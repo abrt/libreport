@@ -1,4 +1,6 @@
-AC_INIT([libreport], [2.0.2], [crash-catcher@fedorahosted.org])
+AC_INIT([libreport],
+	m4_esyscmd([cat ./libreport-version]),
+	[crash-catcher@fedorahosted.org])
 
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign silent-rules])

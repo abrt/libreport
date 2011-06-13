@@ -1,6 +1,6 @@
 #! /bin/sh
-#echo "Running gen-version"
-#./gen-version
+echo "Running gen-version"
+./gen-version
 
 mkdir -p m4
 echo "Creating m4/aclocal.m4 ..."
