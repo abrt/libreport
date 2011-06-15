@@ -1094,7 +1094,10 @@ static void start_event_run(const char *event_name,
     int locked = (dd && dd->locked);
     dd_close(dd);
     if (!locked)
+    {
+        free_run_event_state(state);
         return; /* user refused to steal, or write error, etc... */
+    }
 
     set_excluded_envvar();
     GList *env_list = export_event_config(event_name);
