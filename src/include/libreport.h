@@ -289,6 +289,9 @@ void parse_release_for_rhts(const char *pRelease, char **product, char **version
 #define load_conf_file libreport_load_conf_file
 bool load_conf_file(const char *pPath, map_string_h *settings, bool skipKeysWithoutValue);
 
+/* Connect to abrtd over unix domain socket, issue DELETE command */
+int delete_dump_dir_possibly_using_abrtd(const char *dump_dir_name);
+
 /* Tries to create a copy of dump_dir_name in base_dir, with same or similar basename.
  * Returns NULL if copying failed. In this case, logs a message before returning. */
 #define steal_directory libreport_steal_directory
