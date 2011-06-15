@@ -31,7 +31,7 @@ int report_problem_in_dir(const char *dirname, int flags)
 
     char *args[5], **pp;
     pp = args;
-    *pp++ = (char *)"bug-reporting-wizard";
+    *pp++ = (char *)"report-gtk";
     if (!(flags & LIBREPORT_ANALYZE))
         *pp++ = (char *)"--report-only";
     *pp++ = (char *)"--";
@@ -54,13 +54,13 @@ int report_problem_in_dir(const char *dirname, int flags)
          * Note that we do it in the child, so the parent is never affected.
          */
         signal(SIGCHLD, SIG_DFL);
-        path = BIN_DIR"/bug-reporting-wizard";
+        path = BIN_DIR"/report-gtk";
         VERB1 log("Executing: %s", path);
         execv(path, args);
         /* Did not find the desired executable in the installation directory.
          * Trying to find it in PATH
          */
-        path = "bug-reporting-wizard";
+        path = "report-gtk";
         execvp(path, args);
         perror_msg_and_die("Can't execute %s", path);
     }
@@ -98,7 +98,7 @@ int report_problem_in_memory(problem_data_t *pd, int flags)
     dd_close(dd);
     VERB2 log("Temp problem dir: '%s'", dir_name);
 
-// TODO: if !LIBREPORT_WAIT pass LIBREPORT_DEL_DIR, and teach bug-reporting-wizard
+// TODO: if !LIBREPORT_WAIT pass LIBREPORT_DEL_DIR, and teach report-gtk
 // an option to delete directory after reporting?
 // It will make !LIBREPORT_WAIT reporting possible
     result = report_problem_in_dir(dir_name, flags);

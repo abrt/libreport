@@ -1,7 +1,7 @@
-# bug-reporting-wizard binary
-bin_PROGRAMS = bug-reporting-wizard
+# report-gtk binary
+bin_PROGRAMS = report-gtk
 
-bug_reporting_wizard_SOURCES = \
+report_gtk_SOURCES = \
     wizard.h wizard.c \
     main.c \
     wizard_glade.c
@@ -9,7 +9,7 @@ bug_reporting_wizard_SOURCES = \
 # Required for gtk_builder_connect_signals() to work correctly:
 # -g
 # -Wl,--export-dynamic
-bug_reporting_wizard_CFLAGS = \
+report_gtk_CFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -I$(srcdir)/../gtk-helpers \
@@ -29,7 +29,7 @@ bug_reporting_wizard_CFLAGS = \
 # Required for gtk_builder_connect_signals() to work correctly:
 # -lgmodule-2.0
 # -lgthread-2.0
-bug_reporting_wizard_LDADD = \
+report_gtk_LDADD = \
     ../lib/libreport.la \
     ../gtk-helpers/libreport-gtk.la \
     $(GLIB_LIBS) \
