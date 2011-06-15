@@ -62,6 +62,15 @@ Obsoletes: report <= 0.20
 %description python
 Python bindings for report-libs.
 
+%package cli
+Summary: %{name}'s command line interface
+Group: User Interface/Desktops
+Requires: %{name} = %{version}-%{release}
+
+%description cli
+This package contains simple command line tool for working
+with problem dump reports
+
 %package gtk
 Summary: GTK front-end for libreport
 Group: User Interface/Desktops
@@ -162,6 +171,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files python
 %defattr(-,root,root,-)
 %{python_sitearch}/report/*
+
+%files cli
+%defattr(-,root,root,-)
+%{_bindir}/report-cli
+%{_mandir}/man1/report-cli.1.gz
 
 %files gtk
 %defattr(-,root,root,-)

@@ -79,18 +79,12 @@ EVENTS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/events.d'
 PLUGINS_LIB_DIR='${libdir}/${PACKAGE_NAME}'
 LIBEXEC_DIR='${libexecdir}'
 
-DEBUG_DUMPS_DIR='${localstatedir}/spool/${PACKAGE_NAME}'
-DEBUG_INFO_DIR='${localstatedir}/cache/${PACKAGE_NAME}-di'
+DEBUG_DUMPS_DIR='${localstatedir}/spool/abrt'
 
 AC_ARG_WITH(debugdumpsdir,
             [AS_HELP_STRING([--with-debugdumpdir=DIR],
                            [Directory where debugdumps are created])],
             [DEBUG_DUMPS_DIR="$withval"])
-
-AC_ARG_WITH(debuginfosdir,
-            [AS_HELP_STRING([--with-debuginfodir=DIR],
-                           [Directory where debuginfo is stored])],
-            [DEBUG_INFO_DIR="$withval"])
 
 AC_SUBST(CONF_DIR)
 AC_SUBST(VAR_RUN)
@@ -99,7 +93,6 @@ AC_SUBST(EVENTS_CONF_DIR)
 AC_SUBST(EVENTS_DIR)
 AC_SUBST(PLUGINS_LIB_DIR)
 AC_SUBST(DEBUG_DUMPS_DIR)
-AC_SUBST(DEBUG_INFO_DIR)
 AC_SUBST(LIBEXEC_DIR)
 
 # Initialize the test suite.
@@ -121,6 +114,7 @@ AC_CONFIG_FILES([
 	src/gtk-helpers/Makefile
 	src/gtk-helpers/libreport-gtk.pc
 	src/gui-wizard-gtk/Makefile
+	src/cli/Makefile
 	po/Makefile.in
 ])
 

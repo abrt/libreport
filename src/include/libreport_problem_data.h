@@ -32,7 +32,7 @@ enum {
     CD_FLAG_TXT           = (1 << 1),
     CD_FLAG_ISEDITABLE    = (1 << 2),
     CD_FLAG_ISNOTEDITABLE = (1 << 3),
-    /* Show this element in "short" info (abrt-cli -l) */
+    /* Show this element in "short" info (report-cli -l) */
     CD_FLAG_LIST          = (1 << 4),
     CD_FLAG_UNIXTIME      = (1 << 5),
 };

@@ -1,1 +1,1 @@
-SUBDIRS = include lib report-python gtk-helpers gui-wizard-gtk
+SUBDIRS = include lib report-python gtk-helpers gui-wizard-gtk cli
