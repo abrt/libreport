@@ -92,10 +92,10 @@ enum {
 extern "C" {
 #endif
 
-#define add_reported_to abrt_add_reported_to
+#define add_reported_to libreport_add_reported_to
 void add_reported_to(struct dump_dir *dd, const char *line);
 
-#define log_problem_data abrt_log_problem_data
+#define log_problem_data libreport_log_problem_data
 void log_problem_data(problem_data_t *problem_data, const char *pfx);
 
 #ifdef __cplusplus

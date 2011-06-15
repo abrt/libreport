@@ -45,11 +45,11 @@ typedef struct sha1_ctx_t {
 	uint32_t hash[8];    /* 4 elements for md5, 5 for sha1, 8 for sha256 */
 } sha1_ctx_t;
 
-#define sha1_begin abrt_sha1_begin
+#define sha1_begin libreport_sha1_begin
 void sha1_begin(sha1_ctx_t *ctx);
-#define sha1_hash abrt_sha1_hash
+#define sha1_hash libreport_sha1_hash
 void sha1_hash(sha1_ctx_t *ctx, const void *buffer, size_t len);
-#define sha1_end abrt_sha1_end
+#define sha1_end libreport_sha1_end
 void sha1_end(sha1_ctx_t *ctx, void *resbuf);
 
 #ifdef __cplusplus

@@ -29,50 +29,50 @@
 extern "C" {
 #endif
 
-#define ndelay_on abrt_ndelay_on
+#define ndelay_on libreport_ndelay_on
 int ndelay_on(int fd);
-#define ndelay_off abrt_ndelay_off
+#define ndelay_off libreport_ndelay_off
 int ndelay_off(int fd);
-#define close_on_exec_on abrt_close_on_exec_on
+#define close_on_exec_on libreport_close_on_exec_on
 int close_on_exec_on(int fd);
 
-#define xmalloc abrt_xmalloc
+#define xmalloc libreport_xmalloc
 void* xmalloc(size_t size);
-#define xrealloc abrt_xrealloc
+#define xrealloc libreport_xrealloc
 void* xrealloc(void *ptr, size_t size);
-#define xzalloc abrt_xzalloc
+#define xzalloc libreport_xzalloc
 void* xzalloc(size_t size);
-#define xstrdup abrt_xstrdup
+#define xstrdup libreport_xstrdup
 char* xstrdup(const char *s);
-#define xstrndup abrt_xstrndup
+#define xstrndup libreport_xstrndup
 char* xstrndup(const char *s, int n);
 
-#define xpipe abrt_xpipe
+#define xpipe libreport_xpipe
 void xpipe(int filedes[2]);
-#define xdup abrt_xdup
+#define xdup libreport_xdup
 void xdup(int from);
-#define xdup2 abrt_xdup2
+#define xdup2 libreport_xdup2
 void xdup2(int from, int to);
-#define xmove_fd abrt_xmove_fd
+#define xmove_fd libreport_xmove_fd
 void xmove_fd(int from, int to);
 
-#define xwrite abrt_xwrite
+#define xwrite libreport_xwrite
 void xwrite(int fd, const void *buf, size_t count);
-#define xwrite_str abrt_xwrite_str
+#define xwrite_str libreport_xwrite_str
 void xwrite_str(int fd, const char *str);
 
-#define xlseek abrt_xlseek
+#define xlseek libreport_xlseek
 off_t xlseek(int fd, off_t offset, int whence);
 
-#define xchdir abrt_xchdir
+#define xchdir libreport_xchdir
 void xchdir(const char *path);
 
-#define xvasprintf abrt_xvasprintf
+#define xvasprintf libreport_xvasprintf
 char* xvasprintf(const char *format, va_list p);
-#define xasprintf abrt_xasprintf
+#define xasprintf libreport_xasprintf
 char* xasprintf(const char *format, ...);
 
-#define xsetenv abrt_xsetenv
+#define xsetenv libreport_xsetenv
 void xsetenv(const char *key, const char *value);
 /*
  * Utility function to unsetenv a string which was possibly putenv'ed.
@@ -84,27 +84,27 @@ void xsetenv(const char *key, const char *value);
  * Of course, saving/restoring the char wouldn't work either.
  * This helper creates a copy up to '=', unsetenv's it, and frees:
  */
-#define safe_unsetenv abrt_safe_unsetenv
+#define safe_unsetenv libreport_safe_unsetenv
 void safe_unsetenv(const char *var_val);
 
-#define xsocket abrt_xsocket
+#define xsocket libreport_xsocket
 int xsocket(int domain, int type, int protocol);
-#define xbind abrt_xbind
+#define xbind libreport_xbind
 void xbind(int sockfd, struct sockaddr *my_addr, socklen_t addrlen);
-#define xlisten abrt_xlisten
+#define xlisten libreport_xlisten
 void xlisten(int s, int backlog);
-#define xsendto abrt_xsendto
+#define xsendto libreport_xsendto
 ssize_t xsendto(int s, const void *buf, size_t len,
                 const struct sockaddr *to, socklen_t tolen);
 
-#define xstat abrt_xstat
+#define xstat libreport_xstat
 void xstat(const char *name, struct stat *stat_buf);
 
-#define xopen3 abrt_xopen3
+#define xopen3 libreport_xopen3
 int xopen3(const char *pathname, int flags, int mode);
-#define xopen abrt_xopen
+#define xopen libreport_xopen
 int xopen(const char *pathname, int flags);
-#define xunlink abrt_xunlink
+#define xunlink libreport_xunlink
 void xunlink(const char *pathname);
 
 /* Just testing dent->d_type == DT_REG is wrong: some filesystems
@@ -113,28 +113,28 @@ void xunlink(const char *pathname);
  * This function handles this case. Note: it returns 0 on symlinks
  * even if they point to regular files.
  */
-#define is_regular_file abrt_is_regular_file
+#define is_regular_file libreport_is_regular_file
 int is_regular_file(struct dirent *dent, const char *dirname);
 
-#define dot_or_dotdot abrt_dot_or_dotdot
+#define dot_or_dotdot libreport_dot_or_dotdot
 bool dot_or_dotdot(const char *filename);
-#define last_char_is abrt_last_char_is
+#define last_char_is libreport_last_char_is
 char *last_char_is(const char *s, int c);
 
-#define string_to_bool abrt_string_to_bool
+#define string_to_bool libreport_string_to_bool
 bool string_to_bool(const char *s);
 
-#define xseteuid abrt_xseteuid
+#define xseteuid libreport_xseteuid
 void xseteuid(uid_t euid);
-#define xsetegid abrt_xsetegid
+#define xsetegid libreport_xsetegid
 void xsetegid(gid_t egid);
-#define xsetreuid abrt_xsetreuid
+#define xsetreuid libreport_xsetreuid
 void xsetreuid(uid_t ruid, uid_t euid);
-#define xsetregid abrt_xsetregid
+#define xsetregid libreport_xsetregid
 void xsetregid(gid_t rgid, gid_t egid);
 
 /* Returns getpwuid(uid)->pw_dir or NULL */
-#define get_home_dir abrt_get_home_dir
+#define get_home_dir libreport_get_home_dir
 const char *get_home_dir(uid_t uid);
 
 #ifdef __cplusplus

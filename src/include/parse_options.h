@@ -24,9 +24,9 @@ extern "C" {
 #endif
 
 const char *abrt_init(char **argv);
-#define export_abrt_envvars abrt_export_abrt_envvars
+#define export_abrt_envvars libreport_export_abrt_envvars
 void export_abrt_envvars(int pfx);
-#define g_progname abrt_g_progname
+#define g_progname libreport_g_progname
 extern const char *g_progname;
 
 
@@ -66,11 +66,11 @@ struct options {
 
 #define OPT__VERBOSE(v)     OPT_BOOL('v', "verbose", (v), _("Be verbose"))
 
-#define parse_opts abrt_parse_opts
+#define parse_opts libreport_parse_opts
 unsigned parse_opts(int argc, char **argv, const struct options *opt,
                 const char *usage);
 
-#define show_usage_and_die abrt_show_usage_and_die
+#define show_usage_and_die libreport_show_usage_and_die
 void show_usage_and_die(const char *usage, const struct options *opt);
 
 #ifdef __cplusplus

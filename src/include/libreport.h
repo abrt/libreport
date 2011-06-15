@@ -245,10 +245,6 @@ char* get_cmdline(pid_t pid);
 #define get_environ libreport_get_environ
 char* get_environ(pid_t pid);
 
-/* Returns 1 if abrtd daemon is running, 0 otherwise. */
-#define daemon_is_ok libreport_daemon_is_ok
-int daemon_is_ok();
-
 /* Takes ptr to time_t, or NULL if you want to use current time.
  * Returns "YYYY-MM-DD-hh:mm:ss" string.
  */
