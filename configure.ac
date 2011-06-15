@@ -43,7 +43,7 @@ AC_PATH_PROG([ASCIIDOC], [asciidoc], [no])
 [then]
     [echo "The asciidoc program was not found in the search path. Please ensure"]
     [echo "that it is installed and its directory is included in the search path."]
-    [echo "Then run configure again before attempting to build ABRT."]
+    [echo "Then run configure again before attempting to build libreport."]
     [exit 1]
 [fi]
 
@@ -52,7 +52,7 @@ AC_PATH_PROG([XMLTO], [xmlto], [no])
 [then]
     [echo "The xmlto program was not found in the search path. Please ensure"]
     [echo "that it is installed and its directory is included in the search path."]
-    [echo "Then run configure again before attempting to build ABRT."]
+    [echo "Then run configure again before attempting to build libreport."]
     [exit 1]
 [fi]
 
@@ -71,12 +71,10 @@ PKG_CHECK_MODULES([PYTHON], [python],,[
 
 PKG_PROG_PKG_CONFIG
 
-# FIXME: do we want to share the /etc/abrt dir?
-CONF_DIR='${sysconfdir}/abrt'
+CONF_DIR='${sysconfdir}/${PACKAGE_NAME}'
 VAR_RUN='${localstatedir}/run'
 PLUGINS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/plugins'
-# and again share /etc/abrt ?
-EVENTS_DIR='${sysconfdir}/abrt/events'
+EVENTS_DIR='${sysconfdir}/${PACKAGE_NAME}/events'
 EVENTS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/events.d'
 PLUGINS_LIB_DIR='${libdir}/${PACKAGE_NAME}'
 LIBEXEC_DIR='${libexecdir}'
