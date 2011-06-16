@@ -1,31 +1,30 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: libreport\n"
+"Report-Msgid-Bugs-To: https://fedorahosted.org/abrt/report\n"
 "POT-Creation-Date: 2011-06-16 12:17+0200\n"
-"PO-Revision-Date: 2011-05-02 18:28+0000\n"
+"PO-Revision-Date: 2011-06-16 11:23+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
-"Language-Team: Finnish <None>\n"
-"Language: fi\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/cli/cli.c:167
 msgid ""
-"\b [-vsp] -l[f] [-D BASE_DIR]...\n"
-"or: \b [-vsp] -i[f] DUMP_DIR\n"
-"or: \b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
-"or: \b [-vsp] -e EVENT DUMP_DIR\n"
-"or: \b [-vsp] -a[y] DUMP_DIR\n"
-"or: \b [-vsp] -r[y] DUMP_DIR\n"
-"or: \b [-vsp] -d DUMP_DIR"
+"\\b [-vsp] -l[f] [-D BASE_DIR]...\n"
+"or: \\b [-vsp] -i[f] DUMP_DIR\n"
+"or: \\b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
+"or: \\b [-vsp] -e EVENT DUMP_DIR\n"
+"or: \\b [-vsp] -a[y] DUMP_DIR\n"
+"or: \\b [-vsp] -r[y] DUMP_DIR\n"
+"or: \\b [-vsp] -d DUMP_DIR"
 msgstr ""
 
 #. short_name long_name  value    parameter_name  help
@@ -42,9 +41,8 @@ msgid "Print information about DUMP_DIR (detailed with -f)"
 msgstr ""
 
 #: ../src/cli/cli.c:199
-#, fuzzy
 msgid "List possible events [which start with PREFIX]"
-msgstr "Luettelo mahdollisista tapahtumista [jotka alkavat PFX]"
+msgstr ""
 
 #: ../src/cli/cli.c:200
 msgid "Run EVENT on DUMP_DIR"
@@ -97,8 +95,7 @@ msgid ""
 "# Check that it does not contain any sensitive data (passwords, etc.)"
 msgstr ""
 "# Pinolistaus\n"
-"# Tarkista, ettei tämä sisällä mitään luottamuksellisia tietoja, kuten "
-"salasanoja."
+"# Tarkista, ettei tämä sisällä mitään luottamuksellisia tietoja, kuten salasanoja."
 
 #: ../src/cli/report.c:155
 msgid "# Architecture"
@@ -177,9 +174,9 @@ msgid "Bad value for '%s': %s"
 msgstr "Virheellinen arvo kohteelle ”%s”: %s"
 
 #: ../src/cli/report.c:617
-#, fuzzy, c-format
+#, c-format
 msgid "How you would like to analyze the problem?\n"
-msgstr "Valitse kuinka haluat analysoida ongelman:\n"
+msgstr ""
 
 #: ../src/cli/report.c:635
 msgid "Select analyzer: "
@@ -199,14 +196,12 @@ msgid "Reporting..."
 msgstr "Raportoidaan..."
 
 #: ../src/cli/report.c:774
-#, fuzzy
 msgid "How would you like to report the problem?"
-msgstr "Valitse kuinka haluat raportoida ongelman:"
+msgstr ""
 
 #: ../src/cli/report.c:784
-#, fuzzy
 msgid "Select reporter(s): "
-msgstr "Raportoijat:"
+msgstr ""
 
 #: ../src/cli/report.c:804
 msgid "Reporting disabled because the backtrace is unusable"
@@ -245,8 +240,8 @@ msgstr "Tee tapahtuman asetukset"
 #: ../src/gtk-helpers/event_config_dialog.c:425
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue "
-"with the current configuration."
+"Wrong settings detected for %s, reporting will probably fail if you continue"
+" with the current configuration."
 msgstr ""
 "Kohteen %s asetukset ovat väärät, raportointi luultavasti epäonnistuu, jos "
 "jatkat nykyisillä asetuksilla."
@@ -261,16 +256,11 @@ msgstr ""
 "epäonnistuu, jos jatkat nykyisillä asetuksilla."
 
 #: ../src/gui-wizard-gtk/main.c:96
-#, fuzzy
 msgid ""
-"\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
+"\\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
-" [-vp] [-g GUI-TIEDOSTO] HAKEMISTO\n"
-"\n"
-"Graafinen työkalu annetussa HAKEMISTOssa olevan ongelman analysointiin ja "
-"raportointiin"
 
 #: ../src/gui-wizard-gtk/main.c:110
 msgid "Alternate GUI file"
@@ -283,7 +273,7 @@ msgstr ""
 
 #. override the default prgname, so it's the same as the application
 #. which is calling us
-#.
+#. 
 #: ../src/gui-wizard-gtk/main.c:117
 msgid "Override the default prgname"
 msgstr ""
@@ -421,11 +411,10 @@ msgid "Details"
 msgstr "Lisätietoja"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
-#, fuzzy
 msgid ""
 "How did this problem happen (step-by-step)? How can it be reproduced? Any "
 "additional comments useful for diagnosing the problem?"
-msgstr "Kuinka tämä ongelma tapahtui? Kuinka sen voi toistaa?"
+msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "I _agree with submitting the backtrace"
@@ -510,647 +499,7 @@ msgid "Unsupported option type"
 msgstr "Valitsimen tyyppiä ei tueta"
 
 #: ../src/lib/parse_options.c:60
-#, fuzzy
 msgid "Usage: "
-msgstr "Käyttö: %s\n"
+msgstr ""
 
-#~ msgid "ABRT notification applet"
-#~ msgstr "ABRT-ilmoitussovelma"
 
-#~ msgid "Automatic Bug Reporting Tool"
-#~ msgstr "Automaattinen ohjelmavikojen raportointiohjelma"
-
-#~ msgid "A crash in the %s package has been detected"
-#~ msgstr "Paketissa %s on huomattu kaatuminen"
-
-#~ msgid "A crash has been detected"
-#~ msgstr "Kaatuminen on huomattu"
-
-#~ msgid "ABRT service is not running"
-#~ msgstr "ABRT-palvelu ei ole käytössä"
-
-#~ msgid "Warning"
-#~ msgstr "Varoitus"
-
-#~ msgid ""
-#~ "Notification area applet that notifies users about issues detected by ABRT"
-#~ msgstr ""
-#~ "Ilmoitusalueen kuvake, joka kertoo käyttäjälle ABRT:n huomaamista "
-#~ "ongelmista"
-
-#~ msgid "translator-credits"
-#~ msgstr "Ville-Pekka Vainio, 2009-2011."
-
-#~ msgid "Hide"
-#~ msgstr "Piilota"
-
-#~ msgid "Report"
-#~ msgstr "Raportti"
-
-#~ msgid "Show"
-#~ msgstr "Näytä"
-
-#~ msgid "A Problem has Occurred"
-#~ msgstr "Tapahtui ongelma"
-
-#~ msgid "Open ABRT"
-#~ msgstr "Avaa ABRT"
-
-#~ msgid ""
-#~ "Usage: %s -l[f] [-D BASE_DIR]...]\n"
-#~ "   or: %s -r[y] CRASH_DIR\n"
-#~ "   or: %s -i[b] CRASH_DIR\n"
-#~ "   or: %s -d CRASH_DIR\n"
-#~ "\n"
-#~ "\t-l, --list\t\tList not yet reported problems\n"
-#~ "\t  -f, --full\t\tList all problems\n"
-#~ "\t-D BASE_DIR\t\tDirectory to list problems from\n"
-#~ "\t\t\t\t(default: -D $HOME/.abrt/spool -D %s)\n"
-#~ "\n"
-#~ "\t-r, --report\t\tSend a report about CRASH_DIR\n"
-#~ "\t  -y, --always\t\t...without editing and asking\n"
-#~ "\t-i, --info\t\tPrint detailed information about CRASH_DIR\n"
-#~ "\t  -f, --full\t\t...including multi-line entries\n"
-#~ "\t\t\t\tNote: -if will run analyzers\n"
-#~ "\t\t\t\t(if this CRASH_DIR have defined analyzers)\n"
-#~ "\t-d, --delete\t\tRemove CRASH_DIR\n"
-#~ "\n"
-#~ "\t-V, --version\t\tDisplay version and exit\n"
-#~ "\t-v, --verbose\t\tBe verbose\n"
-#~ msgstr ""
-#~ "Käyttö: %s -l[f] [-D PERUSHAKEMISTO]...]\n"
-#~ "   tai: %s -r[y] KAATUMISHAKEMISTO\n"
-#~ "   tai: %s -i[b] KAATUMISHAKEMISTO\n"
-#~ "   tai: %s -d KAATUMISHAKEMISTO\n"
-#~ "\n"
-#~ "\t-l, --list\t\tLuettelo raportoimattomista ongelmista\n"
-#~ "\t  -f, --full\t\tLuettelo kaikista ongelmista\n"
-#~ "\t-D PERUSHAKEMISTO\t\tHakemisto, josta ongelmat luetteloidaan\n"
-#~ "\t\t\t\t(oletus: -D $HOME/.abrt/spool -D %s)\n"
-#~ "\n"
-#~ "\t-r, --report\t\tLähetä raportti KAATUMISHAKEMISTOsta\n"
-#~ "\t  -y, --always\t\t...ei muokata eikä kysellä\n"
-#~ "\t-i, --info\t\tTulosta KAATUMISHAKEMISTOn tiedot\n"
-#~ "\t  -f, --full\t\t...myös moniriviset kohdat\n"
-#~ "\t\t\t\tHuomaa: -if suorittaa analysaattorit\n"
-#~ "\t\t\t\t(jos tällä KAATUMISHAKEMISTOlla on määritettyjä "
-#~ "analysaattoreita)\n"
-#~ "\t-d, --delete\t\tPoista KAATUMISHAKEMISTO\n"
-#~ "\n"
-#~ "\t-V, --version\t\tNäytä versio ja poistu\n"
-#~ "\t-v, --verbose\t\tEnemmän tulosteita\n"
-
-#~ msgid "You must specify exactly one operation"
-#~ msgstr "On määritettävä tasan yksi toiminto."
-
-#~ msgid "Choose option [0 - %u]: "
-#~ msgstr "Valitse vaihtoehto [0 - %u]:"
-
-#~ msgid "Report using %s?"
-#~ msgstr "Raportoidaanko käyttäen raportoijaa %s?: "
-
-#~ msgid "Skipping..."
-#~ msgstr "Ohitetaan..."
-
-#~ msgid ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Query package database and save package name, component, and description"
-#~ msgstr ""
-#~ " [-v] -d HAKEMISTO\n"
-#~ "\n"
-#~ "Kysele pakettitietokannasta ja tallenna paketin nimi, komponentti ja "
-#~ "kuvaus"
-
-#~ msgid "Dump directory"
-#~ msgstr "Vedoshakemisto"
-
-#~ msgid ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   or: "
-#~ msgstr ""
-#~ " [-vs] -d HAKEMISTO -e TAPAHTUMA\n"
-#~ "   tai: "
-
-#~ msgid "Handle EVENT"
-#~ msgstr "Käsittele TAPAHTUMA"
-
-#~ msgid " [options]"
-#~ msgstr " [valitsimet]"
-
-#~ msgid "Use UID as client uid"
-#~ msgstr "Käytä UID:tä asiakkaan UID:nä"
-
-#~ msgid ""
-#~ "The size of the report exceeded the quota. Please check system's "
-#~ "MaxCrashReportsSize value in abrt.conf."
-#~ msgstr ""
-#~ "Raportin koko ylitti sille annetun rajan. Tarkista järjestelmän "
-#~ "MaxCrashReportsSize-arvo abrt.conf-tiedostossa."
-
-#~ msgid "Do not daemonize"
-#~ msgstr "Älä aseta taustaprosessiksi"
-
-#~ msgid "Log to syslog even with -d"
-#~ msgstr "Kirjoita lokia syslogiin myös valitsimen -d kanssa"
-
-#~ msgid "Exit after SEC seconds of inactivity"
-#~ msgstr "Lopeta SEK sekunnin toimettomuuden jälkeen"
-
-#~ msgid "Reported"
-#~ msgstr "Raportoitu"
-
-#~ msgid "Problem"
-#~ msgstr "Ongelma"
-
-#~ msgid "Last occurrence"
-#~ msgstr "Tapahtui edellisen kerran"
-
-#~ msgid "_File"
-#~ msgstr "_Tiedosto"
-
-#~ msgid "_Edit"
-#~ msgstr "_Muokkaa"
-
-#~ msgid "_Help"
-#~ msgstr "_Ohje"
-
-#~ msgid "_Event configuration"
-#~ msgstr "_Tapahtumien asetukset"
-
-#~ msgid "Online _Help"
-#~ msgstr "Ohje _verkossa"
-
-#~ msgid "View and report application crashes"
-#~ msgstr "Katsele ja raportoi ohjelmien kaatumisia"
-
-#~ msgid ""
-#~ " [-vp] [DIR]...\n"
-#~ "\n"
-#~ "Shows list of ABRT dump directories in specified DIR(s)\n"
-#~ "(default DIRs: "
-#~ msgstr ""
-#~ " [-vp] [HAKEMISTO]...\n"
-#~ "\n"
-#~ "Näyttää luettelon ABRT:n vedoshakemistoista annetuissa HAKEMISTOissa\n"
-#~ "(oletus-HAKEMISTOt: "
-
-#~ msgid "Any additional comments useful for diagnosing the problem?"
-#~ msgstr "Muita ongelman löytämisessä auttavia kommentteja"
-
-#~ msgid "Uploaded: %llu of %llu kbytes"
-#~ msgstr "Lähetetty: %llu/%llu kilotavua"
-
-#~ msgid ""
-#~ " [options] -d DIR\n"
-#~ "\n"
-#~ "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, "
-#~ "and identifies crash function in dump directory DIR"
-#~ msgstr ""
-#~ " [valitsimet] -d HAKEMISTO\n"
-#~ "\n"
-#~ "Analysoi C/C++-pinolistauksen, luo duplikaattitiivisteen, arvostelee "
-#~ "pinolistauksen ja tunnistaa kaatumisfunktion muistivedoshakemistosta "
-#~ "HAKEMISTO"
-
-#~ msgid "Backtrace parsing failed for %s"
-#~ msgstr "Kohteen %s pinolistauksen jäsentäminen epäonnistui"
-
-#~ msgid ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID of coredump in dump directory DIR"
-#~ msgstr ""
-#~ " [-v] -d HAKEMISTO\n"
-#~ "\n"
-#~ "Laskee ja tallentaa muistivedoksen UUID:n vedoshakemistoon HAKEMISTO"
-
-#~ msgid ""
-#~ " [-vs] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
-#~ msgstr ""
-#~ " [-v] -d HAKEMISTO\n"
-#~ "\n"
-#~ "Laskee ja tallentaa muistivedoksen UUID:n ja DUPHASH:in oops-"
-#~ "vedoshakemistoon HAKEMISTO"
-
-#~ msgid ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID and DUPHASH of python crash dumps"
-#~ msgstr ""
-#~ " [-v] -d HAKEMISTO\n"
-#~ "\n"
-#~ "Laskee ja tallentaa muistivedoksen UUID:n ja DUPHASH:in python-"
-#~ "kaatumisvedoksista"
-
-#~ msgid "New bug id: %i"
-#~ msgstr "Uuden ohjelmavirheilmoituksen tunnus: %i"
-
-#~ msgid "Empty login or password, please check your configuration"
-#~ msgstr "Tyhjä käyttäjätunnus tai salasana, tarkista asetukset"
-
-#~ msgid "Essential file '%s' is missing, can't continue.."
-#~ msgstr "Tärkeä tiedosto ”%s” puuttuu, ei voida jatkaa."
-
-#~ msgid "Essential file '%s' is empty, can't continue.."
-#~ msgstr "Tärkeä tiedosto ”%s” on tyhjä, ei voida jatkaa."
-
-#~ msgid "Logging into Bugzilla at %s"
-#~ msgstr "Kirjaudutaan Bugzillaan osoitteessa %s"
-
-#~ msgid "Checking for duplicates"
-#~ msgstr "Etsitään duplikaatteja"
-
-#~ msgid "Missing mandatory member 'bugs'"
-#~ msgstr "Puuttuva pakollinen osa ”bugs”"
-
-#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
-#~ msgstr ""
-#~ "get_bug_info() epäonnistui. Kaikkia pakollisia tietoja ei voitu kerätä."
-
-#~ msgid "Creating a new bug"
-#~ msgstr "Luodaan uusi ohjelmavirheilmoitus"
-
-#~ msgid "Bugzilla entry creation failed"
-#~ msgstr "Bugzilla-ilmoituksen luominen epäonnistui"
-
-#~ msgid "Logging out"
-#~ msgstr "Kirjaudutaan ulos"
-
-#~ msgid "Bug is already reported: %i"
-#~ msgstr "Ohjelmavirheestä on jo tehty ilmoitus: %i"
-
-#~ msgid "Bugzilla couldn't find parent of bug %d"
-#~ msgstr "Bugzilla ei löytänyt ylemmän tason vikailmoitusta ilmoitukselle %d"
-
-#~ msgid "Add %s to CC list"
-#~ msgstr "Lisää %s CC-luetteloon"
-
-#~ msgid "Adding new comment to bug %d"
-#~ msgstr "﻿Lisää uusi kommentti vikailmoitukseen (%d)"
-
-#~ msgid ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Reports problem to Bugzilla"
-#~ msgstr ""
-#~ " [-v] -c ASETUSTIEDOSTO -d HAKEMISTO\n"
-#~ "\n"
-#~ "Raportoi ongelmat Bugzillaan"
-
-#~ msgid "Configuration file (may be given many times)"
-#~ msgstr "Asetustiedosto (voidaan syöttää useita)"
-
-#~ msgid ""
-#~ " [options] -d DIR\n"
-#~ "\n"
-#~ "Generates and saves backtrace for coredump in dump directory DIR"
-#~ msgstr ""
-#~ " [valitsimet] -d HAKEMISTO\n"
-#~ "\n"
-#~ "Luo ja tallentaa pinolistauksen vedoshakemiston HAKEMISTO muistivedoksesta"
-
-#~ msgid "Additional debuginfo directories"
-#~ msgstr "Lisää debuginfoa sisältävät hakemistot"
-
-#~ msgid "Kill gdb if it runs for more than N seconds"
-#~ msgstr "Tapa gdb, jos se sitä on suoritettu enemmän kuin N sekuntia"
-
-#~ msgid "Backtrace is generated and saved, %u bytes"
-#~ msgstr "Pinolistausta luodaan ja tallennetaan, %u tavua"
-
-#~ msgid "Extracting cpio from %s"
-#~ msgstr "Puretaan cpio lähteestä %s"
-
-#~ msgid "Can't write to '%s': %s"
-#~ msgstr "Kohteeseen ”%s” ei voi kirjoittaa: %s"
-
-#~ msgid "Can't extract package '%s'"
-#~ msgstr "Pakettia ”%s” ei voi purkaa"
-
-#~ msgid "Caching files from %s made from %s"
-#~ msgstr "Viedään kohteen %s paketista %s tehtyjä tiedostoja välimuistiin"
-
-#~ msgid "Can't extract files from '%s'"
-#~ msgstr "Kohteesta ”%s” ei voi purkaa tiedostoja"
-
-#~ msgid "Downloading (%i of %i) %s: %3u%%"
-#~ msgstr "Ladataan (%i/%i) %s: %3u%%"
-
-#~ msgid "Looking for needed packages in repositories"
-#~ msgstr "Etsitään tarvittavia paketteja pakettivarastoista"
-
-#~ msgid "Can't find packages for %u debuginfo files"
-#~ msgstr "%u debuginfo-tiedoston paketteja ei löytynyt"
-
-#~ msgid "Packages to download: %u"
-#~ msgstr "Ladattavat paketit: %u"
-
-#~ msgid "Downloading %.2fMb, installed size: %.2fMb"
-#~ msgstr "Ladataan %.2f Mb, asennettu koko: %.2f Mb"
-
-#~ msgid "Is this ok? [y/N] "
-#~ msgstr "Onko tämä ok? [kyllä=y/EI=e]"
-
-#~ msgid "Downloading package %s failed"
-#~ msgstr "Paketin %s lataaminen epäonnistui"
-
-#~ msgid "Unpacking failed, aborting download..."
-#~ msgstr "Purkaminen epäonnistui, keskeytetään lataus…"
-
-#~ msgid "All downloaded packages have been extracted, removing %s"
-#~ msgstr "Kaikki ladatut paketit on purettu, poistetaan %s"
-
-#~ msgid "Can't remove %s, probably contains an error log"
-#~ msgstr "Hakemistoa %s ei voida poistaa, se luultavasti sisältää virhelokin"
-
-#~ msgid "Can't remove '%s': %s"
-#~ msgstr "Hakemistoa ”%s” ei voi poistaa: %s"
-
-#~ msgid "Exiting on user command"
-#~ msgstr "Lopetetaan, käyttäjä antoi lopetuskomennon"
-
-#~ msgid "Coredump references %u debuginfo files, %u of them are not installed"
-#~ msgstr ""
-#~ "Muistivedos viittaa %u debuginfo-tiedostoon, %u niistä ei ole asennettu"
-
-#~ msgid "Missing debuginfo file: %s"
-#~ msgstr "Puuttuva debuginfo-tiedosto: %s"
-
-#~ msgid "All %u debuginfo files are available"
-#~ msgstr "Kaikki %u debuginfo-tiedostoa ovat käytettävissä"
-
-#~ msgid "Submitting oops report to %s"
-#~ msgstr "Lähetetään oops-raportti osoitteeseen %s"
-
-#~ msgid ""
-#~ " [-v] [-c CONFFILE]... -d DIR\n"
-#~ "\n"
-#~ "Reports kernel oops to kerneloops.org (or similar) site"
-#~ msgstr ""
-#~ " [-v] [-c ASETUSTIEDOSTO]... -d HAKEMISTO\n"
-#~ "\n"
-#~ "Raportoi oopsit kerneloops.org-sivustolle (tai vastaavalle)"
-
-#~ msgid "Configuration file"
-#~ msgstr "Asetustiedosto"
-
-#~ msgid "Sending an email..."
-#~ msgstr "Lähetetään sähköpostia..."
-
-#~ msgid "Config file"
-#~ msgstr "Asetustiedosto"
-
-#~ msgid ""
-#~ " [-v] -d DIR [-o FILE] [-a yes/no]\n"
-#~ "\n"
-#~ "Prints problem information to standard output or FILE"
-#~ msgstr ""
-#~ " [-v] -d HAKEMISTO [-o TIEDOSTO] [-a kyllä/ei]\n"
-#~ "\n"
-#~ "Tulostaa ongelman tiedot vakiotulosteeseen tai TIEDOSTOon"
-
-#~ msgid "Output file"
-#~ msgstr "Kohdetiedosto"
-
-#~ msgid "Append to, or overwrite FILE"
-#~ msgstr "Lisää tai korvaa TIEDOSTO"
-
-#~ msgid "Create reported_to in DIR"
-#~ msgstr "Luo reported_to HAKEMISTOON"
-
-#~ msgid "The report was appended to %s"
-#~ msgstr "Raportti lisättiin kohteeseen %s"
-
-#~ msgid "The report was stored to %s"
-#~ msgstr "Raportti tallennettiin kohteeseen %s"
-
-#~ msgid "Compressing data"
-#~ msgstr "Pakataan tietoja"
-
-#~ msgid "Empty RHTS login or password"
-#~ msgstr "Tyhjä RHTS-käyttäjätunnus tai -salasana"
-
-#~ msgid "Can't create a temporary directory in /tmp"
-#~ msgstr "Ei voi luoda tilapäishakemistoa hakemistoon /tmp"
-
-#~ msgid "Creating a new case..."
-#~ msgstr "Luodaan uusi tapaus..."
-
-#~ msgid ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Reports a problem to RHTSupport"
-#~ msgstr ""
-#~ " [-v] -c ASETUSTIEDOSTO -d HAKEMISTO\n"
-#~ "\n"
-#~ "Raportoi ongelman RHTSupportiin"
-
-#~ msgid ""
-#~ " [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
-#~ "\n"
-#~ "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than "
-#~ "SIZE"
-#~ msgstr ""
-#~ " [-v] [-d KOKO:HAKEMISTO]... [-f KOKO:HAKEMISTO]... [-p HAKEMISTO]\n"
-#~ "\n"
-#~ "Poistaa vedoshakemistoja (-d) tai tiedostoja (-f) HAKEMISTOista, kunnes "
-#~ "ne ovat pienempiä kuin KOKO"
-
-#~ msgid "Delete dump dirs"
-#~ msgstr "Poista vedoshakemistot"
-
-#~ msgid "Delete files"
-#~ msgstr "Poista tiedostot"
-
-#~ msgid "Preserve this dump dir"
-#~ msgstr "Säilytä tämä vedoshakemisto"
-
-#~ msgid "Sending %s to %s"
-#~ msgstr "Lähetetään tiedosto %s osoitteeseen %s"
-
-#~ msgid "Successfully sent %s to %s"
-#~ msgstr "Tiedoston %s lähetys osoitteeseen %s onnistui"
-
-#~ msgid "Archive is created: '%s'"
-#~ msgstr "Luodaan hakemistoa: ”%s”"
-
-#~ msgid ""
-#~ " [-v] -d DIR [-c CONFFILE] [-u URL]\n"
-#~ "\n"
-#~ "Uploads compressed tarball of dump directory DIR"
-#~ msgstr ""
-#~ " [-v] -d HAKEMISTO [-c ASETUSTIEDOSTO] [-u URL]\n"
-#~ "\n"
-#~ "Lähettää vedoshakemiston HAKEMISTO sisällön pakattuna verkkoon"
-
-#~ msgid "Base URL to upload to"
-#~ msgstr "Perusosoite, johon lähetetään"
-
-#~ msgid ""
-#~ " [-vsrowx] [-d DIR] FILE\n"
-#~ "\n"
-#~ "Extract oops from syslog/dmesg file"
-#~ msgstr ""
-#~ " [-vsrowx] [-d HAKEMISTO] TIEDOSTO\n"
-#~ "\n"
-#~ "Purkaa oopsit syslog-/dmesg-tiedostosta"
-
-#~ msgid "Parse kernel's message buffer before parsing FILE"
-#~ msgstr "Jäsennä ytimen viestipuskuri ennen TIEDOSTOn jäsentämistä"
-
-#~ msgid "Print found oopses on standard output"
-#~ msgstr "Tulosta löydetyt oopsit vakiotulosteeseen"
-
-#~ msgid "Do not exit, watch the file for new oopses"
-#~ msgstr "Älä poistu, seuraa tiedostoa uusien oopsien varalta"
-
-#~ msgid "Create ABRT dump in DIR for every oops found"
-#~ msgstr ""
-#~ "Luo ABRT-vedoshakemisto HAKEMISTOon jokaista löydettyä oopsia varten"
-
-#~ msgid "Make the dump directory world readable"
-#~ msgstr "Aseta vedoshakemisto kaikkien luettavaksi"
-
-#~ msgid "log to syslog"
-#~ msgstr "kirjoita lokia syslogiin"
-
-#~ msgid "Download debuginfo packages and generate backtrace locally using GDB"
-#~ msgstr ""
-#~ "Lataa debuginfo-paketit ja luo pinolistaus paikallisesti GDB:tä käyttäen"
-
-#~ msgid "Local GNU Debugger"
-#~ msgstr "Paikallinen GNU-virheenjäljitin"
-
-#~ msgid ""
-#~ "Needs to downloads debuginfo packages, which might take significant time, "
-#~ "and take up disk space. However, unlike RetraceServer, doesn't send "
-#~ "coredump to remote machines."
-#~ msgstr ""
-#~ "Debuginfo-paketit on ladattava paikallisesti, mikä saattaa viedä paljon "
-#~ "aikaa ja levytilaa. Ei kuitenkaan lähetä muistivedosta etäkoneille, "
-#~ "toisin kuin RetraceServer."
-
-#~ msgid "Address of the retrace server"
-#~ msgstr "Retrace-palvelimen osoite"
-
-#~ msgid "Retrace server URL"
-#~ msgstr "Retrace-palvelimen URL"
-
-#~ msgid "Send core dump to remote retrace server for analysis"
-#~ msgstr "Lähetä muistivedos etäpalvelimelle analysointavaksi"
-
-#~ msgid ""
-#~ "Uploads coredump to a server, which generates backtrace and returns it. "
-#~ "Pros: no need for debuginfo downloads. Retrace server's database of "
-#~ "debuginfos is more complete. Retrace server may generate better "
-#~ "backtraces. Cons: coredump you upload contains all the data from the "
-#~ "crashed program, including your private data, if any."
-#~ msgstr ""
-#~ "Lähettää muistivedoksen palvelimelle, joka luo pinolistauksen ja "
-#~ "palauttaa sen. Hyödyt: debuginfo-tiedostoja ei tarvitse ladata. "
-#~ "Palvelimen debuginfo-tietokanta on kattavampi. Palvelin saattaa luoda "
-#~ "parempia pinolistauksia. Haitat: lähetettävä muistivedos sisältää kaikki "
-#~ "kaatuneen ohjelman tiedot, myös mahdolliset yksityiset tiedot."
-
-#~ msgid "Address of Bugzilla server"
-#~ msgstr "Bugzilla-palvelimen osoite"
-
-#~ msgid "Bugzilla"
-#~ msgstr "Bugzilla"
-
-#~ msgid "Bugzilla URL"
-#~ msgstr "Bugzillan URL"
-
-#~ msgid "Bugzilla account password"
-#~ msgstr "Bugzilla-tilin salasana"
-
-#~ msgid "Bugzilla account user name"
-#~ msgstr "Bugzilla-tilin käyttäjätunnus"
-
-#~ msgid "Check SSL key validity"
-#~ msgstr "Tarkista SSL-avaimen oikeellisuus"
-
-#~ msgid "Password"
-#~ msgstr "Salasana"
-
-#~ msgid "Report to Bugzilla bug tracker"
-#~ msgstr "Raportoi Bugzilla-ohjelmavirhetietokantaan"
-
-#~ msgid "User name"
-#~ msgstr "Käyttäjätunnus"
-
-#~ msgid "Verify SSL"
-#~ msgstr "Tarkista SSL"
-
-#~ msgid ""
-#~ "You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
-#~ "redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
-#~ msgstr ""
-#~ "Voit luoda bugzilla.redhat.com-tilin &lt;a href=\"https://bugzilla.redhat."
-#~ "com/createaccount.cgi\"&gt;täällä&lt;/a&gt;"
-
-#~ msgid "Kerneloops URL"
-#~ msgstr "Kerneloopsin URL"
-
-#~ msgid "Kerneloops.org"
-#~ msgstr "Kerneloops.org"
-
-#~ msgid "Oops server url"
-#~ msgstr "Oops-palvelimen url"
-
-#~ msgid "Send kernel problems to oops tracker"
-#~ msgstr "Lähetä ydinongelmat oops-tietokantaan"
-
-#~ msgid "Mailx"
-#~ msgstr "Mailx"
-
-#~ msgid "Message subject"
-#~ msgstr "Viestin aihe"
-
-#~ msgid "Recipient"
-#~ msgstr "Vastaanottaja"
-
-#~ msgid "Recipient's email"
-#~ msgstr "Vastaanottajan sähköpostiosoite"
-
-#~ msgid "Send Binary Data"
-#~ msgstr "Lähetä binääritiedot"
-
-#~ msgid "Send binary files like coredump"
-#~ msgstr "Lähetä binääritiedostoja, esim. coredump"
-
-#~ msgid "Send via email"
-#~ msgstr "Lähetä sähköpostitse"
-
-#~ msgid "Sender"
-#~ msgstr "Lähettäjä"
-
-#~ msgid "Sender's email"
-#~ msgstr "Lähettäjän sähköpostiosoite"
-
-#~ msgid "Subject"
-#~ msgstr "Aihe"
-
-#~ msgid "Address of the Red Hat support portal"
-#~ msgstr "Red Hat -tukiportaalin osoite"
-
-#~ msgid "RH Portal URL"
-#~ msgstr "RH-portaalin URL"
-
-#~ msgid "Red Hat Customer Support"
-#~ msgstr "Red Hat -asiakastuki"
-
-#~ msgid "Red Hat customer password"
-#~ msgstr "Red Hat -asiakkaan salasana"
-
-#~ msgid "Red Hat customer user name"
-#~ msgstr "Red Hat -asiakkaan käyttäjätunnus"
-
-#~ msgid "Report to Red Hat support"
-#~ msgstr "Raportoi Red Hatin tukeen"
-
-#~ msgid "Username"
-#~ msgstr "Käyttäjätunnus"

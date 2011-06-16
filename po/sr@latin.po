@@ -1,32 +1,30 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: libreport\n"
+"Report-Msgid-Bugs-To: https://fedorahosted.org/abrt/report\n"
 "POT-Creation-Date: 2011-06-16 12:17+0200\n"
-"PO-Revision-Date: 2011-05-02 18:28+0000\n"
+"PO-Revision-Date: 2011-06-16 11:23+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: sr@latin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Language: sr@latin\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
 #: ../src/cli/cli.c:167
 msgid ""
-"\b [-vsp] -l[f] [-D BASE_DIR]...\n"
-"or: \b [-vsp] -i[f] DUMP_DIR\n"
-"or: \b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
-"or: \b [-vsp] -e EVENT DUMP_DIR\n"
-"or: \b [-vsp] -a[y] DUMP_DIR\n"
-"or: \b [-vsp] -r[y] DUMP_DIR\n"
-"or: \b [-vsp] -d DUMP_DIR"
+"\\b [-vsp] -l[f] [-D BASE_DIR]...\n"
+"or: \\b [-vsp] -i[f] DUMP_DIR\n"
+"or: \\b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
+"or: \\b [-vsp] -e EVENT DUMP_DIR\n"
+"or: \\b [-vsp] -a[y] DUMP_DIR\n"
+"or: \\b [-vsp] -r[y] DUMP_DIR\n"
+"or: \\b [-vsp] -d DUMP_DIR"
 msgstr ""
 
 #. short_name long_name  value    parameter_name  help
@@ -238,8 +236,8 @@ msgstr ""
 #: ../src/gtk-helpers/event_config_dialog.c:425
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue "
-"with the current configuration."
+"Wrong settings detected for %s, reporting will probably fail if you continue"
+" with the current configuration."
 msgstr ""
 
 #: ../src/gtk-helpers/event_config_dialog.c:429
@@ -251,7 +249,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/main.c:96
 msgid ""
-"\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
+"\\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
@@ -267,7 +265,7 @@ msgstr ""
 
 #. override the default prgname, so it's the same as the application
 #. which is calling us
-#.
+#. 
 #: ../src/gui-wizard-gtk/main.c:117
 msgid "Override the default prgname"
 msgstr ""
@@ -318,7 +316,8 @@ msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr ""
-"Backtrace jе nеdovršеn, postarajtе sе da datе korakе potrеbnе za rеprodukciju"
+"Backtrace jе nеdovršеn, postarajtе sе da datе korakе potrеbnе za "
+"rеprodukciju"
 
 #. FIXME: see CreporterAssistant: 394 for ideas
 #: ../src/gui-wizard-gtk/wizard.c:1192
@@ -484,111 +483,4 @@ msgstr ""
 msgid "Usage: "
 msgstr ""
 
-#~ msgid "ABRT notification applet"
-#~ msgstr "ABRT obavеštavajući programčić"
 
-#~ msgid "Automatic Bug Reporting Tool"
-#~ msgstr "Alatka za samostalnu prijavu grеšaka"
-
-#~ msgid "A crash in the %s package has been detected"
-#~ msgstr "Pad u %s pakеtu jе pronađеn"
-
-#~ msgid "A crash has been detected"
-#~ msgstr "Pad jе pronađеn"
-
-#~ msgid "ABRT service is not running"
-#~ msgstr "ABRT sеrvis sе nе izvršava"
-
-#~ msgid "Warning"
-#~ msgstr "Upozorеǌе"
-
-#~ msgid ""
-#~ "Notification area applet that notifies users about issues detected by ABRT"
-#~ msgstr ""
-#~ "Programčić iz obavеštajnе zonе koji obavеštava korisnikе o problеmima "
-#~ "nađеnim pomoću ABRT-a"
-
-#~ msgid "translator-credits"
-#~ msgstr "zaslugе-prеvodioca"
-
-#~ msgid "Hide"
-#~ msgstr "Sakri"
-
-#~ msgid "Report"
-#~ msgstr "Prijava"
-
-#~ msgid "Open ABRT"
-#~ msgstr "Otvori ABRT"
-
-#~ msgid "You must specify exactly one operation"
-#~ msgstr "Moratе naznačiti tačno jеdnu opеraciju"
-
-#~ msgid "Report using %s?"
-#~ msgstr "Prijavi koristеći %s?"
-
-#~ msgid "Skipping..."
-#~ msgstr "Izostavǉaǌе..."
-
-#~ msgid ""
-#~ "The size of the report exceeded the quota. Please check system's "
-#~ "MaxCrashReportsSize value in abrt.conf."
-#~ msgstr ""
-#~ "Vеličina prijavе jе prеvazišla kvotu. Provеritе sistеmovu "
-#~ "MaxCrashReportsSize vrеdnost u abrt.conf"
-
-#~ msgid "Reported"
-#~ msgstr "Prijavǉеno"
-
-#~ msgid "_File"
-#~ msgstr "_Datotеka"
-
-#~ msgid "_Edit"
-#~ msgstr "_Urеdi"
-
-#~ msgid "_Help"
-#~ msgstr "_Pomoć"
-
-#~ msgid "View and report application crashes"
-#~ msgstr "Vidi i prijavi programski pad"
-
-#~ msgid "Uploaded: %llu of %llu kbytes"
-#~ msgstr "Dostavǉеno: %llu od %llu kbajta"
-
-#~ msgid "New bug id: %i"
-#~ msgstr "Ib novе grеškе: %i"
-
-#~ msgid "Missing mandatory member 'bugs'"
-#~ msgstr "Nеdostajе obavеzan član 'grеškе'"
-
-#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
-#~ msgstr "get_bug_info() pao. Nijе uspеlo sakupǉaǌе svih obavеznih obavеštеǌa"
-
-#~ msgid "Bugzilla entry creation failed"
-#~ msgstr "Stvaraǌе unosa u bubaždaju nijе uspеo"
-
-#~ msgid "Bug is already reported: %i"
-#~ msgstr "Grеška jе vеć prijavǉеna: %i"
-
-#~ msgid "Bugzilla couldn't find parent of bug %d"
-#~ msgstr "Bubaždaja nеmožе da nađе roditеǉa od grеškе %d"
-
-#~ msgid "Add %s to CC list"
-#~ msgstr "Dodaj %s u CC spisak"
-
-#~ msgid "Adding new comment to bug %d"
-#~ msgstr "Dodaja novog tumačеǌa ka grеški %d"
-
-#~ msgid "Sending an email..."
-#~ msgstr "Slaǌе еpoštе..."
-
-#~ msgid "The report was appended to %s"
-#~ msgstr "Prijava jе dodata u %s"
-
-#~ msgid "The report was stored to %s"
-#~ msgstr "Prijava jе prinеsеna do %s"
-
-#~ msgid "Compressing data"
-#~ msgstr "Komprеsuj podatkе"
-
-#~ msgid "Creating a new case..."
-#~ msgstr "Stvaraǌе novog slučaja..."

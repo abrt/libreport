@@ -1,31 +1,30 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: libreport\n"
+"Report-Msgid-Bugs-To: https://fedorahosted.org/abrt/report\n"
 "POT-Creation-Date: 2011-06-16 12:17+0200\n"
-"PO-Revision-Date: 2011-05-02 18:28+0000\n"
+"PO-Revision-Date: 2011-06-16 11:22+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
-"Language-Team: Tamil <tamil-users@lists.fedoraproject.org>\n"
-"Language: ta\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ta\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/cli/cli.c:167
 msgid ""
-"\b [-vsp] -l[f] [-D BASE_DIR]...\n"
-"or: \b [-vsp] -i[f] DUMP_DIR\n"
-"or: \b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
-"or: \b [-vsp] -e EVENT DUMP_DIR\n"
-"or: \b [-vsp] -a[y] DUMP_DIR\n"
-"or: \b [-vsp] -r[y] DUMP_DIR\n"
-"or: \b [-vsp] -d DUMP_DIR"
+"\\b [-vsp] -l[f] [-D BASE_DIR]...\n"
+"or: \\b [-vsp] -i[f] DUMP_DIR\n"
+"or: \\b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
+"or: \\b [-vsp] -e EVENT DUMP_DIR\n"
+"or: \\b [-vsp] -a[y] DUMP_DIR\n"
+"or: \\b [-vsp] -r[y] DUMP_DIR\n"
+"or: \\b [-vsp] -d DUMP_DIR"
 msgstr ""
 
 #. short_name long_name  value    parameter_name  help
@@ -42,9 +41,8 @@ msgid "Print information about DUMP_DIR (detailed with -f)"
 msgstr ""
 
 #: ../src/cli/cli.c:199
-#, fuzzy
 msgid "List possible events [which start with PREFIX]"
-msgstr "வாய்ப்பு நிகழ்வுகளை பட்டியலிடு [PFX உடன் துவங்குவது]"
+msgstr ""
 
 #: ../src/cli/cli.c:200
 msgid "Run EVENT on DUMP_DIR"
@@ -137,7 +135,9 @@ msgstr "# வெளியீடு சரத்திற்கான இயங�
 
 #: ../src/cli/report.c:276
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr "vi: $TERM, $VISUAL மற்றும் $EDITOR அமைக்கப்படவில்லை மற்றும் இயக்க முடியவில்லை"
+msgstr ""
+"vi: $TERM, $VISUAL மற்றும் $EDITOR அமைக்கப்படவில்லை மற்றும் இயக்க "
+"முடியவில்லை"
 
 #: ../src/cli/report.c:360
 msgid ""
@@ -200,9 +200,8 @@ msgid "How would you like to report the problem?"
 msgstr ""
 
 #: ../src/cli/report.c:784
-#, fuzzy
 msgid "Select reporter(s): "
-msgstr "அறிக்கையாளர்கள்:"
+msgstr ""
 
 #: ../src/cli/report.c:804
 msgid "Reporting disabled because the backtrace is unusable"
@@ -214,8 +213,8 @@ msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
-"பிழைதிருத்த தகவலை கைமுறையாக நிறுவ கட்டளையை பயன்படுத்தி முயற்சிக்கவும்: \"debuginfo-"
-"install %s\" மற்றும் மீண்டும் முயற்சிக்கவும்\n"
+"பிழைதிருத்த தகவலை கைமுறையாக நிறுவ கட்டளையை பயன்படுத்தி முயற்சிக்கவும்: "
+"\"debuginfo-install %s\" மற்றும் மீண்டும் முயற்சிக்கவும்\n"
 
 #: ../src/cli/report.c:830
 #, c-format
@@ -241,8 +240,8 @@ msgstr ""
 #: ../src/gtk-helpers/event_config_dialog.c:425
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue "
-"with the current configuration."
+"Wrong settings detected for %s, reporting will probably fail if you continue"
+" with the current configuration."
 msgstr ""
 
 #: ../src/gtk-helpers/event_config_dialog.c:429
@@ -253,15 +252,11 @@ msgid ""
 msgstr ""
 
 #: ../src/gui-wizard-gtk/main.c:96
-#, fuzzy
 msgid ""
-"\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
+"\\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
-" [-vp] [-g GUI_FILE] DIR\n"
-"\n"
-"GUI tool to analyze and report problem saved in specified DIR"
 
 #: ../src/gui-wizard-gtk/main.c:110
 msgid "Alternate GUI file"
@@ -274,7 +269,7 @@ msgstr ""
 
 #. override the default prgname, so it's the same as the application
 #. which is calling us
-#.
+#. 
 #: ../src/gui-wizard-gtk/main.c:117
 msgid "Override the default prgname"
 msgstr ""
@@ -327,8 +322,8 @@ msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr ""
-"bactrace முடிக்கப்படாமல் உள்ளது, மறுஉற்பத்திக்கு நீங்கள் சரியான படிகளை செய்திருக்கிறீர்கள் "
-"என உறுதிசெய்யவும்."
+"bactrace முடிக்கப்படாமல் உள்ளது, மறுஉற்பத்திக்கு நீங்கள் சரியான படிகளை "
+"செய்திருக்கிறீர்கள் என உறுதிசெய்யவும்."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
 #: ../src/gui-wizard-gtk/wizard.c:1192
@@ -374,7 +369,8 @@ msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
 msgstr ""
-"<b>துணுக்கு:</b> உங்கள் கருத்துக்கள் தனிப்பட்டவை அல்ல. நீங்கள் சொல்வதற்கு ஏற்ப பார்க்கவும்."
+"<b>துணுக்கு:</b> உங்கள் கருத்துக்கள் தனிப்பட்டவை அல்ல. நீங்கள் சொல்வதற்கு "
+"ஏற்ப பார்க்கவும்."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Analyzing did not start yet"
@@ -411,11 +407,10 @@ msgid "Details"
 msgstr "விவரங்கள்"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
-#, fuzzy
 msgid ""
 "How did this problem happen (step-by-step)? How can it be reproduced? Any "
 "additional comments useful for diagnosing the problem?"
-msgstr "How did this problem happen (step-by-step)? How can it be reproduced?"
+msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "I _agree with submitting the backtrace"
@@ -500,367 +495,7 @@ msgid "Unsupported option type"
 msgstr "துணைபுரியாத விருப்ப வகை"
 
 #: ../src/lib/parse_options.c:60
-#, fuzzy
 msgid "Usage: "
-msgstr "பயன்பாடு: %s\n"
+msgstr ""
 
-#~ msgid "ABRT notification applet"
-#~ msgstr "ABRT அறிவிப்பு ஆப்லெட்"
 
-#~ msgid "Automatic Bug Reporting Tool"
-#~ msgstr "தானியக்க பிழை அறிக்கையிடும் கருவி"
-
-#~ msgid "A crash in the %s package has been detected"
-#~ msgstr "தொகுப்பு %s இல் ஒரு சேதம் கண்டறியப்பட்டது"
-
-#~ msgid "A crash has been detected"
-#~ msgstr "ஒரு சேதம் கண்டறியப்பட்டது"
-
-#~ msgid "ABRT service is not running"
-#~ msgstr "ABRT சேவை இயங்கவில்லை"
-
-#~ msgid "Warning"
-#~ msgstr "எச்சரிக்கை"
-
-#~ msgid ""
-#~ "Notification area applet that notifies users about issues detected by ABRT"
-#~ msgstr ""
-#~ "ABRT ஆல் கண்டுபிடிக்கப்பட்ட சிக்கல்களைப் பற்றி அப்லெட்டில் உள்ள அறிக்கைப் பகுதியில் பயனர் "
-#~ "குறிப்பிட வேண்டும்"
-
-#~ msgid "translator-credits"
-#~ msgstr "I. Felix <ifelix@redhat.com> 2010"
-
-#~ msgid "Hide"
-#~ msgstr "மறை"
-
-#~ msgid "Report"
-#~ msgstr "அறிக்கை"
-
-#~ msgid "Open ABRT"
-#~ msgstr "Open ABRT"
-
-#~ msgid "You must specify exactly one operation"
-#~ msgstr "நீங்கள் ஒரு செயல்முறையை சரியாக குறிப்பிட வேண்டும்"
-
-#~ msgid "Report using %s?"
-#~ msgstr "%sஐ அறிக்கை பயன்படுத்துகிறதா?"
-
-#~ msgid "Skipping..."
-#~ msgstr "தவிர்க்கிறது..."
-
-#~ msgid ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Query package database and save package name, component, and description"
-#~ msgstr ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Query package database and save package name, component, and description"
-
-#~ msgid "Dump directory"
-#~ msgstr "டம்ப் அடைவு"
-
-#~ msgid ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   or: "
-#~ msgstr ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   அல்லது: "
-
-#~ msgid "Handle EVENT"
-#~ msgstr "நிகழ்ச்சியை கையாளல்"
-
-#~ msgid " [options]"
-#~ msgstr " [விருப்பங்கள் ]"
-
-#~ msgid ""
-#~ "The size of the report exceeded the quota. Please check system's "
-#~ "MaxCrashReportsSize value in abrt.conf."
-#~ msgstr ""
-#~ "அறிக்கை அளவு ஒதுக்கீட்டை தாண்டியது. உங்கள் MaxCrashReportsSize மதிப்பை abrt.conf."
-#~ "இல் சரிபார்க்கவும்."
-
-#~ msgid "Do not daemonize"
-#~ msgstr "அனுப்ப வேண்டாம்அனுப்ப வேண்ட"
-
-#~ msgid "Log to syslog even with -d"
-#~ msgstr "-d-உடன் syslog பதிவு செய்தாலும்"
-
-#~ msgid "Exit after SEC seconds of inactivity"
-#~ msgstr "SEC விநாடிகள் செயலிழப்பில் இருந்தால் வெளியேறு"
-
-#~ msgid "Reported"
-#~ msgstr "அறிக்கையிடப்பட்டது"
-
-#~ msgid "Problem"
-#~ msgstr "சிக்கல்"
-
-#~ msgid "Last occurrence"
-#~ msgstr "கடைசி தருவாய்"
-
-#~ msgid "_File"
-#~ msgstr "கோப்பு (_F)"
-
-#~ msgid "_Edit"
-#~ msgstr "திருத்தவும் (_E)"
-
-#~ msgid "_Help"
-#~ msgstr "உதவி (_H)"
-
-#~ msgid "_Event configuration"
-#~ msgstr "நிகழ்வு கட்டமைப்பு (_E)"
-
-#~ msgid "Online _Help"
-#~ msgstr "வலை உதவி (_H)"
-
-#~ msgid "View and report application crashes"
-#~ msgstr "பயன்பாட்டு கிரஷ்களை பார்த்து அறிக்கையிடவும் "
-
-#~ msgid ""
-#~ " [-vp] [DIR]...\n"
-#~ "\n"
-#~ "Shows list of ABRT dump directories in specified DIR(s)\n"
-#~ "(default DIRs: "
-#~ msgstr ""
-#~ " [-vp] [DIR]...\n"
-#~ "\n"
-#~ "Shows list of ABRT dump directories in specified DIR(s)\n"
-#~ "(default DIRs: "
-
-#~ msgid "Any additional comments useful for diagnosing the problem?"
-#~ msgstr "Any additional comments useful for diagnosing the problem?"
-
-#~ msgid "Uploaded: %llu of %llu kbytes"
-#~ msgstr "பதிவேற்றப்பட்டது: %llu இல் %llu கேபைட்டுகள்"
-
-#~ msgid ""
-#~ " [options] -d DIR\n"
-#~ "\n"
-#~ "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, "
-#~ "and identifies crash function in dump directory DIR"
-#~ msgstr ""
-#~ " [options] -d DIR\n"
-#~ "\n"
-#~ "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, "
-#~ "and identifies crash function in dump directory DIR"
-
-#~ msgid "Backtrace parsing failed for %s"
-#~ msgstr "பேக்ட்ரேஸ் %s-க்கு பகுக்க முடியவில்லைபேக்டே"
-
-#~ msgid ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID of coredump in dump directory DIR"
-#~ msgstr ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID of coredump in dump directory DIR"
-
-#~ msgid ""
-#~ " [-vs] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
-#~ msgstr ""
-#~ " [-vs] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
-
-#~ msgid ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID and DUPHASH of python crash dumps"
-#~ msgstr ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID and DUPHASH of python crash dumps"
-
-#~ msgid "New bug id: %i"
-#~ msgstr "புதிய பிழை குறியீடு: %i"
-
-#~ msgid "Missing mandatory member 'bugs'"
-#~ msgstr "விடுபட்ட அவசியமான உறுப்பினர் 'பிழைகள்'"
-
-#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
-#~ msgstr ""
-#~ "get_bug_info() செயலிழக்கப்பட்டது. அனைத்து அவசிய தகவலையும் சேகரிக்க முடியவில்லை"
-
-#~ msgid "Bugzilla entry creation failed"
-#~ msgstr "Bugzilla உள்ளீடு உருவாக்க முடியவில்லை"
-
-#~ msgid "Bug is already reported: %i"
-#~ msgstr "பிழை ஏற்கனவே அறிக்கையிடப்பட்டது: %i"
-
-#~ msgid "Bugzilla couldn't find parent of bug %d"
-#~ msgstr "Bugzilla பிழை(%d) மூலத்தை அறிய முடியவில்லை"
-
-#~ msgid "Add %s to CC list"
-#~ msgstr "%s ஐ CC பட்டியலுக்குச் சேர்"
-
-#~ msgid "Adding new comment to bug %d"
-#~ msgstr "பிழையில் புதிய கட்டளையைச் சேர்(%d)"
-
-#~ msgid ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Reports problem to Bugzilla"
-#~ msgstr ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Reports problem to Bugzilla"
-
-#~ msgid ""
-#~ " [options] -d DIR\n"
-#~ "\n"
-#~ "Generates and saves backtrace for coredump in dump directory DIR"
-#~ msgstr ""
-#~ " [options] -d DIR\n"
-#~ "\n"
-#~ "Generates and saves backtrace for coredump in dump directory DIR"
-
-#~ msgid "Extracting cpio from %s"
-#~ msgstr "cpio ஐ %s லிருந்து இழுக்கிறது"
-
-#~ msgid "Caching files from %s made from %s"
-#~ msgstr "%s-லிருந்து செய்யப்பட்ட %s கோப்புகளை மாற்றுகிறது"
-
-#~ msgid "Is this ok? [y/N] "
-#~ msgstr "இது சரியா?  [y/N] "
-
-#~ msgid "Downloading package %s failed"
-#~ msgstr "தொகுப்பு %s பதிவிறக்குதல் தோல்வியுற்றது"
-
-#~ msgid "Unpacking failed, aborting download..."
-#~ msgstr "தொகுப்புநீக்கல் தோல்வியுற்றது, பதிவிறக்கத்தை ஒதுக்குகிறது..."
-
-#~ msgid "All downloaded packages have been extracted, removing %s"
-#~ msgstr "அனைத்து பதிவிறக்கப்பட்ட தொகுப்புகள், removing %s"
-
-#~ msgid "Can't remove %s, probably contains an error log"
-#~ msgstr "%sஐ நீக்க முடியவில்லை, ஒரு பதிவு பிழையால் இருக்கலாம்"
-
-#~ msgid "Can't remove '%s': %s"
-#~ msgstr "Can't remove '%s': %s"
-
-#~ msgid "Exiting on user command"
-#~ msgstr "Exiting on user command"
-
-#~ msgid "Coredump references %u debuginfo files, %u of them are not installed"
-#~ msgstr ""
-#~ "Coredump references %u debuginfo files, %u of them are not installed"
-
-#~ msgid "Missing debuginfo file: %s"
-#~ msgstr "Missing debuginfo file: %s"
-
-#~ msgid "All %u debuginfo files are available"
-#~ msgstr "All %u debuginfo files are available"
-
-#~ msgid "Submitting oops report to %s"
-#~ msgstr "'%s'க்கு ஊப்ஸ் அறிக்கையை சமர்பிக்கிறது"
-
-#~ msgid ""
-#~ " [-v] [-c CONFFILE]... -d DIR\n"
-#~ "\n"
-#~ "Reports kernel oops to kerneloops.org (or similar) site"
-#~ msgstr ""
-#~ " [-v] [-c CONFFILE]... -d DIR\n"
-#~ "\n"
-#~ "Reports kernel oops to kerneloops.org (or similar) site"
-
-#~ msgid "Sending an email..."
-#~ msgstr "ஒரு மின்னஞ்சல் அனுப்புகிறது..."
-
-#~ msgid "Config file"
-#~ msgstr "கோப்பை கட்டமை"
-
-#~ msgid ""
-#~ " [-v] -d DIR [-o FILE] [-a yes/no]\n"
-#~ "\n"
-#~ "Prints problem information to standard output or FILE"
-#~ msgstr ""
-#~ " [-v] -d DIR [-o FILE] [-a yes/no]\n"
-#~ "\n"
-#~ "Prints problem information to standard output or FILE"
-
-#~ msgid "Output file"
-#~ msgstr "வெளியேறும் கோப்பு"
-
-#~ msgid "The report was appended to %s"
-#~ msgstr "சேவை %sக்கு சேர்க்கப்பட்டது"
-
-#~ msgid "The report was stored to %s"
-#~ msgstr "அறிக்கை %sஇல் சேமிக்கப்பட்டது"
-
-#~ msgid "Compressing data"
-#~ msgstr "அழுத்தும் தரவு"
-
-#~ msgid "Empty RHTS login or password"
-#~ msgstr "Empty RHTS login or password"
-
-#~ msgid "Creating a new case..."
-#~ msgstr "ஒரு புதிய வழக்கை உருவாக்குகிறது..."
-
-#~ msgid ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Reports a problem to RHTSupport"
-#~ msgstr ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Reports a problem to RHTSupport"
-
-#~ msgid ""
-#~ " [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
-#~ "\n"
-#~ "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than "
-#~ "SIZE"
-#~ msgstr ""
-#~ " [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
-#~ "\n"
-#~ "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than "
-#~ "SIZE"
-
-#~ msgid "Delete dump dirs"
-#~ msgstr "Delete dump dirs"
-
-#~ msgid "Delete files"
-#~ msgstr "கோப்புகளை அழி"
-
-#~ msgid "Preserve this dump dir"
-#~ msgstr "Preserve this dump dir"
-
-#~ msgid "Sending %s to %s"
-#~ msgstr "%sஐ %sக்கு அனுப்புகிறது"
-
-#~ msgid "Successfully sent %s to %s"
-#~ msgstr "%s ஆல் %s- க்கு வெற்றிகரகமாக அனுப்பப்பட்டது"
-
-#~ msgid "Archive is created: '%s'"
-#~ msgstr "ஆர்ச்சிவ் உருவாக்கப்பட்டது: '%s'"
-
-#~ msgid ""
-#~ " [-v] -d DIR [-c CONFFILE] [-u URL]\n"
-#~ "\n"
-#~ "Uploads compressed tarball of dump directory DIR"
-#~ msgstr ""
-#~ " [-v] -d DIR [-c CONFFILE] [-u URL]\n"
-#~ "\n"
-#~ "Uploads compressed tarball of dump directory DIR"
-
-#~ msgid "Base URL to upload to"
-#~ msgstr "பதிவேற்றுவதற்கு தள URL"
-
-#~ msgid "Parse kernel's message buffer before parsing FILE"
-#~ msgstr "Parse kernel's message buffer before parsing FILE"
-
-#~ msgid "Print found oopses on standard output"
-#~ msgstr "Print found oopses on standard output"
-
-#~ msgid "Do not exit, watch the file for new oopses"
-#~ msgstr "Do not exit, watch the file for new oopses"
-
-#~ msgid "Make the dump directory world readable"
-#~ msgstr "Make the dump directory world readable"
-
-#~ msgid "log to syslog"
-#~ msgstr "log to syslog"

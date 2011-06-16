@@ -1,31 +1,30 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: libreport\n"
+"Report-Msgid-Bugs-To: https://fedorahosted.org/abrt/report\n"
 "POT-Creation-Date: 2011-06-16 12:17+0200\n"
-"PO-Revision-Date: 2011-05-02 18:28+0000\n"
+"PO-Revision-Date: 2011-06-16 11:23+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
-"Language-Team: Korean <>\n"
-"Language: ko\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ko\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../src/cli/cli.c:167
 msgid ""
-"\b [-vsp] -l[f] [-D BASE_DIR]...\n"
-"or: \b [-vsp] -i[f] DUMP_DIR\n"
-"or: \b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
-"or: \b [-vsp] -e EVENT DUMP_DIR\n"
-"or: \b [-vsp] -a[y] DUMP_DIR\n"
-"or: \b [-vsp] -r[y] DUMP_DIR\n"
-"or: \b [-vsp] -d DUMP_DIR"
+"\\b [-vsp] -l[f] [-D BASE_DIR]...\n"
+"or: \\b [-vsp] -i[f] DUMP_DIR\n"
+"or: \\b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
+"or: \\b [-vsp] -e EVENT DUMP_DIR\n"
+"or: \\b [-vsp] -a[y] DUMP_DIR\n"
+"or: \\b [-vsp] -r[y] DUMP_DIR\n"
+"or: \\b [-vsp] -d DUMP_DIR"
 msgstr ""
 
 #. short_name long_name  value    parameter_name  help
@@ -136,8 +135,7 @@ msgstr "# 운영 체제 릴리즈 문자열"
 
 #: ../src/cli/report.c:276
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr ""
-"vi를 실행할 수 없습니다: $TERM, $VISUAL, $EDITOR등이 설정되지 않았습니다"
+msgstr "vi를 실행할 수 없습니다: $TERM, $VISUAL, $EDITOR등이 설정되지 않았습니다"
 
 #: ../src/cli/report.c:360
 msgid ""
@@ -238,8 +236,8 @@ msgstr ""
 #: ../src/gtk-helpers/event_config_dialog.c:425
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue "
-"with the current configuration."
+"Wrong settings detected for %s, reporting will probably fail if you continue"
+" with the current configuration."
 msgstr ""
 
 #: ../src/gtk-helpers/event_config_dialog.c:429
@@ -251,7 +249,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/main.c:96
 msgid ""
-"\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
+"\\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
@@ -267,7 +265,7 @@ msgstr ""
 
 #. override the default prgname, so it's the same as the application
 #. which is calling us
-#.
+#. 
 #: ../src/gui-wizard-gtk/main.c:117
 msgid "Override the default prgname"
 msgstr ""
@@ -317,8 +315,7 @@ msgstr ""
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
-msgstr ""
-"역추적이 불완전합니다. 재현을 위한 올바른 단계를 제공했는지 확인하십시오.  "
+msgstr "역추적이 불완전합니다. 재현을 위한 올바른 단계를 제공했는지 확인하십시오.  "
 
 #. FIXME: see CreporterAssistant: 394 for ideas
 #: ../src/gui-wizard-gtk/wizard.c:1192
@@ -327,8 +324,7 @@ msgstr "역추적이 비활성화되었기 때문에 보고가 비활성화 되�
 
 #: ../src/gui-wizard-gtk/wizard.c:1201
 msgid "You should check the backtrace for sensitive data."
-msgstr ""
-"민감한 정보가 포함되지는 않았는지 역추적(backtrace)을 검토하셔야 합니다."
+msgstr "민감한 정보가 포함되지는 않았는지 역추적(backtrace)을 검토하셔야 합니다."
 
 #: ../src/gui-wizard-gtk/wizard.c:1202
 msgid "You must agree with sending the backtrace."
@@ -485,103 +481,4 @@ msgstr ""
 msgid "Usage: "
 msgstr ""
 
-#~ msgid "ABRT notification applet"
-#~ msgstr "ABRT 알림 애플릿"
 
-#~ msgid "Automatic Bug Reporting Tool"
-#~ msgstr "자동 버그 보고 도구 (ABRT) "
-
-#~ msgid "A crash in the %s package has been detected"
-#~ msgstr "%s 패키지에 있는 크래시가 감지되었습니다"
-
-#~ msgid "A crash has been detected"
-#~ msgstr "크래시가 감지되었습니다"
-
-#~ msgid "ABRT service is not running"
-#~ msgstr "ABRT 서비스가 실행되고 있지 않습니다"
-
-#~ msgid "Warning"
-#~ msgstr "경고"
-
-#~ msgid ""
-#~ "Notification area applet that notifies users about issues detected by ABRT"
-#~ msgstr "ABRT가 감지한 문제를 사용자에게 통지하기 위한 통지 영역 애플릿"
-
-#~ msgid "translator-credits"
-#~ msgstr ""
-#~ "김은주<eukim@redhat.com>\n"
-#~ "오현석<hoh@redhat.com>"
-
-#~ msgid "Hide"
-#~ msgstr "숨기기"
-
-#~ msgid "Report"
-#~ msgstr "보고  "
-
-#~ msgid "Open ABRT"
-#~ msgstr "ABRT 열기"
-
-#~ msgid "You must specify exactly one operation"
-#~ msgstr "동작을 하나만 지정해야 합니다"
-
-#~ msgid "Report using %s?"
-#~ msgstr "%s를 사용해서 보고하겠습니까?"
-
-#~ msgid "Skipping..."
-#~ msgstr "건너뜀..."
-
-#~ msgid ""
-#~ "The size of the report exceeded the quota. Please check system's "
-#~ "MaxCrashReportsSize value in abrt.conf."
-#~ msgstr ""
-#~ "보고된 크기가 쿼터를 초과하였습니다. abrt.conf에서 시스템의 "
-#~ "MaxCrashReportsSize 값을 확인하십시오."
-
-#~ msgid "Reported"
-#~ msgstr "보고됨"
-
-#~ msgid "_File"
-#~ msgstr "파일(_F)  "
-
-#~ msgid "_Edit"
-#~ msgstr "편집(_E)  "
-
-#~ msgid "_Help"
-#~ msgstr "도움말(_H)  "
-
-#~ msgid "View and report application crashes"
-#~ msgstr "어플리케이션 크래시를 확인 및 보고함"
-
-#~ msgid "New bug id: %i"
-#~ msgstr "새 버그 id: %i "
-
-#~ msgid "Missing mandatory member 'bugs'"
-#~ msgstr "필수 요소 'bugs'가 빠짐"
-
-#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
-#~ msgstr ""
-#~ "get_bug_info()가 실패했습니다. 모든 필수 정보를 얻어올 수 없었습니다."
-
-#~ msgid "Bugzilla entry creation failed"
-#~ msgstr "버그질라 엔트리 생성에 실패했습니다"
-
-#~ msgid "Bug is already reported: %i"
-#~ msgstr "이미 버그를 보고하였습니다: %i"
-
-#~ msgid "Bugzilla couldn't find parent of bug %d"
-#~ msgstr "버그질라가 버그(%d)의 부모를 찾을 수 없습니다"
-
-#~ msgid "Adding new comment to bug %d"
-#~ msgstr "버그(%d)에 새로운 주석을 추가합니다"
-
-#~ msgid "Sending an email..."
-#~ msgstr "이메일 전송 중..."
-
-#~ msgid "The report was appended to %s"
-#~ msgstr "보고서가 %s에 추가되었습니다"
-
-#~ msgid "The report was stored to %s"
-#~ msgstr "보고서가 %s에 저장되었습니다"
-
-#~ msgid "Creating a new case..."
-#~ msgstr "새 버그 생성 중..."

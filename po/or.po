@@ -1,31 +1,30 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: libreport\n"
+"Report-Msgid-Bugs-To: https://fedorahosted.org/abrt/report\n"
 "POT-Creation-Date: 2011-06-16 12:17+0200\n"
-"PO-Revision-Date: 2011-05-02 18:28+0000\n"
+"PO-Revision-Date: 2011-06-16 11:24+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
-"Language-Team: Oriya <None>\n"
-"Language: or\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: or\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/cli/cli.c:167
 msgid ""
-"\b [-vsp] -l[f] [-D BASE_DIR]...\n"
-"or: \b [-vsp] -i[f] DUMP_DIR\n"
-"or: \b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
-"or: \b [-vsp] -e EVENT DUMP_DIR\n"
-"or: \b [-vsp] -a[y] DUMP_DIR\n"
-"or: \b [-vsp] -r[y] DUMP_DIR\n"
-"or: \b [-vsp] -d DUMP_DIR"
+"\\b [-vsp] -l[f] [-D BASE_DIR]...\n"
+"or: \\b [-vsp] -i[f] DUMP_DIR\n"
+"or: \\b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
+"or: \\b [-vsp] -e EVENT DUMP_DIR\n"
+"or: \\b [-vsp] -a[y] DUMP_DIR\n"
+"or: \\b [-vsp] -r[y] DUMP_DIR\n"
+"or: \\b [-vsp] -d DUMP_DIR"
 msgstr ""
 
 #. short_name long_name  value    parameter_name  help
@@ -42,9 +41,8 @@ msgid "Print information about DUMP_DIR (detailed with -f)"
 msgstr ""
 
 #: ../src/cli/cli.c:199
-#, fuzzy
 msgid "List possible events [which start with PREFIX]"
-msgstr "ସମ୍ଭାବ୍ୟ ଘଟଣାଗୁଡ଼ିକୁ ତାଲିକାଭୁକ୍ତ କରନ୍ତୁ [ଯାହାକି PFX ସହିତ ଆରମ୍ଭ ହୋଇଥାଏ]"
+msgstr ""
 
 #: ../src/cli/cli.c:200
 msgid "Run EVENT on DUMP_DIR"
@@ -174,9 +172,9 @@ msgid "Bad value for '%s': %s"
 msgstr "'%s' ପାଇଁ ଖରାପ ମୂଲ୍ୟ: %s"
 
 #: ../src/cli/report.c:617
-#, fuzzy, c-format
+#, c-format
 msgid "How you would like to analyze the problem?\n"
-msgstr "ଆପଣ କିପରି ସମସ୍ୟାକୁ ବିଶ୍ଳେଷଣ କରିବାକୁ ଚାହୁଁଛନ୍ତି ତାହା ବାଛନ୍ତୁ:"
+msgstr ""
 
 #: ../src/cli/report.c:635
 msgid "Select analyzer: "
@@ -196,19 +194,18 @@ msgid "Reporting..."
 msgstr "ଖବର କରୁଅଛି..."
 
 #: ../src/cli/report.c:774
-#, fuzzy
 msgid "How would you like to report the problem?"
-msgstr "ଆପଣ କିପରି ସମସ୍ୟାକୁ ଖବର କରିବାକୁ ଚାହୁଁଛନ୍ତି ତାହା ବାଛନ୍ତୁ:"
+msgstr ""
 
 #: ../src/cli/report.c:784
-#, fuzzy
 msgid "Select reporter(s): "
-msgstr "ବିବରଣୀକାରୀ(ମାନେ):"
+msgstr ""
 
 #: ../src/cli/report.c:804
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr ""
-"ଖବର କରିବା ପଦ୍ଧତିକୁ ନିଷ୍କ୍ରିୟ କରାଯାଇଛି, ଉପରେ ଦର୍ଶାଯାଇଥିବା ସମସ୍ୟାଗୁଡ଼ିକୁ ଦୟାକରି ସମାଧାନ କରନ୍ତୁ"
+"ଖବର କରିବା ପଦ୍ଧତିକୁ ନିଷ୍କ୍ରିୟ କରାଯାଇଛି, ଉପରେ ଦର୍ଶାଯାଇଥିବା ସମସ୍ୟାଗୁଡ଼ିକୁ "
+"ଦୟାକରି ସମାଧାନ କରନ୍ତୁ"
 
 #: ../src/cli/report.c:808
 #, c-format
@@ -216,8 +213,8 @@ msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
-"ଦୟାକରି ତ୍ରୁଟି ନିବାରଣ ସୂଚନାକୁ ଏହି ନିର୍ଦ୍ଦେଶକୁ ବ୍ୟବହାର କରି ହସ୍ତକୃତ ଭାବରେ ସ୍ଥାପନ କରନ୍ତୁ: "
-"\"debuginfo-install %s\" ଏବଂ ପୁଣିଥରେ ଚେଷ୍ଟାକରନ୍ତୁ\n"
+"ଦୟାକରି ତ୍ରୁଟି ନିବାରଣ ସୂଚନାକୁ ଏହି ନିର୍ଦ୍ଦେଶକୁ ବ୍ୟବହାର କରି ହସ୍ତକୃତ ଭାବରେ "
+"ସ୍ଥାପନ କରନ୍ତୁ: \"debuginfo-install %s\" ଏବଂ ପୁଣିଥରେ ଚେଷ୍ଟାକରନ୍ତୁ\n"
 
 #: ../src/cli/report.c:830
 #, c-format
@@ -243,8 +240,8 @@ msgstr "ଘଟଣାକୁ ବିନ୍ଯାସ କରନ୍ତୁ (_v)"
 #: ../src/gtk-helpers/event_config_dialog.c:425
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue "
-"with the current configuration."
+"Wrong settings detected for %s, reporting will probably fail if you continue"
+" with the current configuration."
 msgstr ""
 
 #: ../src/gtk-helpers/event_config_dialog.c:429
@@ -255,15 +252,11 @@ msgid ""
 msgstr ""
 
 #: ../src/gui-wizard-gtk/main.c:96
-#, fuzzy
 msgid ""
-"\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
+"\\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
-" [-vp] [-g GUI_FILE] DIR\n"
-"\n"
-"ନିର୍ଦ୍ଦିଷ୍ଟ DIR ରେ ସଂରକ୍ଷିତ ସମସ୍ୟାକୁ ବିଶ୍ଳେଷଣ ଏବଂ ଖବର କରିବା ପାଇଁ GUI ସାଧନ "
 
 #: ../src/gui-wizard-gtk/main.c:110
 msgid "Alternate GUI file"
@@ -276,7 +269,7 @@ msgstr ""
 
 #. override the default prgname, so it's the same as the application
 #. which is calling us
-#.
+#. 
 #: ../src/gui-wizard-gtk/main.c:117
 msgid "Override the default prgname"
 msgstr ""
@@ -287,8 +280,8 @@ msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved copy?"
 msgstr ""
-"ନୂତନ ଲିଖନଯୋଗ୍ୟ ଡିରେକ୍ଟୋରୀ, କିନ୍ତୁ '%s' ଟି ଲିଖନଯୋଗ୍ୟ ନୁହଁ। ଏହାକୁ '%s' କୁ ଘୁଞ୍ଚାଇ ଏବଂଘୁଞ୍ଚାଯାଇଥିବା "
-"ନକଲ ମଧ୍ଯରେ କାର୍ଯ୍ୟ କରିବେ କି?"
+"ନୂତନ ଲିଖନଯୋଗ୍ୟ ଡିରେକ୍ଟୋରୀ, କିନ୍ତୁ '%s' ଟି ଲିଖନଯୋଗ୍ୟ ନୁହଁ। ଏହାକୁ '%s' କୁ "
+"ଘୁଞ୍ଚାଇ ଏବଂଘୁଞ୍ଚାଯାଇଥିବା ନକଲ ମଧ୍ଯରେ କାର୍ଯ୍ୟ କରିବେ କି?"
 
 #: ../src/gui-wizard-gtk/wizard.c:577
 #, c-format
@@ -329,14 +322,15 @@ msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr ""
-"ବ୍ୟାକଟ୍ରେସଟି ସମ୍ପୂର୍ଣ୍ଣ ହୋଇନାହିଁ, ଦୟାକରି ନିଶ୍ଚିତ କରନ୍ତୁ ଯେ ଆପଣ ପୁନଃ ଉତ୍ପାଦନ କରିବା ପାଇଁ ଉତ୍ତମ "
-"ପଦକ୍ଷେପ ପ୍ରଦାନ କରିଛନ୍ତି।"
+"ବ୍ୟାକଟ୍ରେସଟି ସମ୍ପୂର୍ଣ୍ଣ ହୋଇନାହିଁ, ଦୟାକରି ନିଶ୍ଚିତ କରନ୍ତୁ ଯେ ଆପଣ ପୁନଃ ଉତ୍ପାଦନ "
+"କରିବା ପାଇଁ ଉତ୍ତମ ପଦକ୍ଷେପ ପ୍ରଦାନ କରିଛନ୍ତି।"
 
 #. FIXME: see CreporterAssistant: 394 for ideas
 #: ../src/gui-wizard-gtk/wizard.c:1192
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr ""
-"ଖବର କରିବା ପଦ୍ଧତିକୁ ନିଷ୍କ୍ରିୟ କରାଯାଇଛି, ଉପରେ ଦର୍ଶାଯାଇଥିବା ସମସ୍ୟାଗୁଡ଼ିକୁ ଦୟାକରି ସମାଧାନ କରନ୍ତୁ।"
+"ଖବର କରିବା ପଦ୍ଧତିକୁ ନିଷ୍କ୍ରିୟ କରାଯାଇଛି, ଉପରେ ଦର୍ଶାଯାଇଥିବା ସମସ୍ୟାଗୁଡ଼ିକୁ "
+"ଦୟାକରି ସମାଧାନ କରନ୍ତୁ।"
 
 #: ../src/gui-wizard-gtk/wizard.c:1201
 msgid "You should check the backtrace for sensitive data."
@@ -377,8 +371,8 @@ msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
 msgstr ""
-"<b>ଆପଣଙ୍କର ମନ୍ତବ୍ୟ ବ୍ୟକ୍ତିଗତ ନୁହଁ।</b> ସେମାନେ ସର୍ବସାଧାରଣରେ ଦୃଶ୍ୟମାନ ସମସ୍ୟା ବିବରଣୀରେ "
-"ଅନ୍ତର୍ଭୁକ୍ତ।"
+"<b>ଆପଣଙ୍କର ମନ୍ତବ୍ୟ ବ୍ୟକ୍ତିଗତ ନୁହଁ।</b> ସେମାନେ ସର୍ବସାଧାରଣରେ ଦୃଶ୍ୟମାନ ସମସ୍ୟା "
+"ବିବରଣୀରେ ଅନ୍ତର୍ଭୁକ୍ତ।"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Analyzing did not start yet"
@@ -390,17 +384,17 @@ msgid ""
 "down the source of the problem. Please review it and remove any sensitive "
 "data you would rather not share:"
 msgstr ""
-"ବ୍ୟାକଟ୍ରେସ ବିକାଶକାରୀମାନଙ୍କୁ ନଷ୍ଟର ବିବରଣୀ ପ୍ରଦାନ କରିଥାଏ, ଯାହାଫଳରେ ସେମାନଙ୍କୁ ସମସ୍ୟାର ଉତ୍ସକୁ "
-"ନିରୀକ୍ଷଣ କରିବାରେ ସହାୟତା କରିଥାଏ। ଦୟାକରି ଏହାକୁ ସମୀକ୍ଷା କରନ୍ତୁ ଏବଂ ସ୍ପର୍ଶକାତର ତଥ୍ୟକୁ ବାହାର "
-"କରିଦିଅନ୍ତୁ:"
+"ବ୍ୟାକଟ୍ରେସ ବିକାଶକାରୀମାନଙ୍କୁ ନଷ୍ଟର ବିବରଣୀ ପ୍ରଦାନ କରିଥାଏ, ଯାହାଫଳରେ ସେମାନଙ୍କୁ "
+"ସମସ୍ୟାର ଉତ୍ସକୁ ନିରୀକ୍ଷଣ କରିବାରେ ସହାୟତା କରିଥାଏ। ଦୟାକରି ଏହାକୁ ସମୀକ୍ଷା କରନ୍ତୁ "
+"ଏବଂ ସ୍ପର୍ଶକାତର ତଥ୍ୟକୁ ବାହାର କରିଦିଅନ୍ତୁ:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid ""
 "Can create more informative backtrace if you installed additional debug "
 "packages"
 msgstr ""
-"ଅଧିକ ସୂଚନା ବିଶିଷ୍ଟ ବ୍ୟାକଟ୍ରେସକୁ ନିର୍ମାଣ କରିପାରିବେ ଯଦି ଆପଣ ଅତିରିକ୍ତ ତ୍ରୁଟି ନିବାରଣ ପ୍ୟାକେଜଗୁଡ଼ିକୁ ସ୍ଥାପନ "
-"କରନ୍ତି"
+"ଅଧିକ ସୂଚନା ବିଶିଷ୍ଟ ବ୍ୟାକଟ୍ରେସକୁ ନିର୍ମାଣ କରିପାରିବେ ଯଦି ଆପଣ ଅତିରିକ୍ତ ତ୍ରୁଟି "
+"ନିବାରଣ ପ୍ୟାକେଜଗୁଡ଼ିକୁ ସ୍ଥାପନ କରନ୍ତି"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid "Click 'Apply' to start reporting"
@@ -415,11 +409,10 @@ msgid "Details"
 msgstr "ବିସ୍ତୃତ ବିବରଣୀ"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
-#, fuzzy
 msgid ""
 "How did this problem happen (step-by-step)? How can it be reproduced? Any "
 "additional comments useful for diagnosing the problem?"
-msgstr "ଏହି ସମସ୍ୟା କିପରି ଘଟିଲା (ପଦକ୍ଷେପ ଅନୁସାରେ)? ଏହାକୁ କିପରି ପୁନଃ ଉତ୍ପାଦନ କରାଯାଇପାରିବ?"
+msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "I _agree with submitting the backtrace"
@@ -473,8 +466,8 @@ msgid ""
 "Use this button to generate more informative backtrace after you installed "
 "additional debug packages"
 msgstr ""
-"ଆପଣ ଅତିରିକ୍ତ ତ୍ରୁଟି ନିବାରଣ ପ୍ୟାକେଜଗୁଡ଼ିକୁ ସ୍ଥାପନ କରିସାରିବା ପରେ ଅଧିକ ସୂଚନାମୟ ବ୍ୟାକଟ୍ରେସକୁ ନିର୍ମାଣ "
-"କରିବା ପାଇଁ ଏହି ବଟନକୁ ବ୍ୟବହାର କରନ୍ତୁ"
+"ଆପଣ ଅତିରିକ୍ତ ତ୍ରୁଟି ନିବାରଣ ପ୍ୟାକେଜଗୁଡ଼ିକୁ ସ୍ଥାପନ କରିସାରିବା ପରେ ଅଧିକ ସୂଚନାମୟ "
+"ବ୍ୟାକଟ୍ରେସକୁ ନିର୍ମାଣ କରିବା ପାଇଁ ଏହି ବଟନକୁ ବ୍ୟବହାର କରନ୍ତୁ"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:20
 msgid "You need to fill the how to before you can proceed..."
@@ -504,421 +497,7 @@ msgid "Unsupported option type"
 msgstr "ଅସମର୍ଥିତ ବିକଳ୍ପ ପ୍ରକାର"
 
 #: ../src/lib/parse_options.c:60
-#, fuzzy
 msgid "Usage: "
-msgstr "ବ୍ଯବହାର ବିଧି: %s\n"
+msgstr ""
 
-#~ msgid "ABRT notification applet"
-#~ msgstr "ABRT ବିଜ୍ଞପ୍ତି ଆପଲେଟ"
 
-#~ msgid "Automatic Bug Reporting Tool"
-#~ msgstr "ସ୍ୱୟଂଚାଳିତ ତ୍ରୁଟି ନିବାରଣ ସାଧନ"
-
-#~ msgid "A crash in the %s package has been detected"
-#~ msgstr "ପ୍ୟାକେଜ %s ରେ ଗୋଟିଏ ବିନାଶ ଚିହ୍ନାପଡ଼ିଛି"
-
-#~ msgid "A crash has been detected"
-#~ msgstr "ଗୋଟିଏ ବିନାଶ ଚିହ୍ନାପଡ଼ିଛି"
-
-#~ msgid "ABRT service is not running"
-#~ msgstr "ABRT ସର୍ଭିସଟି ଚାଲୁନାହିଁ"
-
-#~ msgid "Warning"
-#~ msgstr "ଚେତାବନୀ"
-
-#~ msgid ""
-#~ "Notification area applet that notifies users about issues detected by ABRT"
-#~ msgstr ""
-#~ "ABRT ଦ୍ୱାରା ଚିହ୍ନାହୋଇଥିବା ସମସ୍ୟାଗୁଡ଼ିକ ବିଷୟରେ ଚାଳକଙ୍କୁ ସୂଚାଇବା ପାଇଁ ବିଜ୍ଞପ୍ତି କ୍ଷେତ୍ର ଆପଲେଟ"
-
-#~ msgid "translator-credits"
-#~ msgstr "ମନୋଜ କୁମାର ଗିରି <mgiri@redhat.com>"
-
-#~ msgid "Hide"
-#~ msgstr "ଲୁଚାନ୍ତୁ"
-
-#~ msgid "Report"
-#~ msgstr "ରିପୋର୍ଟ"
-
-#~ msgid "Open ABRT"
-#~ msgstr "ABRT ଖୋଲନ୍ତୁ"
-
-#~ msgid "You must specify exactly one operation"
-#~ msgstr "ଆପଣଙ୍କୁ ପ୍ରକୃତରେ ଗୋଟିଏ ପ୍ରୟୋଗକୁ ଉଲ୍ଲେଖ କରିବାକୁ ହେବ"
-
-#~ msgid "Report using %s?"
-#~ msgstr "%s କୁ ବ୍ୟବହାର କରି ଖବର କରିବେ କି?"
-
-#~ msgid "Skipping..."
-#~ msgstr "ଏଡ଼ାଇଦେଉଛି..."
-
-#~ msgid ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Query package database and save package name, component, and description"
-#~ msgstr ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "ପ୍ୟାକେଜ ତଥ୍ୟାଧାରକୁ ପଚାରନ୍ତୁ ଏବଂ ପ୍ୟାକେଜ ନାମ, ଉପାଦାନ, ଏବଂ ବର୍ଣ୍ଣନାକୁ ସଂରକ୍ଷଣ କରନ୍ତୁ"
-
-#~ msgid "Dump directory"
-#~ msgstr "ଡମ୍ପ ଡିରେକ୍ଟୋରି"
-
-#~ msgid ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   or: "
-#~ msgstr ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   or: "
-
-#~ msgid "Handle EVENT"
-#~ msgstr "EVENT କୁ ନିୟନ୍ତ୍ରଣ କରନ୍ତୁ"
-
-#~ msgid " [options]"
-#~ msgstr " [ବିକଳ୍ପଗୁଡ଼ିକ]"
-
-#~ msgid "Use UID as client uid"
-#~ msgstr "UID କୁ କ୍ଲାଏଣ୍ଟ uid ଭାବରେ ବ୍ୟବହାର କରନ୍ତୁ"
-
-#~ msgid ""
-#~ "The size of the report exceeded the quota. Please check system's "
-#~ "MaxCrashReportsSize value in abrt.conf."
-#~ msgstr ""
-#~ "ବିବରଣୀ ଆକାର ସଂରକ୍ଷଣକୁ ଅତିକ୍ରମ କରିଛି। ଦୟାକରି ତନ୍ତ୍ରର MaxCrashReportsSize ମୂଲ୍ୟକୁ abrt."
-#~ "conf ରେ ଯାଞ୍ଚ କରନ୍ତୁ।"
-
-#~ msgid "Do not daemonize"
-#~ msgstr "daemonize କରନ୍ତୁ ନାହିଁ"
-
-#~ msgid "Log to syslog even with -d"
-#~ msgstr "-d ସହିତ ମଧ୍ଯ syslog ଘଟଣାକୁ ଲଗ କରନ୍ତୁ"
-
-#~ msgid "Exit after SEC seconds of inactivity"
-#~ msgstr "SEC ସେକଣ୍ଡ ନିଷ୍କ୍ରିୟ ହେବା ପରେ ପ୍ରସ୍ଥାନ କରନ୍ତୁ"
-
-#~ msgid "Reported"
-#~ msgstr "ଖବର କରାଯାଇଛି"
-
-#~ msgid "Problem"
-#~ msgstr "ସମସ୍ଯା"
-
-#~ msgid "Last occurrence"
-#~ msgstr "ଅନ୍ତିମ ଘଟଣା"
-
-#~ msgid "_File"
-#~ msgstr "ଫାଇଲ (_F)"
-
-#~ msgid "_Edit"
-#~ msgstr "ସମ୍ପାଦନ କରନ୍ତୁ (_E)"
-
-#~ msgid "_Help"
-#~ msgstr "ସହାୟତା (_H)"
-
-#~ msgid "_Event configuration"
-#~ msgstr "ଘଟଣା ବିନ୍ୟାସ (_E)"
-
-#~ msgid "Online _Help"
-#~ msgstr "ଅନ ଲାଇନ ସହାୟତା (_H)"
-
-#~ msgid "View and report application crashes"
-#~ msgstr "ପ୍ରୟୋଗ ନଷ୍ଟଗୁଡ଼ିକୁ ଦେଖନ୍ତୁ ଏବଂ ଖବର କରନ୍ତୁ"
-
-#~ msgid ""
-#~ " [-vp] [DIR]...\n"
-#~ "\n"
-#~ "Shows list of ABRT dump directories in specified DIR(s)\n"
-#~ "(default DIRs: "
-#~ msgstr ""
-#~ " [-vp] [DIR]...\n"
-#~ "\n"
-#~ "ABRT ଡମ୍ପ ଡିରେକ୍ଟୋରୀଗୁଡ଼ିକର ତାଲିକାକୁ ଉଲ୍ଲିଖିତ DIR(s) ରେ ଦର୍ଶାନ୍ତୁ\n"
-#~ "(ପୂର୍ବନିର୍ଦ୍ଧାରିତ DIRs: "
-
-#~ msgid "Any additional comments useful for diagnosing the problem?"
-#~ msgstr "ଯେକୌଣସି ଅତିରିକ୍ତ ମନ୍ତବ୍ୟ ସମସ୍ୟା ବିଶ୍ଳେଷଣ କରିବାରେ ଉପଯୋଗି ହୋଇଥାଏ?"
-
-#~ msgid "Uploaded: %llu of %llu kbytes"
-#~ msgstr "ଆହରଣ କରାଯାଇଛି: %llu ର %llu kbytes"
-
-#~ msgid ""
-#~ " [options] -d DIR\n"
-#~ "\n"
-#~ "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, "
-#~ "and identifies crash function in dump directory DIR"
-#~ msgstr ""
-#~ " [options] -d DIR\n"
-#~ "\n"
-#~ "C/C++ ବ୍ୟାକଟ୍ରେସକୁ ବିଶ୍ଳେଷଣ କରିଥାଏ, ନକଲି ହ୍ୟାସ, ବ୍ୟାକଟ୍ରେସ ମାନ୍ୟତାକୁ ସୃଷ୍ଟି କରିଥାଏ, ଏବଂ "
-#~ "ନଷ୍ଟ ଫଳନକୁ ଡମ୍ପ ଡିରେକ୍ଟୋରୀ DIR ରେ ଚିହ୍ନିଥାଏ"
-
-#~ msgid "Backtrace parsing failed for %s"
-#~ msgstr "%s ପାଇଁ ବ୍ୟାକଟ୍ରାସ ବିଶ୍ଳେଷଣ ବିଫଳ ହୋଇଛି"
-
-#~ msgid ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID of coredump in dump directory DIR"
-#~ msgstr ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "ଡମ୍ପ ଡିରେକ୍ଟୋରୀ DIR ରେ କୋର ଡମ୍ପର UUID କୁ ଗଣନା କରିଥାଏ ଏବଂ ସଂରକ୍ଷଣ କରିଥାଏ"
-
-#~ msgid ""
-#~ " [-vs] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
-#~ msgstr ""
-#~ " [-vs] -d DIR\n"
-#~ "\n"
-#~ "UUID ଏବଂ DUPHASH କୁ oops ଡମ୍ପ ଡିରେକ୍ଟୋରୀ DIR ପାଇଁ ଗଣନା କରିଥାଏ ଏବଂ ସଂରକ୍ଷଣ କରିଥାଏ"
-
-#~ msgid ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID and DUPHASH of python crash dumps"
-#~ msgstr ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "python ନଷ୍ଟ ଡମ୍ପଗୁଡ଼ିକର UUID ଏବଂ DUPHASH କୁ ଗଣନା କରିଥାଏ ଏବଂ ସଂରକ୍ଷଣ କରିଥାଏ"
-
-#~ msgid "New bug id: %i"
-#~ msgstr "ନୂତନ ତ୍ରୁଟି id: %i"
-
-#~ msgid "Logging into Bugzilla at %s"
-#~ msgstr "%s ରେ ବଗଜିଲାରେ ଲଗଇନ କରୁଅଛି"
-
-#~ msgid "Checking for duplicates"
-#~ msgstr "ନକଲିଗୁଡ଼ିକୁ ଯାଞ୍ଚ କରୁଅଛି"
-
-#~ msgid "Missing mandatory member 'bugs'"
-#~ msgstr "ଆବଶ୍ୟକ ସଦସ୍ୟ 'bugs' ଅନୁପସ୍ଥିତ"
-
-#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
-#~ msgstr "get_bug_info() ବିଫଳ ହୋଇଛି। ସମସ୍ୟ ଆବଶ୍ୟକୀୟ ସୂଚନାକୁ ସଂଗ୍ରହ କରିପାରିଲା ନାହିଁ"
-
-#~ msgid "Creating a new bug"
-#~ msgstr "ଗୋଟିଏ ନୂତନ ତ୍ରୁଟି ନିର୍ମାଣ କରୁଅଛି"
-
-#~ msgid "Bugzilla entry creation failed"
-#~ msgstr "Bugzilla ଭରଣ ନିର୍ମାଣରେ ବିଫଳ ହୋଇଛି"
-
-#~ msgid "Logging out"
-#~ msgstr "ଲଗଆଉଟ କରୁଅଛି"
-
-#~ msgid "Bug is already reported: %i"
-#~ msgstr "ତ୍ରୁଟିକୁ ପୂର୍ବରୁ ଖବର କରାଯାଇଛି: %i"
-
-#~ msgid "Bugzilla couldn't find parent of bug %d"
-#~ msgstr "Bugzilla ମୂଖ୍ୟ ତ୍ରୁଟି %d କୁ ଖୋଜିପାରିଲା ନାହିଁ"
-
-#~ msgid "Add %s to CC list"
-#~ msgstr "%s କୁ CC ତାଲିକାରେ ଯୋଗ କରନ୍ତୁ"
-
-#~ msgid "Adding new comment to bug %d"
-#~ msgstr "ତ୍ରୁଟି(%d) ରେ ନୂତନ ନିର୍ଦ୍ଦେଶ ଯୋଗ କରନ୍ତୁ"
-
-#~ msgid ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Reports problem to Bugzilla"
-#~ msgstr ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "ବଗଜିଲାରେ ସମସ୍ୟାକୁ ଖବର କରିଥାଏ"
-
-#~ msgid "Configuration file (may be given many times)"
-#~ msgstr "ବିନ୍ୟାସ ଫାଇଲ (ହୁଏତଃ ଅନେକ ଥର ଦିଆଯାଇଥାଏ)"
-
-#~ msgid ""
-#~ " [options] -d DIR\n"
-#~ "\n"
-#~ "Generates and saves backtrace for coredump in dump directory DIR"
-#~ msgstr ""
-#~ " [options] -d DIR\n"
-#~ "\n"
-#~ "କୋରଡମ୍ପ ପାଇଁ ବ୍ୟାକଟ୍ରେସକୁ ଡମ୍ପ ଡିରେକ୍ଟୋରୀ DIR ରେ ନିର୍ମାଣ କରିଥାଏ ଏବଂ ସଂରକ୍ଷଣ କରିଥାଏ"
-
-#~ msgid "Additional debuginfo directories"
-#~ msgstr "ଅତିରିକ୍ତ ତ୍ରୁଟିନିବାରଣ ସୂଚନା ଡିରେକ୍ଟୋରୀଗୁଡ଼ିକ"
-
-#~ msgid "Kill gdb if it runs for more than N seconds"
-#~ msgstr "gdb କୁ ବନ୍ଦ କରନ୍ତୁ ଯଦି ଏହା N ସେକଣ୍ଡରୁ ଅଧିକ ଥର ଚାଲିଥାଏ"
-
-#~ msgid "Backtrace is generated and saved, %u bytes"
-#~ msgstr "ବ୍ୟାକଟ୍ରେସ ନିର୍ମାଣ ହୋଇଛି ଏବଂ ସଂରକ୍ଷଣ କରାସରିଛି, %u ବାଇଟ"
-
-#~ msgid "Extracting cpio from %s"
-#~ msgstr "%s ରୁ cpio କୁ ବାହାର କରୁଅଛି"
-
-#~ msgid "Can't write to '%s': %s"
-#~ msgstr "'%s' ରେ ଲେଖି ପାରିଲା ନାହିଁ: %s"
-
-#~ msgid "Can't extract package '%s'"
-#~ msgstr "ପ୍ୟାକେଜ '%s' କୁ ବାହାର କରିପାରିବେ ନାହିଁ"
-
-#~ msgid "Caching files from %s made from %s"
-#~ msgstr "%s ରୁ ନିର୍ମିତ %s ଫାଇଲଗୁଡ଼ିକୁ କ୍ୟାଶରେ ରଖୁଅଛି"
-
-#~ msgid "Can't extract files from '%s'"
-#~ msgstr "'%s' ରୁ ଫାଇଲଗୁଡ଼ିକୁ ବାହାର କରିପାରିବେ ନାହିଁ"
-
-#~ msgid "Downloading (%i of %i) %s: %3u%%"
-#~ msgstr "(%i ର %i) %s କୁ ଆହରଣ କରୁଅଛି: %3u%%"
-
-#~ msgid "Looking for needed packages in repositories"
-#~ msgstr "ସଂଗ୍ରହାଳୟରେ ଆବଶ୍ୟକୀୟ ପ୍ୟାକେଜଗୁଡ଼ିକୁ ଦେଖୁଅଛି"
-
-#~ msgid "Can't find packages for %u debuginfo files"
-#~ msgstr "%u ତ୍ରୁଟିନିବାରଣ ଫାଇଲଗୁଡ଼ିକ ପାଇଁ ପ୍ୟାକେଜଗୁଡ଼ିକୁ ଖୋଜିପାରିବେ ନାହିଁ"
-
-#~ msgid "Packages to download: %u"
-#~ msgstr "ଆହରଣ କରିବା ପାଇଁ ଥିବା ପ୍ୟାକେଜଗୁଡ଼ିକ: %u"
-
-#~ msgid "Downloading %.2fMb, installed size: %.2fMb"
-#~ msgstr "%.2fMb ଆହରଣ କରୁଅଛି, ସ୍ଥାପନ ଆକାର: %.2fMb"
-
-#~ msgid "Is this ok? [y/N] "
-#~ msgstr "ଏହା ଠିକ ଅଛି କି? [y/N] "
-
-#~ msgid "Downloading package %s failed"
-#~ msgstr "%s ପ୍ୟାକେଜକୁ ଆହରଣ କରିବା ବିଫଳ ହୋଇଛି"
-
-#~ msgid "Unpacking failed, aborting download..."
-#~ msgstr "ପ୍ୟାକ କରିବା ବିଫଳ ହୋଇଛି, ଆହରଣକୁ ବନ୍ଦ କରୁଅଛି..."
-
-#~ msgid "All downloaded packages have been extracted, removing %s"
-#~ msgstr "ସମସ୍ତ ଆହରଣ କରାଯାଇଥିବା ପ୍ୟାକେଜଗୁଡ଼ିକୁ ବାହାର କରାଯାଇଛି, %s କୁ କାଢ଼ୁଅଛି"
-
-#~ msgid "Can't remove %s, probably contains an error log"
-#~ msgstr "%s କୁ କାଢ଼ୁଅଛି, ସମ୍ଭବତଃ ଗୋଟିଏ ତ୍ରୁଟି ଲଗ ଧାରଣ କରିଥାଇପାରେ"
-
-#~ msgid "Can't remove '%s': %s"
-#~ msgstr "'%s' କୁ କାଢ଼ିପାରିବେ ନାହିଁ: %s"
-
-#~ msgid "Exiting on user command"
-#~ msgstr "ଚାଳକ ନିର୍ଦ୍ଦେଶ ଉପରେ ପ୍ରସ୍ଥାନ କରୁଅଛି"
-
-#~ msgid "Coredump references %u debuginfo files, %u of them are not installed"
-#~ msgstr "କୋରଡମ୍ପ ସନ୍ଦର୍ଭ %u ତ୍ରୁଟିନିବାରଣ ଫାଇଲଗୁଡ଼ିକ, ସେମାନଙ୍କ ମଧ୍ଯରୁ %u ସ୍ଥାପିତ ହୋଇନାହିଁ"
-
-#~ msgid "Missing debuginfo file: %s"
-#~ msgstr "ଅନୁପସ୍ଥିତ ତ୍ରୁଟିନିବାରଣ ଫାଇଲ: %s"
-
-#~ msgid "All %u debuginfo files are available"
-#~ msgstr "ସମସ୍ତ %u ତ୍ରୁଟିନିବାରଣ ଫାଇଲଗୁଡ଼ିକ ଉପଲବ୍ଧ"
-
-#~ msgid "Submitting oops report to %s"
-#~ msgstr "%s ରେ oops ବିବରଣୀ ଦାଖଲ କରୁଅଛି"
-
-#~ msgid ""
-#~ " [-v] [-c CONFFILE]... -d DIR\n"
-#~ "\n"
-#~ "Reports kernel oops to kerneloops.org (or similar) site"
-#~ msgstr ""
-#~ " [-v] [-c CONFFILE]... -d DIR\n"
-#~ "\n"
-#~ "କର୍ଣ୍ଣଲ ଉପସକୁ kerneloops.org (କିମ୍ବା ସେହି ସଦୃଶ) ସାଇଟରେ ଖବର କରିଥାଏ"
-
-#~ msgid "Configuration file"
-#~ msgstr "କନଫିଗରେସନ ଫାଇଲ"
-
-#~ msgid "Sending an email..."
-#~ msgstr "ଗୋଟିଏ ଇମେଲ ପଠାଉଅଛି..."
-
-#~ msgid "Config file"
-#~ msgstr "ବିନ୍ୟାସ ଫାଇଲ"
-
-#~ msgid ""
-#~ " [-v] -d DIR [-o FILE] [-a yes/no]\n"
-#~ "\n"
-#~ "Prints problem information to standard output or FILE"
-#~ msgstr ""
-#~ " [-v] -d DIR [-o FILE] [-a yes/no]\n"
-#~ "\n"
-#~ "ମାନକ ଫଳାଫଳ ଅଥବା FILE ରେ ସମସ୍ୟା ସୂଚନାକୁ ମୁଦ୍ରଣ କରିଥାଏ"
-
-#~ msgid "Output file"
-#~ msgstr "ଫଳାଫଳ ଫାଇଲ"
-
-#~ msgid "Append to, or overwrite FILE"
-#~ msgstr "FILE କୁ ଯୋଡନ୍ତୁ, ଅଥବା ନବଲିଖନ କରନ୍ତୁ"
-
-#~ msgid "The report was appended to %s"
-#~ msgstr "ବିବରଣୀକୁ %s ରେ ଯୋଡ଼ିଥାଏ"
-
-#~ msgid "The report was stored to %s"
-#~ msgstr "ବିବରଣୀକୁ %s ରେ ସଂରକ୍ଷଣ କରିଥାଏ"
-
-#~ msgid "Compressing data"
-#~ msgstr "ତଥ୍ଯ ସଙ୍କୋଚନ କରୁଅଛି"
-
-#~ msgid "Empty RHTS login or password"
-#~ msgstr "RHTS ଲଗଇନ ଅଥବା ପ୍ରବେଶ ସଂକେତକୁ ଖାଲି କରନ୍ତୁ"
-
-#~ msgid "Creating a new case..."
-#~ msgstr "ଗୋଟିଏ ନୂତନ ପରିସ୍ଥିତି ନିର୍ମାଣ କରୁଅଛି..."
-
-#~ msgid ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Reports a problem to RHTSupport"
-#~ msgstr ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "RHTSupport ରେ ସମସ୍ୟା ଖବର କରିଥାଏ"
-
-#~ msgid ""
-#~ " [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
-#~ "\n"
-#~ "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than "
-#~ "SIZE"
-#~ msgstr ""
-#~ " [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
-#~ "\n"
-#~ "ଡମ୍ପ ଡିରେକ୍ଟୋରୀ (-d) କୁ ଅଥବା ଫାଇଲ (-f) କୁ DIRs ରେ ଅପସାରଣ କରିଥାଏ ଯେପର୍ଯ୍ୟନ୍ତ ସେମାନେ "
-#~ "ଆକାରରେ କ୍ଷୁଦ୍ରତର ଥାଏ"
-
-#~ msgid "Delete dump dirs"
-#~ msgstr "ଡମ୍ପ ଡିରେକ୍ଟୋରୀଗୁଡ଼ିକୁ ଅପସାରଣ କରନ୍ତୁ"
-
-#~ msgid "Delete files"
-#~ msgstr "ଫାଇଲଗୁଡ଼ିକୁ ଅପସାରଣ କରନ୍ତୁ"
-
-#~ msgid "Preserve this dump dir"
-#~ msgstr "ଏହି ଡମ୍ପ ଡିରେକ୍ଟୋରୀକୁ ସଂରକ୍ଷଣ କରନ୍ତୁ"
-
-#~ msgid "Sending %s to %s"
-#~ msgstr "%s କୁ %s ମଧ୍ଯକୁ ପଠାଉଛି"
-
-#~ msgid "Successfully sent %s to %s"
-#~ msgstr "%s କୁ %s ମଧ୍ଯକୁ ସଫଳଭାବରେ ପଠାହେଲ"
-
-#~ msgid "Archive is created: '%s'"
-#~ msgstr "ଅଭିଲେଖ ନିର୍ମାଣ ହୋଇଛି: '%s'"
-
-#~ msgid ""
-#~ " [-v] -d DIR [-c CONFFILE] [-u URL]\n"
-#~ "\n"
-#~ "Uploads compressed tarball of dump directory DIR"
-#~ msgstr ""
-#~ " [-v] -d DIR [-c CONFFILE] [-u URL]\n"
-#~ "\n"
-#~ "ଡମ୍ପ ଡିରେକ୍ଟୋରୀ DIRର ସଙ୍କୁଚିତ ଟାରବଲକୁ ଧାରଣ କରନ୍ତୁ"
-
-#~ msgid "Base URL to upload to"
-#~ msgstr "ଧାରଣ କରିବା ପାଇଁ ଆଧାର URL"
-
-#~ msgid "Parse kernel's message buffer before parsing FILE"
-#~ msgstr "କର୍ଣ୍ଣଲ ସନ୍ଦେଶ ବଫରକୁ FILE ବିଶ୍ଳେଷଣ କରିବା ପୂର୍ବରୁ ବିଶ୍ଳେଷଣ କରନ୍ତୁ"
-
-#~ msgid "Print found oopses on standard output"
-#~ msgstr "ମାନକ ଫଳାଫଳ ଉପରେ ମୁଦ୍ରଣୀ oopses ପାଇଛି"
-
-#~ msgid "Do not exit, watch the file for new oopses"
-#~ msgstr "ପ୍ରସ୍ଥାନ କରନ୍ତୁ ନାହିଁ, ନୂତନ oopses ପାଇଁ ଫାଇଲକୁ ଦେଖନ୍ତୁ"
-
-#~ msgid "Make the dump directory world readable"
-#~ msgstr "ଡମ୍ପ ଡିରେକ୍ଟୋରୀକୁ ବିଶ୍ୱ ପଠନଯୋଗ୍ୟ କରନ୍ତୁ"
-
-#~ msgid "log to syslog"
-#~ msgstr "syslog ରେ ଲଗ କରନ୍ତୁ"

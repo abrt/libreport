@@ -1,31 +1,30 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: libreport\n"
+"Report-Msgid-Bugs-To: https://fedorahosted.org/abrt/report\n"
 "POT-Creation-Date: 2011-06-16 12:17+0200\n"
-"PO-Revision-Date: 2011-05-02 18:28+0000\n"
+"PO-Revision-Date: 2011-06-16 11:22+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
-"Language-Team: Portuguese <trans-pt@lists.fedoraproject.org>\n"
-"Language: pt\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: pt\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/cli/cli.c:167
 msgid ""
-"\b [-vsp] -l[f] [-D BASE_DIR]...\n"
-"or: \b [-vsp] -i[f] DUMP_DIR\n"
-"or: \b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
-"or: \b [-vsp] -e EVENT DUMP_DIR\n"
-"or: \b [-vsp] -a[y] DUMP_DIR\n"
-"or: \b [-vsp] -r[y] DUMP_DIR\n"
-"or: \b [-vsp] -d DUMP_DIR"
+"\\b [-vsp] -l[f] [-D BASE_DIR]...\n"
+"or: \\b [-vsp] -i[f] DUMP_DIR\n"
+"or: \\b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
+"or: \\b [-vsp] -e EVENT DUMP_DIR\n"
+"or: \\b [-vsp] -a[y] DUMP_DIR\n"
+"or: \\b [-vsp] -r[y] DUMP_DIR\n"
+"or: \\b [-vsp] -d DUMP_DIR"
 msgstr ""
 
 #. short_name long_name  value    parameter_name  help
@@ -42,9 +41,8 @@ msgid "Print information about DUMP_DIR (detailed with -f)"
 msgstr ""
 
 #: ../src/cli/cli.c:199
-#, fuzzy
 msgid "List possible events [which start with PREFIX]"
-msgstr "Listar eventos possíveis [que começam com PFX]"
+msgstr ""
 
 #: ../src/cli/cli.c:200
 msgid "Run EVENT on DUMP_DIR"
@@ -137,7 +135,8 @@ msgstr "# String de lançamento do sistema operativo"
 
 #: ../src/cli/report.c:276
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr "Incapaz de executar o vi: $TERM, $VISUAL e $EDITOR não estão definidas"
+msgstr ""
+"Incapaz de executar o vi: $TERM, $VISUAL e $EDITOR não estão definidas"
 
 #: ../src/cli/report.c:360
 msgid ""
@@ -174,9 +173,9 @@ msgid "Bad value for '%s': %s"
 msgstr "Valor inválido para '%s': %s"
 
 #: ../src/cli/report.c:617
-#, fuzzy, c-format
+#, c-format
 msgid "How you would like to analyze the problem?\n"
-msgstr "Seleccione como pretende analisar o problema:\n"
+msgstr ""
 
 #: ../src/cli/report.c:635
 msgid "Select analyzer: "
@@ -196,14 +195,12 @@ msgid "Reporting..."
 msgstr "A reportar..."
 
 #: ../src/cli/report.c:774
-#, fuzzy
 msgid "How would you like to report the problem?"
-msgstr "Seleccione como gostaria de reportar o problema:"
+msgstr ""
 
 #: ../src/cli/report.c:784
-#, fuzzy
 msgid "Select reporter(s): "
-msgstr "Reporter(s):"
+msgstr ""
 
 #: ../src/cli/report.c:804
 msgid "Reporting disabled because the backtrace is unusable"
@@ -242,8 +239,8 @@ msgstr "Configurar E_vento"
 #: ../src/gtk-helpers/event_config_dialog.c:425
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue "
-"with the current configuration."
+"Wrong settings detected for %s, reporting will probably fail if you continue"
+" with the current configuration."
 msgstr ""
 "Definições erradas para %s, o relatório provavelmente irá falhar se "
 "continuar com as configurações actuais."
@@ -259,7 +256,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/main.c:96
 msgid ""
-"\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
+"\\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
@@ -275,7 +272,7 @@ msgstr ""
 
 #. override the default prgname, so it's the same as the application
 #. which is calling us
-#.
+#. 
 #: ../src/gui-wizard-gtk/main.c:117
 msgid "Override the default prgname"
 msgstr ""
@@ -286,8 +283,8 @@ msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved copy?"
 msgstr ""
-"Directório gravável necessário, mas '%s' não é gravável. Movê-lo para '%s' e "
-"operar na cópia?"
+"Directório gravável necessário, mas '%s' não é gravável. Movê-lo para '%s' e"
+" operar na cópia?"
 
 #: ../src/gui-wizard-gtk/wizard.c:577
 #, c-format
@@ -328,8 +325,8 @@ msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr ""
-"A traçagem está incompleta. Por favor, tenha a certeza que fornece os passos "
-"para reproduzir."
+"A traçagem está incompleta. Por favor, tenha a certeza que fornece os passos"
+" para reproduzir."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
 #: ../src/gui-wizard-gtk/wizard.c:1192
@@ -413,12 +410,10 @@ msgid "Details"
 msgstr "Detalhes"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
-#, fuzzy
 msgid ""
 "How did this problem happen (step-by-step)? How can it be reproduced? Any "
 "additional comments useful for diagnosing the problem?"
 msgstr ""
-"Como aconteceu este problema (passo a passo)? Como pode ser reproduzido?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "I _agree with submitting the backtrace"
@@ -503,366 +498,7 @@ msgid "Unsupported option type"
 msgstr "tipo de opção não suportada"
 
 #: ../src/lib/parse_options.c:60
-#, fuzzy
 msgid "Usage: "
-msgstr "Utilização: %s\n"
+msgstr ""
 
-#~ msgid "ABRT notification applet"
-#~ msgstr "Applet de notificação do ABRT"
 
-#~ msgid "Automatic Bug Reporting Tool"
-#~ msgstr "Ferramenta automática para reportar erros"
-
-#~ msgid "A crash in the %s package has been detected"
-#~ msgstr "Foi detectada uma falha no pacote %s"
-
-#~ msgid "A crash has been detected"
-#~ msgstr "Foi detectado uma falha"
-
-#~ msgid "ABRT service is not running"
-#~ msgstr "O serviço ABRT não está a correr"
-
-#~ msgid "Warning"
-#~ msgstr "Aviso"
-
-#~ msgid ""
-#~ "Notification area applet that notifies users about issues detected by ABRT"
-#~ msgstr ""
-#~ "Applet da área de notificação que informa os utilizadores sobre os "
-#~ "problemas detectados pela ABRT"
-
-#~ msgid "translator-credits"
-#~ msgstr "Rui Gouveia <rui.gouveia@gmail.com>"
-
-#~ msgid "Hide"
-#~ msgstr "Esconder"
-
-#~ msgid "Report"
-#~ msgstr "Relatório"
-
-#~ msgid "Show"
-#~ msgstr "Mostrar"
-
-#~ msgid "A Problem has Occurred"
-#~ msgstr "Ocorreu um problema"
-
-#~ msgid "Open ABRT"
-#~ msgstr "Abrir ABRT"
-
-#~ msgid "You must specify exactly one operation"
-#~ msgstr "Tem de especificar exactamente uma operação"
-
-#~ msgid "Choose option [0 - %u]: "
-#~ msgstr "Escolha a opção [0 - %u]: "
-
-#~ msgid "Report using %s?"
-#~ msgstr "Reportar utilizando %s?"
-
-#~ msgid "Skipping..."
-#~ msgstr "A passar à frente..."
-
-#~ msgid "Dump directory"
-#~ msgstr "Directório de despejo"
-
-#~ msgid ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   or: "
-#~ msgstr ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   ou: "
-
-#~ msgid "Handle EVENT"
-#~ msgstr "Lidar com o EVENTO"
-
-#~ msgid " [options]"
-#~ msgstr " [options]"
-
-#~ msgid "Use UID as client uid"
-#~ msgstr "Utilizar UID como uid do cliente"
-
-#~ msgid ""
-#~ "The size of the report exceeded the quota. Please check system's "
-#~ "MaxCrashReportsSize value in abrt.conf."
-#~ msgstr ""
-#~ "O tamanho do relatório excedeu a cota. Por favor, verifique o valor de "
-#~ "MaxCrashReportsSize em abrt.conf."
-
-#~ msgid "Do not daemonize"
-#~ msgstr "Não enviar para segundo plano"
-
-#~ msgid "Log to syslog even with -d"
-#~ msgstr "Registar para o syslog mesmo com o -d"
-
-#~ msgid "Exit after SEC seconds of inactivity"
-#~ msgstr "Sair após SEC segundos de inactividade"
-
-#~ msgid "Reported"
-#~ msgstr "Reportado"
-
-#~ msgid "Problem"
-#~ msgstr "Problema"
-
-#~ msgid "Last occurrence"
-#~ msgstr "Última ocorrência"
-
-#~ msgid "_File"
-#~ msgstr "_Ficheiro"
-
-#~ msgid "_Edit"
-#~ msgstr "_Editar"
-
-#~ msgid "_Help"
-#~ msgstr "_Ajuda"
-
-#~ msgid "_Event configuration"
-#~ msgstr "Configuração de _Eventos"
-
-#~ msgid "Online _Help"
-#~ msgstr "Ajuda _Online"
-
-#~ msgid "View and report application crashes"
-#~ msgstr "Ver e reportar as falhas de aplicações"
-
-#~ msgid "Any additional comments useful for diagnosing the problem?"
-#~ msgstr "Tem comentários adicionais úteis para diagnosticar o problema?"
-
-#~ msgid "Uploaded: %llu of %llu kbytes"
-#~ msgstr "Enviado: %llu de %llu kbytes"
-
-#~ msgid "Backtrace parsing failed for %s"
-#~ msgstr "Processamento da traçagem falhou para %s"
-
-#~ msgid ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID and DUPHASH of python crash dumps"
-#~ msgstr ""
-#~ " [-vs] -d DIR\n"
-#~ "\n"
-#~ "Calcula e grava os UUID e DUPHASH dos dumps dos erros de python"
-
-#~ msgid "New bug id: %i"
-#~ msgstr "Novo ID de erro: %i"
-
-#~ msgid "Essential file '%s' is missing, can't continue.."
-#~ msgstr "Ficheiro essencial '%s' em falta, incapaz de continuar.."
-
-#~ msgid "Essential file '%s' is empty, can't continue.."
-#~ msgstr "Ficheiro essencial '%s' está vazio, incapaz de continuar.."
-
-#~ msgid "Logging into Bugzilla at %s"
-#~ msgstr "A iniciar sessão no Bugzilla em %s"
-
-#~ msgid "Checking for duplicates"
-#~ msgstr "A verificar duplicados"
-
-#~ msgid "Missing mandatory member 'bugs'"
-#~ msgstr "Falta membro obrigatório 'erros'"
-
-#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
-#~ msgstr ""
-#~ "Falhou get_bug_info(). Não foi possível recolher todas as informações "
-#~ "obrigatórias"
-
-#~ msgid "Creating a new bug"
-#~ msgstr "A criar um novo erro"
-
-#~ msgid "Bugzilla entry creation failed"
-#~ msgstr "Criação de entrada no Bugzilla falhou"
-
-#~ msgid "Logging out"
-#~ msgstr "A terminar sessão"
-
-#~ msgid "Bug is already reported: %i"
-#~ msgstr "Erro já foi reportado: %i"
-
-#~ msgid "Bugzilla couldn't find parent of bug %d"
-#~ msgstr "Bugzilla não encontra o pai do erro %d"
-
-#~ msgid "Add %s to CC list"
-#~ msgstr "Adicionar %s à lista CC"
-
-#~ msgid "Adding new comment to bug %d"
-#~ msgstr "Adicionar novo comentário no erro (%d)"
-
-#~ msgid ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Reports problem to Bugzilla"
-#~ msgstr ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Reportar problema para Bugzilla"
-
-#~ msgid "Configuration file (may be given many times)"
-#~ msgstr "Ficheiro de configuração (pode ser inserido várias vezes)"
-
-#~ msgid "Additional debuginfo directories"
-#~ msgstr "Directórios adicionais de debuginfo"
-
-#~ msgid "Kill gdb if it runs for more than N seconds"
-#~ msgstr "Matar o gdb se este executar por mais de N segundos"
-
-#~ msgid "Backtrace is generated and saved, %u bytes"
-#~ msgstr "Traçagem foi gerada e gravada, %u bytes"
-
-#~ msgid "Extracting cpio from %s"
-#~ msgstr "A extrair cpio de %s"
-
-#~ msgid "Can't write to '%s': %s"
-#~ msgstr "Incapaz de escrever para '%s': %s"
-
-#~ msgid "Can't extract package '%s'"
-#~ msgstr "Incapaz de extrair pacote '%s'"
-
-#~ msgid "Caching files from %s made from %s"
-#~ msgstr "A fazer cache de ficheiros de %s feitos a partir de %s"
-
-#~ msgid "Can't extract files from '%s'"
-#~ msgstr "Incapaz de extrair ficheiros de '%s'"
-
-#~ msgid "Downloading (%i of %i) %s: %3u%%"
-#~ msgstr "A transferir (%i de %i) %s: %3u%%"
-
-#~ msgid "Looking for needed packages in repositories"
-#~ msgstr "A procurar por pacotes necessários nos repositórios"
-
-#~ msgid "Can't find packages for %u debuginfo files"
-#~ msgstr "Incapaz de encontrar pacotes para ficheiros debuginfo do %u"
-
-#~ msgid "Packages to download: %u"
-#~ msgstr "Pacotes para descarregar: %u"
-
-#~ msgid "Downloading %.2fMb, installed size: %.2fMb"
-#~ msgstr "A transferir %.2fMb, instalado: %.2fMb"
-
-#~ msgid "Is this ok? [y/N] "
-#~ msgstr "Isto está ok? [s/N]"
-
-#~ msgid "Downloading package %s failed"
-#~ msgstr "A transferência do pacote %s falhou"
-
-#~ msgid "Unpacking failed, aborting download..."
-#~ msgstr "Desempacotamento falhou, a abortar transferência..."
-
-#~ msgid "All downloaded packages have been extracted, removing %s"
-#~ msgstr "Todos os pacotes transferidos foram extraídos, a remover %s"
-
-#~ msgid "Can't remove %s, probably contains an error log"
-#~ msgstr "Incapaz de remover %s, provavelmente contém um registo de erro"
-
-#~ msgid "Can't remove '%s': %s"
-#~ msgstr "Incapaz de remover '%s': %s"
-
-#~ msgid "Exiting on user command"
-#~ msgstr "A sair por comando do utilizador"
-
-#~ msgid "Coredump references %u debuginfo files, %u of them are not installed"
-#~ msgstr ""
-#~ "\"Coredump\" referencia %u ficheiros de debuginfo, %u dos quais não estão "
-#~ "instalados"
-
-#~ msgid "Missing debuginfo file: %s"
-#~ msgstr "Ficheiro de debuginfo em falta: %s"
-
-#~ msgid "All %u debuginfo files are available"
-#~ msgstr "Todos os %u ficheiros de debuginfo estão disponíveis"
-
-#~ msgid "Submitting oops report to %s"
-#~ msgstr "A submeter relatório oops para %s"
-
-#~ msgid "Configuration file"
-#~ msgstr "Ficheiro de configuração"
-
-#~ msgid "Sending an email..."
-#~ msgstr "A enviar E-mail..."
-
-#~ msgid "Config file"
-#~ msgstr "Ficheiro de configuração"
-
-#~ msgid "Output file"
-#~ msgstr "Ficheiro de resultado"
-
-#~ msgid "Append to, or overwrite FILE"
-#~ msgstr "Adicionar, ou sobrescrever FICHEIRO"
-
-#~ msgid "The report was appended to %s"
-#~ msgstr "O relatório foi anexado a %s"
-
-#~ msgid "The report was stored to %s"
-#~ msgstr "O relatório foi armazenado em %s"
-
-#~ msgid "Compressing data"
-#~ msgstr "A comprimir dados"
-
-#~ msgid "Empty RHTS login or password"
-#~ msgstr "Nome de utilizador ou senha vazios"
-
-#~ msgid "Can't create a temporary directory in /tmp"
-#~ msgstr "Não foi possível criar a directoria temporária em /tmp"
-
-#~ msgid "Creating a new case..."
-#~ msgstr "A criar um novo caso..."
-
-#~ msgid "Delete dump dirs"
-#~ msgstr "Apaga directorias dump"
-
-#~ msgid "Delete files"
-#~ msgstr "Apagar ficheiros"
-
-#~ msgid "Preserve this dump dir"
-#~ msgstr "Preserva esta directoria dump"
-
-#~ msgid "Sending %s to %s"
-#~ msgstr "A enviar %s para %s"
-
-#~ msgid "Successfully sent %s to %s"
-#~ msgstr "%s enviado com sucesso para %s"
-
-#~ msgid "Archive is created: '%s'"
-#~ msgstr "Foi criado o arquivo: '%s'"
-
-#~ msgid "Base URL to upload to"
-#~ msgstr "URL base para enviar para"
-
-#~ msgid "Parse kernel's message buffer before parsing FILE"
-#~ msgstr "Processar o buffer de mensagens do kernel antes de processar FILE"
-
-#~ msgid "Print found oopses on standard output"
-#~ msgstr "Apresentar oopses encontrados na saída standard"
-
-#~ msgid "Do not exit, watch the file for new oopses"
-#~ msgstr "Não sair, monitorar o ficheiro por novos oopses"
-
-#~ msgid "log to syslog"
-#~ msgstr "Registar no syslog"
-
-#~ msgid "Local GNU Debugger"
-#~ msgstr "Depurador GNU local"
-
-#~ msgid "Address of Bugzilla server"
-#~ msgstr "Endereço do servidor Bugzilla"
-
-#~ msgid "Bugzilla"
-#~ msgstr "Bugzilla"
-
-#~ msgid "Bugzilla URL"
-#~ msgstr "Bugzilla URL"
-
-#~ msgid "Bugzilla account password"
-#~ msgstr "Senha da conta Bugzilla"
-
-#~ msgid "Bugzilla account user name"
-#~ msgstr "nome de utilizador da conta Bugzilla"
-
-#~ msgid "Check SSL key validity"
-#~ msgstr "Verificar validade da chave SSL"
-
-#~ msgid "Password"
-#~ msgstr "Senha"
-
-#~ msgid "User name"
-#~ msgstr "Nome de utilizador"
-
-#~ msgid "Verify SSL"
-#~ msgstr "Verificar SSL"

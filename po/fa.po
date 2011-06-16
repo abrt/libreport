@@ -1,31 +1,30 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: libreport\n"
+"Report-Msgid-Bugs-To: https://fedorahosted.org/abrt/report\n"
 "POT-Creation-Date: 2011-06-16 12:17+0200\n"
-"PO-Revision-Date: 2011-05-02 18:28+0000\n"
+"PO-Revision-Date: 2011-06-16 11:23+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
-"Language-Team: Persian <None>\n"
-"Language: fa\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fa\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../src/cli/cli.c:167
 msgid ""
-"\b [-vsp] -l[f] [-D BASE_DIR]...\n"
-"or: \b [-vsp] -i[f] DUMP_DIR\n"
-"or: \b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
-"or: \b [-vsp] -e EVENT DUMP_DIR\n"
-"or: \b [-vsp] -a[y] DUMP_DIR\n"
-"or: \b [-vsp] -r[y] DUMP_DIR\n"
-"or: \b [-vsp] -d DUMP_DIR"
+"\\b [-vsp] -l[f] [-D BASE_DIR]...\n"
+"or: \\b [-vsp] -i[f] DUMP_DIR\n"
+"or: \\b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
+"or: \\b [-vsp] -e EVENT DUMP_DIR\n"
+"or: \\b [-vsp] -a[y] DUMP_DIR\n"
+"or: \\b [-vsp] -r[y] DUMP_DIR\n"
+"or: \\b [-vsp] -d DUMP_DIR"
 msgstr ""
 
 #. short_name long_name  value    parameter_name  help
@@ -42,9 +41,8 @@ msgid "Print information about DUMP_DIR (detailed with -f)"
 msgstr ""
 
 #: ../src/cli/cli.c:199
-#, fuzzy
 msgid "List possible events [which start with PREFIX]"
-msgstr "رخ‌دادهای ممکن [که با PFX شروع می‌شوند] را لیست کنید"
+msgstr ""
 
 #: ../src/cli/cli.c:200
 msgid "Run EVENT on DUMP_DIR"
@@ -176,9 +174,9 @@ msgid "Bad value for '%s': %s"
 msgstr ""
 
 #: ../src/cli/report.c:617
-#, fuzzy, c-format
+#, c-format
 msgid "How you would like to analyze the problem?\n"
-msgstr "چگونگی تحلیل کردن مشکل را برگزینید:"
+msgstr ""
 
 #: ../src/cli/report.c:635
 msgid "Select analyzer: "
@@ -198,14 +196,12 @@ msgid "Reporting..."
 msgstr "درحال گزارش..."
 
 #: ../src/cli/report.c:774
-#, fuzzy
 msgid "How would you like to report the problem?"
-msgstr "چگونگی گزارش دادن مشکل را برگزینید:"
+msgstr ""
 
 #: ../src/cli/report.c:784
-#, fuzzy
 msgid "Select reporter(s): "
-msgstr "گزارش‌کننده(ها):"
+msgstr ""
 
 #: ../src/cli/report.c:804
 msgid "Reporting disabled because the backtrace is unusable"
@@ -217,8 +213,8 @@ msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
-"لطفا به صورت دستی debuginfo را نصب کنید با دستور: \"debuginfo-install %s\" و "
-"دوباره سعی کنید\n"
+"لطفا به صورت دستی debuginfo را نصب کنید با دستور: \"debuginfo-install %s\" و"
+" دوباره سعی کنید\n"
 
 #: ../src/cli/report.c:830
 #, c-format
@@ -244,8 +240,8 @@ msgstr "پیکربندی ـرخ‌داد"
 #: ../src/gtk-helpers/event_config_dialog.c:425
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue "
-"with the current configuration."
+"Wrong settings detected for %s, reporting will probably fail if you continue"
+" with the current configuration."
 msgstr ""
 
 #: ../src/gtk-helpers/event_config_dialog.c:429
@@ -257,7 +253,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/main.c:96
 msgid ""
-"\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
+"\\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
@@ -273,7 +269,7 @@ msgstr ""
 
 #. override the default prgname, so it's the same as the application
 #. which is calling us
-#.
+#. 
 #: ../src/gui-wizard-gtk/main.c:117
 msgid "Override the default prgname"
 msgstr ""
@@ -284,8 +280,8 @@ msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved copy?"
 msgstr ""
-"نیاز به شاخه قابل نوشتن است، ولی '%s' قابل نوشتن نیست. به '%s' جابه‌جا کنید و "
-"بر روی کپی جابه‌جا شده انجام دهید؟"
+"نیاز به شاخه قابل نوشتن است، ولی '%s' قابل نوشتن نیست. به '%s' جابه‌جا کنید "
+"و بر روی کپی جابه‌جا شده انجام دهید؟"
 
 #: ../src/gui-wizard-gtk/wizard.c:577
 #, c-format
@@ -371,8 +367,8 @@ msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
 msgstr ""
-"<b> توضیح‌های شما خصوصی نیستند.</b> ممکن است آن‌ها به گزارش خطاهای عمومی قابل "
-"مشاهده افزوده شوند."
+"<b> توضیح‌های شما خصوصی نیستند.</b> ممکن است آن‌ها به گزارش خطاهای عمومی "
+"قابل مشاهده افزوده شوند."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Analyzing did not start yet"
@@ -384,17 +380,17 @@ msgid ""
 "down the source of the problem. Please review it and remove any sensitive "
 "data you would rather not share:"
 msgstr ""
-"دنباله جزئیات بیش‌تری از شکست را به گسترش‌دهنده‌ها می‌دهد، به آن‌ها کمک می‌کند تا "
-"منبع مشکا را بیابند. خواهشمندیم بازنگری کنید و هر داده حساسی که نمی‌خواهید به "
-"اشتراک بگذارید را پاک کنید:"
+"دنباله جزئیات بیش‌تری از شکست را به گسترش‌دهنده‌ها می‌دهد، به آن‌ها کمک "
+"می‌کند تا منبع مشکا را بیابند. خواهشمندیم بازنگری کنید و هر داده حساسی که "
+"نمی‌خواهید به اشتراک بگذارید را پاک کنید:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid ""
 "Can create more informative backtrace if you installed additional debug "
 "packages"
 msgstr ""
-"اگر شما بسته‌های اشکال‌زدای افزون‌تری نصب کرده بودید می توانستید دنباله آگه‌ساز "
-"بیش‌تری بسازید"
+"اگر شما بسته‌های اشکال‌زدای افزون‌تری نصب کرده بودید می توانستید دنباله "
+"آگه‌ساز بیش‌تری بسازید"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid "Click 'Apply' to start reporting"
@@ -409,11 +405,10 @@ msgid "Details"
 msgstr "جزییات"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
-#, fuzzy
 msgid ""
 "How did this problem happen (step-by-step)? How can it be reproduced? Any "
 "additional comments useful for diagnosing the problem?"
-msgstr "این مشکل چگونه رخ‌داد (گام-به-گام)؟ ممکن است دوباره ایجاد شود؟"
+msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "I _agree with submitting the backtrace"
@@ -467,8 +462,8 @@ msgid ""
 "Use this button to generate more informative backtrace after you installed "
 "additional debug packages"
 msgstr ""
-"این دکمه را برای تولید دنباله آگه‌ساز بیش‌تر پس از این‌که بسته‌های اشکال‌زدایی "
-"افزون‌تری نصب کردید به کار برید"
+"این دکمه را برای تولید دنباله آگه‌ساز بیش‌تر پس از این‌که بسته‌های "
+"اشکال‌زدایی افزون‌تری نصب کردید به کار برید"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:20
 msgid "You need to fill the how to before you can proceed..."
@@ -498,262 +493,7 @@ msgid "Unsupported option type"
 msgstr ""
 
 #: ../src/lib/parse_options.c:60
-#, fuzzy
 msgid "Usage: "
-msgstr "کاربرد: %s\n"
+msgstr ""
 
-#~ msgid "ABRT notification applet"
-#~ msgstr "اپلت آگاه کننده ابزار گزارش اشکال خودکار"
 
-#~ msgid "Automatic Bug Reporting Tool"
-#~ msgstr "ابزار گزارش اشکال خودکار"
-
-#~ msgid "A crash in the %s package has been detected"
-#~ msgstr "شکستی در بسته %s یافت شد"
-
-#~ msgid "A crash has been detected"
-#~ msgstr "شکستی یافت شد"
-
-#~ msgid "ABRT service is not running"
-#~ msgstr "سرویس ای‌بی‌ار‌تی اجرا نمی‌باشد"
-
-#~ msgid "Warning"
-#~ msgstr "اخطار"
-
-#~ msgid ""
-#~ "Notification area applet that notifies users about issues detected by ABRT"
-#~ msgstr ""
-#~ "برنامه ناحیه اخطار که کاربران را درباره جریانات یافت شده توسط ای‌بی‌ار‌تی "
-#~ "یافت شده اند"
-
-#~ msgid "translator-credits"
-#~ msgstr "مترجمین"
-
-#~ msgid "Hide"
-#~ msgstr "پنهان"
-
-#~ msgid "Report"
-#~ msgstr "گزارش"
-
-#~ msgid "Open ABRT"
-#~ msgstr "بازکردن ابزار گزارش خودکار اشکال"
-
-#~ msgid "You must specify exactly one operation"
-#~ msgstr "شما باید یک عمل دقیق مشخص کنید"
-
-#~ msgid "Report using %s?"
-#~ msgstr "گزارش با استفاده از %s؟"
-
-#~ msgid "Skipping..."
-#~ msgstr "لغوکردن..."
-
-#~ msgid ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   or: "
-#~ msgstr ""
-#~ "[-vs] -d شاخه -e رخ‌داد\n"
-#~ "  یا:"
-
-#~ msgid "Handle EVENT"
-#~ msgstr "مدیریت رخ‌داد"
-
-#~ msgid " [options]"
-#~ msgstr "[گزینه‌ها]"
-
-#~ msgid "Use UID as client uid"
-#~ msgstr "UID را به‌جای uid مشتری به کار ببرید"
-
-#~ msgid ""
-#~ "The size of the report exceeded the quota. Please check system's "
-#~ "MaxCrashReportsSize value in abrt.conf."
-#~ msgstr ""
-#~ "اندازه شماره گزارش ها بیش از حد است. لطفا مقدارMaxCrashReportsSize را در "
-#~ "abrt.conf کنترل کنید."
-
-#~ msgid "Do not daemonize"
-#~ msgstr "دیمون سازی نکن"
-
-#~ msgid "Log to syslog even with -d"
-#~ msgstr "هم‌چنین در syslog با -d سیاهه شد"
-
-#~ msgid "Exit after SEC seconds of inactivity"
-#~ msgstr "پس از SEC ثانیه بی‌کاری خارج شوید"
-
-#~ msgid "Reported"
-#~ msgstr "گزارش شده"
-
-#~ msgid "Problem"
-#~ msgstr "مشکل"
-
-#~ msgid "Last occurrence"
-#~ msgstr "آخرین رویداد"
-
-#~ msgid "_File"
-#~ msgstr "ـپرونده"
-
-#~ msgid "_Edit"
-#~ msgstr "اصلاح"
-
-#~ msgid "_Help"
-#~ msgstr "کمک"
-
-#~ msgid "View and report application crashes"
-#~ msgstr "دیدن و گزارش شکستهای برنامه"
-
-#~ msgid "Any additional comments useful for diagnosing the problem?"
-#~ msgstr "هر توضیح افزون‌تر مفیدی برای تشخیص مشکل؟"
-
-#~ msgid "Uploaded: %llu of %llu kbytes"
-#~ msgstr "بارگذاری : %llu از %llu kbytes"
-
-#~ msgid "Backtrace parsing failed for %s"
-#~ msgstr "واکاوی دنباله برای %s شکست خورد"
-
-#~ msgid ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID and DUPHASH of python crash dumps"
-#~ msgstr ""
-#~ "[-v] -d شاخه\n"
-#~ "\n"
-#~ "UUID و DUPHASH رونوشت‌های شکست پایتون محاسبه و ذخیره شد"
-
-#~ msgid "New bug id: %i"
-#~ msgstr "شناسه جدید باگ: %i"
-
-#~ msgid "Missing mandatory member 'bugs'"
-#~ msgstr "از دست دادن عضو ضروری باگ ها"
-
-#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
-#~ msgstr "خطا در get_bug_info(). نمی تواند همه اطلاعات ضروری را جمع آوری کند"
-
-#~ msgid "Bugzilla entry creation failed"
-#~ msgstr "ساختن باگ جدید با خطا مواجه شد"
-
-#~ msgid "Bug is already reported: %i"
-#~ msgstr "خطا قبلا گزارش شده است: %i"
-
-#~ msgid "Bugzilla couldn't find parent of bug %d"
-#~ msgstr "باگزیلا نه توانست باگ اصلی باگ %d را پیدا کند"
-
-#~ msgid "Add %s to CC list"
-#~ msgstr "افزودن %s به لیست CC"
-
-#~ msgid "Adding new comment to bug %d"
-#~ msgstr "افزودن اظهارنظر جدید به باگ %d"
-
-#~ msgid "Configuration file (may be given many times)"
-#~ msgstr "پرونده پیکربندی (ممکن است زمان زیادی بگیرد)"
-
-#~ msgid "Additional debuginfo directories"
-#~ msgstr "شاخه‌های اطلاعات اشکال‌زدایی افزون‌تر"
-
-#~ msgid "Kill gdb if it runs for more than N seconds"
-#~ msgstr "gdb را اگر بیش از N ثانیه اجرا شد بکشید"
-
-#~ msgid "Backtrace is generated and saved, %u bytes"
-#~ msgstr "دنباله تولید و ذخیره شد، %u بایت"
-
-#~ msgid "Extracting cpio from %s"
-#~ msgstr "در حال استخراج cpio از %s"
-
-#~ msgid "Can't write to '%s': %s"
-#~ msgstr "نمی‌تواند در '%s' بنویسد: %s"
-
-#~ msgid "Can't extract package '%s'"
-#~ msgstr "نمی‌تواند بسته '%s' را استخراج کند"
-
-#~ msgid "Caching files from %s made from %s"
-#~ msgstr "نهان‌سازی پرونده‌ها از %s ساخته شده از %s"
-
-#~ msgid "Can't extract files from '%s'"
-#~ msgstr "نمی‌تواند پرونده‌ها را از '%s' استخراج کند"
-
-#~ msgid "Downloading (%i of %i) %s: %3u%%"
-#~ msgstr "بارگیری (%i از %i) %s: %3u%%"
-
-#~ msgid "Can't find packages for %u debuginfo files"
-#~ msgstr "نمی‌تواند بسته‌ها را برای %u پرونده اطلاعات اشکال‌زدایی بیابد"
-
-#~ msgid "Downloading %.2fMb, installed size: %.2fMb"
-#~ msgstr "بارگیری %.2fMb، اندازه نصب: %.2fMb"
-
-#~ msgid "Is this ok? [y/N] "
-#~ msgstr "درست است؟ [y/n]"
-
-#~ msgid "Downloading package %s failed"
-#~ msgstr "بارگیری بسته %s شکست خورد"
-
-#~ msgid "Unpacking failed, aborting download..."
-#~ msgstr "از بسته درآوردن شکست خورد، رها کردن بارگیری..."
-
-#~ msgid "All downloaded packages have been extracted, removing %s"
-#~ msgstr "همه‌ی بسته‌های بارگیری شده استخراج شدند، در حال پاک کردن %s"
-
-#~ msgid "Can't remove %s, probably contains an error log"
-#~ msgstr "نمی‌تواند %s را پاک کند، شاید دارای یک سیاهه خطا باشد"
-
-#~ msgid "Can't remove '%s': %s"
-#~ msgstr "نمی‌تواند '%s' را پاک کند: %s"
-
-#~ msgid "Exiting on user command"
-#~ msgstr "به فرمان کاربر در حال خارج شدن است"
-
-#~ msgid "Coredump references %u debuginfo files, %u of them are not installed"
-#~ msgstr ""
-#~ "رونوشت هسته به%u پرونده اطلاعات اشکال‌زدایی مراجعه کرده، %u از آن‌ها نصب "
-#~ "نشده‌اند"
-
-#~ msgid "Missing debuginfo file: %s"
-#~ msgstr "پرونده اطلاعات اشکال‌زدایی فراموش شده است: %s"
-
-#~ msgid "All %u debuginfo files are available"
-#~ msgstr "همه %u پرونده اطلاعات اشکال‌زدایی موجود است"
-
-#~ msgid "Submitting oops report to %s"
-#~ msgstr "ارایه گزارش لغزش‌ها به %s"
-
-#~ msgid "Sending an email..."
-#~ msgstr "درحال ارسال ایمیل..."
-
-#~ msgid "Config file"
-#~ msgstr "پرونده پیکربندی"
-
-#~ msgid "Output file"
-#~ msgstr "پرونده خروجی"
-
-#~ msgid "The report was appended to %s"
-#~ msgstr "گزارش به %s افزوده شد"
-
-#~ msgid "The report was stored to %s"
-#~ msgstr "گزارش در %s ذخیره شد"
-
-#~ msgid "Compressing data"
-#~ msgstr " داده های فشرده شده"
-
-#~ msgid "Creating a new case..."
-#~ msgstr "درحال ساخت یک مورد جدید..."
-
-#~ msgid "Sending %s to %s"
-#~ msgstr "در حال فرستادن %s به %s"
-
-#~ msgid "Successfully sent %s to %s"
-#~ msgstr "%s با موفقیت به %s فرستاده شد"
-
-#~ msgid "Archive is created: '%s'"
-#~ msgstr "آرشیو ساخته شد: %s"
-
-#~ msgid "Base URL to upload to"
-#~ msgstr "َURL پایه برای بارگذاری به"
-
-#~ msgid "Parse kernel's message buffer before parsing FILE"
-#~ msgstr "میان‌گیر پیام هسته را پیش از واکاوی پرونده واکاوی کن"
-
-#~ msgid "Print found oopses on standard output"
-#~ msgstr "چاپ لغزش‌هایی روی خروجی استاندارد یافته"
-
-#~ msgid "Do not exit, watch the file for new oopses"
-#~ msgstr "خارج نشوید، برای مشاهده لغزش‌های جدید پرونده را ببینید"
-
-#~ msgid "log to syslog"
-#~ msgstr "در syslog سیاهه کن"

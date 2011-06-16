@@ -1,31 +1,30 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: libreport\n"
+"Report-Msgid-Bugs-To: https://fedorahosted.org/abrt/report\n"
 "POT-Creation-Date: 2011-06-16 12:17+0200\n"
-"PO-Revision-Date: 2011-05-02 18:28+0000\n"
+"PO-Revision-Date: 2011-06-16 11:22+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
-"Language-Team: Bengali (India) <None>\n"
-"Language: bn_IN\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: bn_IN\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/cli/cli.c:167
 msgid ""
-"\b [-vsp] -l[f] [-D BASE_DIR]...\n"
-"or: \b [-vsp] -i[f] DUMP_DIR\n"
-"or: \b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
-"or: \b [-vsp] -e EVENT DUMP_DIR\n"
-"or: \b [-vsp] -a[y] DUMP_DIR\n"
-"or: \b [-vsp] -r[y] DUMP_DIR\n"
-"or: \b [-vsp] -d DUMP_DIR"
+"\\b [-vsp] -l[f] [-D BASE_DIR]...\n"
+"or: \\b [-vsp] -i[f] DUMP_DIR\n"
+"or: \\b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
+"or: \\b [-vsp] -e EVENT DUMP_DIR\n"
+"or: \\b [-vsp] -a[y] DUMP_DIR\n"
+"or: \\b [-vsp] -r[y] DUMP_DIR\n"
+"or: \\b [-vsp] -d DUMP_DIR"
 msgstr ""
 
 #. short_name long_name  value    parameter_name  help
@@ -42,9 +41,8 @@ msgid "Print information about DUMP_DIR (detailed with -f)"
 msgstr ""
 
 #: ../src/cli/cli.c:199
-#, fuzzy
 msgid "List possible events [which start with PREFIX]"
-msgstr "সম্ভাব্য ঘটনার [প্রারম্ভে PFX সহ] তালিকা প্রস্তুতি "
+msgstr ""
 
 #: ../src/cli/cli.c:200
 msgid "Run EVENT on DUMP_DIR"
@@ -137,7 +135,8 @@ msgstr "# অপারেটিং সিস্টেমের রিলিজ �
 
 #: ../src/cli/report.c:276
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr "vi সঞ্চালন করতে ব্যর্থ: $TERM, $VISUAL ও $EDITOR-র মান নির্ধারণ করা হয়নি"
+msgstr ""
+"vi সঞ্চালন করতে ব্যর্থ: $TERM, $VISUAL ও $EDITOR-র মান নির্ধারণ করা হয়নি"
 
 #: ../src/cli/report.c:360
 msgid ""
@@ -206,7 +205,8 @@ msgstr ""
 #: ../src/cli/report.c:804
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr ""
-"ব্যাক-ট্রেস ব্যবহারযোগ্য না হওয়ার ফলে রিপোর্ট দায়ের করার ব্যবস্থা নিষ্ক্রিয় করা হয়েছে"
+"ব্যাক-ট্রেস ব্যবহারযোগ্য না হওয়ার ফলে রিপোর্ট দায়ের করার ব্যবস্থা নিষ্ক্রিয় "
+"করা হয়েছে"
 
 #: ../src/cli/report.c:808
 #, c-format
@@ -214,8 +214,8 @@ msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
-"চিহ্নিত কমান্ড সহযোগে অনুগ্রহ করে স্বয়ং debuginfo ইনস্টল করার প্রয়াস করে পুনরায় "
-"প্রচেষ্টা করুন: \"debuginfo-install %s\"\n"
+"চিহ্নিত কমান্ড সহযোগে অনুগ্রহ করে স্বয়ং debuginfo ইনস্টল করার প্রয়াস করে "
+"পুনরায় প্রচেষ্টা করুন: \"debuginfo-install %s\"\n"
 
 #: ../src/cli/report.c:830
 #, c-format
@@ -241,8 +241,8 @@ msgstr ""
 #: ../src/gtk-helpers/event_config_dialog.c:425
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue "
-"with the current configuration."
+"Wrong settings detected for %s, reporting will probably fail if you continue"
+" with the current configuration."
 msgstr ""
 
 #: ../src/gtk-helpers/event_config_dialog.c:429
@@ -254,7 +254,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/main.c:96
 msgid ""
-"\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
+"\\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
@@ -270,7 +270,7 @@ msgstr ""
 
 #. override the default prgname, so it's the same as the application
 #. which is calling us
-#.
+#. 
 #: ../src/gui-wizard-gtk/main.c:117
 msgid "Override the default prgname"
 msgstr ""
@@ -321,18 +321,20 @@ msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr ""
-"ব্যাক-ট্রেসের তথ্য সম্পূর্ণ নয়, অনুগ্রহ করে পুনরাবৃত্তির জন্য প্রয়োজনীয় ধাপগুলি সঠিকরূপে "
-"চিহ্নিত করুন।"
+"ব্যাক-ট্রেসের তথ্য সম্পূর্ণ নয়, অনুগ্রহ করে পুনরাবৃত্তির জন্য প্রয়োজনীয় "
+"ধাপগুলি সঠিকরূপে চিহ্নিত করুন।"
 
 #. FIXME: see CreporterAssistant: 394 for ideas
 #: ../src/gui-wizard-gtk/wizard.c:1192
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr ""
-"ব্যাক-ট্রেস ব্যবহারযোগ্য না হওয়ার ফলে রিপোর্ট দায়ের করার ব্যবস্থা নিষ্ক্রিয় করা হয়েছে।"
+"ব্যাক-ট্রেস ব্যবহারযোগ্য না হওয়ার ফলে রিপোর্ট দায়ের করার ব্যবস্থা নিষ্ক্রিয় "
+"করা হয়েছে।"
 
 #: ../src/gui-wizard-gtk/wizard.c:1201
 msgid "You should check the backtrace for sensitive data."
-msgstr "সংবেদনশীল তথ্যের উপস্থিতি সনাক্ত করার জন্য ব্যাক-ট্রেস পরীক্ষা করা আবশ্যক।"
+msgstr ""
+"সংবেদনশীল তথ্যের উপস্থিতি সনাক্ত করার জন্য ব্যাক-ট্রেস পরীক্ষা করা আবশ্যক।"
 
 #: ../src/gui-wizard-gtk/wizard.c:1202
 msgid "You must agree with sending the backtrace."
@@ -486,179 +488,7 @@ msgid "Unsupported option type"
 msgstr ""
 
 #: ../src/lib/parse_options.c:60
-#, fuzzy
 msgid "Usage: "
-msgstr "ব্যবহারপ্রণালী: %s\n"
+msgstr ""
 
-#~ msgid "ABRT notification applet"
-#~ msgstr "ABRT বিজ্ঞেপ্তির অ্যাপ্লেট"
 
-#~ msgid "Automatic Bug Reporting Tool"
-#~ msgstr "স্বয়ংক্রিয় বাগ রিপোর্টিং ব্যবস্থা"
-
-#~ msgid "A crash in the %s package has been detected"
-#~ msgstr "%s প্যাকেজের মধ্যে একটি বিপর্যয় সনাক্ত করা হয়েছে"
-
-#~ msgid "A crash has been detected"
-#~ msgstr "একটি বিপর্যয় সনাক্ত করা হয়েছে"
-
-#~ msgid "ABRT service is not running"
-#~ msgstr "ABRT পরিসেবা বর্তমানে চলছে না"
-
-#~ msgid "Warning"
-#~ msgstr "সতর্কবার্তা"
-
-#~ msgid ""
-#~ "Notification area applet that notifies users about issues detected by ABRT"
-#~ msgstr ""
-#~ "ABRT দ্বারা সনাক্ত করা সমস্যা সম্বন্ধে ব্যবহারকারীদেরকে সূচিত করার উদ্দেশ্যে, "
-#~ "বিজ্ঞপ্তিস্থলে ব্যবহারযোগ্য অ্যাপ্লেট"
-
-#~ msgid "translator-credits"
-#~ msgstr "রুণা ভট্টাচার্য্য"
-
-#~ msgid "Hide"
-#~ msgstr "আড়াল করুন"
-
-#~ msgid "Report"
-#~ msgstr "রিপোর্ট"
-
-#~ msgid "Open ABRT"
-#~ msgstr "ABRT আরম্ভ করুন"
-
-#~ msgid "You must specify exactly one operation"
-#~ msgstr "শুধুমাত্র একটি কর্ম নির্ধারণ করা যাবে"
-
-#~ msgid "Report using %s?"
-#~ msgstr "%s সহযোগে রিপোর্ট দায়ের করা হবে কি?"
-
-#~ msgid "Skipping..."
-#~ msgstr "উপেক্ষা করা হচ্ছে..."
-
-#~ msgid ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   or: "
-#~ msgstr ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   অথবা: "
-
-#~ msgid "Handle EVENT"
-#~ msgstr "EVENT পরিচালনা"
-
-#~ msgid ""
-#~ "The size of the report exceeded the quota. Please check system's "
-#~ "MaxCrashReportsSize value in abrt.conf."
-#~ msgstr ""
-#~ "রিপোর্টের মাপ অনুমোদিত মাপের থেকে বড়। অনুগ্রহ করে abrt.conf ফাইলের মধ্যে "
-#~ "MaxCrashReportsSize-র মাপ যাচাই করুন।"
-
-#~ msgid "Do not daemonize"
-#~ msgstr "ডেমন তৈরি করা হবে না"
-
-#~ msgid "Log to syslog even with -d"
-#~ msgstr "-d সহযোগেও syslog-এ লগ করা হবে"
-
-#~ msgid "Exit after SEC seconds of inactivity"
-#~ msgstr "SEC সেকেন্ড নিষ্ক্রিয় থাকলে প্রস্থান করা হবে"
-
-#~ msgid "Reported"
-#~ msgstr "দায়ের করা হয়েছে"
-
-#~ msgid "_File"
-#~ msgstr "ফাইল (_F)"
-
-#~ msgid "_Edit"
-#~ msgstr "সম্পাদনা (_E)"
-
-#~ msgid "_Help"
-#~ msgstr "সাহায্য (_H)"
-
-#~ msgid "View and report application crashes"
-#~ msgstr "অ্যাপ্লিকেশনের বিপর্যয় সংক্রান্ত তথ্য নিরীক্ষণ ও দায়ের করুন"
-
-#~ msgid "Uploaded: %llu of %llu kbytes"
-#~ msgstr "আপলোড করা হয়েছে: %llu কিলোবাইট, সর্বমোট %llu কিলোবাইট"
-
-#~ msgid "Backtrace parsing failed for %s"
-#~ msgstr "%s-র জন্য ব্যাক-ট্রেস পার্সিং করতে ব্যর্থ"
-
-#~ msgid "New bug id: %i"
-#~ msgstr "নতুন বাগ id: %i"
-
-#~ msgid "Missing mandatory member 'bugs'"
-#~ msgstr "আবশ্যক তথ্য 'bugs' অনুপস্থিত"
-
-#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
-#~ msgstr "get_bug_info() বিফল। সকল আবশ্যক তথ্য সংগ্রহ করা যায়নি"
-
-#~ msgid "Bugzilla entry creation failed"
-#~ msgstr "Bugzilla-র এনট্রি নির্মাণ করতে ব্যর্থ"
-
-#~ msgid "Bug is already reported: %i"
-#~ msgstr "বাগ পূর্বেই দায়ের করা হয়েছে: %i"
-
-#~ msgid "Bugzilla couldn't find parent of bug %d"
-#~ msgstr "Bugzilla দ্বারা বাগ %d-র ঊর্ধ্বতন বাগ সনাক্ত করা সম্ভব হয়নি"
-
-#~ msgid "Add %s to CC list"
-#~ msgstr "%s-কে প্রতিলিপি প্রাপকদের (CC) তালিকায় যোগ করুন"
-
-#~ msgid "Adding new comment to bug %d"
-#~ msgstr "বাগ(%d)-র মধ্যে নতুন বিবৃতি সংযোজন করুন"
-
-#~ msgid "Extracting cpio from %s"
-#~ msgstr "%s থেকে cpio উদ্ধার করা হচ্ছে"
-
-#~ msgid "Caching files from %s made from %s"
-#~ msgstr "%s-র ফাইলগুলি (%s থেকে প্রস্তুত করা) ক্যাশে করা হচ্ছে"
-
-#~ msgid "Is this ok? [y/N] "
-#~ msgstr "এটি ঠিক কী? [y/N] "
-
-#~ msgid "Downloading package %s failed"
-#~ msgstr "%s প্যাকেজটি ডাউনলোড করতে ব্যর্থ"
-
-#~ msgid "Unpacking failed, aborting download..."
-#~ msgstr "আন-প্যাক করতে ব্যর্থ, ডাউনলোড পরিত্যাগ করা হচ্ছে..."
-
-#~ msgid "All downloaded packages have been extracted, removing %s"
-#~ msgstr "ডাউনলোড করা সকল প্যাকেজ উদ্ধার করা হয়েছে, %s মুছে ফেলা হচ্ছে"
-
-#~ msgid "Can't remove %s, probably contains an error log"
-#~ msgstr "%s মুছে ফেলা সম্ভব নয়, সম্ভবত ত্রুটির লগ উপলব্ধ রয়েছে"
-
-#~ msgid "Submitting oops report to %s"
-#~ msgstr "%s-এ oops  রিপোর্ট দায়ের করা হচ্ছে"
-
-#~ msgid "Sending an email..."
-#~ msgstr "ই-মেইল পাঠানো হচ্ছে..."
-
-#~ msgid "Config file"
-#~ msgstr "কনফিগ ফাইল"
-
-#~ msgid "Output file"
-#~ msgstr "আউটপুট ফাইল"
-
-#~ msgid "The report was appended to %s"
-#~ msgstr "%s-র সাথে রিপোর্ট সংযোজন করা হয়েছে"
-
-#~ msgid "The report was stored to %s"
-#~ msgstr "%s-এ রিপোর্ট সংরক্ষণ করা হয়েছে"
-
-#~ msgid "Compressing data"
-#~ msgstr "তথ্য সংকুচন করা হচ্ছে"
-
-#~ msgid "Creating a new case..."
-#~ msgstr "একটি নতুন কেস নির্মাণ করা হচ্ছে..."
-
-#~ msgid "Sending %s to %s"
-#~ msgstr "%s, %s-এ প্রেরিত হচ্ছে"
-
-#~ msgid "Successfully sent %s to %s"
-#~ msgstr "%s-কে সাফল্যের সাথে to %s-এ পাঠানো হয়েছে"
-
-#~ msgid "Archive is created: '%s'"
-#~ msgstr "আর্কাইভ প্রস্তুত করা হয়েছে: '%s'"
-
-#~ msgid "Base URL to upload to"
-#~ msgstr "আপলোড করার উদ্দেশ্যে চিহ্নিত বেস URL"

@@ -1,31 +1,30 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: libreport\n"
+"Report-Msgid-Bugs-To: https://fedorahosted.org/abrt/report\n"
 "POT-Creation-Date: 2011-06-16 12:17+0200\n"
-"PO-Revision-Date: 2011-05-02 18:28+0000\n"
+"PO-Revision-Date: 2011-06-16 11:22+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
-"Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
-"Language: nb\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: nb\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/cli/cli.c:167
 msgid ""
-"\b [-vsp] -l[f] [-D BASE_DIR]...\n"
-"or: \b [-vsp] -i[f] DUMP_DIR\n"
-"or: \b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
-"or: \b [-vsp] -e EVENT DUMP_DIR\n"
-"or: \b [-vsp] -a[y] DUMP_DIR\n"
-"or: \b [-vsp] -r[y] DUMP_DIR\n"
-"or: \b [-vsp] -d DUMP_DIR"
+"\\b [-vsp] -l[f] [-D BASE_DIR]...\n"
+"or: \\b [-vsp] -i[f] DUMP_DIR\n"
+"or: \\b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
+"or: \\b [-vsp] -e EVENT DUMP_DIR\n"
+"or: \\b [-vsp] -a[y] DUMP_DIR\n"
+"or: \\b [-vsp] -r[y] DUMP_DIR\n"
+"or: \\b [-vsp] -d DUMP_DIR"
 msgstr ""
 
 #. short_name long_name  value    parameter_name  help
@@ -195,9 +194,8 @@ msgid "How would you like to report the problem?"
 msgstr ""
 
 #: ../src/cli/report.c:784
-#, fuzzy
 msgid "Select reporter(s): "
-msgstr "Rapportert av:"
+msgstr ""
 
 #: ../src/cli/report.c:804
 msgid "Reporting disabled because the backtrace is unusable"
@@ -234,8 +232,8 @@ msgstr "Konfigurer hen_delse"
 #: ../src/gtk-helpers/event_config_dialog.c:425
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue "
-"with the current configuration."
+"Wrong settings detected for %s, reporting will probably fail if you continue"
+" with the current configuration."
 msgstr ""
 
 #: ../src/gtk-helpers/event_config_dialog.c:429
@@ -247,7 +245,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/main.c:96
 msgid ""
-"\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
+"\\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
@@ -263,7 +261,7 @@ msgstr ""
 
 #. override the default prgname, so it's the same as the application
 #. which is calling us
-#.
+#. 
 #: ../src/gui-wizard-gtk/main.c:117
 msgid "Override the default prgname"
 msgstr ""
@@ -476,112 +474,7 @@ msgid "Unsupported option type"
 msgstr ""
 
 #: ../src/lib/parse_options.c:60
-#, fuzzy
 msgid "Usage: "
-msgstr "Bruk: %s\n"
+msgstr ""
 
-#~ msgid "ABRT notification applet"
-#~ msgstr "ABRT-varslingsprogram for panelet"
 
-#~ msgid "Automatic Bug Reporting Tool"
-#~ msgstr "Automatisk feilrapporteringsverktøy"
-
-#~ msgid "A crash in the %s package has been detected"
-#~ msgstr "Et krasj ble oppdaget i pakke %s"
-
-#~ msgid "A crash has been detected"
-#~ msgstr "Et krasj ble oppdaget"
-
-#~ msgid "ABRT service is not running"
-#~ msgstr "ABRT-tjenesten kjører ikke"
-
-#~ msgid "Warning"
-#~ msgstr "Advarsel"
-
-#~ msgid ""
-#~ "Notification area applet that notifies users about issues detected by ABRT"
-#~ msgstr "Varslingsikon som varsler brukere om feil funnet av ABRT"
-
-#~ msgid "translator-credits"
-#~ msgstr "Kjartan Maraas <kmaraas@gnome.org>"
-
-#~ msgid "Hide"
-#~ msgstr "Skjul"
-
-#~ msgid "Report"
-#~ msgstr "Rapporter"
-
-#~ msgid "Open ABRT"
-#~ msgstr "Åpne ABRT"
-
-#~ msgid "Report using %s?"
-#~ msgstr "Rapporter med %s?"
-
-#~ msgid "Skipping..."
-#~ msgstr "Hopper over..."
-
-#~ msgid "Reported"
-#~ msgstr "Rapportert"
-
-#~ msgid "Problem"
-#~ msgstr "Problem"
-
-#~ msgid "_File"
-#~ msgstr "_Fil"
-
-#~ msgid "_Edit"
-#~ msgstr "R_ediger"
-
-#~ msgid "_Help"
-#~ msgstr "_Hjelp"
-
-#~ msgid "View and report application crashes"
-#~ msgstr "Vis og rapporter krasj i programmer"
-
-#~ msgid "New bug id: %i"
-#~ msgstr "Ny feil-ID: %i"
-
-#~ msgid "Bugzilla entry creation failed"
-#~ msgstr "Klarte ikke å lage en oppføring i bugzilla"
-
-#~ msgid "Bug is already reported: %i"
-#~ msgstr "Feilen er allerede rapportert: %i"
-
-#~ msgid "Add %s to CC list"
-#~ msgstr "Legger %s til på Cc:-listen"
-
-#~ msgid "Adding new comment to bug %d"
-#~ msgstr "Legger til en ny kommentar i feilrapport %d"
-
-#~ msgid "Can't write to '%s': %s"
-#~ msgstr "Kam ikke skrive til «%s»: %s"
-
-#~ msgid "Is this ok? [y/N] "
-#~ msgstr "Er dette ok? [y/N] "
-
-#~ msgid "Can't remove '%s': %s"
-#~ msgstr "Kan ikke fjerne «%s»: %s"
-
-#~ msgid "Sending an email..."
-#~ msgstr "Sender en e-post..."
-
-#~ msgid "Config file"
-#~ msgstr "Konfigurasjonsfil"
-
-#~ msgid "The report was appended to %s"
-#~ msgstr "Dette rapporten ble lagt til i %s"
-
-#~ msgid "The report was stored to %s"
-#~ msgstr "Rapporten ble lagret til %s"
-
-#~ msgid "Compressing data"
-#~ msgstr "Komprimerer data"
-
-#~ msgid "Creating a new case..."
-#~ msgstr "Lager en ny feilrapport..."
-
-#~ msgid "Sending %s to %s"
-#~ msgstr "Sender %s til %s"
-
-#~ msgid "Successfully sent %s to %s"
-#~ msgstr "Sending av %s til %s fullført"

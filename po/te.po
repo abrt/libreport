@@ -1,31 +1,30 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: libreport\n"
+"Report-Msgid-Bugs-To: https://fedorahosted.org/abrt/report\n"
 "POT-Creation-Date: 2011-06-16 12:17+0200\n"
-"PO-Revision-Date: 2011-05-02 18:28+0000\n"
+"PO-Revision-Date: 2011-06-16 11:22+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
-"Language-Team: Telugu <>\n"
-"Language: te\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: te\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/cli/cli.c:167
 msgid ""
-"\b [-vsp] -l[f] [-D BASE_DIR]...\n"
-"or: \b [-vsp] -i[f] DUMP_DIR\n"
-"or: \b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
-"or: \b [-vsp] -e EVENT DUMP_DIR\n"
-"or: \b [-vsp] -a[y] DUMP_DIR\n"
-"or: \b [-vsp] -r[y] DUMP_DIR\n"
-"or: \b [-vsp] -d DUMP_DIR"
+"\\b [-vsp] -l[f] [-D BASE_DIR]...\n"
+"or: \\b [-vsp] -i[f] DUMP_DIR\n"
+"or: \\b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
+"or: \\b [-vsp] -e EVENT DUMP_DIR\n"
+"or: \\b [-vsp] -a[y] DUMP_DIR\n"
+"or: \\b [-vsp] -r[y] DUMP_DIR\n"
+"or: \\b [-vsp] -d DUMP_DIR"
 msgstr ""
 
 #. short_name long_name  value    parameter_name  help
@@ -42,9 +41,8 @@ msgid "Print information about DUMP_DIR (detailed with -f)"
 msgstr ""
 
 #: ../src/cli/cli.c:199
-#, fuzzy
 msgid "List possible events [which start with PREFIX]"
-msgstr "సంభవమైన ఘటనలను జాబిచాచేయి [PFX తో ప్రారంభమగునది]"
+msgstr ""
 
 #: ../src/cli/cli.c:200
 msgid "Run EVENT on DUMP_DIR"
@@ -97,8 +95,7 @@ msgid ""
 "# Check that it does not contain any sensitive data (passwords, etc.)"
 msgstr ""
 "# బ్యాక్‌ట్రేస్\n"
-"# ఇది యేవిధమైన సున్నితమైన డాటాను కలిగివుండకుండా వుండునట్లు పరిశీలించుము (సంకేతపదములు, "
-"మొదలగునవి.)"
+"# ఇది యేవిధమైన సున్నితమైన డాటాను కలిగివుండకుండా వుండునట్లు పరిశీలించుము (సంకేతపదములు, మొదలగునవి.)"
 
 #: ../src/cli/report.c:155
 msgid "# Architecture"
@@ -175,9 +172,9 @@ msgid "Bad value for '%s': %s"
 msgstr ""
 
 #: ../src/cli/report.c:617
-#, fuzzy, c-format
+#, c-format
 msgid "How you would like to analyze the problem?\n"
-msgstr "మీరు సమస్యను యెలా విశ్లేషించ దలచారో యెంపికచేయండి:"
+msgstr ""
 
 #: ../src/cli/report.c:635
 msgid "Select analyzer: "
@@ -197,14 +194,12 @@ msgid "Reporting..."
 msgstr "నివేదించుచున్నది..."
 
 #: ../src/cli/report.c:774
-#, fuzzy
 msgid "How would you like to report the problem?"
-msgstr "మీరు సమస్యను యెలా నివేదించ దలచారో యెంపికచేయండి:"
+msgstr ""
 
 #: ../src/cli/report.c:784
-#, fuzzy
 msgid "Select reporter(s): "
-msgstr "నివేదిక(లు):"
+msgstr ""
 
 #: ../src/cli/report.c:804
 msgid "Reporting disabled because the backtrace is unusable"
@@ -216,8 +211,8 @@ msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
-"ఈ ఆదేశమును వుపయోగించి డీబగ్ సమాచారమును మానవీయంగా సంస్థాపించుటకు ప్రయత్నించుము: \"debuginfo-"
-"install %s\" తిరిగి ప్రయత్నించు\n"
+"ఈ ఆదేశమును వుపయోగించి డీబగ్ సమాచారమును మానవీయంగా సంస్థాపించుటకు "
+"ప్రయత్నించుము: \"debuginfo-install %s\" తిరిగి ప్రయత్నించు\n"
 
 #: ../src/cli/report.c:830
 #, c-format
@@ -243,8 +238,8 @@ msgstr "ఘటన ఆకృతీకరణ (_v)"
 #: ../src/gtk-helpers/event_config_dialog.c:425
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue "
-"with the current configuration."
+"Wrong settings detected for %s, reporting will probably fail if you continue"
+" with the current configuration."
 msgstr ""
 
 #: ../src/gtk-helpers/event_config_dialog.c:429
@@ -256,7 +251,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/main.c:96
 msgid ""
-"\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
+"\\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
@@ -272,7 +267,7 @@ msgstr ""
 
 #. override the default prgname, so it's the same as the application
 #. which is calling us
-#.
+#. 
 #: ../src/gui-wizard-gtk/main.c:117
 msgid "Override the default prgname"
 msgstr ""
@@ -283,7 +278,8 @@ msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved copy?"
 msgstr ""
-"వ్రాయదగు సంచయం అవసరం, అయితే '%s' వ్రాయదగునది కాదు. దీనిని '%s' కు కదిపి ఆ నకలుపై పనిచేయాలా?"
+"వ్రాయదగు సంచయం అవసరం, అయితే '%s' వ్రాయదగునది కాదు. దీనిని '%s' కు కదిపి ఆ "
+"నకలుపై పనిచేయాలా?"
 
 #: ../src/gui-wizard-gtk/wizard.c:577
 #, c-format
@@ -324,7 +320,8 @@ msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr ""
-"బాక్‌ట్రేస్ అసంపూర్తిగా వుంది, దానిని తిరిగివుత్పన్నం చేయుటకు దయచేసి మీరు స్టెప్సును యిచ్చునట్లు చూచుకోండి."
+"బాక్‌ట్రేస్ అసంపూర్తిగా వుంది, దానిని తిరిగివుత్పన్నం చేయుటకు దయచేసి మీరు "
+"స్టెప్సును యిచ్చునట్లు చూచుకోండి."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
 #: ../src/gui-wizard-gtk/wizard.c:1192
@@ -370,7 +367,8 @@ msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
 msgstr ""
-"<b>మీ వ్యాఖ్యానాలు వ్యక్తిగతమైనవి కావు.</b> అవి బహిర్గతంగా కనిపించు సమస్యా నివేదికలయందు చేర్చబడ గలవు."
+"<b>మీ వ్యాఖ్యానాలు వ్యక్తిగతమైనవి కావు.</b> అవి బహిర్గతంగా కనిపించు సమస్యా "
+"నివేదికలయందు చేర్చబడ గలవు."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Analyzing did not start yet"
@@ -382,15 +380,17 @@ msgid ""
 "down the source of the problem. Please review it and remove any sensitive "
 "data you would rather not share:"
 msgstr ""
-"బ్యాక్‌ట్రేస్ అనునది అభివృద్దికారులకు క్రాష్ యొక్క వివరాలను అందించును, సమస్య యొక్క మూలకారణం "
-"తెలుసుకొనుటలో వారికి దోహదపడును. దయచేసి దానిని పునఃపరిశీలించి యేదైన దత్తాంశంను మీరు యితరులతో "
-"పంచుకొనుటకు యిష్టపడకపోతే దానిని తీసివేయండి."
+"బ్యాక్‌ట్రేస్ అనునది అభివృద్దికారులకు క్రాష్ యొక్క వివరాలను అందించును, సమస్య"
+" యొక్క మూలకారణం తెలుసుకొనుటలో వారికి దోహదపడును. దయచేసి దానిని పునఃపరిశీలించి"
+" యేదైన దత్తాంశంను మీరు యితరులతో పంచుకొనుటకు యిష్టపడకపోతే దానిని తీసివేయండి."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid ""
 "Can create more informative backtrace if you installed additional debug "
 "packages"
-msgstr "మీరు అదనపు డీబగ్ ప్యాకేజీలను సంస్థాపించితే అదిక సమాచారపూర్వక బ్యాక్‌ట్రేస్ సృష్టించగలదు"
+msgstr ""
+"మీరు అదనపు డీబగ్ ప్యాకేజీలను సంస్థాపించితే అదిక సమాచారపూర్వక బ్యాక్‌ట్రేస్ "
+"సృష్టించగలదు"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid "Click 'Apply' to start reporting"
@@ -405,11 +405,10 @@ msgid "Details"
 msgstr "వివరములు"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
-#, fuzzy
 msgid ""
 "How did this problem happen (step-by-step)? How can it be reproduced? Any "
 "additional comments useful for diagnosing the problem?"
-msgstr "ఈ సమస్య యెలా సంభవించినది (అంచెలంచెలుగా)? అది మరలా యెలా రాగలదు?"
+msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "I _agree with submitting the backtrace"
@@ -463,8 +462,8 @@ msgid ""
 "Use this button to generate more informative backtrace after you installed "
 "additional debug packages"
 msgstr ""
-"మీరు అదనపు డీబగ్ ప్యాకేజీలను సంస్థాపించిన తర్వాత మరింత సమాచారపూర్వక బ్యాక్‌ట్రేస్‌ను వుద్బవింపచేయుటకు యీ "
-"బటన్‌ను వుపయోగించు."
+"మీరు అదనపు డీబగ్ ప్యాకేజీలను సంస్థాపించిన తర్వాత మరింత సమాచారపూర్వక "
+"బ్యాక్‌ట్రేస్‌ను వుద్బవింపచేయుటకు యీ బటన్‌ను వుపయోగించు."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:20
 msgid "You need to fill the how to before you can proceed..."
@@ -494,258 +493,7 @@ msgid "Unsupported option type"
 msgstr ""
 
 #: ../src/lib/parse_options.c:60
-#, fuzzy
 msgid "Usage: "
-msgstr "వాడుక: %s\n"
+msgstr ""
 
-#~ msgid "ABRT notification applet"
-#~ msgstr "ABRT ప్రకటన ఆప్లెట్"
 
-#~ msgid "Automatic Bug Reporting Tool"
-#~ msgstr "స్వయంచాలక బగ్ నివేదీకరణ సాధనము"
-
-#~ msgid "A crash in the %s package has been detected"
-#~ msgstr "ప్యాకేజీ %s నందు వొక క్రాష్ గుర్తించబడింది"
-
-#~ msgid "A crash has been detected"
-#~ msgstr "ఒక క్రాష్ గుర్తించబడెను"
-
-#~ msgid "ABRT service is not running"
-#~ msgstr "ABRT సేవ నడుచుటలేదు"
-
-#~ msgid "Warning"
-#~ msgstr "హెచ్చరిక"
-
-#~ msgid ""
-#~ "Notification area applet that notifies users about issues detected by ABRT"
-#~ msgstr "ABRT చేత గుర్తించబడిన సమస్యల గురించి వినియోగదారికి తెలుపుటకు నోటిఫికేషన్ ప్రాంతపు ఆప్లెట్"
-
-#~ msgid "translator-credits"
-#~ msgstr "కృష్ణబాబు క్రొత్తపల్లి <kkrothap@redhat.com> 2009,2010."
-
-#~ msgid "Hide"
-#~ msgstr "మరుగునవుంచుము"
-
-#~ msgid "Report"
-#~ msgstr "నివేదించు"
-
-#~ msgid "Open ABRT"
-#~ msgstr "ABRT తెరువుము"
-
-#~ msgid "You must specify exactly one operation"
-#~ msgstr "మీరు తప్పక ఖచ్చితంగా వొక ఆపరేషన్‌ను తెలపాలి"
-
-#~ msgid "Report using %s?"
-#~ msgstr "%s వుపయోగించి నివేదించు?"
-
-#~ msgid "Skipping..."
-#~ msgstr "వదిలివేయుచున్నది..."
-
-#~ msgid ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   or: "
-#~ msgstr ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   or: "
-
-#~ msgid "Handle EVENT"
-#~ msgstr "EVENT సంభాలించు"
-
-#~ msgid " [options]"
-#~ msgstr " [ఐచ్చికములు]"
-
-#~ msgid "Use UID as client uid"
-#~ msgstr "UIDను క్లైంట్ uid వలె వుపయోగించు"
-
-#~ msgid ""
-#~ "The size of the report exceeded the quota. Please check system's "
-#~ "MaxCrashReportsSize value in abrt.conf."
-#~ msgstr ""
-#~ "నివేదిక పరిమాణము కోటాను మించినది. abrt.conf నందు సిస్టమ్ యొక్క MaxCrashReportsSize "
-#~ "విలువను పరిశీలించండి."
-
-#~ msgid "Do not daemonize"
-#~ msgstr "డెమొనైజ్ చేయవద్దు"
-
-#~ msgid "Log to syslog even with -d"
-#~ msgstr "సిస్‌లాగ్‌కు -d తో లాగ్ అవ్వుము"
-
-#~ msgid "Exit after SEC seconds of inactivity"
-#~ msgstr "SEC క్షణాల క్రియాహీనత తర్వాత నిష్క్రమించుము"
-
-#~ msgid "Reported"
-#~ msgstr "నివేదించిన"
-
-#~ msgid "Problem"
-#~ msgstr "సమస్య"
-
-#~ msgid "Last occurrence"
-#~ msgstr "చివరి సంభవం"
-
-#~ msgid "_File"
-#~ msgstr "ఫైలు (_F)"
-
-#~ msgid "_Edit"
-#~ msgstr "సరికూర్చు (_E)"
-
-#~ msgid "_Help"
-#~ msgstr "సహాయము (_H)"
-
-#~ msgid "View and report application crashes"
-#~ msgstr "అనువర్తనము క్రాషెస్‌ను దర్శించుము మరియు నివేదించుము"
-
-#~ msgid "Any additional comments useful for diagnosing the problem?"
-#~ msgstr "సమస్యను కూలకషంగా పరిశీలించుటకు అదనపు వ్యాఖ్యానాలు వుపయోగకరం కాగలవా?"
-
-#~ msgid "Uploaded: %llu of %llu kbytes"
-#~ msgstr "అప్‌లోడైంది: %llu మొత్తం %llu కిబైట్లలో"
-
-#~ msgid "Backtrace parsing failed for %s"
-#~ msgstr "%s కొరకు బాక్‌ట్రేస్ పార్శింగ్ విఫలమైంది"
-
-#~ msgid ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID and DUPHASH of python crash dumps"
-#~ msgstr ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "పైథాన్ క్రాష్ డంప్స్ యొక్క UUID మరియు DUPHASH ను దాయును"
-
-#~ msgid "New bug id: %i"
-#~ msgstr "కొత్త బగ్ id: %i"
-
-#~ msgid "Missing mandatory member 'bugs'"
-#~ msgstr "తప్పనిసరైన సభ్యుని 'bugs' తప్పిపోయినవి"
-
-#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
-#~ msgstr "get_bug_info() విఫలమైంది. తప్పనిసరైన సమాచారము మొత్తంను సేకరించలేక పోయింది"
-
-#~ msgid "Bugzilla entry creation failed"
-#~ msgstr "బగ్‌జిల్లా పద్దు సృష్టించుట విఫలమైంది"
-
-#~ msgid "Bug is already reported: %i"
-#~ msgstr "బగ్ యిప్పటికే నివేదించబడింది: %i"
-
-#~ msgid "Bugzilla couldn't find parent of bug %d"
-#~ msgstr "బగ్‌జిల్లా బగ్ %d యొక్క మాత్రుక(పేరెంట్)ను కనుగొనలేక పోయింది"
-
-#~ msgid "Add %s to CC list"
-#~ msgstr "%s ను CC జాబితాకు జతచేయి"
-
-#~ msgid "Adding new comment to bug %d"
-#~ msgstr "కొత్త వ్యాఖ్యను బగ్(%d)నకు జతచేయుము"
-
-#~ msgid "Configuration file (may be given many times)"
-#~ msgstr "ఆకృతీకరణ ఫైలు (చాలా సార్లు యిచ్చివుండ వచ్చును)"
-
-#~ msgid "Additional debuginfo directories"
-#~ msgstr "అదనపు డీబగ్‌యిన్ఫో సంచయములు"
-
-#~ msgid "Kill gdb if it runs for more than N seconds"
-#~ msgstr "gdb ను ముగించండి వొక వేళ అది N క్షణాల కన్నా యెక్కువ నడిస్తే"
-
-#~ msgid "Backtrace is generated and saved, %u bytes"
-#~ msgstr "బ్యాక్‌ట్రేస్ వుద్భవింపబడినది మరియు దాయబడినది, %u బైట్లు"
-
-#~ msgid "Extracting cpio from %s"
-#~ msgstr "%s నుండి cpioను వెలికితీయుచున్నది"
-
-#~ msgid "Can't write to '%s': %s"
-#~ msgstr "'%s' కు వ్రాయలేము: %s"
-
-#~ msgid "Can't extract package '%s'"
-#~ msgstr "ప్యాకేజీ '%s' ను వెలికితీయలేము"
-
-#~ msgid "Caching files from %s made from %s"
-#~ msgstr "ఫైళ్ళను %s నుండి క్యాచింగ్ చేస్తున్నది యిది %s నుండి చేయబడినవి"
-
-#~ msgid "Can't extract files from '%s'"
-#~ msgstr "ఫైళ్ళను '%s' నుండి వెలికితీయలేదు"
-
-#~ msgid "Downloading (%i of %i) %s: %3u%%"
-#~ msgstr "(%i మొత్త %i లో) %s డౌన్‌లోడ్ చేయుచున్నది: %3u%%"
-
-#~ msgid "Can't find packages for %u debuginfo files"
-#~ msgstr "%u డీబగ్‌యిన్ఫో ఫైళ్ళ కొరకు ప్యాకేజీలను కనుగొనలేదు"
-
-#~ msgid "Downloading %.2fMb, installed size: %.2fMb"
-#~ msgstr "%.2fMb డౌన్‌లోడ్ చేయుచున్నది, సంస్థాపిత పరిమాణం: %.2fMb"
-
-#~ msgid "Is this ok? [y/N] "
-#~ msgstr "ఇది సరేనా? [y/N]"
-
-#~ msgid "Downloading package %s failed"
-#~ msgstr "ప్యాకేజీ %sను డౌనులోడుచేయుట విఫలమైంది"
-
-#~ msgid "Unpacking failed, aborting download..."
-#~ msgstr "అన్‌పాకింగ్ విఫలమైంది, డౌన్‌లోడ్ విరమింపచేయడమైంది..."
-
-#~ msgid "All downloaded packages have been extracted, removing %s"
-#~ msgstr "డౌన్‌లోడ్ చేసిన ప్యాకేజీలు అన్ని వెలికితీయబడినవి, %s తీసివేయుచున్నది"
-
-#~ msgid "Can't remove %s, probably contains an error log"
-#~ msgstr "%s ను తీసివేయలేదు, బహుశా దోషపు లాగ్‌ను కలిగివుంది"
-
-#~ msgid "Can't remove '%s': %s"
-#~ msgstr "'%s' తీసివేయలేదు: %s"
-
-#~ msgid "Exiting on user command"
-#~ msgstr "వాడుకరి ఆదేశంపై నిష్క్రమించుచున్నది"
-
-#~ msgid "Coredump references %u debuginfo files, %u of them are not installed"
-#~ msgstr "ప్రాధమికడంప్ %u డీబగ్‌యిన్ఫో ఫైళ్ళను పునఃపరిశీలించును, వాటిలో %u సంస్థాపించబడిలేవు"
-
-#~ msgid "Missing debuginfo file: %s"
-#~ msgstr "డీబగ్‌యిన్ఫో ఫైల్ జాడలేదు: %s"
-
-#~ msgid "All %u debuginfo files are available"
-#~ msgstr "అన్ని %u డీబగ్‌యిన్ఫో ఫైళ్ళు అందుబాటులో వున్నాయి"
-
-#~ msgid "Submitting oops report to %s"
-#~ msgstr "oops నివేదికను %s కు నివేదించుచున్నది"
-
-#~ msgid "Sending an email..."
-#~ msgstr "ఈమెయిల్ పంపుచున్నది..."
-
-#~ msgid "Config file"
-#~ msgstr "ఆకృతీకరణ ఫైల్"
-
-#~ msgid "Output file"
-#~ msgstr "అవుట్పుట్ ఫైల్"
-
-#~ msgid "The report was appended to %s"
-#~ msgstr "నివేదిక అనునది %sకు జోడించబడింది"
-
-#~ msgid "The report was stored to %s"
-#~ msgstr "నివేదిక %sకు నిల్వవుంచబడింది"
-
-#~ msgid "Compressing data"
-#~ msgstr "డాటాను కుదించుచున్నది"
-
-#~ msgid "Creating a new case..."
-#~ msgstr "కొత్త కేస్‌ను సృష్టించుచున్నది..."
-
-#~ msgid "Sending %s to %s"
-#~ msgstr "%sను %s కు పంపుచున్నది"
-
-#~ msgid "Successfully sent %s to %s"
-#~ msgstr "%s ను %s నకు విజయవంతంగా పంపెను"
-
-#~ msgid "Archive is created: '%s'"
-#~ msgstr "ఆర్కైవ్ సృష్టించబడెను: '%s'"
-
-#~ msgid "Base URL to upload to"
-#~ msgstr "అప్‌లోడ్ చేయుటకు ప్రాధమిక URL"
-
-#~ msgid "Parse kernel's message buffer before parsing FILE"
-#~ msgstr "FILE ను పార్శ్ చేయుటకు ముందుగా కెర్నల్ యొక్క సందేశంను పార్శ్ చేయి"
-
-#~ msgid "Print found oopses on standard output"
-#~ msgstr "కనుగొన్న oopses ను ప్రామాణిక అవుట్పుట్‌పై ముద్రించు"
-
-#~ msgid "Do not exit, watch the file for new oopses"
-#~ msgstr "నిష్క్రమించ వద్దు, కొత్త oopses కొరకు ఫైలును గమనించు"
-
-#~ msgid "log to syslog"
-#~ msgstr "సిస్‌లాగ్ లాగ్"

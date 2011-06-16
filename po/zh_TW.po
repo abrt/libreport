@@ -1,31 +1,30 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: libreport\n"
+"Report-Msgid-Bugs-To: https://fedorahosted.org/abrt/report\n"
 "POT-Creation-Date: 2011-06-16 12:17+0200\n"
-"PO-Revision-Date: 2011-05-02 18:28+0000\n"
+"PO-Revision-Date: 2011-06-16 11:22+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
-"Language-Team: Chinese (Taiwan) <None>\n"
-"Language: zh_TW\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../src/cli/cli.c:167
 msgid ""
-"\b [-vsp] -l[f] [-D BASE_DIR]...\n"
-"or: \b [-vsp] -i[f] DUMP_DIR\n"
-"or: \b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
-"or: \b [-vsp] -e EVENT DUMP_DIR\n"
-"or: \b [-vsp] -a[y] DUMP_DIR\n"
-"or: \b [-vsp] -r[y] DUMP_DIR\n"
-"or: \b [-vsp] -d DUMP_DIR"
+"\\b [-vsp] -l[f] [-D BASE_DIR]...\n"
+"or: \\b [-vsp] -i[f] DUMP_DIR\n"
+"or: \\b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
+"or: \\b [-vsp] -e EVENT DUMP_DIR\n"
+"or: \\b [-vsp] -a[y] DUMP_DIR\n"
+"or: \\b [-vsp] -r[y] DUMP_DIR\n"
+"or: \\b [-vsp] -d DUMP_DIR"
 msgstr ""
 
 #. short_name long_name  value    parameter_name  help
@@ -42,9 +41,8 @@ msgid "Print information about DUMP_DIR (detailed with -f)"
 msgstr ""
 
 #: ../src/cli/cli.c:199
-#, fuzzy
 msgid "List possible events [which start with PREFIX]"
-msgstr "列出可能的事件 [以 PFX 開頭]"
+msgstr ""
 
 #: ../src/cli/cli.c:200
 msgid "Run EVENT on DUMP_DIR"
@@ -174,9 +172,9 @@ msgid "Bad value for '%s': %s"
 msgstr "「%s」的值不良：%s"
 
 #: ../src/cli/report.c:617
-#, fuzzy, c-format
+#, c-format
 msgid "How you would like to analyze the problem?\n"
-msgstr "請選取您想要如何分析問題：\n"
+msgstr ""
 
 #: ../src/cli/report.c:635
 msgid "Select analyzer: "
@@ -196,14 +194,12 @@ msgid "Reporting..."
 msgstr "正在回報..."
 
 #: ../src/cli/report.c:774
-#, fuzzy
 msgid "How would you like to report the problem?"
-msgstr "選取您想要回報該問題的方式："
+msgstr ""
 
 #: ../src/cli/report.c:784
-#, fuzzy
 msgid "Select reporter(s): "
-msgstr "回報者："
+msgstr ""
 
 #: ../src/cli/report.c:804
 msgid "Reporting disabled because the backtrace is unusable"
@@ -240,30 +236,23 @@ msgstr "設定事件(_V)"
 #: ../src/gtk-helpers/event_config_dialog.c:425
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue "
-"with the current configuration."
-msgstr ""
-"偵測到 %s 有錯誤的設定值，若您以目前的組態繼續的話，回報動作可能會失敗。"
+"Wrong settings detected for %s, reporting will probably fail if you continue"
+" with the current configuration."
+msgstr "偵測到 %s 有錯誤的設定值，若您以目前的組態繼續的話，回報動作可能會失敗。"
 
 #: ../src/gtk-helpers/event_config_dialog.c:429
 #, c-format
 msgid ""
 "Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
 "continue with the current configuration."
-msgstr ""
-"偵測到 <b>%s</b> 有錯誤的設定值，若您以目前的組態繼續的話，回報動作可能會失"
-"敗。"
+msgstr "偵測到 <b>%s</b> 有錯誤的設定值，若您以目前的組態繼續的話，回報動作可能會失敗。"
 
 #: ../src/gui-wizard-gtk/main.c:96
-#, fuzzy
 msgid ""
-"\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
+"\\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
-" [-vp] [-g GUI_FILE] DIR\n"
-"\n"
-"分析並回報儲存在指定 DIR 內問題的 GUI 工具"
 
 #: ../src/gui-wizard-gtk/main.c:110
 msgid "Alternate GUI file"
@@ -276,7 +265,7 @@ msgstr ""
 
 #. override the default prgname, so it's the same as the application
 #. which is calling us
-#.
+#. 
 #: ../src/gui-wizard-gtk/main.c:117
 msgid "Override the default prgname"
 msgstr ""
@@ -286,9 +275,7 @@ msgstr ""
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved copy?"
-msgstr ""
-"需要可以寫入的目錄，但是「%s」無法寫入。您想要將它移動至「%s」並對移動的副本"
-"進行操作嗎？"
+msgstr "需要可以寫入的目錄，但是「%s」無法寫入。您想要將它移動至「%s」並對移動的副本進行操作嗎？"
 
 #: ../src/gui-wizard-gtk/wizard.c:577
 #, c-format
@@ -373,8 +360,7 @@ msgstr "值"
 msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
-msgstr ""
-"<b>您的評註並非以私密方式處理。</b> 它們可能被納入能夠公開查看的問題回報中。"
+msgstr "<b>您的評註並非以私密方式處理。</b> 它們可能被納入能夠公開查看的問題回報中。"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Analyzing did not start yet"
@@ -385,9 +371,7 @@ msgid ""
 "Backtrace provides developers with details of the crash, helping them track "
 "down the source of the problem. Please review it and remove any sensitive "
 "data you would rather not share:"
-msgstr ""
-"追蹤資訊提供開發者當機的細節，並幫助他們追蹤問題的來源。請校閱資料並移除任何"
-"您不想要與他人分享的敏感資料："
+msgstr "追蹤資訊提供開發者當機的細節，並幫助他們追蹤問題的來源。請校閱資料並移除任何您不想要與他人分享的敏感資料："
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid ""
@@ -408,11 +392,10 @@ msgid "Details"
 msgstr "詳情"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
-#, fuzzy
 msgid ""
 "How did this problem happen (step-by-step)? How can it be reproduced? Any "
 "additional comments useful for diagnosing the problem?"
-msgstr "此問題如何發生的 (請分步驟敘述)？該怎麼讓問題重新產生？"
+msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "I _agree with submitting the backtrace"
@@ -495,636 +478,7 @@ msgid "Unsupported option type"
 msgstr "未支援的選項類型"
 
 #: ../src/lib/parse_options.c:60
-#, fuzzy
 msgid "Usage: "
-msgstr "用法：%s\n"
+msgstr ""
 
-#~ msgid "ABRT notification applet"
-#~ msgstr "ABRT 通知面板程式"
 
-#~ msgid "Automatic Bug Reporting Tool"
-#~ msgstr "自動臭蟲回報工具"
-
-#~ msgid "A crash in the %s package has been detected"
-#~ msgstr "在 %s 套件中偵測到錯誤"
-
-#~ msgid "A crash has been detected"
-#~ msgstr "已偵測到錯誤"
-
-#~ msgid "ABRT service is not running"
-#~ msgstr "ABRT 服務沒有在運作中"
-
-#~ msgid "Warning"
-#~ msgstr "警告"
-
-#~ msgid ""
-#~ "Notification area applet that notifies users about issues detected by ABRT"
-#~ msgstr "會通知使用者有關於 ABRT 所發現的問題的通知區域面板程式"
-
-#~ msgid "translator-credits"
-#~ msgstr ""
-#~ "Eunju Kim <eukim@redhat.com>, 2009.\n"
-#~ "Terry Chuang <tchuang@redhat.com>, 2009, 2010.\n"
-#~ "Cheng-Chia Tseng <pswo10680@gmail.com>, 2011."
-
-#~ msgid "Hide"
-#~ msgstr "隱藏"
-
-#~ msgid "Report"
-#~ msgstr "回報"
-
-#~ msgid "Show"
-#~ msgstr "顯示"
-
-#~ msgid "A Problem has Occurred"
-#~ msgstr "遭遇到問題"
-
-#~ msgid "Open ABRT"
-#~ msgstr "開啟 ABRT"
-
-#~ msgid ""
-#~ "Usage: %s -l[f] [-D BASE_DIR]...]\n"
-#~ "   or: %s -r[y] CRASH_DIR\n"
-#~ "   or: %s -i[b] CRASH_DIR\n"
-#~ "   or: %s -d CRASH_DIR\n"
-#~ "\n"
-#~ "\t-l, --list\t\tList not yet reported problems\n"
-#~ "\t  -f, --full\t\tList all problems\n"
-#~ "\t-D BASE_DIR\t\tDirectory to list problems from\n"
-#~ "\t\t\t\t(default: -D $HOME/.abrt/spool -D %s)\n"
-#~ "\n"
-#~ "\t-r, --report\t\tSend a report about CRASH_DIR\n"
-#~ "\t  -y, --always\t\t...without editing and asking\n"
-#~ "\t-i, --info\t\tPrint detailed information about CRASH_DIR\n"
-#~ "\t  -f, --full\t\t...including multi-line entries\n"
-#~ "\t\t\t\tNote: -if will run analyzers\n"
-#~ "\t\t\t\t(if this CRASH_DIR have defined analyzers)\n"
-#~ "\t-d, --delete\t\tRemove CRASH_DIR\n"
-#~ "\n"
-#~ "\t-V, --version\t\tDisplay version and exit\n"
-#~ "\t-v, --verbose\t\tBe verbose\n"
-#~ msgstr ""
-#~ "用法：%s -l[f] [-D BASE_DIR]...]\n"
-#~ "   或：%s -r[y] CRASH_DIR\n"
-#~ "   或：%s -i[b] CRASH_DIR\n"
-#~ "   或：%s -d CRASH_DIR\n"
-#~ "\n"
-#~ "\t-l, --list\t\t列出尚未回報的問題\n"
-#~ "\t  -f, --full\t\t列出所有問題\n"
-#~ "\t-D BASE_DIR\t\t要從哪個目錄列出問題\n"
-#~ "\t\t\t\t(預設：-D $HOME/.abrt/spool -D %s)\n"
-#~ "\n"
-#~ "\t-r, --report\t\t傳送有關 CRASH_DIR 的回報\n"
-#~ "\t  -y, --always\t\t...不編輯也不詢問\n"
-#~ "\t-i, --info\t\t印出有關 CRASH_DIR 的詳細資訊\n"
-#~ "\t  -f, --full\t\t...包含多列的條目\n"
-#~ "\t\t\t\t注意：-if 會執行分析程式\n"
-#~ "\t\t\t\t(如果這個 CRASH_DIR 已經有定義分析程式的話)\n"
-#~ "\t-d, --delete\t\t移除 CRASH_DIR\n"
-#~ "\n"
-#~ "\t-V, --version\t\t顯示版本並離開\n"
-#~ "\t-v, --verbose\t\t以詳細模式執行\n"
-
-#~ msgid "You must specify exactly one operation"
-#~ msgstr "您必須指定「一項」作業"
-
-#~ msgid "Choose option [0 - %u]: "
-#~ msgstr "請選擇選項 [0 - %u]："
-
-#~ msgid "Report using %s?"
-#~ msgstr "使用 %s 回報？"
-
-#~ msgid "Skipping..."
-#~ msgstr "跳過..."
-
-#~ msgid ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Query package database and save package name, component, and description"
-#~ msgstr ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "查詢套件資料庫並儲存套件名稱、元件、描述等。"
-
-#~ msgid "Dump directory"
-#~ msgstr "傾印目錄"
-
-#~ msgid ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   or: "
-#~ msgstr ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   或："
-
-#~ msgid "Handle EVENT"
-#~ msgstr "處理 EVENT"
-
-#~ msgid " [options]"
-#~ msgstr " [選項]"
-
-#~ msgid "Use UID as client uid"
-#~ msgstr "使用 UID 作為客戶端 uid"
-
-#~ msgid ""
-#~ "The size of the report exceeded the quota. Please check system's "
-#~ "MaxCrashReportsSize value in abrt.conf."
-#~ msgstr ""
-#~ "報告配額大小超出。請檢查您在 abrt.conf 中，系統的 MaxCrashReportsSize 數"
-#~ "值。"
-
-#~ msgid "Do not daemonize"
-#~ msgstr "不要在幕後運行"
-
-#~ msgid "Log to syslog even with -d"
-#~ msgstr "即使加上 -d 參數也紀錄至 slslog"
-
-#~ msgid "Exit after SEC seconds of inactivity"
-#~ msgstr "在停止運作 SEC 秒後離開"
-
-#~ msgid "Reported"
-#~ msgstr "已回報"
-
-#~ msgid "Problem"
-#~ msgstr "問題"
-
-#~ msgid "Last occurrence"
-#~ msgstr "上次出現"
-
-#~ msgid "_File"
-#~ msgstr "檔案(_F)"
-
-#~ msgid "_Edit"
-#~ msgstr "編輯(_E)"
-
-#~ msgid "_Help"
-#~ msgstr "求助(_H)"
-
-#~ msgid "_Event configuration"
-#~ msgstr "事件組態(_E)"
-
-#~ msgid "Online _Help"
-#~ msgstr "線上幫助(_H)"
-
-#~ msgid "View and report application crashes"
-#~ msgstr "檢視與回報應用程式錯誤"
-
-#~ msgid ""
-#~ " [-vp] [DIR]...\n"
-#~ "\n"
-#~ "Shows list of ABRT dump directories in specified DIR(s)\n"
-#~ "(default DIRs: "
-#~ msgstr ""
-#~ " [-vp] [DIR]...\n"
-#~ "\n"
-#~ "顯示指定 DIR(s) 內 ABRT 傾印目錄的清單\n"
-#~ "(預設 DIRs："
-
-#~ msgid "Any additional comments useful for diagnosing the problem?"
-#~ msgstr "有任何其他評註對於診斷該問題有幫助嗎？"
-
-#~ msgid "Uploaded: %llu of %llu kbytes"
-#~ msgstr "已上傳：%llu / %llu kbytes"
-
-#~ msgid ""
-#~ " [options] -d DIR\n"
-#~ "\n"
-#~ "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, "
-#~ "and identifies crash function in dump directory DIR"
-#~ msgstr ""
-#~ " [選項] -d DIR\n"
-#~ "\n"
-#~ "分析 C/C++ 追蹤資料、產生複本雜湊、追蹤評等、並辨識傾印目錄 DIR 內的當機函"
-#~ "式"
-
-#~ msgid "Backtrace parsing failed for %s"
-#~ msgstr "%s 的追蹤解析失敗"
-
-#~ msgid ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID of coredump in dump directory DIR"
-#~ msgstr ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "計算並儲存傾印目錄 DIR 內 coredump 的 UUID"
-
-#~ msgid ""
-#~ " [-vs] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
-#~ msgstr ""
-#~ " [-vs] -d DIR\n"
-#~ "\n"
-#~ "為 oops 傾印目錄 DIR 計算並儲存 UUID 與 DUPHASH"
-
-#~ msgid ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID and DUPHASH of python crash dumps"
-#~ msgstr ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "計算與儲存 python 當機傾印的 UUID 與 DUPHASH"
-
-#~ msgid "New bug id: %i"
-#~ msgstr "新的臭蟲 id：%i"
-
-#~ msgid "Empty login or password, please check your configuration"
-#~ msgstr "空白的登入名稱或密碼，請檢查您的組態"
-
-#~ msgid "Essential file '%s' is missing, can't continue.."
-#~ msgstr "遺失必要檔案「%s」，無法繼續。"
-
-#~ msgid "Essential file '%s' is empty, can't continue.."
-#~ msgstr "必要檔案「%s」為空白，無法繼續。"
-
-#~ msgid "Logging into Bugzilla at %s"
-#~ msgstr "正在登入 Bugzilla 於 %s"
-
-#~ msgid "Checking for duplicates"
-#~ msgstr "正在檢查是否有重複"
-
-#~ msgid "Missing mandatory member 'bugs'"
-#~ msgstr "遺失必要的成員「bugs」"
-
-#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
-#~ msgstr "get_bug_info() 失敗。無法蒐集所有必要的資訊"
-
-#~ msgid "Creating a new bug"
-#~ msgstr "正在建立新臭蟲"
-
-#~ msgid "Bugzilla entry creation failed"
-#~ msgstr "Bugzilla 項目建立失敗"
-
-#~ msgid "Logging out"
-#~ msgstr "正在登出"
-
-#~ msgid "Bug is already reported: %i"
-#~ msgstr "臭蟲已回報：%i"
-
-#~ msgid "Bugzilla couldn't find parent of bug %d"
-#~ msgstr "Bugzilla 找不到臭蟲 %d 的 親代"
-
-#~ msgid "Add %s to CC list"
-#~ msgstr "將 %s 加入 CC 副本清單中"
-
-#~ msgid "Adding new comment to bug %d"
-#~ msgstr "在臭蟲回報 (%d) 中新增評註"
-
-#~ msgid ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Reports problem to Bugzilla"
-#~ msgstr ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "回報問題至 Bugzilla"
-
-#~ msgid "Configuration file (may be given many times)"
-#~ msgstr "組態檔案 (可以給定多次)"
-
-#~ msgid ""
-#~ " [options] -d DIR\n"
-#~ "\n"
-#~ "Generates and saves backtrace for coredump in dump directory DIR"
-#~ msgstr ""
-#~ " [options] -d DIR\n"
-#~ "\n"
-#~ "為傾印目錄 DIR 內的 coredump 產生追蹤資料並儲存"
-
-#~ msgid "Additional debuginfo directories"
-#~ msgstr "額外 debuginfo 目錄"
-
-#~ msgid "Kill gdb if it runs for more than N seconds"
-#~ msgstr "若 gdb 執行超過 N 秒就終止它"
-
-#~ msgid "Backtrace is generated and saved, %u bytes"
-#~ msgstr "追蹤已產生並儲存，%u 位元組"
-
-#~ msgid "Extracting cpio from %s"
-#~ msgstr "正在從 %s 解開 cpio"
-
-#~ msgid "Can't write to '%s': %s"
-#~ msgstr "無法寫入「%s」：%s"
-
-#~ msgid "Can't extract package '%s'"
-#~ msgstr "無法解開套件「%s」"
-
-#~ msgid "Caching files from %s made from %s"
-#~ msgstr "正在從 %s 產生檔案快取，由 %s 製作"
-
-#~ msgid "Can't extract files from '%s'"
-#~ msgstr "無法從「%s」抽出檔案"
-
-#~ msgid "Downloading (%i of %i) %s: %3u%%"
-#~ msgstr "正在下載 (%i / %i) %s：%3u%%"
-
-#~ msgid "Looking for needed packages in repositories"
-#~ msgstr "正在查詢套件庫中所需要的套件"
-
-#~ msgid "Can't find packages for %u debuginfo files"
-#~ msgstr "找不到 %u debuginfo 檔的套件"
-
-#~ msgid "Packages to download: %u"
-#~ msgstr "要下載的套件：%u"
-
-#~ msgid "Downloading %.2fMb, installed size: %.2fMb"
-#~ msgstr "正在下載 %.2fMb，安裝大小：%.2fMb"
-
-#~ msgid "Is this ok? [y/N] "
-#~ msgstr "這樣沒問題嗎？[y/N]"
-
-#~ msgid "Downloading package %s failed"
-#~ msgstr "下載套件 %s 失敗"
-
-#~ msgid "Unpacking failed, aborting download..."
-#~ msgstr "解包失敗，正在中止下載..."
-
-#~ msgid "All downloaded packages have been extracted, removing %s"
-#~ msgstr "所有下載的套件已被解開，正在移除 %s"
-
-#~ msgid "Can't remove %s, probably contains an error log"
-#~ msgstr "無法移除 %s，可能包含錯誤紀錄"
-
-#~ msgid "Can't remove '%s': %s"
-#~ msgstr "無法移除「%s」：%s"
-
-#~ msgid "Exiting on user command"
-#~ msgstr "正在離開使用者指令"
-
-#~ msgid "Coredump references %u debuginfo files, %u of them are not installed"
-#~ msgstr "Coredump 參照 %u 份 debuginfo 檔，其中的 %u 份尚未安裝"
-
-#~ msgid "Missing debuginfo file: %s"
-#~ msgstr "遺失 debuginfo 檔：%s"
-
-#~ msgid "All %u debuginfo files are available"
-#~ msgstr "全部有 %u 份 debuginfo 檔可用"
-
-#~ msgid "Submitting oops report to %s"
-#~ msgstr "正在提交 oops 回報至 %s"
-
-#~ msgid ""
-#~ " [-v] [-c CONFFILE]... -d DIR\n"
-#~ "\n"
-#~ "Reports kernel oops to kerneloops.org (or similar) site"
-#~ msgstr ""
-#~ " [-v] [-c CONFFILE]... -d DIR\n"
-#~ "\n"
-#~ "回報 kernel oops 至 kerneloops.org (或類似) 網站"
-
-#~ msgid "Configuration file"
-#~ msgstr "組態檔"
-
-#~ msgid "Sending an email..."
-#~ msgstr "正在傳送電子郵件中..."
-
-#~ msgid "Config file"
-#~ msgstr "組態檔"
-
-#~ msgid ""
-#~ " [-v] -d DIR [-o FILE] [-a yes/no]\n"
-#~ "\n"
-#~ "Prints problem information to standard output or FILE"
-#~ msgstr ""
-#~ " [-v] -d DIR [-o FILE] [-a yes/no]\n"
-#~ "\n"
-#~ "列印問題資訊至標準輸出或 FILE 上"
-
-#~ msgid "Output file"
-#~ msgstr "輸出檔"
-
-#~ msgid "Append to, or overwrite FILE"
-#~ msgstr "附加至，或是覆寫 FILE"
-
-#~ msgid "Create reported_to in DIR"
-#~ msgstr "在 DIR 內建立 reported_to"
-
-#~ msgid "The report was appended to %s"
-#~ msgstr "錯誤已附加至 %s"
-
-#~ msgid "The report was stored to %s"
-#~ msgstr "錯誤已儲存至 %s"
-
-#~ msgid "Compressing data"
-#~ msgstr "正在壓縮資料"
-
-#~ msgid "Empty RHTS login or password"
-#~ msgstr "空白的 RHTS 登入名稱或密碼"
-
-#~ msgid "Can't create a temporary directory in /tmp"
-#~ msgstr "無法在 /tmp 內建立暫時目錄"
-
-#~ msgid "Creating a new case..."
-#~ msgstr "正在建立新的案例…"
-
-#~ msgid ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Reports a problem to RHTSupport"
-#~ msgstr ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "回報問題至 RHTSupport"
-
-#~ msgid ""
-#~ " [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
-#~ "\n"
-#~ "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than "
-#~ "SIZE"
-#~ msgstr ""
-#~ " [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
-#~ "\n"
-#~ "刪除 DIRs 內的傾印目錄 (-d) 或檔案 (-f) 直到其大小小於 SIZE"
-
-#~ msgid "Delete dump dirs"
-#~ msgstr "刪除傾印目錄"
-
-#~ msgid "Delete files"
-#~ msgstr "刪除檔案"
-
-#~ msgid "Preserve this dump dir"
-#~ msgstr "保留這個傾印目錄"
-
-#~ msgid "Sending %s to %s"
-#~ msgstr "正在傳送 %s 至 %s"
-
-#~ msgid "Successfully sent %s to %s"
-#~ msgstr "已成功傳送 %s 至 %s"
-
-#~ msgid "Archive is created: '%s'"
-#~ msgstr "已建立封存檔：「%s」"
-
-#~ msgid ""
-#~ " [-v] -d DIR [-c CONFFILE] [-u URL]\n"
-#~ "\n"
-#~ "Uploads compressed tarball of dump directory DIR"
-#~ msgstr ""
-#~ " [-v] -d DIR [-c CONFFILE] [-u URL]\n"
-#~ "\n"
-#~ "上傳傾印目錄 DIR 的壓縮 tarball"
-
-#~ msgid "Base URL to upload to"
-#~ msgstr "要上傳至的基礎網址"
-
-#~ msgid ""
-#~ " [-vsrowx] [-d DIR] FILE\n"
-#~ "\n"
-#~ "Extract oops from syslog/dmesg file"
-#~ msgstr ""
-#~ " [-vsrowx] [-d DIR] FILE\n"
-#~ "\n"
-#~ "從 syslog/dmesg 檔案抽出 oops"
-
-#~ msgid "Parse kernel's message buffer before parsing FILE"
-#~ msgstr "在解析 FILE 前先解析 kernel 的訊息緩衝"
-
-#~ msgid "Print found oopses on standard output"
-#~ msgstr "列印找到的 oops 於標準輸出上"
-
-#~ msgid "Do not exit, watch the file for new oopses"
-#~ msgstr "不要離開，監視檔案以取得新的 oops"
-
-#~ msgid "Create ABRT dump in DIR for every oops found"
-#~ msgstr "在 DIR 內為每個找到的 oops 建立 ABRT 傾印"
-
-#~ msgid "Make the dump directory world readable"
-#~ msgstr "讓傾印目錄全世界都可以讀取"
-
-#~ msgid "log to syslog"
-#~ msgstr "紀錄至 syslog"
-
-#~ msgid "Download debuginfo packages and generate backtrace locally using GDB"
-#~ msgstr "下載 debuginfo 套件並透過本地端的 GDB 產生追蹤資訊"
-
-#~ msgid "Local GNU Debugger"
-#~ msgstr "本地端 GNU 除錯器"
-
-#~ msgid ""
-#~ "Needs to downloads debuginfo packages, which might take significant time, "
-#~ "and take up disk space. However, unlike RetraceServer, doesn't send "
-#~ "coredump to remote machines."
-#~ msgstr ""
-#~ "需要下載 debuginfo 套件，並且可能會花上一段時間以及消耗一些磁碟空間。然"
-#~ "而，這不像 RetraceServer，所以不會傳送核心傾印資料至遠端機器。"
-
-#~ msgid "Address of the retrace server"
-#~ msgstr "回追伺服器的位址"
-
-#~ msgid "Retrace server URL"
-#~ msgstr "回追伺服器網址"
-
-#~ msgid "Send core dump to remote retrace server for analysis"
-#~ msgstr "傳送核心傾印至遠端回追伺服器來分析"
-
-#~ msgid ""
-#~ "Uploads coredump to a server, which generates backtrace and returns it. "
-#~ "Pros: no need for debuginfo downloads. Retrace server's database of "
-#~ "debuginfos is more complete. Retrace server may generate better "
-#~ "backtraces. Cons: coredump you upload contains all the data from the "
-#~ "crashed program, including your private data, if any."
-#~ msgstr ""
-#~ "上傳核心傾印資料至伺服器，該伺服器會產生追蹤資料並回傳。優點：不需要下載 "
-#~ "debuginfo 套件、回追伺服器資料庫中的 debuginfo 比較完整、回追伺服器可能會"
-#~ "產生比較良好的追蹤資料。缺點：您需要上傳核心傾印檔案，該檔案包含當掉程式的"
-#~ "所有資料，包括您的私人資料 (如果有的話)。"
-
-#~ msgid "Address of Bugzilla server"
-#~ msgstr "Bugzilla 伺服器的位址"
-
-#~ msgid "Bugzilla"
-#~ msgstr "Bugzilla"
-
-#~ msgid "Bugzilla URL"
-#~ msgstr "Bugzilla 網址"
-
-#~ msgid "Bugzilla account password"
-#~ msgstr "Bugzilla 帳號密碼"
-
-#~ msgid "Bugzilla account user name"
-#~ msgstr "Bugzilla 帳號使用者名稱"
-
-#~ msgid "Check SSL key validity"
-#~ msgstr "檢查 SSL 金鑰是否有效"
-
-#~ msgid "Password"
-#~ msgstr "密碼"
-
-#~ msgid "Report to Bugzilla bug tracker"
-#~ msgstr "回報至 Bugzilla 臭蟲追蹤器"
-
-#~ msgid "User name"
-#~ msgstr "使用者名稱"
-
-#~ msgid "Verify SSL"
-#~ msgstr "驗證 SSL"
-
-#~ msgid ""
-#~ "You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
-#~ "redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
-#~ msgstr ""
-#~ "您可以 &lt;a href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;從"
-#~ "這裡&lt;/a&gt; 建立 bugzilla.redhat.com 帳號"
-
-#~ msgid "Kerneloops URL"
-#~ msgstr "Kerneloops 網址"
-
-#~ msgid "Kerneloops.org"
-#~ msgstr "Kerneloops.org"
-
-#~ msgid "Oops server url"
-#~ msgstr "Oops 伺服器網址"
-
-#~ msgid "Send kernel problems to oops tracker"
-#~ msgstr "傳送 kernel 問題至 opps 追蹤器"
-
-#~ msgid "Mailx"
-#~ msgstr "Mailx"
-
-#~ msgid "Message subject"
-#~ msgstr "訊息主旨"
-
-#~ msgid "Recipient"
-#~ msgstr "收件人"
-
-#~ msgid "Recipient's email"
-#~ msgstr "收件人的電子郵件"
-
-#~ msgid "Send Binary Data"
-#~ msgstr "傳送二進位資料"
-
-#~ msgid "Send binary files like coredump"
-#~ msgstr "傳送二進位檔案，例如 coredump"
-
-#~ msgid "Send via email"
-#~ msgstr "透過郵件傳送"
-
-#~ msgid "Sender"
-#~ msgstr "寄件人"
-
-#~ msgid "Sender's email"
-#~ msgstr "寄件人的電子郵件"
-
-#~ msgid "Subject"
-#~ msgstr "主旨"
-
-#~ msgid "Address of the Red Hat support portal"
-#~ msgstr "Red Hat 支援的入口網站位址"
-
-#~ msgid "RH Portal URL"
-#~ msgstr "RH 入口網站網址"
-
-#~ msgid "Red Hat Customer Support"
-#~ msgstr "Red Hat 客戶支援"
-
-#~ msgid "Red Hat customer password"
-#~ msgstr "Red Hat 客戶密碼"
-
-#~ msgid "Red Hat customer user name"
-#~ msgstr "Red Hat 客戶使用者名稱"
-
-#~ msgid "Report to Red Hat support"
-#~ msgstr "回報至 Red Hat 支援"
-
-#~ msgid "Username"
-#~ msgstr "使用者名稱"

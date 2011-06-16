@@ -1,31 +1,30 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: libreport\n"
+"Report-Msgid-Bugs-To: https://fedorahosted.org/abrt/report\n"
 "POT-Creation-Date: 2011-06-16 12:17+0200\n"
-"PO-Revision-Date: 2011-05-03 15:21+0000\n"
+"PO-Revision-Date: 2011-06-16 11:21+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
-"Language-Team: Czech (http://www.transifex.net/projects/p/fedora/team/cs/)\n"
-"Language: cs\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: cs\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2\n"
 
 #: ../src/cli/cli.c:167
 msgid ""
-"\b [-vsp] -l[f] [-D BASE_DIR]...\n"
-"or: \b [-vsp] -i[f] DUMP_DIR\n"
-"or: \b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
-"or: \b [-vsp] -e EVENT DUMP_DIR\n"
-"or: \b [-vsp] -a[y] DUMP_DIR\n"
-"or: \b [-vsp] -r[y] DUMP_DIR\n"
-"or: \b [-vsp] -d DUMP_DIR"
+"\\b [-vsp] -l[f] [-D BASE_DIR]...\n"
+"or: \\b [-vsp] -i[f] DUMP_DIR\n"
+"or: \\b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
+"or: \\b [-vsp] -e EVENT DUMP_DIR\n"
+"or: \\b [-vsp] -a[y] DUMP_DIR\n"
+"or: \\b [-vsp] -r[y] DUMP_DIR\n"
+"or: \\b [-vsp] -d DUMP_DIR"
 msgstr ""
 
 #. short_name long_name  value    parameter_name  help
@@ -42,9 +41,8 @@ msgid "Print information about DUMP_DIR (detailed with -f)"
 msgstr ""
 
 #: ../src/cli/cli.c:199
-#, fuzzy
 msgid "List possible events [which start with PREFIX]"
-msgstr "Vypsat možné události [které začínají na PFX]"
+msgstr ""
 
 #: ../src/cli/cli.c:200
 msgid "Run EVENT on DUMP_DIR"
@@ -175,9 +173,9 @@ msgid "Bad value for '%s': %s"
 msgstr "Chybná hodnota „%s“: %s"
 
 #: ../src/cli/report.c:617
-#, fuzzy, c-format
+#, c-format
 msgid "How you would like to analyze the problem?\n"
-msgstr "Vyberte, jak byste chtěli problém analyzovat:"
+msgstr ""
 
 #: ../src/cli/report.c:635
 msgid "Select analyzer: "
@@ -197,14 +195,12 @@ msgid "Reporting..."
 msgstr "Nahlašuje se…"
 
 #: ../src/cli/report.c:774
-#, fuzzy
 msgid "How would you like to report the problem?"
-msgstr "Vyberte, jak byste chtěli problém nahlásit:"
+msgstr ""
 
 #: ../src/cli/report.c:784
-#, fuzzy
 msgid "Select reporter(s): "
-msgstr "Ohlašovatel(é):"
+msgstr ""
 
 #: ../src/cli/report.c:804
 msgid "Reporting disabled because the backtrace is unusable"
@@ -216,8 +212,8 @@ msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
-"Zkuste nainstalovat balíčky s ladicími údaji ručně pomocí „debuginfo-install "
-"%s“ a zkuste to znovu\n"
+"Zkuste nainstalovat balíčky s ladicími údaji ručně pomocí „debuginfo-install"
+" %s“ a zkuste to znovu\n"
 
 #: ../src/cli/report.c:830
 #, c-format
@@ -243,8 +239,8 @@ msgstr "Nasta_vit událost"
 #: ../src/gtk-helpers/event_config_dialog.c:425
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue "
-"with the current configuration."
+"Wrong settings detected for %s, reporting will probably fail if you continue"
+" with the current configuration."
 msgstr ""
 
 #: ../src/gtk-helpers/event_config_dialog.c:429
@@ -255,15 +251,11 @@ msgid ""
 msgstr ""
 
 #: ../src/gui-wizard-gtk/main.c:96
-#, fuzzy
 msgid ""
-"\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
+"\\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
-" [-vp] [-g SOUBOR_S_GUI] ADRESÁŘ\n"
-"\n"
-"Grafický nástroj pro analýzu a hlášení problémů uložených v zadaném ADRESÁŘI."
 
 #: ../src/gui-wizard-gtk/main.c:110
 msgid "Alternate GUI file"
@@ -276,7 +268,7 @@ msgstr ""
 
 #. override the default prgname, so it's the same as the application
 #. which is calling us
-#.
+#. 
 #: ../src/gui-wizard-gtk/main.c:117
 msgid "Override the default prgname"
 msgstr ""
@@ -414,11 +406,10 @@ msgid "Details"
 msgstr "Podrobnosti"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
-#, fuzzy
 msgid ""
 "How did this problem happen (step-by-step)? How can it be reproduced? Any "
 "additional comments useful for diagnosing the problem?"
-msgstr "Jak k tomuto problému došlo (krok za krokem)? Jak jej lze vyvolat?"
+msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "I _agree with submitting the backtrace"
@@ -503,437 +494,7 @@ msgid "Unsupported option type"
 msgstr "Nepodporovaný druh přepínače"
 
 #: ../src/lib/parse_options.c:60
-#, fuzzy
 msgid "Usage: "
-msgstr "Použití: %s\n"
+msgstr ""
 
-#~ msgid "ABRT notification applet"
-#~ msgstr "Upozorňovací applet démonu ABRT"
 
-#~ msgid "Automatic Bug Reporting Tool"
-#~ msgstr "Nástroj automatického hlášení chyb"
-
-#~ msgid "A crash in the %s package has been detected"
-#~ msgstr "Zjištěn pád v balíčku %s"
-
-#~ msgid "A crash has been detected"
-#~ msgstr "Zjištěn pád"
-
-#~ msgid "ABRT service is not running"
-#~ msgstr "Služba ABRT neběží"
-
-#~ msgid "Warning"
-#~ msgstr "Upozornění"
-
-#~ msgid ""
-#~ "Notification area applet that notifies users about issues detected by ABRT"
-#~ msgstr "Applet upozorňující uživatele na chyby nalezené démonem ABRT"
-
-#~ msgid "translator-credits"
-#~ msgstr ""
-#~ "Jiří Moskovčák <jmoskovc@redhat.com>\n"
-#~ "Radek Vokál <rvokal@redhat.com>\n"
-#~ "Nikola Pajkovsky <npajkovs@redhat.com>\n"
-#~ "Petr Písař <ppisar@redhat.com>"
-
-#~ msgid "Hide"
-#~ msgstr "Skrýt"
-
-#~ msgid "Report"
-#~ msgstr "Nahlásit"
-
-#~ msgid "Show"
-#~ msgstr "Zobrazit"
-
-#~ msgid "A Problem has Occurred"
-#~ msgstr "Vyskytl se problém"
-
-#~ msgid "Open ABRT"
-#~ msgstr "Spustit ABRT"
-
-#~ msgid "You must specify exactly one operation"
-#~ msgstr "Musíte zadat právě jednu operaci"
-
-#~ msgid "Report using %s?"
-#~ msgstr "Nahlásit prostřednictvím %s?"
-
-#~ msgid "Skipping..."
-#~ msgstr "Vynecháno…"
-
-#~ msgid ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Query package database and save package name, component, and description"
-#~ msgstr ""
-#~ " [-v] -d ADRESÁŘ\n"
-#~ "\n"
-#~ "Dotáže se databáze balíčků a uloží název balíčku, komponentu a popis."
-
-#~ msgid "Dump directory"
-#~ msgstr "Vypíše obsah adresáře"
-
-#~ msgid ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   or: "
-#~ msgstr ""
-#~ " [-vs] -d ADRESÁŘ -e UDÁLOST\n"
-#~ " nebo: "
-
-#~ msgid "Handle EVENT"
-#~ msgstr "Obstarat UDÁLOST"
-
-#~ msgid " [options]"
-#~ msgstr " [PŘEPÍNAČE]"
-
-#~ msgid "Use UID as client uid"
-#~ msgstr "Použije UID jako UID uživatele"
-
-#~ msgid ""
-#~ "The size of the report exceeded the quota. Please check system's "
-#~ "MaxCrashReportsSize value in abrt.conf."
-#~ msgstr ""
-#~ "Velikost zprávy překročena. Prosím, zkontrolujte systémovou hodnotu "
-#~ "MaxCrashReportsSize v abrt.conf."
-
-#~ msgid "Do not daemonize"
-#~ msgstr "Nedémonizuje se"
-
-#~ msgid "Log to syslog even with -d"
-#~ msgstr "Protokoluje do syslogu i s -d"
-
-#~ msgid "Exit after SEC seconds of inactivity"
-#~ msgstr "Skončí po N sekundách nečinnosti"
-
-#~ msgid "View and report application crashes"
-#~ msgstr "Prohlédni si a nahlas chyby v aplikacích"
-
-#~ msgid "Reported"
-#~ msgstr "Nahlášeno"
-
-#~ msgid "Problem"
-#~ msgstr "Problém"
-
-#~ msgid "Last occurrence"
-#~ msgstr "Poslední výskyt"
-
-#~ msgid "_File"
-#~ msgstr "_Soubor"
-
-#~ msgid "_Edit"
-#~ msgstr "_Upravit"
-
-#~ msgid "_Help"
-#~ msgstr "_Pomoc"
-
-#~ msgid "_Event configuration"
-#~ msgstr "Nastav_ení událostí"
-
-#~ msgid "Online _Help"
-#~ msgstr "Online nápo_věda"
-
-#~ msgid ""
-#~ " [-vp] [DIR]...\n"
-#~ "\n"
-#~ "Shows list of ABRT dump directories in specified DIR(s)\n"
-#~ "(default DIRs: "
-#~ msgstr ""
-#~ " [-vp] [ADRESÁŘ…]\n"
-#~ "\n"
-#~ "Zobrazí seznam adresářů s výpisy ABRTu v zadaných ADRESÁŘÍCH.\n"
-#~ "(Výchozí ADRESÁŘE: "
-
-#~ msgid "Any additional comments useful for diagnosing the problem?"
-#~ msgstr "Nějaké další poznámky užitečné pro určení problému?"
-
-#~ msgid "Uploaded: %llu of %llu kbytes"
-#~ msgstr "Nahráno: %'llu z %'llu kilobajtů"
-
-#~ msgid ""
-#~ " [options] -d DIR\n"
-#~ "\n"
-#~ "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, "
-#~ "and identifies crash function in dump directory DIR"
-#~ msgstr ""
-#~ " [PŘEPÍNAČE] -d ADRESÁŘ\n"
-#~ "\n"
-#~ "Analyzuje výpis volání C/C++, vytvoří duplikační otisk, ohodnotí výpis "
-#~ "volání a určí havarovanou funkci z ADRESÁŘE s výpisy."
-
-#~ msgid "Backtrace parsing failed for %s"
-#~ msgstr "Rozbor zásobníku volání v %s se nezdařil"
-
-#~ msgid ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID of coredump in dump directory DIR"
-#~ msgstr ""
-#~ " [-v] -d ADRESÁŘ\n"
-#~ "\n"
-#~ "Vypočte a uloží UUID obrazu paměti do ADRESÁŘE s výpisy."
-
-#~ msgid ""
-#~ " [-vs] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
-#~ msgstr ""
-#~ " [-vs] -d ADRESÁŘ\n"
-#~ "\n"
-#~ "Vypočte a uloží UUID a DUPHASH ADRESÁŘE s výpisem oops."
-
-#~ msgid ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID and DUPHASH of python crash dumps"
-#~ msgstr ""
-#~ " [-v] -d ADRESÁŘ\n"
-#~ "\n"
-#~ "Vypočte a uloží UUID a DUPHASH výpisu pádu pythonu."
-
-#~ msgid "New bug id: %i"
-#~ msgstr "Číslo nové chyby: %i"
-
-#~ msgid "Essential file '%s' is missing, can't continue.."
-#~ msgstr "Chybí nezbytný soubor „%s“, nelze pokračovat…"
-
-#~ msgid "Essential file '%s' is empty, can't continue.."
-#~ msgstr "Nezbytný soubor „%s“ je prázdný, nelze pokračovat…"
-
-#~ msgid "Logging into Bugzilla at %s"
-#~ msgstr "Probíhá přihlášeno do Bugzilly na %s"
-
-#~ msgid "Checking for duplicates"
-#~ msgstr "Kontrolují se duplikáty"
-
-#~ msgid "Missing mandatory member 'bugs'"
-#~ msgstr "Povinný prvek „bugs“ chybí"
-
-#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
-#~ msgstr "get_bug_info() selhalo. Nebylo možné získat všechny povinné údaje"
-
-#~ msgid "Creating a new bug"
-#~ msgstr "Vytváří se nové chybové hlášení"
-
-#~ msgid "Bugzilla entry creation failed"
-#~ msgstr "Záznam v bugzille se nepodařilo vytvořit"
-
-#~ msgid "Logging out"
-#~ msgstr "Probíhá odhlášení"
-
-#~ msgid "Bug is already reported: %i"
-#~ msgstr "Tato chyba již je nahlášena: %i"
-
-#~ msgid "Bugzilla couldn't find parent of bug %d"
-#~ msgstr "Bugzilla nedokázala najít rodiče chyby %d"
-
-#~ msgid "Add %s to CC list"
-#~ msgstr "Do seznamu CC přidat %s"
-
-#~ msgid "Adding new comment to bug %d"
-#~ msgstr "K chybě %d se přidává nový komentář"
-
-#~ msgid ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Reports problem to Bugzilla"
-#~ msgstr ""
-#~ " [-v] -c KONFIGURAČNÍ_SOUBOR -d ADRESÁŘ\n"
-#~ "\n"
-#~ "Nahlásí problém do Bugzilly."
-
-#~ msgid "Configuration file (may be given many times)"
-#~ msgstr "Konfigurační soubor (lze zadat vícekrát)"
-
-#~ msgid ""
-#~ " [options] -d DIR\n"
-#~ "\n"
-#~ "Generates and saves backtrace for coredump in dump directory DIR"
-#~ msgstr ""
-#~ " [PŘEPÍNAČE] -d ADRESÁŘ\n"
-#~ "\n"
-#~ "Vytvoří a uloží výpis volání z obrazu paměti do ADRESÁŘE s výpisy."
-
-#~ msgid "Additional debuginfo directories"
-#~ msgstr "Adresáře s dalšími ladicími údaji"
-
-#~ msgid "Kill gdb if it runs for more than N seconds"
-#~ msgstr "Zabije gdb, pokud běží déle než N sekund"
-
-#~ msgid "Backtrace is generated and saved, %u bytes"
-#~ msgstr "Výpis volání byl vytvořen a uložen, %u bajtů"
-
-#~ msgid "Extracting cpio from %s"
-#~ msgstr "Z %s se vybaluje cpio"
-
-#~ msgid "Can't write to '%s': %s"
-#~ msgstr "Do „%s“ nezle zapsat: %s"
-
-#~ msgid "Can't extract package '%s'"
-#~ msgstr "Balík „%s“ nelze rozbalit"
-
-#~ msgid "Caching files from %s made from %s"
-#~ msgstr "Zapamatovávají se soubory z %s vyrobené z %s"
-
-#~ msgid "Can't extract files from '%s'"
-#~ msgstr "Z „%s“ nelze vybalit soubory"
-
-#~ msgid "Downloading (%i of %i) %s: %3u%%"
-#~ msgstr "Stahuje se (%i z %i) %s: %3u%%"
-
-#~ msgid "Looking for needed packages in repositories"
-#~ msgstr "Potřebné balíky se hledají v repozitářích"
-
-#~ msgid "Can't find packages for %u debuginfo files"
-#~ msgstr "Pro %u ladicích souborů nelze dohledat balíčky"
-
-#~ msgid "Packages to download: %u"
-#~ msgstr "Balíčků ke stažení: %u"
-
-#~ msgid "Downloading %.2fMb, installed size: %.2fMb"
-#~ msgstr "Stahuje se %.2f MB, instalovaná velikost: %.2f MB"
-
-#~ msgid "Is this ok? [y/N] "
-#~ msgstr "Je to v pořádku [a/N] "
-
-#~ msgid "Downloading package %s failed"
-#~ msgstr "Balíček %s se nepodařilo stáhnout"
-
-#~ msgid "Unpacking failed, aborting download..."
-#~ msgstr "Rozbalování selhalo, stahovaní bude ukončeno…"
-
-#~ msgid "All downloaded packages have been extracted, removing %s"
-#~ msgstr "Všechny stažené balíčky byly rozbaleny, odstraňuje se %s"
-
-#~ msgid "Can't remove %s, probably contains an error log"
-#~ msgstr "%s nelze odstranit, zřejmě obsahuje chybový protokol"
-
-#~ msgid "Can't remove '%s': %s"
-#~ msgstr "„%s“ nelze odstranit: %s"
-
-#~ msgid "Exiting on user command"
-#~ msgstr "Činnost ukončena na příkaz uživatele"
-
-#~ msgid "Coredump references %u debuginfo files, %u of them are not installed"
-#~ msgstr ""
-#~ "Obraz paměti odkazuje na %u ladicích souborů, %u z nich není nainstalováno"
-
-#~ msgid "Missing debuginfo file: %s"
-#~ msgstr "Chybí ladicí soubor: %s"
-
-#~ msgid "All %u debuginfo files are available"
-#~ msgstr "Všech %u souborů s ladicími informacemi je k dostupných"
-
-#~ msgid "Submitting oops report to %s"
-#~ msgstr "Hlášení s oops se odesílá na %s"
-
-#~ msgid ""
-#~ " [-v] [-c CONFFILE]... -d DIR\n"
-#~ "\n"
-#~ "Reports kernel oops to kerneloops.org (or similar) site"
-#~ msgstr ""
-#~ " [-v] [-c KONFIGURAČNÍ_SOUBOR]… -d ADRESÁŘ\n"
-#~ "\n"
-#~ "Ohlásí oops jádra na stránku kerneloops.org (nebo obdobnou)."
-
-#~ msgid "Configuration file"
-#~ msgstr "Konfigurační soubor"
-
-#~ msgid "Sending an email..."
-#~ msgstr "Odesílá se e-mail…"
-
-#~ msgid "Config file"
-#~ msgstr "Konfigurační soubor"
-
-#~ msgid ""
-#~ " [-v] -d DIR [-o FILE] [-a yes/no]\n"
-#~ "\n"
-#~ "Prints problem information to standard output or FILE"
-#~ msgstr ""
-#~ " [-v] -d ADRESÁŘ [-o SOUBOR] [-a yes/no]\n"
-#~ "\n"
-#~ "Údaje o problému zapíše na standardní výstup nebo do SOUBORU."
-
-#~ msgid "Output file"
-#~ msgstr "Výstupní soubor"
-
-#~ msgid "Append to, or overwrite FILE"
-#~ msgstr "Připíše na konec SOUBORU, nebo SOUBOR přepíše"
-
-#~ msgid "The report was appended to %s"
-#~ msgstr "Hlášení bylo připojeno k %s"
-
-#~ msgid "The report was stored to %s"
-#~ msgstr "Hlášení bylo uloženo do %s"
-
-#~ msgid "Compressing data"
-#~ msgstr "Komprimují se data"
-
-#~ msgid "Empty RHTS login or password"
-#~ msgstr "Prázdné přihlašovací jméno nebo heslo pro RHTS"
-
-#~ msgid "Creating a new case..."
-#~ msgstr "Vytváří se nový případ…"
-
-#~ msgid ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Reports a problem to RHTSupport"
-#~ msgstr ""
-#~ " [-v] -c KONFIGURAČNÍ_SOUBOR -d ADRESÁŘ\n"
-#~ "\n"
-#~ "Ohlásí problém na podporu RHTSupport."
-
-#~ msgid ""
-#~ " [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
-#~ "\n"
-#~ "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than "
-#~ "SIZE"
-#~ msgstr ""
-#~ " [-v] [-d VELIKOST:ADRESÁŘ]… [-f VELIKOST:ADRESÁŘ]… [-p ADRESÁŘ]\n"
-#~ "\n"
-#~ "V ADRESÁŘI maže adresáře s výpisy (-d) nebo soubory (-f), dokud nejsou\n"
-#~ "menší než VELIKOST."
-
-#~ msgid "Delete dump dirs"
-#~ msgstr "Mazat adresáře s výpisy"
-
-#~ msgid "Delete files"
-#~ msgstr "Mazat soubory"
-
-#~ msgid "Preserve this dump dir"
-#~ msgstr "Zachovat tento adresář s výpisem"
-
-#~ msgid "Sending %s to %s"
-#~ msgstr "%s se odesílá na %s"
-
-#~ msgid "Successfully sent %s to %s"
-#~ msgstr "%s úspěšně odesláno na %s"
-
-#~ msgid "Archive is created: '%s'"
-#~ msgstr "Archiv byl vytvořen: „%s“"
-
-#~ msgid ""
-#~ " [-v] -d DIR [-c CONFFILE] [-u URL]\n"
-#~ "\n"
-#~ "Uploads compressed tarball of dump directory DIR"
-#~ msgstr ""
-#~ " [-v] -d ADRESÁŘ [-c KONFIGURAČNÍ_SOUBOR] [-u URL]\n"
-#~ "\n"
-#~ "ADRESÁŘ s výpisem zabalí do komprimovaného archivu tar a nahraje jej."
-
-#~ msgid "Base URL to upload to"
-#~ msgstr "Základ URL, kam nahrávat"
-
-#~ msgid "Parse kernel's message buffer before parsing FILE"
-#~ msgstr "Rozebere buffer jaderných zpráv před rozebrání SOUBORU"
-
-#~ msgid "Print found oopses on standard output"
-#~ msgstr "Nalezené stížnosti vypíše na standardní výstup"
-
-#~ msgid "Do not exit, watch the file for new oopses"
-#~ msgstr "Neskončí, bude sledovat soubor kvůli novým stížnostem"
-
-#~ msgid "Make the dump directory world readable"
-#~ msgstr "Učiní adresář s výpisem všem čitelný"
-
-#~ msgid "log to syslog"
-#~ msgstr "protokolovat do syslogu"

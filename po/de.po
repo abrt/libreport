@@ -1,31 +1,30 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: libreport\n"
+"Report-Msgid-Bugs-To: https://fedorahosted.org/abrt/report\n"
 "POT-Creation-Date: 2011-06-16 12:17+0200\n"
-"PO-Revision-Date: 2011-05-02 18:28+0000\n"
+"PO-Revision-Date: 2011-06-16 11:23+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
-"Language-Team: German <trans-de@lists.fedoraproject.org>\n"
-"Language: de\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/cli/cli.c:167
 msgid ""
-"\b [-vsp] -l[f] [-D BASE_DIR]...\n"
-"or: \b [-vsp] -i[f] DUMP_DIR\n"
-"or: \b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
-"or: \b [-vsp] -e EVENT DUMP_DIR\n"
-"or: \b [-vsp] -a[y] DUMP_DIR\n"
-"or: \b [-vsp] -r[y] DUMP_DIR\n"
-"or: \b [-vsp] -d DUMP_DIR"
+"\\b [-vsp] -l[f] [-D BASE_DIR]...\n"
+"or: \\b [-vsp] -i[f] DUMP_DIR\n"
+"or: \\b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
+"or: \\b [-vsp] -e EVENT DUMP_DIR\n"
+"or: \\b [-vsp] -a[y] DUMP_DIR\n"
+"or: \\b [-vsp] -r[y] DUMP_DIR\n"
+"or: \\b [-vsp] -d DUMP_DIR"
 msgstr ""
 
 #. short_name long_name  value    parameter_name  help
@@ -96,8 +95,7 @@ msgid ""
 "# Check that it does not contain any sensitive data (passwords, etc.)"
 msgstr ""
 "# Backtrace\n"
-"# Stellen Sie sicher, dass keine sensiblen Daten (Passwörter, usw.) "
-"enthalten sind"
+"# Stellen Sie sicher, dass keine sensiblen Daten (Passwörter, usw.) enthalten sind"
 
 #: ../src/cli/report.c:155
 msgid "# Architecture"
@@ -215,8 +213,8 @@ msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
-"Bitte versuchen Sie, debuginfo manuell mit dem Befehl: \"debuginfo-install %s"
-"\" zu installieren und versuchen Sie es erneut\n"
+"Bitte versuchen Sie, debuginfo manuell mit dem Befehl: \"debuginfo-install "
+"%s\" zu installieren und versuchen Sie es erneut\n"
 
 #: ../src/cli/report.c:830
 #, c-format
@@ -242,8 +240,8 @@ msgstr ""
 #: ../src/gtk-helpers/event_config_dialog.c:425
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue "
-"with the current configuration."
+"Wrong settings detected for %s, reporting will probably fail if you continue"
+" with the current configuration."
 msgstr ""
 
 #: ../src/gtk-helpers/event_config_dialog.c:429
@@ -255,7 +253,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/main.c:96
 msgid ""
-"\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
+"\\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
@@ -271,7 +269,7 @@ msgstr ""
 
 #. override the default prgname, so it's the same as the application
 #. which is calling us
-#.
+#. 
 #: ../src/gui-wizard-gtk/main.c:117
 msgid "Override the default prgname"
 msgstr ""
@@ -486,132 +484,7 @@ msgid "Unsupported option type"
 msgstr ""
 
 #: ../src/lib/parse_options.c:60
-#, fuzzy
 msgid "Usage: "
-msgstr "Verwendung: %s\n"
+msgstr ""
 
-#~ msgid "ABRT notification applet"
-#~ msgstr "ABRT-Benachrichtigungs-Applet"
 
-#~ msgid "Automatic Bug Reporting Tool"
-#~ msgstr "Automatisches Bug-Reporting-Tool"
-
-#~ msgid "A crash in the %s package has been detected"
-#~ msgstr "In Paket %s wurde ein Absturz entdeckt"
-
-#~ msgid "A crash has been detected"
-#~ msgstr "Es wurde ein Absturz entdeckt"
-
-#~ msgid "ABRT service is not running"
-#~ msgstr "ABRT-Dienst wird nicht ausgeführt."
-
-#~ msgid "Warning"
-#~ msgstr "Warnung"
-
-#~ msgid ""
-#~ "Notification area applet that notifies users about issues detected by ABRT"
-#~ msgstr ""
-#~ "Info-Applet, das Benutzer über die von ABRT entdeckten Probleme "
-#~ "benachrichtigt"
-
-#~ msgid "translator-credits"
-#~ msgstr "translator-credits"
-
-#~ msgid "Hide"
-#~ msgstr "Verstecken"
-
-#~ msgid "Report"
-#~ msgstr "Bericht"
-
-#~ msgid "Open ABRT"
-#~ msgstr "ABRT öffnen"
-
-#~ msgid "You must specify exactly one operation"
-#~ msgstr "Sie müssen exakt eine Operation angeben."
-
-#~ msgid "Report using %s?"
-#~ msgstr "Unter Verwendung von %s melden?"
-
-#~ msgid "Skipping..."
-#~ msgstr "Überspringen..."
-
-#~ msgid " [options]"
-#~ msgstr " [options]"
-
-#~ msgid ""
-#~ "The size of the report exceeded the quota. Please check system's "
-#~ "MaxCrashReportsSize value in abrt.conf."
-#~ msgstr ""
-#~ "Berichtgröße überschreitet die maximale Größe. Bitte überprüfen Sie den "
-#~ "MaxCrashReportsSize-Wert in abrt.conf."
-
-#~ msgid "Do not daemonize"
-#~ msgstr "Nicht daemonize"
-
-#~ msgid "Reported"
-#~ msgstr "Berichtet"
-
-#~ msgid "_File"
-#~ msgstr "_Datei"
-
-#~ msgid "_Edit"
-#~ msgstr "_Bearbeiten"
-
-#~ msgid "_Help"
-#~ msgstr "_Hilfe"
-
-#~ msgid "View and report application crashes"
-#~ msgstr "Applikationsabstürze ansehen und melden"
-
-#~ msgid "Uploaded: %llu of %llu kbytes"
-#~ msgstr "Hochgeladen: %llu von %llu KBytes"
-
-#~ msgid "New bug id: %i"
-#~ msgstr "Neue Fehler-ID: %i"
-
-#~ msgid "Missing mandatory member 'bugs'"
-#~ msgstr "Fehlender benötigter Teil 'bugs'"
-
-#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
-#~ msgstr ""
-#~ "get_bug_info() fehlgeschlagen. Es konnten nicht alle relevanten "
-#~ "Informationen gesammelt werden."
-
-#~ msgid "Bugzilla entry creation failed"
-#~ msgstr "Erstellung eines Bugzilla-Eintrags fehlgeschlagen"
-
-#~ msgid "Bug is already reported: %i"
-#~ msgstr "Fehler wurde bereits gemeldet: %i"
-
-#~ msgid "Bugzilla couldn't find parent of bug %d"
-#~ msgstr "Bugzilla kann die Eltern des Fehlerberichts nicht finden %d"
-
-#~ msgid "Add %s to CC list"
-#~ msgstr "%s zur CC-Liste hinzufügen"
-
-#~ msgid "Adding new comment to bug %d"
-#~ msgstr "Füge neuen Kommentar in Bug(%d) hinzu"
-
-#~ msgid "Sending an email..."
-#~ msgstr "Eine E-Mail senden ..."
-
-#~ msgid "Config file"
-#~ msgstr "Konfigurationsdatei"
-
-#~ msgid "Output file"
-#~ msgstr "Ausgabedatei"
-
-#~ msgid "The report was appended to %s"
-#~ msgstr "Der Bericht wurde an %s angefügt"
-
-#~ msgid "The report was stored to %s"
-#~ msgstr "Der Bericht wurde in %s gespeichert"
-
-#~ msgid "Compressing data"
-#~ msgstr "Daten komprimieren"
-
-#~ msgid "Creating a new case..."
-#~ msgstr "Neuen Fall erstellen ..."
-
-#~ msgid "Sending %s to %s"
-#~ msgstr "Sende %s an %s"

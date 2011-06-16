@@ -1,31 +1,30 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: libreport\n"
+"Report-Msgid-Bugs-To: https://fedorahosted.org/abrt/report\n"
 "POT-Creation-Date: 2011-06-16 12:17+0200\n"
-"PO-Revision-Date: 2011-05-03 14:35+0000\n"
+"PO-Revision-Date: 2011-06-16 11:22+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
-"Language-Team: Dutch (http://www.transifex.net/projects/p/fedora/team/nl/)\n"
-"Language: nl\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/cli/cli.c:167
 msgid ""
-"\b [-vsp] -l[f] [-D BASE_DIR]...\n"
-"or: \b [-vsp] -i[f] DUMP_DIR\n"
-"or: \b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
-"or: \b [-vsp] -e EVENT DUMP_DIR\n"
-"or: \b [-vsp] -a[y] DUMP_DIR\n"
-"or: \b [-vsp] -r[y] DUMP_DIR\n"
-"or: \b [-vsp] -d DUMP_DIR"
+"\\b [-vsp] -l[f] [-D BASE_DIR]...\n"
+"or: \\b [-vsp] -i[f] DUMP_DIR\n"
+"or: \\b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
+"or: \\b [-vsp] -e EVENT DUMP_DIR\n"
+"or: \\b [-vsp] -a[y] DUMP_DIR\n"
+"or: \\b [-vsp] -r[y] DUMP_DIR\n"
+"or: \\b [-vsp] -d DUMP_DIR"
 msgstr ""
 
 #. short_name long_name  value    parameter_name  help
@@ -42,9 +41,8 @@ msgid "Print information about DUMP_DIR (detailed with -f)"
 msgstr ""
 
 #: ../src/cli/cli.c:199
-#, fuzzy
 msgid "List possible events [which start with PREFIX]"
-msgstr "Laat mogelijke gebeurtenissen zien [die beginnen met PFX]"
+msgstr ""
 
 #: ../src/cli/cli.c:200
 msgid "Run EVENT on DUMP_DIR"
@@ -174,9 +172,9 @@ msgid "Bad value for '%s': %s"
 msgstr "Slechte waarde voor  '%s': %s"
 
 #: ../src/cli/report.c:617
-#, fuzzy, c-format
+#, c-format
 msgid "How you would like to analyze the problem?\n"
-msgstr "Selecteer hoe je het probleem wilt analyseren:\n"
+msgstr ""
 
 #: ../src/cli/report.c:635
 msgid "Select analyzer: "
@@ -196,14 +194,12 @@ msgid "Reporting..."
 msgstr "Rapporteren..."
 
 #: ../src/cli/report.c:774
-#, fuzzy
 msgid "How would you like to report the problem?"
-msgstr "Selecteer hoe je het probleem wilt rapporteren:"
+msgstr ""
 
 #: ../src/cli/report.c:784
-#, fuzzy
 msgid "Select reporter(s): "
-msgstr "Aanmelder(s):"
+msgstr ""
 
 #: ../src/cli/report.c:804
 msgid "Reporting disabled because the backtrace is unusable"
@@ -242,8 +238,8 @@ msgstr "Configureer _gebeurtenis"
 #: ../src/gtk-helpers/event_config_dialog.c:425
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue "
-"with the current configuration."
+"Wrong settings detected for %s, reporting will probably fail if you continue"
+" with the current configuration."
 msgstr ""
 "Er zijn verkeerde instellingen gedetecteerd voor %s, de rapportage zal "
 "waarschijnlijk mislukken als je doorgaat met de huidige configuratie."
@@ -258,16 +254,11 @@ msgstr ""
 "zal waarschijnlijk mislukken als je doorgaat met de huidige configuratie."
 
 #: ../src/gui-wizard-gtk/main.c:96
-#, fuzzy
 msgid ""
-"\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
+"\\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
-" [-vp] [-g GUI_FILE] MAP\n"
-"\n"
-"GUI gereedschap voor het analyseren en rapporteren van probleem opgeslagen "
-"in gespecificeerde MAP"
 
 #: ../src/gui-wizard-gtk/main.c:110
 msgid "Alternate GUI file"
@@ -280,7 +271,7 @@ msgstr ""
 
 #. override the default prgname, so it's the same as the application
 #. which is calling us
-#.
+#. 
 #: ../src/gui-wizard-gtk/main.c:117
 msgid "Override the default prgname"
 msgstr ""
@@ -291,8 +282,8 @@ msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved copy?"
 msgstr ""
-"Beschrijfbare map is nodig, maar '%s' is niet beschrijfbaar. Het verplaatsen "
-"naar '%s' en de verplaatste kopie bewerken?"
+"Beschrijfbare map is nodig, maar '%s' is niet beschrijfbaar. Het verplaatsen"
+" naar '%s' en de verplaatste kopie bewerken?"
 
 #: ../src/gui-wizard-gtk/wizard.c:577
 #, c-format
@@ -418,12 +409,10 @@ msgid "Details"
 msgstr "Details"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
-#, fuzzy
 msgid ""
 "How did this problem happen (step-by-step)? How can it be reproduced? Any "
 "additional comments useful for diagnosing the problem?"
 msgstr ""
-"Hoe trad dit probleem op (stap-voor-stap)? Hoe kan het gereproduceerd worden?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "I _agree with submitting the backtrace"
@@ -508,645 +497,7 @@ msgid "Unsupported option type"
 msgstr "Niet-ondersteund optie type"
 
 #: ../src/lib/parse_options.c:60
-#, fuzzy
 msgid "Usage: "
-msgstr "Gebruik: %s\n"
+msgstr ""
 
-#~ msgid "ABRT notification applet"
-#~ msgstr "ABRT bericht applet "
 
-#~ msgid "Automatic Bug Reporting Tool"
-#~ msgstr "Automatisch bug rapporteer gereedschap"
-
-#~ msgid "A crash in the %s package has been detected"
-#~ msgstr "Een crash in het %s pakket is ontdekt"
-
-#~ msgid "A crash has been detected"
-#~ msgstr "Een crash is ontdekt"
-
-#~ msgid "ABRT service is not running"
-#~ msgstr "ABRT service draait niet"
-
-#~ msgid "Warning"
-#~ msgstr "Waarschuwing"
-
-#~ msgid ""
-#~ "Notification area applet that notifies users about issues detected by ABRT"
-#~ msgstr ""
-#~ "Mededelingen gebied applet om gebruiker te berichten over problemen "
-#~ "ontdekt door ABRT"
-
-#~ msgid "translator-credits"
-#~ msgstr "Geert Warrink <geert.warrink@onsnet.nu>"
-
-#~ msgid "Hide"
-#~ msgstr "Verbergen"
-
-#~ msgid "Report"
-#~ msgstr "Rapport"
-
-#~ msgid "Show"
-#~ msgstr "Toon"
-
-#~ msgid "A Problem has Occurred"
-#~ msgstr "Er is een probleem opgetreden"
-
-#~ msgid "Open ABRT"
-#~ msgstr "Open ABRT"
-
-#~ msgid ""
-#~ "Usage: %s -l[f] [-D BASE_DIR]...]\n"
-#~ "   or: %s -r[y] CRASH_DIR\n"
-#~ "   or: %s -i[b] CRASH_DIR\n"
-#~ "   or: %s -d CRASH_DIR\n"
-#~ "\n"
-#~ "\t-l, --list\t\tList not yet reported problems\n"
-#~ "\t  -f, --full\t\tList all problems\n"
-#~ "\t-D BASE_DIR\t\tDirectory to list problems from\n"
-#~ "\t\t\t\t(default: -D $HOME/.abrt/spool -D %s)\n"
-#~ "\n"
-#~ "\t-r, --report\t\tSend a report about CRASH_DIR\n"
-#~ "\t  -y, --always\t\t...without editing and asking\n"
-#~ "\t-i, --info\t\tPrint detailed information about CRASH_DIR\n"
-#~ "\t  -f, --full\t\t...including multi-line entries\n"
-#~ "\t\t\t\tNote: -if will run analyzers\n"
-#~ "\t\t\t\t(if this CRASH_DIR have defined analyzers)\n"
-#~ "\t-d, --delete\t\tRemove CRASH_DIR\n"
-#~ "\n"
-#~ "\t-V, --version\t\tDisplay version and exit\n"
-#~ "\t-v, --verbose\t\tBe verbose\n"
-#~ msgstr ""
-#~ "Gebruik: %s -l[f] [-D BASE_DIR]...]\n"
-#~ "   of: %s -r[y] CRASH_DIR\n"
-#~ "   of: %s -i[b] CRASH_DIR\n"
-#~ "   of: %s -d CRASH_DIR\n"
-#~ "\n"
-#~ "»-l, --list»»Toon nog niet gerapporteerde problemen\n"
-#~ "»  -f, --full»»Toon alle problemen\n"
-#~ "»-D BASE_DIR»»Map waaruit problemen getoond worden\n"
-#~ "»»»»(standaard: -D $HOME/.abrt/spool -D %s)\n"
-#~ "\n"
-#~ "»-r, --report»»Stuur een rapport over CRASH_DIR\n"
-#~ "»  -y, --always»»...zonder bewerking en vragen\n"
-#~ "»-i, --info»»Print gedetailleerde informatie over CRASH_DIR\n"
-#~ "»  -f, --full»»...inclusief multi-regel ingangen\n"
-#~ "»»»»Opmerking: -if zal analyzers draaien\n"
-#~ "»»»»(als deze CRASH_DIR analyzers gedefinieerd heeft)\n"
-#~ "»-d, --delete»»Verwijder CRASH_DIR\n"
-#~ "\n"
-#~ "»-V, --version»»Toon versie en sluit af\n"
-#~ "»-v, --verbose»»Breedsprakig\n"
-
-#~ msgid "You must specify exactly one operation"
-#~ msgstr "Je moet exact een bewerking specificeren."
-
-#~ msgid "Choose option [0 - %u]: "
-#~ msgstr "Kies optie [0 - %u]: "
-
-#~ msgid "Report using %s?"
-#~ msgstr "Rapporteren met gebruik van %s? "
-
-#~ msgid "Skipping..."
-#~ msgstr "Overslaan..."
-
-#~ msgid ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Query package database and save package name, component, and description"
-#~ msgstr ""
-#~ " [-v] -d MAP\n"
-#~ "\n"
-#~ "Bevraag pakket database en sla pakket naam, onderdelen en beschrijving op"
-
-#~ msgid "Dump directory"
-#~ msgstr "Dump map"
-
-#~ msgid ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   or: "
-#~ msgstr ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   of: "
-
-#~ msgid "Handle EVENT"
-#~ msgstr "Handel gebeurtenis af"
-
-#~ msgid " [options]"
-#~ msgstr " [opties]"
-
-#~ msgid "Use UID as client uid"
-#~ msgstr "Gebruik UID als cliënt uid"
-
-#~ msgid ""
-#~ "The size of the report exceeded the quota. Please check system's "
-#~ "MaxCrashReportsSize value in abrt.conf."
-#~ msgstr ""
-#~ "De grootte van het rapport overschreed de quota. Controleer de "
-#~ "MaxCrashReportsSize waarde van het systeem in abrt.conf."
-
-#~ msgid "Do not daemonize"
-#~ msgstr "Niet instellen als daemon"
-
-#~ msgid "Log to syslog even with -d"
-#~ msgstr "Loggen naar syslog zelfs met -d"
-
-#~ msgid "Exit after SEC seconds of inactivity"
-#~ msgstr "Afsluiten na SEC seconden van inactiviteit"
-
-#~ msgid "View and report application crashes"
-#~ msgstr "Bekijk en rapporteer crashes van toepassingen"
-
-#~ msgid "Reported"
-#~ msgstr "Gerapporteerd"
-
-#~ msgid "Problem"
-#~ msgstr "Probleem"
-
-#~ msgid "Last occurrence"
-#~ msgstr "Laatste optreden"
-
-#~ msgid "_File"
-#~ msgstr "_Bestand"
-
-#~ msgid "_Edit"
-#~ msgstr "Be_werken"
-
-#~ msgid "_Help"
-#~ msgstr "_Hulp"
-
-#~ msgid "_Event configuration"
-#~ msgstr "_Gebeurtenis configuratie"
-
-#~ msgid "Online _Help"
-#~ msgstr "Online _Hulp"
-
-#~ msgid ""
-#~ " [-vp] [DIR]...\n"
-#~ "\n"
-#~ "Shows list of ABRT dump directories in specified DIR(s)\n"
-#~ "(default DIRs: "
-#~ msgstr ""
-#~ "  [-vp] [MAP] ...\n"
-#~ "\n"
-#~ "Toon een lijst van ABRT dump mappen in gespecificeerde MAP(PEN)\n"
-#~ "(standaard mappen: "
-
-#~ msgid "Any additional comments useful for diagnosing the problem?"
-#~ msgstr ""
-#~ "Eventuele aanvullende opmerkingen die nuttig voor het diagnosticeren van "
-#~ "het probleem?"
-
-#~ msgid "Uploaded: %llu of %llu kbytes"
-#~ msgstr "Upload: %llu van %llu KB"
-
-#~ msgid ""
-#~ " [options] -d DIR\n"
-#~ "\n"
-#~ "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, "
-#~ "and identifies crash function in dump directory DIR"
-#~ msgstr ""
-#~ " [opties] -d MAP\n"
-#~ "\n"
-#~ "Analyseer C/C++ backtrace, genereer duplicaat hash, backtrace rating, en "
-#~ "identificeer crash functie in dump ma MAP"
-
-#~ msgid "Backtrace parsing failed for %s"
-#~ msgstr "Backtrace ontleden mislukte voor %s"
-
-#~ msgid ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID of coredump in dump directory DIR"
-#~ msgstr ""
-#~ " [-v] -d MAP\n"
-#~ "\n"
-#~ "Berekent en slaat UUID van een core dump op in dump map MAP"
-
-#~ msgid ""
-#~ " [-vs] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
-#~ msgstr ""
-#~ " [-vs] -d MAP\n"
-#~ "\n"
-#~ "Berekent en slaat UUID en DUPHASH op voor Oops dump map MAP"
-
-#~ msgid ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Calculates and saves UUID and DUPHASH of python crash dumps"
-#~ msgstr ""
-#~ " [-v] -d DIR\n"
-#~ "\n"
-#~ "Berekent en slaat UUID en DUPHASH van python crash dumps op"
-
-#~ msgid "New bug id: %i"
-#~ msgstr "Nieuwe bug id: %i"
-
-#~ msgid "Empty login or password, please check your configuration"
-#~ msgstr "Lege inlog of wachtwoord, controleer jouw configuratie"
-
-#~ msgid "Essential file '%s' is missing, can't continue.."
-#~ msgstr "Het essentiële  bestand '%s' ontbreekt, kan niet doorgaan.."
-
-#~ msgid "Essential file '%s' is empty, can't continue.."
-#~ msgstr "Het essentiële bestand '%s' is leeg, kan niet doorgaan .."
-
-#~ msgid "Logging into Bugzilla at %s"
-#~ msgstr "Inloggen op Bugzilla op %s"
-
-#~ msgid "Checking for duplicates"
-#~ msgstr "Controleren voor duplicaten"
-
-#~ msgid "Missing mandatory member 'bugs'"
-#~ msgstr "Verplicht onderdeel 'bugs' ontbreekt"
-
-#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
-#~ msgstr ""
-#~ "get_bug_info() faalde. Kon alle noodzakelijke informatie niet verzamelen"
-
-#~ msgid "Creating a new bug"
-#~ msgstr "Maak een nieuwe bug aan"
-
-#~ msgid "Bugzilla entry creation failed"
-#~ msgstr "Het aanmaken van een Bugzilla ingang mislukte"
-
-#~ msgid "Logging out"
-#~ msgstr "Afmelden"
-
-#~ msgid "Bug is already reported: %i"
-#~ msgstr "Bug is al aangemeld: %i"
-
-#~ msgid "Bugzilla couldn't find parent of bug %d"
-#~ msgstr "Bugzilla kon de ouder van bug %d  niet vinden"
-
-#~ msgid "Add %s to CC list"
-#~ msgstr "Voeg %s toe aan CC lijst"
-
-#~ msgid "Adding new comment to bug %d"
-#~ msgstr "Voeg nieuw commentaar toe aan bug(%d)"
-
-#~ msgid ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Reports problem to Bugzilla"
-#~ msgstr ""
-#~ " [-v] -c CONFFILE -d MAP\n"
-#~ "\n"
-#~ "Rapporteer probleem naar Bugzilla"
-
-#~ msgid "Configuration file (may be given many times)"
-#~ msgstr "Configuratiebestand (kan meerdere keren gegeven worden)"
-
-#~ msgid ""
-#~ " [options] -d DIR\n"
-#~ "\n"
-#~ "Generates and saves backtrace for coredump in dump directory DIR"
-#~ msgstr ""
-#~ " [Opties] -d MAP\n"
-#~ "\n"
-#~ "Genereer en sla backtrace voor een core dump op in dump map MAP"
-
-#~ msgid "Additional debuginfo directories"
-#~ msgstr "Extra debuginfo mappen"
-
-#~ msgid "Kill gdb if it runs for more than N seconds"
-#~ msgstr "Sluit gdb af als het meer dan N secondes draait"
-
-#~ msgid "Backtrace is generated and saved, %u bytes"
-#~ msgstr "Backtrace wordt gegenereerd en opgeslagen, %u bytes"
-
-#~ msgid "Extracting cpio from %s"
-#~ msgstr "Cpio extraheren uit %s"
-
-#~ msgid "Can't write to '%s': %s"
-#~ msgstr "Kan niet naar '%s' schrijven: %s"
-
-#~ msgid "Can't extract package '%s'"
-#~ msgstr "Kan pakket '%s' niet uitpakken"
-
-#~ msgid "Caching files from %s made from %s"
-#~ msgstr "Bestanden van %s gemaakt van %s in cache opslaan"
-
-#~ msgid "Can't extract files from '%s'"
-#~ msgstr "Kan geen bestanden uitpakken uit '%s'"
-
-#~ msgid "Downloading (%i of %i) %s: %3u%%"
-#~ msgstr "Downloaden (%i van %i) %s: %3u%%"
-
-#~ msgid "Looking for needed packages in repositories"
-#~ msgstr "Opzoeken van benodigde pakketten in de repositories"
-
-#~ msgid "Can't find packages for %u debuginfo files"
-#~ msgstr "Kan geen pakketten voor %u debuginfo bestanden vinden"
-
-#~ msgid "Packages to download: %u"
-#~ msgstr "Te downloaden pakketten: %u"
-
-#~ msgid "Downloading %.2fMb, installed size: %.2fMb"
-#~ msgstr "Downloaden van %.2fMB, geïnstalleerde grootte: %.2fMB"
-
-#~ msgid "Is this ok? [y/N] "
-#~ msgstr "Is dit ok? [j/N]"
-
-#~ msgid "Downloading package %s failed"
-#~ msgstr "Downloaden van pakket %s mislukte"
-
-#~ msgid "Unpacking failed, aborting download..."
-#~ msgstr "Uitpakken mislukte, download wordt afgebroken..."
-
-#~ msgid "All downloaded packages have been extracted, removing %s"
-#~ msgstr "Alle gedownloade pakketten zijn geëxtraheerd, %s wordt verwijderd"
-
-#~ msgid "Can't remove %s, probably contains an error log"
-#~ msgstr "Kan %s niet verwijderen, bevat waarschijnlijk een fout log"
-
-#~ msgid "Can't remove '%s': %s"
-#~ msgstr "Kan '%s' niet verwijderen: %s"
-
-#~ msgid "Exiting on user command"
-#~ msgstr "Verlaten op gebruikerscommando"
-
-#~ msgid "Coredump references %u debuginfo files, %u of them are not installed"
-#~ msgstr ""
-#~ "Coredump refereert naar %u debuginfo bestanden, %u ervan zijn niet "
-#~ "geïnstalleerd"
-
-#~ msgid "Missing debuginfo file: %s"
-#~ msgstr "Ontbrekend debuginfo bestand:  %s"
-
-#~ msgid "All %u debuginfo files are available"
-#~ msgstr "Alle %u debuginfo bestanden zijn beschikbaar"
-
-#~ msgid "Submitting oops report to %s"
-#~ msgstr "Stuur oops rapport naar %s"
-
-#~ msgid ""
-#~ " [-v] [-c CONFFILE]... -d DIR\n"
-#~ "\n"
-#~ "Reports kernel oops to kerneloops.org (or similar) site"
-#~ msgstr ""
-#~ " [-v] [-c CONFFILR] ... -d MAP\n"
-#~ "\n"
-#~ "Rapporteer kernel oops aan kerneloops.org (of soortgelijke) site"
-
-#~ msgid "Configuration file"
-#~ msgstr "Configuratiebestand"
-
-#~ msgid "Sending an email..."
-#~ msgstr "Versturen van een email..."
-
-#~ msgid "Config file"
-#~ msgstr "Config bestand"
-
-#~ msgid ""
-#~ " [-v] -d DIR [-o FILE] [-a yes/no]\n"
-#~ "\n"
-#~ "Prints problem information to standard output or FILE"
-#~ msgstr ""
-#~ " [-v] -d MAP [-o BESTAND] [-a yes/no]\n"
-#~ "\n"
-#~ "Druk probleem informatie af naar standaarduitvoer of BESTAND"
-
-#~ msgid "Output file"
-#~ msgstr "Output bestand"
-
-#~ msgid "Append to, or overwrite FILE"
-#~ msgstr "Toevoegen aan, of overschrijven van BESTAND"
-
-#~ msgid "Create reported_to in DIR"
-#~ msgstr "Maak reported_to aan in MAP"
-
-#~ msgid "The report was appended to %s"
-#~ msgstr "Het rapport werd toegevoegd aan %s"
-
-#~ msgid "The report was stored to %s"
-#~ msgstr "Het rapport werd opgeslagen in %s"
-
-#~ msgid "Compressing data"
-#~ msgstr "Data comprimeren"
-
-#~ msgid "Empty RHTS login or password"
-#~ msgstr "Leeg RHTS inlog of wachtwoord"
-
-#~ msgid "Can't create a temporary directory in /tmp"
-#~ msgstr "Kan geen tijdelijke directory aanmaken in /tmp"
-
-#~ msgid "Creating a new case..."
-#~ msgstr "Een nieuwe zaak aanmaken..."
-
-#~ msgid ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Reports a problem to RHTSupport"
-#~ msgstr ""
-#~ " [-v] -c CONFFILE -d MAP\n"
-#~ "\n"
-#~ "Rapporteert een probleem aan RHTSupport"
-
-#~ msgid ""
-#~ " [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
-#~ "\n"
-#~ "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than "
-#~ "SIZE"
-#~ msgstr ""
-#~ " [-v] [-d GROOTTE:MAP] ... [-f GROOTTE:MAP] ... [-p MAP]\n"
-#~ "Wis dump mappen (-d) of bestanden (-f) in MAPPEN totdat ze kleiner zijn "
-#~ "dan GROOTTE"
-
-#~ msgid "Delete dump dirs"
-#~ msgstr "Dump mappen verwijderen"
-
-#~ msgid "Delete files"
-#~ msgstr "Bestanden verwijderen"
-
-#~ msgid "Preserve this dump dir"
-#~ msgstr "Deze dump map behouden"
-
-#~ msgid "Sending %s to %s"
-#~ msgstr "%s versturen naar %s"
-
-#~ msgid "Successfully sent %s to %s"
-#~ msgstr "%s met succes verzonden naar %s"
-
-#~ msgid "Archive is created: '%s'"
-#~ msgstr "Archief is gemaakt: '%s'"
-
-#~ msgid ""
-#~ " [-v] -d DIR [-c CONFFILE] [-u URL]\n"
-#~ "\n"
-#~ "Uploads compressed tarball of dump directory DIR"
-#~ msgstr ""
-#~ "[-v] -d MAP [-c CONFFILE] [-u URL]\n"
-#~ "\n"
-#~ "Upload gecomprimeerde tar bestand van dump map MAP"
-
-#~ msgid "Base URL to upload to"
-#~ msgstr "Basis URL om naar te uploaden"
-
-#~ msgid ""
-#~ " [-vsrowx] [-d DIR] FILE\n"
-#~ "\n"
-#~ "Extract oops from syslog/dmesg file"
-#~ msgstr ""
-#~ " [-vsrowx] [-d MAP] BESTAND\n"
-#~ "\n"
-#~ "Extraheer oops uit syslog/dmesg bestand"
-
-#~ msgid "Parse kernel's message buffer before parsing FILE"
-#~ msgstr "ontleed boodschap buffer van kernel voor het ontleden van BESTAND"
-
-#~ msgid "Print found oopses on standard output"
-#~ msgstr "Print gevonden oops naar standaard output"
-
-#~ msgid "Do not exit, watch the file for new oopses"
-#~ msgstr "Sluit niet af, bekijk het bestand voor nieuwe oopses"
-
-#~ msgid "Create ABRT dump in DIR for every oops found"
-#~ msgstr "Maak ABRT dump aan in MAP voor elke gevonden oops"
-
-#~ msgid "Make the dump directory world readable"
-#~ msgstr "Maak de dump map leesbaar voor wereld"
-
-#~ msgid "log to syslog"
-#~ msgstr "log naar syslog"
-
-#~ msgid "Download debuginfo packages and generate backtrace locally using GDB"
-#~ msgstr ""
-#~ "Download debuginfo pakketten en genereer de backtrace lokaal met behulp "
-#~ "van GDB"
-
-#~ msgid "Local GNU Debugger"
-#~ msgstr "Lokale GNU debugger"
-
-#~ msgid ""
-#~ "Needs to downloads debuginfo packages, which might take significant time, "
-#~ "and take up disk space. However, unlike RetraceServer, doesn't send "
-#~ "coredump to remote machines."
-#~ msgstr ""
-#~ "Debuginfo pakketten moeten gedownload worden, wat veel tijd en "
-#~ "schijfruimte zou kunnen kosten. In tegenstelling tot RetraceServer "
-#~ "echter, wordt geen coredump naar machines op afstand gestuurd."
-
-#~ msgid "Address of the retrace server"
-#~ msgstr "Adres van de retrace server"
-
-#~ msgid "Retrace server URL"
-#~ msgstr "URL van de retrace server"
-
-#~ msgid "Send core dump to remote retrace server for analysis"
-#~ msgstr "Stuur core dump naar retrace server op afstand voor analyse"
-
-#~ msgid ""
-#~ "Uploads coredump to a server, which generates backtrace and returns it. "
-#~ "Pros: no need for debuginfo downloads. Retrace server's database of "
-#~ "debuginfos is more complete. Retrace server may generate better "
-#~ "backtraces. Cons: coredump you upload contains all the data from the "
-#~ "crashed program, including your private data, if any."
-#~ msgstr ""
-#~ "Upload een coredump naar een server, die een backtrace genereert en deze "
-#~ "terugstuurt. Voordelen: debuginfo downloaden is niet nodig. De database "
-#~ "van debuginfos  van de retrace server is completer. De retrace server kan "
-#~ "betere backtraces genereren. Nadelen: een coredump jouw upload bevat alle "
-#~ "data van het gecrashte programma, mogelijk inclusief jouw persoonlijke "
-#~ "data."
-
-#~ msgid "Address of Bugzilla server"
-#~ msgstr "Adres van de Bugzilla server"
-
-#~ msgid "Bugzilla"
-#~ msgstr "Bugzilla"
-
-#~ msgid "Bugzilla URL"
-#~ msgstr "Bugzilla URL"
-
-#~ msgid "Bugzilla account password"
-#~ msgstr "Bugzilla account wachtwoord"
-
-#~ msgid "Bugzilla account user name"
-#~ msgstr "Bugzilla account gebruikersnaam"
-
-#~ msgid "Check SSL key validity"
-#~ msgstr "Controleer geldigheid van SSL sleutels"
-
-#~ msgid "Password"
-#~ msgstr "Wachtwoord"
-
-#~ msgid "Report to Bugzilla bug tracker"
-#~ msgstr "Rapporteer aan Bugzilla bug tracker"
-
-#~ msgid "User name"
-#~ msgstr "Gebruikersnaam"
-
-#~ msgid "Verify SSL"
-#~ msgstr "Verifieer SSL"
-
-#~ msgid ""
-#~ "You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
-#~ "redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
-#~ msgstr ""
-#~ "Je kunt bugzilla.redhat.com account &lt;a href=\"https://bugzilla.redhat."
-#~ "com/createaccount.cgi\"&gt;hier&lt;/a&gt; aanmaken"
-
-#~ msgid "Kerneloops URL"
-#~ msgstr "Kerneloops URL"
-
-#~ msgid "Kerneloops.org"
-#~ msgstr "Kerneloops.org"
-
-#~ msgid "Oops server url"
-#~ msgstr "Oops server url"
-
-#~ msgid "Send kernel problems to oops tracker"
-#~ msgstr "Stuur kernel problemen naar oops tracker"
-
-#~ msgid "Mailx"
-#~ msgstr "Mailx"
-
-#~ msgid "Message subject"
-#~ msgstr "Onderwerp van het bericht"
-
-#~ msgid "Recipient"
-#~ msgstr "Ontvanger"
-
-#~ msgid "Recipient's email"
-#~ msgstr "Email van ontvanger"
-
-#~ msgid "Send Binary Data"
-#~ msgstr "Stuur binaire data"
-
-#~ msgid "Send binary files like coredump"
-#~ msgstr "Stuur binaire bestanden zoals een core dump"
-
-#~ msgid "Send via email"
-#~ msgstr "Stuur via email"
-
-#~ msgid "Sender"
-#~ msgstr "Afzender"
-
-#~ msgid "Sender's email"
-#~ msgstr "Email van afzender"
-
-#~ msgid "Subject"
-#~ msgstr "Onderwerp"
-
-#~ msgid "Address of the Red Hat support portal"
-#~ msgstr "Adres van het Red Hat support portaal"
-
-#~ msgid "RH Portal URL"
-#~ msgstr "RH portaal URL"
-
-#~ msgid "Red Hat Customer Support"
-#~ msgstr "Red Hat Customer Support"
-
-#~ msgid "Red Hat customer password"
-#~ msgstr "Red Hat klant wachtwoord"
-
-#~ msgid "Red Hat customer user name"
-#~ msgstr "Red Hat klant gebruikersnaam"
-
-#~ msgid "Report to Red Hat support"
-#~ msgstr "Rapporteer aan Red Hat support"
-
-#~ msgid "Username"
-#~ msgstr "Gebruikersnaam"
