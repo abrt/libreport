@@ -1,0 +1,477 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-06-16 12:17+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/cli/cli.c:167
+msgid ""
+"\b [-vsp] -l[f] [-D BASE_DIR]...\n"
+"or: \b [-vsp] -i[f] DUMP_DIR\n"
+"or: \b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
+"or: \b [-vsp] -e EVENT DUMP_DIR\n"
+"or: \b [-vsp] -a[y] DUMP_DIR\n"
+"or: \b [-vsp] -r[y] DUMP_DIR\n"
+"or: \b [-vsp] -d DUMP_DIR"
+msgstr ""
+
+#. short_name long_name  value    parameter_name  help
+#: ../src/cli/cli.c:196
+msgid "List not yet reported problems, or all with -f"
+msgstr ""
+
+#: ../src/cli/cli.c:197
+msgid "Directory to list problems from (default: -D $HOME/.abrt/spool -D "
+msgstr ""
+
+#: ../src/cli/cli.c:198
+msgid "Print information about DUMP_DIR (detailed with -f)"
+msgstr ""
+
+#: ../src/cli/cli.c:199
+msgid "List possible events [which start with PREFIX]"
+msgstr ""
+
+#: ../src/cli/cli.c:200
+msgid "Run EVENT on DUMP_DIR"
+msgstr ""
+
+#: ../src/cli/cli.c:201
+msgid "Run analyze event(s) on DUMP_DIR"
+msgstr ""
+
+#: ../src/cli/cli.c:202
+msgid "Send a report about DUMP_DIR"
+msgstr ""
+
+#: ../src/cli/cli.c:203
+msgid "Remove DUMP_DIR"
+msgstr ""
+
+#: ../src/cli/cli.c:204
+msgid "Display version and exit"
+msgstr ""
+
+#: ../src/cli/cli.c:205
+msgid "Full listing"
+msgstr ""
+
+#: ../src/cli/cli.c:206
+msgid "Noninteractive: don't ask questions, assume 'yes'"
+msgstr ""
+
+#: ../src/cli/cli.c:208
+msgid "Log to syslog"
+msgstr ""
+
+#: ../src/cli/cli.c:209 ../src/gui-wizard-gtk/main.c:111
+msgid "Add program names to log"
+msgstr ""
+
+#: ../src/cli/report.c:131
+#, c-format
+msgid "# This field is read only\n"
+msgstr ""
+
+#: ../src/cli/report.c:151
+msgid "# Describe the circumstances of this crash below"
+msgstr ""
+
+#: ../src/cli/report.c:153
+msgid ""
+"# Backtrace\n"
+"# Check that it does not contain any sensitive data (passwords, etc.)"
+msgstr ""
+
+#: ../src/cli/report.c:155
+msgid "# Architecture"
+msgstr ""
+
+#: ../src/cli/report.c:156
+msgid "# Command line"
+msgstr ""
+
+#: ../src/cli/report.c:157
+msgid "# Component"
+msgstr ""
+
+#: ../src/cli/report.c:158
+msgid "# Core dump"
+msgstr ""
+
+#: ../src/cli/report.c:159
+msgid "# Executable"
+msgstr ""
+
+#: ../src/cli/report.c:160
+msgid "# Kernel version"
+msgstr ""
+
+#: ../src/cli/report.c:161
+msgid "# Package"
+msgstr ""
+
+#: ../src/cli/report.c:162
+msgid "# Reason of crash"
+msgstr ""
+
+#: ../src/cli/report.c:163
+msgid "# Release string of the operating system"
+msgstr ""
+
+#: ../src/cli/report.c:276
+msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
+msgstr ""
+
+#: ../src/cli/report.c:360
+msgid ""
+"\n"
+"The report has been updated"
+msgstr ""
+
+#: ../src/cli/report.c:362
+msgid ""
+"\n"
+"No changes were detected in the report"
+msgstr ""
+
+#. The response might take more than 1 char in non-latin scripts.
+#: ../src/cli/report.c:394
+msgid "y"
+msgstr ""
+
+#: ../src/cli/report.c:395
+msgid "N"
+msgstr ""
+
+#: ../src/cli/report.c:517
+msgid "Your input is not valid, because of:"
+msgstr ""
+
+#: ../src/cli/report.c:520
+#, c-format
+msgid "Bad value for '%s': %s"
+msgstr ""
+
+#: ../src/cli/report.c:617
+#, c-format
+msgid "How you would like to analyze the problem?\n"
+msgstr ""
+
+#: ../src/cli/report.c:635
+msgid "Select analyzer: "
+msgstr ""
+
+#: ../src/cli/report.c:642
+#, c-format
+msgid "You have chosen number out of range"
+msgstr ""
+
+#: ../src/cli/report.c:651
+msgid "Invalid input, program exiting..."
+msgstr ""
+
+#: ../src/cli/report.c:761 ../src/gui-wizard-gtk/wizard.c:1301
+msgid "Reporting..."
+msgstr ""
+
+#: ../src/cli/report.c:774
+msgid "How would you like to report the problem?"
+msgstr ""
+
+#: ../src/cli/report.c:784
+msgid "Select reporter(s): "
+msgstr ""
+
+#: ../src/cli/report.c:804
+msgid "Reporting disabled because the backtrace is unusable"
+msgstr ""
+
+#: ../src/cli/report.c:808
+#, c-format
+msgid ""
+"Please try to install debuginfo manually using the command: \"debuginfo-"
+"install %s\" and try again\n"
+msgstr ""
+
+#: ../src/cli/report.c:830
+#, c-format
+msgid "Problem reported via %d report events (%d errors)\n"
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:122
+msgid "Show password"
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:343
+msgid "Event Configuration"
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:368
+msgid "Event"
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:402
+msgid "Configure E_vent"
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:425
+#, c-format
+msgid ""
+"Wrong settings detected for %s, reporting will probably fail if you continue "
+"with the current configuration."
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:429
+#, c-format
+msgid ""
+"Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
+"continue with the current configuration."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/main.c:96
+msgid ""
+"\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
+"\n"
+"GUI tool to analyze and report problem saved in specified DIR"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/main.c:110
+msgid "Alternate GUI file"
+msgstr ""
+
+#. for use from 3rd party apps to show just a reporter selector
+#: ../src/gui-wizard-gtk/main.c:113
+msgid "Use wizard to report pre-filled problem data"
+msgstr ""
+
+#. override the default prgname, so it's the same as the application
+#. which is calling us
+#.
+#: ../src/gui-wizard-gtk/main.c:117
+msgid "Override the default prgname"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:233
+#, c-format
+msgid ""
+"Need writable directory, but '%s' is not writable. Move it to '%s' and "
+"operate on the moved copy?"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:577
+#, c-format
+msgid "(not needed, '%s' already exists)"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:641
+msgid "Go to reporting step"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:698
+msgid "(click here to view/edit)"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:708
+#, c-format
+msgid "(binary file, %llu bytes)"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:722
+msgid "(no description)"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:727
+#, c-format
+msgid "%llu bytes, %u files"
+msgstr ""
+
+#. TODO: better msg?
+#: ../src/gui-wizard-gtk/wizard.c:1086
+#, c-format
+msgid "No processing for event '%s' is defined"
+msgstr ""
+
+#. bt is usable, but not complete, so show a warning
+#: ../src/gui-wizard-gtk/wizard.c:1187
+msgid ""
+"The backtrace is incomplete, please make sure you provide the steps to "
+"reproduce."
+msgstr ""
+
+#. FIXME: see CreporterAssistant: 394 for ideas
+#: ../src/gui-wizard-gtk/wizard.c:1192
+msgid "Reporting disabled because the backtrace is unusable."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1201
+msgid "You should check the backtrace for sensitive data."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1202
+msgid "You must agree with sending the backtrace."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1274
+msgid "Analyzing..."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1275
+#, c-format
+msgid "Analyzing finished with exit code %d"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1302
+#, c-format
+msgid "Reporting finished with exit code %d"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1704
+msgid "Include"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1714
+msgid "Name"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1721
+msgid "Value"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:1
+msgid ""
+"<b>Your comments are not private.</b> They may be included into publicly "
+"visible problem reports."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:2
+msgid "Analyzing did not start yet"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:3
+msgid ""
+"Backtrace provides developers with details of the crash, helping them track "
+"down the source of the problem. Please review it and remove any sensitive "
+"data you would rather not share:"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:4
+msgid ""
+"Can create more informative backtrace if you installed additional debug "
+"packages"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:5
+msgid "Click 'Apply' to start reporting"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:6
+msgid "Configure _Events"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:7
+msgid "Details"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:8
+msgid ""
+"How did this problem happen (step-by-step)? How can it be reproduced? Any "
+"additional comments useful for diagnosing the problem?"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:9
+msgid "I _agree with submitting the backtrace"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:10
+msgid ""
+"If you want to report the problem to a different destination, collect "
+"additional information, or provide a better problem description and repeat "
+"reporting process, press 'Forward'."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:11
+msgid ""
+"On the following screens, you will be asked to describe how the problem "
+"occurred, to choose how to analyze the problem (if needed), to review "
+"collected data, and to choose where the problem should be reported. Click "
+"'Forward' to proceed."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:12
+msgid "Regenerate backtrace"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:13
+msgid "Reporter(s):"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:14
+msgid "Reporting did not start yet"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:15
+msgid "Reporting has finished. You can close this window now."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:16
+msgid "Select how you would like to analyze the problem:"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:17
+msgid "Select how you would like to report the problem:"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:18
+msgid "Size:"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:19
+msgid ""
+"Use this button to generate more informative backtrace after you installed "
+"additional debug packages"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:20
+msgid "You need to fill the how to before you can proceed..."
+msgstr ""
+
+#: ../src/lib/event_config.c:298
+msgid "Missing mandatory value"
+msgstr ""
+
+#: ../src/lib/event_config.c:306
+#, c-format
+msgid "Invalid utf8 character '%c'"
+msgstr ""
+
+#: ../src/lib/event_config.c:319
+#, c-format
+msgid "Invalid number '%s'"
+msgstr ""
+
+#: ../src/lib/event_config.c:331
+#, c-format
+msgid "Invalid boolean value '%s'"
+msgstr ""
+
+#: ../src/lib/event_config.c:337
+msgid "Unsupported option type"
+msgstr ""
+
+#: ../src/lib/parse_options.c:60
+msgid "Usage: "
+msgstr ""
