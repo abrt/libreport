@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-05-03 16:21+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-06-16 12:17+0200\n"
 "PO-Revision-Date: 2011-05-02 18:28+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -18,114 +18,70 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
-#: ../src/applet/abrt-applet.desktop.in.h:1
-msgid "ABRT notification applet"
-msgstr "Аплет сповіщення ABRT"
-
-#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt-gtk.c:358
-#: ../src/gui-gtk/abrt.desktop.in.h:1
-msgid "Automatic Bug Reporting Tool"
-msgstr "ABRT — автоматичне звітування про помилки"
-
-#: ../src/applet/applet.c:83
-#, c-format
-msgid "A crash in the %s package has been detected"
-msgstr "Було виявлено збій у пакунку %s"
-
-#: ../src/applet/applet.c:85
-msgid "A crash has been detected"
-msgstr "Виявлено збій у пакеті"
-
-#: ../src/applet/applet.c:279
-msgid "ABRT service is not running"
-msgstr "Службу ABRT не запущено"
-
-#: ../src/applet/applet_gtk.c:202 ../src/applet/applet_gtk.c:204
-msgid "Warning"
-msgstr "Попередження"
-
-#: ../src/applet/applet_gtk.c:259
+#: ../src/cli/cli.c:167
 msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
+"\b [-vsp] -l[f] [-D BASE_DIR]...\n"
+"or: \b [-vsp] -i[f] DUMP_DIR\n"
+"or: \b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
+"or: \b [-vsp] -e EVENT DUMP_DIR\n"
+"or: \b [-vsp] -a[y] DUMP_DIR\n"
+"or: \b [-vsp] -r[y] DUMP_DIR\n"
+"or: \b [-vsp] -d DUMP_DIR"
 msgstr ""
-"Аплет у області сповіщень для попередження користувача про виявлені ABRT "
-"проблеми"
 
-#: ../src/applet/applet_gtk.c:275 ../src/gui-gtk/abrt-gtk.c:243
-msgid "translator-credits"
+#. short_name long_name  value    parameter_name  help
+#: ../src/cli/cli.c:196
+msgid "List not yet reported problems, or all with -f"
 msgstr ""
-"Максим Дзюманенко <dziumanenko@gmail.com>\n"
-"Юрій Чорноіван <yurchor@ukr.net>"
 
-#: ../src/applet/applet_gtk.c:285
-msgid "Hide"
-msgstr "Сховати"
-
-#: ../src/applet/applet_gtk.c:398
-msgid "Report"
-msgstr "Повідомити"
-
-#: ../src/applet/applet_gtk.c:401
-msgid "Show"
-msgstr "Показати"
-
-#: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
-msgid "A Problem has Occurred"
-msgstr "Виникла проблема"
-
-#: ../src/applet/applet_gtk.c:429
-msgid "Open ABRT"
-msgstr "Відкрити ABRT"
-
-#: ../src/cli/cli.c:175
-#, c-format
-msgid ""
-"Usage: %s -l[f] [-D BASE_DIR]...]\n"
-"   or: %s -r[y] CRASH_DIR\n"
-"   or: %s -i[b] CRASH_DIR\n"
-"   or: %s -d CRASH_DIR\n"
-"\n"
-"\t-l, --list\t\tList not yet reported problems\n"
-"\t  -f, --full\t\tList all problems\n"
-"\t-D BASE_DIR\t\tDirectory to list problems from\n"
-"\t\t\t\t(default: -D $HOME/.abrt/spool -D %s)\n"
-"\n"
-"\t-r, --report\t\tSend a report about CRASH_DIR\n"
-"\t  -y, --always\t\t...without editing and asking\n"
-"\t-i, --info\t\tPrint detailed information about CRASH_DIR\n"
-"\t  -f, --full\t\t...including multi-line entries\n"
-"\t\t\t\tNote: -if will run analyzers\n"
-"\t\t\t\t(if this CRASH_DIR have defined analyzers)\n"
-"\t-d, --delete\t\tRemove CRASH_DIR\n"
-"\n"
-"\t-V, --version\t\tDisplay version and exit\n"
-"\t-v, --verbose\t\tBe verbose\n"
+#: ../src/cli/cli.c:197
+msgid "Directory to list problems from (default: -D $HOME/.abrt/spool -D "
 msgstr ""
-"Використання: %s -l[f] [-D БАЗОВИЙ_КАТАЛОГ]...]\n"
-"   або: %s -r[y] КАТАЛОГ_АВАРІЇ\n"
-"   або: %s -i[b] КАТАЛОГ_АВАРІЇ\n"
-"   або: %s -d КАТАЛОГ_АВАРІЇ\n"
-"\n"
-"\t-l, --list\t\tПоказати список всіх проблеми, для яких ще не створено "
-"звітів\n"
-"\t  -f, --full\t\tПоказати список всіх проблем\n"
-"\t-D БАЗОВИЙ_КАТАЛОГ\t\tКаталог, проблеми з якого слід включити до списку\n"
-"\t\t\t\t(типові значення: -D $HOME/.abrt/spool -D %s)\n"
-"\n"
-"\t-r, --report\t\tНадіслати звіт щодо каталогу КАТАЛОГ_АВАРІЇ\n"
-"\t  -y, --always\t\t...без редагування і додаткових питань\n"
-"\t-i, --info\t\tПоказати докладні дані щодо каталогу КАТАЛОГ_АВАРІЇ\n"
-"\t  -f, --full\t\t...зокрема багаторядкові записи\n"
-"\t\t\t\tЗауваження: -if запустити інструменти аналізу\n"
-"\t\t\t\t(якщо у каталозі КАТАЛОГ_АВАРІЇ визначено інструменти аналізу)\n"
-"\t-d, --delete\t\tВилучити каталог КАТАЛОГ_АВАРІЇ\n"
-"\n"
-"\t-V, --version\t\tПоказати дані щодо версії і завершити роботу\n"
-"\t-v, --verbose\t\tПоказати докладні дані\n"
 
-#: ../src/cli/cli.c:224
-msgid "You must specify exactly one operation"
-msgstr "Вам слід вказати точно одну дію"
+#: ../src/cli/cli.c:198
+msgid "Print information about DUMP_DIR (detailed with -f)"
+msgstr ""
+
+#: ../src/cli/cli.c:199
+#, fuzzy
+msgid "List possible events [which start with PREFIX]"
+msgstr "Список записів можливих подій [що починаються з PFX]"
+
+#: ../src/cli/cli.c:200
+msgid "Run EVENT on DUMP_DIR"
+msgstr ""
+
+#: ../src/cli/cli.c:201
+msgid "Run analyze event(s) on DUMP_DIR"
+msgstr ""
+
+#: ../src/cli/cli.c:202
+msgid "Send a report about DUMP_DIR"
+msgstr ""
+
+#: ../src/cli/cli.c:203
+msgid "Remove DUMP_DIR"
+msgstr ""
+
+#: ../src/cli/cli.c:204
+msgid "Display version and exit"
+msgstr ""
+
+#: ../src/cli/cli.c:205
+msgid "Full listing"
+msgstr ""
+
+#: ../src/cli/cli.c:206
+msgid "Noninteractive: don't ask questions, assume 'yes'"
+msgstr ""
+
+#: ../src/cli/cli.c:208
+msgid "Log to syslog"
+msgstr "Записувати до журналу syslog"
+
+#: ../src/cli/cli.c:209 ../src/gui-wizard-gtk/main.c:111
+msgid "Add program names to log"
+msgstr "Додати назви програм до журналу"
 
 #: ../src/cli/report.c:131
 #, c-format
@@ -203,7 +159,7 @@ msgstr ""
 "Не виявлено жодних змін у звіті"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.c:394 ../src/plugins/abrt-action-install-debuginfo.py:83
+#: ../src/cli/report.c:394
 msgid "y"
 msgstr "y"
 
@@ -211,52 +167,52 @@ msgstr "y"
 msgid "N"
 msgstr "N"
 
-#: ../src/cli/report.c:492
+#: ../src/cli/report.c:517
 msgid "Your input is not valid, because of:"
 msgstr "Вказані вами дані є некоректними. Причини:"
 
-#: ../src/cli/report.c:495
+#: ../src/cli/report.c:520
 #, c-format
 msgid "Bad value for '%s': %s"
 msgstr "Помилкове значення «%s»: %s"
 
-#: ../src/cli/report.c:592
-#, c-format
-msgid "Select how you would like to analyze the problem:\n"
+#: ../src/cli/report.c:617
+#, fuzzy, c-format
+msgid "How you would like to analyze the problem?\n"
 msgstr "Виберіть спосіб аналізу проблеми:\n"
 
-#: ../src/cli/report.c:608
-#, c-format
-msgid "Choose option [0 - %u]: "
-msgstr "Виберіть варіант [0 — %u]: "
+#: ../src/cli/report.c:635
+msgid "Select analyzer: "
+msgstr ""
 
-#: ../src/cli/report.c:622
+#: ../src/cli/report.c:642
 #, c-format
 msgid "You have chosen number out of range"
 msgstr "Вибрано номер поза діапазоном можливих"
 
-#: ../src/cli/report.c:630
+#: ../src/cli/report.c:651
 msgid "Invalid input, program exiting..."
 msgstr "Некоректні вхідні дані, програма завершує роботу…"
 
-#: ../src/cli/report.c:740 ../src/gui-wizard-gtk/wizard.c:1101
+#: ../src/cli/report.c:761 ../src/gui-wizard-gtk/wizard.c:1301
 msgid "Reporting..."
 msgstr "Звітування…"
 
-#: ../src/cli/report.c:761
-#, c-format
-msgid "Report using %s?"
-msgstr "Створити звіт за допомогою %s?"
+#: ../src/cli/report.c:774
+#, fuzzy
+msgid "How would you like to report the problem?"
+msgstr "Виберіть спосіб звітування щодо проблеми:"
 
-#: ../src/cli/report.c:768
-msgid "Skipping..."
-msgstr "Пропускаємо…"
+#: ../src/cli/report.c:784
+#, fuzzy
+msgid "Select reporter(s): "
+msgstr "Автор звіту:"
 
-#: ../src/cli/report.c:778
+#: ../src/cli/report.c:804
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Звітування вимкнено, оскільки зворотне трасування є непридатним"
 
-#: ../src/cli/report.c:782
+#: ../src/cli/report.c:808
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -265,102 +221,20 @@ msgstr ""
 "Спробуйте встановити debuginfo вручну: «debuginfo-install %s», потім "
 "повторіть спробу\n"
 
-#: ../src/cli/report.c:804
+#: ../src/cli/report.c:830
 #, c-format
 msgid "Problem reported via %d report events (%d errors)\n"
 msgstr ""
 
-#: ../src/daemon/abrt-action-save-package-data.c:254
-msgid ""
-" [-v] -d DIR\n"
-"\n"
-"Query package database and save package name, component, and description"
-msgstr ""
-" [-v] -d КАТАЛОГ\n"
-"\n"
-"Отримати дані з бази даних пакунків і зберегти назву пакунка, компонент та "
-"опис"
-
-#: ../src/daemon/abrt-action-save-package-data.c:265
-#: ../src/daemon/abrt-handle-crashdump.c:61
-#: ../src/plugins/abrt-action-analyze-backtrace.c:70
-#: ../src/plugins/abrt-action-analyze-c.c:177
-#: ../src/plugins/abrt-action-analyze-oops.c:159
-#: ../src/plugins/abrt-action-analyze-python.c:45
-#: ../src/plugins/abrt-action-bugzilla.cpp:933
-#: ../src/plugins/abrt-action-generate-backtrace.c:256
-#: ../src/plugins/abrt-action-kerneloops.c:154
-#: ../src/plugins/abrt-action-mailx.c:155
-#: ../src/plugins/abrt-action-print.c:53
-#: ../src/plugins/abrt-action-rhtsupport.c:291
-#: ../src/plugins/abrt-action-upload.c:258
-msgid "Dump directory"
-msgstr "Каталог дампу"
-
-#: ../src/daemon/abrt-handle-crashdump.c:43
-msgid ""
-" [-vs] -d DIR -e EVENT\n"
-"   or: "
-msgstr ""
-" [-vs] -d КАТАЛОГ -e ПОДІЯ\n"
-"   або: "
-
-#: ../src/daemon/abrt-handle-crashdump.c:60 ../src/daemon/abrt-server.c:301
-#: ../src/plugins/abrt-dump-oops.c:585
-msgid "Log to syslog"
-msgstr "Записувати до журналу syslog"
-
-#: ../src/daemon/abrt-handle-crashdump.c:62
-msgid "Handle EVENT"
-msgstr "Обробити ПОДІЮ"
-
-#: ../src/daemon/abrt-handle-crashdump.c:63
-msgid "List possible events [which start with PFX]"
-msgstr "Список записів можливих подій [що починаються з PFX]"
-
-#: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:302
-#: ../src/daemon/abrtd.c:525 ../src/gui-gtk/main.c:228
-#: ../src/gui-wizard-gtk/main.c:94
-msgid "Add program names to log"
-msgstr "Додати назви програм до журналу"
-
-#: ../src/daemon/abrt-server.c:289 ../src/daemon/abrtd.c:510
-msgid " [options]"
-msgstr " [параметри]"
-
-#: ../src/daemon/abrt-server.c:300
-msgid "Use UID as client uid"
-msgstr "Використати UID як унікальний ідентифікатор клієнта"
-
-#: ../src/daemon/abrtd.c:337
-msgid ""
-"The size of the report exceeded the quota. Please check system's "
-"MaxCrashReportsSize value in abrt.conf."
-msgstr ""
-"Розмір звіту перевищує припустимий. Змініть значення MaxCrashReportsSize у "
-"файлі abrt.conf"
-
-#: ../src/daemon/abrtd.c:522
-msgid "Do not daemonize"
-msgstr "Не запускати фонової служби"
-
-#: ../src/daemon/abrtd.c:523
-msgid "Log to syslog even with -d"
-msgstr "Записувати до журналу syslog навіть з параметром -d"
-
-#: ../src/daemon/abrtd.c:524
-msgid "Exit after SEC seconds of inactivity"
-msgstr "Завершувати роботу після SEC секунд бездіяльності"
-
-#: ../src/gtk-helpers/event_config_dialog.c:123
+#: ../src/gtk-helpers/event_config_dialog.c:122
 msgid "Show password"
 msgstr "Показувати пароль"
 
-#: ../src/gtk-helpers/event_config_dialog.c:344
+#: ../src/gtk-helpers/event_config_dialog.c:343
 msgid "Event Configuration"
 msgstr "Налаштування подій"
 
-#: ../src/gtk-helpers/event_config_dialog.c:369
+#: ../src/gtk-helpers/event_config_dialog.c:368
 msgid "Event"
 msgstr "Подія"
 
@@ -386,57 +260,10 @@ msgstr ""
 "Виявлено помилкові параметри <b>%s</b>. Якщо ви продовжите створення звіту "
 "за поточних налаштувань, можливо, звіт створити не вдасться."
 
-#: ../src/gui-gtk/abrt-gtk.c:262
-msgid "Reported"
-msgstr "Повідомлено"
-
-#: ../src/gui-gtk/abrt-gtk.c:274
-msgid "Problem"
-msgstr "Проблема"
-
-#: ../src/gui-gtk/abrt-gtk.c:297
-msgid "Last occurrence"
-msgstr "Останній випадок"
-
-#: ../src/gui-gtk/abrt-gtk.c:312
-msgid "_File"
-msgstr "_Файл"
-
-#: ../src/gui-gtk/abrt-gtk.c:313
-msgid "_Edit"
-msgstr "З_міни"
-
-#: ../src/gui-gtk/abrt-gtk.c:314
-msgid "_Help"
-msgstr "_Довідка"
-
-#: ../src/gui-gtk/abrt-gtk.c:330
-msgid "_Event configuration"
-msgstr "_Налаштування події"
-
-#: ../src/gui-gtk/abrt-gtk.c:411
-msgid "Online _Help"
-msgstr "Інтернет-_довідка"
-
-#: ../src/gui-gtk/abrt.desktop.in.h:2
-msgid "View and report application crashes"
-msgstr "Переглянути збої програми та створити звіт"
-
-#: ../src/gui-gtk/main.c:216
+#: ../src/gui-wizard-gtk/main.c:96
+#, fuzzy
 msgid ""
-" [-vp] [DIR]...\n"
-"\n"
-"Shows list of ABRT dump directories in specified DIR(s)\n"
-"(default DIRs: "
-msgstr ""
-" [-vp] [КАТАЛОГ]...\n"
-"\n"
-"Показати список каталогів дампів ABRT у вказаних КАТАЛОГах\n"
-"(типовими є такі КАТАЛОГи: "
-
-#: ../src/gui-wizard-gtk/main.c:81
-msgid ""
-" [-vp] [-g GUI_FILE] DIR\n"
+"\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
@@ -445,11 +272,23 @@ msgstr ""
 "Інструмент з графічним інтерфейсом для аналізу та звітування щодо даних, які "
 "зберігаються у каталозі КАТАЛОГ."
 
-#: ../src/gui-wizard-gtk/main.c:93
+#: ../src/gui-wizard-gtk/main.c:110
 msgid "Alternate GUI file"
 msgstr "Альтернативний файл графічного інтерфейсу"
 
-#: ../src/gui-wizard-gtk/wizard.c:201
+#. for use from 3rd party apps to show just a reporter selector
+#: ../src/gui-wizard-gtk/main.c:113
+msgid "Use wizard to report pre-filled problem data"
+msgstr ""
+
+#. override the default prgname, so it's the same as the application
+#. which is calling us
+#.
+#: ../src/gui-wizard-gtk/main.c:117
+msgid "Override the default prgname"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:233
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
@@ -458,32 +297,41 @@ msgstr ""
 "Потрібен придатний до запису каталог. Каталог «%s» непридатний до запису. "
 "Пересунути файли до «%s» ви працювати з пересунутою копією?"
 
-#: ../src/gui-wizard-gtk/wizard.c:559
+#: ../src/gui-wizard-gtk/wizard.c:577
+#, c-format
+msgid "(not needed, '%s' already exists)"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:641
+msgid "Go to reporting step"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:698
 msgid "(click here to view/edit)"
 msgstr "(натисніть для перегляду або редагування)"
 
-#: ../src/gui-wizard-gtk/wizard.c:571
+#: ../src/gui-wizard-gtk/wizard.c:708
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(бінарний файл, %llu байтів)"
 
-#: ../src/gui-wizard-gtk/wizard.c:586
+#: ../src/gui-wizard-gtk/wizard.c:722
 msgid "(no description)"
 msgstr "(без опису)"
 
-#: ../src/gui-wizard-gtk/wizard.c:591
+#: ../src/gui-wizard-gtk/wizard.c:727
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu байтів, %u файлів"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:914
+#: ../src/gui-wizard-gtk/wizard.c:1086
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "Обробки для події «%s» не визначено"
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:1004
+#: ../src/gui-wizard-gtk/wizard.c:1187
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -492,38 +340,42 @@ msgstr ""
 "відтворення помилки."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1009
+#: ../src/gui-wizard-gtk/wizard.c:1192
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Звітування вимкнено, оскільки зворотне трасування є непридатним."
 
-#: ../src/gui-wizard-gtk/wizard.c:1018
+#: ../src/gui-wizard-gtk/wizard.c:1201
 msgid "You should check the backtrace for sensitive data."
 msgstr ""
 "Вам слід вилучити з даних зворотного трасування всі конфіденційні дані."
 
-#: ../src/gui-wizard-gtk/wizard.c:1019
+#: ../src/gui-wizard-gtk/wizard.c:1202
 msgid "You must agree with sending the backtrace."
 msgstr "Вам слід погодитися на надсилання зворотного трасування."
 
-#: ../src/gui-wizard-gtk/wizard.c:1075
+#: ../src/gui-wizard-gtk/wizard.c:1274
 msgid "Analyzing..."
 msgstr "Аналіз…"
 
-#: ../src/gui-wizard-gtk/wizard.c:1076
+#: ../src/gui-wizard-gtk/wizard.c:1275
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "Аналіз завершено з кодом виходу %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1102
+#: ../src/gui-wizard-gtk/wizard.c:1302
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "Звітування завершено з кодом виходу %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1219
+#: ../src/gui-wizard-gtk/wizard.c:1704
+msgid "Include"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1714
 msgid "Name"
 msgstr "Назва"
 
-#: ../src/gui-wizard-gtk/wizard.c:1228
+#: ../src/gui-wizard-gtk/wizard.c:1721
 msgid "Value"
 msgstr "Значення"
 
@@ -540,12 +392,6 @@ msgid "Analyzing did not start yet"
 msgstr "Аналіз ще не розпочато"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
-msgid "Any additional comments useful for diagnosing the problem?"
-msgstr ""
-"Маєте додаткові коментарі, які будуть корисними для виявлення причин "
-"проблеми?"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid ""
 "Backtrace provides developers with details of the crash, helping them track "
 "down the source of the problem. Please review it and remove any sensitive "
@@ -556,7 +402,7 @@ msgstr ""
 "ласка, перегляньте ці дані і вилучіть з них будь-які конфіденційні дані, "
 "якими ви не бажаєте ділитися:"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:5
+#: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid ""
 "Can create more informative backtrace if you installed additional debug "
 "packages"
@@ -564,27 +410,37 @@ msgstr ""
 "Повніші дані зворотного трасування можна буде отримати, якщо ви встановили "
 "додаткові діагностичні пакунки"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:6
+#: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid "Click 'Apply' to start reporting"
 msgstr "Натисніть кнопку «Застосувати», щоб розпочати звітування"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:7
+#: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "Configure _Events"
 msgstr "Налаштувати п_одії"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:8
+#: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "Details"
 msgstr "Подробиці"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:9
-msgid "How did this problem happen (step-by-step)? How can it be reproduced?"
+#: ../src/gui-wizard-gtk/wizard.glade.h:8
+#, fuzzy
+msgid ""
+"How did this problem happen (step-by-step)? How can it be reproduced? Any "
+"additional comments useful for diagnosing the problem?"
 msgstr ""
 "Які дії (покроково) призвели до виникнення проблеми? Чи можна відтворити "
 "проблему?"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:10
+#: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "I _agree with submitting the backtrace"
 msgstr "Я _погоджуюся на надсилання зворотного трасування"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:10
+msgid ""
+"If you want to report the problem to a different destination, collect "
+"additional information, or provide a better problem description and repeat "
+"reporting process, press 'Forward'."
+msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid ""
@@ -607,18 +463,22 @@ msgid "Reporting did not start yet"
 msgstr "Звітування ще не розпочато"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:15
+msgid "Reporting has finished. You can close this window now."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "Select how you would like to analyze the problem:"
 msgstr "Виберіть спосіб аналізу проблеми:"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:16
+#: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "Select how you would like to report the problem:"
 msgstr "Виберіть спосіб звітування щодо проблеми:"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:17
+#: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid "Size:"
 msgstr "Розмір:"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:18
+#: ../src/gui-wizard-gtk/wizard.glade.h:19
 msgid ""
 "Use this button to generate more informative backtrace after you installed "
 "additional debug packages"
@@ -626,725 +486,689 @@ msgstr ""
 "Скористайтеся цієї кнопкою для створення повніших даних зворотного "
 "трасування після встановлення додаткових діагностичних пакунків"
 
-#: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:45
-#, c-format
-msgid "Uploaded: %llu of %llu kbytes"
-msgstr "Вивантажено: %llu з %llu кілобайтів"
+#: ../src/gui-wizard-gtk/wizard.glade.h:20
+msgid "You need to fill the how to before you can proceed..."
+msgstr ""
 
-#: ../src/lib/event_config.c:294
+#: ../src/lib/event_config.c:298
 msgid "Missing mandatory value"
 msgstr "Не вистачає обов’язкового значення"
 
-#: ../src/lib/event_config.c:302
+#: ../src/lib/event_config.c:306
 #, c-format
 msgid "Invalid utf8 character '%c'"
 msgstr "Некоректний символ utf8 «%c»"
 
-#: ../src/lib/event_config.c:315
+#: ../src/lib/event_config.c:319
 #, c-format
 msgid "Invalid number '%s'"
 msgstr "Некоректне число «%s»"
 
-#: ../src/lib/event_config.c:327
+#: ../src/lib/event_config.c:331
 #, c-format
 msgid "Invalid boolean value '%s'"
 msgstr "Некоректне значення булевого типу «%s»"
 
-#: ../src/lib/event_config.c:333
+#: ../src/lib/event_config.c:337
 msgid "Unsupported option type"
 msgstr "Непідтримуваний тип параметра"
 
-#: ../src/lib/parse_options.c:29
-#, c-format
-msgid "Usage: %s\n"
+#: ../src/lib/parse_options.c:60
+#, fuzzy
+msgid "Usage: "
 msgstr "Використання: %s\n"
 
-#: ../src/plugins/abrt-action-analyze-backtrace.c:59
-msgid ""
-" [options] -d DIR\n"
-"\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
-"identifies crash function in dump directory DIR"
-msgstr ""
-" [параметри] -d КАТАЛОГ\n"
-"\n"
-"Проаналізувати зворотне трасування C/C++, створити хеш дублювання, оцінки "
-"зворотного трасування та визначити функцію, під час виконання якої сталося "
-"аварійне завершення, у каталозі дампів КАТАЛОГ"
-
-#.
-#. * The parser failed. Compute the duphash from the executable
-#. * instead of a backtrace.
-#. * and component only.  This is not supposed to happen often.
-#.
-#: ../src/plugins/abrt-action-analyze-backtrace.c:111
-#, c-format
-msgid "Backtrace parsing failed for %s"
-msgstr "Не вдалося обробити дані зворотного трасування для %s"
-
-#: ../src/plugins/abrt-action-analyze-c.c:166
-msgid ""
-" [-v] -d DIR\n"
-"\n"
-"Calculates and saves UUID of coredump in dump directory DIR"
-msgstr ""
-" [-v] -d КАТАЛОГ\n"
-"\n"
-"Обчислює і зберігає UUID дампу ядра у каталозі дампу КАТАЛОГ"
-
-#: ../src/plugins/abrt-action-analyze-oops.c:148
-msgid ""
-" [-vs] -d DIR\n"
-"\n"
-"Calculates and saves UUID and DUPHASH for oops dump directory DIR"
-msgstr ""
-" [-vs] -d КАТАЛОГ\n"
-"\n"
-"Обчислює і зберігає UUID та DUPHASH для каталогу аварійних дампів ядра "
-"КАТАЛОГ"
-
-#: ../src/plugins/abrt-action-analyze-python.c:34
-msgid ""
-" [-v] -d DIR\n"
-"\n"
-"Calculates and saves UUID and DUPHASH of python crash dumps"
-msgstr ""
-" [-v] -d КАТАЛОГ\n"
-"\n"
-"Обчислює і зберігає UUID та DUPHASH аварійних дампів Python"
-
-#: ../src/plugins/abrt-action-bugzilla.cpp:518
-#, c-format
-msgid "New bug id: %i"
-msgstr "Новий ідентифікатор запиту: %i"
-
-#: ../src/plugins/abrt-action-bugzilla.cpp:649
-msgid "Empty login or password, please check your configuration"
-msgstr "Порожнє ім'я або пароль. Перевірте ваші налаштування."
-
-#: ../src/plugins/abrt-action-bugzilla.cpp:663
-#, c-format
-msgid "Essential file '%s' is missing, can't continue.."
-msgstr "Не вистачає важливого файла «%s», продовження обробки неможливе…"
-
-#: ../src/plugins/abrt-action-bugzilla.cpp:667
-#, c-format
-msgid "Essential file '%s' is empty, can't continue.."
-msgstr "Важливий файл «%s» є порожнім, продовження обробки неможливе…"
-
-#: ../src/plugins/abrt-action-bugzilla.cpp:676
-#, c-format
-msgid "Logging into Bugzilla at %s"
-msgstr "Вхід до Bugzilla від імені %s"
-
-#: ../src/plugins/abrt-action-bugzilla.cpp:679
-msgid "Checking for duplicates"
-msgstr "Пошук дублікатів"
-
-#: ../src/plugins/abrt-action-bugzilla.cpp:701
-#: ../src/plugins/abrt-action-bugzilla.cpp:737
-msgid "Missing mandatory member 'bugs'"
-msgstr "Не вказано обов’язкового учасника «bugs»"
-
-#: ../src/plugins/abrt-action-bugzilla.cpp:720
-#: ../src/plugins/abrt-action-bugzilla.cpp:753
-#: ../src/plugins/abrt-action-bugzilla.cpp:829
-msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr "Збій get_bug_info(). Не вдалося зібрати потрібну інформацію."
-
-#: ../src/plugins/abrt-action-bugzilla.cpp:768
-msgid "Creating a new bug"
-msgstr "Створення нового повідомлення про ваду"
-
-#: ../src/plugins/abrt-action-bugzilla.cpp:773
-msgid "Bugzilla entry creation failed"
-msgstr "Не вдалося створити запис у Bugzilla"
-
-#: ../src/plugins/abrt-action-bugzilla.cpp:785
-#: ../src/plugins/abrt-action-bugzilla.cpp:885
-msgid "Logging out"
-msgstr "Завершення сеансу"
-
-#. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:803
-#, c-format
-msgid "Bug is already reported: %i"
-msgstr "Запит вже існує: %i"
-
-#: ../src/plugins/abrt-action-bugzilla.cpp:814
-#, c-format
-msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "Bugzilla не вдалося знайти батьківський запит для %d"
-
-#: ../src/plugins/abrt-action-bugzilla.cpp:844
-#, c-format
-msgid "Add %s to CC list"
-msgstr "Додати %s до списку CC"
-
-#: ../src/plugins/abrt-action-bugzilla.cpp:870
-#, c-format
-msgid "Adding new comment to bug %d"
-msgstr "Додавання коментаря до запиту (%d)"
-
-#: ../src/plugins/abrt-action-bugzilla.cpp:921
-msgid ""
-" [-v] -c CONFFILE -d DIR\n"
-"\n"
-"Reports problem to Bugzilla"
-msgstr ""
-" [-v] -c ФАЙЛ_НАЛАШТУВАНЬ -d КАТАЛОГ\n"
-"\n"
-"Повідомити про аварійне завершення на Bugzilla"
-
-#: ../src/plugins/abrt-action-bugzilla.cpp:934
-#: ../src/plugins/abrt-action-rhtsupport.c:292
-msgid "Configuration file (may be given many times)"
-msgstr "Файл налаштувань (можна вказувати декілька файлів)"
-
-#: ../src/plugins/abrt-action-generate-backtrace.c:243
-msgid ""
-" [options] -d DIR\n"
-"\n"
-"Generates and saves backtrace for coredump in dump directory DIR"
-msgstr ""
-" [параметри] -d КАТАЛОГ\n"
-"\n"
-"Створити і зберегти дані зворотного трасування до файла coredump у каталозі "
-"дампів КАТАЛОГ"
-
-#: ../src/plugins/abrt-action-generate-backtrace.c:257
-msgid "Additional debuginfo directories"
-msgstr "Додаткові каталоги діагностичних даних"
-
-#: ../src/plugins/abrt-action-generate-backtrace.c:258
-msgid "Kill gdb if it runs for more than N seconds"
-msgstr "Завершити роботу gdb, якщо вона триває понад N секунд"
-
-#. Don't be completely silent. gdb run takes a few seconds,
-#. * it is useful to let user know it (maybe) worked.
-#.
-#: ../src/plugins/abrt-action-generate-backtrace.c:298
-#, c-format
-msgid "Backtrace is generated and saved, %u bytes"
-msgstr "Створено і збережено дані зворотного трасування, %u байтів"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:85
-msgid "n"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:100
-#, python-format
-msgid "Extracting cpio from %s"
-msgstr "Видобування cpio з %s"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:105
-#, python-format
-msgid "Can't write to '%s': %s"
-msgstr "Не вдалося виконати запис до «%s»: %s"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:119
-#, python-format
-msgid "Can't extract package '%s'"
-msgstr "Не вдалося видобути пакунок: «%s»"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:127
-#, python-format
-msgid "Caching files from %s made from %s"
-msgstr "Кешування файлів з %s виконано з %s"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:137
-#, python-format
-msgid "Can't extract files from '%s'"
-msgstr "Не вдалося видобути файли з «%s»"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:161
-#: ../src/plugins/abrt-action-install-debuginfo.py:171
-#, python-format
-msgid "Downloading (%i of %i) %s: %3u%%"
-msgstr "Звантаження (%i з %i) %s : %3u%%"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:196
-#, python-format
-msgid "Error initializing yum (YumBase.doConfigSetup): '%s'"
-msgstr ""
-
-#. This is somewhat "magic", it unpacks the metadata making it usable.
-#. Looks like this is the moment when yum talks to remote servers,
-#. which takes time (sometimes minutes), let user know why
-#. we have "paused":
-#: ../src/plugins/abrt-action-install-debuginfo.py:239
-msgid "Looking for needed packages in repositories"
-msgstr "Пошук потрібних пакунків у сховищах"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:243
-#, python-format
-msgid "Error retrieving metadata: '%s'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:253
-#, python-format
-msgid "Error retrieving filelists: '%s'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:286
-#, python-format
-msgid "Can't find packages for %u debuginfo files"
-msgstr "Не вдалося знайти пакунки для %u файлів діагностичних даних"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:288
-#, python-format
-msgid "Packages to download: %u"
-msgstr "Пакунки, які слід звантажити: %u"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:289
-#, python-format
-msgid "Downloading %.2fMb, installed size: %.2fMb"
-msgstr "Об’єм звантаження: %.2f МБ, об’єм встановлення: %.2f МБ"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:297
-msgid "Is this ok? [y/N] "
-msgstr "Виконати дію? [y/N] "
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:314
-#, python-format
-msgid "Downloading package %s failed"
-msgstr "Спроба звантаження пакунка %s зазнала невдачі"
-
-#. recursively delete the temp dir on failure
-#: ../src/plugins/abrt-action-install-debuginfo.py:325
-msgid "Unpacking failed, aborting download..."
-msgstr "Спроба розпакування зазнала невдачі, перериваємо звантаження…"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:332
-#, python-format
-msgid "All downloaded packages have been extracted, removing %s"
-msgstr "Дані всіх звантажених пакунків було видобуто, вилучаємо %s"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:337
-#, python-format
-msgid "Can't remove %s, probably contains an error log"
-msgstr "Не вдалося вилучити %s, ймовірно, містить журнал помилки"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:371
-#, python-format
-msgid "Can't remove '%s': %s"
-msgstr "Не вдалося вилучити «%s»: %s"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:379
-msgid "Exiting on user command"
-msgstr "Завершення роботи за бажанням користувача"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:411
-#, python-format
-msgid ""
-"Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR] [--size_mb=SIZE]\n"
-"\n"
-"Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
-"to CACHEDIR, using TMPDIR as temporary staging area.\n"
-"Old files in CACHEDIR are deleted until it is smaller than SIZE.\n"
-"\n"
-"    -v          Be verbose\n"
-"    -y          Noninteractive, assume 'Yes' to all questions\n"
-"    --ids       Default: build_ids\n"
-"    --tmpdir    Default: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
-"    --cache     Default: /var/cache/abrt-di\n"
-"    --size_mb   Default: 4096\n"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:466
-#, python-format
-msgid "Can't open %s: %s"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:496
-#, python-format
-msgid "Coredump references %u debuginfo files, %u of them are not installed"
-msgstr ""
-"Дамп ядра посилається на %u файлів діагностичних даних, %u з яких не "
-"встановлено."
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:507
-#, python-format
-msgid "Missing debuginfo file: %s"
-msgstr "Не вистачає файл діагностичних даних: %s"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:510
-#, python-format
-msgid "All %u debuginfo files are available"
-msgstr "Доступні всі файли діагностичних даних (%u)"
-
-#: ../src/plugins/abrt-action-kerneloops.c:105
-#, c-format
-msgid "Submitting oops report to %s"
-msgstr "Надсилання звіту про збій до %s"
-
-#: ../src/plugins/abrt-action-kerneloops.c:142
-msgid ""
-" [-v] [-c CONFFILE]... -d DIR\n"
-"\n"
-"Reports kernel oops to kerneloops.org (or similar) site"
-msgstr ""
-" [-v] [-c ФАЙЛ_НАЛАШТУВАНЬ]... -d КАТАЛОГ\n"
-"\n"
-"Повідомити про збій ядра на kerneloops.org (або подібному) сайті"
-
-#: ../src/plugins/abrt-action-kerneloops.c:155
-msgid "Configuration file"
-msgstr "Файл налаштувань"
-
-#: ../src/plugins/abrt-action-mailx.c:109
-msgid "Sending an email..."
-msgstr "Надсилання пошти…"
-
-#: ../src/plugins/abrt-action-mailx.c:143
-msgid ""
-" [-v] -d DIR [-c CONFFILE]\n"
-"\n"
-"Sends contents of a dump directory DIR via email"
-msgstr ""
-
-#: ../src/plugins/abrt-action-mailx.c:156
-#: ../src/plugins/abrt-action-upload.c:259
-msgid "Config file"
-msgstr "Файл налаштувань"
-
-#: ../src/plugins/abrt-action-print.c:39
-msgid ""
-" [-v] -d DIR [-o FILE] [-a yes/no]\n"
-"\n"
-"Prints problem information to standard output or FILE"
-msgstr ""
-" [-v] [-o ФАЙЛ] -d КАТАЛОГ [-o ФАЙЛ] [-a yes/no]\n"
-"\n"
-"Вивести дані щодо проблеми до стандартного виводу або файла ФАЙЛ"
-
-#: ../src/plugins/abrt-action-print.c:54
-msgid "Output file"
-msgstr "Вихідний файл"
-
-#: ../src/plugins/abrt-action-print.c:55
-msgid "Append to, or overwrite FILE"
-msgstr "Дописати або перезаписати ФАЙЛ"
-
-#: ../src/plugins/abrt-action-print.c:56
-msgid "Create reported_to in DIR"
-msgstr "Створити reported_to у КАТАЛОЗІ"
-
-#: ../src/plugins/abrt-action-print.c:102
-#, c-format
-msgid "The report was appended to %s"
-msgstr "Звіт було долучено до %s"
-
-#: ../src/plugins/abrt-action-print.c:102
-#, c-format
-msgid "The report was stored to %s"
-msgstr "Звіт було збережено до %s"
-
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../src/plugins/abrt-action-rhtsupport.c:41
-#: ../src/plugins/abrt-action-upload.c:119
-msgid "Compressing data"
-msgstr "Стискання даних"
-
-#: ../src/plugins/abrt-action-rhtsupport.c:73
-msgid "Empty RHTS login or password"
-msgstr "Порожнє значення імені користувача або пароля RHTS"
-
-#: ../src/plugins/abrt-action-rhtsupport.c:101
-msgid "Can't create a temporary directory in /tmp"
-msgstr "Не вдалося створити каталог тимчасових даних у /tmp"
-
-#: ../src/plugins/abrt-action-rhtsupport.c:194
-msgid "Creating a new case..."
-msgstr "Створення нового випадку…"
-
-#: ../src/plugins/abrt-action-rhtsupport.c:279
-msgid ""
-" [-v] -c CONFFILE -d DIR\n"
-"\n"
-"Reports a problem to RHTSupport"
-msgstr ""
-" [-v] -c ФАЙЛ_НАЛАШТУВАНЬ -d КАТАЛОГ\n"
-"\n"
-"Повідомити про проблему до RHTSupport"
-
-#: ../src/plugins/abrt-action-trim-files.c:154
-msgid ""
-" [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
-"\n"
-"Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
-msgstr ""
-" [-v] [-d РОЗМІР:КАТАЛОГ]... [-f РОЗМІР:КАТАЛОГ]... [-p КАТАЛОГ]\n"
-"\n"
-"Вилучити каталоги дампів (-d) або файли (-f) у КАТАЛОГах, якщо їхні розміри "
-"більші за РОЗМІР"
-
-#: ../src/plugins/abrt-action-trim-files.c:167
-msgid "Delete dump dirs"
-msgstr "Вилучити каталоги дампів"
-
-#: ../src/plugins/abrt-action-trim-files.c:168
-msgid "Delete files"
-msgstr "Вилучити файли"
-
-#: ../src/plugins/abrt-action-trim-files.c:169
-msgid "Preserve this dump dir"
-msgstr "Зберегти цей каталог дампів"
-
-#: ../src/plugins/abrt-action-upload.c:63
-#, c-format
-msgid "Sending %s to %s"
-msgstr "Надсилання %s до %s"
-
-#. This ends up a "reporting status message" in abrtd
-#: ../src/plugins/abrt-action-upload.c:96
-#, c-format
-msgid "Successfully sent %s to %s"
-msgstr "Успішно надіслано %s до %s"
-
-#: ../src/plugins/abrt-action-upload.c:210
-#, c-format
-msgid "Archive is created: '%s'"
-msgstr "Створено архів: «%s»"
-
-#: ../src/plugins/abrt-action-upload.c:245
-msgid ""
-" [-v] -d DIR [-c CONFFILE] [-u URL]\n"
-"\n"
-"Uploads compressed tarball of dump directory DIR"
-msgstr ""
-" [-v] -d КАТАЛОГ [-c ФАЙЛ_НАЛАШТУВАНЬ] [-u АДРЕСА]\n"
-"\n"
-"Вивантажити стиснутий архів каталогу дампу КАТАЛОГ за вказаною адресою"
-
-#: ../src/plugins/abrt-action-upload.c:260
-msgid "Base URL to upload to"
-msgstr "Базова адреса для вивантаження даних"
-
-#: ../src/plugins/abrt-dump-oops.c:569
-msgid ""
-" [-vsrowx] [-d DIR] FILE\n"
-"\n"
-"Extract oops from syslog/dmesg file"
-msgstr ""
-" [-vsrowx] [-d КАТАЛОГ] ФАЙЛ\n"
-"\n"
-"Видобути повідомлення про аварії (oops) з файла syslog/dmesg"
-
-#: ../src/plugins/abrt-dump-oops.c:586
-msgid "Parse kernel's message buffer before parsing FILE"
-msgstr "Обробити буфер повідомлень ядра до обробки ФАЙЛа"
-
-#: ../src/plugins/abrt-dump-oops.c:587
-msgid "Print found oopses on standard output"
-msgstr "Вивести знайдені повідомлення про аварії (oops) до стандартного виводу"
-
-#: ../src/plugins/abrt-dump-oops.c:588
-msgid "Do not exit, watch the file for new oopses"
-msgstr ""
-"Не завершувати роботу, спостерігати за появою нових повідомлень про аварії "
-"(oops) у файлі"
-
-#. oopses don't contain any sensitive info, and even
-#. * the old koops app was showing the oopses to all users
-#.
-#: ../src/plugins/abrt-dump-oops.c:592
-msgid "Create ABRT dump in DIR for every oops found"
-msgstr ""
-"Створити дамп ABRT у КАТАЛОЗІ для кожного знайденого повідомлення про аварію "
-"(oops)"
-
-#: ../src/plugins/abrt-dump-oops.c:593
-msgid "Make the dump directory world readable"
-msgstr "Зробити каталог дампу доступним для всіх користувачів"
-
-#: ../src/plugins/abrt-retrace-client.c:890
-msgid "log to syslog"
-msgstr "записувати до журналу syslog"
-
-#: ../src/plugins/analyze_LocalGDB.xml.in.h:1
-msgid "Download debuginfo packages and generate backtrace locally using GDB"
-msgstr ""
-"Отримати пакунки debuginfo і створити дані зворотного трасування локально за "
-"допомогою GDB"
-
-#: ../src/plugins/analyze_LocalGDB.xml.in.h:2
-msgid "Local GNU Debugger"
-msgstr "Локальний зневаджувач GNU"
-
-#: ../src/plugins/analyze_LocalGDB.xml.in.h:3
-msgid ""
-"Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
-"to remote machines."
-msgstr ""
-"Доведеться звантажити пакунки debuginfo. Звантаження може тривати досить "
-"довго, пакунки, які буде встановлено, можуть значно зменшити об’єм вільного "
-"місця на диску. Втім, на відміну від RetraceServer, не доведеться надсилати "
-"дамп ядра на віддалений комп’ютер."
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:1
-msgid "Address of the retrace server"
-msgstr "Адреса сервера повторного трасування"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:2
-msgid "Retrace server URL"
-msgstr "Адреса сервера повторного трасування"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:3
-msgid "Send core dump to remote retrace server for analysis"
-msgstr "Надіслати дамп ядра на сервер повторного трасування для аналізу"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:4
-msgid ""
-"Uploads coredump to a server, which generates backtrace and returns it. "
-"Pros: no need for debuginfo downloads. Retrace server's database of "
-"debuginfos is more complete. Retrace server may generate better backtraces. "
-"Cons: coredump you upload contains all the data from the crashed program, "
-"including your private data, if any."
-msgstr ""
-"Вивантажує дамп ядра на сервер. Сервер створить дані зворотного трасування і "
-"поверне їх вам. Переваги: не потрібно встановлювати пакунки debuginfo. База "
-"даних пакунків debuginfo може бути повнішою за вашу. Сервер повторного "
-"трасування може отримати кращі дані зворотного трасування. Недоліки: дамп "
-"ядра, який буде вивантажено, міститиме всі дані з аварійної програми, "
-"зокрема конфіденційні дані, якщо такі там зберігалися."
-
-#: ../src/plugins/report_Bugzilla.xml.in.h:1
-msgid "Address of Bugzilla server"
-msgstr "Адреса сервера Bugzilla"
-
-#: ../src/plugins/report_Bugzilla.xml.in.h:2
-msgid "Bugzilla"
-msgstr "Bugzilla"
-
-#: ../src/plugins/report_Bugzilla.xml.in.h:3
-msgid "Bugzilla URL"
-msgstr "Адреса Bugzilla"
-
-#: ../src/plugins/report_Bugzilla.xml.in.h:4
-msgid "Bugzilla account password"
-msgstr "Пароль облікового запису Bugzilla"
-
-#: ../src/plugins/report_Bugzilla.xml.in.h:5
-msgid "Bugzilla account user name"
-msgstr "Ім’я користувача облікового запису Bugzilla"
-
-#: ../src/plugins/report_Bugzilla.xml.in.h:6
-#: ../src/plugins/report_RHTSupport.xml.in.h:2
-msgid "Check SSL key validity"
-msgstr "Перевірити чинність ключа SSL"
-
-#: ../src/plugins/report_Bugzilla.xml.in.h:7
-#: ../src/plugins/report_RHTSupport.xml.in.h:3
-msgid "Password"
-msgstr "Пароль"
-
-#: ../src/plugins/report_Bugzilla.xml.in.h:8
-msgid "Report to Bugzilla bug tracker"
-msgstr "Повідомити до системи стеження за вадами Bugzilla"
-
-#: ../src/plugins/report_Bugzilla.xml.in.h:9
-msgid "User name"
-msgstr "Ім'я користувача"
-
-#: ../src/plugins/report_Bugzilla.xml.in.h:10
-#: ../src/plugins/report_RHTSupport.xml.in.h:10
-msgid "Verify SSL"
-msgstr "Перевірити SSL"
-
-#: ../src/plugins/report_Bugzilla.xml.in.h:11
-msgid ""
-"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
-"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
-msgstr ""
-"Створити обліковий запис bugzilla.redhat.com можна &lt;a href=\"https://"
-"bugzilla.redhat.com/createaccount.cgi\"&gt;тут&lt;/a&gt;"
-
-#: ../src/plugins/report_Kerneloops.xml.in.h:1
-msgid "Kerneloops URL"
-msgstr "Адреса Kerneloops"
-
-#: ../src/plugins/report_Kerneloops.xml.in.h:2
-msgid "Kerneloops.org"
-msgstr "Kerneloops.org"
-
-#: ../src/plugins/report_Kerneloops.xml.in.h:3
-msgid "Oops server url"
-msgstr "Адреса сервера некритичних помилок"
-
-#: ../src/plugins/report_Kerneloops.xml.in.h:4
-msgid "Send kernel problems to oops tracker"
-msgstr ""
-"Надіслати повідомлення про проблеми з ядром до системи стеження за вадами"
-
-#: ../src/plugins/report_Mailx.xml.in.h:1
-msgid "Mailx"
-msgstr "Mailx"
-
-#: ../src/plugins/report_Mailx.xml.in.h:2
-msgid "Message subject"
-msgstr "Тема повідомлення"
-
-#: ../src/plugins/report_Mailx.xml.in.h:3
-msgid "Recipient"
-msgstr "Отримувач"
-
-#: ../src/plugins/report_Mailx.xml.in.h:4
-msgid "Recipient's email"
-msgstr "Ел. пошта отримувача"
-
-#: ../src/plugins/report_Mailx.xml.in.h:5
-msgid "Send Binary Data"
-msgstr "Надіслати бінарні дані"
-
-#: ../src/plugins/report_Mailx.xml.in.h:6
-msgid "Send binary files like coredump"
-msgstr "Надіслати бінарні файли як дамп ядра (coredump)"
-
-#: ../src/plugins/report_Mailx.xml.in.h:7
-msgid "Send via email"
-msgstr "Надіслати електронною поштою"
-
-#: ../src/plugins/report_Mailx.xml.in.h:8
-msgid "Sender"
-msgstr "Відправник"
-
-#: ../src/plugins/report_Mailx.xml.in.h:9
-msgid "Sender's email"
-msgstr "Адреса відправника"
-
-#: ../src/plugins/report_Mailx.xml.in.h:10
-msgid "Subject"
-msgstr "Тема"
-
-#: ../src/plugins/report_RHTSupport.xml.in.h:1
-msgid "Address of the Red Hat support portal"
-msgstr "Адреса порталу підтримки користувачів Red Hat"
-
-#: ../src/plugins/report_RHTSupport.xml.in.h:4
-msgid "RH Portal URL"
-msgstr "Адреса порталу RH"
-
-#: ../src/plugins/report_RHTSupport.xml.in.h:5
-msgid "Red Hat Customer Support"
-msgstr "Підтримка користувачів Red Hat"
-
-#: ../src/plugins/report_RHTSupport.xml.in.h:6
-msgid "Red Hat customer password"
-msgstr "Пароль користувача Red Hat"
-
-#: ../src/plugins/report_RHTSupport.xml.in.h:7
-msgid "Red Hat customer user name"
-msgstr "Ім’я користувача Red Hat"
-
-#: ../src/plugins/report_RHTSupport.xml.in.h:8
-msgid "Report to Red Hat support"
-msgstr "Повідомити до служби підтримки Red Hat"
-
-#: ../src/plugins/report_RHTSupport.xml.in.h:9
-msgid "Username"
-msgstr "Користувач"
+#~ msgid "ABRT notification applet"
+#~ msgstr "Аплет сповіщення ABRT"
+
+#~ msgid "Automatic Bug Reporting Tool"
+#~ msgstr "ABRT — автоматичне звітування про помилки"
+
+#~ msgid "A crash in the %s package has been detected"
+#~ msgstr "Було виявлено збій у пакунку %s"
+
+#~ msgid "A crash has been detected"
+#~ msgstr "Виявлено збій у пакеті"
+
+#~ msgid "ABRT service is not running"
+#~ msgstr "Службу ABRT не запущено"
+
+#~ msgid "Warning"
+#~ msgstr "Попередження"
+
+#~ msgid ""
+#~ "Notification area applet that notifies users about issues detected by ABRT"
+#~ msgstr ""
+#~ "Аплет у області сповіщень для попередження користувача про виявлені ABRT "
+#~ "проблеми"
+
+#~ msgid "translator-credits"
+#~ msgstr ""
+#~ "Максим Дзюманенко <dziumanenko@gmail.com>\n"
+#~ "Юрій Чорноіван <yurchor@ukr.net>"
+
+#~ msgid "Hide"
+#~ msgstr "Сховати"
+
+#~ msgid "Report"
+#~ msgstr "Повідомити"
+
+#~ msgid "Show"
+#~ msgstr "Показати"
+
+#~ msgid "A Problem has Occurred"
+#~ msgstr "Виникла проблема"
+
+#~ msgid "Open ABRT"
+#~ msgstr "Відкрити ABRT"
+
+#~ msgid ""
+#~ "Usage: %s -l[f] [-D BASE_DIR]...]\n"
+#~ "   or: %s -r[y] CRASH_DIR\n"
+#~ "   or: %s -i[b] CRASH_DIR\n"
+#~ "   or: %s -d CRASH_DIR\n"
+#~ "\n"
+#~ "\t-l, --list\t\tList not yet reported problems\n"
+#~ "\t  -f, --full\t\tList all problems\n"
+#~ "\t-D BASE_DIR\t\tDirectory to list problems from\n"
+#~ "\t\t\t\t(default: -D $HOME/.abrt/spool -D %s)\n"
+#~ "\n"
+#~ "\t-r, --report\t\tSend a report about CRASH_DIR\n"
+#~ "\t  -y, --always\t\t...without editing and asking\n"
+#~ "\t-i, --info\t\tPrint detailed information about CRASH_DIR\n"
+#~ "\t  -f, --full\t\t...including multi-line entries\n"
+#~ "\t\t\t\tNote: -if will run analyzers\n"
+#~ "\t\t\t\t(if this CRASH_DIR have defined analyzers)\n"
+#~ "\t-d, --delete\t\tRemove CRASH_DIR\n"
+#~ "\n"
+#~ "\t-V, --version\t\tDisplay version and exit\n"
+#~ "\t-v, --verbose\t\tBe verbose\n"
+#~ msgstr ""
+#~ "Використання: %s -l[f] [-D БАЗОВИЙ_КАТАЛОГ]...]\n"
+#~ "   або: %s -r[y] КАТАЛОГ_АВАРІЇ\n"
+#~ "   або: %s -i[b] КАТАЛОГ_АВАРІЇ\n"
+#~ "   або: %s -d КАТАЛОГ_АВАРІЇ\n"
+#~ "\n"
+#~ "\t-l, --list\t\tПоказати список всіх проблеми, для яких ще не створено "
+#~ "звітів\n"
+#~ "\t  -f, --full\t\tПоказати список всіх проблем\n"
+#~ "\t-D БАЗОВИЙ_КАТАЛОГ\t\tКаталог, проблеми з якого слід включити до "
+#~ "списку\n"
+#~ "\t\t\t\t(типові значення: -D $HOME/.abrt/spool -D %s)\n"
+#~ "\n"
+#~ "\t-r, --report\t\tНадіслати звіт щодо каталогу КАТАЛОГ_АВАРІЇ\n"
+#~ "\t  -y, --always\t\t...без редагування і додаткових питань\n"
+#~ "\t-i, --info\t\tПоказати докладні дані щодо каталогу КАТАЛОГ_АВАРІЇ\n"
+#~ "\t  -f, --full\t\t...зокрема багаторядкові записи\n"
+#~ "\t\t\t\tЗауваження: -if запустити інструменти аналізу\n"
+#~ "\t\t\t\t(якщо у каталозі КАТАЛОГ_АВАРІЇ визначено інструменти аналізу)\n"
+#~ "\t-d, --delete\t\tВилучити каталог КАТАЛОГ_АВАРІЇ\n"
+#~ "\n"
+#~ "\t-V, --version\t\tПоказати дані щодо версії і завершити роботу\n"
+#~ "\t-v, --verbose\t\tПоказати докладні дані\n"
+
+#~ msgid "You must specify exactly one operation"
+#~ msgstr "Вам слід вказати точно одну дію"
+
+#~ msgid "Choose option [0 - %u]: "
+#~ msgstr "Виберіть варіант [0 — %u]: "
+
+#~ msgid "Report using %s?"
+#~ msgstr "Створити звіт за допомогою %s?"
+
+#~ msgid "Skipping..."
+#~ msgstr "Пропускаємо…"
+
+#~ msgid ""
+#~ " [-v] -d DIR\n"
+#~ "\n"
+#~ "Query package database and save package name, component, and description"
+#~ msgstr ""
+#~ " [-v] -d КАТАЛОГ\n"
+#~ "\n"
+#~ "Отримати дані з бази даних пакунків і зберегти назву пакунка, компонент "
+#~ "та опис"
+
+#~ msgid "Dump directory"
+#~ msgstr "Каталог дампу"
+
+#~ msgid ""
+#~ " [-vs] -d DIR -e EVENT\n"
+#~ "   or: "
+#~ msgstr ""
+#~ " [-vs] -d КАТАЛОГ -e ПОДІЯ\n"
+#~ "   або: "
+
+#~ msgid "Handle EVENT"
+#~ msgstr "Обробити ПОДІЮ"
+
+#~ msgid " [options]"
+#~ msgstr " [параметри]"
+
+#~ msgid "Use UID as client uid"
+#~ msgstr "Використати UID як унікальний ідентифікатор клієнта"
+
+#~ msgid ""
+#~ "The size of the report exceeded the quota. Please check system's "
+#~ "MaxCrashReportsSize value in abrt.conf."
+#~ msgstr ""
+#~ "Розмір звіту перевищує припустимий. Змініть значення MaxCrashReportsSize "
+#~ "у файлі abrt.conf"
+
+#~ msgid "Do not daemonize"
+#~ msgstr "Не запускати фонової служби"
+
+#~ msgid "Log to syslog even with -d"
+#~ msgstr "Записувати до журналу syslog навіть з параметром -d"
+
+#~ msgid "Exit after SEC seconds of inactivity"
+#~ msgstr "Завершувати роботу після SEC секунд бездіяльності"
+
+#~ msgid "Reported"
+#~ msgstr "Повідомлено"
+
+#~ msgid "Problem"
+#~ msgstr "Проблема"
+
+#~ msgid "Last occurrence"
+#~ msgstr "Останній випадок"
+
+#~ msgid "_File"
+#~ msgstr "_Файл"
+
+#~ msgid "_Edit"
+#~ msgstr "З_міни"
+
+#~ msgid "_Help"
+#~ msgstr "_Довідка"
+
+#~ msgid "_Event configuration"
+#~ msgstr "_Налаштування події"
+
+#~ msgid "Online _Help"
+#~ msgstr "Інтернет-_довідка"
+
+#~ msgid "View and report application crashes"
+#~ msgstr "Переглянути збої програми та створити звіт"
+
+#~ msgid ""
+#~ " [-vp] [DIR]...\n"
+#~ "\n"
+#~ "Shows list of ABRT dump directories in specified DIR(s)\n"
+#~ "(default DIRs: "
+#~ msgstr ""
+#~ " [-vp] [КАТАЛОГ]...\n"
+#~ "\n"
+#~ "Показати список каталогів дампів ABRT у вказаних КАТАЛОГах\n"
+#~ "(типовими є такі КАТАЛОГи: "
+
+#~ msgid "Any additional comments useful for diagnosing the problem?"
+#~ msgstr ""
+#~ "Маєте додаткові коментарі, які будуть корисними для виявлення причин "
+#~ "проблеми?"
+
+#~ msgid "Uploaded: %llu of %llu kbytes"
+#~ msgstr "Вивантажено: %llu з %llu кілобайтів"
+
+#~ msgid ""
+#~ " [options] -d DIR\n"
+#~ "\n"
+#~ "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, "
+#~ "and identifies crash function in dump directory DIR"
+#~ msgstr ""
+#~ " [параметри] -d КАТАЛОГ\n"
+#~ "\n"
+#~ "Проаналізувати зворотне трасування C/C++, створити хеш дублювання, оцінки "
+#~ "зворотного трасування та визначити функцію, під час виконання якої "
+#~ "сталося аварійне завершення, у каталозі дампів КАТАЛОГ"
+
+#~ msgid "Backtrace parsing failed for %s"
+#~ msgstr "Не вдалося обробити дані зворотного трасування для %s"
+
+#~ msgid ""
+#~ " [-v] -d DIR\n"
+#~ "\n"
+#~ "Calculates and saves UUID of coredump in dump directory DIR"
+#~ msgstr ""
+#~ " [-v] -d КАТАЛОГ\n"
+#~ "\n"
+#~ "Обчислює і зберігає UUID дампу ядра у каталозі дампу КАТАЛОГ"
+
+#~ msgid ""
+#~ " [-vs] -d DIR\n"
+#~ "\n"
+#~ "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
+#~ msgstr ""
+#~ " [-vs] -d КАТАЛОГ\n"
+#~ "\n"
+#~ "Обчислює і зберігає UUID та DUPHASH для каталогу аварійних дампів ядра "
+#~ "КАТАЛОГ"
+
+#~ msgid ""
+#~ " [-v] -d DIR\n"
+#~ "\n"
+#~ "Calculates and saves UUID and DUPHASH of python crash dumps"
+#~ msgstr ""
+#~ " [-v] -d КАТАЛОГ\n"
+#~ "\n"
+#~ "Обчислює і зберігає UUID та DUPHASH аварійних дампів Python"
+
+#~ msgid "New bug id: %i"
+#~ msgstr "Новий ідентифікатор запиту: %i"
+
+#~ msgid "Empty login or password, please check your configuration"
+#~ msgstr "Порожнє ім'я або пароль. Перевірте ваші налаштування."
+
+#~ msgid "Essential file '%s' is missing, can't continue.."
+#~ msgstr "Не вистачає важливого файла «%s», продовження обробки неможливе…"
+
+#~ msgid "Essential file '%s' is empty, can't continue.."
+#~ msgstr "Важливий файл «%s» є порожнім, продовження обробки неможливе…"
+
+#~ msgid "Logging into Bugzilla at %s"
+#~ msgstr "Вхід до Bugzilla від імені %s"
+
+#~ msgid "Checking for duplicates"
+#~ msgstr "Пошук дублікатів"
+
+#~ msgid "Missing mandatory member 'bugs'"
+#~ msgstr "Не вказано обов’язкового учасника «bugs»"
+
+#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
+#~ msgstr "Збій get_bug_info(). Не вдалося зібрати потрібну інформацію."
+
+#~ msgid "Creating a new bug"
+#~ msgstr "Створення нового повідомлення про ваду"
+
+#~ msgid "Bugzilla entry creation failed"
+#~ msgstr "Не вдалося створити запис у Bugzilla"
+
+#~ msgid "Logging out"
+#~ msgstr "Завершення сеансу"
+
+#~ msgid "Bug is already reported: %i"
+#~ msgstr "Запит вже існує: %i"
+
+#~ msgid "Bugzilla couldn't find parent of bug %d"
+#~ msgstr "Bugzilla не вдалося знайти батьківський запит для %d"
+
+#~ msgid "Add %s to CC list"
+#~ msgstr "Додати %s до списку CC"
+
+#~ msgid "Adding new comment to bug %d"
+#~ msgstr "Додавання коментаря до запиту (%d)"
+
+#~ msgid ""
+#~ " [-v] -c CONFFILE -d DIR\n"
+#~ "\n"
+#~ "Reports problem to Bugzilla"
+#~ msgstr ""
+#~ " [-v] -c ФАЙЛ_НАЛАШТУВАНЬ -d КАТАЛОГ\n"
+#~ "\n"
+#~ "Повідомити про аварійне завершення на Bugzilla"
+
+#~ msgid "Configuration file (may be given many times)"
+#~ msgstr "Файл налаштувань (можна вказувати декілька файлів)"
+
+#~ msgid ""
+#~ " [options] -d DIR\n"
+#~ "\n"
+#~ "Generates and saves backtrace for coredump in dump directory DIR"
+#~ msgstr ""
+#~ " [параметри] -d КАТАЛОГ\n"
+#~ "\n"
+#~ "Створити і зберегти дані зворотного трасування до файла coredump у "
+#~ "каталозі дампів КАТАЛОГ"
+
+#~ msgid "Additional debuginfo directories"
+#~ msgstr "Додаткові каталоги діагностичних даних"
+
+#~ msgid "Kill gdb if it runs for more than N seconds"
+#~ msgstr "Завершити роботу gdb, якщо вона триває понад N секунд"
+
+#~ msgid "Backtrace is generated and saved, %u bytes"
+#~ msgstr "Створено і збережено дані зворотного трасування, %u байтів"
+
+#~ msgid "Extracting cpio from %s"
+#~ msgstr "Видобування cpio з %s"
+
+#~ msgid "Can't write to '%s': %s"
+#~ msgstr "Не вдалося виконати запис до «%s»: %s"
+
+#~ msgid "Can't extract package '%s'"
+#~ msgstr "Не вдалося видобути пакунок: «%s»"
+
+#~ msgid "Caching files from %s made from %s"
+#~ msgstr "Кешування файлів з %s виконано з %s"
+
+#~ msgid "Can't extract files from '%s'"
+#~ msgstr "Не вдалося видобути файли з «%s»"
+
+#~ msgid "Downloading (%i of %i) %s: %3u%%"
+#~ msgstr "Звантаження (%i з %i) %s : %3u%%"
+
+#~ msgid "Looking for needed packages in repositories"
+#~ msgstr "Пошук потрібних пакунків у сховищах"
+
+#~ msgid "Can't find packages for %u debuginfo files"
+#~ msgstr "Не вдалося знайти пакунки для %u файлів діагностичних даних"
+
+#~ msgid "Packages to download: %u"
+#~ msgstr "Пакунки, які слід звантажити: %u"
+
+#~ msgid "Downloading %.2fMb, installed size: %.2fMb"
+#~ msgstr "Об’єм звантаження: %.2f МБ, об’єм встановлення: %.2f МБ"
+
+#~ msgid "Is this ok? [y/N] "
+#~ msgstr "Виконати дію? [y/N] "
+
+#~ msgid "Downloading package %s failed"
+#~ msgstr "Спроба звантаження пакунка %s зазнала невдачі"
+
+#~ msgid "Unpacking failed, aborting download..."
+#~ msgstr "Спроба розпакування зазнала невдачі, перериваємо звантаження…"
+
+#~ msgid "All downloaded packages have been extracted, removing %s"
+#~ msgstr "Дані всіх звантажених пакунків було видобуто, вилучаємо %s"
+
+#~ msgid "Can't remove %s, probably contains an error log"
+#~ msgstr "Не вдалося вилучити %s, ймовірно, містить журнал помилки"
+
+#~ msgid "Can't remove '%s': %s"
+#~ msgstr "Не вдалося вилучити «%s»: %s"
+
+#~ msgid "Exiting on user command"
+#~ msgstr "Завершення роботи за бажанням користувача"
+
+#~ msgid "Coredump references %u debuginfo files, %u of them are not installed"
+#~ msgstr ""
+#~ "Дамп ядра посилається на %u файлів діагностичних даних, %u з яких не "
+#~ "встановлено."
+
+#~ msgid "Missing debuginfo file: %s"
+#~ msgstr "Не вистачає файл діагностичних даних: %s"
+
+#~ msgid "All %u debuginfo files are available"
+#~ msgstr "Доступні всі файли діагностичних даних (%u)"
+
+#~ msgid "Submitting oops report to %s"
+#~ msgstr "Надсилання звіту про збій до %s"
+
+#~ msgid ""
+#~ " [-v] [-c CONFFILE]... -d DIR\n"
+#~ "\n"
+#~ "Reports kernel oops to kerneloops.org (or similar) site"
+#~ msgstr ""
+#~ " [-v] [-c ФАЙЛ_НАЛАШТУВАНЬ]... -d КАТАЛОГ\n"
+#~ "\n"
+#~ "Повідомити про збій ядра на kerneloops.org (або подібному) сайті"
+
+#~ msgid "Configuration file"
+#~ msgstr "Файл налаштувань"
+
+#~ msgid "Sending an email..."
+#~ msgstr "Надсилання пошти…"
+
+#~ msgid "Config file"
+#~ msgstr "Файл налаштувань"
+
+#~ msgid ""
+#~ " [-v] -d DIR [-o FILE] [-a yes/no]\n"
+#~ "\n"
+#~ "Prints problem information to standard output or FILE"
+#~ msgstr ""
+#~ " [-v] [-o ФАЙЛ] -d КАТАЛОГ [-o ФАЙЛ] [-a yes/no]\n"
+#~ "\n"
+#~ "Вивести дані щодо проблеми до стандартного виводу або файла ФАЙЛ"
+
+#~ msgid "Output file"
+#~ msgstr "Вихідний файл"
+
+#~ msgid "Append to, or overwrite FILE"
+#~ msgstr "Дописати або перезаписати ФАЙЛ"
+
+#~ msgid "Create reported_to in DIR"
+#~ msgstr "Створити reported_to у КАТАЛОЗІ"
+
+#~ msgid "The report was appended to %s"
+#~ msgstr "Звіт було долучено до %s"
+
+#~ msgid "The report was stored to %s"
+#~ msgstr "Звіт було збережено до %s"
+
+#~ msgid "Compressing data"
+#~ msgstr "Стискання даних"
+
+#~ msgid "Empty RHTS login or password"
+#~ msgstr "Порожнє значення імені користувача або пароля RHTS"
+
+#~ msgid "Can't create a temporary directory in /tmp"
+#~ msgstr "Не вдалося створити каталог тимчасових даних у /tmp"
+
+#~ msgid "Creating a new case..."
+#~ msgstr "Створення нового випадку…"
+
+#~ msgid ""
+#~ " [-v] -c CONFFILE -d DIR\n"
+#~ "\n"
+#~ "Reports a problem to RHTSupport"
+#~ msgstr ""
+#~ " [-v] -c ФАЙЛ_НАЛАШТУВАНЬ -d КАТАЛОГ\n"
+#~ "\n"
+#~ "Повідомити про проблему до RHTSupport"
+
+#~ msgid ""
+#~ " [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+#~ "\n"
+#~ "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than "
+#~ "SIZE"
+#~ msgstr ""
+#~ " [-v] [-d РОЗМІР:КАТАЛОГ]... [-f РОЗМІР:КАТАЛОГ]... [-p КАТАЛОГ]\n"
+#~ "\n"
+#~ "Вилучити каталоги дампів (-d) або файли (-f) у КАТАЛОГах, якщо їхні "
+#~ "розміри більші за РОЗМІР"
+
+#~ msgid "Delete dump dirs"
+#~ msgstr "Вилучити каталоги дампів"
+
+#~ msgid "Delete files"
+#~ msgstr "Вилучити файли"
+
+#~ msgid "Preserve this dump dir"
+#~ msgstr "Зберегти цей каталог дампів"
+
+#~ msgid "Sending %s to %s"
+#~ msgstr "Надсилання %s до %s"
+
+#~ msgid "Successfully sent %s to %s"
+#~ msgstr "Успішно надіслано %s до %s"
+
+#~ msgid "Archive is created: '%s'"
+#~ msgstr "Створено архів: «%s»"
+
+#~ msgid ""
+#~ " [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+#~ "\n"
+#~ "Uploads compressed tarball of dump directory DIR"
+#~ msgstr ""
+#~ " [-v] -d КАТАЛОГ [-c ФАЙЛ_НАЛАШТУВАНЬ] [-u АДРЕСА]\n"
+#~ "\n"
+#~ "Вивантажити стиснутий архів каталогу дампу КАТАЛОГ за вказаною адресою"
+
+#~ msgid "Base URL to upload to"
+#~ msgstr "Базова адреса для вивантаження даних"
+
+#~ msgid ""
+#~ " [-vsrowx] [-d DIR] FILE\n"
+#~ "\n"
+#~ "Extract oops from syslog/dmesg file"
+#~ msgstr ""
+#~ " [-vsrowx] [-d КАТАЛОГ] ФАЙЛ\n"
+#~ "\n"
+#~ "Видобути повідомлення про аварії (oops) з файла syslog/dmesg"
+
+#~ msgid "Parse kernel's message buffer before parsing FILE"
+#~ msgstr "Обробити буфер повідомлень ядра до обробки ФАЙЛа"
+
+#~ msgid "Print found oopses on standard output"
+#~ msgstr ""
+#~ "Вивести знайдені повідомлення про аварії (oops) до стандартного виводу"
+
+#~ msgid "Do not exit, watch the file for new oopses"
+#~ msgstr ""
+#~ "Не завершувати роботу, спостерігати за появою нових повідомлень про "
+#~ "аварії (oops) у файлі"
+
+#~ msgid "Create ABRT dump in DIR for every oops found"
+#~ msgstr ""
+#~ "Створити дамп ABRT у КАТАЛОЗІ для кожного знайденого повідомлення про "
+#~ "аварію (oops)"
+
+#~ msgid "Make the dump directory world readable"
+#~ msgstr "Зробити каталог дампу доступним для всіх користувачів"
+
+#~ msgid "log to syslog"
+#~ msgstr "записувати до журналу syslog"
+
+#~ msgid "Download debuginfo packages and generate backtrace locally using GDB"
+#~ msgstr ""
+#~ "Отримати пакунки debuginfo і створити дані зворотного трасування локально "
+#~ "за допомогою GDB"
+
+#~ msgid "Local GNU Debugger"
+#~ msgstr "Локальний зневаджувач GNU"
+
+#~ msgid ""
+#~ "Needs to downloads debuginfo packages, which might take significant time, "
+#~ "and take up disk space. However, unlike RetraceServer, doesn't send "
+#~ "coredump to remote machines."
+#~ msgstr ""
+#~ "Доведеться звантажити пакунки debuginfo. Звантаження може тривати досить "
+#~ "довго, пакунки, які буде встановлено, можуть значно зменшити об’єм "
+#~ "вільного місця на диску. Втім, на відміну від RetraceServer, не "
+#~ "доведеться надсилати дамп ядра на віддалений комп’ютер."
+
+#~ msgid "Address of the retrace server"
+#~ msgstr "Адреса сервера повторного трасування"
+
+#~ msgid "Retrace server URL"
+#~ msgstr "Адреса сервера повторного трасування"
+
+#~ msgid "Send core dump to remote retrace server for analysis"
+#~ msgstr "Надіслати дамп ядра на сервер повторного трасування для аналізу"
+
+#~ msgid ""
+#~ "Uploads coredump to a server, which generates backtrace and returns it. "
+#~ "Pros: no need for debuginfo downloads. Retrace server's database of "
+#~ "debuginfos is more complete. Retrace server may generate better "
+#~ "backtraces. Cons: coredump you upload contains all the data from the "
+#~ "crashed program, including your private data, if any."
+#~ msgstr ""
+#~ "Вивантажує дамп ядра на сервер. Сервер створить дані зворотного "
+#~ "трасування і поверне їх вам. Переваги: не потрібно встановлювати пакунки "
+#~ "debuginfo. База даних пакунків debuginfo може бути повнішою за вашу. "
+#~ "Сервер повторного трасування може отримати кращі дані зворотного "
+#~ "трасування. Недоліки: дамп ядра, який буде вивантажено, міститиме всі "
+#~ "дані з аварійної програми, зокрема конфіденційні дані, якщо такі там "
+#~ "зберігалися."
+
+#~ msgid "Address of Bugzilla server"
+#~ msgstr "Адреса сервера Bugzilla"
+
+#~ msgid "Bugzilla"
+#~ msgstr "Bugzilla"
+
+#~ msgid "Bugzilla URL"
+#~ msgstr "Адреса Bugzilla"
+
+#~ msgid "Bugzilla account password"
+#~ msgstr "Пароль облікового запису Bugzilla"
+
+#~ msgid "Bugzilla account user name"
+#~ msgstr "Ім’я користувача облікового запису Bugzilla"
+
+#~ msgid "Check SSL key validity"
+#~ msgstr "Перевірити чинність ключа SSL"
+
+#~ msgid "Password"
+#~ msgstr "Пароль"
+
+#~ msgid "Report to Bugzilla bug tracker"
+#~ msgstr "Повідомити до системи стеження за вадами Bugzilla"
+
+#~ msgid "User name"
+#~ msgstr "Ім'я користувача"
+
+#~ msgid "Verify SSL"
+#~ msgstr "Перевірити SSL"
+
+#~ msgid ""
+#~ "You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
+#~ "redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+#~ msgstr ""
+#~ "Створити обліковий запис bugzilla.redhat.com можна &lt;a href=\"https://"
+#~ "bugzilla.redhat.com/createaccount.cgi\"&gt;тут&lt;/a&gt;"
+
+#~ msgid "Kerneloops URL"
+#~ msgstr "Адреса Kerneloops"
+
+#~ msgid "Kerneloops.org"
+#~ msgstr "Kerneloops.org"
+
+#~ msgid "Oops server url"
+#~ msgstr "Адреса сервера некритичних помилок"
+
+#~ msgid "Send kernel problems to oops tracker"
+#~ msgstr ""
+#~ "Надіслати повідомлення про проблеми з ядром до системи стеження за вадами"
+
+#~ msgid "Mailx"
+#~ msgstr "Mailx"
+
+#~ msgid "Message subject"
+#~ msgstr "Тема повідомлення"
+
+#~ msgid "Recipient"
+#~ msgstr "Отримувач"
+
+#~ msgid "Recipient's email"
+#~ msgstr "Ел. пошта отримувача"
+
+#~ msgid "Send Binary Data"
+#~ msgstr "Надіслати бінарні дані"
+
+#~ msgid "Send binary files like coredump"
+#~ msgstr "Надіслати бінарні файли як дамп ядра (coredump)"
+
+#~ msgid "Send via email"
+#~ msgstr "Надіслати електронною поштою"
+
+#~ msgid "Sender"
+#~ msgstr "Відправник"
+
+#~ msgid "Sender's email"
+#~ msgstr "Адреса відправника"
+
+#~ msgid "Subject"
+#~ msgstr "Тема"
+
+#~ msgid "Address of the Red Hat support portal"
+#~ msgstr "Адреса порталу підтримки користувачів Red Hat"
+
+#~ msgid "RH Portal URL"
+#~ msgstr "Адреса порталу RH"
+
+#~ msgid "Red Hat Customer Support"
+#~ msgstr "Підтримка користувачів Red Hat"
+
+#~ msgid "Red Hat customer password"
+#~ msgstr "Пароль користувача Red Hat"
+
+#~ msgid "Red Hat customer user name"
+#~ msgstr "Ім’я користувача Red Hat"
+
+#~ msgid "Report to Red Hat support"
+#~ msgstr "Повідомити до служби підтримки Red Hat"
+
+#~ msgid "Username"
+#~ msgstr "Користувач"
