@@ -22,22 +22,6 @@
 
 int report_problem_in_dir(const char *dirname, int flags)
 {
-    const char *path;
-    /*
-    if is isatty
-      -> run cli reporter
-      path = "cli"
-    */
-
-    char *args[5], **pp;
-    pp = args;
-    *pp++ = (char *)"report-gtk";
-    if (!(flags & LIBREPORT_ANALYZE))
-        *pp++ = (char *)"--report-only";
-    *pp++ = (char *)"--";
-    *pp++ = (char *)dirname;
-    *pp++ = NULL;
-
     pid_t pid = vfork();
     if (pid < 0) /* error */
     {
@@ -47,6 +31,37 @@ int report_problem_in_dir(const char *dirname, int flags)
 
     if (pid == 0) /* child */
     {
+        const char *path, *path1, *path2;
+        char *args[5], **pp;
+
+        /* Graphical tool */
+        path1 = BIN_DIR"/report-gtk";
+        path2 = "report-gtk";
+        pp = args;
+        *pp++ = (char *)"report-gtk";
+        if (!(flags & LIBREPORT_ANALYZE))
+            *pp++ = (char *)"--report-only";
+        *pp++ = (char *)"--";
+        *pp++ = (char *)dirname;
+        *pp = NULL;
+
+        if (!getenv("DISPLAY"))
+        {
+            /* GUI won't work, use command line tool instead */
+            path1 = BIN_DIR"/report-cli";
+            path2 = "report-cli";
+            pp = args;
+            *pp++ = (char *)"report-cli";
+            if (!(flags & LIBREPORT_ANALYZE))
+                *pp++ = (char *)"--report";
+            else
+// TODO: we actually need --analyze-and-report here
+                *pp++ = (char *)"--analyze";
+            *pp++ = (char *)"--";
+            *pp++ = (char *)dirname;
+            *pp = NULL;
+        }
+
         /* Some callers set SIGCHLD to SIG_IGN.
          * However, reporting spawns child processes.
          * Suppressing child death notification terribly confuses some of them.
@@ -54,13 +69,14 @@ int report_problem_in_dir(const char *dirname, int flags)
          * Note that we do it in the child, so the parent is never affected.
          */
         signal(SIGCHLD, SIG_DFL);
-        path = BIN_DIR"/report-gtk";
+
+        path = path1;
         VERB1 log("Executing: %s", path);
         execv(path, args);
         /* Did not find the desired executable in the installation directory.
-         * Trying to find it in PATH
+         * Trying to find it in PATH.
          */
-        path = "report-gtk";
+        path = path2;
         execvp(path, args);
         perror_msg_and_die("Can't execute %s", path);
     }
