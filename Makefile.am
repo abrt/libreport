@@ -1,7 +1,10 @@
 ACLOCAL_AMFLAGS = -I m4
 SUBDIRS = po src
 
-EXTRA_DIST = libreport.pc.in libreport-version
+EXTRA_DIST = \
+    libreport.pc.in \
+    libreport-version \
+    asciidoc.conf
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libreport.pc
