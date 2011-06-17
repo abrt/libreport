@@ -53,10 +53,9 @@ int report_problem_in_dir(const char *dirname, int flags)
             pp = args;
             *pp++ = (char *)"report-cli";
             if (!(flags & LIBREPORT_ANALYZE))
-                *pp++ = (char *)"--report";
+                *pp++ = (char *)"-ro"; /* only report */
             else
-// TODO: we actually need --analyze-and-report here
-                *pp++ = (char *)"--analyze";
+                *pp++ = (char *)"-r"; /* analyze and report */
             *pp++ = (char *)"--";
             *pp++ = (char *)dirname;
             *pp = NULL;
