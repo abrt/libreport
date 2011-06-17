@@ -200,7 +200,7 @@ int main(int argc, char** argv)
         OPT_OPTSTRING('L', NULL     , &pfx, "PREFIX",          _("List possible events [which start with PREFIX]")),
         OPT_STRING(   'e', NULL     , &event_name, "EVENT",    _("Run EVENT on DUMP_DIR")),
         OPT_BOOL(     'a', "analyze", NULL,                    _("Run analyze event(s) on DUMP_DIR")),
-        OPT_BOOL(     'r', "report" , NULL,                    _("Send a report about DUMP_DIR")),
+        OPT_BOOL(     'r', "report" , NULL,                    _("Analyze and report problem data in DUMP_DIR")),
         OPT_BOOL(     'd', "delete" , NULL,                    _("Remove DUMP_DIR")),
         OPT_BOOL(     'V', "version", NULL,                    _("Display version and exit")),
         OPT_BOOL(     'f', "full"   , NULL,                    _("Full listing")),
