@@ -18,8 +18,8 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#ifndef DUMP_DIR_H_
-#define DUMP_DIR_H_
+#ifndef LIBREPORT_DUMP_DIR_H_
+#define LIBREPORT_DUMP_DIR_H_
 
 /* For DIR */
 #include <sys/types.h>

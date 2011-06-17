@@ -17,7 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include "libreport.h"
+#include "internal_libreport.h"
 
 int copy_file_recursive(const char *source, const char *dest)
 {

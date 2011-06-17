@@ -17,7 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <gtk/gtk.h>
-#include "libreport.h"
+#include "internal_libreport.h"
 
 /*
  * GTK doesn't re-wrap GtkLabels which have line wrapping set to true.

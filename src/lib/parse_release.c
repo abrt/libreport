@@ -16,7 +16,7 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include "libreport.h"
+#include "internal_libreport.h"
 
 // caller is reposible for freeing *product* and *version*
 static void parse_release(const char *release, char** product, char** version, bool append_rhel_version)

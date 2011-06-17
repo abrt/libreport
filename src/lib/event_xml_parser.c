@@ -16,8 +16,8 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include "libreport.h"
 #include "event_config.h"
+#include "internal_libreport.h"
 
 #define EVENT_ELEMENT           "event"
 #define LABEL_ELEMENT           "label"

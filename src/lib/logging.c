@@ -16,12 +16,8 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-
-/*
- * Utility routines.
- *
- */
-#include "libreport.h"
+#include <syslog.h>
+#include "internal_libreport.h"
 
 void (*g_custom_logger)(const char*);
 const char *msg_prefix = "";

@@ -17,7 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <gnome-keyring.h>
-#include "libreport.h"
+#include "internal_libreport.h"
 
 static char *keyring_name;
 static bool got_keyring = 0;

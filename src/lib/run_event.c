@@ -18,7 +18,7 @@
 */
 #include <glob.h>
 #include <regex.h>
-#include "libreport.h"
+#include "internal_libreport.h"
 
 struct run_event_state *new_run_event_state()
 {

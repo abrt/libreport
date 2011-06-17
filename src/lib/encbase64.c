@@ -18,7 +18,7 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-#include "libreport.h" /* xmalloc */
+#include "internal_libreport.h" /* xmalloc */
 
 /* Conversion table for base 64 */
 static const char tbl_base64[65 /*+ 2*/] = {

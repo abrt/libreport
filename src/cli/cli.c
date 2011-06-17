@@ -19,8 +19,9 @@
 # include <locale.h>
 #endif
 #include <getopt.h>
-#include "libreport.h"
-#include "report.h"
+#include <syslog.h>
+#include "internal_libreport.h"
+#include "cli-report.h"
 
 
 /* Vector of problems: */

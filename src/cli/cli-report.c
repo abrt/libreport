@@ -15,9 +15,9 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include "libreport.h"
+#include "internal_libreport.h"
 #include "run-command.h"
-#include "report.h"
+#include "cli-report.h"
 
 /* Field separator for the crash report file that is edited by user. */
 #define FIELD_SEP "%----"

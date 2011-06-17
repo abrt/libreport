@@ -16,10 +16,8 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-
 #include <getopt.h>
-#include "libreport.h"
-#include "parse_options.h"
+#include "internal_libreport.h"
 
 #define USAGE_OPTS_WIDTH 30
 #define USAGE_GAP         2

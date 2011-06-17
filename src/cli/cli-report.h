@@ -1,5 +1,4 @@
 /*
-    Copyright (C) 2009  Denys Vlasenko (dvlasenk@redhat.com)
     Copyright (C) 2009  RedHat inc.
 
     This program is free software; you can redistribute it and/or modify
@@ -16,27 +15,23 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#ifndef ABRT_TYPES_H_
-#define ABRT_TYPES_H_
+#ifndef CLI_REPORT_H_
+#define CLI_REPORT_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/* TODO: rename to map_string_t */
-typedef GHashTable map_string_h;
+int run_analyze_event(const char *dump_dir_name, const char *analyzer);
+char *select_event_option(GList *list_options);
+GList *str_to_glist(char *str, int delim);
 
-#define new_map_string libreport_new_map_string
-map_string_h *new_map_string(void);
-#define free_map_string libreport_free_map_string
-void free_map_string(map_string_h *ms);
-#define get_map_string_item_or_empty libreport_get_map_string_item_or_empty
-const char *get_map_string_item_or_empty(map_string_h *ms, const char *key);
-static inline
-const char *get_map_string_item_or_NULL(map_string_h *ms, const char *key)
-{
-    return (const char*)g_hash_table_lookup(ms, key);
-}
+/* Report the crash */
+enum {
+    CLI_REPORT_BATCH = 1 << 0,
+    CLI_REPORT_ONLY  = 1 << 1,
+};
+int report(const char *dump_dir_name, int flags);
 
 #ifdef __cplusplus
 }

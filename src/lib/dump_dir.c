@@ -17,8 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <sys/utsname.h>
-#include "libreport.h"
-#include "strbuf.h"
+#include "internal_libreport.h"
 
 // Locking logic:
 //

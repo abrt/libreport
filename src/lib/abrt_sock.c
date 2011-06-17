@@ -16,8 +16,8 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include "libreport.h"
 #include <sys/un.h>
+#include "internal_libreport.h"
 
 #define SOCKET_FILE  VAR_RUN"/abrt/abrt.socket"
 

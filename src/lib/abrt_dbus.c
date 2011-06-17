@@ -17,7 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <dbus/dbus.h>
-#include "abrt_dbus.h"
+#include "internal_abrt_dbus.h"
 
 DBusConnection* g_dbus_conn;
 
@@ -353,26 +353,6 @@ static void timeout_toggled(DBusTimeout *timeout, void* data)
 static void unregister_vtable(DBusConnection *conn, void* data)
 {
     VERB3 log("%s()", __func__);
-}
-
-
-/*
- * Simple logging handler for dbus errors.
- */
-int log_dbus_error(const char *msg, DBusError *err)
-{
-    int ret = 0;
-    if (dbus_error_is_set(err))
-    {
-        error_msg("dbus error: %s", err->message);
-        ret = 1;
-    }
-    if (msg)
-    {
-        error_msg(msg);
-        ret = 1;
-    }
-    return ret;
 }
 
 

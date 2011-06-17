@@ -6,7 +6,7 @@ bin_PROGRAMS = \
 report_cli_SOURCES = \
     cli.c \
     run-command.h run-command.c \
-    report.h report.c
+    cli-report.h cli-report.c
 report_cli_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \

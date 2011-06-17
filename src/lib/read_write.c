@@ -18,7 +18,7 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-#include "libreport.h"
+#include "internal_libreport.h"
 
 /* Die with an error message if we can't read the entire buffer. */
 void xread(int fd, void *buf, size_t count)

@@ -18,8 +18,7 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
-#include "libreport.h"
+#include "internal_libreport.h"
 
 /* Like strcpy but can copy overlapping strings. */
 void overlapping_strcpy(char *dst, const char *src)

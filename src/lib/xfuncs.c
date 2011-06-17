@@ -16,12 +16,7 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-
-/*
- * Utility routines.
- *
- */
-#include "libreport.h"
+#include "internal_libreport.h"
 
 /* Turn on nonblocking I/O on a fd */
 int ndelay_on(int fd)

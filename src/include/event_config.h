@@ -16,12 +16,11 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#ifndef LIBREPORT_EVENT_CONFIG_H
+#define LIBREPORT_EVENT_CONFIG_H
 
+#include <stdbool.h>
 #include <glib.h>
-
-#ifndef EVENT_CONFIG_H
-#define EVENT_CONFIG_H
-
 
 #ifdef __cplusplus
 extern "C" {

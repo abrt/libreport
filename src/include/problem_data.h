@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009  ABRT team.
+    Copyright (C) 2009  Abrt team.
     Copyright (C) 2009  RedHat inc.
 
     This program is free software; you can redistribute it and/or modify
@@ -16,87 +16,81 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#ifndef ABRT_PROBLEM_DATA_H_
-#define ABRT_PROBLEM_DATA_H_
+#ifndef LIBREPORT_PROBLEM_DATA_H_
+#define LIBREPORT_PROBLEM_DATA_H_
 
-#include "libreport_problem_data.h"
-#include "libreport_types.h"
-#include "dump_dir.h"
-
-// Text bigger than this usually is attached, not added inline
-// was 2k, now bumbed up to 20k:
-#define CD_TEXT_ATT_SIZE (20*1024)
-
-// Filenames in dump directory:
-// filled by a hook:
-#define FILENAME_REASON       "reason"      /* mandatory */
-#define FILENAME_UID          "uid"         /* mandatory */
-#define FILENAME_TIME         "time"        /* mandatory */
-#define FILENAME_ANALYZER     "analyzer"
-#define FILENAME_EXECUTABLE   "executable"
-#define FILENAME_BINARY       "binary"
-#define FILENAME_CMDLINE      "cmdline"
-#define FILENAME_COREDUMP     "coredump"
-#define FILENAME_BACKTRACE    "backtrace"
-#define FILENAME_MAPS         "maps"
-#define FILENAME_SMAPS        "smaps"
-#define FILENAME_ENVIRON      "environ"
-#define FILENAME_DUPHASH      "duphash"
-// Name of the function where the application crashed.
-// Optional.
-#define FILENAME_CRASH_FUNCTION "crash_function"
-// filled by CDebugDump::Create() (which also fills FILENAME_UID):
-#define FILENAME_ARCHITECTURE "architecture"
-#define FILENAME_KERNEL       "kernel"
-// From /etc/system-release or /etc/redhat-release
-#define FILENAME_OS_RELEASE   "os_release"
-// Filled by <what?>
-#define FILENAME_PACKAGE      "package"
-#define FILENAME_COMPONENT    "component"
-#define FILENAME_COMMENT      "comment"
-#define FILENAME_RATING       "backtrace_rating"
-#define FILENAME_HOSTNAME     "hostname"
-// Optional. Set to "1" by abrt-handle-upload for every unpacked dump
-#define FILENAME_REMOTE       "remote"
-#define FILENAME_TAINTED      "kernel_tainted"
-#define FILENAME_TAINTED_SHORT "kernel_tainted_short"
-#define FILENAME_TAINTED_LONG  "kernel_tainted_long"
-
-#define FILENAME_UUID         "uuid"
-#define FILENAME_COUNT        "count"
-/* Multi-line list of places problem was reported.
- * Recommended line format:
- * "Reporter: VAR=VAL VAR=VAL"
- * Use add_reported_to(dd, "line_without_newline"): it adds line
- * only if it is not already there.
- */
-#define FILENAME_REPORTED_TO  "reported_to"
-#define FILENAME_EVENT_LOG    "event_log"
-
-// Not stored as files, added "on the fly":
-#define CD_DUMPDIR            "Directory"
-//UNUSED:
-//// "Which events are possible (make sense) on this dump dir?"
-//// (a string with "\n" terminated event names)
-//#define CD_EVENTS             "Events"
-
-/* FILENAME_EVENT_LOG is trimmed to below LOW_WATERMARK
- * when it reaches HIGH_WATERMARK size
- */
-enum {
-    EVENT_LOG_HIGH_WATERMARK = 30 * 1024,
-    EVENT_LOG_LOW_WATERMARK  = 20 * 1024,
-};
+#include <glib.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define add_reported_to libreport_add_reported_to
-void add_reported_to(struct dump_dir *dd, const char *line);
+struct dump_dir;
 
-#define log_problem_data libreport_log_problem_data
-void log_problem_data(problem_data_t *problem_data, const char *pfx);
+enum {
+    CD_FLAG_BIN           = (1 << 0),
+    CD_FLAG_TXT           = (1 << 1),
+    CD_FLAG_ISEDITABLE    = (1 << 2),
+    CD_FLAG_ISNOTEDITABLE = (1 << 3),
+    /* Show this element in "short" info (report-cli -l) */
+    CD_FLAG_LIST          = (1 << 4),
+    CD_FLAG_UNIXTIME      = (1 << 5),
+};
+
+struct problem_item {
+    char    *content;
+    unsigned flags;
+    /* Used by UI for presenting "item allowed/not allowed" checkboxes: */
+    int      selected_by_user;     /* 0 "don't know", -1 "no", 1 "yes" */
+    int      allowed_by_reporter;  /* 0 "no", 1 "yes" */
+    int      default_by_reporter;  /* 0 "no", 1 "yes" */
+    int      required_by_reporter; /* 0 "no", 1 "yes" */
+};
+typedef struct problem_item problem_item;
+
+char *format_problem_item(struct problem_item *item);
+
+
+/* In-memory problem data structure and accessors */
+
+typedef GHashTable problem_data_t;
+
+problem_data_t *new_problem_data(void);
+
+void add_basics_to_problem_data(problem_data_t *pd);
+
+static inline void free_problem_data(problem_data_t *problem_data)
+{
+    if (problem_data)
+        g_hash_table_destroy(problem_data);
+}
+
+void add_to_problem_data_ext(problem_data_t *problem_data,
+                const char *name,
+                const char *content,
+                unsigned flags);
+/* Uses CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE flags */
+void add_to_problem_data(problem_data_t *problem_data,
+                const char *name,
+                const char *content);
+
+static inline struct problem_item *get_problem_data_item_or_NULL(problem_data_t *problem_data, const char *key)
+{
+    return (struct problem_item *)g_hash_table_lookup(problem_data, key);
+}
+const char *get_problem_item_content_or_NULL(problem_data_t *problem_data, const char *key);
+/* Aborts if key is not found: */
+const char *get_problem_item_content_or_die(problem_data_t *problem_data, const char *key);
+
+
+/* Conversions between in-memory and on-disk formats */
+
+void load_problem_data_from_dump_dir(problem_data_t *problem_data, struct dump_dir *dd, char **excluding);
+problem_data_t *create_problem_data_from_dump_dir(struct dump_dir *dd);
+/* Helper for typical operation in reporters: */
+problem_data_t *create_problem_data_for_reporting(const char *dump_dir_name);
+
+struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data, const char *base_dir_name);
 
 #ifdef __cplusplus
 }

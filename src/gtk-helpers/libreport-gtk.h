@@ -16,9 +16,8 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-
-#include "libreport.h"
 #include "report.h"
+#include "internal_libreport.h"
 
 void make_label_autowrap_on_resize(GtkLabel *label);
 void fix_all_wrapped_labels(GtkWidget *widget);

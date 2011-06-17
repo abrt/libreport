@@ -16,10 +16,14 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#ifndef REPORT_H_
-#define REPORT_H_
+#ifndef LIBREPORT_REPORT_H_
+#define LIBREPORT_REPORT_H_
 
 #include "problem_data.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 enum {
     LIBREPORT_NOWAIT      = 0,
@@ -39,4 +43,8 @@ int report_problem_in_memory(problem_data_t *pd, int flags);
 /* Simple wrapper for trivial uses */
 int report_problem(problem_data_t *pd);
 
-#endif /* REPORT_H_ */
+#ifdef __cplusplus
+}
+#endif
+
+#endif

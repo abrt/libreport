@@ -16,7 +16,7 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include "libreport.h"
+#include "internal_libreport.h"
 
 struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name)
 {

@@ -17,7 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <gtk/gtk.h>
-#include "parse_options.h"
+#include "internal_libreport.h"
 #include "wizard.h"
 #if HAVE_LOCALE_H
 # include <locale.h>

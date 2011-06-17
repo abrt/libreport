@@ -16,6 +16,8 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#ifndef WIZARD_H_
+#define WIZARD_H_
 
 #include "libreport-gtk.h"
 
@@ -31,3 +33,5 @@ extern char *g_report_events;
 extern problem_data_t *g_cd;
 extern int g_report_only;
 void reload_problem_data_from_dump_dir(void);
+
+#endif

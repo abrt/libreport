@@ -32,8 +32,8 @@
  *
  * ---------------------------------------------------------------------------
  */
-#include "libreport.h"
 #include <byteswap.h>
+#include "internal_libreport.h"
 
 #if defined(__BIG_ENDIAN__) && __BIG_ENDIAN__
 # define SHA1_BIG_ENDIAN 1

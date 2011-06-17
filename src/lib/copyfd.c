@@ -21,7 +21,7 @@
  * Utility routines.
  *
  */
-#include "libreport.h"
+#include "internal_libreport.h"
 
 #define CONFIG_FEATURE_COPYBUF_KB 4
 

@@ -17,15 +17,13 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
+#include "internal_libreport.h"
 
 /* Concatenate path and filename to new allocated buffer.
  * Add '/' only as needed (no duplicate // are produced).
  * If path is NULL, it is assumed to be "/".
  * filename should not be NULL.
  */
-
-#include "libreport.h"
-
 char *concat_path_file(const char *path, const char *filename)
 {
 	if (!path)

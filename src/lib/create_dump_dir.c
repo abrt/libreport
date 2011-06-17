@@ -17,7 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include "libreport.h"
+#include "internal_libreport.h"
 
 static struct dump_dir *try_dd_create(const char *base_dir_name, const char *dir_name)
 {
