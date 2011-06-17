@@ -29,6 +29,7 @@ GList *str_to_glist(char *str, int delim);
 /* Report the crash */
 enum {
     CLI_REPORT_BATCH = 1 << 0,
+    CLI_REPORT_ONLY  = 1 << 1,
 };
 int report(const char *dump_dir_name, int flags);
 

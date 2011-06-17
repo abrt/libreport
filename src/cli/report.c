@@ -684,34 +684,37 @@ int report(const char *dump_dir_name, int flags)
     if (!dd)
         return -1;
 
-    char *analyze_events_as_lines = list_possible_events(dd, NULL, "analyze");
-    dd_close(dd);
-
-    if (analyze_events_as_lines && *analyze_events_as_lines)
+    if (!(flags & CLI_REPORT_ONLY))
     {
-        GList *list_analyze_events = str_to_glist(analyze_events_as_lines, '\n');
-        free(analyze_events_as_lines);
+        char *analyze_events_as_lines = list_possible_events(dd, NULL, "analyze");
+        dd_close(dd);
 
-        char *event = select_event_option(list_analyze_events);
-        list_free_with_free(list_analyze_events);
+        if (analyze_events_as_lines && *analyze_events_as_lines)
+        {
+            GList *list_analyze_events = str_to_glist(analyze_events_as_lines, '\n');
+            free(analyze_events_as_lines);
 
-        int analyzer_result = run_analyze_event(dump_dir_name, event);
-        free(event);
+            char *event = select_event_option(list_analyze_events);
+            list_free_with_free(list_analyze_events);
 
-        if (analyzer_result != 0)
-            return 1;
+            int analyzer_result = run_analyze_event(dump_dir_name, event);
+            free(event);
+
+            if (analyzer_result != 0)
+                return 1;
+        }
+
+        /* Load problem_data from (possibly updated by analyze) dump dir */
+        dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+        if (!dd)
+            return -1;
     }
-
-    /* Load problem_data from (possibly updated by analyze) dump dir */
-    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        return -1;
 
     char *report_events_as_lines = list_possible_events(dd, NULL, "report");
     problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
     dd_close(dd);
 
-    if (!(flags & CLI_REPORT_BATCH))
+    if (!(flags & (CLI_REPORT_BATCH | CLI_REPORT_ONLY)))
     {
         /* Open text editor and give a chance to review the backtrace etc */
         create_fields_for_editor(problem_data);

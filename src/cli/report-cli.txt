@@ -17,7 +17,7 @@ SYNOPSIS
 
 'report-cli' [-vsp] -a[y] DUMP_DIR
 
-'report-cli' [-vsp] -r[y] DUMP_DIR
+'report-cli' [-vsp] -r[y|o] DUMP_DIR
 
 'report-cli' [-vsp] -d DUMP_DIR
 
@@ -58,6 +58,9 @@ OPTIONS
 
 -y, --always::
     Noninteractive: don't ask questions, assume positive answer to all of them
+
+-o, --report-only::
+    With -r: do not run analyzers, run only reporters
 
 -v, --verbose::
     Be verbose

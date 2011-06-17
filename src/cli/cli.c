@@ -169,7 +169,7 @@ int main(int argc, char** argv)
         "or: \b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
         "or: \b [-vsp] -e EVENT DUMP_DIR\n"
         "or: \b [-vsp] -a[y] DUMP_DIR\n"
-        "or: \b [-vsp] -r[y] DUMP_DIR\n"
+        "or: \b [-vsp] -r[y|o] DUMP_DIR\n"
         "or: \b [-vsp] -d DUMP_DIR"
     );
     enum {
@@ -186,9 +186,10 @@ int main(int argc, char** argv)
         OPTMASK_need_arg = OPT_info|OPT_run_event|OPT_analyze|OPT_report|OPT_delete,
         OPT_f            = 1 << 9,
         OPT_y            = 1 << 10,
-        OPT_v            = 1 << 11,
-        OPT_s            = 1 << 12,
-        OPT_p            = 1 << 13,
+        OPT_o            = 1 << 11,
+        OPT_v            = 1 << 12,
+        OPT_s            = 1 << 13,
+        OPT_p            = 1 << 14,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
@@ -204,6 +205,7 @@ int main(int argc, char** argv)
         OPT_BOOL(     'V', "version", NULL,                    _("Display version and exit")),
         OPT_BOOL(     'f', "full"   , NULL,                    _("Full listing")),
         OPT_BOOL(     'y', "always" , NULL,                    _("Noninteractive: don't ask questions, assume 'yes'")),
+        OPT_BOOL(     'o', "report-only" , NULL,               _("With -r: do not run analyzers, run only reporters")),
         OPT__VERBOSE(&g_verbose),
         OPT_BOOL(     's', NULL     , NULL,                    _("Log to syslog")),
         OPT_BOOL(     'p', NULL     , NULL,                    _("Add program names to log")),
@@ -243,6 +245,7 @@ int main(int argc, char** argv)
     char *dump_dir_name = argv[0];
     bool full = (opts & OPT_f);
     bool always = (opts & OPT_y);
+    bool report_only = (opts & OPT_o);
 
     if (!D_list)
     {
@@ -334,7 +337,9 @@ int main(int argc, char** argv)
                 }
             }
 
-            exitcode = report(dump_dir_name, (always ? CLI_REPORT_BATCH : 0));
+            exitcode = report(dump_dir_name,
+                    (always ? CLI_REPORT_BATCH : 0) |
+                    (report_only ? CLI_REPORT_ONLY : 0));
             if (exitcode == -1)
                 error_msg_and_die("Crash '%s' not found", dump_dir_name);
             break;
