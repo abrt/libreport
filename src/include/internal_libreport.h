@@ -90,10 +90,6 @@ int vdprintf(int d, const char *format, va_list ap);
 #include "report.h"
 #include "run_event.h"
 
-
-#define NORETURN __attribute__ ((noreturn))
-
-
 #ifdef __cplusplus
 extern "C" {
 #endif
