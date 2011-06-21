@@ -18,8 +18,7 @@
 */
 
 #include <newt.h>
-#include "libreport.h"
-#include "parse_options.h"
+#include "internal_libreport.h"
 #if HAVE_LOCALE_H
 # include <locale.h>
 #endif
