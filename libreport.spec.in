@@ -27,6 +27,7 @@ BuildRequires: nss-devel
 BuildRequires: texinfo
 BuildRequires: asciidoc
 BuildRequires: xmlto
+BuildRequires: newt-devel
 
 # for rhel6
 %if 0%{?rhel} >= 6
@@ -55,8 +56,6 @@ Summary: Python bindings for report-libs
 Group: System Environment/Libraries
 Requires: libreport = %{version}-%{release}
 Provides: report > 0.20
-# FIXME: just a workaround to make it work with python-meh, but we should probably provide -newt UI asap
-Provides: report-newt > 0.20
 Obsoletes: report <= 0.20
 
 %description python
@@ -70,6 +69,16 @@ Requires: %{name} = %{version}-%{release}
 %description cli
 This package contains simple command line tool for working
 with problem dump reports
+
+%package newt
+Summary: %{name}'s newt interface
+Group: User Interface/Desktops
+Requires: %{name} = %{version}-%{release}
+Provides: report-newt > 0.20
+
+%description newt
+This package contains a simple newt application for reporting
+bugs
 
 %package gtk
 Summary: GTK front-end for libreport
@@ -170,6 +179,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %{_bindir}/report-cli
 %{_mandir}/man1/report-cli.1.gz
+
+%files newt
+%defattr(-,root,root,-)
+%{_bindir}/report-newt
 
 %files gtk
 %defattr(-,root,root,-)

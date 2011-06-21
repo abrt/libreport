@@ -68,6 +68,7 @@ PKG_CHECK_MODULES([PYTHON], [python],,[
     PYTHON_LIBS='-L/usr/lib64 -lpython2.6'
     PYTHON_CFLAGS='-I/usr/include/python2.6'
 ])
+PKG_CHECK_MODULES([NEWT], [libnewt])
 
 PKG_PROG_PKG_CONFIG
 
@@ -115,6 +116,7 @@ AC_CONFIG_FILES([
 	src/gtk-helpers/libreport-gtk.pc
 	src/gui-wizard-gtk/Makefile
 	src/cli/Makefile
+	src/report-newt/Makefile
 	po/Makefile.in
 ])
 
