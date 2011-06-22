@@ -193,12 +193,12 @@ static int configure_reporter(struct reporter *r, bool skip_if_valid)
             }
         }
         else
-            cancel = true; 
+            cancel = true;
 
         newtFormDestroy(form);
         newtGridFree(grid, 1);
         newtPopWindow();
-        
+
         free(options);
 
         if (error_table)
@@ -221,7 +221,7 @@ static char *save_log_line(char *log_line, void *param)
     struct log *log = (struct log *)param;
     char *new;
     size_t len;
-    
+
     if (log->text == NULL)
     {
         log->text = log_line;
@@ -314,7 +314,7 @@ static int report(const char *dump_dir_name)
     GArray *reporters;
     struct dump_dir *dd;
     char *events_as_lines;
-   
+
     if (!(dd = dd_opendir(dump_dir_name, 0)))
         return -1;
     events_as_lines = list_possible_events(dd, NULL, "report");
