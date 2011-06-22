@@ -48,7 +48,7 @@ static int connect_to_abrtd_and_call_DeleteDebugDump(const char *dump_dir_name)
             /* "HTTP/1.1 200 " */
             response[5] = '1';
             response[7] = '1';
-            result = strncmp(response, "HTTP/1.1 200 ", sizeof("HTTP/1.1 200 "));
+            result = strncmp(response, "HTTP/1.1 200 ", strlen("HTTP/1.1 200 "));
         }
     }
     else
