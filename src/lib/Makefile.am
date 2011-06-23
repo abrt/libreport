@@ -43,7 +43,8 @@ libreport_la_SOURCES = \
     event_xml_parser.c \
     event_config.c \
     kernel-tainted.c \
-    report.c
+    report.c \
+    client.c
 libreport_la_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror \
     -I$(srcdir)/../include \

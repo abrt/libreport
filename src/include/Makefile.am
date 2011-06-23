@@ -1,5 +1,6 @@
 libreport_includedir = $(includedir)/libreport
 libreport_include_HEADERS = \
+    client.h \
     dump_dir.h \
     event_config.h \
     problem_data.h \
