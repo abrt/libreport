@@ -192,6 +192,37 @@ static page_obj_t *added_pages[NUM_PAGES];
 
 /* Utility functions */
 
+static void wrap_fixer(GtkWidget *widget, gpointer data_unused)
+{
+    if (GTK_IS_CONTAINER(widget))
+    {
+        gtk_container_foreach((GtkContainer*)widget, wrap_fixer, NULL);
+        return;
+    }
+    if (GTK_IS_LABEL(widget))
+    {
+        GtkLabel *label = (GtkLabel*)widget;
+        //const char *txt = gtk_label_get_label(label);
+        GtkMisc *misc = (GtkMisc*)widget;
+        gfloat yalign; //= 1;
+        gint ypad; //= 1;
+        if (gtk_label_get_line_wrap(label)
+         && (gtk_misc_get_alignment(misc, NULL, &yalign), yalign == 0)
+         && (gtk_misc_get_padding(misc, NULL, &ypad), ypad == 0)
+        ) {
+            //log("label '%s' set to wrap", txt);
+            make_label_autowrap_on_resize(label);
+            return;
+        }
+        //log("label '%s' not set to wrap %g %d", txt, yalign, ypad);
+    }
+}
+
+static void fix_all_wrapped_labels(GtkWidget *widget)
+{
+    wrap_fixer(widget, NULL);
+}
+
 static void remove_child_widget(GtkWidget *widget, gpointer unused)
 {
     /* Destroy will safely remove it and free the memory
@@ -203,6 +234,38 @@ static void remove_child_widget(GtkWidget *widget, gpointer unused)
 static void save_dialog_response(GtkDialog *dialog, gint response_id, gpointer user_data)
 {
     *(gint*)user_data = response_id;
+}
+
+static void show_event_opt_error_dialog(const char *event_name)
+{
+    event_config_t *ec = get_event_config(event_name);
+    char *message = xasprintf(_("Wrong settings detected for %s, "
+                              "reporting will probably fail if you continue "
+                              "with the current configuration."),
+                               ec->screen_name);
+    char *markup_message = xasprintf(_("Wrong settings detected for <b>%s</b>, "
+                              "reporting will probably fail if you continue "
+                              "with the current configuration."),
+                               ec->screen_name);
+    GtkWidget *wrong_settings = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
+        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+        GTK_MESSAGE_WARNING,
+        GTK_BUTTONS_CLOSE,
+        message);
+    gtk_window_set_transient_for(GTK_WINDOW(wrong_settings), GTK_WINDOW(g_assistant));
+    free(message);
+    gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(wrong_settings),
+                                    markup_message);
+    free(markup_message);
+    gtk_dialog_run(GTK_DIALOG(wrong_settings));
+    gtk_widget_destroy(wrong_settings);
+}
+
+static void s_validate_event(const char* event_name)
+{
+    GHashTable *errors = validate_event(event_name);
+    if (errors != NULL)
+        show_event_opt_error_dialog(event_name);
 }
 
 struct dump_dir *steal_if_needed(struct dump_dir *dd)
@@ -507,7 +570,7 @@ static void report_tb_was_toggled(GtkButton *button_unused, gpointer user_data_u
                             (reporters_string->len != 0 ? ", " : ""),
                             event_gui_data->event_name
             );
-            g_validate_event(event_gui_data->event_name);
+            s_validate_event(event_gui_data->event_name);
         }
     }
 
@@ -1755,7 +1818,6 @@ void create_assistant(void)
     gtk_assistant_set_forward_page_func(g_assistant, select_next_page_no, NULL, NULL);
 
     GtkWindow *wnd_assistant = GTK_WINDOW(g_assistant);
-    g_parent_window = wnd_assistant;
     gtk_window_set_default_size(wnd_assistant, DEFAULT_WIDTH, DEFAULT_HEIGHT);
     /* set_default sets icon for every windows used in this app, so we don't
      * have to set the icon for those windows manually

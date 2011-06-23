@@ -17,11 +17,11 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <gtk/gtk.h>
+#include <gnome-keyring.h>
 #include "libreport-gtk.h"
 
 static GtkWindow *g_event_list_window;
 static GList *option_widget_list;
-GtkWindow *g_parent_window;
 
 enum
 {
@@ -283,6 +283,56 @@ static void dehydrate_config_dialog()
         g_list_foreach(option_widget_list, &save_value_from_widget, NULL);
 }
 
+static void save_settings_to_keyring(const char *event_name)
+{
+    char *keyring_name = NULL;
+    GnomeKeyringResult result = gnome_keyring_get_default_keyring_sync(&keyring_name);
+    if (result != GNOME_KEYRING_RESULT_OK)
+    {
+        error_msg("Can't get default keyring (result:%d)", result);
+        return;
+    }
+
+    GnomeKeyringAttributeList *attrs = gnome_keyring_attribute_list_new();
+    event_config_t *ec = get_event_config(event_name);
+    /* add string id which we use to search for items */
+    gnome_keyring_attribute_list_append_string(attrs, "libreportEventConfig", event_name);
+    GList *l;
+    for (l = g_list_first(ec->options); l != NULL; l = g_list_next(l))
+    {
+        event_option_t *op = (event_option_t *)l->data;
+        gnome_keyring_attribute_list_append_string(attrs, op->eo_name, op->eo_value);
+    }
+
+    guint32 item_id = find_keyring_item_id_for_event(event_name);
+    if (item_id)
+    {
+        /* found existing item, so just update the values */
+        result = gnome_keyring_item_set_attributes_sync(keyring_name, item_id, attrs);
+        VERB2 log("updated item with id: %i", item_id);
+    }
+    else
+    {
+        /* did't find existing item, so create a new one */
+        result = gnome_keyring_item_create_sync(keyring_name,
+                                     GNOME_KEYRING_ITEM_GENERIC_SECRET, /* type */
+                                     event_name, /* display name */
+                                     attrs, /* attributes */
+                                     NULL, /* secret - no special handling for password it's stored in attrs */
+                                     1, /* update if exist */
+                                     &item_id);
+        VERB2 log("created new item with id: %i", item_id);
+    }
+    gnome_keyring_attribute_list_free(attrs);
+
+    if (result != GNOME_KEYRING_RESULT_OK)
+    {
+        error_msg("Error saving event '%s' configuration to keyring", event_name);
+        return;
+    }
+    VERB2 log("saved event '%s' configuration to keyring", event_name);
+}
+
 static void show_event_config_dialog(const char *event_name)
 {
     if (option_widget_list != NULL)
@@ -320,7 +370,7 @@ static void show_event_config_dialog(const char *event_name)
     if (result == GTK_RESPONSE_APPLY)
     {
         dehydrate_config_dialog();
-        abrt_keyring_save_settings(event_name);
+        save_settings_to_keyring(event_name);
     }
     //else if (result == GTK_RESPONSE_CANCEL)
     //    log("log");
@@ -417,38 +467,4 @@ void show_events_list_dialog(GtkWindow *parent)
     gtk_container_add(GTK_CONTAINER(event_list_window), main_vbox);
 
     gtk_widget_show_all(event_list_window);
-}
-
-static void show_event_opt_error_dialog(const char *event_name)
-{
-    event_config_t *ec = get_event_config(event_name);
-    char *message = xasprintf(_("Wrong settings detected for %s, "
-                              "reporting will probably fail if you continue "
-                              "with the current configuration."),
-                               ec->screen_name);
-    char *markup_message = xasprintf(_("Wrong settings detected for <b>%s</b>, "
-                              "reporting will probably fail if you continue "
-                              "with the current configuration."),
-                               ec->screen_name);
-    GtkWidget *wrong_settings = gtk_message_dialog_new(g_parent_window,
-        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-        GTK_MESSAGE_WARNING,
-        GTK_BUTTONS_CLOSE,
-        message);
-    gtk_window_set_transient_for(GTK_WINDOW(wrong_settings), g_parent_window);
-    free(message);
-    gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(wrong_settings),
-                                    markup_message);
-    free(markup_message);
-    gtk_dialog_run(GTK_DIALOG(wrong_settings));
-    gtk_widget_destroy(wrong_settings);
-}
-
-//TODO: move this code to its only callsite?
-// (in which case, move show_event_opt_error_dialog and g_parent_window too)
-void g_validate_event(const char* event_name)
-{
-    GHashTable *errors = validate_event(event_name);
-    if (errors != NULL)
-        show_event_opt_error_dialog(event_name);
 }

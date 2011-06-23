@@ -18,11 +18,12 @@
 */
 #include <gnome-keyring.h>
 #include "internal_libreport.h"
+#include "libreport-gtk.h"
 
 static char *keyring_name;
 static bool got_keyring = 0;
 
-static guint32 search_item_id(const char *event_name)
+guint32 find_keyring_item_id_for_event(const char *event_name)
 {
     GnomeKeyringAttributeList *attrs = gnome_keyring_attribute_list_new();
     GList *found = NULL;
@@ -46,52 +47,9 @@ static guint32 search_item_id(const char *event_name)
     return item_id;
 }
 
-void abrt_keyring_save_settings(const char *event_name)
-{
-    GList *l;
-    GnomeKeyringAttributeList *attrs = gnome_keyring_attribute_list_new();
-    event_config_t *ec = get_event_config(event_name);
-    /* add string id which we use to search for items */
-    gnome_keyring_attribute_list_append_string(attrs, "libreportEventConfig", event_name);
-    for (l = g_list_first(ec->options); l != NULL; l = g_list_next(l))
-    {
-        event_option_t *op = (event_option_t *)l->data;
-        gnome_keyring_attribute_list_append_string(attrs, op->eo_name, op->eo_value);
-    }
-
-    GnomeKeyringResult result;
-    guint32 item_id = search_item_id(event_name);
-    if (item_id)
-    {
-        /* found existing item, so just update the values */
-        result = gnome_keyring_item_set_attributes_sync(keyring_name, item_id, attrs);
-        VERB2 log("updated item with id: %i", item_id);
-    }
-    else
-    {
-        /* did't find existing item, so create a new one */
-        result = gnome_keyring_item_create_sync(keyring_name,
-                                     GNOME_KEYRING_ITEM_GENERIC_SECRET, /* type */
-                                     event_name, /* display name */
-                                     attrs, /* attributes */
-                                     NULL, /* secret - no special handling for password it's stored in attrs */
-                                     1, /* update if exist */
-                                     &item_id);
-        VERB2 log("created new item with id: %i", item_id);
-    }
-    gnome_keyring_attribute_list_free(attrs);
-
-    if (result != GNOME_KEYRING_RESULT_OK)
-    {
-        error_msg("Error saving event '%s' configuration to keyring", event_name);
-        return;
-    }
-    VERB2 log("saved event '%s' configuration to keyring", event_name);
-}
-
 static void abrt_keyring_load_settings(const char *event_name, event_config_t *ec)
 {
-    guint item_id = search_item_id(event_name);
+    guint item_id = find_keyring_item_id_for_event(event_name);
     if (!item_id)
         return;
     GnomeKeyringAttributeList *attrs = NULL;
@@ -157,7 +115,7 @@ static void load_event_config(gpointer key, gpointer value, gpointer user_data)
 /*
  * Tries to load settings for all events in g_event_config_list
 */
-void load_event_config_data_from_keyring()
+void load_event_config_data_from_keyring(void)
 {
     init_keyring();
     if (!got_keyring)

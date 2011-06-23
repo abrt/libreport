@@ -16,15 +16,31 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#ifndef INTERNAL_LIBREPORT_GTK_H_
+#define INTERNAL_LIBREPORT_GTK_H_
+
+#include <gtk/gtk.h>
 #include "report.h"
 #include "internal_libreport.h"
 
-void make_label_autowrap_on_resize(GtkLabel *label);
-void fix_all_wrapped_labels(GtkWidget *widget);
+#ifdef __cplusplus
+extern "C" {
+#endif
 
+#define make_label_autowrap_on_resize libreport_make_label_autowrap_on_resize
+void make_label_autowrap_on_resize(GtkLabel *label);
+
+#define show_events_list_dialog libreport_show_events_list_dialog
 void show_events_list_dialog(GtkWindow *parent);
 
-void abrt_keyring_save_settings(const char *event_name);
-void load_event_config_data_from_keyring();
-void g_validate_event(const char* event_name);
-extern GtkWindow *g_parent_window;
+#define load_event_config_data_from_keyring libreport_load_event_config_data_from_keyring
+void load_event_config_data_from_keyring(void);
+
+#define find_keyring_item_id_for_event libreport_find_keyring_item_id_for_event
+guint32 find_keyring_item_id_for_event(const char *event_name);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
