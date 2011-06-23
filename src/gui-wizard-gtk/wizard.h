@@ -19,7 +19,7 @@
 #ifndef WIZARD_H_
 #define WIZARD_H_
 
-#include "libreport-gtk.h"
+#include "internal_libreport_gtk.h"
 
 void create_assistant(void);
 void update_gui_state_from_problem_data(void);

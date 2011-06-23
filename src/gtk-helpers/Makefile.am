@@ -3,7 +3,7 @@ libreport_gtk_includedir = \
     $(includedir)/libreport
 
 libreport_gtk_include_HEADERS = \
-    libreport-gtk.h
+    internal_libreport_gtk.h
 
 lib_LTLIBRARIES = \
     libreport-gtk.la

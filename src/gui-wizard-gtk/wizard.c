@@ -17,7 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <gtk/gtk.h>
-#include "libreport-gtk.h"
+#include "internal_libreport_gtk.h"
 #include "wizard.h"
 
 #define DEFAULT_WIDTH   800

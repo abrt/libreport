@@ -18,7 +18,7 @@
 */
 #include <gtk/gtk.h>
 #include <gnome-keyring.h>
-#include "libreport-gtk.h"
+#include "internal_libreport_gtk.h"
 
 static GtkWindow *g_event_list_window;
 static GList *option_widget_list;

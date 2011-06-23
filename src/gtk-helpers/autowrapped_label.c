@@ -18,7 +18,7 @@
 */
 #include <gtk/gtk.h>
 #include "internal_libreport.h"
-#include "libreport-gtk.h"
+#include "internal_libreport_gtk.h"
 
 /*
  * GTK doesn't re-wrap GtkLabels which have line wrapping set to true.

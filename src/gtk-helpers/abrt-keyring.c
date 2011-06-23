@@ -18,7 +18,7 @@
 */
 #include <gnome-keyring.h>
 #include "internal_libreport.h"
-#include "libreport-gtk.h"
+#include "internal_libreport_gtk.h"
 
 static char *keyring_name;
 static bool got_keyring = 0;
