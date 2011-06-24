@@ -261,13 +261,6 @@ static void show_event_opt_error_dialog(const char *event_name)
     gtk_widget_destroy(wrong_settings);
 }
 
-static void s_validate_event(const char* event_name)
-{
-    GHashTable *errors = validate_event(event_name);
-    if (errors != NULL)
-        show_event_opt_error_dialog(event_name);
-}
-
 struct dump_dir *steal_if_needed(struct dump_dir *dd)
 {
     if (!dd)
@@ -342,8 +335,31 @@ void show_error_as_msgbox(const char *msg)
 
 static void load_text_to_text_view(GtkTextView *tv, const char *name)
 {
+    GtkTextBuffer *tb = gtk_text_view_get_buffer(tv);
+
     const char *str = g_cd ? get_problem_item_content_or_NULL(g_cd, name) : NULL;
-    gtk_text_buffer_set_text(gtk_text_view_get_buffer(tv), (str ? str : ""), -1);
+    /* Bad: will choke at any text with non-Unicode parts: */
+    /* gtk_text_buffer_set_text(tb, (str ? str : ""), -1);*/
+    /* Start torturing ourself instead: */
+
+    GtkTextIter beg_iter, end_iter;
+    gtk_text_buffer_get_iter_at_offset(tb, &beg_iter, 0);
+    gtk_text_buffer_get_iter_at_offset(tb, &end_iter, -1);
+    gtk_text_buffer_delete(tb, &beg_iter, &end_iter);
+
+    if (!str)
+        return;
+
+    const gchar *end;
+    while (!g_utf8_validate(str, -1, &end))
+    {
+        gtk_text_buffer_insert_at_cursor(tb, str, end - str);
+        char buf[8];
+        unsigned len = sprintf(buf, "<%02X>", (unsigned char)*end);
+        gtk_text_buffer_insert_at_cursor(tb, buf, len);
+        str = end + 1;
+    }
+    gtk_text_buffer_insert_at_cursor(tb, str, strlen(str));
 }
 
 static gchar *get_malloced_string_from_text_view(GtkTextView *tv)
@@ -392,6 +408,16 @@ static void append_to_textview(GtkTextView *tv, const char *str)
     gtk_text_buffer_get_iter_at_offset(tb, &text_iter, -1);
     gtk_text_buffer_place_cursor(tb, &text_iter);
 
+    /* Deal with possible broken Unicode */
+    const gchar *end;
+    while (!g_utf8_validate(str, -1, &end))
+    {
+        gtk_text_buffer_insert_at_cursor(tb, str, end - str);
+        char buf[8];
+        unsigned len = sprintf(buf, "<%02X>", (unsigned char)*end);
+        gtk_text_buffer_insert_at_cursor(tb, buf, len);
+        str = end + 1;
+    }
     gtk_text_buffer_insert_at_cursor(tb, str, strlen(str));
 
     /* Scroll so that the end of the log is visible */
@@ -546,13 +572,18 @@ static gint find_by_button(gconstpointer a, gconstpointer button)
 
 static void analyze_rb_was_toggled(GtkButton *button, gpointer user_data)
 {
-    free(g_analyze_event_selected);
-    g_analyze_event_selected = NULL;
+    /* Note: called both when item is selected and _unselected_,
+     * use gtk_toggle_button_get_active() to determine state.
+     */
     GList *found = g_list_find_custom(g_list_analyzers, button, find_by_button);
     if (found)
     {
         event_gui_data_t *evdata = found->data;
-        g_analyze_event_selected = xstrdup(evdata->event_name);
+        if (gtk_toggle_button_get_active(evdata->toggle_button))
+        {
+            free(g_analyze_event_selected);
+            g_analyze_event_selected = xstrdup(evdata->event_name);
+        }
     }
 }
 
@@ -570,7 +601,12 @@ static void report_tb_was_toggled(GtkButton *button_unused, gpointer user_data_u
                             (reporters_string->len != 0 ? ", " : ""),
                             event_gui_data->event_name
             );
-            s_validate_event(event_gui_data->event_name);
+            GHashTable *errors = validate_event(event_gui_data->event_name);
+            if (errors != NULL)
+            {
+                g_hash_table_unref(errors);
+                show_event_opt_error_dialog(event_gui_data->event_name);
+            }
         }
     }
 
@@ -800,12 +836,13 @@ void update_gui_state_from_problem_data(void)
                 /*radio:*/ true
     );
     /* Update the value of currently selected analyzer */
+    free(g_analyze_event_selected);
+    g_analyze_event_selected = NULL;
     if (active_button)
     {
-        free(g_analyze_event_selected);
         g_analyze_event_selected = xstrdup(active_button->event_name);
-        VERB2 log("g_analyze_event_selected='%s'", g_analyze_event_selected);
     }
+    VERB2 log("g_analyze_event_selected='%s'", g_analyze_event_selected);
 
     /* Update reporter checkboxes */
     /* Remember names of selected reporters */

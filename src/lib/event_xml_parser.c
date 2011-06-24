@@ -63,11 +63,11 @@ static const char *const option_types[] =
 static char *get_element_lang(struct my_parse_data *parse_data, const gchar **att_names, const gchar **att_values)
 {
     char *short_locale_end = strchr(parse_data->cur_locale, '_');
-    VERB3 log("locale: %s", parse_data->cur_locale);
+    //VERB3 log("locale: %s", parse_data->cur_locale);
     int i;
     for (i = 0; att_names[i] != NULL; ++i)
     {
-        VERB3 log("attr: %s:%s", att_names[i], att_values[i]);
+        //VERB3 log("attr: %s:%s", att_names[i], att_values[i]);
         if (strcmp(att_names[i], "xml:lang") == 0)
         {
             if (strcmp(att_values[i], parse_data->cur_locale) == 0)
