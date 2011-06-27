@@ -238,8 +238,17 @@ static const char *const blacklisted_items[] = {
     FILENAME_UUID     ,
     FILENAME_COUNT    ,
     FILENAME_TAINTED_SHORT,
+    FILENAME_ARCHITECTURE,
+    FILENAME_PACKAGE,
+    FILENAME_OS_RELEASE,
+    FILENAME_COMPONENT,
     NULL
 };
+
+/*
+ * npajkovs: implement second part of problem (not so important)
+ * https://bugzilla.redhat.com/show_bug.cgi?id=711591
+ */
 
 char* make_description_bz(problem_data_t *problem_data)
 {
