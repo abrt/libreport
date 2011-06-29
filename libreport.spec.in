@@ -55,8 +55,8 @@ Summary: Python bindings for report-libs
 # Is group correct here? -
 Group: System Environment/Libraries
 Requires: libreport = %{version}-%{release}
-Provides: report > 0.20
-Obsoletes: report <= 0.20
+Provides: report = 0.20-3
+Obsoletes: report <= 0.20-2
 
 %description python
 Python bindings for report-libs.
@@ -84,8 +84,8 @@ bugs
 Summary: GTK front-end for libreport
 Group: User Interface/Desktops
 Requires: libreport = %{version}-%{release}
-Provides: report-gtk > 0.20
-Obsoletes: report-gtk <= 0.20
+Provides: report-gtk = 0.20-3
+Obsoletes: report-gtk <= 0.20-2
 
 %description gtk
 Applications for reporting bugs using libreport backend
