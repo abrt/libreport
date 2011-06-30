@@ -234,6 +234,9 @@ char *run_in_shell_and_save_output(int flags,
 #define is_in_string_list libreport_is_in_string_list
 bool is_in_string_list(const char *name, char **v);
 
+#define is_in_comma_separated_list libreport_is_in_comma_separated_list
+bool is_in_comma_separated_list(const char *value, const char *list);
+
 /* Frees every element'd data using free(),
  * then frees list itself using g_list_free(list):
  */

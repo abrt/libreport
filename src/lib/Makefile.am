@@ -10,6 +10,7 @@ lib_LTLIBRARIES = \
 libreport_la_SOURCES = \
     xfuncs.c \
     is_in_string_list.c \
+    is_in_comma_separated_list.c \
     encbase64.c \
     binhex.c \
     stdio_helpers.c \

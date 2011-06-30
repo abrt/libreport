@@ -1426,23 +1426,6 @@ static void log_ready_state()
 }
 #endif
 
-static bool is_in_comma_separated_list(const char *value, const char *list)
-{
-    if (!list)
-        return false;
-    unsigned len = strlen(value);
-    while (*list)
-    {
-        const char *comma = strchrnul(list, ',');
-        if ((comma - list == len) && strncmp(value, list, len) == 0)
-            return true;
-        if (!*comma)
-            break;
-        list = comma + 1;
-    }
-    return false;
-}
-
 static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer user_data)
 {
     //int page_no = gtk_assistant_get_current_page(g_assistant);
