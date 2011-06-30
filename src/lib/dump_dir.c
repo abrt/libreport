@@ -436,7 +436,7 @@ struct dump_dir *dd_create(const char *dir, uid_t uid, mode_t mode)
     /* mkdir's mode (above) can be affected by umask, fix it */
     if (chmod(dir, dir_mode) == -1)
     {
-        perror_msg("can't change mode of '%s'", dir);
+        perror_msg("Can't change mode of '%s'", dir);
         dd_close(dd);
         return NULL;
     }
@@ -463,7 +463,7 @@ struct dump_dir *dd_create(const char *dir, uid_t uid, mode_t mode)
 
         if (chown(dir, dd->dd_uid, dd->dd_gid) == -1)
         {
-            perror_msg("can't change '%s' ownership to %lu:%lu", dir,
+            perror_msg("Can't change '%s' ownership to %lu:%lu", dir,
                        (long)dd->dd_uid, (long)dd->dd_gid);
         }
     }
@@ -537,7 +537,7 @@ void dd_sanitize_mode_and_owner(struct dump_dir *dd)
             {
                 if (chown(full_path, dd->dd_uid, dd->dd_gid) != 0)
                 {
-                    perror_msg("can't change '%s' ownership to %lu:%lu", full_path,
+                    perror_msg("Can't change '%s' ownership to %lu:%lu", full_path,
                                (long)dd->dd_uid, (long)dd->dd_gid);
                 }
             }
@@ -700,7 +700,7 @@ static bool save_binary_file(const char *path, const char* data, unsigned size, 
     {
         if (fchown(fd, uid, gid) == -1)
         {
-            perror_msg("can't change '%s' ownership to %lu:%lu", path, (long)uid, (long)gid);
+            perror_msg("Can't change '%s' ownership to %lu:%lu", path, (long)uid, (long)gid);
         }
     }
 

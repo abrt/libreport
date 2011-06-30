@@ -302,7 +302,7 @@ static int run_report_editor(problem_data_t *problem_data)
     int fd = mkstemp(filename);
     if (fd == -1) /* errno is set */
     {
-        perror_msg("can't generate temporary file name");
+        perror_msg("Can't generate temporary file name");
         return 2;
     }
 
@@ -316,7 +316,7 @@ static int run_report_editor(problem_data_t *problem_data)
 
     if (fclose(fp)) /* errno is set */
     {
-        perror_msg("can't write '%s'", filename);
+        perror_msg("Can't write '%s'", filename);
         return 2;
     }
 
@@ -328,7 +328,7 @@ static int run_report_editor(problem_data_t *problem_data)
     fp = fopen(filename, "r");
     if (!fp) /* errno is set */
     {
-        perror_msg("can't open '%s' to read the crash report", filename);
+        perror_msg("Can't open '%s' to read the crash report", filename);
         return 2;
     }
 
@@ -339,7 +339,7 @@ static int run_report_editor(problem_data_t *problem_data)
     char *text = (char*)xmalloc(size + 1);
     if (fread(text, 1, size, fp) != size)
     {
-        error_msg("can't read '%s'", filename);
+        error_msg("Can't read '%s'", filename);
         fclose(fp);
         return 2;
     }
@@ -349,7 +349,7 @@ static int run_report_editor(problem_data_t *problem_data)
     // Delete the tempfile.
     if (unlink(filename) == -1) /* errno is set */
     {
-        perror_msg("can't unlink %s", filename);
+        perror_msg("Can't unlink %s", filename);
     }
 
     remove_comments_and_unescape(text);

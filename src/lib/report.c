@@ -83,10 +83,14 @@ int report_problem_in_dir(const char *dirname, int flags)
     if (flags & LIBREPORT_WAIT)
     {
         int status;
-        pid_t p = waitpid(pid, &status, 0);
+        pid_t p;
+ again:
+        p = waitpid(pid, &status, 0);
         if (p <= 0)
         {
-            perror_msg("can't waitpid");
+            if (p < 0 && errno == EINTR)
+                goto again;
+            perror_msg("Can't waitpid");
             return -1;
         }
         if (WIFEXITED(status))

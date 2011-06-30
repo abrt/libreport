@@ -110,19 +110,19 @@ char* xstrndup(const char *s, int n)
 void xpipe(int filedes[2])
 {
     if (pipe(filedes))
-        perror_msg_and_die("can't create pipe");
+        perror_msg_and_die("Can't create pipe");
 }
 
 void xdup(int from)
 {
     if (dup(from) < 0)
-        perror_msg_and_die("can't duplicate file descriptor");
+        perror_msg_and_die("Can't duplicate file descriptor");
 }
 
 void xdup2(int from, int to)
 {
     if (dup2(from, to) != to)
-        perror_msg_and_die("can't duplicate file descriptor");
+        perror_msg_and_die("Can't duplicate file descriptor");
 }
 
 // "Renumber" opened fd
@@ -273,7 +273,7 @@ ssize_t xsendto(int s, const void *buf, size_t len,
 void xstat(const char *name, struct stat *stat_buf)
 {
     if (stat(name, stat_buf))
-        perror_msg_and_die("can't stat '%s'", name);
+        perror_msg_and_die("Can't stat '%s'", name);
 }
 
 // Die if we can't open a file and return a fd
@@ -282,7 +282,7 @@ int xopen3(const char *pathname, int flags, int mode)
     int ret;
     ret = open(pathname, flags, mode);
     if (ret < 0)
-        perror_msg_and_die("can't open '%s'", pathname);
+        perror_msg_and_die("Can't open '%s'", pathname);
     return ret;
 }
 
@@ -305,7 +305,7 @@ int open3_or_warn(const char *pathname, int flags, int mode)
     int ret;
     ret = open(pathname, flags, mode);
     if (ret < 0)
-        perror_msg("can't open '%s'", pathname);
+        perror_msg("Can't open '%s'", pathname);
     return ret;
 }
 
@@ -376,25 +376,25 @@ bool string_to_bool(const char *s)
 void xseteuid(uid_t euid)
 {
     if (seteuid(euid) != 0)
-        perror_msg_and_die("can't set %cid %lu", 'u', (long)euid);
+        perror_msg_and_die("Can't set %cid %lu", 'u', (long)euid);
 }
 
 void xsetegid(gid_t egid)
 {
     if (setegid(egid) != 0)
-        perror_msg_and_die("can't set %cid %lu", 'g', (long)egid);
+        perror_msg_and_die("Can't set %cid %lu", 'g', (long)egid);
 }
 
 void xsetreuid(uid_t ruid, uid_t euid)
 {
     if (setreuid(ruid, euid) != 0)
-        perror_msg_and_die("can't set %cid %lu", 'u', (long)ruid);
+        perror_msg_and_die("Can't set %cid %lu", 'u', (long)ruid);
 }
 
 void xsetregid(gid_t rgid, gid_t egid)
 {
     if (setregid(rgid, egid) != 0)
-        perror_msg_and_die("can't set %cid %lu", 'g', (long)rgid);
+        perror_msg_and_die("Can't set %cid %lu", 'g', (long)rgid);
 }
 
 const char *get_home_dir(uid_t uid)
