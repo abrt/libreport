@@ -61,6 +61,9 @@ PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.21])
 PKG_CHECK_MODULES([DBUS], [dbus-1])
 PKG_CHECK_MODULES([LIBXML], [libxml-2.0])
 PKG_CHECK_MODULES([NSS], [nss])
+PKG_CHECK_MODULES([XMLRPC], [xmlrpc])
+PKG_CHECK_MODULES([XMLRPC_CLIENT], [xmlrpc_client])
+PKG_CHECK_MODULES([CURL], [libcurl])
 PKG_CHECK_MODULES([GNOME_KEYRING], [gnome-keyring-1])
 # Just PKG_CHECK_MODULES([PYTHON], [python]) works only with python2.7+
 # Below, if python is not found, we set up for python2.6 w/o checking:
@@ -72,9 +75,13 @@ PKG_CHECK_MODULES([NEWT], [libnewt])
 
 PKG_PROG_PKG_CONFIG
 
+AC_CHECK_HEADER([libtar.h], [],
+   [AC_MSG_ERROR([libtar.h is needed to build libreport])])
+
 CONF_DIR='${sysconfdir}/${PACKAGE_NAME}'
 VAR_RUN='${localstatedir}/run'
 PLUGINS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/plugins'
+REPORT_PLUGINS_CONF_DIR='${sysconfdir}/libreport/plugins'
 EVENTS_DIR='${sysconfdir}/${PACKAGE_NAME}/events'
 EVENTS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/events.d'
 PLUGINS_LIB_DIR='${libdir}/${PACKAGE_NAME}'
@@ -90,6 +97,7 @@ AC_ARG_WITH(debugdumpsdir,
 AC_SUBST(CONF_DIR)
 AC_SUBST(VAR_RUN)
 AC_SUBST(PLUGINS_CONF_DIR)
+AC_SUBST(REPORT_PLUGINS_CONF_DIR)
 AC_SUBST(EVENTS_CONF_DIR)
 AC_SUBST(EVENTS_DIR)
 AC_SUBST(PLUGINS_LIB_DIR)
@@ -117,6 +125,7 @@ AC_CONFIG_FILES([
 	src/gui-wizard-gtk/Makefile
 	src/cli/Makefile
 	src/report-newt/Makefile
+	src/plugins/Makefile
 	po/Makefile.in
 ])
 

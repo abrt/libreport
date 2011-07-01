@@ -98,6 +98,63 @@ Requires: libreport-gtk = %{version}-%{release}
 %description gtk-devel
 Development libraries and headers for libreport-gtk
 
+%package plugin-kerneloops
+Summary: %{name}'s kerneloops reporter plugin
+Group: System Environment/Libraries
+Requires: curl
+Requires: %{name} = %{version}-%{release}
+
+%description plugin-kerneloops
+This package contains plugin which sends kernel crash information to specified
+server, usually to kerneloops.org.
+
+%package plugin-logger
+Summary: %{name}'s logger reporter plugin
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+Obsoletes: abrt-plugin-logger < 2.0.4
+
+%description plugin-logger
+The simple reporter plugin which writes a report to a specified file.
+
+%package plugin-mailx
+Summary: %{name}'s mailx reporter plugin
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+Requires: mailx
+Obsoletes: abrt-plugin-mailx < 2.0.4
+
+%description plugin-mailx
+The simple reporter plugin which sends a report via mailx to a specified
+email address.
+
+%package plugin-bugzilla
+Summary: %{name}'s bugzilla plugin
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+Obsoletes: abrt-plugin-bugzilla < 2.0.4
+
+%description plugin-bugzilla
+Plugin to report bugs into the bugzilla.
+
+%package plugin-rhtsupport
+Summary: %{name}'s RHTSupport plugin
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+Obsoletes: abrt-plugin-rhtsupport < 2.0.4
+
+%description plugin-rhtsupport
+Plugin to report bugs into RH support system.
+
+%package plugin-reportuploader
+Summary: %{name}'s reportuploader plugin
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+Obsoletes: abrt-plugin-reportuploader < 2.0.4
+
+%description plugin-reportuploader
+Plugin to report bugs into anonymous FTP site associated with ticketing system.
+
 %prep
 %setup -q
 
@@ -154,6 +211,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/%{name}/report_event.conf
 %{_libdir}/libreport.so.*
 %{_libdir}/libabrt_dbus.so.*
+%{_libdir}/libabrt_web.so.*
+%exclude %{_libdir}/libabrt_web.so
 
 %files devel
 %defattr(-,root,root,-)
@@ -195,6 +254,47 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libdir}/libreport-gtk.so
 %{_includedir}/libreport/internal_libreport_gtk.h
 %{_libdir}/pkgconfig/libreport-gtk.pc
+
+%files plugin-kerneloops
+%defattr(-,root,root,-)
+%{_sysconfdir}/libreport/events/report_Kerneloops.xml
+%{_mandir}/man*/reporter-kerneloops.*
+%{_bindir}/reporter-kerneloops
+
+%files plugin-logger
+%defattr(-,root,root,-)
+%{_sysconfdir}/libreport/events/report_Logger.conf
+%config(noreplace) %{_sysconfdir}/libreport/events.d/print_event.conf
+%{_bindir}/reporter-print
+%{_mandir}/man*/reporter-print.*
+
+%files plugin-mailx
+%defattr(-,root,root,-)
+%{_sysconfdir}/libreport/events/report_Mailx.xml
+%config(noreplace) %{_sysconfdir}/libreport/events.d/mailx_event.conf
+%{_mandir}/man*/reporter-mailx.*
+%{_bindir}/reporter-mailx
+
+%files plugin-bugzilla
+%defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/libreport/plugins/Bugzilla.conf
+%{_sysconfdir}/libreport/events/report_Bugzilla.xml
+%config(noreplace) %{_sysconfdir}/libreport/events/report_Bugzilla.conf
+# FIXME: remove with the old gui
+%{_mandir}/man1/reporter-bugzilla.1.gz
+%{_bindir}/reporter-bugzilla
+
+%files plugin-rhtsupport
+%defattr(-,root,root,-)
+%{_sysconfdir}/libreport/events/report_RHTSupport.xml
+%config(noreplace) %{_sysconfdir}/libreport/events.d/rhtsupport_event.conf
+# {_mandir}/man7/abrt-RHTSupport.7.gz
+%{_bindir}/reporter-rhtsupport
+
+%files plugin-reportuploader
+%defattr(-,root,root,-)
+%{_mandir}/man*/reporter-upload.*
+%{_bindir}/reporter-upload
 
 %changelog
 * Wed Jun 01 2011 Jiri Moskovcak <jmoskovc@redhat.com> 2.0.2-1

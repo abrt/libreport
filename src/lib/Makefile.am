@@ -1,6 +1,7 @@
 # libreport - the stuff shared among most of abrt (like xmalloc, logging)
 lib_LTLIBRARIES = \
     libreport.la \
+    libabrt_web.la \
     libabrt_dbus.la
 
 # Not used just yet:
@@ -89,6 +90,33 @@ libabrt_dbus_la_LIBADD = \
     libreport.la \
     $(GLIB_LIBS) \
     $(DBUS_LIBS)
+
+libabrt_web_la_SOURCES = \
+    abrt_curl.h abrt_curl.c \
+    abrt_xmlrpc.h abrt_xmlrpc.c
+libabrt_web_la_CPPFLAGS = \
+    -Wall -Wwrite-strings -Werror \
+    -I$(srcdir)/../include \
+    -DLOCALSTATEDIR='"$(localstatedir)"' \
+    -DVAR_RUN=\"$(VAR_RUN)\" \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
+    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    -DCONF_DIR=\"$(CONF_DIR)\" \
+    -DEVENTS_DIR=\"$(EVENTS_DIR)\" \
+    $(GLIB_CFLAGS) \
+    $(CURL_CFLAGS) \
+    $(LIBXML_CFLAGS) \
+    $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    -D_GNU_SOURCE
+libabrt_web_la_LDFLAGS = \
+    -version-info 0:1:0
+libabrt_web_la_LIBADD = \
+    $(GLIB_LIBS) \
+    $(CURL_LIBS) \
+    $(LIBXML_LIBS) \
+    $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS)
 
 $(DESTDIR)/$(DEBUG_DUMPS_DIR):
 	$(mkdir_p) '$@'
