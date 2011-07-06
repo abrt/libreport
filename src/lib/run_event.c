@@ -242,11 +242,11 @@ static int regcmp_lines(char *val, const char *regex)
     return r;
 }
 
-/* Deletes rules in *pp_rule_list, starting from first (remaining) rule,
+/* Checks rules in *pp_rule_list, starting from first (remaining) rule,
  * until it finds a rule with all conditions satisfied.
  * In this case, it deletes this rule and returns this rule's cmd.
- * Else (if it didn't find such rule), it deletes all rules and returns NULL.
- * In case of error (dump_dir can't be opened), deletes all rules and returns NULL.
+ * Else (if it didn't find such rule), it returns NULL.
+ * In case of error (dump_dir can't be opened), returns NULL.
  *
  * Intended usage:
  * list = load_rule_list(...);
@@ -324,27 +324,18 @@ static char* pop_next_command(GList **pp_rule_list,
             /* We are here if current condition is satisfied */
 
             condition = condition->next;
-        }
+        } /* while (condition) */
         /* We are here if all conditions are satisfied */
-
+        /* IOW, we found rule to run, delete it and return its command */
+        *pp_rule_list = g_list_remove(*pp_rule_list, cur_rule);
+        list_free_with_free(cur_rule->conditions);
         command = cur_rule->command;
+        /*free(cur_rule->command); - WRONG! we are returning it! */
+        free(cur_rule);
+        break;
 
  next_rule:
-        *pp_rule_list = rule_list->next;
-        g_list_free_1(rule_list);
-
-        list_free_with_free(cur_rule->conditions);
-        /*free(cur_rule->command); - WRONG! we might be returning it! */
-        if (command)
-        {
-            /* We found rule to run, return it */
-            free(cur_rule);
-            break;
-        }
-        free(cur_rule->command); /* _now_ it is ok */
-        free(cur_rule);
-
-        rule_list = *pp_rule_list;
+        rule_list = rule_list->next;
     } /* while (rule_list) */
 
  ret:
