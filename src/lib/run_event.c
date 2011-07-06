@@ -304,11 +304,15 @@ static char* pop_next_command(GList **pp_rule_list,
                 }
                 /* Is it "VAR~=REGEX"? */
                 int regex = (eq_sign > cond_str && eq_sign[-1] == '~');
+                /* Is it "VAR!=VAL"? */
+                int inverted = (eq_sign > cond_str && eq_sign[-1] == '!');
                 char *var_name = xstrndup(cond_str, eq_sign - cond_str - regex);
                 char *real_val = dd_load_text_ext(dd, var_name, DD_FAIL_QUIETLY_ENOENT);
                 free(var_name);
                 int vals_differ = regex ? regcmp_lines(real_val, eq_sign + 1) : strcmp(real_val, eq_sign + 1);
                 free(real_val);
+                if (inverted)
+                    vals_differ = !vals_differ;
 
                 /* Do values match? */
                 if (vals_differ) /* no */
