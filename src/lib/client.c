@@ -39,6 +39,13 @@ int ask_yes_no(const char *question)
             return false;
     }
 
+    if (is_slave_mode())
+        printf(REPORT_PREFIX_ASK_YES_NO "%s\n", question);
+    else
+        printf("%s [%s/%s] ", question, yes, no);
+
+    fflush(stdout);
+
     char response[16];
     if (NULL == fgets(response, sizeof(response), stdin))
         return false;
@@ -49,9 +56,11 @@ int ask_yes_no(const char *question)
 char *ask(const char *question, char *response, int response_len)
 {
     if (is_slave_mode())
-        printf("ASK ");
+        printf(REPORT_PREFIX_ASK "%s\n", question);
+    else
+        printf("%s ", question);
 
-    puts(question);
+    fflush(stdout);
 
     return fgets(response, response_len, stdin);
 }
@@ -59,7 +68,8 @@ char *ask(const char *question, char *response, int response_len)
 void alert(const char *message)
 {
     if (is_slave_mode())
-        printf("ALERT ");
+        printf(REPORT_PREFIX_ALERT);
 
     puts(message);
+    fflush(stdout);
 }

@@ -20,6 +20,10 @@
 #ifndef LIBREPORT_CLIENT_H_
 #define LIBREPORT_CLIENT_H_
 
+#define REPORT_PREFIX_ASK_YES_NO "ASK_YES_NO "
+#define REPORT_PREFIX_ASK "ASK "
+#define REPORT_PREFIX_ALERT "ALERT "
+
 #ifdef __cplusplus
 extern "C" {
 #endif
