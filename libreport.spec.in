@@ -55,8 +55,8 @@ Summary: Python bindings for report-libs
 # Is group correct here? -
 Group: System Environment/Libraries
 Requires: libreport = %{version}-%{release}
-Provides: report = 0.20-3
-Obsoletes: report <= 0.20-2
+Provides: report = 0.22-1
+Obsoletes: report < 0.22-1
 
 %description python
 Python bindings for report-libs.
@@ -74,7 +74,8 @@ with problem dump reports
 Summary: %{name}'s newt interface
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
-Provides: report-newt > 0.20
+Provides: report-newt = 0.22-1
+Obsoletes: report-newt < 0.22-1
 
 %description newt
 This package contains a simple newt application for reporting
@@ -84,8 +85,8 @@ bugs
 Summary: GTK front-end for libreport
 Group: User Interface/Desktops
 Requires: libreport = %{version}-%{release}
-Provides: report-gtk = 0.20-3
-Obsoletes: report-gtk <= 0.20-2
+Provides: report-gtk = 0.22-1
+Obsoletes: report-gtk < 0.22-1
 
 %description gtk
 Applications for reporting bugs using libreport backend
