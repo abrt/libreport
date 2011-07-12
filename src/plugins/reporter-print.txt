@@ -35,17 +35,18 @@ OPTIONS
    Output file
 
 -a yes/no::
-   If -o FILE is specified, controls whether FILE is appended to, or overwritten.
+   If -o FILE is specified, controls whether FILE is appended to, or
+   overwritten. (default: no)
 
 -r::
-   Add a recor to 'reported_to' in DIR which specifies that this problem
-   was reported. Some tools use this to differentiate between problems
-   which were and weren't yet reported.
+   Add a record to 'reported_to' in DIR which specifies that this
+   problem was reported. Some tools use this to differentiate between
+   problems which were and weren't yet reported.
 
 Output format
 ~~~~~~~~~~~~~
-The output is designed to be machine-parseable. The elements which have only
-one line are printed in the form
+The output is designed to be machine-parsable. The elements which have
+only one line are printed in the form
 
    NAME:<whitespace>VALUE
 
