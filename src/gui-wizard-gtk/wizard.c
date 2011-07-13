@@ -96,19 +96,25 @@ static PangoFontDescription *monospace_font;
 
 
 /* THE PAGE FLOW
- * page_5: user comments
- * page_1: analyze action selection
- * page_2: analyze progress
- * page_3: reporter selection
- * page_4: backtrace editor
- * page_6: summary
- * page_7: reporting progress
+ * page_0:  introduction/summary
+ * page_1:  user comments
+ * page_2:  analyze action selection
+ * page_3:  analyze progress
+ * page_4:  file collect selection
+ * page_5:  collect progress
+ * page_6:  reporter selection
+ * page_7:  backtrace editor
+ * page_8:  summary
+ * page_9:  reporting progress
+ * page_10: finished
  */
 enum {
     PAGENO_SUMMARY,
     PAGENO_EDIT_COMMENT,
     PAGENO_ANALYZE_SELECTOR,
     PAGENO_ANALYZE_PROGRESS,
+    PAGENO_COLLECT_SELECTOR,
+    PAGENO_COLLECT_PROGRESS,
     PAGENO_REPORTER_SELECTOR,
     PAGENO_EDIT_BACKTRACE,
     PAGENO_REVIEW_DATA,
@@ -126,12 +132,14 @@ static const gchar PAGE_SUMMARY[]            = "page_0";
 static const gchar PAGE_EDIT_COMMENT[]       = "page_1";
 static const gchar PAGE_ANALYZE_SELECTOR[]   = "page_2";
 static const gchar PAGE_ANALYZE_PROGRESS[]   = "page_3";
-static const gchar PAGE_REPORTER_SELECTOR[]  = "page_4_report";
-static const gchar PAGE_EDIT_BACKTRACE[]     = "page_5";
-static const gchar PAGE_REVIEW_DATA[]        = "page_6_report";
-static const gchar PAGE_REPORT_PROGRESS[]    = "page_7_report";
-static const gchar PAGE_REPORT_DONE[]        = "page_8_report";
-static const gchar PAGE_NOT_SHOWN[]          = "page_9_report";
+static const gchar PAGE_COLLECT_SELECTOR[]   = "page_4";
+static const gchar PAGE_COLLECT_PROGRESS[]   = "page_5";
+static const gchar PAGE_REPORTER_SELECTOR[]  = "page_6_report";
+static const gchar PAGE_EDIT_BACKTRACE[]     = "page_7";
+static const gchar PAGE_REVIEW_DATA[]        = "page_8_report";
+static const gchar PAGE_REPORT_PROGRESS[]    = "page_9_report";
+static const gchar PAGE_REPORT_DONE[]        = "page_10_report";
+static const gchar PAGE_NOT_SHOWN[]          = "page_11_report";
 
 static const gchar *const page_names[] =
 {
@@ -139,6 +147,8 @@ static const gchar *const page_names[] =
     PAGE_EDIT_COMMENT,
     PAGE_ANALYZE_SELECTOR,
     PAGE_ANALYZE_PROGRESS,
+    PAGE_COLLECT_SELECTOR,
+    PAGE_COLLECT_PROGRESS,
     PAGE_REPORTER_SELECTOR,
     PAGE_EDIT_BACKTRACE,
     PAGE_REVIEW_DATA,
@@ -174,6 +184,8 @@ static page_obj_t pages[] =
     { PAGE_EDIT_COMMENT,"Provide additional information", GTK_ASSISTANT_PAGE_CONTENT  },
     { PAGE_ANALYZE_SELECTOR   , "Select analyzer"       , GTK_ASSISTANT_PAGE_CONFIRM  },
     { PAGE_ANALYZE_PROGRESS   , "Analyzing"             , GTK_ASSISTANT_PAGE_INTRO    },
+    { PAGE_COLLECT_SELECTOR   , "Select collector"      , GTK_ASSISTANT_PAGE_CONFIRM  },
+    { PAGE_COLLECT_PROGRESS   , "Collecting"            , GTK_ASSISTANT_PAGE_INTRO    },
     /* Some reporters don't need backtrace, we can skip bt page for them.
      * Therefore we want to know reporters _before_ we go to bt page
      */
