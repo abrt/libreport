@@ -92,4 +92,5 @@ init_pyreport(void)
     PyModule_AddObject(m, "LIBREPORT_WAIT"       , Py_BuildValue("i", LIBREPORT_WAIT       ));
     PyModule_AddObject(m, "LIBREPORT_ANALYZE"    , Py_BuildValue("i", LIBREPORT_ANALYZE    ));
     PyModule_AddObject(m, "LIBREPORT_RELOAD_DATA", Py_BuildValue("i", LIBREPORT_RELOAD_DATA));
+    PyModule_AddObject(m, "LIBREPORT_DEL_DIR"    , Py_BuildValue("i", LIBREPORT_DEL_DIR    ));
 }

@@ -21,6 +21,8 @@
 
 int report_problem_in_dir(const char *dirname, int flags)
 {
+    fflush(NULL);
+
     pid_t pid = vfork();
     if (pid < 0) /* error */
     {
@@ -31,13 +33,15 @@ int report_problem_in_dir(const char *dirname, int flags)
     if (pid == 0) /* child */
     {
         const char *path, *path1, *path2;
-        char *args[5], **pp;
+        char *args[6], **pp;
 
         /* Graphical tool */
         path1 = BIN_DIR"/report-gtk";
         path2 = "report-gtk";
         pp = args;
         *pp++ = (char *)"report-gtk";
+        if (flags & LIBREPORT_DEL_DIR)
+            *pp++ = (char *)"--delete";
         if (!(flags & LIBREPORT_ANALYZE))
             *pp++ = (char *)"--report-only";
         *pp++ = (char *)"--";
@@ -51,6 +55,8 @@ int report_problem_in_dir(const char *dirname, int flags)
             path2 = "report-cli";
             pp = args;
             *pp++ = (char *)"report-cli";
+            if (flags & LIBREPORT_DEL_DIR)
+                *pp++ = (char *)"--delete";
             if (!(flags & LIBREPORT_ANALYZE))
                 *pp++ = (char *)"-ro"; /* only report */
             else
@@ -68,6 +74,40 @@ int report_problem_in_dir(const char *dirname, int flags)
          */
         signal(SIGCHLD, SIG_DFL);
 
+        if (!(flags & LIBREPORT_WAIT))
+        {
+            /* Caller doesn't want to wait for completion.
+             * Create a grandchild, and then exit.
+             * This reparents grandchild to init, and makes waitpid
+             * in parent detect our exit and return almost immediately.
+             */
+            pid_t pid = vfork();
+            if (pid < 0) /* error */
+                perror_msg_and_die("vfork");
+            if (pid != 0) /* not grandching */
+            {
+                /* Use of vfork above is ok: grandchild will exec or exit at once,
+                 * (see code below) and therefore will unblock us at once.
+                 * And now we exit:
+                 */
+                exit(0);
+            }
+            /* There's an alternative approach to achieve this,
+             * instead of using --delete.
+             * We can create yet another intermediate process which
+             * waits for reporting child to finish, and then
+             * removes temporary dump dir.
+             * Pros: deletion becomes more robust.
+             * Even if child crashes, dir will be deleted.
+             * Cons: having another process would use some resources,
+             * and we'll need to at least close all open file descriptors,
+             * and reopen stdio to /dev/null. We also might keep
+             * a lot of libraries loaded:
+             * who knows what parent process links against.
+             * (can be worked around by exec'ing a "wait & delete" helper)
+             */
+        }
+
         path = path1;
         VERB1 log("Executing: %s", path);
         execv(path, args);
@@ -80,30 +120,24 @@ int report_problem_in_dir(const char *dirname, int flags)
     }
 
     /* parent */
-    if (flags & LIBREPORT_WAIT)
+    int status;
+    do
+        pid = waitpid(pid, &status, 0);
+    while (pid < 0 && errno == EINTR);
+    if (pid <= 0)
     {
-        int status;
-        pid_t p;
- again:
-        p = waitpid(pid, &status, 0);
-        if (p <= 0)
-        {
-            if (p < 0 && errno == EINTR)
-                goto again;
-            perror_msg("Can't waitpid");
-            return -1;
-        }
-        if (WIFEXITED(status))
-        {
-            VERB2 log("reporting finished with exitcode %d", WEXITSTATUS(status));
-            return WEXITSTATUS(status);
-        }
-        /* child died from a signal: WIFSIGNALED(status) should be true */
-        VERB2 log("reporting killed by signal %d", WTERMSIG(status));
-        return WTERMSIG(status) + 128;
+        perror_msg("Can't waitpid");
+        return -1;
     }
 
-    return 0;
+    if (WIFEXITED(status))
+    {
+        VERB2 log("reporting finished with exitcode %d", WEXITSTATUS(status));
+        return WEXITSTATUS(status);
+    }
+    /* child died from a signal: WIFSIGNALED(status) should be true */
+    VERB2 log("reporting killed by signal %d", WTERMSIG(status));
+    return WTERMSIG(status) + 128;
 }
 
 int report_problem_in_memory(problem_data_t *pd, int flags)
@@ -116,12 +150,12 @@ int report_problem_in_memory(problem_data_t *pd, int flags)
     dd_close(dd);
     VERB2 log("Temp problem dir: '%s'", dir_name);
 
-// TODO: if !LIBREPORT_WAIT pass LIBREPORT_DEL_DIR, and teach report-gtk
-// an option to delete directory after reporting?
-// It will make !LIBREPORT_WAIT reporting possible
+    if (!(flags & LIBREPORT_WAIT))
+        flags |= LIBREPORT_DEL_DIR;
     result = report_problem_in_dir(dir_name, flags);
 
-    /* If we wait for reporter to finish, we should clean the tmp dir.
+    /* If we waited for reporter to finish, we should clean up the tmp dir
+     * (if we didn't, cleaning up will be done by reporting child process later).
      * We can also reload the problem data if requested.
      */
     if (flags & LIBREPORT_WAIT)
@@ -143,5 +177,5 @@ int report_problem_in_memory(problem_data_t *pd, int flags)
 
 int report_problem(problem_data_t *pd)
 {
-    return report_problem_in_memory(pd, LIBREPORT_WAIT);
+    return report_problem_in_memory(pd, LIBREPORT_NOWAIT);
 }

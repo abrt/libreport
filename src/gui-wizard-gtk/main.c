@@ -93,7 +93,7 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
+        "\b [-vpod] [-g GUI_FILE] [-n PROG_NAME] DIR\n"
         "\n"
         "GUI tool to analyze and report problem saved in specified DIR"
     );
@@ -103,18 +103,20 @@ int main(int argc, char **argv)
         OPT_p = 1 << 2,
         OPT_o = 1 << 3, // report only
         OPT_n = 1 << 4, // prgname
+        OPT_d = 1 << 5,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_STRING('g', NULL, &g_glade_file, "FILE" , _("Alternate GUI file")),
-        OPT_BOOL(  'p', NULL, NULL                  , _("Add program names to log")),
+        OPT_STRING('g', NULL, &g_glade_file, "FILE"  , _("Alternate GUI file")),
+        OPT_BOOL(  'p', NULL, NULL                   , _("Add program names to log")),
         /* for use from 3rd party apps to show just a reporter selector */
-        OPT_BOOL(  'o', "report-only", &g_report_only         , _("Use wizard to report pre-filled problem data")),
+        OPT_BOOL(  'o', "report-only", &g_report_only, _("Skip analyze steps, go through report steps only")),
         /* override the default prgname, so it's the same as the application
-           which is calling us
-        */
-        OPT_STRING(  'n', "prgname", &prgname, "NAME" , _("Override the default prgname")),
+         * which is calling us
+         */
+        OPT_STRING('n', "prgname", &prgname, "NAME"  , _("Override the default prgname")),
+        OPT_BOOL(  'd', "delete", NULL,                _("Remove DIR after reporting")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
@@ -147,6 +149,9 @@ int main(int argc, char **argv)
 
     /* Enter main loop */
     gtk_main();
+
+    if (opts & OPT_d)
+        delete_dump_dir_possibly_using_abrtd(g_dump_dir_name);
 
     return 0;
 }

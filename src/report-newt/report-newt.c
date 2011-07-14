@@ -350,16 +350,18 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "\b -o|--report-only DIR\n"
+        "\b [-od] DIR\n"
         "\n"
         "newt tool to report problem saved in specified DIR"
     );
     enum {
         OPT_o = 1 << 0, // report only
+        OPT_r = 1 << 1,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT_BOOL('o', "report-only", NULL, _("Report pre-filled problem data")),
+        OPT_BOOL('o', "report-only", NULL, _("Skip analyze steps, go through report steps only")),
+        OPT_BOOL('d', "delete", NULL,      _("Remove DIR after reporting")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
@@ -376,6 +378,9 @@ int main(int argc, char **argv)
     newtCls();
 
     report(dump_dir_name);
+
+    if (opts & OPT_r)
+        delete_dump_dir_possibly_using_abrtd(dump_dir_name);
 
     newtFinished();
 
