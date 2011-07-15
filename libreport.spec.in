@@ -13,9 +13,7 @@ Source: https://fedorahosted.org/released/abrt/%{name}-%{version}.tar.gz
 BuildRequires: dbus-devel
 BuildRequires: gtk2-devel
 BuildRequires: curl-devel
-BuildRequires: rpm-devel >= 4.6
 BuildRequires: desktop-file-utils
-BuildRequires: libnotify-devel
 BuildRequires: xmlrpc-c-devel
 BuildRequires: python-devel
 BuildRequires: gettext
@@ -57,6 +55,10 @@ Group: System Environment/Libraries
 Requires: libreport = %{version}-%{release}
 Provides: report = 0.22-1
 Obsoletes: report < 0.22-1
+# in report the rhtsupport is in the main package, so we need to install it too
+%if 0%{?rhel} >= 6
+Requires: libreport-plugin-rhtsupport
+%endif
 
 %description python
 Python bindings for report-libs.
@@ -114,6 +116,10 @@ Summary: %{name}'s logger reporter plugin
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Obsoletes: abrt-plugin-logger < 2.0.4
+Provides: report-plugin-localsave = 0.22-1
+Obsoletes: report-plugin-localsave < 0.22-1
+Provides: report-config-localsave = 0.22-1
+Obsoletes: report-config-localsave < 0.22-1
 
 %description plugin-logger
 The simple reporter plugin which writes a report to a specified file.
@@ -134,6 +140,10 @@ Summary: %{name}'s bugzilla plugin
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Obsoletes: abrt-plugin-bugzilla < 2.0.4
+Provides: report-plugin-bugzilla = 0.22-1
+Obsoletes: report-plugin-bugzilla < 0.22-1
+Provides: report-config-bugzilla = 0.22-1
+Obsoletes: report-config-bugzilla < 0.22-1
 
 %description plugin-bugzilla
 Plugin to report bugs into the bugzilla.
@@ -152,6 +162,14 @@ Summary: %{name}'s reportuploader plugin
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Obsoletes: abrt-plugin-reportuploader < 2.0.4
+Provides: report-plugin-ftp = 0.22-1
+Obsoletes: report-plugin-ftp < 0.22-1
+Provides: report-config-ftp = 0.22-1
+Obsoletes: report-config-ftp < 0.22-1
+Provides: report-plugin-scp = 0.22-1
+Obsoletes: report-plugin-scp < 0.22-1
+Provides: report-config-scp = 0.22-1
+Obsoletes: report-config-scp < 0.22-1
 
 %description plugin-reportuploader
 Plugin to report bugs into anonymous FTP site associated with ticketing system.
