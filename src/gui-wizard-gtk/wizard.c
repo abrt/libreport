@@ -1556,9 +1556,17 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
 
 static gint select_next_page_no(gint current_page_no, gpointer data)
 {
-    /* we don't need any magic here if we're in only-report mode */
     if (g_report_only)
-        return current_page_no + 1;
+    {
+        /* In only-report mode, we only need to wrap back at the end */
+        GtkWidget *page = gtk_assistant_get_nth_page(g_assistant, current_page_no);
+        if (page == pages[PAGENO_REPORT_DONE].page_widget)
+            current_page_no = 0;
+        else
+            current_page_no++;
+        VERB2 log("%s: selected page #%d", __func__, current_page_no);
+        return current_page_no;
+    }
 
     gint prev_page_no = current_page_no;
 

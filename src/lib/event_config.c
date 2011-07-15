@@ -321,13 +321,16 @@ static char *validate_event_option(event_option_t *opt)
         break;
     }
     case OPTION_TYPE_BOOL:
-        if (strcmp(opt->eo_value, "yes") != 0
-            && strcmp(opt->eo_value, "no") != 0
-            && strcmp(opt->eo_value, "on") != 0
-            && strcmp(opt->eo_value, "off") != 0
-            && strcmp(opt->eo_value, "1") != 0
-            && strcmp(opt->eo_value, "0") != 0)
-        {
+        /* note: should match strings which string_to_bool accepts */
+        if (strcasecmp(opt->eo_value, "yes") != 0
+         && strcasecmp(opt->eo_value, "no") != 0
+         && strcasecmp(opt->eo_value, "on") != 0
+         && strcasecmp(opt->eo_value, "off") != 0
+         && strcasecmp(opt->eo_value, "true") != 0
+         && strcasecmp(opt->eo_value, "false") != 0
+         && strcmp(opt->eo_value, "1") != 0
+         && strcmp(opt->eo_value, "0") != 0
+        ) {
             return xasprintf(_("Invalid boolean value '%s'"), opt->eo_value);
         }
         break;

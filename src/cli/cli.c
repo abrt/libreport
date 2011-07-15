@@ -183,7 +183,7 @@ int main(int argc, char** argv)
         OPT_report       = 1 << 6,
         OPT_delete       = 1 << 7,
         OPT_version      = 1 << 8,
-        OPTMASK_op       = OPT_list|OPT_info|OPT_list_events|OPT_run_event|OPT_analyze|OPT_report|OPT_delete|OPT_version,
+        OPTMASK_op       = OPT_list|OPT_info|OPT_list_events|OPT_run_event|OPT_analyze|OPT_report|OPT_version,
         OPTMASK_need_arg = OPT_info|OPT_run_event|OPT_analyze|OPT_report|OPT_delete,
         OPT_f            = 1 << 9,
         OPT_y            = 1 << 10,
@@ -345,11 +345,6 @@ int main(int argc, char** argv)
                 error_msg_and_die("Crash '%s' not found", dump_dir_name);
             break;
         }
-        case OPT_delete:
-        {
-            exitcode = delete_dump_dir_possibly_using_abrtd(dump_dir_name);
-            break;
-        }
         case OPT_info:
         {
             /* Load problem_data from dump dir */
@@ -368,6 +363,13 @@ int main(int argc, char** argv)
 
             break;
         }
+    }
+
+    if (opts & OPT_delete)
+    {
+        int r = delete_dump_dir_possibly_using_abrtd(dump_dir_name);
+        if (exitcode == 0)
+            exitcode = r;
     }
 
     return exitcode;
