@@ -505,7 +505,12 @@ static void tv_details_cursor_changed(
     struct problem_item *item = get_current_problem_item_or_NULL(tree_view, &item_name);
     g_free(item_name);
 
-    gboolean editable = (item && (item->flags & CD_FLAG_TXT) && !strchr(item->content, '\n'));
+    gboolean editable = (item
+                /* With this, copying of non-editable fields are more difficult */
+                //&& (item->flags & CD_FLAG_ISEDITABLE)
+                && (item->flags & CD_FLAG_TXT)
+                && !strchr(item->content, '\n')
+    );
 
     /* Allow user to select the text with mouse.
      * Has undesirable side-effect of allowing user to "edit" the text,
@@ -1784,6 +1789,40 @@ static void add_pages()
     gtk_widget_modify_bg(GTK_WIDGET(g_eb_comment), GTK_STATE_NORMAL, &color);
 }
 
+static void save_edited_one_liner(GtkCellRendererText *renderer,
+                gchar *tree_path,
+                gchar *new_text,
+                gpointer user_data)
+{
+    //log("path:'%s' new_text:'%s'", tree_path, new_text);
+
+    GtkTreeIter iter;
+    if (!gtk_tree_model_get_iter_from_string(GTK_TREE_MODEL(g_ls_details), &iter, tree_path))
+        return;
+    gchar *item_name = NULL;
+    gtk_tree_model_get(GTK_TREE_MODEL(g_ls_details), &iter,
+                DETAIL_COLUMN_NAME, &item_name,
+                -1);
+    if (!item_name) /* paranoia, should never happen */
+        return;
+    struct problem_item *item = get_problem_data_item_or_NULL(g_cd, item_name);
+    if (item && (item->flags & CD_FLAG_ISEDITABLE))
+    {
+        struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY);
+        dd = steal_if_needed(dd);
+        if (dd && dd->locked)
+        {
+            dd_save_text(dd, item_name, new_text);
+            free(item->content);
+            item->content = xstrdup(new_text);
+            gtk_list_store_set(g_ls_details, &iter,
+                    DETAIL_COLUMN_VALUE, new_text,
+                    -1);
+        }
+        dd_close(dd);
+    }
+}
+
 static void create_details_treeview()
 {
     GtkCellRenderer *renderer;
@@ -1808,6 +1847,7 @@ static void create_details_treeview()
     gtk_tree_view_append_column(g_tv_details, column);
 
     g_tv_details_renderer_value = renderer = gtk_cell_renderer_text_new();
+    g_signal_connect(renderer, "edited", G_CALLBACK(save_edited_one_liner), NULL);
     column = gtk_tree_view_column_new_with_attributes(
                 _("Value"), renderer,
                 "text", DETAIL_COLUMN_VALUE,
