@@ -1787,6 +1787,44 @@ static void add_pages()
     GdkColor color;
     gdk_color_parse("#CC3333", &color);
     gtk_widget_modify_bg(GTK_WIDGET(g_eb_comment), GTK_STATE_NORMAL, &color);
+
+//TODO: implement deletion of items in dump dir with [Del] key
+//
+//static void delete_item(GtkTreeView *treeview)
+//{
+//    GtkTreeSelection *selection = gtk_tree_view_get_selection(treeview);
+//    if (selection)
+//    {
+//        GtkTreeIter iter;
+//        GtkTreeModel *store = gtk_tree_view_get_model(treeview);
+//        if (gtk_tree_selection_get_selected(selection, &store, &iter) == TRUE)
+//        {
+//            GtkTreePath *old_path = gtk_tree_model_get_path(store, &iter);
+//
+//            GValue d_item_name = { 0 };
+//            gtk_tree_model_get_value(store, &iter, COLUMN_FOO, &d_item_name);
+//            const char *item_name = g_value_get_string(&d_item_name);
+//            ...del item_name...
+//
+//            /* Try to retain the same cursor position */
+//            sanitize_cursor(old_path);
+//            gtk_tree_path_free(old_path);
+//        }
+//    }
+//}
+//
+//static gint on_key_press_event_cb(GtkTreeView *treeview, GdkEventKey *key, gpointer unused)
+//{
+//    int k = key->keyval;
+//
+//    if (k == GDK_Delete || k == GDK_KP_Delete)
+//    {
+//        delete_item(treeview);
+//        return TRUE;
+//    }
+//    return FALSE;
+//}
+//    g_signal_connect(g_tv_details, "key-press-event", G_CALLBACK(on_key_press_event_cb), NULL);
 }
 
 static void save_edited_one_liner(GtkCellRendererText *renderer,
