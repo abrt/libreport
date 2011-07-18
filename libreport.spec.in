@@ -26,6 +26,11 @@ BuildRequires: texinfo
 BuildRequires: asciidoc
 BuildRequires: xmlto
 BuildRequires: newt-devel
+# required for update from old report library, otherwise we obsolete report-gtk
+# and all it's plugins, but don't provide the python bindings and the sealert
+# end-up with: can't import report.GtkIO
+# FIXME: can be removed when F15 will EOLed, needs to stay in rhel6!
+Requires: libreport-python
 
 # for rhel6
 %if 0%{?rhel} >= 6
