@@ -318,7 +318,7 @@ static void save_settings_to_keyring(const char *event_name)
                                      GNOME_KEYRING_ITEM_GENERIC_SECRET, /* type */
                                      event_name, /* display name */
                                      attrs, /* attributes */
-                                     NULL, /* secret - no special handling for password it's stored in attrs */
+                                     "", /* secret - no special handling for password it's stored in attrs */
                                      1, /* update if exist */
                                      &item_id);
         VERB2 log("created new item with id: %i", item_id);
