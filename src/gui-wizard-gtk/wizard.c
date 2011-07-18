@@ -789,7 +789,7 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
 
     if (radio)
     {
-        const char *msg_proceed_to_reporting = _("Go to reporting step");
+        const char *msg_proceed_to_reporting = _("Go to next step");
         GtkWidget *button = radio
             ? gtk_radio_button_new_with_label_from_widget(
                     (first_button ? GTK_RADIO_BUTTON(first_button->toggle_button) : NULL),
@@ -1831,8 +1831,6 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
         return current_page_no;
     }
 
-    gint prev_page_no = current_page_no;
-
  again:
     current_page_no++;
 
@@ -1854,7 +1852,7 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
         if (!g_analyze_events[0] || g_black_event_count == 0)
         {
             /* skip analyze selector page and analyze log page */
-            current_page_no = PAGENO_REPORTER_SELECTOR-1;
+            current_page_no = PAGENO_COLLECT_SELECTOR-1;
             goto again;
         }
         break;
@@ -1866,20 +1864,24 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
             goto again; /* skip this page */
         break;
 
-    case PAGENO_REPORTER_SELECTOR:
-        VERB2 log("%s: REPORTER_SELECTOR: g_black_event_count:%d",
-                        __func__, g_black_event_count);
-        /* if we _did_ run an event (didn't skip it)
-         * and still have analyzers which didn't run
-         */
-        if (prev_page_no == PAGENO_ANALYZE_PROGRESS
-         && g_black_event_count != 0
-        ) {
-            /* Go back to analyzer selectors */
-            current_page_no = PAGENO_ANALYZE_SELECTOR-1;
+    case PAGENO_COLLECT_SELECTOR:
+        /* skip collection if there are no applicable events */
+        if (!g_collect_events[0])
+        {
+            current_page_no = PAGENO_REPORTER_SELECTOR-1;
             goto again;
         }
         break;
+
+    case PAGENO_COLLECT_PROGRESS:
+        /* skip progress page if no events were chosen */
+        if (g_collect_events_selected_count == 0)
+        {
+            current_page_no = PAGENO_REPORTER_SELECTOR-1;
+            goto again;
+        }
+        break;
+
     case PAGENO_NOT_SHOWN:
         /* No! this would SEGV (infinitely recurse into select_next_page_no) */
         /*gtk_assistant_commit(g_assistant);*/
