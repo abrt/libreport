@@ -39,6 +39,7 @@ typedef struct event_gui_data_t
 static GtkAssistant *g_assistant;
 
 static char *g_analyze_event_selected;
+static unsigned g_collect_events_selected_count = 0;
 static char *g_reporter_events_selected;
 static unsigned g_black_event_count = 0;
 
@@ -47,6 +48,12 @@ static GtkBox *g_box_analyzers;
 static GList *g_list_analyzers;
 static GtkLabel *g_lbl_analyze_log;
 static GtkTextView *g_tv_analyze_log;
+
+static GtkBox *g_box_collectors;
+/* List of event_gui_data's */
+static GList *g_list_collectors;
+static GtkLabel *g_lbl_collect_log;
+static GtkTextView *g_tv_collect_log;
 
 static GtkBox *g_box_reporters;
 /* List of event_gui_data's */
@@ -641,6 +648,31 @@ static void report_tb_was_toggled(GtkButton *button_unused, gpointer user_data_u
     gtk_label_set_text(g_lbl_reporters, g_reporter_events_selected);
 }
 
+static void collect_tb_was_toggled(GtkButton *button_unused, gpointer user_data_unused)
+{
+    /* Update the number of selected collectors. */
+    g_collect_events_selected_count = 0;
+
+    GList *li = g_list_collectors;
+    for (; li; li = li->next)
+    {
+        event_gui_data_t *event_gui_data = li->data;
+        if (gtk_toggle_button_get_active(event_gui_data->toggle_button) == TRUE)
+        {
+            g_collect_events_selected_count++;
+
+            GHashTable *errors = validate_event(event_gui_data->event_name);
+            if (errors != NULL)
+            {
+                g_hash_table_unref(errors);
+                show_event_opt_error_dialog(event_gui_data->event_name);
+            }
+        }
+    }
+
+    /* The page is complete even if no checkbox is checked. */
+}
+
 /* event_name contains "EVENT1\nEVENT2\nEVENT3\n".
  * Add new {radio/check}buttons to GtkBox for each EVENTn (type depends on bool radio).
  * Remember them in GList **p_event_list (list of event_gui_data_t's).
@@ -833,6 +865,55 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
     }
 }
 
+/* Update collector/reporter checkboxes according to events parameter.
+ * Checkboxes are created in box specified by the second argument and their
+ * data stored in events_gui_data list. Parameter func is the callback function
+ * passed to the checkboxes.
+ */
+static void update_event_checkboxes(GList **events_gui_data,
+                GtkBox *box,
+                char *events,
+                GCallback func)
+{
+    /* Remember names of selected events */
+    GList *old_events = NULL;
+    GList *li = *events_gui_data;
+    for (; li; li = li->next)
+    {
+        event_gui_data_t *event_gui_data = li->data;
+        if (gtk_toggle_button_get_active(event_gui_data->toggle_button) == TRUE)
+        {
+            /* order isn't important. prepend is faster */
+            old_events = g_list_prepend(old_events, xstrdup(event_gui_data->event_name));
+        }
+    }
+    /* Delete old checkboxes and create new ones */
+    add_event_buttons(box, events_gui_data,
+                events, /*callback:*/ func,
+                /*radio:*/ false
+    );
+    /* Re-select new events which were selected before we deleted them */
+    GList *li_new = *events_gui_data;
+    for (; li_new; li_new = li_new->next)
+    {
+        event_gui_data_t *new_gui_data = li_new->data;
+        GList *li_old = old_events;
+        for (; li_old; li_old = li_old->next)
+        {
+            if (strcmp(new_gui_data->event_name, li_old->data) == 0)
+            {
+                gtk_toggle_button_set_active(new_gui_data->toggle_button, true);
+                break;
+            }
+        }
+    }
+    list_free_with_free(old_events);
+
+    /* Update readiness state of event selector page
+     * and eventually the "list of reporters" label */
+    ((void (*)(GtkButton*, gpointer*))func)(NULL, NULL);
+}
+
 void update_gui_state_from_problem_data(void)
 {
     gtk_window_set_title(GTK_WINDOW(g_assistant), g_dump_dir_name);
@@ -865,42 +946,12 @@ void update_gui_state_from_problem_data(void)
     VERB2 log("g_analyze_event_selected='%s'", g_analyze_event_selected);
 
     /* Update reporter checkboxes */
-    /* Remember names of selected reporters */
-    GList *old_reporters = NULL;
-    GList *li = g_list_reporters;
-    for (; li; li = li->next)
-    {
-        event_gui_data_t *event_gui_data = li->data;
-        if (gtk_toggle_button_get_active(event_gui_data->toggle_button) == TRUE)
-        {
-            /* order isn't important. prepend is faster */
-            old_reporters = g_list_prepend(old_reporters, xstrdup(event_gui_data->event_name));
-        }
-    }
-    /* Delete old checkboxes and create new ones */
-    add_event_buttons(g_box_reporters, &g_list_reporters,
-                g_report_events, /*callback:*/ G_CALLBACK(report_tb_was_toggled),
-                /*radio:*/ false
-    );
-    /* Re-select new reporters which were selected before we deleted them */
-    GList *li_new = g_list_reporters;
-    for (; li_new; li_new = li_new->next)
-    {
-        event_gui_data_t *new_gui_data = li_new->data;
-        GList *li_old = old_reporters;
-        for (; li_old; li_old = li_old->next)
-        {
-            if (strcmp(new_gui_data->event_name, li_old->data) == 0)
-            {
-                gtk_toggle_button_set_active(new_gui_data->toggle_button, true);
-                break;
-            }
-        }
-    }
-    list_free_with_free(old_reporters);
+    update_event_checkboxes(&g_list_reporters, g_box_reporters, g_report_events,
+                    G_CALLBACK(report_tb_was_toggled));
 
-    /* Update readiness state of reporter selector page and "list of reporters" label  */
-    report_tb_was_toggled(NULL, NULL);
+    /* Update collector checkboxes in a similar way */
+    update_event_checkboxes(&g_list_collectors, g_box_collectors, g_collect_events,
+                    G_CALLBACK(collect_tb_was_toggled));
 
     /* We can't just do gtk_widget_show_all once in main:
      * We created new widgets (buttons). Need to make them visible.
@@ -2117,6 +2168,9 @@ static void add_pages()
     g_box_analyzers        = GTK_BOX(          gtk_builder_get_object(builder, "vb_analyzers"));
     g_lbl_analyze_log      = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_analyze_log"));
     g_tv_analyze_log       = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_analyze_log"));
+    g_box_collectors       = GTK_BOX(          gtk_builder_get_object(builder, "vb_collectors"));
+    g_lbl_collect_log      = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_collect_log"));
+    g_tv_collect_log       = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_collect_log"));
     g_box_reporters        = GTK_BOX(          gtk_builder_get_object(builder, "vb_reporters"));
     g_lbl_report_log       = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_report_log"));
     g_tv_report_log        = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_report_log"));
@@ -2155,6 +2209,11 @@ static void add_pages()
 
     /* Configure btn on select reporters page */
     config_btn = GTK_WIDGET(gtk_builder_get_object(builder, "button_cfg2"));
+    if (config_btn)
+        g_signal_connect(G_OBJECT(config_btn), "clicked", G_CALLBACK(on_show_event_list_cb), NULL);
+
+    /* Configure btn on select collectors page */
+    config_btn = GTK_WIDGET(gtk_builder_get_object(builder, "button_cfg3"));
     if (config_btn)
         g_signal_connect(G_OBJECT(config_btn), "clicked", G_CALLBACK(on_show_event_list_cb), NULL);
 
