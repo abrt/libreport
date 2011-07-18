@@ -1656,6 +1656,34 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
             );
         }
     }
+
+    /* Run 'collect' events. */
+    if (added_pages[page_no]->name == PAGE_COLLECT_SELECTOR)
+    {
+        GList *collectors = NULL;
+        GList *li = g_list_collectors;
+        for (; li; li = li->next)
+        {
+            event_gui_data_t *event_gui_data = li->data;
+            if (gtk_toggle_button_get_active(event_gui_data->toggle_button) == TRUE)
+            {
+                collectors = g_list_append(collectors, event_gui_data->event_name);
+            }
+        }
+        if (collectors)
+        {
+            char *first_event_name = collectors->data;
+            collectors = g_list_remove(collectors, collectors->data);
+            start_event_run(first_event_name,
+                    collectors,
+                    pages[PAGENO_COLLECT_PROGRESS].page_widget,
+                    g_tv_collect_log,
+                    g_lbl_collect_log,
+                    _("Collecting..."),
+                    _("Collecting finished with exit code %d")
+            );
+        }
+    }
 }
 
 static void on_show_event_list_cb(GtkWidget *button, gpointer user_data)
