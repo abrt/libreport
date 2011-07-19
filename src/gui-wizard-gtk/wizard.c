@@ -1675,6 +1675,92 @@ static void search_timeout(GtkEntry *entry)
     g_timeout = g_timeout_add(500, &highlight_search, (gpointer)entry);
 }
 
+static void save_edited_one_liner(GtkCellRendererText *renderer,
+                gchar *tree_path,
+                gchar *new_text,
+                gpointer user_data)
+{
+    //log("path:'%s' new_text:'%s'", tree_path, new_text);
+
+    GtkTreeIter iter;
+    if (!gtk_tree_model_get_iter_from_string(GTK_TREE_MODEL(g_ls_details), &iter, tree_path))
+        return;
+    gchar *item_name = NULL;
+    gtk_tree_model_get(GTK_TREE_MODEL(g_ls_details), &iter,
+                DETAIL_COLUMN_NAME, &item_name,
+                -1);
+    if (!item_name) /* paranoia, should never happen */
+        return;
+    struct problem_item *item = get_problem_data_item_or_NULL(g_cd, item_name);
+    if (item && (item->flags & CD_FLAG_ISEDITABLE))
+    {
+        struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY);
+        dd = steal_if_needed(dd);
+        if (dd && dd->locked)
+        {
+            dd_save_text(dd, item_name, new_text);
+            free(item->content);
+            item->content = xstrdup(new_text);
+            gtk_list_store_set(g_ls_details, &iter,
+                    DETAIL_COLUMN_VALUE, new_text,
+                    -1);
+        }
+        dd_close(dd);
+    }
+}
+
+static void on_btn_add_file(GtkButton *button)
+{
+    GtkWidget *dialog = gtk_file_chooser_dialog_new(
+            "Attach File",
+            GTK_WINDOW(g_assistant),
+            GTK_FILE_CHOOSER_ACTION_OPEN,
+            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+            GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+            NULL
+    );
+    char *filename = NULL;
+    if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
+        filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+    gtk_widget_destroy(dialog);
+
+    if (filename)
+    {
+        char *basename = strrchr(filename, '/');
+        if (!basename)  /* wtf? */
+            goto free_and_ret;
+        basename++;
+
+        struct stat statbuf;
+        if (stat(filename, &statbuf) != 0 || !S_ISREG(statbuf.st_mode))
+            goto free_and_ret;
+
+        struct problem_item *item = get_problem_data_item_or_NULL(g_cd, basename);
+        if (!item || (item->flags & CD_FLAG_ISEDITABLE))
+        {
+            struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY);
+            dd = steal_if_needed(dd);
+            bool writable = (dd && dd->locked);
+            dd_close(dd);
+            if (writable)
+            {
+                char *new_name = concat_path_file(g_dump_dir_name, basename);
+                /* TODO: error check */
+                copy_file(filename, new_name, 0666);
+                free(new_name);
+                reload_problem_data_from_dump_dir();
+                update_gui_state_from_problem_data();
+            }
+        }
+        else
+        {
+            /* TODO: show error dialog */
+        }
+ free_and_ret:
+        g_free(filename);
+    }
+}
+
 
 /* Initialization */
 
@@ -1827,83 +1913,6 @@ static void add_pages()
 //    return FALSE;
 //}
 //    g_signal_connect(g_tv_details, "key-press-event", G_CALLBACK(on_key_press_event_cb), NULL);
-}
-
-static void save_edited_one_liner(GtkCellRendererText *renderer,
-                gchar *tree_path,
-                gchar *new_text,
-                gpointer user_data)
-{
-    //log("path:'%s' new_text:'%s'", tree_path, new_text);
-
-    GtkTreeIter iter;
-    if (!gtk_tree_model_get_iter_from_string(GTK_TREE_MODEL(g_ls_details), &iter, tree_path))
-        return;
-    gchar *item_name = NULL;
-    gtk_tree_model_get(GTK_TREE_MODEL(g_ls_details), &iter,
-                DETAIL_COLUMN_NAME, &item_name,
-                -1);
-    if (!item_name) /* paranoia, should never happen */
-        return;
-    struct problem_item *item = get_problem_data_item_or_NULL(g_cd, item_name);
-    if (item && (item->flags & CD_FLAG_ISEDITABLE))
-    {
-        struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY);
-        dd = steal_if_needed(dd);
-        if (dd && dd->locked)
-        {
-            dd_save_text(dd, item_name, new_text);
-            free(item->content);
-            item->content = xstrdup(new_text);
-            gtk_list_store_set(g_ls_details, &iter,
-                    DETAIL_COLUMN_VALUE, new_text,
-                    -1);
-        }
-        dd_close(dd);
-    }
-}
-
-static void on_btn_add_file(GtkButton *button)
-{
-    GtkWidget *dialog = gtk_file_chooser_dialog_new(
-            "Attach File",
-            GTK_WINDOW(g_assistant),
-            GTK_FILE_CHOOSER_ACTION_OPEN,
-            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-            GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
-            NULL
-    );
-    if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
-    {
-        char *filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-
-        char *basename = strrchr(filename, '/');
-        if (!basename)  /* wtf? */
-            goto free_and_ret;
-        basename++;
-
-        struct stat statbuf;
-        if (stat(filename, &statbuf) != 0 || !S_ISREG(statbuf.st_mode))
-            goto free_and_ret;
-
-        struct problem_item *item = get_problem_data_item_or_NULL(g_cd, basename);
-        if (!item || (item->flags & CD_FLAG_ISEDITABLE))
-        {
-            char *new_name = concat_path_file(g_dump_dir_name, basename);
-            /* TODO: error check */
-            copy_file(filename, new_name, 0666);
-            free(new_name);
-            reload_problem_data_from_dump_dir();
-            update_gui_state_from_problem_data();
-        }
-        else
-        {
-            /* TODO: error dialog */
-        }
- free_and_ret:
-        g_free(filename);
-    }
-    gtk_widget_destroy(dialog);
 }
 
 static void create_details_treeview(void)
