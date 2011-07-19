@@ -63,6 +63,7 @@ static GtkWidget *g_widget_warnings_area;
 static GtkBox *g_box_warning_labels;
 static GtkToggleButton *g_tb_approve_bt;
 static GtkButton *g_btn_refresh;
+static GtkButton *g_btn_add_file;
 
 static GtkLabel *g_lbl_reporters;
 static GtkLabel *g_lbl_size;
@@ -1752,6 +1753,7 @@ static void add_pages()
     g_search_entry_bt      = GTK_ENTRY(        gtk_builder_get_object(builder, "entry_search_bt"));
     g_container_details1   = GTK_CONTAINER(    gtk_builder_get_object(builder, "container_details1"));
     g_container_details2   = GTK_CONTAINER(    gtk_builder_get_object(builder, "container_details2"));
+    g_btn_add_file         = GTK_BUTTON(       gtk_builder_get_object(builder, "btn_add_file"));
     g_lbl_reporters        = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_reporters"));
     g_lbl_size             = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_size"));
 
@@ -1861,7 +1863,50 @@ static void save_edited_one_liner(GtkCellRendererText *renderer,
     }
 }
 
-static void create_details_treeview()
+static void on_btn_add_file(GtkButton *button)
+{
+    GtkWidget *dialog = gtk_file_chooser_dialog_new(
+            "Attach File",
+            GTK_WINDOW(g_assistant),
+            GTK_FILE_CHOOSER_ACTION_OPEN,
+            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+            GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+            NULL
+    );
+    if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
+    {
+        char *filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+
+        char *basename = strrchr(filename, '/');
+        if (!basename)  /* wtf? */
+            goto free_and_ret;
+        basename++;
+
+        struct stat statbuf;
+        if (stat(filename, &statbuf) != 0 || !S_ISREG(statbuf.st_mode))
+            goto free_and_ret;
+
+        struct problem_item *item = get_problem_data_item_or_NULL(g_cd, basename);
+        if (!item || (item->flags & CD_FLAG_ISEDITABLE))
+        {
+            char *new_name = concat_path_file(g_dump_dir_name, basename);
+            /* TODO: error check */
+            copy_file(filename, new_name, 0666);
+            free(new_name);
+            reload_problem_data_from_dump_dir();
+            update_gui_state_from_problem_data();
+        }
+        else
+        {
+            /* TODO: error dialog */
+        }
+ free_and_ret:
+        g_free(filename);
+    }
+    gtk_widget_destroy(dialog);
+}
+
+static void create_details_treeview(void)
 {
     GtkCellRenderer *renderer;
     GtkTreeViewColumn *column;
@@ -1943,6 +1988,8 @@ void create_assistant(void)
     g_signal_connect(g_tb_approve_bt, "toggled", G_CALLBACK(on_bt_approve_toggle), NULL);
     g_signal_connect(g_btn_refresh, "clicked", G_CALLBACK(on_btn_refresh_clicked), NULL);
     g_signal_connect(gtk_text_view_get_buffer(g_tv_comment), "changed", G_CALLBACK(on_comment_changed), NULL);
+
+    g_signal_connect(g_btn_add_file, "clicked", G_CALLBACK(on_btn_add_file), NULL);
 
     /* init searching */
     GtkTextBuffer *backtrace_buf = gtk_text_view_get_buffer(g_tv_backtrace);
