@@ -309,6 +309,13 @@ void load_problem_data_from_dump_dir(problem_data_t *problem_data, struct dump_d
             goto next;
         }
 
+        if (short_name[0] == '#'
+         || (short_name[0] && short_name[strlen(short_name) - 1] == '~')
+        ) {
+            //log("Excluded (editor backup file):'%s'", short_name);
+            goto next;
+        }
+
         ssize_t sz = 4*1024;
         char *text = NULL;
         bool editable = is_editable_file(short_name);
