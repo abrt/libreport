@@ -1655,74 +1655,84 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
             /* Based on selected reporter, update item checkboxes */
             event_config_t *cfg = get_event_config(g_reporter_events_selected ? g_reporter_events_selected : "");
             //log("%s: event:'%s', cfg:'%p'", __func__, g_reporter_events_selected, cfg);
+            int allowed_by_reporter = 1;
+            int default_by_reporter = 1;
             if (cfg)
             {
                 /* Default settings are... */
-                int allowed_by_reporter = 1;
                 if (cfg->ec_exclude_items_always && strcmp(cfg->ec_exclude_items_always, "*") == 0)
                     allowed_by_reporter = 0;
-                int default_by_reporter = allowed_by_reporter;
+                default_by_reporter = allowed_by_reporter;
                 if (cfg->ec_exclude_items_by_default && strcmp(cfg->ec_exclude_items_by_default, "*") == 0)
                     default_by_reporter = 0;
+            }
 
-                GHashTableIter iter;
-                char *name;
-                struct problem_item *item;
-                g_hash_table_iter_init(&iter, g_cd);
-                while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&item))
+            GHashTableIter iter;
+            char *name;
+            struct problem_item *item;
+            g_hash_table_iter_init(&iter, g_cd);
+            while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&item))
+            {
+                /* Decide whether item is allowed, required, and what's the default */
+                item->allowed_by_reporter = allowed_by_reporter;
+                if (cfg)
                 {
-                    /* Decide whether item is allowed, required, and what's the default */
-                    item->allowed_by_reporter = allowed_by_reporter;
                     if (is_in_comma_separated_list(name, cfg->ec_exclude_items_always))
                         item->allowed_by_reporter = 0;
                     if ((item->flags & CD_FLAG_BIN) && cfg->ec_exclude_binary_items)
                         item->allowed_by_reporter = 0;
+                }
 
-                    item->default_by_reporter = item->allowed_by_reporter ? default_by_reporter : 0;
+                item->default_by_reporter = item->allowed_by_reporter ? default_by_reporter : 0;
+                if (cfg)
+                {
                     if (is_in_comma_separated_list(name, cfg->ec_exclude_items_by_default))
                         item->default_by_reporter = 0;
                     if (is_in_comma_separated_list(name, cfg->ec_include_items_by_default))
                         item->allowed_by_reporter = item->default_by_reporter = 1;
+                }
 
-                    item->required_by_reporter = 0;
+                item->required_by_reporter = 0;
+                if (cfg)
+                {
                     if (is_in_comma_separated_list(name, cfg->ec_requires_items))
                         item->default_by_reporter = item->allowed_by_reporter = item->required_by_reporter = 1;
+                }
 
-                    int cur_value;
-                    if (item->selected_by_user == 0)
-                        cur_value = item->default_by_reporter;
-                    else
-                        cur_value = !!(item->selected_by_user + 1); /* map -1,1 to 0,1 */
+                int cur_value;
+                if (item->selected_by_user == 0)
+                    cur_value = item->default_by_reporter;
+                else
+                    cur_value = !!(item->selected_by_user + 1); /* map -1,1 to 0,1 */
 
-                    //log("%s: '%s' allowed:%d reqd:%d def:%d user:%d", __func__, name,
-                    //    item->allowed_by_reporter,
-                    //    item->required_by_reporter,
-                    //    item->default_by_reporter,
-                    //    item->selected_by_user
-                    //);
+                //log("%s: '%s' allowed:%d reqd:%d def:%d user:%d", __func__, name,
+                //    item->allowed_by_reporter,
+                //    item->required_by_reporter,
+                //    item->default_by_reporter,
+                //    item->selected_by_user
+                //);
 
-                    /* Find corresponding line and update checkbox */
-                    GtkTreeIter iter;
-                    if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(g_ls_details), &iter))
-                    {
-                        do {
-                            gchar *item_name = NULL;
-                            gtk_tree_model_get(GTK_TREE_MODEL(g_ls_details), &iter,
-                                        DETAIL_COLUMN_NAME, &item_name,
-                                        -1);
-                            if (!item_name) /* paranoia, should never happen */
-                                continue;
-                            int differ = strcmp(name, item_name);
-                            g_free(item_name);
-                            if (differ)
-                                continue;
-                            gtk_list_store_set(g_ls_details, &iter,
-                                    DETAIL_COLUMN_CHECKBOX, cur_value,
+                /* Find corresponding line and update checkbox */
+                GtkTreeIter iter;
+                if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(g_ls_details), &iter))
+                {
+                    do {
+                        gchar *item_name = NULL;
+                        gtk_tree_model_get(GTK_TREE_MODEL(g_ls_details), &iter,
+                                    DETAIL_COLUMN_NAME, &item_name,
                                     -1);
-                            //log("%s: changed gtk_list_store_set to %d", __func__, (item->allowed_by_reporter && item->selected_by_user >= 0));
-                            break;
-                        } while (gtk_tree_model_iter_next(GTK_TREE_MODEL(g_ls_details), &iter));
-                    }
+                        if (!item_name) /* paranoia, should never happen */
+                            continue;
+                        int differ = strcmp(name, item_name);
+                        g_free(item_name);
+                        if (differ)
+                            continue;
+                        gtk_list_store_set(g_ls_details, &iter,
+                                DETAIL_COLUMN_CHECKBOX, cur_value,
+                                -1);
+                        //log("%s: changed gtk_list_store_set to %d", __func__, (item->allowed_by_reporter && item->selected_by_user >= 0));
+                        break;
+                    } while (gtk_tree_model_iter_next(GTK_TREE_MODEL(g_ls_details), &iter));
                 }
             }
         }
