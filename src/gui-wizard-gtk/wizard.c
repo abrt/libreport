@@ -17,6 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <gtk/gtk.h>
+#include "client.h"
 #include "internal_libreport_gtk.h"
 #include "wizard.h"
 
@@ -1051,13 +1052,185 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 
     /* Read and insert the output into the log pane */
     char buf[257]; /* usually we get one line, no need to have big buf */
+    char *msg; /* one line */
+    char *newline;
+    char *raw;
     int r;
-    while ((r = read(evd->fd, buf, sizeof(buf)-1)) > 0)
+    struct strbuf *line = strbuf_new();
+
+    int alert_prefix_len = strlen(REPORT_PREFIX_ALERT);
+    int ask_prefix_len = strlen(REPORT_PREFIX_ASK);
+    int ask_yes_no_prefix_len = strlen(REPORT_PREFIX_ASK_YES_NO);
+    int ask_password_prefix_len = strlen(REPORT_PREFIX_ASK_PASSWORD);
+
+    /* read buffered and split lines */
+    while ((r = read(evd->fd, buf, sizeof(buf) - 1)) > 0)
     {
         buf[r] = '\0';
-        append_to_textview(evd->tv_log, buf);
-        save_to_event_log(evd, buf);
+        raw = buf;
+
+        /* split lines in the current buffer */
+        while ((newline = strchr(raw, '\n')) != NULL)
+        {
+            *newline = '\0';
+            /* finish line */
+            strbuf_append_str(line, raw);
+            strbuf_append_char(line, '\n');
+
+            msg = line->buf;
+
+            /* alert dialog */
+            if (strncmp(REPORT_PREFIX_ALERT, msg, alert_prefix_len) == 0)
+            {
+                msg += alert_prefix_len;
+
+                GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
+                    GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                    GTK_MESSAGE_WARNING,
+                    GTK_BUTTONS_CLOSE,
+                    msg);
+
+                gtk_dialog_run(GTK_DIALOG(dialog));
+                gtk_widget_destroy(dialog);
+            }
+            /* ask dialog with textbox */
+            else if (strncmp(REPORT_PREFIX_ASK, msg, ask_prefix_len) == 0)
+            {
+                msg += ask_prefix_len;
+
+                GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
+                    GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                    GTK_MESSAGE_QUESTION,
+                    GTK_BUTTONS_OK_CANCEL,
+                    msg);
+
+                GtkWidget *vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+                GtkWidget *textbox = gtk_entry_new();
+                gtk_entry_set_editable(GTK_ENTRY(textbox), TRUE);
+                gtk_box_pack_start(GTK_BOX(vbox), textbox, TRUE, TRUE, 0);
+                gtk_widget_show(textbox);
+
+                if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_OK)
+                {
+                    const char *text = gtk_entry_get_text(GTK_ENTRY(textbox));
+                    char *response = xasprintf("%s\n", text);
+                    if (write(evd->run_state->command_in_fd, response, strlen(response)) < 0)
+                    {
+                        free(response);
+                        VERB1 perror_msg("Unable to write %s\\n to child's stdin", text);
+                        return FALSE;
+                    }
+
+                    free(response);
+                }
+                else
+                {
+                    if (write(evd->run_state->command_in_fd, "\n", strlen("\n")) < 0)
+                    {
+                        VERB1 perror_msg("Unable to write \\n to child's stdin");
+                        return FALSE;
+                    }
+                }
+
+                gtk_widget_destroy(textbox);
+                gtk_widget_destroy(dialog);
+            }
+            /* ask dialog with passwordbox */
+            else if (strncmp(REPORT_PREFIX_ASK_PASSWORD, msg, ask_password_prefix_len) == 0)
+            {
+                msg += ask_password_prefix_len;
+
+                GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
+                    GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                    GTK_MESSAGE_QUESTION,
+                    GTK_BUTTONS_OK_CANCEL,
+                    msg);
+
+                GtkWidget *vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+                GtkWidget *textbox = gtk_entry_new();
+                gtk_entry_set_editable(GTK_ENTRY(textbox), TRUE);
+                gtk_entry_set_visibility(GTK_ENTRY(textbox), FALSE);
+                gtk_box_pack_start(GTK_BOX(vbox), textbox, TRUE, TRUE, 0);
+                gtk_widget_show(textbox);
+
+                if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_OK)
+                {
+                    const char *text = gtk_entry_get_text(GTK_ENTRY(textbox));
+                    char *response = xasprintf("%s\n", text);
+                    if (write(evd->run_state->command_in_fd, response, strlen(response)) < 0)
+                    {
+                        free(response);
+                        VERB1 perror_msg("Unable to write %s\\n to child's stdin", text);
+                        return FALSE;
+                    }
+
+                    free(response);
+                }
+                else
+                {
+                    if (write(evd->run_state->command_in_fd, "\n", strlen("\n")) < 0)
+                    {
+                        VERB1 perror_msg("Unable to write \\n to child's stdin");
+                        return FALSE;
+                    }
+                }
+
+                gtk_widget_destroy(textbox);
+                gtk_widget_destroy(dialog);
+            }
+            /* yes/no dialog */
+            else if (strncmp(REPORT_PREFIX_ASK_YES_NO, msg, ask_yes_no_prefix_len) == 0)
+            {
+                msg += ask_yes_no_prefix_len;
+
+                GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
+                    GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                    GTK_MESSAGE_QUESTION,
+                    GTK_BUTTONS_YES_NO,
+                    msg);
+
+                if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_YES)
+                {
+                    char *yes = _("y");
+                    char *response = xasprintf("%s\n", yes);
+                    if (write(evd->run_state->command_in_fd, response, strlen(response)) < 0)
+                    {
+                        free(response);
+                        VERB1 perror_msg("Unable to write %s\\n to child's stdin", yes);
+                        return FALSE;
+                    }
+
+                    free(response);
+                }
+                else
+                {
+                    if (write(evd->run_state->command_in_fd, "\n", strlen("\n")) < 0)
+                    {
+                        VERB1 perror_msg("Unable to write \\n to child's stdin");
+                        return FALSE;
+                    }
+                }
+
+                gtk_widget_destroy(dialog);
+            }
+            /* no special prefix - forward to log */
+            else
+            {
+                append_to_textview(evd->tv_log, msg);
+                save_to_event_log(evd, msg);
+            }
+
+            strbuf_clear(line);
+
+            /* jump to next line */
+            raw = newline + 1;
+        }
+
+        /* beginning of next line. the line continues by next read() */
+        strbuf_append_str(line, raw);
     }
+
+    strbuf_free(line);
 
     if (r < 0 && errno == EAGAIN)
         /* We got all buffered data, but fd is still open. Done for now */

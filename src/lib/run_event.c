@@ -18,6 +18,7 @@
 */
 #include <glob.h>
 #include <regex.h>
+#include "client.h"
 #include "internal_libreport.h"
 
 struct run_event_state *new_run_event_state()
@@ -393,7 +394,7 @@ int spawn_next_command(struct run_event_state *state,
     VERB1 log("Executing '%s'", cmd);
 
     /* Export some useful environment variables for children */
-    char *env_vec[3];
+    char *env_vec[4];
     /* Just exporting dump_dir_name isn't always ok: it can be "."
      * and some children want to cd to other directory but still
      * be able to find dump directory by using $DUMP_DIR...
@@ -402,7 +403,8 @@ int spawn_next_command(struct run_event_state *state,
     env_vec[0] = xasprintf("DUMP_DIR=%s", (full_name ? full_name : dump_dir_name));
     free(full_name);
     env_vec[1] = xasprintf("EVENT=%s", event);
-    env_vec[2] = NULL;
+    env_vec[2] = xasprintf("REPORT_CLIENT_SLAVE=1");
+    env_vec[3] = NULL;
 
     char *argv[4];
     argv[0] = (char*)"/bin/sh"; // TODO: honor $SHELL?
@@ -412,7 +414,7 @@ int spawn_next_command(struct run_event_state *state,
 
     int pipefds[2];
     state->command_pid = fork_execv_on_steroids(
-                EXECFLG_INPUT_NUL + EXECFLG_OUTPUT + EXECFLG_ERR2OUT,
+                EXECFLG_INPUT + EXECFLG_OUTPUT + EXECFLG_ERR2OUT,
                 argv,
                 pipefds,
                 /* env_vec: */ env_vec,
@@ -420,9 +422,11 @@ int spawn_next_command(struct run_event_state *state,
                 /* uid(unused): */ 0
     );
     state->command_out_fd = pipefds[0];
+    state->command_in_fd = pipefds[1];
 
     free(env_vec[0]);
     free(env_vec[1]);
+    free(env_vec[2]);
     free(cmd);
 
     return 0;
@@ -447,10 +451,68 @@ int run_event_on_dir_name(struct run_event_state *state,
         if (!fp)
             die_out_of_memory();
         char *buf;
+        char *msg;
+
+        int alert_prefix_len = strlen(REPORT_PREFIX_ALERT);
+        int ask_prefix_len = strlen(REPORT_PREFIX_ASK);
+        int ask_yes_no_prefix_len = strlen(REPORT_PREFIX_ASK_YES_NO);
+        int ask_password_prefix_len = strlen(REPORT_PREFIX_ASK_PASSWORD);
+
         while ((buf = xmalloc_fgetline(fp)) != NULL)
         {
-            if (state->logging_callback)
-                buf = state->logging_callback(buf, state->logging_param);
+            msg = buf;
+
+            /* just cut off prefix, no waiting */
+            if (strncmp(REPORT_PREFIX_ALERT, msg, alert_prefix_len) == 0)
+            {
+                msg += alert_prefix_len;
+                printf("%s\n", msg);
+                fflush(stdout);
+            }
+            /* wait for y/N response on the same line */
+            else if (strncmp(REPORT_PREFIX_ASK_YES_NO, msg, ask_yes_no_prefix_len) == 0)
+            {
+                msg += ask_yes_no_prefix_len;
+                printf("%s [%s/%s] ", msg, _("y"), _("N"));
+                fflush(stdout);
+                char buf[16];
+                if (!fgets(buf, sizeof(buf), stdin))
+                    buf[0] = '\0';
+
+                if (write(state->command_in_fd, buf, strlen(buf)) < 0)
+                    perror_msg_and_die("write");
+            }
+            /* wait for the string on the same line */
+            else if (strncmp(REPORT_PREFIX_ASK, msg, ask_prefix_len) == 0)
+            {
+                msg += ask_prefix_len;
+                printf("%s ", msg);
+                fflush(stdout);
+                char buf[256];
+                if (!fgets(buf, sizeof(buf), stdin))
+                    buf[0] = '\0';
+
+                if (write(state->command_in_fd, buf, strlen(buf)) < 0)
+                    perror_msg_and_die("write");
+            }
+            /* set echo off and wait for password on the same line */
+            else if (strncmp(REPORT_PREFIX_ASK_PASSWORD, msg, ask_password_prefix_len) == 0)
+            {
+                msg += ask_password_prefix_len;
+                printf("%s ", msg);
+                fflush(stdout);
+                char buf[256];
+                set_echo(false);
+                if (!fgets(buf, sizeof(buf), stdin))
+                    buf[0] = '\0';
+                set_echo(true);
+
+                if (write(state->command_in_fd, buf, strlen(buf)) < 0)
+                    perror_msg_and_die("write");
+            }
+            /* no special prefix -> forward to log if applicable */
+            else if (state->logging_callback)
+                msg = state->logging_callback(msg, state->logging_param);
             free(buf);
         }
         fclose(fp); /* Got EOF, close. This also closes state->command_out_fd */

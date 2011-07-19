@@ -25,6 +25,24 @@ static int is_slave_mode()
     return getenv("REPORT_CLIENT_SLAVE") != NULL;
 }
 
+/* Returns 1 if echo has been changed from another state. */
+int set_echo(int enable)
+{
+    struct termios t;
+    if (tcgetattr(STDIN_FILENO, &t) < 0)
+        return 0;
+
+    /* No change needed? */
+    if ((t.c_lflag & ECHO) == enable)
+        return 0;
+
+    t.c_lflag ^= ECHO;
+    if (tcsetattr(STDIN_FILENO, TCSANOW, &t) < 0)
+        perror_msg_and_die("tcsetattr");
+
+    return 1;
+}
+
 int ask_yes_no(const char *question)
 {
     const char *yes = _("y");
@@ -32,12 +50,7 @@ int ask_yes_no(const char *question)
 
     char *env_response = getenv("REPORT_CLIENT_RESPONSE");
     if (env_response)
-    {
-        if (strncasecmp(yes, env_response, strlen(yes)) == 0)
-            return true;
-        if (strncasecmp(no, env_response, strlen(no)) == 0)
-            return false;
-    }
+        return strncasecmp(yes, env_response, strlen(yes)) == 0;
 
     if (is_slave_mode())
         printf(REPORT_PREFIX_ASK_YES_NO "%s\n", question);
@@ -48,7 +61,7 @@ int ask_yes_no(const char *question)
 
     char response[16];
     if (NULL == fgets(response, sizeof(response), stdin))
-        return false;
+        return 0;
 
     return strncasecmp(yes, response, strlen(yes)) == 0;
 }
@@ -63,6 +76,22 @@ char *ask(const char *question, char *response, int response_len)
     fflush(stdout);
 
     return fgets(response, response_len, stdin);
+}
+
+char *ask_password(const char *question, char *response, int response_len)
+{
+    if (is_slave_mode())
+        printf(REPORT_PREFIX_ASK_PASSWORD "%s\n", question);
+    else
+        printf("%s ", question);
+
+    fflush(stdout);
+
+    set_echo(false);
+    char *result = fgets(response, response_len, stdin);
+    set_echo(true);
+
+    return result;
 }
 
 void alert(const char *message)

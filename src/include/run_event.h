@@ -44,6 +44,7 @@ struct run_event_state {
     GList *rule_list;
     pid_t command_pid;
     int command_out_fd;
+    int command_in_fd;
 };
 struct run_event_state *new_run_event_state(void);
 void free_run_event_state(struct run_event_state *state);

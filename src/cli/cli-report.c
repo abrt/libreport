@@ -18,6 +18,7 @@
 #include "internal_libreport.h"
 #include "run-command.h"
 #include "cli-report.h"
+#include "client.h"
 
 /* Field separator for the crash report file that is edited by user. */
 #define FIELD_SEP "%----"
@@ -402,24 +403,6 @@ static bool ask_yesno(const char *question)
     /* Use strncmp here because the answer might contain a newline as
        the last char. */
     return 0 == strncmp(answer, yes, strlen(yes));
-}
-
-/* Returns true if echo has been changed from another state. */
-static bool set_echo(bool enable)
-{
-    struct termios t;
-    if (tcgetattr(STDIN_FILENO, &t) < 0)
-        return false;
-
-    /* No change needed? */
-    if ((bool)(t.c_lflag & ECHO) == enable)
-        return false;
-
-    t.c_lflag ^= ECHO;
-    if (tcsetattr(STDIN_FILENO, TCSANOW, &t) < 0)
-        perror_msg_and_die("tcsetattr");
-
-    return true;
 }
 
 /* Returns true if the string contains the specified number. */
