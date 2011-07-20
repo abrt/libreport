@@ -23,6 +23,7 @@ dist_events_DATA = \
     report_Bugzilla.xml \
     report_Bugzilla.conf \
     report_Logger.conf \
+    report_Logger.xml \
     report_Mailx.xml \
     report_RHTSupport.xml \
     report_Kerneloops.xml
@@ -62,6 +63,7 @@ EXTRA_DIST = \
     report_Bugzilla.xml.in \
     report_Bugzilla.conf \
     report_Logger.conf \
+    report_Logger.xml.in \
     report_Mailx.xml.in \
     report_RHTSupport.xml.in \
     report_Kerneloops.xml.in

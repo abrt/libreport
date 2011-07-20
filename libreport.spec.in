@@ -288,6 +288,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files plugin-logger
 %defattr(-,root,root,-)
 %{_sysconfdir}/libreport/events/report_Logger.conf
+%{_sysconfdir}/libreport/events/report_Logger.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/print_event.conf
 %{_bindir}/reporter-print
 %{_mandir}/man*/reporter-print.*

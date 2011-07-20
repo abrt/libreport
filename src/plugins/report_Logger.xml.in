@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<event>
+    <_name>Logger</_name>
+    <_description>Save the report locally</_description>
+
+    <requires-items></requires-items>
+    <exclude-items-by-default>coredump</exclude-items-by-default>
+    <exclude-items-always></exclude-items-always>
+    <exclude-binary-items>no</exclude-binary-items>
+    <include-items-by-default></include-items-by-default>
+
+    <options>
+        <option type="text" name="Logger_Log_File">
+            <_label>Log File</_label>
+            <allow-empty>no</allow-empty>
+            <_description>Name of the logfile</_description>
+            <default-value>/tmp/abrt.log</default-value>
+        </option>
+        <option type="bool" name="Logger_Append">
+            <_label>Append</_label>
+            <_description>Append new reports or overwrite the old one.</_description>
+            <default-value>yes</default-value>
+        </option>
+    </options>
+</event>
