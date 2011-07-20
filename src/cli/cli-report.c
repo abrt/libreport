@@ -620,7 +620,7 @@ char *select_event_option(GList *list_options)
             continue;
 
         picked = xatou(answer);
-        if (picked > count)
+        if (picked > count || picked < 1)
         {
             fprintf(stdout, _("You have chosen number out of range"));
             fprintf(stdout, "\n");
