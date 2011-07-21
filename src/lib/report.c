@@ -74,9 +74,10 @@ int report_problem_in_dir(const char *dirname, int flags)
          */
         signal(SIGCHLD, SIG_DFL);
 
-        if (!(flags & LIBREPORT_WAIT))
+        if (!(flags & (LIBREPORT_WAIT | LIBREPORT_GETPID)))
         {
-            /* Caller doesn't want to wait for completion.
+            /* Caller doesn't want to wait for completion (!LIBREPORT_WAIT),
+             * and doesn't want to have pid returned (!LIBREPORT_GETPID).
              * Create a grandchild, and then exit.
              * This reparents grandchild to init, and makes waitpid
              * in parent detect our exit and return almost immediately.
@@ -120,6 +121,13 @@ int report_problem_in_dir(const char *dirname, int flags)
     }
 
     /* parent */
+    if (!(flags & LIBREPORT_WAIT) && (flags & LIBREPORT_GETPID))
+        return pid;
+
+    /* we are here either if LIBREPORT_WAIT (caller wants exitcode)
+     * or !LIBREPORT_GETPID (caller doesn't want to have a child).
+     * In both cases, we need to wait for child:
+     */
     int status;
     do
         pid = waitpid(pid, &status, 0);
@@ -150,7 +158,7 @@ int report_problem_in_memory(problem_data_t *pd, int flags)
     dd_close(dd);
     VERB2 log("Temp problem dir: '%s'", dir_name);
 
-    if (!(flags & LIBREPORT_WAIT))
+    if (flags & LIBREPORT_NOWAIT)
         flags |= LIBREPORT_DEL_DIR;
     result = report_problem_in_dir(dir_name, flags);
 

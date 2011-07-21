@@ -90,6 +90,7 @@ init_pyreport(void)
     /* for include/report/report.h */
     PyModule_AddObject(m, "LIBREPORT_NOWAIT"     , Py_BuildValue("i", LIBREPORT_NOWAIT     ));
     PyModule_AddObject(m, "LIBREPORT_WAIT"       , Py_BuildValue("i", LIBREPORT_WAIT       ));
+    PyModule_AddObject(m, "LIBREPORT_GETPID"     , Py_BuildValue("i", LIBREPORT_GETPID     ));
     PyModule_AddObject(m, "LIBREPORT_ANALYZE"    , Py_BuildValue("i", LIBREPORT_ANALYZE    ));
     PyModule_AddObject(m, "LIBREPORT_RELOAD_DATA", Py_BuildValue("i", LIBREPORT_RELOAD_DATA));
     PyModule_AddObject(m, "LIBREPORT_DEL_DIR"    , Py_BuildValue("i", LIBREPORT_DEL_DIR    ));
