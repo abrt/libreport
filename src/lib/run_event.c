@@ -510,9 +510,11 @@ int run_event_on_dir_name(struct run_event_state *state,
                 if (write(state->command_in_fd, buf, strlen(buf)) < 0)
                     perror_msg_and_die("write");
             }
-            /* no special prefix -> forward to log if applicable */
+            /* no special prefix -> forward to log if applicable
+             * note that callback may take ownership of buf by returning NULL */
             else if (state->logging_callback)
-                msg = state->logging_callback(msg, state->logging_param);
+                buf = state->logging_callback(buf, state->logging_param);
+
             free(buf);
         }
         fclose(fp); /* Got EOF, close. This also closes state->command_out_fd */
