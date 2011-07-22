@@ -664,6 +664,84 @@ GList *str_to_glist(char *str, int delim)
     return list;
 }
 
+/* Runs collect_* events if there are any. If batch is nonzero, no questions
+ * are asked and positive answers are assumed, i.e. all events are ran.
+ * returns:  0: success
+ *          -1: failed to open dumpdir
+ *          >0: number of errors encountered when running the events
+ */
+int collect(const char *dump_dir_name, int batch)
+{
+    int errors = 0;
+    char wanted_collectors[255];
+    GList *selected_events = NULL;
+
+    struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
+    if (!dd)
+        return -1;
+
+    char *collect_events_as_lines = list_possible_events(dd, NULL, "collect");
+    dd_close(dd);
+
+    /* return if there are no collect events */
+    if (!collect_events_as_lines)
+        return 0;
+
+    if (!*collect_events_as_lines)
+    {
+        free(collect_events_as_lines);
+        return 0;
+    }
+
+    GList *list_collect_events = str_to_glist(collect_events_as_lines, '\n');
+    free(collect_events_as_lines);
+
+    if (!batch)
+    {
+        GList *li;
+        unsigned i;
+
+        puts(_("What additional information would you like to collect?"));
+        /* Print list of collectors and ask the user which should be used. */
+        for (li = list_collect_events, i = 1; li; li = li->next, i++)
+        {
+            char *collector_name = (char *) li->data;
+            event_config_t *config = get_event_config(collector_name);
+
+            if (!config)
+                VERB1 log("No configuration file found for collector '%s'", collector_name);
+
+            printf(" %d) %s\n", i, (config && config->screen_name) ? config->screen_name : collector_name);
+        }
+
+        read_from_stdin(_("Select collector(s): "), wanted_collectors, sizeof(wanted_collectors));
+
+        for (li = list_collect_events, i = 1; li; li = li->next, i++)
+        {
+            char *collector_name = (char *) li->data;
+
+            /* Was this collector requested? */
+            if (!is_number_in_string(i, wanted_collectors))
+                continue;
+
+            selected_events = g_list_append(selected_events, collector_name);
+        }
+    }
+    else
+    {
+        /* run all collectors in noninteractive mode */
+        selected_events = list_collect_events;
+    }
+
+    errors = run_events(dump_dir_name, selected_events, "Collection");
+
+    list_free_with_free(list_collect_events);
+    if (!batch)
+        g_list_free(selected_events);
+
+    return errors;
+}
+
 /* Report the crash */
 int report(const char *dump_dir_name, int flags)
 {
@@ -692,7 +770,14 @@ int report(const char *dump_dir_name, int flags)
                 return 1;
         }
 
-        /* Load problem_data from (possibly updated by analyze) dump dir */
+        /* Run collect events if there are any */
+        int collect_res = collect(dump_dir_name, flags & CLI_REPORT_BATCH);
+        if (collect_res == -1)
+            return -1;
+        else if (collect_res > 0)
+            printf(_("There were %d errors while collecting additional data\n"), collect_res);
+
+        /* Load dd from (possibly updated by collect) dump dir */
         dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
         if (!dd)
             return -1;

@@ -32,6 +32,7 @@ enum {
     CLI_REPORT_ONLY  = 1 << 1,
 };
 int report(const char *dump_dir_name, int flags);
+int collect(const char *dump_dir_name, int batch);
 
 #ifdef __cplusplus
 }

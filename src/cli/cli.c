@@ -176,6 +176,16 @@ int main(int argc, char** argv)
             free(analyze_events_as_lines);
             break;
         }
+        case OPT_collect:
+        {
+            exitcode = collect(dump_dir_name, always);
+
+            /* Be consistent and return 1 when opening dd failed */
+            if (exitcode == -1)
+                return 1;
+
+            break;
+        }
         case OPT_report:
         {
             struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
