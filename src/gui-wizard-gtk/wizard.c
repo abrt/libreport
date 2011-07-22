@@ -1475,14 +1475,6 @@ static void check_bt_rating_and_allow_send(void)
         }
     }
 
-    if (!gtk_toggle_button_get_active(g_tb_approve_bt))
-    {
-        add_warning(_("You should check the backtrace for sensitive data."));
-        add_warning(_("You must agree with sending the backtrace."));
-        send = false;
-        warn = true;
-    }
-
     gtk_assistant_set_page_complete(g_assistant,
                                     pages[PAGENO_EDIT_BACKTRACE].page_widget,
                                     send);
