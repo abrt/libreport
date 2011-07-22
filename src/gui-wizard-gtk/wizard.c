@@ -1491,22 +1491,19 @@ static void check_bt_rating_and_allow_send(void)
         }
     }
 
-    if (!gtk_toggle_button_get_active(g_tb_approve_bt))
-    {
-        send = false;
-    }
-
     gtk_assistant_set_page_complete(g_assistant,
-                                    pages[PAGENO_REVIEW_DATA].page_widget,
+                                    pages[PAGENO_EDIT_BACKTRACE].page_widget,
                                     send);
-
     if (warn)
         gtk_widget_show(g_widget_warnings_area);
 }
 
 static void on_bt_approve_toggle(GtkToggleButton *togglebutton, gpointer user_data)
 {
-    check_bt_rating_and_allow_send();
+    gtk_assistant_set_page_complete(g_assistant,
+                                    pages[PAGENO_REVIEW_DATA].page_widget,
+                                    gtk_toggle_button_get_active(g_tb_approve_bt)
+    );
 }
 
 static void on_comment_changed(GtkTextBuffer *buffer, gpointer user_data)
@@ -1636,7 +1633,7 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
     //            pages[PAGENO_REVIEW_DATA].page_widget == page
     //);
 
-    if (pages[PAGENO_REVIEW_DATA].page_widget == page)
+    if (pages[PAGENO_EDIT_BACKTRACE].page_widget == page)
     {
         check_bt_rating_and_allow_send();
     }

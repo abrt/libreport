@@ -413,8 +413,6 @@ static void text(GMarkupParseContext *context,
             }
             return;
         }
-        else
-            ui->ec_minimal_rating = 3;
     }
     free(text_copy);
 }
