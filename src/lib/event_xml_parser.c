@@ -30,6 +30,7 @@
 //#define ACTION_ELEMENT        "action"
 #define NAME_ELEMENT            "name"
 #define DEFAULT_VALUE_ELEMENT   "default-value"
+#define MINIMAL_RATING_ELEMENT  "minimal-rating"
 
 #define REQUIRES_ELEMENT        "requires-items"
 #define EXCL_BY_DEFAULT_ELEMENT "exclude-items-by-default"
@@ -398,6 +399,18 @@ static void text(GMarkupParseContext *context,
         {
             ui->ec_exclude_binary_items = string_to_bool(text_copy);
             free(text_copy);
+            return;
+        }
+        if (strcmp(inner_element, MINIMAL_RATING_ELEMENT) == 0)
+        {
+            char *endptr;
+            errno = 0;
+            ui->ec_minimal_rating = strtol(text_copy, &endptr, 10);
+            if (errno != 0 || endptr == text_copy || *endptr != '\0')
+            {
+                log("invalid minimal-rating number '%s', set to default 4", text_copy);
+                ui->ec_minimal_rating = 4;
+            }
             return;
         }
     }

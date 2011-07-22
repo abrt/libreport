@@ -752,7 +752,9 @@ int report(const char *dump_dir_name, int flags)
     {
         const char *rating_str = get_problem_item_content_or_NULL(problem_data, FILENAME_RATING);
 //COMPAT, remove after 2.1 release
-        if (!rating_str) rating_str = get_problem_item_content_or_NULL(problem_data, "rating");
+        if (!rating_str)
+            rating_str = get_problem_item_content_or_NULL(problem_data, "rating");
+
         unsigned i, rating = rating_str ? xatou(rating_str) : 4;
         GList *li;
         char wanted_reporters[255];
@@ -781,11 +783,7 @@ int report(const char *dump_dir_name, int flags)
             if (!is_number_in_string(i, wanted_reporters))
                 continue;
 
-            /* TODO: npajkovs; not implemented yet */
-            //const char *rating_required = get_map_string_item_or_NULL(single_plugin_settings, "RatingRequired");
-            //if (rating_required
-            //    && string_to_bool(rating_required) == true
-            if (rating < 3)
+            if (rating < config->ec_minimal_rating)
             {
                 puts(_("Reporting disabled because the backtrace is unusable"));
 
