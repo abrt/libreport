@@ -46,6 +46,7 @@ libreport_la_SOURCES = \
     event_config.c \
     kernel-tainted.c \
     report.c \
+    report_result.c \
     client.c
 libreport_la_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror \
