@@ -520,7 +520,7 @@ static char *do_log_and_save_line(char *log_line, void *param)
     l_state->last_line = log_line;
     return NULL;
 }
-static int run_events(const char *dump_dir_name, GList *events)
+static int run_events(const char *dump_dir_name, GList *events, const char *event_type)
 {
     int error_cnt = 0;
     GList *env_list = NULL;
@@ -547,11 +547,16 @@ static int run_events(const char *dump_dir_name, GList *events)
         }
         if (r == 0)
         {
-            printf("%s: %s\n", event, (l_state.last_line ? : "Reporting succeeded"));
+            printf("%s: ", event);
+            if (l_state.last_line)
+                printf("%s\n", l_state.last_line);
+            else
+                printf("%s succeeded\n", event_type);
         }
         else
         {
-            error_msg("Reporting via '%s' was not successful%s%s",
+            error_msg("%s via '%s' was not successful%s%s",
+                    event_type,
                     event,
                     l_state.last_line ? ": " : "",
                     l_state.last_line ? l_state.last_line : ""
@@ -745,7 +750,7 @@ int report(const char *dump_dir_name, int flags)
     if (flags & CLI_REPORT_BATCH)
     {
         puts(_("Reporting..."));
-        errors += run_events(dump_dir_name, report_events);
+        errors += run_events(dump_dir_name, report_events, "Reporting");
         plugins += g_list_length(report_events);
     }
     else
@@ -804,7 +809,7 @@ int report(const char *dump_dir_name, int flags)
              */
             GList *cur_event = NULL;
             cur_event = g_list_append(cur_event, reporter_name);
-            errors += run_events(dump_dir_name, cur_event);
+            errors += run_events(dump_dir_name, cur_event, "Reporting");
             g_list_free(cur_event);
 
             plugins++;
