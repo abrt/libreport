@@ -17,6 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <gtk/gtk.h>
+#include <gdk/gdkkeysyms.h>
 #include "client.h"
 #include "internal_libreport_gtk.h"
 #include "wizard.h"
@@ -255,9 +256,9 @@ static void show_event_opt_error_dialog(const char *event_name)
         GTK_BUTTONS_CLOSE,
         message);
     gtk_window_set_transient_for(GTK_WINDOW(wrong_settings), GTK_WINDOW(g_assistant));
-    free(message);
     gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(wrong_settings),
                                     markup_message);
+    free(message);
     free(markup_message);
     gtk_dialog_run(GTK_DIALOG(wrong_settings));
     gtk_widget_destroy(wrong_settings);
@@ -1490,9 +1491,15 @@ static void check_bt_rating_and_allow_send(void)
         }
     }
 
+    if (!gtk_toggle_button_get_active(g_tb_approve_bt))
+    {
+        send = false;
+    }
+
     gtk_assistant_set_page_complete(g_assistant,
-                                    pages[PAGENO_EDIT_BACKTRACE].page_widget,
+                                    pages[PAGENO_REVIEW_DATA].page_widget,
                                     send);
+
     if (warn)
         gtk_widget_show(g_widget_warnings_area);
 }
@@ -1629,7 +1636,7 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
     //            pages[PAGENO_REVIEW_DATA].page_widget == page
     //);
 
-    if (pages[PAGENO_EDIT_BACKTRACE].page_widget == page)
+    if (pages[PAGENO_REVIEW_DATA].page_widget == page)
     {
         check_bt_rating_and_allow_send();
     }
@@ -1917,13 +1924,20 @@ static void on_btn_add_file(GtkButton *button)
     if (filename)
     {
         char *basename = strrchr(filename, '/');
-        if (!basename)  /* wtf? */
+        if (!basename)  /* wtf? (never happens) */
             goto free_and_ret;
         basename++;
 
+        /* TODO: ask for the name to save it as? For now, just use basename */
+
+        char *message = NULL;
+
         struct stat statbuf;
         if (stat(filename, &statbuf) != 0 || !S_ISREG(statbuf.st_mode))
-            goto free_and_ret;
+        {
+            message = xasprintf(_("'%s' is not an ordinary file"), filename);
+            goto show_msgbox;
+        }
 
         struct problem_item *item = get_problem_data_item_or_NULL(g_cd, basename);
         if (!item || (item->flags & CD_FLAG_ISEDITABLE))
@@ -1935,20 +1949,99 @@ static void on_btn_add_file(GtkButton *button)
             if (writable)
             {
                 char *new_name = concat_path_file(g_dump_dir_name, basename);
-                /* TODO: error check */
-                copy_file(filename, new_name, 0666);
+                if (strcmp(filename, new_name) == 0)
+                {
+                    message = xstrdup(_("You are trying to copy a file onto itself"));
+                }
+                else
+                {
+                    off_t r = copy_file(filename, new_name, 0666);
+                    if (r < 0)
+                    {
+                        message = xasprintf(_("Can't copy '%s': %s"), filename, strerror(errno));
+                        unlink(new_name);
+                    }
+                    if (!message)
+                    {
+// FIXME: this destroys checkbox settings for each item!
+                        reload_problem_data_from_dump_dir();
+                        update_gui_state_from_problem_data();
+                    }
+                }
                 free(new_name);
-                reload_problem_data_from_dump_dir();
-                update_gui_state_from_problem_data();
             }
         }
         else
+            message = xasprintf(_("Item '%s' already exists and is not modifiable"), basename);
+
+        if (message)
         {
-            /* TODO: show error dialog */
+ show_msgbox: ;
+            GtkWidget *dlg = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
+                GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                GTK_MESSAGE_WARNING,
+                GTK_BUTTONS_CLOSE,
+                message);
+            free(message);
+            gtk_window_set_transient_for(GTK_WINDOW(dlg), GTK_WINDOW(g_assistant));
+            gtk_dialog_run(GTK_DIALOG(dlg));
+            gtk_widget_destroy(dlg);
         }
  free_and_ret:
         g_free(filename);
     }
+}
+
+/* [Del] key handling in item list */
+static void delete_item(GtkTreeView *treeview)
+{
+    GtkTreeSelection *selection = gtk_tree_view_get_selection(treeview);
+    if (selection)
+    {
+        GtkTreeIter iter;
+        GtkTreeModel *store = gtk_tree_view_get_model(treeview);
+        if (gtk_tree_selection_get_selected(selection, &store, &iter) == TRUE)
+        {
+            GValue d_item_name = { 0 };
+            gtk_tree_model_get_value(store, &iter, DETAIL_COLUMN_NAME, &d_item_name);
+            const char *item_name = g_value_get_string(&d_item_name);
+            if (item_name)
+            {
+                struct problem_item *item = get_problem_data_item_or_NULL(g_cd, item_name);
+                if (item->flags & CD_FLAG_ISEDITABLE)
+                {
+//                  GtkTreePath *old_path = gtk_tree_model_get_path(store, &iter);
+
+                    struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY);
+                    dd = steal_if_needed(dd);
+                    if (dd)
+                    {
+                        char *filename = concat_path_file(g_dump_dir_name, item_name);
+                        unlink(filename);
+                        free(filename);
+                        dd_close(dd);
+                        g_hash_table_remove(g_cd, item_name);
+                        gtk_list_store_remove(g_ls_details, &iter);
+                    }
+
+//                  /* Try to retain the same cursor position */
+//                  sanitize_cursor(old_path);
+//                  gtk_tree_path_free(old_path);
+                }
+            }
+        }
+    }
+}
+static gint on_key_press_event_in_item_list(GtkTreeView *treeview, GdkEventKey *key, gpointer unused)
+{
+    int k = key->keyval;
+
+    if (k == GDK_Delete || k == GDK_KP_Delete)
+    {
+        delete_item(treeview);
+        return TRUE;
+    }
+    return FALSE;
 }
 
 
@@ -2033,14 +2126,18 @@ static void add_pages()
     g_lbl_reporters        = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_reporters"));
     g_lbl_size             = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_size"));
 
+    gtk_widget_hide(g_widget_warnings_area);
+
     gtk_widget_modify_font(GTK_WIDGET(g_tv_analyze_log), monospace_font);
     gtk_widget_modify_font(GTK_WIDGET(g_tv_report_log), monospace_font);
     gtk_widget_modify_font(GTK_WIDGET(g_tv_backtrace), monospace_font);
     fix_all_wrapped_labels(GTK_WIDGET(g_assistant));
 
-    if (pages[PAGENO_EDIT_BACKTRACE].page_widget != NULL)
-        gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_EDIT_BACKTRACE].page_widget,
+    if (pages[PAGENO_REVIEW_DATA].page_widget != NULL)
+    {
+        gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_REVIEW_DATA].page_widget,
                     gtk_toggle_button_get_active(g_tb_approve_bt));
+    }
 
     /* Configure btn on select analyzers page */
     GtkWidget *config_btn = GTK_WIDGET(gtk_builder_get_object(builder, "button_cfg1"));
@@ -2066,43 +2163,7 @@ static void add_pages()
     gdk_color_parse("#CC3333", &color);
     gtk_widget_modify_bg(GTK_WIDGET(g_eb_comment), GTK_STATE_NORMAL, &color);
 
-//TODO: implement deletion of items in dump dir with [Del] key
-//
-//static void delete_item(GtkTreeView *treeview)
-//{
-//    GtkTreeSelection *selection = gtk_tree_view_get_selection(treeview);
-//    if (selection)
-//    {
-//        GtkTreeIter iter;
-//        GtkTreeModel *store = gtk_tree_view_get_model(treeview);
-//        if (gtk_tree_selection_get_selected(selection, &store, &iter) == TRUE)
-//        {
-//            GtkTreePath *old_path = gtk_tree_model_get_path(store, &iter);
-//
-//            GValue d_item_name = { 0 };
-//            gtk_tree_model_get_value(store, &iter, COLUMN_FOO, &d_item_name);
-//            const char *item_name = g_value_get_string(&d_item_name);
-//            ...del item_name...
-//
-//            /* Try to retain the same cursor position */
-//            sanitize_cursor(old_path);
-//            gtk_tree_path_free(old_path);
-//        }
-//    }
-//}
-//
-//static gint on_key_press_event_cb(GtkTreeView *treeview, GdkEventKey *key, gpointer unused)
-//{
-//    int k = key->keyval;
-//
-//    if (k == GDK_Delete || k == GDK_KP_Delete)
-//    {
-//        delete_item(treeview);
-//        return TRUE;
-//    }
-//    return FALSE;
-//}
-//    g_signal_connect(g_tv_details, "key-press-event", G_CALLBACK(on_key_press_event_cb), NULL);
+    g_signal_connect(g_tv_details, "key-press-event", G_CALLBACK(on_key_press_event_in_item_list), NULL);
 }
 
 static void create_details_treeview(void)
