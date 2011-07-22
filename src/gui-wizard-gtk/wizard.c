@@ -1455,23 +1455,38 @@ static void check_bt_rating_and_allow_send(void)
 //FIXME: say "no" to special casing!
     if (analyzer && strcmp(analyzer, "Kerneloops") != 0)
     {
-        const char *rating = get_problem_item_content_or_NULL(g_cd, FILENAME_RATING);
+        const char *rating_str = get_problem_item_content_or_NULL(g_cd, FILENAME_RATING);
 //COMPAT, remove after 2.1 release
-        if (!rating) rating= get_problem_item_content_or_NULL(g_cd, "rating");
-        if (rating) switch (*rating)
+        if (!rating_str)
+            rating_str = get_problem_item_content_or_NULL(g_cd, "rating");
+
+        if (rating_str)
         {
-            case '4': /* bt is ok - no warning here */
-                break;
-            case '3': /* bt is usable, but not complete, so show a warning */
+            char *endptr;
+            errno = 0;
+            long rating = strtol(rating_str, &endptr, 10);
+            if (errno != 0 || endptr == rating_str || *endptr != '\0')
+            {
+                add_warning(_("Reporting disabled because the rating does not contain a number '%s'."));
+                send = false;
+                warn = true;
+            }
+
+            event_config_t *cfg = get_event_config(g_reporter_events_selected);
+
+            if (rating == cfg->ec_minimal_rating) /* bt is usable, but not complete, so show a warning */
+            {
                 add_warning(_("The backtrace is incomplete, please make sure you provide the steps to reproduce."));
                 warn = true;
-                break;
-            default:
+            }
+
+            if (rating < cfg->ec_minimal_rating)
+            {
                 //FIXME: see CreporterAssistant: 394 for ideas
                 add_warning(_("Reporting disabled because the backtrace is unusable."));
                 send = false;
                 warn = true;
-                break;
+            }
         }
     }
 

@@ -76,6 +76,7 @@ typedef struct
     char *ec_include_items_by_default;
     char *ec_exclude_items_always;
     bool  ec_exclude_binary_items;
+    long  ec_minimal_rating;
 
     GList *options;
 } event_config_t;
