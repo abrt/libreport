@@ -48,22 +48,24 @@ int main(int argc, char** argv)
         "\b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
         "   or: \b [-vsp] -e EVENT DUMP_DIR\n"
         "   or: \b [-vsp] -a[y] DUMP_DIR\n"
+        "   or: \b [-vsp] -c[y] DUMP_DIR\n"
         "   or: \b [-vsp] -r[y|o|d] DUMP_DIR\n"
     );
     enum {
         OPT_list_events  = 1 << 0,
         OPT_run_event    = 1 << 1,
         OPT_analyze      = 1 << 2,
-        OPT_report       = 1 << 3,
-        OPT_version      = 1 << 4,
-        OPT_delete       = 1 << 5,
-        OPTMASK_op       = OPT_list_events|OPT_run_event|OPT_analyze|OPT_report|OPT_version,
-        OPTMASK_need_arg = OPT_run_event|OPT_analyze|OPT_report,
-        OPT_y            = 1 << 6,
-        OPT_o            = 1 << 7,
-        OPT_v            = 1 << 8,
-        OPT_s            = 1 << 9,
-        OPT_p            = 1 << 10,
+        OPT_collect      = 1 << 3,
+        OPT_report       = 1 << 4,
+        OPT_version      = 1 << 5,
+        OPT_delete       = 1 << 6,
+        OPTMASK_op       = OPT_list_events|OPT_run_event|OPT_analyze|OPT_collect|OPT_report|OPT_version,
+        OPTMASK_need_arg = OPT_run_event|OPT_analyze|OPT_collect|OPT_report,
+        OPT_y            = 1 << 7,
+        OPT_o            = 1 << 8,
+        OPT_v            = 1 << 9,
+        OPT_s            = 1 << 10,
+        OPT_p            = 1 << 11,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
@@ -71,7 +73,8 @@ int main(int argc, char** argv)
         OPT_OPTSTRING('L', NULL     , &pfx, "PREFIX",          _("List possible events [which start with PREFIX]")),
         OPT_STRING(   'e', NULL     , &event_name, "EVENT",    _("Run EVENT on DUMP_DIR")),
         OPT_BOOL(     'a', "analyze", NULL,                    _("Run analyze event(s) on DUMP_DIR")),
-        OPT_BOOL(     'r', "report" , NULL,                    _("Analyze and report problem data in DUMP_DIR")),
+        OPT_BOOL(     'c', "collect", NULL,                    _("Run collect event(s) on DUMP_DIR")),
+        OPT_BOOL(     'r', "report" , NULL,                    _("Analyze, collect and report problem data in DUMP_DIR")),
         OPT_BOOL(     'V', "version", NULL,                    _("Display version and exit")),
         OPT_BOOL(     'd', "delete" , NULL,                    _("Remove DUMP_DIR after reporting")),
         OPT_BOOL(     'y', "always" , NULL,                    _("Noninteractive: don't ask questions, assume 'yes'")),
