@@ -19,7 +19,7 @@
 
 #include "internal_libreport.h"
 
-char *iso_date_string(time_t *pt)
+char *iso_date_string(const time_t *pt)
 {
     static char buf[sizeof("YYYY-MM-DD-HH:MM:SS") + 4];
 
@@ -28,4 +28,12 @@ char *iso_date_string(time_t *pt)
     strftime(buf, sizeof(buf), "%Y-%m-%d-%H:%M:%S", ptm);
 
     return buf;
+}
+
+time_t string_iso_date(const char *date)
+{
+    struct tm tm;
+    strptime(date, "%Y-%m-%d-%H:%M:%S", &tm);
+
+    return mktime(&tm);
 }
