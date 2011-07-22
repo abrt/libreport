@@ -1475,9 +1475,15 @@ static void check_bt_rating_and_allow_send(void)
         }
     }
 
+    if (!gtk_toggle_button_get_active(g_tb_approve_bt))
+    {
+        send = false;
+    }
+
     gtk_assistant_set_page_complete(g_assistant,
-                                    pages[PAGENO_EDIT_BACKTRACE].page_widget,
+                                    pages[PAGENO_REVIEW_DATA].page_widget,
                                     send);
+
     if (warn)
         gtk_widget_show(g_widget_warnings_area);
 }
@@ -1614,7 +1620,7 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
     //            pages[PAGENO_REVIEW_DATA].page_widget == page
     //);
 
-    if (pages[PAGENO_EDIT_BACKTRACE].page_widget == page)
+    if (pages[PAGENO_REVIEW_DATA].page_widget == page)
     {
         check_bt_rating_and_allow_send();
     }
@@ -2018,14 +2024,18 @@ static void add_pages()
     g_lbl_reporters        = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_reporters"));
     g_lbl_size             = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_size"));
 
+    gtk_widget_hide(g_widget_warnings_area);
+
     gtk_widget_modify_font(GTK_WIDGET(g_tv_analyze_log), monospace_font);
     gtk_widget_modify_font(GTK_WIDGET(g_tv_report_log), monospace_font);
     gtk_widget_modify_font(GTK_WIDGET(g_tv_backtrace), monospace_font);
     fix_all_wrapped_labels(GTK_WIDGET(g_assistant));
 
-    if (pages[PAGENO_EDIT_BACKTRACE].page_widget != NULL)
-        gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_EDIT_BACKTRACE].page_widget,
+    if (pages[PAGENO_REVIEW_DATA].page_widget != NULL)
+    {
+        gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_REVIEW_DATA].page_widget,
                     gtk_toggle_button_get_active(g_tb_approve_bt));
+    }
 
     /* Configure btn on select analyzers page */
     GtkWidget *config_btn = GTK_WIDGET(gtk_builder_get_object(builder, "button_cfg1"));
