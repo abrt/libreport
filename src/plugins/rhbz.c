@@ -307,20 +307,25 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
                                                                 FILENAME_TAINTED_SHORT);
 
     struct strbuf *buf_summary = strbuf_new();
-    strbuf_append_strf(buf_summary, "[abrt] %s", package);
-
-    if (function != NULL && strlen(function) < 30)
-        strbuf_append_strf(buf_summary, ": %s", function);
-
-    if (reason != NULL)
-        strbuf_append_strf(buf_summary, ": %s", reason);
-
-    if (tainted_short && analyzer
-        && (strcmp(analyzer, "Kerneloops") == 0))
+    if (analyzer && strcmp(analyzer, "libreport") == 0)
     {
-        strbuf_append_strf(buf_summary, ": TAINTED %s", tainted_short);
+        strbuf_append_str(buf_summary, reason);
     }
+    else
+    {
+        strbuf_append_strf(buf_summary, "[abrt] %s", package);
+        if (function && strlen(function) < 30)
+            strbuf_append_strf(buf_summary, ": %s", function);
 
+        if (reason)
+            strbuf_append_strf(buf_summary, ": %s", reason);
+
+        if (tainted_short && analyzer
+            && (strcmp(analyzer, "Kerneloops") == 0))
+        {
+            strbuf_append_strf(buf_summary, ": TAINTED %s", tainted_short);
+        }
+    }
     char *status_whiteboard = xasprintf("abrt_hash:%s", duphash);
 
     char *bz_dsc = make_description_bz(problem_data);
