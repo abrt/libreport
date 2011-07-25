@@ -178,7 +178,7 @@ int main(int argc, char** argv)
         {
             struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
             if (!dd)
-                break;
+                return 1;
             int readonly = !dd->locked;
             dd_close(dd);
             if (readonly)
