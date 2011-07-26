@@ -48,8 +48,7 @@ int main(int argc, char** argv)
         "\b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
         "   or: \b [-vsp] -e EVENT DUMP_DIR\n"
         "   or: \b [-vsp] -a[y] DUMP_DIR\n"
-        "   or: \b [-vsp] -r[y|o] DUMP_DIR\n"
-        "   or: \b [-vsp] -d DUMP_DIR"
+        "   or: \b [-vsp] -r[y|o|d] DUMP_DIR\n"
     );
     enum {
         OPT_list_events  = 1 << 0,
@@ -59,7 +58,7 @@ int main(int argc, char** argv)
         OPT_version      = 1 << 4,
         OPT_delete       = 1 << 5,
         OPTMASK_op       = OPT_list_events|OPT_run_event|OPT_analyze|OPT_report|OPT_version,
-        OPTMASK_need_arg = OPT_delete|OPT_run_event|OPT_analyze|OPT_report,
+        OPTMASK_need_arg = OPT_run_event|OPT_analyze|OPT_report,
         OPT_y            = 1 << 6,
         OPT_o            = 1 << 7,
         OPT_v            = 1 << 8,
@@ -74,7 +73,7 @@ int main(int argc, char** argv)
         OPT_BOOL(     'a', "analyze", NULL,                    _("Run analyze event(s) on DUMP_DIR")),
         OPT_BOOL(     'r', "report" , NULL,                    _("Analyze and report problem data in DUMP_DIR")),
         OPT_BOOL(     'V', "version", NULL,                    _("Display version and exit")),
-        OPT_BOOL(     'd', "delete" , NULL,                    _("Remove DUMP_DIR")),
+        OPT_BOOL(     'd', "delete" , NULL,                    _("Remove DUMP_DIR after reporting")),
         OPT_BOOL(     'y', "always" , NULL,                    _("Noninteractive: don't ask questions, assume 'yes'")),
         OPT_BOOL(     'o', "report-only" , NULL,               _("With -r: do not run analyzers, run only reporters")),
         OPT__VERBOSE(&g_verbose),
@@ -199,15 +198,16 @@ int main(int argc, char** argv)
                     (report_only ? CLI_REPORT_ONLY : 0));
             if (exitcode == -1)
                 error_msg_and_die("Crash '%s' not found", dump_dir_name);
+
+            if (opts & OPT_delete)
+            {
+                int r = delete_dump_dir_possibly_using_abrtd(dump_dir_name);
+                if (exitcode == 0)
+                    exitcode = r;
+            }
+
             break;
         }
-    }
-
-    if (opts & OPT_delete)
-    {
-        int r = delete_dump_dir_possibly_using_abrtd(dump_dir_name);
-        if (exitcode == 0)
-            exitcode = r;
     }
 
     return exitcode;
