@@ -23,126 +23,6 @@
 #include "internal_libreport.h"
 #include "cli-report.h"
 
-
-/* Vector of problems: */
-/* problem_data_vector[i] = { "name" = { "content", CD_FLAG_foo_bits } } */
-
-typedef GPtrArray vector_of_problem_data_t;
-
-static inline problem_data_t *get_problem_data(vector_of_problem_data_t *vector, unsigned i)
-{
-    return (problem_data_t *)g_ptr_array_index(vector, i);
-}
-
-static void free_vector_of_problem_data(vector_of_problem_data_t *vector)
-{
-    if (vector)
-        g_ptr_array_free(vector, TRUE);
-}
-
-static vector_of_problem_data_t *new_vector_of_problem_data(void)
-{
-    return g_ptr_array_new_with_free_func((void (*)(void*)) &free_problem_data);
-}
-
-
-static problem_data_t *FillCrashInfo(const char *dump_dir_name)
-{
-    int sv_logmode = logmode;
-    logmode = 0; /* suppress EPERM/EACCES errors in opendir */
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ DD_OPEN_READONLY);
-    logmode = sv_logmode;
-
-    if (!dd)
-        return NULL;
-
-    problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
-    dd_close(dd);
-    add_to_problem_data_ext(problem_data, CD_DUMPDIR, dump_dir_name, CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE + CD_FLAG_LIST);
-
-    return problem_data;
-}
-
-static void GetCrashInfos(vector_of_problem_data_t *retval, const char *dir_name)
-{
-    VERB1 log("Loading dumps from '%s'", dir_name);
-
-    DIR *dir = opendir(dir_name);
-    if (dir != NULL)
-    {
-        struct dirent *dent;
-        while ((dent = readdir(dir)) != NULL)
-        {
-            if (dot_or_dotdot(dent->d_name))
-                continue; /* skip "." and ".." */
-
-            char *dump_dir_name = concat_path_file(dir_name, dent->d_name);
-
-            struct stat statbuf;
-            if (stat(dump_dir_name, &statbuf) == 0
-             && S_ISDIR(statbuf.st_mode)
-            ) {
-                problem_data_t *problem_data = FillCrashInfo(dump_dir_name);
-                if (problem_data)
-                    g_ptr_array_add(retval, problem_data);
-            }
-            free(dump_dir_name);
-        }
-        closedir(dir);
-    }
-}
-
-/** Prints basic information about a crash to stdout. */
-static void print_crash(problem_data_t *problem_data)
-{
-    char* desc = make_description(
-                problem_data,
-                /*names_to_skip:*/ NULL,
-                /*max_text_size:*/ CD_TEXT_ATT_SIZE,
-                MAKEDESC_SHOW_ONLY_LIST
-    );
-    fputs(desc, stdout);
-    free(desc);
-}
-
-/**
- * Prints a list containing "crashes" to stdout.
- * @param include_reported
- *   Do not skip entries marked as already reported.
- */
-static void print_crash_list(vector_of_problem_data_t *crash_list, bool include_reported)
-{
-    unsigned i;
-    for (i = 0; i < crash_list->len; ++i)
-    {
-        problem_data_t *crash = get_problem_data(crash_list, i);
-        if (!include_reported)
-        {
-            const char *msg = get_problem_item_content_or_NULL(crash, FILENAME_REPORTED_TO);
-            if (msg)
-                continue;
-        }
-
-        printf("%u.\n", i);
-        print_crash(crash);
-    }
-}
-
-/**
- * Prints full information about a crash
- */
-static void print_crash_info(problem_data_t *problem_data, bool show_multiline)
-{
-    char* desc = make_description(
-                problem_data,
-                /*names_to_skip:*/ NULL,
-                /*max_text_size:*/ CD_TEXT_ATT_SIZE,
-                MAKEDESC_SHOW_FILES | (show_multiline ? MAKEDESC_SHOW_MULTILINE : 0)
-    );
-    fputs(desc, stdout);
-    free(desc);
-}
-
 static char *do_log(char *log_line, void *param)
 {
     log("%s", log_line);
@@ -165,46 +45,36 @@ int main(int argc, char** argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "\b [-vsp] -l[f] [-D BASE_DIR]...\n"
-        "or: \b [-vsp] -i[f] DUMP_DIR\n"
-        "or: \b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
-        "or: \b [-vsp] -e EVENT DUMP_DIR\n"
-        "or: \b [-vsp] -a[y] DUMP_DIR\n"
-        "or: \b [-vsp] -r[y|o] DUMP_DIR\n"
-        "or: \b [-vsp] -d DUMP_DIR"
+        "\b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
+        "   or: \b [-vsp] -e EVENT DUMP_DIR\n"
+        "   or: \b [-vsp] -a[y] DUMP_DIR\n"
+        "   or: \b [-vsp] -r[y|o] DUMP_DIR\n"
+        "   or: \b [-vsp] -d DUMP_DIR"
     );
     enum {
-        OPT_list         = 1 << 0,
-        OPT_D            = 1 << 1,
-        OPT_info         = 1 << 2,
-        OPT_list_events  = 1 << 3,
-        OPT_run_event    = 1 << 4,
-        OPT_analyze      = 1 << 5,
-        OPT_report       = 1 << 6,
-        OPT_delete       = 1 << 7,
-        OPT_version      = 1 << 8,
-        OPTMASK_op       = OPT_list|OPT_info|OPT_list_events|OPT_run_event|OPT_analyze|OPT_report|OPT_version,
-        OPTMASK_need_arg = OPT_info|OPT_run_event|OPT_analyze|OPT_report|OPT_delete,
-        OPT_f            = 1 << 9,
-        OPT_y            = 1 << 10,
-        OPT_o            = 1 << 11,
-        OPT_v            = 1 << 12,
-        OPT_s            = 1 << 13,
-        OPT_p            = 1 << 14,
+        OPT_list_events  = 1 << 0,
+        OPT_run_event    = 1 << 1,
+        OPT_analyze      = 1 << 2,
+        OPT_report       = 1 << 3,
+        OPT_version      = 1 << 4,
+        OPT_delete       = 1 << 5,
+        OPTMASK_op       = OPT_list_events|OPT_run_event|OPT_analyze|OPT_report|OPT_version,
+        OPTMASK_need_arg = OPT_delete|OPT_run_event|OPT_analyze|OPT_report,
+        OPT_y            = 1 << 6,
+        OPT_o            = 1 << 7,
+        OPT_v            = 1 << 8,
+        OPT_s            = 1 << 9,
+        OPT_p            = 1 << 10,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         /*      short_name long_name  value    parameter_name  help */
-        OPT_BOOL(     'l', "list"   , NULL,                    _("List not yet reported problems, or all with -f")),
-        OPT_LIST(     'D', NULL     , &D_list, "BASE_DIR",     _("Directory to list problems from (default: -D $HOME/.abrt/spool -D "DEBUG_DUMPS_DIR")")),
-        OPT_BOOL(     'i', "info"   , NULL,                    _("Print information about DUMP_DIR (detailed with -f)")),
         OPT_OPTSTRING('L', NULL     , &pfx, "PREFIX",          _("List possible events [which start with PREFIX]")),
         OPT_STRING(   'e', NULL     , &event_name, "EVENT",    _("Run EVENT on DUMP_DIR")),
         OPT_BOOL(     'a', "analyze", NULL,                    _("Run analyze event(s) on DUMP_DIR")),
         OPT_BOOL(     'r', "report" , NULL,                    _("Analyze and report problem data in DUMP_DIR")),
-        OPT_BOOL(     'd', "delete" , NULL,                    _("Remove DUMP_DIR")),
         OPT_BOOL(     'V', "version", NULL,                    _("Display version and exit")),
-        OPT_BOOL(     'f', "full"   , NULL,                    _("Full listing")),
+        OPT_BOOL(     'd', "delete" , NULL,                    _("Remove DUMP_DIR")),
         OPT_BOOL(     'y', "always" , NULL,                    _("Noninteractive: don't ask questions, assume 'yes'")),
         OPT_BOOL(     'o', "report-only" , NULL,               _("With -r: do not run analyzers, run only reporters")),
         OPT__VERBOSE(&g_verbose),
@@ -244,7 +114,6 @@ int main(int argc, char** argv)
     }
 
     char *dump_dir_name = argv[0];
-    bool full = (opts & OPT_f);
     bool always = (opts & OPT_y);
     bool report_only = (opts & OPT_o);
 
@@ -263,19 +132,6 @@ int main(int argc, char** argv)
     int exitcode = 0;
     switch (op)
     {
-        case OPT_list:
-        {
-            vector_of_problem_data_t *ci = new_vector_of_problem_data();
-            while (D_list)
-            {
-                char *dir = (char *)D_list->data;
-                GetCrashInfos(ci, dir);
-                D_list = g_list_remove(D_list, dir);
-            }
-            print_crash_list(ci, full);
-            free_vector_of_problem_data(ci);
-            break;
-        }
         case OPT_list_events: /* -L[PREFIX] */
         {
             /* Note that dump_dir_name may be NULL here, it means "show all
@@ -343,24 +199,6 @@ int main(int argc, char** argv)
                     (report_only ? CLI_REPORT_ONLY : 0));
             if (exitcode == -1)
                 error_msg_and_die("Crash '%s' not found", dump_dir_name);
-            break;
-        }
-        case OPT_info:
-        {
-            /* Load problem_data from dump dir */
-            struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
-            if (!dd)
-                return -1;
-
-            problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
-            dd_close(dd);
-
-            add_to_problem_data_ext(problem_data, CD_DUMPDIR, dump_dir_name,
-                                  CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
-
-            print_crash_info(problem_data, full);
-            free_problem_data(problem_data);
-
             break;
         }
     }
