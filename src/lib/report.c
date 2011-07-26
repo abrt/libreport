@@ -48,7 +48,7 @@ int report_problem_in_dir(const char *dirname, int flags)
         *pp++ = (char *)dirname;
         *pp = NULL;
 
-        if (!getenv("DISPLAY"))
+        if (!getenv("DISPLAY") || (flags & LIBREPORT_RUN_CLI))
         {
             /* GUI won't work, use command line tool instead */
             path1 = BIN_DIR"/report-cli";

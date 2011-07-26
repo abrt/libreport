@@ -35,6 +35,7 @@ enum {
                                       /* ("run reporters" is always on, has no flag (for now?)) */
     LIBREPORT_RELOAD_DATA = (1 << 5), /* reload problem data after run (needs WAIT) */
     LIBREPORT_DEL_DIR     = (1 << 6), /* delete directory after reporting */
+    LIBREPORT_RUN_CLI     = (1 << 7), /* run 'cli' instead of 'gui' */
 };
 
 int report_problem_in_dir(const char *dirname, int flags);
