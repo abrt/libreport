@@ -35,6 +35,7 @@ eventsconfdir = $(EVENTS_CONF_DIR)
 dist_eventsconf_DATA = \
     mailx_event.conf \
     print_event.conf \
+    bugzilla_event.conf \
     rhtsupport_event.conf
 
 MAN_TXT = \
