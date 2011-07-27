@@ -459,3 +459,23 @@ void log_problem_data(problem_data_t *problem_data, const char *pfx)
         );
     }
 }
+
+gint cmp_problem_data(gconstpointer a, gconstpointer b, gpointer filename)
+{
+    problem_data_t *a_data = (problem_data_t *) a;
+    const char *a_time_str = get_problem_item_content_or_NULL(a_data, filename);
+    unsigned long a_time= strtoul(a_time_str, NULL, 10);
+
+    problem_data_t *b_data = (problem_data_t *) b;
+    const char *b_time_str = get_problem_item_content_or_NULL(b_data, filename);
+    unsigned long b_time= strtoul(b_time_str, NULL, 10);
+
+    /* newer first */
+    if (a_time > b_time)
+        return -1;
+
+    if (a_time == b_time)
+        return 0;
+
+    return 1;
+}
