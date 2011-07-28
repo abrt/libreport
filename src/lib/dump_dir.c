@@ -492,8 +492,19 @@ void dd_create_basic_files(struct dump_dir *dd, uid_t uid)
     dd_save_text(dd, FILENAME_ARCHITECTURE, buf.machine);
     dd_save_text(dd, FILENAME_HOSTNAME, buf.nodename);
 
-    char *release = load_text_file("/etc/system-release",
-                DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    /* if release exists in dumpdir don't create it, but don't warn
+     * if it doesn't
+     * i.e: anaconda doesn't have /etc/{fedora,redhat}-release and trying to load it
+     * results in errors: rhbz#725857
+    */
+    char *release = dd_load_text_ext(dd, FILENAME_OS_RELEASE,
+                    DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+
+    if (release)
+        return;
+
+    release = load_text_file("/etc/system-release",
+            DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     if (!release)
         release = load_text_file("/etc/redhat-release", /*flags:*/ 0);
     dd_save_text(dd, FILENAME_OS_RELEASE, release);

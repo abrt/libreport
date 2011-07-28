@@ -40,6 +40,12 @@ static void parse_release(const char *release, char** product, char** version, b
         strbuf_append_str(buf_product, release);
     }
 
+    /* examples of release strings:
+     * installed system: Red Hat Enterprise Linux Server release 6.2 Beta (Santiago)
+     * anaconda: Red Hat Enterprise Linux 6.2
+       * ^ note missing "release"
+     * so the following parsing would fail, workaround is in python bindings
+     */
     const char *r = strstr(release, "release");
     const char *space = r ? strchr(r, ' ') : NULL;
 

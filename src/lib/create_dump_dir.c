@@ -23,8 +23,6 @@ static struct dump_dir *try_dd_create(const char *base_dir_name, const char *dir
 {
     char *path = concat_path_file(base_dir_name, dir_name);
     struct dump_dir *dd = dd_create(path, (uid_t)-1L, 0640);
-    if (dd)
-        dd_create_basic_files(dd, (uid_t)-1L);
     free(path);
     return dd;
 }
@@ -80,6 +78,13 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
         dd_save_text(dd, name, value->content);
  next: ;
     }
+
+    /* need to create basic files AFTER we save the pd to dump_dir
+     * otherwise we can't skip already created files like in case when
+     * reporting from anaconda where we can't read /etc/{system,redhat}-release
+     * and os_release is taken from anaconda
+    */
+    dd_create_basic_files(dd, (uid_t)-1L);
 
     return dd;
 }
