@@ -647,28 +647,43 @@ static void analyze_rb_was_toggled(GtkButton *button, gpointer user_data)
     }
 }
 
-static void report_tb_was_toggled(GtkButton *button_unused, gpointer user_data_unused)
+static void report_tb_was_toggled(GtkButton *button, gpointer user_data)
 {
+    char *event_name = (char *)user_data;
     struct strbuf *reporters_string = strbuf_new();
     GList *li = g_list_reporters;
-    for (; li; li = li->next)
+
+    /* if ((button && user_data)
+     * prevents sigsegv which would happen when call from
+     * line 990: ((void (*)(GtkButton*, gpointer*))func)(NULL, NULL);
+     */
+
+    if ((button && user_data)
+        && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)) == TRUE)
     {
-        event_gui_data_t *event_gui_data = li->data;
-        if (gtk_toggle_button_get_active(event_gui_data->toggle_button) == TRUE)
-        {
-            strbuf_append_strf(reporters_string,
+        if (g_list_find(li, event_name) == NULL)
+            li = g_list_prepend(li, event_name);
+
+        strbuf_append_strf(reporters_string,
                             "%s%s",
                             (reporters_string->len != 0 ? ", " : ""),
-                            event_gui_data->event_name
-            );
-            GHashTable *errors = validate_event(event_gui_data->event_name);
-            if (errors != NULL)
-            {
-                g_hash_table_unref(errors);
-                show_event_opt_error_dialog(event_gui_data->event_name);
-            }
+                            event_name
+                            );
+
+        GHashTable *errors = validate_event(event_name);
+        if (errors != NULL)
+        {
+            g_hash_table_unref(errors);
+            show_event_opt_error_dialog(event_name);
         }
+
     }
+    else
+    {
+        if (g_list_find(li, event_name) != NULL)
+            li = g_list_remove(li, event_name);
+    }
+
 
     gtk_assistant_set_page_complete(g_assistant,
                 pages[PAGENO_REPORTER_SELECTOR].page_widget,
@@ -796,7 +811,8 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
         }
 
         if (func)
-            g_signal_connect(G_OBJECT(button), "toggled", func, NULL);
+            g_signal_connect(G_OBJECT(button), "toggled", func, xstrdup(event_name));
+
         if (cfg && cfg->long_descr)
             gtk_widget_set_tooltip_text(button, cfg->long_descr);
 
@@ -908,6 +924,7 @@ static void update_event_checkboxes(GList **events_gui_data,
                 char *events,
                 GCallback func)
 {
+
     /* Remember names of selected events */
     GList *old_events = NULL;
     GList *li = *events_gui_data;
@@ -920,11 +937,15 @@ static void update_event_checkboxes(GList **events_gui_data,
             old_events = g_list_prepend(old_events, xstrdup(event_gui_data->event_name));
         }
     }
+
+
+
     /* Delete old checkboxes and create new ones */
     add_event_buttons(box, events_gui_data,
                 events, /*callback:*/ func,
                 /*radio:*/ false
     );
+
     /* Re-select new events which were selected before we deleted them */
     GList *li_new = *events_gui_data;
     for (; li_new; li_new = li_new->next)
