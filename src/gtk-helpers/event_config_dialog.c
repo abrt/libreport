@@ -36,7 +36,7 @@ typedef struct
     GtkWidget *widget;
 } option_widget_t;
 
-static void show_event_config_dialog(const char *event_name);
+int show_event_config_dialog(const char *event_name, GtkWindow *parent);
 
 static GtkWidget *gtk_label_new_justify_left(const gchar *label_str)
 {
@@ -211,7 +211,7 @@ static void on_configure_event_cb(GtkWidget *button, gpointer user_data)
     GtkTreeView *events_tv = (GtkTreeView *)user_data;
     char *event_name = get_event_name_from_row(events_tv);
     if (event_name != NULL)
-        show_event_config_dialog(event_name);
+        show_event_config_dialog(event_name, NULL);
     //else
     //    error_msg(_("Please select a plugin from the list to edit its options."));
 }
@@ -221,7 +221,7 @@ static void on_event_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, 
     char *event_name = get_event_name_from_row(treeview);
     event_config_t *ec = get_event_config(event_name);
     if (ec->options != NULL) //We need to have some options to show
-        show_event_config_dialog(event_name);
+        show_event_config_dialog(event_name, NULL);
 }
 
 static void on_event_row_changed_cb(GtkTreeView *treeview, gpointer user_data)
@@ -285,6 +285,9 @@ static void dehydrate_config_dialog()
 
 static void save_settings_to_keyring(const char *event_name)
 {
+    //don't bother when we already know that keyring is not available
+    if (!g_keyring_available)
+        return;
     char *keyring_name = NULL;
     GnomeKeyringResult result = gnome_keyring_get_default_keyring_sync(&keyring_name);
     if (result != GNOME_KEYRING_RESULT_OK)
@@ -333,7 +336,7 @@ static void save_settings_to_keyring(const char *event_name)
     VERB2 log("saved event '%s' configuration to keyring", event_name);
 }
 
-static void show_event_config_dialog(const char *event_name)
+int show_event_config_dialog(const char *event_name, GtkWindow *parent)
 {
     if (option_widget_list != NULL)
     {
@@ -343,19 +346,21 @@ static void show_event_config_dialog(const char *event_name)
 
     event_config_t *event = get_event_config(event_name);
 
+    GtkWindow *parent_window = parent ? parent : g_event_list_window;
+
     GtkWidget *dialog = gtk_dialog_new_with_buttons(
                         /*title:*/ event->screen_name ? event->screen_name : event_name,
-                        g_event_list_window,
+                        parent_window,
                         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                         GTK_STOCK_CANCEL,
                         GTK_RESPONSE_CANCEL,
                         GTK_STOCK_OK,
                         GTK_RESPONSE_APPLY,
                         NULL);
-    if (g_event_list_window != NULL)
+    if (parent_window != NULL)
     {
         gtk_window_set_icon_name(GTK_WINDOW(dialog),
-                gtk_window_get_icon_name(g_event_list_window));
+                gtk_window_get_icon_name(parent_window));
     }
 
     GtkWidget *option_table = gtk_table_new(/*rows*/ 0, /*cols*/ 2, /*homogeneous*/ FALSE);
@@ -364,7 +369,21 @@ static void show_event_config_dialog(const char *event_name)
 
     GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
     gtk_box_pack_start(GTK_BOX(content), option_table, false, false, 20);
-    gtk_widget_show_all(option_table);
+
+    /* add warning if keyring is not available showing the nagging dialog
+     * is considered "too heavy UI" be designers
+     */
+    if (!g_keyring_available)
+    {
+        GtkWidget *keyring_warn_lbl =
+        gtk_label_new(
+          _("Gnome Keyring is not available, your settings won't be saved!"));
+        static const GdkColor red = { .red = 0xffff };
+        gtk_widget_modify_fg(keyring_warn_lbl, GTK_STATE_NORMAL, &red);
+        gtk_box_pack_start(GTK_BOX(content), keyring_warn_lbl, false, false, 0);
+    }
+
+    gtk_widget_show_all(content);
 
     int result = gtk_dialog_run(GTK_DIALOG(dialog));
     if (result == GTK_RESPONSE_APPLY)
@@ -375,6 +394,7 @@ static void show_event_config_dialog(const char *event_name)
     //else if (result == GTK_RESPONSE_CANCEL)
     //    log("log");
     gtk_widget_destroy(dialog);
+    return result;
 }
 
 void show_events_list_dialog(GtkWindow *parent)

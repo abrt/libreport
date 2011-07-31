@@ -27,6 +27,8 @@
 extern "C" {
 #endif
 
+extern bool g_keyring_available;
+
 #define make_label_autowrap_on_resize libreport_make_label_autowrap_on_resize
 void make_label_autowrap_on_resize(GtkLabel *label);
 
@@ -38,6 +40,9 @@ void load_event_config_data_from_keyring(void);
 
 #define find_keyring_item_id_for_event libreport_find_keyring_item_id_for_event
 guint32 find_keyring_item_id_for_event(const char *event_name);
+
+#define show_event_config_dialog libreport_show_event_config_dialog
+int show_event_config_dialog(const char *event_name, GtkWindow *parent);
 
 #ifdef __cplusplus
 }

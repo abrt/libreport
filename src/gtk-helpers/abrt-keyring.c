@@ -22,6 +22,7 @@
 
 static char *keyring_name;
 static bool got_keyring = 0;
+bool g_keyring_available = 1; //by default we assume that keyring is available
 
 guint32 find_keyring_item_id_for_event(const char *event_name)
 {
@@ -49,6 +50,10 @@ guint32 find_keyring_item_id_for_event(const char *event_name)
 
 static void abrt_keyring_load_settings(const char *event_name, event_config_t *ec)
 {
+    //don't bother when we already know that keyring is not available
+    if (!g_keyring_available)
+        return;
+
     guint item_id = find_keyring_item_id_for_event(event_name);
     if (!item_id)
         return;
@@ -81,12 +86,13 @@ static void abrt_keyring_load_settings(const char *event_name, event_config_t *e
 static void init_keyring()
 {
     /* Called again? */
-    if (got_keyring)
+    if (got_keyring || !g_keyring_available)
         return;
 
     if (!gnome_keyring_is_available())
     {
-        error_msg("Cannot connect to Gnome keyring daemon");
+        g_keyring_available = 0;
+        VERB1 error_msg("Cannot connect to Gnome keyring daemon");
         return;
     }
 
