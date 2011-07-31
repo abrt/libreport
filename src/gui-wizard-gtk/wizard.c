@@ -82,6 +82,8 @@ static GtkCellRenderer *g_tv_details_renderer_value;
 static GtkTreeViewColumn *g_tv_details_col_checkbox;
 //static GtkCellRenderer *g_tv_details_renderer_checkbox;
 static GtkListStore *g_ls_details;
+static GtkWidget *g_top_most_window;
+
 enum
 {
     /* Note: need to update types in
@@ -258,6 +260,24 @@ static void save_dialog_response(GtkDialog *dialog, gint response_id, gpointer u
     *(gint*)user_data = response_id;
 }
 
+static void on_configure_event_cb(GtkWidget *button, gpointer user_data)
+{
+    char *event_name = (char *)user_data;
+    if (event_name != NULL)
+    {
+        int result = show_event_config_dialog(event_name, GTK_WINDOW(g_top_most_window));
+        if (result == GTK_RESPONSE_APPLY)
+        {
+            GHashTable *errors = validate_event(event_name);
+            if (errors == NULL)
+            {
+                gtk_widget_destroy(g_top_most_window);
+                g_top_most_window = NULL;
+            }
+        }
+    }
+}
+
 static void show_event_opt_error_dialog(const char *event_name)
 {
     event_config_t *ec = get_event_config(event_name);
@@ -269,18 +289,31 @@ static void show_event_opt_error_dialog(const char *event_name)
                               "reporting will probably fail if you continue "
                               "with the current configuration."),
                                ec->screen_name);
-    GtkWidget *wrong_settings = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
+    GtkWidget *wrong_settings = g_top_most_window = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
         GTK_MESSAGE_WARNING,
         GTK_BUTTONS_CLOSE,
         message);
+
     gtk_window_set_transient_for(GTK_WINDOW(wrong_settings), GTK_WINDOW(g_assistant));
     gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(wrong_settings),
                                     markup_message);
     free(message);
     free(markup_message);
+
+    GtkWidget *act_area = gtk_dialog_get_content_area(GTK_DIALOG(wrong_settings));
+    char * conf_btn_lbl = xasprintf(_("Con_figure %s"), ec->screen_name);
+    GtkWidget *configure_event_btn = gtk_button_new_with_mnemonic(conf_btn_lbl);
+    g_signal_connect(configure_event_btn, "clicked", G_CALLBACK(on_configure_event_cb), (gpointer)event_name);
+    free(conf_btn_lbl);
+
+    gtk_box_pack_start(GTK_BOX(act_area), configure_event_btn, false, false, 0);
+    gtk_widget_show(configure_event_btn);
+
+
     gtk_dialog_run(GTK_DIALOG(wrong_settings));
-    gtk_widget_destroy(wrong_settings);
+    if (g_top_most_window)
+        gtk_widget_destroy(wrong_settings);
 }
 
 struct dump_dir *steal_if_needed(struct dump_dir *dd)
