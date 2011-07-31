@@ -74,10 +74,6 @@ void reload_problem_data_from_dump_dir(void)
     }
     g_cd = new_cd;
 
-    /* Load /etc/abrt/events/foo.{conf,xml} stuff */
-    load_event_config_data();
-    load_event_config_data_from_keyring();
-//TODO: Load ~/.abrt/events/foo.conf?
 }
 
 int main(int argc, char **argv)
