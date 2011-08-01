@@ -7,19 +7,15 @@ report-cli - Work with ABRT dump directories from command line.
 
 SYNOPSIS
 --------
-'report-cli' [-vsp] -l[f] [-D BASE_DIR]...
-
-'report-cli' [-vsp] -i[f] DUMP_DIR
-
 'report-cli' [-vsp] -L[PREFIX] [DUMP_DIR]
 
 'report-cli' [-vsp] -e EVENT DUMP_DIR
 
 'report-cli' [-vsp] -a[y] DUMP_DIR
 
-'report-cli' [-vsp] -r[y|o] DUMP_DIR
+'report-cli' [-vsp] -c[y] DUMP_DIR
 
-'report-cli' [-vsp] -d DUMP_DIR
+'report-cli' [-vsp] -r[y|o|d] DUMP_DIR
 
 DESCRIPTION
 -----------
@@ -29,15 +25,6 @@ It enables access to, manipulation of problem data, and reporting.
 
 OPTIONS
 -------
--l::
-    List not yet reported problems, or all problems with -f
-
--D BASE_DIR::
-    Directory to list problems from (default: -D $HOME/.abrt/spool -D /var/spool/abrt)
-
--i, --info::
-    Print information about DUMP_DIR (detailed with -f)
-
 -L[PREFIX]::
     List possible events [which start with PREFIX]
 
@@ -47,14 +34,14 @@ OPTIONS
 -a, --analyze::
     Run analyze event(s) on DUMP_DIR
 
+-c, --collect::
+    Run collect event(s) on DUMP_DIR
+
 -r, --report::
-    Analyze and report problem data in DUMP_DIR
+    Analyze, collect and report problem data in DUMP_DIR
 
 -d, --delete::
-    Remove DUMP_DIR
-
--f, --full::
-    Full listing
+    Remove DUMP_DIR after reporting
 
 -y, --always::
     Noninteractive: don't ask questions, assume positive answer to all of them
