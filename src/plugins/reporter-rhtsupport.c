@@ -38,6 +38,7 @@ static void report_to_rhtsupport(
     pid_t child;
     char* tempfile = NULL;
     reportfile_t* file = NULL;
+    rhts_result_t* result = NULL;
     char* dsc = NULL;
     char* summary = NULL;
     const char* function;
@@ -112,7 +113,7 @@ static void report_to_rhtsupport(
     if (tar_fdopen(&tar, pipe_from_parent_to_child[1], tempfile,
                 /*fileops:(standard)*/ NULL, O_WRONLY | O_CREAT, 0644, TAR_GNU) != 0)
     {
-        errmsg = "Can't create temporary file in /tmp";
+        errmsg = _("Can't create temporary file in /tmp");
         goto ret;
     }
 
@@ -146,7 +147,7 @@ static void report_to_rhtsupport(
                         /*binary           */ 1);
                 if (tar_append_file(tar, (char*)content, xml_name) != 0)
                 {
-                    errmsg = "Can't create temporary file in /tmp";
+                    errmsg = _("Can't create temporary file in /tmp");
                     free(xml_name);
                     goto ret;
                 }
@@ -180,7 +181,7 @@ static void report_to_rhtsupport(
          || tar_close(tar) != 0
         ) {
             free(block);
-            errmsg = "Can't create temporary file in /tmp";
+            errmsg = _("Can't create temporary file in /tmp");
             goto ret;
         }
         tar = NULL;
@@ -196,61 +197,64 @@ static void report_to_rhtsupport(
         /* Hopefully, by this time child emitted more meaningful
          * error message. But just in case it didn't:
          */
-        errmsg = "Can't create temporary file in /tmp";
+        errmsg = _("Can't create temporary file in /tmp");
         goto ret;
     }
 
     /* Send tempfile */
-    {
-        log(_("Creating a new case..."));
-        char* result = send_report_to_new_case(url,
-                login,
-                password,
-                ssl_verify,
-                summary,
-                dsc,
-                package,
-                tempfile
-        );
-        /* Temporary hackish detection of errors. Ideally,
-         * send_report_to_new_case needs to have better error reporting.
-         */
-        if (strncasecmp(result, "error", 5) == 0)
-        {
-            /*
-             * result can contain "...server says: 'multi-line <html> text'"
-             * Replace all '\n' with spaces:
-             * we want this message to be, logically, one log entry.
-             * IOW: one line, not many lines.
-             */
-            char *src, *dst;
-            dst = src = result;
-            while (1)
-            {
-                unsigned char c = *src++;
-                if (c == '\n')
-                    c = ' ';
-                *dst++ = c;
-                if (c == '\0')
-                    break;
-            }
-            /* Use sanitized string as error message */
-            errmsg = result;
-            goto ret;
-        }
+    log(_("Creating a new case..."));
+    result = send_report_to_new_case(url,
+            login,
+            password,
+            ssl_verify,
+            summary,
+            dsc,
+            package,
+            tempfile
+    );
 
-        /* No error */
-        struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-        if (dd)
+    if (result->error)
+    {
+        /*
+         * Message can contain "...server says: 'multi-line <html> text'"
+         * Replace all '\n' with spaces:
+         * we want this message to be, logically, one log entry.
+         * IOW: one line, not many lines.
+         */
+        char *src, *dst;
+        errmsg = dst = src = result->msg;
+        while (1)
         {
-            char *msg = xasprintf("RHTSupport: %s", result);
-            add_reported_to(dd, msg);
-            free(msg);
-            dd_close(dd);
+            unsigned char c = *src++;
+            if (c == '\n')
+                c = ' ';
+            *dst++ = c;
+            if (c == '\0')
+                break;
         }
-        log("%s", result);
-        free(result);
+        /* Remove trailing spaces (usually produced by trailing '\n') */
+        while (--dst >= errmsg && *dst == ' ')
+            *dst = '\0';
+        goto ret;
     }
+
+    /* No error */
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (dd)
+    {
+        char *msg = xasprintf("RHTSupport: TIME=%s URL=%s%s%s",
+                iso_date_string(NULL),
+                result->url,
+                result->msg ? " MSG=" : "", result->msg ? result->msg : ""
+        );
+        add_reported_to(dd, msg);
+        free(msg);
+        dd_close(dd);
+        if (result->msg)
+            log("%s", result->msg);
+        log("URL=%s", result->url);
+    }
+    /* else: error msg was already emitted by dd_opendir */
 
  ret:
     /* We must close write fd first, or else child will wait forever */
@@ -268,19 +272,24 @@ static void report_to_rhtsupport(
 
     unlink(tempfile);
     free(tempfile);
-    reportfile_free(file);
+    free_reportfile(file);
     rmdir(tmpdir_name);
+
+    /* Note: errmsg may be = result->msg, don't move this code block
+     * below free_rhts_result(result)!
+     */
+    if (errmsg)
+        error_msg_and_die("%s", errmsg);
 
     free(summary);
     free(dsc);
+
+    free_rhts_result(result);
 
     free(url);
     free(login);
     free(password);
     free_problem_data(problem_data);
-
-    if (errmsg)
-        error_msg_and_die("%s", errmsg);
 }
 
 int main(int argc, char **argv)

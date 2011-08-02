@@ -201,7 +201,7 @@ reportfile_as_string(reportfile_t* file)
 }
 
 void
-reportfile_free(reportfile_t* file)
+free_reportfile(reportfile_t* file)
 {
     if (!file)
         return;
@@ -210,6 +210,15 @@ reportfile_free(reportfile_t* file)
     free(file);
 }
 
+
+void free_rhts_result(rhts_result_t *p)
+{
+    if (!p)
+        return;
+    free(p->url);
+    free(p->msg);
+    free(p);
+}
 
 //
 // send_report_to_new_case()
@@ -292,7 +301,7 @@ make_response(const char* title, const char* body,
 //<response><title>Case Created and Report Attached</title><body></body><URL href="http://support-services-devel.gss.redhat.com:8080/Strata/cases/00005129/attachments/ccbf3e65-b941-3db7-a016-6a3831691a32">New Case URL</URL></response>
 #endif
 
-char*
+rhts_result_t*
 send_report_to_new_case(const char* baseURL,
                 const char* username,
                 const char* password,
@@ -302,6 +311,8 @@ send_report_to_new_case(const char* baseURL,
                 const char* component,
                 const char* report_file_name)
 {
+    rhts_result_t *result = xzalloc(sizeof(*result));
+
     char *case_url = concat_path_file(baseURL, "/cases");
 
     char *case_data = make_case_data(summary, description,
@@ -311,7 +322,6 @@ send_report_to_new_case(const char* baseURL,
     int redirect_count = 0;
     char *errmsg;
     char *allocated = NULL;
-    char* retval = NULL;
     abrt_post_state_t *case_state;
 
  redirect_case:
@@ -339,7 +349,8 @@ send_report_to_new_case(const char* baseURL,
          * but makes this typical error less cryptic:
          * instead of returning html-encoded body, we show short concise message,
          * and show offending URL (typos in which is a typical cause) */
-        retval = xasprintf("error in case creation, "
+        result->error = -1;
+        result->msg = xasprintf("error in case creation, "
                         "HTTP code: 404 (Not found), URL:'%s'", case_url);
         break;
 
@@ -356,17 +367,20 @@ send_report_to_new_case(const char* baseURL,
         /* fall through */
 
     default:
+        result->error = -1;
         errmsg = case_state->curl_error_msg;
         if (errmsg && errmsg[0])
-            retval = xasprintf("error in case creation: %s", errmsg);
+        {
+            result->msg = xasprintf("error in case creation: %s", errmsg);
+        }
         else
         {
             errmsg = case_state->body;
             if (errmsg && errmsg[0])
-                retval = xasprintf("error in case creation, HTTP code: %d, server says: '%s'",
+                result->msg = xasprintf("error in case creation, HTTP code: %d, server says: '%s'",
                         case_state->http_resp_code, errmsg);
             else
-                retval = xasprintf("error in case creation, HTTP code: %d",
+                result->msg = xasprintf("error in case creation, HTTP code: %d",
                         case_state->http_resp_code);
         }
         break;
@@ -375,7 +389,8 @@ send_report_to_new_case(const char* baseURL,
     case 201: {
         if (!case_location) {
             /* Case Creation returned valid code, but no location */
-            retval = xasprintf("error in case creation: no Location URL, HTTP code: %d",
+            result->error = -1;
+            result->msg = xasprintf("error in case creation: no Location URL, HTTP code: %d",
                     case_state->http_resp_code);
             break;
         }
@@ -422,10 +437,9 @@ send_report_to_new_case(const char* baseURL,
                 else /* only body exists */
                     errmsg = atch_state->body;
             }
-            /* Note: to prevent URL misparsing, make sure to delimit
-             * case_location only using spaces */
-            retval = xasprintf("Case created: %s but report attachment failed (HTTP code %d)%s%s",
-                    case_location,
+            result->error = -1;
+            result->url = xstrdup(case_location);
+            result->msg = xasprintf("Case created but report attachment failed (HTTP code %d)%s%s",
                     atch_state->http_resp_code,
                     errmsg ? ": " : "",
                     errmsg ? errmsg : ""
@@ -444,7 +458,8 @@ send_report_to_new_case(const char* baseURL,
             //                case_state->body,
             //                atch_state->body);
             //}
-            retval = xasprintf("Case created: %s", /*body,*/ case_location);
+            result->url = xstrdup(case_location);
+            result->msg = xstrdup("Case created");
         } /* switch (attach HTTP code) */
 
         free_abrt_post_state(atch_state);
@@ -456,5 +471,5 @@ send_report_to_new_case(const char* baseURL,
     free_abrt_post_state(case_state);
     free(allocated);
     free(case_url);
-    return retval;
+    return result;
 }
