@@ -637,6 +637,10 @@ GList *kernel_tainted_long(unsigned tainted);
 
 // Not stored as files, added "on the fly":
 #define CD_DUMPDIR            "Directory"
+
+#define cmp_problem_data libreport_cmp_problem_data
+gint cmp_problem_data(gconstpointer a, gconstpointer b, gpointer filename);
+
 //UNUSED:
 //// "Which events are possible (make sense) on this dump dir?"
 //// (a string with "\n" terminated event names)

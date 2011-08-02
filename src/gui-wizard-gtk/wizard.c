@@ -213,6 +213,7 @@ static page_obj_t pages[] =
 
 static page_obj_t *added_pages[NUM_PAGES];
 
+static struct strbuf *line = NULL;
 
 /* Utility functions */
 
@@ -1174,7 +1175,8 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     char *newline;
     char *raw;
     int r;
-    struct strbuf *line = strbuf_new();
+    if (!line)
+        line = strbuf_new();
 
     int alert_prefix_len = strlen(REPORT_PREFIX_ALERT);
     int ask_prefix_len = strlen(REPORT_PREFIX_ASK);
@@ -1348,8 +1350,6 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         strbuf_append_str(line, raw);
     }
 
-    strbuf_free(line);
-
     if (r < 0 && errno == EAGAIN)
         /* We got all buffered data, but fd is still open. Done for now */
         return TRUE; /* "please don't remove this event (yet)" */
@@ -1414,6 +1414,10 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                 char *msg = xasprintf(evd->end_msg, retval);
                 gtk_label_set_text(evd->status_label, msg);
                 free(msg);
+
+                /* free child output buffer */
+                strbuf_free(line);
+                line = NULL;
 
                 /* Enable (un-gray out) navigation buttons */
                 gtk_widget_set_sensitive(GTK_WIDGET(g_assistant), true);
