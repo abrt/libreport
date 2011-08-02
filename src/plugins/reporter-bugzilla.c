@@ -22,34 +22,13 @@
 
 #define XML_RPC_SUFFIX "/xmlrpc.cgi"
 
-static void report_to_bugzilla(const char *dump_dir_name, map_string_h *settings)
+static void report_to_bugzilla(const char *dump_dir_name, const char *login,
+                               const char *password, const char *bugzilla_xmlrpc,
+                               const char *bugzilla_url, int ssl_verify)
 {
     problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
     if (!problem_data)
         xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
-
-    const char *env;
-    const char *login;
-    const char *password;
-    const char *bugzilla_xmlrpc;
-    const char *bugzilla_url;
-    bool ssl_verify;
-
-    env = getenv("Bugzilla_Login");
-    login = env ? env : get_map_string_item_or_empty(settings, "Login");
-    env = getenv("Bugzilla_Password");
-    password = env ? env : get_map_string_item_or_empty(settings, "Password");
-    if (!login[0] || !password[0])
-        error_msg_and_die(_("Empty login or password, please check your configuration"));
-
-    env = getenv("Bugzilla_BugzillaURL");
-    bugzilla_url = env ? env : get_map_string_item_or_empty(settings, "BugzillaURL");
-    if (!bugzilla_url[0])
-        bugzilla_url = "https://bugzilla.redhat.com";
-    bugzilla_xmlrpc = xasprintf("%s"XML_RPC_SUFFIX, bugzilla_url);
-
-    env = getenv("Bugzilla_SSLVerify");
-    ssl_verify = string_to_bool(env ? env : get_map_string_item_or_empty(settings, "SSLVerify"));
 
     const char *component = get_problem_item_content_or_NULL(problem_data, FILENAME_COMPONENT);
     const char *duphash   = get_problem_item_content_or_NULL(problem_data, FILENAME_DUPHASH);
@@ -234,6 +213,7 @@ int main(int argc, char **argv)
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
         "\b [-v] [-c CONFFILE] -d DIR\n"
+        "   or: \b [-v] --ticket[ID] FILE [FILE...]\n"
         "\n"
         "Reports problem to Bugzilla.\n"
         "\n"
@@ -260,15 +240,22 @@ int main(int argc, char **argv)
         OPT_v = 1 << 0,
         OPT_d = 1 << 1,
         OPT_c = 1 << 2,
+        OPT_t = 1 << 3,
     };
+
+    char *ticket_no = NULL;
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_STRING('d', NULL, &dump_dir_name, "DIR" , _("Dump directory")),
         OPT_LIST(  'c', NULL, &conf_file    , "FILE", _("Configuration file (may be given many times)")),
+        OPT_OPTSTRING('t', "ticket", &ticket_no, "ID", _("Attach file to a bugzilla id")),
         OPT_END()
     };
-    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+
+    if ((opts & OPT_t) && !ticket_no)
+        error_msg_and_die("Not implemented yet");
 
     export_abrt_envvars(0);
 
@@ -289,7 +276,92 @@ int main(int argc, char **argv)
         error_msg_and_die("XML-RPC Fault: %s(%d)", env.fault_string, env.fault_code);
     xmlrpc_env_clean(&env);
 
-    report_to_bugzilla(dump_dir_name, settings);
+    const char *environ;
+    const char *login;
+    const char *password;
+    const char *bugzilla_xmlrpc;
+    const char *bugzilla_url;
+    bool ssl_verify;
+
+    environ = getenv("Bugzilla_Login");
+    login = environ ? environ : get_map_string_item_or_empty(settings, "Login");
+    environ = getenv("Bugzilla_Password");
+    password = environ ? environ : get_map_string_item_or_empty(settings, "Password");
+    if (!login[0] || !password[0])
+        error_msg_and_die(_("Empty login or password, please check your configuration"));
+
+    environ = getenv("Bugzilla_BugzillaURL");
+    bugzilla_url = environ ? environ : get_map_string_item_or_empty(settings, "BugzillaURL");
+    if (!bugzilla_url[0])
+        bugzilla_url = "https://bugzilla.redhat.com";
+    bugzilla_xmlrpc = xasprintf("%s"XML_RPC_SUFFIX, bugzilla_url);
+
+    environ = getenv("Bugzilla_SSLVerify");
+    ssl_verify = string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "SSLVerify"));
+
+    if (opts & OPT_t)
+    {
+        if (!argv[optind])
+            show_usage_and_die(program_usage_string, program_options);
+
+        struct abrt_xmlrpc *client = abrt_xmlrpc_new_client(bugzilla_xmlrpc, ssl_verify);
+
+        log(_("Logging into Bugzilla at %s"), bugzilla_url);
+        rhbz_login(client, login, password);
+
+        while (argv[optind])
+        {
+            const char *filename = argv[optind++];
+            VERB1 log("Attaching file '%s' to bugticket %s", filename, ticket_no);
+
+            int fd = open(filename, O_RDONLY);
+            if (fd < 0)
+            {
+                perror_msg("Can't open '%s'", filename);
+                continue;
+            }
+
+            struct stat st;
+            if (fstat(fd, &st) != 0 || !S_ISREG(st.st_mode))
+            {
+                error_msg("'%s': not a regular file", filename);
+                close(fd);
+                continue;
+            }
+
+            off_t size = lseek(fd, 0, SEEK_END);
+            if (size < 0)
+            {
+                close(fd);
+                perror_msg("Can't lseek '%s'", filename);
+                continue;
+            }
+            lseek(fd, 0, SEEK_SET);
+
+            char *data = xmalloc(size + 1);
+            ssize_t r = full_read(fd, data, size);
+            if (r < 0)
+            {
+                free(data);
+                perror_msg("Can't read '%s'", filename);
+                close(fd);
+                continue;
+            }
+            close(fd);
+
+            rhbz_attachment(client, filename, ticket_no, data, /*flags*/ 0);
+            free(data);
+        }
+
+        log(_("Logging out"));
+        rhbz_logout(client);
+        abrt_xmlrpc_free_client(client);
+    }
+    else
+    {
+        report_to_bugzilla(dump_dir_name, login, password, bugzilla_xmlrpc,
+                           bugzilla_url, ssl_verify);
+    }
 
     free_map_string(settings);
     return 0;
