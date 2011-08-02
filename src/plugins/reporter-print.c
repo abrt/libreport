@@ -81,12 +81,7 @@ int main(int argc, char **argv)
             struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
             if (dd)
             {
-                struct report_result *res;
-                char *msg = xasprintf("file://%s", output_file);;
-
-                res = new_report_result(REPORT_RESULT_TYPE_URL, msg);
-                msg = format_report_result(res);
-                free_report_result(res);
+                char *msg = xasprintf("file: %s", output_file);
                 add_reported_to(dd, msg);
                 free(msg);
                 dd_close(dd);

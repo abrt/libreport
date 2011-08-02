@@ -243,12 +243,7 @@ static void report_to_rhtsupport(
         struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
         if (dd)
         {
-            struct report_result *res;
-            char *msg = xasprintf("%s", result);
-
-            res = new_report_result(REPORT_RESULT_TYPE_MESSAGE, msg);
-            msg = format_report_result(res);
-            free_report_result(res);
+            char *msg = xasprintf("RHTSupport: %s", result);
             add_reported_to(dd, msg);
             free(msg);
             dd_close(dd);

@@ -23,7 +23,8 @@ struct report_result *new_report_result(enum report_result_type type, char *data
     struct report_result *res;
     const char *event;
 
-    if (!(event = getenv("EVENT")))
+    event = getenv("EVENT");
+    if (!event)
         event = "unknown";
 
     res = xmalloc(sizeof (*res));
