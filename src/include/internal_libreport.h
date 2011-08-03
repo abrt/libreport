@@ -652,24 +652,6 @@ enum {
     EVENT_LOG_LOW_WATERMARK  = 20 * 1024,
 };
 
-struct report_result {
-    char *url;
-    char *msg;
-    /* char *whole_line; */
-    /* time_t timestamp; */
-    /* ^^^ if you add more fields, don't forget to update free_report_result() */
-};
-typedef struct report_result report_result_t;
-
-#define free_report_result libreport_free_report_result
-void free_report_result(struct report_result *result);
-
-#define add_reported_to libreport_add_reported_to
-void add_reported_to(struct dump_dir *dd, const char *line);
-
-#define find_in_reported_to libreport_find_in_reported_to
-report_result_t *find_in_reported_to(struct dump_dir *dd, const char *prefix);
-
 #define log_problem_data libreport_log_problem_data
 void log_problem_data(problem_data_t *problem_data, const char *pfx);
 

@@ -71,6 +71,25 @@ void dd_save_binary(struct dump_dir *dd, const char *name, const char *data, uns
 /* Returns 0 if directory is deleted or not found */
 int dd_delete(struct dump_dir *dd);
 
+
+/* reported_to handling */
+#define add_reported_to libreport_add_reported_to
+void add_reported_to(struct dump_dir *dd, const char *line);
+struct report_result {
+    char *url;
+    char *msg;
+    /* char *whole_line; */
+    /* time_t timestamp; */
+    /* ^^^ if you add more fields, don't forget to update free_report_result() */
+};
+typedef struct report_result report_result_t;
+#define free_report_result libreport_free_report_result
+void free_report_result(struct report_result *result);
+#define find_in_reported_to libreport_find_in_reported_to
+report_result_t *find_in_reported_to(struct dump_dir *dd, const char *prefix);
+/* TODO: GList *read_entire_reported_to(dd); */
+
+
 void delete_dump_dir(const char *dirname);
 
 #ifdef __cplusplus
