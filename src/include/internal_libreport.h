@@ -534,8 +534,6 @@ char* get_environ(pid_t pid);
  */
 #define iso_date_string libreport_iso_date_string
 char *iso_date_string(const time_t *pt);
-#define string_iso_date libreport_string_iso_date
-time_t string_iso_date(const char *date);
 
 enum {
     MAKEDESC_SHOW_FILES     = (1 << 0),
@@ -654,29 +652,23 @@ enum {
     EVENT_LOG_LOW_WATERMARK  = 20 * 1024,
 };
 
-enum report_result_type {
-    REPORT_RESULT_TYPE_URL,
-    REPORT_RESULT_TYPE_MESSAGE
-};
-
 struct report_result {
-    char *event;
-    char *data;
-    enum report_result_type type;
-    time_t timestamp;
+    char *url;
+    char *msg;
+    /* char *whole_line; */
+    /* time_t timestamp; */
+    /* ^^^ if you add more fields, don't forget to update free_report_result() */
 };
+typedef struct report_result report_result_t;
+
+#define free_report_result libreport_free_report_result
+void free_report_result(struct report_result *result);
 
 #define add_reported_to libreport_add_reported_to
 void add_reported_to(struct dump_dir *dd, const char *line);
 
-#define new_report_result libreport_new_report_result
-struct report_result *new_report_result(enum report_result_type type, char *data);
-#define format_report_result libreport_format_report_result
-char *format_report_result(const struct report_result *result);
-#define parse_report_result libreport_parse_report_result
-struct report_result *parse_report_result(const char *text);
-#define free_report_result libreport_free_report_result
-void free_report_result(struct report_result *result);
+#define find_in_reported_to libreport_find_in_reported_to
+report_result_t *find_in_reported_to(struct dump_dir *dd, const char *prefix);
 
 #define log_problem_data libreport_log_problem_data
 void log_problem_data(problem_data_t *problem_data, const char *pfx);

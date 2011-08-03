@@ -18,84 +18,11 @@
 */
 #include "internal_libreport.h"
 
-struct report_result *new_report_result(enum report_result_type type, char *data)
-{
-    struct report_result *res;
-    const char *event;
-
-    event = getenv("EVENT");
-    if (!event)
-        event = "unknown";
-
-    res = xmalloc(sizeof (*res));
-    res->event = xstrdup(event);
-    res->data = data;
-    res->type = type;
-    res->timestamp = time(NULL);
-
-    return res;
-}
-
-char *format_report_result(const struct report_result *result)
-{
-    const char *type_string;
-
-    switch (result->type)
-    {
-        case REPORT_RESULT_TYPE_URL:
-            type_string = "URL";
-            break;
-        case REPORT_RESULT_TYPE_MESSAGE:
-            type_string = "MSG";
-            break;
-        default:
-            assert(0);
-    }
-    return xasprintf("%s: TIME=%s %s=%s", result->event,
-            iso_date_string(&result->timestamp), type_string, result->data);
-}
-
-struct report_result *parse_report_result(const char *text)
-{
-    struct report_result *res;
-    enum report_result_type type;
-    time_t ts;
-    int event_len, event_ts_len;
-    char event[256], timestamp[256], *data;
-
-    if (sscanf(text, "%s%n %s%n", event, &event_len, timestamp, &event_ts_len) != 2)
-        return NULL;
-
-    data = skip_whitespace(text + event_ts_len);
-    if (!strncmp(data, "URL=", 4))
-    {
-        data += 4;
-        type = REPORT_RESULT_TYPE_URL;
-    }
-    else if (!strncmp(data, "MSG=", 4))
-    {
-        data += 4;
-        type = REPORT_RESULT_TYPE_MESSAGE;
-    }
-    else
-        return NULL;
-
-    if (strncmp(timestamp, "TIME=", 5))
-        return NULL;
-    ts = string_iso_date(timestamp + 5);
-
-    res = xmalloc(sizeof (*res));
-    res->event = xstrndup(event, event_len - 1);
-    res->data = xstrdup(data);
-    res->type = type;
-    res->timestamp = ts;
-
-    return res;
-}
-
 void free_report_result(struct report_result *result)
 {
-    free(result->event);
-    free(result->data);
+    if (!result)
+        return;
+    free(result->url);
+    free(result->msg);
     free(result);
 }

@@ -395,7 +395,7 @@ send_report_to_new_case(const char* baseURL,
             break;
         }
 
-        char *atch_url = concat_path_file(case_location, "/attachments");
+        char *atch_url = concat_path_file(case_location, "attachments");
         abrt_post_state_t *atch_state;
  redirect_attach:
         atch_state = new_abrt_post_state(0
@@ -410,16 +410,18 @@ send_report_to_new_case(const char* baseURL,
         abrt_post_file_as_form(atch_state, atch_url, "application/binary", headers,
                                report_file_name);
 
-        char *atch_location = find_header_in_abrt_post_state(atch_state, "Location:");
         switch (atch_state->http_resp_code)
         {
         case 305: /* "305 Use Proxy" */
-            if (++redirect_count < 10 && atch_location)
             {
-                free(atch_url);
-                atch_url = xstrdup(atch_location);
-                free_abrt_post_state(atch_state);
-                goto redirect_attach;
+                char *atch_location = find_header_in_abrt_post_state(atch_state, "Location:");
+                if (++redirect_count < 10 && atch_location)
+                {
+                    free(atch_url);
+                    atch_url = xstrdup(atch_location);
+                    free_abrt_post_state(atch_state);
+                    goto redirect_attach;
+                }
             }
             /* fall through */
 

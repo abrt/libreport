@@ -29,11 +29,3 @@ char *iso_date_string(const time_t *pt)
 
     return buf;
 }
-
-time_t string_iso_date(const char *date)
-{
-    struct tm tm;
-    strptime(date, "%Y-%m-%d-%H:%M:%S", &tm);
-
-    return mktime(&tm);
-}
