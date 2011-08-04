@@ -162,6 +162,15 @@ Obsoletes: abrt-plugin-rhtsupport < 2.0.4
 %description plugin-rhtsupport
 Plugin to report bugs into RH support system.
 
+%package compat
+Summary: %{name}'s compat layer for obsoleted 'report' package
+Group: System Environment/Libraries
+Requires: %{name}-plugin-bugzilla
+Requires: %{name}-plugin-rhtsupport
+
+%description compat
+Provides 'report' command-line tool.
+
 %package plugin-reportuploader
 Summary: %{name}'s reportuploader plugin
 Group: System Environment/Libraries
@@ -317,6 +326,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/events.d/rhtsupport_event.conf
 # {_mandir}/man7/abrt-RHTSupport.7.gz
 %{_bindir}/reporter-rhtsupport
+
+%files compat
+%defattr(-,root,root,-)
+%{_bindir}/report
 
 %files plugin-reportuploader
 %defattr(-,root,root,-)

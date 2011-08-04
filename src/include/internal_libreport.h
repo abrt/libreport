@@ -703,7 +703,7 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
                 const char *usage);
 
 #define show_usage_and_die libreport_show_usage_and_die
-void show_usage_and_die(const char *usage, const struct options *opt);
+void show_usage_and_die(const char *usage, const struct options *opt) NORETURN;
 
 
 #ifdef __cplusplus

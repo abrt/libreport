@@ -8,7 +8,8 @@ bin_PROGRAMS = \
     reporter-kerneloops \
     reporter-upload \
     reporter-mailx \
-    reporter-print
+    reporter-print \
+    report
 
 pluginsconfdir = $(PLUGINS_CONF_DIR)
 
@@ -204,6 +205,26 @@ reporter_print_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 reporter_print_LDADD = \
+    ../lib/libreport.la
+
+report_SOURCES = \
+    report.c
+report_CPPFLAGS = \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    -DBIN_DIR=\"$(bindir)\" \
+    -DVAR_RUN=\"$(VAR_RUN)\" \
+    -DCONF_DIR=\"$(CONF_DIR)\" \
+    -DLOCALSTATEDIR='"$(localstatedir)"' \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
+    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
+    -DPLUGINS_CONF_DIR=\"$(REPORT_PLUGINS_CONF_DIR)\" \
+    $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    -D_GNU_SOURCE \
+    -Wall -Wwrite-strings -Werror
+report_LDADD = \
     ../lib/libreport.la
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
