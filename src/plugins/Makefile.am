@@ -61,7 +61,6 @@ CLEANFILES = $(man1_MANS)
 EXTRA_DIST = \
     $(man_MANS) \
     $(MAN_TXT) \
-    $(man1_MANS) \
     report_Bugzilla.xml.in \
     report_Bugzilla.conf \
     report_Logger.conf \
