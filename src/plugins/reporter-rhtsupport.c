@@ -362,9 +362,10 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
+        "\n"
         "\b [-v] [-c CONFFILE] -d DIR\n"
-        "or\n"
-        "\b [-v] [-c CONFFILE] [-d DIR] [-t[ID] FILE...]\n"
+        "or:\n"
+        "\b [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
         "\n"
         "Reports a problem to RHTSupport.\n"
         "\n"
@@ -378,7 +379,7 @@ int main(int argc, char **argv)
         "The case ID is retrieved from directory specified by -d DIR.\n"
         "If problem data in DIR was never reported to RHTSupport, upload will fail.\n"
         "\n"
-        "Option -tCASE uploads FILE to the case CASE on RHTSupport site.\n"
+        "Option -tCASE uploads FILEs to the case CASE on RHTSupport site.\n"
         "-d DIR is ignored."
     );
     enum {

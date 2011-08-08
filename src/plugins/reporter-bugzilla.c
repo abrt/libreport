@@ -207,8 +207,10 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
+        "\n"
         "\b [-v] [-c CONFFILE] -d DIR\n"
-        "   or: \b [-v] --ticket[ID] FILE [FILE...]\n"
+        "or:\n"
+        "\b [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
         "\n"
         "Reports problem to Bugzilla.\n"
         "\n"
@@ -229,7 +231,14 @@ int main(int argc, char **argv)
         "CONFFILE lines should have 'PARAM = VALUE' format.\n"
         "Recognized string parameters: BugzillaURL, Login, Password.\n"
         "Recognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify.\n"
-        "Parameters can be overridden via $Bugzilla_PARAM environment variables."
+        "Parameters can be overridden via $Bugzilla_PARAM environment variables.\n"
+        "\n"
+        "Option -t uploads FILEs to the already created bug on Bugzilla site.\n"
+        "The bug ID is retrieved from directory specified by -d DIR.\n"
+        "If problem data in DIR was never reported to Bugzilla, upload will fail.\n"
+        "\n"
+        "Option -tID uploads FILEs to the bug with specified ID on Bugzilla site.\n"
+        "-d DIR is ignored."
     );
     enum {
         OPT_v = 1 << 0,
@@ -242,15 +251,33 @@ int main(int argc, char **argv)
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_STRING('d', NULL, &dump_dir_name, "DIR" , _("Dump directory")),
-        OPT_LIST(  'c', NULL, &conf_file    , "FILE", _("Configuration file (may be given many times)")),
-        OPT_OPTSTRING('t', "ticket", &ticket_no, "ID", _("Attach file to a bugzilla id")),
+        OPT_STRING(   'd', NULL, &dump_dir_name, "DIR" , _("Dump directory")),
+        OPT_LIST(     'c', NULL, &conf_file    , "FILE", _("Configuration file (may be given many times)")),
+        OPT_OPTSTRING('t', "ticket", &ticket_no, "ID"  , _("Attach FILEs [to bug with this ID]")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
     if ((opts & OPT_t) && !ticket_no)
+    {
         error_msg_and_die("Not implemented yet");
+//TODO:
+//        /* -t */
+//        struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+//        if (!dd)
+//            xfunc_die();
+//        report_result_t *reported_to = find_in_reported_to(dd, "Bugzilla:");
+//        dd_close(dd);
+//
+//        if (!reported_to || !reported_to->url)
+//            error_msg_and_die("Can't attach: problem data in '%s' "
+//                    "was not reported to Bugzilla and therefore has no URL",
+//                    dump_dir_name);
+//        url = reported_to->url;
+//        reported_to->url = NULL;
+//        free_report_result(reported_to);
+//        ...
+    }
 
     export_abrt_envvars(0);
 
