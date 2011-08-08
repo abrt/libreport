@@ -368,7 +368,8 @@ int main(int argc, char **argv)
         "\n"
         "Reports a problem to RHTSupport.\n"
         "\n"
-        "CONFFILE lines should have 'PARAM = VALUE' format.\n"
+        "If not specified, CONFFILE defaults to "CONF_DIR"/plugins/rhtsupport.conf\n"
+        "Its lines should have 'PARAM = VALUE' format.\n"
         "Recognized string parameters: URL, Login, Password.\n"
         "Recognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify.\n"
         "Parameters can be overridden via $RHTSupport_PARAM environment variables.\n"
@@ -400,9 +401,11 @@ int main(int argc, char **argv)
 
     /* Parse config, extract necessary params */
     map_string_h *settings = new_map_string();
+    if (!conf_file)
+        conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/rhtsupport.conf");
     while (conf_file)
     {
-        char *fn = (char *)conf_file->data;
+        const char *fn = (char *)conf_file->data;
         VERB1 log("Loading settings from '%s'", fn);
         load_conf_file(fn, settings, /*skip key w/o values:*/ true);
         VERB3 log("Loaded '%s'", fn);

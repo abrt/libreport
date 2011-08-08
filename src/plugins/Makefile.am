@@ -16,7 +16,8 @@ pluginsconfdir = $(PLUGINS_CONF_DIR)
 reportpluginsconfdir = $(REPORT_PLUGINS_CONF_DIR)
 
 dist_reportpluginsconf_DATA = \
-    Bugzilla.conf
+    Bugzilla.conf \
+    rhtsupport.conf
 
 eventsdir = $(EVENTS_DIR)
 
