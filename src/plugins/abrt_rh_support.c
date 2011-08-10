@@ -306,6 +306,7 @@ send_report_to_new_case(const char* baseURL,
                 const char* username,
                 const char* password,
                 bool ssl_verify,
+                const char* release,
                 const char* summary,
                 const char* description,
                 const char* component,
@@ -313,11 +314,16 @@ send_report_to_new_case(const char* baseURL,
 {
     rhts_result_t *result = xzalloc(sizeof(*result));
 
-    char *case_url = concat_path_file(baseURL, "/cases");
+    char *case_url = concat_path_file(baseURL, "cases");
 
+    char *product = NULL;
+    char *version = NULL;
+    parse_release_for_bz(release, &product, &version);
     char *case_data = make_case_data(summary, description,
-                                         "Red Hat Enterprise Linux", "6.0",
+                                         product, version,
                                          component);
+    free(product);
+    free(version);
 
     int redirect_count = 0;
     char *errmsg;

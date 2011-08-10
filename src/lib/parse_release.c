@@ -43,11 +43,20 @@ static void parse_release(const char *release, char** product, char** version, b
     /* examples of release strings:
      * installed system: Red Hat Enterprise Linux Server release 6.2 Beta (Santiago)
      * anaconda: Red Hat Enterprise Linux 6.2
-       * ^ note missing "release"
-     * so the following parsing would fail, workaround is in python bindings
      */
     const char *r = strstr(release, "release");
     const char *space = r ? strchr(r, ' ') : NULL;
+    if (!space)
+    {
+        /* Try to find "<space><digit>" sequence */
+        space = release;
+        while ((space = strchr(space, ' ')) != NULL)
+        {
+            if (space[1] >= '0' && space[1] <= '9')
+                break;
+            space++;
+        }
+    }
 
     struct strbuf *buf_version = strbuf_new();
     if (space)

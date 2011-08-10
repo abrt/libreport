@@ -36,18 +36,22 @@ static void report_to_rhtsupport(const char *dump_dir_name)
     /* Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing */
     log(_("Compressing data"));
 
-    const char* errmsg = NULL;
-    TAR* tar = NULL;
+    const char *errmsg = NULL;
+    TAR *tar = NULL;
     pid_t child;
-    char* tempfile = NULL;
-    reportfile_t* file = NULL;
-    rhts_result_t* result = NULL;
-    char* dsc = NULL;
-    char* summary = NULL;
-    const char* function;
-    const char* reason;
-    const char* package;
+    char *tempfile = NULL;
+    reportfile_t *file = NULL;
+    rhts_result_t *result = NULL;
+    char *dsc = NULL;
+    char *summary = NULL;
+    const char *function;
+    const char *reason;
+    const char *package;
+    const char *release;
 
+    release  = get_problem_item_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
+    if (!release) /* Old dump dir format compat. Remove in abrt-2.1 */
+        release = get_problem_item_content_or_NULL(problem_data, "release");
     package  = get_problem_item_content_or_NULL(problem_data, FILENAME_PACKAGE);
     reason   = get_problem_item_content_or_NULL(problem_data, FILENAME_REASON);
     function = get_problem_item_content_or_NULL(problem_data, FILENAME_CRASH_FUNCTION);
@@ -192,6 +196,7 @@ static void report_to_rhtsupport(const char *dump_dir_name)
             login,
             password,
             ssl_verify,
+            release,
             summary,
             dsc,
             package,
