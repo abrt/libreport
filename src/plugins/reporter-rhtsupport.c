@@ -113,9 +113,6 @@ static void report_to_rhtsupport(const char *dump_dir_name)
         g_hash_table_iter_init(&iter, problem_data);
         while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
         {
-            if (strcmp(name, FILENAME_COUNT) == 0) continue;
-            if (strcmp(name, CD_DUMPDIR) == 0) continue;
-
             const char *content = value->content;
             if (value->flags & CD_FLAG_TXT)
             {
