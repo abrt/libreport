@@ -202,7 +202,7 @@ static int dd_lock(struct dump_dir *dd, unsigned sleep_usec, int flags)
     /* Are we called by dd_opendir (as opposed to dd_create)? */
     if (sleep_usec == WAIT_FOR_OTHER_PROCESS_USLEEP) /* yes */
     {
-        strcpy(lock_buf + dirname_len, "/time");
+        strcpy(lock_buf + dirname_len, "/"FILENAME_TIME);
         if (access(lock_buf, F_OK) != 0)
         {
             /* time file doesn't exist. We managed to lock the directory
@@ -302,6 +302,13 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
              && S_ISDIR(stat_buf.st_mode)
              && access(dir, R_OK) == 0
             ) {
+                char *time_file_name = concat_path_file(dir, FILENAME_TIME);
+                if (access(time_file_name, R_OK) != 0)
+                {
+                    dd_close(dd);
+                    dd = NULL;
+                }
+                free(time_file_name);
                 return dd;
             }
         }
