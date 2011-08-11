@@ -334,7 +334,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
 
     char *product = NULL;
     char *version = NULL;
-    parse_release_for_bz(release, &product, &version);
+    parse_release_for_rhts(release, &product, &version);
 
     xmlrpc_value* result = NULL;
     char *summary = strbuf_free_nobuf(buf_summary);
