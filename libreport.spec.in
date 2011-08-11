@@ -336,6 +336,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %{_mandir}/man*/reporter-upload.*
 %{_bindir}/reporter-upload
+%{_sysconfdir}/libreport/events/report_Uploader.xml
+%config(noreplace) %{_sysconfdir}/libreport/events.d/uploader_event.conf
 
 %changelog
 * Wed Jun 01 2011 Jiri Moskovcak <jmoskovc@redhat.com> 2.0.2-1

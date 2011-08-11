@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<event>
+    <_name>Report uploader</_name>
+    <_description>Upload compressed report to url of choice</_description>
+
+    <requires-items></requires-items>
+    <exclude-items-by-default>event_log,reported_to</exclude-items-by-default>
+    <exclude-items-always></exclude-items-always>
+    <exclude-binary-items>no</exclude-binary-items>
+    <include-items-by-default></include-items-by-default>
+    <minimal-rating>0</minimal-rating>
+
+    <options>
+        <option type="text" name="Upload_URL">
+            <_label>URL</_label>
+            <allow-empty>no</allow-empty>
+            <_description>Where do you want to upload the tarball with report in form login:password@url</_description>
+            <default-value></default-value>
+        </option>
+    </options>
+</event>

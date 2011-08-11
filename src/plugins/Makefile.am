@@ -28,7 +28,8 @@ dist_events_DATA = \
     report_Logger.xml \
     report_Mailx.xml \
     report_RHTSupport.xml \
-    report_Kerneloops.xml
+    report_Kerneloops.xml \
+    report_Uploader.xml
 
 @INTLTOOL_XML_RULE@
 
@@ -38,7 +39,8 @@ dist_eventsconf_DATA = \
     mailx_event.conf \
     print_event.conf \
     bugzilla_event.conf \
-    rhtsupport_event.conf
+    rhtsupport_event.conf \
+    uploader_event.conf
 
 MAN_TXT = \
     reporter-print.txt \
@@ -68,7 +70,8 @@ EXTRA_DIST = \
     report_Logger.xml.in \
     report_Mailx.xml.in \
     report_RHTSupport.xml.in \
-    report_Kerneloops.xml.in
+    report_Kerneloops.xml.in \
+    report_Uploader.xml.in
 
 $(DESTDIR)/$(DEBUG_INFO_DIR):
 	$(mkdir_p) '$@'
