@@ -49,7 +49,7 @@ int main(int argc, char** argv)
         "   or: \b [-vsp] -e EVENT DUMP_DIR\n"
         "   or: \b [-vsp] -a[y] DUMP_DIR\n"
         "   or: \b [-vsp] -c[y] DUMP_DIR\n"
-        "   or: \b [-vsp] -r[y|o|d] DUMP_DIR\n"
+        "   or: \b [-vsp] -r[y|o|d] DUMP_DIR"
     );
     enum {
         OPT_list_events  = 1 << 0,
