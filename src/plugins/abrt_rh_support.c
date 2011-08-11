@@ -318,7 +318,7 @@ send_report_to_new_case(const char* baseURL,
 
     char *product = NULL;
     char *version = NULL;
-    parse_release_for_bz(release, &product, &version);
+    parse_release_for_rhts(release, &product, &version);
     char *case_data = make_case_data(summary, description,
                                          product, version,
                                          component);
