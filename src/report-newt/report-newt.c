@@ -254,7 +254,7 @@ static void run_reporter(const char *dump_dir_name, struct reporter *r)
     int x;
 
     text = newtTextboxReflowed(0, 0, _("Reporting"), 35, 5, 5, 0);
-    log.co = newtTextbox(0, 0, 60, 20, NEWT_FLAG_WRAP | NEWT_FLAG_SCROLL);
+    log.co = newtTextbox(0, 0, 60, 11, NEWT_FLAG_WRAP | NEWT_FLAG_SCROLL);
     log.text = NULL;
     bgrid = newtButtonBar(_("Ok"), &button, NULL);
     grid = newtGridSimpleWindow(text, log.co, bgrid);
