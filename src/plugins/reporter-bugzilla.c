@@ -281,6 +281,8 @@ int main(int argc, char **argv)
 
     export_abrt_envvars(0);
 
+    if (!conf_file)
+        conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/bugzilla.conf");
     while (conf_file)
     {
         char *fn = (char *)conf_file->data;
