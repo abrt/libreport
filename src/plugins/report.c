@@ -33,7 +33,13 @@ int main(int argc, char **argv)
         "\n"
         "This tool is provided to ease transition of users of report package\n"
         "to libreport. Recognized TARGETs are 'strata' and 'bugzilla',\n"
-        "first one invokes upload to RHTSupport and second - to Bugzilla."
+        "first one invokes upload to RHTSupport and second - to Bugzilla.\n"
+        "\n"
+        "Configuration (such as login data) can be supplied via files\n"
+        CONF_DIR"/plugins/bugzilla.conf and\n"
+        CONF_DIR"/plugins/rhtsupport.conf,\n"
+        "or via environment variables - read documentation of\n"
+        "reporter-bugzilla and reporter-rhtsupport tools."
     );
     enum {
         OPT_v = 1 << 0,
