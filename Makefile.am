@@ -1,5 +1,5 @@
 ACLOCAL_AMFLAGS = -I m4
-SUBDIRS = po src
+SUBDIRS = po src tests
 
 EXTRA_DIST = \
     libreport.pc.in \
