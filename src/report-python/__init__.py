@@ -13,7 +13,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 from _pyreport import *
-
+from report.io import TextIO, GTKIO, NewtIO
 
 #Compatibility with report package:
 # Author(s): Gavin Romig-Koch <gavin@redhat.com>
@@ -181,5 +181,17 @@ def report(cd, io_unused):
     return r
 """
 
-def report(pd, io_unused):
+def report(pd, io):
+
+    flags = None
+    if isinstance(io, TextIO.TextIO):
+        flags = LIBREPORT_RUN_CLI
+    elif isinstance(io, NewtIO.NewtIO):
+        flags = LIBREPORT_WAIT  # wait for report to finish, so we can restore the screen
+        flags |= LIBREPORT_RUN_NEWT # run newt first
+        io.screen.suspend() # save the state of anaconda windows before we fork
+        result = report_problem_in_memory(pd, flags)
+        io.screen.resume() # restore the previously saved state
+        return result
+
     result = report_problem(pd)

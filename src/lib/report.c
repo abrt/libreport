@@ -48,7 +48,21 @@ int report_problem_in_dir(const char *dirname, int flags)
         *pp++ = (char *)dirname;
         *pp = NULL;
 
-        if (!getenv("DISPLAY") || (flags & LIBREPORT_RUN_CLI))
+        if(flags & LIBREPORT_RUN_NEWT)
+        {
+            /* we want to run newt first */
+            path1 = BIN_DIR"/report-newt";
+            path2 = "report-newt";
+            pp = args;
+            *pp++ = (char *)"report-newt";
+            if (flags & LIBREPORT_DEL_DIR)
+                *pp++ = (char *)"--delete";
+            *pp++ = (char *)"-o"; /* report only, newt can't analyze */
+            *pp++ = (char *)"--";
+            *pp++ = (char *)dirname;
+            *pp = NULL;
+        }
+        else if(!getenv("DISPLAY") || (flags & LIBREPORT_RUN_CLI))
         {
             /* GUI won't work, use command line tool instead */
             path1 = BIN_DIR"/report-cli";

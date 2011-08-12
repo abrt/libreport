@@ -18,4 +18,5 @@
 
 class NewtIO:
     def __init__(self, screen = None):
+        self.screen = screen
         pass
