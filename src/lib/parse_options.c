@@ -58,13 +58,13 @@ void show_usage_and_die(const char *usage, const struct options *opt)
     fputs(_("Usage: "), stderr);
     while (*usage)
     {
-        int len = strchrnul(usage, '\b') - usage;
+        int len = strchrnul(usage, '\1') - usage;
         if (len > 0)
         {
             fprintf(stderr, "%.*s", len, usage);
             usage += len;
         }
-        if (*usage == '\b')
+        if (*usage == '\1')
         {
             fputs(g_progname, stderr);
             usage++;

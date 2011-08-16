@@ -244,7 +244,7 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "\b [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+        "\1 [-v] -d DIR [-c CONFFILE] [-u URL]\n"
         "\n"
         "Uploads compressed tarball of dump directory DIR to URL.\n"
         "If URL is not specified, creates tarball in /tmp and exits.\n"
