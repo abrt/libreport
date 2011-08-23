@@ -873,7 +873,7 @@ int report(const char *dump_dir_name, int flags)
             if (!is_number_in_string(i, wanted_reporters))
                 continue;
 
-            if (rating < config->ec_minimal_rating)
+            if (config && (rating < config->ec_minimal_rating))
             {
                 puts(_("Reporting disabled because the backtrace is unusable"));
 
