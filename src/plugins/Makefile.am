@@ -47,7 +47,8 @@ MAN_TXT = \
     reporter-mailx.txt \
     reporter-bugzilla.txt \
     reporter-kerneloops.txt \
-    reporter-upload.txt
+    reporter-upload.txt \
+    report.txt
 
 # Manual pages are generated from .txt via Docbook
 man1_MANS = ${MAN_TXT:%.txt=%.1}

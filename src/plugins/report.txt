@@ -1,0 +1,41 @@
+report(1)
+=========
+
+NAME
+----
+report - uploads FILEs to specified ticket on TARGET.
+
+SYNOPSIS
+--------
+'report' [-v] -T TARGET -t ID FILE...
+
+DESCRIPTION
+-----------
+This tool is provided to ease transition of users of report package
+to libreport. Recognized TARGETs are 'strata' and 'bugzilla',
+first one invokes upload to RHTSupport and second - to Bugzilla.
+
+Configuration (such as login data) can be supplied via files
+/etc/libreport/plugins/bugzilla.conf and /etc/libreport/plugins/rhtsupport.conf,
+or via environment variables - read documentation of reporter-bugzilla and
+reporter-rhtsupport tools."
+
+
+OPTIONS
+-------
+-T::
+--target::
+    "strata" or "bugzilla"
+
+-t::
+--ticket ID::
+    Ticket/case ID
+
+SEE ALSO
+--------
+*reporter-bugzilla*(1),
+*reporter-rhtsupport*(1)
+
+AUTHORS
+-------
+* ABRT team
