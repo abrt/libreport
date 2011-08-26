@@ -1,0 +1,76 @@
+reporter-rhtsupport(1)
+======================
+
+NAME
+----
+reporter-rhtsupport - Reports problem to RHTSupport.
+
+SYNOPSIS
+--------
+'reporter-rhtsupport' [-v] [-c CONFFILE] -d DIR
+
+Or:
+
+'reporter-rhtsupport' [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...
+
+DESCRIPTION
+-----------
+The tool reads problem dump directory DIR. Then it logs in to RHTSupport
+and creates a new case.
+
+The URL to new case is printed to stdout and recorded in 'reported_to'
+element in DIR.
+
+If not specified, CONFFILE defaults to /etc/libreport/plugins/rhtsupport.conf.
+
+Option -t uploads FILEs to the already created case on RHTSupport site.
+The case ID is retrieved from directory specified by -d DIR.
+If problem data in DIR was never reported to RHTSupport, upload will fail.
+
+Option -tCASE uploads FILEs to the case CASE on RHTSupport site.
+-d DIR is ignored.
+
+
+Configuration file
+~~~~~~~~~~~~~~~~~~
+Configuration file lines should have 'PARAM = VALUE' format. The parameters are:
+
+'Login'::
+	Login to RHTSupport account.
+
+'Password'::
+	Password to RHTSupport account.
+
+'URL'::
+	HTTP(S) address. (default: https://api.access.redhat.com/rs)
+
+'SSLVerify'::
+	Use yes/true/on/1 to verify server's SSL certificate. (default: yes)
+
+Parameters can be overridden via $RHTSupport_PARAM environment variables.
+
+Integration with ABRT events
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'reporter-rhtsupport' can be used as an ABRT reporter. Example
+fragment for /etc/libreport/report_event.conf:
+
+------------
+# Report Python crashes
+EVENT=report_RHTSupport analyzer=Python
+      reporter-rhtsupport -d . -c /etc/libreport/plugins/rhtsupport.conf
+------------
+
+OPTIONS
+-------
+-d DIR::
+   Path to dump directory.
+
+-c CONFFILE::
+   Path to configuration file.
+
+-t[ID]::
+   Upload FILEs to the already created case on RHTSupport site.
+
+SEE ALSO
+--------
+abrt_event.conf

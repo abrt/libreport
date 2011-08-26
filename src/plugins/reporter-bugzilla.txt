@@ -1,4 +1,4 @@
-reporter-buzilla(1)
+reporter-bugzilla(1)
 ====================
 
 NAME
@@ -8,6 +8,11 @@ reporter-bugzilla - Reports problem to Bugzilla.
 SYNOPSIS
 --------
 'reporter-bugzilla' [-v] [-c CONFFILE] -d DIR
+
+Or:
+
+'reporter-bugzilla' [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...
+
 
 DESCRIPTION
 -----------
@@ -39,7 +44,7 @@ Configuration file lines should have 'PARAM = VALUE' format. The parameters are:
 	Bugzilla HTTP(S) address. (default: https://bugzilla.redhat.com)
 
 'SSLVerify'::
-	Use yes/true/on/1 to verify Bugzilla SSL certificate. (default: yes)
+	Use yes/true/on/1 to verify server's SSL certificate. (default: yes)
 
 Parameters can be overridden via $Bugzilla_PARAM environment variables.
 
@@ -61,6 +66,9 @@ OPTIONS
 
 -c CONFFILE::
    Path to configuration file.
+
+-t[ID]::
+   Upload FILEs to the already created bug on Bugzilla site
 
 SEE ALSO
 --------

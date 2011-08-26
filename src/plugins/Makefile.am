@@ -46,6 +46,7 @@ MAN_TXT = \
     reporter-print.txt \
     reporter-mailx.txt \
     reporter-bugzilla.txt \
+    reporter-rhtsupport.txt \
     reporter-kerneloops.txt \
     reporter-upload.txt \
     report.txt
