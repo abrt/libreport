@@ -381,9 +381,9 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
 
 /* suppress mail notify by {s:i} (nomail:1) (driven by flag) */
 int rhbz_attachment(struct abrt_xmlrpc *ax, const char *filename,
-                    const char *bug_id, const char *data, int flags)
+                    const char *bug_id, const char *data, int data_len, int flags)
 {
-    char *encoded64 = encode_base64(data, strlen(data));
+    char *encoded64 = encode_base64(data, data_len);
     char *fn = xasprintf("File: %s", filename);
     xmlrpc_value* result;
     int nomail_notify = IS_NOMAIL_NOTIFY(flags);
@@ -416,15 +416,19 @@ int rhbz_attachments(struct abrt_xmlrpc *ax, const char *bug_id,
     g_hash_table_iter_init(&iter, problem_data);
     while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
-        const char *content = value->content;
-
-        // We were special-casing FILENAME_BACKTRACE here, but karel says
-        // he can retrieve it in inlined form from comments too.
-        if ((value->flags & CD_FLAG_TXT)
-         && (strlen(content) > CD_TEXT_ATT_SIZE /*|| (strcmp(name, FILENAME_BACKTRACE) == 0)*/)
-        ) {
-            /* check if the attachment failed and try it once more  */
-            rhbz_attachment(ax, name, bug_id, content, flags);
+        if (value->flags & CD_FLAG_TXT)
+        {
+            const char *content = value->content;
+            unsigned len = strlen(content);
+            // We were special-casing FILENAME_BACKTRACE here, but karel says
+            // he can retrieve it in inlined form from comments too.
+            if (len > CD_TEXT_ATT_SIZE /*|| (strcmp(name, FILENAME_BACKTRACE) == 0)*/)
+            {
+                /* This text item wasn't added in comments, it is too big
+                 * for that. Attach it as a file.
+                 */
+                rhbz_attachment(ax, name, bug_id, content, len, flags);
+            }
         }
     }
 

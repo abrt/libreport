@@ -357,12 +357,13 @@ int main(int argc, char **argv)
             off_t size = lseek(fd, 0, SEEK_END);
             if (size < 0)
             {
-                close(fd);
                 perror_msg("Can't lseek '%s'", filename);
+                close(fd);
                 continue;
             }
             lseek(fd, 0, SEEK_SET);
 
+    /* FIXME: what if the file is tens of gigabytes? */
             char *data = xmalloc(size + 1);
             ssize_t r = full_read(fd, data, size);
             if (r < 0)
@@ -374,7 +375,7 @@ int main(int argc, char **argv)
             }
             close(fd);
 
-            rhbz_attachment(client, filename, ticket_no, data, /*flags*/ 0);
+            rhbz_attachment(client, filename, ticket_no, data, r, /*flags*/ 0);
             free(data);
         }
 

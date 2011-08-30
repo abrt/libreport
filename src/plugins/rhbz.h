@@ -86,7 +86,7 @@ int rhbz_attachments(struct abrt_xmlrpc *ax, const char *bug_id,
                      problem_data_t *problem_data, int flags);
 
 int rhbz_attachment(struct abrt_xmlrpc *ax, const char *filename,
-                    const char *bug_id, const char *data, int flags);
+                    const char *bug_id, const char *data, int data_len, int flags);
 
 GList *rhbz_bug_cc(xmlrpc_value *result_xml);
 
