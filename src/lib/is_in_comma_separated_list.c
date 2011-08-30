@@ -16,6 +16,7 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#include <fnmatch.h>
 #include "internal_libreport.h"
 
 bool is_in_comma_separated_list(const char *value, const char *list)
@@ -27,6 +28,25 @@ bool is_in_comma_separated_list(const char *value, const char *list)
     {
         const char *comma = strchrnul(list, ',');
         if ((comma - list == len) && strncmp(value, list, len) == 0)
+            return true;
+        if (!*comma)
+            break;
+        list = comma + 1;
+    }
+    return false;
+}
+
+bool is_in_comma_separated_list_of_glob_patterns(const char *value, const char *list)
+{
+    if (!list)
+        return false;
+    while (*list)
+    {
+        const char *comma = strchrnul(list, ',');
+        char *pattern = xstrndup(list, comma - list);
+        int match = !fnmatch(pattern, value, /*flags:*/ 0);
+        free(pattern);
+        if (match)
             return true;
         if (!*comma)
             break;

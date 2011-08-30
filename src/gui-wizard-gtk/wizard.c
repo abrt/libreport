@@ -1846,18 +1846,6 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
             /* Based on selected reporter, update item checkboxes */
             event_config_t *cfg = get_event_config(g_reporter_events_selected ? g_reporter_events_selected : "");
             //log("%s: event:'%s', cfg:'%p'", __func__, g_reporter_events_selected, cfg);
-            int allowed_by_reporter = 1;
-            int default_by_reporter = 1;
-            if (cfg)
-            {
-                /* Default settings are... */
-                if (cfg->ec_exclude_items_always && strcmp(cfg->ec_exclude_items_always, "*") == 0)
-                    allowed_by_reporter = 0;
-                default_by_reporter = allowed_by_reporter;
-                if (cfg->ec_exclude_items_by_default && strcmp(cfg->ec_exclude_items_by_default, "*") == 0)
-                    default_by_reporter = 0;
-            }
-
             GHashTableIter iter;
             char *name;
             struct problem_item *item;
@@ -1865,28 +1853,28 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
             while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&item))
             {
                 /* Decide whether item is allowed, required, and what's the default */
-                item->allowed_by_reporter = allowed_by_reporter;
+                item->allowed_by_reporter = 1;
                 if (cfg)
                 {
-                    if (is_in_comma_separated_list(name, cfg->ec_exclude_items_always))
+                    if (is_in_comma_separated_list_of_glob_patterns(name, cfg->ec_exclude_items_always))
                         item->allowed_by_reporter = 0;
                     if ((item->flags & CD_FLAG_BIN) && cfg->ec_exclude_binary_items)
                         item->allowed_by_reporter = 0;
                 }
 
-                item->default_by_reporter = item->allowed_by_reporter ? default_by_reporter : 0;
+                item->default_by_reporter = item->allowed_by_reporter;
                 if (cfg)
                 {
-                    if (is_in_comma_separated_list(name, cfg->ec_exclude_items_by_default))
+                    if (is_in_comma_separated_list_of_glob_patterns(name, cfg->ec_exclude_items_by_default))
                         item->default_by_reporter = 0;
-                    if (is_in_comma_separated_list(name, cfg->ec_include_items_by_default))
+                    if (is_in_comma_separated_list_of_glob_patterns(name, cfg->ec_include_items_by_default))
                         item->allowed_by_reporter = item->default_by_reporter = 1;
                 }
 
                 item->required_by_reporter = 0;
                 if (cfg)
                 {
-                    if (is_in_comma_separated_list(name, cfg->ec_requires_items))
+                    if (is_in_comma_separated_list_of_glob_patterns(name, cfg->ec_requires_items))
                         item->default_by_reporter = item->allowed_by_reporter = item->required_by_reporter = 1;
                 }
 

@@ -433,10 +433,10 @@ static char **build_exclude_vector(const char *comma_separated_list)
 
 problem_data_t *create_problem_data_for_reporting(const char *dump_dir_name)
 {
-    char **exclude_items = build_exclude_vector(getenv("EXCLUDE_FROM_REPORT"));
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return NULL; /* dd_opendir already emitted error msg */
+    char **exclude_items = build_exclude_vector(getenv("EXCLUDE_FROM_REPORT"));
     problem_data_t *problem_data = new_problem_data();
     load_problem_data_from_dump_dir(problem_data, dd, exclude_items);
     dd_close(dd);
