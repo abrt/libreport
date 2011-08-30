@@ -24,7 +24,7 @@
 
 static void report_to_bugzilla(const char *dump_dir_name, const char *login,
                                const char *password, const char *bugzilla_xmlrpc,
-                               const char *bugzilla_url, int ssl_verify)
+                               const char *bugzilla_url, int ssl_verify, int attach_binary)
 {
     problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
     if (!problem_data)
@@ -113,7 +113,10 @@ static void report_to_bugzilla(const char *dump_dir_name, const char *login,
         char bug_id_str[sizeof(int)*3 + 2];
         sprintf(bug_id_str, "%i", bug_id);
 
-        rhbz_attachments(client, bug_id_str, problem_data, RHBZ_NOMAIL_NOTIFY);
+        int flags = RHBZ_NOMAIL_NOTIFY;
+        if (attach_binary)
+            flags |= RHBZ_ATTACH_BINARY_FILES;
+        rhbz_attach_big_files(client, bug_id_str, problem_data, flags);
 
         bz = new_bug_info();
         bz->bi_status = xstrdup("NEW");
@@ -208,7 +211,7 @@ int main(int argc, char **argv)
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
         "\n"
-        "\1 [-v] [-c CONFFILE] -d DIR\n"
+        "\1 [-vb] [-c CONFFILE] -d DIR\n"
         "or:\n"
         "\1 [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
         "\n"
@@ -246,6 +249,7 @@ int main(int argc, char **argv)
         OPT_d = 1 << 1,
         OPT_c = 1 << 2,
         OPT_t = 1 << 3,
+        OPT_b = 1 << 4,
     };
 
     char *ticket_no = NULL;
@@ -255,6 +259,7 @@ int main(int argc, char **argv)
         OPT_STRING(   'd', NULL, &dump_dir_name, "DIR" , _("Dump directory")),
         OPT_LIST(     'c', NULL, &conf_file    , "FILE", _("Configuration file (may be given many times)")),
         OPT_OPTSTRING('t', "ticket", &ticket_no, "ID"  , _("Attach FILEs [to bug with this ID]")),
+        OPT_BOOL(     'b', NULL, NULL,                   _("When creating bug, attach binary files too")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
@@ -354,29 +359,8 @@ int main(int argc, char **argv)
                 continue;
             }
 
-            off_t size = lseek(fd, 0, SEEK_END);
-            if (size < 0)
-            {
-                perror_msg("Can't lseek '%s'", filename);
-                close(fd);
-                continue;
-            }
-            lseek(fd, 0, SEEK_SET);
-
-    /* FIXME: what if the file is tens of gigabytes? */
-            char *data = xmalloc(size + 1);
-            ssize_t r = full_read(fd, data, size);
-            if (r < 0)
-            {
-                free(data);
-                perror_msg("Can't read '%s'", filename);
-                close(fd);
-                continue;
-            }
+            rhbz_attach_fd(client, filename, ticket_no, fd, /*flags*/ 0);
             close(fd);
-
-            rhbz_attachment(client, filename, ticket_no, data, r, /*flags*/ 0);
-            free(data);
         }
 
         log(_("Logging out"));
@@ -386,7 +370,7 @@ int main(int argc, char **argv)
     else
     {
         report_to_bugzilla(dump_dir_name, login, password, bugzilla_xmlrpc,
-                           bugzilla_url, ssl_verify);
+                           bugzilla_url, ssl_verify, opts & OPT_b);
     }
 
     free_map_string(settings);

@@ -236,9 +236,10 @@ static char* is_text_file(const char *name, ssize_t *sz)
      * So, don't remove this. If you really need to, raise the limit.
      *
      * Bumped up to 200k: saw 124740 byte /proc/PID/smaps file
+     * Bumped up to 500k: saw 375252 byte anaconda traceback file
      */
     off_t size = lseek(fd, 0, SEEK_END);
-    if (size < 0 || size > 200*1024)
+    if (size < 0 || size > 500*1024)
     {
         close(fd);
         return NULL; /* it's not a SMALL text */

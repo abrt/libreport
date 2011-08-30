@@ -380,7 +380,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
 }
 
 /* suppress mail notify by {s:i} (nomail:1) (driven by flag) */
-int rhbz_attachment(struct abrt_xmlrpc *ax, const char *filename,
+int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *filename,
                     const char *bug_id, const char *data, int data_len, int flags)
 {
     char *encoded64 = encode_base64(data, data_len);
@@ -406,8 +406,38 @@ int rhbz_attachment(struct abrt_xmlrpc *ax, const char *filename,
     return 0;
 }
 
+int rhbz_attach_fd(struct abrt_xmlrpc *ax, const char *filename,
+                    const char *bug_id, int fd, int flags)
+{
+    off_t size = lseek(fd, 0, SEEK_END);
+    if (size < 0)
+    {
+        perror_msg("Can't lseek '%s'", filename);
+        return -1;
+    }
+    if (size > INT_MAX / 2)
+    {
+        error_msg("Can't upload '%s', it's too large (%llu bytes)", filename, (long long)size);
+        return -1;
+    }
+    lseek(fd, 0, SEEK_SET);
+
+    char *data = xmalloc(size + 1);
+    ssize_t r = full_read(fd, data, size);
+    if (r < 0)
+    {
+        free(data);
+        perror_msg("Can't read '%s'", filename);
+        return -1;
+    }
+
+    int res = rhbz_attach_blob(ax, filename, bug_id, data, size, flags);
+    free(data);
+    return res;
+}
+
 /* suppress mail notify by {s:i} (nomail:1) (driven by flag) */
-int rhbz_attachments(struct abrt_xmlrpc *ax, const char *bug_id,
+int rhbz_attach_big_files(struct abrt_xmlrpc *ax, const char *bug_id,
                      problem_data_t *problem_data, int flags)
 {
     GHashTableIter iter;
@@ -427,8 +457,26 @@ int rhbz_attachments(struct abrt_xmlrpc *ax, const char *bug_id,
                 /* This text item wasn't added in comments, it is too big
                  * for that. Attach it as a file.
                  */
-                rhbz_attachment(ax, name, bug_id, content, len, flags);
+                rhbz_attach_blob(ax, name, bug_id, content, len, flags);
             }
+        }
+        if ((flags & RHBZ_ATTACH_BINARY_FILES) && (value->flags & CD_FLAG_BIN))
+        {
+            int fd = open(value->content, O_RDONLY);
+            if (fd < 0)
+            {
+                perror_msg("Can't open '%s'", value->content);
+                continue;
+            }
+            struct stat st;
+            if (fstat(fd, &st) != 0 || !S_ISREG(st.st_mode))
+            {
+                error_msg("'%s': not a regular file", value->content);
+                close(fd);
+                continue;
+            }
+            rhbz_attach_fd(ax, name, bug_id, fd, flags);
+            close(fd);
         }
     }
 

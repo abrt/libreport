@@ -36,6 +36,7 @@ enum {
     RHBZ_READ_INT       = (1 << 2),
     RHBZ_NOMAIL_NOTIFY  = (1 << 3),
     RHBZ_PRIVATE        = (1 << 4),
+    RHBZ_ATTACH_BINARY_FILES = (1 << 5),
 };
 
 #define IS_MANDATORY(flags) ((flags) & RHBZ_MANDATORY_MEMB)
@@ -82,11 +83,14 @@ int rhbz_bug_id(xmlrpc_value *xml);
 int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
                  int depend_on_bug);
 
-int rhbz_attachments(struct abrt_xmlrpc *ax, const char *bug_id,
+int rhbz_attach_big_files(struct abrt_xmlrpc *ax, const char *bug_id,
                      problem_data_t *problem_data, int flags);
 
-int rhbz_attachment(struct abrt_xmlrpc *ax, const char *filename,
+int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *filename,
                     const char *bug_id, const char *data, int data_len, int flags);
+
+int rhbz_attach_fd(struct abrt_xmlrpc *ax, const char *filename,
+                    const char *bug_id, int fd, int flags);
 
 GList *rhbz_bug_cc(xmlrpc_value *result_xml);
 
