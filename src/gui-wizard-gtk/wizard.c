@@ -175,7 +175,22 @@ typedef struct
     GtkWidget *page_widget;
 } page_obj_t;
 
-static page_obj_t pages[] =
+static page_obj_t pages[NUM_PAGES];
+
+static page_obj_t *added_pages[NUM_PAGES];
+
+static struct strbuf *line = NULL;
+
+/* Utility functions */
+
+static void init_page(page_obj_t *page, const char *name, const char *title, GtkAssistantPageType type)
+{
+   page->name = name;
+   page->title = title;
+   page->type = type;
+}
+
+static void init_pages()
 {
     /* Page types:
      * CONTENT: normal page (has all btns: [Cancel] [Last] [Back] [Fwd])
@@ -189,33 +204,26 @@ static page_obj_t pages[] =
      * using gtk_assistant_commit at init time.
      */
     /* glade element name     , on-screen text          , type */
-    { PAGE_SUMMARY            , "Problem description"   , GTK_ASSISTANT_PAGE_CONTENT  },
-    { PAGE_EDIT_COMMENT,"Provide additional information", GTK_ASSISTANT_PAGE_CONTENT  },
-    { PAGE_ANALYZE_SELECTOR   , "Select analyzer"       , GTK_ASSISTANT_PAGE_CONFIRM  },
-    { PAGE_ANALYZE_PROGRESS   , "Analyzing"             , GTK_ASSISTANT_PAGE_INTRO    },
-    { PAGE_COLLECT_SELECTOR   , "Select collector"      , GTK_ASSISTANT_PAGE_CONFIRM  },
-    { PAGE_COLLECT_PROGRESS   , "Collecting"            , GTK_ASSISTANT_PAGE_INTRO    },
+    init_page(&pages[0], PAGE_SUMMARY            , _("Problem description")   , GTK_ASSISTANT_PAGE_CONTENT );
+    init_page(&pages[1], PAGE_EDIT_COMMENT,_("Provide additional information"), GTK_ASSISTANT_PAGE_CONTENT );
+    init_page(&pages[2], PAGE_ANALYZE_SELECTOR   , _("Select analyzer")       , GTK_ASSISTANT_PAGE_CONFIRM );
+    init_page(&pages[3], PAGE_ANALYZE_PROGRESS   , _("Analyzing")             , GTK_ASSISTANT_PAGE_INTRO   );
+    init_page(&pages[4], PAGE_COLLECT_SELECTOR   , _("Select collector")      , GTK_ASSISTANT_PAGE_CONFIRM );
+    init_page(&pages[5], PAGE_COLLECT_PROGRESS   , _("Collecting")            , GTK_ASSISTANT_PAGE_INTRO   );
     /* Some reporters don't need backtrace, we can skip bt page for them.
      * Therefore we want to know reporters _before_ we go to bt page
      */
-    { PAGE_REPORTER_SELECTOR  , "Select reporter"       , GTK_ASSISTANT_PAGE_CONTENT  },
-    { PAGE_EDIT_BACKTRACE     , "Review the backtrace"  , GTK_ASSISTANT_PAGE_CONTENT  },
-    { PAGE_REVIEW_DATA        , "Confirm data to report", GTK_ASSISTANT_PAGE_CONFIRM  },
+    init_page(&pages[6], PAGE_REPORTER_SELECTOR  , _("Select reporter")       , GTK_ASSISTANT_PAGE_CONTENT );
+    init_page(&pages[7], PAGE_EDIT_BACKTRACE     , _("Review the backtrace")  , GTK_ASSISTANT_PAGE_CONTENT );
+    init_page(&pages[8], PAGE_REVIEW_DATA        , _("Confirm data to report"), GTK_ASSISTANT_PAGE_CONFIRM );
     /* Was GTK_ASSISTANT_PAGE_PROGRESS, but we want to allow returning to it */
-    { PAGE_REPORT_PROGRESS    , "Reporting"             , GTK_ASSISTANT_PAGE_INTRO    },
-    { PAGE_REPORT_DONE        , "Reporting done"        , GTK_ASSISTANT_PAGE_CONTENT  },
+    init_page(&pages[9], PAGE_REPORT_PROGRESS    , _("Reporting")             , GTK_ASSISTANT_PAGE_INTRO   );
+    init_page(&pages[10], PAGE_REPORT_DONE        , _("Reporting done")        , GTK_ASSISTANT_PAGE_CONTENT );
     /* We prevent user from reaching this page, as SUMMARY can't be navigated away
      * (must be always closed) and we don't want that
      */
-    { PAGE_NOT_SHOWN          , ""                      , GTK_ASSISTANT_PAGE_SUMMARY  },
-    { NULL }
-};
-
-static page_obj_t *added_pages[NUM_PAGES];
-
-static struct strbuf *line = NULL;
-
-/* Utility functions */
+    init_page(&pages[11], PAGE_NOT_SHOWN          , ""                      , GTK_ASSISTANT_PAGE_SUMMARY );
+}
 
 static void wrap_fixer(GtkWidget *widget, gpointer data_unused)
 {
@@ -2395,6 +2403,7 @@ static void create_details_treeview(void)
 
 void create_assistant(void)
 {
+    init_pages();
     monospace_font = pango_font_description_from_string("monospace");
 
     builder = gtk_builder_new();
