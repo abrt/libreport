@@ -51,7 +51,8 @@ bool load_conf_file(const char *pPath, map_string_h *settings, bool skipKeysWith
             }
             if (!in_quote)
             {
-                if (isspace(c))
+                /* skip white-space unless it's inside value */
+                if (isspace(c) && !(value && dst != value))
                 {
                     continue;
                 }
@@ -68,11 +69,16 @@ bool load_conf_file(const char *pPath, map_string_h *settings, bool skipKeysWith
             }
             *dst++ = c; /* store next key or value char */
         }
-	*dst = '\0'; /* terminate value */
 
         /* Skip broken or empty lines. */
         if (!value)
             goto free_line;
+
+        /* Strip trailing spaces from value */
+        while (dst > value && isspace(dst[-1]))
+            dst--;
+
+        *dst = '\0'; /* terminate value */
 
         /* Skip lines with empty key. */
         if (line[0] == '\0')
