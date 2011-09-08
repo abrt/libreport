@@ -48,6 +48,9 @@ bool load_conf_file(const char *pPath, map_string_h *settings, bool skipKeysWith
             if (c == '"')
             {
                 in_quote = !in_quote;
+                /* skip the opening quote */
+                if (in_quote)
+                    continue;
             }
             if (!in_quote)
             {
@@ -74,9 +77,13 @@ bool load_conf_file(const char *pPath, map_string_h *settings, bool skipKeysWith
         if (!value)
             goto free_line;
 
-        /* Strip trailing spaces from value */
-        while (dst > value && isspace(dst[-1]))
+        /* Strip trailing spaces and closing quote from value */
+        while (dst > value && (isspace(dst[-1]) || dst[-1] == '"'))
+        {
             dst--;
+            if (*dst == '"')
+                break;
+        }
 
         *dst = '\0'; /* terminate value */
 
