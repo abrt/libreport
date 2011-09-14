@@ -45,6 +45,9 @@ int set_echo(int enable)
 
 int ask_yes_no(const char *question)
 {
+#if ENABLE_NLS
+    textdomain(PACKAGE);
+#endif
     const char *yes = _("y");
     const char *no = _("N");
 
