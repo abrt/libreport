@@ -88,6 +88,18 @@ int main(int argc, char **argv)
     textdomain(PACKAGE);
 #endif
 
+    /* without this the name is set to argv[0] which confuses
+     * desktops which uses the name to find the corresponding .desktop file
+     * trac#180
+     *
+     * env variable can be used to override the default prgname, so it's the
+     * same as the application which is calling us (trac#303)
+     *
+     * note that g_set_prgname has to be called before gtk_init
+     */
+    char *env_prgname = getenv("LIBREPORT_PRGNAME");
+    g_set_prgname(env_prgname ? env_prgname : prgname);
+
     gtk_init(&argc, &argv);
 
     /* Can't keep these strings/structs static: _() doesn't support that */
@@ -101,8 +113,7 @@ int main(int argc, char **argv)
         OPT_g = 1 << 1,
         OPT_p = 1 << 2,
         OPT_o = 1 << 3, // report only
-        OPT_n = 1 << 4, // prgname
-        OPT_d = 1 << 5,
+        OPT_d = 1 << 4,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
@@ -111,10 +122,6 @@ int main(int argc, char **argv)
         OPT_BOOL(  'p', NULL, NULL                   , _("Add program names to log")),
         /* for use from 3rd party apps to show just a reporter selector */
         OPT_BOOL(  'o', "report-only", &g_report_only, _("Skip analyze steps, go through report steps only")),
-        /* override the default prgname, so it's the same as the application
-         * which is calling us
-         */
-        OPT_STRING('n', "prgname", &prgname, "NAME"  , _("Override the default prgname")),
         OPT_BOOL(  'd', "delete", NULL,                _("Remove DIR after reporting")),
         OPT_END()
     };
@@ -122,12 +129,6 @@ int main(int argc, char **argv)
     argv += optind;
     if (!argv[0] || argv[1]) /* zero or >1 arguments */
         show_usage_and_die(program_usage_string, program_options);
-
-    /* without this the name is set to argv[0] which confuses
-     * desktops which uses the name to find the corresponding .desktop file
-     * trac#180
-     */
-    g_set_prgname(prgname);
 
     export_abrt_envvars(opts & OPT_p);
 

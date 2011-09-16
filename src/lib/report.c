@@ -48,6 +48,11 @@ int report_problem_in_dir(const char *dirname, int flags)
         *pp++ = (char *)dirname;
         *pp = NULL;
 
+        if (g_get_prgname())
+        {
+            xsetenv("LIBREPORT_PRGNAME", g_get_prgname());
+        }
+
         if(flags & LIBREPORT_RUN_NEWT)
         {
             /* we want to run newt first */
