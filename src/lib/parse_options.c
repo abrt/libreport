@@ -113,7 +113,7 @@ void show_usage_and_die(const char *usage, const struct options *opt)
         fprintf(stderr, "%*s%s\n", pad + USAGE_GAP, "", opt->help);
     }
     fputc('\n', stderr);
-    exit(1);
+    xfunc_die();
 }
 
 static int parse_opt_size(const struct options *opt)
@@ -208,6 +208,7 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
         {
             free(longopts);
             strbuf_free(shortopts);
+            xfunc_error_retval = 0; /* this isn't error, exit code = 0 */
             show_usage_and_die(usage, opt);
         }
 
