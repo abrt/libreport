@@ -2,14 +2,16 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
+# Translators:
+# Milan Kerslager <milan.kerslager@pslib.cz>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-05 13:56+0200\n"
-"PO-Revision-Date: 2011-06-16 11:21+0000\n"
+"POT-Creation-Date: 2011-09-22 13:09+0200\n"
+"PO-Revision-Date: 2011-09-22 11:08+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: Czech (http://www.transifex.net/projects/p/fedora/team/cs/)\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,15 +30,15 @@ msgstr ""
 #. short_name long_name  value    parameter_name  help
 #: ../src/cli/cli.c:73
 msgid "List possible events [which start with PREFIX]"
-msgstr ""
+msgstr "Vypsat možné události [začínající na PREFIX]"
 
 #: ../src/cli/cli.c:74
 msgid "Run EVENT on DUMP_DIR"
-msgstr ""
+msgstr "Spustit EVENT v DUMP_DIR"
 
 #: ../src/cli/cli.c:75
 msgid "Run analyze event(s) on DUMP_DIR"
-msgstr ""
+msgstr "Spustit analýzu událostí v DUP_DIR"
 
 #: ../src/cli/cli.c:76
 msgid "Run collect event(s) on DUMP_DIR"
@@ -48,7 +50,7 @@ msgstr ""
 
 #: ../src/cli/cli.c:78
 msgid "Display version and exit"
-msgstr ""
+msgstr "Zobrazit verzi a skončit"
 
 #: ../src/cli/cli.c:79
 msgid "Remove DUMP_DIR after reporting"
@@ -56,7 +58,7 @@ msgstr ""
 
 #: ../src/cli/cli.c:80
 msgid "Noninteractive: don't ask questions, assume 'yes'"
-msgstr ""
+msgstr "Neinteraktivně: neptat se na otázky, předpokládat 'Ano'"
 
 #: ../src/cli/cli.c:81
 msgid "With -r: do not run analyzers, run only reporters"
@@ -145,12 +147,12 @@ msgstr ""
 "V hlášení nebyly nalezeny žádné změny"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1353
-#: ../src/lib/client.c:48 ../src/lib/run_event.c:476
+#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1362
+#: ../src/lib/client.c:51 ../src/lib/run_event.c:476
 msgid "y"
 msgstr "a"
 
-#: ../src/cli/cli-report.c:396 ../src/lib/client.c:49
+#: ../src/cli/cli-report.c:396 ../src/lib/client.c:52
 #: ../src/lib/run_event.c:476
 msgid "N"
 msgstr "N"
@@ -167,20 +169,20 @@ msgstr "Chybná hodnota „%s“: %s"
 #: ../src/cli/cli-report.c:605
 #, c-format
 msgid "How you would like to analyze the problem?\n"
-msgstr ""
+msgstr "Jak chcete problém analyzovat?\n"
 
 #: ../src/cli/cli-report.c:623
 msgid "Select analyzer: "
-msgstr ""
+msgstr "Zvolte analyzátor: "
 
 #: ../src/cli/cli-report.c:630
 #, c-format
 msgid "You have chosen number out of range"
-msgstr ""
+msgstr "Zvolili jste číslo mimo rozsah"
 
 #: ../src/cli/cli-report.c:639
 msgid "Invalid input, program exiting..."
-msgstr ""
+msgstr "Neplatný vstup. Program skončí..."
 
 #: ../src/cli/cli-report.c:704
 msgid "What additional information would you like to collect?"
@@ -195,17 +197,17 @@ msgstr ""
 msgid "There were %d errors while collecting additional data\n"
 msgstr ""
 
-#: ../src/cli/cli-report.c:837 ../src/gui-wizard-gtk/wizard.c:1751
+#: ../src/cli/cli-report.c:837 ../src/gui-wizard-gtk/wizard.c:1776
 msgid "Reporting..."
 msgstr "Nahlašuje se…"
 
 #: ../src/cli/cli-report.c:852 ../src/report-newt/report-newt.c:55
 msgid "How would you like to report the problem?"
-msgstr ""
+msgstr "Jak chcete problém ohlásit?"
 
 #: ../src/cli/cli-report.c:862
 msgid "Select reporter(s): "
-msgstr ""
+msgstr "Zvolit ohlašovatele: "
 
 #: ../src/cli/cli-report.c:878
 msgid "Reporting disabled because the backtrace is unusable"
@@ -223,7 +225,7 @@ msgstr ""
 #: ../src/cli/cli-report.c:904
 #, c-format
 msgid "Problem reported via %d report events (%d errors)\n"
-msgstr ""
+msgstr "Problém byl nahlášen jako %d událost(i) (%d chyb)\n"
 
 #: ../src/gtk-helpers/event_config_dialog.c:122
 msgid "Show password"
@@ -266,7 +268,7 @@ msgstr ""
 #.
 #: ../src/gui-wizard-gtk/main.c:117
 msgid "Override the default prgname"
-msgstr ""
+msgstr "Přepsat implicitní jméno programu"
 
 #: ../src/gui-wizard-gtk/main.c:118 ../src/report-newt/report-newt.c:364
 msgid "Remove DIR after reporting"
@@ -284,77 +286,78 @@ msgstr ""
 #. * using gtk_assistant_commit at init time.
 #.
 #. glade element name     , on-screen text          , type
-#: ../src/gui-wizard-gtk/wizard.c:207
-#, fuzzy
-msgid "Problem description"
-msgstr "(žádný popis)"
-
 #: ../src/gui-wizard-gtk/wizard.c:208
-msgid "Provide additional information"
+msgid "Problem description"
 msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:209
-msgid "Select analyzer"
-msgstr "Zvolte analyzer"
+msgid "Provide additional information"
+msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:210
-#, fuzzy
-msgid "Analyzing"
-msgstr "Analyzuje se…"
+msgid "Select analyzer"
+msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:211
-msgid "Select collector"
+msgid "Analyzing"
 msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:212
+msgid "Select collector"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:213
 msgid "Collecting"
 msgstr ""
 
 #. Some reporters don't need backtrace, we can skip bt page for them.
 #. * Therefore we want to know reporters _before_ we go to bt page
 #.
-#: ../src/gui-wizard-gtk/wizard.c:216
-msgid "Select reporter"
-msgstr "Zvolte reporter"
-
 #: ../src/gui-wizard-gtk/wizard.c:217
-#, fuzzy
-msgid "Review the backtrace"
-msgstr "Znovu vytvořit výpis volání"
+msgid "Select reporter"
+msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:218
+msgid "Review the backtrace"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:219
 msgid "Confirm data to report"
-msgstr "Kontrola odesílaných dat"
+msgstr ""
 
 #. Was GTK_ASSISTANT_PAGE_PROGRESS, but we want to allow returning to it
-#: ../src/gui-wizard-gtk/wizard.c:220 ../src/report-newt/report-newt.c:256
+#: ../src/gui-wizard-gtk/wizard.c:221 ../src/report-newt/report-newt.c:256
 msgid "Reporting"
-msgstr "Nahlašuje se…"
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:221
+#: ../src/gui-wizard-gtk/wizard.c:222
 msgid "Reporting done"
-msgstr "Nahlášeno"
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:293
+#: ../src/gui-wizard-gtk/wizard.c:294
 #, c-format
 msgid ""
 "Wrong settings detected for %s, reporting will probably fail if you continue "
 "with the current configuration."
 msgstr ""
+"Pro %s detekováno chybné nastavení. Pokud budete pokračovat, odeslání "
+"hlášení zřejmě nebude možné."
 
-#: ../src/gui-wizard-gtk/wizard.c:297
+#: ../src/gui-wizard-gtk/wizard.c:298
 #, c-format
 msgid ""
 "Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
 "continue with the current configuration."
 msgstr ""
+"Pro <b>%s</b> detekováno chybné nastavení. Pokud budete pokračovat, odeslání "
+"hlášení zřejmě nebude možné."
 
-#: ../src/gui-wizard-gtk/wizard.c:314
-#, fuzzy, c-format
+#: ../src/gui-wizard-gtk/wizard.c:315
+#, c-format
 msgid "Con_figure %s"
-msgstr "Nas_tavit %s"
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:353
+#: ../src/gui-wizard-gtk/wizard.c:354
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
@@ -363,112 +366,112 @@ msgstr ""
 "Je třeba zapisovatelný adresář, ale do „%s“ nelze zapsat. Přesunout jej do "
 "„%s“ a pracovat nad přesunutou kopií?"
 
-#: ../src/gui-wizard-gtk/wizard.c:557
+#: ../src/gui-wizard-gtk/wizard.c:558
 msgid "View/edit a text file"
-msgstr "Zobrazit/editovat soubor"
-
-#: ../src/gui-wizard-gtk/wizard.c:816
-#, c-format
-msgid "(not needed, '%s' already exists)"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:881
-msgid "Go to next step"
-msgstr "Další krok"
+#: ../src/gui-wizard-gtk/wizard.c:825
+#, c-format
+msgid "(not needed, '%s' already exists)"
+msgstr "(není potřeba, '%s' již existuje)"
 
-#: ../src/gui-wizard-gtk/wizard.c:938
+#: ../src/gui-wizard-gtk/wizard.c:890
+msgid "Go to next step"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:947
 msgid "(click here to view/edit)"
 msgstr "(kliknout zde pro zobrazení/úpravy)"
 
-#: ../src/gui-wizard-gtk/wizard.c:948
+#: ../src/gui-wizard-gtk/wizard.c:957
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(binární soubor, %'llu bajtů)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1016
+#: ../src/gui-wizard-gtk/wizard.c:1025
 msgid "(no description)"
 msgstr "(žádný popis)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1021
+#: ../src/gui-wizard-gtk/wizard.c:1030
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%'llu bajtů, %'u souborů"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1526
+#: ../src/gui-wizard-gtk/wizard.c:1535
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "Pro událost „%s“ není určen způsob zpracování"
 
-#: ../src/gui-wizard-gtk/wizard.c:1631
+#: ../src/gui-wizard-gtk/wizard.c:1641
 #, c-format
 msgid "Reporting disabled because the rating does not contain a number '%s'."
-msgstr "Odeslání hlášení není povoleno, protože rating obsahuje nepovolenou hodnotu: '%s'."
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1640
+#: ../src/gui-wizard-gtk/wizard.c:1665
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr ""
-"Výpis volání není úplný, prosím ujistěte se, že jste dostatečně popsali "
+"Výpis volání není úplný, prosím ujistěte se, že jste dostatečně popsaly "
 "postup, jak problém vyvolat."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1647
+#: ../src/gui-wizard-gtk/wizard.c:1672
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Odeslání hlášení není povoleno, protože výpis volání je nepoužitelný."
 
-#: ../src/gui-wizard-gtk/wizard.c:1724
+#: ../src/gui-wizard-gtk/wizard.c:1749
 msgid "Analyzing..."
 msgstr "Analyzuje se…"
 
-#: ../src/gui-wizard-gtk/wizard.c:1725
+#: ../src/gui-wizard-gtk/wizard.c:1750
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "Analýza skončila s návratovým kódem %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1752
+#: ../src/gui-wizard-gtk/wizard.c:1777
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "Nahlašování skončilo s návratovým kódem %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1779
+#: ../src/gui-wizard-gtk/wizard.c:1804
 msgid "Collecting..."
-msgstr "Sběr informací.."
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1780
-#c-format
+#: ../src/gui-wizard-gtk/wizard.c:1805
+#, c-format
 msgid "Collecting finished with exit code %d"
-msgstr "Sběr informací skončil s návratovým kódem %d"
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2113
+#: ../src/gui-wizard-gtk/wizard.c:2138
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2129
+#: ../src/gui-wizard-gtk/wizard.c:2154
 msgid "You are trying to copy a file onto itself"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2136
+#: ../src/gui-wizard-gtk/wizard.c:2161
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2150
+#: ../src/gui-wizard-gtk/wizard.c:2175
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2360
+#: ../src/gui-wizard-gtk/wizard.c:2385
 msgid "Include"
-msgstr ""
+msgstr "Vložit"
 
-#: ../src/gui-wizard-gtk/wizard.c:2370
+#: ../src/gui-wizard-gtk/wizard.c:2395
 msgid "Name"
 msgstr "Název"
 
-#: ../src/gui-wizard-gtk/wizard.c:2378
+#: ../src/gui-wizard-gtk/wizard.c:2403
 msgid "Value"
 msgstr "Hodnota"
 
@@ -511,9 +514,8 @@ msgid "Click 'Apply' to start reporting"
 msgstr "Proces hlášení započnete kliknutím na „Aplikovat“."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
-#, fuzzy
 msgid "Collecting did not start yet"
-msgstr "Ohlašování ještě nezapočalo"
+msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "Details"
@@ -522,7 +524,8 @@ msgstr "Podrobnosti"
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid ""
 "How did this problem happen (step-by-step)? How can it be reproduced? Any "
-"additional comments useful for diagnosing the problem?"
+"additional comments useful for diagnosing the problem? Please use English if "
+"possible."
 msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:10
@@ -542,6 +545,8 @@ msgid ""
 "additional information, or provide a better problem description and repeat "
 "reporting process, press 'Forward'."
 msgstr ""
+"Chcete-li nahlásit problém jinam, doplnit informace, poskytnout lepší "
+"vysvětlení a zopakovat ohlášení, stiskněte tlačítko 'Další'."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid ""
@@ -550,6 +555,9 @@ msgid ""
 "collected data, and to choose where the problem should be reported. Click "
 "'Forward' to proceed."
 msgstr ""
+"Na následujících stránkách budete dotázáni na to, jak problém vznikl, budete "
+"analyzovat problém (bude-li to nutné), zobrazí se shrnutí sesbíraných dat a "
+"zvolíte, kam bude problém nahlášen. Pro pokračování klikněte na 'Další'."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:14
 msgid "Regenerate backtrace"
@@ -565,7 +573,7 @@ msgstr "Ohlašování ještě nezapočalo"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "Reporting has finished. You can close this window now."
-msgstr ""
+msgstr "Hlášení bylo dokončeno. Okno můžete nyní zavřít."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid "Select additional files to attach to the report:"
@@ -593,7 +601,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:23
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "Musíte nejprve vyplnit, jak se to stalo."
 
 #: ../src/lib/event_config.c:300
 msgid "Missing mandatory value"
@@ -620,7 +628,7 @@ msgstr "Nepodporovaný druh přepínače"
 
 #: ../src/lib/parse_options.c:58
 msgid "Usage: "
-msgstr ""
+msgstr "Použití: "
 
 #: ../src/lib/abrt_curl.c:170 ../src/plugins/reporter-upload.c:41
 #, c-format
@@ -675,9 +683,8 @@ msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:7
 #: ../src/plugins/report_RHTSupport.xml.in.h:3
-#, fuzzy
 msgid "Password"
-msgstr "Zobrazit heslo"
+msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:8
 msgid "Report to Bugzilla bug tracker"
@@ -845,9 +852,8 @@ msgid "Checking for duplicates"
 msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:70
-#, fuzzy
 msgid "Missing mandatory member 'bugs'"
-msgstr "Chybí povinná hodnota"
+msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:109
 msgid "Creating a new bug"
@@ -946,9 +952,8 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/reporter-kerneloops.c:153
-#, fuzzy
 msgid "Configuration file"
-msgstr "Nastavení událostí"
+msgstr ""
 
 #: ../src/plugins/reporter-mailx.c:102
 msgid "Sending an email..."
@@ -985,18 +990,14 @@ msgid "Create reported_to in DIR"
 msgstr ""
 
 #: ../src/plugins/reporter-print.c:90
-#, fuzzy, c-format
+#, c-format
 msgid "The report was appended to %s"
 msgstr ""
-"\n"
-"Hlášení bylo aktualizováno"
 
 #: ../src/plugins/reporter-print.c:90
-#, fuzzy, c-format
+#, c-format
 msgid "The report was stored to %s"
 msgstr ""
-"\n"
-"Hlášení bylo aktualizováno"
 
 #. create_problem_data_for_reporting already emitted error msg
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
@@ -1140,12 +1141,3 @@ msgid ""
 "\n"
 "newt tool to report problem saved in specified DIR"
 msgstr ""
-
-#~ msgid "You should check the backtrace for sensitive data."
-#~ msgstr "Ve výpisu volání byste měli zkontrolovat citlivá data."
-
-#~ msgid "You must agree with sending the backtrace."
-#~ msgstr "S odesláním výpisu volání musíte souhlasit."
-
-#~ msgid "I _agree with submitting the backtrace"
-#~ msgstr "Souhl_asím s odesláním výpisu volání"
