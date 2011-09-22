@@ -58,6 +58,7 @@ static GtkTextView *g_tv_collect_log;
 static GtkBox *g_box_reporters;
 /* List of event_gui_data's */
 static GList *g_list_reporters;
+static GList *g_list_selected_reporters;
 static GtkLabel *g_lbl_report_log;
 static GtkTextView *g_tv_report_log;
 
@@ -691,7 +692,6 @@ static void report_tb_was_toggled(GtkButton *button, gpointer user_data)
 {
     char *event_name = (char *)user_data;
     struct strbuf *reporters_string = strbuf_new();
-    GList *li = g_list_reporters;
 
     /* if ((button && user_data)
      * prevents sigsegv which would happen when call from
@@ -701,14 +701,8 @@ static void report_tb_was_toggled(GtkButton *button, gpointer user_data)
     if ((button && user_data)
         && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)) == TRUE)
     {
-        if (g_list_find(li, event_name) == NULL)
-            li = g_list_prepend(li, event_name);
-
-        strbuf_append_strf(reporters_string,
-                            "%s%s",
-                            (reporters_string->len != 0 ? ", " : ""),
-                            event_name
-                            );
+        if (g_list_find_custom(g_list_selected_reporters, event_name, (GCompareFunc)g_strcmp0) == NULL)
+            g_list_selected_reporters = g_list_prepend(g_list_selected_reporters, xstrdup(event_name));
 
         GHashTable *errors = validate_event(event_name);
         if (errors != NULL)
@@ -720,18 +714,33 @@ static void report_tb_was_toggled(GtkButton *button, gpointer user_data)
     }
     else
     {
-        if (g_list_find(li, event_name) != NULL)
-            li = g_list_remove(li, event_name);
+        GList *l;
+        if ((l = g_list_find_custom(g_list_selected_reporters, event_name, (GCompareFunc)g_strcmp0)) != NULL)
+        {
+            char *data = l->data;
+            g_list_selected_reporters = g_list_remove(g_list_selected_reporters, data);
+            free(data);
+        }
     }
-
 
     gtk_assistant_set_page_complete(g_assistant,
                 pages[PAGENO_REPORTER_SELECTOR].page_widget,
-                reporters_string->len != 0 /* true if at least one checkbox is active */
+                g_list_selected_reporters != NULL /* true if at least one checkbox is active */
     );
 
     /* Update "list of reporters" label */
     free(g_reporter_events_selected);
+    GList *li = g_list_selected_reporters;
+    while (li != NULL)
+    {
+        event_config_t *cfg = get_event_config(li->data);
+        strbuf_append_strf(reporters_string,
+                            "%s%s",
+                            (reporters_string->len != 0 ? ", " : ""),
+                            (cfg->screen_name ? cfg->screen_name : li->data)
+                            );
+        li = g_list_next(li);
+    }
     g_reporter_events_selected = strbuf_free_nobuf(reporters_string);
     gtk_label_set_text(g_lbl_reporters, g_reporter_events_selected);
 }
@@ -1600,6 +1609,7 @@ static void add_warning(const char *warning)
 
 static void check_bt_rating_and_allow_send(void)
 {
+    int minimal_rating = 0;
     bool send = true;
     bool warn = false;
 
@@ -1633,15 +1643,30 @@ static void check_bt_rating_and_allow_send(void)
                 warn = true;
             }
 
-            event_config_t *cfg = get_event_config(g_reporter_events_selected);
+            GList *li = g_list_selected_reporters;
+            while (li != NULL)
+            {
+                /* need to obey the highest minimal rating of all selected reporters
+                 * FIXME: check this when selecting the reporter and allow select
+                 * only usable ones
+                 */
+                event_config_t *cfg = get_event_config((const char *)li->data);
+                if (cfg->ec_minimal_rating > minimal_rating)
+                {
+                    minimal_rating = cfg->ec_minimal_rating;
+                    VERB1 log("%s reporter sets the minimal rating to: %i", (const char *)li->data, minimal_rating);
+                }
 
-            if (rating == cfg->ec_minimal_rating) /* bt is usable, but not complete, so show a warning */
+                li = g_list_next(li);
+            };
+
+            if (rating == minimal_rating) /* bt is usable, but not complete, so show a warning */
             {
                 add_warning(_("The backtrace is incomplete, please make sure you provide the steps to reproduce."));
                 warn = true;
             }
 
-            if (rating < cfg->ec_minimal_rating)
+            if (rating < minimal_rating)
             {
                 //FIXME: see CreporterAssistant: 394 for ideas
                 add_warning(_("Reporting disabled because the backtrace is unusable."));
