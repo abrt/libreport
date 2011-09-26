@@ -62,7 +62,8 @@ static void parse_release(const char *release, char** product, char** version, b
     if (space)
     {
         space++;
-        while (*space != '\0' && *space != ' ')
+        /* observed also: "Fedora F16-Alpha" rhbz#730887 */
+        while (isdigit(*space) || *space == '.')
         {
             /* Eat string like "5.2" */
             strbuf_append_char(buf_version, *space);
