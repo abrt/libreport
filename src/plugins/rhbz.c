@@ -329,7 +329,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
     char *status_whiteboard = xasprintf("abrt_hash:%s", duphash);
 
     char *bz_dsc = make_description_bz(problem_data);
-    char *full_dsc = xasprintf("abrt version: "VERSION"\n%s", bz_dsc);
+    char *full_dsc = xasprintf("libreport version: "VERSION"\n%s", bz_dsc);
     free(bz_dsc);
 
     char *product = NULL;
