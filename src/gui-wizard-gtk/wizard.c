@@ -692,6 +692,7 @@ static void report_tb_was_toggled(GtkButton *button, gpointer user_data)
 {
     char *event_name = (char *)user_data;
     struct strbuf *reporters_string = strbuf_new();
+    struct strbuf *reporters_event_string = strbuf_new();
 
     /* if ((button && user_data)
      * prevents sigsegv which would happen when call from
@@ -734,6 +735,12 @@ static void report_tb_was_toggled(GtkButton *button, gpointer user_data)
     while (li != NULL)
     {
         event_config_t *cfg = get_event_config(li->data);
+        strbuf_append_strf(reporters_event_string,
+                            "%s%s",
+                            (reporters_event_string->len != 0 ? ", " : ""),
+                            (li->data ? li->data : "")
+                            );
+
         strbuf_append_strf(reporters_string,
                             "%s%s",
                             (reporters_string->len != 0 ? ", " : ""),
@@ -741,8 +748,9 @@ static void report_tb_was_toggled(GtkButton *button, gpointer user_data)
                             );
         li = g_list_next(li);
     }
-    g_reporter_events_selected = strbuf_free_nobuf(reporters_string);
-    gtk_label_set_text(g_lbl_reporters, g_reporter_events_selected);
+    g_reporter_events_selected = strbuf_free_nobuf(reporters_event_string);
+    gtk_label_set_text(g_lbl_reporters, strbuf_free_nobuf(reporters_string));
+    free(reporters_string); //we can, gtk copies the string
 }
 
 static void collect_tb_was_toggled(GtkButton *button_unused, gpointer user_data_unused)
