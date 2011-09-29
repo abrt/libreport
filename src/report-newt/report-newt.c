@@ -357,17 +357,28 @@ int main(int argc, char **argv)
     enum {
         OPT_o = 1 << 0, // report only
         OPT_r = 1 << 1,
+        OPT_V = 1 << 2,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT_BOOL('o', "report-only", NULL, _("Skip analyze steps, go through report steps only")),
         OPT_BOOL('d', "delete", NULL,      _("Remove DIR after reporting")),
+        OPT_BOOL('V', "version", NULL,     _("Display version and exit")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
     argv += optind;
-    if (!argv[0] || argv[1] || !(opts & OPT_o)) /* zero or >1 arguments */
+    /* zero or >1 arguments with -o, or >0 arguments with -V */
+    if (!(opts & (OPT_o | OPT_V)) ||
+            ((opts & OPT_o) && (!argv[0] || argv[1])) ||
+            ((opts & OPT_V) && argv[0]))
         show_usage_and_die(program_usage_string, program_options);
+
+    if (opts & OPT_V)
+    {
+        printf("%s "VERSION"\n", g_progname);
+        return 0;
+    }
 
     dump_dir_name = argv[0];
 
