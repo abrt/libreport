@@ -670,6 +670,7 @@ bool make_dir_recursive(char *dir, mode_t dir_mode);
 #define FILENAME_REPORTED_TO  "reported_to"
 #define FILENAME_EVENT_LOG    "event_log"
 #define FILENAME_NOT_REPORTABLE "not-reportable"
+#define FILENAME_CORE_BACKTRACE "core_backtrace"
 
 // Not stored as files, added "on the fly":
 #define CD_DUMPDIR            "Directory"
