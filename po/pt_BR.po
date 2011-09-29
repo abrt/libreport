@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-22 13:09+0200\n"
+"POT-Creation-Date: 2011-09-29 13:55+0200\n"
 "PO-Revision-Date: 2011-09-22 11:08+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Portuguese (Brazilian) <trans-pt_br@lists.fedoraproject.org>\n"
@@ -73,7 +73,7 @@ msgstr "Com -r: não executar analizadores, executar apenas reportadores"
 msgid "Log to syslog"
 msgstr "Log para o syslog"
 
-#: ../src/cli/cli.c:84 ../src/gui-wizard-gtk/main.c:111
+#: ../src/cli/cli.c:84 ../src/gui-wizard-gtk/main.c:122
 msgid "Add program names to log"
 msgstr "Adicionar os nomes dos programas ao log"
 
@@ -152,7 +152,7 @@ msgstr ""
 " Não foi detectada nenhuma mudança no relatório"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1362
+#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1370
 #: ../src/lib/client.c:51 ../src/lib/run_event.c:476
 msgid "y"
 msgstr "y"
@@ -202,7 +202,7 @@ msgstr "Selecione o coletor(es): "
 msgid "There were %d errors while collecting additional data\n"
 msgstr "Existiram erros %d durante a coleta de dados adicionais\n"
 
-#: ../src/cli/cli-report.c:837 ../src/gui-wizard-gtk/wizard.c:1776
+#: ../src/cli/cli-report.c:837 ../src/gui-wizard-gtk/wizard.c:1784
 msgid "Reporting..."
 msgstr "Relatando..."
 
@@ -253,7 +253,7 @@ msgstr "Evento"
 msgid "Configure E_vent"
 msgstr "Configurar e_vento"
 
-#: ../src/gui-wizard-gtk/main.c:95
+#: ../src/gui-wizard-gtk/main.c:107
 msgid ""
 " [-vpod] [-g GUI_FILE] [-n PROG_NAME] DIR\n"
 "\n"
@@ -264,23 +264,16 @@ msgstr ""
 "Ferramenta gráfica para analisar e reportar problemas salvos no DIR "
 "especificado"
 
-#: ../src/gui-wizard-gtk/main.c:110
+#: ../src/gui-wizard-gtk/main.c:121
 msgid "Alternate GUI file"
 msgstr "Substituir arquivo GUI"
 
 #. for use from 3rd party apps to show just a reporter selector
-#: ../src/gui-wizard-gtk/main.c:113 ../src/report-newt/report-newt.c:363
+#: ../src/gui-wizard-gtk/main.c:124 ../src/report-newt/report-newt.c:363
 msgid "Skip analyze steps, go through report steps only"
 msgstr "Pular passos de análise, ir até a etapa de relato apenas"
 
-#. override the default prgname, so it's the same as the application
-#. * which is calling us
-#.
-#: ../src/gui-wizard-gtk/main.c:117
-msgid "Override the default prgname"
-msgstr "Substituir o prgname padrão"
-
-#: ../src/gui-wizard-gtk/main.c:118 ../src/report-newt/report-newt.c:364
+#: ../src/gui-wizard-gtk/main.c:125 ../src/report-newt/report-newt.c:364
 msgid "Remove DIR after reporting"
 msgstr "Remover DIR depois de reportar"
 
@@ -380,45 +373,45 @@ msgstr ""
 msgid "View/edit a text file"
 msgstr "Ver/Editar um arquivo texto"
 
-#: ../src/gui-wizard-gtk/wizard.c:825
+#: ../src/gui-wizard-gtk/wizard.c:833
 #, c-format
 msgid "(not needed, '%s' already exists)"
 msgstr "(não necessário, '%s' já existe)"
 
-#: ../src/gui-wizard-gtk/wizard.c:890
+#: ../src/gui-wizard-gtk/wizard.c:898
 msgid "Go to next step"
 msgstr "Vá para"
 
-#: ../src/gui-wizard-gtk/wizard.c:947
+#: ../src/gui-wizard-gtk/wizard.c:955
 msgid "(click here to view/edit)"
 msgstr "(clique aqui para ver/editar)"
 
-#: ../src/gui-wizard-gtk/wizard.c:957
+#: ../src/gui-wizard-gtk/wizard.c:965
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(arquivo binário, %llu bytes)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1025
+#: ../src/gui-wizard-gtk/wizard.c:1033
 msgid "(no description)"
 msgstr "(sem descrição)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1030
+#: ../src/gui-wizard-gtk/wizard.c:1038
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu bytes, %u arquivos"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1535
+#: ../src/gui-wizard-gtk/wizard.c:1543
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "Não está definido nenhum processamento para o evento '%s'"
 
-#: ../src/gui-wizard-gtk/wizard.c:1641
+#: ../src/gui-wizard-gtk/wizard.c:1649
 #, c-format
 msgid "Reporting disabled because the rating does not contain a number '%s'."
 msgstr "Relatórios desativados porque a pontuação não contém um número '%s'."
 
-#: ../src/gui-wizard-gtk/wizard.c:1665
+#: ../src/gui-wizard-gtk/wizard.c:1673
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -427,61 +420,61 @@ msgstr ""
 "passos para a reprodução. "
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1672
+#: ../src/gui-wizard-gtk/wizard.c:1680
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Relatório desabilitado, porque o backtrace está inutilizado."
 
-#: ../src/gui-wizard-gtk/wizard.c:1749
+#: ../src/gui-wizard-gtk/wizard.c:1757
 msgid "Analyzing..."
 msgstr "Analizando..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1750
+#: ../src/gui-wizard-gtk/wizard.c:1758
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "Analize finalizada com o código de saída %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1777
+#: ../src/gui-wizard-gtk/wizard.c:1785
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "Relato finalizado com o código de saída %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1804
+#: ../src/gui-wizard-gtk/wizard.c:1812
 msgid "Collecting..."
 msgstr "Coletando..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1805
+#: ../src/gui-wizard-gtk/wizard.c:1813
 #, c-format
 msgid "Collecting finished with exit code %d"
 msgstr "Coleta finalizada com código de saída %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:2138
+#: ../src/gui-wizard-gtk/wizard.c:2146
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' não é um arquivo normal"
 
-#: ../src/gui-wizard-gtk/wizard.c:2154
+#: ../src/gui-wizard-gtk/wizard.c:2162
 msgid "You are trying to copy a file onto itself"
 msgstr "Você está tentando copiar um arquivo dentro dele próprio"
 
-#: ../src/gui-wizard-gtk/wizard.c:2161
+#: ../src/gui-wizard-gtk/wizard.c:2169
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "Não foi possível copiar '%s': %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2175
+#: ../src/gui-wizard-gtk/wizard.c:2183
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "Item '%s' já existe e não pode ser modificado"
 
-#: ../src/gui-wizard-gtk/wizard.c:2385
+#: ../src/gui-wizard-gtk/wizard.c:2393
 msgid "Include"
 msgstr "Incluir"
 
-#: ../src/gui-wizard-gtk/wizard.c:2395
+#: ../src/gui-wizard-gtk/wizard.c:2403
 msgid "Name"
 msgstr "Nome: "
 
-#: ../src/gui-wizard-gtk/wizard.c:2403
+#: ../src/gui-wizard-gtk/wizard.c:2411
 msgid "Value"
 msgstr "Valor"
 
@@ -1196,7 +1189,7 @@ msgstr "O Bug %i está FECHADO como DUPLICATA, mas ele não tem DUP_ID"
 msgid "New bug id: %i"
 msgstr "Novo id do bug: %i"
 
-#: ../src/plugins/rhbz.c:503
+#: ../src/plugins/rhbz.c:510
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "O Bugzilla não pôde encontrar a origem do bug %d"
@@ -1233,3 +1226,6 @@ msgstr ""
 " -o [-d] DIR\n"
 "\n"
 "Nova ferramenta para relatar problemas salvos no DIR especificado"
+
+#~ msgid "Override the default prgname"
+#~ msgstr "Substituir o prgname padrão"

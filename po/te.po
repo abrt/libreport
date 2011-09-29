@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-22 13:09+0200\n"
+"POT-Creation-Date: 2011-09-29 13:55+0200\n"
 "PO-Revision-Date: 2011-09-22 11:08+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Telugu (http://www.transifex.net/projects/p/fedora/team/te/)\n"
@@ -67,7 +67,7 @@ msgstr ""
 msgid "Log to syslog"
 msgstr "సిస్‌లాగ్‌కు లాగ్"
 
-#: ../src/cli/cli.c:84 ../src/gui-wizard-gtk/main.c:111
+#: ../src/cli/cli.c:84 ../src/gui-wizard-gtk/main.c:122
 msgid "Add program names to log"
 msgstr ""
 
@@ -146,7 +146,7 @@ msgstr ""
 "నివేదికనందు యే మార్పులు గుర్తించబడలేదు"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1362
+#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1370
 #: ../src/lib/client.c:51 ../src/lib/run_event.c:476
 msgid "y"
 msgstr "y"
@@ -196,7 +196,7 @@ msgstr ""
 msgid "There were %d errors while collecting additional data\n"
 msgstr ""
 
-#: ../src/cli/cli-report.c:837 ../src/gui-wizard-gtk/wizard.c:1776
+#: ../src/cli/cli-report.c:837 ../src/gui-wizard-gtk/wizard.c:1784
 msgid "Reporting..."
 msgstr "నివేదించుచున్నది..."
 
@@ -246,30 +246,23 @@ msgstr "ఘటన"
 msgid "Configure E_vent"
 msgstr "ఘటన ఆకృతీకరణ (_v)"
 
-#: ../src/gui-wizard-gtk/main.c:95
+#: ../src/gui-wizard-gtk/main.c:107
 msgid ""
 " [-vpod] [-g GUI_FILE] [-n PROG_NAME] DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/main.c:110
+#: ../src/gui-wizard-gtk/main.c:121
 msgid "Alternate GUI file"
 msgstr "ప్రత్యామ్నాయ GUI ఫైల్"
 
 #. for use from 3rd party apps to show just a reporter selector
-#: ../src/gui-wizard-gtk/main.c:113 ../src/report-newt/report-newt.c:363
+#: ../src/gui-wizard-gtk/main.c:124 ../src/report-newt/report-newt.c:363
 msgid "Skip analyze steps, go through report steps only"
 msgstr ""
 
-#. override the default prgname, so it's the same as the application
-#. * which is calling us
-#.
-#: ../src/gui-wizard-gtk/main.c:117
-msgid "Override the default prgname"
-msgstr ""
-
-#: ../src/gui-wizard-gtk/main.c:118 ../src/report-newt/report-newt.c:364
+#: ../src/gui-wizard-gtk/main.c:125 ../src/report-newt/report-newt.c:364
 msgid "Remove DIR after reporting"
 msgstr ""
 
@@ -364,45 +357,45 @@ msgstr ""
 msgid "View/edit a text file"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:825
+#: ../src/gui-wizard-gtk/wizard.c:833
 #, c-format
 msgid "(not needed, '%s' already exists)"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:890
+#: ../src/gui-wizard-gtk/wizard.c:898
 msgid "Go to next step"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:947
+#: ../src/gui-wizard-gtk/wizard.c:955
 msgid "(click here to view/edit)"
 msgstr "(దర్శించు/సరిచేయి కు యిచట నొక్కు)"
 
-#: ../src/gui-wizard-gtk/wizard.c:957
+#: ../src/gui-wizard-gtk/wizard.c:965
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(బైనరీ ఫైలు, %llu బెట్లు)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1025
+#: ../src/gui-wizard-gtk/wizard.c:1033
 msgid "(no description)"
 msgstr "(వివరణ లేదు)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1030
+#: ../src/gui-wizard-gtk/wizard.c:1038
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu బెట్లు, %u ఫైళ్ళు"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1535
+#: ../src/gui-wizard-gtk/wizard.c:1543
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "ఘటన '%s' కొరకు యే క్రమణం నిర్వచించబడలేదు"
 
-#: ../src/gui-wizard-gtk/wizard.c:1641
+#: ../src/gui-wizard-gtk/wizard.c:1649
 #, c-format
 msgid "Reporting disabled because the rating does not contain a number '%s'."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1665
+#: ../src/gui-wizard-gtk/wizard.c:1673
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -410,61 +403,61 @@ msgstr ""
 "బాక్‌ట్రేస్ అసంపూర్తిగా వుంది, దానిని తిరిగివుత్పన్నం చేయుటకు దయచేసి మీరు స్టెప్సును యిచ్చునట్లు చూచుకోండి."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1672
+#: ../src/gui-wizard-gtk/wizard.c:1680
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "బ్యాక్‌ట్రేస్ నిరుపయోగమైంది కావున నివేదీకరణ అచేతనపరచడమైంది."
 
-#: ../src/gui-wizard-gtk/wizard.c:1749
+#: ../src/gui-wizard-gtk/wizard.c:1757
 msgid "Analyzing..."
 msgstr "విశ్లేషించుచున్నది..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1750
+#: ../src/gui-wizard-gtk/wizard.c:1758
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "విశ్లేషణ నిష్క్రమమ కోడ్ %d తో ముగిసినది"
 
-#: ../src/gui-wizard-gtk/wizard.c:1777
+#: ../src/gui-wizard-gtk/wizard.c:1785
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "నివేదీకరణ నిష్క్రమణ కోడ్ %d తో ముగిసినది"
 
-#: ../src/gui-wizard-gtk/wizard.c:1804
+#: ../src/gui-wizard-gtk/wizard.c:1812
 msgid "Collecting..."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1805
+#: ../src/gui-wizard-gtk/wizard.c:1813
 #, c-format
 msgid "Collecting finished with exit code %d"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2138
+#: ../src/gui-wizard-gtk/wizard.c:2146
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2154
+#: ../src/gui-wizard-gtk/wizard.c:2162
 msgid "You are trying to copy a file onto itself"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2161
+#: ../src/gui-wizard-gtk/wizard.c:2169
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2175
+#: ../src/gui-wizard-gtk/wizard.c:2183
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2385
+#: ../src/gui-wizard-gtk/wizard.c:2393
 msgid "Include"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2395
+#: ../src/gui-wizard-gtk/wizard.c:2403
 msgid "Name"
 msgstr "పేరు"
 
-#: ../src/gui-wizard-gtk/wizard.c:2403
+#: ../src/gui-wizard-gtk/wizard.c:2411
 msgid "Value"
 msgstr "విలువ"
 
@@ -1092,7 +1085,7 @@ msgstr ""
 msgid "New bug id: %i"
 msgstr ""
 
-#: ../src/plugins/rhbz.c:503
+#: ../src/plugins/rhbz.c:510
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr ""

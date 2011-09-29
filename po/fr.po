@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-22 13:09+0200\n"
+"POT-Creation-Date: 2011-09-29 13:55+0200\n"
 "PO-Revision-Date: 2011-09-22 11:08+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: French <trans-fr@lists.fedoraproject.org>\n"
@@ -68,7 +68,7 @@ msgstr "With -r : rapporter sans effectuer d'analyses"
 msgid "Log to syslog"
 msgstr "Journaliser vers syslog"
 
-#: ../src/cli/cli.c:84 ../src/gui-wizard-gtk/main.c:111
+#: ../src/cli/cli.c:84 ../src/gui-wizard-gtk/main.c:122
 msgid "Add program names to log"
 msgstr "Ajouter le nom des programmes dans le journal"
 
@@ -147,7 +147,7 @@ msgstr ""
 "Aucun changement n'a été détecté dans le rapport"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1362
+#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1370
 #: ../src/lib/client.c:51 ../src/lib/run_event.c:476
 msgid "y"
 msgstr "y"
@@ -198,7 +198,7 @@ msgid "There were %d errors while collecting additional data\n"
 msgstr ""
 "Il y a eu %d erreurs lors de la récupération des données supplémentaires\n"
 
-#: ../src/cli/cli-report.c:837 ../src/gui-wizard-gtk/wizard.c:1776
+#: ../src/cli/cli-report.c:837 ../src/gui-wizard-gtk/wizard.c:1784
 msgid "Reporting..."
 msgstr "Envoie du rapport..."
 
@@ -252,32 +252,25 @@ msgstr "Événement"
 msgid "Configure E_vent"
 msgstr "Configurer l'é_vénement"
 
-#: ../src/gui-wizard-gtk/main.c:95
+#: ../src/gui-wizard-gtk/main.c:107
 msgid ""
 " [-vpod] [-g GUI_FILE] [-n PROG_NAME] DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/main.c:110
+#: ../src/gui-wizard-gtk/main.c:121
 msgid "Alternate GUI file"
 msgstr "Fichier d'IHM graphique alternatif"
 
 #. for use from 3rd party apps to show just a reporter selector
-#: ../src/gui-wizard-gtk/main.c:113 ../src/report-newt/report-newt.c:363
+#: ../src/gui-wizard-gtk/main.c:124 ../src/report-newt/report-newt.c:363
 msgid "Skip analyze steps, go through report steps only"
 msgstr ""
 "Ignorer les étapes d'analyse, aller directement à l'étape de rédaction des "
 "rapports"
 
-#. override the default prgname, so it's the same as the application
-#. * which is calling us
-#.
-#: ../src/gui-wizard-gtk/main.c:117
-msgid "Override the default prgname"
-msgstr "Remplacer le nom des programmes par défaut"
-
-#: ../src/gui-wizard-gtk/main.c:118 ../src/report-newt/report-newt.c:364
+#: ../src/gui-wizard-gtk/main.c:125 ../src/report-newt/report-newt.c:364
 msgid "Remove DIR after reporting"
 msgstr "Supprimer DIR après l'envoie du rapport"
 
@@ -377,47 +370,47 @@ msgstr ""
 msgid "View/edit a text file"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:825
+#: ../src/gui-wizard-gtk/wizard.c:833
 #, c-format
 msgid "(not needed, '%s' already exists)"
 msgstr "(pas nécessaire, « %s » existe déjà)"
 
-#: ../src/gui-wizard-gtk/wizard.c:890
+#: ../src/gui-wizard-gtk/wizard.c:898
 msgid "Go to next step"
 msgstr "Aller à l'étape suivante"
 
-#: ../src/gui-wizard-gtk/wizard.c:947
+#: ../src/gui-wizard-gtk/wizard.c:955
 msgid "(click here to view/edit)"
 msgstr "(cliquer ici pour voir/éditer)"
 
-#: ../src/gui-wizard-gtk/wizard.c:957
+#: ../src/gui-wizard-gtk/wizard.c:965
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(fichier binaire, %llu octets)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1025
+#: ../src/gui-wizard-gtk/wizard.c:1033
 msgid "(no description)"
 msgstr "(sans description)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1030
+#: ../src/gui-wizard-gtk/wizard.c:1038
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu octets, %u fichiers"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1535
+#: ../src/gui-wizard-gtk/wizard.c:1543
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "Aucune action liée à l'événement « %s » n'a été définie."
 
-#: ../src/gui-wizard-gtk/wizard.c:1641
+#: ../src/gui-wizard-gtk/wizard.c:1649
 #, c-format
 msgid "Reporting disabled because the rating does not contain a number '%s'."
 msgstr ""
 "L'envoie du rapport est désactivé car la valeur nominale ne contient pas un "
 "nombre « %s »."
 
-#: ../src/gui-wizard-gtk/wizard.c:1665
+#: ../src/gui-wizard-gtk/wizard.c:1673
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -426,62 +419,62 @@ msgstr ""
 "pour le reproduire."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1672
+#: ../src/gui-wizard-gtk/wizard.c:1680
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr ""
 "L'envoie du rapport est désactivé car la trace mémoire est inutilisable."
 
-#: ../src/gui-wizard-gtk/wizard.c:1749
+#: ../src/gui-wizard-gtk/wizard.c:1757
 msgid "Analyzing..."
 msgstr "Analyse..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1750
+#: ../src/gui-wizard-gtk/wizard.c:1758
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "Analyse terminée avec le code de sortie %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1777
+#: ../src/gui-wizard-gtk/wizard.c:1785
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "Rapport envoyé avec le code de sortie %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1804
+#: ../src/gui-wizard-gtk/wizard.c:1812
 msgid "Collecting..."
 msgstr "Récupération..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1805
+#: ../src/gui-wizard-gtk/wizard.c:1813
 #, c-format
 msgid "Collecting finished with exit code %d"
 msgstr "La récupération s'est terminée avec un code de sortie %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:2138
+#: ../src/gui-wizard-gtk/wizard.c:2146
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "« %s » n'est pas un fichier ordinaire"
 
-#: ../src/gui-wizard-gtk/wizard.c:2154
+#: ../src/gui-wizard-gtk/wizard.c:2162
 msgid "You are trying to copy a file onto itself"
 msgstr "Vous essayez de copier un fichier sur lui-même"
 
-#: ../src/gui-wizard-gtk/wizard.c:2161
+#: ../src/gui-wizard-gtk/wizard.c:2169
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "Impossible de copier « %s » : %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2175
+#: ../src/gui-wizard-gtk/wizard.c:2183
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "L'élément « %s » existe déjà et n'est pas modifiable"
 
-#: ../src/gui-wizard-gtk/wizard.c:2385
+#: ../src/gui-wizard-gtk/wizard.c:2393
 msgid "Include"
 msgstr "Inclure"
 
-#: ../src/gui-wizard-gtk/wizard.c:2395
+#: ../src/gui-wizard-gtk/wizard.c:2403
 msgid "Name"
 msgstr "Nom"
 
-#: ../src/gui-wizard-gtk/wizard.c:2403
+#: ../src/gui-wizard-gtk/wizard.c:2411
 msgid "Value"
 msgstr "Valeur"
 
@@ -1129,7 +1122,7 @@ msgstr "L'anomalie %i est FERMÉE comme DOUBLON mais n'a pas de DUP_ID"
 msgid "New bug id: %i"
 msgstr "Nouvel identifiant de l'anomalie : %i"
 
-#: ../src/plugins/rhbz.c:503
+#: ../src/plugins/rhbz.c:510
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla n'a pas pu trouver le parent de l'anomalie %d"
@@ -1163,3 +1156,6 @@ msgid ""
 "\n"
 "newt tool to report problem saved in specified DIR"
 msgstr ""
+
+#~ msgid "Override the default prgname"
+#~ msgstr "Remplacer le nom des programmes par défaut"

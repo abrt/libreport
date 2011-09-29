@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-22 13:09+0200\n"
+"POT-Creation-Date: 2011-09-29 13:55+0200\n"
 "PO-Revision-Date: 2011-09-22 11:08+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Dutch (http://www.transifex.net/projects/p/fedora/team/nl/)\n"
@@ -73,7 +73,7 @@ msgstr "Met -r: voer geen analyses uit, draai alleen verzamelaars"
 msgid "Log to syslog"
 msgstr "Loggen naar syslog"
 
-#: ../src/cli/cli.c:84 ../src/gui-wizard-gtk/main.c:111
+#: ../src/cli/cli.c:84 ../src/gui-wizard-gtk/main.c:122
 msgid "Add program names to log"
 msgstr "Voeg programmanamen toe aan de log"
 
@@ -151,7 +151,7 @@ msgstr ""
 "Er zijn geen veranderingen in het rapport ontdekt"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1362
+#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1370
 #: ../src/lib/client.c:51 ../src/lib/run_event.c:476
 msgid "y"
 msgstr "j"
@@ -201,7 +201,7 @@ msgstr "Selecteer verzamelaar(s): "
 msgid "There were %d errors while collecting additional data\n"
 msgstr "Er waren %d fouten tijdens het verzamelen van extra data\n"
 
-#: ../src/cli/cli-report.c:837 ../src/gui-wizard-gtk/wizard.c:1776
+#: ../src/cli/cli-report.c:837 ../src/gui-wizard-gtk/wizard.c:1784
 msgid "Reporting..."
 msgstr "Rapporteren..."
 
@@ -253,7 +253,7 @@ msgstr "Gebeurtenis"
 msgid "Configure E_vent"
 msgstr "Configureer _gebeurtenis"
 
-#: ../src/gui-wizard-gtk/main.c:95
+#: ../src/gui-wizard-gtk/main.c:107
 msgid ""
 " [-vpod] [-g GUI_FILE] [-n PROG_NAME] DIR\n"
 "\n"
@@ -264,23 +264,16 @@ msgstr ""
 "GUI gereedschap voor het analyseren  en rapporteren van problemen opgeslagen "
 "in de gespecificeerde MAP"
 
-#: ../src/gui-wizard-gtk/main.c:110
+#: ../src/gui-wizard-gtk/main.c:121
 msgid "Alternate GUI file"
 msgstr "Alternatief GUI bestand"
 
 #. for use from 3rd party apps to show just a reporter selector
-#: ../src/gui-wizard-gtk/main.c:113 ../src/report-newt/report-newt.c:363
+#: ../src/gui-wizard-gtk/main.c:124 ../src/report-newt/report-newt.c:363
 msgid "Skip analyze steps, go through report steps only"
 msgstr "Sla de analyse stappen over, voer alleen de rapportage stappen uit"
 
-#. override the default prgname, so it's the same as the application
-#. * which is calling us
-#.
-#: ../src/gui-wizard-gtk/main.c:117
-msgid "Override the default prgname"
-msgstr "Overschrijf de standaard programmanaam"
-
-#: ../src/gui-wizard-gtk/main.c:118 ../src/report-newt/report-newt.c:364
+#: ../src/gui-wizard-gtk/main.c:125 ../src/report-newt/report-newt.c:364
 msgid "Remove DIR after reporting"
 msgstr "Verwijder MAP na het rapporteren"
 
@@ -380,45 +373,45 @@ msgstr ""
 msgid "View/edit a text file"
 msgstr "Bekijk/bewerk een tekstbestand"
 
-#: ../src/gui-wizard-gtk/wizard.c:825
+#: ../src/gui-wizard-gtk/wizard.c:833
 #, c-format
 msgid "(not needed, '%s' already exists)"
 msgstr "(niet nodig, '%s' bestaat al)"
 
-#: ../src/gui-wizard-gtk/wizard.c:890
+#: ../src/gui-wizard-gtk/wizard.c:898
 msgid "Go to next step"
 msgstr "Ga na de volgende stap"
 
-#: ../src/gui-wizard-gtk/wizard.c:947
+#: ../src/gui-wizard-gtk/wizard.c:955
 msgid "(click here to view/edit)"
 msgstr "(klik hier voor bekijken/bewerken)"
 
-#: ../src/gui-wizard-gtk/wizard.c:957
+#: ../src/gui-wizard-gtk/wizard.c:965
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(binair bestand, %llu bytes)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1025
+#: ../src/gui-wizard-gtk/wizard.c:1033
 msgid "(no description)"
 msgstr "(geen beschrijving)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1030
+#: ../src/gui-wizard-gtk/wizard.c:1038
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu bytes, %u bestanden"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1535
+#: ../src/gui-wizard-gtk/wizard.c:1543
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "Er is geen verwerking gedefinieerd voor de gebeurtenis '%s'"
 
-#: ../src/gui-wizard-gtk/wizard.c:1641
+#: ../src/gui-wizard-gtk/wizard.c:1649
 #, c-format
 msgid "Reporting disabled because the rating does not contain a number '%s'."
 msgstr "Rapporteren is uitgezet omdat de kwalificatie geen getal '%s' bevat."
 
-#: ../src/gui-wizard-gtk/wizard.c:1665
+#: ../src/gui-wizard-gtk/wizard.c:1673
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -427,61 +420,61 @@ msgstr ""
 "juiste stappen op te volgen."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1672
+#: ../src/gui-wizard-gtk/wizard.c:1680
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Rapportage is uitgezet omdat de backtrace onbruikbaar is."
 
-#: ../src/gui-wizard-gtk/wizard.c:1749
+#: ../src/gui-wizard-gtk/wizard.c:1757
 msgid "Analyzing..."
 msgstr "Analyseren..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1750
+#: ../src/gui-wizard-gtk/wizard.c:1758
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "Analyseren afgewerkt met exit code %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1777
+#: ../src/gui-wizard-gtk/wizard.c:1785
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "Rapportage afgewerkt met exit code %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1804
+#: ../src/gui-wizard-gtk/wizard.c:1812
 msgid "Collecting..."
 msgstr "Verzamelen..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1805
+#: ../src/gui-wizard-gtk/wizard.c:1813
 #, c-format
 msgid "Collecting finished with exit code %d"
 msgstr "Verzamelen beëindigd met exit code %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:2138
+#: ../src/gui-wizard-gtk/wizard.c:2146
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' is geen gewoon bestand"
 
-#: ../src/gui-wizard-gtk/wizard.c:2154
+#: ../src/gui-wizard-gtk/wizard.c:2162
 msgid "You are trying to copy a file onto itself"
 msgstr "Je probeert een bestand naar zichzelf te kopieren"
 
-#: ../src/gui-wizard-gtk/wizard.c:2161
+#: ../src/gui-wizard-gtk/wizard.c:2169
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "Kan '%s' niet kopieren: %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2175
+#: ../src/gui-wizard-gtk/wizard.c:2183
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "Item '%s' bestaat al en kan niet gewijzigd worden"
 
-#: ../src/gui-wizard-gtk/wizard.c:2385
+#: ../src/gui-wizard-gtk/wizard.c:2393
 msgid "Include"
 msgstr "Bijsluiten"
 
-#: ../src/gui-wizard-gtk/wizard.c:2395
+#: ../src/gui-wizard-gtk/wizard.c:2403
 msgid "Name"
 msgstr "Naam"
 
-#: ../src/gui-wizard-gtk/wizard.c:2403
+#: ../src/gui-wizard-gtk/wizard.c:2411
 msgid "Value"
 msgstr "Waarde"
 
@@ -1202,7 +1195,7 @@ msgstr "Bug %i is CLOSED als DUPLICATE, maar heeft geen DUP_ID"
 msgid "New bug id: %i"
 msgstr "Nieuwe bug id: %i"
 
-#: ../src/plugins/rhbz.c:503
+#: ../src/plugins/rhbz.c:510
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla kon ouder van bug %d niet vinden"
@@ -1239,3 +1232,6 @@ msgstr ""
 " -o [-d] MAP\n"
 "\n"
 "gereedschap op probleem opgeslagen in gespecificeerde MAP te rapporteren"
+
+#~ msgid "Override the default prgname"
+#~ msgstr "Overschrijf de standaard programmanaam"

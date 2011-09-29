@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-22 13:09+0200\n"
-"PO-Revision-Date: 2011-09-22 11:08+0000\n"
-"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
+"POT-Creation-Date: 2011-09-29 13:55+0200\n"
+"PO-Revision-Date: 2011-09-27 04:20+0000\n"
+"Last-Translator: zerng07 <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) <trans-zh_TW@lists.fedoraproject.org>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
@@ -73,7 +73,7 @@ msgstr "加上 -r：不要執行分析器，僅執行回報器"
 msgid "Log to syslog"
 msgstr "紀錄至 syslog"
 
-#: ../src/cli/cli.c:84 ../src/gui-wizard-gtk/main.c:111
+#: ../src/cli/cli.c:84 ../src/gui-wizard-gtk/main.c:122
 msgid "Add program names to log"
 msgstr "加入程式名稱至紀錄檔"
 
@@ -151,7 +151,7 @@ msgstr ""
 "報告中未偵測到變更"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1362
+#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1370
 #: ../src/lib/client.c:51 ../src/lib/run_event.c:476
 msgid "y"
 msgstr "是 (y)"
@@ -201,7 +201,7 @@ msgstr "選取收集器："
 msgid "There were %d errors while collecting additional data\n"
 msgstr "收集額外資料時發生 %d 個錯誤\n"
 
-#: ../src/cli/cli-report.c:837 ../src/gui-wizard-gtk/wizard.c:1776
+#: ../src/cli/cli-report.c:837 ../src/gui-wizard-gtk/wizard.c:1784
 msgid "Reporting..."
 msgstr "正在回報..."
 
@@ -249,7 +249,7 @@ msgstr "事件"
 msgid "Configure E_vent"
 msgstr "設定事件(_V)"
 
-#: ../src/gui-wizard-gtk/main.c:95
+#: ../src/gui-wizard-gtk/main.c:107
 msgid ""
 " [-vpod] [-g GUI_FILE] [-n PROG_NAME] DIR\n"
 "\n"
@@ -259,23 +259,16 @@ msgstr ""
 "\n"
 "分析並回報儲存在指定 DIR 內問題的 GUI 工具"
 
-#: ../src/gui-wizard-gtk/main.c:110
+#: ../src/gui-wizard-gtk/main.c:121
 msgid "Alternate GUI file"
 msgstr "替代的 GUI 檔案"
 
 #. for use from 3rd party apps to show just a reporter selector
-#: ../src/gui-wizard-gtk/main.c:113 ../src/report-newt/report-newt.c:363
+#: ../src/gui-wizard-gtk/main.c:124 ../src/report-newt/report-newt.c:363
 msgid "Skip analyze steps, go through report steps only"
 msgstr "略過分析步驟，只處理回報步驟"
 
-#. override the default prgname, so it's the same as the application
-#. * which is calling us
-#.
-#: ../src/gui-wizard-gtk/main.c:117
-msgid "Override the default prgname"
-msgstr "凌駕預設的 prgname"
-
-#: ../src/gui-wizard-gtk/main.c:118 ../src/report-newt/report-newt.c:364
+#: ../src/gui-wizard-gtk/main.c:125 ../src/report-newt/report-newt.c:364
 msgid "Remove DIR after reporting"
 msgstr "在回報後移除 DIR"
 
@@ -374,106 +367,106 @@ msgstr ""
 msgid "View/edit a text file"
 msgstr "檢視/編輯文件檔"
 
-#: ../src/gui-wizard-gtk/wizard.c:825
+#: ../src/gui-wizard-gtk/wizard.c:833
 #, c-format
 msgid "(not needed, '%s' already exists)"
 msgstr "(不需要，「%s」已經存在)"
 
-#: ../src/gui-wizard-gtk/wizard.c:890
+#: ../src/gui-wizard-gtk/wizard.c:898
 msgid "Go to next step"
 msgstr "前往下一步"
 
-#: ../src/gui-wizard-gtk/wizard.c:947
+#: ../src/gui-wizard-gtk/wizard.c:955
 msgid "(click here to view/edit)"
 msgstr "(請點擊這裡檢視或編輯)"
 
-#: ../src/gui-wizard-gtk/wizard.c:957
+#: ../src/gui-wizard-gtk/wizard.c:965
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(二進位檔，%llu 位元組)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1025
+#: ../src/gui-wizard-gtk/wizard.c:1033
 msgid "(no description)"
 msgstr "(無敘述)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1030
+#: ../src/gui-wizard-gtk/wizard.c:1038
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu 位元組，%u 個檔案"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1535
+#: ../src/gui-wizard-gtk/wizard.c:1543
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "未定義「%s」事件的處理"
 
-#: ../src/gui-wizard-gtk/wizard.c:1641
+#: ../src/gui-wizard-gtk/wizard.c:1649
 #, c-format
 msgid "Reporting disabled because the rating does not contain a number '%s'."
 msgstr "已停用回報，因為評等不包含數字「%s」。"
 
-#: ../src/gui-wizard-gtk/wizard.c:1665
+#: ../src/gui-wizard-gtk/wizard.c:1673
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "追蹤資訊不完整，請確認您提供了能夠重現問題的步驟。"
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1672
+#: ../src/gui-wizard-gtk/wizard.c:1680
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "已停用回報，因為無法使用追蹤功能。"
 
-#: ../src/gui-wizard-gtk/wizard.c:1749
+#: ../src/gui-wizard-gtk/wizard.c:1757
 msgid "Analyzing..."
 msgstr "正在分析..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1750
+#: ../src/gui-wizard-gtk/wizard.c:1758
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "分析完成附帶離開碼 %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1777
+#: ../src/gui-wizard-gtk/wizard.c:1785
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "回報完成附帶離開碼 %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1804
+#: ../src/gui-wizard-gtk/wizard.c:1812
 msgid "Collecting..."
 msgstr "正在收集..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1805
+#: ../src/gui-wizard-gtk/wizard.c:1813
 #, c-format
 msgid "Collecting finished with exit code %d"
 msgstr "已完成收集，伴隨離開代碼 %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:2138
+#: ../src/gui-wizard-gtk/wizard.c:2146
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "「%s」不是原本的檔案"
 
-#: ../src/gui-wizard-gtk/wizard.c:2154
+#: ../src/gui-wizard-gtk/wizard.c:2162
 msgid "You are trying to copy a file onto itself"
 msgstr "您正嘗試複製檔案至其自身"
 
-#: ../src/gui-wizard-gtk/wizard.c:2161
+#: ../src/gui-wizard-gtk/wizard.c:2169
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "無法複製「%s」：%s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2175
+#: ../src/gui-wizard-gtk/wizard.c:2183
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "項目「%s」已經存在，且不能修改"
 
-#: ../src/gui-wizard-gtk/wizard.c:2385
+#: ../src/gui-wizard-gtk/wizard.c:2393
 msgid "Include"
 msgstr "包含"
 
-#: ../src/gui-wizard-gtk/wizard.c:2395
+#: ../src/gui-wizard-gtk/wizard.c:2403
 msgid "Name"
 msgstr "名稱"
 
-#: ../src/gui-wizard-gtk/wizard.c:2403
+#: ../src/gui-wizard-gtk/wizard.c:2411
 msgid "Value"
 msgstr "值"
 
@@ -525,6 +518,8 @@ msgid ""
 "additional comments useful for diagnosing the problem? Please use English if "
 "possible."
 msgstr ""
+"這個問題是怎麼發生的 (請一步接一步描述)？要如何讓它重現？還有沒有對於問題診斷"
+"有用的其他評註？請盡可能使用英文填寫。"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid "I reviewed the data and _agree with submitting it"
@@ -1172,7 +1167,7 @@ msgstr "臭蟲回報 %i 已 CLOSED，因為屬 DUPLICATE，但它沒有 DUP_ID"
 msgid "New bug id: %i"
 msgstr "新臭蟲回報 id：%i"
 
-#: ../src/plugins/rhbz.c:503
+#: ../src/plugins/rhbz.c:510
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla 找不到 bug %d 的親代"
@@ -1209,3 +1204,6 @@ msgstr ""
 " -o [-d] DIR\n"
 "\n"
 "回報儲存於指定 DIR 內問題的新工具"
+
+#~ msgid "Override the default prgname"
+#~ msgstr "凌駕預設的 prgname"
