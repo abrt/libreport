@@ -415,7 +415,14 @@ int rhbz_attach_fd(struct abrt_xmlrpc *ax, const char *filename,
         perror_msg("Can't lseek '%s'", filename);
         return -1;
     }
-    if (size > INT_MAX / 2)
+
+    /* bugzilla limit is 20MB */
+    /* attaching more then bugzilla's limit could cause that xmlrpc-c fails
+     * somewhere inside itself.
+     * https://bugzilla.redhat.com/show_bug.cgi?id=741980 */
+    #define _20MB (20 * 1024 * 1024)
+
+    if (size >= _20MB )
     {
         error_msg("Can't upload '%s', it's too large (%llu bytes)", filename, (long long)size);
         return -1;
