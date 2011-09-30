@@ -184,6 +184,7 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip, unsig
     return strbuf_free_nobuf(buf_dsc);
 }
 
+#ifdef UNUSED
 char* make_description_mailx(problem_data_t *problem_data)
 {
     struct strbuf *buf_dsc = strbuf_new();
@@ -227,6 +228,7 @@ char* make_description_mailx(problem_data_t *problem_data)
 
     return strbuf_free_nobuf(buf_dsc);
 }
+#endif
 
 /* Items we don't want to include to bz / logger */
 static const char *const blacklisted_items[] = {
