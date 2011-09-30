@@ -99,6 +99,13 @@ static void create_and_send_email(
     args = append_str_to_vector(args, &arg_size, email_from);
     args = append_str_to_vector(args, &arg_size, email_to);
 
+    /* This makes (some versions of) mailx to wait for child process to finish,
+     * and to report its exit code, not useless "always 0" exit code.
+     * Sadly, usually this still doesn't help. See:
+     * https://bugzilla.redhat.com/show_bug.cgi?id=740895
+     */
+    putenv((char*)"sendwait=1");
+
     log(_("Sending an email..."));
     exec_and_feed_input(dsc, args);
 
