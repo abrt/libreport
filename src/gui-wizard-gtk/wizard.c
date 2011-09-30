@@ -691,8 +691,9 @@ static void analyze_rb_was_toggled(GtkButton *button, gpointer user_data)
 static void report_tb_was_toggled(GtkButton *button, gpointer user_data)
 {
     char *event_name = (char *)user_data;
-    struct strbuf *reporters_string = strbuf_new();
-    struct strbuf *reporters_event_string = strbuf_new();
+    struct strbuf *reporters_strbuf = strbuf_new();
+    struct strbuf *reporters_event_strbuf = strbuf_new();
+    char * reporters_string;
 
     /* if ((button && user_data)
      * prevents sigsegv which would happen when call from
@@ -735,21 +736,22 @@ static void report_tb_was_toggled(GtkButton *button, gpointer user_data)
     while (li != NULL)
     {
         event_config_t *cfg = get_event_config(li->data);
-        strbuf_append_strf(reporters_event_string,
+        strbuf_append_strf(reporters_event_strbuf,
                             "%s%s",
-                            (reporters_event_string->len != 0 ? ", " : ""),
+                            (reporters_event_strbuf->len != 0 ? ", " : ""),
                             (li->data ? li->data : "")
                             );
 
-        strbuf_append_strf(reporters_string,
+        strbuf_append_strf(reporters_strbuf,
                             "%s%s",
-                            (reporters_string->len != 0 ? ", " : ""),
+                            (reporters_strbuf->len != 0 ? ", " : ""),
                             (cfg->screen_name ? cfg->screen_name : li->data)
                             );
         li = g_list_next(li);
     }
-    g_reporter_events_selected = strbuf_free_nobuf(reporters_event_string);
-    gtk_label_set_text(g_lbl_reporters, strbuf_free_nobuf(reporters_string));
+    g_reporter_events_selected = strbuf_free_nobuf(reporters_event_strbuf);
+    reporters_string = strbuf_free_nobuf(reporters_strbuf);
+    gtk_label_set_text(g_lbl_reporters, reporters_string);
     free(reporters_string); //we can, gtk copies the string
 }
 
