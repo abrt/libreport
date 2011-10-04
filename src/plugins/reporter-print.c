@@ -19,6 +19,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "internal_libreport.h"
+#include "client.h"
 
 static const char *dump_dir_name = ".";
 static const char *output_file = NULL;
@@ -55,12 +56,68 @@ int main(int argc, char **argv)
 
     export_abrt_envvars(0);
 
+    char *outfile = NULL;
+    FILE *outstream = NULL;
     if (output_file)
     {
+        outfile = xstrdup(output_file);
         if (string_to_bool(append))
             open_mode = "a";
-        if (!freopen(output_file, open_mode, stdout))
-            perror_msg_and_die("Can't open '%s'", output_file);
+        struct stat stbuf;
+        char *msg = NULL;
+        /* do not use freopen - ask() writes to stdout */
+        while (1)
+        {
+            /* prompt for another file name if needed */
+            if (msg)
+            {
+                free(outfile);
+                char response[256];
+                if (!ask(msg, response, sizeof(response)))
+                {
+                    free(msg);
+                    perror_msg_and_die("ask");
+                }
+                free(msg);
+                msg = NULL;
+
+                if (strcmp("\n", response) == 0)
+                    error_msg_and_die(_("Cancelled by user."));
+
+                outfile = xstrdup(strtrim(response));
+            }
+
+            /* do not consider ENOENT an error - file is going to be created */
+            if (lstat(outfile, &stbuf) < 0)
+            {
+                if (errno != ENOENT)
+                {
+                    VERB1 perror_msg("stat");
+                    msg = xasprintf(_("Unable to stat file '%s'. "
+                                      "Please select another file:"), outfile);
+                    continue;
+                }
+            }
+            /* do not allow symlinks */
+            else if (S_ISLNK(stbuf.st_mode))
+            {
+                msg = xasprintf(_("File '%s' is a symbolic link. "
+                                  "Please select a regular file:"), outfile);
+                continue;
+            }
+
+            if ((outstream = fopen(outfile, open_mode)) == NULL)
+            {
+                VERB1 perror_msg("fopen");
+                msg = xasprintf(_("Unable to open file '%s' for writing. "
+                                  "Please select another file:"), outfile);
+                continue;
+            }
+
+            break;
+        }
+        fclose(stdout);
+        stdout = outstream;
     }
 
     problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
@@ -74,21 +131,22 @@ int main(int argc, char **argv)
     free(dsc);
     free_problem_data(problem_data);
 
-    if (output_file)
+    if (outfile)
     {
         if (opts & OPT_r)
         {
             struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
             if (dd)
             {
-                char *msg = xasprintf("file: %s", output_file);
+                char *msg = xasprintf("file: %s", outfile);
                 add_reported_to(dd, msg);
                 free(msg);
                 dd_close(dd);
             }
         }
         const char *format = (open_mode[0] == 'a' ? _("The report was appended to %s") : _("The report was stored to %s"));
-        log(format, output_file);
+        log(format, outfile);
+        free(outfile);
     }
 
     return 0;
