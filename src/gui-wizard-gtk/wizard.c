@@ -1032,7 +1032,16 @@ void update_gui_state_from_problem_data(void)
     gtk_window_set_title(GTK_WINDOW(g_assistant), g_dump_dir_name);
 
     const char *reason = get_problem_item_content_or_NULL(g_cd, FILENAME_REASON);
-    gtk_label_set_text(g_lbl_cd_reason, reason ? reason : _("(no description)"));
+    const char *not_reportable = get_problem_item_content_or_NULL(g_cd,
+                                                                  FILENAME_NOT_REPORTABLE);
+
+    char *t = xasprintf("%s%s%s",
+                        not_reportable ?: "",
+                        not_reportable ? ": " : "",
+                        reason ?: _("(no description)"));
+
+    gtk_label_set_text(g_lbl_cd_reason, t);
+    free(t);
 
     gtk_list_store_clear(g_ls_details);
     struct cd_stats stats = { 0 };
@@ -2281,12 +2290,21 @@ static void add_pages()
             error_msg_and_die("Can't load %s: %s", g_glade_file, error->message);
     }
 
+    struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
+    if (!dd)
+        return;
+    char *not_reportable = dd_load_text_ext(dd, FILENAME_NOT_REPORTABLE, 0
+                                            | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
+                                            | DD_FAIL_QUIETLY_ENOENT
+                                            | DD_FAIL_QUIETLY_EACCES);
+    dd_close(dd);
+
     int i;
     int page_no = 0;
     for (i = 0; page_names[i] != NULL; i++)
     {
         char *delim = strrchr(page_names[i], '_');
-        if (delim != NULL)
+        if (!not_reportable && delim)
         {
             if (g_report_only && (strncmp(delim + 1, "report", strlen("report"))) != 0)
             {
@@ -2308,10 +2326,14 @@ static void add_pages()
         gtk_assistant_set_page_complete(g_assistant, page, true);
 
         gtk_assistant_set_page_title(g_assistant, page, pages[i].title);
-        gtk_assistant_set_page_type(g_assistant, page, pages[i].type);
+        if (not_reportable && i == 0)
+            gtk_assistant_set_page_type(g_assistant, pages[i].page_widget, GTK_ASSISTANT_PAGE_SUMMARY);
+        else
+            gtk_assistant_set_page_type(g_assistant, page, pages[i].type);
 
         VERB1 log("added page: %s", page_names[i]);
     }
+    free(not_reportable);
 
     /* Set pointers to objects we might need to work with */
     g_lbl_cd_reason        = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_cd_reason"));
@@ -2369,10 +2391,14 @@ static void add_pages()
 
     /* Add "Close" button */
     GtkWidget *w;
-    w = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
-    g_signal_connect(w, "clicked", G_CALLBACK(gtk_main_quit), NULL);
-    gtk_widget_show(w);
-    gtk_assistant_add_action_widget(g_assistant, w);
+    if (!not_reportable)
+    {
+        w = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
+        g_signal_connect(w, "clicked", G_CALLBACK(gtk_main_quit), NULL);
+        gtk_widget_show(w);
+        gtk_assistant_add_action_widget(g_assistant, w);
+    }
+
     /* and hide "Cancel" button - "Close" is a better name for what we want */
     gtk_assistant_commit(g_assistant);
 

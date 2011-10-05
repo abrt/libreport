@@ -18,6 +18,12 @@
 */
 #include "internal_libreport.h"
 
+/* reading /proc/sys/kernel/tainted file after an oops is ALWAYS going
+ * to show it as tainted.
+ *
+ * https://bugzilla.redhat.com/show_bug.cgi?id=724838
+ */
+
 /* From RHEL6 kernel/panic.c: */
 static const int tnts_short[] = {
 	 'P' ,
@@ -106,21 +112,16 @@ static const char *const tnts_long[] = {
     "Tech_preview",
 };
 
-char *kernel_tainted_short(unsigned tainted)
+char *kernel_tainted_short(const char *kernel_bt)
 {
-    char *tnt = xzalloc(ARRAY_SIZE(tnts_short) + 1);
-    int i = 0;
-    while (tainted)
-    {
-        if (0x1 & tainted)
-            tnt[i] = tnts_short[i];
-        else
-            tnt[i] = '-';
 
-        ++i;
-        tainted >>= 1;
-    }
+    /* example of flags: |G    B      | */
+    char *tainted = strstr(kernel_bt, "Tainted: ");
+    if (!tainted)
+        return NULL;
 
+    /* 12 == count of flags */
+    char *tnt = xstrndup(tainted + strlen("Tainted: "), 12);
     return tnt;
 }
 
