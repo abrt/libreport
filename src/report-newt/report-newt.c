@@ -318,6 +318,27 @@ static int report(const char *dump_dir_name)
     if (!(dd = dd_opendir(dump_dir_name, 0)))
         return -1;
     events_as_lines = list_possible_events(dd, NULL, "report");
+
+    char *not_reportable = dd_load_text_ext(dd, FILENAME_NOT_REPORTABLE, 0
+                                            | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
+                                            | DD_FAIL_QUIETLY_ENOENT
+                                            | DD_FAIL_QUIETLY_EACCES);
+
+    if (not_reportable)
+    {
+        char *reason = dd_load_text_ext(dd, FILENAME_REASON, 0
+                                        | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+        char *t = xasprintf("%s%s%s",
+                            not_reportable ?: "",
+                            not_reportable ? ": " : "",
+                            reason ?: _("(no description)"));
+
+        dd_close(dd);
+        newtWinMessage(_("Error"), _("Ok"), "%s", t);
+        free(t);
+        return -1;
+    }
+
     dd_close(dd);
 
     reporters = get_available_reporters(events_as_lines);

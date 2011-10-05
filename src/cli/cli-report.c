@@ -750,6 +750,26 @@ int report(const char *dump_dir_name, int flags)
     if (!dd)
         return -1;
 
+    char *not_reportable = dd_load_text_ext(dd, FILENAME_NOT_REPORTABLE, 0
+                                            | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
+                                            | DD_FAIL_QUIETLY_ENOENT
+                                            | DD_FAIL_QUIETLY_EACCES);
+
+    if (not_reportable)
+    {
+        char *reason = dd_load_text_ext(dd, FILENAME_REASON, 0
+                                        | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+        char *t = xasprintf("%s%s%s",
+                            not_reportable ?: "",
+                            not_reportable ? ": " : "",
+                            reason ?: _("(no description)"));
+
+        dd_close(dd);
+        error_msg("%s", t);
+        free(t);
+        xfunc_die();
+    }
+
     if (!(flags & CLI_REPORT_ONLY))
     {
         char *analyze_events_as_lines = list_possible_events(dd, NULL, "analyze");

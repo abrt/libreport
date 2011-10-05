@@ -581,7 +581,7 @@ int delete_dump_dir_possibly_using_abrtd(const char *dump_dir_name);
 struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name);
 
 #define kernel_tainted_short libreport_kernel_tainted_short
-char *kernel_tainted_short(unsigned tainted);
+char *kernel_tainted_short(const char *kernel_bt);
 #define kernel_tainted_long libreport_kernel_tainted_long
 GList *kernel_tainted_long(unsigned tainted);
 
@@ -635,6 +635,7 @@ GList *kernel_tainted_long(unsigned tainted);
  */
 #define FILENAME_REPORTED_TO  "reported_to"
 #define FILENAME_EVENT_LOG    "event_log"
+#define FILENAME_NOT_REPORTABLE "not-reportable"
 
 // Not stored as files, added "on the fly":
 #define CD_DUMPDIR            "Directory"
