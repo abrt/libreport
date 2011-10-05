@@ -971,6 +971,17 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
                               -1);
         free(msg);
     }
+
+    int cur_value;
+    if (item->selected_by_user == 0)
+        cur_value = item->default_by_reporter;
+    else
+        cur_value = !!(item->selected_by_user + 1); /* map -1,1 to 0,1 */
+
+    gtk_list_store_set(g_ls_details, &iter,
+            DETAIL_COLUMN_CHECKBOX, cur_value,
+            -1);
+}
 }
 
 /* Update collector/reporter checkboxes according to events parameter.
@@ -2182,7 +2193,6 @@ static void on_btn_add_file(GtkButton *button)
                     }
                     if (!message)
                     {
-// FIXME: this destroys checkbox settings for each item!
                         reload_problem_data_from_dump_dir();
                         update_gui_state_from_problem_data();
                     }

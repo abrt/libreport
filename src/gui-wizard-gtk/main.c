@@ -63,10 +63,16 @@ void reload_problem_data_from_dump_dir(void)
             if (old_item)
             {
                 new_item->selected_by_user = old_item->selected_by_user;
+                new_item->allowed_by_reporter = old_item->allowed_by_reporter;
+                new_item->default_by_reporter = old_item->default_by_reporter;
+                new_item->required_by_reporter = old_item->required_by_reporter;
             }
             else
             {
                 new_item->selected_by_user = 0;
+                new_item->allowed_by_reporter = 0;
+                new_item->default_by_reporter = 0;
+                new_item->required_by_reporter = 0;
             }
             //log("%s: was ->selected_by_user=%d", __func__, new_item->selected_by_user);
         }
