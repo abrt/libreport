@@ -330,6 +330,17 @@ static void show_event_opt_error_dialog(const char *event_name)
         gtk_widget_destroy(wrong_settings);
 }
 
+static void update_window_title(void)
+{
+    /* prgname can be null according to gtk documentation */
+    const char *prgname = g_get_prgname();
+    const char *reason = get_problem_item_content_or_NULL(g_cd, FILENAME_REASON);
+    char *title = xasprintf("%s - %s", (reason ? reason : g_dump_dir_name),
+            (prgname ? prgname : "report"));
+    gtk_window_set_title(GTK_WINDOW(g_assistant), title);
+    free(title);
+}
+
 struct dump_dir *steal_if_needed(struct dump_dir *dd)
 {
     if (!dd)
@@ -379,7 +390,7 @@ struct dump_dir *steal_if_needed(struct dump_dir *dd)
     g_dump_dir_name = xstrdup(dd->dd_dirname);
     dd_close(dd);
 
-    gtk_window_set_title(GTK_WINDOW(g_assistant), g_dump_dir_name);
+    update_window_title();
     delete_dump_dir_possibly_using_abrtd(old_name); //TODO: if (deletion_failed) error_msg("BAD")?
     free(old_name);
 
@@ -1118,7 +1129,7 @@ static void update_event_checkboxes(GList **events_gui_data,
 
 void update_gui_state_from_problem_data(void)
 {
-    gtk_window_set_title(GTK_WINDOW(g_assistant), g_dump_dir_name);
+    update_window_title();
 
     const char *reason = get_problem_item_content_or_NULL(g_cd, FILENAME_REASON);
     const char *not_reportable = get_problem_item_content_or_NULL(g_cd,
