@@ -44,7 +44,6 @@ libreport_la_SOURCES = \
     steal_directory.c \
     event_xml_parser.c \
     event_config.c \
-    kernel-tainted.c \
     report.c \
     client.c
 libreport_la_CPPFLAGS = \

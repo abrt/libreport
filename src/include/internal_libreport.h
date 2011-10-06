@@ -580,12 +580,6 @@ int delete_dump_dir_possibly_using_abrtd(const char *dump_dir_name);
 #define steal_directory libreport_steal_directory
 struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name);
 
-#define kernel_tainted_short libreport_kernel_tainted_short
-char *kernel_tainted_short(const char *kernel_bt);
-#define kernel_tainted_long libreport_kernel_tainted_long
-GList *kernel_tainted_long(unsigned tainted);
-
-
 // Text bigger than this usually is attached, not added inline
 // was 2k, now bumbed up to 20k:
 #define CD_TEXT_ATT_SIZE (20*1024)
