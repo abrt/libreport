@@ -48,6 +48,7 @@ static GtkBox *g_box_analyzers;
 static GList *g_list_analyzers;
 static GtkLabel *g_lbl_analyze_log;
 static GtkTextView *g_tv_analyze_log;
+static GtkProgressBar *g_pb_analyze;
 
 static GtkBox *g_box_collectors;
 /* List of event_gui_data's */
@@ -103,6 +104,9 @@ static GtkEntry *g_search_entry_bt;
 
 static GtkBuilder *builder;
 static PangoFontDescription *monospace_font;
+
+static gboolean pb_pulse = false;
+static gint pb_pulse_speed = 150;
 
 
 /* THE PAGE FLOW
@@ -1490,6 +1494,8 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
             {
                 append_to_textview(evd->tv_log, msg);
                 save_to_event_log(evd, msg);
+                /* cuts off \n from msg */
+                gtk_label_set_text(g_lbl_analyze_log, strtrim(msg));
             }
 
             strbuf_clear(line);
@@ -1558,7 +1564,6 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     ) {
         VERB1 log("done running event on '%s': %d", g_dump_dir_name, retval);
         append_to_textview(evd->tv_log, "\n");
-
         for (;;)
         {
             if (!evd->more_events)
@@ -1570,6 +1575,9 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                 /* free child output buffer */
                 strbuf_free(line);
                 line = NULL;
+
+                /* hide progress bar */
+                pb_pulse = false;
 
                 /* Enable (un-gray out) navigation buttons */
                 gtk_widget_set_sensitive(GTK_WIDGET(g_assistant), true);
@@ -1617,6 +1625,16 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     return TRUE; /* "please don't remove this event (yet)" */
 }
 
+/* pulse the progressbar */
+static gboolean pb_pulse_timeout(gpointer data)
+{
+    if (pb_pulse)
+        gtk_progress_bar_pulse(g_pb_analyze);
+    else
+        gtk_widget_hide(GTK_WIDGET(g_pb_analyze));
+    return pb_pulse;
+}
+
 static void start_event_run(const char *event_name,
                 GList *more_events,
                 GtkWidget *page,
@@ -1629,6 +1647,9 @@ static void start_event_run(const char *event_name,
      * (synchronous run would freeze GUI until completion)
      */
     struct run_event_state *state = new_run_event_state();
+
+    pb_pulse = true;
+    g_timeout_add(pb_pulse_speed, pb_pulse_timeout, NULL);
 
     if (prepare_commands(state, g_dump_dir_name, event_name) == 0)
     {
@@ -2356,6 +2377,7 @@ static void add_pages()
     g_box_analyzers        = GTK_BOX(          gtk_builder_get_object(builder, "vb_analyzers"));
     g_lbl_analyze_log      = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_analyze_log"));
     g_tv_analyze_log       = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_analyze_log"));
+    g_pb_analyze           = GTK_PROGRESS_BAR( gtk_builder_get_object(builder, "pb_analyze"));
     g_box_collectors       = GTK_BOX(          gtk_builder_get_object(builder, "vb_collectors"));
     g_lbl_collect_log      = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_collect_log"));
     g_tv_collect_log       = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_collect_log"));
