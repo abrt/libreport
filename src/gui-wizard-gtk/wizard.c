@@ -2442,6 +2442,12 @@ static void add_pages()
     GtkWidget *w;
     if (!not_reportable)
     {
+        /* Align the "Close" button to left */   
+        w = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);
+        gtk_assistant_add_action_widget(g_assistant, w);
+        gtk_box_set_child_packing(GTK_BOX(gtk_widget_get_parent(w)), w, TRUE, FALSE, 0, GTK_PACK_END);
+        gtk_widget_show(w);
+
         w = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
         g_signal_connect(w, "clicked", G_CALLBACK(gtk_main_quit), NULL);
         gtk_widget_show(w);
