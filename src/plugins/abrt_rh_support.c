@@ -478,6 +478,7 @@ send_report_to_new_case(const char* baseURL,
 
     free_abrt_post_state(case_state);
     free(allocated);
+    free(case_data);
     free(case_url);
     return result;
 }
