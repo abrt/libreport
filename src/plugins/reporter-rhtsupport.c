@@ -64,10 +64,7 @@ static void report_to_rhtsupport(const char *dump_dir_name)
         if (reason)
             strbuf_append_strf(buf_summary, ": %s", reason);
         summary = strbuf_free_nobuf(buf_summary);
-
-        char *bz_dsc = make_description_bz(problem_data);
-        dsc = xasprintf("abrt version: "VERSION"\n%s", bz_dsc);
-        free(bz_dsc);
+        dsc = make_description_bz(problem_data);
     }
     file = new_reportfile();
     const char *dt_string = iso_date_string(NULL);
