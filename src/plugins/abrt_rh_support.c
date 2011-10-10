@@ -221,7 +221,7 @@ void free_rhts_result(rhts_result_t *p)
 }
 
 //
-// send_report_to_new_case()
+// create_new_case()
 //
 
 static char*
@@ -301,16 +301,20 @@ make_response(const char* title, const char* body,
 //<response><title>Case Created and Report Attached</title><body></body><URL href="http://support-services-devel.gss.redhat.com:8080/Strata/cases/00005129/attachments/ccbf3e65-b941-3db7-a016-6a3831691a32">New Case URL</URL></response>
 #endif
 
+static const char *headers[] = {
+    "Accept: text/plain",
+    NULL
+};
+
 rhts_result_t*
-send_report_to_new_case(const char* baseURL,
+create_new_case(const char* baseURL,
                 const char* username,
                 const char* password,
                 bool ssl_verify,
                 const char* release,
                 const char* summary,
                 const char* description,
-                const char* component,
-                const char* report_file_name)
+                const char* component)
 {
     rhts_result_t *result = xzalloc(sizeof(*result));
 
@@ -340,11 +344,6 @@ send_report_to_new_case(const char* baseURL,
     case_state->username = username;
     case_state->password = password;
 
-    static const char *headers[] = {
-        "Accept: text/plain",
-        NULL
-    };
-
     abrt_post_string(case_state, case_url, "application/xml", headers, case_data);
 
     char *case_location = find_header_in_abrt_post_state(case_state, "Location:");
@@ -373,6 +372,20 @@ send_report_to_new_case(const char* baseURL,
         /* fall through */
 
     default:
+        // TODO: error messages in headers
+        // are observed to be more informative than the body:
+        //
+        // 'HTTP/1.1 400 Bad Request'
+        // 'Date: Mon, 10 Oct 2011 13:31:56 GMT^M'
+        // 'Server: Apache^M'
+        // 'Strata-Message: The supplied parameter Fedora value  can not be processed^M'
+        // ^^^^^^^^^^^^^^^^^^^^^^^^^ useful message
+        // 'Strata-Code: BAD_PARAMETER^M'
+        // 'Content-Length: 1^M'
+        // 'Content-Type: text/plain; charset=UTF-8^M'
+        // 'Connection: close^M'
+        // '^M'
+        // ' '  <------ body is useless
         result->error = -1;
         errmsg = case_state->curl_error_msg;
         if (errmsg && errmsg[0])
@@ -392,7 +405,7 @@ send_report_to_new_case(const char* baseURL,
         break;
 
     case 200:
-    case 201: {
+    case 201:
         if (!case_location) {
             /* Case Creation returned valid code, but no location */
             result->error = -1;
@@ -401,84 +414,99 @@ send_report_to_new_case(const char* baseURL,
             break;
         }
 
-        char *atch_url = concat_path_file(case_location, "attachments");
-        abrt_post_state_t *atch_state;
- redirect_attach:
-        atch_state = new_abrt_post_state(0
-                + ABRT_POST_WANT_HEADERS
-                + ABRT_POST_WANT_BODY
-                + ABRT_POST_WANT_ERROR_MSG
-                + (ssl_verify ? ABRT_POST_WANT_SSL_VERIFY : 0)
-        );
-        atch_state->username = username;
-        atch_state->password = password;
-
-        abrt_post_file_as_form(atch_state, atch_url, "application/binary", headers,
-                               report_file_name);
-
-        switch (atch_state->http_resp_code)
-        {
-        case 305: /* "305 Use Proxy" */
-            {
-                char *atch_location = find_header_in_abrt_post_state(atch_state, "Location:");
-                if (++redirect_count < 10 && atch_location)
-                {
-                    free(atch_url);
-                    atch_url = xstrdup(atch_location);
-                    free_abrt_post_state(atch_state);
-                    goto redirect_attach;
-                }
-            }
-            /* fall through */
-
-        default:
-            /* Case Creation Succeeded, attachement FAILED */
-            errmsg = atch_state->curl_error_msg;
-            if (atch_state->body && atch_state->body[0])
-            {
-                if (errmsg && errmsg[0]
-                 && strcmp(errmsg, atch_state->body) != 0
-                ) /* both strata/curl error and body are present (and aren't the same) */
-                    allocated = errmsg = xasprintf("%s. %s",
-                            atch_state->body,
-                            errmsg);
-                else /* only body exists */
-                    errmsg = atch_state->body;
-            }
-            result->error = -1;
-            result->url = xstrdup(case_location);
-            result->msg = xasprintf("Case created but report attachment failed (HTTP code %d)%s%s",
-                    atch_state->http_resp_code,
-                    errmsg ? ": " : "",
-                    errmsg ? errmsg : ""
-            );
-            break;
-
-        case 200:
-        case 201:
-            // unused
-            //char *body = atch_state->body;
-            //if (case_state->body && case_state->body[0])
-            //{
-            //    body = case_state->body;
-            //    if (atch_state->body && atch_state->body[0])
-            //        allocated = body = xasprintf("%s\n%s",
-            //                case_state->body,
-            //                atch_state->body);
-            //}
-            result->url = xstrdup(case_location);
-            result->msg = xstrdup("Case created");
-        } /* switch (attach HTTP code) */
-
-        free_abrt_post_state(atch_state);
-        free(atch_url);
-    } /* case 200/201 */
-
+        /* Cose created successfully */
+        result->url = xstrdup(case_location);
+        //result->msg = xstrdup("Case created");
     } /* switch (case HTTP code) */
 
     free_abrt_post_state(case_state);
     free(allocated);
     free(case_data);
     free(case_url);
+    return result;
+}
+
+rhts_result_t*
+attach_file_to_case(const char* baseURL,
+                const char* username,
+                const char* password,
+                bool ssl_verify,
+                const char *file_name)
+{
+    rhts_result_t *result = xzalloc(sizeof(*result));
+
+    int redirect_count = 0;
+    char *atch_url = concat_path_file(baseURL, "attachments");
+    abrt_post_state_t *atch_state;
+
+ redirect_attach:
+    atch_state = new_abrt_post_state(0
+            + ABRT_POST_WANT_HEADERS
+            + ABRT_POST_WANT_BODY
+            + ABRT_POST_WANT_ERROR_MSG
+            + (ssl_verify ? ABRT_POST_WANT_SSL_VERIFY : 0)
+    );
+    atch_state->username = username;
+    atch_state->password = password;
+    abrt_post_file_as_form(atch_state,
+        atch_url,
+        "application/binary",
+        headers,
+        file_name
+    );
+
+    switch (atch_state->http_resp_code)
+    {
+    case 305: /* "305 Use Proxy" */
+        {
+            char *atch_location = find_header_in_abrt_post_state(atch_state, "Location:");
+            if (++redirect_count < 10 && atch_location)
+            {
+                free(atch_url);
+                atch_url = xstrdup(atch_location);
+                free_abrt_post_state(atch_state);
+                goto redirect_attach;
+            }
+        }
+        /* fall through */
+
+    default:
+        /* Error */
+        {
+            char *allocated = NULL;
+            const char *errmsg = atch_state->curl_error_msg;
+            if (atch_state->body && atch_state->body[0])
+            {
+                if (errmsg && errmsg[0]
+                 && strcmp(errmsg, atch_state->body) != 0
+                ) /* both strata/curl error and body are present (and aren't the same) */
+                    errmsg = allocated = xasprintf("%s. %s",
+                            atch_state->body,
+                            errmsg);
+                else /* only body exists */
+                    errmsg = atch_state->body;
+            }
+            result->error = -1;
+            result->msg = xasprintf("Attachment failed (HTTP code %d)%s%s",
+                    atch_state->http_resp_code,
+                    errmsg ? ": " : "",
+                    errmsg ? errmsg : ""
+            );
+            free(allocated);
+        }
+        break;
+
+    case 200:
+    case 201:
+        {
+            char *loc = find_header_in_abrt_post_state(atch_state, "Location:");
+            if (loc)
+                result->url = xstrdup(loc);
+            //result->msg = xstrdup("File attached successfully");
+        }
+    } /* switch */
+
+    free_abrt_post_state(atch_state);
+    free(atch_url);
     return result;
 }

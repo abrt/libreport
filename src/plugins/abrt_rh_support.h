@@ -49,15 +49,23 @@ typedef struct rhts_result rhts_result_t;
 void free_rhts_result(rhts_result_t *p);
 
 rhts_result_t*
-send_report_to_new_case(const char* baseURL,
+create_new_case(const char* baseURL,
                 const char* username,
                 const char* password,
                 bool ssl_verify,
                 const char* release,
                 const char* summary,
                 const char* description,
-                const char* component,
-                const char* report_file_name);
+                const char* component
+);
+
+rhts_result_t*
+attach_file_to_case(const char* baseURL,
+                const char* username,
+                const char* password,
+                bool ssl_verify,
+                const char* file_name
+);
 
 #ifdef __cplusplus
 }

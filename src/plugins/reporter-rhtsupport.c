@@ -42,6 +42,7 @@ static void report_to_rhtsupport(const char *dump_dir_name)
     char *tempfile = NULL;
     reportfile_t *file = NULL;
     rhts_result_t *result = NULL;
+    rhts_result_t *result_atch = NULL;
     char *dsc = NULL;
     char *summary = NULL;
     const char *function;
@@ -186,15 +187,14 @@ static void report_to_rhtsupport(const char *dump_dir_name)
 
     /* Send tempfile */
     log(_("Creating a new case..."));
-    result = send_report_to_new_case(url,
+    result = create_new_case(url,
             login,
             password,
             ssl_verify,
             release,
             summary,
             dsc,
-            package,
-            tempfile
+            package
     );
 
     if (result->error)
@@ -222,7 +222,22 @@ static void report_to_rhtsupport(const char *dump_dir_name)
         goto ret;
     }
 
-    /* No error */
+    /* No error in case creation. Attach the file. */
+    result_atch = attach_file_to_case(result->url,
+            login,
+            password,
+            ssl_verify,
+            tempfile
+    );
+    if (result_atch->error)
+    {
+        /* Error. Prepend "Case created" text to whatever error message there is,
+         * so that user knows that case _was_ created despite error in attaching.
+         */
+        log("Case created but report attachment failed: %s", result_atch->msg);
+    }
+
+    /* Record "reported_to" element */
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (dd)
     {
@@ -268,87 +283,13 @@ static void report_to_rhtsupport(const char *dump_dir_name)
     free(summary);
     free(dsc);
 
+    free_rhts_result(result_atch);
     free_rhts_result(result);
 
     free(url);
     free(login);
     free(password);
     free_problem_data(problem_data);
-}
-
-/* TODO: move to send_report_to_new_case (it has similar code) */
-static void attach_to_rhtsupport(const char *file_name)
-{
-    log(_("Attaching '%s' to case '%s'"), file_name, url);
-
-    static const char *headers[] = {
-        "Accept: text/plain",
-        NULL
-    };
-
-    int redirect_count = 0;
-    char *atch_url = concat_path_file(url, "attachments");
-    abrt_post_state_t *atch_state;
-
- redirect_attach:
-    atch_state = new_abrt_post_state(0
-            + ABRT_POST_WANT_HEADERS
-            + ABRT_POST_WANT_BODY
-            + ABRT_POST_WANT_ERROR_MSG
-            + (ssl_verify ? ABRT_POST_WANT_SSL_VERIFY : 0)
-    );
-    atch_state->username = login;
-    atch_state->password = password;
-    abrt_post_file_as_form(atch_state,
-        atch_url,
-        "application/binary",
-        headers,
-        file_name
-    );
-    free(atch_url);
-
-    char *atch_location = find_header_in_abrt_post_state(atch_state, "Location:");
-    switch (atch_state->http_resp_code)
-    {
-    case 305: /* "305 Use Proxy" */
-        if (++redirect_count < 10 && atch_location)
-        {
-            atch_url = xstrdup(atch_location);
-            free_abrt_post_state(atch_state);
-            goto redirect_attach;
-        }
-        /* fall through */
-
-    default:
-        /* Error */
-        {
-            const char *errmsg = atch_state->curl_error_msg;
-            if (atch_state->body && atch_state->body[0])
-            {
-                if (errmsg && errmsg[0]
-                 && strcmp(errmsg, atch_state->body) != 0
-                ) /* both strata/curl error and body are present (and aren't the same) */
-                    errmsg = xasprintf("%s. %s",
-                            atch_state->body,
-                            errmsg);
-                else /* only body exists */
-                    errmsg = atch_state->body;
-            }
-            error_msg_and_die("Can't attach. HTTP code %d%s%s",
-                    atch_state->http_resp_code,
-                    errmsg ? ". " : "",
-                    errmsg ? errmsg : ""
-            );
-        }
-        break;
-
-    case 200:
-    case 201:
-        log("Attachment URL:%s", atch_location);
-        log("File attached successfully");
-    } /* switch */
-
-    free_abrt_post_state(atch_state);
 }
 
 int main(int argc, char **argv)
@@ -469,7 +410,21 @@ int main(int argc, char **argv)
         }
 
         while (*argv)
-            attach_to_rhtsupport(*argv++);
+        {
+            log(_("Attaching '%s' to case '%s'"), *argv, url);
+            rhts_result_t *result = attach_file_to_case(url,
+                login,
+                password,
+                ssl_verify,
+                *argv
+            );
+            if (result->error)
+                error_msg_and_die("%s", result->msg);
+            log("Attachment URL:%s", result->url);
+            log("File attached successfully");
+            free_rhts_result(result);
+            argv++;
+        }
 
         return 0;
     }
