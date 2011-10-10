@@ -62,6 +62,7 @@ static GList *g_list_reporters;
 static GList *g_list_selected_reporters;
 static GtkLabel *g_lbl_report_log;
 static GtkTextView *g_tv_report_log;
+static GtkProgressBar *g_pb_report;
 
 static GtkContainer *g_container_details1;
 static GtkContainer *g_container_details2;
@@ -85,6 +86,9 @@ static GtkTreeViewColumn *g_tv_details_col_checkbox;
 //static GtkCellRenderer *g_tv_details_renderer_checkbox;
 static GtkListStore *g_ls_details;
 static GtkWidget *g_top_most_window;
+
+static GtkLabel *g_active_lbl;
+static GtkProgressBar *g_active_pb;
 
 enum
 {
@@ -1506,7 +1510,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                 append_to_textview(evd->tv_log, msg);
                 save_to_event_log(evd, msg);
                 /* cuts off \n from msg */
-                gtk_label_set_text(g_lbl_analyze_log, strtrim(msg));
+                gtk_label_set_text(g_active_lbl, strtrim(msg));
             }
 
             strbuf_clear(line);
@@ -1640,9 +1644,9 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 static gboolean pb_pulse_timeout(gpointer data)
 {
     if (pb_pulse)
-        gtk_progress_bar_pulse(g_pb_analyze);
+        gtk_progress_bar_pulse(g_active_pb);
     else
-        gtk_widget_hide(GTK_WIDGET(g_pb_analyze));
+        gtk_widget_hide(GTK_WIDGET(g_active_pb));
     return pb_pulse;
 }
 
@@ -1659,6 +1663,8 @@ static void start_event_run(const char *event_name,
      */
     struct run_event_state *state = new_run_event_state();
 
+    if (g_active_pb)
+        gtk_widget_show(GTK_WIDGET(g_active_pb));
     pb_pulse = true;
     g_timeout_add(pb_pulse_speed, pb_pulse_timeout, NULL);
 
@@ -1981,6 +1987,18 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
     //            pages[PAGENO_REVIEW_DATA].page_widget,
     //            pages[PAGENO_REVIEW_DATA].page_widget == page
     //);
+
+    if (pages[PAGENO_ANALYZE_PROGRESS].page_widget == page)
+    {
+        g_active_pb = g_pb_analyze;
+        g_active_lbl = g_lbl_analyze_log;
+    }
+
+    if (pages[PAGENO_REPORT_PROGRESS].page_widget == page)
+    {
+        g_active_pb = g_pb_report;
+        g_active_lbl = g_lbl_report_log;
+    }
 
     if (pages[PAGENO_EDIT_BACKTRACE].page_widget == page)
     {
@@ -2395,6 +2413,7 @@ static void add_pages()
     g_box_reporters        = GTK_BOX(          gtk_builder_get_object(builder, "vb_reporters"));
     g_lbl_report_log       = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_report_log"));
     g_tv_report_log        = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_report_log"));
+    g_pb_report            = GTK_PROGRESS_BAR( gtk_builder_get_object(builder, "pb_report"));
     g_tv_backtrace         = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_backtrace"));
     g_tv_comment           = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_comment"));
     g_eb_comment           = GTK_EVENT_BOX(    gtk_builder_get_object(builder, "eb_comment"));
