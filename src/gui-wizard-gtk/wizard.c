@@ -90,6 +90,8 @@ static GtkWidget *g_top_most_window;
 static GtkLabel *g_active_lbl;
 static GtkProgressBar *g_active_pb;
 
+static GtkBox *g_box_assist_nav;
+
 enum
 {
     /* Note: need to update types in
@@ -1595,7 +1597,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                 pb_pulse = false;
 
                 /* Enable (un-gray out) navigation buttons */
-                gtk_widget_set_sensitive(GTK_WIDGET(g_assistant), true);
+                gtk_widget_set_sensitive(GTK_WIDGET(g_box_assist_nav), true);
 
                 /*g_source_remove(evd->event_source_id);*/
                 close(evd->fd);
@@ -1730,7 +1732,7 @@ static void start_event_run(const char *event_name,
     free(msg);
 
     /* Disable (gray out) navigation buttons */
-    gtk_widget_set_sensitive(GTK_WIDGET(g_assistant), false);
+    gtk_widget_set_sensitive(GTK_WIDGET(g_box_assist_nav), false);
 }
 
 
@@ -2457,16 +2459,19 @@ static void add_pages()
     if (config_btn)
         g_signal_connect(G_OBJECT(config_btn), "clicked", G_CALLBACK(on_show_event_list_cb), NULL);
 
-    /* Add "Close" button */
     GtkWidget *w;
+
+    /* Align "Close" button to left */   
+    w = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);
+    gtk_assistant_add_action_widget(g_assistant, w);
+    /* Keep pointer to the button box so we can set sensitivity later */
+    g_box_assist_nav = GTK_BOX(gtk_widget_get_parent(w));
+    gtk_box_set_child_packing(g_box_assist_nav, w, TRUE, FALSE, 0, GTK_PACK_END);
+    gtk_widget_show(w);
+
+    /* Add "Close" button */
     if (!not_reportable)
     {
-        /* Align the "Close" button to left */   
-        w = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);
-        gtk_assistant_add_action_widget(g_assistant, w);
-        gtk_box_set_child_packing(GTK_BOX(gtk_widget_get_parent(w)), w, TRUE, FALSE, 0, GTK_PACK_END);
-        gtk_widget_show(w);
-
         w = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
         g_signal_connect(w, "clicked", G_CALLBACK(gtk_main_quit), NULL);
         gtk_widget_show(w);
