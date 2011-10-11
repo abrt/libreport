@@ -1,0 +1,127 @@
+# -*- Autotest -*-
+
+AT_BANNER([osrelease - 730887])
+
+## ---------------------- ##
+## parse_release_for_bz ##
+## ---------------------- ##
+
+AT_TESTFUN([parse_release_for_bz],
+[[
+#include "internal_libreport.h"
+#include <assert.h>
+
+/* Test parsing different release strings */
+int test(char ***input)
+{
+    char * release_string = **input;
+    int retcode = 1;
+    log("release: >>%s<<\n", release_string);
+    char *product = NULL;
+    char *version = NULL;
+    parse_release_for_bz(release_string, &product, &version);
+    log("version: >>%s<<\n", version);
+    log("product: >>%s<<\n", product);
+
+    if(version == NULL || (strlen(version) == 0))
+    {
+        printf("version == NULL\n");
+        goto ret;
+    }
+
+    (*input)++; //expected product is +1 in the array
+    log("'%s' == '%s'", product, **input);
+    if (strcmp(product, **input) != 0)
+        goto ret;
+
+    (*input)++; //expected version is +2 in the array
+    log("'%s' == '%s'", version, **input);
+    if (strcmp(version, **input) == 0)
+        retcode = 0;
+
+ret:
+    log("retcode %i\n", retcode);
+    return retcode;
+}
+
+int main(void)
+{
+    char *releases_good[7][3] =
+    {
+        //"Fedora release 15.a (Lovelock)", //should fail
+        {"Fedora release 16 (Rawhide)", "Fedora", "rawhide"},
+        {"Fedora release 16 (Verne)", "Fedora", "16"},
+        {"Fedora 16-Alpha", "Fedora", "16"},// rhbz#730887
+        {"Fedora release 17 (Rawhide)", "Fedora", "rawhide"},
+        {"Red Hat Enterprise Linux Server release 6.2 Beta (Santiago)", "Red Hat Enterprise Linux 6", "6.2"},
+        {"Red Hat Enterprise Linux 6.2", "Red Hat Enterprise Linux 6", "6.2"},
+    };
+
+    char **tmp = (char **)releases_good;
+    while(*tmp)
+    {
+        assert(test(&tmp) == 0);
+        tmp++;
+    }
+}
+]])
+
+## --------------------- ##
+## parse_release_for_rhts##
+## --------------------- ##
+
+AT_TESTFUN([parse_release_for_rhts],
+[[
+#include "internal_libreport.h"
+#include <assert.h>
+
+/* Test parsing different release strings */
+/* Test parsing different release strings */
+int test(char ***input)
+{
+    char * release_string = **input;
+    int retcode = 1;
+    log("release: >>%s<<\n", release_string);
+    char *product = NULL;
+    char *version = NULL;
+    parse_release_for_rhts(release_string, &product, &version);
+    log("version: >>%s<<\n", version);
+    log("product: >>%s<<\n", product);
+
+    if(version == NULL || (strlen(version) == 0))
+    {
+        printf("version == NULL\n");
+        goto ret;
+    }
+
+    (*input)++; //expected product is +1 in the array
+    log("'%s' == '%s'", product, **input);
+    if (strcmp(product, **input) != 0)
+        goto ret;
+
+    (*input)++; //expected version is +2 in the array
+    log("'%s' == '%s'", version, **input);
+    if (strcmp(version, **input) == 0)
+        retcode = 0;
+
+ret:
+    log("retcode %i\n", retcode);
+    return retcode;
+}
+
+int main(void)
+{
+    char *releases_good[7][3] =
+    {
+        {"Red Hat Enterprise Linux Server release 6.2 Beta (Santiago)", "Red Hat Enterprise Linux", "6.2"},
+        {"Red Hat Enterprise Linux 6.2", "Red Hat Enterprise Linux", "6.2"},
+    };
+
+    char **tmp = (char **)releases_good;
+    while(*tmp)
+    {
+        assert(test(&tmp) == 0);
+        tmp++;
+    }
+}
+]])

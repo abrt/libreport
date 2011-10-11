@@ -27,7 +27,8 @@ EXTRA_DIST = package.m4
 TESTSUITE_AT = \
   local.at \
   testsuite.at \
-  strbuf.at
+  strbuf.at \
+  osrelease.at
 
 EXTRA_DIST += $(TESTSUITE_AT)
 TESTSUITE = $(srcdir)/testsuite
