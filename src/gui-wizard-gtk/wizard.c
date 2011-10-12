@@ -727,11 +727,17 @@ static void report_tb_was_toggled(GtkButton *button, gpointer user_data)
         if (g_list_find_custom(g_list_selected_reporters, event_name, (GCompareFunc)g_strcmp0) == NULL)
             g_list_selected_reporters = g_list_prepend(g_list_selected_reporters, xstrdup(event_name));
 
-        GHashTable *errors = validate_event(event_name);
-        if (errors != NULL)
+        /* check only if it wasn't toggeld by update_event_checkboxes
+           i.e: when user clicks "regenerate backtrace"
+        */
+        if(gtk_widget_has_focus(GTK_WIDGET(button)))
         {
-            g_hash_table_unref(errors);
-            show_event_opt_error_dialog(event_name);
+            GHashTable *errors = validate_event(event_name);
+            if (errors != NULL)
+            {
+                g_hash_table_unref(errors);
+                show_event_opt_error_dialog(event_name);
+            }
         }
 
     }
@@ -2461,7 +2467,7 @@ static void add_pages()
 
     GtkWidget *w;
 
-    /* Align "Close" button to left */   
+    /* Align "Close" button to left */
     w = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);
     gtk_assistant_add_action_widget(g_assistant, w);
     /* Keep pointer to the button box so we can set sensitivity later */
