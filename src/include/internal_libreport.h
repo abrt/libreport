@@ -618,6 +618,8 @@ struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name
 #define FILENAME_TAINTED      "kernel_tainted"
 #define FILENAME_TAINTED_SHORT "kernel_tainted_short"
 #define FILENAME_TAINTED_LONG  "kernel_tainted_long"
+#define FILENAME_VMCORE       "vmcore"
+#define FILENAME_KERNEL_LOG   "kernel_log"
 
 #define FILENAME_UUID         "uuid"
 #define FILENAME_COUNT        "count"
