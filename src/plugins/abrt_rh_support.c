@@ -217,6 +217,7 @@ void free_rhts_result(rhts_result_t *p)
         return;
     free(p->url);
     free(p->msg);
+    free(p->body);
     free(p);
 }
 
@@ -306,8 +307,8 @@ static const char *headers[] = {
     NULL
 };
 
-rhts_result_t*
-create_new_case(const char* baseURL,
+static rhts_result_t*
+post_case_to_url(const char* url,
                 const char* username,
                 const char* password,
                 bool ssl_verify,
@@ -317,8 +318,7 @@ create_new_case(const char* baseURL,
                 const char* component)
 {
     rhts_result_t *result = xzalloc(sizeof(*result));
-
-    char *case_url = concat_path_file(baseURL, "cases");
+    char *url_copy = NULL;
 
     char *product = NULL;
     char *version = NULL;
@@ -344,7 +344,7 @@ create_new_case(const char* baseURL,
     case_state->username = username;
     case_state->password = password;
 
-    abrt_post_string(case_state, case_url, "application/xml", headers, case_data);
+    abrt_post_string(case_state, url, "application/xml", headers, case_data);
 
     char *case_location = find_header_in_abrt_post_state(case_state, "Location:");
     switch (case_state->http_resp_code)
@@ -355,8 +355,8 @@ create_new_case(const char* baseURL,
          * instead of returning html-encoded body, we show short concise message,
          * and show offending URL (typos in which is a typical cause) */
         result->error = -1;
-        result->msg = xasprintf("error in case creation, "
-                        "HTTP code: 404 (Not found), URL:'%s'", case_url);
+        result->msg = xasprintf("error in HTTP POST, "
+                        "HTTP code: 404 (Not found), URL:'%s'", url);
         break;
 
     case 301: /* "301 Moved Permanently" (for example, used to move http:// to https://) */
@@ -364,8 +364,8 @@ create_new_case(const char* baseURL,
     case 305: /* "305 Use Proxy" */
         if (++redirect_count < 10 && case_location)
         {
-            free(case_url);
-            case_url = xstrdup(case_location);
+            free(url_copy);
+            url = url_copy = xstrdup(case_location);
             free_abrt_post_state(case_state);
             goto redirect_case;
         }
@@ -402,6 +402,8 @@ create_new_case(const char* baseURL,
                 result->msg = xasprintf("error in case creation, HTTP code: %d",
                         case_state->http_resp_code);
         }
+        result->body = case_state->body;
+        case_state->body = NULL;
         break;
 
     case 200:
@@ -417,12 +419,62 @@ create_new_case(const char* baseURL,
         /* Cose created successfully */
         result->url = xstrdup(case_location);
         //result->msg = xstrdup("Case created");
+        result->body = case_state->body;
+        case_state->body = NULL;
     } /* switch (case HTTP code) */
 
     free_abrt_post_state(case_state);
     free(allocated);
     free(case_data);
-    free(case_url);
+    free(url_copy);
+    return result;
+}
+
+rhts_result_t*
+create_new_case(const char* base_url,
+                const char* username,
+                const char* password,
+                bool ssl_verify,
+                const char* release,
+                const char* summary,
+                const char* description,
+                const char* component)
+{
+    char *url = concat_path_file(base_url, "cases");
+    rhts_result_t *result = post_case_to_url(url,
+                username,
+                password,
+                ssl_verify,
+                release,
+                summary,
+                description,
+                component
+    );
+    free(url);
+    return result;
+}
+
+rhts_result_t*
+get_rhts_hints(const char* base_url,
+                const char* username,
+                const char* password,
+                bool ssl_verify,
+                const char* release,
+                const char* summary,
+                const char* description,
+                const char* component)
+{
+    char *url = concat_path_file(base_url, "problems");
+    rhts_result_t *result = post_case_to_url(url,
+                username,
+                password,
+                ssl_verify,
+                release,
+                summary,
+                description,
+                component
+    );
+    free(url);
     return result;
 }
 

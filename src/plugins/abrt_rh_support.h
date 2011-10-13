@@ -40,13 +40,25 @@ const char* reportfile_as_string(reportfile_t* file);
 
 /* Used to return result of RHTS submission */
 struct rhts_result {
-    int error; /* 0: no error; else: error code, msg contains error msg. */
+    int error; /* 0: no error; else: error code, msg contains error msg */
     char *msg;
     char *url; /* URL to created case, or NULL */
+    char *body; /* body of the response, or NULL */
 };
 typedef struct rhts_result rhts_result_t;
 
 void free_rhts_result(rhts_result_t *p);
+
+rhts_result_t*
+get_rhts_hints(const char* baseURL,
+                const char* username,
+                const char* password,
+                bool ssl_verify,
+                const char* release,
+                const char* summary,
+                const char* description,
+                const char* component
+);
 
 rhts_result_t*
 create_new_case(const char* baseURL,

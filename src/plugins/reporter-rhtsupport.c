@@ -18,6 +18,7 @@
 */
 #include <libtar.h>
 #include "internal_libreport.h"
+#include "client.h"
 #include "abrt_curl.h"
 #include "abrt_xmlrpc.h"
 #include "abrt_rh_support.h"
@@ -184,6 +185,27 @@ static void report_to_rhtsupport(const char *dump_dir_name)
         errmsg = _("Can't create temporary file in /tmp");
         goto ret;
     }
+
+    /* Check for hints and show them if we have something */
+    result = get_rhts_hints(url,
+            login,
+            password,
+            ssl_verify,
+            release,
+            summary,
+            dsc,
+            package
+    );
+    if (result->error == 0 && result->body)
+    {
+        //log("ERR:%d MSG:'%s'", result->error, result->msg);
+        /* The message might contain URLs to known solutions and such */
+        alert(result->body);
+//TODO: discern when we have legitimate links there, and ask user whenther he wants to continue.
+//Otherwise, continue unconditionally.
+    }
+    free_rhts_result(result);
+    /*result = NULL; - redundant, result is assigned below */
 
     /* Send tempfile */
     log(_("Creating a new case..."));
