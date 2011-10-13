@@ -190,7 +190,7 @@ static page_obj_t pages[NUM_PAGES];
 
 static page_obj_t *added_pages[NUM_PAGES];
 
-static struct strbuf *line = NULL;
+static struct strbuf *cmd_output = NULL;
 
 /* Utility functions */
 
@@ -1350,21 +1350,20 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 
     /* Read and insert the output into the log pane */
     char buf[257]; /* usually we get one line, no need to have big buf */
-    char *msg; /* one line */
-    char *newline;
-    char *raw;
     int r;
-    if (!line)
-        line = strbuf_new();
-
     int alert_prefix_len = strlen(REPORT_PREFIX_ALERT);
     int ask_prefix_len = strlen(REPORT_PREFIX_ASK);
     int ask_yes_no_prefix_len = strlen(REPORT_PREFIX_ASK_YES_NO);
     int ask_password_prefix_len = strlen(REPORT_PREFIX_ASK_PASSWORD);
 
+    if (!cmd_output)
+        cmd_output = strbuf_new();
+
     /* read buffered and split lines */
     while ((r = read(evd->fd, buf, sizeof(buf) - 1)) > 0)
     {
+        char *newline;
+        char *raw;
         buf[r] = '\0';
         raw = buf;
 
@@ -1372,16 +1371,22 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         while ((newline = strchr(raw, '\n')) != NULL)
         {
             *newline = '\0';
-            /* finish line */
-            strbuf_append_str(line, raw);
-            strbuf_append_char(line, '\n');
+            strbuf_append_str(cmd_output, raw);
+            char *msg = cmd_output->buf;
 
-            msg = line->buf;
+            /* In the code below:
+             * response is always malloced,
+             * log_response is always set to response
+             * or to constant string.
+             */
+            char *response = NULL;
+            const char *log_response = response;
+            unsigned skip_chars = 0;
 
             /* alert dialog */
             if (strncmp(REPORT_PREFIX_ALERT, msg, alert_prefix_len) == 0)
             {
-                msg += alert_prefix_len;
+                skip_chars = alert_prefix_len;
 
                 GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
                     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -1395,7 +1400,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
             /* ask dialog with textbox */
             else if (strncmp(REPORT_PREFIX_ASK, msg, ask_prefix_len) == 0)
             {
-                msg += ask_prefix_len;
+                skip_chars = ask_prefix_len;
 
                 GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
                     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -1408,36 +1413,24 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                 gtk_entry_set_editable(GTK_ENTRY(textbox), TRUE);
                 gtk_box_pack_start(GTK_BOX(vbox), textbox, TRUE, TRUE, 0);
                 gtk_widget_show(textbox);
-
                 if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_OK)
                 {
                     const char *text = gtk_entry_get_text(GTK_ENTRY(textbox));
-                    char *response = xasprintf("%s\n", text);
-                    if (write(evd->run_state->command_in_fd, response, strlen(response)) < 0)
-                    {
-                        free(response);
-                        VERB1 perror_msg("Unable to write %s\\n to child's stdin", text);
-                        return FALSE;
-                    }
-
-                    free(response);
+                    response = xstrdup(text);
+                    log_response = response;
                 }
                 else
                 {
-                    if (write(evd->run_state->command_in_fd, "\n", strlen("\n")) < 0)
-                    {
-                        VERB1 perror_msg("Unable to write \\n to child's stdin");
-                        return FALSE;
-                    }
+                    response = xstrdup("");
+                    log_response = "";
                 }
-
                 gtk_widget_destroy(textbox);
                 gtk_widget_destroy(dialog);
             }
             /* ask dialog with passwordbox */
             else if (strncmp(REPORT_PREFIX_ASK_PASSWORD, msg, ask_password_prefix_len) == 0)
             {
-                msg += ask_password_prefix_len;
+                skip_chars = ask_password_prefix_len;
 
                 GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
                     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -1451,84 +1444,78 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                 gtk_entry_set_visibility(GTK_ENTRY(textbox), FALSE);
                 gtk_box_pack_start(GTK_BOX(vbox), textbox, TRUE, TRUE, 0);
                 gtk_widget_show(textbox);
-
                 if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_OK)
                 {
                     const char *text = gtk_entry_get_text(GTK_ENTRY(textbox));
-                    char *response = xasprintf("%s\n", text);
-                    if (write(evd->run_state->command_in_fd, response, strlen(response)) < 0)
-                    {
-                        free(response);
-                        VERB1 perror_msg("Unable to write %s\\n to child's stdin", text);
-                        return FALSE;
-                    }
-
-                    free(response);
+                    response = xstrdup(text);
+                    log_response = "******"; /* don't log passwords! */
                 }
                 else
                 {
-                    if (write(evd->run_state->command_in_fd, "\n", strlen("\n")) < 0)
-                    {
-                        VERB1 perror_msg("Unable to write \\n to child's stdin");
-                        return FALSE;
-                    }
+                    response = xstrdup("");
+                    log_response = "";
                 }
-
                 gtk_widget_destroy(textbox);
                 gtk_widget_destroy(dialog);
             }
             /* yes/no dialog */
             else if (strncmp(REPORT_PREFIX_ASK_YES_NO, msg, ask_yes_no_prefix_len) == 0)
             {
-                msg += ask_yes_no_prefix_len;
+                skip_chars = ask_yes_no_prefix_len;
 
                 GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
                     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                     GTK_MESSAGE_QUESTION,
                     GTK_BUTTONS_YES_NO,
                     msg);
-
                 if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_YES)
                 {
-                    char *yes = _("y");
-                    char *response = xasprintf("%s\n", yes);
-                    if (write(evd->run_state->command_in_fd, response, strlen(response)) < 0)
-                    {
-                        free(response);
-                        VERB1 perror_msg("Unable to write %s\\n to child's stdin", yes);
-                        return FALSE;
-                    }
-
-                    free(response);
+                    response = xstrdup(_("y"));
+                    log_response = "YES";
                 }
                 else
                 {
-                    if (write(evd->run_state->command_in_fd, "\n", strlen("\n")) < 0)
-                    {
-                        VERB1 perror_msg("Unable to write \\n to child's stdin");
-                        return FALSE;
-                    }
+                    response = xstrdup("");
+                    log_response = "NO";
                 }
-
                 gtk_widget_destroy(dialog);
             }
-            /* no special prefix - forward to log */
-            else
+            /* else: no special prefix, just forward to log */
+
+            if (response)
             {
-                append_to_textview(evd->tv_log, msg);
-                save_to_event_log(evd, msg);
-                /* cuts off \n from msg */
-                gtk_label_set_text(g_active_lbl, strtrim(msg));
+                unsigned len = strlen(response);
+                response[len++] = '\n';
+                if (full_write(evd->run_state->command_in_fd, response, len) != len)
+                {
+                    VERB1 perror_msg("Can't write %u bytes to child's stdin", len);
+                    free(response);
+                    response = xstrdup("<WRITE ERROR>");
+                    log_response = response;
+                }
+                strbuf_append_char(cmd_output, ' ');
+                strbuf_append_str(cmd_output, log_response);
+                free(response);
             }
 
-            strbuf_clear(line);
+            msg = cmd_output->buf;
+            msg += skip_chars;
+            gtk_label_set_text(g_active_lbl, msg);
+
+            strbuf_append_char(cmd_output, '\n');
+            msg = cmd_output->buf;
+            msg += skip_chars;
+            append_to_textview(evd->tv_log, msg);
+            save_to_event_log(evd, msg);
+
+            strbuf_clear(cmd_output);
 
             /* jump to next line */
             raw = newline + 1;
         }
 
         /* beginning of next line. the line continues by next read() */
-        strbuf_append_str(line, raw);
+        strbuf_append_str(cmd_output, raw);
     }
 
     if (r < 0 && errno == EAGAIN)
@@ -1536,6 +1523,8 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         return TRUE; /* "please don't remove this event (yet)" */
 
     /* EOF/error */
+
+    strbuf_clear(cmd_output);
 
     unexport_event_config(evd->env_list);
     evd->env_list = NULL;
@@ -1596,8 +1585,8 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                 free(msg);
 
                 /* free child output buffer */
-                strbuf_free(line);
-                line = NULL;
+                strbuf_free(cmd_output);
+                cmd_output = NULL;
 
                 /* hide progress bar */
                 pb_pulse = false;
