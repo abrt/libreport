@@ -41,13 +41,15 @@ PyObject *p_ask(PyObject *pself, PyObject *args)
         return NULL;
     }
 
-    char response[256];
-    if (!ask(question, response, sizeof(response)))
+    char *response = ask(question);
+    if (!response)
     {
         Py_RETURN_NONE;
     }
 
-    return Py_BuildValue("s", response);
+    PyObject *r = Py_BuildValue("s", response);
+    free(response);
+    return r;
 }
 
 /* C: char *ask_password(const char *question, char *response, int response_len); */
@@ -59,13 +61,15 @@ PyObject *p_ask_password(PyObject *pself, PyObject *args)
         return NULL;
     }
 
-    char response[256];
-    if (!ask_password(question, response, sizeof(response)))
+    char *response = ask_password(question);
+    if (!response)
     {
         Py_RETURN_NONE;
     }
 
-    return Py_BuildValue("s", response);
+    PyObject *r = Py_BuildValue("s", response);
+    free(response);
+    return r;
 }
 
 /* C: int ask_yes_no(const char *question); */

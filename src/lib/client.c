@@ -69,7 +69,7 @@ int ask_yes_no(const char *question)
     return strncasecmp(yes, response, strlen(yes)) == 0;
 }
 
-char *ask(const char *question, char *response, int response_len)
+char *ask(const char *question)
 {
     if (is_slave_mode())
         printf(REPORT_PREFIX_ASK "%s\n", question);
@@ -78,10 +78,10 @@ char *ask(const char *question, char *response, int response_len)
 
     fflush(stdout);
 
-    return fgets(response, response_len, stdin);
+    return xmalloc_fgets(stdin);
 }
 
-char *ask_password(const char *question, char *response, int response_len)
+char *ask_password(const char *question)
 {
     if (is_slave_mode())
         printf(REPORT_PREFIX_ASK_PASSWORD "%s\n", question);
@@ -90,9 +90,10 @@ char *ask_password(const char *question, char *response, int response_len)
 
     fflush(stdout);
 
-    set_echo(false);
-    char *result = fgets(response, response_len, stdin);
-    set_echo(true);
+    bool changed = set_echo(false);
+    char *result = xmalloc_fgets(stdin);
+    if (changed)
+        set_echo(true);
 
     return result;
 }

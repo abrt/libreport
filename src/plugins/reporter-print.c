@@ -72,19 +72,16 @@ int main(int argc, char **argv)
             if (msg)
             {
                 free(outfile);
-                char response[256];
-                if (!ask(msg, response, sizeof(response)))
-                {
-                    free(msg);
+                char *response = ask(msg);
+                if (!response)
                     perror_msg_and_die("ask");
-                }
                 free(msg);
                 msg = NULL;
 
                 if (strcmp("\n", response) == 0)
                     error_msg_and_die(_("Cancelled by user."));
 
-                outfile = xstrdup(strtrim(response));
+                outfile = strtrim(response);
             }
 
             /* do not consider ENOENT an error - file is going to be created */

@@ -36,10 +36,10 @@ int set_echo(int enable);
 int ask_yes_no(const char *question);
 
 #define ask libreport_ask
-char *ask(const char *question, char *response, int response_len);
+char *ask(const char *question);
 
 #define ask_password libreport_ask_password
-char *ask_password(const char *question, char *response, int response_len);
+char *ask_password(const char *question)
 
 #define alert libreport_alert
 void alert(const char *message);

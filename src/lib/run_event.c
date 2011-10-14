@@ -502,10 +502,11 @@ int run_event_on_dir_name(struct run_event_state *state,
                 printf("%s ", msg);
                 fflush(stdout);
                 char buf[256];
-                set_echo(false);
+                bool changed = set_echo(false);
                 if (!fgets(buf, sizeof(buf), stdin))
                     buf[0] = '\0';
-                set_echo(true);
+                if (changed)
+                    set_echo(true);
 
                 if (write(state->command_in_fd, buf, strlen(buf)) < 0)
                     perror_msg_and_die("write");
