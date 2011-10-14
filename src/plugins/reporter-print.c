@@ -22,7 +22,7 @@
 #include "client.h"
 
 static const char *dump_dir_name = ".";
-static const char *output_file = NULL;
+static char *output_file = NULL;
 static const char *append = "no";
 static const char *open_mode = "w";
 
@@ -56,65 +56,56 @@ int main(int argc, char **argv)
 
     export_abrt_envvars(0);
 
-    char *outfile = NULL;
-    FILE *outstream = NULL;
     if (output_file)
     {
-        outfile = xstrdup(output_file);
         if (string_to_bool(append))
             open_mode = "a";
-        struct stat stbuf;
+
+        output_file = xstrdup(output_file);
+
+        /* We used freopen to change stdout,
+         * but ask() writes to stdout. Can't use that trick anymore.
+         */
         char *msg = NULL;
-        /* do not use freopen - ask() writes to stdout */
         while (1)
         {
             /* prompt for another file name if needed */
             if (msg)
             {
-                free(outfile);
+                free(output_file);
                 char *response = ask(msg);
                 if (!response)
                     perror_msg_and_die("ask");
                 free(msg);
-                msg = NULL;
 
-                if (strcmp("\n", response) == 0)
+                if (response[0] == '\0' || response[0] == '\n')
                     error_msg_and_die(_("Cancelled by user."));
 
-                outfile = strtrim(response);
+                output_file = strtrim(response);
             }
 
-            /* do not consider ENOENT an error - file is going to be created */
-            if (lstat(outfile, &stbuf) < 0)
-            {
-                if (errno != ENOENT)
-                {
-                    VERB1 perror_msg("stat");
-                    msg = xasprintf(_("Unable to stat file '%s'. "
-                                      "Please select another file:"), outfile);
-                    continue;
-                }
-            }
-            /* do not allow symlinks */
-            else if (S_ISLNK(stbuf.st_mode))
+            /* do not allow symlinks (this can be an attack) */
+            struct stat stbuf;
+            if (lstat(output_file, &stbuf) == 0 && S_ISLNK(stbuf.st_mode))
             {
                 msg = xasprintf(_("File '%s' is a symbolic link. "
-                                  "Please select a regular file:"), outfile);
+                                  "Please select a regular file:"), output_file);
                 continue;
             }
 
-            if ((outstream = fopen(outfile, open_mode)) == NULL)
+            FILE *outstream = fopen(output_file, open_mode);
+            if (!outstream)
             {
                 VERB1 perror_msg("fopen");
-                msg = xasprintf(_("Unable to open file '%s' for writing. "
-                                  "Please select another file:"), outfile);
+                msg = xasprintf(_("Can't open '%s' for writing. "
+                                  "Please select another file:"), output_file);
                 continue;
             }
 
+            fclose(stdout);
+            stdout = outstream;
             break;
         }
-        fclose(stdout);
-        stdout = outstream;
     }
 
     problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
@@ -128,22 +119,22 @@ int main(int argc, char **argv)
     free(dsc);
     free_problem_data(problem_data);
 
-    if (outfile)
+    if (output_file)
     {
         if (opts & OPT_r)
         {
             struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
             if (dd)
             {
-                char *msg = xasprintf("file: %s", outfile);
+                char *msg = xasprintf("file: %s", output_file);
                 add_reported_to(dd, msg);
                 free(msg);
                 dd_close(dd);
             }
         }
         const char *format = (open_mode[0] == 'a' ? _("The report was appended to %s") : _("The report was stored to %s"));
-        log(format, outfile);
-        free(outfile);
+        log(format, output_file);
+        free(output_file);
     }
 
     return 0;
