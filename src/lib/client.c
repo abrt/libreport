@@ -33,7 +33,7 @@ int set_echo(int enable)
         return 0;
 
     /* No change needed? */
-    if ((t.c_lflag & ECHO) == enable)
+    if (!(t.c_lflag & ECHO) == !enable)
         return 0;
 
     t.c_lflag ^= ECHO;
