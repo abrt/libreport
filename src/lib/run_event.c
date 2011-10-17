@@ -522,7 +522,7 @@ int run_event_on_dir_name(struct run_event_state *state,
 
         /* Wait for child to actually exit, collect status */
         int status;
-        waitpid(state->command_pid, &status, 0);
+        safe_waitpid(state->command_pid, &status, 0);
 
         retval = WEXITSTATUS(status);
         if (WIFSIGNALED(status))

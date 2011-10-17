@@ -175,7 +175,7 @@ static void report_to_rhtsupport(const char *dump_dir_name)
 
     /* We must be sure gzip finished, and finished successfully */
     int status;
-    waitpid(child, &status, 0);
+    safe_waitpid(child, &status, 0);
     child = -1;
     if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
     {
@@ -288,7 +288,7 @@ static void report_to_rhtsupport(const char *dump_dir_name)
     {
         // Damn, selinux does not allow SIGKILLing our own child! wtf??
         //kill(child, SIGKILL); /* just in case */
-        waitpid(child, NULL, 0);
+        safe_waitpid(child, NULL, 0);
     }
 
     unlink(tempfile);

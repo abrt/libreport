@@ -169,7 +169,7 @@ char *run_in_shell_and_save_output(int flags,
 	if (size_p)
 		*size_p = pos;
 	close(pipeout[0]);
-	waitpid(child, NULL, 0);
+	safe_waitpid(child, NULL, 0);
 
 	return result;
 }

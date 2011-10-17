@@ -40,10 +40,8 @@ static pid_t start_command(char **argv)
 
 static int finish_command(pid_t pid, char **argv)
 {
-  pid_t waiting;
   int status;
-  while ((waiting = waitpid(pid, &status, 0)) < 0 && errno == EINTR)
-    continue;
+  pid_t waiting = safe_waitpid(pid, &status, 0);
   if (waiting < 0)
     perror_msg_and_die("waitpid");
 

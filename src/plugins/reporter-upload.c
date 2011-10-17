@@ -194,7 +194,7 @@ static int create_and_upload_archive(
     tar = NULL;
     /* ...and check that gzip child finished successfully */
     int status;
-    waitpid(child, &status, 0);
+    safe_waitpid(child, &status, 0);
     child = -1;
     if (status != 0)
     {
@@ -222,7 +222,7 @@ static int create_and_upload_archive(
         tar_close(tar);
     /* close(pipe_from_parent_to_child[1]); - tar_close() does it itself */
     if (child > 0)
-        waitpid(child, NULL, 0);
+        safe_waitpid(child, NULL, 0);
     if (tempfile)
     {
         unlink(tempfile);

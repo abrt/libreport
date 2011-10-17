@@ -148,12 +148,10 @@ int report_problem_in_dir(const char *dirname, int flags)
      * In both cases, we need to wait for child:
      */
     int status;
-    do
-        pid = waitpid(pid, &status, 0);
-    while (pid < 0 && errno == EINTR);
+    pid = safe_waitpid(pid, &status, 0);
     if (pid <= 0)
     {
-        perror_msg("Can't waitpid");
+        perror_msg("waitpid");
         return -1;
     }
 
