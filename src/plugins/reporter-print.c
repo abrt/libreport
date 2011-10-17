@@ -58,10 +58,17 @@ int main(int argc, char **argv)
 
     if (output_file)
     {
+        char *HOME;
+        if (output_file[0] == '~' && output_file[1] == '/'
+         && (HOME = getenv("HOME")) != NULL
+        ) {
+            output_file = concat_path_file(HOME, output_file + 2);
+        }
+        else
+            output_file = xstrdup(output_file);
+
         if (string_to_bool(append))
             open_mode = "a";
-
-        output_file = xstrdup(output_file);
 
         /* We used freopen to change stdout,
          * but ask() writes to stdout. Can't use that trick anymore.
