@@ -1406,7 +1406,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                     GTK_MESSAGE_QUESTION,
                     GTK_BUTTONS_OK_CANCEL,
-                    msg);
+                    msg + skip_chars);
 
                 GtkWidget *vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
                 GtkWidget *textbox = gtk_entry_new();
@@ -1436,7 +1436,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                     GTK_MESSAGE_QUESTION,
                     GTK_BUTTONS_OK_CANCEL,
-                    msg);
+                    msg + skip_chars);
 
                 GtkWidget *vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
                 GtkWidget *textbox = gtk_entry_new();
@@ -1467,7 +1467,8 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                     GTK_MESSAGE_QUESTION,
                     GTK_BUTTONS_YES_NO,
-                    msg);
+                    msg + skip_chars);
+
                 if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_YES)
                 {
                     response = xstrdup(_("y"));
