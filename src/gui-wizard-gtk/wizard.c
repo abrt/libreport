@@ -1660,11 +1660,6 @@ static void start_event_run(const char *event_name,
      */
     struct run_event_state *state = new_run_event_state();
 
-    if (g_active_pb)
-        gtk_widget_show(GTK_WIDGET(g_active_pb));
-    pb_pulse = true;
-    g_timeout_add(pb_pulse_speed, pb_pulse_timeout, NULL);
-
     if (prepare_commands(state, g_dump_dir_name, event_name) == 0)
     {
  no_cmds:
@@ -1695,6 +1690,11 @@ static void start_event_run(const char *event_name,
         unexport_event_config(env_list);
         goto no_cmds;
     }
+
+    if (g_active_pb)
+        gtk_widget_show(GTK_WIDGET(g_active_pb));
+    pb_pulse = true;
+    g_timeout_add(pb_pulse_speed, pb_pulse_timeout, NULL);
 
     /* At least one command is needed, and we started first one.
      * Hook its output fd to the main loop.
