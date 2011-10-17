@@ -43,12 +43,15 @@ static unsigned g_collect_events_selected_count = 0;
 static char *g_reporter_events_selected;
 static unsigned g_black_event_count = 0;
 
+static pid_t g_event_child_pid = 0;
+
 static GtkBox *g_box_analyzers;
 /* List of event_gui_data's */
 static GList *g_list_analyzers;
 static GtkLabel *g_lbl_analyze_log;
 static GtkTextView *g_tv_analyze_log;
 static GtkProgressBar *g_pb_analyze;
+static GtkButton *g_btn_cancel_analyze;
 
 static GtkBox *g_box_collectors;
 /* List of event_gui_data's */
@@ -1264,7 +1267,11 @@ static int spawn_next_command_in_evd(struct analyze_event_data *evd)
 {
     evd->env_list = export_event_config(evd->event_name);
     int r = spawn_next_command(evd->run_state, g_dump_dir_name, evd->event_name);
-    if (r < 0)
+    if (r >= 0)
+    {
+        g_event_child_pid = evd->run_state->command_pid;
+    }
+    else
     {
         unexport_event_config(evd->env_list);
         evd->env_list = NULL;
@@ -1342,6 +1349,12 @@ static void update_event_log_on_disk(const char *str)
     dd_save_text(dd, FILENAME_EVENT_LOG, new_log);
     free(event_log);
     dd_close(dd);
+}
+
+static void on_btn_cancel_event(GtkButton *button)
+{
+    if (g_event_child_pid > 0)
+        kill(- g_event_child_pid, SIGTERM);
 }
 
 static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, gpointer data)
@@ -1532,10 +1545,14 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 
     /* Wait for child to actually exit, collect status */
     int status;
-    waitpid(evd->run_state->command_pid, &status, 0);
+    safe_waitpid(evd->run_state->command_pid, &status, 0);
     int retval = WEXITSTATUS(status);
     if (WIFSIGNALED(status))
         retval = WTERMSIG(status) + 128;
+
+    /* Make sure "Cancel" button won't send anything (process is gone) */
+    g_event_child_pid = -1;
+    evd->run_state->command_pid = -1; /* just for consistency */
 
     /* Write a final message to the log */
     if (evd->event_log->len != 0 && evd->event_log->buf[evd->event_log->len - 1] != '\n')
@@ -1635,6 +1652,9 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     evd->run_state->command_out_fd = evd->fd; /* just to keep it consistent */
     ndelay_on(evd->fd);
 
+    /* Revive "Cancel" button */
+    g_event_child_pid = evd->run_state->command_pid;
+
     return TRUE; /* "please don't remove this event (yet)" */
 }
 
@@ -1691,6 +1711,7 @@ static void start_event_run(const char *event_name,
         unexport_event_config(env_list);
         goto no_cmds;
     }
+    g_event_child_pid = state->command_pid;
 
     if (g_active_pb)
         gtk_widget_show(GTK_WIDGET(g_active_pb));
@@ -2405,6 +2426,7 @@ static void add_pages()
     g_lbl_analyze_log      = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_analyze_log"));
     g_tv_analyze_log       = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_analyze_log"));
     g_pb_analyze           = GTK_PROGRESS_BAR( gtk_builder_get_object(builder, "pb_analyze"));
+    g_btn_cancel_analyze   = GTK_BUTTON(       gtk_builder_get_object(builder, "btn_cancel_analyze"));
     g_box_collectors       = GTK_BOX(          gtk_builder_get_object(builder, "vb_collectors"));
     g_lbl_collect_log      = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_collect_log"));
     g_tv_collect_log       = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_collect_log"));
@@ -2454,6 +2476,8 @@ static void add_pages()
     config_btn = GTK_WIDGET(gtk_builder_get_object(builder, "button_cfg3"));
     if (config_btn)
         g_signal_connect(G_OBJECT(config_btn), "clicked", G_CALLBACK(on_show_event_list_cb), NULL);
+
+    g_signal_connect(g_btn_cancel_analyze, "clicked", G_CALLBACK(on_btn_cancel_event), NULL);
 
     GtkWidget *w;
 

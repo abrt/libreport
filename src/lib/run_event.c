@@ -414,7 +414,7 @@ int spawn_next_command(struct run_event_state *state,
 
     int pipefds[2];
     state->command_pid = fork_execv_on_steroids(
-                EXECFLG_INPUT + EXECFLG_OUTPUT + EXECFLG_ERR2OUT,
+                EXECFLG_INPUT + EXECFLG_OUTPUT + EXECFLG_ERR2OUT + EXECFLG_SETPGID,
                 argv,
                 pipefds,
                 /* env_vec: */ env_vec,

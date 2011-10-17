@@ -188,6 +188,9 @@ int xatoi_positive(const char *numstr);
 //unsigned long long monotonic_us(void);
 //unsigned monotonic_sec(void);
 
+#define safe_waitpid libreport_safe_waitpid
+pid_t safe_waitpid(pid_t pid, int *wstat, int options);
+
 enum {
         /* on return, pipefds[1] is fd to which parent may write
          * and deliver data to child's stdin: */
@@ -207,6 +210,7 @@ enum {
         EXECFLG_QUIET      = 1 << 6,
         EXECFLG_SETGUID    = 1 << 7,
         EXECFLG_SETSID     = 1 << 8,
+        EXECFLG_SETPGID    = 1 << 9,
 };
 /*
  * env_vec: list of variables to set in environment (if string has

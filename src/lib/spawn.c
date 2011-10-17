@@ -121,6 +121,8 @@ pid_t fork_execv_on_steroids(int flags,
 
 		if (flags & EXECFLG_SETSID)
 			setsid();
+		if (flags & EXECFLG_SETPGID)
+			setpgid(0, 0);
 
 		execvp(argv[0], argv);
 		if (!(flags & EXECFLG_QUIET))
@@ -170,4 +172,14 @@ char *run_in_shell_and_save_output(int flags,
 	waitpid(child, NULL, 0);
 
 	return result;
+}
+
+pid_t safe_waitpid(pid_t pid, int *wstat, int options)
+{
+	pid_t r;
+
+	do
+		r = waitpid(pid, wstat, options);
+	while ((r == -1) && (errno == EINTR));
+	return r;
 }
