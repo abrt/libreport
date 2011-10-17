@@ -66,6 +66,7 @@ static GList *g_list_selected_reporters;
 static GtkLabel *g_lbl_report_log;
 static GtkTextView *g_tv_report_log;
 static GtkProgressBar *g_pb_report;
+static GtkButton *g_btn_cancel_report;
 
 static GtkContainer *g_container_details1;
 static GtkContainer *g_container_details2;
@@ -2434,6 +2435,7 @@ static void add_pages()
     g_lbl_report_log       = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_report_log"));
     g_tv_report_log        = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_report_log"));
     g_pb_report            = GTK_PROGRESS_BAR( gtk_builder_get_object(builder, "pb_report"));
+    g_btn_cancel_report    = GTK_BUTTON(       gtk_builder_get_object(builder, "btn_cancel_report"));
     g_tv_backtrace         = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_backtrace"));
     g_tv_comment           = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_comment"));
     g_eb_comment           = GTK_EVENT_BOX(    gtk_builder_get_object(builder, "eb_comment"));
@@ -2478,6 +2480,7 @@ static void add_pages()
         g_signal_connect(G_OBJECT(config_btn), "clicked", G_CALLBACK(on_show_event_list_cb), NULL);
 
     g_signal_connect(g_btn_cancel_analyze, "clicked", G_CALLBACK(on_btn_cancel_event), NULL);
+    g_signal_connect(g_btn_cancel_report, "clicked", G_CALLBACK(on_btn_cancel_event), NULL);
 
     GtkWidget *w;
 
