@@ -1392,7 +1392,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                     GTK_MESSAGE_WARNING,
                     GTK_BUTTONS_CLOSE,
-                    msg);
+                    msg + skip_chars);
 
                 gtk_dialog_run(GTK_DIALOG(dialog));
                 gtk_widget_destroy(dialog);
