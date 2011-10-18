@@ -105,7 +105,8 @@ void add_basics_to_problem_data(problem_data_t *pd)
     }
 
     pid_t pid = getpid();
-    if (pid > 0)
+    const char *executable = get_problem_item_content_or_NULL(pd, FILENAME_EXECUTABLE);
+    if (executable == NULL && pid > 0)
     {
         char buf[PATH_MAX+1];
         char *exe = xasprintf("/proc/%u/exe", pid);
