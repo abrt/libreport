@@ -127,7 +127,7 @@ man5_MANS = report_event.conf.5
 	$(XMLTO_SILENT) xmlto man $< 2>&1 | sed '/Note/d'
 
 %.xml: %.txt ../../asciidoc.conf
-	$(ASCIIDOC_SILENT) asciidoc --backend=docbook --doctype=manpage --conf-file ../../asciidoc.conf -aabrt_version=$(PACKAGE_VERSION) -o $@ $<
+	$(ASCIIDOC_SILENT) asciidoc --backend=docbook --doctype=manpage --conf-file ../../asciidoc.conf -alibreport_version=$(PACKAGE_VERSION) -o $@ $<
 
 EXTRA_DIST = $(MAN_TXT)
 

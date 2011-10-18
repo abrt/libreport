@@ -32,7 +32,7 @@ man1_MANS = ${MAN_TXT:%.txt=%.1}
 	$(XMLTO_SILENT) xmlto man $< 2>&1 | sed '/Note/d'
 
 %.xml: %.txt ../../asciidoc.conf
-	$(ASCIIDOC_SILENT) asciidoc --backend=docbook --doctype=manpage --conf-file ../../asciidoc.conf -aabrt_version=$(PACKAGE_VERSION) -o $@ $<
+	$(ASCIIDOC_SILENT) asciidoc --backend=docbook --doctype=manpage --conf-file ../../asciidoc.conf -alibreport_version=$(PACKAGE_VERSION) -o $@ $<
 
 CLEANFILES = $(man1_MANS)
 
