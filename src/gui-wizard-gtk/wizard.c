@@ -747,8 +747,8 @@ static void report_tb_was_toggled(GtkButton *button, gpointer user_data)
     }
     else
     {
-        GList *l;
-        if ((l = g_list_find_custom(g_list_selected_reporters, event_name, (GCompareFunc)g_strcmp0)) != NULL)
+        GList *l = g_list_find_custom(g_list_selected_reporters, event_name, (GCompareFunc)g_strcmp0);
+        if (l)
         {
             char *data = l->data;
             g_list_selected_reporters = g_list_remove(g_list_selected_reporters, data);

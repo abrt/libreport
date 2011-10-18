@@ -302,7 +302,7 @@ make_response(const char* title, const char* body,
 //<response><title>Case Created and Report Attached</title><body></body><URL href="http://support-services-devel.gss.redhat.com:8080/Strata/cases/00005129/attachments/ccbf3e65-b941-3db7-a016-6a3831691a32">New Case URL</URL></response>
 #endif
 
-static const char *headers[] = {
+static const char *const text_plain_header[] = {
     "Accept: text/plain",
     NULL
 };
@@ -312,6 +312,7 @@ post_case_to_url(const char* url,
                 const char* username,
                 const char* password,
                 bool ssl_verify,
+                const char **additional_headers,
                 const char* release,
                 const char* summary,
                 const char* description,
@@ -344,9 +345,11 @@ post_case_to_url(const char* url,
     case_state->username = username;
     case_state->password = password;
 
-    abrt_post_string(case_state, url, "application/xml", headers, case_data);
+    abrt_post_string(case_state, url, "application/xml", additional_headers, case_data);
 
     char *case_location = find_header_in_abrt_post_state(case_state, "Location:");
+    result->http_resp_code = case_state->http_resp_code;
+
     switch (case_state->http_resp_code)
     {
     case 404:
@@ -408,14 +411,6 @@ post_case_to_url(const char* url,
 
     case 200:
     case 201:
-        if (!case_location) {
-            /* Case Creation returned valid code, but no location */
-            result->error = -1;
-            result->msg = xasprintf("error in case creation: no Location URL, HTTP code: %d",
-                    case_state->http_resp_code);
-            break;
-        }
-
         /* Cose created successfully */
         result->url = xstrdup(case_location);
         //result->msg = xstrdup("Case created");
@@ -445,12 +440,24 @@ create_new_case(const char* base_url,
                 username,
                 password,
                 ssl_verify,
+                (const char **)text_plain_header,
                 release,
                 summary,
                 description,
                 component
     );
     free(url);
+
+    if (!result->url)
+    {
+        /* Case Creation returned valid code, but no location */
+        result->error = -1;
+        free(result->msg);
+        result->msg = xasprintf("error in case creation: no Location URL, HTTP code: %d",
+                result->http_resp_code
+        );
+    }
+
     return result;
 }
 
@@ -469,6 +476,7 @@ get_rhts_hints(const char* base_url,
                 username,
                 password,
                 ssl_verify,
+                NULL,
                 release,
                 summary,
                 description,
@@ -503,7 +511,7 @@ attach_file_to_case(const char* baseURL,
     abrt_post_file_as_form(atch_state,
         atch_url,
         "application/binary",
-        headers,
+        (const char **) text_plain_header,
         file_name
     );
 

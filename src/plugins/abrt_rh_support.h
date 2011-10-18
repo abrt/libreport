@@ -40,6 +40,7 @@ const char* reportfile_as_string(reportfile_t* file);
 
 /* Used to return result of RHTS submission */
 struct rhts_result {
+    int http_resp_code;
     int error; /* 0: no error; else: error code, msg contains error msg */
     char *msg;
     char *url; /* URL to created case, or NULL */

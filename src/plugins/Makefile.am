@@ -102,6 +102,8 @@ reporter_bugzilla_LDADD = \
 
 reporter_rhtsupport_SOURCES = \
     abrt_rh_support.h abrt_rh_support.c \
+    reporter-rhtsupport.h \
+    reporter-rhtsupport-parse.c \
     reporter-rhtsupport.c
 reporter_rhtsupport_CPPFLAGS = \
     -I$(srcdir)/../include \

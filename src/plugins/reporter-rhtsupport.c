@@ -22,6 +22,7 @@
 #include "abrt_curl.h"
 #include "abrt_xmlrpc.h"
 #include "abrt_rh_support.h"
+#include "reporter-rhtsupport.h"
 
 static char *url;
 static char *login;
@@ -196,16 +197,41 @@ static void report_to_rhtsupport(const char *dump_dir_name)
             dsc,
             package
     );
+#if 0 /* testing */
+    log("ERR:%d", result->error);
+    log("MSG:'%s'", result->msg);
+    log("BODY:'%s'", result->body);
+    result->error = 0;
+    result->body = xstrdup(
+    "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
+    "<problems xmlns=\"http://www.redhat.com/gss/strata\">"
+      "<link uri=\"http://access.redhat.com/\" rel=\"help\">The main Red Hat Support web site</link>"
+      "<property name=\"content\">an ABRT report</property>"
+      "<problem>"
+        "<property name=\"source\">a backtrace in the ABRT report</property>"
+        "<link uri=\"https://avalon-ci.gss.redhat.com/kb/docs/DOC-22029\" rel=\"suggestion\">[RHEL 5.3] EVO autocompletion lookup hang</link>"
+      "</problem>"
+    "</problems>"
+    );
+#endif
     if (result->error == 0 && result->body)
     {
-        //log("ERR:%d MSG:'%s'", result->error, result->msg);
         /* The message might contain URLs to known solutions and such */
-        alert(result->body);
-//TODO: discern when we have legitimate links there, and ask user whenther he wants to continue.
-//Otherwise, continue unconditionally.
+        char *hint = parse_response_from_RHTS_hint_xml2txt(result->body);
+        if (hint)
+        {
+            hint = append_to_malloced_string(hint, " ");
+            hint = append_to_malloced_string(hint,
+                    _("Do you still want to create a RHTSupport ticket?")
+            );
+            int create_ticket = ask_yes_no(hint);
+            free(hint);
+            if (!create_ticket)
+                goto ret;
+        }
     }
     free_rhts_result(result);
-    /*result = NULL; - redundant, result is assigned below */
+    /*result = NULL; - redundant, result is assigned just below */
 
     /* Send tempfile */
     log(_("Creating a new case..."));

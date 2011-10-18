@@ -448,7 +448,7 @@ static void error(GMarkupParseContext *context,
 
 void load_event_description_from_file(event_config_t *event_config, const char* filename)
 {
-    struct my_parse_data parse_data = { event_config, NULL, NULL , NULL };
+    struct my_parse_data parse_data = { event_config, NULL, NULL, NULL };
     parse_data.cur_locale = setlocale(LC_ALL, NULL);
 
     GMarkupParser parser;
@@ -466,7 +466,7 @@ void load_event_description_from_file(event_config_t *event_config, const char* 
     FILE* fin = fopen(filename, "r");
     if (fin != NULL)
     {
-        size_t read_bytes = 0;
+        size_t read_bytes;
         char buff[1024];
         while ((read_bytes = fread(buff, 1, 1024, fin)) != 0)
         {

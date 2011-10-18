@@ -66,7 +66,7 @@ int ask_yes_no(const char *question)
     if (NULL == fgets(response, sizeof(response), stdin))
         return 0;
 
-    return strncasecmp(yes, response, strlen(yes)) == 0;
+    return ((response[0] | 0x20) == 'y' || strncasecmp(yes, response, strlen(yes)) == 0);
 }
 
 char *ask(const char *question)
