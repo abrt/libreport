@@ -393,16 +393,16 @@ post_case_to_url(const char* url,
         errmsg = case_state->curl_error_msg;
         if (errmsg && errmsg[0])
         {
-            result->msg = xasprintf("error in case creation: %s", errmsg);
+            result->msg = xasprintf(_("error in case creation: %s"), errmsg);
         }
         else
         {
             errmsg = case_state->body;
             if (errmsg && errmsg[0])
-                result->msg = xasprintf("error in case creation, HTTP code: %d, server says: '%s'",
+                result->msg = xasprintf(_("error in case creation, HTTP code: %d, server says: '%s'"),
                         case_state->http_resp_code, errmsg);
             else
-                result->msg = xasprintf("error in case creation, HTTP code: %d",
+                result->msg = xasprintf(_("error in case creation, HTTP code: %d"),
                         case_state->http_resp_code);
         }
         result->body = case_state->body;
@@ -453,7 +453,7 @@ create_new_case(const char* base_url,
         /* Case Creation returned valid code, but no location */
         result->error = -1;
         free(result->msg);
-        result->msg = xasprintf("error in case creation: no Location URL, HTTP code: %d",
+        result->msg = xasprintf(_("error in case creation: no Location URL, HTTP code: %d"),
                 result->http_resp_code
         );
     }
