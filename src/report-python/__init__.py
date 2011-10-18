@@ -142,14 +142,17 @@ def createAlertSignature(component, hashmarkername, hashvalue, summary, alertSig
     return pd
 
 # used in anaconda / python-meh
-def createPythonUnhandledExceptionSignature(component, hashmarkername, hashvalue, summary, description, exnFileName):
+def createPythonUnhandledExceptionSignature(**kwargs):
+    mandatory_args = ["component", "hashmarkername", "duphash", "reason",
+                    "description", "exnFileName"]
+
+    for arg in mandatory_args:
+        if arg not in kwargs:
+            raise AttributeError("missing argument {0}".format(arg))
+
     pd = problem_data()
-    pd.add("component", component)
-    pd.add("hashmarkername", hashmarkername)
-    #cd.add("localhash", hashvalue)
-    pd.add("duphash", hashvalue)
-    pd.add("reason", summary)
-    pd.add("description", description)
+    for (key, value) in kwargs.iteritems():
+        pd.add(key, value)
     product = getProduct()
     if product:
         pd.add("product", product)
@@ -163,13 +166,13 @@ def createPythonUnhandledExceptionSignature(component, hashmarkername, hashvalue
     pd.add_basics() # adds product and version + some other required field
     # FIXME: how to handle files out of dump dir??
     # temporary glue: 2011-02-08 (let's see how temporary..)
-    if (exnFileName):
-        try:
-            inf = open(exnFileName, "r")
-            pd.add(exnFileName[exnFileName.rfind('/')+1:], inf.read())
-            inf.close()
-        except Exception, ex:
-            print "Can't add %s to report: %s" % (exnFileName, ex)
+    exnFileName = kwargs["exnFileName"]
+    try:
+        inf = open(exnFileName, "r")
+        pd.add(os.path.basename(exnFileName), inf.read())
+        inf.close()
+    except Exception, ex:
+        print "Can't add %s to report: %s" % (exnFileName, ex)
 
     return pd
 
