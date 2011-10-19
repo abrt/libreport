@@ -46,6 +46,7 @@ libreport_la_SOURCES = \
     event_config.c \
     report.c \
     make_dir_recursive.c \
+    user_settings.c \
     client.c
 libreport_la_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror \

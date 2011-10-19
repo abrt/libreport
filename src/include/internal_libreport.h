@@ -572,6 +572,17 @@ void parse_release_for_rhts(const char *pRelease, char **product, char **version
 #define load_conf_file libreport_load_conf_file
 bool load_conf_file(const char *pPath, map_string_h *settings, bool skipKeysWithoutValue);
 
+#define save_conf_file libreport_save_conf_file
+bool save_conf_file(const char *path, map_string_h *settings);
+#define save_user_settings libreport_save_user_settings
+bool save_user_settings();
+#define load_user_settings libreport_load_user_settings
+bool load_user_settings(const char *application_name);
+#define set_user_setting libreport_set_user_setting
+void set_user_setting(const char *name, const char *value);
+#define get_user_setting libreport_get_user_setting
+const char *get_user_setting(const char *name);
+
 /* Connect to abrtd over unix domain socket, issue DELETE command */
 int delete_dump_dir_possibly_using_abrtd(const char *dump_dir_name);
 
