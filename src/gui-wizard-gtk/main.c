@@ -144,6 +144,7 @@ int main(int argc, char **argv)
        and ~/.abrt/events/foo.conf */
     load_event_config_data();
     load_event_config_data_from_keyring();
+    load_user_settings("report-gtk");
 
     create_assistant();
 
@@ -158,6 +159,8 @@ int main(int argc, char **argv)
 
     if (opts & OPT_d)
         delete_dump_dir_possibly_using_abrtd(g_dump_dir_name);
+
+    save_user_settings();
 
     return 0;
 }

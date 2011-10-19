@@ -22,6 +22,7 @@
 
 static GtkWindow *g_event_list_window;
 static GList *option_widget_list;
+static bool has_password_option;
 
 enum
 {
@@ -60,6 +61,11 @@ static void on_show_pass_cb(GtkToggleButton *tb, gpointer user_data)
 {
     GtkEntry *entry = (GtkEntry *)user_data;
     gtk_entry_set_visibility(entry, gtk_toggle_button_get_active(tb));
+}
+
+static void on_show_pass_store_cb(GtkToggleButton *tb, gpointer user_data)
+{
+    set_user_setting("store_passwords", gtk_toggle_button_get_active(tb) ? "no" : "yes");
 }
 
 static unsigned grow_table_by_1(GtkTable *table)
@@ -126,6 +132,7 @@ static void add_option_to_table(gpointer data, gpointer user_data)
                              /*x,yoptions:*/ GTK_FILL, GTK_FILL,
                              /*x,ypadding:*/ 0, 0);
                 g_signal_connect(pass_cb, "toggled", G_CALLBACK(on_show_pass_cb), option_input);
+                has_password_option = true;
             }
             break;
 
@@ -296,6 +303,9 @@ static void save_settings_to_keyring(const char *event_name)
         return;
     }
 
+    const char *store_passwords_s = get_user_setting("store_passwords");
+    bool store_passwords = !(store_passwords_s && !strcmp(store_passwords_s, "no"));
+
     GnomeKeyringAttributeList *attrs = gnome_keyring_attribute_list_new();
     event_config_t *ec = get_event_config(event_name);
     /* add string id which we use to search for items */
@@ -304,7 +314,8 @@ static void save_settings_to_keyring(const char *event_name)
     for (l = g_list_first(ec->options); l != NULL; l = g_list_next(l))
     {
         event_option_t *op = (event_option_t *)l->data;
-        gnome_keyring_attribute_list_append_string(attrs, op->eo_name, op->eo_value);
+        gnome_keyring_attribute_list_append_string(attrs, op->eo_name,
+                (!store_passwords && op->eo_type == OPTION_TYPE_PASSWORD) ? "" : op->eo_value);
     }
 
     guint32 item_id = find_keyring_item_id_for_event(event_name);
@@ -365,7 +376,24 @@ int show_event_config_dialog(const char *event_name, GtkWindow *parent)
 
     GtkWidget *option_table = gtk_table_new(/*rows*/ 0, /*cols*/ 2, /*homogeneous*/ FALSE);
     gtk_table_set_row_spacings(GTK_TABLE(option_table), 2);
+    has_password_option = false;
     g_list_foreach(event->options, &add_option_to_table, option_table);
+
+    /* if there is at least one password option, add checkbox to disable storing passwords */
+    if (has_password_option)
+    {
+        unsigned last_row = grow_table_by_1(GTK_TABLE(option_table));
+        GtkWidget *pass_store_cb = gtk_check_button_new_with_label(_("Don't store passwords"));
+        gtk_table_attach(GTK_TABLE(option_table), pass_store_cb,
+                /*left,right_attach:*/ 0, 1,
+                /*top,bottom_attach:*/ last_row, last_row+1,
+                /*x,yoptions:*/ GTK_FILL, GTK_FILL,
+                /*x,ypadding:*/ 0, 0);
+        const char *store_passwords = get_user_setting("store_passwords");
+        if (store_passwords && !strcmp(store_passwords, "no"))
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(pass_store_cb), 1);
+        g_signal_connect(pass_store_cb, "toggled", G_CALLBACK(on_show_pass_store_cb), NULL);
+    }
 
     GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
     gtk_box_pack_start(GTK_BOX(content), option_table, false, false, 20);
