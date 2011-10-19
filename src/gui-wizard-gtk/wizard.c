@@ -1397,6 +1397,8 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
             const char *log_response = response;
             unsigned skip_chars = 0;
 
+            char * tagged_msg = NULL;
+
             /* alert dialog */
             if (strncmp(REPORT_PREFIX_ALERT, msg, alert_prefix_len) == 0)
             {
@@ -1406,7 +1408,9 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                     GTK_MESSAGE_WARNING,
                     GTK_BUTTONS_CLOSE,
-                    msg + skip_chars);
+                    "%s", msg + skip_chars);
+                tagged_msg = tag_url(msg + skip_chars);
+                gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), tagged_msg);
 
                 gtk_dialog_run(GTK_DIALOG(dialog));
                 gtk_widget_destroy(dialog);
@@ -1420,7 +1424,9 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                     GTK_MESSAGE_QUESTION,
                     GTK_BUTTONS_OK_CANCEL,
-                    msg + skip_chars);
+                    "%s", msg + skip_chars);
+                tagged_msg = tag_url(msg + skip_chars);
+                gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), tagged_msg);
 
                 GtkWidget *vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
                 GtkWidget *textbox = gtk_entry_new();
@@ -1450,7 +1456,9 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                     GTK_MESSAGE_QUESTION,
                     GTK_BUTTONS_OK_CANCEL,
-                    msg + skip_chars);
+                    "%s", msg + skip_chars);
+                tagged_msg = tag_url(msg + skip_chars);
+                gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), tagged_msg);
 
                 GtkWidget *vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
                 GtkWidget *textbox = gtk_entry_new();
@@ -1481,7 +1489,9 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                     GTK_MESSAGE_QUESTION,
                     GTK_BUTTONS_YES_NO,
-                    msg + skip_chars);
+                    "%s", msg + skip_chars);
+                tagged_msg = tag_url(msg + skip_chars);
+                gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), tagged_msg);
 
                 if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_YES)
                 {
@@ -1527,6 +1537,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 
             /* jump to next line */
             raw = newline + 1;
+            free(tagged_msg);
         }
 
         /* beginning of next line. the line continues by next read() */

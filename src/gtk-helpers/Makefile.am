@@ -11,6 +11,7 @@ lib_LTLIBRARIES = \
 libreport_gtk_la_SOURCES = \
     event_config_dialog.c \
     abrt-keyring.c \
+    hyperlinks.c \
     autowrapped_label.c
 
 libreport_gtk_la_CPPFLAGS = \
