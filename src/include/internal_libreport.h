@@ -580,6 +580,9 @@ int delete_dump_dir_possibly_using_abrtd(const char *dump_dir_name);
 #define steal_directory libreport_steal_directory
 struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name);
 
+#define make_dir_recursive libreport_make_dir_recursive
+bool make_dir_recursive(char *dir, mode_t dir_mode);
+
 // Text bigger than this usually is attached, not added inline
 // was 2k, now bumbed up to 20k:
 #define CD_TEXT_ATT_SIZE (20*1024)

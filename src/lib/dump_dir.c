@@ -404,31 +404,12 @@ struct dump_dir *dd_create(const char *dir, uid_t uid, mode_t mode)
         return NULL;
     }
 
-    bool created_parents = false;
- try_again:
     /* Was creating it with mode 0700 and user as the owner, but this allows
      * the user to replace any file in the directory, changing security-sensitive data
      * (e.g. "uid", "analyzer", "executable")
      */
-    if (mkdir(dir, dir_mode) == -1)
+    if (!make_dir_recursive(dd->dd_dirname, dir_mode))
     {
-        int err = errno;
-        if (!created_parents && errno == ENOENT)
-        {
-            char *p = dd->dd_dirname + 1;
-            while ((p = strchr(p, '/')) != NULL)
-            {
-                *p = '\0';
-                int r = (mkdir(dd->dd_dirname, 0755) == 0 || errno == EEXIST);
-                *p++ = '/';
-                if (!r)
-                    goto report_err;
-            }
-            created_parents = true;
-            goto try_again;
-        }
- report_err:
-        errno = err;
         perror_msg("Can't create directory '%s'", dir);
         dd_close(dd);
         return NULL;
