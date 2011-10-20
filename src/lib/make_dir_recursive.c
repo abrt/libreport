@@ -21,7 +21,7 @@ bool make_dir_recursive(char *dir, mode_t dir_mode)
 {
     bool created_parents = false;
  try_again:
-    if (mkdir(dir, dir_mode) == -1)
+    if (mkdir(dir, dir_mode) == -1 && errno != EEXIST)
     {
         int err = errno;
         if (!created_parents && errno == ENOENT)
