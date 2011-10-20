@@ -55,10 +55,7 @@ get_rhts_hints(const char* baseURL,
                 const char* username,
                 const char* password,
                 bool ssl_verify,
-                const char* release,
-                const char* summary,
-                const char* description,
-                const char* component
+                const char* file_name
 );
 
 rhts_result_t*

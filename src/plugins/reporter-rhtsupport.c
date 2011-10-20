@@ -192,10 +192,7 @@ static void report_to_rhtsupport(const char *dump_dir_name)
             login,
             password,
             ssl_verify,
-            release,
-            summary,
-            dsc,
-            package
+            tempfile
     );
 #if 0 /* testing */
     log("ERR:%d", result->error);

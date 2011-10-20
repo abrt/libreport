@@ -332,7 +332,6 @@ post_case_to_url(const char* url,
 
     int redirect_count = 0;
     char *errmsg;
-    char *allocated = NULL;
     abrt_post_state_t *case_state;
 
  redirect_case:
@@ -348,7 +347,6 @@ post_case_to_url(const char* url,
     abrt_post_string(case_state, url, "application/xml", additional_headers, case_data);
 
     char *case_location = find_header_in_abrt_post_state(case_state, "Location:");
-    result->http_resp_code = case_state->http_resp_code;
 
     switch (case_state->http_resp_code)
     {
@@ -405,22 +403,101 @@ post_case_to_url(const char* url,
                 result->msg = xasprintf(_("error in case creation, HTTP code: %d"),
                         case_state->http_resp_code);
         }
-        result->body = case_state->body;
-        case_state->body = NULL;
         break;
 
     case 200:
     case 201:
         /* Cose created successfully */
-        result->url = xstrdup(case_location);
+        result->url = xstrdup(case_location); /* note: xstrdup(NULL) returns NULL */
         //result->msg = xstrdup("Case created");
-        result->body = case_state->body;
-        case_state->body = NULL;
-    } /* switch (case HTTP code) */
+    } /* switch (HTTP code) */
+
+    result->http_resp_code = case_state->http_resp_code;
+    result->body = case_state->body;
+    case_state->body = NULL;
 
     free_abrt_post_state(case_state);
-    free(allocated);
     free(case_data);
+    free(url_copy);
+    return result;
+}
+
+static rhts_result_t*
+post_file_to_url(const char* url,
+                const char* username,
+                const char* password,
+                bool ssl_verify,
+                const char **additional_headers,
+                const char *file_name)
+{
+    rhts_result_t *result = xzalloc(sizeof(*result));
+    char *url_copy = NULL;
+
+    int redirect_count = 0;
+    char *errmsg;
+    abrt_post_state_t *atch_state;
+
+ redirect_attach:
+    atch_state = new_abrt_post_state(0
+            + ABRT_POST_WANT_HEADERS
+            + ABRT_POST_WANT_BODY
+            + ABRT_POST_WANT_ERROR_MSG
+            + (ssl_verify ? ABRT_POST_WANT_SSL_VERIFY : 0)
+    );
+    atch_state->username = username;
+    atch_state->password = password;
+    abrt_post_file_as_form(atch_state,
+        url,
+        "application/binary",
+        additional_headers,
+        file_name
+    );
+
+    char *atch_location = find_header_in_abrt_post_state(atch_state, "Location:");
+
+    switch (atch_state->http_resp_code)
+    {
+    case 305: /* "305 Use Proxy" */
+        if (++redirect_count < 10 && atch_location)
+        {
+            free(url_copy);
+            url = url_copy = xstrdup(atch_location);
+            free_abrt_post_state(atch_state);
+            goto redirect_attach;
+        }
+        /* fall through */
+
+    default:
+        /* Error */
+        result->error = -1;
+        errmsg = atch_state->curl_error_msg;
+        if (errmsg && errmsg[0])
+        {
+            result->msg = xasprintf("error in file upload: %s", errmsg);
+        }
+        else
+        {
+            errmsg = atch_state->body;
+            if (errmsg && errmsg[0])
+                result->msg = xasprintf("error in file upload, HTTP code: %d, server says: '%s'",
+                        atch_state->http_resp_code, errmsg);
+            else
+                result->msg = xasprintf("error in file upload, HTTP code: %d",
+                        atch_state->http_resp_code);
+        }
+        break;
+
+    case 200:
+    case 201:
+        result->url = xstrdup(atch_location); /* note: xstrdup(NULL) returns NULL */
+        //result->msg = xstrdup("File uploaded successfully");
+    } /* switch (HTTP code) */
+
+    result->http_resp_code = atch_state->http_resp_code;
+    result->body = atch_state->body;
+    atch_state->body = NULL;
+
+    free_abrt_post_state(atch_state);
     free(url_copy);
     return result;
 }
@@ -466,107 +543,45 @@ get_rhts_hints(const char* base_url,
                 const char* username,
                 const char* password,
                 bool ssl_verify,
-                const char* release,
-                const char* summary,
-                const char* description,
-                const char* component)
+                const char* file_name)
 {
     char *url = concat_path_file(base_url, "problems");
-    rhts_result_t *result = post_case_to_url(url,
+//    rhts_result_t *result = post_case_to_url(url,
+//                username,
+//                password,
+//                ssl_verify,
+//                NULL,
+//                release,
+//                summary,
+//                description,
+//                component
+//    );
+    rhts_result_t *result = post_file_to_url(url,
                 username,
                 password,
                 ssl_verify,
-                NULL,
-                release,
-                summary,
-                description,
-                component
+                /*headers:*/ NULL,
+                file_name
     );
     free(url);
     return result;
 }
 
 rhts_result_t*
-attach_file_to_case(const char* baseURL,
+attach_file_to_case(const char* base_url,
                 const char* username,
                 const char* password,
                 bool ssl_verify,
                 const char *file_name)
 {
-    rhts_result_t *result = xzalloc(sizeof(*result));
-
-    int redirect_count = 0;
-    char *atch_url = concat_path_file(baseURL, "attachments");
-    abrt_post_state_t *atch_state;
-
- redirect_attach:
-    atch_state = new_abrt_post_state(0
-            + ABRT_POST_WANT_HEADERS
-            + ABRT_POST_WANT_BODY
-            + ABRT_POST_WANT_ERROR_MSG
-            + (ssl_verify ? ABRT_POST_WANT_SSL_VERIFY : 0)
+    char *url = concat_path_file(base_url, "attachments");
+    rhts_result_t *result = post_file_to_url(url,
+                username,
+                password,
+                ssl_verify,
+                (const char **) text_plain_header,
+                file_name
     );
-    atch_state->username = username;
-    atch_state->password = password;
-    abrt_post_file_as_form(atch_state,
-        atch_url,
-        "application/binary",
-        (const char **) text_plain_header,
-        file_name
-    );
-
-    switch (atch_state->http_resp_code)
-    {
-    case 305: /* "305 Use Proxy" */
-        {
-            char *atch_location = find_header_in_abrt_post_state(atch_state, "Location:");
-            if (++redirect_count < 10 && atch_location)
-            {
-                free(atch_url);
-                atch_url = xstrdup(atch_location);
-                free_abrt_post_state(atch_state);
-                goto redirect_attach;
-            }
-        }
-        /* fall through */
-
-    default:
-        /* Error */
-        {
-            char *allocated = NULL;
-            const char *errmsg = atch_state->curl_error_msg;
-            if (atch_state->body && atch_state->body[0])
-            {
-                if (errmsg && errmsg[0]
-                 && strcmp(errmsg, atch_state->body) != 0
-                ) /* both strata/curl error and body are present (and aren't the same) */
-                    errmsg = allocated = xasprintf("%s. %s",
-                            atch_state->body,
-                            errmsg);
-                else /* only body exists */
-                    errmsg = atch_state->body;
-            }
-            result->error = -1;
-            result->msg = xasprintf("Attachment failed (HTTP code %d)%s%s",
-                    atch_state->http_resp_code,
-                    errmsg ? ": " : "",
-                    errmsg ? errmsg : ""
-            );
-            free(allocated);
-        }
-        break;
-
-    case 200:
-    case 201:
-        {
-            char *loc = find_header_in_abrt_post_state(atch_state, "Location:");
-            if (loc)
-                result->url = xstrdup(loc);
-            //result->msg = xstrdup("File attached successfully");
-        }
-    } /* switch */
-
-    free_abrt_post_state(atch_state);
-    free(atch_url);
+    free(url);
     return result;
 }
