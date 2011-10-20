@@ -352,6 +352,11 @@ static void update_window_title(void)
     free(title);
 }
 
+static void on_toggle_ask_steal_cb(GtkToggleButton *tb, gpointer user_data)
+{
+    set_user_setting("ask_steal_dir", gtk_toggle_button_get_active(tb) ? "no" : "yes");
+}
+
 struct dump_dir *steal_if_needed(struct dump_dir *dd)
 {
     if (!dd)
@@ -373,21 +378,32 @@ struct dump_dir *steal_if_needed(struct dump_dir *dd)
     else
         HOME = xstrdup("/tmp");
 
-    GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
+    const char *ask_steal_dir = get_user_setting("ask_steal_dir");
+
+    if (!ask_steal_dir || strcmp(ask_steal_dir, "no"))
+    {
+        GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
                 GTK_DIALOG_DESTROY_WITH_PARENT,
                 GTK_MESSAGE_QUESTION,
                 GTK_BUTTONS_OK_CANCEL,
                 _("Need writable directory, but '%s' is not writable."
                 " Move it to '%s' and operate on the moved copy?"),
                 g_dump_dir_name, HOME
-    );
-    gint response = GTK_RESPONSE_CANCEL;
-    g_signal_connect(G_OBJECT(dialog), "response", G_CALLBACK(save_dialog_response), &response);
-    gtk_dialog_run(GTK_DIALOG(dialog));
-    gtk_widget_destroy(dialog);
+                );
+        gint response = GTK_RESPONSE_CANCEL;
+        g_signal_connect(G_OBJECT(dialog), "response", G_CALLBACK(save_dialog_response), &response);
 
-    if (response != GTK_RESPONSE_OK)
-        return NULL;
+        GtkWidget *ask_steal_cb = gtk_check_button_new_with_label(_("Don't ask me again"));
+        gtk_box_pack_start(GTK_BOX(gtk_message_dialog_get_message_area(GTK_MESSAGE_DIALOG(dialog))),
+                ask_steal_cb, TRUE, TRUE, 0);
+        g_signal_connect(ask_steal_cb, "toggled", G_CALLBACK(on_toggle_ask_steal_cb), NULL);
+        gtk_widget_show(ask_steal_cb);
+        gtk_dialog_run(GTK_DIALOG(dialog));
+        gtk_widget_destroy(dialog);
+
+        if (response != GTK_RESPONSE_OK)
+            return NULL;
+    }
 
     dd = steal_directory(HOME, g_dump_dir_name);
     if (!dd)
