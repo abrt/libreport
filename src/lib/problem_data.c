@@ -61,7 +61,7 @@ void add_basics_to_problem_data(problem_data_t *pd)
 {
     const char *analyzer = get_problem_item_content_or_NULL(pd, FILENAME_ANALYZER);
     if (analyzer == NULL)
-        add_to_problem_data(pd, "analyzer", "libreport");
+        add_to_problem_data(pd, FILENAME_ANALYZER, "libreport");
 
     /* If application didn't provide dupe hash, we generate it
      * from all components, so we at least eliminate the exact same
