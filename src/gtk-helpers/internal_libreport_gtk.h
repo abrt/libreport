@@ -44,7 +44,7 @@ guint32 find_keyring_item_id_for_event(const char *event_name);
 #define show_event_config_dialog libreport_show_event_config_dialog
 int show_event_config_dialog(const char *event_name, GtkWindow *parent);
 
-char * tag_url(const char* line);
+char * tag_url(const char* line, const char* prefix);
 
 #ifdef __cplusplus
 }

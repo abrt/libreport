@@ -1409,7 +1409,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                     GTK_MESSAGE_WARNING,
                     GTK_BUTTONS_CLOSE,
                     "%s", msg + skip_chars);
-                tagged_msg = tag_url(msg + skip_chars);
+                tagged_msg = tag_url(msg + skip_chars, "\n");
                 gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), tagged_msg);
 
                 gtk_dialog_run(GTK_DIALOG(dialog));
@@ -1425,7 +1425,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                     GTK_MESSAGE_QUESTION,
                     GTK_BUTTONS_OK_CANCEL,
                     "%s", msg + skip_chars);
-                tagged_msg = tag_url(msg + skip_chars);
+                tagged_msg = tag_url(msg + skip_chars, "\n");
                 gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), tagged_msg);
 
                 GtkWidget *vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
@@ -1457,7 +1457,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                     GTK_MESSAGE_QUESTION,
                     GTK_BUTTONS_OK_CANCEL,
                     "%s", msg + skip_chars);
-                tagged_msg = tag_url(msg + skip_chars);
+                tagged_msg = tag_url(msg + skip_chars, "\n");
                 gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), tagged_msg);
 
                 GtkWidget *vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
@@ -1490,7 +1490,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                     GTK_MESSAGE_QUESTION,
                     GTK_BUTTONS_YES_NO,
                     "%s", msg + skip_chars);
-                tagged_msg = tag_url(msg + skip_chars);
+                tagged_msg = tag_url(msg + skip_chars, "\n");
                 gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), tagged_msg);
 
                 if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_YES)

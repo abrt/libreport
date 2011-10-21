@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <internal_libreport_gtk.h>
 
-char *tag_url(const char* line)
+char *tag_url(const char* line, const char* prefix)
 {
     static const char *const known_url_prefixes[] = {"http://", "https://", "ftp://", "file://", NULL};
 
@@ -18,7 +18,8 @@ char *tag_url(const char* line)
         {
             char *url_end = strchrnul(url_start, ' '); //TODO: also '.', ',', '\t', '\n'...
             int len = url_end - url_start;
-            char *hyperlink = xasprintf("<a href=\"%.*s\">%.*s</a>",
+            char *hyperlink = xasprintf("%s<a href=\"%.*s\">%.*s</a>",
+                            prefix,
                             len, url_start,
                             len, url_start
             );
