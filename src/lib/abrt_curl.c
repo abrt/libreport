@@ -64,6 +64,17 @@ xcurl_easy_setopt_long(CURL *handle, CURLoption option, long parameter)
     xcurl_easy_setopt_ptr(handle, option, (void*)parameter);
 }
 
+static void
+xcurl_easy_setopt_off_t(CURL *handle, CURLoption option, curl_off_t parameter)
+{
+    /* Can't reuse xcurl_easy_setopt_ptr: paramter is too wide */
+    CURLcode err = curl_easy_setopt(handle, option, parameter);
+    if (err) {
+        char *msg = check_curl_error(err, "curl");
+        error_msg_and_die("%s", msg);
+    }
+}
+
 /*
  * post_state utility functions
  */
@@ -279,6 +290,12 @@ abrt_post(abrt_post_state_t *state,
         xcurl_easy_setopt_ptr(handle, CURLOPT_READDATA, data_file);
         // Want to use custom read function
         xcurl_easy_setopt_ptr(handle, CURLOPT_READFUNCTION, (const void*)fread_with_reporting);
+        // Without this, curl would send "Content-Length: -1"
+        // servers don't like that: "413 Request Entity Too Large"
+        fseeko(data_file, 0, SEEK_END);
+        off_t sz = ftello(data_file);
+        fseeko(data_file, 0, SEEK_SET);
+        xcurl_easy_setopt_off_t(handle, CURLOPT_POSTFIELDSIZE_LARGE, sz);
     } else if (data_size == ABRT_POST_DATA_FROMFILE_AS_FORM_DATA) {
         // ...from a file, in multipart/formdata format
         const char *basename = strrchr(data, '/');
@@ -309,6 +326,7 @@ abrt_post(abrt_post_state_t *state,
                         // use CURLOPT_READFUNCTION for reading, pass data_file as its last param:
                         CURLFORM_STREAM, data_file,
                         CURLFORM_CONTENTSLENGTH, (long)sz, // a must if we use CURLFORM_STREAM option
+//FIXME: what if file size doesn't fit in long?
                         CURLFORM_CONTENTTYPE, content_type,
                         CURLFORM_FILENAME, basename, // filename to put in the form
                         CURLFORM_END);
@@ -322,9 +340,9 @@ abrt_post(abrt_post_state_t *state,
         xcurl_easy_setopt_ptr(handle, CURLOPT_POSTFIELDS, data);
         // note1: if data_size == ABRT_POST_DATA_STRING == -1, curl will use strlen(data)
         xcurl_easy_setopt_long(handle, CURLOPT_POSTFIELDSIZE, data_size);
-        // note2: CURLOPT_POSTFIELDSIZE_LARGE can't be used: xcurl_easy_setopt_long()
-        // truncates data_size on 32-bit arch. Need xcurl_easy_setopt_long_long()?
-        // Also, I'm not sure CURLOPT_POSTFIELDSIZE_LARGE special-cases -1.
+        // We don't use CURLOPT_POSTFIELDSIZE_LARGE because
+        // I'm not sure CURLOPT_POSTFIELDSIZE_LARGE special-cases -1.
+        // Not a big problem: memory blobs >4GB are very unlikely.
     }
 
     struct curl_slist *httpheader_list = NULL;

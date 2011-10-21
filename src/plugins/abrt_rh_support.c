@@ -427,6 +427,7 @@ post_file_to_url(const char* url,
                 const char* username,
                 const char* password,
                 bool ssl_verify,
+                bool post_as_form,
                 const char **additional_headers,
                 const char *file_name)
 {
@@ -446,12 +447,28 @@ post_file_to_url(const char* url,
     );
     atch_state->username = username;
     atch_state->password = password;
-    abrt_post_file_as_form(atch_state,
-        url,
-        "application/binary",
-        additional_headers,
-        file_name
-    );
+    if (post_as_form)
+    {
+        /* Sends data in multipart/mixed document. One detail is that
+	 * file *name* is also sent to the server.
+	 */
+        abrt_post_file_as_form(atch_state,
+            url,
+            "application/octet-stream",
+            additional_headers,
+            file_name
+        );
+    }
+    else
+    {
+        /* Sends file's raw contents */
+        abrt_post_file(atch_state,
+            url,
+            "application/octet-stream",
+            additional_headers,
+            file_name
+        );
+    }
 
     char *atch_location = find_header_in_abrt_post_state(atch_state, "Location:");
 
@@ -560,6 +577,7 @@ get_rhts_hints(const char* base_url,
                 username,
                 password,
                 ssl_verify,
+                /*post_as_form:*/ false,
                 /*headers:*/ NULL,
                 file_name
     );
@@ -579,6 +597,7 @@ attach_file_to_case(const char* base_url,
                 username,
                 password,
                 ssl_verify,
+                /*post_as_form:*/ true,
                 (const char **) text_plain_header,
                 file_name
     );
