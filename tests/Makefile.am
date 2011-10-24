@@ -28,7 +28,8 @@ TESTSUITE_AT = \
   local.at \
   testsuite.at \
   strbuf.at \
-  osrelease.at
+  osrelease.at \
+  taghyperlinks.at
 
 EXTRA_DIST += $(TESTSUITE_AT)
 TESTSUITE = $(srcdir)/testsuite

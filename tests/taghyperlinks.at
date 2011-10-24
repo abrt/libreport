@@ -1,0 +1,48 @@
+# -*- Autotest -*-
+
+AT_BANNER([tag hyperlinks])
+
+## ---------------------- ##
+## parse_release_for_bz ##
+## ---------------------- ##
+
+AT_TESTFUN([gtk_labels],
+[[
+#include <assert.h>
+#include <stdio.h>
+#include <string.h>
+
+//from hyperlinks.c
+char *tag_url(const char* line, const char* prefix);
+
+/* Test parsing different release strings */
+int test(char ***input)
+{
+    char *hyperlink = tag_url(**input, "");
+    (*input)++;
+
+    printf("'%s' == '%s'\n", hyperlink, **input);
+    return strcmp(hyperlink, **input);
+}
+
+int main(void)
+{
+    char *urls[2][2] =
+    {
+        //"Fedora release 15.a (Lovelock)", //should fail
+        {"https://bugzilla.redhat.com/show_bug.cgi?id=743198",
+        "<a href=\"https://bugzilla.redhat.com/show_bug.cgi?id=743198\">https://bugzilla.redhat.com/show_bug.cgi?id=743198</a>"},
+        {"SOMETEXT https://bugzilla.redhat.com/show_bug.cgi?id=743198",
+         "SOMETEXT <a href=\"https://bugzilla.redhat.com/show_bug.cgi?id=743198\">https://bugzilla.redhat.com/show_bug.cgi?id=743198</a>"},
+    };
+
+
+    char **tmp = (char **)urls;
+    while(*tmp)
+    {
+        assert(test(&tmp) == 0);
+        tmp++;
+    }
+}
+]])
+
