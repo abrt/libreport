@@ -363,10 +363,6 @@ void xsetreuid(uid_t ruid, uid_t euid);
 #define xsetregid libreport_xsetregid
 void xsetregid(gid_t rgid, gid_t egid);
 
-/* Returns getpwuid(uid)->pw_dir or NULL */
-#define get_home_dir libreport_get_home_dir
-const char *get_home_dir(uid_t uid);
-
 
 /* Emit a string of hex representation of bytes */
 #define bin2hex libreport_bin2hex

@@ -396,10 +396,3 @@ void xsetregid(gid_t rgid, gid_t egid)
     if (setregid(rgid, egid) != 0)
         perror_msg_and_die("Can't set %cid %lu", 'g', (long)rgid);
 }
-
-const char *get_home_dir(uid_t uid)
-{
-    struct passwd* pw = getpwuid(uid);
-    // TODO: handle errno
-    return pw ? pw->pw_dir : NULL;
-}
