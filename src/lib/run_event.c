@@ -52,7 +52,7 @@ void free_run_event_state(struct run_event_state *state)
  * After cmd1/2, should we execute cmd3 if element foo changed value to baz?
  *
  * We used to read entire config file and select a list of commands to execute,
- * checking all conditions in the beginning. It is a bit more simple to code up.
+ * checking all conditions in the beginning.
  *
  * This proved to be bad for use cases where, for example, post-create rule
  * for a specified package needs to run:
@@ -60,22 +60,22 @@ void free_run_event_state(struct run_event_state *state)
  * EVENT=post-create
  *      abrt-action-save-package-data
  * EVENT=post-create component=mypkg
- *      my_handling
+ *      do_something
  *
  * Problem here is that "component" element is created by
  * abrt-action-save-package-data! Pre-selecting rules excludes second rule.
  *
  * Now we read entire config but do NOT select commands to execute,
- * we check conditions of every next rule *directly before its execution*.
+ * we check conditions of every rule *directly before its execution*.
+ * We remove the rule which we executed, and if the execution was successful,
+ * we check conditions of every rule *starting from first rule*,
+ * not *from the rule next to one we just executed and removed*.
+ * IOW: the reordered rules like the example below work too:
  *
- * It's possible we'd want to switch to an algorightm which makes in unnecessary
- * to properly order rules in config files(s). Now these two rules must not
- * be reordered, or else second one won't work:
- * EVENT=post-create         echo foo >bar
  * EVENT=post-create foo=bar do_something
- * but this might be not so easy to ensure when include files are involved...
+ * EVENT=post-create         echo foo >bar
  *
- * Anyway, list of commands machinery is encapsulated in struct run_event_state,
+ * List of commands machinery is encapsulated in struct run_event_state,
  * and public async API:
  *      prepare_commands(state, dir, event);
  *      spawn_next_command(state, dir, event);
