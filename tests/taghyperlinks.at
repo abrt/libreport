@@ -27,13 +27,14 @@ int test(char ***input)
 
 int main(void)
 {
-    char *urls[2][2] =
+    char *urls[3][2] =
     {
         //"Fedora release 15.a (Lovelock)", //should fail
         {"https://bugzilla.redhat.com/show_bug.cgi?id=743198",
         "<a href=\"https://bugzilla.redhat.com/show_bug.cgi?id=743198\">https://bugzilla.redhat.com/show_bug.cgi?id=743198</a>"},
         {"SOMETEXT https://bugzilla.redhat.com/show_bug.cgi?id=743198",
          "SOMETEXT <a href=\"https://bugzilla.redhat.com/show_bug.cgi?id=743198\">https://bugzilla.redhat.com/show_bug.cgi?id=743198</a>"},
+        NULL,
     };
 
 
