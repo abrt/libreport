@@ -149,7 +149,10 @@ static void emit_url_text_pairs_to_strbuf(struct strbuf *result, GList *urllist,
     {
         if (txtlist->data)
         {
-            strbuf_append_strf(result, "%s%s: %s", prefix, urllist->data, txtlist->data);
+            /* changed "%s%s:" -> "%s%s :" if the url ends with ':' then it
+             * becomes part of the link and makes it invalid
+             */
+            strbuf_append_strf(result, "%s%s : %s", prefix, urllist->data, txtlist->data);
             free(txtlist->data);
         }
         else
