@@ -100,6 +100,8 @@ int prefixcmp(const char *str, const char *prefix);
 int suffixcmp(const char *str, const char *suffix);
 #define strtrim libreport_strtrim
 char *strtrim(char *str);
+#define strtrimch libreport_strtrimch
+char *strtrimch(char *str, int ch);
 #define concat_path_file libreport_concat_path_file
 char *concat_path_file(const char *path, const char *filename);
 #define append_to_malloced_string libreport_append_to_malloced_string

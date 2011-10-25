@@ -60,6 +60,36 @@ char *strtrim(char *str)
     return str;
 }
 
+/*
+ * Trims characters both from left and right side of a string.
+ * Modifies the string in-place. Returns the trimmed string.
+ */
+char *strtrimch(char *str, int ch)
+{
+    if (!str)
+        return NULL;
+
+    char *tmp = str;
+
+
+    // Remove leading characters.
+    while (*tmp == ch)
+        ++tmp;
+
+    memmove(str, tmp, strlen(str));
+
+    // Remove trailing spaces.
+    int i = strlen(str);
+    while (--i >= 0)
+    {
+        if (str[i] != ch)
+            break;
+    }
+    str[++i] = '\0';
+    return str;
+}
+
+
 struct strbuf *strbuf_new(void)
 {
     struct strbuf *buf = xzalloc(sizeof(*buf));
