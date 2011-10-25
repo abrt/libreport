@@ -60,7 +60,13 @@ static int send_file(const char *url, const char *filename)
 
     struct stat stbuf;
     fstat(fileno(fp), &stbuf); /* never fails */
-    char *whole_url = concat_path_file(url, strrchr(filename, '/') ? : filename);
+
+    char *whole_url;
+    unsigned len = strlen(url);
+    if (len > 0 && url[len-1] == '/')
+        whole_url = concat_path_file(url, strrchr(filename, '/') ? : filename);
+    else
+        whole_url = xstrdup(url);
 
     CURL *curl = curl_easy_init();
     if (!curl)
@@ -204,7 +210,8 @@ static int create_and_upload_archive(
     }
 
     /* Upload the tarball */
-    if (url && url[0])
+    /* Upload from /tmp to /tmp + deletion -> BAD, exclude this possibility */
+    if (url && url[0] && strcmp(url, "file:///tmp/") != 0)
     {
         result = send_file(url, tempfile);
         /* cleanup code will delete tempfile */
@@ -248,6 +255,12 @@ int main(int argc, char **argv)
         "\n"
         "Uploads compressed tarball of dump directory DIR to URL.\n"
         "If URL is not specified, creates tarball in /tmp and exits.\n"
+        "\n"
+        "URL should have form 'protocol://[user[:pass]@]host/dir/[file.tar.gz]'\n"
+        "where protocol can be http(s), ftp, scp, or file.\n"
+        "File protocol can't have user and host parts: 'file:///dir/[file.tar.gz].'\n"
+        "If URL ends with a slash, the archive name will be generated and appended\n"
+        "to URL; otherwise, URL will be used as full file name.\n"
         "\n"
         "Files with names listed in $EXCLUDE_FROM_REPORT are not included\n"
         "into the tarball.\n"
