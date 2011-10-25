@@ -75,6 +75,7 @@ static GtkLabel *g_lbl_cd_reason;
 static GtkTextView *g_tv_backtrace;
 static GtkTextView *g_tv_comment;
 static GtkEventBox *g_eb_comment;
+static GtkCheckButton *g_cb_no_comment;
 static GtkWidget *g_widget_warnings_area;
 static GtkBox *g_box_warning_labels;
 static GtkToggleButton *g_tb_approve_bt;
@@ -1864,13 +1865,15 @@ static void on_bt_approve_toggle(GtkToggleButton *togglebutton, gpointer user_da
     );
 }
 
-static void on_comment_changed(GtkTextBuffer *buffer, gpointer user_data)
+static void toggle_eb_comment(void)
 {
-    bool good = gtk_text_buffer_get_char_count(buffer) >= 10;
-
     /* The page doesn't exist with report-only option */
     if (pages[PAGENO_EDIT_COMMENT].page_widget == NULL)
         return;
+
+    bool good =
+        gtk_text_buffer_get_char_count(gtk_text_view_get_buffer(g_tv_comment)) >= 10
+        || gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(g_cb_no_comment));
 
     /* Allow next page only when the comment has at least 10 chars */
     gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_EDIT_COMMENT].page_widget, good);
@@ -1880,6 +1883,16 @@ static void on_comment_changed(GtkTextBuffer *buffer, gpointer user_data)
         gtk_widget_hide(GTK_WIDGET(g_eb_comment));
     else
         gtk_widget_show(GTK_WIDGET(g_eb_comment));
+}
+
+static void on_comment_changed(GtkTextBuffer *buffer, gpointer user_data)
+{
+    toggle_eb_comment();
+}
+
+static void on_no_comment_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+{
+    toggle_eb_comment();
 }
 
 
@@ -2450,6 +2463,7 @@ static void add_pages()
     g_tv_backtrace         = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_backtrace"));
     g_tv_comment           = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_comment"));
     g_eb_comment           = GTK_EVENT_BOX(    gtk_builder_get_object(builder, "eb_comment"));
+    g_cb_no_comment        = GTK_CHECK_BUTTON( gtk_builder_get_object(builder, "cb_no_comment"));
     g_tv_details           = GTK_TREE_VIEW(    gtk_builder_get_object(builder, "tv_details"));
     g_box_warning_labels   = GTK_BOX(          gtk_builder_get_object(builder, "box_warning_labels"));
     g_tb_approve_bt        = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "cb_approve_bt"));
@@ -2492,6 +2506,8 @@ static void add_pages()
 
     g_signal_connect(g_btn_cancel_analyze, "clicked", G_CALLBACK(on_btn_cancel_event), NULL);
     g_signal_connect(g_btn_cancel_report, "clicked", G_CALLBACK(on_btn_cancel_event), NULL);
+
+    g_signal_connect(g_cb_no_comment, "toggled", G_CALLBACK(on_no_comment_toggled), NULL);
 
     GtkWidget *w;
 
