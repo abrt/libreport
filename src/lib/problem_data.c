@@ -159,7 +159,7 @@ const char *get_problem_item_content_or_die(problem_data_t *problem_data, const 
 {
     struct problem_item *item = get_problem_data_item_or_NULL(problem_data, key);
     if (!item)
-        error_msg_and_die("Error accessing problem data: no ['%s']", key);
+        error_msg_and_die(_("Essential element '%s' is missing, can't continue"), key);
     return item->content;
 }
 
