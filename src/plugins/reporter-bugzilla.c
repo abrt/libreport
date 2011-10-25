@@ -22,189 +22,10 @@
 
 #define XML_RPC_SUFFIX "/xmlrpc.cgi"
 
-static void report_to_bugzilla(const char *dump_dir_name, const char *login,
-                               const char *password, const char *bugzilla_xmlrpc,
-                               const char *bugzilla_url, int ssl_verify, int attach_binary)
-{
-    problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
-    if (!problem_data)
-        xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
-
-    const char *component = get_problem_item_content_or_NULL(problem_data, FILENAME_COMPONENT);
-    const char *duphash   = get_problem_item_content_or_NULL(problem_data, FILENAME_DUPHASH);
-//COMPAT, remove after 2.1 release
-    if (!duphash) duphash = get_problem_item_content_or_NULL(problem_data, "global_uuid");
-    if (!duphash)
-        error_msg_and_die(_("Essential file '%s' is missing, can't continue.."),
-                          FILENAME_DUPHASH);
-
-    if (!*duphash)
-        error_msg_and_die(_("Essential file '%s' is empty, can't continue.."),
-                          FILENAME_DUPHASH);
-
-    const char *release   = get_problem_item_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
-    if (!release) /* Old dump dir format compat. Remove in abrt-2.1 */
-        release = get_problem_item_content_or_NULL(problem_data, "release");
-
-    struct abrt_xmlrpc *client = abrt_xmlrpc_new_client(bugzilla_xmlrpc, ssl_verify);
-
-    log(_("Logging into Bugzilla at %s"), bugzilla_url);
-    rhbz_login(client, login, password);
-
-    log(_("Checking for duplicates"));
-    char *product = NULL;
-    char *version = NULL;
-    parse_release_for_bz(release, &product, &version);
-    free(version);
-
-    xmlrpc_value *result;
-    if (strcmp(product, "Fedora") == 0)
-        result  = rhbz_search_duphash(client, component, product, duphash);
-    else
-        result  = rhbz_search_duphash(client, component, NULL, duphash);
-
-    xmlrpc_value *all_bugs = rhbz_get_member("bugs", result);
-    xmlrpc_DECREF(result);
-
-    if (!all_bugs)
-        error_msg_and_die(_("Missing mandatory member 'bugs'"));
-
-    int all_bugs_size = rhbz_array_size(all_bugs);
-    // When someone clones bug it has same duphash, so we can find more than 1.
-    // Need to be checked if component is same.
-    VERB3 log("Bugzilla has %i reports with same duphash '%s'",
-              all_bugs_size, duphash);
-
-    int bug_id = -1;
-    struct bug_info *bz = NULL;
-    if (all_bugs_size > 0)
-    {
-        bug_id = rhbz_bug_id(all_bugs);
-        xmlrpc_DECREF(all_bugs);
-        bz = rhbz_bug_info(client, bug_id);
-
-        if (strcmp(bz->bi_product, product) != 0)
-        {
-            /* found something, but its a different product */
-            free_bug_info(bz);
-
-            xmlrpc_value *result = rhbz_search_duphash(client, component,
-                                                       product, duphash);
-            xmlrpc_value *all_bugs = rhbz_get_member("bugs", result);
-            xmlrpc_DECREF(result);
-
-            all_bugs_size = rhbz_array_size(all_bugs);
-            if (all_bugs_size > 0)
-            {
-                bug_id = rhbz_bug_id(all_bugs);
-                bz = rhbz_bug_info(client, bug_id);
-            }
-            xmlrpc_DECREF(all_bugs);
-        }
-    }
-    free(product);
-
-    if (all_bugs_size == 0) // Create new bug
-    {
-        log(_("Creating a new bug"));
-        bug_id = rhbz_new_bug(client, problem_data, bug_id);
-
-        log("Adding attachments to bug %i", bug_id);
-        char bug_id_str[sizeof(int)*3 + 2];
-        sprintf(bug_id_str, "%i", bug_id);
-
-        int flags = RHBZ_NOMAIL_NOTIFY;
-        if (attach_binary)
-            flags |= RHBZ_ATTACH_BINARY_FILES;
-        rhbz_attach_big_files(client, bug_id_str, problem_data, flags);
-
-        bz = new_bug_info();
-        bz->bi_status = xstrdup("NEW");
-        bz->bi_id = bug_id;
-        goto log_out;
-    }
-
-    // decision based on state
-    log(_("Bug is already reported: %i"), bz->bi_id);
-    if ((strcmp(bz->bi_status, "CLOSED") == 0)
-     && (strcmp(bz->bi_resolution, "DUPLICATE") == 0)
-    ) {
-        struct bug_info *origin;
-        origin = rhbz_find_origin_bug_closed_duplicate(client, bz);
-        if (origin)
-        {
-            free_bug_info(bz);
-            bz = origin;
-        }
-    }
-
-    if (strcmp(bz->bi_status, "CLOSED") != 0)
-    {
-        if ((strcmp(bz->bi_reporter, login) != 0)
-            && (!g_list_find_custom(bz->bi_cc_list, login, (GCompareFunc)g_strcmp0)))
-        {
-            log(_("Add %s to CC list"), login);
-            rhbz_mail_to_cc(client, bz->bi_id, login, RHBZ_NOMAIL_NOTIFY);
-        }
-
-        const char *comment = get_problem_item_content_or_NULL(problem_data, FILENAME_COMMENT);
-        if (comment && comment[0])
-        {
-            const char *package = get_problem_item_content_or_NULL(problem_data, FILENAME_PACKAGE);
-            const char *release = get_problem_item_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
-//COMPAT, remove in abrt-2.1 release
-            if (!release)release= get_problem_item_content_or_NULL(problem_data, "release");
-            const char *arch    = get_problem_item_content_or_NULL(problem_data, FILENAME_ARCHITECTURE);
-            char *full_dsc = xasprintf("Package: %s\n"
-                                       "Architecture: %s\n"
-                                       "OS Release: %s\n"
-                                       "\n"
-                                       "Comment\n"
-                                       "-----\n"
-                                       "%s\n",
-                                       package, arch, release, comment
-            );
-            log(_("Adding new comment to bug %d"), bz->bi_id);
-            /* unused code, enable it when gui/cli will be ready
-            int is_priv = is_private && string_to_bool(is_private);
-            const char *is_private = get_problem_item_content_or_NULL(problem_data,
-                                                                      "is_private");
-            */
-            rhbz_add_comment(client, bz->bi_id, full_dsc, 0);
-            free(full_dsc);
-        }
-    }
-
- log_out:
-    log(_("Logging out"));
-    rhbz_logout(client);
-
-    log("Status: %s%s%s %s/show_bug.cgi?id=%u",
-                bz->bi_status,
-                bz->bi_resolution ? " " : "",
-                bz->bi_resolution ? bz->bi_resolution : "",
-                bugzilla_url,
-                bz->bi_id);
-
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (dd)
-    {
-        char *msg = xasprintf("Bugzilla: URL=%s/show_bug.cgi?id=%u", bugzilla_url, bz->bi_id);
-        add_reported_to(dd, msg);
-        free(msg);
-        dd_close(dd);
-    }
-
-    free_problem_data(problem_data);
-    free_bug_info(bz);
-    abrt_xmlrpc_free_client(client);
-}
-
 int main(int argc, char **argv)
 {
     abrt_init(argv);
 
-    map_string_h *settings = new_map_string();
     const char *dump_dir_name = ".";
     GList *conf_file = NULL;
 
@@ -233,7 +54,7 @@ int main(int argc, char **argv)
         "\n"
         "If not specified, CONFFILE defaults to "CONF_DIR"/plugins/bugzilla.conf\n"
         "Its lines should have 'PARAM = VALUE' format.\n"
-        "Recognized string parameters: BugzillaURL, Login, Password.\n"
+        "Recognized string parameters: BugzillaURL, Login, Password, Product.\n"
         "Recognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify.\n"
         "Parameters can be overridden via $Bugzilla_PARAM environment variables.\n"
         "\n"
@@ -287,6 +108,7 @@ int main(int argc, char **argv)
 
     export_abrt_envvars(0);
 
+    map_string_h *settings = new_map_string();
     if (!conf_file)
         conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/bugzilla.conf");
     while (conf_file)
@@ -295,7 +117,7 @@ int main(int argc, char **argv)
         VERB1 log("Loading settings from '%s'", fn);
         load_conf_file(fn, settings, /*skip key w/o values:*/ true);
         VERB3 log("Loaded '%s'", fn);
-        conf_file = g_list_remove(conf_file, fn);
+        conf_file = g_list_delete_link(conf_file, conf_file);
     }
 
     VERB1 log("Initializing XML-RPC library");
@@ -312,6 +134,7 @@ int main(int argc, char **argv)
     const char *bugzilla_xmlrpc;
     const char *bugzilla_url;
     bool ssl_verify;
+    char *product;
 
     environ = getenv("Bugzilla_Login");
     login = environ ? environ : get_map_string_item_or_empty(settings, "Login");
@@ -329,12 +152,16 @@ int main(int argc, char **argv)
     environ = getenv("Bugzilla_SSLVerify");
     ssl_verify = string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "SSLVerify"));
 
+    environ = getenv("Bugzilla_Product");
+    product = xstrdup(environ ? environ : get_map_string_item_or_NULL(settings, "Product"));
+
+    struct abrt_xmlrpc *client = abrt_xmlrpc_new_client(bugzilla_xmlrpc, ssl_verify);
+
     if (opts & OPT_t)
     {
+        /* Attach files to existing BZ */
         if (!argv[optind])
             show_usage_and_die(program_usage_string, program_options);
-
-        struct abrt_xmlrpc *client = abrt_xmlrpc_new_client(bugzilla_xmlrpc, ssl_verify);
 
         log(_("Logging into Bugzilla at %s"), bugzilla_url);
         rhbz_login(client, login, password);
@@ -342,7 +169,7 @@ int main(int argc, char **argv)
         while (argv[optind])
         {
             const char *filename = argv[optind++];
-            VERB1 log("Attaching file '%s' to bugticket %s", filename, ticket_no);
+            VERB1 log("Attaching file '%s' to bug %s", filename, ticket_no);
 
             int fd = open(filename, O_RDONLY);
             if (fd < 0)
@@ -365,14 +192,182 @@ int main(int argc, char **argv)
 
         log(_("Logging out"));
         rhbz_logout(client);
+
+#if 0  /* enable if you search for leaks (valgrind etc) */
         abrt_xmlrpc_free_client(client);
-    }
-    else
-    {
-        report_to_bugzilla(dump_dir_name, login, password, bugzilla_xmlrpc,
-                           bugzilla_url, ssl_verify, opts & OPT_b);
+        free_map_string(settings);
+#endif
+        return 0;
     }
 
+    /* Create new bug in Bugzilla */
+
+    problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
+    if (!problem_data)
+        xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
+
+    const char *component = get_problem_item_content_or_die(problem_data, FILENAME_COMPONENT);
+    const char *duphash   = get_problem_item_content_or_NULL(problem_data, FILENAME_DUPHASH);
+//COMPAT, remove after 2.1 release
+    if (!duphash) duphash = get_problem_item_content_or_die(problem_data, "global_uuid");
+    const char *release   = get_problem_item_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
+//COMPAT, remove in abrt-2.1
+    if (!release) release = get_problem_item_content_or_die(problem_data, "release");
+
+    log(_("Logging into Bugzilla at %s"), bugzilla_url);
+    rhbz_login(client, login, password);
+
+    if (!product) /* If not overridden by config... */
+    {
+        char *version = NULL;
+        parse_release_for_bz(release, &product, &version);
+        free(version);
+    }
+
+    log(_("Checking for duplicates"));
+    xmlrpc_value *result;
+    if (strcmp(product, "Fedora") == 0)
+        result = rhbz_search_duphash(client, component, product, duphash);
+    else
+        result = rhbz_search_duphash(client, component, NULL, duphash);
+
+    xmlrpc_value *all_bugs = rhbz_get_member("bugs", result);
+    xmlrpc_DECREF(result);
+    if (!all_bugs)
+        error_msg_and_die(_("Missing mandatory member 'bugs'"));
+
+    int all_bugs_size = rhbz_array_size(all_bugs);
+    // When someone clones bug it has same duphash, so we can find more than 1.
+    // Need to be checked if component is same.
+    VERB3 log("Bugzilla has %i reports with same duphash '%s'",
+              all_bugs_size, duphash);
+
+    int bug_id = -1;
+    struct bug_info *bz = NULL;
+    if (all_bugs_size > 0)
+    {
+        bug_id = rhbz_bug_id(all_bugs);
+        xmlrpc_DECREF(all_bugs);
+        bz = rhbz_bug_info(client, bug_id);
+
+        if (strcmp(bz->bi_product, product) != 0)
+        {
+            /* found something, but its a different product */
+            free_bug_info(bz);
+
+            xmlrpc_value *result = rhbz_search_duphash(client, component,
+                                                       product, duphash);
+            xmlrpc_value *all_bugs = rhbz_get_member("bugs", result);
+            xmlrpc_DECREF(result);
+
+            all_bugs_size = rhbz_array_size(all_bugs);
+            if (all_bugs_size > 0)
+            {
+                bug_id = rhbz_bug_id(all_bugs);
+                bz = rhbz_bug_info(client, bug_id);
+            }
+            xmlrpc_DECREF(all_bugs);
+        }
+    }
+
+    if (all_bugs_size == 0)
+    {
+        /* Create new bug */
+        log(_("Creating a new bug"));
+        bug_id = rhbz_new_bug(client, problem_data, bug_id);
+
+        log("Adding attachments to bug %i", bug_id);
+        char bug_id_str[sizeof(int)*3 + 2];
+        sprintf(bug_id_str, "%i", bug_id);
+
+        int flags = RHBZ_NOMAIL_NOTIFY;
+        if (opts & OPT_b)
+            flags |= RHBZ_ATTACH_BINARY_FILES;
+        rhbz_attach_big_files(client, bug_id_str, problem_data, flags);
+
+        bz = new_bug_info();
+        bz->bi_status = xstrdup("NEW");
+        bz->bi_id = bug_id;
+        goto log_out;
+    }
+
+    log(_("Bug is already reported: %i"), bz->bi_id);
+
+    /* Follow duplicates */
+    if ((strcmp(bz->bi_status, "CLOSED") == 0)
+     && (strcmp(bz->bi_resolution, "DUPLICATE") == 0)
+    ) {
+        struct bug_info *origin;
+        origin = rhbz_find_origin_bug_closed_duplicate(client, bz);
+        if (origin)
+        {
+            free_bug_info(bz);
+            bz = origin;
+        }
+    }
+
+    if (strcmp(bz->bi_status, "CLOSED") != 0)
+    {
+        /* Add user's login to CC if not there already */
+        if (strcmp(bz->bi_reporter, login) != 0
+         && !g_list_find_custom(bz->bi_cc_list, login, (GCompareFunc)g_strcmp0)
+        ) {
+            log(_("Add %s to CC list"), login);
+            rhbz_mail_to_cc(client, bz->bi_id, login, RHBZ_NOMAIL_NOTIFY);
+        }
+
+        /* Add comment */
+        const char *comment = get_problem_item_content_or_NULL(problem_data, FILENAME_COMMENT);
+        if (comment && comment[0])
+        {
+            const char *package = get_problem_item_content_or_NULL(problem_data, FILENAME_PACKAGE);
+            const char *arch    = get_problem_item_content_or_NULL(problem_data, FILENAME_ARCHITECTURE);
+            char *full_dsc = xasprintf("Package: %s\n"
+                                       "Architecture: %s\n"
+                                       "OS Release: %s\n"
+                                       "\n"
+                                       "Comment\n"
+                                       "-----\n"
+                                       "%s\n",
+                                       package, arch, release, comment
+            );
+            log(_("Adding new comment to bug %d"), bz->bi_id);
+            /* unused code, enable it when gui/cli will be ready
+            int is_priv = is_private && string_to_bool(is_private);
+            const char *is_private = get_problem_item_content_or_NULL(problem_data,
+                                                                      "is_private");
+            */
+            rhbz_add_comment(client, bz->bi_id, full_dsc, 0);
+            free(full_dsc);
+        }
+    }
+
+ log_out:
+    log(_("Logging out"));
+    rhbz_logout(client);
+
+    log("Status: %s%s%s %s/show_bug.cgi?id=%u",
+                bz->bi_status,
+                bz->bi_resolution ? " " : "",
+                bz->bi_resolution ? bz->bi_resolution : "",
+                bugzilla_url,
+                bz->bi_id);
+
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (dd)
+    {
+        char *msg = xasprintf("Bugzilla: URL=%s/show_bug.cgi?id=%u", bugzilla_url, bz->bi_id);
+        add_reported_to(dd, msg);
+        free(msg);
+        dd_close(dd);
+    }
+
+#if 0  /* enable if you search for leaks (valgrind etc) */
+    free(product);
+    free_problem_data(problem_data);
+    free_bug_info(bz);
+    abrt_xmlrpc_free_client(client);
     free_map_string(settings);
+#endif
     return 0;
 }

@@ -78,7 +78,7 @@ struct abrt_xmlrpc *abrt_xmlrpc_new_client(const char *url, int ssl_verify)
     ax->ax_server_info = xmlrpc_server_info_new(&env, url);
     if (env.fault_occurred)
     {
-        xmlrpc_client_destroy(ax->ax_client);
+        /* xmlrpc_client_destroy(ax->ax_client); */
         abrt_xmlrpc_die(&env);
     }
 
