@@ -26,7 +26,6 @@ int main(int argc, char **argv)
 {
     abrt_init(argv);
 
-    map_string_h *settings = new_map_string();
     const char *dump_dir_name = ".";
     GList *conf_file = NULL;
 
@@ -55,7 +54,7 @@ int main(int argc, char **argv)
         "\n"
         "If not specified, CONFFILE defaults to "CONF_DIR"/plugins/bugzilla.conf\n"
         "Its lines should have 'PARAM = VALUE' format.\n"
-        "Recognized string parameters: BugzillaURL, Login, Password.\n"
+        "Recognized string parameters: BugzillaURL, Login, Password, Product.\n"
         "Recognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify.\n"
         "Parameters can be overridden via $Bugzilla_PARAM environment variables.\n"
         "\n"
@@ -109,6 +108,7 @@ int main(int argc, char **argv)
 
     export_abrt_envvars(0);
 
+    map_string_h *settings = new_map_string();
     if (!conf_file)
         conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/bugzilla.conf");
     while (conf_file)
@@ -117,7 +117,7 @@ int main(int argc, char **argv)
         VERB1 log("Loading settings from '%s'", fn);
         load_conf_file(fn, settings, /*skip key w/o values:*/ true);
         VERB3 log("Loaded '%s'", fn);
-        conf_file = g_list_remove(conf_file, fn);
+        conf_file = g_list_delete_link(conf_file, conf_file);
     }
 
     VERB1 log("Initializing XML-RPC library");
@@ -134,6 +134,7 @@ int main(int argc, char **argv)
     const char *bugzilla_xmlrpc;
     const char *bugzilla_url;
     bool ssl_verify;
+    char *product;
 
     environ = getenv("Bugzilla_Login");
     login = environ ? environ : get_map_string_item_or_empty(settings, "Login");
@@ -150,6 +151,9 @@ int main(int argc, char **argv)
 
     environ = getenv("Bugzilla_SSLVerify");
     ssl_verify = string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "SSLVerify"));
+
+    environ = getenv("Bugzilla_Product");
+    product = xstrdup(environ ? environ : get_map_string_item_or_NULL(settings, "Product"));
 
     struct abrt_xmlrpc *client = abrt_xmlrpc_new_client(bugzilla_xmlrpc, ssl_verify);
 
@@ -202,13 +206,10 @@ int main(int argc, char **argv)
     if (!problem_data)
         xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
-    const char *component = get_problem_item_content_or_NULL(problem_data, FILENAME_COMPONENT);
+    const char *component = get_problem_item_content_or_die(problem_data, FILENAME_COMPONENT);
     const char *duphash   = get_problem_item_content_or_NULL(problem_data, FILENAME_DUPHASH);
 //COMPAT, remove after 2.1 release
     if (!duphash) duphash = get_problem_item_content_or_die(problem_data, "global_uuid");
-    if (!*duphash)
-        error_msg_and_die(_("Essential file '%s' is empty, can't continue.."),
-                          FILENAME_DUPHASH);
     const char *release   = get_problem_item_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
 //COMPAT, remove in abrt-2.1
     if (!release) release = get_problem_item_content_or_die(problem_data, "release");
@@ -216,10 +217,12 @@ int main(int argc, char **argv)
     log(_("Logging into Bugzilla at %s"), bugzilla_url);
     rhbz_login(client, login, password);
 
-    char *product = NULL;
-    char *version = NULL;
-    parse_release_for_bz(release, &product, &version);
-    free(version);
+    if (!product) /* If not overridden by config... */
+    {
+        char *version = NULL;
+        parse_release_for_bz(release, &product, &version);
+        free(version);
+    }
 
     log(_("Checking for duplicates"));
     xmlrpc_value *result;
