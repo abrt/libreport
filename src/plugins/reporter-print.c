@@ -30,6 +30,13 @@ int main(int argc, char **argv)
 {
     abrt_init(argv);
 
+    /* I18n */
+    setlocale(LC_ALL, "");
+#if ENABLE_NLS
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+#endif
+
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
         "\1 [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"

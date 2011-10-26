@@ -341,6 +341,13 @@ int main(int argc, char **argv)
 {
     abrt_init(argv);
 
+    /* I18n */
+    setlocale(LC_ALL, "");
+#if ENABLE_NLS
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+#endif
+
     const char *dump_dir_name = ".";
     const char *case_no = NULL;
     GList *conf_file = NULL;
