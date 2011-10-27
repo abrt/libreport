@@ -53,11 +53,11 @@ int main(int argc, char** argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "\1 [-vsp] -L[PREFIX] [DUMP_DIR]\n"
-        "   or: \1 [-vsp] -e EVENT DUMP_DIR\n"
-        "   or: \1 [-vsp] -a[y] DUMP_DIR\n"
-        "   or: \1 [-vsp] -c[y] DUMP_DIR\n"
-        "   or: \1 [-vsp] -r[y|o|d] DUMP_DIR"
+        "& [-vsp] -L[PREFIX] [DUMP_DIR]\n"
+        "   or: & [-vsp] -e EVENT DUMP_DIR\n"
+        "   or: & [-vsp] -a[y] DUMP_DIR\n"
+        "   or: & [-vsp] -c[y] DUMP_DIR\n"
+        "   or: & [-vsp] -r[y|o|d] DUMP_DIR"
     );
     enum {
         OPT_list_events  = 1 << 0,

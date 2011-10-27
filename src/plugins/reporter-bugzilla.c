@@ -39,9 +39,9 @@ int main(int argc, char **argv)
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
         "\n"
-        "\1 [-vb] [-c CONFFILE] -d DIR\n"
+        "& [-vb] [-c CONFFILE] -d DIR\n"
         "or:\n"
-        "\1 [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
+        "& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
         "\n"
         "Reports problem to Bugzilla.\n"
         "\n"

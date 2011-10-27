@@ -58,15 +58,21 @@ void show_usage_and_die(const char *usage, const struct options *opt)
     fputs(_("Usage: "), stderr);
     while (*usage)
     {
-        int len = strchrnul(usage, '\1') - usage;
+        int len = strchrnul(usage, '&') - usage;
         if (len > 0)
         {
             fprintf(stderr, "%.*s", len, usage);
             usage += len;
         }
-        if (*usage == '\1')
+        if (*usage == '&')
         {
-            fputs(g_progname, stderr);
+            /* Only '&' *followed by whitespace* is substituted
+             * with program name - all other &'s are printed literally.
+             */
+            if (usage[1] == '\0' || isspace(usage[1]))
+                fputs(g_progname, stderr);
+            else
+                fputc('&', stderr);
             usage++;
         }
     }
