@@ -25,7 +25,7 @@ static bool create_parentdir(char *path)
     bool ret;
     char *c;
 
-    /* dirname() */
+    /* in-place dirname() */
     for (c = path + strlen(path); c > path && *c != '/'; c--)
         ;
     if (*c != '/')
@@ -48,9 +48,9 @@ bool save_conf_file(const char *path, map_string_h *settings)
 
     ret = false, out = NULL;
 
-    if (!(temp_path = xasprintf("%s.tmp", path)) ||
-            !create_parentdir(temp_path) ||
-            !(out = fopen(temp_path, "w")))
+    temp_path = xasprintf("%s.tmp", path);
+
+    if (!create_parentdir(temp_path) || !(out = fopen(temp_path, "w")))
         goto cleanup;
 
     g_hash_table_iter_init(&iter, settings);
@@ -77,7 +77,7 @@ static char *get_conf_path(const char *name)
 {
     char *HOME = getenv("HOME"), *s, *conf;
 
-    s = xasprintf("%s/%s", ".abrt/settings", name);
+    s = xasprintf("%s/%s.conf", ".abrt/settings", name);
     conf = concat_path_file(HOME, s);
     free(s);
     return conf;
