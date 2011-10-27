@@ -394,7 +394,7 @@ struct dump_dir *steal_if_needed(struct dump_dir *dd)
         g_signal_connect(G_OBJECT(dialog), "response", G_CALLBACK(save_dialog_response), &response);
 
         GtkWidget *ask_steal_cb = gtk_check_button_new_with_label(_("Don't ask me again"));
-        gtk_box_pack_start(GTK_BOX(gtk_message_dialog_get_message_area(GTK_MESSAGE_DIALOG(dialog))),
+        gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))),
                 ask_steal_cb, TRUE, TRUE, 0);
         g_signal_connect(ask_steal_cb, "toggled", G_CALLBACK(on_toggle_ask_steal_cb), NULL);
         gtk_widget_show(ask_steal_cb);
