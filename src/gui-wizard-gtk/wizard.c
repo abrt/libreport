@@ -27,6 +27,8 @@
 
 #if GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 22
 # define gtk_assistant_commit(...) ((void)0)
+# define GDK_KEY_Delete GDK_Delete
+# define GDK_KEY_KP_Delete GDK_KP_Delete
 #endif
 
 typedef struct event_gui_data_t
@@ -1447,7 +1449,11 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 
                 GtkWidget *vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
                 GtkWidget *textbox = gtk_entry_new();
-                gtk_entry_set_editable(GTK_ENTRY(textbox), TRUE);
+                /* gtk_entry_set_editable(GTK_ENTRY(textbox), TRUE);
+                 * is not available in gtk3, so please use the highlevel
+                 * g_object_set
+                 */
+                g_object_set(G_OBJECT(textbox), "editable", TRUE, NULL);
                 gtk_box_pack_start(GTK_BOX(vbox), textbox, TRUE, TRUE, 0);
                 gtk_widget_show(textbox);
                 if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_OK)
@@ -1479,7 +1485,11 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 
                 GtkWidget *vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
                 GtkWidget *textbox = gtk_entry_new();
-                gtk_entry_set_editable(GTK_ENTRY(textbox), TRUE);
+                /* gtk_entry_set_editable(GTK_ENTRY(textbox), TRUE);
+                 * is not available in gtk3, so please use the highlevel
+                 * g_object_set
+                 */
+                g_object_set(G_OBJECT(textbox), "editable", TRUE, NULL);
                 gtk_entry_set_visibility(GTK_ENTRY(textbox), FALSE);
                 gtk_box_pack_start(GTK_BOX(vbox), textbox, TRUE, TRUE, 0);
                 gtk_widget_show(textbox);
@@ -2381,7 +2391,7 @@ static gint on_key_press_event_in_item_list(GtkTreeView *treeview, GdkEventKey *
 {
     int k = key->keyval;
 
-    if (k == GDK_Delete || k == GDK_KP_Delete)
+    if (k == GDK_KEY_Delete || k == GDK_KEY_KP_Delete)
     {
         delete_item(treeview);
         return TRUE;
