@@ -605,6 +605,8 @@ bool make_dir_recursive(char *dir, mode_t dir_mode);
 #define FILENAME_TIME         "time"        /* mandatory */
 #define FILENAME_ANALYZER     "analyzer"
 #define FILENAME_EXECUTABLE   "executable"
+#define FILENAME_PID          "pid"
+#define FILENAME_PWD          "pwd"
 #define FILENAME_BINARY       "binary"
 #define FILENAME_CMDLINE      "cmdline"
 #define FILENAME_COREDUMP     "coredump"
