@@ -24,18 +24,164 @@
 #include "abrt_rh_support.h"
 #include "reporter-rhtsupport.h"
 
-static char *url;
-static char *login;
-static char *password;
-static bool ssl_verify;
-
-static void report_to_rhtsupport(const char *dump_dir_name)
+int main(int argc, char **argv)
 {
+    abrt_init(argv);
+
+    /* I18n */
+    setlocale(LC_ALL, "");
+#if ENABLE_NLS
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+#endif
+
+    const char *dump_dir_name = ".";
+    const char *case_no = NULL;
+    GList *conf_file = NULL;
+
+    /* Can't keep these strings/structs static: _() doesn't support that */
+    const char *program_usage_string = _(
+        "\n"
+        "& [-v] [-c CONFFILE] -d DIR\n"
+        "or:\n"
+        "& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
+        "\n"
+        "Reports a problem to RHTSupport.\n"
+        "\n"
+        "If not specified, CONFFILE defaults to "CONF_DIR"/plugins/rhtsupport.conf\n"
+        "Its lines should have 'PARAM = VALUE' format.\n"
+        "Recognized string parameters: URL, Login, Password.\n"
+        "Recognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify.\n"
+        "Parameters can be overridden via $RHTSupport_PARAM environment variables.\n"
+        "\n"
+        "Option -t uploads FILEs to the already created case on RHTSupport site.\n"
+        "The case ID is retrieved from directory specified by -d DIR.\n"
+        "If problem data in DIR was never reported to RHTSupport, upload will fail.\n"
+        "\n"
+        "Option -tCASE uploads FILEs to the case CASE on RHTSupport site.\n"
+        "-d DIR is ignored."
+    );
+    enum {
+        OPT_v = 1 << 0,
+        OPT_d = 1 << 1,
+        OPT_c = 1 << 2,
+        OPT_t = 1 << 3,
+    };
+    /* Keep enum above and order of options below in sync! */
+    struct options program_options[] = {
+        OPT__VERBOSE(&g_verbose),
+        OPT_STRING(   'd', NULL, &dump_dir_name, "DIR" , _("Dump directory")),
+        OPT_LIST(     'c', NULL, &conf_file    , "FILE", _("Configuration file (may be given many times)")),
+        OPT_OPTSTRING('t', NULL, &case_no      , "ID"  , _("Upload FILEs [to case with this ID]")),
+        OPT_END()
+    };
+    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+
+    export_abrt_envvars(0);
+
+    /* Parse config, extract necessary params */
+    map_string_h *settings = new_map_string();
+    if (!conf_file)
+        conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/rhtsupport.conf");
+    while (conf_file)
+    {
+        const char *fn = (char *)conf_file->data;
+        VERB1 log("Loading settings from '%s'", fn);
+        load_conf_file(fn, settings, /*skip key w/o values:*/ true);
+        VERB3 log("Loaded '%s'", fn);
+        conf_file = g_list_remove(conf_file, fn);
+    }
+    char* envvar;
+    char *url;
+    char *login;
+    char *password;
+    bool ssl_verify;
+    envvar = getenv("RHTSupport_URL");
+    url = xstrdup(envvar ? envvar : (get_map_string_item_or_NULL(settings, "URL") ? : "https://api.access.redhat.com/rs"));
+    envvar = getenv("RHTSupport_Login");
+    login = xstrdup(envvar ? envvar : get_map_string_item_or_empty(settings, "Login"));
+    envvar = getenv("RHTSupport_Password");
+    password = xstrdup(envvar ? envvar : get_map_string_item_or_empty(settings, "Password"));
+    envvar = getenv("RHTSupport_SSLVerify");
+    ssl_verify = string_to_bool(envvar ? envvar : get_map_string_item_or_empty(settings, "SSLVerify"));
+    if (!login[0] || !password[0])
+        error_msg_and_die(_("Empty RHTS login or password"));
+    free_map_string(settings);
+
+    VERB1 log("Initializing XML-RPC library");
+    xmlrpc_env env;
+    xmlrpc_env_init(&env);
+    xmlrpc_client_setup_global_const(&env);
+    if (env.fault_occurred)
+        error_msg_and_die("XML-RPC Fault: %s(%d)", env.fault_string, env.fault_code);
+    xmlrpc_env_clean(&env);
+
+    argv += optind;
+    if (opts & OPT_t)
+    {
+        if (!*argv)
+            show_usage_and_die(program_usage_string, program_options);
+
+        if (!case_no)
+        {
+            /* -t */
+            struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+            if (!dd)
+                xfunc_die();
+            report_result_t *reported_to = find_in_reported_to(dd, "RHTSupport:");
+            dd_close(dd);
+
+            if (!reported_to || !reported_to->url)
+                error_msg_and_die("Can't attach: problem data in '%s' "
+                        "was not reported to RHTSupport and therefore has no URL",
+                        dump_dir_name);
+
+            //log("URL:'%s'", reported_to->url);
+            //log("MSG:'%s'", reported_to->msg);
+            free(url);
+            url = reported_to->url;
+            reported_to->url = NULL;
+            free_report_result(reported_to);
+        }
+        else
+        {
+            /* -tCASE */
+            char *url1 = concat_path_file(url, "cases");
+            free(url);
+            url = concat_path_file(url1, case_no);
+            free(url1);
+        }
+
+        while (*argv)
+        {
+            log(_("Attaching '%s' to case '%s'"), *argv, url);
+            rhts_result_t *result = attach_file_to_case(url,
+                login,
+                password,
+                ssl_verify,
+                *argv
+            );
+            if (result->error)
+                error_msg_and_die("%s", result->msg);
+            log("Attachment URL:%s", result->url);
+            log("File attached successfully");
+            free_rhts_result(result);
+            argv++;
+        }
+
+        return 0;
+    }
+
+    if (*argv)
+        show_usage_and_die(program_usage_string, program_options);
+
+    /* Creating a new case */
+
     problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
     if (!problem_data)
         xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
-    /* Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing */
+    /* Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing */
     log(_("Compressing data"));
 
     const char *errmsg = NULL;
@@ -335,155 +481,6 @@ static void report_to_rhtsupport(const char *dump_dir_name)
     free(login);
     free(password);
     free_problem_data(problem_data);
-}
 
-int main(int argc, char **argv)
-{
-    abrt_init(argv);
-
-    /* I18n */
-    setlocale(LC_ALL, "");
-#if ENABLE_NLS
-    bindtextdomain(PACKAGE, LOCALEDIR);
-    textdomain(PACKAGE);
-#endif
-
-    const char *dump_dir_name = ".";
-    const char *case_no = NULL;
-    GList *conf_file = NULL;
-
-    /* Can't keep these strings/structs static: _() doesn't support that */
-    const char *program_usage_string = _(
-        "\n"
-        "& [-v] [-c CONFFILE] -d DIR\n"
-        "or:\n"
-        "& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
-        "\n"
-        "Reports a problem to RHTSupport.\n"
-        "\n"
-        "If not specified, CONFFILE defaults to "CONF_DIR"/plugins/rhtsupport.conf\n"
-        "Its lines should have 'PARAM = VALUE' format.\n"
-        "Recognized string parameters: URL, Login, Password.\n"
-        "Recognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify.\n"
-        "Parameters can be overridden via $RHTSupport_PARAM environment variables.\n"
-        "\n"
-        "Option -t uploads FILEs to the already created case on RHTSupport site.\n"
-        "The case ID is retrieved from directory specified by -d DIR.\n"
-        "If problem data in DIR was never reported to RHTSupport, upload will fail.\n"
-        "\n"
-        "Option -tCASE uploads FILEs to the case CASE on RHTSupport site.\n"
-        "-d DIR is ignored."
-    );
-    enum {
-        OPT_v = 1 << 0,
-        OPT_d = 1 << 1,
-        OPT_c = 1 << 2,
-        OPT_t = 1 << 3,
-    };
-    /* Keep enum above and order of options below in sync! */
-    struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
-        OPT_STRING(   'd', NULL, &dump_dir_name, "DIR" , _("Dump directory")),
-        OPT_LIST(     'c', NULL, &conf_file    , "FILE", _("Configuration file (may be given many times)")),
-        OPT_OPTSTRING('t', NULL, &case_no      , "ID"  , _("Upload FILEs [to case with this ID]")),
-        OPT_END()
-    };
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
-
-    export_abrt_envvars(0);
-
-    /* Parse config, extract necessary params */
-    map_string_h *settings = new_map_string();
-    if (!conf_file)
-        conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/rhtsupport.conf");
-    while (conf_file)
-    {
-        const char *fn = (char *)conf_file->data;
-        VERB1 log("Loading settings from '%s'", fn);
-        load_conf_file(fn, settings, /*skip key w/o values:*/ true);
-        VERB3 log("Loaded '%s'", fn);
-        conf_file = g_list_remove(conf_file, fn);
-    }
-    char* envvar;
-    envvar = getenv("RHTSupport_URL");
-    url = xstrdup(envvar ? envvar : (get_map_string_item_or_NULL(settings, "URL") ? : "https://api.access.redhat.com/rs"));
-    envvar = getenv("RHTSupport_Login");
-    login = xstrdup(envvar ? envvar : get_map_string_item_or_empty(settings, "Login"));
-    envvar = getenv("RHTSupport_Password");
-    password = xstrdup(envvar ? envvar : get_map_string_item_or_empty(settings, "Password"));
-    envvar = getenv("RHTSupport_SSLVerify");
-    ssl_verify = string_to_bool(envvar ? envvar : get_map_string_item_or_empty(settings, "SSLVerify"));
-    if (!login[0] || !password[0])
-        error_msg_and_die(_("Empty RHTS login or password"));
-    free_map_string(settings);
-
-    VERB1 log("Initializing XML-RPC library");
-    xmlrpc_env env;
-    xmlrpc_env_init(&env);
-    xmlrpc_client_setup_global_const(&env);
-    if (env.fault_occurred)
-        error_msg_and_die("XML-RPC Fault: %s(%d)", env.fault_string, env.fault_code);
-    xmlrpc_env_clean(&env);
-
-    argv += optind;
-    if (opts & OPT_t)
-    {
-        if (!*argv)
-            show_usage_and_die(program_usage_string, program_options);
-
-        if (!case_no)
-        {
-            /* -t */
-            struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-            if (!dd)
-                xfunc_die();
-            report_result_t *reported_to = find_in_reported_to(dd, "RHTSupport:");
-            dd_close(dd);
-
-            if (!reported_to || !reported_to->url)
-                error_msg_and_die("Can't attach: problem data in '%s' "
-                        "was not reported to RHTSupport and therefore has no URL",
-                        dump_dir_name);
-
-            //log("URL:'%s'", reported_to->url);
-            //log("MSG:'%s'", reported_to->msg);
-            free(url);
-            url = reported_to->url;
-            reported_to->url = NULL;
-            free_report_result(reported_to);
-        }
-        else
-        {
-            /* -tCASE */
-            char *url1 = concat_path_file(url, "cases");
-            free(url);
-            url = concat_path_file(url1, case_no);
-            free(url1);
-        }
-
-        while (*argv)
-        {
-            log(_("Attaching '%s' to case '%s'"), *argv, url);
-            rhts_result_t *result = attach_file_to_case(url,
-                login,
-                password,
-                ssl_verify,
-                *argv
-            );
-            if (result->error)
-                error_msg_and_die("%s", result->msg);
-            log("Attachment URL:%s", result->url);
-            log("File attached successfully");
-            free_rhts_result(result);
-            argv++;
-        }
-
-        return 0;
-    }
-
-    if (*argv)
-        show_usage_and_die(program_usage_string, program_options);
-
-    report_to_rhtsupport(dump_dir_name);
     return 0;
 }
