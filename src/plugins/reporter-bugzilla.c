@@ -78,6 +78,7 @@ int main(int argc, char **argv)
         OPT_c = 1 << 2,
         OPT_t = 1 << 3,
         OPT_b = 1 << 4,
+        OPT_f = 1 << 5,
     };
 
     char *ticket_no = NULL;
@@ -88,30 +89,11 @@ int main(int argc, char **argv)
         OPT_LIST(     'c', NULL, &conf_file    , "FILE", _("Configuration file (may be given many times)")),
         OPT_OPTSTRING('t', "ticket", &ticket_no, "ID"  , _("Attach FILEs [to bug with this ID]")),
         OPT_BOOL(     'b', NULL, NULL,                   _("When creating bug, attach binary files too")),
+        OPT_BOOL(     'f', NULL, NULL,                   _("Force reporting even if this problem is already reported")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
-
-    if ((opts & OPT_t) && !ticket_no)
-    {
-        error_msg_and_die("Not implemented yet");
-//TODO:
-//        /* -t */
-//        struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-//        if (!dd)
-//            xfunc_die();
-//        report_result_t *reported_to = find_in_reported_to(dd, "Bugzilla:");
-//        dd_close(dd);
-//
-//        if (!reported_to || !reported_to->url)
-//            error_msg_and_die("Can't attach: problem data in '%s' "
-//                    "was not reported to Bugzilla and therefore has no URL",
-//                    dump_dir_name);
-//        url = reported_to->url;
-//        reported_to->url = NULL;
-//        free_report_result(reported_to);
-//        ...
-    }
+    argv += optind;
 
     export_abrt_envvars(0);
 
@@ -162,20 +144,42 @@ int main(int argc, char **argv)
     environ = getenv("Bugzilla_Product");
     product = xstrdup(environ ? environ : get_map_string_item_or_NULL(settings, "Product"));
 
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        xfunc_die();
+    report_result_t *reported_to = find_in_reported_to(dd, "Bugzilla:");
+    dd_close(dd);
+
     struct abrt_xmlrpc *client = abrt_xmlrpc_new_client(bugzilla_xmlrpc, ssl_verify);
 
     if (opts & OPT_t)
     {
+        if (!ticket_no)
+        {
+            error_msg_and_die("Not implemented yet");
+//TODO:
+//            /* -t */
+//            if (!reported_to || !reported_to->url)
+//                error_msg_and_die("Can't attach: problem data in '%s' "
+//                        "was not reported to Bugzilla and therefore has no URL",
+//                        dump_dir_name);
+//            url = reported_to->url;
+//            reported_to->url = NULL;
+//            free_report_result(reported_to);
+//            ...
+        }
+        free_report_result(reported_to);
+
         /* Attach files to existing BZ */
-        if (!argv[optind])
+        if (!argv[0])
             show_usage_and_die(program_usage_string, program_options);
 
         log(_("Logging into Bugzilla at %s"), bugzilla_url);
         rhbz_login(client, login, password);
 
-        while (argv[optind])
+        while (*argv)
         {
-            const char *filename = argv[optind++];
+            const char *filename = *argv++;
             VERB1 log("Attaching file '%s' to bug %s", filename, ticket_no);
 
             int fd = open(filename, O_RDONLY);
@@ -208,6 +212,11 @@ int main(int argc, char **argv)
     }
 
     /* Create new bug in Bugzilla */
+
+    if (reported_to && reported_to->url && !(opts & OPT_f))
+        error_msg_and_die("This problem was already reported to Bugzilla. URL is '%s'",
+                        reported_to->url);
+    free_report_result(reported_to);
 
     problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
     if (!problem_data)
@@ -360,7 +369,7 @@ int main(int argc, char **argv)
                 bugzilla_url,
                 bz->bi_id);
 
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (dd)
     {
         char *msg = xasprintf("Bugzilla: URL=%s/show_bug.cgi?id=%u", bugzilla_url, bz->bi_id);

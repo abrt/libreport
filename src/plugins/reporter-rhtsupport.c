@@ -66,6 +66,7 @@ int main(int argc, char **argv)
         OPT_d = 1 << 1,
         OPT_c = 1 << 2,
         OPT_t = 1 << 3,
+        OPT_f = 1 << 4,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
@@ -73,9 +74,11 @@ int main(int argc, char **argv)
         OPT_STRING(   'd', NULL, &dump_dir_name, "DIR" , _("Dump directory")),
         OPT_LIST(     'c', NULL, &conf_file    , "FILE", _("Configuration file (may be given many times)")),
         OPT_OPTSTRING('t', NULL, &case_no      , "ID"  , _("Upload FILEs [to case with this ID]")),
+        OPT_BOOL(     'f', NULL, NULL          ,         _("Force reporting even if this problem is already reported")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    argv += optind;
 
     export_abrt_envvars(0);
 
@@ -116,7 +119,12 @@ int main(int argc, char **argv)
         error_msg_and_die("XML-RPC Fault: %s(%d)", env.fault_string, env.fault_code);
     xmlrpc_env_clean(&env);
 
-    argv += optind;
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        xfunc_die();
+    report_result_t *reported_to = find_in_reported_to(dd, "RHTSupport:");
+    dd_close(dd);
+
     if (opts & OPT_t)
     {
         if (!*argv)
@@ -125,12 +133,6 @@ int main(int argc, char **argv)
         if (!case_no)
         {
             /* -t */
-            struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-            if (!dd)
-                xfunc_die();
-            report_result_t *reported_to = find_in_reported_to(dd, "RHTSupport:");
-            dd_close(dd);
-
             if (!reported_to || !reported_to->url)
                 error_msg_and_die("Can't attach: problem data in '%s' "
                         "was not reported to RHTSupport and therefore has no URL",
@@ -141,7 +143,6 @@ int main(int argc, char **argv)
             free(url);
             url = reported_to->url;
             reported_to->url = NULL;
-            free_report_result(reported_to);
         }
         else
         {
@@ -169,6 +170,7 @@ int main(int argc, char **argv)
             argv++;
         }
 
+        free_report_result(reported_to);
         return 0;
     }
 
@@ -176,6 +178,11 @@ int main(int argc, char **argv)
         show_usage_and_die(program_usage_string, program_options);
 
     /* Creating a new case */
+
+    if (reported_to && reported_to->url && !(opts & OPT_f))
+        error_msg_and_die("This problem was already reported to RHTS. URL is '%s'",
+                        reported_to->url);
+    free_report_result(reported_to);
 
     problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
     if (!problem_data)
@@ -429,7 +436,7 @@ int main(int argc, char **argv)
     }
 
     /* Record "reported_to" element */
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (dd)
     {
         char *msg = xasprintf("RHTSupport: TIME=%s URL=%s%s%s",
