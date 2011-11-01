@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
+  <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="window0">
     <property name="can_focus">False</property>
     <child>
@@ -156,12 +157,11 @@
         <child>
           <object class="GtkCheckButton" id="cb_no_comment">
             <property name="label" translatable="yes">I don't know what caused this problem</property>
+            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
-            <property name="use_action_appearance">False</property>
             <property name="xalign">0</property>
-            <property name="yalign">0.5</property>
             <property name="draw_indicator">True</property>
           </object>
           <packing>
@@ -218,10 +218,10 @@
             <child>
               <object class="GtkButton" id="button_cfg3">
                 <property name="label">gtk-preferences</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
                 <property name="image_position">right</property>
@@ -345,10 +345,10 @@
             <child>
               <object class="GtkButton" id="button_cfg1">
                 <property name="label">gtk-preferences</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
                 <property name="image_position">right</property>
@@ -459,10 +459,10 @@
             <child>
               <object class="GtkButton" id="btn_cancel_analyze">
                 <property name="label">gtk-stop</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -526,10 +526,10 @@
             <child>
               <object class="GtkButton" id="button_cfg2">
                 <property name="label">gtk-preferences</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
                 <property name="image_position">right</property>
@@ -574,37 +574,33 @@
         <property name="border_width">10</property>
         <property name="spacing">3</property>
         <child>
-          <object class="GtkLabel" id="lbl_page4">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="xalign">0</property>
-            <property name="yalign">0</property>
-            <property name="label" translatable="yes">Backtrace provides developers with details of the crash, helping them track down the source of the problem. Please review it and remove any sensitive data you would rather not share:</property>
-            <property name="wrap">True</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkScrolledWindow" id="scrolledwindow2">
+          <object class="GtkNotebook" id="notebook_edit">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="shadow_type">out</property>
+            <property name="scrollable">True</property>
             <child>
-              <object class="GtkTextView" id="tv_backtrace">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="wrap_mode">word</property>
-              </object>
+              <placeholder/>
+            </child>
+            <child type="tab">
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child type="tab">
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child type="tab">
+              <placeholder/>
             </child>
           </object>
           <packing>
             <property name="expand">True</property>
             <property name="fill">True</property>
-            <property name="position">1</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
@@ -644,7 +640,7 @@
                       </object>
                       <packing>
                         <property name="expand">True</property>
-                        <property name="fill">True</property>
+                        <property name="fill">False</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
@@ -664,7 +660,7 @@
                       </object>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="fill">True</property>
+                        <property name="fill">False</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -678,7 +674,8 @@
                       </object>
                       <packing>
                         <property name="expand">True</property>
-                        <property name="fill">True</property>
+                        <property name="fill">False</property>
+                        <property name="padding">1</property>
                         <property name="position">2</property>
                       </packing>
                     </child>
@@ -693,6 +690,7 @@
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
+                <property name="padding">1</property>
                 <property name="position">0</property>
               </packing>
             </child>
@@ -705,7 +703,12 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="invisible_char">●</property>
+                    <property name="invisible_char_set">True</property>
                     <property name="secondary_icon_stock">gtk-find</property>
+                    <property name="primary_icon_activatable">False</property>
+                    <property name="secondary_icon_activatable">True</property>
+                    <property name="primary_icon_sensitive">True</property>
+                    <property name="secondary_icon_sensitive">True</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -716,11 +719,10 @@
                 <child>
                   <object class="GtkButton" id="btn_refresh">
                     <property name="label" translatable="yes">Regenerate backtrace</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Can create more informative backtrace if you installed additional debug packages</property>
-                    <property name="use_action_appearance">False</property>
                     <signal name="clicked" handler="on_b_refresh_clicked" swapped="no"/>
                   </object>
                   <packing>
@@ -740,8 +742,8 @@
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="fill">False</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </object>
@@ -864,10 +866,10 @@
             <child>
               <object class="GtkButton" id="btn_add_file">
                 <property name="label" translatable="yes">Attach a file</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -888,11 +890,11 @@
         <child>
           <object class="GtkCheckButton" id="cb_approve_bt">
             <property name="label" translatable="yes">I reviewed the data and _agree with submitting it</property>
+            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
             <property name="tooltip_text" translatable="yes">If you are reporting to a remote server, make sure you removed all private data (such as usernames and passwords). Backtrace, command line, environment variables are the typical items in need of examining.</property>
-            <property name="use_action_appearance">False</property>
             <property name="use_underline">True</property>
             <property name="xalign">0</property>
             <property name="draw_indicator">True</property>
@@ -982,10 +984,10 @@
             <child>
               <object class="GtkButton" id="btn_cancel_report">
                 <property name="label">gtk-stop</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>

@@ -74,7 +74,6 @@ static GtkContainer *g_container_details1;
 static GtkContainer *g_container_details2;
 
 static GtkLabel *g_lbl_cd_reason;
-static GtkTextView *g_tv_backtrace;
 static GtkTextView *g_tv_comment;
 static GtkEventBox *g_eb_comment;
 static GtkCheckButton *g_cb_no_comment;
@@ -98,6 +97,7 @@ static GtkLabel *g_active_lbl;
 static GtkProgressBar *g_active_pb;
 
 static GtkBox *g_box_assist_nav;
+static GtkNotebook *g_notebook;
 
 enum
 {
@@ -232,7 +232,7 @@ static void init_pages()
      * Therefore we want to know reporters _before_ we go to bt page
      */
     init_page(&pages[6], PAGE_REPORTER_SELECTOR  , _("Select reporter")       , GTK_ASSISTANT_PAGE_CONTENT );
-    init_page(&pages[7], PAGE_EDIT_BACKTRACE     , _("Review the backtrace")  , GTK_ASSISTANT_PAGE_CONTENT );
+    init_page(&pages[7], PAGE_EDIT_BACKTRACE     , _("Review the data")  , GTK_ASSISTANT_PAGE_CONTENT );
     init_page(&pages[8], PAGE_REVIEW_DATA        , _("Confirm data to report"), GTK_ASSISTANT_PAGE_CONFIRM );
     /* Was GTK_ASSISTANT_PAGE_PROGRESS, but we want to allow returning to it */
     init_page(&pages[9], PAGE_REPORT_PROGRESS    , _("Reporting")             , GTK_ASSISTANT_PAGE_INTRO   );
@@ -979,6 +979,31 @@ struct cd_stats {
     unsigned filecount;
 };
 
+static void save_items_from_notepad()
+{
+    gint n_pages = gtk_notebook_get_n_pages(g_notebook);
+    int i = 0;
+
+    GtkWidget *notebook_child;
+    GList *children;
+    GtkTextView *tev;
+    GtkWidget *tab_lbl;
+    const char *item_name;
+
+    for (i = 0; i < n_pages; i++)
+    {
+        //notebook_page->scrolled_window->text_view
+        notebook_child = gtk_notebook_get_nth_page(g_notebook, i);
+        children = gtk_container_get_children(GTK_CONTAINER(notebook_child));
+        tev = GTK_TEXT_VIEW(g_list_nth_data(children, 0));
+        tab_lbl = gtk_notebook_get_tab_label(g_notebook, notebook_child);
+        item_name = gtk_label_get_text(GTK_LABEL(tab_lbl));
+        VERB1 log("saving: '%s'", item_name);
+
+        save_text_from_text_view(tev, item_name);
+    }
+}
+
 static void append_item_to_ls_details(gpointer name, gpointer value, gpointer data)
 {
     problem_item *item = (problem_item*)value;
@@ -991,6 +1016,20 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
     //FIXME: use the human-readable format_problem_item(item) instead of item->content.
     if (item->flags & CD_FLAG_TXT)
     {
+        if (item->flags & CD_FLAG_ISEDITABLE)
+        {
+            GtkWidget *tab_lbl = gtk_label_new((char *)name);
+            GtkWidget *tev = gtk_text_view_new();
+            gtk_widget_modify_font(GTK_WIDGET(tev), monospace_font);
+            load_text_to_text_view(GTK_TEXT_VIEW(tev), (char *)name);
+            /* init searching */
+            GtkTextBuffer *buf = gtk_text_view_get_buffer(GTK_TEXT_VIEW(tev));
+            /* found items background */
+            gtk_text_buffer_create_tag(buf, "search_result_bg", "background", "red", NULL);
+            GtkWidget *sw = gtk_scrolled_window_new(NULL, NULL);
+            gtk_container_add(GTK_CONTAINER(sw), tev);
+            gtk_notebook_append_page(g_notebook, sw, tab_lbl);
+        }
         stats->filesize += strlen(item->content);
         /* If not multiline... */
         if (!strchr(item->content, '\n'))
@@ -1185,7 +1224,6 @@ void update_gui_state_from_problem_data(void)
     gtk_label_set_text(g_lbl_size, msg);
     free(msg);
 
-    load_text_to_text_view(g_tv_backtrace, FILENAME_BACKTRACE);
     load_text_to_text_view(g_tv_comment, FILENAME_COMMENT);
 
     /* Update analyze radio buttons */
@@ -1926,8 +1964,8 @@ static void on_no_comment_toggled(GtkToggleButton *togglebutton, gpointer user_d
 
 static void on_btn_refresh_clicked(GtkButton *button)
 {
-    /* Save backtrace text if changed */
-    save_text_from_text_view(g_tv_backtrace, FILENAME_BACKTRACE);
+    /* Save what's changed */
+    save_items_from_notepad();
 
     /* Refresh GUI so that we see new analyze buttons */
     update_gui_state_from_problem_data();
@@ -2076,7 +2114,7 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
     }
 
     /* Save text fields if changed */
-    save_text_from_text_view(g_tv_backtrace, FILENAME_BACKTRACE);
+    save_items_from_notepad();
     save_text_from_text_view(g_tv_comment, FILENAME_COMMENT);
 
     if (pages[PAGENO_SUMMARY].page_widget == page
@@ -2185,29 +2223,81 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
     return current_page_no;
 }
 
-
 static gboolean highlight_search(gpointer user_data)
 {
     GtkEntry *entry = GTK_ENTRY(user_data);
-    GtkTextBuffer *buffer = gtk_text_view_get_buffer(g_tv_backtrace);
+    GtkTextBuffer *buffer;
     GtkTextIter start_find;
     GtkTextIter end_find;
     GtkTextIter start_match;
     GtkTextIter end_match;
+    PangoAttrList * attrs;
     int offset = 0;
 
-    gtk_text_buffer_get_start_iter(buffer, &start_find);
-    gtk_text_buffer_get_end_iter(buffer, &end_find);
-    gtk_text_buffer_remove_tag_by_name(buffer, "search_result_bg", &start_find, &end_find);
-    VERB1 log("searching: %s", gtk_entry_get_text(entry));
-    while (gtk_text_iter_forward_search(&start_find, gtk_entry_get_text(entry),
-                                 GTK_TEXT_SEARCH_TEXT_ONLY, &start_match,
-                                 &end_match, NULL))
+    gint n_pages = gtk_notebook_get_n_pages(g_notebook);
+    int i = 0;
+
+    VERB1 log("searching: '%s'", gtk_entry_get_text(entry));
+
+    for (i = 0; i < n_pages; i++)
     {
-        gtk_text_buffer_apply_tag_by_name(buffer, "search_result_bg",
-                                          &start_match, &end_match);
-        offset = gtk_text_iter_get_offset(&end_match);
-        gtk_text_buffer_get_iter_at_offset(buffer, &start_find, offset);
+        //notebook_page->scrolled_window->text_view
+        GtkWidget *notebook_child = gtk_notebook_get_nth_page(g_notebook, i);
+        GList *children = gtk_container_get_children(GTK_CONTAINER(notebook_child));
+        GtkTextView *tev = GTK_TEXT_VIEW(g_list_nth_data(children, 0));
+        const char *search_text = gtk_entry_get_text(entry);
+        buffer = gtk_text_view_get_buffer(tev);
+        gtk_text_buffer_get_start_iter(buffer, &start_find);
+        gtk_text_buffer_get_end_iter(buffer, &end_find);
+        //reset previous results
+        gtk_text_buffer_remove_tag_by_name(buffer, "search_result_bg", &start_find, &end_find);
+        GtkWidget *tab_lbl = gtk_notebook_get_tab_label(g_notebook, notebook_child);
+        attrs = gtk_label_get_attributes(GTK_LABEL(tab_lbl));
+        gtk_label_set_attributes(GTK_LABEL(tab_lbl), NULL);
+        pango_attr_list_unref(attrs); //If the result is zero, free the attribute list and the attributes it contains.
+
+        /* adds * instead of changing color - usable for gtk < 2.8 */
+        /*
+        char* lbl = xstrdup(gtk_label_get_text(GTK_LABEL(tab_lbl)));
+        if (lbl[0] == '*') // lets hope we don't have elements name starting with *
+        {
+            gtk_label_set_text(GTK_LABEL(tab_lbl), lbl+1);
+        }
+        free(lbl);
+        */
+
+        bool lbl_set = false;
+
+        if (strncmp(gtk_label_get_text(GTK_LABEL(tab_lbl)), "page 1", 5) == 0)
+        {
+            continue;
+        }
+
+        while ((strlen(search_text) > 0) && gtk_text_iter_forward_search(&start_find, search_text,
+                                     GTK_TEXT_SEARCH_TEXT_ONLY, &start_match,
+                                     &end_match, NULL))
+        {
+            if (!lbl_set)
+            {
+                attrs = pango_attr_list_new();
+                PangoAttribute *foreground_attr = pango_attr_foreground_new(65535, 0, 0);
+                pango_attr_list_insert(attrs, foreground_attr);
+                gtk_label_set_attributes(GTK_LABEL(tab_lbl), attrs);
+
+                /* adds * instead of changing color - usable for gtk < 2.8 */
+                /*
+                char *found_lbl = xasprintf("*%s", gtk_label_get_text(GTK_LABEL(tab_lbl)));
+                gtk_label_set_text(GTK_LABEL(tab_lbl), found_lbl);
+                free(found_lbl);
+                */
+
+                lbl_set = true;
+            }
+            gtk_text_buffer_apply_tag_by_name(buffer, "search_result_bg",
+                                              &start_match, &end_match);
+            offset = gtk_text_iter_get_offset(&end_match);
+            gtk_text_buffer_get_iter_at_offset(buffer, &start_find, offset);
+        }
     }
 
     /* returning false will make glib to remove this event */
@@ -2486,7 +2576,6 @@ static void add_pages()
     g_tv_report_log        = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_report_log"));
     g_pb_report            = GTK_PROGRESS_BAR( gtk_builder_get_object(builder, "pb_report"));
     g_btn_cancel_report    = GTK_BUTTON(       gtk_builder_get_object(builder, "btn_cancel_report"));
-    g_tv_backtrace         = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_backtrace"));
     g_tv_comment           = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_comment"));
     g_eb_comment           = GTK_EVENT_BOX(    gtk_builder_get_object(builder, "eb_comment"));
     g_cb_no_comment        = GTK_CHECK_BUTTON( gtk_builder_get_object(builder, "cb_no_comment"));
@@ -2501,12 +2590,12 @@ static void add_pages()
     g_btn_add_file         = GTK_BUTTON(       gtk_builder_get_object(builder, "btn_add_file"));
     g_lbl_reporters        = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_reporters"));
     g_lbl_size             = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_size"));
+    g_notebook             = GTK_NOTEBOOK(     gtk_builder_get_object(builder, "notebook_edit"));
 
     gtk_widget_hide(g_widget_warnings_area);
 
     gtk_widget_modify_font(GTK_WIDGET(g_tv_analyze_log), monospace_font);
     gtk_widget_modify_font(GTK_WIDGET(g_tv_report_log), monospace_font);
-    gtk_widget_modify_font(GTK_WIDGET(g_tv_backtrace), monospace_font);
     fix_all_wrapped_labels(GTK_WIDGET(g_assistant));
 
     if (pages[PAGENO_REVIEW_DATA].page_widget != NULL)
@@ -2651,9 +2740,5 @@ void create_assistant(void)
 
     g_signal_connect(g_btn_add_file, "clicked", G_CALLBACK(on_btn_add_file), NULL);
 
-    /* init searching */
-    GtkTextBuffer *backtrace_buf = gtk_text_view_get_buffer(g_tv_backtrace);
-    /* found items background */
-    gtk_text_buffer_create_tag(backtrace_buf, "search_result_bg", "background", "red", NULL);
     g_signal_connect(g_search_entry_bt, "changed", G_CALLBACK(search_timeout), NULL);
 }
