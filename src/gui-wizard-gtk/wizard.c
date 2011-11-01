@@ -985,7 +985,6 @@ static void save_items_from_notepad()
     int i = 0;
 
     GtkWidget *notebook_child;
-    GList *children;
     GtkTextView *tev;
     GtkWidget *tab_lbl;
     const char *item_name;
@@ -994,8 +993,7 @@ static void save_items_from_notepad()
     {
         //notebook_page->scrolled_window->text_view
         notebook_child = gtk_notebook_get_nth_page(g_notebook, i);
-        children = gtk_container_get_children(GTK_CONTAINER(notebook_child));
-        tev = GTK_TEXT_VIEW(g_list_nth_data(children, 0));
+        tev = GTK_TEXT_VIEW(gtk_bin_get_child(GTK_BIN(notebook_child)));
         tab_lbl = gtk_notebook_get_tab_label(g_notebook, notebook_child);
         item_name = gtk_label_get_text(GTK_LABEL(tab_lbl));
         VERB1 log("saving: '%s'", item_name);
@@ -2243,8 +2241,7 @@ static gboolean highlight_search(gpointer user_data)
     {
         //notebook_page->scrolled_window->text_view
         GtkWidget *notebook_child = gtk_notebook_get_nth_page(g_notebook, i);
-        GList *children = gtk_container_get_children(GTK_CONTAINER(notebook_child));
-        GtkTextView *tev = GTK_TEXT_VIEW(g_list_nth_data(children, 0));
+        GtkTextView *tev = GTK_TEXT_VIEW(gtk_bin_get_child(GTK_BIN(notebook_child)));
         const char *search_text = gtk_entry_get_text(entry);
         buffer = gtk_text_view_get_buffer(tev);
         gtk_text_buffer_get_start_iter(buffer, &start_find);
@@ -2273,7 +2270,7 @@ static gboolean highlight_search(gpointer user_data)
             continue;
         }
 
-        while ((strlen(search_text) > 0) && gtk_text_iter_forward_search(&start_find, search_text,
+        while (search_text[0] && gtk_text_iter_forward_search(&start_find, search_text,
                                      GTK_TEXT_SEARCH_TEXT_ONLY, &start_match,
                                      &end_match, NULL))
         {
