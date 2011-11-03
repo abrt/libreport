@@ -110,6 +110,9 @@ bool load_user_settings(const char *application_name)
 
 void set_user_setting(const char *name, const char *value)
 {
+    if (!user_settings)
+        return;
+
     if (value)
         g_hash_table_replace(user_settings, xstrdup(name), xstrdup(value));
     else
@@ -118,5 +121,8 @@ void set_user_setting(const char *name, const char *value)
 
 const char *get_user_setting(const char *name)
 {
+    if (!user_settings)
+        return NULL;
+
     return g_hash_table_lookup(user_settings, name);
 }
