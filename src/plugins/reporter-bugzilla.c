@@ -81,7 +81,7 @@ int main(int argc, char **argv)
         OPT_f = 1 << 5,
     };
 
-    char *ticket_no = NULL;
+    char *ticket_no = NULL, *abrt_hash = NULL;
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
@@ -90,6 +90,7 @@ int main(int argc, char **argv)
         OPT_OPTSTRING('t', "ticket", &ticket_no, "ID"  , _("Attach FILEs [to bug with this ID]")),
         OPT_BOOL(     'b', NULL, NULL,                   _("When creating bug, attach binary files too")),
         OPT_BOOL(     'f', NULL, NULL,                   _("Force reporting even if this problem is already reported")),
+        OPT_STRING(   'h', "duphash", &abrt_hash, "DUPHASH", _("Find BUG-ID according to DUPHASH")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
@@ -129,9 +130,6 @@ int main(int argc, char **argv)
     login = environ ? environ : get_map_string_item_or_empty(settings, "Login");
     environ = getenv("Bugzilla_Password");
     password = environ ? environ : get_map_string_item_or_empty(settings, "Password");
-    if (!login[0] || !password[0])
-        error_msg_and_die(_("Empty login or password, please check your configuration"));
-
     environ = getenv("Bugzilla_BugzillaURL");
     bugzilla_url = environ ? environ : get_map_string_item_or_empty(settings, "BugzillaURL");
     if (!bugzilla_url[0])
@@ -144,13 +142,45 @@ int main(int argc, char **argv)
     environ = getenv("Bugzilla_Product");
     product = xstrdup(environ ? environ : get_map_string_item_or_NULL(settings, "Product"));
 
+    struct abrt_xmlrpc *client = abrt_xmlrpc_new_client(bugzilla_xmlrpc, ssl_verify);
+
+    if (abrt_hash)
+    {
+        char *hash;
+        if (prefixcmp(abrt_hash, "abrt_hash:"))
+            hash = xasprintf("abrt_hash:%s", abrt_hash);
+        else
+            hash = xstrdup(abrt_hash);
+
+        /* it's fedora specific */
+        char *query = xasprintf("ALL whiteboard:\"%s\" product:\"Fedora\"", hash);
+        free(hash);
+
+        xmlrpc_value *result = abrt_xmlrpc_call(client, "Bug.search", "({s:s})",
+                                             "quicksearch", query);
+        free(query);
+
+        xmlrpc_value *all_bugs = rhbz_get_member("bugs", result);
+        xmlrpc_DECREF(result);
+
+        int all_bugs_size = rhbz_array_size(all_bugs);
+        if (all_bugs_size > 0)
+        {
+            int bug_id = rhbz_bug_id(all_bugs);
+            printf("%i", bug_id);
+        }
+
+        exit(EXIT_SUCCESS);
+    }
+
+    if (!login[0] || !password[0])
+        error_msg_and_die(_("Empty login or password, please check your configuration"));
+
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         xfunc_die();
     report_result_t *reported_to = find_in_reported_to(dd, "Bugzilla:");
     dd_close(dd);
-
-    struct abrt_xmlrpc *client = abrt_xmlrpc_new_client(bugzilla_xmlrpc, ssl_verify);
 
     if (opts & OPT_t)
     {

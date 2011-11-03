@@ -10,6 +10,9 @@ bin_PROGRAMS = \
     reporter-mailx \
     reporter-print \
     report
+if HAVE_BODHI
+bin_PROGRAMS += abrt-bodhi
+endif
 
 pluginsconfdir = $(PLUGINS_CONF_DIR)
 
@@ -30,6 +33,9 @@ dist_events_DATA = \
     report_RHTSupport.xml \
     report_Kerneloops.xml \
     report_Uploader.xml
+if HAVE_BODHI
+dist_events_DATA += analyze_LocalGDB_Bodhi.xml
+endif
 
 @INTLTOOL_XML_RULE@
 
@@ -41,6 +47,9 @@ dist_eventsconf_DATA = \
     bugzilla_event.conf \
     rhtsupport_event.conf \
     uploader_event.conf
+if HAVE_BODHI
+dist_eventsconf_DATA += bodhi_event.conf
+endif
 
 MAN_TXT = \
     reporter-print.txt \
@@ -74,6 +83,9 @@ EXTRA_DIST = \
     report_RHTSupport.xml.in \
     report_Kerneloops.xml.in \
     report_Uploader.xml.in
+if HAVE_BODHI
+EXTRA_DIST += analyze_LocalGDB_Bodhi.xml.in
+endif
 
 $(DESTDIR)/$(DEBUG_INFO_DIR):
 	$(mkdir_p) '$@'
@@ -233,5 +245,22 @@ report_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror
 report_LDADD = \
     ../lib/libreport.la
+
+if HAVE_BODHI
+abrt_bodhi_SOURCES = \
+    abrt-bodhi.c
+abrt_bodhi_CPPFLAGS = \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    $(JSON_C_CFLAGS) \
+    -D_GNU_SOURCE \
+    -Wall -Wwrite-strings -Werror
+abrt_bodhi_LDADD = \
+    $(JSON_C_LIBS) \
+    ../lib/libreport.la \
+    ../lib/libabrt_web.la
+endif
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@

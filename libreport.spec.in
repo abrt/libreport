@@ -150,6 +150,18 @@ Obsoletes: report-plugin-bugzilla < 0.23-1
 Provides: report-config-bugzilla-redhat-com = 0.23-1
 Obsoletes: report-config-bugzilla-redhat-com < 0.23-1
 
+%if 0%{?fedora}
+%package plugin-bodhi
+Summary: %{name}'s bodhi plugin
+BuildRequires: json-c-devel
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+Requires: PackageKit
+
+%description plugin-bodhi
+Search for a new updates in bodhi server
+%endif
+
 %description plugin-bugzilla
 Plugin to report bugs into the bugzilla.
 
@@ -311,6 +323,12 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/events.d/mailx_event.conf
 %{_mandir}/man*/reporter-mailx.*
 %{_bindir}/reporter-mailx
+
+%if 0%{?fedora}
+%files plugin-bodhi
+%defattr(-,root,root,-)
+%{_bindir}/abrt-action-bodhi
+%endif
 
 %files plugin-bugzilla
 %defattr(-,root,root,-)

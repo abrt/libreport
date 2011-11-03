@@ -25,6 +25,10 @@ AC_ARG_ENABLE(gtk3,
                              [Use gtk3 instead of gtk2])],
               [GTK_VER="gtk+-3.0"],[GTK_VER="gtk+-2.0"])
 
+AC_ARG_ENABLE([bodhi],
+      AC_HELP_STRING([--disable-bodhi], [do not use bodhi plugin]))
+
+
 dnl ****** INTERNATIONALIZATION **********************
 GETTEXT_PACKAGE=libreport
 AC_SUBST(GETTEXT_PACKAGE)
@@ -77,6 +81,21 @@ PKG_CHECK_MODULES([PYTHON], [python],,[
     PYTHON_CFLAGS='-I/usr/include/python2.6'
 ])
 PKG_CHECK_MODULES([NEWT], [libnewt])
+
+AS_IF([test "x$enable_bodhi" != "xno"], [
+  dnl Do the stuff needed for enabling the feature
+  AC_CHECK_LIB([json], [json_tokener_parse],
+		     [AM_CONDITIONAL(HAVE_BODHI, true)
+		     AC_DEFINE([HAVE_BODHI], [1], [have bodhi])
+		     PKG_CHECK_MODULES([JSON_C], [json])],
+		     [AM_CONDITIONAL(HAVE_BODHI, false)
+		     AC_DEFINE([HAVE_BODHI], [0], [have bodhi])])
+  ],
+  [test "x$enable_bodhi" = xno], [
+     AM_CONDITIONAL(HAVE_BODHI, false)
+     AC_DEFINE([HAVE_BODHI], [0], [have bodhi])
+  ]
+)
 
 PKG_PROG_PKG_CONFIG
 
