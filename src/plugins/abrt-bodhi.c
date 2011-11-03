@@ -213,23 +213,29 @@ static GList *bodhi_query_list(const char *query, const char *release)
 int main(int argc, char **argv)
 {
     abrt_init(argv);
+    enum {
+        OPT_v = 1 << 0,
+        OPT_b = 1 << 1,
+        OPT_r = 1 << 2,
+    };
 
-    char *bugs = NULL, *release = NULL;
+    const char *bugs = NULL, *release = NULL, *dump_dir = ".";
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_STRING('b', "bugs", &bugs, "ID1[,ID2,...]" , _("List of bug ids")),
-        OPT_STRING('r', "release", &release, "RELEASE", _("Specify a release")),
+        OPT_OPTSTRING('r', "release", &release, "RELEASE", _("Specify a release")),
+        OPT__DUMP_DIR(&dump_dir),
         OPT_END()
     };
 
     const char *program_usage_string = _(
-        "& [-v] [-r] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
+        "& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
         "\n"
         "Search for a new updates in bodhi server"
     );
 
-    /* unsigned opts = */ parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned opts =  parse_opts(argc, argv, program_options, program_usage_string);
 
     if (!bugs && !argv[optind])
         show_usage_and_die(program_usage_string, program_options);
@@ -238,8 +244,26 @@ int main(int argc, char **argv)
     if (bugs)
         query = strbuf_append_strf(query, "bugs=%s&", bugs);
 
-    if (release)
-        query = strbuf_append_strf(query, "release=%s&", release);
+    if (opts & OPT_r)
+    {
+        if (release)
+        {
+            query = strbuf_append_strf(query, "release=%s&", release);
+        }
+        else
+        {
+            problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir);
+            if (!problem_data)
+                xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
+
+            release = get_problem_item_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
+            //COMPAT, remove in abrt-2.1
+            if (!release) release = get_problem_item_content_or_die(problem_data, "release");
+            char *product = NULL, *version = NULL;
+            parse_release_for_bz(release, &product, &version);
+            query = strbuf_append_strf(query, "release=f%s&", version);
+        }
+    }
 
     if (argv[optind])
         query = strbuf_append_strf(query, "package=%s&", argv[optind]);
