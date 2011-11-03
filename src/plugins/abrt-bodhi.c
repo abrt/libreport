@@ -224,7 +224,7 @@ int main(int argc, char **argv)
     };
 
     const char *program_usage_string = _(
-        "\1 [-v] [-r] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
+        "& [-v] [-r] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
         "\n"
         "Search for a new updates in bodhi server"
     );
