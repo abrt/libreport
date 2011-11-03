@@ -399,6 +399,12 @@ struct dump_dir *steal_if_needed(struct dump_dir *dd)
         gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))),
                 ask_steal_cb, TRUE, TRUE, 0);
         g_signal_connect(ask_steal_cb, "toggled", G_CALLBACK(on_toggle_ask_steal_cb), NULL);
+
+        /* check it by default if it's shown for the first time */
+        if (!ask_steal_dir) {
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ask_steal_cb), TRUE);
+	}
+
         gtk_widget_show(ask_steal_cb);
         gtk_dialog_run(GTK_DIALOG(dialog));
         gtk_widget_destroy(dialog);
