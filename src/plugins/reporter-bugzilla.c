@@ -17,6 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "internal_libreport.h"
+#include "client.h"
 #include "abrt_xmlrpc.h"
 #include "rhbz.h"
 
@@ -244,8 +245,15 @@ int main(int argc, char **argv)
     /* Create new bug in Bugzilla */
 
     if (reported_to && reported_to->url && !(opts & OPT_f))
-        error_msg_and_die("This problem was already reported to Bugzilla. URL is '%s'",
+    {
+        char *msg = xasprintf("This problem was already reported to Bugzilla (see '%s')."
+                        " Do you still want to create a new bug?",
                         reported_to->url);
+        int yes = ask_yes_no(msg);
+        free(msg);
+        if (!yes)
+            return 0;
+    }
     free_report_result(reported_to);
 
     problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
