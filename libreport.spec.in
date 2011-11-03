@@ -228,6 +228,9 @@ rm -f $RPM_BUILD_ROOT/%{_infodir}/dir
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%check
+make check
+
 %post gtk
 /sbin/ldconfig
 # update icon cache
@@ -327,7 +330,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %if 0%{?fedora}
 %files plugin-bodhi
 %defattr(-,root,root,-)
-%{_bindir}/abrt-action-bodhi
+%{_bindir}/abrt-bodhi
+%config(noreplace) %{_sysconfdir}/libreport/events.d/bodhi_event.conf
+%{_sysconfdir}/libreport/events/analyze_LocalGDB_Bodhi.xml
 %endif
 
 %files plugin-bugzilla
