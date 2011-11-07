@@ -58,6 +58,7 @@ typedef struct
     //char *description; //can be used as tooltip in gtk app
     //char *allowed_value;
     //int required;
+    bool is_advanced;
 } event_option_t;
 
 event_option_t *new_event_option(void);

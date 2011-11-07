@@ -22,6 +22,7 @@
 
 static GtkWindow *g_event_list_window;
 static GList *option_widget_list;
+static GtkWidget *g_adv_option_table;
 static bool has_password_option;
 
 enum
@@ -82,6 +83,8 @@ static void add_option_to_table(gpointer data, gpointer user_data)
 {
     event_option_t *option = data;
     GtkTable *option_table = user_data;
+    if (option->is_advanced)
+        option_table = GTK_TABLE(g_adv_option_table);
 
     GtkWidget *label;
     GtkWidget *option_input;
@@ -368,6 +371,10 @@ int show_event_config_dialog(const char *event_name, GtkWindow *parent)
                         GTK_STOCK_OK,
                         GTK_RESPONSE_APPLY,
                         NULL);
+    /* if the window is resizable expanders will resize it, but
+     * but won't resize it back when collapsed
+     */
+    gtk_window_set_resizable(GTK_WINDOW(dialog), false);
     if (parent_window != NULL)
     {
         gtk_window_set_icon_name(GTK_WINDOW(dialog),
@@ -376,6 +383,17 @@ int show_event_config_dialog(const char *event_name, GtkWindow *parent)
 
     GtkWidget *option_table = gtk_table_new(/*rows*/ 0, /*cols*/ 2, /*homogeneous*/ FALSE);
     gtk_table_set_row_spacings(GTK_TABLE(option_table), 2);
+
+    /* table to hold advanced options
+     * hidden in expander which is visible only if there's at least
+     * one advanced option
+    */
+
+    g_adv_option_table = gtk_table_new(/*rows*/ 0, /*cols*/ 2, /*homogeneous*/ FALSE);
+    gtk_table_set_row_spacings(GTK_TABLE(g_adv_option_table), 2);
+    GtkWidget *adv_expander = gtk_expander_new(_("Advanced"));
+    gtk_container_add(GTK_CONTAINER(adv_expander), g_adv_option_table);
+
     has_password_option = false;
     g_list_foreach(event->options, &add_option_to_table, option_table);
 
@@ -397,6 +415,10 @@ int show_event_config_dialog(const char *event_name, GtkWindow *parent)
 
     GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
     gtk_box_pack_start(GTK_BOX(content), option_table, false, false, 20);
+
+    /* add the adv_option_table to the dialog only if there is some adv option */
+    if (g_list_length(gtk_container_get_children(GTK_CONTAINER(g_adv_option_table))) > 0)
+        gtk_box_pack_start(GTK_BOX(content), adv_expander, false, false, 0);
 
     /* add warning if keyring is not available showing the nagging dialog
      * is considered "too heavy UI" be designers

@@ -37,6 +37,7 @@
 #define INCL_BY_DEFAULT_ELEMENT "include-items-by-default"
 #define EXCL_ALWAYS_ELEMENT     "exclude-items-always"
 #define EXCL_BINARY_ELEMENT     "exclude-binary-items"
+#define ADV_OPTIONS_ELEMENT     "advanced-options"
 
 
 struct my_parse_data
@@ -45,6 +46,7 @@ struct my_parse_data
     event_option_t *cur_option;
     const char *cur_locale;
     char *attribute_lang;
+    bool in_adv_option;
 };
 
 static const char *const option_types[] =
@@ -154,7 +156,11 @@ static void start_element(GMarkupParseContext *context,
     //log("start: %s", element_name);
 
     struct my_parse_data *parse_data = user_data;
-
+    if (strcmp(element_name, ADV_OPTIONS_ELEMENT) == 0)
+    {
+        parse_data->in_adv_option = true;
+        return;
+    }
     if (strcmp(element_name, OPTION_ELEMENT) == 0)
     {
         if (parse_data->cur_option)
@@ -164,6 +170,7 @@ static void start_element(GMarkupParseContext *context,
         }
 
         event_option_t *opt = parse_data->cur_option = new_event_option();
+        opt->is_advanced = (parse_data->in_adv_option == true);
         int i;
 
         for (i = 0; attribute_names[i] != NULL; ++i)
@@ -208,6 +215,10 @@ static void end_element(GMarkupParseContext *context,
     free(parse_data->attribute_lang);
     parse_data->attribute_lang = NULL;
 
+    if (strcmp(element_name, ADV_OPTIONS_ELEMENT) == 0)
+    {
+        parse_data->in_adv_option = false;
+    }
     if (strcmp(element_name, OPTION_ELEMENT) == 0)
     {
         consume_cur_option(parse_data);
