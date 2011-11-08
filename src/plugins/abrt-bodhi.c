@@ -17,18 +17,104 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+#include <json/json.h>
+#include <rpm/rpmts.h>
+#include <rpm/rpmcli.h>
+#include <rpm/rpmdb.h>
+#include <rpm/rpmpgp.h>
+
 #include "internal_libreport.h"
 #include "abrt_curl.h"
 #include "client.h"
 
-#include <json/json.h>
-
 //699198,705037,705036
+
+/* bodhi returns json structure
+
+{
+   "num_items":2,
+   "title":"2 updats found",
+   "tg_flash":null,
+   "updates":[
+      {
+         "status":"stable",
+         "close_bugs":true,
+         "request":null,
+         "date_submitted":"2011-03-18 17:25:14",
+         "unstable_karma":-3,
+         "submitter":"twaugh",
+         "critpath":false,
+         "approved":null,
+         "stable_karma":2,
+         "date_pushed":"2011-03-19 05:34:27",
+         "builds":[
+            {
+               "nvr":"system-config-printer-1.3.2-1.fc15",
+               "package":{
+                  "suggest_reboot":false,
+                  "committers":[
+                     "twaugh",
+                     "jpopelka"
+                  ],
+                  "name":"system-config-printer"
+               }
+            },
+            {
+            ....
+            }
+         ],
+         "title":"system-config-printer-1.3.2-1.fc15",
+         "notes":"This update fixes several bugs and re-enables translations that were accidentally disabled.",
+         "date_modified":null,
+         "nagged":null,
+         "bugs":[
+            {
+               "bz_id":685098,
+               "security":false,
+               "parent":false,
+               "title":"[abrt] system-config-printer-1.3.1-1.fc15: authconn.py:197:_connect:RuntimeError: failed to connect to server"
+            },
+            {
+            ...
+            }
+         ],
+         "comments":[
+            {
+               "group":null,
+               "karma":0,
+               "anonymous":false,
+               "author":"bodhi",
+               "timestamp":"2011-03-18 17:26:34",
+               "text":"This update has been submitted for testing by twaugh. "
+            },
+            {
+            ...
+            }
+         ],
+         "critpath_approved":false,
+         "updateid":"FEDORA-2011-3596",
+         "karma":0,
+         "release":{
+            "dist_tag":"dist-f15",
+            "id_prefix":"FEDORA",
+            "locked":false,
+            "name":"F15",
+            "long_name":"Fedora 15"
+         },
+         "type":"bugfix"
+      },
+      {
+      ...
+      }
+   ]
+}
+*/
 
 static const char *const bodhi_url = "https://admin.fedoraproject.org/updates/%s";
 
 struct bodhi {
     GList *nvr;
+    GList *name;
     char *date_pushed;
     char *status;
     char *dist_tag;
@@ -54,6 +140,7 @@ static void free_bodhi_list(GList *bodhi_list)
         struct bodhi *b = (struct bodhi *) li->data;
         list_free_with_free(b->bz_ids);
         list_free_with_free(b->nvr);
+        list_free_with_free(b->name);
         free(b);
     }
 
@@ -89,6 +176,9 @@ static void bodhi_read_value(json_object *json, const char *item_name,
 static void print_bodhi(struct bodhi *b)
 {
     for (GList *l = b->nvr; l; l = l->next)
+        printf("'%s' ", (char *)l->data);
+
+    for (GList *l = b->name; l; l = l->next)
         printf("'%s' ", (char *)l->data);
 
     if (b->date_pushed)
@@ -165,10 +255,16 @@ static GList *bodhi_parse_json(json_object *json, const char *release)
             int builds_len = json_object_array_length(builds_item);
             for (int k = 0; k < builds_len; ++k)
             {
-                char *nvr = NULL;
+                char *nvr = NULL, *name = NULL;
                 json_object *build = json_object_array_get_idx(builds_item, k);
+
                 bodhi_read_value(build, "nvr", &nvr, BODHI_READ_STR);
                 b->nvr = g_list_append(b->nvr, nvr);
+
+                json_object *package = NULL;
+                bodhi_read_value(build, "package", &package, BODHI_READ_JSON_OBJ);
+                bodhi_read_value(package, "name", &name, BODHI_READ_STR);
+                b->name = g_list_append(b->name, name);
             }
         }
 
@@ -208,6 +304,34 @@ static GList *bodhi_query_list(const char *query, const char *release)
     free_abrt_post_state(post_state);
 
     return bodhi_list;
+}
+
+static char *rpm_get_nvr_by_pkg_name(const char *pkg_name)
+{
+    int status = rpmReadConfigFiles((const char *) NULL, (const char *) NULL);
+    if (status)
+        error_msg_and_die("error reading rc files");
+
+    char* nvr = NULL;
+    const char *errmsg = NULL;
+
+    rpmts ts = rpmtsCreate();
+    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_NAME, pkg_name, 0);
+    Header header = rpmdbNextIterator(iter);
+
+    if (!header)
+        goto error;
+
+    nvr = headerFormat(header, "%{name}-%{version}-%{release}", &errmsg);
+
+    if (!nvr && errmsg)
+        error_msg("cannot get nvr. reason: %s", errmsg);
+
+error:
+    rpmdbFreeIterator(iter);
+    rpmtsFree(ts);
+
+    return nvr;
 }
 
 int main(int argc, char **argv)
@@ -278,15 +402,34 @@ int main(int argc, char **argv)
         return 0;
 
     struct strbuf *q = strbuf_new();
-    strbuf_append_str(q, _("Abrt found a new update which fix your problem. Please run "
-                           "before submitting bug: pkcon --repo-enable=fedora --repo"
-                           "-repo=updates-testing"));
     for (GList *l = update_list; l; l = l->next)
     {
         struct bodhi *b = (struct bodhi *) l->data;
-        for (GList *nvr = b->nvr; nvr; nvr = nvr->next)
+        for (GList *nvr = b->nvr, *name = b->name;
+             nvr && name;
+             nvr = nvr->next, name = name->next)
+        {
+            char *rpm_pkg_nvr = rpm_get_nvr_by_pkg_name((char *) name->data);
+            /* package is not installed on system, but have an update which fixes bug */
+            if (!rpm_pkg_nvr)
+            {
+                strbuf_append_strf(q, " %s", (char *) nvr->data);
+                continue;
+            }
+
+            if (rpmvercmp((char *)nvr->data, rpm_pkg_nvr) <= 0)
+                continue;
+
             strbuf_append_strf(q, " %s", (char *) nvr->data);
+        }
     }
+
+    if (!q->len)
+        return 0;
+
+    strbuf_prepend_str(q, _("Abrt found a new update which fix your problem. Please run "
+                            "before submitting bug: pkcon update --repo-enable=fedora --repo"
+                            "-repo=updates-testing"));
 
     strbuf_append_str(q, _(". Do you want to continue with reporting bug?"));
     return !ask_yes_no(q->buf);

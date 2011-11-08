@@ -87,7 +87,8 @@ AS_IF([test "x$enable_bodhi" != "xno"], [
   AC_CHECK_LIB([json], [json_tokener_parse],
 		     [AM_CONDITIONAL(HAVE_BODHI, true)
 		     AC_DEFINE([HAVE_BODHI], [1], [have bodhi])
-		     PKG_CHECK_MODULES([JSON_C], [json])],
+		     PKG_CHECK_MODULES([JSON_C], [json])
+		     PKG_CHECK_MODULES([RPM], [rpm])],
 		     [AM_CONDITIONAL(HAVE_BODHI, false)
 		     AC_DEFINE([HAVE_BODHI], [0], [have bodhi])])
   ],
