@@ -62,7 +62,7 @@ int main(int argc, char **argv)
         "\n"
         "If not specified, CONFFILE defaults to "CONF_DIR"/plugins/bugzilla.conf\n"
         "Its lines should have 'PARAM = VALUE' format.\n"
-        "Recognized string parameters: BugzillaURL, Login, Password, Product.\n"
+        "Recognized string parameters: BugzillaURL, Login, Password, OSRelease.\n"
         "Recognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify.\n"
         "Parameters can be overridden via $Bugzilla_PARAM environment variables.\n"
         "\n"
@@ -125,6 +125,7 @@ int main(int argc, char **argv)
     const char *bugzilla_xmlrpc;
     const char *bugzilla_url;
     bool ssl_verify;
+    const char *release;
     char *product;
 
     environ = getenv("Bugzilla_Login");
@@ -140,8 +141,8 @@ int main(int argc, char **argv)
     environ = getenv("Bugzilla_SSLVerify");
     ssl_verify = string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "SSLVerify"));
 
-    environ = getenv("Bugzilla_Product");
-    product = xstrdup(environ ? environ : get_map_string_item_or_NULL(settings, "Product"));
+    environ = getenv("Bugzilla_OSRelease");
+    release = environ ? environ : get_map_string_item_or_NULL(settings, "OSRelease");
 
     struct abrt_xmlrpc *client = abrt_xmlrpc_new_client(bugzilla_xmlrpc, ssl_verify);
 
@@ -264,19 +265,19 @@ int main(int argc, char **argv)
     const char *duphash   = get_problem_item_content_or_NULL(problem_data, FILENAME_DUPHASH);
 //COMPAT, remove after 2.1 release
     if (!duphash) duphash = get_problem_item_content_or_die(problem_data, "global_uuid");
-    const char *release   = get_problem_item_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
+    if (!release) /* if not overridden... */
+    {
+        release           = get_problem_item_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
 //COMPAT, remove in abrt-2.1
-    if (!release) release = get_problem_item_content_or_die(problem_data, "release");
+        if (!release) release = get_problem_item_content_or_die(problem_data, "release");
+    }
 
     log(_("Logging into Bugzilla at %s"), bugzilla_url);
     rhbz_login(client, login, password);
 
-    if (!product) /* If not overridden by config... */
-    {
-        char *version = NULL;
-        parse_release_for_bz(release, &product, &version);
-        free(version);
-    }
+    char *version = NULL;
+    parse_release_for_bz(release, &product, &version);
+    free(version);
 
     log(_("Checking for duplicates"));
     xmlrpc_value *result;
@@ -328,7 +329,7 @@ int main(int argc, char **argv)
     {
         /* Create new bug */
         log(_("Creating a new bug"));
-        bug_id = rhbz_new_bug(client, problem_data, bug_id);
+        bug_id = rhbz_new_bug(client, problem_data, release, bug_id);
 
         log("Adding attachments to bug %i", bug_id);
         char bug_id_str[sizeof(int)*3 + 2];

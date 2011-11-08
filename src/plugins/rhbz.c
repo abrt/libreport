@@ -280,16 +280,20 @@ struct bug_info *rhbz_bug_info(struct abrt_xmlrpc *ax, int bug_id)
 
 /* suppress mail notify by {s:i} (nomail:1) (driven by flag) */
 int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
+                 const char *release,
                  int depend_on_bug)
 {
     const char *package      = get_problem_item_content_or_NULL(problem_data,
                                                                 FILENAME_PACKAGE);
     const char *component    = get_problem_item_content_or_NULL(problem_data,
                                                                 FILENAME_COMPONENT);
-    const char *release      = get_problem_item_content_or_NULL(problem_data,
+    if (!release)
+    {
+        release              = get_problem_item_content_or_NULL(problem_data,
                                                                 FILENAME_OS_RELEASE);
-    if (!release) /* Old dump dir format compat. Remove in abrt-2.1 */
-        release = get_problem_item_content_or_NULL(problem_data, "release");
+        if (!release) /* Old dump dir format compat. Remove in abrt-2.1 */
+            release = get_problem_item_content_or_NULL(problem_data, "release");
+    }
     const char *arch         = get_problem_item_content_or_NULL(problem_data,
                                                                 FILENAME_ARCHITECTURE);
     const char *duphash      = get_problem_item_content_or_NULL(problem_data,
