@@ -255,10 +255,12 @@ abrt_bodhi_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     $(JSON_C_CFLAGS) \
+    $(RPM_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_bodhi_LDADD = \
     $(JSON_C_LIBS) \
+    $(RPM_LIBS) \
     ../lib/libreport.la \
     ../lib/libabrt_web.la
 endif
