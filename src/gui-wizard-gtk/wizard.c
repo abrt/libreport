@@ -1008,6 +1008,20 @@ static void save_items_from_notepad()
     }
 }
 
+static void remove_tabs_from_notebook(GtkNotebook *notebook)
+{
+    gint n_pages = gtk_notebook_get_n_pages(notebook);
+    int ii;
+
+    for (ii = 0; ii < n_pages; ii++)
+    {
+        /* removing a page changes the indices, so we always need to remove
+         * page 0
+        */
+        gtk_notebook_remove_page(notebook, 0); //we need to always the page 0
+    }
+}
+
 static void append_item_to_ls_details(gpointer name, gpointer value, gpointer data)
 {
     problem_item *item = (problem_item*)value;
@@ -1208,6 +1222,7 @@ static void update_event_checkboxes(GList **events_gui_data,
 void update_gui_state_from_problem_data(void)
 {
     update_window_title();
+    remove_tabs_from_notebook(g_notebook);
 
     const char *reason = get_problem_item_content_or_NULL(g_cd, FILENAME_REASON);
     const char *not_reportable = get_problem_item_content_or_NULL(g_cd,
