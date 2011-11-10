@@ -113,14 +113,15 @@
 static const char *const bodhi_url = "https://admin.fedoraproject.org/updates/%s";
 
 struct bodhi {
-    GList *nvr;
-    GList *name;
+    char *nvr;
+#if 0
     char *date_pushed;
     char *status;
     char *dist_tag;
     int karma;
 
     GList *bz_ids;
+#endif
 };
 
 enum {
@@ -129,24 +130,22 @@ enum {
     BODHI_READ_JSON_OBJ,
 };
 
-#if 0
-static void free_bodhi_list(GList *bodhi_list)
+static void free_bodhi_item(struct bodhi *b)
 {
-    if (!bodhi_list)
+    if (!b)
         return;
 
-    for (GList *li = bodhi_list; li; li = li->next)
-    {
-        struct bodhi *b = (struct bodhi *) li->data;
-        list_free_with_free(b->bz_ids);
-        list_free_with_free(b->nvr);
-        list_free_with_free(b->name);
-        free(b);
-    }
+    free(b->nvr);
 
-    g_list_free(bodhi_list);
-}
+#if 0
+    list_free_with_free(b->bz_ids);
+    free(b->date_pushed);
+    free(b->status);
+    free(b->dist_tag);
 #endif
+
+    free(b);
+}
 
 static void bodhi_read_value(json_object *json, const char *item_name,
                              void *value, int flags)
@@ -201,7 +200,7 @@ static void print_bodhi(struct bodhi *b)
 }
 #endif
 
-static GList *bodhi_parse_json(json_object *json, const char *release)
+static GHashTable *bodhi_parse_json(json_object *json, const char *release)
 {
 
     int num_items = 0;
@@ -216,7 +215,8 @@ static GList *bodhi_parse_json(json_object *json, const char *release)
 
     int updates_len = json_object_array_length(updates);
 
-    GList *bodhi_list = NULL;
+    GHashTable *bodhi_table = g_hash_table_new_full(g_str_hash, g_str_equal, free,
+                                                    (GDestroyNotify) free_bodhi_item);
     for (int i = 0; i < updates_len; ++i)
     {
         json_object *updates_item = json_object_array_get_idx(updates, i);
@@ -225,7 +225,36 @@ static GList *bodhi_parse_json(json_object *json, const char *release)
         if (!updates_item)
             continue;
 
-        struct bodhi *b = xzalloc(sizeof(struct bodhi));
+        json_object *builds_item = NULL;
+        bodhi_read_value(updates_item, "builds", &builds_item, BODHI_READ_JSON_OBJ);
+        if (!builds_item) /* broken json */
+            continue;
+
+        struct bodhi *b = NULL;
+        int builds_len = json_object_array_length(builds_item);
+        for (int k = 0; k < builds_len; ++k)
+        {
+            b = xzalloc(sizeof(struct bodhi));
+
+            char *name = NULL;
+            json_object *build = json_object_array_get_idx(builds_item, k);
+
+            bodhi_read_value(build, "nvr", &b->nvr, BODHI_READ_STR);
+
+            json_object *package = NULL;
+            bodhi_read_value(build, "package", &package, BODHI_READ_JSON_OBJ);
+            bodhi_read_value(package, "name", &name, BODHI_READ_STR);
+
+            struct bodhi *bodhi_tbl_item = g_hash_table_lookup(bodhi_table, name);
+            if (bodhi_tbl_item && rpmvercmp(bodhi_tbl_item->nvr, b->nvr) > 0)
+            {
+                free_bodhi_item(b);
+                continue;
+            }
+            g_hash_table_replace(bodhi_table, name, b);
+        }
+
+#if 0
         bodhi_read_value(updates_item, "date_pushed", &b->date_pushed, BODHI_READ_STR);
         bodhi_read_value(updates_item, "karma", &b->karma, BODHI_READ_INT);
         bodhi_read_value(updates_item, "status", &b->status, BODHI_READ_STR);
@@ -247,36 +276,13 @@ static GList *bodhi_parse_json(json_object *json, const char *release)
                 b->bz_ids = g_list_append(b->bz_ids, bz_id);
             }
         }
-
-        json_object *builds_item = NULL;
-        bodhi_read_value(updates_item, "builds", &builds_item, BODHI_READ_JSON_OBJ);
-        if (builds_item)
-        {
-            int builds_len = json_object_array_length(builds_item);
-            for (int k = 0; k < builds_len; ++k)
-            {
-                char *nvr = NULL, *name = NULL;
-                json_object *build = json_object_array_get_idx(builds_item, k);
-
-                bodhi_read_value(build, "nvr", &nvr, BODHI_READ_STR);
-                b->nvr = g_list_append(b->nvr, nvr);
-
-                json_object *package = NULL;
-                bodhi_read_value(build, "package", &package, BODHI_READ_JSON_OBJ);
-                bodhi_read_value(package, "name", &name, BODHI_READ_STR);
-                b->name = g_list_append(b->name, name);
-            }
-        }
-
-        bodhi_list = g_list_append(bodhi_list, b);
-
-//        print_bodhi(b);
+#endif
     }
 
-    return bodhi_list;
+    return bodhi_table;
 }
 
-static GList *bodhi_query_list(const char *query, const char *release)
+static GHashTable *bodhi_query_list(const char *query, const char *release)
 {
     char *bodhi_url_bugs = xasprintf(bodhi_url, "list");
 
@@ -299,11 +305,11 @@ static GList *bodhi_query_list(const char *query, const char *release)
     if (is_error(json))
         error_msg_and_die("fatal: unable parse response from bodhi server");
 
-    GList *bodhi_list = bodhi_parse_json(json, release);
+    GHashTable *bodhi_table = bodhi_parse_json(json, release);
     json_object_put(json);
     free_abrt_post_state(post_state);
 
-    return bodhi_list;
+    return bodhi_table;
 }
 
 static char *rpm_get_nvr_by_pkg_name(const char *pkg_name)
@@ -395,33 +401,24 @@ int main(int argc, char **argv)
     if (query->buf[query->len - 1] == '&')
         query->buf[query->len - 1] = '\0';
 
-    GList *update_list = bodhi_query_list(query->buf, release);
+    GHashTable *update_hash_tbl = bodhi_query_list(query->buf, release);
     strbuf_free(query);
 
-    if (!update_list)
+    if (!g_hash_table_size(update_hash_tbl))
         return 0;
 
+    GHashTableIter iter;
+    char *name = NULL;
+    struct bodhi *b = NULL;
     struct strbuf *q = strbuf_new();
-    for (GList *l = update_list; l; l = l->next)
+    g_hash_table_iter_init(&iter, update_hash_tbl);
+    while (g_hash_table_iter_next(&iter, (void **) &name, (void **) &b))
     {
-        struct bodhi *b = (struct bodhi *) l->data;
-        for (GList *nvr = b->nvr, *name = b->name;
-             nvr && name;
-             nvr = nvr->next, name = name->next)
-        {
-            char *rpm_pkg_nvr = rpm_get_nvr_by_pkg_name((char *) name->data);
-            /* package is not installed on system, but have an update which fixes bug */
-            if (!rpm_pkg_nvr)
-            {
-                strbuf_append_strf(q, " %s", (char *) nvr->data);
-                continue;
-            }
+        char *installed_pkg_nvr = rpm_get_nvr_by_pkg_name(name);
+        if (installed_pkg_nvr && rpmvercmp(installed_pkg_nvr, b->nvr) > 0)
+            continue;
 
-            if (rpmvercmp((char *)nvr->data, rpm_pkg_nvr) <= 0)
-                continue;
-
-            strbuf_append_strf(q, " %s", (char *) nvr->data);
-        }
+        strbuf_append_strf(q, " %s", b->nvr);
     }
 
     if (!q->len)
