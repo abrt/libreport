@@ -600,7 +600,7 @@ bool make_dir_recursive(char *dir, mode_t dir_mode);
 // was 2k, 20kb is too much and back to 2kb:
 #define CD_TEXT_ATT_SIZE (2*1024)
 
-// Filenames in dump directory:
+// Filenames in problem directory:
 // filled by a hook:
 #define FILENAME_REASON       "reason"      /* mandatory */
 #define FILENAME_UID          "uid"         /* mandatory */

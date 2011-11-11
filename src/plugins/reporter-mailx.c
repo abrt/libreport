@@ -148,7 +148,7 @@ int main(int argc, char **argv)
     const char *program_usage_string = _(
         "& [-v] -d DIR [-c CONFFILE]\n"
         "\n"
-        "Sends contents of a dump directory DIR via email"
+        "Sends contents of a problem directory DIR via email"
     );
     enum {
         OPT_v = 1 << 0,

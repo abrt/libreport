@@ -843,7 +843,7 @@ int report(const char *dump_dir_name, int flags)
     if (!report_events)
     {
         free_problem_data(problem_data);
-        error_msg_and_die("The dump directory '%s' has no defined reporters",
+        error_msg_and_die("The problem directory '%s' has no defined reporters",
                           dump_dir_name);
     }
 

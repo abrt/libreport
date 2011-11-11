@@ -260,7 +260,7 @@ int main(int argc, char **argv)
     const char *program_usage_string = _(
         "& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
         "\n"
-        "Uploads compressed tarball of dump directory DIR to URL.\n"
+        "Uploads compressed tarball of problem directory DIR to URL.\n"
         "If URL is not specified, creates tarball in /tmp and exits.\n"
         "\n"
         "URL should have form 'protocol://[user[:pass]@]host/dir/[file.tar.gz]'\n"

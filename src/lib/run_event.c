@@ -397,7 +397,7 @@ int spawn_next_command(struct run_event_state *state,
     char *env_vec[4];
     /* Just exporting dump_dir_name isn't always ok: it can be "."
      * and some children want to cd to other directory but still
-     * be able to find dump directory by using $DUMP_DIR...
+     * be able to find problem directory by using $DUMP_DIR...
      */
     char *full_name = realpath(dump_dir_name, NULL);
     env_vec[0] = xasprintf("DUMP_DIR=%s", (full_name ? full_name : dump_dir_name));

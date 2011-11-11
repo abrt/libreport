@@ -3,7 +3,7 @@ reporter-mailx(1)
 
 NAME
 ----
-reporter-mailx - Sends contents of a dump directory via email.
+reporter-mailx - Sends contents of a problem directory via email.
 
 SYNOPSIS
 --------
@@ -11,7 +11,7 @@ SYNOPSIS
 
 DESCRIPTION
 -----------
-The tool reads a problem dump directory, composes an email message
+The tool reads a problem directory, composes an email message
 from the directory contents, and uses mailx to send the message to
 specified recipient.
 
@@ -59,7 +59,7 @@ EVENT=post-create       reporter-mailx
 OPTIONS
 -------
 -d DIR::
-   Path to dump directory.
+   Path to problem directory.
 
 -c CONFFILE::
    Path to configration file. When used in ABRT event system, the file
