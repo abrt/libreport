@@ -92,7 +92,7 @@ AS_IF([test "x$enable_bodhi" != "xno"], [
 		     [AM_CONDITIONAL(HAVE_BODHI, false)
 		     AC_DEFINE([HAVE_BODHI], [0], [have bodhi])])
   ],
-  [test "x$enable_bodhi" = xno], [
+  [test "x$enable_bodhi" = "xno"], [
      AM_CONDITIONAL(HAVE_BODHI, false)
      AC_DEFINE([HAVE_BODHI], [0], [have bodhi])
   ]
