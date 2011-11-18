@@ -15,7 +15,6 @@ _reportclient_la_CPPFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(PYTHON_CFLAGS) \
     -D_GNU_SOURCE \
