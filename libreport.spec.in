@@ -332,6 +332,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-bodhi
 %config(noreplace) %{_sysconfdir}/libreport/events.d/bodhi_event.conf
 %{_sysconfdir}/libreport/events/analyze_LocalGDB_Bodhi.xml
+%else
+# exclude bodhi files for rhel build, otherwise rpm build fails
+%exclude %{_bindir}/abrt-bodhi
+%config(noreplace) %exclude %{_sysconfdir}/libreport/events.d/bodhi_event.conf
+%exclude %{_sysconfdir}/libreport/events/analyze_LocalGDB_Bodhi.xml
 %endif
 
 %files plugin-bugzilla
