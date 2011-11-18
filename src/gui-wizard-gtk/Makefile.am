@@ -14,7 +14,6 @@ report_gtk_CFLAGS = \
     -I$(srcdir)/../lib \
     -I$(srcdir)/../gtk-helpers \
     -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DDATA_DIR=\"$(datadir)\" \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
