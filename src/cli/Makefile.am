@@ -1,5 +1,3 @@
--include ../../config.mak
-
 bin_PROGRAMS = \
     report-cli
 
@@ -21,26 +19,9 @@ report_cli_CPPFLAGS = \
 report_cli_LDADD = \
     ../lib/libreport.la \
     $(GLIB_LIBS)
-
-MAN_TXT = \
-    report-cli.txt
-
-# Manual pages are generated from .txt via Docbook
-man1_MANS = ${MAN_TXT:%.txt=%.1}
-
-%.1 %.5 %.7: %.xml
-	$(XMLTO_SILENT) xmlto man $< 2>&1 | sed '/Note/d'
-
-%.xml: %.txt ../../asciidoc.conf
-	$(ASCIIDOC_SILENT) asciidoc --backend=docbook --doctype=manpage --conf-file ../../asciidoc.conf -alibreport_version=$(PACKAGE_VERSION) -o $@ $<
-
-CLEANFILES = $(man1_MANS)
-
 PYTHON_FILES = \
     abrt-action-install-debuginfo \
     abrt-action-list-dsos.py \
     abrt-action-analyze-core.py
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
-
-EXTRA_DIST = $(MAN_TXT)

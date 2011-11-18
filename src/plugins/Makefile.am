@@ -1,5 +1,3 @@
--include ../../config.mak
-
 pluginslibdir = $(PLUGINS_LIB_DIR)
 
 bin_PROGRAMS = \
@@ -51,30 +49,7 @@ if HAVE_BODHI
 dist_eventsconf_DATA += bodhi_event.conf
 endif
 
-MAN_TXT = \
-    reporter-print.txt \
-    reporter-mailx.txt \
-    reporter-bugzilla.txt \
-    reporter-rhtsupport.txt \
-    reporter-kerneloops.txt \
-    reporter-upload.txt \
-    report.txt
-
-# Manual pages are generated from .txt via Docbook
-man1_MANS = ${MAN_TXT:%.txt=%.1}
-
-%.1 %.5 %.7: %.xml
-	$(XMLTO_SILENT) xmlto man $< 2>&1 | sed '/Note/d'
-
-%.xml: %.txt ../../asciidoc.conf
-	$(ASCIIDOC_SILENT) asciidoc --backend=docbook --doctype=manpage --conf-file ../../asciidoc.conf -alibreport_version=$(PACKAGE_VERSION) -o $@ $<
-
-
-CLEANFILES = $(man1_MANS)
-
 EXTRA_DIST = \
-    $(man_MANS) \
-    $(MAN_TXT) \
     report_Bugzilla.xml.in \
     report_Bugzilla.conf \
     report_Logger.conf \

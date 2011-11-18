@@ -119,20 +119,6 @@ libabrt_web_la_LIBADD = \
     $(LIBXML_LIBS) \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS)
 
-MAN_TXT = \
-    report_event.conf.txt
-
-# Manual pages are generated from .txt via Docbook
-man5_MANS = report_event.conf.5
-
-%.5: %.xml
-	$(XMLTO_SILENT) xmlto man $< 2>&1 | sed '/Note/d'
-
-%.xml: %.txt ../../asciidoc.conf
-	$(ASCIIDOC_SILENT) asciidoc --backend=docbook --doctype=manpage --conf-file ../../asciidoc.conf -alibreport_version=$(PACKAGE_VERSION) -o $@ $<
-
-EXTRA_DIST = $(MAN_TXT)
-
 $(DESTDIR)/$(DEBUG_DUMPS_DIR):
 	$(mkdir_p) '$@'
 # no need to chmod it here

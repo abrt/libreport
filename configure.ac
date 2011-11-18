@@ -153,6 +153,7 @@ AC_CONFIG_FILES([
 	src/plugins/Makefile
 	src/client-python/Makefile
 	po/Makefile.in
+	doc/Makefile
 ])
 
 #	src/plugins/Makefile
