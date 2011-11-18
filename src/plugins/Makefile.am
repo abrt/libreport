@@ -82,10 +82,8 @@ EXTRA_DIST = \
     report_Mailx.xml.in \
     report_RHTSupport.xml.in \
     report_Kerneloops.xml.in \
-    report_Uploader.xml.in
-if HAVE_BODHI
-EXTRA_DIST += analyze_LocalGDB_Bodhi.xml.in
-endif
+    report_Uploader.xml.in \
+    analyze_LocalGDB_Bodhi.xml.in
 
 $(DESTDIR)/$(DEBUG_INFO_DIR):
 	$(mkdir_p) '$@'
