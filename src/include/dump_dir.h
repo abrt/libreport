@@ -54,7 +54,7 @@ struct dump_dir *dd_opendir(const char *dir, int flags);
 struct dump_dir *dd_create(const char *dir, uid_t uid, mode_t mode);
 
 void dd_create_basic_files(struct dump_dir *dd, uid_t uid);
-int dd_exist(struct dump_dir *dd, const char *path);
+int dd_exist(const struct dump_dir *dd, const char *path);
 void dd_sanitize_mode_and_owner(struct dump_dir *dd);
 
 DIR *dd_init_next_file(struct dump_dir *dd);
