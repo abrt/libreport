@@ -75,11 +75,9 @@ libabrt_dbus_la_SOURCES = \
 libabrt_dbus_la_CPPFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
     -DEVENTS_DIR=\"$(EVENTS_DIR)\" \
     $(GLIB_CFLAGS) \
     $(DBUS_CFLAGS) \
@@ -99,11 +97,9 @@ libabrt_web_la_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror \
     -I$(srcdir)/../include \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
     -DEVENTS_DIR=\"$(EVENTS_DIR)\" \
     $(GLIB_CFLAGS) \
     $(CURL_CFLAGS) \
@@ -118,20 +114,6 @@ libabrt_web_la_LIBADD = \
     $(CURL_LIBS) \
     $(LIBXML_LIBS) \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS)
-
-MAN_TXT = \
-    report_event.conf.txt
-
-# Manual pages are generated from .txt via Docbook
-man5_MANS = report_event.conf.5
-
-%.5: %.xml
-	$(XMLTO_SILENT) xmlto man $< 2>&1 | sed '/Note/d'
-
-%.xml: %.txt ../../asciidoc.conf
-	$(ASCIIDOC_SILENT) asciidoc --backend=docbook --doctype=manpage --conf-file ../../asciidoc.conf -alibreport_version=$(PACKAGE_VERSION) -o $@ $<
-
-EXTRA_DIST = $(MAN_TXT)
 
 $(DESTDIR)/$(DEBUG_DUMPS_DIR):
 	$(mkdir_p) '$@'

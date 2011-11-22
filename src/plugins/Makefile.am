@@ -1,5 +1,3 @@
--include ../../config.mak
-
 pluginslibdir = $(PLUGINS_LIB_DIR)
 
 bin_PROGRAMS = \
@@ -51,30 +49,7 @@ if HAVE_BODHI
 dist_eventsconf_DATA += bodhi_event.conf
 endif
 
-MAN_TXT = \
-    reporter-print.txt \
-    reporter-mailx.txt \
-    reporter-bugzilla.txt \
-    reporter-rhtsupport.txt \
-    reporter-kerneloops.txt \
-    reporter-upload.txt \
-    report.txt
-
-# Manual pages are generated from .txt via Docbook
-man1_MANS = ${MAN_TXT:%.txt=%.1}
-
-%.1 %.5 %.7: %.xml
-	$(XMLTO_SILENT) xmlto man $< 2>&1 | sed '/Note/d'
-
-%.xml: %.txt ../../asciidoc.conf
-	$(ASCIIDOC_SILENT) asciidoc --backend=docbook --doctype=manpage --conf-file ../../asciidoc.conf -alibreport_version=$(PACKAGE_VERSION) -o $@ $<
-
-
-CLEANFILES = $(man1_MANS)
-
 EXTRA_DIST = \
-    $(man_MANS) \
-    $(MAN_TXT) \
     report_Bugzilla.xml.in \
     report_Bugzilla.conf \
     report_Logger.conf \
@@ -94,7 +69,6 @@ reporter_bugzilla_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
@@ -119,7 +93,6 @@ reporter_rhtsupport_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
@@ -144,8 +117,6 @@ reporter_upload_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
@@ -168,8 +139,6 @@ reporter_kerneloops_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
@@ -190,8 +159,6 @@ reporter_mailx_CPPFLAGS = \
     -I$(srcdir)/../libreport/src/lib \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
@@ -210,8 +177,6 @@ reporter_print_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
@@ -230,7 +195,6 @@ report_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
