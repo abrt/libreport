@@ -118,7 +118,6 @@ struct bodhi {
     char *date_pushed;
     char *status;
     char *dist_tag;
-    int karma;
 
     GList *bz_ids;
 #endif
@@ -230,6 +229,12 @@ static GHashTable *bodhi_parse_json(json_object *json, const char *release)
         if (!builds_item) /* broken json */
             continue;
 
+        int karma, unstable_karma;
+        bodhi_read_value(updates_item, "karma", &karma, BODHI_READ_INT);
+        bodhi_read_value(updates_item, "unstable_karma", &unstable_karma, BODHI_READ_INT);
+        if (karma <= unstable_karma)
+            continue;
+
         struct bodhi *b = NULL;
         int builds_len = json_object_array_length(builds_item);
         for (int k = 0; k < builds_len; ++k)
@@ -256,7 +261,6 @@ static GHashTable *bodhi_parse_json(json_object *json, const char *release)
 
 #if 0
         bodhi_read_value(updates_item, "date_pushed", &b->date_pushed, BODHI_READ_STR);
-        bodhi_read_value(updates_item, "karma", &b->karma, BODHI_READ_INT);
         bodhi_read_value(updates_item, "status", &b->status, BODHI_READ_STR);
 
         json_object *release_item = NULL;
