@@ -81,6 +81,9 @@ PKG_CHECK_MODULES([PYTHON], [python],,[
     PYTHON_CFLAGS='-I/usr/include/python2.6'
 ])
 PKG_CHECK_MODULES([NEWT], [libnewt])
+PKG_CHECK_MODULES([PROXY], [libproxy-1.0], [
+    AC_DEFINE([HAVE_PROXY], [1], [Use libproxy])
+], [ ])
 
 AS_IF([test "x$enable_bodhi" != "xno"], [
   dnl Do the stuff needed for enabling the feature

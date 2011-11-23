@@ -92,7 +92,8 @@ libabrt_dbus_la_LIBADD = \
 
 libabrt_web_la_SOURCES = \
     abrt_curl.h abrt_curl.c \
-    abrt_xmlrpc.h abrt_xmlrpc.c
+    abrt_xmlrpc.h abrt_xmlrpc.c \
+    proxies.h proxies.c
 libabrt_web_la_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror \
     -I$(srcdir)/../include \
@@ -103,6 +104,7 @@ libabrt_web_la_CPPFLAGS = \
     -DEVENTS_DIR=\"$(EVENTS_DIR)\" \
     $(GLIB_CFLAGS) \
     $(CURL_CFLAGS) \
+    $(PROXY_CFLAGS) \
     $(LIBXML_CFLAGS) \
     $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
@@ -112,6 +114,7 @@ libabrt_web_la_LDFLAGS = \
 libabrt_web_la_LIBADD = \
     $(GLIB_LIBS) \
     $(CURL_LIBS) \
+    $(PROXY_LIBS) \
     $(LIBXML_LIBS) \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS)
 
