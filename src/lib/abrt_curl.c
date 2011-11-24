@@ -18,6 +18,7 @@
 */
 #include "internal_libreport.h"
 #include "abrt_curl.h"
+#include "proxies.h"
 
 /*
  * Utility functions
@@ -73,6 +74,32 @@ xcurl_easy_setopt_off_t(CURL *handle, CURLoption option, curl_off_t parameter)
         char *msg = check_curl_error(err, "curl");
         error_msg_and_die("%s", msg);
     }
+}
+
+CURLcode curl_easy_perform_with_proxy(CURL *handle, const char *url)
+{
+    GList *proxy_list, *li;
+    CURLcode curl_err;
+
+    proxy_list = get_proxy_list(url);
+
+    if (proxy_list)
+    {
+        /* Try with each proxy before giving up. */
+        /* TODO: Should we repeat the perform call only on certain errors? */
+        for (li = proxy_list, curl_err = 1; curl_err && li; li = g_list_next(li))
+        {
+            xcurl_easy_setopt_ptr(handle, CURLOPT_PROXY, li->data);
+            VERB3 log("Proxy set to: '%s'", (const char *)li->data);
+
+            curl_err = curl_easy_perform(handle);
+        }
+    } else
+        curl_err = curl_easy_perform(handle);
+
+    list_free_with_free(proxy_list);
+
+    return curl_err;
 }
 
 /*
@@ -415,7 +442,7 @@ abrt_post(abrt_post_state_t *state,
 
     // This is the place where everything happens.
     // Here errors are not limited to "out of memory", can't just die.
-    curl_err = curl_easy_perform(handle);
+    curl_err = curl_easy_perform_with_proxy(handle, url);
     if (curl_err)
     {
         VERB2 log("curl_easy_perform: error %d", (int)curl_err);

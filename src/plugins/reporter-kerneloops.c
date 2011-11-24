@@ -16,7 +16,7 @@
        Anton Arapov <anton@redhat.com>
        Arjan van de Ven <arjan@linux.intel.com>
  */
-#include <curl/curl.h>
+#include "abrt_curl.h"
 #include "internal_libreport.h"
 
 /* helpers */
@@ -70,7 +70,7 @@ static CURLcode http_post_to_kerneloops_site(const char *url, const char *oopsda
     curl_easy_setopt(handle, CURLOPT_HTTPPOST, post);
     curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, writefunction);
 
-    ret = curl_easy_perform(handle);
+    ret = curl_easy_perform_with_proxy(handle, url);
 
     curl_formfree(post);
     curl_easy_cleanup(handle);

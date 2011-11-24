@@ -130,7 +130,7 @@ reporter_upload_CPPFLAGS = \
 reporter_upload_LDFLAGS = -ltar
 reporter_upload_LDADD = \
     $(GLIB_LIBS) \
-    $(CURL_LIBS) \
+    ../lib/libabrt_web.la \
     ../lib/libreport.la
 
 reporter_kerneloops_SOURCES = \

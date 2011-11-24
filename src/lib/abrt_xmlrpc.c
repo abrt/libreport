@@ -18,6 +18,7 @@
 */
 #include "internal_libreport.h"
 #include "abrt_xmlrpc.h"
+#include "proxies.h"
 
 void abrt_xmlrpc_die(xmlrpc_env *env)
 {
@@ -31,6 +32,7 @@ void abrt_xmlrpc_error(xmlrpc_env *env)
 
 struct abrt_xmlrpc *abrt_xmlrpc_new_client(const char *url, int ssl_verify)
 {
+    GList *proxies;
     xmlrpc_env env;
     xmlrpc_env_init(&env);
 
@@ -61,16 +63,23 @@ struct abrt_xmlrpc *abrt_xmlrpc_new_client(const char *url, int ssl_verify)
     curl_parms.user_agent        = "abrt";
 #endif
 
+    proxies = get_proxy_list(url);
+    /* Use the first proxy from the list */
+    if (proxies)
+        curl_parms.proxy = (const char *)proxies->data;
+
     struct xmlrpc_clientparms client_parms;
     memset(&client_parms, 0, sizeof(client_parms));
     client_parms.transport          = "curl";
     client_parms.transportparmsP    = &curl_parms;
-    client_parms.transportparm_size = XMLRPC_CXPSIZE(user_agent);
+    client_parms.transportparm_size = XMLRPC_CXPSIZE(proxy);
 
     xmlrpc_client_create(&env, XMLRPC_CLIENT_NO_FLAGS,
                          PACKAGE_NAME, VERSION,
                          &client_parms, XMLRPC_CPSIZE(transportparm_size),
                          &ax->ax_client);
+
+    list_free_with_free(proxies);
 
     if (env.fault_occurred)
         abrt_xmlrpc_die(&env);

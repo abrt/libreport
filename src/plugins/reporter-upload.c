@@ -17,7 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <libtar.h>
-#include <curl/curl.h>
+#include "abrt_curl.h"
 #include "internal_libreport.h"
 
 //TODO: use this for better logging
@@ -88,7 +88,7 @@ static int send_file(const char *url, const char *filename)
     curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)stbuf.st_size);
 
     /* everything is done here; result 0 means success */
-    CURLcode result = curl_easy_perform(curl);
+    CURLcode result = curl_easy_perform_with_proxy(curl, whole_url);
     free(whole_url);
     fclose(fp);
     if (result != 0)

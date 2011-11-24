@@ -27,6 +27,9 @@ extern "C" {
 
 CURL* xcurl_easy_init();
 
+/* Set proxy according to the url and call curl_easy_perform */
+CURLcode curl_easy_perform_with_proxy(CURL *handle, const char *url);
+
 typedef struct abrt_post_state {
     /* Supplied by caller: */
     int         flags;
