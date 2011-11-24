@@ -37,7 +37,8 @@ GList *get_proxy_list(const char *url)
             return NULL;
     }
 
-    proxies = px_proxy_factory_get_proxies(px_factory, url);
+    /* Cast to char * is needed with libproxy versions before 0.4.0 */
+    proxies = px_proxy_factory_get_proxies(px_factory, (char *)url);
     if (!proxies)
         return NULL;
 
