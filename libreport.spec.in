@@ -27,6 +27,7 @@ BuildRequires: asciidoc
 BuildRequires: xmlto
 BuildRequires: newt-devel
 BuildRequires: libproxy-devel
+Requires: libreport-filesystem
 # required for update from old report library, otherwise we obsolete report-gtk
 # and all it's plugins, but don't provide the python bindings and the sealert
 # end-up with: can't import report.GtkIO
@@ -45,6 +46,13 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 %description
 Libraries providing API for reporting different problems in applications
 to different bug targets like Bugzilla, ftp, trac, etc...
+
+%package filesystem
+Summary: Filesystem layout for libreport
+Group: Applications/File
+
+%description filesystem
+Filesystem layout for libreport
 
 %package devel
 Summary: Development libraries and headers for libreport
@@ -253,16 +261,19 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %doc README COPYING
-%dir %{_sysconfdir}/%{name}/
-%dir %{_sysconfdir}/%{name}/events.d/
-%dir %{_sysconfdir}/%{name}/events/
-%dir %{_sysconfdir}/%{name}/plugins/
 %config(noreplace) %{_sysconfdir}/%{name}/report_event.conf
 %{_libdir}/libreport.so.*
 %{_libdir}/libabrt_dbus.so.*
 %{_libdir}/libabrt_web.so.*
 %exclude %{_libdir}/libabrt_web.so
 %{_mandir}/man5/report_event.conf.5*
+
+%files filesystem
+%defattr(-,root,root,-)
+%dir %{_sysconfdir}/%{name}/
+%dir %{_sysconfdir}/%{name}/events.d/
+%dir %{_sysconfdir}/%{name}/events/
+%dir %{_sysconfdir}/%{name}/plugins/
 
 %files devel
 %defattr(-,root,root,-)
