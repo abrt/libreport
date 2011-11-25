@@ -159,7 +159,6 @@ Obsoletes: report-plugin-bugzilla < 0.23-1
 Provides: report-config-bugzilla-redhat-com = 0.23-1
 Obsoletes: report-config-bugzilla-redhat-com < 0.23-1
 
-%if 0%{?fedora}
 %package plugin-bodhi
 Summary: %{name}'s bodhi plugin
 BuildRequires: json-c-devel
@@ -170,7 +169,6 @@ BuildRequires: rpm-devel
 
 %description plugin-bodhi
 Search for a new updates in bodhi server
-%endif
 
 %description plugin-bugzilla
 Plugin to report bugs into the bugzilla.
@@ -338,20 +336,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man*/reporter-mailx.*
 %{_bindir}/reporter-mailx
 
-%if 0%{?fedora}
 %files plugin-bodhi
 %defattr(-,root,root,-)
 %{_bindir}/abrt-bodhi
-%config(noreplace) %{_sysconfdir}/libreport/events.d/bodhi_event.conf
-%{_sysconfdir}/libreport/events/analyze_LocalGDB_Bodhi.xml
 %{_mandir}/man1/abrt-bodhi.1.gz
-%else
-# exclude bodhi files for rhel build, otherwise rpm build fails
-%exclude %{_bindir}/abrt-bodhi
-%config(noreplace) %exclude %{_sysconfdir}/libreport/events.d/bodhi_event.conf
-%exclude %{_sysconfdir}/libreport/events/analyze_LocalGDB_Bodhi.xml
-%exclude %{_mandir}/man1/abrt-bodhi.1.gz
-%endif
 
 %files plugin-bugzilla
 %defattr(-,root,root,-)

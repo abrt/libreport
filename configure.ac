@@ -74,6 +74,9 @@ PKG_CHECK_MODULES([XMLRPC], [xmlrpc])
 PKG_CHECK_MODULES([XMLRPC_CLIENT], [xmlrpc_client])
 PKG_CHECK_MODULES([CURL], [libcurl])
 PKG_CHECK_MODULES([GNOME_KEYRING], [gnome-keyring-1])
+PKG_CHECK_MODULES([JSON_C], [json])
+PKG_CHECK_MODULES([RPM], [rpm])
+
 # Just PKG_CHECK_MODULES([PYTHON], [python]) works only with python2.7+
 # Below, if python is not found, we set up for python2.6 w/o checking:
 PKG_CHECK_MODULES([PYTHON], [python],,[
@@ -84,22 +87,6 @@ PKG_CHECK_MODULES([NEWT], [libnewt])
 PKG_CHECK_MODULES([PROXY], [libproxy-1.0], [
     AC_DEFINE([HAVE_PROXY], [1], [Use libproxy])
 ], [:])
-
-AS_IF([test "x$enable_bodhi" != "xno"], [
-  dnl Do the stuff needed for enabling the feature
-  AC_CHECK_LIB([json], [json_tokener_parse],
-		     [AM_CONDITIONAL(HAVE_BODHI, true)
-		     AC_DEFINE([HAVE_BODHI], [1], [have bodhi])
-		     PKG_CHECK_MODULES([JSON_C], [json])
-		     PKG_CHECK_MODULES([RPM], [rpm])],
-		     [AM_CONDITIONAL(HAVE_BODHI, false)
-		     AC_DEFINE([HAVE_BODHI], [0], [have bodhi])])
-  ],
-  [test "x$enable_bodhi" = "xno"], [
-     AM_CONDITIONAL(HAVE_BODHI, false)
-     AC_DEFINE([HAVE_BODHI], [0], [have bodhi])
-  ]
-)
 
 PKG_PROG_PKG_CONFIG
 

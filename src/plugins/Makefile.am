@@ -7,10 +7,8 @@ bin_PROGRAMS = \
     reporter-upload \
     reporter-mailx \
     reporter-print \
-    report
-if HAVE_BODHI
-bin_PROGRAMS += abrt-bodhi
-endif
+    report \
+    abrt-bodhi
 
 pluginsconfdir = $(PLUGINS_CONF_DIR)
 
@@ -31,9 +29,6 @@ dist_events_DATA = \
     report_RHTSupport.xml \
     report_Kerneloops.xml \
     report_Uploader.xml
-if HAVE_BODHI
-dist_events_DATA += analyze_LocalGDB_Bodhi.xml
-endif
 
 @INTLTOOL_XML_RULE@
 
@@ -45,9 +40,6 @@ dist_eventsconf_DATA = \
     bugzilla_event.conf \
     rhtsupport_event.conf \
     uploader_event.conf
-if HAVE_BODHI
-dist_eventsconf_DATA += bodhi_event.conf
-endif
 
 EXTRA_DIST = \
     report_Bugzilla.xml.in \
@@ -57,8 +49,7 @@ EXTRA_DIST = \
     report_Mailx.xml.in \
     report_RHTSupport.xml.in \
     report_Kerneloops.xml.in \
-    report_Uploader.xml.in \
-    analyze_LocalGDB_Bodhi.xml.in
+    report_Uploader.xml.in
 
 $(DESTDIR)/$(DEBUG_INFO_DIR):
 	$(mkdir_p) '$@'
@@ -208,7 +199,6 @@ report_CPPFLAGS = \
 report_LDADD = \
     ../lib/libreport.la
 
-if HAVE_BODHI
 abrt_bodhi_SOURCES = \
     abrt-bodhi.c
 abrt_bodhi_CPPFLAGS = \
@@ -225,6 +215,5 @@ abrt_bodhi_LDADD = \
     $(RPM_LIBS) \
     ../lib/libreport.la \
     ../lib/libabrt_web.la
-endif
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
