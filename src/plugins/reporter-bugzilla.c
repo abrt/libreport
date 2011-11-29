@@ -377,14 +377,16 @@ int main(int argc, char **argv)
         {
             const char *package = get_problem_item_content_or_NULL(problem_data, FILENAME_PACKAGE);
             const char *arch    = get_problem_item_content_or_NULL(problem_data, FILENAME_ARCHITECTURE);
+            const char *rating_str = get_problem_item_content_or_NULL(problem_data, FILENAME_RATING);
             char *full_dsc = xasprintf("Package: %s\n"
                                        "Architecture: %s\n"
                                        "OS Release: %s\n"
+                                       "rating: %s\n"
                                        "\n"
                                        "Comment\n"
                                        "-----\n"
                                        "%s\n",
-                                       package, arch, release, comment
+                                       package, arch, release, rating_str, comment
             );
             log(_("Adding new comment to bug %d"), bz->bi_id);
             /* unused code, enable it when gui/cli will be ready
@@ -394,6 +396,19 @@ int main(int argc, char **argv)
             */
             rhbz_add_comment(client, bz->bi_id, full_dsc, 0);
             free(full_dsc);
+
+            unsigned rating = xatou(rating_str);
+            if (bz->bi_best_bt_rating < rating)
+            {
+                char bug_id_str[sizeof(int)*3 + 2];
+                sprintf(bug_id_str, "%i", bz->bi_id);
+
+                const char *bt =  get_problem_item_content_or_NULL(problem_data,
+                                                                   FILENAME_BACKTRACE);
+                log(_("Attaching better backtrace"));
+                rhbz_attach_blob(client, FILENAME_BACKTRACE, bug_id_str, bt, strlen(bt),
+                                 RHBZ_NOMAIL_NOTIFY);
+            }
         }
     }
 

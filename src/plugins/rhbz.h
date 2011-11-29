@@ -48,6 +48,7 @@ enum {
 struct bug_info {
     int bi_id;
     int bi_dup_id;
+    unsigned bi_best_bt_rating;
 
     char *bi_status;
     char *bi_resolution;
