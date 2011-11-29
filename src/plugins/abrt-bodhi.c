@@ -408,7 +408,7 @@ int main(int argc, char **argv)
     GHashTable *update_hash_tbl = bodhi_query_list(query->buf, release);
     strbuf_free(query);
 
-    if (!g_hash_table_size(update_hash_tbl))
+    if (!update_hash_tbl || !g_hash_table_size(update_hash_tbl))
         return 0;
 
     GHashTableIter iter;
