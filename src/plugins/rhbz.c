@@ -116,17 +116,20 @@ void rhbz_login(struct abrt_xmlrpc *ax, const char* login, const char* passwd)
 xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax, const char *component,
                                   const char *product, const char *duphash)
 {
-    char *query = NULL;
-    if (!product)
-        query = xasprintf("ALL component:\"%s\" whiteboard:\"%s\"", component, duphash);
-    else
-        query = xasprintf("ALL component:\"%s\" whiteboard:\"%s\" product:\"%s\"",
-                          component, duphash, product);
+    struct strbuf *query = strbuf_new();
+    strbuf_append_strf(query, "ALL whiteboard:\"%s\"", duphash);
 
-    VERB3 log("search for '%s'", query);
+    if (product)
+        strbuf_append_strf(query, " product:\"%s\"", product);
+
+    if (component)
+        strbuf_append_strf(query, " component:\"%s\"", component);
+
+    VERB3 log("search for '%s'", query->buf);
     xmlrpc_value *ret = abrt_xmlrpc_call(ax, "Bug.search", "({s:s})",
-                                         "quicksearch", query);
-    free(query);
+                                         "quicksearch", query->buf);
+    strbuf_free(query);
+
     return ret;
 }
 

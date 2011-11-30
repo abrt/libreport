@@ -280,11 +280,22 @@ int main(int argc, char **argv)
     free(version);
 
     log(_("Checking for duplicates"));
-    xmlrpc_value *result;
-    if (strcmp(product, "Fedora") == 0)
-        result = rhbz_search_duphash(client, component, product, duphash);
-    else
-        result = rhbz_search_duphash(client, component, NULL, duphash);
+
+    /*
+      selinux guy's almost always move filled bug from component selinux-policy
+      to right component.
+
+      bugzilla client is looking for duplicate bug by sending xmlrpc query
+
+      "ALL whiteboard:<hash>  component:<name>  [product:<product>]"
+
+      so if bug is moved from component selinux-policy to other, then query
+      returns NULL and creates a new bug.
+    */
+    const char *product_substitute = (!strcmp(product, "Fedora")) ? product : NULL;
+    const char *component_substitute = (!strcmp(component, "selinux-policy")) ? NULL : component;
+    xmlrpc_value *result = rhbz_search_duphash(client, component_substitute,
+                                               product_substitute, duphash);
 
     xmlrpc_value *all_bugs = rhbz_get_member("bugs", result);
     xmlrpc_DECREF(result);
@@ -310,8 +321,8 @@ int main(int argc, char **argv)
             /* found something, but its a different product */
             free_bug_info(bz);
 
-            xmlrpc_value *result = rhbz_search_duphash(client, component,
-                                                       product, duphash);
+            xmlrpc_value *result = rhbz_search_duphash(client, component_substitute,
+                                                       product_substitute, duphash);
             xmlrpc_value *all_bugs = rhbz_get_member("bugs", result);
             xmlrpc_DECREF(result);
 
