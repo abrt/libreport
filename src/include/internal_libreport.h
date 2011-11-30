@@ -597,8 +597,8 @@ struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name
 bool make_dir_recursive(char *dir, mode_t dir_mode);
 
 // Text bigger than this usually is attached, not added inline
-// was 2k, 20kb is too much and back to 2kb:
-#define CD_TEXT_ATT_SIZE (2*1024)
+// was 2k, 20kb is too much and back to 2kb, 4kb must be the right value
+#define CD_TEXT_ATT_SIZE (4*1024)
 
 // Filenames in problem directory:
 // filled by a hook:
