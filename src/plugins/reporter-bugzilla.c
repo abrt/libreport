@@ -389,24 +389,22 @@ int main(int argc, char **argv)
             const char *package = get_problem_item_content_or_NULL(problem_data, FILENAME_PACKAGE);
             const char *arch    = get_problem_item_content_or_NULL(problem_data, FILENAME_ARCHITECTURE);
             const char *rating_str = get_problem_item_content_or_NULL(problem_data, FILENAME_RATING);
-            char *full_dsc = xasprintf("Package: %s\n"
-                                       "Architecture: %s\n"
-                                       "OS Release: %s\n"
-                                       "rating: %s\n"
-                                       "\n"
-                                       "Comment\n"
-                                       "-----\n"
-                                       "%s\n",
-                                       package, arch, release, rating_str, comment
-            );
+
+            struct strbuf *full_desc = strbuf_new();
+            strbuf_append_strf(full_desc, "%s\n\n", comment);
+            strbuf_append_strf(full_desc, "rating: %s\n", rating_str);
+            strbuf_append_strf(full_desc, "Package: %s\n", package);
+            strbuf_append_strf(full_desc, "Architecture: %s\n", arch);
+            strbuf_append_strf(full_desc, "OS Release: %s\n", release);
+
             log(_("Adding new comment to bug %d"), bz->bi_id);
             /* unused code, enable it when gui/cli will be ready
             int is_priv = is_private && string_to_bool(is_private);
             const char *is_private = get_problem_item_content_or_NULL(problem_data,
                                                                       "is_private");
             */
-            rhbz_add_comment(client, bz->bi_id, full_dsc, 0);
-            free(full_dsc);
+            rhbz_add_comment(client, bz->bi_id, full_desc->buf, 0);
+            strbuf_free(full_desc);
 
             unsigned rating = xatou(rating_str);
             if (bz->bi_best_bt_rating < rating)
