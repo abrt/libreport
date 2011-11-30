@@ -353,13 +353,13 @@ int main(int argc, char **argv)
         OPT_r = 1 << 2,
     };
 
-    const char *bugs = NULL, *release = NULL, *dump_dir = ".";
+    const char *bugs = NULL, *release = NULL, *dump_dir_path = ".";
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_STRING('b', "bugs", &bugs, "ID1[,ID2,...]" , _("List of bug ids")),
         OPT_OPTSTRING('r', "release", &release, "RELEASE", _("Specify a release")),
-        OPT__DUMP_DIR(&dump_dir),
+        OPT__DUMP_DIR(&dump_dir_path),
         OPT_END()
     };
 
@@ -386,7 +386,9 @@ int main(int argc, char **argv)
         }
         else
         {
-            problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir);
+            struct dump_dir *dd = dd_opendir(dump_dir_path, DD_OPEN_READONLY);
+            problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
+            dd_close(dd);
             if (!problem_data)
                 xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
@@ -420,7 +422,10 @@ int main(int argc, char **argv)
     {
         char *installed_pkg_nvr = rpm_get_nvr_by_pkg_name(name);
         if (installed_pkg_nvr && rpmvercmp(installed_pkg_nvr, b->nvr) > 0)
+        {
+            VERB2 log("Update %s is older than local version: %s, skipping", b->nvr, installed_pkg_nvr);
             continue;
+        }
 
         strbuf_append_strf(q, " %s", b->nvr);
     }
