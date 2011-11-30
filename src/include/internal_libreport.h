@@ -282,7 +282,7 @@ char* xstrndup(const char *s, int n);
 #define xpipe libreport_xpipe
 void xpipe(int filedes[2]);
 #define xdup libreport_xdup
-void xdup(int from);
+int xdup(int from);
 #define xdup2 libreport_xdup2
 void xdup2(int from, int to);
 #define xmove_fd libreport_xmove_fd
