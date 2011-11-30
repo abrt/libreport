@@ -171,16 +171,29 @@ struct strbuf *strbuf_prepend_str(struct strbuf *strbuf, const char *str)
     return strbuf;
 }
 
+struct strbuf *strbuf_append_strfv(struct strbuf *strbuf, const char *format, va_list p)
+{
+    char *string_ptr = xvasprintf(format, p);
+    strbuf_append_str(strbuf, string_ptr);
+    free(string_ptr);
+    return strbuf;
+}
+
 struct strbuf *strbuf_append_strf(struct strbuf *strbuf, const char *format, ...)
 {
     va_list p;
-    char *string_ptr;
 
     va_start(p, format);
-    string_ptr = xvasprintf(format, p);
+    strbuf_append_strfv(strbuf, format, p);
     va_end(p);
 
-    strbuf_append_str(strbuf, string_ptr);
+    return strbuf;
+}
+
+struct strbuf *strbuf_prepend_strfv(struct strbuf *strbuf, const char *format, va_list p)
+{
+    char *string_ptr = xvasprintf(format, p);
+    strbuf_prepend_str(strbuf, string_ptr);
     free(string_ptr);
     return strbuf;
 }
@@ -188,13 +201,10 @@ struct strbuf *strbuf_append_strf(struct strbuf *strbuf, const char *format, ...
 struct strbuf *strbuf_prepend_strf(struct strbuf *strbuf, const char *format, ...)
 {
     va_list p;
-    char *string_ptr;
 
     va_start(p, format);
-    string_ptr = xvasprintf(format, p);
+    strbuf_prepend_strfv(strbuf, format, p);
     va_end(p);
 
-    strbuf_prepend_str(strbuf, string_ptr);
-    free(string_ptr);
     return strbuf;
 }

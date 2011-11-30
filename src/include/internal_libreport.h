@@ -499,6 +499,14 @@ struct strbuf *strbuf_append_strf(struct strbuf *strbuf,
                                   const char *format, ...);
 
 /**
+ * Same as strbuf_append_strf except that va_list is passed instead of
+ * variable number of arguments.
+ */
+#define strbuf_append_strfv libreport_strbuf_append_strfv
+struct strbuf *strbuf_append_strfv(struct strbuf *strbuf,
+                                   const char *format, va_list p);
+
+/**
  * The current content of the string buffer is extended by inserting a
  * sequence of data formatted as the format argument specifies at the
  * buffer beginning.
@@ -506,6 +514,14 @@ struct strbuf *strbuf_append_strf(struct strbuf *strbuf,
 #define strbuf_prepend_strf libreport_strbuf_prepend_strf
 struct strbuf *strbuf_prepend_strf(struct strbuf *strbuf,
                                    const char *format, ...);
+
+/**
+ * Same as strbuf_prepend_strf except that va_list is passed instead of
+ * variable number of arguments.
+ */
+#define strbuf_prepend_strfv libreport_strbuf_prepend_strfv
+struct strbuf *strbuf_prepend_strfv(struct strbuf *strbuf,
+                                    const char *format, va_list p);
 
 
 /* TODO: rename to map_string_t */
