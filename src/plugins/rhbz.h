@@ -56,6 +56,7 @@ struct bug_info {
     char *bi_product;
 
     GList *bi_cc_list;
+    GList *bi_comments;
 };
 
 struct bug_info *new_bug_info();
@@ -93,6 +94,8 @@ int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *filename,
 
 int rhbz_attach_fd(struct abrt_xmlrpc *ax, const char *filename,
                     const char *bug_id, int fd, int flags);
+
+int is_comment_dup(GList *comments, const char *comment);
 
 GList *rhbz_bug_cc(xmlrpc_value *result_xml);
 

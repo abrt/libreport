@@ -397,17 +397,22 @@ int main(int argc, char **argv)
             strbuf_append_strf(full_desc, "Architecture: %s\n", arch);
             strbuf_append_strf(full_desc, "OS Release: %s\n", release);
 
-            log(_("Adding new comment to bug %d"), bz->bi_id);
             /* unused code, enable it when gui/cli will be ready
             int is_priv = is_private && string_to_bool(is_private);
             const char *is_private = get_problem_item_content_or_NULL(problem_data,
                                                                       "is_private");
             */
-            rhbz_add_comment(client, bz->bi_id, full_desc->buf, 0);
+
+            int allow_comment = is_comment_dup(bz->bi_comments, full_desc->buf);
+            if (!allow_comment)
+            {
+                log(_("Adding new comment to bug %d"), bz->bi_id);
+                rhbz_add_comment(client, bz->bi_id, full_desc->buf, 0);
+            }
             strbuf_free(full_desc);
 
             unsigned rating = xatou(rating_str);
-            if (bz->bi_best_bt_rating < rating)
+            if (!allow_comment && (bz->bi_best_bt_rating < rating))
             {
                 char bug_id_str[sizeof(int)*3 + 2];
                 sprintf(bug_id_str, "%i", bz->bi_id);

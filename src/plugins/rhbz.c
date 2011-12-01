@@ -45,17 +45,17 @@ void free_bug_info(struct bug_info *bi)
     free(bi);
 }
 
-static unsigned find_best_bt_rating_in_comments(xmlrpc_value *result_xml)
+static GList *parse_comments(xmlrpc_value *result_xml)
 {
+    GList *comments = NULL;
     xmlrpc_value *comments_memb = rhbz_get_member("longdescs", result_xml);
     if (!comments_memb)
-        return 0;
+        return NULL;
 
     int comments_memb_size = rhbz_array_size(comments_memb);
 
     xmlrpc_env env;
     xmlrpc_env_init(&env);
-    int best_bt_rating = 0;
     for (int i = 0; i < comments_memb_size; ++i)
     {
         xmlrpc_value* item = NULL;
@@ -65,8 +65,55 @@ static unsigned find_best_bt_rating_in_comments(xmlrpc_value *result_xml)
 
         char *comment_body = rhbz_bug_read_item("body", item, RHBZ_READ_STR);
         /* attachments are sometimes without comments -- skip them */
-        if (!comment_body)
-            continue;
+        if (comment_body)
+            comments = g_list_prepend(comments, comment_body);
+    }
+
+    return g_list_reverse(comments);
+}
+
+static char *trim_all_whitespace(const char *str)
+{
+    char *trim = xzalloc(sizeof(char) * strlen(str) + 1);
+    int i = 0;
+    while (*str)
+    {
+        if (!isspace(*str))
+            trim[i++] = *str;
+        str++;
+    }
+
+    return trim;
+}
+
+int is_comment_dup(GList *comments, const char *comment)
+{
+    for (GList *l = comments; l; l = l->next)
+    {
+        char *comment_body = (char *) l->data;
+        char *trim_comment_body = trim_all_whitespace(comment_body);
+        char *trim_comment = trim_all_whitespace(comment);
+        if (!strcmp(trim_comment_body, trim_comment))
+        {
+            free(trim_comment_body);
+            free(trim_comment);
+            return 1;
+        }
+    }
+
+    return 0;;
+}
+
+static unsigned find_best_bt_rating_in_comments(GList *comments)
+{
+    if (!comments)
+        return 0;
+
+    int best_bt_rating = 0;
+
+    for (GList *l = comments; l; l = l->next)
+    {
+        char *comment_body = (char *) l->data;
 
         char *start_rating_line = strstr(comment_body, "rating: ");
         if (!start_rating_line)
@@ -324,7 +371,8 @@ struct bug_info *rhbz_bug_info(struct abrt_xmlrpc *ax, int bug_id)
 
     bz->bi_cc_list = rhbz_bug_cc(xml_bug_response);
 
-    bz->bi_best_bt_rating = find_best_bt_rating_in_comments(xml_bug_response);
+    bz->bi_comments = parse_comments(xml_bug_response);
+    bz->bi_best_bt_rating = find_best_bt_rating_in_comments(bz->bi_comments);
 
     xmlrpc_DECREF(xml_bug_response);
 
