@@ -110,7 +110,7 @@
 }
 */
 
-static const char *const bodhi_url = "https://admin.fedoraproject.org/updates/%s";
+static const char *bodhi_url = "https://admin.fedoraproject.org/updates/";
 
 struct bodhi {
     char *nvr;
@@ -288,10 +288,10 @@ static GHashTable *bodhi_parse_json(json_object *json, const char *release)
 
 static GHashTable *bodhi_query_list(const char *query, const char *release)
 {
-    char *bodhi_url_bugs = xasprintf(bodhi_url, "list");
+    char *bodhi_url_bugs = xasprintf("%s/list", bodhi_url);
 
     abrt_post_state_t *post_state = new_abrt_post_state(
-        ABRT_POST_WANT_BODY|ABRT_POST_WANT_SSL_VERIFY);
+        ABRT_POST_WANT_BODY | ABRT_POST_WANT_SSL_VERIFY | ABRT_POST_WANT_ERROR_MSG);
 
     const char *headers[] = {
         "Accept: application/json",
@@ -301,6 +301,13 @@ static GHashTable *bodhi_query_list(const char *query, const char *release)
     log(_("Search for a new updates"));
     abrt_post_string(post_state, bodhi_url_bugs, "application/x-www-form-urlencoded",
                      headers, query);
+
+    if (post_state->http_resp_code != 200)
+    {
+        char *errmsg = post_state->curl_error_msg;
+        if (errmsg && errmsg[0])
+            error_msg_and_die("%s '%s'", errmsg, bodhi_url_bugs);
+    }
     free(bodhi_url_bugs);
 
 //    log("%s", post_state->body);
@@ -357,9 +364,11 @@ int main(int argc, char **argv)
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_STRING('b', "bugs", &bugs, "ID1[,ID2,...]" , _("List of bug ids")),
-        OPT_OPTSTRING('r', "release", &release, "RELEASE", _("Specify a release")),
         OPT__DUMP_DIR(&dump_dir_path),
+        OPT_GROUP(""),
+        OPT_STRING('b', "bugs", &bugs, "ID1[,ID2,...]" , _("List of bug ids")),
+        OPT_STRING('u', "url", &bodhi_url, "URL", _("Specify a bodhi server url")),
+        OPT_OPTSTRING('r', "release", &release, "RELEASE", _("Specify a release")),
         OPT_END()
     };
 
@@ -387,6 +396,9 @@ int main(int argc, char **argv)
         else
         {
             struct dump_dir *dd = dd_opendir(dump_dir_path, DD_OPEN_READONLY);
+            if (!dd)
+                xfunc_die();
+
             problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
             dd_close(dd);
             if (!problem_data)
