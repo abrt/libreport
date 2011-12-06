@@ -298,7 +298,7 @@ static GHashTable *bodhi_query_list(const char *query, const char *release)
         NULL
     };
 
-    log(_("Search for a new updates"));
+    log(_("Searching for updates"));
     abrt_post_string(post_state, bodhi_url_bugs, "application/x-www-form-urlencoded",
                      headers, query);
     free(bodhi_url_bugs);
@@ -366,7 +366,7 @@ int main(int argc, char **argv)
     const char *program_usage_string = _(
         "& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
         "\n"
-        "Search for a new updates in bodhi server"
+        "Search for updates on bodhi server"
     );
 
     unsigned opts =  parse_opts(argc, argv, program_options, program_usage_string);
