@@ -265,7 +265,7 @@ int main(int argc, char **argv)
     const char *duphash   = get_problem_item_content_or_NULL(problem_data, FILENAME_DUPHASH);
 //COMPAT, remove after 2.1 release
     if (!duphash) duphash = get_problem_item_content_or_die(problem_data, "global_uuid");
-    if (!release) /* if not overridden... */
+    if (!release || !*release) /* if not overridden or empty... */
     {
         release           = get_problem_item_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
 //COMPAT, remove in abrt-2.1
