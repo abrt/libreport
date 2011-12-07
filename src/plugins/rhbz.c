@@ -42,14 +42,109 @@ void free_bug_info(struct bug_info *bi)
 
     list_free_with_free(bi->bi_cc_list);
 
-    bi->bi_status = NULL;
-    bi->bi_resolution = NULL;
-    bi->bi_reporter = NULL;
-    bi->bi_product = NULL;
-
-    bi->bi_cc_list = NULL;
-
     free(bi);
+}
+
+static GList *parse_comments(xmlrpc_value *result_xml)
+{
+    GList *comments = NULL;
+    xmlrpc_value *comments_memb = rhbz_get_member("longdescs", result_xml);
+    if (!comments_memb)
+        return NULL;
+
+    int comments_memb_size = rhbz_array_size(comments_memb);
+
+    xmlrpc_env env;
+    xmlrpc_env_init(&env);
+    for (int i = 0; i < comments_memb_size; ++i)
+    {
+        xmlrpc_value* item = NULL;
+        xmlrpc_array_read_item(&env, comments_memb, i, &item);
+        if (env.fault_occurred)
+            abrt_xmlrpc_die(&env);
+
+        char *comment_body = rhbz_bug_read_item("body", item, RHBZ_READ_STR);
+        /* attachments are sometimes without comments -- skip them */
+        if (comment_body)
+            comments = g_list_prepend(comments, comment_body);
+    }
+
+    return g_list_reverse(comments);
+}
+
+static char *trim_all_whitespace(const char *str)
+{
+    char *trim = xzalloc(sizeof(char) * strlen(str) + 1);
+    int i = 0;
+    while (*str)
+    {
+        if (!isspace(*str))
+            trim[i++] = *str;
+        str++;
+    }
+
+    return trim;
+}
+
+int is_comment_dup(GList *comments, const char *comment)
+{
+    for (GList *l = comments; l; l = l->next)
+    {
+        char *comment_body = (char *) l->data;
+        char *trim_comment_body = trim_all_whitespace(comment_body);
+        char *trim_comment = trim_all_whitespace(comment);
+        if (!strcmp(trim_comment_body, trim_comment))
+        {
+            free(trim_comment_body);
+            free(trim_comment);
+            return 1;
+        }
+    }
+
+    return 0;;
+}
+
+static unsigned find_best_bt_rating_in_comments(GList *comments)
+{
+    if (!comments)
+        return 0;
+
+    int best_bt_rating = 0;
+
+    for (GList *l = comments; l; l = l->next)
+    {
+        char *comment_body = (char *) l->data;
+
+        char *start_rating_line = strstr(comment_body, "rating: ");
+        if (!start_rating_line)
+        {
+            VERB3 error_msg("comment does not contain rating");
+            continue;
+        }
+
+        start_rating_line += strlen("rating: ");
+        char *end_rating_line = strchr(start_rating_line, '\n');
+        if (!end_rating_line)
+            VERB3 error_msg("broken comment body");
+
+        char *rating_srt = xstrndup(start_rating_line, end_rating_line - start_rating_line);
+        int old_errno = errno;
+        errno = 0;
+        char *e;
+        long rating = strtoul(rating_srt, &e, 10);
+        if (errno || rating_srt == e || *e != '\0' || rating > UINT_MAX)
+        {
+            /* error / no digits / illegal trailing chars */
+            errno = old_errno;
+            continue;
+        }
+        errno = old_errno; /* Ok.  So restore errno. */
+
+        if (rating > best_bt_rating)
+            best_bt_rating = rating;
+    }
+
+    return best_bt_rating;
 }
 
 void rhbz_login(struct abrt_xmlrpc *ax, const char* login, const char* passwd)
@@ -68,17 +163,20 @@ void rhbz_login(struct abrt_xmlrpc *ax, const char* login, const char* passwd)
 xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax, const char *component,
                                   const char *product, const char *duphash)
 {
-    char *query = NULL;
-    if (!product)
-        query = xasprintf("ALL component:\"%s\" whiteboard:\"%s\"", component, duphash);
-    else
-        query = xasprintf("ALL component:\"%s\" whiteboard:\"%s\" product:\"%s\"",
-                          component, duphash, product);
+    struct strbuf *query = strbuf_new();
+    strbuf_append_strf(query, "ALL whiteboard:\"%s\"", duphash);
 
-    VERB3 log("search for '%s'", query);
+    if (product)
+        strbuf_append_strf(query, " product:\"%s\"", product);
+
+    if (component)
+        strbuf_append_strf(query, " component:\"%s\"", component);
+
+    VERB3 log("search for '%s'", query->buf);
     xmlrpc_value *ret = abrt_xmlrpc_call(ax, "Bug.search", "({s:s})",
-                                         "quicksearch", query);
-    free(query);
+                                         "quicksearch", query->buf);
+    strbuf_free(query);
+
     return ret;
 }
 
@@ -272,6 +370,9 @@ struct bug_info *rhbz_bug_info(struct abrt_xmlrpc *ax, int bug_id)
     free(ret);
 
     bz->bi_cc_list = rhbz_bug_cc(xml_bug_response);
+
+    bz->bi_comments = parse_comments(xml_bug_response);
+    bz->bi_best_bt_rating = find_best_bt_rating_in_comments(bz->bi_comments);
 
     xmlrpc_DECREF(xml_bug_response);
 

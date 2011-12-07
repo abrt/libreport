@@ -715,7 +715,7 @@ struct options {
 #define OPT_LIST(     s, l, v, a, h) { OPTION_LIST     , (s), (l), (v), (a)  , (h) }
 
 #define OPT__VERBOSE(v)     OPT_BOOL('v', "verbose", (v), _("Be verbose"))
-#define OPT__DUMP_DIR(v)    OPT_STRING('d', "dump-dir", (v), "DIR", _("Dump directory"))
+#define OPT__DUMP_DIR(v)    OPT_STRING('d', "problem-dir", (v), "DIR", _("Problem directory"))
 
 #define parse_opts libreport_parse_opts
 unsigned parse_opts(int argc, char **argv, const struct options *opt,

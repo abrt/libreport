@@ -265,7 +265,7 @@ int main(int argc, char **argv)
     const char *duphash   = get_problem_item_content_or_NULL(problem_data, FILENAME_DUPHASH);
 //COMPAT, remove after 2.1 release
     if (!duphash) duphash = get_problem_item_content_or_die(problem_data, "global_uuid");
-    if (!release) /* if not overridden... */
+    if (!release || !*release) /* if not overridden or empty... */
     {
         release           = get_problem_item_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
 //COMPAT, remove in abrt-2.1
@@ -280,11 +280,22 @@ int main(int argc, char **argv)
     free(version);
 
     log(_("Checking for duplicates"));
-    xmlrpc_value *result;
-    if (strcmp(product, "Fedora") == 0)
-        result = rhbz_search_duphash(client, component, product, duphash);
-    else
-        result = rhbz_search_duphash(client, component, NULL, duphash);
+
+    /*
+      selinux guy's almost always move filled bug from component selinux-policy
+      to right component.
+
+      bugzilla client is looking for duplicate bug by sending xmlrpc query
+
+      "ALL whiteboard:<hash>  component:<name>  [product:<product>]"
+
+      so if bug is moved from component selinux-policy to other, then query
+      returns NULL and creates a new bug.
+    */
+    const char *product_substitute = (!strcmp(product, "Fedora")) ? product : NULL;
+    const char *component_substitute = (!strcmp(component, "selinux-policy")) ? NULL : component;
+    xmlrpc_value *result = rhbz_search_duphash(client, component_substitute,
+                                               product_substitute, duphash);
 
     xmlrpc_value *all_bugs = rhbz_get_member("bugs", result);
     xmlrpc_DECREF(result);
@@ -310,8 +321,8 @@ int main(int argc, char **argv)
             /* found something, but its a different product */
             free_bug_info(bz);
 
-            xmlrpc_value *result = rhbz_search_duphash(client, component,
-                                                       product, duphash);
+            xmlrpc_value *result = rhbz_search_duphash(client, component_substitute,
+                                                       product_substitute, duphash);
             xmlrpc_value *all_bugs = rhbz_get_member("bugs", result);
             xmlrpc_DECREF(result);
 
@@ -377,23 +388,41 @@ int main(int argc, char **argv)
         {
             const char *package = get_problem_item_content_or_NULL(problem_data, FILENAME_PACKAGE);
             const char *arch    = get_problem_item_content_or_NULL(problem_data, FILENAME_ARCHITECTURE);
-            char *full_dsc = xasprintf("Package: %s\n"
-                                       "Architecture: %s\n"
-                                       "OS Release: %s\n"
-                                       "\n"
-                                       "Comment\n"
-                                       "-----\n"
-                                       "%s\n",
-                                       package, arch, release, comment
-            );
-            log(_("Adding new comment to bug %d"), bz->bi_id);
+            const char *rating_str = get_problem_item_content_or_NULL(problem_data, FILENAME_RATING);
+
+            struct strbuf *full_desc = strbuf_new();
+            strbuf_append_strf(full_desc, "%s\n\n", comment);
+            strbuf_append_strf(full_desc, "rating: %s\n", rating_str);
+            strbuf_append_strf(full_desc, "Package: %s\n", package);
+            strbuf_append_strf(full_desc, "Architecture: %s\n", arch);
+            strbuf_append_strf(full_desc, "OS Release: %s\n", release);
+
             /* unused code, enable it when gui/cli will be ready
             int is_priv = is_private && string_to_bool(is_private);
             const char *is_private = get_problem_item_content_or_NULL(problem_data,
                                                                       "is_private");
             */
-            rhbz_add_comment(client, bz->bi_id, full_dsc, 0);
-            free(full_dsc);
+
+            int allow_comment = is_comment_dup(bz->bi_comments, full_desc->buf);
+            if (!allow_comment)
+            {
+                log(_("Adding new comment to bug %d"), bz->bi_id);
+                rhbz_add_comment(client, bz->bi_id, full_desc->buf, 0);
+            }
+            strbuf_free(full_desc);
+
+            unsigned rating = xatou(rating_str);
+            if (!allow_comment && (bz->bi_best_bt_rating < rating))
+            {
+                char bug_id_str[sizeof(int)*3 + 2];
+                sprintf(bug_id_str, "%i", bz->bi_id);
+
+                const char *bt =  get_problem_item_content_or_NULL(problem_data,
+                                                                   FILENAME_BACKTRACE);
+                log(_("Attaching better backtrace"));
+                rhbz_attach_blob(client, FILENAME_BACKTRACE, bug_id_str, bt, strlen(bt),
+                                 RHBZ_NOMAIL_NOTIFY);
+            }
         }
     }
 
