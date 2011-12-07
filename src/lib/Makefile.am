@@ -47,7 +47,8 @@ libreport_la_SOURCES = \
     report.c \
     make_dir_recursive.c \
     user_settings.c \
-    client.c
+    client.c \
+    utf8.c
 libreport_la_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror \
     -I$(srcdir)/../include \

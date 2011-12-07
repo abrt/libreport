@@ -353,6 +353,14 @@ void load_problem_data_from_dump_dir(problem_data_t *problem_data, struct dump_d
         if (nl && nl[1] == '\0')
             *nl = '\0';
 
+        /* Sanitize possibly corrupted utf8 */
+        char *sanitized = sanitize_utf8(content);
+        if (sanitized)
+        {
+            free(content);
+            content = sanitized;
+        }
+
         int flags = 0;
 
         if (editable)

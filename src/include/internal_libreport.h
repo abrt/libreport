@@ -156,6 +156,10 @@ ssize_t full_write_str(int fd, const char *buf);
 #define encode_base64 libreport_encode_base64
 char *encode_base64(const void *src, int length);
 
+/* Returns NULL if the string needs no sanitizing. */
+#define sanitize_utf8 libreport_sanitize_utf8
+char *sanitize_utf8(const char *src);
+
 #define SHA1_RESULT_LEN (5 * 4)
 typedef struct sha1_ctx_t {
         uint8_t wbuffer[64]; /* always correctly aligned for uint64_t */
