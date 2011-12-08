@@ -110,7 +110,7 @@
 }
 */
 
-static const char *bodhi_url = "https://admin.fedoraproject.org/updates/";
+static const char *bodhi_url = "https://admin.fedoraproject.org/updates";
 
 struct bodhi {
     char *nvr;
@@ -356,8 +356,11 @@ int main(int argc, char **argv)
     abrt_init(argv);
     enum {
         OPT_v = 1 << 0,
-        OPT_b = 1 << 1,
-        OPT_r = 1 << 2,
+        OPT_d = 1 << 1,
+        OPT_g = 1 << 2,
+        OPT_b = 1 << 3,
+        OPT_u = 1 << 4,
+        OPT_r = 1 << 5,
     };
 
     const char *bugs = NULL, *release = NULL, *dump_dir_path = ".";
