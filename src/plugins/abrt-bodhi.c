@@ -421,7 +421,11 @@ int main(int argc, char **argv)
     }
 
     if (argv[optind])
-        query = strbuf_append_strf(query, "package=%s&", argv[optind]);
+    {
+        char *escaped = g_uri_escape_string(argv[optind], NULL, 0);
+        query = strbuf_append_strf(query, "package=%s&", escaped);
+        free(escaped);
+    }
 
     if (query->buf[query->len - 1] == '&')
         query->buf[query->len - 1] = '\0';
