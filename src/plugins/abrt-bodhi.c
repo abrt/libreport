@@ -348,6 +348,10 @@ error:
     rpmdbFreeIterator(iter);
     rpmtsFree(ts);
 
+    rpmFreeRpmrc();
+    rpmFreeCrypto();
+    rpmFreeMacros(NULL);
+
     return nvr;
 }
 
