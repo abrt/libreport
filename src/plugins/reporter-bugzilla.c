@@ -394,7 +394,15 @@ int main(int argc, char **argv)
             strbuf_append_strf(full_desc, "%s\n\n", comment);
             strbuf_append_strf(full_desc, "rating: %s\n", rating_str);
             strbuf_append_strf(full_desc, "Package: %s\n", package);
-            strbuf_append_strf(full_desc, "Architecture: %s\n", arch);
+            /* attach the architecture only if it's different from the initial report */
+            if ((strcmp(bz->bi_platform, "All") != 0) &&
+                (strcmp(bz->bi_platform, "Unspecified") != 0) &&
+                (strcmp(bz->bi_platform, arch) !=0))
+                strbuf_append_strf(full_desc, "Architecture: %s\n", arch);
+            else
+            {
+                VERB3 log("not adding the arch: %s because rep_plat is %s", arch, bz->bi_platform);
+            }
             strbuf_append_strf(full_desc, "OS Release: %s\n", release);
 
             /* unused code, enable it when gui/cli will be ready

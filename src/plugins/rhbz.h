@@ -54,6 +54,7 @@ struct bug_info {
     char *bi_resolution;
     char *bi_reporter;
     char *bi_product;
+    char *bi_platform;
 
     GList *bi_cc_list;
     GList *bi_comments;

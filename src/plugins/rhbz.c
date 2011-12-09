@@ -352,6 +352,8 @@ struct bug_info *rhbz_bug_info(struct abrt_xmlrpc *ax, int bug_id)
                                        RHBZ_MANDATORY_MEMB | RHBZ_READ_STR);
     bz->bi_resolution = rhbz_bug_read_item("resolution", xml_bug_response,
                                            RHBZ_READ_STR);
+    bz->bi_platform = rhbz_bug_read_item("rep_platform", xml_bug_response,
+                                           RHBZ_READ_STR);
 
     if (strcmp(bz->bi_status, "CLOSED") == 0 && !bz->bi_resolution)
         error_msg_and_die(_("Bug %i is CLOSED, but it has no RESOLUTION"), bz->bi_id);
