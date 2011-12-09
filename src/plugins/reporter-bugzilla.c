@@ -342,7 +342,7 @@ int main(int argc, char **argv)
         log(_("Creating a new bug"));
         bug_id = rhbz_new_bug(client, problem_data, release, bug_id);
 
-        log("Adding attachments to bug %i", bug_id);
+        log(_("Adding attachments to bug %i"), bug_id);
         char bug_id_str[sizeof(int)*3 + 2];
         sprintf(bug_id_str, "%i", bug_id);
 
@@ -430,7 +430,7 @@ int main(int argc, char **argv)
     log(_("Logging out"));
     rhbz_logout(client);
 
-    log("Status: %s%s%s %s/show_bug.cgi?id=%u",
+    log(_("Status: %s%s%s %s/show_bug.cgi?id=%u"),
                 bz->bi_status,
                 bz->bi_resolution ? " " : "",
                 bz->bi_resolution ? bz->bi_resolution : "",
