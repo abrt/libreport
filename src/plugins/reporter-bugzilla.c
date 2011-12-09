@@ -409,6 +409,10 @@ int main(int argc, char **argv)
                 log(_("Adding new comment to bug %d"), bz->bi_id);
                 rhbz_add_comment(client, bz->bi_id, full_desc->buf, 0);
             }
+            else
+            {
+                log(_("Found the same comment in the bug history, not adding a new one"));
+            }
             strbuf_free(full_desc);
 
             unsigned rating = xatou(rating_str);
