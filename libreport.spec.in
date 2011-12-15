@@ -67,8 +67,8 @@ Summary: Python bindings for report-libs
 # Is group correct here? -
 Group: System Environment/Libraries
 Requires: libreport = %{version}-%{release}
-Provides: report = 0.23-1
-Obsoletes: report < 0.23-1
+Provides: report = 0:0.23-1
+Obsoletes: report < 0:0.23-1
 # in report the rhtsupport is in the main package, so we need to install it too
 %if 0%{?rhel} >= 6
 Requires: libreport-plugin-rhtsupport
@@ -90,8 +90,8 @@ with problem dump reports
 Summary: %{name}'s newt interface
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
-Provides: report-newt = 0.23-1
-Obsoletes: report-newt < 0.23-1
+Provides: report-newt = 0:0.23-1
+Obsoletes: report-newt < 0:0.23-1
 
 %description newt
 This package contains a simple newt application for reporting
@@ -101,8 +101,8 @@ bugs
 Summary: GTK front-end for libreport
 Group: User Interface/Desktops
 Requires: libreport = %{version}-%{release}
-Provides: report-gtk = 0.23-1
-Obsoletes: report-gtk < 0.23-1
+Provides: report-gtk = 0:0.23-1
+Obsoletes: report-gtk < 0:0.23-1
 
 %description gtk
 Applications for reporting bugs using libreport backend
@@ -130,10 +130,10 @@ Summary: %{name}'s logger reporter plugin
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Obsoletes: abrt-plugin-logger < 2.0.4
-Provides: report-plugin-localsave = 0.23-1
-Obsoletes: report-plugin-localsave < 0.23-1
-Provides: report-config-localsave = 0.23-1
-Obsoletes: report-config-localsave < 0.23-1
+Provides: report-plugin-localsave = 0:0.23-1
+Obsoletes: report-plugin-localsave < 0:0.23-1
+Provides: report-config-localsave = 0:0.23-1
+Obsoletes: report-config-localsave < 0:0.23-1
 
 %description plugin-logger
 The simple reporter plugin which writes a report to a specified file.
@@ -154,10 +154,10 @@ Summary: %{name}'s bugzilla plugin
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Obsoletes: abrt-plugin-bugzilla < 2.0.4
-Provides: report-plugin-bugzilla = 0.23-1
-Obsoletes: report-plugin-bugzilla < 0.23-1
-Provides: report-config-bugzilla-redhat-com = 0.23-1
-Obsoletes: report-config-bugzilla-redhat-com < 0.23-1
+Provides: report-plugin-bugzilla = 0:0.23-1
+Obsoletes: report-plugin-bugzilla < 0:0.23-1
+Provides: report-config-bugzilla-redhat-com = 0:0.23-1
+Obsoletes: report-config-bugzilla-redhat-com < 0:0.23-1
 
 %package plugin-bodhi
 Summary: %{name}'s bodhi plugin
@@ -196,14 +196,14 @@ Summary: %{name}'s reportuploader plugin
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Obsoletes: abrt-plugin-reportuploader < 2.0.4
-Provides: report-plugin-ftp = 0.23-1
-Obsoletes: report-plugin-ftp < 0.23-1
-Provides: report-config-ftp = 0.23-1
-Obsoletes: report-config-ftp < 0.23-1
-Provides: report-plugin-scp = 0.23-1
-Obsoletes: report-plugin-scp < 0.23-1
-Provides: report-config-scp = 0.23-1
-Obsoletes: report-config-scp < 0.23-1
+Provides: report-plugin-ftp = 0:0.23-1
+Obsoletes: report-plugin-ftp < 0:0.23-1
+Provides: report-config-ftp = 0:0.23-1
+Obsoletes: report-config-ftp < 0:0.23-1
+Provides: report-plugin-scp = 0:0.23-1
+Obsoletes: report-plugin-scp < 0:0.23-1
+Provides: report-config-scp = 0:0.23-1
+Obsoletes: report-config-scp < 0:0.23-1
 
 %description plugin-reportuploader
 Plugin to report bugs into anonymous FTP site associated with ticketing system.
