@@ -392,7 +392,10 @@ int main(int argc, char **argv)
 
             struct strbuf *full_desc = strbuf_new();
             strbuf_append_strf(full_desc, "%s\n\n", comment);
-            strbuf_append_strf(full_desc, "rating: %s\n", rating_str);
+
+            /* python doesn't have rating file */
+            if (rating_str)
+                strbuf_append_strf(full_desc, "%s: %s\n", FILENAME_RATING, rating_str);
             strbuf_append_strf(full_desc, "Package: %s\n", package);
             /* attach the architecture only if it's different from the initial report */
             if ((strcmp(bz->bi_platform, "All") != 0) &&
@@ -423,7 +426,10 @@ int main(int argc, char **argv)
             }
             strbuf_free(full_desc);
 
-            unsigned rating = xatou(rating_str);
+            unsigned rating = 0;
+            /* python doesn't have rating file */
+            if (rating_str)
+                rating = xatou(rating_str);
             if (!allow_comment && (bz->bi_best_bt_rating < rating))
             {
                 char bug_id_str[sizeof(int)*3 + 2];

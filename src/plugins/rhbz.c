@@ -115,7 +115,7 @@ static unsigned find_best_bt_rating_in_comments(GList *comments)
     {
         char *comment_body = (char *) l->data;
 
-        char *start_rating_line = strstr(comment_body, "rating: ");
+        char *start_rating_line = strstr(comment_body, FILENAME_RATING": ");
         if (!start_rating_line)
         {
             VERB3 error_msg("comment does not contain rating");
