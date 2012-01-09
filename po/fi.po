@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-29 13:55+0200\n"
+"POT-Creation-Date: 2012-01-09 15:49+0100\n"
 "PO-Revision-Date: 2011-09-22 11:08+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Finnish (http://www.transifex.net/projects/p/fedora/team/"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: ../src/cli/cli.c:48
+#: ../src/cli/cli.c:56
 msgid ""
 "& [-vsp] -L[PREFIX] [DUMP_DIR]\n"
 "   or: & [-vsp] -e EVENT DUMP_DIR\n"
@@ -30,47 +30,47 @@ msgid ""
 msgstr ""
 
 #. short_name long_name  value    parameter_name  help
-#: ../src/cli/cli.c:73
+#: ../src/cli/cli.c:81
 msgid "List possible events [which start with PREFIX]"
 msgstr ""
 
-#: ../src/cli/cli.c:74
+#: ../src/cli/cli.c:82
 msgid "Run EVENT on DUMP_DIR"
 msgstr ""
 
-#: ../src/cli/cli.c:75
+#: ../src/cli/cli.c:83
 msgid "Run analyze event(s) on DUMP_DIR"
 msgstr ""
 
-#: ../src/cli/cli.c:76
+#: ../src/cli/cli.c:84
 msgid "Run collect event(s) on DUMP_DIR"
 msgstr ""
 
-#: ../src/cli/cli.c:77
+#: ../src/cli/cli.c:85
 msgid "Analyze, collect and report problem data in DUMP_DIR"
 msgstr ""
 
-#: ../src/cli/cli.c:78
+#: ../src/cli/cli.c:86 ../src/report-newt/report-newt.c:395
 msgid "Display version and exit"
 msgstr "Näytä versio ja lopeta"
 
-#: ../src/cli/cli.c:79
+#: ../src/cli/cli.c:87
 msgid "Remove DUMP_DIR after reporting"
 msgstr ""
 
-#: ../src/cli/cli.c:80
+#: ../src/cli/cli.c:88
 msgid "Noninteractive: don't ask questions, assume 'yes'"
 msgstr ""
 
-#: ../src/cli/cli.c:81
+#: ../src/cli/cli.c:89
 msgid "With -r: do not run analyzers, run only reporters"
 msgstr ""
 
-#: ../src/cli/cli.c:83
+#: ../src/cli/cli.c:91
 msgid "Log to syslog"
 msgstr "Kirjoita lokia syslogiin"
 
-#: ../src/cli/cli.c:84 ../src/gui-wizard-gtk/main.c:122
+#: ../src/cli/cli.c:92 ../src/gui-wizard-gtk/main.c:128
 msgid "Add program names to log"
 msgstr "Lisää ohjelmanimet lokiin"
 
@@ -151,7 +151,7 @@ msgstr ""
 "Raportissa ei havaittu muutoksia"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1370
+#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1582
 #: ../src/lib/client.c:51 ../src/lib/run_event.c:476
 msgid "y"
 msgstr "k"
@@ -196,28 +196,33 @@ msgstr "Mitä muita tietoja haluat kerätä?"
 msgid "Select collector(s): "
 msgstr ""
 
-#: ../src/cli/cli-report.c:778
+#: ../src/cli/cli-report.c:765 ../src/gui-wizard-gtk/wizard.c:1234
+#: ../src/report-newt/report-newt.c:334
+msgid "(no description)"
+msgstr "(ei kuvausta)"
+
+#: ../src/cli/cli-report.c:798
 #, c-format
 msgid "There were %d errors while collecting additional data\n"
 msgstr ""
 
-#: ../src/cli/cli-report.c:837 ../src/gui-wizard-gtk/wizard.c:1784
+#: ../src/cli/cli-report.c:857 ../src/gui-wizard-gtk/wizard.c:2045
 msgid "Reporting..."
 msgstr "Raportoidaan..."
 
-#: ../src/cli/cli-report.c:852 ../src/report-newt/report-newt.c:55
+#: ../src/cli/cli-report.c:872 ../src/report-newt/report-newt.c:55
 msgid "How would you like to report the problem?"
 msgstr "Miten haluat raportoida ongelman?"
 
-#: ../src/cli/cli-report.c:862
+#: ../src/cli/cli-report.c:882
 msgid "Select reporter(s): "
 msgstr "Valitse raportoija(t):"
 
-#: ../src/cli/cli-report.c:878
+#: ../src/cli/cli-report.c:898
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Raportointi on poistettu käytöstä, koska pinolistaus on hyödytön"
 
-#: ../src/cli/cli-report.c:882
+#: ../src/cli/cli-report.c:902
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -226,48 +231,56 @@ msgstr ""
 "Yritä asentaa debuginfo manuaalisesti käyttäen komentoa ”debuginfo-install "
 "%s” ja kokeile sitten uudelleen\n"
 
-#: ../src/cli/cli-report.c:904
+#: ../src/cli/cli-report.c:924
 #, c-format
 msgid "Problem reported via %d report events (%d errors)\n"
 msgstr ""
 
-#: ../src/gtk-helpers/event_config_dialog.c:122
+#: ../src/gtk-helpers/event_config_dialog.c:131
 msgid "Show password"
 msgstr "Näytä salasana"
 
-#: ../src/gtk-helpers/event_config_dialog.c:380
+#: ../src/gtk-helpers/event_config_dialog.c:394
+msgid "Advanced"
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:404
+msgid "Don't store passwords"
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:430
 msgid "Gnome Keyring is not available, your settings won't be saved!"
 msgstr ""
 
-#: ../src/gtk-helpers/event_config_dialog.c:413
+#: ../src/gtk-helpers/event_config_dialog.c:463
 msgid "Event Configuration"
 msgstr "Tapahtuma-asetukset"
 
-#: ../src/gtk-helpers/event_config_dialog.c:438
+#: ../src/gtk-helpers/event_config_dialog.c:488
 msgid "Event"
 msgstr "Tapahtuma"
 
-#: ../src/gtk-helpers/event_config_dialog.c:472
+#: ../src/gtk-helpers/event_config_dialog.c:522
 msgid "Configure E_vent"
 msgstr "Tee tapahtuman asetukset"
 
-#: ../src/gui-wizard-gtk/main.c:107
+#: ../src/gui-wizard-gtk/main.c:113
 msgid ""
 "& [-vpod] [-g GUI_FILE] [-n PROG_NAME] DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/main.c:121
+#: ../src/gui-wizard-gtk/main.c:127
 msgid "Alternate GUI file"
 msgstr "Vaihtoehtoinen GUI-tiedosto"
 
 #. for use from 3rd party apps to show just a reporter selector
-#: ../src/gui-wizard-gtk/main.c:124 ../src/report-newt/report-newt.c:363
+#: ../src/gui-wizard-gtk/main.c:130 ../src/report-newt/report-newt.c:393
 msgid "Skip analyze steps, go through report steps only"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/main.c:125 ../src/report-newt/report-newt.c:364
+#: ../src/gui-wizard-gtk/main.c:131 ../src/report-newt/report-newt.c:394
 msgid "Remove DIR after reporting"
 msgstr ""
 
@@ -283,55 +296,55 @@ msgstr ""
 #. * using gtk_assistant_commit at init time.
 #.
 #. glade element name     , on-screen text          , type
-#: ../src/gui-wizard-gtk/wizard.c:208
+#: ../src/gui-wizard-gtk/wizard.c:225
 msgid "Problem description"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:209
+#: ../src/gui-wizard-gtk/wizard.c:226
 msgid "Provide additional information"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:210
+#: ../src/gui-wizard-gtk/wizard.c:227
 msgid "Select analyzer"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:211
+#: ../src/gui-wizard-gtk/wizard.c:228
 msgid "Analyzing"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:212
+#: ../src/gui-wizard-gtk/wizard.c:229
 msgid "Select collector"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:213
+#: ../src/gui-wizard-gtk/wizard.c:230
 msgid "Collecting"
 msgstr ""
 
 #. Some reporters don't need backtrace, we can skip bt page for them.
 #. * Therefore we want to know reporters _before_ we go to bt page
 #.
-#: ../src/gui-wizard-gtk/wizard.c:217
+#: ../src/gui-wizard-gtk/wizard.c:234
 msgid "Select reporter"
 msgstr "Valitse raportoija"
 
-#: ../src/gui-wizard-gtk/wizard.c:218
-msgid "Review the backtrace"
+#: ../src/gui-wizard-gtk/wizard.c:235
+msgid "Review the data"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:219
+#: ../src/gui-wizard-gtk/wizard.c:236
 msgid "Confirm data to report"
 msgstr "Vahvista raportoitavat tiedot"
 
 #. Was GTK_ASSISTANT_PAGE_PROGRESS, but we want to allow returning to it
-#: ../src/gui-wizard-gtk/wizard.c:221 ../src/report-newt/report-newt.c:256
+#: ../src/gui-wizard-gtk/wizard.c:238 ../src/report-newt/report-newt.c:256
 msgid "Reporting"
 msgstr "Raportoidaan"
 
-#: ../src/gui-wizard-gtk/wizard.c:222
+#: ../src/gui-wizard-gtk/wizard.c:239
 msgid "Reporting done"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:294
+#: ../src/gui-wizard-gtk/wizard.c:311
 #, c-format
 msgid ""
 "Wrong settings detected for %s, reporting will probably fail if you continue "
@@ -340,7 +353,7 @@ msgstr ""
 "Kohteen %s asetukset ovat väärät, raportointi luultavasti epäonnistuu, jos "
 "jatkat nykyisillä asetuksilla."
 
-#: ../src/gui-wizard-gtk/wizard.c:298
+#: ../src/gui-wizard-gtk/wizard.c:315
 #, c-format
 msgid ""
 "Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
@@ -349,12 +362,12 @@ msgstr ""
 "Kohteen <b>%s</b> asetukset ovat väärät, raportointi luultavasti "
 "epäonnistuu, jos jatkat nykyisillä asetuksilla."
 
-#: ../src/gui-wizard-gtk/wizard.c:315
+#: ../src/gui-wizard-gtk/wizard.c:332
 #, c-format
 msgid "Con_figure %s"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:354
+#: ../src/gui-wizard-gtk/wizard.c:391
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
@@ -363,49 +376,49 @@ msgstr ""
 "Tarvitaan hakemisto, johon voi kirjoittaa, mutta ”%s” ei ole sellainen. "
 "Siirretäänkö kohteeseen ”%s” ja käytetään siirrettyä kopiota?"
 
-#: ../src/gui-wizard-gtk/wizard.c:558
+#: ../src/gui-wizard-gtk/wizard.c:398
+msgid "Don't ask me again"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:608
 msgid "View/edit a text file"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:833
+#: ../src/gui-wizard-gtk/wizard.c:891
 #, c-format
 msgid "(not needed, '%s' already exists)"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:898
+#: ../src/gui-wizard-gtk/wizard.c:956
 msgid "Go to next step"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:955
+#: ../src/gui-wizard-gtk/wizard.c:1064
 msgid "(click here to view/edit)"
 msgstr "(napsauta tästä katsellaksesi tai muokataksesi)"
 
-#: ../src/gui-wizard-gtk/wizard.c:965
+#: ../src/gui-wizard-gtk/wizard.c:1074
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(binääritiedosto, %llu tavua)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1033
-msgid "(no description)"
-msgstr "(ei kuvausta)"
-
-#: ../src/gui-wizard-gtk/wizard.c:1038
+#: ../src/gui-wizard-gtk/wizard.c:1242
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu tavua, %u tiedostoa"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1543
+#: ../src/gui-wizard-gtk/wizard.c:1786
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "Tapahtumalle ”%s” ei ole määritetty toimintoa"
 
-#: ../src/gui-wizard-gtk/wizard.c:1649
+#: ../src/gui-wizard-gtk/wizard.c:1898
 #, c-format
 msgid "Reporting disabled because the rating does not contain a number '%s'."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1673
+#: ../src/gui-wizard-gtk/wizard.c:1922
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -414,61 +427,61 @@ msgstr ""
 "tarkat vaiheet virheen toistamiseen."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1680
+#: ../src/gui-wizard-gtk/wizard.c:1929
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Raportointi on poistettu käytöstä, koska pinolistaus on hyödytön."
 
-#: ../src/gui-wizard-gtk/wizard.c:1757
+#: ../src/gui-wizard-gtk/wizard.c:2018
 msgid "Analyzing..."
 msgstr "Analysoidaan..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1758
+#: ../src/gui-wizard-gtk/wizard.c:2019
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "Analyysi valmistui loppuarvolla %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1785
+#: ../src/gui-wizard-gtk/wizard.c:2046
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "Raportointi valmistui loppuarvolla %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1812
+#: ../src/gui-wizard-gtk/wizard.c:2073
 msgid "Collecting..."
 msgstr "Kerätään..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1813
+#: ../src/gui-wizard-gtk/wizard.c:2074
 #, c-format
 msgid "Collecting finished with exit code %d"
 msgstr "Kerääminen valmistui loppuarvolla %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:2146
+#: ../src/gui-wizard-gtk/wizard.c:2400
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "”%s” ei ole tavallinen tiedosto"
 
-#: ../src/gui-wizard-gtk/wizard.c:2162
+#: ../src/gui-wizard-gtk/wizard.c:2416
 msgid "You are trying to copy a file onto itself"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2169
+#: ../src/gui-wizard-gtk/wizard.c:2423
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2183
+#: ../src/gui-wizard-gtk/wizard.c:2438
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2393
+#: ../src/gui-wizard-gtk/wizard.c:2683
 msgid "Include"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2403
+#: ../src/gui-wizard-gtk/wizard.c:2693
 msgid "Name"
 msgstr "Nimi"
 
-#: ../src/gui-wizard-gtk/wizard.c:2411
+#: ../src/gui-wizard-gtk/wizard.c:2701
 msgid "Value"
 msgstr "Arvo"
 
@@ -489,61 +502,47 @@ msgid "Attach a file"
 msgstr "Liitä tiedosto"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
-msgid ""
-"Backtrace provides developers with details of the crash, helping them track "
-"down the source of the problem. Please review it and remove any sensitive "
-"data you would rather not share:"
-msgstr ""
-"Virheenjäljitystiedot kertovat kehittäjille kaatumisen yksityiskohdat, "
-"jolloin ongelman syy on helpompi löytää. Tarkista tiedot ja poista kaikki "
-"yksityiset tiedot:"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:5
-msgid ""
-"Can create more informative backtrace if you installed additional debug "
-"packages"
-msgstr ""
-"Tarkemmat virheenjäljitystiedot voitaisiin luoda, jos lisää "
-"virheenjäljityspaketteja asennettaisiin"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "Click 'Apply' to start reporting"
 msgstr "Napsauta ”Käytä” raportoinnin aloittamiseksi"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:7
+#: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid "Collecting did not start yet"
 msgstr "Keräys ei ole vielä alkanut"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:8
+#: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "Details"
 msgstr "Lisätietoja"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:9
+#: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid ""
 "How did this problem happen (step-by-step)? How can it be reproduced? Any "
 "additional comments useful for diagnosing the problem? Please use English if "
 "possible."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:10
+#: ../src/gui-wizard-gtk/wizard.glade.h:8
+msgid "I don't know what caused this problem"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "I reviewed the data and _agree with submitting it"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:11
+#: ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid ""
 "If you are reporting to a remote server, make sure you removed all private "
 "data (such as usernames and passwords). Backtrace, command line, environment "
 "variables are the typical items in need of examining."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:12
+#: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid ""
 "If you want to report the problem to a different destination, collect "
 "additional information, or provide a better problem description and repeat "
 "reporting process, press 'Forward'."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:13
+#: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid ""
 "On the following screens, you will be asked to describe how the problem "
 "occurred, to choose how to analyze the problem (if needed), to review "
@@ -551,33 +550,37 @@ msgid ""
 "'Forward' to proceed."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:14
+#: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid "Regenerate backtrace"
 msgstr "Luo pinolistaus uudelleen"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:15
+#: ../src/gui-wizard-gtk/wizard.glade.h:14
 msgid "Reporter(s):"
 msgstr "Raportoija(t):"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:16
+#: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid "Reporting did not start yet"
 msgstr "Raportointi ei ole vielä alkanut"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:17
+#: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "Reporting has finished. You can close this window now."
 msgstr "Raportointi on päättynyt. Tämän ikkunan voi sulkea nyt."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:18
+#: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "Select additional files to attach to the report:"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:19
+#: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid "Select how you would like to analyze the problem:"
 msgstr "Valitse kuinka haluat analysoida ongelman:"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:20
+#: ../src/gui-wizard-gtk/wizard.glade.h:19
 msgid "Select how you would like to report the problem:"
 msgstr "Valitse kuinka haluat raportoida ongelman:"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:20
+msgid "Show log"
+msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:21
 msgid "Size:"
@@ -622,12 +625,37 @@ msgstr "Valitsimen tyyppiä ei tueta"
 msgid "Usage: "
 msgstr "Käyttö:"
 
-#: ../src/lib/abrt_curl.c:170 ../src/plugins/reporter-upload.c:41
+#: ../src/lib/abrt_curl.c:208 ../src/plugins/reporter-upload.c:41
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Lähetetty: %llu/%llu kilotavua"
 
-#: ../src/plugins/report.c:30
+#: ../src/lib/problem_data.c:163
+#, c-format
+msgid "Essential element '%s' is missing, can't continue"
+msgstr ""
+
+#: ../src/plugins/abrt_rh_support.c:394
+#, c-format
+msgid "error in case creation: %s"
+msgstr ""
+
+#: ../src/plugins/abrt_rh_support.c:400
+#, c-format
+msgid "error in case creation, HTTP code: %d, server says: '%s'"
+msgstr ""
+
+#: ../src/plugins/abrt_rh_support.c:403
+#, c-format
+msgid "error in case creation, HTTP code: %d"
+msgstr ""
+
+#: ../src/plugins/abrt_rh_support.c:550
+#, c-format
+msgid "error in case creation: no Location URL, HTTP code: %d"
+msgstr ""
+
+#: ../src/plugins/report.c:37
 msgid ""
 "& [-v] --target TARGET --ticket ID FILE...\n"
 "\n"
@@ -640,11 +668,11 @@ msgid ""
 "Configuration (such as login data) can be supplied via files\n"
 msgstr ""
 
-#: ../src/plugins/report.c:52
+#: ../src/plugins/report.c:59
 msgid "'strata' or 'bugzilla'"
 msgstr ""
 
-#: ../src/plugins/report.c:53
+#: ../src/plugins/report.c:60
 msgid "Ticket/case ID"
 msgstr ""
 
@@ -674,24 +702,32 @@ msgid "Check SSL key validity"
 msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:7
+msgid "OS release string"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:3
 msgid "Password"
 msgstr "Salasana"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:8
+#: ../src/plugins/report_Bugzilla.xml.in.h:9
 msgid "Report to Bugzilla bug tracker"
 msgstr ""
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:9
+#: ../src/plugins/report_Bugzilla.xml.in.h:10
+msgid "Specify this only if you modified your /etc/system-release file"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:11
 msgid "User name"
 msgstr "Käyttäjätunnus"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:10
+#: ../src/plugins/report_Bugzilla.xml.in.h:12
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Verify SSL"
 msgstr "Tarkista SSL"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:11
+#: ../src/plugins/report_Bugzilla.xml.in.h:13
 msgid ""
 "You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
 "redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
@@ -710,7 +746,7 @@ msgid "Oops server url"
 msgstr ""
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:4
-msgid "Send kernel problems to oops tracker"
+msgid "Send to kernel oops tracker"
 msgstr ""
 
 #: ../src/plugins/report_Logger.xml.in.h:1
@@ -734,8 +770,9 @@ msgid "Name of the logfile"
 msgstr "Lokitiedoston nimi"
 
 #: ../src/plugins/report_Logger.xml.in.h:6
-msgid "Save the report locally"
-msgstr "Tallenna raportti paikallisesti"
+#, fuzzy
+msgid "Save as text file"
+msgstr "Lokitiedoston nimi"
 
 #: ../src/plugins/report_Mailx.xml.in.h:1
 msgid "Mailx"
@@ -806,73 +843,30 @@ msgid "Username"
 msgstr "Käyttäjätunnus"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
-msgid "Report uploader"
+msgid ""
+"Examples: ftp://[user[:pass]@]host/dir/[file.tar.gz], scp://[user[:pass]@]"
+"host/dir/[file.tar.gz], file:///dir/[file.tar.gz]"
 msgstr ""
 
 #: ../src/plugins/report_Uploader.xml.in.h:2
+msgid "Report uploader"
+msgstr ""
+
+#: ../src/plugins/report_Uploader.xml.in.h:3
 msgid "URL"
 msgstr "URL"
 
-#: ../src/plugins/report_Uploader.xml.in.h:3
-msgid "Upload compressed report to url of choice"
+#: ../src/plugins/report_Uploader.xml.in.h:4
+msgid "Upload as tar.gz file (via FTP/SCP/...)"
 msgstr ""
 
-#: ../src/plugins/report_Uploader.xml.in.h:4
+#: ../src/plugins/report_Uploader.xml.in.h:5
 msgid ""
 "Where do you want to upload the tarball with report in form login:"
 "password@url"
 msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:38
-#, c-format
-msgid "Essential file '%s' is missing, can't continue.."
-msgstr ""
-
 #: ../src/plugins/reporter-bugzilla.c:42
-#, c-format
-msgid "Essential file '%s' is empty, can't continue.."
-msgstr ""
-
-#: ../src/plugins/reporter-bugzilla.c:51
-#: ../src/plugins/reporter-bugzilla.c:339
-#, c-format
-msgid "Logging into Bugzilla at %s"
-msgstr ""
-
-#: ../src/plugins/reporter-bugzilla.c:54
-msgid "Checking for duplicates"
-msgstr "Etsitään samanlaisia"
-
-#: ../src/plugins/reporter-bugzilla.c:70
-msgid "Missing mandatory member 'bugs'"
-msgstr "Puuttuva pakollinen osa ”bugs”"
-
-#: ../src/plugins/reporter-bugzilla.c:109
-msgid "Creating a new bug"
-msgstr "Luodaan uusi ohjelmavirheilmoitus"
-
-#. decision based on state
-#: ../src/plugins/reporter-bugzilla.c:128
-#, c-format
-msgid "Bug is already reported: %i"
-msgstr "Ohjelmavirheestä on jo tehty ilmoitus: %i"
-
-#: ../src/plugins/reporter-bugzilla.c:146
-#, c-format
-msgid "Add %s to CC list"
-msgstr "Lisää %s CC-luetteloon"
-
-#: ../src/plugins/reporter-bugzilla.c:167
-#, c-format
-msgid "Adding new comment to bug %d"
-msgstr "﻿Lisää uusi kommentti vikailmoitukseen %d"
-
-#: ../src/plugins/reporter-bugzilla.c:179
-#: ../src/plugins/reporter-bugzilla.c:366
-msgid "Logging out"
-msgstr "Kirjaudutaan ulos"
-
-#: ../src/plugins/reporter-bugzilla.c:213
 msgid ""
 "\n"
 "& [-vb] [-c CONFFILE] -d DIR\n"
@@ -899,37 +893,104 @@ msgid ""
 "If not specified, CONFFILE defaults to "
 msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:259
-#: ../src/plugins/reporter-kerneloops.c:152
-#: ../src/plugins/reporter-mailx.c:146 ../src/plugins/reporter-print.c:48
-#: ../src/plugins/reporter-rhtsupport.c:396
-#: ../src/plugins/reporter-upload.c:268
+#: ../src/plugins/reporter-bugzilla.c:89
+#: ../src/plugins/reporter-kerneloops.c:159
+#: ../src/plugins/reporter-mailx.c:161 ../src/plugins/reporter-print.c:56
+#: ../src/plugins/reporter-rhtsupport.c:74
+#: ../src/plugins/reporter-upload.c:288
 msgid "Dump directory"
 msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:260
-#: ../src/plugins/reporter-rhtsupport.c:397
+#: ../src/plugins/reporter-bugzilla.c:90
+#: ../src/plugins/reporter-rhtsupport.c:75
 msgid "Configuration file (may be given many times)"
 msgstr "Asetustiedosto (voidaan syöttää useita)"
 
-#: ../src/plugins/reporter-bugzilla.c:261
+#: ../src/plugins/reporter-bugzilla.c:91
 msgid "Attach FILEs [to bug with this ID]"
 msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:262
+#: ../src/plugins/reporter-bugzilla.c:92
 msgid "When creating bug, attach binary files too"
 msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:321
+#: ../src/plugins/reporter-bugzilla.c:93
+#: ../src/plugins/reporter-rhtsupport.c:77
+msgid "Force reporting even if this problem is already reported"
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:94
+msgid "Find BUG-ID according to DUPHASH"
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:179
 msgid "Empty login or password, please check your configuration"
 msgstr "Käyttäjätunnus tai salasana on tyhjä, tarkista asetukset"
+
+#: ../src/plugins/reporter-bugzilla.c:209
+#: ../src/plugins/reporter-bugzilla.c:275
+#, c-format
+msgid "Logging into Bugzilla at %s"
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:236
+#: ../src/plugins/reporter-bugzilla.c:448
+msgid "Logging out"
+msgstr "Kirjaudutaan ulos"
+
+#: ../src/plugins/reporter-bugzilla.c:282
+msgid "Checking for duplicates"
+msgstr "Etsitään samanlaisia"
+
+#: ../src/plugins/reporter-bugzilla.c:303
+msgid "Missing mandatory member 'bugs'"
+msgstr "Puuttuva pakollinen osa ”bugs”"
+
+#. Create new bug
+#: ../src/plugins/reporter-bugzilla.c:342
+msgid "Creating a new bug"
+msgstr "Luodaan uusi ohjelmavirheilmoitus"
+
+#: ../src/plugins/reporter-bugzilla.c:345
+#, fuzzy, c-format
+msgid "Adding attachments to bug %i"
+msgstr "﻿Lisää uusi kommentti vikailmoitukseen %d"
+
+#: ../src/plugins/reporter-bugzilla.c:360
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "Ohjelmavirheestä on jo tehty ilmoitus: %i"
+
+#: ../src/plugins/reporter-bugzilla.c:381
+#, c-format
+msgid "Add %s to CC list"
+msgstr "Lisää %s CC-luetteloon"
+
+#: ../src/plugins/reporter-bugzilla.c:420
+#, c-format
+msgid "Adding new comment to bug %d"
+msgstr "﻿Lisää uusi kommentti vikailmoitukseen %d"
+
+#: ../src/plugins/reporter-bugzilla.c:425
+msgid "Found the same comment in the bug history, not adding a new one"
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:440
+#, fuzzy
+msgid "Attaching better backtrace"
+msgstr "Luo pinolistaus uudelleen"
+
+#: ../src/plugins/reporter-bugzilla.c:451
+#, c-format
+msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
+msgstr ""
 
 #: ../src/plugins/reporter-kerneloops.c:98
 #, c-format
 msgid "Submitting oops report to %s"
 msgstr "Lähetetään oops-raportti osoitteeseen %s"
 
-#: ../src/plugins/reporter-kerneloops.c:133
+#: ../src/plugins/reporter-kerneloops.c:140
 msgid ""
 "& [-v] [-c CONFFILE]... -d DIR\n"
 "\n"
@@ -943,88 +1004,74 @@ msgid ""
 "Parameter can be overridden via $KerneloopsReporter_SubmitURL."
 msgstr ""
 
-#: ../src/plugins/reporter-kerneloops.c:153
+#: ../src/plugins/reporter-kerneloops.c:160
 msgid "Configuration file"
 msgstr "Asetustiedosto"
 
-#: ../src/plugins/reporter-mailx.c:102
+#: ../src/plugins/reporter-mailx.c:110
 msgid "Sending an email..."
 msgstr "Lähetetään sähköpostia..."
 
-#: ../src/plugins/reporter-mailx.c:134
+#: ../src/plugins/reporter-mailx.c:130
+#, c-format
+msgid "Email was sent to: %s"
+msgstr ""
+
+#: ../src/plugins/reporter-mailx.c:149
 msgid ""
 "& [-v] -d DIR [-c CONFFILE]\n"
 "\n"
-"Sends contents of a dump directory DIR via email"
+"Sends contents of a problem directory DIR via email"
 msgstr ""
 
-#: ../src/plugins/reporter-mailx.c:147 ../src/plugins/reporter-upload.c:269
+#: ../src/plugins/reporter-mailx.c:162 ../src/plugins/reporter-upload.c:289
 msgid "Config file"
 msgstr "Asetustiedosto"
 
-#: ../src/plugins/reporter-print.c:34
+#: ../src/plugins/reporter-print.c:42
 msgid ""
 "& [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
 "\n"
 "Prints problem information to standard output or FILE"
 msgstr ""
 
-#: ../src/plugins/reporter-print.c:49
+#: ../src/plugins/reporter-print.c:57
 msgid "Output file"
 msgstr "Kohdetiedosto"
 
-#: ../src/plugins/reporter-print.c:50
+#: ../src/plugins/reporter-print.c:58
 msgid "Append to, or overwrite FILE"
 msgstr ""
 
-#: ../src/plugins/reporter-print.c:51
+#: ../src/plugins/reporter-print.c:59
 msgid "Create reported_to in DIR"
 msgstr ""
 
-#: ../src/plugins/reporter-print.c:90
+#: ../src/plugins/reporter-print.c:96
+msgid "Cancelled by user."
+msgstr ""
+
+#: ../src/plugins/reporter-print.c:105
+#, c-format
+msgid "File '%s' is a symbolic link. Please select a regular file:"
+msgstr ""
+
+#: ../src/plugins/reporter-print.c:114
+#, c-format
+msgid "Can't open '%s' for writing. Please select another file:"
+msgstr ""
+
+#: ../src/plugins/reporter-print.c:149
 #, c-format
 msgid "The report was appended to %s"
 msgstr "Raportti lisättiin kohteeseen %s"
 
-#: ../src/plugins/reporter-print.c:90
+#: ../src/plugins/reporter-print.c:149
 #, c-format
 msgid "The report was stored to %s"
 msgstr "Raportti tallennettiin kohteeseen %s"
 
-#. create_problem_data_for_reporting already emitted error msg
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../src/plugins/reporter-rhtsupport.c:37
-#: ../src/plugins/reporter-upload.c:115
-msgid "Compressing data"
-msgstr "Pakataan tietoja"
-
-#: ../src/plugins/reporter-rhtsupport.c:79
-msgid "Can't create a temporary directory in /tmp"
-msgstr ""
-
-#. Hopefully, by this time child emitted more meaningful
-#. * error message. But just in case it didn't:
-#.
-#: ../src/plugins/reporter-rhtsupport.c:105
-#: ../src/plugins/reporter-rhtsupport.c:136
-#: ../src/plugins/reporter-rhtsupport.c:170
-#: ../src/plugins/reporter-rhtsupport.c:186
-msgid "Can't create temporary file in /tmp"
-msgstr ""
-
-#. Send tempfile
-#: ../src/plugins/reporter-rhtsupport.c:191
-msgid "Creating a new case..."
-msgstr "Luodaan uusi tapaus..."
-
-#: ../src/plugins/reporter-rhtsupport.c:285
-#, c-format
-msgid "Attaching '%s' to case '%s'"
-msgstr ""
-
-#: ../src/plugins/reporter-rhtsupport.c:367
+#: ../src/plugins/reporter-rhtsupport.c:44
 msgid ""
 "\n"
 "& [-v] [-c CONFFILE] -d DIR\n"
@@ -1036,12 +1083,58 @@ msgid ""
 "If not specified, CONFFILE defaults to "
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:398
+#: ../src/plugins/reporter-rhtsupport.c:76
 msgid "Upload FILEs [to case with this ID]"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:427
+#: ../src/plugins/reporter-rhtsupport.c:111
 msgid "Empty RHTS login or password"
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:158
+#, c-format
+msgid "Attaching '%s' to case '%s'"
+msgstr ""
+
+#. create_problem_data_for_reporting already emitted error msg
+#. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing
+#. error msg is already logged by dd_opendir
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#: ../src/plugins/reporter-rhtsupport.c:199
+#: ../src/plugins/reporter-upload.c:121
+msgid "Compressing data"
+msgstr "Pakataan tietoja"
+
+#: ../src/plugins/reporter-rhtsupport.c:239
+msgid "Can't create a temporary directory in /tmp"
+msgstr ""
+
+#. Hopefully, by this time child emitted more meaningful
+#. * error message. But just in case it didn't:
+#.
+#: ../src/plugins/reporter-rhtsupport.c:265
+#: ../src/plugins/reporter-rhtsupport.c:296
+#: ../src/plugins/reporter-rhtsupport.c:330
+#: ../src/plugins/reporter-rhtsupport.c:346
+msgid "Can't create temporary file in /tmp"
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:382
+msgid "Do you still want to create a RHTSupport ticket?"
+msgstr ""
+
+#. result = NULL; - redundant, result is assigned just below
+#. Send tempfile
+#: ../src/plugins/reporter-rhtsupport.c:394
+msgid "Creating a new case..."
+msgstr "Luodaan uusi tapaus..."
+
+#: ../src/plugins/reporter-rhtsupport-parse.c:202
+msgid "Documentation which might be relevant: "
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport-parse.c:210
+msgid "Updates which possibly help: "
 msgstr ""
 
 #: ../src/plugins/reporter-upload.c:59
@@ -1050,22 +1143,28 @@ msgid "Sending %s to %s"
 msgstr "Lähetetään tiedosto %s osoitteeseen %s"
 
 #. This ends up a "reporting status message" in abrtd
-#: ../src/plugins/reporter-upload.c:92
+#: ../src/plugins/reporter-upload.c:98
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "Tiedoston %s lähetys osoitteeseen %s onnistui"
 
-#: ../src/plugins/reporter-upload.c:214
+#: ../src/plugins/reporter-upload.c:221
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr ""
 
-#: ../src/plugins/reporter-upload.c:247
+#: ../src/plugins/reporter-upload.c:261
 msgid ""
 "& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
-"Uploads compressed tarball of dump directory DIR to URL.\n"
+"Uploads compressed tarball of problem directory DIR to URL.\n"
 "If URL is not specified, creates tarball in /tmp and exits.\n"
+"\n"
+"URL should have form 'protocol://[user[:pass]@]host/dir/[file.tar.gz]'\n"
+"where protocol can be http(s), ftp, scp, or file.\n"
+"File protocol can't have user and host parts: 'file:///dir/[file.tar.gz].'\n"
+"If URL ends with a slash, the archive name will be generated and appended\n"
+"to URL; otherwise, URL will be used as full file name.\n"
 "\n"
 "Files with names listed in $EXCLUDE_FROM_REPORT are not included\n"
 "into the tarball.\n"
@@ -1075,38 +1174,72 @@ msgid ""
 "Parameter can be overridden via $Upload_URL."
 msgstr ""
 
-#: ../src/plugins/reporter-upload.c:270
+#: ../src/plugins/reporter-upload.c:290
 msgid "Base URL to upload to"
 msgstr "Perusosoite, johon lähetetään"
 
-#: ../src/plugins/rhbz.c:191
+#: ../src/plugins/rhbz.c:289
 #, c-format
 msgid "Looks like corrupted xml response, because '%s' member is missing."
 msgstr ""
 
-#: ../src/plugins/rhbz.c:259
+#: ../src/plugins/rhbz.c:359
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
 msgstr ""
 
-#: ../src/plugins/rhbz.c:267
+#: ../src/plugins/rhbz.c:367
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
 msgstr ""
 
-#: ../src/plugins/rhbz.c:378
+#: ../src/plugins/rhbz.c:485
 #, c-format
 msgid "New bug id: %i"
 msgstr "Uuden ohjelmavirheilmoituksen tunnus: %i"
 
-#: ../src/plugins/rhbz.c:510
+#: ../src/plugins/rhbz.c:617
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla ei löytänyt ylemmän tason vikailmoitusta ilmoitukselle %d"
 
+#: ../src/plugins/abrt-bodhi.c:301
+#, fuzzy
+msgid "Searching for updates"
+msgstr "Etsitään samanlaisia"
+
+#: ../src/plugins/abrt-bodhi.c:376
+msgid "List of bug ids"
+msgstr ""
+
+#: ../src/plugins/abrt-bodhi.c:377
+msgid "Specify a bodhi server url"
+msgstr ""
+
+#: ../src/plugins/abrt-bodhi.c:378
+msgid "Specify a release"
+msgstr ""
+
+#: ../src/plugins/abrt-bodhi.c:383
+msgid ""
+"& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
+"\n"
+"Search for updates on bodhi server"
+msgstr ""
+
+#: ../src/plugins/abrt-bodhi.c:459
+msgid ""
+"Abrt found a new update which fix your problem. Please run before submitting "
+"bug: pkcon update --repo-enable=fedora --repo-repo=updates-testing"
+msgstr ""
+
+#: ../src/plugins/abrt-bodhi.c:463
+msgid ". Do you want to continue with reporting bug?"
+msgstr ""
+
 #: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:146
 #: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:259
-#: ../src/report-newt/report-newt.c:331
+#: ../src/report-newt/report-newt.c:337 ../src/report-newt/report-newt.c:352
 msgid "Ok"
 msgstr "Ok"
 
@@ -1114,7 +1247,7 @@ msgstr "Ok"
 msgid "Cancel"
 msgstr "Peru"
 
-#: ../src/report-newt/report-newt.c:169
+#: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:337
 msgid "Error"
 msgstr "Virhe"
 
@@ -1123,13 +1256,32 @@ msgstr "Virhe"
 msgid "--- Running %s ---"
 msgstr ""
 
-#: ../src/report-newt/report-newt.c:331
+#: ../src/report-newt/report-newt.c:352
 msgid "No reporters available"
 msgstr ""
 
-#: ../src/report-newt/report-newt.c:353
+#: ../src/report-newt/report-newt.c:382
 msgid ""
 "& -o [-d] DIR\n"
 "\n"
 "newt tool to report problem saved in specified DIR"
 msgstr ""
+
+#~ msgid ""
+#~ "Backtrace provides developers with details of the crash, helping them "
+#~ "track down the source of the problem. Please review it and remove any "
+#~ "sensitive data you would rather not share:"
+#~ msgstr ""
+#~ "Virheenjäljitystiedot kertovat kehittäjille kaatumisen yksityiskohdat, "
+#~ "jolloin ongelman syy on helpompi löytää. Tarkista tiedot ja poista kaikki "
+#~ "yksityiset tiedot:"
+
+#~ msgid ""
+#~ "Can create more informative backtrace if you installed additional debug "
+#~ "packages"
+#~ msgstr ""
+#~ "Tarkemmat virheenjäljitystiedot voitaisiin luoda, jos lisää "
+#~ "virheenjäljityspaketteja asennettaisiin"
+
+#~ msgid "Save the report locally"
+#~ msgstr "Tallenna raportti paikallisesti"

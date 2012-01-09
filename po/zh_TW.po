@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-29 13:55+0200\n"
+"POT-Creation-Date: 2012-01-09 15:49+0100\n"
 "PO-Revision-Date: 2011-09-27 04:20+0000\n"
 "Last-Translator: zerng07 <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) <trans-zh_TW@lists.fedoraproject.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
-#: ../src/cli/cli.c:48
+#: ../src/cli/cli.c:56
 msgid ""
 "& [-vsp] -L[PREFIX] [DUMP_DIR]\n"
 "   or: & [-vsp] -e EVENT DUMP_DIR\n"
@@ -33,47 +33,47 @@ msgstr ""
 "   或：& [-vsp] -r[y|o|d] DUMP_DIR"
 
 #. short_name long_name  value    parameter_name  help
-#: ../src/cli/cli.c:73
+#: ../src/cli/cli.c:81
 msgid "List possible events [which start with PREFIX]"
 msgstr "列出可能的事件 [以 PREFIX 開頭]"
 
-#: ../src/cli/cli.c:74
+#: ../src/cli/cli.c:82
 msgid "Run EVENT on DUMP_DIR"
 msgstr "於 DUMP_DIR 執行 EVENT"
 
-#: ../src/cli/cli.c:75
+#: ../src/cli/cli.c:83
 msgid "Run analyze event(s) on DUMP_DIR"
 msgstr "於 DUMP_DIR 執行事件分析"
 
-#: ../src/cli/cli.c:76
+#: ../src/cli/cli.c:84
 msgid "Run collect event(s) on DUMP_DIR"
 msgstr "於 DUMP_DIR 執行事件收集"
 
-#: ../src/cli/cli.c:77
+#: ../src/cli/cli.c:85
 msgid "Analyze, collect and report problem data in DUMP_DIR"
 msgstr "在 DUMP_DIR 內分析、收集、回報問題資料"
 
-#: ../src/cli/cli.c:78
+#: ../src/cli/cli.c:86 ../src/report-newt/report-newt.c:395
 msgid "Display version and exit"
 msgstr "顯示版本並離開"
 
-#: ../src/cli/cli.c:79
+#: ../src/cli/cli.c:87
 msgid "Remove DUMP_DIR after reporting"
 msgstr "在回報後移除 DUMP_DIR"
 
-#: ../src/cli/cli.c:80
+#: ../src/cli/cli.c:88
 msgid "Noninteractive: don't ask questions, assume 'yes'"
 msgstr "非互動模式：不詢問，當作回答皆是「yes」"
 
-#: ../src/cli/cli.c:81
+#: ../src/cli/cli.c:89
 msgid "With -r: do not run analyzers, run only reporters"
 msgstr "加上 -r：不要執行分析器，僅執行回報器"
 
-#: ../src/cli/cli.c:83
+#: ../src/cli/cli.c:91
 msgid "Log to syslog"
 msgstr "紀錄至 syslog"
 
-#: ../src/cli/cli.c:84 ../src/gui-wizard-gtk/main.c:122
+#: ../src/cli/cli.c:92 ../src/gui-wizard-gtk/main.c:128
 msgid "Add program names to log"
 msgstr "加入程式名稱至紀錄檔"
 
@@ -151,7 +151,7 @@ msgstr ""
 "報告中未偵測到變更"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1370
+#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1582
 #: ../src/lib/client.c:51 ../src/lib/run_event.c:476
 msgid "y"
 msgstr "是 (y)"
@@ -196,60 +196,74 @@ msgstr "您想要收集怎樣的額外資訊？"
 msgid "Select collector(s): "
 msgstr "選取收集器："
 
-#: ../src/cli/cli-report.c:778
+#: ../src/cli/cli-report.c:765 ../src/gui-wizard-gtk/wizard.c:1234
+#: ../src/report-newt/report-newt.c:334
+msgid "(no description)"
+msgstr "(無敘述)"
+
+#: ../src/cli/cli-report.c:798
 #, c-format
 msgid "There were %d errors while collecting additional data\n"
 msgstr "收集額外資料時發生 %d 個錯誤\n"
 
-#: ../src/cli/cli-report.c:837 ../src/gui-wizard-gtk/wizard.c:1784
+#: ../src/cli/cli-report.c:857 ../src/gui-wizard-gtk/wizard.c:2045
 msgid "Reporting..."
 msgstr "正在回報..."
 
-#: ../src/cli/cli-report.c:852 ../src/report-newt/report-newt.c:55
+#: ../src/cli/cli-report.c:872 ../src/report-newt/report-newt.c:55
 msgid "How would you like to report the problem?"
 msgstr "您想要怎麼回報這個問題？"
 
-#: ../src/cli/cli-report.c:862
+#: ../src/cli/cli-report.c:882
 msgid "Select reporter(s): "
 msgstr "選取回報器："
 
-#: ../src/cli/cli-report.c:878
+#: ../src/cli/cli-report.c:898
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "已停用回報，因為追蹤功能無法使用"
 
-#: ../src/cli/cli-report.c:882
+#: ../src/cli/cli-report.c:902
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr "請試著以指令手動安裝 debuginfo：「debuginfo-install %s」，接著重試\n"
 
-#: ../src/cli/cli-report.c:904
+#: ../src/cli/cli-report.c:924
 #, c-format
 msgid "Problem reported via %d report events (%d errors)\n"
 msgstr "問題已透過 %d 個回報事件回報 (%d 個錯誤)\n"
 
-#: ../src/gtk-helpers/event_config_dialog.c:122
+#: ../src/gtk-helpers/event_config_dialog.c:131
 msgid "Show password"
 msgstr "顯示密碼"
 
-#: ../src/gtk-helpers/event_config_dialog.c:380
+#: ../src/gtk-helpers/event_config_dialog.c:394
+msgid "Advanced"
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:404
+#, fuzzy
+msgid "Don't store passwords"
+msgstr "Red Hat 客戶密碼"
+
+#: ../src/gtk-helpers/event_config_dialog.c:430
 msgid "Gnome Keyring is not available, your settings won't be saved!"
 msgstr "Gnome 鑰匙圈無法使用，您的設定值不會儲存！"
 
-#: ../src/gtk-helpers/event_config_dialog.c:413
+#: ../src/gtk-helpers/event_config_dialog.c:463
 msgid "Event Configuration"
 msgstr "事件組態"
 
-#: ../src/gtk-helpers/event_config_dialog.c:438
+#: ../src/gtk-helpers/event_config_dialog.c:488
 msgid "Event"
 msgstr "事件"
 
-#: ../src/gtk-helpers/event_config_dialog.c:472
+#: ../src/gtk-helpers/event_config_dialog.c:522
 msgid "Configure E_vent"
 msgstr "設定事件(_V)"
 
-#: ../src/gui-wizard-gtk/main.c:107
+#: ../src/gui-wizard-gtk/main.c:113
 msgid ""
 "& [-vpod] [-g GUI_FILE] [-n PROG_NAME] DIR\n"
 "\n"
@@ -259,16 +273,16 @@ msgstr ""
 "\n"
 "分析並回報儲存在指定 DIR 內問題的 GUI 工具"
 
-#: ../src/gui-wizard-gtk/main.c:121
+#: ../src/gui-wizard-gtk/main.c:127
 msgid "Alternate GUI file"
 msgstr "替代的 GUI 檔案"
 
 #. for use from 3rd party apps to show just a reporter selector
-#: ../src/gui-wizard-gtk/main.c:124 ../src/report-newt/report-newt.c:363
+#: ../src/gui-wizard-gtk/main.c:130 ../src/report-newt/report-newt.c:393
 msgid "Skip analyze steps, go through report steps only"
 msgstr "略過分析步驟，只處理回報步驟"
 
-#: ../src/gui-wizard-gtk/main.c:125 ../src/report-newt/report-newt.c:364
+#: ../src/gui-wizard-gtk/main.c:131 ../src/report-newt/report-newt.c:394
 msgid "Remove DIR after reporting"
 msgstr "在回報後移除 DIR"
 
@@ -284,55 +298,56 @@ msgstr "在回報後移除 DIR"
 #. * using gtk_assistant_commit at init time.
 #.
 #. glade element name     , on-screen text          , type
-#: ../src/gui-wizard-gtk/wizard.c:208
+#: ../src/gui-wizard-gtk/wizard.c:225
 msgid "Problem description"
 msgstr "問題描述"
 
-#: ../src/gui-wizard-gtk/wizard.c:209
+#: ../src/gui-wizard-gtk/wizard.c:226
 msgid "Provide additional information"
 msgstr "提供額外資訊"
 
-#: ../src/gui-wizard-gtk/wizard.c:210
+#: ../src/gui-wizard-gtk/wizard.c:227
 msgid "Select analyzer"
 msgstr "選取分析器"
 
-#: ../src/gui-wizard-gtk/wizard.c:211
+#: ../src/gui-wizard-gtk/wizard.c:228
 msgid "Analyzing"
 msgstr "正在分析"
 
-#: ../src/gui-wizard-gtk/wizard.c:212
+#: ../src/gui-wizard-gtk/wizard.c:229
 msgid "Select collector"
 msgstr "選取收集器"
 
-#: ../src/gui-wizard-gtk/wizard.c:213
+#: ../src/gui-wizard-gtk/wizard.c:230
 msgid "Collecting"
 msgstr "正在收集"
 
 #. Some reporters don't need backtrace, we can skip bt page for them.
 #. * Therefore we want to know reporters _before_ we go to bt page
 #.
-#: ../src/gui-wizard-gtk/wizard.c:217
+#: ../src/gui-wizard-gtk/wizard.c:234
 msgid "Select reporter"
 msgstr "選取回報器"
 
-#: ../src/gui-wizard-gtk/wizard.c:218
-msgid "Review the backtrace"
+#: ../src/gui-wizard-gtk/wizard.c:235
+#, fuzzy
+msgid "Review the data"
 msgstr "檢閱回追資訊"
 
-#: ../src/gui-wizard-gtk/wizard.c:219
+#: ../src/gui-wizard-gtk/wizard.c:236
 msgid "Confirm data to report"
 msgstr "確認要回報的資料"
 
 #. Was GTK_ASSISTANT_PAGE_PROGRESS, but we want to allow returning to it
-#: ../src/gui-wizard-gtk/wizard.c:221 ../src/report-newt/report-newt.c:256
+#: ../src/gui-wizard-gtk/wizard.c:238 ../src/report-newt/report-newt.c:256
 msgid "Reporting"
 msgstr "正在回報"
 
-#: ../src/gui-wizard-gtk/wizard.c:222
+#: ../src/gui-wizard-gtk/wizard.c:239
 msgid "Reporting done"
 msgstr "回報完成"
 
-#: ../src/gui-wizard-gtk/wizard.c:294
+#: ../src/gui-wizard-gtk/wizard.c:311
 #, c-format
 msgid ""
 "Wrong settings detected for %s, reporting will probably fail if you continue "
@@ -340,7 +355,7 @@ msgid ""
 msgstr ""
 "偵測到 %s 有錯誤的設定值，若您以目前的組態繼續的話，回報動作可能會失敗。"
 
-#: ../src/gui-wizard-gtk/wizard.c:298
+#: ../src/gui-wizard-gtk/wizard.c:315
 #, c-format
 msgid ""
 "Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
@@ -349,12 +364,12 @@ msgstr ""
 "偵測到 <b>%s</b> 有錯誤的設定值，若您以目前的組態繼續的話，回報動作可能會失"
 "敗。"
 
-#: ../src/gui-wizard-gtk/wizard.c:315
+#: ../src/gui-wizard-gtk/wizard.c:332
 #, c-format
 msgid "Con_figure %s"
 msgstr "設定(_F) %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:354
+#: ../src/gui-wizard-gtk/wizard.c:391
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
@@ -363,110 +378,110 @@ msgstr ""
 "需要可以寫入的目錄，但是「%s」無法寫入。您想要將它移動至「%s」並對移動的副本"
 "進行操作嗎？"
 
-#: ../src/gui-wizard-gtk/wizard.c:558
+#: ../src/gui-wizard-gtk/wizard.c:398
+msgid "Don't ask me again"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:608
 msgid "View/edit a text file"
 msgstr "檢視/編輯文件檔"
 
-#: ../src/gui-wizard-gtk/wizard.c:833
+#: ../src/gui-wizard-gtk/wizard.c:891
 #, c-format
 msgid "(not needed, '%s' already exists)"
 msgstr "(不需要，「%s」已經存在)"
 
-#: ../src/gui-wizard-gtk/wizard.c:898
+#: ../src/gui-wizard-gtk/wizard.c:956
 msgid "Go to next step"
 msgstr "前往下一步"
 
-#: ../src/gui-wizard-gtk/wizard.c:955
+#: ../src/gui-wizard-gtk/wizard.c:1064
 msgid "(click here to view/edit)"
 msgstr "(請點擊這裡檢視或編輯)"
 
-#: ../src/gui-wizard-gtk/wizard.c:965
+#: ../src/gui-wizard-gtk/wizard.c:1074
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(二進位檔，%llu 位元組)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1033
-msgid "(no description)"
-msgstr "(無敘述)"
-
-#: ../src/gui-wizard-gtk/wizard.c:1038
+#: ../src/gui-wizard-gtk/wizard.c:1242
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu 位元組，%u 個檔案"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1543
+#: ../src/gui-wizard-gtk/wizard.c:1786
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "未定義「%s」事件的處理"
 
-#: ../src/gui-wizard-gtk/wizard.c:1649
+#: ../src/gui-wizard-gtk/wizard.c:1898
 #, c-format
 msgid "Reporting disabled because the rating does not contain a number '%s'."
 msgstr "已停用回報，因為評等不包含數字「%s」。"
 
-#: ../src/gui-wizard-gtk/wizard.c:1673
+#: ../src/gui-wizard-gtk/wizard.c:1922
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "追蹤資訊不完整，請確認您提供了能夠重現問題的步驟。"
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1680
+#: ../src/gui-wizard-gtk/wizard.c:1929
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "已停用回報，因為無法使用追蹤功能。"
 
-#: ../src/gui-wizard-gtk/wizard.c:1757
+#: ../src/gui-wizard-gtk/wizard.c:2018
 msgid "Analyzing..."
 msgstr "正在分析..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1758
+#: ../src/gui-wizard-gtk/wizard.c:2019
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "分析完成附帶離開碼 %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1785
+#: ../src/gui-wizard-gtk/wizard.c:2046
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "回報完成附帶離開碼 %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1812
+#: ../src/gui-wizard-gtk/wizard.c:2073
 msgid "Collecting..."
 msgstr "正在收集..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1813
+#: ../src/gui-wizard-gtk/wizard.c:2074
 #, c-format
 msgid "Collecting finished with exit code %d"
 msgstr "已完成收集，伴隨離開代碼 %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:2146
+#: ../src/gui-wizard-gtk/wizard.c:2400
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "「%s」不是原本的檔案"
 
-#: ../src/gui-wizard-gtk/wizard.c:2162
+#: ../src/gui-wizard-gtk/wizard.c:2416
 msgid "You are trying to copy a file onto itself"
 msgstr "您正嘗試複製檔案至其自身"
 
-#: ../src/gui-wizard-gtk/wizard.c:2169
+#: ../src/gui-wizard-gtk/wizard.c:2423
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "無法複製「%s」：%s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2183
+#: ../src/gui-wizard-gtk/wizard.c:2438
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "項目「%s」已經存在，且不能修改"
 
-#: ../src/gui-wizard-gtk/wizard.c:2393
+#: ../src/gui-wizard-gtk/wizard.c:2683
 msgid "Include"
 msgstr "包含"
 
-#: ../src/gui-wizard-gtk/wizard.c:2403
+#: ../src/gui-wizard-gtk/wizard.c:2693
 msgid "Name"
 msgstr "名稱"
 
-#: ../src/gui-wizard-gtk/wizard.c:2411
+#: ../src/gui-wizard-gtk/wizard.c:2701
 msgid "Value"
 msgstr "值"
 
@@ -486,33 +501,18 @@ msgid "Attach a file"
 msgstr "加上附件"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
-msgid ""
-"Backtrace provides developers with details of the crash, helping them track "
-"down the source of the problem. Please review it and remove any sensitive "
-"data you would rather not share:"
-msgstr ""
-"追蹤資訊提供開發者當機的細節，並幫助他們追蹤問題的來源。請校閱資料並移除任何"
-"您不想要與他人分享的敏感資料："
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:5
-msgid ""
-"Can create more informative backtrace if you installed additional debug "
-"packages"
-msgstr "若您已安裝額外除錯套件可以產生更多追蹤資訊"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "Click 'Apply' to start reporting"
 msgstr "點擊「套用」開始回報"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:7
+#: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid "Collecting did not start yet"
 msgstr "尚未開始收集"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:8
+#: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "Details"
 msgstr "詳情"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:9
+#: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid ""
 "How did this problem happen (step-by-step)? How can it be reproduced? Any "
 "additional comments useful for diagnosing the problem? Please use English if "
@@ -521,11 +521,15 @@ msgstr ""
 "這個問題是怎麼發生的 (請一步接一步描述)？要如何讓它重現？還有沒有對於問題診斷"
 "有用的其他評註？請盡可能使用英文填寫。"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:10
+#: ../src/gui-wizard-gtk/wizard.glade.h:8
+msgid "I don't know what caused this problem"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "I reviewed the data and _agree with submitting it"
 msgstr "我已檢閱過資料並同意提交(_A)"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:11
+#: ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid ""
 "If you are reporting to a remote server, make sure you removed all private "
 "data (such as usernames and passwords). Backtrace, command line, environment "
@@ -534,7 +538,7 @@ msgstr ""
 "若您要回報至遠端伺服器，請確保您已移除全部的隱私資料 (例如使用者名稱與密碼)。"
 "回追資訊、指令列、環境變數等，這幾項通常都需要檢視。"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:12
+#: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid ""
 "If you want to report the problem to a different destination, collect "
 "additional information, or provide a better problem description and repeat "
@@ -543,7 +547,7 @@ msgstr ""
 "若您想將問題回報至不同的目的地、收集額外資訊、或提供更佳的問題描述，並重複回"
 "報程序，請按「下一步」。"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:13
+#: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid ""
 "On the following screens, you will be asked to describe how the problem "
 "occurred, to choose how to analyze the problem (if needed), to review "
@@ -553,33 +557,37 @@ msgstr ""
 "在下列畫面中，您會被要求描述該問題如何發生、選擇如何分析該問題 (如果需要的"
 "話)、檢閱收集的資料，並選擇要將問題回報至何處。請按「下一步」繼續。"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:14
+#: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid "Regenerate backtrace"
 msgstr "重新產生追蹤訊息"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:15
+#: ../src/gui-wizard-gtk/wizard.glade.h:14
 msgid "Reporter(s):"
 msgstr "回報器："
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:16
+#: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid "Reporting did not start yet"
 msgstr "尚未開始回報"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:17
+#: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "Reporting has finished. You can close this window now."
 msgstr "已經完成回報。您現在可以關閉這個視窗。"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:18
+#: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "Select additional files to attach to the report:"
 msgstr "選取要為回報附件的額外檔案："
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:19
+#: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid "Select how you would like to analyze the problem:"
 msgstr "選取您想要分析該問題的方式："
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:20
+#: ../src/gui-wizard-gtk/wizard.glade.h:19
 msgid "Select how you would like to report the problem:"
 msgstr "選取您想要回報該問題的方式："
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:20
+msgid "Show log"
+msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:21
 msgid "Size:"
@@ -622,12 +630,37 @@ msgstr "未支援的選項類型"
 msgid "Usage: "
 msgstr "用法："
 
-#: ../src/lib/abrt_curl.c:170 ../src/plugins/reporter-upload.c:41
+#: ../src/lib/abrt_curl.c:208 ../src/plugins/reporter-upload.c:41
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "已上傳：%llu / %llu kbytes"
 
-#: ../src/plugins/report.c:30
+#: ../src/lib/problem_data.c:163
+#, fuzzy, c-format
+msgid "Essential element '%s' is missing, can't continue"
+msgstr "遺失必要檔案「%s」，無法繼續。"
+
+#: ../src/plugins/abrt_rh_support.c:394
+#, c-format
+msgid "error in case creation: %s"
+msgstr ""
+
+#: ../src/plugins/abrt_rh_support.c:400
+#, c-format
+msgid "error in case creation, HTTP code: %d, server says: '%s'"
+msgstr ""
+
+#: ../src/plugins/abrt_rh_support.c:403
+#, c-format
+msgid "error in case creation, HTTP code: %d"
+msgstr ""
+
+#: ../src/plugins/abrt_rh_support.c:550
+#, c-format
+msgid "error in case creation: no Location URL, HTTP code: %d"
+msgstr ""
+
+#: ../src/plugins/report.c:37
 msgid ""
 "& [-v] --target TARGET --ticket ID FILE...\n"
 "\n"
@@ -649,11 +682,11 @@ msgstr ""
 "\n"
 "組態 (例如登入資料) 可以透過檔案提供\n"
 
-#: ../src/plugins/report.c:52
+#: ../src/plugins/report.c:59
 msgid "'strata' or 'bugzilla'"
 msgstr "「strata」或「bugzilla」"
 
-#: ../src/plugins/report.c:53
+#: ../src/plugins/report.c:60
 msgid "Ticket/case ID"
 msgstr "Ticket/案例 ID"
 
@@ -683,24 +716,32 @@ msgid "Check SSL key validity"
 msgstr "檢查 SSL 金鑰有效性"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:7
+msgid "OS release string"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:3
 msgid "Password"
 msgstr "密碼"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:8
+#: ../src/plugins/report_Bugzilla.xml.in.h:9
 msgid "Report to Bugzilla bug tracker"
 msgstr "回報至 Bugzilla 臭蟲追蹤器"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:9
+#: ../src/plugins/report_Bugzilla.xml.in.h:10
+msgid "Specify this only if you modified your /etc/system-release file"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:11
 msgid "User name"
 msgstr "使用者名稱"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:10
+#: ../src/plugins/report_Bugzilla.xml.in.h:12
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Verify SSL"
 msgstr "驗證 SSL"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:11
+#: ../src/plugins/report_Bugzilla.xml.in.h:13
 msgid ""
 "You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
 "redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
@@ -721,7 +762,8 @@ msgid "Oops server url"
 msgstr "Oops 伺服器網址"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:4
-msgid "Send kernel problems to oops tracker"
+#, fuzzy
+msgid "Send to kernel oops tracker"
 msgstr "傳送內核問題至 oops 追蹤器"
 
 #: ../src/plugins/report_Logger.xml.in.h:1
@@ -745,8 +787,9 @@ msgid "Name of the logfile"
 msgstr "logfile 的名稱"
 
 #: ../src/plugins/report_Logger.xml.in.h:6
-msgid "Save the report locally"
-msgstr "將回報儲存在本地"
+#, fuzzy
+msgid "Save as text file"
+msgstr "檢視/編輯文件檔"
 
 #: ../src/plugins/report_Mailx.xml.in.h:1
 msgid "Mailx"
@@ -817,73 +860,30 @@ msgid "Username"
 msgstr "使用者名稱"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
+msgid ""
+"Examples: ftp://[user[:pass]@]host/dir/[file.tar.gz], scp://[user[:pass]@]"
+"host/dir/[file.tar.gz], file:///dir/[file.tar.gz]"
+msgstr ""
+
+#: ../src/plugins/report_Uploader.xml.in.h:2
 msgid "Report uploader"
 msgstr "回報上傳器"
 
-#: ../src/plugins/report_Uploader.xml.in.h:2
+#: ../src/plugins/report_Uploader.xml.in.h:3
 msgid "URL"
 msgstr "網址"
 
-#: ../src/plugins/report_Uploader.xml.in.h:3
-msgid "Upload compressed report to url of choice"
-msgstr "上傳壓縮的回報內容至選擇的網址"
-
 #: ../src/plugins/report_Uploader.xml.in.h:4
+msgid "Upload as tar.gz file (via FTP/SCP/...)"
+msgstr ""
+
+#: ../src/plugins/report_Uploader.xml.in.h:5
 msgid ""
 "Where do you want to upload the tarball with report in form login:"
 "password@url"
 msgstr "您想要將回報與 tarball 透過 login:password@url 這樣的格式上傳至何處"
 
-#: ../src/plugins/reporter-bugzilla.c:38
-#, c-format
-msgid "Essential file '%s' is missing, can't continue.."
-msgstr "遺失必要檔案「%s」，無法繼續。"
-
 #: ../src/plugins/reporter-bugzilla.c:42
-#, c-format
-msgid "Essential file '%s' is empty, can't continue.."
-msgstr "必要檔案「%s」為空白，無法繼續。"
-
-#: ../src/plugins/reporter-bugzilla.c:51
-#: ../src/plugins/reporter-bugzilla.c:339
-#, c-format
-msgid "Logging into Bugzilla at %s"
-msgstr "正在登入 Bugzilla 於 %s"
-
-#: ../src/plugins/reporter-bugzilla.c:54
-msgid "Checking for duplicates"
-msgstr "正在檢查是否有重複"
-
-#: ../src/plugins/reporter-bugzilla.c:70
-msgid "Missing mandatory member 'bugs'"
-msgstr "遺失必要的成員「bugs」"
-
-#: ../src/plugins/reporter-bugzilla.c:109
-msgid "Creating a new bug"
-msgstr "正在建立新臭蟲"
-
-#. decision based on state
-#: ../src/plugins/reporter-bugzilla.c:128
-#, c-format
-msgid "Bug is already reported: %i"
-msgstr "臭蟲已回報：%i"
-
-#: ../src/plugins/reporter-bugzilla.c:146
-#, c-format
-msgid "Add %s to CC list"
-msgstr "將 %s 加入 CC 副本清單中"
-
-#: ../src/plugins/reporter-bugzilla.c:167
-#, c-format
-msgid "Adding new comment to bug %d"
-msgstr "在臭蟲回報 (%d) 中新增評註"
-
-#: ../src/plugins/reporter-bugzilla.c:179
-#: ../src/plugins/reporter-bugzilla.c:366
-msgid "Logging out"
-msgstr "正在登出"
-
-#: ../src/plugins/reporter-bugzilla.c:213
 msgid ""
 "\n"
 "& [-vb] [-c CONFFILE] -d DIR\n"
@@ -932,37 +932,104 @@ msgstr ""
 "\n"
 "若沒有指定，CONFFILE 預設為 "
 
-#: ../src/plugins/reporter-bugzilla.c:259
-#: ../src/plugins/reporter-kerneloops.c:152
-#: ../src/plugins/reporter-mailx.c:146 ../src/plugins/reporter-print.c:48
-#: ../src/plugins/reporter-rhtsupport.c:396
-#: ../src/plugins/reporter-upload.c:268
+#: ../src/plugins/reporter-bugzilla.c:89
+#: ../src/plugins/reporter-kerneloops.c:159
+#: ../src/plugins/reporter-mailx.c:161 ../src/plugins/reporter-print.c:56
+#: ../src/plugins/reporter-rhtsupport.c:74
+#: ../src/plugins/reporter-upload.c:288
 msgid "Dump directory"
 msgstr "傾印目錄"
 
-#: ../src/plugins/reporter-bugzilla.c:260
-#: ../src/plugins/reporter-rhtsupport.c:397
+#: ../src/plugins/reporter-bugzilla.c:90
+#: ../src/plugins/reporter-rhtsupport.c:75
 msgid "Configuration file (may be given many times)"
 msgstr "組態檔 (可以給定多次)"
 
-#: ../src/plugins/reporter-bugzilla.c:261
+#: ../src/plugins/reporter-bugzilla.c:91
 msgid "Attach FILEs [to bug with this ID]"
 msgstr "加入 FILEs 附件 [至這個 ID 的臭蟲]"
 
-#: ../src/plugins/reporter-bugzilla.c:262
+#: ../src/plugins/reporter-bugzilla.c:92
 msgid "When creating bug, attach binary files too"
 msgstr "建立臭蟲回報時，也附上二進位檔作附件"
 
-#: ../src/plugins/reporter-bugzilla.c:321
+#: ../src/plugins/reporter-bugzilla.c:93
+#: ../src/plugins/reporter-rhtsupport.c:77
+msgid "Force reporting even if this problem is already reported"
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:94
+msgid "Find BUG-ID according to DUPHASH"
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:179
 msgid "Empty login or password, please check your configuration"
 msgstr "空白的登入名稱或密碼，請檢查您的組態"
+
+#: ../src/plugins/reporter-bugzilla.c:209
+#: ../src/plugins/reporter-bugzilla.c:275
+#, c-format
+msgid "Logging into Bugzilla at %s"
+msgstr "正在登入 Bugzilla 於 %s"
+
+#: ../src/plugins/reporter-bugzilla.c:236
+#: ../src/plugins/reporter-bugzilla.c:448
+msgid "Logging out"
+msgstr "正在登出"
+
+#: ../src/plugins/reporter-bugzilla.c:282
+msgid "Checking for duplicates"
+msgstr "正在檢查是否有重複"
+
+#: ../src/plugins/reporter-bugzilla.c:303
+msgid "Missing mandatory member 'bugs'"
+msgstr "遺失必要的成員「bugs」"
+
+#. Create new bug
+#: ../src/plugins/reporter-bugzilla.c:342
+msgid "Creating a new bug"
+msgstr "正在建立新臭蟲"
+
+#: ../src/plugins/reporter-bugzilla.c:345
+#, fuzzy, c-format
+msgid "Adding attachments to bug %i"
+msgstr "在臭蟲回報 (%d) 中新增評註"
+
+#: ../src/plugins/reporter-bugzilla.c:360
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "臭蟲已回報：%i"
+
+#: ../src/plugins/reporter-bugzilla.c:381
+#, c-format
+msgid "Add %s to CC list"
+msgstr "將 %s 加入 CC 副本清單中"
+
+#: ../src/plugins/reporter-bugzilla.c:420
+#, c-format
+msgid "Adding new comment to bug %d"
+msgstr "在臭蟲回報 (%d) 中新增評註"
+
+#: ../src/plugins/reporter-bugzilla.c:425
+msgid "Found the same comment in the bug history, not adding a new one"
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:440
+#, fuzzy
+msgid "Attaching better backtrace"
+msgstr "檢閱回追資訊"
+
+#: ../src/plugins/reporter-bugzilla.c:451
+#, c-format
+msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
+msgstr ""
 
 #: ../src/plugins/reporter-kerneloops.c:98
 #, c-format
 msgid "Submitting oops report to %s"
 msgstr "正在提交 oops 回報至 %s"
 
-#: ../src/plugins/reporter-kerneloops.c:133
+#: ../src/plugins/reporter-kerneloops.c:140
 msgid ""
 "& [-v] [-c CONFFILE]... -d DIR\n"
 "\n"
@@ -986,29 +1053,35 @@ msgstr ""
 "可辨識的字串參數：SubmitURL。\n"
 "參數可以被 $KerneloopsReporter_SubmitURL 凌駕。"
 
-#: ../src/plugins/reporter-kerneloops.c:153
+#: ../src/plugins/reporter-kerneloops.c:160
 msgid "Configuration file"
 msgstr "組態檔"
 
-#: ../src/plugins/reporter-mailx.c:102
+#: ../src/plugins/reporter-mailx.c:110
 msgid "Sending an email..."
 msgstr "正在傳送電子郵件..."
 
-#: ../src/plugins/reporter-mailx.c:134
+#: ../src/plugins/reporter-mailx.c:130
+#, c-format
+msgid "Email was sent to: %s"
+msgstr ""
+
+#: ../src/plugins/reporter-mailx.c:149
+#, fuzzy
 msgid ""
 "& [-v] -d DIR [-c CONFFILE]\n"
 "\n"
-"Sends contents of a dump directory DIR via email"
+"Sends contents of a problem directory DIR via email"
 msgstr ""
 "& [-v] -d DIR [-c CONFFILE]\n"
 "\n"
 "透過電子郵件傳送傾印目錄 DIR 的內容"
 
-#: ../src/plugins/reporter-mailx.c:147 ../src/plugins/reporter-upload.c:269
+#: ../src/plugins/reporter-mailx.c:162 ../src/plugins/reporter-upload.c:289
 msgid "Config file"
 msgstr "組態檔"
 
-#: ../src/plugins/reporter-print.c:34
+#: ../src/plugins/reporter-print.c:42
 msgid ""
 "& [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
 "\n"
@@ -1018,62 +1091,43 @@ msgstr ""
 "\n"
 "列印問題資訊至標準輸出或 FILE"
 
-#: ../src/plugins/reporter-print.c:49
+#: ../src/plugins/reporter-print.c:57
 msgid "Output file"
 msgstr "輸出檔"
 
-#: ../src/plugins/reporter-print.c:50
+#: ../src/plugins/reporter-print.c:58
 msgid "Append to, or overwrite FILE"
 msgstr "附加至，或是覆寫 FILE"
 
-#: ../src/plugins/reporter-print.c:51
+#: ../src/plugins/reporter-print.c:59
 msgid "Create reported_to in DIR"
 msgstr "在 DIR 內建立 reported_to"
 
-#: ../src/plugins/reporter-print.c:90
+#: ../src/plugins/reporter-print.c:96
+msgid "Cancelled by user."
+msgstr ""
+
+#: ../src/plugins/reporter-print.c:105
+#, c-format
+msgid "File '%s' is a symbolic link. Please select a regular file:"
+msgstr ""
+
+#: ../src/plugins/reporter-print.c:114
+#, c-format
+msgid "Can't open '%s' for writing. Please select another file:"
+msgstr ""
+
+#: ../src/plugins/reporter-print.c:149
 #, c-format
 msgid "The report was appended to %s"
 msgstr "回報已附加至 %s"
 
-#: ../src/plugins/reporter-print.c:90
+#: ../src/plugins/reporter-print.c:149
 #, c-format
 msgid "The report was stored to %s"
 msgstr "回報已儲存至 %s"
 
-#. create_problem_data_for_reporting already emitted error msg
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../src/plugins/reporter-rhtsupport.c:37
-#: ../src/plugins/reporter-upload.c:115
-msgid "Compressing data"
-msgstr "正在壓縮資料"
-
-#: ../src/plugins/reporter-rhtsupport.c:79
-msgid "Can't create a temporary directory in /tmp"
-msgstr "無法在 /tmp 內建立暫存目錄"
-
-#. Hopefully, by this time child emitted more meaningful
-#. * error message. But just in case it didn't:
-#.
-#: ../src/plugins/reporter-rhtsupport.c:105
-#: ../src/plugins/reporter-rhtsupport.c:136
-#: ../src/plugins/reporter-rhtsupport.c:170
-#: ../src/plugins/reporter-rhtsupport.c:186
-msgid "Can't create temporary file in /tmp"
-msgstr "無法在 /tmp 內建立暫存檔案"
-
-#. Send tempfile
-#: ../src/plugins/reporter-rhtsupport.c:191
-msgid "Creating a new case..."
-msgstr "正在建立新案例..."
-
-#: ../src/plugins/reporter-rhtsupport.c:285
-#, c-format
-msgid "Attaching '%s' to case '%s'"
-msgstr "正為案例「%2$s」加上附件「%1$s」"
-
-#: ../src/plugins/reporter-rhtsupport.c:367
+#: ../src/plugins/reporter-rhtsupport.c:44
 msgid ""
 "\n"
 "& [-v] [-c CONFFILE] -d DIR\n"
@@ -1093,13 +1147,59 @@ msgstr ""
 "\n"
 "如果沒有指定，CONFFILE 預設為 "
 
-#: ../src/plugins/reporter-rhtsupport.c:398
+#: ../src/plugins/reporter-rhtsupport.c:76
 msgid "Upload FILEs [to case with this ID]"
 msgstr "上傳 FILEs [至這個 ID 的案例]"
 
-#: ../src/plugins/reporter-rhtsupport.c:427
+#: ../src/plugins/reporter-rhtsupport.c:111
 msgid "Empty RHTS login or password"
 msgstr "空白的 RHTS 登入名稱或密碼"
+
+#: ../src/plugins/reporter-rhtsupport.c:158
+#, c-format
+msgid "Attaching '%s' to case '%s'"
+msgstr "正為案例「%2$s」加上附件「%1$s」"
+
+#. create_problem_data_for_reporting already emitted error msg
+#. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing
+#. error msg is already logged by dd_opendir
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#: ../src/plugins/reporter-rhtsupport.c:199
+#: ../src/plugins/reporter-upload.c:121
+msgid "Compressing data"
+msgstr "正在壓縮資料"
+
+#: ../src/plugins/reporter-rhtsupport.c:239
+msgid "Can't create a temporary directory in /tmp"
+msgstr "無法在 /tmp 內建立暫存目錄"
+
+#. Hopefully, by this time child emitted more meaningful
+#. * error message. But just in case it didn't:
+#.
+#: ../src/plugins/reporter-rhtsupport.c:265
+#: ../src/plugins/reporter-rhtsupport.c:296
+#: ../src/plugins/reporter-rhtsupport.c:330
+#: ../src/plugins/reporter-rhtsupport.c:346
+msgid "Can't create temporary file in /tmp"
+msgstr "無法在 /tmp 內建立暫存檔案"
+
+#: ../src/plugins/reporter-rhtsupport.c:382
+msgid "Do you still want to create a RHTSupport ticket?"
+msgstr ""
+
+#. result = NULL; - redundant, result is assigned just below
+#. Send tempfile
+#: ../src/plugins/reporter-rhtsupport.c:394
+msgid "Creating a new case..."
+msgstr "正在建立新案例..."
+
+#: ../src/plugins/reporter-rhtsupport-parse.c:202
+msgid "Documentation which might be relevant: "
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport-parse.c:210
+msgid "Updates which possibly help: "
+msgstr ""
 
 #: ../src/plugins/reporter-upload.c:59
 #, c-format
@@ -1107,22 +1207,29 @@ msgid "Sending %s to %s"
 msgstr "正在傳送 %s 至 %s"
 
 #. This ends up a "reporting status message" in abrtd
-#: ../src/plugins/reporter-upload.c:92
+#: ../src/plugins/reporter-upload.c:98
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "已成功傳送 %s 至 %s"
 
-#: ../src/plugins/reporter-upload.c:214
+#: ../src/plugins/reporter-upload.c:221
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "封存檔已建立：「%s」"
 
-#: ../src/plugins/reporter-upload.c:247
+#: ../src/plugins/reporter-upload.c:261
+#, fuzzy
 msgid ""
 "& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
-"Uploads compressed tarball of dump directory DIR to URL.\n"
+"Uploads compressed tarball of problem directory DIR to URL.\n"
 "If URL is not specified, creates tarball in /tmp and exits.\n"
+"\n"
+"URL should have form 'protocol://[user[:pass]@]host/dir/[file.tar.gz]'\n"
+"where protocol can be http(s), ftp, scp, or file.\n"
+"File protocol can't have user and host parts: 'file:///dir/[file.tar.gz].'\n"
+"If URL ends with a slash, the archive name will be generated and appended\n"
+"to URL; otherwise, URL will be used as full file name.\n"
 "\n"
 "Files with names listed in $EXCLUDE_FROM_REPORT are not included\n"
 "into the tarball.\n"
@@ -1143,38 +1250,72 @@ msgstr ""
 "可辨識的字串參數：URL。\n"
 "參數可以被 $Upload_URL 凌駕。"
 
-#: ../src/plugins/reporter-upload.c:270
+#: ../src/plugins/reporter-upload.c:290
 msgid "Base URL to upload to"
 msgstr "要上傳至的基礎網址"
 
-#: ../src/plugins/rhbz.c:191
+#: ../src/plugins/rhbz.c:289
 #, c-format
 msgid "Looks like corrupted xml response, because '%s' member is missing."
 msgstr "看起來 xml 回應已損壞，因為遺失「%s」成員。"
 
-#: ../src/plugins/rhbz.c:259
+#: ../src/plugins/rhbz.c:359
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
 msgstr "臭蟲回報 %i 已 CLOSED，但沒有 RESOLUTION"
 
-#: ../src/plugins/rhbz.c:267
+#: ../src/plugins/rhbz.c:367
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
 msgstr "臭蟲回報 %i 已 CLOSED，因為屬 DUPLICATE，但它沒有 DUP_ID"
 
-#: ../src/plugins/rhbz.c:378
+#: ../src/plugins/rhbz.c:485
 #, c-format
 msgid "New bug id: %i"
 msgstr "新臭蟲回報 id：%i"
 
-#: ../src/plugins/rhbz.c:510
+#: ../src/plugins/rhbz.c:617
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla 找不到 bug %d 的親代"
 
+#: ../src/plugins/abrt-bodhi.c:301
+#, fuzzy
+msgid "Searching for updates"
+msgstr "正在檢查是否有重複"
+
+#: ../src/plugins/abrt-bodhi.c:376
+msgid "List of bug ids"
+msgstr ""
+
+#: ../src/plugins/abrt-bodhi.c:377
+msgid "Specify a bodhi server url"
+msgstr ""
+
+#: ../src/plugins/abrt-bodhi.c:378
+msgid "Specify a release"
+msgstr ""
+
+#: ../src/plugins/abrt-bodhi.c:383
+msgid ""
+"& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
+"\n"
+"Search for updates on bodhi server"
+msgstr ""
+
+#: ../src/plugins/abrt-bodhi.c:459
+msgid ""
+"Abrt found a new update which fix your problem. Please run before submitting "
+"bug: pkcon update --repo-enable=fedora --repo-repo=updates-testing"
+msgstr ""
+
+#: ../src/plugins/abrt-bodhi.c:463
+msgid ". Do you want to continue with reporting bug?"
+msgstr ""
+
 #: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:146
 #: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:259
-#: ../src/report-newt/report-newt.c:331
+#: ../src/report-newt/report-newt.c:337 ../src/report-newt/report-newt.c:352
 msgid "Ok"
 msgstr "確定"
 
@@ -1182,7 +1323,7 @@ msgstr "確定"
 msgid "Cancel"
 msgstr "取消"
 
-#: ../src/report-newt/report-newt.c:169
+#: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:337
 msgid "Error"
 msgstr "錯誤"
 
@@ -1191,11 +1332,11 @@ msgstr "錯誤"
 msgid "--- Running %s ---"
 msgstr "--- 正在執行 %s ---"
 
-#: ../src/report-newt/report-newt.c:331
+#: ../src/report-newt/report-newt.c:352
 msgid "No reporters available"
 msgstr "沒有可用的回報器"
 
-#: ../src/report-newt/report-newt.c:353
+#: ../src/report-newt/report-newt.c:382
 msgid ""
 "& -o [-d] DIR\n"
 "\n"
@@ -1204,6 +1345,28 @@ msgstr ""
 "& -o [-d] DIR\n"
 "\n"
 "回報儲存於指定 DIR 內問題的新工具"
+
+#~ msgid ""
+#~ "Backtrace provides developers with details of the crash, helping them "
+#~ "track down the source of the problem. Please review it and remove any "
+#~ "sensitive data you would rather not share:"
+#~ msgstr ""
+#~ "追蹤資訊提供開發者當機的細節，並幫助他們追蹤問題的來源。請校閱資料並移除任"
+#~ "何您不想要與他人分享的敏感資料："
+
+#~ msgid ""
+#~ "Can create more informative backtrace if you installed additional debug "
+#~ "packages"
+#~ msgstr "若您已安裝額外除錯套件可以產生更多追蹤資訊"
+
+#~ msgid "Save the report locally"
+#~ msgstr "將回報儲存在本地"
+
+#~ msgid "Upload compressed report to url of choice"
+#~ msgstr "上傳壓縮的回報內容至選擇的網址"
+
+#~ msgid "Essential file '%s' is empty, can't continue.."
+#~ msgstr "必要檔案「%s」為空白，無法繼續。"
 
 #~ msgid "Override the default prgname"
 #~ msgstr "凌駕預設的 prgname"
