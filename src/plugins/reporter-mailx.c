@@ -127,7 +127,7 @@ static void create_and_send_email(
         free(msg);
         dd_close(dd);
     }
-    log("Email was sent to: %s", email_to);
+    log(_("Email was sent to: %s"), email_to);
 }
 
 int main(int argc, char **argv)
