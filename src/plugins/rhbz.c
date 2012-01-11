@@ -557,13 +557,21 @@ int rhbz_attach_big_files(struct abrt_xmlrpc *ax, const char *bug_id,
     GHashTableIter iter;
     char *name;
     struct problem_item *value;
+
+    const char *analyzer = get_problem_item_content_or_NULL(problem_data,
+                                                            FILENAME_ANALYZER);
+
     g_hash_table_iter_init(&iter, problem_data);
     while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
         if (value->flags & CD_FLAG_TXT)
         {
             const char *content = value->content;
+            if (!strcmp(analyzer, "Kerneloops") && !strcmp(name, FILENAME_BACKTRACE))
+                continue;
+
             unsigned len = strlen(content);
+
             // We were special-casing FILENAME_BACKTRACE here, but karel says
             // he can retrieve it in inlined form from comments too.
             if (len > CD_TEXT_ATT_SIZE /*|| (strcmp(name, FILENAME_BACKTRACE) == 0)*/)

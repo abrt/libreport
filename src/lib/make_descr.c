@@ -18,10 +18,12 @@
 */
 #include "internal_libreport.h"
 
-
 char *make_description(problem_data_t *problem_data, char **names_to_skip, unsigned max_text_size, unsigned desc_flags)
 {
     struct strbuf *buf_dsc = strbuf_new();
+
+    const char *analyzer = get_problem_item_content_or_NULL(problem_data,
+                                                            FILENAME_ANALYZER);
 
     GList *list = g_hash_table_get_keys(problem_data);
     list = g_list_sort(list, (GCompareFunc)strcmp);
@@ -153,8 +155,9 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip, unsig
                 continue;
 
             if ((item->flags & CD_FLAG_TXT)
-             && strlen(item->content) <= max_text_size
-            ) {
+                && (strlen(item->content) <= max_text_size
+                    || (!strcmp(analyzer, "Kerneloops") && !strcmp(key, FILENAME_BACKTRACE))))
+            {
                 char *formatted = format_problem_item(item);
                 char *output = formatted ? formatted : item->content;
                 char *eol = strchr(output, '\n');
