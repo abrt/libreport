@@ -7,7 +7,7 @@ reporter-bugzilla - Reports problem to Bugzilla.
 
 SYNOPSIS
 --------
-'reporter-bugzilla' [-vb] [-c CONFFILE] -d DIR
+'reporter-bugzilla' [-vbf] [-c CONFFILE] -d DIR
 
 Or:
 
@@ -70,11 +70,14 @@ OPTIONS
 -c CONFFILE::
    Path to configuration file.
 
--b:
+-b::
    When creating bug, attach binary files too.
 
+-f::
+   Force reporting even if this problem is already reported.
+
 -t[ID]::
-   Upload FILEs to the already created bug on Bugzilla site
+   Upload FILEs to the already created bug on Bugzilla site.
 
 SEE ALSO
 --------
