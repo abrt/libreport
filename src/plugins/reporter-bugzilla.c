@@ -40,7 +40,7 @@ int main(int argc, char **argv)
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
         "\n"
-        "& [-vb] [-c CONFFILE] -d DIR\n"
+        "& [-vbf] [-c CONFFILE] -d DIR\n"
         "or:\n"
         "& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
         "\n"
