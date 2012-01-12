@@ -142,14 +142,21 @@ int main(int argc, char **argv)
 #endif
 
     const char *dump_dir_name = ".";
-    const char *conf_file = NULL;
+    const char *conf_file = CONF_DIR"/plugins/mailx.conf";
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
         "& [-v] -d DIR [-c CONFFILE]\n"
         "\n"
-        "Sends contents of a problem directory DIR via email"
+        "Sends contents of a problem directory DIR via email\n"
+        "\n"
+        "If not specified, CONFFILE defaults to "CONF_DIR"/plugins/mailx.conf\n"
+        "Its lines should have 'PARAM = VALUE' format.\n"
+        "Recognized string parameters: Subject, EmailFrom, EmailTo.\n"
+        "Recognized boolean parameter (VALUE should be 1/0, yes/no): SendBinaryData.\n"
+        "Parameters can be overridden via $Mailx_PARAM environment variables.\n"
     );
+
     enum {
         OPT_v = 1 << 0,
         OPT_d = 1 << 1,
@@ -167,8 +174,7 @@ int main(int argc, char **argv)
     export_abrt_envvars(0);
 
     map_string_h *settings = new_map_string();
-    if (conf_file)
-        load_conf_file(conf_file, settings, /*skip key w/o values:*/ true);
+    load_conf_file(conf_file, settings, /*skip key w/o values:*/ true);
 
     create_and_send_email(dump_dir_name, settings);
 

@@ -18,8 +18,7 @@
 */
 #include "internal_libreport.h"
 
-/* Returns false if open failed.
- * Returns empty hash if conf file is empty.
+/* Returns false if open failed, else returns true.
  * TODO: better error detection?
  */
 bool load_conf_file(const char *pPath, map_string_h *settings, bool skipKeysWithoutValue)

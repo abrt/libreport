@@ -16,7 +16,8 @@ reportpluginsconfdir = $(REPORT_PLUGINS_CONF_DIR)
 
 dist_reportpluginsconf_DATA = \
     bugzilla.conf \
-    rhtsupport.conf
+    rhtsupport.conf \
+    mailx.conf
 
 eventsdir = $(EVENTS_DIR)
 
@@ -150,6 +151,7 @@ reporter_mailx_CPPFLAGS = \
     -I$(srcdir)/../libreport/src/lib \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
+    -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \

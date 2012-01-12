@@ -331,6 +331,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files plugin-mailx
 %defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/libreport/plugins/mailx.conf
 %{_sysconfdir}/libreport/events/report_Mailx.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/mailx_event.conf
 %{_mandir}/man*/reporter-mailx.*
