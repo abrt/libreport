@@ -567,9 +567,9 @@ enum {
 #define make_description libreport_make_description
 char *make_description(problem_data_t *problem_data, char **names_to_skip, unsigned max_text_size, unsigned desc_flags);
 #define make_description_bz libreport_make_description_bz
-char* make_description_bz(problem_data_t *problem_data);
+char* make_description_bz(problem_data_t *problem_data, unsigned max_text_size);
 #define make_description_logger libreport_make_description_logger
-char* make_description_logger(problem_data_t *problem_data);
+char* make_description_logger(problem_data_t *problem_data, unsigned max_text_size);
 //UNUSED
 //#define make_description_mailx libreport_make_description_mailx
 //char* make_description_mailx(problem_data_t *problem_data);
@@ -618,9 +618,27 @@ struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name
 #define make_dir_recursive libreport_make_dir_recursive
 bool make_dir_recursive(char *dir, mode_t dir_mode);
 
+// Files bigger than this are never considered to be text.
+//
+// Started at 64k limit. But _some_ limit is necessary:
+// fields declared "text" may end up in editing fields and such.
+// We don't want to accidentally end up with 100meg text in a textbox!
+// So, don't remove this. If you really need to, raise the limit.
+//
+// Bumped up to 200k: saw 124740 byte /proc/PID/smaps file
+// Bumped up to 500k: saw 375252 byte anaconda traceback file
+// Bumped up to 1M: bugzilla.redhat.com/show_bug.cgi?id=746727
+// mentions 853646 byte anaconda-tb-* file.
+//
+#define CD_MAX_TEXT_SIZE (1024*1024)
+
 // Text bigger than this usually is attached, not added inline
-// was 2k, 20kb is too much and back to 2kb, 4kb must be the right value
-#define CD_TEXT_ATT_SIZE (4*1024)
+// was 2k, 20kb is too much, let's try 4kb
+//
+// For bug databases
+#define CD_TEXT_ATT_SIZE_BZ     (4*1024)
+// For dumping problem data into a text file, email, etc
+#define CD_TEXT_ATT_SIZE_LOGGER (CD_MAX_TEXT_SIZE)
 
 // Filenames in problem directory:
 // filled by a hook:

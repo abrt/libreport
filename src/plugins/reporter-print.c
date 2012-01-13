@@ -126,7 +126,7 @@ int main(int argc, char **argv)
     if (!problem_data)
         xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
-    char *dsc = make_description_logger(problem_data);
+    char *dsc = make_description_logger(problem_data, CD_TEXT_ATT_SIZE_LOGGER);
     fputs(dsc, stdout);
     if (open_mode[0] == 'a')
         fputs("\nEND:\n\n", stdout);

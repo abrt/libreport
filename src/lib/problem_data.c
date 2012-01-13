@@ -231,16 +231,8 @@ static char* is_text_file(const char *name, ssize_t *sz)
     if (fd < 0)
         return NULL; /* it's not text (because it does not exist! :) */
 
-    /* Maybe 64k limit is small. But _some_ limit is necessary:
-     * fields declared "text" may end up in editing fields and such.
-     * We don't want to accidentally end up with 100meg text in a textbox!
-     * So, don't remove this. If you really need to, raise the limit.
-     *
-     * Bumped up to 200k: saw 124740 byte /proc/PID/smaps file
-     * Bumped up to 500k: saw 375252 byte anaconda traceback file
-     */
     off_t size = lseek(fd, 0, SEEK_END);
-    if (size < 0 || size > 500*1024)
+        if (size < 0 || size > CD_MAX_TEXT_SIZE)
     {
         close(fd);
         return NULL; /* it's not a SMALL text */

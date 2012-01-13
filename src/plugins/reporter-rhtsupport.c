@@ -227,7 +227,7 @@ int main(int argc, char **argv)
         if (reason)
             strbuf_append_strf(buf_summary, ": %s", reason);
         summary = strbuf_free_nobuf(buf_summary);
-        dsc = make_description_bz(problem_data);
+        dsc = make_description_bz(problem_data, CD_TEXT_ATT_SIZE_BZ);
     }
     file = new_reportfile();
     const char *dt_string = iso_date_string(NULL);

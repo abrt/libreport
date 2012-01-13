@@ -255,22 +255,22 @@ static const char *const blacklisted_items[] = {
  * https://bugzilla.redhat.com/show_bug.cgi?id=711591
  */
 
-char* make_description_bz(problem_data_t *problem_data)
+char* make_description_bz(problem_data_t *problem_data, unsigned max_text_size)
 {
     return make_description(
                 problem_data,
                 (char**)blacklisted_items,
-                /*max_text_size:*/ CD_TEXT_ATT_SIZE,
+                max_text_size,
                 MAKEDESC_SHOW_FILES | MAKEDESC_SHOW_MULTILINE
     );
 }
 
-char* make_description_logger(problem_data_t *problem_data)
+char* make_description_logger(problem_data_t *problem_data, unsigned max_text_size)
 {
     return make_description(
                 problem_data,
                 (char**)blacklisted_items,
-                /*max_text_size:*/ CD_TEXT_ATT_SIZE,
+                max_text_size,
                 MAKEDESC_SHOW_FILES | MAKEDESC_SHOW_MULTILINE
     );
 }

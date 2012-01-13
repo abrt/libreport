@@ -435,7 +435,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
     }
     char *status_whiteboard = xasprintf("abrt_hash:%s", duphash);
 
-    char *bz_dsc = make_description_bz(problem_data);
+    char *bz_dsc = make_description_bz(problem_data, CD_TEXT_ATT_SIZE_BZ);
     char *full_dsc = xasprintf("libreport version: "VERSION"\n%s", bz_dsc);
     free(bz_dsc);
 
@@ -574,7 +574,7 @@ int rhbz_attach_big_files(struct abrt_xmlrpc *ax, const char *bug_id,
 
             // We were special-casing FILENAME_BACKTRACE here, but karel says
             // he can retrieve it in inlined form from comments too.
-            if (len > CD_TEXT_ATT_SIZE /*|| (strcmp(name, FILENAME_BACKTRACE) == 0)*/)
+            if (len > CD_TEXT_ATT_SIZE_BZ /*|| (strcmp(name, FILENAME_BACKTRACE) == 0)*/)
             {
                 /* This text item wasn't added in comments, it is too big
                  * for that. Attach it as a file.
