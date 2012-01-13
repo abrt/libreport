@@ -639,6 +639,8 @@ bool make_dir_recursive(char *dir, mode_t dir_mode);
 #define FILENAME_MAPS         "maps"
 #define FILENAME_SMAPS        "smaps"
 #define FILENAME_ENVIRON      "environ"
+#define FILENAME_LIMITS       "limits"
+#define FILENAME_OPEN_FDS     "open_fds"
 #define FILENAME_DUPHASH      "duphash"
 // Name of the function where the application crashed.
 // Optional.
