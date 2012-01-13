@@ -604,6 +604,8 @@ bool load_user_settings(const char *application_name);
 void set_user_setting(const char *name, const char *value);
 #define get_user_setting libreport_get_user_setting
 const char *get_user_setting(const char *name);
+#define load_forbidden_words libreport_load_forbidden_words
+GList *load_forbidden_words();
 
 /* Connect to abrtd over unix domain socket, issue DELETE command */
 int delete_dump_dir_possibly_using_abrtd(const char *dump_dir_name);

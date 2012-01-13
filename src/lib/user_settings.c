@@ -126,3 +126,46 @@ const char *get_user_setting(const char *name)
 
     return g_hash_table_lookup(user_settings, name);
 }
+
+GList *load_forbidden_words(void)
+{
+    const char *conf_file = "forbidden_words.conf";
+    GList *words_list = NULL;
+    GList *file_list = NULL;
+    file_list = g_list_prepend(file_list, concat_path_file(CONF_DIR, conf_file));
+    // get_conf_path adds .conf suffix, so we need to either change it or use it like this:
+    file_list = g_list_prepend(file_list, get_conf_path("forbidden_words"));
+    GList *file_list_cur = file_list;
+
+    while(file_list_cur)
+    {
+        char *cur_file = (char *)file_list_cur->data;
+        FILE *fp = fopen(cur_file, "r");
+        if (fp)
+        {
+            /* every line is one word
+             */
+            char *line;
+            while ((line = xmalloc_fgetline(fp)) != NULL)
+            {
+                //FIXME: works only if the '#' is first char won't work for " #abcd#
+                if (line[0] != '#') // if it's not comment
+                    words_list = g_list_append(words_list, line);
+                else
+                    free(line);
+            }
+            fclose(fp);
+        }
+        else
+        {
+            VERB1 log("Can't open %s", cur_file);
+        }
+
+        file_list_cur = g_list_next(file_list_cur);
+    }
+
+    list_free_with_free(file_list);
+
+    return words_list;
+}
+

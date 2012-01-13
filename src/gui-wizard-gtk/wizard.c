@@ -98,6 +98,7 @@ static GtkProgressBar *g_active_pb;
 
 static GtkBox *g_box_assist_nav;
 static GtkNotebook *g_notebook;
+static gboolean g_warning_issued;
 
 enum
 {
@@ -109,6 +110,11 @@ enum
     DETAIL_COLUMN_NAME,
     DETAIL_COLUMN_VALUE,
     DETAIL_NUM_COLUMNS,
+};
+
+enum
+{
+    CLEAR_PREVIOUS_RESULT = 1 << 0,
 };
 
 /* Search in bt */
@@ -1853,6 +1859,7 @@ static void start_event_run(const char *event_name,
 
 static void add_warning(const char *warning)
 {
+    g_warning_issued = true;
     char *label_str = xasprintf("• %s", warning);
     GtkWidget *warning_lbl = gtk_label_new(label_str);
     /* should be safe to free it, gtk calls strdup() to copy it */
@@ -1864,15 +1871,23 @@ static void add_warning(const char *warning)
     gtk_widget_show(warning_lbl);
 }
 
+static void show_warnings()
+{
+    if (g_warning_issued)
+        gtk_widget_show(g_widget_warnings_area);
+}
+
+static void clear_warnings()
+{
+    /* erase all warnings */
+    gtk_widget_hide(g_widget_warnings_area);
+    gtk_container_foreach(GTK_CONTAINER(g_box_warning_labels), &remove_child_widget, NULL);
+}
+
 static void check_bt_rating_and_allow_send(void)
 {
     int minimal_rating = 0;
     bool send = true;
-    bool warn = false;
-
-    /* erase all warnings */
-    gtk_widget_hide(g_widget_warnings_area);
-    gtk_container_foreach(GTK_CONTAINER(g_box_warning_labels), &remove_child_widget, NULL);
 
     /*
      * FIXME: this should be bind to a reporter not to a compoment
@@ -1897,7 +1912,6 @@ static void check_bt_rating_and_allow_send(void)
             {
                 add_warning(_("Reporting disabled because the rating does not contain a number '%s'."));
                 send = false;
-                warn = true;
             }
 
             GList *li = g_list_selected_reporters;
@@ -1920,7 +1934,6 @@ static void check_bt_rating_and_allow_send(void)
             if (rating == minimal_rating) /* bt is usable, but not complete, so show a warning */
             {
                 add_warning(_("The backtrace is incomplete, please make sure you provide the steps to reproduce."));
-                warn = true;
             }
 
             if (rating < minimal_rating)
@@ -1928,7 +1941,6 @@ static void check_bt_rating_and_allow_send(void)
                 //FIXME: see CreporterAssistant: 394 for ideas
                 add_warning(_("Reporting disabled because the backtrace is unusable."));
                 send = false;
-                warn = true;
             }
         }
     }
@@ -1936,8 +1948,6 @@ static void check_bt_rating_and_allow_send(void)
     gtk_assistant_set_page_complete(g_assistant,
                                     pages[PAGENO_EDIT_BACKTRACE].page_widget,
                                     send);
-    if (warn)
-        gtk_widget_show(g_widget_warnings_area);
 }
 
 static void on_bt_approve_toggle(GtkToggleButton *togglebutton, gpointer user_data)
@@ -2098,6 +2108,103 @@ static void log_ready_state()
 }
 #endif
 
+static gboolean highligh_word_in_tabs(const char *search_word, int flags)
+{
+    gboolean found = false;
+    GtkTextBuffer *buffer;
+    GtkTextIter start_find;
+    GtkTextIter end_find;
+    GtkTextIter start_match;
+    GtkTextIter end_match;
+    PangoAttrList *attrs;
+    int offset = 0;
+
+    gint n_pages = gtk_notebook_get_n_pages(g_notebook);
+    int i = 0;
+    for (i = 0; i < n_pages; i++)
+    {
+        //notebook_page->scrolled_window->text_view
+        GtkWidget *notebook_child = gtk_notebook_get_nth_page(g_notebook, i);
+        GtkTextView *tev = GTK_TEXT_VIEW(gtk_bin_get_child(GTK_BIN(notebook_child)));
+        buffer = gtk_text_view_get_buffer(tev);
+        gtk_text_buffer_get_start_iter(buffer, &start_find);
+        gtk_text_buffer_get_end_iter(buffer, &end_find);
+        GtkWidget *tab_lbl = gtk_notebook_get_tab_label(g_notebook, notebook_child);
+        //reset previous results
+        if (flags & CLEAR_PREVIOUS_RESULT)
+        {
+            gtk_text_buffer_remove_tag_by_name(buffer, "search_result_bg", &start_find, &end_find);
+            attrs = gtk_label_get_attributes(GTK_LABEL(tab_lbl));
+            gtk_label_set_attributes(GTK_LABEL(tab_lbl), NULL);
+            pango_attr_list_unref(attrs); //If the result is zero, free the attribute list and the attributes it contains.
+        }
+
+        /* adds * instead of changing color - usable for gtk < 2.8 */
+        /*
+        char* lbl = xstrdup(gtk_label_get_text(GTK_LABEL(tab_lbl)));
+        if (lbl[0] == '*') // lets hope we don't have elements name starting with *
+        {
+            gtk_label_set_text(GTK_LABEL(tab_lbl), lbl+1);
+        }
+        free(lbl);
+        */
+
+        bool lbl_set = false;
+
+        if (strncmp(gtk_label_get_text(GTK_LABEL(tab_lbl)), "page 1", 5) == 0)
+        {
+            continue;
+        }
+
+        while (search_word && search_word[0] && gtk_text_iter_forward_search(&start_find, search_word,
+                                     GTK_TEXT_SEARCH_TEXT_ONLY,
+                                     &start_match,
+                                     &end_match, NULL))
+        {
+            found = true;
+            if (!lbl_set)
+            {
+                attrs = pango_attr_list_new();
+                PangoAttribute *foreground_attr = pango_attr_foreground_new(65535, 0, 0);
+                pango_attr_list_insert(attrs, foreground_attr);
+                gtk_label_set_attributes(GTK_LABEL(tab_lbl), attrs);
+
+                /* adds * instead of changing color - usable for gtk < 2.8 */
+                /*
+                char *found_lbl = xasprintf("*%s", gtk_label_get_text(GTK_LABEL(tab_lbl)));
+                gtk_label_set_text(GTK_LABEL(tab_lbl), found_lbl);
+                free(found_lbl);
+                */
+
+                lbl_set = true;
+            }
+            gtk_text_buffer_apply_tag_by_name(buffer, "search_result_bg",
+                                              &start_match, &end_match);
+            offset = gtk_text_iter_get_offset(&end_match);
+            gtk_text_buffer_get_iter_at_offset(buffer, &start_find, offset);
+        }
+    }
+    return found;
+}
+
+static void highlight_forbidden()
+{
+    gboolean found = false;
+    GList *forbidden_words = load_forbidden_words();
+    GList *cur_word = forbidden_words;
+    while (cur_word && ((char *)cur_word->data)[0])
+    {
+        if(highligh_word_in_tabs((char *)cur_word->data, 0))
+            found = true;
+        cur_word = g_list_next(cur_word);
+    }
+    if (found)
+    {
+        add_warning(_("Possible sensitive data detected, please review the highlighted tabs carefully."));
+    }
+    list_free_with_free(forbidden_words);
+}
+
 static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer user_data)
 {
     //int page_no = gtk_assistant_get_current_page(g_assistant);
@@ -2129,7 +2236,10 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
 
     if (pages[PAGENO_EDIT_BACKTRACE].page_widget == page)
     {
+        clear_warnings();
         check_bt_rating_and_allow_send();
+        highlight_forbidden();
+        show_warnings();
     }
 
     /* Save text fields if changed */
@@ -2245,78 +2355,10 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
 static gboolean highlight_search(gpointer user_data)
 {
     GtkEntry *entry = GTK_ENTRY(user_data);
-    GtkTextBuffer *buffer;
-    GtkTextIter start_find;
-    GtkTextIter end_find;
-    GtkTextIter start_match;
-    GtkTextIter end_match;
-    PangoAttrList * attrs;
-    int offset = 0;
-
-    gint n_pages = gtk_notebook_get_n_pages(g_notebook);
-    int i = 0;
 
     VERB1 log("searching: '%s'", gtk_entry_get_text(entry));
 
-    for (i = 0; i < n_pages; i++)
-    {
-        //notebook_page->scrolled_window->text_view
-        GtkWidget *notebook_child = gtk_notebook_get_nth_page(g_notebook, i);
-        GtkTextView *tev = GTK_TEXT_VIEW(gtk_bin_get_child(GTK_BIN(notebook_child)));
-        const char *search_text = gtk_entry_get_text(entry);
-        buffer = gtk_text_view_get_buffer(tev);
-        gtk_text_buffer_get_start_iter(buffer, &start_find);
-        gtk_text_buffer_get_end_iter(buffer, &end_find);
-        //reset previous results
-        gtk_text_buffer_remove_tag_by_name(buffer, "search_result_bg", &start_find, &end_find);
-        GtkWidget *tab_lbl = gtk_notebook_get_tab_label(g_notebook, notebook_child);
-        attrs = gtk_label_get_attributes(GTK_LABEL(tab_lbl));
-        gtk_label_set_attributes(GTK_LABEL(tab_lbl), NULL);
-        pango_attr_list_unref(attrs); //If the result is zero, free the attribute list and the attributes it contains.
-
-        /* adds * instead of changing color - usable for gtk < 2.8 */
-        /*
-        char* lbl = xstrdup(gtk_label_get_text(GTK_LABEL(tab_lbl)));
-        if (lbl[0] == '*') // lets hope we don't have elements name starting with *
-        {
-            gtk_label_set_text(GTK_LABEL(tab_lbl), lbl+1);
-        }
-        free(lbl);
-        */
-
-        bool lbl_set = false;
-
-        if (strncmp(gtk_label_get_text(GTK_LABEL(tab_lbl)), "page 1", 5) == 0)
-        {
-            continue;
-        }
-
-        while (search_text[0] && gtk_text_iter_forward_search(&start_find, search_text,
-                                     GTK_TEXT_SEARCH_TEXT_ONLY, &start_match,
-                                     &end_match, NULL))
-        {
-            if (!lbl_set)
-            {
-                attrs = pango_attr_list_new();
-                PangoAttribute *foreground_attr = pango_attr_foreground_new(65535, 0, 0);
-                pango_attr_list_insert(attrs, foreground_attr);
-                gtk_label_set_attributes(GTK_LABEL(tab_lbl), attrs);
-
-                /* adds * instead of changing color - usable for gtk < 2.8 */
-                /*
-                char *found_lbl = xasprintf("*%s", gtk_label_get_text(GTK_LABEL(tab_lbl)));
-                gtk_label_set_text(GTK_LABEL(tab_lbl), found_lbl);
-                free(found_lbl);
-                */
-
-                lbl_set = true;
-            }
-            gtk_text_buffer_apply_tag_by_name(buffer, "search_result_bg",
-                                              &start_match, &end_match);
-            offset = gtk_text_iter_get_offset(&end_match);
-            gtk_text_buffer_get_iter_at_offset(buffer, &start_find, offset);
-        }
-    }
+    highligh_word_in_tabs(gtk_entry_get_text(entry), CLEAR_PREVIOUS_RESULT);
 
     /* returning false will make glib to remove this event */
     return false;

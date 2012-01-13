@@ -39,6 +39,9 @@ GLADE_FILES = wizard.glade
 #pkgdata_DATA = $(GLADE_FILES)
 EXTRA_DIST = $(GLADE_FILES)
 
+libreportconfdir = $(CONF_DIR)
+dist_libreportconf_DATA = \
+    forbidden_words.conf
 
 # For internal glade file storage in the binary:
 wizard.c: wizard_glade.c
