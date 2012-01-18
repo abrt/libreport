@@ -100,6 +100,22 @@ static GtkBox *g_box_assist_nav;
 static GtkNotebook *g_notebook;
 static gboolean g_warning_issued;
 
+static GtkEventBox *g_ev_search_up;
+static GtkEventBox *g_ev_search_down;
+
+typedef struct
+{
+    int page; //which tab in notepad
+    GtkTextBuffer *buffer;
+    GtkTextView *tev;
+    GtkTextIter start;
+    GtkTextIter end;
+} search_item_t;
+
+GList *g_search_result_list;
+static guint g_current_highlighted_word;
+static bool g_first_highlight = true;
+
 enum
 {
     /* Note: need to update types in
@@ -1050,6 +1066,7 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
             GtkTextBuffer *buf = gtk_text_view_get_buffer(GTK_TEXT_VIEW(tev));
             /* found items background */
             gtk_text_buffer_create_tag(buf, "search_result_bg", "background", "red", NULL);
+            gtk_text_buffer_create_tag(buf, "current_result_bg", "background", "green", NULL);
             GtkWidget *sw = gtk_scrolled_window_new(NULL, NULL);
             gtk_container_add(GTK_CONTAINER(sw), tev);
             gtk_notebook_append_page(g_notebook, sw, tab_lbl);
@@ -2119,12 +2136,20 @@ static gboolean highligh_word_in_tabs(const char *search_word, int flags)
     PangoAttrList *attrs;
     int offset = 0;
 
+    if (flags & CLEAR_PREVIOUS_RESULT)
+    {
+        list_free_with_free(g_search_result_list);
+        g_search_result_list = NULL;
+        g_current_highlighted_word = 0;
+        g_first_highlight = true;
+    }
+
     gint n_pages = gtk_notebook_get_n_pages(g_notebook);
-    int i = 0;
-    for (i = 0; i < n_pages; i++)
+    int page = 0;
+    for (page = 0; page < n_pages; page++)
     {
         //notebook_page->scrolled_window->text_view
-        GtkWidget *notebook_child = gtk_notebook_get_nth_page(g_notebook, i);
+        GtkWidget *notebook_child = gtk_notebook_get_nth_page(g_notebook, page);
         GtkTextView *tev = GTK_TEXT_VIEW(gtk_bin_get_child(GTK_BIN(notebook_child)));
         buffer = gtk_text_view_get_buffer(tev);
         gtk_text_buffer_get_start_iter(buffer, &start_find);
@@ -2134,6 +2159,7 @@ static gboolean highligh_word_in_tabs(const char *search_word, int flags)
         if (flags & CLEAR_PREVIOUS_RESULT)
         {
             gtk_text_buffer_remove_tag_by_name(buffer, "search_result_bg", &start_find, &end_find);
+            gtk_text_buffer_remove_tag_by_name(buffer, "current_result_bg", &start_find, &end_find);
             attrs = gtk_label_get_attributes(GTK_LABEL(tab_lbl));
             gtk_label_set_attributes(GTK_LABEL(tab_lbl), NULL);
             pango_attr_list_unref(attrs); //If the result is zero, free the attribute list and the attributes it contains.
@@ -2161,6 +2187,13 @@ static gboolean highligh_word_in_tabs(const char *search_word, int flags)
                                      &start_match,
                                      &end_match, NULL))
         {
+            search_item_t * found_word = (search_item_t *)xmalloc(sizeof(search_item_t));
+            found_word->start = start_match;
+            found_word->end = end_match;
+            found_word->buffer = buffer;
+            found_word->tev = tev;
+            found_word->page = page;
+            g_search_result_list = g_list_append(g_search_result_list, found_word);
             found = true;
             if (!lbl_set)
             {
@@ -2350,6 +2383,63 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
 
     VERB2 log("%s: selected page #%d", __func__, current_page_no);
     return current_page_no;
+}
+
+static void highlight_widget(GtkWidget *widget, gpointer *user_data)
+{
+    gtk_drag_highlight(widget);
+}
+
+static void unhighlight_widget(GtkWidget *widget, gpointer *user_data)
+{
+    gtk_drag_unhighlight(widget);
+}
+
+static void unhighlight_current_word()
+{
+    search_item_t *word = NULL;
+    word = (search_item_t *)g_list_nth_data(g_search_result_list, g_current_highlighted_word);
+    if (word)
+    {
+        gtk_text_buffer_remove_tag_by_name(word->buffer, "current_result_bg", &(word->start), &(word->end));
+    }
+}
+
+static void highlight_current_word()
+{
+    search_item_t *word = NULL;
+    word = (search_item_t *)g_list_nth_data(g_search_result_list, g_current_highlighted_word);
+    if (word)
+    {
+        gtk_notebook_set_current_page(g_notebook, word->page);
+        gtk_text_buffer_apply_tag_by_name(word->buffer, "current_result_bg", &(word->start), &(word->end));
+        gtk_text_buffer_place_cursor(word->buffer, &(word->start));
+        gtk_text_view_scroll_to_iter(word->tev, &(word->start), 0.0, false, 0, 0);
+    }
+}
+
+static void search_down(GtkWidget *widget, gpointer user_data)
+{
+    if (g_current_highlighted_word < g_list_length(g_search_result_list)-1)
+    {
+        unhighlight_current_word();
+        if (!g_first_highlight)
+            g_current_highlighted_word++;
+        g_first_highlight = false;
+        highlight_current_word();
+    }
+}
+
+static void search_up(GtkWidget *widget, gpointer user_data)
+{
+    if (g_current_highlighted_word > 0)
+    {
+        unhighlight_current_word();
+        if (!g_first_highlight)
+            g_current_highlighted_word--;
+        g_first_highlight = false;
+        highlight_current_word();
+    }
 }
 
 static gboolean highlight_search(gpointer user_data)
@@ -2651,6 +2741,8 @@ static void add_pages()
     g_lbl_reporters        = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_reporters"));
     g_lbl_size             = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_size"));
     g_notebook             = GTK_NOTEBOOK(     gtk_builder_get_object(builder, "notebook_edit"));
+    g_ev_search_up         = GTK_EVENT_BOX(     gtk_builder_get_object(builder, "ev_search_up"));
+    g_ev_search_down       = GTK_EVENT_BOX(   gtk_builder_get_object(builder, "ev_search_down"));
 
     gtk_widget_hide(g_widget_warnings_area);
 
@@ -2683,6 +2775,15 @@ static void add_pages()
     g_signal_connect(g_btn_cancel_report, "clicked", G_CALLBACK(on_btn_cancel_event), NULL);
 
     g_signal_connect(g_cb_no_comment, "toggled", G_CALLBACK(on_no_comment_toggled), NULL);
+
+    /* hook up the search arrows */
+    g_signal_connect(G_OBJECT(g_ev_search_up), "enter-notify-event", G_CALLBACK(highlight_widget), NULL);
+    g_signal_connect(G_OBJECT(g_ev_search_up), "leave-notify-event", G_CALLBACK(unhighlight_widget), NULL);
+    g_signal_connect(G_OBJECT(g_ev_search_up), "button-press-event", G_CALLBACK(search_up), NULL);
+
+    g_signal_connect(G_OBJECT(g_ev_search_down), "enter-notify-event", G_CALLBACK(highlight_widget), NULL);
+    g_signal_connect(G_OBJECT(g_ev_search_down), "leave-notify-event", G_CALLBACK(unhighlight_widget), NULL);
+    g_signal_connect(G_OBJECT(g_ev_search_down), "button-press-event", G_CALLBACK(search_down), NULL);
 
     GtkWidget *w;
 
