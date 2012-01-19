@@ -156,9 +156,18 @@ ssize_t full_write_str(int fd, const char *buf);
 #define encode_base64 libreport_encode_base64
 char *encode_base64(const void *src, int length);
 
-/* Returns NULL if the string needs no sanitizing. */
+/* Returns NULL if the string needs no sanitizing.
+ * control_chars_to_sanitize is a bit mask.
+ * If Nth bit is set, Nth control char will be sanitized (replaced by [XX]).
+ */
 #define sanitize_utf8 libreport_sanitize_utf8
-char *sanitize_utf8(const char *src);
+char *sanitize_utf8(const char *src, uint32_t control_chars_to_sanitize);
+enum {
+    SANITIZE_ALL = 0xffffffff,
+    SANITIZE_TAB = (1 << 9),
+    SANITIZE_LF  = (1 << 10),
+    SANITIZE_CR  = (1 << 13),
+};
 
 #define SHA1_RESULT_LEN (5 * 4)
 typedef struct sha1_ctx_t {

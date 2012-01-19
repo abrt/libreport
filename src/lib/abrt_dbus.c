@@ -58,7 +58,7 @@ void store_string(DBusMessageIter* iter, const char* val)
     /* dbus daemon will simply close our connection if we send broken utf8.
      * Therefore we must never do that.
      */
-    const char *sanitized = sanitize_utf8(val);
+    const char *sanitized = sanitize_utf8(val, /*ctrl:*/ 0);
     if (!dbus_message_iter_append_basic(iter, DBUS_TYPE_STRING, sanitized ? &sanitized : &val))
         die_out_of_memory();
     free((char*)sanitized);

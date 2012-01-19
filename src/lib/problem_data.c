@@ -345,8 +345,12 @@ void load_problem_data_from_dump_dir(problem_data_t *problem_data, struct dump_d
         if (nl && nl[1] == '\0')
             *nl = '\0';
 
-        /* Sanitize possibly corrupted utf8 */
-        char *sanitized = sanitize_utf8(content);
+        /* Sanitize possibly corrupted utf8.
+         * Of control chars, allow only tab and newline.
+         */
+        char *sanitized = sanitize_utf8(content,
+                (SANITIZE_ALL & ~SANITIZE_LF & ~SANITIZE_TAB)
+        );
         if (sanitized)
         {
             free(content);
