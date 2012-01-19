@@ -184,6 +184,8 @@ static const char *const editable_files[] = {
     //FILENAME_ANALYZER   ,
     //FILENAME_EXECUTABLE ,
     //FILENAME_BINARY     ,
+    FILENAME_OPEN_FDS   , /* user might want to hide sensitive file names */
+    //FILENAME_LIMITS     ,
     FILENAME_CMDLINE    ,
     //FILENAME_COREDUMP   ,
     FILENAME_BACKTRACE  ,
@@ -197,7 +199,6 @@ static const char *const editable_files[] = {
     //FILENAME_OS_RELEASE ,
     //FILENAME_PACKAGE    ,
     //FILENAME_COMPONENT  ,
-    FILENAME_COMMENT    ,
     //FILENAME_RATING     ,
     FILENAME_HOSTNAME   ,
     FILENAME_REMOTE     ,
