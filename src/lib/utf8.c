@@ -18,7 +18,7 @@
 */
 #include "internal_libreport.h"
 
-char *sanitize_utf8(const char *src)
+char *sanitize_utf8(const char *src, uint32_t control_chars_to_sanitize)
 {
     const char *initial_src = src;
     char *sanitized = NULL;
@@ -31,6 +31,8 @@ char *sanitize_utf8(const char *src)
         unsigned c = (unsigned char) *src;
         if (c <= 0x7f)
         {
+            if (c < 32 && (((uint32_t)1 << c) & control_chars_to_sanitize))
+                goto bad_byte;
             bytes = 1;
             goto good_byte;
         }

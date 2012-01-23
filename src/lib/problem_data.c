@@ -184,6 +184,8 @@ static const char *const editable_files[] = {
     //FILENAME_ANALYZER   ,
     //FILENAME_EXECUTABLE ,
     //FILENAME_BINARY     ,
+    FILENAME_OPEN_FDS   , /* user might want to hide sensitive file names */
+    //FILENAME_LIMITS     ,
     FILENAME_CMDLINE    ,
     //FILENAME_COREDUMP   ,
     FILENAME_BACKTRACE  ,
@@ -197,7 +199,6 @@ static const char *const editable_files[] = {
     //FILENAME_OS_RELEASE ,
     //FILENAME_PACKAGE    ,
     //FILENAME_COMPONENT  ,
-    FILENAME_COMMENT    ,
     //FILENAME_RATING     ,
     FILENAME_HOSTNAME   ,
     FILENAME_REMOTE     ,
@@ -345,8 +346,12 @@ void load_problem_data_from_dump_dir(problem_data_t *problem_data, struct dump_d
         if (nl && nl[1] == '\0')
             *nl = '\0';
 
-        /* Sanitize possibly corrupted utf8 */
-        char *sanitized = sanitize_utf8(content);
+        /* Sanitize possibly corrupted utf8.
+         * Of control chars, allow only tab and newline.
+         */
+        char *sanitized = sanitize_utf8(content,
+                (SANITIZE_ALL & ~SANITIZE_LF & ~SANITIZE_TAB)
+        );
         if (sanitized)
         {
             free(content);

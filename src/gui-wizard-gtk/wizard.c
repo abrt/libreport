@@ -411,7 +411,7 @@ struct dump_dir *steal_if_needed(struct dump_dir *dd)
                 GTK_MESSAGE_QUESTION,
                 GTK_BUTTONS_OK_CANCEL,
                 _("Need writable directory, but '%s' is not writable."
-                " Move it to '%s' and operate on the moved copy?"),
+                " Move it to '%s' and operate on the moved data?"),
                 g_dump_dir_name, HOME
                 );
         gint response = GTK_RESPONSE_CANCEL;
