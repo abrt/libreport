@@ -3,15 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
+# Jakub Jedelský <jakub.jedelsky@gmail.com>, 2011.
 # Milan Kerslager <milan.kerslager@pslib.cz>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-09 15:49+0100\n"
-"PO-Revision-Date: 2011-09-22 11:08+0000\n"
-"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
-"Language-Team: Czech (http://www.transifex.net/projects/p/fedora/team/cs/)\n"
+"POT-Creation-Date: 2012-02-03 13:45+0100\n"
+"PO-Revision-Date: 2012-02-03 12:38+0000\n"
+"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -42,11 +43,11 @@ msgstr "Spustit analýzu událostí v DUP_DIR"
 
 #: ../src/cli/cli.c:84
 msgid "Run collect event(s) on DUMP_DIR"
-msgstr ""
+msgstr "Spustit shromažďování událostí v DUMP_DIR"
 
 #: ../src/cli/cli.c:85
 msgid "Analyze, collect and report problem data in DUMP_DIR"
-msgstr ""
+msgstr "Analýza, shromáždění a nahlášení problémových dat v DUMP_DIR"
 
 #: ../src/cli/cli.c:86 ../src/report-newt/report-newt.c:395
 msgid "Display version and exit"
@@ -54,7 +55,7 @@ msgstr "Zobrazit verzi a skončit"
 
 #: ../src/cli/cli.c:87
 msgid "Remove DUMP_DIR after reporting"
-msgstr ""
+msgstr "Odstranit DUMP_DIR po nahlášení chyb"
 
 #: ../src/cli/cli.c:88
 msgid "Noninteractive: don't ask questions, assume 'yes'"
@@ -147,7 +148,7 @@ msgstr ""
 "V hlášení nebyly nalezeny žádné změny"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1582
+#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1605
 #: ../src/lib/client.c:51 ../src/lib/run_event.c:476
 msgid "y"
 msgstr "a"
@@ -186,13 +187,13 @@ msgstr "Neplatný vstup. Program skončí..."
 
 #: ../src/cli/cli-report.c:704
 msgid "What additional information would you like to collect?"
-msgstr ""
+msgstr "Jaké další informace si přejete shromáždit?"
 
 #: ../src/cli/cli-report.c:717
 msgid "Select collector(s): "
 msgstr ""
 
-#: ../src/cli/cli-report.c:765 ../src/gui-wizard-gtk/wizard.c:1234
+#: ../src/cli/cli-report.c:765 ../src/gui-wizard-gtk/wizard.c:1257
 #: ../src/report-newt/report-newt.c:334
 msgid "(no description)"
 msgstr "(žádný popis)"
@@ -200,9 +201,9 @@ msgstr "(žádný popis)"
 #: ../src/cli/cli-report.c:798
 #, c-format
 msgid "There were %d errors while collecting additional data\n"
-msgstr ""
+msgstr "Během shromažďování dodatečných dat se objevilo %d chyb\n"
 
-#: ../src/cli/cli-report.c:857 ../src/gui-wizard-gtk/wizard.c:2045
+#: ../src/cli/cli-report.c:857 ../src/gui-wizard-gtk/wizard.c:2072
 msgid "Reporting..."
 msgstr "Nahlašuje se…"
 
@@ -246,7 +247,7 @@ msgstr ""
 
 #: ../src/gtk-helpers/event_config_dialog.c:430
 msgid "Gnome Keyring is not available, your settings won't be saved!"
-msgstr ""
+msgstr "Není dostupný Gnome Keyring, nastavení nemůže být uloženo!"
 
 #: ../src/gtk-helpers/event_config_dialog.c:463
 msgid "Event Configuration"
@@ -274,11 +275,11 @@ msgstr "Náhradní soubor s GUI"
 #. for use from 3rd party apps to show just a reporter selector
 #: ../src/gui-wizard-gtk/main.c:130 ../src/report-newt/report-newt.c:393
 msgid "Skip analyze steps, go through report steps only"
-msgstr ""
+msgstr "Přeskočit kroky analýzy, pokračovat jen na hlášení"
 
 #: ../src/gui-wizard-gtk/main.c:131 ../src/report-newt/report-newt.c:394
 msgid "Remove DIR after reporting"
-msgstr ""
+msgstr "Odstranit DIR po odeslání hlášení"
 
 #. Page types:
 #. * CONTENT: normal page (has all btns: [Cancel] [Last] [Back] [Fwd])
@@ -292,55 +293,55 @@ msgstr ""
 #. * using gtk_assistant_commit at init time.
 #.
 #. glade element name     , on-screen text          , type
-#: ../src/gui-wizard-gtk/wizard.c:225
+#: ../src/gui-wizard-gtk/wizard.c:247
 msgid "Problem description"
-msgstr ""
+msgstr "Popis problému"
 
-#: ../src/gui-wizard-gtk/wizard.c:226
+#: ../src/gui-wizard-gtk/wizard.c:248
 msgid "Provide additional information"
-msgstr ""
+msgstr "Poskytnutí dodatečných informací"
 
-#: ../src/gui-wizard-gtk/wizard.c:227
+#: ../src/gui-wizard-gtk/wizard.c:249
 msgid "Select analyzer"
-msgstr ""
+msgstr "Výběr analyzéru"
 
-#: ../src/gui-wizard-gtk/wizard.c:228
+#: ../src/gui-wizard-gtk/wizard.c:250
 msgid "Analyzing"
-msgstr ""
+msgstr "Probíhá analýza"
 
-#: ../src/gui-wizard-gtk/wizard.c:229
+#: ../src/gui-wizard-gtk/wizard.c:251
 msgid "Select collector"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:230
+#: ../src/gui-wizard-gtk/wizard.c:252
 msgid "Collecting"
-msgstr ""
+msgstr "Probíhá sběr dat"
 
 #. Some reporters don't need backtrace, we can skip bt page for them.
 #. * Therefore we want to know reporters _before_ we go to bt page
 #.
-#: ../src/gui-wizard-gtk/wizard.c:234
+#: ../src/gui-wizard-gtk/wizard.c:256
 msgid "Select reporter"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:235
+#: ../src/gui-wizard-gtk/wizard.c:257
 msgid "Review the data"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:236
+#: ../src/gui-wizard-gtk/wizard.c:258
 msgid "Confirm data to report"
-msgstr ""
+msgstr "Schválit data k odeslání hlášení"
 
 #. Was GTK_ASSISTANT_PAGE_PROGRESS, but we want to allow returning to it
-#: ../src/gui-wizard-gtk/wizard.c:238 ../src/report-newt/report-newt.c:256
+#: ../src/gui-wizard-gtk/wizard.c:260 ../src/report-newt/report-newt.c:256
 msgid "Reporting"
-msgstr ""
+msgstr "Probíhá nahlašování"
 
-#: ../src/gui-wizard-gtk/wizard.c:239
+#: ../src/gui-wizard-gtk/wizard.c:261
 msgid "Reporting done"
-msgstr ""
+msgstr "Nahlašování dokončeno"
 
-#: ../src/gui-wizard-gtk/wizard.c:311
+#: ../src/gui-wizard-gtk/wizard.c:333
 #, c-format
 msgid ""
 "Wrong settings detected for %s, reporting will probably fail if you continue "
@@ -349,7 +350,7 @@ msgstr ""
 "Pro %s detekováno chybné nastavení. Pokud budete pokračovat, odeslání "
 "hlášení zřejmě nebude možné."
 
-#: ../src/gui-wizard-gtk/wizard.c:315
+#: ../src/gui-wizard-gtk/wizard.c:337
 #, c-format
 msgid ""
 "Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
@@ -358,63 +359,61 @@ msgstr ""
 "Pro <b>%s</b> detekováno chybné nastavení. Pokud budete pokračovat, odeslání "
 "hlášení zřejmě nebude možné."
 
-#: ../src/gui-wizard-gtk/wizard.c:332
+#: ../src/gui-wizard-gtk/wizard.c:354
 #, c-format
 msgid "Con_figure %s"
-msgstr ""
+msgstr "_Konfigurace %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:391
+#: ../src/gui-wizard-gtk/wizard.c:413
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved data?"
 msgstr ""
-"Je třeba zapisovatelný adresář, ale do „%s“ nelze zapsat. Přesunout jej do "
-"„%s“ a pracovat nad přesunutou kopií?"
 
-#: ../src/gui-wizard-gtk/wizard.c:398
+#: ../src/gui-wizard-gtk/wizard.c:420
 msgid "Don't ask me again"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:608
+#: ../src/gui-wizard-gtk/wizard.c:630
 msgid "View/edit a text file"
-msgstr ""
+msgstr "Zobrazit/Upravit testový soubor"
 
-#: ../src/gui-wizard-gtk/wizard.c:891
+#: ../src/gui-wizard-gtk/wizard.c:913
 #, c-format
 msgid "(not needed, '%s' already exists)"
 msgstr "(není potřeba, '%s' již existuje)"
 
-#: ../src/gui-wizard-gtk/wizard.c:956
+#: ../src/gui-wizard-gtk/wizard.c:978
 msgid "Go to next step"
-msgstr ""
+msgstr "Přejít na další krok"
 
-#: ../src/gui-wizard-gtk/wizard.c:1064
+#: ../src/gui-wizard-gtk/wizard.c:1087
 msgid "(click here to view/edit)"
 msgstr "(kliknout zde pro zobrazení/úpravy)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1074
+#: ../src/gui-wizard-gtk/wizard.c:1097
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(binární soubor, %'llu bajtů)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1242
+#: ../src/gui-wizard-gtk/wizard.c:1265
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%'llu bajtů, %'u souborů"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1786
+#: ../src/gui-wizard-gtk/wizard.c:1809
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "Pro událost „%s“ není určen způsob zpracování"
 
-#: ../src/gui-wizard-gtk/wizard.c:1898
+#: ../src/gui-wizard-gtk/wizard.c:1930
 #, c-format
 msgid "Reporting disabled because the rating does not contain a number '%s'."
-msgstr ""
+msgstr "Odeslání hlášení je vypnuto, protože hodnocení neobsahuje číslo „%s“."
 
-#: ../src/gui-wizard-gtk/wizard.c:1922
+#: ../src/gui-wizard-gtk/wizard.c:1953
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -423,61 +422,67 @@ msgstr ""
 "postup, jak problém vyvolat."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1929
+#: ../src/gui-wizard-gtk/wizard.c:1959
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Odeslání hlášení není povoleno, protože výpis volání je nepoužitelný."
 
-#: ../src/gui-wizard-gtk/wizard.c:2018
+#: ../src/gui-wizard-gtk/wizard.c:2045
 msgid "Analyzing..."
 msgstr "Analyzuje se…"
 
-#: ../src/gui-wizard-gtk/wizard.c:2019
+#: ../src/gui-wizard-gtk/wizard.c:2046
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "Analýza skončila s návratovým kódem %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:2046
+#: ../src/gui-wizard-gtk/wizard.c:2073
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "Nahlašování skončilo s návratovým kódem %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:2073
+#: ../src/gui-wizard-gtk/wizard.c:2100
 msgid "Collecting..."
-msgstr ""
+msgstr "Shromažďování..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2074
+#: ../src/gui-wizard-gtk/wizard.c:2101
 #, c-format
 msgid "Collecting finished with exit code %d"
+msgstr "Shromažďování dokončeno s návratovým kódem %d"
+
+#: ../src/gui-wizard-gtk/wizard.c:2236
+msgid ""
+"Possible sensitive data detected, please review the highlighted tabs "
+"carefully."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2400
+#: ../src/gui-wizard-gtk/wizard.c:2532
 #, c-format
 msgid "'%s' is not an ordinary file"
-msgstr ""
+msgstr "„%s“ není obyčejný soubor"
 
-#: ../src/gui-wizard-gtk/wizard.c:2416
+#: ../src/gui-wizard-gtk/wizard.c:2548
 msgid "You are trying to copy a file onto itself"
-msgstr ""
+msgstr "Pokoušíte se kopírovat soubor na sebe sama"
 
-#: ../src/gui-wizard-gtk/wizard.c:2423
+#: ../src/gui-wizard-gtk/wizard.c:2555
 #, c-format
 msgid "Can't copy '%s': %s"
-msgstr ""
+msgstr "Nelze zkopírovat „%s“: %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2438
+#: ../src/gui-wizard-gtk/wizard.c:2570
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
-msgstr ""
+msgstr "Položka „%s“ již existuje a není možné ji upravovat"
 
-#: ../src/gui-wizard-gtk/wizard.c:2683
+#: ../src/gui-wizard-gtk/wizard.c:2826
 msgid "Include"
 msgstr "Vložit"
 
-#: ../src/gui-wizard-gtk/wizard.c:2693
+#: ../src/gui-wizard-gtk/wizard.c:2836
 msgid "Name"
 msgstr "Název"
 
-#: ../src/gui-wizard-gtk/wizard.c:2701
+#: ../src/gui-wizard-gtk/wizard.c:2844
 msgid "Value"
 msgstr "Hodnota"
 
@@ -495,7 +500,7 @@ msgstr "Analýza ještě nezačala"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid "Attach a file"
-msgstr ""
+msgstr "Přiložit soubor"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid "Click 'Apply' to start reporting"
@@ -503,7 +508,7 @@ msgstr "Proces hlášení započnete kliknutím na „Aplikovat“."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid "Collecting did not start yet"
-msgstr ""
+msgstr "Shromažďování dat ještě nezačalo"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "Details"
@@ -515,6 +520,9 @@ msgid ""
 "additional comments useful for diagnosing the problem? Please use English if "
 "possible."
 msgstr ""
+"Jak tento problém nastal (krok po kroku)? Jak může být reprodukován? Jsou "
+"nějaké další užitečné informace k diagnostice problému? Pokud je to možné, "
+"použijte prosím angličtinu."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "I don't know what caused this problem"
@@ -522,7 +530,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "I reviewed the data and _agree with submitting it"
-msgstr ""
+msgstr "Zkontroloval jsem data a _souhlasím s jejich odesláním"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid ""
@@ -530,6 +538,10 @@ msgid ""
 "data (such as usernames and passwords). Backtrace, command line, environment "
 "variables are the typical items in need of examining."
 msgstr ""
+"Pokud odesíláte chybu na vzdálený server, zkontrolujte, zda jste opravdu "
+"odstranili všechny soukromé údaje (jako například uživatelská jména a "
+"hesla). Běžné položky potřebné pro zkoumání jsou výpisy volání (backtrace), "
+"příkazová řádka a proměnné prostředí."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid ""
@@ -569,7 +581,7 @@ msgstr "Hlášení bylo dokončeno. Okno můžete nyní zavřít."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "Select additional files to attach to the report:"
-msgstr ""
+msgstr "Vyberte další soubory jako přílohu k hlášení problému:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid "Select how you would like to analyze the problem:"
@@ -629,7 +641,7 @@ msgstr "Použití: "
 #: ../src/lib/abrt_curl.c:208 ../src/plugins/reporter-upload.c:41
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
-msgstr ""
+msgstr "Odesláno: %llu z %llu kilobytů"
 
 #: ../src/lib/problem_data.c:163
 #, c-format
@@ -671,7 +683,7 @@ msgstr ""
 
 #: ../src/plugins/report.c:59
 msgid "'strata' or 'bugzilla'"
-msgstr ""
+msgstr "„strata“ nebo „bugzilla“"
 
 #: ../src/plugins/report.c:60
 msgid "Ticket/case ID"
@@ -679,7 +691,7 @@ msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:1
 msgid "Address of Bugzilla server"
-msgstr ""
+msgstr "Adresa Bugzilla serveru"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:2
 msgid "Bugzilla"
@@ -691,16 +703,16 @@ msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:4
 msgid "Bugzilla account password"
-msgstr ""
+msgstr "Heslo Bugzilla účtu"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:5
 msgid "Bugzilla account user name"
-msgstr ""
+msgstr "Uživatelské jméno Bugzilla účtu"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:6
 #: ../src/plugins/report_RHTSupport.xml.in.h:2
 msgid "Check SSL key validity"
-msgstr ""
+msgstr "Kontrola platnosti SSL klíče"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:7
 msgid "OS release string"
@@ -709,11 +721,11 @@ msgstr ""
 #: ../src/plugins/report_Bugzilla.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:3
 msgid "Password"
-msgstr ""
+msgstr "Heslo"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:9
 msgid "Report to Bugzilla bug tracker"
-msgstr ""
+msgstr "Odeslat hlášení do Bugzilly"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:10
 msgid "Specify this only if you modified your /etc/system-release file"
@@ -721,18 +733,20 @@ msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:11
 msgid "User name"
-msgstr ""
+msgstr "Uživatelské jméno"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:12
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Verify SSL"
-msgstr ""
+msgstr "Kontrola SSl"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:13
 msgid ""
 "You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
 "redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 msgstr ""
+"Můžete vytvořit bugzilla.redhat.com účet &lt;a href=\"https://bugzilla."
+"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
 msgid "Kerneloops URL"
@@ -744,7 +758,7 @@ msgstr ""
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:3
 msgid "Oops server url"
-msgstr ""
+msgstr "Adresa Oops serveru"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:4
 msgid "Send to kernel oops tracker"
@@ -752,15 +766,15 @@ msgstr ""
 
 #: ../src/plugins/report_Logger.xml.in.h:1
 msgid "Append"
-msgstr ""
+msgstr "Připojit"
 
 #: ../src/plugins/report_Logger.xml.in.h:2
 msgid "Append new reports or overwrite the old one."
-msgstr ""
+msgstr "Připojit nové hlášení nebo přepsat stará."
 
 #: ../src/plugins/report_Logger.xml.in.h:3
 msgid "Log File"
-msgstr ""
+msgstr "Protokolovací soubor"
 
 #: ../src/plugins/report_Logger.xml.in.h:4
 msgid "Logger"
@@ -768,7 +782,7 @@ msgstr ""
 
 #: ../src/plugins/report_Logger.xml.in.h:5
 msgid "Name of the logfile"
-msgstr ""
+msgstr "Jméno protokolovacího souboru"
 
 #: ../src/plugins/report_Logger.xml.in.h:6
 msgid "Save as text file"
@@ -780,43 +794,43 @@ msgstr ""
 
 #: ../src/plugins/report_Mailx.xml.in.h:2
 msgid "Message subject"
-msgstr ""
+msgstr "Předmět zprávy"
 
 #: ../src/plugins/report_Mailx.xml.in.h:3
 msgid "Recipient"
-msgstr ""
+msgstr "Příjemce"
 
 #: ../src/plugins/report_Mailx.xml.in.h:4
 msgid "Recipient's email"
-msgstr ""
+msgstr "E-mail příjemce"
 
 #: ../src/plugins/report_Mailx.xml.in.h:5
 msgid "Send Binary Data"
-msgstr ""
+msgstr "Odeslat binární data"
 
 #: ../src/plugins/report_Mailx.xml.in.h:6
 msgid "Send binary files like coredump"
-msgstr ""
+msgstr "Odeslat binární data jako coredump"
 
 #: ../src/plugins/report_Mailx.xml.in.h:7
 msgid "Send via email"
-msgstr ""
+msgstr "Odeslat e-mailem"
 
 #: ../src/plugins/report_Mailx.xml.in.h:8
 msgid "Sender"
-msgstr ""
+msgstr "Odesílatel"
 
 #: ../src/plugins/report_Mailx.xml.in.h:9
 msgid "Sender's email"
-msgstr ""
+msgstr "E-mail odesílatele"
 
 #: ../src/plugins/report_Mailx.xml.in.h:10
 msgid "Subject"
-msgstr ""
+msgstr "Předmět"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:1
 msgid "Address of the Red Hat support portal"
-msgstr ""
+msgstr "Adresa portálu podpory společnosti Red Hat"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:4
 msgid "RH Portal URL"
@@ -824,7 +838,7 @@ msgstr ""
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:5
 msgid "Red Hat Customer Support"
-msgstr ""
+msgstr "Podpora zákazníků Red Hat"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:6
 msgid "Red Hat customer password"
@@ -836,11 +850,11 @@ msgstr ""
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:8
 msgid "Report to Red Hat support"
-msgstr ""
+msgstr "Nahlásit problém na podporu Red Hatu"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:9
 msgid "Username"
-msgstr ""
+msgstr "Uživatelské jméno"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid ""
@@ -869,7 +883,7 @@ msgstr ""
 #: ../src/plugins/reporter-bugzilla.c:42
 msgid ""
 "\n"
-"& [-vb] [-c CONFFILE] -d DIR\n"
+"& [-vbf] [-c CONFFILE] -d DIR\n"
 "or:\n"
 "& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
 "\n"
@@ -895,7 +909,7 @@ msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:89
 #: ../src/plugins/reporter-kerneloops.c:159
-#: ../src/plugins/reporter-mailx.c:161 ../src/plugins/reporter-print.c:56
+#: ../src/plugins/reporter-mailx.c:168 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:74
 #: ../src/plugins/reporter-upload.c:288
 msgid "Dump directory"
@@ -908,11 +922,11 @@ msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:91
 msgid "Attach FILEs [to bug with this ID]"
-msgstr ""
+msgstr "Přiloží SOUBOR [k chybě s ID]"
 
 #: ../src/plugins/reporter-bugzilla.c:92
 msgid "When creating bug, attach binary files too"
-msgstr ""
+msgstr "Při vytváření chybového hlášení přiložte také binární soubory"
 
 #: ../src/plugins/reporter-bugzilla.c:93
 #: ../src/plugins/reporter-rhtsupport.c:77
@@ -925,22 +939,22 @@ msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:179
 msgid "Empty login or password, please check your configuration"
-msgstr ""
+msgstr "Prázdné uživatelské jméno nebo heslo, zkontrolujte prosím nastavení"
 
 #: ../src/plugins/reporter-bugzilla.c:209
 #: ../src/plugins/reporter-bugzilla.c:275
 #, c-format
 msgid "Logging into Bugzilla at %s"
-msgstr ""
+msgstr "Přihlašování do Bugzilly na %s"
 
 #: ../src/plugins/reporter-bugzilla.c:236
 #: ../src/plugins/reporter-bugzilla.c:448
 msgid "Logging out"
-msgstr ""
+msgstr "Odhlašování"
 
 #: ../src/plugins/reporter-bugzilla.c:282
 msgid "Checking for duplicates"
-msgstr ""
+msgstr "Kontrola duplikátů"
 
 #: ../src/plugins/reporter-bugzilla.c:303
 msgid "Missing mandatory member 'bugs'"
@@ -949,7 +963,7 @@ msgstr ""
 #. Create new bug
 #: ../src/plugins/reporter-bugzilla.c:342
 msgid "Creating a new bug"
-msgstr ""
+msgstr "Vytváření hlášení nové chyby"
 
 #: ../src/plugins/reporter-bugzilla.c:345
 #, c-format
@@ -959,12 +973,12 @@ msgstr ""
 #: ../src/plugins/reporter-bugzilla.c:360
 #, c-format
 msgid "Bug is already reported: %i"
-msgstr ""
+msgstr "Chyba je již nahlášena: %i"
 
 #: ../src/plugins/reporter-bugzilla.c:381
 #, c-format
 msgid "Add %s to CC list"
-msgstr ""
+msgstr "Přidat %s do kopie"
 
 #: ../src/plugins/reporter-bugzilla.c:420
 #, c-format
@@ -976,9 +990,8 @@ msgid "Found the same comment in the bug history, not adding a new one"
 msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:440
-#, fuzzy
 msgid "Attaching better backtrace"
-msgstr "Znovu vytvořit výpis volání"
+msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:451
 #, c-format
@@ -988,7 +1001,7 @@ msgstr ""
 #: ../src/plugins/reporter-kerneloops.c:98
 #, c-format
 msgid "Submitting oops report to %s"
-msgstr ""
+msgstr "Odesílání oops hlášení na %s"
 
 #: ../src/plugins/reporter-kerneloops.c:140
 msgid ""
@@ -1006,11 +1019,11 @@ msgstr ""
 
 #: ../src/plugins/reporter-kerneloops.c:160
 msgid "Configuration file"
-msgstr ""
+msgstr "Konfigurační soubor"
 
 #: ../src/plugins/reporter-mailx.c:110
 msgid "Sending an email..."
-msgstr ""
+msgstr "Odesílání e-mailu..."
 
 #: ../src/plugins/reporter-mailx.c:130
 #, c-format
@@ -1021,12 +1034,14 @@ msgstr ""
 msgid ""
 "& [-v] -d DIR [-c CONFFILE]\n"
 "\n"
-"Sends contents of a problem directory DIR via email"
+"Sends contents of a problem directory DIR via email\n"
+"\n"
+"If not specified, CONFFILE defaults to "
 msgstr ""
 
-#: ../src/plugins/reporter-mailx.c:162 ../src/plugins/reporter-upload.c:289
+#: ../src/plugins/reporter-mailx.c:169 ../src/plugins/reporter-upload.c:289
 msgid "Config file"
-msgstr ""
+msgstr "Konfigurační soubor"
 
 #: ../src/plugins/reporter-print.c:42
 msgid ""
@@ -1037,11 +1052,11 @@ msgstr ""
 
 #: ../src/plugins/reporter-print.c:57
 msgid "Output file"
-msgstr ""
+msgstr "Výstupní soubor"
 
 #: ../src/plugins/reporter-print.c:58
 msgid "Append to, or overwrite FILE"
-msgstr ""
+msgstr "Přiložit nebo přepsat SOUBOR"
 
 #: ../src/plugins/reporter-print.c:59
 msgid "Create reported_to in DIR"
@@ -1064,12 +1079,12 @@ msgstr ""
 #: ../src/plugins/reporter-print.c:149
 #, c-format
 msgid "The report was appended to %s"
-msgstr ""
+msgstr "Hlášení bylo připojeno k %s"
 
 #: ../src/plugins/reporter-print.c:149
 #, c-format
 msgid "The report was stored to %s"
-msgstr ""
+msgstr "Hlášení bylo uloženo v %s"
 
 #: ../src/plugins/reporter-rhtsupport.c:44
 msgid ""
@@ -1089,12 +1104,12 @@ msgstr ""
 
 #: ../src/plugins/reporter-rhtsupport.c:111
 msgid "Empty RHTS login or password"
-msgstr ""
+msgstr "Prázdné uživatelské jméno nebo heslo pro RHTS"
 
 #: ../src/plugins/reporter-rhtsupport.c:158
 #, c-format
 msgid "Attaching '%s' to case '%s'"
-msgstr ""
+msgstr "Přikládání „%s“ k případu „%s“"
 
 #. create_problem_data_for_reporting already emitted error msg
 #. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing
@@ -1103,11 +1118,11 @@ msgstr ""
 #: ../src/plugins/reporter-rhtsupport.c:199
 #: ../src/plugins/reporter-upload.c:121
 msgid "Compressing data"
-msgstr ""
+msgstr "Komprese dat"
 
 #: ../src/plugins/reporter-rhtsupport.c:239
 msgid "Can't create a temporary directory in /tmp"
-msgstr ""
+msgstr "Není možné vytvořit dočasný adresář v /tmp"
 
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
@@ -1117,7 +1132,7 @@ msgstr ""
 #: ../src/plugins/reporter-rhtsupport.c:330
 #: ../src/plugins/reporter-rhtsupport.c:346
 msgid "Can't create temporary file in /tmp"
-msgstr ""
+msgstr "Není možné vyvtořit dočasný soubor v /tmp"
 
 #: ../src/plugins/reporter-rhtsupport.c:382
 msgid "Do you still want to create a RHTSupport ticket?"
@@ -1127,7 +1142,7 @@ msgstr ""
 #. Send tempfile
 #: ../src/plugins/reporter-rhtsupport.c:394
 msgid "Creating a new case..."
-msgstr ""
+msgstr "Vytváření nového případu..."
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:202
 msgid "Documentation which might be relevant: "
@@ -1140,18 +1155,18 @@ msgstr ""
 #: ../src/plugins/reporter-upload.c:59
 #, c-format
 msgid "Sending %s to %s"
-msgstr ""
+msgstr "Odesílání %s na %s"
 
 #. This ends up a "reporting status message" in abrtd
 #: ../src/plugins/reporter-upload.c:98
 #, c-format
 msgid "Successfully sent %s to %s"
-msgstr ""
+msgstr "%s v pořádku odesláno na %s"
 
 #: ../src/plugins/reporter-upload.c:221
 #, c-format
 msgid "Archive is created: '%s'"
-msgstr ""
+msgstr "Archív je vytvořen: „%s“"
 
 #: ../src/plugins/reporter-upload.c:261
 msgid ""
@@ -1186,22 +1201,22 @@ msgstr ""
 #: ../src/plugins/rhbz.c:359
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
-msgstr ""
+msgstr "Chyba %i je UZAVŘENA, ale nemá ŘEŠENÍ"
 
 #: ../src/plugins/rhbz.c:367
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
-msgstr ""
+msgstr "Chyba %i je UZAVŘENA jako DUPLIKÁT, ale nemá DUP_ID"
 
 #: ../src/plugins/rhbz.c:485
 #, c-format
 msgid "New bug id: %i"
-msgstr ""
+msgstr "ID nové chyby: %i"
 
-#: ../src/plugins/rhbz.c:617
+#: ../src/plugins/rhbz.c:625
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
-msgstr ""
+msgstr "Bugzilla nemůže nalézt rodiče chyby %d"
 
 #: ../src/plugins/abrt-bodhi.c:301
 msgid "Searching for updates"
@@ -1240,20 +1255,20 @@ msgstr ""
 #: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:259
 #: ../src/report-newt/report-newt.c:337 ../src/report-newt/report-newt.c:352
 msgid "Ok"
-msgstr ""
+msgstr "Budiž"
 
 #: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:146
 msgid "Cancel"
-msgstr ""
+msgstr "Zrušit"
 
 #: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:337
 msgid "Error"
-msgstr ""
+msgstr "Chyba"
 
 #: ../src/report-newt/report-newt.c:276
 #, c-format
 msgid "--- Running %s ---"
-msgstr ""
+msgstr "--- Probíhá %s ---"
 
 #: ../src/report-newt/report-newt.c:352
 msgid "No reporters available"
@@ -1265,22 +1280,3 @@ msgid ""
 "\n"
 "newt tool to report problem saved in specified DIR"
 msgstr ""
-
-#~ msgid ""
-#~ "Backtrace provides developers with details of the crash, helping them "
-#~ "track down the source of the problem. Please review it and remove any "
-#~ "sensitive data you would rather not share:"
-#~ msgstr ""
-#~ "Výpis volání poskytuje vývojářům podrobnosti o pádu a napomáhá k nalezení "
-#~ "příčiny problému. Prosím, prohlédněte jej a odstraňte jakékoliv citlivé "
-#~ "údaje, které byste raději udrželi v soukromí:"
-
-#~ msgid ""
-#~ "Can create more informative backtrace if you installed additional debug "
-#~ "packages"
-#~ msgstr ""
-#~ "Bylo by možné vytvořit podrobnější výpis volání, kdybyste nainstalovali "
-#~ "další ladicí balíčky"
-
-#~ msgid "Override the default prgname"
-#~ msgstr "Přepsat implicitní jméno programu"

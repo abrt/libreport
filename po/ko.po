@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-09 15:49+0100\n"
-"PO-Revision-Date: 2012-01-06 12:28+0000\n"
-"Last-Translator: fedoracat <raypoatssium@gmail.com>\n"
+"POT-Creation-Date: 2012-02-03 13:45+0100\n"
+"PO-Revision-Date: 2012-02-03 12:38+0000\n"
+"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
@@ -147,7 +147,7 @@ msgstr ""
 "보고서에서 변경 사항을 감지하지 못했습니다"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1582
+#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1605
 #: ../src/lib/client.c:51 ../src/lib/run_event.c:476
 msgid "y"
 msgstr ""
@@ -192,7 +192,7 @@ msgstr "수집하고자 하는 추가적인 정보가 무엇입니까?"
 msgid "Select collector(s): "
 msgstr "콜렉터 선택:"
 
-#: ../src/cli/cli-report.c:765 ../src/gui-wizard-gtk/wizard.c:1234
+#: ../src/cli/cli-report.c:765 ../src/gui-wizard-gtk/wizard.c:1257
 #: ../src/report-newt/report-newt.c:334
 msgid "(no description)"
 msgstr "(설명 없음)"
@@ -202,7 +202,7 @@ msgstr "(설명 없음)"
 msgid "There were %d errors while collecting additional data\n"
 msgstr "데이터를 추가로 수집하는 도중 %d개의 에러가 발생하였습니다.\n"
 
-#: ../src/cli/cli-report.c:857 ../src/gui-wizard-gtk/wizard.c:2045
+#: ../src/cli/cli-report.c:857 ../src/gui-wizard-gtk/wizard.c:2072
 msgid "Reporting..."
 msgstr "보고..."
 
@@ -241,9 +241,8 @@ msgid "Advanced"
 msgstr ""
 
 #: ../src/gtk-helpers/event_config_dialog.c:404
-#, fuzzy
 msgid "Don't store passwords"
-msgstr "Red Hat 고객 암호"
+msgstr ""
 
 #: ../src/gtk-helpers/event_config_dialog.c:430
 msgid "Gnome Keyring is not available, your settings won't be saved!"
@@ -293,56 +292,55 @@ msgstr "보고 후 디렉터리 삭제"
 #. * using gtk_assistant_commit at init time.
 #.
 #. glade element name     , on-screen text          , type
-#: ../src/gui-wizard-gtk/wizard.c:225
+#: ../src/gui-wizard-gtk/wizard.c:247
 msgid "Problem description"
 msgstr "문제 설명"
 
-#: ../src/gui-wizard-gtk/wizard.c:226
+#: ../src/gui-wizard-gtk/wizard.c:248
 msgid "Provide additional information"
 msgstr "추가 정보 제공"
 
-#: ../src/gui-wizard-gtk/wizard.c:227
+#: ../src/gui-wizard-gtk/wizard.c:249
 msgid "Select analyzer"
 msgstr "분석기 선택"
 
-#: ../src/gui-wizard-gtk/wizard.c:228
+#: ../src/gui-wizard-gtk/wizard.c:250
 msgid "Analyzing"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:229
+#: ../src/gui-wizard-gtk/wizard.c:251
 msgid "Select collector"
 msgstr "콜렉터 선택"
 
-#: ../src/gui-wizard-gtk/wizard.c:230
+#: ../src/gui-wizard-gtk/wizard.c:252
 msgid "Collecting"
 msgstr ""
 
 #. Some reporters don't need backtrace, we can skip bt page for them.
 #. * Therefore we want to know reporters _before_ we go to bt page
 #.
-#: ../src/gui-wizard-gtk/wizard.c:234
+#: ../src/gui-wizard-gtk/wizard.c:256
 msgid "Select reporter"
 msgstr "보고할 곳 선택"
 
-#: ../src/gui-wizard-gtk/wizard.c:235
-#, fuzzy
+#: ../src/gui-wizard-gtk/wizard.c:257
 msgid "Review the data"
-msgstr "역추적 기록 검토"
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:236
+#: ../src/gui-wizard-gtk/wizard.c:258
 msgid "Confirm data to report"
 msgstr "데이터 확인 및 보고"
 
 #. Was GTK_ASSISTANT_PAGE_PROGRESS, but we want to allow returning to it
-#: ../src/gui-wizard-gtk/wizard.c:238 ../src/report-newt/report-newt.c:256
+#: ../src/gui-wizard-gtk/wizard.c:260 ../src/report-newt/report-newt.c:256
 msgid "Reporting"
 msgstr "보고"
 
-#: ../src/gui-wizard-gtk/wizard.c:239
+#: ../src/gui-wizard-gtk/wizard.c:261
 msgid "Reporting done"
 msgstr "보고 완료"
 
-#: ../src/gui-wizard-gtk/wizard.c:311
+#: ../src/gui-wizard-gtk/wizard.c:333
 #, c-format
 msgid ""
 "Wrong settings detected for %s, reporting will probably fail if you continue "
@@ -351,7 +349,7 @@ msgstr ""
 "%s에서 잘못된 설정이 탐지되었으며, 현재 설정대로 진행시 보고가 실패할 가능성"
 "이 높습니다."
 
-#: ../src/gui-wizard-gtk/wizard.c:315
+#: ../src/gui-wizard-gtk/wizard.c:337
 #, c-format
 msgid ""
 "Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
@@ -360,63 +358,61 @@ msgstr ""
 "<b>%s</b>에서 잘못된 설정이 탐지되었으며, 현재 설정대로 진행시 보고가 실패할 "
 "가능성이 높습니다."
 
-#: ../src/gui-wizard-gtk/wizard.c:332
+#: ../src/gui-wizard-gtk/wizard.c:354
 #, c-format
 msgid "Con_figure %s"
 msgstr "%s 설정(f)"
 
-#: ../src/gui-wizard-gtk/wizard.c:391
+#: ../src/gui-wizard-gtk/wizard.c:413
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved data?"
 msgstr ""
-"쓰기 가능한 디렉토리가 필요하지만, '%s'는 쓰기가 불가능합니다. '%s'로 이동한 "
-"후 이동한 사본에서 작동시키겠습니까?"
 
-#: ../src/gui-wizard-gtk/wizard.c:398
+#: ../src/gui-wizard-gtk/wizard.c:420
 msgid "Don't ask me again"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:608
+#: ../src/gui-wizard-gtk/wizard.c:630
 msgid "View/edit a text file"
 msgstr "텍스트 파일 보기/수정하기"
 
-#: ../src/gui-wizard-gtk/wizard.c:891
+#: ../src/gui-wizard-gtk/wizard.c:913
 #, c-format
 msgid "(not needed, '%s' already exists)"
 msgstr "('%s' 가 이미 존재하여, 필요하지 않습니다)"
 
-#: ../src/gui-wizard-gtk/wizard.c:956
+#: ../src/gui-wizard-gtk/wizard.c:978
 msgid "Go to next step"
 msgstr "다음 단계로 이동"
 
-#: ../src/gui-wizard-gtk/wizard.c:1064
+#: ../src/gui-wizard-gtk/wizard.c:1087
 msgid "(click here to view/edit)"
 msgstr "(이곳을 클릭하여 보기/편집하기)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1074
+#: ../src/gui-wizard-gtk/wizard.c:1097
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1242
+#: ../src/gui-wizard-gtk/wizard.c:1265
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr ""
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1786
+#: ../src/gui-wizard-gtk/wizard.c:1809
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1898
+#: ../src/gui-wizard-gtk/wizard.c:1930
 #, c-format
 msgid "Reporting disabled because the rating does not contain a number '%s'."
 msgstr "등급이 숫자 '%s'를 포함하고 있지 않기 때문에 보고가 취소되었습니다."
 
-#: ../src/gui-wizard-gtk/wizard.c:1922
+#: ../src/gui-wizard-gtk/wizard.c:1953
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -424,61 +420,67 @@ msgstr ""
 "역추적이 불완전합니다. 재현을 위한 올바른 단계를 제공했는지 확인하십시오.  "
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1929
+#: ../src/gui-wizard-gtk/wizard.c:1959
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "역추적이 비활성화되었기 때문에 보고가 비활성화되었습니다."
 
-#: ../src/gui-wizard-gtk/wizard.c:2018
+#: ../src/gui-wizard-gtk/wizard.c:2045
 msgid "Analyzing..."
 msgstr "분석 중..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2019
+#: ../src/gui-wizard-gtk/wizard.c:2046
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "종료 코드 %d를 반환하며 분석을 마쳤습니다."
 
-#: ../src/gui-wizard-gtk/wizard.c:2046
+#: ../src/gui-wizard-gtk/wizard.c:2073
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "종료 코드 %d를 반환하며 보고를 마쳤습니다."
 
-#: ../src/gui-wizard-gtk/wizard.c:2073
+#: ../src/gui-wizard-gtk/wizard.c:2100
 msgid "Collecting..."
 msgstr "수집 중..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2074
+#: ../src/gui-wizard-gtk/wizard.c:2101
 #, c-format
 msgid "Collecting finished with exit code %d"
 msgstr "종료 코드 %d를 반환하며 수집을 마쳤습니다."
 
-#: ../src/gui-wizard-gtk/wizard.c:2400
+#: ../src/gui-wizard-gtk/wizard.c:2236
+msgid ""
+"Possible sensitive data detected, please review the highlighted tabs "
+"carefully."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:2532
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' 는 일반 파일이 아닙니다."
 
-#: ../src/gui-wizard-gtk/wizard.c:2416
+#: ../src/gui-wizard-gtk/wizard.c:2548
 msgid "You are trying to copy a file onto itself"
 msgstr "같은 곳에 같은 이름으로 파일을 복사하려고 시도하고 있습니다"
 
-#: ../src/gui-wizard-gtk/wizard.c:2423
+#: ../src/gui-wizard-gtk/wizard.c:2555
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "'%s'를 복사할 수 없습니다: %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2438
+#: ../src/gui-wizard-gtk/wizard.c:2570
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2683
+#: ../src/gui-wizard-gtk/wizard.c:2826
 msgid "Include"
 msgstr "포함"
 
-#: ../src/gui-wizard-gtk/wizard.c:2693
+#: ../src/gui-wizard-gtk/wizard.c:2836
 msgid "Name"
 msgstr "이름"
 
-#: ../src/gui-wizard-gtk/wizard.c:2701
+#: ../src/gui-wizard-gtk/wizard.c:2844
 msgid "Value"
 msgstr "값"
 
@@ -638,9 +640,9 @@ msgid "Uploaded: %llu of %llu kbytes"
 msgstr "업로드됨: %llu / %llu kbytes"
 
 #: ../src/lib/problem_data.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Essential element '%s' is missing, can't continue"
-msgstr "필요한 파일 '%s'가 누락되어, 계속할 수 없습니다..."
+msgstr ""
 
 #: ../src/plugins/abrt_rh_support.c:394
 #, c-format
@@ -777,9 +779,8 @@ msgid "Name of the logfile"
 msgstr "로그 파일명"
 
 #: ../src/plugins/report_Logger.xml.in.h:6
-#, fuzzy
 msgid "Save as text file"
-msgstr "텍스트 파일 보기/수정하기"
+msgstr ""
 
 #: ../src/plugins/report_Mailx.xml.in.h:1
 msgid "Mailx"
@@ -874,10 +875,9 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:42
-#, fuzzy
 msgid ""
 "\n"
-"& [-vb] [-c CONFFILE] -d DIR\n"
+"& [-vbf] [-c CONFFILE] -d DIR\n"
 "or:\n"
 "& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
 "\n"
@@ -900,31 +900,10 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
-"\n"
-" [-vb] [-c CONFFILE] -d DIR\n"
-"or:\n"
-" [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
-"\n"
-"문제를 버그질라로 보고합니다.\n"
-"\n"
-"이 도구는 DIR을 읽습니다. 그 후 버그질라에 기록하고 abrt_hash가 같은 버그를 "
-"찾습니다:HEXSTRING in 'Whiteboard'.\n"
-"\n"
-"만약 같은 버그를 찾지 못한다면, 새 버그가 생성됩니다. DIR의 요소는 버그 설명"
-"이나 형식이나 크기에 따른 첨부 파일의 일부로 버그에 저장됩니다.\n"
-"\n"
-"혹은, 버그를 찾았고 중복이 닫혀있으면, 도구는 중복되는 버그를 찾지 못할 때까"
-"지 중복 사슬을 따릅니다. 이 도구는 발견된 버그에 새로운 설명을 추가합니다.\n"
-"\n"
-"신규 혹은 수정된 버그의 주소는 'reported_to' 요소에서 stdout으로 인쇄되고 기"
-"록됩니다.\n"
-"\n"
-"지정되지 않았으면, CONFFILE은 기본으로 설정됩니다.\n"
-"If not specified, CONFFILE defaults to "
 
 #: ../src/plugins/reporter-bugzilla.c:89
 #: ../src/plugins/reporter-kerneloops.c:159
-#: ../src/plugins/reporter-mailx.c:161 ../src/plugins/reporter-print.c:56
+#: ../src/plugins/reporter-mailx.c:168 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:74
 #: ../src/plugins/reporter-upload.c:288
 msgid "Dump directory"
@@ -981,9 +960,9 @@ msgid "Creating a new bug"
 msgstr "새로운 버그를 작성하는 중"
 
 #: ../src/plugins/reporter-bugzilla.c:345
-#, fuzzy, c-format
+#, c-format
 msgid "Adding attachments to bug %i"
-msgstr "버그 %d에 새로운 설명을 추가 중"
+msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:360
 #, c-format
@@ -1005,9 +984,8 @@ msgid "Found the same comment in the bug history, not adding a new one"
 msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:440
-#, fuzzy
 msgid "Attaching better backtrace"
-msgstr "역추적 기록 검토"
+msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:451
 #, c-format
@@ -1020,7 +998,6 @@ msgid "Submitting oops report to %s"
 msgstr ""
 
 #: ../src/plugins/reporter-kerneloops.c:140
-#, fuzzy
 msgid ""
 "& [-v] [-c CONFFILE]... -d DIR\n"
 "\n"
@@ -1033,15 +1010,6 @@ msgid ""
 "Recognized string parameter: SubmitURL.\n"
 "Parameter can be overridden via $KerneloopsReporter_SubmitURL."
 msgstr ""
-" [-v] [-c CONFFILE]... -d DIR\n"
-"\n"
-"커널 오류는 kerneloops.org(혹은 이와 비슷한) 사이트에 보고하십시오.\n"
-"\n"
-"파일명이 $EXCLUDE_FROM_REPORT에 있는 파일은 타볼에 포함되지 않습니다.\n"
-"\n"
-"CONFFILE 라인은 반드시 'PARAM = VALUE' 형식이어야 합니다.\n"
-"매개변수로 인식하는 문자열: SubmitURL.\n"
-"매개변수는 $KerneloopsReporter_SubmitURL를 통해 무시될 수 있습니다."
 
 #: ../src/plugins/reporter-kerneloops.c:160
 msgid "Configuration file"
@@ -1060,10 +1028,12 @@ msgstr ""
 msgid ""
 "& [-v] -d DIR [-c CONFFILE]\n"
 "\n"
-"Sends contents of a problem directory DIR via email"
+"Sends contents of a problem directory DIR via email\n"
+"\n"
+"If not specified, CONFFILE defaults to "
 msgstr ""
 
-#: ../src/plugins/reporter-mailx.c:162 ../src/plugins/reporter-upload.c:289
+#: ../src/plugins/reporter-mailx.c:169 ../src/plugins/reporter-upload.c:289
 msgid "Config file"
 msgstr "파일 설정"
 
@@ -1193,7 +1163,6 @@ msgid "Archive is created: '%s'"
 msgstr ""
 
 #: ../src/plugins/reporter-upload.c:261
-#, fuzzy
 msgid ""
 "& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
@@ -1213,16 +1182,6 @@ msgid ""
 "Recognized string parameter: URL.\n"
 "Parameter can be overridden via $Upload_URL."
 msgstr ""
-" [-v] -d DIR [-c CONFFILE] [-u URL]\n"
-"\n"
-"압축된 덤프 디렉토리의 타볼을 디렉터리 DIR에서 URL로 업로드합니다.\n"
-"만약 URL이 지정되지 않았다면 타볼을 /tmp에 만들고 종료합니다.\n"
-"\n"
-"파일명이 $EXCLUDE_FROM_REPORT에 있는 파일은 타볼에 포함되지 않습니다.\n"
-"\n"
-"CONFFILE 라인은 반드시 'PARAM = VALUE' 형식이어야 합니다.\n"
-"매개변수로 인식하는 문자열: URL.\n"
-"매개변수는 $Upload_URL을 통해 무시될 수 있습니다."
 
 #: ../src/plugins/reporter-upload.c:290
 msgid "Base URL to upload to"
@@ -1248,15 +1207,14 @@ msgstr ""
 msgid "New bug id: %i"
 msgstr ""
 
-#: ../src/plugins/rhbz.c:617
+#: ../src/plugins/rhbz.c:625
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr ""
 
 #: ../src/plugins/abrt-bodhi.c:301
-#, fuzzy
 msgid "Searching for updates"
-msgstr "사본 확인 중"
+msgstr ""
 
 #: ../src/plugins/abrt-bodhi.c:376
 msgid "List of bug ids"
@@ -1316,31 +1274,3 @@ msgid ""
 "\n"
 "newt tool to report problem saved in specified DIR"
 msgstr ""
-
-#~ msgid "Override the default prgname"
-#~ msgstr "기본 prgname 재정의"
-
-#~ msgid ""
-#~ "Backtrace provides developers with details of the crash, helping them "
-#~ "track down the source of the problem. Please review it and remove any "
-#~ "sensitive data you would rather not share:"
-#~ msgstr ""
-#~ "역추적은 개발자들에게 크래시에 대한 세부 사항을 제공하며, 문제의 원인을 추"
-#~ "적하는 것을 도와줍니다. 이를 검토하여 공유하면 안 되는 민감한 데이터를 삭"
-#~ "제하십시오:"
-
-#~ msgid ""
-#~ "Can create more informative backtrace if you installed additional debug "
-#~ "packages"
-#~ msgstr ""
-#~ "디버그 패키지를 추가로 설치하였다면 더 유용한 역추적 기록을 생성할 수 있습"
-#~ "니다"
-
-#~ msgid "Save the report locally"
-#~ msgstr "보고서를 로컬에 저장합니다."
-
-#~ msgid "Upload compressed report to url of choice"
-#~ msgstr "선택한 url로 압축한 보고서를 업로드"
-
-#~ msgid "Essential file '%s' is empty, can't continue.."
-#~ msgstr "필요한 파일 '%s'가 비어있어, 계속할 수 없습니다..."

@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-09 15:49+0100\n"
-"PO-Revision-Date: 2011-12-21 00:42+0000\n"
-"Last-Translator: Miguel Sousa <migueljorgesousa@sapo.pt>\n"
+"POT-Creation-Date: 2012-02-03 13:45+0100\n"
+"PO-Revision-Date: 2012-02-03 12:38+0000\n"
+"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/cli/cli.c:56
-#, fuzzy
 msgid ""
 "& [-vsp] -L[PREFIX] [DUMP_DIR]\n"
 "   or: & [-vsp] -e EVENT DUMP_DIR\n"
@@ -28,11 +27,6 @@ msgid ""
 "   or: & [-vsp] -c[y] DUMP_DIR\n"
 "   or: & [-vsp] -r[y|o|d] DUMP_DIR"
 msgstr ""
-" [-vsp] -L[PREFIX] [DUMP_DIR]\n"
-"   ou:  [-vsp] -e EVENT DUMP_DIR\n"
-"   ou:  [-vsp] -a[y] DUMP_DIR\n"
-"   ou:  [-vsp] -c[y] DUMP_DIR\n"
-"   ou:  [-vsp] -r[y|o|d] DUMP_DIR"
 
 #. short_name long_name  value    parameter_name  help
 #: ../src/cli/cli.c:81
@@ -153,7 +147,7 @@ msgstr ""
 "Não foram detectadas alterações no relatório"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1582
+#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1605
 #: ../src/lib/client.c:51 ../src/lib/run_event.c:476
 msgid "y"
 msgstr "s"
@@ -198,7 +192,7 @@ msgstr "Que informações adicionais gostaria de recolher?"
 msgid "Select collector(s): "
 msgstr "Seleccione colectore(s): "
 
-#: ../src/cli/cli-report.c:765 ../src/gui-wizard-gtk/wizard.c:1234
+#: ../src/cli/cli-report.c:765 ../src/gui-wizard-gtk/wizard.c:1257
 #: ../src/report-newt/report-newt.c:334
 msgid "(no description)"
 msgstr "(sem descrição)"
@@ -208,7 +202,7 @@ msgstr "(sem descrição)"
 msgid "There were %d errors while collecting additional data\n"
 msgstr "Houve %d erros durante a recolha de dados adicionais\n"
 
-#: ../src/cli/cli-report.c:857 ../src/gui-wizard-gtk/wizard.c:2045
+#: ../src/cli/cli-report.c:857 ../src/gui-wizard-gtk/wizard.c:2072
 msgid "Reporting..."
 msgstr "A reportar..."
 
@@ -247,9 +241,8 @@ msgid "Advanced"
 msgstr ""
 
 #: ../src/gtk-helpers/event_config_dialog.c:404
-#, fuzzy
 msgid "Don't store passwords"
-msgstr "Senha do cliente Red Hat"
+msgstr ""
 
 #: ../src/gtk-helpers/event_config_dialog.c:430
 msgid "Gnome Keyring is not available, your settings won't be saved!"
@@ -269,15 +262,11 @@ msgid "Configure E_vent"
 msgstr "Configurar E_vento"
 
 #: ../src/gui-wizard-gtk/main.c:113
-#, fuzzy
 msgid ""
 "& [-vpod] [-g GUI_FILE] [-n PROG_NAME] DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
-" [-vpod] [-g GUI_FILE] [-n PROG_NAME] DIR\n"
-"\n"
-"Ferramenta GUI para analizar e reportar problema no diretório especifico"
 
 #: ../src/gui-wizard-gtk/main.c:127
 msgid "Alternate GUI file"
@@ -304,56 +293,55 @@ msgstr "Remover DIR depois de reportar"
 #. * using gtk_assistant_commit at init time.
 #.
 #. glade element name     , on-screen text          , type
-#: ../src/gui-wizard-gtk/wizard.c:225
+#: ../src/gui-wizard-gtk/wizard.c:247
 msgid "Problem description"
 msgstr "Descrição do problema"
 
-#: ../src/gui-wizard-gtk/wizard.c:226
+#: ../src/gui-wizard-gtk/wizard.c:248
 msgid "Provide additional information"
 msgstr "Forneça informação adicional"
 
-#: ../src/gui-wizard-gtk/wizard.c:227
+#: ../src/gui-wizard-gtk/wizard.c:249
 msgid "Select analyzer"
 msgstr "Seleccione analisador"
 
-#: ../src/gui-wizard-gtk/wizard.c:228
+#: ../src/gui-wizard-gtk/wizard.c:250
 msgid "Analyzing"
 msgstr "A analisar"
 
-#: ../src/gui-wizard-gtk/wizard.c:229
+#: ../src/gui-wizard-gtk/wizard.c:251
 msgid "Select collector"
 msgstr "Seleccione colector"
 
-#: ../src/gui-wizard-gtk/wizard.c:230
+#: ../src/gui-wizard-gtk/wizard.c:252
 msgid "Collecting"
 msgstr "A recolher"
 
 #. Some reporters don't need backtrace, we can skip bt page for them.
 #. * Therefore we want to know reporters _before_ we go to bt page
 #.
-#: ../src/gui-wizard-gtk/wizard.c:234
+#: ../src/gui-wizard-gtk/wizard.c:256
 msgid "Select reporter"
 msgstr "Seleccione repórter"
 
-#: ../src/gui-wizard-gtk/wizard.c:235
-#, fuzzy
+#: ../src/gui-wizard-gtk/wizard.c:257
 msgid "Review the data"
-msgstr "Reveja a traçagem"
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:236
+#: ../src/gui-wizard-gtk/wizard.c:258
 msgid "Confirm data to report"
 msgstr "Confirme os dados a reportar"
 
 #. Was GTK_ASSISTANT_PAGE_PROGRESS, but we want to allow returning to it
-#: ../src/gui-wizard-gtk/wizard.c:238 ../src/report-newt/report-newt.c:256
+#: ../src/gui-wizard-gtk/wizard.c:260 ../src/report-newt/report-newt.c:256
 msgid "Reporting"
 msgstr "A reportar"
 
-#: ../src/gui-wizard-gtk/wizard.c:239
+#: ../src/gui-wizard-gtk/wizard.c:261
 msgid "Reporting done"
 msgstr "Relatório feito"
 
-#: ../src/gui-wizard-gtk/wizard.c:311
+#: ../src/gui-wizard-gtk/wizard.c:333
 #, c-format
 msgid ""
 "Wrong settings detected for %s, reporting will probably fail if you continue "
@@ -362,7 +350,7 @@ msgstr ""
 "Detectadas definições erradas para %s, o relatório provavelmente irá falhar "
 "se continuar com as configurações actuais."
 
-#: ../src/gui-wizard-gtk/wizard.c:315
+#: ../src/gui-wizard-gtk/wizard.c:337
 #, c-format
 msgid ""
 "Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
@@ -371,63 +359,61 @@ msgstr ""
 "Detectadas definições erradas para <b>%s</b>, o relatório provavelmente irá "
 "falhar se continuar com as configurações actuais."
 
-#: ../src/gui-wizard-gtk/wizard.c:332
+#: ../src/gui-wizard-gtk/wizard.c:354
 #, c-format
 msgid "Con_figure %s"
 msgstr "Con_figurar %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:391
+#: ../src/gui-wizard-gtk/wizard.c:413
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved data?"
 msgstr ""
-"Directório gravável necessário, mas '%s' não é gravável. Movê-lo para '%s' e "
-"operar na cópia?"
 
-#: ../src/gui-wizard-gtk/wizard.c:398
+#: ../src/gui-wizard-gtk/wizard.c:420
 msgid "Don't ask me again"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:608
+#: ../src/gui-wizard-gtk/wizard.c:630
 msgid "View/edit a text file"
 msgstr "Ver/editar um ficheiro de texto"
 
-#: ../src/gui-wizard-gtk/wizard.c:891
+#: ../src/gui-wizard-gtk/wizard.c:913
 #, c-format
 msgid "(not needed, '%s' already exists)"
 msgstr "(não necessário, '%s' já existe)"
 
-#: ../src/gui-wizard-gtk/wizard.c:956
+#: ../src/gui-wizard-gtk/wizard.c:978
 msgid "Go to next step"
 msgstr "Ir para o próximo passo"
 
-#: ../src/gui-wizard-gtk/wizard.c:1064
+#: ../src/gui-wizard-gtk/wizard.c:1087
 msgid "(click here to view/edit)"
 msgstr "(clique aqui para ver/editar)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1074
+#: ../src/gui-wizard-gtk/wizard.c:1097
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(ficheiro binário, %llu bytes)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1242
+#: ../src/gui-wizard-gtk/wizard.c:1265
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu bytes, %u ficheiros"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1786
+#: ../src/gui-wizard-gtk/wizard.c:1809
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "Não está definido processamento para o evento '%s'"
 
-#: ../src/gui-wizard-gtk/wizard.c:1898
+#: ../src/gui-wizard-gtk/wizard.c:1930
 #, c-format
 msgid "Reporting disabled because the rating does not contain a number '%s'."
 msgstr "Relatório desativado porque a classificação não contém um número '%s'."
 
-#: ../src/gui-wizard-gtk/wizard.c:1922
+#: ../src/gui-wizard-gtk/wizard.c:1953
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -436,61 +422,67 @@ msgstr ""
 "reproduzir."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1929
+#: ../src/gui-wizard-gtk/wizard.c:1959
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Relatório desactivado porque a traçagem não é utilizável."
 
-#: ../src/gui-wizard-gtk/wizard.c:2018
+#: ../src/gui-wizard-gtk/wizard.c:2045
 msgid "Analyzing..."
 msgstr "A analisar..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2019
+#: ../src/gui-wizard-gtk/wizard.c:2046
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "A análise terminou com código %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:2046
+#: ../src/gui-wizard-gtk/wizard.c:2073
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "Relatório terminou com código %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:2073
+#: ../src/gui-wizard-gtk/wizard.c:2100
 msgid "Collecting..."
 msgstr "A recolher..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2074
+#: ../src/gui-wizard-gtk/wizard.c:2101
 #, c-format
 msgid "Collecting finished with exit code %d"
 msgstr "A recolha terminou com código %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:2400
+#: ../src/gui-wizard-gtk/wizard.c:2236
+msgid ""
+"Possible sensitive data detected, please review the highlighted tabs "
+"carefully."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:2532
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' não é um ficheiro comum"
 
-#: ../src/gui-wizard-gtk/wizard.c:2416
+#: ../src/gui-wizard-gtk/wizard.c:2548
 msgid "You are trying to copy a file onto itself"
 msgstr "Esta a tentar copiar um ficheiro para si próprio"
 
-#: ../src/gui-wizard-gtk/wizard.c:2423
+#: ../src/gui-wizard-gtk/wizard.c:2555
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "Incapaz de copiar '%s': %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2438
+#: ../src/gui-wizard-gtk/wizard.c:2570
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "Item '%s' já existe e não é modificável"
 
-#: ../src/gui-wizard-gtk/wizard.c:2683
+#: ../src/gui-wizard-gtk/wizard.c:2826
 msgid "Include"
 msgstr "Incluir"
 
-#: ../src/gui-wizard-gtk/wizard.c:2693
+#: ../src/gui-wizard-gtk/wizard.c:2836
 msgid "Name"
 msgstr "Nome"
 
-#: ../src/gui-wizard-gtk/wizard.c:2701
+#: ../src/gui-wizard-gtk/wizard.c:2844
 msgid "Value"
 msgstr "Valor"
 
@@ -654,9 +646,9 @@ msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Enviado: %llu de %llu kbytes"
 
 #: ../src/lib/problem_data.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Essential element '%s' is missing, can't continue"
-msgstr "Ficheiro essencial '%s' em falta, incapaz de continuar.."
+msgstr ""
 
 #: ../src/plugins/abrt_rh_support.c:394
 #, c-format
@@ -771,9 +763,8 @@ msgid "Oops server url"
 msgstr "Url do servidor oops"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:4
-#, fuzzy
 msgid "Send to kernel oops tracker"
-msgstr "Enviar problemas no kernel para tracker oops"
+msgstr ""
 
 #: ../src/plugins/report_Logger.xml.in.h:1
 msgid "Append"
@@ -796,9 +787,8 @@ msgid "Name of the logfile"
 msgstr "Nome do ficheiro de registo"
 
 #: ../src/plugins/report_Logger.xml.in.h:6
-#, fuzzy
 msgid "Save as text file"
-msgstr "Ver/editar um ficheiro de texto"
+msgstr ""
 
 #: ../src/plugins/report_Mailx.xml.in.h:1
 msgid "Mailx"
@@ -895,10 +885,9 @@ msgstr ""
 "senha@url"
 
 #: ../src/plugins/reporter-bugzilla.c:42
-#, fuzzy
 msgid ""
 "\n"
-"& [-vb] [-c CONFFILE] -d DIR\n"
+"& [-vbf] [-c CONFFILE] -d DIR\n"
 "or:\n"
 "& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
 "\n"
@@ -921,31 +910,10 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
-"\n"
-" [-vb] [-c CONFFILE] -d DIR\n"
-"ou:\n"
-"  [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
-"Reporta problema para o Bugzilla.\n"
-"\n"
-"Esta ferramenta lê o DIR. Depois ela loga no Bugzilla e tenta encontrar um "
-"erro com o mesmo abrt_hash:HEXSTRING no 'Quadro Branco'.\n"
-"\n"
-"Se este erro não é encontrado, então um novo erro é criado. Elementos do DIR "
-"são gravados no erro como parte da descrição do erro ou com anexos, "
-"dependendo do seu tipo e tamanho.\n"
-"\n"
-"Caso contrário, se o erro é encontrado e está marcado como CLOSED DUPLICATE, "
-"a ferramenta segue a cadeia de duplicados até encontrar um erro não "
-"DUPLICATE. A ferramenta adiciona um novo comentário no erro encontrado.\n"
-"\n"
-" A URL do erro,  novo ou modificado, é enviado para stdout e gravada no "
-"elemento 'reported_to'.\n"
-"\n"
-" Se não especificado, CONFFILE padrão para"
 
 #: ../src/plugins/reporter-bugzilla.c:89
 #: ../src/plugins/reporter-kerneloops.c:159
-#: ../src/plugins/reporter-mailx.c:161 ../src/plugins/reporter-print.c:56
+#: ../src/plugins/reporter-mailx.c:168 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:74
 #: ../src/plugins/reporter-upload.c:288
 msgid "Dump directory"
@@ -1002,9 +970,9 @@ msgid "Creating a new bug"
 msgstr "A criar um novo erro"
 
 #: ../src/plugins/reporter-bugzilla.c:345
-#, fuzzy, c-format
+#, c-format
 msgid "Adding attachments to bug %i"
-msgstr "Adicionar novo comentário ao erro %d"
+msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:360
 #, c-format
@@ -1026,9 +994,8 @@ msgid "Found the same comment in the bug history, not adding a new one"
 msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:440
-#, fuzzy
 msgid "Attaching better backtrace"
-msgstr "Reveja a traçagem"
+msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:451
 #, c-format
@@ -1041,7 +1008,6 @@ msgid "Submitting oops report to %s"
 msgstr "A submeter relatório oops para %s"
 
 #: ../src/plugins/reporter-kerneloops.c:140
-#, fuzzy
 msgid ""
 "& [-v] [-c CONFFILE]... -d DIR\n"
 "\n"
@@ -1054,16 +1020,6 @@ msgid ""
 "Recognized string parameter: SubmitURL.\n"
 "Parameter can be overridden via $KerneloopsReporter_SubmitURL."
 msgstr ""
-" [-v] [-c CONFFILE]... -d DIR\n"
-"\n"
-"Reporta oops kernel para site kerneloops.org (ou similar).\n"
-"\n"
-"Não são incluídos no tarball ficheiros com nomes listados em "
-"$EXCLUDE_FROM_REPORT.\n"
-"\n"
-"Linhas CONFFILE devem ter o formato 'PARAM = VALUE'.\n"
-"Parâmetro string reconhecido: SubmitURL.\n"
-"Parâmetro pode ser ignorado via $KerneloopsReporter_SubmitURL."
 
 #: ../src/plugins/reporter-kerneloops.c:160
 msgid "Configuration file"
@@ -1079,30 +1035,24 @@ msgid "Email was sent to: %s"
 msgstr ""
 
 #: ../src/plugins/reporter-mailx.c:149
-#, fuzzy
 msgid ""
 "& [-v] -d DIR [-c CONFFILE]\n"
 "\n"
-"Sends contents of a problem directory DIR via email"
-msgstr ""
-" [-v] -d DIR [-c CONFFILE]\n"
+"Sends contents of a problem directory DIR via email\n"
 "\n"
-"Envia via email conteúdo de uma diretoria dump DIR"
+"If not specified, CONFFILE defaults to "
+msgstr ""
 
-#: ../src/plugins/reporter-mailx.c:162 ../src/plugins/reporter-upload.c:289
+#: ../src/plugins/reporter-mailx.c:169 ../src/plugins/reporter-upload.c:289
 msgid "Config file"
 msgstr "Ficheiro de configuração"
 
 #: ../src/plugins/reporter-print.c:42
-#, fuzzy
 msgid ""
 "& [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
 "\n"
 "Prints problem information to standard output or FILE"
 msgstr ""
-" [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
-"\n"
-"Imprime informação do problema para saída standard ou FILE"
 
 #: ../src/plugins/reporter-print.c:57
 msgid "Output file"
@@ -1141,7 +1091,6 @@ msgid "The report was stored to %s"
 msgstr "O relatório foi armazenado em %s"
 
 #: ../src/plugins/reporter-rhtsupport.c:44
-#, fuzzy
 msgid ""
 "\n"
 "& [-v] [-c CONFFILE] -d DIR\n"
@@ -1152,14 +1101,6 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
-"\n"
-" [-v] [-c CONFFILE] -d DIR\n"
-"ou:\n"
-" [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
-"\n"
-"Relata problema para RHTSupport.\n"
-"\n"
-"Se não especificado, CONFFILE por defeito para "
 
 #: ../src/plugins/reporter-rhtsupport.c:76
 msgid "Upload FILEs [to case with this ID]"
@@ -1277,15 +1218,14 @@ msgstr "O erro %i está FECHADO como DUPLICADO, mas não tem DUP_ID"
 msgid "New bug id: %i"
 msgstr "Novo ID de erro: %i"
 
-#: ../src/plugins/rhbz.c:617
+#: ../src/plugins/rhbz.c:625
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla não encontra o pai do erro %d"
 
 #: ../src/plugins/abrt-bodhi.c:301
-#, fuzzy
 msgid "Searching for updates"
-msgstr "A verificar por duplicados"
+msgstr ""
 
 #: ../src/plugins/abrt-bodhi.c:376
 msgid "List of bug ids"
@@ -1340,40 +1280,8 @@ msgid "No reporters available"
 msgstr "Sem sistemas de envio disponíveis"
 
 #: ../src/report-newt/report-newt.c:382
-#, fuzzy
 msgid ""
 "& -o [-d] DIR\n"
 "\n"
 "newt tool to report problem saved in specified DIR"
 msgstr ""
-" -o [-d] DIR\n"
-"\n"
-"novo ferramenta para reportar problema gravado num DIR especificado"
-
-#~ msgid "Override the default prgname"
-#~ msgstr "Substituir o prgname pré-definido"
-
-#~ msgid ""
-#~ "Backtrace provides developers with details of the crash, helping them "
-#~ "track down the source of the problem. Please review it and remove any "
-#~ "sensitive data you would rather not share:"
-#~ msgstr ""
-#~ "O backtrace fornece aos programadores detalhes do crash, ajudando-os a "
-#~ "descobrir a fonte do problema. Reveja-o e remova quaisquer dados "
-#~ "sensíveis que prefira não partilhar:"
-
-#~ msgid ""
-#~ "Can create more informative backtrace if you installed additional debug "
-#~ "packages"
-#~ msgstr ""
-#~ "Pode criar backtraces mais informativos se instalar pacotes adicionais de "
-#~ "depuração"
-
-#~ msgid "Save the report locally"
-#~ msgstr "Gravar o relatório localmente"
-
-#~ msgid "Upload compressed report to url of choice"
-#~ msgstr "Enviar relatório comprimido para o url escolhido"
-
-#~ msgid "Essential file '%s' is empty, can't continue.."
-#~ msgstr "Ficheiro essencial '%s' está vazio, incapaz de continuar.."

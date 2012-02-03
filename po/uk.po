@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Yuri Chornoivan <yurchor@ukr.net>, 2011.
+# Yuri Chornoivan <yurchor@ukr.net>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-09 15:49+0100\n"
-"PO-Revision-Date: 2011-09-22 11:08+0000\n"
-"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
-"Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
+"POT-Creation-Date: 2012-02-03 13:45+0100\n"
+"PO-Revision-Date: 2012-02-03 12:38+0000\n"
+"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -157,7 +157,7 @@ msgstr ""
 "Не виявлено жодних змін у звіті"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1582
+#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1605
 #: ../src/lib/client.c:51 ../src/lib/run_event.c:476
 msgid "y"
 msgstr "y"
@@ -202,7 +202,7 @@ msgstr "Які додаткові дані ви хотіли б зібрати?"
 msgid "Select collector(s): "
 msgstr "Виберіть засоби збирання:"
 
-#: ../src/cli/cli-report.c:765 ../src/gui-wizard-gtk/wizard.c:1234
+#: ../src/cli/cli-report.c:765 ../src/gui-wizard-gtk/wizard.c:1257
 #: ../src/report-newt/report-newt.c:334
 msgid "(no description)"
 msgstr "(без опису)"
@@ -212,7 +212,7 @@ msgstr "(без опису)"
 msgid "There were %d errors while collecting additional data\n"
 msgstr "Під час збирання додаткових даних сталося %d помилок\n"
 
-#: ../src/cli/cli-report.c:857 ../src/gui-wizard-gtk/wizard.c:2045
+#: ../src/cli/cli-report.c:857 ../src/gui-wizard-gtk/wizard.c:2072
 msgid "Reporting..."
 msgstr "Звітування…"
 
@@ -248,12 +248,11 @@ msgstr "Показувати пароль"
 
 #: ../src/gtk-helpers/event_config_dialog.c:394
 msgid "Advanced"
-msgstr ""
+msgstr "Додатково"
 
 #: ../src/gtk-helpers/event_config_dialog.c:404
-#, fuzzy
 msgid "Don't store passwords"
-msgstr "Пароль користувача Red Hat"
+msgstr "Не зберігати паролів"
 
 #: ../src/gtk-helpers/event_config_dialog.c:430
 msgid "Gnome Keyring is not available, your settings won't be saved!"
@@ -307,56 +306,55 @@ msgstr "Вилучити КАТАЛОГ після звітування"
 #. * using gtk_assistant_commit at init time.
 #.
 #. glade element name     , on-screen text          , type
-#: ../src/gui-wizard-gtk/wizard.c:225
+#: ../src/gui-wizard-gtk/wizard.c:247
 msgid "Problem description"
 msgstr "Опис проблеми"
 
-#: ../src/gui-wizard-gtk/wizard.c:226
+#: ../src/gui-wizard-gtk/wizard.c:248
 msgid "Provide additional information"
 msgstr "Надання додаткових даних"
 
-#: ../src/gui-wizard-gtk/wizard.c:227
+#: ../src/gui-wizard-gtk/wizard.c:249
 msgid "Select analyzer"
 msgstr "Виберіть засіб аналізу"
 
-#: ../src/gui-wizard-gtk/wizard.c:228
+#: ../src/gui-wizard-gtk/wizard.c:250
 msgid "Analyzing"
 msgstr "Аналіз"
 
-#: ../src/gui-wizard-gtk/wizard.c:229
+#: ../src/gui-wizard-gtk/wizard.c:251
 msgid "Select collector"
 msgstr "Виберіть засіб збирання даних"
 
-#: ../src/gui-wizard-gtk/wizard.c:230
+#: ../src/gui-wizard-gtk/wizard.c:252
 msgid "Collecting"
 msgstr "Збирання даних"
 
 #. Some reporters don't need backtrace, we can skip bt page for them.
 #. * Therefore we want to know reporters _before_ we go to bt page
 #.
-#: ../src/gui-wizard-gtk/wizard.c:234
+#: ../src/gui-wizard-gtk/wizard.c:256
 msgid "Select reporter"
 msgstr "Виберіть засіб звітування"
 
-#: ../src/gui-wizard-gtk/wizard.c:235
-#, fuzzy
+#: ../src/gui-wizard-gtk/wizard.c:257
 msgid "Review the data"
-msgstr "Перегляд зворотного трасування"
+msgstr "Переглянути дані"
 
-#: ../src/gui-wizard-gtk/wizard.c:236
+#: ../src/gui-wizard-gtk/wizard.c:258
 msgid "Confirm data to report"
 msgstr "Підтвердження даних звіту"
 
 #. Was GTK_ASSISTANT_PAGE_PROGRESS, but we want to allow returning to it
-#: ../src/gui-wizard-gtk/wizard.c:238 ../src/report-newt/report-newt.c:256
+#: ../src/gui-wizard-gtk/wizard.c:260 ../src/report-newt/report-newt.c:256
 msgid "Reporting"
 msgstr "Звітування"
 
-#: ../src/gui-wizard-gtk/wizard.c:239
+#: ../src/gui-wizard-gtk/wizard.c:261
 msgid "Reporting done"
 msgstr "Звітування виконано"
 
-#: ../src/gui-wizard-gtk/wizard.c:311
+#: ../src/gui-wizard-gtk/wizard.c:333
 #, c-format
 msgid ""
 "Wrong settings detected for %s, reporting will probably fail if you continue "
@@ -365,7 +363,7 @@ msgstr ""
 "Виявлено помилкові параметри %s. Якщо ви продовжите створення звіту за "
 "поточних налаштувань, можливо, звіт створити не вдасться."
 
-#: ../src/gui-wizard-gtk/wizard.c:315
+#: ../src/gui-wizard-gtk/wizard.c:337
 #, c-format
 msgid ""
 "Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
@@ -374,63 +372,61 @@ msgstr ""
 "Виявлено помилкові параметри <b>%s</b>. Якщо ви продовжите створення звіту "
 "за поточних налаштувань, можливо, звіт створити не вдасться."
 
-#: ../src/gui-wizard-gtk/wizard.c:332
+#: ../src/gui-wizard-gtk/wizard.c:354
 #, c-format
 msgid "Con_figure %s"
 msgstr "_Налаштувати %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:391
+#: ../src/gui-wizard-gtk/wizard.c:413
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved data?"
 msgstr ""
-"Потрібен придатний до запису каталог. Каталог «%s» непридатний до запису. "
-"Пересунути файли до «%s» і працювати з пересунутими даними?"
 
-#: ../src/gui-wizard-gtk/wizard.c:398
+#: ../src/gui-wizard-gtk/wizard.c:420
 msgid "Don't ask me again"
-msgstr ""
+msgstr "Більше не питати"
 
-#: ../src/gui-wizard-gtk/wizard.c:608
+#: ../src/gui-wizard-gtk/wizard.c:630
 msgid "View/edit a text file"
 msgstr "Перегляд/Редагування текстового файла"
 
-#: ../src/gui-wizard-gtk/wizard.c:891
+#: ../src/gui-wizard-gtk/wizard.c:913
 #, c-format
 msgid "(not needed, '%s' already exists)"
 msgstr "(непотрібний, «%s» вже існує)"
 
-#: ../src/gui-wizard-gtk/wizard.c:956
+#: ../src/gui-wizard-gtk/wizard.c:978
 msgid "Go to next step"
 msgstr "Перейти до наступного кроку"
 
-#: ../src/gui-wizard-gtk/wizard.c:1064
+#: ../src/gui-wizard-gtk/wizard.c:1087
 msgid "(click here to view/edit)"
 msgstr "(натисніть для перегляду або редагування)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1074
+#: ../src/gui-wizard-gtk/wizard.c:1097
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(бінарний файл, %llu байтів)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1242
+#: ../src/gui-wizard-gtk/wizard.c:1265
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu байтів, %u файлів"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1786
+#: ../src/gui-wizard-gtk/wizard.c:1809
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "Обробки для події «%s» не визначено"
 
-#: ../src/gui-wizard-gtk/wizard.c:1898
+#: ../src/gui-wizard-gtk/wizard.c:1930
 #, c-format
 msgid "Reporting disabled because the rating does not contain a number '%s'."
 msgstr "Звітування вимкнено через те, що у оцінці не міститься числа «%s»."
 
-#: ../src/gui-wizard-gtk/wizard.c:1922
+#: ../src/gui-wizard-gtk/wizard.c:1953
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -439,61 +435,67 @@ msgstr ""
 "відтворення помилки."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1929
+#: ../src/gui-wizard-gtk/wizard.c:1959
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Звітування вимкнено, оскільки зворотне трасування є непридатним."
 
-#: ../src/gui-wizard-gtk/wizard.c:2018
+#: ../src/gui-wizard-gtk/wizard.c:2045
 msgid "Analyzing..."
 msgstr "Аналіз…"
 
-#: ../src/gui-wizard-gtk/wizard.c:2019
+#: ../src/gui-wizard-gtk/wizard.c:2046
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "Аналіз завершено з кодом виходу %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:2046
+#: ../src/gui-wizard-gtk/wizard.c:2073
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "Звітування завершено з кодом виходу %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:2073
+#: ../src/gui-wizard-gtk/wizard.c:2100
 msgid "Collecting..."
 msgstr "Збирання…"
 
-#: ../src/gui-wizard-gtk/wizard.c:2074
+#: ../src/gui-wizard-gtk/wizard.c:2101
 #, c-format
 msgid "Collecting finished with exit code %d"
 msgstr "Збирання завершено з кодом виходу %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:2400
+#: ../src/gui-wizard-gtk/wizard.c:2236
+msgid ""
+"Possible sensitive data detected, please review the highlighted tabs "
+"carefully."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:2532
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "«%s» не є звичайним файлом"
 
-#: ../src/gui-wizard-gtk/wizard.c:2416
+#: ../src/gui-wizard-gtk/wizard.c:2548
 msgid "You are trying to copy a file onto itself"
 msgstr "Ви намагаєтеся скопіювати файл до цього ж файла"
 
-#: ../src/gui-wizard-gtk/wizard.c:2423
+#: ../src/gui-wizard-gtk/wizard.c:2555
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "Не вдалося скопіювати «%s»: %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2438
+#: ../src/gui-wizard-gtk/wizard.c:2570
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "Пункт «%s» вже існує, його не можна змінювати"
 
-#: ../src/gui-wizard-gtk/wizard.c:2683
+#: ../src/gui-wizard-gtk/wizard.c:2826
 msgid "Include"
 msgstr "Включення"
 
-#: ../src/gui-wizard-gtk/wizard.c:2693
+#: ../src/gui-wizard-gtk/wizard.c:2836
 msgid "Name"
 msgstr "Назва"
 
-#: ../src/gui-wizard-gtk/wizard.c:2701
+#: ../src/gui-wizard-gtk/wizard.c:2844
 msgid "Value"
 msgstr "Значення"
 
@@ -531,10 +533,13 @@ msgid ""
 "additional comments useful for diagnosing the problem? Please use English if "
 "possible."
 msgstr ""
+"Які дії призвели до виникнення проблеми (покроково)? Як можна відтворити "
+"проблему? Маєте додаткові коментарі, які будуть корисними для діагностування "
+"причин проблеми? Будь ласка, надайте ці дані англійською мовою."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "I don't know what caused this problem"
-msgstr ""
+msgstr "Причина проблеми мені не відома"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "I reviewed the data and _agree with submitting it"
@@ -603,7 +608,7 @@ msgstr "Виберіть спосіб звітування щодо пробле
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:20
 msgid "Show log"
-msgstr ""
+msgstr "Показати журнал"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:21
 msgid "Size:"
@@ -654,29 +659,32 @@ msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Вивантажено: %llu з %llu кілобайтів"
 
 #: ../src/lib/problem_data.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Essential element '%s' is missing, can't continue"
-msgstr "Не вистачає важливого файла «%s», продовження обробки неможливе…"
+msgstr "Не вистачає важливого елемента «%s», продовження обробки неможливе…"
 
 #: ../src/plugins/abrt_rh_support.c:394
 #, c-format
 msgid "error in case creation: %s"
-msgstr ""
+msgstr "помилка під час створення випадку: %s"
 
 #: ../src/plugins/abrt_rh_support.c:400
 #, c-format
 msgid "error in case creation, HTTP code: %d, server says: '%s'"
 msgstr ""
+"помилка під час створення запису випадку, код HTTP: %d, повідомлення "
+"сервера: «%s»"
 
 #: ../src/plugins/abrt_rh_support.c:403
 #, c-format
 msgid "error in case creation, HTTP code: %d"
-msgstr ""
+msgstr "помилка під час створення запису випадку, код HTTP: %d"
 
 #: ../src/plugins/abrt_rh_support.c:550
 #, c-format
 msgid "error in case creation: no Location URL, HTTP code: %d"
 msgstr ""
+"помилка під час створення запису випадку: не вказано адреси, код HTTP: %d"
 
 #: ../src/plugins/report.c:37
 msgid ""
@@ -737,7 +745,7 @@ msgstr "Перевірити чинність ключа SSL"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:7
 msgid "OS release string"
-msgstr ""
+msgstr "Рядок випуску ОС"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:3
@@ -751,6 +759,7 @@ msgstr "Повідомити до системи стеження за вада�
 #: ../src/plugins/report_Bugzilla.xml.in.h:10
 msgid "Specify this only if you modified your /etc/system-release file"
 msgstr ""
+"Вказуйте, лише якщо вами було внесено зміни до файла /etc/system-release"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:11
 msgid "User name"
@@ -782,10 +791,8 @@ msgid "Oops server url"
 msgstr "Адреса сервера некритичних помилок"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:4
-#, fuzzy
 msgid "Send to kernel oops tracker"
-msgstr ""
-"Надіслати повідомлення про проблеми з ядром до системи стеження за вадами"
+msgstr "Надіслати до системи стеження за вадами у ядрі"
 
 #: ../src/plugins/report_Logger.xml.in.h:1
 msgid "Append"
@@ -808,9 +815,8 @@ msgid "Name of the logfile"
 msgstr "Назва файла журналу"
 
 #: ../src/plugins/report_Logger.xml.in.h:6
-#, fuzzy
 msgid "Save as text file"
-msgstr "Перегляд/Редагування текстового файла"
+msgstr "Зберегти як текстовий файл"
 
 #: ../src/plugins/report_Mailx.xml.in.h:1
 msgid "Mailx"
@@ -885,6 +891,9 @@ msgid ""
 "Examples: ftp://[user[:pass]@]host/dir/[file.tar.gz], scp://[user[:pass]@]"
 "host/dir/[file.tar.gz], file:///dir/[file.tar.gz]"
 msgstr ""
+"Приклади: ftp://[користувач[:пароль]@]вузол/каталог/[файл.tar.gz], scp://"
+"[користувач[:пароль]@]вузол/каталог/[файл.tar.gz], file:///каталог/[файл.tar."
+"gz]"
 
 #: ../src/plugins/report_Uploader.xml.in.h:2
 msgid "Report uploader"
@@ -896,7 +905,7 @@ msgstr "Адреса"
 
 #: ../src/plugins/report_Uploader.xml.in.h:4
 msgid "Upload as tar.gz file (via FTP/SCP/...)"
-msgstr ""
+msgstr "Вивантажити як файл tar.gz (за допомогою FTP/SCP/...)"
 
 #: ../src/plugins/report_Uploader.xml.in.h:5
 msgid ""
@@ -909,7 +918,7 @@ msgstr ""
 #: ../src/plugins/reporter-bugzilla.c:42
 msgid ""
 "\n"
-"& [-vb] [-c CONFFILE] -d DIR\n"
+"& [-vbf] [-c CONFFILE] -d DIR\n"
 "or:\n"
 "& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
 "\n"
@@ -932,34 +941,10 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
-"\n"
-"& [-vb] [-c ФАЙЛ_НАЛАШТУВАНЬ] -d КАТАЛОГ\n"
-"або:\n"
-"& [-v] [-c ФАЙЛ_НАЛАШТУВАНЬ] [-d КАТАЛОГ] -t[ІД] ФАЙЛ...\n"
-"\n"
-"Повідомляє про проблему до Bugzilla.\n"
-"\n"
-"Цей засіб читає дані з КАТАЛОГУ, далі входить до системи Bugzilla\n"
-"і намагається знайти ваду з тим самим значенням abrt_hash:ШІСТ_РЯДОК\n"
-"у розділі «Whiteboard».\n"
-"\n"
-"Якщо таку ваду не буде знайдено, засіб створить новий звіт.\n"
-"Дані з КАТАЛОГУ буде збережено у записі вади як частину опису вади\n"
-"або як долучення до неї, залежно від типу та розміру.\n"
-"\n"
-"Якщо ж ваду з відповідним значення буде знайдено і цю ваду позначено як\n"
-"CLOSED DUPLICATE, засіб знайде у ланцюжку дублікатів початкову версію\n"
-"звіту про ваду. Після цього до запису знайденої вади буде додано новий "
-"коментар.\n"
-"\n"
-"Адресну нового або зміненого повідомлення щодо вади буде виведено до\n"
-"stdout і записано у елементі «reported_to».\n"
-"\n"
-"Якщо не вказано ФАЙЛ_НАЛАШТУВАНЬ, типові значення буде взято з "
 
 #: ../src/plugins/reporter-bugzilla.c:89
 #: ../src/plugins/reporter-kerneloops.c:159
-#: ../src/plugins/reporter-mailx.c:161 ../src/plugins/reporter-print.c:56
+#: ../src/plugins/reporter-mailx.c:168 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:74
 #: ../src/plugins/reporter-upload.c:288
 msgid "Dump directory"
@@ -981,11 +966,11 @@ msgstr "Долучити до звіту щодо вади бінарні фай
 #: ../src/plugins/reporter-bugzilla.c:93
 #: ../src/plugins/reporter-rhtsupport.c:77
 msgid "Force reporting even if this problem is already reported"
-msgstr ""
+msgstr "Створити звіт, навіть якщо про цю проблему вже було повідомлено"
 
 #: ../src/plugins/reporter-bugzilla.c:94
 msgid "Find BUG-ID according to DUPHASH"
-msgstr ""
+msgstr "Знайти ідентифікатор вади відповідно до хешу-дубліката"
 
 #: ../src/plugins/reporter-bugzilla.c:179
 msgid "Empty login or password, please check your configuration"
@@ -1016,9 +1001,9 @@ msgid "Creating a new bug"
 msgstr "Створення нового повідомлення про ваду"
 
 #: ../src/plugins/reporter-bugzilla.c:345
-#, fuzzy, c-format
+#, c-format
 msgid "Adding attachments to bug %i"
-msgstr "Додавання коментаря до запиту (%d)"
+msgstr "Додавання долучень до повідомлення про ваду %i"
 
 #: ../src/plugins/reporter-bugzilla.c:360
 #, c-format
@@ -1037,17 +1022,16 @@ msgstr "Додавання коментаря до запиту (%d)"
 
 #: ../src/plugins/reporter-bugzilla.c:425
 msgid "Found the same comment in the bug history, not adding a new one"
-msgstr ""
+msgstr "У журналі вади виявлено тотожний коментар, новий не буде додано"
 
 #: ../src/plugins/reporter-bugzilla.c:440
-#, fuzzy
 msgid "Attaching better backtrace"
-msgstr "Перегляд зворотного трасування"
+msgstr "Долучення кращого зворотного трасування"
 
 #: ../src/plugins/reporter-bugzilla.c:451
 #, c-format
 msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
-msgstr ""
+msgstr "Стан: %s%s%s %s/show_bug.cgi?id=%u"
 
 #: ../src/plugins/reporter-kerneloops.c:98
 #, c-format
@@ -1090,20 +1074,18 @@ msgstr "Надсилання пошти…"
 #: ../src/plugins/reporter-mailx.c:130
 #, c-format
 msgid "Email was sent to: %s"
-msgstr ""
+msgstr "Повідомлення було надіслано: %s"
 
 #: ../src/plugins/reporter-mailx.c:149
-#, fuzzy
 msgid ""
 "& [-v] -d DIR [-c CONFFILE]\n"
 "\n"
-"Sends contents of a problem directory DIR via email"
-msgstr ""
-"& [-v] -d КАТАЛОГ [-c ФАЙЛ_НАЛАШТУВАНЬ]\n"
+"Sends contents of a problem directory DIR via email\n"
 "\n"
-"Надіслати дані з каталогу дампу КАТАЛОГ електронною поштою"
+"If not specified, CONFFILE defaults to "
+msgstr ""
 
-#: ../src/plugins/reporter-mailx.c:162 ../src/plugins/reporter-upload.c:289
+#: ../src/plugins/reporter-mailx.c:169 ../src/plugins/reporter-upload.c:289
 msgid "Config file"
 msgstr "Файл налаштувань"
 
@@ -1131,17 +1113,20 @@ msgstr "Створити reported_to у КАТАЛОЗІ"
 
 #: ../src/plugins/reporter-print.c:96
 msgid "Cancelled by user."
-msgstr ""
+msgstr "Скасовано користувачем."
 
 #: ../src/plugins/reporter-print.c:105
 #, c-format
 msgid "File '%s' is a symbolic link. Please select a regular file:"
 msgstr ""
+"Файл «%s» є символічним посиланням. Будь ласка, виберіть звичайний файл:"
 
 #: ../src/plugins/reporter-print.c:114
 #, c-format
 msgid "Can't open '%s' for writing. Please select another file:"
 msgstr ""
+"Не вдалося відкрити «%s» для виконання запису. Будь ласка, виберіть інший "
+"файл:"
 
 #: ../src/plugins/reporter-print.c:149
 #, c-format
@@ -1211,7 +1196,7 @@ msgstr "Не вдалося створити тимчасовий файл у /t
 
 #: ../src/plugins/reporter-rhtsupport.c:382
 msgid "Do you still want to create a RHTSupport ticket?"
-msgstr ""
+msgstr "Хочете створити повідомлення для RHTSupport?"
 
 #. result = NULL; - redundant, result is assigned just below
 #. Send tempfile
@@ -1221,11 +1206,11 @@ msgstr "Створення нового випадку…"
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:202
 msgid "Documentation which might be relevant: "
-msgstr ""
+msgstr "Документація, яка може допомогти: "
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:210
 msgid "Updates which possibly help: "
-msgstr ""
+msgstr "Оновлення, які можуть допомогти:"
 
 #: ../src/plugins/reporter-upload.c:59
 #, c-format
@@ -1244,7 +1229,6 @@ msgid "Archive is created: '%s'"
 msgstr "Створено архів: «%s»"
 
 #: ../src/plugins/reporter-upload.c:261
-#, fuzzy
 msgid ""
 "& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
@@ -1266,18 +1250,25 @@ msgid ""
 msgstr ""
 "& [-v] -d КАТАЛОГ [-c ФАЙЛ_НАЛАШТУВАНЬ] [-u АДРЕСА]\n"
 "\n"
-"Вивантажує стиснений архів каталогу дампів КАТАЛОГ за\n"
-"вказаною АДРЕСОЮ. Якщо АДРЕСУ не вказано, створює архів\n"
-"у /tmp і завершує роботу.\n"
+"Вивантажує стиснений архів каталогу даних щодо проблеми, КАТАЛОГ, за "
+"вказаною адресою АДРЕСА.\n"
+"Якщо адресу не вказано, створює архів у /tmp і завершує роботу.\n"
 "\n"
-"Файли, назви яких вказано у $EXCLUDE_FROM_REPORT, не буде\n"
-"включено до архіву.\n"
+"Параметр АДРЕСА слід вказувати у формі\n"
+"«протокол://[користувач[:пароль]@]вузол/каталог/[файл.tar.gz]»,\n"
+"де протокол може мати значення http(s), ftp, scp або file.\n"
+"Запис протоколу «file» не повинен містити визначень користувача\n"
+"і вузла: «file:///каталог/[файл.tar.gz]».\n"
+"If URL ends with a slash, the archive name will be generated and appended\n"
+"to URL; otherwise, URL will be used as full file name.\n"
 "\n"
-"Рядки ФАЙЛА_НАЛАШТУВАНЬ має бути записано у форматі\n"
-"«ПАРАМЕТР = ЗНАЧЕННЯ».\n"
-"Рядковий параметр: АДРЕСА.\n"
-"Параметри може бути перевизначено за допомогою змінної\n"
-"$Upload_URL."
+"Файли, назви яких відповідають списку з $EXCLUDE_FROM_REPORT,\n"
+"не буде включено до архіву.\n"
+"\n"
+"Рядки файла ФАЙЛ_НАЛАШТУВАНЬ має бути записано у\n"
+"форматі «Параметр = Значення».\n"
+"Рядковий параметр команди: АДРЕСА.\n"
+"Параметр можне бути перевизначено за допомогою змінної $Upload_URL."
 
 #: ../src/plugins/reporter-upload.c:290
 msgid "Base URL to upload to"
@@ -1308,27 +1299,26 @@ msgstr ""
 msgid "New bug id: %i"
 msgstr "Новий ідентифікатор запиту: %i"
 
-#: ../src/plugins/rhbz.c:617
+#: ../src/plugins/rhbz.c:625
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla не вдалося знайти батьківський запит для %d"
 
 #: ../src/plugins/abrt-bodhi.c:301
-#, fuzzy
 msgid "Searching for updates"
-msgstr "Пошук дублікатів"
+msgstr "Пошук оновлень"
 
 #: ../src/plugins/abrt-bodhi.c:376
 msgid "List of bug ids"
-msgstr ""
+msgstr "Список ідентифікаторів вад"
 
 #: ../src/plugins/abrt-bodhi.c:377
 msgid "Specify a bodhi server url"
-msgstr ""
+msgstr "Вкажіть адресу сервера bodhi"
 
 #: ../src/plugins/abrt-bodhi.c:378
 msgid "Specify a release"
-msgstr ""
+msgstr "Вкажіть випуск"
 
 #: ../src/plugins/abrt-bodhi.c:383
 msgid ""
@@ -1336,16 +1326,22 @@ msgid ""
 "\n"
 "Search for updates on bodhi server"
 msgstr ""
+"& [-v] [-r[ВИПУСК]] (-b ІД1[,ІД2,...] | НАЗВА-ПАКУНКА) [НАЗВА-ПАКУНКА]... \n"
+"\n"
+"Виконати пошук оновлень на сервері bodhi"
 
 #: ../src/plugins/abrt-bodhi.c:459
 msgid ""
 "Abrt found a new update which fix your problem. Please run before submitting "
 "bug: pkcon update --repo-enable=fedora --repo-repo=updates-testing"
 msgstr ""
+"Abrt знайдено оновлення, яке вирішить ваші проблеми. Перш ніж надсилати "
+"повідомлення про ваду, віддайте команду: pkcon update --repo-enable=fedora --"
+"repo-repo=updates-testing"
 
 #: ../src/plugins/abrt-bodhi.c:463
 msgid ". Do you want to continue with reporting bug?"
-msgstr ""
+msgstr ". Бажаєте продовжити створення звіту щодо цієї вади?"
 
 #: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:146
 #: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:259
@@ -1380,32 +1376,3 @@ msgstr ""
 "\n"
 "Засіб newt для створення звітів на сонові даних, що зберігаються у вказаному "
 "КАТАЛОЗІ"
-
-#~ msgid ""
-#~ "Backtrace provides developers with details of the crash, helping them "
-#~ "track down the source of the problem. Please review it and remove any "
-#~ "sensitive data you would rather not share:"
-#~ msgstr ""
-#~ "Дані зворотного трасування нададуть розробникам додаткові подробиці щодо "
-#~ "аварійного завершення та допоможуть їм у виявлені джерела проблеми. Будь "
-#~ "ласка, перегляньте ці дані і вилучіть з них будь-які конфіденційні дані, "
-#~ "якими ви не бажаєте ділитися:"
-
-#~ msgid ""
-#~ "Can create more informative backtrace if you installed additional debug "
-#~ "packages"
-#~ msgstr ""
-#~ "Повніші дані зворотного трасування можна буде отримати, якщо ви "
-#~ "встановили додаткові діагностичні пакунки"
-
-#~ msgid "Save the report locally"
-#~ msgstr "Зберегти звіт на вашому комп’ютері"
-
-#~ msgid "Upload compressed report to url of choice"
-#~ msgstr "Вивантажити стиснені дані звіту за вказаною адресою"
-
-#~ msgid "Essential file '%s' is empty, can't continue.."
-#~ msgstr "Важливий файл «%s» є порожнім, продовження обробки неможливе…"
-
-#~ msgid "Override the default prgname"
-#~ msgstr "Перевизначити типову prgname (назву програми)"
