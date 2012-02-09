@@ -22,12 +22,12 @@
 
 void abrt_xmlrpc_die(xmlrpc_env *env)
 {
-    error_msg_and_die("fatal: XML-RPC(%d): %s", env->fault_code, env->fault_string);
+    error_msg_and_die("fatal: %s", env->fault_string);
 }
 
 void abrt_xmlrpc_error(xmlrpc_env *env)
 {
-    error_msg("error: XML-RPC (%d): %s", env->fault_code, env->fault_string);
+    error_msg("error: %s", env->fault_string);
 }
 
 struct abrt_xmlrpc *abrt_xmlrpc_new_client(const char *url, int ssl_verify)

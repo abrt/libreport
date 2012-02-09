@@ -116,7 +116,7 @@ int main(int argc, char **argv)
     xmlrpc_env_init(&env);
     xmlrpc_client_setup_global_const(&env);
     if (env.fault_occurred)
-        error_msg_and_die("XML-RPC Fault: %s(%d)", env.fault_string, env.fault_code);
+        abrt_xmlrpc_die(&env);
     xmlrpc_env_clean(&env);
 
     const char *environ;
