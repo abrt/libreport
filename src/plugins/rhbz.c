@@ -147,10 +147,10 @@ static unsigned find_best_bt_rating_in_comments(GList *comments)
     return best_bt_rating;
 }
 
-void rhbz_login(struct abrt_xmlrpc *ax, const char* login, const char* passwd)
+void rhbz_login(struct abrt_xmlrpc *ax, struct bugzilla_struct *b)
 {
     xmlrpc_value* result = abrt_xmlrpc_call(ax, "User.login", "({s:s,s:s})",
-                                            "login", login, "password", passwd);
+                                            "login", b->b_login, "password", b->b_password);
 
 //TODO: with URL like http://bugzilla.redhat.com (that is, with http: instead of https:)
 //we are getting this error:

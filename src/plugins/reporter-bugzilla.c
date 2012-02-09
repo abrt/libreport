@@ -23,6 +23,27 @@
 
 #define XML_RPC_SUFFIX "/xmlrpc.cgi"
 
+static void set_settings(struct bugzilla_struct *b, map_string_h *settings)
+{
+    const char *environ;
+
+    environ = getenv("Bugzilla_Login");
+    b->b_login = environ ? environ : get_map_string_item_or_empty(settings, "Login");
+    environ = getenv("Bugzilla_Password");
+    b->b_password = environ ? environ : get_map_string_item_or_empty(settings, "Password");
+    environ = getenv("Bugzilla_BugzillaURL");
+    b->b_bugzilla_url = environ ? environ : get_map_string_item_or_empty(settings, "BugzillaURL");
+    if (!b->b_bugzilla_url[0])
+        b->b_bugzilla_url = "https://bugzilla.redhat.com";
+    b->b_bugzilla_xmlrpc = xasprintf("%s"XML_RPC_SUFFIX, b->b_bugzilla_url);
+
+    environ = getenv("Bugzilla_SSLVerify");
+    b->b_ssl_verify = string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "SSLVerify"));
+
+    environ = getenv("Bugzilla_OSRelease");
+    b->b_release = environ ? environ : get_map_string_item_or_NULL(settings, "OSRelease");
+}
+
 int main(int argc, char **argv)
 {
     abrt_init(argv);
@@ -119,32 +140,11 @@ int main(int argc, char **argv)
         abrt_xmlrpc_die(&env);
     xmlrpc_env_clean(&env);
 
-    const char *environ;
-    const char *login;
-    const char *password;
-    const char *bugzilla_xmlrpc;
-    const char *bugzilla_url;
-    bool ssl_verify;
-    const char *release;
-    char *product;
+    INIT_BUGZILLA(rhbz);
+    set_settings(&rhbz, settings);
 
-    environ = getenv("Bugzilla_Login");
-    login = environ ? environ : get_map_string_item_or_empty(settings, "Login");
-    environ = getenv("Bugzilla_Password");
-    password = environ ? environ : get_map_string_item_or_empty(settings, "Password");
-    environ = getenv("Bugzilla_BugzillaURL");
-    bugzilla_url = environ ? environ : get_map_string_item_or_empty(settings, "BugzillaURL");
-    if (!bugzilla_url[0])
-        bugzilla_url = "https://bugzilla.redhat.com";
-    bugzilla_xmlrpc = xasprintf("%s"XML_RPC_SUFFIX, bugzilla_url);
-
-    environ = getenv("Bugzilla_SSLVerify");
-    ssl_verify = string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "SSLVerify"));
-
-    environ = getenv("Bugzilla_OSRelease");
-    release = environ ? environ : get_map_string_item_or_NULL(settings, "OSRelease");
-
-    struct abrt_xmlrpc *client = abrt_xmlrpc_new_client(bugzilla_xmlrpc, ssl_verify);
+    struct abrt_xmlrpc *client;
+    client = abrt_xmlrpc_new_client(rhbz.b_bugzilla_xmlrpc, rhbz.b_ssl_verify);
 
     if (abrt_hash)
     {
@@ -175,7 +175,7 @@ int main(int argc, char **argv)
         exit(EXIT_SUCCESS);
     }
 
-    if (!login[0] || !password[0])
+    if (!rhbz.b_login[0] || !rhbz.b_password[0])
         error_msg_and_die(_("Empty login or password, please check your configuration"));
 
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
@@ -206,8 +206,8 @@ int main(int argc, char **argv)
         if (!argv[0])
             show_usage_and_die(program_usage_string, program_options);
 
-        log(_("Logging into Bugzilla at %s"), bugzilla_url);
-        rhbz_login(client, login, password);
+        log(_("Logging into Bugzilla at %s"), rhbz.b_bugzilla_url);
+        rhbz_login(client, &rhbz);
 
         while (*argv)
         {
@@ -265,18 +265,19 @@ int main(int argc, char **argv)
     const char *duphash   = get_problem_item_content_or_NULL(problem_data, FILENAME_DUPHASH);
 //COMPAT, remove after 2.1 release
     if (!duphash) duphash = get_problem_item_content_or_die(problem_data, "global_uuid");
-    if (!release || !*release) /* if not overridden or empty... */
+    if (!rhbz.b_release || !*rhbz.b_release) /* if not overridden or empty... */
     {
-        release           = get_problem_item_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
+        rhbz.b_release = get_problem_item_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
 //COMPAT, remove in abrt-2.1
-        if (!release) release = get_problem_item_content_or_die(problem_data, "release");
+        if (!rhbz.b_release)
+		rhbz.b_release = get_problem_item_content_or_die(problem_data, "release");
     }
 
-    log(_("Logging into Bugzilla at %s"), bugzilla_url);
-    rhbz_login(client, login, password);
+    log(_("Logging into Bugzilla at %s"), rhbz.b_bugzilla_url);
+    rhbz_login(client, &rhbz);
 
     char *version = NULL;
-    parse_release_for_bz(release, &product, &version);
+    parse_release_for_bz(rhbz.b_release, &rhbz.b_product, &version);
     free(version);
 
     log(_("Checking for duplicates"));
@@ -292,7 +293,7 @@ int main(int argc, char **argv)
       so if bug is moved from component selinux-policy to other, then query
       returns NULL and creates a new bug.
     */
-    const char *product_substitute = (!strcmp(product, "Fedora")) ? product : NULL;
+    const char *product_substitute = (!strcmp(rhbz.b_product, "Fedora")) ? rhbz.b_product : NULL;
     const char *component_substitute = (!strcmp(component, "selinux-policy")) ? NULL : component;
     xmlrpc_value *result = rhbz_search_duphash(client, component_substitute,
                                                product_substitute, duphash);
@@ -316,7 +317,7 @@ int main(int argc, char **argv)
         xmlrpc_DECREF(all_bugs);
         bz = rhbz_bug_info(client, bug_id);
 
-        if (strcmp(bz->bi_product, product) != 0)
+        if (strcmp(bz->bi_product, rhbz.b_product) != 0)
         {
             /* found something, but its a different product */
             free_bug_info(bz);
@@ -340,7 +341,7 @@ int main(int argc, char **argv)
     {
         /* Create new bug */
         log(_("Creating a new bug"));
-        bug_id = rhbz_new_bug(client, problem_data, release, bug_id);
+        bug_id = rhbz_new_bug(client, problem_data, rhbz.b_release, bug_id);
 
         log(_("Adding attachments to bug %i"), bug_id);
         char bug_id_str[sizeof(int)*3 + 2];
@@ -375,11 +376,11 @@ int main(int argc, char **argv)
     if (strcmp(bz->bi_status, "CLOSED") != 0)
     {
         /* Add user's login to CC if not there already */
-        if (strcmp(bz->bi_reporter, login) != 0
-         && !g_list_find_custom(bz->bi_cc_list, login, (GCompareFunc)g_strcmp0)
+        if (strcmp(bz->bi_reporter, rhbz.b_login) != 0
+         && !g_list_find_custom(bz->bi_cc_list, rhbz.b_login, (GCompareFunc)g_strcmp0)
         ) {
-            log(_("Add %s to CC list"), login);
-            rhbz_mail_to_cc(client, bz->bi_id, login, RHBZ_NOMAIL_NOTIFY);
+            log(_("Add %s to CC list"), rhbz.b_login);
+            rhbz_mail_to_cc(client, bz->bi_id, rhbz.b_login, RHBZ_NOMAIL_NOTIFY);
         }
 
         /* Add comment */
@@ -406,7 +407,7 @@ int main(int argc, char **argv)
             {
                 VERB3 log("not adding the arch: %s because rep_plat is %s", arch, bz->bi_platform);
             }
-            strbuf_append_strf(full_desc, "OS Release: %s\n", release);
+            strbuf_append_strf(full_desc, "OS Release: %s\n", rhbz.b_release);
 
             /* unused code, enable it when gui/cli will be ready
             int is_priv = is_private && string_to_bool(is_private);
@@ -452,13 +453,13 @@ int main(int argc, char **argv)
                 bz->bi_status,
                 bz->bi_resolution ? " " : "",
                 bz->bi_resolution ? bz->bi_resolution : "",
-                bugzilla_url,
+                rhbz.b_bugzilla_url,
                 bz->bi_id);
 
     dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (dd)
     {
-        char *msg = xasprintf("Bugzilla: URL=%s/show_bug.cgi?id=%u", bugzilla_url, bz->bi_id);
+        char *msg = xasprintf("Bugzilla: URL=%s/show_bug.cgi?id=%u", rhbz.b_bugzilla_url, bz->bi_id);
         add_reported_to(dd, msg);
         free(msg);
         dd_close(dd);
