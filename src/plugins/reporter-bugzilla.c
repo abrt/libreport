@@ -415,8 +415,8 @@ int main(int argc, char **argv)
                                                                       "is_private");
             */
 
-            int allow_comment = is_comment_dup(bz->bi_comments, full_desc->buf);
-            if (!allow_comment)
+            int dup_comment = is_comment_dup(bz->bi_comments, full_desc->buf);
+            if (!dup_comment)
             {
                 log(_("Adding new comment to bug %d"), bz->bi_id);
                 rhbz_add_comment(client, bz->bi_id, full_desc->buf, 0);
@@ -431,7 +431,7 @@ int main(int argc, char **argv)
             /* python doesn't have rating file */
             if (rating_str)
                 rating = xatou(rating_str);
-            if (!allow_comment && (bz->bi_best_bt_rating < rating))
+            if (!dup_comment && (rating > bz->bi_best_bt_rating))
             {
                 char bug_id_str[sizeof(int)*3 + 2];
                 sprintf(bug_id_str, "%i", bz->bi_id);

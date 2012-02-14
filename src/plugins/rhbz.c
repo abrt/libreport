@@ -122,7 +122,7 @@ static unsigned find_best_bt_rating_in_comments(GList *comments)
             continue;
         }
 
-        start_rating_line += strlen("rating: ");
+        start_rating_line += strlen(FILENAME_RATING": ");
         char *end_rating_line = strchr(start_rating_line, '\n');
         if (!end_rating_line)
             VERB3 error_msg("broken comment body");
