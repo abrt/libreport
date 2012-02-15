@@ -1,0 +1,362 @@
+from subprocess import Popen, PIPE
+from yum import _, YumBase
+from yum.callbacks import DownloadBaseCallback
+from reportclient import *
+from reportclient import _
+import sys
+import os
+import time
+
+old_stdout = -1
+def mute_stdout():
+    if verbose < 2:
+        global old_stdout
+        old_stdout = sys.stdout
+        sys.stdout = open("/dev/null", "w")
+
+def unmute_stdout():
+    if verbose < 2:
+        if old_stdout != -1:
+            sys.stdout = old_stdout
+        else:
+            print "ERR: unmute called without mute?"
+
+# TODO: unpack just required debuginfo and not entire rpm?
+# ..that can lead to: foo.c No such file and directory
+# files is not used...
+def unpack_rpm(package_file_name, files, tmp_dir, destdir, keeprpm, exact_files=False):
+    package_full_path = tmp_dir + "/" + package_file_name
+    log1("Extracting %s to %s", package_full_path, destdir)
+    log2("%s", files)
+    print _("Extracting cpio from {0}").format(package_full_path)
+    unpacked_cpio_path = tmp_dir + "/unpacked.cpio"
+    try:
+        unpacked_cpio = open(unpacked_cpio_path, 'wb')
+    except IOError, ex:
+        print _("Can't write to '{0}': {1}").format(unpacked_cpio_path, ex)
+        return RETURN_FAILURE
+    rpm2cpio = Popen(["rpm2cpio", package_full_path],
+                       stdout = unpacked_cpio, bufsize = -1)
+    retcode = rpm2cpio.wait()
+
+    if retcode == 0:
+        log1("cpio written OK")
+        if not keeprpm:
+            log1("keeprpms = False, removing %s", package_full_path)
+            #print _("Removing temporary rpm file")
+            os.unlink(package_full_path)
+    else:
+        unpacked_cpio.close()
+        print _("Can't extract package '{0}'").format(package_full_path)
+        return RETURN_FAILURE
+
+    # close the file
+    unpacked_cpio.close()
+    # and open it for reading
+    unpacked_cpio = open(unpacked_cpio_path, 'rb')
+
+    print _("Caching files from {0} made from {1}").format("unpacked.cpio", package_file_name)
+
+    file_patterns = ""
+    cpio_args = ["cpio", "-idu"]
+    if exact_files:
+        for filename in files:
+            file_patterns += "." + filename + " "
+        cpio_args = ["cpio", "-idu", file_patterns.strip()]
+
+    cpio = Popen(cpio_args,
+              stdin=unpacked_cpio, cwd=destdir, bufsize=-1)
+    retcode = cpio.wait()
+
+    if retcode == 0:
+        log1("files extracted OK")
+        #print _("Removing temporary cpio file")
+        os.unlink(unpacked_cpio_path)
+    else:
+        print _("Can't extract files from '{0}'").format(unpacked_cpio_path)
+        return RETURN_FAILURE
+
+def clean_up():
+    if tmpdir:
+        try:
+            shutil.rmtree(tmpdir)
+        except OSError, ex:
+            if ex.errno != errno.ENOENT:
+                error_msg(_("Can't remove '{0}': {1}").format(tmpdir, ex))
+
+class MyDownloadCallback(DownloadBaseCallback):
+    def __init__(self, total_pkgs):
+        self.total_pkgs = total_pkgs
+        self.downloaded_pkgs = 0
+        self.last_pct = 0
+        self.last_time = 0
+        DownloadBaseCallback.__init__(self)
+
+    def updateProgress(self, name, frac, fread, ftime):
+        pct = int(frac * 100)
+        if pct == self.last_pct:
+            log2("percentage is the same, not updating progress")
+            return
+
+        self.last_pct = pct
+        # if run from terminal we can have fancy output
+        if sys.stdout.isatty():
+            sys.stdout.write("\033[sDownloading (%i of %i) %s: %3u%%\033[u"
+                    % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
+            )
+            if pct == 100:
+                #print (_("Downloading (%i of %i) %s: %3u%%")
+                #        % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
+                #)
+                print (_("Downloading ({0} of {1}) {2}: {3:3}%").format(
+                        self.downloaded_pkgs + 1, self.total_pkgs, name, pct
+                        )
+                )
+        # but we want machine friendly output when spawned from abrt-server
+        else:
+            t = time.time()
+            if self.last_time == 0:
+                self.last_time = t
+            # update only every 5 seconds
+            if pct == 100 or self.last_time > t or t - self.last_time >= 5:
+                print (_("Downloading ({0} of {1}) {2}: {3:3}%").format(
+                        self.downloaded_pkgs + 1, self.total_pkgs, name, pct
+                        )
+                )
+                self.last_time = t
+                if pct == 100:
+                    self.last_time = 0
+
+        sys.stdout.flush()
+
+class DebugInfoDownload(YumBase):
+    def __init__(self, cache, tmp, keep_rpms=False, noninteractive=True):
+        self.cachedir = cache
+        self.tmpdir = tmp
+        global tmpdir
+        tmpdir = tmp
+        self.keeprpms = keep_rpms
+        self.noninteractive = noninteractive
+        YumBase.__init__(self)
+        mute_stdout()
+        #self.conf.cache = os.geteuid() != 0
+        # Setup yum (Ts, RPM db, Repo & Sack)
+        # doConfigSetup() takes some time, let user know what we are doing
+        print _("Initializing yum")
+        try:
+            # Saw this exception here:
+            # cannot open Packages index using db3 - Permission denied (13)
+            # yum.Errors.YumBaseError: Error: rpmdb open failed
+            self.doConfigSetup()
+        except Exception, e:
+            unmute_stdout()
+            print _("Error initializing yum (YumBase.doConfigSetup): '{0!s}'").format(e)
+            #return 1 - can't do this in constructor
+            exit(1)
+        unmute_stdout()
+
+    # return value will be used as exitcode. So 0 = ok, !0 - error
+    def download(self, files, exact_files=False):
+        """ @files - """
+        installed_size = 0
+        total_pkgs = 0
+        todownload_size = 0
+        downloaded_pkgs = 0
+        # nothing to download?
+        if not files:
+            return
+
+        #if verbose == 0:
+        #    # this suppress yum messages about setting up repositories
+        #    mute_stdout()
+
+        # make yumdownloader work as non root user
+        if not self.setCacheDir():
+            self.logger.error("Error: can't make cachedir, exiting")
+            exit(50)
+
+        # disable all not needed
+        for repo in self.repos.listEnabled():
+            repo.close()
+            self.repos.disableRepo(repo.id)
+
+        # This takes some time, let user know what we are doing
+        print _("Setting up yum repositories")
+        # setting-up repos one-by-one, so we can skip the broken ones...
+        # this helps when users are using 3rd party repos like rpmfusion
+        # in rawhide it results in: Can't find valid base url...
+        for r in self.repos.findRepos(pattern="*debuginfo*"):
+            try:
+                rid = self.repos.enableRepo(r.id)
+                self.repos.doSetup(thisrepo=str(r.id))
+                log1("enabled repo %s", rid)
+                setattr(r, "skip_if_unavailable", True)
+            except Exception, ex:
+                print _("Can't setup {0}: {1}, disabling").format(r.id, ex)
+                self.repos.disableRepo(r.id)
+
+        # This is somewhat "magic", it unpacks the metadata making it usable.
+        # Looks like this is the moment when yum talks to remote servers,
+        # which takes time (sometimes minutes), let user know why
+        # we have "paused":
+        print _("Looking for needed packages in repositories")
+        try:
+            self.repos.populateSack(mdtype='metadata', cacheonly=1)
+        except Exception, e:
+            print _("Error retrieving metadata: '{0!s}'").format(e)
+            return 1
+        try:
+            # Saw this exception here:
+            # raise Errors.NoMoreMirrorsRepoError, errstr
+            # NoMoreMirrorsRepoError: failure:
+            # repodata/7e6632b82c91a2e88a66ad848e231f14c48259cbf3a1c3e992a77b1fc0e9d2f6-filelists.sqlite.bz2
+            # from fedora-debuginfo: [Errno 256] No more mirrors to try.
+            self.repos.populateSack(mdtype='filelists', cacheonly=1)
+        except Exception, e:
+            print _("Error retrieving filelists: '{0!s}'").format(e)
+            return 1
+
+        #if verbose == 0:
+        #    # re-enable the output to stdout
+        #    unmute_stdout()
+
+        not_found = []
+        package_files_dict = {}
+        for debuginfo_path in files:
+            log2("yum whatprovides %s", debuginfo_path)
+            pkg = self.pkgSack.searchFiles(debuginfo_path)
+            # sometimes one file is provided by more rpms, we can use either of
+            # them, so let's use the first match
+            if pkg:
+                if pkg[0] in package_files_dict.keys():
+                    package_files_dict[pkg[0]].append(debuginfo_path)
+                else:
+                    package_files_dict[pkg[0]] = [debuginfo_path]
+                    todownload_size += float(pkg[0].size)
+                    installed_size += float(pkg[0].installedsize)
+                    total_pkgs += 1
+
+                log2("found pkg for %s: %s", debuginfo_path, pkg[0])
+            else:
+                log2("not found pkg for %s", debuginfo_path)
+                not_found.append(debuginfo_path)
+
+        # connect our progress update callback
+        dnlcb = MyDownloadCallback(total_pkgs)
+        self.repos.setProgressBar(dnlcb)
+
+        if verbose != 0 or len(not_found) != 0:
+            print _("Can't find packages for {0} debuginfo files").format(len(not_found))
+        if verbose != 0 or total_pkgs != 0:
+            print _("Packages to download: {0}").format(total_pkgs)
+            question = _("Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?").format(
+                         todownload_size / (1024*1024),
+                         installed_size / (1024*1024)
+                        )
+            if self.noninteractive == False and not ask_yes_no(question):
+                print _("Download cancelled by user")
+                return RETURN_OK
+
+        for pkg, files in package_files_dict.iteritems():
+            dnlcb.downloaded_pkgs = downloaded_pkgs
+            repo.cache = 0
+            remote = pkg.returnSimple('relativepath')
+            local = os.path.basename(remote)
+            if not os.path.exists(self.tmpdir):
+                try:
+                    os.makedirs(self.tmpdir)
+                except OSError, ex:
+                    print "Can't create tmpdir: %s" % ex
+                    return RETURN_FAILURE
+            if not os.path.exists(self.cachedir):
+                try:
+                    os.makedirs(self.cachedir)
+                except OSError, ex:
+                    print "Can't create cachedir: %s" % ex
+                    return RETURN_FAILURE
+            local = os.path.join(self.tmpdir, local)
+            pkg.localpath = local # Hack: to set the localpath we want
+            err = self.downloadPkgs(pkglist=[pkg])
+            # normalize the name
+            # just str(pkg) doesn't work because it can have epoch
+            pkg_nvra = pkg.name + "-" + pkg.version + "-" + pkg.release + "." + pkg.arch
+            package_file_name = pkg_nvra + ".rpm"
+            if err:
+                # I observed a zero-length file left on error,
+                # which prevents cleanup later. Fix it:
+                try:
+                    os.unlink(self.tmpdir + "/" + package_file_name)
+                except:
+                    pass
+                print (_("Downloading package {0} failed").format(pkg))
+            else:
+                unpack_result = unpack_rpm(package_file_name, files, self.tmpdir,
+                                           self.cachedir, self.keeprpms, exact_files=exact_files)
+                if unpack_result == RETURN_FAILURE:
+                    # recursively delete the temp dir on failure
+                    print _("Unpacking failed, aborting download...")
+                    clean_up()
+                    return RETURN_FAILURE
+
+            downloaded_pkgs += 1
+
+        if not self.keeprpms and os.path.exists(self.tmpdir):
+            # Was: "All downloaded packages have been extracted, removing..."
+            # but it was appearing even if no packages were in fact extracted
+            # (say, when there was one package, and it has download error).
+            print (_("Removing {0}").format(self.tmpdir))
+            try:
+                os.rmdir(self.tmpdir)
+            except OSError:
+                error_msg(_("Can't remove %s, probably contains an error log").format(self.tmpdir))
+
+        return RETURN_OK
+
+def build_ids_to_path(pfx, build_ids):
+    """
+    build_id1=${build_id:0:2}
+    build_id2=${build_id:2}
+    file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
+    """
+    return ["%s/usr/lib/debug/.build-id/%s/%s.debug" % (pfx, b_id[:2], b_id[2:]) for b_id in build_ids]
+
+# beware this finds only missing libraries, but not the executable itself ..
+
+def filter_installed_debuginfos(build_ids, cache_dirs):
+    files = build_ids_to_path("", build_ids)
+    missing = []
+
+    # 1st pass -> search in /usr/lib
+    for debuginfo_path in files:
+        log2("looking: %s", debuginfo_path)
+        if os.path.exists(debuginfo_path):
+            log2("found: %s", debuginfo_path)
+            continue
+        log2("not found: %s", debuginfo_path)
+        missing.append(debuginfo_path)
+
+    if missing:
+        files = missing
+        missing = []
+    else: # nothing is missing, we can stop looking
+        return missing
+
+    for cache_dir in cache_dirs:
+        log2("looking in %s" % cache_dir)
+        for debuginfo_path in files:
+            cache_debuginfo_path = cache_dir + debuginfo_path
+            log2("looking: %s", cache_debuginfo_path)
+            if os.path.exists(cache_debuginfo_path):
+                log2("found: %s", cache_debuginfo_path)
+                continue
+            log2("not found: %s", debuginfo_path)
+            missing.append(debuginfo_path)
+        # in next iteration look only for files missing
+        # from previous iterations
+        if missing:
+            files = missing
+            missing = []
+        else: # nothing is missing, we can stop looking
+            return missing
+
+    return files
