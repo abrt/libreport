@@ -1,23 +1,24 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 #   <crl0x7c2@gmail.com>, 2011.
+#   <excalc@live.cn>, 2012.
 #   <lovenemesis@gmail.com>, 2011, 2012.
 #   <lrlanswer@gmail.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-03 13:45+0100\n"
-"PO-Revision-Date: 2012-02-03 12:38+0000\n"
+"Report-Msgid-Bugs-To: https://fedorahosted.org/abrt/report\n"
+"POT-Creation-Date: 2012-02-15 15:29+0100\n"
+"PO-Revision-Date: 2012-02-15 14:29+0000\n"
 "Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../src/cli/cli.c:56
@@ -27,12 +28,7 @@ msgid ""
 "   or: & [-vsp] -a[y] DUMP_DIR\n"
 "   or: & [-vsp] -c[y] DUMP_DIR\n"
 "   or: & [-vsp] -r[y|o|d] DUMP_DIR"
-msgstr ""
-"& [-vsp] -L[前缀] [转储目录]\n"
-"   or: & [-vsp] -e 事件 转储目录\n"
-"   or: & [-vsp] -a[y] 转储目录\n"
-"   or: & [-vsp] -c[y] 转储目录\n"
-"   or: & [-vsp] -r[y|o|d] 转储目录"
+msgstr "& [-vsp] -L[前缀] [转储目录]\n   or: & [-vsp] -e 事件 转储目录\n   or: & [-vsp] -a[y] 转储目录\n   or: & [-vsp] -c[y] 转储目录\n   or: & [-vsp] -r[y|o|d] 转储目录"
 
 #. short_name long_name  value    parameter_name  help
 #: ../src/cli/cli.c:81
@@ -92,9 +88,7 @@ msgstr "# 在下面描述此崩溃的发生环境"
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
-msgstr ""
-"# 回溯\n"
-"# 检查它是否包含任何敏感数据（密码等等）"
+msgstr "# 回溯\n# 检查它是否包含任何敏感数据（密码等等）"
 
 #: ../src/cli/cli-report.c:156
 msgid "# Architecture"
@@ -140,17 +134,13 @@ msgstr "无法运行 vi：还没有设置 $TERM、$VISUAL 和 $EDITOR"
 msgid ""
 "\n"
 "The report has been updated"
-msgstr ""
-"\n"
-"该报告已更新"
+msgstr "\n该报告已更新"
 
 #: ../src/cli/cli-report.c:363
 msgid ""
 "\n"
 "No changes were detected in the report"
-msgstr ""
-"\n"
-"未查出报告有更改"
+msgstr "\n未查出报告有更改"
 
 #. The response might take more than 1 char in non-latin scripts.
 #: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1605
@@ -236,6 +226,110 @@ msgstr "请尝试用命令 \"debuginfo-install %s\" 手动安装除错信息并�
 msgid "Problem reported via %d report events (%d errors)\n"
 msgstr "问题已汇报，%d 次事件报告(%d 次错误)\n"
 
+#: ../src/client-python/debuginfo.py:31
+msgid "Extracting cpio from {0}"
+msgstr ""
+
+#: ../src/client-python/debuginfo.py:36
+msgid "Can't write to '{0}': {1}"
+msgstr ""
+
+#: ../src/client-python/debuginfo.py:50
+msgid "Can't extract package '{0}'"
+msgstr ""
+
+#: ../src/client-python/debuginfo.py:58
+msgid "Caching files from {0} made from {1}"
+msgstr ""
+
+#: ../src/client-python/debuginfo.py:76
+msgid "Can't extract files from '{0}'"
+msgstr ""
+
+#: ../src/client-python/debuginfo.py:85
+msgid "Can't remove '{0}': {1}"
+msgstr ""
+
+#. print (_("Downloading (%i of %i) %s: %3u%%")
+#. % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
+#. )
+#: ../src/client-python/debuginfo.py:111 ../src/client-python/debuginfo.py:122
+msgid "Downloading ({0} of {1}) {2}: {3:3}%"
+msgstr ""
+
+#. self.conf.cache = os.geteuid() != 0
+#. Setup yum (Ts, RPM db, Repo & Sack)
+#. doConfigSetup() takes some time, let user know what we are doing
+#: ../src/client-python/debuginfo.py:145
+msgid "Initializing yum"
+msgstr ""
+
+#: ../src/client-python/debuginfo.py:153
+msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
+msgstr ""
+
+#. This takes some time, let user know what we are doing
+#: ../src/client-python/debuginfo.py:184
+msgid "Setting up yum repositories"
+msgstr ""
+
+#: ../src/client-python/debuginfo.py:195
+msgid "Can't setup {0}: {1}, disabling"
+msgstr ""
+
+#. This is somewhat "magic", it unpacks the metadata making it usable.
+#. Looks like this is the moment when yum talks to remote servers,
+#. which takes time (sometimes minutes), let user know why
+#. we have "paused":
+#: ../src/client-python/debuginfo.py:202
+msgid "Looking for needed packages in repositories"
+msgstr ""
+
+#: ../src/client-python/debuginfo.py:206
+msgid "Error retrieving metadata: '{0!s}'"
+msgstr ""
+
+#: ../src/client-python/debuginfo.py:216
+msgid "Error retrieving filelists: '{0!s}'"
+msgstr ""
+
+#: ../src/client-python/debuginfo.py:249
+msgid "Can't find packages for {0} debuginfo files"
+msgstr ""
+
+#: ../src/client-python/debuginfo.py:251
+msgid "Packages to download: {0}"
+msgstr ""
+
+#: ../src/client-python/debuginfo.py:252
+msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
+msgstr ""
+
+#: ../src/client-python/debuginfo.py:257
+msgid "Download cancelled by user"
+msgstr ""
+
+#: ../src/client-python/debuginfo.py:291
+msgid "Downloading package {0} failed"
+msgstr ""
+
+#. recursively delete the temp dir on failure
+#: ../src/client-python/debuginfo.py:297
+msgid "Unpacking failed, aborting download..."
+msgstr ""
+
+#. Was: "All downloaded packages have been extracted, removing..."
+#. but it was appearing even if no packages were in fact extracted
+#. (say, when there was one package, and it has download error).
+#: ../src/client-python/debuginfo.py:307
+msgid "Removing {0}"
+msgstr ""
+
+#: ../src/client-python/debuginfo.py:311
+#, python-format
+msgid "Can't remove %s, probably contains an error log"
+msgstr ""
+
 #: ../src/gtk-helpers/event_config_dialog.c:131
 msgid "Show password"
 msgstr "显示密码"
@@ -269,10 +363,7 @@ msgid ""
 "& [-vpod] [-g GUI_FILE] [-n PROG_NAME] DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
-msgstr ""
-"& [-vpod] [-g 图形化界面] [-n 程序名] 目录\n"
-"\n"
-"分析并汇报保存在指定目录问题的图形化工具"
+msgstr "& [-vpod] [-g 图形化界面] [-n 程序名] 目录\n\n分析并汇报保存在指定目录问题的图形化工具"
 
 #: ../src/gui-wizard-gtk/main.c:127
 msgid "Alternate GUI file"
@@ -297,7 +388,7 @@ msgstr "在报告后移除 DIR"
 #. *
 #. * Note that we suppress [Cancel] everywhere once and for all
 #. * using gtk_assistant_commit at init time.
-#.
+#. 
 #. glade element name     , on-screen text          , type
 #: ../src/gui-wizard-gtk/wizard.c:247
 msgid "Problem description"
@@ -325,7 +416,7 @@ msgstr "收集中"
 
 #. Some reporters don't need backtrace, we can skip bt page for them.
 #. * Therefore we want to know reporters _before_ we go to bt page
-#.
+#. 
 #: ../src/gui-wizard-gtk/wizard.c:256
 msgid "Select reporter"
 msgstr "选择报告器"
@@ -350,8 +441,8 @@ msgstr "报告完成"
 #: ../src/gui-wizard-gtk/wizard.c:333
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue "
-"with the current configuration."
+"Wrong settings detected for %s, reporting will probably fail if you continue"
+" with the current configuration."
 msgstr "检测到 %s 的错误设置，如果您继续使用当前配置，报告可能失败。"
 
 #: ../src/gui-wizard-gtk/wizard.c:337
@@ -371,7 +462,7 @@ msgstr "配置(_F) %s"
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved data?"
-msgstr ""
+msgstr "需要可写目录，但目录'%s'不是可写的。需要把它移动到 '%s' 然后再对其进行操作，确定吗？"
 
 #: ../src/gui-wizard-gtk/wizard.c:420
 msgid "Don't ask me again"
@@ -453,7 +544,7 @@ msgstr "收集结束，退出代码 %d"
 msgid ""
 "Possible sensitive data detected, please review the highlighted tabs "
 "carefully."
-msgstr ""
+msgstr "检测到敏感数据，请仔细检查高亮部分的内容。"
 
 #: ../src/gui-wizard-gtk/wizard.c:2532
 #, c-format
@@ -515,11 +606,9 @@ msgstr "细节"
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid ""
 "How did this problem happen (step-by-step)? How can it be reproduced? Any "
-"additional comments useful for diagnosing the problem? Please use English if "
-"possible."
-msgstr ""
-"问题是如何一步步的发生的？如何去重现？有没有其他可能有助于诊断问题的额外信"
-"息？如果可以的请尽量使用英语。"
+"additional comments useful for diagnosing the problem? Please use English if"
+" possible."
+msgstr "问题是如何一步步的发生的？如何去重现？有没有其他可能有助于诊断问题的额外信息？如果可以的请尽量使用英语。"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "I don't know what caused this problem"
@@ -532,20 +621,16 @@ msgstr "我已经检查了数据并且同意提交(_A)"
 #: ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid ""
 "If you are reporting to a remote server, make sure you removed all private "
-"data (such as usernames and passwords). Backtrace, command line, environment "
-"variables are the typical items in need of examining."
-msgstr ""
-"如果您准备汇报给远程服务器，确定您移除了全部私人数据(比如用户名和密码)。回"
-"溯、命令行、环境变量是通常需要检查的项目。"
+"data (such as usernames and passwords). Backtrace, command line, environment"
+" variables are the typical items in need of examining."
+msgstr "如果您准备汇报给远程服务器，确定您移除了全部私人数据(比如用户名和密码)。回溯、命令行、环境变量是通常需要检查的项目。"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid ""
 "If you want to report the problem to a different destination, collect "
 "additional information, or provide a better problem description and repeat "
 "reporting process, press 'Forward'."
-msgstr ""
-"如果想要像第三方报告该问题，收集额外信息或是为问题提供更好的描述并继续报告问"
-"题，请点击'前进'。"
+msgstr "如果想要像第三方报告该问题，收集额外信息或是为问题提供更好的描述并继续报告问题，请点击'前进'。"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid ""
@@ -553,9 +638,7 @@ msgid ""
 "occurred, to choose how to analyze the problem (if needed), to review "
 "collected data, and to choose where the problem should be reported. Click "
 "'Forward' to proceed."
-msgstr ""
-"接下来，请描述该问题是如何发生的，选择如何分析此问题(如果需要的话)，确定所收"
-"集到的资料，并决定是否报告该问题。点击'前进'以继续。"
+msgstr "接下来，请描述该问题是如何发生的，选择如何分析此问题(如果需要的话)，确定所收集到的资料，并决定是否报告该问题。点击'前进'以继续。"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid "Regenerate backtrace"
@@ -671,16 +754,7 @@ msgid ""
 "first one invokes upload to RHTSupport and second - to Bugzilla.\n"
 "\n"
 "Configuration (such as login data) can be supplied via files\n"
-msgstr ""
-"& [-v] --target 目标 --ticket ID 文件...\n"
-"\n"
-"上传文件到位于指定目标的特定标签\n"
-"\n"
-"该工具被用来简化用户从 report 软件包到 libreport 的迁移。\n"
-"可识别的的目标有 'strata' 和 'bugzilla'，\n"
-"前者涉及上传至红帽支持而后者至 Bugzilla。\n"
-"\n"
-"配置（比如登录数据）可通过文件提供\n"
+msgstr "& [-v] --target 目标 --ticket ID 文件...\n\n上传文件到位于指定目标的特定标签\n\n该工具被用来简化用户从 report 软件包到 libreport 的迁移。\n可识别的的目标有 'strata' 和 'bugzilla'，\n前者涉及上传至红帽支持而后者至 Bugzilla。\n\n配置（比如登录数据）可通过文件提供\n"
 
 #: ../src/plugins/report.c:59
 msgid "'strata' or 'bugzilla'"
@@ -743,11 +817,9 @@ msgstr "检验 SSL"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:13
 msgid ""
-"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
-"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
-msgstr ""
-"您可以在 &lt;a href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;这里"
-"&lt;/a&gt; 创建 bugzilla.redhat.com 账户 "
+"You can create bugzilla.redhat.com account &lt;a "
+"href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+msgstr "您可以在 &lt;a href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;这里&lt;/a&gt; 创建 bugzilla.redhat.com 账户 "
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
 msgid "Kerneloops URL"
@@ -859,11 +931,9 @@ msgstr "用户名"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid ""
-"Examples: ftp://[user[:pass]@]host/dir/[file.tar.gz], scp://[user[:pass]@]"
-"host/dir/[file.tar.gz], file:///dir/[file.tar.gz]"
-msgstr ""
-"样例： ftp://[user[:pass]@]host/dir/[file.tar.gz], scp://[user[:pass]@]host/"
-"dir/[file.tar.gz], file:///dir/[file.tar.gz]"
+"Examples: ftp://[user[:pass]@]host/dir/[file.tar.gz], "
+"scp://[user[:pass]@]host/dir/[file.tar.gz], file:///dir/[file.tar.gz]"
+msgstr "样例： ftp://[user[:pass]@]host/dir/[file.tar.gz], scp://[user[:pass]@]host/dir/[file.tar.gz], file:///dir/[file.tar.gz]"
 
 #: ../src/plugins/report_Uploader.xml.in.h:2
 msgid "Report uploader"
@@ -879,11 +949,11 @@ msgstr "以 tar.gz 文件上传(通过 FTP/SCP/...)"
 
 #: ../src/plugins/report_Uploader.xml.in.h:5
 msgid ""
-"Where do you want to upload the tarball with report in form login:"
-"password@url"
+"Where do you want to upload the tarball with report in form "
+"login:password@url"
 msgstr "以用户名:密码@URL 的格式指定压缩包的上传位置"
 
-#: ../src/plugins/reporter-bugzilla.c:42
+#: ../src/plugins/reporter-bugzilla.c:63
 msgid ""
 "\n"
 "& [-vbf] [-c CONFFILE] -d DIR\n"
@@ -900,17 +970,16 @@ msgid ""
 "depending on their type and size.\n"
 "\n"
 "Otherwise, if such bug is found and it is marked as CLOSED DUPLICATE,\n"
-"the tool follows the chain of duplicates until it finds a non-DUPLICATE "
-"bug.\n"
+"the tool follows the chain of duplicates until it finds a non-DUPLICATE bug.\n"
 "The tool adds a new comment to found bug.\n"
 "\n"
 "The URL to new or modified bug is printed to stdout and recorded in\n"
 "'reported_to' element.\n"
 "\n"
 "If not specified, CONFFILE defaults to "
-msgstr ""
+msgstr "\n& [-vbf] [-c 配置文件(CONFFILE)] -d 目录\n或者：\n& [-v] [-c 配置文件(CONFFILE)] [-d 目录] -t[ID] 文件...\n\n向 Bugzilla 提交问题报告。\n\n此实用工具会读取指定目录，然后登录 Bugzilla 并尝试在“白板”中查找具有相同 abrt_hash:HEXSTRING 的项目。\n\n如果没有找到相同漏洞，将会登记一个新的漏洞。目录中的元素将依据它们的类型和大小，分别做为错误描述或附件保存。\n\n否则，如果找到相同的错误并且被标识为 CLOSED DUPLICATE。该工具会查询重复记录链条直到找到一个非重复的错误为止。 发现的错误将会作为注释被添加上去。\n\n指向新创建的或者被修改后的漏洞的URL会被打印到stdout（标准输出）上并记录到 'reported_to' 元素中。\n\n如果没有指定 CONFFILE，它默认为"
 
-#: ../src/plugins/reporter-bugzilla.c:89
+#: ../src/plugins/reporter-bugzilla.c:110
 #: ../src/plugins/reporter-kerneloops.c:159
 #: ../src/plugins/reporter-mailx.c:168 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:74
@@ -918,25 +987,25 @@ msgstr ""
 msgid "Dump directory"
 msgstr "转储目录"
 
-#: ../src/plugins/reporter-bugzilla.c:90
+#: ../src/plugins/reporter-bugzilla.c:111
 #: ../src/plugins/reporter-rhtsupport.c:75
 msgid "Configuration file (may be given many times)"
 msgstr "配置文件(可能需要给出多次)"
 
-#: ../src/plugins/reporter-bugzilla.c:91
+#: ../src/plugins/reporter-bugzilla.c:112
 msgid "Attach FILEs [to bug with this ID]"
 msgstr "附加文件[错误号]"
 
-#: ../src/plugins/reporter-bugzilla.c:92
+#: ../src/plugins/reporter-bugzilla.c:113
 msgid "When creating bug, attach binary files too"
 msgstr "当创建错误报告时，也提交二进制文件"
 
-#: ../src/plugins/reporter-bugzilla.c:93
+#: ../src/plugins/reporter-bugzilla.c:114
 #: ../src/plugins/reporter-rhtsupport.c:77
 msgid "Force reporting even if this problem is already reported"
 msgstr "强行汇报，哪怕问题已经汇报过了"
 
-#: ../src/plugins/reporter-bugzilla.c:94
+#: ../src/plugins/reporter-bugzilla.c:115
 msgid "Find BUG-ID according to DUPHASH"
 msgstr "按照转储哈希值查找错误 ID"
 
@@ -945,58 +1014,58 @@ msgid "Empty login or password, please check your configuration"
 msgstr "空白用户名或密码，请检查您的配置"
 
 #: ../src/plugins/reporter-bugzilla.c:209
-#: ../src/plugins/reporter-bugzilla.c:275
+#: ../src/plugins/reporter-bugzilla.c:276
 #, c-format
 msgid "Logging into Bugzilla at %s"
 msgstr "正在登陆位于 %s 的 Bugzilla"
 
 #: ../src/plugins/reporter-bugzilla.c:236
-#: ../src/plugins/reporter-bugzilla.c:448
+#: ../src/plugins/reporter-bugzilla.c:449
 msgid "Logging out"
 msgstr "正在注销"
 
-#: ../src/plugins/reporter-bugzilla.c:282
+#: ../src/plugins/reporter-bugzilla.c:283
 msgid "Checking for duplicates"
 msgstr "检查是否有重复"
 
-#: ../src/plugins/reporter-bugzilla.c:303
+#: ../src/plugins/reporter-bugzilla.c:304
 msgid "Missing mandatory member 'bugs'"
 msgstr "缺少必要的成员 '错误'"
 
 #. Create new bug
-#: ../src/plugins/reporter-bugzilla.c:342
+#: ../src/plugins/reporter-bugzilla.c:343
 msgid "Creating a new bug"
 msgstr "创建一个新错误"
 
-#: ../src/plugins/reporter-bugzilla.c:345
+#: ../src/plugins/reporter-bugzilla.c:346
 #, c-format
 msgid "Adding attachments to bug %i"
 msgstr "添加附件至错误 %i"
 
-#: ../src/plugins/reporter-bugzilla.c:360
+#: ../src/plugins/reporter-bugzilla.c:361
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "错误已经汇报：%i"
 
-#: ../src/plugins/reporter-bugzilla.c:381
+#: ../src/plugins/reporter-bugzilla.c:382
 #, c-format
 msgid "Add %s to CC list"
 msgstr "添加 %s 至抄送列表"
 
-#: ../src/plugins/reporter-bugzilla.c:420
+#: ../src/plugins/reporter-bugzilla.c:421
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "添加新的留言至错误 %d"
 
-#: ../src/plugins/reporter-bugzilla.c:425
+#: ../src/plugins/reporter-bugzilla.c:426
 msgid "Found the same comment in the bug history, not adding a new one"
 msgstr "在错误历史中发现相同的评论，不再添加一个新的"
 
-#: ../src/plugins/reporter-bugzilla.c:440
+#: ../src/plugins/reporter-bugzilla.c:441
 msgid "Attaching better backtrace"
 msgstr "正在添加更好的回溯信息"
 
-#: ../src/plugins/reporter-bugzilla.c:451
+#: ../src/plugins/reporter-bugzilla.c:452
 #, c-format
 msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
 msgstr "状态：%s%s%s %s/show_bug.cgi?id=%u"
@@ -1018,16 +1087,7 @@ msgid ""
 "CONFFILE lines should have 'PARAM = VALUE' format.\n"
 "Recognized string parameter: SubmitURL.\n"
 "Parameter can be overridden via $KerneloopsReporter_SubmitURL."
-msgstr ""
-" [-v] [-c 配置文件]... -d 目录\n"
-"\n"
-"汇报内核异常至 kerneloops.org (或类似) 站点。\n"
-"\n"
-"位于 $EXCLUDE_FROM_REPORT 列表中的文件将不会被包括在归档包中。\n"
-"\n"
-"配置文件应该是 '参数 = 值' 格式的。\n"
-"可识别的字符串参数: SubmitURL。\n"
-"参数可被 $KerneloopsReporter_SubmitURL 覆盖。"
+msgstr " [-v] [-c 配置文件]... -d 目录\n\n汇报内核异常至 kerneloops.org (或类似) 站点。\n\n位于 $EXCLUDE_FROM_REPORT 列表中的文件将不会被包括在归档包中。\n\n配置文件应该是 '参数 = 值' 格式的。\n可识别的字符串参数: SubmitURL。\n参数可被 $KerneloopsReporter_SubmitURL 覆盖。"
 
 #: ../src/plugins/reporter-kerneloops.c:160
 msgid "Configuration file"
@@ -1049,7 +1109,7 @@ msgid ""
 "Sends contents of a problem directory DIR via email\n"
 "\n"
 "If not specified, CONFFILE defaults to "
-msgstr ""
+msgstr "& [-v] -d 目录 [-c 配置文件]\n\n将问题目录的内容通过 E-Mail 发送。\n\n如果没有指定 CONFFILE，它默认为"
 
 #: ../src/plugins/reporter-mailx.c:169 ../src/plugins/reporter-upload.c:289
 msgid "Config file"
@@ -1060,10 +1120,7 @@ msgid ""
 "& [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
 "\n"
 "Prints problem information to standard output or FILE"
-msgstr ""
-"& [-v] -d 目录 [-o 文件] [-a yes/no] [-r]\n"
-"\n"
-"打印问题信息至标准输出或者文件"
+msgstr "& [-v] -d 目录 [-o 文件] [-a yes/no] [-r]\n\n打印问题信息至标准输出或者文件"
 
 #: ../src/plugins/reporter-print.c:57
 msgid "Output file"
@@ -1111,15 +1168,7 @@ msgid ""
 "Reports a problem to RHTSupport.\n"
 "\n"
 "If not specified, CONFFILE defaults to "
-msgstr ""
-"\n"
-"& [-v] [-c 配置文件] -d 目录\n"
-"or:\n"
-"& [-v] [-c 配置文件] [-d 目录] -t[ID] 文件...\n"
-"\n"
-"汇报一个问题至红帽支持。\n"
-"\n"
-"如果未指定，配置文件默认为 "
+msgstr "\n& [-v] [-c 配置文件] -d 目录\nor:\n& [-v] [-c 配置文件] [-d 目录] -t[ID] 文件...\n\n汇报一个问题至红帽支持。\n\n如果未指定，配置文件默认为 "
 
 #: ../src/plugins/reporter-rhtsupport.c:76
 msgid "Upload FILEs [to case with this ID]"
@@ -1135,9 +1184,11 @@ msgid "Attaching '%s' to case '%s'"
 msgstr "添加 '%s' 到个案 '%s'"
 
 #. create_problem_data_for_reporting already emitted error msg
-#. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are
+#. doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #: ../src/plugins/reporter-rhtsupport.c:199
 #: ../src/plugins/reporter-upload.c:121
 msgid "Compressing data"
@@ -1149,7 +1200,7 @@ msgstr "无法在 /tmp 下创建临时目录"
 
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
-#.
+#. 
 #: ../src/plugins/reporter-rhtsupport.c:265
 #: ../src/plugins/reporter-rhtsupport.c:296
 #: ../src/plugins/reporter-rhtsupport.c:330
@@ -1210,23 +1261,7 @@ msgid ""
 "CONFFILE lines should have 'PARAM = VALUE' format.\n"
 "Recognized string parameter: URL.\n"
 "Parameter can be overridden via $Upload_URL."
-msgstr ""
-"& [-v] -d 目录 [-c 配置文件] [-u URL]\n"
-"\n"
-"上传包含指定问题目录的压缩归档包到 URL。\n"
-"如果未指定 URL，则在 /tmp 创建归档包并退出。\n"
-"\n"
-"URL 应该具有 '协议://[user[:pass]@]host/dir/[file.tar.gz]' 的形式，\n"
-"其中协议可以是 http(s), ftp, scp, 或者 file。\n"
-"文件协议不可包含用户和主机部分： 'file:///dir/[file.tar.gz].'\n"
-"如果 URL 以斜杠结束，则会自动生成归档名称并附加到\n"
-"URL 上；否则 URL 将被视做完整文件名使用。\n"
-"\n"
-"位于 $EXCLUDE_FROM_REPORT 列表中的文件将不会被包括在归档包中。\n"
-"\n"
-"配置文件应该是 '参数 = 值' 格式的。\n"
-"可识别的字符串参数: SubmitURL。\n"
-"参数可被 $KerneloopsReporter_SubmitURL 覆盖。"
+msgstr "& [-v] -d 目录 [-c 配置文件] [-u URL]\n\n上传包含指定问题目录的压缩归档包到 URL。\n如果未指定 URL，则在 /tmp 创建归档包并退出。\n\nURL 应该具有 '协议://[user[:pass]@]host/dir/[file.tar.gz]' 的形式，\n其中协议可以是 http(s), ftp, scp, 或者 file。\n文件协议不可包含用户和主机部分： 'file:///dir/[file.tar.gz].'\n如果 URL 以斜杠结束，则会自动生成归档名称并附加到\nURL 上；否则 URL 将被视做完整文件名使用。\n\n位于 $EXCLUDE_FROM_REPORT 列表中的文件将不会被包括在归档包中。\n\n配置文件应该是 '参数 = 值' 格式的。\n可识别的字符串参数: SubmitURL。\n参数可被 $KerneloopsReporter_SubmitURL 覆盖。"
 
 #: ../src/plugins/reporter-upload.c:290
 msgid "Base URL to upload to"
@@ -1278,18 +1313,13 @@ msgid ""
 "& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
 "\n"
 "Search for updates on bodhi server"
-msgstr ""
-"& [-v] [-r[发布版本]] (-b ID1[,ID2,...] | 软件包名) [软件包名]... \n"
-"\n"
-"在 Bodhi 服务器上搜索更新"
+msgstr "& [-v] [-r[发布版本]] (-b ID1[,ID2,...] | 软件包名) [软件包名]... \n\n在 Bodhi 服务器上搜索更新"
 
 #: ../src/plugins/abrt-bodhi.c:459
 msgid ""
-"Abrt found a new update which fix your problem. Please run before submitting "
-"bug: pkcon update --repo-enable=fedora --repo-repo=updates-testing"
-msgstr ""
-"自动错误汇报工作找到修复您问题的更新。请在提交错误前运行： pkcon update --"
-"repo-enable=fedora --repo-enable=updates-testing"
+"Abrt found a new update which fix your problem. Please run before submitting"
+" bug: pkcon update --repo-enable=fedora --repo-repo=updates-testing"
+msgstr "自动错误汇报工作找到修复您问题的更新。请在提交错误前运行： pkcon update --repo-enable=fedora --repo-enable=updates-testing"
 
 #: ../src/plugins/abrt-bodhi.c:463
 msgid ". Do you want to continue with reporting bug?"
@@ -1323,7 +1353,4 @@ msgid ""
 "& -o [-d] DIR\n"
 "\n"
 "newt tool to report problem saved in specified DIR"
-msgstr ""
-"& -o [-d] 目录\n"
-"\n"
-"汇报保存在指定目录问题的 newt 工具"
+msgstr "& -o [-d] 目录\n\n汇报保存在指定目录问题的 newt 工具"
