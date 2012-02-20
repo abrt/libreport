@@ -156,7 +156,7 @@ class DebugInfoDownload(YumBase):
         unmute_stdout()
 
     # return value will be used as exitcode. So 0 = ok, !0 - error
-    def download(self, files, exact_files=False):
+    def download(self, files, download_exact_files=False):
         """ @files - """
         installed_size = 0
         total_pkgs = 0
@@ -291,7 +291,7 @@ class DebugInfoDownload(YumBase):
                 print (_("Downloading package {0} failed").format(pkg))
             else:
                 unpack_result = unpack_rpm(package_file_name, files, self.tmpdir,
-                                           self.cachedir, self.keeprpms, exact_files=exact_files)
+                                           self.cachedir, self.keeprpms, exact_files=download_exact_files)
                 if unpack_result == RETURN_FAILURE:
                     # recursively delete the temp dir on failure
                     print _("Unpacking failed, aborting download...")
