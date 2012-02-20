@@ -420,7 +420,11 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
     }
     else
     {
-        strbuf_append_strf(buf_summary, "[abrt] %s", package);
+        if (analyzer && !strcmp(analyzer, "Kerneloops"))
+            strbuf_append_str(buf_summary, "[abrt]");
+        else
+            strbuf_append_strf(buf_summary, "[abrt] %s", package);
+
         if (function && strlen(function) < 30)
             strbuf_append_strf(buf_summary, ": %s", function);
 
