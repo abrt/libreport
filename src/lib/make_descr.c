@@ -247,6 +247,7 @@ static const char *const blacklisted_items[] = {
     FILENAME_PACKAGE,
     FILENAME_OS_RELEASE,
     FILENAME_COMPONENT,
+    FILENAME_REASON,
     NULL
 };
 
