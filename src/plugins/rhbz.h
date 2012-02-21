@@ -61,13 +61,13 @@ struct bug_info {
 };
 
 struct bugzilla_struct {
-	const char *b_login;
-	const char *b_password;
-	const char *b_bugzilla_xmlrpc;
-	const char *b_bugzilla_url;
-	const char *b_release;
-	char       *b_product;
-	int         b_ssl_verify;
+    const char *b_login;
+    const char *b_password;
+    const char *b_bugzilla_xmlrpc;
+    const char *b_bugzilla_url;
+    const char *b_release;
+    char       *b_product;
+    int         b_ssl_verify;
 };
 
 #define INIT_BUGZILLA(name)			\
