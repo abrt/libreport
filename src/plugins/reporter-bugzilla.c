@@ -288,15 +288,14 @@ int main(int argc, char **argv)
 
       bugzilla client is looking for duplicate bug by sending xmlrpc query
 
-      "ALL whiteboard:<hash>  component:<name>  [product:<product>]"
+      "ALL whiteboard:<hash> product:<product> component:<name>"
 
       so if bug is moved from component selinux-policy to other, then query
       returns NULL and creates a new bug.
     */
-    const char *product_substitute = (!strcmp(rhbz.b_product, "Fedora")) ? rhbz.b_product : NULL;
     const char *component_substitute = (!strcmp(component, "selinux-policy")) ? NULL : component;
     xmlrpc_value *result = rhbz_search_duphash(client, component_substitute,
-                                               product_substitute, duphash);
+                                               rhbz.b_product, duphash);
 
     xmlrpc_value *all_bugs = rhbz_get_member("bugs", result);
     xmlrpc_DECREF(result);
@@ -309,39 +308,15 @@ int main(int argc, char **argv)
     VERB3 log("Bugzilla has %i reports with same duphash '%s'",
               all_bugs_size, duphash);
 
-    int bug_id = -1;
-    struct bug_info *bz = NULL;
-    if (all_bugs_size > 0)
-    {
-        bug_id = rhbz_bug_id(all_bugs);
-        xmlrpc_DECREF(all_bugs);
-        bz = rhbz_bug_info(client, bug_id);
-
-        if (strcmp(bz->bi_product, rhbz.b_product) != 0)
-        {
-            /* found something, but its a different product */
-            free_bug_info(bz);
-
-            xmlrpc_value *result = rhbz_search_duphash(client, component_substitute,
-                                                       product_substitute, duphash);
-            xmlrpc_value *all_bugs = rhbz_get_member("bugs", result);
-            xmlrpc_DECREF(result);
-
-            all_bugs_size = rhbz_array_size(all_bugs);
-            if (all_bugs_size > 0)
-            {
-                bug_id = rhbz_bug_id(all_bugs);
-                bz = rhbz_bug_info(client, bug_id);
-            }
-            xmlrpc_DECREF(all_bugs);
-        }
-    }
+    int bug_id = rhbz_bug_id(all_bugs);
+    xmlrpc_DECREF(all_bugs);
+    struct bug_info *bz = rhbz_bug_info(client, bug_id);
 
     if (all_bugs_size == 0)
     {
         /* Create new bug */
         log(_("Creating a new bug"));
-        bug_id = rhbz_new_bug(client, problem_data, rhbz.b_release, bug_id);
+        bug_id = rhbz_new_bug(client, problem_data, rhbz.b_release);
 
         log(_("Adding attachments to bug %i"), bug_id);
         char bug_id_str[sizeof(int)*3 + 2];

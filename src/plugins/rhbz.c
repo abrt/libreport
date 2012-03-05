@@ -383,8 +383,7 @@ struct bug_info *rhbz_bug_info(struct abrt_xmlrpc *ax, int bug_id)
 
 /* suppress mail notify by {s:i} (nomail:1) (driven by flag) */
 int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
-                 const char *release,
-                 int depend_on_bug)
+                 const char *release)
 {
     const char *package      = get_problem_item_content_or_NULL(problem_data,
                                                                 FILENAME_PACKAGE);
@@ -449,29 +448,15 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
 
     xmlrpc_value* result = NULL;
     char *summary = strbuf_free_nobuf(buf_summary);
-    if (depend_on_bug > -1)
-    {
-        result = abrt_xmlrpc_call(ax, "Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s,s:s,s:i})",
-                                  "product", product,
-                                  "component", component,
-                                  "version", version,
-                                  "summary", summary,
-                                  "description", full_dsc,
-                                  "status_whiteboard", status_whiteboard,
-                                  "platform", arch,
-                                  "dependson", depend_on_bug);
-    }
-    else
-    {
-        result = abrt_xmlrpc_call(ax, "Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
-                                  "product", product,
-                                  "component", component,
-                                  "version", version,
-                                  "summary", summary,
-                                  "description", full_dsc,
-                                  "status_whiteboard", status_whiteboard,
-                                  "platform", arch);
-    }
+    result = abrt_xmlrpc_call(ax, "Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
+                              "product", product,
+                              "component", component,
+                              "version", version,
+                              "summary", summary,
+                              "description", full_dsc,
+                              "status_whiteboard", status_whiteboard,
+                              "platform", arch);
+
     free(status_whiteboard);
     free(product);
     free(version);
