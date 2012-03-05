@@ -156,7 +156,7 @@ void add_to_problem_data(problem_data_t *problem_data,
     add_to_problem_data_ext(problem_data, name, content, CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
 }
 
-const char *get_problem_item_content_or_die(problem_data_t *problem_data, const char *key)
+char *get_problem_item_content_or_die(problem_data_t *problem_data, const char *key)
 {
     struct problem_item *item = get_problem_data_item_or_NULL(problem_data, key);
     if (!item)
@@ -164,7 +164,7 @@ const char *get_problem_item_content_or_die(problem_data_t *problem_data, const 
     return item->content;
 }
 
-const char *get_problem_item_content_or_NULL(problem_data_t *problem_data, const char *key)
+char *get_problem_item_content_or_NULL(problem_data_t *problem_data, const char *key)
 {
     struct problem_item *item = get_problem_data_item_or_NULL(problem_data, key);
     if (!item)
