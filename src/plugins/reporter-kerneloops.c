@@ -51,12 +51,18 @@ static CURLcode http_post_to_kerneloops_site(const char *url, const char *oopsda
     CURL *handle;
     struct curl_httppost *post = NULL;
     struct curl_httppost *last = NULL;
+    struct curl_slist *headers = NULL;
 
     handle = curl_easy_init();
     if (!handle)
         error_msg_and_die("Can't create curl handle");
 
+    headers = curl_slist_append(headers, "Accept: */*");
+    headers = curl_slist_append(headers, "Expect:");
+
     curl_easy_setopt(handle, CURLOPT_URL, url);
+    curl_easy_setopt(handle, CURLOPT_FAILONERROR, 1L);
+    curl_easy_setopt(handle, CURLOPT_HTTPHEADER, headers);
 
     curl_formadd(&post, &last,
             CURLFORM_COPYNAME, "oopsdata",
@@ -73,6 +79,7 @@ static CURLcode http_post_to_kerneloops_site(const char *url, const char *oopsda
     ret = curl_easy_perform_with_proxy(handle, url);
 
     curl_formfree(post);
+    curl_slist_free_all(headers);
     curl_easy_cleanup(handle);
 
     return ret;
