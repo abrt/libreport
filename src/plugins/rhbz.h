@@ -61,6 +61,7 @@ struct bug_info {
 };
 
 struct bugzilla_struct {
+    int         b_id;
     const char *b_login;
     const char *b_password;
     const char *b_bugzilla_xmlrpc;
@@ -71,7 +72,9 @@ struct bugzilla_struct {
 };
 
 #define INIT_BUGZILLA(name)			\
-	static struct bugzilla_struct name
+    static struct bugzilla_struct name = {      \
+        .b_id = 0,                              \
+    }
 
 struct bug_info *new_bug_info();
 void free_bug_info(struct bug_info *bz);
@@ -97,8 +100,7 @@ int rhbz_array_size(xmlrpc_value *xml);
 int rhbz_bug_id(xmlrpc_value *xml);
 
 int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
-                 const char *release,
-                 int depend_on_bug);
+                 const char *release);
 
 int rhbz_attach_big_files(struct abrt_xmlrpc *ax, const char *bug_id,
                      problem_data_t *problem_data, int flags);

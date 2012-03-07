@@ -280,82 +280,91 @@ int main(int argc, char **argv)
     parse_release_for_bz(rhbz.b_release, &rhbz.b_product, &version);
     free(version);
 
-    log(_("Checking for duplicates"));
-
-    /*
-      selinux guy's almost always move filled bug from component selinux-policy
-      to right component.
-
-      bugzilla client is looking for duplicate bug by sending xmlrpc query
-
-      "ALL whiteboard:<hash>  component:<name>  [product:<product>]"
-
-      so if bug is moved from component selinux-policy to other, then query
-      returns NULL and creates a new bug.
-    */
-    const char *product_substitute = (!strcmp(rhbz.b_product, "Fedora")) ? rhbz.b_product : NULL;
-    const char *component_substitute = (!strcmp(component, "selinux-policy")) ? NULL : component;
-    xmlrpc_value *result = rhbz_search_duphash(client, component_substitute,
-                                               product_substitute, duphash);
-
-    xmlrpc_value *all_bugs = rhbz_get_member("bugs", result);
-    xmlrpc_DECREF(result);
-    if (!all_bugs)
-        error_msg_and_die(_("Missing mandatory member 'bugs'"));
-
-    int all_bugs_size = rhbz_array_size(all_bugs);
-    // When someone clones bug it has same duphash, so we can find more than 1.
-    // Need to be checked if component is same.
-    VERB3 log("Bugzilla has %i reports with same duphash '%s'",
-              all_bugs_size, duphash);
-
-    int bug_id = -1;
-    struct bug_info *bz = NULL;
-    if (all_bugs_size > 0)
+    char *remote_result;
+    remote_result = get_problem_item_content_or_NULL(problem_data, FILENAME_REMOTE_RESULT);
+    if (remote_result)
     {
-        bug_id = rhbz_bug_id(all_bugs);
-        xmlrpc_DECREF(all_bugs);
-        bz = rhbz_bug_info(client, bug_id);
+        char *cmd = strtok(remote_result, " \n");
+        char *id = strtok(NULL, " \n");
 
-        if (strcmp(bz->bi_product, rhbz.b_product) != 0)
+        if (!prefixcmp(cmd, "DUPLICATE"))
         {
-            /* found something, but its a different product */
-            free_bug_info(bz);
-
-            xmlrpc_value *result = rhbz_search_duphash(client, component_substitute,
-                                                       product_substitute, duphash);
-            xmlrpc_value *all_bugs = rhbz_get_member("bugs", result);
-            xmlrpc_DECREF(result);
-
-            all_bugs_size = rhbz_array_size(all_bugs);
-            if (all_bugs_size > 0)
+            int old_errno = errno;
+            errno = 0;
+            char *e;
+            rhbz.b_id = strtoul(id, &e, 10);
+            if (errno || id == e || *e != '\0' || rhbz.b_id > INT_MAX)
             {
-                bug_id = rhbz_bug_id(all_bugs);
-                bz = rhbz_bug_info(client, bug_id);
+                /* error / no digits / illegal trailing chars */
+                errno = old_errno;
+                rhbz.b_id = 0;
             }
-            xmlrpc_DECREF(all_bugs);
+            errno = old_errno; /* Ok.  So restore errno. */
         }
     }
 
-    if (all_bugs_size == 0)
+    struct bug_info *bz = NULL;
+    if (!rhbz.b_id)
     {
-        /* Create new bug */
-        log(_("Creating a new bug"));
-        bug_id = rhbz_new_bug(client, problem_data, rhbz.b_release, bug_id);
+        log(_("Checking for duplicates"));
 
-        log(_("Adding attachments to bug %i"), bug_id);
-        char bug_id_str[sizeof(int)*3 + 2];
-        sprintf(bug_id_str, "%i", bug_id);
+        /*
+          SELinux guys almost always move filed bugs from component
+          selinux-policy to another component.
 
-        int flags = RHBZ_NOMAIL_NOTIFY;
-        if (opts & OPT_b)
-            flags |= RHBZ_ATTACH_BINARY_FILES;
-        rhbz_attach_big_files(client, bug_id_str, problem_data, flags);
+          Bugzilla client is looking for duplicate bug by sending
+          xmlrpc query:
 
-        bz = new_bug_info();
-        bz->bi_status = xstrdup("NEW");
-        bz->bi_id = bug_id;
-        goto log_out;
+          "ALL whiteboard:<hash> product:<product> component:<name>"
+
+          So if bug is moved from component selinux-policy to other,
+          then query returns NULL and creates a new bug.
+        */
+        const char *component_substitute = (!strcmp(component, "selinux-policy")) ? NULL : component;
+        xmlrpc_value *result = rhbz_search_duphash(client, component_substitute,
+                                                   rhbz.b_product, duphash);
+
+        xmlrpc_value *all_bugs = rhbz_get_member("bugs", result);
+        xmlrpc_DECREF(result);
+        if (!all_bugs)
+            error_msg_and_die(_("Missing mandatory member 'bugs'"));
+
+        int all_bugs_size = rhbz_array_size(all_bugs);
+        // When someone clones bug it has same duphash, so we can find more than 1.
+        // Need to be checked if component is same.
+        VERB3 log("Bugzilla has %i reports with same duphash '%s'",
+                  all_bugs_size, duphash);
+
+        if (all_bugs_size == 0)
+        {
+            /* Create new bug */
+            log(_("Creating a new bug"));
+            int bug_id = rhbz_new_bug(client, problem_data, rhbz.b_release);
+
+            log(_("Adding attachments to bug %i"), bug_id);
+            char bug_id_str[sizeof(int)*3 + 2];
+            sprintf(bug_id_str, "%i", bug_id);
+
+            int flags = RHBZ_NOMAIL_NOTIFY;
+            if (opts & OPT_b)
+                flags |= RHBZ_ATTACH_BINARY_FILES;
+            rhbz_attach_big_files(client, bug_id_str, problem_data, flags);
+
+            bz = new_bug_info();
+            bz->bi_status = xstrdup("NEW");
+            bz->bi_id = bug_id;
+            goto log_out;
+        }
+        else
+        {
+            int bug_id = rhbz_bug_id(all_bugs);
+            xmlrpc_DECREF(all_bugs);
+            bz = rhbz_bug_info(client, bug_id);
+        }
+    }
+    else
+    {
+        bz = rhbz_bug_info(client, rhbz.b_id);
     }
 
     log(_("Bug is already reported: %i"), bz->bi_id);

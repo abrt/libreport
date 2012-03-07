@@ -78,9 +78,9 @@ static inline struct problem_item *get_problem_data_item_or_NULL(problem_data_t 
 {
     return (struct problem_item *)g_hash_table_lookup(problem_data, key);
 }
-const char *get_problem_item_content_or_NULL(problem_data_t *problem_data, const char *key);
+char *get_problem_item_content_or_NULL(problem_data_t *problem_data, const char *key);
 /* Aborts if key is not found: */
-const char *get_problem_item_content_or_die(problem_data_t *problem_data, const char *key);
+char *get_problem_item_content_or_die(problem_data_t *problem_data, const char *key);
 
 
 /* Conversions between in-memory and on-disk formats */
