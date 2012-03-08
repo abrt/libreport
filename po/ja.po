@@ -1,22 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
-# Tomoyuki KATO <tomo@dream.daynight.jp>, 2012.
-#   <www.carrotsoft@gmail.com>, 2011, 2012.
+# Kiyoto Hashida <khashida@redhat.com>, 2011.
+#   <noriko@fedoraproject.org>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
-"Report-Msgid-Bugs-To: https://fedorahosted.org/abrt/report\n"
-"POT-Creation-Date: 2012-02-15 15:29+0100\n"
-"PO-Revision-Date: 2012-02-15 14:29+0000\n"
-"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-03-08 10:19+0100\n"
+"PO-Revision-Date: 2012-02-29 04:30+0000\n"
+"Last-Translator: noriko <noriko@fedoraproject.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../src/cli/cli.c:56
@@ -26,44 +26,49 @@ msgid ""
 "   or: & [-vsp] -a[y] DUMP_DIR\n"
 "   or: & [-vsp] -c[y] DUMP_DIR\n"
 "   or: & [-vsp] -r[y|o|d] DUMP_DIR"
-msgstr "& [-vsp] -L[PREFIX] [DUMP_DIR]\n   or: & [-vsp] -e EVENT DUMP_DIR\n   or: & [-vsp] -a[y] DUMP_DIR\n   or: & [-vsp] -c[y] DUMP_DIR\n   or: & [-vsp] -r[y|o|d] DUMP_DIR"
+msgstr ""
+"& [-vsp] -L[PREFIX] [DUMP_DIR]\n"
+"   or: & [-vsp] -e EVENT DUMP_DIR\n"
+"   or: & [-vsp] -a[y] DUMP_DIR\n"
+"   or: & [-vsp] -c[y] DUMP_DIR\n"
+"   or: & [-vsp] -r[y|o|d] DUMP_DIR"
 
 #. short_name long_name  value    parameter_name  help
 #: ../src/cli/cli.c:81
 msgid "List possible events [which start with PREFIX]"
-msgstr "可能なイベントをリストします [接頭辞から開始]"
+msgstr "可能性のある [PREFIX で始まる] イベントを一覧にする"
 
 #: ../src/cli/cli.c:82
 msgid "Run EVENT on DUMP_DIR"
-msgstr "DUMP_DIRでイベントを実行する"
+msgstr "DUMP_DIR 上で EVENT を実行する"
 
 #: ../src/cli/cli.c:83
 msgid "Run analyze event(s) on DUMP_DIR"
-msgstr "DUMP_DIRのイベントを分析する"
+msgstr "DUMP_DIR 上で analyze event(s) を実行する"
 
 #: ../src/cli/cli.c:84
 msgid "Run collect event(s) on DUMP_DIR"
-msgstr "DUMP_DIRのイベントを収集する"
+msgstr "DUMP_DIR でイベント収集を実行"
 
 #: ../src/cli/cli.c:85
 msgid "Analyze, collect and report problem data in DUMP_DIR"
-msgstr "DUMP_DIR内の問題のデータを分析、収集する"
+msgstr "DUMP_DIR で問題になっているデータを分析、収集、レポートする"
 
 #: ../src/cli/cli.c:86 ../src/report-newt/report-newt.c:395
 msgid "Display version and exit"
-msgstr "バージョンを表示して終了"
+msgstr "バージョンを表示して終了する"
 
 #: ../src/cli/cli.c:87
 msgid "Remove DUMP_DIR after reporting"
-msgstr "報告後にDUMP_DIRを削除する"
+msgstr "報告した後で DUMP_DIR を削除"
 
 #: ../src/cli/cli.c:88
 msgid "Noninteractive: don't ask questions, assume 'yes'"
-msgstr "非対話式: 質問をせず、すべて 'yes' で答えます"
+msgstr "非対話型: 質問なしで、「はい」を想定"
 
 #: ../src/cli/cli.c:89
 msgid "With -r: do not run analyzers, run only reporters"
-msgstr "-r オプション: 分析をせず、報告のみ実行します"
+msgstr "-r 付き: アナライザを実行しないで、レポーターのみを実行"
 
 #: ../src/cli/cli.c:91
 msgid "Log to syslog"
@@ -71,7 +76,7 @@ msgstr "syslog へのログ"
 
 #: ../src/cli/cli.c:92 ../src/gui-wizard-gtk/main.c:128
 msgid "Add program names to log"
-msgstr "プログラム名をログに追加"
+msgstr "ログへプログラム名を追加する"
 
 #: ../src/cli/cli-report.c:132
 #, c-format
@@ -86,7 +91,9 @@ msgstr "# このクラッシュの状況を以下で説明して下さい。"
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
-msgstr "# バックトレース\n# パスワードなどの機密情報が入っていないことを確認して下さい。"
+msgstr ""
+"# バックトレース\n"
+"# パスワードなどの機密情報が入っていないことを確認して下さい。"
 
 #: ../src/cli/cli-report.c:156
 msgid "# Architecture"
@@ -118,7 +125,7 @@ msgstr "# パッケージ"
 
 #: ../src/cli/cli-report.c:163
 msgid "# Reason of crash"
-msgstr "# クラッシュの原因"
+msgstr "# クラッシュの理由"
 
 #: ../src/cli/cli-report.c:164
 msgid "# Release string of the operating system"
@@ -132,13 +139,17 @@ msgstr "vi を実行できません: $TERM, $VISUAL, 及び $EDITOR が定義さ
 msgid ""
 "\n"
 "The report has been updated"
-msgstr "\nバグレポートを更新しました"
+msgstr ""
+"\n"
+"バグレポートを更新しました"
 
 #: ../src/cli/cli-report.c:363
 msgid ""
 "\n"
 "No changes were detected in the report"
-msgstr "\n報告の中に変更は検出されませんでした。"
+msgstr ""
+"\n"
+"報告の中に変更は検出されませんでした。"
 
 #. The response might take more than 1 char in non-latin scripts.
 #: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1605
@@ -153,38 +164,38 @@ msgstr "N"
 
 #: ../src/cli/cli-report.c:500
 msgid "Your input is not valid, because of:"
-msgstr "入力された値は無効です:"
+msgstr "以下の理由でユーザーの入力は無効です:　"
 
 #: ../src/cli/cli-report.c:503
 #, c-format
 msgid "Bad value for '%s': %s"
-msgstr "無効な値 '%s':%s"
+msgstr "'%s' の不正な値: %s"
 
 #: ../src/cli/cli-report.c:605
 #, c-format
 msgid "How you would like to analyze the problem?\n"
-msgstr "どのように問題を分析したいですか？\n"
+msgstr "問題をどのように分析したですか？\n"
 
 #: ../src/cli/cli-report.c:623
 msgid "Select analyzer: "
-msgstr "アナライザを選択してください:"
+msgstr "アナライザの選択:　"
 
 #: ../src/cli/cli-report.c:630
 #, c-format
 msgid "You have chosen number out of range"
-msgstr "範囲外の数値が選択されました"
+msgstr "範囲外の数字を選択しました"
 
 #: ../src/cli/cli-report.c:639
 msgid "Invalid input, program exiting..."
-msgstr "無効な入力値です。プログラムを終了しています..."
+msgstr "無効な入力です、プログラムを終了しています..."
 
 #: ../src/cli/cli-report.c:704
 msgid "What additional information would you like to collect?"
-msgstr ""
+msgstr "収集したい追加情報は何ですか?"
 
 #: ../src/cli/cli-report.c:717
 msgid "Select collector(s): "
-msgstr "コレクターを選択:"
+msgstr "コレクターを選択: "
 
 #: ../src/cli/cli-report.c:765 ../src/gui-wizard-gtk/wizard.c:1257
 #: ../src/report-newt/report-newt.c:334
@@ -194,7 +205,7 @@ msgstr "(説明なし)"
 #: ../src/cli/cli-report.c:798
 #, c-format
 msgid "There were %d errors while collecting additional data\n"
-msgstr "追加のデータを処理中に %d個のエラーが発生しました\n"
+msgstr "追加データの収集中に %d エラーが発生しました\n"
 
 #: ../src/cli/cli-report.c:857 ../src/gui-wizard-gtk/wizard.c:2072
 msgid "Reporting..."
@@ -202,11 +213,11 @@ msgstr "報告中..."
 
 #: ../src/cli/cli-report.c:872 ../src/report-newt/report-newt.c:55
 msgid "How would you like to report the problem?"
-msgstr "どの方法でバグを報告しますか?"
+msgstr "どのように問題を報告したいですか？"
 
 #: ../src/cli/cli-report.c:882
 msgid "Select reporter(s): "
-msgstr "報告先を選択:"
+msgstr "レポーターの選択:"
 
 #: ../src/cli/cli-report.c:898
 msgid "Reporting disabled because the backtrace is unusable"
@@ -217,63 +228,65 @@ msgstr "バックトレースが利用できないため、レポート機能が
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
-msgstr "debuginfo を \"debuginfo-install %s\" コマンドにて手動でのインストールをもう一度試してください。\n"
+msgstr ""
+"手動で「debuginfo-install %s」コマンドを実行して debuginfo をインストールして"
+"からやり直してみてください\n"
 
 #: ../src/cli/cli-report.c:924
 #, c-format
 msgid "Problem reported via %d report events (%d errors)\n"
-msgstr "問題は、%d個の報告イベントを経由して報告されました (%d エラー)\n"
+msgstr "%d 回の報告イベントを通じて報告された問題(%d 個のエラー)　\n"
 
 #: ../src/client-python/debuginfo.py:31
 msgid "Extracting cpio from {0}"
-msgstr ""
+msgstr "cpio を {0} から抽出中"
 
 #: ../src/client-python/debuginfo.py:36
 msgid "Can't write to '{0}': {1}"
-msgstr ""
+msgstr "「{0}」 に書き込みできません: {1}"
 
 #: ../src/client-python/debuginfo.py:50
 msgid "Can't extract package '{0}'"
-msgstr ""
+msgstr "パッケージ「{0}」を抽出できません"
 
 #: ../src/client-python/debuginfo.py:58
 msgid "Caching files from {0} made from {1}"
-msgstr ""
+msgstr "{0} にある {1} から作成されたファイルをキャッシュ中"
 
 #: ../src/client-python/debuginfo.py:76
 msgid "Can't extract files from '{0}'"
-msgstr ""
+msgstr "「{0}」からファイルを抽出できません"
 
 #: ../src/client-python/debuginfo.py:85
 msgid "Can't remove '{0}': {1}"
-msgstr ""
+msgstr "「{0}」を削除できません: {1}"
 
 #. print (_("Downloading (%i of %i) %s: %3u%%")
 #. % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
 #. )
 #: ../src/client-python/debuginfo.py:111 ../src/client-python/debuginfo.py:122
 msgid "Downloading ({0} of {1}) {2}: {3:3}%"
-msgstr ""
+msgstr "ダウンロード中 ({0} ／ {1}) {2}: {3:3}%"
 
 #. self.conf.cache = os.geteuid() != 0
 #. Setup yum (Ts, RPM db, Repo & Sack)
 #. doConfigSetup() takes some time, let user know what we are doing
 #: ../src/client-python/debuginfo.py:145
 msgid "Initializing yum"
-msgstr ""
+msgstr "yum を初期化中"
 
 #: ../src/client-python/debuginfo.py:153
 msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
-msgstr ""
+msgstr "yum の初期化でエラー発生 (YumBase.doConfigSetup): '{0!s}'"
 
 #. This takes some time, let user know what we are doing
 #: ../src/client-python/debuginfo.py:184
 msgid "Setting up yum repositories"
-msgstr ""
+msgstr "yum リポジトリの設定中"
 
 #: ../src/client-python/debuginfo.py:195
 msgid "Can't setup {0}: {1}, disabling"
-msgstr ""
+msgstr "{0} を設定できません: {1}、 無効にしています"
 
 #. This is somewhat "magic", it unpacks the metadata making it usable.
 #. Looks like this is the moment when yum talks to remote servers,
@@ -281,52 +294,53 @@ msgstr ""
 #. we have "paused":
 #: ../src/client-python/debuginfo.py:202
 msgid "Looking for needed packages in repositories"
-msgstr ""
+msgstr "必要なパッケージをリポジトリで検索中"
 
 #: ../src/client-python/debuginfo.py:206
 msgid "Error retrieving metadata: '{0!s}'"
-msgstr ""
+msgstr "メタデータの取得中にエラーが発生: '{0!s}'"
 
 #: ../src/client-python/debuginfo.py:216
 msgid "Error retrieving filelists: '{0!s}'"
-msgstr ""
+msgstr "ファイル一覧の取得中にエラーが発生: '{0!s}'"
 
 #: ../src/client-python/debuginfo.py:249
 msgid "Can't find packages for {0} debuginfo files"
-msgstr ""
+msgstr "{0} debuginfo ファイルのパッケージが見つかりません"
 
 #: ../src/client-python/debuginfo.py:251
 msgid "Packages to download: {0}"
-msgstr ""
+msgstr "ダウンロードするパッケージ: {0}"
 
 #: ../src/client-python/debuginfo.py:252
 msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
 msgstr ""
+"ダウンロード中 {0:.2f}Mb、 インストールサイズ: {1:.2f}Mb、 続行しますか?"
 
 #: ../src/client-python/debuginfo.py:257
 msgid "Download cancelled by user"
-msgstr ""
+msgstr "ユーザーによってダウンロードが取り消されました"
 
 #: ../src/client-python/debuginfo.py:291
 msgid "Downloading package {0} failed"
-msgstr ""
+msgstr "パッケージ {0} のダウンロードに失敗しました "
 
 #. recursively delete the temp dir on failure
 #: ../src/client-python/debuginfo.py:297
 msgid "Unpacking failed, aborting download..."
-msgstr ""
+msgstr "解凍に失敗しました、 ダウンロードを中止しています…"
 
 #. Was: "All downloaded packages have been extracted, removing..."
 #. but it was appearing even if no packages were in fact extracted
 #. (say, when there was one package, and it has download error).
 #: ../src/client-python/debuginfo.py:307
 msgid "Removing {0}"
-msgstr ""
+msgstr "{0} を削除中"
 
 #: ../src/client-python/debuginfo.py:311
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
-msgstr ""
+msgstr "%s を削除できません、 おそらくエラーログが含まれています"
 
 #: ../src/gtk-helpers/event_config_dialog.c:131
 msgid "Show password"
@@ -338,11 +352,11 @@ msgstr "高度"
 
 #: ../src/gtk-helpers/event_config_dialog.c:404
 msgid "Don't store passwords"
-msgstr "パスワードを保存しない"
+msgstr "パスワードを保存しないでください"
 
 #: ../src/gtk-helpers/event_config_dialog.c:430
 msgid "Gnome Keyring is not available, your settings won't be saved!"
-msgstr "Gnome Keyringは利用できません, 設定は保存されていません!"
+msgstr "Gnome キーリングが利用できません、設定は保存されません！"
 
 #: ../src/gtk-helpers/event_config_dialog.c:463
 msgid "Event Configuration"
@@ -354,7 +368,7 @@ msgstr "イベント"
 
 #: ../src/gtk-helpers/event_config_dialog.c:522
 msgid "Configure E_vent"
-msgstr "E_ventを設定してください"
+msgstr "イベントの設定 (_E)"
 
 #: ../src/gui-wizard-gtk/main.c:113
 msgid ""
@@ -362,19 +376,22 @@ msgid ""
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
+"& [-vpod] [-g GUI_FILE] [-n PROG_NAME] DIR\n"
+"\n"
+"指定ディレクトリに保存した問題の分析と報告を行うための GUI ツール"
 
 #: ../src/gui-wizard-gtk/main.c:127
 msgid "Alternate GUI file"
-msgstr "代替GUIファイル"
+msgstr "代替の GUI ファイル"
 
 #. for use from 3rd party apps to show just a reporter selector
 #: ../src/gui-wizard-gtk/main.c:130 ../src/report-newt/report-newt.c:393
 msgid "Skip analyze steps, go through report steps only"
-msgstr "分析ステップをスキップし、報告のみ実行"
+msgstr "分析のステップを省略し報告ステップのみを行います"
 
 #: ../src/gui-wizard-gtk/main.c:131 ../src/report-newt/report-newt.c:394
 msgid "Remove DIR after reporting"
-msgstr "報告後にDIRを削除"
+msgstr "報告後に DIR を削除する"
 
 #. Page types:
 #. * CONTENT: normal page (has all btns: [Cancel] [Last] [Back] [Fwd])
@@ -386,11 +403,11 @@ msgstr "報告後にDIRを削除"
 #. *
 #. * Note that we suppress [Cancel] everywhere once and for all
 #. * using gtk_assistant_commit at init time.
-#. 
+#.
 #. glade element name     , on-screen text          , type
 #: ../src/gui-wizard-gtk/wizard.c:247
 msgid "Problem description"
-msgstr "バグの内容"
+msgstr "問題の説明"
 
 #: ../src/gui-wizard-gtk/wizard.c:248
 msgid "Provide additional information"
@@ -406,7 +423,7 @@ msgstr "分析中"
 
 #: ../src/gui-wizard-gtk/wizard.c:251
 msgid "Select collector"
-msgstr "コレクタを選択"
+msgstr "コレクターの選択"
 
 #: ../src/gui-wizard-gtk/wizard.c:252
 msgid "Collecting"
@@ -414,10 +431,10 @@ msgstr "収集中"
 
 #. Some reporters don't need backtrace, we can skip bt page for them.
 #. * Therefore we want to know reporters _before_ we go to bt page
-#. 
+#.
 #: ../src/gui-wizard-gtk/wizard.c:256
 msgid "Select reporter"
-msgstr "報告先の選択"
+msgstr "レポーターの選択"
 
 #: ../src/gui-wizard-gtk/wizard.c:257
 msgid "Review the data"
@@ -434,37 +451,43 @@ msgstr "報告中"
 
 #: ../src/gui-wizard-gtk/wizard.c:261
 msgid "Reporting done"
-msgstr "報告が完了しました"
+msgstr "報告終了"
 
 #: ../src/gui-wizard-gtk/wizard.c:333
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue"
-" with the current configuration."
-msgstr "%s ヘの無効な設定が検出されました、このまま続行すると報告は失敗するかもしれません。"
+"Wrong settings detected for %s, reporting will probably fail if you continue "
+"with the current configuration."
+msgstr ""
+"%s に誤った設定を検出しました。 現在の設定で続行すると報告はおそらく失敗する"
+"ことになります。"
 
 #: ../src/gui-wizard-gtk/wizard.c:337
 #, c-format
 msgid ""
 "Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
 "continue with the current configuration."
-msgstr "無効な設定が <b>%s</b> に検出されました、このまま続行すると報告は失敗するかもしれません。"
+msgstr ""
+"<b>%s</b> に誤った設定を検出しました。 現在の設定で続行すると報告はおそらく失"
+"敗することになります。"
 
 #: ../src/gui-wizard-gtk/wizard.c:354
 #, c-format
 msgid "Con_figure %s"
-msgstr "Con_figure %s"
+msgstr "%s を設定する (_F)"
 
 #: ../src/gui-wizard-gtk/wizard.c:413
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved data?"
-msgstr "書き込み可能なディレクトリが必要ですが、 '%s' は書き込みできません。'%s' に移動し、移動先でデータを処理しますか?"
+msgstr ""
+"書き込み可能なディレクトリが必要ですが、「%s」は書き込みできません。 「%s」に"
+"移動してから移動したデータで操作してみてください。"
 
 #: ../src/gui-wizard-gtk/wizard.c:420
 msgid "Don't ask me again"
-msgstr "再び確認しない"
+msgstr "次回からそのまま実行する"
 
 #: ../src/gui-wizard-gtk/wizard.c:630
 msgid "View/edit a text file"
@@ -473,99 +496,102 @@ msgstr "テキストファイルの表示/編集"
 #: ../src/gui-wizard-gtk/wizard.c:913
 #, c-format
 msgid "(not needed, '%s' already exists)"
-msgstr "('%s'は既に存在します)"
+msgstr "(必要ありません, '%s' は既に存在します)"
 
 #: ../src/gui-wizard-gtk/wizard.c:978
 msgid "Go to next step"
-msgstr "次のステップへ"
+msgstr "次のステップに進む"
 
 #: ../src/gui-wizard-gtk/wizard.c:1087
 msgid "(click here to view/edit)"
-msgstr "(ここをクリックすると ビュー/編集 できます)"
+msgstr "(ここをクリックして 表示/編集)"
 
 #: ../src/gui-wizard-gtk/wizard.c:1097
 #, c-format
 msgid "(binary file, %llu bytes)"
-msgstr "(バイナリーファイル、%llu バイト)"
+msgstr "(バイナリファイル、 %llu バイト)"
 
 #: ../src/gui-wizard-gtk/wizard.c:1265
 #, c-format
 msgid "%llu bytes, %u files"
-msgstr "%llu バイト、ファイル数 %u"
+msgstr "%llu バイト、 %u ファイル"
 
 #. TODO: better msg?
 #: ../src/gui-wizard-gtk/wizard.c:1809
 #, c-format
 msgid "No processing for event '%s' is defined"
-msgstr "イベント '%s' の処理は定義されていません"
+msgstr "イベント '%s' のプロセッシングは定義されていません。"
 
 #: ../src/gui-wizard-gtk/wizard.c:1930
 #, c-format
 msgid "Reporting disabled because the rating does not contain a number '%s'."
-msgstr "評価が数値 '%s' を含んでいないため、報告は無効になりました。"
+msgstr "レーティングが数値 '%s' を含んでいないため、報告は無効です。 "
 
 #: ../src/gui-wizard-gtk/wizard.c:1953
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
-msgstr "バックトレースが不完全です。再現手順が書かれているかどうか確認してください。"
+msgstr ""
+"バックトレースが不完全です。再現手順が書かれているかどうか確認してください。"
 
 #. FIXME: see CreporterAssistant: 394 for ideas
 #: ../src/gui-wizard-gtk/wizard.c:1959
 msgid "Reporting disabled because the backtrace is unusable."
-msgstr "バックトレースが利用できないため、レポート機能が無効になっています。"
+msgstr "バックトレースが利用できないため、報告機能が無効になっています。"
 
 #: ../src/gui-wizard-gtk/wizard.c:2045
 msgid "Analyzing..."
-msgstr "分析中..."
+msgstr "分析中...　"
 
 #: ../src/gui-wizard-gtk/wizard.c:2046
 #, c-format
 msgid "Analyzing finished with exit code %d"
-msgstr "分析が終了コード %d で終了しました"
+msgstr "分析は終了コード %d で完了しました"
 
 #: ../src/gui-wizard-gtk/wizard.c:2073
 #, c-format
 msgid "Reporting finished with exit code %d"
-msgstr "報告が終了コード %d で終了しました"
+msgstr "報告は終了コード  %d で完了しました"
 
 #: ../src/gui-wizard-gtk/wizard.c:2100
 msgid "Collecting..."
-msgstr "収集中..."
+msgstr "収集中…"
 
 #: ../src/gui-wizard-gtk/wizard.c:2101
 #, c-format
 msgid "Collecting finished with exit code %d"
-msgstr "収集はコード %d により終了しました"
+msgstr "終了コード %d で終了したものを収集中"
 
 #: ../src/gui-wizard-gtk/wizard.c:2236
 msgid ""
 "Possible sensitive data detected, please review the highlighted tabs "
 "carefully."
 msgstr ""
+"機密データの可能性があるものを検出しました、 ハイライトされているタブを慎重に"
+"確認してください。"
 
 #: ../src/gui-wizard-gtk/wizard.c:2532
 #, c-format
 msgid "'%s' is not an ordinary file"
-msgstr "ファイル '%s' は壊れています。"
+msgstr "「%s」は普通のファイルではありません"
 
 #: ../src/gui-wizard-gtk/wizard.c:2548
 msgid "You are trying to copy a file onto itself"
-msgstr ""
+msgstr "ファイルをそのファイル自体にコピーしようとしています"
 
 #: ../src/gui-wizard-gtk/wizard.c:2555
 #, c-format
 msgid "Can't copy '%s': %s"
-msgstr "'%s' をコピーできません: %s"
+msgstr "「%s」をコピーできません: %s"
 
 #: ../src/gui-wizard-gtk/wizard.c:2570
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
-msgstr "アイテム '%s' は既に存在し、変更不可能です。"
+msgstr "アイテム「%s」はすでに存在しているため変更できません"
 
 #: ../src/gui-wizard-gtk/wizard.c:2826
 msgid "Include"
-msgstr "組み込み"
+msgstr "含む"
 
 #: ../src/gui-wizard-gtk/wizard.c:2836
 msgid "Name"
@@ -579,23 +605,25 @@ msgstr "値"
 msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
-msgstr "<b>あなたのコメントは非公開ではありません。</b>コメントは、問題レポートに含まれる可能性があります。"
+msgstr ""
+"<b>コメントはプライベートではありません。</b>公共に見える問題報告に含まれるか"
+"も知れません。"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Analyzing did not start yet"
-msgstr "分析はまだ開始していません。"
+msgstr "分析はまだ開始していません"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid "Attach a file"
-msgstr "ファイルを添付する"
+msgstr "ファイルの添付"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid "Click 'Apply' to start reporting"
-msgstr "'Apply'をクリックすると報告を開始します。"
+msgstr "「適用」をクリックして報告を開始します"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid "Collecting did not start yet"
-msgstr "収集はまだ開始していません"
+msgstr "収集作業はまだ開始されていませんでした"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "Details"
@@ -604,24 +632,30 @@ msgstr "詳細"
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid ""
 "How did this problem happen (step-by-step)? How can it be reproduced? Any "
-"additional comments useful for diagnosing the problem? Please use English if"
-" possible."
-msgstr "いつ発生したか、どのようにしたら再現するか、段階的に記入してください。また、詳しいコメントは原因の解明に役立つかもしれません。可能であれば英語を使用してください。"
+"additional comments useful for diagnosing the problem? Please use English if "
+"possible."
+msgstr ""
+"この問題がどのようにして発生したか順を追って説明してください。 再現方法を説明"
+"してください。 問題の診断に役立つそうなコメントが他にありますか? できれば英語"
+"でお願いします。"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "I don't know what caused this problem"
-msgstr "私はなぜこの問題が起きたのか分かりません"
+msgstr "この問題の原因がわかりません。"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "I reviewed the data and _agree with submitting it"
-msgstr ""
+msgstr "データを見直しました、 送信に同意します。"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid ""
 "If you are reporting to a remote server, make sure you removed all private "
-"data (such as usernames and passwords). Backtrace, command line, environment"
-" variables are the typical items in need of examining."
+"data (such as usernames and passwords). Backtrace, command line, environment "
+"variables are the typical items in need of examining."
 msgstr ""
+"リモートサーバーにレポートを行う場合には、 プライベートなデータがすべて削除済"
+"みであることを必ず確認してください (ユーザー名、 パスワードなど)。 バックト"
+"レース、 コマンドライン、 環境変数などは特に注意が必要な事項になります。"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid ""
@@ -629,6 +663,8 @@ msgid ""
 "additional information, or provide a better problem description and repeat "
 "reporting process, press 'Forward'."
 msgstr ""
+"異なる送信先に問題を報告したい場合は、追加情報を収集するか、又はより良い問題"
+"説明を提供して報告プロセスを繰り返した上で、「進む」を押します。"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid ""
@@ -637,10 +673,13 @@ msgid ""
 "collected data, and to choose where the problem should be reported. Click "
 "'Forward' to proceed."
 msgstr ""
+"以下の画面で、問題が発生した順序の説明、問題分析法の選択(必要な場合)、収集"
+"データの再確認、及び問題報告先の選択などを依頼されます。「進む」を押して継続"
+"します。"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid "Regenerate backtrace"
-msgstr "バックトレースの再生成"
+msgstr "バックトレースを再生成する"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:14
 msgid "Reporter(s):"
@@ -648,98 +687,100 @@ msgstr "レポーター:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid "Reporting did not start yet"
-msgstr "報告はまだ開始されていません"
+msgstr "報告はまだ開始していません"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "Reporting has finished. You can close this window now."
-msgstr "報告が終了しました。このウィンドウを閉じることができます。"
+msgstr "報告は終了しました。この画面を今閉じることができます。"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "Select additional files to attach to the report:"
-msgstr ""
+msgstr "レポートに添付する追加ファイルを選択:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid "Select how you would like to analyze the problem:"
-msgstr "バグの分析方法を選択"
+msgstr "問題の分析法を選択して下さい:　"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:19
 msgid "Select how you would like to report the problem:"
-msgstr "バグの報告方法を選択:"
+msgstr "問題の報告法を選択して下さい:　"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:20
 msgid "Show log"
-msgstr "ログを表示する"
+msgstr "ログの表示"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:21
 msgid "Size:"
-msgstr "サイズ:"
+msgstr "サイズ:　"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:22
 msgid ""
 "Use this button to generate more informative backtrace after you installed "
 "additional debug packages"
 msgstr ""
+"追加のデバッグパッケージをインストールした後に、このボタンを使用してより情報"
+"を持つバックトレースを生成します"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:23
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "方法を記入した後に次に進むことができます..."
 
 #: ../src/lib/event_config.c:300
 msgid "Missing mandatory value"
-msgstr "必須の値がありません。"
+msgstr "必須の値がありません"
 
 #: ../src/lib/event_config.c:308
 #, c-format
 msgid "Invalid utf8 character '%c'"
-msgstr "無効なUTF8文字:'%c'"
+msgstr "無効な utf8 文字 '%c'"
 
 #: ../src/lib/event_config.c:321
 #, c-format
 msgid "Invalid number '%s'"
-msgstr "無効な数値:'%s'"
+msgstr "無効な数字 '%s'"
 
 #: ../src/lib/event_config.c:336
 #, c-format
 msgid "Invalid boolean value '%s'"
-msgstr "無効な真偽値:'%s'"
+msgstr "無効な boolean 値 '%s'"
 
 #: ../src/lib/event_config.c:342
 msgid "Unsupported option type"
-msgstr "サポートされていないオプションの種類"
+msgstr "サポートされていないオプションタイプ"
 
 #: ../src/lib/parse_options.c:58
 msgid "Usage: "
-msgstr "使用法:"
+msgstr "使用法: "
 
 #: ../src/lib/abrt_curl.c:208 ../src/plugins/reporter-upload.c:41
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
-msgstr "アップロード済: %llu / %llu kB"
+msgstr "アップロード済み: 合計 %llu キロバイトの内 %llu キロバイト"
 
 #: ../src/lib/problem_data.c:163
 #, c-format
 msgid "Essential element '%s' is missing, can't continue"
-msgstr ""
+msgstr "必須エレメントの「%s」がありません、 続行できません"
 
 #: ../src/plugins/abrt_rh_support.c:394
 #, c-format
 msgid "error in case creation: %s"
-msgstr "ケースの作成でエラー: %s"
+msgstr "作成時にエラー発生: %s"
 
 #: ../src/plugins/abrt_rh_support.c:400
 #, c-format
 msgid "error in case creation, HTTP code: %d, server says: '%s'"
-msgstr "ケースの作成でエラー、HTTPコード: %d、サーバーの応答: '%s'"
+msgstr "作成時にエラー発生、 HTTP コード: %d、 サーバー側: '%s'"
 
 #: ../src/plugins/abrt_rh_support.c:403
 #, c-format
 msgid "error in case creation, HTTP code: %d"
-msgstr "ケースの作成でエラー, HTTPコード: %d"
+msgstr "作成時にエラー発生、 HTTP コード: %d"
 
 #: ../src/plugins/abrt_rh_support.c:550
 #, c-format
 msgid "error in case creation: no Location URL, HTTP code: %d"
-msgstr "ケースの作成でエラー:位置URLなし, HTTPコード: %d"
+msgstr "作成時にエラー発生: URL がありません、 HTTP コード: %d"
 
 #: ../src/plugins/report.c:37
 msgid ""
@@ -753,18 +794,28 @@ msgid ""
 "\n"
 "Configuration (such as login data) can be supplied via files\n"
 msgstr ""
+"& [-v] --target TARGET --ticket ID FILE...\n"
+"\n"
+"FILEs を TARGET 上の指定したチケットにアップロードします。\n"
+"\n"
+"report package から libreport への移行を容易にするツールです。 \n"
+"認識されている TARGET は「strata」と「bugzilla」です。\n"
+"「strata」にすると RHTSupport に「bugzilla」にすると Bugzilla\n"
+"にアップロードされます。\n"
+"\n"
+"設定 (ログインデータなど) はファイルで与えることができます\n"
 
 #: ../src/plugins/report.c:59
 msgid "'strata' or 'bugzilla'"
-msgstr "strata または bugzilla"
+msgstr "'strata' 又は 'bugzilla'"
 
 #: ../src/plugins/report.c:60
 msgid "Ticket/case ID"
-msgstr "チケット／ケース ID"
+msgstr "チケット/ケース ID"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:1
 msgid "Address of Bugzilla server"
-msgstr "Bugzillaのサーバーアドレス"
+msgstr "Bugzilla サーバーのアドレス"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:2
 msgid "Bugzilla"
@@ -772,20 +823,20 @@ msgstr "Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:3
 msgid "Bugzilla URL"
-msgstr "BugzillaのURL"
+msgstr "Bugzilla URL"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:4
 msgid "Bugzilla account password"
-msgstr "Bugzillaのパスワード"
+msgstr "Bugzilla アカウントのパスワード"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:5
 msgid "Bugzilla account user name"
-msgstr "Bugzillaのアカウント名"
+msgstr "Bugzilla アカウントのユーザー名"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:6
 #: ../src/plugins/report_RHTSupport.xml.in.h:2
 msgid "Check SSL key validity"
-msgstr "SSLキーの有効性を確認してください"
+msgstr "SSL キーの妥当性をチェックする"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:7
 msgid "OS release string"
@@ -798,11 +849,11 @@ msgstr "パスワード"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:9
 msgid "Report to Bugzilla bug tracker"
-msgstr "Bugzilla バグトラッカーへ報告"
+msgstr "Bugzilla バグトラッカーに報告する"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:10
 msgid "Specify this only if you modified your /etc/system-release file"
-msgstr ""
+msgstr "/etc/system-release ファイルに変更を加えた場合にのみ指定します"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:11
 msgid "User name"
@@ -811,13 +862,15 @@ msgstr "ユーザー名"
 #: ../src/plugins/report_Bugzilla.xml.in.h:12
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Verify SSL"
-msgstr "SSLの確認"
+msgstr "SSL を照合する"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:13
 msgid ""
-"You can create bugzilla.redhat.com account &lt;a "
-"href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
+"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 msgstr ""
+"bugzilla.redhat.com アカウントを作成できます。&lt;a href=\"https://bugzilla."
+"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;　"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
 msgid "Kerneloops URL"
@@ -829,19 +882,19 @@ msgstr "Kerneloops.org"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:3
 msgid "Oops server url"
-msgstr "Oops server url"
+msgstr "Oops サーバー の URL"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:4
 msgid "Send to kernel oops tracker"
-msgstr "kernel oops トラッカーに送信する"
+msgstr "カーネル oops トラッカーに送信します"
 
 #: ../src/plugins/report_Logger.xml.in.h:1
 msgid "Append"
-msgstr "追記"
+msgstr "追加"
 
 #: ../src/plugins/report_Logger.xml.in.h:2
 msgid "Append new reports or overwrite the old one."
-msgstr ""
+msgstr "新しい報告を追加する、 または古い報告を上書きします。"
 
 #: ../src/plugins/report_Logger.xml.in.h:3
 msgid "Log File"
@@ -853,11 +906,11 @@ msgstr "ロガー"
 
 #: ../src/plugins/report_Logger.xml.in.h:5
 msgid "Name of the logfile"
-msgstr "ログファイル名"
+msgstr "logfile の名前"
 
 #: ../src/plugins/report_Logger.xml.in.h:6
 msgid "Save as text file"
-msgstr "テキストファイルとして保存する"
+msgstr "テキストファイルで保存"
 
 #: ../src/plugins/report_Mailx.xml.in.h:1
 msgid "Mailx"
@@ -869,23 +922,23 @@ msgstr "メッセージの件名"
 
 #: ../src/plugins/report_Mailx.xml.in.h:3
 msgid "Recipient"
-msgstr "送信先"
+msgstr "受信者"
 
 #: ../src/plugins/report_Mailx.xml.in.h:4
 msgid "Recipient's email"
-msgstr "送信先のEメールアドレス"
+msgstr "受信者の電子メール"
 
 #: ../src/plugins/report_Mailx.xml.in.h:5
 msgid "Send Binary Data"
-msgstr "バイナリデータの送信"
+msgstr "バイナリデータを送信する"
 
 #: ../src/plugins/report_Mailx.xml.in.h:6
 msgid "Send binary files like coredump"
-msgstr "コアダンプをバイナリファイルとして送信"
+msgstr "coredump のようなバイナリファイルを送信する"
 
 #: ../src/plugins/report_Mailx.xml.in.h:7
 msgid "Send via email"
-msgstr "Eメール経由で送信"
+msgstr "電子メールで送信"
 
 #: ../src/plugins/report_Mailx.xml.in.h:8
 msgid "Sender"
@@ -893,11 +946,11 @@ msgstr "送信者"
 
 #: ../src/plugins/report_Mailx.xml.in.h:9
 msgid "Sender's email"
-msgstr "送信元のEメールアドレス"
+msgstr "送信者の電子メール"
 
 #: ../src/plugins/report_Mailx.xml.in.h:10
 msgid "Subject"
-msgstr "件名"
+msgstr "題目"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:1
 msgid "Address of the Red Hat support portal"
@@ -905,7 +958,7 @@ msgstr "Red Hat サポートポータルのアドレス"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:4
 msgid "RH Portal URL"
-msgstr "RH ポータル URL"
+msgstr "RH ポータルの URL"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:5
 msgid "Red Hat Customer Support"
@@ -921,17 +974,19 @@ msgstr "Red Hat カスタマーユーザー名"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:8
 msgid "Report to Red Hat support"
-msgstr "Red Hat サポートへ報告"
+msgstr "Red Hat サポートに報告する"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:9
 msgid "Username"
-msgstr "ユーザ名"
+msgstr "ユーザー名"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid ""
-"Examples: ftp://[user[:pass]@]host/dir/[file.tar.gz], "
-"scp://[user[:pass]@]host/dir/[file.tar.gz], file:///dir/[file.tar.gz]"
-msgstr "例: ftp://[user[:pass]@]host/dir/[file.tar.gz], scp://[user[:pass]@]host/dir/[file.tar.gz], file:///dir/[file.tar.gz]"
+"Examples: ftp://[user[:pass]@]host/dir/[file.tar.gz], scp://[user[:pass]@]"
+"host/dir/[file.tar.gz], file:///dir/[file.tar.gz]"
+msgstr ""
+"例: ftp://[user[:pass]@]host/dir/[file.tar.gz]、 scp://[user[:pass]@]host/"
+"dir/[file.tar.gz]、 file:///dir/[file.tar.gz]"
 
 #: ../src/plugins/report_Uploader.xml.in.h:2
 msgid "Report uploader"
@@ -943,13 +998,14 @@ msgstr "URL"
 
 #: ../src/plugins/report_Uploader.xml.in.h:4
 msgid "Upload as tar.gz file (via FTP/SCP/...)"
-msgstr "tar.gz ファイルとしてアップロードする（FTP/SCP/...経由）"
+msgstr "tar.gz でアップロード (FTP/SCP/... 経由)"
 
 #: ../src/plugins/report_Uploader.xml.in.h:5
 msgid ""
-"Where do you want to upload the tarball with report in form "
-"login:password@url"
+"Where do you want to upload the tarball with report in form login:"
+"password@url"
 msgstr ""
+"login:password@url 形式の報告を持つターボールをどこにアップロードしますか？"
 
 #: ../src/plugins/reporter-bugzilla.c:63
 msgid ""
@@ -968,7 +1024,8 @@ msgid ""
 "depending on their type and size.\n"
 "\n"
 "Otherwise, if such bug is found and it is marked as CLOSED DUPLICATE,\n"
-"the tool follows the chain of duplicates until it finds a non-DUPLICATE bug.\n"
+"the tool follows the chain of duplicates until it finds a non-DUPLICATE "
+"bug.\n"
 "The tool adds a new comment to found bug.\n"
 "\n"
 "The URL to new or modified bug is printed to stdout and recorded in\n"
@@ -976,79 +1033,102 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"\n"
+"& [-vbf] [-c CONFFILE] -d DIR\n"
+"または:\n"
+"& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
+"\n"
+"問題を Bugzilla に報告します。\n"
+"\n"
+"このツールは DIR ディレクトリを読み込みます。 次に Bugzilla \n"
+"にログしてから「Whiteboard」で同じ abrt_hash:HEXSTRING を\n"
+"持つバグを検索します。\n"
+"\n"
+"検索で何も見つからんかった場合は新規のバグが作成されます。 DIR\n"
+"のエレメントが種類やサイズに応じてバグ詳細の一部または添付ファイルとして保存"
+"されます。\n"
+"\n"
+"これ以外、 検索で見つかったバグが CLOSED DUPLICATE になっている\n"
+"場合、 ツールは重複のないバグにたどり着くまで重複バグの追跡を行い\n"
+"ます。 たどり着いたバグに新しいコメントが追加されます。\n"
+"\n"
+"新しいバグまたは変更したバグへの URL はstdout に出力され、 \n"
+"「reported_to」エレメントに記録されます。\n"
+"\n"
+"指定しない場合、 CONFFILE により次のようにデフォルト設定されます。 "
 
 #: ../src/plugins/reporter-bugzilla.c:110
-#: ../src/plugins/reporter-kerneloops.c:159
+#: ../src/plugins/reporter-kerneloops.c:166
 #: ../src/plugins/reporter-mailx.c:168 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:74
 #: ../src/plugins/reporter-upload.c:288
 msgid "Dump directory"
-msgstr "ディレクトリをダンプする"
+msgstr "ダンプディレクトリ"
 
 #: ../src/plugins/reporter-bugzilla.c:111
 #: ../src/plugins/reporter-rhtsupport.c:75
 msgid "Configuration file (may be given many times)"
-msgstr ""
+msgstr "設定ファイル (何回でも供給可能)"
 
 #: ../src/plugins/reporter-bugzilla.c:112
 msgid "Attach FILEs [to bug with this ID]"
-msgstr ""
+msgstr "FILEs を添付する [この ID を持つバグに] "
 
 #: ../src/plugins/reporter-bugzilla.c:113
 msgid "When creating bug, attach binary files too"
-msgstr "バグ作成時、バイナリファイルも添付"
+msgstr "バグを作成する時には、バイナリファイルも添付して下さい"
 
 #: ../src/plugins/reporter-bugzilla.c:114
 #: ../src/plugins/reporter-rhtsupport.c:77
 msgid "Force reporting even if this problem is already reported"
-msgstr ""
+msgstr "この問題がすでに報告されている場合でも強制的に報告します"
 
 #: ../src/plugins/reporter-bugzilla.c:115
 msgid "Find BUG-ID according to DUPHASH"
-msgstr ""
+msgstr "DUPHASH にしたがって BUG-ID を検索します"
 
 #: ../src/plugins/reporter-bugzilla.c:179
 msgid "Empty login or password, please check your configuration"
-msgstr ""
+msgstr "ログイン、又はパスワードが空です。設定を確認して下さい。"
 
 #: ../src/plugins/reporter-bugzilla.c:209
 #: ../src/plugins/reporter-bugzilla.c:276
 #, c-format
 msgid "Logging into Bugzilla at %s"
-msgstr "%s の Bugzilla にログイン中"
+msgstr "%s にある Bugzilla にログインしています"
 
 #: ../src/plugins/reporter-bugzilla.c:236
 #: ../src/plugins/reporter-bugzilla.c:449
 msgid "Logging out"
-msgstr "ログアウト"
+msgstr "ログアウトしています"
 
 #: ../src/plugins/reporter-bugzilla.c:283
 msgid "Checking for duplicates"
-msgstr "重複の確認中"
+msgstr "重複をチェックしています"
 
 #: ../src/plugins/reporter-bugzilla.c:304
 msgid "Missing mandatory member 'bugs'"
-msgstr "必須のメンバ 'bugs' が欠けています"
+msgstr "必須メンバー 'bugs' がありません"
 
 #. Create new bug
 #: ../src/plugins/reporter-bugzilla.c:343
 msgid "Creating a new bug"
-msgstr "新規バグの作成中"
+msgstr "新しいバグを作成しています"
 
 #: ../src/plugins/reporter-bugzilla.c:346
 #, c-format
 msgid "Adding attachments to bug %i"
-msgstr ""
+msgstr "バグ %i に添付ファイルを追加しています"
 
 #: ../src/plugins/reporter-bugzilla.c:361
 #, c-format
 msgid "Bug is already reported: %i"
-msgstr "バグはすでに報告されています: %i"
+msgstr "バグは既に報告済みです: %i　"
 
 #: ../src/plugins/reporter-bugzilla.c:382
 #, c-format
 msgid "Add %s to CC list"
-msgstr "%s を CC 一覧に追加する"
+msgstr "%s を CC リストに追加する"
 
 #: ../src/plugins/reporter-bugzilla.c:421
 #, c-format
@@ -1057,23 +1137,23 @@ msgstr "新しいコメントをバグ %d に追加しています"
 
 #: ../src/plugins/reporter-bugzilla.c:426
 msgid "Found the same comment in the bug history, not adding a new one"
-msgstr ""
+msgstr "バグ履歴に同じコメントが見つかりました、 新しいコメントは追加しません"
 
 #: ../src/plugins/reporter-bugzilla.c:441
 msgid "Attaching better backtrace"
-msgstr "良いバックトレースを添付"
+msgstr "より適したバックトレースを添付中"
 
 #: ../src/plugins/reporter-bugzilla.c:452
 #, c-format
 msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
-msgstr "状態: %s%s%s %s/show_bug.cgi_id=%u"
+msgstr "状態: %s%s%s %s/show_bug.cgi?id=%u"
 
-#: ../src/plugins/reporter-kerneloops.c:98
+#: ../src/plugins/reporter-kerneloops.c:105
 #, c-format
 msgid "Submitting oops report to %s"
-msgstr "oops報告を%sへ送信しています"
+msgstr "oops 報告を %s に提出しています"
 
-#: ../src/plugins/reporter-kerneloops.c:140
+#: ../src/plugins/reporter-kerneloops.c:147
 msgid ""
 "& [-v] [-c CONFFILE]... -d DIR\n"
 "\n"
@@ -1086,19 +1166,29 @@ msgid ""
 "Recognized string parameter: SubmitURL.\n"
 "Parameter can be overridden via $KerneloopsReporter_SubmitURL."
 msgstr ""
+"& [-v] [-c CONFFILE]... -d DIR\n"
+"\n"
+"カーネル oops を kerneloops.org (または同様の) サイトに報告します。\n"
+"\n"
+"$EXCLUDE_FROM_REPORT に表示されている名前のファイルは \n"
+"tarball に含まれません。\n"
+"\n"
+"CONFFILE 行には「PARAM = VALUE」の形式を含ませなければなり\n"
+"ません。 認識される文字列パラメータは SubmitURL です。\n"
+"パラメータは $KerneloopsReporter_SubmitURL で上書きできます。"
 
-#: ../src/plugins/reporter-kerneloops.c:160
+#: ../src/plugins/reporter-kerneloops.c:167
 msgid "Configuration file"
-msgstr "構成ファイル"
+msgstr "設定ファイル"
 
 #: ../src/plugins/reporter-mailx.c:110
 msgid "Sending an email..."
-msgstr "Eメールの送信中..."
+msgstr "電子メールを送信しています...　"
 
 #: ../src/plugins/reporter-mailx.c:130
 #, c-format
 msgid "Email was sent to: %s"
-msgstr "Eメールが宛先に送信されました: %s"
+msgstr "電子メールが送信されました: %s"
 
 #: ../src/plugins/reporter-mailx.c:149
 msgid ""
@@ -1108,6 +1198,11 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"& [-v] -d DIR [-c CONFFILE]\n"
+"\n"
+"電子メールで問題の DIR ディレクトリのコンテンツを送信します\n"
+"\n"
+"指定しない場合、 CONFFILE により次のようにデフォルト設定されます。"
 
 #: ../src/plugins/reporter-mailx.c:169 ../src/plugins/reporter-upload.c:289
 msgid "Config file"
@@ -1119,6 +1214,9 @@ msgid ""
 "\n"
 "Prints problem information to standard output or FILE"
 msgstr ""
+"& [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
+"\n"
+"問題の情報を標準出力または FILE に出力します"
 
 #: ../src/plugins/reporter-print.c:57
 msgid "Output file"
@@ -1126,35 +1224,37 @@ msgstr "出力ファイル"
 
 #: ../src/plugins/reporter-print.c:58
 msgid "Append to, or overwrite FILE"
-msgstr "FILE を追加、または上書きします"
+msgstr "追加する、 または FILE を上書きします"
 
 #: ../src/plugins/reporter-print.c:59
 msgid "Create reported_to in DIR"
-msgstr "DIR に reported_to を作成します"
+msgstr "DIR 内に reported_to を作成します"
 
 #: ../src/plugins/reporter-print.c:96
 msgid "Cancelled by user."
-msgstr "ユーザーによりキャンセルされました。"
+msgstr "ユーザーによって取り消されました。"
 
 #: ../src/plugins/reporter-print.c:105
 #, c-format
 msgid "File '%s' is a symbolic link. Please select a regular file:"
-msgstr "ファイル '%s' はシンボリックリンクです。標準ファイルを選択してください:"
+msgstr ""
+"「%s」ファイルはシンボリックリンクです。 通常のファイルを選択してください:"
 
 #: ../src/plugins/reporter-print.c:114
 #, c-format
 msgid "Can't open '%s' for writing. Please select another file:"
-msgstr "書き込みにファイル '%s' を開けませんでした。他のファイルを選択してください。"
+msgstr ""
+"書き込みに「%s」を開くことができません。 別のファイルを選択してください:"
 
 #: ../src/plugins/reporter-print.c:149
 #, c-format
 msgid "The report was appended to %s"
-msgstr "レポートが %s に追加されました"
+msgstr "報告は %s に追記されました"
 
 #: ../src/plugins/reporter-print.c:149
 #, c-format
 msgid "The report was stored to %s"
-msgstr "報告は%sへ格納されました"
+msgstr "報告は %s に保存されました"
 
 #: ../src/plugins/reporter-rhtsupport.c:44
 msgid ""
@@ -1167,26 +1267,32 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"\n"
+"& [-v] [-c CONFFILE] -d DIR\n"
+"or:\n"
+"& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
+"\n"
+"問題を RHTSupport に報告します。\n"
+"\n"
+"指定しない場合、 CONFFILE により次のようにデフォルト設定されます。"
 
 #: ../src/plugins/reporter-rhtsupport.c:76
 msgid "Upload FILEs [to case with this ID]"
-msgstr ""
+msgstr "FILEs をアップロードします [この ID を持つケースへ]"
 
 #: ../src/plugins/reporter-rhtsupport.c:111
 msgid "Empty RHTS login or password"
-msgstr ""
+msgstr "RHTS ログイン、又はパスワードが空です"
 
 #: ../src/plugins/reporter-rhtsupport.c:158
 #, c-format
 msgid "Attaching '%s' to case '%s'"
-msgstr "'%s' をケース '%s' に添付中"
+msgstr "'%s' をケース '%s' に添付しています"
 
 #. create_problem_data_for_reporting already emitted error msg
-#. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are
-#. doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
-#. doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../src/plugins/reporter-rhtsupport.c:199
 #: ../src/plugins/reporter-upload.c:121
 msgid "Compressing data"
@@ -1198,47 +1304,49 @@ msgstr "/tmp に一時ディレクトリを作成できません"
 
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
-#. 
+#.
 #: ../src/plugins/reporter-rhtsupport.c:265
 #: ../src/plugins/reporter-rhtsupport.c:296
 #: ../src/plugins/reporter-rhtsupport.c:330
 #: ../src/plugins/reporter-rhtsupport.c:346
 msgid "Can't create temporary file in /tmp"
-msgstr "/tmp に 一時ファイルを作成できません"
+msgstr ""
+"/tmp に一時ファイルを作成できません\n"
+"\t"
 
 #: ../src/plugins/reporter-rhtsupport.c:382
 msgid "Do you still want to create a RHTSupport ticket?"
-msgstr "RHTSupportチケットを作成しますか?"
+msgstr "RHTSupport チケットを本当に作成しますか?"
 
 #. result = NULL; - redundant, result is assigned just below
 #. Send tempfile
 #: ../src/plugins/reporter-rhtsupport.c:394
 msgid "Creating a new case..."
-msgstr "新規ケースの作成中..."
+msgstr "新しいケースを作成しています...　"
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:202
 msgid "Documentation which might be relevant: "
-msgstr ""
+msgstr "関連する可能性があるドキュメント:"
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:210
 msgid "Updates which possibly help: "
-msgstr ""
+msgstr "役に立つ可能性のある更新:"
 
 #: ../src/plugins/reporter-upload.c:59
 #, c-format
 msgid "Sending %s to %s"
-msgstr "%s を %s に送信中"
+msgstr "%s を %s に送信しています"
 
 #. This ends up a "reporting status message" in abrtd
 #: ../src/plugins/reporter-upload.c:98
 #, c-format
 msgid "Successfully sent %s to %s"
-msgstr "正常に %s を %s に送信しました"
+msgstr "%s を %s に正常に送信しました"
 
 #: ../src/plugins/reporter-upload.c:221
 #, c-format
 msgid "Archive is created: '%s'"
-msgstr "アーカイブが作成されました: '%s'"
+msgstr "アーカイブが作成されました: '%s'　"
 
 #: ../src/plugins/reporter-upload.c:261
 msgid ""
@@ -1260,43 +1368,63 @@ msgid ""
 "Recognized string parameter: URL.\n"
 "Parameter can be overridden via $Upload_URL."
 msgstr ""
+"& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\n"
+"問題の DIR ディレクトリの圧縮 tarball を URL にアップロードします。\n"
+"URL を指定しない場合、 tarball を /tmp に作成して終了します。\n"
+"\n"
+"URL は「protocol://[user[:pass]@]host/dir/[file.tar.gz]」の形式にしてくださ"
+"い。\n"
+"protocol の部分は http(s)、 ftp、 scp、 file のいずれかになります。\n"
+"File プロトコルの場合、 user と host の部分は含ませないでください\n"
+"(file:///dir/[file.tar.gz])。 URL の末尾がスラッシュの場合、 アーカイブ\n"
+"名が生成され URL; に追加されます。 これ以外の場合、 URL は完全ファイル名とひ"
+"て使用されます。\n"
+"\n"
+"$EXCLUDE_FROM_REPORT に表示されている名前のファイルは \n"
+"tarball に含まれません。\n"
+"\n"
+"CONFFILE 行には「PARAM = VALUE」の形式を含ませなければなり\n"
+"ません。 認識される文字列パラメータは URL です。\n"
+"パラメータは $Upload_URL で上書きできます。"
 
 #: ../src/plugins/reporter-upload.c:290
 msgid "Base URL to upload to"
-msgstr "アップロードするベース URL"
+msgstr "アップロード先のベース URL"
 
 #: ../src/plugins/rhbz.c:289
 #, c-format
 msgid "Looks like corrupted xml response, because '%s' member is missing."
-msgstr ""
+msgstr "'%s' メンバーがない為、xml 反応が破損したと思われます。"
 
 #: ../src/plugins/rhbz.c:359
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
-msgstr "バグ %i は閉じられましたが、解決策はありません。"
+msgstr "バグ %i は閉じていますが、RESOLUTION がありません"
 
 #: ../src/plugins/rhbz.c:367
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
-msgstr ""
+msgstr "DUPLICATE としてバグ %i は閉じていますが、DUP_ID がありません"
 
-#: ../src/plugins/rhbz.c:485
+#: ../src/plugins/rhbz.c:489
 #, c-format
 msgid "New bug id: %i"
-msgstr "新しいバグID: %i"
+msgstr "新しいバグ id: %i"
 
-#: ../src/plugins/rhbz.c:625
+#: ../src/plugins/rhbz.c:629
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "Bugzillaは親バグ %d を検索できませんでした"
+msgstr "Bugzilla はバグ %d の親を見つけることが出来ません"
 
 #: ../src/plugins/abrt-bodhi.c:301
+#, fuzzy
 msgid "Searching for updates"
-msgstr ""
+msgstr "重複をチェックしています"
 
 #: ../src/plugins/abrt-bodhi.c:376
 msgid "List of bug ids"
-msgstr "バグIDのリスト"
+msgstr ""
 
 #: ../src/plugins/abrt-bodhi.c:377
 msgid "Specify a bodhi server url"
@@ -1304,7 +1432,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-bodhi.c:378
 msgid "Specify a release"
-msgstr "リリースを指定"
+msgstr ""
 
 #: ../src/plugins/abrt-bodhi.c:383
 msgid ""
@@ -1315,13 +1443,13 @@ msgstr ""
 
 #: ../src/plugins/abrt-bodhi.c:459
 msgid ""
-"Abrt found a new update which fix your problem. Please run before submitting"
-" bug: pkcon update --repo-enable=fedora --repo-repo=updates-testing"
+"Abrt found a new update which fix your problem. Please run before submitting "
+"bug: pkcon update --repo-enable=fedora --repo-repo=updates-testing"
 msgstr ""
 
 #: ../src/plugins/abrt-bodhi.c:463
 msgid ". Do you want to continue with reporting bug?"
-msgstr "。 バグの報告を続行しますか?"
+msgstr ""
 
 #: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:146
 #: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:259
@@ -1331,7 +1459,7 @@ msgstr "OK"
 
 #: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:146
 msgid "Cancel"
-msgstr "キャンセル"
+msgstr "取り消し"
 
 #: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:337
 msgid "Error"
@@ -1340,11 +1468,11 @@ msgstr "エラー"
 #: ../src/report-newt/report-newt.c:276
 #, c-format
 msgid "--- Running %s ---"
-msgstr "--- %s の実行中 ---"
+msgstr "---  %s を実行中 ---"
 
 #: ../src/report-newt/report-newt.c:352
 msgid "No reporters available"
-msgstr "利用可能はレポーターがありません"
+msgstr "レポーターは利用できません"
 
 #: ../src/report-newt/report-newt.c:382
 msgid ""
@@ -1352,3 +1480,6 @@ msgid ""
 "\n"
 "newt tool to report problem saved in specified DIR"
 msgstr ""
+"& -o [-d] DIR\n"
+"\n"
+"指定した DIR に保存した問題を報告する newt ツールです"

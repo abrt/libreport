@@ -1,22 +1,21 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
-# Elodie  <djezael@gmail.com>, 2011.
-# Kévin Raymond <shaiton@fedoraproject.org>, 2011.
+# Sam Friedmann <sam.friedmann@redhat.com>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
-"Report-Msgid-Bugs-To: https://fedorahosted.org/abrt/report\n"
-"POT-Creation-Date: 2012-02-15 15:29+0100\n"
-"PO-Revision-Date: 2012-02-15 14:29+0000\n"
-"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-03-08 10:19+0100\n"
+"PO-Revision-Date: 2012-03-01 06:12+0000\n"
+"Last-Translator: Sam Friedmann <sam.friedmann@redhat.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
 #: ../src/cli/cli.c:56
@@ -27,47 +26,99 @@ msgid ""
 "   or: & [-vsp] -c[y] DUMP_DIR\n"
 "   or: & [-vsp] -r[y|o|d] DUMP_DIR"
 msgstr ""
+"& [-vsp] -L[PREFIX] [DUMP_DIR]\n"
+"   ou : & [-vsp] -e EVENT DUMP_DIR\n"
+"   ou : & [-vsp] -a[y] DUMP_DIR\n"
+"   ou : & [-vsp] -c[y] DUMP_DIR\n"
+"   ou : & [-vsp] -r[y|o|d] DUMP_DIR"
 
 #. short_name long_name  value    parameter_name  help
 #: ../src/cli/cli.c:81
 msgid "List possible events [which start with PREFIX]"
-msgstr "Liste des événements possibles [qui commencent par PREFIX]"
+msgstr "Répertorier les événements possibles [qui commencent avec PREFIX]"
 
 #: ../src/cli/cli.c:82
 msgid "Run EVENT on DUMP_DIR"
-msgstr "Exécuter EVENT sur DUMP_DIR"
+msgstr ""
+"& [-v] [-c CONFFILE]... -d DIR\n"
+"\n"
+"Rapporte les oops de noyau sur le site kerneloops.org (ou autre site "
+"similaire).\n"
+"\n"
+"Les fichiers avec des noms répertoriés dans $EXCLUDE_FROM_REPORT "
+"($EXCLURE_DU_RAPPORT) ne sont pas inclus\n"
+"dans le tarball.\n"
+"\n"
+"Les lignes CONFFILE doivent être sous le format 'PARAM = VALUE'.\n"
+"Paramètre de chaîne reconnu : SubmitURL.\n"
+"Le paramètre peut être remplacé via $KerneloopsReporter_SubmitURL."
 
 #: ../src/cli/cli.c:83
 msgid "Run analyze event(s) on DUMP_DIR"
-msgstr "Analyser les événements sur DUMP_DIR"
+msgstr ""
+"& [-v] -d DIR [-c CONFFILE]\n"
+"\n"
+"Envoie le contenu d'un répertoire d'incidents DIR via courriel\n"
+"\n"
+"Si non-spécifié, CONFFILE est ajusté par défaut sur  "
 
 #: ../src/cli/cli.c:84
 msgid "Run collect event(s) on DUMP_DIR"
-msgstr "Récupérer les événements sur DUMP_DIR"
+msgstr "Exécute des événements de collecte sur DUMP_DIR"
 
 #: ../src/cli/cli.c:85
 msgid "Analyze, collect and report problem data in DUMP_DIR"
-msgstr "Analyser, récupérer et rapporter les données du problème sur DUMP_DIR"
+msgstr "Analyse, collecte et rapporte les données d'incidents sur DUMP_DIR"
 
 #: ../src/cli/cli.c:86 ../src/report-newt/report-newt.c:395
 msgid "Display version and exit"
-msgstr "Afficher la version et quitter"
+msgstr ""
+"& [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
+"\n"
+"Imprime les informations d'incidents sur un sortie standard ou un FICHIER "
+"(FILE)"
 
 #: ../src/cli/cli.c:87
 msgid "Remove DUMP_DIR after reporting"
-msgstr "Supprimer DUMP_DIR après l'envoi du rapport"
+msgstr "Supprimer DUMP_DIR après le rapport"
 
 #: ../src/cli/cli.c:88
 msgid "Noninteractive: don't ask questions, assume 'yes'"
-msgstr "Non-interactif : ne pas poser de questions, supposons « oui »"
+msgstr ""
+"Non-interactif : ne pose pas de questions et répond à toutes les questions "
+"par 'oui'"
 
 #: ../src/cli/cli.c:89
 msgid "With -r: do not run analyzers, run only reporters"
-msgstr "Avec -r : rapporter sans effectuer d'analyses"
+msgstr ""
+"& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\n"
+"Télécharge le tarball compressé du répertoire d'incidents DIR sur l'URL.\n"
+"Si l'URL n'est pas spécifié, il crée un tarball dans /tmp puis se ferme.\n"
+"\n"
+"L'URL doit être sous la fome 'protocol://[user[:pass]@]host/dir/[file.tar."
+"gz]'\n"
+"où le protocole peut êtrehttp(s), ftp, scp, ou file.\n"
+"Le protocole File ne peut pas avoir de partie utilisateur et hôte : 'file:///"
+"dir/[file.tar.gz].'\n"
+"Si l'URL se termine par une barre oblique, le nom de l'archive sera généré "
+"et ajouté à l'URL ; sinon, l'URL sera utilisé en tant que nom de fichier "
+"complet.\n"
+"\n"
+"Les fichiers avec des noms répertoriés dans  $EXCLUDE_FROM_REPORT ne sont "
+"pas inclus dans le tarball.\n"
+"\n"
+"Les lignes CONFFILE doivent être sous le format 'PARAM = VALUE'.\n"
+"Paramètre de chaîne reconnu : URL.\n"
+"Le paramètre peut être remplacé via $Upload_URL."
 
 #: ../src/cli/cli.c:91
 msgid "Log to syslog"
-msgstr "Journaliser vers syslog"
+msgstr ""
+"& -o [-d] DIR\n"
+"\n"
+"nouvel outil pour rapporter les incidents enregistrés dans le RÉPERTOIRE "
+"(DIR) spécifié"
 
 #: ../src/cli/cli.c:92 ../src/gui-wizard-gtk/main.c:128
 msgid "Add program names to log"
@@ -80,13 +131,15 @@ msgstr "# Ce champ est en lecture seule\n"
 
 #: ../src/cli/cli-report.c:152
 msgid "# Describe the circumstances of this crash below"
-msgstr "# Décrivez ci-dessous les circonstances de l'incident"
+msgstr "# Décrivez ci dessous les circonstances de l'incident"
 
 #: ../src/cli/cli-report.c:154
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
-msgstr "# Trace de débogage\n# Vérifiez qu'elle ne contient aucune donnée sensible (mots de passe, etc.)"
+msgstr ""
+"# Backtrace\n"
+"# Vérifiez qu'il ne contient aucune donnée sensible (mots de passe, etc.)"
 
 #: ../src/cli/cli-report.c:156
 msgid "# Architecture"
@@ -126,19 +179,24 @@ msgstr "# Version du système d'exploitation"
 
 #: ../src/cli/cli-report.c:277
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr "Exécution de vi impossible : $TERM, $VISUAL et $EDITOR ne sont pas définis"
+msgstr ""
+"Exécution de vi impossible : $TERM, $VISUAL et $EDITOR ne sont pas définis"
 
 #: ../src/cli/cli-report.c:361
 msgid ""
 "\n"
 "The report has been updated"
-msgstr "\nLe rapport a été mis à jour"
+msgstr ""
+"\n"
+"Le rapport a été mis à jour"
 
 #: ../src/cli/cli-report.c:363
 msgid ""
 "\n"
 "No changes were detected in the report"
-msgstr "\nAucun changement n'a été détecté dans le rapport"
+msgstr ""
+"\n"
+"Aucun changement n'a été détecté dans le rapport"
 
 #. The response might take more than 1 char in non-latin scripts.
 #: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1605
@@ -153,7 +211,7 @@ msgstr "N"
 
 #: ../src/cli/cli-report.c:500
 msgid "Your input is not valid, because of:"
-msgstr "Votre entrée n'est pas valide, à cause de : "
+msgstr "Votre entrée n'est pas valide, à cause de :"
 
 #: ../src/cli/cli-report.c:503
 #, c-format
@@ -163,16 +221,16 @@ msgstr "Valeur incorrecte pour « %s » : %s"
 #: ../src/cli/cli-report.c:605
 #, c-format
 msgid "How you would like to analyze the problem?\n"
-msgstr "Comment souhaitez-vous analyser le problème ?\n"
+msgstr "De quelle manière souhaitez-vous analyser le problème ?\n"
 
 #: ../src/cli/cli-report.c:623
 msgid "Select analyzer: "
-msgstr "Sélectionner l'analyseur : "
+msgstr "Veuillez sélectionner un analyseur :"
 
 #: ../src/cli/cli-report.c:630
 #, c-format
 msgid "You have chosen number out of range"
-msgstr "Vous avez choisi un nombre hors des limites"
+msgstr "Le nombre choisi est hors des limites"
 
 #: ../src/cli/cli-report.c:639
 msgid "Invalid input, program exiting..."
@@ -180,11 +238,11 @@ msgstr "Entrée invalide, arrêt du programme..."
 
 #: ../src/cli/cli-report.c:704
 msgid "What additional information would you like to collect?"
-msgstr "Quelles informations supplémentaires aimeriez-vous récupérer ?"
+msgstr "Quelles informations supplémentaires souhaitez-vous collecter ?"
 
 #: ../src/cli/cli-report.c:717
 msgid "Select collector(s): "
-msgstr "Sélectionner le programme de récupération : "
+msgstr "Sélectionner le(s) collecteur(s) : "
 
 #: ../src/cli/cli-report.c:765 ../src/gui-wizard-gtk/wizard.c:1257
 #: ../src/report-newt/report-newt.c:334
@@ -194,7 +252,9 @@ msgstr "(sans description)"
 #: ../src/cli/cli-report.c:798
 #, c-format
 msgid "There were %d errors while collecting additional data\n"
-msgstr "Il y a eu %d erreurs lors de la récupération des données supplémentaires\n"
+msgstr ""
+"%d incidents se sont produits lors de la collecte des données "
+"supplémentaires\n"
 
 #: ../src/cli/cli-report.c:857 ../src/gui-wizard-gtk/wizard.c:2072
 msgid "Reporting..."
@@ -202,78 +262,81 @@ msgstr "Envoi du rapport..."
 
 #: ../src/cli/cli-report.c:872 ../src/report-newt/report-newt.c:55
 msgid "How would you like to report the problem?"
-msgstr "Comment souhaitez-vous rapporter le problème ?"
+msgstr "De quelle manière souhaitez-vous rapporter le problème ?"
 
 #: ../src/cli/cli-report.c:882
 msgid "Select reporter(s): "
-msgstr "Sélectionner la méthode d'envoi des rapports : "
+msgstr "Veuillez sélectionner un (des) rapporteur(s) :"
 
 #: ../src/cli/cli-report.c:898
 msgid "Reporting disabled because the backtrace is unusable"
-msgstr "L'envoi du rapport est désactivé car la trace de débogage est inutilisable"
+msgstr "L'envoi du rapport est désactivé car le backtrace est inutilisable"
 
 #: ../src/cli/cli-report.c:902
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
-msgstr "Veuillez tenter d'installer debuginfo manuellement en utilisant la commande : « debuginfo-install %s » et réessayer\n"
+msgstr ""
+"Veuillez essayer d'installer debuginfo manuellement en utilisant la "
+"commande : « debuginfo-install %s » puis essayez à nouveau\n"
 
 #: ../src/cli/cli-report.c:924
 #, c-format
 msgid "Problem reported via %d report events (%d errors)\n"
-msgstr "Problème rapporté par l'intermédiaire du rapport d'événements %d (%d errors)\n"
+msgstr "Problème rapporté via %d événements rapport (%d erreurs)\n"
 
 #: ../src/client-python/debuginfo.py:31
 msgid "Extracting cpio from {0}"
-msgstr ""
+msgstr "Extraction de cpio depuis {0}"
 
 #: ../src/client-python/debuginfo.py:36
 msgid "Can't write to '{0}': {1}"
-msgstr ""
+msgstr "Écriture sur '{0}' impossible : {1}"
 
 #: ../src/client-python/debuginfo.py:50
 msgid "Can't extract package '{0}'"
-msgstr ""
+msgstr "Extraction du paquetage '{0}' impossible"
 
 #: ../src/client-python/debuginfo.py:58
 msgid "Caching files from {0} made from {1}"
-msgstr ""
+msgstr "Mise en cache des fichiers de {0} effectuée à partir de {1}"
 
 #: ../src/client-python/debuginfo.py:76
 msgid "Can't extract files from '{0}'"
-msgstr ""
+msgstr "Extraction des fichiers de '{0}' impossible"
 
 #: ../src/client-python/debuginfo.py:85
 msgid "Can't remove '{0}': {1}"
-msgstr ""
+msgstr "Suppression de '{0}' impossible : {1}"
 
 #. print (_("Downloading (%i of %i) %s: %3u%%")
 #. % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
 #. )
 #: ../src/client-python/debuginfo.py:111 ../src/client-python/debuginfo.py:122
 msgid "Downloading ({0} of {1}) {2}: {3:3}%"
-msgstr ""
+msgstr "Téléchargement ({0} de {1}) {2} : {3:3}%"
 
 #. self.conf.cache = os.geteuid() != 0
 #. Setup yum (Ts, RPM db, Repo & Sack)
 #. doConfigSetup() takes some time, let user know what we are doing
 #: ../src/client-python/debuginfo.py:145
 msgid "Initializing yum"
-msgstr ""
+msgstr "Initialisation de yum"
 
 #: ../src/client-python/debuginfo.py:153
 msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
 msgstr ""
+"Erreur lors de l'initialisation de yum (YumBase.doConfigSetup) : '{0!s}'"
 
 #. This takes some time, let user know what we are doing
 #: ../src/client-python/debuginfo.py:184
 msgid "Setting up yum repositories"
-msgstr ""
+msgstr "Paramétrage des référentiels yum"
 
 #: ../src/client-python/debuginfo.py:195
 msgid "Can't setup {0}: {1}, disabling"
-msgstr ""
+msgstr "Impossible d'installer {0} : {1}, désactivation"
 
 #. This is somewhat "magic", it unpacks the metadata making it usable.
 #. Looks like this is the moment when yum talks to remote servers,
@@ -281,52 +344,53 @@ msgstr ""
 #. we have "paused":
 #: ../src/client-python/debuginfo.py:202
 msgid "Looking for needed packages in repositories"
-msgstr ""
+msgstr "Recherche des paquetages nécessités dans les référentiels"
 
 #: ../src/client-python/debuginfo.py:206
 msgid "Error retrieving metadata: '{0!s}'"
-msgstr ""
+msgstr "Erreur lors de la récupération des métadonnées : '{0!s}'"
 
 #: ../src/client-python/debuginfo.py:216
 msgid "Error retrieving filelists: '{0!s}'"
-msgstr ""
+msgstr "Erreur lors de la récupération des listes de fichiers : '{0!s}'"
 
 #: ../src/client-python/debuginfo.py:249
 msgid "Can't find packages for {0} debuginfo files"
-msgstr ""
+msgstr "Les paquetages pour les fichiers debuginfo {0} sont introuvables"
 
 #: ../src/client-python/debuginfo.py:251
 msgid "Packages to download: {0}"
-msgstr ""
+msgstr "Paquetages à télécharger : {0}"
 
 #: ../src/client-python/debuginfo.py:252
 msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
-msgstr ""
+msgstr "Téléchargement {0:.2f}Mo, taille installée : {1:.2f}Mo. Continuer ?"
 
 #: ../src/client-python/debuginfo.py:257
 msgid "Download cancelled by user"
-msgstr ""
+msgstr "Téléchargement annulé par l'utilisateur"
 
 #: ../src/client-python/debuginfo.py:291
 msgid "Downloading package {0} failed"
-msgstr ""
+msgstr "Échec du téléchargement du paquetage {0}"
 
 #. recursively delete the temp dir on failure
 #: ../src/client-python/debuginfo.py:297
 msgid "Unpacking failed, aborting download..."
-msgstr ""
+msgstr "Échec de la décompression, téléchargement annulé..."
 
 #. Was: "All downloaded packages have been extracted, removing..."
 #. but it was appearing even if no packages were in fact extracted
 #. (say, when there was one package, and it has download error).
 #: ../src/client-python/debuginfo.py:307
 msgid "Removing {0}"
-msgstr ""
+msgstr "Suppression de {0}"
 
 #: ../src/client-python/debuginfo.py:311
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
 msgstr ""
+"Suppression de %s impossible, contient probablement un journal des erreurs"
 
 #: ../src/gtk-helpers/event_config_dialog.c:131
 msgid "Show password"
@@ -334,15 +398,17 @@ msgstr "Afficher le mot de passe"
 
 #: ../src/gtk-helpers/event_config_dialog.c:394
 msgid "Advanced"
-msgstr ""
+msgstr "Avancé"
 
 #: ../src/gtk-helpers/event_config_dialog.c:404
 msgid "Don't store passwords"
-msgstr ""
+msgstr "Ne pas stocker de mots de passe"
 
 #: ../src/gtk-helpers/event_config_dialog.c:430
 msgid "Gnome Keyring is not available, your settings won't be saved!"
-msgstr "Le trousseau de clés GNOME n'est pas disponible, vos configurations ne seront pas sauvegardées !"
+msgstr ""
+"Le trousseau de clés Gnome n'est pas disponible, les paramètres ne seront "
+"pas enregistrés !"
 
 #: ../src/gtk-helpers/event_config_dialog.c:463
 msgid "Event Configuration"
@@ -362,19 +428,24 @@ msgid ""
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
+"& [-vpod] [-g GUI_FILE] [-n PROG_NAME] DIR\n"
+"\n"
+"Outil de GUI pour analyser et rapporter le problème enregistré dans le DIR "
+"spécifié"
 
 #: ../src/gui-wizard-gtk/main.c:127
 msgid "Alternate GUI file"
-msgstr "Fichier d'IHM graphique alternatif"
+msgstr "Fichier GUI alternatif"
 
 #. for use from 3rd party apps to show just a reporter selector
 #: ../src/gui-wizard-gtk/main.c:130 ../src/report-newt/report-newt.c:393
 msgid "Skip analyze steps, go through report steps only"
-msgstr "Ignorer les étapes d'analyse, aller directement à l'étape de rédaction des rapports"
+msgstr ""
+"Ignorer les étapes d'analyse, aller sur les étapes du rapport uniquement"
 
 #: ../src/gui-wizard-gtk/main.c:131 ../src/report-newt/report-newt.c:394
 msgid "Remove DIR after reporting"
-msgstr "Supprimer REPERTOIRE après l'envoi du rapport"
+msgstr "Supprimer DIR après le rapport"
 
 #. Page types:
 #. * CONTENT: normal page (has all btns: [Cancel] [Last] [Back] [Fwd])
@@ -386,7 +457,7 @@ msgstr "Supprimer REPERTOIRE après l'envoi du rapport"
 #. *
 #. * Note that we suppress [Cancel] everywhere once and for all
 #. * using gtk_assistant_commit at init time.
-#. 
+#.
 #. glade element name     , on-screen text          , type
 #: ../src/gui-wizard-gtk/wizard.c:247
 msgid "Problem description"
@@ -394,7 +465,7 @@ msgstr "Description du problème"
 
 #: ../src/gui-wizard-gtk/wizard.c:248
 msgid "Provide additional information"
-msgstr "Fournir des informations supplémentaires"
+msgstr "Veuillez fournir des informations supplémentaires"
 
 #: ../src/gui-wizard-gtk/wizard.c:249
 msgid "Select analyzer"
@@ -402,7 +473,7 @@ msgstr "Sélectionner l'analyseur"
 
 #: ../src/gui-wizard-gtk/wizard.c:250
 msgid "Analyzing"
-msgstr "En cours d'analyse"
+msgstr "Analyse en cours"
 
 #: ../src/gui-wizard-gtk/wizard.c:251
 msgid "Select collector"
@@ -410,45 +481,47 @@ msgstr "Sélectionner le collecteur"
 
 #: ../src/gui-wizard-gtk/wizard.c:252
 msgid "Collecting"
-msgstr "En cours de collecte"
+msgstr "Collection"
 
 #. Some reporters don't need backtrace, we can skip bt page for them.
 #. * Therefore we want to know reporters _before_ we go to bt page
-#. 
+#.
 #: ../src/gui-wizard-gtk/wizard.c:256
 msgid "Select reporter"
-msgstr "Sélectionner le reporteur"
+msgstr "Sélectionner le rapporteur"
 
 #: ../src/gui-wizard-gtk/wizard.c:257
 msgid "Review the data"
-msgstr ""
+msgstr "Vérifier les données"
 
 #: ../src/gui-wizard-gtk/wizard.c:258
 msgid "Confirm data to report"
-msgstr "Confirmer les données à signaler"
+msgstr "Confirmer les données à rapporter"
 
 #. Was GTK_ASSISTANT_PAGE_PROGRESS, but we want to allow returning to it
 #: ../src/gui-wizard-gtk/wizard.c:260 ../src/report-newt/report-newt.c:256
 msgid "Reporting"
-msgstr "Rapport en cours"
+msgstr "Rapport"
 
 #: ../src/gui-wizard-gtk/wizard.c:261
 msgid "Reporting done"
-msgstr "Compte-rendu effectué"
+msgstr "Rapport terminé"
 
 #: ../src/gui-wizard-gtk/wizard.c:333
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue"
-" with the current configuration."
-msgstr "Mauvais paramètres détectés pour %s, l'envoi du rapport échouera probablement si vous continuez avec la configuration actuelle."
+"Wrong settings detected for %s, reporting will probably fail if you continue "
+"with the current configuration."
+msgstr ""
+"Des paramètres incorrects ont été détectés pour %s, le rapport va "
+"probablement échouer si vous continuez avec la configuration actuelle."
 
 #: ../src/gui-wizard-gtk/wizard.c:337
 #, c-format
 msgid ""
 "Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
 "continue with the current configuration."
-msgstr "Mauvais paramètres détectés pour <b>%s</b>, l'envoi du rapport échouera probablement si vous continuez avec la configuration actuelle."
+msgstr "Des paramètres incorrects ont été détectés pour <b>%s</b>, l"
 
 #: ../src/gui-wizard-gtk/wizard.c:354
 #, c-format
@@ -461,19 +534,22 @@ msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved data?"
 msgstr ""
+"Un répertoire accessible en écriture est nécessaire, mais '%s' n'est pas "
+"accessible en écriture. Le déplacer sur '%s' et opérer sur les données "
+"déplacées ?"
 
 #: ../src/gui-wizard-gtk/wizard.c:420
 msgid "Don't ask me again"
-msgstr ""
+msgstr "Ne plus demander"
 
 #: ../src/gui-wizard-gtk/wizard.c:630
 msgid "View/edit a text file"
-msgstr "Lire/éditer un fichier texte"
+msgstr "Voir/modifier un fichier texte"
 
 #: ../src/gui-wizard-gtk/wizard.c:913
 #, c-format
 msgid "(not needed, '%s' already exists)"
-msgstr "(pas nécessaire, « %s » existe déjà)"
+msgstr "(non nécessaire, '%s' existe déjà)"
 
 #: ../src/gui-wizard-gtk/wizard.c:978
 msgid "Go to next step"
@@ -502,18 +578,21 @@ msgstr "Aucune action liée à l'événement « %s » n'a été définie."
 #: ../src/gui-wizard-gtk/wizard.c:1930
 #, c-format
 msgid "Reporting disabled because the rating does not contain a number '%s'."
-msgstr "L'envoi du rapport est désactivé car la valeur nominale ne contient pas un nombre « %s »."
+msgstr ""
+"Les rapports sont désactivés car l'évaluation ne contient pas le nombre %s."
 
 #: ../src/gui-wizard-gtk/wizard.c:1953
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
-msgstr "La trace de débogage est incomplète, veuillez vous assurer de fournir les étapes pour le reproduire."
+msgstr ""
+"Le backtrace est incomplet, veuillez vous assurer de fournir les étapes pour "
+"le reproduire."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
 #: ../src/gui-wizard-gtk/wizard.c:1959
 msgid "Reporting disabled because the backtrace is unusable."
-msgstr "L'envoi du rapport est désactivé car la trace de débogage est inutilisable."
+msgstr "L'envoi du rapport est désactivé car le backtrace est inutilisable."
 
 #: ../src/gui-wizard-gtk/wizard.c:2045
 msgid "Analyzing..."
@@ -531,23 +610,25 @@ msgstr "Rapport envoyé avec le code de sortie %d"
 
 #: ../src/gui-wizard-gtk/wizard.c:2100
 msgid "Collecting..."
-msgstr "Récupération..."
+msgstr "Collection..."
 
 #: ../src/gui-wizard-gtk/wizard.c:2101
 #, c-format
 msgid "Collecting finished with exit code %d"
-msgstr "La récupération s'est terminée avec un code de sortie %d"
+msgstr "Collection terminée avec le code de sortie %d"
 
 #: ../src/gui-wizard-gtk/wizard.c:2236
 msgid ""
 "Possible sensitive data detected, please review the highlighted tabs "
 "carefully."
 msgstr ""
+"Des données possiblement critiques ont été détectées, veuillez vérifier les "
+"onglets surlignés avec attention."
 
 #: ../src/gui-wizard-gtk/wizard.c:2532
 #, c-format
 msgid "'%s' is not an ordinary file"
-msgstr "« %s » n'est pas un fichier ordinaire"
+msgstr "'%s' n'est pas un fichier ordinaire"
 
 #: ../src/gui-wizard-gtk/wizard.c:2548
 msgid "You are trying to copy a file onto itself"
@@ -556,12 +637,12 @@ msgstr "Vous essayez de copier un fichier sur lui-même"
 #: ../src/gui-wizard-gtk/wizard.c:2555
 #, c-format
 msgid "Can't copy '%s': %s"
-msgstr "Impossible de copier « %s » : %s"
+msgstr "Copie de '%s' impossible : %s"
 
 #: ../src/gui-wizard-gtk/wizard.c:2570
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
-msgstr "L'élément « %s » existe déjà et n'est pas modifiable"
+msgstr "L'élément '%s' existe déjà et n'est pas modifiable"
 
 #: ../src/gui-wizard-gtk/wizard.c:2826
 msgid "Include"
@@ -579,15 +660,17 @@ msgstr "Valeur"
 msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
-msgstr "<b>Vos commentaires ne sont pas privés.</b> Ils peuvent être ajoutés dans des rapports d'anomalie publics."
+msgstr ""
+"<b>Vos commentaires ne sont pas privés.</b> Ils peuvent être ajoutés dans "
+"des rapports d'anomalies publiques."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Analyzing did not start yet"
-msgstr "L'analyse n'a pas encore commencé"
+msgstr "L'analyse n'a pas encore commencée"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid "Attach a file"
-msgstr "Joindre un fichier"
+msgstr "Attacher un fichier"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid "Click 'Apply' to start reporting"
@@ -595,7 +678,7 @@ msgstr "Cliquer sur « Appliquer » afin de commencer le rapport."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid "Collecting did not start yet"
-msgstr "La récupération n'a pas encore commencé"
+msgstr "La collection n'a pas encore démarrée"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "Details"
@@ -604,31 +687,44 @@ msgstr "Détails"
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid ""
 "How did this problem happen (step-by-step)? How can it be reproduced? Any "
-"additional comments useful for diagnosing the problem? Please use English if"
-" possible."
-msgstr "Comment ce problème est-il arrivé (étape par étape) ? Comment peut-il être reproduit ? D'autres commentaires utiles pour diagnostiquer le problème ? Veuillez utiliser l'anglais si possible."
+"additional comments useful for diagnosing the problem? Please use English if "
+"possible."
+msgstr ""
+"Comment cet incident est-il survenu (étape par étape) ? Comment peut-il être "
+"reproduit ? Possédez-vous des commentaires supplémentaires pouvant être "
+"utiles au diagnostic de cet incident ? Veuillez s'il-vous-plaît utiliser "
+"l'anglais dans la mesure du possible."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "I don't know what caused this problem"
-msgstr ""
+msgstr "Je ne sais pas ce qui a causé cet incident"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "I reviewed the data and _agree with submitting it"
-msgstr "J'ai passé en revue les données et suis d'_accord pour les envoyer"
+msgstr "J'ai vérifié les données et donne mon _accord pour les soumettre"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid ""
 "If you are reporting to a remote server, make sure you removed all private "
-"data (such as usernames and passwords). Backtrace, command line, environment"
-" variables are the typical items in need of examining."
-msgstr "Si vous envoyez vers un serveur distant, vérifiez que vous avez effacé toutes vos données personnelles (comme les noms d'utilisateur et les mots de passe). La trace de débogage, la ligne de commande et les variables d'environnement sont les principaux éléments à vérifier."
+"data (such as usernames and passwords). Backtrace, command line, environment "
+"variables are the typical items in need of examining."
+msgstr ""
+"Si vos rapports sont envoyés à un serveur distant, assurez-vous de bien "
+"avoir supprimé toutes les données privées (telles que les noms "
+"d'utilisateurs et mots de passe). Le backtrace, la ligne de commande et les "
+"variables d'environnement sont habituellement les éléments devant être "
+"examinés."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid ""
 "If you want to report the problem to a different destination, collect "
 "additional information, or provide a better problem description and repeat "
 "reporting process, press 'Forward'."
-msgstr "Si vous souhaitez signaler le problème à une autre destination, recueillir des informations supplémentaires ou fournir une meilleure description du problème et recommencer le processus de rapport, cliquez sur « Suivant »."
+msgstr ""
+"Si vous souhaitez rapporter le problème sur une différente destination, "
+"collecter des informations supplémentaires ou fournir de meilleures "
+"descriptions de problèmes et répéter le processus de rapportage, pressez sur "
+"'Suivant'."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid ""
@@ -636,53 +732,62 @@ msgid ""
 "occurred, to choose how to analyze the problem (if needed), to review "
 "collected data, and to choose where the problem should be reported. Click "
 "'Forward' to proceed."
-msgstr "Sur l'écran suivant il vous sera demandé de décrire comment le problème est survenu, de choisir comment analyser le problème (si nécessaire), de vérifier les données collectées et de choisir où le problème doit être signalé. Cliquez sur « Suivant » pour continuer."
+msgstr ""
+"Sur les écrans suivants, il vous sera demandé de décrire comment le problème "
+"est survenu, de choisir comment analyser le problème (si nécessaire), de "
+"revoir les données collectées et de choisir où le problème devra être "
+"rapporté. Veuillez cliquer sur 'Suivant' pour continuer."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid "Regenerate backtrace"
-msgstr "Régénérer la trace de débogage"
+msgstr "Regénérer la trace mémoire"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:14
 msgid "Reporter(s):"
-msgstr "Méthode de rapport : "
+msgstr "Rapporteurs :"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid "Reporting did not start yet"
-msgstr "L'envoi du rapport n'a pas encore commencé"
+msgstr "L'envoie du rapport n'a pas encore commencé"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "Reporting has finished. You can close this window now."
-msgstr "Le rapport est terminé. Vous pouvez fermer cette fenêtre maintenant."
+msgstr ""
+"La création de rapports est terminée. Vous pouvez maintenant fermer cette "
+"fenêtre."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "Select additional files to attach to the report:"
-msgstr "Sélectionner des fichiers complémentaires à joindre au rapport."
+msgstr ""
+"Veuillez sélectionner des fichiers supplémentaires à attacher au rapport :"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid "Select how you would like to analyze the problem:"
-msgstr "Sélectionnez la manière d'analyser le problème : "
+msgstr "Sélectionnez la manière d'analyser le problème :"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:19
 msgid "Select how you would like to report the problem:"
-msgstr "Sélectionnez la manière dont vous souhaitez rapporter le problème : "
+msgstr "Sélectionnez la manière dont vous souhaitez rapporter le problème :"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:20
 msgid "Show log"
-msgstr ""
+msgstr "Afficher le journal"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:21
 msgid "Size:"
-msgstr "Taille : "
+msgstr "Taille :"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:22
 msgid ""
 "Use this button to generate more informative backtrace after you installed "
 "additional debug packages"
-msgstr "Utiliser ce bouton afin de générer un rapport plus complet une fois que vous avez installé les paquets de débogage supplémentaires"
+msgstr ""
+"Utiliser ce bouton afin de générer un rapport plus complet une fois que vous "
+"avez installé les paquets de déboguage supplémentaires"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:23
 msgid "You need to fill the how to before you can proceed..."
-msgstr "Vous devez remplir le comment avant de pouvoir continuer..."
+msgstr "La section 'Comment' doit être remplie avant de pouvoir continuer..."
 
 #: ../src/lib/event_config.c:300
 msgid "Missing mandatory value"
@@ -705,41 +810,43 @@ msgstr "Valeur booléenne invalide : « %s »"
 
 #: ../src/lib/event_config.c:342
 msgid "Unsupported option type"
-msgstr "Type d'option non pris en charge"
+msgstr "Option de type non supportée"
 
 #: ../src/lib/parse_options.c:58
 msgid "Usage: "
-msgstr "Utilisation : "
+msgstr "Utilisation :"
 
 #: ../src/lib/abrt_curl.c:208 ../src/plugins/reporter-upload.c:41
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
-msgstr "Envoyé : %llu sur %llu kilo-octets"
+msgstr "Téléchargé : %llu sur %llu Ko"
 
 #: ../src/lib/problem_data.c:163
 #, c-format
 msgid "Essential element '%s' is missing, can't continue"
-msgstr ""
+msgstr "L'élément essentiel '%s' est manquant, impossible de continuer"
 
 #: ../src/plugins/abrt_rh_support.c:394
 #, c-format
 msgid "error in case creation: %s"
-msgstr ""
+msgstr "erreur lors de la création du dossier : %s"
 
 #: ../src/plugins/abrt_rh_support.c:400
 #, c-format
 msgid "error in case creation, HTTP code: %d, server says: '%s'"
 msgstr ""
+"erreur lors de la création du dossier, code HTTP : %d, le serveur dit : '%s'"
 
 #: ../src/plugins/abrt_rh_support.c:403
 #, c-format
 msgid "error in case creation, HTTP code: %d"
-msgstr ""
+msgstr "erreur lors de la création du dossier, code HTTP : %d"
 
 #: ../src/plugins/abrt_rh_support.c:550
 #, c-format
 msgid "error in case creation: no Location URL, HTTP code: %d"
 msgstr ""
+"erreur lors de la création du dossier : pas d'emplacement URL, code HTTP : %d"
 
 #: ../src/plugins/report.c:37
 msgid ""
@@ -753,14 +860,27 @@ msgid ""
 "\n"
 "Configuration (such as login data) can be supplied via files\n"
 msgstr ""
+"& [-v] --target TARGET --ticket ID FILE...\n"
+"\n"
+"Télécharge les FICHIERS (FILEs) sur le ticket spécifié sur la CIBLE "
+"(TARGET).\n"
+"\n"
+"Cet outil est fourni pour faciliter la transition des utilisateurs du "
+"paquetage des rapports à libreport. Les CIBLES (TARGETs) reconnues sont "
+"'strata' et 'bugzilla',\n"
+"la première invoque le téléchargement sur RHTSupport et la deuxième - sur "
+"Bugzilla.\n"
+"\n"
+"La configuration (comme les données de connexion) peut être obtenues via des "
+"fichiers\n"
 
 #: ../src/plugins/report.c:59
 msgid "'strata' or 'bugzilla'"
-msgstr "« strata » ou « bugzilla »"
+msgstr "'strata' ou 'bugzilla'"
 
 #: ../src/plugins/report.c:60
 msgid "Ticket/case ID"
-msgstr "Ticket/cas ID"
+msgstr "ID du ticket/cas"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:1
 msgid "Address of Bugzilla server"
@@ -772,7 +892,7 @@ msgstr "Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:3
 msgid "Bugzilla URL"
-msgstr "URL du Bugzilla"
+msgstr "URL de Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:4
 msgid "Bugzilla account password"
@@ -789,7 +909,7 @@ msgstr "Vérifier la validité de la clé SSL"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:7
 msgid "OS release string"
-msgstr ""
+msgstr "Chaîne de version du SE"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:3
@@ -798,11 +918,12 @@ msgstr "Mot de passe"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:9
 msgid "Report to Bugzilla bug tracker"
-msgstr "Rapporter vers le suivi d'anomalie Bugzilla"
+msgstr "Rapporter sur le suivi de bogues de Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:10
 msgid "Specify this only if you modified your /etc/system-release file"
 msgstr ""
+"Uniquement spécifier si vous avez modifié votre fichier /etc/system-release"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:11
 msgid "User name"
@@ -815,13 +936,15 @@ msgstr "Vérifier SSL"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:13
 msgid ""
-"You can create bugzilla.redhat.com account &lt;a "
-"href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
-msgstr "Vous pouvez créer un compte bugzilla.redhat.com &lt;a href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;ici&lt;/a&gt;"
+"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
+"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+msgstr ""
+"Vous pouvez créer un compte bugzilla.redhat.com &lt;a href=\"https://"
+"bugzilla.redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
 msgid "Kerneloops URL"
-msgstr "URL de kerneloops"
+msgstr "URL de Kerneloops"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:2
 msgid "Kerneloops.org"
@@ -829,11 +952,11 @@ msgstr "Kerneloops.org"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:3
 msgid "Oops server url"
-msgstr "URL du serveur oops"
+msgstr "URL du serveur Oops"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:4
 msgid "Send to kernel oops tracker"
-msgstr ""
+msgstr "Envoyer sur le dispositif de suivi des oops de noyau"
 
 #: ../src/plugins/report_Logger.xml.in.h:1
 msgid "Append"
@@ -841,23 +964,23 @@ msgstr "Ajouter"
 
 #: ../src/plugins/report_Logger.xml.in.h:2
 msgid "Append new reports or overwrite the old one."
-msgstr "Ajouter de nouveaux rapports ou écraser l'ancien."
+msgstr "Ajouter de nouveaux rapports ou substituer les anciens."
 
 #: ../src/plugins/report_Logger.xml.in.h:3
 msgid "Log File"
-msgstr "Fichier journal"
+msgstr "Journaliser le fichier"
 
 #: ../src/plugins/report_Logger.xml.in.h:4
 msgid "Logger"
-msgstr "Journalisation"
+msgstr "Enregistreur"
 
 #: ../src/plugins/report_Logger.xml.in.h:5
 msgid "Name of the logfile"
-msgstr "Nom du journal"
+msgstr "Nom du fichier de journalisation"
 
 #: ../src/plugins/report_Logger.xml.in.h:6
 msgid "Save as text file"
-msgstr ""
+msgstr "Enregistrer en tant que fichier texte"
 
 #: ../src/plugins/report_Mailx.xml.in.h:1
 msgid "Mailx"
@@ -873,7 +996,7 @@ msgstr "Destinataire"
 
 #: ../src/plugins/report_Mailx.xml.in.h:4
 msgid "Recipient's email"
-msgstr "Adresse e-mail du destinataire"
+msgstr "Email du destinataire"
 
 #: ../src/plugins/report_Mailx.xml.in.h:5
 msgid "Send Binary Data"
@@ -881,11 +1004,11 @@ msgstr "Envoyer des données binaires"
 
 #: ../src/plugins/report_Mailx.xml.in.h:6
 msgid "Send binary files like coredump"
-msgstr "Envoyer les fichiers binaires tels que le core dump"
+msgstr "Envoyer des fichiers binaires comme coredump"
 
 #: ../src/plugins/report_Mailx.xml.in.h:7
 msgid "Send via email"
-msgstr "Envoyer par e-mail"
+msgstr "Envoyer via email"
 
 #: ../src/plugins/report_Mailx.xml.in.h:8
 msgid "Sender"
@@ -893,7 +1016,7 @@ msgstr "Expéditeur"
 
 #: ../src/plugins/report_Mailx.xml.in.h:9
 msgid "Sender's email"
-msgstr "E-mail de l'expéditeur"
+msgstr "Email de l'expéditeur"
 
 #: ../src/plugins/report_Mailx.xml.in.h:10
 msgid "Subject"
@@ -901,7 +1024,7 @@ msgstr "Sujet"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:1
 msgid "Address of the Red Hat support portal"
-msgstr "Adresse du portail de support de Red Hat"
+msgstr "Adresse du portail de support Red Hat"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:4
 msgid "RH Portal URL"
@@ -909,19 +1032,19 @@ msgstr "URL du portail RH"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:5
 msgid "Red Hat Customer Support"
-msgstr "Soutien à la clientèle Red Hat"
+msgstr "Support client de Red Hat"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:6
 msgid "Red Hat customer password"
-msgstr "Mot de passe client Red Hat"
+msgstr "Mot de passe du client Red Hat"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:7
 msgid "Red Hat customer user name"
-msgstr "Nom d'utilisateur client Red Hat"
+msgstr "Nom d'utilisateur du client Red Hat"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:8
 msgid "Report to Red Hat support"
-msgstr "Rapporter vers l'assistance Red Hat"
+msgstr "Rapporter au support de Red Hat"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:9
 msgid "Username"
@@ -929,13 +1052,15 @@ msgstr "Nom d'utilisateur"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid ""
-"Examples: ftp://[user[:pass]@]host/dir/[file.tar.gz], "
-"scp://[user[:pass]@]host/dir/[file.tar.gz], file:///dir/[file.tar.gz]"
+"Examples: ftp://[user[:pass]@]host/dir/[file.tar.gz], scp://[user[:pass]@]"
+"host/dir/[file.tar.gz], file:///dir/[file.tar.gz]"
 msgstr ""
+"Exemples : ftp://[user[:pass]@]host/dir/[file.tar.gz], scp://[user[:pass]@]"
+"host/dir/[file.tar.gz], file:///dir/[file.tar.gz]"
 
 #: ../src/plugins/report_Uploader.xml.in.h:2
 msgid "Report uploader"
-msgstr "Report uploader"
+msgstr "Rapporter le téléchargeur"
 
 #: ../src/plugins/report_Uploader.xml.in.h:3
 msgid "URL"
@@ -943,13 +1068,14 @@ msgstr "URL"
 
 #: ../src/plugins/report_Uploader.xml.in.h:4
 msgid "Upload as tar.gz file (via FTP/SCP/...)"
-msgstr ""
+msgstr "Télécharger en tant que fichier tar.gz (via FTP/SCP/...)"
 
 #: ../src/plugins/report_Uploader.xml.in.h:5
 msgid ""
-"Where do you want to upload the tarball with report in form "
-"login:password@url"
-msgstr "Où voulez-vous envoyer l'archive tar avec le rapport, sous la forme de login:password@url"
+"Where do you want to upload the tarball with report in form login:"
+"password@url"
+msgstr ""
+"Où souhaitez-vous télécharger le tarball avec le rapport sous la forme "
 
 #: ../src/plugins/reporter-bugzilla.c:63
 msgid ""
@@ -968,7 +1094,8 @@ msgid ""
 "depending on their type and size.\n"
 "\n"
 "Otherwise, if such bug is found and it is marked as CLOSED DUPLICATE,\n"
-"the tool follows the chain of duplicates until it finds a non-DUPLICATE bug.\n"
+"the tool follows the chain of duplicates until it finds a non-DUPLICATE "
+"bug.\n"
 "The tool adds a new comment to found bug.\n"
 "\n"
 "The URL to new or modified bug is printed to stdout and recorded in\n"
@@ -976,46 +1103,76 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"\n"
+"& [-vbf] [-c CONFFILE] -d DIR\n"
+"ou :\n"
+"& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
+"\n"
+"Rapporte les incidents sur Bugzilla.\n"
+"\n"
+"L'outil lit le RÉPERTOIRE (DIR). Puis il se connecte à Bugzilla et tente de "
+"trouver un bogue\n"
+"avec le même abrt_hash:HEXSTRING dans 'Whiteboard'.\n"
+"\n"
+"Si aucun bogue similaire n'est trouvé, alors un nouveau bogue est créé. Des "
+"éléments du RÉPERTOIRE (DIR)\n"
+"sont stockés dans le bogue, faisant partie de la description du bogue ou "
+"comme attachements\n"
+"en fonction du type et de la taille.\n"
+"\n"
+"Autrement, si un tel bogue est trouvé et est marqué en tant que CLOSED "
+"DUPLICATE (DUPLIQUÉ),\n"
+"l'outil suivra alors la chaîne des dupliqués jusqu'à ce qu'il trouve un "
+"bogue non-DUPLIQUÉ (non-DUPLICATE bug).\n"
+"L'outil ajoute un nouveau commentaire au bogue trouvé.\n"
+"\n"
+"L'URL vers le nouveau bogue, ou vers le bogue modifié, est imprimé sur "
+"stdout et enregistré dans l'élément\n"
+"'reported_to'.\n"
+"\n"
+"Si non-spécifié, CONFFILE est ajusté par défaut sur "
 
 #: ../src/plugins/reporter-bugzilla.c:110
-#: ../src/plugins/reporter-kerneloops.c:159
+#: ../src/plugins/reporter-kerneloops.c:166
 #: ../src/plugins/reporter-mailx.c:168 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:74
 #: ../src/plugins/reporter-upload.c:288
 msgid "Dump directory"
-msgstr "Répertoire de sauvegarde"
+msgstr "Répertoire des vidages"
 
 #: ../src/plugins/reporter-bugzilla.c:111
 #: ../src/plugins/reporter-rhtsupport.c:75
 msgid "Configuration file (may be given many times)"
-msgstr "Fichier de configuration (peut être donné à plusieurs reprises)"
+msgstr "Fichier de configuration (peut être fourni de nombreuses fois)"
 
 #: ../src/plugins/reporter-bugzilla.c:112
 msgid "Attach FILEs [to bug with this ID]"
-msgstr "Joindre les FICHIERs [au rapport d'anomalie qui a cet identifiant ID]"
+msgstr "Attacher les FICHIERs (FILEs) [au bogue avec cet ID]"
 
 #: ../src/plugins/reporter-bugzilla.c:113
 msgid "When creating bug, attach binary files too"
-msgstr "Au moment de la création du rapport d'anomalie, attacher aussi les fichiers binaires"
+msgstr "Attacher les fichiers binaires aussi lors de la création d'un bogue"
 
 #: ../src/plugins/reporter-bugzilla.c:114
 #: ../src/plugins/reporter-rhtsupport.c:77
 msgid "Force reporting even if this problem is already reported"
-msgstr ""
+msgstr "Forcer le rapport même si cet incident a déjà été rapporté"
 
 #: ../src/plugins/reporter-bugzilla.c:115
 msgid "Find BUG-ID according to DUPHASH"
-msgstr ""
+msgstr "Trouver le BUG-ID selon DUPHASH"
 
 #: ../src/plugins/reporter-bugzilla.c:179
 msgid "Empty login or password, please check your configuration"
-msgstr "Identification ou mot de passe vide, veuillez vérifier votre configuration"
+msgstr ""
+"L'identifiant ou le mot de passe est manquant, veuillez vérifier votre "
+"configuration"
 
 #: ../src/plugins/reporter-bugzilla.c:209
 #: ../src/plugins/reporter-bugzilla.c:276
 #, c-format
 msgid "Logging into Bugzilla at %s"
-msgstr "Se connecter à Bugzilla depuis %s"
+msgstr "Connexion à Bugzilla sur %s"
 
 #: ../src/plugins/reporter-bugzilla.c:236
 #: ../src/plugins/reporter-bugzilla.c:449
@@ -1024,56 +1181,58 @@ msgstr "Déconnexion"
 
 #: ../src/plugins/reporter-bugzilla.c:283
 msgid "Checking for duplicates"
-msgstr "Contrôle des doublons"
+msgstr "Vérification des duplications"
 
 #: ../src/plugins/reporter-bugzilla.c:304
 msgid "Missing mandatory member 'bugs'"
-msgstr "Membre obligatoire « anomalies » manquant"
+msgstr "Membre obligatoire 'bugs' manquant"
 
 #. Create new bug
 #: ../src/plugins/reporter-bugzilla.c:343
 msgid "Creating a new bug"
-msgstr "Créer un nouveau rapport d'anomalie"
+msgstr "Création d'un nouveau bogue"
 
 #: ../src/plugins/reporter-bugzilla.c:346
 #, c-format
 msgid "Adding attachments to bug %i"
-msgstr ""
+msgstr "Ajouter des attachements au bogue %i"
 
 #: ../src/plugins/reporter-bugzilla.c:361
 #, c-format
 msgid "Bug is already reported: %i"
-msgstr "L'anomalie est déjà signalée : %i"
+msgstr "Le bogue a déjà été rapporté : %i"
 
 #: ../src/plugins/reporter-bugzilla.c:382
 #, c-format
 msgid "Add %s to CC list"
-msgstr "Ajouter %s à la liste CC"
+msgstr "Ajout de %s à la liste en copie"
 
 #: ../src/plugins/reporter-bugzilla.c:421
 #, c-format
 msgid "Adding new comment to bug %d"
-msgstr "Ajout d'un nouveau commentaire au rapport d'anomalie %d"
+msgstr "Ajout d'un nouveau commentaires au bogue %d"
 
 #: ../src/plugins/reporter-bugzilla.c:426
 msgid "Found the same comment in the bug history, not adding a new one"
 msgstr ""
+"Le même commentaire a été trouvé dans l'historique du bogue, ajout d'un "
+"nouveau commentaire annulé"
 
 #: ../src/plugins/reporter-bugzilla.c:441
 msgid "Attaching better backtrace"
-msgstr ""
+msgstr "Attachement d'un meilleur backtrace en cours"
 
 #: ../src/plugins/reporter-bugzilla.c:452
 #, c-format
 msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
-msgstr ""
+msgstr "Statut : %s%s%s %s/show_bug.cgi?id=%u"
 
-#: ../src/plugins/reporter-kerneloops.c:98
+#: ../src/plugins/reporter-kerneloops.c:105
 #, c-format
 msgid "Submitting oops report to %s"
-msgstr "Envoi du rapport oops vers %s"
+msgstr "Soumission du rapport oops sur %s"
 
-#: ../src/plugins/reporter-kerneloops.c:140
+#: ../src/plugins/reporter-kerneloops.c:147
 msgid ""
 "& [-v] [-c CONFFILE]... -d DIR\n"
 "\n"
@@ -1086,19 +1245,31 @@ msgid ""
 "Recognized string parameter: SubmitURL.\n"
 "Parameter can be overridden via $KerneloopsReporter_SubmitURL."
 msgstr ""
+"& [-v] [-c CONFFILE]... -d DIR\n"
+"\n"
+"Rapporte les oops de noyau sur le site kerneloops.org (ou autre site "
+"similaire).\n"
+"\n"
+"Les fichiers avec des noms répertoriés dans $EXCLUDE_FROM_REPORT ne sont pas "
+"inclus \n"
+"dans le tarball.\n"
+"\n"
+"Les lignes CONFFILE doiventêtre sous le format 'PARAM = VALUE'.\n"
+"Paramètre de chaîne reconnu : SubmitURL.\n"
+"Le paramètre peut être remplacé via $KerneloopsReporter_SubmitURL."
 
-#: ../src/plugins/reporter-kerneloops.c:160
+#: ../src/plugins/reporter-kerneloops.c:167
 msgid "Configuration file"
 msgstr "Fichier de configuration"
 
 #: ../src/plugins/reporter-mailx.c:110
 msgid "Sending an email..."
-msgstr "Envoi d'un e-mail..."
+msgstr "Envoyer un email..."
 
 #: ../src/plugins/reporter-mailx.c:130
 #, c-format
 msgid "Email was sent to: %s"
-msgstr ""
+msgstr "Courriel envoyé à : %s"
 
 #: ../src/plugins/reporter-mailx.c:149
 msgid ""
@@ -1108,6 +1279,11 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"& [-v] -d DIR [-c CONFFILE]\n"
+"\n"
+"Envoie le contenu d'un répertoire d'incidents DIR via courriel\n"
+"\n"
+"Si non-spécifié CONFFILE est ajusté par défaut sur "
 
 #: ../src/plugins/reporter-mailx.c:169 ../src/plugins/reporter-upload.c:289
 msgid "Config file"
@@ -1119,6 +1295,9 @@ msgid ""
 "\n"
 "Prints problem information to standard output or FILE"
 msgstr ""
+"& [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
+"\n"
+"Imprime les informations d'incidents sur sortie standard ou FICHIER (FILE)"
 
 #: ../src/plugins/reporter-print.c:57
 msgid "Output file"
@@ -1126,25 +1305,29 @@ msgstr "Fichier de sortie"
 
 #: ../src/plugins/reporter-print.c:58
 msgid "Append to, or overwrite FILE"
-msgstr "Ajouter ou écraser FICHIER"
+msgstr "Ajouter à, ou écraser FICHIER (FILE)"
 
 #: ../src/plugins/reporter-print.c:59
 msgid "Create reported_to in DIR"
-msgstr "Créer rapporter_à dans REPERTOIRE"
+msgstr "Créer reported_to dans DIR"
 
 #: ../src/plugins/reporter-print.c:96
 msgid "Cancelled by user."
-msgstr ""
+msgstr "Annulé par l'utilisateur."
 
 #: ../src/plugins/reporter-print.c:105
 #, c-format
 msgid "File '%s' is a symbolic link. Please select a regular file:"
 msgstr ""
+"Le fichier '%s' est un lien symbolique. Veuillez sélectionner un fichier "
+"normal :"
 
 #: ../src/plugins/reporter-print.c:114
 #, c-format
 msgid "Can't open '%s' for writing. Please select another file:"
 msgstr ""
+"Ouverture de '%s' pour accès en écriture impossible. Veuillez sélectionner "
+"un autre fichier :"
 
 #: ../src/plugins/reporter-print.c:149
 #, c-format
@@ -1154,7 +1337,7 @@ msgstr "Le rapport a été ajouté à %s"
 #: ../src/plugins/reporter-print.c:149
 #, c-format
 msgid "The report was stored to %s"
-msgstr "Le rapport a été stocké dans %s"
+msgstr "Le rapport a été stocké sur %s"
 
 #: ../src/plugins/reporter-rhtsupport.c:44
 msgid ""
@@ -1167,10 +1350,18 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"\n"
+"& [-v] [-c CONFFILE] -d DIR\n"
+"ou :\n"
+"& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
+"\n"
+"Rapporte un problème à RHTSupport.\n"
+"\n"
+"Si non-spécifié, CONFFILE est ajusté par défaut sur  "
 
 #: ../src/plugins/reporter-rhtsupport.c:76
 msgid "Upload FILEs [to case with this ID]"
-msgstr "Envoyer les FICHIERs [vers le cas qui a cet identifiant ID]"
+msgstr "Télécharger les FICHIERs (FILEs) [sur le dossier avec cet ID]"
 
 #: ../src/plugins/reporter-rhtsupport.c:111
 msgid "Empty RHTS login or password"
@@ -1179,14 +1370,12 @@ msgstr "Identifiant ou mot de passe RHTS vide"
 #: ../src/plugins/reporter-rhtsupport.c:158
 #, c-format
 msgid "Attaching '%s' to case '%s'"
-msgstr "Joindre « %s » au cas « %s »"
+msgstr "Attachement de '%s' au dossier '%s' en cours"
 
 #. create_problem_data_for_reporting already emitted error msg
-#. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are
-#. doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
-#. doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../src/plugins/reporter-rhtsupport.c:199
 #: ../src/plugins/reporter-upload.c:121
 msgid "Compressing data"
@@ -1198,7 +1387,7 @@ msgstr "Impossible de créer un répertoire temporaire dans /tmp"
 
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
-#. 
+#.
 #: ../src/plugins/reporter-rhtsupport.c:265
 #: ../src/plugins/reporter-rhtsupport.c:296
 #: ../src/plugins/reporter-rhtsupport.c:330
@@ -1208,37 +1397,37 @@ msgstr "Impossible de créer un fichier temporaire dans /tmp"
 
 #: ../src/plugins/reporter-rhtsupport.c:382
 msgid "Do you still want to create a RHTSupport ticket?"
-msgstr ""
+msgstr "Voulez-vous toujours créer un ticket RHTSupport ?"
 
 #. result = NULL; - redundant, result is assigned just below
 #. Send tempfile
 #: ../src/plugins/reporter-rhtsupport.c:394
 msgid "Creating a new case..."
-msgstr "Créer un nouveau cas..."
+msgstr "Création d'un nouveau dossier..."
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:202
 msgid "Documentation which might be relevant: "
-msgstr ""
+msgstr "Documents pouvant être pertinents :"
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:210
 msgid "Updates which possibly help: "
-msgstr ""
+msgstr "Mises à jour pouvant être utiles :"
 
 #: ../src/plugins/reporter-upload.c:59
 #, c-format
 msgid "Sending %s to %s"
-msgstr "Envoi de %s vers %s"
+msgstr "Envoi de %s sur %s"
 
 #. This ends up a "reporting status message" in abrtd
 #: ../src/plugins/reporter-upload.c:98
 #, c-format
 msgid "Successfully sent %s to %s"
-msgstr "Envoi avec succès de %s vers %s"
+msgstr "Envoi de %s sur %s réussi"
 
 #: ../src/plugins/reporter-upload.c:221
 #, c-format
 msgid "Archive is created: '%s'"
-msgstr "L'archive est créée : « %s »"
+msgstr "Archive créée : %s"
 
 #: ../src/plugins/reporter-upload.c:261
 msgid ""
@@ -1260,39 +1449,64 @@ msgid ""
 "Recognized string parameter: URL.\n"
 "Parameter can be overridden via $Upload_URL."
 msgstr ""
+"& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\n"
+"Télécharge le tarball compressé du répertoire d'incidents DIR sur l'URL.\n"
+"Si l'URL n'est pas spécifié, le tarball peut être créé dans /tmp et fermé.\n"
+"\n"
+"L'URL doit être sous la forme 'protocol://[user[:pass]@]host/dir/[file.tar."
+"gz]'\n"
+"où le protocole peut être http(s), ftp, scp, ou file.\n"
+"Le protocole File ne peut pas avoir de partie utilisateur et hôte : 'file:///"
+"dir/[file.tar.gz].'\n"
+"Si l'URL se termine par une barre oblique, le nom de l'archive sera généré "
+"et ajouté\n"
+"à l'URL ; sinon, l'URL sera utilisé en tant que nom de fichier complet.\n"
+"\n"
+"Les fichiers avec des noms répertoriés dans $EXCLUDE_FROM_REPORT ne sont pas "
+"inclus\n"
+"dans le tarball.\n"
+"\n"
+"Les lignes CONFFILE doivent être sous le format 'PARAM = VALUE'.\n"
+"Paramètre de chaîne reconnu : URL.\n"
+"Le paramètre peut être remplacé via $Upload_URL."
 
 #: ../src/plugins/reporter-upload.c:290
 msgid "Base URL to upload to"
-msgstr "URL de base où envoyer"
+msgstr "URL de base sur lequel effectuer le téléchargement"
 
 #: ../src/plugins/rhbz.c:289
 #, c-format
 msgid "Looks like corrupted xml response, because '%s' member is missing."
-msgstr "Ressemble à une réponse XML corrompue, parce que le membre « %s » est absent."
+msgstr "Il semble que la réponse xml est corrompue car il manque '%s'."
 
 #: ../src/plugins/rhbz.c:359
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
-msgstr "L'anomalie %i est FERMÉE mais n'a pas de SOLUTION"
+msgstr ""
+"Le bogue %i est FERMÉ (CLOSED), mais il n'y a pas de RÉSOLUTION (RESOLUTION)."
 
 #: ../src/plugins/rhbz.c:367
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
-msgstr "L'anomalie %i est FERMÉE comme DOUBLON mais n'a pas de DUP_ID"
+msgstr ""
+"Le bogue %i est FERMÉ (CLOSED) en tant que DUPLIQUÉ (DUPLICATE), mais il ne "
+"possède pas de DUP_ID"
 
-#: ../src/plugins/rhbz.c:485
+#: ../src/plugins/rhbz.c:489
 #, c-format
 msgid "New bug id: %i"
-msgstr "Nouvel identifiant de l'anomalie : %i"
+msgstr "Nouvel ID de bogue : %i"
 
-#: ../src/plugins/rhbz.c:625
+#: ../src/plugins/rhbz.c:629
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "Bugzilla n'a pas pu trouver le parent de l'anomalie %d"
+msgstr "Bugzilla n'a pas trouvé le parent du bogue %d"
 
 #: ../src/plugins/abrt-bodhi.c:301
+#, fuzzy
 msgid "Searching for updates"
-msgstr ""
+msgstr "Vérification des duplications"
 
 #: ../src/plugins/abrt-bodhi.c:376
 msgid "List of bug ids"
@@ -1315,8 +1529,8 @@ msgstr ""
 
 #: ../src/plugins/abrt-bodhi.c:459
 msgid ""
-"Abrt found a new update which fix your problem. Please run before submitting"
-" bug: pkcon update --repo-enable=fedora --repo-repo=updates-testing"
+"Abrt found a new update which fix your problem. Please run before submitting "
+"bug: pkcon update --repo-enable=fedora --repo-repo=updates-testing"
 msgstr ""
 
 #: ../src/plugins/abrt-bodhi.c:463
@@ -1327,7 +1541,7 @@ msgstr ""
 #: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:259
 #: ../src/report-newt/report-newt.c:337 ../src/report-newt/report-newt.c:352
 msgid "Ok"
-msgstr "OK"
+msgstr "Valider"
 
 #: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:146
 msgid "Cancel"
@@ -1340,11 +1554,11 @@ msgstr "Erreur"
 #: ../src/report-newt/report-newt.c:276
 #, c-format
 msgid "--- Running %s ---"
-msgstr "--- %s en cours d'exécution ---"
+msgstr "--- Exécution %s ---"
 
 #: ../src/report-newt/report-newt.c:352
 msgid "No reporters available"
-msgstr "Pas de méthode d'envoi de rapports disponible"
+msgstr "Aucun rapporteur disponible"
 
 #: ../src/report-newt/report-newt.c:382
 msgid ""
@@ -1352,3 +1566,7 @@ msgid ""
 "\n"
 "newt tool to report problem saved in specified DIR"
 msgstr ""
+"& -o [-d] DIR\n"
+"\n"
+"nouvel outil pour rapporter les incidents enregistrés dans le RÉPERTOIRE "
+"spécifié DIR"
