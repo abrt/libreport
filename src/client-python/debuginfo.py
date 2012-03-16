@@ -64,9 +64,10 @@ def unpack_rpm(package_file_name, files, tmp_dir, destdir, keeprpm, exact_files=
             file_patterns += "." + filename + " "
         cpio_args = ["cpio", "-idu", file_patterns.strip()]
 
-    cpio = Popen(cpio_args,
-              stdin=unpacked_cpio, cwd=destdir, bufsize=-1)
-    retcode = cpio.wait()
+    with open("/dev/null", "w") as null:
+        cpio = Popen(cpio_args, cwd=destdir, bufsize=-1,
+                     stdin=unpacked_cpio, stdout=null, stderr=null)
+        retcode = cpio.wait()
 
     if retcode == 0:
         log1("files extracted OK")
