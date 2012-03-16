@@ -55,7 +55,8 @@ static char** append_str_to_vector(char **vec, unsigned *size_p, const char *str
 
 static void create_and_send_email(
                 const char *dump_dir_name,
-                map_string_h *settings)
+                map_string_h *settings,
+                bool notify_only)
 {
     problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
     if (!problem_data)
@@ -119,13 +120,16 @@ static void create_and_send_email(
 
     free_problem_data(problem_data);
 
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (dd)
+    if (!notify_only)
     {
-        char *msg = xasprintf("email: %s", email_to);
-        add_reported_to(dd, msg);
-        free(msg);
-        dd_close(dd);
+        struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+        if (dd)
+        {
+            char *msg = xasprintf("email: %s", email_to);
+            add_reported_to(dd, msg);
+            free(msg);
+            dd_close(dd);
+        }
     }
     log(_("Email was sent to: %s"), email_to);
 }
@@ -161,22 +165,24 @@ int main(int argc, char **argv)
         OPT_v = 1 << 0,
         OPT_d = 1 << 1,
         OPT_c = 1 << 2,
+        OPT_n = 1 << 3,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_STRING('d', NULL, &dump_dir_name, "DIR"     , _("Dump directory")),
         OPT_STRING('c', NULL, &conf_file    , "CONFFILE", _("Config file")),
+        OPT_BOOL('n', "notify-only", NULL  , _("Notify only (Do not mark the report as sent)")),
         OPT_END()
     };
-    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
     export_abrt_envvars(0);
 
     map_string_h *settings = new_map_string();
     load_conf_file(conf_file, settings, /*skip key w/o values:*/ true);
 
-    create_and_send_email(dump_dir_name, settings);
+    create_and_send_email(dump_dir_name, settings, /*notify_only*/(opts & OPT_n));
 
     free_map_string(settings);
     return 0;
