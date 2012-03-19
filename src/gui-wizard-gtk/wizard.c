@@ -1313,7 +1313,8 @@ struct analyze_event_data
     GtkWidget *page_widget;
     GtkLabel *status_label;
     GtkTextView *tv_log;
-    const char *end_msg;
+    const char *success_msg;
+    const char *error_msg;
     GIOChannel *channel;
     struct strbuf *event_log;
     int event_log_state;
@@ -1717,9 +1718,10 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         {
             if (!evd->more_events)
             {
-                char *msg = xasprintf(evd->end_msg, retval);
-                gtk_label_set_text(evd->status_label, msg);
-                free(msg);
+                if (retval)
+                    gtk_label_set_text(evd->status_label, evd->error_msg);
+                else
+                    gtk_label_set_text(evd->status_label, evd->success_msg);
 
                 /* free child output buffer */
                 strbuf_free(cmd_output);
@@ -1793,7 +1795,8 @@ static void start_event_run(const char *event_name,
                 GtkTextView *tv_log,
                 GtkLabel *status_label,
                 const char *start_msg,
-                const char *end_msg
+                const char *error_msg,
+                const char *success_msg
 ) {
     /* Start event asynchronously on the dump dir
      * (synchronous run would freeze GUI until completion)
@@ -1848,7 +1851,8 @@ static void start_event_run(const char *event_name,
     evd->page_widget = page;
     evd->status_label = status_label;
     evd->tv_log = tv_log;
-    evd->end_msg = end_msg;
+    evd->error_msg = error_msg;
+    evd->success_msg = success_msg;
     evd->event_log = strbuf_new();
     evd->fd = state->command_out_fd;
     ndelay_on(evd->fd);
@@ -2043,7 +2047,8 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
                     g_tv_analyze_log,
                     g_lbl_analyze_log,
                     _("Analyzing..."),
-                    _("Analyzing finished with exit code %d")
+                    _("Analyzing failed. You can try another analyzer if available."),
+                    _("Analyzing finished. You can proceed to the next step.")
             );
         }
     }
@@ -2070,7 +2075,8 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
                     g_tv_report_log,
                     g_lbl_report_log,
                     _("Reporting..."),
-                    _("Reporting finished with exit code %d")
+                    _("Reporting failed. You can try another reporter if available."),
+                    _("Reporting finished. You can proceed to the next step.")
             );
         }
     }
@@ -2098,7 +2104,8 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
                     g_tv_collect_log,
                     g_lbl_collect_log,
                     _("Collecting..."),
-                    _("Collecting finished with exit code %d")
+                    _("Collecting failed. You can try another collector if available."),
+                    _("Collecting finished. You can proceed to the next step.")
             );
         }
     }
