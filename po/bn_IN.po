@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-08 10:19+0100\n"
-"PO-Revision-Date: 2012-02-28 12:54+0000\n"
-"Last-Translator: runa <runabh@gmail.com>\n"
+"POT-Creation-Date: 2012-03-20 09:56+0100\n"
+"PO-Revision-Date: 2012-03-20 08:47+0000\n"
+"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: bn_IN\n"
 "MIME-Version: 1.0\n"
@@ -153,7 +153,7 @@ msgstr ""
 "রিপোর্টের মধ্যে কোনো পরিবর্তন সনাক্ত করা যায়নি"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1605
+#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1606
 #: ../src/lib/client.c:51 ../src/lib/run_event.c:476
 msgid "y"
 msgstr "y"
@@ -208,7 +208,7 @@ msgstr "(বর্ণনা বিহীন)"
 msgid "There were %d errors while collecting additional data\n"
 msgstr "অতিরিক্ত তথ্য সংগ্রহের সময় %d-ট ত্রুটি দেখা দিয়েছে\n"
 
-#: ../src/cli/cli-report.c:857 ../src/gui-wizard-gtk/wizard.c:2072
+#: ../src/cli/cli-report.c:857 ../src/gui-wizard-gtk/wizard.c:2077
 msgid "Reporting..."
 msgstr "রিপোর্ট দায়ের..."
 
@@ -255,38 +255,38 @@ msgstr "'{0}' প্যাকেজ প্রাপ্ত করতে ব্য
 msgid "Caching files from {0} made from {1}"
 msgstr "{0} থেকে ফাইল ক্যাশে করা হচ্ছে, এইগুলি {1} থকে প্রস্তুত করা হয়েছে"
 
-#: ../src/client-python/debuginfo.py:76
+#: ../src/client-python/debuginfo.py:77
 msgid "Can't extract files from '{0}'"
 msgstr "'{0}' থেকে ফাইল প্রাপ্ত করতে ব্যর্থ"
 
-#: ../src/client-python/debuginfo.py:85
+#: ../src/client-python/debuginfo.py:86
 msgid "Can't remove '{0}': {1}"
 msgstr "'{0}' সরাতে ব্যর্থ: {1}"
 
 #. print (_("Downloading (%i of %i) %s: %3u%%")
 #. % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
 #. )
-#: ../src/client-python/debuginfo.py:111 ../src/client-python/debuginfo.py:122
+#: ../src/client-python/debuginfo.py:112 ../src/client-python/debuginfo.py:123
 msgid "Downloading ({0} of {1}) {2}: {3:3}%"
 msgstr "({0} ডাউনলোড করা হচ্ছে, সর্বমোট {1}) {2}: {3:3}%"
 
 #. self.conf.cache = os.geteuid() != 0
 #. Setup yum (Ts, RPM db, Repo & Sack)
 #. doConfigSetup() takes some time, let user know what we are doing
-#: ../src/client-python/debuginfo.py:145
+#: ../src/client-python/debuginfo.py:146
 msgid "Initializing yum"
 msgstr "yum আরম্ভ করা হচ্ছে"
 
-#: ../src/client-python/debuginfo.py:153
+#: ../src/client-python/debuginfo.py:154
 msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
 msgstr "yum আরম্ভ করতে ত্রুটি (YumBase.doConfigSetup): '{0!s}'"
 
 #. This takes some time, let user know what we are doing
-#: ../src/client-python/debuginfo.py:184
+#: ../src/client-python/debuginfo.py:185
 msgid "Setting up yum repositories"
 msgstr "yum সংগ্রহস্থল নির্ধারণ"
 
-#: ../src/client-python/debuginfo.py:195
+#: ../src/client-python/debuginfo.py:196
 msgid "Can't setup {0}: {1}, disabling"
 msgstr "{0} প্রস্তুত করতে ব্যর্থ: {1}, নিষ্ক্রিয় করা হচ্ছে"
 
@@ -294,53 +294,53 @@ msgstr "{0} প্রস্তুত করতে ব্যর্থ: {1}, ন�
 #. Looks like this is the moment when yum talks to remote servers,
 #. which takes time (sometimes minutes), let user know why
 #. we have "paused":
-#: ../src/client-python/debuginfo.py:202
+#: ../src/client-python/debuginfo.py:203
 msgid "Looking for needed packages in repositories"
 msgstr "সংগ্রহস্থলের মধ্যে আবশ্যক প্যাকেজ অনুসন্ধান করা হচ্ছে"
 
-#: ../src/client-python/debuginfo.py:206
+#: ../src/client-python/debuginfo.py:207
 msgid "Error retrieving metadata: '{0!s}'"
 msgstr "মিটা-ডাটা প্রাপ্ত করতে সমস্যা: '{0!s}'"
 
-#: ../src/client-python/debuginfo.py:216
+#: ../src/client-python/debuginfo.py:217
 msgid "Error retrieving filelists: '{0!s}'"
 msgstr "ফাইলের তালিকা প্রাপ্ত করতে ত্রুটি: '{0!s}'"
 
-#: ../src/client-python/debuginfo.py:249
+#: ../src/client-python/debuginfo.py:250
 msgid "Can't find packages for {0} debuginfo files"
 msgstr "{0} debuginfo ফাইলের জন্য প্যাকেজ পাওয়া যায়নি"
 
-#: ../src/client-python/debuginfo.py:251
+#: ../src/client-python/debuginfo.py:252
 msgid "Packages to download: {0}"
 msgstr "ডাউনলোড করার জন্য চিহ্নিত প্যাকেজ: {0}"
 
-#: ../src/client-python/debuginfo.py:252
+#: ../src/client-python/debuginfo.py:253
 msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
 msgstr ""
 "ডাউনলোডের মাপ {0:.2f}মেগাবাইট, ইনস্টলেশনের মাপ: {1:.2f}মেগাবাইট। এগিয়ে যাওয়া "
 "হবে কি?"
 
-#: ../src/client-python/debuginfo.py:257
+#: ../src/client-python/debuginfo.py:258
 msgid "Download cancelled by user"
 msgstr "ব্যবহারকারী দ্বারা ডাউনলোড বাতিল করতে ব্যর্থ"
 
-#: ../src/client-python/debuginfo.py:291
+#: ../src/client-python/debuginfo.py:292
 msgid "Downloading package {0} failed"
 msgstr "প্যাকেজ {0} ডাউনলোড করতে ব্যর্থ"
 
 #. recursively delete the temp dir on failure
-#: ../src/client-python/debuginfo.py:297
+#: ../src/client-python/debuginfo.py:298
 msgid "Unpacking failed, aborting download..."
 msgstr "আন-প্যাক করতে ব্যর্থ, ডাউনলোডের কাজ পরিত্যাগ করা হচ্ছে..."
 
 #. Was: "All downloaded packages have been extracted, removing..."
 #. but it was appearing even if no packages were in fact extracted
 #. (say, when there was one package, and it has download error).
-#: ../src/client-python/debuginfo.py:307
+#: ../src/client-python/debuginfo.py:308
 msgid "Removing {0}"
 msgstr "{0} সরিয়ে ফেলা হবে"
 
-#: ../src/client-python/debuginfo.py:311
+#: ../src/client-python/debuginfo.py:312
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
 msgstr "%s সরিয়ে ফেলা সম্ভব নয়, সম্ভবত ত্রুটির তথ্য বিশিষ্ট লগ উপস্থিত রয়েছে"
@@ -523,17 +523,17 @@ msgid "%llu bytes, %u files"
 msgstr "%llu বাইট, %u ফাইল"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1809
+#: ../src/gui-wizard-gtk/wizard.c:1812
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "'%s' ইভেন্টের ক্ষেত্র প্রক্রিয়াকরণ নির্ধারিত হয়নি"
 
-#: ../src/gui-wizard-gtk/wizard.c:1930
+#: ../src/gui-wizard-gtk/wizard.c:1934
 #, c-format
 msgid "Reporting disabled because the rating does not contain a number '%s'."
 msgstr "হারের মধ্যে সংখ্যা অনুপস্থিত থাকার ফলে নিষ্ক্রিয় হিসাবে চিহ্নিত করা হবে '%s'।"
 
-#: ../src/gui-wizard-gtk/wizard.c:1953
+#: ../src/gui-wizard-gtk/wizard.c:1957
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -542,35 +542,44 @@ msgstr ""
 "চিহ্নিত করুন।"
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1959
+#: ../src/gui-wizard-gtk/wizard.c:1963
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr ""
 "ব্যাক-ট্রেস ব্যবহারযোগ্য না হওয়ার ফলে রিপোর্ট দায়ের করার ব্যবস্থা নিষ্ক্রিয় করা হয়েছে।"
 
-#: ../src/gui-wizard-gtk/wizard.c:2045
+#: ../src/gui-wizard-gtk/wizard.c:2049
 msgid "Analyzing..."
 msgstr "বিশ্লেষণ করা হচ্ছে..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2046
-#, c-format
-msgid "Analyzing finished with exit code %d"
-msgstr "বিশ্লেষণ সমাপ্ত করে প্রস্থান কালে %d কোড উৎপন্ন হয়েছে"
+#: ../src/gui-wizard-gtk/wizard.c:2050
+msgid "Analyzing failed. You can try another analyzer if available."
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2073
-#, c-format
-msgid "Reporting finished with exit code %d"
-msgstr "সূচনা সমাপ্ত করে প্রস্থান কালে %d কোড উৎপন্ন হয়েছে"
+#: ../src/gui-wizard-gtk/wizard.c:2051
+msgid "Analyzing finished. You can proceed to the next step."
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2100
+#: ../src/gui-wizard-gtk/wizard.c:2078
+msgid "Reporting failed. You can try another reporter if available."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:2079
+msgid "Reporting finished. You can proceed to the next step."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:2106
 msgid "Collecting..."
 msgstr "সংগ্রহ করা হচ্ছে..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2101
-#, c-format
-msgid "Collecting finished with exit code %d"
-msgstr "সংগ্রহের কাজ সমাপ্ত করে %d কোড সহ প্রস্থান করা হয়েছে"
+#: ../src/gui-wizard-gtk/wizard.c:2107
+msgid "Collecting failed. You can try another collector if available."
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2236
+#: ../src/gui-wizard-gtk/wizard.c:2108
+msgid "Collecting finished. You can proceed to the next step."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:2243
 msgid ""
 "Possible sensitive data detected, please review the highlighted tabs "
 "carefully."
@@ -578,34 +587,34 @@ msgstr ""
 "সম্ভাব্য সংবেদনশীল তথ্য চিহ্নিত হয়েছে, অনুগ্রহ করে উজ্জ্বল করা ট্যাবগুলির তথ্য  "
 "যত্নসহকারে পরীক্ষা করুন।"
 
-#: ../src/gui-wizard-gtk/wizard.c:2532
+#: ../src/gui-wizard-gtk/wizard.c:2539
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' সাধারণ ফাইল নয়"
 
-#: ../src/gui-wizard-gtk/wizard.c:2548
+#: ../src/gui-wizard-gtk/wizard.c:2555
 msgid "You are trying to copy a file onto itself"
 msgstr "আপনি একটি ফাইলকে সেটির মধ্যেই কপি করার প্রচেষ্টা করছেন"
 
-#: ../src/gui-wizard-gtk/wizard.c:2555
+#: ../src/gui-wizard-gtk/wizard.c:2562
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "'%s' কপি করা সম্ভব নয়: %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2570
+#: ../src/gui-wizard-gtk/wizard.c:2577
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "'%s' বস্তুটি বর্তমানে উপস্থিত রয়েছে ও সেটি পরিবর্তন করা সম্ভব নয়"
 
-#: ../src/gui-wizard-gtk/wizard.c:2826
+#: ../src/gui-wizard-gtk/wizard.c:2833
 msgid "Include"
 msgstr "অন্তর্ভুক্ত করা হবে"
 
-#: ../src/gui-wizard-gtk/wizard.c:2836
+#: ../src/gui-wizard-gtk/wizard.c:2843
 msgid "Name"
 msgstr "নাম"
 
-#: ../src/gui-wizard-gtk/wizard.c:2844
+#: ../src/gui-wizard-gtk/wizard.c:2851
 msgid "Value"
 msgstr "মান"
 
@@ -1070,7 +1079,7 @@ msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:110
 #: ../src/plugins/reporter-kerneloops.c:166
-#: ../src/plugins/reporter-mailx.c:168 ../src/plugins/reporter-print.c:56
+#: ../src/plugins/reporter-mailx.c:173 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:74
 #: ../src/plugins/reporter-upload.c:288
 msgid "Dump directory"
@@ -1109,54 +1118,54 @@ msgid "Logging into Bugzilla at %s"
 msgstr "%s-এ Bugzilla-তে লগ-ইন করুন"
 
 #: ../src/plugins/reporter-bugzilla.c:236
-#: ../src/plugins/reporter-bugzilla.c:449
+#: ../src/plugins/reporter-bugzilla.c:458
 msgid "Logging out"
 msgstr "লগ-আউট করুন"
 
-#: ../src/plugins/reporter-bugzilla.c:283
+#: ../src/plugins/reporter-bugzilla.c:309
 msgid "Checking for duplicates"
 msgstr "প্রতিলিপি পরীক্ষা করা হচ্ছে"
 
-#: ../src/plugins/reporter-bugzilla.c:304
+#: ../src/plugins/reporter-bugzilla.c:330
 msgid "Missing mandatory member 'bugs'"
 msgstr "আবশ্যক সদস্য 'bugs' অনুপস্থিত"
 
 #. Create new bug
-#: ../src/plugins/reporter-bugzilla.c:343
+#: ../src/plugins/reporter-bugzilla.c:341
 msgid "Creating a new bug"
 msgstr "নতুন বাগ নির্মাণ"
 
-#: ../src/plugins/reporter-bugzilla.c:346
+#: ../src/plugins/reporter-bugzilla.c:344
 #, c-format
 msgid "Adding attachments to bug %i"
 msgstr "বাগ %i-র সাথে কিছু অতিরিক্ত সামগ্রী যোগ করা হচ্ছে"
 
-#: ../src/plugins/reporter-bugzilla.c:361
+#: ../src/plugins/reporter-bugzilla.c:370
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "বাগটি পূর্বেই দায়ের করা হয়েছে: %i"
 
-#: ../src/plugins/reporter-bugzilla.c:382
+#: ../src/plugins/reporter-bugzilla.c:391
 #, c-format
 msgid "Add %s to CC list"
 msgstr "প্রতিলিপি প্রাপ্তকদের তালিকায় %s-কে যোগ করা হবে"
 
-#: ../src/plugins/reporter-bugzilla.c:421
+#: ../src/plugins/reporter-bugzilla.c:430
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "%d বাগে নতুন বক্তব্য যোগ করা হবে"
 
-#: ../src/plugins/reporter-bugzilla.c:426
+#: ../src/plugins/reporter-bugzilla.c:435
 msgid "Found the same comment in the bug history, not adding a new one"
 msgstr ""
 "বাগের পূর্ববর্তী তথ্যের মধ্যে একই বিবৃতি পাওয়া গিয়েছে, নতুন করে একই বিবৃতি পুনরায় যোগ "
 "করা হবে না"
 
-#: ../src/plugins/reporter-bugzilla.c:441
+#: ../src/plugins/reporter-bugzilla.c:450
 msgid "Attaching better backtrace"
 msgstr "উন্নত ব্যাক-ট্রেস যোগ করা হচ্ছে"
 
-#: ../src/plugins/reporter-bugzilla.c:452
+#: ../src/plugins/reporter-bugzilla.c:461
 #, c-format
 msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
 msgstr "অবস্থা: %s%s%s %s/show_bug.cgi?id=%u"
@@ -1194,16 +1203,16 @@ msgstr ""
 msgid "Configuration file"
 msgstr "কনফিগারেশন ফাইল"
 
-#: ../src/plugins/reporter-mailx.c:110
+#: ../src/plugins/reporter-mailx.c:111
 msgid "Sending an email..."
 msgstr "ই-মেইল প্রেরণ..."
 
-#: ../src/plugins/reporter-mailx.c:130
+#: ../src/plugins/reporter-mailx.c:134
 #, c-format
 msgid "Email was sent to: %s"
 msgstr "চিহ্নিত ঠিকানায় ই-মেইল পাঠানো হয়েছে: %s"
 
-#: ../src/plugins/reporter-mailx.c:149
+#: ../src/plugins/reporter-mailx.c:153
 msgid ""
 "& [-v] -d DIR [-c CONFFILE]\n"
 "\n"
@@ -1217,9 +1226,13 @@ msgstr ""
 "\n"
 "If not specified, CONFFILE defaults to "
 
-#: ../src/plugins/reporter-mailx.c:169 ../src/plugins/reporter-upload.c:289
+#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:289
 msgid "Config file"
 msgstr "কনফিগ ফাইল"
+
+#: ../src/plugins/reporter-mailx.c:175
+msgid "Notify only (Do not mark the report as sent)"
+msgstr ""
 
 #: ../src/plugins/reporter-print.c:42
 msgid ""
@@ -1418,32 +1431,31 @@ msgstr ""
 "%i বাগটি DUPLICATE রপে চিহ্নিত করে CLOSED অবস্থায় রয়েছে কিন্তু এটির কোনো DUP_ID "
 "নেই"
 
-#: ../src/plugins/rhbz.c:489
+#: ../src/plugins/rhbz.c:474
 #, c-format
 msgid "New bug id: %i"
 msgstr "নতুন বাগ id: %i"
 
-#: ../src/plugins/rhbz.c:629
+#: ../src/plugins/rhbz.c:614
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla দ্বারা বাগ %d-র ঊর্ধ্বতন বাগ সন্ধান করা যায়নি"
 
 #: ../src/plugins/abrt-bodhi.c:301
-#, fuzzy
 msgid "Searching for updates"
-msgstr "প্রতিলিপি পরীক্ষা করা হচ্ছে"
+msgstr "আপডেটের উপস্থিতি পরীক্ষা করা হচ্ছে"
 
 #: ../src/plugins/abrt-bodhi.c:376
 msgid "List of bug ids"
-msgstr ""
+msgstr "বাগ id-র তালিকা"
 
 #: ../src/plugins/abrt-bodhi.c:377
 msgid "Specify a bodhi server url"
-msgstr ""
+msgstr "একটি bodhi সার্ভারের url উল্লেখ করুন"
 
 #: ../src/plugins/abrt-bodhi.c:378
 msgid "Specify a release"
-msgstr ""
+msgstr "একটি রিলিজ উল্লেখ করুন"
 
 #: ../src/plugins/abrt-bodhi.c:383
 msgid ""
@@ -1451,16 +1463,22 @@ msgid ""
 "\n"
 "Search for updates on bodhi server"
 msgstr ""
+"& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
+"\n"
+"bodhi সার্ভারের মধ্যে আপডেট অনুসন্ধান করুন"
 
 #: ../src/plugins/abrt-bodhi.c:459
 msgid ""
 "Abrt found a new update which fix your problem. Please run before submitting "
 "bug: pkcon update --repo-enable=fedora --repo-repo=updates-testing"
 msgstr ""
+"Abrt দ্বারা প্রাপ্ত একটি নতুন আপডেটের সহাতায় এই সমস্যাটি সমাধান করা যাবে।  বাগ "
+"দায়ের করার পূর্বে অনুগ্রহ করে চিহ্নিত কমান্ডটি সঞ্চালন করুন: pkcon update --repo-"
+"enable=fedora --repo-repo=updates-testing"
 
 #: ../src/plugins/abrt-bodhi.c:463
 msgid ". Do you want to continue with reporting bug?"
-msgstr ""
+msgstr "। বাগ দায়ের করার কাজে এগিয়ে যাওয়া হবে কি?"
 
 #: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:146
 #: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:259

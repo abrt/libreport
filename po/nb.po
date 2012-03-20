@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
+# Kjartan Maraas <kmaraas@gnome.org>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-08 10:19+0100\n"
-"PO-Revision-Date: 2012-02-21 14:11+0000\n"
+"POT-Creation-Date: 2012-03-20 09:56+0100\n"
+"PO-Revision-Date: 2012-03-20 08:47+0000\n"
 "Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: nb\n"
@@ -49,7 +50,7 @@ msgstr ""
 
 #: ../src/cli/cli.c:86 ../src/report-newt/report-newt.c:395
 msgid "Display version and exit"
-msgstr ""
+msgstr "Vis versjon og avslutt"
 
 #: ../src/cli/cli.c:87
 msgid "Remove DUMP_DIR after reporting"
@@ -74,11 +75,11 @@ msgstr ""
 #: ../src/cli/cli-report.c:132
 #, c-format
 msgid "# This field is read only\n"
-msgstr ""
+msgstr "# Dette feltet er skrivebeskyttet\n"
 
 #: ../src/cli/cli-report.c:152
 msgid "# Describe the circumstances of this crash below"
-msgstr ""
+msgstr "# Beskriv omstendighetene rundt dette krasjet under"
 
 #: ../src/cli/cli-report.c:154
 msgid ""
@@ -141,7 +142,7 @@ msgid ""
 msgstr ""
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1605
+#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1606
 #: ../src/lib/client.c:51 ../src/lib/run_event.c:476
 msgid "y"
 msgstr "j"
@@ -153,12 +154,12 @@ msgstr "N"
 
 #: ../src/cli/cli-report.c:500
 msgid "Your input is not valid, because of:"
-msgstr ""
+msgstr "Inndata er ikke gyldig på grunn av:"
 
 #: ../src/cli/cli-report.c:503
 #, c-format
 msgid "Bad value for '%s': %s"
-msgstr ""
+msgstr "Ugyldig verdi for «%s»: %s"
 
 #: ../src/cli/cli-report.c:605
 #, c-format
@@ -167,12 +168,12 @@ msgstr ""
 
 #: ../src/cli/cli-report.c:623
 msgid "Select analyzer: "
-msgstr ""
+msgstr "Velg analyseverktøy: "
 
 #: ../src/cli/cli-report.c:630
 #, c-format
 msgid "You have chosen number out of range"
-msgstr ""
+msgstr "Du har valgt et tall utenfor gyldig område"
 
 #: ../src/cli/cli-report.c:639
 msgid "Invalid input, program exiting..."
@@ -196,13 +197,13 @@ msgstr "(ingen beskrivelse)"
 msgid "There were %d errors while collecting additional data\n"
 msgstr ""
 
-#: ../src/cli/cli-report.c:857 ../src/gui-wizard-gtk/wizard.c:2072
+#: ../src/cli/cli-report.c:857 ../src/gui-wizard-gtk/wizard.c:2077
 msgid "Reporting..."
 msgstr "Rapporterer..."
 
 #: ../src/cli/cli-report.c:872 ../src/report-newt/report-newt.c:55
 msgid "How would you like to report the problem?"
-msgstr ""
+msgstr "Hvordan vil du rapportere problemet?"
 
 #: ../src/cli/cli-report.c:882
 msgid "Select reporter(s): "
@@ -240,38 +241,38 @@ msgstr ""
 msgid "Caching files from {0} made from {1}"
 msgstr ""
 
-#: ../src/client-python/debuginfo.py:76
+#: ../src/client-python/debuginfo.py:77
 msgid "Can't extract files from '{0}'"
 msgstr ""
 
-#: ../src/client-python/debuginfo.py:85
+#: ../src/client-python/debuginfo.py:86
 msgid "Can't remove '{0}': {1}"
 msgstr ""
 
 #. print (_("Downloading (%i of %i) %s: %3u%%")
 #. % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
 #. )
-#: ../src/client-python/debuginfo.py:111 ../src/client-python/debuginfo.py:122
+#: ../src/client-python/debuginfo.py:112 ../src/client-python/debuginfo.py:123
 msgid "Downloading ({0} of {1}) {2}: {3:3}%"
 msgstr ""
 
 #. self.conf.cache = os.geteuid() != 0
 #. Setup yum (Ts, RPM db, Repo & Sack)
 #. doConfigSetup() takes some time, let user know what we are doing
-#: ../src/client-python/debuginfo.py:145
+#: ../src/client-python/debuginfo.py:146
 msgid "Initializing yum"
 msgstr ""
 
-#: ../src/client-python/debuginfo.py:153
+#: ../src/client-python/debuginfo.py:154
 msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
 msgstr ""
 
 #. This takes some time, let user know what we are doing
-#: ../src/client-python/debuginfo.py:184
+#: ../src/client-python/debuginfo.py:185
 msgid "Setting up yum repositories"
 msgstr ""
 
-#: ../src/client-python/debuginfo.py:195
+#: ../src/client-python/debuginfo.py:196
 msgid "Can't setup {0}: {1}, disabling"
 msgstr ""
 
@@ -279,51 +280,51 @@ msgstr ""
 #. Looks like this is the moment when yum talks to remote servers,
 #. which takes time (sometimes minutes), let user know why
 #. we have "paused":
-#: ../src/client-python/debuginfo.py:202
+#: ../src/client-python/debuginfo.py:203
 msgid "Looking for needed packages in repositories"
 msgstr ""
 
-#: ../src/client-python/debuginfo.py:206
+#: ../src/client-python/debuginfo.py:207
 msgid "Error retrieving metadata: '{0!s}'"
 msgstr ""
 
-#: ../src/client-python/debuginfo.py:216
+#: ../src/client-python/debuginfo.py:217
 msgid "Error retrieving filelists: '{0!s}'"
 msgstr ""
 
-#: ../src/client-python/debuginfo.py:249
+#: ../src/client-python/debuginfo.py:250
 msgid "Can't find packages for {0} debuginfo files"
 msgstr ""
 
-#: ../src/client-python/debuginfo.py:251
+#: ../src/client-python/debuginfo.py:252
 msgid "Packages to download: {0}"
 msgstr ""
 
-#: ../src/client-python/debuginfo.py:252
+#: ../src/client-python/debuginfo.py:253
 msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
 msgstr ""
 
-#: ../src/client-python/debuginfo.py:257
+#: ../src/client-python/debuginfo.py:258
 msgid "Download cancelled by user"
 msgstr ""
 
-#: ../src/client-python/debuginfo.py:291
+#: ../src/client-python/debuginfo.py:292
 msgid "Downloading package {0} failed"
 msgstr ""
 
 #. recursively delete the temp dir on failure
-#: ../src/client-python/debuginfo.py:297
+#: ../src/client-python/debuginfo.py:298
 msgid "Unpacking failed, aborting download..."
 msgstr ""
 
 #. Was: "All downloaded packages have been extracted, removing..."
 #. but it was appearing even if no packages were in fact extracted
 #. (say, when there was one package, and it has download error).
-#: ../src/client-python/debuginfo.py:307
+#: ../src/client-python/debuginfo.py:308
 msgid "Removing {0}"
 msgstr ""
 
-#: ../src/client-python/debuginfo.py:311
+#: ../src/client-python/debuginfo.py:312
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
 msgstr ""
@@ -343,10 +344,11 @@ msgstr ""
 #: ../src/gtk-helpers/event_config_dialog.c:430
 msgid "Gnome Keyring is not available, your settings won't be saved!"
 msgstr ""
+"GNOME nøkkelring er ikke tilgjengelig. Innstillingene vil ikke bli lagret!"
 
 #: ../src/gtk-helpers/event_config_dialog.c:463
 msgid "Event Configuration"
-msgstr ""
+msgstr "Konfigurasjon av hendelser"
 
 #: ../src/gtk-helpers/event_config_dialog.c:488
 msgid "Event"
@@ -370,11 +372,11 @@ msgstr "Alternativ brukergrensesnittfil"
 #. for use from 3rd party apps to show just a reporter selector
 #: ../src/gui-wizard-gtk/main.c:130 ../src/report-newt/report-newt.c:393
 msgid "Skip analyze steps, go through report steps only"
-msgstr ""
+msgstr "Hopp over analysestegene. Gå kun gjennom rapporteringsstegene"
 
 #: ../src/gui-wizard-gtk/main.c:131 ../src/report-newt/report-newt.c:394
 msgid "Remove DIR after reporting"
-msgstr ""
+msgstr "Fjern KATALOG etter rapportering"
 
 #. Page types:
 #. * CONTENT: normal page (has all btns: [Cancel] [Last] [Back] [Fwd])
@@ -390,34 +392,34 @@ msgstr ""
 #. glade element name     , on-screen text          , type
 #: ../src/gui-wizard-gtk/wizard.c:247
 msgid "Problem description"
-msgstr ""
+msgstr "Beskrivelse av problemet"
 
 #: ../src/gui-wizard-gtk/wizard.c:248
 msgid "Provide additional information"
-msgstr ""
+msgstr "Gi ekstra informasjon"
 
 #: ../src/gui-wizard-gtk/wizard.c:249
 msgid "Select analyzer"
-msgstr ""
+msgstr "Velg analyseverktøy"
 
 #: ../src/gui-wizard-gtk/wizard.c:250
 msgid "Analyzing"
-msgstr ""
+msgstr "Analyserer"
 
 #: ../src/gui-wizard-gtk/wizard.c:251
 msgid "Select collector"
-msgstr ""
+msgstr "Velg innsamler"
 
 #: ../src/gui-wizard-gtk/wizard.c:252
 msgid "Collecting"
-msgstr ""
+msgstr "Samler inn"
 
 #. Some reporters don't need backtrace, we can skip bt page for them.
 #. * Therefore we want to know reporters _before_ we go to bt page
 #.
 #: ../src/gui-wizard-gtk/wizard.c:256
 msgid "Select reporter"
-msgstr ""
+msgstr "Velg rapporteringsverktøy"
 
 #: ../src/gui-wizard-gtk/wizard.c:257
 msgid "Review the data"
@@ -425,16 +427,16 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:258
 msgid "Confirm data to report"
-msgstr ""
+msgstr "Bekreft data i rapporten"
 
 #. Was GTK_ASSISTANT_PAGE_PROGRESS, but we want to allow returning to it
 #: ../src/gui-wizard-gtk/wizard.c:260 ../src/report-newt/report-newt.c:256
 msgid "Reporting"
-msgstr ""
+msgstr "Rapporterer"
 
 #: ../src/gui-wizard-gtk/wizard.c:261
 msgid "Reporting done"
-msgstr ""
+msgstr "Rapportering fullført"
 
 #: ../src/gui-wizard-gtk/wizard.c:333
 #, c-format
@@ -453,7 +455,7 @@ msgstr ""
 #: ../src/gui-wizard-gtk/wizard.c:354
 #, c-format
 msgid "Con_figure %s"
-msgstr ""
+msgstr "Kon_figurer %s"
 
 #: ../src/gui-wizard-gtk/wizard.c:413
 #, c-format
@@ -468,7 +470,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:630
 msgid "View/edit a text file"
-msgstr ""
+msgstr "Vis/rediger en tekstfil"
 
 #: ../src/gui-wizard-gtk/wizard.c:913
 #, c-format
@@ -477,7 +479,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:978
 msgid "Go to next step"
-msgstr ""
+msgstr "Gå til neste steg"
 
 #: ../src/gui-wizard-gtk/wizard.c:1087
 msgid "(click here to view/edit)"
@@ -494,84 +496,93 @@ msgid "%llu bytes, %u files"
 msgstr "%llu byte, %u filer"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1809
+#: ../src/gui-wizard-gtk/wizard.c:1812
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1930
+#: ../src/gui-wizard-gtk/wizard.c:1934
 #, c-format
 msgid "Reporting disabled because the rating does not contain a number '%s'."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1953
+#: ../src/gui-wizard-gtk/wizard.c:1957
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr ""
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1959
+#: ../src/gui-wizard-gtk/wizard.c:1963
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2045
+#: ../src/gui-wizard-gtk/wizard.c:2049
 msgid "Analyzing..."
 msgstr "Analyserer …"
 
-#: ../src/gui-wizard-gtk/wizard.c:2046
-#, c-format
-msgid "Analyzing finished with exit code %d"
-msgstr "Analyse avsluttet med kode %d"
+#: ../src/gui-wizard-gtk/wizard.c:2050
+msgid "Analyzing failed. You can try another analyzer if available."
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2073
-#, c-format
-msgid "Reporting finished with exit code %d"
-msgstr "Rapportering fullført med kode %d"
+#: ../src/gui-wizard-gtk/wizard.c:2051
+msgid "Analyzing finished. You can proceed to the next step."
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2100
+#: ../src/gui-wizard-gtk/wizard.c:2078
+msgid "Reporting failed. You can try another reporter if available."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:2079
+msgid "Reporting finished. You can proceed to the next step."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:2106
 msgid "Collecting..."
+msgstr "Samler inn …"
+
+#: ../src/gui-wizard-gtk/wizard.c:2107
+msgid "Collecting failed. You can try another collector if available."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2101
-#, c-format
-msgid "Collecting finished with exit code %d"
+#: ../src/gui-wizard-gtk/wizard.c:2108
+msgid "Collecting finished. You can proceed to the next step."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2236
+#: ../src/gui-wizard-gtk/wizard.c:2243
 msgid ""
 "Possible sensitive data detected, please review the highlighted tabs "
 "carefully."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2532
+#: ../src/gui-wizard-gtk/wizard.c:2539
 #, c-format
 msgid "'%s' is not an ordinary file"
-msgstr ""
-
-#: ../src/gui-wizard-gtk/wizard.c:2548
-msgid "You are trying to copy a file onto itself"
-msgstr ""
+msgstr "«%s» er ikke en vanlig fil"
 
 #: ../src/gui-wizard-gtk/wizard.c:2555
+msgid "You are trying to copy a file onto itself"
+msgstr "Du prøver å kopiere en fil til seg selv"
+
+#: ../src/gui-wizard-gtk/wizard.c:2562
 #, c-format
 msgid "Can't copy '%s': %s"
-msgstr ""
+msgstr "Kan ikke kopiere «%s»: %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2570
+#: ../src/gui-wizard-gtk/wizard.c:2577
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
-msgstr ""
+msgstr "Oppføring «%s» eksisterer allerede og kan ikke endres"
 
-#: ../src/gui-wizard-gtk/wizard.c:2826
+#: ../src/gui-wizard-gtk/wizard.c:2833
 msgid "Include"
-msgstr ""
+msgstr "Ta med"
 
-#: ../src/gui-wizard-gtk/wizard.c:2836
+#: ../src/gui-wizard-gtk/wizard.c:2843
 msgid "Name"
 msgstr "Navn"
 
-#: ../src/gui-wizard-gtk/wizard.c:2844
+#: ../src/gui-wizard-gtk/wizard.c:2851
 msgid "Value"
 msgstr "Verdi"
 
@@ -587,7 +598,7 @@ msgstr "Analyse ikke startet ennå"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid "Attach a file"
-msgstr ""
+msgstr "Legg ved en fil"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid "Click 'Apply' to start reporting"
@@ -696,7 +707,7 @@ msgstr ""
 #: ../src/lib/event_config.c:321
 #, c-format
 msgid "Invalid number '%s'"
-msgstr ""
+msgstr "Ugyldig tall «%s»"
 
 #: ../src/lib/event_config.c:336
 #, c-format
@@ -709,7 +720,7 @@ msgstr ""
 
 #: ../src/lib/parse_options.c:58
 msgid "Usage: "
-msgstr ""
+msgstr "Bruk: "
 
 #: ../src/lib/abrt_curl.c:208 ../src/plugins/reporter-upload.c:41
 #, c-format
@@ -768,11 +779,11 @@ msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:2
 msgid "Bugzilla"
-msgstr ""
+msgstr "Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:3
 msgid "Bugzilla URL"
-msgstr ""
+msgstr "URL til Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:4
 msgid "Bugzilla account password"
@@ -794,7 +805,7 @@ msgstr ""
 #: ../src/plugins/report_Bugzilla.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:3
 msgid "Password"
-msgstr ""
+msgstr "Passord"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:9
 msgid "Report to Bugzilla bug tracker"
@@ -806,7 +817,7 @@ msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:11
 msgid "User name"
-msgstr ""
+msgstr "Brukernavn"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:12
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
@@ -825,7 +836,7 @@ msgstr ""
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:2
 msgid "Kerneloops.org"
-msgstr ""
+msgstr "Kerneloops.org"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:3
 msgid "Oops server url"
@@ -837,7 +848,7 @@ msgstr ""
 
 #: ../src/plugins/report_Logger.xml.in.h:1
 msgid "Append"
-msgstr ""
+msgstr "Legg til"
 
 #: ../src/plugins/report_Logger.xml.in.h:2
 msgid "Append new reports or overwrite the old one."
@@ -845,7 +856,7 @@ msgstr ""
 
 #: ../src/plugins/report_Logger.xml.in.h:3
 msgid "Log File"
-msgstr ""
+msgstr "Loggfil"
 
 #: ../src/plugins/report_Logger.xml.in.h:4
 msgid "Logger"
@@ -853,7 +864,7 @@ msgstr ""
 
 #: ../src/plugins/report_Logger.xml.in.h:5
 msgid "Name of the logfile"
-msgstr ""
+msgstr "Navn på loggfil"
 
 #: ../src/plugins/report_Logger.xml.in.h:6
 msgid "Save as text file"
@@ -869,7 +880,7 @@ msgstr ""
 
 #: ../src/plugins/report_Mailx.xml.in.h:3
 msgid "Recipient"
-msgstr ""
+msgstr "Mottaker"
 
 #: ../src/plugins/report_Mailx.xml.in.h:4
 msgid "Recipient's email"
@@ -885,19 +896,19 @@ msgstr ""
 
 #: ../src/plugins/report_Mailx.xml.in.h:7
 msgid "Send via email"
-msgstr ""
+msgstr "Send via e-post"
 
 #: ../src/plugins/report_Mailx.xml.in.h:8
 msgid "Sender"
-msgstr ""
+msgstr "Avsender"
 
 #: ../src/plugins/report_Mailx.xml.in.h:9
 msgid "Sender's email"
-msgstr ""
+msgstr "Avsenders e-post"
 
 #: ../src/plugins/report_Mailx.xml.in.h:10
 msgid "Subject"
-msgstr ""
+msgstr "Emne"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:1
 msgid "Address of the Red Hat support portal"
@@ -925,7 +936,7 @@ msgstr ""
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:9
 msgid "Username"
-msgstr ""
+msgstr "Brukernavn"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid ""
@@ -939,7 +950,7 @@ msgstr ""
 
 #: ../src/plugins/report_Uploader.xml.in.h:3
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: ../src/plugins/report_Uploader.xml.in.h:4
 msgid "Upload as tar.gz file (via FTP/SCP/...)"
@@ -980,7 +991,7 @@ msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:110
 #: ../src/plugins/reporter-kerneloops.c:166
-#: ../src/plugins/reporter-mailx.c:168 ../src/plugins/reporter-print.c:56
+#: ../src/plugins/reporter-mailx.c:173 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:74
 #: ../src/plugins/reporter-upload.c:288
 msgid "Dump directory"
@@ -1019,52 +1030,52 @@ msgid "Logging into Bugzilla at %s"
 msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:236
-#: ../src/plugins/reporter-bugzilla.c:449
+#: ../src/plugins/reporter-bugzilla.c:458
 msgid "Logging out"
 msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:283
+#: ../src/plugins/reporter-bugzilla.c:309
 msgid "Checking for duplicates"
 msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:304
+#: ../src/plugins/reporter-bugzilla.c:330
 msgid "Missing mandatory member 'bugs'"
 msgstr ""
 
 #. Create new bug
-#: ../src/plugins/reporter-bugzilla.c:343
+#: ../src/plugins/reporter-bugzilla.c:341
 msgid "Creating a new bug"
 msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:346
+#: ../src/plugins/reporter-bugzilla.c:344
 #, c-format
 msgid "Adding attachments to bug %i"
 msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:361
+#: ../src/plugins/reporter-bugzilla.c:370
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:382
+#: ../src/plugins/reporter-bugzilla.c:391
 #, c-format
 msgid "Add %s to CC list"
 msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:421
+#: ../src/plugins/reporter-bugzilla.c:430
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:426
+#: ../src/plugins/reporter-bugzilla.c:435
 msgid "Found the same comment in the bug history, not adding a new one"
 msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:441
+#: ../src/plugins/reporter-bugzilla.c:450
 msgid "Attaching better backtrace"
 msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:452
+#: ../src/plugins/reporter-bugzilla.c:461
 #, c-format
 msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
 msgstr ""
@@ -1090,18 +1101,18 @@ msgstr ""
 
 #: ../src/plugins/reporter-kerneloops.c:167
 msgid "Configuration file"
-msgstr ""
+msgstr "Konfigurasjonsfil"
 
-#: ../src/plugins/reporter-mailx.c:110
+#: ../src/plugins/reporter-mailx.c:111
 msgid "Sending an email..."
-msgstr ""
+msgstr "Sender en e-post …"
 
-#: ../src/plugins/reporter-mailx.c:130
+#: ../src/plugins/reporter-mailx.c:134
 #, c-format
 msgid "Email was sent to: %s"
 msgstr ""
 
-#: ../src/plugins/reporter-mailx.c:149
+#: ../src/plugins/reporter-mailx.c:153
 msgid ""
 "& [-v] -d DIR [-c CONFFILE]\n"
 "\n"
@@ -1110,8 +1121,12 @@ msgid ""
 "If not specified, CONFFILE defaults to "
 msgstr ""
 
-#: ../src/plugins/reporter-mailx.c:169 ../src/plugins/reporter-upload.c:289
+#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:289
 msgid "Config file"
+msgstr ""
+
+#: ../src/plugins/reporter-mailx.c:175
+msgid "Notify only (Do not mark the report as sent)"
 msgstr ""
 
 #: ../src/plugins/reporter-print.c:42
@@ -1279,12 +1294,12 @@ msgstr ""
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
 msgstr ""
 
-#: ../src/plugins/rhbz.c:489
+#: ../src/plugins/rhbz.c:474
 #, c-format
 msgid "New bug id: %i"
 msgstr ""
 
-#: ../src/plugins/rhbz.c:629
+#: ../src/plugins/rhbz.c:614
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr ""
@@ -1326,24 +1341,24 @@ msgstr ""
 #: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:259
 #: ../src/report-newt/report-newt.c:337 ../src/report-newt/report-newt.c:352
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 #: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:146
 msgid "Cancel"
-msgstr ""
+msgstr "Avbryt"
 
 #: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:337
 msgid "Error"
-msgstr ""
+msgstr "Feil"
 
 #: ../src/report-newt/report-newt.c:276
 #, c-format
 msgid "--- Running %s ---"
-msgstr ""
+msgstr "--- Kjører %s ---"
 
 #: ../src/report-newt/report-newt.c:352
 msgid "No reporters available"
-msgstr ""
+msgstr "Ingen rapporteringsverktøy tilgjengelig"
 
 #: ../src/report-newt/report-newt.c:382
 msgid ""

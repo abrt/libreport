@@ -3,14 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
+# Elodie  <djezael@gmail.com>, 2011.
+# Kévin Raymond <shaiton@fedoraproject.org>, 2011.
 # Sam Friedmann <sam.friedmann@redhat.com>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-08 10:19+0100\n"
-"PO-Revision-Date: 2012-03-01 06:12+0000\n"
-"Last-Translator: Sam Friedmann <sam.friedmann@redhat.com>\n"
+"POT-Creation-Date: 2012-03-20 09:56+0100\n"
+"PO-Revision-Date: 2012-03-20 08:47+0000\n"
+"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -199,7 +201,7 @@ msgstr ""
 "Aucun changement n'a été détecté dans le rapport"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1605
+#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1606
 #: ../src/lib/client.c:51 ../src/lib/run_event.c:476
 msgid "y"
 msgstr "y"
@@ -256,7 +258,7 @@ msgstr ""
 "%d incidents se sont produits lors de la collecte des données "
 "supplémentaires\n"
 
-#: ../src/cli/cli-report.c:857 ../src/gui-wizard-gtk/wizard.c:2072
+#: ../src/cli/cli-report.c:857 ../src/gui-wizard-gtk/wizard.c:2077
 msgid "Reporting..."
 msgstr "Envoi du rapport..."
 
@@ -302,39 +304,39 @@ msgstr "Extraction du paquetage '{0}' impossible"
 msgid "Caching files from {0} made from {1}"
 msgstr "Mise en cache des fichiers de {0} effectuée à partir de {1}"
 
-#: ../src/client-python/debuginfo.py:76
+#: ../src/client-python/debuginfo.py:77
 msgid "Can't extract files from '{0}'"
 msgstr "Extraction des fichiers de '{0}' impossible"
 
-#: ../src/client-python/debuginfo.py:85
+#: ../src/client-python/debuginfo.py:86
 msgid "Can't remove '{0}': {1}"
 msgstr "Suppression de '{0}' impossible : {1}"
 
 #. print (_("Downloading (%i of %i) %s: %3u%%")
 #. % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
 #. )
-#: ../src/client-python/debuginfo.py:111 ../src/client-python/debuginfo.py:122
+#: ../src/client-python/debuginfo.py:112 ../src/client-python/debuginfo.py:123
 msgid "Downloading ({0} of {1}) {2}: {3:3}%"
 msgstr "Téléchargement ({0} de {1}) {2} : {3:3}%"
 
 #. self.conf.cache = os.geteuid() != 0
 #. Setup yum (Ts, RPM db, Repo & Sack)
 #. doConfigSetup() takes some time, let user know what we are doing
-#: ../src/client-python/debuginfo.py:145
+#: ../src/client-python/debuginfo.py:146
 msgid "Initializing yum"
 msgstr "Initialisation de yum"
 
-#: ../src/client-python/debuginfo.py:153
+#: ../src/client-python/debuginfo.py:154
 msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
 msgstr ""
 "Erreur lors de l'initialisation de yum (YumBase.doConfigSetup) : '{0!s}'"
 
 #. This takes some time, let user know what we are doing
-#: ../src/client-python/debuginfo.py:184
+#: ../src/client-python/debuginfo.py:185
 msgid "Setting up yum repositories"
 msgstr "Paramétrage des référentiels yum"
 
-#: ../src/client-python/debuginfo.py:195
+#: ../src/client-python/debuginfo.py:196
 msgid "Can't setup {0}: {1}, disabling"
 msgstr "Impossible d'installer {0} : {1}, désactivation"
 
@@ -342,51 +344,51 @@ msgstr "Impossible d'installer {0} : {1}, désactivation"
 #. Looks like this is the moment when yum talks to remote servers,
 #. which takes time (sometimes minutes), let user know why
 #. we have "paused":
-#: ../src/client-python/debuginfo.py:202
+#: ../src/client-python/debuginfo.py:203
 msgid "Looking for needed packages in repositories"
 msgstr "Recherche des paquetages nécessités dans les référentiels"
 
-#: ../src/client-python/debuginfo.py:206
+#: ../src/client-python/debuginfo.py:207
 msgid "Error retrieving metadata: '{0!s}'"
 msgstr "Erreur lors de la récupération des métadonnées : '{0!s}'"
 
-#: ../src/client-python/debuginfo.py:216
+#: ../src/client-python/debuginfo.py:217
 msgid "Error retrieving filelists: '{0!s}'"
 msgstr "Erreur lors de la récupération des listes de fichiers : '{0!s}'"
 
-#: ../src/client-python/debuginfo.py:249
+#: ../src/client-python/debuginfo.py:250
 msgid "Can't find packages for {0} debuginfo files"
 msgstr "Les paquetages pour les fichiers debuginfo {0} sont introuvables"
 
-#: ../src/client-python/debuginfo.py:251
+#: ../src/client-python/debuginfo.py:252
 msgid "Packages to download: {0}"
 msgstr "Paquetages à télécharger : {0}"
 
-#: ../src/client-python/debuginfo.py:252
+#: ../src/client-python/debuginfo.py:253
 msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
 msgstr "Téléchargement {0:.2f}Mo, taille installée : {1:.2f}Mo. Continuer ?"
 
-#: ../src/client-python/debuginfo.py:257
+#: ../src/client-python/debuginfo.py:258
 msgid "Download cancelled by user"
 msgstr "Téléchargement annulé par l'utilisateur"
 
-#: ../src/client-python/debuginfo.py:291
+#: ../src/client-python/debuginfo.py:292
 msgid "Downloading package {0} failed"
 msgstr "Échec du téléchargement du paquetage {0}"
 
 #. recursively delete the temp dir on failure
-#: ../src/client-python/debuginfo.py:297
+#: ../src/client-python/debuginfo.py:298
 msgid "Unpacking failed, aborting download..."
 msgstr "Échec de la décompression, téléchargement annulé..."
 
 #. Was: "All downloaded packages have been extracted, removing..."
 #. but it was appearing even if no packages were in fact extracted
 #. (say, when there was one package, and it has download error).
-#: ../src/client-python/debuginfo.py:307
+#: ../src/client-python/debuginfo.py:308
 msgid "Removing {0}"
 msgstr "Suppression de {0}"
 
-#: ../src/client-python/debuginfo.py:311
+#: ../src/client-python/debuginfo.py:312
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
 msgstr ""
@@ -570,18 +572,18 @@ msgid "%llu bytes, %u files"
 msgstr "%llu octets, %u fichiers"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1809
+#: ../src/gui-wizard-gtk/wizard.c:1812
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "Aucune action liée à l'événement « %s » n'a été définie."
 
-#: ../src/gui-wizard-gtk/wizard.c:1930
+#: ../src/gui-wizard-gtk/wizard.c:1934
 #, c-format
 msgid "Reporting disabled because the rating does not contain a number '%s'."
 msgstr ""
 "Les rapports sont désactivés car l'évaluation ne contient pas le nombre %s."
 
-#: ../src/gui-wizard-gtk/wizard.c:1953
+#: ../src/gui-wizard-gtk/wizard.c:1957
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -590,34 +592,43 @@ msgstr ""
 "le reproduire."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1959
+#: ../src/gui-wizard-gtk/wizard.c:1963
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "L'envoi du rapport est désactivé car le backtrace est inutilisable."
 
-#: ../src/gui-wizard-gtk/wizard.c:2045
+#: ../src/gui-wizard-gtk/wizard.c:2049
 msgid "Analyzing..."
 msgstr "Analyse..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2046
-#, c-format
-msgid "Analyzing finished with exit code %d"
-msgstr "Analyse terminée avec le code de sortie %d"
+#: ../src/gui-wizard-gtk/wizard.c:2050
+msgid "Analyzing failed. You can try another analyzer if available."
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2073
-#, c-format
-msgid "Reporting finished with exit code %d"
-msgstr "Rapport envoyé avec le code de sortie %d"
+#: ../src/gui-wizard-gtk/wizard.c:2051
+msgid "Analyzing finished. You can proceed to the next step."
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2100
+#: ../src/gui-wizard-gtk/wizard.c:2078
+msgid "Reporting failed. You can try another reporter if available."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:2079
+msgid "Reporting finished. You can proceed to the next step."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:2106
 msgid "Collecting..."
 msgstr "Collection..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2101
-#, c-format
-msgid "Collecting finished with exit code %d"
-msgstr "Collection terminée avec le code de sortie %d"
+#: ../src/gui-wizard-gtk/wizard.c:2107
+msgid "Collecting failed. You can try another collector if available."
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2236
+#: ../src/gui-wizard-gtk/wizard.c:2108
+msgid "Collecting finished. You can proceed to the next step."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:2243
 msgid ""
 "Possible sensitive data detected, please review the highlighted tabs "
 "carefully."
@@ -625,34 +636,34 @@ msgstr ""
 "Des données possiblement critiques ont été détectées, veuillez vérifier les "
 "onglets surlignés avec attention."
 
-#: ../src/gui-wizard-gtk/wizard.c:2532
+#: ../src/gui-wizard-gtk/wizard.c:2539
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' n'est pas un fichier ordinaire"
 
-#: ../src/gui-wizard-gtk/wizard.c:2548
+#: ../src/gui-wizard-gtk/wizard.c:2555
 msgid "You are trying to copy a file onto itself"
 msgstr "Vous essayez de copier un fichier sur lui-même"
 
-#: ../src/gui-wizard-gtk/wizard.c:2555
+#: ../src/gui-wizard-gtk/wizard.c:2562
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "Copie de '%s' impossible : %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2570
+#: ../src/gui-wizard-gtk/wizard.c:2577
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "L'élément '%s' existe déjà et n'est pas modifiable"
 
-#: ../src/gui-wizard-gtk/wizard.c:2826
+#: ../src/gui-wizard-gtk/wizard.c:2833
 msgid "Include"
 msgstr "Inclure"
 
-#: ../src/gui-wizard-gtk/wizard.c:2836
+#: ../src/gui-wizard-gtk/wizard.c:2843
 msgid "Name"
 msgstr "Nom"
 
-#: ../src/gui-wizard-gtk/wizard.c:2844
+#: ../src/gui-wizard-gtk/wizard.c:2851
 msgid "Value"
 msgstr "Valeur"
 
@@ -1134,7 +1145,7 @@ msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:110
 #: ../src/plugins/reporter-kerneloops.c:166
-#: ../src/plugins/reporter-mailx.c:168 ../src/plugins/reporter-print.c:56
+#: ../src/plugins/reporter-mailx.c:173 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:74
 #: ../src/plugins/reporter-upload.c:288
 msgid "Dump directory"
@@ -1175,54 +1186,54 @@ msgid "Logging into Bugzilla at %s"
 msgstr "Connexion à Bugzilla sur %s"
 
 #: ../src/plugins/reporter-bugzilla.c:236
-#: ../src/plugins/reporter-bugzilla.c:449
+#: ../src/plugins/reporter-bugzilla.c:458
 msgid "Logging out"
 msgstr "Déconnexion"
 
-#: ../src/plugins/reporter-bugzilla.c:283
+#: ../src/plugins/reporter-bugzilla.c:309
 msgid "Checking for duplicates"
 msgstr "Vérification des duplications"
 
-#: ../src/plugins/reporter-bugzilla.c:304
+#: ../src/plugins/reporter-bugzilla.c:330
 msgid "Missing mandatory member 'bugs'"
 msgstr "Membre obligatoire 'bugs' manquant"
 
 #. Create new bug
-#: ../src/plugins/reporter-bugzilla.c:343
+#: ../src/plugins/reporter-bugzilla.c:341
 msgid "Creating a new bug"
 msgstr "Création d'un nouveau bogue"
 
-#: ../src/plugins/reporter-bugzilla.c:346
+#: ../src/plugins/reporter-bugzilla.c:344
 #, c-format
 msgid "Adding attachments to bug %i"
 msgstr "Ajouter des attachements au bogue %i"
 
-#: ../src/plugins/reporter-bugzilla.c:361
+#: ../src/plugins/reporter-bugzilla.c:370
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Le bogue a déjà été rapporté : %i"
 
-#: ../src/plugins/reporter-bugzilla.c:382
+#: ../src/plugins/reporter-bugzilla.c:391
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Ajout de %s à la liste en copie"
 
-#: ../src/plugins/reporter-bugzilla.c:421
+#: ../src/plugins/reporter-bugzilla.c:430
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Ajout d'un nouveau commentaires au bogue %d"
 
-#: ../src/plugins/reporter-bugzilla.c:426
+#: ../src/plugins/reporter-bugzilla.c:435
 msgid "Found the same comment in the bug history, not adding a new one"
 msgstr ""
 "Le même commentaire a été trouvé dans l'historique du bogue, ajout d'un "
 "nouveau commentaire annulé"
 
-#: ../src/plugins/reporter-bugzilla.c:441
+#: ../src/plugins/reporter-bugzilla.c:450
 msgid "Attaching better backtrace"
 msgstr "Attachement d'un meilleur backtrace en cours"
 
-#: ../src/plugins/reporter-bugzilla.c:452
+#: ../src/plugins/reporter-bugzilla.c:461
 #, c-format
 msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
 msgstr "Statut : %s%s%s %s/show_bug.cgi?id=%u"
@@ -1262,16 +1273,16 @@ msgstr ""
 msgid "Configuration file"
 msgstr "Fichier de configuration"
 
-#: ../src/plugins/reporter-mailx.c:110
+#: ../src/plugins/reporter-mailx.c:111
 msgid "Sending an email..."
 msgstr "Envoyer un email..."
 
-#: ../src/plugins/reporter-mailx.c:130
+#: ../src/plugins/reporter-mailx.c:134
 #, c-format
 msgid "Email was sent to: %s"
 msgstr "Courriel envoyé à : %s"
 
-#: ../src/plugins/reporter-mailx.c:149
+#: ../src/plugins/reporter-mailx.c:153
 msgid ""
 "& [-v] -d DIR [-c CONFFILE]\n"
 "\n"
@@ -1285,9 +1296,13 @@ msgstr ""
 "\n"
 "Si non-spécifié CONFFILE est ajusté par défaut sur "
 
-#: ../src/plugins/reporter-mailx.c:169 ../src/plugins/reporter-upload.c:289
+#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:289
 msgid "Config file"
 msgstr "Fichier de configuration"
+
+#: ../src/plugins/reporter-mailx.c:175
+msgid "Notify only (Do not mark the report as sent)"
+msgstr ""
 
 #: ../src/plugins/reporter-print.c:42
 msgid ""
@@ -1493,32 +1508,31 @@ msgstr ""
 "Le bogue %i est FERMÉ (CLOSED) en tant que DUPLIQUÉ (DUPLICATE), mais il ne "
 "possède pas de DUP_ID"
 
-#: ../src/plugins/rhbz.c:489
+#: ../src/plugins/rhbz.c:474
 #, c-format
 msgid "New bug id: %i"
 msgstr "Nouvel ID de bogue : %i"
 
-#: ../src/plugins/rhbz.c:629
+#: ../src/plugins/rhbz.c:614
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla n'a pas trouvé le parent du bogue %d"
 
 #: ../src/plugins/abrt-bodhi.c:301
-#, fuzzy
 msgid "Searching for updates"
-msgstr "Vérification des duplications"
+msgstr "Recherche de mises à jour"
 
 #: ../src/plugins/abrt-bodhi.c:376
 msgid "List of bug ids"
-msgstr ""
+msgstr "Liste des anomalies par id"
 
 #: ../src/plugins/abrt-bodhi.c:377
 msgid "Specify a bodhi server url"
-msgstr ""
+msgstr "Définir l'url du serveur bodhi"
 
 #: ../src/plugins/abrt-bodhi.c:378
 msgid "Specify a release"
-msgstr ""
+msgstr "Définir une version"
 
 #: ../src/plugins/abrt-bodhi.c:383
 msgid ""
@@ -1526,16 +1540,22 @@ msgid ""
 "\n"
 "Search for updates on bodhi server"
 msgstr ""
+"& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
+"\n"
+"Recherche de mises à jour sur le serveur bodhi"
 
 #: ../src/plugins/abrt-bodhi.c:459
 msgid ""
 "Abrt found a new update which fix your problem. Please run before submitting "
 "bug: pkcon update --repo-enable=fedora --repo-repo=updates-testing"
 msgstr ""
+"Abrt a trouvé une nouvelle mise à jour qui solutionne votre problème. Avant "
+"de soumettre votre rapport, veuillez lancer la commande : pkcon update --"
+"repo-enable=fedora --repo-repo=updates-testing"
 
 #: ../src/plugins/abrt-bodhi.c:463
 msgid ". Do you want to continue with reporting bug?"
-msgstr ""
+msgstr ". Voulez-vous poursuivre votre rapport d'anomalie ?"
 
 #: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:146
 #: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:259

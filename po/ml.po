@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-08 10:19+0100\n"
-"PO-Revision-Date: 2012-03-01 09:47+0000\n"
-"Last-Translator: Ani Peter <apeter@redhat.com>\n"
+"POT-Creation-Date: 2012-03-20 09:56+0100\n"
+"PO-Revision-Date: 2012-03-20 08:47+0000\n"
+"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ml\n"
 "MIME-Version: 1.0\n"
@@ -151,7 +151,7 @@ msgstr ""
 "ഒരു മാറ്റങ്ങളും റിപോര്‍ട്ടില്‍ കാണിയ്ക്കുന്നില്ല"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1605
+#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1606
 #: ../src/lib/client.c:51 ../src/lib/run_event.c:476
 msgid "y"
 msgstr "y"
@@ -206,7 +206,7 @@ msgstr "(വിവരണം ലഭ്യമല്ല)"
 msgid "There were %d errors while collecting additional data\n"
 msgstr "കൂടുതല്‍ ഡേറ്റാ ശേഖരിയ്ക്കുമ്പോള്‍ %d പിശകുകള്‍ ഉണ്ടായിരിയ്ക്കുന്നു\n"
 
-#: ../src/cli/cli-report.c:857 ../src/gui-wizard-gtk/wizard.c:2072
+#: ../src/cli/cli-report.c:857 ../src/gui-wizard-gtk/wizard.c:2077
 msgid "Reporting..."
 msgstr "രേഖപ്പെടുത്തുന്നു..."
 
@@ -252,38 +252,38 @@ msgstr "പാക്കേജ് '{0}' ലഭ്യമാക്കുവാന�
 msgid "Caching files from {0} made from {1}"
 msgstr "{0}-ല്‍ നിന്നുള്ള ഫയലുകള്‍ കാഷ് ചെയ്യുന്നു, {1}-ല്‍ നിന്നും ലഭ്യമായിരിയ്ക്കുന്നു"
 
-#: ../src/client-python/debuginfo.py:76
+#: ../src/client-python/debuginfo.py:77
 msgid "Can't extract files from '{0}'"
 msgstr "'{0}'-ല്‍ നിന്നും ഫയലുകള്‍ ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല"
 
-#: ../src/client-python/debuginfo.py:85
+#: ../src/client-python/debuginfo.py:86
 msgid "Can't remove '{0}': {1}"
 msgstr "'{0}' നീക്കം ചെയ്യുവാന്‍ സാധ്യമല്ല: {1}"
 
 #. print (_("Downloading (%i of %i) %s: %3u%%")
 #. % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
 #. )
-#: ../src/client-python/debuginfo.py:111 ../src/client-python/debuginfo.py:122
+#: ../src/client-python/debuginfo.py:112 ../src/client-python/debuginfo.py:123
 msgid "Downloading ({0} of {1}) {2}: {3:3}%"
 msgstr "({0} / {1}) ഡൌണ്‍ലോഡ് ചെയ്യുന്നു {2}: {3:3}%"
 
 #. self.conf.cache = os.geteuid() != 0
 #. Setup yum (Ts, RPM db, Repo & Sack)
 #. doConfigSetup() takes some time, let user know what we are doing
-#: ../src/client-python/debuginfo.py:145
+#: ../src/client-python/debuginfo.py:146
 msgid "Initializing yum"
 msgstr "yum ആരംഭിയ്ക്കുന്നു"
 
-#: ../src/client-python/debuginfo.py:153
+#: ../src/client-python/debuginfo.py:154
 msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
 msgstr "yum (YumBase.doConfigSetup) ആരംഭിയ്ക്കുന്നതില്‍ പിശക്: '{0!s}'"
 
 #. This takes some time, let user know what we are doing
-#: ../src/client-python/debuginfo.py:184
+#: ../src/client-python/debuginfo.py:185
 msgid "Setting up yum repositories"
 msgstr "yum റിപ്പോസിറ്ററികള്‍ സജ്ജീകരിയ്ക്കുന്നു"
 
-#: ../src/client-python/debuginfo.py:195
+#: ../src/client-python/debuginfo.py:196
 msgid "Can't setup {0}: {1}, disabling"
 msgstr "{0}: {1} സജ്ജീകരിയ്ക്കുവാന്‍ സാധ്യമല്ല, പ്രവര്‍ത്തന രഹിതമാക്കുന്നു"
 
@@ -291,51 +291,51 @@ msgstr "{0}: {1} സജ്ജീകരിയ്ക്കുവാന്‍ സ�
 #. Looks like this is the moment when yum talks to remote servers,
 #. which takes time (sometimes minutes), let user know why
 #. we have "paused":
-#: ../src/client-python/debuginfo.py:202
+#: ../src/client-python/debuginfo.py:203
 msgid "Looking for needed packages in repositories"
 msgstr "റിപ്പോസിറ്ററികളില്‍ ആവശ്യമുള്ള പാക്കേജുകള്‍ക്കായി തെരയുന്നു"
 
-#: ../src/client-python/debuginfo.py:206
+#: ../src/client-python/debuginfo.py:207
 msgid "Error retrieving metadata: '{0!s}'"
 msgstr "മെറ്റാഡേറ്റാ ലഭ്യമാക്കുന്നതില്‍ പിശക്: '{0!s}'"
 
-#: ../src/client-python/debuginfo.py:216
+#: ../src/client-python/debuginfo.py:217
 msgid "Error retrieving filelists: '{0!s}'"
 msgstr "ഫയല്‍ലിസ്റ്റുകള്‍ ലഭ്യമാക്കുന്നതില്‍ പിശക്: '{0!s}'"
 
-#: ../src/client-python/debuginfo.py:249
+#: ../src/client-python/debuginfo.py:250
 msgid "Can't find packages for {0} debuginfo files"
 msgstr "{0} debuginfo ഫയലുകള്‍ക്കുള്ള പാക്കേജുകള്‍ കണ്ടുപിടിയ്ക്കുവാന്‍ സാധ്യമല്ല"
 
-#: ../src/client-python/debuginfo.py:251
+#: ../src/client-python/debuginfo.py:252
 msgid "Packages to download: {0}"
 msgstr "ഡൌണ്‍ലോഡ് ചെയ്യുവാനുള്ള പാക്കേജുകള്‍: {0}"
 
-#: ../src/client-python/debuginfo.py:252
+#: ../src/client-python/debuginfo.py:253
 msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
 msgstr "{0:.2f}Mb ഡൌണ്‍ലോഡ് ചെയ്യുന്നു, ഇന്‍സ്റ്റോള്‍ ചെയ്ത വ്യാപ്തി: {1:.2f}Mb. തുടരണമോ?"
 
-#: ../src/client-python/debuginfo.py:257
+#: ../src/client-python/debuginfo.py:258
 msgid "Download cancelled by user"
 msgstr "ഉപയോക്താവു് ഡൌണ്‍ലോഡ് ചെയ്യുന്നതു് റദ്ദാക്കിയിരിയ്ക്കുന്നു"
 
-#: ../src/client-python/debuginfo.py:291
+#: ../src/client-python/debuginfo.py:292
 msgid "Downloading package {0} failed"
 msgstr "പാക്കേജ് {0} ഡൌണ്‍ലോഡ് ചെയ്യുന്നതില്‍ പരാജയം"
 
 #. recursively delete the temp dir on failure
-#: ../src/client-python/debuginfo.py:297
+#: ../src/client-python/debuginfo.py:298
 msgid "Unpacking failed, aborting download..."
 msgstr "അണ്‍പാക്കിങ് പരാജയപ്പെട്ടു, ഡൌണ്‍ലോഡ് നിര്‍ത്തുന്നു..."
 
 #. Was: "All downloaded packages have been extracted, removing..."
 #. but it was appearing even if no packages were in fact extracted
 #. (say, when there was one package, and it has download error).
-#: ../src/client-python/debuginfo.py:307
+#: ../src/client-python/debuginfo.py:308
 msgid "Removing {0}"
 msgstr "{0} നീക്കം ചെയ്യുന്നു"
 
-#: ../src/client-python/debuginfo.py:311
+#: ../src/client-python/debuginfo.py:312
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
 msgstr "%s നീക്കം ചെയ്യുവാന്‍ സാധ്യമല്ല, ഒരു പക്ഷേ ഒരു പിശക് ലോഗ് ഉണ്ടാവാം"
@@ -515,51 +515,60 @@ msgid "%llu bytes, %u files"
 msgstr "%llu ബൈറ്റുകള്‍, %u ഫയലുകള്‍"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1809
+#: ../src/gui-wizard-gtk/wizard.c:1812
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "ഇവന്റ് '%s'-നു് ഒരു പ്രവര്‍ത്തനവും നിഷ്കര്‍ഷിച്ചിട്ടില്ല"
 
-#: ../src/gui-wizard-gtk/wizard.c:1930
+#: ../src/gui-wizard-gtk/wizard.c:1934
 #, c-format
 msgid "Reporting disabled because the rating does not contain a number '%s'."
 msgstr "'%s' നംബര്‍ റേറ്റിങില്‍ ഇല്ലാത്തതിനാല്‍ രേഖപ്പെടുത്തല്‍ പ്രവര്‍ത്തന രഹിതമായി."
 
-#: ../src/gui-wizard-gtk/wizard.c:1953
+#: ../src/gui-wizard-gtk/wizard.c:1957
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "ബാക്ക്ട്രെയിസ് പൂര്‍ണ്ണമല്ല, തയ്യാറാക്കുന്നതിനുള്ള ഉത്തമ രീതികള്‍ ദയവായി നല്‍കുക."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1959
+#: ../src/gui-wizard-gtk/wizard.c:1963
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "ബാക്ക്ട്രെയിസ് ഉപയോഗപ്രദമല്ല, അതിനാല്‍ റിപോര്‍ട്ട് ചെയ്യുന്നതു് നിര്‍ജീവമാക്കിയിരിക്കുന്നു."
 
-#: ../src/gui-wizard-gtk/wizard.c:2045
+#: ../src/gui-wizard-gtk/wizard.c:2049
 msgid "Analyzing..."
 msgstr "നിരീക്ഷിയ്ക്കുന്നു..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2046
-#, c-format
-msgid "Analyzing finished with exit code %d"
-msgstr "%d എന്ന എക്സ്റ്റിറ്റ് കോഡില്‍ നിരീക്ഷണം പൂര്‍ത്തിയായി"
+#: ../src/gui-wizard-gtk/wizard.c:2050
+msgid "Analyzing failed. You can try another analyzer if available."
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2073
-#, c-format
-msgid "Reporting finished with exit code %d"
-msgstr "%d എന്ന എക്സ്റ്റിറ്റ് കോഡില്‍ രേഖപ്പെടുത്തല്‍ പൂര്‍ത്തിയായി"
+#: ../src/gui-wizard-gtk/wizard.c:2051
+msgid "Analyzing finished. You can proceed to the next step."
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2100
+#: ../src/gui-wizard-gtk/wizard.c:2078
+msgid "Reporting failed. You can try another reporter if available."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:2079
+msgid "Reporting finished. You can proceed to the next step."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:2106
 msgid "Collecting..."
 msgstr "ശേഖരിയ്ക്കുന്നു...."
 
-#: ../src/gui-wizard-gtk/wizard.c:2101
-#, c-format
-msgid "Collecting finished with exit code %d"
-msgstr "എക്സിറ്റ് കോഡ് %d-മായി ശേഖരണം പൂര്‍ത്തിയായിരിയ്ക്കുന്നു"
+#: ../src/gui-wizard-gtk/wizard.c:2107
+msgid "Collecting failed. You can try another collector if available."
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2236
+#: ../src/gui-wizard-gtk/wizard.c:2108
+msgid "Collecting finished. You can proceed to the next step."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:2243
 msgid ""
 "Possible sensitive data detected, please review the highlighted tabs "
 "carefully."
@@ -567,34 +576,34 @@ msgstr ""
 "സാധ്യമായ സെന്‍സിറ്റീവ് ഡേറ്റാ കണ്ടുപിടിച്ചിരിയ്ക്കുന്നു, എടുത്തുകാണിച്ചിരിയ്ക്കുന്ന റ്റാബുകള്‍ ദയവായി "
 "ശരിയായി നിരീക്ഷിയ്ക്കുക."
 
-#: ../src/gui-wizard-gtk/wizard.c:2532
+#: ../src/gui-wizard-gtk/wizard.c:2539
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' ഒരു സാധാരണ ഫയലല്ല"
 
-#: ../src/gui-wizard-gtk/wizard.c:2548
+#: ../src/gui-wizard-gtk/wizard.c:2555
 msgid "You are trying to copy a file onto itself"
 msgstr "ഒരു ഫയലിനെ അതിലേക്കു് തന്നെ പകര്‍ത്തുവാനാണു് നിങ്ങള്‍ ശ്രമിയ്ക്കുന്നതു്"
 
-#: ../src/gui-wizard-gtk/wizard.c:2555
+#: ../src/gui-wizard-gtk/wizard.c:2562
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "'%s' പകര്‍ത്തുവാന്‍ സാധ്യമല്ല: %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2570
+#: ../src/gui-wizard-gtk/wizard.c:2577
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "'%s' നിലവിലുണ്ടു്, മാറ്റം വരുത്തുവാന്‍ സാധ്യമാകുന്നു"
 
-#: ../src/gui-wizard-gtk/wizard.c:2826
+#: ../src/gui-wizard-gtk/wizard.c:2833
 msgid "Include"
 msgstr "ഉള്‍പ്പെടുത്തേണ്ടതു്"
 
-#: ../src/gui-wizard-gtk/wizard.c:2836
+#: ../src/gui-wizard-gtk/wizard.c:2843
 msgid "Name"
 msgstr "പേരു്"
 
-#: ../src/gui-wizard-gtk/wizard.c:2844
+#: ../src/gui-wizard-gtk/wizard.c:2851
 msgid "Value"
 msgstr "മൂല്ല്യം"
 
@@ -1053,7 +1062,7 @@ msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:110
 #: ../src/plugins/reporter-kerneloops.c:166
-#: ../src/plugins/reporter-mailx.c:168 ../src/plugins/reporter-print.c:56
+#: ../src/plugins/reporter-mailx.c:173 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:74
 #: ../src/plugins/reporter-upload.c:288
 msgid "Dump directory"
@@ -1092,52 +1101,52 @@ msgid "Logging into Bugzilla at %s"
 msgstr "%s-ല്‍ ബഗ്സിലയിലേക്കു് പ്രവേശിയ്ക്കുന്നു"
 
 #: ../src/plugins/reporter-bugzilla.c:236
-#: ../src/plugins/reporter-bugzilla.c:449
+#: ../src/plugins/reporter-bugzilla.c:458
 msgid "Logging out"
 msgstr "പുറത്തു് കടക്കുന്നു"
 
-#: ../src/plugins/reporter-bugzilla.c:283
+#: ../src/plugins/reporter-bugzilla.c:309
 msgid "Checking for duplicates"
 msgstr "ആവര്‍ത്തനങ്ങള്‍ക്കായി തെരയുന്നു"
 
-#: ../src/plugins/reporter-bugzilla.c:304
+#: ../src/plugins/reporter-bugzilla.c:330
 msgid "Missing mandatory member 'bugs'"
 msgstr "നിര്‍ബന്ധമായ 'bugs' എന്ന അംഗം ലഭ്യമല്ല"
 
 #. Create new bug
-#: ../src/plugins/reporter-bugzilla.c:343
+#: ../src/plugins/reporter-bugzilla.c:341
 msgid "Creating a new bug"
 msgstr "ഒരു പുതിയ ബഗ് തയ്യാറാക്കുന്നു"
 
-#: ../src/plugins/reporter-bugzilla.c:346
+#: ../src/plugins/reporter-bugzilla.c:344
 #, c-format
 msgid "Adding attachments to bug %i"
 msgstr "ബഗ് %i-ലേക്കു് അറ്റാച്ച്മെന്റുകള്‍ ചേര്‍ക്കുന്നു"
 
-#: ../src/plugins/reporter-bugzilla.c:361
+#: ../src/plugins/reporter-bugzilla.c:370
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "ബഗ് രേഖപ്പെടുത്തിയിട്ടുണ്ടു്: %i"
 
-#: ../src/plugins/reporter-bugzilla.c:382
+#: ../src/plugins/reporter-bugzilla.c:391
 #, c-format
 msgid "Add %s to CC list"
 msgstr "സിസി പട്ടികയിലേക്കു് %s ചേര്‍ക്കുക"
 
-#: ../src/plugins/reporter-bugzilla.c:421
+#: ../src/plugins/reporter-bugzilla.c:430
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "ബഗ് %d-ലേക്കു് പുതിയ അഭിപ്രായം ചേര്‍ക്കുന്നു"
 
-#: ../src/plugins/reporter-bugzilla.c:426
+#: ../src/plugins/reporter-bugzilla.c:435
 msgid "Found the same comment in the bug history, not adding a new one"
 msgstr "ബഗ് നാള്‍വഴിയില്‍ അതേ അഭിപ്രായം കണ്ടിരിയ്ക്കുന്നു, പുതിയൊരെണ്ണം ചേര്‍ക്കുന്നില്ല"
 
-#: ../src/plugins/reporter-bugzilla.c:441
+#: ../src/plugins/reporter-bugzilla.c:450
 msgid "Attaching better backtrace"
 msgstr "മെച്ചപ്പെട്ട ബാക്ക്ട്രെയിസ് കൂട്ടിച്ചേര്‍ക്കുന്നു"
 
-#: ../src/plugins/reporter-bugzilla.c:452
+#: ../src/plugins/reporter-bugzilla.c:461
 #, c-format
 msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
 msgstr "അവസ്ഥ: %s%s%s %s/show_bug.cgi?id=%u"
@@ -1175,16 +1184,16 @@ msgstr ""
 msgid "Configuration file"
 msgstr "ക്രമീകരണ ഫയല്‍"
 
-#: ../src/plugins/reporter-mailx.c:110
+#: ../src/plugins/reporter-mailx.c:111
 msgid "Sending an email..."
 msgstr "ഒരു ഈമെയില്‍ അയയ്ക്കുന്നു..."
 
-#: ../src/plugins/reporter-mailx.c:130
+#: ../src/plugins/reporter-mailx.c:134
 #, c-format
 msgid "Email was sent to: %s"
 msgstr "ഈമെയില്‍ ഇങ്ങോട്ട് അയയ്ക്കുക: %s"
 
-#: ../src/plugins/reporter-mailx.c:149
+#: ../src/plugins/reporter-mailx.c:153
 msgid ""
 "& [-v] -d DIR [-c CONFFILE]\n"
 "\n"
@@ -1198,9 +1207,13 @@ msgstr ""
 "\n"
 "നിഷ്കര്‍ഷിച്ചിട്ടില്ലെങ്കില്‍, CONFFILE-നു് സ്വതവേയുള്ള മൂല്ല്യം"
 
-#: ../src/plugins/reporter-mailx.c:169 ../src/plugins/reporter-upload.c:289
+#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:289
 msgid "Config file"
 msgstr "ക്രമീകരണ ഫയല്‍"
+
+#: ../src/plugins/reporter-mailx.c:175
+msgid "Notify only (Do not mark the report as sent)"
+msgstr ""
 
 #: ../src/plugins/reporter-print.c:42
 msgid ""
@@ -1395,20 +1408,19 @@ msgstr "ബഗ് %i CLOSED ആയി, പക്ഷേ RESOLUTION ഇല്ല"
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
 msgstr "DUPLICATE ആയി ബഗ് %i CLOSED ആക്കി. പക്ഷേ, ഇതിനു് DUP_ID ലഭ്യമല്ല"
 
-#: ../src/plugins/rhbz.c:489
+#: ../src/plugins/rhbz.c:474
 #, c-format
 msgid "New bug id: %i"
 msgstr "പുതിയ ബഗ് ഐഡി: %i"
 
-#: ../src/plugins/rhbz.c:629
+#: ../src/plugins/rhbz.c:614
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "ബഗ് %d-ന്റെ പേരന്റ് ലഭ്യമാക്കുവാന്‍ ബഗ്സിലയ്ക്കു് സാധ്യമായില്ല"
 
 #: ../src/plugins/abrt-bodhi.c:301
-#, fuzzy
 msgid "Searching for updates"
-msgstr "ആവര്‍ത്തനങ്ങള്‍ക്കായി തെരയുന്നു"
+msgstr ""
 
 #: ../src/plugins/abrt-bodhi.c:376
 msgid "List of bug ids"

@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Valentin Laskov <laskov@festa.bg>, 2011.
+# Valentin Laskov <laskov@festa.bg>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-08 10:19+0100\n"
-"PO-Revision-Date: 2012-02-15 14:29+0000\n"
+"POT-Creation-Date: 2012-03-20 09:56+0100\n"
+"PO-Revision-Date: 2012-03-20 08:48+0000\n"
 "Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: bg\n"
@@ -26,6 +26,11 @@ msgid ""
 "   or: & [-vsp] -c[y] DUMP_DIR\n"
 "   or: & [-vsp] -r[y|o|d] DUMP_DIR"
 msgstr ""
+"& [-vsp] -L[PREFIX] [DUMP_DIR]\n"
+"   или: & [-vsp] -e EVENT DUMP_DIR\n"
+"   или: & [-vsp] -a[y] DUMP_DIR\n"
+"   или: & [-vsp] -c[y] DUMP_DIR\n"
+"   или: & [-vsp] -r[y|o|d] DUMP_DIR"
 
 #. short_name long_name  value    parameter_name  help
 #: ../src/cli/cli.c:81
@@ -146,7 +151,7 @@ msgstr ""
 "Не бяха намерени промени в доклада"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1605
+#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1606
 #: ../src/lib/client.c:51 ../src/lib/run_event.c:476
 msgid "y"
 msgstr "Д"
@@ -201,7 +206,7 @@ msgstr "(няма описание)"
 msgid "There were %d errors while collecting additional data\n"
 msgstr "Получиха се %d грешки докато събирах допълнителни данни\n"
 
-#: ../src/cli/cli-report.c:857 ../src/gui-wizard-gtk/wizard.c:2072
+#: ../src/cli/cli-report.c:857 ../src/gui-wizard-gtk/wizard.c:2077
 msgid "Reporting..."
 msgstr "Докладване..."
 
@@ -233,107 +238,107 @@ msgstr ""
 
 #: ../src/client-python/debuginfo.py:31
 msgid "Extracting cpio from {0}"
-msgstr ""
+msgstr "Извличане на cpio от {0}"
 
 #: ../src/client-python/debuginfo.py:36
 msgid "Can't write to '{0}': {1}"
-msgstr ""
+msgstr "Не мога да пиша в '{0}': {1}"
 
 #: ../src/client-python/debuginfo.py:50
 msgid "Can't extract package '{0}'"
-msgstr ""
+msgstr "Не мога да извлека пакет '{0}'"
 
 #: ../src/client-python/debuginfo.py:58
 msgid "Caching files from {0} made from {1}"
-msgstr ""
+msgstr "Кешване на файлове от {0} създадени от {1}"
 
-#: ../src/client-python/debuginfo.py:76
+#: ../src/client-python/debuginfo.py:77
 msgid "Can't extract files from '{0}'"
-msgstr ""
+msgstr "Не мога да извлека файлове от '{0}'"
 
-#: ../src/client-python/debuginfo.py:85
+#: ../src/client-python/debuginfo.py:86
 msgid "Can't remove '{0}': {1}"
-msgstr ""
+msgstr "Не мога да премахна '{0}': {1}"
 
 #. print (_("Downloading (%i of %i) %s: %3u%%")
 #. % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
 #. )
-#: ../src/client-python/debuginfo.py:111 ../src/client-python/debuginfo.py:122
+#: ../src/client-python/debuginfo.py:112 ../src/client-python/debuginfo.py:123
 msgid "Downloading ({0} of {1}) {2}: {3:3}%"
-msgstr ""
+msgstr "Сваляне на ({0} от {1}) {2}: {3:3}%"
 
 #. self.conf.cache = os.geteuid() != 0
 #. Setup yum (Ts, RPM db, Repo & Sack)
 #. doConfigSetup() takes some time, let user know what we are doing
-#: ../src/client-python/debuginfo.py:145
+#: ../src/client-python/debuginfo.py:146
 msgid "Initializing yum"
-msgstr ""
+msgstr "Инициализиране на yum"
 
-#: ../src/client-python/debuginfo.py:153
+#: ../src/client-python/debuginfo.py:154
 msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
-msgstr ""
+msgstr "Грешка при инициализиране на yum (YumBase.doConfigSetup): '{0!s}'"
 
 #. This takes some time, let user know what we are doing
-#: ../src/client-python/debuginfo.py:184
+#: ../src/client-python/debuginfo.py:185
 msgid "Setting up yum repositories"
-msgstr ""
+msgstr "Задаване на yum хранилища"
 
-#: ../src/client-python/debuginfo.py:195
+#: ../src/client-python/debuginfo.py:196
 msgid "Can't setup {0}: {1}, disabling"
-msgstr ""
+msgstr "Не мога да задам {0}: {1}, забраняване"
 
 #. This is somewhat "magic", it unpacks the metadata making it usable.
 #. Looks like this is the moment when yum talks to remote servers,
 #. which takes time (sometimes minutes), let user know why
 #. we have "paused":
-#: ../src/client-python/debuginfo.py:202
+#: ../src/client-python/debuginfo.py:203
 msgid "Looking for needed packages in repositories"
-msgstr ""
+msgstr "Търсене на необходими пакети в хранилищата"
 
-#: ../src/client-python/debuginfo.py:206
+#: ../src/client-python/debuginfo.py:207
 msgid "Error retrieving metadata: '{0!s}'"
-msgstr ""
+msgstr "Грешка при извличане на метаданни: '{0!s}'"
 
-#: ../src/client-python/debuginfo.py:216
+#: ../src/client-python/debuginfo.py:217
 msgid "Error retrieving filelists: '{0!s}'"
-msgstr ""
+msgstr "Грешка при извличане на списъци с файлове: '{0!s}'"
 
-#: ../src/client-python/debuginfo.py:249
+#: ../src/client-python/debuginfo.py:250
 msgid "Can't find packages for {0} debuginfo files"
-msgstr ""
-
-#: ../src/client-python/debuginfo.py:251
-msgid "Packages to download: {0}"
-msgstr ""
+msgstr "Не мога да намеря пакети за {0} debuginfo файлове"
 
 #: ../src/client-python/debuginfo.py:252
+msgid "Packages to download: {0}"
+msgstr "Пакети за сваляне: {0}"
+
+#: ../src/client-python/debuginfo.py:253
 msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
-msgstr ""
+msgstr "Сваляне на {0:.2f}Mb, инсталиран обем: {1:.2f}Mb. Да продължа ли?"
 
-#: ../src/client-python/debuginfo.py:257
+#: ../src/client-python/debuginfo.py:258
 msgid "Download cancelled by user"
-msgstr ""
+msgstr "Свалянето е прекратено от потребителя"
 
-#: ../src/client-python/debuginfo.py:291
+#: ../src/client-python/debuginfo.py:292
 msgid "Downloading package {0} failed"
-msgstr ""
+msgstr "Свалянето на пакета {0} не успя"
 
 #. recursively delete the temp dir on failure
-#: ../src/client-python/debuginfo.py:297
+#: ../src/client-python/debuginfo.py:298
 msgid "Unpacking failed, aborting download..."
-msgstr ""
+msgstr "Разопаковането не успя, прекратяване на свалянето..."
 
 #. Was: "All downloaded packages have been extracted, removing..."
 #. but it was appearing even if no packages were in fact extracted
 #. (say, when there was one package, and it has download error).
-#: ../src/client-python/debuginfo.py:307
+#: ../src/client-python/debuginfo.py:308
 msgid "Removing {0}"
-msgstr ""
+msgstr "Премахване {0}"
 
-#: ../src/client-python/debuginfo.py:311
+#: ../src/client-python/debuginfo.py:312
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
-msgstr ""
+msgstr "Не мога да премахна %s, вероятно съдържа списък с грешки"
 
 #: ../src/gtk-helpers/event_config_dialog.c:131
 msgid "Show password"
@@ -341,11 +346,11 @@ msgstr "Покажи паролата"
 
 #: ../src/gtk-helpers/event_config_dialog.c:394
 msgid "Advanced"
-msgstr ""
+msgstr "Допълнителни"
 
 #: ../src/gtk-helpers/event_config_dialog.c:404
 msgid "Don't store passwords"
-msgstr ""
+msgstr "Не записвай пароли"
 
 #: ../src/gtk-helpers/event_config_dialog.c:430
 msgid "Gnome Keyring is not available, your settings won't be saved!"
@@ -371,6 +376,9 @@ msgid ""
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
+"& [-vpod] [-g GUI_FILE] [-n PROG_NAME] DIR\n"
+"\n"
+"GUI инструмент за анализиране и докладване на проблем, записан в зададена DIR"
 
 #: ../src/gui-wizard-gtk/main.c:127
 msgid "Alternate GUI file"
@@ -430,7 +438,7 @@ msgstr "Избор на докладчик"
 
 #: ../src/gui-wizard-gtk/wizard.c:257
 msgid "Review the data"
-msgstr ""
+msgstr "Преглед на данните"
 
 #: ../src/gui-wizard-gtk/wizard.c:258
 msgid "Confirm data to report"
@@ -474,10 +482,12 @@ msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved data?"
 msgstr ""
+"Нужна е директория за запис, но в '%s' не може да се пише. Да я преместя ли "
+"в '%s' и да оперирам с преместените данни?"
 
 #: ../src/gui-wizard-gtk/wizard.c:420
 msgid "Don't ask me again"
-msgstr ""
+msgstr "Не ме питай повече"
 
 #: ../src/gui-wizard-gtk/wizard.c:630
 msgid "View/edit a text file"
@@ -507,17 +517,17 @@ msgid "%llu bytes, %u files"
 msgstr "%llu байта, %u файла"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1809
+#: ../src/gui-wizard-gtk/wizard.c:1812
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1930
+#: ../src/gui-wizard-gtk/wizard.c:1934
 #, c-format
 msgid "Reporting disabled because the rating does not contain a number '%s'."
 msgstr "Докладването е забранено понеже рейтингът не съдържа число '%s'."
 
-#: ../src/gui-wizard-gtk/wizard.c:1953
+#: ../src/gui-wizard-gtk/wizard.c:1957
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -526,68 +536,79 @@ msgstr ""
 "възстановка."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1959
+#: ../src/gui-wizard-gtk/wizard.c:1963
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr ""
 "Докладването е забранено понеже обратното проследяване е неизползваемо."
 
-#: ../src/gui-wizard-gtk/wizard.c:2045
+#: ../src/gui-wizard-gtk/wizard.c:2049
 msgid "Analyzing..."
 msgstr "Анализиране..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2046
-#, c-format
-msgid "Analyzing finished with exit code %d"
-msgstr "Анализирането завърши с код %d"
+#: ../src/gui-wizard-gtk/wizard.c:2050
+msgid "Analyzing failed. You can try another analyzer if available."
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2073
-#, c-format
-msgid "Reporting finished with exit code %d"
-msgstr "Докладването завърши с код %d"
+#: ../src/gui-wizard-gtk/wizard.c:2051
+msgid "Analyzing finished. You can proceed to the next step."
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2100
+#: ../src/gui-wizard-gtk/wizard.c:2078
+msgid "Reporting failed. You can try another reporter if available."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:2079
+msgid "Reporting finished. You can proceed to the next step."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:2106
 msgid "Collecting..."
 msgstr "Събиране..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2101
-#, c-format
-msgid "Collecting finished with exit code %d"
-msgstr "Събирането на информация завърши с код %d"
+#: ../src/gui-wizard-gtk/wizard.c:2107
+msgid "Collecting failed. You can try another collector if available."
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2236
+#: ../src/gui-wizard-gtk/wizard.c:2108
+msgid "Collecting finished. You can proceed to the next step."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:2243
 msgid ""
 "Possible sensitive data detected, please review the highlighted tabs "
 "carefully."
 msgstr ""
+"Възможно е наличие на поверителни данни, моля, прегледайте внимателно "
+"подчертаните страници."
 
-#: ../src/gui-wizard-gtk/wizard.c:2532
+#: ../src/gui-wizard-gtk/wizard.c:2539
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' не е нормален файл"
 
-#: ../src/gui-wizard-gtk/wizard.c:2548
+#: ../src/gui-wizard-gtk/wizard.c:2555
 msgid "You are trying to copy a file onto itself"
 msgstr "Опитвате се да копирате файл в самия него"
 
-#: ../src/gui-wizard-gtk/wizard.c:2555
+#: ../src/gui-wizard-gtk/wizard.c:2562
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "Не мога да копирам '%s': %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2570
+#: ../src/gui-wizard-gtk/wizard.c:2577
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "'%s' вече съществува и не може да бъде променено"
 
-#: ../src/gui-wizard-gtk/wizard.c:2826
+#: ../src/gui-wizard-gtk/wizard.c:2833
 msgid "Include"
 msgstr "Включи"
 
-#: ../src/gui-wizard-gtk/wizard.c:2836
+#: ../src/gui-wizard-gtk/wizard.c:2843
 msgid "Name"
 msgstr "Име"
 
-#: ../src/gui-wizard-gtk/wizard.c:2844
+#: ../src/gui-wizard-gtk/wizard.c:2851
 msgid "Value"
 msgstr "Стойност"
 
@@ -631,7 +652,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "I don't know what caused this problem"
-msgstr ""
+msgstr "Не знам кое причини този проблем"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "I reviewed the data and _agree with submitting it"
@@ -700,7 +721,7 @@ msgstr "Изберете как бихте желали да докладват�
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:20
 msgid "Show log"
-msgstr ""
+msgstr "Покажи дневник"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:21
 msgid "Size:"
@@ -753,7 +774,7 @@ msgstr "Качени: %llu от %llu kбайта"
 #: ../src/lib/problem_data.c:163
 #, c-format
 msgid "Essential element '%s' is missing, can't continue"
-msgstr ""
+msgstr "Съществен елемент '%s' липсва, не мога да продължа"
 
 #: ../src/plugins/abrt_rh_support.c:394
 #, c-format
@@ -823,7 +844,7 @@ msgstr "Проверете валидността на SSL ключа"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:7
 msgid "OS release string"
-msgstr ""
+msgstr "Низ, идентифициращ изданието на OS"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:3
@@ -836,7 +857,7 @@ msgstr "Доклад към Bugzilla bug tracker"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:10
 msgid "Specify this only if you modified your /etc/system-release file"
-msgstr ""
+msgstr "Задайте това само ако сте променили файла /etc/system-release"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:11
 msgid "User name"
@@ -869,7 +890,7 @@ msgstr ""
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:4
 msgid "Send to kernel oops tracker"
-msgstr ""
+msgstr "Изпрати на kernel oops тракера"
 
 #: ../src/plugins/report_Logger.xml.in.h:1
 msgid "Append"
@@ -893,7 +914,7 @@ msgstr "Име на журналния файл"
 
 #: ../src/plugins/report_Logger.xml.in.h:6
 msgid "Save as text file"
-msgstr ""
+msgstr "Запис като текстов файл"
 
 #: ../src/plugins/report_Mailx.xml.in.h:1
 msgid "Mailx"
@@ -968,6 +989,8 @@ msgid ""
 "Examples: ftp://[user[:pass]@]host/dir/[file.tar.gz], scp://[user[:pass]@]"
 "host/dir/[file.tar.gz], file:///dir/[file.tar.gz]"
 msgstr ""
+"Примери: ftp://[user[:pass]@]host/dir/[file.tar.gz], scp://[user[:pass]@]"
+"host/dir/[file.tar.gz], file:///dir/[file.tar.gz]"
 
 #: ../src/plugins/report_Uploader.xml.in.h:2
 msgid "Report uploader"
@@ -979,7 +1002,7 @@ msgstr "URL"
 
 #: ../src/plugins/report_Uploader.xml.in.h:4
 msgid "Upload as tar.gz file (via FTP/SCP/...)"
-msgstr ""
+msgstr "Качи като tar.gz файл (чрез FTP/SCP/...)"
 
 #: ../src/plugins/report_Uploader.xml.in.h:5
 msgid ""
@@ -1013,10 +1036,32 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"\n"
+"& [-vbf] [-c CONFFILE] -d DIR\n"
+"или:\n"
+"& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
+"\n"
+"Докладва проблем в Bugzilla.\n"
+"\n"
+"Инструментът чете DIR. След това влиза в Bugzilla и опитва да намери бъг\n"
+"със същия abrt_hash:HEXSTRING в 'Whiteboard'.\n"
+"\n"
+"Ако такъв не бъде намерен, създава доклад за нов бъг. Елементите в DIR\n"
+"се записват в доклада като части от описанието или приложения,\n"
+"в зависимост от типа и обема им.\n"
+"\n"
+"Иначе, ако такъв бъг бъде намерен, маркиран като CLOSED DUPLICATE,\n"
+"инструментът следва веригата дубликати докато намери non-DUPLICATE бъг.\n"
+"Инструментът добавя нов коментар към намерения бъг.\n"
+"\n"
+"URL-ът на новия или променения бъг се извежда на стандартния изход\n"
+"и се записва в елемента 'reported_to'.\n"
+"\n"
+"Ако не е зададен, CONFFILE по подразбиране е "
 
 #: ../src/plugins/reporter-bugzilla.c:110
 #: ../src/plugins/reporter-kerneloops.c:166
-#: ../src/plugins/reporter-mailx.c:168 ../src/plugins/reporter-print.c:56
+#: ../src/plugins/reporter-mailx.c:173 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:74
 #: ../src/plugins/reporter-upload.c:288
 msgid "Dump directory"
@@ -1038,11 +1083,11 @@ msgstr "Когато създаваш бъг, прилагай и двоични
 #: ../src/plugins/reporter-bugzilla.c:114
 #: ../src/plugins/reporter-rhtsupport.c:77
 msgid "Force reporting even if this problem is already reported"
-msgstr ""
+msgstr "Принудително докладване, даже и ако този проблем вече е докладван"
 
 #: ../src/plugins/reporter-bugzilla.c:115
 msgid "Find BUG-ID according to DUPHASH"
-msgstr ""
+msgstr "Намери BUG-ID съобразно с DUPHASH"
 
 #: ../src/plugins/reporter-bugzilla.c:179
 msgid "Empty login or password, please check your configuration"
@@ -1055,55 +1100,55 @@ msgid "Logging into Bugzilla at %s"
 msgstr "Влизане в Bugzilla на %s"
 
 #: ../src/plugins/reporter-bugzilla.c:236
-#: ../src/plugins/reporter-bugzilla.c:449
+#: ../src/plugins/reporter-bugzilla.c:458
 msgid "Logging out"
 msgstr "Излизане"
 
-#: ../src/plugins/reporter-bugzilla.c:283
+#: ../src/plugins/reporter-bugzilla.c:309
 msgid "Checking for duplicates"
 msgstr "Проверка за дубликати"
 
-#: ../src/plugins/reporter-bugzilla.c:304
+#: ../src/plugins/reporter-bugzilla.c:330
 msgid "Missing mandatory member 'bugs'"
 msgstr "Липсва важна част 'bugs'"
 
 #. Create new bug
-#: ../src/plugins/reporter-bugzilla.c:343
+#: ../src/plugins/reporter-bugzilla.c:341
 msgid "Creating a new bug"
 msgstr "Създаване на нов бъг"
 
-#: ../src/plugins/reporter-bugzilla.c:346
+#: ../src/plugins/reporter-bugzilla.c:344
 #, c-format
 msgid "Adding attachments to bug %i"
-msgstr ""
+msgstr "Добавяне като приложени към бъг %i"
 
-#: ../src/plugins/reporter-bugzilla.c:361
+#: ../src/plugins/reporter-bugzilla.c:370
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Грешката вече е докладвана: %i"
 
-#: ../src/plugins/reporter-bugzilla.c:382
+#: ../src/plugins/reporter-bugzilla.c:391
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Добавяне %s към списъка получатели"
 
-#: ../src/plugins/reporter-bugzilla.c:421
+#: ../src/plugins/reporter-bugzilla.c:430
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Добавяне на нов коментар към бъг %d"
 
-#: ../src/plugins/reporter-bugzilla.c:426
+#: ../src/plugins/reporter-bugzilla.c:435
 msgid "Found the same comment in the bug history, not adding a new one"
-msgstr ""
+msgstr "Намерен е същия коментар в бъг историята, няма да добавям нов"
 
-#: ../src/plugins/reporter-bugzilla.c:441
+#: ../src/plugins/reporter-bugzilla.c:450
 msgid "Attaching better backtrace"
-msgstr ""
+msgstr "Прилагане на по-добро проследяване"
 
-#: ../src/plugins/reporter-bugzilla.c:452
+#: ../src/plugins/reporter-bugzilla.c:461
 #, c-format
 msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
-msgstr ""
+msgstr "Статус: %s%s%s %s/show_bug.cgi?id=%u"
 
 #: ../src/plugins/reporter-kerneloops.c:105
 #, c-format
@@ -1128,16 +1173,16 @@ msgstr ""
 msgid "Configuration file"
 msgstr "Конфигурационен файл"
 
-#: ../src/plugins/reporter-mailx.c:110
+#: ../src/plugins/reporter-mailx.c:111
 msgid "Sending an email..."
 msgstr "Изпращане на имейл..."
 
-#: ../src/plugins/reporter-mailx.c:130
+#: ../src/plugins/reporter-mailx.c:134
 #, c-format
 msgid "Email was sent to: %s"
-msgstr ""
+msgstr "Email беше изпратен до: %s"
 
-#: ../src/plugins/reporter-mailx.c:149
+#: ../src/plugins/reporter-mailx.c:153
 msgid ""
 "& [-v] -d DIR [-c CONFFILE]\n"
 "\n"
@@ -1145,10 +1190,19 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"& [-v] -d DIR [-c CONFFILE]\n"
+"\n"
+"Изпраща съдържанието на директорията с проблема DIR чрез email\n"
+"\n"
+"Ако не е зададено, CONFFILE по подразбиране е "
 
-#: ../src/plugins/reporter-mailx.c:169 ../src/plugins/reporter-upload.c:289
+#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:289
 msgid "Config file"
 msgstr "Конфиг файл"
+
+#: ../src/plugins/reporter-mailx.c:175
+msgid "Notify only (Do not mark the report as sent)"
+msgstr ""
 
 #: ../src/plugins/reporter-print.c:42
 msgid ""
@@ -1156,6 +1210,9 @@ msgid ""
 "\n"
 "Prints problem information to standard output or FILE"
 msgstr ""
+"& [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
+"\n"
+"Отпечатва информация за проблема на стандартния изход или във FILE"
 
 #: ../src/plugins/reporter-print.c:57
 msgid "Output file"
@@ -1171,17 +1228,17 @@ msgstr ""
 
 #: ../src/plugins/reporter-print.c:96
 msgid "Cancelled by user."
-msgstr ""
+msgstr "Прекратено от потребителя."
 
 #: ../src/plugins/reporter-print.c:105
 #, c-format
 msgid "File '%s' is a symbolic link. Please select a regular file:"
-msgstr ""
+msgstr "Файлът '%s' е символна връзка. Моля, посочете обикновен файл:"
 
 #: ../src/plugins/reporter-print.c:114
 #, c-format
 msgid "Can't open '%s' for writing. Please select another file:"
-msgstr ""
+msgstr "Не мога да отворя '%s' за запис. Моля, посочете друг файл:"
 
 #: ../src/plugins/reporter-print.c:149
 #, c-format
@@ -1204,6 +1261,14 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"\n"
+"& [-v] [-c CONFFILE] -d DIR\n"
+"или:\n"
+"& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
+"\n"
+"Докладва проблем на RHTSupport.\n"
+"\n"
+"Ако не е зададено, CONFFILE по подразбиране е "
 
 #: ../src/plugins/reporter-rhtsupport.c:76
 msgid "Upload FILEs [to case with this ID]"
@@ -1243,7 +1308,7 @@ msgstr "Не мога да създам временен файл в /tmp"
 
 #: ../src/plugins/reporter-rhtsupport.c:382
 msgid "Do you still want to create a RHTSupport ticket?"
-msgstr ""
+msgstr "Искате ли все още да създадете RHTSupport билет?"
 
 #. result = NULL; - redundant, result is assigned just below
 #. Send tempfile
@@ -1253,11 +1318,11 @@ msgstr "Създаване на нов случай..."
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:202
 msgid "Documentation which might be relevant: "
-msgstr ""
+msgstr "Документация, която може да е свързана с това: "
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:210
 msgid "Updates which possibly help: "
-msgstr ""
+msgstr "Обновления, които може да помогнат: "
 
 #: ../src/plugins/reporter-upload.c:59
 #, c-format
@@ -1295,6 +1360,25 @@ msgid ""
 "Recognized string parameter: URL.\n"
 "Parameter can be overridden via $Upload_URL."
 msgstr ""
+"& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\n"
+"Качва компресиран архив на директорията с проблема DIR на URL.\n"
+"Ако URL не е зададен, създава архив в /tmp и спира.\n"
+"\n"
+"URL трябва да има формата 'протокол://[user[:pass]@]host/dir/[file.tar."
+"gz]',\n"
+"където протокол е http(s), ftp, scp или file.\n"
+"Протоколът file не може да има части user и host: 'file:///dir/[file.tar."
+"gz].'\n"
+"Ако URL завършва с /, името на архива ще бъде създадено и добавено\n"
+"към URL-а; иначе, URL-ът ще се използва като пълно име на файл.\n"
+"\n"
+"Файловете с имена, включени в $EXCLUDE_FROM_REPORT няма да\n"
+"бъдат включени в архива.\n"
+"\n"
+"Редовете в CONFFILE трябва да са с формат 'PARAM = VALUE'.\n"
+"Разпознат низов параметър: URL.\n"
+"Параметър може да бъде пренебрегнат чрез $Upload_URL."
 
 #: ../src/plugins/reporter-upload.c:290
 msgid "Base URL to upload to"
@@ -1315,32 +1399,31 @@ msgstr "Бъг %i е ЗАТВОРЕН, но няма РЕШЕНИЕ"
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
 msgstr "Бъг %i е ЗАТВОРЕН като ДУБЛИРАЩ се, но в него липсва DUP_ID"
 
-#: ../src/plugins/rhbz.c:489
+#: ../src/plugins/rhbz.c:474
 #, c-format
 msgid "New bug id: %i"
 msgstr "ID на новия бъг: %i"
 
-#: ../src/plugins/rhbz.c:629
+#: ../src/plugins/rhbz.c:614
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr ""
 
 #: ../src/plugins/abrt-bodhi.c:301
-#, fuzzy
 msgid "Searching for updates"
-msgstr "Проверка за дубликати"
+msgstr "Търсене на обновления"
 
 #: ../src/plugins/abrt-bodhi.c:376
 msgid "List of bug ids"
-msgstr ""
+msgstr "Списък id на бъгове"
 
 #: ../src/plugins/abrt-bodhi.c:377
 msgid "Specify a bodhi server url"
-msgstr ""
+msgstr "Задайте url на bodhi сървъра"
 
 #: ../src/plugins/abrt-bodhi.c:378
 msgid "Specify a release"
-msgstr ""
+msgstr "Задайте издание"
 
 #: ../src/plugins/abrt-bodhi.c:383
 msgid ""
@@ -1348,16 +1431,22 @@ msgid ""
 "\n"
 "Search for updates on bodhi server"
 msgstr ""
+"& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
+"\n"
+"Претърсва за обновления на bodhi сървър"
 
 #: ../src/plugins/abrt-bodhi.c:459
 msgid ""
 "Abrt found a new update which fix your problem. Please run before submitting "
 "bug: pkcon update --repo-enable=fedora --repo-repo=updates-testing"
 msgstr ""
+"Abrt откри ново обновление, което отстранява проблема Ви. Моля, преди да "
+"докладвате за бъг, стартирайте: pkcon update --repo-enable=fedora --repo-"
+"repo=updates-testing"
 
 #: ../src/plugins/abrt-bodhi.c:463
 msgid ". Do you want to continue with reporting bug?"
-msgstr ""
+msgstr ". Искате ли да продължите с докладването на бъга?"
 
 #: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:146
 #: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:259
@@ -1388,3 +1477,6 @@ msgid ""
 "\n"
 "newt tool to report problem saved in specified DIR"
 msgstr ""
+"& -o [-d] DIR\n"
+"\n"
+"newt инструмент за докладване на проблем, записан в зададената DIR"
