@@ -662,6 +662,7 @@ bool make_dir_recursive(char *dir, mode_t dir_mode);
 #define FILENAME_BINARY       "binary"
 #define FILENAME_CMDLINE      "cmdline"
 #define FILENAME_COREDUMP     "coredump"
+#define FILENAME_CGROUP       "cgroup"
 #define FILENAME_BACKTRACE    "backtrace"
 #define FILENAME_MAPS         "maps"
 #define FILENAME_SMAPS        "smaps"
