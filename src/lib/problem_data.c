@@ -187,6 +187,7 @@ static const char *const editable_files[] = {
     FILENAME_OPEN_FDS   , /* user might want to hide sensitive file names */
     //FILENAME_LIMITS     ,
     FILENAME_CMDLINE    ,
+    //FILENAME_CGROUP     ,
     //FILENAME_COREDUMP   ,
     FILENAME_BACKTRACE  ,
     FILENAME_MAPS       ,
