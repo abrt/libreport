@@ -630,7 +630,7 @@ static void tv_details_row_activated(
         GtkWidget *dialog = gtk_dialog_new_with_buttons(_("View/edit a text file"),
             GTK_WINDOW(g_assistant),
             GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-            NULL);
+            NULL, NULL);
         GtkWidget *vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
         GtkWidget *scrolled = gtk_scrolled_window_new(NULL, NULL);
         GtkWidget *textview = gtk_text_view_new();
