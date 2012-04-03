@@ -18,7 +18,16 @@
 */
 #include "internal_libreport.h"
 
-char *make_description(problem_data_t *problem_data, char **names_to_skip, unsigned max_text_size, unsigned desc_flags)
+static bool rejected_name(const char *name, char **v, int flags)
+{
+    bool r = is_in_string_list(name, v);
+    if (flags & MAKEDESC_WHITELIST)
+         r = !r;
+    return r;
+}
+
+char *make_description(problem_data_t *problem_data, char **names_to_skip,
+                       unsigned max_text_size, unsigned desc_flags)
 {
     struct strbuf *buf_dsc = strbuf_new();
 
@@ -42,7 +51,8 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip, unsig
 
         /* Skip items we are not interested in */
 //TODO: optimize by doing this once, not 3 times:
-        if (names_to_skip && is_in_string_list(key, names_to_skip))
+        if (names_to_skip
+            && rejected_name(key, names_to_skip, desc_flags))
             continue;
 
         struct problem_item *item = g_hash_table_lookup(problem_data, key);
@@ -87,7 +97,8 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip, unsig
             l = l->next;
 
             /* Skip items we are not interested in */
-            if (names_to_skip && is_in_string_list(key, names_to_skip))
+            if (names_to_skip
+                && rejected_name(key, names_to_skip, desc_flags))
                 continue;
 
             struct problem_item *item = g_hash_table_lookup(problem_data, key);
@@ -144,7 +155,8 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip, unsig
             l = l->next;
 
             /* Skip items we are not interested in */
-            if (names_to_skip && is_in_string_list(key, names_to_skip))
+            if (names_to_skip
+                && rejected_name(key, names_to_skip, desc_flags))
                 continue;
 
             struct problem_item *item = g_hash_table_lookup(problem_data, key);
@@ -251,11 +263,6 @@ static const char *const blacklisted_items[] = {
     NULL
 };
 
-/*
- * npajkovs: implement second part of problem (not so important)
- * https://bugzilla.redhat.com/show_bug.cgi?id=711591
- */
-
 char* make_description_bz(problem_data_t *problem_data, unsigned max_text_size)
 {
     return make_description(
@@ -273,5 +280,24 @@ char* make_description_logger(problem_data_t *problem_data, unsigned max_text_si
                 (char**)blacklisted_items,
                 max_text_size,
                 MAKEDESC_SHOW_FILES | MAKEDESC_SHOW_MULTILINE
+    );
+}
+
+/* Items we want to include to bz */
+static const char *const whitelisted_items[] = {
+    FILENAME_CMDLINE,
+    FILENAME_BACKTRACE,
+    NULL
+};
+
+char* make_description_koops(problem_data_t *problem_data, unsigned max_text_size)
+{
+    return make_description(
+                problem_data,
+                (char**)whitelisted_items,
+                max_text_size,
+                MAKEDESC_SHOW_FILES
+                | MAKEDESC_SHOW_MULTILINE
+                | MAKEDESC_WHITELIST
     );
 }
