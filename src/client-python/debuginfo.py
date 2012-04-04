@@ -6,6 +6,7 @@ from reportclient import _
 import sys
 import os
 import time
+import errno
 
 old_stdout = -1
 def mute_stdout():
