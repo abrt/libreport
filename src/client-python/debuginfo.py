@@ -179,8 +179,11 @@ class DebugInfoDownload(YumBase):
 
         # disable all not needed
         for repo in self.repos.listEnabled():
-            repo.close()
-            self.repos.disableRepo(repo.id)
+            try:
+                repo.close()
+                self.repos.disableRepo(repo.id)
+            except Exception, ex:
+                print _("Can't disable repository '{0!s}': {1!s}").format(repo.id, str(ex))
 
         # This takes some time, let user know what we are doing
         print _("Setting up yum repositories")
