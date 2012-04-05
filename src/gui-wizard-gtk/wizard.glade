@@ -173,135 +173,6 @@
       </object>
     </child>
   </object>
-  <object class="GtkWindow" id="window10">
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkVBox" id="page_4">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="border_width">10</property>
-        <property name="spacing">3</property>
-        <child>
-          <object class="GtkLabel" id="lbl_page7">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="xalign">0</property>
-            <property name="label" translatable="yes">Select additional files to attach to the report:</property>
-            <property name="use_markup">True</property>
-            <property name="justify">fill</property>
-            <property name="wrap">True</property>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkVBox" id="vb_collectors">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <placeholder/>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkHBox" id="hbox4">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="GtkButton" id="button_cfg3">
-                <property name="label">gtk-preferences</property>
-                <property name="use_action_appearance">False</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_underline">True</property>
-                <property name="use_stock">True</property>
-                <property name="image_position">right</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkAlignment" id="alignment5">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-  </object>
-  <object class="GtkWindow" id="window11">
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkVBox" id="page_5">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="border_width">10</property>
-        <property name="spacing">3</property>
-        <child>
-          <object class="GtkLabel" id="lbl_collect_log">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="xalign">0</property>
-            <property name="label" translatable="yes">Collecting did not start yet</property>
-            <property name="use_markup">True</property>
-            <property name="wrap">True</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkScrolledWindow" id="scrolledwindow7">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="shadow_type">out</property>
-            <child>
-              <object class="GtkTextView" id="tv_collect_log">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="editable">False</property>
-                <property name="accepts_tab">False</property>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-  </object>
   <object class="GtkWindow" id="window2">
     <property name="can_focus">False</property>
     <child>
@@ -345,10 +216,10 @@
             <child>
               <object class="GtkButton" id="button_cfg1">
                 <property name="label">gtk-preferences</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
                 <property name="image_position">right</property>
@@ -459,10 +330,10 @@
             <child>
               <object class="GtkButton" id="btn_cancel_analyze">
                 <property name="label">gtk-stop</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -482,6 +353,135 @@
     </child>
   </object>
   <object class="GtkWindow" id="window4">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkVBox" id="page_4">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="border_width">10</property>
+        <property name="spacing">3</property>
+        <child>
+          <object class="GtkLabel" id="lbl_page7">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes">Select additional files to attach to the report:</property>
+            <property name="use_markup">True</property>
+            <property name="justify">fill</property>
+            <property name="wrap">True</property>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkVBox" id="vb_collectors">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHBox" id="hbox4">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkButton" id="button_cfg3">
+                <property name="label">gtk-preferences</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_underline">True</property>
+                <property name="use_stock">True</property>
+                <property name="image_position">right</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkAlignment" id="alignment5">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="window5">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkVBox" id="page_5">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="border_width">10</property>
+        <property name="spacing">3</property>
+        <child>
+          <object class="GtkLabel" id="lbl_collect_log">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes">Collecting did not start yet</property>
+            <property name="use_markup">True</property>
+            <property name="wrap">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="scrolledwindow7">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="shadow_type">out</property>
+            <child>
+              <object class="GtkTextView" id="tv_collect_log">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="editable">False</property>
+                <property name="accepts_tab">False</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="window6">
     <property name="can_focus">False</property>
     <child>
       <object class="GtkVBox" id="page_6_report">
@@ -564,7 +564,7 @@
       </object>
     </child>
   </object>
-  <object class="GtkWindow" id="window5">
+  <object class="GtkWindow" id="window7">
     <property name="can_focus">False</property>
     <property name="tooltip_text" translatable="yes">Use this button to generate more informative backtrace after you installed additional debug packages</property>
     <child>
@@ -710,9 +710,6 @@
                         <property name="invisible_char_set">True</property>
                         <property name="secondary_icon_stock">gtk-find</property>
                         <property name="primary_icon_activatable">False</property>
-                        <property name="secondary_icon_activatable">True</property>
-                        <property name="primary_icon_sensitive">True</property>
-                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -807,7 +804,7 @@
       </object>
     </child>
   </object>
-  <object class="GtkWindow" id="window6">
+  <object class="GtkWindow" id="window8">
     <property name="can_focus">False</property>
     <child>
       <object class="GtkVBox" id="page_8_report">
@@ -966,7 +963,7 @@
       </object>
     </child>
   </object>
-  <object class="GtkWindow" id="window7">
+  <object class="GtkWindow" id="window9">
     <property name="can_focus">False</property>
     <child>
       <object class="GtkVBox" id="page_9_report">
@@ -1067,7 +1064,7 @@
       </object>
     </child>
   </object>
-  <object class="GtkWindow" id="window8">
+  <object class="GtkWindow" id="windowA">
     <property name="can_focus">False</property>
     <child>
       <object class="GtkVBox" id="page_10_report">
@@ -1111,7 +1108,7 @@
       </object>
     </child>
   </object>
-  <object class="GtkWindow" id="window9">
+  <object class="GtkWindow" id="windowB">
     <property name="can_focus">False</property>
     <child>
       <object class="GtkVBox" id="page_11_report">
