@@ -259,9 +259,9 @@ static void text(GMarkupParseContext *context,
                     VERB2 log("new label:'%s'", text_copy);
                     free(opt->eo_label);
                     opt->eo_label = text_copy;
+                    text_copy = NULL;
                 }
             }
-            return;
         }
         /*
          * we can add a separate field for the default value
@@ -269,15 +269,14 @@ static void text(GMarkupParseContext *context,
          * but for now using "value" should be enough and clients doesn't
          * have to know about the "defaul-value"
          */
-        if (strcmp(inner_element, DEFAULT_VALUE_ELEMENT) == 0)
+        else if (strcmp(inner_element, DEFAULT_VALUE_ELEMENT) == 0)
         {
             VERB2 log("default value:'%s'", text_copy);
             free(opt->eo_value);
             opt->eo_value = text_copy;
-            return;
+            text_copy = NULL;
         }
-
-        if (strcmp(inner_element, NOTE_HTML_ELEMENT) == 0)
+        else if (strcmp(inner_element, NOTE_HTML_ELEMENT) == 0)
         {
             if (parse_data->attribute_lang != NULL) /* if it isn't for other locale */
             {
@@ -290,16 +289,14 @@ static void text(GMarkupParseContext *context,
                     VERB2 log("html note:'%s'", text_copy);
                     free(opt->eo_note_html);
                     opt->eo_note_html = text_copy;
+                    text_copy = NULL;
                 }
             }
-            return;
         }
-
-        if (strcmp(inner_element, ALLOW_EMPTY_ELEMENT) == 0)
+        else if (strcmp(inner_element, ALLOW_EMPTY_ELEMENT) == 0)
         {
             VERB2 log("allow-empty:'%s'", text_copy);
             opt->eo_allow_empty = string_to_bool(text_copy);
-            return;
         }
         /*
         if (strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)
@@ -307,7 +304,7 @@ static void text(GMarkupParseContext *context,
             VERB2 log("tooltip:'%s'", text_copy);
             free(opt->eo_description);
             opt->eo_description = text_copy;
-            return;
+            text_copy = NULL;
         }
         */
     }
@@ -320,7 +317,7 @@ static void text(GMarkupParseContext *context,
             VERB2 log("action description:'%s'", text_copy);
             free(ui->action);
             ui->action = text_copy;
-            return;
+            text_copy = NULL;
         }
         */
         if (strcmp(inner_element, CREATES_ELEMENT) == 0)
@@ -328,9 +325,9 @@ static void text(GMarkupParseContext *context,
             VERB2 log("ec_creates_items:'%s'", text_copy);
             free(ui->ec_creates_items);
             ui->ec_creates_items = text_copy;
-            return;
+            text_copy = NULL;
         }
-        if (strcmp(inner_element, NAME_ELEMENT) == 0)
+        else if (strcmp(inner_element, NAME_ELEMENT) == 0)
         {
             if (parse_data->attribute_lang != NULL) /* if it isn't for other locale */
             {
@@ -343,11 +340,11 @@ static void text(GMarkupParseContext *context,
                     VERB2 log("event name:'%s'", text_copy);
                     free(ui->screen_name);
                     ui->screen_name = text_copy;
+                    text_copy = NULL;
                 }
             }
-            return;
         }
-        if (strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)
+        else if (strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)
         {
             VERB3 log("event description:'%s'", text_copy);
 
@@ -361,11 +358,11 @@ static void text(GMarkupParseContext *context,
                 ) {
                     free(ui->description);
                     ui->description = text_copy;
+                    text_copy = NULL;
                 }
             }
-            return;
         }
-        if (strcmp(inner_element, LONG_DESCR_ELEMENT) == 0)
+        else if (strcmp(inner_element, LONG_DESCR_ELEMENT) == 0)
         {
             VERB3 log("event long description:'%s'", text_copy);
 
@@ -379,41 +376,39 @@ static void text(GMarkupParseContext *context,
                 ) {
                     free(ui->long_descr);
                     ui->long_descr = text_copy;
+                    text_copy = NULL;
                 }
             }
-            return;
         }
-        if (strcmp(inner_element, REQUIRES_ELEMENT) == 0)
+        else if (strcmp(inner_element, REQUIRES_ELEMENT) == 0)
         {
             free(ui->ec_requires_items);
             ui->ec_requires_items = text_copy;
-            return;
+            text_copy = NULL;
         }
-        if (strcmp(inner_element, EXCL_BY_DEFAULT_ELEMENT) == 0)
+        else if (strcmp(inner_element, EXCL_BY_DEFAULT_ELEMENT) == 0)
         {
             free(ui->ec_exclude_items_by_default);
             ui->ec_exclude_items_by_default = text_copy;
-            return;
+            text_copy = NULL;
         }
-        if (strcmp(inner_element, INCL_BY_DEFAULT_ELEMENT) == 0)
+        else if (strcmp(inner_element, INCL_BY_DEFAULT_ELEMENT) == 0)
         {
             free(ui->ec_include_items_by_default);
             ui->ec_include_items_by_default = text_copy;
-            return;
+            text_copy = NULL;
         }
-        if (strcmp(inner_element, EXCL_ALWAYS_ELEMENT) == 0)
+        else if (strcmp(inner_element, EXCL_ALWAYS_ELEMENT) == 0)
         {
             free(ui->ec_exclude_items_always);
             ui->ec_exclude_items_always = text_copy;
-            return;
+            text_copy = NULL;
         }
-        if (strcmp(inner_element, EXCL_BINARY_ELEMENT) == 0)
+        else if (strcmp(inner_element, EXCL_BINARY_ELEMENT) == 0)
         {
             ui->ec_exclude_binary_items = string_to_bool(text_copy);
-            free(text_copy);
-            return;
         }
-        if (strcmp(inner_element, MINIMAL_RATING_ELEMENT) == 0)
+        else if (strcmp(inner_element, MINIMAL_RATING_ELEMENT) == 0)
         {
             char *endptr;
             errno = 0;
@@ -423,13 +418,10 @@ static void text(GMarkupParseContext *context,
                 log("invalid minimal-rating number '%s', set to default 4", text_copy);
                 ui->ec_minimal_rating = 4;
             }
-            return;
         }
-        if (strcmp(inner_element, GUI_REVIEW_ELEMENTS) == 0)
+        else if (strcmp(inner_element, GUI_REVIEW_ELEMENTS) == 0)
         {
             ui->ec_skip_review = !string_to_bool(text_copy);
-            free(text_copy);
-            return;
         }
     }
     free(text_copy);
