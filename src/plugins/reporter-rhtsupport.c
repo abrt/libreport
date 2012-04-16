@@ -230,9 +230,8 @@ int main(int argc, char **argv)
         dsc = make_description_bz(problem_data, CD_TEXT_ATT_SIZE_BZ);
     }
     file = new_reportfile();
-    const char *dt_string = iso_date_string(NULL);
-    char tmpdir_name[sizeof("/tmp/rhtsupport-YYYY-MM-DD-hh:mm:ss-XXXXXX")];
-    sprintf(tmpdir_name, "/tmp/rhtsupport-%s-XXXXXX", dt_string);
+    char tmpdir_name[sizeof("/tmp/rhtsupport-"LIBREPORT_ISO_DATE_STRING_SAMPLE"-XXXXXX")];
+    snprintf(tmpdir_name, sizeof(tmpdir_name), "/tmp/rhtsupport-%s-XXXXXX", iso_date_string(NULL));
     /* mkdtemp does mkdir(xxx, 0700), should be safe (is it?) */
     if (mkdtemp(tmpdir_name) == NULL)
     {

@@ -21,7 +21,7 @@
 
 char *iso_date_string(const time_t *pt)
 {
-    static char buf[sizeof("YYYY-MM-DD-HH:MM:SS") + 4];
+    static char buf[sizeof(LIBREPORT_ISO_DATE_STRING_SAMPLE) + 4];
 
     time_t t;
     struct tm *ptm = localtime(pt ? pt : (time(&t), &t));
