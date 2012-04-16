@@ -567,6 +567,7 @@ char* get_environ(pid_t pid);
  */
 #define iso_date_string libreport_iso_date_string
 char *iso_date_string(const time_t *pt);
+#define LIBREPORT_ISO_DATE_STRING_SAMPLE "YYYY-MM-DD-hh:mm:ss"
 
 enum {
     MAKEDESC_SHOW_FILES     = (1 << 0),

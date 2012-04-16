@@ -29,8 +29,8 @@ static struct dump_dir *try_dd_create(const char *base_dir_name, const char *dir
 
 struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data, const char *base_dir_name)
 {
-    char dir_name[sizeof("abrt-tmp-YYYY-MM-DD-HH:MM:SS-%lu") + sizeof(long)*3];
-    sprintf(dir_name, "abrt-tmp-%s-%lu", iso_date_string(NULL), (long)getpid());
+    char dir_name[sizeof("abrt-tmp-"LIBREPORT_ISO_DATE_STRING_SAMPLE"-%lu") + sizeof(long)*3];
+    snprintf(dir_name, sizeof(dir_name), "abrt-tmp-%s-%lu", iso_date_string(NULL), (long)getpid());
 
     struct dump_dir *dd;
     if (base_dir_name)
