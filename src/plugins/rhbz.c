@@ -88,20 +88,19 @@ static char *trim_all_whitespace(const char *str)
 
 int is_comment_dup(GList *comments, const char *comment)
 {
-    for (GList *l = comments; l; l = l->next)
+    char * const trim_comment = trim_all_whitespace(comment);
+    bool same_comments = false;
+
+    for (GList *l = comments; l && !same_comments; l = l->next)
     {
-        char *comment_body = (char *) l->data;
-        char *trim_comment_body = trim_all_whitespace(comment_body);
-        char *trim_comment = trim_all_whitespace(comment);
-        if (!strcmp(trim_comment_body, trim_comment))
-        {
-            free(trim_comment_body);
-            free(trim_comment);
-            return 1;
-        }
+        const char * const comment_body = (const char *) l->data;
+        char * const trim_comment_body = trim_all_whitespace(comment_body);
+        same_comments = !strcmp(trim_comment_body, trim_comment);
+        free(trim_comment_body);
     }
 
-    return 0;;
+    free(trim_comment);
+    return same_comments;
 }
 
 static unsigned find_best_bt_rating_in_comments(GList *comments)
