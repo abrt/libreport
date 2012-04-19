@@ -295,7 +295,7 @@ static char* pop_next_command(GList **pp_rule_list,
                     /* Without dir to match, we assume match for all conditions */
                     if (!dump_dir_name)
                         goto next_cond;
-                    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+                    dd = dd_opendir(dump_dir_name, /*flags:*/ DD_OPEN_READONLY);
                     if (!dd)
                     {
                         free_rule_list(rule_list);
