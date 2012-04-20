@@ -41,16 +41,16 @@ struct abrt_xmlrpc *abrt_xmlrpc_new_client(const char *url, int ssl_verify)
     /* This should be done at program startup, once. We do it in main */
     /* xmlrpc_client_setup_global_const(&env); */
 
-    /* URL - bugzilla.redhat.com/show_bug.cgi?id=666893 Unable to make sense of
+    /* URL - #666893, 814628 Unable to make sense of
      * XML-RPC response from server
      *
      * By default, XML data from the network may be no larger than 512K.
      * XMLRPC_XML_SIZE_LIMIT_DEFAULT is #defined to (512*1024) in xmlrpc-c/base.h
      *
      * Users reported trouble with 733402 byte long responses, hope raising the
-     * limit to 2*512k is enough
+     * limit to 4*512k is enough
      */
-    xmlrpc_limit_set(XMLRPC_XML_SIZE_LIMIT_ID, 2 * XMLRPC_XML_SIZE_LIMIT_DEFAULT);
+    xmlrpc_limit_set(XMLRPC_XML_SIZE_LIMIT_ID, 4 * XMLRPC_XML_SIZE_LIMIT_DEFAULT);
 
     struct xmlrpc_curl_xportparms curl_parms;
     memset(&curl_parms, 0, sizeof(curl_parms));
