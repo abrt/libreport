@@ -709,6 +709,11 @@ bool make_dir_recursive(char *dir, mode_t dir_mode);
 #define FILENAME_NOT_REPORTABLE "not-reportable"
 #define FILENAME_CORE_BACKTRACE "core_backtrace"
 #define FILENAME_REMOTE_RESULT "remote_result"
+#define FILENAME_PKG_EPOCH     "pkg_epoch"
+#define FILENAME_PKG_NAME      "pkg_name"
+#define FILENAME_PKG_VERSION   "pkg_version"
+#define FILENAME_PKG_RELEASE   "pkg_release"
+#define FILENAME_PKG_ARCH      "pkg_arch"
 
 // Not stored as files, added "on the fly":
 #define CD_DUMPDIR            "Directory"
