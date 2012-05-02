@@ -25,18 +25,15 @@
 
 char *g_glade_file = NULL;
 char *g_dump_dir_name = NULL;
-char *g_analyze_events = NULL;
-char *g_collect_events = NULL;
-char *g_report_events = NULL;
+char *g_events = NULL;
+GList *g_auto_event_list = NULL;
 int g_report_only = false;
 problem_data_t *g_cd;
 
 
 void reload_problem_data_from_dump_dir(void)
 {
-    free(g_analyze_events);
-    free(g_collect_events);
-    free(g_report_events);
+    free(g_events);
 
     struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY);
     if (!dd)
@@ -45,9 +42,7 @@ void reload_problem_data_from_dump_dir(void)
     problem_data_t *new_cd = create_problem_data_from_dump_dir(dd);
     add_to_problem_data_ext(new_cd, CD_DUMPDIR, g_dump_dir_name, (CD_FLAG_TXT | CD_FLAG_ISNOTEDITABLE));
 
-    g_analyze_events = list_possible_events(dd, NULL, "analyze");
-    g_collect_events = list_possible_events(dd, NULL, "collect");
-    g_report_events = list_possible_events(dd, NULL, "report");
+    g_events = list_possible_events(dd, NULL, "");
     dd_close(dd);
 
     if (1)
@@ -120,15 +115,17 @@ int main(int argc, char **argv)
         OPT_p = 1 << 2,
         OPT_o = 1 << 3, // report only
         OPT_d = 1 << 4,
+        OPT_e = 1 << 5,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_STRING('g', NULL, &g_glade_file, "FILE"  , _("Alternate GUI file")),
-        OPT_BOOL(  'p', NULL, NULL                   , _("Add program names to log")),
+        OPT_STRING('g', NULL, &g_glade_file, "FILE",          _("Alternate GUI file")),
+        OPT_BOOL(  'p', NULL, NULL,                           _("Add program names to log")),
         /* for use from 3rd party apps to show just a reporter selector */
-        OPT_BOOL(  'o', "report-only", &g_report_only, _("Skip analyze steps, go through report steps only")),
-        OPT_BOOL(  'd', "delete", NULL,                _("Remove DIR after reporting")),
+        OPT_BOOL(  'o', "report-only", &g_report_only,        _("Skip analyze steps, go through report steps only")),
+        OPT_BOOL(  'd', "delete", NULL,                       _("Remove DIR after reporting")),
+        OPT_LIST(  'e', "event", &g_auto_event_list, "EVENT", _("Run only this event")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);

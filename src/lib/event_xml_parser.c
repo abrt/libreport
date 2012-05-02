@@ -31,6 +31,7 @@
 #define NAME_ELEMENT            "name"
 #define DEFAULT_VALUE_ELEMENT   "default-value"
 #define MINIMAL_RATING_ELEMENT  "minimal-rating"
+#define GUI_REVIEW_ELEMENTS     "gui-review-elements"
 
 #define REQUIRES_ELEMENT        "requires-items"
 #define EXCL_BY_DEFAULT_ELEMENT "exclude-items-by-default"
@@ -422,6 +423,12 @@ static void text(GMarkupParseContext *context,
                 log("invalid minimal-rating number '%s', set to default 4", text_copy);
                 ui->ec_minimal_rating = 4;
             }
+            return;
+        }
+        if (strcmp(inner_element, GUI_REVIEW_ELEMENTS) == 0)
+        {
+            ui->ec_skip_review = !string_to_bool(text_copy);
+            free(text_copy);
             return;
         }
     }

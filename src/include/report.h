@@ -27,14 +27,14 @@ extern "C" {
 
 enum {
     LIBREPORT_NOWAIT      = 0,
-    LIBREPORT_WAIT        = (1 << 0), /* wait for report to finish and reload the problem data */
+    LIBREPORT_WAIT        = (1 << 0), /* wait for report to finish */
     LIBREPORT_GETPID      = (1 << 1), /* return pid of child. Use with LIBREPORT_NOWAIT. */
                                       /* Note: without LIBREPORT_GETPID, child will be detached */
                                       /* (reparented to init) */
     LIBREPORT_ANALYZE     = (1 << 2), /* run analyzers? */
                                       /* ("run reporters" is always on, has no flag (for now?)) */
     LIBREPORT_RELOAD_DATA = (1 << 5), /* reload problem data after run (needs WAIT) */
-    LIBREPORT_DEL_DIR     = (1 << 6), /* delete directory after reporting */
+    LIBREPORT_DEL_DIR     = (1 << 6), /* delete directory after reporting (passes --delete to child) */
     LIBREPORT_RUN_CLI     = (1 << 7), /* run 'cli' instead of 'gui' */
     LIBREPORT_RUN_NEWT    = (1 << 8), /* run 'report-newt' */
 };

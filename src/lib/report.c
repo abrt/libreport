@@ -23,19 +23,21 @@ int report_problem_in_dir(const char *dirname, int flags)
 {
     fflush(NULL);
 
-    pid_t pid = vfork();
+    pid_t pid = fork();
     if (pid < 0) /* error */
     {
-        perror_msg("vfork");
+        perror_msg("fork");
         return -1;
     }
 
     if (pid == 0) /* child */
     {
+        const char *event_name;
         const char *path, *path1, *path2;
         char *args[6], **pp;
 
         /* Graphical tool */
+        event_name = "report-gui";
         path1 = BIN_DIR"/report-gtk";
         path2 = "report-gtk";
         pp = args;
@@ -53,9 +55,10 @@ int report_problem_in_dir(const char *dirname, int flags)
             xsetenv("LIBREPORT_PRGNAME", g_get_prgname());
         }
 
-        if(flags & LIBREPORT_RUN_NEWT)
+        if (flags & LIBREPORT_RUN_NEWT)
         {
             /* we want to run newt first */
+            event_name = "report-cli";
             path1 = BIN_DIR"/report-newt";
             path2 = "report-newt";
             pp = args;
@@ -67,9 +70,10 @@ int report_problem_in_dir(const char *dirname, int flags)
             *pp++ = (char *)dirname;
             *pp = NULL;
         }
-        else if(!getenv("DISPLAY") || (flags & LIBREPORT_RUN_CLI))
+        else if (!getenv("DISPLAY") || (flags & LIBREPORT_RUN_CLI))
         {
             /* GUI won't work, use command line tool instead */
+            event_name = "report-cli";
             path1 = BIN_DIR"/report-cli";
             path2 = "report-cli";
             pp = args;
@@ -101,15 +105,12 @@ int report_problem_in_dir(const char *dirname, int flags)
              * This reparents grandchild to init, and makes waitpid
              * in parent detect our exit and return almost immediately.
              */
-            pid_t pid = vfork();
+            pid_t pid = fork();
             if (pid < 0) /* error */
-                perror_msg_and_die("vfork");
+                perror_msg_and_die("fork");
             if (pid != 0) /* not grandching */
             {
-                /* Use of vfork above is ok: grandchild will exec or exit at once,
-                 * (see code below) and therefore will unblock us at once.
-                 * And now we exit:
-                 */
+                /* And now we exit: */
                 exit(0);
             }
             /* There's an alternative approach to achieve this,
@@ -127,6 +128,17 @@ int report_problem_in_dir(const char *dirname, int flags)
              * (can be worked around by exec'ing a "wait & delete" helper)
              */
         }
+
+        struct run_event_state *run_state = new_run_event_state();
+        int r = run_event_on_dir_name(run_state, dirname, event_name);
+        int no_such_event = (r == 0 && run_state->children_count == 0);
+        free_run_event_state(run_state);
+        if (!no_such_event)
+        {
+///FIXME: handle --delete
+            exit(r);
+        }
+        /* No "report-cli/gui" event found, do it old-style */
 
         path = path1;
         VERB1 log("Executing: %s", path);
