@@ -670,6 +670,18 @@ static gint find_by_button(gconstpointer a, gconstpointer button)
     return (evdata->toggle_button != button);
 }
 
+static int check_event_config(const char *event_name)
+{
+    GHashTable *errors = validate_event(event_name);
+    if (errors != NULL)
+    {
+        g_hash_table_unref(errors);
+        show_event_opt_error_dialog(event_name);
+        return 1;
+    }
+    return 0;
+}
+
 static void event_rb_was_toggled(GtkButton *button, gpointer user_data)
 {
     /* Note: called both when item is selected and _unselected_,
@@ -683,12 +695,7 @@ static void event_rb_was_toggled(GtkButton *button, gpointer user_data)
         {
             free(g_event_selected);
             g_event_selected = xstrdup(evdata->event_name);
-            GHashTable *errors = validate_event(g_event_selected);
-            if (errors != NULL)
-            {
-                g_hash_table_unref(errors);
-                show_event_opt_error_dialog(g_event_selected);
-            }
+            check_event_config(evdata->event_name);
         }
     }
 }
@@ -2074,8 +2081,15 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
              * We don't remove the list element, because GTK calls select_next_page_no()
              * spuriously (for example, it calls it twice for first page).
              */
+
+            if (check_event_config(g_event_selected) != 0)
+            {
+                goto again;
+            }
+
             current_page_no = pages[PAGENO_EVENT_SELECTOR].page_no + 1;
             goto event_was_selected;
+
         }
     }
 
@@ -2088,6 +2102,7 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
             current_page_no = pages[PAGENO_EVENT_SELECTOR].page_no - 1;
             goto again;
         }
+
         event_config_t *cfg = get_event_config(g_event_selected);
         if (cfg && cfg->ec_skip_review)
         {
