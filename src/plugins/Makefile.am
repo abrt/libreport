@@ -8,7 +8,8 @@ bin_PROGRAMS = \
     reporter-mailx \
     reporter-print \
     report \
-    abrt-bodhi
+    abrt-bodhi \
+    reporter-ureport
 
 pluginsconfdir = $(PLUGINS_CONF_DIR)
 
@@ -215,6 +216,19 @@ abrt_bodhi_CPPFLAGS = \
 abrt_bodhi_LDADD = \
     $(JSON_C_LIBS) \
     $(RPM_LIBS) \
+    ../lib/libreport.la \
+    ../lib/libabrt_web.la
+
+reporter_ureport_SOURCES = \
+    ureport.c
+reporter_ureport_CPPFLAGS = \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    -D_GNU_SOURCE \
+    -Wall -Wwrite-strings -Werror
+reporter_ureport_LDADD = \
     ../lib/libreport.la \
     ../lib/libabrt_web.la
 

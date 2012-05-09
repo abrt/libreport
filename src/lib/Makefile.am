@@ -94,7 +94,7 @@ libabrt_dbus_la_LIBADD = \
 libabrt_web_la_SOURCES = \
     abrt_curl.h abrt_curl.c \
     abrt_xmlrpc.h abrt_xmlrpc.c \
-    proxies.h proxies.c
+    proxies.h proxies.c json.c
 libabrt_web_la_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror \
     -I$(srcdir)/../include \
@@ -109,6 +109,8 @@ libabrt_web_la_CPPFLAGS = \
     $(LIBXML_CFLAGS) \
     $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
+    $(JSON_C_CFLAGS) \
+    $(BTPARSER_CFLAGS) \
     -D_GNU_SOURCE
 libabrt_web_la_LDFLAGS = \
     -version-info 0:1:0
@@ -117,6 +119,8 @@ libabrt_web_la_LIBADD = \
     $(CURL_LIBS) \
     $(PROXY_LIBS) \
     $(LIBXML_LIBS) \
+    $(JSON_C_LIBS) \
+    $(BTPARSER_LIBS) \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS)
 
 $(DESTDIR)/$(DEBUG_DUMPS_DIR):
