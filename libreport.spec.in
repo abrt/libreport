@@ -27,6 +27,7 @@ BuildRequires: asciidoc
 BuildRequires: xmlto
 BuildRequires: newt-devel
 BuildRequires: libproxy-devel
+BuildRequires: btparser-devel
 Requires: libreport-filesystem
 # required for update from old report library, otherwise we obsolete report-gtk
 # and all it's plugins, but don't provide the python bindings and the sealert
@@ -169,6 +170,15 @@ BuildRequires: rpm-devel
 
 %description plugin-bodhi
 Search for a new updates in bodhi server
+
+%package plugin-ureport
+Summary: %{name}'s micro report plugin
+BuildRequires: json-c-devel
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+
+%description plugin-ureport
+Uploads micro-report to abrt server
 
 %description plugin-bugzilla
 Plugin to report bugs into the bugzilla.
@@ -342,6 +352,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %{_bindir}/abrt-bodhi
 %{_mandir}/man1/abrt-bodhi.1.gz
+
+%files plugin-ureport
+%defattr(-,root,root,-)
+%{_bindir}/reporter-ureport
+#%{_mandir}/man1/reporter-ureport.1.gz
 
 %files plugin-bugzilla
 %defattr(-,root,root,-)
