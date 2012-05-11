@@ -18,6 +18,7 @@
 */
 
 #include "internal_libreport.h"
+#include "abrt_curl.h"
 
 int main(int argc, char **argv)
 {

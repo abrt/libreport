@@ -89,7 +89,6 @@ int vdprintf(int d, const char *format, va_list ap);
 #include "problem_data.h"
 #include "report.h"
 #include "run_event.h"
-#include "abrt_curl.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -789,8 +788,13 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
 #define show_usage_and_die libreport_show_usage_and_die
 void show_usage_and_die(const char *usage, const struct options *opt) NORETURN;
 
+/* Can't include "abrt_curl.h", it's not a public API.
+ * Resorting to just forward-declaring the struct we need.
+ */
+struct abrt_post_state;
+
 #define post_ureport libreport_post_ureport
-abrt_post_state_t *post_ureport(problem_data_t *pd, const char *ureport_url);
+struct abrt_post_state *post_ureport(problem_data_t *pd, const char *ureport_url);
 
 #ifdef __cplusplus
 }
