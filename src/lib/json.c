@@ -44,7 +44,6 @@ static int get_pd_int_item(problem_data_t *pd, const char *key, int *result)
         return 0;
     }
 
-    int old_errno = errno;
     errno = 0;
     char *e;
     long i = strtol(pd_item, &e, 10);
@@ -52,8 +51,6 @@ static int get_pd_int_item(problem_data_t *pd, const char *key, int *result)
         return 0;
 
     *result = i;
-
-    errno = old_errno;
     return 1;
 }
 
@@ -61,7 +58,7 @@ static void ureport_add_int(struct json_object *ur, const char *key, int i)
 {
     struct json_object *jint = json_object_new_int(i);
     if (!jint)
-        return;
+        die_out_of_memory();
 
     json_object_object_add(ur, key, jint);
 }
@@ -71,18 +68,20 @@ static void ureport_add_str(struct json_object *ur, const char *key,
 {
     struct json_object *jstring = json_object_new_string(s);
     if (!jstring)
-        return;
+        die_out_of_memory();
 
     json_object_object_add(ur, key, jstring);
 }
 
 static void ureport_add_os(struct json_object *ur, problem_data_t *pd)
 {
-    struct json_object *jobject = json_object_new_object();
-
     char *pd_item = get_problem_item_content_or_NULL(pd, FILENAME_OS_RELEASE);
     if (!pd_item)
         return;
+
+    struct json_object *jobject = json_object_new_object();
+    if (!jobject)
+        die_out_of_memory();
 
     char *name, *version;
     parse_release_for_rhts(pd_item, &name, &version);
@@ -102,13 +101,12 @@ static void ureport_add_type(struct json_object *ur, problem_data_t *pd)
     if (!pd_item)
         return;
 
-    const char type[] = "type";
     if (!strcmp(pd_item, "CCpp"))
-        ureport_add_str(ur, type, "USERSPACE");
+        ureport_add_str(ur, "type", "USERSPACE");
     if (!strcmp(pd_item, "Python"))
-        ureport_add_str(ur, type, "PYTHON");
+        ureport_add_str(ur, "type", "PYTHON");
     if (!strcmp(pd_item, "Kerneloops"))
-        ureport_add_str(ur, type, "KERNELOOPS");
+        ureport_add_str(ur, "type", "KERNELOOPS");
 }
 
 static void ureport_add_core_backtrace(struct json_object *ur, problem_data_t *pd)
@@ -117,13 +115,13 @@ static void ureport_add_core_backtrace(struct json_object *ur, problem_data_t *p
     if (!pd_item)
         return;
 
-    struct json_object *jarray = json_object_new_array();
-    if (!jarray)
-        return;
-
     struct btp_thread *core_bt = btp_load_core_backtrace(pd_item);
     if (!core_bt)
         return;
+
+    struct json_object *jarray = json_object_new_array();
+    if (!jarray)
+        die_out_of_memory();
 
     struct btp_frame *frame;
     unsigned frame_nr = 0;
@@ -132,6 +130,8 @@ static void ureport_add_core_backtrace(struct json_object *ur, problem_data_t *p
         struct frame_aux *aux = frame->user_data;
 
         struct json_object *item = json_object_new_object();
+        if (!item)
+            die_out_of_memory();
 
         if (aux->filename)
             ureport_add_str(item, "path", aux->filename);
@@ -185,7 +185,7 @@ static void ureport_add_pkg(struct json_object *ur, problem_data_t *pd)
 {
     struct json_object *jobject = json_object_new_object();
     if (!jobject)
-        return;
+        die_out_of_memory();
 
     ureport_add_item_int(jobject, pd, FILENAME_PKG_EPOCH, "epoch");
     ureport_add_item_str(jobject, pd, FILENAME_PKG_NAME, "name");
@@ -199,6 +199,8 @@ static void ureport_add_pkg(struct json_object *ur, problem_data_t *pd)
 char *new_json_ureport(problem_data_t *pd)
 {
     struct json_object *ureport = json_object_new_object();
+    if (!ureport)
+        die_out_of_memory();
 
     ureport_add_item_str(ureport, pd, "user_type", NULL);
     ureport_add_item_int(ureport, pd, "uptime", NULL);
@@ -234,7 +236,7 @@ abrt_post_state_t *post_ureport(problem_data_t *pd, const char *ureport_url)
                                      | ABRT_POST_WANT_SSL_VERIFY
                                      | ABRT_POST_WANT_ERROR_MSG);
 
-    const char *headers[] = {
+    static const char *headers[] = {
         "Accept: text/plain",
         "Connection: close",
         NULL,
