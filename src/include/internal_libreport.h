@@ -67,6 +67,10 @@
 # define _(S) (S)
 #endif
 
+#if HAVE_LOCALE_H
+# include <locale.h>
+#endif /* HAVE_LOCALE_H */
+
 /* Some libc's forget to declare these, do it ourself */
 extern char **environ;
 #if defined(__GLIBC__) && __GLIBC__ < 2

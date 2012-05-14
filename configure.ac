@@ -94,6 +94,8 @@ PKG_PROG_PKG_CONFIG
 AC_CHECK_HEADER([libtar.h], [],
    [AC_MSG_ERROR([libtar.h is needed to build libreport])])
 
+AC_CHECK_HEADERS([locale.h])
+
 CONF_DIR='${sysconfdir}/${PACKAGE_NAME}'
 VAR_RUN='${localstatedir}/run'
 PLUGINS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/plugins'
