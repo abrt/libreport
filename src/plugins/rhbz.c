@@ -22,8 +22,20 @@
 
 #define MAX_HOPS            5
 
+
+//#define DEBUG
+#ifdef DEBUG
+#define func_entry() log("-- %s", __func__)
+#define func_entry_str(x) log("-- %s\t%s", __func__, (x))
+#else
+#define func_entry()
+#define func_entry_str(x)
+#endif
+
 struct bug_info *new_bug_info()
 {
+    func_entry();
+
     struct bug_info *bi = xzalloc(sizeof(struct bug_info));
     bi->bi_dup_id = -1;
 
@@ -32,6 +44,8 @@ struct bug_info *new_bug_info()
 
 void free_bug_info(struct bug_info *bi)
 {
+    func_entry();
+
     if (!bi)
         return;
 
@@ -47,6 +61,8 @@ void free_bug_info(struct bug_info *bi)
 
 static GList *parse_comments(xmlrpc_value *result_xml)
 {
+    func_entry();
+
     GList *comments = NULL;
     xmlrpc_value *comments_memb = rhbz_get_member("longdescs", result_xml);
     if (!comments_memb)
@@ -74,6 +90,8 @@ static GList *parse_comments(xmlrpc_value *result_xml)
 
 static char *trim_all_whitespace(const char *str)
 {
+    func_entry();
+
     char *trim = xzalloc(sizeof(char) * strlen(str) + 1);
     int i = 0;
     while (*str)
@@ -88,6 +106,8 @@ static char *trim_all_whitespace(const char *str)
 
 int is_comment_dup(GList *comments, const char *comment)
 {
+    func_entry();
+
     char * const trim_comment = trim_all_whitespace(comment);
     bool same_comments = false;
 
@@ -105,6 +125,8 @@ int is_comment_dup(GList *comments, const char *comment)
 
 static unsigned find_best_bt_rating_in_comments(GList *comments)
 {
+    func_entry();
+
     if (!comments)
         return 0;
 
@@ -148,6 +170,8 @@ static unsigned find_best_bt_rating_in_comments(GList *comments)
 
 void rhbz_login(struct abrt_xmlrpc *ax, struct bugzilla_struct *b)
 {
+    func_entry();
+
     xmlrpc_value* result = abrt_xmlrpc_call(ax, "User.login", "({s:s,s:s})",
                                             "login", b->b_login, "password", b->b_password);
 
@@ -162,6 +186,8 @@ void rhbz_login(struct abrt_xmlrpc *ax, struct bugzilla_struct *b)
 xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax, const char *component,
                                   const char *product, const char *duphash)
 {
+    func_entry();
+
     struct strbuf *query = strbuf_new();
     strbuf_append_strf(query, "ALL whiteboard:\"%s\"", duphash);
 
@@ -181,6 +207,8 @@ xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax, const char *component,
 
 xmlrpc_value *rhbz_get_member(const char *member, xmlrpc_value *xml)
 {
+    func_entry_str(member);
+
     xmlrpc_env env;
     xmlrpc_env_init(&env);
 
@@ -203,6 +231,8 @@ xmlrpc_value *rhbz_get_member(const char *member, xmlrpc_value *xml)
  */
 int rhbz_array_size(xmlrpc_value *xml)
 {
+    func_entry();
+
     xmlrpc_env env;
     xmlrpc_env_init(&env);
 
@@ -216,6 +246,8 @@ int rhbz_array_size(xmlrpc_value *xml)
 /* die or return bug id; each bug must have bug id otherwise xml is corrupted */
 int rhbz_bug_id(xmlrpc_value* xml)
 {
+    func_entry();
+
     xmlrpc_env env;
     xmlrpc_env_init(&env);
 
@@ -227,7 +259,7 @@ int rhbz_bug_id(xmlrpc_value* xml)
     if (env.fault_occurred)
         abrt_xmlrpc_die(&env);
 
-    bug = rhbz_get_member("bug_id", item);
+    bug = rhbz_get_member("id", item);
     xmlrpc_DECREF(item);
     if (!bug)
         abrt_xmlrpc_die(&env);
@@ -247,6 +279,8 @@ int rhbz_bug_id(xmlrpc_value* xml)
 // TODO: npajkovs: add flag to read xmlrpc_read_array_item first
 void *rhbz_bug_read_item(const char *memb, xmlrpc_value *xml, int flags)
 {
+    func_entry();
+
     xmlrpc_env env;
     xmlrpc_env_init(&env);
 
@@ -293,6 +327,8 @@ die:
 
 GList *rhbz_bug_cc(xmlrpc_value* result_xml)
 {
+    func_entry();
+
     xmlrpc_env env;
     xmlrpc_env_init(&env);
 
@@ -335,6 +371,8 @@ GList *rhbz_bug_cc(xmlrpc_value* result_xml)
 
 struct bug_info *rhbz_bug_info(struct abrt_xmlrpc *ax, int bug_id)
 {
+    func_entry();
+
     struct bug_info *bz = new_bug_info();
     xmlrpc_value *xml_bug_response = abrt_xmlrpc_call(ax, "bugzilla.getBug",
                                                       "(i)", bug_id);
@@ -384,6 +422,8 @@ struct bug_info *rhbz_bug_info(struct abrt_xmlrpc *ax, int bug_id)
 int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
                  const char *release)
 {
+    func_entry();
+
     const char *package      = get_problem_item_content_or_NULL(problem_data,
                                                                 FILENAME_PACKAGE);
     const char *component    = get_problem_item_content_or_NULL(problem_data,
@@ -483,6 +523,8 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
 int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *filename,
                     const char *bug_id, const char *data, int data_len, int flags)
 {
+    func_entry();
+
     char *encoded64 = encode_base64(data, data_len);
     char *fn = xasprintf("File: %s", filename);
     xmlrpc_value* result;
@@ -509,6 +551,8 @@ int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *filename,
 int rhbz_attach_fd(struct abrt_xmlrpc *ax, const char *filename,
                     const char *bug_id, int fd, int flags)
 {
+    func_entry();
+
     off_t size = lseek(fd, 0, SEEK_END);
     if (size < 0)
     {
@@ -547,6 +591,8 @@ int rhbz_attach_fd(struct abrt_xmlrpc *ax, const char *filename,
 int rhbz_attach_big_files(struct abrt_xmlrpc *ax, const char *bug_id,
                      problem_data_t *problem_data, int flags)
 {
+    func_entry();
+
     GHashTableIter iter;
     char *name;
     struct problem_item *value;
@@ -600,6 +646,8 @@ int rhbz_attach_big_files(struct abrt_xmlrpc *ax, const char *bug_id,
 
 void rhbz_logout(struct abrt_xmlrpc *ax)
 {
+    func_entry();
+
     xmlrpc_value* result = abrt_xmlrpc_call(ax, "User.logout", "(s)", "");
     if (result)
         xmlrpc_DECREF(result);
@@ -608,6 +656,8 @@ void rhbz_logout(struct abrt_xmlrpc *ax)
 struct bug_info *rhbz_find_origin_bug_closed_duplicate(struct abrt_xmlrpc *ax,
                                                        struct bug_info *bi)
 {
+    func_entry();
+
     struct bug_info *bi_tmp = new_bug_info();
     bi_tmp->bi_id = bi->bi_id;
     bi_tmp->bi_dup_id = bi->bi_dup_id;
@@ -634,6 +684,8 @@ struct bug_info *rhbz_find_origin_bug_closed_duplicate(struct abrt_xmlrpc *ax,
 /* suppress mail notify by {s:i} (nomail:1) */
 void rhbz_mail_to_cc(struct abrt_xmlrpc *ax, int bug_id, const char *mail, int flags)
 {
+    func_entry();
+
     xmlrpc_value *result;
     int nomail_notify = IS_NOMAIL_NOTIFY(flags);
     result = abrt_xmlrpc_call(ax, "Bug.update", "({s:i,s:{s:(s),s:i}})",
@@ -647,6 +699,8 @@ void rhbz_mail_to_cc(struct abrt_xmlrpc *ax, int bug_id, const char *mail, int f
 void rhbz_add_comment(struct abrt_xmlrpc *ax, int bug_id, const char *comment,
                       int flags)
 {
+    func_entry();
+
     int private = IS_PRIVATE(flags);
     int nomail_notify = IS_NOMAIL_NOTIFY(flags);
 
