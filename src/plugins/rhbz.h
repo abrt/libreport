@@ -97,7 +97,7 @@ xmlrpc_value *rhbz_get_member(const char *member, xmlrpc_value *xml);
 
 int rhbz_array_size(xmlrpc_value *xml);
 
-int rhbz_bug_id(xmlrpc_value *xml);
+int rhbz_bug_id(xmlrpc_value *xml, const char *ver);
 
 int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
                  const char *release);
@@ -120,6 +120,7 @@ struct bug_info *rhbz_bug_info(struct abrt_xmlrpc *ax, int bug_id);
 
 struct bug_info *rhbz_find_origin_bug_closed_duplicate(struct abrt_xmlrpc *ax,
                                                        struct bug_info *bi);
+char *rhbz_version(struct abrt_xmlrpc *ax);
 
 #ifdef __cplusplus
 }

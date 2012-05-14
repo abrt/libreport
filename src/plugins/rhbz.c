@@ -243,8 +243,26 @@ int rhbz_array_size(xmlrpc_value *xml)
     return size;
 }
 
+
+char *rhbz_version(struct abrt_xmlrpc *ax)
+{
+    func_entry();
+
+    xmlrpc_value *result;
+    result = abrt_xmlrpc_call(ax, "Bugzilla.version", "()");
+
+    char *version = NULL;
+    if (result)
+    {
+        version = rhbz_bug_read_item("version", result, RHBZ_READ_STR);
+        xmlrpc_DECREF(result);
+    }
+
+    return version;
+}
+
 /* die or return bug id; each bug must have bug id otherwise xml is corrupted */
-int rhbz_bug_id(xmlrpc_value* xml)
+int rhbz_bug_id(xmlrpc_value* xml, const char *ver)
 {
     func_entry();
 
@@ -259,7 +277,13 @@ int rhbz_bug_id(xmlrpc_value* xml)
     if (env.fault_occurred)
         abrt_xmlrpc_die(&env);
 
-    bug = rhbz_get_member("id", item);
+    char *id;
+    if (!prefixcmp(ver, "4.2"))
+        id = "id";
+    else
+        id = "bug_id";
+
+    bug = rhbz_get_member(id, item);
     xmlrpc_DECREF(item);
     if (!bug)
         abrt_xmlrpc_die(&env);
