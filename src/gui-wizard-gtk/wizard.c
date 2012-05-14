@@ -318,16 +318,8 @@ struct dump_dir *steal_if_needed(struct dump_dir *dd)
 
     dd_close(dd);
 
-    char *HOME = getenv("HOME");
-    if (!HOME || !HOME[0])
-    {
-        struct passwd *pw = getpwuid(getuid());
-        HOME = pw ? pw->pw_dir : NULL;
-    }
-    if (HOME && HOME[0])
-        HOME = concat_path_file(HOME, ".abrt/spool");
-    else
-        HOME = xstrdup("/tmp");
+    char *spooldir;
+    spooldir = concat_path_file(g_get_user_cache_dir(), "abrt/spool");
 
     const char *ask_steal_dir = get_user_setting("ask_steal_dir");
 
@@ -339,7 +331,7 @@ struct dump_dir *steal_if_needed(struct dump_dir *dd)
                 GTK_BUTTONS_OK_CANCEL,
                 _("Need writable directory, but '%s' is not writable."
                 " Move it to '%s' and operate on the moved data?"),
-                g_dump_dir_name, HOME
+                g_dump_dir_name, spooldir
                 );
         gint response = GTK_RESPONSE_CANCEL;
         g_signal_connect(G_OBJECT(dialog), "response", G_CALLBACK(save_dialog_response), &response);
@@ -362,7 +354,8 @@ struct dump_dir *steal_if_needed(struct dump_dir *dd)
             return NULL;
     }
 
-    dd = steal_directory(HOME, g_dump_dir_name);
+    dd = steal_directory(spooldir, g_dump_dir_name);
+    g_free(spooldir);
     if (!dd)
         return NULL; /* Stealing failed. Error msg was already logged */
 

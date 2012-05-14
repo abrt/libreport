@@ -138,7 +138,7 @@ int main(int argc, char **argv)
     g_dump_dir_name = xstrdup(argv[0]);
 
     /* load /etc/abrt/events/foo.{conf,xml} stuff
-       and ~/.abrt/events/foo.conf */
+       and $XDG_CACHE_HOME/abrt/events/foo.conf */
     load_event_config_data();
     load_event_config_data_from_keyring();
     load_user_settings("report-gtk");

@@ -45,7 +45,6 @@ libreport_la_SOURCES = \
     event_xml_parser.c \
     event_config.c \
     report.c \
-    make_dir_recursive.c \
     user_settings.c \
     client.c \
     utf8.c

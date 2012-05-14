@@ -129,9 +129,7 @@ int main(int argc, char** argv)
 
     if (!D_list)
     {
-        char *home = getenv("HOME");
-        if (home)
-            D_list = g_list_append(D_list, concat_path_file(home, ".abrt/spool"));
+        D_list = g_list_append(D_list, concat_path_file(g_get_user_cache_dir(), "abrt/spool"));
         D_list = g_list_append(D_list, (void*)DEBUG_DUMPS_DIR);
     }
 

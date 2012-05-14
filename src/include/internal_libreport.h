@@ -628,9 +628,6 @@ int delete_dump_dir_possibly_using_abrtd(const char *dump_dir_name);
 #define steal_directory libreport_steal_directory
 struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name);
 
-#define make_dir_recursive libreport_make_dir_recursive
-bool make_dir_recursive(char *dir, mode_t dir_mode);
-
 // Files bigger than this are never considered to be text.
 //
 // Started at 64k limit. But _some_ limit is necessary:

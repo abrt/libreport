@@ -147,7 +147,7 @@ static void load_config_files(const char *dir_path)
     closedir(dir);
 }
 
-/* (Re)loads data from /etc/abrt/events/foo.{xml,conf} and ~/.abrt/events/foo.conf */
+/* (Re)loads data from /etc/abrt/events/foo.{xml,conf} and $XDG_CACHE_HOME/abrt/events/foo.conf */
 void load_event_config_data(void)
 {
     free_event_config_data();
@@ -222,12 +222,10 @@ void load_event_config_data(void)
 
     load_config_files(EVENTS_DIR);
 
-    char *HOME = getenv("HOME");
-    if (!HOME || !HOME[0])
-        return;
-    HOME = concat_path_file(HOME, ".abrt/events");
-    load_config_files(HOME);
-    free(HOME);
+    char *cachedir;
+    cachedir = concat_path_file(g_get_user_cache_dir(), "abrt/events");
+    load_config_files(cachedir);
+    free(cachedir);
 }
 
 /* Frees all loaded data */

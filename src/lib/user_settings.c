@@ -25,15 +25,9 @@ static bool create_parentdir(char *path)
     bool ret;
     char *c;
 
-    /* in-place dirname() */
-    for (c = path + strlen(path); c > path && *c != '/'; c--)
-        ;
-    if (*c != '/')
-        return false;
-    *c = '\0';
-
-    ret = make_dir_recursive(path, 0755);
-    *c = '/'; /* restore path back */
+    c = g_path_get_dirname(path);
+    ret = g_mkdir_with_parents(c, 0700);
+    g_free(c);
 
     return ret;
 }
@@ -50,7 +44,7 @@ bool save_conf_file(const char *path, map_string_h *settings)
 
     temp_path = xasprintf("%s.tmp", path);
 
-    if (!create_parentdir(temp_path) || !(out = fopen(temp_path, "w")))
+    if (create_parentdir(temp_path) != 0 || !(out = fopen(temp_path, "w")))
         goto cleanup;
 
     g_hash_table_iter_init(&iter, settings);
@@ -75,10 +69,12 @@ cleanup:
 
 static char *get_conf_path(const char *name)
 {
-    char *HOME = getenv("HOME"), *s, *conf;
+    const char *configdir;
+    char *s, *conf;
 
-    s = xasprintf("%s/%s.conf", ".abrt/settings", name);
-    conf = concat_path_file(HOME, s);
+    configdir = g_get_user_config_dir();
+    s = xasprintf("%s/%s.conf", "abrt/settings", name);
+    conf = concat_path_file(configdir, s);
     free(s);
     return conf;
 }

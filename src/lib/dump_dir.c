@@ -408,7 +408,7 @@ struct dump_dir *dd_create(const char *dir, uid_t uid, mode_t mode)
      * the user to replace any file in the directory, changing security-sensitive data
      * (e.g. "uid", "analyzer", "executable")
      */
-    if (!make_dir_recursive(dd->dd_dirname, dir_mode))
+    if (g_mkdir_with_parents(dd->dd_dirname, dir_mode) != 0)
     {
         perror_msg("Can't create directory '%s'", dir);
         dd_close(dd);
