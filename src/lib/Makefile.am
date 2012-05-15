@@ -107,7 +107,6 @@ libabrt_web_la_CPPFLAGS = \
     $(PROXY_CFLAGS) \
     $(LIBXML_CFLAGS) \
     $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
-    $(LIBREPORT_CFLAGS) \
     $(JSON_C_CFLAGS) \
     $(BTPARSER_CFLAGS) \
     -D_GNU_SOURCE
@@ -120,7 +119,8 @@ libabrt_web_la_LIBADD = \
     $(LIBXML_LIBS) \
     $(JSON_C_LIBS) \
     $(BTPARSER_LIBS) \
-    $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS)
+    $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS) \
+    libreport.la
 
 $(DESTDIR)/$(DEBUG_DUMPS_DIR):
 	$(mkdir_p) '$@'

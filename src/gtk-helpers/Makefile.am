@@ -27,7 +27,8 @@ libreport_gtk_la_LDFLAGS = \
 libreport_gtk_la_LIBADD = \
     $(GTK_LIBS) \
     $(GLIB_LIBS) \
-    $(GNOME_KEYRING_LIBS)
+    $(GNOME_KEYRING_LIBS) \
+    ../lib/libreport.la
 
 EXTRA_DIST = libreport-gtk.pc.in
 
