@@ -69,12 +69,10 @@ cleanup:
 
 static char *get_conf_path(const char *name)
 {
-    const char *configdir;
     char *s, *conf;
 
-    configdir = g_get_user_config_dir();
-    s = xasprintf("%s/%s.conf", "abrt/settings", name);
-    conf = concat_path_file(configdir, s);
+    s = xasprintf("abrt/settings/%s.conf", name);
+    conf = concat_path_file(g_get_user_config_dir(), s);
     free(s);
     return conf;
 }
