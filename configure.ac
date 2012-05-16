@@ -20,11 +20,6 @@ AC_ARG_ENABLE(debug,
                              [Enable debug information])],
               [CFLAGS="$CFLAGS -DDEBUG -ggdb -g"])
 
-AC_ARG_ENABLE(gtk3,
-              [AC_HELP_STRING([--enable-gtk3],
-                             [Use gtk3 instead of gtk2])],
-              [GTK_VER="gtk+-3.0"],[GTK_VER="gtk+-2.0"])
-
 AC_ARG_ENABLE([bodhi],
       AC_HELP_STRING([--disable-bodhi], [do not use bodhi plugin]))
 
@@ -65,7 +60,7 @@ AC_PATH_PROG([XMLTO], [xmlto], [no])
     [exit 1]
 [fi]
 
-PKG_CHECK_MODULES([GTK], [$GTK_VER])
+PKG_CHECK_MODULES([GTK], [gtk+-3.0])
 PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.21])
 PKG_CHECK_MODULES([DBUS], [dbus-1])
 PKG_CHECK_MODULES([LIBXML], [libxml-2.0])

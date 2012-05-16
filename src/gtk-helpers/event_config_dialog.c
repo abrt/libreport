@@ -236,8 +236,13 @@ static void on_event_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, 
 
 static void on_event_row_changed_cb(GtkTreeView *treeview, gpointer user_data)
 {
-    event_config_t *ec = get_event_config(get_event_name_from_row(treeview));
-    gtk_widget_set_sensitive(GTK_WIDGET(user_data), ec->options != NULL);
+    const char *event_name = get_event_name_from_row(treeview);
+
+    if (event_name)
+    {
+        event_config_t *ec = get_event_config(event_name);
+        gtk_widget_set_sensitive(GTK_WIDGET(user_data), ec->options != NULL);
+    }
 }
 
 static void add_event_to_liststore(gpointer key, gpointer value, gpointer user_data)
@@ -472,7 +477,7 @@ void show_events_list_dialog(GtkWindow *parent)
             gtk_window_get_icon_name(parent));
     }
 
-    GtkWidget *main_vbox = gtk_vbox_new(0, 0);
+    GtkWidget *main_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     GtkWidget *events_scroll = gtk_scrolled_window_new(NULL, NULL);
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(events_scroll),
                                     GTK_POLICY_NEVER,
@@ -527,7 +532,7 @@ void show_events_list_dialog(GtkWindow *parent)
     GtkWidget *close_btn = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
     g_signal_connect(close_btn, "clicked", G_CALLBACK(on_close_event_list_cb), g_event_list_window);
 
-    GtkWidget *btnbox = gtk_hbutton_box_new();
+    GtkWidget *btnbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
     gtk_box_pack_end(GTK_BOX(btnbox), close_btn, false, false, 0);
     gtk_box_pack_end(GTK_BOX(btnbox), configure_event_btn, false, false, 0);
 

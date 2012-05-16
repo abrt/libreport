@@ -45,7 +45,11 @@ static pid_t g_event_child_pid = 0;
 
 static bool g_expert_mode;
 
-static GtkAssistant *g_assistant;
+static GtkNotebook *g_assistant;
+static GtkWindow *g_wnd_assistant;
+static GtkBox *g_box_assistant;
+static GtkWidget *g_next_btn;
+
 
 static GtkBox *g_box_events;
 /* List of event_gui_data's */
@@ -265,13 +269,13 @@ static void show_event_opt_error_dialog(const char *event_name)
                               "reporting will probably fail if you continue "
                               "with the current configuration."),
                                ec->screen_name);
-    GtkWidget *wrong_settings = g_top_most_window = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
+    GtkWidget *wrong_settings = g_top_most_window = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
         GTK_MESSAGE_WARNING,
         GTK_BUTTONS_CLOSE,
         message);
 
-    gtk_window_set_transient_for(GTK_WINDOW(wrong_settings), GTK_WINDOW(g_assistant));
+    gtk_window_set_transient_for(GTK_WINDOW(wrong_settings), GTK_WINDOW(g_wnd_assistant));
     gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(wrong_settings),
                                     markup_message);
     free(message);
@@ -299,7 +303,7 @@ static void update_window_title(void)
     const char *reason = get_problem_item_content_or_NULL(g_cd, FILENAME_REASON);
     char *title = xasprintf("%s - %s", (reason ? reason : g_dump_dir_name),
             (prgname ? prgname : "report"));
-    gtk_window_set_title(GTK_WINDOW(g_assistant), title);
+    gtk_window_set_title(g_wnd_assistant, title);
     free(title);
 }
 
@@ -325,7 +329,7 @@ struct dump_dir *steal_if_needed(struct dump_dir *dd)
 
     if (!ask_steal_dir || strcmp(ask_steal_dir, "no"))
     {
-        GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
+        GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
                 GTK_DIALOG_DESTROY_WITH_PARENT,
                 GTK_MESSAGE_QUESTION,
                 GTK_BUTTONS_OK_CANCEL,
@@ -380,7 +384,7 @@ struct dump_dir *steal_if_needed(struct dump_dir *dd)
 
 void show_error_as_msgbox(const char *msg)
 {
-    GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
+    GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
                 GTK_DIALOG_DESTROY_WITH_PARENT,
                 GTK_MESSAGE_WARNING,
                 GTK_BUTTONS_CLOSE,
@@ -508,6 +512,10 @@ static struct problem_item *get_current_problem_item_or_NULL(GtkTreeView *tree_v
     GtkTreeModel *model;
     GtkTreeIter iter;
     GtkTreeSelection* selection = gtk_tree_view_get_selection(tree_view);
+
+    if (selection == NULL)
+        return NULL;
+
     if (!gtk_tree_selection_get_selected(selection, &model, &iter))
         return NULL;
 
@@ -518,7 +526,6 @@ static struct problem_item *get_current_problem_item_or_NULL(GtkTreeView *tree_v
     if (!*pp_item_name) /* paranoia, should never happen */
         return NULL;
     struct problem_item *item = get_problem_data_item_or_NULL(g_cd, *pp_item_name);
-
     return item;
 }
 
@@ -548,7 +555,7 @@ static void tv_details_row_activated(
     if (exitcode != EXIT_SUCCESS)
     {
         GtkWidget *dialog = gtk_dialog_new_with_buttons(_("View/edit a text file"),
-            GTK_WINDOW(g_assistant),
+            GTK_WINDOW(g_wnd_assistant),
             GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
             NULL, NULL);
         GtkWidget *vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
@@ -589,9 +596,22 @@ static void tv_details_cursor_changed(
                         GtkTreeView *tree_view,
                         gpointer     user_data_UNUSED)
 {
-    gchar *item_name;
+    /* I see this being called on window "destroy" signal when the tree_view is
+       not a tree view anymore (or destroyed?) causing this error msg:
+       (abrt:12804): Gtk-CRITICAL **: gtk_tree_selection_get_selected: assertion `GTK_IS_TREE_SELECTION (selection)' failed
+       (abrt:12804): GLib-GObject-WARNING **: invalid uninstantiatable type `(null)' in cast to `GObject'
+       (abrt:12804): GLib-GObject-CRITICAL **: g_object_set: assertion `G_IS_OBJECT (object)' failed
+    */
+    if (!GTK_IS_TREE_VIEW(tree_view))
+        return;
+
+    gchar *item_name = NULL;
     struct problem_item *item = get_current_problem_item_or_NULL(tree_view, &item_name);
     g_free(item_name);
+
+    /* happens when closing the wizard by clicking 'X' */
+    if (!item)
+        return;
 
     gboolean editable = (item
                 /* With this, copying of non-editable fields are more difficult */
@@ -750,16 +770,8 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
         gtk_misc_set_alignment(GTK_MISC(lbl), /*x*/ 0.0, /*y*/ 0.0);
         make_label_autowrap_on_resize(GTK_LABEL(lbl));
         gtk_box_pack_start(box, lbl, /*expand*/ true, /*fill*/ false, /*padding*/ 0);
-        gtk_assistant_set_page_complete(g_assistant,
-                    pages[PAGENO_EVENT_SELECTOR].page_widget,
-                    false
-        );
         return NULL;
     }
-    gtk_assistant_set_page_complete(g_assistant,
-                pages[PAGENO_EVENT_SELECTOR].page_widget,
-                true
-    );
 
     event_gui_data_t *first_button = NULL;
     event_gui_data_t *active_button = NULL;
@@ -1106,7 +1118,7 @@ void update_gui_state_from_problem_data(void)
     /* We can't just do gtk_widget_show_all once in main:
      * We created new widgets (buttons). Need to make them visible.
      */
-    gtk_widget_show_all(GTK_WIDGET(g_assistant));
+    gtk_widget_show_all(GTK_WIDGET(g_wnd_assistant));
 }
 
 
@@ -1311,7 +1323,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
             {
                 skip_chars = alert_prefix_len;
 
-                GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
+                GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
                     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                     GTK_MESSAGE_WARNING,
                     GTK_BUTTONS_CLOSE,
@@ -1327,7 +1339,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
             {
                 skip_chars = ask_prefix_len;
 
-                GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
+                GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
                     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                     GTK_MESSAGE_QUESTION,
                     GTK_BUTTONS_OK_CANCEL,
@@ -1363,7 +1375,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
             {
                 skip_chars = ask_password_prefix_len;
 
-                GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
+                GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
                     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                     GTK_MESSAGE_QUESTION,
                     GTK_BUTTONS_OK_CANCEL,
@@ -1400,7 +1412,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
             {
                 skip_chars = ask_yes_no_prefix_len;
 
-                GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
+                GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
                     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                     GTK_MESSAGE_QUESTION,
                     GTK_BUTTONS_YES_NO,
@@ -1757,18 +1769,12 @@ static void check_bt_rating_and_allow_send(void)
             }
         }
     }
-
-    gtk_assistant_set_page_complete(g_assistant,
-                                    pages[PAGENO_EDIT_ELEMENTS].page_widget,
-                                    send);
+    gtk_widget_set_sensitive(GTK_WIDGET(g_box_assist_nav), send);
 }
 
 static void on_bt_approve_toggle(GtkToggleButton *togglebutton, gpointer user_data)
 {
-    gtk_assistant_set_page_complete(g_assistant,
-                                    pages[PAGENO_REVIEW_DATA].page_widget,
-                                    gtk_toggle_button_get_active(g_tb_approve_bt)
-    );
+    gtk_widget_set_sensitive(g_next_btn, gtk_toggle_button_get_active(g_tb_approve_bt));
 }
 
 static void toggle_eb_comment(void)
@@ -1782,7 +1788,7 @@ static void toggle_eb_comment(void)
         || gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(g_cb_no_comment));
 
     /* Allow next page only when the comment has at least 10 chars */
-    gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_EDIT_COMMENT].page_widget, good);
+    gtk_widget_set_sensitive(g_next_btn, good);
 
     /* And show the eventbox with label */
     if (good)
@@ -1804,7 +1810,7 @@ static void on_no_comment_toggled(GtkToggleButton *togglebutton, gpointer user_d
 
 static void on_show_event_list_cb(GtkWidget *button, gpointer user_data)
 {
-    show_events_list_dialog(GTK_WINDOW(g_assistant));
+    show_events_list_dialog(GTK_WINDOW(g_wnd_assistant));
 }
 
 #if 0
@@ -1936,22 +1942,9 @@ static void highlight_forbidden(void)
     list_free_with_free(forbidden_words);
 }
 
-
-/* Page navigation handlers */
-
-/* Called _only_ by "Apply" button, not by "Forward" btn! */
-static void next_page(GtkAssistant *assistant, gpointer user_data)
-{
-    /* page_no is actually the previous page, because this
-     * function is called before assistant goes to the next page
-     */
-    int page_no = gtk_assistant_get_current_page(assistant);
-    VERB2 log("page_no:%d", page_no);
-}
-
 static gint select_next_page_no(gint current_page_no, gpointer data);
 
-static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer user_data)
+static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer user_data)
 {
     //int page_no = gtk_assistant_get_current_page(g_assistant);
     //log_ready_state();
@@ -1975,7 +1968,7 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
             /* Skip intro screen */
             int n = select_next_page_no(pages[PAGENO_SUMMARY].page_no, NULL);
             VERB2 log("switching to page_no:%d", n);
-            gtk_assistant_set_current_page(assistant, n);
+            gtk_notebook_set_current_page(assistant, n);
             return;
         }
     }
@@ -2010,12 +2003,16 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
 
         if (pages[PAGENO_REVIEW_DATA].page_widget == page)
         {
+            gtk_widget_set_sensitive(g_next_btn, gtk_toggle_button_get_active(g_tb_approve_bt));
             update_ls_details_checkboxes();
         }
     }
 
     if (pages[PAGENO_EDIT_COMMENT].page_widget == page)
+    {
+        gtk_widget_set_sensitive(g_next_btn, false);
         on_comment_changed(gtk_text_view_get_buffer(g_tv_comment), NULL);
+    }
     //log_ready_state();
 
     if (pages[PAGENO_EVENT_PROGRESS].page_widget == page)
@@ -2049,7 +2046,7 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
     if (g_report_only)
     {
         /* In only-report mode, we only need to wrap back at the end */
-        page = gtk_assistant_get_nth_page(g_assistant, current_page_no);
+        page = gtk_notebook_get_nth_page(g_assistant, current_page_no);
         if (page == pages[PAGENO_EVENT_DONE].page_widget)
             current_page_no = 0;
         else
@@ -2061,7 +2058,7 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
  again:
     VERB1 log("%s: current_page_no:%d", __func__, current_page_no);
     current_page_no++;
-    page = gtk_assistant_get_nth_page(g_assistant, current_page_no);
+    page = gtk_notebook_get_nth_page(g_assistant, current_page_no);
 
     if (pages[PAGENO_EVENT_SELECTOR].page_widget == page)
     {
@@ -2259,7 +2256,7 @@ static void on_btn_add_file(GtkButton *button)
 {
     GtkWidget *dialog = gtk_file_chooser_dialog_new(
             "Attach File",
-            GTK_WINDOW(g_assistant),
+            GTK_WINDOW(g_wnd_assistant),
             GTK_FILE_CHOOSER_ACTION_OPEN,
             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
             GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
@@ -2327,13 +2324,13 @@ static void on_btn_add_file(GtkButton *button)
         if (message)
         {
  show_msgbox: ;
-            GtkWidget *dlg = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
+            GtkWidget *dlg = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
                 GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                 GTK_MESSAGE_WARNING,
                 GTK_BUTTONS_CLOSE,
                 message);
             free(message);
-            gtk_window_set_transient_for(GTK_WINDOW(dlg), GTK_WINDOW(g_assistant));
+            gtk_window_set_transient_for(GTK_WINDOW(dlg), GTK_WINDOW(g_wnd_assistant));
             gtk_dialog_run(GTK_DIALOG(dlg));
             gtk_widget_destroy(dlg);
         }
@@ -2400,6 +2397,15 @@ static gint on_key_press_event_in_item_list(GtkTreeView *treeview, GdkEventKey *
 /* wizard.glade file as a string WIZARD_GLADE_CONTENTS: */
 #include "wizard_glade.c"
 
+static void on_next_btn_cb(GtkWidget *btn, gpointer user_data)
+{
+    gint next_page_no = select_next_page_no(
+                        gtk_notebook_get_current_page(g_assistant),
+                        NULL
+                        );
+    gtk_notebook_set_current_page(g_assistant, next_page_no);
+}
+
 static void add_pages(void)
 {
     GError *error = NULL;
@@ -2448,18 +2454,7 @@ static void add_pages(void)
         GtkWidget *page = GTK_WIDGET(gtk_builder_get_object(builder, page_names[i]));
         pages[i].page_widget = page;
         pages[i].page_no = page_no++;
-        gtk_assistant_append_page(g_assistant, page);
-        /* If we set all pages to complete the wizard thinks there is nothing
-         * to do and shows the button "Last" which allows user to skip all pages
-         * so we need to set them all as incomplete and complete them one by one
-         * on proper place - on_page_prepare() ?
-         */
-        gtk_assistant_set_page_complete(g_assistant, page, true);
-        gtk_assistant_set_page_title(g_assistant, page, pages[i].title);
-        if (not_reportable && i == 0)
-            gtk_assistant_set_page_type(g_assistant, page, GTK_ASSISTANT_PAGE_SUMMARY);
-        else
-            gtk_assistant_set_page_type(g_assistant, page, pages[i].type);
+        gtk_notebook_append_page(g_assistant, page, gtk_label_new(pages[i].title));
         VERB1 log("added page: %s", page_names[i]);
     }
     free(not_reportable);
@@ -2492,12 +2487,6 @@ static void add_pages(void)
     gtk_widget_modify_font(GTK_WIDGET(g_tv_event_log), monospace_font);
     fix_all_wrapped_labels(GTK_WIDGET(g_assistant));
 
-    if (pages[PAGENO_REVIEW_DATA].page_widget != NULL)
-    {
-        gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_REVIEW_DATA].page_widget,
-                    gtk_toggle_button_get_active(g_tb_approve_bt));
-    }
-
     /* Configure btn on select analyzers page */
     GtkWidget *config_btn = GTK_WIDGET(gtk_builder_get_object(builder, "button_cfg1"));
     if (config_btn)
@@ -2516,34 +2505,12 @@ static void add_pages(void)
     g_signal_connect(G_OBJECT(g_ev_search_down), "leave-notify-event", G_CALLBACK(unhighlight_widget), NULL);
     g_signal_connect(G_OBJECT(g_ev_search_down), "button-press-event", G_CALLBACK(search_down), NULL);
 
-    GtkWidget *w;
-
-    /* Align "Close" button to left */
-    w = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);
-    gtk_assistant_add_action_widget(g_assistant, w);
-    /* Keep pointer to the button box so we can set sensitivity later */
-    g_box_assist_nav = GTK_BOX(gtk_widget_get_parent(w));
-    gtk_box_set_child_packing(g_box_assist_nav, w, /*expand:*/ TRUE, /*fill:*/ FALSE, /*padding:*/ 0, GTK_PACK_END);
-    gtk_widget_show(w);
-
-    /* Add "Close" button */
-    if (!not_reportable)
-    {
-        w = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
-        gtk_assistant_add_action_widget(g_assistant, w);
-        gtk_widget_show(w);
-        g_signal_connect(w, "clicked", G_CALLBACK(gtk_main_quit), NULL);
-    }
-
 //TODO: have [Stop event] button here, not inside log window?
 //    w = gtk_button_new_from_stock(GTK_STOCK_STOP);
 //    gtk_assistant_add_action_widget(g_assistant, w);
 //    gtk_box_set_child_packing(g_box_assist_nav, w, /*expand:*/ FALSE, /*fill:*/ FALSE, /*padding:*/ 0, GTK_PACK_START);
 //    gtk_widget_show(w);
 //    g_signal_connect(w, "clicked", G_CALLBACK(on_btn_cancel_event), NULL);
-
-    /* and hide "Cancel" button - "Close" is a better name for what we want */
-    gtk_assistant_commit(g_assistant);
 
     /* Set color of the comment evenbox */
     GdkColor color;
@@ -2651,24 +2618,60 @@ void create_assistant(void)
 
     builder = gtk_builder_new();
 
-    g_assistant = GTK_ASSISTANT(gtk_assistant_new());
+    g_assistant = GTK_NOTEBOOK(gtk_notebook_new());
+    gtk_notebook_set_show_tabs(g_assistant, false);
+    VERB1 gtk_notebook_set_show_tabs(g_assistant, true);
 
-    gtk_assistant_set_forward_page_func(g_assistant, select_next_page_no, NULL, NULL);
+    g_box_assistant = GTK_BOX(gtk_box_new(GTK_ORIENTATION_VERTICAL, 0));
 
-    GtkWindow *wnd_assistant = GTK_WINDOW(g_assistant);
-    gtk_window_set_default_size(wnd_assistant, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+
+    GtkWidget *close_btn = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
+    g_signal_connect(G_OBJECT(close_btn), "clicked", G_CALLBACK(gtk_main_quit), NULL);
+    g_box_assist_nav = GTK_BOX(gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0));
+
+
+    gtk_box_pack_start(GTK_BOX(g_box_assist_nav), close_btn, false, false, 5);
+
+    GtkWidget *w;
+    /* Align "Close" button to left */
+    w = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);
+    gtk_box_pack_start(GTK_BOX(g_box_assist_nav), w, true, true, 5);
+
+    g_next_btn = gtk_button_new_from_stock(GTK_STOCK_GO_FORWARD);
+    g_signal_connect(G_OBJECT(g_next_btn), "clicked", G_CALLBACK(on_next_btn_cb), NULL);
+
+    gtk_box_pack_start(GTK_BOX(g_box_assist_nav), g_next_btn, false, false, 5);
+
+    gtk_widget_show_all(GTK_WIDGET(g_box_assist_nav));
+
+#if 0
+    /* Add "Close" button */
+    if (!not_reportable)
+    {
+        close_btn = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
+        //gtk_box_pack_start(g_assistant, w, GTK_PACK_START);
+        gtk_box_pack_start(GTK_BOX(g_box_assist_nav), w, false, false, 0);
+        gtk_widget_show(w);
+        g_signal_connect(w, "clicked", G_CALLBACK(gtk_main_quit), NULL);
+    }
+#endif
+
+    gtk_box_pack_start(g_box_assistant, GTK_WIDGET(g_assistant), true, true, 5);
+    gtk_box_pack_start(g_box_assistant, GTK_WIDGET(g_box_assist_nav), false, false, 5);
+
+    g_wnd_assistant = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
+    gtk_container_add(GTK_CONTAINER(g_wnd_assistant), GTK_WIDGET(g_box_assistant));
+    gtk_window_set_default_size(g_wnd_assistant, DEFAULT_WIDTH, DEFAULT_HEIGHT);
     /* set_default sets icon for every windows used in this app, so we don't
      * have to set the icon for those windows manually
      */
     gtk_window_set_default_icon_name("abrt");
 
-    GObject *obj_assistant = G_OBJECT(g_assistant);
-    g_signal_connect(obj_assistant, "cancel", G_CALLBACK(gtk_main_quit), NULL);
-    g_signal_connect(obj_assistant, "close", G_CALLBACK(gtk_main_quit), NULL);
-    g_signal_connect(obj_assistant, "apply", G_CALLBACK(next_page), NULL);
-    g_signal_connect(obj_assistant, "prepare", G_CALLBACK(on_page_prepare), NULL);
+    g_signal_connect(G_OBJECT(g_wnd_assistant), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
     add_pages();
+
+    g_signal_connect(G_OBJECT(g_assistant), "switch-page", G_CALLBACK(on_page_prepare), NULL);
 
     create_details_treeview();
 
@@ -2678,4 +2681,7 @@ void create_assistant(void)
     g_signal_connect(g_btn_add_file, "clicked", G_CALLBACK(on_btn_add_file), NULL);
 
     g_signal_connect(g_search_entry_bt, "changed", G_CALLBACK(search_timeout), NULL);
+
+    /* switch to right starting page */
+    on_page_prepare(g_assistant, gtk_notebook_get_nth_page(g_assistant, 0), NULL);
 }

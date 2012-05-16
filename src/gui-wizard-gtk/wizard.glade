@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy toplevel-contextual -->
+  <!-- interface-requires gtk+ 3.0 -->
   <object class="GtkWindow" id="window0">
     <property name="can_focus">False</property>
     <child>
@@ -160,6 +159,7 @@
         <child>
           <object class="GtkCheckButton" id="cb_no_comment">
             <property name="label" translatable="yes">I don't know what caused this problem</property>
+            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
@@ -205,6 +205,7 @@
             <child>
               <object class="GtkButton" id="button_cfg1">
                 <property name="label">gtk-preferences</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -318,7 +319,7 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="expand">True</property>
+                        <property name="expand">False</property>
                         <property name="fill">False</property>
                         <property name="position">0</property>
                       </packing>
@@ -352,7 +353,7 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="expand">True</property>
+                        <property name="expand">False</property>
                         <property name="fill">False</property>
                         <property name="padding">1</property>
                         <property name="position">2</property>
@@ -361,7 +362,7 @@
                   </object>
                   <packing>
                     <property name="expand">True</property>
-                    <property name="fill">True</property>
+                    <property name="fill">False</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -510,6 +511,7 @@
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
+                <property name="y_options">GTK_FILL</property>
               </packing>
             </child>
           </object>
@@ -541,6 +543,7 @@
             <child>
               <object class="GtkButton" id="btn_add_file">
                 <property name="label" translatable="yes">Attach a file</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -565,6 +568,7 @@
         <child>
           <object class="GtkCheckButton" id="cb_approve_bt">
             <property name="label" translatable="yes">I reviewed the data and _agree with submitting it</property>
+            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
@@ -659,6 +663,7 @@
             <child>
               <object class="GtkButton" id="btn_cancel_event">
                 <property name="label">gtk-stop</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>

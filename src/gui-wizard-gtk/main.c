@@ -143,11 +143,11 @@ int main(int argc, char **argv)
     load_event_config_data_from_keyring();
     load_user_settings("report-gtk");
 
+    reload_problem_data_from_dump_dir();
+
     create_assistant();
 
     g_custom_logger = &show_error_as_msgbox;
-
-    reload_problem_data_from_dump_dir();
 
     update_gui_state_from_problem_data();
 
