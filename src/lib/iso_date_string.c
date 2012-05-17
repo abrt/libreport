@@ -25,6 +25,14 @@ char *iso_date_string(const time_t *pt)
 
     time_t t;
     struct tm *ptm = localtime(pt ? pt : (time(&t), &t));
+
+    /* Callers expect that %Y is four digits, and size buffers accordingly.
+     * For paranoid reasons, disallow insane years which can overflow
+     * string buffers.
+     */
+    if (ptm->tm_year+1900 < 0 || ptm->tm_year+1900 > 9999)
+        error_msg_and_die("Year=%d?? Aborting", ptm->tm_year+1900);
+
     strftime(buf, sizeof(buf), "%Y-%m-%d-%H:%M:%S", ptm);
 
     return buf;
