@@ -168,10 +168,9 @@ int main(int argc, char **argv)
         int all_bugs_size = rhbz_array_size(all_bugs);
         if (all_bugs_size > 0)
         {
-            char *rhbz_ver = rhbz_version(client);
+            size_t rhbz_ver = rhbz_version(client);
             int bug_id = rhbz_bug_id(all_bugs, rhbz_ver);
             printf("%i", bug_id);
-            free(rhbz_ver);
         }
 
         exit(EXIT_SUCCESS);
@@ -359,11 +358,10 @@ int main(int argc, char **argv)
         }
         else
         {
-            char *rhbz_ver = rhbz_version(client);
+            size_t rhbz_ver = rhbz_version(client);
             int bug_id = rhbz_bug_id(all_bugs, rhbz_ver);
             xmlrpc_DECREF(all_bugs);
             bz = rhbz_bug_info(client, bug_id);
-            free(rhbz_ver);
         }
     }
     else
