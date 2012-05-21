@@ -298,7 +298,6 @@ static GHashTable *bodhi_query_list(const char *query, const char *release)
         NULL
     };
 
-    log(_("Searching for updates"));
     abrt_post_string(post_state, bodhi_url_bugs, "application/x-www-form-urlencoded",
                      headers, query);
 
@@ -430,11 +429,15 @@ int main(int argc, char **argv)
     if (query->buf[query->len - 1] == '&')
         query->buf[query->len - 1] = '\0';
 
+    log(_("Searching for updates"));
     GHashTable *update_hash_tbl = bodhi_query_list(query->buf, release);
     strbuf_free(query);
 
     if (!update_hash_tbl || !g_hash_table_size(update_hash_tbl))
+    {
+        log(_("No updates for this package found"));
         return 0;
+    }
 
     GHashTableIter iter;
     char *name = NULL;
@@ -454,7 +457,10 @@ int main(int argc, char **argv)
     }
 
     if (!q->len)
+    {
+        log(_("Local version of the package is newer than available updates"));
         return 0;
+    }
 
     strbuf_prepend_str(q, _("Abrt found a new update which fix your problem. Please run "
                             "before submitting bug: pkcon update --repo-enable=fedora --repo"
