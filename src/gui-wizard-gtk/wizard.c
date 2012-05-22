@@ -186,7 +186,6 @@ typedef struct
     const gchar *name;
     const gchar *title;
     GtkWidget *page_widget;
-    GtkAssistantPageType type;
     int page_no;
 } page_obj_t;
 
@@ -1670,7 +1669,6 @@ static void start_event_run(const char *event_name,
     gtk_label_set_text(status_label, start_msg);
 
     VERB1 log("running event '%s' on '%s'", event_name, g_dump_dir_name);
-//TODO: save_to_event_log(evd, "message that we run event foo")?
     char *msg = xasprintf("--- Running %s ---\n", event_name);
     append_to_textview(evd->tv_log, msg);
     free(msg);
@@ -2505,13 +2503,6 @@ static void add_pages(void)
     g_signal_connect(G_OBJECT(g_ev_search_down), "leave-notify-event", G_CALLBACK(unhighlight_widget), NULL);
     g_signal_connect(G_OBJECT(g_ev_search_down), "button-press-event", G_CALLBACK(search_down), NULL);
 
-//TODO: have [Stop event] button here, not inside log window?
-//    w = gtk_button_new_from_stock(GTK_STOCK_STOP);
-//    gtk_assistant_add_action_widget(g_assistant, w);
-//    gtk_box_set_child_packing(g_box_assist_nav, w, /*expand:*/ FALSE, /*fill:*/ FALSE, /*padding:*/ 0, GTK_PACK_START);
-//    gtk_widget_show(w);
-//    g_signal_connect(w, "clicked", G_CALLBACK(on_btn_cancel_event), NULL);
-
     /* Set color of the comment evenbox */
     GdkColor color;
     gdk_color_parse("#CC3333", &color);
@@ -2571,42 +2562,23 @@ static void create_details_treeview(void)
      */
 }
 
-static void init_page(page_obj_t *page, const char *name, const char *title, GtkAssistantPageType type)
+static void init_page(page_obj_t *page, const char *name, const char *title)
 {
     page->name = name;
     page->title = title;
-    page->type = type;
 }
 
 static void init_pages(void)
 {
-    /* Page types:
-     * CONTENT: normal page (has all btns: [Cancel] [Last] [Back] [Fwd])
-     * INTRO: only [Fwd] button is shown
-     *   (we use these where we want to suppress [Back]-navigation)
-     * CONFIRM: has [Apply] instead of [Fwd] and emits "apply" signal
-     * PROGRESS: skipped on [Back] navigation
-     * SUMMARY: has only [Close] button
-     *
-     * Note that we suppress [Cancel] everywhere once and for all
-     * using gtk_assistant_commit at init time.
-     */
-    init_page(&pages[0], PAGE_SUMMARY            , _("Problem description")   , GTK_ASSISTANT_PAGE_CONTENT );
-    /* Was GTK_ASSISTANT_PAGE_CONFIRM, but it allowed returning to log window
-     * (which was re-running the event). Bad:
-     */
-    init_page(&pages[1], PAGE_EVENT_SELECTOR     , _("Select operation")      , GTK_ASSISTANT_PAGE_INTRO   );
-    /* In non-expert mode, returning back would go to log window, bad: */
-    init_page(&pages[2], PAGE_EDIT_COMMENT,_("Provide additional information"), g_expert_mode ? GTK_ASSISTANT_PAGE_CONTENT : GTK_ASSISTANT_PAGE_INTRO );
-    init_page(&pages[3], PAGE_EDIT_ELEMENTS      , _("Review the data")       , GTK_ASSISTANT_PAGE_CONTENT );
-    init_page(&pages[4], PAGE_REVIEW_DATA        , _("Confirm data to report"), GTK_ASSISTANT_PAGE_CONFIRM );
-    /* Was GTK_ASSISTANT_PAGE_PROGRESS, but we want to allow returning to it */
-    init_page(&pages[5], PAGE_EVENT_PROGRESS     , _("Processing")            , GTK_ASSISTANT_PAGE_INTRO   );
-    init_page(&pages[6], PAGE_EVENT_DONE         , _("Processing done")       , GTK_ASSISTANT_PAGE_CONTENT );
-    /* We prevent user from reaching this page, as SUMMARY can't be navigated away
-     * (must be always closed) and we don't want that
-     */
-    init_page(&pages[7], PAGE_NOT_SHOWN          , ""                         , GTK_ASSISTANT_PAGE_SUMMARY );
+    init_page(&pages[0], PAGE_SUMMARY            , _("Problem description")   );
+    init_page(&pages[1], PAGE_EVENT_SELECTOR     , _("Select operation")      );
+    init_page(&pages[2], PAGE_EDIT_COMMENT,_("Provide additional information"));
+    init_page(&pages[3], PAGE_EDIT_ELEMENTS      , _("Review the data")       );
+    init_page(&pages[4], PAGE_REVIEW_DATA        , _("Confirm data to report"));
+    init_page(&pages[5], PAGE_EVENT_PROGRESS     , _("Processing")            );
+    init_page(&pages[6], PAGE_EVENT_DONE         , _("Processing done")       );
+//do we still need this?
+    init_page(&pages[7], PAGE_NOT_SHOWN          , ""                         );
 }
 
 void create_assistant(void)
@@ -2643,18 +2615,6 @@ void create_assistant(void)
     gtk_box_pack_start(GTK_BOX(g_box_assist_nav), g_next_btn, false, false, 5);
 
     gtk_widget_show_all(GTK_WIDGET(g_box_assist_nav));
-
-#if 0
-    /* Add "Close" button */
-    if (!not_reportable)
-    {
-        close_btn = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
-        //gtk_box_pack_start(g_assistant, w, GTK_PACK_START);
-        gtk_box_pack_start(GTK_BOX(g_box_assist_nav), w, false, false, 0);
-        gtk_widget_show(w);
-        g_signal_connect(w, "clicked", G_CALLBACK(gtk_main_quit), NULL);
-    }
-#endif
 
     gtk_box_pack_start(g_box_assistant, GTK_WIDGET(g_assistant), true, true, 5);
     gtk_box_pack_start(g_box_assistant, GTK_WIDGET(g_box_assist_nav), false, false, 5);
