@@ -48,21 +48,21 @@ static bool g_expert_mode;
 static GtkNotebook *g_assistant;
 static GtkWindow *g_wnd_assistant;
 static GtkBox *g_box_assistant;
-static GtkWidget *g_next_btn;
 
+static GtkWidget *g_btn_stop;
+static GtkWidget *g_btn_close;
+static GtkWidget *g_btn_next;
 
 static GtkBox *g_box_events;
 /* List of event_gui_data's */
 static GList *g_list_events;
 static GtkLabel *g_lbl_event_log;
 static GtkTextView *g_tv_event_log;
-static GtkProgressBar *g_pb_event;
 
 /* List of event_gui_data's */
 
 /* List of event_gui_data's */
 static GList *g_list_selected_reporters;
-static GtkButton *g_btn_cancel_event;
 
 static GtkContainer *g_container_details1;
 static GtkContainer *g_container_details2;
@@ -84,12 +84,13 @@ static GtkTreeViewColumn *g_tv_details_col_checkbox;
 //static GtkCellRenderer *g_tv_details_renderer_checkbox;
 static GtkListStore *g_ls_details;
 
-static GtkBox *g_box_assist_nav;
+static GtkBox *g_box_buttons; //TODO: needs not be global
 static GtkNotebook *g_notebook;
 static gboolean g_warning_issued;
 
 static GtkEventBox *g_ev_search_up;
 static GtkEventBox *g_ev_search_down;
+static GtkSpinner *g_spinner_event_log;
 
 static GtkWidget *g_top_most_window;
 
@@ -127,12 +128,8 @@ enum
 static guint g_timeout = 0;
 static GtkEntry *g_search_entry_bt;
 
-static GtkBuilder *builder;
-static PangoFontDescription *monospace_font;
-
-static gboolean pb_pulse = false;
-static gint pb_pulse_speed = 150;
-
+static GtkBuilder *g_builder;
+static PangoFontDescription *g_monospace_font;
 
 /* THE PAGE FLOW
  * page_0: introduction/summary
@@ -940,7 +937,7 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
         {
             GtkWidget *tab_lbl = gtk_label_new((char *)name);
             GtkWidget *tev = gtk_text_view_new();
-            gtk_widget_modify_font(GTK_WIDGET(tev), monospace_font);
+            gtk_widget_modify_font(GTK_WIDGET(tev), g_monospace_font);
             load_text_to_text_view(GTK_TEXT_VIEW(tev), (char *)name);
             /* init searching */
             GtkTextBuffer *buf = gtk_text_view_get_buffer(GTK_TEXT_VIEW(tev));
@@ -1548,11 +1545,12 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         strbuf_free(cmd_output);
         cmd_output = NULL;
 
-        /* Hide progress bar */
-        pb_pulse = false;
-
+        /* Hide spinner and stop btn */
+        gtk_widget_hide(GTK_WIDGET(g_spinner_event_log));
+        gtk_widget_hide(g_btn_stop);
         /* Enable (un-gray out) navigation buttons */
-        gtk_widget_set_sensitive(GTK_WIDGET(g_box_assist_nav), true);
+        gtk_widget_set_sensitive(g_btn_close, true);
+        gtk_widget_set_sensitive(g_btn_next, true);
 
         /*g_source_remove(evd->event_source_id);*/
         close(evd->fd);
@@ -1582,16 +1580,6 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     g_event_child_pid = evd->run_state->command_pid;
 
     return TRUE; /* "please don't remove this event (yet)" */
-}
-
-/* pulse the progressbar */
-static gboolean pb_pulse_timeout(gpointer data)
-{
-    if (pb_pulse)
-        gtk_progress_bar_pulse(g_pb_event);
-    else
-        gtk_widget_hide(GTK_WIDGET(g_pb_event));
-    return pb_pulse;
 }
 
 static void start_event_run(const char *event_name,
@@ -1639,11 +1627,6 @@ static void start_event_run(const char *event_name,
     }
     g_event_child_pid = state->command_pid;
 
-    if (g_pb_event)
-        gtk_widget_show(GTK_WIDGET(g_pb_event));
-    pb_pulse = true;
-    g_timeout_add(pb_pulse_speed, pb_pulse_timeout, NULL);
-
     /* At least one command is needed, and we started first one.
      * Hook its output fd to the main loop.
      */
@@ -1673,8 +1656,11 @@ static void start_event_run(const char *event_name,
     append_to_textview(evd->tv_log, msg);
     free(msg);
 
+    gtk_widget_show(GTK_WIDGET(g_spinner_event_log));
+    gtk_widget_show(g_btn_stop);
     /* Disable (gray out) navigation buttons */
-    gtk_widget_set_sensitive(GTK_WIDGET(g_box_assist_nav), false);
+    gtk_widget_set_sensitive(g_btn_close, false);
+    gtk_widget_set_sensitive(g_btn_next, false);
 }
 
 
@@ -1767,12 +1753,12 @@ static void check_bt_rating_and_allow_send(void)
             }
         }
     }
-    gtk_widget_set_sensitive(GTK_WIDGET(g_box_assist_nav), send);
+    gtk_widget_set_sensitive(g_btn_next, send);
 }
 
 static void on_bt_approve_toggle(GtkToggleButton *togglebutton, gpointer user_data)
 {
-    gtk_widget_set_sensitive(g_next_btn, gtk_toggle_button_get_active(g_tb_approve_bt));
+    gtk_widget_set_sensitive(g_btn_next, gtk_toggle_button_get_active(g_tb_approve_bt));
 }
 
 static void toggle_eb_comment(void)
@@ -1786,7 +1772,7 @@ static void toggle_eb_comment(void)
         || gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(g_cb_no_comment));
 
     /* Allow next page only when the comment has at least 10 chars */
-    gtk_widget_set_sensitive(g_next_btn, good);
+    gtk_widget_set_sensitive(g_btn_next, good);
 
     /* And show the eventbox with label */
     if (good)
@@ -2001,14 +1987,14 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
 
         if (pages[PAGENO_REVIEW_DATA].page_widget == page)
         {
-            gtk_widget_set_sensitive(g_next_btn, gtk_toggle_button_get_active(g_tb_approve_bt));
+            gtk_widget_set_sensitive(g_btn_next, gtk_toggle_button_get_active(g_tb_approve_bt));
             update_ls_details_checkboxes();
         }
     }
 
     if (pages[PAGENO_EDIT_COMMENT].page_widget == page)
     {
-        gtk_widget_set_sensitive(g_next_btn, false);
+        gtk_widget_set_sensitive(g_btn_next, false);
         on_comment_changed(gtk_text_view_get_buffer(g_tv_comment), NULL);
     }
     //log_ready_state();
@@ -2410,7 +2396,7 @@ static void add_pages(void)
     if (!g_glade_file)
     {
         /* Load UI from internal string */
-        gtk_builder_add_objects_from_string(builder,
+        gtk_builder_add_objects_from_string(g_builder,
                 WIZARD_GLADE_CONTENTS, sizeof(WIZARD_GLADE_CONTENTS) - 1,
                 (gchar**)page_names,
                 &error);
@@ -2420,7 +2406,7 @@ static void add_pages(void)
     else
     {
         /* -g FILE: load IU from it */
-        gtk_builder_add_objects_from_file(builder, g_glade_file, (gchar**)page_names, &error);
+        gtk_builder_add_objects_from_file(g_builder, g_glade_file, (gchar**)page_names, &error);
         if (error != NULL)
             error_msg_and_die("Can't load %s: %s", g_glade_file, error->message);
     }
@@ -2449,7 +2435,7 @@ static void add_pages(void)
             }
         }
 
-        GtkWidget *page = GTK_WIDGET(gtk_builder_get_object(builder, page_names[i]));
+        GtkWidget *page = GTK_WIDGET(gtk_builder_get_object(g_builder, page_names[i]));
         pages[i].page_widget = page;
         pages[i].page_no = page_no++;
         gtk_notebook_append_page(g_assistant, page, gtk_label_new(pages[i].title));
@@ -2458,39 +2444,37 @@ static void add_pages(void)
     free(not_reportable);
 
     /* Set pointers to objects we might need to work with */
-    g_lbl_cd_reason        = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_cd_reason"));
-    g_box_events           = GTK_BOX(          gtk_builder_get_object(builder, "vb_events"));
-    g_lbl_event_log        = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_event_log"));
-    g_tv_event_log         = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_event_log"));
-    g_pb_event             = GTK_PROGRESS_BAR( gtk_builder_get_object(builder, "pb_event"));
-    g_btn_cancel_event     = GTK_BUTTON(       gtk_builder_get_object(builder, "btn_cancel_event"));
-    g_tv_comment           = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_comment"));
-    g_eb_comment           = GTK_EVENT_BOX(    gtk_builder_get_object(builder, "eb_comment"));
-    g_cb_no_comment        = GTK_CHECK_BUTTON( gtk_builder_get_object(builder, "cb_no_comment"));
-    g_tv_details           = GTK_TREE_VIEW(    gtk_builder_get_object(builder, "tv_details"));
-    g_box_warning_labels   = GTK_BOX(          gtk_builder_get_object(builder, "box_warning_labels"));
-    g_tb_approve_bt        = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "cb_approve_bt"));
-    g_widget_warnings_area = GTK_WIDGET(       gtk_builder_get_object(builder, "box_warning_area"));
-    g_search_entry_bt      = GTK_ENTRY(        gtk_builder_get_object(builder, "entry_search_bt"));
-    g_container_details1   = GTK_CONTAINER(    gtk_builder_get_object(builder, "container_details1"));
-    g_container_details2   = GTK_CONTAINER(    gtk_builder_get_object(builder, "container_details2"));
-    g_btn_add_file         = GTK_BUTTON(       gtk_builder_get_object(builder, "btn_add_file"));
-    g_lbl_size             = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_size"));
-    g_notebook             = GTK_NOTEBOOK(     gtk_builder_get_object(builder, "notebook_edit"));
-    g_ev_search_up         = GTK_EVENT_BOX(    gtk_builder_get_object(builder, "ev_search_up"));
-    g_ev_search_down       = GTK_EVENT_BOX(    gtk_builder_get_object(builder, "ev_search_down"));
+    g_lbl_cd_reason        = GTK_LABEL(        gtk_builder_get_object(g_builder, "lbl_cd_reason"));
+    g_box_events           = GTK_BOX(          gtk_builder_get_object(g_builder, "vb_events"));
+    g_lbl_event_log        = GTK_LABEL(        gtk_builder_get_object(g_builder, "lbl_event_log"));
+    g_tv_event_log         = GTK_TEXT_VIEW(    gtk_builder_get_object(g_builder, "tv_event_log"));
+    g_tv_comment           = GTK_TEXT_VIEW(    gtk_builder_get_object(g_builder, "tv_comment"));
+    g_eb_comment           = GTK_EVENT_BOX(    gtk_builder_get_object(g_builder, "eb_comment"));
+    g_cb_no_comment        = GTK_CHECK_BUTTON( gtk_builder_get_object(g_builder, "cb_no_comment"));
+    g_tv_details           = GTK_TREE_VIEW(    gtk_builder_get_object(g_builder, "tv_details"));
+    g_box_warning_labels   = GTK_BOX(          gtk_builder_get_object(g_builder, "box_warning_labels"));
+    g_tb_approve_bt        = GTK_TOGGLE_BUTTON(gtk_builder_get_object(g_builder, "cb_approve_bt"));
+    g_widget_warnings_area = GTK_WIDGET(       gtk_builder_get_object(g_builder, "box_warning_area"));
+    g_search_entry_bt      = GTK_ENTRY(        gtk_builder_get_object(g_builder, "entry_search_bt"));
+    g_container_details1   = GTK_CONTAINER(    gtk_builder_get_object(g_builder, "container_details1"));
+    g_container_details2   = GTK_CONTAINER(    gtk_builder_get_object(g_builder, "container_details2"));
+    g_btn_add_file         = GTK_BUTTON(       gtk_builder_get_object(g_builder, "btn_add_file"));
+    g_lbl_size             = GTK_LABEL(        gtk_builder_get_object(g_builder, "lbl_size"));
+    g_notebook             = GTK_NOTEBOOK(     gtk_builder_get_object(g_builder, "notebook_edit"));
+    g_ev_search_up         = GTK_EVENT_BOX(    gtk_builder_get_object(g_builder, "ev_search_up"));
+    g_ev_search_down       = GTK_EVENT_BOX(    gtk_builder_get_object(g_builder, "ev_search_down"));
+    g_spinner_event_log    = GTK_SPINNER(      gtk_builder_get_object(g_builder, "spinner_event_log"));
 
+    gtk_widget_set_no_show_all(GTK_WIDGET(g_spinner_event_log), true);
     gtk_widget_hide(g_widget_warnings_area);
 
-    gtk_widget_modify_font(GTK_WIDGET(g_tv_event_log), monospace_font);
+    gtk_widget_modify_font(GTK_WIDGET(g_tv_event_log), g_monospace_font);
     fix_all_wrapped_labels(GTK_WIDGET(g_assistant));
 
     /* Configure btn on select analyzers page */
-    GtkWidget *config_btn = GTK_WIDGET(gtk_builder_get_object(builder, "button_cfg1"));
+    GtkWidget *config_btn = GTK_WIDGET(gtk_builder_get_object(g_builder, "button_cfg1"));
     if (config_btn)
         g_signal_connect(G_OBJECT(config_btn), "clicked", G_CALLBACK(on_show_event_list_cb), NULL);
-
-    g_signal_connect(g_btn_cancel_event, "clicked", G_CALLBACK(on_btn_cancel_event), NULL);
 
     g_signal_connect(g_cb_no_comment, "toggled", G_CALLBACK(on_no_comment_toggled), NULL);
 
@@ -2585,55 +2569,53 @@ void create_assistant(void)
 {
     g_expert_mode = !g_auto_event_list;
 
-    init_pages();
-    monospace_font = pango_font_description_from_string("monospace");
-
-    builder = gtk_builder_new();
+    g_monospace_font = pango_font_description_from_string("monospace");
+    g_builder = gtk_builder_new();
 
     g_assistant = GTK_NOTEBOOK(gtk_notebook_new());
-    gtk_notebook_set_show_tabs(g_assistant, false);
-    VERB1 gtk_notebook_set_show_tabs(g_assistant, true);
+    gtk_notebook_set_show_tabs(g_assistant, (g_verbose != 0));
+
+    g_btn_close = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
+    g_btn_stop = gtk_button_new_from_stock(GTK_STOCK_STOP);
+    gtk_widget_set_no_show_all(g_btn_stop, true); /* else gtk_widget_hide won't work */
+    g_btn_next = gtk_button_new_from_stock(GTK_STOCK_GO_FORWARD);
+
+    g_box_buttons = GTK_BOX(gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0));
+    gtk_box_pack_start(g_box_buttons, g_btn_close, false, false, 5);
+    gtk_box_pack_start(g_box_buttons, g_btn_stop, false, false, 5);
+    /* Btns above are to the left, the rest are to the right: */
+    GtkWidget *w = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);
+    gtk_box_pack_start(g_box_buttons, w, true, true, 5);
+    gtk_box_pack_start(g_box_buttons, g_btn_next, false, false, 5);
 
     g_box_assistant = GTK_BOX(gtk_box_new(GTK_ORIENTATION_VERTICAL, 0));
-
-
-    GtkWidget *close_btn = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
-    g_signal_connect(G_OBJECT(close_btn), "clicked", G_CALLBACK(gtk_main_quit), NULL);
-    g_box_assist_nav = GTK_BOX(gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0));
-
-
-    gtk_box_pack_start(GTK_BOX(g_box_assist_nav), close_btn, false, false, 5);
-
-    GtkWidget *w;
-    /* Align "Close" button to left */
-    w = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);
-    gtk_box_pack_start(GTK_BOX(g_box_assist_nav), w, true, true, 5);
-
-    g_next_btn = gtk_button_new_from_stock(GTK_STOCK_GO_FORWARD);
-    g_signal_connect(G_OBJECT(g_next_btn), "clicked", G_CALLBACK(on_next_btn_cb), NULL);
-
-    gtk_box_pack_start(GTK_BOX(g_box_assist_nav), g_next_btn, false, false, 5);
-
-    gtk_widget_show_all(GTK_WIDGET(g_box_assist_nav));
-
     gtk_box_pack_start(g_box_assistant, GTK_WIDGET(g_assistant), true, true, 5);
-    gtk_box_pack_start(g_box_assistant, GTK_WIDGET(g_box_assist_nav), false, false, 5);
+    gtk_box_pack_start(g_box_assistant, GTK_WIDGET(g_box_buttons), false, false, 5);
+
+    gtk_widget_show_all(GTK_WIDGET(g_box_buttons));
+    gtk_widget_hide(g_btn_stop);
 
     g_wnd_assistant = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
     gtk_container_add(GTK_CONTAINER(g_wnd_assistant), GTK_WIDGET(g_box_assistant));
+
     gtk_window_set_default_size(g_wnd_assistant, DEFAULT_WIDTH, DEFAULT_HEIGHT);
     /* set_default sets icon for every windows used in this app, so we don't
      * have to set the icon for those windows manually
      */
     gtk_window_set_default_icon_name("abrt");
 
-    g_signal_connect(G_OBJECT(g_wnd_assistant), "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    init_pages();
 
     add_pages();
 
-    g_signal_connect(G_OBJECT(g_assistant), "switch-page", G_CALLBACK(on_page_prepare), NULL);
-
     create_details_treeview();
+
+    g_signal_connect(g_btn_close, "clicked", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(g_btn_stop, "clicked", G_CALLBACK(on_btn_cancel_event), NULL);
+    g_signal_connect(g_btn_next, "clicked", G_CALLBACK(on_next_btn_cb), NULL);
+
+    g_signal_connect(g_wnd_assistant, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(g_assistant, "switch-page", G_CALLBACK(on_page_prepare), NULL);
 
     g_signal_connect(g_tb_approve_bt, "toggled", G_CALLBACK(on_bt_approve_toggle), NULL);
     g_signal_connect(gtk_text_view_get_buffer(g_tv_comment), "changed", G_CALLBACK(on_comment_changed), NULL);
