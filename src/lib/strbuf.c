@@ -130,7 +130,7 @@ void strbuf_clear(struct strbuf *strbuf)
 static char *strbuf_grow(struct strbuf *strbuf, unsigned increment)
 {
     unsigned len = strbuf->len;
-    unsigned need = strbuf->len = len + increment;
+    unsigned need = strbuf->len = len + increment + 1;
     unsigned cur_size = strbuf->alloc;
     if (cur_size <= need)
     {
