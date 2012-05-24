@@ -60,13 +60,31 @@ AC_PATH_PROG([XMLTO], [xmlto], [no])
     [exit 1]
 [fi]
 
+AC_PATH_PROG([XMLRPC], [xmlrpc-c-config], [no])
+[if test "$XMLRPC" = "no"]
+[then]
+    [echo "The xmlrpc-c-config program was not found in the search path. Please ensure"]
+    [echo "that it is installed and its directory is included in the search path."]
+    [echo "Then run configure again before attempting to build libreport."]
+    [exit 1]
+[fi]
+
+XMLRPC_CFLAGS=`xmlrpc-c-config --cflags 2> /dev/null`
+XMLRPC_LIBS=`xmlrpc-c-config --libs 2> /dev/null`
+AC_SUBST(XMLRPC_CFLAGS)
+AC_SUBST(XMLRPC_LIBS)
+
+XMLRPC_CLIENT_CFLAGS=`xmlrpc-c-config client --cflags 2> /dev/null`
+XMLRPC_CLIENT_LIBS=`xmlrpc-c-config client --libs 2> /dev/null`
+AC_SUBST(XMLRPC_CLIENT_CFLAGS)
+AC_SUBST(XMLRPC_CLIENT_LIBS)
+
+
 PKG_CHECK_MODULES([GTK], [gtk+-3.0])
 PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.21])
 PKG_CHECK_MODULES([DBUS], [dbus-1])
 PKG_CHECK_MODULES([LIBXML], [libxml-2.0])
 PKG_CHECK_MODULES([NSS], [nss])
-PKG_CHECK_MODULES([XMLRPC], [xmlrpc])
-PKG_CHECK_MODULES([XMLRPC_CLIENT], [xmlrpc_client])
 PKG_CHECK_MODULES([CURL], [libcurl])
 PKG_CHECK_MODULES([GNOME_KEYRING], [gnome-keyring-1])
 PKG_CHECK_MODULES([JSON_C], [json])
@@ -75,7 +93,7 @@ PKG_CHECK_MODULES([BTPARSER], [btparser])
 
 # Just PKG_CHECK_MODULES([PYTHON], [python]) works only with python2.7+
 # Below, if python is not found, we set up for python2.6 w/o checking:
-PKG_CHECK_MODULES([PYTHON], [python],,[
+PKG_CHECK_MODULES([PYTHON], [python2],,[
     PYTHON_LIBS='-L/usr/lib64 -lpython2.6'
     PYTHON_CFLAGS='-I/usr/include/python2.6'
 ])
