@@ -166,7 +166,7 @@ struct strbuf *strbuf_prepend_str(struct strbuf *strbuf, const char *str)
     unsigned inc_len = strlen(str);
     strbuf_grow(strbuf, inc_len);
     assert(strbuf->len < strbuf->alloc);
-    memmove(strbuf->buf + inc_len, strbuf->buf, cur_len);
+    memmove(strbuf->buf + inc_len, strbuf->buf, cur_len + 1);
     memcpy(strbuf->buf, str, inc_len);
     return strbuf;
 }
