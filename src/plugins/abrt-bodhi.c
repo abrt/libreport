@@ -161,8 +161,7 @@ static void bodhi_read_value(json_object *json, const char *item_name,
         *(int *) value = json_object_get_int(j);
         break;
     case BODHI_READ_STR:
-        *(char **) value = (char *) xstrdup(json_object_to_json_string(j));
-        value = strtrimch(*(char **) value, '"');
+        *(char **) value = (char *) strtrimch(xstrdup(json_object_to_json_string(j)), '"');
         break;
     case BODHI_READ_JSON_OBJ:
         *(json_object **) value = (json_object *) j;
