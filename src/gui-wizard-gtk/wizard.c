@@ -412,7 +412,7 @@ static void load_text_to_text_view(GtkTextView *tv, const char *name)
     {
         gtk_text_buffer_insert_at_cursor(tb, str, end - str);
         char buf[8];
-        unsigned len = sprintf(buf, "<%02X>", (unsigned char)*end);
+        unsigned len = snprintf(buf, sizeof(buf), "<%02X>", (unsigned char)*end);
         gtk_text_buffer_insert_at_cursor(tb, buf, len);
         str = end + 1;
     }
@@ -471,7 +471,7 @@ static void append_to_textview(GtkTextView *tv, const char *str)
     {
         gtk_text_buffer_insert_at_cursor(tb, str, end - str);
         char buf[8];
-        unsigned len = sprintf(buf, "<%02X>", (unsigned char)*end);
+        unsigned len = snprintf(buf, sizeof(buf), "<%02X>", (unsigned char)*end);
         gtk_text_buffer_insert_at_cursor(tb, buf, len);
         str = end + 1;
     }

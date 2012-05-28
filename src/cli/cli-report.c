@@ -176,7 +176,7 @@ static int read_crash_report_field(const char *text, problem_data_t *report,
         const char *field)
 {
     char separator[sizeof("\n" FIELD_SEP)-1 + strlen(field) + 2]; // 2 = '\n\0'
-    sprintf(separator, "\n%s%s\n", FIELD_SEP, field);
+    snprintf(separator, sizeof(separator), "\n%s%s\n", FIELD_SEP, field);
     const char *textfield = strstr(text, separator);
     if (!textfield)
         return 0; // exit silently because all fields are optional

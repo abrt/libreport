@@ -152,7 +152,7 @@ static int get_and_set_lock(const char* lock_file, const char* pid)
         if (isdigit_str(pid_buf))
         {
             char pid_str[sizeof("/proc/") + sizeof(pid_buf)];
-            sprintf(pid_str, "/proc/%s", pid_buf);
+            snprintf(pid_str, sizeof(pid_str), "/proc/%s", pid_buf);
             if (access(pid_str, F_OK) == 0)
             {
                 log("Lock file '%s' is locked by process %s", lock_file, pid_buf);
@@ -179,7 +179,7 @@ static int dd_lock(struct dump_dir *dd, unsigned sleep_usec, int flags)
         error_msg_and_die("Locking bug on '%s'", dd->dd_dirname);
 
     char pid_buf[sizeof(long)*3 + 2];
-    sprintf(pid_buf, "%lu", (long)getpid());
+    snprintf(pid_buf, sizeof(pid_buf), "%lu", (long)getpid());
 
     unsigned dirname_len = strlen(dd->dd_dirname);
     char lock_buf[dirname_len + sizeof("/.lock")];
@@ -464,13 +464,13 @@ void dd_create_basic_files(struct dump_dir *dd, uid_t uid)
     char long_str[sizeof(long) * 3 + 2];
 
     time_t t = time(NULL);
-    sprintf(long_str, "%lu", (long)t);
+    snprintf(long_str, sizeof(long_str), "%lu", (long)t);
     dd_save_text(dd, FILENAME_TIME, long_str);
 
     /* it doesn't make sense to create the uid file if uid == -1 */
     if (uid != (uid_t)-1L)
     {
-        sprintf(long_str, "%li", (long)uid);
+        snprintf(long_str, sizeof(long_str), "%li", (long)uid);
         dd_save_text(dd, FILENAME_UID, long_str);
     }
 

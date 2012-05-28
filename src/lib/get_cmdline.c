@@ -138,13 +138,13 @@ static char* get_escaped(const char *path, char separator)
 char* get_cmdline(pid_t pid)
 {
     char path[sizeof("/proc/%lu/cmdline") + sizeof(long)*3];
-    sprintf(path, "/proc/%lu/cmdline", (long)pid);
+    snprintf(path, sizeof(path), "/proc/%lu/cmdline", (long)pid);
     return get_escaped(path, ' ');
 }
 
 char* get_environ(pid_t pid)
 {
     char path[sizeof("/proc/%lu/environ") + sizeof(long)*3];
-    sprintf(path, "/proc/%lu/environ", (long)pid);
+    snprintf(path, sizeof(path), "/proc/%lu/environ", (long)pid);
     return get_escaped(path, '\n');
 }

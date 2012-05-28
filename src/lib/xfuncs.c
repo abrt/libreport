@@ -193,7 +193,7 @@ char* xvasprintf(const char *format, va_list p)
 }
 
 // Die with an error message if we can't malloc() enough space and do an
-// sprintf() into that space.
+// sprintf() into that space., sizeof() into that space.)
 char* xasprintf(const char *format, ...)
 {
     va_list p;

@@ -344,7 +344,7 @@ int main(int argc, char **argv)
 
             log(_("Adding attachments to bug %i"), bug_id);
             char bug_id_str[sizeof(int)*3 + 2];
-            sprintf(bug_id_str, "%i", bug_id);
+            snprintf(bug_id_str, sizeof(bug_id_str), "%i", bug_id);
 
             int flags = RHBZ_NOMAIL_NOTIFY;
             if (opts & OPT_b)
@@ -445,7 +445,7 @@ int main(int argc, char **argv)
             if (!dup_comment && (rating > bz->bi_best_bt_rating))
             {
                 char bug_id_str[sizeof(int)*3 + 2];
-                sprintf(bug_id_str, "%i", bz->bi_id);
+                snprintf(bug_id_str, sizeof(bug_id_str), "%i", bz->bi_id);
 
                 const char *bt =  get_problem_item_content_or_NULL(problem_data,
                                                                    FILENAME_BACKTRACE);
