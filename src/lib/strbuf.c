@@ -76,7 +76,7 @@ char *strtrimch(char *str, int ch)
     while (*tmp == ch)
         ++tmp;
 
-    memmove(str, tmp, strlen(str));
+    memmove(str, tmp, strlen(tmp));
 
     // Remove trailing spaces.
     int i = strlen(str);
