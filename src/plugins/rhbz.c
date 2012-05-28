@@ -157,9 +157,11 @@ static unsigned find_best_bt_rating_in_comments(GList *comments)
         {
             /* error / no digits / illegal trailing chars */
             errno = old_errno;
+            free(rating_srt);
             continue;
         }
         errno = old_errno; /* Ok.  So restore errno. */
+        free(rating_srt);
 
         if (rating > best_bt_rating)
             best_bt_rating = rating;
