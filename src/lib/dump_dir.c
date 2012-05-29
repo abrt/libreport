@@ -488,14 +488,14 @@ void dd_create_basic_files(struct dump_dir *dd, uid_t uid)
     char *release = dd_load_text_ext(dd, FILENAME_OS_RELEASE,
                     DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
 
-    if (release)
-        return;
-
-    release = load_text_file("/etc/system-release",
-            DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     if (!release)
-        release = load_text_file("/etc/redhat-release", /*flags:*/ 0);
-    dd_save_text(dd, FILENAME_OS_RELEASE, release);
+    {
+        release = load_text_file("/etc/system-release",
+                DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+        if (!release)
+            release = load_text_file("/etc/redhat-release", /*flags:*/ 0);
+        dd_save_text(dd, FILENAME_OS_RELEASE, release);
+    }
     free(release);
 }
 
