@@ -60,6 +60,7 @@ enum {
     ABRT_POST_DATA_STRING = -1,
     ABRT_POST_DATA_FROMFILE = -2,
     ABRT_POST_DATA_FROMFILE_AS_FORM_DATA = -3,
+    ABRT_POST_DATA_STRING_AS_FORM_DATA = -4,
 };
 int
 abrt_post(abrt_post_state_t *state,
@@ -77,6 +78,16 @@ abrt_post_string(abrt_post_state_t *state,
 {
     return abrt_post(state, url, content_type, additional_headers,
                      str, ABRT_POST_DATA_STRING);
+}
+static inline int
+abrt_post_string_as_form_data(abrt_post_state_t *state,
+                const char *url,
+                const char *content_type,
+                const char **additional_headers,
+                const char *str)
+{
+    return abrt_post(state, url, content_type, additional_headers,
+                     str, ABRT_POST_DATA_STRING_AS_FORM_DATA);
 }
 static inline int
 abrt_post_file(abrt_post_state_t *state,

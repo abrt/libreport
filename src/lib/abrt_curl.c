@@ -362,6 +362,24 @@ abrt_post(abrt_post_state_t *state,
 //FIXME:
             error_msg_and_die("out of memory or read error (curl_formadd error code: %d)", (int)curlform_err);
         xcurl_easy_setopt_ptr(handle, CURLOPT_HTTPPOST, post);
+    } else if (data_size == ABRT_POST_DATA_STRING_AS_FORM_DATA) {
+        CURLFORMcode curlform_err = curl_formadd(&post, &last,
+                        CURLFORM_PTRNAME, "file", // element name
+                        // curl bug - missing filename 
+                        // http://curl.haxx.se/mail/lib-2011-07/0176.html
+                        // https://github.com/bagder/curl/commit/45d883d
+                        // fixed in curl-7.22.0~144
+                        // tested with curl-7.24.0-3
+                        // should be working on F17
+                        CURLFORM_BUFFER, "*buffer*", // provides filename
+                        CURLFORM_BUFFERPTR, data,
+                        CURLFORM_BUFFERLENGTH, (long)strlen(data),
+//FIXME: what if file size doesn't fit in long?
+                        CURLFORM_CONTENTTYPE, content_type,
+                        CURLFORM_END);
+        if (curlform_err != 0)
+            error_msg_and_die("out of memory or read error (curl_formadd error code: %d)", (int)curlform_err);
+        xcurl_easy_setopt_ptr(handle, CURLOPT_HTTPPOST, post);
     } else {
         // .. from a blob in memory
         xcurl_easy_setopt_ptr(handle, CURLOPT_POSTFIELDS, data);
@@ -375,7 +393,8 @@ abrt_post(abrt_post_state_t *state,
     struct curl_slist *httpheader_list = NULL;
 
     // Override "Content-Type:"
-    if (data_size != ABRT_POST_DATA_FROMFILE_AS_FORM_DATA)
+    if (data_size != ABRT_POST_DATA_FROMFILE_AS_FORM_DATA
+        && data_size != ABRT_POST_DATA_STRING_AS_FORM_DATA)
     {
         char *content_type_header = xasprintf("Content-Type: %s", content_type);
         // Note: curl_slist_append() copies content_type_header

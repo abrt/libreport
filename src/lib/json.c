@@ -237,14 +237,14 @@ abrt_post_state_t *post_ureport(problem_data_t *pd, const char *ureport_url)
                                      | ABRT_POST_WANT_ERROR_MSG);
 
     static const char *headers[] = {
-        "Accept: text/plain",
+        "Accept: application/json",
         "Connection: close",
         NULL,
     };
 
     char *json_ureport = new_json_ureport(pd);
 
-    abrt_post_string(post_state, ureport_url, "application/json",
+    abrt_post_string_as_form_data(post_state, ureport_url, "application/json",
                      headers, json_ureport);
 
     free(json_ureport);
