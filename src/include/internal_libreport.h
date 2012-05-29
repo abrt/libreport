@@ -683,6 +683,7 @@ struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name
 #define FILENAME_KERNEL       "kernel"
 // From /etc/system-release or /etc/redhat-release
 #define FILENAME_OS_RELEASE   "os_release"
+#define FILENAME_OS_RELEASE_IN_ROOTDIR "os_release_in_rootdir"
 // Filled by <what?>
 #define FILENAME_PACKAGE      "package"
 #define FILENAME_COMPONENT    "component"

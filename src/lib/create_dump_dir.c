@@ -84,7 +84,7 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
      * reporting from anaconda where we can't read /etc/{system,redhat}-release
      * and os_release is taken from anaconda
     */
-    dd_create_basic_files(dd, (uid_t)-1L);
+    dd_create_basic_files(dd, (uid_t)-1L, NULL);
 
     return dd;
 }
