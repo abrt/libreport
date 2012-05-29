@@ -196,6 +196,25 @@ static void ureport_add_pkg(struct json_object *ur, problem_data_t *pd)
     json_object_object_add(ur, "installed_package", jobject);
 }
 
+static void ureport_add_related_pkgs(struct json_object *ur, problem_data_t *pd)
+{
+    // TODO: populate this field
+    struct json_object *jobject = json_object_new_array();
+    json_object_object_add(ur, "related_packages", jobject);
+}
+
+static void ureport_add_reporter(struct json_object *ur, const char *name, const char *version)
+{
+    struct json_object *jobject = json_object_new_object();
+    if (!jobject)
+        die_out_of_memory();
+
+    ureport_add_str(jobject, "name", name);
+    ureport_add_str(jobject, "version", version);
+
+    json_object_object_add(ur, "reporter", jobject);
+}
+
 char *new_json_ureport(problem_data_t *pd)
 {
     struct json_object *ureport = json_object_new_object();
@@ -219,9 +238,11 @@ char *new_json_ureport(problem_data_t *pd)
     ureport_add_type(ureport, pd);
 
     ureport_add_pkg(ureport, pd);
+    ureport_add_related_pkgs(ureport, pd);
     ureport_add_os(ureport, pd);
 
     ureport_add_core_backtrace(ureport, pd);
+    ureport_add_reporter(ureport, "ABRT", VERSION);
 
     char *j = xstrdup(json_object_to_json_string(ureport));
     json_object_put(ureport);
