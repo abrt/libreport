@@ -17,8 +17,51 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+#include <json/json.h>
 #include "internal_libreport.h"
 #include "abrt_curl.h"
+
+enum response_type
+{
+    UREPORT_SERVER_RESP_UNKNOWN_TYPE,
+    UREPORT_SERVER_RESP_KNOWN,
+    UREPORT_SERVER_RESP_ERROR,
+};
+
+struct ureport_server_response {
+    enum response_type type;
+    const char *value;
+};
+
+/*
+ * Reponse samples:
+ * {"error":"field 'foo' is required"}
+ * {"response":"true"}
+ * {"response":"false"}
+ */
+static bool ureport_server_parse_json(json_object *json, struct ureport_server_response *out_response)
+{
+    json_object *obj = json_object_object_get(json, "error");
+
+    if (obj)
+    {
+        out_response->type = UREPORT_SERVER_RESP_ERROR;
+        out_response->value = json_object_to_json_string(obj);
+        return true;
+    }
+
+    obj = json_object_object_get(json, "result");
+
+    if (obj)
+    {
+        out_response->type = UREPORT_SERVER_RESP_KNOWN;
+        out_response->value = json_object_to_json_string(obj);
+        return true;
+    }
+
+    out_response->type = UREPORT_SERVER_RESP_UNKNOWN_TYPE;
+    return false;
+}
 
 int main(int argc, char **argv)
 {
@@ -63,26 +106,54 @@ int main(int argc, char **argv)
         }
     }
 
-    char *line = strtok(post_state->body, "\n");
-    int ret = 0;
-    while (line)
+    int ret = 1; /* return 1 by default */
+    json_object *const json = json_tokener_parse(post_state->body);
+
+    if (is_error(json))
     {
-        if (!prefixcmp(line, "ERROR "))
-        {
-            ret = 1;
-            break;
-        }
-
-        if (!prefixcmp(line, "NEEDMORE"))
-        {
-            log("%s", line);
-            ret = 0;
-            break;
-        }
-
-        line = strtok(NULL, "\n");
+        error_msg("fatal: unable to parse response from ureport server");
+        goto err;
     }
 
+    struct ureport_server_response response = {
+        .type=UREPORT_SERVER_RESP_UNKNOWN_TYPE,
+        .value=NULL,
+    };
+
+    const bool is_valid_response = ureport_server_parse_json(json, &response);
+
+    if (!is_valid_response)
+    {
+        error_msg("fatal: wrong format of response from ureport server");
+        goto format_err;
+    }
+
+    switch (response.type)
+    {
+        case UREPORT_SERVER_RESP_KNOWN:
+            VERB1 log("is known: %s", response.value);
+            ret = 0;
+            /* If a reported problem is not known then emit NEEDMORE */
+            if (strcmp("true",response.value))
+                log("NEEDMORE");
+            break;
+        case UREPORT_SERVER_RESP_ERROR:
+            VERB1 log("server side error: %s", response.value);
+            ret = 1; /* just to be sure */
+            break;
+        case UREPORT_SERVER_RESP_UNKNOWN_TYPE:
+            error_msg("invalid server response: %s", response.value);
+            ret = 1; /* just to be sure */
+            break;
+        default:
+            error_msg("reporter internal error: missing handler for response type");
+            ret = 1; /* just to be sure */
+            break;
+    }
+
+format_err:
+    json_object_put(json);
+err:
     free_abrt_post_state(post_state);
 
     return ret;
