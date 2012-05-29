@@ -459,7 +459,7 @@ struct dump_dir *dd_create(const char *dir, uid_t uid, mode_t mode)
     return dd;
 }
 
-void dd_create_basic_files(struct dump_dir *dd, uid_t uid)
+void dd_create_basic_files(struct dump_dir *dd, uid_t uid, const char *chroot_dir)
 {
     char long_str[sizeof(long) * 3 + 2];
 
@@ -495,6 +495,15 @@ void dd_create_basic_files(struct dump_dir *dd, uid_t uid)
         if (!release)
             release = load_text_file("/etc/redhat-release", /*flags:*/ 0);
         dd_save_text(dd, FILENAME_OS_RELEASE, release);
+        if (chroot_dir)
+        {
+            free(release);
+            char *chrooted_name = concat_path_file(chroot_dir, "/etc/system-release");
+            release = load_text_file(chrooted_name, /*flags:*/ 0);
+            free(chrooted_name);
+            if (release[0])
+                dd_save_text(dd, FILENAME_OS_RELEASE_IN_ROOTDIR, release);
+        }
     }
     free(release);
 }

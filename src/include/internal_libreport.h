@@ -686,6 +686,7 @@ bool make_dir_recursive(char *dir, mode_t dir_mode);
 #define FILENAME_KERNEL       "kernel"
 // From /etc/system-release or /etc/redhat-release
 #define FILENAME_OS_RELEASE   "os_release"
+#define FILENAME_OS_RELEASE_IN_ROOTDIR "os_release_in_rootdir"
 // Filled by <what?>
 #define FILENAME_PACKAGE      "package"
 #define FILENAME_COMPONENT    "component"
