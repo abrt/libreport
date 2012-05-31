@@ -21,6 +21,31 @@
 #include "internal_libreport.h"
 #include "abrt_curl.h"
 
+/*
+ * uReport server configuration
+ */
+struct ureport_server_config
+{
+    const char *url; ///< Web service URL
+};
+
+/*
+ * Loads uReport configuration from various sources.
+ *
+ * Replaces a value of an already configured option only if the
+ * option was found in a configuration source.
+ *
+ * @param config a server configuration to be populated
+ */
+static void load_ureport_server_config(struct ureport_server_config *config)
+{
+    const char *environ;
+
+    environ = getenv("uReport_URL");
+    config->url = environ ? environ : config->url;
+}
+
+
 enum response_type
 {
     UREPORT_SERVER_RESP_UNKNOWN_TYPE,
@@ -67,11 +92,15 @@ int main(int argc, char **argv)
 {
     abrt_init(argv);
 
-    const char *dump_dir_path = ".", *url = "https://retrace.fedoraproject.org/faf/reports/new/";
+    struct ureport_server_config config = {
+        .url = "https://retrace.fedoraproject.org/faf/reports/new/",
+    };
+
+    const char *dump_dir_path = ".";
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT__DUMP_DIR(&dump_dir_path),
-        OPT_STRING('u', "url", &url, "URL", _("Specify url")),
+        OPT_STRING('u', "url", &config.url, "URL", _("Specify url")),
         OPT_END(),
     };
 
@@ -86,13 +115,15 @@ int main(int argc, char **argv)
     if (!dd)
         xfunc_die();
 
+    load_ureport_server_config(&config);
+
     problem_data_t *pd = create_problem_data_from_dump_dir(dd);
     dd_close(dd);
     if (!pd)
         xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
     abrt_post_state_t *post_state = NULL;
-    post_state = post_ureport(pd, url);
+    post_state = post_ureport(pd, config.url);
     free_problem_data(pd);
 
     if (post_state->http_resp_code != 200)
@@ -100,7 +131,7 @@ int main(int argc, char **argv)
         char *errmsg = post_state->curl_error_msg;
         if (errmsg && *errmsg)
         {
-            error_msg("%s '%s'", errmsg, url);
+            error_msg("%s '%s'", errmsg, config.url);
             free_abrt_post_state(post_state);
             return 1;
         }
