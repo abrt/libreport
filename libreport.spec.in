@@ -35,13 +35,6 @@ Requires: libreport-filesystem
 # FIXME: can be removed when F15 will EOLed, needs to stay in rhel6!
 Requires: libreport-python
 
-# for rhel6
-%if 0%{?rhel} == 6
-BuildRequires: gnome-keyring-devel
-%else
-BuildRequires: libgnome-keyring-devel
-%endif
-
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description

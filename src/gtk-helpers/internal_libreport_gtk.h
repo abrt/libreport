@@ -27,19 +27,22 @@
 extern "C" {
 #endif
 
-extern bool g_keyring_available;
-
 #define make_label_autowrap_on_resize libreport_make_label_autowrap_on_resize
 void make_label_autowrap_on_resize(GtkLabel *label);
 
 #define show_events_list_dialog libreport_show_events_list_dialog
 void show_events_list_dialog(GtkWindow *parent);
 
-#define load_event_config_data_from_keyring libreport_load_event_config_data_from_keyring
-void load_event_config_data_from_keyring(void);
+#define is_event_config_user_storage_available libreport_is_event_config_user_storage_available
+bool is_event_config_user_storage_available();
 
-#define find_keyring_item_id_for_event libreport_find_keyring_item_id_for_event
-guint32 find_keyring_item_id_for_event(const char *event_name);
+#define load_event_config_data_from_user_storage libreport_load_event_config_data_from_user_storage
+void load_event_config_data_from_user_storage(GHashTable *event_config_list);
+
+#define save_event_config_data_to_user_storage libreport_save_event_config_data_to_user_storage
+void  save_event_config_data_to_user_storage(const char *event_name,
+                                             const event_config_t *event_config,
+                                             bool store_password);
 
 #define show_event_config_dialog libreport_show_event_config_dialog
 int show_event_config_dialog(const char *event_name, GtkWindow *parent);

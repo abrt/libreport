@@ -10,7 +10,7 @@ lib_LTLIBRARIES = \
 
 libreport_gtk_la_SOURCES = \
     event_config_dialog.c \
-    abrt-keyring.c \
+    secrets.c \
     hyperlinks.c \
     autowrapped_label.c
 
@@ -19,14 +19,14 @@ libreport_gtk_la_CPPFLAGS = \
     -I$(srcdir)/../lib \
     $(GTK_CFLAGS) \
     $(GLIB_CFLAGS) \
-    $(GNOME_KEYRING_CFLAGS) \
+    $(GIO_CFLAGS) \
     -D_GNU_SOURCE
 libreport_gtk_la_LDFLAGS = \
     -version-info 0:1:0
 libreport_gtk_la_LIBADD = \
     $(GTK_LIBS) \
     $(GLIB_LIBS) \
-    $(GNOME_KEYRING_LIBS) \
+    $(GIO_LIBS) \
     ../lib/libreport.la
 
 EXTRA_DIST = libreport-gtk.pc.in

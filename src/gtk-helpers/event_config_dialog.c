@@ -17,7 +17,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <gtk/gtk.h>
-#include <gnome-keyring.h>
 #include "internal_libreport_gtk.h"
 
 static GtkWindow *g_event_list_window;
@@ -298,63 +297,6 @@ static void dehydrate_config_dialog()
         g_list_foreach(option_widget_list, &save_value_from_widget, NULL);
 }
 
-static void save_settings_to_keyring(const char *event_name)
-{
-    //don't bother when we already know that keyring is not available
-    if (!g_keyring_available)
-        return;
-    char *keyring_name = NULL;
-    GnomeKeyringResult result = gnome_keyring_get_default_keyring_sync(&keyring_name);
-    if (result != GNOME_KEYRING_RESULT_OK)
-    {
-        error_msg("Can't get default keyring (result:%d)", result);
-        return;
-    }
-
-    const char *store_passwords_s = get_user_setting("store_passwords");
-    bool store_passwords = !(store_passwords_s && !strcmp(store_passwords_s, "no"));
-
-    GnomeKeyringAttributeList *attrs = gnome_keyring_attribute_list_new();
-    event_config_t *ec = get_event_config(event_name);
-    /* add string id which we use to search for items */
-    gnome_keyring_attribute_list_append_string(attrs, "libreportEventConfig", event_name);
-    GList *l;
-    for (l = g_list_first(ec->options); l != NULL; l = g_list_next(l))
-    {
-        event_option_t *op = (event_option_t *)l->data;
-        gnome_keyring_attribute_list_append_string(attrs, op->eo_name,
-                (!store_passwords && op->eo_type == OPTION_TYPE_PASSWORD) ? "" : op->eo_value);
-    }
-
-    guint32 item_id = find_keyring_item_id_for_event(event_name);
-    if (item_id)
-    {
-        /* found existing item, so just update the values */
-        result = gnome_keyring_item_set_attributes_sync(keyring_name, item_id, attrs);
-        VERB2 log("updated item with id: %i", item_id);
-    }
-    else
-    {
-        /* did't find existing item, so create a new one */
-        result = gnome_keyring_item_create_sync(keyring_name,
-                                     GNOME_KEYRING_ITEM_GENERIC_SECRET, /* type */
-                                     event_name, /* display name */
-                                     attrs, /* attributes */
-                                     "", /* secret - no special handling for password it's stored in attrs */
-                                     1, /* update if exist */
-                                     &item_id);
-        VERB2 log("created new item with id: %i", item_id);
-    }
-    gnome_keyring_attribute_list_free(attrs);
-
-    if (result != GNOME_KEYRING_RESULT_OK)
-    {
-        error_msg("Error saving event '%s' configuration to keyring", event_name);
-        return;
-    }
-    VERB2 log("saved event '%s' configuration to keyring", event_name);
-}
-
 int show_event_config_dialog(const char *event_name, GtkWindow *parent)
 {
     if (option_widget_list != NULL)
@@ -425,14 +367,14 @@ int show_event_config_dialog(const char *event_name, GtkWindow *parent)
     if (g_list_length(gtk_container_get_children(GTK_CONTAINER(g_adv_option_table))) > 0)
         gtk_box_pack_start(GTK_BOX(content), adv_expander, false, false, 0);
 
-    /* add warning if keyring is not available showing the nagging dialog
+    /* add warning if secrets service is not available showing the nagging dialog
      * is considered "too heavy UI" be designers
      */
-    if (!g_keyring_available)
+    if (!is_event_config_user_storage_available())
     {
         GtkWidget *keyring_warn_lbl =
         gtk_label_new(
-          _("Gnome Keyring is not available, your settings won't be saved!"));
+          _("Secret Service is not available, your settings won't be saved!"));
         static const GdkColor red = { .red = 0xffff };
         gtk_widget_modify_fg(keyring_warn_lbl, GTK_STATE_NORMAL, &red);
         gtk_box_pack_start(GTK_BOX(content), keyring_warn_lbl, false, false, 0);
@@ -444,7 +386,10 @@ int show_event_config_dialog(const char *event_name, GtkWindow *parent)
     if (result == GTK_RESPONSE_APPLY)
     {
         dehydrate_config_dialog();
-        save_settings_to_keyring(event_name);
+        const char *const store_passwords_s = get_user_setting("store_passwords");
+        save_event_config_data_to_user_storage(event_name,
+                                               get_event_config(event_name),
+                                               !(store_passwords_s && !strcmp(store_passwords_s, "no")));
     }
     //else if (result == GTK_RESPONSE_CANCEL)
     //    log("log");
@@ -460,7 +405,7 @@ void show_events_list_dialog(GtkWindow *parent)
     if (g_event_config_list == NULL)
     {
         load_event_config_data();
-        load_event_config_data_from_keyring();
+        load_event_config_data_from_user_storage(g_event_config_list);
     }
 
     GtkWidget *event_list_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
