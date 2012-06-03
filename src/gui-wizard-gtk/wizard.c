@@ -732,7 +732,7 @@ static char *missing_items_in_comma_list(const char *input_item_list)
         if (!get_problem_data_item_or_NULL(g_cd, item_list))
         {
             if (dst != result)
-                *dst += ',';
+                *dst++ = ',';
             dst = stpcpy(dst, item_list);
         }
         if (!end)
