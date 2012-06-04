@@ -305,7 +305,7 @@ int rhbz_bug_id(xmlrpc_value* xml, size_t ver)
     bug = rhbz_get_member(id, item);
     xmlrpc_DECREF(item);
     if (!bug)
-        abrt_xmlrpc_die(&env);
+        error_msg_and_die("fatal: There is no member named '%s'", id);
 
     xmlrpc_read_int(&env, bug, &bug_id);
     xmlrpc_DECREF(bug);
