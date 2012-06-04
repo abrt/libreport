@@ -223,8 +223,6 @@ xmlrpc_value *rhbz_get_member(const char *member, xmlrpc_value *xml)
     xmlrpc_struct_find_value(&env, xml, member, &value);
     if (env.fault_occurred)
         abrt_xmlrpc_error(&env);
-    if (!value)
-        error_msg_and_die("fatal: There is no member named '%s'", member);
 
     return value;
 }
