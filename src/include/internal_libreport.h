@@ -798,9 +798,6 @@ void show_usage_and_die(const char *usage, const struct options *opt) NORETURN;
  */
 struct abrt_post_state;
 
-#define post_ureport libreport_post_ureport
-struct abrt_post_state *post_ureport(problem_data_t *pd, const char *ureport_url);
-
 #ifdef __cplusplus
 }
 #endif
