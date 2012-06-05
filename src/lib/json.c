@@ -22,6 +22,7 @@
 #include <btparser/core-backtrace.h>
 
 #include "internal_libreport.h"
+#include "ureport.h"
 #include "abrt_curl.h"
 
 
@@ -250,12 +251,14 @@ char *new_json_ureport(problem_data_t *pd)
     return j;
 }
 
-abrt_post_state_t *post_ureport(problem_data_t *pd, const char *ureport_url)
+struct abrt_post_state *post_ureport(problem_data_t *pd, struct ureport_server_config *config)
 {
-    abrt_post_state_t *post_state;
-    post_state = new_abrt_post_state(ABRT_POST_WANT_BODY
-                                     | ABRT_POST_WANT_SSL_VERIFY
-                                     | ABRT_POST_WANT_ERROR_MSG);
+    int flags = ABRT_POST_WANT_BODY | ABRT_POST_WANT_ERROR_MSG;
+
+    if (config->ur_ssl_verify)
+        flags |= ABRT_POST_WANT_SSL_VERIFY;
+
+    abrt_post_state_t *post_state = new_abrt_post_state(flags);
 
     static const char *headers[] = {
         "Accept: application/json",
@@ -265,7 +268,7 @@ abrt_post_state_t *post_ureport(problem_data_t *pd, const char *ureport_url)
 
     char *json_ureport = new_json_ureport(pd);
 
-    abrt_post_string_as_form_data(post_state, ureport_url, "application/json",
+    abrt_post_string_as_form_data(post_state, config->ur_url, "application/json",
                      headers, json_ureport);
 
     free(json_ureport);

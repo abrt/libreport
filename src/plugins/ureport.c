@@ -19,15 +19,8 @@
 
 #include <json/json.h>
 #include "internal_libreport.h"
+#include "ureport.h"
 #include "abrt_curl.h"
-
-/*
- * uReport server configuration
- */
-struct ureport_server_config
-{
-    const char *url; ///< Web service URL
-};
 
 /*
  * Loads uReport configuration from various sources.
@@ -42,7 +35,10 @@ static void load_ureport_server_config(struct ureport_server_config *config)
     const char *environ;
 
     environ = getenv("uReport_URL");
-    config->url = environ ? environ : config->url;
+    config->ur_url = environ ? environ : config->ur_url;
+
+    environ = getenv("uReport_SSLVerify");
+    config->ur_ssl_verify = environ ? string_to_bool(environ) : config->ur_ssl_verify;
 }
 
 
@@ -93,19 +89,23 @@ int main(int argc, char **argv)
     abrt_init(argv);
 
     struct ureport_server_config config = {
-        .url = "https://retrace.fedoraproject.org/faf/reports/new/",
+        .ur_url = "https://retrace.fedoraproject.org/faf/reports/new/",
+        .ur_ssl_verify = true,
     };
 
+    bool insecure = !config.ur_ssl_verify;
     const char *dump_dir_path = ".";
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT__DUMP_DIR(&dump_dir_path),
-        OPT_STRING('u', "url", &config.url, "URL", _("Specify url")),
+        OPT_STRING('u', "url", &config.ur_url, "URL", _("Specify url")),
+        OPT_BOOL('k', "insecure", &insecure,
+                          _("Allow insecure connection to ureport server")),
         OPT_END(),
     };
 
     const char *program_usage_string = _(
-        "& [-v] -d DIR\n"
+        "& [-v] [-u URL] [-k] -d DIR\n"
         "\n"
         "Upload micro report"
     );
@@ -115,6 +115,7 @@ int main(int argc, char **argv)
     if (!dd)
         xfunc_die();
 
+    config.ur_ssl_verify = !insecure;
     load_ureport_server_config(&config);
 
     problem_data_t *pd = create_problem_data_from_dump_dir(dd);
@@ -123,7 +124,7 @@ int main(int argc, char **argv)
         xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
     abrt_post_state_t *post_state = NULL;
-    post_state = post_ureport(pd, config.url);
+    post_state = post_ureport(pd, &config);
     free_problem_data(pd);
 
     if (post_state->http_resp_code != 200)
@@ -131,7 +132,7 @@ int main(int argc, char **argv)
         char *errmsg = post_state->curl_error_msg;
         if (errmsg && *errmsg)
         {
-            error_msg("%s '%s'", errmsg, config.url);
+            error_msg("%s '%s'", errmsg, config.ur_url);
             free_abrt_post_state(post_state);
             return 1;
         }
