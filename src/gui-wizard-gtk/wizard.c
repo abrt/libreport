@@ -141,15 +141,15 @@ static PangoFontDescription *g_monospace_font;
  * page_6: finished
  */
 enum {
-    PAGENO_SUMMARY,
-    PAGENO_EVENT_SELECTOR,
-    PAGENO_EDIT_COMMENT,
-    PAGENO_EDIT_ELEMENTS,
-    PAGENO_REVIEW_DATA,
-    PAGENO_EVENT_PROGRESS,
-    PAGENO_EVENT_DONE,
-    PAGENO_NOT_SHOWN,
-    NUM_PAGES
+    PAGENO_SUMMARY,        // 0
+    PAGENO_EVENT_SELECTOR, // 1
+    PAGENO_EDIT_COMMENT,   // 2
+    PAGENO_EDIT_ELEMENTS,  // 3
+    PAGENO_REVIEW_DATA,    // 4
+    PAGENO_EVENT_PROGRESS, // 5
+    PAGENO_EVENT_DONE,     // 6
+    PAGENO_NOT_SHOWN,      // 7
+    NUM_PAGES              // 8
 };
 
 /* Use of arrays (instead of, say, #defines to C strings)
@@ -2048,7 +2048,7 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
     {
         if (!g_expert_mode)
         {
-            VERB1 log("selected -e EVENT:%s", (char*)g_auto_event_list->data);
+            VERB1 log("selected -e EVENT:%s on page: %d", (char*)g_auto_event_list->data, current_page_no);
             free(g_event_selected);
             g_event_selected = xstrdup((char*)g_auto_event_list->data);
             /*
@@ -2383,11 +2383,14 @@ static gint on_key_press_event_in_item_list(GtkTreeView *treeview, GdkEventKey *
 
 static void on_next_btn_cb(GtkWidget *btn, gpointer user_data)
 {
-    gint next_page_no = select_next_page_no(
-                        gtk_notebook_get_current_page(g_assistant),
-                        NULL
-                        );
-    gtk_notebook_set_current_page(g_assistant, next_page_no);
+    gint current_page_no = gtk_notebook_get_current_page(g_assistant);
+    gint next_page_no = select_next_page_no(current_page_no, NULL);
+
+    /* if pageno is not change 'switch-page' signal is not emitted */
+    if (current_page_no == next_page_no)
+        on_page_prepare(g_assistant, gtk_notebook_get_nth_page(g_assistant, next_page_no), NULL);
+    else
+        gtk_notebook_set_current_page(g_assistant, next_page_no);
 }
 
 static void add_pages(void)
