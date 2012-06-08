@@ -79,6 +79,19 @@ XMLRPC_CLIENT_LIBS=`xmlrpc-c-config client --libs 2> /dev/null`
 AC_SUBST(XMLRPC_CLIENT_CFLAGS)
 AC_SUBST(XMLRPC_CLIENT_LIBS)
 
+AC_PATH_PROG([PYTHON], [python-config], [no])
+[if test "$XMLTO" = "no"]
+[then]
+    [echo "The python-config program was not found in the search path. Please ensure"]
+    [echo "that it is installed and its directory is included in the search path."]
+    [echo "Then run configure again before attempting to build libreport."]
+    [exit 1]
+[fi]
+
+PYTHON_CFLAGS=`python-config --cflags 2> /dev/null`
+PYTHON_LIBS=`python-config --libs 2> /dev/null`
+AC_SUBST(PYTHON_CFLAGS)
+AC_SUBST(PYTHON_LIBS)
 
 PKG_CHECK_MODULES([GTK], [gtk+-3.0])
 PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.21])
@@ -90,13 +103,6 @@ PKG_CHECK_MODULES([GNOME_KEYRING], [gnome-keyring-1])
 PKG_CHECK_MODULES([JSON_C], [json])
 PKG_CHECK_MODULES([RPM], [rpm])
 PKG_CHECK_MODULES([BTPARSER], [btparser])
-
-# Just PKG_CHECK_MODULES([PYTHON], [python]) works only with python2.7+
-# Below, if python is not found, we set up for python2.6 w/o checking:
-PKG_CHECK_MODULES([PYTHON], [python2],,[
-    PYTHON_LIBS='-L/usr/lib64 -lpython2.6'
-    PYTHON_CFLAGS='-I/usr/include/python2.6'
-])
 PKG_CHECK_MODULES([NEWT], [libnewt])
 PKG_CHECK_MODULES([PROXY], [libproxy-1.0], [
     AC_DEFINE([HAVE_PROXY], [1], [Use libproxy])
