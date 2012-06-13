@@ -100,7 +100,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
                  const char *release,
                  int depend_on_bug);
 
-int rhbz_attach_big_files(struct abrt_xmlrpc *ax, const char *bug_id,
+int rhbz_attach_files(struct abrt_xmlrpc *ax, const char *bug_id,
                      problem_data_t *problem_data, int flags);
 
 int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *filename,
