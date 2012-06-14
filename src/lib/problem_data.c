@@ -112,7 +112,7 @@ void add_basics_to_problem_data(problem_data_t *pd)
     if (executable == NULL)
     {
         char buf[PATH_MAX + 1];
-        char exe[sizeof("/proc/%u/exe") + sizeof(int)*3]
+        char exe[sizeof("/proc/%u/exe") + sizeof(int)*3];
         sprintf(exe, "/proc/%u/exe", (int)getpid());
         ssize_t read = readlink(exe, buf, PATH_MAX);
         if (read > 0)
