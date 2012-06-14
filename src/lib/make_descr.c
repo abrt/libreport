@@ -264,6 +264,7 @@ char* make_description_mailx(problem_data_t *problem_data)
 static const char *const blacklisted_items[] = {
     CD_DUMPDIR        ,
     FILENAME_ANALYZER ,
+    FILENAME_TYPE     ,
     FILENAME_COREDUMP ,
     FILENAME_HOSTNAME ,
     FILENAME_DUPHASH  ,

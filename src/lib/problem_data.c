@@ -61,7 +61,11 @@ void add_basics_to_problem_data(problem_data_t *pd)
 {
     const char *analyzer = get_problem_item_content_or_NULL(pd, FILENAME_ANALYZER);
     if (analyzer == NULL)
-        add_to_problem_data(pd, FILENAME_ANALYZER, "libreport");
+    {
+        analyzer = "libreport";
+        add_to_problem_data(pd, FILENAME_ANALYZER, analyzer);
+    }
+    add_to_problem_data(pd, FILENAME_TYPE, analyzer);
 
     /* If application didn't provide dupe hash, we generate it
      * from all components, so we at least eliminate the exact same
@@ -104,20 +108,19 @@ void add_basics_to_problem_data(problem_data_t *pd)
         add_to_problem_data(pd, FILENAME_DUPHASH, hash_str);
     }
 
-    pid_t pid = getpid();
     const char *executable = get_problem_item_content_or_NULL(pd, FILENAME_EXECUTABLE);
-    if (executable == NULL && pid > 0)
+    if (executable == NULL)
     {
-        char buf[PATH_MAX+1];
-        char *exe = xasprintf("/proc/%u/exe", pid);
+        char buf[PATH_MAX + 1];
+        char exe[sizeof("/proc/%u/exe") + sizeof(int)*3]
+        sprintf(exe, "/proc/%u/exe", (int)getpid());
         ssize_t read = readlink(exe, buf, PATH_MAX);
         if (read > 0)
         {
-            buf[read] = 0;
+            buf[read] = '\0';
             VERB2 log("reporting initiated from: %s", buf);
             add_to_problem_data(pd, FILENAME_EXECUTABLE, buf);
         }
-        free(exe);
 
 //#ifdef WITH_RPM
         /* FIXME: component should be taken from rpm using librpm
