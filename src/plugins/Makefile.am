@@ -42,8 +42,7 @@ dist_eventsconf_DATA = \
     print_event.conf \
     bugzilla_event.conf \
     rhtsupport_event.conf \
-    uploader_event.conf \
-    ureport_event.conf
+    uploader_event.conf
 
 EXTRA_DIST = \
     report_Bugzilla.xml.in \
