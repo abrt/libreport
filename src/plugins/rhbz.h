@@ -102,7 +102,7 @@ int rhbz_array_size(xmlrpc_value *xml);
 int rhbz_bug_id(xmlrpc_value *xml, size_t ver);
 
 int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
-                 const char *release);
+                 const char *release, GList *group);
 
 int rhbz_attach_files(struct abrt_xmlrpc *ax, const char *bug_id,
                      problem_data_t *problem_data, int flags);

@@ -61,7 +61,7 @@ int main(int argc, char **argv)
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
         "\n"
-        "& [-vbf] [-c CONFFILE] -d DIR\n"
+        "& [-vbf] [-g|--group GROUP-NAME]... [-c CONFFILE] -d DIR\n"
         "or:\n"
         "& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
         "\n"
@@ -104,6 +104,7 @@ int main(int argc, char **argv)
     };
 
     char *ticket_no = NULL, *abrt_hash = NULL;
+    GList *group = NULL;
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
@@ -113,6 +114,7 @@ int main(int argc, char **argv)
         OPT_BOOL(     'b', NULL, NULL,                   _("When creating bug, attach binary files too")),
         OPT_BOOL(     'f', NULL, NULL,                   _("Force reporting even if this problem is already reported")),
         OPT_STRING(   'h', "duphash", &abrt_hash, "DUPHASH", _("Find BUG-ID according to DUPHASH")),
+        OPT_LIST(     'g', "group", &group    , "GROUP-NAME", _("Restrict access to this groups only")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
@@ -340,7 +342,7 @@ int main(int argc, char **argv)
         {
             /* Create new bug */
             log(_("Creating a new bug"));
-            int bug_id = rhbz_new_bug(client, problem_data, rhbz.b_release);
+            int bug_id = rhbz_new_bug(client, problem_data, rhbz.b_release, group);
 
             log(_("Adding attachments to bug %i"), bug_id);
             char bug_id_str[sizeof(int)*3 + 2];

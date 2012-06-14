@@ -596,9 +596,12 @@ char *rhbz_get_backtrace_info(problem_data_t *problem_data, size_t max_text_size
 
 /* suppress mail notify by {s:i} (nomail:1) (driven by flag) */
 int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
-                 const char *release)
+                 const char *release, GList *group)
 {
     func_entry();
+
+    if (group)
+        VERB3 log("# of groups %d", g_list_length(group));
 
     const char *package      = get_problem_item_content_or_NULL(problem_data,
                                                                 FILENAME_PACKAGE);
@@ -693,14 +696,50 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
 
     xmlrpc_value* result = NULL;
     char *summary = strbuf_free_nobuf(buf_summary);
-    result = abrt_xmlrpc_call(ax, "Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
-                              "product", product,
-                              "component", component,
-                              "version", version,
-                              "summary", summary,
-                              "description", full_dsc,
-                              "status_whiteboard", status_whiteboard,
-                              "platform", arch);
+
+    if (!group)
+    {
+        result = abrt_xmlrpc_call(ax, "Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
+                                  "product", product,
+                                  "component", component,
+                                  "version", version,
+                                  "summary", summary,
+                                  "description", full_dsc,
+                                  "status_whiteboard", status_whiteboard,
+                                  "platform", arch);
+    }
+    else
+    {
+        xmlrpc_env env;
+        xmlrpc_env_init(&env);
+
+        xmlrpc_value *xmlrpc_groups = xmlrpc_array_new(&env);
+        if (env.fault_occurred)
+            abrt_xmlrpc_die(&env);
+
+        for (GList *l = group; l; l = l->next)
+        {
+            xmlrpc_value *s = xmlrpc_string_new(&env, (char *) l->data);
+            if (env.fault_occurred)
+                abrt_xmlrpc_die(&env);
+
+            xmlrpc_array_append_item(&env, xmlrpc_groups, s);
+            if (env.fault_occurred)
+                abrt_xmlrpc_die(&env);
+
+            xmlrpc_DECREF(s);
+        }
+
+        result = abrt_xmlrpc_call(ax, "Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s,s:s,s:A})",
+                                  "product", product,
+                                  "component", component,
+                                  "version", version,
+                                  "summary", summary,
+                                  "description", full_dsc,
+                                  "status_whiteboard", status_whiteboard,
+                                  "platform", arch,
+                                  "groups", xmlrpc_groups);
+    }
 
     free(status_whiteboard);
     free(product);

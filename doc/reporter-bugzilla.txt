@@ -7,7 +7,7 @@ reporter-bugzilla - Reports problem to Bugzilla.
 
 SYNOPSIS
 --------
-'reporter-bugzilla' [-vbf] [-c CONFFILE] -d DIR
+'reporter-bugzilla' [-vbf] [-g|--group GROUP-NAME]... [-c CONFFILE] -d DIR
 
 Or:
 
@@ -84,7 +84,11 @@ OPTIONS
 
 -h::
 --duphash::
-   Search in bugzilla by abrt's DUPHASH and return BUG-ID
+   Search in bugzilla by abrt's DUPHASH and return BUG-ID.
+
+-g::
+--group GROUP-NAME::
+   When creating a new ticket restrict access to the defined groups only.
 
 SEE ALSO
 --------
