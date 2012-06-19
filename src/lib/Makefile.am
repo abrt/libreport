@@ -1,7 +1,7 @@
 # libreport - the stuff shared among most of abrt (like xmalloc, logging)
 lib_LTLIBRARIES = \
     libreport.la \
-    libabrt_web.la \
+    libreport-web.la \
     libabrt_dbus.la
 
 # Not used just yet:
@@ -90,12 +90,12 @@ libabrt_dbus_la_LIBADD = \
     $(GLIB_LIBS) \
     $(DBUS_LIBS)
 
-libabrt_web_la_SOURCES = \
+libreport_web_la_SOURCES = \
     abrt_curl.c \
     abrt_xmlrpc.h abrt_xmlrpc.c \
     proxies.h proxies.c \
     ureport.h json.c
-libabrt_web_la_CPPFLAGS = \
+libreport_web_la_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror \
     -I$(srcdir)/../include \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
@@ -111,9 +111,9 @@ libabrt_web_la_CPPFLAGS = \
     $(JSON_C_CFLAGS) \
     $(BTPARSER_CFLAGS) \
     -D_GNU_SOURCE
-libabrt_web_la_LDFLAGS = \
+libreport_web_la_LDFLAGS = \
     -version-info 0:1:0
-libabrt_web_la_LIBADD = \
+libreport_web_la_LIBADD = \
     $(GLIB_LIBS) \
     $(CURL_LIBS) \
     $(PROXY_LIBS) \

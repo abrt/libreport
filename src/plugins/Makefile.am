@@ -78,7 +78,7 @@ reporter_bugzilla_CPPFLAGS = \
 reporter_bugzilla_LDADD = \
     $(GLIB_LIBS) \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS) \
-    ../lib/libabrt_web.la \
+    ../lib/libreport-web.la \
     ../lib/libreport.la
 
 reporter_rhtsupport_SOURCES = \
@@ -107,7 +107,7 @@ reporter_rhtsupport_LDADD = \
     $(GLIB_LIBS) \
     $(LIBXML_LIBS) \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS) \
-    ../lib/libabrt_web.la \
+    ../lib/libreport-web.la \
     ../lib/libreport.la
 
 reporter_upload_SOURCES = \
@@ -129,7 +129,7 @@ reporter_upload_CPPFLAGS = \
 reporter_upload_LDFLAGS = -ltar
 reporter_upload_LDADD = \
     $(GLIB_LIBS) \
-    ../lib/libabrt_web.la \
+    ../lib/libreport-web.la \
     ../lib/libreport.la
 
 reporter_kerneloops_SOURCES = \
@@ -148,7 +148,7 @@ reporter_kerneloops_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 reporter_kerneloops_LDADD = \
-    ../lib/libabrt_web.la \
+    ../lib/libreport-web.la \
     ../lib/libreport.la
 
 reporter_mailx_SOURCES = \
@@ -223,7 +223,7 @@ abrt_bodhi_LDADD = \
     $(JSON_C_LIBS) \
     $(RPM_LIBS) \
     ../lib/libreport.la \
-    ../lib/libabrt_web.la
+    ../lib/libreport-web.la
 
 reporter_ureport_SOURCES = \
     ureport.c
@@ -236,6 +236,6 @@ reporter_ureport_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror
 reporter_ureport_LDADD = \
     ../lib/libreport.la \
-    ../lib/libabrt_web.la
+    ../lib/libreport-web.la
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
