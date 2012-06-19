@@ -8,6 +8,7 @@ EXTRA_DIST = \
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libreport.pc
+pkgconfig_DATA += libreport-web.pc
 
 RPM_DIRS = --define "_sourcedir `pwd`" \
 	   --define "_rpmdir `pwd`" \

@@ -153,6 +153,7 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([
 	Makefile
 	libreport.pc
+	libreport-web.pc
 	src/include/Makefile
 	src/lib/Makefile
 	src/report-python/Makefile

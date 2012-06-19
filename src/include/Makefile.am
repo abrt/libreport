@@ -6,6 +6,7 @@ libreport_include_HEADERS = \
     problem_data.h \
     report.h \
     run_event.h \
+    abrt_curl.h \
     \
     internal_libreport.h \
     internal_abrt_dbus.h

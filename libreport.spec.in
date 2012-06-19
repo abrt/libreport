@@ -63,6 +63,22 @@ Requires: libreport = %{version}-%{release}
 %description devel
 Development libraries and headers for libreport
 
+%package web
+Summary: Library providing network API for libreport
+Group: Libraries
+Requires: libreport = %{version}-%{release}
+
+%description web
+Library providing network API for libreport
+
+%package web-devel
+Summary: Development headers for libreport-web
+Group: Development/Libraries
+Requires: libreport-web = %{version}-%{release}
+
+%description web-devel
+Development headers for libreport-web
+
 %package python
 Summary: Python bindings for report-libs
 # Is group correct here? -
@@ -273,8 +289,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/%{name}/forbidden_words.conf
 %{_libdir}/libreport.so.*
 %{_libdir}/libabrt_dbus.so.*
-%{_libdir}/libabrt_web.so.*
-%exclude %{_libdir}/libabrt_web.so
 %{_mandir}/man5/report_event.conf.5*
 
 %files filesystem
@@ -300,6 +314,15 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libdir}/libabrt_dbus.so
 %{_libdir}/pkgconfig/libreport.pc
 %dir %{_includedir}/libreport
+
+%files web
+%defattr(-,root,root,-)
+%{_libdir}/libabrt_web.so*
+
+%files web-devel
+%defattr(-,root,root,-)
+%{_includedir}/libreport/abrt_curl.h
+%{_libdir}/pkgconfig/libreport-web.pc
 
 %files python
 %defattr(-,root,root,-)

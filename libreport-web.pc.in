@@ -1,0 +1,12 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: libreport
+Description: Library providing network API for libreport
+Version: @VERSION@
+Requires: glib-2.0 libcurl libproxy-1.0 libxml-2.0 xmlrpc xmlrpc_client json btparser libreport
+Libs: -L${libdir} -labrt_web
+Cflags:
+
