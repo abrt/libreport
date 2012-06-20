@@ -19,7 +19,7 @@
 #include <libtar.h>
 #include "internal_libreport.h"
 #include "client.h"
-#include "abrt_curl.h"
+#include "libreport_curl.h"
 #include "abrt_xmlrpc.h"
 #include "abrt_rh_support.h"
 #include "reporter-rhtsupport.h"

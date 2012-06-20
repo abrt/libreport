@@ -24,7 +24,7 @@
 #include <rpm/rpmpgp.h>
 
 #include "internal_libreport.h"
-#include "abrt_curl.h"
+#include "libreport_curl.h"
 #include "client.h"
 
 //699198,705037,705036

@@ -91,7 +91,7 @@ libabrt_dbus_la_LIBADD = \
     $(DBUS_LIBS)
 
 libreport_web_la_SOURCES = \
-    abrt_curl.c \
+    curl.c \
     abrt_xmlrpc.h abrt_xmlrpc.c \
     proxies.h proxies.c \
     ureport.h json.c

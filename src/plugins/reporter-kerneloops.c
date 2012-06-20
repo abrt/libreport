@@ -16,7 +16,7 @@
        Anton Arapov <anton@redhat.com>
        Arjan van de Ven <arjan@linux.intel.com>
  */
-#include "abrt_curl.h"
+#include "libreport_curl.h"
 #include "internal_libreport.h"
 
 /* helpers */

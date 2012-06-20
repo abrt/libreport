@@ -17,7 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <libtar.h>
-#include "abrt_curl.h"
+#include "libreport_curl.h"
 #include "internal_libreport.h"
 
 //TODO: use this for better logging

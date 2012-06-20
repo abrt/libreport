@@ -20,7 +20,7 @@
 #include <json/json.h>
 #include "internal_libreport.h"
 #include "ureport.h"
-#include "abrt_curl.h"
+#include "libreport_curl.h"
 
 /*
  * Loads uReport configuration from various sources.

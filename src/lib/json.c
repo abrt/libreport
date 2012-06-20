@@ -23,7 +23,7 @@
 
 #include "internal_libreport.h"
 #include "ureport.h"
-#include "abrt_curl.h"
+#include "libreport_curl.h"
 
 
 /* on success 1 returned, on error zero is returned and appropriate value

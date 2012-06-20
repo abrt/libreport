@@ -20,7 +20,7 @@
 #include <libxml/xmlwriter.h>
 #include <curl/curl.h>
 #include "internal_libreport.h"
-#include "abrt_curl.h"
+#include "libreport_curl.h"
 #include "abrt_rh_support.h"
 
 struct reportfile {

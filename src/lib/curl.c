@@ -17,7 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "internal_libreport.h"
-#include "abrt_curl.h"
+#include "libreport_curl.h"
 #include "proxies.h"
 
 /*
