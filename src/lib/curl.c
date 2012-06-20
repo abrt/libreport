@@ -106,14 +106,14 @@ CURLcode curl_easy_perform_with_proxy(CURL *handle, const char *url)
  * post_state utility functions
  */
 
-abrt_post_state_t *new_abrt_post_state(int flags)
+post_state_t *new_post_state(int flags)
 {
-    abrt_post_state_t *state = (abrt_post_state_t *)xzalloc(sizeof(*state));
+    post_state_t *state = (post_state_t *)xzalloc(sizeof(*state));
     state->flags = flags;
     return state;
 }
 
-void free_abrt_post_state(abrt_post_state_t *state)
+void free_post_state(post_state_t *state)
 {
     char **headers = state->headers;
     if (headers)
@@ -127,7 +127,7 @@ void free_abrt_post_state(abrt_post_state_t *state)
     free(state);
 }
 
-char *find_header_in_abrt_post_state(abrt_post_state_t *state, const char *str)
+char *find_header_in_post_state(post_state_t *state, const char *str)
 {
     char **headers = state->headers;
     if (headers)
@@ -144,14 +144,14 @@ char *find_header_in_abrt_post_state(abrt_post_state_t *state, const char *str)
 }
 
 /*
- * abrt_post: perform HTTP POST transaction
+ * post: perform HTTP POST transaction
  */
 
 /* "save headers" callback */
 static size_t
 save_headers(void *buffer_pv, size_t count, size_t nmemb, void *ptr)
 {
-    abrt_post_state_t* state = (abrt_post_state_t*)ptr;
+    post_state_t* state = (post_state_t*)ptr;
     size_t size = count * nmemb;
 
     char *h = xstrndup((char*)buffer_pv, size);
@@ -248,7 +248,7 @@ static int curl_debug(CURL *handle, curl_infotype it, char *buf, size_t bufsize,
 }
 
 int
-abrt_post(abrt_post_state_t *state,
+post(post_state_t *state,
                 const char *url,
                 const char *content_type,
                 const char **additional_headers,
@@ -257,9 +257,9 @@ abrt_post(abrt_post_state_t *state,
 {
     CURLcode curl_err;
     long response_code;
-    abrt_post_state_t localstate;
+    post_state_t localstate;
 
-    VERB3 log("abrt_post('%s','%s')", url, data);
+    VERB3 log("%s('%s','%s')", __func__, url, data);
 
     if (!state)
     {
@@ -308,7 +308,7 @@ abrt_post(abrt_post_state_t *state,
     struct curl_httppost* post = NULL;
     struct curl_httppost* last = NULL;
     FILE* data_file = NULL;
-    if (data_size == ABRT_POST_DATA_FROMFILE) {
+    if (data_size == POST_DATA_FROMFILE) {
         // ...from a file
         data_file = fopen(data, "r");
         if (!data_file)
@@ -323,7 +323,7 @@ abrt_post(abrt_post_state_t *state,
         off_t sz = ftello(data_file);
         fseeko(data_file, 0, SEEK_SET);
         xcurl_easy_setopt_off_t(handle, CURLOPT_POSTFIELDSIZE_LARGE, sz);
-    } else if (data_size == ABRT_POST_DATA_FROMFILE_AS_FORM_DATA) {
+    } else if (data_size == POST_DATA_FROMFILE_AS_FORM_DATA) {
         // ...from a file, in multipart/formdata format
         const char *basename = strrchr(data, '/');
         if (basename) basename++;
@@ -362,7 +362,7 @@ abrt_post(abrt_post_state_t *state,
 //FIXME:
             error_msg_and_die("out of memory or read error (curl_formadd error code: %d)", (int)curlform_err);
         xcurl_easy_setopt_ptr(handle, CURLOPT_HTTPPOST, post);
-    } else if (data_size == ABRT_POST_DATA_STRING_AS_FORM_DATA) {
+    } else if (data_size == POST_DATA_STRING_AS_FORM_DATA) {
         CURLFORMcode curlform_err = curl_formadd(&post, &last,
                         CURLFORM_PTRNAME, "file", // element name
                         // curl bug - missing filename 
@@ -383,7 +383,7 @@ abrt_post(abrt_post_state_t *state,
     } else {
         // .. from a blob in memory
         xcurl_easy_setopt_ptr(handle, CURLOPT_POSTFIELDS, data);
-        // note1: if data_size == ABRT_POST_DATA_STRING == -1, curl will use strlen(data)
+        // note1: if data_size == POST_DATA_STRING == -1, curl will use strlen(data)
         xcurl_easy_setopt_long(handle, CURLOPT_POSTFIELDSIZE, data_size);
         // We don't use CURLOPT_POSTFIELDSIZE_LARGE because
         // I'm not sure CURLOPT_POSTFIELDSIZE_LARGE special-cases -1.
@@ -393,8 +393,8 @@ abrt_post(abrt_post_state_t *state,
     struct curl_slist *httpheader_list = NULL;
 
     // Override "Content-Type:"
-    if (data_size != ABRT_POST_DATA_FROMFILE_AS_FORM_DATA
-        && data_size != ABRT_POST_DATA_STRING_AS_FORM_DATA)
+    if (data_size != POST_DATA_FROMFILE_AS_FORM_DATA
+        && data_size != POST_DATA_STRING_AS_FORM_DATA)
     {
         char *content_type_header = xasprintf("Content-Type: %s", content_type);
         // Note: curl_slist_append() copies content_type_header
@@ -440,20 +440,20 @@ abrt_post(abrt_post_state_t *state,
 #endif
 
     // Prepare for saving information
-    if (state->flags & ABRT_POST_WANT_HEADERS)
+    if (state->flags & POST_WANT_HEADERS)
     {
         xcurl_easy_setopt_ptr(handle, CURLOPT_HEADERFUNCTION, (void*)save_headers);
         xcurl_easy_setopt_ptr(handle, CURLOPT_WRITEHEADER, state);
     }
     FILE* body_stream = NULL;
-    if (state->flags & ABRT_POST_WANT_BODY)
+    if (state->flags & POST_WANT_BODY)
     {
         body_stream = open_memstream(&state->body, &state->body_size);
         if (!body_stream)
             error_msg_and_die("out of memory");
         xcurl_easy_setopt_ptr(handle, CURLOPT_WRITEDATA, body_stream);
     }
-    if (!(state->flags & ABRT_POST_WANT_SSL_VERIFY))
+    if (!(state->flags & POST_WANT_SSL_VERIFY))
     {
         xcurl_easy_setopt_long(handle, CURLOPT_SSL_VERIFYPEER, 0);
         xcurl_easy_setopt_long(handle, CURLOPT_SSL_VERIFYHOST, 0);
@@ -465,7 +465,7 @@ abrt_post(abrt_post_state_t *state,
     if (curl_err)
     {
         VERB2 log("curl_easy_perform: error %d", (int)curl_err);
-        if (state->flags & ABRT_POST_WANT_ERROR_MSG)
+        if (state->flags & POST_WANT_ERROR_MSG)
         {
             state->curl_error_msg = check_curl_error(curl_err, "curl_easy_perform");
             VERB3 log("curl_easy_perform: error_msg: %s", state->curl_error_msg);

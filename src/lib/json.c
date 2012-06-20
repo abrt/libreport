@@ -251,14 +251,14 @@ char *new_json_ureport(problem_data_t *pd)
     return j;
 }
 
-struct abrt_post_state *post_ureport(problem_data_t *pd, struct ureport_server_config *config)
+struct post_state *post_ureport(problem_data_t *pd, struct ureport_server_config *config)
 {
-    int flags = ABRT_POST_WANT_BODY | ABRT_POST_WANT_ERROR_MSG;
+    int flags = POST_WANT_BODY | POST_WANT_ERROR_MSG;
 
     if (config->ur_ssl_verify)
-        flags |= ABRT_POST_WANT_SSL_VERIFY;
+        flags |= POST_WANT_SSL_VERIFY;
 
-    abrt_post_state_t *post_state = new_abrt_post_state(flags);
+    struct post_state *post_state = new_post_state(flags);
 
     static const char *headers[] = {
         "Accept: application/json",
@@ -268,7 +268,7 @@ struct abrt_post_state *post_ureport(problem_data_t *pd, struct ureport_server_c
 
     char *json_ureport = new_json_ureport(pd);
 
-    abrt_post_string_as_form_data(post_state, config->ur_url, "application/json",
+    post_string_as_form_data(post_state, config->ur_url, "application/json",
                      headers, json_ureport);
 
     free(json_ureport);

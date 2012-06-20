@@ -16,8 +16,8 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#ifndef ABRT_CURL_H_
-#define ABRT_CURL_H_
+#ifndef LIBREPORT_CURL_H_
+#define LIBREPORT_CURL_H_
 
 #include <curl/curl.h>
 
@@ -30,7 +30,7 @@ CURL* xcurl_easy_init();
 /* Set proxy according to the url and call curl_easy_perform */
 CURLcode curl_easy_perform_with_proxy(CURL *handle, const char *url);
 
-typedef struct abrt_post_state {
+typedef struct post_state {
     /* Supplied by caller: */
     int         flags;
     const char  *username;
@@ -43,71 +43,71 @@ typedef struct abrt_post_state {
     char        *body;
     size_t      body_size;
     char        errmsg[CURL_ERROR_SIZE];
-} abrt_post_state_t;
+} post_state_t;
 
-abrt_post_state_t *new_abrt_post_state(int flags);
-void free_abrt_post_state(abrt_post_state_t *state);
-char *find_header_in_abrt_post_state(abrt_post_state_t *state, const char *str);
+post_state_t *new_post_state(int flags);
+void free_post_state(post_state_t *state);
+char *find_header_in_post_state(post_state_t *state, const char *str);
 
 enum {
-    ABRT_POST_WANT_HEADERS    = (1 << 0),
-    ABRT_POST_WANT_ERROR_MSG  = (1 << 1),
-    ABRT_POST_WANT_BODY       = (1 << 2),
-    ABRT_POST_WANT_SSL_VERIFY = (1 << 3),
+    POST_WANT_HEADERS    = (1 << 0),
+    POST_WANT_ERROR_MSG  = (1 << 1),
+    POST_WANT_BODY       = (1 << 2),
+    POST_WANT_SSL_VERIFY = (1 << 3),
 };
 enum {
     /* Must be -1! CURLOPT_POSTFIELDSIZE interprets -1 as "use strlen" */
-    ABRT_POST_DATA_STRING = -1,
-    ABRT_POST_DATA_FROMFILE = -2,
-    ABRT_POST_DATA_FROMFILE_AS_FORM_DATA = -3,
-    ABRT_POST_DATA_STRING_AS_FORM_DATA = -4,
+    POST_DATA_STRING = -1,
+    POST_DATA_FROMFILE = -2,
+    POST_DATA_FROMFILE_AS_FORM_DATA = -3,
+    POST_DATA_STRING_AS_FORM_DATA = -4,
 };
 int
-abrt_post(abrt_post_state_t *state,
+post(post_state_t *state,
                 const char *url,
                 const char *content_type,
                 const char **additional_headers,
                 const char *data,
                 off_t data_size);
 static inline int
-abrt_post_string(abrt_post_state_t *state,
+post_string(post_state_t *state,
                 const char *url,
                 const char *content_type,
                 const char **additional_headers,
                 const char *str)
 {
-    return abrt_post(state, url, content_type, additional_headers,
-                     str, ABRT_POST_DATA_STRING);
+    return post(state, url, content_type, additional_headers,
+                     str, POST_DATA_STRING);
 }
 static inline int
-abrt_post_string_as_form_data(abrt_post_state_t *state,
+post_string_as_form_data(post_state_t *state,
                 const char *url,
                 const char *content_type,
                 const char **additional_headers,
                 const char *str)
 {
-    return abrt_post(state, url, content_type, additional_headers,
-                     str, ABRT_POST_DATA_STRING_AS_FORM_DATA);
+    return post(state, url, content_type, additional_headers,
+                     str, POST_DATA_STRING_AS_FORM_DATA);
 }
 static inline int
-abrt_post_file(abrt_post_state_t *state,
+post_file(post_state_t *state,
                 const char *url,
                 const char *content_type,
                 const char **additional_headers,
                 const char *filename)
 {
-    return abrt_post(state, url, content_type, additional_headers,
-                     filename, ABRT_POST_DATA_FROMFILE);
+    return post(state, url, content_type, additional_headers,
+                     filename, POST_DATA_FROMFILE);
 }
 static inline int
-abrt_post_file_as_form(abrt_post_state_t *state,
+post_file_as_form(post_state_t *state,
                 const char *url,
                 const char *content_type,
                 const char **additional_headers,
                 const char *filename)
 {
-    return abrt_post(state, url, content_type, additional_headers,
-                     filename, ABRT_POST_DATA_FROMFILE_AS_FORM_DATA);
+    return post(state, url, content_type, additional_headers,
+                     filename, POST_DATA_FROMFILE_AS_FORM_DATA);
 }
 
 #ifdef __cplusplus

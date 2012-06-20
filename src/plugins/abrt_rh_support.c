@@ -332,21 +332,21 @@ post_case_to_url(const char* url,
 
     int redirect_count = 0;
     char *errmsg;
-    abrt_post_state_t *case_state;
+    post_state_t *case_state;
 
  redirect_case:
-    case_state = new_abrt_post_state(0
-            + ABRT_POST_WANT_HEADERS
-            + ABRT_POST_WANT_BODY
-            + ABRT_POST_WANT_ERROR_MSG
-            + (ssl_verify ? ABRT_POST_WANT_SSL_VERIFY : 0)
+    case_state = new_post_state(0
+            + POST_WANT_HEADERS
+            + POST_WANT_BODY
+            + POST_WANT_ERROR_MSG
+            + (ssl_verify ? POST_WANT_SSL_VERIFY : 0)
     );
     case_state->username = username;
     case_state->password = password;
 
-    abrt_post_string(case_state, url, "application/xml", additional_headers, case_data);
+    post_string(case_state, url, "application/xml", additional_headers, case_data);
 
-    char *case_location = find_header_in_abrt_post_state(case_state, "Location:");
+    char *case_location = find_header_in_post_state(case_state, "Location:");
 
     switch (case_state->http_resp_code)
     {
@@ -367,7 +367,7 @@ post_case_to_url(const char* url,
         {
             free(url_copy);
             url = url_copy = xstrdup(case_location);
-            free_abrt_post_state(case_state);
+            free_post_state(case_state);
             goto redirect_case;
         }
         /* fall through */
@@ -416,7 +416,7 @@ post_case_to_url(const char* url,
     result->body = case_state->body;
     case_state->body = NULL;
 
-    free_abrt_post_state(case_state);
+    free_post_state(case_state);
     free(case_data);
     free(url_copy);
     return result;
@@ -436,14 +436,14 @@ post_file_to_url(const char* url,
 
     int redirect_count = 0;
     char *errmsg;
-    abrt_post_state_t *atch_state;
+    post_state_t *atch_state;
 
  redirect_attach:
-    atch_state = new_abrt_post_state(0
-            + ABRT_POST_WANT_HEADERS
-            + ABRT_POST_WANT_BODY
-            + ABRT_POST_WANT_ERROR_MSG
-            + (ssl_verify ? ABRT_POST_WANT_SSL_VERIFY : 0)
+    atch_state = new_post_state(0
+            + POST_WANT_HEADERS
+            + POST_WANT_BODY
+            + POST_WANT_ERROR_MSG
+            + (ssl_verify ? POST_WANT_SSL_VERIFY : 0)
     );
     atch_state->username = username;
     atch_state->password = password;
@@ -452,7 +452,7 @@ post_file_to_url(const char* url,
         /* Sends data in multipart/mixed document. One detail is that
 	 * file *name* is also sent to the server.
 	 */
-        abrt_post_file_as_form(atch_state,
+        post_file_as_form(atch_state,
             url,
             "application/octet-stream",
             additional_headers,
@@ -462,7 +462,7 @@ post_file_to_url(const char* url,
     else
     {
         /* Sends file's raw contents */
-        abrt_post_file(atch_state,
+        post_file(atch_state,
             url,
             "application/octet-stream",
             additional_headers,
@@ -470,7 +470,7 @@ post_file_to_url(const char* url,
         );
     }
 
-    char *atch_location = find_header_in_abrt_post_state(atch_state, "Location:");
+    char *atch_location = find_header_in_post_state(atch_state, "Location:");
 
     switch (atch_state->http_resp_code)
     {
@@ -479,7 +479,7 @@ post_file_to_url(const char* url,
         {
             free(url_copy);
             url = url_copy = xstrdup(atch_location);
-            free_abrt_post_state(atch_state);
+            free_post_state(atch_state);
             goto redirect_attach;
         }
         /* fall through */
@@ -514,7 +514,7 @@ post_file_to_url(const char* url,
     result->body = atch_state->body;
     atch_state->body = NULL;
 
-    free_abrt_post_state(atch_state);
+    free_post_state(atch_state);
     free(url_copy);
     return result;
 }

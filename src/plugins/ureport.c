@@ -123,7 +123,7 @@ int main(int argc, char **argv)
     if (!pd)
         xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
-    abrt_post_state_t *post_state = NULL;
+    post_state_t *post_state = NULL;
     post_state = post_ureport(pd, &config);
     free_problem_data(pd);
 
@@ -133,7 +133,7 @@ int main(int argc, char **argv)
         if (errmsg && *errmsg)
         {
             error_msg("%s '%s'", errmsg, config.ur_url);
-            free_abrt_post_state(post_state);
+            free_post_state(post_state);
             return 1;
         }
     }
@@ -186,7 +186,7 @@ int main(int argc, char **argv)
 format_err:
     json_object_put(json);
 err:
-    free_abrt_post_state(post_state);
+    free_post_state(post_state);
 
     return ret;
 }

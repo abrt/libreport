@@ -37,7 +37,7 @@ struct ureport_server_config
 struct abrt_post_state;
 
 #define post_ureport libreport_post_ureport
-struct abrt_post_state *post_ureport(problem_data_t *pd, struct ureport_server_config *config);
+struct post_state *post_ureport(problem_data_t *pd, struct ureport_server_config *config);
 
 #ifdef __cplusplus
 }

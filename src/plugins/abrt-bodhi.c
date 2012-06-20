@@ -289,15 +289,16 @@ static GHashTable *bodhi_query_list(const char *query, const char *release)
 {
     char *bodhi_url_bugs = xasprintf("%s/list", bodhi_url);
 
-    abrt_post_state_t *post_state = new_abrt_post_state(
-        ABRT_POST_WANT_BODY | ABRT_POST_WANT_SSL_VERIFY | ABRT_POST_WANT_ERROR_MSG);
+    post_state_t *post_state = new_post_state(POST_WANT_BODY
+                                              | POST_WANT_SSL_VERIFY
+                                              | POST_WANT_ERROR_MSG);
 
     const char *headers[] = {
         "Accept: application/json",
         NULL
     };
 
-    abrt_post_string(post_state, bodhi_url_bugs, "application/x-www-form-urlencoded",
+    post_string(post_state, bodhi_url_bugs, "application/x-www-form-urlencoded",
                      headers, query);
 
     if (post_state->http_resp_code != 200)
@@ -316,7 +317,7 @@ static GHashTable *bodhi_query_list(const char *query, const char *release)
 
     GHashTable *bodhi_table = bodhi_parse_json(json, release);
     json_object_put(json);
-    free_abrt_post_state(post_state);
+    free_post_state(post_state);
 
     return bodhi_table;
 }
