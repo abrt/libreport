@@ -913,6 +913,16 @@ report_result_t *find_in_reported_to(struct dump_dir *dd, const char *prefix)
     return result;
 }
 
+int dd_rename(struct dump_dir *dd, const char *new_path)
+{
+    int res = rename(dd->dd_dirname, new_path);
+    if (res == 0)
+    {
+        free(dd->dd_dirname);
+        dd->dd_dirname = rm_trailing_slashes(new_path);
+    }
+    return res;
+}
 
 /* Utility function */
 

@@ -70,6 +70,7 @@ void dd_save_text(struct dump_dir *dd, const char *name, const char *data);
 void dd_save_binary(struct dump_dir *dd, const char *name, const char *data, unsigned size);
 /* Returns 0 if directory is deleted or not found */
 int dd_delete(struct dump_dir *dd);
+int dd_rename(struct dump_dir *dd, const char *new_path);
 
 
 /* reported_to handling */
