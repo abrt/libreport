@@ -19,6 +19,8 @@
 
 #include "internal_libreport.h"
 
+#define NEW_PD_SUFFIX ".new"
+
 static struct dump_dir *try_dd_create(const char *base_dir_name, const char *dir_name)
 {
     char *path = concat_path_file(base_dir_name, dir_name);
@@ -87,4 +89,95 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
     dd_create_basic_files(dd, (uid_t)-1L, NULL);
 
     return dd;
+}
+
+LibreportError save_dump_dir_from_problem_data(problem_data_t *problem_data, char **problem_id, const char *base_dir_name)
+{
+    char *type = get_problem_item_content_or_NULL(problem_data, FILENAME_TYPE);
+
+    if(!type)
+    {
+        error_msg(_("Missing required item: '%s'"), FILENAME_TYPE);
+        return LR_MISSING_ITEM;
+    }
+
+    char *time_s = get_problem_item_content_or_NULL(problem_data, FILENAME_TIME);
+    if(!time_s)
+    {
+        /* 64 is a randomly picked constant which should be
+         * enough to hold the time in seconds for a long time..
+         */
+        char buf[sizeof(long unsigned)*3];
+        time_t t = time(NULL);
+        /* time is a required field, so if it's not provided add a default one */
+        snprintf(buf, sizeof(buf), "%lu", (long unsigned)t);
+        add_to_problem_data_ext(problem_data, FILENAME_TIME, buf, CD_FLAG_TXT);
+    }
+
+    *problem_id = xasprintf("%s-%s-%lu"NEW_PD_SUFFIX, type, iso_date_string(NULL), (long)getpid());
+
+    VERB2 log("Saving to %s/%s", base_dir_name, *problem_id);
+    struct dump_dir *dd = try_dd_create(base_dir_name, *problem_id);
+    if (!dd)
+    {
+        perror_msg("Can't create problem directory");
+        free(*problem_id);
+        *problem_id = NULL;
+        return LR_ERROR;
+    }
+
+    GHashTableIter iter;
+    char *name;
+    struct problem_item *value;
+    g_hash_table_iter_init(&iter, problem_data);
+    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
+    {
+        if (value->flags & CD_FLAG_FILE)
+        {
+            char dest[PATH_MAX+1];
+            snprintf(dest, sizeof(dest), "%s/%s", dd->dd_dirname, name);
+            VERB2 log("copying '%s' to '%s'", value->content, dest);
+            off_t copied = copy_file(value->content, dest, 0644);
+            if (copied < 0)
+                error_msg("Can't copy %s to %s", value->content, dest);
+
+            VERB2 log("copied %li bytes", (unsigned long)copied);
+
+            continue;
+        }
+
+        /* only files should contain '/' and those are handled earlier */
+        if (name[0] == '.' || strchr(name, '/'))
+        {
+            error_msg("Problem data field name contains disallowed chars: '%s'", name);
+            continue;
+        }
+
+//FIXME: what to do with CD_FLAG_BINs??
+        if (value->flags & CD_FLAG_BIN)
+            continue;
+
+        dd_save_text(dd, name, value->content);
+    }
+
+
+
+    char *suffix = strstr(*problem_id, NEW_PD_SUFFIX);
+    if (suffix)
+        *suffix = '\0';
+
+    char* new_path = concat_path_file(base_dir_name, *problem_id);
+
+    VERB2 log("Renaming from'%s' to '%s'", dd->dd_dirname, new_path);
+    if (dd_rename(dd, new_path) != 0)
+    {
+        free(*problem_id);
+        *problem_id = NULL;
+        return LR_ERROR;
+    }
+    free(new_path);
+
+    dd_close(dd);
+
+    return LR_OK;
 }

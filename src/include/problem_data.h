@@ -35,6 +35,7 @@ enum {
     /* Show this element in "short" info (report-cli -l) */
     CD_FLAG_LIST          = (1 << 4),
     CD_FLAG_UNIXTIME      = (1 << 5),
+    CD_FLAG_FILE          = (1 << 6),
 };
 
 struct problem_item {
@@ -61,6 +62,7 @@ void add_basics_to_problem_data(problem_data_t *pd);
 
 static inline void free_problem_data(problem_data_t *problem_data)
 {
+    //TODO: leaks problem item;
     if (problem_data)
         g_hash_table_destroy(problem_data);
 }
