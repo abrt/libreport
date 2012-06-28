@@ -44,8 +44,6 @@ int report_problem_in_dir(const char *dirname, int flags)
         *pp++ = (char *)"report-gtk";
         if (flags & LIBREPORT_DEL_DIR)
             *pp++ = (char *)"--delete";
-        if (!(flags & LIBREPORT_ANALYZE))
-            *pp++ = (char *)"--report-only";
         *pp++ = (char *)"--";
         *pp++ = (char *)dirname;
         *pp = NULL;
@@ -65,7 +63,6 @@ int report_problem_in_dir(const char *dirname, int flags)
             *pp++ = (char *)"report-newt";
             if (flags & LIBREPORT_DEL_DIR)
                 *pp++ = (char *)"--delete";
-            *pp++ = (char *)"-o"; /* report only, newt can't analyze */
             *pp++ = (char *)"--";
             *pp++ = (char *)dirname;
             *pp = NULL;
@@ -80,10 +77,7 @@ int report_problem_in_dir(const char *dirname, int flags)
             *pp++ = (char *)"report-cli";
             if (flags & LIBREPORT_DEL_DIR)
                 *pp++ = (char *)"--delete";
-            if (!(flags & LIBREPORT_ANALYZE))
-                *pp++ = (char *)"-ro"; /* only report */
-            else
-                *pp++ = (char *)"-r"; /* analyze and report */
+            *pp++ = (char *)"-r"; /* analyze and report */
             *pp++ = (char *)"--";
             *pp++ = (char *)dirname;
             *pp = NULL;
