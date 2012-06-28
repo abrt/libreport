@@ -27,7 +27,6 @@ char *g_glade_file = NULL;
 char *g_dump_dir_name = NULL;
 char *g_events = NULL;
 GList *g_auto_event_list = NULL;
-int g_report_only = false;
 problem_data_t *g_cd;
 
 
@@ -105,7 +104,7 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "& [-vpod] [-g GUI_FILE] [-n PROG_NAME] DIR\n"
+        "& [-vpd] [-g GUI_FILE] [-n PROG_NAME] DIR\n"
         "\n"
         "GUI tool to analyze and report problem saved in specified DIR"
     );
@@ -113,9 +112,8 @@ int main(int argc, char **argv)
         OPT_v = 1 << 0,
         OPT_g = 1 << 1,
         OPT_p = 1 << 2,
-        OPT_o = 1 << 3, // report only
-        OPT_d = 1 << 4,
-        OPT_e = 1 << 5,
+        OPT_d = 1 << 3,
+        OPT_e = 1 << 4,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
@@ -123,7 +121,6 @@ int main(int argc, char **argv)
         OPT_STRING('g', NULL, &g_glade_file, "FILE",          _("Alternate GUI file")),
         OPT_BOOL(  'p', NULL, NULL,                           _("Add program names to log")),
         /* for use from 3rd party apps to show just a reporter selector */
-        OPT_BOOL(  'o', "report-only", &g_report_only,        _("Skip analyze steps, go through report steps only")),
         OPT_BOOL(  'd', "delete", NULL,                       _("Remove DIR after reporting")),
         OPT_LIST(  'e', "event", &g_auto_event_list, "EVENT", _("Run only this event")),
         OPT_END()

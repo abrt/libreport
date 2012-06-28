@@ -157,13 +157,13 @@ enum {
  * instead of strcmp.
  */
 static const gchar PAGE_SUMMARY[]        = "page_0";
-static const gchar PAGE_EVENT_SELECTOR[] = "page_2_report";
+static const gchar PAGE_EVENT_SELECTOR[] = "page_2";
 static const gchar PAGE_EDIT_COMMENT[]   = "page_1";
 static const gchar PAGE_EDIT_ELEMENTS[]  = "page_3";
-static const gchar PAGE_REVIEW_DATA[]    = "page_4_report";
-static const gchar PAGE_EVENT_PROGRESS[] = "page_5_report";
-static const gchar PAGE_EVENT_DONE[]     = "page_6_report";
-static const gchar PAGE_NOT_SHOWN[]      = "page_7_report";
+static const gchar PAGE_REVIEW_DATA[]    = "page_4";
+static const gchar PAGE_EVENT_PROGRESS[] = "page_5";
+static const gchar PAGE_EVENT_DONE[]     = "page_6";
+static const gchar PAGE_NOT_SHOWN[]      = "page_7";
 
 static const gchar *const page_names[] =
 {
@@ -2027,18 +2027,6 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
 {
     GtkWidget *page;
 
-    if (g_report_only)
-    {
-        /* In only-report mode, we only need to wrap back at the end */
-        page = gtk_notebook_get_nth_page(g_assistant, current_page_no);
-        if (page == pages[PAGENO_EVENT_DONE].page_widget)
-            current_page_no = 0;
-        else
-            current_page_no++;
-        VERB1 log("%s: selected page #%d", __func__, current_page_no);
-        return current_page_no;
-    }
-
  again:
     VERB1 log("%s: current_page_no:%d", __func__, current_page_no);
     current_page_no++;
@@ -2427,17 +2415,6 @@ static void add_pages(void)
     int page_no = 0;
     for (i = 0; page_names[i] != NULL; i++)
     {
-        char *delim = strrchr(page_names[i], '_');
-        if (!not_reportable && delim)
-        {
-            if (g_report_only && (strncmp(delim + 1, "report", strlen("report"))) != 0)
-            {
-                pages[i].page_widget = NULL;
-                pages[i].page_no = -1;
-                continue;
-            }
-        }
-
         GtkWidget *page = GTK_WIDGET(gtk_builder_get_object(g_builder, page_names[i]));
         pages[i].page_widget = page;
         pages[i].page_no = page_no++;
