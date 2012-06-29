@@ -171,12 +171,15 @@ LibreportError save_dump_dir_from_problem_data(problem_data_t *problem_data, cha
     VERB2 log("Renaming from'%s' to '%s'", dd->dd_dirname, new_path);
     if (dd_rename(dd, new_path) != 0)
     {
+        free(new_path);
+        dd_close(dd);
+
         free(*problem_id);
         *problem_id = NULL;
         return LR_ERROR;
     }
-    free(new_path);
 
+    free(new_path);
     dd_close(dd);
 
     return LR_OK;
