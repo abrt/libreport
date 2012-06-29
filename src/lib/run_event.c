@@ -439,6 +439,11 @@ int run_event_on_dir_name(struct run_event_state *state,
                 const char *dump_dir_name,
                 const char *event
 ) {
+    static const size_t alert_prefix_len = sizeof(REPORT_PREFIX_ALERT) - 1;
+    static const size_t ask_prefix_len = sizeof(REPORT_PREFIX_ASK) - 1;
+    static const size_t ask_yes_no_prefix_len = sizeof(REPORT_PREFIX_ASK_YES_NO) - 1;
+    static const size_t ask_password_prefix_len = sizeof(REPORT_PREFIX_ASK_PASSWORD) - 1;
+
     prepare_commands(state, dump_dir_name, event);
 
     /* Execute every command in shell */
@@ -452,11 +457,6 @@ int run_event_on_dir_name(struct run_event_state *state,
             die_out_of_memory();
         char *buf;
         char *msg;
-
-        int alert_prefix_len = strlen(REPORT_PREFIX_ALERT);
-        int ask_prefix_len = strlen(REPORT_PREFIX_ASK);
-        int ask_yes_no_prefix_len = strlen(REPORT_PREFIX_ASK_YES_NO);
-        int ask_password_prefix_len = strlen(REPORT_PREFIX_ASK_PASSWORD);
 
         while ((buf = xmalloc_fgetline(fp)) != NULL)
         {
