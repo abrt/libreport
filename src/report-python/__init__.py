@@ -144,7 +144,7 @@ def createAlertSignature(component, hashmarkername, hashvalue, summary, alertSig
 # used in anaconda / python-meh
 def createPythonUnhandledExceptionSignature(**kwargs):
     mandatory_args = ["component", "hashmarkername", "duphash", "reason",
-                    "description", "exnFileName"]
+                    "description"]
 
     for arg in mandatory_args:
         if arg not in kwargs:
@@ -164,15 +164,6 @@ def createPythonUnhandledExceptionSignature(**kwargs):
         # need to add "release", parse_release() expects format "<product> release <version>"
         pd.add("os_release", product +" release "+ version)
     pd.add_basics() # adds product and version + some other required field
-    # FIXME: how to handle files out of dump dir??
-    # temporary glue: 2011-02-08 (let's see how temporary..)
-    exnFileName = kwargs["exnFileName"]
-    try:
-        inf = open(exnFileName, "r")
-        pd.add(os.path.basename(exnFileName), inf.read())
-        inf.close()
-    except Exception, ex:
-        print "Can't add %s to report: %s" % (exnFileName, ex)
 
     return pd
 
