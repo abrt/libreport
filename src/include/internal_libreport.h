@@ -662,7 +662,15 @@ bool make_dir_recursive(char *dir, mode_t dir_mode);
 #define FILENAME_TIME         "time"        /* mandatory */
 #define FILENAME_REASON       "reason"      /* mandatory? */
 #define FILENAME_UID          "uid"         /* mandatory? */
+/*
+ * "analyzer" is to be gradually changed to "type":
+ * For now, we fetch and look at "analyzer" element,
+ * but we always save both "analyzer" and "type" (with same contents).
+ * By 2013, we switch to looking at "type". Then we will stop generating
+ * "analyzer" element.
+ */
 #define FILENAME_ANALYZER     "analyzer"
+#define FILENAME_TYPE         "type"
 #define FILENAME_EXECUTABLE   "executable"
 #define FILENAME_PID          "pid"
 #define FILENAME_PWD          "pwd"
@@ -681,7 +689,6 @@ bool make_dir_recursive(char *dir, mode_t dir_mode);
 // Name of the function where the application crashed.
 // Optional.
 #define FILENAME_CRASH_FUNCTION "crash_function"
-// filled by CDebugDump::Create() (which also fills FILENAME_UID):
 #define FILENAME_ARCHITECTURE "architecture"
 #define FILENAME_KERNEL       "kernel"
 // From /etc/system-release or /etc/redhat-release
