@@ -159,6 +159,13 @@ void problem_data_add_text_noteditable(problem_data_t *problem_data,
     problem_data_add(problem_data, name, content, CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
 }
 
+void problem_data_add_text_editable(problem_data_t *problem_data,
+                const char *name,
+                const char *content)
+{
+    problem_data_add(problem_data, name, content, CD_FLAG_TXT + CD_FLAG_ISEDITABLE);
+}
+
 char *problem_data_get_content_or_die(problem_data_t *problem_data, const char *key)
 {
     struct problem_item *item = problem_data_get_item_or_NULL(problem_data, key);
