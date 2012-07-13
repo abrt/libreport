@@ -132,7 +132,7 @@ LibreportError save_dump_dir_from_problem_data(problem_data_t *problem_data, cha
     g_hash_table_iter_init(&iter, problem_data);
     while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
-        if (value->flags & CD_FLAG_FILE)
+        if (value->flags & CD_FLAG_BIN)
         {
             char dest[PATH_MAX+1];
             snprintf(dest, sizeof(dest), "%s/%s", dd->dd_dirname, name);
@@ -153,14 +153,8 @@ LibreportError save_dump_dir_from_problem_data(problem_data_t *problem_data, cha
             continue;
         }
 
-//FIXME: what to do with CD_FLAG_BINs??
-        if (value->flags & CD_FLAG_BIN)
-            continue;
-
         dd_save_text(dd, name, value->content);
     }
-
-
 
     char *suffix = strstr(*problem_id, NEW_PD_SUFFIX);
     if (suffix)

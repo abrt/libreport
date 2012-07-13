@@ -35,7 +35,6 @@ enum {
     /* Show this element in "short" info (report-cli -l) */
     CD_FLAG_LIST          = (1 << 4),
     CD_FLAG_UNIXTIME      = (1 << 5),
-    CD_FLAG_FILE          = (1 << 6),
 };
 
 struct problem_item {
