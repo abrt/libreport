@@ -25,14 +25,18 @@ struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name
     {
         if (base_name[1] == '\0')
         {
-            /* Drats. It has trailing slash. Find previous one */
+            /* Drats. It has trailing slash(es) */
+            /* Skip all trailing slashes */
+            while (base_name > dump_dir_name && *--base_name == '/')
+                continue;
+            /* Find previous one */
             for (;;)
             {
+                if (*base_name == '/')
+                    break;
                 base_name--;
                 if (base_name < dump_dir_name)
-                    /* It has ONLY trailing slash */
-                    break;
-                if (*base_name == '/')
+                    /* It has ONLY trailing slash(es) */
                     break;
             }
         }
