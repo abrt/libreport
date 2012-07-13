@@ -111,7 +111,7 @@ LibreportError save_dump_dir_from_problem_data(problem_data_t *problem_data, cha
         time_t t = time(NULL);
         /* time is a required field, so if it's not provided add a default one */
         snprintf(buf, sizeof(buf), "%lu", (long unsigned)t);
-        problem_data_add(problem_data, FILENAME_TIME, buf, CD_FLAG_TXT);
+        problem_data_add_text_noteditable(problem_data, FILENAME_TIME, buf);
     }
 
     *problem_id = xasprintf("%s-%s-%lu"NEW_PD_SUFFIX, type, iso_date_string(NULL), (long)getpid());

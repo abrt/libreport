@@ -166,6 +166,19 @@ void problem_data_add_text_editable(problem_data_t *problem_data,
     problem_data_add(problem_data, name, content, CD_FLAG_TXT + CD_FLAG_ISEDITABLE);
 }
 
+static const char *get_filename(const char *path)
+{
+    const char *filename = strrchr(path, '/');
+    if (filename) /* +1 => strip the '/' */
+        return filename + 1;
+    return path;
+}
+void problem_data_add_file(problem_data_t *pd, const char *name, const char *path)
+{
+    problem_data_add(pd, name ? name : get_filename(path), path, CD_FLAG_BIN);
+}
+
+
 char *problem_data_get_content_or_die(problem_data_t *problem_data, const char *key)
 {
     struct problem_item *item = problem_data_get_item_or_NULL(problem_data, key);

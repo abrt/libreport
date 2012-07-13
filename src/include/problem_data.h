@@ -76,6 +76,8 @@ void problem_data_add_text_noteditable(problem_data_t *problem_data,
 void problem_data_add_text_editable(problem_data_t *problem_data,
                 const char *name,
                 const char *content);
+/* "name" can be NULL: */
+void problem_data_add_file(problem_data_t *pd, const char *name, const char *path);
 
 static inline struct problem_item *problem_data_get_item_or_NULL(problem_data_t *problem_data, const char *key)
 {

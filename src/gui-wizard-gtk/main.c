@@ -39,7 +39,7 @@ void problem_data_reload_from_dump_dir(void)
         xfunc_die(); /* dd_opendir already logged error msg */
 
     problem_data_t *new_cd = create_problem_data_from_dump_dir(dd);
-    problem_data_add(new_cd, CD_DUMPDIR, g_dump_dir_name, (CD_FLAG_TXT | CD_FLAG_ISNOTEDITABLE));
+    problem_data_add_text_noteditable(new_cd, CD_DUMPDIR, g_dump_dir_name);
 
     g_events = list_possible_events(dd, NULL, "");
     dd_close(dd);
