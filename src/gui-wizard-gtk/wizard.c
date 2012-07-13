@@ -62,8 +62,6 @@ static GtkTextView *g_tv_event_log;
 /* List of event_gui_data's */
 
 /* List of event_gui_data's */
-static GList *g_list_selected_reporters;
-
 static GtkContainer *g_container_details1;
 static GtkContainer *g_container_details2;
 
@@ -191,6 +189,11 @@ static page_obj_t pages[NUM_PAGES];
 static struct strbuf *cmd_output = NULL;
 
 /* Utility functions */
+
+static void clear_warnings(void);
+static void show_warnings(void);
+static void add_warning(const char *warning);
+static bool check_minimal_bt_rating(const char *event_name);
 
 static void wrap_fixer(GtkWidget *widget, gpointer data_unused)
 {
@@ -705,6 +708,12 @@ static void event_rb_was_toggled(GtkButton *button, gpointer user_data)
             free(g_event_selected);
             g_event_selected = xstrdup(evdata->event_name);
             check_event_config(evdata->event_name);
+
+            clear_warnings();
+            const bool good_rating = check_minimal_bt_rating(g_event_selected);
+            show_warnings();
+
+            gtk_widget_set_sensitive(g_btn_next, good_rating);
         }
     }
 }
@@ -1693,10 +1702,29 @@ static void clear_warnings(void)
     gtk_container_foreach(GTK_CONTAINER(g_box_warning_labels), &remove_child_widget, NULL);
 }
 
-static void check_bt_rating_and_allow_send(void)
+/* TODO : this function should not set a warning directly, it makes the function unusable for add_event_buttons(); */
+static bool check_minimal_bt_rating(const char *event_name)
 {
-    int minimal_rating = 0;
-    bool send = true;
+    bool acceptable_rating = true;
+    event_config_t *event_cfg = NULL;
+
+    if (!event_name)
+        error_msg_and_die(_("Cannot check backtrace rating because of invalid event name"));
+    else if(strncmp("report", event_name, sizeof("report")-1) != 0)
+    {
+        VERB1 log("No checks for bactrace rating because event '%s' doesn't report.", event_name);
+        return acceptable_rating;
+    }
+    else
+    {
+        event_cfg = get_event_config(event_name);
+
+        if (!event_cfg)
+        {
+            VERB1 log("Cannot check backtrace rating because of not defined configuration for event '%s'", event_name);
+            return acceptable_rating;
+        }
+    }
 
     /*
      * FIXME: this should be bind to a reporter not to a compoment
@@ -1705,7 +1733,7 @@ static void check_bt_rating_and_allow_send(void)
      */
     const char *analyzer = problem_data_get_content_or_NULL(g_cd, FILENAME_ANALYZER);
 //FIXME: say "no" to special casing!
-    if (analyzer && strcmp(analyzer, "Kerneloops") != 0)
+    if (event_cfg && analyzer && strcmp(analyzer, "Kerneloops") != 0)
     {
         const char *rating_str = problem_data_get_content_or_NULL(g_cd, FILENAME_RATING);
 //COMPAT, remove after 2.1 release
@@ -1719,41 +1747,27 @@ static void check_bt_rating_and_allow_send(void)
             long rating = strtol(rating_str, &endptr, 10);
             if (errno != 0 || endptr == rating_str || *endptr != '\0')
             {
-                add_warning(_("Reporting disabled because the rating does not contain a number '%s'."));
-                send = false;
+                add_warning(_("Reporting disabled because the rating does not contain a number."));
+                acceptable_rating = false;
             }
-
-            GList *li = g_list_selected_reporters;
-            while (li != NULL)
+            else
             {
-                /* need to obey the highest minimal rating of all selected reporters
-                 * FIXME: check this when selecting the reporter and allow select
-                 * only usable ones
-                 */
-                event_config_t *cfg = get_event_config((const char *)li->data);
-                if (cfg->ec_minimal_rating > minimal_rating)
+                VERB1 log("Checking current rating %ld to required rating %ld.", rating, event_cfg->ec_minimal_rating);
+                if (rating == event_cfg->ec_minimal_rating) /* bt is usable, but not complete, so show a warning */
                 {
-                    minimal_rating = cfg->ec_minimal_rating;
-                    VERB1 log("%s reporter sets the minimal rating to: %i", (const char *)li->data, minimal_rating);
+                    add_warning(_("The backtrace is incomplete, please make sure you provide the steps to reproduce."));
                 }
-
-                li = g_list_next(li);
-            };
-
-            if (rating == minimal_rating) /* bt is usable, but not complete, so show a warning */
-            {
-                add_warning(_("The backtrace is incomplete, please make sure you provide the steps to reproduce."));
-            }
-
-            if (rating < minimal_rating)
-            {
-                //FIXME: see CreporterAssistant: 394 for ideas
-                add_warning(_("Reporting disabled because the backtrace is unusable."));
-                send = false;
+                else if (rating < event_cfg->ec_minimal_rating)
+                {
+                    add_warning(_("Reporting disabled because the backtrace is unusable."));
+                    //FIXME: see CreporterAssistant: 394 for ideas
+                    acceptable_rating = false;
+                }
             }
         }
     }
-    gtk_widget_set_sensitive(g_btn_next, send);
+
+    return acceptable_rating;
 }
 
 static void on_bt_approve_toggle(GtkToggleButton *togglebutton, gpointer user_data)
@@ -1928,6 +1942,27 @@ static void highlight_forbidden(void)
 
 static gint select_next_page_no(gint current_page_no, gpointer data);
 
+static const char *get_next_processed_event(GList **events_list)
+{
+    if (!events_list)
+        return NULL;
+
+    const char *event_name = (const char *)(*events_list)->data;
+
+    clear_warnings();
+    const bool acceptable = check_minimal_bt_rating(event_name);
+    show_warnings();
+
+    if (!acceptable)
+    {
+        *events_list = NULL;
+        return NULL;
+    }
+
+    *events_list = g_list_next(*events_list);
+    return event_name;
+}
+
 static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer user_data)
 {
     //int page_no = gtk_assistant_get_current_page(g_assistant);
@@ -1960,7 +1995,6 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
     if (pages[PAGENO_EDIT_ELEMENTS].page_widget == page)
     {
         clear_warnings();
-        check_bt_rating_and_allow_send();
         highlight_forbidden();
         show_warnings();
     }
@@ -2013,13 +2047,9 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
                     _("Processing failed. You can try another operation if available."),
                     _("Processing finished, please proceed to the next step.")
             );
-
-            if (g_auto_event_list)
-            {
-                g_auto_event_list = g_auto_event_list->next;
-                VERB1 log("next -e EVENT:%s", g_auto_event_list ? (char*)g_auto_event_list->data : "NULL");
-            }
         }
+        else
+            gtk_label_set_text(g_lbl_event_log, _("Thank you!"));
     }
 }
 
@@ -2036,9 +2066,18 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
     {
         if (!g_expert_mode)
         {
-            VERB1 log("selected -e EVENT:%s on page: %d", (char*)g_auto_event_list->data, current_page_no);
             free(g_event_selected);
-            g_event_selected = xstrdup((char*)g_auto_event_list->data);
+
+            const char *event = get_next_processed_event(&g_auto_event_list);
+            if (!event)
+            {
+                g_event_selected = NULL;
+                current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
+                goto again;
+            }
+
+            VERB1 log("selected -e EVENT:%s on page: %d", event, current_page_no);
+            g_event_selected = xstrdup((char*)event);
             /*
              * We don't remove the list element, because GTK calls select_next_page_no()
              * spuriously (for example, it calls it twice for first page).
@@ -2051,7 +2090,6 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
 
             current_page_no = pages[PAGENO_EVENT_SELECTOR].page_no + 1;
             goto event_was_selected;
-
         }
     }
 
