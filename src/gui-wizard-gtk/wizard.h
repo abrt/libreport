@@ -31,6 +31,6 @@ extern char *g_dump_dir_name;
 extern char *g_events;
 extern GList *g_auto_event_list;
 extern problem_data_t *g_cd;
-void reload_problem_data_from_dump_dir(void);
+void problem_data_reload_from_dump_dir(void);
 
 #endif

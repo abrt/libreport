@@ -38,7 +38,7 @@ static int get_pd_int_item(problem_data_t *pd, const char *key, int *result)
     if (!pd || !key)
         return 0;
 
-    char *pd_item = get_problem_item_content_or_NULL(pd, key);
+    char *pd_item = problem_data_get_content_or_NULL(pd, key);
     if (!pd_item)
     {
         VERB1 log("warning: '%s' is not an item in problem directory", key);
@@ -76,7 +76,7 @@ static void ureport_add_str(struct json_object *ur, const char *key,
 
 static void ureport_add_os(struct json_object *ur, problem_data_t *pd)
 {
-    char *pd_item = get_problem_item_content_or_NULL(pd, FILENAME_OS_RELEASE);
+    char *pd_item = problem_data_get_content_or_NULL(pd, FILENAME_OS_RELEASE);
     if (!pd_item)
         return;
 
@@ -98,7 +98,7 @@ static void ureport_add_os(struct json_object *ur, problem_data_t *pd)
 
 static void ureport_add_type(struct json_object *ur, problem_data_t *pd)
 {
-    char *pd_item = get_problem_item_content_or_NULL(pd, FILENAME_ANALYZER);
+    char *pd_item = problem_data_get_content_or_NULL(pd, FILENAME_ANALYZER);
     if (!pd_item)
         return;
 
@@ -112,7 +112,7 @@ static void ureport_add_type(struct json_object *ur, problem_data_t *pd)
 
 static void ureport_add_core_backtrace(struct json_object *ur, problem_data_t *pd)
 {
-    char *pd_item = get_problem_item_content_or_NULL(pd, FILENAME_CORE_BACKTRACE);
+    char *pd_item = problem_data_get_content_or_NULL(pd, FILENAME_CORE_BACKTRACE);
     if (!pd_item)
         return;
 
@@ -164,7 +164,7 @@ static void ureport_add_core_backtrace(struct json_object *ur, problem_data_t *p
 static void ureport_add_item_str(struct json_object *ur, problem_data_t *pd,
                                  const char *key, const char *rename)
 {
-        char *pd_item = get_problem_item_content_or_NULL(pd, key);
+        char *pd_item = problem_data_get_content_or_NULL(pd, key);
         if (!pd_item)
             return;
 

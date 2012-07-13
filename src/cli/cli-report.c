@@ -117,7 +117,7 @@ static void remove_comments_and_unescape(char *str)
 static void write_crash_report_field(FILE *fp, problem_data_t *problem_data,
         const char *field, const char *description)
 {
-    const struct problem_item *value = get_problem_data_item_or_NULL(problem_data, field);
+    const struct problem_item *value = problem_data_get_item_or_NULL(problem_data, field);
     if (!value)
     {
         // exit silently, all fields are optional for now
@@ -189,7 +189,7 @@ static int read_crash_report_field(const char *text, problem_data_t *report,
     else
         length = end - textfield;
 
-    struct problem_item *value = get_problem_data_item_or_NULL(report, field);
+    struct problem_item *value = problem_data_get_item_or_NULL(report, field);
     if (!value)
     {
         error_msg("Field %s not found", field);
@@ -251,8 +251,8 @@ static int read_crash_report(problem_data_t *report, const char *text)
  */
 static void create_fields_for_editor(problem_data_t *problem_data)
 {
-    if (!get_problem_data_item_or_NULL(problem_data, FILENAME_COMMENT))
-        add_to_problem_data_ext(problem_data, FILENAME_COMMENT, "", CD_FLAG_TXT + CD_FLAG_ISEDITABLE);
+    if (!problem_data_get_item_or_NULL(problem_data, FILENAME_COMMENT))
+        problem_data_add(problem_data, FILENAME_COMMENT, "", CD_FLAG_TXT + CD_FLAG_ISEDITABLE);
 }
 
 /**
@@ -811,7 +811,7 @@ int report(const char *dump_dir_name, int flags)
         int result = run_report_editor(problem_data);
         if (result != 0)
         {
-            free_problem_data(problem_data);
+            problem_data_free(problem_data);
             free(report_events_as_lines);
             return 1;
         }
@@ -820,8 +820,8 @@ int report(const char *dump_dir_name, int flags)
         if (dd)
         {
 //TODO: we should iterate through problem_data and modify all modifiable fields
-            const char *comment = get_problem_item_content_or_NULL(problem_data, FILENAME_COMMENT);
-            const char *backtrace = get_problem_item_content_or_NULL(problem_data, FILENAME_BACKTRACE);
+            const char *comment = problem_data_get_content_or_NULL(problem_data, FILENAME_COMMENT);
+            const char *backtrace = problem_data_get_content_or_NULL(problem_data, FILENAME_BACKTRACE);
             if (comment)
                 dd_save_text(dd, FILENAME_COMMENT, comment);
             if (backtrace)
@@ -839,7 +839,7 @@ int report(const char *dump_dir_name, int flags)
 
     if (!report_events)
     {
-        free_problem_data(problem_data);
+        problem_data_free(problem_data);
         error_msg_and_die("The problem directory '%s' has no defined reporters",
                           dump_dir_name);
     }
@@ -857,10 +857,10 @@ int report(const char *dump_dir_name, int flags)
     }
     else
     {
-        const char *rating_str = get_problem_item_content_or_NULL(problem_data, FILENAME_RATING);
+        const char *rating_str = problem_data_get_content_or_NULL(problem_data, FILENAME_RATING);
 //COMPAT, remove after 2.1 release
         if (!rating_str)
-            rating_str = get_problem_item_content_or_NULL(problem_data, "rating");
+            rating_str = problem_data_get_content_or_NULL(problem_data, "rating");
 
         unsigned i, rating = rating_str ? xatou(rating_str) : 4;
         GList *li;
@@ -894,7 +894,7 @@ int report(const char *dump_dir_name, int flags)
             {
                 puts(_("Reporting disabled because the backtrace is unusable"));
 
-                const char *package = get_problem_item_content_or_NULL(problem_data, FILENAME_PACKAGE);
+                const char *package = problem_data_get_content_or_NULL(problem_data, FILENAME_PACKAGE);
                 if (package && package[0])
                     printf(_("Please try to install debuginfo manually using the command: \"debuginfo-install %s\" and try again\n"), package);
 
@@ -919,7 +919,7 @@ int report(const char *dump_dir_name, int flags)
     }
 
     printf(_("Problem reported via %d report events (%d errors)\n"), plugins, errors);
-    free_problem_data(problem_data);
+    problem_data_free(problem_data);
     list_free_with_free(report_events);
     return errors;
 }

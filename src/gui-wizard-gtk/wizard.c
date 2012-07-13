@@ -296,7 +296,7 @@ static void update_window_title(void)
 {
     /* prgname can be null according to gtk documentation */
     const char *prgname = g_get_prgname();
-    const char *reason = get_problem_item_content_or_NULL(g_cd, FILENAME_REASON);
+    const char *reason = problem_data_get_content_or_NULL(g_cd, FILENAME_REASON);
     char *title = xasprintf("%s - %s", (reason ? reason : g_dump_dir_name),
             (prgname ? prgname : "report"));
     gtk_window_set_title(g_wnd_assistant, title);
@@ -394,7 +394,7 @@ static void load_text_to_text_view(GtkTextView *tv, const char *name)
 {
     GtkTextBuffer *tb = gtk_text_view_get_buffer(tv);
 
-    const char *str = g_cd ? get_problem_item_content_or_NULL(g_cd, name) : NULL;
+    const char *str = g_cd ? problem_data_get_content_or_NULL(g_cd, name) : NULL;
     /* Bad: will choke at any text with non-Unicode parts: */
     /* gtk_text_buffer_set_text(tb, (str ? str : ""), -1);*/
     /* Start torturing ourself instead: */
@@ -431,7 +431,7 @@ static gchar *get_malloced_string_from_text_view(GtkTextView *tv)
 
 static void save_text_if_changed(const char *name, const char *new_value)
 {
-    const char *old_value = g_cd ? get_problem_item_content_or_NULL(g_cd, name) : "";
+    const char *old_value = g_cd ? problem_data_get_content_or_NULL(g_cd, name) : "";
     if (!old_value)
         old_value = "";
     if (strcmp(new_value, old_value) != 0)
@@ -444,7 +444,7 @@ static void save_text_if_changed(const char *name, const char *new_value)
         }
 //FIXME: else: what to do with still-unsaved data in the widget??
         dd_close(dd);
-        reload_problem_data_from_dump_dir();
+        problem_data_reload_from_dump_dir();
         update_gui_state_from_problem_data();
     }
 }
@@ -521,7 +521,7 @@ static struct problem_item *get_current_problem_item_or_NULL(GtkTreeView *tree_v
                 -1);
     if (!*pp_item_name) /* paranoia, should never happen */
         return NULL;
-    struct problem_item *item = get_problem_data_item_or_NULL(g_cd, *pp_item_name);
+    struct problem_item *item = problem_data_get_item_or_NULL(g_cd, *pp_item_name);
     return item;
 }
 
@@ -642,7 +642,7 @@ static void g_tv_details_checkbox_toggled(
                 -1);
     if (!item_name) /* paranoia, should never happen */
         return;
-    struct problem_item *item = get_problem_data_item_or_NULL(g_cd, item_name);
+    struct problem_item *item = problem_data_get_item_or_NULL(g_cd, item_name);
     g_free(item_name);
     if (!item) /* paranoia */
         return;
@@ -729,7 +729,7 @@ static char *missing_items_in_comma_list(const char *input_item_list)
     {
         char *end = strchr(item_list, ',');
         if (end) *end = '\0';
-        if (!get_problem_data_item_or_NULL(g_cd, item_list))
+        if (!problem_data_get_item_or_NULL(g_cd, item_list))
         {
             if (dst != result)
                 *dst++ = ',';
@@ -805,7 +805,7 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
             else
             if (cfg->ec_creates_items)
             {
-                if (get_problem_data_item_or_NULL(g_cd, cfg->ec_creates_items))
+                if (problem_data_get_item_or_NULL(g_cd, cfg->ec_creates_items))
                 {
                     char *missing = missing_items_in_comma_list(cfg->ec_creates_items);
                     if (missing)
@@ -930,7 +930,7 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
     gtk_list_store_append(g_ls_details, &iter);
     stats->filecount++;
 
-    //FIXME: use the human-readable format_problem_item(item) instead of item->content.
+    //FIXME: use the human-readable problem_item_format(item) instead of item->content.
     if (item->flags & CD_FLAG_TXT)
     {
         if (item->flags & CD_FLAG_ISEDITABLE)
@@ -1070,8 +1070,8 @@ void update_gui_state_from_problem_data(void)
     update_window_title();
     remove_tabs_from_notebook(g_notebook);
 
-    const char *reason = get_problem_item_content_or_NULL(g_cd, FILENAME_REASON);
-    const char *not_reportable = get_problem_item_content_or_NULL(g_cd,
+    const char *reason = problem_data_get_content_or_NULL(g_cd, FILENAME_REASON);
+    const char *not_reportable = problem_data_get_content_or_NULL(g_cd,
                                                                   FILENAME_NOT_REPORTABLE);
 
     char *t = xasprintf("%s%s%s",
@@ -1558,7 +1558,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         strbuf_free(evd->event_log);
         free(evd);
 
-        reload_problem_data_from_dump_dir();
+        problem_data_reload_from_dump_dir();
         update_gui_state_from_problem_data();
 
         /* Inform abrt-gui that it is a good idea to rescan the directory */
@@ -1703,14 +1703,14 @@ static void check_bt_rating_and_allow_send(void)
      * but so far only oopses don't have rating, so for now we
      * skip the "kernel" manually
      */
-    const char *analyzer = get_problem_item_content_or_NULL(g_cd, FILENAME_ANALYZER);
+    const char *analyzer = problem_data_get_content_or_NULL(g_cd, FILENAME_ANALYZER);
 //FIXME: say "no" to special casing!
     if (analyzer && strcmp(analyzer, "Kerneloops") != 0)
     {
-        const char *rating_str = get_problem_item_content_or_NULL(g_cd, FILENAME_RATING);
+        const char *rating_str = problem_data_get_content_or_NULL(g_cd, FILENAME_RATING);
 //COMPAT, remove after 2.1 release
         if (!rating_str)
-            rating_str = get_problem_item_content_or_NULL(g_cd, "rating");
+            rating_str = problem_data_get_content_or_NULL(g_cd, "rating");
 
         if (rating_str)
         {
@@ -2071,14 +2071,14 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
             current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
             goto again;
         }
-        if (!get_problem_item_content_or_NULL(g_cd, FILENAME_BACKTRACE))
+        if (!problem_data_get_content_or_NULL(g_cd, FILENAME_BACKTRACE))
             goto again; /* no backtrace, skip this page */
     }
 
 #if 0
     if (pages[PAGENO_EDIT_COMMENT].page_widget == page)
     {
-        if (get_problem_item_content_or_NULL(g_cd, FILENAME_COMMENT))
+        if (problem_data_get_content_or_NULL(g_cd, FILENAME_COMMENT))
             goto again; /* no comment, skip this page */
     }
 #endif
@@ -2206,7 +2206,7 @@ static void save_edited_one_liner(GtkCellRendererText *renderer,
                 -1);
     if (!item_name) /* paranoia, should never happen */
         return;
-    struct problem_item *item = get_problem_data_item_or_NULL(g_cd, item_name);
+    struct problem_item *item = problem_data_get_item_or_NULL(g_cd, item_name);
     if (item && (item->flags & CD_FLAG_ISEDITABLE))
     {
         struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY);
@@ -2257,7 +2257,7 @@ static void on_btn_add_file(GtkButton *button)
             goto show_msgbox;
         }
 
-        struct problem_item *item = get_problem_data_item_or_NULL(g_cd, basename);
+        struct problem_item *item = problem_data_get_item_or_NULL(g_cd, basename);
         if (!item || (item->flags & CD_FLAG_ISEDITABLE))
         {
             struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY);
@@ -2281,7 +2281,7 @@ static void on_btn_add_file(GtkButton *button)
                     }
                     if (!message)
                     {
-                        reload_problem_data_from_dump_dir();
+                        problem_data_reload_from_dump_dir();
                         update_gui_state_from_problem_data();
                         /* Set flags for the new item */
                         update_ls_details_checkboxes();
@@ -2326,7 +2326,7 @@ static void delete_item(GtkTreeView *treeview)
             const char *item_name = g_value_get_string(&d_item_name);
             if (item_name)
             {
-                struct problem_item *item = get_problem_data_item_or_NULL(g_cd, item_name);
+                struct problem_item *item = problem_data_get_item_or_NULL(g_cd, item_name);
                 if (item->flags & CD_FLAG_ISEDITABLE)
                 {
 //                  GtkTreePath *old_path = gtk_tree_model_get_path(store, &iter);

@@ -26,7 +26,7 @@ static void
 p_problem_data_dealloc(PyObject *pself)
 {
     p_problem_data *self = (p_problem_data*)pself;
-    free_problem_data(self->cd);
+    problem_data_free(self->cd);
     self->cd = NULL;
     self->ob_type->tp_free(pself);
 }
@@ -36,7 +36,7 @@ p_problem_data_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 {
     p_problem_data *self = (p_problem_data *)type->tp_alloc(type, 0);
     if (self)
-        self->cd = new_problem_data();
+        self->cd = problem_data_new();
     return (PyObject *)self;
 }
 
@@ -47,7 +47,7 @@ p_problem_data_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 //}
 
 /*
-void add_to_problem_data_ext(problem_data_t *problem_data,
+void problem_data_add(problem_data_t *problem_data,
                 const char *name,
                 const char *content,
                 unsigned flags);
@@ -66,14 +66,14 @@ static PyObject *p_problem_data_add(PyObject *pself, PyObject *args)
          */
         return NULL;
     }
-    add_to_problem_data_ext(self->cd, name, content, flags);
+    problem_data_add(self->cd, name, content, flags);
 
     /* every function returns PyObject, to return void we need to do this */
     Py_RETURN_NONE;
 }
 
-/* struct problem_item *get_problem_data_item_or_NULL(problem_data_t *problem_data, const char *key); */
-static PyObject *p_get_problem_data_item(PyObject *pself, PyObject *args)
+/* struct problem_item *problem_data_get_item_or_NULL(problem_data_t *problem_data, const char *key); */
+static PyObject *p_problem_data_get_item(PyObject *pself, PyObject *args)
 {
     p_problem_data *self = (p_problem_data*)pself;
     const char *key;
@@ -81,7 +81,7 @@ static PyObject *p_get_problem_data_item(PyObject *pself, PyObject *args)
     {
         return NULL;
     }
-    struct problem_item *ci = get_problem_data_item_or_NULL(self->cd, key);
+    struct problem_item *ci = problem_data_get_item_or_NULL(self->cd, key);
     if (ci == NULL)
     {
         Py_RETURN_NONE;
@@ -112,10 +112,10 @@ static PyObject *p_create_dump_dir_from_problem_data(PyObject *pself, PyObject *
     return (PyObject*)new_dd;
 }
 
-static PyObject *p_add_basics_to_problem_data(PyObject *pself, PyObject *always_null)
+static PyObject *p_problem_data_add_basics(PyObject *pself, PyObject *always_null)
 {
     p_problem_data *self = (p_problem_data*)pself;
-    add_basics_to_problem_data(self->cd);
+    problem_data_add_basics(self->cd);
 
     Py_RETURN_NONE;
 }
@@ -128,9 +128,9 @@ static PyObject *p_add_basics_to_problem_data(PyObject *pself, PyObject *always_
 static PyMethodDef p_problem_data_methods[] = {
     /* method_name, func, flags, doc_string */
     { "add"            , p_problem_data_add                 , METH_VARARGS },
-    { "get"            , p_get_problem_data_item            , METH_VARARGS },
+    { "get"            , p_problem_data_get_item            , METH_VARARGS },
     { "create_dump_dir", p_create_dump_dir_from_problem_data, METH_VARARGS },
-    { "add_basics",      p_add_basics_to_problem_data,        METH_NOARGS },
+    { "add_basics",      p_problem_data_add_basics,        METH_NOARGS },
     { NULL }
 };
 

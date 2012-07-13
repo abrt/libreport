@@ -30,7 +30,7 @@ GList *g_auto_event_list = NULL;
 problem_data_t *g_cd;
 
 
-void reload_problem_data_from_dump_dir(void)
+void problem_data_reload_from_dump_dir(void)
 {
     free(g_events);
 
@@ -39,7 +39,7 @@ void reload_problem_data_from_dump_dir(void)
         xfunc_die(); /* dd_opendir already logged error msg */
 
     problem_data_t *new_cd = create_problem_data_from_dump_dir(dd);
-    add_to_problem_data_ext(new_cd, CD_DUMPDIR, g_dump_dir_name, (CD_FLAG_TXT | CD_FLAG_ISNOTEDITABLE));
+    problem_data_add(new_cd, CD_DUMPDIR, g_dump_dir_name, (CD_FLAG_TXT | CD_FLAG_ISNOTEDITABLE));
 
     g_events = list_possible_events(dd, NULL, "");
     dd_close(dd);
@@ -53,7 +53,7 @@ void reload_problem_data_from_dump_dir(void)
         g_hash_table_iter_init(&iter, new_cd);
         while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&new_item))
         {
-            struct problem_item *old_item = g_cd ? get_problem_data_item_or_NULL(g_cd, name) : NULL;
+            struct problem_item *old_item = g_cd ? problem_data_get_item_or_NULL(g_cd, name) : NULL;
             if (old_item)
             {
                 new_item->selected_by_user = old_item->selected_by_user;
@@ -70,7 +70,7 @@ void reload_problem_data_from_dump_dir(void)
             }
             //log("%s: was ->selected_by_user=%d", __func__, new_item->selected_by_user);
         }
-        free_problem_data(g_cd);
+        problem_data_free(g_cd);
     }
     g_cd = new_cd;
 
@@ -140,7 +140,7 @@ int main(int argc, char **argv)
     load_event_config_data_from_keyring();
     load_user_settings("report-gtk");
 
-    reload_problem_data_from_dump_dir();
+    problem_data_reload_from_dump_dir();
 
     create_assistant();
 

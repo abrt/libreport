@@ -93,7 +93,7 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
 
 LibreportError save_dump_dir_from_problem_data(problem_data_t *problem_data, char **problem_id, const char *base_dir_name)
 {
-    char *type = get_problem_item_content_or_NULL(problem_data, FILENAME_TYPE);
+    char *type = problem_data_get_content_or_NULL(problem_data, FILENAME_TYPE);
 
     if(!type)
     {
@@ -101,7 +101,7 @@ LibreportError save_dump_dir_from_problem_data(problem_data_t *problem_data, cha
         return LR_MISSING_ITEM;
     }
 
-    char *time_s = get_problem_item_content_or_NULL(problem_data, FILENAME_TIME);
+    char *time_s = problem_data_get_content_or_NULL(problem_data, FILENAME_TIME);
     if(!time_s)
     {
         /* 64 is a randomly picked constant which should be
@@ -111,7 +111,7 @@ LibreportError save_dump_dir_from_problem_data(problem_data_t *problem_data, cha
         time_t t = time(NULL);
         /* time is a required field, so if it's not provided add a default one */
         snprintf(buf, sizeof(buf), "%lu", (long unsigned)t);
-        add_to_problem_data_ext(problem_data, FILENAME_TIME, buf, CD_FLAG_TXT);
+        problem_data_add(problem_data, FILENAME_TIME, buf, CD_FLAG_TXT);
     }
 
     *problem_id = xasprintf("%s-%s-%lu"NEW_PD_SUFFIX, type, iso_date_string(NULL), (long)getpid());

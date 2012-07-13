@@ -49,45 +49,46 @@ struct problem_item {
 };
 typedef struct problem_item problem_item;
 
-char *format_problem_item(struct problem_item *item);
+char *problem_item_format(struct problem_item *item);
 
 
 /* In-memory problem data structure and accessors */
 
 typedef GHashTable problem_data_t;
 
-problem_data_t *new_problem_data(void);
+problem_data_t *problem_data_new(void);
 
-void add_basics_to_problem_data(problem_data_t *pd);
-
-static inline void free_problem_data(problem_data_t *problem_data)
+static inline void problem_data_free(problem_data_t *problem_data)
 {
     //TODO: leaks problem item;
     if (problem_data)
         g_hash_table_destroy(problem_data);
 }
 
-void add_to_problem_data_ext(problem_data_t *problem_data,
+void problem_data_add_basics(problem_data_t *pd);
+
+void problem_data_add(problem_data_t *problem_data,
                 const char *name,
                 const char *content,
                 unsigned flags);
 /* Uses CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE flags */
-void add_to_problem_data(problem_data_t *problem_data,
+void problem_data_add_text_noteditable(problem_data_t *problem_data,
                 const char *name,
                 const char *content);
 
-static inline struct problem_item *get_problem_data_item_or_NULL(problem_data_t *problem_data, const char *key)
+static inline struct problem_item *problem_data_get_item_or_NULL(problem_data_t *problem_data, const char *key)
 {
     return (struct problem_item *)g_hash_table_lookup(problem_data, key);
 }
-char *get_problem_item_content_or_NULL(problem_data_t *problem_data, const char *key);
+char *problem_data_get_content_or_NULL(problem_data_t *problem_data, const char *key);
 /* Aborts if key is not found: */
-char *get_problem_item_content_or_die(problem_data_t *problem_data, const char *key);
+char *problem_data_get_content_or_die(problem_data_t *problem_data, const char *key);
 
 
 /* Conversions between in-memory and on-disk formats */
 
-void load_problem_data_from_dump_dir(problem_data_t *problem_data, struct dump_dir *dd, char **excluding);
+void problem_data_load_from_dump_dir(problem_data_t *problem_data, struct dump_dir *dd, char **excluding);
+
 problem_data_t *create_problem_data_from_dump_dir(struct dump_dir *dd);
 /* Helper for typical operation in reporters: */
 problem_data_t *create_problem_data_for_reporting(const char *dump_dir_name);

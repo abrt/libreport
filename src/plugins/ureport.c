@@ -125,7 +125,7 @@ int main(int argc, char **argv)
 
     post_state_t *post_state = NULL;
     post_state = post_ureport(pd, &config);
-    free_problem_data(pd);
+    problem_data_free(pd);
 
     if (post_state->http_resp_code != 200)
     {

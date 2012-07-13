@@ -197,7 +197,7 @@ int report_problem_in_memory(problem_data_t *pd, int flags)
         if (dd)
         {
             if (flags & LIBREPORT_RELOAD_DATA)
-                load_problem_data_from_dump_dir(pd, dd, NULL);
+                problem_data_load_from_dump_dir(pd, dd, NULL);
             dd_delete(dd);
         }
     }

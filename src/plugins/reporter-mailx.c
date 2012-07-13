@@ -118,7 +118,7 @@ static void create_and_send_email(
     args -= arg_size;
     free(args);
 
-    free_problem_data(problem_data);
+    problem_data_free(problem_data);
 
     if (!notify_only)
     {

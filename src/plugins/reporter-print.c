@@ -131,7 +131,7 @@ int main(int argc, char **argv)
     if (open_mode[0] == 'a')
         fputs("\nEND:\n\n", stdout);
     free(dsc);
-    free_problem_data(problem_data);
+    problem_data_free(problem_data);
 
     if (output_file)
     {

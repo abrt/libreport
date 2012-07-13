@@ -93,7 +93,7 @@ static void report_to_kerneloops(
     if (!problem_data)
         xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
-    const char *backtrace = get_problem_item_content_or_NULL(problem_data, FILENAME_BACKTRACE);
+    const char *backtrace = problem_data_get_content_or_NULL(problem_data, FILENAME_BACKTRACE);
     if (!backtrace)
         error_msg_and_die("Error sending kernel oops due to missing backtrace");
 
@@ -108,7 +108,7 @@ static void report_to_kerneloops(
     if (ret != CURLE_OK)
         error_msg_and_die("Kernel oops has not been sent due to %s", curl_easy_strerror(ret));
 
-    free_problem_data(problem_data);
+    problem_data_free(problem_data);
 
     /* Server replies with:
      * 200 thank you for submitting the kernel oops information

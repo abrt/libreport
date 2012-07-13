@@ -28,7 +28,7 @@ static void free_problem_item(void *ptr)
     }
 }
 
-char *format_problem_item(struct problem_item *item)
+char *problem_item_format(struct problem_item *item)
 {
     if (!item)
         return xstrdup("(nullitem)");
@@ -51,27 +51,27 @@ char *format_problem_item(struct problem_item *item)
 
 /* problem_data["name"] = { "content", CD_FLAG_foo_bits } */
 
-problem_data_t *new_problem_data(void)
+problem_data_t *problem_data_new(void)
 {
     return g_hash_table_new_full(g_str_hash, g_str_equal,
                  free, free_problem_item);
 }
 
-void add_basics_to_problem_data(problem_data_t *pd)
+void problem_data_add_basics(problem_data_t *pd)
 {
-    const char *analyzer = get_problem_item_content_or_NULL(pd, FILENAME_ANALYZER);
+    const char *analyzer = problem_data_get_content_or_NULL(pd, FILENAME_ANALYZER);
     if (analyzer == NULL)
     {
         analyzer = "libreport";
-        add_to_problem_data(pd, FILENAME_ANALYZER, analyzer);
+        problem_data_add_text_noteditable(pd, FILENAME_ANALYZER, analyzer);
     }
-    add_to_problem_data(pd, FILENAME_TYPE, analyzer);
+    problem_data_add_text_noteditable(pd, FILENAME_TYPE, analyzer);
 
     /* If application didn't provide dupe hash, we generate it
      * from all components, so we at least eliminate the exact same
      * reports
      */
-    if (get_problem_item_content_or_NULL(pd, FILENAME_DUPHASH) == NULL)
+    if (problem_data_get_content_or_NULL(pd, FILENAME_DUPHASH) == NULL)
     {
         /* start hash */
         sha1_ctx_t sha1ctx;
@@ -105,10 +105,10 @@ void add_basics_to_problem_data(problem_data_t *pd)
         char hash_str[SHA1_RESULT_LEN*2 + 1];
         bin2hex(hash_str, hash_bytes, SHA1_RESULT_LEN)[0] = '\0';
 
-        add_to_problem_data(pd, FILENAME_DUPHASH, hash_str);
+        problem_data_add_text_noteditable(pd, FILENAME_DUPHASH, hash_str);
     }
 
-    const char *executable = get_problem_item_content_or_NULL(pd, FILENAME_EXECUTABLE);
+    const char *executable = problem_data_get_content_or_NULL(pd, FILENAME_EXECUTABLE);
     if (executable == NULL)
     {
         char buf[PATH_MAX + 1];
@@ -119,7 +119,7 @@ void add_basics_to_problem_data(problem_data_t *pd)
         {
             buf[read] = '\0';
             VERB2 log("reporting initiated from: %s", buf);
-            add_to_problem_data(pd, FILENAME_EXECUTABLE, buf);
+            problem_data_add_text_noteditable(pd, FILENAME_EXECUTABLE, buf);
         }
 
 //#ifdef WITH_RPM
@@ -128,15 +128,15 @@ void add_basics_to_problem_data(problem_data_t *pd)
          * or run rpm -qf executable ??
          */
         /* Fedora/RHEL rpm specific piece of code */
-        const char *component = get_problem_item_content_or_NULL(pd, FILENAME_COMPONENT);
+        const char *component = problem_data_get_content_or_NULL(pd, FILENAME_COMPONENT);
         //FIXME: this REALLY needs to go away, or every report will be assigned to abrt
         if (component == NULL) // application didn't specify component
-            add_to_problem_data(pd, FILENAME_COMPONENT, "abrt");
+            problem_data_add_text_noteditable(pd, FILENAME_COMPONENT, "abrt");
 //#endif
     }
 }
 
-void add_to_problem_data_ext(problem_data_t *problem_data,
+void problem_data_add(problem_data_t *problem_data,
                 const char *name,
                 const char *content,
                 unsigned flags)
@@ -152,24 +152,24 @@ void add_to_problem_data_ext(problem_data_t *problem_data,
     g_hash_table_replace(problem_data, xstrdup(name), item);
 }
 
-void add_to_problem_data(problem_data_t *problem_data,
+void problem_data_add_text_noteditable(problem_data_t *problem_data,
                 const char *name,
                 const char *content)
 {
-    add_to_problem_data_ext(problem_data, name, content, CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
+    problem_data_add(problem_data, name, content, CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
 }
 
-char *get_problem_item_content_or_die(problem_data_t *problem_data, const char *key)
+char *problem_data_get_content_or_die(problem_data_t *problem_data, const char *key)
 {
-    struct problem_item *item = get_problem_data_item_or_NULL(problem_data, key);
+    struct problem_item *item = problem_data_get_item_or_NULL(problem_data, key);
     if (!item)
         error_msg_and_die(_("Essential element '%s' is missing, can't continue"), key);
     return item->content;
 }
 
-char *get_problem_item_content_or_NULL(problem_data_t *problem_data, const char *key)
+char *problem_data_get_content_or_NULL(problem_data_t *problem_data, const char *key)
 {
-    struct problem_item *item = get_problem_data_item_or_NULL(problem_data, key);
+    struct problem_item *item = problem_data_get_item_or_NULL(problem_data, key);
     if (!item)
         return NULL;
     return item->content;
@@ -294,7 +294,7 @@ static char* is_text_file(const char *name, ssize_t *sz)
     return NULL; /* it's binary */
 }
 
-void load_problem_data_from_dump_dir(problem_data_t *problem_data, struct dump_dir *dd, char **excluding)
+void problem_data_load_from_dump_dir(problem_data_t *problem_data, struct dump_dir *dd, char **excluding)
 {
     char *short_name;
     char *full_name;
@@ -324,7 +324,7 @@ void load_problem_data_from_dump_dir(problem_data_t *problem_data, struct dump_d
             text = is_text_file(full_name, &sz);
             if (!text)
             {
-                add_to_problem_data_ext(problem_data,
+                problem_data_add(problem_data,
                         short_name,
                         full_name,
                         CD_FLAG_BIN + CD_FLAG_ISNOTEDITABLE
@@ -383,7 +383,7 @@ void load_problem_data_from_dump_dir(problem_data_t *problem_data, struct dump_d
         if (strcmp(short_name, FILENAME_TIME) == 0)
             flags |= CD_FLAG_UNIXTIME;
 
-        add_to_problem_data_ext(problem_data,
+        problem_data_add(problem_data,
                 short_name,
                 content,
                 flags
@@ -397,8 +397,8 @@ void load_problem_data_from_dump_dir(problem_data_t *problem_data, struct dump_d
 
 problem_data_t *create_problem_data_from_dump_dir(struct dump_dir *dd)
 {
-    problem_data_t *problem_data = new_problem_data();
-    load_problem_data_from_dump_dir(problem_data, dd, NULL);
+    problem_data_t *problem_data = problem_data_new();
+    problem_data_load_from_dump_dir(problem_data, dd, NULL);
     return problem_data;
 }
 
@@ -448,8 +448,8 @@ problem_data_t *create_problem_data_for_reporting(const char *dump_dir_name)
     if (!dd)
         return NULL; /* dd_opendir already emitted error msg */
     char **exclude_items = build_exclude_vector(getenv("EXCLUDE_FROM_REPORT"));
-    problem_data_t *problem_data = new_problem_data();
-    load_problem_data_from_dump_dir(problem_data, dd, exclude_items);
+    problem_data_t *problem_data = problem_data_new();
+    problem_data_load_from_dump_dir(problem_data, dd, exclude_items);
     dd_close(dd);
     free(exclude_items);
     return problem_data;
@@ -474,11 +474,11 @@ void log_problem_data(problem_data_t *problem_data, const char *pfx)
 gint cmp_problem_data(gconstpointer a, gconstpointer b, gpointer filename)
 {
     problem_data_t *a_data = *(problem_data_t **) a;
-    const char *a_time_str = get_problem_item_content_or_NULL(a_data, filename);
+    const char *a_time_str = problem_data_get_content_or_NULL(a_data, filename);
     unsigned long a_time= strtoul(a_time_str, NULL, 10);
 
     problem_data_t *b_data = *(problem_data_t **) b;
-    const char *b_time_str = get_problem_item_content_or_NULL(b_data, filename);
+    const char *b_time_str = problem_data_get_content_or_NULL(b_data, filename);
     unsigned long b_time= strtoul(b_time_str, NULL, 10);
 
     /* newer first */

@@ -264,16 +264,16 @@ int main(int argc, char **argv)
     if (!problem_data)
         xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
-    const char *component = get_problem_item_content_or_die(problem_data, FILENAME_COMPONENT);
-    const char *duphash   = get_problem_item_content_or_NULL(problem_data, FILENAME_DUPHASH);
+    const char *component = problem_data_get_content_or_die(problem_data, FILENAME_COMPONENT);
+    const char *duphash   = problem_data_get_content_or_NULL(problem_data, FILENAME_DUPHASH);
 //COMPAT, remove after 2.1 release
-    if (!duphash) duphash = get_problem_item_content_or_die(problem_data, "global_uuid");
+    if (!duphash) duphash = problem_data_get_content_or_die(problem_data, "global_uuid");
     if (!rhbz.b_release || !*rhbz.b_release) /* if not overridden or empty... */
     {
-        rhbz.b_release = get_problem_item_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
+        rhbz.b_release = problem_data_get_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
 //COMPAT, remove in abrt-2.1
         if (!rhbz.b_release)
-		rhbz.b_release = get_problem_item_content_or_die(problem_data, "release");
+		rhbz.b_release = problem_data_get_content_or_die(problem_data, "release");
     }
 
     log(_("Logging into Bugzilla at %s"), rhbz.b_bugzilla_url);
@@ -284,7 +284,7 @@ int main(int argc, char **argv)
     free(version);
 
     char *remote_result;
-    remote_result = get_problem_item_content_or_NULL(problem_data, FILENAME_REMOTE_RESULT);
+    remote_result = problem_data_get_content_or_NULL(problem_data, FILENAME_REMOTE_RESULT);
     if (remote_result)
     {
         char *cmd = strtok(remote_result, " \n");
@@ -397,12 +397,12 @@ int main(int argc, char **argv)
         }
 
         /* Add comment */
-        const char *comment = get_problem_item_content_or_NULL(problem_data, FILENAME_COMMENT);
+        const char *comment = problem_data_get_content_or_NULL(problem_data, FILENAME_COMMENT);
         if (comment && comment[0])
         {
-            const char *package = get_problem_item_content_or_NULL(problem_data, FILENAME_PACKAGE);
-            const char *arch    = get_problem_item_content_or_NULL(problem_data, FILENAME_ARCHITECTURE);
-            const char *rating_str = get_problem_item_content_or_NULL(problem_data, FILENAME_RATING);
+            const char *package = problem_data_get_content_or_NULL(problem_data, FILENAME_PACKAGE);
+            const char *arch    = problem_data_get_content_or_NULL(problem_data, FILENAME_ARCHITECTURE);
+            const char *rating_str = problem_data_get_content_or_NULL(problem_data, FILENAME_RATING);
 
             struct strbuf *full_desc = strbuf_new();
             strbuf_append_strf(full_desc, "%s\n\n", comment);
@@ -424,7 +424,7 @@ int main(int argc, char **argv)
 
             /* unused code, enable it when gui/cli will be ready
             int is_priv = is_private && string_to_bool(is_private);
-            const char *is_private = get_problem_item_content_or_NULL(problem_data,
+            const char *is_private = problem_data_get_content_or_NULL(problem_data,
                                                                       "is_private");
             */
 
@@ -449,7 +449,7 @@ int main(int argc, char **argv)
                 char bug_id_str[sizeof(int)*3 + 2];
                 snprintf(bug_id_str, sizeof(bug_id_str), "%i", bz->bi_id);
 
-                const char *bt =  get_problem_item_content_or_NULL(problem_data,
+                const char *bt =  problem_data_get_content_or_NULL(problem_data,
                                                                    FILENAME_BACKTRACE);
                 log(_("Attaching better backtrace"));
                 rhbz_attach_blob(client, FILENAME_BACKTRACE, bug_id_str, bt, strlen(bt),
@@ -480,7 +480,7 @@ int main(int argc, char **argv)
 
 #if 0  /* enable if you search for leaks (valgrind etc) */
     free(product);
-    free_problem_data(problem_data);
+    problem_data_free(problem_data);
     free_bug_info(bz);
     abrt_xmlrpc_free_client(client);
     free_map_string(settings);

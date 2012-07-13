@@ -52,7 +52,7 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
 {
     struct strbuf *buf_dsc = strbuf_new();
 
-    const char *analyzer = get_problem_item_content_or_NULL(problem_data,
+    const char *analyzer = problem_data_get_content_or_NULL(problem_data,
                                                             FILENAME_ANALYZER);
 
     GList *list = g_hash_table_get_keys(problem_data);
@@ -86,7 +86,7 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
         if ((item->flags & CD_FLAG_TXT)
          && strlen(item->content) <= max_text_size
         ) {
-            char *formatted = format_problem_item(item);
+            char *formatted = problem_item_format(item);
             char *output = formatted ? formatted : item->content;
             char *eol = strchr(output, '\n');
             if (!eol)
@@ -191,7 +191,7 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
                 && (strlen(item->content) <= max_text_size
                     || (!strcmp(analyzer, "Kerneloops") && !strcmp(key, FILENAME_BACKTRACE))))
             {
-                char *formatted = format_problem_item(item);
+                char *formatted = problem_item_format(item);
                 char *output = make_description_item_multiline(key, formatted ? formatted : item->content);
 
                 if (output)

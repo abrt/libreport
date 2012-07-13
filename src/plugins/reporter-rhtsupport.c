@@ -212,12 +212,12 @@ int main(int argc, char **argv)
     const char *package;
     const char *release;
 
-    release  = get_problem_item_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
+    release  = problem_data_get_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
     if (!release) /* Old dump dir format compat. Remove in abrt-2.1 */
-        release = get_problem_item_content_or_NULL(problem_data, "release");
-    package  = get_problem_item_content_or_NULL(problem_data, FILENAME_PACKAGE);
-    reason   = get_problem_item_content_or_NULL(problem_data, FILENAME_REASON);
-    function = get_problem_item_content_or_NULL(problem_data, FILENAME_CRASH_FUNCTION);
+        release = problem_data_get_content_or_NULL(problem_data, "release");
+    package  = problem_data_get_content_or_NULL(problem_data, FILENAME_PACKAGE);
+    reason   = problem_data_get_content_or_NULL(problem_data, FILENAME_REASON);
+    function = problem_data_get_content_or_NULL(problem_data, FILENAME_CRASH_FUNCTION);
 
     {
         struct strbuf *buf_summary = strbuf_new();
@@ -493,7 +493,7 @@ int main(int argc, char **argv)
     free(url);
     free(login);
     free(password);
-    free_problem_data(problem_data);
+    problem_data_free(problem_data);
 
     return 0;
 }

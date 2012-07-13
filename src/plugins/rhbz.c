@@ -543,7 +543,7 @@ struct bug_info *rhbz_bug_info(struct abrt_xmlrpc *ax, int bug_id)
  */
 char *rhbz_get_backtrace_info(problem_data_t *problem_data, size_t max_text_size)
 {
-    const problem_item *item = get_problem_data_item_or_NULL(problem_data,
+    const problem_item *item = problem_data_get_item_or_NULL(problem_data,
                                                              FILENAME_BACKTRACE);
 
     if (!item)
@@ -603,31 +603,31 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
     if (group)
         VERB3 log("# of groups %d", g_list_length(group));
 
-    const char *package      = get_problem_item_content_or_NULL(problem_data,
+    const char *package      = problem_data_get_content_or_NULL(problem_data,
                                                                 FILENAME_PACKAGE);
-    const char *component    = get_problem_item_content_or_NULL(problem_data,
+    const char *component    = problem_data_get_content_or_NULL(problem_data,
                                                                 FILENAME_COMPONENT);
     if (!release)
     {
-        release              = get_problem_item_content_or_NULL(problem_data,
+        release              = problem_data_get_content_or_NULL(problem_data,
                                                                 FILENAME_OS_RELEASE);
         if (!release) /* Old dump dir format compat. Remove in abrt-2.1 */
-            release = get_problem_item_content_or_NULL(problem_data, "release");
+            release = problem_data_get_content_or_NULL(problem_data, "release");
     }
-    const char *arch         = get_problem_item_content_or_NULL(problem_data,
+    const char *arch         = problem_data_get_content_or_NULL(problem_data,
                                                                 FILENAME_ARCHITECTURE);
-    const char *duphash      = get_problem_item_content_or_NULL(problem_data,
+    const char *duphash      = problem_data_get_content_or_NULL(problem_data,
                                                                 FILENAME_DUPHASH);
 //COMPAT, remove after 2.1 release
-    if (!duphash) duphash    = get_problem_item_content_or_NULL(problem_data,
+    if (!duphash) duphash    = problem_data_get_content_or_NULL(problem_data,
                                                                 "global_uuid");
-    const char *reason       = get_problem_item_content_or_NULL(problem_data,
+    const char *reason       = problem_data_get_content_or_NULL(problem_data,
                                                                 FILENAME_REASON);
-    const char *function     = get_problem_item_content_or_NULL(problem_data,
+    const char *function     = problem_data_get_content_or_NULL(problem_data,
                                                                 FILENAME_CRASH_FUNCTION);
-    const char *analyzer     = get_problem_item_content_or_NULL(problem_data,
+    const char *analyzer     = problem_data_get_content_or_NULL(problem_data,
                                                                 FILENAME_ANALYZER);
-    const char *tainted_short = get_problem_item_content_or_NULL(problem_data,
+    const char *tainted_short = problem_data_get_content_or_NULL(problem_data,
                                                                 FILENAME_TAINTED_SHORT);
 
     struct strbuf *buf_summary = strbuf_new();
@@ -665,7 +665,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
     }
     else
     {
-        const char *comment      = get_problem_item_content_or_NULL(problem_data,
+        const char *comment      = problem_data_get_content_or_NULL(problem_data,
                                                                 FILENAME_COMMENT);
 
         char *bz_dsc = make_description(problem_data, (char**)g_additional_info_files,
@@ -833,7 +833,7 @@ int rhbz_attach_files(struct abrt_xmlrpc *ax, const char *bug_id,
 {
     func_entry();
 
-    const char *analyzer = get_problem_item_content_or_NULL(problem_data,
+    const char *analyzer = problem_data_get_content_or_NULL(problem_data,
                                                             FILENAME_ANALYZER);
     /* Do not attach anything if analyzer is Kerneloops */
     if (!strcmp(analyzer, "Kerneloops"))
