@@ -2432,9 +2432,7 @@ static void add_pages(void)
     g_eb_comment           = GTK_EVENT_BOX(    gtk_builder_get_object(g_builder, "eb_comment"));
     g_cb_no_comment        = GTK_CHECK_BUTTON( gtk_builder_get_object(g_builder, "cb_no_comment"));
     g_tv_details           = GTK_TREE_VIEW(    gtk_builder_get_object(g_builder, "tv_details"));
-    g_box_warning_labels   = GTK_BOX(          gtk_builder_get_object(g_builder, "box_warning_labels"));
     g_tb_approve_bt        = GTK_TOGGLE_BUTTON(gtk_builder_get_object(g_builder, "cb_approve_bt"));
-    g_widget_warnings_area = GTK_WIDGET(       gtk_builder_get_object(g_builder, "box_warning_area"));
     g_search_entry_bt      = GTK_ENTRY(        gtk_builder_get_object(g_builder, "entry_search_bt"));
     g_container_details1   = GTK_CONTAINER(    gtk_builder_get_object(g_builder, "container_details1"));
     g_container_details2   = GTK_CONTAINER(    gtk_builder_get_object(g_builder, "container_details2"));
@@ -2446,7 +2444,6 @@ static void add_pages(void)
     g_spinner_event_log    = GTK_SPINNER(      gtk_builder_get_object(g_builder, "spinner_event_log"));
 
     gtk_widget_set_no_show_all(GTK_WIDGET(g_spinner_event_log), true);
-    gtk_widget_hide(g_widget_warnings_area);
 
     gtk_widget_modify_font(GTK_WIDGET(g_tv_event_log), g_monospace_font);
     fix_all_wrapped_labels(GTK_WIDGET(g_assistant));
@@ -2568,8 +2565,36 @@ void create_assistant(void)
     gtk_box_pack_start(g_box_buttons, w, true, true, 5);
     gtk_box_pack_start(g_box_buttons, g_btn_next, false, false, 5);
 
+    {   /* Warnings area widget definition start */
+        GtkWidget *alignment_left = gtk_alignment_new(0.5,0.5,1,1);
+        gtk_widget_set_visible(alignment_left, TRUE);
+
+        GtkWidget *alignment_right = gtk_alignment_new(0.5,0.5,1,1);
+        gtk_widget_set_visible(alignment_right, TRUE);
+
+        g_box_warning_labels = GTK_BOX(gtk_box_new(GTK_ORIENTATION_VERTICAL, 0));
+        gtk_widget_set_visible(GTK_WIDGET(g_box_warning_labels), TRUE);
+
+        GtkBox *vbox = GTK_BOX(gtk_box_new(GTK_ORIENTATION_VERTICAL, 0));
+        gtk_widget_set_visible(GTK_WIDGET(vbox), TRUE);
+        gtk_box_pack_start(vbox, GTK_WIDGET(g_box_warning_labels), false, false, 5);
+
+        GtkWidget *image = gtk_image_new_from_stock(GTK_STOCK_DIALOG_WARNING, GTK_ICON_SIZE_DIALOG);
+        gtk_widget_set_visible(image, TRUE);
+
+        g_widget_warnings_area = GTK_WIDGET(gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0));
+        gtk_widget_set_visible(g_widget_warnings_area, FALSE);
+        gtk_widget_set_no_show_all(g_widget_warnings_area, TRUE);
+        gtk_box_pack_start(GTK_BOX(g_widget_warnings_area), alignment_left, true, false, 0);
+        gtk_box_pack_start(GTK_BOX(g_widget_warnings_area), image, false, false, 5);
+        gtk_box_pack_start(GTK_BOX(g_widget_warnings_area), GTK_WIDGET(vbox), false, false, 0);
+        gtk_box_pack_start(GTK_BOX(g_widget_warnings_area), alignment_right, true, false, 0);
+    }   /* Warnings area widget definition end */
+
     g_box_assistant = GTK_BOX(gtk_box_new(GTK_ORIENTATION_VERTICAL, 0));
-    gtk_box_pack_start(g_box_assistant, GTK_WIDGET(g_assistant), true, true, 5);
+    gtk_box_pack_start(g_box_assistant, GTK_WIDGET(g_assistant), true, true, 0);
+
+    gtk_box_pack_start(g_box_assistant, GTK_WIDGET(g_widget_warnings_area), false, false, 0);
     gtk_box_pack_start(g_box_assistant, GTK_WIDGET(g_box_buttons), false, false, 5);
 
     gtk_widget_show_all(GTK_WIDGET(g_box_buttons));
