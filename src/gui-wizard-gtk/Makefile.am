@@ -21,8 +21,7 @@ report_gtk_CFLAGS = \
     -DICON_DIR=\"${datadir}/abrt/icons/hicolor/48x48/status\" \
     $(GLIB_CFLAGS) \
     $(GTK_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
 
 # Required for gtk_builder_connect_signals() to work correctly:
 # -lgmodule-2.0

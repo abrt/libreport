@@ -15,7 +15,6 @@ libreport_gtk_la_SOURCES = \
     autowrapped_label.c
 
 libreport_gtk_la_CPPFLAGS = \
-    -Wall -Wwrite-strings -Werror \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     $(GTK_CFLAGS) \

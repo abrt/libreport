@@ -18,8 +18,7 @@ _reportclient_la_CPPFLAGS = \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     $(GLIB_CFLAGS) \
     $(PYTHON_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
 _reportclient_la_LDFLAGS = \
     -module \
     -avoid-version \

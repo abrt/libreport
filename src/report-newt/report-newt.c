@@ -334,7 +334,7 @@ static int report(const char *dump_dir_name)
                             reason ?: _("(no description)"));
 
         dd_close(dd);
-        newtWinMessage(_("Error"), _("Ok"), "%s", t);
+        newtWinMessage(_("Error"), _("Ok"), (char *)"%s", t);
         free(t);
         return -1;
     }

@@ -22,8 +22,7 @@ _pyreport_la_CPPFLAGS = \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     $(GLIB_CFLAGS) \
     $(PYTHON_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
 _pyreport_la_LDFLAGS = \
     -module \
     -avoid-version \

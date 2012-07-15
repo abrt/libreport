@@ -49,7 +49,6 @@ libreport_la_SOURCES = \
     client.c \
     utf8.c
 libreport_la_CPPFLAGS = \
-    -Wall -Wwrite-strings -Werror \
     -I$(srcdir)/../include \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -81,7 +80,6 @@ libabrt_dbus_la_CPPFLAGS = \
     -DEVENTS_DIR=\"$(EVENTS_DIR)\" \
     $(GLIB_CFLAGS) \
     $(DBUS_CFLAGS) \
-    -Wall -Wwrite-strings -Werror \
     -D_GNU_SOURCE
 libabrt_dbus_la_LDFLAGS = \
     -version-info 0:1:0
@@ -96,7 +94,6 @@ libreport_web_la_SOURCES = \
     proxies.h proxies.c \
     ureport.h json.c
 libreport_web_la_CPPFLAGS = \
-    -Wall -Wwrite-strings -Werror \
     -I$(srcdir)/../include \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \

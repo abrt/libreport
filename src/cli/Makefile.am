@@ -12,8 +12,7 @@ report_cli_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
-    $(LIBREPORT_CFLAGS) \
-    -Wall -Wwrite-strings -Werror
+    $(LIBREPORT_CFLAGS)
 #    $(GTK_CFLAGS)
 report_cli_LDADD = \
     ../lib/libreport.la \

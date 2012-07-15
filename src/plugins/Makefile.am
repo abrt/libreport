@@ -72,8 +72,7 @@ reporter_bugzilla_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings
+    -D_GNU_SOURCE
 reporter_bugzilla_LDADD = \
     $(GLIB_LIBS) \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS) \
@@ -99,8 +98,7 @@ reporter_rhtsupport_CPPFLAGS = \
     $(LIBREPORT_CFLAGS) \
     $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
     $(LIBXML_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
 reporter_rhtsupport_LDFLAGS = -ltar
 reporter_rhtsupport_LDADD = \
     $(GLIB_LIBS) \
@@ -123,8 +121,7 @@ reporter_upload_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     $(CURL_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
 reporter_upload_LDFLAGS = -ltar
 reporter_upload_LDADD = \
     $(GLIB_LIBS) \
@@ -144,8 +141,7 @@ reporter_kerneloops_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(REPORT_PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
 reporter_kerneloops_LDADD = \
     ../lib/libreport-web.la \
     ../lib/libreport.la
@@ -165,8 +161,7 @@ reporter_mailx_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(REPORT_PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
 reporter_mailx_LDADD = \
     ../lib/libreport.la
 
@@ -183,8 +178,7 @@ reporter_print_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(REPORT_PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
 reporter_print_LDADD = \
     ../lib/libreport.la
 
@@ -202,8 +196,7 @@ report_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(REPORT_PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
 report_LDADD = \
     ../lib/libreport.la
 
@@ -214,8 +207,7 @@ reporter_ureport_CPPFLAGS = \
     -I$(srcdir)/../lib \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
 reporter_ureport_LDADD = \
     ../lib/libreport.la \
     ../lib/libreport-web.la

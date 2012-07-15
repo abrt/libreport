@@ -228,8 +228,7 @@ Plugin to report bugs into anonymous FTP site associated with ticketing system.
 
 %build
 autoconf
-%configure
-CFLAGS="-fno-strict-aliasing"
+CFLAGS="%{optflags} -Werror" %configure --disable-silent-rules
 make %{?_smp_mflags}
 
 %install
