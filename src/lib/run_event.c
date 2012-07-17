@@ -432,6 +432,96 @@ int spawn_next_command(struct run_event_state *state,
     return 0;
 }
 
+static int consume_event_command_output(struct run_event_state *state, const char *dump_dir_name)
+{
+    static const size_t alert_prefix_len = sizeof(REPORT_PREFIX_ALERT) - 1;
+    static const size_t ask_prefix_len = sizeof(REPORT_PREFIX_ASK) - 1;
+    static const size_t ask_yes_no_prefix_len = sizeof(REPORT_PREFIX_ASK_YES_NO) - 1;
+    static const size_t ask_password_prefix_len = sizeof(REPORT_PREFIX_ASK_PASSWORD) - 1;
+
+    /* Consume log from stdout */
+    FILE *fp = fdopen(state->command_out_fd, "r");
+    if (!fp)
+        die_out_of_memory();
+
+    char *buf;
+    char *msg;
+
+    while ((buf = xmalloc_fgetline(fp)) != NULL)
+    {
+        msg = buf;
+
+        /* just cut off prefix, no waiting */
+        if (strncmp(REPORT_PREFIX_ALERT, msg, alert_prefix_len) == 0)
+        {
+            msg += alert_prefix_len;
+            printf("%s\n", msg);
+            fflush(stdout);
+        }
+        /* wait for y/N response on the same line */
+        else if (strncmp(REPORT_PREFIX_ASK_YES_NO, msg, ask_yes_no_prefix_len) == 0)
+        {
+            msg += ask_yes_no_prefix_len;
+            printf("%s [%s/%s] ", msg, _("y"), _("N"));
+            fflush(stdout);
+            char buf[16];
+            if (!fgets(buf, sizeof(buf), stdin))
+                buf[0] = '\0';
+
+            if (write(state->command_in_fd, buf, strlen(buf)) < 0)
+                perror_msg_and_die("write");
+        }
+        /* wait for the string on the same line */
+        else if (strncmp(REPORT_PREFIX_ASK, msg, ask_prefix_len) == 0)
+        {
+            msg += ask_prefix_len;
+            printf("%s ", msg);
+            fflush(stdout);
+            char buf[256];
+            if (!fgets(buf, sizeof(buf), stdin))
+                buf[0] = '\0';
+
+            if (write(state->command_in_fd, buf, strlen(buf)) < 0)
+                perror_msg_and_die("write");
+        }
+        /* set echo off and wait for password on the same line */
+        else if (strncmp(REPORT_PREFIX_ASK_PASSWORD, msg, ask_password_prefix_len) == 0)
+        {
+            msg += ask_password_prefix_len;
+            printf("%s ", msg);
+            fflush(stdout);
+            char buf[256];
+            bool changed = set_echo(false);
+            if (!fgets(buf, sizeof(buf), stdin))
+                buf[0] = '\0';
+            if (changed)
+                set_echo(true);
+
+            if (write(state->command_in_fd, buf, strlen(buf)) < 0)
+                perror_msg_and_die("write");
+        }
+        /* no special prefix -> forward to log if applicable
+         * note that callback may take ownership of buf by returning NULL */
+        else if (state->logging_callback)
+            buf = state->logging_callback(buf, state->logging_param);
+
+        free(buf);
+    }
+    fclose(fp); /* Got EOF, close. This also closes state->command_out_fd */
+
+    /* Wait for child to actually exit, collect status */
+    int status;
+    safe_waitpid(state->command_pid, &status, 0);
+
+    int retval = WEXITSTATUS(status);
+    if (WIFSIGNALED(status))
+        retval = WTERMSIG(status) + 128;
+
+    if (retval == 0 && state->post_run_callback)
+        retval = state->post_run_callback(dump_dir_name, state->post_run_param);
+
+    return retval;
+}
 
 /* Synchronous command execution:
  */
@@ -439,11 +529,6 @@ int run_event_on_dir_name(struct run_event_state *state,
                 const char *dump_dir_name,
                 const char *event
 ) {
-    static const size_t alert_prefix_len = sizeof(REPORT_PREFIX_ALERT) - 1;
-    static const size_t ask_prefix_len = sizeof(REPORT_PREFIX_ASK) - 1;
-    static const size_t ask_yes_no_prefix_len = sizeof(REPORT_PREFIX_ASK_YES_NO) - 1;
-    static const size_t ask_password_prefix_len = sizeof(REPORT_PREFIX_ASK_PASSWORD) - 1;
-
     prepare_commands(state, dump_dir_name, event);
 
     /* Execute every command in shell */
@@ -451,91 +536,9 @@ int run_event_on_dir_name(struct run_event_state *state,
     int retval = 0;
     while (spawn_next_command(state, dump_dir_name, event) >= 0)
     {
-        /* Consume log from stdout */
-        FILE *fp = fdopen(state->command_out_fd, "r");
-        if (!fp)
-            die_out_of_memory();
-        char *buf;
-        char *msg;
-
-        while ((buf = xmalloc_fgetline(fp)) != NULL)
-        {
-            msg = buf;
-
-            /* just cut off prefix, no waiting */
-            if (strncmp(REPORT_PREFIX_ALERT, msg, alert_prefix_len) == 0)
-            {
-                msg += alert_prefix_len;
-                printf("%s\n", msg);
-                fflush(stdout);
-            }
-            /* wait for y/N response on the same line */
-            else if (strncmp(REPORT_PREFIX_ASK_YES_NO, msg, ask_yes_no_prefix_len) == 0)
-            {
-                msg += ask_yes_no_prefix_len;
-                printf("%s [%s/%s] ", msg, _("y"), _("N"));
-                fflush(stdout);
-                char buf[16];
-                if (!fgets(buf, sizeof(buf), stdin))
-                    buf[0] = '\0';
-
-                if (write(state->command_in_fd, buf, strlen(buf)) < 0)
-                    perror_msg_and_die("write");
-            }
-            /* wait for the string on the same line */
-            else if (strncmp(REPORT_PREFIX_ASK, msg, ask_prefix_len) == 0)
-            {
-                msg += ask_prefix_len;
-                printf("%s ", msg);
-                fflush(stdout);
-                char buf[256];
-                if (!fgets(buf, sizeof(buf), stdin))
-                    buf[0] = '\0';
-
-                if (write(state->command_in_fd, buf, strlen(buf)) < 0)
-                    perror_msg_and_die("write");
-            }
-            /* set echo off and wait for password on the same line */
-            else if (strncmp(REPORT_PREFIX_ASK_PASSWORD, msg, ask_password_prefix_len) == 0)
-            {
-                msg += ask_password_prefix_len;
-                printf("%s ", msg);
-                fflush(stdout);
-                char buf[256];
-                bool changed = set_echo(false);
-                if (!fgets(buf, sizeof(buf), stdin))
-                    buf[0] = '\0';
-                if (changed)
-                    set_echo(true);
-
-                if (write(state->command_in_fd, buf, strlen(buf)) < 0)
-                    perror_msg_and_die("write");
-            }
-            /* no special prefix -> forward to log if applicable
-             * note that callback may take ownership of buf by returning NULL */
-            else if (state->logging_callback)
-                buf = state->logging_callback(buf, state->logging_param);
-
-            free(buf);
-        }
-        fclose(fp); /* Got EOF, close. This also closes state->command_out_fd */
-
-        /* Wait for child to actually exit, collect status */
-        int status;
-        safe_waitpid(state->command_pid, &status, 0);
-
-        retval = WEXITSTATUS(status);
-        if (WIFSIGNALED(status))
-            retval = WTERMSIG(status) + 128;
+        retval = consume_event_command_output(state, dump_dir_name);
         if (retval != 0)
             break;
-
-        if (state->post_run_callback)
-        {
-            retval = state->post_run_callback(dump_dir_name, state->post_run_param);
-            if (retval != 0)
-                break;
-        }
     }
 
     free_commands(state);
