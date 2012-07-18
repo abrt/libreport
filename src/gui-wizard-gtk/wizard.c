@@ -1282,217 +1282,138 @@ static void on_btn_cancel_event(GtkButton *button)
         kill(- g_event_child_pid, SIGTERM);
 }
 
+static void update_command_run_log(const char* message, struct analyze_event_data *evd)
+{
+    gtk_label_set_text(g_lbl_event_log, message);
+
+    char *log_msg = xasprintf("%s\n", message);
+    append_to_textview(evd->tv_log, log_msg);
+    save_to_event_log(evd, log_msg);
+    free(log_msg);
+}
+
+static void run_event_gtk_error(const char *error_line, void *param)
+{
+    update_command_run_log(error_line, (struct analyze_event_data *)param);
+}
+
+static char *run_event_gtk_logging(char *log_line, void *param)
+{
+    update_command_run_log(log_line, (struct analyze_event_data *)param);
+    return log_line;
+}
+
+static void log_request_response_communication(const char *request, const char *response, struct analyze_event_data *evd)
+{
+    char *message = xasprintf(response ? "%s '%s'" : "%s", request, response);
+    update_command_run_log(message, evd);
+    free(message);
+}
+
+static void run_event_gtk_alert(const char *msg, void *args)
+{
+    GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
+            GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+            GTK_MESSAGE_WARNING,
+            GTK_BUTTONS_CLOSE,
+            "%s", msg);
+    char *tagged_msg = tag_url(msg, "\n");
+    gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), tagged_msg);
+    free(tagged_msg);
+
+    gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_destroy(dialog);
+
+    log_request_response_communication(msg, NULL, (struct analyze_event_data *)args);
+}
+
+static char *ask_helper(const char *msg, void *args, bool password)
+{
+    GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
+            GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+            GTK_MESSAGE_QUESTION,
+            GTK_BUTTONS_OK_CANCEL,
+            "%s", msg);
+    char *tagged_msg = tag_url(msg, "\n");
+    gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), tagged_msg);
+    free(tagged_msg);
+
+    GtkWidget *vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+    GtkWidget *textbox = gtk_entry_new();
+    /* gtk_entry_set_editable(GTK_ENTRY(textbox), TRUE);
+     * is not available in gtk3, so please use the highlevel
+     * g_object_set
+     */
+    g_object_set(G_OBJECT(textbox), "editable", TRUE, NULL);
+
+    if (password)
+        gtk_entry_set_visibility(GTK_ENTRY(textbox), FALSE);
+
+    gtk_box_pack_start(GTK_BOX(vbox), textbox, TRUE, TRUE, 0);
+    gtk_widget_show(textbox);
+
+    char *response = NULL;
+    if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_OK)
+    {
+        const char *text = gtk_entry_get_text(GTK_ENTRY(textbox));
+        response = xstrdup(text);
+    }
+
+    gtk_widget_destroy(textbox);
+    gtk_widget_destroy(dialog);
+
+    const char *log_response = "";
+    if (response)
+        log_response = password ? "********" : response;
+
+    log_request_response_communication(msg, log_response, (struct analyze_event_data *)args);
+    return response ? response : xstrdup("");
+}
+
+static char *run_event_gtk_ask(const char *msg, void *args)
+{
+    return ask_helper(msg, args, false);
+}
+
+static int run_event_gtk_ask_yes_no(const char *msg, void *args)
+{
+    GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
+            GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+            GTK_MESSAGE_QUESTION,
+            GTK_BUTTONS_YES_NO,
+            "%s", msg);
+    char *tagged_msg = tag_url(msg, "\n");
+    gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), tagged_msg);
+    free(tagged_msg);
+
+    const int ret = gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_YES;
+
+    gtk_widget_destroy(dialog);
+
+    log_request_response_communication(msg, ret ? "YES" : "NO", (struct analyze_event_data *)args);
+    return ret;
+}
+
+static char *run_event_gtk_ask_password(const char *msg, void *args)
+{
+    return ask_helper(msg, args, true);
+}
+
 static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, gpointer data)
 {
     struct analyze_event_data *evd = data;
+    struct run_event_state *run_state = evd->run_state;
 
-    /* Read and insert the output into the log pane */
-    char buf[257]; /* usually we get one line, no need to have big buf */
-    int r;
-    int alert_prefix_len = strlen(REPORT_PREFIX_ALERT);
-    int ask_prefix_len = strlen(REPORT_PREFIX_ASK);
-    int ask_yes_no_prefix_len = strlen(REPORT_PREFIX_ASK_YES_NO);
-    int ask_password_prefix_len = strlen(REPORT_PREFIX_ASK_PASSWORD);
+    const int retval = consume_event_command_output(run_state, g_dump_dir_name);
 
-    if (!cmd_output)
-        cmd_output = strbuf_new();
-
-    /* read buffered and split lines */
-    while ((r = read(evd->fd, buf, sizeof(buf) - 1)) > 0)
-    {
-        char *newline;
-        char *raw;
-        buf[r] = '\0';
-        raw = buf;
-
-        /* split lines in the current buffer */
-        while ((newline = strchr(raw, '\n')) != NULL)
-        {
-            *newline = '\0';
-            strbuf_append_str(cmd_output, raw);
-            char *msg = cmd_output->buf;
-
-            /* In the code below:
-             * response is always malloced,
-             * log_response is always set to response
-             * or to constant string.
-             */
-            char *response = NULL;
-            const char *log_response = response;
-            unsigned skip_chars = 0;
-
-            char * tagged_msg = NULL;
-
-            /* alert dialog */
-            if (strncmp(REPORT_PREFIX_ALERT, msg, alert_prefix_len) == 0)
-            {
-                skip_chars = alert_prefix_len;
-
-                GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
-                    GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                    GTK_MESSAGE_WARNING,
-                    GTK_BUTTONS_CLOSE,
-                    "%s", msg + skip_chars);
-                tagged_msg = tag_url(msg + skip_chars, "\n");
-                gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), tagged_msg);
-
-                gtk_dialog_run(GTK_DIALOG(dialog));
-                gtk_widget_destroy(dialog);
-            }
-            /* ask dialog with textbox */
-            else if (strncmp(REPORT_PREFIX_ASK, msg, ask_prefix_len) == 0)
-            {
-                skip_chars = ask_prefix_len;
-
-                GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
-                    GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                    GTK_MESSAGE_QUESTION,
-                    GTK_BUTTONS_OK_CANCEL,
-                    "%s", msg + skip_chars);
-                tagged_msg = tag_url(msg + skip_chars, "\n");
-                gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), tagged_msg);
-
-                GtkWidget *vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-                GtkWidget *textbox = gtk_entry_new();
-                /* gtk_entry_set_editable(GTK_ENTRY(textbox), TRUE);
-                 * is not available in gtk3, so please use the highlevel
-                 * g_object_set
-                 */
-                g_object_set(G_OBJECT(textbox), "editable", TRUE, NULL);
-                gtk_box_pack_start(GTK_BOX(vbox), textbox, TRUE, TRUE, 0);
-                gtk_widget_show(textbox);
-                if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_OK)
-                {
-                    const char *text = gtk_entry_get_text(GTK_ENTRY(textbox));
-                    response = xstrdup(text);
-                    log_response = response;
-                }
-                else
-                {
-                    response = xstrdup("");
-                    log_response = "";
-                }
-                gtk_widget_destroy(textbox);
-                gtk_widget_destroy(dialog);
-            }
-            /* ask dialog with passwordbox */
-            else if (strncmp(REPORT_PREFIX_ASK_PASSWORD, msg, ask_password_prefix_len) == 0)
-            {
-                skip_chars = ask_password_prefix_len;
-
-                GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
-                    GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                    GTK_MESSAGE_QUESTION,
-                    GTK_BUTTONS_OK_CANCEL,
-                    "%s", msg + skip_chars);
-                tagged_msg = tag_url(msg + skip_chars, "\n");
-                gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), tagged_msg);
-
-                GtkWidget *vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-                GtkWidget *textbox = gtk_entry_new();
-                /* gtk_entry_set_editable(GTK_ENTRY(textbox), TRUE);
-                 * is not available in gtk3, so please use the highlevel
-                 * g_object_set
-                 */
-                g_object_set(G_OBJECT(textbox), "editable", TRUE, NULL);
-                gtk_entry_set_visibility(GTK_ENTRY(textbox), FALSE);
-                gtk_box_pack_start(GTK_BOX(vbox), textbox, TRUE, TRUE, 0);
-                gtk_widget_show(textbox);
-                if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_OK)
-                {
-                    const char *text = gtk_entry_get_text(GTK_ENTRY(textbox));
-                    response = xstrdup(text);
-                    log_response = "******"; /* don't log passwords! */
-                }
-                else
-                {
-                    response = xstrdup("");
-                    log_response = "";
-                }
-                gtk_widget_destroy(textbox);
-                gtk_widget_destroy(dialog);
-            }
-            /* yes/no dialog */
-            else if (strncmp(REPORT_PREFIX_ASK_YES_NO, msg, ask_yes_no_prefix_len) == 0)
-            {
-                skip_chars = ask_yes_no_prefix_len;
-
-                GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
-                    GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                    GTK_MESSAGE_QUESTION,
-                    GTK_BUTTONS_YES_NO,
-                    "%s", msg + skip_chars);
-                tagged_msg = tag_url(msg + skip_chars, "\n");
-                gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), tagged_msg);
-
-                if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_YES)
-                {
-                    response = xstrdup(_("y"));
-                    log_response = "YES";
-                }
-                else
-                {
-                    response = xstrdup("");
-                    log_response = "NO";
-                }
-                gtk_widget_destroy(dialog);
-            }
-            /* else: no special prefix, just forward to log */
-
-            if (response)
-            {
-                unsigned len = strlen(response);
-                response[len++] = '\n';
-                if (full_write(evd->run_state->command_in_fd, response, len) != len)
-                {
-                    VERB1 perror_msg("Can't write %u bytes to child's stdin", len);
-                    free(response);
-                    response = xstrdup("<WRITE ERROR>");
-                    log_response = response;
-                }
-                strbuf_append_char(cmd_output, ' ');
-                strbuf_append_str(cmd_output, log_response);
-                free(response);
-            }
-
-            msg = cmd_output->buf;
-            msg += skip_chars;
-            gtk_label_set_text(g_lbl_event_log, msg);
-
-            strbuf_append_char(cmd_output, '\n');
-            msg = cmd_output->buf;
-            msg += skip_chars;
-            append_to_textview(evd->tv_log, msg);
-            save_to_event_log(evd, msg);
-
-            strbuf_clear(cmd_output);
-
-            /* jump to next line */
-            raw = newline + 1;
-            free(tagged_msg);
-        }
-
-        /* beginning of next line. the line continues by next read() */
-        strbuf_append_str(cmd_output, raw);
-    }
-
-    if (r < 0 && errno == EAGAIN)
+    if (retval < 0 && errno == EAGAIN)
         /* We got all buffered data, but fd is still open. Done for now */
         return TRUE; /* "please don't remove this event (yet)" */
 
     /* EOF/error */
 
-    strbuf_clear(cmd_output);
-
     unexport_event_config(evd->env_list);
     evd->env_list = NULL;
-
-    /* Wait for child to actually exit, collect status */
-    int status;
-    safe_waitpid(evd->run_state->command_pid, &status, 0);
-    int retval = WEXITSTATUS(status);
-    if (WIFSIGNALED(status))
-        retval = WTERMSIG(status) + 128;
 
     /* Make sure "Cancel" button won't send anything (process is gone) */
     g_event_child_pid = -1;
@@ -1501,14 +1422,15 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     /* Write a final message to the log */
     if (evd->event_log->len != 0 && evd->event_log->buf[evd->event_log->len - 1] != '\n')
         save_to_event_log(evd, "\n");
+
     /* If program failed, or if it finished successfully without saying anything... */
     if (retval != 0 || evd->event_log_state == LOGSTATE_FIRSTLINE)
     {
         if (retval != 0) /* If program failed, emit error line */
             evd->event_log_state = LOGSTATE_ERRLINE;
         char *msg;
-        if (WIFSIGNALED(status))
-            msg = xasprintf("(killed by signal %u)\n", WTERMSIG(status));
+        if (WIFSIGNALED(run_state->process_status))
+            msg = xasprintf("(killed by signal %u)\n", WTERMSIG(run_state->process_status));
         else
             msg = xasprintf("(exited with %u)\n", retval);
         append_to_textview(evd->tv_log, msg);
@@ -1603,6 +1525,12 @@ static void start_event_run(const char *event_name,
      * (synchronous run would freeze GUI until completion)
      */
     struct run_event_state *state = new_run_event_state();
+    state->logging_callback = run_event_gtk_logging;
+    state->error_callback = run_event_gtk_error;
+    state->alert_callback = run_event_gtk_alert;
+    state->ask_callback = run_event_gtk_ask;
+    state->ask_yes_no_callback = run_event_gtk_ask_yes_no;
+    state->ask_password_callback = run_event_gtk_ask_password;
 
     if (prepare_commands(state, g_dump_dir_name, event_name) == 0)
     {
@@ -1650,6 +1578,11 @@ static void start_event_run(const char *event_name,
     evd->success_msg = success_msg;
     evd->event_log = strbuf_new();
     evd->fd = state->command_out_fd;
+
+    state->logging_param = evd;
+    state->error_param = evd;
+    state->interaction_param = evd;
+
     ndelay_on(evd->fd);
     evd->channel = g_io_channel_unix_new(evd->fd);
     /*evd->event_source_id = */ g_io_add_watch(evd->channel,

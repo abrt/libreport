@@ -41,6 +41,15 @@ struct run_event_state {
     void *logging_param;
 
     /*
+     * Called if any error occures during communication with child's command.
+     *
+     * @param error_line An error message
+     * @param param a custom param
+     */
+    void (*error_callback)(const char *error_line, void *param);
+    void *error_param;
+
+    /*
      * An optional argument for the following callbacks
      */
     void *interaction_param;
@@ -96,6 +105,7 @@ struct run_event_state {
     pid_t command_pid;
     int command_out_fd;
     int command_in_fd;
+    int process_status;
     struct strbuf *command_output;
 };
 struct run_event_state *new_run_event_state(void);

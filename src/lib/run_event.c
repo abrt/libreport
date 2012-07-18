@@ -499,7 +499,12 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
                 response[len++] = '\n';
 
                 if (full_write(state->command_in_fd, response, len) != len)
-                    perror_msg_and_die("Can't write %zu bytes to child's stdin", len);
+                {
+                    if (state->error_callback)
+                        state->error_callback("<WRITE ERROR>", state->error_param);
+                    else
+                        perror_msg_and_die("Can't write %zu bytes to child's stdin", len);
+                }
 
                 free(response);
             }
@@ -521,12 +526,11 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
     strbuf_clear(cmd_output);
 
     /* Wait for child to actually exit, collect status */
-    int status;
-    safe_waitpid(state->command_pid, &status, 0);
+    safe_waitpid(state->command_pid, &(state->process_status), 0);
 
-    int retval = WEXITSTATUS(status);
-    if (WIFSIGNALED(status))
-        retval = WTERMSIG(status) + 128;
+    int retval = WEXITSTATUS(state->process_status);
+    if (WIFSIGNALED(state->process_status))
+        retval = WTERMSIG(state->process_status) + 128;
 
     if (retval == 0 && state->post_run_callback)
         retval = state->post_run_callback(dump_dir_name, state->post_run_param);
