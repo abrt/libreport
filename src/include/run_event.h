@@ -96,6 +96,7 @@ struct run_event_state {
     pid_t command_pid;
     int command_out_fd;
     int command_in_fd;
+    struct strbuf *command_output;
 };
 struct run_event_state *new_run_event_state(void);
 void free_run_event_state(struct run_event_state *state);
@@ -112,6 +113,18 @@ int spawn_next_command(struct run_event_state *state, const char *dump_dir_name,
 void free_commands(struct run_event_state *state);
 
 /* Synchronous command execution */
+
+/* The function believes that a state param value is fully initialized and
+ * action is started.
+ *
+ * Returns exit code of action, or nonzero return value of post_run_callback
+ * If action is successful, returns 0.
+ *
+ * If return value is lower than 0 and you set O_NONBLOCK to command's out fd
+ * examine errno to detect EAGAIN case. Incomplete child lines are buffered
+ * in the state param.
+ */
+int consume_event_command_output(struct run_event_state *state, const char *dump_dir_name);
 
 /* Returns exit code of first failed action, or first nonzero return value
  * of post_run_callback. If all actions are successful, returns 0.

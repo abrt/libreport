@@ -30,6 +30,8 @@ struct run_event_state *new_run_event_state()
     state->ask_yes_no_callback = run_event_stdio_ask_yes_no;
     state->ask_password_callback = run_event_stdio_ask_password;
 
+    state->command_output = strbuf_new();
+
     return state;
 }
 
@@ -37,6 +39,7 @@ void free_run_event_state(struct run_event_state *state)
 {
     if (state)
     {
+        strbuf_free(state->command_output);
         free_commands(state);
         free(state);
     }
@@ -373,6 +376,7 @@ int prepare_commands(struct run_event_state *state,
     free_commands(state);
 
     state->children_count = 0;
+    strbuf_clear(state->command_output);
 
     GList *rule_list = load_rule_list(NULL, CONF_DIR"/report_event.conf", /*recursion_depth:*/ 0);
     state->rule_list = rule_list;
@@ -439,70 +443,82 @@ int spawn_next_command(struct run_event_state *state,
     return 0;
 }
 
-static int consume_event_command_output(struct run_event_state *state, const char *dump_dir_name)
+int consume_event_command_output(struct run_event_state *state, const char *dump_dir_name)
 {
-    static const size_t alert_prefix_len = sizeof(REPORT_PREFIX_ALERT) - 1;
-    static const size_t ask_prefix_len = sizeof(REPORT_PREFIX_ASK) - 1;
-    static const size_t ask_yes_no_prefix_len = sizeof(REPORT_PREFIX_ASK_YES_NO) - 1;
-    static const size_t ask_password_prefix_len = sizeof(REPORT_PREFIX_ASK_PASSWORD) - 1;
-
-    /* Consume log from stdout */
-    FILE *fp = fdopen(state->command_out_fd, "r");
-    if (!fp)
-        die_out_of_memory();
-
-    char *buf;
-    char *msg;
-
-    while ((buf = xmalloc_fgetline(fp)) != NULL)
+    int r = 0;
+    char buf[256];
+    errno = 0;
+    struct strbuf *cmd_output = state->command_output;
+    while ((r = safe_read(state->command_out_fd, buf, sizeof(buf) - 1)) > 0)
     {
-        msg = buf;
+        char *newline;
+        char *raw;
+        buf[r] = '\0';
+        raw = buf;
 
-        char *response = NULL;
-        /* just cut off prefix, no waiting */
-        if (strncmp(REPORT_PREFIX_ALERT, msg, alert_prefix_len) == 0)
+        while ((newline = strchr(raw, '\n')) != NULL)
         {
-            msg += alert_prefix_len;
-            state->alert_callback(msg, state->interaction_param);
-        }
-        /* wait for y/N response on the same line */
-        else if (strncmp(REPORT_PREFIX_ASK_YES_NO, msg, ask_yes_no_prefix_len) == 0)
-        {
-            msg += ask_yes_no_prefix_len;
-            const bool ans = state->ask_yes_no_callback(msg, state->interaction_param);
-            response = xstrdup(ans ? "yes" : "no");
-        }
-        /* wait for the string on the same line */
-        else if (strncmp(REPORT_PREFIX_ASK, msg, ask_prefix_len) == 0)
-        {
-            msg += ask_prefix_len;
-            response = state->ask_callback(msg, state->interaction_param);
-        }
-        /* set echo off and wait for password on the same line */
-        else if (strncmp(REPORT_PREFIX_ASK_PASSWORD, msg, ask_password_prefix_len) == 0)
-        {
-            msg += ask_password_prefix_len;
-            response = state->ask_password_callback(msg, state->interaction_param);
-        }
-        /* no special prefix -> forward to log if applicable
-         * note that callback may take ownership of buf by returning NULL */
-        else if (state->logging_callback)
-            buf = state->logging_callback(buf, state->logging_param);
+            *newline = '\0';
+            strbuf_append_str(cmd_output, raw);
+            char *msg = cmd_output->buf;
 
-        if (response)
-        {
-            size_t len = strlen(response);
-            response[len++] = '\n';
+            char *response = NULL;
 
-            if (full_write(state->command_in_fd, response, len) != len)
-                perror_msg_and_die("Can't write %zu bytes to child's stdin", len);
+            /* just cut off prefix, no waiting */
+            if (prefixcmp(msg, REPORT_PREFIX_ALERT) == 0)
+            {
+                state->alert_callback(msg + sizeof(REPORT_PREFIX_ALERT) - 1 , state->interaction_param);
+            }
+            /* wait for y/N response on the same line */
+            else if (prefixcmp(msg, REPORT_PREFIX_ASK_YES_NO) == 0)
+            {
+                const bool ans = state->ask_yes_no_callback(msg + sizeof(REPORT_PREFIX_ASK_YES_NO) - 1, state->interaction_param);
+                response = xstrdup(ans ? "yes" : "no");
+            }
+            /* wait for the string on the same line */
+            else if (prefixcmp(msg, REPORT_PREFIX_ASK) == 0)
+            {
+                response = state->ask_callback(msg + sizeof(REPORT_PREFIX_ASK) - 1, state->interaction_param);
+            }
+            /* set echo off and wait for password on the same line */
+            else if (prefixcmp(msg, REPORT_PREFIX_ASK_PASSWORD) == 0)
+            {
+                response = state->ask_password_callback(msg + sizeof(REPORT_PREFIX_ASK_PASSWORD) - 1, state->interaction_param);
+            }
+            /* no special prefix -> forward to log if applicable
+             * note that callback may take ownership of buf by returning NULL */
+            else if (state->logging_callback)
+            {
+                char *logged = state->logging_callback(xstrdup(msg), state->logging_param);
+                free(logged);
+            }
 
-            free(response);
+            if (response)
+            {
+                size_t len = strlen(response);
+                response[len++] = '\n';
+
+                if (full_write(state->command_in_fd, response, len) != len)
+                    perror_msg_and_die("Can't write %zu bytes to child's stdin", len);
+
+                free(response);
+            }
+
+            strbuf_clear(cmd_output);
+
+            /* jump to next line */
+            raw = newline + 1;
         }
 
-        free(buf);
+        /* beginning of next line. the line continues by next read() */
+        strbuf_append_str(cmd_output, raw);
     }
-    fclose(fp); /* Got EOF, close. This also closes state->command_out_fd */
+
+    /* Hope that child's stdout fd was set to O_NONBLOCK */
+    if (r == -1 && errno == EAGAIN)
+        return -1;
+
+    strbuf_clear(cmd_output);
 
     /* Wait for child to actually exit, collect status */
     int status;
