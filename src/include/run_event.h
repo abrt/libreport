@@ -40,6 +40,57 @@ struct run_event_state {
     char* (*logging_callback)(char *log_line, void *param);
     void *logging_param;
 
+    /*
+     * An optional argument for the following callbacks
+     */
+    void *interaction_param;
+
+    /*
+     * Called when child command produced an alert.
+     *
+     * The default value is run_event_stdio_alert()
+     *
+     * @param msg An alert message produced byt child command
+     * @param args An interaction param
+     */
+    void (*alert_callback)(const char *msg, void *interaction_param);
+
+    /*
+     * Called when child command ask for some input. A callee
+     * should return a text whithout any new line character.
+     *
+     * The default value is run_event_stdio_ask()
+     *
+     * @param msg An ask message produced by child command
+     * @param args An interaction param
+     * @return Must allways return string without new lines, an empty string
+     *         if response was not get.
+     */
+    char *(*ask_callback)(const char *msg, void *interaction_param);
+
+    /*
+     * Called when child command wants to know 'yes/no' decision.
+     *
+     * The default value is run_event_stdio_ask_yes_no()
+     *
+     * @param msg An ask message produced by child command
+     * @param args An implementor args
+     * @return Return 0 if an answer is NO, otherwise return nonzero value.
+     */
+    int (*ask_yes_no_callback)(const char *msg, void *interaction_param);
+
+    /*
+     * Called when child wants to know a password.
+     *
+     * The default value is run_event_stdio_ask_password()
+     *
+     * @param msg An ask message produced by child command
+     * @param args An interaction param
+     * @return Must allways return string without new lines, an empty string
+     *         if password was not get.
+     */
+    char *(*ask_password_callback)(const char *msg, void *interaction_param);
+
     /* Internal data for async command execution */
     GList *rule_list;
     pid_t command_pid;
@@ -75,6 +126,43 @@ int run_event_on_problem_data(struct run_event_state *state, problem_data_t *dat
  * Returns a malloced string with '\n'-terminated event names.
  */
 char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const char *pfx);
+
+/* Command line run event callback implemenetation */
+
+/*
+ * Prints the msg param on stdout
+ *
+ * @param msg a printed message
+ * @param param UNUSED
+ */
+void run_event_stdio_alert(const char *msg, void *param);
+
+/*
+ * Prints the msg param on stdout and reads a response from stdin
+ *
+ * @param msg a printed message
+ * @param param UNUSED
+ * @return a malloced string with response, an empty string on error or no response
+ */
+char *run_event_stdio_ask(const char *msg, void *param);
+
+/*
+ * Prints the msg param on stdout and reads a response from stdin
+ *
+ * @param msg a printed message
+ * @param param UNUSED
+ * @return 0 if user's answer is 'no', otherwise non 0 value
+ */
+int run_event_stdio_ask_yes_no(const char *msg, void *param);
+
+/*
+ * Prints the msg param on stdout and reads a response from stdin
+ *
+ * @param msg a printed message
+ * @param param UNUSED
+ * @return a malloced string with response, an empty string on error or no response
+ */
+char *run_event_stdio_ask_password(const char *msg, void *param);
 
 #ifdef __cplusplus
 }

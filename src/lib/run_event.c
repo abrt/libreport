@@ -23,7 +23,14 @@
 
 struct run_event_state *new_run_event_state()
 {
-    return xzalloc(sizeof(struct run_event_state));
+    struct run_event_state *state = xzalloc(sizeof(struct run_event_state));
+
+    state->alert_callback = run_event_stdio_alert;
+    state->ask_callback = run_event_stdio_ask;
+    state->ask_yes_no_callback = run_event_stdio_ask_yes_no;
+    state->ask_password_callback = run_event_stdio_ask_password;
+
+    return state;
 }
 
 void free_run_event_state(struct run_event_state *state)
@@ -451,59 +458,47 @@ static int consume_event_command_output(struct run_event_state *state, const cha
     {
         msg = buf;
 
+        char *response = NULL;
         /* just cut off prefix, no waiting */
         if (strncmp(REPORT_PREFIX_ALERT, msg, alert_prefix_len) == 0)
         {
             msg += alert_prefix_len;
-            printf("%s\n", msg);
-            fflush(stdout);
+            state->alert_callback(msg, state->interaction_param);
         }
         /* wait for y/N response on the same line */
         else if (strncmp(REPORT_PREFIX_ASK_YES_NO, msg, ask_yes_no_prefix_len) == 0)
         {
             msg += ask_yes_no_prefix_len;
-            printf("%s [%s/%s] ", msg, _("y"), _("N"));
-            fflush(stdout);
-            char buf[16];
-            if (!fgets(buf, sizeof(buf), stdin))
-                buf[0] = '\0';
-
-            if (write(state->command_in_fd, buf, strlen(buf)) < 0)
-                perror_msg_and_die("write");
+            const bool ans = state->ask_yes_no_callback(msg, state->interaction_param);
+            response = xstrdup(ans ? "yes" : "no");
         }
         /* wait for the string on the same line */
         else if (strncmp(REPORT_PREFIX_ASK, msg, ask_prefix_len) == 0)
         {
             msg += ask_prefix_len;
-            printf("%s ", msg);
-            fflush(stdout);
-            char buf[256];
-            if (!fgets(buf, sizeof(buf), stdin))
-                buf[0] = '\0';
-
-            if (write(state->command_in_fd, buf, strlen(buf)) < 0)
-                perror_msg_and_die("write");
+            response = state->ask_callback(msg, state->interaction_param);
         }
         /* set echo off and wait for password on the same line */
         else if (strncmp(REPORT_PREFIX_ASK_PASSWORD, msg, ask_password_prefix_len) == 0)
         {
             msg += ask_password_prefix_len;
-            printf("%s ", msg);
-            fflush(stdout);
-            char buf[256];
-            bool changed = set_echo(false);
-            if (!fgets(buf, sizeof(buf), stdin))
-                buf[0] = '\0';
-            if (changed)
-                set_echo(true);
-
-            if (write(state->command_in_fd, buf, strlen(buf)) < 0)
-                perror_msg_and_die("write");
+            response = state->ask_password_callback(msg, state->interaction_param);
         }
         /* no special prefix -> forward to log if applicable
          * note that callback may take ownership of buf by returning NULL */
         else if (state->logging_callback)
             buf = state->logging_callback(buf, state->logging_param);
+
+        if (response)
+        {
+            size_t len = strlen(response);
+            response[len++] = '\n';
+
+            if (full_write(state->command_in_fd, response, len) != len)
+                perror_msg_and_die("Can't write %zu bytes to child's stdin", len);
+
+            free(response);
+        }
 
         free(buf);
     }
@@ -611,4 +606,45 @@ char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const
     }
 
     return strbuf_free_nobuf(result);
+}
+
+void run_event_stdio_alert(const char *msg, void *param)
+{
+    printf("%s\n", msg);
+    fflush(stdout);
+}
+
+char *run_event_stdio_ask(const char *msg, void *param)
+{
+    printf("%s ", msg);
+    fflush(stdout);
+    char buf[256];
+    if (!fgets(buf, sizeof(buf), stdin))
+        buf[0] = '\0';
+    else
+        strtrimch(buf, '\n');
+
+    return xstrdup(buf);
+}
+
+int run_event_stdio_ask_yes_no(const char *msg, void *param)
+{
+    printf("%s [%s/%s] ", msg, _("y"), _("N"));
+    fflush(stdout);
+    char buf[16];
+    if (!fgets(buf, sizeof(buf), stdin))
+        buf[0] = '\0';
+
+    return buf[0] == 'y' && (buf[1] == '\n' || buf[1] == '\0');
+}
+
+char *run_event_stdio_ask_password(const char *msg, void *param)
+{
+    const bool changed = set_echo(false);
+    char *const password = run_event_stdio_ask(msg, param);
+
+    if (changed)
+        set_echo(true);
+
+    return password;
 }
