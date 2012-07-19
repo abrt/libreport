@@ -1633,6 +1633,7 @@ static void clear_warnings(void)
     /* erase all warnings */
     gtk_widget_hide(g_widget_warnings_area);
     gtk_container_foreach(GTK_CONTAINER(g_box_warning_labels), &remove_child_widget, NULL);
+    g_warning_issued = false;
 }
 
 /* TODO : this function should not set a warning directly, it makes the function unusable for add_event_buttons(); */
@@ -1972,6 +1973,8 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
         if (g_event_selected
          && g_event_selected[0]
         ) {
+            clear_warnings();
+
             start_event_run(g_event_selected,
                     pages[PAGENO_EVENT_PROGRESS].page_widget,
                     g_tv_event_log,
