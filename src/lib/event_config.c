@@ -367,3 +367,82 @@ GHashTable *validate_event(const char *event_name)
 
     return NULL;
 }
+
+/*
+ * This function checks if a value of problem's backtrace rating is acceptable
+ * for event according to event's required rating value.
+ *
+ * The solved problem seems to be pretty straightforward but there are some
+ * pitfalls.
+ *
+ * 1. Is rating acceptable if event doesn't have configuration?
+ * 2. Is rating acceptable if problem's data doesn't contains rating value?
+ * 3. Is rating acceptable if rating value is not a number?
+ * 4. What message show to user if there is a concern about usability?
+ */
+bool check_problem_rating_usability(const event_config_t *cfg,
+                                    problem_data_t *pd,
+                                    char **description,
+                                    char **detail)
+{
+    char *tmp_desc = NULL;
+    char *tmp_detail = NULL;
+    bool result = true;
+
+    if(!cfg)
+        goto finish;
+
+    const char *rating_str = problem_data_get_content_or_NULL(pd, FILENAME_RATING);
+
+    if (!rating_str)
+        goto finish;
+
+    /* just to be sure */
+    result = false;
+
+    const long minimal_rating = cfg->ec_minimal_rating;
+    char *endptr;
+    errno = 0;
+    const long rating = strtol(rating_str, &endptr, 10);
+    if (errno != 0 || endptr == rating_str || *endptr != '\0')
+    {
+        tmp_desc = xasprintf("%s '%s'.", _("Reporting disabled because the rating does not contain a number."), rating_str);
+        tmp_detail = xstrdup(_("Please report this problem to ABRT project developers."));
+
+        result = false;
+    }
+    else if (rating == minimal_rating) /* bt is usable, but not complete, so show a warning */
+    {
+        tmp_desc = xstrdup(_("The backtrace is incomplete, please make sure you provide the steps to reproduce."));
+        tmp_detail = xstrdup(_("The backtrace probably can't help to a developer in searching for bug."));
+
+        result = true;
+    }
+    else if (rating < minimal_rating)
+    {
+        tmp_desc = xstrdup(_("Reporting disabled because the backtrace is unusable."));
+
+        const char *package = problem_data_get_content_or_NULL(pd, FILENAME_PACKAGE);
+        if (package && package[0])
+            tmp_detail = xasprintf(_("Please try to install debuginfo manually using the command: \"debuginfo-install %s\" and try again."), package);
+        else
+            tmp_detail = xstrdup(_("A proper debuginfo is probably missing or the coredump is corrupted."));
+
+        result = false;
+    }
+    else /* rating > minimal_rating */
+        result = true;
+
+finish:
+    if (description)
+        *description = tmp_desc;
+    else
+        free(tmp_desc);
+
+    if (detail)
+        *detail = tmp_detail;
+    else
+        free(tmp_detail);
+
+    return result;
+}

@@ -1627,61 +1627,20 @@ static bool check_minimal_bt_rating(const char *event_name)
 
     if (!event_name)
         error_msg_and_die(_("Cannot check backtrace rating because of invalid event name"));
-    else if(strncmp("report", event_name, sizeof("report")-1) != 0)
+    else if (prefixcmp(event_name, "report") != 0)
     {
-        VERB1 log("No checks for bactrace rating because event '%s' doesn't report.", event_name);
+        VERB2 log("No checks for bactrace rating because event '%s' doesn't report.", event_name);
         return acceptable_rating;
     }
     else
-    {
         event_cfg = get_event_config(event_name);
 
-        if (!event_cfg)
-        {
-            VERB1 log("Cannot check backtrace rating because of not defined configuration for event '%s'", event_name);
-            return acceptable_rating;
-        }
-    }
-
-    /*
-     * FIXME: this should be bind to a reporter not to a compoment
-     * but so far only oopses don't have rating, so for now we
-     * skip the "kernel" manually
-     */
-    const char *analyzer = problem_data_get_content_or_NULL(g_cd, FILENAME_ANALYZER);
-//FIXME: say "no" to special casing!
-    if (event_cfg && analyzer && strcmp(analyzer, "Kerneloops") != 0)
+    char *description = NULL;
+    acceptable_rating = check_problem_rating_usability(event_cfg, g_cd, &description, NULL);
+    if (description)
     {
-        const char *rating_str = problem_data_get_content_or_NULL(g_cd, FILENAME_RATING);
-//COMPAT, remove after 2.1 release
-        if (!rating_str)
-            rating_str = problem_data_get_content_or_NULL(g_cd, "rating");
-
-        if (rating_str)
-        {
-            char *endptr;
-            errno = 0;
-            long rating = strtol(rating_str, &endptr, 10);
-            if (errno != 0 || endptr == rating_str || *endptr != '\0')
-            {
-                add_warning(_("Reporting disabled because the rating does not contain a number."));
-                acceptable_rating = false;
-            }
-            else
-            {
-                VERB1 log("Checking current rating %ld to required rating %ld.", rating, event_cfg->ec_minimal_rating);
-                if (rating == event_cfg->ec_minimal_rating) /* bt is usable, but not complete, so show a warning */
-                {
-                    add_warning(_("The backtrace is incomplete, please make sure you provide the steps to reproduce."));
-                }
-                else if (rating < event_cfg->ec_minimal_rating)
-                {
-                    add_warning(_("Reporting disabled because the backtrace is unusable."));
-                    //FIXME: see CreporterAssistant: 394 for ideas
-                    acceptable_rating = false;
-                }
-            }
-        }
+        add_warning(description);
+        free(description);
     }
 
     return acceptable_rating;

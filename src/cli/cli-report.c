@@ -857,12 +857,7 @@ int report(const char *dump_dir_name, int flags)
     }
     else
     {
-        const char *rating_str = problem_data_get_content_or_NULL(problem_data, FILENAME_RATING);
-//COMPAT, remove after 2.1 release
-        if (!rating_str)
-            rating_str = problem_data_get_content_or_NULL(problem_data, "rating");
-
-        unsigned i, rating = rating_str ? xatou(rating_str) : 4;
+        unsigned i;
         GList *li;
         char wanted_reporters[255];
 
@@ -890,18 +885,21 @@ int report(const char *dump_dir_name, int flags)
             if (!is_number_in_string(i, wanted_reporters))
                 continue;
 
-            if (config && (rating < config->ec_minimal_rating))
+            char *usability_description = NULL;
+            char *usability_detail = NULL;
+            const bool usable_rating = check_problem_rating_usability(config, problem_data,
+                                                                      &usability_description,
+                                                                      &usability_detail);
+
+            if (!usable_rating)
             {
-                puts(_("Reporting disabled because the backtrace is unusable"));
+                printf("%s\n", usability_description);
+                printf("%s\n", usability_detail);
 
-                const char *package = problem_data_get_content_or_NULL(problem_data, FILENAME_PACKAGE);
-                if (package && package[0])
-                    printf(_("Please try to install debuginfo manually using the command: \"debuginfo-install %s\" and try again\n"), package);
-
-                plugins++;
                 errors++;
-                continue;
+                goto next_plugin;
             }
+
             ask_for_missing_settings(reporter_name);
 
             /*
@@ -914,7 +912,10 @@ int report(const char *dump_dir_name, int flags)
             errors += run_events(dump_dir_name, cur_event, "Reporting");
             g_list_free(cur_event);
 
+next_plugin:
             plugins++;
+            free(usability_description);
+            free(usability_detail);
         }
     }
 

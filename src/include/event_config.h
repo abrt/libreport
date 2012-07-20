@@ -21,6 +21,7 @@
 
 #include <stdbool.h>
 #include <glib.h>
+#include "problem_data.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -102,6 +103,27 @@ GList *export_event_config(const char *event_name);
 void unexport_event_config(GList *env_list);
 
 GHashTable *validate_event(const char *event_name);
+
+/*
+ * Checks usability of problem's backtrace rating against required rating level
+ * from event configuration.
+ *
+ * @param cfg an event configuration
+ * @param pd a checked problem data
+ * @param description an output parameter for a description of rating
+ * usability. If the variable holds NULL after function call no description is
+ * available. The description can be provided even if backtrace rating is
+ * acceptable. Can be NULL.
+ * @param detail an output parameter for a more details about rating usability.
+ * If the variable holds NULL after function call no description is available.
+ * The detail can be provided even if backtrace rating is acceptable. Can be
+ * NULL.
+ * @returns true if rating is usable or above usable; otherwise false
+ */
+bool check_problem_rating_usability(const event_config_t *cfg,
+                                    problem_data_t       *pd,
+                                    char                 **description,
+                                    char                 **detail);
 
 #ifdef __cplusplus
 }
