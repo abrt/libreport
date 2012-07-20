@@ -179,7 +179,7 @@ static void ureport_add_item_int(struct json_object *ur, problem_data_t *pd,
     if (!stat)
         return;
 
-    ureport_add_int(ur, (rename) ?: rename, nr);
+    ureport_add_int(ur, (rename) ?: key, nr);
 }
 
 static void ureport_add_pkg(struct json_object *ur, problem_data_t *pd)
