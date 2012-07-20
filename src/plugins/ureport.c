@@ -166,8 +166,8 @@ int main(int argc, char **argv)
             VERB1 log("is known: %s", response.value);
             ret = 0;
             /* If a reported problem is not known then emit NEEDMORE */
-            if (strcmp("true",response.value))
-                log("NEEDMORE");
+            if (strcmp("true", response.value) == 0)
+                log("THANKYOU");
             break;
         case UREPORT_SERVER_RESP_ERROR:
             VERB1 log("server side error: %s", response.value);

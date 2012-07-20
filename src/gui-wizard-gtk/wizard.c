@@ -1279,6 +1279,13 @@ static void run_event_gtk_error(const char *error_line, void *param)
 static char *run_event_gtk_logging(char *log_line, void *param)
 {
     update_command_run_log(log_line, (struct analyze_event_data *)param);
+
+    if (strcmp(log_line, "THANKYOU") == 0)
+    {
+        VERB1 log("Received a request for termination of processing of event chain. (Request: '%s')", log_line);
+        g_auto_event_list = NULL;
+    }
+
     return log_line;
 }
 
@@ -1569,7 +1576,6 @@ static void start_event_run(const char *event_name,
     );
 
     gtk_label_set_text(status_label, start_msg);
-
     VERB1 log("running event '%s' on '%s'", event_name, g_dump_dir_name);
     char *msg = xasprintf("--- Running %s ---\n", event_name);
     append_to_textview(evd->tv_log, msg);
