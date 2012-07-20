@@ -75,3 +75,45 @@ struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name
 
     return dd_dst;
 }
+
+struct dump_dir *open_directory_for_writing(
+                            const char *dump_dir_name,
+                            bool (*ask)(const char *, const char *))
+{
+    struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
+
+    if (!dd)
+        xfunc_die(); /* error msg was already logged */
+
+    if (dd->locked)
+        return dd;
+
+    log("'%s' is not writable", dump_dir_name);
+    dd_close(dd);
+
+    char *spooldir = concat_path_file(g_get_user_cache_dir(), "abrt/spool");
+
+    if (ask && !ask(spooldir, dump_dir_name))
+        return NULL;
+
+    dd = steal_directory(spooldir, dump_dir_name);
+    free(spooldir);
+
+    if (!dd)
+        return NULL;
+
+    /* Delete old dir and switch to new one.
+     * Don't want to keep new dd open across deletion,
+     * therefore it's a bit more complicated.
+     */
+    delete_dump_dir_possibly_using_abrtd(dump_dir_name);
+    char *new_name = xstrdup(dd->dd_dirname);
+    dd_close(dd);
+    dd = dd_opendir(new_name, 0);
+    free(new_name);
+
+    if (!dd)
+        xfunc_die(); /* error msg was already logged */
+
+    return dd;
+}

@@ -311,72 +311,53 @@ static void on_toggle_ask_steal_cb(GtkToggleButton *tb, gpointer user_data)
     set_user_setting("ask_steal_dir", gtk_toggle_button_get_active(tb) ? "no" : "yes");
 }
 
-struct dump_dir *steal_if_needed(struct dump_dir *dd)
+static bool ask_continue_before_steal(const char *base_dir, const char *dump_dir)
 {
-    if (!dd)
-        xfunc_die(); /* error msg was already logged */
-
-    if (dd->locked)
-        return dd;
-
-    dd_close(dd);
-
-    char *spooldir;
-    spooldir = concat_path_file(g_get_user_cache_dir(), "abrt/spool");
-
     const char *ask_steal_dir = get_user_setting("ask_steal_dir");
 
-    if (!ask_steal_dir || strcmp(ask_steal_dir, "no"))
+    if (ask_steal_dir && string_to_bool(ask_steal_dir) == false)
+        return true;
+
+    GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
+            GTK_DIALOG_DESTROY_WITH_PARENT,
+            GTK_MESSAGE_QUESTION,
+            GTK_BUTTONS_OK_CANCEL,
+            _("Need writable directory, but '%s' is not writable."
+            " Move it to '%s' and operate on the moved data?"),
+            dump_dir, base_dir
+            );
+
+    gint response = GTK_RESPONSE_CANCEL;
+    g_signal_connect(G_OBJECT(dialog), "response", G_CALLBACK(save_dialog_response), &response);
+
+    GtkWidget *ask_steal_cb = gtk_check_button_new_with_label(_("Don't ask me again"));
+    gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))),
+            ask_steal_cb, TRUE, TRUE, 0);
+    g_signal_connect(ask_steal_cb, "toggled", G_CALLBACK(on_toggle_ask_steal_cb), NULL);
+
+    /* check it by default if it's shown for the first time */
+    if (!ask_steal_dir)
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ask_steal_cb), TRUE);
+
+    gtk_widget_show(ask_steal_cb);
+    gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_destroy(dialog);
+
+    return response == GTK_RESPONSE_OK;
+}
+
+struct dump_dir *wizard_open_directory_for_writing(const char *dump_dir_name)
+{
+    struct dump_dir *dd = open_directory_for_writing(dump_dir_name,
+                                                     ask_continue_before_steal);
+
+    if (dd && strcmp(g_dump_dir_name, dd->dd_dirname) != 0)
     {
-        GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
-                GTK_DIALOG_DESTROY_WITH_PARENT,
-                GTK_MESSAGE_QUESTION,
-                GTK_BUTTONS_OK_CANCEL,
-                _("Need writable directory, but '%s' is not writable."
-                " Move it to '%s' and operate on the moved data?"),
-                g_dump_dir_name, spooldir
-                );
-        gint response = GTK_RESPONSE_CANCEL;
-        g_signal_connect(G_OBJECT(dialog), "response", G_CALLBACK(save_dialog_response), &response);
-
-        GtkWidget *ask_steal_cb = gtk_check_button_new_with_label(_("Don't ask me again"));
-        gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))),
-                ask_steal_cb, TRUE, TRUE, 0);
-        g_signal_connect(ask_steal_cb, "toggled", G_CALLBACK(on_toggle_ask_steal_cb), NULL);
-
-        /* check it by default if it's shown for the first time */
-        if (!ask_steal_dir) {
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ask_steal_cb), TRUE);
-	}
-
-        gtk_widget_show(ask_steal_cb);
-        gtk_dialog_run(GTK_DIALOG(dialog));
-        gtk_widget_destroy(dialog);
-
-        if (response != GTK_RESPONSE_OK)
-            return NULL;
+        char *old_name = g_dump_dir_name;
+        g_dump_dir_name = xstrdup(dd->dd_dirname);
+        update_window_title();
+        free(old_name);
     }
-
-    dd = steal_directory(spooldir, g_dump_dir_name);
-    g_free(spooldir);
-    if (!dd)
-        return NULL; /* Stealing failed. Error msg was already logged */
-
-    /* Delete old dir and switch to new one.
-     * Don't want to keep new dd open across deletion,
-     * therefore it's a bit more complicated.
-     */
-    char *old_name = g_dump_dir_name;
-    g_dump_dir_name = xstrdup(dd->dd_dirname);
-    dd_close(dd);
-
-    update_window_title();
-    delete_dump_dir_possibly_using_abrtd(old_name); //TODO: if (deletion_failed) error_msg("BAD")?
-    free(old_name);
-
-    dd = dd_opendir(g_dump_dir_name, 0);
-    if (!dd)
-        xfunc_die(); /* error msg was already logged */
 
     return dd;
 }
@@ -439,12 +420,10 @@ static void save_text_if_changed(const char *name, const char *new_value)
         old_value = "";
     if (strcmp(new_value, old_value) != 0)
     {
-        struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY);
-        dd = steal_if_needed(dd);
-        if (dd && dd->locked)
-        {
+        struct dump_dir *dd = wizard_open_directory_for_writing(g_dump_dir_name);
+        if (dd)
             dd_save_text(dd, name, new_value);
-        }
+
 //FIXME: else: what to do with still-unsaved data in the widget??
         dd_close(dd);
         problem_data_reload_from_dump_dir();
@@ -1544,11 +1523,9 @@ static void start_event_run(const char *event_name,
         return;
     }
 
-    struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY);
-    dd = steal_if_needed(dd);
-    int locked = (dd && dd->locked);
+    struct dump_dir *dd = wizard_open_directory_for_writing(g_dump_dir_name);
     dd_close(dd);
-    if (!locked)
+    if (!dd)
     {
         free_run_event_state(state);
         return; /* user refused to steal, or write error, etc... */
@@ -2183,9 +2160,8 @@ static void save_edited_one_liner(GtkCellRendererText *renderer,
     struct problem_item *item = problem_data_get_item_or_NULL(g_cd, item_name);
     if (item && (item->flags & CD_FLAG_ISEDITABLE))
     {
-        struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY);
-        dd = steal_if_needed(dd);
-        if (dd && dd->locked)
+        struct dump_dir *dd = wizard_open_directory_for_writing(g_dump_dir_name);
+        if (dd)
         {
             dd_save_text(dd, item_name, new_text);
             free(item->content);
@@ -2234,11 +2210,8 @@ static void on_btn_add_file(GtkButton *button)
         struct problem_item *item = problem_data_get_item_or_NULL(g_cd, basename);
         if (!item || (item->flags & CD_FLAG_ISEDITABLE))
         {
-            struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY);
-            dd = steal_if_needed(dd);
-            bool writable = (dd && dd->locked);
-            dd_close(dd);
-            if (writable)
+            struct dump_dir *dd = wizard_open_directory_for_writing(g_dump_dir_name);
+            if (dd)
             {
                 char *new_name = concat_path_file(g_dump_dir_name, basename);
                 if (strcmp(filename, new_name) == 0)
@@ -2263,6 +2236,7 @@ static void on_btn_add_file(GtkButton *button)
                 }
                 free(new_name);
             }
+            dd_close(dd);
         }
         else
             message = xasprintf(_("Item '%s' already exists and is not modifiable"), basename);
@@ -2305,8 +2279,7 @@ static void delete_item(GtkTreeView *treeview)
                 {
 //                  GtkTreePath *old_path = gtk_tree_model_get_path(store, &iter);
 
-                    struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY);
-                    dd = steal_if_needed(dd);
+                    struct dump_dir *dd = wizard_open_directory_for_writing(g_dump_dir_name);
                     if (dd)
                     {
                         char *filename = concat_path_file(g_dump_dir_name, item_name);

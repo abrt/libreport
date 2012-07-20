@@ -634,6 +634,17 @@ int delete_dump_dir_possibly_using_abrtd(const char *dump_dir_name);
 #define steal_directory libreport_steal_directory
 struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name);
 
+/* Tries to open dump_dir_name with writing access. If function needs to steal
+ * directory calls ask_continue(new base dir, dump dir) callback to ask user
+ * for permission. If ask_continue param is NULL the function thinks that an
+ * answer is positive and steals directory.
+ * Returns NULL if opening failed or if stealing was dismissed. In this case,
+ * logs a message before returning. */
+#define open_directory_for_writing libreport_open_directory_for_writing
+struct dump_dir *open_directory_for_writing(
+                         const char *dump_dir_name,
+                         bool (*ask_continue)(const char *, const char *));
+
 // Files bigger than this are never considered to be text.
 //
 // Started at 64k limit. But _some_ limit is necessary:

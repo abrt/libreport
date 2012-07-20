@@ -47,7 +47,6 @@ int main(int argc, char** argv)
     textdomain(PACKAGE);
 #endif
 
-    GList *D_list = NULL;
     const char *event_name = NULL;
     const char *pfx = "";
 
@@ -124,12 +123,6 @@ int main(int argc, char** argv)
     char *dump_dir_name = argv[0];
     bool always = (opts & OPT_y);
 
-    if (!D_list)
-    {
-        D_list = g_list_append(D_list, concat_path_file(g_get_user_cache_dir(), "abrt/spool"));
-        D_list = g_list_append(D_list, (void*)DEBUG_DUMPS_DIR);
-    }
-
     /* Get settings */
     load_event_config_data();
 
@@ -191,26 +184,17 @@ int main(int argc, char** argv)
         }
         case OPT_report:
         {
-            struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
-            if (!dd)
-                return 1;
-            int readonly = !dd->locked;
-            dd_close(dd);
-            if (readonly)
+            struct dump_dir *dd = open_directory_for_writing(dump_dir_name, NULL);
+
+            if (dd)
             {
-                log("'%s' is not writable", dump_dir_name);
-                /* D_list can't be NULL here */
-                struct dump_dir *dd_copy = steal_directory((char *)D_list->data, dump_dir_name);
-                if (dd_copy)
-                {
-                    delete_dump_dir_possibly_using_abrtd(dump_dir_name);
-                    dump_dir_name = xstrdup(dd_copy->dd_dirname);
-                    dd_close(dd_copy);
-                }
+                dump_dir_name = xstrdup(dd->dd_dirname);
+                dd_close(dd);
             }
 
             exitcode = report(dump_dir_name,
                     (always ? CLI_REPORT_BATCH : 0));
+
             if (exitcode == -1)
                 error_msg_and_die("Crash '%s' not found", dump_dir_name);
 
