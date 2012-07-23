@@ -98,6 +98,8 @@ problem_data_t *create_problem_data_for_reporting(const char *dump_dir_name);
 
 struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data, const char *base_dir_name);
 
+char* save_dump_dir_from_problem_data(problem_data_t *problem_data, const char *base_dir_name);
+
 #ifdef __cplusplus
 }
 #endif

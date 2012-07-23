@@ -37,12 +37,6 @@ enum {
     LIBREPORT_RUN_NEWT    = (1 << 8), /* run 'report-newt' */
 };
 
-typedef enum {
-    LR_OK = 0,
-    LR_MISSING_ITEM = (1 << 1),
-    LR_ERROR        = (1 << 2),
-} LibreportError;
-
 int report_problem_in_dir(const char *dirname, int flags);
 
 /* Reports a problem stored in problem_data_t.
@@ -52,8 +46,6 @@ int report_problem_in_memory(problem_data_t *pd, int flags);
 
 /* Simple wrapper for trivial uses */
 int report_problem(problem_data_t *pd);
-
-LibreportError save_dump_dir_from_problem_data(problem_data_t *problem_data, char **problem_id, const char *base_dir_name);
 
 #ifdef __cplusplus
 }

@@ -91,39 +91,35 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
     return dd;
 }
 
-LibreportError save_dump_dir_from_problem_data(problem_data_t *problem_data, char **problem_id, const char *base_dir_name)
+char* save_dump_dir_from_problem_data(problem_data_t *problem_data, const char *base_dir_name)
 {
-    char *type = problem_data_get_content_or_NULL(problem_data, FILENAME_TYPE);
+    char *type = problem_data_get_content_or_NULL(problem_data, FILENAME_ANALYZER);
 
-    if(!type)
+    if (!type)
     {
-        error_msg(_("Missing required item: '%s'"), FILENAME_TYPE);
-        return LR_MISSING_ITEM;
+        error_msg(_("Missing required item: '%s'"), FILENAME_ANALYZER);
+        return NULL;
     }
 
     char *time_s = problem_data_get_content_or_NULL(problem_data, FILENAME_TIME);
-    if(!time_s)
+    if (!time_s)
     {
-        /* 64 is a randomly picked constant which should be
-         * enough to hold the time in seconds for a long time..
-         */
-        char buf[sizeof(long unsigned)*3];
-        time_t t = time(NULL);
         /* time is a required field, so if it's not provided add a default one */
-        snprintf(buf, sizeof(buf), "%lu", (long unsigned)t);
+        char buf[sizeof(unsigned long) * 3];
+        time_t t = time(NULL);
+        sprintf(buf, "%lu", (unsigned long)t);
         problem_data_add_text_noteditable(problem_data, FILENAME_TIME, buf);
     }
 
-    *problem_id = xasprintf("%s-%s-%lu"NEW_PD_SUFFIX, type, iso_date_string(NULL), (long)getpid());
+    char *problem_id = xasprintf("%s-%s-%lu"NEW_PD_SUFFIX, type, iso_date_string(NULL), (long)getpid());
 
-    VERB2 log("Saving to %s/%s", base_dir_name, *problem_id);
-    struct dump_dir *dd = try_dd_create(base_dir_name, *problem_id);
+    VERB2 log("Saving to %s/%s", base_dir_name, problem_id);
+    struct dump_dir *dd = try_dd_create(base_dir_name, problem_id);
     if (!dd)
     {
         perror_msg("Can't create problem directory");
-        free(*problem_id);
-        *problem_id = NULL;
-        return LR_ERROR;
+        free(problem_id);
+        return NULL;
     }
 
     GHashTableIter iter;
@@ -134,14 +130,14 @@ LibreportError save_dump_dir_from_problem_data(problem_data_t *problem_data, cha
     {
         if (value->flags & CD_FLAG_BIN)
         {
-            char dest[PATH_MAX+1];
-            snprintf(dest, sizeof(dest), "%s/%s", dd->dd_dirname, name);
+            char *dest = concat_path_file(dd->dd_dirname, name);
             VERB2 log("copying '%s' to '%s'", value->content, dest);
             off_t copied = copy_file(value->content, dest, 0644);
             if (copied < 0)
                 error_msg("Can't copy %s to %s", value->content, dest);
-
-            VERB2 log("copied %li bytes", (unsigned long)copied);
+            else
+                VERB2 log("copied %li bytes", (unsigned long)copied);
+            free(dest);
 
             continue;
         }
@@ -156,25 +152,19 @@ LibreportError save_dump_dir_from_problem_data(problem_data_t *problem_data, cha
         dd_save_text(dd, name, value->content);
     }
 
-    char *suffix = strstr(*problem_id, NEW_PD_SUFFIX);
-    if (suffix)
-        *suffix = '\0';
+    problem_id[strlen(problem_id) - strlen(NEW_PD_SUFFIX)] = '\0';
 
-    char* new_path = concat_path_file(base_dir_name, *problem_id);
+    char* new_path = concat_path_file(base_dir_name, problem_id);
 
-    VERB2 log("Renaming from'%s' to '%s'", dd->dd_dirname, new_path);
+    VERB2 log("Renaming from '%s' to '%s'", dd->dd_dirname, new_path);
     if (dd_rename(dd, new_path) != 0)
     {
-        free(new_path);
-        dd_close(dd);
-
-        free(*problem_id);
-        *problem_id = NULL;
-        return LR_ERROR;
+        free(problem_id);
+        problem_id = NULL;
     }
 
     free(new_path);
     dd_close(dd);
 
-    return LR_OK;
+    return problem_id;
 }
