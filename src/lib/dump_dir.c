@@ -463,9 +463,15 @@ void dd_create_basic_files(struct dump_dir *dd, uid_t uid, const char *chroot_di
 {
     char long_str[sizeof(long) * 3 + 2];
 
-    time_t t = time(NULL);
-    snprintf(long_str, sizeof(long_str), "%lu", (long)t);
-    dd_save_text(dd, FILENAME_TIME, long_str);
+    char *time_str = dd_load_text_ext(dd, FILENAME_TIME,
+                    DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    if (!time_str)
+    {
+        time_t t = time(NULL);
+        sprintf(long_str, "%lu", (long)t);
+        dd_save_text(dd, FILENAME_TIME, long_str);
+    }
+    free(time_str);
 
     /* it doesn't make sense to create the uid file if uid == -1 */
     if (uid != (uid_t)-1L)
@@ -484,7 +490,7 @@ void dd_create_basic_files(struct dump_dir *dd, uid_t uid, const char *chroot_di
      * if it doesn't
      * i.e: anaconda doesn't have /etc/{fedora,redhat}-release and trying to load it
      * results in errors: rhbz#725857
-    */
+     */
     char *release = dd_load_text_ext(dd, FILENAME_OS_RELEASE,
                     DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
 
