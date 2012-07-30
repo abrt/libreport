@@ -181,12 +181,6 @@ int main(int argc, char **argv)
     if (!rhbz.b_login[0] || !rhbz.b_password[0])
         error_msg_and_die(_("Empty login or password, please check your configuration"));
 
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        xfunc_die();
-    report_result_t *reported_to = find_in_reported_to(dd, "Bugzilla:");
-    dd_close(dd);
-
     if (opts & OPT_t)
     {
         if (!ticket_no)
@@ -203,7 +197,6 @@ int main(int argc, char **argv)
 //            free_report_result(reported_to);
 //            ...
         }
-        free_report_result(reported_to);
 
         /* Attach files to existing BZ */
         if (!argv[0])
@@ -247,6 +240,12 @@ int main(int argc, char **argv)
     }
 
     /* Create new bug in Bugzilla */
+
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        xfunc_die();
+    report_result_t *reported_to = find_in_reported_to(dd, "Bugzilla:");
+    dd_close(dd);
 
     if (reported_to && reported_to->url && !(opts & OPT_f))
     {
