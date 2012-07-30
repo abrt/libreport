@@ -2675,7 +2675,7 @@ static void add_pages()
 
     struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
     if (!dd)
-        return;
+        xfunc_die();
     char *not_reportable = dd_load_text_ext(dd, FILENAME_NOT_REPORTABLE, 0
                                             | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
                                             | DD_FAIL_QUIETLY_ENOENT
