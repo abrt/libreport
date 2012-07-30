@@ -24,6 +24,16 @@
 #include "abrt_rh_support.h"
 #include "reporter-rhtsupport.h"
 
+static report_result_t *get_reported_to(const char *dump_dir_name)
+{
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        xfunc_die();
+    report_result_t *reported_to = find_in_reported_to(dd, "RHTSupport:");
+    dd_close(dd);
+    return reported_to;
+}
+
 int main(int argc, char **argv)
 {
     abrt_init(argv);
@@ -119,12 +129,6 @@ int main(int argc, char **argv)
         error_msg_and_die("XML-RPC Fault: %s(%d)", env.fault_string, env.fault_code);
     xmlrpc_env_clean(&env);
 
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        xfunc_die();
-    report_result_t *reported_to = find_in_reported_to(dd, "RHTSupport:");
-    dd_close(dd);
-
     if (opts & OPT_t)
     {
         if (!*argv)
@@ -133,6 +137,7 @@ int main(int argc, char **argv)
         if (!case_no)
         {
             /* -t */
+            report_result_t *reported_to = get_reported_to(dump_dir_name);
             if (!reported_to || !reported_to->url)
                 error_msg_and_die("Can't attach: problem data in '%s' "
                         "was not reported to RHTSupport and therefore has no URL",
@@ -143,6 +148,7 @@ int main(int argc, char **argv)
             free(url);
             url = reported_to->url;
             reported_to->url = NULL;
+            free_report_result(reported_to);
         }
         else
         {
@@ -170,7 +176,6 @@ int main(int argc, char **argv)
             argv++;
         }
 
-        free_report_result(reported_to);
         return 0;
     }
 
@@ -179,6 +184,7 @@ int main(int argc, char **argv)
 
     /* Creating a new case */
 
+    report_result_t *reported_to = get_reported_to(dump_dir_name);
     if (reported_to && reported_to->url && !(opts & OPT_f))
     {
         char *msg = xasprintf("This problem was already reported to RHTS (see '%s')."
@@ -442,7 +448,7 @@ int main(int argc, char **argv)
     }
 
     /* Record "reported_to" element */
-    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (dd)
     {
         char *msg = xasprintf("RHTSupport: TIME=%s URL=%s%s%s",
