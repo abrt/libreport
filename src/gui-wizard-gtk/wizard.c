@@ -1527,6 +1527,7 @@ static void start_event_run(const char *event_name,
         char *msg = xasprintf(_("No processing for event '%s' is defined"), event_name);
         gtk_label_set_text(status_label, msg);
         free(msg);
+        g_auto_event_list = NULL;
         return;
     }
 
