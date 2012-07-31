@@ -109,6 +109,63 @@ static bool exist_file_dir(const char *path)
     return false;
 }
 
+/* Returns true if the file is not readable or */
+/* if the file doesn't contain valid unixt time stamp */
+/* implementation is a compromise between efficiency and accuracy */
+/* the function gets false negative results for big numbers */
+static bool not_valid_time_file(const char *filename)
+{
+    /* Open input file, and parse it. */
+    int fd = open(filename, O_RDONLY);
+    if (fd < 0)
+    {
+        VERB2 perror_msg("Can't open '%s'", filename);
+        return true;
+    }
+
+    /* ~ maximal number of digits for positive time stamp string*/
+    char time_buf[sizeof(time_t) * 3 + 1];
+    ssize_t rdsz = read(fd, time_buf, sizeof(time_buf));
+
+    /* Just reading, so no need to check the returned value. */
+    close(fd);
+
+    if (rdsz == -1)
+    {
+        VERB2 perror_msg("Can't read from '%s'", filename);
+        return true;
+    }
+
+    /* approximate maximal number of digits in timestamp is sizeof(time_t)*3 */
+    /* buffer has this size + 1 byte for trailing '\0' */
+    /* if whole size of buffer was read then file is bigger */
+    /* than string representing maximal time stamp */
+    if (rdsz == sizeof(time_buf))
+    {
+        VERB2 log("File '%s' is too long to be valid unix "
+                  "time stamp (max size %zdB)", filename, sizeof(time_buf));
+        return true;
+    }
+
+    /* Our tools don't put trailing newline into time file,
+     * but we allow such format too:
+     */
+    if (rdsz > 0 && time_buf[rdsz - 1] == '\n')
+        rdsz--;
+    time_buf[rdsz] = '\0';
+
+    /* the value should fit to timestamp number range because of file size */
+    /* condition above, hence check if the value string consists only from digits */
+    if (!isdigit_str(time_buf))
+    {
+        VERB2 log("File '%s' doesn't contain valid unix "
+                  "time stamp ('%s')", filename, time_buf);
+        return true;
+    }
+
+    return false;
+}
+
 /* Return values:
  * -1: error (in this case, errno is 0 if error message is already logged)
  *  0: failed to lock (someone else has it locked)
@@ -203,7 +260,7 @@ static int dd_lock(struct dump_dir *dd, unsigned sleep_usec, int flags)
     if (sleep_usec == WAIT_FOR_OTHER_PROCESS_USLEEP) /* yes */
     {
         strcpy(lock_buf + dirname_len, "/"FILENAME_TIME);
-        if (access(lock_buf, F_OK) != 0)
+        if (not_valid_time_file(lock_buf))
         {
             /* time file doesn't exist. We managed to lock the directory
              * which was just created by somebody else, or is almost deleted
@@ -212,7 +269,7 @@ static int dd_lock(struct dump_dir *dd, unsigned sleep_usec, int flags)
              */
             strcpy(lock_buf + dirname_len, "/.lock");
             xunlink(lock_buf);
-            VERB1 log("Unlocked '%s' (no time file)", lock_buf);
+            VERB1 log("Unlocked '%s' (no or corrupted time file)", lock_buf);
             if (--count == 0)
             {
                 errno = EISDIR; /* "this is an ordinary dir, not dump dir" */
@@ -303,7 +360,7 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
              && access(dir, R_OK) == 0
             ) {
                 char *time_file_name = concat_path_file(dir, FILENAME_TIME);
-                if (access(time_file_name, R_OK) != 0)
+                if (not_valid_time_file(time_file_name))
                 {
                     dd_close(dd);
                     dd = NULL;
