@@ -520,10 +520,30 @@ static char *do_log_and_save_line(char *log_line, void *param)
     l_state->last_line = log_line;
     return NULL;
 }
+
+static int run_event(struct run_event_state *state, const char *dump_dir_name,
+                     const char *event, struct logging_state *l_state)
+{
+    // Export overridden settings as environment variables
+    GList *env_list = export_event_config(event);
+
+    int r = run_event_on_dir_name(state, dump_dir_name, event);
+    if (r == 0 && state->children_count == 0)
+    {
+        l_state->last_line = xasprintf("Error: no processing is specified for event '%s'",
+                event);
+        r = -1;
+    }
+
+    // Unexport overridden settings
+    unexport_event_config(env_list);
+
+    return r;
+}
+
 static int run_events(const char *dump_dir_name, GList *events, const char *event_type)
 {
     int error_cnt = 0;
-    GList *env_list = NULL;
 
     // Run events
     struct logging_state l_state;
@@ -534,18 +554,7 @@ static int run_events(const char *dump_dir_name, GList *events, const char *even
     for (GList *li = events; li; li = li->next)
     {
         char *event = (char *) li->data;
-
-        // Export overridden settings as environment variables
-        env_list = export_event_config(event);
-
-        int r = run_event_on_dir_name(run_state, dump_dir_name, event);
-        if (r == 0 && run_state->children_count == 0)
-        {
-            l_state.last_line = xasprintf("Error: no processing is specified for event '%s'",
-                                          event);
-            r = -1;
-        }
-        if (r == 0)
+        if (run_event(run_state, dump_dir_name, event, &l_state) == 0)
         {
             printf("%s: ", event);
             if (l_state.last_line)
@@ -560,14 +569,11 @@ static int run_events(const char *dump_dir_name, GList *events, const char *even
                     event,
                     l_state.last_line ? ": " : "",
                     l_state.last_line ? l_state.last_line : ""
-            );
-            error_cnt++;
+                    );
+            ++error_cnt;
         }
         free(l_state.last_line);
         l_state.last_line = NULL;
-
-        // Unexport overridden settings
-        unexport_event_config(env_list);
     }
     free_run_event_state(run_state);
 
@@ -742,6 +748,51 @@ int collect(const char *dump_dir_name, int batch)
     return errors;
 }
 
+static int review_problem_data(const char *dump_dir_name, problem_data_t *problem_data)
+{
+    /* Open text editor and give a chance to review the backtrace etc */
+    create_fields_for_editor(problem_data);
+    int result = run_report_editor(problem_data);
+    if (result != 0)
+        return 1;
+
+    /* Save comment, backtrace */
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (dd)
+    {
+        //TODO: we should iterate through problem_data and modify all modifiable fields
+        const char *comment = problem_data_get_content_or_NULL(problem_data, FILENAME_COMMENT);
+        const char *backtrace = problem_data_get_content_or_NULL(problem_data, FILENAME_BACKTRACE);
+        if (comment)
+            dd_save_text(dd, FILENAME_COMMENT, comment);
+        if (backtrace)
+            dd_save_text(dd, FILENAME_BACKTRACE, backtrace);
+        dd_close(dd);
+    }
+
+    return 0;
+}
+
+static int is_backtrace_rating_usable(event_config_t *config, problem_data_t *problem_data)
+{
+    char *usability_description = NULL;
+    char *usability_detail = NULL;
+    const bool usable_rating = check_problem_rating_usability(config, problem_data,
+                                                              &usability_description,
+                                                              &usability_detail);
+
+    if (!usable_rating)
+    {
+        printf("%s\n", usability_description);
+        printf("%s\n", usability_detail);
+    }
+
+    free(usability_description);
+    free(usability_detail);
+
+    return usable_rating;
+}
+
 /* Report the crash */
 int report(const char *dump_dir_name, int flags)
 {
@@ -804,30 +855,12 @@ int report(const char *dump_dir_name, int flags)
     problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
     dd_close(dd);
 
-    if (!(flags & (CLI_REPORT_BATCH)))
+    if (!(flags & (CLI_REPORT_BATCH))
+        && review_problem_data(dump_dir_name, problem_data))
     {
-        /* Open text editor and give a chance to review the backtrace etc */
-        create_fields_for_editor(problem_data);
-        int result = run_report_editor(problem_data);
-        if (result != 0)
-        {
-            problem_data_free(problem_data);
-            free(report_events_as_lines);
-            return 1;
-        }
-        /* Save comment, backtrace */
-        dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-        if (dd)
-        {
-//TODO: we should iterate through problem_data and modify all modifiable fields
-            const char *comment = problem_data_get_content_or_NULL(problem_data, FILENAME_COMMENT);
-            const char *backtrace = problem_data_get_content_or_NULL(problem_data, FILENAME_BACKTRACE);
-            if (comment)
-                dd_save_text(dd, FILENAME_COMMENT, comment);
-            if (backtrace)
-                dd_save_text(dd, FILENAME_BACKTRACE, backtrace);
-            dd_close(dd);
-        }
+        problem_data_free(problem_data);
+        free(report_events_as_lines);
+        return 1;
     }
 
     /* Get possible reporters associated with this particular crash */
@@ -885,17 +918,8 @@ int report(const char *dump_dir_name, int flags)
             if (!is_number_in_string(i, wanted_reporters))
                 continue;
 
-            char *usability_description = NULL;
-            char *usability_detail = NULL;
-            const bool usable_rating = check_problem_rating_usability(config, problem_data,
-                                                                      &usability_description,
-                                                                      &usability_detail);
-
-            if (!usable_rating)
+            if (!is_backtrace_rating_usable(config, problem_data))
             {
-                printf("%s\n", usability_description);
-                printf("%s\n", usability_detail);
-
                 errors++;
                 goto next_plugin;
             }
@@ -914,8 +938,6 @@ int report(const char *dump_dir_name, int flags)
 
 next_plugin:
             plugins++;
-            free(usability_description);
-            free(usability_detail);
         }
     }
 
@@ -923,4 +945,95 @@ next_plugin:
     problem_data_free(problem_data);
     list_free_with_free(report_events);
     return errors;
+}
+
+struct chain_logging_param
+{
+    struct logging_state l_state;
+    bool terminate;
+};
+
+static char *do_log_and_terminate_chain_on_request(char *log_line, void *param)
+{
+    struct chain_logging_param *arg = (struct chain_logging_param *)param;
+
+    arg->terminate = strcmp("THANKYOU", log_line) == 0;
+
+    return do_log_and_save_line(log_line, &(arg->l_state));
+}
+
+/*
+ * Runs event from chain. Perform the following steps for each event from chain.
+ * 1. Terminates a chain run if a backtrace is not usable.
+ * 2. Asks for missing settings.
+ * 3. Performs review of problem data if event requires review.
+ * 4. Runs events commands.
+ * 5. Terminates a chain run if any event from the chain requires termination
+ *    (prints THANKYOU to stdout in the current implementation)
+ * 6. Terminates a chain run if any error occurs.
+ * 7. Continues immediately with processing of next event.
+ */
+int run_events_chain(const char *dump_dir_name, GList *chain)
+{
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        return -1;
+
+    problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
+
+    dd_close(dd);
+
+    struct chain_logging_param chain_state;
+    memset(&chain_state, 0, sizeof(chain_state));
+
+    struct run_event_state *run_state = new_run_event_state();
+    run_state->logging_callback = do_log_and_terminate_chain_on_request;
+    run_state->logging_param = &chain_state;
+
+    int returncode = 0;
+
+    for (GList *eitem = chain; !chain_state.terminate && eitem; eitem = g_list_next(eitem))
+    {
+        const char *const event = (const char *)eitem->data;
+        event_config_t *config = get_event_config(event);
+
+        if (!is_backtrace_rating_usable(config, problem_data))
+            /* it is not a failure of event if the backtrace is unusable */
+            break;
+
+        if (config)
+        {
+            /* can't fail */
+            ask_for_missing_settings(event);
+
+            /* review problem data only if the event needs it */
+            if (!config->ec_skip_review
+                && review_problem_data(dump_dir_name, problem_data))
+            {
+                /* review failed, an error message was already logged */
+                returncode = -1;
+                break;
+            }
+        }
+
+        returncode = run_event(run_state, dump_dir_name, event, &chain_state.l_state);
+        if (returncode != 0)
+        {
+            error_msg("'%s' event was not successful%s%s",
+                      event,
+                      chain_state.l_state.last_line ? ": " : "",
+                      chain_state.l_state.last_line ? chain_state.l_state.last_line : ""
+                     );
+            break;
+        }
+
+        free(chain_state.l_state.last_line);
+        chain_state.l_state.last_line = NULL;
+    }
+
+    free_run_event_state(run_state);
+    free(chain_state.l_state.last_line);
+    problem_data_free(problem_data);
+
+    return returncode;
 }

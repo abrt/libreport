@@ -32,6 +32,7 @@ enum {
 };
 int report(const char *dump_dir_name, int flags);
 int collect(const char *dump_dir_name, int batch);
+int run_events_chain(const char *dump_dir_name, GList *chain);
 
 #ifdef __cplusplus
 }

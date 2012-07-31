@@ -23,10 +23,18 @@
 #include "internal_libreport.h"
 #include "cli-report.h"
 
-static char *do_log(char *log_line, void *param)
+static char *steal_directory_if_needed(char *dump_dir_name)
 {
-    log("%s", log_line);
-    return log_line;
+    struct dump_dir *dd = open_directory_for_writing(dump_dir_name,
+                                                     /* ask callback */ NULL);
+
+    if (dd)
+    {
+        dump_dir_name = xstrdup(dd->dd_dirname);
+        dd_close(dd);
+    }
+
+    return dump_dir_name;
 }
 
 int main(int argc, char** argv)
@@ -47,7 +55,7 @@ int main(int argc, char** argv)
     textdomain(PACKAGE);
 #endif
 
-    const char *event_name = NULL;
+    GList *event_list = NULL;
     const char *pfx = "";
 
     /* Can't keep these strings/structs static: _() doesn't support that */
@@ -77,7 +85,7 @@ int main(int argc, char** argv)
     struct options program_options[] = {
         /*      short_name long_name  value    parameter_name  help */
         OPT_OPTSTRING('L', NULL     , &pfx, "PREFIX",          _("List possible events [which start with PREFIX]")),
-        OPT_STRING(   'e', NULL     , &event_name, "EVENT",    _("Run EVENT on DUMP_DIR")),
+        OPT_LIST(     'e', "event"  , &event_list, "EVENT",    _("Run only these events")),
         OPT_BOOL(     'a', "analyze", NULL,                    _("Run analyze event(s) on DUMP_DIR")),
         OPT_BOOL(     'c', "collect", NULL,                    _("Run collect event(s) on DUMP_DIR")),
         OPT_BOOL(     'r', "report" , NULL,                    _("Analyze, collect and report problem data in DUMP_DIR")),
@@ -144,12 +152,8 @@ int main(int argc, char** argv)
         }
         case OPT_run_event: /* -e EVENT: run event */
         {
-            struct run_event_state *run_state = new_run_event_state();
-            run_state->logging_callback = do_log;
-            int r = run_event_on_dir_name(run_state, dump_dir_name, event_name);
-            if (r == 0 && run_state->children_count == 0)
-                error_msg_and_die("No actions are found for event '%s'", event_name);
-            free_run_event_state(run_state);
+            dump_dir_name = steal_directory_if_needed(dump_dir_name);
+            exitcode = run_events_chain(dump_dir_name, event_list);
             break;
         }
         case OPT_analyze:
@@ -184,13 +188,7 @@ int main(int argc, char** argv)
         }
         case OPT_report:
         {
-            struct dump_dir *dd = open_directory_for_writing(dump_dir_name, NULL);
-
-            if (dd)
-            {
-                dump_dir_name = xstrdup(dd->dd_dirname);
-                dd_close(dd);
-            }
+            dump_dir_name = steal_directory_if_needed(dump_dir_name);
 
             exitcode = report(dump_dir_name,
                     (always ? CLI_REPORT_BATCH : 0));
