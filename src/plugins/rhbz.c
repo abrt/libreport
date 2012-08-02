@@ -192,7 +192,7 @@ int is_comment_dup(GList *comments, const char *comment)
     {
         const char * const comment_body = (const char *) l->data;
         char * const trim_comment_body = trim_all_whitespace(comment_body);
-        same_comments = !strcmp(trim_comment_body, trim_comment);
+        same_comments = (strcmp(trim_comment_body, trim_comment) == 0);
         free(trim_comment_body);
     }
 
@@ -221,24 +221,19 @@ static unsigned find_best_bt_rating_in_comments(GList *comments)
         }
 
         start_rating_line += strlen(FILENAME_RATING": ");
-        char *end_rating_line = strchr(start_rating_line, '\n');
-        if (!end_rating_line)
-            VERB3 error_msg("broken comment body");
 
-        char *rating_srt = xstrndup(start_rating_line, end_rating_line - start_rating_line);
-        int old_errno = errno;
         errno = 0;
         char *e;
-        long rating = strtoul(rating_srt, &e, 10);
-        if (errno || rating_srt == e || *e != '\0' || rating > UINT_MAX)
+        long rating = strtoul(start_rating_line, &e, 10);
+        /*
+         * Note: we intentionally check for '\n'. Any other terminator
+         * (even '\0') is not ok in this case.
+         */
+        if (errno || e == start_rating_line || *e != '\n' || (unsigned long)rating > UINT_MAX)
         {
             /* error / no digits / illegal trailing chars */
-            errno = old_errno;
-            free(rating_srt);
             continue;
         }
-        errno = old_errno; /* Ok.  So restore errno. */
-        free(rating_srt);
 
         if (rating > best_bt_rating)
             best_bt_rating = rating;

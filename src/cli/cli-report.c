@@ -341,6 +341,7 @@ static int run_report_editor(problem_data_t *problem_data)
     if (fread(text, 1, size, fp) != size)
     {
         error_msg("Can't read '%s'", filename);
+        free(text);
         fclose(fp);
         return 2;
     }
@@ -654,9 +655,8 @@ GList *str_to_glist(char *str, int delim)
     while (*str)
     {
         char *end = strchrnul(str, delim);
-        char *tmp = xstrndup(str, end - str);
-        if (*tmp)
-            list = g_list_append(list, tmp);
+        if (end != str)
+            list = g_list_append(list, xstrndup(str, end - str));
 
         str = end;
         if (!*str)

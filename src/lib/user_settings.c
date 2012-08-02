@@ -52,7 +52,6 @@ bool save_conf_file(const char *path, map_string_h *settings)
         fprintf(out, "%s = \"%s\"\n", name, value);
 
     fclose(out);
-    out = NULL;
 
     if (!rename(temp_path, path))
         goto cleanup;
@@ -60,8 +59,6 @@ bool save_conf_file(const char *path, map_string_h *settings)
     ret = true; /* success */
 
 cleanup:
-    if (out)
-        fclose(out);
     free(temp_path);
 
     return ret;
