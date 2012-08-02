@@ -1261,6 +1261,29 @@ static void on_btn_cancel_event(GtkButton *button)
         kill(- g_event_child_pid, SIGTERM);
 }
 
+static bool is_reporting_finished()
+{
+    return !g_expert_mode && !g_auto_event_list;
+}
+
+static void update_gui_on_finished_reporting()
+{
+    /* replace 'Forward' with 'Close' button */
+    /* 1. hide next button */
+    gtk_widget_hide(g_btn_next);
+    /* 2. move close button to the last position */
+    gtk_box_reorder_child(g_box_buttons, g_btn_close, 3);
+}
+
+static void terminate_event_chain()
+{
+    if (g_expert_mode)
+        return;
+
+    g_auto_event_list = NULL;
+    update_gui_on_finished_reporting();
+}
+
 static void update_command_run_log(const char* message, struct analyze_event_data *evd)
 {
     gtk_label_set_text(g_lbl_event_log, message);
@@ -1278,12 +1301,15 @@ static void run_event_gtk_error(const char *error_line, void *param)
 
 static char *run_event_gtk_logging(char *log_line, void *param)
 {
-    update_command_run_log(log_line, (struct analyze_event_data *)param);
+    struct analyze_event_data *evd = (struct analyze_event_data *)param;
+    update_command_run_log(log_line, evd);
 
     if (strcmp(log_line, "THANKYOU") == 0)
     {
         VERB1 log("Received a request for termination of processing of event chain. (Request: '%s')", log_line);
-        g_auto_event_list = NULL;
+        terminate_event_chain();
+        if (!g_expert_mode)
+            evd->success_msg = _("Reporting finished. Thank you!");
     }
 
     return log_line;
@@ -1440,12 +1466,6 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         }
     }
 
-    if (retval != 0)
-    {
-	/* If we were running -e EV1 -e EV2, stop if EV1 failed: */
-	g_auto_event_list = NULL;
-    }
-
     /* Stop if exit code is not 0, or no more commands */
     if (retval != 0
      || spawn_next_command_in_evd(evd) < 0
@@ -1454,7 +1474,11 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         append_to_textview(evd->tv_log, "\n");
 
         if (retval)
+        {
             gtk_label_set_text(evd->status_label, evd->error_msg);
+            /* If we were running -e EV1 -e EV2, stop if EV1 failed: */
+            terminate_event_chain();
+        }
         else
             gtk_label_set_text(evd->status_label, evd->success_msg);
 
@@ -1480,6 +1504,10 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 
         /* Inform abrt-gui that it is a good idea to rescan the directory */
         kill(getppid(), SIGCHLD);
+
+        /* this event was the last event from the chain */
+        if (is_reporting_finished())
+            update_gui_on_finished_reporting();
 
         return FALSE; /* "please remove this event" */
     }
@@ -1525,9 +1553,15 @@ static void start_event_run(const char *event_name,
         free_run_event_state(state);
 //TODO: better msg?
         char *msg = xasprintf(_("No processing for event '%s' is defined"), event_name);
-        gtk_label_set_text(status_label, msg);
+        if (g_expert_mode)
+            gtk_label_set_text(status_label, msg);
+        else
+        {
+            gtk_label_set_text(status_label, error_msg);
+            append_to_textview(tv_log, msg);
+            terminate_event_chain();
+        }
         free(msg);
-        g_auto_event_list = NULL;
         return;
     }
 
@@ -1923,12 +1957,13 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
                     g_tv_event_log,
                     g_lbl_event_log,
                     _("Processing..."),
-                    _("Processing failed. You can try another operation if available."),
-                    _("Processing finished, please proceed to the next step.")
+                    g_expert_mode ? _("Processing failed. You can try another operation if available.")
+                                  : _("Processing failed. Nothing more can be done. Thank you!"),
+                    /* this event is the last event from the chain */
+                    is_reporting_finished() ? _("Reporting finished. Thank you!")
+                                            : _("Processing finished, please proceed to the next step.")
             );
         }
-        else
-            gtk_label_set_text(g_lbl_event_log, _("Thank you!"));
     }
 }
 
@@ -1951,7 +1986,10 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
             if (!event)
             {
                 g_event_selected = NULL;
+                /* No next event, go to progress page and finish */
                 current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
+                gtk_label_set_text(g_lbl_event_log, "Reporting finished. Thank you!");
+                update_gui_on_finished_reporting();
                 goto again;
             }
 
@@ -2469,6 +2507,7 @@ void create_assistant(void)
     g_btn_stop = gtk_button_new_from_stock(GTK_STOCK_STOP);
     gtk_widget_set_no_show_all(g_btn_stop, true); /* else gtk_widget_hide won't work */
     g_btn_next = gtk_button_new_from_stock(GTK_STOCK_GO_FORWARD);
+    gtk_widget_set_no_show_all(g_btn_next, true); /* else gtk_widget_hide won't work */
 
     g_box_buttons = GTK_BOX(gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0));
     gtk_box_pack_start(g_box_buttons, g_btn_close, false, false, 5);
@@ -2512,6 +2551,7 @@ void create_assistant(void)
 
     gtk_widget_show_all(GTK_WIDGET(g_box_buttons));
     gtk_widget_hide(g_btn_stop);
+    gtk_widget_show(g_btn_next);
 
     g_wnd_assistant = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
     gtk_container_add(GTK_CONTAINER(g_wnd_assistant), GTK_WIDGET(g_box_assistant));
