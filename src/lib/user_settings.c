@@ -42,15 +42,18 @@ static bool create_parentdir(char *path)
 bool save_conf_file(const char *path, map_string_h *settings)
 {
     bool ret;
-    FILE *out;
     char *temp_path, *name, *value;
     GHashTableIter iter;
 
-    ret = false, out = NULL;
+    ret = false;
 
     temp_path = xasprintf("%s.tmp", path);
 
-    if (!create_parentdir(temp_path) || !(out = fopen(temp_path, "w")))
+    if (!create_parentdir(temp_path))
+        goto cleanup;
+
+    FILE *out = fopen(temp_path, "w");
+    if (!out)
         goto cleanup;
 
     g_hash_table_iter_init(&iter, settings);
@@ -58,7 +61,6 @@ bool save_conf_file(const char *path, map_string_h *settings)
         fprintf(out, "%s = \"%s\"\n", name, value);
 
     fclose(out);
-    out = NULL;
 
     if (!rename(temp_path, path))
         goto cleanup;
@@ -66,8 +68,6 @@ bool save_conf_file(const char *path, map_string_h *settings)
     ret = true; /* success */
 
 cleanup:
-    if (out)
-        fclose(out);
     free(temp_path);
 
     return ret;

@@ -98,15 +98,6 @@ int main(int argc, char **argv)
                 output_file = strtrim(response);
             }
 
-            /* do not allow symlinks (this can be an attack) */
-            struct stat stbuf;
-            if (lstat(output_file, &stbuf) == 0 && S_ISLNK(stbuf.st_mode))
-            {
-                msg = xasprintf(_("File '%s' is a symbolic link. "
-                                  "Please select a regular file:"), output_file);
-                continue;
-            }
-
             FILE *outstream = fopen(output_file, open_mode);
             if (!outstream)
             {

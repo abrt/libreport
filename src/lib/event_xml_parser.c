@@ -258,9 +258,10 @@ static void text(GMarkupParseContext *context,
                     VERB2 log("new label:'%s'", text_copy);
                     free(opt->eo_label);
                     opt->eo_label = text_copy;
+                    text_copy = NULL;
                 }
             }
-            return;
+            goto ret;
         }
         /*
          * we can add a separate field for the default value
@@ -273,7 +274,8 @@ static void text(GMarkupParseContext *context,
             VERB2 log("default value:'%s'", text_copy);
             free(opt->eo_value);
             opt->eo_value = text_copy;
-            return;
+            text_copy = NULL;
+            goto ret;
         }
 
         if (strcmp(inner_element, NOTE_HTML_ELEMENT) == 0)
@@ -289,16 +291,17 @@ static void text(GMarkupParseContext *context,
                     VERB2 log("html note:'%s'", text_copy);
                     free(opt->eo_note_html);
                     opt->eo_note_html = text_copy;
+                    text_copy = NULL;
                 }
             }
-            return;
+            goto ret;
         }
 
         if (strcmp(inner_element, ALLOW_EMPTY_ELEMENT) == 0)
         {
             VERB2 log("allow-empty:'%s'", text_copy);
             opt->eo_allow_empty = string_to_bool(text_copy);
-            return;
+            goto ret;
         }
         /*
         if (strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)
@@ -306,7 +309,8 @@ static void text(GMarkupParseContext *context,
             VERB2 log("tooltip:'%s'", text_copy);
             free(opt->eo_description);
             opt->eo_description = text_copy;
-            return;
+            text_copy = NULL;
+            goto ret;
         }
         */
     }
@@ -319,7 +323,8 @@ static void text(GMarkupParseContext *context,
             VERB2 log("action description:'%s'", text_copy);
             free(ui->action);
             ui->action = text_copy;
-            return;
+            text_copy = NULL;
+            goto ret;
         }
         */
         if (strcmp(inner_element, CREATES_ELEMENT) == 0)
@@ -327,7 +332,8 @@ static void text(GMarkupParseContext *context,
             VERB2 log("ec_creates_items:'%s'", text_copy);
             free(ui->ec_creates_items);
             ui->ec_creates_items = text_copy;
-            return;
+            text_copy = NULL;
+            goto ret;
         }
         if (strcmp(inner_element, NAME_ELEMENT) == 0)
         {
@@ -342,9 +348,10 @@ static void text(GMarkupParseContext *context,
                     VERB2 log("event name:'%s'", text_copy);
                     free(ui->screen_name);
                     ui->screen_name = text_copy;
+                    text_copy = NULL;
                 }
             }
-            return;
+            goto ret;
         }
         if (strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)
         {
@@ -360,9 +367,10 @@ static void text(GMarkupParseContext *context,
                 ) {
                     free(ui->description);
                     ui->description = text_copy;
+                    text_copy = NULL;
                 }
             }
-            return;
+            goto ret;
         }
         if (strcmp(inner_element, LONG_DESCR_ELEMENT) == 0)
         {
@@ -378,39 +386,43 @@ static void text(GMarkupParseContext *context,
                 ) {
                     free(ui->long_descr);
                     ui->long_descr = text_copy;
+                    text_copy = NULL;
                 }
             }
-            return;
+            goto ret;
         }
         if (strcmp(inner_element, REQUIRES_ELEMENT) == 0)
         {
             free(ui->ec_requires_items);
             ui->ec_requires_items = text_copy;
-            return;
+            text_copy = NULL;
+            goto ret;
         }
         if (strcmp(inner_element, EXCL_BY_DEFAULT_ELEMENT) == 0)
         {
             free(ui->ec_exclude_items_by_default);
             ui->ec_exclude_items_by_default = text_copy;
-            return;
+            text_copy = NULL;
+            goto ret;
         }
         if (strcmp(inner_element, INCL_BY_DEFAULT_ELEMENT) == 0)
         {
             free(ui->ec_include_items_by_default);
             ui->ec_include_items_by_default = text_copy;
-            return;
+            text_copy = NULL;
+            goto ret;
         }
         if (strcmp(inner_element, EXCL_ALWAYS_ELEMENT) == 0)
         {
             free(ui->ec_exclude_items_always);
             ui->ec_exclude_items_always = text_copy;
-            return;
+            text_copy = NULL;
+            goto ret;
         }
         if (strcmp(inner_element, EXCL_BINARY_ELEMENT) == 0)
         {
             ui->ec_exclude_binary_items = string_to_bool(text_copy);
-            free(text_copy);
-            return;
+            goto ret;
         }
         if (strcmp(inner_element, MINIMAL_RATING_ELEMENT) == 0)
         {
@@ -422,9 +434,11 @@ static void text(GMarkupParseContext *context,
                 log("invalid minimal-rating number '%s', set to default 4", text_copy);
                 ui->ec_minimal_rating = 4;
             }
-            return;
+            goto ret;
         }
     }
+
+ ret:
     free(text_copy);
 }
 
