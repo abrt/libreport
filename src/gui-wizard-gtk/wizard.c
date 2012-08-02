@@ -194,6 +194,9 @@ static void clear_warnings(void);
 static void show_warnings(void);
 static void add_warning(const char *warning);
 static bool check_minimal_bt_rating(const char *event_name);
+static const char *get_next_processed_event(GList **events_list);
+static const char *setup_next_processed_event(GList **events_list);
+static void setup_and_start_even_run(const char *event_name);
 
 static void wrap_fixer(GtkWidget *widget, gpointer data_unused)
 {
@@ -1411,6 +1414,20 @@ static char *run_event_gtk_ask_password(const char *msg, void *args)
     return ask_helper(msg, args, true);
 }
 
+static bool event_need_review(const char *event_name)
+{
+    event_config_t *event_cfg = get_event_config(event_name);
+    return !event_cfg || !event_cfg->ec_skip_review;
+}
+
+static void start_event_run(const char *event_name,
+                            GtkWidget *page,
+                            GtkTextView *tv_log,
+                            GtkLabel *status_label,
+                            const char *start_msg,
+                            const char *error_msg,
+                            const char *success_msg);
+
 static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, gpointer data)
 {
     struct analyze_event_data *evd = data;
@@ -1473,15 +1490,6 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         VERB1 log("done running event on '%s': %d", g_dump_dir_name, retval);
         append_to_textview(evd->tv_log, "\n");
 
-        if (retval)
-        {
-            gtk_label_set_text(evd->status_label, evd->error_msg);
-            /* If we were running -e EV1 -e EV2, stop if EV1 failed: */
-            terminate_event_chain();
-        }
-        else
-            gtk_label_set_text(evd->status_label, evd->success_msg);
-
         /* Free child output buffer */
         strbuf_free(cmd_output);
         cmd_output = NULL;
@@ -1493,17 +1501,60 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         gtk_widget_set_sensitive(g_btn_close, true);
         gtk_widget_set_sensitive(g_btn_next, true);
 
-        /*g_source_remove(evd->event_source_id);*/
-        close(evd->fd);
-        free_run_event_state(evd->run_state);
-        strbuf_free(evd->event_log);
-        free(evd);
-
         problem_data_reload_from_dump_dir();
         update_gui_state_from_problem_data();
 
-        /* Inform abrt-gui that it is a good idea to rescan the directory */
-        kill(getppid(), SIGCHLD);
+        if (retval)
+        {
+            gtk_label_set_text(evd->status_label, evd->error_msg);
+            /* If we were running -e EV1 -e EV2, stop if EV1 failed: */
+            terminate_event_chain();
+        }
+        else
+        {
+            gtk_label_set_text(evd->status_label, evd->success_msg);
+
+            if (!g_expert_mode)
+            {
+                const char *event = setup_next_processed_event(&g_auto_event_list);
+                if (event)
+                {
+                    if (event_need_review(event))
+                    {
+                        if (g_verbose)
+                            /* do not forward user directly to review page */
+                            /* because we want to show to user the results of */
+                            /* finished events and we don't have Back button */
+                            /* push back event to the beginning of the chain */
+                            /* and let the event selector page start event */
+                            /* processing */
+                            g_auto_event_list = g_list_prepend(g_auto_event_list,
+                                                               (gpointer)event);
+                        else
+                            /* everything was ok, there is no serious reason */
+                            /* to bother user with the logs */
+                            /* move gui directly to the review page */
+                            gtk_notebook_set_current_page(g_assistant,
+                                                          pages[PAGENO_EDIT_COMMENT].page_no);
+                    }
+                    else
+                    {
+                        free(g_event_selected);
+                        g_event_selected = xstrdup(event);
+                        setup_and_start_even_run(g_event_selected);
+                    }
+                }
+            }
+
+            /*g_source_remove(evd->event_source_id);*/
+            close(evd->fd);
+            free_run_event_state(evd->run_state);
+            strbuf_free(evd->event_log);
+            free(evd);
+
+            /* Inform abrt-gui that it is a good idea to rescan the directory */
+            kill(getppid(), SIGCHLD);
+        }
 
         /* this event was the last event from the chain */
         if (is_reporting_finished())
@@ -1860,9 +1911,24 @@ static void highlight_forbidden(void)
 
 static gint select_next_page_no(gint current_page_no, gpointer data);
 
+static void setup_and_start_even_run(const char *event_name)
+{
+    start_event_run(event_name,
+            pages[PAGENO_EVENT_PROGRESS].page_widget,
+            g_tv_event_log,
+            g_lbl_event_log,
+            _("Processing..."),
+            g_expert_mode ? _("Processing failed. You can try another operation if available.")
+                          : _("Processing failed. Nothing more can be done. Thank you!"),
+            /* this event is the last event from the chain */
+            is_reporting_finished() ? _("Reporting finished. Thank you!")
+                                    : _("Processing finished, please proceed to the next step.")
+    );
+}
+
 static const char *get_next_processed_event(GList **events_list)
 {
-    if (!events_list)
+    if (!events_list || !*events_list)
         return NULL;
 
     const char *event_name = (const char *)(*events_list)->data;
@@ -1879,6 +1945,23 @@ static const char *get_next_processed_event(GList **events_list)
 
     *events_list = g_list_next(*events_list);
     return event_name;
+}
+
+static const char *setup_next_processed_event(GList **events_list)
+{
+    const char *event = get_next_processed_event(&g_auto_event_list);
+    if (!event)
+    {
+        free(g_event_selected);
+        g_event_selected = NULL;
+        /* No next event, go to progress page and finish */
+        gtk_label_set_text(g_lbl_event_log, _("Reporting finished. Thank you!"));
+        update_gui_on_finished_reporting();
+        return NULL;
+    }
+
+    VERB1 log("selected -e EVENT:%s", event);
+    return event;
 }
 
 static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer user_data)
@@ -1958,18 +2041,7 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
          && g_event_selected[0]
         ) {
             clear_warnings();
-
-            start_event_run(g_event_selected,
-                    pages[PAGENO_EVENT_PROGRESS].page_widget,
-                    g_tv_event_log,
-                    g_lbl_event_log,
-                    _("Processing..."),
-                    g_expert_mode ? _("Processing failed. You can try another operation if available.")
-                                  : _("Processing failed. Nothing more can be done. Thank you!"),
-                    /* this event is the last event from the chain */
-                    is_reporting_finished() ? _("Reporting finished. Thank you!")
-                                            : _("Processing finished, please proceed to the next step.")
-            );
+            setup_and_start_even_run(g_event_selected);
         }
     }
 }
@@ -1987,25 +2059,15 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
     {
         if (!g_expert_mode)
         {
-            free(g_event_selected);
-
-            const char *event = get_next_processed_event(&g_auto_event_list);
+            const char *event = setup_next_processed_event(&g_auto_event_list);
             if (!event)
             {
-                g_event_selected = NULL;
-                /* No next event, go to progress page and finish */
                 current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
-                gtk_label_set_text(g_lbl_event_log, "Reporting finished. Thank you!");
-                update_gui_on_finished_reporting();
                 goto again;
             }
 
-            VERB1 log("selected -e EVENT:%s on page: %d", event, current_page_no);
-            g_event_selected = xstrdup((char*)event);
-            /*
-             * We don't remove the list element, because GTK calls select_next_page_no()
-             * spuriously (for example, it calls it twice for first page).
-             */
+            free(g_event_selected);
+            g_event_selected = xstrdup(event);
 
             if (check_event_config(g_event_selected) != 0)
             {
@@ -2027,8 +2089,7 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
             goto again;
         }
 
-        event_config_t *cfg = get_event_config(g_event_selected);
-        if (cfg && cfg->ec_skip_review)
+        if (!event_need_review(g_event_selected))
         {
             current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
             goto again;
