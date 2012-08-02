@@ -1570,6 +1570,13 @@ static void start_event_run(const char *event_name,
     if (!dd)
     {
         free_run_event_state(state);
+        if (!g_expert_mode)
+        {
+            char *msg = xasprintf(_("Reporting was interrupted. Can't contiue without writable directory. Thank you!"));
+            gtk_label_set_text(status_label, msg);
+            free(msg);
+            terminate_event_chain();
+        }
         return; /* user refused to steal, or write error, etc... */
     }
 
