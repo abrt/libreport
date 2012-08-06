@@ -53,7 +53,7 @@ static int connect_to_abrtd_and_call_DeleteDebugDump(const char *dump_dir_name)
     }
     else
     {
-        perror_msg("Can't connect to '%s'", SOCKET_FILE);
+        VERB1 perror_msg("Can't connect to '%s'", SOCKET_FILE);
     }
     close(socketfd);
 
@@ -70,7 +70,17 @@ int delete_dump_dir_possibly_using_abrtd(const char *dump_dir_name)
             return dd_delete(dd);
         dd_close(dd);
     }
+    else
+    {
+        if (errno == ENOENT || errno == ENOTDIR)
+            /* No such dir, no point in trying to talk over socket */
+            return 1;
+    }
 
     VERB1 log("Deleting '%s' via abrtd", dump_dir_name);
-    return connect_to_abrtd_and_call_DeleteDebugDump(dump_dir_name);
+    const int res = connect_to_abrtd_and_call_DeleteDebugDump(dump_dir_name);
+    if (res != 0)
+        error_msg(_("Can't delete: '%s'"), dump_dir_name);
+
+    return res;
 }
