@@ -160,26 +160,6 @@ Obsoletes: report-plugin-bugzilla < 0:0.23-1
 Provides: report-config-bugzilla-redhat-com = 0:0.23-1
 Obsoletes: report-config-bugzilla-redhat-com < 0:0.23-1
 
-%package plugin-bodhi
-Summary: %{name}'s bodhi plugin
-BuildRequires: json-c-devel
-Group: System Environment/Libraries
-Requires: %{name} = %{version}-%{release}
-Requires: PackageKit
-BuildRequires: rpm-devel
-
-%description plugin-bodhi
-Search for a new updates in bodhi server
-
-%package plugin-ureport
-Summary: %{name}'s micro report plugin
-BuildRequires: json-c-devel
-Group: System Environment/Libraries
-Requires: %{name} = %{version}-%{release}
-
-%description plugin-ureport
-Uploads micro-report to abrt server
-
 %description plugin-bugzilla
 Plugin to report bugs into the bugzilla.
 
@@ -347,17 +327,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/events.d/mailx_event.conf
 %{_mandir}/man*/reporter-mailx.*
 %{_bindir}/reporter-mailx
-
-%files plugin-bodhi
-%defattr(-,root,root,-)
-%{_bindir}/abrt-bodhi
-%{_mandir}/man1/abrt-bodhi.1.gz
-
-%files plugin-ureport
-%defattr(-,root,root,-)
-%{_bindir}/reporter-ureport
-#%{_mandir}/man1/reporter-ureport.1.gz
-%{_sysconfdir}/libreport/events/report_uReport.xml
 
 %files plugin-bugzilla
 %defattr(-,root,root,-)
