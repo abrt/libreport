@@ -197,6 +197,7 @@ static bool check_minimal_bt_rating(const char *event_name);
 static const char *get_next_processed_event(GList **events_list);
 static const char *setup_next_processed_event(GList **events_list);
 static void setup_and_start_even_run(const char *event_name);
+static void on_next_btn_cb(GtkWidget *btn, gpointer user_data);
 
 static void wrap_fixer(GtkWidget *widget, gpointer data_unused)
 {
@@ -1511,54 +1512,21 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
             terminate_event_chain();
         }
         else
-        {
             gtk_label_set_text(evd->status_label, evd->success_msg);
 
-            if (!g_expert_mode)
-            {
-                const char *event = setup_next_processed_event(&g_auto_event_list);
-                if (event)
-                {
-                    if (event_need_review(event))
-                    {
-                        if (g_verbose)
-                            /* do not forward user directly to review page */
-                            /* because we want to show to user the results of */
-                            /* finished events and we don't have Back button */
-                            /* push back event to the beginning of the chain */
-                            /* and let the event selector page start event */
-                            /* processing */
-                            g_auto_event_list = g_list_prepend(g_auto_event_list,
-                                                               (gpointer)event);
-                        else
-                            /* everything was ok, there is no serious reason */
-                            /* to bother user with the logs */
-                            /* move gui directly to the review page */
-                            gtk_notebook_set_current_page(g_assistant,
-                                                          pages[PAGENO_EDIT_COMMENT].page_no);
-                    }
-                    else
-                    {
-                        free(g_event_selected);
-                        g_event_selected = xstrdup(event);
-                        setup_and_start_even_run(g_event_selected);
-                    }
-                }
-            }
+        /*g_source_remove(evd->event_source_id);*/
+        close(evd->fd);
+        free_run_event_state(evd->run_state);
+        strbuf_free(evd->event_log);
+        free(evd);
 
-            /*g_source_remove(evd->event_source_id);*/
-            close(evd->fd);
-            free_run_event_state(evd->run_state);
-            strbuf_free(evd->event_log);
-            free(evd);
+        /* Inform abrt-gui that it is a good idea to rescan the directory */
+        kill(getppid(), SIGCHLD);
 
-            /* Inform abrt-gui that it is a good idea to rescan the directory */
-            kill(getppid(), SIGCHLD);
-        }
-
-        /* this event was the last event from the chain */
         if (is_reporting_finished())
             update_gui_on_finished_reporting();
+        else if (retval == 0 && !g_verbose && !g_expert_mode)
+            on_next_btn_cb(GTK_WIDGET(g_btn_next), NULL);
 
         return FALSE; /* "please remove this event" */
     }
