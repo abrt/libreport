@@ -74,8 +74,6 @@ PKG_CHECK_MODULES([XMLRPC], [xmlrpc])
 PKG_CHECK_MODULES([XMLRPC_CLIENT], [xmlrpc_client])
 PKG_CHECK_MODULES([CURL], [libcurl])
 PKG_CHECK_MODULES([GNOME_KEYRING], [gnome-keyring-1])
-PKG_CHECK_MODULES([JSON_C], [json])
-PKG_CHECK_MODULES([RPM], [rpm])
 PKG_CHECK_MODULES([BTPARSER], [btparser])
 
 # Just PKG_CHECK_MODULES([PYTHON], [python]) works only with python2.7+

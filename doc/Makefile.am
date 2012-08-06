@@ -16,7 +16,6 @@ MAN1_TXT += reporter-print.txt
 MAN1_TXT += reporter-rhtsupport.txt
 MAN1_TXT += reporter-upload.txt
 MAN1_TXT += report.txt
-MAN1_TXT += abrt-bodhi.txt
 
 MAN5_TXT =
 MAN5_TXT += report_event.conf.txt

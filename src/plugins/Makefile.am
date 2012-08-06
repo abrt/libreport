@@ -7,9 +7,7 @@ bin_PROGRAMS = \
     reporter-upload \
     reporter-mailx \
     reporter-print \
-    report \
-    abrt-bodhi \
-    reporter-ureport
+    report
 
 pluginsconfdir = $(PLUGINS_CONF_DIR)
 
@@ -30,8 +28,7 @@ dist_events_DATA = \
     report_Mailx.xml \
     report_RHTSupport.xml \
     report_Kerneloops.xml \
-    report_Uploader.xml \
-    report_uReport.xml
+    report_Uploader.xml
 
 @INTLTOOL_XML_RULE@
 
@@ -52,8 +49,7 @@ EXTRA_DIST = \
     report_Mailx.xml.in \
     report_RHTSupport.xml.in \
     report_Kerneloops.xml.in \
-    report_Uploader.xml.in \
-    report_uReport.xml.in
+    report_Uploader.xml.in
 
 $(DESTDIR)/$(DEBUG_INFO_DIR):
 	$(mkdir_p) '$@'
@@ -203,35 +199,5 @@ report_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror
 report_LDADD = \
     ../lib/libreport.la
-
-abrt_bodhi_SOURCES = \
-    abrt-bodhi.c
-abrt_bodhi_CPPFLAGS = \
-    -I$(srcdir)/../include \
-    -I$(srcdir)/../lib \
-    $(GLIB_CFLAGS) \
-    $(LIBREPORT_CFLAGS) \
-    $(JSON_C_CFLAGS) \
-    $(RPM_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
-abrt_bodhi_LDADD = \
-    $(JSON_C_LIBS) \
-    $(RPM_LIBS) \
-    ../lib/libreport.la \
-    ../lib/libabrt_web.la
-
-reporter_ureport_SOURCES = \
-    ureport.c
-reporter_ureport_CPPFLAGS = \
-    -I$(srcdir)/../include \
-    -I$(srcdir)/../lib \
-    $(GLIB_CFLAGS) \
-    $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
-reporter_ureport_LDADD = \
-    ../lib/libreport.la \
-    ../lib/libabrt_web.la
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
