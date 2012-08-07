@@ -603,7 +603,11 @@ char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const
                 pfx, pfx_len       /* for events with this prefix */
         );
         if (!cmd)
+        {
+            free_rule_list(rule_list);
+            free(event_name);
             break;
+        }
         free(cmd);
 
         if (event_name)
