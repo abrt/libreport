@@ -1003,6 +1003,17 @@ int run_events_chain(const char *dump_dir_name, GList *chain)
 
         if (config)
         {
+            if (config->ec_sending_sensitive_data)
+            {
+                char *msg = xasprintf(_("Event '%s' requires permision to send possibly sensitive data."
+                                        " Do you want to continue?"),
+                            config->screen_name ? config->screen_name : event);
+                const bool response = ask_yesno(msg);
+                free(msg);
+                if (!response)
+                    break;
+            }
+
             /* can't fail */
             ask_for_missing_settings(event);
 
