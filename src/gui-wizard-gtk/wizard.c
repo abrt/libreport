@@ -2028,6 +2028,22 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
     }
 }
 
+static bool get_sensitive_data_permission(const char *event_name)
+{
+    event_config_t *event_cfg = get_event_config(event_name);
+
+    if (!event_cfg || !event_cfg->ec_sending_sensitive_data)
+        return true;
+
+    char *msg = xasprintf(_("Event '%s' requires permission to send possibly sensitive data."
+                            "\nDo you want to continue?"),
+                            event_cfg->screen_name ? event_cfg->screen_name : event_name);
+    const bool response = ask_yes_no_save_result(msg, "ask_send_sensitive_data");
+    free(msg);
+
+    return response;
+}
+
 static gint select_next_page_no(gint current_page_no, gpointer data)
 {
     GtkWidget *page;
@@ -2049,6 +2065,16 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
             }
 
             free(g_event_selected);
+
+            if (!get_sensitive_data_permission(event))
+            {
+                g_event_selected = NULL;
+                gtk_label_set_text(g_lbl_event_log, _("Processing was cancelled"));
+                terminate_event_chain();
+                current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
+                goto again;
+            }
+
             g_event_selected = xstrdup(event);
 
             if (check_event_config(g_event_selected) != 0)
