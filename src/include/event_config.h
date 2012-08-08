@@ -80,6 +80,7 @@ typedef struct
     bool  ec_exclude_binary_items;
     long  ec_minimal_rating;
     bool  ec_skip_review;
+    bool  ec_sending_sensitive_data;
 
     GList *options;
 } event_config_t;

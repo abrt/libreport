@@ -32,6 +32,7 @@
 #define DEFAULT_VALUE_ELEMENT   "default-value"
 #define MINIMAL_RATING_ELEMENT  "minimal-rating"
 #define GUI_REVIEW_ELEMENTS     "gui-review-elements"
+#define SENDING_SENSITIVE_DATA_ELEMENT  "sending-sensitive-data"
 
 #define REQUIRES_ELEMENT        "requires-items"
 #define EXCL_BY_DEFAULT_ELEMENT "exclude-items-by-default"
@@ -422,6 +423,10 @@ static void text(GMarkupParseContext *context,
         else if (strcmp(inner_element, GUI_REVIEW_ELEMENTS) == 0)
         {
             ui->ec_skip_review = !string_to_bool(text_copy);
+        }
+        else if (strcmp(inner_element, SENDING_SENSITIVE_DATA_ELEMENT) == 0)
+        {
+            ui->ec_sending_sensitive_data = string_to_bool(text_copy);
         }
     }
     free(text_copy);
