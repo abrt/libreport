@@ -310,44 +310,58 @@ static void update_window_title(void)
     free(title);
 }
 
-static void on_toggle_ask_steal_cb(GtkToggleButton *tb, gpointer user_data)
+static void on_toggle_ask_yes_no_save_result_cb(GtkToggleButton *tb, gpointer user_data)
 {
-    set_user_setting("ask_steal_dir", gtk_toggle_button_get_active(tb) ? "no" : "yes");
+    set_user_setting(user_data, gtk_toggle_button_get_active(tb) ? "no" : "yes");
 }
 
-static bool ask_continue_before_steal(const char *base_dir, const char *dump_dir)
+/*
+ * Function shows a dialog with 'Yes/No' buttons and a check box allowing to
+ * remeber the answer. The answer is stored in configuration file under
+ * 'option_name' key.
+ */
+static bool ask_yes_no_save_result(const char *message, const char *option_name)
 {
-    const char *ask_steal_dir = get_user_setting("ask_steal_dir");
+    const char *ask_result = get_user_setting(option_name);
 
-    if (ask_steal_dir && string_to_bool(ask_steal_dir) == false)
+    if (ask_result && string_to_bool(ask_result) == false)
         return true;
 
     GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
-            GTK_DIALOG_DESTROY_WITH_PARENT,
-            GTK_MESSAGE_QUESTION,
-            GTK_BUTTONS_OK_CANCEL,
-            _("Need writable directory, but '%s' is not writable."
-            " Move it to '%s' and operate on the moved data?"),
-            dump_dir, base_dir
-            );
+                                               GTK_DIALOG_DESTROY_WITH_PARENT,
+                                               GTK_MESSAGE_QUESTION,
+                                               GTK_BUTTONS_YES_NO,
+                                               "%s", message);
 
     gint response = GTK_RESPONSE_CANCEL;
-    g_signal_connect(G_OBJECT(dialog), "response", G_CALLBACK(save_dialog_response), &response);
+    g_signal_connect(G_OBJECT(dialog), "response",
+                     G_CALLBACK(save_dialog_response), &response);
 
-    GtkWidget *ask_steal_cb = gtk_check_button_new_with_label(_("Don't ask me again"));
+    GtkWidget *ask_yes_no_cb = gtk_check_button_new_with_label(_("Don't ask me again"));
     gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))),
-            ask_steal_cb, TRUE, TRUE, 0);
-    g_signal_connect(ask_steal_cb, "toggled", G_CALLBACK(on_toggle_ask_steal_cb), NULL);
+                       ask_yes_no_cb, TRUE, TRUE, 0);
+    g_signal_connect(ask_yes_no_cb, "toggled",
+                     G_CALLBACK(on_toggle_ask_yes_no_save_result_cb), (gpointer)option_name);
 
     /* check it by default if it's shown for the first time */
-    if (!ask_steal_dir)
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ask_steal_cb), TRUE);
+    if (!ask_result)
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ask_yes_no_cb), TRUE);
 
-    gtk_widget_show(ask_steal_cb);
+    gtk_widget_show(ask_yes_no_cb);
     gtk_dialog_run(GTK_DIALOG(dialog));
     gtk_widget_destroy(dialog);
 
     return response == GTK_RESPONSE_OK;
+}
+
+static bool ask_continue_before_steal(const char *base_dir, const char *dump_dir)
+{
+    char *msg = xasprintf(_("Need writable directory, but '%s' is not writable."
+                            " Move it to '%s' and operate on the moved data?"),
+                            dump_dir, base_dir);
+    const bool response = ask_yes_no_save_result(msg, "ask_steal_dir");
+    free(msg);
+    return response;
 }
 
 struct dump_dir *wizard_open_directory_for_writing(const char *dump_dir_name)
