@@ -632,7 +632,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
     }
     else
     {
-        if (analyzer && !strcmp(analyzer, "Kerneloops"))
+        if (analyzer && strcmp(analyzer, "Kerneloops") == 0)
             strbuf_append_str(buf_summary, "[abrt]");
         else
             strbuf_append_strf(buf_summary, "[abrt] %s", package);
@@ -643,8 +643,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
         if (reason)
             strbuf_append_strf(buf_summary, ": %s", reason);
 
-        if (tainted_short && analyzer
-            && (strcmp(analyzer, "Kerneloops") == 0))
+        if (tainted_short)
         {
             strbuf_append_strf(buf_summary, ": TAINTED %s", tainted_short);
         }
@@ -652,7 +651,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
     char *status_whiteboard = xasprintf("abrt_hash:%s", duphash);
 
     char *full_dsc = NULL;
-    if (analyzer && !strcmp(analyzer, "Kerneloops"))
+    if (analyzer && strcmp(analyzer, "Kerneloops") == 0)
     {
         char *bz_dsc = make_description_koops(problem_data, CD_TEXT_ATT_SIZE_BZ);
         full_dsc = xasprintf("libreport version: "VERSION"\n%s", bz_dsc);
@@ -831,7 +830,7 @@ int rhbz_attach_files(struct abrt_xmlrpc *ax, const char *bug_id,
     const char *analyzer = problem_data_get_content_or_NULL(problem_data,
                                                             FILENAME_ANALYZER);
     /* Do not attach anything if analyzer is Kerneloops */
-    if (!strcmp(analyzer, "Kerneloops"))
+    if (strcmp(analyzer, "Kerneloops") == 0)
         return 0;
 
     GHashTableIter iter;
@@ -853,7 +852,7 @@ int rhbz_attach_files(struct abrt_xmlrpc *ax, const char *bug_id,
             const unsigned len = strlen(content);
 
             /* For standard bugs, do not attach backtrace shorter than CD_TEXT_ATT_SIZE_BZ */
-            if (!strcmp(name, FILENAME_BACKTRACE) && len < CD_TEXT_ATT_SIZE_BZ)
+            if (len < CD_TEXT_ATT_SIZE_BZ && strcmp(name, FILENAME_BACKTRACE) == 0)
                 continue;
 
             rhbz_attach_blob(ax, name, bug_id, content, len, flags);
