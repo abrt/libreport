@@ -1279,7 +1279,7 @@ static void on_btn_cancel_event(GtkButton *button)
         kill(- g_event_child_pid, SIGTERM);
 }
 
-static bool is_reporting_finished()
+static bool is_processing_finished()
 {
     return !g_expert_mode && !g_auto_event_list;
 }
@@ -1327,7 +1327,7 @@ static char *run_event_gtk_logging(char *log_line, void *param)
         VERB1 log("Received a request for termination of processing of event chain. (Request: '%s')", log_line);
         terminate_event_chain();
         if (!g_expert_mode)
-            evd->success_msg = _("Reporting finished. Thank you!");
+            evd->success_msg = _("Processing finished.");
     }
 
     return log_line;
@@ -1537,7 +1537,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         /* Inform abrt-gui that it is a good idea to rescan the directory */
         kill(getppid(), SIGCHLD);
 
-        if (is_reporting_finished())
+        if (is_processing_finished())
             update_gui_on_finished_reporting();
         else if (retval == 0 && !g_verbose && !g_expert_mode)
             on_next_btn_cb(GTK_WIDGET(g_btn_next), NULL);
@@ -1605,7 +1605,7 @@ static void start_event_run(const char *event_name,
         free_run_event_state(state);
         if (!g_expert_mode)
         {
-            char *msg = xasprintf(_("Reporting was interrupted. Can't contiue without writable directory. Thank you!"));
+            char *msg = xasprintf(_("Processing interrupted: can't continue without writable directory."));
             gtk_label_set_text(status_label, msg);
             free(msg);
             terminate_event_chain();
@@ -1901,10 +1901,10 @@ static void setup_and_start_even_run(const char *event_name)
             g_lbl_event_log,
             _("Processing..."),
             g_expert_mode ? _("Processing failed. You can try another operation if available.")
-                          : _("Processing failed. Nothing more can be done. Thank you!"),
+                          : _("Processing failed."),
             /* this event is the last event from the chain */
-            is_reporting_finished() ? _("Reporting finished. Thank you!")
-                                    : _("Processing finished, please proceed to the next step.")
+            is_processing_finished() ? _("Processing finished.")
+                                     : _("Processing finished, please proceed to the next step.")
     );
 }
 
@@ -1937,7 +1937,7 @@ static const char *setup_next_processed_event(GList **events_list)
         free(g_event_selected);
         g_event_selected = NULL;
         /* No next event, go to progress page and finish */
-        gtk_label_set_text(g_lbl_event_log, _("Reporting finished. Thank you!"));
+        gtk_label_set_text(g_lbl_event_log, _("Processing finished."));
         update_gui_on_finished_reporting();
         return NULL;
     }
