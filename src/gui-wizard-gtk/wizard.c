@@ -1320,7 +1320,6 @@ static void run_event_gtk_error(const char *error_line, void *param)
 static char *run_event_gtk_logging(char *log_line, void *param)
 {
     struct analyze_event_data *evd = (struct analyze_event_data *)param;
-    update_command_run_log(log_line, evd);
 
     if (strcmp(log_line, "THANKYOU") == 0)
     {
@@ -1329,6 +1328,8 @@ static char *run_event_gtk_logging(char *log_line, void *param)
         if (!g_expert_mode)
             evd->success_msg = _("Processing finished.");
     }
+    else
+        update_command_run_log(log_line, evd);
 
     return log_line;
 }
