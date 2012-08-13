@@ -107,7 +107,10 @@ void problem_data_add_basics(problem_data_t *pd)
 
         problem_data_add_text_noteditable(pd, FILENAME_DUPHASH, hash_str);
     }
+}
 
+void problem_data_add_current_process_data(problem_data_t *pd)
+{
     const char *executable = problem_data_get_content_or_NULL(pd, FILENAME_EXECUTABLE);
     if (executable == NULL)
     {
