@@ -34,8 +34,7 @@ double get_dirsize(const char *pPath)
         char *dname = concat_path_file(pPath, ep->d_name);
         if (lstat(dname, &statbuf) != 0)
         {
-            free(dname);
-            continue;
+            goto next;
         }
         if (S_ISDIR(statbuf.st_mode))
         {
@@ -45,10 +44,20 @@ double get_dirsize(const char *pPath)
         {
             size += statbuf.st_size;
         }
+ next:
         free(dname);
     }
     closedir(dp);
     return size;
+}
+
+static bool this_is_a_dd(const char *dirname)
+{
+    struct dump_dir *dd = dd_opendir(dirname,
+                /*flags:*/ DD_OPEN_READONLY | DD_FAIL_QUIETLY_ENOENT | DD_FAIL_QUIETLY_EACCES
+    );
+    dd_close(dd);
+    return dd != NULL;
 }
 
 double get_dirsize_find_largest_dir(
@@ -63,6 +72,7 @@ double get_dirsize_find_largest_dir(
     if (dp == NULL)
         return 0;
 
+    time_t cur_time = time(NULL);
     struct dirent *ep;
     struct stat statbuf;
     double size = 0;
@@ -74,8 +84,7 @@ double get_dirsize_find_largest_dir(
         char *dname = concat_path_file(pPath, ep->d_name);
         if (lstat(dname, &statbuf) != 0)
         {
-            free(dname);
-            continue;
+            goto next;
         }
         if (S_ISDIR(statbuf.st_mode))
         {
@@ -85,17 +94,25 @@ double get_dirsize_find_largest_dir(
             if (worst_dir && (!excluded || strcmp(excluded, ep->d_name) != 0))
             {
                 /* Calculate "weighted" size and age
-                 * w = sz_kbytes * age_mins */
+                 * w = sz_kbytes * age_mins
+                 */
                 sz /= 1024;
-                long age = (time(NULL) - statbuf.st_mtime) / 60;
+                long age = (cur_time - statbuf.st_mtime) / 60;
                 if (age > 0)
                     sz *= age;
 
                 if (sz > maxsz)
                 {
-                    maxsz = sz;
-                    free(*worst_dir);
-                    *worst_dir = xstrdup(ep->d_name);
+                    if (!this_is_a_dd(dname))
+                    {
+                        VERB1 log("'%s' isn't a problem directory, probably a stray directory?", dname);
+                    }
+                    else
+                    {
+                        maxsz = sz;
+                        free(*worst_dir);
+                        *worst_dir = xstrdup(ep->d_name);
+                    }
                 }
             }
         }
@@ -103,6 +120,7 @@ double get_dirsize_find_largest_dir(
         {
             size += statbuf.st_size;
         }
+ next:
         free(dname);
     }
     closedir(dp);
