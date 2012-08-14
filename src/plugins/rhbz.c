@@ -841,6 +841,13 @@ int rhbz_attach_files(struct abrt_xmlrpc *ax, const char *bug_id,
         if (is_in_string_list(name, (char**)g_not_attached_files))
             continue;
 
+        /* Skip empty files */
+        if (strlen(value->content) == 0)
+        {
+            log(_("Not attaching empty file '%s'"), name);
+            continue;
+        }
+
         if (value->flags & CD_FLAG_TXT)
         {
             const char *content = value->content;
