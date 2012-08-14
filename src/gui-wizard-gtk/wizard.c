@@ -351,7 +351,7 @@ static bool ask_yes_no_save_result(const char *message, const char *option_name)
     gtk_dialog_run(GTK_DIALOG(dialog));
     gtk_widget_destroy(dialog);
 
-    return response == GTK_RESPONSE_OK;
+    return response == GTK_RESPONSE_YES;
 }
 
 static bool ask_continue_before_steal(const char *base_dir, const char *dump_dir)
