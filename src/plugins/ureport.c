@@ -52,6 +52,7 @@ enum response_type
 struct ureport_server_response {
     enum response_type type;
     const char *value;
+    const char *message;
 };
 
 /*
@@ -76,7 +77,12 @@ static bool ureport_server_parse_json(json_object *json, struct ureport_server_r
     if (obj)
     {
         out_response->type = UREPORT_SERVER_RESP_KNOWN;
-        out_response->value = json_object_to_json_string(obj);
+        out_response->value = json_object_get_string(obj);
+
+        json_object *message = json_object_object_get(json, "message");
+        if (message)
+            out_response->message = json_object_get_string(message);
+
         return true;
     }
 
@@ -150,6 +156,7 @@ int main(int argc, char **argv)
     struct ureport_server_response response = {
         .type=UREPORT_SERVER_RESP_UNKNOWN_TYPE,
         .value=NULL,
+        .message=NULL,
     };
 
     const bool is_valid_response = ureport_server_parse_json(json, &response);
@@ -167,7 +174,12 @@ int main(int argc, char **argv)
             ret = 0;
             /* If a reported problem is not known then emit NEEDMORE */
             if (strcmp("true", response.value) == 0)
+            {
+                log("This problem has already been reported.");
+                if (response.message)
+                    log(response.message);
                 log("THANKYOU");
+            }
             break;
         case UREPORT_SERVER_RESP_ERROR:
             VERB1 log("server side error: %s", response.value);
