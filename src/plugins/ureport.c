@@ -53,6 +53,7 @@ struct ureport_server_response {
     enum response_type type;
     const char *value;
     const char *message;
+    const char *bthash;
 };
 
 /*
@@ -82,6 +83,10 @@ static bool ureport_server_parse_json(json_object *json, struct ureport_server_r
         json_object *message = json_object_object_get(json, "message");
         if (message)
             out_response->message = json_object_get_string(message);
+
+        json_object *bthash = json_object_object_get(json, "bthash");
+        if (bthash)
+            out_response->bthash = json_object_get_string(bthash);
 
         return true;
     }
@@ -157,6 +162,7 @@ int main(int argc, char **argv)
         .type=UREPORT_SERVER_RESP_UNKNOWN_TYPE,
         .value=NULL,
         .message=NULL,
+        .bthash=NULL,
     };
 
     const bool is_valid_response = ureport_server_parse_json(json, &response);
@@ -172,6 +178,19 @@ int main(int argc, char **argv)
         case UREPORT_SERVER_RESP_KNOWN:
             VERB1 log("is known: %s", response.value);
             ret = 0;
+
+            if (response.bthash)
+            {
+                dd = dd_opendir(dump_dir_path, /* flags */ 0);
+                if (!dd)
+                    xfunc_die();
+
+                char *msg = xasprintf("uReport: BTHASH=%s", response.bthash);
+                add_reported_to(dd, msg);
+                free(msg);
+                dd_close(dd);
+            }
+
             /* If a reported problem is not known then emit NEEDMORE */
             if (strcmp("true", response.value) == 0)
             {
