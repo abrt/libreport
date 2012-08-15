@@ -624,15 +624,20 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
                                                                 FILENAME_ANALYZER);
     const char *tainted_short = problem_data_get_content_or_NULL(problem_data,
                                                                 FILENAME_TAINTED_SHORT);
+    const char *comment      = problem_data_get_content_or_NULL(problem_data,
+                                                            FILENAME_COMMENT);
 
     struct strbuf *buf_summary = strbuf_new();
+
+    const bool kerneloops = analyzer && strcmp(analyzer, "Kerneloops") == 0;
+
     if (analyzer && strcmp(analyzer, "libreport") == 0)
     {
         strbuf_append_str(buf_summary, reason);
     }
     else
     {
-        if (analyzer && strcmp(analyzer, "Kerneloops") == 0)
+        if (kerneloops)
             strbuf_append_str(buf_summary, "[abrt]");
         else
             strbuf_append_strf(buf_summary, "[abrt] %s", package);
@@ -644,45 +649,34 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
             strbuf_append_strf(buf_summary, ": %s", reason);
 
         if (tainted_short)
-        {
             strbuf_append_strf(buf_summary, ": TAINTED %s", tainted_short);
-        }
     }
-    char *status_whiteboard = xasprintf("abrt_hash:%s", duphash);
 
-    char *full_dsc = NULL;
-    if (analyzer && strcmp(analyzer, "Kerneloops") == 0)
+    /* Generating of a description according to the RH bugzilla default format:
+     * https://bugzilla.redhat.com/enter_bug.cgi?product=Fedora
+     */
+    struct strbuf *tmp_full_dsc = strbuf_new();
+    if (comment)
+        strbuf_append_strf(tmp_full_dsc, "Description of problem:\n%s\n\n", comment);
+
+    /* the package file always contains 'kernel' string in case of kerneloops */
+    /* it doesn't make sense to mess up a description with this useless information */
+    if (package && !kerneloops)
+        strbuf_append_strf(tmp_full_dsc, "Version-Release number of selected component:\n%s\n\n", package);
+
+    char *bz_dsc = make_description(problem_data, (char**)g_additional_info_files,
+                                    CD_TEXT_ATT_SIZE_BZ, MAKEDESC_SHOW_MULTILINE | MAKEDESC_WHITELIST);
+    strbuf_append_strf(tmp_full_dsc, "Additional info:\nlibreport version: "VERSION"\n%s\n", bz_dsc);
+    free(bz_dsc);
+
+    char *backtrace = rhbz_get_backtrace_info(problem_data, CD_TEXT_ATT_SIZE_BZ);
+    if (backtrace)
     {
-        char *bz_dsc = make_description_koops(problem_data, CD_TEXT_ATT_SIZE_BZ);
-        full_dsc = xasprintf("libreport version: "VERSION"\n%s", bz_dsc);
-        free(bz_dsc);
-    }
-    else
-    {
-        const char *comment      = problem_data_get_content_or_NULL(problem_data,
-                                                                FILENAME_COMMENT);
-
-        char *bz_dsc = make_description(problem_data, (char**)g_additional_info_files,
-                                        CD_TEXT_ATT_SIZE_BZ, MAKEDESC_SHOW_MULTILINE | MAKEDESC_WHITELIST);
-
-        char *backtrace = rhbz_get_backtrace_info(problem_data, CD_TEXT_ATT_SIZE_BZ);
-
-        /* Generating of a description according to the RH bugzilla default format:
-         * https://bugzilla.redhat.com/enter_bug.cgi?product=Fedora
-         */
-        full_dsc = xasprintf("Description of problem:\n%s\n\n"
-                             "Version-Release number of selected component:\n%s\n\n"
-                             "Additional info:\n"
-                             "libreport version: "VERSION"\n%s\n"
-                             "%s",
-                             comment ? comment : "",
-                             package,
-                             bz_dsc,
-                             backtrace ? backtrace : "");
-
+        strbuf_append_str(tmp_full_dsc, backtrace);
         free(backtrace);
-        free(bz_dsc);
     }
+
+    char *full_dsc = strbuf_free_nobuf(tmp_full_dsc);
 
     char *product = NULL;
     char *version = NULL;
@@ -690,6 +684,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
 
     xmlrpc_value* result = NULL;
     char *summary = strbuf_free_nobuf(buf_summary);
+    char *status_whiteboard = xasprintf("abrt_hash:%s", duphash);
 
     if (!group)
     {
@@ -845,6 +840,13 @@ int rhbz_attach_files(struct abrt_xmlrpc *ax, const char *bug_id,
          */
         if (is_in_string_list(name, (char**)g_not_attached_files))
             continue;
+
+        /* Skip empty files */
+        if (strlen(value->content) == 0)
+        {
+            log(_("Not attaching empty file '%s'"), name);
+            continue;
+        }
 
         if (value->flags & CD_FLAG_TXT)
         {

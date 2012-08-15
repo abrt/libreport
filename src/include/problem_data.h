@@ -66,6 +66,8 @@ static inline void problem_data_free(problem_data_t *problem_data)
 
 void problem_data_add_basics(problem_data_t *pd);
 
+void problem_data_add_current_process_data(problem_data_t *pd);
+
 void problem_data_add(problem_data_t *problem_data,
                 const char *name,
                 const char *content,

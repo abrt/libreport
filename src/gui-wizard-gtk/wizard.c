@@ -351,7 +351,7 @@ static bool ask_yes_no_save_result(const char *message, const char *option_name)
     gtk_dialog_run(GTK_DIALOG(dialog));
     gtk_widget_destroy(dialog);
 
-    return response == GTK_RESPONSE_OK;
+    return response == GTK_RESPONSE_YES;
 }
 
 static bool ask_continue_before_steal(const char *base_dir, const char *dump_dir)
@@ -1320,7 +1320,6 @@ static void run_event_gtk_error(const char *error_line, void *param)
 static char *run_event_gtk_logging(char *log_line, void *param)
 {
     struct analyze_event_data *evd = (struct analyze_event_data *)param;
-    update_command_run_log(log_line, evd);
 
     if (strcmp(log_line, "THANKYOU") == 0)
     {
@@ -1329,6 +1328,8 @@ static char *run_event_gtk_logging(char *log_line, void *param)
         if (!g_expert_mode)
             evd->success_msg = _("Processing finished.");
     }
+    else
+        update_command_run_log(log_line, evd);
 
     return log_line;
 }

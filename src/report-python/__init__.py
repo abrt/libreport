@@ -130,13 +130,15 @@ def getVersion():
 
     return _hardcoded_default_version
 
-def createAlertSignature(component, hashmarkername, hashvalue, summary, alertSignature):
+def createAlertSignature(component, hashmarkername, hashvalue, summary, alertSignature, executable=None):
     pd = problem_data()
     pd.add("component", component)
     pd.add("hashmarkername", hashmarkername)
     pd.add("duphash", hashvalue)
     pd.add("reason", summary)
     pd.add("description", alertSignature)
+    if executable:
+        pd.add("executable", executable)
     pd.add_basics()
 
     return pd
@@ -163,7 +165,8 @@ def createPythonUnhandledExceptionSignature(**kwargs):
     if (version and product):
         # need to add "release", parse_release() expects format "<product> release <version>"
         pd.add("os_release", product +" release "+ version)
-    pd.add_basics() # adds product and version + some other required field
+    pd.add_basics() # adds required items
+    pd.add_current_proccess() # adds executable and component
 
     return pd
 
