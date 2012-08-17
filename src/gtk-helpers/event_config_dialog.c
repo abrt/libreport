@@ -318,10 +318,17 @@ int show_event_config_dialog(const char *event_name, GtkWindow *parent)
                         GTK_STOCK_OK,
                         GTK_RESPONSE_APPLY,
                         NULL);
-    /* if the window is resizable expanders will resize it, but
-     * but won't resize it back when collapsed
+
+    /* Allow resize?
+     * W/o resize, e.g. upload configuration hint looks awfully
+     * line wrapped.
+     * With resize, there are some somewhat not nice effects:
+     * for one, opening an expander will enlarge window,
+     * but won't contract it back when expander is closed.
      */
-    gtk_window_set_resizable(GTK_WINDOW(dialog), false);
+    gtk_window_set_resizable(GTK_WINDOW(dialog), true);
+    gtk_window_set_default_size(GTK_WINDOW(dialog), 450, -1);
+
     if (parent_window != NULL)
     {
         gtk_window_set_icon_name(GTK_WINDOW(dialog),
