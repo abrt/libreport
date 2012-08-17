@@ -89,6 +89,7 @@ char *problem_data_get_content_or_NULL(problem_data_t *problem_data, const char 
 /* Aborts if key is not found: */
 char *problem_data_get_content_or_die(problem_data_t *problem_data, const char *key);
 
+int problem_data_send_to_abrt(problem_data_t* problem_data);
 
 /* Conversions between in-memory and on-disk formats */
 

@@ -906,6 +906,7 @@ void free_report_result(struct report_result *result)
         return;
     free(result->url);
     free(result->msg);
+    free(result->bthash);
     free(result);
 }
 
@@ -920,16 +921,21 @@ static report_result_t *parse_reported_line(const char *line)
         if (!*line)
             break;
         const char *end = skip_non_whitespace(line);
-        if (strncmp(line, "MSG=", 4) == 0)
+        if (prefixcmp(line, "MSG=") == 0)
         {
             result->msg = xstrdup(line + 4);
             /* MSG=... eats entire line: exiting the loop */
             break;
         }
-        if (strncmp(line, "URL=", 4) == 0)
+        if (prefixcmp(line, "URL=") == 0)
         {
             free(result->url);
             result->url = xstrndup(line + 4, end - (line + 4));
+        }
+        if (prefixcmp(line, "BTHASH=") == 0)
+        {
+            free(result->bthash);
+            result->bthash = xstrndup(line + 7, end - (line + 7));
         }
         //else
         //if (strncmp(line, "TIME=", 5) == 0)

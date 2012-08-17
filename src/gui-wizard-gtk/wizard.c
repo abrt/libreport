@@ -38,6 +38,11 @@ typedef struct event_gui_data_t
 } event_gui_data_t;
 
 
+/* Using GHashTable as a set of file names */
+/* Each table key has associated an nonzero integer and it allows us */
+/* to write the following statements:                                */
+/*   if(g_hash_table_lookup(g_loaded_texts, FILENAME_COMMENT)) ...   */
+static GHashTable *g_loaded_texts;
 static char *g_event_selected;
 static unsigned g_black_event_count = 0;
 
@@ -394,6 +399,9 @@ void show_error_as_msgbox(const char *msg)
 
 static void load_text_to_text_view(GtkTextView *tv, const char *name)
 {
+    /* Add to set of loaded files */
+    g_hash_table_insert(g_loaded_texts, (gpointer)name, (gpointer)1);
+
     GtkTextBuffer *tb = gtk_text_view_get_buffer(tv);
 
     const char *str = g_cd ? problem_data_get_content_or_NULL(g_cd, name) : NULL;
@@ -433,6 +441,11 @@ static gchar *get_malloced_string_from_text_view(GtkTextView *tv)
 
 static void save_text_if_changed(const char *name, const char *new_value)
 {
+    /* a text value can't be change if the file is not loaded */
+    /* returns NULL if the name is not found; otherwise nonzero */
+    if (!g_hash_table_lookup(g_loaded_texts, name))
+        return;
+
     const char *old_value = g_cd ? problem_data_get_content_or_NULL(g_cd, name) : "";
     if (!old_value)
         old_value = "";
@@ -2570,8 +2583,16 @@ static void init_pages(void)
     init_page(&pages[7], PAGE_NOT_SHOWN          , ""                         );
 }
 
+static void assistant_quit_cb(void *obj, void *data)
+{
+    g_hash_table_destroy(g_loaded_texts);
+    gtk_main_quit();
+}
+
 void create_assistant(void)
 {
+    g_loaded_texts = g_hash_table_new(g_str_hash, g_str_equal);
+
     g_expert_mode = !g_auto_event_list;
 
     g_monospace_font = pango_font_description_from_string("monospace");
@@ -2645,11 +2666,11 @@ void create_assistant(void)
 
     create_details_treeview();
 
-    g_signal_connect(g_btn_close, "clicked", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(g_btn_close, "clicked", G_CALLBACK(assistant_quit_cb), NULL);
     g_signal_connect(g_btn_stop, "clicked", G_CALLBACK(on_btn_cancel_event), NULL);
     g_signal_connect(g_btn_next, "clicked", G_CALLBACK(on_next_btn_cb), NULL);
 
-    g_signal_connect(g_wnd_assistant, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(g_wnd_assistant, "destroy", G_CALLBACK(assistant_quit_cb), NULL);
     g_signal_connect(g_assistant, "switch-page", G_CALLBACK(on_page_prepare), NULL);
 
     g_signal_connect(g_tb_approve_bt, "toggled", G_CALLBACK(on_bt_approve_toggle), NULL);

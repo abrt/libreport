@@ -79,6 +79,7 @@ void add_reported_to(struct dump_dir *dd, const char *line);
 struct report_result {
     char *url;
     char *msg;
+    char *bthash;
     /* char *whole_line; */
     /* time_t timestamp; */
     /* ^^^ if you add more fields, don't forget to update free_report_result() */
