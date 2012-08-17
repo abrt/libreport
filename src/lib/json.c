@@ -251,6 +251,22 @@ char *new_json_ureport(problem_data_t *pd)
     return j;
 }
 
+char *new_json_attachment(const char *bthash, const char *type, const char *data)
+{
+    struct json_object *attachment = json_object_new_object();
+    if (!attachment)
+        die_out_of_memory();
+
+    ureport_add_str(attachment, "bthash", bthash);
+    ureport_add_str(attachment, "type", type);
+    ureport_add_str(attachment, "data", data);
+
+    char *result = xstrdup(json_object_to_json_string(attachment));
+    json_object_put(attachment);
+
+    return result;
+}
+
 struct post_state *post_ureport(problem_data_t *pd, struct ureport_server_config *config)
 {
     int flags = POST_WANT_BODY | POST_WANT_ERROR_MSG;
@@ -272,6 +288,32 @@ struct post_state *post_ureport(problem_data_t *pd, struct ureport_server_config
                      headers, json_ureport);
 
     free(json_ureport);
+
+    return post_state;
+}
+
+struct post_state *ureport_attach_rhbz(const char *bthash, int rhbz_bug_id,
+                                       struct ureport_server_config *config)
+{
+    int flags = POST_WANT_BODY | POST_WANT_ERROR_MSG;
+
+    if (config->ur_ssl_verify)
+        flags |= POST_WANT_SSL_VERIFY;
+
+    struct post_state *post_state = new_post_state(flags);
+
+    static const char *headers[] = {
+        "Accept: application/json",
+        "Connection: close",
+        NULL,
+    };
+
+    char *str_bug_id = xasprintf("%d", rhbz_bug_id);
+    char *json_attachment = new_json_attachment(bthash, "RHBZ", str_bug_id);
+    post_string_as_form_data(post_state, config->ur_url, "application/json",
+                             headers, json_attachment);
+    free(str_bug_id);
+    free(json_attachment);
 
     return post_state;
 }

@@ -22,6 +22,9 @@
 #include "ureport.h"
 #include "libreport_curl.h"
 
+#define REPORT_URL "https://retrace.fedoraproject.org/faf/reports/new/"
+#define ATTACH_URL "https://retrace.fedoraproject.org/faf/reports/attach/"
+
 /*
  * Loads uReport configuration from various sources.
  *
@@ -95,58 +98,103 @@ static bool ureport_server_parse_json(json_object *json, struct ureport_server_r
     return false;
 }
 
+static bool check_response_statuscode(post_state_t *post_state, 
+                                      const char *url)
+{
+    if (post_state->http_resp_code != 202)
+    {
+        char *errmsg = post_state->curl_error_msg;
+        if (errmsg && *errmsg)
+            error_msg("%s '%s'", errmsg, url);
+        else
+            error_msg("Unexpected HTTP status code: %d",
+                      post_state->http_resp_code);
+
+        return false;
+    }
+
+    return true;
+}
+
 int main(int argc, char **argv)
 {
     abrt_init(argv);
 
     struct ureport_server_config config = {
-        .ur_url = "https://retrace.fedoraproject.org/faf/reports/new/",
+        .ur_url = NULL,
         .ur_ssl_verify = true,
     };
 
     bool insecure = !config.ur_ssl_verify;
     const char *dump_dir_path = ".";
+    const char *ureport_hash = NULL;
+    int rhbz_bug = -1;
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT__DUMP_DIR(&dump_dir_path),
         OPT_STRING('u', "url", &config.ur_url, "URL", _("Specify url")),
         OPT_BOOL('k', "insecure", &insecure,
                           _("Allow insecure connection to ureport server")),
+        OPT_STRING('a', "attach", &ureport_hash, "BTHASH",
+                          _("bthash of uReport to attach")),
+        OPT_INTEGER('b', "bug-id", &rhbz_bug,
+                          _("Attach RHBZ bug (requires -a)")),
         OPT_END(),
     };
 
     const char *program_usage_string = _(
-        "& [-v] [-u URL] [-k] -d DIR\n"
+        "& [-v] [-u URL] [-k] [-a bthash -b bug-id] [-d DIR]\n"
         "\n"
-        "Upload micro report"
+        "Upload micro report or add an attachment to a micro report"
     );
 
     parse_opts(argc, argv, program_options, program_usage_string);
-    struct dump_dir *dd = dd_opendir(dump_dir_path, DD_OPEN_READONLY);
-    if (!dd)
-        xfunc_die();
 
     config.ur_ssl_verify = !insecure;
     load_ureport_server_config(&config);
+    post_state_t *post_state = NULL;
+
+    /* we either need both -b & -a or none of them */
+    if (ureport_hash && rhbz_bug > 0)
+    {
+        if (!config.ur_url)
+            config.ur_url = ATTACH_URL;
+
+        post_state = ureport_attach_rhbz(ureport_hash, rhbz_bug, &config);
+        if (!check_response_statuscode(post_state, config.ur_url))
+        {
+            free_post_state(post_state);
+            return 1;
+        }
+
+        free_post_state(post_state);
+        return 0;
+    }
+    else if (ureport_hash && rhbz_bug <= 0)
+        error_msg_and_die(_("You need to specify bug ID to attach."));
+    else if (!ureport_hash && rhbz_bug > 0)
+        error_msg_and_die(_("You need to specify bthash of the uReport to attach."));
+
+    /* -b nor -a were specified - upload uReport from dump_dir */
+    if (!config.ur_url)
+        config.ur_url = REPORT_URL;
+
+    struct dump_dir *dd = dd_opendir(dump_dir_path, DD_OPEN_READONLY);
+    if (!dd)
+        xfunc_die();
 
     problem_data_t *pd = create_problem_data_from_dump_dir(dd);
     dd_close(dd);
     if (!pd)
         xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
-    post_state_t *post_state = NULL;
     post_state = post_ureport(pd, &config);
     problem_data_free(pd);
 
-    if (post_state->http_resp_code != 200)
+    if (!check_response_statuscode(post_state, config.ur_url))
     {
-        char *errmsg = post_state->curl_error_msg;
-        if (errmsg && *errmsg)
-        {
-            error_msg("%s '%s'", errmsg, config.ur_url);
-            free_post_state(post_state);
-            return 1;
-        }
+        free_post_state(post_state);
+        return 1;
     }
 
     int ret = 1; /* return 1 by default */
