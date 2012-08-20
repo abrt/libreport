@@ -126,6 +126,7 @@ int main(int argc, char **argv)
     };
 
     bool insecure = !config.ur_ssl_verify;
+    bool attach_reported_to = false;
     const char *dump_dir_path = ".";
     const char *ureport_hash = NULL;
     int rhbz_bug = -1;
@@ -139,11 +140,13 @@ int main(int argc, char **argv)
                           _("bthash of uReport to attach")),
         OPT_INTEGER('b', "bug-id", &rhbz_bug,
                           _("Attach RHBZ bug (requires -a)")),
+        OPT_BOOL('r', "attach-reported-to", &attach_reported_to,
+                          _("Attach contents of reported_to")),
         OPT_END(),
     };
 
     const char *program_usage_string = _(
-        "& [-v] [-u URL] [-k] [-a bthash -b bug-id] [-d DIR]\n"
+        "& [-v] [-u URL] [-k] [-a bthash -b bug-id] [-r] [-d DIR]\n"
         "\n"
         "Upload micro report or add an attachment to a micro report"
     );
@@ -175,13 +178,53 @@ int main(int argc, char **argv)
     else if (!ureport_hash && rhbz_bug > 0)
         error_msg_and_die(_("You need to specify bthash of the uReport to attach."));
 
-    /* -b nor -a were specified - upload uReport from dump_dir */
-    if (!config.ur_url)
-        config.ur_url = REPORT_URL;
-
     struct dump_dir *dd = dd_opendir(dump_dir_path, DD_OPEN_READONLY);
     if (!dd)
         xfunc_die();
+
+    /* -r */
+    if (attach_reported_to)
+    {
+        if (!config.ur_url)
+            config.ur_url = ATTACH_URL;
+
+        report_result_t *ureport_result = find_in_reported_to(dd, "uReport");
+        report_result_t *bz_result = find_in_reported_to(dd, "Bugzilla");
+
+        dd_close(dd);
+
+        if (!ureport_result || !ureport_result->bthash)
+            error_msg_and_die(_("This problem does not have an uReport assigned."));
+
+        if (!bz_result || !bz_result->url)
+            error_msg_and_die(_("This problem has not been reported to Bugzilla."));
+
+        char *bthash = xstrdup(ureport_result->bthash);
+        free_report_result(ureport_result);
+
+        char *bugid_ptr = strstr(bz_result->url, "show_bug.cgi?id=");
+        if (!bugid_ptr)
+            error_msg_and_die(_("Unable to find bug ID in bugzilla URL."));
+
+        bugid_ptr += strlen("show_bug.cgi?id=");
+        int bugid;
+        /* we're just reading int, sscanf works fine */
+        if (sscanf(bugid_ptr, "%d", &bugid) != 1)
+            error_msg_and_die(_("Unable to parse bug ID from bugzilla URL."));
+
+        free_report_result(bz_result);
+
+        post_state = ureport_attach_rhbz(bthash, bugid, &config);
+        free(bthash);
+
+        int ret = !check_response_statuscode(post_state, config.ur_url);
+        free_post_state(post_state);
+        return ret;
+    }
+
+    /* -b, -a nor -r were specified - upload uReport from dump_dir */
+    if (!config.ur_url)
+        config.ur_url = REPORT_URL;
 
     problem_data_t *pd = create_problem_data_from_dump_dir(dd);
     dd_close(dd);
