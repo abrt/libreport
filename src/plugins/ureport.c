@@ -22,8 +22,9 @@
 #include "ureport.h"
 #include "libreport_curl.h"
 
-#define REPORT_URL "https://retrace.fedoraproject.org/faf/reports/new/"
-#define ATTACH_URL "https://retrace.fedoraproject.org/faf/reports/attach/"
+#define SERVER_URL "https://retrace.fedoraproject.org/faf"
+#define REPORT_URL_SFX "/reports/new/"
+#define ATTACH_URL_SFX "/reports/attach/"
 
 /*
  * Loads uReport configuration from various sources.
@@ -121,7 +122,7 @@ int main(int argc, char **argv)
     abrt_init(argv);
 
     struct ureport_server_config config = {
-        .ur_url = NULL,
+        .ur_url = SERVER_URL,
         .ur_ssl_verify = true,
     };
 
@@ -133,7 +134,7 @@ int main(int argc, char **argv)
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT__DUMP_DIR(&dump_dir_path),
-        OPT_STRING('u', "url", &config.ur_url, "URL", _("Specify url")),
+        OPT_STRING('u', "url", &config.ur_url, "URL", _("Specify server URL")),
         OPT_BOOL('k', "insecure", &insecure,
                           _("Allow insecure connection to ureport server")),
         OPT_STRING('a', "attach", &ureport_hash, "BTHASH",
@@ -160,18 +161,15 @@ int main(int argc, char **argv)
     /* we either need both -b & -a or none of them */
     if (ureport_hash && rhbz_bug > 0)
     {
-        if (!config.ur_url)
-            config.ur_url = ATTACH_URL;
-
+        char *dest_url = xasprintf("%s%s", config.ur_url, ATTACH_URL_SFX);
+        config.ur_url = dest_url;
         post_state = ureport_attach_rhbz(ureport_hash, rhbz_bug, &config);
-        if (!check_response_statuscode(post_state, config.ur_url))
-        {
-            free_post_state(post_state);
-            return 1;
-        }
+        const int result = !check_response_statuscode(post_state, dest_url);
 
         free_post_state(post_state);
-        return 0;
+        free(dest_url);
+
+        return result;
     }
     else if (ureport_hash && rhbz_bug <= 0)
         error_msg_and_die(_("You need to specify bug ID to attach."));
@@ -185,9 +183,6 @@ int main(int argc, char **argv)
     /* -r */
     if (attach_reported_to)
     {
-        if (!config.ur_url)
-            config.ur_url = ATTACH_URL;
-
         report_result_t *ureport_result = find_in_reported_to(dd, "uReport");
         report_result_t *bz_result = find_in_reported_to(dd, "Bugzilla");
 
@@ -214,33 +209,35 @@ int main(int argc, char **argv)
 
         free_report_result(bz_result);
 
+        char *dest_url = xasprintf("%s%s", config.ur_url, ATTACH_URL_SFX);
+        config.ur_url = dest_url;
         post_state = ureport_attach_rhbz(bthash, bugid, &config);
         free(bthash);
 
-        int ret = !check_response_statuscode(post_state, config.ur_url);
+        int ret = !check_response_statuscode(post_state, dest_url);
         free_post_state(post_state);
+        free(dest_url);
+
         return ret;
     }
 
     /* -b, -a nor -r were specified - upload uReport from dump_dir */
-    if (!config.ur_url)
-        config.ur_url = REPORT_URL;
-
     problem_data_t *pd = create_problem_data_from_dump_dir(dd);
     dd_close(dd);
     if (!pd)
         xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
+    char *dest_url = xasprintf("%s%s", config.ur_url, REPORT_URL_SFX);
+    config.ur_url = dest_url;
     post_state = post_ureport(pd, &config);
     problem_data_free(pd);
 
-    if (!check_response_statuscode(post_state, config.ur_url))
-    {
-        free_post_state(post_state);
-        return 1;
-    }
-
     int ret = 1; /* return 1 by default */
+
+    if (!check_response_statuscode(post_state, dest_url))
+        /* check_response_statuscode() already logged an error message */
+        goto err;
+
     json_object *const json = json_tokener_parse(post_state->body);
 
     if (is_error(json))
@@ -308,6 +305,7 @@ int main(int argc, char **argv)
 format_err:
     json_object_put(json);
 err:
+    free(dest_url);
     free_post_state(post_state);
 
     return ret;
