@@ -128,6 +128,13 @@ static PyObject *p_problem_data_add_current_process(PyObject *pself, PyObject *a
     Py_RETURN_NONE;
 }
 
+static PyObject *p_problem_data_send_to_abrt(PyObject *pself, PyObject *always_null)
+{
+    p_problem_data *self = (p_problem_data*)pself;
+    int result = problem_data_send_to_abrt(self->cd);
+
+    return Py_BuildValue("i", result);
+}
 
 //static PyMemberDef p_problem_data_members[] = {
 //    { NULL }
@@ -140,6 +147,7 @@ static PyMethodDef p_problem_data_methods[] = {
     { "create_dump_dir"     , p_create_dump_dir_from_problem_data, METH_VARARGS },
     { "add_basics"          , p_problem_data_add_basics          , METH_NOARGS },
     { "add_current_proccess", p_problem_data_add_current_process , METH_NOARGS },
+    { "send_to_abrt"        , p_problem_data_send_to_abrt        , METH_NOARGS },
     { NULL }
 };
 
