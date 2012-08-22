@@ -163,7 +163,7 @@ int main(int argc, char **argv)
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_STRING('d', NULL, &dump_dir_name, "DIR" , _("Dump directory")),
+        OPT_STRING('d', NULL, &dump_dir_name, "DIR" , _("Problem directory")),
         OPT_LIST(  'c', NULL, &conf_file    , "FILE", _("Configuration file")),
         OPT_END()
     };

@@ -170,7 +170,7 @@ int main(int argc, char **argv)
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_STRING('d', NULL, &dump_dir_name, "DIR"     , _("Dump directory")),
+        OPT_STRING('d', NULL, &dump_dir_name, "DIR"     , _("Problem directory")),
         OPT_STRING('c', NULL, &conf_file    , "CONFFILE", _("Config file")),
         OPT_BOOL('n', "notify-only", NULL  , _("Notify only (Do not mark the report as sent)")),
         OPT_END()

@@ -53,7 +53,7 @@ int main(int argc, char **argv)
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_STRING('d', NULL, &dump_dir_name, "DIR"   , _("Dump directory")),
+        OPT_STRING('d', NULL, &dump_dir_name, "DIR"   , _("Problem directory")),
         OPT_STRING('o', NULL, &output_file  , "FILE"  , _("Output file")),
         OPT_STRING('a', NULL, &append       , "yes/no", _("Append to, or overwrite FILE")),
         OPT_BOOL(  'r', NULL, NULL          ,           _("Create reported_to in DIR")),
