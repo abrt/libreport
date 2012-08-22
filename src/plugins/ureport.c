@@ -58,7 +58,68 @@ struct ureport_server_response {
     const char *value;
     const char *message;
     const char *bthash;
+    GList *reported_to_list;
 };
+
+/* reported_to json element should be a list of structures
+{ "reporter": "Bugzilla",
+  "type": "url",
+  "value": "https://bugzilla.redhat.com/show_bug.cgi?id=XYZ" } */
+static GList *parse_reported_to_from_json_list(struct json_object *list)
+{
+    int i;
+    json_object *list_elem, *struct_elem;
+    const char *reporter, *value, *type;
+    char *reported_to_line, *prefix;
+    GList *result = NULL;
+
+    for (i = 0; i < json_object_array_length(list); ++i)
+    {
+        prefix = NULL;
+        list_elem = json_object_array_get_idx(list, i);
+        if (!list_elem)
+            continue;
+
+        struct_elem = json_object_object_get(list_elem, "reporter");
+        if (!struct_elem)
+            continue;
+
+        reporter = json_object_get_string(struct_elem);
+        if (!reporter)
+            continue;
+
+        struct_elem = json_object_object_get(list_elem, "value");
+        if (!struct_elem)
+            continue;
+
+        value = json_object_get_string(struct_elem);
+        if (!value)
+            continue;
+
+        struct_elem = json_object_object_get(list_elem, "type");
+        if (!struct_elem)
+            continue;
+
+        type = json_object_get_string(struct_elem);
+        if (type)
+        {
+            if (strcasecmp("url", type) == 0)
+                prefix = xstrdup("URL=");
+            else if (strcasecmp("bthash", type) == 0)
+                prefix = xstrdup("BTHASH=");
+        }
+
+        if (!prefix)
+            prefix = xstrdup("");
+
+        reported_to_line = xasprintf("%s: %s%s", reporter, prefix, value);
+        free(prefix);
+
+        result = g_list_append(result, reported_to_line);
+    }
+
+    return result;
+}
 
 /*
  * Reponse samples:
@@ -91,6 +152,10 @@ static bool ureport_server_parse_json(json_object *json, struct ureport_server_r
         json_object *bthash = json_object_object_get(json, "bthash");
         if (bthash)
             out_response->bthash = json_object_get_string(bthash);
+
+        json_object *reported_to_list = json_object_object_get(json, "reported_to");
+        if (reported_to_list)
+            out_response->reported_to_list = parse_reported_to_from_json_list(reported_to_list);
 
         return true;
     }
@@ -276,6 +341,20 @@ int main(int argc, char **argv)
                 char *msg = xasprintf("uReport: BTHASH=%s", response.bthash);
                 add_reported_to(dd, msg);
                 free(msg);
+
+                if (response.reported_to_list)
+                {
+                    GList *elem = response.reported_to_list;
+                    while (elem)
+                    {
+                        add_reported_to(dd, elem->data);
+                        free(elem->data);
+                        elem = g_list_next(elem);
+                    }
+
+                    g_list_free(response.reported_to_list);
+                }
+
                 dd_close(dd);
             }
 
