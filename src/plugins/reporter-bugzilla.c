@@ -114,7 +114,7 @@ int main(int argc, char **argv)
         OPT_OPTSTRING('t', "ticket", &ticket_no , "ID"     , _("Attach FILEs [to bug with this ID]")),
         OPT_BOOL(     'b', NULL, NULL,                       _("When creating bug, attach binary files too")),
         OPT_BOOL(     'f', NULL, NULL,                       _("Force reporting even if this problem is already reported")),
-        OPT_STRING(   'h', "duphash", &abrt_hash, "DUPHASH", _("Find BUG-ID according to DUPHASH")),
+        OPT_STRING(   'h', "duphash", &abrt_hash, "DUPHASH", _("Print BUG_ID which has given DUPHASH")),
         OPT_LIST(     'g', "group", &group      , "GROUP"  , _("Restrict access to this group only")),
         OPT_END()
     };
