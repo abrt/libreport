@@ -173,7 +173,7 @@ int main(int argc, char **argv)
         {
             size_t rhbz_ver = rhbz_version(client);
             int bug_id = rhbz_bug_id(all_bugs, rhbz_ver);
-            printf("%i", bug_id);
+            printf("%i\n", bug_id);
         }
 
         return EXIT_SUCCESS;
