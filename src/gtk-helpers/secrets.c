@@ -29,6 +29,7 @@
 #define SECRETS_COLLECTION_ALIAS "default"
 
 #define SECRETS_SEARCH_ATTRIBUTE "libreportEventConfig"
+#define SECRETS_OPTION_VALUE_DELIMITER '='
 
 /* 5s timeout*/
 #define SECRETS_CALL_DEFAULT_TIMEOUT 5000
@@ -36,6 +37,7 @@
 /* Well known errors for which we have workarounds */
 #define NOT_IMPLEMENTED_READ_ALIAS_ERROR_MESSAGE "GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: No such method 'ReadAlias' in interface 'org.freedesktop.Secret.Service' at object path '/org/freedesktop/secrets' (signature 's')"
 #define INVALID_PROPERTIES_ARGUMENTS "GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: Invalid properties argument"
+#define GNOME_KEYRING_NOT_HAVING_SECRET_ERROR_MESSAGE "GDBus.Error:org.freedesktop.DBus.Error.Failed: Couldn't get item secret"
 
 /*
    Data structure:
@@ -47,12 +49,23 @@
 
    Collection is a set of Items identified by labels (label is a string).
    Libreport uses event names as labels for items which hold event config data.
+   One item holds all configuration items for one event.
 
-   Item is a set of (name,value) pairs called attributes.
-   Libreport uses attributes to store config data.
+   Item has a set of (name,value) pairs called lookup attributes.
+   Libreport uses 'libreportEventConfig' attribute for searching. The
+   attribute hodls an event name.
+   Item has a secret value. The value holds an arbitrary binary data.
+   Libreport uses the value to store configuration items.
+   The value consists from several c-strings where each option is
+   represented by one c-string (bytes followed by '\0').
+   Each option string is concatenation of option name, delimiter and option value.
 
-   For example, "report_Bugzilla" item will have some attributes,
-   like ("Bugzilla_BugzillaURL", "https://bugzilla.redhat.com").
+
+   For example, "report_Bugzilla" item will have the lookup attribute
+   like ("libreportEventConfig", "report_Bugzilla") and the secret value
+   like ("Bugzilla_URL=https://bugzilla.redhat.com\0Bugzilla_Login=foo\0")
+
+
 
    DBus API:
    =========
@@ -244,32 +257,6 @@ static GDBusProxy *secrets_object_get_properties_proxy(struct secrets_object *ob
                                              "org.freedesktop.DBus.Properties");
 
     return obj->property_proxy;
-}
-
-
-static bool secrets_object_set_dbus_property(struct secrets_object *obj,
-                                             const char *property,
-                                             GVariant *value)
-{
-    GDBusProxy *properties = secrets_object_get_properties_proxy(obj);
-
-    if (!properties)
-        return false;
-
-    /* http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-properties */
-    /* org.freedesktop.DBus.Properties.Set (IN String interface_name, IN String property_name, IN Variant value); */
-    GVariant *const resp = dbus_call_sync(properties,
-                                          "Set",
-                                          g_variant_new("(ssv)",
-                                                        obj->interface_name,
-                                                        property,
-                                                        value)
-                                         );
-
-    if (resp)
-        g_variant_unref(resp);
-
-    return resp;
 }
 
 /*******************************************************************************/
@@ -472,6 +459,7 @@ static GVariant *secrets_prompt(const char *prompt_path,
         .closure_marshal = NULL,
     };
 
+    /* TODO : leak */
     GDBusProxy *const prompt_proxy = get_dbus_proxy(prompt_path, SECRETS_NAME_SPACE("Prompt"));
 
     *dismissed = false;
@@ -544,6 +532,7 @@ static GVariant *secrets_service_unlock(const gchar *const *objects,
 
     gchar *prompt = NULL;
     GVariant *result = NULL;
+    /* TODO : leak */
     g_variant_get(var, "(@aoo)", &result, &prompt);
 
     *dismissed = false;
@@ -774,6 +763,7 @@ static struct secrets_object *secrets_service_create_collection(const gchar *lab
 
     gchar *prompt = NULL;
     GVariant *collection_var = NULL;
+    /* TODO : leak */
     g_variant_get(resp, "(@oo)", &collection_var, &prompt);
 
     if (is_prompt_required(prompt))
@@ -810,7 +800,7 @@ static struct secrets_object *secrets_service_create_collection(const gchar *lab
 
 static GVariant *create_item_call_args(const char *event_name,
                                        GVariant *attributes,
-                                       GDBusProxy *session,
+                                       GVariant *secret,
                                        bool full_property_name)
 {
     /* gnome-keyring accepts properties with namespace */
@@ -842,21 +832,60 @@ static GVariant *create_item_call_args(const char *event_name,
     g_variant_builder_add(prop_builder, "{sv}", lbl_name, g_variant_new_string(event_name));
     g_variant_builder_add(prop_builder, "{sv}", att_name, attributes);
 
-    GVariantBuilder *const param_builder = g_variant_builder_new(G_VARIANT_TYPE("ay"));
+    GVariant *const prop = g_variant_builder_end(prop_builder);
+
+    return g_variant_new("(@a{sv}@(oayays)b)", prop, secret, FALSE);
+}
+
+static GVariant *create_secret_from_options(GDBusProxy *session, GList *options, bool store_passwords)
+{
     GVariantBuilder *const value_builder = g_variant_builder_new(G_VARIANT_TYPE("ay"));
+    for (GList *iter = g_list_first(options); iter; iter = g_list_next(iter))
+    {
+        event_option_t *const op = (event_option_t *)iter->data;
+        /* TODO : is it still necessary? Passwords are encrypted now. */
+        if (op->eo_type != OPTION_TYPE_PASSWORD || store_passwords)
+        {
+            const char *byte = op->eo_name;
+            while(byte[0] != '\0')
+                g_variant_builder_add(value_builder, "y", *byte++);
 
-    GVariant *const secret = g_variant_new("(o@ay@ays)",
-                                           g_dbus_proxy_get_object_path(session),
-                                           g_variant_builder_end(param_builder),
-                                           g_variant_builder_end(value_builder),
-                                           "text/plain, charset=utf8");
+            g_variant_builder_add(value_builder, "y", SECRETS_OPTION_VALUE_DELIMITER);
 
-    return g_variant_new("(@a{sv}@(oayays)b)", g_variant_builder_end(prop_builder), secret, FALSE);
+            byte = op->eo_value;
+            while(byte[0] != '\0')
+                g_variant_builder_add(value_builder, "y", *byte++);
+
+            g_variant_builder_add(value_builder, "y", '\0');
+        }
+    }
+
+    GVariant *const value = g_variant_builder_end(value_builder);
+
+    return g_variant_new("(oay@ays)",
+                         g_dbus_proxy_get_object_path(session),
+                         /* param */ NULL,
+                         value,
+                         "application/libreport");
+}
+
+static GVariant *create_lookup_attributes(const char *event_name)
+{
+    GVariantBuilder *const attr_builder = g_variant_builder_new(G_VARIANT_TYPE_DICTIONARY);
+    /* add extra attribute used for searching */
+    g_variant_builder_add(attr_builder, "{ss}", SECRETS_SEARCH_ATTRIBUTE, event_name);
+
+    /* An example of attributes:               */
+    /* {                                       */
+    /*   "libreportEventConfig": "event_name", */
+    /* }                                       */
+    return g_variant_builder_end(attr_builder);
 }
 
 static bool secrets_collection_create_text_item(struct secrets_object *collection,
                                                 const char *event_name,
                                                 GVariant *attributes,
+                                                GVariant *secret,
                                                 bool *dismissed)
 {
     bool succ = false;
@@ -903,8 +932,10 @@ static bool secrets_collection_create_text_item(struct secrets_object *collectio
         /*   prompt     : A prompt object, or the special value '/' if no prompt */
         /*                is necessary. */
         GVariant *const resp = g_dbus_proxy_call_sync(collection->proxy, "CreateItem",
-                                      create_item_call_args(event_name, g_variant_ref(attributes),
-                                                            g_session_proxy, options[choice]),
+                                      create_item_call_args(event_name,
+                                                            g_variant_ref(attributes),
+                                                            g_variant_ref(secret),
+                                                            options[choice]),
                                       G_DBUS_PROXY_FLAGS_NONE, SECRETS_CALL_DEFAULT_TIMEOUT,
                                       NULL, &error);
 
@@ -924,6 +955,7 @@ static bool secrets_collection_create_text_item(struct secrets_object *collectio
 
         gchar *prompt = NULL;
         gchar *item = NULL;
+        /* TODO : leak */
         g_variant_get(resp, "(oo)", &item, &prompt);
 
         /* if prompt is no required the function is successfull */
@@ -941,6 +973,7 @@ static bool secrets_collection_create_text_item(struct secrets_object *collectio
     }
 
     g_variant_unref(attributes);
+    g_variant_unref(secret);
 
     return succ;
 }
@@ -1052,68 +1085,138 @@ static bool get_default_collection(struct secrets_object **collection,
     return succ;
 }
 
-static void load_event_options_from_item(GList *options,
+static void load_event_options_from_item(GDBusProxy *session,
+                                         GList *options,
                                          struct secrets_object *item)
 {
-    GVariant *const attributes =
-        g_dbus_proxy_get_cached_property(item->proxy, "Attributes");
+    {   /* for backward compatibility */
+        /* load configuration from lookup attributes but don't store configuration in lookup attributes */
+        GVariant *const attributes =
+            g_dbus_proxy_get_cached_property(item->proxy, "Attributes");
 
-    GVariantIter *iter = NULL;
-    g_variant_get(attributes, "a{ss}", &iter);
+        GVariantIter *iter = NULL;
+        g_variant_get(attributes, "a{ss}", &iter);
 
-    gchar *name = NULL;
-    gchar *value = NULL;
-    while (g_variant_iter_loop(iter, "{ss}", &name, &value))
-    {
-        event_option_t *const option = get_event_option_from_list(name, options);
-        if (option)
+        gchar *name = NULL;
+        gchar *value = NULL;
+        while (g_variant_iter_loop(iter, "{ss}", &name, &value))
         {
-            free(option->eo_value);
-            option->eo_value = xstrdup(value);
-            VERB2 log("loaded event option : '%s => %s'", name, option->eo_value);
+            event_option_t *const option = get_event_option_from_list(name, options);
+            if (option)
+            {
+                free(option->eo_value);
+                option->eo_value = xstrdup(value);
+                VERB2 log("loaded event option : '%s' => '%s'", name, option->eo_value);
+            }
         }
+
+        g_variant_unref(attributes);
     }
 
-    g_variant_unref(attributes);
-}
+    {   /* read configuration from the secret value */
+        GError *error = NULL;
+        GVariant *const resp = g_dbus_proxy_call_sync(item->proxy,
+                                                      "GetSecret",
+                                                      g_variant_new("(o)",
+                                                        g_dbus_proxy_get_object_path(session)),
+                                                      G_DBUS_PROXY_FLAGS_NONE,
+                                                      SECRETS_CALL_DEFAULT_TIMEOUT,
+                                                      /* GCancellable */ NULL,
+                                                      &error);
 
-static GVariant *create_attributes_from_options(GList *options,
-                                                const char *event_name,
-                                                bool store_passwords)
-{
-    GVariantBuilder *const attr_builder = g_variant_builder_new(G_VARIANT_TYPE_DICTIONARY);
-    for (GList *iter = g_list_first(options); iter; iter = g_list_next(iter))
-    {   /* we store data in the search attributes */
-        event_option_t *const op = (event_option_t *)iter->data;
-        if (op->eo_type != OPTION_TYPE_PASSWORD || store_passwords)
-            g_variant_builder_add(attr_builder, "{ss}", op->eo_name, op->eo_value);
+        if (error)
+        {   /* if the error is NOT the known error produced by the gnome-keyring */
+            /* when no secret value is assigned to an item */
+            /* then let you user known that the error occured */
+            if(strcmp(error->message, GNOME_KEYRING_NOT_HAVING_SECRET_ERROR_MESSAGE) != 0)
+                error_msg(_("can't get secret value: %s"), error->message);
+            else
+            {
+                VERB1 log("can't get secret value: %s", error->message);
+            }
+
+            g_error_free(error);
+            return;
+        }
+
+        if (g_variant_n_children(resp) == 0)
+        {
+            VERB1 log("response from GetSecret() method doesn't contain data: '%s'", g_variant_print(resp, TRUE));
+            return;
+        }
+
+        /* All dbus responses are returned inside of an variant */
+        GVariant *const secret = g_variant_get_child_value(resp, 0);
+
+        /* DBus represents a structure as a tuple of values */
+        /* struct Secret
+         * {
+         *   (o)  object path
+         *   (ay) byte array params
+         *   (ay) byte array value
+         *   (s)  string content type
+         * }
+         */
+        if (g_variant_n_children(secret) != 4)
+        {
+            VERB1 log("secret value has invalid structure: '%s'", g_variant_print(secret, TRUE));
+            return;
+        }
+
+        /* get (ay) byte array value */
+        GVariant *const secret_value = g_variant_get_child_value(secret, 2);
+
+        gsize nelems;
+        gconstpointer data = g_variant_get_fixed_array(secret_value, &nelems, sizeof(guchar));
+
+        while(nelems > 0)
+        {
+            const size_t sz = strlen(data) + 1;
+            if (sz > nelems)
+            {   /* check next size, if is too big then trailing 0 is probably missing */
+                VERB1 log("broken secret value, atttempts to read %zdB but only %zdB are available)", sz, nelems);
+                break;
+            }
+            nelems -= sz;
+
+            char *name = xstrdup(data);
+            char *value = strchr(name, SECRETS_OPTION_VALUE_DELIMITER);
+            if (!value)
+            {
+                VERB1 log("secret value has invalid format: missing delimiter after option name");
+                goto next_option;
+            }
+
+            *value++ = '\0';
+
+            event_option_t *const option = get_event_option_from_list(name, options);
+            if (option)
+            {
+                free(option->eo_value);
+                option->eo_value = xstrdup(value);
+                VERB2 log("loaded event option : '%s' => '%s'", name, option->eo_value);
+            }
+
+next_option:
+            free(name);
+            data += sz;
+        }
+
+        g_variant_unref(secret_value);
+        g_variant_unref(secret);
+        g_variant_unref(resp);
     }
-
-    /* and finally, add extra attribute used for searching */
-    g_variant_builder_add(attr_builder, "{ss}", SECRETS_SEARCH_ATTRIBUTE, event_name);
-
-    /* An example of attributes:               */
-    /* {                                       */
-    /*   "BugzillaURL": "Value1",              */
-    /*   "BugzillaPassword": "Value2",         */
-    /*   "libreportEventConfig": "event_name", */
-    /* }                                       */
-    return g_variant_builder_end(attr_builder);
 }
 
 static bool find_item_by_event_name(const struct secrets_object *collection,
                                     const char *event_name,
                                     struct secrets_object **item)
 {
-    GVariantBuilder *const attrs = g_variant_builder_new(G_VARIANT_TYPE_DICTIONARY);
-
-    /* For searching uses item's attribute holding an event name */
-    g_variant_builder_add(attrs, "{ss}", SECRETS_SEARCH_ATTRIBUTE, event_name);
-
-    return secrets_collection_search_one_item(collection, g_variant_builder_end(attrs), item);
+    return secrets_collection_search_one_item(collection, create_lookup_attributes(event_name), item);
 }
 
-static void load_settings(struct secrets_object *collection, const char *event_name, event_config_t *ec)
+static void load_settings(GDBusProxy *session, struct secrets_object *collection,
+                          const char *event_name, event_config_t *ec)
 {
     /* Locked property is not supported by ksecrets */
     /* thus we have to perform Unlock for each call of load settings */
@@ -1128,7 +1231,7 @@ static void load_settings(struct secrets_object *collection, const char *event_n
         if (succ && item)
         {
             VERB2 log("loading event config : '%s'", event_name);
-            load_event_options_from_item(ec->options, item);
+            load_event_options_from_item(session, ec->options, item);
             secrets_object_delete(item);
             item = NULL;
         }
@@ -1145,7 +1248,7 @@ static void load_event_config(gpointer key, gpointer value, gpointer user_data)
     struct secrets_object *const collection = (struct secrets_object *)user_data;
 
     if (is_event_config_user_storage_available())
-        load_settings(collection, event_name, ec);
+        load_settings(g_session_proxy, collection, event_name, ec);
 }
 
 static bool save_options(struct secrets_object *collection,
@@ -1160,22 +1263,31 @@ static bool save_options(struct secrets_object *collection,
     if (!succ)
         return succ;
 
-    GVariant *const attributes = create_attributes_from_options(options,
-                                                                event_name,
-                                                                store_passwords);
+    GVariant *const secret = create_secret_from_options(g_session_proxy, options, store_passwords);
 
     if (item)
-    {   /* item exists, change Attributes */
+    {   /* item exists, change a secret */
         VERB2 log("updating event config : '%s'", event_name);
+        /* can't be dismissed */
         *dismissed = false;
-        succ = secrets_object_set_dbus_property(item, "Attributes", attributes);
+        GVariant *const args = g_variant_new("(@(oayays))", secret);
+        GVariant *const resp = dbus_call_sync(item->proxy, "SetSecret", args);
+        succ = resp;
+
+        if (succ)
+            g_variant_unref(resp);
+
         secrets_object_delete(item);
-        item = NULL;
     }
     else
-    {   /* create a new item with Attributes */
+    {   /* create a new item */
+        GVariant *const attributes = create_lookup_attributes(event_name);
         VERB2 log("creating event config : '%s'", event_name);
-        succ = secrets_collection_create_text_item(collection, event_name, attributes, dismissed);
+        succ = secrets_collection_create_text_item(collection, event_name, attributes, secret, dismissed);
+
+        /* I can't figure out why I have to do the following */
+        g_variant_unref(attributes);
+        g_variant_unref(secret);
     }
 
     return succ;
