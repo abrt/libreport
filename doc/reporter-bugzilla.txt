@@ -7,15 +7,15 @@ reporter-bugzilla - Reports problem to Bugzilla.
 
 SYNOPSIS
 --------
-'reporter-bugzilla' [-vbf] [-g|--group GROUP-NAME]... [-c CONFFILE] -d DIR
+'reporter-bugzilla' [-vbf] [-g GROUP]... [-c CONFFILE]... -d DIR
 
 Or:
 
-'reporter-bugzilla' [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...
+'reporter-bugzilla' [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...
 
 Or:
 
-'reporter-bugzilla' -h DUPHASH
+'reporter-bugzilla' [-v] [-c CONFFILE]... -h DUPHASH
 
 DESCRIPTION
 -----------
@@ -33,8 +33,16 @@ The tool adds a new comment to found bug.
 The URL to new or modified bug is printed to stdout and recorded in
 'reported_to' element in DIR.
 
+Option -t uploads FILEs to the already created bug on Bugzilla site.
+The bug ID is retrieved from directory specified by -d DIR.
+If problem data in DIR was never reported to Bugzilla, upload will fail.
+
+Option -tID uploads FILEs to the bug with specified ID on Bugzilla site.
+-d DIR is ignored.
+
 Configuration file
 ~~~~~~~~~~~~~~~~~~
+If not specified, CONFFILE defaults to /etc/libreport/plugins/bugzilla.conf.
 Configuration file lines should have 'PARAM = VALUE' format. The parameters are:
 
 'Login'::
@@ -84,11 +92,11 @@ OPTIONS
 
 -h::
 --duphash::
-   Search in bugzilla by abrt's DUPHASH and return BUG-ID.
+   Search in Bugzilla by abrt's DUPHASH and print BUG_ID.
 
 -g::
---group GROUP-NAME::
-   When creating a new ticket restrict access to the defined groups only.
+--group GROUP::
+   When creating a new ticket restrict access to this group only.
 
 SEE ALSO
 --------
