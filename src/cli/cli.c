@@ -60,11 +60,11 @@ int main(int argc, char** argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "& [-vsp] -L[PREFIX] [DUMP_DIR]\n"
-        "   or: & [-vsp] -e EVENT DUMP_DIR\n"
-        "   or: & [-vsp] -a[y] DUMP_DIR\n"
-        "   or: & [-vsp] -c[y] DUMP_DIR\n"
-        "   or: & [-vsp] -r[y|d] DUMP_DIR"
+        "& [-vsp] -L[PREFIX] [PROBLEM_DIR]\n"
+        "   or: & [-vsp] -e EVENT PROBLEM_DIR\n"
+        "   or: & [-vsp] -a[y] PROBLEM_DIR\n"
+        "   or: & [-vsp] -c[y] PROBLEM_DIR\n"
+        "   or: & [-vsp] -r[y|d] PROBLEM_DIR"
     );
     enum {
         OPT_list_events  = 1 << 0,
@@ -86,11 +86,11 @@ int main(int argc, char** argv)
         /*      short_name long_name  value    parameter_name  help */
         OPT_OPTSTRING('L', NULL     , &pfx, "PREFIX",          _("List possible events [which start with PREFIX]")),
         OPT_LIST(     'e', "event"  , &event_list, "EVENT",    _("Run only these events")),
-        OPT_BOOL(     'a', "analyze", NULL,                    _("Run analyze event(s) on DUMP_DIR")),
-        OPT_BOOL(     'c', "collect", NULL,                    _("Run collect event(s) on DUMP_DIR")),
-        OPT_BOOL(     'r', "report" , NULL,                    _("Analyze, collect and report problem data in DUMP_DIR")),
+        OPT_BOOL(     'a', "analyze", NULL,                    _("Run analyze event(s) on PROBLEM_DIR")),
+        OPT_BOOL(     'c', "collect", NULL,                    _("Run collect event(s) on PROBLEM_DIR")),
+        OPT_BOOL(     'r', "report" , NULL,                    _("Analyze, collect and report problem data in PROBLEM_DIR")),
         OPT_BOOL(     'V', "version", NULL,                    _("Display version and exit")),
-        OPT_BOOL(     'd', "delete" , NULL,                    _("Remove DUMP_DIR after reporting")),
+        OPT_BOOL(     'd', "delete" , NULL,                    _("Remove PROBLEM_DIR after reporting")),
         OPT_BOOL(     'y', "always" , NULL,                    _("Noninteractive: don't ask questions, assume 'yes'")),
         OPT__VERBOSE(&g_verbose),
         OPT_BOOL(     's', NULL     , NULL,                    _("Log to syslog")),

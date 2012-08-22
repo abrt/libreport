@@ -3,19 +3,19 @@ report-cli(1)
 
 NAME
 ----
-report-cli - Work with ABRT dump directories from command line.
+report-cli - Work with ABRT problem directories from command line.
 
 SYNOPSIS
 --------
-'report-cli' [-vsp] -L[PREFIX] [DUMP_DIR]
+'report-cli' [-vsp] -L[PREFIX] [PROBLEM_DIR]
 
-'report-cli' [-vsp] -e EVENT DUMP_DIR
+'report-cli' [-vsp] -e EVENT PROBLEM_DIR
 
-'report-cli' [-vsp] -a[y] DUMP_DIR
+'report-cli' [-vsp] -a[y] PROBLEM_DIR
 
-'report-cli' [-vsp] -c[y] DUMP_DIR
+'report-cli' [-vsp] -c[y] PROBLEM_DIR
 
-'report-cli' [-vsp] -r[y|o|d] DUMP_DIR
+'report-cli' [-vsp] -r[y|o|d] PROBLEM_DIR
 
 DESCRIPTION
 -----------
@@ -29,19 +29,19 @@ OPTIONS
     List possible events [which start with PREFIX]
 
 -e EVENT::
-    Run EVENT on DUMP_DIR
+    Run EVENT on PROBLEM_DIR
 
 -a, --analyze::
-    Run analyze event(s) on DUMP_DIR
+    Run analyze event(s) on PROBLEM_DIR
 
 -c, --collect::
-    Run collect event(s) on DUMP_DIR
+    Run collect event(s) on PROBLEM_DIR
 
 -r, --report::
-    Analyze, collect and report problem data in DUMP_DIR
+    Analyze, collect and report problem data in PROBLEM_DIR
 
 -d, --delete::
-    Remove DUMP_DIR after reporting
+    Remove PROBLEM_DIR after reporting
 
 -y, --always::
     Noninteractive: don't ask questions, assume positive answer to all of them
