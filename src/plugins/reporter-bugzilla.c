@@ -60,39 +60,40 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
+        "\n& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... -d DIR"
+        "\nor:"
+        "\n& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE..."
+        "\nor:"
+        "\n& [-v] [-c CONFFILE]... -h DUPHASH"
         "\n"
-        "& [-vbf] [-g|--group GROUP-NAME]... [-c CONFFILE] -d DIR\n"
-        "or:\n"
-        "& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
+        "\nReports problem to Bugzilla."
         "\n"
-        "Reports problem to Bugzilla.\n"
+        "\nThe tool reads DIR. Then it logs in to Bugzilla and tries to find a bug"
+        "\nwith the same abrt_hash:HEXSTRING in 'Whiteboard'."
         "\n"
-        "The tool reads DIR. Then it logs in to Bugzilla and tries to find a bug\n"
-        "with the same abrt_hash:HEXSTRING in 'Whiteboard'.\n"
+        "\nIf such bug is not found, then a new bug is created. Elements of DIR"
+        "\nare stored in the bug as part of bug description or as attachments,"
+        "\ndepending on their type and size."
         "\n"
-        "If such bug is not found, then a new bug is created. Elements of DIR\n"
-        "are stored in the bug as part of bug description or as attachments,\n"
-        "depending on their type and size.\n"
+        "\nOtherwise, if such bug is found and it is marked as CLOSED DUPLICATE,"
+        "\nthe tool follows the chain of duplicates until it finds a non-DUPLICATE bug."
+        "\nThe tool adds a new comment to found bug."
         "\n"
-        "Otherwise, if such bug is found and it is marked as CLOSED DUPLICATE,\n"
-        "the tool follows the chain of duplicates until it finds a non-DUPLICATE bug.\n"
-        "The tool adds a new comment to found bug.\n"
+        "\nThe URL to new or modified bug is printed to stdout and recorded in"
+        "\n'reported_to' element."
         "\n"
-        "The URL to new or modified bug is printed to stdout and recorded in\n"
-        "'reported_to' element.\n"
+        "\nOption -t uploads FILEs to the already created bug on Bugzilla site."
+        "\nThe bug ID is retrieved from directory specified by -d DIR."
+        "\nIf problem data in DIR was never reported to Bugzilla, upload will fail."
         "\n"
-        "If not specified, CONFFILE defaults to "CONF_DIR"/plugins/bugzilla.conf\n"
-        "Its lines should have 'PARAM = VALUE' format.\n"
-        "Recognized string parameters: BugzillaURL, Login, Password, OSRelease.\n"
-        "Recognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify.\n"
-        "Parameters can be overridden via $Bugzilla_PARAM environment variables.\n"
+        "\nOption -tID uploads FILEs to the bug with specified ID on Bugzilla site."
+        "\n-d DIR is ignored.\n"
         "\n"
-        "Option -t uploads FILEs to the already created bug on Bugzilla site.\n"
-        "The bug ID is retrieved from directory specified by -d DIR.\n"
-        "If problem data in DIR was never reported to Bugzilla, upload will fail.\n"
-        "\n"
-        "Option -tID uploads FILEs to the bug with specified ID on Bugzilla site.\n"
-        "-d DIR is ignored."
+        "\nIf not specified, CONFFILE defaults to "CONF_DIR"/plugins/bugzilla.conf"
+        "\nIts lines should have 'PARAM = VALUE' format."
+        "\nRecognized string parameters: BugzillaURL, Login, Password, OSRelease."
+        "\nRecognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify."
+        "\nParameters can be overridden via $Bugzilla_PARAM environment variables."
     );
     enum {
         OPT_v = 1 << 0,
@@ -108,13 +109,13 @@ int main(int argc, char **argv)
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_STRING(   'd', NULL, &dump_dir_name, "DIR" , _("Dump directory")),
-        OPT_LIST(     'c', NULL, &conf_file    , "FILE", _("Configuration file (may be given many times)")),
-        OPT_OPTSTRING('t', "ticket", &ticket_no, "ID"  , _("Attach FILEs [to bug with this ID]")),
-        OPT_BOOL(     'b', NULL, NULL,                   _("When creating bug, attach binary files too")),
-        OPT_BOOL(     'f', NULL, NULL,                   _("Force reporting even if this problem is already reported")),
-        OPT_STRING(   'h', "duphash", &abrt_hash, "DUPHASH", _("Find BUG-ID according to DUPHASH")),
-        OPT_LIST(     'g', "group", &group    , "GROUP-NAME", _("Restrict access to this groups only")),
+        OPT_STRING(   'd', NULL, &dump_dir_name , "DIR"    , _("Problem directory")),
+        OPT_LIST(     'c', NULL, &conf_file     , "FILE"   , _("Configuration file (may be given many times)")),
+        OPT_OPTSTRING('t', "ticket", &ticket_no , "ID"     , _("Attach FILEs [to bug with this ID]")),
+        OPT_BOOL(     'b', NULL, NULL,                       _("When creating bug, attach binary files too")),
+        OPT_BOOL(     'f', NULL, NULL,                       _("Force reporting even if this problem is already reported")),
+        OPT_STRING(   'h', "duphash", &abrt_hash, "DUPHASH", _("Print BUG_ID which has given DUPHASH")),
+        OPT_LIST(     'g', "group", &group      , "GROUP"  , _("Restrict access to this group only")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
@@ -172,10 +173,10 @@ int main(int argc, char **argv)
         {
             size_t rhbz_ver = rhbz_version(client);
             int bug_id = rhbz_bug_id(all_bugs, rhbz_ver);
-            printf("%i", bug_id);
+            printf("%i\n", bug_id);
         }
 
-        exit(EXIT_SUCCESS);
+        return EXIT_SUCCESS;
     }
 
     if (!rhbz.b_login[0] || !rhbz.b_password[0])
