@@ -298,22 +298,3 @@ char* make_description_logger(problem_data_t *problem_data, unsigned max_text_si
                 MAKEDESC_SHOW_FILES | MAKEDESC_SHOW_MULTILINE
     );
 }
-
-/* Items we want to include to bz */
-static const char *const whitelisted_items[] = {
-    FILENAME_CMDLINE,
-    FILENAME_BACKTRACE,
-    NULL
-};
-
-char* make_description_koops(problem_data_t *problem_data, unsigned max_text_size)
-{
-    return make_description(
-                problem_data,
-                (char**)whitelisted_items,
-                max_text_size,
-                MAKEDESC_SHOW_FILES
-                | MAKEDESC_SHOW_MULTILINE
-                | MAKEDESC_WHITELIST
-    );
-}
