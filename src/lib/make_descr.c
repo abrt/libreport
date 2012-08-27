@@ -26,6 +26,27 @@ static bool rejected_name(const char *name, char **v, int flags)
     return r;
 }
 
+char *make_description_item_multiline(const char *name, const char *content)
+{
+    char *eol = strchr(content, '\n');
+    if (!eol)
+        return NULL;
+
+    struct strbuf *buf = strbuf_new();
+    strbuf_append_str(buf, name);
+    strbuf_append_str(buf, ":\n");
+    for (;;)
+    {
+        eol = strchrnul(content, '\n');
+        strbuf_append_strf(buf, ":%.*s\n", (int)(eol - content), content);
+        if (*eol == '\0' || eol[1] == '\0')
+            break;
+        content = eol + 1;
+    }
+
+    return strbuf_free_nobuf(buf);
+}
+
 char *make_description(problem_data_t *problem_data, char **names_to_skip,
                        unsigned max_text_size, unsigned desc_flags)
 {
@@ -171,24 +192,18 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
                     || (!strcmp(analyzer, "Kerneloops") && !strcmp(key, FILENAME_BACKTRACE))))
             {
                 char *formatted = format_problem_item(item);
-                char *output = formatted ? formatted : item->content;
-                char *eol = strchr(output, '\n');
-                if (eol)
+                char *output = make_description_item_multiline(key, formatted ? formatted : item->content);
+
+                if (output)
                 {
                     if (!empty)
-                        strbuf_append_char(buf_dsc, '\n');
-                    strbuf_append_str(buf_dsc, key);
-                    strbuf_append_str(buf_dsc, ":\n");
-                    for (;;)
-                    {
-                        eol = strchrnul(output, '\n');
-                        strbuf_append_strf(buf_dsc, ":%.*s\n", (int)(eol - output), output);
-                        if (*eol == '\0' || eol[1] == '\0')
-                            break;
-                        output = eol + 1;
-                    }
+                        strbuf_append_str(buf_dsc, "\n");
+
+                    strbuf_append_str(buf_dsc, output);
                     empty = false;
+                    free(output);
                 }
+
                 free(formatted);
             }
         }

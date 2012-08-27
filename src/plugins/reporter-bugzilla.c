@@ -349,7 +349,7 @@ int main(int argc, char **argv)
         int flags = RHBZ_NOMAIL_NOTIFY;
         if (opts & OPT_b)
             flags |= RHBZ_ATTACH_BINARY_FILES;
-        rhbz_attach_big_files(client, bug_id_str, problem_data, flags);
+        rhbz_attach_files(client, bug_id_str, problem_data, flags);
 
         bz = new_bug_info();
         bz->bi_status = xstrdup("NEW");

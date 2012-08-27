@@ -19,6 +19,11 @@
 
 #include "internal_libreport.h"
 #include "rhbz.h"
+#include <btparser/location.h>
+#include <btparser/backtrace.h>
+#include <btparser/thread.h>
+#include <btparser/frame.h>
+#include <btparser/strbuf.h>
 
 #define MAX_HOPS            5
 
@@ -31,6 +36,78 @@
 #define func_entry()
 #define func_entry_str(x)
 #endif
+
+/******************************************************************************/
+/* Global lists used in process of creation a new Bugzilla bug
+ * New bug logic:
+ * 1. 'Description of problem' is FILENAME_COMMENT
+ * 2. 'Version-Release number of selected component' is FILENAME_PACKAGE
+ * 3. 'Additional info' is a concatenation of files listed in ADDITIONAL_INFO_FILES_LIST
+ * 3.1 backtrace is also present in 'Additional info'
+ *     - if has size lower than CD_TEXT_ATT_SIZE_BZ then the bactrace is inlined
+ *     - otherwise preview of crashed thread stack trace is created
+ * 4. Attached files are the ONLY files which ARE NOT present in g_not_attached_files
+ *    As you can see g_not_attached_files consist from some hardcoded files and
+ *    files from ADDITIONAL_INFO_FILES_LIST.
+ *    Black list for attached files allows us to attach all of files added to
+ *    a problem directory by a user.
+ */
+#define INLINED_FILES_LIST\
+    FILENAME_ABRT_VERSION,\
+    FILENAME_RATING,\
+    FILENAME_KERNEL,\
+    FILENAME_CRASH_FUNCTION,\
+    FILENAME_CMDLINE,\
+    FILENAME_TAINTED_LONG
+
+/* Items we want to use in additional info */
+static const char *const g_additional_info_files[] = {
+    /* ! a bunch of file names */
+    INLINED_FILES_LIST,
+    NULL
+};
+
+/* Items we don't want to attach to bz */
+static const char *const g_not_attached_files[] = {
+    CD_DUMPDIR,
+    FILENAME_ANALYZER,
+    FILENAME_PID,
+    FILENAME_PWD,
+    FILENAME_ROOTDIR,
+    FILENAME_BINARY,
+    FILENAME_COREDUMP,
+    FILENAME_DUPHASH,
+    FILENAME_ARCHITECTURE,
+    FILENAME_OS_RELEASE,
+    FILENAME_OS_RELEASE_IN_ROOTDIR,
+    FILENAME_PACKAGE,
+    FILENAME_COMPONENT,
+    FILENAME_COMMENT,
+    FILENAME_HOSTNAME,
+    FILENAME_REASON,
+    FILENAME_UID,
+    FILENAME_REMOTE,
+    FILENAME_TAINTED,
+    FILENAME_TAINTED_SHORT,
+    FILENAME_VMCORE,
+    FILENAME_UUID,
+    FILENAME_COUNT,
+    FILENAME_REPORTED_TO,
+    FILENAME_NOT_REPORTABLE,
+    FILENAME_PKG_EPOCH,
+    FILENAME_PKG_NAME,
+    FILENAME_PKG_VERSION,
+    FILENAME_PKG_RELEASE,
+    FILENAME_PKG_ARCH,
+    FILENAME_REMOTE_RESULT,
+    FILENAME_USERNAME,
+    FILENAME_TIME,
+    FILENAME_EXECUTABLE,
+    /* ! a bunch of file names */
+    INLINED_FILES_LIST,
+    NULL
+};
+/******************************************************************************/
 
 struct bug_info *new_bug_info()
 {
@@ -415,6 +492,62 @@ struct bug_info *rhbz_bug_info(struct abrt_xmlrpc *ax, int bug_id)
     return bz;
 }
 
+/*
+ * Produces an optimal backtrace for bugzilla comment
+ */
+char *rhbz_get_backtrace_info(problem_data_t *problem_data, size_t max_text_size)
+{
+    const problem_item *item = get_problem_data_item_or_NULL(problem_data,
+                                                             FILENAME_BACKTRACE);
+
+    if (!item)
+        return NULL;
+
+    char *truncated = NULL;
+
+    if (strlen(item->content) >= max_text_size)
+    {
+        struct btp_location location;
+        btp_location_init(&location);
+
+        /* btp_backtrace_parse modifies the input parameter */
+        char *content = item->content;
+        struct btp_backtrace *backtrace = btp_backtrace_parse((const char **)&content, &location);
+
+        if (!backtrace)
+        {
+            log(_("Can't parse backtrace"));
+            return NULL;
+        }
+
+        /* Get optimized thread stack trace for 10 top most frames */
+        struct btp_thread *thread = btp_backtrace_get_optimized_thread(backtrace, 10);
+
+        btp_backtrace_free(backtrace);
+
+        if (!thread)
+        {
+            log(_("Can't find crash thread"));
+            return NULL;
+        }
+
+        /* Cannot be NULL, it dies on memory error */
+        struct btp_strbuf *bt = btp_strbuf_new();
+
+        btp_thread_append_to_str(thread, bt, true);
+
+        btp_thread_free(thread);
+
+        truncated = btp_strbuf_free_nobuf(bt);
+    }
+
+    char *bt = make_description_item_multiline(truncated ? "truncated backtrace" : FILENAME_BACKTRACE,
+                                               truncated ? truncated             : item->content);
+    free(truncated);
+
+    return bt;
+}
+
 /* suppress mail notify by {s:i} (nomail:1) (driven by flag) */
 int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
                  const char *release,
@@ -475,14 +608,39 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
     }
     char *status_whiteboard = xasprintf("abrt_hash:%s", duphash);
 
-    char *bz_dsc;
+    char *full_dsc = NULL;
     if (analyzer && !strcmp(analyzer, "Kerneloops"))
-        bz_dsc = make_description_koops(problem_data, CD_TEXT_ATT_SIZE_BZ);
+    {
+        char *bz_dsc = make_description_koops(problem_data, CD_TEXT_ATT_SIZE_BZ);
+        full_dsc = xasprintf("libreport version: "VERSION"\n%s", bz_dsc);
+        free(bz_dsc);
+    }
     else
-        bz_dsc = make_description_bz(problem_data, CD_TEXT_ATT_SIZE_BZ);
+    {
+        const char *comment      = get_problem_item_content_or_NULL(problem_data,
+                                                                FILENAME_COMMENT);
 
-    char *full_dsc = xasprintf("libreport version: "VERSION"\n%s", bz_dsc);
-    free(bz_dsc);
+        char *bz_dsc = make_description(problem_data, (char**)g_additional_info_files,
+                                        CD_TEXT_ATT_SIZE_BZ, MAKEDESC_SHOW_MULTILINE | MAKEDESC_WHITELIST);
+
+        char *backtrace = rhbz_get_backtrace_info(problem_data, CD_TEXT_ATT_SIZE_BZ);
+
+        /* Generating of a description according to the RH bugzilla default format:
+         * https://bugzilla.redhat.com/enter_bug.cgi?product=Fedora
+         */
+        full_dsc = xasprintf("Description of problem:\n%s\n\n"
+                             "Version-Release number of selected component:\n%s\n\n"
+                             "Additional info:\n"
+                             "libreport version: "VERSION"\n%s\n"
+                             "%s",
+                             comment ? comment : "",
+                             package,
+                             bz_dsc,
+                             backtrace ? backtrace : "");
+
+        free(backtrace);
+        free(bz_dsc);
+    }
 
     char *product = NULL;
     char *version = NULL;
@@ -600,38 +758,40 @@ int rhbz_attach_fd(struct abrt_xmlrpc *ax, const char *filename,
 }
 
 /* suppress mail notify by {s:i} (nomail:1) (driven by flag) */
-int rhbz_attach_big_files(struct abrt_xmlrpc *ax, const char *bug_id,
+int rhbz_attach_files(struct abrt_xmlrpc *ax, const char *bug_id,
                      problem_data_t *problem_data, int flags)
 {
     func_entry();
+
+    const char *analyzer = get_problem_item_content_or_NULL(problem_data,
+                                                            FILENAME_ANALYZER);
+    /* Do not attach anything if analyzer is Kerneloops */
+    if (!strcmp(analyzer, "Kerneloops"))
+        return 0;
 
     GHashTableIter iter;
     char *name;
     struct problem_item *value;
 
-    const char *analyzer = get_problem_item_content_or_NULL(problem_data,
-                                                            FILENAME_ANALYZER);
-
     g_hash_table_iter_init(&iter, problem_data);
     while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
+         /* The not attached list contains files that are used in the description or
+         * in the bug fields and the files which nobody is interested in.
+         */
+        if (is_in_string_list(name, (char**)g_not_attached_files))
+            continue;
+
         if (value->flags & CD_FLAG_TXT)
         {
             const char *content = value->content;
-            if (!strcmp(analyzer, "Kerneloops") && !strcmp(name, FILENAME_BACKTRACE))
+            const unsigned len = strlen(content);
+
+            /* For standard bugs, do not attach backtrace shorter than CD_TEXT_ATT_SIZE_BZ */
+            if (!strcmp(name, FILENAME_BACKTRACE) && len < CD_TEXT_ATT_SIZE_BZ)
                 continue;
 
-            unsigned len = strlen(content);
-
-            // We were special-casing FILENAME_BACKTRACE here, but karel says
-            // he can retrieve it in inlined form from comments too.
-            if (len > CD_TEXT_ATT_SIZE_BZ /*|| (strcmp(name, FILENAME_BACKTRACE) == 0)*/)
-            {
-                /* This text item wasn't added in comments, it is too big
-                 * for that. Attach it as a file.
-                 */
-                rhbz_attach_blob(ax, name, bug_id, content, len, flags);
-            }
+            rhbz_attach_blob(ax, name, bug_id, content, len, flags);
         }
         if ((flags & RHBZ_ATTACH_BINARY_FILES) && (value->flags & CD_FLAG_BIN))
         {
