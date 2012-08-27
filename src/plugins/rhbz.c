@@ -617,29 +617,32 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
     }
     else
     {
-        const char *comment      = get_problem_item_content_or_NULL(problem_data,
-                                                                FILENAME_COMMENT);
-
-        char *bz_dsc = make_description(problem_data, (char**)g_additional_info_files,
-                                        CD_TEXT_ATT_SIZE_BZ, MAKEDESC_SHOW_MULTILINE | MAKEDESC_WHITELIST);
-
-        char *backtrace = rhbz_get_backtrace_info(problem_data, CD_TEXT_ATT_SIZE_BZ);
-
         /* Generating of a description according to the RH bugzilla default format:
          * https://bugzilla.redhat.com/enter_bug.cgi?product=Fedora
          */
-        full_dsc = xasprintf("Description of problem:\n%s\n\n"
-                             "Version-Release number of selected component:\n%s\n\n"
-                             "Additional info:\n"
-                             "libreport version: "VERSION"\n%s\n"
-                             "%s",
-                             comment ? comment : "",
-                             package,
-                             bz_dsc,
-                             backtrace ? backtrace : "");
+        struct strbuf *tmp_full_dsc = strbuf_new();
 
-        free(backtrace);
+        const char *comment      = get_problem_item_content_or_NULL(problem_data,
+                                                                FILENAME_COMMENT);
+        if (comment)
+            strbuf_append_strf(tmp_full_dsc, "Description of problem:\n%s\n\n", comment);
+
+        if (package)
+            strbuf_append_strf(tmp_full_dsc, "Version-Release number of selected component:\n%s\n\n", package);
+
+        char *bz_dsc = make_description(problem_data, (char**)g_additional_info_files,
+                CD_TEXT_ATT_SIZE_BZ, MAKEDESC_SHOW_MULTILINE | MAKEDESC_WHITELIST);
+        strbuf_append_strf(tmp_full_dsc, "Additional info:\nlibreport version: "VERSION"\n%s\n", bz_dsc);
         free(bz_dsc);
+
+        char *backtrace = rhbz_get_backtrace_info(problem_data, CD_TEXT_ATT_SIZE_BZ);
+        if (backtrace)
+        {
+            strbuf_append_str(tmp_full_dsc, backtrace);
+            free(backtrace);
+        }
+
+        full_dsc = strbuf_free_nobuf(tmp_full_dsc);
     }
 
     char *product = NULL;
