@@ -707,6 +707,9 @@ bool make_dir_recursive(char *dir, mode_t dir_mode);
 #define FILENAME_TAINTED_LONG  "kernel_tainted_long"
 #define FILENAME_VMCORE       "vmcore"
 #define FILENAME_KERNEL_LOG   "kernel_log"
+// File created by createAlertSignature() from libreport's python module
+// The file should contain a description of an alert
+#define FILENAME_DESCRIPTION  "description"
 
 #define FILENAME_UUID         "uuid"
 #define FILENAME_COUNT        "count"
