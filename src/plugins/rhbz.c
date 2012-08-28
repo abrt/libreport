@@ -17,6 +17,14 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+/* Bugzilla API doc:
+ * http://www.bugzilla.org/docs/4.2/en/html/api/Bugzilla/WebService.html
+ * http://www.bugzilla.org/docs/tip/en/html/api/Bugzilla/WebService.html
+ *
+ * To make libxmlrpc print debug info to stdout (stderr?),
+ * export XMLRPC_TRACE_XML=1
+ */
+
 #include "internal_libreport.h"
 #include "rhbz.h"
 #include <btparser/location.h>
@@ -693,9 +701,9 @@ int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *filename,
     char *encoded64 = encode_base64(data, data_len);
     char *fn = xasprintf("File: %s", filename);
     xmlrpc_value* result;
-    int nomail_notify = IS_NOMAIL_NOTIFY(flags);
+    int nomail_notify = !!IS_NOMAIL_NOTIFY(flags);
 
-    result= abrt_xmlrpc_call(ax, "bugzilla.addAttachment", "(s{s:s,s:s,s:s,s:s,s:i})",
+    result = abrt_xmlrpc_call(ax, "bugzilla.addAttachment", "(s{s:s,s:s,s:s,s:s,s:i})",
                              bug_id,
                              "description", fn,
                              "filename", filename,
@@ -861,13 +869,41 @@ void rhbz_mail_to_cc(struct abrt_xmlrpc *ax, int bug_id, const char *mail, int f
     func_entry();
 
     xmlrpc_value *result;
-    int nomail_notify = IS_NOMAIL_NOTIFY(flags);
+    int nomail_notify = !!IS_NOMAIL_NOTIFY(flags);
+#if 0 /* Obsolete API */
     result = abrt_xmlrpc_call(ax, "Bug.update", "({s:i,s:{s:(s),s:i}})",
-                              "ids", bug_id, "updates", "add_cc", mail,
-                              "nomail", nomail_notify);
-
+                              "ids", bug_id,
+                              "updates", "add_cc", mail,
+                                         "nomail", nomail_notify
+    );
+#endif
+    /* Bugzilla 4.0+ uses this API: */
+    result = abrt_xmlrpc_call(ax, "Bug.update", "({s:i,s:{s:(s),s:i}})",
+                              "ids", bug_id,
+                              "cc", "add", mail,
+                                    "nomail", nomail_notify
+    );
     if (result)
         xmlrpc_DECREF(result);
+
+    /* TODO: check that result does indicate that CC was updated.
+     * The structure I see from Bugzilla 4.2:
+     * <struct>
+     * <member><name>bugs</name><value>
+     *   <array><data><value><struct>
+     *     <member><name>changes</name><value><struct>
+     *       <member><name>cc</name><value><struct>
+     *         <member><name>removed</name><value><string /></value></member>
+     *         <member><name>added</name><value><string>USER@HOST.COM</string></value></member>
+     *         </struct></value></member>
+     *       </struct></value></member>
+     *     <member><name>last_change_time</name><value><dateTime.iso8601>20120828T11:09:04</dateTime.iso8601></value></member>
+     *     <member><name>id</name><value><int>NNNNNNN</int></value></member>
+     *     <member><name>alias</name><value><array><data /></array></value></member>
+     *     </struct></value></data>
+     *   </array></value>
+     * </member></struct>
+     */
 }
 
 void rhbz_add_comment(struct abrt_xmlrpc *ax, int bug_id, const char *comment,
@@ -875,8 +911,8 @@ void rhbz_add_comment(struct abrt_xmlrpc *ax, int bug_id, const char *comment,
 {
     func_entry();
 
-    int private = IS_PRIVATE(flags);
-    int nomail_notify = IS_NOMAIL_NOTIFY(flags);
+    int private = !!IS_PRIVATE(flags);
+    int nomail_notify = !!IS_NOMAIL_NOTIFY(flags);
 
     xmlrpc_value *result;
     result = abrt_xmlrpc_call(ax, "Bug.add_comment", "({s:i,s:s,s:b,s:i})",
