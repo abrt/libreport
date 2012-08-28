@@ -45,21 +45,25 @@ static void load_ureport_server_config(struct ureport_server_config *config)
     config->ur_ssl_verify = environ ? string_to_bool(environ) : config->ur_ssl_verify;
 }
 
-
-enum response_type
-{
-    UREPORT_SERVER_RESP_UNKNOWN_TYPE,
-    UREPORT_SERVER_RESP_KNOWN,
-    UREPORT_SERVER_RESP_ERROR,
-};
-
 struct ureport_server_response {
-    enum response_type type;
-    const char *value;
-    const char *message;
-    const char *bthash;
+    bool is_error;
+    char *value;
+    char *message;
+    char *bthash;
     GList *reported_to_list;
 };
+
+void free_ureport_server_response(struct ureport_server_response *resp)
+{
+    if (!resp)
+        return;
+
+    g_list_free_full(resp->reported_to_list, g_free);
+    free(resp->bthash);
+    free(resp->message);
+    free(resp->value);
+    free(resp);
+}
 
 /* reported_to json element should be a list of structures
 { "reporter": "Bugzilla",
@@ -127,59 +131,115 @@ static GList *parse_reported_to_from_json_list(struct json_object *list)
  * {"response":"true"}
  * {"response":"false"}
  */
-static bool ureport_server_parse_json(json_object *json, struct ureport_server_response *out_response)
+static struct ureport_server_response *ureport_server_parse_json(json_object *json)
 {
     json_object *obj = json_object_object_get(json, "error");
 
     if (obj)
     {
-        out_response->type = UREPORT_SERVER_RESP_ERROR;
-        out_response->value = json_object_to_json_string(obj);
-        return true;
+        struct ureport_server_response *out_response = xzalloc(sizeof(*out_response));
+        out_response->is_error = true;
+        out_response->value = xstrdup(json_object_to_json_string(obj));
+        return out_response;
     }
 
     obj = json_object_object_get(json, "result");
 
     if (obj)
     {
-        out_response->type = UREPORT_SERVER_RESP_KNOWN;
-        out_response->value = json_object_get_string(obj);
+        struct ureport_server_response *out_response = xzalloc(sizeof(*out_response));
+        out_response->value = xstrdup(json_object_get_string(obj));
 
         json_object *message = json_object_object_get(json, "message");
         if (message)
-            out_response->message = json_object_get_string(message);
+            out_response->message = xstrdup(json_object_get_string(message));
 
         json_object *bthash = json_object_object_get(json, "bthash");
         if (bthash)
-            out_response->bthash = json_object_get_string(bthash);
+            out_response->bthash = xstrdup(json_object_get_string(bthash));
 
         json_object *reported_to_list = json_object_object_get(json, "reported_to");
         if (reported_to_list)
             out_response->reported_to_list = parse_reported_to_from_json_list(reported_to_list);
 
-        return true;
+        return out_response;
     }
 
-    out_response->type = UREPORT_SERVER_RESP_UNKNOWN_TYPE;
-    return false;
+    return NULL;
 }
 
-static bool check_response_statuscode(post_state_t *post_state, 
-                                      const char *url)
+static struct ureport_server_response *get_server_response(post_state_t *post_state)
 {
-    if (post_state->http_resp_code != 202)
+    if (post_state->errmsg[0] !=  '\0')
     {
-        char *errmsg = post_state->curl_error_msg;
-        if (errmsg && *errmsg)
-            error_msg("%s '%s'", errmsg, url);
-        else
-            error_msg("Unexpected HTTP status code: %d",
-                      post_state->http_resp_code);
-
-        return false;
+        error_msg("%s", post_state->errmsg);
+        return NULL;
     }
 
-    return true;
+    if (post_state->http_resp_code == 404)
+    {
+        error_msg(_("Can't get server response because of invalid url"));
+        return NULL;
+    }
+
+    json_object *const json = json_tokener_parse(post_state->body);
+
+    if (is_error(json))
+    {
+        error_msg(_("Unable to parse response from ureport server"));
+        json_object_put(json);
+        return NULL;
+    }
+
+    struct ureport_server_response *response = ureport_server_parse_json(json);
+    json_object_put(json);
+
+    if (post_state->http_resp_code == 202)
+    {
+        if (!response)
+            error_msg(_("Server response data has invalid format"));
+        else if (response->is_error)
+        {
+            /* HTTP CODE 202 means that call was successful but the response */
+            /* has an error message */
+            error_msg(_("Server response type mismatch"));
+            free_ureport_server_response(response);
+            response = NULL;
+        }
+    }
+    else if (!response || !response->is_error)
+    {
+        /* can't print better error message */
+        error_msg(_("Unexpected HTTP status code: %d"), post_state->http_resp_code);
+        free_ureport_server_response(response);
+        response = NULL;
+    }
+
+    return response;
+}
+
+static bool perform_attach(struct ureport_server_config *config, const char *ureport_hash, int rhbz_bug)
+{
+    char *dest_url = xasprintf("%s%s", config->ur_url, ATTACH_URL_SFX);
+    const char *old_url = config->ur_url;
+    config->ur_url = dest_url;
+    post_state_t *post_state = ureport_attach_rhbz(ureport_hash, rhbz_bug, config);
+    config->ur_url = old_url;
+    free(dest_url);
+
+    struct ureport_server_response *resp = get_server_response(post_state);
+    free_post_state(post_state);
+    /* don't use str_bo_bool() because we require "true" string */
+    const int result = !resp || resp->is_error || strcmp(resp->value,"true") != 0;
+
+    if (resp && resp->is_error)
+    {
+        VERB1 error_msg(_("Server side error: '%s'"), resp->value);
+    }
+
+    free_ureport_server_response(resp);
+
+    return result;
 }
 
 int main(int argc, char **argv)
@@ -226,15 +286,7 @@ int main(int argc, char **argv)
     /* we either need both -b & -a or none of them */
     if (ureport_hash && rhbz_bug > 0)
     {
-        char *dest_url = xasprintf("%s%s", config.ur_url, ATTACH_URL_SFX);
-        config.ur_url = dest_url;
-        post_state = ureport_attach_rhbz(ureport_hash, rhbz_bug, &config);
-        const int result = !check_response_statuscode(post_state, dest_url);
-
-        free_post_state(post_state);
-        free(dest_url);
-
-        return result;
+        return perform_attach(&config, ureport_hash, rhbz_bug);
     }
     else if (ureport_hash && rhbz_bug <= 0)
         error_msg_and_die(_("You need to specify bug ID to attach."));
@@ -274,16 +326,10 @@ int main(int argc, char **argv)
 
         free_report_result(bz_result);
 
-        char *dest_url = xasprintf("%s%s", config.ur_url, ATTACH_URL_SFX);
-        config.ur_url = dest_url;
-        post_state = ureport_attach_rhbz(bthash, bugid, &config);
+        const int result = perform_attach(&config, bthash, bugid);
+
         free(bthash);
-
-        int ret = !check_response_statuscode(post_state, dest_url);
-        free_post_state(post_state);
-        free(dest_url);
-
-        return ret;
+        return result;
     }
 
     /* -b, -a nor -r were specified - upload uReport from dump_dir */
@@ -295,96 +341,54 @@ int main(int argc, char **argv)
     char *dest_url = xasprintf("%s%s", config.ur_url, REPORT_URL_SFX);
     config.ur_url = dest_url;
     post_state = post_ureport(pd, &config);
+    free(dest_url);
     problem_data_free(pd);
 
     int ret = 1; /* return 1 by default */
 
-    if (!check_response_statuscode(post_state, dest_url))
-        /* check_response_statuscode() already logged an error message */
-        goto err;
+    struct ureport_server_response *response = get_server_response(post_state);
 
-    json_object *const json = json_tokener_parse(post_state->body);
-
-    if (is_error(json))
-    {
-        error_msg("fatal: unable to parse response from ureport server");
-        goto err;
-    }
-
-    struct ureport_server_response response = {
-        .type=UREPORT_SERVER_RESP_UNKNOWN_TYPE,
-        .value=NULL,
-        .message=NULL,
-        .bthash=NULL,
-    };
-
-    const bool is_valid_response = ureport_server_parse_json(json, &response);
-
-    if (!is_valid_response)
-    {
-        error_msg("fatal: wrong format of response from ureport server");
+    if (!response)
         goto format_err;
-    }
 
-    switch (response.type)
+    if (!response->is_error)
     {
-        case UREPORT_SERVER_RESP_KNOWN:
-            VERB1 log("is known: %s", response.value);
-            ret = 0;
+        VERB1 log("is known: %s", response->value);
+        ret = 0;
 
-            if (response.bthash)
-            {
-                dd = dd_opendir(dump_dir_path, /* flags */ 0);
-                if (!dd)
-                    xfunc_die();
+        if (response->bthash)
+        {
+            dd = dd_opendir(dump_dir_path, /* flags */ 0);
+            if (!dd)
+                xfunc_die();
 
-                char *msg = xasprintf("uReport: BTHASH=%s", response.bthash);
-                add_reported_to(dd, msg);
-                free(msg);
+            char *msg = xasprintf("uReport: BTHASH=%s", response->bthash);
+            add_reported_to(dd, msg);
+            free(msg);
 
-                if (response.reported_to_list)
-                {
-                    GList *elem = response.reported_to_list;
-                    while (elem)
-                    {
-                        add_reported_to(dd, elem->data);
-                        free(elem->data);
-                        elem = g_list_next(elem);
-                    }
+            for(GList *e = response->reported_to_list; e; e = g_list_next(e))
+                add_reported_to(dd, e->data);
 
-                    g_list_free(response.reported_to_list);
-                }
+            dd_close(dd);
+        }
 
-                dd_close(dd);
-            }
-
-            /* If a reported problem is not known then emit NEEDMORE */
-            if (strcmp("true", response.value) == 0)
-            {
-                log("This problem has already been reported.");
-                if (response.message)
-                    log(response.message);
-                log("THANKYOU");
-            }
-            break;
-        case UREPORT_SERVER_RESP_ERROR:
-            VERB1 log("server side error: %s", response.value);
-            ret = 1; /* just to be sure */
-            break;
-        case UREPORT_SERVER_RESP_UNKNOWN_TYPE:
-            error_msg("invalid server response: %s", response.value);
-            ret = 1; /* just to be sure */
-            break;
-        default:
-            error_msg("reporter internal error: missing handler for response type");
-            ret = 1; /* just to be sure */
-            break;
+        /* If a reported problem is not known then emit NEEDMORE */
+        if (strcmp("true", response->value) == 0)
+        {
+            log("This problem has already been reported.");
+            if (response->message)
+                log(response->message);
+            log("THANKYOU");
+        }
     }
+    else
+    {
+        VERB1 log("server side error: %s", response->value);
+    }
+
+    free_ureport_server_response(response);
 
 format_err:
-    json_object_put(json);
-err:
-    free(dest_url);
     free_post_state(post_state);
 
     return ret;
