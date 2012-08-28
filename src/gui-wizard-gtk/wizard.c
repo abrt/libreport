@@ -475,7 +475,7 @@ static void append_to_textview(GtkTextView *tv, const char *str)
 
     /* Ensure we insert text at the end */
     GtkTextIter text_iter;
-    gtk_text_buffer_get_iter_at_offset(tb, &text_iter, -1);
+    gtk_text_buffer_get_end_iter(tb, &text_iter);
     gtk_text_buffer_place_cursor(tb, &text_iter);
 
     /* Deal with possible broken Unicode */
@@ -488,14 +488,207 @@ static void append_to_textview(GtkTextView *tv, const char *str)
         gtk_text_buffer_insert_at_cursor(tb, buf, len);
         str = end + 1;
     }
-    gtk_text_buffer_insert_at_cursor(tb, str, strlen(str));
+
+    gtk_text_buffer_get_end_iter(tb, &text_iter);
+
+    const char *last = str;
+    GList *urls = find_url_tokens(str);
+    for (GList *u = urls; u; u = g_list_next(u))
+    {
+        const struct url_token *const t = (struct url_token *)u->data;
+        if (last < t->start)
+            gtk_text_buffer_insert(tb, &text_iter, last, t->start - last);
+
+        GtkTextTag *tag;
+        tag = gtk_text_buffer_create_tag (tb, NULL, "foreground", "blue",
+                                          "underline", PANGO_UNDERLINE_SINGLE, NULL);
+        char *url = xstrndup(t->start, t->len);
+        g_object_set_data (G_OBJECT (tag), "url", url);
+
+        gtk_text_buffer_insert_with_tags(tb, &text_iter, url, -1, tag, NULL);
+
+        last = t->start + t->len;
+    }
+
+    g_list_free_full(urls, g_free);
+
+    if (last[0] != '\0')
+        gtk_text_buffer_insert(tb, &text_iter, last, strlen(last));
 
     /* Scroll so that the end of the log is visible */
-    gtk_text_buffer_get_iter_at_offset(tb, &text_iter, -1);
     gtk_text_view_scroll_to_iter(tv, &text_iter,
                 /*within_margin:*/ 0.0, /*use_align:*/ FALSE, /*xalign:*/ 0, /*yalign:*/ 0);
 }
 
+/* Looks at all tags covering the position of iter in the text view,
+ * and if one of them is a link, follow it by showing the page identified
+ * by the data attached to it.
+ */
+static void open_browse_if_link(GtkWidget *text_view, GtkTextIter *iter)
+{
+    GSList *tags = NULL, *tagp = NULL;
+
+    tags = gtk_text_iter_get_tags (iter);
+    for (tagp = tags;  tagp != NULL;  tagp = tagp->next)
+    {
+        GtkTextTag *tag = tagp->data;
+        const char *url = g_object_get_data (G_OBJECT (tag), "url");
+
+        if (url != 0)
+        {
+            if (fork() != 0)
+            {
+                execlp("gnome-open", "gnome-open", url, NULL);
+                execlp("xdg-open", "xdg-open", url, NULL);
+                exit(1);
+            }
+            break;
+        }
+    }
+
+    if (tags)
+        g_slist_free (tags);
+}
+
+/* Links can be activated by pressing Enter.
+ */
+static gboolean key_press_event(GtkWidget *text_view, GdkEventKey *event)
+{
+    GtkTextIter iter;
+    GtkTextBuffer *buffer;
+
+    switch (event->keyval)
+    {
+        case GDK_KEY_Return:
+        case GDK_KEY_KP_Enter:
+            buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW (text_view));
+            gtk_text_buffer_get_iter_at_mark(buffer, &iter,
+                    gtk_text_buffer_get_insert(buffer));
+            open_browse_if_link(text_view, &iter);
+            break;
+
+        default:
+            break;
+    }
+
+    return FALSE;
+}
+
+/* Links can also be activated by clicking.
+ */
+static gboolean event_after(GtkWidget *text_view, GdkEvent *ev)
+{
+    GtkTextIter start, end, iter;
+    GtkTextBuffer *buffer;
+    GdkEventButton *event;
+    gint x, y;
+
+    if (ev->type != GDK_BUTTON_RELEASE)
+        return FALSE;
+
+    event = (GdkEventButton *)ev;
+
+    if (event->button != GDK_BUTTON_PRIMARY)
+        return FALSE;
+
+    buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_view));
+
+    /* we shouldn't follow a link if the user has selected something */
+    gtk_text_buffer_get_selection_bounds(buffer, &start, &end);
+    if (gtk_text_iter_get_offset(&start) != gtk_text_iter_get_offset(&end))
+        return FALSE;
+
+    gtk_text_view_window_to_buffer_coords(GTK_TEXT_VIEW (text_view),
+                                          GTK_TEXT_WINDOW_WIDGET,
+                                          event->x, event->y, &x, &y);
+
+    gtk_text_view_get_iter_at_location(GTK_TEXT_VIEW (text_view), &iter, x, y);
+
+    open_browse_if_link(text_view, &iter);
+
+    return FALSE;
+}
+
+static gboolean hovering_over_link = FALSE;
+static GdkCursor *hand_cursor = NULL;
+static GdkCursor *regular_cursor = NULL;
+
+/* Looks at all tags covering the position (x, y) in the text view,
+ * and if one of them is a link, change the cursor to the "hands" cursor
+ * typically used by web browsers.
+ */
+static void set_cursor_if_appropriate(GtkTextView *text_view,
+                                      gint x,
+                                      gint y)
+{
+    GSList *tags = NULL, *tagp = NULL;
+    GtkTextIter iter;
+    gboolean hovering = FALSE;
+
+    gtk_text_view_get_iter_at_location(text_view, &iter, x, y);
+
+    tags = gtk_text_iter_get_tags(&iter);
+    for (tagp = tags; tagp != NULL; tagp = tagp->next)
+    {
+        GtkTextTag *tag = tagp->data;
+        gpointer url = g_object_get_data(G_OBJECT (tag), "url");
+
+        if (url != 0)
+        {
+            hovering = TRUE;
+            break;
+        }
+    }
+
+    if (hovering != hovering_over_link)
+    {
+        hovering_over_link = hovering;
+
+        if (hovering_over_link)
+            gdk_window_set_cursor(gtk_text_view_get_window(text_view, GTK_TEXT_WINDOW_TEXT), hand_cursor);
+        else
+            gdk_window_set_cursor(gtk_text_view_get_window(text_view, GTK_TEXT_WINDOW_TEXT), regular_cursor);
+    }
+
+    if (tags)
+        g_slist_free (tags);
+}
+
+
+/* Update the cursor image if the pointer moved.
+ */
+static gboolean motion_notify_event(GtkWidget *text_view, GdkEventMotion *event)
+{
+    gint x, y;
+
+    gtk_text_view_window_to_buffer_coords(GTK_TEXT_VIEW(text_view),
+                                          GTK_TEXT_WINDOW_WIDGET,
+                                          event->x, event->y, &x, &y);
+
+    set_cursor_if_appropriate(GTK_TEXT_VIEW(text_view), x, y);
+    return FALSE;
+}
+
+/* Also update the cursor image if the window becomes visible
+ * (e.g. when a window covering it got iconified).
+ */
+static gboolean visibility_notify_event(GtkWidget *text_view, GdkEventVisibility *event)
+{
+    gint wx, wy, bx, by;
+
+    GdkWindow *win = gtk_text_view_get_window(GTK_TEXT_VIEW(text_view), GTK_TEXT_WINDOW_TEXT);
+    GdkDeviceManager *device_manager = gdk_display_get_device_manager(gdk_window_get_display (win));
+    GdkDevice *pointer = gdk_device_manager_get_client_pointer(device_manager);
+    gdk_window_get_device_position(gtk_widget_get_window(text_view), pointer, &wx, &wy, NULL);
+
+    gtk_text_view_window_to_buffer_coords(GTK_TEXT_VIEW(text_view),
+                                          GTK_TEXT_WINDOW_WIDGET,
+                                          wx, wy, &bx, &by);
+
+    set_cursor_if_appropriate(GTK_TEXT_VIEW (text_view), bx, by);
+
+    return FALSE;
+}
 
 /* event_gui_data_t */
 
@@ -2679,6 +2872,14 @@ void create_assistant(void)
     g_signal_connect(g_btn_add_file, "clicked", G_CALLBACK(on_btn_add_file), NULL);
 
     g_signal_connect(g_search_entry_bt, "changed", G_CALLBACK(search_timeout), NULL);
+
+    g_signal_connect (g_tv_event_log, "key-press-event", G_CALLBACK (key_press_event), NULL);
+    g_signal_connect (g_tv_event_log, "event-after", G_CALLBACK (event_after), NULL);
+    g_signal_connect (g_tv_event_log, "motion-notify-event", G_CALLBACK (motion_notify_event), NULL);
+    g_signal_connect (g_tv_event_log, "visibility-notify-event", G_CALLBACK (visibility_notify_event), NULL);
+
+    hand_cursor = gdk_cursor_new (GDK_HAND2);
+    regular_cursor = gdk_cursor_new (GDK_XTERM);
 
     /* switch to right starting page */
     on_page_prepare(g_assistant, gtk_notebook_get_nth_page(g_assistant, 0), NULL);

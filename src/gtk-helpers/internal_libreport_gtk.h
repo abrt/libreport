@@ -49,6 +49,16 @@ int show_event_config_dialog(const char *event_name, GtkWindow *parent);
 
 char * tag_url(const char* line, const char* prefix);
 
+#define url_token libreport_url_token
+struct url_token
+{
+    const char *start;
+    int len;
+};
+
+#define find_url_tokens libreport_find_url_tokens
+GList *find_url_tokens(const char *line);
+
 #ifdef __cplusplus
 }
 #endif
