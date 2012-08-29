@@ -31,6 +31,11 @@
 # define GDK_KEY_KP_Delete GDK_KP_Delete
 #endif
 
+/* For Fedora 16 and gtk3 < 3.4.4*/
+#ifndef GDK_BUTTON_PRIMARY
+# define GDK_BUTTON_PRIMARY 1
+#endif
+
 typedef struct event_gui_data_t
 {
     char *event_name;
