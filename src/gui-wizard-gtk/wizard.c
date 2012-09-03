@@ -2314,8 +2314,6 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
             current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
             goto again;
         }
-        if (!problem_data_get_content_or_NULL(g_cd, FILENAME_BACKTRACE))
-            goto again; /* no backtrace, skip this page */
     }
 
 #if 0
