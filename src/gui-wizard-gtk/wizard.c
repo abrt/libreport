@@ -320,14 +320,18 @@ static void update_window_title(void)
     free(title);
 }
 
+/*
+ * We don't allow users to remember 'No' answer therefore if 'Don't ask me again' box is
+ * checked we have to disable 'No' button
+ */
 static void on_toggle_ask_yes_no_save_result_cb(GtkToggleButton *tb, gpointer user_data)
 {
-    set_user_setting(user_data, gtk_toggle_button_get_active(tb) ? "no" : "yes");
+    gtk_widget_set_sensitive(GTK_WIDGET(user_data), !gtk_toggle_button_get_active(tb));
 }
 
 /*
  * Function shows a dialog with 'Yes/No' buttons and a check box allowing to
- * remeber the answer. The answer is stored in configuration file under
+ * remember the answer. The answer is stored in configuration file under
  * 'option_name' key.
  */
 static bool ask_yes_no_save_result(const char *message, const char *option_name)
@@ -335,15 +339,19 @@ static bool ask_yes_no_save_result(const char *message, const char *option_name)
     const char *ask_result = get_user_setting(option_name);
 
     if (ask_result && string_to_bool(ask_result) == false)
+        /* Do you want to be asked? -> No, I don't. Do whatever you want */
         return true;
 
     GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
                                                GTK_DIALOG_DESTROY_WITH_PARENT,
                                                GTK_MESSAGE_QUESTION,
-                                               GTK_BUTTONS_YES_NO,
+                                               GTK_BUTTONS_NONE,
                                                "%s", message);
 
-    gint response = GTK_RESPONSE_CANCEL;
+    gtk_dialog_add_button(GTK_DIALOG(dialog), GTK_STOCK_YES, GTK_RESPONSE_YES);
+    GtkWidget *no_button = gtk_dialog_add_button(GTK_DIALOG(dialog), GTK_STOCK_NO, GTK_RESPONSE_NO);
+
+    gint response = GTK_RESPONSE_NO;
     g_signal_connect(G_OBJECT(dialog), "response",
                      G_CALLBACK(save_dialog_response), &response);
 
@@ -351,14 +359,17 @@ static bool ask_yes_no_save_result(const char *message, const char *option_name)
     gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))),
                        ask_yes_no_cb, TRUE, TRUE, 0);
     g_signal_connect(ask_yes_no_cb, "toggled",
-                     G_CALLBACK(on_toggle_ask_yes_no_save_result_cb), (gpointer)option_name);
+                     G_CALLBACK(on_toggle_ask_yes_no_save_result_cb), (gpointer)no_button);
 
-    /* check it by default if it's shown for the first time */
-    if (!ask_result)
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ask_yes_no_cb), TRUE);
+    /* Don't check the box by default. If the box is checked the 'No' button is disabled and
+     * we don't want to force users to click on 'Yes' button. */
 
     gtk_widget_show(ask_yes_no_cb);
     gtk_dialog_run(GTK_DIALOG(dialog));
+
+    /* the box is checked -> Don't ask me again and my response is always 'Yes' */
+    set_user_setting(option_name, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ask_yes_no_cb)) ? "no" : "yes");
+
     gtk_widget_destroy(dialog);
 
     return response == GTK_RESPONSE_YES;
