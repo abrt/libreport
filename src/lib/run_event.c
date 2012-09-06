@@ -126,17 +126,23 @@ static GList *load_rule_list(GList *rule_list,
         return rule_list;
     }
 
+    /* Used only for better warning message */
+    int line_counter = 0;
     /* Read and remember rules */
     char *next_line = xmalloc_fgetline(conffile);
     while (next_line)
     {
         /* Read and concatenate all lines in a rule */
         char *line = next_line;
+        ++line_counter;
+
         while (1)
         {
             next_line = xmalloc_fgetline(conffile);
             if (!next_line || !isblank(next_line[0]))
                 break;
+
+            ++line_counter;
             char *old_line = line;
             line = xasprintf("%s\n%s", line, next_line);
             free(old_line);
@@ -206,6 +212,9 @@ static GList *load_rule_list(GList *rule_list,
             /* Go to next word */
             p = skip_whitespace(end_word);
         } /* end of word loop */
+
+        if (cur_rule->conditions == NULL)
+            log("%s:%d: warning: command without conditions, this command will be executed for all events", conf_file_name, line_counter);
 
         VERB1 log("Adding '%s'", p);
         cur_rule->command = xstrdup(p);
