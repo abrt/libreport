@@ -416,7 +416,9 @@ void show_error_as_msgbox(const char *msg)
 static void load_text_to_text_view(GtkTextView *tv, const char *name)
 {
     /* Add to set of loaded files */
-    g_hash_table_insert(g_loaded_texts, (gpointer)name, (gpointer)1);
+    /* a key_destroy_func() is provided therefore if the key for name already exists */
+    /* a result of xstrdup() is freed */
+    g_hash_table_insert(g_loaded_texts, (gpointer)xstrdup(name), (gpointer)1);
 
     GtkTextBuffer *tb = gtk_text_view_get_buffer(tv);
 
@@ -2798,7 +2800,7 @@ static void assistant_quit_cb(void *obj, void *data)
 
 void create_assistant(void)
 {
-    g_loaded_texts = g_hash_table_new(g_str_hash, g_str_equal);
+    g_loaded_texts = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 
     g_expert_mode = !g_auto_event_list;
 
