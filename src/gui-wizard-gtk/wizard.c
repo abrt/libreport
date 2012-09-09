@@ -766,11 +766,11 @@ static void tv_details_row_activated(
     arg[1] = concat_path_file(g_dump_dir_name, item_name);
     arg[2] = NULL;
 
-    g_spawn_sync(NULL, arg, NULL,
-                 G_SPAWN_SEARCH_PATH | G_SPAWN_STDOUT_TO_DEV_NULL,
-                 NULL, NULL, NULL, NULL, &exitcode, NULL);
+    const gboolean spawn_ret = g_spawn_sync(NULL, arg, NULL,
+                                 G_SPAWN_SEARCH_PATH | G_SPAWN_STDOUT_TO_DEV_NULL,
+                                 NULL, NULL, NULL, NULL, &exitcode, NULL);
 
-    if (exitcode != EXIT_SUCCESS)
+    if (spawn_ret == FALSE || exitcode != EXIT_SUCCESS)
     {
         GtkWidget *dialog = gtk_dialog_new_with_buttons(_("View/edit a text file"),
             GTK_WINDOW(g_wnd_assistant),
