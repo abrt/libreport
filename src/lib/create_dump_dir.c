@@ -18,13 +18,14 @@
 */
 
 #include "internal_libreport.h"
+#include <errno.h>
 
 #define NEW_PD_SUFFIX ".new"
 
-static struct dump_dir *try_dd_create(const char *base_dir_name, const char *dir_name)
+static struct dump_dir *try_dd_create(const char *base_dir_name, const char *dir_name, uid_t uid)
 {
     char *path = concat_path_file(base_dir_name, dir_name);
-    struct dump_dir *dd = dd_create(path, (uid_t)-1L, 0640);
+    struct dump_dir *dd = dd_create(path, uid, 0640);
     free(path);
     return dd;
 }
@@ -39,17 +40,35 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
         return NULL;
     }
 
+    uid_t uid = (uid_t)-1L;
+    char *uid_str = problem_data_get_content_or_NULL(problem_data, FILENAME_UID);
+
+    if (uid_str)
+    {
+        char *endptr;
+        errno = 0;
+        long val = strtol(uid_str, &endptr, 10);
+
+        if (errno != 0 || endptr == uid_str || *endptr != '\0' || INT_MAX < val)
+        {
+            error_msg(_("uid value is not valid: '%s'"), uid_str);
+            return NULL;
+        }
+
+        uid = (uid_t)val;
+    }
+
     char *problem_id = xasprintf("%s-%s-%lu"NEW_PD_SUFFIX, type, iso_date_string(NULL), (long)getpid());
 
-    VERB2 log("Saving to %s/%s", base_dir_name, problem_id);
+    VERB2 log("Saving to %s/%s with uid %d", base_dir_name, problem_id, uid);
 
     struct dump_dir *dd;
     if (base_dir_name)
-        dd = try_dd_create(base_dir_name, problem_id);
+        dd = try_dd_create(base_dir_name, problem_id, uid);
     else
     {
         /* Try /var/run/abrt */
-        dd = try_dd_create(LOCALSTATEDIR"/run/abrt", problem_id);
+        dd = try_dd_create(LOCALSTATEDIR"/run/abrt", problem_id, uid);
         /* Try $HOME/tmp */
         if (!dd)
         {
@@ -58,14 +77,14 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
             {
                 home = concat_path_file(home, "tmp");
                 /*mkdir(home, 0777); - do we want this? */
-                dd = try_dd_create(home, problem_id);
+                dd = try_dd_create(home, problem_id, uid);
                 free(home);
             }
         }
 //TODO: try user's home dir obtained by getpwuid(getuid())?
         /* Try /tmp */
         if (!dd)
-            dd = try_dd_create("/tmp", problem_id);
+            dd = try_dd_create("/tmp", problem_id, uid);
     }
 
     if (!dd) /* try_dd_create() already emitted the error message */
@@ -106,7 +125,7 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
      * reporting from anaconda where we can't read /etc/{system,redhat}-release
      * and os_release is taken from anaconda
      */
-    dd_create_basic_files(dd, (uid_t)-1L, NULL);
+    dd_create_basic_files(dd, uid, NULL);
 
     problem_id[strlen(problem_id) - strlen(NEW_PD_SUFFIX)] = '\0';
     char* new_path = concat_path_file(base_dir_name, problem_id);
