@@ -244,6 +244,12 @@ static bool perform_attach(struct ureport_server_config *config, const char *ure
 
 int main(int argc, char **argv)
 {
+    setlocale(LC_ALL, "");
+#if ENABLE_NLS
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+#endif
+
     abrt_init(argv);
 
     struct ureport_server_config config = {
@@ -375,7 +381,7 @@ int main(int argc, char **argv)
         /* If a reported problem is not known then emit NEEDMORE */
         if (strcmp("true", response->value) == 0)
         {
-            log("This problem has already been reported.");
+            log(_("This problem has already been reported."));
             if (response->message)
                 log(response->message);
             log("THANKYOU");
