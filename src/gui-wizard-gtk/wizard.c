@@ -1649,6 +1649,13 @@ static int run_event_gtk_ask_yes_no(const char *msg, void *args)
     return ret;
 }
 
+static int run_event_gtk_ask_yes_no_yesforever(const char *msg, const char *key, void *args)
+{
+    const int ret = ask_yes_no_save_result(msg, key);
+    log_request_response_communication(msg, ret ? "YES" : "NO", (struct analyze_event_data *)args);
+    return ret;
+}
+
 static char *run_event_gtk_ask_password(const char *msg, void *args)
 {
     return ask_helper(msg, args, true);
@@ -1802,6 +1809,7 @@ static void start_event_run(const char *event_name,
     state->alert_callback = run_event_gtk_alert;
     state->ask_callback = run_event_gtk_ask;
     state->ask_yes_no_callback = run_event_gtk_ask_yes_no;
+    state->ask_yes_no_yesforever_callback = run_event_gtk_ask_yes_no_yesforever;
     state->ask_password_callback = run_event_gtk_ask_password;
 
     if (prepare_commands(state, g_dump_dir_name, event_name) == 0)

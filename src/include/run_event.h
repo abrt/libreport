@@ -89,6 +89,21 @@ struct run_event_state {
     int (*ask_yes_no_callback)(const char *msg, void *interaction_param);
 
     /*
+     * Called when child command wants to know 'yes/no/yesforever' decision.
+     * The yes forever means that in next call the yes answer is returned
+     * immediately without asking. The yes forever answer is stored in
+     * configuration under a passed key.
+     *
+     * The default value is run_event_stdio_ask_yes_no_yesforever()
+     *
+     * @param msg An ask message produced by child command
+     * @param key An option name used as a key in configuration
+     * @param args An implementor args
+     * @return Return 0 if an answer is NO, otherwise return nonzero value.
+     */
+    int (*ask_yes_no_yesforever_callback)(const char *msg, const char *key, void *interaction_param);
+
+    /*
      * Called when child wants to know a password.
      *
      * The default value is run_event_stdio_ask_password()
@@ -177,6 +192,20 @@ char *run_event_stdio_ask(const char *msg, void *param);
  * @return 0 if user's answer is 'no', otherwise non 0 value
  */
 int run_event_stdio_ask_yes_no(const char *msg, void *param);
+
+/*
+ * Prints the msg param on stdout and reads a response from stdin. To store the
+ * yes forever answer uses libreport's user settings API. Therefore if you want
+ * to get the yes forever stuff working you have to call load_user_setting()
+ * function before this function call and call save_user_settings() function
+ * after this function call.
+ *
+ * @param msg a printed message
+ * @param key a key under which the yes forever answer is stored
+ * @param param UNUSED
+ * @return 0 if user's answer is 'no', otherwise non 0 value
+ */
+int run_event_stdio_ask_yes_no_yesforever(const char *msg, const char *key, void *param);
 
 /*
  * Prints the msg param on stdout and reads a response from stdin

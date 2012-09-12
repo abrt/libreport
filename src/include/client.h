@@ -21,6 +21,17 @@
 #define LIBREPORT_CLIENT_H_
 
 #define REPORT_PREFIX_ASK_YES_NO "ASK_YES_NO "
+/* The REPORT_PREFIX_ASK_YES_NO_YESFOREVER prefix must be followed by a single
+ * word used as key. If the prefix is followed only by the key the
+ * REPORT_PREFIX_ASK_YES_NO implementation is used instead.
+ *
+ * Example:
+ *   ASK_YES_NO_YESFOREVER ask_before_delete Do you want to delete selected files?
+ *
+ * Example of message handled as REPORT_PREFIX_ASK_YES_NO:
+ *   ASK_YES_NO_YESFOREVER Continue?
+ */
+#define REPORT_PREFIX_ASK_YES_NO_YESFOREVER "ASK_YES_NO_YESFOREVER "
 #define REPORT_PREFIX_ASK "ASK "
 #define REPORT_PREFIX_ASK_PASSWORD "ASK_PASSWORD "
 #define REPORT_PREFIX_ALERT "ALERT "

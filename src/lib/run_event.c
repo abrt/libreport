@@ -28,6 +28,7 @@ struct run_event_state *new_run_event_state()
     state->alert_callback = run_event_stdio_alert;
     state->ask_callback = run_event_stdio_ask;
     state->ask_yes_no_callback = run_event_stdio_ask_yes_no;
+    state->ask_yes_no_yesforever_callback= run_event_stdio_ask_yes_no_yesforever;
     state->ask_password_callback = run_event_stdio_ask_password;
 
     state->command_output = strbuf_new();
@@ -478,6 +479,37 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
             {
                 state->alert_callback(msg + sizeof(REPORT_PREFIX_ALERT) - 1 , state->interaction_param);
             }
+            /* wait for y/N/f response on the same line */
+            else if (prefixcmp(msg, REPORT_PREFIX_ASK_YES_NO_YESFOREVER) == 0)
+            {
+                /* example:
+                 *   ASK_YES_NO_YESFOREVER ask_before_delete Do you want to delete selected files?
+                 */
+                char *key = msg + sizeof(REPORT_PREFIX_ASK_YES_NO_YESFOREVER) - 1;
+                char *key_end = strchr(key, ' ');
+
+                bool ans = false;
+
+                if (!key_end)
+                {   /* example:
+                     *  ASK_YES_NO_YESFOREVER Continue?
+                     *
+                     * Print a wraning only and do not scary users with error messages.
+                     */
+                    log("Warning: invalid input format (missing option name), using simple ask yes/no");
+
+                    /* can't simply use 'goto ask_yes_no' because of different lenght of prefixes */
+                    ans = state->ask_yes_no_callback(key, state->interaction_param);
+                }
+                else
+                {
+                    key_end[0] = '\0'; /* split 'key msg' to 'key' and 'msg' */
+                    ans = state->ask_yes_no_yesforever_callback(key + strlen(key) + 1, key, state->interaction_param);
+                    key_end[0] = ' '; /* restore original message, not sure if it is necessary */
+                }
+
+                response = xstrdup(ans ? "yes" : "no");
+            }
             /* wait for y/N response on the same line */
             else if (prefixcmp(msg, REPORT_PREFIX_ASK_YES_NO) == 0)
             {
@@ -669,6 +701,31 @@ int run_event_stdio_ask_yes_no(const char *msg, void *param)
         buf[0] = '\0';
 
     return buf[0] == 'y' && (buf[1] == '\n' || buf[1] == '\0');
+}
+
+int run_event_stdio_ask_yes_no_yesforever(const char *msg, const char *key, void *param)
+{
+    const char *ask_result = get_user_setting(key);
+
+    if (ask_result && string_to_bool(ask_result) == false)
+        /* Do you want to be asked? -> No, I don't */
+        return 1;
+
+    printf("%s [%s/%s/%s] ", msg, _("y"), _("N"), _("f"));
+    fflush(stdout);
+    char buf[16];
+    if (!fgets(buf, sizeof(buf), stdin))
+        buf[0] = '\0';
+
+    char *endln = strchr(buf, '\n');
+    if (endln)
+        endln[0] = '\0';
+
+    /* Do you want to be asked for next time? */
+    /* 'f' means 'yes forever' and it means 'no, dont' ask me again' */
+    set_user_setting(key, strcmp(_("f"), buf) == 0 ? "no" : "yes");
+
+    return strcmp(_("f"), buf) == 0 || strcmp(_("y"), buf) == 0;
 }
 
 char *run_event_stdio_ask_password(const char *msg, void *param)

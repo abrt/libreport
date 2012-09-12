@@ -134,6 +134,11 @@ int main(int argc, char** argv)
     /* Get settings */
     load_event_config_data();
 
+    /* At least, needed by ASK_YES_NO_YESFOREVER event command requests.
+     * Removing of the following statement will get the yes forever stuff not
+     * working. */
+    load_user_settings("report-cli");
+
     /* Do the selected operation. */
     int exitcode = 0;
     switch (op)
@@ -182,7 +187,7 @@ int main(int argc, char** argv)
 
             /* Be consistent and return 1 when opening dd failed */
             if (exitcode == -1)
-                return 1;
+                exitcode = 1;
 
             break;
         }
@@ -194,9 +199,13 @@ int main(int argc, char** argv)
                     (always ? CLI_REPORT_BATCH : 0));
 
             if (exitcode == -1)
-                error_msg_and_die("Crash '%s' not found", dump_dir_name);
-
-            if (opts & OPT_delete)
+            {   /* Be consistent and return 1 */
+                exitcode = 1;
+                /* Can't use error_msg_and_die() function because we want to
+                 * store user's answers on yes/no/yes forever questions */
+                error_msg("Crash '%s' not found", dump_dir_name);
+            }
+            else if (opts & OPT_delete)
             {
                 int r = delete_dump_dir_possibly_using_abrtd(dump_dir_name);
                 if (exitcode == 0)
@@ -207,5 +216,7 @@ int main(int argc, char** argv)
         }
     }
 
+    /* At least, needed by ASK_YES_NO_YESFOREVER event command requests. */
+    save_user_settings();
     return exitcode;
 }
