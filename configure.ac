@@ -9,7 +9,7 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
 # The 'yes' argument is undocumented but it is common knowledge that it works.
 AM_SILENT_RULES([yes])
-AM_PROG_AR
+m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
