@@ -81,7 +81,7 @@ Provides: report = 0:0.23-1
 Obsoletes: report < 0:0.23-1
 # in report the rhtsupport is in the main package, so we need to install it too
 %if 0%{?rhel} >= 6
-Requires: libreport-plugin-rhtsupport
+Requires: libreport-plugin-rhtsupport = %{version}-%{release}
 %endif
 
 %description python
@@ -193,8 +193,9 @@ Plugin to report bugs into RH support system.
 %package compat
 Summary: %{name}'s compat layer for obsoleted 'report' package
 Group: System Environment/Libraries
-Requires: %{name}-plugin-bugzilla
-Requires: %{name}-plugin-rhtsupport
+Requires: libreport = %{version}-%{release}
+Requires: %{name}-plugin-bugzilla = %{version}-%{release}
+Requires: %{name}-plugin-rhtsupport = %{version}-%{release}
 
 %description compat
 Provides 'report' command-line tool.
