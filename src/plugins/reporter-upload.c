@@ -56,7 +56,19 @@ static int send_file(const char *url, const char *filename)
         return 1;
     }
 
-    log(_("Sending %s to %s"), filename, url);
+    /* we don't want to print the whole url as it may contain password
+     * rhbz#856960
+     * there can be '@' in the login or password so let's try to find the
+     * first '@' from the end
+     */
+    const char *clean_url = strrchr(url, '@');
+    if (clean_url != NULL)
+        clean_url++;
+    else
+        clean_url = url;
+
+
+    log(_("Sending %s to %s"), filename, clean_url);
 
     struct stat stbuf;
     fstat(fileno(fp), &stbuf); /* never fails */
@@ -95,7 +107,7 @@ static int send_file(const char *url, const char *filename)
         error_msg("Error while uploading: '%s'", curl_easy_strerror(result));
     else
         /* This ends up a "reporting status message" in abrtd */
-        log(_("Successfully sent %s to %s"), filename, url);
+        log(_("Successfully sent %s to %s"), filename, clean_url);
 
     curl_easy_cleanup(curl);
 
