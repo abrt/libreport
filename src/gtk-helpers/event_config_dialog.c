@@ -21,7 +21,6 @@
 
 static GtkWindow *g_event_list_window;
 static GList *option_widget_list;
-static GtkWidget *g_adv_option_table;
 static bool has_password_option;
 
 enum
@@ -68,22 +67,20 @@ static void on_show_pass_store_cb(GtkToggleButton *tb, gpointer user_data)
     set_user_setting("store_passwords", gtk_toggle_button_get_active(tb) ? "no" : "yes");
 }
 
-static unsigned grow_table_by_1(GtkTable *table)
+static unsigned add_one_row_to_grid(GtkGrid *table)
 {
-    guint rows, columns;
-    //needs gtk 2.22: gtk_table_get_size(table, &rows, &columns);
-    g_object_get(table, "n-rows", &rows, NULL);
-    g_object_get(table, "n-columns", &columns, NULL);
-    gtk_table_resize(table, rows + 1, columns);
+    gulong rows = (gulong)g_object_get_data(G_OBJECT(table), "n-rows");
+    gtk_grid_insert_row(table, rows);
+    g_object_set_data(G_OBJECT(table), "n-rows", (gpointer)(rows + 1));
     return rows;
 }
 
 static void add_option_to_table(gpointer data, gpointer user_data)
 {
     event_option_t *option = data;
-    GtkTable *option_table = user_data;
+    GtkGrid *option_table = user_data;
     if (option->is_advanced)
-        option_table = GTK_TABLE(g_adv_option_table);
+        option_table = GTK_GRID(g_object_get_data(G_OBJECT(option_table), "advanced-options"));
 
     GtkWidget *label;
     GtkWidget *option_input;
@@ -107,32 +104,27 @@ static void add_option_to_table(gpointer data, gpointer user_data)
         case OPTION_TYPE_TEXT:
         case OPTION_TYPE_NUMBER:
         case OPTION_TYPE_PASSWORD:
-            last_row = grow_table_by_1(option_table);
+            last_row = add_one_row_to_grid(option_table);
             label = gtk_label_new_justify_left(option_label);
-            gtk_table_attach(option_table, label,
-                             /*left,right_attach:*/ 0, 1,
-                             /*top,bottom_attach:*/ last_row, last_row+1,
-                             /*x,yoptions:*/ GTK_FILL, GTK_FILL,
-                             /*x,ypadding:*/ 0, 0);
+            gtk_grid_attach(option_table, label,
+                             /*left,top:*/ 0, last_row,
+                             /*width,height:*/ 1, 1);
             option_input = gtk_entry_new();
+            gtk_widget_set_hexpand(option_input, TRUE);
             if (option->eo_value != NULL)
                 gtk_entry_set_text(GTK_ENTRY(option_input), option->eo_value);
-            gtk_table_attach(option_table, option_input,
-                             /*left,right_attach:*/ 1, 2,
-                             /*top,bottom_attach:*/ last_row, last_row+1,
-                             /*x,yoptions:*/ GTK_FILL | GTK_EXPAND, GTK_FILL,
-                             /*x,ypadding:*/ 0, 0);
+            gtk_grid_attach(option_table, option_input,
+                             /*left,top:*/ 1, last_row,
+                             /*width,height:*/ 1, 1);
             add_option_widget(option_input, option);
             if (option->eo_type == OPTION_TYPE_PASSWORD)
             {
                 gtk_entry_set_visibility(GTK_ENTRY(option_input), 0);
-                last_row = grow_table_by_1(option_table);
+                last_row = add_one_row_to_grid(option_table);
                 GtkWidget *pass_cb = gtk_check_button_new_with_label(_("Show password"));
-                gtk_table_attach(option_table, pass_cb,
-                             /*left,right_attach:*/ 1, 2,
-                             /*top,bottom_attach:*/ last_row, last_row+1,
-                             /*x,yoptions:*/ GTK_FILL, GTK_FILL,
-                             /*x,ypadding:*/ 0, 0);
+                gtk_grid_attach(option_table, pass_cb,
+                             /*left,top:*/ 1, last_row,
+                             /*width,height:*/ 1, 1);
                 g_signal_connect(pass_cb, "toggled", G_CALLBACK(on_show_pass_cb), option_input);
                 has_password_option = true;
             }
@@ -144,22 +136,18 @@ static void add_option_to_table(gpointer data, gpointer user_data)
             gtk_misc_set_alignment(GTK_MISC(label), /*x,yalign:*/ 0.0, 0.0);
             make_label_autowrap_on_resize(GTK_LABEL(label));
 
-            last_row = grow_table_by_1(option_table);
-            gtk_table_attach(option_table, label,
-                             /*left,right_attach:*/ 0, 2,
-                             /*top,bottom_attach:*/ last_row, last_row+1,
-                             /*x,yoptions:*/ GTK_FILL, GTK_FILL,
-                             /*x,ypadding:*/ 0, 0);
+            last_row = add_one_row_to_grid(option_table);
+            gtk_grid_attach(option_table, label,
+                             /*left,top:*/ 0, last_row,
+                             /*width,height:*/ 2, 1);
             break;
 
         case OPTION_TYPE_BOOL:
-            last_row = grow_table_by_1(option_table);
+            last_row = add_one_row_to_grid(option_table);
             option_input = gtk_check_button_new_with_label(option_label);
-            gtk_table_attach(option_table, option_input,
-                             /*left,right_attach:*/ 0, 2,
-                             /*top,bottom_attach:*/ last_row, last_row+1,
-                             /*x,yoptions:*/ GTK_FILL, GTK_FILL,
-                             /*x,ypadding:*/ 0, 0);
+            gtk_grid_attach(option_table, option_input,
+                             /*left,top:*/ 0, last_row,
+                             /*width,height:*/ 2, 1);
             if (option->eo_value != NULL)
                 gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(option_input),
                                     string_to_bool(option->eo_value));
@@ -180,12 +168,10 @@ static void add_option_to_table(gpointer data, gpointer user_data)
         gtk_misc_set_alignment(GTK_MISC(label), /*x,yalign:*/ 0.0, 0.0);
         make_label_autowrap_on_resize(GTK_LABEL(label));
 
-        last_row = grow_table_by_1(option_table);
-        gtk_table_attach(option_table, label,
-                             /*left,right_attach:*/ 1, 2,
-                             /*top,bottom_attach:*/ last_row, last_row+1,
-                             /*x,yoptions:*/ GTK_FILL, GTK_FILL,
-                             /*x,ypadding:*/ 0, 0);
+        last_row = add_one_row_to_grid(option_table);
+        gtk_grid_attach(option_table, label,
+                             /*left,top:*/ 1, last_row,
+                             /*top,heigh:*/ 1, 1);
     }
 
     free(option_label);
@@ -335,18 +321,26 @@ int show_event_config_dialog(const char *event_name, GtkWindow *parent)
                 gtk_window_get_icon_name(parent_window));
     }
 
-    GtkWidget *option_table = gtk_table_new(/*rows*/ 0, /*cols*/ 2, /*homogeneous*/ FALSE);
-    gtk_table_set_row_spacings(GTK_TABLE(option_table), 2);
+    GtkWidget *option_table = gtk_grid_new();
+    gtk_grid_set_row_homogeneous(GTK_GRID(option_table), FALSE);
+    gtk_grid_set_column_homogeneous(GTK_GRID(option_table), FALSE);
+    gtk_grid_set_row_spacing(GTK_GRID(option_table), 2);
+    g_object_set_data(G_OBJECT(option_table), "n-rows", (gpointer)-1);
 
     /* table to hold advanced options
      * hidden in expander which is visible only if there's at least
      * one advanced option
     */
 
-    g_adv_option_table = gtk_table_new(/*rows*/ 0, /*cols*/ 2, /*homogeneous*/ FALSE);
-    gtk_table_set_row_spacings(GTK_TABLE(g_adv_option_table), 2);
+    GtkWidget *adv_option_table = gtk_grid_new();
+    gtk_grid_set_row_homogeneous(GTK_GRID(adv_option_table), FALSE);
+    gtk_grid_set_column_homogeneous(GTK_GRID(adv_option_table), FALSE);
+    gtk_grid_set_row_spacing(GTK_GRID(adv_option_table), 2);
+    g_object_set_data(G_OBJECT(adv_option_table), "n-rows", (gpointer)-1);
+
     GtkWidget *adv_expander = gtk_expander_new(_("Advanced"));
-    gtk_container_add(GTK_CONTAINER(adv_expander), g_adv_option_table);
+    gtk_container_add(GTK_CONTAINER(adv_expander), adv_option_table);
+    g_object_set_data(G_OBJECT(option_table), "advanced-options", adv_option_table);
 
     has_password_option = false;
     g_list_foreach(event->options, &add_option_to_table, option_table);
@@ -354,13 +348,11 @@ int show_event_config_dialog(const char *event_name, GtkWindow *parent)
     /* if there is at least one password option, add checkbox to disable storing passwords */
     if (has_password_option)
     {
-        unsigned last_row = grow_table_by_1(GTK_TABLE(option_table));
+        unsigned last_row = add_one_row_to_grid(GTK_GRID(option_table));
         GtkWidget *pass_store_cb = gtk_check_button_new_with_label(_("Don't store passwords"));
-        gtk_table_attach(GTK_TABLE(option_table), pass_store_cb,
-                /*left,right_attach:*/ 0, 1,
-                /*top,bottom_attach:*/ last_row, last_row+1,
-                /*x,yoptions:*/ GTK_FILL, GTK_FILL,
-                /*x,ypadding:*/ 0, 0);
+        gtk_grid_attach(GTK_GRID(option_table), pass_store_cb,
+                /*left,top:*/ 0, last_row,
+                /*width,height:*/ 1, 1);
         const char *store_passwords = get_user_setting("store_passwords");
         if (store_passwords && !strcmp(store_passwords, "no"))
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(pass_store_cb), 1);
@@ -371,7 +363,7 @@ int show_event_config_dialog(const char *event_name, GtkWindow *parent)
     gtk_box_pack_start(GTK_BOX(content), option_table, false, false, 20);
 
     /* add the adv_option_table to the dialog only if there is some adv option */
-    if (g_list_length(gtk_container_get_children(GTK_CONTAINER(g_adv_option_table))) > 0)
+    if (g_list_length(gtk_container_get_children(GTK_CONTAINER(adv_option_table))) > 0)
         gtk_box_pack_start(GTK_BOX(content), adv_expander, false, false, 0);
 
     /* add warning if secrets service is not available showing the nagging dialog
