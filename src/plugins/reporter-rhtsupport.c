@@ -20,7 +20,6 @@
 #include "internal_libreport.h"
 #include "client.h"
 #include "libreport_curl.h"
-#include "abrt_xmlrpc.h"
 #include "abrt_rh_support.h"
 #include "reporter-rhtsupport.h"
 
@@ -120,14 +119,6 @@ int main(int argc, char **argv)
     if (!login[0] || !password[0])
         error_msg_and_die(_("Empty RHTS login or password"));
     free_map_string(settings);
-
-    VERB1 log("Initializing XML-RPC library");
-    xmlrpc_env env;
-    xmlrpc_env_init(&env);
-    xmlrpc_client_setup_global_const(&env);
-    if (env.fault_occurred)
-        error_msg_and_die("XML-RPC Fault: %s(%d)", env.fault_string, env.fault_code);
-    xmlrpc_env_clean(&env);
 
     if (opts & OPT_t)
     {

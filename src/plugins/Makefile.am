@@ -96,14 +96,12 @@ reporter_rhtsupport_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(REPORT_PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
-    $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
     $(LIBXML_CFLAGS) \
     -D_GNU_SOURCE
 reporter_rhtsupport_LDFLAGS = -ltar
 reporter_rhtsupport_LDADD = \
     $(GLIB_LIBS) \
     $(LIBXML_LIBS) \
-    $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS) \
     ../lib/libreport-web.la \
     ../lib/libreport.la
 
