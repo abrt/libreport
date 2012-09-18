@@ -24,10 +24,15 @@ MAN5_TXT += report_event.conf.txt
 man1_MANS = ${MAN1_TXT:%.txt=%.1}
 man5_MANS = ${MAN5_TXT:%.txt=%.5}
 
-%.1 %.5: %.xml
+SUFFIXES = .1 .5
+
+.xml.1:
 	$(XMLTO_SILENT) xmlto man $< 2>&1 | sed '/Note/d'
 
-%.xml: %.txt ../asciidoc.conf
+.xml.5:
+	$(XMLTO_SILENT) xmlto man $< 2>&1 | sed '/Note/d'
+
+.txt.xml: ../asciidoc.conf
 	$(ASCIIDOC_SILENT) asciidoc --backend=docbook --doctype=manpage \
                                     --conf-file ../asciidoc.conf \
                                     -alibreport_version=$(PACKAGE_VERSION) -o $@ $<
