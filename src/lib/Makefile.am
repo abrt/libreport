@@ -88,9 +88,13 @@ libabrt_dbus_la_LIBADD = \
     $(GLIB_LIBS) \
     $(DBUS_LIBS)
 
-libreport_web_la_SOURCES = \
+libreport_web_o =
+if BUILD_BUGZILLA
+libreport_web_o += abrt_xmlrpc.h abrt_xmlrpc.c
+endif
+
+libreport_web_la_SOURCES = $(libreport_web_o) \
     curl.c \
-    abrt_xmlrpc.h abrt_xmlrpc.c \
     proxies.h proxies.c \
     ureport.h json.c
 libreport_web_la_CPPFLAGS = \

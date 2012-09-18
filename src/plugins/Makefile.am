@@ -1,7 +1,11 @@
 pluginslibdir = $(PLUGINS_LIB_DIR)
 
-bin_PROGRAMS = \
-    reporter-bugzilla \
+reporters_bin =
+if BUILD_BUGZILLA
+reporters_bin += reporter-bugzilla
+endif
+
+bin_PROGRAMS = $(reporters_bin) \
     reporter-rhtsupport \
     reporter-kerneloops \
     reporter-upload \
@@ -14,16 +18,23 @@ pluginsconfdir = $(PLUGINS_CONF_DIR)
 
 reportpluginsconfdir = $(REPORT_PLUGINS_CONF_DIR)
 
-dist_reportpluginsconf_DATA = \
-    bugzilla.conf \
+reporters_plugin_conf =
+if BUILD_BUGZILLA
+reporters_plugin_conf += bugzilla.conf
+endif
+
+dist_reportpluginsconf_DATA = $(reporters_plugin_conf) \
     rhtsupport.conf \
     mailx.conf
 
 eventsdir = $(EVENTS_DIR)
 
-dist_events_DATA = \
-    report_Bugzilla.xml \
-    report_Bugzilla.conf \
+reporters_events =
+if BUILD_BUGZILLA
+reporters_events += report_Bugzilla.xml report_Bugzilla.conf
+endif
+
+dist_events_DATA = $(reporters_events) \
     report_Logger.conf \
     report_Logger.xml \
     report_Mailx.xml \
@@ -43,9 +54,12 @@ dist_eventsconf_DATA = \
     rhtsupport_event.conf \
     uploader_event.conf
 
-EXTRA_DIST = \
-    report_Bugzilla.xml.in \
-    report_Bugzilla.conf \
+reporters_extra_dist =
+if BUILD_BUGZILLA
+reporters_extra_dist += report_Bugzilla.xml.in report_Bugzilla.conf
+endif
+
+EXTRA_DIST = $(reporters_extra_dist) \
     report_Logger.conf \
     report_Logger.xml.in \
     report_Mailx.xml.in \
@@ -57,6 +71,7 @@ EXTRA_DIST = \
 $(DESTDIR)/$(DEBUG_INFO_DIR):
 	$(mkdir_p) '$@'
 
+if BUILD_BUGZILLA
 reporter_bugzilla_SOURCES = \
     reporter-bugzilla.c rhbz.c rhbz.h
 reporter_bugzilla_CPPFLAGS = \
@@ -78,6 +93,7 @@ reporter_bugzilla_LDADD = \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS) \
     ../lib/libreport-web.la \
     ../lib/libreport.la
+endif
 
 reporter_rhtsupport_SOURCES = \
     abrt_rh_support.h abrt_rh_support.c \

@@ -1,3 +1,20 @@
+# LIBREPORT_PARSE_WITH(PACKAGE)
+# -----------------------
+# For use in AC_ARG_WITH action-if-found, for packages default ON.
+# * Set NO_PACKAGE=YesPlease for --without-PACKAGE
+# * Unset NO_PACKAGE for --with-PACKAGE without ARG
+AC_DEFUN([LIBREPORT_PARSE_WITH],
+    [m4_pushdef([LIBREPORT_UC_PACKAGE], m4_toupper([$1]))dnl
+    if test "$withval" = "no"; then
+        NO_[]LIBREPORT_UC_PACKAGE=YesPlease
+    elif test "$withval" = "yes"; then
+        NO_[]LIBREPORT_UC_PACKAGE=
+    else
+        NO_[]LIBREPORT_UC_PACKAGE=
+    fi
+    m4_popdef([LIBREPORT_UC_PACKAGE])])
+
+
 AC_INIT([libreport],
 	m4_esyscmd([cat ./libreport-version]),
 	[crash-catcher@fedorahosted.org])
@@ -66,6 +83,12 @@ AC_PATH_PROG([XMLTO], [xmlto], [no])
     [exit 1]
 [fi]
 
+AC_ARG_WITH(bugzilla,
+AS_HELP_STRING([--with-bugzilla],[use Bugzilla plugin (default is YES)]),
+LIBREPORT_PARSE_WITH([bugzilla]))
+
+if test -z "$NO_BUGZILLA"; then
+AM_CONDITIONAL(BUILD_BUGZILLA, true)
 AC_PATH_PROG([XMLRPC], [xmlrpc-c-config], [no])
 [if test "$XMLRPC" = "no"]
 [then]
@@ -84,6 +107,9 @@ XMLRPC_CLIENT_CFLAGS=`xmlrpc-c-config client --cflags 2> /dev/null`
 XMLRPC_CLIENT_LIBS=`xmlrpc-c-config client --libs 2> /dev/null`
 AC_SUBST(XMLRPC_CLIENT_CFLAGS)
 AC_SUBST(XMLRPC_CLIENT_LIBS)
+else
+AM_CONDITIONAL(BUILD_BUGZILLA, false)
+fi dnl end NO_BUGZILLA
 
 AC_PATH_PROG([PYTHON], [python-config], [no])
 [if test "$XMLTO" = "no"]

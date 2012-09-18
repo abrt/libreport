@@ -9,7 +9,11 @@ XMLTO_SILENT_0 = @echo "  XMLTO " $@;
 
 MAN1_TXT =
 MAN1_TXT += report-cli.txt
+
+if BUILD_BUGZILLA
 MAN1_TXT += reporter-bugzilla.txt
+endif
+
 MAN1_TXT += reporter-kerneloops.txt
 MAN1_TXT += reporter-mailx.txt
 MAN1_TXT += reporter-print.txt
