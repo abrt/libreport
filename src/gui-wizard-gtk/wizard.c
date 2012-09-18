@@ -276,11 +276,13 @@ static void show_event_opt_error_dialog(const char *event_name)
     event_config_t *ec = get_event_config(event_name);
     char *message = xasprintf(_("Wrong settings detected for %s, "
                               "reporting will probably fail if you continue "
-                              "with the current configuration."),
+                              "with the current configuration.\n\n"
+                              "Read more about the configuration at: https://fedorahosted.org/abrt/wiki/AbrtConfiguration"),
                                ec->screen_name);
     char *markup_message = xasprintf(_("Wrong settings detected for <b>%s</b>, "
                               "reporting will probably fail if you continue "
-                              "with the current configuration."),
+                              "with the current configuration.\n\n"
+                              "<a href=\"https://fedorahosted.org/abrt/wiki/AbrtConfiguration\">Read more about the configuration</a>"),
                                ec->screen_name);
     GtkWidget *wrong_settings = g_top_most_window = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
