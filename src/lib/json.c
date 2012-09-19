@@ -229,6 +229,7 @@ char *new_json_ureport(problem_data_t *pd)
     *
     * ureport_add_item_int(ureport, pd, "crash_thread", NULL);
     */
+    ureport_add_int(ureport, "ureport_version", 1);
     ureport_add_int(ureport, "crash_thread", 0);
 
     ureport_add_item_str(ureport, pd, FILENAME_ARCHITECTURE, NULL);
