@@ -196,6 +196,14 @@ class DebugInfoDownload(YumBase):
                 self.repos.doSetup(thisrepo=str(r.id))
                 log1("enabled repo %s", rid)
                 setattr(r, "skip_if_unavailable", True)
+                # yes, we want async download otherwise our progressCallback
+                # is not called and the interanl yum is used, which cause
+                # artefacts in output
+                try:
+                    setattr(r, "_async", False)
+                except Exception, ex:
+                    print ex
+                    print _("Can't disable async download, the output might contain artefacts!")
             except Exception, ex:
                 print _("Can't setup {0}: {1}, disabling").format(r.id, ex)
                 self.repos.disableRepo(r.id)
