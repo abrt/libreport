@@ -127,10 +127,19 @@ PKG_CHECK_MODULES([LIBXML], [libxml-2.0])
 PKG_CHECK_MODULES([NSS], [nss])
 PKG_CHECK_MODULES([CURL], [libcurl])
 PKG_CHECK_MODULES([BTPARSER], [btparser])
-PKG_CHECK_MODULES([NEWT], [libnewt])
 PKG_CHECK_MODULES([PROXY], [libproxy-1.0], [
     AC_DEFINE([HAVE_PROXY], [1], [Use libproxy])
 ], [:])
+
+AC_ARG_WITH(newt,
+AS_HELP_STRING([--with-newt],[use newt (default is YES)]),
+LIBREPORT_PARSE_WITH([newt]))
+if test -z "$NO_NEWT"; then
+AM_CONDITIONAL(BUILD_NEWT, true)
+PKG_CHECK_MODULES([NEWT], [libnewt])
+else
+AM_CONDITIONAL(BUILD_NEWT, false)
+fi dnl end NO_NEWT
 
 AC_ARG_WITH(gtk,
 AS_HELP_STRING([--with-gtk],[use gtk wizard and libreport-gtk (default is YES)]),
