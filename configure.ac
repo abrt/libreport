@@ -121,9 +121,7 @@ PYTHON_LIBS=`python-config --libs 2> /dev/null`
 AC_SUBST(PYTHON_CFLAGS)
 AC_SUBST(PYTHON_LIBS)
 
-PKG_CHECK_MODULES([GTK], [gtk+-3.0])
 PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.21])
-PKG_CHECK_MODULES([GIO], [gio-2.0])
 PKG_CHECK_MODULES([DBUS], [dbus-1])
 PKG_CHECK_MODULES([LIBXML], [libxml-2.0])
 PKG_CHECK_MODULES([NSS], [nss])
@@ -133,6 +131,18 @@ PKG_CHECK_MODULES([NEWT], [libnewt])
 PKG_CHECK_MODULES([PROXY], [libproxy-1.0], [
     AC_DEFINE([HAVE_PROXY], [1], [Use libproxy])
 ], [:])
+
+AC_ARG_WITH(gtk,
+AS_HELP_STRING([--with-gtk],[use gtk wizard and libreport-gtk (default is YES)]),
+LIBREPORT_PARSE_WITH([gtk]))
+if test -z "$NO_GTK"; then
+AM_CONDITIONAL(BUILD_GTK, true)
+PKG_CHECK_MODULES([GTK], [gtk+-3.0])
+PKG_CHECK_MODULES([GIO], [gio-2.0])
+else
+AM_CONDITIONAL(BUILD_GTK, false)
+fi dnl end NO_GTK
+
 
 AC_ARG_WITH(ureport,
 AS_HELP_STRING([--with-ureport],[use uReport plugin (default is YES)]),
