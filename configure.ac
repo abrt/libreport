@@ -43,10 +43,6 @@ AC_ARG_ENABLE(debug,
                              [Enable debug information])],
               [CFLAGS="$CFLAGS -DDEBUG -ggdb -g -O0"])
 
-AC_ARG_ENABLE([bodhi],
-      AC_HELP_STRING([--disable-bodhi], [do not use bodhi plugin]))
-
-
 dnl ****** INTERNATIONALIZATION **********************
 GETTEXT_PACKAGE=libreport
 AC_SUBST(GETTEXT_PACKAGE)
@@ -132,12 +128,21 @@ PKG_CHECK_MODULES([DBUS], [dbus-1])
 PKG_CHECK_MODULES([LIBXML], [libxml-2.0])
 PKG_CHECK_MODULES([NSS], [nss])
 PKG_CHECK_MODULES([CURL], [libcurl])
-PKG_CHECK_MODULES([JSON_C], [json])
 PKG_CHECK_MODULES([BTPARSER], [btparser])
 PKG_CHECK_MODULES([NEWT], [libnewt])
 PKG_CHECK_MODULES([PROXY], [libproxy-1.0], [
     AC_DEFINE([HAVE_PROXY], [1], [Use libproxy])
 ], [:])
+
+AC_ARG_WITH(ureport,
+AS_HELP_STRING([--with-ureport],[use uReport plugin (default is YES)]),
+LIBREPORT_PARSE_WITH([ureport]))
+if test -z "$NO_UREPORT"; then
+AM_CONDITIONAL(BUILD_UREPORT, true)
+PKG_CHECK_MODULES([JSON_C], [json])
+else
+AM_CONDITIONAL(BUILD_UREPORT, false)
+fi dnl end NO_UREPORT
 
 PKG_PROG_PKG_CONFIG
 

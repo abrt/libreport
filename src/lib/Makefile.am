@@ -93,10 +93,14 @@ if BUILD_BUGZILLA
 libreport_web_o += abrt_xmlrpc.h abrt_xmlrpc.c
 endif
 
+if BUILD_UREPORT
+libreport_web_o += ureport.h json.c
+endif
+
 libreport_web_la_SOURCES = $(libreport_web_o) \
     curl.c \
-    proxies.h proxies.c \
-    ureport.h json.c
+    proxies.h proxies.c
+
 libreport_web_la_CPPFLAGS = \
     -I$(srcdir)/../include \
     -DLOCALSTATEDIR='"$(localstatedir)"' \

@@ -5,14 +5,17 @@ if BUILD_BUGZILLA
 reporters_bin += reporter-bugzilla
 endif
 
+if BUILD_UREPORT
+reporters_bin +=  reporter-ureport
+endif
+
 bin_PROGRAMS = $(reporters_bin) \
     reporter-rhtsupport \
     reporter-kerneloops \
     reporter-upload \
     reporter-mailx \
     reporter-print \
-    report \
-    reporter-ureport
+    report
 
 pluginsconfdir = $(PLUGINS_CONF_DIR)
 
@@ -34,14 +37,17 @@ if BUILD_BUGZILLA
 reporters_events += report_Bugzilla.xml report_Bugzilla.conf
 endif
 
+if BUILD_UREPORT
+reporters_events += report_uReport.xml
+endif
+
 dist_events_DATA = $(reporters_events) \
     report_Logger.conf \
     report_Logger.xml \
     report_Mailx.xml \
     report_RHTSupport.xml \
     report_Kerneloops.xml \
-    report_Uploader.xml \
-    report_uReport.xml
+    report_Uploader.xml
 
 @INTLTOOL_XML_RULE@
 
@@ -59,14 +65,17 @@ if BUILD_BUGZILLA
 reporters_extra_dist += report_Bugzilla.xml.in report_Bugzilla.conf
 endif
 
+if BUILD_UREPORT
+reporters_extra_dist += report_uReport.xml.in
+endif
+
 EXTRA_DIST = $(reporters_extra_dist) \
     report_Logger.conf \
     report_Logger.xml.in \
     report_Mailx.xml.in \
     report_RHTSupport.xml.in \
     report_Kerneloops.xml.in \
-    report_Uploader.xml.in \
-    report_uReport.xml.in
+    report_Uploader.xml.in
 
 $(DESTDIR)/$(DEBUG_INFO_DIR):
 	$(mkdir_p) '$@'
@@ -214,6 +223,7 @@ report_CPPFLAGS = \
 report_LDADD = \
     ../lib/libreport.la
 
+if BUILD_UREPORT
 reporter_ureport_SOURCES = \
     ureport.c
 reporter_ureport_CPPFLAGS = \
@@ -225,5 +235,6 @@ reporter_ureport_CPPFLAGS = \
 reporter_ureport_LDADD = \
     ../lib/libreport.la \
     ../lib/libreport-web.la
+endif
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
