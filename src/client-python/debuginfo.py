@@ -131,6 +131,13 @@ class MyDownloadCallback(DownloadBaseCallback):
 
         sys.stdout.flush()
 
+def downloadErrorCallback(callBackObj):
+    print _("Problem '{0!s}' occured while downloading from mirror: '{1!s}'. Trying next one").format(
+        callBackObj.exception, callBackObj.mirror)
+    # explanation of the return value can be found here:
+    # /usr/lib/python2.7/site-packages/urlgrabber/mirror.py
+    return {'fail':0}
+
 class DebugInfoDownload(YumBase):
     def __init__(self, cache, tmp, keep_rpms=False, noninteractive=True):
         self.cachedir = cache
@@ -257,6 +264,7 @@ class DebugInfoDownload(YumBase):
         # connect our progress update callback
         dnlcb = MyDownloadCallback(total_pkgs)
         self.repos.setProgressBar(dnlcb)
+        self.repos.setMirrorFailureCallback(downloadErrorCallback)
 
         if verbose != 0 or len(not_found) != 0:
             print _("Can't find packages for {0} debuginfo files").format(len(not_found))
