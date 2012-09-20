@@ -224,7 +224,10 @@ class DebugInfoDownload(YumBase):
             self.repos.populateSack(mdtype='metadata', cacheonly=1)
         except Exception, e:
             print _("Error retrieving metadata: '{0!s}'").format(e)
-            return 1
+            #we don't want to die here, some metadata might be already retrieved
+            # so there is a chance we already have what we need
+            #return 1
+
         try:
             # Saw this exception here:
             # raise Errors.NoMoreMirrorsRepoError, errstr
@@ -232,9 +235,11 @@ class DebugInfoDownload(YumBase):
             # repodata/7e6632b82c91a2e88a66ad848e231f14c48259cbf3a1c3e992a77b1fc0e9d2f6-filelists.sqlite.bz2
             # from fedora-debuginfo: [Errno 256] No more mirrors to try.
             self.repos.populateSack(mdtype='filelists', cacheonly=1)
-        except Exception, e:
-            print _("Error retrieving filelists: '{0!s}'").format(e)
-            return 1
+        except Exception, ex:
+            print _("Error retrieving filelists: '{0!s}'").format(ex)
+            # we don't want to die here, some repos might be already processed
+            # so there is a chance we already have what we need
+            #return 1
 
         #if verbose == 0:
         #    # re-enable the output to stdout
