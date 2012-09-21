@@ -35,9 +35,9 @@
 #define SECRETS_CALL_DEFAULT_TIMEOUT 5000
 
 /* Well known errors for which we have workarounds */
-#define NOT_IMPLEMENTED_READ_ALIAS_ERROR_MESSAGE "GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: No such method 'ReadAlias' in interface 'org.freedesktop.Secret.Service' at object path '/org/freedesktop/secrets' (signature 's')"
-#define INVALID_PROPERTIES_ARGUMENTS "GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: Invalid properties argument"
-#define GNOME_KEYRING_NOT_HAVING_SECRET_ERROR_MESSAGE "GDBus.Error:org.freedesktop.DBus.Error.Failed: Couldn't get item secret"
+#define NOT_IMPLEMENTED_READ_ALIAS_ERROR "org.freedesktop.DBus.Error.UnknownMethod"
+#define INVALID_PROPERTIES_ARGUMENTS_ERROR "org.freedesktop.DBus.Error.InvalidArgs"
+#define GNOME_KEYRING_NOT_HAVING_SECRET_ERROR "org.freedesktop.DBus.Error.Failed"
 
 /*
    Data structure:
@@ -695,8 +695,7 @@ static bool secrets_service_read_alias(const char *alias, struct secrets_object 
         /* return TRUE if collection was not found or if collection object is not NULL */
         return !found || *collection;
     }
-    else if (strcmp(error->message, NOT_IMPLEMENTED_READ_ALIAS_ERROR_MESSAGE) == 0)
-
+    else if (strcmp(NOT_IMPLEMENTED_READ_ALIAS_ERROR, g_dbus_error_get_remote_error(error)) == 0)
     {
         /* this code branch can be safely removed if KSecrets provides ReadAlias method*/
         VERB1 log("D-Bus Secrets Service ReadAlias method failed,"
@@ -941,7 +940,7 @@ static bool secrets_collection_create_text_item(struct secrets_object *collectio
 
         if (error)
         {
-            if (strcmp(INVALID_PROPERTIES_ARGUMENTS, error->message) == 0)
+            if (strcmp(INVALID_PROPERTIES_ARGUMENTS_ERROR, g_dbus_error_get_remote_error(error)) == 0)
             {  /* it is OK - we know this error and we can safely continue */
                VERB2 log("CreateItem failed, going to use other property names: %s", error->message);
                continue;
@@ -1128,7 +1127,7 @@ static void load_event_options_from_item(GDBusProxy *session,
         {   /* if the error is NOT the known error produced by the gnome-keyring */
             /* when no secret value is assigned to an item */
             /* then let you user known that the error occured */
-            if(strcmp(error->message, GNOME_KEYRING_NOT_HAVING_SECRET_ERROR_MESSAGE) != 0)
+            if(strcmp(GNOME_KEYRING_NOT_HAVING_SECRET_ERROR, g_dbus_error_get_remote_error(error)) != 0)
                 error_msg(_("can't get secret value: %s"), error->message);
             else
             {
@@ -1284,10 +1283,6 @@ static bool save_options(struct secrets_object *collection,
         GVariant *const attributes = create_lookup_attributes(event_name);
         VERB2 log("creating event config : '%s'", event_name);
         succ = secrets_collection_create_text_item(collection, event_name, attributes, secret, dismissed);
-
-        /* I can't figure out why I have to do the following */
-        g_variant_unref(attributes);
-        g_variant_unref(secret);
     }
 
     return succ;
