@@ -153,7 +153,7 @@ static GDBusProxy *get_dbus_proxy(const gchar *path, const gchar *interface)
 
     if (error)
     {
-        error_msg(_("Can't connect over DBus to name '%s' path '%s'" "interface '%s': %s"),
+        error_msg(_("Can't connect over DBus to name '%s' path '%s' interface '%s': %s"),
                     SECRETS_SERVICE_BUS, path, interface, error->message);
         g_error_free(error);
         /* proxy is NULL in this case */
@@ -445,7 +445,7 @@ static bool is_prompt_required(const char *prompt_path)
  * @param prompt_path An object path pointing to a prompt
  * @param result A prompt result (can be NULL)
  * @param dismissed A dismissed flag (can't be NULL)
- * @return returns TRUE if no errors occured; otherwise false
+ * @return returns TRUE if no errors occurred; otherwise false
  */
 static GVariant *secrets_prompt(const char *prompt_path,
                                 bool *dismissed)
@@ -658,7 +658,7 @@ static bool secrets_service_find_collection(const char *alias, struct secrets_ob
     g_variant_unref(prop);
 
     /* If coolection is not found no error could occure */
-    /* If coolection is found and variable is null then error occured */
+    /* If coolection is found and variable is null then error occurred */
     return !found || *collection;
 }
 
@@ -672,7 +672,7 @@ static bool secrets_service_read_alias(const char *alias, struct secrets_object 
     /* ReadAlias (IN String name, OUT ObjectPath collection); */
     /*   Get the collection with the given alias. */
     /*   name       : An alias, such as 'default'. */
-    /*   collection : The collection or the the path '/' if no such collection exists. */
+    /*   collection : The collection or the path '/' if no such collection exists. */
     GVariant *const resp =
         g_dbus_proxy_call_sync(g_service_object->proxy, "ReadAlias", g_variant_new("(s)", alias),
                                G_DBUS_PROXY_FLAGS_NONE, SECRETS_CALL_DEFAULT_TIMEOUT,
@@ -947,7 +947,7 @@ static bool secrets_collection_create_text_item(struct secrets_object *collectio
             }
 
             /* if the error wasn't about invalid properties we have an another problem */
-            error_msg(_("Can't create an secret item for event '%s': %s"), event_name, error->message);
+            error_msg(_("Can't create a secret item for event '%s': %s"), event_name, error->message);
             g_error_free(error);
             break;
         }
@@ -1029,7 +1029,7 @@ static bool secrets_collection_search_one_item(const struct secrets_object *coll
     g_variant_unref(resp);
 
     /* If item is not found no error could occure */
-    /* If item is found and variable is null then error occured */
+    /* If item is found and variable is null then error occurred */
     return !found || *item;
 }
 
@@ -1040,7 +1040,7 @@ static bool secrets_collection_search_one_item(const struct secrets_object *coll
 /*
  * Gets an unlocked default collection if it exists
  *
- * Collection is null when error occured or when user dismissed unlocking
+ * Collection is null when error occurred or when user dismissed unlocking
  *
  * @return on error false
  */
@@ -1077,7 +1077,7 @@ static bool get_default_collection(struct secrets_object **collection,
 
         /* create collection function succeded if a collection is not NULL */
         /* or if the call was dismissed */
-        /* if dismissed is false and collection is null then an error occured */
+        /* if dismissed is false and collection is null then an error occurred */
         succ = *collection || *dismissed;
     }
 
@@ -1126,7 +1126,7 @@ static void load_event_options_from_item(GDBusProxy *session,
         if (error)
         {   /* if the error is NOT the known error produced by the gnome-keyring */
             /* when no secret value is assigned to an item */
-            /* then let you user known that the error occured */
+            /* then let you user known that the error occurred */
             if(strcmp(GNOME_KEYRING_NOT_HAVING_SECRET_ERROR, g_dbus_error_get_remote_error(error)) != 0)
                 error_msg(_("can't get secret value: %s"), error->message);
             else
@@ -1313,7 +1313,7 @@ static void save_event_config(const char *event_name,
      *      dismissed is TRUE - USER DISMISSED A PROMPT, he don't want to unlock the default collection !!
      *      We the set service state to unavailable in order to not bother user with prompts anymore
      *
-     *   4. An error occured
+     *   4. An error occurred
      *      collection is NULL
      *      succ is TRUE - call was NOT successful
      *      dismissed variable holds FALSE - no prompt no dismissed
@@ -1376,7 +1376,7 @@ void load_event_config_data_from_user_storage(GHashTable *event_config_list)
          *      dismissed is TRUE - USER DISMISSED A PROMPT, he don't want to unlock the default collection !!
          *      We the set service state to unavailable in order to not bother user with prompts anymore
          *
-         *   4. An error occured
+         *   4. An error occurred
          *      collection is NULL
          *      succ is TRUE - call was NOT successful
          *      dismissed variable holds FALSE - no prompt no dismissed

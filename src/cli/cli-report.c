@@ -1005,7 +1005,7 @@ int run_events_chain(const char *dump_dir_name, GList *chain)
         {
             if (config->ec_sending_sensitive_data)
             {
-                char *msg = xasprintf(_("Event '%s' requires permision to send possibly sensitive data."
+                char *msg = xasprintf(_("Event '%s' requires permission to send possibly sensitive data."
                                         " Do you want to continue?"),
                             config->screen_name ? config->screen_name : event);
                 const bool response = ask_yesno(msg);
