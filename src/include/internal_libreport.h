@@ -162,6 +162,12 @@ ssize_t full_read(int fd, void *buf, size_t count);
 ssize_t full_write(int fd, const void *buf, size_t count);
 #define full_write_str libreport_full_write_str
 ssize_t full_write_str(int fd, const char *buf);
+#define xmalloc_read libreport_xmalloc_read
+void* xmalloc_read(int fd, size_t *maxsz_p);
+#define xmalloc_open_read_close libreport_xmalloc_open_read_close
+void* xmalloc_open_read_close(const char *filename, size_t *maxsz_p);
+#define xmalloc_xopen_read_close libreport_xmalloc_xopen_read_close
+void* xmalloc_xopen_read_close(const char *filename, size_t *maxsz_p);
 
 
 /* Returns malloc'ed block */
@@ -700,6 +706,7 @@ bool make_dir_recursive(char *dir, mode_t dir_mode);
 #define FILENAME_BACKTRACE    "backtrace"
 #define FILENAME_MAPS         "maps"
 #define FILENAME_SMAPS        "smaps"
+#define FILENAME_PROC_PID_STATUS "proc_pid_status"
 #define FILENAME_ENVIRON      "environ"
 #define FILENAME_LIMITS       "limits"
 #define FILENAME_OPEN_FDS     "open_fds"
