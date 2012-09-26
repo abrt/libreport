@@ -2016,16 +2016,158 @@ static void log_ready_state(void)
 }
 #endif
 
-static gboolean highligh_word_in_tabs(const char *search_word, int flags)
+static int compare_search_item(gconstpointer a, gconstpointer b)
 {
-    gboolean found = false;
-    GtkTextBuffer *buffer;
+    const search_item_t *lhs = a;
+    const search_item_t *rhs = b;
+    return gtk_text_iter_compare(&(lhs->start), &(rhs->start));
+}
+
+static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words, int flags)
+{
+    GtkTextBuffer *buffer = gtk_text_view_get_buffer(tev);
+    gtk_text_buffer_set_modified(buffer, FALSE);
+
     GtkTextIter start_find;
-    GtkTextIter end_find;
+    gtk_text_buffer_get_start_iter(buffer, &start_find);
+
+    int bufferpos = -1;
+    GList *after_buffer = NULL;
+
+    GtkWidget *notebook_child = gtk_notebook_get_nth_page(g_notebook, page);
+    GtkWidget *tab_lbl = gtk_notebook_get_tab_label(g_notebook, notebook_child);
+
+    if (flags & CLEAR_PREVIOUS_RESULT)
+    {
+        int allwordspos = 0;
+        int bufferwords = 0;
+        for (GList* item = g_search_result_list; item; ++allwordspos)
+        {
+             GList* current = item;
+             item = g_list_next(item);
+
+             search_item_t *word = (search_item_t *)current->data;
+             if (word->buffer == buffer)
+             {
+                 ++bufferwords;
+
+                 if (allwordspos < g_current_highlighted_word)
+                     ++bufferpos;
+
+                 g_search_result_list = g_list_delete_link(g_search_result_list, current);
+                 free(word);
+             }
+             else if(after_buffer == NULL && bufferwords != 0)
+                 after_buffer = current;
+        }
+
+        GtkTextIter end_find;
+        gtk_text_buffer_get_end_iter(buffer, &end_find);
+
+        gtk_text_buffer_remove_tag_by_name(buffer, "search_result_bg", &start_find, &end_find);
+        gtk_text_buffer_remove_tag_by_name(buffer, "current_result_bg", &start_find, &end_find);
+
+        PangoAttrList *attrs = gtk_label_get_attributes(GTK_LABEL(tab_lbl));
+        gtk_label_set_attributes(GTK_LABEL(tab_lbl), NULL);
+        pango_attr_list_unref(attrs);
+    }
+
     GtkTextIter start_match;
     GtkTextIter end_match;
-    PangoAttrList *attrs;
-    int offset = 0;
+    int found = 0;
+    GList *result = NULL;
+    for (GList *w = words; w; w = g_list_next(w))
+    {
+        gtk_text_buffer_get_start_iter(buffer, &start_find);
+
+        const char *search_word = w->data;
+        while (search_word && search_word[0] && gtk_text_iter_forward_search(&start_find, search_word,
+                    GTK_TEXT_SEARCH_TEXT_ONLY,
+                    &start_match,
+                    &end_match, NULL))
+        {
+            ++found;
+
+            search_item_t * found_word = (search_item_t *)xmalloc(sizeof(search_item_t));
+            found_word->start = start_match;
+            found_word->end = end_match;
+            found_word->buffer = buffer;
+            found_word->tev = tev;
+            found_word->page = page;
+            result = g_list_prepend(result, found_word);
+
+            gtk_text_buffer_apply_tag_by_name(buffer, "search_result_bg",
+                                              &start_match, &end_match);
+            int offset = gtk_text_iter_get_offset(&end_match);
+            gtk_text_buffer_get_iter_at_offset(buffer, &start_find, offset);
+        }
+    }
+
+    if (found)
+    {
+        PangoAttrList *attrs = pango_attr_list_new();
+        PangoAttribute *foreground_attr = pango_attr_foreground_new(65535, 0, 0);
+        pango_attr_list_insert(attrs, foreground_attr);
+        gtk_label_set_attributes(GTK_LABEL(tab_lbl), attrs);
+
+        /* The current order of the found words is defined by order of words in the
+         * passed list. We have to order the words according to their occurrence in
+         * the buffer.
+         */
+        result = g_list_sort(result, compare_search_item);
+
+        /* Put words of the buffer at the correct place */
+        if (after_buffer == g_search_result_list)
+        {
+            /*
+             * The original list:
+             *   (buffer, after buffer)
+             */
+            g_search_result_list = g_list_concat(result, after_buffer);
+        }
+        else
+        {
+            /*
+             * The original:
+             *   (before buffer, buffer, after buffer)
+             * After removing buffer's words:
+             *   (before buffer, after buffer)
+             */
+            if (after_buffer && after_buffer->prev)
+            {
+                /* split to two lists (before buffer) and (after buffer) */
+                after_buffer->prev->next = NULL;
+                after_buffer->prev = NULL;
+            }
+
+            /* create (before buffer, buffer) */
+            g_search_result_list = g_list_concat(g_search_result_list, result);
+
+            if (after_buffer)
+                /* create (before buffer, buffer, after buffer) */
+                g_search_result_list = g_list_concat(g_search_result_list, after_buffer);
+        }
+    }
+
+    if (flags & CLEAR_PREVIOUS_RESULT)
+    {
+        /* The bufferpos variable greater than 0 means that current word was in
+         * the buffer or the currently highlighted word was after all buffer's
+         * words, therefore we have to decrease the index of the currently
+         * highlighted word. If any word was found the highlighting process
+         * will start from the beginning of the buffer. If no word was found
+         * the currently highlighted word will be the first word in a next buffer.
+         */
+        if (bufferpos >= 0)
+            g_current_highlighted_word -= (bufferpos + (found == 0));
+    }
+
+    return found;
+}
+
+static gboolean highligh_words_in_tabs(GList *words, int flags)
+{
+    gboolean found = false;
 
     if (flags & CLEAR_PREVIOUS_RESULT)
     {
@@ -2041,91 +2183,25 @@ static gboolean highligh_word_in_tabs(const char *search_word, int flags)
     {
         //notebook_page->scrolled_window->text_view
         GtkWidget *notebook_child = gtk_notebook_get_nth_page(g_notebook, page);
-        GtkTextView *tev = GTK_TEXT_VIEW(gtk_bin_get_child(GTK_BIN(notebook_child)));
-        buffer = gtk_text_view_get_buffer(tev);
-        gtk_text_buffer_get_start_iter(buffer, &start_find);
-        gtk_text_buffer_get_end_iter(buffer, &end_find);
         GtkWidget *tab_lbl = gtk_notebook_get_tab_label(g_notebook, notebook_child);
-        //reset previous results
-        if (flags & CLEAR_PREVIOUS_RESULT)
-        {
-            gtk_text_buffer_remove_tag_by_name(buffer, "search_result_bg", &start_find, &end_find);
-            gtk_text_buffer_remove_tag_by_name(buffer, "current_result_bg", &start_find, &end_find);
-            attrs = gtk_label_get_attributes(GTK_LABEL(tab_lbl));
-            gtk_label_set_attributes(GTK_LABEL(tab_lbl), NULL);
-            pango_attr_list_unref(attrs); //If the result is zero, free the attribute list and the attributes it contains.
-        }
-
-        /* adds * instead of changing color - usable for gtk < 2.8 */
-        /*
-        char* lbl = xstrdup(gtk_label_get_text(GTK_LABEL(tab_lbl)));
-        if (lbl[0] == '*') // lets hope we don't have elements name starting with *
-        {
-            gtk_label_set_text(GTK_LABEL(tab_lbl), lbl+1);
-        }
-        free(lbl);
-        */
-
-        bool lbl_set = false;
 
         if (strncmp(gtk_label_get_text(GTK_LABEL(tab_lbl)), "page 1", 5) == 0)
-        {
             continue;
-        }
 
-        while (search_word && search_word[0] && gtk_text_iter_forward_search(&start_find, search_word,
-                                     GTK_TEXT_SEARCH_TEXT_ONLY,
-                                     &start_match,
-                                     &end_match, NULL))
-        {
-            search_item_t * found_word = (search_item_t *)xmalloc(sizeof(search_item_t));
-            found_word->start = start_match;
-            found_word->end = end_match;
-            found_word->buffer = buffer;
-            found_word->tev = tev;
-            found_word->page = page;
-            g_search_result_list = g_list_append(g_search_result_list, found_word);
-            found = true;
-            if (!lbl_set)
-            {
-                attrs = pango_attr_list_new();
-                PangoAttribute *foreground_attr = pango_attr_foreground_new(65535, 0, 0);
-                pango_attr_list_insert(attrs, foreground_attr);
-                gtk_label_set_attributes(GTK_LABEL(tab_lbl), attrs);
-
-                /* adds * instead of changing color - usable for gtk < 2.8 */
-                /*
-                char *found_lbl = xasprintf("*%s", gtk_label_get_text(GTK_LABEL(tab_lbl)));
-                gtk_label_set_text(GTK_LABEL(tab_lbl), found_lbl);
-                free(found_lbl);
-                */
-
-                lbl_set = true;
-            }
-            gtk_text_buffer_apply_tag_by_name(buffer, "search_result_bg",
-                                              &start_match, &end_match);
-            offset = gtk_text_iter_get_offset(&end_match);
-            gtk_text_buffer_get_iter_at_offset(buffer, &start_find, offset);
-        }
+        GtkTextView *tev = GTK_TEXT_VIEW(gtk_bin_get_child(GTK_BIN(notebook_child)));
+        found |= highligh_words_in_textview(page, tev, words, flags);
     }
+
     return found;
 }
 
 static void highlight_forbidden(void)
 {
-    gboolean found = false;
     GList *forbidden_words = load_forbidden_words();
-    GList *cur_word = forbidden_words;
-    while (cur_word && ((char *)cur_word->data)[0])
-    {
-        if(highligh_word_in_tabs((char *)cur_word->data, 0))
-            found = true;
-        cur_word = g_list_next(cur_word);
-    }
-    if (found)
-    {
+
+    if (highligh_words_in_tabs(forbidden_words, 0))
         add_warning(_("Possible sensitive data detected, please review the highlighted tabs carefully."));
-    }
+
     list_free_with_free(forbidden_words);
 }
 
@@ -2390,13 +2466,26 @@ static void unhighlight_widget(GtkWidget *widget, gpointer *user_data)
     gtk_drag_unhighlight(widget);
 }
 
+static void rehighlight_forbidden_words(int page, GtkTextView *tev)
+{
+    GList *forbidden_words = load_forbidden_words();
+    highligh_words_in_textview(page, tev, forbidden_words, CLEAR_PREVIOUS_RESULT);
+    list_free_with_free(forbidden_words);
+
+    /* Don't increment resp. decrement in search_down() resp. search_up() */
+    g_first_highlight = true;
+}
+
 static void unhighlight_current_word(void)
 {
     search_item_t *word = NULL;
     word = (search_item_t *)g_list_nth_data(g_search_result_list, g_current_highlighted_word);
     if (word)
     {
-        gtk_text_buffer_remove_tag_by_name(word->buffer, "current_result_bg", &(word->start), &(word->end));
+        if (gtk_text_buffer_get_modified(word->buffer))
+            rehighlight_forbidden_words(word->page, word->tev);
+        else
+            gtk_text_buffer_remove_tag_by_name(word->buffer, "current_result_bg", &(word->start), &(word->end));
     }
 }
 
@@ -2406,6 +2495,13 @@ static void highlight_current_word(void)
     word = (search_item_t *)g_list_nth_data(g_search_result_list, g_current_highlighted_word);
     if (word)
     {
+        if (gtk_text_buffer_get_modified(word->buffer))
+        {
+            rehighlight_forbidden_words(word->page, word->tev);
+            highlight_current_word();
+            return;
+        }
+
         gtk_notebook_set_current_page(g_notebook, word->page);
         gtk_text_buffer_apply_tag_by_name(word->buffer, "current_result_bg", &(word->start), &(word->end));
         gtk_text_buffer_place_cursor(word->buffer, &(word->start));
@@ -2443,7 +2539,9 @@ static gboolean highlight_search(gpointer user_data)
 
     VERB1 log("searching: '%s'", gtk_entry_get_text(entry));
 
-    highligh_word_in_tabs(gtk_entry_get_text(entry), CLEAR_PREVIOUS_RESULT);
+    GList *words = g_list_append(NULL, (gpointer)gtk_entry_get_text(entry));
+    highligh_words_in_tabs(words, CLEAR_PREVIOUS_RESULT);
+    g_list_free(words);
 
     /* returning false will make glib to remove this event */
     return false;
