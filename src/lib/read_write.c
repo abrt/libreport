@@ -118,3 +118,76 @@ ssize_t full_write_str(int fd, const char *buf)
 {
     return full_write(fd, buf, strlen(buf));
 }
+
+/* Read (potentially big) files in one go. File size is estimated
+ * by stat. Extra '\0' byte is appended.
+ */
+void* xmalloc_read(int fd, size_t *maxsz_p)
+{
+    char *buf;
+    size_t size, rd_size, total;
+    size_t to_read;
+
+    to_read = maxsz_p ? *maxsz_p : (INT_MAX - 4095); /* max to read */
+
+    /* Estimate file size */
+    {
+        struct stat st;
+        st.st_size = 0; /* in case fstat fails, assume 0 */
+        fstat(fd, &st);
+        /* /proc/N/stat files report st_size 0 */
+        /* In order to make such files readable, we add small const (4k) */
+        size = (st.st_size | 0xfff) + 1;
+    }
+
+    total = 0;
+    buf = NULL;
+    while (1) {
+        if (to_read < size)
+            size = to_read;
+        buf = xrealloc(buf, total + size + 1);
+        rd_size = full_read(fd, buf + total, size);
+        if ((ssize_t)rd_size == (ssize_t)(-1)) { /* error */
+            free(buf);
+            return NULL;
+        }
+        total += rd_size;
+        if (rd_size < size) /* EOF */
+            break;
+        if (to_read <= rd_size)
+            break;
+        to_read -= rd_size;
+        /* grow by 1/8, but in [1k..64k] bounds */
+        size = ((total / 8) | 0x3ff) + 1;
+        if (size > 64*1024)
+            size = 64*1024;
+    }
+    buf = xrealloc(buf, total + 1);
+    buf[total] = '\0';
+
+    if (maxsz_p)
+        *maxsz_p = total;
+    return buf;
+}
+
+void* xmalloc_open_read_close(const char *filename, size_t *maxsz_p)
+{
+    char *buf;
+    int fd;
+
+    fd = open(filename, O_RDONLY);
+    if (fd < 0)
+        return NULL;
+
+    buf = xmalloc_read(fd, maxsz_p);
+    close(fd);
+    return buf;
+}
+
+void* xmalloc_xopen_read_close(const char *filename, size_t *maxsz_p)
+{
+    void *buf = xmalloc_open_read_close(filename, maxsz_p);
+    if (!buf)
+        perror_msg_and_die("Can't read '%s'", filename);
+    return buf;
+}
