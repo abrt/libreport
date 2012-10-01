@@ -68,6 +68,11 @@ char* dd_load_text_ext(const struct dump_dir *dd, const char *name, unsigned fla
 char* dd_load_text(const struct dump_dir *dd, const char *name);
 void dd_save_text(struct dump_dir *dd, const char *name, const char *data);
 void dd_save_binary(struct dump_dir *dd, const char *name, const char *data, unsigned size);
+/* Returns value less than 0 if any error occured; otherwise returns size of an
+ * item in Bytes. If an item does not exist returns 0 instead of an error
+ * value.
+ */
+long dd_get_item_size(struct dump_dir *dd, const char *name);
 /* Returns 0 if directory is deleted or not found */
 int dd_delete(struct dump_dir *dd);
 int dd_rename(struct dump_dir *dd, const char *new_path);
