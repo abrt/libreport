@@ -2526,6 +2526,7 @@ static void on_btn_add_file(GtkButton *button)
             struct dump_dir *dd = wizard_open_directory_for_writing(g_dump_dir_name);
             if (dd)
             {
+                dd_close(dd);
                 char *new_name = concat_path_file(g_dump_dir_name, basename);
                 if (strcmp(filename, new_name) == 0)
                 {
@@ -2549,7 +2550,6 @@ static void on_btn_add_file(GtkButton *button)
                 }
                 free(new_name);
             }
-            dd_close(dd);
         }
         else
             message = xasprintf(_("Item '%s' already exists and is not modifiable"), basename);
