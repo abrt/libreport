@@ -1924,6 +1924,9 @@ static void show_warnings(void)
 static void clear_warnings(void)
 {
     /* erase all warnings */
+    if (!g_warning_issued)
+        return;
+
     gtk_widget_hide(g_widget_warnings_area);
     gtk_container_foreach(GTK_CONTAINER(g_box_warning_labels), &remove_child_widget, NULL);
     g_warning_issued = false;
@@ -2198,6 +2201,8 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
     //            pages[PAGENO_REVIEW_DATA].page_widget == page
     //);
 
+    clear_warnings();
+
     if (pages[PAGENO_SUMMARY].page_widget == page)
     {
         if (!g_expert_mode)
@@ -2212,7 +2217,6 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
 
     if (pages[PAGENO_EDIT_ELEMENTS].page_widget == page)
     {
-        clear_warnings();
         highlight_forbidden();
         show_warnings();
     }
