@@ -2408,7 +2408,7 @@ static void highlight_current_word(void)
 
 static void search_down(GtkWidget *widget, gpointer user_data)
 {
-    if (g_current_highlighted_word < g_list_length(g_search_result_list)-1)
+    if (g_current_highlighted_word + !g_first_highlight < g_list_length(g_search_result_list))
     {
         unhighlight_current_word();
         if (!g_first_highlight)
@@ -2420,7 +2420,7 @@ static void search_down(GtkWidget *widget, gpointer user_data)
 
 static void search_up(GtkWidget *widget, gpointer user_data)
 {
-    if (g_current_highlighted_word > 0)
+    if (g_current_highlighted_word + g_first_highlight > 0)
     {
         unhighlight_current_word();
         if (!g_first_highlight)
