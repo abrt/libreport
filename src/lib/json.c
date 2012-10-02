@@ -154,8 +154,8 @@ static void ureport_add_core_backtrace(struct json_object *ur, problem_data_t *p
         if (aux->fingerprint)
             ureport_add_str(item, "funchash", aux->fingerprint);
 
-        if ((uintmax_t)frame->address)
-            ureport_add_int(item, "offset", (uintmax_t)frame->address);
+        /* always add offset - even offset 0 is valid */
+        ureport_add_int(item, "offset", (uintmax_t)frame->address);
 
         ureport_add_int(item, "frame", frame_nr++);
         ureport_add_int(item, "thread", 0);
