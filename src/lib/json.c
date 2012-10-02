@@ -76,7 +76,15 @@ static void ureport_add_str(struct json_object *ur, const char *key,
 
 static void ureport_add_os(struct json_object *ur, problem_data_t *pd)
 {
-    char *pd_item = problem_data_get_content_or_NULL(pd, FILENAME_OS_RELEASE);
+    /* paranoia - we only need OS_RELEASE_IN_ROOTDIR,
+       but check that ROOTDIR also exists */
+    char *pd_item = problem_data_get_content_or_NULL(pd, FILENAME_ROOTDIR);
+    if (pd_item)
+        pd_item = problem_data_get_content_or_NULL(pd, FILENAME_OS_RELEASE_IN_ROOTDIR);
+
+    if (!pd_item)
+        pd_item = problem_data_get_content_or_NULL(pd, FILENAME_OS_RELEASE);
+
     if (!pd_item)
         return;
 
