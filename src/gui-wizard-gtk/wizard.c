@@ -2203,6 +2203,13 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
 
     clear_warnings();
 
+    /* Save text fields if changed */
+    /* Must be called before any GUI operation because the following two
+     * functions causes recreating of the text items tabs, thus all updates to
+     * these tabs will be lost */
+    save_items_from_notepad();
+    save_text_from_text_view(g_tv_comment, FILENAME_COMMENT);
+
     if (pages[PAGENO_SUMMARY].page_widget == page)
     {
         if (!g_expert_mode)
@@ -2220,10 +2227,6 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
         highlight_forbidden();
         show_warnings();
     }
-
-    /* Save text fields if changed */
-    save_items_from_notepad();
-    save_text_from_text_view(g_tv_comment, FILENAME_COMMENT);
 
     if (pages[PAGENO_SUMMARY].page_widget == page
      || pages[PAGENO_REVIEW_DATA].page_widget == page
