@@ -124,6 +124,10 @@ char *xmalloc_fgets(FILE *file);
 /* Similar, but removes trailing \n */
 #define xmalloc_fgetline libreport_xmalloc_fgetline
 char *xmalloc_fgetline(FILE *file);
+/* Useful for easy reading of various /proc files */
+#define xmalloc_fopen_fgetline_fclose libreport_fopen_fgetline_fclose
+char *xmalloc_fopen_fgetline_fclose(const char *filename);
+
 
 /* On error, copyfd_XX prints error messages and returns -1 */
 enum {

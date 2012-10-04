@@ -82,3 +82,15 @@ char *xmalloc_fgetline(FILE *file)
 		r[--sz] = '\0';
 	return xrealloc(r, sz + 1);
 }
+
+char *xmalloc_fopen_fgetline_fclose(const char *filename)
+{
+    char *s = NULL;
+    FILE *fp = fopen(filename, "r");
+    if (fp)
+    {
+        s = xmalloc_fgetline(fp);
+        fclose(fp);
+    }
+    return s;
+}
