@@ -184,6 +184,21 @@ static GVariant *dbus_call_sync(GDBusProxy *proxy, const gchar *method, GVariant
     return resp;
 }
 
+/* Compares D-Bus error name against a name passsed as type argument
+ *
+ * @param error an error occured in any D-Bus method
+ * @param type a checked error type
+ * @returns true if a D-Bus name of error param equals to a value of type param
+ */
+static bool is_dbus_remote_error(GError *error, const char *type)
+{
+    /* returns a malloced string and return value can be NULL */
+    char *remote_type = g_dbus_error_get_remote_error(error);
+    const bool result = (remote_type && strcmp(type, remote_type) == 0);
+    g_free(remote_type);
+    return result;
+}
+
 /******************************************************************************/
 /* struct secrets_object                                                      */
 /******************************************************************************/
@@ -695,7 +710,7 @@ static bool secrets_service_read_alias(const char *alias, struct secrets_object 
         /* return TRUE if collection was not found or if collection object is not NULL */
         return !found || *collection;
     }
-    else if (strcmp(NOT_IMPLEMENTED_READ_ALIAS_ERROR, g_dbus_error_get_remote_error(error)) == 0)
+    else if (is_dbus_remote_error(error, NOT_IMPLEMENTED_READ_ALIAS_ERROR))
     {
         /* this code branch can be safely removed if KSecrets provides ReadAlias method*/
         VERB1 log("D-Bus Secrets Service ReadAlias method failed,"
@@ -940,7 +955,7 @@ static bool secrets_collection_create_text_item(struct secrets_object *collectio
 
         if (error)
         {
-            if (strcmp(INVALID_PROPERTIES_ARGUMENTS_ERROR, g_dbus_error_get_remote_error(error)) == 0)
+            if (is_dbus_remote_error(error, INVALID_PROPERTIES_ARGUMENTS_ERROR))
             {  /* it is OK - we know this error and we can safely continue */
                VERB2 log("CreateItem failed, going to use other property names: %s", error->message);
                continue;
@@ -1127,7 +1142,7 @@ static void load_event_options_from_item(GDBusProxy *session,
         {   /* if the error is NOT the known error produced by the gnome-keyring */
             /* when no secret value is assigned to an item */
             /* then let you user known that the error occurred */
-            if(strcmp(GNOME_KEYRING_NOT_HAVING_SECRET_ERROR, g_dbus_error_get_remote_error(error)) != 0)
+            if (is_dbus_remote_error(error, GNOME_KEYRING_NOT_HAVING_SECRET_ERROR))
                 error_msg(_("can't get secret value: %s"), error->message);
             else
             {
