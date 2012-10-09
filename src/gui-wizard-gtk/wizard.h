@@ -22,7 +22,21 @@
 #include "internal_libreport_gtk.h"
 
 void create_assistant(void);
-void update_gui_state_from_problem_data(void);
+
+enum
+{
+    /*
+     * the selected event is updated to a first event wich can be applied on
+     * the current problem directory
+     */
+    UPDATE_SELECTED_EVENT = 1 << 0,
+};
+
+/* Loads problem's data and update GUI elements according to the data.
+ *
+ * @param flags Flags to alternate the update process
+ */
+void update_gui_state_from_problem_data(int flags);
 void show_error_as_msgbox(const char *msg);
 
 

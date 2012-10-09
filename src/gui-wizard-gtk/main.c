@@ -146,7 +146,7 @@ int main(int argc, char **argv)
 
     g_custom_logger = &show_error_as_msgbox;
 
-    update_gui_state_from_problem_data();
+    update_gui_state_from_problem_data(UPDATE_SELECTED_EVENT);
 
     /* Enter main loop */
     gtk_main();

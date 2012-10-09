@@ -473,7 +473,7 @@ static void save_text_if_changed(const char *name, const char *new_value)
 //FIXME: else: what to do with still-unsaved data in the widget??
         dd_close(dd);
         problem_data_reload_from_dump_dir();
-        update_gui_state_from_problem_data();
+        update_gui_state_from_problem_data(/* don't update selected event */ 0);
     }
 }
 
@@ -1292,7 +1292,7 @@ static void update_ls_details_checkboxes(void)
     }
 }
 
-void update_gui_state_from_problem_data(void)
+void update_gui_state_from_problem_data(int flags)
 {
     update_window_title();
     remove_tabs_from_notebook(g_notebook);
@@ -1326,7 +1326,7 @@ void update_gui_state_from_problem_data(void)
                 G_CALLBACK(event_rb_was_toggled)
     );
 
-    if (g_expert_mode)
+    if (flags & UPDATE_SELECTED_EVENT && g_expert_mode)
     {
         /* Update the value of currently selected event */
         free(g_event_selected);
@@ -1746,7 +1746,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         gtk_widget_set_sensitive(g_btn_next, true);
 
         problem_data_reload_from_dump_dir();
-        update_gui_state_from_problem_data();
+        update_gui_state_from_problem_data(UPDATE_SELECTED_EVENT);
 
         if (retval)
         {
@@ -2635,7 +2635,7 @@ static void on_btn_add_file(GtkButton *button)
                     if (!message)
                     {
                         problem_data_reload_from_dump_dir();
-                        update_gui_state_from_problem_data();
+                        update_gui_state_from_problem_data(/* don't update selected event */ 0);
                         /* Set flags for the new item */
                         update_ls_details_checkboxes();
                     }
