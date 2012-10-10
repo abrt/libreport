@@ -1677,7 +1677,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     struct analyze_event_data *evd = data;
     struct run_event_state *run_state = evd->run_state;
 
-    const int retval = consume_event_command_output(run_state, g_dump_dir_name);
+    int retval = consume_event_command_output(run_state, g_dump_dir_name);
 
     if (retval < 0 && errno == EAGAIN)
         /* We got all buffered data, but fd is still open. Done for now */
@@ -1716,16 +1716,34 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     strbuf_clear(evd->event_log);
     evd->event_log_state = LOGSTATE_FIRSTLINE;
 
+    struct dump_dir *dd = NULL;
     if (geteuid() == 0)
     {
         /* Reset mode/uig/gid to correct values for all files created by event run */
         struct dump_dir *dd = dd_opendir(g_dump_dir_name, 0);
         if (dd)
-        {
             dd_sanitize_mode_and_owner(dd);
-            dd_close(dd);
-        }
     }
+
+    if (retval == 0)
+    {
+        /* Check whether NOT_REPORTABLE element appeared. If it did, we'll stop
+         * even if exit code is "success".
+         */
+        if (!dd) /* why? because dd may be already open by the code above */
+            dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
+        if (!dd)
+            xfunc_die();
+        char *not_reportable = dd_load_text_ext(dd, FILENAME_NOT_REPORTABLE, 0
+                                            | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
+                                            | DD_FAIL_QUIETLY_ENOENT
+                                            | DD_FAIL_QUIETLY_EACCES);
+        if (not_reportable)
+            retval = 256;
+        free(not_reportable);
+    }
+    if (dd)
+        dd_close(dd);
 
     /* Stop if exit code is not 0, or no more commands */
     if (retval != 0
@@ -1748,9 +1766,10 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         problem_data_reload_from_dump_dir();
         update_gui_state_from_problem_data(UPDATE_SELECTED_EVENT);
 
-        if (retval)
+        if (retval != 0)
         {
-            gtk_label_set_text(evd->status_label, evd->error_msg);
+            gtk_label_set_text(evd->status_label,
+                        retval == 256 ? evd->success_msg : evd->error_msg);
             /* If we were running -e EV1 -e EV2, stop if EV1 failed: */
             terminate_event_chain();
         }
@@ -2754,15 +2773,6 @@ static void add_pages(void)
             error_msg_and_die("Can't load %s: %s", g_glade_file, error->message);
     }
 
-    struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
-    if (!dd)
-        xfunc_die();
-    char *not_reportable = dd_load_text_ext(dd, FILENAME_NOT_REPORTABLE, 0
-                                            | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
-                                            | DD_FAIL_QUIETLY_ENOENT
-                                            | DD_FAIL_QUIETLY_EACCES);
-    dd_close(dd);
-
     int i;
     int page_no = 0;
     for (i = 0; page_names[i] != NULL; i++)
@@ -2773,7 +2783,6 @@ static void add_pages(void)
         gtk_notebook_append_page(g_assistant, page, gtk_label_new(pages[i].title));
         VERB1 log("added page: %s", page_names[i]);
     }
-    free(not_reportable);
 
     /* Set pointers to objects we might need to work with */
     g_lbl_cd_reason        = GTK_LABEL(        gtk_builder_get_object(g_builder, "lbl_cd_reason"));
