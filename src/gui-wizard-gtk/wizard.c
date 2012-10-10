@@ -2401,13 +2401,22 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
                 goto again;
             }
 
-            if (check_event_config(event) != 0)
+            /* must set g_event_selected otherwise if the event was not
+             * configured the reporting process will be terminated even if a
+             * user configured the event on report-gtk's demand from
+             * check_event_config() function
+             */
+            g_event_selected = xstrdup(event);
+
+            if (check_event_config(g_event_selected) != 0)
             {
+                /* don't know what is the difference between this <<< */
                 goto again;
             }
 
-            g_event_selected = xstrdup(event);
-
+            /* >>> and this but this is clearer
+             * because it does exactly the same thing
+             * but I'm pretty scared to touch it */
             current_page_no = pages[PAGENO_EVENT_SELECTOR].page_no + 1;
             goto event_was_selected;
         }
