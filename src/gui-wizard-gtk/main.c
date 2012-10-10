@@ -44,36 +44,32 @@ void problem_data_reload_from_dump_dir(void)
     g_events = list_possible_events(dd, NULL, "");
     dd_close(dd);
 
-    if (1)
+    /* Copy "selected for reporting" flags */
+    GHashTableIter iter;
+    char *name;
+    struct problem_item *new_item;
+    g_hash_table_iter_init(&iter, new_cd);
+    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&new_item))
     {
-        /* Copy "selected for reporting" flags */
-        GHashTableIter iter;
-        char *name;
-        struct problem_item *new_item;
-        g_hash_table_iter_init(&iter, new_cd);
-        while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&new_item))
+        struct problem_item *old_item = g_cd ? problem_data_get_item_or_NULL(g_cd, name) : NULL;
+        if (old_item)
         {
-            struct problem_item *old_item = g_cd ? problem_data_get_item_or_NULL(g_cd, name) : NULL;
-            if (old_item)
-            {
-                new_item->selected_by_user = old_item->selected_by_user;
-                new_item->allowed_by_reporter = old_item->allowed_by_reporter;
-                new_item->default_by_reporter = old_item->default_by_reporter;
-                new_item->required_by_reporter = old_item->required_by_reporter;
-            }
-            else
-            {
-                new_item->selected_by_user = 0;
-                new_item->allowed_by_reporter = 0;
-                new_item->default_by_reporter = 0;
-                new_item->required_by_reporter = 0;
-            }
-            //log("%s: was ->selected_by_user=%d", __func__, new_item->selected_by_user);
+            new_item->selected_by_user = old_item->selected_by_user;
+            new_item->allowed_by_reporter = old_item->allowed_by_reporter;
+            new_item->default_by_reporter = old_item->default_by_reporter;
+            new_item->required_by_reporter = old_item->required_by_reporter;
         }
-        problem_data_free(g_cd);
+        else
+        {
+            new_item->selected_by_user = 0;
+            new_item->allowed_by_reporter = 0;
+            new_item->default_by_reporter = 0;
+            new_item->required_by_reporter = 0;
+        }
+        //log("%s: was ->selected_by_user=%d", __func__, new_item->selected_by_user);
     }
+    problem_data_free(g_cd);
     g_cd = new_cd;
-
 }
 
 int main(int argc, char **argv)
