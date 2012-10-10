@@ -2401,7 +2401,7 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
                 goto again;
             }
 
-            if (check_event_config(g_event_selected) != 0)
+            if (check_event_config(event) != 0)
             {
                 goto again;
             }
