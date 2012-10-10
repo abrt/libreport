@@ -199,7 +199,7 @@ static void clear_warnings(void);
 static void show_warnings(void);
 static void add_warning(const char *warning);
 static bool check_minimal_bt_rating(const char *event_name);
-static const char *get_next_processed_event(GList **events_list);
+static char *get_next_processed_event(GList **events_list);
 static void on_next_btn_cb(GtkWidget *btn, gpointer user_data);
 
 static void wrap_fixer(GtkWidget *widget, gpointer data_unused)
@@ -1517,7 +1517,12 @@ static void terminate_event_chain()
     if (g_expert_mode)
         return;
 
+    free(g_event_selected);
+    g_event_selected = NULL;
+
+    g_list_free_full(g_auto_event_list, free);
     g_auto_event_list = NULL;
+
     update_gui_on_finished_reporting();
 }
 
@@ -2218,12 +2223,70 @@ static void setup_and_start_event_run(const char *event_name)
     );
 }
 
-static const char *get_next_processed_event(GList **events_list)
+static char *get_next_processed_event(GList **events_list)
 {
     if (!events_list || !*events_list)
         return NULL;
 
-    const char *event_name = (const char *)(*events_list)->data;
+    char *event_name = (char *)(*events_list)->data;
+    const size_t event_len = strlen(event_name);
+
+    /* pop the current event */
+    *events_list = g_list_delete_link(*events_list, *events_list);
+
+    if (event_name[event_len - 1] == '*')
+    {
+        VERB2 log("Expanding event '%s'", event_name);
+
+        struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY);
+        if (!dd)
+            error_msg_and_die("Can't open directory '%s'", g_dump_dir_name);
+
+        /* Erase '*' */
+        event_name[event_len - 1] = '\0';
+
+        /* get 'event1\nevent2\nevent3\n' or '' if no event is possible */
+        char *expanded_events = list_possible_events(dd, g_dump_dir_name, event_name);
+
+        dd_close(dd);
+        free(event_name);
+
+        GList *expanded_list = NULL;
+        /* add expanded events from event having trailing '*' */
+        char *next = event_name = expanded_events;
+        while ((next = strchr(event_name, '\n')))
+        {
+            /* 'event1\0event2\nevent3\n' */
+            next[0] = '\0';
+
+            /* 'event1' */
+            event_name = xstrdup(event_name);
+            VERB3 log("Adding a new expanded event '%s' to the processed list", event_name);
+
+            /* the last event is not added to the expanded list */
+            ++next;
+            if (next[0] == '\0')
+                break;
+
+            expanded_list = g_list_prepend(expanded_list, event_name);
+
+            /* 'event2\nevent3\n' */
+            event_name = next;
+        }
+
+        free(expanded_events);
+
+        /* It's OK we can safely compare address even if them were previously freed */
+        if (event_name != expanded_events)
+            /* the last expanded event name is stored in event_name */
+            *events_list = g_list_concat(expanded_list, *events_list);
+        else
+        {
+            VERB2 log("No event was expanded, will continue continue with the next one.");
+            /* no expanded event try the next event */
+            return get_next_processed_event(events_list);
+        }
+    }
 
     clear_warnings();
     const bool acceptable = check_minimal_bt_rating(event_name);
@@ -2231,11 +2294,14 @@ static const char *get_next_processed_event(GList **events_list)
 
     if (!acceptable)
     {
+        /* a node for this event was already removed */
+        free(event_name);
+
+        g_list_free_full(*events_list, free);
         *events_list = NULL;
         return NULL;
     }
 
-    *events_list = g_list_next(*events_list);
     return event_name;
 }
 
@@ -2325,12 +2391,12 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
     }
 }
 
-static const char *setup_next_processed_event(GList **events_list)
+static char *setup_next_processed_event(GList **events_list)
 {
     free(g_event_selected);
     g_event_selected = NULL;
 
-    const char *event = get_next_processed_event(&g_auto_event_list);
+    char *event = get_next_processed_event(&g_auto_event_list);
     if (!event)
     {
         /* No next event, go to progress page and finish */
@@ -2373,7 +2439,7 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
         if (!g_expert_mode)
         {
             /* (note: this frees and sets to NULL g_event_selected) */
-            const char *event = setup_next_processed_event(&g_auto_event_list);
+            char *event = setup_next_processed_event(&g_auto_event_list);
             if (!event)
             {
                 current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
@@ -2382,6 +2448,8 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
 
             if (!get_sensitive_data_permission(event))
             {
+                free(event);
+
                 gtk_label_set_text(g_lbl_event_log, _("Processing was cancelled"));
                 terminate_event_chain();
                 current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
@@ -2390,6 +2458,8 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
 
             if (problem_data_get_content_or_NULL(g_cd, FILENAME_NOT_REPORTABLE))
             {
+                free(event);
+
                 char *msg = xasprintf(_("This problem should not be reported "
                                 "(it is likely a known problem). %s"),
                                 problem_data_get_content_or_NULL(g_cd, FILENAME_NOT_REPORTABLE)
@@ -2406,7 +2476,7 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
              * user configured the event on report-gtk's demand from
              * check_event_config() function
              */
-            g_event_selected = xstrdup(event);
+            g_event_selected = event;
 
             if (check_event_config(g_event_selected) != 0)
             {

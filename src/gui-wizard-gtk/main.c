@@ -126,6 +126,10 @@ int main(int argc, char **argv)
     if (!argv[0] || argv[1]) /* zero or >1 arguments */
         show_usage_and_die(program_usage_string, program_options);
 
+    /* Allow algorithms to add mallocated strings */
+    for (GList *elem = g_auto_event_list; elem; elem = g_list_next(elem))
+        elem->data = xstrdup((const char *)elem->data);
+
     export_abrt_envvars(opts & OPT_p);
 
     g_dump_dir_name = xstrdup(argv[0]);
