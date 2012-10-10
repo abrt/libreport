@@ -740,6 +740,11 @@ struct dump_dir *open_directory_for_writing(
  */
 #define FILENAME_REPORTED_TO  "reported_to"
 #define FILENAME_EVENT_LOG    "event_log"
+/*
+ * If exists, should contain a full sentence (w/o trailing period)
+ * which describes why this problem should not be reported.
+ * Example: "Your laptop firmware 1.9a is buggy, version 1.10 contains the fix"
+ */
 #define FILENAME_NOT_REPORTABLE "not-reportable"
 #define FILENAME_CORE_BACKTRACE "core_backtrace"
 #define FILENAME_REMOTE_RESULT "remote_result"

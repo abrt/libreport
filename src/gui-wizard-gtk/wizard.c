@@ -200,7 +200,6 @@ static void show_warnings(void);
 static void add_warning(const char *warning);
 static bool check_minimal_bt_rating(const char *event_name);
 static const char *get_next_processed_event(GList **events_list);
-static const char *setup_next_processed_event(GList **events_list);
 static void on_next_btn_cb(GtkWidget *btn, gpointer user_data);
 
 static void wrap_fixer(GtkWidget *widget, gpointer data_unused)
@@ -1716,7 +1715,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
             dd_sanitize_mode_and_owner(dd);
     }
 
-    if (retval == 0)
+    if (retval == 0 && !g_expert_mode)
     {
         /* Check whether NOT_REPORTABLE element appeared. If it did, we'll stop
          * even if exit code is "success".
@@ -2240,23 +2239,6 @@ static const char *get_next_processed_event(GList **events_list)
     return event_name;
 }
 
-static const char *setup_next_processed_event(GList **events_list)
-{
-    const char *event = get_next_processed_event(&g_auto_event_list);
-    if (!event)
-    {
-        free(g_event_selected);
-        g_event_selected = NULL;
-        /* No next event, go to progress page and finish */
-        gtk_label_set_text(g_lbl_event_log, _("Processing finished."));
-        update_gui_on_finished_reporting();
-        return NULL;
-    }
-
-    VERB1 log("selected -e EVENT:%s", event);
-    return event;
-}
-
 static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer user_data)
 {
     //int page_no = gtk_assistant_get_current_page(g_assistant);
@@ -2343,6 +2325,24 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
     }
 }
 
+static const char *setup_next_processed_event(GList **events_list)
+{
+    free(g_event_selected);
+    g_event_selected = NULL;
+
+    const char *event = get_next_processed_event(&g_auto_event_list);
+    if (!event)
+    {
+        /* No next event, go to progress page and finish */
+        gtk_label_set_text(g_lbl_event_log, _("Processing finished."));
+        update_gui_on_finished_reporting();
+        return NULL;
+    }
+
+    VERB1 log("selected -e EVENT:%s", event);
+    return event;
+}
+
 static bool get_sensitive_data_permission(const char *event_name)
 {
     event_config_t *event_cfg = get_event_config(event_name);
@@ -2372,15 +2372,13 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
     {
         if (!g_expert_mode)
         {
+            /* (note: this frees and sets to NULL g_event_selected) */
             const char *event = setup_next_processed_event(&g_auto_event_list);
             if (!event)
             {
                 current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
                 goto again;
             }
-
-            free(g_event_selected);
-            g_event_selected = NULL;
 
             if (!get_sensitive_data_permission(event))
             {
@@ -2390,12 +2388,25 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
                 goto again;
             }
 
-            g_event_selected = xstrdup(event);
+            if (problem_data_get_content_or_NULL(g_cd, FILENAME_NOT_REPORTABLE))
+            {
+                char *msg = xasprintf(_("This problem should not be reported "
+                                "(it is likely a known problem). %s"),
+                                problem_data_get_content_or_NULL(g_cd, FILENAME_NOT_REPORTABLE)
+                );
+                gtk_label_set_text(g_lbl_event_log, msg);
+                free(msg);
+                terminate_event_chain();
+                current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
+                goto again;
+            }
 
             if (check_event_config(g_event_selected) != 0)
             {
                 goto again;
             }
+
+            g_event_selected = xstrdup(event);
 
             current_page_no = pages[PAGENO_EVENT_SELECTOR].page_no + 1;
             goto event_was_selected;
