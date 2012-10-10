@@ -201,7 +201,6 @@ static void add_warning(const char *warning);
 static bool check_minimal_bt_rating(const char *event_name);
 static const char *get_next_processed_event(GList **events_list);
 static const char *setup_next_processed_event(GList **events_list);
-static void setup_and_start_even_run(const char *event_name);
 static void on_next_btn_cb(GtkWidget *btn, gpointer user_data);
 
 static void wrap_fixer(GtkWidget *widget, gpointer data_unused)
@@ -1664,14 +1663,6 @@ static bool event_need_review(const char *event_name)
     return !event_cfg || !event_cfg->ec_skip_review;
 }
 
-static void start_event_run(const char *event_name,
-                            GtkWidget *page,
-                            GtkTextView *tv_log,
-                            GtkLabel *status_label,
-                            const char *start_msg,
-                            const char *error_msg,
-                            const char *success_msg);
-
 static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, gpointer data)
 {
     struct analyze_event_data *evd = data;
@@ -2213,7 +2204,7 @@ static void highlight_forbidden(void)
 
 static gint select_next_page_no(gint current_page_no, gpointer data);
 
-static void setup_and_start_even_run(const char *event_name)
+static void setup_and_start_event_run(const char *event_name)
 {
     start_event_run(event_name,
             pages[PAGENO_EVENT_PROGRESS].page_widget,
@@ -2347,7 +2338,7 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
          && g_event_selected[0]
         ) {
             clear_warnings();
-            setup_and_start_even_run(g_event_selected);
+            setup_and_start_event_run(g_event_selected);
         }
     }
 }
@@ -2389,10 +2380,10 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
             }
 
             free(g_event_selected);
+            g_event_selected = NULL;
 
             if (!get_sensitive_data_permission(event))
             {
-                g_event_selected = NULL;
                 gtk_label_set_text(g_lbl_event_log, _("Processing was cancelled"));
                 terminate_event_chain();
                 current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
