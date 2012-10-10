@@ -1720,7 +1720,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     if (geteuid() == 0)
     {
         /* Reset mode/uig/gid to correct values for all files created by event run */
-        struct dump_dir *dd = dd_opendir(g_dump_dir_name, 0);
+        dd = dd_opendir(g_dump_dir_name, 0);
         if (dd)
             dd_sanitize_mode_and_owner(dd);
     }
