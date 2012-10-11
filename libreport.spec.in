@@ -390,5 +390,19 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/events.d/uploader_event.conf
 
 %changelog
+* Thu Oct 11 2012 Jakub Filak <jfilak@redhat.com> 2.0.16-1
+- expand events from a chain and process expanded events separately
+- report-gtk: move selection of event to a right place
+- fix a crash while report-gtk startup (use the correct variable)
+- wizard: allow "non-reportable" reporting for experts; disallow it for non-experts
+- fix typo in function name, remove unnecessary forward declaratioins
+- wizard: fix a thinko in last commit (thanks Jakub)
+- wizard: check for NON_REPORTABLE file, stop if it exists.FILE
+- wizard: remove unnecessary if (1) {...} block. No code changes
+- don't update the selected event while processing it
+- check D-Bus err name without leaking nor crashing
+- ureport: always include offset
+- add Makefile target release-fix
+
 * Wed Jun 01 2011 Jiri Moskovcak <jmoskovc@redhat.com> 2.0.2-1
 - initial packaging
