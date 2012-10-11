@@ -396,7 +396,7 @@ int main(int argc, char **argv)
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
     argv += optind;
     /* >0 arguments with -V */
-    if ((opts & OPT_V) && argv[0])
+    if (((opts & OPT_V) && argv[0]) || !argv[0])
         show_usage_and_die(program_usage_string, program_options);
 
     if (opts & OPT_V)
