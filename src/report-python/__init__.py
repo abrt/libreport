@@ -42,23 +42,6 @@ def getProduct_fromRPM():
     except:
         return ""
 
-def getProduct_fromFILE():
-    for each_path in SYSTEM_RELEASE_PATHS:
-        if os.path.exists(each_path):
-            file = open(each_path, "r")
-            content = file.read()
-            if content.startswith("Red Hat Enterprise Linux"):
-                return "Red Hat Enterprise Linux"
-
-            if content.startswith("Fedora"):
-                return "Fedora"
-
-            i = content.find(" release")
-            if i > -1:
-                return content[0:i]
-
-    return ""
-
 def getVersion_fromRPM():
     try:
         import rpm
@@ -72,11 +55,39 @@ def getVersion_fromRPM():
         return ""
     except:
         return ""
+"""
+
+def getProduct_fromFILE():
+    for each_path in SYSTEM_RELEASE_PATHS:
+        if os.path.exists(each_path):
+            file = None
+            try:
+                file = open(each_path, "r")
+            except IOError as e:
+                return ""
+
+            content = file.read()
+            if content.startswith("Red Hat Enterprise Linux"):
+                return "Red Hat Enterprise Linux"
+
+            if content.startswith("Fedora"):
+                return "Fedora"
+
+            i = content.find(" release")
+            if i > -1:
+                return content[0:i]
+
+    return ""
 
 def getVersion_fromFILE():
     for each_path in SYSTEM_RELEASE_PATHS:
         if os.path.exists(each_path):
-            file = open(each_path, "r")
+            file = None
+            try:
+                file = open(each_path, "r")
+            except IOError as e:
+                return ""
+
             content = file.read()
             if content.find("Rawhide") > -1:
                 return "rawhide"
@@ -86,7 +97,6 @@ def getVersion_fromFILE():
             return clist[i+1]
         else:
             return ""
-"""
 
 def getProduct_fromPRODUCT():
     try:
@@ -112,21 +122,28 @@ def getVersion_fromPRODUCT():
 
 
 def getProduct():
-    """Attempt to determine the product of the running system by asking anaconda
+    """Attempt to determine the product of the running system at first attempt
+       from the release configuration file or if the first attempt fails by
+       asking anaconda
+       Always return as a string.
     """
-    product = getProduct_fromPRODUCT()
-    if product:
-        return product
+    for getter in (getProduct_fromFILE, getProduct_fromPRODUCT):
+        product = getter()
+        if product:
+            return product
 
     return _hardcoded_default_product
 
 def getVersion():
-    """Attempt to determine the version of the running system by asking anaconda
+    """Attempt to determine the version of the running system at first attempt
+       from the release configuration file or if the first attempt fails by
+       asking anaconda
        Always return as a string.
     """
-    version = getVersion_fromPRODUCT()
-    if version:
-        return version
+    for getter in (getVersion_fromFILE, getVersion_fromPRODUCT):
+        version = getter()
+        if version:
+            return version
 
     return _hardcoded_default_version
 
