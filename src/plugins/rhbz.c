@@ -82,13 +82,11 @@ static const char *const g_not_attached_files[] = {
     FILENAME_ANALYZER,
     FILENAME_PID,
     FILENAME_PWD,
-    FILENAME_ROOTDIR,
     FILENAME_BINARY,
     FILENAME_COREDUMP,
     FILENAME_DUPHASH,
     FILENAME_ARCHITECTURE,
     FILENAME_OS_RELEASE,
-    FILENAME_OS_RELEASE_IN_ROOTDIR,
     FILENAME_PACKAGE,
     FILENAME_COMPONENT,
     FILENAME_COMMENT,
@@ -111,7 +109,6 @@ static const char *const g_not_attached_files[] = {
     FILENAME_REMOTE_RESULT,
     FILENAME_USERNAME,
     FILENAME_TIME,
-    FILENAME_EXECUTABLE,
     /* ! a bunch of file names */
     INLINED_FILES_LIST,
     NULL
@@ -851,7 +848,7 @@ int rhbz_attach_files(struct abrt_xmlrpc *ax, const char *bug_id,
             continue;
 
         /* Skip empty files */
-        if (strlen(value->content) == 0)
+        if (value->content[0] == '\0')
         {
             log(_("Not attaching empty file '%s'"), name);
             continue;
