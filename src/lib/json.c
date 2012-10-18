@@ -224,6 +224,16 @@ static void ureport_add_reporter(struct json_object *ur, const char *name, const
     json_object_object_add(ur, "reporter", jobject);
 }
 
+static void ureport_add_oops(struct json_object *ur, problem_data_t *pd)
+{
+    char *pd_item = problem_data_get_content_or_NULL(pd, FILENAME_ANALYZER);
+    if (!pd_item)
+        return;
+
+    if (!strcmp(pd_item, "Kerneloops"))
+        ureport_add_item_str(ur, pd, FILENAME_BACKTRACE, "oops");
+}
+
 char *new_json_ureport(problem_data_t *pd)
 {
     struct json_object *ureport = json_object_new_object();
@@ -253,6 +263,8 @@ char *new_json_ureport(problem_data_t *pd)
 
     ureport_add_core_backtrace(ureport, pd);
     ureport_add_reporter(ureport, "ABRT", VERSION);
+
+    ureport_add_oops(ureport, pd);
 
     char *j = xstrdup(json_object_to_json_string(ureport));
     json_object_put(ureport);
