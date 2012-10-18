@@ -19,7 +19,8 @@ _reportclient_la_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     $(PYTHON_CFLAGS) \
     -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -Wall -Wwrite-strings -Werror \
+    -fPIE -Wl,-z,bind_now
 _reportclient_la_LDFLAGS = \
     -module \
     -avoid-version \

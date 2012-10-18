@@ -24,6 +24,7 @@ _pyreport_la_CPPFLAGS = \
     $(PYTHON_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
+    -fPIE -Wl,-z,bind_now
 _pyreport_la_LDFLAGS = \
     -module \
     -avoid-version \
