@@ -22,7 +22,8 @@ _pyreport_la_CPPFLAGS = \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     $(GLIB_CFLAGS) \
     $(PYTHON_CFLAGS) \
-    -D_GNU_SOURCE
+    -D_GNU_SOURCE \
+    -fPIE -Wl,-z,bind_now
 _pyreport_la_LDFLAGS = \
     -module \
     -avoid-version \
