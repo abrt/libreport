@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-06 15:49+0200\n"
+"POT-Creation-Date: 2012-10-18 16:27+0200\n"
 "PO-Revision-Date: 2012-02-15 14:29+0000\n"
 "Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -717,6 +717,11 @@ msgid ""
 "reporting process, press 'Forward'."
 msgstr ""
 
+#: ../src/lib/abrt_sock.c:83
+#, c-format
+msgid "Can't delete: '%s'"
+msgstr ""
+
 #: ../src/lib/event_config.c:300
 msgid "Missing mandatory value"
 msgstr "Eksik zorunlu değer"
@@ -1017,7 +1022,7 @@ msgstr ""
 #: ../src/plugins/reporter-kerneloops.c:166
 #: ../src/plugins/reporter-mailx.c:173 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:84
-#: ../src/plugins/reporter-upload.c:288
+#: ../src/plugins/reporter-upload.c:300
 msgid "Dump directory"
 msgstr "Döküm dizini"
 
@@ -1145,7 +1150,7 @@ msgid ""
 "If not specified, CONFFILE defaults to "
 msgstr ""
 
-#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:289
+#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:301
 msgid "Config file"
 msgstr "Yapılandırma dosyası"
 
@@ -1221,7 +1226,7 @@ msgstr "'%s' '%s' durumuna bağlanıyor"
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../src/plugins/reporter-rhtsupport.c:205
-#: ../src/plugins/reporter-upload.c:121
+#: ../src/plugins/reporter-upload.c:133
 msgid "Compressing data"
 msgstr "Sıkıştırılmış veri"
 
@@ -1257,23 +1262,23 @@ msgstr ""
 msgid "Updates which possibly help: "
 msgstr ""
 
-#: ../src/plugins/reporter-upload.c:59
+#: ../src/plugins/reporter-upload.c:71
 #, c-format
 msgid "Sending %s to %s"
 msgstr "%s %s e gönderiliyor"
 
 #. This ends up a "reporting status message" in abrtd
-#: ../src/plugins/reporter-upload.c:98
+#: ../src/plugins/reporter-upload.c:110
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "%s %s e başarılı bir şekilde gönderildi"
 
-#: ../src/plugins/reporter-upload.c:221
+#: ../src/plugins/reporter-upload.c:233
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "Arşiv yaratıldı: '%s'"
 
-#: ../src/plugins/reporter-upload.c:261
+#: ../src/plugins/reporter-upload.c:273
 msgid ""
 "& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
@@ -1294,31 +1299,45 @@ msgid ""
 "Parameter can be overridden via $Upload_URL."
 msgstr ""
 
-#: ../src/plugins/reporter-upload.c:290
+#: ../src/plugins/reporter-upload.c:302
 msgid "Base URL to upload to"
 msgstr ""
 
-#: ../src/plugins/rhbz.c:319
+#: ../src/plugins/rhbz.c:405
 #, c-format
 msgid "Looks like corrupted xml response, because '%s' member is missing."
 msgstr "xml yanıtının çökmesine benziyor, çünkü '%s' eksik."
 
-#: ../src/plugins/rhbz.c:393
+#: ../src/plugins/rhbz.c:479
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
 msgstr ""
 
-#: ../src/plugins/rhbz.c:401
+#: ../src/plugins/rhbz.c:487
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
 msgstr "%i hatası aynısı olduğu kapatıldı, fakat o DUP_ID ye sahip değil"
 
-#: ../src/plugins/rhbz.c:530
+#: ../src/plugins/rhbz.c:528
+#, fuzzy
+msgid "Can't parse backtrace"
+msgstr "Geri izlemeyi yeniden üret"
+
+#: ../src/plugins/rhbz.c:539
+msgid "Can't find crash thread"
+msgstr ""
+
+#: ../src/plugins/rhbz.c:691
 #, c-format
 msgid "New bug id: %i"
 msgstr "Yeni hata id: %i"
 
-#: ../src/plugins/rhbz.c:680
+#: ../src/plugins/rhbz.c:791
+#, fuzzy, c-format
+msgid "Not attaching empty file '%s'"
+msgstr "'%s' '%s' durumuna bağlanıyor"
+
+#: ../src/plugins/rhbz.c:850
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla %d hatasının üst hatasını bulamadı"

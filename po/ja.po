@@ -4,20 +4,20 @@
 #
 # Translators:
 # Kiyoto Hashida <khashida@redhat.com>, 2011.
-#   <noriko@fedoraproject.org>, 2011, 2012.
+#   <noriko@fedoraproject.org>, 2011-2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-06 15:49+0200\n"
-"PO-Revision-Date: 2012-02-29 04:30+0000\n"
+"POT-Creation-Date: 2012-10-18 16:27+0200\n"
+"PO-Revision-Date: 2012-10-09 23:56+0000\n"
 "Last-Translator: noriko <noriko@fedoraproject.org>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: Japanese <trans-ja@lists.fedoraproject.org>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../src/cli/cli.c:56
 msgid ""
@@ -280,9 +280,8 @@ msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
 msgstr "yum の初期化でエラー発生 (YumBase.doConfigSetup): '{0!s}'"
 
 #: ../src/client-python/debuginfo.py:186
-#, fuzzy
 msgid "Can't disable repository '{0!s}': {1!s}"
-msgstr "「{0}」 に書き込みできません: {1}"
+msgstr "リポジトリ「{0!s}」は無効にできません: {1!s}"
 
 #. This takes some time, let user know what we are doing
 #: ../src/client-python/debuginfo.py:189
@@ -551,20 +550,22 @@ msgstr "分析中...　"
 #: ../src/gui-wizard-gtk/wizard.c:2050
 msgid "Analyzing failed. You can try another analyzer if available."
 msgstr ""
+"分析に失敗しました。別の分析ツールがある場合はそのツールで試行してみてくださ"
+"い。"
 
 #: ../src/gui-wizard-gtk/wizard.c:2051
-#, fuzzy
 msgid "Analyzing finished. You can proceed to the next step."
-msgstr "分析は終了コード %d で完了しました"
+msgstr "分析が完了しました。次の手順に進むことができます。"
 
 #: ../src/gui-wizard-gtk/wizard.c:2078
 msgid "Reporting failed. You can try another reporter if available."
 msgstr ""
+"報告に失敗しました。別の報告ツールがある場合はそのツールで試行してみてくださ"
+"い。"
 
 #: ../src/gui-wizard-gtk/wizard.c:2079
-#, fuzzy
 msgid "Reporting finished. You can proceed to the next step."
-msgstr "報告は終了しました。この画面を今閉じることができます。"
+msgstr "報告が完了しました。次の手順に進むことができます。"
 
 #: ../src/gui-wizard-gtk/wizard.c:2106
 msgid "Collecting..."
@@ -573,11 +574,12 @@ msgstr "収集中…"
 #: ../src/gui-wizard-gtk/wizard.c:2107
 msgid "Collecting failed. You can try another collector if available."
 msgstr ""
+"収集に失敗しました。別の収集ツールがある場合はそのツールで試行してみてくださ"
+"い。"
 
 #: ../src/gui-wizard-gtk/wizard.c:2108
-#, fuzzy
 msgid "Collecting finished. You can proceed to the next step."
-msgstr "終了コード %d で終了したものを収集中"
+msgstr "収集が完了しました。次の手順に進むことができます。"
 
 #: ../src/gui-wizard-gtk/wizard.c:2243
 msgid ""
@@ -741,6 +743,11 @@ msgid ""
 msgstr ""
 "異なる送信先に問題を報告したい場合は、追加情報を収集するか、又はより良い問題"
 "説明を提供して報告プロセスを繰り返した上で、「進む」を押します。"
+
+#: ../src/lib/abrt_sock.c:83
+#, c-format
+msgid "Can't delete: '%s'"
+msgstr "削除できません: 「%s」"
 
 #: ../src/lib/event_config.c:300
 msgid "Missing mandatory value"
@@ -1078,7 +1085,7 @@ msgstr ""
 #: ../src/plugins/reporter-kerneloops.c:166
 #: ../src/plugins/reporter-mailx.c:173 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:84
-#: ../src/plugins/reporter-upload.c:288
+#: ../src/plugins/reporter-upload.c:300
 msgid "Dump directory"
 msgstr "ダンプディレクトリ"
 
@@ -1221,13 +1228,13 @@ msgstr ""
 "\n"
 "指定しない場合、 CONFFILE により次のようにデフォルト設定されます。"
 
-#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:289
+#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:301
 msgid "Config file"
 msgstr "設定ファイル"
 
 #: ../src/plugins/reporter-mailx.c:175
 msgid "Notify only (Do not mark the report as sent)"
-msgstr ""
+msgstr "通知のみ (レポート送信済みのマークは付けない)"
 
 #: ../src/plugins/reporter-print.c:42
 msgid ""
@@ -1309,7 +1316,7 @@ msgstr "'%s' をケース '%s' に添付しています"
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../src/plugins/reporter-rhtsupport.c:205
-#: ../src/plugins/reporter-upload.c:121
+#: ../src/plugins/reporter-upload.c:133
 msgid "Compressing data"
 msgstr "データの圧縮"
 
@@ -1347,23 +1354,23 @@ msgstr "関連する可能性があるドキュメント:"
 msgid "Updates which possibly help: "
 msgstr "役に立つ可能性のある更新:"
 
-#: ../src/plugins/reporter-upload.c:59
+#: ../src/plugins/reporter-upload.c:71
 #, c-format
 msgid "Sending %s to %s"
 msgstr "%s を %s に送信しています"
 
 #. This ends up a "reporting status message" in abrtd
-#: ../src/plugins/reporter-upload.c:98
+#: ../src/plugins/reporter-upload.c:110
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "%s を %s に正常に送信しました"
 
-#: ../src/plugins/reporter-upload.c:221
+#: ../src/plugins/reporter-upload.c:233
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "アーカイブが作成されました: '%s'　"
 
-#: ../src/plugins/reporter-upload.c:261
+#: ../src/plugins/reporter-upload.c:273
 msgid ""
 "& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
@@ -1403,31 +1410,44 @@ msgstr ""
 "ません。 認識される文字列パラメータは URL です。\n"
 "パラメータは $Upload_URL で上書きできます。"
 
-#: ../src/plugins/reporter-upload.c:290
+#: ../src/plugins/reporter-upload.c:302
 msgid "Base URL to upload to"
 msgstr "アップロード先のベース URL"
 
-#: ../src/plugins/rhbz.c:319
+#: ../src/plugins/rhbz.c:405
 #, c-format
 msgid "Looks like corrupted xml response, because '%s' member is missing."
 msgstr "'%s' メンバーがない為、xml 反応が破損したと思われます。"
 
-#: ../src/plugins/rhbz.c:393
+#: ../src/plugins/rhbz.c:479
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
 msgstr "バグ %i は閉じていますが、RESOLUTION がありません"
 
-#: ../src/plugins/rhbz.c:401
+#: ../src/plugins/rhbz.c:487
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
 msgstr "DUPLICATE としてバグ %i は閉じていますが、DUP_ID がありません"
 
-#: ../src/plugins/rhbz.c:530
+#: ../src/plugins/rhbz.c:528
+msgid "Can't parse backtrace"
+msgstr "バックトレースを解析できません"
+
+#: ../src/plugins/rhbz.c:539
+msgid "Can't find crash thread"
+msgstr "クラッシュスレッドが見つかりません"
+
+#: ../src/plugins/rhbz.c:691
 #, c-format
 msgid "New bug id: %i"
 msgstr "新しいバグ id: %i"
 
-#: ../src/plugins/rhbz.c:680
+#: ../src/plugins/rhbz.c:791
+#, c-format
+msgid "Not attaching empty file '%s'"
+msgstr "空ファイルの「%s」は添付していません"
+
+#: ../src/plugins/rhbz.c:850
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla はバグ %d の親を見つけることが出来ません"
@@ -1464,10 +1484,3 @@ msgstr ""
 "& -o [-d] DIR\n"
 "\n"
 "指定した DIR に保存した問題を報告する newt ツールです"
-
-#~ msgid "Reporting finished with exit code %d"
-#~ msgstr "報告は終了コード  %d で完了しました"
-
-#~ msgid "File '%s' is a symbolic link. Please select a regular file:"
-#~ msgstr ""
-#~ "「%s」ファイルはシンボリックリンクです。 通常のファイルを選択してください:"

@@ -3,21 +3,21 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Chester Cheng <ccheng@redhat.com>, 2011, 2012.
+# Chester Cheng <ccheng@redhat.com>, 2011-2012.
 # Terry Chuang <tchuang@redhat.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-06 15:49+0200\n"
-"PO-Revision-Date: 2012-03-01 06:06+0000\n"
+"POT-Creation-Date: 2012-10-18 16:27+0200\n"
+"PO-Revision-Date: 2012-10-08 04:40+0000\n"
 "Last-Translator: Chester Cheng <ccheng@redhat.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: Chinese (Taiwan) <trans-zh_TW@lists.fedoraproject.org>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../src/cli/cli.c:56
 msgid ""
@@ -279,9 +279,8 @@ msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
 msgstr "初始化 yum 時發生錯誤 (YumBase.doConfigSetup)：'{0!s}'"
 
 #: ../src/client-python/debuginfo.py:186
-#, fuzzy
 msgid "Can't disable repository '{0!s}': {1!s}"
-msgstr "無法寫入「{0}」：{1}"
+msgstr "無法停用軟體庫：'{0!s}': {1!s}"
 
 #. This takes some time, let user know what we are doing
 #: ../src/client-python/debuginfo.py:189
@@ -544,21 +543,19 @@ msgstr "正在分析..."
 
 #: ../src/gui-wizard-gtk/wizard.c:2050
 msgid "Analyzing failed. You can try another analyzer if available."
-msgstr ""
+msgstr "分析失敗，請使用其它分析程式。"
 
 #: ../src/gui-wizard-gtk/wizard.c:2051
-#, fuzzy
 msgid "Analyzing finished. You can proceed to the next step."
-msgstr "分析完成附帶退出碼 %d"
+msgstr "分析完成。請進行下一步驟。"
 
 #: ../src/gui-wizard-gtk/wizard.c:2078
 msgid "Reporting failed. You can try another reporter if available."
-msgstr ""
+msgstr "回報失敗。請使用其它分析程式。"
 
 #: ../src/gui-wizard-gtk/wizard.c:2079
-#, fuzzy
 msgid "Reporting finished. You can proceed to the next step."
-msgstr "回報已完成。您現在可將此視窗關閉。"
+msgstr "回報完成。請進行下一步驟。"
 
 #: ../src/gui-wizard-gtk/wizard.c:2106
 msgid "Collecting..."
@@ -566,12 +563,11 @@ msgstr "蒐集中……"
 
 #: ../src/gui-wizard-gtk/wizard.c:2107
 msgid "Collecting failed. You can try another collector if available."
-msgstr ""
+msgstr "蒐集失敗。請使用其它蒐集程式。"
 
 #: ../src/gui-wizard-gtk/wizard.c:2108
-#, fuzzy
 msgid "Collecting finished. You can proceed to the next step."
-msgstr "蒐集完成，退出代碼為 %d "
+msgstr "蒐集完成。請進行下一步驟。"
 
 #: ../src/gui-wizard-gtk/wizard.c:2243
 msgid ""
@@ -727,6 +723,11 @@ msgid ""
 msgstr ""
 "若您希望將問題回報至不同的目的地，請蒐集額外資訊，或提供較詳盡的問題描述、重"
 "複回報程序，並按下「下一步」。"
+
+#: ../src/lib/abrt_sock.c:83
+#, c-format
+msgid "Can't delete: '%s'"
+msgstr "無法刪除：'%s'"
 
 #: ../src/lib/event_config.c:300
 msgid "Missing mandatory value"
@@ -1059,7 +1060,7 @@ msgstr ""
 #: ../src/plugins/reporter-kerneloops.c:166
 #: ../src/plugins/reporter-mailx.c:173 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:84
-#: ../src/plugins/reporter-upload.c:288
+#: ../src/plugins/reporter-upload.c:300
 msgid "Dump directory"
 msgstr "傾印目錄"
 
@@ -1201,13 +1202,13 @@ msgstr ""
 "\n"
 "如果不指定的話，CONFFILE 預設至 "
 
-#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:289
+#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:301
 msgid "Config file"
 msgstr "配置檔案"
 
 #: ../src/plugins/reporter-mailx.c:175
 msgid "Notify only (Do not mark the report as sent)"
-msgstr ""
+msgstr "僅通知（不要將這報告標示為以發送）"
 
 #: ../src/plugins/reporter-print.c:42
 msgid ""
@@ -1288,7 +1289,7 @@ msgstr "附加「%s」至專案「%s」"
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../src/plugins/reporter-rhtsupport.c:205
-#: ../src/plugins/reporter-upload.c:121
+#: ../src/plugins/reporter-upload.c:133
 msgid "Compressing data"
 msgstr "壓縮資料"
 
@@ -1324,23 +1325,23 @@ msgstr "相關文件："
 msgid "Updates which possibly help: "
 msgstr "有所幫助的更新："
 
-#: ../src/plugins/reporter-upload.c:59
+#: ../src/plugins/reporter-upload.c:71
 #, c-format
 msgid "Sending %s to %s"
 msgstr "將 %s 傳送至 %s"
 
 #. This ends up a "reporting status message" in abrtd
-#: ../src/plugins/reporter-upload.c:98
+#: ../src/plugins/reporter-upload.c:110
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "已成功將 %s 傳送至 %s"
 
-#: ../src/plugins/reporter-upload.c:221
+#: ../src/plugins/reporter-upload.c:233
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "封存檔案已建立：「%s」"
 
-#: ../src/plugins/reporter-upload.c:261
+#: ../src/plugins/reporter-upload.c:273
 msgid ""
 "& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
@@ -1377,31 +1378,44 @@ msgstr ""
 "可辨識的字串參數：URL。\n"
 "參數可以透過 $Upload_URL 覆寫。"
 
-#: ../src/plugins/reporter-upload.c:290
+#: ../src/plugins/reporter-upload.c:302
 msgid "Base URL to upload to"
 msgstr "欲上傳至的基礎 URL"
 
-#: ../src/plugins/rhbz.c:319
+#: ../src/plugins/rhbz.c:405
 #, c-format
 msgid "Looks like corrupted xml response, because '%s' member is missing."
 msgstr "看似損毀的 xml 回應，因為「%s」成員遺失。"
 
-#: ../src/plugins/rhbz.c:393
+#: ../src/plugins/rhbz.c:479
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
 msgstr "Bug %i 已關閉，不過尚無解決方法"
 
-#: ../src/plugins/rhbz.c:401
+#: ../src/plugins/rhbz.c:487
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
 msgstr "Bug %i 已 CLOSED 為 DUPLICATE，不過它無 DUP_ID"
 
-#: ../src/plugins/rhbz.c:530
+#: ../src/plugins/rhbz.c:528
+msgid "Can't parse backtrace"
+msgstr "無法剖析 backtrace"
+
+#: ../src/plugins/rhbz.c:539
+msgid "Can't find crash thread"
+msgstr "找不到 crash 執行續"
+
+#: ../src/plugins/rhbz.c:691
 #, c-format
 msgid "New bug id: %i"
 msgstr "新的 bug id：%i"
 
-#: ../src/plugins/rhbz.c:680
+#: ../src/plugins/rhbz.c:791
+#, c-format
+msgid "Not attaching empty file '%s'"
+msgstr "未連接空檔案 '%s'"
+
+#: ../src/plugins/rhbz.c:850
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla 找不到 bug %d 的 parent"
@@ -1438,9 +1452,3 @@ msgstr ""
 "& -o [-d] DIR\n"
 "\n"
 "回報儲存在特定 DIR 中的 newt 工具"
-
-#~ msgid "Reporting finished with exit code %d"
-#~ msgstr "回報完成附帶退出碼 %d"
-
-#~ msgid "File '%s' is a symbolic link. Please select a regular file:"
-#~ msgstr "檔案 '%s' 是符號連結。請選擇正常的檔案："

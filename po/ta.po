@@ -4,21 +4,22 @@
 #
 # Translators:
 # A <B>, 2012.
-# Felix I <ifelix25@gmail.com>, 2011, 2012.
+# Felix I <ifelix25@gmail.com>, 2011-2012.
 # I Felix <ifelix@redhat.com>, 2011.
+# Shantha kumar <shkumar@redhat.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-06 15:49+0200\n"
-"PO-Revision-Date: 2012-03-02 17:21+0000\n"
-"Last-Translator: Felix I <ifelix25@gmail.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2012-10-18 16:27+0200\n"
+"PO-Revision-Date: 2012-10-10 05:43+0000\n"
+"Last-Translator: shkumar <shkumar@redhat.com>\n"
+"Language-Team: Tamil <tamil-users@lists.fedoraproject.org>\n"
 "Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../src/cli/cli.c:56
 msgid ""
@@ -281,9 +282,8 @@ msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
 msgstr "பிழை துவக்கும் yum (YumBase.doConfigSetup): '{0!s}'"
 
 #: ../src/client-python/debuginfo.py:186
-#, fuzzy
 msgid "Can't disable repository '{0!s}': {1!s}"
-msgstr "'{0}' க்கு எழுத முடியாது: {1}"
+msgstr "தொகுப்பதிவகத்தைக் காண்பிக்க முடியவில்லை '{0!s}': {1!s}"
 
 #. This takes some time, let user know what we are doing
 #: ../src/client-python/debuginfo.py:189
@@ -553,21 +553,19 @@ msgstr "ஆராய்கிறது..."
 
 #: ../src/gui-wizard-gtk/wizard.c:2050
 msgid "Analyzing failed. You can try another analyzer if available."
-msgstr ""
+msgstr "பகுப்பாய்வு தோல்வி. உள்ளதென்றால் நீங்கள் வேறு அனலைசரை முயற்சிக்கலாம்."
 
 #: ../src/gui-wizard-gtk/wizard.c:2051
-#, fuzzy
 msgid "Analyzing finished. You can proceed to the next step."
-msgstr "வெளியேறு குறியீடு %d-உடன் ஆராய்தல் முடிந்தது"
+msgstr "பகுப்பாய்வு தோல்வி. நீங்கள் அடுத்த படிக்குத் தொடரலாம்."
 
 #: ../src/gui-wizard-gtk/wizard.c:2078
 msgid "Reporting failed. You can try another reporter if available."
-msgstr ""
+msgstr "புகாரளித்தல் தோல்வி. உள்ளதென்றால் நீங்கள் வேறு ரிப்போர்ட்டரை முயற்சிக்கலாம்."
 
 #: ../src/gui-wizard-gtk/wizard.c:2079
-#, fuzzy
 msgid "Reporting finished. You can proceed to the next step."
-msgstr "பதிவுசெய்தல் முடிவடைந்தது. இப்போது இந்த சாளரத்தை நீங்களை மூடலாம்."
+msgstr "புகாரளித்தல் முடிவடைந்தது. நீங்கள் அடுத்த படிக்குத் தொடரலாம்."
 
 #: ../src/gui-wizard-gtk/wizard.c:2106
 msgid "Collecting..."
@@ -575,12 +573,11 @@ msgstr "சேகரிக்கிறது..."
 
 #: ../src/gui-wizard-gtk/wizard.c:2107
 msgid "Collecting failed. You can try another collector if available."
-msgstr ""
+msgstr "சேகரித்தல் தோல்வி. உள்ளதென்றால் நீங்கள் வேறு கலெக்டரை முயற்சிக்கலாம்."
 
 #: ../src/gui-wizard-gtk/wizard.c:2108
-#, fuzzy
 msgid "Collecting finished. You can proceed to the next step."
-msgstr "வெளியேறும் குறியீடு %d உடன் சேகரித்தல் முடிந்தது"
+msgstr "சேகரித்தல் முடிவடைந்தது. நீங்கள் அடுத்த படிக்குத் தொடரலாம்."
 
 #: ../src/gui-wizard-gtk/wizard.c:2243
 msgid ""
@@ -743,6 +740,11 @@ msgid ""
 msgstr ""
 "நீங்கள் பல்வேறு இடங்களில் சிக்கலை அறிக்கையிட எண்ணினால், கூடுதல் தகவலை சேகரித்து அல்லது "
 "சிக்கல் விளக்கத்தை கொடுத்து முன்னோக்கு என அழுத்தவும்."
+
+#: ../src/lib/abrt_sock.c:83
+#, c-format
+msgid "Can't delete: '%s'"
+msgstr "நீக்க முடியவில்லை: '%s'"
 
 #: ../src/lib/event_config.c:300
 msgid "Missing mandatory value"
@@ -1078,7 +1080,7 @@ msgstr ""
 #: ../src/plugins/reporter-kerneloops.c:166
 #: ../src/plugins/reporter-mailx.c:173 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:84
-#: ../src/plugins/reporter-upload.c:288
+#: ../src/plugins/reporter-upload.c:300
 msgid "Dump directory"
 msgstr "டம்ப் அடைவு"
 
@@ -1221,13 +1223,13 @@ msgstr ""
 "\n"
 "If not specified, CONFFILE defaults to "
 
-#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:289
+#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:301
 msgid "Config file"
 msgstr "கட்டமை கோப்பு "
 
 #: ../src/plugins/reporter-mailx.c:175
 msgid "Notify only (Do not mark the report as sent)"
-msgstr ""
+msgstr "அறிவித்தால் மட்டும் போதும் (புகாரை அனுப்பியது எனக் குறிக்க வேண்டாம்)"
 
 #: ../src/plugins/reporter-print.c:42
 msgid ""
@@ -1308,7 +1310,7 @@ msgstr "'%s' ஐ வழக்கு '%s' க்கு சேர்க்கி�
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../src/plugins/reporter-rhtsupport.c:205
-#: ../src/plugins/reporter-upload.c:121
+#: ../src/plugins/reporter-upload.c:133
 msgid "Compressing data"
 msgstr "குறுக்கப்பட்ட தரவு"
 
@@ -1344,23 +1346,23 @@ msgstr "ஆவணமாக்கம் தொடர்புடையதாக �
 msgid "Updates which possibly help: "
 msgstr "உதவிபுரியும் புதுப்பித்தல்கள்:"
 
-#: ../src/plugins/reporter-upload.c:59
+#: ../src/plugins/reporter-upload.c:71
 #, c-format
 msgid "Sending %s to %s"
 msgstr "%s க்கு %s ஐ அனுப்புகிறது"
 
 #. This ends up a "reporting status message" in abrtd
-#: ../src/plugins/reporter-upload.c:98
+#: ../src/plugins/reporter-upload.c:110
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "%s க்கு %s ஐ வெற்றிகரமாக அனுப்பியது"
 
-#: ../src/plugins/reporter-upload.c:221
+#: ../src/plugins/reporter-upload.c:233
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "ஆர்ச்வ் உருவாக்கப்பட்டது: '%s'"
 
-#: ../src/plugins/reporter-upload.c:261
+#: ../src/plugins/reporter-upload.c:273
 msgid ""
 "& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
@@ -1398,31 +1400,44 @@ msgstr ""
 "Recognized string parameter: URL.\n"
 "Parameter can be overridden via $Upload_URL."
 
-#: ../src/plugins/reporter-upload.c:290
+#: ../src/plugins/reporter-upload.c:302
 msgid "Base URL to upload to"
 msgstr "இதற்கு பதிவேற்ற தள URL"
 
-#: ../src/plugins/rhbz.c:319
+#: ../src/plugins/rhbz.c:405
 #, c-format
 msgid "Looks like corrupted xml response, because '%s' member is missing."
 msgstr "அழிக்கப்பட்ட xml பதிலாக உள்ளது, ஏனெனில் '%s' உறுப்பினர் விடுப்பட்டுள்ளார்."
 
-#: ../src/plugins/rhbz.c:393
+#: ../src/plugins/rhbz.c:479
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
 msgstr "பிழை %i CLOSED, ஆனால் இது RESOLUTION-ஐ கொண்டிருக்கவில்லை"
 
-#: ../src/plugins/rhbz.c:401
+#: ../src/plugins/rhbz.c:487
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
 msgstr "பிழை %i DUPLICATE-ஆக CLOSED, ஆனால் இது DUP_ID-ஐ கொண்டிருக்கவில்லை"
 
-#: ../src/plugins/rhbz.c:530
+#: ../src/plugins/rhbz.c:528
+msgid "Can't parse backtrace"
+msgstr "பின் தடமறிதலைப் பாகுபடுத்த முடியவில்லை"
+
+#: ../src/plugins/rhbz.c:539
+msgid "Can't find crash thread"
+msgstr "செயலிழப்பு தொடரிழையைப் பாகுபடுத்த முடியவில்லை"
+
+#: ../src/plugins/rhbz.c:691
 #, c-format
 msgid "New bug id: %i"
 msgstr "புதிய பிழை குறியீடு: %i"
 
-#: ../src/plugins/rhbz.c:680
+#: ../src/plugins/rhbz.c:791
+#, c-format
+msgid "Not attaching empty file '%s'"
+msgstr "காலியான கோப்பு '%s' ஐ இணைக்கவில்லை"
+
+#: ../src/plugins/rhbz.c:850
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "பிழை %d-ஐ பக்ஸில்லா காணவில்லை"
@@ -1459,9 +1474,3 @@ msgstr ""
 "& -o [-d] DIR\n"
 "\n"
 "குறிப்பிட்ட DIR இல் சிக்கலை அறிக்கையிடுவதற்கான அடுத்த கருவி"
-
-#~ msgid "Reporting finished with exit code %d"
-#~ msgstr "வெளியேறு குறியீடு %d-உடன் அறிக்கையிடுதல் முடிந்தது"
-
-#~ msgid "File '%s' is a symbolic link. Please select a regular file:"
-#~ msgstr "கோப்பு '%s' ஒரு அடையாள இணைப்பாகும். ஒரு வழக்கமான கோப்பை தேர்ந்தெடுக்கவும்:"

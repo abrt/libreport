@@ -4,19 +4,20 @@
 #
 # Translators:
 #   <gguerrer@redhat.com>, 2011, 2012.
+# Gladys Guerrero <gguerrer@redhat.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-06 15:49+0200\n"
-"PO-Revision-Date: 2012-02-29 04:59+0000\n"
-"Last-Translator: gguerrer <gguerrer@redhat.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2012-10-18 16:27+0200\n"
+"PO-Revision-Date: 2012-10-12 04:38+0000\n"
+"Last-Translator: Gladys Guerrero <gguerrer@redhat.com>\n"
+"Language-Team: Spanish <trans-es@lists.fedoraproject.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../src/cli/cli.c:56
 msgid ""
@@ -283,9 +284,8 @@ msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
 msgstr "Error al inicializar yum (YumBase.doConfigSetup): '{0!s}'"
 
 #: ../src/client-python/debuginfo.py:186
-#, fuzzy
 msgid "Can't disable repository '{0!s}': {1!s}"
-msgstr "No se puede crear '{0}': {1}"
+msgstr "No se puede desactivar el repositorio '{0!s}': {1!s}"
 
 #. This takes some time, let user know what we are doing
 #: ../src/client-python/debuginfo.py:189
@@ -557,21 +557,19 @@ msgstr "Analizando..."
 
 #: ../src/gui-wizard-gtk/wizard.c:2050
 msgid "Analyzing failed. You can try another analyzer if available."
-msgstr ""
+msgstr "Falló el análisis. Puede intentar otro analizador si está disponible."
 
 #: ../src/gui-wizard-gtk/wizard.c:2051
-#, fuzzy
 msgid "Analyzing finished. You can proceed to the next step."
-msgstr "El análisis terminó con código de salida %d"
+msgstr "Finalizó el análisis. Puede ir al siguiente paso."
 
 #: ../src/gui-wizard-gtk/wizard.c:2078
 msgid "Reporting failed. You can try another reporter if available."
-msgstr ""
+msgstr "Falló el reporte. Puede intentar otro reportero si está disponible."
 
 #: ../src/gui-wizard-gtk/wizard.c:2079
-#, fuzzy
 msgid "Reporting finished. You can proceed to the next step."
-msgstr "El informa ha terminado. Puede cerrar "
+msgstr "Finalizó el  reporte. Puede ir al siguiente paso."
 
 #: ../src/gui-wizard-gtk/wizard.c:2106
 msgid "Collecting..."
@@ -580,11 +578,11 @@ msgstr "Recolectando..."
 #: ../src/gui-wizard-gtk/wizard.c:2107
 msgid "Collecting failed. You can try another collector if available."
 msgstr ""
+"Falló  la recolección. Puede intentar otro recolector si está disponible."
 
 #: ../src/gui-wizard-gtk/wizard.c:2108
-#, fuzzy
 msgid "Collecting finished. You can proceed to the next step."
-msgstr "La recolección ha terminado con el código de salida %d"
+msgstr "Finalizó el análisis. Puede ir al siguiente paso."
 
 #: ../src/gui-wizard-gtk/wizard.c:2243
 msgid ""
@@ -751,6 +749,11 @@ msgstr ""
 "Si desea reportar el problema a un destino diferente, recoja toda la "
 "información adicional o proporcione una mejor descripción del problema y "
 "repita el proceso del reporte, presione 'Siguiente'."
+
+#: ../src/lib/abrt_sock.c:83
+#, c-format
+msgid "Can't delete: '%s'"
+msgstr "No se puede borrar: '%s'"
 
 #: ../src/lib/event_config.c:300
 msgid "Missing mandatory value"
@@ -1102,7 +1105,7 @@ msgstr ""
 #: ../src/plugins/reporter-kerneloops.c:166
 #: ../src/plugins/reporter-mailx.c:173 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:84
-#: ../src/plugins/reporter-upload.c:288
+#: ../src/plugins/reporter-upload.c:300
 msgid "Dump directory"
 msgstr "Directorio de vaciado"
 
@@ -1248,13 +1251,13 @@ msgstr ""
 "Si no se especifica, CONFFILE se predetermina\n"
 " "
 
-#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:289
+#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:301
 msgid "Config file"
 msgstr "Archivo config"
 
 #: ../src/plugins/reporter-mailx.c:175
 msgid "Notify only (Do not mark the report as sent)"
-msgstr ""
+msgstr "Notificar únicamente (No marque el reporte como enviado)"
 
 #: ../src/plugins/reporter-print.c:42
 msgid ""
@@ -1336,7 +1339,7 @@ msgstr "Anexa %s' para caso '%s'"
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../src/plugins/reporter-rhtsupport.c:205
-#: ../src/plugins/reporter-upload.c:121
+#: ../src/plugins/reporter-upload.c:133
 msgid "Compressing data"
 msgstr "Comprensión de datos "
 
@@ -1372,23 +1375,23 @@ msgstr "La documentación podría ser relevante:"
 msgid "Updates which possibly help: "
 msgstr "Actualizaciones que podrían ser de ayuda:"
 
-#: ../src/plugins/reporter-upload.c:59
+#: ../src/plugins/reporter-upload.c:71
 #, c-format
 msgid "Sending %s to %s"
 msgstr "Enviando %s a %s"
 
 #. This ends up a "reporting status message" in abrtd
-#: ../src/plugins/reporter-upload.c:98
+#: ../src/plugins/reporter-upload.c:110
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "Enviado correctamente %s a %s"
 
-#: ../src/plugins/reporter-upload.c:221
+#: ../src/plugins/reporter-upload.c:233
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "Se creó el archivo: '%s'"
 
-#: ../src/plugins/reporter-upload.c:261
+#: ../src/plugins/reporter-upload.c:273
 msgid ""
 "& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
@@ -1429,31 +1432,44 @@ msgstr ""
 "El parámetro de cadena reconocido: URL.\n"
 "El parámetro puede sobrescribirse a través de $Upload_URL."
 
-#: ../src/plugins/reporter-upload.c:290
+#: ../src/plugins/reporter-upload.c:302
 msgid "Base URL to upload to"
 msgstr "Base URL para cargar a "
 
-#: ../src/plugins/rhbz.c:319
+#: ../src/plugins/rhbz.c:405
 #, c-format
 msgid "Looks like corrupted xml response, because '%s' member is missing."
 msgstr "Parece que la respuesta xml está dañada, porque falta el miembro '%s'"
 
-#: ../src/plugins/rhbz.c:393
+#: ../src/plugins/rhbz.c:479
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
 msgstr "Error %i está CERRADO, pero no tiene RESOLUCIÓN"
 
-#: ../src/plugins/rhbz.c:401
+#: ../src/plugins/rhbz.c:487
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
 msgstr "Error %i está CERRADO como DUPLICADO, pero no tiene DUP_ID"
 
-#: ../src/plugins/rhbz.c:530
+#: ../src/plugins/rhbz.c:528
+msgid "Can't parse backtrace"
+msgstr " No se puede leer el trazado"
+
+#: ../src/plugins/rhbz.c:539
+msgid "Can't find crash thread"
+msgstr "No se puede ubicar el daño"
+
+#: ../src/plugins/rhbz.c:691
 #, c-format
 msgid "New bug id: %i"
 msgstr "¡ID de nuevo error: %i"
 
-#: ../src/plugins/rhbz.c:680
+#: ../src/plugins/rhbz.c:791
+#, c-format
+msgid "Not attaching empty file '%s'"
+msgstr "No se adjunta el archivo vacío '%s'"
+
+#: ../src/plugins/rhbz.c:850
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla no pudo hallar el padre de error %d"
@@ -1490,11 +1506,3 @@ msgstr ""
 "& -o [-d] DIR\n"
 "\n"
 "Nueva herramienta para reportar problemas guardados en DIR especificado"
-
-#~ msgid "Reporting finished with exit code %d"
-#~ msgstr "El reporte terminó con código de salida %d"
-
-#~ msgid "File '%s' is a symbolic link. Please select a regular file:"
-#~ msgstr ""
-#~ "Archivo '%s' es un enlace simbólico. Por favor seleccione un archivo "
-#~ "regular:"

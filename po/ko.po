@@ -3,20 +3,21 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Eun-Ju Kim  <eukim@redhat.com>, 2011, 2012.
+# Eun-Ju Kim  <eukim@redhat.com>, 2011-2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-06 15:49+0200\n"
-"PO-Revision-Date: 2012-02-29 07:17+0000\n"
+"POT-Creation-Date: 2012-10-18 16:27+0200\n"
+"PO-Revision-Date: 2012-10-09 06:23+0000\n"
 "Last-Translator: eukim <eukim@redhat.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: Korean (http://www.transifex.com/projects/p/fedora/language/"
+"ko/)\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../src/cli/cli.c:56
 msgid ""
@@ -280,9 +281,8 @@ msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
 msgstr "yum 초기화 오류 (YumBase.doConfigSetup): '{0!s}'"
 
 #: ../src/client-python/debuginfo.py:186
-#, fuzzy
 msgid "Can't disable repository '{0!s}': {1!s}"
-msgstr "'{0}'에 작성할 수 없음: {1}"
+msgstr "리포지터리 '{0!s}'를 비활성화할 수 없습니다: {1!s}"
 
 #. This takes some time, let user know what we are doing
 #: ../src/client-python/debuginfo.py:189
@@ -550,21 +550,19 @@ msgstr "분석 중... "
 
 #: ../src/gui-wizard-gtk/wizard.c:2050
 msgid "Analyzing failed. You can try another analyzer if available."
-msgstr ""
+msgstr "분석 실패했습니다. 사용 가능한 다른 분석 프로그램을 시도해 보십시오."
 
 #: ../src/gui-wizard-gtk/wizard.c:2051
-#, fuzzy
 msgid "Analyzing finished. You can proceed to the next step."
-msgstr "종료 코드 %d로 분석 작업을 마칩니다 "
+msgstr "분석 완료했습니다. 다음 단계를 진행할 수 있습니다. "
 
 #: ../src/gui-wizard-gtk/wizard.c:2078
 msgid "Reporting failed. You can try another reporter if available."
-msgstr ""
+msgstr "보고 실패했습니다. 사용 가능한 다른 보고서를 시도해 보십시오. "
 
 #: ../src/gui-wizard-gtk/wizard.c:2079
-#, fuzzy
 msgid "Reporting finished. You can proceed to the next step."
-msgstr "문제 보고가 완료되었습니다. 이제 이 창을 닫으실 수 있습니다. "
+msgstr "보고 완료했습니다. 다음 단계를 진행할 수 있습니다."
 
 #: ../src/gui-wizard-gtk/wizard.c:2106
 msgid "Collecting..."
@@ -572,12 +570,11 @@ msgstr "수집 중..."
 
 #: ../src/gui-wizard-gtk/wizard.c:2107
 msgid "Collecting failed. You can try another collector if available."
-msgstr ""
+msgstr "수집 실패했습니다. 사용 가능한 다른 수집기를 시도해 보십시오."
 
 #: ../src/gui-wizard-gtk/wizard.c:2108
-#, fuzzy
 msgid "Collecting finished. You can proceed to the next step."
-msgstr "종료 코드 %d로 수집 완료 "
+msgstr "수집 완료했습니다. 다음 단계를 진행할 수 있습니다. "
 
 #: ../src/gui-wizard-gtk/wizard.c:2243
 msgid ""
@@ -740,6 +737,11 @@ msgid ""
 msgstr ""
 "다른 장소에 문제를 보고하고자 할 경우 추가 정보를 수집하거나 보다 상세하게 문"
 "제를 설명하여 보고 절차를 반복 실행한 후 '앞으로'를 누릅니다.  "
+
+#: ../src/lib/abrt_sock.c:83
+#, c-format
+msgid "Can't delete: '%s'"
+msgstr "삭제할 수 없음: '%s'"
 
 #: ../src/lib/event_config.c:300
 msgid "Missing mandatory value"
@@ -1077,7 +1079,7 @@ msgstr ""
 #: ../src/plugins/reporter-kerneloops.c:166
 #: ../src/plugins/reporter-mailx.c:173 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:84
-#: ../src/plugins/reporter-upload.c:288
+#: ../src/plugins/reporter-upload.c:300
 msgid "Dump directory"
 msgstr "덤프 디렉토리 "
 
@@ -1220,13 +1222,13 @@ msgstr ""
 "\n"
 "지정하지 않을 경우, CONFFILE에 따라 다음과 같이 기본 설정됩니다. "
 
-#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:289
+#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:301
 msgid "Config file"
 msgstr "설정 파일 "
 
 #: ../src/plugins/reporter-mailx.c:175
 msgid "Notify only (Do not mark the report as sent)"
-msgstr ""
+msgstr "통지 전용 (전송으로 보고서를 표시하지 마십시오)"
 
 #: ../src/plugins/reporter-print.c:42
 msgid ""
@@ -1307,7 +1309,7 @@ msgstr "'%s'을(를) 사례 '%s'에 추가 중 "
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../src/plugins/reporter-rhtsupport.c:205
-#: ../src/plugins/reporter-upload.c:121
+#: ../src/plugins/reporter-upload.c:133
 msgid "Compressing data"
 msgstr "데이터 압축 중 "
 
@@ -1343,23 +1345,23 @@ msgstr "관련 가능성이 있는 문서: "
 msgid "Updates which possibly help: "
 msgstr "도움이 될 수 있는 업데이트: "
 
-#: ../src/plugins/reporter-upload.c:59
+#: ../src/plugins/reporter-upload.c:71
 #, c-format
 msgid "Sending %s to %s"
 msgstr "%s을(를) %s에 전송 중 "
 
 #. This ends up a "reporting status message" in abrtd
-#: ../src/plugins/reporter-upload.c:98
+#: ../src/plugins/reporter-upload.c:110
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "%s을(를) %s에 성공적으로 전송 "
 
-#: ../src/plugins/reporter-upload.c:221
+#: ../src/plugins/reporter-upload.c:233
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "아카이브가 생성됨: '%s' "
 
-#: ../src/plugins/reporter-upload.c:261
+#: ../src/plugins/reporter-upload.c:273
 msgid ""
 "& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
@@ -1398,32 +1400,45 @@ msgstr ""
 "인식되는 문자열 매개 변수는 URL입니다. \n"
 "매개 변수는 $Upload_URL을 통해 덮어쓰기될 수 있습니다. "
 
-#: ../src/plugins/reporter-upload.c:290
+#: ../src/plugins/reporter-upload.c:302
 msgid "Base URL to upload to"
 msgstr "업로드할 기본 URL "
 
-#: ../src/plugins/rhbz.c:319
+#: ../src/plugins/rhbz.c:405
 #, c-format
 msgid "Looks like corrupted xml response, because '%s' member is missing."
 msgstr "xml 응답이 손상된 것 같습니다. '%s' 멤버가 누락되어 있기 때문입니다. "
 
-#: ../src/plugins/rhbz.c:393
+#: ../src/plugins/rhbz.c:479
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
 msgstr "버그 %i이(가) 종료 (CLOSED)되었지만 해결 방법 (RESOLUTION)이 없습니다 "
 
-#: ../src/plugins/rhbz.c:401
+#: ../src/plugins/rhbz.c:487
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
 msgstr ""
 "Bug %i이(가) 중복 (DUPLICATE)으로 종료 (CLOSED)되었지만 DUP_ID가 없습니다. "
 
-#: ../src/plugins/rhbz.c:530
+#: ../src/plugins/rhbz.c:528
+msgid "Can't parse backtrace"
+msgstr "백트레이스를 구문 분석할 수 없음 "
+
+#: ../src/plugins/rhbz.c:539
+msgid "Can't find crash thread"
+msgstr "크래시 스레드를 찾을 수 없음 "
+
+#: ../src/plugins/rhbz.c:691
 #, c-format
 msgid "New bug id: %i"
 msgstr "새 버그 id: %i "
 
-#: ../src/plugins/rhbz.c:680
+#: ../src/plugins/rhbz.c:791
+#, c-format
+msgid "Not attaching empty file '%s'"
+msgstr "빈 파일 '%s'을 첨부하지 않음 "
+
+#: ../src/plugins/rhbz.c:850
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla는 버그 %d의 부모 버그를 찾을 수 없습니다 "
@@ -1460,9 +1475,3 @@ msgstr ""
 "& -o [-d] DIR\n"
 "\n"
 "지정된 DIR에 저장된 문제를 보고하기 위한 newt 도구입니다 "
-
-#~ msgid "Reporting finished with exit code %d"
-#~ msgstr "종료 코드 %d로 보고 작업을 마칩니다 "
-
-#~ msgid "File '%s' is a symbolic link. Please select a regular file:"
-#~ msgstr "'%s' 파일은 심볼릭 링크입니다. 정규 파일을 선택하십시오: "

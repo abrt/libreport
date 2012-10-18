@@ -4,20 +4,20 @@
 #
 # Translators:
 # Runa Bhattacharjee <runab@redhat.com>, 2011.
-#   <runabh@gmail.com>, 2011, 2012.
+#   <runabh@gmail.com>, 2011-2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-06 15:49+0200\n"
-"PO-Revision-Date: 2012-02-28 12:54+0000\n"
+"POT-Creation-Date: 2012-10-18 16:27+0200\n"
+"PO-Revision-Date: 2012-10-11 07:08+0000\n"
 "Last-Translator: runa <runabh@gmail.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: Bengali (India) <anubad@lists.ankur.org.in>\n"
 "Language: bn_IN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../src/cli/cli.c:56
 msgid ""
@@ -282,9 +282,8 @@ msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
 msgstr "yum আরম্ভ করতে ত্রুটি (YumBase.doConfigSetup): '{0!s}'"
 
 #: ../src/client-python/debuginfo.py:186
-#, fuzzy
 msgid "Can't disable repository '{0!s}': {1!s}"
-msgstr "'{0}'-এ লিখতে ব্যর্থ: {1}"
+msgstr "'{0!s}' সংগ্রহস্থল নিষ্ক্রিয় করা যায়নি: {1!s}"
 
 #. This takes some time, let user know what we are doing
 #: ../src/client-python/debuginfo.py:189
@@ -559,20 +558,20 @@ msgstr "বিশ্লেষণ করা হচ্ছে..."
 #: ../src/gui-wizard-gtk/wizard.c:2050
 msgid "Analyzing failed. You can try another analyzer if available."
 msgstr ""
+"বিশ্লেষণ করতে ব্যর্থ। উপলব্ধ থাকলে অন্য একটি বিশ্লেষণ ব্যবস্থা ব্যবহার করতে পারেন।"
 
 #: ../src/gui-wizard-gtk/wizard.c:2051
-#, fuzzy
 msgid "Analyzing finished. You can proceed to the next step."
-msgstr "বিশ্লেষণ সমাপ্ত করে প্রস্থান কালে %d কোড উৎপন্ন হয়েছে"
+msgstr "বিশ্লেষণ সমাপ্ত। পরবর্তী ধাপে এগিয়ে যাওয়া যাবে।"
 
 #: ../src/gui-wizard-gtk/wizard.c:2078
 msgid "Reporting failed. You can try another reporter if available."
 msgstr ""
+"রিপোর্ট করতে ব্যর্থ। উপলব্ধ থাকলে অন্য একটি রিপোর্ট ব্যবস্থা ব্যবহার করতে পারেন।"
 
 #: ../src/gui-wizard-gtk/wizard.c:2079
-#, fuzzy
 msgid "Reporting finished. You can proceed to the next step."
-msgstr "রিপোর্ট দায়ের করার কাজ সমাপ্ত হয়েছে। এই উইন্ডোটি এখন বন্ধ করা যাবে।"
+msgstr "রিপোর্ট দায়ের সমাপ্ত। পরবর্তী ধাপে এগিয়ে যাওয়া যাবে।"
 
 #: ../src/gui-wizard-gtk/wizard.c:2106
 msgid "Collecting..."
@@ -580,12 +579,11 @@ msgstr "সংগ্রহ করা হচ্ছে..."
 
 #: ../src/gui-wizard-gtk/wizard.c:2107
 msgid "Collecting failed. You can try another collector if available."
-msgstr ""
+msgstr "সংগ্রহ করতে ব্যর্থ। উপলব্ধ থাকলে অন্য একটি সংগ্রহ ব্যবস্থা ব্যবহার করতে পারেন।"
 
 #: ../src/gui-wizard-gtk/wizard.c:2108
-#, fuzzy
 msgid "Collecting finished. You can proceed to the next step."
-msgstr "সংগ্রহের কাজ সমাপ্ত করে %d কোড সহ প্রস্থান করা হয়েছে"
+msgstr "সংগ্রহ করা সমাপ্ত। পরবর্তী ধাপে এগিয়ে যাওয়া যাবে।"
 
 #: ../src/gui-wizard-gtk/wizard.c:2243
 msgid ""
@@ -750,6 +748,11 @@ msgid ""
 msgstr ""
 "ভিন্ন স্থানে সমস্যার রিপোর্ট দায়ের করতে ইচ্ছুল থাকলে, অতিরিক্ত তথ্য সংগ্রহ করুন অথবা "
 "সমস্যার বিবরণটি উন্নত করে পুনরায় রিপোর্ট করুন ও 'এগিয়ে চলুন' ক্লিক করুন।"
+
+#: ../src/lib/abrt_sock.c:83
+#, c-format
+msgid "Can't delete: '%s'"
+msgstr "মুছে ফেলা যাবে না: '%s'"
 
 #: ../src/lib/event_config.c:300
 msgid "Missing mandatory value"
@@ -1089,7 +1092,7 @@ msgstr ""
 #: ../src/plugins/reporter-kerneloops.c:166
 #: ../src/plugins/reporter-mailx.c:173 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:84
-#: ../src/plugins/reporter-upload.c:288
+#: ../src/plugins/reporter-upload.c:300
 msgid "Dump directory"
 msgstr "ডাম্প ডিরেক্টরি"
 
@@ -1234,13 +1237,13 @@ msgstr ""
 "\n"
 "If not specified, CONFFILE defaults to "
 
-#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:289
+#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:301
 msgid "Config file"
 msgstr "কনফিগ ফাইল"
 
 #: ../src/plugins/reporter-mailx.c:175
 msgid "Notify only (Do not mark the report as sent)"
-msgstr ""
+msgstr "শুধুমাত্র সূচনা (প্রেরিত রিপোর্ট রূপে চিহ্নিত করা হবে না)"
 
 #: ../src/plugins/reporter-print.c:42
 msgid ""
@@ -1321,7 +1324,7 @@ msgstr "'%s'-কে '%s' কেসের সাথে যুক্ত করা 
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../src/plugins/reporter-rhtsupport.c:205
-#: ../src/plugins/reporter-upload.c:121
+#: ../src/plugins/reporter-upload.c:133
 msgid "Compressing data"
 msgstr "তথ্য সংকুচন করা হচ্ছে"
 
@@ -1357,23 +1360,23 @@ msgstr "প্রাসঙ্গিক নথিপত্র: "
 msgid "Updates which possibly help: "
 msgstr "সম্ভবত সহায়ক আপডেট: "
 
-#: ../src/plugins/reporter-upload.c:59
+#: ../src/plugins/reporter-upload.c:71
 #, c-format
 msgid "Sending %s to %s"
 msgstr "%s-কে %s-এ পাঠানো হচ্ছে"
 
 #. This ends up a "reporting status message" in abrtd
-#: ../src/plugins/reporter-upload.c:98
+#: ../src/plugins/reporter-upload.c:110
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "%s-কে %s-এ সাফল্যের সাথে পাঠানো হয়েছে"
 
-#: ../src/plugins/reporter-upload.c:221
+#: ../src/plugins/reporter-upload.c:233
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "আর্কাইভ প্রস্তুত করা হয়েছে: '%s'"
 
-#: ../src/plugins/reporter-upload.c:261
+#: ../src/plugins/reporter-upload.c:273
 msgid ""
 "& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
@@ -1411,35 +1414,48 @@ msgstr ""
 "Recognized string parameter: URL.\n"
 "Parameter can be overridden via $Upload_URL."
 
-#: ../src/plugins/reporter-upload.c:290
+#: ../src/plugins/reporter-upload.c:302
 msgid "Base URL to upload to"
 msgstr "যে মূল URL-এ আপলোড করা হবে"
 
-#: ../src/plugins/rhbz.c:319
+#: ../src/plugins/rhbz.c:405
 #, c-format
 msgid "Looks like corrupted xml response, because '%s' member is missing."
 msgstr ""
 "'%s' সদস্য অনুপস্থিত থাকার ফলে  সম্ভবত একটি ত্রুটিপূর্ণ xml প্রত্যুত্তর প্রাপ্ত হয়েছে"
 
-#: ../src/plugins/rhbz.c:393
+#: ../src/plugins/rhbz.c:479
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
 msgstr ""
 "%i বাগটি CLOSED অবস্থায় রয়েছে কিন্তু এটির কোনো মীমাংসা অর্থাৎ RESOLUTION হয়নি"
 
-#: ../src/plugins/rhbz.c:401
+#: ../src/plugins/rhbz.c:487
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
 msgstr ""
 "%i বাগটি DUPLICATE রপে চিহ্নিত করে CLOSED অবস্থায় রয়েছে কিন্তু এটির কোনো DUP_ID "
 "নেই"
 
-#: ../src/plugins/rhbz.c:530
+#: ../src/plugins/rhbz.c:528
+msgid "Can't parse backtrace"
+msgstr "ব্যাক-ট্রেস পার্স করা যায়নি"
+
+#: ../src/plugins/rhbz.c:539
+msgid "Can't find crash thread"
+msgstr "বিপর্যয় সম্পর্কিত থ্রেড পাওয়া যায়নি"
+
+#: ../src/plugins/rhbz.c:691
 #, c-format
 msgid "New bug id: %i"
 msgstr "নতুন বাগ id: %i"
 
-#: ../src/plugins/rhbz.c:680
+#: ../src/plugins/rhbz.c:791
+#, c-format
+msgid "Not attaching empty file '%s'"
+msgstr "ফাঁকা ফাইল '%s' সংযুক্ত করা হচ্ছে না"
+
+#: ../src/plugins/rhbz.c:850
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla দ্বারা বাগ %d-র ঊর্ধ্বতন বাগ সন্ধান করা যায়নি"
@@ -1476,10 +1492,3 @@ msgstr ""
 "& -o [-d] DIR\n"
 "\n"
 "newt tool to report problem saved in specified DIR"
-
-#~ msgid "Reporting finished with exit code %d"
-#~ msgstr "সূচনা সমাপ্ত করে প্রস্থান কালে %d কোড উৎপন্ন হয়েছে"
-
-#~ msgid "File '%s' is a symbolic link. Please select a regular file:"
-#~ msgstr ""
-#~ "'%s' ফাইলটি একটি সিম্বলিক লিংক। অনুগ্রহ করে একটি সাধারণ ফাইল নির্বাচন করুন:"

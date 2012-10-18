@@ -3,20 +3,20 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# , 2011, 2012.
+# , 2011-2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-06 15:49+0200\n"
-"PO-Revision-Date: 2012-02-29 07:17+0000\n"
+"POT-Creation-Date: 2012-10-18 16:27+0200\n"
+"PO-Revision-Date: 2012-10-09 08:16+0000\n"
 "Last-Translator: sweta <swkothar@redhat.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: Gujarati <trans-gu@lists.fedoraproject.org>\n"
 "Language: gu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../src/cli/cli.c:56
 msgid ""
@@ -279,9 +279,8 @@ msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
 msgstr "yum (YumBase.doConfigSetup) શરૂ કરતી વખતે ભૂલ: '{0!s}'"
 
 #: ../src/client-python/debuginfo.py:186
-#, fuzzy
 msgid "Can't disable repository '{0!s}': {1!s}"
-msgstr "'{0}' માં લખી શકાતુ નથી: {1}"
+msgstr "રિપોઝીટરી '{0!s}' ને નિષ્ક્રિય કરી શકાતુ નથી: {1!s}"
 
 #. This takes some time, let user know what we are doing
 #: ../src/client-python/debuginfo.py:189
@@ -550,20 +549,19 @@ msgstr "વિશ્લેષણ કરી રહ્યા છે..."
 #: ../src/gui-wizard-gtk/wizard.c:2050
 msgid "Analyzing failed. You can try another analyzer if available."
 msgstr ""
+"વિશ્ર્લેષણ કરવામાં નિષ્ફળતા. તમે બીજા વિશ્ર્લેષકનો પ્રયત્ન કરી શકો છો જો ઉપલબ્ધ હોય."
 
 #: ../src/gui-wizard-gtk/wizard.c:2051
-#, fuzzy
 msgid "Analyzing finished. You can proceed to the next step."
-msgstr "exit કોડ %d સાથે વિશ્લેષણ કરવાનું સમાપ્ત થયું"
+msgstr "વિશ્ર્લેષણ કરવાનું સમાપ્ત થયેલ છે. તમે આગળનાં તબક્કામાં આગળ જઇ શકો છો."
 
 #: ../src/gui-wizard-gtk/wizard.c:2078
 msgid "Reporting failed. You can try another reporter if available."
-msgstr ""
+msgstr "અહેવાલ કરવાનું નિષ્ફળ. તમે બીજા રિપોર્ટરનો પ્રયત્ન કરી શકો છો જો ઉપલબ્ધ હોય."
 
 #: ../src/gui-wizard-gtk/wizard.c:2079
-#, fuzzy
 msgid "Reporting finished. You can proceed to the next step."
-msgstr "અહેવાલીકરણ સમાપ્ત થયેલ છે. તમે હવે આ વિન્ડોને બંધ કરી શકો છો."
+msgstr "અહેવાલ કરવાનું નિષ્ફળ. તમે આગળનાં તબક્કામાં આગળ જઇ શકો છો."
 
 #: ../src/gui-wizard-gtk/wizard.c:2106
 msgid "Collecting..."
@@ -571,12 +569,11 @@ msgstr "સંગ્રહ કરી રહ્યા છે..."
 
 #: ../src/gui-wizard-gtk/wizard.c:2107
 msgid "Collecting failed. You can try another collector if available."
-msgstr ""
+msgstr "સંગ્રહ કરવાનુ નિષ્ફળ. તમે બીજા સંગ્રહકનો પ્રયત્ન કરી શકો છો જો ઉપલબ્ધ હોય."
 
 #: ../src/gui-wizard-gtk/wizard.c:2108
-#, fuzzy
 msgid "Collecting finished. You can proceed to the next step."
-msgstr "એગ્ઝિટ કોડ %d સાથે સમાપ્ત થયેલનો સંગ્રહ કરી રહ્યા છે"
+msgstr "સંગ્રહ કરવાનું સમાપ્ત થયેલ છે. તમે આગળનાં તબક્કામાં આગળ જઇ શકો છો."
 
 #: ../src/gui-wizard-gtk/wizard.c:2243
 msgid ""
@@ -741,6 +738,11 @@ msgstr ""
 "જો તમે વિવિધ સ્થળમાં સમસ્યાનો અહેવાલ કરવા માંગો તો, વધારાની જાણકારીને ભેગી કરો, અથવા "
 "સારામાં સારી સમસ્યા વર્ણનને પૂરી પાડો અને અહેવાલીકરણ પ્રક્રિયા વારંવાર કરો, 'આગળ "
 "ધપાવો' દબાવો."
+
+#: ../src/lib/abrt_sock.c:83
+#, c-format
+msgid "Can't delete: '%s'"
+msgstr "કાઢી શકાતુ નથી: '%s'"
 
 #: ../src/lib/event_config.c:300
 msgid "Missing mandatory value"
@@ -1076,7 +1078,7 @@ msgstr ""
 #: ../src/plugins/reporter-kerneloops.c:166
 #: ../src/plugins/reporter-mailx.c:173 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:84
-#: ../src/plugins/reporter-upload.c:288
+#: ../src/plugins/reporter-upload.c:300
 msgid "Dump directory"
 msgstr "ડમ્પ ડિરેક્ટરી"
 
@@ -1218,13 +1220,13 @@ msgstr ""
 "\n"
 "જો સ્પષ્ટ થયેલ ન હોય તો, CONFFILE એ તેમાં મૂળભૂત છે"
 
-#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:289
+#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:301
 msgid "Config file"
 msgstr "રૂપરેખાંકન ફાઇલ"
 
 #: ../src/plugins/reporter-mailx.c:175
 msgid "Notify only (Do not mark the report as sent)"
-msgstr ""
+msgstr "ફક્ત સૂચિત કરો (મોકલ્યા પ્રમાણે અહેવાલને ચિહ્નત ન કરો)"
 
 #: ../src/plugins/reporter-print.c:42
 msgid ""
@@ -1305,7 +1307,7 @@ msgstr "સ્થિતિ '%s' માં '%s' ને જોડી રહ્ય�
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../src/plugins/reporter-rhtsupport.c:205
-#: ../src/plugins/reporter-upload.c:121
+#: ../src/plugins/reporter-upload.c:133
 msgid "Compressing data"
 msgstr "માહિતીને સંકોચી રહ્યા છે"
 
@@ -1341,23 +1343,23 @@ msgstr "દસ્તાવેજીકરણ કે જે તેને લગ�
 msgid "Updates which possibly help: "
 msgstr "સુધારાં કે જેનાથી મદદ થઇ શકે છે:"
 
-#: ../src/plugins/reporter-upload.c:59
+#: ../src/plugins/reporter-upload.c:71
 #, c-format
 msgid "Sending %s to %s"
 msgstr "%s માં %s ને મોકલી રહ્યા છે"
 
 #. This ends up a "reporting status message" in abrtd
-#: ../src/plugins/reporter-upload.c:98
+#: ../src/plugins/reporter-upload.c:110
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "%s માં %s ને સફળતાપૂર્વક મોકલ્યું"
 
-#: ../src/plugins/reporter-upload.c:221
+#: ../src/plugins/reporter-upload.c:233
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "પેટી બનાવેલ છે: '%s'"
 
-#: ../src/plugins/reporter-upload.c:261
+#: ../src/plugins/reporter-upload.c:273
 msgid ""
 "& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
@@ -1395,31 +1397,44 @@ msgstr ""
 "ઓળખાયેલ શબ્દમાળા પરિમાણ: URL.\n"
 "પરિમાણ $Upload_URL મારફતે ઉપર લખી શકાય છે."
 
-#: ../src/plugins/reporter-upload.c:290
+#: ../src/plugins/reporter-upload.c:302
 msgid "Base URL to upload to"
 msgstr "તેમાં અપલોડ કરવા માટે આધાર URL"
 
-#: ../src/plugins/rhbz.c:319
+#: ../src/plugins/rhbz.c:405
 #, c-format
 msgid "Looks like corrupted xml response, because '%s' member is missing."
 msgstr "એવું લાગે છે તે ભાંગેલ xml જવાબ, કારણ કે '%s' સભ્ય ગુમ થયેલ છે."
 
-#: ../src/plugins/rhbz.c:393
+#: ../src/plugins/rhbz.c:479
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
 msgstr "Bug %i એ CLOSED છે, પરંતુ તેની પાસે RESOLUTION નથી"
 
-#: ../src/plugins/rhbz.c:401
+#: ../src/plugins/rhbz.c:487
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
 msgstr "Bug %i એ DUPLICATE તરીકે CLOSED છે, પરંતુ તેની પાસે DUP_ID નથી"
 
-#: ../src/plugins/rhbz.c:530
+#: ../src/plugins/rhbz.c:528
+msgid "Can't parse backtrace"
+msgstr "બેકટ્રેસનું પદચ્છેદન કરી શકાતુ નથી"
+
+#: ../src/plugins/rhbz.c:539
+msgid "Can't find crash thread"
+msgstr "ભાંગેલ થ્રેડને શોધી શકાતુ નથી"
+
+#: ../src/plugins/rhbz.c:691
 #, c-format
 msgid "New bug id: %i"
 msgstr "નવી ભૂલ id: %i"
 
-#: ../src/plugins/rhbz.c:680
+#: ../src/plugins/rhbz.c:791
+#, c-format
+msgid "Not attaching empty file '%s'"
+msgstr "ખાલી ફાઇલ '%s' ને જોડી રહ્યા નથી"
+
+#: ../src/plugins/rhbz.c:850
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "બગઝીલા ભૂલ %d નાં મુખ્યને શોધી શક્યુ નહિં"
@@ -1456,9 +1471,3 @@ msgstr ""
 "& -o [-d] DIR\n"
 "\n"
 "સ્પષ્ટ થયેલ DIR માં સંગ્રહ થયેલ સમસ્યાનો અહેવાલ કરવા માટે નવું સાધન"
-
-#~ msgid "Reporting finished with exit code %d"
-#~ msgstr "exit કોડ %d સાથે અહેવાલ કરવાનું સમાપ્ત થયુ"
-
-#~ msgid "File '%s' is a symbolic link. Please select a regular file:"
-#~ msgstr "ફાઇલ '%s' એ સાંકેતિક કડી છે. મહેરબાની કરીને નિયમિત ફાઇલ પસંદ કરો:"

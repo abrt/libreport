@@ -4,21 +4,21 @@
 #
 # Translators:
 # Yulia <ypoyarko@redhat.com>, 2011, 2012.
-# Yulia  <yulia.poyarkova@redhat.com>, 2011.
+# Yulia  <yulia.poyarkova@redhat.com>, 2011-2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-06 15:49+0200\n"
-"PO-Revision-Date: 2012-02-29 22:36+0000\n"
+"POT-Creation-Date: 2012-10-18 16:27+0200\n"
+"PO-Revision-Date: 2012-10-09 06:16+0000\n"
 "Last-Translator: Yulia <yulia.poyarkova@redhat.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: Russian <trans-ru@lists.fedoraproject.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../src/cli/cli.c:56
 msgid ""
@@ -281,9 +281,8 @@ msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
 msgstr "Ошибка инициализации yum (YumBase.doConfigSetup): '{0!s}'"
 
 #: ../src/client-python/debuginfo.py:186
-#, fuzzy
 msgid "Can't disable repository '{0!s}': {1!s}"
-msgstr "Ошибка записи в \"{0}\": {1}"
+msgstr "Не удалось отключить репозиторий '{0!s}': {1!s}"
 
 #. This takes some time, let user know what we are doing
 #: ../src/client-python/debuginfo.py:189
@@ -388,7 +387,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/main.c:127
 msgid "Alternate GUI file"
-msgstr "Доп. GUI-файл"
+msgstr "Файл GUI"
 
 #. for use from 3rd party apps to show just a reporter selector
 #: ../src/gui-wizard-gtk/main.c:130 ../src/report-newt/report-newt.c:393
@@ -551,20 +550,21 @@ msgstr "Выполняется анализ..."
 #: ../src/gui-wizard-gtk/wizard.c:2050
 msgid "Analyzing failed. You can try another analyzer if available."
 msgstr ""
+"Не удалось выполнить анализ. Можете попробовать другой инструмент анализа."
 
 #: ../src/gui-wizard-gtk/wizard.c:2051
-#, fuzzy
 msgid "Analyzing finished. You can proceed to the next step."
-msgstr "Анализ завершён с кодом выхода %d"
+msgstr "Анализ завершён. Можно перейти к следующему этапу."
 
 #: ../src/gui-wizard-gtk/wizard.c:2078
 msgid "Reporting failed. You can try another reporter if available."
 msgstr ""
+"Попытка создания отчета завершилась неудачей. Можете попробовать другой "
+"инструмент, если он доступен."
 
 #: ../src/gui-wizard-gtk/wizard.c:2079
-#, fuzzy
 msgid "Reporting finished. You can proceed to the next step."
-msgstr "Отчёт отправлен. Можно закрыть окно."
+msgstr "Создание отчета завершено. Можно перейти к следующему шагу."
 
 #: ../src/gui-wizard-gtk/wizard.c:2106
 msgid "Collecting..."
@@ -573,11 +573,12 @@ msgstr "Сбор статистики..."
 #: ../src/gui-wizard-gtk/wizard.c:2107
 msgid "Collecting failed. You can try another collector if available."
 msgstr ""
+"Попытка сбора данных завершилась неудачей. Можете попробовать другой "
+"инструмент сбора данных, если он доступен."
 
 #: ../src/gui-wizard-gtk/wizard.c:2108
-#, fuzzy
 msgid "Collecting finished. You can proceed to the next step."
-msgstr "Сбор статистики завершен с кодом выхода %d"
+msgstr "Сбор данных завершен. Можно перейти к следующему шагу."
 
 #: ../src/gui-wizard-gtk/wizard.c:2243
 msgid ""
@@ -739,6 +740,11 @@ msgid ""
 msgstr ""
 "Чтобы изменить получателя отчёта, подробно опишите проблему и создайте отчёт "
 "заново, нажав «Вперёд»."
+
+#: ../src/lib/abrt_sock.c:83
+#, c-format
+msgid "Can't delete: '%s'"
+msgstr "Не удалось удалить: «%s»"
 
 #: ../src/lib/event_config.c:300
 msgid "Missing mandatory value"
@@ -904,7 +910,7 @@ msgstr "URL сервера Oops"
 
 #: ../src/plugins/report_Logger.xml.in.h:1
 msgid "Logger"
-msgstr "Создал"
+msgstr "Журнал"
 
 #: ../src/plugins/report_Logger.xml.in.h:2
 msgid "Save as text file"
@@ -996,7 +1002,7 @@ msgstr "Пароль пользователя Red Hat"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report uploader"
-msgstr "Отправитель отчёта"
+msgstr "URL"
 
 #: ../src/plugins/report_Uploader.xml.in.h:2
 msgid "Upload as tar.gz file (via FTP/SCP/...)"
@@ -1072,7 +1078,7 @@ msgstr ""
 #: ../src/plugins/reporter-kerneloops.c:166
 #: ../src/plugins/reporter-mailx.c:173 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:84
-#: ../src/plugins/reporter-upload.c:288
+#: ../src/plugins/reporter-upload.c:300
 msgid "Dump directory"
 msgstr "Каталог дампа"
 
@@ -1215,13 +1221,13 @@ msgstr ""
 "\n"
 "Если CONFILE не задан, по умолчанию используется "
 
-#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:289
+#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:301
 msgid "Config file"
 msgstr "Файл конфигурации"
 
 #: ../src/plugins/reporter-mailx.c:175
 msgid "Notify only (Do not mark the report as sent)"
-msgstr ""
+msgstr "Уведомлять, но не отмечать отчёт как отправленный"
 
 #: ../src/plugins/reporter-print.c:42
 msgid ""
@@ -1302,7 +1308,7 @@ msgstr "Добавление «%s» в запрос «%s»"
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../src/plugins/reporter-rhtsupport.c:205
-#: ../src/plugins/reporter-upload.c:121
+#: ../src/plugins/reporter-upload.c:133
 msgid "Compressing data"
 msgstr "Сжатие данных..."
 
@@ -1338,23 +1344,23 @@ msgstr "Дополнительная документация:"
 msgid "Updates which possibly help: "
 msgstr "Подходящие обновления:"
 
-#: ../src/plugins/reporter-upload.c:59
+#: ../src/plugins/reporter-upload.c:71
 #, c-format
 msgid "Sending %s to %s"
 msgstr "%s отправляется в %s..."
 
 #. This ends up a "reporting status message" in abrtd
-#: ../src/plugins/reporter-upload.c:98
+#: ../src/plugins/reporter-upload.c:110
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "%s успешно отправлен в %s"
 
-#: ../src/plugins/reporter-upload.c:221
+#: ../src/plugins/reporter-upload.c:233
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "Создан архив «%s»"
 
-#: ../src/plugins/reporter-upload.c:261
+#: ../src/plugins/reporter-upload.c:273
 msgid ""
 "& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
@@ -1393,31 +1399,44 @@ msgstr ""
 "Допустимый ПАРАМЕТР: URL.\n"
 "Его можно переопределить с помощью $Upload_URL."
 
-#: ../src/plugins/reporter-upload.c:290
+#: ../src/plugins/reporter-upload.c:302
 msgid "Base URL to upload to"
 msgstr "URL получателя"
 
-#: ../src/plugins/rhbz.c:319
+#: ../src/plugins/rhbz.c:405
 #, c-format
 msgid "Looks like corrupted xml response, because '%s' member is missing."
 msgstr "Ответ XML может быть повреждён, так как отсутствует «%s»."
 
-#: ../src/plugins/rhbz.c:393
+#: ../src/plugins/rhbz.c:479
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
 msgstr "Запрос %i закрыт без решения"
 
-#: ../src/plugins/rhbz.c:401
+#: ../src/plugins/rhbz.c:487
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
 msgstr "Запрос %i закрыт как ДУБЛИКАТ, но DUP_ID отсутствует"
 
-#: ../src/plugins/rhbz.c:530
+#: ../src/plugins/rhbz.c:528
+msgid "Can't parse backtrace"
+msgstr "Ошибка обработки отладочных данных"
+
+#: ../src/plugins/rhbz.c:539
+msgid "Can't find crash thread"
+msgstr "Не найден поток сбоев"
+
+#: ../src/plugins/rhbz.c:691
 #, c-format
 msgid "New bug id: %i"
 msgstr "ID нового запроса: %i"
 
-#: ../src/plugins/rhbz.c:680
+#: ../src/plugins/rhbz.c:791
+#, c-format
+msgid "Not attaching empty file '%s'"
+msgstr "Нельзя вложить пустой файл «%s»."
+
+#: ../src/plugins/rhbz.c:850
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Родительский запрос для %d не найден."
@@ -1454,9 +1473,3 @@ msgstr ""
 "& -o [-d] DIR\n"
 "\n"
 "Программа newt для создания отчёта на основе статистики в каталоге DIR."
-
-#~ msgid "Reporting finished with exit code %d"
-#~ msgstr "Отчёт создан с кодом выхода %d"
-
-#~ msgid "File '%s' is a symbolic link. Please select a regular file:"
-#~ msgstr "\"%s\" является символьной ссылкой. Выберите другой файл:"
