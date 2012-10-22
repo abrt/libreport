@@ -323,20 +323,18 @@ int rhbz_array_size(xmlrpc_value *xml)
     return size;
 }
 
-
-size_t rhbz_version(struct abrt_xmlrpc *ax)
+unsigned rhbz_version(struct abrt_xmlrpc *ax)
 {
     func_entry();
 
     xmlrpc_value *result;
     result = abrt_xmlrpc_call(ax, "Bugzilla.version", "()");
 
-    char *version = NULL;
-    if (result)
-    {
-        version = rhbz_bug_read_item("version", result, RHBZ_READ_STR);
-        xmlrpc_DECREF(result);
-    }
+    if (!result)
+        error_msg_and_die("Can't determine %s", "Bugzilla.version");
+
+    char *version = rhbz_bug_read_item("version", result, RHBZ_READ_STR);
+    xmlrpc_DECREF(result);
 
     strchrnul(version, '-')[0] = '\0';
 
@@ -359,7 +357,7 @@ size_t rhbz_version(struct abrt_xmlrpc *ax)
 }
 
 /* die or return bug id; each bug must have bug id otherwise xml is corrupted */
-int rhbz_bug_id(xmlrpc_value* xml, size_t ver)
+int rhbz_bug_id(xmlrpc_value* xml, unsigned ver)
 {
     func_entry();
 

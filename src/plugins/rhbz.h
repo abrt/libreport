@@ -30,7 +30,7 @@
 extern "C" {
 #endif
 
-#define BUGZILLA_VERSION(a,b,c) (((a) << 16) + ((b) << 8) + (c))
+#define BUGZILLA_VERSION(a,b,c) ((unsigned)(((a) << 16) + ((b) << 8) + (c)))
 
 enum {
     RHBZ_MANDATORY_MEMB = (1 << 0),
@@ -99,7 +99,7 @@ xmlrpc_value *rhbz_get_member(const char *member, xmlrpc_value *xml);
 
 int rhbz_array_size(xmlrpc_value *xml);
 
-int rhbz_bug_id(xmlrpc_value *xml, size_t ver);
+int rhbz_bug_id(xmlrpc_value *xml, unsigned ver);
 
 int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
                  const char *release, GList *group);
@@ -122,7 +122,7 @@ struct bug_info *rhbz_bug_info(struct abrt_xmlrpc *ax, int bug_id);
 
 struct bug_info *rhbz_find_origin_bug_closed_duplicate(struct abrt_xmlrpc *ax,
                                                        struct bug_info *bi);
-size_t rhbz_version(struct abrt_xmlrpc *ax);
+unsigned rhbz_version(struct abrt_xmlrpc *ax);
 
 #ifdef __cplusplus
 }

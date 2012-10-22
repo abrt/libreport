@@ -171,7 +171,7 @@ int main(int argc, char **argv)
         int all_bugs_size = rhbz_array_size(all_bugs);
         if (all_bugs_size > 0)
         {
-            size_t rhbz_ver = rhbz_version(client);
+            unsigned rhbz_ver = rhbz_version(client);
             int bug_id = rhbz_bug_id(all_bugs, rhbz_ver);
             printf("%i\n", bug_id);
         }
@@ -242,23 +242,26 @@ int main(int argc, char **argv)
 
     /* Create new bug in Bugzilla */
 
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        xfunc_die();
-    report_result_t *reported_to = find_in_reported_to(dd, "Bugzilla:");
-    dd_close(dd);
-
-    if (reported_to && reported_to->url && !(opts & OPT_f))
+    if (!(opts & OPT_f))
     {
-        char *msg = xasprintf("This problem was already reported to Bugzilla (see '%s')."
-                        " Do you still want to create a new bug?",
-                        reported_to->url);
-        int yes = ask_yes_no(msg);
-        free(msg);
-        if (!yes)
-            return 0;
+        struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+        if (!dd)
+            xfunc_die();
+        report_result_t *reported_to = find_in_reported_to(dd, "Bugzilla:");
+        dd_close(dd);
+
+        if (reported_to && reported_to->url)
+        {
+            char *msg = xasprintf("This problem was already reported to Bugzilla (see '%s')."
+                            " Do you still want to create a new bug?",
+                            reported_to->url);
+            int yes = ask_yes_no(msg);
+            free(msg);
+            if (!yes)
+                return 0;
+        }
+        free_report_result(reported_to);
     }
-    free_report_result(reported_to);
 
     problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
     if (!problem_data)
@@ -283,6 +286,9 @@ int main(int argc, char **argv)
     parse_release_for_bz(rhbz.b_release, &rhbz.b_product, &version);
     free(version);
 
+    /* If REMOTE_RESULT contains "DUPLICATE 12345", we consider it a dup of 12345
+     * and won't search on bz server.
+     */
     char *remote_result;
     remote_result = problem_data_get_content_or_NULL(problem_data, FILENAME_REMOTE_RESULT);
     if (remote_result)
@@ -292,17 +298,14 @@ int main(int argc, char **argv)
 
         if (!prefixcmp(cmd, "DUPLICATE"))
         {
-            int old_errno = errno;
             errno = 0;
             char *e;
             rhbz.b_id = strtoul(id, &e, 10);
             if (errno || id == e || *e != '\0' || rhbz.b_id > INT_MAX)
             {
-                /* error / no digits / illegal trailing chars */
-                errno = old_errno;
+                /* error / no digits / illegal trailing chars / too big a number */
                 rhbz.b_id = 0;
             }
-            errno = old_errno; /* Ok.  So restore errno. */
         }
     }
 
@@ -323,7 +326,7 @@ int main(int argc, char **argv)
           So if bug is moved from component selinux-policy to other,
           then query returns NULL and creates a new bug.
         */
-        const char *component_substitute = (!strcmp(component, "selinux-policy")) ? NULL : component;
+        const char *component_substitute = (strcmp(component, "selinux-policy") == 0) ? NULL : component;
         xmlrpc_value *result = rhbz_search_duphash(client, component_substitute,
                                                    rhbz.b_product, duphash);
 
@@ -333,8 +336,9 @@ int main(int argc, char **argv)
             error_msg_and_die(_("Missing mandatory member 'bugs'"));
 
         int all_bugs_size = rhbz_array_size(all_bugs);
-        // When someone clones bug it has same duphash, so we can find more than 1.
-        // Need to be checked if component is same.
+        /* When someone clones bug it has same duphash, so we can find more than 1.
+         * Need to be checked if component is same.
+         */
         VERB3 log("Bugzilla has %i reports with same duphash '%s'",
                   all_bugs_size, duphash);
 
@@ -358,13 +362,11 @@ int main(int argc, char **argv)
             bz->bi_id = bug_id;
             goto log_out;
         }
-        else
-        {
-            size_t rhbz_ver = rhbz_version(client);
-            int bug_id = rhbz_bug_id(all_bugs, rhbz_ver);
-            xmlrpc_DECREF(all_bugs);
-            bz = rhbz_bug_info(client, bug_id);
-        }
+
+        unsigned rhbz_ver = rhbz_version(client);
+        int bug_id = rhbz_bug_id(all_bugs, rhbz_ver);
+        xmlrpc_DECREF(all_bugs);
+        bz = rhbz_bug_info(client, bug_id);
     }
     else
     {
@@ -392,7 +394,7 @@ int main(int argc, char **argv)
         if (strcmp(bz->bi_reporter, rhbz.b_login) != 0
          && !g_list_find_custom(bz->bi_cc_list, rhbz.b_login, (GCompareFunc)g_strcmp0)
         ) {
-            log(_("Add %s to CC list"), rhbz.b_login);
+            log(_("Adding %s to CC list"), rhbz.b_login);
             rhbz_mail_to_cc(client, bz->bi_id, rhbz.b_login, RHBZ_NOMAIL_NOTIFY);
         }
 
@@ -469,7 +471,7 @@ int main(int argc, char **argv)
                 rhbz.b_bugzilla_url,
                 bz->bi_id);
 
-    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (dd)
     {
         char *msg = xasprintf("Bugzilla: URL=%s/show_bug.cgi?id=%u", rhbz.b_bugzilla_url, bz->bi_id);
