@@ -76,8 +76,11 @@ void *rhbz_bug_read_item(const char *memb, xmlrpc_value *xml, int flags);
 
 void rhbz_logout(struct abrt_xmlrpc *ax);
 
-xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax, const char *component,
-                                  const char *release, const char *duphash);
+xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax,
+                                  const char *product,
+                                  const char *version,
+                                  const char *component,
+                                  const char *duphash);
 
 xmlrpc_value *rhbz_get_member(const char *member, xmlrpc_value *xml);
 

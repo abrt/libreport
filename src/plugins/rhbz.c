@@ -263,8 +263,11 @@ void rhbz_login(struct abrt_xmlrpc *ax, const char *login, const char *password)
     xmlrpc_DECREF(result);
 }
 
-xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax, const char *component,
-                                  const char *product, const char *duphash)
+xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax,
+                                  const char *product,
+                                  const char *version,
+                                  const char *component,
+                                  const char *duphash)
 {
     func_entry();
 
@@ -273,6 +276,9 @@ xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax, const char *component,
 
     if (product)
         strbuf_append_strf(query, " product:\"%s\"", product);
+
+    if (version)
+        strbuf_append_strf(query, " version:\"%s\"", version);
 
     if (component)
         strbuf_append_strf(query, " component:\"%s\"", component);

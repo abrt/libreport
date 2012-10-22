@@ -295,11 +295,8 @@ int main(int argc, char **argv)
     rhbz_login(client, rhbz.b_login, rhbz.b_password);
 
     char *product = NULL;
-    {
-        char *version = NULL;
-        parse_release_for_bz(rhbz.b_os_release, &product, &version);
-        free(version);
-    }
+    char *version = NULL;
+    parse_release_for_bz(rhbz.b_os_release, &product, &version);
 
     /* If REMOTE_RESULT contains "DUPLICATE 12345", we consider it a dup of 12345
      * and won't search on bz server.
@@ -330,25 +327,33 @@ int main(int argc, char **argv)
         log(_("Checking for duplicates"));
 
         /*
-          SELinux guys almost always move filed bugs from component
-          selinux-policy to another component.
-
-          Bugzilla client is looking for duplicate bug by sending
-          xmlrpc query:
-
-          "ALL whiteboard:<hash> product:<product> component:<name>"
-
-          So if bug is moved from component selinux-policy to other,
-          then query returns NULL and creates a new bug.
-        */
+         * SELinux guys almost always move filed bugs from component
+         * selinux-policy to another component.
+         *
+         * Bugzilla client is looking for duplicate bug by sending
+         * xmlrpc query:
+         *
+         * "ALL whiteboard:<hash> product:<product> component:<name>"
+         *
+         * So if bug is moved from component selinux-policy to other,
+         * then query returns NULL and creates a new bug.
+         */
         const char *component_substitute = (strcmp(component, "selinux-policy") == 0) ? NULL : component;
-        xmlrpc_value *result = rhbz_search_duphash(client, component_substitute,
-                                                   product, duphash);
+        /*
+         * We require match in product *and version*.
+         * Otherwise we sometimes have bugs in e.g. Fedora 17
+         * considered to be dups of Fedora 16 bugs.
+         * Imagine that F16 is "end-of-lifed" - allowing cross-version
+         * match will make all newly detected crashes DUPed
+         * to a bug in a dead release.
+         */
+        xmlrpc_value *result = rhbz_search_duphash(client, product, version,
+                        component_substitute, duphash);
 
         xmlrpc_value *all_bugs = rhbz_get_member("bugs", result);
         xmlrpc_DECREF(result);
         if (!all_bugs)
-            error_msg_and_die(_("Missing mandatory member 'bugs'"));
+            error_msg_and_die(_("Bug.search(quicksearch) return value did not contain member 'bugs'"));
 
         int all_bugs_size = rhbz_array_size(all_bugs);
         /* When someone clones bug it has same duphash, so we can find more than 1.
