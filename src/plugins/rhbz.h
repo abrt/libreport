@@ -62,26 +62,10 @@ struct bug_info {
     GList *bi_comments;
 };
 
-struct bugzilla_struct {
-    int         b_id;
-    const char *b_login;
-    const char *b_password;
-    const char *b_bugzilla_xmlrpc;
-    const char *b_bugzilla_url;
-    const char *b_release;
-    char       *b_product;
-    int         b_ssl_verify;
-};
-
-#define INIT_BUGZILLA(name)			\
-    static struct bugzilla_struct name = {      \
-        .b_id = 0,                              \
-    }
-
 struct bug_info *new_bug_info();
 void free_bug_info(struct bug_info *bz);
 
-void rhbz_login(struct abrt_xmlrpc *ax, struct bugzilla_struct *b);
+void rhbz_login(struct abrt_xmlrpc *ax, const char *login, const char *password);
 
 void rhbz_mail_to_cc(struct abrt_xmlrpc *ax, int bug_id, const char *mail, int flags);
 

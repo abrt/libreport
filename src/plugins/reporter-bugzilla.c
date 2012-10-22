@@ -23,6 +23,16 @@
 
 #define XML_RPC_SUFFIX "/xmlrpc.cgi"
 
+struct bugzilla_struct {
+    const char *b_login;
+    const char *b_password;
+    const char *b_bugzilla_xmlrpc;
+    const char *b_bugzilla_url;
+    const char *b_release;
+    char       *b_product;
+    int         b_ssl_verify;
+};
+
 static void set_settings(struct bugzilla_struct *b, map_string_h *settings)
 {
     const char *environ;
@@ -143,7 +153,7 @@ int main(int argc, char **argv)
         abrt_xmlrpc_die(&env);
     xmlrpc_env_clean(&env);
 
-    INIT_BUGZILLA(rhbz);
+    struct bugzilla_struct rhbz = { 0 };
     set_settings(&rhbz, settings);
 
     struct abrt_xmlrpc *client;
@@ -204,7 +214,7 @@ int main(int argc, char **argv)
             show_usage_and_die(program_usage_string, program_options);
 
         log(_("Logging into Bugzilla at %s"), rhbz.b_bugzilla_url);
-        rhbz_login(client, &rhbz);
+        rhbz_login(client, rhbz.b_login, rhbz.b_password);
 
         while (*argv)
         {
@@ -241,6 +251,7 @@ int main(int argc, char **argv)
     }
 
     /* Create new bug in Bugzilla */
+    int bug_id = 0;
 
     if (!(opts & OPT_f))
     {
@@ -280,7 +291,7 @@ int main(int argc, char **argv)
     }
 
     log(_("Logging into Bugzilla at %s"), rhbz.b_bugzilla_url);
-    rhbz_login(client, &rhbz);
+    rhbz_login(client, rhbz.b_login, rhbz.b_password);
 
     char *version = NULL;
     parse_release_for_bz(rhbz.b_release, &rhbz.b_product, &version);
@@ -300,17 +311,17 @@ int main(int argc, char **argv)
         {
             errno = 0;
             char *e;
-            rhbz.b_id = strtoul(id, &e, 10);
-            if (errno || id == e || *e != '\0' || rhbz.b_id > INT_MAX)
+            bug_id = strtoul(id, &e, 10);
+            if (errno || id == e || *e != '\0' || bug_id > INT_MAX)
             {
                 /* error / no digits / illegal trailing chars / too big a number */
-                rhbz.b_id = 0;
+                bug_id = 0;
             }
         }
     }
 
     struct bug_info *bz = NULL;
-    if (!rhbz.b_id)
+    if (!bug_id)
     {
         log(_("Checking for duplicates"));
 
@@ -346,31 +357,31 @@ int main(int argc, char **argv)
         {
             /* Create new bug */
             log(_("Creating a new bug"));
-            int bug_id = rhbz_new_bug(client, problem_data, rhbz.b_release, group);
+            int new_id = rhbz_new_bug(client, problem_data, rhbz.b_release, group);
 
-            log(_("Adding attachments to bug %i"), bug_id);
-            char bug_id_str[sizeof(int)*3 + 2];
-            snprintf(bug_id_str, sizeof(bug_id_str), "%i", bug_id);
+            log(_("Adding attachments to bug %i"), new_id);
+            char new_id_str[sizeof(int)*3 + 2];
+            sprintf(new_id_str, "%i", new_id);
 
             int flags = RHBZ_NOMAIL_NOTIFY;
             if (opts & OPT_b)
                 flags |= RHBZ_ATTACH_BINARY_FILES;
-            rhbz_attach_files(client, bug_id_str, problem_data, flags);
+            rhbz_attach_files(client, new_id_str, problem_data, flags);
 
             bz = new_bug_info();
             bz->bi_status = xstrdup("NEW");
-            bz->bi_id = bug_id;
+            bz->bi_id = new_id;
             goto log_out;
         }
 
         unsigned rhbz_ver = rhbz_version(client);
-        int bug_id = rhbz_bug_id(all_bugs, rhbz_ver);
+        int existing_id = rhbz_bug_id(all_bugs, rhbz_ver);
         xmlrpc_DECREF(all_bugs);
-        bz = rhbz_bug_info(client, bug_id);
+        bz = rhbz_bug_info(client, existing_id);
     }
     else
     {
-        bz = rhbz_bug_info(client, rhbz.b_id);
+        bz = rhbz_bug_info(client, bug_id);
     }
 
     log(_("Bug is already reported: %i"), bz->bi_id);
@@ -451,7 +462,7 @@ int main(int argc, char **argv)
                 char bug_id_str[sizeof(int)*3 + 2];
                 snprintf(bug_id_str, sizeof(bug_id_str), "%i", bz->bi_id);
 
-                const char *bt =  problem_data_get_content_or_NULL(problem_data,
+                const char *bt = problem_data_get_content_or_NULL(problem_data,
                                                                    FILENAME_BACKTRACE);
                 log(_("Attaching better backtrace"));
                 rhbz_attach_blob(client, FILENAME_BACKTRACE, bug_id_str, bt, strlen(bt),
