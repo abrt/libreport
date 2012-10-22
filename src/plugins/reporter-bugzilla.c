@@ -26,10 +26,9 @@
 struct bugzilla_struct {
     const char *b_login;
     const char *b_password;
-    const char *b_bugzilla_xmlrpc;
     const char *b_bugzilla_url;
-    const char *b_release;
-    char       *b_product;
+    const char *b_bugzilla_xmlrpc;
+    const char *b_os_release;
     int         b_ssl_verify;
 };
 
@@ -39,19 +38,21 @@ static void set_settings(struct bugzilla_struct *b, map_string_h *settings)
 
     environ = getenv("Bugzilla_Login");
     b->b_login = environ ? environ : get_map_string_item_or_empty(settings, "Login");
+
     environ = getenv("Bugzilla_Password");
     b->b_password = environ ? environ : get_map_string_item_or_empty(settings, "Password");
+
     environ = getenv("Bugzilla_BugzillaURL");
     b->b_bugzilla_url = environ ? environ : get_map_string_item_or_empty(settings, "BugzillaURL");
     if (!b->b_bugzilla_url[0])
         b->b_bugzilla_url = "https://bugzilla.redhat.com";
     b->b_bugzilla_xmlrpc = xasprintf("%s"XML_RPC_SUFFIX, b->b_bugzilla_url);
 
+    environ = getenv("Bugzilla_OSRelease");
+    b->b_os_release = environ ? environ : get_map_string_item_or_NULL(settings, "OSRelease");
+
     environ = getenv("Bugzilla_SSLVerify");
     b->b_ssl_verify = string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "SSLVerify"));
-
-    environ = getenv("Bugzilla_OSRelease");
-    b->b_release = environ ? environ : get_map_string_item_or_NULL(settings, "OSRelease");
 }
 
 int main(int argc, char **argv)
@@ -282,20 +283,23 @@ int main(int argc, char **argv)
     const char *duphash   = problem_data_get_content_or_NULL(problem_data, FILENAME_DUPHASH);
 //COMPAT, remove after 2.1 release
     if (!duphash) duphash = problem_data_get_content_or_die(problem_data, "global_uuid");
-    if (!rhbz.b_release || !*rhbz.b_release) /* if not overridden or empty... */
+    if (!rhbz.b_os_release || !*rhbz.b_os_release) /* if not overridden or empty... */
     {
-        rhbz.b_release = problem_data_get_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
+        rhbz.b_os_release = problem_data_get_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
 //COMPAT, remove in abrt-2.1
-        if (!rhbz.b_release)
-		rhbz.b_release = problem_data_get_content_or_die(problem_data, "release");
+        if (!rhbz.b_os_release)
+		rhbz.b_os_release = problem_data_get_content_or_die(problem_data, "release");
     }
 
     log(_("Logging into Bugzilla at %s"), rhbz.b_bugzilla_url);
     rhbz_login(client, rhbz.b_login, rhbz.b_password);
 
-    char *version = NULL;
-    parse_release_for_bz(rhbz.b_release, &rhbz.b_product, &version);
-    free(version);
+    char *product = NULL;
+    {
+        char *version = NULL;
+        parse_release_for_bz(rhbz.b_os_release, &product, &version);
+        free(version);
+    }
 
     /* If REMOTE_RESULT contains "DUPLICATE 12345", we consider it a dup of 12345
      * and won't search on bz server.
@@ -339,7 +343,7 @@ int main(int argc, char **argv)
         */
         const char *component_substitute = (strcmp(component, "selinux-policy") == 0) ? NULL : component;
         xmlrpc_value *result = rhbz_search_duphash(client, component_substitute,
-                                                   rhbz.b_product, duphash);
+                                                   product, duphash);
 
         xmlrpc_value *all_bugs = rhbz_get_member("bugs", result);
         xmlrpc_DECREF(result);
@@ -357,7 +361,7 @@ int main(int argc, char **argv)
         {
             /* Create new bug */
             log(_("Creating a new bug"));
-            int new_id = rhbz_new_bug(client, problem_data, rhbz.b_release, group);
+            int new_id = rhbz_new_bug(client, problem_data, rhbz.b_os_release, group);
 
             log(_("Adding attachments to bug %i"), new_id);
             char new_id_str[sizeof(int)*3 + 2];
@@ -433,7 +437,7 @@ int main(int argc, char **argv)
             {
                 VERB3 log("not adding the arch: %s because rep_plat is %s", arch, bz->bi_platform);
             }
-            strbuf_append_strf(full_desc, "OS Release: %s\n", rhbz.b_release);
+            strbuf_append_strf(full_desc, "OS Release: %s\n", rhbz.b_os_release);
 
             /* unused code, enable it when gui/cli will be ready
             int is_priv = is_private && string_to_bool(is_private);
