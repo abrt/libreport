@@ -102,6 +102,16 @@ struct dump_dir *open_directory_for_writing(
     if (!dd)
         return NULL;
 
+    bool dd_was_cwd = false;
+    {
+        char old_cwd[PATH_MAX + 1];
+        /* must get CWD before deleting */
+        if (getcwd(old_cwd, sizeof(old_cwd)))
+            dd_was_cwd = strcmp(old_cwd, dump_dir_name) == 0;
+        else
+            perror_msg("getcwd()");
+    }
+
     /* Delete old dir and switch to new one.
      * Don't want to keep new dd open across deletion,
      * therefore it's a bit more complicated.
@@ -114,6 +124,11 @@ struct dump_dir *open_directory_for_writing(
 
     if (!dd)
         xfunc_die(); /* error msg was already logged */
+
+    /* Update CWD to the new dump dir path if CWD is the stolen dump dir */
+    /* Nonexisting CWD breaks lot of things (i.e. gnome-open can't open URL)*/
+    if (dd_was_cwd && chdir(dd->dd_dirname))
+        perror_msg("chdir()");
 
     return dd;
 }
