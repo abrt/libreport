@@ -390,6 +390,19 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/events.d/uploader_event.conf
 
 %changelog
+* Wed Oct 24 2012 Jakub Filak <jfilak@redhat.com> 2.0.17-1
+- update CWD after stealing of a dump directory
+- get product/version from system configuration
+- shorten bz summary if its length exceeds 255 chars
+- add full kerneloops to the uReport
+- reporter-bz: require bz version match when searching for dups. Closes rhbz#849833
+- reporter-bz: eliminate bugzilla_struct::b_product - use auto var instead
+- Move struct bugzilla_struct to its only user, reporter-bugzilla.c
+- reporter-bz: do not needlessly open dd if -f; assorted small fixes
+- added relro to reportclient.so and _pyreport.so rhbz#812283
+- bz reporter: include ROOTDIR, OS_RELEASE_IN_ROOTDIR, EXECUTABLE elements
+- Fix report-newt segfault
+
 * Thu Oct 11 2012 Jakub Filak <jfilak@redhat.com> 2.0.16-1
 - expand events from a chain and process expanded events separately
 - report-gtk: move selection of event to a right place
