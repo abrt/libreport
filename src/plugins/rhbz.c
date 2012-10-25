@@ -572,8 +572,11 @@ char *rhbz_get_backtrace_info(problem_data_t *problem_data, size_t max_text_size
 }
 
 /* suppress mail notify by {s:i} (nomail:1) (driven by flag) */
-int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
-                 const char *release, GList *group)
+int rhbz_new_bug(struct abrt_xmlrpc *ax,
+                problem_data_t *problem_data,
+                const char *release,
+                const char *aux_msg,
+                GList *group)
 {
     func_entry();
 
@@ -696,6 +699,9 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
         strbuf_append_str(tmp_full_dsc, backtrace);
         free(backtrace);
     }
+
+    if (aux_msg)
+        strbuf_append_str(tmp_full_dsc, aux_msg);
 
     char *full_dsc = strbuf_free_nobuf(tmp_full_dsc);
 

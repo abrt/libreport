@@ -193,6 +193,7 @@ int main(int argc, char **argv)
 
     struct abrt_xmlrpc *client;
     client = abrt_xmlrpc_new_client(rhbz.b_bugzilla_xmlrpc, rhbz.b_ssl_verify);
+    unsigned rhbz_ver = rhbz_version(client);
 
     if (abrt_hash)
     {
@@ -212,7 +213,6 @@ int main(int argc, char **argv)
         int all_bugs_size = rhbz_array_size(all_bugs);
         if (all_bugs_size > 0)
         {
-            unsigned rhbz_ver = rhbz_version(client);
             int bug_id = rhbz_get_bug_id_from_array0(all_bugs, rhbz_ver);
             printf("%i\n", bug_id);
         }
@@ -356,38 +356,66 @@ int main(int argc, char **argv)
     {
         log(_("Checking for duplicates"));
 
-        /*
-         * SELinux guys almost always move filed bugs from component
-         * selinux-policy to another component.
-         *
-         * Bugzilla client is looking for duplicate bug by sending
-         * xmlrpc query:
-         *
-         * "ALL whiteboard:<hash> product:<product> component:<name>"
-         *
-         * So if bug is moved from component selinux-policy to other,
-         * then query returns NULL and creates a new bug.
-         */
-        const char *component_substitute = (strcmp(component, "selinux-policy") == 0) ? NULL : component;
-        /*
-         * We require match in product *and version*.
-         * Otherwise we sometimes have bugs in e.g. Fedora 17
-         * considered to be dups of Fedora 16 bugs.
-         * Imagine that F16 is "end-of-lifed" - allowing cross-version
-         * match will make all newly detected crashes DUPed
-         * to a bug in a dead release.
-         */
-        xmlrpc_value *all_bugs = rhbz_search_duphash(client, product, version,
-                        component_substitute, duphash);
-        int all_bugs_size = rhbz_array_size(all_bugs);
-        VERB3 log("Bugzilla has %i reports with same duphash '%s'",
-                  all_bugs_size, duphash);
+        int existing_id = -1;
+        int crossver_id = -1;
+        {
+            /* SELinux guys almost always move filed bugs from component
+             * selinux-policy to another component.
+             *
+             * Bugzilla client is looking for duplicate bug by sending
+             * xmlrpc query:
+             *
+             * "ALL whiteboard:<hash> product:<product> component:<name>"
+             *
+             * So if bug is moved from component selinux-policy to other,
+             * then query returns NULL and creates a new bug.
+             */
+            const char *component_substitute = (strcmp(component, "selinux-policy") == 0) ? NULL : component;
 
-        if (all_bugs_size == 0)
+            /* We don't do dup detection across versions (see below why),
+             * but we do add a note if cross-version potential dup exists.
+             * For that, we search for cross version dups first:
+             */
+            xmlrpc_value *crossver_bugs = rhbz_search_duphash(client, product, /*version:*/ NULL,
+                            component_substitute, duphash);
+            int crossver_bugs_count = rhbz_array_size(crossver_bugs);
+            VERB3 log("Bugzilla has %i reports with same duphash '%s' including cross-version ones",
+                    crossver_bugs_count, duphash);
+            if (crossver_bugs_count > 0)
+                crossver_id = rhbz_get_bug_id_from_array0(crossver_bugs, rhbz_ver);
+            xmlrpc_DECREF(crossver_bugs);
+
+            if (crossver_bugs_count > 0)
+            {
+                /* In dup detection we require match in product *and version*.
+                 * Otherwise we sometimes have bugs in e.g. Fedora 17
+                 * considered to be dups of Fedora 16 bugs.
+                 * Imagine that F16 is "end-of-lifed" - allowing cross-version
+                 * match will make all newly detected crashes DUPed
+                 * to a bug in a dead release.
+                 */
+                xmlrpc_value *dup_bugs = rhbz_search_duphash(client, product, version,
+                                component_substitute, duphash);
+                int dup_bugs_count = rhbz_array_size(dup_bugs);
+                VERB3 log("Bugzilla has %i reports with same duphash '%s'",
+                        dup_bugs_count, duphash);
+                if (dup_bugs_count > 0)
+                    existing_id = rhbz_get_bug_id_from_array0(dup_bugs, rhbz_ver);
+                xmlrpc_DECREF(dup_bugs);
+            }
+        }
+
+        if (existing_id < 0)
         {
             /* Create new bug */
             log(_("Creating a new bug"));
-            int new_id = rhbz_new_bug(client, problem_data, rhbz.b_os_release, group);
+
+            char *aux_msg = crossver_id < 0 ? NULL :
+                    xasprintf("\nPotential duplicate bug: %u\n", crossver_id);
+            int new_id = rhbz_new_bug(client, problem_data, rhbz.b_os_release,
+                    aux_msg,
+                    group);
+            free(aux_msg);
 
             log(_("Adding attachments to bug %i"), new_id);
             char new_id_str[sizeof(int)*3 + 2];
@@ -404,15 +432,10 @@ int main(int argc, char **argv)
             goto log_out;
         }
 
-        unsigned rhbz_ver = rhbz_version(client);
-        int existing_id = rhbz_get_bug_id_from_array0(all_bugs, rhbz_ver);
-        xmlrpc_DECREF(all_bugs);
-        bz = rhbz_bug_info(client, existing_id);
+        bug_id = existing_id;
     }
-    else
-    {
-        bz = rhbz_bug_info(client, bug_id);
-    }
+
+    bz = rhbz_bug_info(client, bug_id);
 
     log(_("Bug is already reported: %i"), bz->bi_id);
 
