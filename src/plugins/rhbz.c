@@ -264,34 +264,6 @@ void rhbz_login(struct abrt_xmlrpc *ax, const char *login, const char *password)
     xmlrpc_DECREF(result);
 }
 
-xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax,
-                                  const char *product,
-                                  const char *version,
-                                  const char *component,
-                                  const char *duphash)
-{
-    func_entry();
-
-    struct strbuf *query = strbuf_new();
-    strbuf_append_strf(query, "ALL whiteboard:\"%s\"", duphash);
-
-    if (product)
-        strbuf_append_strf(query, " product:\"%s\"", product);
-
-    if (version)
-        strbuf_append_strf(query, " version:\"%s\"", version);
-
-    if (component)
-        strbuf_append_strf(query, " component:\"%s\"", component);
-
-    VERB3 log("search for '%s'", query->buf);
-    xmlrpc_value *ret = abrt_xmlrpc_call(ax, "Bug.search", "({s:s})",
-                                         "quicksearch", query->buf);
-    strbuf_free(query);
-
-    return ret;
-}
-
 xmlrpc_value *rhbz_get_member(const char *member, xmlrpc_value *xml)
 {
     func_entry_str(member);
@@ -364,7 +336,7 @@ unsigned rhbz_version(struct abrt_xmlrpc *ax)
 }
 
 /* die or return bug id; each bug must have bug id otherwise xml is corrupted */
-int rhbz_bug_id(xmlrpc_value* xml, unsigned ver)
+int rhbz_get_bug_id_from_array0(xmlrpc_value* xml, unsigned ver)
 {
     func_entry();
 
@@ -372,9 +344,6 @@ int rhbz_bug_id(xmlrpc_value* xml, unsigned ver)
     xmlrpc_env_init(&env);
 
     xmlrpc_value *item = NULL;
-    xmlrpc_value *bug = NULL;
-    int bug_id = -1;;
-
     xmlrpc_array_read_item(&env, xml, 0, &item);
     if (env.fault_occurred)
         abrt_xmlrpc_die(&env);
@@ -385,11 +354,13 @@ int rhbz_bug_id(xmlrpc_value* xml, unsigned ver)
     else
         id = "bug_id";
 
+    xmlrpc_value *bug;
     bug = rhbz_get_member(id, item);
     xmlrpc_DECREF(item);
     if (!bug)
-        error_msg_and_die("fatal: There is no member named '%s'", id);
+        error_msg_and_die("Can't get member '%s' from bug data", id);
 
+    int bug_id = -1;
     xmlrpc_read_int(&env, bug, &bug_id);
     xmlrpc_DECREF(bug);
     if (env.fault_occurred)
@@ -778,6 +749,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
                                   "status_whiteboard", status_whiteboard,
                                   "platform", arch,
                                   "groups", xmlrpc_groups);
+        xmlrpc_DECREF(xmlrpc_groups);
     }
 
     free(status_whiteboard);

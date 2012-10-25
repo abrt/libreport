@@ -55,6 +55,40 @@ static void set_settings(struct bugzilla_struct *b, map_string_h *settings)
     b->b_ssl_verify = string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "SSLVerify"));
 }
 
+static
+xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax,
+                        const char *product,
+                        const char *version,
+                        const char *component,
+                        const char *duphash)
+{
+    struct strbuf *query = strbuf_new();
+
+    strbuf_append_strf(query, "ALL whiteboard:\"%s\"", duphash);
+
+    if (product)
+        strbuf_append_strf(query, " product:\"%s\"", product);
+
+    if (version)
+        strbuf_append_strf(query, " version:\"%s\"", version);
+
+    if (component)
+        strbuf_append_strf(query, " component:\"%s\"", component);
+
+    char *s = strbuf_free_nobuf(query);
+    VERB3 log("search for '%s'", s);
+    xmlrpc_value *search = abrt_xmlrpc_call(ax, "Bug.search", "({s:s})",
+                                         "quicksearch", s);
+    free(s);
+    xmlrpc_value *bugs = rhbz_get_member("bugs", search);
+    xmlrpc_DECREF(search);
+
+    if (!bugs)
+        error_msg_and_die(_("Bug.search(quicksearch) return value did not contain member 'bugs'"));
+
+    return bugs;
+}
+
 int main(int argc, char **argv)
 {
     abrt_init(argv);
@@ -168,22 +202,18 @@ int main(int argc, char **argv)
         else
             hash = xstrdup(abrt_hash);
 
-        /* it's fedora specific */
-        char *query = xasprintf("ALL whiteboard:\"%s\" product:\"Fedora\"", hash);
+        /* it's Fedora specific */
+        xmlrpc_value *all_bugs = rhbz_search_duphash(client,
+                                /*product:*/ "Fedora",
+                                /*version:*/ NULL,
+                                /*component:*/ NULL,
+                                hash);
         free(hash);
-
-        xmlrpc_value *result = abrt_xmlrpc_call(client, "Bug.search", "({s:s})",
-                                             "quicksearch", query);
-        free(query);
-
-        xmlrpc_value *all_bugs = rhbz_get_member("bugs", result);
-        xmlrpc_DECREF(result);
-
         int all_bugs_size = rhbz_array_size(all_bugs);
         if (all_bugs_size > 0)
         {
             unsigned rhbz_ver = rhbz_version(client);
-            int bug_id = rhbz_bug_id(all_bugs, rhbz_ver);
+            int bug_id = rhbz_get_bug_id_from_array0(all_bugs, rhbz_ver);
             printf("%i\n", bug_id);
         }
 
@@ -347,18 +377,9 @@ int main(int argc, char **argv)
          * match will make all newly detected crashes DUPed
          * to a bug in a dead release.
          */
-        xmlrpc_value *result = rhbz_search_duphash(client, product, version,
+        xmlrpc_value *all_bugs = rhbz_search_duphash(client, product, version,
                         component_substitute, duphash);
-
-        xmlrpc_value *all_bugs = rhbz_get_member("bugs", result);
-        xmlrpc_DECREF(result);
-        if (!all_bugs)
-            error_msg_and_die(_("Bug.search(quicksearch) return value did not contain member 'bugs'"));
-
         int all_bugs_size = rhbz_array_size(all_bugs);
-        /* When someone clones bug it has same duphash, so we can find more than 1.
-         * Need to be checked if component is same.
-         */
         VERB3 log("Bugzilla has %i reports with same duphash '%s'",
                   all_bugs_size, duphash);
 
@@ -384,7 +405,7 @@ int main(int argc, char **argv)
         }
 
         unsigned rhbz_ver = rhbz_version(client);
-        int existing_id = rhbz_bug_id(all_bugs, rhbz_ver);
+        int existing_id = rhbz_get_bug_id_from_array0(all_bugs, rhbz_ver);
         xmlrpc_DECREF(all_bugs);
         bz = rhbz_bug_info(client, existing_id);
     }

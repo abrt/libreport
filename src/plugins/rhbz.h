@@ -76,17 +76,11 @@ void *rhbz_bug_read_item(const char *memb, xmlrpc_value *xml, int flags);
 
 void rhbz_logout(struct abrt_xmlrpc *ax);
 
-xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax,
-                                  const char *product,
-                                  const char *version,
-                                  const char *component,
-                                  const char *duphash);
-
 xmlrpc_value *rhbz_get_member(const char *member, xmlrpc_value *xml);
 
 int rhbz_array_size(xmlrpc_value *xml);
 
-int rhbz_bug_id(xmlrpc_value *xml, unsigned ver);
+int rhbz_get_bug_id_from_array0(xmlrpc_value *xml, unsigned ver);
 
 int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
                  const char *release, GList *group);
