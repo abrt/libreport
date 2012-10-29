@@ -29,6 +29,7 @@ struct bugzilla_struct {
     const char *b_bugzilla_url;
     const char *b_bugzilla_xmlrpc;
     const char *b_os_release;
+    const char *b_DontMatchComponents;
     int         b_ssl_verify;
 };
 
@@ -53,6 +54,9 @@ static void set_settings(struct bugzilla_struct *b, map_string_h *settings)
 
     environ = getenv("Bugzilla_SSLVerify");
     b->b_ssl_verify = string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "SSLVerify"));
+
+    environ = getenv("Bugzilla_DontMatchComponents");
+    b->b_DontMatchComponents = environ ? environ : get_map_string_item_or_empty(settings, "DontMatchComponents");
 }
 
 static
@@ -168,16 +172,21 @@ int main(int argc, char **argv)
 
     export_abrt_envvars(0);
 
-    map_string_h *settings = new_map_string();
-    if (!conf_file)
-        conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/bugzilla.conf");
-    while (conf_file)
+    struct bugzilla_struct rhbz = { 0 };
     {
-        char *fn = (char *)conf_file->data;
-        VERB1 log("Loading settings from '%s'", fn);
-        load_conf_file(fn, settings, /*skip key w/o values:*/ true);
-        VERB3 log("Loaded '%s'", fn);
-        conf_file = g_list_delete_link(conf_file, conf_file);
+        map_string_h *settings = new_map_string();
+        if (!conf_file)
+            conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/bugzilla.conf");
+        while (conf_file)
+        {
+            char *fn = (char *)conf_file->data;
+            VERB1 log("Loading settings from '%s'", fn);
+            load_conf_file(fn, settings, /*skip key w/o values:*/ true);
+            VERB3 log("Loaded '%s'", fn);
+            conf_file = g_list_delete_link(conf_file, conf_file);
+        }
+        set_settings(&rhbz, settings);
+        free_map_string(settings);
     }
 
     VERB1 log("Initializing XML-RPC library");
@@ -187,9 +196,6 @@ int main(int argc, char **argv)
     if (env.fault_occurred)
         abrt_xmlrpc_die(&env);
     xmlrpc_env_clean(&env);
-
-    struct bugzilla_struct rhbz = { 0 };
-    set_settings(&rhbz, settings);
 
     struct abrt_xmlrpc *client;
     client = abrt_xmlrpc_new_client(rhbz.b_bugzilla_xmlrpc, rhbz.b_ssl_verify);
@@ -276,7 +282,6 @@ int main(int argc, char **argv)
 
 #if 0  /* enable if you search for leaks (valgrind etc) */
         abrt_xmlrpc_free_client(client);
-        free_map_string(settings);
 #endif
         return 0;
     }
@@ -359,18 +364,10 @@ int main(int argc, char **argv)
         int existing_id = -1;
         int crossver_id = -1;
         {
-            /* SELinux guys almost always move filed bugs from component
-             * selinux-policy to another component.
-             *
-             * Bugzilla client is looking for duplicate bug by sending
-             * xmlrpc query:
-             *
-             * "ALL whiteboard:<hash> product:<product> component:<name>"
-             *
-             * So if bug is moved from component selinux-policy to other,
-             * then query returns NULL and creates a new bug.
+            /* Figure out whether we want to match component
+             * when doing dup search.
              */
-            const char *component_substitute = (strcmp(component, "selinux-policy") == 0) ? NULL : component;
+            const char *component_substitute = is_in_comma_separated_list(component, rhbz.b_DontMatchComponents) ? NULL : component;
 
             /* We don't do dup detection across versions (see below why),
              * but we do add a note if cross-version potential dup exists.
@@ -549,7 +546,6 @@ int main(int argc, char **argv)
     problem_data_free(problem_data);
     free_bug_info(bz);
     abrt_xmlrpc_free_client(client);
-    free_map_string(settings);
 #endif
     return 0;
 }
