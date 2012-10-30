@@ -172,9 +172,9 @@ int main(int argc, char **argv)
 
     export_abrt_envvars(0);
 
+    map_string_h *settings = new_map_string();
     struct bugzilla_struct rhbz = { 0 };
     {
-        map_string_h *settings = new_map_string();
         if (!conf_file)
             conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/bugzilla.conf");
         while (conf_file)
@@ -186,7 +186,10 @@ int main(int argc, char **argv)
             conf_file = g_list_delete_link(conf_file, conf_file);
         }
         set_settings(&rhbz, settings);
-        free_map_string(settings);
+        /* WRONG! set_settings() does not copy the strings, it merely sets up pointers
+         * to settings[] dictionary:
+         */
+        /*free_map_string(settings);*/
     }
 
     VERB1 log("Initializing XML-RPC library");
@@ -376,7 +379,7 @@ int main(int argc, char **argv)
             xmlrpc_value *crossver_bugs = rhbz_search_duphash(client, product, /*version:*/ NULL,
                             component_substitute, duphash);
             int crossver_bugs_count = rhbz_array_size(crossver_bugs);
-            VERB3 log("Bugzilla has %i reports with same duphash '%s' including cross-version ones",
+            VERB3 log("Bugzilla has %i reports with duphash '%s' including cross-version ones",
                     crossver_bugs_count, duphash);
             if (crossver_bugs_count > 0)
                 crossver_id = rhbz_get_bug_id_from_array0(crossver_bugs, rhbz_ver);
@@ -394,7 +397,7 @@ int main(int argc, char **argv)
                 xmlrpc_value *dup_bugs = rhbz_search_duphash(client, product, version,
                                 component_substitute, duphash);
                 int dup_bugs_count = rhbz_array_size(dup_bugs);
-                VERB3 log("Bugzilla has %i reports with same duphash '%s'",
+                VERB3 log("Bugzilla has %i reports with duphash '%s'",
                         dup_bugs_count, duphash);
                 if (dup_bugs_count > 0)
                     existing_id = rhbz_get_bug_id_from_array0(dup_bugs, rhbz_ver);

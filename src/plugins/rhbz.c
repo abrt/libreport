@@ -308,11 +308,11 @@ unsigned rhbz_version(struct abrt_xmlrpc *ax)
 
     xmlrpc_value *result;
     result = abrt_xmlrpc_call(ax, "Bugzilla.version", "()");
-
-    if (!result)
+    char *version = NULL;
+    if (result)
+        version = rhbz_bug_read_item("version", result, RHBZ_READ_STR);
+    if (!result || !version)
         error_msg_and_die("Can't determine %s", "Bugzilla.version");
-
-    char *version = rhbz_bug_read_item("version", result, RHBZ_READ_STR);
     xmlrpc_DECREF(result);
 
     strchrnul(version, '-')[0] = '\0';
