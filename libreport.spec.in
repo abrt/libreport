@@ -390,6 +390,12 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/events.d/uploader_event.conf
 
 %changelog
+* Thu Nov 01 2012 Jakub Filak <jfilak@redhat.com> 2.0.18-1
+- reporter-bz: tighten up checking that BZ server gave us its version; fix recently broken settings parsing
+- reporter-bz: make selinux-policy special case controllable from config file
+- reporter-bz: if we create a new bug but cross-version dup exists, add a note
+- reporter-bz: make rhbz_search_duphash static, use it more widely
+
 * Wed Oct 24 2012 Jakub Filak <jfilak@redhat.com> 2.0.17-1
 - update CWD after stealing of a dump directory
 - get product/version from system configuration
