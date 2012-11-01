@@ -53,7 +53,7 @@
  * 2. 'Version-Release number of selected component' is FILENAME_PACKAGE
  * 3. 'Additional info' is a concatenation of files listed in ADDITIONAL_INFO_FILES_LIST
  * 3.1 backtrace is also present in 'Additional info'
- *     - if has size lower than CD_TEXT_ATT_SIZE_BZ then the bactrace is inlined
+ *     - if has size lower than CD_TEXT_ATT_SIZE_BZ then the backtrace is inlined
  *     - otherwise preview of crashed thread stack trace is created
  * 4. Attached files are the ONLY files which ARE NOT present in g_not_attached_files
  *    As you can see g_not_attached_files consist from some hardcoded files and
@@ -67,8 +67,7 @@
     FILENAME_KERNEL,\
     FILENAME_CRASH_FUNCTION,\
     FILENAME_CMDLINE,\
-    FILENAME_TAINTED_LONG, \
-    FILENAME_DESCRIPTION
+    FILENAME_TAINTED_LONG
 
 /* Items we want to use in additional info */
 static const char *const g_additional_info_files[] = {
@@ -690,7 +689,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
 
     char *bz_dsc = make_description(problem_data, (char**)g_additional_info_files,
                                     CD_TEXT_ATT_SIZE_BZ, MAKEDESC_SHOW_MULTILINE | MAKEDESC_WHITELIST);
-    strbuf_append_strf(tmp_full_dsc, "Additional info:\nlibreport version: "VERSION"\n%s\n", bz_dsc);
+    strbuf_append_strf(tmp_full_dsc, "Additional info:\nlibreport_version: "VERSION"\n%s\n", bz_dsc);
     free(bz_dsc);
 
     char *backtrace = rhbz_get_backtrace_info(problem_data, CD_TEXT_ATT_SIZE_BZ);
@@ -853,17 +852,16 @@ int rhbz_attach_files(struct abrt_xmlrpc *ax, const char *bug_id,
     const char *analyzer = problem_data_get_content_or_NULL(problem_data,
                                                             FILENAME_ANALYZER);
     /* Do not attach anything if analyzer is Kerneloops */
-    if (strcmp(analyzer, "Kerneloops") == 0)
+    if (analyzer && strcmp(analyzer, "Kerneloops") == 0)
         return 0;
 
     GHashTableIter iter;
+    g_hash_table_iter_init(&iter, problem_data);
     char *name;
     struct problem_item *value;
-
-    g_hash_table_iter_init(&iter, problem_data);
     while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
-         /* The not attached list contains files that are used in the description or
+        /* The not attached list contains files that are used in the description or
          * in the bug fields and the files which nobody is interested in.
          */
         if (is_in_string_list(name, (char**)g_not_attached_files))

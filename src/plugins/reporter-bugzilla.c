@@ -290,7 +290,6 @@ int main(int argc, char **argv)
     }
 
     /* Create new bug in Bugzilla */
-    int bug_id = 0;
 
     if (!(opts & OPT_f))
     {
@@ -335,6 +334,8 @@ int main(int argc, char **argv)
     char *product = NULL;
     char *version = NULL;
     parse_release_for_bz(rhbz.b_os_release, &product, &version);
+
+    int bug_id = 0;
 
     /* If REMOTE_RESULT contains "DUPLICATE 12345", we consider it a dup of 12345
      * and won't search on bz server.
@@ -411,7 +412,7 @@ int main(int argc, char **argv)
             log(_("Creating a new bug"));
 
             char *aux_msg = crossver_id < 0 ? NULL :
-                    xasprintf("\nPotential duplicate bug: %u\n", crossver_id);
+                    xasprintf("\nPotential duplicate: bug %u\n", crossver_id);
             int new_id = rhbz_new_bug(client, problem_data, rhbz.b_os_release,
                     aux_msg,
                     group);
