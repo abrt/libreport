@@ -103,6 +103,15 @@
    special value "/" no prompt is required.
 */
 
+enum {
+    /* Find and immediately return collection */
+    GET_COLLECTION_FLAGS_NONE = 0,
+    /* Return unlocked collection or NULL. */
+    GET_COLLECTION_UNLOCK     = 1 << 0,
+    /* If collection doesn't exist, create a new one return it. */
+    GET_COLLECTION_CREATE     = 1 << 1,
+};
+
 enum secrets_service_state
 {
     /* intial state */
@@ -1060,7 +1069,7 @@ static bool secrets_collection_search_one_item(const struct secrets_object *coll
  * @return on error false
  */
 static bool get_default_collection(struct secrets_object **collection,
-                                   bool create,
+                                   int flags,
                                    bool *dismissed)
 {
     bool succ = secrets_service_read_alias(SECRETS_COLLECTION_ALIAS, collection);
@@ -1069,7 +1078,7 @@ static bool get_default_collection(struct secrets_object **collection,
         return false;
 
     /* ReadAlias was successful*/
-    if (*collection)
+    if (*collection != NULL && flags & GET_COLLECTION_UNLOCK)
     {   /* the default collection was found */
         succ = secrets_service_unlock_object(*collection, dismissed);
 
@@ -1079,7 +1088,8 @@ static bool get_default_collection(struct secrets_object **collection,
             *collection = NULL;
         }
     }
-    else if (create)
+
+    if (*collection == NULL && flags & GET_COLLECTION_CREATE)
     {   /* the default collection wasn't found */
         /* a method caller requires to create a new collection */
         /* if the default collection doesn't exist */
@@ -1232,23 +1242,20 @@ static bool find_item_by_event_name(const struct secrets_object *collection,
 static void load_settings(GDBusProxy *session, struct secrets_object *collection,
                           const char *event_name, event_config_t *ec)
 {
-    /* Locked property is not supported by ksecrets */
-    /* thus we have to perform Unlock for each call of load settings */
-    /* because a collection can be locked by the service at anytime */
+    struct secrets_object *item = NULL;
     bool dismissed = false;
-    bool succ = secrets_service_unlock_object(collection, &dismissed);
-
-    if (succ && !dismissed)
+    VERB2 log("looking for event config : '%s'", event_name);
+    bool succ = find_item_by_event_name(collection, event_name, &item);
+    if (succ && item)
     {
-        struct secrets_object *item = NULL;
-        succ = find_item_by_event_name(collection, event_name, &item);
-        if (succ && item)
+        succ = secrets_service_unlock_object(item, &dismissed);
+        if (succ && !dismissed)
         {
             VERB2 log("loading event config : '%s'", event_name);
             load_event_options_from_item(session, ec->options, item);
-            secrets_object_delete(item);
-            item = NULL;
         }
+        secrets_object_delete(item);
+        item = NULL;
     }
 
     if (!succ || dismissed)
@@ -1335,7 +1342,8 @@ static void save_event_config(const char *event_name,
      *      Set the service state to unavailable in order to not bother user with error messages anymore
      */
     struct secrets_object *collection = NULL;
-    bool succ = get_default_collection(&collection, true, &dismissed);
+    const int flags = GET_COLLECTION_UNLOCK | GET_COLLECTION_CREATE;
+    bool succ = get_default_collection(&collection, flags, &dismissed);
 
     if (collection)
     {
@@ -1397,7 +1405,8 @@ void load_event_config_data_from_user_storage(GHashTable *event_config_list)
          *      dismissed variable holds FALSE - no prompt no dismissed
          *      Set the service state to unavailable in order to not bother user with error messages anymore
          */
-        const bool succ = get_default_collection(&collection, false, &dismissed);
+        const int flags = GET_COLLECTION_FLAGS_NONE;
+        const bool succ = get_default_collection(&collection, flags, &dismissed);
 
         if (collection)
         {
