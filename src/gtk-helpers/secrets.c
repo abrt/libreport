@@ -1023,7 +1023,7 @@ static bool secrets_collection_search_one_item(const struct secrets_object *coll
     for (gsize child = 0; !*item && child < n_results; ++child)
     {   /*               ^^^^^^ break if the item object was created */
 
-        GVariant *const paths = g_variant_get_child_value(resp, 0);
+        GVariant *const paths = g_variant_get_child_value(resp, child);
 
         /* NULL terminated list of path */
         const gchar *const *item_path_vector = g_variant_get_objv(paths, NULL);
