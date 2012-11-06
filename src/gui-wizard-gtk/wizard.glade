@@ -159,11 +159,9 @@
         <child>
           <object class="GtkCheckButton" id="cb_no_comment">
             <property name="label" translatable="yes">I don't know what caused this problem</property>
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
-            <property name="use_action_appearance">False</property>
             <property name="xalign">0</property>
             <property name="draw_indicator">True</property>
           </object>
@@ -205,11 +203,9 @@
             <child>
               <object class="GtkButton" id="button_cfg1">
                 <property name="label">gtk-preferences</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">True</property>
                 <property name="image_position">right</property>
@@ -401,7 +397,7 @@
               </object>
               <packing>
                 <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
               </packing>
             </child>
             <child>
@@ -445,11 +441,9 @@
             <child>
               <object class="GtkButton" id="btn_add_file">
                 <property name="label" translatable="yes">Attach a file</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -470,12 +464,10 @@
         <child>
           <object class="GtkCheckButton" id="cb_approve_bt">
             <property name="label" translatable="yes">I reviewed the data and _agree with submitting it</property>
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
             <property name="tooltip_text" translatable="yes">If you are reporting to a remote server, make sure you removed all private data (such as usernames and passwords). Backtrace, command line, environment variables are the typical items in need of examining.</property>
-            <property name="use_action_appearance">False</property>
             <property name="use_underline">True</property>
             <property name="xalign">0</property>
             <property name="draw_indicator">True</property>
@@ -515,6 +507,34 @@
               </packing>
             </child>
             <child>
+              <object class="GtkImage" id="img_process_ok">
+                <property name="can_focus">False</property>
+                <property name="no_show_all">True</property>
+                <property name="stock">gtk-apply</property>
+                <property name="icon-size">1</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="padding">5</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="img_process_fail">
+                <property name="can_focus">False</property>
+                <property name="no_show_all">True</property>
+                <property name="stock">gtk-dialog-error</property>
+                <property name="icon-size">1</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="padding">5</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkLabel" id="lbl_event_log">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -528,7 +548,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">1</property>
+                <property name="position">3</property>
               </packing>
             </child>
           </object>

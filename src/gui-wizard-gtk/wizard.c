@@ -99,6 +99,8 @@ static gboolean g_warning_issued;
 static GtkEventBox *g_ev_search_up;
 static GtkEventBox *g_ev_search_down;
 static GtkSpinner *g_spinner_event_log;
+static GtkImage *g_img_process_fail;
+static GtkImage *g_img_process_ok;
 
 static GtkWidget *g_top_most_window;
 
@@ -1753,6 +1755,11 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 
         /* Hide spinner and stop btn */
         gtk_widget_hide(GTK_WIDGET(g_spinner_event_log));
+        if (retval != 0)
+            gtk_widget_show(GTK_WIDGET(g_img_process_fail));
+        else
+            gtk_widget_show(GTK_WIDGET(g_img_process_ok));
+
         gtk_widget_hide(g_btn_stop);
         /* Enable (un-gray out) navigation buttons */
         gtk_widget_set_sensitive(g_btn_close, true);
@@ -1899,6 +1906,10 @@ static void start_event_run(const char *event_name,
     char *msg = xasprintf("--- Running %s ---\n", event_name);
     append_to_textview(evd->tv_log, msg);
     free(msg);
+
+    /* don't bother testing if they are visible, this is faster */
+    gtk_widget_hide(GTK_WIDGET(g_img_process_fail));
+    gtk_widget_hide(GTK_WIDGET(g_img_process_ok));
 
     gtk_widget_show(GTK_WIDGET(g_spinner_event_log));
     gtk_widget_show(g_btn_stop);
@@ -2884,6 +2895,8 @@ static void add_pages(void)
     g_ev_search_up         = GTK_EVENT_BOX(    gtk_builder_get_object(g_builder, "ev_search_up"));
     g_ev_search_down       = GTK_EVENT_BOX(    gtk_builder_get_object(g_builder, "ev_search_down"));
     g_spinner_event_log    = GTK_SPINNER(      gtk_builder_get_object(g_builder, "spinner_event_log"));
+    g_img_process_ok       = GTK_IMAGE(      gtk_builder_get_object(g_builder, "img_process_ok"));
+    g_img_process_fail     = GTK_IMAGE(      gtk_builder_get_object(g_builder, "img_process_fail"));
 
     gtk_widget_set_no_show_all(GTK_WIDGET(g_spinner_event_log), true);
 
