@@ -128,6 +128,9 @@ struct secrets_object
     /* http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-properties */
     GDBusProxy *property_proxy;
     const gchar *interface_name;
+
+    /* various data */
+    void *tag;
 };
 
 /* DBus session bus connection */
@@ -1153,7 +1156,7 @@ static void load_event_options_from_item(GDBusProxy *session,
             /* when no secret value is assigned to an item */
             /* then let you user known that the error occurred */
             if (is_dbus_remote_error(error, GNOME_KEYRING_NOT_HAVING_SECRET_ERROR))
-                error_msg(_("can't get secret value: %s"), error->message);
+                error_msg(_("can't get secret value of '%s': %s"), (const char *)item->tag, error->message);
             else
             {
                 VERB1 log("can't get secret value: %s", error->message);
@@ -1251,7 +1254,8 @@ static void load_settings(GDBusProxy *session, struct secrets_object *collection
         succ = secrets_service_unlock_object(item, &dismissed);
         if (succ && !dismissed)
         {
-            VERB2 log("loading event config : '%s'", event_name);
+            VERB1 log("loading event config : '%s'", event_name);
+            item->tag = (void *)event_name;
             load_event_options_from_item(session, ec->options, item);
         }
         secrets_object_delete(item);
