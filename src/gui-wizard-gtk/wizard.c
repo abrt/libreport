@@ -2293,7 +2293,7 @@ static char *get_next_processed_event(GList **events_list)
             *events_list = g_list_concat(expanded_list, *events_list);
         else
         {
-            VERB2 log("No event was expanded, will continue continue with the next one.");
+            VERB2 log("No event was expanded, will continue with the next one.");
             /* no expanded event try the next event */
             return get_next_processed_event(events_list);
         }
