@@ -2412,6 +2412,10 @@ static char *setup_next_processed_event(GList **events_list)
     {
         /* No next event, go to progress page and finish */
         gtk_label_set_text(g_lbl_event_log, _("Processing finished."));
+        /* we don't know the result of the previous event here
+         * so at least hide the spinner, because we're obviously finished
+        */
+        gtk_widget_hide(GTK_WIDGET(g_spinner_event_log));
         update_gui_on_finished_reporting();
         return NULL;
     }
