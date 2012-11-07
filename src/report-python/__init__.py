@@ -153,7 +153,7 @@ def createAlertSignature(component, hashmarkername, hashvalue, summary, alertSig
     pd.add("hashmarkername", hashmarkername)
     pd.add("duphash", hashvalue)
     pd.add("reason", summary)
-    pd.add("comment", alertSignature)
+    pd.add("description", alertSignature)
     if executable:
         pd.add("executable", executable)
     pd.add_basics()
@@ -163,7 +163,7 @@ def createAlertSignature(component, hashmarkername, hashvalue, summary, alertSig
 # used in anaconda / python-meh
 def createPythonUnhandledExceptionSignature(**kwargs):
     mandatory_args = ["component", "hashmarkername", "duphash", "reason",
-                    "comment"]
+                    "description"]
 
     for arg in mandatory_args:
         if arg not in kwargs:

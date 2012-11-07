@@ -67,7 +67,8 @@
     FILENAME_KERNEL,\
     FILENAME_CRASH_FUNCTION,\
     FILENAME_CMDLINE,\
-    FILENAME_TAINTED_LONG
+    FILENAME_TAINTED_LONG, \
+    FILENAME_DESCRIPTION
 
 /* Items we want to use in additional info */
 static const char *const g_additional_info_files[] = {
