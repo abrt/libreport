@@ -29,7 +29,6 @@ event_option_t *new_event_option(void)
 event_config_t *new_event_config(void)
 {
     event_config_t *e = xzalloc(sizeof(event_config_t));
-    e->ec_minimal_rating = 3;
     return e;
 }
 
