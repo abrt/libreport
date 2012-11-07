@@ -508,13 +508,13 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
                     key_end[0] = ' '; /* restore original message, not sure if it is necessary */
                 }
 
-                response = xstrdup(ans ? "yes" : "no");
+                response = xstrdup(ans ? _("y") : _("N"));
             }
             /* wait for y/N response on the same line */
             else if (prefixcmp(msg, REPORT_PREFIX_ASK_YES_NO) == 0)
             {
                 const bool ans = state->ask_yes_no_callback(msg + sizeof(REPORT_PREFIX_ASK_YES_NO) - 1, state->interaction_param);
-                response = xstrdup(ans ? "yes" : "no");
+                response = xstrdup(ans ? _("y") : _("N"));
             }
             /* wait for the string on the same line */
             else if (prefixcmp(msg, REPORT_PREFIX_ASK) == 0)
@@ -694,13 +694,15 @@ char *run_event_stdio_ask(const char *msg, void *param)
 
 int run_event_stdio_ask_yes_no(const char *msg, void *param)
 {
-    printf("%s [%s/%s] ", msg, _("y"), _("N"));
+    const char *yes = _("y");
+    const char *no = _("N");
+    printf("%s [%s/%s] ", msg, yes, no);
     fflush(stdout);
     char buf[16];
     if (!fgets(buf, sizeof(buf), stdin))
         buf[0] = '\0';
 
-    return buf[0] == 'y' && (buf[1] == '\n' || buf[1] == '\0');
+    return strncmp(yes, buf, strlen(yes)) == 0;
 }
 
 int run_event_stdio_ask_yes_no_yesforever(const char *msg, const char *key, void *param)
@@ -711,7 +713,10 @@ int run_event_stdio_ask_yes_no_yesforever(const char *msg, const char *key, void
         /* Do you want to be asked? -> No, I don't */
         return 1;
 
-    printf("%s [%s/%s/%s] ", msg, _("y"), _("N"), _("f"));
+    const char *yes = _("y");
+    const char *no = _("N");
+    const char *forever = _("f");
+    printf("%s [%s/%s/%s] ", msg, yes, no, forever);
     fflush(stdout);
     char buf[16];
     if (!fgets(buf, sizeof(buf), stdin))
@@ -723,9 +728,9 @@ int run_event_stdio_ask_yes_no_yesforever(const char *msg, const char *key, void
 
     /* Do you want to be asked for next time? */
     /* 'f' means 'yes forever' and it means 'no, dont' ask me again' */
-    set_user_setting(key, strcmp(_("f"), buf) == 0 ? "no" : "yes");
+    set_user_setting(key, strncmp(forever, buf, strlen(forever)) == 0 ? "no" : "yes");
 
-    return strcmp(_("f"), buf) == 0 || strcmp(_("y"), buf) == 0;
+    return strncmp(forever, buf, strlen(forever)) == 0 || strncmp(yes, buf, strlen(yes)) == 0;
 }
 
 char *run_event_stdio_ask_password(const char *msg, void *param)
