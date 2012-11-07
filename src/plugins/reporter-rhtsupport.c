@@ -99,7 +99,7 @@ int main(int argc, char **argv)
     {
         const char *fn = (char *)conf_file->data;
         VERB1 log("Loading settings from '%s'", fn);
-        load_conf_file(fn, settings, /*skip key w/o values:*/ true);
+        load_conf_file(fn, settings, /*skip key w/o values:*/ false);
         VERB3 log("Loaded '%s'", fn);
         conf_file = g_list_remove(conf_file, fn);
     }

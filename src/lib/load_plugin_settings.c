@@ -21,12 +21,12 @@
 /* Returns false if open failed, else returns true.
  * TODO: better error detection?
  */
-bool load_conf_file(const char *pPath, map_string_h *settings, bool skipKeysWithoutValue)
+bool load_conf_file(const char *path, map_string_h *settings, bool skipKeysWithoutValue)
 {
     FILE *fp = stdin;
-    if (strcmp(pPath, "-") != 0)
+    if (strcmp(path, "-") != 0)
     {
-        fp = fopen(pPath, "r");
+        fp = fopen(path, "r");
         if (!fp)
             return false;
     }
@@ -85,10 +85,6 @@ bool load_conf_file(const char *pPath, map_string_h *settings, bool skipKeysWith
         }
 
         *dst = '\0'; /* terminate value */
-
-        /* Skip lines with empty key. */
-        if (line[0] == '\0')
-            goto free_line;
 
         if (skipKeysWithoutValue && value[0] == '\0')
             goto free_line;

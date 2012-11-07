@@ -21,7 +21,6 @@
 #include "abrt_xmlrpc.h"
 #include "rhbz.h"
 
-#define XML_RPC_SUFFIX "/xmlrpc.cgi"
 
 struct bugzilla_struct {
     const char *b_login;
@@ -47,7 +46,7 @@ static void set_settings(struct bugzilla_struct *b, map_string_h *settings)
     b->b_bugzilla_url = environ ? environ : get_map_string_item_or_empty(settings, "BugzillaURL");
     if (!b->b_bugzilla_url[0])
         b->b_bugzilla_url = "https://bugzilla.redhat.com";
-    b->b_bugzilla_xmlrpc = xasprintf("%s"XML_RPC_SUFFIX, b->b_bugzilla_url);
+    b->b_bugzilla_xmlrpc = concat_path_file(b->b_bugzilla_url, "xmlrpc.cgi");
 
     environ = getenv("Bugzilla_OSRelease");
     b->b_os_release = environ ? environ : get_map_string_item_or_NULL(settings, "OSRelease");
@@ -181,7 +180,7 @@ int main(int argc, char **argv)
         {
             char *fn = (char *)conf_file->data;
             VERB1 log("Loading settings from '%s'", fn);
-            load_conf_file(fn, settings, /*skip key w/o values:*/ true);
+            load_conf_file(fn, settings, /*skip key w/o values:*/ false);
             VERB3 log("Loaded '%s'", fn);
             conf_file = g_list_delete_link(conf_file, conf_file);
         }

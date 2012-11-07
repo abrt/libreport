@@ -180,7 +180,7 @@ int main(int argc, char **argv)
     export_abrt_envvars(0);
 
     map_string_h *settings = new_map_string();
-    load_conf_file(conf_file, settings, /*skip key w/o values:*/ true);
+    load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 
     create_and_send_email(dump_dir_name, settings, /*notify_only*/(opts & OPT_n));
 

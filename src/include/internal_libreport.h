@@ -616,6 +616,8 @@ void parse_release_for_rhts(const char *pRelease, char **product, char **version
  * @param skipKeysWithoutValue
  *  If true, lines in format "key=" (without value) are skipped.
  *  Otherwise empty value "" is inserted into pSettings.
+ *  TODO: all callers pass "false" here, drop this parameter
+ *  in mid-2013 if no user for it is identified.
  * @return if it success it returns true, otherwise it returns false.
  */
 #define load_conf_file libreport_load_conf_file

@@ -310,7 +310,7 @@ int main(int argc, char **argv)
     if (url)
         g_hash_table_replace(settings, xstrdup("URL"), xstrdup(url));
     if (conf_file)
-        load_conf_file(conf_file, settings, /*skip key w/o values:*/ true);
+        load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 
     int result = create_and_upload_archive(dump_dir_name, settings);
 
