@@ -21,6 +21,11 @@
 #include "client.h"
 #include "internal_libreport.h"
 
+/*
+ * Forces run_event_stdio_* functions to work in slave mode.
+ */
+#define FORWARD_REPORT_REQUEST_PTR ((void *)(uintptr_t)2)
+
 struct run_event_state *new_run_event_state()
 {
     struct run_event_state *state = xzalloc(sizeof(struct run_event_state));
@@ -46,6 +51,18 @@ void free_run_event_state(struct run_event_state *state)
     }
 }
 
+void make_run_event_state_forwarding(struct run_event_state *state)
+{
+    /* reset callbacks, just to be sure */
+    state->alert_callback = run_event_stdio_alert;
+    state->ask_callback = run_event_stdio_ask;
+    state->ask_yes_no_callback = run_event_stdio_ask_yes_no;
+    state->ask_yes_no_yesforever_callback= run_event_stdio_ask_yes_no_yesforever;
+    state->ask_password_callback = run_event_stdio_ask_password;
+
+    /* notify default callbacks */
+    state->interaction_param = FORWARD_REPORT_REQUEST_PTR;
+}
 
 /* Asynchronous command execution */
 
@@ -675,13 +692,21 @@ char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const
 
 void run_event_stdio_alert(const char *msg, void *param)
 {
-    printf("%s\n", msg);
+    if (param == FORWARD_REPORT_REQUEST_PTR)
+        printf(REPORT_PREFIX_ALERT "%s\n", msg);
+    else
+        printf("%s\n", msg);
+
     fflush(stdout);
 }
 
-char *run_event_stdio_ask(const char *msg, void *param)
+static char *internal_ask(const char *msg, const char *prefix)
 {
-    printf("%s ", msg);
+    if (prefix == NULL)
+        printf("%s ", msg);
+    else
+        printf("%s%s\n", prefix, msg);
+
     fflush(stdout);
     char buf[256];
     if (!fgets(buf, sizeof(buf), stdin))
@@ -692,11 +717,21 @@ char *run_event_stdio_ask(const char *msg, void *param)
     return xstrdup(buf);
 }
 
+char *run_event_stdio_ask(const char *msg, void *param)
+{
+    return internal_ask(msg, param == FORWARD_REPORT_REQUEST_PTR ? REPORT_PREFIX_ASK : NULL);
+}
+
 int run_event_stdio_ask_yes_no(const char *msg, void *param)
 {
     const char *yes = _("y");
     const char *no = _("N");
-    printf("%s [%s/%s] ", msg, yes, no);
+
+    if (param == FORWARD_REPORT_REQUEST_PTR)
+        printf(REPORT_PREFIX_ASK_YES_NO "%s\n", msg);
+    else
+        printf("%s [%s/%s] ", msg, yes, no);
+
     fflush(stdout);
     char buf[16];
     if (!fgets(buf, sizeof(buf), stdin))
@@ -707,16 +742,23 @@ int run_event_stdio_ask_yes_no(const char *msg, void *param)
 
 int run_event_stdio_ask_yes_no_yesforever(const char *msg, const char *key, void *param)
 {
-    const char *ask_result = get_user_setting(key);
-
-    if (ask_result && string_to_bool(ask_result) == false)
-        /* Do you want to be asked? -> No, I don't */
-        return 1;
-
     const char *yes = _("y");
     const char *no = _("N");
     const char *forever = _("f");
-    printf("%s [%s/%s/%s] ", msg, yes, no, forever);
+
+    if (param == FORWARD_REPORT_REQUEST_PTR)
+        printf(REPORT_PREFIX_ASK_YES_NO_YESFOREVER "%s %s\n", key, msg);
+    else
+    {
+        const char *ask_result = get_user_setting(key);
+
+        if (ask_result && string_to_bool(ask_result) == false)
+            /* Do you want to be asked? -> No, I don't */
+            return 1;
+
+        printf("%s [%s/%s/%s] ", msg, yes, no, forever);
+    }
+
     fflush(stdout);
     char buf[16];
     if (!fgets(buf, sizeof(buf), stdin))
@@ -726,9 +768,12 @@ int run_event_stdio_ask_yes_no_yesforever(const char *msg, const char *key, void
     if (endln)
         endln[0] = '\0';
 
-    /* Do you want to be asked for next time? */
-    /* 'f' means 'yes forever' and it means 'no, dont' ask me again' */
-    set_user_setting(key, strncmp(forever, buf, strlen(forever)) == 0 ? "no" : "yes");
+    if (param != FORWARD_REPORT_REQUEST_PTR)
+    {
+        /* Do you want to be asked for next time? */
+        /* 'f' means 'yes forever' and it means 'no, dont' ask me again' */
+        set_user_setting(key, strncmp(forever, buf, strlen(forever)) == 0 ? "no" : "yes");
+    }
 
     return strncmp(forever, buf, strlen(forever)) == 0 || strncmp(yes, buf, strlen(yes)) == 0;
 }
@@ -736,7 +781,8 @@ int run_event_stdio_ask_yes_no_yesforever(const char *msg, const char *key, void
 char *run_event_stdio_ask_password(const char *msg, void *param)
 {
     const bool changed = set_echo(false);
-    char *const password = run_event_stdio_ask(msg, param);
+    char *const password = internal_ask(msg, param == FORWARD_REPORT_REQUEST_PTR
+                                                ? REPORT_PREFIX_ASK_PASSWORD : NULL);
 
     if (changed)
         set_echo(true);

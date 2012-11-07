@@ -126,6 +126,13 @@ struct run_event_state {
 struct run_event_state *new_run_event_state(void);
 void free_run_event_state(struct run_event_state *state);
 
+/*
+ * Configure callbacks to forward requests
+ *
+ * @param state A valid run event state pointer
+ */
+void make_run_event_state_forwarding(struct run_event_state *state);
+
 /* Asynchronous command execution */
 
 /* Returns 0 if no commands found for this dump_dir_name+event, else >0 */
@@ -171,7 +178,7 @@ char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const
  * Prints the msg param on stdout
  *
  * @param msg a printed message
- * @param param UNUSED
+ * @param param ONLY NULL IS ALLOWED; other values are intended for internal use only
  */
 void run_event_stdio_alert(const char *msg, void *param);
 
@@ -179,7 +186,7 @@ void run_event_stdio_alert(const char *msg, void *param);
  * Prints the msg param on stdout and reads a response from stdin
  *
  * @param msg a printed message
- * @param param UNUSED
+ * @param param ONLY NULL IS ALLOWED; other values are intended for internal use only
  * @return a malloced string with response, an empty string on error or no response
  */
 char *run_event_stdio_ask(const char *msg, void *param);
@@ -188,7 +195,7 @@ char *run_event_stdio_ask(const char *msg, void *param);
  * Prints the msg param on stdout and reads a response from stdin
  *
  * @param msg a printed message
- * @param param UNUSED
+ * @param param ONLY NULL IS ALLOWED; other values are intended for internal use only
  * @return 0 if user's answer is 'no', otherwise non 0 value
  */
 int run_event_stdio_ask_yes_no(const char *msg, void *param);
@@ -202,7 +209,7 @@ int run_event_stdio_ask_yes_no(const char *msg, void *param);
  *
  * @param msg a printed message
  * @param key a key under which the yes forever answer is stored
- * @param param UNUSED
+ * @param param ONLY NULL IS ALLOWED; other values are intended for internal use only
  * @return 0 if user's answer is 'no', otherwise non 0 value
  */
 int run_event_stdio_ask_yes_no_yesforever(const char *msg, const char *key, void *param);
@@ -211,7 +218,7 @@ int run_event_stdio_ask_yes_no_yesforever(const char *msg, const char *key, void
  * Prints the msg param on stdout and reads a response from stdin
  *
  * @param msg a printed message
- * @param param UNUSED
+ * @param param ONLY NULL IS ALLOWED; other values are intended for internal use only
  * @return a malloced string with response, an empty string on error or no response
  */
 char *run_event_stdio_ask_password(const char *msg, void *param);
