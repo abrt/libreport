@@ -100,7 +100,7 @@ static void report_to_kerneloops(
     const char *env = getenv("KerneloopsReporter_SubmitURL");
     const char *submitURL = (env ? env : get_map_string_item_or_empty(settings, "SubmitURL"));
     if (!submitURL[0])
-        submitURL = "http://submit.kerneloops.org/submitoops.php";
+        submitURL = "http://oops.kernel.org/submitoops.php";
 
     log(_("Submitting oops report to %s"), submitURL);
 
