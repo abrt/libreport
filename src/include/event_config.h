@@ -68,6 +68,7 @@ void free_event_option(event_option_t *p);
 //structure to hold the option data
 typedef struct
 {
+    char *name;     //the event name (from it's filename)
     char *screen_name; //ui friendly name of the event: "Bugzilla" "RedHat Support Upload"
     char *description; // "Report to..."/"Save to file". Should be one sentence, not long
     char *long_descr;  // Long(er) explanation, if needed

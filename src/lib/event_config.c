@@ -83,33 +83,22 @@ event_option_t *get_event_option_from_list(const char *name, GList *options)
 
 static void load_config_files(const char *dir_path)
 {
-    DIR *dir;
-    struct dirent *dent;
 
-    /* Load .conf files */
-    dir = opendir(dir_path);
-    if (!dir)
-        return;
-    while ((dent = readdir(dir)) != NULL)
+    GList *conf_files = get_file_list(dir_path, "conf");
+    while(conf_files != NULL)
     {
-        char *ext = strrchr(dent->d_name, '.');
-        if (!ext)
-            continue;
-        if (strcmp(ext + 1, "conf") != 0)
-            continue;
+        file_obj_t *file = (file_obj_t *)conf_files->data;
+        char *fullpath = file->fullpath;
+        char *filename = file->filename;
 
-        char *fullname = concat_path_file(dir_path, dent->d_name);
-
-        *ext = '\0';
-        event_config_t *event_config = get_event_config(dent->d_name);
+        event_config_t *event_config = get_event_config(filename);
         bool new_config = (!event_config);
         if (new_config)
             event_config = new_event_config();
 
         map_string_h *keys_and_values = new_map_string();
 
-        load_conf_file(fullname, keys_and_values, /*skipKeysWithoutValue:*/ false);
-        free(fullname);
+        load_conf_file(fullpath, keys_and_values, /*skipKeysWithoutValue:*/ false);
 
         /* Insert or replace every key/value from keys_and_values to event_config->option */
         GHashTableIter iter;
@@ -141,9 +130,11 @@ static void load_config_files(const char *dir_path)
         free_map_string(keys_and_values);
 
         if (new_config)
-            g_hash_table_replace(g_event_config_list, xstrdup(dent->d_name), event_config);
+            g_hash_table_replace(g_event_config_list, xstrdup(filename), event_config);
+
+        conf_files = g_list_next(conf_files);
     }
-    closedir(dir);
+    free_file_list(conf_files);
 }
 
 /* (Re)loads data from /etc/abrt/events/foo.{xml,conf} and $XDG_CACHE_HOME/abrt/events/foo.conf */
@@ -166,58 +157,24 @@ void load_event_config_data(void)
                 /*value_destroy_func:*/ free
         );
 
-    DIR *dir;
-    struct dirent *dent;
-
-    /* Load .xml files */
-    dir = opendir(EVENTS_DIR);
-    if (!dir)
-        return;
-    while ((dent = readdir(dir)) != NULL)
+    GList *event_files = get_file_list(EVENTS_DIR, "xml");
+    while (event_files)
     {
-        char *ext = strrchr(dent->d_name, '.');
-        if (!ext)
-            continue;
-        if (strcmp(ext + 1, "xml") != 0)
-            continue;
+        file_obj_t *file = (file_obj_t *)event_files->data;
 
-        char *fullname = concat_path_file(EVENTS_DIR, dent->d_name);
-        *ext = '\0';
-
-        struct stat buf;
-        if (0 != lstat(fullname, &buf))
-            continue;
-        if (S_ISLNK(buf.st_mode))
-        {
-            GError *error = NULL;
-            gchar *link = g_file_read_link(fullname, &error);
-            if (error != NULL)
-                error_msg_and_die("Error reading symlink '%s': %s", fullname, error->message);
-
-            gchar *target = g_path_get_basename(link);
-            char *ext = strrchr(target, '.');
-            if (!ext || 0 != strcmp(ext + 1, "xml"))
-                error_msg_and_die("Invalid event symlink '%s': expected it to"
-                                  " point to another xml file", fullname);
-            *ext = '\0';
-            g_hash_table_replace(g_event_config_symlinks, xstrdup(dent->d_name), target);
-            g_free(link);
-            /* don't free target, it is owned by the hash table now */
-            continue;
-        }
-
-        event_config_t *event_config = get_event_config(dent->d_name);
+        event_config_t *event_config = get_event_config(file->filename);
         bool new_config = (!event_config);
         if (new_config)
-            event_config = new_event_config();
+           event_config = new_event_config();
 
-        load_event_description_from_file(event_config, fullname);
-        free(fullname);
+        load_event_description_from_file(event_config, file->fullpath);
 
         if (new_config)
-            g_hash_table_replace(g_event_config_list, xstrdup(dent->d_name), event_config);
+            g_hash_table_replace(g_event_config_list, xstrdup(file->filename), event_config);
+
+        event_files = g_list_next(event_files);
     }
-    closedir(dir);
+    free_file_list(event_files);
 
     load_config_files(EVENTS_DIR);
 

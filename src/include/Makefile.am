@@ -8,5 +8,6 @@ libreport_include_HEADERS = \
     run_event.h \
     libreport_curl.h \
     \
+    file_obj.h \
     internal_libreport.h \
     internal_abrt_dbus.h
