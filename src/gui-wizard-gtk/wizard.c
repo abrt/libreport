@@ -551,29 +551,10 @@ static void open_browse_if_link(GtkWidget *text_view, GtkTextIter *iter)
 
         if (url != 0)
         {
-            pid_t pid = fork();
-            if (pid < 0)
-                perror_msg("fork");
-            else
-            {
-                if (pid == 0)
-                {
-                    /* child */
-                    /* double fork to avoid GUI zombies */
-                    pid_t grand_child = vfork();
-                    if (grand_child != 0)
-                    {
-                        if (grand_child < 0) perror_msg("vfork");
-                        exit(0);
-                    }
+            GError *error = NULL;
+            if (!gtk_show_uri(/* use default screen */ NULL, url, GDK_CURRENT_TIME, &error))
+                error_msg("Can't open url '%s': %s", url, error->message);
 
-                    /* grand child */
-                    execlp("gnome-open", "gnome-open", url, NULL);
-                    execlp("xdg-open", "xdg-open", url, NULL);
-                    exit(1);
-                }
-                safe_waitpid(pid, /* status */ NULL, /* options */ 0);
-            }
             break;
         }
     }
