@@ -97,6 +97,7 @@ GList* load_bzrep_conf_file(const char *path)
         /* We are reusing line buffer to form temporary
          * "key\0values\0..." in its beginning
          */
+        bool summary_line = false;
         char *value = NULL;
         char *src;
         char *dst;
@@ -108,6 +109,9 @@ GList* load_bzrep_conf_file(const char *path)
             {
                 *dst++ = '\0'; /* terminate key */
                 value = dst; /* remember where value starts */
+                summary_line = (strcmp(line, "%summary") == 0);
+                if (summary_line)
+                    break;
                 continue;
             }
             /* skip whitespace in value list */
@@ -120,9 +124,18 @@ GList* load_bzrep_conf_file(const char *path)
         if (!value)
             goto free_line;
 
-        *dst = '\0'; /* terminate value */
 
-        GList *item_list = split_string_on_char(value, ',');
+        GList *item_list;
+        if (summary_line)
+        {
+            /* %summary is special */
+            item_list = g_list_append(NULL, xstrdup(skip_whitespace(value)));
+        }
+        else
+        {
+            *dst = '\0'; /* terminate value */
+            item_list = split_string_on_char(value, ',');
+        }
 
         section_t *sec = xzalloc(sizeof(*sec));
         sec->name = xstrdup(line);
@@ -137,6 +150,120 @@ GList* load_bzrep_conf_file(const char *path)
         fclose(fp);
 
     return g_list_reverse(sections);
+}
+
+
+/* Summary generation */
+
+#define MAX_OPT_DEPTH 10
+static
+char *format_percented_string(const char *str, problem_data_t *pd)
+{
+    size_t old_pos[MAX_OPT_DEPTH] = { 0 };
+    int okay[MAX_OPT_DEPTH] = { 1 };
+    int opt_depth = 1;
+    struct strbuf *result = strbuf_new();
+
+    while (*str) {
+        switch (*str) {
+        default:
+            strbuf_append_char(result, *str);
+            str++;
+            break;
+        case '\\':
+            if (str[1])
+                str++;
+            strbuf_append_char(result, *str);
+            str++;
+            break;
+        case '[':
+            if (str[1] == '[' && opt_depth < MAX_OPT_DEPTH)
+            {
+                old_pos[opt_depth] = result->len;
+                okay[opt_depth] = 1;
+                opt_depth++;
+                str += 2;
+            } else {
+                strbuf_append_char(result, *str);
+                str++;
+            }
+            break;
+        case ']':
+            if (str[1] == ']' && opt_depth > 1)
+            {
+                opt_depth--;
+                if (!okay[opt_depth])
+                {
+                    result->len = old_pos[opt_depth];
+                    result->buf[result->len] = '\0';
+                }
+                str += 2;
+            } else {
+                strbuf_append_char(result, *str);
+                str++;
+            }
+            break;
+        case '%': ;
+            char *nextpercent = strchr(++str, '%');
+            if (!nextpercent)
+            {
+                error_msg("Unterminated %%element%%: '%s'", str - 1);
+                strbuf_free(result);
+                return NULL;
+            }
+
+            *nextpercent = '\0';
+            const problem_item *item = problem_data_get_item_or_NULL(pd, str);
+            *nextpercent = '%';
+
+            if (item && (item->flags & CD_FLAG_TXT))
+                strbuf_append_str(result, item->content);
+            else
+                okay[opt_depth - 1] = 0;
+            str = nextpercent + 1;
+            break;
+        }
+    }
+
+    if (opt_depth > 1)
+    {
+        error_msg("Unbalanced [[ ]] bracket");
+        strbuf_free(result);
+        return NULL;
+    }
+
+    if (!okay[0])
+    {
+        error_msg("Undefined variable outside of [[ ]] bracket");
+        strbuf_free(result);
+        return NULL;
+    }
+
+    return strbuf_free_nobuf(result);
+}
+
+static
+char *create_summary_string(problem_data_t *pd, GList *comment_fmt_spec)
+{
+    GList *l = comment_fmt_spec;
+    while (l)
+    {
+        section_t *sec = l->data;
+        l = l->next;
+
+        /* Find %summary" */
+        if (strcmp(sec->name, "%summary") != 0)
+            continue;
+
+        GList *item = sec->items;
+        if (!item)
+            return NULL;
+
+        const char *str = item->data;
+        return format_percented_string(str, pd);
+    }
+
+    return format_percented_string("%comment%", pd);
 }
 
 
@@ -822,7 +949,7 @@ int main(int argc, char **argv)
         rhbz.b_os_release = problem_data_get_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
 //COMPAT, remove in abrt-2.1
         if (!rhbz.b_os_release)
-		rhbz.b_os_release = problem_data_get_content_or_die(problem_data, "release");
+            rhbz.b_os_release = problem_data_get_content_or_die(problem_data, "release");
     }
 
     log(_("Logging into Bugzilla at %s"), rhbz.b_bugzilla_url);
@@ -915,17 +1042,21 @@ int main(int argc, char **argv)
             if (crossver_id >= 0)
                 strbuf_append_strf(bzcomment_buf, "\nPotential duplicate: bug %u\n", crossver_id);
             char *bzcomment = strbuf_free_nobuf(bzcomment_buf);
+            char *summary = create_summary_string(problem_data, comment_fmt_spec);
             int new_id = rhbz_new_bug(client, problem_data, rhbz.b_os_release,
-                    bzcomment,
+                    summary, bzcomment,
                     group
             );
             free(bzcomment);
+            free(summary);
 
             log(_("Adding attachments to bug %i"), new_id);
             char new_id_str[sizeof(int)*3 + 2];
             sprintf(new_id_str, "%i", new_id);
 
             attach_files(client, new_id_str, problem_data, comment_fmt_spec);
+
+//TODO: free_comment_fmt_spec(comment_fmt_spec);
 
             bz = new_bug_info();
             bz->bi_status = xstrdup("NEW");
