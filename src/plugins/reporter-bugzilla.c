@@ -375,7 +375,10 @@ int attach_text_item(struct abrt_xmlrpc *ax, const char *bug_id,
     if (!(item->flags & CD_FLAG_TXT))
         return 0;
     VERB3 log("attaching '%s' as text", item_name);
-    int r = rhbz_attach_blob(ax, item_name, bug_id, item->content, strlen(item->content), RHBZ_NOMAIL_NOTIFY);
+    int r = rhbz_attach_blob(ax, bug_id,
+                item_name, item->content, strlen(item->content),
+                RHBZ_NOMAIL_NOTIFY
+    );
     return (r == 0);
 }
 
@@ -402,7 +405,7 @@ int attach_binary_item(struct abrt_xmlrpc *ax, const char *bug_id,
         return 0;
     }
     VERB3 log("attaching '%s' as binary", item_name);
-    int r = rhbz_attach_fd(ax, item_name, bug_id, fd, RHBZ_NOMAIL_NOTIFY);
+    int r = rhbz_attach_fd(ax, bug_id, item_name, fd, RHBZ_NOMAIL_NOTIFY | RHBZ_BINARY_ATTACHMENT);
     close(fd);
     return (r == 0);
 }
@@ -531,6 +534,13 @@ static void set_settings(struct bugzilla_struct *b, map_string_h *settings)
     b->b_bugzilla_url = environ ? environ : get_map_string_item_or_empty(settings, "BugzillaURL");
     if (!b->b_bugzilla_url[0])
         b->b_bugzilla_url = "https://bugzilla.redhat.com";
+    else
+    {
+        /* We don't want trailing '/': "https://host/dir/" -> "https://host/dir" */
+        char *last_slash = strrchr(b->b_bugzilla_url, '/');
+        if (last_slash && last_slash[1] == '\0')
+            *last_slash = '\0';
+    }
     b->b_bugzilla_xmlrpc = concat_path_file(b->b_bugzilla_url, "xmlrpc.cgi");
 
     environ = getenv("Bugzilla_OSRelease");
@@ -763,7 +773,7 @@ int main(int argc, char **argv)
                 continue;
             }
 
-            rhbz_attach_fd(client, filename, ticket_no, fd, /*flags*/ 0);
+            rhbz_attach_fd(client, ticket_no, filename, fd, /*flags*/ 0);
             close(fd);
         }
 

@@ -38,6 +38,7 @@ enum {
     RHBZ_READ_INT            = (1 << 2),
     RHBZ_NOMAIL_NOTIFY       = (1 << 3),
     RHBZ_PRIVATE             = (1 << 4),
+    RHBZ_BINARY_ATTACHMENT   = (1 << 5),
 };
 
 #define IS_MANDATORY(flags) ((flags) & RHBZ_MANDATORY_MEMB)
@@ -87,11 +88,11 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
                 const char *aux_msg,
                 GList *group);
 
-int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *filename,
-                    const char *bug_id, const char *data, int data_len, int flags);
+int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *bug_id,
+                const char *att_name, const char *data, int data_len, int flags);
 
-int rhbz_attach_fd(struct abrt_xmlrpc *ax, const char *filename,
-                    const char *bug_id, int fd, int flags);
+int rhbz_attach_fd(struct abrt_xmlrpc *ax, const char *bug_id,
+                const char *att_name, int fd, int flags);
 
 int is_comment_dup(GList *comments, const char *comment);
 
