@@ -16,6 +16,12 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#include <btparser/location.h>
+#include <btparser/backtrace.h>
+#include <btparser/thread.h>
+#include <btparser/frame.h>
+#include <btparser/strbuf.h>
+
 #include "internal_libreport.h"
 #include "client.h"
 #include "abrt_xmlrpc.h"
@@ -131,6 +137,105 @@ bool is_explicit_or_forbidden(const char *name, GList *comment_fmt_spec)
 }
 
 static
+int append_text(struct strbuf *result, const char *item_name, const char *content, bool print_item_name)
+{
+    char *eol = strchrnul(content, '\n');
+    if (eol[0] == '\0' || eol[1] == '\0')
+    {
+        /* one-liner */
+        int pad = 16 - (strlen(item_name) + 2);
+        if (pad < 0)
+            pad = 0;
+        if (print_item_name)
+            strbuf_append_strf(result,
+                    eol[0] == '\0' ? "%s: %*s%s\n" : "%s: %*s%s",
+                    item_name, pad, "", content
+            );
+        else
+            strbuf_append_strf(result,
+                    eol[0] == '\0' ? "%s\n" : "%s",
+                    content
+            );
+    }
+    else
+    {
+        /* multi-line item */
+        if (print_item_name)
+            strbuf_append_strf(result, "%s:\n", item_name);
+        for (;;)
+        {
+            eol = strchrnul(content, '\n');
+            strbuf_append_strf(result,
+                    /* For %bare_multiline_item, we don't want to print colons */
+                    (print_item_name ? ":%.*s\n" : "%.*s\n"),
+                    (int)(eol - content), content
+            );
+            if (eol[0] == '\0' || eol[1] == '\0')
+                break;
+            content = eol + 1;
+        }
+    }
+    return 1;
+}
+
+static
+int append_short_backtrace(struct strbuf *result, problem_data_t *problem_data, size_t max_text_size, bool print_item_name)
+{
+    const problem_item *item = problem_data_get_item_or_NULL(problem_data,
+                                                             FILENAME_BACKTRACE);
+    if (!item)
+        return 0; /* "I did not print anything" */
+    if (!(item->flags & CD_FLAG_TXT))
+        return 0; /* "I did not print anything" */
+
+    char *truncated = NULL;
+
+    if (strlen(item->content) >= max_text_size)
+    {
+        struct btp_location location;
+        btp_location_init(&location);
+
+        /* btp_backtrace_parse modifies the input parameter */
+        char *content = item->content;
+        struct btp_backtrace *backtrace = btp_backtrace_parse((const char **)&content, &location);
+
+        if (!backtrace)
+        {
+            log(_("Can't parse backtrace"));
+            return 0;
+        }
+
+        /* Get optimized thread stack trace for 10 top most frames */
+        struct btp_thread *thread = btp_backtrace_get_optimized_thread(backtrace, 10);
+
+        btp_backtrace_free(backtrace);
+
+        if (!thread)
+        {
+            log(_("Can't find crash thread"));
+            return 0;
+        }
+
+        /* Cannot be NULL, it dies on memory error */
+        struct btp_strbuf *bt = btp_strbuf_new();
+
+        btp_thread_append_to_str(thread, bt, true);
+
+        btp_thread_free(thread);
+
+        truncated = btp_strbuf_free_nobuf(bt);
+    }
+
+    append_text(result,
+                /*item_name:*/ truncated ? "truncated_backtrace" : FILENAME_BACKTRACE,
+                /*content:*/   truncated ? truncated             : item->content,
+                print_item_name
+    );
+    free(truncated);
+    return 1;
+}
+
+static
 int append_item(struct strbuf *result, const char *item_name, problem_data_t *pd, GList *comment_fmt_spec)
 {
     bool print_item_name = (strncmp(item_name, "%bare_", strlen("%bare_")) != 0);
@@ -147,47 +252,17 @@ int append_item(struct strbuf *result, const char *item_name, problem_data_t *pd
 
         char *formatted = problem_item_format(item);
         char *content = formatted ? formatted : item->content;
-        char *eol = strchrnul(content, '\n');
-        if (eol[0] == '\0' || eol[1] == '\0')
-        {
-            /* one-liner */
-            int pad = 16 - (strlen(item_name) + 2);
-            if (pad < 0)
-                pad = 0;
-            if (print_item_name)
-                strbuf_append_strf(result,
-                        eol[0] == '\0' ? "%s: %*s%s\n" : "%s: %*s%s",
-                        item_name, pad, "", content
-                );
-            else
-                strbuf_append_strf(result,
-                        eol[0] == '\0' ? "%s\n" : "%s",
-                        content
-                );
-        }
-        else
-        {
-            /* multi-line item */
-            if (print_item_name)
-                strbuf_append_strf(result, "%s:\n", item_name);
-            for (;;)
-            {
-                eol = strchrnul(content, '\n');
-                strbuf_append_strf(result,
-                        /* For %bare_multiline_item, we don't want to print colons */
-                        (print_item_name ? ":%.*s\n" : "%.*s\n"),
-                        (int)(eol - content), content
-                );
-                if (eol[0] == '\0' || eol[1] == '\0')
-                    break;
-                content = eol + 1;
-            }
-        }
+        append_text(result, item_name, content, print_item_name);
         free(formatted);
         return 1; /* "I printed something" */
     }
 
     /* Special item name */
+
+    /* Compat with previously-existed ad-hockery: %short_backtrace */
+    if (strcmp(item_name, "%short_backtrace") == 0)
+        return append_short_backtrace(result, pd, CD_TEXT_ATT_SIZE_BZ, print_item_name);
+
     /* %oneline,%multiline,%text */
     bool oneline   = (strcmp(item_name+1, "oneline"  ) == 0);
     bool multiline = (strcmp(item_name+1, "multiline") == 0);
@@ -228,7 +303,7 @@ int append_item(struct strbuf *result, const char *item_name, problem_data_t *pd
             char *eol = strchrnul(content, '\n');
             bool is_oneline = (eol[0] == '\0' || eol[1] == '\0');
             if (oneline == is_oneline)
-                printed |= append_item(result, name, pd, comment_fmt_spec);
+                printed |= append_text(result, name, content, print_item_name);
             free(formatted);
         }
         if (text && oneline)
