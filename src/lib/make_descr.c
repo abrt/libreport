@@ -26,6 +26,7 @@ static bool rejected_name(const char *name, char **v, int flags)
     return r;
 }
 
+static
 char *make_description_item_multiline(const char *name, const char *content)
 {
     char *eol = strchr(content, '\n');
