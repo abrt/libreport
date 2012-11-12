@@ -41,76 +41,6 @@
 #define func_entry_str(x)
 #endif
 
-/******************************************************************************/
-/* Global lists used in process of creation a new Bugzilla bug
- * New bug logic:
- * 1. 'Description of problem' is FILENAME_COMMENT
- * 2. 'Version-Release number of selected component' is FILENAME_PACKAGE
- * 3. 'Additional info' is a concatenation of files listed in ADDITIONAL_INFO_FILES_LIST
- * 3.1 backtrace is also present in 'Additional info'
- *     - if has size lower than CD_TEXT_ATT_SIZE_BZ then the backtrace is inlined
- *     - otherwise preview of crashed thread stack trace is created
- * 4. Attached files are the ONLY files which ARE NOT present in g_not_attached_files
- *    As you can see g_not_attached_files consist from some hardcoded files and
- *    files from ADDITIONAL_INFO_FILES_LIST.
- *    Black list for attached files allows us to attach all of files added to
- *    a problem directory by a user.
- */
-#define INLINED_FILES_LIST\
-    FILENAME_ABRT_VERSION,\
-    FILENAME_RATING,\
-    FILENAME_KERNEL,\
-    FILENAME_CRASH_FUNCTION,\
-    FILENAME_CMDLINE,\
-    FILENAME_TAINTED_LONG, \
-    FILENAME_DESCRIPTION
-
-/* Items we want to use in additional info */
-static const char *const g_additional_info_files[] = {
-    /* ! a bunch of file names */
-    INLINED_FILES_LIST,
-    NULL
-};
-
-/* Items we don't want to attach to bz */
-static const char *const g_not_attached_files[] = {
-    CD_DUMPDIR,
-    FILENAME_ANALYZER,
-    FILENAME_PID,
-    FILENAME_PWD,
-    FILENAME_BINARY,
-    FILENAME_COREDUMP,
-    FILENAME_DUPHASH,
-    FILENAME_ARCHITECTURE,
-    FILENAME_OS_RELEASE,
-    FILENAME_PACKAGE,
-    FILENAME_COMPONENT,
-    FILENAME_COMMENT,
-    FILENAME_HOSTNAME,
-    FILENAME_REASON,
-    FILENAME_UID,
-    FILENAME_REMOTE,
-    FILENAME_TAINTED,
-    FILENAME_TAINTED_SHORT,
-    FILENAME_VMCORE,
-    FILENAME_UUID,
-    FILENAME_COUNT,
-    FILENAME_REPORTED_TO,
-    FILENAME_NOT_REPORTABLE,
-    FILENAME_PKG_EPOCH,
-    FILENAME_PKG_NAME,
-    FILENAME_PKG_VERSION,
-    FILENAME_PKG_RELEASE,
-    FILENAME_PKG_ARCH,
-    FILENAME_REMOTE_RESULT,
-    FILENAME_USERNAME,
-    FILENAME_TIME,
-    /* ! a bunch of file names */
-    INLINED_FILES_LIST,
-    NULL
-};
-/******************************************************************************/
-
 struct bug_info *new_bug_info()
 {
     func_entry();
@@ -510,7 +440,6 @@ struct bug_info *rhbz_bug_info(struct abrt_xmlrpc *ax, int bug_id)
     return bz;
 }
 
-/* suppress mail notify by {s:i} (nomail:1) (driven by flag) */
 int rhbz_new_bug(struct abrt_xmlrpc *ax,
                 problem_data_t *problem_data,
                 const char *release,
@@ -749,71 +678,6 @@ int rhbz_attach_fd(struct abrt_xmlrpc *ax, const char *filename,
     int res = rhbz_attach_blob(ax, filename, bug_id, data, size, flags);
     free(data);
     return res;
-}
-
-/* suppress mail notify by {s:i} (nomail:1) (driven by flag) */
-int rhbz_attach_files(struct abrt_xmlrpc *ax, const char *bug_id,
-                     problem_data_t *problem_data, int flags)
-{
-    func_entry();
-
-    const char *analyzer = problem_data_get_content_or_NULL(problem_data,
-                                                            FILENAME_ANALYZER);
-    /* Do not attach anything if analyzer is Kerneloops */
-    if (analyzer && strcmp(analyzer, "Kerneloops") == 0)
-        return 0;
-
-    GHashTableIter iter;
-    g_hash_table_iter_init(&iter, problem_data);
-    char *name;
-    struct problem_item *value;
-    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
-    {
-        /* The not attached list contains files that are used in the description or
-         * in the bug fields and the files which nobody is interested in.
-         */
-        if (is_in_string_list(name, (char**)g_not_attached_files))
-            continue;
-
-        /* Skip empty files */
-        if (value->content[0] == '\0')
-        {
-            log(_("Not attaching empty file '%s'"), name);
-            continue;
-        }
-
-        if (value->flags & CD_FLAG_TXT)
-        {
-            const char *content = value->content;
-            const unsigned len = strlen(content);
-
-            /* For standard bugs, do not attach backtrace shorter than CD_TEXT_ATT_SIZE_BZ */
-            if (len < CD_TEXT_ATT_SIZE_BZ && strcmp(name, FILENAME_BACKTRACE) == 0)
-                continue;
-
-            rhbz_attach_blob(ax, name, bug_id, content, len, flags);
-        }
-        if ((flags & RHBZ_ATTACH_BINARY_FILES) && (value->flags & CD_FLAG_BIN))
-        {
-            int fd = open(value->content, O_RDONLY);
-            if (fd < 0)
-            {
-                perror_msg("Can't open '%s'", value->content);
-                continue;
-            }
-            struct stat st;
-            if (fstat(fd, &st) != 0 || !S_ISREG(st.st_mode))
-            {
-                error_msg("'%s': not a regular file", value->content);
-                close(fd);
-                continue;
-            }
-            rhbz_attach_fd(ax, name, bug_id, fd, flags);
-            close(fd);
-        }
-    }
-
-    return 0;
 }
 
 void rhbz_logout(struct abrt_xmlrpc *ax)

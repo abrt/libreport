@@ -33,12 +33,11 @@ extern "C" {
 #define BUGZILLA_VERSION(a,b,c) ((unsigned)(((a) << 16) + ((b) << 8) + (c)))
 
 enum {
-    RHBZ_MANDATORY_MEMB = (1 << 0),
-    RHBZ_READ_STR       = (1 << 1),
-    RHBZ_READ_INT       = (1 << 2),
-    RHBZ_NOMAIL_NOTIFY  = (1 << 3),
-    RHBZ_PRIVATE        = (1 << 4),
-    RHBZ_ATTACH_BINARY_FILES = (1 << 5),
+    RHBZ_MANDATORY_MEMB      = (1 << 0),
+    RHBZ_READ_STR            = (1 << 1),
+    RHBZ_READ_INT            = (1 << 2),
+    RHBZ_NOMAIL_NOTIFY       = (1 << 3),
+    RHBZ_PRIVATE             = (1 << 4),
 };
 
 #define IS_MANDATORY(flags) ((flags) & RHBZ_MANDATORY_MEMB)
@@ -87,9 +86,6 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
                 const char *release,
                 const char *aux_msg,
                 GList *group);
-
-int rhbz_attach_files(struct abrt_xmlrpc *ax, const char *bug_id,
-                     problem_data_t *problem_data, int flags);
 
 int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *filename,
                     const char *bug_id, const char *data, int data_len, int flags);

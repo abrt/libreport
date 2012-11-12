@@ -33,6 +33,9 @@ struct section_t {
 };
 typedef struct section_t section_t;
 
+
+/* Utility functions */
+
 static
 GList* split_string_on_char(const char *str, char ch)
 {
@@ -46,6 +49,28 @@ GList* split_string_on_char(const char *str, char ch)
         str = delim + 1;
     }
     return g_list_reverse(list);
+}
+
+static
+bool is_explicit_or_forbidden(const char *name, GList *comment_fmt_spec)
+{
+    GList *l = comment_fmt_spec;
+    while (l)
+    {
+        section_t *sec = l->data;
+        GList *item = sec->items;
+        while (item)
+        {
+            const char *nm = item->data;
+            item = item->next;
+            if (nm[0] == '-')
+                nm++;
+            if (strcmp(name, nm) == 0)
+                return true; /* we see "name" or "-name" */
+        }
+        l = l->next;
+    }
+    return false;
 }
 
 static
@@ -114,27 +139,8 @@ GList* load_bzrep_conf_file(const char *path)
     return g_list_reverse(sections);
 }
 
-static
-bool is_explicit_or_forbidden(const char *name, GList *comment_fmt_spec)
-{
-    GList *l = comment_fmt_spec;
-    while (l)
-    {
-        section_t *sec = l->data;
-        GList *item = sec->items;
-        while (item)
-        {
-            const char *nm = item->data;
-            if (nm[0] == '-')
-                nm++;
-            if (strcmp(name, nm) == 0)
-                return true; /* we see "name" or "-name" */
-            item = item->next;
-        }
-        l = l->next;
-    }
-    return false;
-}
+
+/* BZ comment generation */
 
 static
 int append_text(struct strbuf *result, const char *item_name, const char *content, bool print_item_name)
@@ -274,48 +280,49 @@ int append_item(struct strbuf *result, const char *item_name, problem_data_t *pd
     }
 
     int printed = 0;
-    {
-        /* Iterate over _sorted_ items */
-        GList *sorted_names = g_hash_table_get_keys(pd);
-        sorted_names = g_list_sort(sorted_names, (GCompareFunc)strcmp);
 
-        /* %text => do as if %oneline, then repeat as if %multiline */
-        if (text)
-            oneline = 1;
+    /* Iterate over _sorted_ items */
+    GList *sorted_names = g_hash_table_get_keys(pd);
+    sorted_names = g_list_sort(sorted_names, (GCompareFunc)strcmp);
+
+    /* %text => do as if %oneline, then repeat as if %multiline */
+    if (text)
+        oneline = 1;
+
  again: ;
-        GList *l = sorted_names;
-        while (l)
-        {
-            const char *name = l->data;
-            l = l->next;
-            struct problem_item *item = g_hash_table_lookup(pd, name);
-            if (!item)
-                continue; /* paranoia, won't happen */
+    GList *l = sorted_names;
+    while (l)
+    {
+        const char *name = l->data;
+        l = l->next;
+        struct problem_item *item = g_hash_table_lookup(pd, name);
+        if (!item)
+            continue; /* paranoia, won't happen */
 
-            if (!(item->flags & CD_FLAG_TXT))
-                continue;
+        if (!(item->flags & CD_FLAG_TXT))
+            continue;
 
-            if (is_explicit_or_forbidden(name, comment_fmt_spec))
-                continue;
+        if (is_explicit_or_forbidden(name, comment_fmt_spec))
+            continue;
 
-            char *formatted = problem_item_format(item);
-            char *content = formatted ? formatted : item->content;
-            char *eol = strchrnul(content, '\n');
-            bool is_oneline = (eol[0] == '\0' || eol[1] == '\0');
-            if (oneline == is_oneline)
-                printed |= append_text(result, name, content, print_item_name);
-            free(formatted);
-        }
-        if (text && oneline)
-        {
-            /* %text, and we just did %oneline. Repeat as if %multiline */
-            oneline = 0;
-            /*multiline = 1; - not checked in fact, so why bother setting? */
-            goto again;
-        }
-
-        g_list_free(sorted_names); /* names themselves are not freed */
+        char *formatted = problem_item_format(item);
+        char *content = formatted ? formatted : item->content;
+        char *eol = strchrnul(content, '\n');
+        bool is_oneline = (eol[0] == '\0' || eol[1] == '\0');
+        if (oneline == is_oneline)
+            printed |= append_text(result, name, content, print_item_name);
+        free(formatted);
     }
+    if (text && oneline)
+    {
+        /* %text, and we just did %oneline. Repeat as if %multiline */
+        oneline = 0;
+        /*multiline = 1; - not checked in fact, so why bother setting? */
+        goto again;
+    }
+
+    g_list_free(sorted_names); /* names themselves are not freed */
+
     return printed;
 }
 
@@ -326,17 +333,22 @@ int generate_bz_comment(struct strbuf *result, problem_data_t *pd, GList *commen
     GList *l = comment_fmt_spec;
     while (l)
     {
-        struct strbuf *output = strbuf_new();
         section_t *sec = l->data;
+        l = l->next;
+
+        /* Skip special sections such as "%attach" */
+        if (sec->name[0] == '%')
+            continue;
+
+        struct strbuf *output = strbuf_new();
         GList *item = sec->items;
         while (item)
         {
             const char *str = item->data;
-            if (str[0] == '-') /* "-name", ignore it */
-                goto skip_item;
-            printed |= append_item(output, str, pd, comment_fmt_spec);
- skip_item:
             item = item->next;
+            if (str[0] == '-') /* "-name", ignore it */
+                continue;
+            printed |= append_item(output, str, pd, comment_fmt_spec);
         }
 
         if (output->len != 0)
@@ -348,12 +360,152 @@ int generate_bz_comment(struct strbuf *result, problem_data_t *pd, GList *commen
             );
         }
         strbuf_free(output);
-
-        l = l->next;
     }
 
     return printed;
 }
+
+
+/* BZ attachments */
+
+static
+int attach_text_item(struct abrt_xmlrpc *ax, const char *bug_id,
+                const char *item_name, struct problem_item *item)
+{
+    if (!(item->flags & CD_FLAG_TXT))
+        return 0;
+    VERB3 log("attaching '%s' as text", item_name);
+    int r = rhbz_attach_blob(ax, item_name, bug_id, item->content, strlen(item->content), RHBZ_NOMAIL_NOTIFY);
+    return (r == 0);
+}
+
+static
+int attach_binary_item(struct abrt_xmlrpc *ax, const char *bug_id,
+                const char *item_name, struct problem_item *item)
+{
+    if (!(item->flags & CD_FLAG_BIN))
+        return 0;
+
+    char *filename = item->content;
+    int fd = open(filename, O_RDONLY);
+    if (fd < 0)
+    {
+        perror_msg("Can't open '%s'", filename);
+        return 0;
+    }
+    errno = 0;
+    struct stat st;
+    if (fstat(fd, &st) != 0 || !S_ISREG(st.st_mode))
+    {
+        perror_msg("'%s': not a regular file", filename);
+        close(fd);
+        return 0;
+    }
+    VERB3 log("attaching '%s' as binary", item_name);
+    int r = rhbz_attach_fd(ax, item_name, bug_id, fd, RHBZ_NOMAIL_NOTIFY);
+    close(fd);
+    return (r == 0);
+}
+
+static
+int attach_item(struct abrt_xmlrpc *ax, const char *bug_id,
+                const char *item_name, problem_data_t *pd, GList *comment_fmt_spec)
+{
+    if (item_name[0] != '%')
+    {
+        struct problem_item *item = problem_data_get_item_or_NULL(pd, item_name);
+        if (!item)
+            return 0;
+        if (item->flags & CD_FLAG_TXT)
+            return attach_text_item(ax, bug_id, item_name, item);
+        if (item->flags & CD_FLAG_BIN)
+            return attach_binary_item(ax, bug_id, item_name, item);
+        return 0;
+    }
+
+    /* Special item name */
+
+    /* %oneline,%multiline,%text,%binary */
+    bool oneline   = (strcmp(item_name+1, "oneline"  ) == 0);
+    bool multiline = (strcmp(item_name+1, "multiline") == 0);
+    bool text      = (strcmp(item_name+1, "text"     ) == 0);
+    bool binary    = (strcmp(item_name+1, "binary"   ) == 0);
+    if (!oneline && !multiline && !text && !binary)
+    {
+        log("Unknown or unsupported element specifier '%s'", item_name);
+        return 0;
+    }
+
+    VERB3 log("Special item_name '%s', iterating for attach...", item_name);
+    int done = 0;
+
+    /* Iterate over _sorted_ items */
+    GList *sorted_names = g_hash_table_get_keys(pd);
+    sorted_names = g_list_sort(sorted_names, (GCompareFunc)strcmp);
+
+    GList *l = sorted_names;
+    while (l)
+    {
+        const char *name = l->data;
+        l = l->next;
+        struct problem_item *item = g_hash_table_lookup(pd, name);
+        if (!item)
+            continue; /* paranoia, won't happen */
+
+        if (is_explicit_or_forbidden(name, comment_fmt_spec))
+            continue;
+
+        if ((item->flags & CD_FLAG_TXT) && !binary)
+        {
+            char *content = item->content;
+            char *eol = strchrnul(content, '\n');
+            bool is_oneline = (eol[0] == '\0' || eol[1] == '\0');
+            if (text || oneline == is_oneline)
+                done |= attach_text_item(ax, bug_id, name, item);
+        }
+        if ((item->flags & CD_FLAG_BIN) && binary)
+            done |= attach_binary_item(ax, bug_id, name, item);
+    }
+
+    g_list_free(sorted_names); /* names themselves are not freed */
+
+
+    VERB3 log("...Done iterating over '%s' for attach", item_name);
+
+    return done;
+}
+
+static
+int attach_files(struct abrt_xmlrpc *ax, const char *bug_id,
+                problem_data_t *pd, GList *comment_fmt_spec)
+{
+    int done = 0;
+    GList *l = comment_fmt_spec;
+    while (l)
+    {
+        section_t *sec = l->data;
+        l = l->next;
+
+        /* Find %attach" */
+        if (strcmp(sec->name, "%attach") != 0)
+            continue;
+
+        GList *item = sec->items;
+        while (item)
+        {
+            const char *str = item->data;
+            item = item->next;
+            if (str[0] == '-') /* "-name", ignore it */
+                continue;
+            done |= attach_item(ax, bug_id, str, pd, comment_fmt_spec);
+        }
+    }
+
+    return done;
+}
+
+
+/* Main */
 
 struct bugzilla_struct {
     const char *b_login;
@@ -763,10 +915,7 @@ int main(int argc, char **argv)
             char new_id_str[sizeof(int)*3 + 2];
             sprintf(new_id_str, "%i", new_id);
 
-            int flags = RHBZ_NOMAIL_NOTIFY;
-            if (opts & OPT_b)
-                flags |= RHBZ_ATTACH_BINARY_FILES;
-            rhbz_attach_files(client, new_id_str, problem_data, flags);
+            attach_files(client, new_id_str, problem_data, comment_fmt_spec);
 
             bz = new_bug_info();
             bz->bi_status = xstrdup("NEW");
