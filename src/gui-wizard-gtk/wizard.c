@@ -551,11 +551,28 @@ static void open_browse_if_link(GtkWidget *text_view, GtkTextIter *iter)
 
         if (url != 0)
         {
-            if (fork() != 0)
+            pid_t pid = fork();
+            if (pid < 0)
+                perror_msg("fork");
+            else
             {
-                execlp("gnome-open", "gnome-open", url, NULL);
-                execlp("xdg-open", "xdg-open", url, NULL);
-                exit(1);
+                if (pid == 0)
+                {
+                    /* child */
+                    /* double fork to avoid GUI zombies */
+                    pid_t grand_child = vfork();
+                    if (grand_child != 0)
+                    {
+                        if (grand_child < 0) perror_msg("vfork");
+                        exit(0);
+                    }
+
+                    /* grand child */
+                    execlp("gnome-open", "gnome-open", url, NULL);
+                    execlp("xdg-open", "xdg-open", url, NULL);
+                    exit(1);
+                }
+                safe_waitpid(pid, /* status */ NULL, /* options */ 0);
             }
             break;
         }
