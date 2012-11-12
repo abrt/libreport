@@ -27,11 +27,6 @@
 
 #include "internal_libreport.h"
 #include "rhbz.h"
-#include <btparser/location.h>
-#include <btparser/backtrace.h>
-#include <btparser/thread.h>
-#include <btparser/frame.h>
-#include <btparser/strbuf.h>
 
 #define MAX_HOPS            5
 #define MAX_SUMMARY_LENGTH  255
@@ -515,67 +510,11 @@ struct bug_info *rhbz_bug_info(struct abrt_xmlrpc *ax, int bug_id)
     return bz;
 }
 
-/*
- * Produces an optimal backtrace for bugzilla comment
- */
-char *rhbz_get_backtrace_info(problem_data_t *problem_data, size_t max_text_size)
-{
-    const problem_item *item = problem_data_get_item_or_NULL(problem_data,
-                                                             FILENAME_BACKTRACE);
-
-    if (!item)
-        return NULL;
-
-    char *truncated = NULL;
-
-    if (strlen(item->content) >= max_text_size)
-    {
-        struct btp_location location;
-        btp_location_init(&location);
-
-        /* btp_backtrace_parse modifies the input parameter */
-        char *content = item->content;
-        struct btp_backtrace *backtrace = btp_backtrace_parse((const char **)&content, &location);
-
-        if (!backtrace)
-        {
-            log(_("Can't parse backtrace"));
-            return NULL;
-        }
-
-        /* Get optimized thread stack trace for 10 top most frames */
-        struct btp_thread *thread = btp_backtrace_get_optimized_thread(backtrace, 10);
-
-        btp_backtrace_free(backtrace);
-
-        if (!thread)
-        {
-            log(_("Can't find crash thread"));
-            return NULL;
-        }
-
-        /* Cannot be NULL, it dies on memory error */
-        struct btp_strbuf *bt = btp_strbuf_new();
-
-        btp_thread_append_to_str(thread, bt, true);
-
-        btp_thread_free(thread);
-
-        truncated = btp_strbuf_free_nobuf(bt);
-    }
-
-    char *bt = make_description_item_multiline(truncated ? "truncated backtrace" : FILENAME_BACKTRACE,
-                                               truncated ? truncated             : item->content);
-    free(truncated);
-
-    return bt;
-}
-
 /* suppress mail notify by {s:i} (nomail:1) (driven by flag) */
 int rhbz_new_bug(struct abrt_xmlrpc *ax,
                 problem_data_t *problem_data,
                 const char *release,
-                const char *aux_msg,
+                const char *bzcomment,
                 GList *group)
 {
     func_entry();
@@ -609,8 +548,6 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
                                                                 FILENAME_ANALYZER);
     const char *tainted_short = problem_data_get_content_or_NULL(problem_data,
                                                                 FILENAME_TAINTED_SHORT);
-    const char *comment      = problem_data_get_content_or_NULL(problem_data,
-                                                            FILENAME_COMMENT);
 
     struct strbuf *buf_summary = strbuf_new();
 
@@ -676,35 +613,6 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
         buf[3] = '\0';
     }
 
-    /* Generating of a description according to the RH bugzilla default format:
-     * https://bugzilla.redhat.com/enter_bug.cgi?product=Fedora
-     */
-    struct strbuf *tmp_full_dsc = strbuf_new();
-    if (comment)
-        strbuf_append_strf(tmp_full_dsc, "Description of problem:\n%s\n\n", comment);
-
-    /* the package file always contains 'kernel' string in case of kerneloops */
-    /* it doesn't make sense to mess up a description with this useless information */
-    if (package && !kerneloops)
-        strbuf_append_strf(tmp_full_dsc, "Version-Release number of selected component:\n%s\n\n", package);
-
-    char *bz_dsc = make_description(problem_data, (char**)g_additional_info_files,
-                                    CD_TEXT_ATT_SIZE_BZ, MAKEDESC_SHOW_MULTILINE | MAKEDESC_WHITELIST);
-    strbuf_append_strf(tmp_full_dsc, "Additional info:\nlibreport_version: "VERSION"\n%s\n", bz_dsc);
-    free(bz_dsc);
-
-    char *backtrace = rhbz_get_backtrace_info(problem_data, CD_TEXT_ATT_SIZE_BZ);
-    if (backtrace)
-    {
-        strbuf_append_str(tmp_full_dsc, backtrace);
-        free(backtrace);
-    }
-
-    if (aux_msg)
-        strbuf_append_str(tmp_full_dsc, aux_msg);
-
-    char *full_dsc = strbuf_free_nobuf(tmp_full_dsc);
-
     char *product = NULL;
     char *version = NULL;
     parse_release_for_bz(release, &product, &version);
@@ -720,7 +628,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
                                   "component", component,
                                   "version", version,
                                   "summary", summary,
-                                  "description", full_dsc,
+                                  "description", bzcomment,
                                   "status_whiteboard", status_whiteboard,
                                   "platform", arch);
     }
@@ -751,7 +659,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
                                   "component", component,
                                   "version", version,
                                   "summary", summary,
-                                  "description", full_dsc,
+                                  "description", bzcomment,
                                   "status_whiteboard", status_whiteboard,
                                   "platform", arch,
                                   "groups", xmlrpc_groups);
@@ -762,7 +670,6 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
     free(product);
     free(version);
     free(summary);
-    free(full_dsc);
 
     if (!result)
         return -1;

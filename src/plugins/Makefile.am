@@ -23,7 +23,7 @@ reportpluginsconfdir = $(REPORT_PLUGINS_CONF_DIR)
 
 reporters_plugin_conf =
 if BUILD_BUGZILLA
-reporters_plugin_conf += bugzilla.conf
+reporters_plugin_conf += bugzilla.conf bugzilla_format.conf
 endif
 
 dist_reportpluginsconf_DATA = $(reporters_plugin_conf) \

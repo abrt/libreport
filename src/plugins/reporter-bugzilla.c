@@ -21,6 +21,264 @@
 #include "abrt_xmlrpc.h"
 #include "rhbz.h"
 
+struct section_t {
+    char *name;
+    GList *items;
+};
+typedef struct section_t section_t;
+
+static
+GList* split_string_on_char(const char *str, char ch)
+{
+    GList *list = NULL;
+    for (;;)
+    {
+        const char *delim = strchrnul(str, ch);
+        list = g_list_prepend(list, xstrndup(str, delim - str));
+        if (*delim == '\0')
+            break;
+        str = delim + 1;
+    }
+    return g_list_reverse(list);
+}
+
+static
+GList* load_bzrep_conf_file(const char *path)
+{
+    FILE *fp = stdin;
+    if (strcmp(path, "-") != 0)
+    {
+        fp = fopen(path, "r");
+        if (!fp)
+            return NULL;
+    }
+
+    GList *sections = NULL;
+
+    char *line;
+    while ((line = xmalloc_fgetline(fp)) != NULL)
+    {
+        /* Skip comments and empty lines */
+        char first = *skip_whitespace(line);
+        if (first == '\0' || first == '#')
+            goto free_line;
+
+        /* We are reusing line buffer to form temporary
+         * "key\0values\0..." in its beginning
+         */
+        char *value = NULL;
+        char *src;
+        char *dst;
+        for (src = dst = line; *src; src++)
+        {
+            char c = *src;
+            /* did we reach the value list? */
+            if (!value && c == ':')
+            {
+                *dst++ = '\0'; /* terminate key */
+                value = dst; /* remember where value starts */
+                continue;
+            }
+            /* skip whitespace in value list */
+            if (value && isspace(c))
+                continue;
+            *dst++ = c; /* store next key or value char */
+        }
+
+        /* Skip broken lines */
+        if (!value)
+            goto free_line;
+
+        *dst = '\0'; /* terminate value */
+
+        GList *item_list = split_string_on_char(value, ',');
+
+        section_t *sec = xzalloc(sizeof(*sec));
+        sec->name = xstrdup(line);
+        sec->items = item_list;
+        sections = g_list_prepend(sections, sec);
+
+ free_line:
+        free(line);
+    }
+
+    if (fp != stdin)
+        fclose(fp);
+
+    return g_list_reverse(sections);
+}
+
+static
+bool is_explicit_or_forbidden(const char *name, GList *comment_fmt_spec)
+{
+    GList *l = comment_fmt_spec;
+    while (l)
+    {
+        section_t *sec = l->data;
+        GList *item = sec->items;
+        while (item)
+        {
+            const char *nm = item->data;
+            if (nm[0] == '-')
+                nm++;
+            if (strcmp(name, nm) == 0)
+                return true; /* we see "name" or "-name" */
+            item = item->next;
+        }
+        l = l->next;
+    }
+    return false;
+}
+
+static
+int append_item(struct strbuf *result, const char *item_name, problem_data_t *pd, GList *comment_fmt_spec)
+{
+    bool print_item_name = (strncmp(item_name, "%bare_", strlen("%bare_")) != 0);
+    if (!print_item_name)
+        item_name += strlen("%bare_");
+
+    if (item_name[0] != '%')
+    {
+        struct problem_item *item = problem_data_get_item_or_NULL(pd, item_name);
+        if (!item)
+            return 0; /* "I did not print anything" */
+        if (!(item->flags & CD_FLAG_TXT))
+            return 0; /* "I did not print anything" */
+
+        char *formatted = problem_item_format(item);
+        char *content = formatted ? formatted : item->content;
+        char *eol = strchrnul(content, '\n');
+        if (eol[0] == '\0' || eol[1] == '\0')
+        {
+            /* one-liner */
+            int pad = 16 - (strlen(item_name) + 2);
+            if (pad < 0)
+                pad = 0;
+            if (print_item_name)
+                strbuf_append_strf(result,
+                        eol[0] == '\0' ? "%s: %*s%s\n" : "%s: %*s%s",
+                        item_name, pad, "", content
+                );
+            else
+                strbuf_append_strf(result,
+                        eol[0] == '\0' ? "%s\n" : "%s",
+                        content
+                );
+        }
+        else
+        {
+            /* multi-line item */
+            if (print_item_name)
+                strbuf_append_strf(result, "%s:\n", item_name);
+            for (;;)
+            {
+                eol = strchrnul(content, '\n');
+                strbuf_append_strf(result,
+                        /* For %bare_multiline_item, we don't want to print colons */
+                        (print_item_name ? ":%.*s\n" : "%.*s\n"),
+                        (int)(eol - content), content
+                );
+                if (eol[0] == '\0' || eol[1] == '\0')
+                    break;
+                content = eol + 1;
+            }
+        }
+        free(formatted);
+        return 1; /* "I printed something" */
+    }
+
+    /* Special item name */
+    /* %oneline,%multiline,%text */
+    bool oneline   = (strcmp(item_name+1, "oneline"  ) == 0);
+    bool multiline = (strcmp(item_name+1, "multiline") == 0);
+    bool text      = (strcmp(item_name+1, "text"     ) == 0);
+    if (!oneline && !multiline && !text)
+    {
+        log("Unknown or unsupported element specifier '%s'", item_name);
+        return 0; /* "I did not print anything" */
+    }
+
+    int printed = 0;
+    {
+        /* Iterate over _sorted_ items */
+        GList *sorted_names = g_hash_table_get_keys(pd);
+        sorted_names = g_list_sort(sorted_names, (GCompareFunc)strcmp);
+
+        /* %text => do as if %oneline, then repeat as if %multiline */
+        if (text)
+            oneline = 1;
+ again: ;
+        GList *l = sorted_names;
+        while (l)
+        {
+            const char *name = l->data;
+            l = l->next;
+            struct problem_item *item = g_hash_table_lookup(pd, name);
+            if (!item)
+                continue; /* paranoia, won't happen */
+
+            if (!(item->flags & CD_FLAG_TXT))
+                continue;
+
+            if (is_explicit_or_forbidden(name, comment_fmt_spec))
+                continue;
+
+            char *formatted = problem_item_format(item);
+            char *content = formatted ? formatted : item->content;
+            char *eol = strchrnul(content, '\n');
+            bool is_oneline = (eol[0] == '\0' || eol[1] == '\0');
+            if (oneline == is_oneline)
+                printed |= append_item(result, name, pd, comment_fmt_spec);
+            free(formatted);
+        }
+        if (text && oneline)
+        {
+            /* %text, and we just did %oneline. Repeat as if %multiline */
+            oneline = 0;
+            /*multiline = 1; - not checked in fact, so why bother setting? */
+            goto again;
+        }
+
+        g_list_free(sorted_names); /* names themselves are not freed */
+    }
+    return printed;
+}
+
+static
+int generate_bz_comment(struct strbuf *result, problem_data_t *pd, GList *comment_fmt_spec)
+{
+    int printed = 0;
+    GList *l = comment_fmt_spec;
+    while (l)
+    {
+        struct strbuf *output = strbuf_new();
+        section_t *sec = l->data;
+        GList *item = sec->items;
+        while (item)
+        {
+            const char *str = item->data;
+            if (str[0] == '-') /* "-name", ignore it */
+                goto skip_item;
+            printed |= append_item(output, str, pd, comment_fmt_spec);
+ skip_item:
+            item = item->next;
+        }
+
+        if (output->len != 0)
+        {
+            strbuf_append_strf(result,
+                        (result->len == 0 ? "%s:\n%s" : "\n%s:\n%s"),
+                        sec->name,
+                        output->buf
+            );
+        }
+        strbuf_free(output);
+
+        l = l->next;
+    }
+
+    return printed;
+}
 
 struct bugzilla_struct {
     const char *b_login;
@@ -103,12 +361,9 @@ int main(int argc, char **argv)
     textdomain(PACKAGE);
 #endif
 
-    const char *dump_dir_name = ".";
-    GList *conf_file = NULL;
-
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "\n& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... -d DIR"
+        "\n& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] -d DIR"
         "\nor:"
         "\n& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE..."
         "\nor:"
@@ -135,23 +390,28 @@ int main(int argc, char **argv)
         "\nIf problem data in DIR was never reported to Bugzilla, upload will fail."
         "\n"
         "\nOption -tID uploads FILEs to the bug with specified ID on Bugzilla site."
-        "\n-d DIR is ignored.\n"
+        "\n-d DIR is ignored."
         "\n"
         "\nIf not specified, CONFFILE defaults to "CONF_DIR"/plugins/bugzilla.conf"
         "\nIts lines should have 'PARAM = VALUE' format."
         "\nRecognized string parameters: BugzillaURL, Login, Password, OSRelease."
         "\nRecognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify."
         "\nParameters can be overridden via $Bugzilla_PARAM environment variables."
+        "\n"
+        "\nFMTFILE defaults to "CONF_DIR"/plugins/bugzilla_format.conf"
     );
     enum {
         OPT_v = 1 << 0,
         OPT_d = 1 << 1,
         OPT_c = 1 << 2,
-        OPT_t = 1 << 3,
-        OPT_b = 1 << 4,
-        OPT_f = 1 << 5,
+        OPT_F = 1 << 3,
+        OPT_t = 1 << 4,
+        OPT_b = 1 << 5,
+        OPT_f = 1 << 6,
     };
-
+    const char *dump_dir_name = ".";
+    GList *conf_file = NULL;
+    const char *fmt_file = CONF_DIR"/plugins/bugzilla_format.conf";
     char *ticket_no = NULL, *abrt_hash = NULL;
     GList *group = NULL;
     /* Keep enum above and order of options below in sync! */
@@ -159,6 +419,7 @@ int main(int argc, char **argv)
         OPT__VERBOSE(&g_verbose),
         OPT_STRING(   'd', NULL, &dump_dir_name , "DIR"    , _("Problem directory")),
         OPT_LIST(     'c', NULL, &conf_file     , "FILE"   , _("Configuration file (may be given many times)")),
+        OPT_STRING(   'F', NULL, &fmt_file      , "FILE"   , _("Formatting file")),
         OPT_OPTSTRING('t', "ticket", &ticket_no , "ID"     , _("Attach FILEs [to bug with this ID]")),
         OPT_BOOL(     'b', NULL, NULL,                       _("When creating bug, attach binary files too")),
         OPT_BOOL(     'f', NULL, NULL,                       _("Force reporting even if this problem is already reported")),
@@ -410,12 +671,18 @@ int main(int argc, char **argv)
             /* Create new bug */
             log(_("Creating a new bug"));
 
-            char *aux_msg = crossver_id < 0 ? NULL :
-                    xasprintf("\nPotential duplicate: bug %u\n", crossver_id);
+            GList *comment_fmt_spec = load_bzrep_conf_file(fmt_file);
+
+            struct strbuf *bzcomment_buf = strbuf_new();
+            generate_bz_comment(bzcomment_buf, problem_data, comment_fmt_spec);
+            if (crossver_id >= 0)
+                strbuf_append_strf(bzcomment_buf, "\nPotential duplicate: bug %u\n", crossver_id);
+            char *bzcomment = strbuf_free_nobuf(bzcomment_buf);
             int new_id = rhbz_new_bug(client, problem_data, rhbz.b_os_release,
-                    aux_msg,
-                    group);
-            free(aux_msg);
+                    bzcomment,
+                    group
+            );
+            free(bzcomment);
 
             log(_("Adding attachments to bug %i"), new_id);
             char new_id_str[sizeof(int)*3 + 2];
