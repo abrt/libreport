@@ -363,6 +363,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla.conf
 %config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla_format.conf
+%config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla_format_libreport.conf
+%config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla_format_kernel.conf
 %{_sysconfdir}/libreport/events/report_Bugzilla.xml
 %config(noreplace) %{_sysconfdir}/libreport/events/report_Bugzilla.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/bugzilla_event.conf
