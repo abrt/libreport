@@ -393,6 +393,36 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/events.d/uploader_event.conf
 
 %changelog
+* Wed Nov 14 2012 Jakub Filak <jfilak@redhat.com> 2.0.19-1
+- bugzilla_format[_libreport].conf: emit truncated backtrace into its own paragraph
+- reporter-bz: use Jakub's version of is_explicit_or_forbidden()
+- bugzilla_format[_libreport].conf: do not attach event_log
+- bugzilla_format[_libreport].conf: include uid. Closes trac#865
+- bugzilla_format{,_libreport}.conf: exclude many more one-liners
+- Create bugzilla_format_{libreport,kernel}.conf and install them.
+- reporter-bz: implement %summary in -F FMTFILE
+- reporter-bz: make binary attachments have "application/octet-stream" MIME-type
+- reporter-bz: implement %attach in -F FMTFILE
+- reporter-bz: reinstate "short backtrace" generation
+- make make_description_item_multiline() static
+- reporter-bz: add -F FMTFILE option
+- use gtk_show_uri() instead of own launcher
+- prevent gnome-open/xdg-open zombie processes
+- update kerneloops urls
+- Reinstate "description" field for now
+- don't force the minimal rating trac#854
+- minor cosmetic fix related to trac#854
+- typo fix
+- add support for forwarding of report client requests
+- fix i18n in event client communication protocol
+- add event name to the error message - can't get secret item
+- switch all load_conf_file() calls to use skipKeysWithoutValue=false
+- hide the spinner when the event processing is finishes trac#852
+- add a method for loading of configuration of a single event
+- unlock secret collection only on meaningful demand
+- fix secret item look up for gnome-keyring
+- Remove FILENAME_DESCRIPTION
+
 * Thu Nov 01 2012 Jakub Filak <jfilak@redhat.com> 2.0.18-1
 - reporter-bz: tighten up checking that BZ server gave us its version; fix recently broken settings parsing
 - reporter-bz: make selinux-policy special case controllable from config file
