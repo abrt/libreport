@@ -52,25 +52,27 @@ GList* split_string_on_char(const char *str, char ch)
 }
 
 static
+int compare_item_name(const char *lookup, const char *name)
+{
+    if (lookup[0] == '-')
+        lookup++;
+    else if (strncmp(lookup, "%bare_", 6) == 0)
+        lookup += 6;
+    return strcmp(lookup, name);
+}
+
+static
+int is_item_name_in_section(const section_t *lookup, const char *name)
+{
+    if (g_list_find_custom(lookup->items, name, (GCompareFunc)compare_item_name))
+        return 0; /* "found it!" */
+    return 1;
+}
+
+static
 bool is_explicit_or_forbidden(const char *name, GList *comment_fmt_spec)
 {
-    GList *l = comment_fmt_spec;
-    while (l)
-    {
-        section_t *sec = l->data;
-        GList *item = sec->items;
-        while (item)
-        {
-            const char *nm = item->data;
-            item = item->next;
-            if (nm[0] == '-')
-                nm++;
-            if (strcmp(name, nm) == 0)
-                return true; /* we see "name" or "-name" */
-        }
-        l = l->next;
-    }
-    return false;
+    return g_list_find_custom(comment_fmt_spec, name, (GCompareFunc)is_item_name_in_section);
 }
 
 static
