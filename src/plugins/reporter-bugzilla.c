@@ -91,10 +91,25 @@ GList* load_bzrep_conf_file(const char *path)
     char *line;
     while ((line = xmalloc_fgetline(fp)) != NULL)
     {
-        /* Skip comments and empty lines */
+        /* Skip comments */
         char first = *skip_whitespace(line);
-        if (first == '\0' || first == '#')
+        if (first == '#')
             goto free_line;
+
+        /* Handle trailing backslash continuation */
+ check_continuation: ;
+        unsigned len = strlen(line);
+        if (len && line[len-1] == '\\')
+        {
+            line[len-1] = '\0';
+            char *next_line = xmalloc_fgetline(fp);
+            if (next_line)
+            {
+                line = append_to_malloced_string(line, next_line);
+                free(next_line);
+                goto check_continuation;
+            }
+        }
 
         /* We are reusing line buffer to form temporary
          * "key\0values\0..." in its beginning
@@ -122,12 +137,7 @@ GList* load_bzrep_conf_file(const char *path)
             *dst++ = c; /* store next key or value char */
         }
 
-        /* Skip broken lines */
-        if (!value)
-            goto free_line;
-
-
-        GList *item_list;
+        GList *item_list = NULL;
         if (summary_line)
         {
             /* %summary is special */
@@ -135,8 +145,9 @@ GList* load_bzrep_conf_file(const char *path)
         }
         else
         {
-            *dst = '\0'; /* terminate value */
-            item_list = split_string_on_char(value, ',');
+            *dst = '\0'; /* terminate value (or key) */
+            if (value)
+                item_list = split_string_on_char(value, ',');
         }
 
         section_t *sec = xzalloc(sizeof(*sec));
@@ -456,9 +467,9 @@ int append_item(struct strbuf *result, const char *item_name, problem_data_t *pd
 }
 
 static
-int generate_bz_comment(struct strbuf *result, problem_data_t *pd, GList *comment_fmt_spec)
+void generate_bz_comment(struct strbuf *result, problem_data_t *pd, GList *comment_fmt_spec)
 {
-    int printed = 0;
+    bool last_line_is_empty = true;
     GList *l = comment_fmt_spec;
     while (l)
     {
@@ -469,29 +480,48 @@ int generate_bz_comment(struct strbuf *result, problem_data_t *pd, GList *commen
         if (sec->name[0] == '%')
             continue;
 
-        struct strbuf *output = strbuf_new();
-        GList *item = sec->items;
-        while (item)
+        if (sec->items)
         {
-            const char *str = item->data;
-            item = item->next;
-            if (str[0] == '-') /* "-name", ignore it */
-                continue;
-            printed |= append_item(output, str, pd, comment_fmt_spec);
-        }
+            /* "Text: item[,item]..." */
+            struct strbuf *output = strbuf_new();
+            GList *item = sec->items;
+            while (item)
+            {
+                const char *str = item->data;
+                item = item->next;
+                if (str[0] == '-') /* "-name", ignore it */
+                    continue;
+                append_item(output, str, pd, comment_fmt_spec);
+            }
 
-        if (output->len != 0)
-        {
-            strbuf_append_strf(result,
-                        (result->len == 0 ? "%s:\n%s" : "\n%s:\n%s"),
-                        sec->name,
-                        output->buf
-            );
+            if (output->len != 0)
+            {
+                strbuf_append_strf(result, "%s:\n%s",
+                            sec->name,
+                            output->buf
+                );
+                last_line_is_empty = false;
+            }
+            strbuf_free(output);
         }
-        strbuf_free(output);
+        else
+        {
+            /* Just "Text" (can be "") */
+
+            /* Filter out consecutive empty lines */
+            if (sec->name[0] != '\0' || !last_line_is_empty)
+                strbuf_append_strf(result, "%s\n", sec->name);
+            last_line_is_empty = (sec->name[0] == '\0');
+        }
     }
 
-    return printed;
+    /* Nuke any trailing empty lines */
+    while (result->len >= 1
+     && result->buf[result->len-1] == '\n'
+     && (result->len == 1 || result->buf[result->len-2] == '\n')
+    ) {
+        result->buf[--result->len] = '\0';
+    }
 }
 
 
