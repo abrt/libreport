@@ -95,6 +95,15 @@ static char *logging_callback(char *log_line, void *param)
     return log_line; /* signaling to caller that we didnt consume the string */
 }
 
+/* void make_run_event_state_forwarding(struct run_event_state *state); */
+static PyObject *p_make_run_event_state_forwarding(PyObject *pself, PyObject *always_null)
+{
+    p_run_event_state *self = (p_run_event_state*)pself;
+    make_run_event_state_forwarding(self->state);
+
+    Py_RETURN_NONE;
+}
+
 /* int run_event_on_dir_name(struct run_event_state *state, const char *dump_dir_name, const char *event); */
 static PyObject *p_run_event_on_dir_name(PyObject *pself, PyObject *args)
 {
@@ -193,6 +202,7 @@ static int set_logging_callback(PyObject *pself, PyObject *callback, void *unuse
 
 static PyMethodDef p_run_event_state_methods[] = {
     /* method_name, func, flags, doc_string */
+    { "make_run_event_state_forwarding", p_make_run_event_state_forwarding, METH_NOARGS },
     { "run_event_on_dir_name"  , p_run_event_on_dir_name  , METH_VARARGS },
     { "run_event_on_problem_data", p_run_event_on_problem_data, METH_VARARGS },
     { NULL }
