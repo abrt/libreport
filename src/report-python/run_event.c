@@ -41,13 +41,7 @@ static PyObject *p_run_event_state_new(PyTypeObject *type, PyObject *args, PyObj
 {
     p_run_event_state *self = (p_run_event_state *)type->tp_alloc(type, 0);
     if (self)
-    {
         self->state = new_run_event_state();
-        self->state->post_run_callback = post_run_callback;
-        self->state->logging_callback = logging_callback;
-        self->state->post_run_param = self;
-        self->state->logging_param = self;
-    }
     return (PyObject *)self;
 }
 
@@ -168,6 +162,14 @@ static int set_post_run_callback(PyObject *pself, PyObject *callback, void *unus
 //    PyObject *callback;
 //    if (!PyArg_ParseTuple(args, "O", &callback))
 //        return -1;
+    if (callback == Py_None)
+    {
+        Py_XDECREF(self->post_run_callback);
+        self->post_run_callback = NULL;
+        self->state->post_run_callback = NULL;
+        self->state->post_run_param = NULL;
+        return 0;
+    }
     if (!PyCallable_Check(callback))
     {
         PyErr_SetString(PyExc_TypeError, "parameter must be callable");
@@ -176,12 +178,22 @@ static int set_post_run_callback(PyObject *pself, PyObject *callback, void *unus
     Py_INCREF(callback);
     Py_XDECREF(self->post_run_callback);
     self->post_run_callback = callback;
+    self->state->post_run_callback = post_run_callback;
+    self->state->post_run_param = self;
     return 0;
 }
 
 static int set_logging_callback(PyObject *pself, PyObject *callback, void *unused)
 {
     p_run_event_state *self = (p_run_event_state*)pself;
+    if (callback == Py_None)
+    {
+        Py_XDECREF(self->logging_callback);
+        self->logging_callback = NULL;
+        self->state->logging_callback = NULL;
+        self->state->logging_param = NULL;
+        return 0;
+    }
     if (!PyCallable_Check(callback))
     {
         PyErr_SetString(PyExc_TypeError, "parameter must be callable");
@@ -190,6 +202,8 @@ static int set_logging_callback(PyObject *pself, PyObject *callback, void *unuse
     Py_INCREF(callback);
     Py_XDECREF(self->logging_callback);
     self->logging_callback = callback;
+    self->state->logging_callback = logging_callback;
+    self->state->logging_param = self;
     return 0;
 }
 
