@@ -125,11 +125,14 @@ GList* load_bzrep_conf_file(const char *path)
             if (!value && c == ':' && src[1] == ':')
             {
                 *dst++ = '\0'; /* terminate key */
+                src += 2;
                 value = dst; /* remember where value starts */
                 summary_line = (strcmp(line, "%summary") == 0);
                 if (summary_line)
+                {
+                    value = src;
                     break;
-                src++;
+                }
                 continue;
             }
             /* skip whitespace in value list */
