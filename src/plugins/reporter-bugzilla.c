@@ -808,11 +808,16 @@ int main(int argc, char **argv)
         OPT_t = 1 << 4,
         OPT_b = 1 << 5,
         OPT_f = 1 << 6,
+        OPT_h = 1 << 7,
+        OPT_g = 1 << 8,
+        OPT_D = 1 << 9,
     };
     const char *dump_dir_name = ".";
     GList *conf_file = NULL;
     const char *fmt_file = CONF_DIR"/plugins/bugzilla_format.conf";
-    char *ticket_no = NULL, *abrt_hash = NULL;
+    char *abrt_hash = NULL;
+    char *ticket_no = NULL;
+    char *debug_str = NULL;
     GList *group = NULL;
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
@@ -825,6 +830,7 @@ int main(int argc, char **argv)
         OPT_BOOL(     'f', NULL, NULL,                       _("Force reporting even if this problem is already reported")),
         OPT_STRING(   'h', "duphash", &abrt_hash, "DUPHASH", _("Print BUG_ID which has given DUPHASH")),
         OPT_LIST(     'g', "group", &group      , "GROUP"  , _("Restrict access to this group only")),
+        OPT_OPTSTRING('D', "debug", &debug_str  , "STR"    , _("Debug")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
@@ -986,6 +992,23 @@ int main(int argc, char **argv)
 //COMPAT, remove in abrt-2.1
         if (!rhbz.b_os_release)
             rhbz.b_os_release = problem_data_get_content_or_die(problem_data, "release");
+    }
+
+    if (opts & OPT_D)
+    {
+        GList *comment_fmt_spec = load_bzrep_conf_file(fmt_file);
+        struct strbuf *bzcomment_buf = strbuf_new();
+        generate_bz_comment(bzcomment_buf, problem_data, comment_fmt_spec);
+        char *bzcomment = strbuf_free_nobuf(bzcomment_buf);
+        char *summary = create_summary_string(problem_data, comment_fmt_spec);
+        printf("summary: %s\n"
+                "\n"
+                "%s"
+                , summary, bzcomment
+        );
+        free(bzcomment);
+        free(summary);
+        exit(0);
     }
 
     log(_("Logging into Bugzilla at %s"), rhbz.b_bugzilla_url);
