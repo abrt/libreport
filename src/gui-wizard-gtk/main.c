@@ -74,6 +74,8 @@ void problem_data_reload_from_dump_dir(void)
 
 int main(int argc, char **argv)
 {
+    bool expert_mode = false;
+
     const char *prgname = "abrt";
     abrt_init(argv);
 
@@ -110,6 +112,7 @@ int main(int argc, char **argv)
         OPT_p = 1 << 2,
         OPT_d = 1 << 3,
         OPT_e = 1 << 4,
+        OPT_x = 1 << 5,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
@@ -119,6 +122,7 @@ int main(int argc, char **argv)
         /* for use from 3rd party apps to show just a reporter selector */
         OPT_BOOL(  'd', "delete", NULL,                       _("Remove DIR after reporting")),
         OPT_LIST(  'e', "event", &g_auto_event_list, "EVENT", _("Run only this event")),
+        OPT_BOOL(  'x', "expert", &expert_mode,             _("Run wizard in expert mode - shows advanced options")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
@@ -142,7 +146,7 @@ int main(int argc, char **argv)
 
     problem_data_reload_from_dump_dir();
 
-    create_assistant();
+    create_assistant(expert_mode);
 
     g_custom_logger = &show_error_as_msgbox;
 
