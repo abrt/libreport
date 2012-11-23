@@ -162,8 +162,8 @@ enum {
  * instead of strcmp.
  */
 static const gchar PAGE_SUMMARY[]        = "page_0";
-static const gchar PAGE_EVENT_SELECTOR[] = "page_2";
-static const gchar PAGE_EDIT_COMMENT[]   = "page_1";
+static const gchar PAGE_EVENT_SELECTOR[] = "page_1";
+static const gchar PAGE_EDIT_COMMENT[]   = "page_2";
 static const gchar PAGE_EDIT_ELEMENTS[]  = "page_3";
 static const gchar PAGE_REVIEW_DATA[]    = "page_4";
 static const gchar PAGE_EVENT_PROGRESS[] = "page_5";
@@ -1099,7 +1099,9 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
         event_name = event_name_end + 1;
 
         gtk_box_pack_start(box, button, /*expand*/ false, /*fill*/ false, /*padding*/ 0);
+        gtk_widget_show_all(GTK_WIDGET(button));
     }
+    gtk_widget_show_all(GTK_WIDGET(box));
 
     return active_button;
 }
