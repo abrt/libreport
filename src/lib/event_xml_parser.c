@@ -336,11 +336,11 @@ static void text(GMarkupParseContext *context,
                  * OR the label is still not set and we found the default value
                  */
                 if (parse_data->attribute_lang[0] != '\0'
-                 || !ui->screen_name /* && parse_data->attribute_lang is "" - always true */
+                 || !ec_get_screen_name(ui) /* && parse_data->attribute_lang is "" - always true */
                 ) {
                     VERB2 log("event name:'%s'", text_copy);
-                    free(ui->screen_name);
-                    ui->screen_name = text_copy;
+                    ec_set_screen_name(ui, text_copy);
+                    free(text_copy);
                     text_copy = NULL;
                 }
             }
@@ -355,10 +355,10 @@ static void text(GMarkupParseContext *context,
                  * OR the description is still not set and we found the default value
                  */
                 if (parse_data->attribute_lang[0] != '\0'
-                 || !ui->description /* && parse_data->attribute_lang is "" - always true */
+                 || !ec_get_description(ui) /* && parse_data->attribute_lang is "" - always true */
                 ) {
-                    free(ui->description);
-                    ui->description = text_copy;
+                    ec_set_description(ui, text_copy);
+                    free(text_copy);
                     text_copy = NULL;
                 }
             }
@@ -373,10 +373,10 @@ static void text(GMarkupParseContext *context,
                  * OR the description is still not set and we found the default value
                  */
                 if (parse_data->attribute_lang[0] != '\0'
-                 || !ui->long_descr /* && parse_data->attribute_lang is "" - always true */
+                 || !ec_get_long_desc(ui) /* && parse_data->attribute_lang is "" - always true */
                 ) {
-                    free(ui->long_descr);
-                    ui->long_descr = text_copy;
+                    ec_set_long_desc(ui, text_copy);
+                    free(text_copy);
                     text_copy = NULL;
                 }
             }
@@ -463,6 +463,7 @@ static void error(GMarkupParseContext *context,
 
 void load_event_description_from_file(event_config_t *event_config, const char* filename)
 {
+    VERB1 log("loading event: '%s'", filename);
     struct my_parse_data parse_data = { event_config, NULL, NULL, NULL };
     parse_data.cur_locale = setlocale(LC_ALL, NULL);
 

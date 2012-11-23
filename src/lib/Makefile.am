@@ -49,7 +49,8 @@ libreport_la_SOURCES = \
     client.c \
     utf8.c \
     file_list.c \
-    file_obj.c
+    file_obj.c \
+    config_item_info.c
 libreport_la_CPPFLAGS = \
     -I$(srcdir)/../include \
     -DLOCALSTATEDIR='"$(localstatedir)"' \

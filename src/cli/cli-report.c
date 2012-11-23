@@ -617,7 +617,7 @@ char *select_event_option(GList *list_options)
         if (config)
         {
             ++pos;
-            printf(" %i) %s\n", pos, config->screen_name);
+            printf(" %i) %s\n", pos, ec_get_screen_name(config));
         }
     }
 
@@ -717,7 +717,7 @@ int collect(const char *dump_dir_name, int batch)
             if (!config)
                 VERB1 log("No configuration file found for collector '%s'", collector_name);
 
-            printf(" %d) %s\n", i, (config && config->screen_name) ? config->screen_name : collector_name);
+            printf(" %d) %s\n", i, (config && ec_get_screen_name(config)) ? ec_get_screen_name(config) : collector_name);
         }
 
         read_from_stdin(_("Select collector(s): "), wanted_collectors, sizeof(wanted_collectors));
@@ -901,7 +901,7 @@ int report(const char *dump_dir_name, int flags)
             char *reporter_name = (char *) li->data;
             event_config_t *config = get_event_config(reporter_name);
 
-            printf(" %d) %s\n", i, (config && config->screen_name) ? config->screen_name : reporter_name);
+            printf(" %d) %s\n", i, (config && ec_get_screen_name(config)) ? ec_get_screen_name(config) : reporter_name);
         }
 
         read_from_stdin(_("Select reporter(s): "), wanted_reporters, sizeof(wanted_reporters));
@@ -1007,7 +1007,7 @@ int run_events_chain(const char *dump_dir_name, GList *chain)
             {
                 char *msg = xasprintf(_("Event '%s' requires permission to send possibly sensitive data."
                                         " Do you want to continue?"),
-                            config->screen_name ? config->screen_name : event);
+                            ec_get_screen_name(config) ? ec_get_screen_name(config) : event);
                 const bool response = ask_yesno(msg);
                 free(msg);
                 if (!response)

@@ -273,12 +273,12 @@ static void show_event_opt_error_dialog(const char *event_name)
                               "reporting will probably fail if you continue "
                               "with the current configuration.\n\n"
                               "Read more about the configuration at: https://fedorahosted.org/abrt/wiki/AbrtConfiguration"),
-                               ec->screen_name);
+                               ec_get_screen_name(ec));
     char *markup_message = xasprintf(_("Wrong settings detected for <b>%s</b>, "
                               "reporting will probably fail if you continue "
                               "with the current configuration.\n\n"
                               "<a href=\"https://fedorahosted.org/abrt/wiki/AbrtConfiguration\">Read more about the configuration</a>"),
-                               ec->screen_name);
+                               ec_get_screen_name(ec));
     GtkWidget *wrong_settings = g_top_most_window = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
         GTK_MESSAGE_WARNING,
@@ -292,7 +292,7 @@ static void show_event_opt_error_dialog(const char *event_name)
     free(markup_message);
 
     GtkWidget *act_area = gtk_dialog_get_content_area(GTK_DIALOG(wrong_settings));
-    char * conf_btn_lbl = xasprintf(_("Con_figure %s"), ec->screen_name);
+    char * conf_btn_lbl = xasprintf(_("Con_figure %s"), ec_get_screen_name(ec));
     GtkWidget *configure_event_btn = gtk_button_new_with_mnemonic(conf_btn_lbl);
     g_signal_connect(configure_event_btn, "clicked", G_CALLBACK(on_configure_event_cb), (gpointer)event_name);
     free(conf_btn_lbl);
@@ -1016,9 +1016,9 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
         if (cfg)
         {
             /* .xml has (presumably) prettier description, use it: */
-            if (cfg->screen_name)
-                event_screen_name = cfg->screen_name;
-            event_description = cfg->description;
+            if (ec_get_screen_name(cfg))
+                event_screen_name = ec_get_screen_name(cfg);
+            event_description = ec_get_description(cfg);
 
             char *missing = missing_items_in_comma_list(cfg->ec_requires_items);
             if (missing)
@@ -1078,8 +1078,8 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
         if (func)
             g_signal_connect(G_OBJECT(button), "toggled", func, xstrdup(event_name));
 
-        if (cfg && cfg->long_descr)
-            gtk_widget_set_tooltip_text(button, cfg->long_descr);
+        if (cfg && ec_get_long_desc(cfg))
+            gtk_widget_set_tooltip_text(button, ec_get_long_desc(cfg));
 
         event_gui_data_t *event_gui_data = new_event_gui_data_t();
         event_gui_data->event_name = xstrdup(event_name);
@@ -2431,7 +2431,7 @@ static bool get_sensitive_data_permission(const char *event_name)
 
     char *msg = xasprintf(_("Event '%s' requires permission to send possibly sensitive data."
                             "\nDo you want to continue?"),
-                            event_cfg->screen_name ? event_cfg->screen_name : event_name);
+                            ec_get_screen_name(event_cfg) ? ec_get_screen_name(event_cfg) : event_name);
     const bool response = ask_yes_no_save_result(msg, "ask_send_sensitive_data");
     free(msg);
 

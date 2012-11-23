@@ -236,8 +236,8 @@ static void add_event_to_liststore(gpointer key, gpointer value, gpointer user_d
     event_config_t *ec = (event_config_t *)value;
 
     char *event_label;
-    if (ec->screen_name != NULL && ec->description != NULL)
-        event_label = xasprintf("<b>%s</b>\n%s", ec->screen_name, ec->description);
+    if (ec_get_screen_name(ec) != NULL && ec_get_description(ec) != NULL)
+        event_label = xasprintf("<b>%s</b>\n%s", ec_get_screen_name(ec), ec_get_description(ec));
     else
         //if event has no xml description
         event_label = xasprintf("<b>%s</b>\nNo description available", key);
@@ -296,7 +296,7 @@ int show_event_config_dialog(const char *event_name, GtkWindow *parent)
     GtkWindow *parent_window = parent ? parent : g_event_list_window;
 
     GtkWidget *dialog = gtk_dialog_new_with_buttons(
-                        /*title:*/ event->screen_name ? event->screen_name : event_name,
+                        /*title:*/ ec_get_screen_name(event) ? ec_get_screen_name(event) : event_name,
                         parent_window,
                         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                         GTK_STOCK_CANCEL,

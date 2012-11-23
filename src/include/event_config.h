@@ -22,6 +22,7 @@
 #include <stdbool.h>
 #include <glib.h>
 #include "problem_data.h"
+#include "config_item_info.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -68,10 +69,7 @@ void free_event_option(event_option_t *p);
 //structure to hold the option data
 typedef struct
 {
-    char *name;     //the event name (from it's filename)
-    char *screen_name; //ui friendly name of the event: "Bugzilla" "RedHat Support Upload"
-    char *description; // "Report to..."/"Save to file". Should be one sentence, not long
-    char *long_descr;  // Long(er) explanation, if needed
+    config_item_info_t *info;
 
     char *ec_creates_items;
     char *ec_requires_items;
@@ -87,6 +85,19 @@ typedef struct
 } event_config_t;
 
 event_config_t *new_event_config(void);
+config_item_info_t *ec_get_config_info(event_config_t * ec);
+const char *ec_get_screen_name(event_config_t *ec);
+void ec_set_screen_name(event_config_t *ec, const char *screen_name);
+void ec_set_name(event_config_t *ec, const char *name);
+
+const char *ec_get_description(event_config_t *ec);
+void ec_set_description(event_config_t *ec, const char *description);
+
+const char *ec_get_name(event_config_t *ec);
+const char *ec_get_long_desc(event_config_t *ec);
+void ec_set_long_desc(event_config_t *ec, const char *long_desc);
+bool ec_is_configurable(event_config_t* ec);
+
 void free_event_config(event_config_t *p);
 
 
@@ -98,6 +109,7 @@ void load_event_config_data(void);
 void free_event_config_data(void);
 event_config_t *get_event_config(const char *event_name);
 event_option_t *get_event_option_from_list(const char *option_name, GList *event_options);
+
 
 extern GHashTable *g_event_config_list;   // for iterating through entire list of all loaded configs
 

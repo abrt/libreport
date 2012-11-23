@@ -60,8 +60,8 @@ static int select_reporters(GArray *reporters)
     {
         struct reporter *r = &g_array_index(reporters, struct reporter, i);
 
-        checkboxes[i] = newtCheckbox(20, i + 1, r->config && r->config->screen_name ?
-                r->config->screen_name : r->name, 0, NULL, NULL);
+        checkboxes[i] = newtCheckbox(20, i + 1, r->config && ec_get_screen_name(r->config) ?
+                ec_get_screen_name(r->config) : r->name, 0, NULL, NULL);
         newtGridSetField(cgrid, 0, i, NEWT_GRID_COMPONENT, checkboxes[i], 0, 0, 0, 0, NEWT_ANCHOR_LEFT, 0);
     }
 
@@ -104,8 +104,8 @@ static int configure_reporter(struct reporter *r, bool skip_if_valid)
     while ((error_table = validate_event(r->name)) ||
             (!skip_if_valid && first && r->config))
     {
-        text = newtTextboxReflowed(0, 0, r->config->screen_name ?
-                r->config->screen_name : r->name, 35, 5, 5, 0);
+        text = newtTextboxReflowed(0, 0, ec_get_screen_name(r->config) ?
+                xstrdup(ec_get_screen_name(r->config)) : r->name, 35, 5, 5, 0);
 
         num_opts = g_list_length(r->config->options);
         options = xmalloc(sizeof (newtComponent) * num_opts);

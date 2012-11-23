@@ -16,6 +16,7 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+
 #include "internal_libreport.h"
 
 GHashTable *g_event_config_list;
@@ -29,7 +30,58 @@ event_option_t *new_event_option(void)
 event_config_t *new_event_config(void)
 {
     event_config_t *e = xzalloc(sizeof(event_config_t));
+    e->info = new_config_info();
     return e;
+}
+
+config_item_info_t *ec_get_config_info(event_config_t * ec)
+{
+    return ec->info;
+}
+
+void ec_set_name(event_config_t *ec, const char *name)
+{
+    ci_set_name(ec->info, name);
+}
+
+void ec_set_screen_name(event_config_t *ec, const char *screen_name)
+{
+    ci_set_screen_name(ec->info, screen_name);
+}
+
+const char *ec_get_screen_name(event_config_t *ec)
+{
+    return ci_get_screen_name(ec->info);
+}
+
+const char *ec_get_description(event_config_t *ec)
+{
+    return ci_get_description(ec->info);
+}
+
+void ec_set_description(event_config_t *ec, const char *description)
+{
+    ci_set_description(ec->info, description);
+}
+
+const char *ec_get_name(event_config_t *ec)
+{
+    return ci_get_name(ec->info);
+}
+
+const char *ec_get_long_desc(event_config_t *ec)
+{
+    return ci_get_long_desc(ec->info);
+}
+
+void ec_set_long_desc(event_config_t *ec, const char *long_descr)
+{
+    ci_set_long_desc(ec->info, long_descr);
+}
+
+bool ec_is_configurable(event_config_t* ec)
+{
+    return g_list_length(ec->options) > 0;
 }
 
 void free_event_option(event_option_t *p)
@@ -50,9 +102,7 @@ void free_event_config(event_config_t *p)
     if (!p)
         return;
 
-    free(p->screen_name);
-    free(p->description);
-    free(p->long_descr);
+    free_config_info(p->info);
     free(p->ec_creates_items);
     free(p->ec_requires_items);
     free(p->ec_exclude_items_by_default);
