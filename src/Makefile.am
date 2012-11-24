@@ -8,4 +8,4 @@ if BUILD_NEWT
 sub_dirs += report-newt
 endif
 
-SUBDIRS = include lib plugins report-python cli client-python $(sub_dirs)
+SUBDIRS = include lib plugins report-python cli client-python workflows $(sub_dirs)

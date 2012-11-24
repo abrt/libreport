@@ -1378,7 +1378,7 @@ bool is_event_config_user_storage_available()
  * @param name Event name
  * @param config Event config
  */
-void load_single_event_config_data_from_user_storage(const char *event_name, event_config_t *config)
+void load_single_event_config_data_from_user_storage(event_config_t *config)
 {
     GHashTable *tmp = g_hash_table_new_full(
                 /*hash_func*/ g_str_hash,
@@ -1386,7 +1386,7 @@ void load_single_event_config_data_from_user_storage(const char *event_name, eve
                 /*key_destroy_func:*/ g_free,
                 /*value_destroy_func:*/ NULL);
 
-    g_hash_table_insert(tmp, xstrdup(event_name), config);
+    g_hash_table_insert(tmp, xstrdup(ec_get_name(config)), config);
 
     load_event_config_data_from_user_storage(tmp);
 

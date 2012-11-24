@@ -64,6 +64,7 @@ static GtkWidget *g_btn_close;
 static GtkWidget *g_btn_next;
 
 static GtkBox *g_box_events;
+static GtkBox *g_box_workflows;
 /* List of event_gui_data's */
 static GList *g_list_events;
 static GtkLabel *g_lbl_event_log;
@@ -103,6 +104,9 @@ static GtkImage *g_img_process_fail;
 static GtkImage *g_img_process_ok;
 
 static GtkWidget *g_top_most_window;
+
+static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback func);
+static void set_auto_event_chain(GtkButton *button, gpointer user_data);
 
 typedef struct
 {
@@ -972,6 +976,7 @@ static char *missing_items_in_comma_list(const char *input_item_list)
     }
     return result;
 }
+
 static event_gui_data_t *add_event_buttons(GtkBox *box,
                 GList **p_event_list,
                 char *event_name,
@@ -1318,13 +1323,24 @@ void update_gui_state_from_problem_data(int flags)
 
     load_text_to_text_view(g_tv_comment, FILENAME_COMMENT);
 
-    /* Update event radio buttons */
-    event_gui_data_t *active_button = add_event_buttons(
-                g_box_events,
-                &g_list_events,
-                g_events,
-                G_CALLBACK(event_rb_was_toggled)
-    );
+    add_workflow_buttons(g_box_workflows, g_workflow_list,
+                        G_CALLBACK(set_auto_event_chain));
+
+    /* Update event radio buttons
+     * show them only in expert mode
+    */
+    event_gui_data_t *active_button = NULL;
+    if (g_expert_mode == true)
+    {
+        //this widget doesn't react to show_all, so we need to "force" it
+        gtk_widget_show(GTK_WIDGET(g_box_events));
+        active_button = add_event_buttons(
+                    g_box_events,
+                    &g_list_events,
+                    g_events,
+                    G_CALLBACK(event_rb_was_toggled)
+        );
+    }
 
     if (flags & UPDATE_SELECTED_EVENT && g_expert_mode)
     {
@@ -1337,7 +1353,6 @@ void update_gui_state_from_problem_data(int flags)
         }
         VERB2 log("g_event_selected='%s'", g_event_selected);
     }
-
     /* We can't just do gtk_widget_show_all once in main:
      * We created new widgets (buttons). Need to make them visible.
      */
@@ -1505,13 +1520,25 @@ static bool is_processing_finished()
     return !g_expert_mode && !g_auto_event_list;
 }
 
-static void update_gui_on_finished_reporting()
+static void hide_next_step_button()
 {
+    if(gtk_widget_get_visible(GTK_WIDGET(g_btn_next)) == false)
+        return
+
     /* replace 'Forward' with 'Close' button */
     /* 1. hide next button */
     gtk_widget_hide(g_btn_next);
     /* 2. move close button to the last position */
     gtk_box_reorder_child(g_box_buttons, g_btn_close, 3);
+}
+
+static void show_next_step_button()
+{
+    if(gtk_widget_get_visible(GTK_WIDGET(g_btn_next)) == true)
+        return
+
+    gtk_box_reorder_child(g_box_buttons, g_btn_close, 0);
+    gtk_widget_show(g_btn_next);
 }
 
 static void terminate_event_chain()
@@ -1525,7 +1552,7 @@ static void terminate_event_chain()
     g_list_free_full(g_auto_event_list, free);
     g_auto_event_list = NULL;
 
-    update_gui_on_finished_reporting();
+    hide_next_step_button();
 }
 
 static void update_command_run_log(const char* message, struct analyze_event_data *evd)
@@ -1788,7 +1815,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         kill(getppid(), SIGCHLD);
 
         if (is_processing_finished())
-            update_gui_on_finished_reporting();
+            hide_next_step_button();
         else if (retval == 0 && !g_verbose && !g_expert_mode)
             on_next_btn_cb(GTK_WIDGET(g_btn_next), NULL);
 
@@ -2342,6 +2369,9 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
     save_items_from_notepad();
     save_text_from_text_view(g_tv_comment, FILENAME_COMMENT);
 
+    //some pages hide it, so restore it to it's default
+    show_next_step_button();
+
     if (pages[PAGENO_SUMMARY].page_widget == page)
     {
         if (!g_expert_mode)
@@ -2400,6 +2430,60 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
             setup_and_start_event_run(g_event_selected);
         }
     }
+
+    if(pages[PAGENO_EVENT_SELECTOR].page_widget == page)
+    {
+        if (!g_expert_mode && !g_auto_event_list)
+            hide_next_step_button();
+    }
+}
+
+//static void event_rb_was_toggled(GtkButton *button, gpointer user_data)
+static void set_auto_event_chain(GtkButton *button, gpointer user_data)
+{
+    //event is selected, so make sure the expert mode is disabled
+    g_expert_mode = false;
+
+    workflow_t *w = (workflow_t *)user_data;
+    config_item_info_t *info = workflow_get_config_info(w);
+    VERB1 log("selected workflow '%s'", info->screen_name);
+
+    GList *wf_event_list = wf_get_event_list(w);
+    while(wf_event_list)
+    {
+        g_auto_event_list = g_list_append(g_auto_event_list, xstrdup(ec_get_name(wf_event_list->data)));
+        load_single_event_config_data_from_user_storage((event_config_t *)wf_event_list->data);
+
+        wf_event_list = g_list_next(wf_event_list);
+    }
+
+    gint current_page_no = gtk_notebook_get_current_page(g_assistant);
+    gint next_page_no = select_next_page_no(current_page_no, NULL);
+
+    /* if pageno is not change 'switch-page' signal is not emitted */
+    if (current_page_no == next_page_no)
+        on_page_prepare(g_assistant, gtk_notebook_get_nth_page(g_assistant, next_page_no), NULL);
+    else
+        gtk_notebook_set_current_page(g_assistant, next_page_no);
+}
+
+static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback func)
+{
+    GList *keys = g_hash_table_get_keys(g_workflow_list);
+    while(keys)
+    {
+        workflow_t *w = g_hash_table_lookup(g_workflow_list, keys->data);
+        char *btn_label = xasprintf("<b>%s</b>\n%s", wf_get_screen_name(w), wf_get_description(w));
+        GtkWidget *button = gtk_button_new_with_label(btn_label);
+        GList *children = gtk_container_get_children(GTK_CONTAINER(button));
+        GtkWidget *label = (GtkWidget *)children->data;
+        gtk_label_set_use_markup(GTK_LABEL(label), true);
+        free(btn_label);
+        g_signal_connect(button, "clicked", func, w);
+        gtk_box_pack_start(box, button, true, false, 2);
+        keys = g_list_next(keys);
+    }
+
 }
 
 static char *setup_next_processed_event(GList **events_list)
@@ -2416,7 +2500,7 @@ static char *setup_next_processed_event(GList **events_list)
          * so at least hide the spinner, because we're obviously finished
         */
         gtk_widget_hide(GTK_WIDGET(g_spinner_event_log));
-        update_gui_on_finished_reporting();
+        hide_next_step_button();
         return NULL;
     }
 
@@ -2451,6 +2535,11 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
 
     if (pages[PAGENO_EVENT_SELECTOR].page_widget == page)
     {
+        if (!g_expert_mode && (g_auto_event_list == NULL))
+        {
+            return current_page_no; //stay here and let user select the workflow
+        }
+
         if (!g_expert_mode)
         {
             /* (note: this frees and sets to NULL g_event_selected) */
@@ -2883,6 +2972,7 @@ static void add_pages(void)
     /* Set pointers to objects we might need to work with */
     g_lbl_cd_reason        = GTK_LABEL(        gtk_builder_get_object(g_builder, "lbl_cd_reason"));
     g_box_events           = GTK_BOX(          gtk_builder_get_object(g_builder, "vb_events"));
+    g_box_workflows        = GTK_BOX(          gtk_builder_get_object(g_builder, "vb_workflows"));
     g_lbl_event_log        = GTK_LABEL(        gtk_builder_get_object(g_builder, "lbl_event_log"));
     g_tv_event_log         = GTK_TEXT_VIEW(    gtk_builder_get_object(g_builder, "tv_event_log"));
     g_tv_comment           = GTK_TEXT_VIEW(    gtk_builder_get_object(g_builder, "tv_comment"));
@@ -2991,7 +3081,7 @@ static void init_page(page_obj_t *page, const char *name, const char *title)
 static void init_pages(void)
 {
     init_page(&pages[0], PAGE_SUMMARY            , _("Problem description")   );
-    init_page(&pages[1], PAGE_EVENT_SELECTOR     , _("Select operation")      );
+    init_page(&pages[1], PAGE_EVENT_SELECTOR     , _("Select how to report this problem"));
     init_page(&pages[2], PAGE_EDIT_COMMENT,_("Provide additional information"));
     init_page(&pages[3], PAGE_EDIT_ELEMENTS      , _("Review the data")       );
     init_page(&pages[4], PAGE_REVIEW_DATA        , _("Confirm data to report"));
@@ -3007,11 +3097,11 @@ static void assistant_quit_cb(void *obj, void *data)
     gtk_main_quit();
 }
 
-void create_assistant(void)
+void create_assistant(bool expert_mode)
 {
     g_loaded_texts = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 
-    g_expert_mode = !g_auto_event_list;
+    g_expert_mode = expert_mode;
 
     g_monospace_font = pango_font_description_from_string("monospace");
     g_builder = gtk_builder_new();

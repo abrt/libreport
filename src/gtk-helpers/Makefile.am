@@ -12,7 +12,9 @@ libreport_gtk_la_SOURCES = \
     event_config_dialog.c \
     secrets.c \
     hyperlinks.c \
-    autowrapped_label.c
+    autowrapped_label.c \
+    workflow_config_dialog.c \
+    config_dialog.c
 
 libreport_gtk_la_CPPFLAGS = \
     -I$(srcdir)/../include \
@@ -20,6 +22,7 @@ libreport_gtk_la_CPPFLAGS = \
     $(GTK_CFLAGS) \
     $(GLIB_CFLAGS) \
     $(GIO_CFLAGS) \
+    -DWORKFLOWS_DIR=\"$(WORKFLOWS_DIR)\" \
     -D_GNU_SOURCE
 libreport_gtk_la_LDFLAGS = \
     -version-info 0:1:0

@@ -144,6 +144,8 @@ int main(int argc, char **argv)
     load_event_config_data_from_user_storage(g_event_config_list);
     load_user_settings("report-gtk");
 
+    load_workflow_config_data(WORKFLOWS_DIR);
+
     problem_data_reload_from_dump_dir();
 
     create_assistant(expert_mode);

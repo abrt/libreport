@@ -24,6 +24,8 @@ typedef struct file_obj
      * e.g:
      *    if fullpath is: /foo/bar/report_Bugzilla.xml
      *    then filename is: report_Bugzilla
+     * in case of symlink the filename is created from the symlink name
+     * and the fullpath is the symlink target
      */
     char *filename;
     char *fullpath; //the full path with extension

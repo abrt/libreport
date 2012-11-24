@@ -29,7 +29,7 @@ typedef struct
 
 } config_item_info_t;
 
-config_item_info_t *new_config_info();
+config_item_info_t *new_config_info(void);
 void free_config_info(config_item_info_t *info);
 
 void ci_set_screen_name(config_item_info_t *ci, const char *screen_name);

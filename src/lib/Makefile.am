@@ -50,6 +50,8 @@ libreport_la_SOURCES = \
     utf8.c \
     file_list.c \
     file_obj.c \
+    workflow.c \
+    workflow_xml_parser.c \
     config_item_info.c
 libreport_la_CPPFLAGS = \
     -I$(srcdir)/../include \
@@ -60,6 +62,7 @@ libreport_la_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DEVENTS_DIR=\"$(EVENTS_DIR)\" \
+    -DWORKFLOWS_DIR=\"$(WORKFLOWS_DIR)\" \
     -DBIN_DIR=\"$(bindir)\" \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE

@@ -176,6 +176,8 @@ PLUGINS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/plugins'
 REPORT_PLUGINS_CONF_DIR='${sysconfdir}/libreport/plugins'
 EVENTS_DIR='${sysconfdir}/${PACKAGE_NAME}/events'
 EVENTS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/events.d'
+WORKFLOWS_DIR='${sysconfdir}/${PACKAGE_NAME}/workflows'
+WORKFLOWS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/workflows.d'
 PLUGINS_LIB_DIR='${libdir}/${PACKAGE_NAME}'
 LIBEXEC_DIR='${libexecdir}'
 
@@ -195,6 +197,8 @@ AC_SUBST(EVENTS_DIR)
 AC_SUBST(PLUGINS_LIB_DIR)
 AC_SUBST(DEBUG_DUMPS_DIR)
 AC_SUBST(LIBEXEC_DIR)
+AC_SUBST(WORKFLOWS_DIR)
+AC_SUBST(WORKFLOWS_CONF_DIR)
 
 # Initialize the test suite.
  AC_CONFIG_TESTDIR(tests)
@@ -222,6 +226,7 @@ AC_CONFIG_FILES([
 	src/client-python/Makefile
 	po/Makefile.in
 	doc/Makefile
+	src/workflows/Makefile
 ])
 
 #	src/plugins/Makefile

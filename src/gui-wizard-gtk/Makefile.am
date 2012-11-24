@@ -19,6 +19,7 @@ report_gtk_CFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DICON_DIR=\"${datadir}/abrt/icons/hicolor/48x48/status\" \
+    -DWORKFLOWS_DIR=\"$(WORKFLOWS_DIR)\" \
     $(GLIB_CFLAGS) \
     $(GTK_CFLAGS) \
     -D_GNU_SOURCE

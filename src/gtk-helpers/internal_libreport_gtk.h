@@ -37,7 +37,7 @@ void show_events_list_dialog(GtkWindow *parent);
 bool is_event_config_user_storage_available();
 
 #define load_single_event_config_data_from_user_storage libreport_load_single_event_config_data_from_user_storage
-void load_single_event_config_data_from_user_storage(const char *event_name, event_config_t *config);
+void load_single_event_config_data_from_user_storage(event_config_t *config);
 
 #define load_event_config_data_from_user_storage libreport_load_event_config_data_from_user_storage
 void load_event_config_data_from_user_storage(GHashTable *event_config_list);
@@ -49,6 +49,24 @@ void  save_event_config_data_to_user_storage(const char *event_name,
 
 #define show_event_config_dialog libreport_show_event_config_dialog
 int show_event_config_dialog(const char *event_name, GtkWindow *parent);
+
+#define create_event_config_dialog_content libreport_create_event_config_dialog_content
+GtkWidget *create_event_config_dialog_content(event_config_t *event, GtkWidget *content);
+
+#define show_workflow_list_dialog libreport_show_workflow_list_dialog
+void show_workflow_list_dialog(GtkWindow *parent);
+
+#define add_item_to_config_liststore libreport_add_item_to_config_liststore
+void add_item_to_config_liststore(gpointer key, gpointer value, gpointer user_data);
+
+#define create_config_list_dialog libreport_create_config_list_dialog
+GtkWidget *create_config_list_dialog(const char *column_label,
+                                    GHashTable *items,
+                                    GtkWindow *dialog,
+                                    GHFunc item_to_config_info,
+                                    GCallback on_config_cb,
+                                    GCallback on_row_change);
+GtkListStore *new_conf_liststore(void);
 
 char * tag_url(const char* line, const char* prefix);
 

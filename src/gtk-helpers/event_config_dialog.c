@@ -177,80 +177,6 @@ static void add_option_to_table(gpointer data, gpointer user_data)
     free(option_label);
 }
 
-static void on_close_event_list_cb(GtkWidget *button, gpointer user_data)
-{
-    GtkWidget *window = (GtkWidget *)user_data;
-    gtk_widget_destroy(window);
-}
-
-static char *get_event_name_from_row(GtkTreeView *treeview)
-{
-    GtkTreeSelection *selection = gtk_tree_view_get_selection(treeview);
-    char *event_name = NULL;
-    if (selection)
-    {
-        GtkTreeIter iter;
-        GtkTreeModel *store = gtk_tree_view_get_model(treeview);
-        if (gtk_tree_selection_get_selected(selection, &store, &iter) == TRUE)
-        {
-            GValue value = { 0 };
-            gtk_tree_model_get_value(store, &iter, COLUMN_EVENT_NAME, &value);
-            event_name = (char *)g_value_get_string(&value);
-        }
-    }
-    return event_name;
-}
-
-static void on_configure_event_cb(GtkWidget *button, gpointer user_data)
-{
-    GtkTreeView *events_tv = (GtkTreeView *)user_data;
-    char *event_name = get_event_name_from_row(events_tv);
-    if (event_name != NULL)
-        show_event_config_dialog(event_name, NULL);
-    //else
-    //    error_msg(_("Please select a plugin from the list to edit its options."));
-}
-
-static void on_event_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
-{
-    char *event_name = get_event_name_from_row(treeview);
-    event_config_t *ec = get_event_config(event_name);
-    if (ec->options != NULL) //We need to have some options to show
-        show_event_config_dialog(event_name, NULL);
-}
-
-static void on_event_row_changed_cb(GtkTreeView *treeview, gpointer user_data)
-{
-    const char *event_name = get_event_name_from_row(treeview);
-
-    if (event_name)
-    {
-        event_config_t *ec = get_event_config(event_name);
-        gtk_widget_set_sensitive(GTK_WIDGET(user_data), ec->options != NULL);
-    }
-}
-
-static void add_event_to_liststore(gpointer key, gpointer value, gpointer user_data)
-{
-    GtkListStore *events_list_store = (GtkListStore *)user_data;
-    event_config_t *ec = (event_config_t *)value;
-
-    char *event_label;
-    if (ec_get_screen_name(ec) != NULL && ec_get_description(ec) != NULL)
-        event_label = xasprintf("<b>%s</b>\n%s", ec_get_screen_name(ec), ec_get_description(ec));
-    else
-        //if event has no xml description
-        event_label = xasprintf("<b>%s</b>\nNo description available", key);
-
-    GtkTreeIter iter;
-    gtk_list_store_append(events_list_store, &iter);
-    gtk_list_store_set(events_list_store, &iter,
-                      COLUMN_EVENT_UINAME, event_label,
-                      COLUMN_EVENT_NAME, key,
-                      -1);
-    free(event_label);
-}
-
 static void save_value_from_widget(gpointer data, gpointer user_data)
 {
     option_widget_t *ow = (option_widget_t *)data;
@@ -283,43 +209,12 @@ static void dehydrate_config_dialog()
         g_list_foreach(option_widget_list, &save_value_from_widget, NULL);
 }
 
-int show_event_config_dialog(const char *event_name, GtkWindow *parent)
+GtkWidget *create_event_config_dialog_content(event_config_t *event, GtkWidget *content)
 {
-    if (option_widget_list != NULL)
-    {
-        g_list_free(option_widget_list);
-        option_widget_list = NULL;
-    }
+    if (content == NULL)
+        content = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 
-    event_config_t *event = get_event_config(event_name);
-
-    GtkWindow *parent_window = parent ? parent : g_event_list_window;
-
-    GtkWidget *dialog = gtk_dialog_new_with_buttons(
-                        /*title:*/ ec_get_screen_name(event) ? ec_get_screen_name(event) : event_name,
-                        parent_window,
-                        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                        GTK_STOCK_CANCEL,
-                        GTK_RESPONSE_CANCEL,
-                        GTK_STOCK_OK,
-                        GTK_RESPONSE_APPLY,
-                        NULL);
-
-    /* Allow resize?
-     * W/o resize, e.g. upload configuration hint looks awfully
-     * line wrapped.
-     * With resize, there are some somewhat not nice effects:
-     * for one, opening an expander will enlarge window,
-     * but won't contract it back when expander is closed.
-     */
-    gtk_window_set_resizable(GTK_WINDOW(dialog), true);
-    gtk_window_set_default_size(GTK_WINDOW(dialog), 450, -1);
-
-    if (parent_window != NULL)
-    {
-        gtk_window_set_icon_name(GTK_WINDOW(dialog),
-                gtk_window_get_icon_name(parent_window));
-    }
+    //event_config_t *event = get_event_config(event_name);
 
     GtkWidget *option_table = gtk_grid_new();
     gtk_grid_set_row_homogeneous(GTK_GRID(option_table), FALSE);
@@ -359,7 +254,6 @@ int show_event_config_dialog(const char *event_name, GtkWindow *parent)
         g_signal_connect(pass_store_cb, "toggled", G_CALLBACK(on_show_pass_store_cb), NULL);
     }
 
-    GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
     gtk_box_pack_start(GTK_BOX(content), option_table, false, false, 20);
 
     /* add the adv_option_table to the dialog only if there is some adv option */
@@ -378,6 +272,106 @@ int show_event_config_dialog(const char *event_name, GtkWindow *parent)
         gtk_widget_modify_fg(keyring_warn_lbl, GTK_STATE_NORMAL, &red);
         gtk_box_pack_start(GTK_BOX(content), keyring_warn_lbl, false, false, 0);
     }
+
+    gtk_widget_show_all(content); //make it all visible
+
+    return content;
+}
+
+GtkWidget *create_config_dialog(const char *event_name, GtkWindow *parent)
+{
+    if (option_widget_list != NULL)
+    {
+        g_list_free(option_widget_list);
+        option_widget_list = NULL;
+    }
+
+    event_config_t *event = get_event_config(event_name);
+
+    if(!ec_is_configurable(event))
+        return NULL;
+
+    GtkWindow *parent_window = parent ? parent : g_event_list_window;
+
+    GtkWidget *dialog = gtk_dialog_new_with_buttons(
+                        /*title:*/ec_get_screen_name(event) ? ec_get_screen_name(event) : event_name,
+                        parent_window,
+                        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                        GTK_STOCK_CANCEL,
+                        GTK_RESPONSE_CANCEL,
+                        GTK_STOCK_OK,
+                        GTK_RESPONSE_APPLY,
+                        NULL);
+
+    /* Allow resize?
+     * W/o resize, e.g. upload configuration hint looks awfully
+     * line wrapped.
+     * With resize, there are some somewhat not nice effects:
+     * for one, opening an expander will enlarge window,
+     * but won't contract it back when expander is closed.
+     */
+    gtk_window_set_resizable(GTK_WINDOW(dialog), true);
+    gtk_window_set_default_size(GTK_WINDOW(dialog), 450, -1);
+
+    if (parent_window != NULL)
+    {
+        gtk_window_set_icon_name(GTK_WINDOW(dialog),
+        gtk_window_get_icon_name(parent_window));
+    }
+
+    GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+    content = create_event_config_dialog_content(event, content);
+
+    return dialog;
+}
+
+static void add_event_to_liststore(gpointer key, gpointer value, gpointer user_data)
+{
+    config_item_info_t *info = ec_get_config_info((event_config_t *)value);
+    GtkWidget *dialog = create_config_dialog(key, NULL);
+    add_item_to_config_liststore(dialog, info, user_data);
+}
+
+int show_event_config_dialog(const char *event_name, GtkWindow *parent)
+{
+    if (option_widget_list != NULL)
+    {
+        g_list_free(option_widget_list);
+        option_widget_list = NULL;
+    }
+
+    event_config_t *event = get_event_config(event_name);
+
+    GtkWindow *parent_window = parent ? parent : g_event_list_window;
+
+    GtkWidget *dialog = gtk_dialog_new_with_buttons(
+                        /*title:*/ec_get_screen_name(event) ? ec_get_screen_name(event) : event_name,
+                        parent_window,
+                        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                        GTK_STOCK_CANCEL,
+                        GTK_RESPONSE_CANCEL,
+                        GTK_STOCK_OK,
+                        GTK_RESPONSE_APPLY,
+                        NULL);
+
+    /* Allow resize?
+     * W/o resize, e.g. upload configuration hint looks awfully
+     * line wrapped.
+     * With resize, there are some somewhat not nice effects:
+     * for one, opening an expander will enlarge window,
+     * but won't contract it back when expander is closed.
+     */
+    gtk_window_set_resizable(GTK_WINDOW(dialog), true);
+    gtk_window_set_default_size(GTK_WINDOW(dialog), 450, -1);
+
+    if (parent_window != NULL)
+    {
+        gtk_window_set_icon_name(GTK_WINDOW(dialog),
+                gtk_window_get_icon_name(parent_window));
+    }
+
+    GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+    content = create_event_config_dialog_content(event, content);
 
     gtk_widget_show_all(content);
 
@@ -421,67 +415,7 @@ void show_events_list_dialog(GtkWindow *parent)
             gtk_window_get_icon_name(parent));
     }
 
-    GtkWidget *main_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-    GtkWidget *events_scroll = gtk_scrolled_window_new(NULL, NULL);
-    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(events_scroll),
-                                    GTK_POLICY_NEVER,
-                                    GTK_POLICY_AUTOMATIC);
-    /* event list treeview */
-    GtkWidget *events_tv = gtk_tree_view_new();
-    /* column with event name and description */
-    GtkCellRenderer *renderer;
-    GtkTreeViewColumn *column;
-
-    /* add column to tree view */
-    renderer = gtk_cell_renderer_text_new();
-    column = gtk_tree_view_column_new_with_attributes(_("Event"),
-                                                 renderer,
-                                                 "markup",
-                                                 COLUMN_EVENT_UINAME,
-                                                 NULL);
-    gtk_tree_view_column_set_resizable(column, TRUE);
-    g_object_set(G_OBJECT(renderer), "wrap-mode", PANGO_WRAP_WORD, NULL);
-    g_object_set(G_OBJECT(renderer), "wrap-width", 440, NULL);
-    gtk_tree_view_column_set_sort_column_id(column, COLUMN_EVENT_NAME);
-    gtk_tree_view_append_column(GTK_TREE_VIEW(events_tv), column);
-    /* "Please draw rows in alternating colors": */
-    gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(events_tv), TRUE);
-    // TODO: gtk_tree_view_set_headers_visible(FALSE)? We have only one column anyway...
-
-    /* Create data store for the list and attach it
-     * COLUMN_EVENT_UINAME -> name+description
-     * COLUMN_EVENT_NAME -> event name so we can retrieve it from the row
-     */
-    GtkListStore *events_list_store = gtk_list_store_new(NUM_COLUMNS,
-                                                G_TYPE_STRING, /* Event name + description */
-                                                G_TYPE_STRING  /* event name */
-    );
-    gtk_tree_view_set_model(GTK_TREE_VIEW(events_tv), GTK_TREE_MODEL(events_list_store));
-
-    g_hash_table_foreach(g_event_config_list,
-                        &add_event_to_liststore,
-                        events_list_store);
-//TODO: can unref events_list_store? treeview holds one ref.
-
-    /* Double click/Enter handler */
-    g_signal_connect(events_tv, "row-activated", G_CALLBACK(on_event_row_activated_cb), NULL);
-
-    gtk_container_add(GTK_CONTAINER(events_scroll), events_tv);
-
-    GtkWidget *configure_event_btn = gtk_button_new_with_mnemonic(_("Configure E_vent"));
-    gtk_widget_set_sensitive(configure_event_btn, false);
-    g_signal_connect(configure_event_btn, "clicked", G_CALLBACK(on_configure_event_cb), events_tv);
-    g_signal_connect(events_tv, "cursor-changed", G_CALLBACK(on_event_row_changed_cb), configure_event_btn);
-
-    GtkWidget *close_btn = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
-    g_signal_connect(close_btn, "clicked", G_CALLBACK(on_close_event_list_cb), g_event_list_window);
-
-    GtkWidget *btnbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
-    gtk_box_pack_end(GTK_BOX(btnbox), close_btn, false, false, 0);
-    gtk_box_pack_end(GTK_BOX(btnbox), configure_event_btn, false, false, 0);
-
-    gtk_box_pack_start(GTK_BOX(main_vbox), events_scroll, true, true, 10);
-    gtk_box_pack_start(GTK_BOX(main_vbox), btnbox, false, false, 0);
+    GtkWidget *main_vbox = create_config_list_dialog(_("Event"), g_event_config_list, GTK_WINDOW(event_list_window), &add_event_to_liststore, NULL, NULL);
 
     gtk_container_add(GTK_CONTAINER(event_list_window), main_vbox);
 

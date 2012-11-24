@@ -217,6 +217,15 @@ Obsoletes: report-config-scp < 0:0.23-1
 %description plugin-reportuploader
 Plugin to report bugs into anonymous FTP site associated with ticketing system.
 
+%package fedora
+Summary: Default configuration for reporting bugs via Fedora infrastructure
+Group: Applications/File
+
+%description fedora
+Default configuration for reporting bugs via Fedora infrastructure
+used to easy configure the reporting process for Fedora sytems. Just
+install this package and you're done.
+
 %prep
 %setup -q
 
@@ -291,6 +300,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_includedir}/libreport/run_event.h
 %{_includedir}/libreport/file_obj.h
 %{_includedir}/libreport/config_item_info.h
+%{_includedir}/libreport/workflow.h
 # Private api headers:
 %{_includedir}/libreport/internal_abrt_dbus.h
 %{_includedir}/libreport/internal_libreport.h
@@ -393,6 +403,12 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/reporter-upload
 %{_sysconfdir}/libreport/events/report_Uploader.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/uploader_event.conf
+%{_sysconfdir}/libreport/workflows/report_Upload.xml
+
+%files fedora
+%defattr(-,root,root,-)
+%{_sysconfdir}/libreport/workflows/report_Fedora.xml
+%config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_fedora.conf
 
 %changelog
 * Wed Nov 14 2012 Jakub Filak <jfilak@redhat.com> 2.0.19-1

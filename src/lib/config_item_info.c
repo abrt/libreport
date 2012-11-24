@@ -21,9 +21,9 @@
 //#include "config_item_info.h"
 
 
-config_item_info_t *new_config_info()
+config_item_info_t *new_config_info(void)
 {
-    config_item_info_t *info = (config_item_info_t *)xzalloc(sizeof(config_item_info_t));
+    config_item_info_t *info = (config_item_info_t *)xzalloc(sizeof(*info));
     return info;
 }
 
