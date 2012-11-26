@@ -23,8 +23,8 @@
 #include "libreport_curl.h"
 
 #define SERVER_URL "https://retrace.fedoraproject.org/faf"
-#define REPORT_URL_SFX "/reports/new/"
-#define ATTACH_URL_SFX "/reports/attach/"
+#define REPORT_URL_SFX "reports/new/"
+#define ATTACH_URL_SFX "reports/attach/"
 
 /*
  * Loads uReport configuration from various sources.
@@ -220,7 +220,7 @@ static struct ureport_server_response *get_server_response(post_state_t *post_st
 
 static bool perform_attach(struct ureport_server_config *config, const char *ureport_hash, int rhbz_bug)
 {
-    char *dest_url = xasprintf("%s%s", config->ur_url, ATTACH_URL_SFX);
+    char *dest_url = concat_path_file(config->ur_url, ATTACH_URL_SFX);
     const char *old_url = config->ur_url;
     config->ur_url = dest_url;
     post_state_t *post_state = ureport_attach_rhbz(ureport_hash, rhbz_bug, config);
@@ -234,7 +234,7 @@ static bool perform_attach(struct ureport_server_config *config, const char *ure
 
     if (resp && resp->is_error)
     {
-        VERB1 error_msg(_("Server side error: '%s'"), resp->value);
+        error_msg(_("Server side error: '%s'"), resp->value);
     }
 
     free_ureport_server_response(resp);
@@ -291,12 +291,10 @@ int main(int argc, char **argv)
 
     /* we either need both -b & -a or none of them */
     if (ureport_hash && rhbz_bug > 0)
-    {
         return perform_attach(&config, ureport_hash, rhbz_bug);
-    }
-    else if (ureport_hash && rhbz_bug <= 0)
+    if (ureport_hash && rhbz_bug <= 0)
         error_msg_and_die(_("You need to specify bug ID to attach."));
-    else if (!ureport_hash && rhbz_bug > 0)
+    if (!ureport_hash && rhbz_bug > 0)
         error_msg_and_die(_("You need to specify bthash of the uReport to attach."));
 
     struct dump_dir *dd = dd_opendir(dump_dir_path, DD_OPEN_READONLY);
@@ -322,13 +320,12 @@ int main(int argc, char **argv)
 
         char *bugid_ptr = strstr(bz_result->url, "show_bug.cgi?id=");
         if (!bugid_ptr)
-            error_msg_and_die(_("Unable to find bug ID in bugzilla URL."));
-
+            error_msg_and_die(_("Unable to find bug ID in bugzilla URL '%s'"), bz_result->url);
         bugid_ptr += strlen("show_bug.cgi?id=");
         int bugid;
         /* we're just reading int, sscanf works fine */
         if (sscanf(bugid_ptr, "%d", &bugid) != 1)
-            error_msg_and_die(_("Unable to parse bug ID from bugzilla URL."));
+            error_msg_and_die(_("Unable to parse bug ID from bugzilla URL '%s'"), bz_result->url);
 
         free_report_result(bz_result);
 
@@ -344,7 +341,7 @@ int main(int argc, char **argv)
     if (!pd)
         xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
-    char *dest_url = xasprintf("%s%s", config.ur_url, REPORT_URL_SFX);
+    char *dest_url = concat_path_file(config.ur_url, REPORT_URL_SFX);
     config.ur_url = dest_url;
     post_state = post_ureport(pd, &config);
     free(dest_url);
@@ -372,7 +369,7 @@ int main(int argc, char **argv)
             add_reported_to(dd, msg);
             free(msg);
 
-            for(GList *e = response->reported_to_list; e; e = g_list_next(e))
+            for (GList *e = response->reported_to_list; e; e = g_list_next(e))
                 add_reported_to(dd, e->data);
 
             dd_close(dd);
@@ -389,7 +386,7 @@ int main(int argc, char **argv)
     }
     else
     {
-        VERB1 log("server side error: %s", response->value);
+        error_msg(_("Server side error: '%s'"), response->value);
     }
 
     free_ureport_server_response(response);

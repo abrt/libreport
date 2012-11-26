@@ -224,9 +224,7 @@ char *format_percented_string(const char *str, problem_data_t *pd)
             char *nextpercent = strchr(++str, '%');
             if (!nextpercent)
             {
-                error_msg("Unterminated %%element%%: '%s'", str - 1);
-                strbuf_free(result);
-                return NULL;
+                error_msg_and_die("Unterminated %%element%%: '%s'", str - 1);
             }
 
             *nextpercent = '\0';
@@ -244,16 +242,12 @@ char *format_percented_string(const char *str, problem_data_t *pd)
 
     if (opt_depth > 1)
     {
-        error_msg("Unbalanced [[ ]] bracket");
-        strbuf_free(result);
-        return NULL;
+        error_msg_and_die("Unbalanced [[ ]] bracket");
     }
 
     if (!okay[0])
     {
         error_msg("Undefined variable outside of [[ ]] bracket");
-        strbuf_free(result);
-        return NULL;
     }
 
     return strbuf_free_nobuf(result);
@@ -274,13 +268,14 @@ char *create_summary_string(problem_data_t *pd, GList *comment_fmt_spec)
 
         GList *item = sec->items;
         if (!item)
-            return NULL;
+            /* not supposed to happen, there will be at least "" */
+            error_msg_and_die("BUG in %%summary parser");
 
         const char *str = item->data;
         return format_percented_string(str, pd);
     }
 
-    return format_percented_string("%comment%", pd);
+    return format_percented_string("%reason%", pd);
 }
 
 
