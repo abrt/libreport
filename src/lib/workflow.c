@@ -128,6 +128,11 @@ const char *wf_get_long_desc(workflow_t *w)
     return ci_get_long_desc(workflow_get_config_info(w));
 }
 
+void wf_set_screen_name(workflow_t *w, const char* screen_name)
+{
+    ci_set_screen_name(workflow_get_config_info(w), screen_name);
+}
+
 void wf_set_name(workflow_t *w, const char* name)
 {
     ci_set_name(workflow_get_config_info(w), name);

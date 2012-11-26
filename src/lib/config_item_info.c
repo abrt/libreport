@@ -18,7 +18,15 @@
 */
 
 #include "internal_libreport.h"
-//#include "config_item_info.h"
+
+struct config_item_info
+{
+    char *name;     //the event name (from it's filename)
+    char *screen_name; //ui friendly name of the event: "Bugzilla" "RedHat Support Upload"
+    char *description; // "Report to..."/"Save to file". Should be one sentence, not long
+    char *long_desc;  // Long(er) explanation, if needed
+
+};
 
 
 config_item_info_t *new_config_info(void)
@@ -64,22 +72,22 @@ void ci_set_long_desc(config_item_info_t *ci, const char *long_description)
     ci->long_desc = xstrdup(long_description);
 }
 
-inline const char *ci_get_screen_name(config_item_info_t *ci)
+const char *ci_get_screen_name(config_item_info_t *ci)
 {
     return ci->screen_name;
 }
 
-inline const char *ci_get_name(config_item_info_t *ci)
+const char *ci_get_name(config_item_info_t *ci)
 {
     return ci->name;
 }
 
-inline const char *ci_get_description(config_item_info_t *ci)
+const char *ci_get_description(config_item_info_t *ci)
 {
     return ci->description;
 }
 
-inline const char *ci_get_long_desc(config_item_info_t *ci)
+const char *ci_get_long_desc(config_item_info_t *ci)
 {
     return ci->long_desc;
 }

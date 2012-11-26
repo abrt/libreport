@@ -100,12 +100,12 @@ static void text(GMarkupParseContext *context,
 
     if(strcmp(inner_element, NAME_ELEMENT) == 0)
     {
-        workflow->info->screen_name = xstrdup(text);
+        wf_set_screen_name(workflow, text);
     }
 
     if(strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)
     {
-        workflow->info->description = xstrdup(text);
+        wf_set_description(workflow, text);
     }
 }
 

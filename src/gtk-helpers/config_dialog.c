@@ -109,7 +109,7 @@ void add_item_to_config_liststore(gpointer dialog, gpointer inf, gpointer user_d
     GtkListStore *list_store = (GtkListStore *)user_data;
     config_item_info_t *info = (config_item_info_t *)inf;
 
-    VERB1 log("adding '%s' to workflow list\n", info->screen_name);
+    VERB1 log("adding '%s' to workflow list\n", ci_get_screen_name(info));
     char *label;
     if (ci_get_screen_name(info) != NULL && ci_get_description(info) != NULL)
         label = xasprintf("<b>%s</b>\n%s",ci_get_screen_name(info), ci_get_description(info));

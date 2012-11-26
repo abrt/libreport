@@ -44,6 +44,7 @@ const char *wf_get_screen_name(workflow_t *w);
 const char *wf_get_description(workflow_t *w);
 const char *wf_get_long_desc(workflow_t *w);
 
+void wf_set_screen_name(workflow_t *w, const char* screen_name);
 void wf_set_name(workflow_t *w, const char* name);
 void wf_set_description(workflow_t *w, const char* description);
 void wf_set_long_desc(workflow_t *w, const char* long_desc);

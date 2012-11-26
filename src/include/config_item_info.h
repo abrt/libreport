@@ -20,14 +20,7 @@
 #ifndef LIBREPORT_CONFIG_ITEM_H
 #define LIBREPORT_CONFIG_ITEM_H
 
-typedef struct
-{
-    char *name;     //the event name (from it's filename)
-    char *screen_name; //ui friendly name of the event: "Bugzilla" "RedHat Support Upload"
-    char *description; // "Report to..."/"Save to file". Should be one sentence, not long
-    char *long_desc;  // Long(er) explanation, if needed
-
-} config_item_info_t;
+typedef struct config_item_info config_item_info_t;
 
 config_item_info_t *new_config_info(void);
 void free_config_info(config_item_info_t *info);
@@ -37,9 +30,9 @@ void ci_set_name(config_item_info_t *ci, const char *name);
 void ci_set_description(config_item_info_t *ci, const char *description);
 void ci_set_long_desc(config_item_info_t *ci, const char *long_description);
 
-extern const char *ci_get_screen_name(config_item_info_t *ci);
-extern const char *ci_get_name(config_item_info_t *ci);
-extern const char *ci_get_description(config_item_info_t *ci);
-extern const char *ci_get_long_desc(config_item_info_t *ci);
+const char *ci_get_screen_name(config_item_info_t *ci);
+const char *ci_get_name(config_item_info_t *ci);
+const char *ci_get_description(config_item_info_t *ci);
+const char *ci_get_long_desc(config_item_info_t *ci);
 
 #endif

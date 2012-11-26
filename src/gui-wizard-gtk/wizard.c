@@ -2446,7 +2446,7 @@ static void set_auto_event_chain(GtkButton *button, gpointer user_data)
 
     workflow_t *w = (workflow_t *)user_data;
     config_item_info_t *info = workflow_get_config_info(w);
-    VERB1 log("selected workflow '%s'", info->screen_name);
+    VERB1 log("selected workflow '%s'", ci_get_screen_name(info));
 
     GList *wf_event_list = wf_get_event_list(w);
     while(wf_event_list)
