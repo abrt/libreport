@@ -36,7 +36,7 @@ static void create_event_config_dialog_content_cb(event_config_t *ec, gpointer c
 GtkWidget *create_workflow_config_dialog(const char *workflow_name, GtkWindow *parent)
 {
     workflow_t *workflow = get_workflow(workflow_name);
-    GList *events = workflow->events;
+    GList *events = wf_get_event_list(workflow);
 
     GtkWindow *parent_window = parent ? parent : g_parent_window;
 

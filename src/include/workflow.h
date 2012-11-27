@@ -23,12 +23,7 @@
 #include "event_config.h"
 #include "config_item_info.h"
 
-typedef struct
-{
-    config_item_info_t *info;
-
-    GList *events; //list of event_option_t
-} workflow_t;
+typedef struct workflow workflow_t;
 
 extern GHashTable *g_workflow_list;
 
@@ -48,5 +43,6 @@ void wf_set_screen_name(workflow_t *w, const char* screen_name);
 void wf_set_name(workflow_t *w, const char* name);
 void wf_set_description(workflow_t *w, const char* description);
 void wf_set_long_desc(workflow_t *w, const char* long_desc);
+void wf_add_event(workflow_t *w, event_config_t *ec);
 
 #endif

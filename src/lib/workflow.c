@@ -21,6 +21,14 @@
 #include "workflow.h"
 #include "internal_libreport.h"
 
+struct workflow
+{
+    config_item_info_t *info;
+
+    GList *events; //list of event_option_t
+};
+
+
 GHashTable *g_workflow_list;
 
 workflow_t *new_workflow(void)
@@ -146,4 +154,10 @@ void wf_set_description(workflow_t *w, const char* description)
 void wf_set_long_desc(workflow_t *w, const char* long_desc)
 {
     ci_set_long_desc(workflow_get_config_info(w), long_desc);
+}
+
+void wf_add_event(workflow_t *w, event_config_t *ec)
+{
+    w->events = g_list_append(w->events, ec);
+    VERB2 log("added to ev list: '%s'", ec_get_screen_name(ec));
 }
