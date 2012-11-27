@@ -88,6 +88,7 @@ static void text(GMarkupParseContext *context,
         load_event_description_from_file(ec, subevent_filename);
         if (ec_get_screen_name(ec))
         {
+            ec_set_name(ec, text);
             wf_add_event(workflow, ec);
         }
         else
