@@ -84,11 +84,10 @@ typedef struct
     GList *options;
 } event_config_t;
 
-event_config_t *new_event_config(void);
+event_config_t *new_event_config(const char *name);
 config_item_info_t *ec_get_config_info(event_config_t * ec);
 const char *ec_get_screen_name(event_config_t *ec);
 void ec_set_screen_name(event_config_t *ec, const char *screen_name);
-void ec_set_name(event_config_t *ec, const char *name);
 
 const char *ec_get_description(event_config_t *ec);
 void ec_set_description(event_config_t *ec, const char *description);

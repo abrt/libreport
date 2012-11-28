@@ -29,9 +29,10 @@ struct config_item_info
 };
 
 
-config_item_info_t *new_config_info(void)
+config_item_info_t *new_config_info(const char *name)
 {
     config_item_info_t *info = (config_item_info_t *)xzalloc(sizeof(*info));
+    info->name = xstrdup(name);
     return info;
 }
 
@@ -52,12 +53,6 @@ void ci_set_screen_name(config_item_info_t *ci, const char *screen_name)
 {
     free(ci->screen_name);
     ci->screen_name = xstrdup(screen_name);
-}
-
-void ci_set_name(config_item_info_t *ci, const char *name)
-{
-    free(ci->name);
-    ci->name = xstrdup(name);
 }
 
 void ci_set_description(config_item_info_t *ci, const char *description)

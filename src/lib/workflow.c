@@ -31,10 +31,10 @@ struct workflow
 
 GHashTable *g_workflow_list;
 
-workflow_t *new_workflow(void)
+workflow_t *new_workflow(const char *name)
 {
     workflow_t *w = xzalloc(sizeof(*w));
-    w->info = new_config_info();
+    w->info = new_config_info(name);
     return w;
 }
 
@@ -94,12 +94,12 @@ void load_workflow_config_data(const char* path)
         workflow_t *workflow = get_workflow(file->filename);
         bool nw_workflow = (!workflow);
         if (nw_workflow)
-            workflow = new_workflow();
+            workflow = new_workflow(file->filename);
 
         load_workflow_description_from_file(workflow, file->fullpath);
 
         if (nw_workflow)
-            g_hash_table_replace(g_workflow_list, xstrdup(file->filename), workflow);
+            g_hash_table_replace(g_workflow_list, xstrdup(wf_get_name(workflow)), workflow);
 
         workflow_files = g_list_next(workflow_files);
     }
@@ -139,11 +139,6 @@ const char *wf_get_long_desc(workflow_t *w)
 void wf_set_screen_name(workflow_t *w, const char* screen_name)
 {
     ci_set_screen_name(workflow_get_config_info(w), screen_name);
-}
-
-void wf_set_name(workflow_t *w, const char* name)
-{
-    ci_set_name(workflow_get_config_info(w), name);
 }
 
 void wf_set_description(workflow_t *w, const char* description)

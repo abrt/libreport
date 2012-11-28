@@ -82,15 +82,12 @@ static void text(GMarkupParseContext *context,
 
     if(parse_data->in_event_list && strcmp(inner_element, EVENT_ELEMENT) == 0)
     {
-        event_config_t *ec = new_event_config();
+        event_config_t *ec = new_event_config(text);
         char *subevent_filename = xasprintf(EVENTS_DIR"/%s.xml", text);
 
         load_event_description_from_file(ec, subevent_filename);
         if (ec_get_screen_name(ec))
-        {
-            ec_set_name(ec, text);
             wf_add_event(workflow, ec);
-        }
         else
             free_event_config(ec);
 

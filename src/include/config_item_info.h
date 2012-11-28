@@ -22,11 +22,10 @@
 
 typedef struct config_item_info config_item_info_t;
 
-config_item_info_t *new_config_info(void);
+config_item_info_t *new_config_info(const char *name);
 void free_config_info(config_item_info_t *info);
 
 void ci_set_screen_name(config_item_info_t *ci, const char *screen_name);
-void ci_set_name(config_item_info_t *ci, const char *name);
 void ci_set_description(config_item_info_t *ci, const char *description);
 void ci_set_long_desc(config_item_info_t *ci, const char *long_description);
 

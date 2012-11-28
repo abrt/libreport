@@ -27,21 +27,16 @@ event_option_t *new_event_option(void)
     return xzalloc(sizeof(event_option_t));
 }
 
-event_config_t *new_event_config(void)
+event_config_t *new_event_config(const char *name)
 {
     event_config_t *e = xzalloc(sizeof(event_config_t));
-    e->info = new_config_info();
+    e->info = new_config_info(name);
     return e;
 }
 
 config_item_info_t *ec_get_config_info(event_config_t * ec)
 {
     return ec->info;
-}
-
-void ec_set_name(event_config_t *ec, const char *name)
-{
-    ci_set_name(ec->info, name);
 }
 
 void ec_set_screen_name(event_config_t *ec, const char *screen_name)
@@ -144,7 +139,7 @@ static void load_config_files(const char *dir_path)
         event_config_t *event_config = get_event_config(filename);
         bool new_config = (!event_config);
         if (new_config)
-            event_config = new_event_config();
+            event_config = new_event_config(filename);
 
         map_string_h *keys_and_values = new_map_string();
 
@@ -180,7 +175,7 @@ static void load_config_files(const char *dir_path)
         free_map_string(keys_and_values);
 
         if (new_config)
-            g_hash_table_replace(g_event_config_list, xstrdup(filename), event_config);
+            g_hash_table_replace(g_event_config_list, xstrdup(ec_get_name(event_config)), event_config);
 
         conf_files = g_list_next(conf_files);
     }
@@ -215,12 +210,12 @@ void load_event_config_data(void)
         event_config_t *event_config = get_event_config(file->filename);
         bool new_config = (!event_config);
         if (new_config)
-           event_config = new_event_config();
+           event_config = new_event_config(file->filename);
 
         load_event_description_from_file(event_config, file->fullpath);
 
         if (new_config)
-            g_hash_table_replace(g_event_config_list, xstrdup(file->filename), event_config);
+            g_hash_table_replace(g_event_config_list, xstrdup(ec_get_name(event_config)), event_config);
 
         event_files = g_list_next(event_files);
     }
