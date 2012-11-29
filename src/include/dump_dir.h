@@ -68,6 +68,11 @@ char* dd_load_text_ext(const struct dump_dir *dd, const char *name, unsigned fla
 char* dd_load_text(const struct dump_dir *dd, const char *name);
 void dd_save_text(struct dump_dir *dd, const char *name, const char *data);
 void dd_save_binary(struct dump_dir *dd, const char *name, const char *data, unsigned size);
+/* Deletes an item from dump directory
+ * On success, zero is returned. On error, -1 is returned, and errno is set appropriately.
+ * For more about errno see unlink documentation
+ */
+int dd_delete_item(struct dump_dir *dd, const char *name);
 /* Returns 0 if directory is deleted or not found */
 int dd_delete(struct dump_dir *dd);
 

@@ -790,6 +790,24 @@ void dd_save_binary(struct dump_dir* dd, const char* name, const char* data, uns
     free(full_path);
 }
 
+
+int dd_delete_item(struct dump_dir *dd, const char *name)
+{
+    char *path = concat_path_file(dd->dd_dirname, name);
+    int res = unlink(path);
+
+    if (res < 0)
+    {
+        if (errno == ENOENT)
+            res = 0;
+        else
+            perror_msg("Can't delete file '%s'", path);
+    }
+
+    free(path);
+    return res;
+}
+
 DIR *dd_init_next_file(struct dump_dir *dd)
 {
 //    if (!dd->locked)
