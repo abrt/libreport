@@ -73,6 +73,11 @@ void dd_save_binary(struct dump_dir *dd, const char *name, const char *data, uns
  * value.
  */
 long dd_get_item_size(struct dump_dir *dd, const char *name);
+/* Deletes an item from dump directory
+ * On success, zero is returned. On error, -1 is returned, and errno is set appropriately.
+ * For more about errno see unlink documentation
+ */
+int dd_delete_item(struct dump_dir *dd, const char *name);
 /* Returns 0 if directory is deleted or not found */
 int dd_delete(struct dump_dir *dd);
 int dd_rename(struct dump_dir *dd, const char *new_path);
