@@ -901,23 +901,35 @@ int main(int argc, char **argv)
 
     if (opts & OPT_t)
     {
-        if (!ticket_no)
-        {
-            error_msg_and_die("Not implemented yet");
-//TODO:
-//            /* -t */
-//            if (!reported_to || !reported_to->url)
-//                error_msg_and_die("Can't attach: problem data in '%s' "
-//                        "was not reported to Bugzilla and therefore has no URL",
-//                        dump_dir_name);
-//            url = reported_to->url;
-//            reported_to->url = NULL;
-//            free_report_result(reported_to);
-//            ...
-        }
-
         if ((!argv[0] && !(opts & OPT_w)) || (argv[0] && (opts & OPT_w)))
             show_usage_and_die(program_usage_string, program_options);
+
+        if (!ticket_no)
+        {
+            struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+            if (!dd)
+                xfunc_die();
+            report_result_t *reported_to = find_in_reported_to(dd, "Bugzilla:");
+            dd_close(dd);
+
+            if (!reported_to || !reported_to->url)
+                error_msg_and_die(_("Can't get Bugzilla ID because this problem has not yet been reported to Bugzilla."));
+
+            char *url = reported_to->url;
+            reported_to->url = NULL;
+            free_report_result(reported_to);
+
+            if (prefixcmp(url, rhbz.b_bugzilla_url) != 0)
+                error_msg_and_die(_("This problem has been reported to Bugzilla '%s' which differs from the configured Bugzilla '%s'."), url, rhbz.b_bugzilla_url);
+
+            ticket_no = strrchr(url, '=');
+            if (!ticket_no)
+                error_msg_and_die(_("Malformed url to Bugzilla '%s'."), url);
+
+            /* won't ever call free on it - it simplifies the code a lot */
+            ticket_no = xstrdup(ticket_no + 1);
+            log(_("Using Bugzilla ID '%s'"), ticket_no);
+        }
 
         log(_("Logging into Bugzilla at %s"), rhbz.b_bugzilla_url);
         rhbz_login(client, rhbz.b_login, rhbz.b_password);
