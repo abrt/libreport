@@ -762,6 +762,8 @@ int main(int argc, char **argv)
         "\nor:"
         "\n& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE..."
         "\nor:"
+        "\n& [-v] [-c CONFFILE]... [-d DIR] -t[ID] -w"
+        "\nor:"
         "\n& [-v] [-c CONFFILE]... -h DUPHASH"
         "\n"
         "\nReports problem to Bugzilla."
@@ -787,6 +789,8 @@ int main(int argc, char **argv)
         "\nOption -tID uploads FILEs to the bug with specified ID on Bugzilla site."
         "\n-d DIR is ignored."
         "\n"
+        "\nOption -w adds bugzilla user to bug's CC list."
+        "\n"
         "\nIf not specified, CONFFILE defaults to "CONF_DIR"/plugins/bugzilla.conf"
         "\nIts lines should have 'PARAM = VALUE' format."
         "\nRecognized string parameters: BugzillaURL, Login, Password, OSRelease."
@@ -803,9 +807,10 @@ int main(int argc, char **argv)
         OPT_t = 1 << 4,
         OPT_b = 1 << 5,
         OPT_f = 1 << 6,
-        OPT_h = 1 << 7,
-        OPT_g = 1 << 8,
-        OPT_D = 1 << 9,
+        OPT_w = 1 << 7,
+        OPT_h = 1 << 8,
+        OPT_g = 1 << 9,
+        OPT_D = 1 << 10,
     };
     const char *dump_dir_name = ".";
     GList *conf_file = NULL;
@@ -823,6 +828,7 @@ int main(int argc, char **argv)
         OPT_OPTSTRING('t', "ticket", &ticket_no , "ID"     , _("Attach FILEs [to bug with this ID]")),
         OPT_BOOL(     'b', NULL, NULL,                       _("When creating bug, attach binary files too")),
         OPT_BOOL(     'f', NULL, NULL,                       _("Force reporting even if this problem is already reported")),
+        OPT_BOOL(     'w', NULL, NULL,                       _("Add bugzilla user to CC list [of bug with this ID]")),
         OPT_STRING(   'h', "duphash", &abrt_hash, "DUPHASH", _("Print BUG_ID which has given DUPHASH")),
         OPT_LIST(     'g', "group", &group      , "GROUP"  , _("Restrict access to this group only")),
         OPT_OPTSTRING('D', "debug", &debug_str  , "STR"    , _("Debug")),
@@ -910,35 +916,39 @@ int main(int argc, char **argv)
 //            ...
         }
 
-        /* Attach files to existing BZ */
-        if (!argv[0])
+        if ((!argv[0] && !(opts & OPT_w)) || (argv[0] && (opts & OPT_w)))
             show_usage_and_die(program_usage_string, program_options);
 
         log(_("Logging into Bugzilla at %s"), rhbz.b_bugzilla_url);
         rhbz_login(client, rhbz.b_login, rhbz.b_password);
 
-        while (*argv)
-        {
-            const char *filename = *argv++;
-            VERB1 log("Attaching file '%s' to bug %s", filename, ticket_no);
-
-            int fd = open(filename, O_RDONLY);
-            if (fd < 0)
+        if (opts & OPT_w)
+            rhbz_mail_to_cc(client, xatoi_positive(ticket_no), rhbz.b_login, /* require mail notify */ 0);
+        else
+        {   /* Attach files to existing BZ */
+            while (*argv)
             {
-                perror_msg("Can't open '%s'", filename);
-                continue;
-            }
+                const char *filename = *argv++;
+                VERB1 log("Attaching file '%s' to bug %s", filename, ticket_no);
 
-            struct stat st;
-            if (fstat(fd, &st) != 0 || !S_ISREG(st.st_mode))
-            {
-                error_msg("'%s': not a regular file", filename);
+                int fd = open(filename, O_RDONLY);
+                if (fd < 0)
+                {
+                    perror_msg("Can't open '%s'", filename);
+                    continue;
+                }
+
+                struct stat st;
+                if (fstat(fd, &st) != 0 || !S_ISREG(st.st_mode))
+                {
+                    error_msg("'%s': not a regular file", filename);
+                    close(fd);
+                    continue;
+                }
+
+                rhbz_attach_fd(client, ticket_no, filename, fd, /*flags*/ 0);
                 close(fd);
-                continue;
             }
-
-            rhbz_attach_fd(client, ticket_no, filename, fd, /*flags*/ 0);
-            close(fd);
         }
 
         log(_("Logging out"));
