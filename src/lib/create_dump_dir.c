@@ -58,7 +58,14 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
         uid = (uid_t)val;
     }
 
-    char *problem_id = xasprintf("%s-%s-%lu"NEW_PD_SUFFIX, type, iso_date_string(NULL), (long)getpid());
+    struct timeval tv;
+    if (gettimeofday(&tv, NULL) < 0)
+    {
+        perror_msg("gettimeofday()");
+        return NULL;
+    }
+
+    char *problem_id = xasprintf("%s-%s.%ld-%lu"NEW_PD_SUFFIX, type, iso_date_string(&(tv.tv_sec)), (long)tv.tv_usec, (long)getpid());
 
     VERB2 log("Saving to %s/%s with uid %d", base_dir_name, problem_id, uid);
 
