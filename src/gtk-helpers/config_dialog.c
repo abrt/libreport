@@ -162,6 +162,22 @@ void add_item_to_config_liststore(gpointer cdialog, gpointer inf, gpointer user_
     free(label);
 }
 
+//filters configuration - show only those with configurable options trac#881
+static gboolean config_filter_func(GtkTreeModel *model,
+                                   GtkTreeIter  *iter,
+                                   gpointer      data)
+{
+  gboolean visible = FALSE;
+  gpointer cdialog;
+
+  GValue value = { 0 };
+  gtk_tree_model_get_value(model, iter, CONFIG_DIALOG, &value);
+  cdialog = g_value_get_pointer(&value);
+  visible = (cdialog != NULL);
+
+  return visible;
+}
+
 GtkWidget *create_config_tab_content(const char *column_label,
                                       GtkListStore *store)
 {
@@ -191,8 +207,10 @@ GtkWidget *create_config_tab_content(const char *column_label,
     /* "Please draw rows in alternating colors": */
     gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(tv), TRUE);
     // TODO: gtk_tree_view_set_headers_visible(FALSE)? We have only one column anyway...
+    GtkTreeModel *model = gtk_tree_model_filter_new(GTK_TREE_MODEL(store), NULL);
+    gtk_tree_model_filter_set_visible_func(GTK_TREE_MODEL_FILTER(model), config_filter_func, NULL, NULL);
 
-    gtk_tree_view_set_model(GTK_TREE_VIEW(tv), GTK_TREE_MODEL(store));
+    gtk_tree_view_set_model(GTK_TREE_VIEW(tv), GTK_TREE_MODEL(model));
     gtk_container_add(GTK_CONTAINER(scroll), tv);
 
     gtk_box_pack_start(GTK_BOX(main_vbox), scroll, true, true, 10);
