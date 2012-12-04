@@ -79,6 +79,15 @@ bool ec_is_configurable(event_config_t* ec)
     return g_list_length(ec->options) > 0;
 }
 
+void ec_print(event_config_t *ec)
+{
+    printf("%s\n\t%s\n\t%s\n",
+        ec_get_name(ec),
+        ec_get_screen_name(ec),
+        ec_get_description(ec)
+        );
+}
+
 void free_event_option(event_option_t *p)
 {
     if (!p)
@@ -183,7 +192,7 @@ static void load_config_files(const char *dir_path)
 }
 
 /* (Re)loads data from /etc/abrt/events/foo.{xml,conf} and $XDG_CACHE_HOME/abrt/events/foo.conf */
-void load_event_config_data(void)
+GHashTable *load_event_config_data(void)
 {
     free_event_config_data();
 
@@ -227,6 +236,8 @@ void load_event_config_data(void)
     cachedir = concat_path_file(g_get_user_cache_dir(), "abrt/events");
     load_config_files(cachedir);
     free(cachedir);
+
+    return g_event_config_list;
 }
 
 /* Frees all loaded data */

@@ -1522,9 +1522,6 @@ static bool is_processing_finished()
 
 static void hide_next_step_button()
 {
-    if(gtk_widget_get_visible(GTK_WIDGET(g_btn_next)) == false)
-        return
-
     /* replace 'Forward' with 'Close' button */
     /* 1. hide next button */
     gtk_widget_hide(g_btn_next);
@@ -1534,9 +1531,6 @@ static void hide_next_step_button()
 
 static void show_next_step_button()
 {
-    if(gtk_widget_get_visible(GTK_WIDGET(g_btn_next)) == true)
-        return
-
     gtk_box_reorder_child(g_box_buttons, g_btn_close, 0);
     gtk_widget_show(g_btn_next);
 }
@@ -2044,7 +2038,7 @@ static void on_no_comment_toggled(GtkToggleButton *togglebutton, gpointer user_d
 
 static void on_show_event_list_cb(GtkWidget *button, gpointer user_data)
 {
-    show_events_list_dialog(GTK_WINDOW(g_wnd_assistant));
+    show_config_list_dialog(GTK_WINDOW(g_wnd_assistant));
 }
 
 #if 0

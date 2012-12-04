@@ -34,17 +34,53 @@ enum
     TYPE_POINTER
 };
 
+struct config_dialog
+{
+    GtkWidget *dialog;
+    gpointer *data;
+    config_save_fun_t save_data;
+};
+
 GtkListStore *new_conf_liststore(void)
 {
     /* Create data store for the list and attach it
-     * COLUMN_EVENT_UINAME -> name+description
-     * COLUMN_EVENT_NAME -> event name so we can retrieve it from the row
+     * COLUMN_UINAME -> name+description
+     * COLUMN_NAME -> config name so we can retrieve it from the row
      */
     return gtk_list_store_new(NUM_COLUMNS,
                               G_TYPE_STRING, /* Event name + description */
                               G_TYPE_STRING,  /* event name */
-                              G_TYPE_POINTER
+                              G_TYPE_POINTER, /* dialog */
+                              G_TYPE_POINTER /* option_list */
                             );
+}
+
+
+config_dialog_t *new_config_dialog(GtkWidget *dialog,
+                                   gpointer config_data,
+                                   config_save_fun_t save_fun)
+{
+    config_dialog_t *cdialog = (config_dialog_t *)xmalloc(sizeof(*cdialog));
+    cdialog->dialog = dialog;
+    cdialog->data = config_data;
+    cdialog->save_data = save_fun;
+    return cdialog;
+}
+
+void cdialog_set_widget(config_dialog_t *cdialog, GtkWidget *widget)
+{
+    //TODO destroy(cdialog-dialog) ??
+    cdialog->dialog = widget;
+}
+
+GtkWidget *cdialog_get_widget(config_dialog_t *cdialog)
+{
+    return cdialog->dialog;
+}
+
+gpointer cdialog_get_data(config_dialog_t *cdialog)
+{
+    return cdialog->data;
 }
 
 static const void *get_column_value_from_row(GtkTreeView *treeview, int column, int type)
@@ -71,40 +107,39 @@ static const void *get_column_value_from_row(GtkTreeView *treeview, int column, 
     return retval;
 }
 
-static void on_row_changed_cb(GtkTreeView *treeview, gpointer user_data)
+static void save_value_from_widget(gpointer data, gpointer user_data)
 {
-    VERB1 log("activated row: '%s'", (const char*)get_column_value_from_row(treeview, COLUMN_NAME, TYPE_STR));
+    option_widget_t *ow = (option_widget_t *)data;
 
-    const void *dialog = get_column_value_from_row(treeview, CONFIG_DIALOG, TYPE_POINTER);
-    gtk_widget_set_sensitive(GTK_WIDGET(user_data), dialog != NULL);
-}
-
-static void on_configure_button_cb(GtkWidget *button, gpointer user_data)
-{
-    GtkTreeView *tv = (GtkTreeView *)user_data;
-    const void * dialog = get_column_value_from_row(tv, CONFIG_DIALOG, TYPE_POINTER);
-
-    if (dialog != NULL)
+    const char *val = NULL;
+    switch (ow->option->eo_type)
     {
-        int result = gtk_dialog_run(GTK_DIALOG(dialog));
-        if (result == GTK_RESPONSE_APPLY)
-        {
-            //TODO: saving!!!
-            g_print("apply\n");
-        }
-        //else if (result == GTK_RESPONSE_CANCEL)
-        //    log("log");
-        gtk_widget_hide(GTK_WIDGET(dialog));
+        case OPTION_TYPE_TEXT:
+        case OPTION_TYPE_NUMBER:
+        case OPTION_TYPE_PASSWORD:
+            val = (char *)gtk_entry_get_text(GTK_ENTRY(ow->widget));
+            break;
+        case OPTION_TYPE_BOOL:
+            val = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ow->widget)) ? "yes" : "no";
+            break;
+        default:
+            log("unsupported option type");
+    }
+    if (val)
+    {
+        free(ow->option->eo_value);
+        ow->option->eo_value = xstrdup(val);
+        VERB1 log("saved: %s:%s", ow->option->eo_name, ow->option->eo_value);
     }
 }
 
-static void on_close_list_cb(GtkWidget *button, gpointer user_data)
+void dehydrate_config_dialog(GList *option_widgets)
 {
-    GtkWidget *window = (GtkWidget *)user_data;
-    gtk_widget_destroy(window);
+    if (option_widgets != NULL)
+        g_list_foreach(option_widgets, &save_value_from_widget, NULL);
 }
 
-void add_item_to_config_liststore(gpointer dialog, gpointer inf, gpointer user_data)
+void add_item_to_config_liststore(gpointer cdialog, gpointer inf, gpointer user_data)
 {
     GtkListStore *list_store = (GtkListStore *)user_data;
     config_item_info_t *info = (config_item_info_t *)inf;
@@ -115,24 +150,20 @@ void add_item_to_config_liststore(gpointer dialog, gpointer inf, gpointer user_d
         label = xasprintf("<b>%s</b>\n%s",ci_get_screen_name(info), ci_get_description(info));
     else
         //if event has no xml description
-        label = xasprintf("<b>%s</b>\nNo description available", ci_get_name(info));
+        label = xasprintf("<b>%s</b>\n%s", _("No description available"), ci_get_name(info));
 
     GtkTreeIter iter;
     gtk_list_store_append(list_store, &iter);
     gtk_list_store_set(list_store, &iter,
                       COLUMN_UINAME, label,
                       COLUMN_NAME, ci_get_name(info),
-                      CONFIG_DIALOG, dialog,
+                      CONFIG_DIALOG, cdialog,
                       -1);
     free(label);
 }
 
-GtkWidget *create_config_list_dialog(const char *column_label,
-                                    GHashTable *items,
-                                    GtkWindow *dialog,
-                                    GHFunc item_to_config_info,
-                                    GCallback on_config_cb,
-                                    GCallback on_row_change)
+GtkWidget *create_config_tab_content(const char *column_label,
+                                      GtkListStore *store)
 {
     GtkWidget *main_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     GtkWidget *scroll = gtk_scrolled_window_new(NULL, NULL);
@@ -161,37 +192,148 @@ GtkWidget *create_config_list_dialog(const char *column_label,
     gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(tv), TRUE);
     // TODO: gtk_tree_view_set_headers_visible(FALSE)? We have only one column anyway...
 
-    /* Create data store for the list and attach it
-     * COLUMN_UINAME -> name+description
-     * COLUMN_NAME -> workflow name so we can retrieve it from the row
-     */
-    GtkListStore *list_store = new_conf_liststore();
-    gtk_tree_view_set_model(GTK_TREE_VIEW(tv), GTK_TREE_MODEL(list_store));
-
-    g_hash_table_foreach(items,
-                        item_to_config_info,
-                        list_store);
-//TODO: can unref workflows_list_store? treeview holds one ref.
-
-    /* Double click/Enter handler */
-    //g_signal_connect(workflows_tv, "row-activated", G_CALLBACK(on_workflow_row_activated_cb), NULL);
-
+    gtk_tree_view_set_model(GTK_TREE_VIEW(tv), GTK_TREE_MODEL(store));
     gtk_container_add(GTK_CONTAINER(scroll), tv);
 
-    GtkWidget *configure_btn = gtk_button_new_with_mnemonic(_("C_onfigure"));
-    gtk_widget_set_sensitive(configure_btn, false);
-    g_signal_connect(configure_btn, "clicked", G_CALLBACK(on_configure_button_cb), tv);
-    g_signal_connect(tv, "cursor-changed", G_CALLBACK(on_row_changed_cb), configure_btn);
-
-    GtkWidget *close_btn = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
-    g_signal_connect(close_btn, "clicked", G_CALLBACK(on_close_list_cb), dialog);
-
-    GtkWidget *btnbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
-    gtk_box_pack_end(GTK_BOX(btnbox), close_btn, false, false, 0);
-    gtk_box_pack_end(GTK_BOX(btnbox), configure_btn, false, false, 0);
-
     gtk_box_pack_start(GTK_BOX(main_vbox), scroll, true, true, 10);
-    gtk_box_pack_start(GTK_BOX(main_vbox), btnbox, false, false, 0);
-
     return main_vbox;
+}
+
+static void add_config_tabs(const char *name, GtkListStore *store, gpointer nb)
+{
+    GtkNotebook *ntb = (GtkNotebook *)nb;
+
+    GtkWidget *config_list_vbox = create_config_tab_content(
+                                        name,
+                                        store);
+
+    gtk_notebook_append_page(ntb, config_list_vbox, gtk_label_new(name));
+}
+
+static void on_configure_cb(GtkWidget *btn, gpointer user_data)
+{
+    GtkNotebook *nb = (GtkNotebook *)user_data;
+
+    guint current_page_n = gtk_notebook_get_current_page(nb);
+    GtkWidget *vbox = gtk_notebook_get_nth_page(nb, current_page_n);
+    GList *children = gtk_container_get_children(GTK_CONTAINER(vbox));
+    GtkScrolledWindow *sw = (GtkScrolledWindow *)children->data;
+    GtkTreeView *tv = (GtkTreeView *)gtk_bin_get_child(GTK_BIN(sw));
+    config_dialog_t *cdialog = (config_dialog_t *)get_column_value_from_row(tv, CONFIG_DIALOG, TYPE_POINTER);
+    const char *name = (const char *)get_column_value_from_row(tv, COLUMN_NAME, TYPE_STR);
+
+
+    if (cdialog == NULL || cdialog->dialog == NULL)
+    {
+        log("There is no configurable option for: '%s'", name);
+        return;
+    }
+
+    int result = gtk_dialog_run(GTK_DIALOG(cdialog->dialog));
+    if (result == GTK_RESPONSE_APPLY)
+    {
+        if (cdialog->save_data)
+            cdialog->save_data(cdialog->data, name);
+    }
+    else if (result == GTK_RESPONSE_CANCEL)
+        VERB1 log("Cancelling on user request");
+
+    gtk_widget_hide(GTK_WIDGET(cdialog->dialog));
+}
+
+static void on_close_cb(GtkWidget *btn, gpointer config_list_w)
+{
+    GtkWidget *w = (GtkWidget *)config_list_w;
+    gtk_widget_hide(w);
+}
+
+GtkWindow *create_config_list_window(GHashTable *configs, GtkWindow *parent)
+{
+
+    // config window
+    GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_container_set_border_width(GTK_CONTAINER(window), 5);
+    gtk_window_set_title(GTK_WINDOW(window), _("Configuration"));
+    gtk_window_set_default_size(GTK_WINDOW(window), 450, 400);
+    gtk_window_set_position(GTK_WINDOW(window), parent
+                            ? GTK_WIN_POS_CENTER_ON_PARENT
+                            : GTK_WIN_POS_CENTER);
+
+    if (parent != NULL)
+    {
+        gtk_window_set_modal(GTK_WINDOW(window), true);
+        gtk_window_set_transient_for(GTK_WINDOW(window), parent);
+    }
+
+    //g_signal_connect(window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
+
+    GtkWidget *main_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+    GtkWidget *config_nb = gtk_notebook_new();
+    gtk_box_pack_start(GTK_BOX(main_vbox), config_nb, 1, 1, 0);
+
+    /* we can't use this, because we want the workflows first and hashtable
+     * doesn't return the items in the order they were added
+     */
+    //g_hash_table_foreach(configs, (GHFunc)add_config_tabs, config_nb);
+
+    gpointer config = g_hash_table_lookup(configs, _("Workflows"));
+    if (config != NULL);
+    add_config_tabs(_("Workflows"), config, config_nb);
+
+    config = g_hash_table_lookup(configs, _("Events"));
+    if (config != NULL);
+    add_config_tabs(_("Events"), config, config_nb);
+
+    //buttons
+    GtkWidget *btn_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL,5);
+    GtkWidget *configure_btn = gtk_button_new_with_mnemonic(_("C_onfigure"));
+    GtkWidget *align = gtk_alignment_new(0, 0, 0, 0);
+    GtkWidget *close_btn = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
+    GtkSizeGroup *sg = gtk_size_group_new(GTK_SIZE_GROUP_BOTH);
+    //force apply and close to have the same size
+    gtk_size_group_add_widget(sg, close_btn);
+    gtk_size_group_add_widget(sg, configure_btn);
+
+    g_signal_connect(configure_btn, "clicked", (GCallback)on_configure_cb, config_nb);
+    g_signal_connect(close_btn, "clicked", (GCallback)on_close_cb, window);
+
+    gtk_box_pack_start(GTK_BOX(btn_box), close_btn, 0, 0, 5);
+    gtk_box_pack_start(GTK_BOX(btn_box), align, true, true, 5);
+    gtk_box_pack_start(GTK_BOX(btn_box), configure_btn, 0, 0, 5);
+
+
+    gtk_box_pack_start(GTK_BOX(main_vbox), btn_box, 0, 0, 0);
+    gtk_container_add(GTK_CONTAINER(window), main_vbox);
+
+    //gtk_widget_show_all(window);
+    return GTK_WINDOW(window);
+}
+
+/*  Name | vbox with the gtk_Tree
+ * <String name, GtkWidget *vbox>
+*/
+
+void show_config_list_dialog(GtkWindow *parent)
+{
+    GHashTable *confs = g_hash_table_new_full(
+            /*hash_func*/ g_str_hash,
+            /*key_equal_func:*/ g_str_equal,
+            /*key_destroy_func:*/ g_free,
+            /*value_destroy_func:*/ NULL);
+
+
+    //TODO: free the hashtables somewhere!!
+    GHashTable *events = load_event_config_data();
+    load_event_config_data_from_user_storage(events);
+
+    GHashTable *workflows = load_workflow_config_data(WORKFLOWS_DIR);
+    load_workflow_config_data_from_user_storage(workflows);
+    GtkListStore *workflows_store = add_workflows_to_liststore(workflows);
+    g_hash_table_insert(confs, _("Workflows"), workflows_store);
+
+    GtkListStore *events_store = add_events_to_liststore(events);
+    g_hash_table_insert(confs, _("Events"), events_store);
+
+    GtkWindow *window = create_config_list_window(confs, parent);
+    gtk_widget_show_all(GTK_WIDGET(window));
 }

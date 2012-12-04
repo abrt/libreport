@@ -140,7 +140,7 @@ int main(int argc, char **argv)
 
     /* load /etc/abrt/events/foo.{conf,xml} stuff
        and $XDG_CACHE_HOME/abrt/events/foo.conf */
-    load_event_config_data();
+    g_event_config_list = load_event_config_data();
     load_event_config_data_from_user_storage(g_event_config_list);
     load_user_settings("report-gtk");
 

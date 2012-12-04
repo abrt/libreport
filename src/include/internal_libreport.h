@@ -644,7 +644,7 @@ file_obj_t *new_file_obj(const char* fullpath, const char* filename);
 #define free_file_obj libreport_free_file_obj
 void free_file_obj(file_obj_t *f);
 #define load_workflow_config_data libreport_load_workflow_config_data
-void load_workflow_config_data(const char* path);
+GHashTable *load_workflow_config_data(const char* path);
 
 /* Connect to abrtd over unix domain socket, issue DELETE command */
 int delete_dump_dir_possibly_using_abrtd(const char *dump_dir_name);

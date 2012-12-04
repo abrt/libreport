@@ -20,7 +20,8 @@
 #include "internal_libreport_gtk.h"
 
 static GtkWindow *g_event_list_window;
-static GList *option_widget_list;
+static GList *g_option_list = NULL;
+
 static bool has_password_option;
 
 enum
@@ -29,14 +30,6 @@ enum
     COLUMN_EVENT_NAME,
     NUM_COLUMNS
 };
-
-typedef struct
-{
-    event_option_t *option;
-    GtkWidget *widget;
-} option_widget_t;
-
-int show_event_config_dialog(const char *event_name, GtkWindow *parent);
 
 static GtkWidget *gtk_label_new_justify_left(const gchar *label_str)
 {
@@ -48,12 +41,14 @@ static GtkWidget *gtk_label_new_justify_left(const gchar *label_str)
     return label;
 }
 
-static void add_option_widget(GtkWidget *widget, event_option_t *option)
+GList *add_option_widget(GList *options, GtkWidget *widget, event_option_t *option)
 {
-    option_widget_t *ow = (option_widget_t *)xmalloc(sizeof(option_widget_t));
+    option_widget_t *ow = (option_widget_t *)xmalloc(sizeof(*ow));
     ow->widget = widget;
     ow->option = option;
-    option_widget_list = g_list_prepend(option_widget_list, ow);
+    options = g_list_prepend(options, ow);
+
+    return options;
 }
 
 static void on_show_pass_cb(GtkToggleButton *tb, gpointer user_data)
@@ -74,6 +69,23 @@ static unsigned add_one_row_to_grid(GtkGrid *table)
     g_object_set_data(G_OBJECT(table), "n-rows", (gpointer)(rows + 1));
     return rows;
 }
+
+void save_data_from_event_config_dialog(GList *widgets, event_config_t *ec)
+{
+    dehydrate_config_dialog(widgets);
+    const char *const store_passwords_s = get_user_setting("store_passwords");
+    save_event_config_data_to_user_storage(ec_get_name(ec),
+                                           ec,
+                                           !(store_passwords_s && !strcmp(store_passwords_s, "no")));
+}
+
+static void save_data_from_event_dialog_name(GList *widgets, const char *name)
+{
+    event_config_t *ec = get_event_config(name);
+
+    save_data_from_event_config_dialog(widgets, ec);
+}
+
 
 static void add_option_to_table(gpointer data, gpointer user_data)
 {
@@ -116,7 +128,7 @@ static void add_option_to_table(gpointer data, gpointer user_data)
             gtk_grid_attach(option_table, option_input,
                              /*left,top:*/ 1, last_row,
                              /*width,height:*/ 1, 1);
-            add_option_widget(option_input, option);
+            g_option_list = add_option_widget(g_option_list, option_input, option);
             if (option->eo_type == OPTION_TYPE_PASSWORD)
             {
                 gtk_entry_set_visibility(GTK_ENTRY(option_input), 0);
@@ -151,7 +163,7 @@ static void add_option_to_table(gpointer data, gpointer user_data)
             if (option->eo_value != NULL)
                 gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(option_input),
                                     string_to_bool(option->eo_value));
-            add_option_widget(option_input, option);
+            g_option_list = add_option_widget(g_option_list, option_input, option);
             break;
 
         default:
@@ -177,39 +189,7 @@ static void add_option_to_table(gpointer data, gpointer user_data)
     free(option_label);
 }
 
-static void save_value_from_widget(gpointer data, gpointer user_data)
-{
-    option_widget_t *ow = (option_widget_t *)data;
-
-    const char *val = NULL;
-    switch (ow->option->eo_type)
-    {
-        case OPTION_TYPE_TEXT:
-        case OPTION_TYPE_NUMBER:
-        case OPTION_TYPE_PASSWORD:
-            val = (char *)gtk_entry_get_text(GTK_ENTRY(ow->widget));
-            break;
-        case OPTION_TYPE_BOOL:
-            val = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ow->widget)) ? "yes" : "no";
-            break;
-        default:
-            log("unsupported option type");
-    }
-    if (val)
-    {
-        free(ow->option->eo_value);
-        ow->option->eo_value = xstrdup(val);
-        VERB1 log("saved: %s:%s", ow->option->eo_name, ow->option->eo_value);
-    }
-}
-
-static void dehydrate_config_dialog()
-{
-    if (option_widget_list != NULL)
-        g_list_foreach(option_widget_list, &save_value_from_widget, NULL);
-}
-
-GtkWidget *create_event_config_dialog_content(event_config_t *event, GtkWidget *content)
+config_dialog_t *create_event_config_dialog_content(event_config_t *event, GtkWidget *content)
 {
     if (content == NULL)
         content = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
@@ -238,6 +218,13 @@ GtkWidget *create_event_config_dialog_content(event_config_t *event, GtkWidget *
     g_object_set_data(G_OBJECT(option_table), "advanced-options", adv_option_table);
 
     has_password_option = false;
+    /* it's already stored in config_dialog_t from the previous call
+     * we need to set it to null so we create a new list for the actual
+     * event_config
+     * note: say *NO* to the global variables!
+    */
+    g_option_list = NULL;
+    /* this fills the g_option_list, so we can use it for new_config_dialog */
     g_list_foreach(event->options, &add_option_to_table, option_table);
 
     /* if there is at least one password option, add checkbox to disable storing passwords */
@@ -275,17 +262,17 @@ GtkWidget *create_event_config_dialog_content(event_config_t *event, GtkWidget *
 
     gtk_widget_show_all(content); //make it all visible
 
-    return content;
+    //g_option_list is filled on
+    config_dialog_t *cdialog = new_config_dialog(NULL,
+                                    g_option_list,
+                                    (config_save_fun_t)save_data_from_event_dialog_name
+                                    );
+
+    return cdialog;
 }
 
-GtkWidget *create_config_dialog(const char *event_name, GtkWindow *parent)
+config_dialog_t *create_event_config_dialog(const char *event_name, GtkWindow *parent)
 {
-    if (option_widget_list != NULL)
-    {
-        g_list_free(option_widget_list);
-        option_widget_list = NULL;
-    }
-
     event_config_t *event = get_event_config(event_name);
 
     if(!ec_is_configurable(event))
@@ -320,26 +307,30 @@ GtkWidget *create_config_dialog(const char *event_name, GtkWindow *parent)
     }
 
     GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-    content = create_event_config_dialog_content(event, content);
+    config_dialog_t *cdialog = create_event_config_dialog_content(event, content);
+    cdialog_set_widget(cdialog, dialog);
 
-    return dialog;
+    return cdialog;
 }
 
-static void add_event_to_liststore(gpointer key, gpointer value, gpointer user_data)
+static void add_event_to_liststore(gpointer key, gpointer value, gpointer list_store)
 {
     config_item_info_t *info = ec_get_config_info((event_config_t *)value);
-    GtkWidget *dialog = create_config_dialog(key, NULL);
-    add_item_to_config_liststore(dialog, info, user_data);
+    config_dialog_t *cdialog = create_event_config_dialog(key, NULL);
+
+    add_item_to_config_liststore(cdialog, info, list_store);
+}
+
+GtkListStore *add_events_to_liststore(GHashTable *events)
+{
+    GtkListStore *list_store = new_conf_liststore();
+    g_hash_table_foreach(events, (GHFunc)add_event_to_liststore, list_store);
+
+    return list_store;
 }
 
 int show_event_config_dialog(const char *event_name, GtkWindow *parent)
 {
-    if (option_widget_list != NULL)
-    {
-        g_list_free(option_widget_list);
-        option_widget_list = NULL;
-    }
-
     event_config_t *event = get_event_config(event_name);
 
     GtkWindow *parent_window = parent ? parent : g_event_list_window;
@@ -371,14 +362,14 @@ int show_event_config_dialog(const char *event_name, GtkWindow *parent)
     }
 
     GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-    content = create_event_config_dialog_content(event, content);
+    content = cdialog_get_widget(create_event_config_dialog_content(event, content));
 
     gtk_widget_show_all(content);
 
     int result = gtk_dialog_run(GTK_DIALOG(dialog));
     if (result == GTK_RESPONSE_APPLY)
     {
-        dehydrate_config_dialog();
+        dehydrate_config_dialog(g_option_list);
         const char *const store_passwords_s = get_user_setting("store_passwords");
         save_event_config_data_to_user_storage(event_name,
                                                get_event_config(event_name),
@@ -390,34 +381,3 @@ int show_event_config_dialog(const char *event_name, GtkWindow *parent)
     return result;
 }
 
-void show_events_list_dialog(GtkWindow *parent)
-{
-    /*remove this line if we want to reload the config
-     *everytime we show the config dialog
-     */
-    if (g_event_config_list == NULL)
-    {
-        load_event_config_data();
-        load_event_config_data_from_user_storage(g_event_config_list);
-    }
-
-    GtkWidget *event_list_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    g_event_list_window = (GtkWindow*)event_list_window;
-    gtk_window_set_title(g_event_list_window, _("Event Configuration"));
-    gtk_window_set_default_size(g_event_list_window, 450, 400);
-    gtk_window_set_position(g_event_list_window, parent ? GTK_WIN_POS_CENTER_ON_PARENT : GTK_WIN_POS_CENTER);
-    if (parent != NULL)
-    {
-        gtk_window_set_transient_for(g_event_list_window, parent);
-        // modal = parent window can't steal focus
-        gtk_window_set_modal(g_event_list_window, true);
-        gtk_window_set_icon_name(g_event_list_window,
-            gtk_window_get_icon_name(parent));
-    }
-
-    GtkWidget *main_vbox = create_config_list_dialog(_("Event"), g_event_config_list, GTK_WINDOW(event_list_window), &add_event_to_liststore, NULL, NULL);
-
-    gtk_container_add(GTK_CONTAINER(event_list_window), main_vbox);
-
-    gtk_widget_show_all(event_list_window);
-}

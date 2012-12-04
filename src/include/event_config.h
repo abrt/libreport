@@ -103,12 +103,14 @@ void free_event_config(event_config_t *p);
 void load_event_description_from_file(event_config_t *event_config, const char* filename);
 
 // (Re)loads data from /etc/abrt/events/*.{conf,xml}
-void load_event_config_data(void);
+GHashTable *load_event_config_data(void);
 /* Frees all loaded data */
 void free_event_config_data(void);
 event_config_t *get_event_config(const char *event_name);
 event_option_t *get_event_option_from_list(const char *option_name, GList *event_options);
 
+/* for debugging */
+void ec_print(event_config_t *ec);
 
 extern GHashTable *g_event_config_list;   // for iterating through entire list of all loaded configs
 

@@ -48,15 +48,13 @@ void free_workflow(workflow_t *w)
     free(w);
 }
 
-static void free_workflow_cb(const char *name, workflow_t *w, gpointer user_data)
+void free_workflow_list(GHashTable **wl)
 {
-    free_workflow(w);
-}
-
-void free_workflow_list(GHashTable *wl)
-{
-    g_hash_table_foreach(wl, (GHFunc)free_workflow_cb, NULL);
-    g_hash_table_destroy(wl);
+    if (*wl != NULL)
+    {
+        g_hash_table_destroy(*wl);
+        *wl = NULL;
+    }
 }
 
 workflow_t *get_workflow(const char *name)
@@ -74,8 +72,11 @@ workflow_t *get_workflow(const char *name)
     return g_hash_table_lookup(g_workflow_list, name);
 }
 
-void load_workflow_config_data(const char* path)
+GHashTable *load_workflow_config_data(const char *path)
 {
+    if (g_workflow_list)
+        return g_workflow_list;
+
     if (g_workflow_list == NULL)
     {
         g_workflow_list = g_hash_table_new_full(
@@ -104,6 +105,8 @@ void load_workflow_config_data(const char* path)
         workflow_files = g_list_next(workflow_files);
     }
     free_file_list(workflow_files);
+
+    return g_workflow_list;
 }
 
 config_item_info_t *workflow_get_config_info(workflow_t *w)

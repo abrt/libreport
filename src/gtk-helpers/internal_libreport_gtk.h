@@ -27,6 +27,15 @@
 extern "C" {
 #endif
 
+typedef struct config_dialog config_dialog_t;
+typedef void (* config_save_fun_t)(gpointer data, const char *event_name);
+
+typedef struct
+{
+    event_option_t *option;
+    GtkWidget *widget;
+} option_widget_t;
+
 #define make_label_autowrap_on_resize libreport_make_label_autowrap_on_resize
 void make_label_autowrap_on_resize(GtkLabel *label);
 
@@ -51,22 +60,28 @@ void  save_event_config_data_to_user_storage(const char *event_name,
 int show_event_config_dialog(const char *event_name, GtkWindow *parent);
 
 #define create_event_config_dialog_content libreport_create_event_config_dialog_content
-GtkWidget *create_event_config_dialog_content(event_config_t *event, GtkWidget *content);
+config_dialog_t *create_event_config_dialog_content(event_config_t *event, GtkWidget *content);
 
-#define show_workflow_list_dialog libreport_show_workflow_list_dialog
-void show_workflow_list_dialog(GtkWindow *parent);
+//#define show_workflow_list_dialog libreport_show_workflow_list_dialog
+//void show_workflow_list_dialog(GtkWindow *parent);
+
+void save_data_from_event_config_dialog(GList *widgets, event_config_t *ec);
 
 #define add_item_to_config_liststore libreport_add_item_to_config_liststore
-void add_item_to_config_liststore(gpointer key, gpointer value, gpointer user_data);
+void add_item_to_config_liststore(gpointer cdialog, gpointer inf, gpointer user_data);
 
-#define create_config_list_dialog libreport_create_config_list_dialog
-GtkWidget *create_config_list_dialog(const char *column_label,
-                                    GHashTable *items,
-                                    GtkWindow *dialog,
-                                    GHFunc item_to_config_info,
-                                    GCallback on_config_cb,
-                                    GCallback on_row_change);
 GtkListStore *new_conf_liststore(void);
+void show_config_list_dialog(GtkWindow *parent);
+GtkListStore *add_events_to_liststore(GHashTable *events);
+GtkListStore *add_workflows_to_liststore(GHashTable *workflows);
+config_dialog_t *new_config_dialog(GtkWidget *dialog, gpointer config_data, config_save_fun_t save_fun);
+void load_workflow_config_data_from_user_storage(GHashTable *workflows);
+
+void cdialog_set_widget(config_dialog_t *cdialog, GtkWidget *widget);
+GtkWidget *cdialog_get_widget(config_dialog_t *cdialog);
+gpointer cdialog_get_data(config_dialog_t *cdialog);
+
+void dehydrate_config_dialog(GList *option_widgets);
 
 char * tag_url(const char* line, const char* prefix);
 
