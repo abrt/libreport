@@ -44,6 +44,9 @@ void abrt_xmlrpc_error(xmlrpc_env *env);
 xmlrpc_value *abrt_xmlrpc_call(struct abrt_xmlrpc *ax,
                                const char *method, const char *format, ...);
 
+xmlrpc_value *abrt_xmlrpc_call_full(xmlrpc_env *enf, struct abrt_xmlrpc *ax,
+                                   const char *method, const char *format, ...);
+
 #ifdef __cplusplus
 }
 #endif

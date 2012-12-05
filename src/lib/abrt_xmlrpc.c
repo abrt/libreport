@@ -108,37 +108,61 @@ void abrt_xmlrpc_free_client(struct abrt_xmlrpc *ax)
     free(ax);
 }
 
-/* die or return expected results */
-xmlrpc_value *abrt_xmlrpc_call(struct abrt_xmlrpc *ax,
-                               const char* method, const char* format, ...)
+/* internall helper function */
+static
+xmlrpc_value *abrt_xmlrpc_call_full_va(xmlrpc_env *env, struct abrt_xmlrpc *ax,
+                                       const char *method, const char *format,
+                                       va_list args)
 {
-    xmlrpc_env env;
-    xmlrpc_env_init(&env);
+    xmlrpc_env_init(env);
 
     xmlrpc_value* param = NULL;
     const char* suffix;
-    va_list args;
 
-    va_start(args, format);
-    xmlrpc_build_value_va(&env, format, args, &param, &suffix);
-    va_end(args);
-    if (env.fault_occurred)
-        abrt_xmlrpc_die(&env);
+    xmlrpc_build_value_va(env, format, args, &param, &suffix);
+    if (env->fault_occurred)
+        abrt_xmlrpc_die(env);
 
-    xmlrpc_value* result = NULL;
+    xmlrpc_value *result = NULL;
     if (*suffix != '\0')
     {
         xmlrpc_env_set_fault_formatted(
-            &env, XMLRPC_INTERNAL_ERROR, "Junk after the argument "
+            env, XMLRPC_INTERNAL_ERROR, "Junk after the argument "
             "specifier: '%s'.  There must be exactly one argument.",
             suffix);
     }
     else
     {
-        xmlrpc_client_call2(&env, ax->ax_client, ax->ax_server_info, method,
+        xmlrpc_client_call2(env, ax->ax_client, ax->ax_server_info, method,
                             param, &result);
     }
     xmlrpc_DECREF(param);
+
+    return result;
+}
+
+xmlrpc_value *abrt_xmlrpc_call_full(xmlrpc_env *env, struct abrt_xmlrpc *ax,
+                                    const char *method, const char *format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    xmlrpc_value *result = abrt_xmlrpc_call_full_va(env, ax, method, format, args);
+    va_end(args);
+
+    return result;
+}
+
+/* die or return expected results */
+xmlrpc_value *abrt_xmlrpc_call(struct abrt_xmlrpc *ax,
+                               const char *method, const char *format, ...)
+{
+    xmlrpc_env env;
+
+    va_list args;
+    va_start(args, format);
+    xmlrpc_value *result = abrt_xmlrpc_call_full_va(&env, ax, method, format, args);
+    va_end(args);
+
     if (env.fault_occurred)
         abrt_xmlrpc_die(&env);
 

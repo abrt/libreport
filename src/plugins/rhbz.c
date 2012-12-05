@@ -174,12 +174,23 @@ static unsigned find_best_bt_rating_in_comments(GList *comments)
     return best_bt_rating;
 }
 
-void rhbz_login(struct abrt_xmlrpc *ax, const char *login, const char *password)
+bool rhbz_login(struct abrt_xmlrpc *ax, const char *login, const char *password)
 {
     func_entry();
 
-    xmlrpc_value* result = abrt_xmlrpc_call(ax, "User.login", "({s:s,s:s})",
-                                            "login", login, "password", password);
+    xmlrpc_env env;
+    xmlrpc_value *result = abrt_xmlrpc_call_full(&env, ax, "User.login", "({s:s,s:s})",
+                                                 "login", login, "password", password);
+
+    if (env.fault_occurred)
+    {
+        /* 300 (Invalid Username or Password) - https://wiki.mozilla.org/Bugzilla:WebServices:Errors */
+        if (env.fault_code != 300)
+            abrt_xmlrpc_die(&env);
+
+        VERB1 log("xmlrpc fault: (%d) %s", env.fault_code, env.fault_string);
+        return false;
+    }
 
 //TODO: with URL like http://bugzilla.redhat.com (that is, with http: instead of https:)
 //we are getting this error:
@@ -187,6 +198,7 @@ void rhbz_login(struct abrt_xmlrpc *ax, const char *login, const char *password)
 //Can't login. Server said: HTTP response code is 301, not 200
 //But this is a 301 redirect! We _can_ follow it if we configure curl to understand that!
     xmlrpc_DECREF(result);
+    return true;
 }
 
 xmlrpc_value *rhbz_get_member(const char *member, xmlrpc_value *xml)

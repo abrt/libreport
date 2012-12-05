@@ -732,6 +732,22 @@ char *ask_bz_password(const char *message)
 }
 
 static
+void login(struct abrt_xmlrpc *client, struct bugzilla_struct *rhbz)
+{
+    log(_("Logging into Bugzilla at %s"), rhbz->b_bugzilla_url);
+    while (!rhbz_login(client, rhbz->b_login, rhbz->b_password))
+    {
+        free(rhbz->b_login);
+        rhbz->b_login = ask_bz_login(_("Invalid password or login. Please enter your BZ login:"));
+
+        free(rhbz->b_password);
+        char *question = xasprintf(_("Invalid password or login. Please enter the password for '%s':"), rhbz->b_login);
+        rhbz->b_password = ask_bz_password(question);
+        free(question);
+    }
+}
+
+static
 xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax,
                         const char *product,
                         const char *version,
@@ -962,8 +978,7 @@ int main(int argc, char **argv)
             log(_("Using Bugzilla ID '%s'"), ticket_no);
         }
 
-        log(_("Logging into Bugzilla at %s"), rhbz.b_bugzilla_url);
-        rhbz_login(client, rhbz.b_login, rhbz.b_password);
+        login(client, &rhbz);
 
         if (opts & OPT_w)
             rhbz_mail_to_cc(client, xatoi_positive(ticket_no), rhbz.b_login, /* require mail notify */ 0);
@@ -1059,8 +1074,7 @@ int main(int argc, char **argv)
         exit(0);
     }
 
-    log(_("Logging into Bugzilla at %s"), rhbz.b_bugzilla_url);
-    rhbz_login(client, rhbz.b_login, rhbz.b_password);
+    login(client, &rhbz);
 
     char *product = NULL;
     char *version = NULL;
