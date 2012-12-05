@@ -669,8 +669,8 @@ int attach_files(struct abrt_xmlrpc *ax, const char *bug_id,
 /* Main */
 
 struct bugzilla_struct {
-    const char *b_login;
-    const char *b_password;
+    char *b_login;
+    char *b_password;
     const char *b_bugzilla_url;
     const char *b_bugzilla_xmlrpc;
     const char *b_os_release;
@@ -683,10 +683,10 @@ static void set_settings(struct bugzilla_struct *b, map_string_h *settings)
     const char *environ;
 
     environ = getenv("Bugzilla_Login");
-    b->b_login = environ ? environ : get_map_string_item_or_empty(settings, "Login");
+    b->b_login = xstrdup(environ ? environ : get_map_string_item_or_empty(settings, "Login"));
 
     environ = getenv("Bugzilla_Password");
-    b->b_password = environ ? environ : get_map_string_item_or_empty(settings, "Password");
+    b->b_password = xstrdup(environ ? environ : get_map_string_item_or_empty(settings, "Password"));
 
     environ = getenv("Bugzilla_BugzillaURL");
     b->b_bugzilla_url = environ ? environ : get_map_string_item_or_empty(settings, "BugzillaURL");
@@ -709,6 +709,26 @@ static void set_settings(struct bugzilla_struct *b, map_string_h *settings)
 
     environ = getenv("Bugzilla_DontMatchComponents");
     b->b_DontMatchComponents = environ ? environ : get_map_string_item_or_empty(settings, "DontMatchComponents");
+}
+
+static
+char *ask_bz_login(const char *message)
+{
+    char *login = ask(message);
+    if (login == NULL || login[0] == '\0')
+        error_msg_and_die(_("Can't continue without login"));
+
+    return login;
+}
+
+static
+char *ask_bz_password(const char *message)
+{
+    char *password = ask_password(message);
+    if (password == NULL || password[0] == '\0')
+        error_msg_and_die(_("Can't continue without password"));
+
+    return password;
 }
 
 static
@@ -896,8 +916,19 @@ int main(int argc, char **argv)
         return EXIT_SUCCESS;
     }
 
-    if (!rhbz.b_login[0] || !rhbz.b_password[0])
-        error_msg_and_die(_("Empty login or password, please check your configuration"));
+    if (rhbz.b_login[0] == '\0')
+    {
+        free(rhbz.b_login);
+        rhbz.b_login = ask_bz_login(_("Login is not provided by configuration. Please enter your BZ login:"));
+    }
+
+    if (rhbz.b_password[0] == '\0')
+    {
+        free(rhbz.b_password);
+        char *question = xasprintf(_("Password is not provided by configuration. Please enter the pasword for '%s':"), rhbz.b_login);
+        rhbz.b_password = ask_bz_password(question);
+        free(question);
+    }
 
     if (opts & OPT_t)
     {
