@@ -46,6 +46,9 @@ int set_echo(int enable);
 #define ask_yes_no libreport_ask_yes_no
 int ask_yes_no(const char *question);
 
+#define ask_yes_no_yesforever libreport_ask_yes_no_yesforever
+int ask_yes_no_yesforever(const char *key, const char *question);
+
 #define ask libreport_ask
 char *ask(const char *question);
 

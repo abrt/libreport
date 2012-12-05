@@ -1672,7 +1672,7 @@ static int run_event_gtk_ask_yes_no(const char *msg, void *args)
     return ret;
 }
 
-static int run_event_gtk_ask_yes_no_yesforever(const char *msg, const char *key, void *args)
+static int run_event_gtk_ask_yes_no_yesforever(const char *key, const char *msg, void *args)
 {
     const int ret = ask_yes_no_save_result(msg, key);
     log_request_response_communication(msg, ret ? "YES" : "NO", (struct analyze_event_data *)args);

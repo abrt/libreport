@@ -69,6 +69,56 @@ int ask_yes_no(const char *question)
     return ((response[0] | 0x20) == 'y' || strncasecmp(yes, response, strlen(yes)) == 0);
 }
 
+int ask_yes_no_yesforever(const char *key, const char *question)
+{
+#if ENABLE_NLS
+    textdomain(PACKAGE);
+#endif
+    const char *yes = _("y");
+    const char *no = _("N");
+    const char *forever = _("f");
+
+    {   /* Use response from REPORT_CLIENT_RESPONSE environment variable.
+         *
+         * The forever response is not allowed in this case.
+         * There is no serious reason for that, it is just decision.
+         * (It doesn't make much sense to allow the forever answer here.)
+         */
+        const char *env_response = getenv("REPORT_CLIENT_RESPONSE");
+        if (env_response)
+            return strncasecmp(yes, env_response, strlen(yes)) == 0;
+    }
+
+    {   /* Load an value for the key from user setting.
+         * NO means 'Don't ask me again, I said yes forever'.
+         */
+        const char *option = get_user_setting(key);
+        if (option && string_to_bool(option) == false)
+            return 1;
+    }
+
+    if (is_slave_mode())
+        printf(REPORT_PREFIX_ASK_YES_NO_YESFOREVER "%s %s\n", key, question);
+    else
+        printf("%s [%s/%s/%s] ", question, yes, no, forever);
+
+    fflush(stdout);
+
+    char response[16];
+    if (NULL == fgets(response, sizeof(response), stdin))
+        return 0;
+
+    if ((is_slave_mode() && response[0] == 'f') || strncasecmp(forever, response, strlen(forever)) == 0)
+    {
+        /* NO means 'Don't ask me again, I said yes forever'. */
+        set_user_setting(key, "no");
+        return 1;
+    }
+    else
+        set_user_setting(key, "yes");
+
+    return ((is_slave_mode() && response[0] == 'y') || strncasecmp(yes, response, strlen(yes)) == 0);
+}
 char *ask(const char *question)
 {
     if (is_slave_mode())

@@ -96,12 +96,12 @@ struct run_event_state {
      *
      * The default value is run_event_stdio_ask_yes_no_yesforever()
      *
-     * @param msg An ask message produced by child command
      * @param key An option name used as a key in configuration
+     * @param msg An ask message produced by child command
      * @param args An implementor args
      * @return Return 0 if an answer is NO, otherwise return nonzero value.
      */
-    int (*ask_yes_no_yesforever_callback)(const char *msg, const char *key, void *interaction_param);
+    int (*ask_yes_no_yesforever_callback)(const char *key, const char *msg, void *interaction_param);
 
     /*
      * Called when child wants to know a password.
