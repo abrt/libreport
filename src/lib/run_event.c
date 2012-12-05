@@ -519,13 +519,13 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
                     key_end[0] = ' '; /* restore original message, not sure if it is necessary */
                 }
 
-                response = xstrdup(ans ? _("y") : _("N"));
+                response = xstrdup(ans ? "y" : "N");
             }
             /* wait for y/N response on the same line */
             else if (prefixcmp(msg, REPORT_PREFIX_ASK_YES_NO) == 0)
             {
                 const bool ans = state->ask_yes_no_callback(msg + sizeof(REPORT_PREFIX_ASK_YES_NO) - 1, state->interaction_param);
-                response = xstrdup(ans ? _("y") : _("N"));
+                response = xstrdup(ans ? "y" : "N");
             }
             /* wait for the string on the same line */
             else if (prefixcmp(msg, REPORT_PREFIX_ASK) == 0)
