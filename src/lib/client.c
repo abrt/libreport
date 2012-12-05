@@ -129,7 +129,10 @@ char *ask(const char *question)
 
     fflush(stdout);
 
-    return xmalloc_fgets(stdin);
+    char *result = xmalloc_fgets(stdin);
+    strtrimch(result, '\n');
+
+    return result;
 }
 
 char *ask_password(const char *question)
@@ -142,7 +145,10 @@ char *ask_password(const char *question)
     fflush(stdout);
 
     bool changed = set_echo(false);
+
     char *result = xmalloc_fgets(stdin);
+    strtrimch(result, '\n');
+
     if (changed)
         set_echo(true);
 
