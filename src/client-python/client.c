@@ -85,3 +85,18 @@ PyObject *p_ask_yes_no(PyObject *pself, PyObject *args)
 
     return Py_BuildValue("i", response);
 }
+
+/* C: int ask_yes_no_yesforever(const char *key, const char *question); */
+PyObject *p_ask_yes_no_yesforever(PyObject *pself, PyObject *args)
+{
+    const char *key;
+    const char *question;
+    if (!PyArg_ParseTuple(args, "ss", &key, &question))
+    {
+        return NULL;
+    }
+
+    int response = ask_yes_no_yesforever(key, question);
+
+    return Py_BuildValue("i", response);
+}

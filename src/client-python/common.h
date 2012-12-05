@@ -25,3 +25,4 @@ PyObject *p_alert(PyObject *pself, PyObject *args);
 PyObject *p_ask(PyObject *pself, PyObject *args);
 PyObject *p_ask_password(PyObject *pself, PyObject *args);
 PyObject *p_ask_yes_no(PyObject *pself, PyObject *args);
+PyObject *p_ask_yes_no_yesforever(PyObject *pself, PyObject *args);
