@@ -1307,9 +1307,9 @@ void update_gui_state_from_problem_data(int flags)
                                                                   FILENAME_NOT_REPORTABLE);
 
     char *t = xasprintf("%s%s%s",
-                        not_reportable ?: "",
-                        not_reportable ? ": " : "",
-                        reason ?: _("(no description)"));
+                        not_reportable ? : "",
+                        not_reportable ? " " : "",
+                        reason ? : _("(no description)"));
 
     gtk_label_set_text(g_lbl_cd_reason, t);
     free(t);

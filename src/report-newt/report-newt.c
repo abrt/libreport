@@ -329,9 +329,9 @@ static int report(const char *dump_dir_name)
         char *reason = dd_load_text_ext(dd, FILENAME_REASON, 0
                                         | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
         char *t = xasprintf("%s%s%s",
-                            not_reportable ?: "",
-                            not_reportable ? ": " : "",
-                            reason ?: _("(no description)"));
+                            not_reportable ? : "",
+                            not_reportable ? " " : "",
+                            reason ? : _("(no description)"));
 
         dd_close(dd);
         newtWinMessage(_("Error"), _("Ok"), (char *)"%s", t);
