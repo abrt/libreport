@@ -3088,7 +3088,12 @@ static void init_pages(void)
 
 static void assistant_quit_cb(void *obj, void *data)
 {
-    g_hash_table_destroy(g_loaded_texts);
+    if (g_loaded_texts)
+    {
+        g_hash_table_destroy(g_loaded_texts);
+        g_loaded_texts = NULL;
+    }
+
     gtk_main_quit();
 }
 
