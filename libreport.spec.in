@@ -403,11 +403,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/reporter-upload
 %{_sysconfdir}/libreport/events/report_Uploader.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/uploader_event.conf
-%{_sysconfdir}/libreport/workflows/report_Upload.xml
+%{_sysconfdir}/libreport/workflows/workflow_Upload.xml
 
 %files fedora
 %defattr(-,root,root,-)
-%{_sysconfdir}/libreport/workflows/report_Fedora.xml
+%{_sysconfdir}/libreport/workflows/workflow_Fedora.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_fedora.conf
 
 %changelog

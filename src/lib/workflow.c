@@ -72,6 +72,47 @@ workflow_t *get_workflow(const char *name)
     return g_hash_table_lookup(g_workflow_list, name);
 }
 
+static gint file_obj_cmp(file_obj_t *file, const char *filename)
+{
+    gint cmp = strcmp(file->filename, filename);
+    return cmp;
+}
+
+static void load_workflow_config(const char *name,
+                           GList *available_wfs,
+                           GHashTable *wf_list)
+{
+    GList *wf_file = g_list_find_custom(available_wfs, name, (GCompareFunc)file_obj_cmp);
+    if (wf_file)
+    {
+        file_obj_t *file = (file_obj_t *)wf_file->data;
+        workflow_t *workflow = new_workflow(file->filename);
+        load_workflow_description_from_file(workflow, file->fullpath);
+        VERB1 log("Adding '%s' to workflows\n", file->filename);
+        g_hash_table_insert(wf_list, file->filename, workflow);
+    }
+}
+
+GHashTable *load_workflow_config_data_from_list(GList *wf_names,
+                                                const char *path)
+{
+    GList *wfs = wf_names;
+    GHashTable *wf_list = g_hash_table_new_full(
+                         g_str_hash,
+                         g_str_equal,
+                         g_free,
+                         (GDestroyNotify) free_workflow
+        );
+    GList *workflow_files = get_file_list(path, "xml");
+    while(wfs)
+    {
+        load_workflow_config((const char *)wfs->data, workflow_files, wf_list);
+        wfs = g_list_next(wfs);
+    }
+
+    return wf_list;
+}
+
 GHashTable *load_workflow_config_data(const char *path)
 {
     if (g_workflow_list)

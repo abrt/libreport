@@ -2464,10 +2464,15 @@ static void set_auto_event_chain(GtkButton *button, gpointer user_data)
 static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback func)
 {
     gtk_container_foreach(GTK_CONTAINER(box), &remove_child_widget, NULL);
-    GList *keys = g_hash_table_get_keys(g_workflow_list);
+
+    GHashTable *workflow_table = load_workflow_config_data_from_list(
+                        list_possible_events_glist(g_dump_dir_name, "workflow"),
+                        WORKFLOWS_DIR);
+
+    GList *keys = g_hash_table_get_keys(workflow_table);
     while(keys)
     {
-        workflow_t *w = g_hash_table_lookup(g_workflow_list, keys->data);
+        workflow_t *w = g_hash_table_lookup(workflow_table, keys->data);
         char *btn_label = xasprintf("<b>%s</b>\n%s", wf_get_screen_name(w), wf_get_description(w));
         GtkWidget *button = gtk_button_new_with_label(btn_label);
         GList *children = gtk_container_get_children(GTK_CONTAINER(button));

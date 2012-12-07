@@ -684,6 +684,29 @@ char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const
     return strbuf_free_nobuf(result);
 }
 
+GList *list_possible_events_glist(const char *problem_dir_name,
+                                  const char *pfx)
+{
+    struct dump_dir *dd = dd_opendir(problem_dir_name, DD_OPEN_READONLY);
+    GList *l = NULL;
+    char *events = list_possible_events(dd, problem_dir_name, pfx);
+    char *start = events;
+    char *end = strchr(events, '\n');
+
+    while(end)
+    {
+        *end = '\0';
+        l = g_list_append(l, xstrdup(start));
+        start = end + 1;
+        end = strchr(start, '\n');
+    }
+
+    dd_close(dd);
+    free(events);
+
+    return l;
+}
+
 void run_event_stdio_alert(const char *msg, void *param)
 {
     alert(msg);

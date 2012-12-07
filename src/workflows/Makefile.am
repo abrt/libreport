@@ -1,8 +1,8 @@
 workflowsdir = $(WORKFLOWS_DIR)
 
 dist_workflows_DATA = \
-    report_Fedora.xml \
-    report_Upload.xml
+    workflow_Fedora.xml \
+    workflow_Upload.xml
 
 workflowsconfdir = $(WORKFLOWS_CONF_DIR)
 
@@ -12,5 +12,5 @@ dist_workflowsconf_DATA =\
 @INTLTOOL_XML_RULE@
 
 EXTRA_DIST = \
-    report_Fedora.xml.in \
-    report_Upload.xml.in
+    workflow_Fedora.xml.in \
+    workflow_Upload.xml.in

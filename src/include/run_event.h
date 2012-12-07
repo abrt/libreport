@@ -223,6 +223,14 @@ int run_event_stdio_ask_yes_no_yesforever(const char *msg, const char *key, void
  */
 char *run_event_stdio_ask_password(const char *msg, void *param);
 
+/*
+ * Returns a list of possible events for given problem directory
+ *
+ * @param problem_dir_name the name of the problem directory
+ * @param pfx the prefix of the events "report", "workflow"
+ */
+GList *list_possible_events_glist(const char *problem_dir_name,
+                                  const char *pfx);
 #ifdef __cplusplus
 }
 #endif

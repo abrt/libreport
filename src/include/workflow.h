@@ -43,5 +43,6 @@ void wf_set_screen_name(workflow_t *w, const char* screen_name);
 void wf_set_description(workflow_t *w, const char* description);
 void wf_set_long_desc(workflow_t *w, const char* long_desc);
 void wf_add_event(workflow_t *w, event_config_t *ec);
+GHashTable *load_workflow_config_data_from_list(GList *wf_names, const char *path);
 
 #endif
