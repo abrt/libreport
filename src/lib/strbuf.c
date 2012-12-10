@@ -46,10 +46,10 @@ char *strtrim(char *str)
     if (!str)
         return NULL;
 
-    // Remove leading spaces.
+    /* Remove leading spaces */
     overlapping_strcpy(str, skip_whitespace(str));
 
-    // Remove trailing spaces.
+    /* Remove trailing spaces */
     int i = strlen(str);
     while (--i >= 0)
     {
@@ -69,16 +69,13 @@ char *strtrimch(char *str, int ch)
     if (!str)
         return NULL;
 
+    /* Remove leading characters */
     char *tmp = str;
-
-
-    // Remove leading characters.
     while (*tmp == ch)
         ++tmp;
+    overlapping_strcpy(str, tmp);
 
-    memmove(str, tmp, strlen(tmp));
-
-    // Remove trailing spaces.
+    /* Remove trailing characters */
     int i = strlen(str);
     while (--i >= 0)
     {
