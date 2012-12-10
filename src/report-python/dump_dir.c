@@ -160,6 +160,22 @@ static PyObject *p_dd_save_binary(PyObject *pself, PyObject *args)
     Py_RETURN_NONE;
 }
 
+/* int dd_delete_item(struct dump_dir *dd, const char *name); */
+static PyObject *p_dd_delete_item(PyObject *pself, PyObject *args)
+{
+    p_dump_dir *self = (p_dump_dir*)pself;
+    if (!self->dd)
+    {
+        PyErr_SetString(ReportError, "dump dir is not open");
+        return NULL;
+    }
+    const char *name;
+    if (!PyArg_ParseTuple(args, "s", &name))
+    {
+        return NULL;
+    }
+    return Py_BuildValue("i", dd_delete_item(self->dd, name));
+}
 
 /*** attribute getters/setters ***/
 
@@ -188,6 +204,7 @@ static PyMethodDef p_dump_dir_methods[] = {
     { "load_text"  , p_dd_load_text, METH_VARARGS, NULL },
     { "save_text"  , p_dd_save_text, METH_VARARGS, NULL },
     { "save_binary", p_dd_save_binary, METH_VARARGS, NULL },
+    { "delete_item", p_dd_delete_item, METH_VARARGS, NULL },
     { NULL }
 };
 
