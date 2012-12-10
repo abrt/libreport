@@ -83,6 +83,7 @@ init_pyreport(void)
     PyModule_AddObject(m, "dump_dir", (PyObject *)&p_dump_dir_type);
     PyModule_AddObject(m, "DD_FAIL_QUIETLY_ENOENT"             , Py_BuildValue("i", DD_FAIL_QUIETLY_ENOENT             ));
     PyModule_AddObject(m, "DD_FAIL_QUIETLY_EACCES"             , Py_BuildValue("i", DD_FAIL_QUIETLY_EACCES             ));
+    PyModule_AddObject(m, "DD_OPEN_READONLY"                   , Py_BuildValue("i", DD_OPEN_READONLY                   ));
     PyModule_AddObject(m, "DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE", Py_BuildValue("i", DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE));
     /* for include/report/run_event.h */
     Py_INCREF(&p_run_event_state_type);
