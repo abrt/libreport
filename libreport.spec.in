@@ -226,6 +226,17 @@ Default configuration for reporting bugs via Fedora infrastructure
 used to easy configure the reporting process for Fedora sytems. Just
 install this package and you're done.
 
+%package anaconda
+Summary: Default configuration for reporting anaconda bugs
+Group: Applications/File
+Requires: libreport-plugin-reportuploader
+Requires: libreport-plugin-bugzilla
+
+%description anaconda
+Default configuration for reporting Anaconda problems using Fedora
+infrastructure or uploading the gathered data over ftp/scp...
+
+
 %prep
 %setup -q
 
@@ -409,6 +420,12 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %{_sysconfdir}/libreport/workflows/workflow_Fedora.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_fedora.conf
+
+%files anaconda
+%defattr(-,root,root,-)
+%{_sysconfdir}/libreport/workflows/workflow_AnacondaFedora.xml
+%{_sysconfdir}/libreport/workflows/workflow_AnacondaUpload.xml
+%config(noreplace) %{_sysconfdir}/libreport/workflows.d/anaconda_event.conf
 
 %changelog
 * Wed Nov 14 2012 Jakub Filak <jfilak@redhat.com> 2.0.19-1
