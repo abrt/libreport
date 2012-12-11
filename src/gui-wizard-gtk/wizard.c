@@ -247,11 +247,6 @@ static void remove_child_widget(GtkWidget *widget, gpointer unused)
     gtk_widget_destroy(widget);
 }
 
-static void save_dialog_response(GtkDialog *dialog, gint response_id, gpointer user_data)
-{
-    *(gint*)user_data = response_id;
-}
-
 static void on_configure_event_cb(GtkWidget *button, gpointer user_data)
 {
     char *event_name = (char *)user_data;
@@ -321,67 +316,12 @@ static void update_window_title(void)
     free(title);
 }
 
-/*
- * We don't allow users to remember 'No' answer therefore if 'Don't ask me again' box is
- * checked we have to disable 'No' button
- */
-static void on_toggle_ask_yes_no_save_result_cb(GtkToggleButton *tb, gpointer user_data)
-{
-    gtk_widget_set_sensitive(GTK_WIDGET(user_data), !gtk_toggle_button_get_active(tb));
-}
-
-/*
- * Function shows a dialog with 'Yes/No' buttons and a check box allowing to
- * remember the answer. The answer is stored in configuration file under
- * 'option_name' key.
- */
-static bool ask_yes_no_save_result(const char *message, const char *option_name)
-{
-    const char *ask_result = get_user_setting(option_name);
-
-    if (ask_result && string_to_bool(ask_result) == false)
-        /* Do you want to be asked? -> No, I don't. Do whatever you want */
-        return true;
-
-    GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
-                                               GTK_DIALOG_DESTROY_WITH_PARENT,
-                                               GTK_MESSAGE_QUESTION,
-                                               GTK_BUTTONS_NONE,
-                                               "%s", message);
-
-    gtk_dialog_add_button(GTK_DIALOG(dialog), GTK_STOCK_YES, GTK_RESPONSE_YES);
-    GtkWidget *no_button = gtk_dialog_add_button(GTK_DIALOG(dialog), GTK_STOCK_NO, GTK_RESPONSE_NO);
-
-    gint response = GTK_RESPONSE_NO;
-    g_signal_connect(G_OBJECT(dialog), "response",
-                     G_CALLBACK(save_dialog_response), &response);
-
-    GtkWidget *ask_yes_no_cb = gtk_check_button_new_with_label(_("Don't ask me again"));
-    gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))),
-                       ask_yes_no_cb, TRUE, TRUE, 0);
-    g_signal_connect(ask_yes_no_cb, "toggled",
-                     G_CALLBACK(on_toggle_ask_yes_no_save_result_cb), (gpointer)no_button);
-
-    /* Don't check the box by default. If the box is checked the 'No' button is disabled and
-     * we don't want to force users to click on 'Yes' button. */
-
-    gtk_widget_show(ask_yes_no_cb);
-    gtk_dialog_run(GTK_DIALOG(dialog));
-
-    /* the box is checked -> Don't ask me again and my response is always 'Yes' */
-    set_user_setting(option_name, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ask_yes_no_cb)) ? "no" : "yes");
-
-    gtk_widget_destroy(dialog);
-
-    return response == GTK_RESPONSE_YES;
-}
-
 static bool ask_continue_before_steal(const char *base_dir, const char *dump_dir)
 {
     char *msg = xasprintf(_("Need writable directory, but '%s' is not writable."
                             " Move it to '%s' and operate on the moved data?"),
                             dump_dir, base_dir);
-    const bool response = ask_yes_no_save_result(msg, "ask_steal_dir");
+    const bool response = run_ask_yes_no_yesforever_dialog("ask_steal_dir", msg, GTK_WINDOW(g_wnd_assistant));
     free(msg);
     return response;
 }
@@ -1674,7 +1614,7 @@ static int run_event_gtk_ask_yes_no(const char *msg, void *args)
 
 static int run_event_gtk_ask_yes_no_yesforever(const char *key, const char *msg, void *args)
 {
-    const int ret = ask_yes_no_save_result(msg, key);
+    const int ret = run_ask_yes_no_yesforever_dialog(key, msg, GTK_WINDOW(g_wnd_assistant));
     log_request_response_communication(msg, ret ? "YES" : "NO", (struct analyze_event_data *)args);
     return ret;
 }
@@ -2518,7 +2458,7 @@ static bool get_sensitive_data_permission(const char *event_name)
     char *msg = xasprintf(_("Event '%s' requires permission to send possibly sensitive data."
                             "\nDo you want to continue?"),
                             ec_get_screen_name(event_cfg) ? ec_get_screen_name(event_cfg) : event_name);
-    const bool response = ask_yes_no_save_result(msg, "ask_send_sensitive_data");
+    const bool response = run_ask_yes_no_yesforever_dialog("ask_send_sensitive_data", msg, GTK_WINDOW(g_wnd_assistant));
     free(msg);
 
     return response;

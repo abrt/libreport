@@ -95,6 +95,26 @@ struct url_token
 #define find_url_tokens libreport_find_url_tokens
 GList *find_url_tokens(const char *line);
 
+/* Ask dialogs */
+
+/*
+ * Runs a dialog with 'Yes'/'No' buttons and 'Don't ask me again' check box and
+ * waits until the dialog is closed. This variant of dialog allows user to
+ * click only 'Yes' button if the check box is checked and stores "no" string
+ * in user settings if the check box is checked.
+ *
+ * Uses libreport's user settings. Don't forget to call load_user_settings()
+ * before the first call of this funcion and call save_user_settings() after
+ * the last call of this function.
+ *
+ * @param key Key under which the response is stored. Not NULL
+ * @param message Displayed message. Not NULL
+ * @param parent Transient parent or NULL
+ * @returns Non 0 if the answer is "Yes"; otherwise 0
+ */
+#define run_ask_yes_no_yesforever_dialog libreport_run_ask_yes_no_yesforever_dialog
+int run_ask_yes_no_yesforever_dialog(const char *key, const char *message, GtkWindow *parent);
+
 #ifdef __cplusplus
 }
 #endif
