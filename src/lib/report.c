@@ -129,7 +129,12 @@ int report_problem_in_dir(const char *dirname, int flags)
         free_run_event_state(run_state);
         if (!no_such_event)
         {
-///FIXME: handle --delete
+            if (flags & LIBREPORT_DEL_DIR)
+            {
+                struct dump_dir *dd = dd_opendir(dirname, 0);
+                if (dd)
+                    dd_delete(dd);
+            }
             exit(r);
         }
         /* No "report-cli/gui" event found, do it old-style */
