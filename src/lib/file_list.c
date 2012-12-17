@@ -21,14 +21,14 @@
 
 GList *get_file_list(const char *path, const char *ext_filter)
 {
-    GList * files = NULL;
-    DIR *dir;
-    struct dirent *dent;
-
     /* Load .$ext files */
+    DIR *dir;
     dir = opendir(path);
     if (!dir)
         return NULL;
+
+    GList *files = NULL;
+    struct dirent *dent;
     while ((dent = readdir(dir)) != NULL)
     {
         char *ext = strrchr(dent->d_name, '.');
@@ -40,9 +40,11 @@ GList *get_file_list(const char *path, const char *ext_filter)
         char *fullname = concat_path_file(path, dent->d_name);
         *ext = '\0';
 
+//TODO: get rid of special handling of symlinks?
         struct stat buf;
         if (0 != lstat(fullname, &buf))
-            continue;
+            goto next;
+
         if (S_ISLNK(buf.st_mode))
         {
             GError *error = NULL;
@@ -52,6 +54,8 @@ GList *get_file_list(const char *path, const char *ext_filter)
 
             gchar *target = g_path_get_basename(link);
             char *ext = strrchr(target, '.');
+
+//FIXME: why "xml"? Shouldn't it be ext_filter?
             if (!ext || 0 != strcmp(ext + 1, "xml"))
                 error_msg_and_die("Invalid event symlink '%s': expected it to"
                                   " point to another xml file", fullname);
@@ -60,13 +64,16 @@ GList *get_file_list(const char *path, const char *ext_filter)
             //g_hash_table_replace(g_event_config_symlinks, xstrdup(dent->d_name), target);
             g_free(link);
             /* don't free target, it is owned by the hash table now */
-            continue;
+
+            goto next;
         }
 
         file_obj_t *file = new_file_obj(fullname, dent->d_name);
         files = g_list_prepend(files, file);
-
+ next:
+        free(fullname);
     }
+
     closedir(dir);
     return files;
 }

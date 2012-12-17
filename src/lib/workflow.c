@@ -129,7 +129,7 @@ GHashTable *load_workflow_config_data(const char *path)
     }
 
     GList *workflow_files = get_file_list(path, "xml");
-    while(workflow_files)
+    while (workflow_files)
     {
         file_obj_t *file = (file_obj_t *)workflow_files->data;
 
@@ -143,9 +143,9 @@ GHashTable *load_workflow_config_data(const char *path)
         if (nw_workflow)
             g_hash_table_replace(g_workflow_list, xstrdup(wf_get_name(workflow)), workflow);
 
-        workflow_files = g_list_next(workflow_files);
+        free_file_obj(file);
+        workflow_files = g_list_delete_link(workflow_files, workflow_files);
     }
-    free_file_list(workflow_files);
 
     return g_workflow_list;
 }

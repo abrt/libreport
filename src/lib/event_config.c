@@ -137,9 +137,8 @@ event_option_t *get_event_option_from_list(const char *name, GList *options)
 
 static void load_config_files(const char *dir_path)
 {
-
     GList *conf_files = get_file_list(dir_path, "conf");
-    while(conf_files != NULL)
+    while (conf_files != NULL)
     {
         file_obj_t *file = (file_obj_t *)conf_files->data;
         char *fullpath = file->fullpath;
@@ -186,9 +185,9 @@ static void load_config_files(const char *dir_path)
         if (new_config)
             g_hash_table_replace(g_event_config_list, xstrdup(ec_get_name(event_config)), event_config);
 
-        conf_files = g_list_next(conf_files);
+        free_file_obj(file);
+        conf_files = g_list_delete_link(conf_files, conf_files);
     }
-    free_file_list(conf_files);
 }
 
 /* (Re)loads data from /etc/abrt/events/foo.{xml,conf} and $XDG_CACHE_HOME/abrt/events/foo.conf */
@@ -226,9 +225,9 @@ GHashTable *load_event_config_data(void)
         if (new_config)
             g_hash_table_replace(g_event_config_list, xstrdup(ec_get_name(event_config)), event_config);
 
-        event_files = g_list_next(event_files);
+        free_file_obj(file);
+        event_files = g_list_delete_link(event_files, event_files);
     }
-    free_file_list(event_files);
 
     load_config_files(EVENTS_DIR);
 

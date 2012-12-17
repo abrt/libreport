@@ -635,7 +635,7 @@ void set_user_setting(const char *name, const char *value);
 const char *get_user_setting(const char *name);
 #define load_forbidden_words libreport_load_forbidden_words
 GList *load_forbidden_words();
-#define  get_file_list libreport_get_file_list
+#define get_file_list libreport_get_file_list
 GList *get_file_list(const char *path, const char *ext);
 #define free_file_list libreport_free_file_list
 void free_file_list(GList *filelist);
