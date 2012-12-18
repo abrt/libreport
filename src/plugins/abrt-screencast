@@ -1,0 +1,248 @@
+#! /usr/bin/python -u
+# -*- coding: utf-8 -*-
+# a lot of code taken from gtk-recordMyDesktop written
+# by johnvarouhakis@gmail.com
+
+import os
+import popen2
+import signal
+import sys
+import fcntl
+from reportclient import _
+import re
+
+# pylint has troubles importing from gi.repository because
+# it uses introspection
+# pylint: disable=E0611
+from gi.repository import GLib
+from gi.repository import Gtk
+# pylint: disable=F0401
+from gi.repository.Gtk import SizeGroupMode
+from gi.repository import Gdk
+#pylint: enable=E0611
+
+class AbrtScreecastWindow(Gtk.Window):
+    wroot = None
+    wwidth = None
+    wheight = None
+    without_frame = False
+    save_to = None
+    recPid = None
+    width = None
+    height = None
+    x = None
+    y = None
+    progress = None
+    enc_completed = None
+    recorapp = None
+    r = re.compile(r'.(?P<num>\d+).')
+
+    # pylint: disable=W0613
+    def update_counter(self, source, condition):
+        """
+        Callback which is run when there is some data to be read from the
+        child stdout
+        It updates the progress bar if the data read from the child contains
+        a progress information
+        """
+        if self.recorapp.poll() != -1: # process died
+            Gtk.main_quit() #encoding finished, so just close the window
+
+        strstdout = ""
+        try:
+            c = ""
+            strstdout = ""
+            # read only until ']' - the string we're trying to read is:
+            # "[X%]" or "[XX%]"
+            while self.recorapp.poll() == -1 and c != "]":
+                c = self.recorapp.fromchild.read(1)
+                strstdout += c
+
+        except IOError, ex:
+            pass #fd is non-blocking so we ignore "Resource unavailable"
+
+        except Exception, ex:
+            print ex
+
+
+        # child process prints some escape sequences to control the output on
+        # terminal, so we need to filter it only tor ord(c) < 32, otherwise the
+        # regexp matching is not reliable
+        cleaned_str = ''.join(c for c in strstdout.strip() if ord(c) >= 32)
+        num_regexp = self.r.match(cleaned_str)
+        num = ""
+        if num_regexp:
+            num = num_regexp.group("num")
+
+        if not num:
+            return True
+
+        self.enc_completed = float(num)
+        percentage = self.enc_completed/100.0
+        if percentage > 1.0 or (self.recorapp.poll() != -1):
+            percentage = 1.0
+
+        self.progress.set_fraction(percentage)
+        self.progress.set_text(_("Encoding: {0!s}% complete").format(self.enc_completed))
+        return True
+
+    def __init__(self, save_to):
+        self.save_to = save_to
+        Gtk.Window.__init__(self)
+        buttons_size_group = Gtk.SizeGroup(SizeGroupMode.BOTH)
+        main_vbox = Gtk.VBox()
+        main_hbox = Gtk.HBox()
+        # pylint: disable=E1101
+        self.add(main_vbox)
+        # pylint: disable=E1101
+        self.set_decorated(False)
+        self.wroot = Gdk.get_default_root_window()
+        self.wwidth = self.wroot.get_width()
+        self.wheight = self.wroot.get_height()
+
+        #progress bar
+        self.progress = Gtk.ProgressBar()
+        self.progress.set_no_show_all(True)
+
+        #stop button
+        stop_button = Gtk.Button(stock=Gtk.STOCK_MEDIA_STOP)
+        stop_button.connect("clicked", self.__stop_recording__)
+        stop_button.set_sensitive(False)
+        buttons_size_group.add_widget(stop_button)
+        main_hbox.pack_start(stop_button, False, False, 0)
+
+        #start button
+        rec_button = Gtk.Button(stock=Gtk.STOCK_MEDIA_RECORD)
+        rec_button.connect("clicked", self.__start_recording__, stop_button)
+        # have to select window first
+        rec_button.set_sensitive(False)
+        buttons_size_group.add_widget(rec_button)
+        main_hbox.pack_start(rec_button, False, False, 0)
+
+        # select button
+        select_button = Gtk.Button(_("Select window"))
+        select_button.connect("clicked", self.__select_window__, rec_button)
+        buttons_size_group.add_widget(select_button)
+        main_hbox.pack_start(select_button, False, False, 0)
+
+        # close button
+        close_button = Gtk.Button(stock=Gtk.STOCK_CLOSE)
+        close_button.connect("clicked", Gtk.main_quit)
+        buttons_size_group.add_widget(close_button)
+        main_hbox.pack_start(close_button, False, False, 0)
+
+        main_vbox.pack_start(main_hbox, True, True, 0)
+        main_vbox.pack_start(self.progress, True, True, 0)
+
+        self.connect("destroy", Gtk.main_quit)
+
+    def __start_recording__(self, button, stop_button):
+        args = [
+        "recordmydesktop",
+        "-o",
+        self.save_to,
+        "--fps",
+        "5",
+        "--no-sound",
+        "--width",
+        str(self.width),
+        "--height",
+        str(self.height),
+        "--v_quality",
+        "50",
+        "--workdir",
+        "/tmp",
+        "-x", str(self.x),
+        "-y", str(self.y)
+        ]
+
+        self.recorapp = popen2.Popen3(args, True, 0)
+        flags = fcntl.fcntl(self.recorapp.fromchild, fcntl.F_GETFL)
+        fcntl.fcntl(self.recorapp.fromchild, fcntl.F_SETFL, flags | os.O_NONBLOCK)
+
+        self.recPid = self.recorapp.pid
+        if self.recPid != None:
+            stop_button.set_sensitive(True)
+            button.set_sensitive(False)
+
+    def __stop_recording__(self, button):
+        """
+        Callback to stop the recording process
+        """
+        os.kill(self.recPid, signal.SIGINT)
+        button.set_sensitive(False)
+        self.progress.set_visible(True)
+
+        giochannel = GLib.IOChannel(filedes=self.recorapp.fromchild.fileno())
+        giochannel.add_watch(GLib.IO_IN|GLib.IO_HUP, self.update_counter)
+
+    def __select_window__(self, button, start_button):
+        """
+        Calls xwinfo to get area which user would like to record
+        """
+        xwininfo_com = ['xwininfo','-frame']
+        if self.without_frame == True:
+            xwininfo_com = ['xwininfo']
+
+        (stdin, stdout, stderr) = os.popen3(xwininfo_com, 't')
+        wid = stdout.readlines()
+        stdin.close()
+        stdout.close()
+        stderr.close()
+        x = y = width = height = None
+        for i in wid:
+            if i.lstrip().startswith('Absolute upper-left X:'):
+                x = int(i.split(' ')[len(i.split(' '))-1])
+            elif i.lstrip().startswith('Absolute upper-left Y'):
+                y = int(i.split(' ')[len(i.split(' '))-1])
+            elif i.lstrip().startswith('Width:'):
+                width = int(i.split(' ')[len(i.split(' '))-1])
+            elif i.lstrip().startswith('Height:'):
+                height = int(i.split(' ')[len(i.split(' '))-1])
+
+        if x <= 0:
+            width += x
+            x = 1 #recordmydesktop accepts only values > 0
+        if y <= 0:
+            height += y
+            y = 1
+        if width + x > self.wwidth:
+            width = self.wwidth - x
+        if height + y > self.wheight:
+            height = self.wheight - y
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+
+        #print self.x, self.y, self.width, self.height
+
+        start_button.set_sensitive(True)
+
+    def show_controls(self):
+        """
+        Wrapper for show_all() method to show the window with controls take it's
+        size move to the to right-lower corner and call present() to drag users
+        attention
+        """
+        # pylint: disable=E1101
+        self.show_all()
+        # pylint: disable=E1101
+        width, height = self.get_size()
+        # pylint: disable=E1101
+        self.move(self.wwidth - (width + 50), self.wheight - (height + 50))
+        # pylint: disable=E1101
+        self.present() #move it on top or do some magic to drag the attention
+
+
+if __name__ == "__main__":
+    output_file = None
+    try:
+        output_file = sys.argv[1]
+    except IndexError, ex:
+        print _("Usage: abrt-screencast -o OUTPUT_FILE")
+        sys.exit(1)
+
+    w = AbrtScreecastWindow(save_to=output_file)
+    w.show_controls()
+    Gtk.main()

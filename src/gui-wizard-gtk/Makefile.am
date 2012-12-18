@@ -20,6 +20,7 @@ report_gtk_CFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DICON_DIR=\"${datadir}/abrt/icons/hicolor/48x48/status\" \
     -DWORKFLOWS_DIR=\"$(WORKFLOWS_DIR)\" \
+    -DLIBEXEC_DIR=\"$(libexecdir)\" \
     $(GLIB_CFLAGS) \
     $(GTK_CFLAGS) \
     -D_GNU_SOURCE

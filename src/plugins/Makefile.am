@@ -73,13 +73,18 @@ if BUILD_UREPORT
 reporters_extra_dist += report_uReport.xml.in
 endif
 
+PYTHON_FILES = abrt-screencast
+
 EXTRA_DIST = $(reporters_extra_dist) \
+    $(PYTHON_FILES) \
     report_Logger.conf \
     report_Logger.xml.in \
     report_Mailx.xml.in \
     report_RHTSupport.xml.in \
     report_Kerneloops.xml.in \
     report_Uploader.xml.in
+
+libexec_SCRIPTS = abrt-screencast
 
 $(DESTDIR)/$(DEBUG_INFO_DIR):
 	$(mkdir_p) '$@'

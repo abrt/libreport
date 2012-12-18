@@ -103,6 +103,8 @@ static GtkSpinner *g_spinner_event_log;
 static GtkImage *g_img_process_fail;
 static GtkImage *g_img_process_ok;
 
+static GtkButton *g_btn_startcast;
+
 static GtkWidget *g_top_most_window;
 
 static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback func);
@@ -2931,6 +2933,7 @@ static void add_pages(void)
     g_spinner_event_log    = GTK_SPINNER(      gtk_builder_get_object(g_builder, "spinner_event_log"));
     g_img_process_ok       = GTK_IMAGE(      gtk_builder_get_object(g_builder, "img_process_ok"));
     g_img_process_fail     = GTK_IMAGE(      gtk_builder_get_object(g_builder, "img_process_fail"));
+    g_btn_startcast        = GTK_BUTTON(    gtk_builder_get_object(g_builder, "btn_startcast"));
 
     gtk_widget_set_no_show_all(GTK_WIDGET(g_spinner_event_log), true);
 
@@ -3042,6 +3045,36 @@ static void assistant_quit_cb(void *obj, void *data)
     gtk_main_quit();
 }
 
+static void on_btn_startcast(GtkWidget *btn, gpointer user_data)
+{
+    const char *args[15];
+    args[0] = (char *) LIBEXEC_DIR"/abrt-screencast";
+    args[1] = concat_path_file(g_dump_dir_name, "screencast.ogv");
+    args[2] = NULL;
+
+    pid_t castapp = 0;
+    castapp = fork_execv_on_steroids(
+                EXECFLG_QUIET,
+                (char **)args,
+                NULL,
+                /*env_vec:*/ NULL,
+                /*dir:*/ NULL,
+                /*uid (ignored):*/ 0
+    );
+    gtk_widget_hide(GTK_WIDGET(g_wnd_assistant));
+    /*flush all gui events before we start waitpid
+     * otherwise the main window wouldn't hide
+     */
+    while (gtk_events_pending())
+        gtk_main_iteration_do(false);
+
+    int status;
+    safe_waitpid(castapp, &status, 0);
+    problem_data_reload_from_dump_dir();
+    update_gui_state_from_problem_data(0 /* don't update the selected event */);
+    gtk_widget_show(GTK_WIDGET(g_wnd_assistant));
+}
+
 void create_assistant(bool expert_mode)
 {
     g_loaded_texts = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
@@ -3130,6 +3163,13 @@ void create_assistant(bool expert_mode)
     g_signal_connect(gtk_text_view_get_buffer(g_tv_comment), "changed", G_CALLBACK(on_comment_changed), NULL);
 
     g_signal_connect(g_btn_add_file, "clicked", G_CALLBACK(on_btn_add_file), NULL);
+
+    /* we need to override the activate-link handler, because we use
+     * the link button instead of normal button and if wouldn't override it
+     * gtk would try to run it's defualt action and open the associated URI
+     * but since the URI is empty it would complain about it...
+     */
+    g_signal_connect(g_btn_startcast, "activate-link", G_CALLBACK(on_btn_startcast), NULL);
 
     g_signal_connect(g_search_entry_bt, "changed", G_CALLBACK(search_timeout), NULL);
 
