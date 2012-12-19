@@ -3,20 +3,20 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Zoltan Hoppár <hopparz@gmail.com>, 2011, 2012.
+# Zoltan Hoppár <hopparz@gmail.com>, 2011-2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: https://fedorahosted.org/abrt/report\n"
-"POT-Creation-Date: 2012-08-13 13:34+0200\n"
-"PO-Revision-Date: 2012-08-13 11:36+0000\n"
+"POT-Creation-Date: 2012-12-19 15:44+0100\n"
+"PO-Revision-Date: 2012-12-19 14:46+0000\n"
 "Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: Hungarian <trans-hu@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: hu\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../src/cli/cli.c:63
 msgid ""
@@ -25,7 +25,7 @@ msgid ""
 "   or: & [-vsp] -a[y] PROBLEM_DIR\n"
 "   or: & [-vsp] -c[y] PROBLEM_DIR\n"
 "   or: & [-vsp] -r[y|d] PROBLEM_DIR"
-msgstr ""
+msgstr "& [-vsp] -L[PREFIX] [PROBLEM_DIR]\n   or: & [-vsp] -e EVENT PROBLEM_DIR\n   or: & [-vsp] -a[y] PROBLEM_DIR\n   or: & [-vsp] -c[y] PROBLEM_DIR\n   or: & [-vsp] -r[y|d] PROBLEM_DIR"
 
 #. short_name long_name  value    parameter_name  help
 #: ../src/cli/cli.c:87
@@ -34,19 +34,19 @@ msgstr "Lista a lehetséges eseményekről [ami PREFIX-el kezdődik]"
 
 #: ../src/cli/cli.c:88
 msgid "Run only these events"
-msgstr ""
+msgstr "Csak ezeket az eseményeket futtassa"
 
 #: ../src/cli/cli.c:89
 msgid "Run analyze event(s) on PROBLEM_DIR"
-msgstr "Esemény (s) analízis futtatása a PROBLEM_DIR-en"
+msgstr "Esemény(ek) elemzésének futtatása PROBLEM_DIR mappán"
 
 #: ../src/cli/cli.c:90
 msgid "Run collect event(s) on PROBLEM_DIR"
-msgstr "Futtassa az esemény(ek) felgyűjtését a DUMP-DIR könyvtárban"
+msgstr "Esemény(ek) begyűjtésének futtatása PROBLEM_DIR mappán"
 
 #: ../src/cli/cli.c:91
 msgid "Analyze, collect and report problem data in PROBLEM_DIR"
-msgstr "Analizálja, gyüjtse és jelentse a problémákat a PROBLEM_DIR könyvtárban"
+msgstr "Elemezze, gyűjtse és jelentse a felmerülő problémákat a PROBLEM_DIR mappába"
 
 #: ../src/cli/cli.c:92 ../src/report-newt/report-newt.c:393
 msgid "Display version and exit"
@@ -54,7 +54,7 @@ msgstr "Verzió megjelenése és kilépés"
 
 #: ../src/cli/cli.c:93
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr "Távolítsa el a PROBLEM_DIR könyvtárat jelentés elkészülte után"
+msgstr "Távoltítsa el a PROBLEM_DIR mappát a bejelentés után"
 
 #: ../src/cli/cli.c:94
 msgid "Noninteractive: don't ask questions, assume 'yes'"
@@ -64,7 +64,7 @@ msgstr "Nem interaktív: ne kérdezzen, a válasz 'igen'"
 msgid "Log to syslog"
 msgstr "Logoljon a syslogba"
 
-#: ../src/cli/cli.c:97 ../src/gui-wizard-gtk/main.c:122
+#: ../src/cli/cli.c:97 ../src/gui-wizard-gtk/main.c:121
 msgid "Add program names to log"
 msgstr "Adjon meg programneveket a logoláshoz"
 
@@ -136,13 +136,11 @@ msgid ""
 msgstr "\nA jelentés nem változott"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/cli-report.c:396 ../src/lib/client.c:51
-#: ../src/lib/run_event.c:656
+#: ../src/cli/cli-report.c:396 ../src/lib/client.c:51 ../src/lib/client.c:77
 msgid "y"
 msgstr "y"
 
-#: ../src/cli/cli-report.c:397 ../src/lib/client.c:52
-#: ../src/lib/run_event.c:656
+#: ../src/cli/cli-report.c:397 ../src/lib/client.c:52 ../src/lib/client.c:78
 msgid "N"
 msgstr "N"
 
@@ -158,7 +156,7 @@ msgstr "Rossz érték '%s': %s"
 #: ../src/cli/cli-report.c:612
 #, c-format
 msgid "How you would like to analyze the problem?\n"
-msgstr "Hogyan kívánja analizáli a problémát?\n"
+msgstr "Hogyan kívánja analizálni a problémát?\n"
 
 #: ../src/cli/cli-report.c:630
 msgid "Select analyzer: "
@@ -181,7 +179,7 @@ msgstr "Milyen további információt szeretne még összegyüjteni?"
 msgid "Select collector(s): "
 msgstr "Válassza ki a begyüjtő(ket): "
 
-#: ../src/cli/cli-report.c:816 ../src/gui-wizard-gtk/wizard.c:1086
+#: ../src/cli/cli-report.c:816 ../src/gui-wizard-gtk/wizard.c:1254
 #: ../src/report-newt/report-newt.c:334
 msgid "(no description)"
 msgstr "(nincs leírás)"
@@ -211,7 +209,7 @@ msgstr "A probléma jelentve a %d hibajelentőn keresztül (%d hiba)\n"
 #: ../src/cli/cli-report.c:1008
 #, c-format
 msgid ""
-"Event '%s' requires permision to send possibly sensitive data. Do you want "
+"Event '%s' requires permission to send possibly sensitive data. Do you want "
 "to continue?"
 msgstr ""
 
@@ -246,27 +244,37 @@ msgstr "Nem eltávolítható '{0}': {1}"
 msgid "Downloading ({0} of {1}) {2}: {3:3}%"
 msgstr "Letöltés folyamatban ({0} / {1}) {2}: {3:3}%"
 
+#: ../src/client-python/debuginfo.py:135
+msgid ""
+"Problem '{0!s}' occured while downloading from mirror: '{1!s}'. Trying next "
+"one"
+msgstr "Hiba '{0!s}' merült fel a tükörről való letöltés közben: '{1!s}'. Megpróbáljuk a következőt."
+
 #. self.conf.cache = os.geteuid() != 0
 #. Setup yum (Ts, RPM db, Repo & Sack)
 #. doConfigSetup() takes some time, let user know what we are doing
-#: ../src/client-python/debuginfo.py:147
+#: ../src/client-python/debuginfo.py:154
 msgid "Initializing yum"
 msgstr "Yum előkészítése"
 
-#: ../src/client-python/debuginfo.py:155
+#: ../src/client-python/debuginfo.py:162
 msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
 msgstr "Yum előkészítése sikertelen (YumBase.doConfigSetup): '{0!s}'"
 
-#: ../src/client-python/debuginfo.py:186
+#: ../src/client-python/debuginfo.py:193
 msgid "Can't disable repository '{0!s}': {1!s}"
-msgstr ""
+msgstr "A tároló nem kapcsolható le '{0!s}': {1!s}"
 
 #. This takes some time, let user know what we are doing
-#: ../src/client-python/debuginfo.py:189
+#: ../src/client-python/debuginfo.py:196
 msgid "Setting up yum repositories"
 msgstr "Yum tárolók beállítása"
 
-#: ../src/client-python/debuginfo.py:200
+#: ../src/client-python/debuginfo.py:213
+msgid "Can't disable async download, the output might contain artifacts!"
+msgstr ""
+
+#: ../src/client-python/debuginfo.py:215
 msgid "Can't setup {0}: {1}, disabling"
 msgstr "Nem beállítható {0}: {1}, figyelmen kívül hagyva"
 
@@ -274,300 +282,333 @@ msgstr "Nem beállítható {0}: {1}, figyelmen kívül hagyva"
 #. Looks like this is the moment when yum talks to remote servers,
 #. which takes time (sometimes minutes), let user know why
 #. we have "paused":
-#: ../src/client-python/debuginfo.py:207
+#: ../src/client-python/debuginfo.py:222
 msgid "Looking for needed packages in repositories"
 msgstr "Szükséges csomagok keresése a tárolókban"
 
-#: ../src/client-python/debuginfo.py:211
+#: ../src/client-python/debuginfo.py:226
 msgid "Error retrieving metadata: '{0!s}'"
 msgstr "Metadat letöltése sikertelen: '{0!s}'"
 
-#: ../src/client-python/debuginfo.py:221
+#: ../src/client-python/debuginfo.py:239
 msgid "Error retrieving filelists: '{0!s}'"
 msgstr "Fájllisták letöltése sikertelen: '{0!s}'"
 
-#: ../src/client-python/debuginfo.py:254
+#: ../src/client-python/debuginfo.py:275
 msgid "Can't find packages for {0} debuginfo files"
 msgstr "{0} debuginfo fájlokhoz nem találhatóak csomagok"
 
-#: ../src/client-python/debuginfo.py:256
+#: ../src/client-python/debuginfo.py:277
 msgid "Packages to download: {0}"
 msgstr "Letöltendő csomagok: {0}"
 
-#: ../src/client-python/debuginfo.py:257
+#: ../src/client-python/debuginfo.py:278
 msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
 msgstr "Letöltésre ütemezve {0:.2f}Mb, ez telepítve: {1:.2f}Mb. Folytatja?"
 
-#: ../src/client-python/debuginfo.py:262
+#: ../src/client-python/debuginfo.py:283
 msgid "Download cancelled by user"
 msgstr "Letöltés felhasználó által megszakíva"
 
-#: ../src/client-python/debuginfo.py:296
+#: ../src/client-python/debuginfo.py:317
 msgid "Downloading package {0} failed"
 msgstr "{0} csomag letöltése nem sikerült"
 
 #. recursively delete the temp dir on failure
-#: ../src/client-python/debuginfo.py:302
+#: ../src/client-python/debuginfo.py:323
 msgid "Unpacking failed, aborting download..."
 msgstr "Kicsomagolás sikertelen, letöltés megszakításra kerül..."
 
 #. Was: "All downloaded packages have been extracted, removing..."
 #. but it was appearing even if no packages were in fact extracted
 #. (say, when there was one package, and it has download error).
-#: ../src/client-python/debuginfo.py:312
+#: ../src/client-python/debuginfo.py:333
 msgid "Removing {0}"
 msgstr "{0} eltávolítása"
 
-#: ../src/client-python/debuginfo.py:316
+#: ../src/client-python/debuginfo.py:337
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
 msgstr "%s eltávolíthatatlan, valószínűleg hibajelentést, log fájlt tartalmaz"
 
-#: ../src/gtk-helpers/event_config_dialog.c:130
+#: ../src/gtk-helpers/ask_dialogs.c:82
+msgid "Don't ask me again"
+msgstr "Ne kérdezze meg újra"
+
+#. if event has no xml description
+#: ../src/gtk-helpers/config_dialog.c:153
+msgid "No description available"
+msgstr ""
+
+#: ../src/gtk-helpers/config_dialog.c:274
+msgid "Configuration"
+msgstr ""
+
+#. we can't use this, because we want the workflows first and hashtable
+#. * doesn't return the items in the order they were added
+#. 
+#. g_hash_table_foreach(configs, (GHFunc)add_config_tabs, config_nb);
+#: ../src/gtk-helpers/config_dialog.c:297
+#: ../src/gtk-helpers/config_dialog.c:299
+#: ../src/gtk-helpers/config_dialog.c:350
+msgid "Workflows"
+msgstr ""
+
+#: ../src/gtk-helpers/config_dialog.c:301
+#: ../src/gtk-helpers/config_dialog.c:303
+#: ../src/gtk-helpers/config_dialog.c:353
+msgid "Events"
+msgstr ""
+
+#: ../src/gtk-helpers/config_dialog.c:307
+msgid "C_onfigure"
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:136
 msgid "Show password"
 msgstr "Jelszó megjelenítése"
 
-#: ../src/gtk-helpers/event_config_dialog.c:341
+#: ../src/gtk-helpers/event_config_dialog.c:216
 msgid "Advanced"
 msgstr "Haladó"
 
-#: ../src/gtk-helpers/event_config_dialog.c:351
+#: ../src/gtk-helpers/event_config_dialog.c:234
 msgid "Don't store passwords"
 msgstr "Jelszavakat ne tárolja"
 
-#: ../src/gtk-helpers/event_config_dialog.c:377
+#: ../src/gtk-helpers/event_config_dialog.c:257
 msgid "Secret Service is not available, your settings won't be saved!"
-msgstr ""
+msgstr "Gnome kulcskarika nem elérhető, a beállításai nem kerülnek mentésre"
 
-#: ../src/gtk-helpers/event_config_dialog.c:413
-msgid "Event Configuration"
-msgstr "Események beállítása"
-
-#: ../src/gtk-helpers/event_config_dialog.c:438
-msgid "Event"
-msgstr "Esemény"
-
-#: ../src/gtk-helpers/event_config_dialog.c:472
-msgid "Configure E_vent"
-msgstr "Esemény beállítása"
-
-#: ../src/gtk-helpers/secrets.c:143
+#: ../src/gtk-helpers/secrets.c:168
 #, c-format
-msgid "Can't connect over DBus to name '%s' path '%s'interface '%s': %s"
+msgid "Can't connect over DBus to name '%s' path '%s' interface '%s': %s"
 msgstr ""
 
-#: ../src/gtk-helpers/secrets.c:163
+#: ../src/gtk-helpers/secrets.c:188
 #, c-format
 msgid "Can't call method '%s' over DBus on path '%s' interface '%s': %s"
-msgstr ""
+msgstr "'%s' eljárás nem hívható a DBus-on keresztül: elérési út '%s'csatlakozó '%s': %s"
 
-#: ../src/gtk-helpers/secrets.c:721
+#: ../src/gtk-helpers/secrets.c:736
 #, c-format
 msgid "D-Bus Secrets Service ReadAlias('%s') method failed: %s"
-msgstr ""
+msgstr "DBus titkosítási szolgáltatás ReadAlias('%s') mód sikertelen: %s"
 
 #. if the error wasn't about invalid properties we have an another problem
-#: ../src/gtk-helpers/secrets.c:920
+#: ../src/gtk-helpers/secrets.c:977
 #, c-format
-msgid "Can't create an secret item for event '%s': %s"
+msgid "Can't create a secret item for event '%s': %s"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/main.c:107
+#: ../src/gtk-helpers/secrets.c:1159
+#, c-format
+msgid "can't get secret value of '%s': %s"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/main.c:105
 msgid ""
-"& [-vpd] [-g GUI_FILE] [-n PROG_NAME] DIR\n"
+"& [-vpd] [-g GUI_FILE] DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
-msgstr ""
+msgstr "& [-vpd] [-g GUI_FILE] DIR\n\nGUI eszköz hogy elemezze és jelentse az elmentett problémákat a definiált DIR mappában"
 
-#: ../src/gui-wizard-gtk/main.c:121
+#: ../src/gui-wizard-gtk/main.c:120
 msgid "Alternate GUI file"
 msgstr "Alternatív GUI fájl"
 
 #. for use from 3rd party apps to show just a reporter selector
-#: ../src/gui-wizard-gtk/main.c:124 ../src/report-newt/report-newt.c:392
+#: ../src/gui-wizard-gtk/main.c:123 ../src/report-newt/report-newt.c:392
 msgid "Remove DIR after reporting"
 msgstr "Mappa eltávoltása jelentés után"
 
-#: ../src/gui-wizard-gtk/main.c:125
+#: ../src/gui-wizard-gtk/main.c:124
 msgid "Run only this event"
+msgstr "Csak ezt az eseményt futtassa"
+
+#: ../src/gui-wizard-gtk/main.c:125
+msgid "Run wizard in expert mode - shows advanced options"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:267
+#: ../src/gui-wizard-gtk/wizard.c:273
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue"
-" with the current configuration."
-msgstr "Rossz beállítás érzékelhető %s -ben, a jelentés valószínűleg nem sikerül ha folytatja, a jelenlegi beállításokkal."
+"Wrong settings detected for %s, reporting will probably fail if you continue with the current configuration.\n"
+"\n"
+"Read more about the configuration at: https://fedorahosted.org/abrt/wiki/AbrtConfiguration"
+msgstr "Wrong settings detected for %s, reporting will probably fail if you continue with the current configuration.\n\nRead more about the configuration at: https://fedorahosted.org/abrt/wiki/AbrtConfiguration"
 
-#: ../src/gui-wizard-gtk/wizard.c:271
+#: ../src/gui-wizard-gtk/wizard.c:278
 #, c-format
 msgid ""
-"Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
-"continue with the current configuration."
-msgstr "Hibás beállítások <b>%s</b> körül, a jelentés valószínűleg nem sikerülhet, ha a jelenlegi beállításokkal folytatja."
+"Wrong settings detected for <b>%s</b>, reporting will probably fail if you continue with the current configuration.\n"
+"\n"
+"<a href=\"https://fedorahosted.org/abrt/wiki/AbrtConfiguration\">Read more about the configuration</a>"
+msgstr "Wrong settings detected for <b>%s</b>, reporting will probably fail if you continue with the current configuration.\n\n<a href=\"https://fedorahosted.org/abrt/wiki/AbrtConfiguration\">Read more about the configuration</a>"
 
-#: ../src/gui-wizard-gtk/wizard.c:288
+#: ../src/gui-wizard-gtk/wizard.c:296
 #, c-format
 msgid "Con_figure %s"
 msgstr "Ko_figurálja: %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:340
-msgid "Don't ask me again"
-msgstr "Ne kérdezze meg újra"
-
-#: ../src/gui-wizard-gtk/wizard.c:359
+#: ../src/gui-wizard-gtk/wizard.c:323
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved data?"
 msgstr "Egy írható könyvtárra lenne szükség, de '%s' nem írható. Mozgassuk '%s' célra és munkát folytassuk az elmozgatott adatokon?"
 
-#: ../src/gui-wizard-gtk/wizard.c:553
+#: ../src/gui-wizard-gtk/wizard.c:718
 msgid "View/edit a text file"
 msgstr "Szövegfájl megtekintése/szerkesztése"
 
-#: ../src/gui-wizard-gtk/wizard.c:771
+#: ../src/gui-wizard-gtk/wizard.c:937
 msgid ""
 "No reporting targets are defined for this problem. Check configuration in "
 "/etc/libreport/*"
-msgstr ""
+msgstr "NIncsenek céljelentések meghatározva erre a problémára. Ellenőrizze az összeállításokat itt: /etc/libreport/*"
 
-#: ../src/gui-wizard-gtk/wizard.c:808
+#: ../src/gui-wizard-gtk/wizard.c:974
 #, c-format
 msgid "(requires: %s)"
-msgstr ""
+msgstr "(szügséges: %s)"
 
-#: ../src/gui-wizard-gtk/wizard.c:822
+#: ../src/gui-wizard-gtk/wizard.c:988
 #, c-format
 msgid "(not needed, data already exist: %s)"
-msgstr ""
+msgstr "(nem szügséges, az adatok már léteznek: %s)"
 
-#: ../src/gui-wizard-gtk/wizard.c:970
+#: ../src/gui-wizard-gtk/wizard.c:1138
 msgid "(click here to view/edit)"
 msgstr "(kattintson ide hogy megtekintse/szerkessze)"
 
-#: ../src/gui-wizard-gtk/wizard.c:980
+#: ../src/gui-wizard-gtk/wizard.c:1148
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(bináris fájl, %llu byte)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1094
+#: ../src/gui-wizard-gtk/wizard.c:1262
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu byte, %u fájl"
 
 #. this event is the last event from the chain
 #. No next event, go to progress page and finish
-#: ../src/gui-wizard-gtk/wizard.c:1330 ../src/gui-wizard-gtk/wizard.c:1906
-#: ../src/gui-wizard-gtk/wizard.c:1940
+#: ../src/gui-wizard-gtk/wizard.c:1518 ../src/gui-wizard-gtk/wizard.c:2195
+#: ../src/gui-wizard-gtk/wizard.c:2440
 msgid "Processing finished."
-msgstr ""
+msgstr "Feldolgozás befejeződött."
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1588
+#: ../src/gui-wizard-gtk/wizard.c:1802
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "Nincs meghatározva feldolgozás a '%s' eseményhez"
 
-#: ../src/gui-wizard-gtk/wizard.c:1608
+#: ../src/gui-wizard-gtk/wizard.c:1822
 msgid "Processing interrupted: can't continue without writable directory."
-msgstr ""
+msgstr "Feldolgozás megszakítva: nem folytatható írható mappa nélkül"
 
-#: ../src/gui-wizard-gtk/wizard.c:1704
+#: ../src/gui-wizard-gtk/wizard.c:1925
 msgid "Cannot check backtrace rating because of invalid event name"
-msgstr ""
+msgstr "Nem ellenőrizhető a nyomkövetés minősítése mivel hibás az esemény neve"
 
-#: ../src/gui-wizard-gtk/wizard.c:1889
+#: ../src/gui-wizard-gtk/wizard.c:2178
 msgid ""
 "Possible sensitive data detected, please review the highlighted tabs "
 "carefully."
 msgstr "Valószínűleg érzékeny adatok találhatóak a tartalomban, kérem tekintse át a kiemelt részeket figyelmesen."
 
-#: ../src/gui-wizard-gtk/wizard.c:1902
+#: ../src/gui-wizard-gtk/wizard.c:2191
 msgid "Processing..."
-msgstr ""
+msgstr "Feldolgozás..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1903
+#: ../src/gui-wizard-gtk/wizard.c:2192
 msgid "Processing failed. You can try another operation if available."
-msgstr ""
+msgstr "Feldolgozás sikertelen. Megpróbálhat egy másik műveletet ha lehetséges."
 
-#: ../src/gui-wizard-gtk/wizard.c:1904
+#: ../src/gui-wizard-gtk/wizard.c:2193
 msgid "Processing failed."
-msgstr ""
+msgstr "Feldolgozás sikertelen."
 
-#: ../src/gui-wizard-gtk/wizard.c:1907
+#: ../src/gui-wizard-gtk/wizard.c:2196
 msgid "Processing finished, please proceed to the next step."
-msgstr ""
+msgstr "Feldolgozás befejeződött, kérem folytassa a következő lépéssel."
 
-#: ../src/gui-wizard-gtk/wizard.c:2038
+#: ../src/gui-wizard-gtk/wizard.c:2460
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
 "Do you want to continue?"
-msgstr ""
+msgstr "Az esemény: %s - engedélyre van szügsége hogy elküldhessen valószínűleg érzékeny "
 
-#: ../src/gui-wizard-gtk/wizard.c:2072
+#: ../src/gui-wizard-gtk/wizard.c:2499
 msgid "Processing was cancelled"
+msgstr "Feldolgozás megszakítva"
+
+#: ../src/gui-wizard-gtk/wizard.c:2509
+#, c-format
+msgid "This problem should not be reported (it is likely a known problem). %s"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2286
+#: ../src/gui-wizard-gtk/wizard.c:2757
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' nem egy szokványos fájl"
 
-#: ../src/gui-wizard-gtk/wizard.c:2299
+#: ../src/gui-wizard-gtk/wizard.c:2771
 msgid "You are trying to copy a file onto itself"
 msgstr "Önmagára próbálja másolni a fájlt"
 
-#: ../src/gui-wizard-gtk/wizard.c:2306
+#: ../src/gui-wizard-gtk/wizard.c:2778
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "Az '%s' nem másolható: %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2322
+#: ../src/gui-wizard-gtk/wizard.c:2793
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "Az '%s' elem már létezik és nem módosítható"
 
-#: ../src/gui-wizard-gtk/wizard.c:2509
+#: ../src/gui-wizard-gtk/wizard.c:2974
 msgid "Include"
 msgstr "Hozzáadva"
 
-#: ../src/gui-wizard-gtk/wizard.c:2519
+#: ../src/gui-wizard-gtk/wizard.c:2984
 msgid "Name"
 msgstr "Név"
 
-#: ../src/gui-wizard-gtk/wizard.c:2527
+#: ../src/gui-wizard-gtk/wizard.c:2992
 msgid "Value"
 msgstr "Értéke"
 
-#: ../src/gui-wizard-gtk/wizard.c:2561
+#: ../src/gui-wizard-gtk/wizard.c:3026
 msgid "Problem description"
 msgstr "Probléma leírása"
 
-#: ../src/gui-wizard-gtk/wizard.c:2562
-msgid "Select operation"
+#: ../src/gui-wizard-gtk/wizard.c:3027
+msgid "Select how to report this problem"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2563
+#: ../src/gui-wizard-gtk/wizard.c:3028
 msgid "Provide additional information"
 msgstr "További infirmációk megadása"
 
-#: ../src/gui-wizard-gtk/wizard.c:2564
+#: ../src/gui-wizard-gtk/wizard.c:3029
 msgid "Review the data"
 msgstr "Adatok áttekintése"
 
-#: ../src/gui-wizard-gtk/wizard.c:2565
+#: ../src/gui-wizard-gtk/wizard.c:3030
 msgid "Confirm data to report"
 msgstr "Erősítse meg az adatokat a jelentéshez"
 
-#: ../src/gui-wizard-gtk/wizard.c:2566
+#: ../src/gui-wizard-gtk/wizard.c:3031
 msgid "Processing"
-msgstr ""
+msgstr "Feldolgozás"
 
-#: ../src/gui-wizard-gtk/wizard.c:2567
+#: ../src/gui-wizard-gtk/wizard.c:3032
 msgid "Processing done"
-msgstr ""
+msgstr "Feldolgozás kész"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
 msgid ""
@@ -586,7 +627,7 @@ msgid ""
 "How did this problem happen (step-by-step)? How can it be reproduced? Any "
 "additional comments useful for diagnosing the problem? Please use English if"
 " possible."
-msgstr "Hogyan történt az eset (lépésről-lépésre)? Hogyan lehet reprodukálni? Minden további információ hasznos lehet a probláma megállapításához? Kérem használjon angol nyelvet amennyiben ez lehetséges."
+msgstr "Hogyan történt az eset (lépésről-lépésre)? Hogyan lehet reprodukálni? Minden további információ hasznos lehet a probléma megállapításához? Kérem használjon angol nyelvet amennyiben ez lehetséges."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid "You need to fill the how to before you can proceed..."
@@ -599,135 +640,165 @@ msgid ""
 msgstr "<b>A bejegyzései nem zártak.</b> Publikusan látható jelentésekben megjelenhetnek."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:6
+msgid "If you don't know how to describe it, you can"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:7
+msgid "add screencast"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "I don't know what caused this problem"
 msgstr "Nem tudom mi okozhatta ezt a problémát"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:7
+#: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid ""
 "Use this button to generate more informative backtrace after you installed "
 "additional debug packages"
 msgstr "Használja ezt a gombot hogy még bővebb nyomkövetési információkhoz jusson, miután telepítette a debug csomagokat"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:8
+#: ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid ""
 "Please review the data before it gets reported. Depending on reporter "
 "chosen, it may end up publicly visible."
-msgstr ""
+msgstr "Kérem nézze át az adatokat mielőtt a jelentését beküldené. A bejelentő klienstől függően végül bárki számára láthatóvá válhat."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:9
+#: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid "Size:"
 msgstr "Mérete:"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:10
+#: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid "Attach a file"
 msgstr "Mellékeljen egy fájlt"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:11
+#: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid "I reviewed the data and _agree with submitting it"
 msgstr "Átnéztem az _adatokat és egyetértek a beküldésükkel"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:12
+#: ../src/gui-wizard-gtk/wizard.glade.h:14
 msgid ""
 "If you are reporting to a remote server, make sure you removed all private "
 "data (such as usernames and passwords). Backtrace, command line, environment"
 " variables are the typical items in need of examining."
 msgstr "Ha egy távoli kiszolgálóra küldi jelentéseit, bizonyosodjon meg arról hogy az összes privát adatát (mint pl. felhasználói nevek, jelszavak) eltávolította. Nyomkövetési adatok, parancsok, környezeti változók viszont amik szükségesek a vizsgálathoz."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:13
+#: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid "Processing did not start yet"
-msgstr ""
+msgstr "Feldolgozás még nem kezdődött el"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:14
+#: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "Show log"
 msgstr "Log megjelenítése"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:15
+#: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "Reporting has finished. You can close this window now."
 msgstr "Bejelentés befejeződött. Bezárhatja ezt az ablakot."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:16
+#: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid ""
 "If you want to report the problem to a different destination, collect "
 "additional information, or provide a better problem description and repeat "
 "reporting process, press 'Forward'."
 msgstr "Ha szeretné jelenteni a problémát egy másik célra is, vagy további információt gyűjtene, vagy jobb leírást adna a korábbi helyett és megismételné a folyamatot, kérem kattintson a 'Folytatás' gombra."
 
-#: ../src/lib/abrt_sock.c:83
+#: ../src/include/internal_libreport.h:834
+msgid "Be verbose"
+msgstr "Legyen részletes"
+
+#: ../src/include/internal_libreport.h:835
+#: ../src/plugins/reporter-bugzilla.c:861
+#: ../src/plugins/reporter-kerneloops.c:166
+#: ../src/plugins/reporter-mailx.c:173 ../src/plugins/reporter-print.c:56
+#: ../src/plugins/reporter-rhtsupport.c:83
+#: ../src/plugins/reporter-upload.c:300
+msgid "Problem directory"
+msgstr "Hibagyűjtő mappa"
+
+#: ../src/lib/abrt_sock.c:150
 #, c-format
 msgid "Can't delete: '%s'"
-msgstr ""
+msgstr "Nem törölhető: '%s'"
 
-#: ../src/lib/create_dump_dir.c:38
+#: ../src/lib/client.c:79
+msgid "f"
+msgstr "f"
+
+#: ../src/lib/create_dump_dir.c:39
 #, c-format
 msgid "Missing required item: '%s'"
-msgstr ""
+msgstr "Hiányzó szügséges elem: '%s'"
 
-#: ../src/lib/event_config.c:298
-msgid "Missing mandatory value"
-msgstr "Hiányzó fontos érték"
-
-#: ../src/lib/event_config.c:306
+#: ../src/lib/create_dump_dir.c:54
 #, c-format
-msgid "Invalid utf8 character '%c'"
-msgstr "Érvénytelen UTF8 karakter '%c'"
-
-#: ../src/lib/event_config.c:319
-#, c-format
-msgid "Invalid number '%s'"
-msgstr "Érvénytelen szám '%s'"
-
-#: ../src/lib/event_config.c:334
-#, c-format
-msgid "Invalid boolean value '%s'"
-msgstr "Érvénytelen boolean érték '%s'"
-
-#: ../src/lib/event_config.c:340
-msgid "Unsupported option type"
-msgstr "Nem támogatott opciótípus"
-
-#: ../src/lib/event_config.c:409
-msgid "Reporting disabled because the rating does not contain a number."
-msgstr ""
-
-#: ../src/lib/event_config.c:410
-msgid "Please report this problem to ABRT project developers."
-msgstr ""
-
-#: ../src/lib/event_config.c:416
-msgid ""
-"The backtrace is incomplete, please make sure you provide the steps to "
-"reproduce."
-msgstr "A nyomkövetési információk hiányosak, kérem legyen biztosítsa hogy a reprodukálási lépések pontosan belekerüljenek."
-
-#: ../src/lib/event_config.c:417
-msgid "The backtrace probably can't help to a developer in searching for bug."
-msgstr ""
-
-#: ../src/lib/event_config.c:423
-msgid "Reporting disabled because the backtrace is unusable."
-msgstr "A jelentés használhatatlan, így nem lehet elküldeni."
-
-#: ../src/lib/event_config.c:427
-#, c-format
-msgid ""
-"Please try to install debuginfo manually using the command: \"debuginfo-"
-"install %s\" and try again."
-msgstr ""
-
-#: ../src/lib/event_config.c:429
-msgid "A proper debuginfo is probably missing or the coredump is corrupted."
-msgstr ""
-
-#: ../src/lib/parse_options.c:58
-msgid "Usage: "
-msgstr "Használata: "
+msgid "uid value is not valid: '%s'"
+msgstr "uid értéke érvénytelen:  '%s'"
 
 #: ../src/lib/curl.c:208 ../src/plugins/reporter-upload.c:41
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Feltöltve: %llu / %llu kbytes"
 
-#: ../src/lib/problem_data.c:186
+#: ../src/lib/event_config.c:309
+msgid "Missing mandatory value"
+msgstr "Hiányzó fontos érték"
+
+#: ../src/lib/event_config.c:317
+#, c-format
+msgid "Invalid utf8 character '%c'"
+msgstr "Érvénytelen UTF8 karakter '%c'"
+
+#: ../src/lib/event_config.c:330
+#, c-format
+msgid "Invalid number '%s'"
+msgstr "Érvénytelen szám '%s'"
+
+#: ../src/lib/event_config.c:345
+#, c-format
+msgid "Invalid boolean value '%s'"
+msgstr "Érvénytelen boolean érték '%s'"
+
+#: ../src/lib/event_config.c:351
+msgid "Unsupported option type"
+msgstr "Nem támogatott opciótípus"
+
+#: ../src/lib/event_config.c:420
+msgid "Reporting disabled because the rating does not contain a number."
+msgstr "Jelentés kikapcsolva mivel a minősítés nem tartalmaz számot"
+
+#: ../src/lib/event_config.c:421
+msgid "Please report this problem to ABRT project developers."
+msgstr "Kérem jelezze ezt a hibát az ABRT fejlesztői felé."
+
+#: ../src/lib/event_config.c:427
+msgid ""
+"The backtrace is incomplete, please make sure you provide the steps to "
+"reproduce."
+msgstr "A nyomkövetési információk hiányosak, kérem biztosítsa hogy a reprodukálási lépések pontosan belekerüljenek."
+
+#: ../src/lib/event_config.c:428
+msgid "The backtrace probably can't help to a developer in searching for bug."
+msgstr "A nyomkövetési információ valószínűleg nem tud segíteni a fejlesztőnek a hibakeresésben."
+
+#: ../src/lib/event_config.c:434
+msgid "Reporting disabled because the backtrace is unusable."
+msgstr "A jelentés használhatatlan, így nem lehet elküldeni."
+
+#: ../src/lib/event_config.c:438
+#, c-format
+msgid ""
+"Please try to install debuginfo manually using the command: \"debuginfo-"
+"install %s\" and try again."
+msgstr "Kérem próbálja meg a debuginfo csomagokat kézzel telepíteni ennek a parancsnak a segítségével: \"debuginfo-install %s\" és próbálja újra."
+
+#: ../src/lib/event_config.c:440
+msgid "A proper debuginfo is probably missing or the coredump is corrupted."
+msgstr "A helyes debuginfo csomag hiányzik, vagy a coredump hibás."
+
+#: ../src/lib/parse_options.c:58
+msgid "Usage: "
+msgstr "Használata: "
+
+#: ../src/lib/problem_data.c:189
 #, c-format
 msgid "Essential element '%s' is missing, can't continue"
 msgstr "Alapvető '%s' komponens  hiányzik, nem folytatható"
@@ -751,27 +822,6 @@ msgstr "hiba az eset összeállításakor, HTTP kód: %d"
 #, c-format
 msgid "error in case creation: no Location URL, HTTP code: %d"
 msgstr "hiba az eset összeállításakor: nincs cél URL, HTTP kód: %d"
-
-#: ../src/plugins/report.c:37
-msgid ""
-"& [-v] --target TARGET --ticket ID FILE...\n"
-"\n"
-"Uploads FILEs to specified ticket on TARGET.\n"
-"\n"
-"This tool is provided to ease transition of users of report package\n"
-"to libreport. Recognized TARGETs are 'strata' and 'bugzilla',\n"
-"first one invokes upload to RHTSupport and second - to Bugzilla.\n"
-"\n"
-"Configuration (such as login data) can be supplied via files\n"
-msgstr "& [-v] --target TARGET --ticket ID FILE...\n\nFeltölti a FILE-t a meghatározott tiketten a TARGET-re.\n\nEz az eszköz arra szolgál, hogy megkönnyítse a felhasználók dolgát a csomagok bejelentését a libreporthoz. Az ismert TARGET 'strata' és 'bugzilla' lehet, az első megadja a lehetőséget az RHTSupport-ra való feltöltésre, míg a második a Bugzilla-ra.\n\nKonfiguráció (mint bejelentkezési adatok) megadhatók fájlokon keresztül\n"
-
-#: ../src/plugins/report.c:59
-msgid "'strata' or 'bugzilla'"
-msgstr "'strata' vagy 'bugzilla'"
-
-#: ../src/plugins/report.c:60
-msgid "Ticket/case ID"
-msgstr "Tikett / eset ID"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:1
 msgid "Bugzilla"
@@ -832,6 +882,415 @@ msgstr "OS kiadási szöveg"
 msgid "Specify this only if you modified your /etc/system-release file"
 msgstr "Csak akkor definiálja ezt, ha módosította a saját /etc/system-release fájlját"
 
+#: ../src/plugins/report.c:37
+msgid ""
+"& [-v] --target TARGET --ticket ID FILE...\n"
+"\n"
+"Uploads FILEs to specified ticket on TARGET.\n"
+"\n"
+"This tool is provided to ease transition of users of report package\n"
+"to libreport. Recognized TARGETs are 'strata' and 'bugzilla',\n"
+"first one invokes upload to RHTSupport and second - to Bugzilla.\n"
+"\n"
+"Configuration (such as login data) can be supplied via files\n"
+msgstr "& [-v] --target TARGET --ticket ID FILE...\n\nFeltölti a FILE-t a meghatározott tiketten a TARGET-re.\n\nEz az eszköz arra szolgál, hogy megkönnyítse a felhasználók dolgát a csomagok bejelentését a libreporthoz. Az ismert TARGET 'strata' és 'bugzilla' lehet, az első megadja a lehetőséget az RHTSupport-ra való feltöltésre, míg a második a Bugzilla-ra.\n\nKonfiguráció (mint bejelentkezési adatok) megadhatók fájlokon keresztül\n"
+
+#: ../src/plugins/report.c:59
+msgid "'strata' or 'bugzilla'"
+msgstr "'strata' vagy 'bugzilla'"
+
+#: ../src/plugins/report.c:60
+msgid "Ticket/case ID"
+msgstr "Tikett / eset ID"
+
+#: ../src/plugins/reporter-bugzilla.c:349
+msgid "Can't parse backtrace"
+msgstr "Nyomkövetési információ nem értelmezhető"
+
+#: ../src/plugins/reporter-bugzilla.c:360
+msgid "Can't find crash thread"
+msgstr "Összeomlási szál nem található"
+
+#: ../src/plugins/reporter-bugzilla.c:719
+msgid "Can't continue without login"
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:729
+msgid "Can't continue without password"
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:737
+#, c-format
+msgid "Logging into Bugzilla at %s"
+msgstr "Bejeletkezés a Bugzilla rendszerbe: %s"
+
+#: ../src/plugins/reporter-bugzilla.c:741
+msgid "Invalid password or login. Please enter your BZ login:"
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:744
+#, c-format
+msgid "Invalid password or login. Please enter the password for '%s':"
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:779
+msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:797
+msgid ""
+"\n"
+"& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] -d DIR\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... [-d DIR] -t[ID] -w\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... -h DUPHASH\n"
+"\n"
+"Reports problem to Bugzilla.\n"
+"\n"
+"The tool reads DIR. Then it logs in to Bugzilla and tries to find a bug\n"
+"with the same abrt_hash:HEXSTRING in 'Whiteboard'.\n"
+"\n"
+"If such bug is not found, then a new bug is created. Elements of DIR\n"
+"are stored in the bug as part of bug description or as attachments,\n"
+"depending on their type and size.\n"
+"\n"
+"Otherwise, if such bug is found and it is marked as CLOSED DUPLICATE,\n"
+"the tool follows the chain of duplicates until it finds a non-DUPLICATE bug.\n"
+"The tool adds a new comment to found bug.\n"
+"\n"
+"The URL to new or modified bug is printed to stdout and recorded in\n"
+"'reported_to' element.\n"
+"\n"
+"Option -t uploads FILEs to the already created bug on Bugzilla site.\n"
+"The bug ID is retrieved from directory specified by -d DIR.\n"
+"If problem data in DIR was never reported to Bugzilla, upload will fail.\n"
+"\n"
+"Option -tID uploads FILEs to the bug with specified ID on Bugzilla site.\n"
+"-d DIR is ignored.\n"
+"\n"
+"Option -w adds bugzilla user to bug's CC list.\n"
+"\n"
+"If not specified, CONFFILE defaults to "
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:862
+#: ../src/plugins/reporter-rhtsupport.c:84
+msgid "Configuration file (may be given many times)"
+msgstr "Konfigurációs fájl (többször is szerepelhet)"
+
+#: ../src/plugins/reporter-bugzilla.c:863
+msgid "Formatting file"
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:864
+msgid "Attach FILEs [to bug with this ID]"
+msgstr "Mellékeljen fájlokat [ehhez a hibához ezzel az ID-vel]"
+
+#: ../src/plugins/reporter-bugzilla.c:865
+msgid "When creating bug, attach binary files too"
+msgstr "ha hibajelentést készít, mellékeljen bináris fájlokat is"
+
+#: ../src/plugins/reporter-bugzilla.c:866
+#: ../src/plugins/reporter-rhtsupport.c:86
+msgid "Force reporting even if this problem is already reported"
+msgstr "Jelentse be akkor is ha ezt a problémát már bejelentették"
+
+#: ../src/plugins/reporter-bugzilla.c:867
+msgid "Add bugzilla user to CC list [of bug with this ID]"
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:868
+msgid "Print BUG_ID which has given DUPHASH"
+msgstr "Nyomtassa a BUG_ID-t aminek DUPHASH értéket adott"
+
+#: ../src/plugins/reporter-bugzilla.c:869
+msgid "Restrict access to this group only"
+msgstr "Szűkítse le a hozzáférését csak erre a csoportra"
+
+#: ../src/plugins/reporter-bugzilla.c:870
+msgid "Debug"
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:938
+msgid "Login is not provided by configuration. Please enter your BZ login:"
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:944
+#, c-format
+msgid ""
+"Password is not provided by configuration. Please enter the pasword for "
+"'%s':"
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:963
+msgid ""
+"Can't get Bugzilla ID because this problem has not yet been reported to "
+"Bugzilla."
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:970
+#, c-format
+msgid ""
+"This problem has been reported to Bugzilla '%s' which differs from the "
+"configured Bugzilla '%s'."
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:974
+#, c-format
+msgid "Malformed url to Bugzilla '%s'."
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:978
+#, c-format
+msgid "Using Bugzilla ID '%s'"
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:1012
+#: ../src/plugins/reporter-bugzilla.c:1281
+msgid "Logging out"
+msgstr "Kijelentkezés"
+
+#: ../src/plugins/reporter-bugzilla.c:1111
+msgid "Checking for duplicates"
+msgstr "Duplikátumok ellenőrzése"
+
+#. Create new bug
+#: ../src/plugins/reporter-bugzilla.c:1157
+msgid "Creating a new bug"
+msgstr "Új jelentés készül"
+
+#: ../src/plugins/reporter-bugzilla.c:1174
+#, c-format
+msgid "Adding attachments to bug %i"
+msgstr "Mellékletek hozzáadása a %i hibához"
+
+#: ../src/plugins/reporter-bugzilla.c:1193
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "A hiba már bejelentésre került: %i"
+
+#: ../src/plugins/reporter-bugzilla.c:1214
+#, c-format
+msgid "Adding %s to CC list"
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:1253
+#, c-format
+msgid "Adding new comment to bug %d"
+msgstr "Új megjegyzés hozzáfűzése a %d hibához"
+
+#: ../src/plugins/reporter-bugzilla.c:1258
+msgid "Found the same comment in the bug history, not adding a new one"
+msgstr "Ugyanazon megjegyzés található meg a hiba korábbi bejegyzéseiben, nincs új hozzáfűzés"
+
+#: ../src/plugins/reporter-bugzilla.c:1273
+msgid "Attaching better backtrace"
+msgstr "Pontosabb nyomonkövetés mellékelése"
+
+#: ../src/plugins/reporter-bugzilla.c:1284
+#, c-format
+msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
+msgstr "Státusz: %s%s%s %s/show_bug.cgi?id=%u"
+
+#: ../src/plugins/reporter-kerneloops.c:105
+#, c-format
+msgid "Submitting oops report to %s"
+msgstr "oops jelentés küldése ide: %s"
+
+#: ../src/plugins/reporter-kerneloops.c:147
+msgid ""
+"& [-v] [-c CONFFILE]... -d DIR\n"
+"\n"
+"Reports kernel oops to kerneloops.org (or similar) site.\n"
+"\n"
+"Files with names listed in $EXCLUDE_FROM_REPORT are not included\n"
+"into the tarball.\n"
+"\n"
+"CONFFILE lines should have 'PARAM = VALUE' format.\n"
+"Recognized string parameter: SubmitURL.\n"
+"Parameter can be overridden via $KerneloopsReporter_SubmitURL."
+msgstr "& [-v] [-c CONFFILE]... -d DIR\n\nBejelenti a kernelproblémákat a kerneloops.org (vagy hasonló) oldalra.\n\nAzok a fájlok amelyek listázva vannak a  $EXCLUDE_FROM_REPORT -ban azok nem kerülnek hozzáadásra az archívhoz.\n\nCONFFILE sorainak 'PARAM = VALUE' formátumúnak kell lennie.\nFelismert szöveges paraméter: SubmitURL.\nParaméter felülírható a $KerneloopsReporter_SubmitURL -en keresztül."
+
+#: ../src/plugins/reporter-kerneloops.c:167
+msgid "Configuration file"
+msgstr "Konfigurációs fájl"
+
+#: ../src/plugins/reporter-mailx.c:111
+msgid "Sending an email..."
+msgstr "Email küldése..."
+
+#: ../src/plugins/reporter-mailx.c:134
+#, c-format
+msgid "Email was sent to: %s"
+msgstr "E-mail elküldve ide: %s"
+
+#: ../src/plugins/reporter-mailx.c:153
+msgid ""
+"& [-v] -d DIR [-c CONFFILE]\n"
+"\n"
+"Sends contents of a problem directory DIR via email\n"
+"\n"
+"If not specified, CONFFILE defaults to "
+msgstr "& [-v] -d DIR [-c CONFFILE]\n\nElküldi a DIR hibakönyvtár tartalmát email-en keresztül\n\nHa másképp nincs meghatározva, CONFFILE alapértelmezése ez "
+
+#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:301
+msgid "Config file"
+msgstr "Konfigurációs fájl"
+
+#: ../src/plugins/reporter-mailx.c:175
+msgid "Notify only (Do not mark the report as sent)"
+msgstr "Csak jelezze. (Ne jelölje meg elküldöttként a jelentést)"
+
+#: ../src/plugins/reporter-print.c:42
+msgid ""
+"& [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
+"\n"
+"Prints problem information to standard output or FILE"
+msgstr "& [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n\nKinyomtatja a hibainformációkat a szabványos kimenetre vagy FILE-ba"
+
+#: ../src/plugins/reporter-print.c:57
+msgid "Output file"
+msgstr "Kimeneti fájl"
+
+#: ../src/plugins/reporter-print.c:58
+msgid "Append to, or overwrite FILE"
+msgstr "Mellékelje vagy írja felül a FILE-t"
+
+#: ../src/plugins/reporter-print.c:59
+msgid "Create reported_to in DIR"
+msgstr "reported_to készítése a DIR-ben"
+
+#: ../src/plugins/reporter-print.c:96
+msgid "Cancelled by user."
+msgstr "Felhasználó által megszakítva."
+
+#: ../src/plugins/reporter-print.c:105
+#, c-format
+msgid "Can't open '%s' for writing. Please select another file:"
+msgstr "'%s' írásra nem nyitható meg. Kérem válasszon másik fájlt: "
+
+#: ../src/plugins/reporter-print.c:140
+#, c-format
+msgid "The report was appended to %s"
+msgstr "A jelentés mellékelve ide: %s"
+
+#: ../src/plugins/reporter-print.c:140
+#, c-format
+msgid "The report was stored to %s"
+msgstr "A jelentés tárolásra került ehhez: %s"
+
+#: ../src/plugins/reporter-rhtsupport.c:53
+msgid ""
+"\n"
+"& [-v] [-c CONFFILE] -d DIR\n"
+"or:\n"
+"& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
+"\n"
+"Reports a problem to RHTSupport.\n"
+"\n"
+"If not specified, CONFFILE defaults to "
+msgstr "\n& [-v] [-c CONFFILE] -d DIR\nor:\n& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n\nAz RHTSupport-nak jelent be hibákat.\n\nHa nincs meghatározva, a CONFFILE alapértelmezés szerint "
+
+#: ../src/plugins/reporter-rhtsupport.c:85
+msgid "Upload FILEs [to case with this ID]"
+msgstr "FILE-ok feltöltése [ehhez az esethez, ezzel az ID-vel]"
+
+#: ../src/plugins/reporter-rhtsupport.c:120
+msgid "Empty RHTS login or password"
+msgstr "Üres RHTS felahsználói név vagy jelszó"
+
+#: ../src/plugins/reporter-rhtsupport.c:155
+#, c-format
+msgid "Attaching '%s' to case '%s'"
+msgstr "Mellékelem '%s' esethez: '%s'"
+
+#. create_problem_data_for_reporting already emitted error msg
+#. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are
+#. doing
+#. error msg is already logged by dd_opendir
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
+#: ../src/plugins/reporter-rhtsupport.c:196
+#: ../src/plugins/reporter-upload.c:133
+msgid "Compressing data"
+msgstr "Adatok tömörítése"
+
+#: ../src/plugins/reporter-rhtsupport.c:235
+msgid "Can't create a temporary directory in /tmp"
+msgstr "Nem lehetséges az átmeneti mappa létrehozása a /tmp mappában"
+
+#. Hopefully, by this time child emitted more meaningful
+#. * error message. But just in case it didn't:
+#. 
+#: ../src/plugins/reporter-rhtsupport.c:261
+#: ../src/plugins/reporter-rhtsupport.c:292
+#: ../src/plugins/reporter-rhtsupport.c:326
+#: ../src/plugins/reporter-rhtsupport.c:342
+msgid "Can't create temporary file in /tmp"
+msgstr "Nem lehetséges az átmeneti fájl létrehozása a /tmp mappában"
+
+#: ../src/plugins/reporter-rhtsupport.c:378
+msgid "Do you still want to create a RHTSupport ticket?"
+msgstr "Még mindig szeretne egy RHTSupport tikettet készíteni?"
+
+#. result = NULL; - redundant, result is assigned just below
+#. Send tempfile
+#: ../src/plugins/reporter-rhtsupport.c:390
+msgid "Creating a new case..."
+msgstr "Új hibaeset feljegyzése..."
+
+#: ../src/plugins/reporter-rhtsupport-parse.c:202
+msgid "Documentation which might be relevant: "
+msgstr "Dokumentáció ami fontos lehet: "
+
+#: ../src/plugins/reporter-rhtsupport-parse.c:210
+msgid "Updates which possibly help: "
+msgstr "Frissítések amelyek valószínűleg segíthetnek: "
+
+#: ../src/plugins/reporter-upload.c:71
+#, c-format
+msgid "Sending %s to %s"
+msgstr "%s küldése ide %s"
+
+#. This ends up a "reporting status message" in abrtd
+#: ../src/plugins/reporter-upload.c:110
+#, c-format
+msgid "Successfully sent %s to %s"
+msgstr "%s sikeresen elküldve ide %s"
+
+#: ../src/plugins/reporter-upload.c:233
+#, c-format
+msgid "Archive is created: '%s'"
+msgstr "Archív elkészült: '%s'"
+
+#: ../src/plugins/reporter-upload.c:273
+msgid ""
+"& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\n"
+"Uploads compressed tarball of problem directory DIR to URL.\n"
+"If URL is not specified, creates tarball in /tmp and exits.\n"
+"\n"
+"URL should have form 'protocol://[user[:pass]@]host/dir/[file.tar.gz]'\n"
+"where protocol can be http(s), ftp, scp, or file.\n"
+"File protocol can't have user and host parts: 'file:///dir/[file.tar.gz].'\n"
+"If URL ends with a slash, the archive name will be generated and appended\n"
+"to URL; otherwise, URL will be used as full file name.\n"
+"\n"
+"Files with names listed in $EXCLUDE_FROM_REPORT are not included\n"
+"into the tarball.\n"
+"\n"
+"CONFFILE lines should have 'PARAM = VALUE' format.\n"
+"Recognized string parameter: URL.\n"
+"Parameter can be overridden via $Upload_URL."
+msgstr "& [-v] -d DIR [-c CONFFILE] [-u URL]\n\nFeltölt egy tömörített tar fájlt a hibagyűjtő DIR mappából az URL címre.\nHa az URL cím nem definiált, egy tar fájlt készít a /tmp mappában és kilép.\n\nURL formája: 'protocol://[user[:pass]@]host/dir/[file.tar.gz]'\nahol a protokoll lehet http(s), ftp, scp, vagy fájl.\nFájl protokollnak nem lehet felhasználó és kiszolgáló része: 'file:///dir/[file.tar.gz].'\nHa az URL link slash jellel végződik, az archív neve automatikusan kerül előállításra és kapcsolva\naz URL linkhez; máskülönben, URL mint teljes fájlnév fogm megjelenni.\n\nNévvel felsorolt fájlok amik a $EXCLUDE_FROM_REPORT listában szerepelnek\nnem kerülnek a tar fájlba.\n\nCONFFILE soroknak kell lennie 'PARAM = VALUE' formátumú részének is.\nFelismert szöveges paraméter: URL.\nParaméter felülírható a $Upload_URL-en keresztül.."
+
+#: ../src/plugins/reporter-upload.c:302
+msgid "Base URL to upload to"
+msgstr "Alap URL a feltöltéshez ide"
+
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
 msgid "Kerneloops.org"
 msgstr "Kerneloops.org"
@@ -870,7 +1329,7 @@ msgstr "Melléklet"
 
 #: ../src/plugins/report_Logger.xml.in.h:6
 msgid "Append new reports or overwrite the old one."
-msgstr "Készítsen új jelentéseket vagy felülírja a régieket."
+msgstr "Készítsen új jelentéseket vagy írja felül a régieket."
 
 #: ../src/plugins/report_Mailx.xml.in.h:1
 msgid "Mailx"
@@ -960,375 +1419,148 @@ msgstr "Ahová fel kívánja feltölteni a tar csomagot a jelentéssel ebben a f
 
 #: ../src/plugins/report_Uploader.xml.in.h:5
 msgid ""
-"Examples: ftp://[user[:pass]@]host/dir/[file.tar.gz], "
-"scp://[user[:pass]@]host/dir/[file.tar.gz], file:///dir/[file.tar.gz]"
-msgstr "Például: ftp://[user[:pass]@]host/dir/[file.tar.gz], scp://[user[:pass]@]host/dir/[file.tar.gz], file:///dir/[file.tar.gz]"
+"Examples:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]"
+msgstr "Példák:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]"
 
 #: ../src/plugins/report_uReport.xml.in.h:1
 msgid "uReport"
-msgstr ""
+msgstr "uReport"
 
 #: ../src/plugins/report_uReport.xml.in.h:2
 msgid "Sends ureports to FAF server"
-msgstr ""
+msgstr "uReport küldése a FAF kiszolgálónak"
 
 #: ../src/plugins/report_uReport.xml.in.h:3
 msgid "uReport Server URL"
-msgstr ""
+msgstr "uReport kiszolgáló URL"
 
 #: ../src/plugins/report_uReport.xml.in.h:4
 msgid "Address of uReport webservice"
-msgstr ""
+msgstr "uReport webszolgáltatás címe "
 
-#: ../src/plugins/reporter-bugzilla.c:63
-msgid ""
-"\n"
-"& [-vbf] [-g|--group GROUP-NAME]... [-c CONFFILE] -d DIR\n"
-"or:\n"
-"& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
-"\n"
-"Reports problem to Bugzilla.\n"
-"\n"
-"The tool reads DIR. Then it logs in to Bugzilla and tries to find a bug\n"
-"with the same abrt_hash:HEXSTRING in 'Whiteboard'.\n"
-"\n"
-"If such bug is not found, then a new bug is created. Elements of DIR\n"
-"are stored in the bug as part of bug description or as attachments,\n"
-"depending on their type and size.\n"
-"\n"
-"Otherwise, if such bug is found and it is marked as CLOSED DUPLICATE,\n"
-"the tool follows the chain of duplicates until it finds a non-DUPLICATE bug.\n"
-"The tool adds a new comment to found bug.\n"
-"\n"
-"The URL to new or modified bug is printed to stdout and recorded in\n"
-"'reported_to' element.\n"
-"\n"
-"If not specified, CONFFILE defaults to "
-msgstr ""
-
-#: ../src/plugins/reporter-bugzilla.c:111
-#: ../src/plugins/reporter-kerneloops.c:166
-#: ../src/plugins/reporter-mailx.c:173 ../src/plugins/reporter-print.c:56
-#: ../src/plugins/reporter-rhtsupport.c:84
-#: ../src/plugins/reporter-upload.c:288
-msgid "Dump directory"
-msgstr "Ürítési mappa"
-
-#: ../src/plugins/reporter-bugzilla.c:112
-#: ../src/plugins/reporter-rhtsupport.c:85
-msgid "Configuration file (may be given many times)"
-msgstr "Konfigurációs fájl (többször is szerepelhet)"
-
-#: ../src/plugins/reporter-bugzilla.c:113
-msgid "Attach FILEs [to bug with this ID]"
-msgstr "Mellékeljen fájlokat [ehhez a hibához ezzel az ID-vel]"
-
-#: ../src/plugins/reporter-bugzilla.c:114
-msgid "When creating bug, attach binary files too"
-msgstr "ha hibajelentést készít, mellékeljen bináris fájlokat is"
-
-#: ../src/plugins/reporter-bugzilla.c:115
-#: ../src/plugins/reporter-rhtsupport.c:87
-msgid "Force reporting even if this problem is already reported"
-msgstr "Jelentse be akkor is ha ezt a problémát már bejelentették"
-
-#: ../src/plugins/reporter-bugzilla.c:116
-msgid "Find BUG-ID according to DUPHASH"
-msgstr "A DUPHASH alapján keressen BUG-ID-t"
-
-#: ../src/plugins/reporter-bugzilla.c:117
-msgid "Restrict access to this groups only"
-msgstr ""
-
-#: ../src/plugins/reporter-bugzilla.c:182
-msgid "Empty login or password, please check your configuration"
-msgstr "Üres bejelentkezési név vagy jelszó, kérem ellenőrizze beállításait"
-
-#: ../src/plugins/reporter-bugzilla.c:205
-#: ../src/plugins/reporter-bugzilla.c:278
-#, c-format
-msgid "Logging into Bugzilla at %s"
-msgstr "Bejeletkezés a Bugzilla rendszerbe: %s"
-
-#: ../src/plugins/reporter-bugzilla.c:232
-#: ../src/plugins/reporter-bugzilla.c:461
-msgid "Logging out"
-msgstr "Kijelentkezés"
-
-#: ../src/plugins/reporter-bugzilla.c:311
-msgid "Checking for duplicates"
-msgstr "Duplikátumok ellenőrzése"
-
-#: ../src/plugins/reporter-bugzilla.c:332
-msgid "Missing mandatory member 'bugs'"
-msgstr "Hiányzik a kötelező tag 'hibákat'"
-
-#. Create new bug
-#: ../src/plugins/reporter-bugzilla.c:343
-msgid "Creating a new bug"
-msgstr "Új jelentés készül"
-
-#: ../src/plugins/reporter-bugzilla.c:346
-#, c-format
-msgid "Adding attachments to bug %i"
-msgstr "Mellékletek hozzáadása a %i hibához"
-
-#: ../src/plugins/reporter-bugzilla.c:373
-#, c-format
-msgid "Bug is already reported: %i"
-msgstr "A hiba már bejelentésre került: %i"
-
-#: ../src/plugins/reporter-bugzilla.c:394
-#, c-format
-msgid "Add %s to CC list"
-msgstr "%s hozzáadása CC listára"
-
-#: ../src/plugins/reporter-bugzilla.c:433
-#, c-format
-msgid "Adding new comment to bug %d"
-msgstr "Új megjegyzés hozzáfűzése a %d hibához"
-
-#: ../src/plugins/reporter-bugzilla.c:438
-msgid "Found the same comment in the bug history, not adding a new one"
-msgstr "Ugyanazon megjegyzés található meg a hiba korábbi bejegyzéseiben, nincs új hozzáfűzés"
-
-#: ../src/plugins/reporter-bugzilla.c:453
-msgid "Attaching better backtrace"
-msgstr "Pontosabb nyomonkövetés mellékelése"
-
-#: ../src/plugins/reporter-bugzilla.c:464
-#, c-format
-msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
-msgstr "Státusz: %s%s%s %s/show_bug.cgi?id=%u"
-
-#: ../src/plugins/reporter-kerneloops.c:105
-#, c-format
-msgid "Submitting oops report to %s"
-msgstr "oops jelentés küldése ide: %s"
-
-#: ../src/plugins/reporter-kerneloops.c:147
-msgid ""
-"& [-v] [-c CONFFILE]... -d DIR\n"
-"\n"
-"Reports kernel oops to kerneloops.org (or similar) site.\n"
-"\n"
-"Files with names listed in $EXCLUDE_FROM_REPORT are not included\n"
-"into the tarball.\n"
-"\n"
-"CONFFILE lines should have 'PARAM = VALUE' format.\n"
-"Recognized string parameter: SubmitURL.\n"
-"Parameter can be overridden via $KerneloopsReporter_SubmitURL."
-msgstr "& [-v] [-c CONFFILE]... -d DIR\n\nBejelenti a kernelproblémákat a kerneloops.org (vagy hasonló) oldalra.\n\nAzok a fájlok amelyek listázva vannak a  $EXCLUDE_FROM_REPORT -ban azok nem kerülnek hozzáadásra az archívhoz.\n\nCONFFILE sorainak 'PARAM = VALUE' formátumúnak kell lennie.\nFelismert szöveges paraméter: SubmitURL.\nParaméter felülírható a $KerneloopsReporter_SubmitURL -en keresztül."
-
-#: ../src/plugins/reporter-kerneloops.c:167
-msgid "Configuration file"
-msgstr "Konfigurációs fájl"
-
-#: ../src/plugins/reporter-mailx.c:111
-msgid "Sending an email..."
-msgstr "Email küldése..."
-
-#: ../src/plugins/reporter-mailx.c:134
-#, c-format
-msgid "Email was sent to: %s"
-msgstr "E-mail elküldve ide: %s"
-
-#: ../src/plugins/reporter-mailx.c:153
-msgid ""
-"& [-v] -d DIR [-c CONFFILE]\n"
-"\n"
-"Sends contents of a problem directory DIR via email\n"
-"\n"
-"If not specified, CONFFILE defaults to "
-msgstr "& [-v] -d DIR [-c CONFFILE]\n\nElküldi a DIR hibakönyvtár tartalmát email-en keresztül\n\nHa másképp nincs meghatározva, CONFFILE alapértelmezése ez "
-
-#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:289
-msgid "Config file"
-msgstr "Konfigurációs fájl"
-
-#: ../src/plugins/reporter-mailx.c:175
-msgid "Notify only (Do not mark the report as sent)"
-msgstr "Csak jelezze. (Ne jelölje meg elküldöttként a jelentést)"
-
-#: ../src/plugins/reporter-print.c:42
-msgid ""
-"& [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
-"\n"
-"Prints problem information to standard output or FILE"
-msgstr "& [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n\nKinyomtatja a hibainformációkat a szabványos kimenetre vagy FILE-ba"
-
-#: ../src/plugins/reporter-print.c:57
-msgid "Output file"
-msgstr "Kimeneti fájl"
-
-#: ../src/plugins/reporter-print.c:58
-msgid "Append to, or overwrite FILE"
-msgstr "Mellékelje vagy írja felül a FILE-t"
-
-#: ../src/plugins/reporter-print.c:59
-msgid "Create reported_to in DIR"
-msgstr "reported_to készítése a DIR-ben"
-
-#: ../src/plugins/reporter-print.c:96
-msgid "Cancelled by user."
-msgstr "Felhasználó által megszakítva."
-
-#: ../src/plugins/reporter-print.c:105
-#, c-format
-msgid "Can't open '%s' for writing. Please select another file:"
-msgstr "'%s' írásra nem nyitható meg. Kérem válasszon másik fájlt: "
-
-#: ../src/plugins/reporter-print.c:140
-#, c-format
-msgid "The report was appended to %s"
-msgstr "A jelentés mellékelve ide: %s"
-
-#: ../src/plugins/reporter-print.c:140
-#, c-format
-msgid "The report was stored to %s"
-msgstr "A jelentés tárolásra került ehhez: %s"
-
-#: ../src/plugins/reporter-rhtsupport.c:54
-msgid ""
-"\n"
-"& [-v] [-c CONFFILE] -d DIR\n"
-"or:\n"
-"& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
-"\n"
-"Reports a problem to RHTSupport.\n"
-"\n"
-"If not specified, CONFFILE defaults to "
-msgstr "\n& [-v] [-c CONFFILE] -d DIR\nor:\n& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n\nAz RHTSupport-nak jelent be hibákat.\n\nHa nincs meghatározva, a CONFFILE alapértelmezés szerint "
-
-#: ../src/plugins/reporter-rhtsupport.c:86
-msgid "Upload FILEs [to case with this ID]"
-msgstr "FILE-ok feltöltése [ehhez az esethez, ezzel az ID-vel]"
-
-#: ../src/plugins/reporter-rhtsupport.c:121
-msgid "Empty RHTS login or password"
-msgstr "Üres RHTS felahsználói név vagy jelszó"
-
-#: ../src/plugins/reporter-rhtsupport.c:164
-#, c-format
-msgid "Attaching '%s' to case '%s'"
-msgstr "Mellékelem '%s' esethez: '%s'"
-
-#. create_problem_data_for_reporting already emitted error msg
-#. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are
-#. doing
-#. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
-#. doing
-#: ../src/plugins/reporter-rhtsupport.c:205
-#: ../src/plugins/reporter-upload.c:121
-msgid "Compressing data"
-msgstr "Adatok tömörítése"
-
-#: ../src/plugins/reporter-rhtsupport.c:244
-msgid "Can't create a temporary directory in /tmp"
-msgstr "Nem lehetséges az átmeneti mappa létrehozása a /tmp mappában"
-
-#. Hopefully, by this time child emitted more meaningful
-#. * error message. But just in case it didn't:
-#. 
-#: ../src/plugins/reporter-rhtsupport.c:270
-#: ../src/plugins/reporter-rhtsupport.c:301
-#: ../src/plugins/reporter-rhtsupport.c:335
-#: ../src/plugins/reporter-rhtsupport.c:351
-msgid "Can't create temporary file in /tmp"
-msgstr "Nem lehetséges az átmeneti fájl létrehozása a /tmp mappában"
-
-#: ../src/plugins/reporter-rhtsupport.c:387
-msgid "Do you still want to create a RHTSupport ticket?"
-msgstr "Még mindig szeretne egy RHTSupport tikettet készíteni?"
-
-#. result = NULL; - redundant, result is assigned just below
-#. Send tempfile
-#: ../src/plugins/reporter-rhtsupport.c:399
-msgid "Creating a new case..."
-msgstr "Új hibaeset feljegyzése..."
-
-#: ../src/plugins/reporter-rhtsupport-parse.c:202
-msgid "Documentation which might be relevant: "
-msgstr "Dokumentáció ami fontos lehet: "
-
-#: ../src/plugins/reporter-rhtsupport-parse.c:210
-msgid "Updates which possibly help: "
-msgstr "Frissítések amelyek valószínűleg segíthetnek: "
-
-#: ../src/plugins/reporter-upload.c:59
-#, c-format
-msgid "Sending %s to %s"
-msgstr "%s küldése ide %s"
-
-#. This ends up a "reporting status message" in abrtd
-#: ../src/plugins/reporter-upload.c:98
-#, c-format
-msgid "Successfully sent %s to %s"
-msgstr "%s sikeresen elküldve ide %s"
-
-#: ../src/plugins/reporter-upload.c:221
-#, c-format
-msgid "Archive is created: '%s'"
-msgstr "Archív elkészült: '%s'"
-
-#: ../src/plugins/reporter-upload.c:261
-msgid ""
-"& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
-"\n"
-"Uploads compressed tarball of problem directory DIR to URL.\n"
-"If URL is not specified, creates tarball in /tmp and exits.\n"
-"\n"
-"URL should have form 'protocol://[user[:pass]@]host/dir/[file.tar.gz]'\n"
-"where protocol can be http(s), ftp, scp, or file.\n"
-"File protocol can't have user and host parts: 'file:///dir/[file.tar.gz].'\n"
-"If URL ends with a slash, the archive name will be generated and appended\n"
-"to URL; otherwise, URL will be used as full file name.\n"
-"\n"
-"Files with names listed in $EXCLUDE_FROM_REPORT are not included\n"
-"into the tarball.\n"
-"\n"
-"CONFFILE lines should have 'PARAM = VALUE' format.\n"
-"Recognized string parameter: URL.\n"
-"Parameter can be overridden via $Upload_URL."
-msgstr ""
-
-#: ../src/plugins/reporter-upload.c:290
-msgid "Base URL to upload to"
-msgstr "Alap URL a feltöltéshez ide"
-
-#: ../src/plugins/rhbz.c:437
+#: ../src/plugins/rhbz.c:356
 #, c-format
 msgid "Looks like corrupted xml response, because '%s' member is missing."
 msgstr "Egy hibás XML válasznak tűnik, mert az '%s' tag hiányzik."
 
-#: ../src/plugins/rhbz.c:511
+#: ../src/plugins/rhbz.c:430
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
 msgstr "A %i számú hiba LEZÁRVA, de nincs MEGOLDÁSA"
 
-#: ../src/plugins/rhbz.c:519
+#: ../src/plugins/rhbz.c:438
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
-msgstr "Az %i számú hiba LEZÁRVA mint DUPLIKÁLT, de nincs DUP-ID-je."
+msgstr "Az %i számú hiba LEZÁRVA mint DUPLIKÁLT, de nincs DUP_ID-je."
 
-#: ../src/plugins/rhbz.c:560
-msgid "Can't parse backtrace"
-msgstr ""
-
-#: ../src/plugins/rhbz.c:571
-msgid "Can't find crash thread"
-msgstr ""
-
-#: ../src/plugins/rhbz.c:752
+#: ../src/plugins/rhbz.c:592
 #, c-format
 msgid "New bug id: %i"
 msgstr "Új hiba ID: %i"
 
-#: ../src/plugins/rhbz.c:904
+#: ../src/plugins/rhbz.c:687
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla nem találja a kiindulási hibát a %d számú hibánál"
+
+#: ../src/plugins/abrt-screencast:86
+#, c-format
+msgid "Encoding: {0!s}% complete"
+msgstr ""
+
+#: ../src/plugins/abrt-screencast:123
+msgid "Select window"
+msgstr ""
+
+#: ../src/plugins/abrt-screencast:243
+msgid "Usage: abrt-screencast -o OUTPUT_FILE"
+msgstr ""
+
+#: ../src/plugins/ureport.c:181
+msgid "Can't get server response because of invalid url"
+msgstr "Kiszolgáló válasza elérhetetlen mivel hibás az URL linkje"
+
+#: ../src/plugins/ureport.c:189
+msgid "Unable to parse response from ureport server"
+msgstr "Értelmezhetetlen a beérkezett válasz a ureport kiszolgálótól"
+
+#: ../src/plugins/ureport.c:200
+msgid "Server response data has invalid format"
+msgstr "Kiszolgáló válasz adatai helytelen formátumúak"
+
+#. HTTP CODE 202 means that call was successful but the response
+#. has an error message
+#: ../src/plugins/ureport.c:205
+msgid "Server response type mismatch"
+msgstr "Kiszolgáló választípusa eltérő"
+
+#. can't print better error message
+#: ../src/plugins/ureport.c:213
+#, c-format
+msgid "Unexpected HTTP status code: %d"
+msgstr "Váratlan HTTP státuszkód: %d"
+
+#: ../src/plugins/ureport.c:237 ../src/plugins/ureport.c:389
+#, c-format
+msgid "Server side error: '%s'"
+msgstr "Kiszolgáló oldali hiba: '%s'"
+
+#: ../src/plugins/ureport.c:268
+msgid "Specify server URL"
+msgstr "Adjon meg egy kiszolgáló URL linkjét"
+
+#: ../src/plugins/ureport.c:270
+msgid "Allow insecure connection to ureport server"
+msgstr "Engedélyezzen nem biztonságos kapcsolatot a uReport kiszolgálóhoz"
+
+#: ../src/plugins/ureport.c:272
+msgid "bthash of uReport to attach"
+msgstr "uReport bthash része mellékeléshez"
+
+#: ../src/plugins/ureport.c:274
+msgid "Attach RHBZ bug (requires -a)"
+msgstr "RHBZ hibát mellékel (szügséges: -a)"
+
+#: ../src/plugins/ureport.c:276
+msgid "Attach contents of reported_to"
+msgstr "Tartalmat mellékel a bejelentő részhez"
+
+#: ../src/plugins/ureport.c:281
+msgid ""
+"& [-v] [-u URL] [-k] [-a bthash -b bug-id] [-r] [-d DIR]\n"
+"\n"
+"Upload micro report or add an attachment to a micro report"
+msgstr "& [-v] [-u URL] [-k] [-a bthash -b bug-id] [-r] [-d DIR]\n\nFeltölt egy uRepotot vagy egy mellékletet csatol a uReport-hoz"
+
+#: ../src/plugins/ureport.c:296
+msgid "You need to specify bug ID to attach."
+msgstr "Meg kell határoznia a hiba ID számát a mellékeléshez."
+
+#: ../src/plugins/ureport.c:298
+msgid "You need to specify bthash of the uReport to attach."
+msgstr "Meg kell határoznia a uReport bthash részét a mellékeléshez."
+
+#: ../src/plugins/ureport.c:313
+msgid "This problem does not have an uReport assigned."
+msgstr "Ennek a problémának nincs hozzákapcsolat uReport része. "
+
+#: ../src/plugins/ureport.c:316
+msgid "This problem has not been reported to Bugzilla."
+msgstr "A hiba még nem került  bejelentésre a Bugzillába."
+
+#: ../src/plugins/ureport.c:323
+#, c-format
+msgid "Unable to find bug ID in bugzilla URL '%s'"
+msgstr ""
+
+#: ../src/plugins/ureport.c:328
+#, c-format
+msgid "Unable to parse bug ID from bugzilla URL '%s'"
+msgstr ""
+
+#: ../src/plugins/ureport.c:381
+msgid "This problem has already been reported."
+msgstr "A hiba már bejelentésre került."
 
 #: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:146
 #: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:259
@@ -1362,19 +1594,24 @@ msgid ""
 "& [-d] DIR\n"
 "\n"
 "newt tool to report problem saved in specified DIR"
+msgstr "& [-d] DIR\n\nnewt eszköz hogy a probléma jelentést elmentse egy meghatározott DIR mappában "
+
+#: ../src/workflows/workflow_AnacondaFedora.xml.in.h:1
+#: ../src/workflows/workflow_Fedora.xml.in.h:1
+msgid "Report to Fedora"
 msgstr ""
 
-#: ../src/plugins/ureport.c:101
-msgid "Specify url"
+#: ../src/workflows/workflow_AnacondaFedora.xml.in.h:2
+#: ../src/workflows/workflow_Fedora.xml.in.h:2
+msgid "Process the report using the Fedora infrastructure"
 msgstr ""
 
-#: ../src/plugins/ureport.c:103
-msgid "Allow insecure connection to ureport server"
+#: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
+#: ../src/workflows/workflow_Upload.xml.in.h:1
+msgid "Upload the problem data to a server"
 msgstr ""
 
-#: ../src/plugins/ureport.c:108
-msgid ""
-"& [-v] [-u URL] [-k] -d DIR\n"
-"\n"
-"Upload micro report"
+#: ../src/workflows/workflow_AnacondaUpload.xml.in.h:2
+#: ../src/workflows/workflow_Upload.xml.in.h:2
+msgid "Analyze the problem locally and upload the data via scp or ftp"
 msgstr ""
