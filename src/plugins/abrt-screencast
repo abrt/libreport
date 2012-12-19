@@ -83,6 +83,7 @@ class AbrtScreecastWindow(Gtk.Window):
             percentage = 1.0
 
         self.progress.set_fraction(percentage)
+        # xgettext:no-c-format
         self.progress.set_text(_("Encoding: {0!s}% complete").format(self.enc_completed))
         return True
 

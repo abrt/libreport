@@ -941,7 +941,7 @@ int main(int argc, char **argv)
     if (rhbz.b_password[0] == '\0')
     {
         free(rhbz.b_password);
-        char *question = xasprintf(_("Password is not provided by configuration. Please enter the pasword for '%s':"), rhbz.b_login);
+        char *question = xasprintf(_("Password is not provided by configuration. Please enter the password for '%s':"), rhbz.b_login);
         rhbz.b_password = ask_bz_password(question);
         free(question);
     }
