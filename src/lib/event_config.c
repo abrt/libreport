@@ -400,7 +400,7 @@ bool check_problem_rating_usability(const event_config_t *cfg,
     char *tmp_detail = NULL;
     bool result = true;
 
-    if(!cfg)
+    if (!cfg)
         goto finish;
 
     const char *rating_str = problem_data_get_content_or_NULL(pd, FILENAME_RATING);
@@ -425,7 +425,7 @@ bool check_problem_rating_usability(const event_config_t *cfg,
     else if (rating == minimal_rating) /* bt is usable, but not complete, so show a warning */
     {
         tmp_desc = xstrdup(_("The backtrace is incomplete, please make sure you provide the steps to reproduce."));
-        tmp_detail = xstrdup(_("The backtrace probably can't help to a developer in searching for bug."));
+        tmp_detail = xstrdup(_("The backtrace probably can't help developer to diagnose the bug."));
 
         result = true;
     }

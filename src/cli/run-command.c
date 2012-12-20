@@ -25,15 +25,22 @@
 
 static pid_t start_command(char **argv)
 {
+  fflush(NULL);
+
   pid_t pid = vfork();
   if (pid < 0)
   {
     perror_msg_and_die("vfork");
   }
   if (pid == 0)
-  { // new process
+  {
+    /* Child */
     execvp(argv[0], argv);
-    exit(127);
+    /* Better to use _exit (not exit) after vfork:
+     * we don't want to mess up parent's memory state
+     * by running libc cleanup routines.
+     */
+    _exit(127);
   }
   return pid;
 }
@@ -45,7 +52,7 @@ static int finish_command(pid_t pid, char **argv)
   if (waiting < 0)
     perror_msg_and_die("waitpid");
 
-  int code = -1;
+  int code;
   if (WIFSIGNALED(status))
   {
     code = WTERMSIG(status);
