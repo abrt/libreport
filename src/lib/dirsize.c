@@ -53,10 +53,19 @@ double get_dirsize(const char *pPath)
 
 static bool this_is_a_dd(const char *dirname)
 {
+    /* Prevent get_dirsize_find_largest_dir() from flooding log
+     * with "is not a problem directory" messages
+     * if there are stray dirs in /var/spool/abrt:
+     */
+    int sv_logmode = logmode;
+    logmode = 0;
+
     struct dump_dir *dd = dd_opendir(dirname,
                 /*flags:*/ DD_OPEN_READONLY | DD_FAIL_QUIETLY_ENOENT | DD_FAIL_QUIETLY_EACCES
     );
     dd_close(dd);
+
+    logmode = sv_logmode;
     return dd != NULL;
 }
 
