@@ -172,7 +172,7 @@ static struct ureport_server_response *get_server_response(post_state_t *post_st
 {
     if (post_state->errmsg[0] !=  '\0')
     {
-        error_msg("%s", post_state->errmsg);
+        error_msg(_("Failed to upload uReport with curl: %s"), post_state->errmsg);
         return NULL;
     }
 
