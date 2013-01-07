@@ -111,7 +111,10 @@ bugs
 Summary: GTK front-end for libreport
 Group: User Interface/Desktops
 Requires: libreport = %{version}-%{release}
+%if 0%{?rhel} >= 6
+%else
 Requires: recordmydesktop
+%endif
 Provides: report-gtk = 0:0.23-1
 Obsoletes: report-gtk < 0:0.23-1
 
