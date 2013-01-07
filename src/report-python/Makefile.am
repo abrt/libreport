@@ -23,8 +23,8 @@ _pyreport_la_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     $(PYTHON_CFLAGS) \
     -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
-    -fPIE -Wl,-z,bind_now
+    -Wall -Wwrite-strings -Werror \
+    -fPIE -Wl,-z,relro,now
 _pyreport_la_LDFLAGS = \
     -module \
     -avoid-version \

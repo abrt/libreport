@@ -20,7 +20,7 @@ _reportclient_la_CPPFLAGS = \
     $(PYTHON_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror \
-    -fPIE -Wl,-z,bind_now
+    -fPIE -Wl,-z,relro,now
 _reportclient_la_LDFLAGS = \
     -module \
     -avoid-version \
