@@ -586,7 +586,6 @@ static problem_data_t *load_problem_data_if_not_yet(problem_data_t *problem_data
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
     {
-        problem_data_free(problem_data);
         return NULL;
     }
     problem_data = create_problem_data_from_dump_dir(dd);
