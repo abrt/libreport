@@ -22,10 +22,8 @@
 extern "C" {
 #endif
 
-extern int g_interactive;
-
-int select_one_event_and_run_interactively(const char *dump_dir_name, const char *pfx);
-int run_events_chain(const char *dump_dir_name, GList *chain);
+int select_and_run_one_event(const char *dump_dir_name, const char *pfx, int interactive);
+int run_event_chain(const char *dump_dir_name, GList *chain, int interactive);
 
 #ifdef __cplusplus
 }

@@ -705,24 +705,6 @@ static int run_event_on_dir_name_interactively(
     return retval;
 }
 
-static GList *str_to_glist(const char *str, int delim)
-{
-    GList *list = NULL;
-    while (*str)
-    {
-        char *end = strchrnul(str, delim);
-        if (end != str)
-            list = g_list_append(list, xstrndup(str, end - str));
-
-        str = end;
-        if (!*str)
-            break;
-        str++;
-    }
-
-    return list;
-}
-
 static char *select_event_name(GList *list_options)
 {
     if (!list_options)
@@ -738,7 +720,7 @@ static char *select_event_name(GList *list_options)
         char *opt = (char*)li->data;
         event_config_t *config = get_event_config(opt);
         count++;
-        printf(" %i) %s\n", count, config ? ec_get_screen_name(config) : opt);
+        printf("%2i) %s\n", count, config ? ec_get_screen_name(config) : opt);
     }
 
     unsigned picked;
@@ -767,14 +749,7 @@ static char *select_event_name(GList *list_options)
 
 int select_one_event_and_run_interactively(const char *dump_dir_name, const char *pfx)
 {
-    char *events_as_lines = list_possible_events(NULL, dump_dir_name, pfx);
-
-    if (!events_as_lines)
-        return -1;
-
-//FIXME: why use intermediate representation?
-    GList *list_events = str_to_glist(events_as_lines, '\n');
-    free(events_as_lines);
+    GList *list_events = list_possible_events_glist(dump_dir_name, pfx);
     char *event_name = select_event_name(list_events);
     list_free_with_free(list_events);
 

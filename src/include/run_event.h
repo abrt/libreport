@@ -133,6 +133,7 @@ void free_run_event_state(struct run_event_state *state);
  */
 void make_run_event_state_forwarding(struct run_event_state *state);
 
+
 /* Asynchronous command execution */
 
 /* Returns 0 if no commands found for this dump_dir_name+event, else >0 */
@@ -143,6 +144,7 @@ int prepare_commands(struct run_event_state *state, const char *dump_dir_name, c
 int spawn_next_command(struct run_event_state *state, const char *dump_dir_name, const char *event);
 /* Cleans up internal state created in prepare_commands */
 void free_commands(struct run_event_state *state);
+
 
 /* Synchronous command execution */
 
@@ -164,6 +166,7 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
 int run_event_on_dir_name(struct run_event_state *state, const char *dump_dir_name, const char *event);
 int run_event_on_problem_data(struct run_event_state *state, problem_data_t *data, const char *event);
 
+
 /* Querying for possible events */
 
 /* Scans event.conf for events starting with pfx which are applicable
@@ -171,6 +174,15 @@ int run_event_on_problem_data(struct run_event_state *state, problem_data_t *dat
  * Returns a malloced string with '\n'-terminated event names.
  */
 char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const char *pfx);
+
+/*
+ * Returns a list of possible events for given problem directory
+ *
+ * @param problem_dir_name the name of the problem directory
+ * @param pfx the prefix of the events "report", "workflow"
+ */
+GList *list_possible_events_glist(const char *problem_dir_name,
+                                  const char *pfx);
 
 /* Command line run event callback implemenetation */
 
@@ -223,14 +235,6 @@ int run_event_stdio_ask_yes_no_yesforever(const char *msg, const char *key, void
  */
 char *run_event_stdio_ask_password(const char *msg, void *param);
 
-/*
- * Returns a list of possible events for given problem directory
- *
- * @param problem_dir_name the name of the problem directory
- * @param pfx the prefix of the events "report", "workflow"
- */
-GList *list_possible_events_glist(const char *problem_dir_name,
-                                  const char *pfx);
 #ifdef __cplusplus
 }
 #endif
