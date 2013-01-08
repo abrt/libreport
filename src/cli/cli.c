@@ -127,7 +127,6 @@ int main(int argc, char** argv)
     }
 
     char *dump_dir_name = argv[0];
-    g_interactive = !(opts & OPT_y);
 
     /* Get settings */
     load_event_config_data();
@@ -156,7 +155,7 @@ int main(int argc, char** argv)
         case OPT_run_event: /* -e EVENT: run event */
         {
             dump_dir_name = steal_directory_if_needed(dump_dir_name);
-            exitcode = run_events_chain(dump_dir_name, event_list);
+            exitcode = run_event_chain(dump_dir_name, event_list, !(opts & OPT_y));
             break;
         }
         case OPT_delete:
@@ -168,7 +167,7 @@ int main(int argc, char** argv)
         case OPT_expert:
         {
             dump_dir_name = steal_directory_if_needed(dump_dir_name);
-            exitcode = select_one_event_and_run_interactively(dump_dir_name, pfx);
+            exitcode = select_and_run_one_event(dump_dir_name, pfx, !(opts & OPT_y));
             break;
         }
     }
