@@ -22,16 +22,9 @@
 extern "C" {
 #endif
 
-int run_analyze_event(const char *dump_dir_name, const char *analyzer);
-char *select_event_option(GList *list_options);
-GList *str_to_glist(char *str, int delim);
+extern int g_interactive;
 
-/* Report the crash */
-enum {
-    CLI_REPORT_BATCH = 1 << 0,
-};
-int report(const char *dump_dir_name, int flags);
-int collect(const char *dump_dir_name, int batch);
+int select_one_event_and_run_interactively(const char *dump_dir_name, const char *pfx);
 int run_events_chain(const char *dump_dir_name, GList *chain);
 
 #ifdef __cplusplus

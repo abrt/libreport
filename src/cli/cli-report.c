@@ -23,6 +23,8 @@
 /* Field separator for the crash report file that is edited by user. */
 #define FIELD_SEP "%----"
 
+int g_interactive;
+
 /*
  * Escapes the field content string to avoid confusion with file comments.
  * Returned field must be free()d by caller.
@@ -382,7 +384,7 @@ static void read_from_stdin(const char *question, char *result, int result_size)
     fflush(NULL);
     if (NULL == fgets(result, result_size, stdin))
         result[0] = '\0';
-    // Remove the newline from the login.
+    // Remove the trailing newline
     strchrnul(result, '\n')[0] = '\0';
 }
 
@@ -404,31 +406,6 @@ static bool ask_yesno(const char *question)
     /* Use strncmp here because the answer might contain a newline as
        the last char. */
     return 0 == strncmp(answer, yes, strlen(yes));
-}
-
-/* Returns true if the string contains the specified number. */
-static bool is_number_in_string(unsigned number, const char *str)
-{
-    const char *c;
-    char numstr[sizeof(int) * 3 + 2];
-    int len;
-
-    len = snprintf(numstr, sizeof(numstr), "%u", number);
-    for (c = str; *c; c++)
-    {
-        c = strstr(c, numstr);
-        if (!c)
-            /* no such number exists in the string */
-            return false;
-        if ((c == str || !isalnum(c[-1])) && !isalnum(c[len]))
-            /* found */
-            return true;
-
-        /* found, but it's part of another number. Continue
-         * from the next position. */
-    }
-
-    return false;
 }
 
 /**
@@ -507,79 +484,16 @@ static void ask_for_missing_settings(const char *event_name)
     }
 
     /* we ask for 3 times and still don't have valid infromation */
-    error_msg_and_die("Invalid input, program exiting...");
+    error_msg_and_die("Invalid input, exiting.");
 }
+
+
+/*** Event running ***/
 
 struct logging_state {
-    char *last_line;
+    bool saw_THANKYOU;
+    bool output_was_produced;
 };
-static char *do_log_and_save_line(char *log_line, void *param)
-{
-    struct logging_state *l_state = (struct logging_state *)param;
-    log("%s", log_line);
-    free(l_state->last_line);
-    l_state->last_line = log_line;
-    return NULL;
-}
-
-static int run_event(struct run_event_state *state, const char *dump_dir_name,
-                     const char *event, struct logging_state *l_state)
-{
-    // Export overridden settings as environment variables
-    GList *env_list = export_event_config(event);
-
-    int r = run_event_on_dir_name(state, dump_dir_name, event);
-    if (r == 0 && state->children_count == 0)
-    {
-        l_state->last_line = xasprintf("Error: no processing is specified for event '%s'",
-                event);
-        r = -1;
-    }
-
-    // Unexport overridden settings
-    unexport_event_config(env_list);
-
-    return r;
-}
-
-static int run_events(const char *dump_dir_name, GList *events, const char *event_type)
-{
-    int error_cnt = 0;
-
-    // Run events
-    struct logging_state l_state;
-    l_state.last_line = NULL;
-    struct run_event_state *run_state = new_run_event_state();
-    run_state->logging_callback = do_log_and_save_line;
-    run_state->logging_param = &l_state;
-    for (GList *li = events; li; li = li->next)
-    {
-        char *event = (char *) li->data;
-        if (run_event(run_state, dump_dir_name, event, &l_state) == 0)
-        {
-            printf("%s: ", event);
-            if (l_state.last_line)
-                printf("%s\n", l_state.last_line);
-            else
-                printf("%s succeeded\n", event_type);
-        }
-        else
-        {
-            error_msg("%s via '%s' was not successful%s%s",
-                    event_type,
-                    event,
-                    l_state.last_line ? ": " : "",
-                    l_state.last_line ? l_state.last_line : ""
-                    );
-            ++error_cnt;
-        }
-        free(l_state.last_line);
-        l_state.last_line = NULL;
-    }
-    free_run_event_state(run_state);
-
-    return error_cnt;
-}
 
 static char *do_log(char *log_line, void *param)
 {
@@ -587,165 +501,59 @@ static char *do_log(char *log_line, void *param)
     return log_line;
 }
 
-int run_analyze_event(const char *dump_dir_name, const char *analyzer)
+static char *do_log_and_check_for_THANKYOU(char *log_line, void *param)
 {
-    VERB2 log("run_analyze_event('%s')", dump_dir_name);
-
-    struct run_event_state *run_state = new_run_event_state();
-    run_state->logging_callback = do_log;
-    int res = run_event_on_dir_name(run_state, dump_dir_name, analyzer);
-    free_run_event_state(run_state);
-    return res;
+    struct logging_state *l_state = param;
+    l_state->saw_THANKYOU |= (strcmp("THANKYOU", log_line) == 0);
+    l_state->output_was_produced |= (log_line[0] != '\0');
+    log("%s", log_line);
+    return log_line;
 }
 
-/* show even description? */
-char *select_event_option(GList *list_options)
+static int export_config_and_run_event(
+                struct run_event_state *state,
+                const char *dump_dir_name,
+                const char *event)
 {
-    if (!list_options)
-        return NULL;
+    /* Export overridden settings as environment variables */
+    GList *env_list = export_event_config(event);
 
-    unsigned count = g_list_length(list_options);
-    if (count == 1)
-        return xstrdup((char*)list_options->data);
+    int r = run_event_on_dir_name(state, dump_dir_name, event);
 
-    int pos = 0;
-    fprintf(stdout, _("How you would like to analyze the problem?\n"));
-    for (GList *li = list_options; li; li = li->next)
-    {
-        char *opt = (char*)li->data;
-        event_config_t *config = get_event_config(opt);
-        if (config)
-        {
-            ++pos;
-            printf(" %i) %s\n", pos, ec_get_screen_name(config));
-        }
-    }
+    unexport_event_config(env_list);
 
-    unsigned picked;
-    unsigned ii;
-    for (ii = 0; ii < 3; ++ii)
-    {
-        char answer[16];
-
-        read_from_stdin(_("Select analyzer: "), answer, sizeof(answer));
-        if (!*answer)
-            continue;
-
-        picked = xatou(answer);
-        if (picked > count || picked < 1)
-        {
-            fprintf(stdout, _("You have chosen number out of range"));
-            fprintf(stdout, "\n");
-            continue;
-        }
-
-        break;
-    }
-
-    if (ii == 3)
-        error_msg_and_die(_("Invalid input, program exiting..."));
-
-    GList *choosen = g_list_nth(list_options, picked - 1);
-    return xstrdup((char*)choosen->data);
+    return r;
 }
 
-GList *str_to_glist(char *str, int delim)
+static int is_not_reportable(problem_data_t *problem_data)
 {
-    GList *list = NULL;
-    while (*str)
+    const char *not_reportable = problem_data_get_content_or_NULL(problem_data, FILENAME_NOT_REPORTABLE);
+    if (not_reportable)
     {
-        char *end = strchrnul(str, delim);
-        if (end != str)
-            list = g_list_append(list, xstrndup(str, end - str));
-
-        str = end;
-        if (!*str)
-            break;
-        str++;
+        printf("%s\n", not_reportable);
+        return 1;
     }
-
-    if (!list && !g_list_length(list))
-        return NULL;
-
-    return list;
+    return 0;
 }
 
-/* Runs collect_* events if there are any. If batch is nonzero, no questions
- * are asked and positive answers are assumed, i.e. all events are ran.
- * returns:  0: success
- *          -1: failed to open dumpdir
- *          >0: number of errors encountered when running the events
- */
-int collect(const char *dump_dir_name, int batch)
+static int is_backtrace_rating_usable(event_config_t *config, problem_data_t *problem_data)
 {
-    int errors = 0;
-    char wanted_collectors[255];
-    GList *selected_events = NULL;
+    char *usability_description = NULL;
+    char *usability_detail = NULL;
+    const bool usable_rating = check_problem_rating_usability(config, problem_data,
+                                                              &usability_description,
+                                                              &usability_detail);
 
-    struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
-    if (!dd)
-        return -1;
-
-    char *collect_events_as_lines = list_possible_events(dd, NULL, "collect");
-    dd_close(dd);
-
-    /* return if there are no collect events */
-    if (!collect_events_as_lines)
-        return 0;
-
-    if (!*collect_events_as_lines)
+    if (!usable_rating)
     {
-        free(collect_events_as_lines);
-        return 0;
+        printf("%s\n", usability_description);
+        printf("%s\n", usability_detail);
     }
 
-    GList *list_collect_events = str_to_glist(collect_events_as_lines, '\n');
-    free(collect_events_as_lines);
+    free(usability_description);
+    free(usability_detail);
 
-    if (!batch)
-    {
-        GList *li;
-        unsigned i;
-
-        puts(_("What additional information would you like to collect?"));
-        /* Print list of collectors and ask the user which should be used. */
-        for (li = list_collect_events, i = 1; li; li = li->next, i++)
-        {
-            char *collector_name = (char *) li->data;
-            event_config_t *config = get_event_config(collector_name);
-
-            if (!config)
-                VERB1 log("No configuration file found for collector '%s'", collector_name);
-
-            printf(" %d) %s\n", i, (config && ec_get_screen_name(config)) ? ec_get_screen_name(config) : collector_name);
-        }
-
-        read_from_stdin(_("Select collector(s): "), wanted_collectors, sizeof(wanted_collectors));
-
-        for (li = list_collect_events, i = 1; li; li = li->next, i++)
-        {
-            char *collector_name = (char *) li->data;
-
-            /* Was this collector requested? */
-            if (!is_number_in_string(i, wanted_collectors))
-                continue;
-
-            selected_events = g_list_append(selected_events, collector_name);
-        }
-    }
-    else
-    {
-        /* run all collectors in noninteractive mode */
-        selected_events = list_collect_events;
-    }
-
-    errors = run_events(dump_dir_name, selected_events, "Collection");
-
-    list_free_with_free(list_collect_events);
-    if (!batch)
-        g_list_free(selected_events);
-
-    return errors;
+    return usable_rating;
 }
 
 static int review_problem_data(const char *dump_dir_name, problem_data_t *problem_data)
@@ -773,197 +581,219 @@ static int review_problem_data(const char *dump_dir_name, problem_data_t *proble
     return 0;
 }
 
-static int is_backtrace_rating_usable(event_config_t *config, problem_data_t *problem_data)
+static problem_data_t *load_problem_data_if_not_yet(problem_data_t *problem_data, const char *dump_dir_name)
 {
-    char *usability_description = NULL;
-    char *usability_detail = NULL;
-    const bool usable_rating = check_problem_rating_usability(config, problem_data,
-                                                              &usability_description,
-                                                              &usability_detail);
-
-    if (!usable_rating)
-    {
-        printf("%s\n", usability_description);
-        printf("%s\n", usability_detail);
-    }
-
-    free(usability_description);
-    free(usability_detail);
-
-    return usable_rating;
-}
-
-/* Report the crash */
-int report(const char *dump_dir_name, int flags)
-{
-    /* Load problem_data from (possibly updated by analyze) dump dir */
+    if (problem_data)
+        return problem_data;
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
-        return -1;
-
-    char *not_reportable = dd_load_text_ext(dd, FILENAME_NOT_REPORTABLE, 0
-                                            | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
-                                            | DD_FAIL_QUIETLY_ENOENT
-                                            | DD_FAIL_QUIETLY_EACCES);
-
-    if (not_reportable)
-    {
-        char *reason = dd_load_text_ext(dd, FILENAME_REASON, 0
-                                        | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-        char *t = xasprintf("%s%s%s",
-                            not_reportable ? : "",
-                            not_reportable ? " " : "",
-                            reason ? : _("(no description)"));
-
-        dd_close(dd);
-        error_msg("%s", t);
-        free(t);
-        xfunc_die();
-    }
-
-    char *analyze_events_as_lines = list_possible_events(dd, NULL, "analyze");
-    dd_close(dd);
-
-    if (analyze_events_as_lines && *analyze_events_as_lines)
-    {
-        GList *list_analyze_events = str_to_glist(analyze_events_as_lines, '\n');
-        free(analyze_events_as_lines);
-
-        char *event = select_event_option(list_analyze_events);
-        list_free_with_free(list_analyze_events);
-
-        int analyzer_result = run_analyze_event(dump_dir_name, event);
-        free(event);
-
-        if (analyzer_result != 0)
-            return 1;
-    }
-
-    /* Run collect events if there are any */
-    int collect_res = collect(dump_dir_name, flags & CLI_REPORT_BATCH);
-    if (collect_res == -1)
-        return -1;
-    else if (collect_res > 0)
-        printf(_("There were %d errors while collecting additional data\n"), collect_res);
-
-    /* Load dd from (possibly updated by collect) dump dir */
-    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        return -1;
-
-    char *report_events_as_lines = list_possible_events(dd, NULL, "report");
-    problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
-    dd_close(dd);
-
-    if (!(flags & (CLI_REPORT_BATCH))
-        && review_problem_data(dump_dir_name, problem_data))
     {
         problem_data_free(problem_data);
-        free(report_events_as_lines);
-        return 1;
+        return NULL;
     }
-
-    /* Get possible reporters associated with this particular crash */
-    GList *report_events = NULL;
-    if (report_events_as_lines && *report_events_as_lines)
-        report_events = str_to_glist(report_events_as_lines, '\n');
-
-    free(report_events_as_lines);
-
-    if (!report_events)
-    {
-        problem_data_free(problem_data);
-        error_msg_and_die("The problem directory '%s' has no defined reporters",
-                          dump_dir_name);
-    }
-
-    /* Get settings */
-    load_event_config_data();
-
-    int errors = 0;
-    int plugins = 0;
-    if (flags & CLI_REPORT_BATCH)
-    {
-        puts(_("Reporting..."));
-        errors += run_events(dump_dir_name, report_events, "Reporting");
-        plugins += g_list_length(report_events);
-    }
-    else
-    {
-        unsigned i;
-        GList *li;
-        char wanted_reporters[255];
-
-        puts(_("How would you like to report the problem?"));
-        /* Print list of reporters and ask the user which should be used. */
-        for (li = report_events, i = 1; li; li = li->next, i++)
-        {
-            char *reporter_name = (char *) li->data;
-            event_config_t *config = get_event_config(reporter_name);
-
-            printf(" %d) %s\n", i, (config && ec_get_screen_name(config)) ? ec_get_screen_name(config) : reporter_name);
-        }
-
-        read_from_stdin(_("Select reporter(s): "), wanted_reporters, sizeof(wanted_reporters));
-
-        for (li = report_events, i = 1; li; li = li->next, i++)
-        {
-            char *reporter_name = (char *) li->data;
-            event_config_t *config = get_event_config(reporter_name);
-
-            if (!config)
-                VERB1 log("No configuration file found for '%s' reporter", reporter_name);
-
-            /* Was this reporter requested? */
-            if (!is_number_in_string(i, wanted_reporters))
-                continue;
-
-            if (!is_backtrace_rating_usable(config, problem_data))
-            {
-                errors++;
-                goto next_plugin;
-            }
-
-            ask_for_missing_settings(reporter_name);
-
-            /*
-             * to avoid creating list with one item, we probably should
-             * provide something like
-             * run_event(char*, char*)
-             */
-            GList *cur_event = NULL;
-            cur_event = g_list_append(cur_event, reporter_name);
-            errors += run_events(dump_dir_name, cur_event, "Reporting");
-            g_list_free(cur_event);
-
-next_plugin:
-            plugins++;
-        }
-    }
-
-    printf(_("Problem reported via %d report events (%d errors)\n"), plugins, errors);
-    problem_data_free(problem_data);
-    list_free_with_free(report_events);
-    return errors;
+    problem_data = create_problem_data_from_dump_dir(dd);
+    dd_close(dd);
+    return problem_data;
 }
 
-struct chain_logging_param
+static int run_event_on_dir_name_batch(
+                struct run_event_state *state,
+                const char *dump_dir_name,
+                const char *event_name)
 {
-    struct logging_state l_state;
-    bool terminate;
-};
+    int retval = -1;
+    problem_data_t *problem_data = NULL;
 
-static char *do_log_and_terminate_chain_on_request(char *log_line, void *param)
+    event_config_t *config = get_event_config(event_name);
+    if (config)
+    {
+        if (config->ec_minimal_rating != 0)
+        {
+            problem_data = load_problem_data_if_not_yet(problem_data, dump_dir_name);
+            if (!problem_data)
+                goto ret;
+            if (!is_backtrace_rating_usable(config, problem_data))
+                goto ret;
+        }
+
+        if (config->ec_sending_sensitive_data)
+        {
+            /* We assume this event is a reporter */
+
+            /* Is problem non-reportable? */
+            problem_data = load_problem_data_if_not_yet(problem_data, dump_dir_name);
+            if (!problem_data)
+                goto ret;
+            if (is_not_reportable(problem_data))
+                goto ret;
+        }
+    }
+
+    problem_data_free(problem_data);
+    problem_data = NULL;
+
+    retval = export_config_and_run_event(state, dump_dir_name, event_name);
+
+ ret:
+    problem_data_free(problem_data);
+    return retval;
+}
+
+static int run_event_on_dir_name_interactively(
+                struct run_event_state *state,
+                const char *dump_dir_name,
+                const char *event_name)
 {
-    struct chain_logging_param *arg = (struct chain_logging_param *)param;
+    int retval = -1;
+    problem_data_t *problem_data = NULL;
 
-    arg->terminate = strcmp("THANKYOU", log_line) == 0;
+    event_config_t *config = get_event_config(event_name);
+    if (config)
+    {
+        if (config->ec_minimal_rating != 0)
+        {
+            problem_data = load_problem_data_if_not_yet(problem_data, dump_dir_name);
+            if (!problem_data)
+                goto ret;
+            if (!is_backtrace_rating_usable(config, problem_data))
+                goto ret;
+        }
 
-    return do_log_and_save_line(log_line, &(arg->l_state));
+        if (config->ec_sending_sensitive_data)
+        {
+            /* We assume this event is a reporter */
+
+            /* Is problem non-reportable? */
+            problem_data = load_problem_data_if_not_yet(problem_data, dump_dir_name);
+            if (!problem_data)
+                goto ret;
+            if (is_not_reportable(problem_data))
+                goto ret;
+
+            char *msg = xasprintf(_("Event '%s' requires permission to send possibly sensitive data."
+                                    " Do you want to continue?"),
+                        ec_get_screen_name(config) ? ec_get_screen_name(config) : event_name);
+            bool ok = ask_yesno(msg);
+            free(msg);
+            if (!ok)
+                goto ret;
+        }
+
+        /* can't fail */
+        ask_for_missing_settings(event_name);
+
+        /* review problem data only if the event needs it */
+        if (!config->ec_skip_review)
+        {
+            problem_data = load_problem_data_if_not_yet(problem_data, dump_dir_name);
+            if (!problem_data)
+                goto ret;
+            retval = review_problem_data(dump_dir_name, problem_data);
+            if (retval != 0)
+                /* review failed, an error message was already logged */
+                goto ret;
+        }
+    }
+
+    problem_data_free(problem_data);
+    problem_data = NULL;
+
+    retval = export_config_and_run_event(state, dump_dir_name, event_name);
+
+ ret:
+    problem_data_free(problem_data);
+    return retval;
+}
+
+static GList *str_to_glist(const char *str, int delim)
+{
+    GList *list = NULL;
+    while (*str)
+    {
+        char *end = strchrnul(str, delim);
+        if (end != str)
+            list = g_list_append(list, xstrndup(str, end - str));
+
+        str = end;
+        if (!*str)
+            break;
+        str++;
+    }
+
+    return list;
+}
+
+static char *select_event_name(GList *list_options)
+{
+    if (!list_options)
+        return NULL;
+
+    /* Just one? */
+    if (!list_options->next)
+        return xstrdup((char*)list_options->data);
+
+    int count = 0;
+    for (GList *li = list_options; li; li = li->next)
+    {
+        char *opt = (char*)li->data;
+        event_config_t *config = get_event_config(opt);
+        count++;
+        printf(" %i) %s\n", count, config ? ec_get_screen_name(config) : opt);
+    }
+
+    unsigned picked;
+    unsigned ii;
+    for (ii = 0; ii < 3; ++ii)
+    {
+        char answer[16];
+
+        read_from_stdin(_("Select an event to run: "), answer, sizeof(answer));
+        if (!*answer)
+            continue;
+
+        picked = xatou(answer);
+        if (picked <= count && picked != 0)
+            break;
+
+        printf("%s\n", _("You have chosen number out of range"));
+    }
+
+    if (ii == 3)
+        error_msg_and_die(_("Invalid input, exiting."));
+
+    GList *chosen = g_list_nth(list_options, picked - 1);
+    return xstrdup((char*)chosen->data);
+}
+
+int select_one_event_and_run_interactively(const char *dump_dir_name, const char *pfx)
+{
+    char *events_as_lines = list_possible_events(NULL, dump_dir_name, pfx);
+
+    if (!events_as_lines)
+        return -1;
+
+//FIXME: why use intermediate representation?
+    GList *list_events = str_to_glist(events_as_lines, '\n');
+    free(events_as_lines);
+    char *event_name = select_event_name(list_events);
+    list_free_with_free(list_events);
+
+    struct run_event_state *run_state = new_run_event_state();
+    run_state->logging_callback = do_log;
+    int r = g_interactive
+                ? run_event_on_dir_name_interactively(run_state, dump_dir_name, event_name)
+                : run_event_on_dir_name_batch(run_state, dump_dir_name, event_name)
+                ;
+
+    free_run_event_state(run_state);
+
+    free(event_name);
+
+    return r;
 }
 
 /*
- * Runs event from chain. Perform the following steps for each event from chain.
+ * Run event from chain. Perform the following steps for each event from chain.
  * 1. Terminates a chain run if a backtrace is not usable.
  * 2. Asks for missing settings.
  * 3. Performs review of problem data if event requires review.
@@ -971,80 +801,51 @@ static char *do_log_and_terminate_chain_on_request(char *log_line, void *param)
  * 5. Terminates a chain run if any event from the chain requires termination
  *    (prints THANKYOU to stdout in the current implementation)
  * 6. Terminates a chain run if any error occurs.
- * 7. Continues immediately with processing of next event.
+ * 7. Continues with processing of next event.
  */
 int run_events_chain(const char *dump_dir_name, GList *chain)
 {
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        return -1;
-
-    problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
-
-    dd_close(dd);
-
-    struct chain_logging_param chain_state;
-    memset(&chain_state, 0, sizeof(chain_state));
+    struct logging_state l_state;
 
     struct run_event_state *run_state = new_run_event_state();
-    run_state->logging_callback = do_log_and_terminate_chain_on_request;
-    run_state->logging_param = &chain_state;
+    run_state->logging_callback = do_log_and_check_for_THANKYOU;
+    run_state->logging_param = &l_state;
 
-    int returncode = 0;
-
-    for (GList *eitem = chain; !chain_state.terminate && eitem; eitem = g_list_next(eitem))
+    int retval = 0;
+    for (GList *eitem = chain; eitem; eitem = g_list_next(eitem))
     {
-        const char *const event = (const char *)eitem->data;
-        event_config_t *config = get_event_config(event);
+        l_state.saw_THANKYOU = 0;
+        l_state.output_was_produced = 0;
+        const char *event_name = eitem->data;
+        retval = g_interactive
+                ? run_event_on_dir_name_interactively(run_state, dump_dir_name, event_name)
+                : run_event_on_dir_name_batch(run_state, dump_dir_name, event_name)
+                ;
 
-        if (!is_backtrace_rating_usable(config, problem_data))
-            /* it is not a failure of event if the backtrace is unusable */
+        if (retval < 0)
+            /* Nothing was run (bad backtrace, user declined, etc... */
             break;
-
-        if (config)
+        if (retval == 0 && run_state->children_count == 0)
         {
-            if (config->ec_sending_sensitive_data)
-            {
-                char *msg = xasprintf(_("Event '%s' requires permission to send possibly sensitive data."
-                                        " Do you want to continue?"),
-                            ec_get_screen_name(config) ? ec_get_screen_name(config) : event);
-                const bool response = ask_yesno(msg);
-                free(msg);
-                if (!response)
-                    break;
-            }
-
-            /* can't fail */
-            ask_for_missing_settings(event);
-
-            /* review problem data only if the event needs it */
-            if (!config->ec_skip_review
-                && review_problem_data(dump_dir_name, problem_data))
-            {
-                /* review failed, an error message was already logged */
-                returncode = -1;
-                break;
-            }
+            printf("Error: no processing is specified for event '%s'", event_name);
+            retval = 1;
         }
-
-        returncode = run_event(run_state, dump_dir_name, event, &chain_state.l_state);
-        if (returncode != 0)
+        else
+        /* If program failed, or if it finished successfully without saying anything... */
+        if (retval != 0 || !l_state.output_was_produced)
         {
-            error_msg("'%s' event was not successful%s%s",
-                      event,
-                      chain_state.l_state.last_line ? ": " : "",
-                      chain_state.l_state.last_line ? chain_state.l_state.last_line : ""
-                     );
+            if (WIFSIGNALED(run_state->process_status))
+                printf("(killed by signal %u)\n", WTERMSIG(run_state->process_status));
+            else
+                printf("(exited with %u)\n", retval);
+        }
+        if (retval != 0)
             break;
-        }
-
-        free(chain_state.l_state.last_line);
-        chain_state.l_state.last_line = NULL;
+        if (l_state.saw_THANKYOU)
+            break;
     }
 
     free_run_event_state(run_state);
-    free(chain_state.l_state.last_line);
-    problem_data_free(problem_data);
 
-    return returncode;
+    return retval;
 }

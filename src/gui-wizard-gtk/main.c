@@ -102,9 +102,9 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "& [-vpd] [-g GUI_FILE] DIR\n"
+        "& [-vpdx] [-e EVENT]... [-g GUI_FILE] PROBLEM_DIR\n"
         "\n"
-        "GUI tool to analyze and report problem saved in specified DIR"
+        "GUI tool to analyze and report problem saved in specified PROBLEM_DIR"
     );
     enum {
         OPT_v = 1 << 0,
@@ -119,10 +119,9 @@ int main(int argc, char **argv)
         OPT__VERBOSE(&g_verbose),
         OPT_STRING('g', NULL, &g_glade_file, "FILE",          _("Alternate GUI file")),
         OPT_BOOL(  'p', NULL, NULL,                           _("Add program names to log")),
-        /* for use from 3rd party apps to show just a reporter selector */
-        OPT_BOOL(  'd', "delete", NULL,                       _("Remove DIR after reporting")),
-        OPT_LIST(  'e', "event", &g_auto_event_list, "EVENT", _("Run only this event")),
-        OPT_BOOL(  'x', "expert", &expert_mode,             _("Run wizard in expert mode - shows advanced options")),
+        OPT_BOOL(  'd', "delete", NULL,                       _("Remove PROBLEM_DIR after reporting")),
+        OPT_LIST(  'e', "event", &g_auto_event_list, "EVENT", _("Run only these events")),
+        OPT_BOOL(  'x', "expert", &expert_mode,               _("Expert mode")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
