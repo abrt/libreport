@@ -34,7 +34,7 @@ int report_problem_in_dir(const char *dirname, int flags)
     {
         const char *event_name;
         const char *path, *path1, *path2;
-        char *args[6], **pp;
+        char *args[7], **pp;
 
         /* Graphical tool */
         event_name = "report-gui";
@@ -77,7 +77,8 @@ int report_problem_in_dir(const char *dirname, int flags)
             *pp++ = (char *)"report-cli";
             if (flags & LIBREPORT_DEL_DIR)
                 *pp++ = (char *)"--delete";
-            *pp++ = (char *)"-r"; /* analyze and report */
+            *pp++ = (char *)"-e";
+            *pp++ = (char *)"report-cli";
             *pp++ = (char *)"--";
             *pp++ = (char *)dirname;
             *pp = NULL;
