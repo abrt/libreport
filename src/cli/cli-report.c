@@ -23,8 +23,6 @@
 /* Field separator for the crash report file that is edited by user. */
 #define FIELD_SEP "%----"
 
-int g_interactive;
-
 /*
  * Escapes the field content string to avoid confusion with file comments.
  * Returned field must be free()d by caller.
@@ -747,7 +745,7 @@ static char *select_event_name(GList *list_options)
     return xstrdup((char*)chosen->data);
 }
 
-int select_one_event_and_run_interactively(const char *dump_dir_name, const char *pfx)
+int select_and_run_one_event(const char *dump_dir_name, const char *pfx, int interactive)
 {
     GList *list_events = list_possible_events_glist(dump_dir_name, pfx);
     char *event_name = select_event_name(list_events);
@@ -755,7 +753,7 @@ int select_one_event_and_run_interactively(const char *dump_dir_name, const char
 
     struct run_event_state *run_state = new_run_event_state();
     run_state->logging_callback = do_log;
-    int r = g_interactive
+    int r = interactive
                 ? run_event_on_dir_name_interactively(run_state, dump_dir_name, event_name)
                 : run_event_on_dir_name_batch(run_state, dump_dir_name, event_name)
                 ;
@@ -778,7 +776,7 @@ int select_one_event_and_run_interactively(const char *dump_dir_name, const char
  * 6. Terminates a chain run if any error occurs.
  * 7. Continues with processing of next event.
  */
-int run_events_chain(const char *dump_dir_name, GList *chain)
+int run_event_chain(const char *dump_dir_name, GList *chain, int interactive)
 {
     struct logging_state l_state;
 
@@ -792,7 +790,7 @@ int run_events_chain(const char *dump_dir_name, GList *chain)
         l_state.saw_THANKYOU = 0;
         l_state.output_was_produced = 0;
         const char *event_name = eitem->data;
-        retval = g_interactive
+        retval = interactive
                 ? run_event_on_dir_name_interactively(run_state, dump_dir_name, event_name)
                 : run_event_on_dir_name_batch(run_state, dump_dir_name, event_name)
                 ;
