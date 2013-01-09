@@ -613,9 +613,11 @@ static int run_event_on_dir_name_batch(
                 goto ret;
         }
 
-        if (config->ec_sending_sensitive_data)
+        if (!config->ec_skip_review)
         {
-            /* We assume this event is a reporter */
+            /* We assume this event is a reporter
+             * (sinse it asks user to review data before it is run)
+             */
 
             /* Is problem non-reportable? */
             problem_data = load_problem_data_if_not_yet(problem_data, dump_dir_name);
@@ -656,9 +658,11 @@ static int run_event_on_dir_name_interactively(
                 goto ret;
         }
 
-        if (config->ec_sending_sensitive_data)
+        if (!config->ec_skip_review)
         {
-            /* We assume this event is a reporter */
+            /* We assume this event is a reporter
+             * (sinse it asks user to review data before it is run)
+             */
 
             /* Is problem non-reportable? */
             problem_data = load_problem_data_if_not_yet(problem_data, dump_dir_name);
@@ -666,7 +670,10 @@ static int run_event_on_dir_name_interactively(
                 goto ret;
             if (is_not_reportable(problem_data))
                 goto ret;
+        }
 
+        if (config->ec_sending_sensitive_data)
+        {
             char *msg = xasprintf(_("Event '%s' requires permission to send possibly sensitive data."
                                     " Do you want to continue?"),
                         ec_get_screen_name(config) ? ec_get_screen_name(config) : event_name);
