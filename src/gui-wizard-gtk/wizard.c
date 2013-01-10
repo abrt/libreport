@@ -3075,6 +3075,30 @@ static void on_btn_startcast(GtkWidget *btn, gpointer user_data)
     gtk_widget_show(GTK_WIDGET(g_wnd_assistant));
 }
 
+static bool is_screencast_available()
+{
+    const char *args[3];
+    args[0] = (char *) LIBEXEC_DIR"/abrt-screencast";
+    args[1] = "is-available";
+    args[2] = NULL;
+
+    pid_t castapp = 0;
+    castapp = fork_execv_on_steroids(
+                EXECFLG_QUIET,
+                (char **)args,
+                NULL,
+                /*env_vec:*/ NULL,
+                /*dir:*/ NULL,
+                /*uid (ignored):*/ 0
+    );
+
+    int status;
+    safe_waitpid(castapp, &status, 0);
+
+    /* 0 means that it's available */
+    return status == 0;
+}
+
 void create_assistant(bool expert_mode)
 {
     g_loaded_texts = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
@@ -3164,12 +3188,25 @@ void create_assistant(bool expert_mode)
 
     g_signal_connect(g_btn_add_file, "clicked", G_CALLBACK(on_btn_add_file), NULL);
 
-    /* we need to override the activate-link handler, because we use
-     * the link button instead of normal button and if wouldn't override it
-     * gtk would try to run it's defualt action and open the associated URI
-     * but since the URI is empty it would complain about it...
-     */
-    g_signal_connect(g_btn_startcast, "activate-link", G_CALLBACK(on_btn_startcast), NULL);
+    if (is_screencast_available()) {
+        /* we need to override the activate-link handler, because we use
+         * the link button instead of normal button and if we wouldn't override it
+         * gtk would try to run it's defualt action and open the associated URI
+         * but since the URI is empty it would complain about it...
+         */
+        g_signal_connect(g_btn_startcast, "activate-link", G_CALLBACK(on_btn_startcast), NULL);
+    }
+    else {
+        gtk_widget_set_sensitive(GTK_WIDGET(g_btn_startcast), false);
+        gtk_widget_set_tooltip_markup(GTK_WIDGET(g_btn_startcast),
+          _("In order to enable the built-in screencasting "
+            "functionality the package recordmydesktop has to be installed. "
+            "Please run the following command if you want to install it."
+            "\n\n"
+            "<b>su -c \"yum install recordmydesktop\"</b>"
+            ));
+    }
+
 
     g_signal_connect(g_search_entry_bt, "changed", G_CALLBACK(search_timeout), NULL);
 

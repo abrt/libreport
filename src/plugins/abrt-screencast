@@ -235,9 +235,21 @@ class AbrtScreecastWindow(Gtk.Window):
         # pylint: disable=E1101
         self.present() #move it on top or do some magic to drag the attention
 
+def is_available():
+    for path in os.environ["PATH"].split(os.pathsep):
+        path = path.strip('"')
+        fpath = os.path.join(path, "recordmydesktop")
+        if os.path.isfile(fpath) and os.access(fpath, os.X_OK):
+            return True
+
+    return False
 
 if __name__ == "__main__":
     output_file = None
+    if sys.argv[1] == "is-available":
+        exitcode = 0 if is_available() else 1
+        sys.exit(exitcode)
+
     try:
         output_file = sys.argv[1]
     except IndexError, ex:
