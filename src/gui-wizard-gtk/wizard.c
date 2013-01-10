@@ -210,6 +210,27 @@ static bool check_minimal_bt_rating(const char *event_name);
 static char *get_next_processed_event(GList **events_list);
 static void on_next_btn_cb(GtkWidget *btn, gpointer user_data);
 
+static void label_wrapper(GtkWidget *widget, gpointer data_unused)
+{
+    if (GTK_IS_CONTAINER(widget))
+    {
+        gtk_container_foreach((GtkContainer*)widget, label_wrapper, NULL);
+        return;
+    }
+    if (GTK_IS_LABEL(widget))
+    {
+        GtkLabel *label = (GtkLabel*)widget;
+        gtk_label_set_line_wrap(label, 1);
+        //const char *txt = gtk_label_get_label(label);
+        //log("label '%s' set to wrap", txt);
+    }
+}
+
+static void wrap_all_labels(GtkWidget *widget)
+{
+    label_wrapper(widget, NULL);
+}
+
 static void wrap_fixer(GtkWidget *widget, gpointer data_unused)
 {
     if (GTK_IS_CONTAINER(widget))
@@ -222,17 +243,17 @@ static void wrap_fixer(GtkWidget *widget, gpointer data_unused)
         GtkLabel *label = (GtkLabel*)widget;
         //const char *txt = gtk_label_get_label(label);
         GtkMisc *misc = (GtkMisc*)widget;
-        gfloat yalign; //= 1;
-        gint ypad; //= 1;
+        gfloat yalign; // = 111;
+        gint ypad; // = 111;
         if (gtk_label_get_line_wrap(label)
          && (gtk_misc_get_alignment(misc, NULL, &yalign), yalign == 0)
          && (gtk_misc_get_padding(misc, NULL, &ypad), ypad == 0)
         ) {
-            //log("label '%s' set to wrap", txt);
+            //log("label '%s' set to autowrap", txt);
             make_label_autowrap_on_resize(label);
             return;
         }
-        //log("label '%s' not set to wrap %g %d", txt, yalign, ypad);
+        //log("label '%s' not set to autowrap %g %d", txt, yalign, ypad);
     }
 }
 
@@ -881,7 +902,7 @@ static void event_rb_was_toggled(GtkButton *button, gpointer user_data)
 }
 
 /* event_name contains "EVENT1\nEVENT2\nEVENT3\n".
- * Add new {radio/check}buttons to GtkBox for each EVENTn (type depends on bool radio).
+ * Add new radio buttons to GtkBox for each EVENTn.
  * Remember them in GList **p_event_list (list of event_gui_data_t's).
  * Set "toggled" callback on each button to given GCallback if it's not NULL.
  * Return active button (or NULL if none created).
@@ -1047,6 +1068,9 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
 
         gtk_box_pack_start(box, button, /*expand*/ false, /*fill*/ false, /*padding*/ 0);
         gtk_widget_show_all(GTK_WIDGET(button));
+        wrap_all_labels(button);
+        /* Disabled - seems that above is enough... */
+        /*fix_all_wrapped_labels(button);*/
     }
     gtk_widget_show_all(GTK_WIDGET(box));
 
