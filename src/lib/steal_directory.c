@@ -50,7 +50,7 @@ struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name
     char *dst_dir_name = concat_path_file(base_dir, base_name);
     while (1)
     {
-        dd_dst = dd_create(dst_dir_name, (uid_t)-1, 0640);
+        dd_dst = dd_create(dst_dir_name, (uid_t)-1, DEFAULT_DUMP_DIR_MODE);
         free(dst_dir_name);
         if (dd_dst)
             break;

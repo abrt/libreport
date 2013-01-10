@@ -25,7 +25,7 @@
 static struct dump_dir *try_dd_create(const char *base_dir_name, const char *dir_name, uid_t uid)
 {
     char *path = concat_path_file(base_dir_name, dir_name);
-    struct dump_dir *dd = dd_create(path, uid, 0640);
+    struct dump_dir *dd = dd_create(path, uid, DEFAULT_DUMP_DIR_MODE);
     free(path);
     return dd;
 }
@@ -107,7 +107,7 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
         {
             char *dest = concat_path_file(dd->dd_dirname, name);
             VERB2 log("copying '%s' to '%s'", value->content, dest);
-            off_t copied = copy_file(value->content, dest, 0644);
+            off_t copied = copy_file(value->content, dest, DEFAULT_DUMP_DIR_MODE | S_IROTH);
             if (copied < 0)
                 error_msg("Can't copy %s to %s", value->content, dest);
             else

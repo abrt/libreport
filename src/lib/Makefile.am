@@ -64,6 +64,7 @@ libreport_la_CPPFLAGS = \
     -DEVENTS_DIR=\"$(EVENTS_DIR)\" \
     -DWORKFLOWS_DIR=\"$(WORKFLOWS_DIR)\" \
     -DBIN_DIR=\"$(bindir)\" \
+    -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE
 libreport_la_LDFLAGS = \
