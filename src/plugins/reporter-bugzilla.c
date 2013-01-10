@@ -1215,64 +1215,42 @@ int main(int argc, char **argv)
             rhbz_mail_to_cc(client, bz->bi_id, rhbz.b_login, RHBZ_NOMAIL_NOTIFY);
         }
 
-        /* Add comment */
+        /* Add comment and bt */
         const char *comment = problem_data_get_content_or_NULL(problem_data, FILENAME_COMMENT);
         if (comment && comment[0])
         {
-            const char *package = problem_data_get_content_or_NULL(problem_data, FILENAME_PACKAGE);
-            const char *arch    = problem_data_get_content_or_NULL(problem_data, FILENAME_ARCHITECTURE);
-            const char *rating_str = problem_data_get_content_or_NULL(problem_data, FILENAME_RATING);
+            GList *comment_fmt_spec = load_bzrep_conf_file(fmt_file);
+            struct strbuf *bzcomment_buf = strbuf_new();
+            generate_bz_comment(bzcomment_buf, problem_data, comment_fmt_spec);
+            char *bzcomment = strbuf_free_nobuf(bzcomment_buf);
+//TODO: free_comment_fmt_spec(comment_fmt_spec);
 
-            struct strbuf *full_desc = strbuf_new();
-            strbuf_append_strf(full_desc, "%s\n\n", comment);
-
-            /* python doesn't have rating file */
-            if (rating_str)
-                strbuf_append_strf(full_desc, "%s: %s\n", FILENAME_RATING, rating_str);
-            strbuf_append_strf(full_desc, "Package: %s\n", package);
-            /* attach the architecture only if it's different from the initial report */
-            if ((strcmp(bz->bi_platform, "All") != 0) &&
-                (strcmp(bz->bi_platform, "Unspecified") != 0) &&
-                (strcmp(bz->bi_platform, arch) !=0))
-                strbuf_append_strf(full_desc, "Architecture: %s\n", arch);
-            else
-            {
-                VERB3 log("not adding the arch: %s because rep_plat is %s", arch, bz->bi_platform);
-            }
-            strbuf_append_strf(full_desc, "OS Release: %s\n", rhbz.b_os_release);
-
-            /* unused code, enable it when gui/cli will be ready
-            int is_priv = is_private && string_to_bool(is_private);
-            const char *is_private = problem_data_get_content_or_NULL(problem_data,
-                                                                      "is_private");
-            */
-
-            int dup_comment = is_comment_dup(bz->bi_comments, full_desc->buf);
+            int dup_comment = is_comment_dup(bz->bi_comments, bzcomment);
             if (!dup_comment)
             {
                 log(_("Adding new comment to bug %d"), bz->bi_id);
-                rhbz_add_comment(client, bz->bi_id, full_desc->buf, 0);
+                rhbz_add_comment(client, bz->bi_id, bzcomment, 0);
+                free(bzcomment);
+
+                const char *bt = problem_data_get_content_or_NULL(problem_data, FILENAME_BACKTRACE);
+                unsigned rating = 0;
+                const char *rating_str = problem_data_get_content_or_NULL(problem_data, FILENAME_RATING);
+                /* python doesn't have rating file */
+                if (rating_str)
+                    rating = xatou(rating_str);
+                if (bt && rating > bz->bi_best_bt_rating)
+                {
+                    char bug_id_str[sizeof(int)*3 + 2];
+                    sprintf(bug_id_str, "%i", bz->bi_id);
+                    log(_("Attaching better backtrace"));
+                    rhbz_attach_blob(client, FILENAME_BACKTRACE, bug_id_str, bt, strlen(bt),
+                                     RHBZ_NOMAIL_NOTIFY);
+                }
             }
             else
             {
+                free(bzcomment);
                 log(_("Found the same comment in the bug history, not adding a new one"));
-            }
-            strbuf_free(full_desc);
-
-            unsigned rating = 0;
-            /* python doesn't have rating file */
-            if (rating_str)
-                rating = xatou(rating_str);
-            if (!dup_comment && (rating > bz->bi_best_bt_rating))
-            {
-                char bug_id_str[sizeof(int)*3 + 2];
-                snprintf(bug_id_str, sizeof(bug_id_str), "%i", bz->bi_id);
-
-                const char *bt = problem_data_get_content_or_NULL(problem_data,
-                                                                   FILENAME_BACKTRACE);
-                log(_("Attaching better backtrace"));
-                rhbz_attach_blob(client, FILENAME_BACKTRACE, bug_id_str, bt, strlen(bt),
-                                 RHBZ_NOMAIL_NOTIFY);
             }
         }
     }
