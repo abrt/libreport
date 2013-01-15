@@ -21,9 +21,15 @@
 #include "client.h"
 #include "internal_libreport.h"
 
+static char *run_event_stdio_log(char *log_line, void *param);
+static void run_event_stdio_error_and_die(const char *error_line, void *param);
+
 struct run_event_state *new_run_event_state()
 {
     struct run_event_state *state = xzalloc(sizeof(struct run_event_state));
+
+    state->logging_callback = run_event_stdio_log;
+    state->error_callback = run_event_stdio_error_and_die;
 
     state->alert_callback = run_event_stdio_alert;
     state->ask_callback = run_event_stdio_ask;
@@ -54,6 +60,10 @@ void make_run_event_state_forwarding(struct run_event_state *state)
     state->ask_yes_no_callback = run_event_stdio_ask_yes_no;
     state->ask_yes_no_yesforever_callback= run_event_stdio_ask_yes_no_yesforever;
     state->ask_password_callback = run_event_stdio_ask_password;
+
+    /*
+     * Not sure if we should reset even logging_callback and error_callback?
+     */
 
     xsetenv("REPORT_CLIENT_SLAVE", "1");
 }
@@ -730,4 +740,15 @@ int run_event_stdio_ask_yes_no_yesforever(const char *key, const char *msg, void
 char *run_event_stdio_ask_password(const char *msg, void *param)
 {
     return ask_password(msg);
+}
+
+static char *run_event_stdio_log(char *log_line, void *param)
+{
+    printf("%s\n", log_line);
+    return log_line;
+}
+
+static void run_event_stdio_error_and_die(const char *error_line, void *param)
+{
+    error_msg_and_die("Can't write bytes to child's stdin");
 }

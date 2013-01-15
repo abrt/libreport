@@ -36,12 +36,17 @@ struct run_event_state {
 
     /* Can take ownership of log_line, which is malloced. In this case, return NULL.
      * Otherwise should return log_line (it will be freed by caller)
+     *
+     * The default value prints log_line with trailing newline to stdout.
      */
     char* (*logging_callback)(char *log_line, void *param);
     void *logging_param;
 
     /*
      * Called if any error occures during communication with child's command.
+     *
+     * The default value prints error_line with trailing newline to stderr and
+     * exits with an error code.
      *
      * @param error_line An error message
      * @param param a custom param
