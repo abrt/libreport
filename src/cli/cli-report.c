@@ -432,7 +432,9 @@ static void ask_for_missing_settings(const char *event_name)
 
             char result[512];
 
-            char *question = xasprintf("%s: ", (opt->eo_label) ? opt->eo_label : opt->eo_name);
+            char *question = xasprintf("%s %s:",
+                                             ec_get_screen_name(event_config) ? ec_get_screen_name(event_config) : event_name,
+                                             (opt->eo_label) ? opt->eo_label : opt->eo_name);
             switch (opt->eo_type) {
             case OPTION_TYPE_TEXT:
             case OPTION_TYPE_NUMBER:
