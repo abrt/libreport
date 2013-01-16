@@ -449,7 +449,7 @@ struct dump_dir *dd_create(const char *dir, uid_t uid, mode_t mode)
         else
             error_msg("User %lu does not exist, using gid 0", (long)uid);
 
-        if (chown(dir, dd->dd_uid, dd->dd_gid) == -1)
+        if (lchown(dir, dd->dd_uid, dd->dd_gid) == -1)
         {
             perror_msg("Can't change '%s' ownership to %lu:%lu", dir,
                        (long)dd->dd_uid, (long)dd->dd_gid);
@@ -543,7 +543,7 @@ void dd_sanitize_mode_and_owner(struct dump_dir *dd)
                 chmod(full_path, dd->mode);
             if (statbuf.st_uid != dd->dd_uid || statbuf.st_gid != dd->dd_gid)
             {
-                if (chown(full_path, dd->dd_uid, dd->dd_gid) != 0)
+                if (lchown(full_path, dd->dd_uid, dd->dd_gid) != 0)
                 {
                     perror_msg("Can't change '%s' ownership to %lu:%lu", full_path,
                                (long)dd->dd_uid, (long)dd->dd_gid);
@@ -645,8 +645,8 @@ int dd_delete(struct dump_dir *dd)
 
 static char *load_text_file(const char *path, unsigned flags)
 {
-    FILE *fp = fopen(path, "r");
-    if (!fp)
+    int fd = open(path, O_RDONLY | O_NOFOLLOW);
+    if (fd == -1)
     {
         if (!(flags & DD_FAIL_QUIETLY_ENOENT))
             perror_msg("Can't open file '%s'", path);
@@ -655,8 +655,8 @@ static char *load_text_file(const char *path, unsigned flags)
 
     struct strbuf *buf_content = strbuf_new();
     int oneline = 0;
-    int ch;
-    while ((ch = fgetc(fp)) != EOF)
+    char ch;
+    while (safe_read(fd, &ch, 1) > 0)
     {
 //TODO? \r -> \n?
 //TODO? strip trailing spaces/tabs?
@@ -667,7 +667,7 @@ static char *load_text_file(const char *path, unsigned flags)
         if (isspace(ch) || ch >= ' ') /* used !iscntrl, but it failed on unicode */
             strbuf_append_char(buf_content, ch);
     }
-    fclose(fp);
+    close(fd);
 
     char last = oneline != 0 ? buf_content->buf[buf_content->len - 1] : 0;
     if (last == '\n')
@@ -697,7 +697,7 @@ static bool save_binary_file(const char *path, const char* data, unsigned size, 
 {
     /* the mode is set by the caller, see dd_create() for security analysis */
     unlink(path);
-    int fd = open(path, O_WRONLY | O_TRUNC | O_CREAT, mode);
+    int fd = open(path, O_WRONLY | O_TRUNC | O_CREAT | O_NOFOLLOW, mode);
     if (fd < 0)
     {
         perror_msg("Can't open file '%s'", path);
