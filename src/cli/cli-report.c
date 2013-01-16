@@ -387,26 +387,6 @@ static void read_from_stdin(const char *question, char *result, int result_size)
 }
 
 /**
- * Asks a [y/n] question on stdin/stdout.
- * Returns true if the answer is yes, false otherwise.
- */
-static bool ask_yesno(const char *question)
-{
-    /* The response might take more than 1 char in non-latin scripts. */
-    const char *yes = _("y");
-    const char *no = _("N");
-    printf("%s [%s/%s]: ", question, yes, no);
-    fflush(NULL);
-
-    char answer[16];
-    if (!fgets(answer, sizeof(answer), stdin))
-        return false;
-    /* Use strncmp here because the answer might contain a newline as
-       the last char. */
-    return 0 == strncmp(answer, yes, strlen(yes));
-}
-
-/**
  *  Asks user for missing information
  */
 static void ask_for_missing_settings(const char *event_name)
@@ -430,32 +410,24 @@ static void ask_for_missing_settings(const char *event_name)
             free(opt->eo_value);
             opt->eo_value = NULL;
 
-            char result[512];
-
             char *question = xasprintf("%s %s:",
                                              ec_get_screen_name(event_config) ? ec_get_screen_name(event_config) : event_name,
                                              (opt->eo_label) ? opt->eo_label : opt->eo_name);
             switch (opt->eo_type) {
             case OPTION_TYPE_TEXT:
             case OPTION_TYPE_NUMBER:
-                read_from_stdin(question, result, 512);
-                opt->eo_value = xstrdup(result);
+                opt->eo_value = ask(question);
                 break;
             case OPTION_TYPE_PASSWORD:
             {
-                bool changed = set_echo(false);
-                read_from_stdin(question, result, 512);
-                if (changed)
-                    set_echo(true);
-
-                opt->eo_value = xstrdup(result);
+                opt->eo_value = ask_password(question);
                 /* Newline was not added by pressing Enter because ECHO was
                    disabled, so add it now. */
                 puts("");
                 break;
             }
             case OPTION_TYPE_BOOL:
-                if (ask_yesno(question))
+                if (ask_yes_no(question))
                     opt->eo_value = xstrdup("yes");
                 else
                     opt->eo_value = xstrdup("no");
@@ -475,10 +447,14 @@ static void ask_for_missing_settings(const char *event_name)
         if (!error_table)
             return;
 
-        log(_("Your input is not valid, because of:"));
+        alert(_("Your input is not valid, because of:"));
         g_hash_table_iter_init(&iter, error_table);
         while (g_hash_table_iter_next(&iter, (void**)&opt_name, (void**)&err_msg))
-            log(_("Bad value for '%s': %s"), opt_name, err_msg);
+        {
+            char *msg = xasprintf(_("Bad value for '%s': %s"), opt_name, err_msg);
+            alert(msg);
+            free(msg);
+        }
 
         g_hash_table_destroy(error_table);
     }
@@ -679,7 +655,7 @@ static int run_event_on_dir_name_interactively(
             char *msg = xasprintf(_("Event '%s' requires permission to send possibly sensitive data."
                                     " Do you want to continue?"),
                         ec_get_screen_name(config) ? ec_get_screen_name(config) : event_name);
-            bool ok = ask_yesno(msg);
+            bool ok = ask_yes_no(msg);
             free(msg);
             if (!ok)
                 goto ret;
