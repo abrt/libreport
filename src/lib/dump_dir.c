@@ -716,10 +716,17 @@ static char *load_text_file(const char *path, unsigned flags)
         return (flags & DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE ? NULL : xstrdup(""));
     }
 
+    /* Why? Because half a million read syscalls of one byte each isn't fun.
+     * FILE-based IO buffers reads.
+     */
+    FILE *fp = fdopen(fd, "r");
+    if (!fp)
+        die_out_of_memory();
+
     struct strbuf *buf_content = strbuf_new();
     int oneline = 0;
-    char ch;
-    while (safe_read(fd, &ch, 1) > 0)
+    int ch;
+    while ((ch = fgetc(fp)) != EOF)
     {
 //TODO? \r -> \n?
 //TODO? strip trailing spaces/tabs?
@@ -730,7 +737,7 @@ static char *load_text_file(const char *path, unsigned flags)
         if (isspace(ch) || ch >= ' ') /* used !iscntrl, but it failed on unicode */
             strbuf_append_char(buf_content, ch);
     }
-    close(fd);
+    fclose(fp); /* this also closes fd */
 
     char last = oneline != 0 ? buf_content->buf[buf_content->len - 1] : 0;
     if (last == '\n')
