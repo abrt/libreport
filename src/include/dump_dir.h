@@ -32,7 +32,9 @@ extern "C" {
 enum {
     DD_FAIL_QUIETLY_ENOENT = (1 << 0),
     DD_FAIL_QUIETLY_EACCES = (1 << 1),
-    DD_OPEN_READONLY = (1 << 2),
+    /* Open symlinks. dd_* funcs don't open symlinks by default */
+    DD_OPEN_FOLLOW = (1 << 2),
+    DD_OPEN_READONLY = (1 << 3),
 };
 
 struct dump_dir {

@@ -608,15 +608,15 @@ void dd_create_basic_files(struct dump_dir *dd, uid_t uid, const char *chroot_di
     if (!release)
     {
         release = load_text_file("/etc/system-release",
-                DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+                DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE | DD_OPEN_FOLLOW);
         if (!release)
-            release = load_text_file("/etc/redhat-release", /*flags:*/ 0);
+            release = load_text_file("/etc/redhat-release", DD_OPEN_FOLLOW);
         dd_save_text(dd, FILENAME_OS_RELEASE, release);
         if (chroot_dir)
         {
             free(release);
             char *chrooted_name = concat_path_file(chroot_dir, "/etc/system-release");
-            release = load_text_file(chrooted_name, /*flags:*/ 0);
+            release = load_text_file(chrooted_name, DD_OPEN_FOLLOW);
             free(chrooted_name);
             if (release[0])
                 dd_save_text(dd, FILENAME_OS_RELEASE_IN_ROOTDIR, release);
@@ -762,7 +762,7 @@ int dd_delete(struct dump_dir *dd)
 
 static char *load_text_file(const char *path, unsigned flags)
 {
-    int fd = open(path, O_RDONLY | O_NOFOLLOW);
+    int fd = open(path, O_RDONLY | ((flags & DD_OPEN_FOLLOW) ? 0 : O_NOFOLLOW));
     if (fd == -1)
     {
         if (!(flags & DD_FAIL_QUIETLY_ENOENT))
