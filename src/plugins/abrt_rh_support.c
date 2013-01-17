@@ -395,7 +395,9 @@ post_case_to_url(const char* url,
         }
         else
         {
-            errmsg = case_state->body;
+            errmsg = find_header_in_post_state(case_state, "Strata-Message:");
+            if (!errmsg)
+                errmsg = case_state->body;
             if (errmsg && errmsg[0])
                 result->msg = xasprintf(_("error in case creation, HTTP code: %d, server says: '%s'"),
                         case_state->http_resp_code, errmsg);
