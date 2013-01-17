@@ -184,6 +184,7 @@ WORKFLOWS_DIR='${sysconfdir}/${PACKAGE_NAME}/workflows'
 WORKFLOWS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/workflows.d'
 PLUGINS_LIB_DIR='${libdir}/${PACKAGE_NAME}'
 LIBEXEC_DIR='${libexecdir}'
+DUMP_DIR_OWNED_BY_USER=0
 
 DEBUG_DUMPS_DIR='${localstatedir}/spool/abrt'
 
@@ -203,6 +204,7 @@ AC_SUBST(DEBUG_DUMPS_DIR)
 AC_SUBST(LIBEXEC_DIR)
 AC_SUBST(WORKFLOWS_DIR)
 AC_SUBST(WORKFLOWS_CONF_DIR)
+AC_SUBST(DUMP_DIR_OWNED_BY_USER)
 
 # Initialize the test suite.
  AC_CONFIG_TESTDIR(tests)

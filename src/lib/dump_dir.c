@@ -415,22 +415,59 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
 
 /* Create a fresh empty debug dump dir.
  *
- * Security: we should not allow users to write new files or write
- * into existing ones, but they should be able to read them.
+ * ABRT owns dump dir:
+ *   We should not allow users to write new files or write into existing ones,
+ *   but they should be able to read them.
+ *
+ *   We set dir's gid to passwd(uid)->pw_gid parameter, and we set uid to
+ *   abrt's user id. We do not allow write access to group. We can't set dir's
+ *   uid to crashed applications's user uid because owner can modify dir's
+ *   mode and ownership.
+ *
+ *   Advantages:
+ *   Safeness
+ *
+ *   Disadvantages:
+ *   This approach leads to stealing of directories because events requires
+ *   write access to a dump directory and events are run under non root (abrt)
+ *   user while reporting.
+ *
+ *   This approach allows group members to see crashes of other members.
+ *   Institutions like schools uses one common group for all students.
+ *
+ * User owns dump dir:
+ *   We grant ownership of dump directories to the user (read/write access).
+ *
+ *   We set set dir's uid to crashed applications's user uid, and we set gid to
+ *   abrt's group id. We allow write access to group because we want to allow
+ *   abrt binaries to process dump directories.
+ *
+ *   Advantages:
+ *   No disadvantages from the previous approach
+ *
+ *   Disadvantages:
+ *   In order to protect the system dump directories must be saved on
+ *   noncritical filesystem (e.g. /tmp or /var/tmp).
+ *
  *
  * @param uid
  *   Crashed application's User Id
  *
  * We currently have only three callers:
- * kernel oops hook: uid -> not saved, so everyone can steal and work with it
- *  this hook runs under 0:0
- * ccpp hook: uid=uid of crashed user's binary
- *  this hook runs under 0:0
- * python hook: uid=uid of crashed user's script
- *  this hook runs under abrt:gid
+ *  kernel oops hook: uid -> not saved, so everyone can steal and work with it
+ *   this hook runs under 0:0
  *
- * Currently, we set dir's gid to passwd(uid)->pw_gid parameter, and we set uid to
- * abrt's user id. We do not allow write access to group.
+ *  ccpp hook: uid=uid of crashed user's binary
+ *   this hook runs under 0:0
+ *
+ *  create_dump_dir_from_problem_data() function:
+ *   Currently known callers:
+ *    abrt server: uid=uid of user's executable
+ *     this runs under 0:0
+ *     - clinets: python hook, ruby hook
+ *    abrt dbus: uid=uid of user's executable
+ *     this runs under 0:0
+ *     - clients: setroubleshootd, abrt python
  */
 struct dump_dir *dd_create(const char *dir, uid_t uid, mode_t mode)
 {
@@ -490,21 +527,38 @@ struct dump_dir *dd_create(const char *dir, uid_t uid, mode_t mode)
     dd->dd_gid = (gid_t)-1L;
     if (uid != (uid_t)-1L)
     {
-        /* Get ABRT's user id */
         dd->dd_uid = 0;
+        dd->dd_uid = 0;
+
+#if DUMP_DIR_OWNED_BY_USER > 0
+        /* Check crashed application's uid */
+        struct passwd *pw = getpwuid(uid);
+        if (pw)
+            dd->dd_uid = pw->pw_uid;
+        else
+            error_msg("User %lu does not exist, using uid 0", (long)uid);
+
+        /* Get ABRT's group gid */
+        struct group *gr = getgrnam("abrt");
+        if (gr)
+            dd->dd_gid = gr->gr_gid;
+        else
+            error_msg("Group 'abrt' does not exist, using gid 0");
+#else
+        /* Get ABRT's user uid */
         struct passwd *pw = getpwnam("abrt");
         if (pw)
             dd->dd_uid = pw->pw_uid;
         else
-            error_msg("user 'abrt' does not exist, using uid 0");
+            error_msg("User 'abrt' does not exist, using uid 0");
 
-        /* Get crashed application's group id */
-        /*dd->dd_gid = 0; - dd_init did this already */
+        /* Get crashed application's gid */
         pw = getpwuid(uid);
         if (pw)
             dd->dd_gid = pw->pw_gid;
         else
             error_msg("User %lu does not exist, using gid 0", (long)uid);
+#endif
 
         if (lchown(dir, dd->dd_uid, dd->dd_gid) == -1)
         {

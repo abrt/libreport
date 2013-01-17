@@ -65,6 +65,7 @@ libreport_la_CPPFLAGS = \
     -DWORKFLOWS_DIR=\"$(WORKFLOWS_DIR)\" \
     -DBIN_DIR=\"$(bindir)\" \
     -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
+    -DDUMP_DIR_OWNED_BY_USER=$(DUMP_DIR_OWNED_BY_USER) \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE
 libreport_la_LDFLAGS = \
