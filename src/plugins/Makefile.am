@@ -25,6 +25,7 @@ reporters_plugin_conf =
 if BUILD_BUGZILLA
 reporters_plugin_conf += bugzilla.conf \
     bugzilla_format.conf \
+    bugzilla_formatdup.conf \
     bugzilla_format_libreport.conf \
     bugzilla_format_kernel.conf
 

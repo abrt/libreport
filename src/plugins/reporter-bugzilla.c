@@ -495,7 +495,8 @@ void generate_bz_comment(struct strbuf *result, problem_data_t *pd, GList *comme
 
             if (output->len != 0)
             {
-                strbuf_append_strf(result, "%s:\n%s",
+                strbuf_append_strf(result,
+                            sec->name[0] ? "%s:\n%s" : "%s%s",
                             sec->name,
                             output->buf
                 );
@@ -794,7 +795,7 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "\n& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] -d DIR"
+        "\n& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR"
         "\nor:"
         "\n& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE..."
         "\nor:"
@@ -833,24 +834,26 @@ int main(int argc, char **argv)
         "\nRecognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify."
         "\nParameters can be overridden via $Bugzilla_PARAM environment variables."
         "\n"
-        "\nFMTFILE defaults to "CONF_DIR"/plugins/bugzilla_format.conf"
+        "\nFMTFILE and FMTFILE2 default to "CONF_DIR"/plugins/bugzilla_format.conf"
     );
     enum {
         OPT_v = 1 << 0,
         OPT_d = 1 << 1,
         OPT_c = 1 << 2,
         OPT_F = 1 << 3,
-        OPT_t = 1 << 4,
-        OPT_b = 1 << 5,
-        OPT_f = 1 << 6,
-        OPT_w = 1 << 7,
-        OPT_h = 1 << 8,
-        OPT_g = 1 << 9,
-        OPT_D = 1 << 10,
+        OPT_A = 1 << 4,
+        OPT_t = 1 << 5,
+        OPT_b = 1 << 6,
+        OPT_f = 1 << 7,
+        OPT_w = 1 << 8,
+        OPT_h = 1 << 9,
+        OPT_g = 1 << 10,
+        OPT_D = 1 << 11,
     };
     const char *dump_dir_name = ".";
     GList *conf_file = NULL;
     const char *fmt_file = CONF_DIR"/plugins/bugzilla_format.conf";
+    const char *fmt_file2 = fmt_file;
     char *abrt_hash = NULL;
     char *ticket_no = NULL;
     char *debug_str = NULL;
@@ -860,7 +863,8 @@ int main(int argc, char **argv)
         OPT__VERBOSE(&g_verbose),
         OPT_STRING(   'd', NULL, &dump_dir_name , "DIR"    , _("Problem directory")),
         OPT_LIST(     'c', NULL, &conf_file     , "FILE"   , _("Configuration file (may be given many times)")),
-        OPT_STRING(   'F', NULL, &fmt_file      , "FILE"   , _("Formatting file")),
+        OPT_STRING(   'F', NULL, &fmt_file      , "FILE"   , _("Formatting file for initial comment")),
+        OPT_STRING(   'A', NULL, &fmt_file2     , "FILE"   , _("Formatting file for duplicates")),
         OPT_OPTSTRING('t', "ticket", &ticket_no , "ID"     , _("Attach FILEs [to bug with this ID]")),
         OPT_BOOL(     'b', NULL, NULL,                       _("When creating bug, attach binary files too")),
         OPT_BOOL(     'f', NULL, NULL,                       _("Force reporting even if this problem is already reported")),
@@ -1215,64 +1219,42 @@ int main(int argc, char **argv)
             rhbz_mail_to_cc(client, bz->bi_id, rhbz.b_login, RHBZ_NOMAIL_NOTIFY);
         }
 
-        /* Add comment */
+        /* Add comment and bt */
         const char *comment = problem_data_get_content_or_NULL(problem_data, FILENAME_COMMENT);
         if (comment && comment[0])
         {
-            const char *package = problem_data_get_content_or_NULL(problem_data, FILENAME_PACKAGE);
-            const char *arch    = problem_data_get_content_or_NULL(problem_data, FILENAME_ARCHITECTURE);
-            const char *rating_str = problem_data_get_content_or_NULL(problem_data, FILENAME_RATING);
+            GList *comment_fmt_spec = load_bzrep_conf_file(fmt_file2);
+            struct strbuf *bzcomment_buf = strbuf_new();
+            generate_bz_comment(bzcomment_buf, problem_data, comment_fmt_spec);
+            char *bzcomment = strbuf_free_nobuf(bzcomment_buf);
+//TODO: free_comment_fmt_spec(comment_fmt_spec);
 
-            struct strbuf *full_desc = strbuf_new();
-            strbuf_append_strf(full_desc, "%s\n\n", comment);
-
-            /* python doesn't have rating file */
-            if (rating_str)
-                strbuf_append_strf(full_desc, "%s: %s\n", FILENAME_RATING, rating_str);
-            strbuf_append_strf(full_desc, "Package: %s\n", package);
-            /* attach the architecture only if it's different from the initial report */
-            if ((strcmp(bz->bi_platform, "All") != 0) &&
-                (strcmp(bz->bi_platform, "Unspecified") != 0) &&
-                (strcmp(bz->bi_platform, arch) !=0))
-                strbuf_append_strf(full_desc, "Architecture: %s\n", arch);
-            else
-            {
-                VERB3 log("not adding the arch: %s because rep_plat is %s", arch, bz->bi_platform);
-            }
-            strbuf_append_strf(full_desc, "OS Release: %s\n", rhbz.b_os_release);
-
-            /* unused code, enable it when gui/cli will be ready
-            int is_priv = is_private && string_to_bool(is_private);
-            const char *is_private = problem_data_get_content_or_NULL(problem_data,
-                                                                      "is_private");
-            */
-
-            int dup_comment = is_comment_dup(bz->bi_comments, full_desc->buf);
+            int dup_comment = is_comment_dup(bz->bi_comments, bzcomment);
             if (!dup_comment)
             {
                 log(_("Adding new comment to bug %d"), bz->bi_id);
-                rhbz_add_comment(client, bz->bi_id, full_desc->buf, 0);
+                rhbz_add_comment(client, bz->bi_id, bzcomment, 0);
+                free(bzcomment);
+
+                const char *bt = problem_data_get_content_or_NULL(problem_data, FILENAME_BACKTRACE);
+                unsigned rating = 0;
+                const char *rating_str = problem_data_get_content_or_NULL(problem_data, FILENAME_RATING);
+                /* python doesn't have rating file */
+                if (rating_str)
+                    rating = xatou(rating_str);
+                if (bt && rating > bz->bi_best_bt_rating)
+                {
+                    char bug_id_str[sizeof(int)*3 + 2];
+                    sprintf(bug_id_str, "%i", bz->bi_id);
+                    log(_("Attaching better backtrace"));
+                    rhbz_attach_blob(client, FILENAME_BACKTRACE, bug_id_str, bt, strlen(bt),
+                                     RHBZ_NOMAIL_NOTIFY);
+                }
             }
             else
             {
+                free(bzcomment);
                 log(_("Found the same comment in the bug history, not adding a new one"));
-            }
-            strbuf_free(full_desc);
-
-            unsigned rating = 0;
-            /* python doesn't have rating file */
-            if (rating_str)
-                rating = xatou(rating_str);
-            if (!dup_comment && (rating > bz->bi_best_bt_rating))
-            {
-                char bug_id_str[sizeof(int)*3 + 2];
-                snprintf(bug_id_str, sizeof(bug_id_str), "%i", bz->bi_id);
-
-                const char *bt = problem_data_get_content_or_NULL(problem_data,
-                                                                   FILENAME_BACKTRACE);
-                log(_("Attaching better backtrace"));
-                rhbz_attach_blob(client, FILENAME_BACKTRACE, bug_id_str, bt, strlen(bt),
-                                 RHBZ_NOMAIL_NOTIFY);
             }
         }
     }
