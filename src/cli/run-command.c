@@ -61,8 +61,8 @@ static void start_command(struct command *cmd)
   if (cmd->pid == 0)
   {
     /* Child */
-
-    xmove_fd(cmd->tty_fd, 0);
+    /* Don't close tty_fd, will be used for changing of foreground group later */
+    xdup2(cmd->tty_fd, 0);
     xdup2(cmd->tty_fd, 1);
     xdup2(cmd->tty_fd, 2);
 
@@ -82,6 +82,9 @@ static void start_command(struct command *cmd)
     }
 
     signal(SIGTTOU, SIG_DFL);
+
+    /* became useless */
+    close(cmd->tty_fd);
 
     execvp(cmd->argv[0], cmd->argv);
     /* Better to use _exit (not exit) after vfork:
