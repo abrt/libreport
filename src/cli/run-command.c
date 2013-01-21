@@ -40,16 +40,16 @@ static void start_command(struct command *cmd)
      * YES, they can always call 'report-cli -y' from script and it should
      * not try to open an editor
      */
-    perror_msg_and_die("open(\"/dev/tty\", O_RDWR)");
+    perror_msg_and_die("Can't open '%s'", "/dev/tty");
 
   /* save current foreground process group id */
   cmd->bck_tcgrp = tcgetpgrp(cmd->tty_fd);
   if (cmd->bck_tcgrp < 0)
-    perror_msg_and_die("tcgetpgrp()");
+    perror_msg_and_die("tcgetpgrp");
 
   /* save tty's attrs */
   if (tcgetattr(cmd->tty_fd, &cmd->bck_tmodes) < 0)
-    perror_msg_and_die("tcsetattr()");
+    perror_msg_and_die("tcsetattr");
 
   fflush(NULL);
 
@@ -61,10 +61,9 @@ static void start_command(struct command *cmd)
   if (cmd->pid == 0)
   {
     /* Child */
-    /* Don't close tty_fd, will be used for changing of foreground group later */
-    xdup2(cmd->tty_fd, 0);
-    xdup2(cmd->tty_fd, 1);
-    xdup2(cmd->tty_fd, 2);
+    xmove_fd(cmd->tty_fd, 0);
+    xdup2(0, 1);
+    xdup2(0, 2);
 
     /* tcsetpgrp() below will send us SIGTTOU if we aren't
      * foreground process group. Need to ignore it */
@@ -72,19 +71,18 @@ static void start_command(struct command *cmd)
 
     /* sends SIGTTOU to process group */
     pid_t pgrp = getpgrp();
-    if (pgrp < 0) {
-      perror_msg("getpgrp()");
+    if (pgrp < 0)
+    {
+      perror_msg("getpgrp"); /* paranoia */
       _exit(127);
     }
-    if (tcsetpgrp(cmd->tty_fd, pgrp) < 0) {
-      perror_msg("tcsetpgrp()");
+    if (tcsetpgrp(0, pgrp) < 0)
+    {
+      perror_msg("tcsetpgrp");
       _exit(127);
     }
 
     signal(SIGTTOU, SIG_DFL);
-
-    /* became useless */
-    close(cmd->tty_fd);
 
     execvp(cmd->argv[0], cmd->argv);
     /* Better to use _exit (not exit) after vfork:
@@ -98,9 +96,19 @@ static void start_command(struct command *cmd)
 static int finish_command(struct command *cmd)
 {
   int status;
-  pid_t waiting = safe_waitpid(cmd->pid, &status, 0);
-  if (waiting < 0)
-    perror_msg_and_die("waitpid");
+  for (;;)
+  {
+    pid_t waiting = safe_waitpid(cmd->pid, &status, WUNTRACED);
+    if (waiting < 0)
+      perror_msg_and_die("waitpid");
+    if (!WIFSTOPPED(status))
+      break;
+    /* User pressed ^Z? Don't remain in confusing state
+     * where editor is stopped but alive, and we wait for it to die.
+     * Instead, restart editor.
+     */
+    kill(cmd->pid, SIGCONT);
+  }
 
   /* tcsetpgrp() below will send us SIGTTOU if we aren't
    * foreground process group. Need to ignore it */
@@ -108,10 +116,10 @@ static int finish_command(struct command *cmd)
 
   /* reset foreground process group */
   if (tcsetpgrp(cmd->tty_fd, cmd->bck_tcgrp) < 0)
-      perror_msg_and_die("tcsetpgrp()");
-  /* restore old tty attrs (not really needed, but just in case editor mangled them) */
-  if (tcsetattr(cmd->tty_fd, TCSADRAIN, &(cmd->bck_tmodes)) < 0)
-      perror_msg_and_die("tcsetattr()");
+      perror_msg_and_die("tcsetpgrp");
+  /* restore tty attrs (not really needed, but just in case editor mangled them) */
+  if (tcsetattr(cmd->tty_fd, TCSADRAIN, &cmd->bck_tmodes) < 0)
+      perror_msg_and_die("tcsetattr");
 
   signal(SIGTTOU, old);
 
