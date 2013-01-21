@@ -36,9 +36,6 @@ AC_PROG_LN_S
 
 AC_SYS_LARGEFILE
 
-DEFAULT_DUMP_DIR_MODE="0640"
-AC_SUBST(DEFAULT_DUMP_DIR_MODE)
-
 CFLAGS="$CFLAGS -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE \
           -D_FILE_OFFSET_BITS=64 -fno-strict-aliasing -std=gnu99 -Wall -Wwrite-strings"
 
@@ -184,7 +181,6 @@ WORKFLOWS_DIR='${sysconfdir}/${PACKAGE_NAME}/workflows'
 WORKFLOWS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/workflows.d'
 PLUGINS_LIB_DIR='${libdir}/${PACKAGE_NAME}'
 LIBEXEC_DIR='${libexecdir}'
-DUMP_DIR_OWNED_BY_USER=0
 
 DEBUG_DUMPS_DIR='${localstatedir}/spool/abrt'
 
@@ -192,6 +188,18 @@ AC_ARG_WITH(debugdumpsdir,
             [AS_HELP_STRING([--with-debugdumpdir=DIR],
                            [Directory where debugdumps are created])],
             [DEBUG_DUMPS_DIR="$withval"])
+
+AC_ARG_WITH([defaultdumpdirmode],
+            AS_HELP_STRING([--with-defaultdumpdirmode=DIR],
+                           [Default dump dir mode (default: 0640)]),
+            [], [with_defaultdumpdirmode="0640"])
+AC_SUBST([DEFAULT_DUMP_DIR_MODE], [$with_defaultdumpdirmode])
+
+DUMP_DIR_OWNED_BY_USER=0
+AC_ARG_ENABLE([userownsdumpdir],
+              [AC_HELP_STRING([--enable-userownsdumpdir],
+                              [Configure user to be owner of dump directories (default: abrt owns dump dir)])],
+              [DUMP_DIR_OWNED_BY_USER=1])
 
 AC_SUBST(CONF_DIR)
 AC_SUBST(VAR_RUN)
