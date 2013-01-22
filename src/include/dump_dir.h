@@ -83,6 +83,15 @@ int dd_delete_item(struct dump_dir *dd, const char *name);
 /* Returns 0 if directory is deleted or not found */
 int dd_delete(struct dump_dir *dd);
 int dd_rename(struct dump_dir *dd, const char *new_path);
+/* Changes owner of dump dir
+ * Uses two different strategies selected at build time by
+ * DUMP_DIR_OWNED_BY_USER configuration:
+ *  <= 0 : owner = abrt user's uid,  group = new_uid's gid
+ *   > 0 : owner = new_uid,          group = abrt group's gid
+ *
+ * On success, zero is returned. On error, -1 is returned.
+ */
+int dd_chown(struct dump_dir *dd, uid_t new_uid);
 
 
 /* reported_to handling */
