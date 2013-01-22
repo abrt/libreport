@@ -60,12 +60,15 @@ problem_data_t *problem_data_new(void)
 void problem_data_add_basics(problem_data_t *pd)
 {
     const char *analyzer = problem_data_get_content_or_NULL(pd, FILENAME_ANALYZER);
+    const char *type = problem_data_get_content_or_NULL(pd, FILENAME_TYPE);
     if (analyzer == NULL)
     {
-        analyzer = "libreport";
+        analyzer = type ? type : "libreport";
         problem_data_add_text_noteditable(pd, FILENAME_ANALYZER, analyzer);
     }
-    problem_data_add_text_noteditable(pd, FILENAME_TYPE, analyzer);
+
+    if (type == NULL)
+        problem_data_add_text_noteditable(pd, FILENAME_TYPE, analyzer);
 
     /* If application didn't provide dupe hash, we generate it
      * from all components, so we at least eliminate the exact same
