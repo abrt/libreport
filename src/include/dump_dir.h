@@ -114,6 +114,10 @@ report_result_t *find_in_reported_to(struct dump_dir *dd, const char *prefix);
 
 
 void delete_dump_dir(const char *dirname);
+/* Checks dump dir accessibility for particular uid
+ * Returns non zero if dump dir is accessible otherwise return 0 value.
+ */
+int dump_dir_accessible_by_uid(const char *dirname, uid_t uid);
 
 #ifdef __cplusplus
 }
