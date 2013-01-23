@@ -1247,7 +1247,7 @@ int main(int argc, char **argv)
                     char bug_id_str[sizeof(int)*3 + 2];
                     sprintf(bug_id_str, "%i", bz->bi_id);
                     log(_("Attaching better backtrace"));
-                    rhbz_attach_blob(client, FILENAME_BACKTRACE, bug_id_str, bt, strlen(bt),
+                    rhbz_attach_blob(client, bug_id_str, FILENAME_BACKTRACE, bt, strlen(bt),
                                      RHBZ_NOMAIL_NOTIFY);
                 }
             }
