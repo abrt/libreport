@@ -114,6 +114,7 @@ Requires: libreport = %{version}-%{release}
 %if 0%{?rhel} >= 6
 %else
 Requires: recordmydesktop
+Requires: pygobject3
 %endif
 Provides: report-gtk = 0:0.23-1
 Obsoletes: report-gtk < 0:0.23-1
