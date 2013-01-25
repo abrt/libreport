@@ -67,11 +67,9 @@ static int send_file(const char *url, const char *filename)
     else
         clean_url = url;
 
-
     log(_("Sending %s to %s"), filename, clean_url);
 
-    struct stat stbuf;
-    fstat(fileno(fp), &stbuf); /* never fails */
+    off_t st_size = fstat_st_size_or_die(fileno(fp));
 
     char *whole_url;
     unsigned len = strlen(url);
@@ -97,7 +95,7 @@ static int send_file(const char *url, const char *filename)
     curl_easy_setopt(curl, CURLOPT_URL, whole_url);
     /* FILE handle: passed to the default callback, it will fread() it */
     curl_easy_setopt(curl, CURLOPT_READDATA, fp);
-    curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)stbuf.st_size);
+    curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)st_size);
 
     /* everything is done here; result 0 means success */
     CURLcode result = curl_easy_perform_with_proxy(curl, whole_url);

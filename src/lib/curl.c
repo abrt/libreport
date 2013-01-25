@@ -201,13 +201,16 @@ static size_t fread_with_reporting(void *ptr, size_t size, size_t nmemb, void *u
     if (!(t & 0xf) && last_t != t)
     {
         last_t = t;
+
         off_t cur_pos = ftello(fp);
-        fseeko(fp, 0, SEEK_END);
-        off_t sz = ftello(fp);
-        fseeko(fp, cur_pos, SEEK_SET);
+        if (cur_pos == -1)
+            goto skip; /* paranoia */
+        off_t sz = fstat_st_size_or_die(fileno(fp));
+
         log(_("Uploaded: %llu of %llu kbytes"),
                 (unsigned long long)cur_pos / 1024,
                 (unsigned long long)sz / 1024);
+ skip: ;
     }
 
     return fread(ptr, size, nmemb, fp);

@@ -78,7 +78,7 @@ void rhbz_logout(struct abrt_xmlrpc *ax);
 
 xmlrpc_value *rhbz_get_member(const char *member, xmlrpc_value *xml);
 
-int rhbz_array_size(xmlrpc_value *xml);
+unsigned rhbz_array_size(xmlrpc_value *xml);
 
 int rhbz_get_bug_id_from_array0(xmlrpc_value *xml, unsigned ver);
 

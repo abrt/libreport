@@ -926,7 +926,7 @@ int main(int argc, char **argv)
                                 /*component:*/ NULL,
                                 hash);
         free(hash);
-        int all_bugs_size = rhbz_array_size(all_bugs);
+        unsigned all_bugs_size = rhbz_array_size(all_bugs);
         if (all_bugs_size > 0)
         {
             int bug_id = rhbz_get_bug_id_from_array0(all_bugs, rhbz_ver);
@@ -1128,7 +1128,7 @@ int main(int argc, char **argv)
              */
             xmlrpc_value *crossver_bugs = rhbz_search_duphash(client, product, /*version:*/ NULL,
                             component_substitute, duphash);
-            int crossver_bugs_count = rhbz_array_size(crossver_bugs);
+            unsigned crossver_bugs_count = rhbz_array_size(crossver_bugs);
             VERB3 log("Bugzilla has %i reports with duphash '%s' including cross-version ones",
                     crossver_bugs_count, duphash);
             if (crossver_bugs_count > 0)
@@ -1146,7 +1146,7 @@ int main(int argc, char **argv)
                  */
                 xmlrpc_value *dup_bugs = rhbz_search_duphash(client, product, version,
                                 component_substitute, duphash);
-                int dup_bugs_count = rhbz_array_size(dup_bugs);
+                unsigned dup_bugs_count = rhbz_array_size(dup_bugs);
                 VERB3 log("Bugzilla has %i reports with duphash '%s'",
                         dup_bugs_count, duphash);
                 if (dup_bugs_count > 0)

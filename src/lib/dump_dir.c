@@ -344,7 +344,8 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
     dir = dd->dd_dirname = rm_trailing_slashes(dir);
 
     struct stat stat_buf;
-    stat(dir, &stat_buf);
+    if (stat(dir, &stat_buf) != 0)
+        goto cant_access;
     /* & 0666 should remove the executable bit */
     dd->mode = (stat_buf.st_mode & 0666);
 
@@ -388,7 +389,10 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
         else
         {
             if (!(flags & DD_FAIL_QUIETLY_EACCES))
+            {
+ cant_access:
                 perror_msg("Can't access '%s'", dir);
+            }
         }
         dd_close(dd);
         return NULL;
@@ -657,7 +661,13 @@ void dd_sanitize_mode_and_owner(struct dump_dir *dd)
         if (lstat(full_path, &statbuf) == 0 && S_ISREG(statbuf.st_mode))
         {
             if ((statbuf.st_mode & 0777) != dd->mode)
-                chmod(full_path, dd->mode);
+            {
+                if (chmod(full_path, dd->mode) != 0)
+                {
+                    perror_msg("Can't change '%s' mode to 0%o", full_path,
+                            (unsigned)dd->mode);
+                }
+            }
             if (statbuf.st_uid != dd->dd_uid || statbuf.st_gid != dd->dd_gid)
             {
                 if (lchown(full_path, dd->dd_uid, dd->dd_gid) != 0)

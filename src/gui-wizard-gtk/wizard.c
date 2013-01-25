@@ -1167,14 +1167,16 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
     {
         struct stat statbuf;
         statbuf.st_size = 0;
-        stat(item->content, &statbuf);
-        stats->filesize += statbuf.st_size;
-        char *msg = xasprintf(_("(binary file, %llu bytes)"), (long long)statbuf.st_size);
-        gtk_list_store_set(g_ls_details, &iter,
-                              DETAIL_COLUMN_NAME, (char *)name,
-                              DETAIL_COLUMN_VALUE, msg,
-                              -1);
-        free(msg);
+        if (stat(item->content, &statbuf) == 0)
+        {
+            stats->filesize += statbuf.st_size;
+            char *msg = xasprintf(_("(binary file, %llu bytes)"), (long long)statbuf.st_size);
+            gtk_list_store_set(g_ls_details, &iter,
+                                  DETAIL_COLUMN_NAME, (char *)name,
+                                  DETAIL_COLUMN_VALUE, msg,
+                                  -1);
+            free(msg);
+        }
     }
 
     int cur_value;
