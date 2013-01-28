@@ -80,6 +80,8 @@ xmlrpc_value *rhbz_get_member(const char *member, xmlrpc_value *xml);
 
 unsigned rhbz_array_size(xmlrpc_value *xml);
 
+xmlrpc_value *rhbz_array_item_at(xmlrpc_value *xml, int pos);
+
 int rhbz_get_bug_id_from_array0(xmlrpc_value *xml, unsigned ver);
 
 int rhbz_new_bug(struct abrt_xmlrpc *ax,

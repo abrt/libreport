@@ -68,31 +68,67 @@ void free_bug_info(struct bug_info *bi)
     free(bi);
 }
 
-static GList *parse_comments(xmlrpc_value *result_xml)
+static GList *rhbz_comments(struct abrt_xmlrpc *ax, int bug_id)
 {
     func_entry();
 
-    GList *comments = NULL;
-    xmlrpc_value *comments_memb = rhbz_get_member("longdescs", result_xml);
-    if (!comments_memb)
-        return NULL;
+    /* http://www.bugzilla.org/docs/4.2/en/html/api/Bugzilla/WebService/Bug.html#comments */
+    /*
+     * <methodResponse>
+     *   <params><param>
+     *     <value><struct>
+     *       <member><name>bugs</name>
+     *       <value><struct>
+     *         <member><name>BUG_ID</name>
+     *         <value><struct>
+     *           <member><name>comments</name>
+     *           <value><array>
+     * ...
+     */
+    xmlrpc_value *xml_response = abrt_xmlrpc_call(ax, "Bug.comments", "({s:(i)})",
+                                                                      "ids", bug_id);
+    /* bugs
+     *     This is used for bugs specified in ids. This is a hash, where the
+     *     keys are the numeric ids of the bugs, and the value is a hash with a
+     *     single key, comments, which is an array of comments.
+     */
+    xmlrpc_value *bugs_memb = rhbz_get_member("bugs", xml_response);
 
-    unsigned comments_memb_size = rhbz_array_size(comments_memb);
+    /* Get hash value assigned to bug_id key */
+    char *item = xasprintf("%d", bug_id);
+    xmlrpc_value *item_memb = rhbz_get_member(item, bugs_memb);
+    free(item);
+
+    /* Get array of comments */
+    xmlrpc_value *comments_memb = rhbz_get_member("comments", item_memb);
 
     xmlrpc_env env;
     xmlrpc_env_init(&env);
-    for (unsigned i = 0; i < comments_memb_size; ++i)
+
+    int comments_memb_size = rhbz_array_size(comments_memb);
+
+    GList *comments = NULL;
+    for (int i = 0; i < comments_memb_size; ++i)
     {
         xmlrpc_value* item = NULL;
         xmlrpc_array_read_item(&env, comments_memb, i, &item);
         if (env.fault_occurred)
             abrt_xmlrpc_die(&env);
 
-        char *comment_body = rhbz_bug_read_item("body", item, RHBZ_READ_STR);
+        char *comment_body = rhbz_bug_read_item("text", item, RHBZ_READ_STR);
         /* attachments are sometimes without comments -- skip them */
         if (comment_body)
             comments = g_list_prepend(comments, comment_body);
+
+        xmlrpc_DECREF(item);
     }
+
+    xmlrpc_env_clean(&env);
+
+    xmlrpc_DECREF(comments_memb);
+    xmlrpc_DECREF(item_memb);
+    xmlrpc_DECREF(bugs_memb);
+    xmlrpc_DECREF(xml_response);
 
     return g_list_reverse(comments);
 }
@@ -237,6 +273,23 @@ unsigned rhbz_array_size(xmlrpc_value *xml)
         abrt_xmlrpc_die(&env);
 
     return size;
+}
+
+xmlrpc_value *rhbz_array_item_at(xmlrpc_value *xml, int pos)
+{
+    func_entry();
+
+    xmlrpc_env env;
+    xmlrpc_env_init(&env);
+
+    xmlrpc_value* item = NULL;
+    xmlrpc_array_read_item(&env, xml, pos, &item);
+    if (env.fault_occurred)
+        abrt_xmlrpc_die(&env);
+
+    xmlrpc_env_clean(&env);
+
+    return item;
 }
 
 unsigned rhbz_version(struct abrt_xmlrpc *ax)
@@ -408,28 +461,42 @@ struct bug_info *rhbz_bug_info(struct abrt_xmlrpc *ax, int bug_id)
     func_entry();
 
     struct bug_info *bz = new_bug_info();
-    xmlrpc_value *xml_bug_response = abrt_xmlrpc_call(ax, "bugzilla.getBug",
-                                                      "(i)", bug_id);
 
-    int *ret = (int*)rhbz_bug_read_item("bug_id", xml_bug_response,
+    /* http://www.bugzilla.org/docs/4.2/en/html/api/Bugzilla/WebService/Bug.html#get
+     *
+     * <methodResponse>
+     * <params>
+     *   <param><value><struct>
+     *     <member><name>faults</name><value><array><data/></array></value></member>
+     *     <member><name>bugs</name>
+     *        <value><array><data>
+     *        ...
+     */
+    xmlrpc_value *xml_bug_response = abrt_xmlrpc_call(ax, "Bug.get", "({s:(i)})",
+                                                          "ids", bug_id);
+
+    xmlrpc_value *bugs_memb = rhbz_get_member("bugs", xml_bug_response);
+    xmlrpc_value *bug_item = rhbz_array_item_at(bugs_memb, 0);
+
+    int *ret = (int*)rhbz_bug_read_item("id", bug_item,
                                         RHBZ_MANDATORY_MEMB | RHBZ_READ_INT);
     bz->bi_id = *ret;
     free(ret);
-    bz->bi_product = rhbz_bug_read_item("product", xml_bug_response,
+    bz->bi_product = rhbz_bug_read_item("product", bug_item,
                                         RHBZ_MANDATORY_MEMB | RHBZ_READ_STR);
-    bz->bi_reporter = rhbz_bug_read_item("reporter", xml_bug_response,
+    bz->bi_reporter = rhbz_bug_read_item("creator", bug_item,
                                          RHBZ_MANDATORY_MEMB | RHBZ_READ_STR);
-    bz->bi_status = rhbz_bug_read_item("bug_status", xml_bug_response,
+    bz->bi_status = rhbz_bug_read_item("status", bug_item,
                                        RHBZ_MANDATORY_MEMB | RHBZ_READ_STR);
-    bz->bi_resolution = rhbz_bug_read_item("resolution", xml_bug_response,
+    bz->bi_resolution = rhbz_bug_read_item("resolution", bug_item,
                                            RHBZ_READ_STR);
-    bz->bi_platform = rhbz_bug_read_item("rep_platform", xml_bug_response,
+    bz->bi_platform = rhbz_bug_read_item("platform", bug_item,
                                            RHBZ_READ_STR);
 
     if (strcmp(bz->bi_status, "CLOSED") == 0 && !bz->bi_resolution)
         error_msg_and_die(_("Bug %i is CLOSED, but it has no RESOLUTION"), bz->bi_id);
 
-    ret = (int*)rhbz_bug_read_item("dup_id", xml_bug_response,
+    ret = (int*)rhbz_bug_read_item("dup_id", bug_item,
                                    RHBZ_READ_INT);
     if (strcmp(bz->bi_status, "CLOSED") == 0
         && strcmp(bz->bi_resolution, "DUPLICATE") == 0
@@ -442,11 +509,13 @@ struct bug_info *rhbz_bug_info(struct abrt_xmlrpc *ax, int bug_id)
     bz->bi_dup_id = (ret) ? *ret: -1;
     free(ret);
 
-    bz->bi_cc_list = rhbz_bug_cc(xml_bug_response);
+    bz->bi_cc_list = rhbz_bug_cc(bug_item);
 
-    bz->bi_comments = parse_comments(xml_bug_response);
+    bz->bi_comments = rhbz_comments(ax, bug_id);
     bz->bi_best_bt_rating = find_best_bt_rating_in_comments(bz->bi_comments);
 
+    xmlrpc_DECREF(bugs_memb);
+    xmlrpc_DECREF(bug_item);
     xmlrpc_DECREF(xml_bug_response);
 
     return bz;
@@ -604,12 +673,17 @@ int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *bug_id,
     xmlrpc_value* result;
     int nomail_notify = !!IS_NOMAIL_NOTIFY(flags);
 
-    result = abrt_xmlrpc_call(ax, "bugzilla.addAttachment", "(s{s:s,s:s,s:s,s:s,s:i})",
-                bug_id,
-                "description", fn,
-                "filename", filename,
-                "contenttype", (flags & RHBZ_BINARY_ATTACHMENT) ? "application/octet-stream" : "text/plain",
+    /* http://www.bugzilla.org/docs/4.2/en/html/api/Bugzilla/WebService/Bug.html#add_attachment */
+    result = abrt_xmlrpc_call(ax, "Bug.add_attachment", "({s:(s),s:s,s:s,s:s,s:s,s:i})",
+                "ids", bug_id,
+                "summary", fn,
+                "file_name", filename,
+                "content_type", (flags & RHBZ_BINARY_ATTACHMENT) ? "application/octet-stream" : "text/plain",
                 "data", encoded64,
+
+                /* Undocumented argument but it works with Red Hat Bugzilla version 4.2.4-7
+                 * and version 4.4.rc1.b02
+                 */
                 "nomail", nomail_notify
     );
 
