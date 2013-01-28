@@ -46,7 +46,7 @@ ret:
 
 int main(void)
 {
-    char *releases_good[7][3] =
+    char *releases_good[][3] =
     {
         //"Fedora release 15.a (Lovelock)", //should fail
         {"Fedora release 16 (Rawhide)", "Fedora", "rawhide"},
@@ -55,6 +55,8 @@ int main(void)
         {"Fedora release 17 (Rawhide)", "Fedora", "rawhide"},
         {"Red Hat Enterprise Linux Server release 6.2 Beta (Santiago)", "Red Hat Enterprise Linux 6", "6.2"},
         {"Red Hat Enterprise Linux 6.2", "Red Hat Enterprise Linux 6", "6.2"},
+        {"Red Hat Enterprise Linux 123.456asd", "Red Hat Enterprise Linux 123", "123.456"},
+        {}
     };
 
     char **tmp = (char **)releases_good;
@@ -111,10 +113,12 @@ ret:
 
 int main(void)
 {
-    char *releases_good[7][3] =
+    char *releases_good[][3] =
     {
-        {"Red Hat Enterprise Linux Server release 6.2 Beta (Santiago)", "Red Hat Enterprise Linux", "6.2"},
+        {"Red Hat Enterprise Linux Server release 6.2 Beta (Santiago)", "Red Hat Enterprise Linux", "6.2 Beta"},
+        {"Red Hat Enterprise Linux Server release 6.2 (Santiago)", "Red Hat Enterprise Linux", "6.2"},
         {"Red Hat Enterprise Linux 6.2", "Red Hat Enterprise Linux", "6.2"},
+        {}
     };
 
     char **tmp = (char **)releases_good;
