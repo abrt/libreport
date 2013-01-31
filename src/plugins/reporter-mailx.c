@@ -150,15 +150,15 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "& [-v] -d DIR [-c CONFFILE]\n"
+        "& [-v] -d DIR [-c CONFFILE]"
         "\n"
-        "Sends contents of a problem directory DIR via email\n"
+        "\n""Sends contents of a problem directory DIR via email"
         "\n"
-        "If not specified, CONFFILE defaults to "CONF_DIR"/plugins/mailx.conf\n"
-        "Its lines should have 'PARAM = VALUE' format.\n"
-        "Recognized string parameters: Subject, EmailFrom, EmailTo.\n"
-        "Recognized boolean parameter (VALUE should be 1/0, yes/no): SendBinaryData.\n"
-        "Parameters can be overridden via $Mailx_PARAM environment variables.\n"
+        "\n""If not specified, CONFFILE defaults to "CONF_DIR"/plugins/mailx.conf"
+        "\n""Its lines should have 'PARAM = VALUE' format."
+        "\n""Recognized string parameters: Subject, EmailFrom, EmailTo."
+        "\n""Recognized boolean parameter (VALUE should be 1/0, yes/no): SendBinaryData."
+        "\n""Parameters can be overridden via $Mailx_PARAM environment variables."
     );
 
     enum {
