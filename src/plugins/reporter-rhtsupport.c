@@ -387,7 +387,7 @@ int main(int argc, char **argv)
     /*result = NULL; - redundant, result is assigned just below */
 
     /* Send tempfile */
-    log(_("Creating a new case..."));
+    log(_("Creating a new case"));
     result = create_new_case(url,
             login,
             password,

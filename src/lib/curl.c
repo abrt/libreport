@@ -90,12 +90,15 @@ CURLcode curl_easy_perform_with_proxy(CURL *handle, const char *url)
         for (li = proxy_list, curl_err = 1; curl_err && li; li = g_list_next(li))
         {
             xcurl_easy_setopt_ptr(handle, CURLOPT_PROXY, li->data);
-            VERB3 log("Proxy set to: '%s'", (const char *)li->data);
-
+            VERB1 log("Connecting to %s (using proxy server %s)", url, (const char *)li->data);
             curl_err = curl_easy_perform(handle);
         }
-    } else
+    }
+    else
+    {
+        VERB1 log("Connecting to %s", url);
         curl_err = curl_easy_perform(handle);
+    }
 
     list_free_with_free(proxy_list);
 

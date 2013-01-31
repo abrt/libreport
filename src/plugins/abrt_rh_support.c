@@ -356,7 +356,7 @@ post_case_to_url(const char* url,
          * instead of returning html-encoded body, we show short concise message,
          * and show offending URL (typos in which is a typical cause) */
         result->error = -1;
-        result->msg = xasprintf("error in HTTP POST, "
+        result->msg = xasprintf("Error in HTTP POST, "
                         "HTTP code: 404 (Not found), URL:'%s'", url);
         break;
 
@@ -391,7 +391,7 @@ post_case_to_url(const char* url,
         errmsg = case_state->curl_error_msg;
         if (errmsg && errmsg[0])
         {
-            result->msg = xasprintf(_("error in case creation: %s"), errmsg);
+            result->msg = xasprintf(_("Error in case creation: %s"), errmsg);
         }
         else
         {
@@ -399,10 +399,10 @@ post_case_to_url(const char* url,
             if (!errmsg)
                 errmsg = case_state->body;
             if (errmsg && errmsg[0])
-                result->msg = xasprintf(_("error in case creation, HTTP code: %d, server says: '%s'"),
+                result->msg = xasprintf(_("Error in case creation, HTTP code: %d, server says: '%s'"),
                         case_state->http_resp_code, errmsg);
             else
-                result->msg = xasprintf(_("error in case creation, HTTP code: %d"),
+                result->msg = xasprintf(_("Error in case creation, HTTP code: %d"),
                         case_state->http_resp_code);
         }
         break;
@@ -492,16 +492,16 @@ post_file_to_url(const char* url,
         errmsg = atch_state->curl_error_msg;
         if (errmsg && errmsg[0])
         {
-            result->msg = xasprintf("error in file upload: %s", errmsg);
+            result->msg = xasprintf("Error in file upload: %s", errmsg);
         }
         else
         {
             errmsg = atch_state->body;
             if (errmsg && errmsg[0])
-                result->msg = xasprintf("error in file upload, HTTP code: %d, server says: '%s'",
+                result->msg = xasprintf("Error in file upload, HTTP code: %d, server says: '%s'",
                         atch_state->http_resp_code, errmsg);
             else
-                result->msg = xasprintf("error in file upload, HTTP code: %d",
+                result->msg = xasprintf("Error in file upload, HTTP code: %d",
                         atch_state->http_resp_code);
         }
         break;
@@ -544,12 +544,12 @@ create_new_case(const char* base_url,
     );
     free(url);
 
-    if (!result->url)
+    if (!result->error && !result->url)
     {
         /* Case Creation returned valid code, but no location */
         result->error = -1;
         free(result->msg);
-        result->msg = xasprintf(_("error in case creation: no Location URL, HTTP code: %d"),
+        result->msg = xasprintf(_("Error in case creation: no Location URL, HTTP code: %d"),
                 result->http_resp_code
         );
     }
