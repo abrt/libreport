@@ -247,7 +247,17 @@ infrastructure or uploading the gathered data over ftp/scp...
 
 %build
 autoconf
-CFLAGS="%{optflags} -Werror" %configure --disable-silent-rules
+
+%if 0%{?fedora} < 18
+    %if 0%{?rhel} < 7
+        CFLAGS="%{optflags} -Werror" %configure --with-defaultdumpdirmode=0640 --disable-userownsdumpdir --disable-silent-rules
+    %else
+        CFLAGS="%{optflags} -Werror" %configure --disable-silent-rules
+    %endif
+%else
+        CFLAGS="%{optflags} -Werror" %configure --disable-silent-rules
+%endif
+
 make %{?_smp_mflags}
 
 %install
