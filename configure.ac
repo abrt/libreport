@@ -191,15 +191,15 @@ AC_ARG_WITH(debugdumpsdir,
 
 AC_ARG_WITH([defaultdumpdirmode],
             AS_HELP_STRING([--with-defaultdumpdirmode=OCTAL-MODE],
-                           [Default dump dir mode (default: 0640)]),
-            [], [with_defaultdumpdirmode="0640"])
+                           [Default dump dir mode (default: 0660)]),
+            [], [with_defaultdumpdirmode="0660"])
 AC_SUBST([DEFAULT_DUMP_DIR_MODE], [$with_defaultdumpdirmode])
 
-DUMP_DIR_OWNED_BY_USER=0
+DUMP_DIR_OWNED_BY_USER=1
 AC_ARG_ENABLE([userownsdumpdir],
               [AC_HELP_STRING([--enable-userownsdumpdir],
-                              [Configure user to be owner of dump directories (default: abrt owns dump dir)])],
-              [DUMP_DIR_OWNED_BY_USER=1])
+                              [Configure abrt to be owner of dump directories (default: user owns dump dir)])],
+              [DUMP_DIR_OWNED_BY_USER=0])
 
 AC_SUBST(CONF_DIR)
 AC_SUBST(VAR_RUN)
