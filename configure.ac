@@ -190,7 +190,7 @@ AC_ARG_WITH(debugdumpsdir,
             [DEBUG_DUMPS_DIR="$withval"])
 
 AC_ARG_WITH([defaultdumpdirmode],
-            AS_HELP_STRING([--with-defaultdumpdirmode=DIR],
+            AS_HELP_STRING([--with-defaultdumpdirmode=OCTAL-MODE],
                            [Default dump dir mode (default: 0640)]),
             [], [with_defaultdumpdirmode="0640"])
 AC_SUBST([DEFAULT_DUMP_DIR_MODE], [$with_defaultdumpdirmode])
