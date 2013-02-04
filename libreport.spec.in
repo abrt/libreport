@@ -445,6 +445,60 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/anaconda_event.conf
 
 %changelog
+* Mon Feb 04 2013 Jakub Filak <jfilak@redhat.com> 2.1.0-1
+- dd: unify error handling in save_binary_file()
+- dd_sanitize: don't sanitize symlinks
+- rpm: preserve old configuration for <F17 and <REHL7
+- configure: change defaults to be compliant with /var/tmp/abrt
+- configure: fix dump dir mode help string
+- dd: always sanitize mode of saved file
+- rhbz: replace obsolete methods by their substitutes
+- reporter-rhtsupport: improve error detection and logging
+- mailx: remove extra trailing newline in help text
+- spec: add requires section for pygobject3
+- reporter-rhtsupport: retain " Beta" suffix in version. Closes rhbz#896090
+- Fix bugs discoverent by Coverity
+- bz: swap 'bug id' arg with 'item name' arg in attach fn call
+- dd: move dir accessibility check from abrt to libreport
+- don't overwrite "type" rhbz#902828
+- move chown functionality from ABRT DBus to libreport
+- expose configure cmd options for dump dir mode and ownership
+- cli: guard against user ^Z-ing editor and being stuck
+- report-cli: don't close tty fd too early
+- report-cli: switch terminal's fg process group to editor's one; and back
+- dd: open symlinks on request
+- minor fix to the pkg-config file
+- reporter-rhtsupport: extract error message from Strata-Message: header
+- add build time condition for dump dir ownership schema
+- reporter-bz: post a comment to dup bug, if we found a dup. version 2.
+- report-cli: use Client API
+- report-cli: add event name prefix before question
+- run_event: default callbacks for logging and errors
+- make default dump dir mode configurable at build time
+- Stop reading text files one byte at a time
+- make dd_delete_item check that dd is locked
+- never follow symlinks rhbz#887866
+- Revert "reporter-bz: post a comment to dup bug, if we found a dup."
+- wizard: make radio-button text wrap
+- reporter-bz: post a comment to dup bug, if we found a dup.
+- added missing article
+- make the dependency on recordmydesktop soft - related to rhbz#891512
+- cli: use !ec_skip_review as indicator that the event is a reporter
+- Add and use "report-cli" event instead of removed "report-cli -r" option
+- cli: remove superfluous problem_data_free() call
+- small tweaks atop report-cli rework #3
+- small tweaks atop report-cli rework #2
+- small tweaks atop report-cli rework
+- uReport: add more explanatory message when upload fails
+- report-cli rework
+- don't require recordmydesktop on RHEL rhbz#891512
+- fixed the relro flags rhbz#812283
+- bugzilla_format_kernel.conf: Attach dmesg element. Closes rhbz#826058
+- bugzilla_format_kernel.conf: fix %summary
+- Make get_dirsize_find_largest_dir less talkative.
+- Minor fixes: robustify start_command(), fix style, fix English in msgs
+- Fix typo, remove c-format from a not c-formatted message
+
 * Wed Nov 14 2012 Jakub Filak <jfilak@redhat.com> 2.0.19-1
 - bugzilla_format[_libreport].conf: emit truncated backtrace into its own paragraph
 - reporter-bz: use Jakub's version of is_explicit_or_forbidden()
