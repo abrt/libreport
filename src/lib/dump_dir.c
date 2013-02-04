@@ -662,10 +662,25 @@ void dd_sanitize_mode_and_owner(struct dump_dir *dd)
         {
             if ((statbuf.st_mode & 0777) != dd->mode)
             {
-                if (chmod(full_path, dd->mode) != 0)
+                /* We open the file only for fchmod()
+                 *
+                 * We use fchmod() because chmod() changes the permissions of
+                 * the file specified whose pathname is given in path, which
+                 * is dereferenced if it is a symbolic link.
+                 */
+                int fd = open(full_path, O_RDONLY | O_NOFOLLOW, dd->mode);
+                if (fd >= 0)
                 {
-                    perror_msg("Can't change '%s' mode to 0%o", full_path,
-                            (unsigned)dd->mode);
+                    if (fchmod(fd, dd->mode) != 0)
+                    {
+                        perror_msg("Can't change '%s' mode to 0%o", full_path,
+                                   (unsigned)dd->mode);
+                    }
+                    close(fd);
+                }
+                else
+                {
+                    perror_msg("Can't open regular file '%s'", full_path);
                 }
             }
             if (statbuf.st_uid != dd->dd_uid || statbuf.st_gid != dd->dd_gid)
