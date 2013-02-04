@@ -909,12 +909,14 @@ static bool save_binary_file(const char *path, const char* data, unsigned size, 
     }
 
     /* O_CREATE in the open() call above causes that the permissions of the
-     * created file are (mode & ~umask) */
+     * created file are (mode & ~umask)
+     *
+     * This is true only if we did create file. We are not sure we created it
+     * in this case - it may exist already.
+     */
     if (fchmod(fd, mode) == -1)
     {
         perror_msg("Can't change mode of '%s'", path);
-        close(fd);
-        return false;
     }
 
     unsigned r = full_write(fd, data, size);
