@@ -893,6 +893,15 @@ static bool save_binary_file(const char *path, const char* data, unsigned size, 
         }
     }
 
+    /* O_CREATE in the open() call above causes that the permissions of the
+     * created file are (mode & ~umask) */
+    if (fchmod(fd, mode) == -1)
+    {
+        perror_msg("Can't change mode of '%s'", path);
+        close(fd);
+        return false;
+    }
+
     unsigned r = full_write(fd, data, size);
     close(fd);
     if (r != size)
