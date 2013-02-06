@@ -139,7 +139,11 @@ static struct ureport_server_response *ureport_server_parse_json(json_object *js
     {
         struct ureport_server_response *out_response = xzalloc(sizeof(*out_response));
         out_response->is_error = true;
-        out_response->value = xstrdup(json_object_to_json_string(obj));
+        /*
+         * Used to use json_object_to_json_string(obj), but it returns
+         * the string in quote marks (") - IOW, json-formatted string.
+         */
+        out_response->value = xstrdup(json_object_get_string(obj));
         return out_response;
     }
 
