@@ -445,6 +445,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/anaconda_event.conf
 
 %changelog
+* Thu Feb 07 2013 Jakub Filak <jfilak@redhat.com> 2.1.1-1
+- move 'reporter-mailx' from post-create event to notify(-dup) event
+- reporter-bugzilla: use base64 XMLRPC type for encoded data instead of string type
+- ureport: fix extra quoting when reporting error messages
+
 * Mon Feb 04 2013 Jakub Filak <jfilak@redhat.com> 2.1.0-1
 - dd: unify error handling in save_binary_file()
 - dd_sanitize: don't sanitize symlinks
