@@ -253,7 +253,7 @@ static int curl_debug(CURL *handle, curl_infotype it, char *buf, size_t bufsize,
     switch (it) {
     case CURLINFO_TEXT: /* The data is informational text. */
         /* Here eol is always "^J" or "", not printing it */
-        log("curl: %.*s", bufsize, buf);
+        log("curl: %.*s", (int) bufsize, buf);
         break;
     case CURLINFO_HEADER_IN: /* The data is header (or header-like) data received from the peer. */
         log("curl rcvd header: '%.*s%s'", (int) bufsize, buf, eol);
