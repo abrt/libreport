@@ -668,18 +668,27 @@ int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *bug_id,
 {
     func_entry();
 
-    char *encoded64 = encode_base64(data, data_len);
     char *fn = xasprintf("File: %s", filename);
     xmlrpc_value* result;
     int nomail_notify = !!IS_NOMAIL_NOTIFY(flags);
 
-    /* http://www.bugzilla.org/docs/4.2/en/html/api/Bugzilla/WebService/Bug.html#add_attachment */
-    result = abrt_xmlrpc_call(ax, "Bug.add_attachment", "({s:(s),s:s,s:s,s:s,s:s,s:i})",
+    /* http://www.bugzilla.org/docs/4.2/en/html/api/Bugzilla/WebService/Bug.html#add_attachment
+     *
+     * XMLRPC format options:
+     *   s -> string,  single argument (char* value)
+     *   i -> integer, single argument (int value)
+     *   6 -> base64,  two arguments (char* plain data which will be encoded by xmlrpc-c to base64,
+     *                                size_t number of bytes to encode)
+     */
+    result = abrt_xmlrpc_call(ax, "Bug.add_attachment", "({s:(s),s:s,s:s,s:s,s:6,s:i})",
                 "ids", bug_id,
                 "summary", fn,
                 "file_name", filename,
                 "content_type", (flags & RHBZ_BINARY_ATTACHMENT) ? "application/octet-stream" : "text/plain",
-                "data", encoded64,
+                /* base64 type requires two arguments: char* (plain data) and size_t (length)
+                 * ! xmlrpc-c takes care about encoding to base64 !
+                 */
+                "data", data, (size_t)data_len,
 
                 /* Undocumented argument but it works with Red Hat Bugzilla version 4.2.4-7
                  * and version 4.4.rc1.b02
@@ -687,7 +696,6 @@ int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *bug_id,
                 "nomail", nomail_notify
     );
 
-    free(encoded64);
     free(fn);
     if (!result)
         return -1;
