@@ -224,27 +224,54 @@ static int curl_debug(CURL *handle, curl_infotype it, char *buf, size_t bufsize,
     if (logmode == 0)
         return 0;
 
+    unsigned orig_bufsize = bufsize;
+
+    /* curl rcvd header: 'HTTP/1.1 400 BAD REQUEST
+     * '
+     * ^^^^^^^ one-liners are typical, and they do not look nice.
+     * Let's replace trailing CRs and/or LFs with caret notation.
+     */
+    char *end = buf + bufsize;
+    char *p = end;
+    while (p > buf)
+    {
+        if (p[-1] != '\r' && p[-1] != '\n')
+            break;
+        p--;
+        bufsize--;
+    }
+    char eol[(end - p + 2) * 2];
+    char *e = eol;
+    while (p < end)
+    {
+        *e++ = '^';
+        *e++ = (*p == '\r' ? 'M' : 'J'); /* CR = ^M, LF = ^J */
+        p++;
+    }
+    *e = '\0';
+
     switch (it) {
     case CURLINFO_TEXT: /* The data is informational text. */
-        log("curl: %.*s", (int) bufsize, buf);
+        /* Here eol is always "^J" or "", not printing it */
+        log("curl: %.*s", bufsize, buf);
         break;
     case CURLINFO_HEADER_IN: /* The data is header (or header-like) data received from the peer. */
-        log("curl rcvd header: '%.*s'", (int) bufsize, buf);
+        log("curl rcvd header: '%.*s%s'", (int) bufsize, buf, eol);
         break;
     case CURLINFO_HEADER_OUT: /* The data is header (or header-like) data sent to the peer. */
-        log("curl sent header: '%.*s'", (int) bufsize, buf);
+        log("curl sent header: '%.*s%s'", (int) bufsize, buf, eol);
         break;
     case CURLINFO_DATA_IN: /* The data is protocol data received from the peer. */
         if (g_verbose >= 3)
-            log("curl rcvd data: '%.*s'", (int) bufsize, buf);
+            log("curl rcvd data: '%.*s%s'", (int) bufsize, buf, eol);
         else
-            log("curl rcvd data %u bytes", (int) bufsize);
+            log("curl rcvd data %u bytes", orig_bufsize);
         break;
     case CURLINFO_DATA_OUT: /* The data is protocol data sent to the peer. */
         if (g_verbose >= 3)
-            log("curl sent data: '%.*s'", (int) bufsize, buf);
+            log("curl sent data: '%.*s%s'", (int) bufsize, buf, eol);
         else
-            log("curl sent data %u bytes", (int) bufsize);
+            log("curl sent data %u bytes", orig_bufsize);
         break;
     default:
         break;

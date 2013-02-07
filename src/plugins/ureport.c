@@ -174,7 +174,7 @@ static struct ureport_server_response *ureport_server_parse_json(json_object *js
 
 static struct ureport_server_response *get_server_response(post_state_t *post_state)
 {
-    if (post_state->errmsg[0] !=  '\0')
+    if (post_state->errmsg[0] != '\0')
     {
         error_msg(_("Failed to upload uReport with curl: %s"), post_state->errmsg);
         return NULL;
