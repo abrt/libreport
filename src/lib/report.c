@@ -22,7 +22,7 @@
 int report_problem_in_dir(const char *dirname, int flags)
 {
     /* Prepare it before fork, to avoid thread-unsafe setenv there */
-    char *prgname = g_get_prgname();
+    char *prgname = (char*) g_get_prgname();
     if (prgname)
         prgname = xasprintf("LIBREPORT_PRGNAME=%s", prgname);
 
