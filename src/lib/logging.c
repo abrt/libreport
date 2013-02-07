@@ -26,24 +26,24 @@ int logmode = LOGMODE_STDIO;
 int xfunc_error_retval = EXIT_FAILURE;
 int g_verbose;
 
+/* [p]error_msg[_and_die] must be safe after fork in multi-threaded programs.
+ * Therefore we avoid stdio, fflush(), and use _exit() instead of exit().
+ *
+ */
 void xfunc_die(void)
 {
-    exit(xfunc_error_retval);
+    _exit(xfunc_error_retval);
 }
+
+/* If set to 0, will use malloc for long messages */
+#define USE_ALLOCA 1
 
 static void verror_msg_helper(const char *s,
                               va_list p,
-                              const char* strerr,
+                              const char *strerr,
                               int flags)
 {
-    char *msg;
-    int prefix_len, strerr_len, msgeol_len, used;
-
     if (!logmode)
-        return;
-
-    used = vasprintf(&msg, s, p);
-    if (used < 0)
         return;
 
     /* This is ugly and costs +60 bytes compared to multiple
@@ -51,15 +51,62 @@ static void verror_msg_helper(const char *s,
      * This is needed for e.g. when multiple children
      * can produce log messages simultaneously. */
 
-    prefix_len = msg_prefix[0] ? strlen(msg_prefix) + 2 : 0;
-    strerr_len = strerr ? strlen(strerr) : 0;
-    msgeol_len = strlen(msg_eol);
+    int prefix_len = msg_prefix[0] ? strlen(msg_prefix) + 2 : 0;
+    int strerr_len = strerr ? strlen(strerr) : 0;
+    int msgeol_len = strlen(msg_eol);
+    int used;
+
+    /* Try to format the message in a fixed buffer.
+     * This eliminates malloc.
+     * Main reason isn't the speed optimization, but to make
+     * short logging safe after fork in multithreaded libraries.
+     */
+    char buf[1024];
+    va_list p2;
+    va_copy(p2, p);
+    if (prefix_len < sizeof(buf))
+        used = vsnprintf(buf + prefix_len, sizeof(buf) - prefix_len, s, p2);
+    else
+        used = vsnprintf(buf, 0, s, p2);
+    va_end(p2);
+
+    char *msg = buf;
+
     /* +3 is for ": " before strerr and for terminating NUL */
-    msg = (char*) xrealloc(msg, prefix_len + used + strerr_len + msgeol_len + 3);
-    /* TODO: maybe use writev instead of memmoving? Need full_writev? */
+    unsigned total_len = prefix_len + used + strerr_len + msgeol_len + 3;
+
+#if USE_ALLOCA
+    if (total_len >= sizeof(buf))
+    {
+        msg = alloca(total_len);
+        used = vsnprintf(msg + prefix_len, total_len - prefix_len, s, p);
+    }
+#else
+#define LOGMODE_DIE ((unsigned)INT_MAX + 1)
+    char *malloced = NULL;
+    if (total_len >= sizeof(buf))
+    {
+        /* Nope, need to malloc the buffer.
+         * Can't use xmalloc: it calls error_msg_and_die on failure,
+         * that will result in a recursion.
+         */
+        msg = malloced = malloc(total_len);
+        if (!msg)
+        {
+            /* Same as xmalloc error */
+            msg = strcpy(buf, "Out of memory, exiting\n");
+            used = strlen(msg) - 1;
+            msgeol_len = 1; /* '\n' */
+            prefix_len = 0;
+            flags |= LOGMODE_DIE;
+            goto send_it;
+        }
+        used = vsnprintf(msg + prefix_len, total_len - prefix_len, s, p);
+    }
+#endif
+
     if (prefix_len) {
         char *p;
-        memmove(msg + prefix_len, msg, used);
         used += prefix_len;
         p = stpcpy(msg, msg_prefix);
         p[0] = ':';
@@ -75,8 +122,11 @@ static void verror_msg_helper(const char *s,
     }
     strcpy(&msg[used], msg_eol);
 
+#if !USE_ALLOCA
+ send_it:
+#endif
     if (flags & LOGMODE_STDIO) {
-        fflush(stdout);
+        /*fflush(stdout); - unsafe after fork! */
         full_write(STDERR_FILENO, msg, used + msgeol_len);
     }
     msg[used] = '\0'; /* remove msg_eol (usually "\n") */
@@ -86,7 +136,13 @@ static void verror_msg_helper(const char *s,
     if ((flags & LOGMODE_CUSTOM) && g_custom_logger) {
         g_custom_logger(msg + prefix_len);
     }
-    free(msg);
+
+#if !USE_ALLOCA
+    free(malloced);
+
+    if (flags & LOGMODE_DIE)
+        xfunc_die();
+#endif
 }
 
 void log_msg(const char *s, ...)
