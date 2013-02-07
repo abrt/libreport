@@ -751,7 +751,7 @@ static void tv_details_row_activated(
         gtk_widget_set_size_request(scrolled, 640, 480);
         gtk_widget_show(scrolled);
 
-#if (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 8)
+#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 7) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 7 && GTK_MICRO_VERSION < 8))
         /* http://developer.gnome.org/gtk3/unstable/GtkScrolledWindow.html#gtk-scrolled-window-add-with-viewport */
         /* gtk_scrolled_window_add_with_viewport has been deprecated since version 3.8 and should not be used in newly-written code. */
         gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(scrolled), textview);
