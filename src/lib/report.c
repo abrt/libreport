@@ -21,6 +21,11 @@
 
 int report_problem_in_dir(const char *dirname, int flags)
 {
+    /* Prepare it before fork, to avoid thread-unsafe setenv there */
+    char *prgname = g_get_prgname();
+    if (prgname)
+        prgname = xasprintf("LIBREPORT_PRGNAME=%s", prgname);
+
     fflush(NULL);
 
     pid_t pid = fork();
@@ -48,10 +53,8 @@ int report_problem_in_dir(const char *dirname, int flags)
         *pp++ = (char *)dirname;
         *pp = NULL;
 
-        if (g_get_prgname())
-        {
-            xsetenv("LIBREPORT_PRGNAME", g_get_prgname());
-        }
+        if (prgname)
+            putenv(prgname);
 
         if (flags & LIBREPORT_RUN_NEWT)
         {
@@ -103,10 +106,10 @@ int report_problem_in_dir(const char *dirname, int flags)
             pid_t pid = fork();
             if (pid < 0) /* error */
                 perror_msg_and_die("fork");
-            if (pid != 0) /* not grandching */
+            if (pid != 0) /* not grandchild */
             {
                 /* And now we exit: */
-                exit(0);
+                _exit(0);
             }
             /* There's an alternative approach to achieve this,
              * instead of using --delete.
@@ -136,7 +139,7 @@ int report_problem_in_dir(const char *dirname, int flags)
                 if (dd)
                     dd_delete(dd);
             }
-            exit(r);
+            _exit(r);
         }
         /* No "report-cli/gui" event found, do it old-style */
 
@@ -152,6 +155,8 @@ int report_problem_in_dir(const char *dirname, int flags)
     }
 
     /* parent */
+    free(prgname);
+
     if (!(flags & LIBREPORT_WAIT) && (flags & LIBREPORT_GETPID))
         return pid;
 

@@ -65,6 +65,12 @@ pid_t fork_execv_on_steroids(int flags,
 	if (flags & EXECFLG_OUTPUT)
 		xpipe(pipe_fm_child);
 
+	/* Prepare it before fork, to avoid thread-unsafe malloc there */
+	char *prog_as_string = NULL;
+	VERB1 {
+		prog_as_string = concat_str_vector(argv);
+	}
+
 	fflush(NULL);
 	child = fork();
 	if (child == -1) {
@@ -106,11 +112,7 @@ pid_t fork_execv_on_steroids(int flags,
 		}
 
 		/* This should be done BEFORE stderr redirect */
-		VERB1 {
-			char *r = concat_str_vector(argv);
-			log("Executing: %s", r);
-			free(r);
-		}
+		VERB1 log("Executing: %s", prog_as_string);
 
 		if (flags & EXECFLG_ERR2OUT) {
 			/* Want parent to see errors in the same stream */
@@ -127,8 +129,11 @@ pid_t fork_execv_on_steroids(int flags,
 		execvp(argv[0], argv);
 		if (!(flags & EXECFLG_QUIET))
 			perror_msg("Can't execute '%s'", argv[0]);
-		exit(127); /* shell uses this exit code in this case */
+		_exit(127); /* shell uses this exit code in this case */
 	}
+
+	/* parent */
+	free(prog_as_string);
 
 	if (flags & EXECFLG_INPUT) {
 		close(pipe_to_child[0]);
