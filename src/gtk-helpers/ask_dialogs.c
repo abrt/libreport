@@ -59,11 +59,15 @@ static int run_ask_yes_no_save_generic_result_dialog(ask_yes_no_dialog_flags fla
     if (ask_result)
     {
         const bool ret = string_to_bool(ask_result);
-        if ((flags & ASK_YES_NO__YESFOREVER) && ret == false)
+        if (!(flags & ASK_YES_NO__YESFOREVER))
+            return ret;
+
+        /* ASK_YES_NO__YESFOREVER */
+        if (ret == false)
             /* Do you want to be asked? -> No, I don't. Do whatever you want */
             return true;
 
-        return ret;
+        /* CONTINUE becuase saved value is "yes" and it means 'Ask me!' */
     }
 
     GtkWidget *dialog = gtk_message_dialog_new(parent,
