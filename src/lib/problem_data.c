@@ -73,42 +73,59 @@ void problem_data_add_basics(problem_data_t *pd)
     /* If application didn't provide dupe hash, we generate it
      * from all components, so we at least eliminate the exact same
      * reports
+     *
+     * We don't want to generate DUPHASH file because it is usually generated
+     * later in some "analyze_*" event. DUPHASH was originally designed as
+     * global problem identifier and generating of global identifier requires
+     * more space and data. On the contrary UUID was originally designed as
+     * local problem identifier. It means that this identifier is weaker (e.g.
+     * a hash generated from a coredump without debuginfo - there can be many
+     * similar backtraces without line numbers and function names).
      */
-    if (problem_data_get_content_or_NULL(pd, FILENAME_DUPHASH) == NULL)
+    if (problem_data_get_content_or_NULL(pd, FILENAME_UUID) == NULL)
     {
-        /* start hash */
-        sha1_ctx_t sha1ctx;
-        sha1_begin(&sha1ctx);
-
-        /*
-         * To avoid spurious hash differences, sort keys so that elements are
-         * always processed in the same order:
+        /* If application provided DUPHASH, we should use it in UUID as well.
+         * Otherwise we compute hash from all problem's data.
          */
-        GList *list = g_hash_table_get_keys(pd);
-        list = g_list_sort(list, (GCompareFunc)strcmp);
-        GList *l = list;
-        while (l)
+        const char *const duphash = problem_data_get_content_or_NULL(pd, FILENAME_DUPHASH);
+        if (duphash != NULL)
+            problem_data_add_text_noteditable(pd, FILENAME_UUID, duphash);
+        else
         {
-            const char *key = l->data;
-            l = l->next;
-            struct problem_item *item = g_hash_table_lookup(pd, key);
-            /* do not hash items which are binary (item->flags & CD_FLAG_BIN).
-             * Their ->content is full file name, with path. Path is always
-             * different and will make hash differ even if files are the same.
+            /* start hash */
+            sha1_ctx_t sha1ctx;
+            sha1_begin(&sha1ctx);
+
+            /*
+             * To avoid spurious hash differences, sort keys so that elements are
+             * always processed in the same order:
              */
-            if (item->flags & CD_FLAG_BIN)
-                continue;
-            sha1_hash(&sha1ctx, item->content, strlen(item->content));
+            GList *list = g_hash_table_get_keys(pd);
+            list = g_list_sort(list, (GCompareFunc)strcmp);
+            GList *l = list;
+            while (l)
+            {
+                const char *key = l->data;
+                l = l->next;
+                struct problem_item *item = g_hash_table_lookup(pd, key);
+                /* do not hash items which are binary (item->flags & CD_FLAG_BIN).
+                 * Their ->content is full file name, with path. Path is always
+                 * different and will make hash differ even if files are the same.
+                 */
+                if (item->flags & CD_FLAG_BIN)
+                    continue;
+                sha1_hash(&sha1ctx, item->content, strlen(item->content));
+            }
+            g_list_free(list);
+
+            /* end hash */
+            char hash_bytes[SHA1_RESULT_LEN];
+            sha1_end(&sha1ctx, hash_bytes);
+            char hash_str[SHA1_RESULT_LEN*2 + 1];
+            bin2hex(hash_str, hash_bytes, SHA1_RESULT_LEN)[0] = '\0';
+
+            problem_data_add_text_noteditable(pd, FILENAME_UUID, hash_str);
         }
-        g_list_free(list);
-
-        /* end hash */
-        char hash_bytes[SHA1_RESULT_LEN];
-        sha1_end(&sha1ctx, hash_bytes);
-        char hash_str[SHA1_RESULT_LEN*2 + 1];
-        bin2hex(hash_str, hash_bytes, SHA1_RESULT_LEN)[0] = '\0';
-
-        problem_data_add_text_noteditable(pd, FILENAME_DUPHASH, hash_str);
     }
 }
 
