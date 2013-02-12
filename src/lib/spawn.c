@@ -70,6 +70,11 @@ pid_t fork_execv_on_steroids(int flags,
 	VERB1 {
 		prog_as_string = concat_str_vector(argv);
 	}
+	gid_t gid;
+	if (flags & EXECFLG_SETGUID) {
+		struct passwd* pw = getpwuid(uid);
+		gid = pw ? pw->pw_gid : uid;
+	}
 
 	fflush(NULL);
 	child = fork();
@@ -83,8 +88,6 @@ pid_t fork_execv_on_steroids(int flags,
 			xchdir(dir);
 
 		if (flags & EXECFLG_SETGUID) {
-			struct passwd* pw = getpwuid(uid);
-			gid_t gid = pw ? pw->pw_gid : uid;
 			setgroups(1, &gid);
 			xsetregid(gid, gid);
 			xsetreuid(uid, uid);
@@ -99,14 +102,17 @@ pid_t fork_execv_on_steroids(int flags,
 
 		/* Play with stdio descriptors */
 		if (flags & EXECFLG_INPUT) {
-			xmove_fd(pipe_to_child[0], STDIN_FILENO);
+			/* NB: close must be first, because
+			 * pipe_to_child[1] may be equal to STDIN_FILENO
+			 */
 			close(pipe_to_child[1]);
+			xmove_fd(pipe_to_child[0], STDIN_FILENO);
 		} else if (flags & EXECFLG_INPUT_NUL) {
 			xmove_fd(xopen("/dev/null", O_RDWR), STDIN_FILENO);
 		}
 		if (flags & EXECFLG_OUTPUT) {
-			xmove_fd(pipe_fm_child[1], STDOUT_FILENO);
 			close(pipe_fm_child[0]);
+			xmove_fd(pipe_fm_child[1], STDOUT_FILENO);
 		} else if (flags & EXECFLG_OUTPUT_NUL) {
 			xmove_fd(xopen("/dev/null", O_RDWR), STDOUT_FILENO);
 		}
@@ -132,7 +138,7 @@ pid_t fork_execv_on_steroids(int flags,
 		_exit(127); /* shell uses this exit code in this case */
 	}
 
-	/* parent */
+	/* Parent */
 	free(prog_as_string);
 
 	if (flags & EXECFLG_INPUT) {
