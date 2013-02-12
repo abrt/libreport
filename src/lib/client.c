@@ -163,3 +163,16 @@ void alert(const char *message)
     puts(message);
     fflush(stdout);
 }
+
+void client_log(const char *message)
+{
+    if (message != NULL
+        && (message[0] == '.' && message[1] == '\0')
+        && !is_slave_mode()
+       )
+        putchar('.');
+    else
+        printf("%s\n", message);
+
+    fflush(stdout);
+}

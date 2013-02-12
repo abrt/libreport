@@ -745,7 +745,7 @@ char *run_event_stdio_ask_password(const char *msg, void *param)
 
 static char *run_event_stdio_log(char *log_line, void *param)
 {
-    printf("%s\n", log_line);
+    client_log(log_line);
     return log_line;
 }
 

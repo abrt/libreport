@@ -58,6 +58,9 @@ char *ask_password(const char *question);
 #define alert libreport_alert
 void alert(const char *message);
 
+#define client_log libreport_client_log
+void client_log(const char *message);
+
 #ifdef __cplusplus
 }
 #endif

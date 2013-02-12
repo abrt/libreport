@@ -472,7 +472,7 @@ struct logging_state {
 
 static char *do_log(char *log_line, void *param)
 {
-    log("%s", log_line);
+    client_log(log_line);
     return log_line;
 }
 
@@ -481,8 +481,7 @@ static char *do_log_and_check_for_THANKYOU(char *log_line, void *param)
     struct logging_state *l_state = param;
     l_state->saw_THANKYOU |= (strcmp("THANKYOU", log_line) == 0);
     l_state->output_was_produced |= (log_line[0] != '\0');
-    log("%s", log_line);
-    return log_line;
+    return do_log(log_line, param);
 }
 
 static int export_config_and_run_event(

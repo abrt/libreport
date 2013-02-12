@@ -1527,12 +1527,19 @@ static void terminate_event_chain()
 
 static void update_command_run_log(const char* message, struct analyze_event_data *evd)
 {
-    gtk_label_set_text(g_lbl_event_log, message);
+    const bool it_is_a_dot = (message[0] == '.' && message[1] == '\0');
 
-    char *log_msg = xasprintf("%s\n", message);
+    if (!it_is_a_dot)
+        gtk_label_set_text(g_lbl_event_log, message);
+
+    /* Don't append new line behind single dot */
+    const char *log_msg = it_is_a_dot ? message : xasprintf("%s\n", message);
     append_to_textview(evd->tv_log, log_msg);
     save_to_event_log(evd, log_msg);
-    free(log_msg);
+
+    /* Because of single dot, see lines above */
+    if (log_msg != message)
+        free((void *)log_msg);
 }
 
 static void run_event_gtk_error(const char *error_line, void *param)
