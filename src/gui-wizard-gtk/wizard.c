@@ -1400,7 +1400,7 @@ static void set_excluded_envvar(void)
 static int spawn_next_command_in_evd(struct analyze_event_data *evd)
 {
     evd->env_list = export_event_config(evd->event_name);
-    int r = spawn_next_command(evd->run_state, g_dump_dir_name, evd->event_name);
+    int r = spawn_next_command(evd->run_state, g_dump_dir_name, evd->event_name, EXECFLG_SETPGID);
     if (r >= 0)
     {
         g_event_child_pid = evd->run_state->command_pid;
@@ -1864,7 +1864,7 @@ static void start_event_run(const char *event_name,
     set_excluded_envvar();
     GList *env_list = export_event_config(event_name);
 
-    if (spawn_next_command(state, g_dump_dir_name, event_name) < 0)
+    if (spawn_next_command(state, g_dump_dir_name, event_name, EXECFLG_SETPGID) < 0)
     {
         unexport_event_config(env_list);
         goto no_cmds;

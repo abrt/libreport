@@ -110,7 +110,7 @@ void make_run_event_state_forwarding(struct run_event_state *state)
  * List of commands machinery is encapsulated in struct run_event_state,
  * and public async API:
  *      prepare_commands(state, dir, event);
- *      spawn_next_command(state, dir, event);
+ *      spawn_next_command(state, dir, event, 0);
  *      free_commands(state);
  * does not expose the way we select rules to execute.
  */
@@ -416,11 +416,12 @@ int prepare_commands(struct run_event_state *state,
 
 int spawn_next_command(struct run_event_state *state,
                 const char *dump_dir_name,
-                const char *event
+                const char *event,
+                unsigned execflags
 ) {
     char *cmd = pop_next_command(&state->rule_list,
                 NULL,          /* don't return event_name */
-                NULL,          /* NULL &dd: we match by... */
+                NULL,          /* NULL dd: we match by... */
                 dump_dir_name, /* ...dirname */
                 event, strlen(event)+1 /* for this event name exactly (not prefix) */
     );
@@ -456,7 +457,7 @@ int spawn_next_command(struct run_event_state *state,
 
     int pipefds[2];
     state->command_pid = fork_execv_on_steroids(
-                EXECFLG_INPUT + EXECFLG_OUTPUT + EXECFLG_ERR2OUT + EXECFLG_SETPGID,
+                EXECFLG_INPUT | EXECFLG_OUTPUT | EXECFLG_ERR2OUT | execflags,
                 argv,
                 pipefds,
                 /* env_vec: */ env_vec,
@@ -611,7 +612,7 @@ int run_event_on_dir_name(struct run_event_state *state,
     /* Execute every command in shell */
 
     int retval = 0;
-    while (spawn_next_command(state, dump_dir_name, event) >= 0)
+    while (spawn_next_command(state, dump_dir_name, event, /*execflags:*/ 0) >= 0)
     {
         retval = consume_event_command_output(state, dump_dir_name);
         if (retval != 0)

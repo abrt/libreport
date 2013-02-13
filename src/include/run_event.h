@@ -143,10 +143,16 @@ void make_run_event_state_forwarding(struct run_event_state *state);
 
 /* Returns 0 if no commands found for this dump_dir_name+event, else >0 */
 int prepare_commands(struct run_event_state *state, const char *dump_dir_name, const char *event);
-/* Returns -1 is no more commands needs to be executed,
- * else sets state->command_pid and state->command_out_fd and returns >=0
+/*
+ * Returns -1 if no more commands needs to be executed,
+ * else sets state->command_pid and state->command_out_fd and returns >=0.
+ * execflags can be e.g. EXECFLG_SETPGID to put the event handling process
+ * into a new process group, EXECFLG_SETSID to put it in a new session, etc.
  */
-int spawn_next_command(struct run_event_state *state, const char *dump_dir_name, const char *event);
+int spawn_next_command(struct run_event_state *state,
+                const char *dump_dir_name,
+                const char *event,
+                unsigned execflags);
 /* Cleans up internal state created in prepare_commands */
 void free_commands(struct run_event_state *state);
 
