@@ -109,18 +109,19 @@ static bool exist_file_dir(const char *path)
     return false;
 }
 
-/* Returns true if the file is not readable or */
-/* if the file doesn't contain valid unixt time stamp */
-/* implementation is a compromise between efficiency and accuracy */
-/* the function gets false negative results for big numbers */
-static bool not_valid_time_file(const char *filename)
+/* Returns value less than 0 if the file is not readable or
+ * if the file doesn't contain valid unixt time stamp.
+ *
+ * Any possible failure will be logged.
+ */
+static long int parse_time_file(const char *filename)
 {
     /* Open input file, and parse it. */
     int fd = open(filename, O_RDONLY | O_NOFOLLOW);
     if (fd < 0)
     {
         VERB2 perror_msg("Can't open '%s'", filename);
-        return true;
+        return -1;
     }
 
     /* ~ maximal number of digits for positive time stamp string*/
@@ -133,18 +134,17 @@ static bool not_valid_time_file(const char *filename)
     if (rdsz == -1)
     {
         VERB2 perror_msg("Can't read from '%s'", filename);
-        return true;
+        return -1;
     }
-
     /* approximate maximal number of digits in timestamp is sizeof(time_t)*3 */
     /* buffer has this size + 1 byte for trailing '\0' */
     /* if whole size of buffer was read then file is bigger */
     /* than string representing maximal time stamp */
     if (rdsz == sizeof(time_buf))
     {
-        VERB2 log("File '%s' is too long to be valid unix "
-                  "time stamp (max size %zdB)", filename, sizeof(time_buf));
-        return true;
+        VERB2 error_msg("File '%s' is too long to be valid unix "
+                        "time stamp (max size %zdB)", filename, sizeof(time_buf));
+        return -1;
     }
 
     /* Our tools don't put trailing newline into time file,
@@ -154,16 +154,38 @@ static bool not_valid_time_file(const char *filename)
         rdsz--;
     time_buf[rdsz] = '\0';
 
-    /* the value should fit to timestamp number range because of file size */
-    /* condition above, hence check if the value string consists only from digits */
-    if (!isdigit_str(time_buf))
+    errno = 0;    /* To distinguish success/failure after call */
+    char *endptr;
+    long val = strtol(time_buf, &endptr, /* base */ 10);
+
+    /* Check for various possible errors */
+    if ((errno == ERANGE && (val == LONG_MAX || val == LONG_MIN))
+            || (errno != 0 && val == 0))
     {
-        VERB2 log("File '%s' doesn't contain valid unix "
-                  "time stamp ('%s')", filename, time_buf);
-        return true;
+        VERB2 perror_msg("File '%s' doesn't contain valid unix "
+                         "time stamp ('%s')", filename, time_buf);
+        return -1;
     }
 
-    return false;
+    if (endptr == time_buf)
+    {
+        VERB2 error_msg("No digits were found in file '%s'", filename);
+        return -1;
+    }
+
+    if (*endptr != '\0')
+    {
+        VERB2 error_msg("Further characters after number: '%s' in file '%s'", endptr, filename);
+        return -1;
+    }
+
+    if (val < 0)
+    {
+        VERB2 error_msg("Negative time found in file '%s'", filename);
+    }
+
+    /* If we got here, strtol() successfully parsed a number */
+    return val;
 }
 
 /* Return values:
@@ -260,7 +282,8 @@ static int dd_lock(struct dump_dir *dd, unsigned sleep_usec, int flags)
     if (sleep_usec == WAIT_FOR_OTHER_PROCESS_USLEEP) /* yes */
     {
         strcpy(lock_buf + dirname_len, "/"FILENAME_TIME);
-        if (not_valid_time_file(lock_buf))
+        dd->dd_time = parse_time_file(lock_buf);
+        if (dd->dd_time < 0)
         {
             /* time file doesn't exist. We managed to lock the directory
              * which was just created by somebody else, or is almost deleted
@@ -302,7 +325,9 @@ static void dd_unlock(struct dump_dir *dd)
 
 static inline struct dump_dir *dd_init(void)
 {
-    return (struct dump_dir*)xzalloc(sizeof(struct dump_dir));
+    struct dump_dir* dd = (struct dump_dir*)xzalloc(sizeof(struct dump_dir));
+    dd->dd_time = -1;
+    return dd;
 }
 
 int dd_exist(const struct dump_dir *dd, const char *path)
@@ -361,7 +386,8 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
              && access(dir, R_OK) == 0
             ) {
                 char *time_file_name = concat_path_file(dir, FILENAME_TIME);
-                if (not_valid_time_file(time_file_name))
+                dd->dd_time = parse_time_file(time_file_name);
+                if (dd->dd_time < 0)
                 {
                     dd_close(dd);
                     dd = NULL;

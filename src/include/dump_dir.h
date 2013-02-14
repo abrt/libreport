@@ -45,6 +45,7 @@ struct dump_dir {
     gid_t dd_gid;
     /* mode fo saved files */
     mode_t mode;
+    time_t dd_time;
 };
 
 void dd_close(struct dump_dir *dd);
