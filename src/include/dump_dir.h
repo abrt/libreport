@@ -119,6 +119,8 @@ void delete_dump_dir(const char *dirname);
  */
 int dump_dir_accessible_by_uid(const char *dirname, uid_t uid);
 
+int dd_mark_as_notreportable(struct dump_dir *dd, const char *reason);
+
 #ifdef __cplusplus
 }
 #endif

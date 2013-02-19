@@ -1239,3 +1239,14 @@ int dump_dir_accessible_by_uid(const char *dirname, uid_t uid)
 
     return 0;
 }
+
+int dd_mark_as_notreportable(struct dump_dir *dd, const char *reason)
+{
+    if (!dd->locked)
+    {
+        error_msg("dump_dir is not locked for writing");
+        return -1;
+    }
+
+    dd_save_text(dd, FILENAME_NOT_REPORTABLE, reason);
+}
