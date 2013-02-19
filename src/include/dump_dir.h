@@ -119,6 +119,12 @@ void delete_dump_dir(const char *dirname);
  */
 int dump_dir_accessible_by_uid(const char *dirname, uid_t uid);
 
+/* creates not_reportable file in the problem directory and saves the
+   reason to it, which prevents libreport from reporting the problem
+   On success, zero is returned.
+   On error, -1 is returned and an error message is logged.
+     - this could probably happen only if the dump dir is not locked
+*/
 int dd_mark_as_notreportable(struct dump_dir *dd, const char *reason);
 
 #ifdef __cplusplus

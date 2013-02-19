@@ -1249,4 +1249,5 @@ int dd_mark_as_notreportable(struct dump_dir *dd, const char *reason)
     }
 
     dd_save_text(dd, FILENAME_NOT_REPORTABLE, reason);
+    return 0;
 }
