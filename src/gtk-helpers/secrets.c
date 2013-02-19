@@ -34,6 +34,9 @@
 /* 5s timeout*/
 #define SECRETS_CALL_DEFAULT_TIMEOUT 5000
 
+/* 15s until the timeout dialog will appear  */
+#define PROMPT_TIMEOUT_SECONDS 15
+
 /* Well known errors for which we have workarounds */
 #define NOT_IMPLEMENTED_READ_ALIAS_ERROR "org.freedesktop.DBus.Error.UnknownMethod"
 #define INVALID_PROPERTIES_ARGUMENTS_ERROR "org.freedesktop.DBus.Error.InvalidArgs"
@@ -377,24 +380,41 @@ static void secrets_service_set_unavailable(void)
 /* http://standards.freedesktop.org/secret-service/re05.html                   */
 /*******************************************************************************/
 
+/*
+ * Holds all data necessary for management of the glib main loop with the
+ * timeout dialog.
+ */
+struct secrets_loop_env
+{
+    GMainContext* gcontext;
+    GMainLoop *gloop;
+    GtkWidget *timeout_dialog;
+};
+
 struct prompt_source
 {
     GSource source;
     GDBusProxy *prompt_proxy;
-    GMainLoop *loop;
+    struct secrets_loop_env *env;
 };
 
 struct prompt_call_back_args
 {
     gboolean dismissed;
     GVariant *result;
-    GMainLoop *loop;
+    struct secrets_loop_env *env;
 };
 
-static void prompt_quit_loop(GMainLoop *loop)
+static void prompt_quit_loop(struct secrets_loop_env *env)
 {
-    if (g_main_loop_is_running(loop))
-        g_main_loop_quit(loop);
+    if (NULL != env->timeout_dialog)
+    {
+        gtk_widget_destroy(env->timeout_dialog);
+        env->timeout_dialog = NULL;
+    }
+
+    if (g_main_loop_is_running(env->gloop))
+        g_main_loop_quit(env->gloop);
 }
 
 static gboolean prompt_g_idle_prepare(GSource *source_data, gint *timeout)
@@ -425,7 +445,7 @@ static gboolean prompt_g_idle_dispatch(GSource *source,
     if (!resp)
         /* We have to kill the loop because a dbus call failed and the signal */
         /* which stops the loop won't be received */
-        prompt_quit_loop(prompt_source->loop);
+        prompt_quit_loop(prompt_source->env);
     else
         g_variant_unref(resp);
 
@@ -454,7 +474,7 @@ static void prompt_call_back(GDBusConnection *connection, const gchar *sender_na
         /* if the prompt or operation were dismissed we don't care about result */
         g_variant_unref(result);
 
-    prompt_quit_loop(args->loop);
+    prompt_quit_loop(args->env);
 }
 
 /*
@@ -464,6 +484,83 @@ static void prompt_call_back(GDBusConnection *connection, const gchar *sender_na
 static bool is_prompt_required(const char *prompt_path)
 {
     return prompt_path && !(prompt_path[0] == '/' && prompt_path[1] == '\0');
+}
+
+/*
+ * Sets the timeout dialog to be displayed after PROMPT_TIMEOUT_SECONDS.
+ *
+ * @param env Crate holding necessary values.
+ */
+static void prompt_timeout_start(struct secrets_loop_env *env);
+
+/*
+ * A response callback which stops main loop execution or starts a new timeout.
+ *
+ * The main loop is stopped if user replied with "YES"; otherwise a new timeout
+ * is started.
+ */
+static void timeout_dialog_response_cb(GtkDialog *dialog, gint response_id, gpointer user_data)
+{
+    struct secrets_loop_env *env = (struct secrets_loop_env *)user_data;
+
+    gtk_widget_hide(env->timeout_dialog);
+
+    /* YES means 'Yes I want to stop waiting for Secret Service' */
+    /* for other responses we have to start a new timeout */
+    if (GTK_RESPONSE_YES == response_id)
+        prompt_quit_loop(env);
+    else
+        prompt_timeout_start(env);
+}
+
+/*
+ * Shows the timeout dialog which should allow user to break infinite waiting
+ * for Completed signal emitted by the Secret Service
+ *
+ * @param user_data Should hold an pointer to struct secrets_loop_env
+ */
+static gboolean prompt_timeout_cb(gpointer user_data)
+{
+    VERB3 log("A timeout was reached while waiting for the DBus Secret Service to get prompt result.");
+    struct secrets_loop_env *env = (struct secrets_loop_env *)user_data;
+
+    if (env->timeout_dialog == NULL)
+    {
+        GtkWidget *dialog = gtk_message_dialog_new(/*parent widget*/NULL,
+                                                   GTK_DIALOG_MODAL,
+                                                   GTK_MESSAGE_WARNING,
+                                                   GTK_BUTTONS_YES_NO,
+                _("A timeout was reached while waiting for a prompt result from the DBus Secret Service."));
+
+        gtk_message_dialog_format_secondary_text(GTK_MESSAGE_DIALOG(dialog),
+                _("Do you want to stop waiting and continue in reporting without properly loaded configuration?"));
+
+        g_signal_connect(dialog, "response", G_CALLBACK(timeout_dialog_response_cb), user_data);
+
+        env->timeout_dialog = dialog;
+    }
+
+    gtk_widget_show_all(env->timeout_dialog);
+
+    return FALSE; /* remove this source */
+}
+
+/*
+ * Sets the timeout dialog to be displayed after PROMPT_TIMEOUT_SECONDS.
+ *
+ * @param env Crate holding necessary values.
+ */
+static void prompt_timeout_start(struct secrets_loop_env *env)
+{
+    GSource *timeout_source= g_timeout_source_new_seconds(PROMPT_TIMEOUT_SECONDS);
+
+    g_source_set_callback(timeout_source, prompt_timeout_cb, /*callback arg*/env, /*arg destroyer*/NULL);
+    g_source_attach(timeout_source, env->gcontext);
+
+    /* remove local reference, the source will be destroyed by the GMainContext
+     * over taken from glib2/gmain.c: g_timeout_add_full()
+     */
+    g_source_unref(timeout_source);
 }
 
 /*
@@ -496,12 +593,16 @@ static GVariant *secrets_prompt(const char *prompt_path,
     /* We have to use the thread default main context because a dbus signal callback */
     /* will be invoked in the thread default main loop */
     GMainContext *context = g_main_context_get_thread_default();
-    GMainLoop *loop = g_main_loop_new(context, FALSE);
+    struct secrets_loop_env env = {
+        .gcontext=context,
+        .gloop=g_main_loop_new(context, FALSE),
+        .timeout_dialog=NULL,
+    };
 
     struct prompt_call_back_args args = {
         .result=NULL,
         .dismissed=FALSE,
-        .loop=loop
+        .env=&env
     };
 
     /* g_dbus_connection_signal_subscribe() doesn't report any error */
@@ -517,22 +618,25 @@ static GVariant *secrets_prompt(const char *prompt_path,
     /* Idle source simply performs a prompt after the loop is stared. */
     struct prompt_source *const prompt_source =
         (struct prompt_source*)g_source_new(&idle_funcs, sizeof(*prompt_source));
-
     prompt_source->prompt_proxy = prompt_proxy;
+    prompt_source->env = &env;
 
     g_source_attach((GSource*)prompt_source, context);
 
-    /* the loop is exited when the Completed signal is received */
     /* the loop may sucks in infinite loop if the signal is never received */
-    /* TODO : if timeout is required use g_timeout_source_new() and g_source_attach() */
-    g_main_loop_run(loop);
+    /* thus in order to prevent it we use this timeout */
+    prompt_timeout_start(&env);
+
+    /* the loop is exited when the Completed signal is received */
+    g_main_loop_run(env.gloop);
 
     /* destroy prompt source */
     g_object_unref(prompt_proxy);
     g_source_destroy((GSource*)prompt_source);
+    g_source_unref((GSource*)prompt_source);
 
     g_dbus_connection_signal_unsubscribe(g_connection, signal_ret);
-    g_main_loop_unref(loop);
+    g_main_loop_unref(env.gloop);
 
     *dismissed = args.dismissed;
     return args.result;
