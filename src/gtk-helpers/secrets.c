@@ -388,6 +388,7 @@ struct secrets_loop_env
 {
     GMainContext* gcontext;
     GMainLoop *gloop;
+    GSource *timeout_source;
     GtkWidget *timeout_dialog;
 };
 
@@ -405,6 +406,18 @@ struct prompt_call_back_args
     struct secrets_loop_env *env;
 };
 
+static void nuke_timeout_source(GSource *source)
+{
+    if (NULL == source)
+        return;
+
+    if (!g_source_is_destroyed(source))
+        /* detach it from GMainContext if it is attached */
+        g_source_destroy(source);
+
+    g_source_unref(source);
+}
+
 static void prompt_quit_loop(struct secrets_loop_env *env)
 {
     if (NULL != env->timeout_dialog)
@@ -412,6 +425,9 @@ static void prompt_quit_loop(struct secrets_loop_env *env)
         gtk_widget_destroy(env->timeout_dialog);
         env->timeout_dialog = NULL;
     }
+
+    nuke_timeout_source(env->timeout_source);
+    env->timeout_source = NULL;
 
     if (g_main_loop_is_running(env->gloop))
         g_main_loop_quit(env->gloop);
@@ -552,15 +568,20 @@ static gboolean prompt_timeout_cb(gpointer user_data)
  */
 static void prompt_timeout_start(struct secrets_loop_env *env)
 {
-    GSource *timeout_source= g_timeout_source_new_seconds(PROMPT_TIMEOUT_SECONDS);
-
-    g_source_set_callback(timeout_source, prompt_timeout_cb, /*callback arg*/env, /*arg destroyer*/NULL);
-    g_source_attach(timeout_source, env->gcontext);
-
-    /* remove local reference, the source will be destroyed by the GMainContext
-     * over taken from glib2/gmain.c: g_timeout_add_full()
+    /* Clean up the old timeout source, it can't be attached to the context again.
+     * http://developer.gnome.org/glib/2.34/glib-The-Main-Event-Loop.html#g-source-destroy
+     *
+     * The old timeout source was destroyed by GMainContext because source's
+     * callback (prompt_timeout_cb) returns FALSE. The callback must return
+     * FALSE because neither the expiration time of timeout source can be reset
+     * nor timeout can be suspended.
      */
-    g_source_unref(timeout_source);
+    nuke_timeout_source(env->timeout_source);
+
+    env->timeout_source= g_timeout_source_new_seconds(PROMPT_TIMEOUT_SECONDS);
+
+    g_source_set_callback(env->timeout_source, prompt_timeout_cb, /*callback arg*/env, /*arg destroyer*/NULL);
+    g_source_attach(env->timeout_source, env->gcontext);
 }
 
 /*
@@ -596,6 +617,7 @@ static GVariant *secrets_prompt(const char *prompt_path,
     struct secrets_loop_env env = {
         .gcontext=context,
         .gloop=g_main_loop_new(context, FALSE),
+        .timeout_source=NULL,
         .timeout_dialog=NULL,
     };
 
