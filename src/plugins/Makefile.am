@@ -52,7 +52,8 @@ dist_events_DATA = $(reporters_events) \
     report_Mailx.xml \
     report_RHTSupport.xml \
     report_Kerneloops.xml \
-    report_Uploader.xml
+    report_Uploader.xml \
+    report_EmergencyAnalysis.xml
 
 @INTLTOOL_XML_RULE@
 
@@ -63,7 +64,8 @@ dist_eventsconf_DATA = \
     print_event.conf \
     bugzilla_event.conf \
     rhtsupport_event.conf \
-    uploader_event.conf
+    uploader_event.conf \
+    emergencyanalysis_event.conf
 
 reporters_extra_dist =
 if BUILD_BUGZILLA
@@ -83,7 +85,8 @@ EXTRA_DIST = $(reporters_extra_dist) \
     report_Mailx.xml.in \
     report_RHTSupport.xml.in \
     report_Kerneloops.xml.in \
-    report_Uploader.xml.in
+    report_Uploader.xml.in \
+    report_EmergencyAnalysis.xml.in
 
 libexec_SCRIPTS = abrt-screencast
 

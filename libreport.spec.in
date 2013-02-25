@@ -111,6 +111,7 @@ bugs
 Summary: GTK front-end for libreport
 Group: User Interface/Desktops
 Requires: libreport = %{version}-%{release}
+Requires: libreport-plugin-reportuploader = %{version}-%{release}
 %if 0%{?rhel} >= 6
 %else
 Requires: recordmydesktop
@@ -363,6 +364,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/report-gtk
 %{_libexecdir}/abrt-screencast
 %{_libdir}/libreport-gtk.so.*
+%config(noreplace) %{_sysconfdir}/libreport/events.d/emergencyanalysis_event.conf
+%{_sysconfdir}/libreport/events/report_EmergencyAnalysis.xml
 
 %files gtk-devel
 %defattr(-,root,root,-)

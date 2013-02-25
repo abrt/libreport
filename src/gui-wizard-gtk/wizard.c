@@ -25,6 +25,8 @@
 #define DEFAULT_WIDTH   800
 #define DEFAULT_HEIGHT  500
 
+#define EMERGENCY_ANALYSIS_EVENT_NAME "report_EmergencyAnalysis"
+
 #if GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 22
 # define gtk_assistant_commit(...) ((void)0)
 # define GDK_KEY_Delete GDK_Delete
@@ -62,6 +64,7 @@ static GtkBox *g_box_assistant;
 static GtkWidget *g_btn_stop;
 static GtkWidget *g_btn_close;
 static GtkWidget *g_btn_next;
+static GtkWidget *g_btn_onfail;
 
 static GtkBox *g_box_events;
 static GtkBox *g_box_workflows;
@@ -104,11 +107,13 @@ static GtkImage *g_img_process_fail;
 static GtkImage *g_img_process_ok;
 
 static GtkButton *g_btn_startcast;
+static GtkExpander *g_exp_report_log;
 
 static GtkWidget *g_top_most_window;
 
 static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback func);
 static void set_auto_event_chain(GtkButton *button, gpointer user_data);
+static void setup_and_start_event_run(const char *event_name);
 
 typedef struct
 {
@@ -1673,6 +1678,41 @@ static bool event_need_review(const char *event_name)
     return !event_cfg || !event_cfg->ec_skip_review;
 }
 
+static void on_btn_failed_cb(GtkButton *button)
+{
+    /* Show detailed log */
+    gtk_expander_set_expanded(g_exp_report_log, TRUE);
+
+    clear_warnings();
+    setup_and_start_event_run(EMERGENCY_ANALYSIS_EVENT_NAME);
+
+    /* single shot button -> hide after click */
+    gtk_widget_hide(GTK_WIDGET(button));
+}
+
+static void on_failed_event(const char *event_name)
+{
+    /* Don't show the 'on failure' button if the processed event
+     * was started by that button. (avoid infinite loop)
+     */
+    if (strcmp(event_name, EMERGENCY_ANALYSIS_EVENT_NAME) == 0)
+        return;
+
+   add_warning(
+_("Processing of the problem failed. This can have many reasons but there are two most common:\n"\
+"\t▫ <b>network connection problems</b>\n"\
+"\t▫ <b>corrupted problem data</b>\n"));
+
+    add_warning(
+_("If you want to help us, please click on the upload button and provide all problem data for a deep analysis.\n"\
+"<i>Before you do that, please consider the security risks. Problem data may contain sensitive information like passwords.\n"\
+"The uploaded data are stored in a protected storage and only a limited number of persons can read them.</i>"));
+
+    show_warnings();
+
+    gtk_widget_show(g_btn_onfail);
+}
+
 static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, gpointer data)
 {
     struct analyze_event_data *evd = data;
@@ -1774,8 +1814,19 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 
         if (retval != 0)
         {
-            gtk_label_set_text(evd->status_label,
-                        retval == 256 ? evd->success_msg : evd->error_msg);
+            /* 256 means NOT_REPORTABLE */
+            if (retval == 256)
+                gtk_label_set_text(evd->status_label, evd->success_msg);
+            else
+            {
+                gtk_label_set_text(evd->status_label, evd->error_msg);
+
+                /* We use SIGTERM to stop event processing on user's request.
+                 * So SIGTERM is not a failure.
+                 */
+                if (WTERMSIG(run_state->process_status) != SIGTERM)
+                    on_failed_event(evd->event_name);
+            }
             /* If we were running -e EV1 -e EV2, stop if EV1 failed: */
             terminate_event_chain();
         }
@@ -1929,7 +1980,8 @@ static void add_warning(const char *warning)
 {
     g_warning_issued = true;
     char *label_str = xasprintf("• %s", warning);
-    GtkWidget *warning_lbl = gtk_label_new(label_str);
+    GtkWidget *warning_lbl = gtk_label_new(NULL);
+    gtk_label_set_markup(GTK_LABEL(warning_lbl), label_str);
     /* should be safe to free it, gtk calls strdup() to copy it */
     free(label_str);
 
@@ -2338,7 +2390,7 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
     //);
 
     clear_warnings();
-
+    gtk_widget_hide(g_btn_onfail);
     /* Save text fields if changed */
     /* Must be called before any GUI operation because the following two
      * functions causes recreating of the text items tabs, thus all updates to
@@ -2975,6 +3027,7 @@ static void add_pages(void)
     g_img_process_ok       = GTK_IMAGE(      gtk_builder_get_object(g_builder, "img_process_ok"));
     g_img_process_fail     = GTK_IMAGE(      gtk_builder_get_object(g_builder, "img_process_fail"));
     g_btn_startcast        = GTK_BUTTON(    gtk_builder_get_object(g_builder, "btn_startcast"));
+    g_exp_report_log       = GTK_EXPANDER(     gtk_builder_get_object(g_builder, "expand_report"));
 
     gtk_widget_set_no_show_all(GTK_WIDGET(g_spinner_event_log), true);
 
@@ -3155,12 +3208,17 @@ void create_assistant(bool expert_mode)
     g_btn_close = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
     g_btn_stop = gtk_button_new_from_stock(GTK_STOCK_STOP);
     gtk_widget_set_no_show_all(g_btn_stop, true); /* else gtk_widget_hide won't work */
+    g_btn_onfail = gtk_button_new_with_label(_("Upload for analysis"));
+    gtk_button_set_image(GTK_BUTTON(g_btn_onfail), gtk_image_new_from_stock(GTK_STOCK_GO_UP, GTK_ICON_SIZE_BUTTON));
+    gtk_button_set_image_position(GTK_BUTTON(g_btn_onfail), GTK_POS_LEFT);
+    gtk_widget_set_no_show_all(g_btn_onfail, true); /* else gtk_widget_hide won't work */
     g_btn_next = gtk_button_new_from_stock(GTK_STOCK_GO_FORWARD);
     gtk_widget_set_no_show_all(g_btn_next, true); /* else gtk_widget_hide won't work */
 
     g_box_buttons = GTK_BOX(gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0));
     gtk_box_pack_start(g_box_buttons, g_btn_close, false, false, 5);
     gtk_box_pack_start(g_box_buttons, g_btn_stop, false, false, 5);
+    gtk_box_pack_start(g_box_buttons, g_btn_onfail, false, false, 5);
     /* Btns above are to the left, the rest are to the right: */
     GtkWidget *w = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);
     gtk_box_pack_start(g_box_buttons, w, true, true, 5);
@@ -3200,6 +3258,7 @@ void create_assistant(bool expert_mode)
 
     gtk_widget_show_all(GTK_WIDGET(g_box_buttons));
     gtk_widget_hide(g_btn_stop);
+    gtk_widget_hide(g_btn_onfail);
     gtk_widget_show(g_btn_next);
 
     g_wnd_assistant = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
@@ -3219,6 +3278,7 @@ void create_assistant(bool expert_mode)
 
     g_signal_connect(g_btn_close, "clicked", G_CALLBACK(assistant_quit_cb), NULL);
     g_signal_connect(g_btn_stop, "clicked", G_CALLBACK(on_btn_cancel_event), NULL);
+    g_signal_connect(g_btn_onfail, "clicked", G_CALLBACK(on_btn_failed_cb), NULL);
     g_signal_connect(g_btn_next, "clicked", G_CALLBACK(on_next_btn_cb), NULL);
 
     g_signal_connect(g_wnd_assistant, "destroy", G_CALLBACK(assistant_quit_cb), NULL);
