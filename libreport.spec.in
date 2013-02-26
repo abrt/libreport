@@ -28,6 +28,7 @@ BuildRequires: xmlto
 BuildRequires: newt-devel
 BuildRequires: libproxy-devel
 BuildRequires: btparser-devel
+BuildRequires: doxygen
 Requires: libreport-filesystem
 # required for update from old report library, otherwise we obsolete report-gtk
 # and all it's plugins, but don't provide the python bindings and the sealert
@@ -253,10 +254,10 @@ autoconf
     %if 0%{?rhel} < 7
         CFLAGS="%{optflags} -Werror" %configure --with-defaultdumpdirmode=0640 --disable-userownsdumpdir --disable-silent-rules
     %else
-        CFLAGS="%{optflags} -Werror" %configure --disable-silent-rules
+        CFLAGS="%{optflags} -Werror" %configure --enable-doxygen-docs --disable-silent-rules
     %endif
 %else
-        CFLAGS="%{optflags} -Werror" %configure --disable-silent-rules
+        CFLAGS="%{optflags} -Werror" %configure --enable-doxygen-docs --disable-silent-rules
 %endif
 
 make %{?_smp_mflags}
@@ -319,6 +320,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files devel
 %defattr(-,root,root,-)
 # Public api headers:
+%doc apidoc/html/*
 %{_includedir}/libreport/client.h
 %{_includedir}/libreport/dump_dir.h
 %{_includedir}/libreport/event_config.h
