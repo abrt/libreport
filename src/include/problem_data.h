@@ -16,6 +16,9 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+
+/** @file problem_data.h */
+
 #ifndef LIBREPORT_PROBLEM_DATA_H_
 #define LIBREPORT_PROBLEM_DATA_H_
 
@@ -99,6 +102,12 @@ problem_data_t *create_problem_data_from_dump_dir(struct dump_dir *dd);
 /* Helper for typical operation in reporters: */
 problem_data_t *create_problem_data_for_reporting(const char *dump_dir_name);
 
+/**
+  @brief Saves the problem data object
+
+  @param problem_data Problem data object to save
+  @param base_dir_name Location to store the problem data
+*/
 struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data, const char *base_dir_name);
 
 #ifdef __cplusplus
