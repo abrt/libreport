@@ -5,15 +5,15 @@
 # Translators:
 # Kiyoto Hashida <khashida@redhat.com>, 2011.
 #   <noriko@fedoraproject.org>, 2011, 2012.
-# Tomoyuki KATO <tomo@dream.daynight.jp>, 2012.
+# Tomoyuki KATO <tomo@dream.daynight.jp>, 2012-2013.
 #   <www.carrotsoft@gmail.com>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: https://fedorahosted.org/abrt/report\n"
-"POT-Creation-Date: 2012-12-19 15:44+0100\n"
-"PO-Revision-Date: 2012-12-19 14:46+0000\n"
-"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
+"POT-Creation-Date: 2012-12-20 08:42+0100\n"
+"PO-Revision-Date: 2013-02-20 09:38+0000\n"
+"Last-Translator: Tomoyuki KATO <tomo@dream.daynight.jp>\n"
 "Language-Team: Japanese <trans-ja@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,15 +41,15 @@ msgstr "これらのイベントのみを実行します"
 
 #: ../src/cli/cli.c:89
 msgid "Run analyze event(s) on PROBLEM_DIR"
-msgstr ""
+msgstr "PROBLEM_DIR においてイベント分析を実行する"
 
 #: ../src/cli/cli.c:90
 msgid "Run collect event(s) on PROBLEM_DIR"
-msgstr ""
+msgstr "PROBLEM_DIR においてイベント収集を実行する"
 
 #: ../src/cli/cli.c:91
 msgid "Analyze, collect and report problem data in PROBLEM_DIR"
-msgstr ""
+msgstr "PROBLEM_DIR において問題データを分析、収集および報告する"
 
 #: ../src/cli/cli.c:92 ../src/report-newt/report-newt.c:393
 msgid "Display version and exit"
@@ -57,7 +57,7 @@ msgstr "バージョンを表示して終了する"
 
 #: ../src/cli/cli.c:93
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "報告後に PROBLEM_DIR を削除する"
 
 #: ../src/cli/cli.c:94
 msgid "Noninteractive: don't ask questions, assume 'yes'"
@@ -214,7 +214,7 @@ msgstr "%d 回の報告イベントを通じて報告された問題(%d 個の�
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data. Do you want "
 "to continue?"
-msgstr ""
+msgstr "イベント '%s' はおそらく機微な情報を送信する権限が必要です。続行したいですか?"
 
 #: ../src/client-python/debuginfo.py:32
 msgid "Extracting cpio from {0}"
@@ -251,7 +251,7 @@ msgstr "ダウンロード中 ({0} ／ {1}) {2}: {3:3}%"
 msgid ""
 "Problem '{0!s}' occured while downloading from mirror: '{1!s}'. Trying next "
 "one"
-msgstr ""
+msgstr "ミラーからダウンロード中に問題 '{0!s}' が発生しました: '{1!s}'。次のものを試してください。"
 
 #. self.conf.cache = os.geteuid() != 0
 #. Setup yum (Ts, RPM db, Repo & Sack)
@@ -275,7 +275,7 @@ msgstr "yum リポジトリの設定中"
 
 #: ../src/client-python/debuginfo.py:213
 msgid "Can't disable async download, the output might contain artifacts!"
-msgstr ""
+msgstr "非同期ダウンロードを無効化できません、出力に加工されたものが含まれています。"
 
 #: ../src/client-python/debuginfo.py:215
 msgid "Can't setup {0}: {1}, disabling"
@@ -341,11 +341,11 @@ msgstr "次回からそのまま実行する"
 #. if event has no xml description
 #: ../src/gtk-helpers/config_dialog.c:153
 msgid "No description available"
-msgstr ""
+msgstr "説明がありません"
 
 #: ../src/gtk-helpers/config_dialog.c:274
 msgid "Configuration"
-msgstr ""
+msgstr "設定"
 
 #. we can't use this, because we want the workflows first and hashtable
 #. * doesn't return the items in the order they were added
@@ -355,17 +355,17 @@ msgstr ""
 #: ../src/gtk-helpers/config_dialog.c:299
 #: ../src/gtk-helpers/config_dialog.c:350
 msgid "Workflows"
-msgstr ""
+msgstr "ワークフロー"
 
 #: ../src/gtk-helpers/config_dialog.c:301
 #: ../src/gtk-helpers/config_dialog.c:303
 #: ../src/gtk-helpers/config_dialog.c:353
 msgid "Events"
-msgstr ""
+msgstr "イベント"
 
 #: ../src/gtk-helpers/config_dialog.c:307
 msgid "C_onfigure"
-msgstr ""
+msgstr "設定(_O)"
 
 #: ../src/gtk-helpers/event_config_dialog.c:136
 msgid "Show password"
@@ -386,35 +386,35 @@ msgstr "シークレットサービスが利用できません、設定は保存
 #: ../src/gtk-helpers/secrets.c:168
 #, c-format
 msgid "Can't connect over DBus to name '%s' path '%s' interface '%s': %s"
-msgstr ""
+msgstr "DBus 経由で名前 '%s' パス '%s' インターフェース '%s' に接続できません: %s"
 
 #: ../src/gtk-helpers/secrets.c:188
 #, c-format
 msgid "Can't call method '%s' over DBus on path '%s' interface '%s': %s"
-msgstr ""
+msgstr "メソッド '%s'  をパス '%s' インターフェース '%s' において DBus 経由で呼び出せません: %s"
 
 #: ../src/gtk-helpers/secrets.c:736
 #, c-format
 msgid "D-Bus Secrets Service ReadAlias('%s') method failed: %s"
-msgstr ""
+msgstr "D-Bus Secrets Service ReadAlias('%s') メソッドに失敗しました: %s"
 
 #. if the error wasn't about invalid properties we have an another problem
 #: ../src/gtk-helpers/secrets.c:977
 #, c-format
 msgid "Can't create a secret item for event '%s': %s"
-msgstr ""
+msgstr "イベント '%s' のシークレット項目を作成できません: %s"
 
 #: ../src/gtk-helpers/secrets.c:1159
 #, c-format
 msgid "can't get secret value of '%s': %s"
-msgstr ""
+msgstr "'%s' のシークレット値を取得できません: %s"
 
 #: ../src/gui-wizard-gtk/main.c:105
 msgid ""
 "& [-vpd] [-g GUI_FILE] DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
-msgstr ""
+msgstr "& [-vpd] [-g GUI_FILE] DIR\n\n指定された DIR に保存された問題を分析および報告する GUI ツール"
 
 #: ../src/gui-wizard-gtk/main.c:120
 msgid "Alternate GUI file"
@@ -431,7 +431,7 @@ msgstr "このイベントのみを実行します"
 
 #: ../src/gui-wizard-gtk/main.c:125
 msgid "Run wizard in expert mode - shows advanced options"
-msgstr ""
+msgstr "エキスパートモードにおいてウィザードの実行 - 高度なオプションの表示"
 
 #: ../src/gui-wizard-gtk/wizard.c:273
 #, c-format
@@ -439,7 +439,7 @@ msgid ""
 "Wrong settings detected for %s, reporting will probably fail if you continue with the current configuration.\n"
 "\n"
 "Read more about the configuration at: https://fedorahosted.org/abrt/wiki/AbrtConfiguration"
-msgstr ""
+msgstr "誤った設定が %s に対して検出されました、現在の設定のまま続行すると、報告が失敗する可能性があります。\n\n設定に関する詳細は次のページを参照してください: https://fedorahosted.org/abrt/wiki/AbrtConfiguration"
 
 #: ../src/gui-wizard-gtk/wizard.c:278
 #, c-format
@@ -447,7 +447,7 @@ msgid ""
 "Wrong settings detected for <b>%s</b>, reporting will probably fail if you continue with the current configuration.\n"
 "\n"
 "<a href=\"https://fedorahosted.org/abrt/wiki/AbrtConfiguration\">Read more about the configuration</a>"
-msgstr ""
+msgstr "誤った設定が <b>%s</b> に対して検出されました、現在の設定のまま続行すると、報告が失敗する可能性があります。\n\n<a href=\"https://fedorahosted.org/abrt/wiki/AbrtConfiguration\">設定に関する詳細はこちらを確認してください。</a>"
 
 #: ../src/gui-wizard-gtk/wizard.c:296
 #, c-format
@@ -469,17 +469,17 @@ msgstr "テキストファイルの表示/編集"
 msgid ""
 "No reporting targets are defined for this problem. Check configuration in "
 "/etc/libreport/*"
-msgstr ""
+msgstr "この問題に対する報告ターゲットが定義されていません。 /etc/libreport/* にある設定を確認してください。"
 
 #: ../src/gui-wizard-gtk/wizard.c:974
 #, c-format
 msgid "(requires: %s)"
-msgstr ""
+msgstr "(必須: %s)"
 
 #: ../src/gui-wizard-gtk/wizard.c:988
 #, c-format
 msgid "(not needed, data already exist: %s)"
-msgstr ""
+msgstr "(必要ありません、データがすでに存在しません: %s)"
 
 #: ../src/gui-wizard-gtk/wizard.c:1138
 msgid "(click here to view/edit)"
@@ -500,7 +500,7 @@ msgstr "%llu バイト、 %u ファイル"
 #: ../src/gui-wizard-gtk/wizard.c:1518 ../src/gui-wizard-gtk/wizard.c:2195
 #: ../src/gui-wizard-gtk/wizard.c:2440
 msgid "Processing finished."
-msgstr ""
+msgstr "処理が完了しました。"
 
 #. TODO: better msg?
 #: ../src/gui-wizard-gtk/wizard.c:1802
@@ -510,11 +510,11 @@ msgstr "イベント '%s' のプロセッシングは定義されていません
 
 #: ../src/gui-wizard-gtk/wizard.c:1822
 msgid "Processing interrupted: can't continue without writable directory."
-msgstr ""
+msgstr "処理を中断しました: 書き込み可能なディレクトリなしで続行できません。"
 
 #: ../src/gui-wizard-gtk/wizard.c:1925
 msgid "Cannot check backtrace rating because of invalid event name"
-msgstr ""
+msgstr "無効なイベント名のためバックトレースのレーティングを確認できません"
 
 #: ../src/gui-wizard-gtk/wizard.c:2178
 msgid ""
@@ -543,16 +543,16 @@ msgstr "処理が完了しました。次のステップに進んでください
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
 "Do you want to continue?"
-msgstr ""
+msgstr "イベント '%s' はおそらく機微な情報を送信する権限が必要です\n続行したいですか?"
 
 #: ../src/gui-wizard-gtk/wizard.c:2499
 msgid "Processing was cancelled"
-msgstr ""
+msgstr "処理が取り消されました"
 
 #: ../src/gui-wizard-gtk/wizard.c:2509
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
-msgstr ""
+msgstr "この問題は報告されるべきではありません (おそらく既知の問題と思われます)。 %s"
 
 #: ../src/gui-wizard-gtk/wizard.c:2757
 #, c-format
@@ -591,7 +591,7 @@ msgstr "問題の説明"
 
 #: ../src/gui-wizard-gtk/wizard.c:3027
 msgid "Select how to report this problem"
-msgstr ""
+msgstr "この問題を報告する方法を選択してください"
 
 #: ../src/gui-wizard-gtk/wizard.c:3028
 msgid "Provide additional information"
@@ -607,11 +607,11 @@ msgstr "報告するデータの確認"
 
 #: ../src/gui-wizard-gtk/wizard.c:3031
 msgid "Processing"
-msgstr ""
+msgstr "処理しています"
 
 #: ../src/gui-wizard-gtk/wizard.c:3032
 msgid "Processing done"
-msgstr ""
+msgstr "処理が完了しました"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
 msgid ""
@@ -644,11 +644,11 @@ msgstr "<b>コメントはプライベートではありません。</b>公共�
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "If you don't know how to describe it, you can"
-msgstr ""
+msgstr "それを説明する方法がわからなければ、次のことができます。"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "add screencast"
-msgstr ""
+msgstr "スクリーンキャストの追加"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "I don't know what caused this problem"
@@ -664,7 +664,7 @@ msgstr "追加のデバッグパッケージをインストールした後に、
 msgid ""
 "Please review the data before it gets reported. Depending on reporter "
 "chosen, it may end up publicly visible."
-msgstr ""
+msgstr "報告する前にデータを確認してください。選択した報告先によっては、一般公開される可能性があります。"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid "Size:"
@@ -687,7 +687,7 @@ msgstr "リモートサーバーにレポートを行う場合には、 プラ�
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid "Processing did not start yet"
-msgstr ""
+msgstr "処理がまだ開始していません"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "Show log"
@@ -706,7 +706,7 @@ msgstr "異なる送信先に問題を報告したい場合は、追加情報を
 
 #: ../src/include/internal_libreport.h:834
 msgid "Be verbose"
-msgstr ""
+msgstr "冗長な出力"
 
 #: ../src/include/internal_libreport.h:835
 #: ../src/plugins/reporter-bugzilla.c:861
@@ -715,7 +715,7 @@ msgstr ""
 #: ../src/plugins/reporter-rhtsupport.c:83
 #: ../src/plugins/reporter-upload.c:300
 msgid "Problem directory"
-msgstr ""
+msgstr "問題ディレクトリ"
 
 #: ../src/lib/abrt_sock.c:150
 #, c-format
@@ -729,7 +729,7 @@ msgstr "f"
 #: ../src/lib/create_dump_dir.c:39
 #, c-format
 msgid "Missing required item: '%s'"
-msgstr ""
+msgstr "必要な項目がありません: '%s'"
 
 #: ../src/lib/create_dump_dir.c:54
 #, c-format
@@ -766,11 +766,11 @@ msgstr "サポートされていないオプションタイプ"
 
 #: ../src/lib/event_config.c:420
 msgid "Reporting disabled because the rating does not contain a number."
-msgstr ""
+msgstr "レーティングが数値を含んでいないため、報告が無効化されます。"
 
 #: ../src/lib/event_config.c:421
 msgid "Please report this problem to ABRT project developers."
-msgstr ""
+msgstr "この問題を ABRT プロジェクト開発者に連絡してください。"
 
 #: ../src/lib/event_config.c:427
 msgid ""
@@ -780,7 +780,7 @@ msgstr "バックトレースが不完全です。再現手順が書かれてい
 
 #: ../src/lib/event_config.c:428
 msgid "The backtrace probably can't help to a developer in searching for bug."
-msgstr ""
+msgstr "おそらくバックトレースがバグを検索するときに開発者の役に立ちません。"
 
 #: ../src/lib/event_config.c:434
 msgid "Reporting disabled because the backtrace is unusable."
@@ -791,11 +791,11 @@ msgstr "バックトレースが利用できないため、報告機能が無効
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again."
-msgstr ""
+msgstr "次のコマンドを使用して手動で debuginfo をインストールして、再び試してください: \"debuginfo-install %s\""
 
 #: ../src/lib/event_config.c:440
 msgid "A proper debuginfo is probably missing or the coredump is corrupted."
-msgstr ""
+msgstr "適切な debuginfo がおそらく見つかりません、またはコアダンプが破損しています。"
 
 #: ../src/lib/parse_options.c:58
 msgid "Usage: "
@@ -908,19 +908,19 @@ msgstr "チケット/ケース ID"
 
 #: ../src/plugins/reporter-bugzilla.c:349
 msgid "Can't parse backtrace"
-msgstr ""
+msgstr "バックトレースを解析できません"
 
 #: ../src/plugins/reporter-bugzilla.c:360
 msgid "Can't find crash thread"
-msgstr ""
+msgstr "クラッシュ・スレッドを見つけられません"
 
 #: ../src/plugins/reporter-bugzilla.c:719
 msgid "Can't continue without login"
-msgstr ""
+msgstr "ログインせずに続行できません"
 
 #: ../src/plugins/reporter-bugzilla.c:729
 msgid "Can't continue without password"
-msgstr ""
+msgstr "パスワードなしで続行できません"
 
 #: ../src/plugins/reporter-bugzilla.c:737
 #, c-format
@@ -929,16 +929,16 @@ msgstr "%s にある Bugzilla にログインしています"
 
 #: ../src/plugins/reporter-bugzilla.c:741
 msgid "Invalid password or login. Please enter your BZ login:"
-msgstr ""
+msgstr "無効なパスワードまたはログイン名です。あなたの BZ ログイン名を入力してください:"
 
 #: ../src/plugins/reporter-bugzilla.c:744
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
-msgstr ""
+msgstr "無効なパスワードまたはログイン名です。'%s' のパスワードを入力してください:"
 
 #: ../src/plugins/reporter-bugzilla.c:779
 msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
-msgstr ""
+msgstr "Bug.search(quicksearch) の返り値がメンバー 'bugs' を含みません"
 
 #: ../src/plugins/reporter-bugzilla.c:797
 msgid ""
@@ -986,7 +986,7 @@ msgstr "設定ファイル (何回でも供給可能)"
 
 #: ../src/plugins/reporter-bugzilla.c:863
 msgid "Formatting file"
-msgstr ""
+msgstr "ファイルを整形しています"
 
 #: ../src/plugins/reporter-bugzilla.c:864
 msgid "Attach FILEs [to bug with this ID]"
@@ -1003,53 +1003,53 @@ msgstr "この問題がすでに報告されている場合でも強制的に報
 
 #: ../src/plugins/reporter-bugzilla.c:867
 msgid "Add bugzilla user to CC list [of bug with this ID]"
-msgstr ""
+msgstr "bugzilla ユーザーを [この ID を持つバグの] CC 一覧に追加する"
 
 #: ../src/plugins/reporter-bugzilla.c:868
 msgid "Print BUG_ID which has given DUPHASH"
-msgstr ""
+msgstr "指定された DUPHASH を持つ BUG_ID を表示します"
 
 #: ../src/plugins/reporter-bugzilla.c:869
 msgid "Restrict access to this group only"
-msgstr ""
+msgstr "アクセスをこのグループのみに制限する"
 
 #: ../src/plugins/reporter-bugzilla.c:870
 msgid "Debug"
-msgstr ""
+msgstr "デバッグ"
 
 #: ../src/plugins/reporter-bugzilla.c:938
 msgid "Login is not provided by configuration. Please enter your BZ login:"
-msgstr ""
+msgstr "ログイン情報が設定により指定されていません。BZ ログイン情報を入力してください:"
 
 #: ../src/plugins/reporter-bugzilla.c:944
 #, c-format
 msgid ""
-"Password is not provided by configuration. Please enter the pasword for "
+"Password is not provided by configuration. Please enter the password for "
 "'%s':"
-msgstr ""
+msgstr "パスワードが設定されていません。'%s' 向けのパスワードを入力してください:"
 
 #: ../src/plugins/reporter-bugzilla.c:963
 msgid ""
 "Can't get Bugzilla ID because this problem has not yet been reported to "
 "Bugzilla."
-msgstr ""
+msgstr "この問題がまだ Bugzilla に報告されていないので Bugzilla ID を取得できません。"
 
 #: ../src/plugins/reporter-bugzilla.c:970
 #, c-format
 msgid ""
 "This problem has been reported to Bugzilla '%s' which differs from the "
 "configured Bugzilla '%s'."
-msgstr ""
+msgstr "この問題が Bugzilla '%s' に報告されました。設定された Bugzilla '%s' から変更されました。"
 
 #: ../src/plugins/reporter-bugzilla.c:974
 #, c-format
 msgid "Malformed url to Bugzilla '%s'."
-msgstr ""
+msgstr "Bugzilla '%s' の不正な形式の URL。"
 
 #: ../src/plugins/reporter-bugzilla.c:978
 #, c-format
 msgid "Using Bugzilla ID '%s'"
-msgstr ""
+msgstr "Bugzilla ID '%s' を使用しています"
 
 #: ../src/plugins/reporter-bugzilla.c:1012
 #: ../src/plugins/reporter-bugzilla.c:1281
@@ -1078,7 +1078,7 @@ msgstr "バグは既に報告済みです: %i　"
 #: ../src/plugins/reporter-bugzilla.c:1214
 #, c-format
 msgid "Adding %s to CC list"
-msgstr ""
+msgstr "%s を CC 一覧に追加しています"
 
 #: ../src/plugins/reporter-bugzilla.c:1253
 #, c-format
@@ -1427,7 +1427,7 @@ msgstr "例:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:pas
 
 #: ../src/plugins/report_uReport.xml.in.h:1
 msgid "uReport"
-msgstr ""
+msgstr "uReport"
 
 #: ../src/plugins/report_uReport.xml.in.h:2
 msgid "Sends ureports to FAF server"
@@ -1466,47 +1466,47 @@ msgstr "新しいバグ id: %i"
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla はバグ %d の親を見つけることが出来ません"
 
-#: ../src/plugins/abrt-screencast:86
+#: ../src/plugins/abrt-screencast:87
 #, c-format
 msgid "Encoding: {0!s}% complete"
-msgstr ""
+msgstr "エンコーディング: {0!s}% c 完了"
 
-#: ../src/plugins/abrt-screencast:123
+#: ../src/plugins/abrt-screencast:124
 msgid "Select window"
-msgstr ""
+msgstr "ウィンドウを選択する"
 
-#: ../src/plugins/abrt-screencast:243
+#: ../src/plugins/abrt-screencast:244
 msgid "Usage: abrt-screencast -o OUTPUT_FILE"
-msgstr ""
+msgstr "使用法: abrt-screencast -o OUTPUT_FILE"
 
 #: ../src/plugins/ureport.c:181
 msgid "Can't get server response because of invalid url"
-msgstr ""
+msgstr "無効な URL のためサーバーの応答を取得できません"
 
 #: ../src/plugins/ureport.c:189
 msgid "Unable to parse response from ureport server"
-msgstr ""
+msgstr "uReport サーバからの応答を構文解析できません"
 
 #: ../src/plugins/ureport.c:200
 msgid "Server response data has invalid format"
-msgstr ""
+msgstr "サーバの応答データが無効な形式です"
 
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
 #: ../src/plugins/ureport.c:205
 msgid "Server response type mismatch"
-msgstr ""
+msgstr "サーバー応答形式が一致しません"
 
 #. can't print better error message
 #: ../src/plugins/ureport.c:213
 #, c-format
 msgid "Unexpected HTTP status code: %d"
-msgstr ""
+msgstr "予期しない HTTP ステータスコード: %d"
 
 #: ../src/plugins/ureport.c:237 ../src/plugins/ureport.c:389
 #, c-format
 msgid "Server side error: '%s'"
-msgstr ""
+msgstr "サーバーサイドエラー: '%s'"
 
 #: ../src/plugins/ureport.c:268
 msgid "Specify server URL"
@@ -1514,52 +1514,52 @@ msgstr "サーバーの URL を指定します"
 
 #: ../src/plugins/ureport.c:270
 msgid "Allow insecure connection to ureport server"
-msgstr ""
+msgstr "uReport サーバーに非セキュアな接続を許可する"
 
 #: ../src/plugins/ureport.c:272
 msgid "bthash of uReport to attach"
-msgstr ""
+msgstr "添付する uReport の bthash"
 
 #: ../src/plugins/ureport.c:274
 msgid "Attach RHBZ bug (requires -a)"
-msgstr ""
+msgstr "RHBZ バグの添付 (-a 必須)"
 
 #: ../src/plugins/ureport.c:276
 msgid "Attach contents of reported_to"
-msgstr ""
+msgstr "reported_to の内容の添付"
 
 #: ../src/plugins/ureport.c:281
 msgid ""
 "& [-v] [-u URL] [-k] [-a bthash -b bug-id] [-r] [-d DIR]\n"
 "\n"
 "Upload micro report or add an attachment to a micro report"
-msgstr ""
+msgstr "& [-v] [-u URL] [-k] [-a bthash -b bug-id] [-r] [-d DIR]\n\nマイクロレポートをアップロードする、または添付資料をマイクロレポートに追加する"
 
 #: ../src/plugins/ureport.c:296
 msgid "You need to specify bug ID to attach."
-msgstr ""
+msgstr "添付するバグ ID を指定する必要があります。"
 
 #: ../src/plugins/ureport.c:298
 msgid "You need to specify bthash of the uReport to attach."
-msgstr ""
+msgstr "添付する uReport の bthash を指定する必要があります。"
 
 #: ../src/plugins/ureport.c:313
 msgid "This problem does not have an uReport assigned."
-msgstr ""
+msgstr "この問題は uReport が添付されていません。"
 
 #: ../src/plugins/ureport.c:316
 msgid "This problem has not been reported to Bugzilla."
-msgstr ""
+msgstr "この問題は Bugzilla に報告されていません。"
 
 #: ../src/plugins/ureport.c:323
 #, c-format
 msgid "Unable to find bug ID in bugzilla URL '%s'"
-msgstr ""
+msgstr "bugzilla URL '%s' にバグ ID を見つけられません"
 
 #: ../src/plugins/ureport.c:328
 #, c-format
 msgid "Unable to parse bug ID from bugzilla URL '%s'"
-msgstr ""
+msgstr "bugzilla URL '%s' からバグ ID を構文解析できません"
 
 #: ../src/plugins/ureport.c:381
 msgid "This problem has already been reported."
@@ -1597,24 +1597,24 @@ msgid ""
 "& [-d] DIR\n"
 "\n"
 "newt tool to report problem saved in specified DIR"
-msgstr ""
+msgstr "& [-d] DIR\n\n指定した DIR に保存した問題を報告する newt ツール"
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:1
 #: ../src/workflows/workflow_Fedora.xml.in.h:1
 msgid "Report to Fedora"
-msgstr ""
+msgstr "Fedora に報告"
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:2
 #: ../src/workflows/workflow_Fedora.xml.in.h:2
 msgid "Process the report using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora インフラストレクチャーを使用して報告を処理する"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
 #: ../src/workflows/workflow_Upload.xml.in.h:1
 msgid "Upload the problem data to a server"
-msgstr ""
+msgstr "問題データをサーバーにアップロードする"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:2
 #: ../src/workflows/workflow_Upload.xml.in.h:2
 msgid "Analyze the problem locally and upload the data via scp or ftp"
-msgstr ""
+msgstr "問題をローカルに分析し、SCP または FTP 経由でデータをアップロードする"
