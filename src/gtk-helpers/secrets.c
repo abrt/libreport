@@ -340,7 +340,7 @@ static enum secrets_service_state secrets_service_connect(void)
     if (!g_session_proxy)
         return SBS_UNAVAILABLE;
 
-    return g_state;
+    return SBS_CONNECTED;
 }
 
 static void secrets_service_close_connection(void)
