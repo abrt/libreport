@@ -19,5 +19,22 @@
             <_note-html>Examples:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]</_note-html>
             <default-value></default-value>
         </option>
+        <advanced-options>
+            <option type="text" name="http_proxy">
+                <_label>HTTP Proxy</_label>
+                <allow-empty>yes</allow-empty>
+                <_note-html>Sets the proxy server to use for HTTP</_note-html>
+            </option>
+            <option type="text" name="HTTPS_PROXY">
+                <_label>HTTPS Proxy</_label>
+                <allow-empty>yes</allow-empty>
+                <_note-html>Sets the proxy server to use for HTTPS</_note-html>
+            </option>
+            <option type="text" name="FTP_PROXY">
+                <_label>FTP Proxy</_label>
+                <allow-empty>yes</allow-empty>
+                <_note-html>Sets the proxy server to use for FTP</_note-html>
+            </option>
+        </advanced-options>
     </options>
 </event>
