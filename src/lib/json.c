@@ -104,18 +104,28 @@ static void ureport_add_os(struct json_object *ur, problem_data_t *pd)
     json_object_object_add(ur, "os", jobject);
 }
 
-static void ureport_add_type(struct json_object *ur, problem_data_t *pd)
+static bool ureport_add_type(struct json_object *ur, problem_data_t *pd)
 {
     char *pd_item = problem_data_get_content_or_NULL(pd, FILENAME_ANALYZER);
     if (!pd_item)
-        return;
+    {
+        error_msg(_("Missing problem element '%s'"), FILENAME_ANALYZER);
+        return false;
+    }
 
-    if (!strcmp(pd_item, "CCpp"))
+    if (strcmp(pd_item, "CCpp") == 0)
         ureport_add_str(ur, "type", "USERSPACE");
-    if (!strcmp(pd_item, "Python"))
+    else if (strcmp(pd_item, "Python") == 0)
         ureport_add_str(ur, "type", "PYTHON");
-    if (!strcmp(pd_item, "Kerneloops"))
+    else if (strcmp(pd_item, "Kerneloops") == 0)
         ureport_add_str(ur, "type", "KERNELOOPS");
+    else
+    {
+        error_msg(_("An unsupported value '%s' in problem element '%s'"), pd_item, FILENAME_ANALYZER);
+        return false;
+    }
+
+    return true;
 }
 
 static void ureport_add_core_backtrace(struct json_object *ur, problem_data_t *pd)
@@ -255,7 +265,12 @@ char *new_json_ureport(problem_data_t *pd)
     ureport_add_item_str(ureport, pd, FILENAME_REASON, NULL);
     ureport_add_item_str(ureport, pd, FILENAME_COMPONENT, NULL);
 
-    ureport_add_type(ureport, pd);
+    if (!ureport_add_type(ureport, pd))
+    {
+        error_msg(_("Can't create an uReport without 'type'"));
+        json_object_put(ureport);
+        return NULL;
+    }
 
     ureport_add_pkg(ureport, pd);
     ureport_add_related_pkgs(ureport, pd);
@@ -295,6 +310,13 @@ struct post_state *post_ureport(problem_data_t *pd, struct ureport_server_config
     if (config->ur_ssl_verify)
         flags |= POST_WANT_SSL_VERIFY;
 
+    char *json_ureport = new_json_ureport(pd);
+    if (json_ureport == NULL)
+    {
+        error_msg(_("Not uploading an empty uReport"));
+        return NULL;
+    }
+
     struct post_state *post_state = new_post_state(flags);
 
     static const char *headers[] = {
@@ -302,8 +324,6 @@ struct post_state *post_ureport(problem_data_t *pd, struct ureport_server_config
         "Connection: close",
         NULL,
     };
-
-    char *json_ureport = new_json_ureport(pd);
 
     post_string_as_form_data(post_state, config->ur_url, "application/json",
                      headers, json_ureport);

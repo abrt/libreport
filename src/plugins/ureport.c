@@ -359,8 +359,13 @@ int main(int argc, char **argv)
     config.ur_url = dest_url;
     post_state = post_ureport(pd, &config);
     problem_data_free(pd);
-
     int ret = 1; /* return 1 by default */
+
+    if (!post_state)
+    {
+        error_msg(_("Failed on submitting the problem"));
+        goto format_err;
+    }
 
     struct ureport_server_response *response = get_server_response(post_state, &config);
 
