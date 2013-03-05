@@ -172,17 +172,38 @@ static struct ureport_server_response *ureport_server_parse_json(json_object *js
     return NULL;
 }
 
-static struct ureport_server_response *get_server_response(post_state_t *post_state)
+static struct ureport_server_response *get_server_response(post_state_t *post_state, struct ureport_server_config *config)
 {
     if (post_state->errmsg[0] != '\0')
     {
-        error_msg(_("Failed to upload uReport with curl: %s"), post_state->errmsg);
+        error_msg(_("Failed to upload uReport to the server '%s' with curl: %s"), config->ur_url, post_state->errmsg);
         return NULL;
     }
 
     if (post_state->http_resp_code == 404)
     {
-        error_msg(_("Can't get server response because of invalid url"));
+        error_msg(_("Can't get server response because of invalid url '%s'"), config->ur_url);
+        return NULL;
+    }
+
+    if (post_state->http_resp_code == 500)
+    {
+        error_msg(_("A server at '%s' encountered an internall error"), config->ur_url);
+        return NULL;
+    }
+
+    if (post_state->http_resp_code == 503)
+    {
+        error_msg(_("A server at '%s' is currently unable to handle the request"), config->ur_url);
+        return NULL;
+    }
+
+    if (post_state->http_resp_code != 202
+            && post_state->http_resp_code != 400
+            && post_state->http_resp_code != 413)
+    {
+        /* can't print better error message */
+        error_msg(_("Unexpected HTTP response from '%s': %d\n%s"), config->ur_url, post_state->http_resp_code, post_state->body);
         return NULL;
     }
 
@@ -190,7 +211,7 @@ static struct ureport_server_response *get_server_response(post_state_t *post_st
 
     if (is_error(json))
     {
-        error_msg(_("Unable to parse response from ureport server"));
+        error_msg(_("Unable to parse response from ureport server at '%s':\n%s"), config->ur_url, post_state->body);
         json_object_put(json);
         return NULL;
     }
@@ -198,25 +219,14 @@ static struct ureport_server_response *get_server_response(post_state_t *post_st
     struct ureport_server_response *response = ureport_server_parse_json(json);
     json_object_put(json);
 
-    if (post_state->http_resp_code == 202)
+    if (!response)
+        error_msg(_("The response from '%s' has invalid format"), config->ur_url);
+    else if ((post_state->http_resp_code == 202 && response->is_error)
+                || (post_state->http_resp_code != 202 && !response->is_error))
     {
-        if (!response)
-            error_msg(_("Server response data has invalid format"));
-        else if (response->is_error)
-        {
-            /* HTTP CODE 202 means that call was successful but the response */
-            /* has an error message */
-            error_msg(_("Server response type mismatch"));
-            free_ureport_server_response(response);
-            response = NULL;
-        }
-    }
-    else if (!response || !response->is_error)
-    {
-        /* can't print better error message */
-        error_msg(_("Unexpected HTTP status code: %d"), post_state->http_resp_code);
-        free_ureport_server_response(response);
-        response = NULL;
+        /* HTTP CODE 202 means that call was successful but the response */
+        /* has an error message */
+        error_msg(_("Type mismatch has been detected in the response from '%s'"), config->ur_url);
     }
 
     return response;
@@ -231,14 +241,14 @@ static bool perform_attach(struct ureport_server_config *config, const char *ure
     config->ur_url = old_url;
     free(dest_url);
 
-    struct ureport_server_response *resp = get_server_response(post_state);
+    struct ureport_server_response *resp = get_server_response(post_state, config);
     free_post_state(post_state);
     /* don't use str_bo_bool() because we require "true" string */
     const int result = !resp || resp->is_error || strcmp(resp->value,"true") != 0;
 
     if (resp && resp->is_error)
     {
-        error_msg(_("Server side error: '%s'"), resp->value);
+        error_msg(_("A server at '%s' responded with an error: '%s'"), config->ur_url, resp->value);
     }
 
     free_ureport_server_response(resp);
@@ -348,12 +358,11 @@ int main(int argc, char **argv)
     char *dest_url = concat_path_file(config.ur_url, REPORT_URL_SFX);
     config.ur_url = dest_url;
     post_state = post_ureport(pd, &config);
-    free(dest_url);
     problem_data_free(pd);
 
     int ret = 1; /* return 1 by default */
 
-    struct ureport_server_response *response = get_server_response(post_state);
+    struct ureport_server_response *response = get_server_response(post_state, &config);
 
     if (!response)
         goto format_err;
@@ -390,13 +399,14 @@ int main(int argc, char **argv)
     }
     else
     {
-        error_msg(_("Server side error: '%s'"), response->value);
+        error_msg(_("A server at '%s' responded with an error: '%s'"), config.ur_url, response->value);
     }
 
     free_ureport_server_response(response);
 
 format_err:
     free_post_state(post_state);
+    free(dest_url);
 
     return ret;
 }
