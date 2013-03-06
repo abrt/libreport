@@ -22,9 +22,33 @@ def unmute_stdout():
         else:
             print "ERR: unmute called without mute?"
 
+def ensure_abrt_uid(fn):
+    import pwd
+    current_uid = os.getuid()
+    current_gid = os.getgid()
+    abrt = pwd.getpwnam("abrt")
+
+    # if we're are already running as abrt, don't do anything
+    if abrt.pw_uid == current_uid and abrt.pw_gid == current_gid:
+        return fn
+
+    def wrapped(*args, **kwargs):
+        # switch to abrt
+        os.setegid(abrt.pw_gid)
+        os.seteuid(abrt.pw_uid)
+        # extract the files as abrt:abrt
+        retval = fn(*args, **kwargs)
+        # switch back to whatever we were
+        os.seteuid(current_uid)
+        os.setegid(current_gid)
+        return retval
+
+    return wrapped
+
 # TODO: unpack just required debuginfo and not entire rpm?
 # ..that can lead to: foo.c No such file and directory
 # files is not used...
+@ensure_abrt_uid
 def unpack_rpm(package_file_name, files, tmp_dir, destdir, keeprpm, exact_files=False):
     package_full_path = tmp_dir + "/" + package_file_name
     log1("Extracting %s to %s", package_full_path, destdir)
@@ -36,6 +60,7 @@ def unpack_rpm(package_file_name, files, tmp_dir, destdir, keeprpm, exact_files=
     except IOError, ex:
         print _("Can't write to '{0}': {1}").format(unpacked_cpio_path, ex)
         return RETURN_FAILURE
+
     rpm2cpio = Popen(["rpm2cpio", package_full_path],
                        stdout = unpacked_cpio, bufsize = -1)
     retcode = rpm2cpio.wait()
@@ -157,6 +182,23 @@ class DebugInfoDownload(YumBase):
             exit(1)
         unmute_stdout()
 
+    @ensure_abrt_uid
+    def setup_tmp_dirs(self):
+        if not os.path.exists(self.tmpdir):
+            try:
+                os.makedirs(self.tmpdir)
+            except OSError, ex:
+                print "Can't create tmpdir: %s" % ex
+                return RETURN_FAILURE
+        if not os.path.exists(self.cachedir):
+            try:
+                os.makedirs(self.cachedir)
+            except OSError, ex:
+                print "Can't create cachedir: %s" % ex
+                return RETURN_FAILURE
+
+        return RETURN_OK
+
     # return value will be used as exitcode. So 0 = ok, !0 - error
     def download(self, files, download_exact_files=False):
         """ @files - """
@@ -267,18 +309,11 @@ class DebugInfoDownload(YumBase):
             repo.cache = 0
             remote = pkg.returnSimple('relativepath')
             local = os.path.basename(remote)
-            if not os.path.exists(self.tmpdir):
-                try:
-                    os.makedirs(self.tmpdir)
-                except OSError, ex:
-                    print "Can't create tmpdir: %s" % ex
-                    return RETURN_FAILURE
-            if not os.path.exists(self.cachedir):
-                try:
-                    os.makedirs(self.cachedir)
-                except OSError, ex:
-                    print "Can't create cachedir: %s" % ex
-                    return RETURN_FAILURE
+            retval = self.setup_tmp_dirs()
+            # continue only if the tmp dirs are ok
+            if retval != RETURN_OK:
+                return retval
+
             local = os.path.join(self.tmpdir, local)
             pkg.localpath = local # Hack: to set the localpath we want
             err = self.downloadPkgs(pkglist=[pkg])
