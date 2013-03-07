@@ -152,6 +152,12 @@ static PyObject *get_logging_callback(PyObject *pself, void *unused)
     Py_RETURN_NONE;
 }
 
+static PyObject *get_children_count(PyObject *pself, void *unused)
+{
+    p_run_event_state *self = (p_run_event_state*)pself;
+    return PyInt_FromLong(self->state ? self->state->children_count : 0);
+}
+
 static int set_post_run_callback(PyObject *pself, PyObject *callback, void *unused)
 {
     p_run_event_state *self = (p_run_event_state*)pself;
@@ -202,6 +208,7 @@ static PyGetSetDef p_run_event_state_getset[] = {
     /* attr_name, getter_func, setter_func, doc_string, void_param */
     { (char*) "post_run_callback", get_post_run_callback, set_post_run_callback },
     { (char*) "logging_callback" , get_logging_callback , set_logging_callback  },
+    { (char*) "children_count"   , get_children_count   , NULL                  },
     { NULL }
 };
 
