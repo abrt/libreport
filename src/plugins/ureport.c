@@ -404,7 +404,7 @@ int main(int argc, char **argv)
     }
     else
     {
-        error_msg(_("A server at '%s' responded with an error: '%s'"), config.ur_url, response->value);
+        error_msg(_("Server responded with an error: '%s'"), response->value);
     }
 
     free_ureport_server_response(response);
