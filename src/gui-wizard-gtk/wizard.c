@@ -2513,6 +2513,10 @@ static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback f
         GList *children = gtk_container_get_children(GTK_CONTAINER(button));
         GtkWidget *label = (GtkWidget *)children->data;
         gtk_label_set_use_markup(GTK_LABEL(label), true);
+        gtk_widget_set_halign(label, GTK_ALIGN_START);
+        gtk_widget_set_margin_top(label, 10);
+        gtk_widget_set_margin_left(label, 40);
+        gtk_widget_set_margin_bottom(label, 10);
         free(btn_label);
         g_signal_connect(button, "clicked", func, w);
         gtk_box_pack_start(box, button, true, false, 2);
