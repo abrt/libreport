@@ -18,6 +18,7 @@
 */
 #include "workflow.h"
 #include "internal_libreport.h"
+#include "xml_parser.h"
 
 //workflow elements
 #define WORKFLOW_ELEMENT        "workflow"
@@ -25,14 +26,6 @@
 #define EVENT_ELEMENT           "event"
 #define DESCRIPTION_ELEMENT     "description"
 #define NAME_ELEMENT            "name"
-
-struct my_parse_data
-{
-    workflow_t *workflow;
-    const char *cur_locale;
-    char *attribute_lang;
-    bool in_event_list;
-};
 
 static void start_element(GMarkupParseContext *context,
                   const gchar *element_name,
@@ -47,6 +40,13 @@ static void start_element(GMarkupParseContext *context,
     if (strcmp(element_name, EVENTS_ELEMENT) == 0)
     {
         parse_data->in_event_list = true;
+    }
+
+    if (strcmp(element_name, NAME_ELEMENT) == 0
+     || strcmp(element_name, DESCRIPTION_ELEMENT) == 0
+    ) {
+        free(parse_data->attribute_lang);
+        parse_data->attribute_lang = get_element_lang(parse_data, attribute_names, attribute_values);
     }
 }
 
@@ -96,13 +96,39 @@ static void text(GMarkupParseContext *context,
 
     if(strcmp(inner_element, NAME_ELEMENT) == 0)
     {
-        wf_set_screen_name(workflow, text);
+        VERB3 log("workflow name:'%s'", text);
+
+        if (parse_data->attribute_lang != NULL) /* if it isn't for other locale */
+        {
+            /* set the value only if we found a value for the current locale
+             * OR the description is still not set and we found the default value
+             */
+            if (parse_data->attribute_lang[0] != '\0'
+             || !wf_get_screen_name(workflow) /* && parse_data->attribute_lang is "" - always true */
+            ) {
+                wf_set_screen_name(workflow, text);
+            }
+        }
     }
 
-    if(strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)
+    else if(strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)
     {
-        wf_set_description(workflow, text);
+       VERB3 log("workflow description:'%s'", text);
+
+        if (parse_data->attribute_lang != NULL) /* if it isn't for other locale */
+        {
+            /* set the value only if we found a value for the current locale
+             * OR the description is still not set and we found the default value
+             */
+            if (parse_data->attribute_lang[0] != '\0'
+             || !wf_get_description(workflow) /* && parse_data->attribute_lang is "" - always true */
+            ) {
+                wf_set_description(workflow, text);
+            }
+        }
+
     }
+
 }
 
   // Called for strings that should be re-saved verbatim in this same

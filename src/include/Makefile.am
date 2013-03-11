@@ -12,4 +12,5 @@ libreport_include_HEADERS = \
     config_item_info.h \
     file_obj.h \
     internal_libreport.h \
-    internal_abrt_dbus.h
+    internal_abrt_dbus.h \
+    xml_parser.h
