@@ -3207,7 +3207,14 @@ void create_assistant(bool expert_mode)
     g_builder = gtk_builder_new();
 
     g_assistant = GTK_NOTEBOOK(gtk_notebook_new());
-    gtk_notebook_set_show_tabs(g_assistant, (g_verbose != 0));
+
+    /* Show tabs only in verbose expert mode
+     *
+     * It is safe to let users randomly switch tabs only in expert mode because
+     * in all other modes a data for the selected page may not be ready and it
+     * will probably cause unexpected behaviour like crash.
+     */
+    gtk_notebook_set_show_tabs(g_assistant, (g_verbose != 0 && g_expert_mode));
 
     g_btn_close = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
     g_btn_stop = gtk_button_new_from_stock(GTK_STOCK_STOP);
