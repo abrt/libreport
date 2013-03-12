@@ -182,19 +182,19 @@ static struct ureport_server_response *get_server_response(post_state_t *post_st
 
     if (post_state->http_resp_code == 404)
     {
-        error_msg(_("Can't get server response because of invalid url '%s'"), config->ur_url);
+        error_msg(_("The URL '%s' does not exist (got error 404 from server)"), config->ur_url);
         return NULL;
     }
 
     if (post_state->http_resp_code == 500)
     {
-        error_msg(_("A server at '%s' encountered an internall error"), config->ur_url);
+        error_msg(_("The server at '%s' encountered an internal error (got error 500)"), config->ur_url);
         return NULL;
     }
 
     if (post_state->http_resp_code == 503)
     {
-        error_msg(_("A server at '%s' is currently unable to handle the request"), config->ur_url);
+        error_msg(_("The server at '%s' is currently can't handle the request (got error 503)"), config->ur_url);
         return NULL;
     }
 
@@ -248,7 +248,7 @@ static bool perform_attach(struct ureport_server_config *config, const char *ure
 
     if (resp && resp->is_error)
     {
-        error_msg(_("A server at '%s' responded with an error: '%s'"), config->ur_url, resp->value);
+        error_msg(_("The server at '%s' responded with an error: '%s'"), config->ur_url, resp->value);
     }
 
     free_ureport_server_response(resp);

@@ -108,7 +108,7 @@ void abrt_xmlrpc_free_client(struct abrt_xmlrpc *ax)
     free(ax);
 }
 
-/* internall helper function */
+/* internal helper function */
 static
 xmlrpc_value *abrt_xmlrpc_call_full_va(xmlrpc_env *env, struct abrt_xmlrpc *ax,
                                        const char *method, const char *format,
