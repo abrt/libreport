@@ -2389,7 +2389,17 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
     //            pages[PAGENO_REVIEW_DATA].page_widget == page
     //);
 
-    clear_warnings();
+    /* If processing is finished and if it was terminated because of an error
+     * the event progress page is selected. So, it does not make sense to show
+     * the next step button and we MUST NOT clear warnings.
+     */
+    if (!is_processing_finished())
+    {
+        /* some pages hide it, so restore it to it's default */
+        show_next_step_button();
+        clear_warnings();
+    }
+
     gtk_widget_hide(g_btn_onfail);
     /* Save text fields if changed */
     /* Must be called before any GUI operation because the following two
@@ -2398,8 +2408,6 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
     save_items_from_notepad();
     save_text_from_text_view(g_tv_comment, FILENAME_COMMENT);
 
-    //some pages hide it, so restore it to it's default
-    show_next_step_button();
 
     if (pages[PAGENO_SUMMARY].page_widget == page)
     {
