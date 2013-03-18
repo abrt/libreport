@@ -233,6 +233,15 @@ Default configuration for reporting bugs via Fedora infrastructure
 used to easy configure the reporting process for Fedora sytems. Just
 install this package and you're done.
 
+%package rhel
+Summary: Default configuration for reporting bugs via Red Hat infrastructure
+Group: Applications/File
+
+%description rhel
+Default configuration for reporting bugs via Red Hat infrastructure
+used to easy configure the reporting process for Red Hat sytems. Just
+install this package and you're done.
+
 %package anaconda
 Summary: Default configuration for reporting anaconda bugs
 Group: Applications/File
@@ -443,6 +452,15 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %{_sysconfdir}/libreport/workflows/workflow_Fedora.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_fedora.conf
+
+%files rhel
+%defattr(-,root,root,-)
+%{_sysconfdir}/libreport/workflows/workflow_RHELCCpp.xml
+%{_sysconfdir}/libreport/workflows/workflow_RHELKerneloops.xml
+%{_sysconfdir}/libreport/workflows/workflow_RHELPython.xml
+%{_sysconfdir}/libreport/workflows/workflow_RHELvmcore.xml
+%{_sysconfdir}/libreport/workflows/workflow_RHELxorg.xml
+%config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_rhel.conf
 
 %files anaconda
 %defattr(-,root,root,-)
