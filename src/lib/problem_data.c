@@ -280,7 +280,7 @@ static char* is_text_file(const char *name, ssize_t *sz)
         return NULL; /* it's not text (because it does not exist! :) */
 
     off_t size = lseek(fd, 0, SEEK_END);
-        if (size < 0 || size > CD_MAX_TEXT_SIZE)
+    if (size < 0 || size > CD_MAX_TEXT_SIZE)
     {
         close(fd);
         return NULL; /* it's not a SMALL text */
@@ -310,8 +310,13 @@ static char* is_text_file(const char *name, ssize_t *sz)
 
     /* Every once in a while, even a text file contains a few garbled
      * or unexpected non-ASCII chars. We should not declare it "binary".
+     *
+     * Used to have RATIO = 50 (2%), but then came Fedora 19 with
+     * os_release = "Schrödinger's Cat". Bumped to 10%.
+     * Alternatives: add os_release to always_text_files[]
+     * or add "if it is valid Unicode, then it's text" check here.
      */
-    const unsigned RATIO = 50;
+    const unsigned RATIO = 10;
     unsigned total_chars = r + RATIO;
     unsigned bad_chars = 1; /* 1 prevents division by 0 later */
     while (--r >= 0)
