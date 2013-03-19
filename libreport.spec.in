@@ -451,6 +451,50 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/anaconda_event.conf
 
 %changelog
+* Tue Mar 19 2013 Jakub Filak <jfilak@redhat.com> 2.1.2-1
+- always treat os-release as textual related to rhbz#922433
+- is_text_file(): bump allowable non-ASCII chars from 2% to 10%. Closes rhbz#922433
+- report-gtk: don't clear warnings after reporting is finished
+- report-gtk: show tabs only in verbose expert mode
+- ureport: improve messages. Closes #579
+- spec: added xml_parser header to -devel subpackage related #137
+- fixed workflow localization closes #137
+- uReport: do not show URL twice in error output
+- uReport: detect missing type field at client side
+- uReport: add more explanatory message when upload fails
+- report-gtk: prettify the workflow buttons rhbz#917694
+- workflows: a less confusing event name for reporting to Fedora infrastructure
+- workflows: correct an event name for reporting to Fedora in anaconda config
+- autogen.sh: stop using bashisms
+- run_event_state: expose children_count in python wrapper
+- configure.ac: Fix wrong variable name
+- add the proxy options to the addvanced section of event configurations
+- - don't suid before running yum related to rhbz#759443
+- ss: stop reconnecting to the session bus
+- update translation
+- add targets to makefile to ease the new release process
+- spec: bundle the docs to the -devel package related to #614
+- added doxygen support for generating api docs closes #614
+- add a button to report reporting failures
+- ss: destroy all timeout GSources attached to the main context
+- ss: add a timeout to the waiting for the Completed signal
+- dd: convert time at lock time
+- fixed the previous commit
+- added helper for marking problem as not reportable
+- logging: pass a single dot from event's process correctly
+- spawn_next_command: make process group creation optional
+- fork_execv_on_steroids: fix close/move order of fds, move getpwuid out of fork
+- problem API: generate UUID if is missing instead of DUPHASH
+- fix logic of 'Dont ask me again' dialogues (stop returning true for all options)
+- autogen: add function which installs dependencies (works on Fedora)
+- make [p]error_msg[_and_die] more fork-in-multithreaded-app safe
+- Suppress "initialization discards 'const' qualifier" build failure
+- Make forking code paths more robust.
+- curl_debug: fix use of "%.*s" (need to pass an int, not size_t)
+- report-gtk: gtk_scrolled_window_add_with_viewport has been deprecated since gtk-3.7.8
+- curl_debug: prettify debug output
+- report-gtk: gtk_scrolled_window_add_with_viewport has been deprecated
+
 * Thu Feb 07 2013 Jakub Filak <jfilak@redhat.com> 2.1.1-1
 - move 'reporter-mailx' from post-create event to notify(-dup) event
 - reporter-bugzilla: use base64 XMLRPC type for encoded data instead of string type
