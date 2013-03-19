@@ -266,6 +266,7 @@ static bool is_editable_file(const char *file_name)
 static const char *const always_text_files[] = {
     FILENAME_CMDLINE  ,
     FILENAME_BACKTRACE,
+    FILENAME_OS_RELEASE,
     NULL
 };
 static char* is_text_file(const char *name, ssize_t *sz)
