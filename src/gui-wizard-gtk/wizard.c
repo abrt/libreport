@@ -1204,9 +1204,9 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
 }
 
 /* Based on selected reporter, update item checkboxes */
-static void update_ls_details_checkboxes(void)
+static void update_ls_details_checkboxes(const char *event_name)
 {
-    event_config_t *cfg = get_event_config(g_event_selected);
+    event_config_t *cfg = get_event_config(event_name);
     //log("%s: event:'%s', cfg:'%p'", __func__, g_event_selected, cfg);
     GHashTableIter iter;
     char *name;
@@ -1684,6 +1684,7 @@ static void on_btn_failed_cb(GtkButton *button)
     gtk_expander_set_expanded(g_exp_report_log, TRUE);
 
     clear_warnings();
+    update_ls_details_checkboxes(EMERGENCY_ANALYSIS_EVENT_NAME);
     setup_and_start_event_run(EMERGENCY_ANALYSIS_EVENT_NAME);
 
     /* single shot button -> hide after click */
@@ -2446,7 +2447,7 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
         if (pages[PAGENO_REVIEW_DATA].page_widget == page)
         {
             gtk_widget_set_sensitive(g_btn_next, gtk_toggle_button_get_active(g_tb_approve_bt));
-            update_ls_details_checkboxes();
+            update_ls_details_checkboxes(g_event_selected);
         }
     }
 
@@ -2888,7 +2889,7 @@ static void on_btn_add_file(GtkButton *button)
                         problem_data_reload_from_dump_dir();
                         update_gui_state_from_problem_data(/* don't update selected event */ 0);
                         /* Set flags for the new item */
-                        update_ls_details_checkboxes();
+                        update_ls_details_checkboxes(g_event_selected);
                     }
                 }
                 free(new_name);
