@@ -571,3 +571,59 @@ post(post_state_t *state,
 
     return response_code;
 }
+
+/* Unlike post_file(),
+ * this function will use PUT, not POST if url is "http(s)://..."
+ */
+char *upload_file(const char *url, const char *filename)
+{
+    /* we don't want to print the whole url as it may contain password
+     * rhbz#856960
+     * there can be '@' in the login or password so let's try to find the
+     * first '@' from the end
+     */
+    const char *clean_url = strrchr(url, '@');
+    if (clean_url)
+        clean_url++;
+    else
+        clean_url = url;
+
+    log(_("Sending %s to %s"), filename, clean_url);
+
+    char *whole_url;
+    unsigned len = strlen(url);
+    if (len > 0 && url[len-1] == '/')
+        whole_url = concat_path_file(url, strrchr(filename, '/') ? : filename);
+    else
+        whole_url = xstrdup(url);
+
+    post_state_t *state = new_post_state(POST_WANT_ERROR_MSG);
+    post(state,
+                whole_url,
+                /*content_type:*/ "???",
+                /*additional_headers:*/ NULL,
+                /*data:*/ filename,
+                POST_DATA_FROMFILE_PUT
+    );
+
+    int error = (state->curl_result != 0);
+    if (error)
+    {
+	if (state->curl_error_msg)
+            error_msg("Error while uploading: '%s'", state->curl_error_msg);
+        else
+            /* for example, when source file can't be opened */
+            error_msg("Error while uploading");
+        free(whole_url);
+        whole_url = NULL;
+    }
+    else
+    {
+        /* This ends up a "reporting status message" in abrtd */
+        log(_("Successfully sent %s to %s"), filename, clean_url);
+    }
+
+    free_post_state(state);
+
+    return whole_url;
+}

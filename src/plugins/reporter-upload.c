@@ -20,58 +20,6 @@
 #include "libreport_curl.h"
 #include "internal_libreport.h"
 
-static int send_file(const char *url, const char *filename)
-{
-    /* we don't want to print the whole url as it may contain password
-     * rhbz#856960
-     * there can be '@' in the login or password so let's try to find the
-     * first '@' from the end
-     */
-    const char *clean_url = strrchr(url, '@');
-    if (clean_url)
-        clean_url++;
-    else
-        clean_url = url;
-
-    log(_("Sending %s to %s"), filename, clean_url);
-
-    char *whole_url;
-    unsigned len = strlen(url);
-    if (len > 0 && url[len-1] == '/')
-        whole_url = concat_path_file(url, strrchr(filename, '/') ? : filename);
-    else
-        whole_url = xstrdup(url);
-
-    post_state_t *state = new_post_state(POST_WANT_ERROR_MSG);
-    post(state,
-                whole_url,
-                /*content_type:*/ "???",
-                /*additional_headers:*/ NULL,
-                /*data:*/ filename,
-                POST_DATA_FROMFILE_PUT
-    );
-    free(whole_url);
-
-    int error = (state->curl_result != 0);
-    if (error)
-    {
-	if (state->curl_error_msg)
-            error_msg("Error while uploading: '%s'", state->curl_error_msg);
-        else
-            /* for example, when source file can't be opened */
-            error_msg("Error while uploading");
-    }
-    else
-    {
-        /* This ends up a "reporting status message" in abrtd */
-        log(_("Successfully sent %s to %s"), filename, clean_url);
-    }
-
-    free_post_state(state);
-
-    return error;
-}
-
 static int create_and_upload_archive(
                 const char *dump_dir_name,
                 map_string_h *settings)
@@ -183,7 +131,9 @@ static int create_and_upload_archive(
     /* Upload from /tmp to /tmp + deletion -> BAD, exclude this possibility */
     if (url && url[0] && strcmp(url, "file:///tmp/") != 0)
     {
-        result = send_file(url, tempfile);
+        char *remote_name = upload_file(url, tempfile);
+        result = (remote_name == NULL); /* error if NULL */
+        free(remote_name);
         /* cleanup code will delete tempfile */
     }
     else

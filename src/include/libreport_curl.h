@@ -117,6 +117,9 @@ post_file_as_form(post_state_t *state,
                      filename, POST_DATA_FROMFILE_AS_FORM_DATA);
 }
 
+#define upload_file libreport_upload_file
+char *upload_file(const char *url, const char *filename);
+
 #ifdef __cplusplus
 }
 #endif
