@@ -23,6 +23,8 @@
 #include "abrt_rh_support.h"
 #include "reporter-rhtsupport.h"
 
+#define QUERY_HINTS_IF_SMALLER_THAN  (8*1024*1024)
+
 static report_result_t *get_reported_to(const char *dump_dir_name)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
@@ -367,50 +369,53 @@ int main(int argc, char **argv)
         goto ret;
     }
 
-//TODO: fetch size, use it to decide whether to fetch hints
+    off_t tempfile_size = stat_st_size_or_die(tempfile);
 
-    /* Check for hints and show them if we have something */
-    result = get_rhts_hints(url,
-            login,
-            password,
-            ssl_verify,
-            tempfile
-    );
-#if 0 /* testing */
-    log("ERR:%d", result->error);
-    log("MSG:'%s'", result->msg);
-    log("BODY:'%s'", result->body);
-    result->error = 0;
-    result->body = xstrdup(
-    "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
-    "<problems xmlns=\"http://www.redhat.com/gss/strata\">"
-      "<link uri=\"http://access.redhat.com/\" rel=\"help\">The main Red Hat Support web site</link>"
-      "<property name=\"content\">an ABRT report</property>"
-      "<problem>"
-        "<property name=\"source\">a backtrace in the ABRT report</property>"
-        "<link uri=\"https://avalon-ci.gss.redhat.com/kb/docs/DOC-22029\" rel=\"suggestion\">[RHEL 5.3] EVO autocompletion lookup hang</link>"
-      "</problem>"
-    "</problems>"
-    );
-#endif
-    if (result->error == 0 && result->body)
+    if (tempfile_size <= QUERY_HINTS_IF_SMALLER_THAN)
     {
-        /* The message might contain URLs to known solutions and such */
-        char *hint = parse_response_from_RHTS_hint_xml2txt(result->body);
-        if (hint)
+        /* Check for hints and show them if we have something */
+        result = get_rhts_hints(url,
+                login,
+                password,
+                ssl_verify,
+                tempfile
+        );
+#if 0 /* testing */
+        log("ERR:%d", result->error);
+        log("MSG:'%s'", result->msg);
+        log("BODY:'%s'", result->body);
+        result->error = 0;
+        result->body = xstrdup(
+        "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
+        "<problems xmlns=\"http://www.redhat.com/gss/strata\">"
+          "<link uri=\"http://access.redhat.com/\" rel=\"help\">The main Red Hat Support web site</link>"
+          "<property name=\"content\">an ABRT report</property>"
+          "<problem>"
+            "<property name=\"source\">a backtrace in the ABRT report</property>"
+            "<link uri=\"https://avalon-ci.gss.redhat.com/kb/docs/DOC-22029\" rel=\"suggestion\">[RHEL 5.3] EVO autocompletion lookup hang</link>"
+          "</problem>"
+        "</problems>"
+        );
+#endif
+        if (result->error == 0 && result->body)
         {
-            hint = append_to_malloced_string(hint, " ");
-            hint = append_to_malloced_string(hint,
-                    _("Do you still want to create a RHTSupport ticket?")
-            );
-            int create_ticket = ask_yes_no(hint);
-            free(hint);
-            if (!create_ticket)
-                goto ret;
+            /* The message might contain URLs to known solutions and such */
+            char *hint = parse_response_from_RHTS_hint_xml2txt(result->body);
+            if (hint)
+            {
+                hint = append_to_malloced_string(hint, " ");
+                hint = append_to_malloced_string(hint,
+                        _("Do you still want to create a RHTSupport ticket?")
+                );
+                int create_ticket = ask_yes_no(hint);
+                free(hint);
+                if (!create_ticket)
+                    goto ret;
+            }
         }
+        free_rhts_result(result);
+        result = NULL;
     }
-    free_rhts_result(result);
-    result = NULL;
 
     if (!(opts & OPT_t))
     {

@@ -286,6 +286,14 @@ off_t fstat_st_size_or_die(int fd)
     return statbuf.st_size;
 }
 
+off_t stat_st_size_or_die(const char *filename)
+{
+    struct stat statbuf;
+    if (stat(filename, &statbuf))
+        perror_msg_and_die("Can't stat '%s'", filename);
+    return statbuf.st_size;
+}
+
 // Die if we can't open a file and return a fd
 int xopen3(const char *pathname, int flags, int mode)
 {

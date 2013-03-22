@@ -362,6 +362,8 @@ ssize_t xsendto(int s, const void *buf, size_t len,
 void xstat(const char *name, struct stat *stat_buf);
 #define fstat_st_size_or_die libreport_fstat_st_size_or_die
 off_t fstat_st_size_or_die(int fd);
+#define stat_st_size_or_die libreport_stat_st_size_or_die
+off_t stat_st_size_or_die(const char *filename);
 
 #define xopen3 libreport_xopen3
 int xopen3(const char *pathname, int flags, int mode);
