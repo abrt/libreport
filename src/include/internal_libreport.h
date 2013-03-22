@@ -127,7 +127,7 @@ char *xmalloc_fgets(FILE *file);
 #define xmalloc_fgetline libreport_xmalloc_fgetline
 char *xmalloc_fgetline(FILE *file);
 /* Useful for easy reading of various /proc files */
-#define xmalloc_fopen_fgetline_fclose libreport_fopen_fgetline_fclose
+#define xmalloc_fopen_fgetline_fclose libreport_xmalloc_fopen_fgetline_fclose
 char *xmalloc_fopen_fgetline_fclose(const char *filename);
 
 
