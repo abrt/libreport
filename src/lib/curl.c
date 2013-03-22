@@ -199,26 +199,36 @@ save_headers(void *buffer_pv, size_t count, size_t nmemb, void *ptr)
 static size_t fread_with_reporting(void *ptr, size_t size, size_t nmemb, void *userdata)
 {
     static time_t last_t; // hack
+    static time_t report_interval;
 
     FILE *fp = (FILE*)userdata;
+
+    off_t cur_pos = ftello(fp);
+    if (cur_pos == -1)
+        goto skip; /* paranoia */
+
     time_t t = time(NULL);
 
-    // Report current file position every 16 seconds
-    if (!(t & 0xf) && last_t != t)
+    if (cur_pos == 0) /* first call */
     {
         last_t = t;
+        report_interval = 15;
+    }
 
-        off_t cur_pos = ftello(fp);
-        if (cur_pos == -1)
-            goto skip; /* paranoia */
+    /* Report current file position after 15 seconds,
+     * then after 30 seconds, then after 60 seconds and so on.
+     */
+    if ((t - last_t) >= report_interval)
+    {
+        last_t = t;
+        report_interval *= 2;
         off_t sz = fstat_st_size_or_die(fileno(fp));
-
         log(_("Uploaded: %llu of %llu kbytes"),
                 (unsigned long long)cur_pos / 1024,
                 (unsigned long long)sz / 1024);
- skip: ;
     }
 
+ skip:
     return fread(ptr, size, nmemb, fp);
 }
 
