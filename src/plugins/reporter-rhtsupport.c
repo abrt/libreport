@@ -471,7 +471,11 @@ int main(int argc, char **argv)
             log("URL=%s", result->url);
         }
         /* else: error msg was already emitted by dd_opendir */
+
         url = result->url;
+        result->url = NULL;
+        free_rhts_result(result);
+        result = NULL;
     }
 
     /* Attach the tarball of -d DIR */
