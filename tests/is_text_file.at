@@ -1,0 +1,49 @@
+# -*- Autotest -*-
+
+AT_BANNER([is_text_file])
+
+## ---------------------- ##
+## is_text_file ##
+## ---------------------- ##
+
+AT_TESTFUN([is_text_file],
+[[
+#include "internal_libreport.h"
+#include <assert.h>
+int main(void)
+{
+    char *dir = mkdtemp(strdup("/tmp/ddXXXXXX"));
+    assert(dir);
+    assert(chdir(dir) == 0);
+    struct dump_dir *dd = dd_create("test", -1, -1);
+    assert(dd);
+    dd_save_text(dd, "time", "12345678");
+
+    dd_save_text(dd, "os_release", "Fedora release 19 (Schrödinger's Cat)");
+    //dd_save_text(dd, "cat", "Schrödinger's Cat");
+
+    problem_data_t *problem_data = problem_data_new();
+    problem_data_load_from_dump_dir(problem_data, dd, NULL);
+    dd_close(dd);
+
+    GList *list = g_hash_table_get_keys(problem_data);
+    list = g_list_sort(list, (GCompareFunc)strcmp);
+    GList *l = list;
+    while (l)
+    {
+        const char *key = l->data;
+        l = l->next;
+        struct problem_item *item = g_hash_table_lookup(problem_data, key);
+        assert(item);
+        printf("%s:'%s'\n", key, item->content);
+        assert(!(item->flags & CD_FLAG_BIN));
+    }
+
+    dd = dd_opendir("test", 0);
+    assert(dd);
+    dd_delete(dd);
+    assert(rmdir(dir) == 0);
+
+    return 0;
+}
+]])

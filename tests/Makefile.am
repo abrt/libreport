@@ -29,6 +29,7 @@ TESTSUITE_AT = \
   testsuite.at \
   strbuf.at \
   osrelease.at \
+  is_text_file.at \
   taghyperlinks.at
 
 EXTRA_DIST += $(TESTSUITE_AT)
