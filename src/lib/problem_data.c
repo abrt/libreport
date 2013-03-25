@@ -288,7 +288,7 @@ static char* is_text_file(const char *name, ssize_t *sz)
     }
     lseek(fd, 0, SEEK_SET);
 
-    char *buf = (char*)xmalloc(*sz);
+    unsigned char *buf = xmalloc(*sz);
     ssize_t r = full_read(fd, buf, *sz);
     close(fd);
     if (r < 0)
@@ -306,7 +306,7 @@ static char* is_text_file(const char *name, ssize_t *sz)
     {
         base++;
         if (is_in_string_list(base, (char**)always_text_files))
-            return buf;
+            return (char*)buf;
     }
 
     /* Every once in a while, even a text file contains a few garbled
@@ -316,28 +316,44 @@ static char* is_text_file(const char *name, ssize_t *sz)
      * os_release = "Schrödinger's Cat". Bumped to 10%.
      * Alternatives: add os_release to always_text_files[]
      * or add "if it is valid Unicode, then it's text" check here.
+     *
+     * Replaced crude "buf[r] > 0x7e is bad" logic with
+     * "if it is a broken Unicode, then it's bad".
      */
     const unsigned RATIO = 10;
     unsigned total_chars = r + RATIO;
     unsigned bad_chars = 1; /* 1 prevents division by 0 later */
-    while (--r >= 0)
+    bool prev_was_unicode = 0;
+    ssize_t i = -1;
+    while (++i < r)
     {
-        if (buf[r] >= 0x7f
-         /* among control chars, only '\t','\n' etc are allowed */
-         || (buf[r] < ' ' && !isspace(buf[r]))
-        ) {
-            if (buf[r] == '\0')
-            {
-                /* We don't like NULs very much. Not text for sure! */
-                free(buf);
-                return NULL;
-            }
-            bad_chars++;
+        /* Among control chars, only '\t','\n' etc are allowed */
+        if (buf[i] < ' ' && !isspace(buf[i]))
+        {
+            /* We don't like NULs and other control chars very much.
+             * Not text for sure!
+             */
+            free(buf);
+            return NULL;
         }
+        if (buf[i] == 0x7f)
+            bad_chars++;
+        else if (buf[i] > 0x7f)
+        {
+            /* We test two possible bad cases with one comparison:
+             * (1) prev byte was unicode AND cur byte is 11xxxxxx:
+             * BAD - unicode start byte can't be in the middle of unicode char
+             * (2) prev byte wasnt unicode AND cur byte is 10xxxxxx:
+             * BAD - unicode continuation byte can't start unicode char
+             */
+            if (prev_was_unicode == ((buf[i] & 0x40) == 0x40))
+                bad_chars++;
+        }
+        prev_was_unicode = (buf[i] > 0x7f);
     }
 
     if ((total_chars / bad_chars) >= RATIO)
-        return buf; /* looks like text to me */
+        return (char*)buf; /* looks like text to me */
 
     free(buf);
     return NULL; /* it's binary */
