@@ -261,6 +261,8 @@ int main(int argc, char **argv)
     );
     free_map_string(settings);
 
+    char *base_api_url = xstrdup(url);
+
     if (opts & OPT_t)
     {
         if (!case_no)
@@ -386,7 +388,7 @@ int main(int argc, char **argv)
     {
         /* Check for hints and show them if we have something */
         log(_("Checking for hints"));
-        result = get_rhts_hints(url,
+        result = get_rhts_hints(base_api_url,
                 login,
                 password,
                 ssl_verify,
@@ -409,6 +411,16 @@ int main(int argc, char **argv)
         "</problems>"
         );
 #endif
+        if (result->error)
+        {
+            /* We don't use result->msg here because it looks like this:
+             *  Error in file upload at 'URL', HTTP code: 404,
+             *  server says: '<?xml...?><error...><code>404</code><message>...</message></error>'
+             * TODO: make server send bare textual msgs, not XML.
+             */
+            error_msg("Error in file upload at '%s', HTTP code: %d",
+                    base_api_url, result->http_resp_code);
+        }
         if (result->error == 0 && result->body)
         {
             /* The message might contain URLs to known solutions and such */
@@ -559,6 +571,7 @@ int main(int argc, char **argv)
     free_rhts_result(result_atch);
     free_rhts_result(result);
 
+    free(base_api_url);
     free(url);
     free(login);
     free(password);
