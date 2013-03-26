@@ -1252,6 +1252,8 @@ int dump_dir_accessible_by_uid(const char *dirname, uid_t uid)
         errno = ENOTDIR;
     else
     {
+        errno = 0;
+
 #if DUMP_DIR_OWNED_BY_USER > 0
         if (uid == 0 || (statbuf.st_mode & S_IROTH) || uid == statbuf.st_uid)
 #else
