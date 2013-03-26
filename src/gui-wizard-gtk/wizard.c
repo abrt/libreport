@@ -1741,13 +1741,19 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     /* If program failed, or if it finished successfully without saying anything... */
     if (retval != 0 || evd->event_log_state == LOGSTATE_FIRSTLINE)
     {
-        if (retval != 0) /* If program failed, emit error line */
-            evd->event_log_state = LOGSTATE_ERRLINE;
         char *msg;
         if (WIFSIGNALED(run_state->process_status))
             msg = xasprintf("(killed by signal %u)\n", WTERMSIG(run_state->process_status));
+        else if (retval == 0)
+        {
+            msg = xasprintf(_("Completed successfuly\n"));
+        }
         else
+        {
+            /* If program failed, emit error line */
+            evd->event_log_state = LOGSTATE_ERRLINE;
             msg = xasprintf("(exited with %u)\n", retval);
+        }
         append_to_textview(evd->tv_log, msg);
         save_to_event_log(evd, msg);
         free(msg);
