@@ -122,15 +122,31 @@ PYTHON_LIBS=`python-config --libs 2> /dev/null`
 AC_SUBST(PYTHON_CFLAGS)
 AC_SUBST(PYTHON_LIBS)
 
+AC_ARG_WITH([satyr],
+    AS_HELP_STRING([--with-satyr],
+        [use satyr instead of btparser (default is no)]),
+    [], [with_satyr=no])
+
 PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.21])
 PKG_CHECK_MODULES([DBUS], [dbus-1])
 PKG_CHECK_MODULES([LIBXML], [libxml-2.0])
 PKG_CHECK_MODULES([NSS], [nss])
 PKG_CHECK_MODULES([CURL], [libcurl])
-PKG_CHECK_MODULES([BTPARSER], [btparser])
 PKG_CHECK_MODULES([PROXY], [libproxy-1.0], [
     AC_DEFINE([HAVE_PROXY], [1], [Use libproxy])
 ], [:])
+
+[if test "$with_satyr" = "yes"]
+[then]
+    PKG_CHECK_MODULES([SATYR], [satyr])
+    AC_DEFINE([USE_SATYR], [1], [Use satyr instead of btparser])
+    SATYR_PKG="satyr"
+[else]
+    PKG_CHECK_MODULES([SATYR], [btparser])
+    SATYR_PKG="btparser"
+[fi]
+AC_SUBST(SATYR_PKG)
+AM_CONDITIONAL([USE_SATYR], [test "$with_satyr" = "yes"])
 
 AC_ARG_WITH(newt,
 AS_HELP_STRING([--with-newt],[use newt (default is YES)]),

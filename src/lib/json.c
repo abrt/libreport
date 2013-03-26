@@ -18,13 +18,46 @@
 */
 
 #include <json/json.h>
-#include <btparser/thread.h>
-#include <btparser/core-backtrace.h>
 
 #include "internal_libreport.h"
 #include "ureport.h"
 #include "libreport_curl.h"
 
+
+static void ureport_add_str(struct json_object *ur, const char *key,
+                            const char *s)
+{
+    struct json_object *jstring = json_object_new_string(s);
+    if (!jstring)
+        die_out_of_memory();
+
+    json_object_object_add(ur, key, jstring);
+}
+
+#if USE_SATYR
+
+#include <satyr/abrt.h>
+#include <satyr/report.h>
+
+char *ureport_from_dump_dir(const char *dump_dir_path)
+{
+    char *error_message;
+    struct sr_report *report = sr_abrt_report_from_dir(dump_dir_path,
+                                                       &error_message);
+
+    if (!report)
+        error_msg_and_die("%s", error_message);
+
+    char *json_ureport = sr_report_to_json(report);
+    sr_report_free(report);
+
+    return json_ureport;
+}
+
+#else /* USE_SATYR */
+
+#include <btparser/thread.h>
+#include <btparser/core-backtrace.h>
 
 /* on success 1 returned, on error zero is returned and appropriate value
  * is returned as third argument. You should never read third argument when
@@ -62,16 +95,6 @@ static void ureport_add_int(struct json_object *ur, const char *key, int i)
         die_out_of_memory();
 
     json_object_object_add(ur, key, jint);
-}
-
-static void ureport_add_str(struct json_object *ur, const char *key,
-                            const char *s)
-{
-    struct json_object *jstring = json_object_new_string(s);
-    if (!jstring)
-        die_out_of_memory();
-
-    json_object_object_add(ur, key, jstring);
 }
 
 static void ureport_add_os(struct json_object *ur, problem_data_t *pd)
@@ -178,7 +201,6 @@ static void ureport_add_core_backtrace(struct json_object *ur, problem_data_t *p
 
     json_object_object_add(ur, FILENAME_CORE_BACKTRACE, jarray);
 }
-
 static void ureport_add_item_str(struct json_object *ur, problem_data_t *pd,
                                  const char *key, const char *rename)
 {
@@ -287,6 +309,32 @@ char *new_json_ureport(problem_data_t *pd)
     return j;
 }
 
+char *ureport_from_dump_dir(const char *dump_dir_path)
+{
+    struct dump_dir *dd = dd_opendir(dump_dir_path, DD_OPEN_READONLY);
+    if (!dd)
+        xfunc_die();
+
+    problem_data_t *pd = create_problem_data_from_dump_dir(dd);
+
+    dd_close(dd);
+    if (!pd)
+        xfunc_die(); /* create_problem_data_from_dump_dir already emitted error msg */
+
+    char *json_ureport = new_json_ureport(pd);
+    problem_data_free(pd);
+
+    if (json_ureport == NULL)
+    {
+        error_msg(_("Not uploading an empty uReport"));
+        return NULL;
+    }
+
+    return json_ureport;
+}
+
+#endif /* USE_SATYR */
+
 char *new_json_attachment(const char *bthash, const char *type, const char *data)
 {
     struct json_object *attachment = json_object_new_object();
@@ -303,19 +351,12 @@ char *new_json_attachment(const char *bthash, const char *type, const char *data
     return result;
 }
 
-struct post_state *post_ureport(problem_data_t *pd, struct ureport_server_config *config)
+struct post_state *post_ureport(const char *json_ureport, struct ureport_server_config *config)
 {
     int flags = POST_WANT_BODY | POST_WANT_ERROR_MSG;
 
     if (config->ur_ssl_verify)
         flags |= POST_WANT_SSL_VERIFY;
-
-    char *json_ureport = new_json_ureport(pd);
-    if (json_ureport == NULL)
-    {
-        error_msg(_("Not uploading an empty uReport"));
-        return NULL;
-    }
 
     struct post_state *post_state = new_post_state(flags);
 
@@ -327,8 +368,6 @@ struct post_state *post_ureport(problem_data_t *pd, struct ureport_server_config
 
     post_string_as_form_data(post_state, config->ur_url, "application/json",
                      headers, json_ureport);
-
-    free(json_ureport);
 
     return post_state;
 }

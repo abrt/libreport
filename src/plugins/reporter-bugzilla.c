@@ -16,16 +16,44 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#include "internal_libreport.h"
+#include "client.h"
+#include "abrt_xmlrpc.h"
+#include "rhbz.h"
+
+/* btparser compatibility - once we move to satyr, the else branch of the ifdef
+ * can be removed
+ */
+#ifdef USE_SATYR
+
+#include <satyr/location.h>
+#include <satyr/gdb_stacktrace.h>
+#include <satyr/gdb_thread.h>
+#include <satyr/gdb_frame.h>
+#include <satyr/strbuf.h>
+
+#else /* USE_SATYR */
+
 #include <btparser/location.h>
 #include <btparser/backtrace.h>
 #include <btparser/thread.h>
 #include <btparser/frame.h>
 #include <btparser/strbuf.h>
 
-#include "internal_libreport.h"
-#include "client.h"
-#include "abrt_xmlrpc.h"
-#include "rhbz.h"
+#define sr_location btp_location
+#define sr_location_init btp_location_init
+#define sr_gdb_stacktrace btp_backtrace
+#define sr_gdb_stacktrace_parse btp_backtrace_parse
+#define sr_gdb_stacktrace_get_optimized_thread btp_backtrace_get_optimized_thread
+#define sr_gdb_stacktrace_free btp_backtrace_free
+#define sr_gdb_thread btp_thread
+#define sr_gdb_thread_append_to_str btp_thread_append_to_str
+#define sr_gdb_thread_free btp_thread_free
+#define sr_strbuf btp_strbuf
+#define sr_strbuf_new btp_strbuf_new
+#define sr_strbuf_free_nobuf btp_strbuf_free_nobuf
+
+#endif /* USE_SATYR */
 
 struct section_t {
     char *name;
@@ -337,12 +365,12 @@ int append_short_backtrace(struct strbuf *result, problem_data_t *problem_data, 
 
     if (strlen(item->content) >= max_text_size)
     {
-        struct btp_location location;
-        btp_location_init(&location);
+        struct sr_location location;
+        sr_location_init(&location);
 
-        /* btp_backtrace_parse modifies the input parameter */
+        /* sr_gdb_stacktrace_parse modifies the input parameter */
         char *content = item->content;
-        struct btp_backtrace *backtrace = btp_backtrace_parse((const char **)&content, &location);
+        struct sr_gdb_stacktrace *backtrace = sr_gdb_stacktrace_parse((const char **)&content, &location);
 
         if (!backtrace)
         {
@@ -351,9 +379,9 @@ int append_short_backtrace(struct strbuf *result, problem_data_t *problem_data, 
         }
 
         /* Get optimized thread stack trace for 10 top most frames */
-        struct btp_thread *thread = btp_backtrace_get_optimized_thread(backtrace, 10);
+        struct sr_gdb_thread *thread = sr_gdb_stacktrace_get_optimized_thread(backtrace, 10);
 
-        btp_backtrace_free(backtrace);
+        sr_gdb_stacktrace_free(backtrace);
 
         if (!thread)
         {
@@ -362,13 +390,13 @@ int append_short_backtrace(struct strbuf *result, problem_data_t *problem_data, 
         }
 
         /* Cannot be NULL, it dies on memory error */
-        struct btp_strbuf *bt = btp_strbuf_new();
+        struct sr_strbuf *bt = sr_strbuf_new();
 
-        btp_thread_append_to_str(thread, bt, true);
+        sr_gdb_thread_append_to_str(thread, bt, true);
 
-        btp_thread_free(thread);
+        sr_gdb_thread_free(thread);
 
-        truncated = btp_strbuf_free_nobuf(bt);
+        truncated = sr_strbuf_free_nobuf(bt);
     }
 
     append_text(result,

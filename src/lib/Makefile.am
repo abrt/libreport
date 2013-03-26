@@ -123,7 +123,7 @@ libreport_web_la_CPPFLAGS = \
     $(LIBXML_CFLAGS) \
     $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
     $(JSON_C_CFLAGS) \
-    $(BTPARSER_CFLAGS) \
+    $(SATYR_CFLAGS) \
     -D_GNU_SOURCE
 libreport_web_la_LDFLAGS = \
     -version-info 0:1:0
@@ -133,7 +133,7 @@ libreport_web_la_LIBADD = \
     $(PROXY_LIBS) \
     $(LIBXML_LIBS) \
     $(JSON_C_LIBS) \
-    $(BTPARSER_LIBS) \
+    $(SATYR_LIBS) \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS) \
     libreport.la
 

@@ -276,6 +276,7 @@ int main(int argc, char **argv)
     const char *dump_dir_path = ".";
     const char *ureport_hash = NULL;
     int rhbz_bug = -1;
+    struct dump_dir *dd = NULL;
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT__DUMP_DIR(&dump_dir_path),
@@ -311,13 +312,13 @@ int main(int argc, char **argv)
     if (!ureport_hash && rhbz_bug > 0)
         error_msg_and_die(_("You need to specify bthash of the uReport to attach."));
 
-    struct dump_dir *dd = dd_opendir(dump_dir_path, DD_OPEN_READONLY);
-    if (!dd)
-        xfunc_die();
-
     /* -r */
     if (attach_reported_to)
     {
+        dd = dd_opendir(dump_dir_path, DD_OPEN_READONLY);
+        if (!dd)
+            xfunc_die();
+
         report_result_t *ureport_result = find_in_reported_to(dd, "uReport");
         report_result_t *bz_result = find_in_reported_to(dd, "Bugzilla");
 
@@ -350,16 +351,19 @@ int main(int argc, char **argv)
     }
 
     /* -b, -a nor -r were specified - upload uReport from dump_dir */
-    problem_data_t *pd = create_problem_data_from_dump_dir(dd);
-    dd_close(dd);
-    if (!pd)
-        xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
-
+    int ret = 1; /* return 1 by default */
     char *dest_url = concat_path_file(config.ur_url, REPORT_URL_SFX);
     config.ur_url = dest_url;
-    post_state = post_ureport(pd, &config);
-    problem_data_free(pd);
-    int ret = 1; /* return 1 by default */
+
+    char *json_ureport = ureport_from_dump_dir(dump_dir_path);
+    if (!json_ureport)
+    {
+        error_msg(_("Not uploading an empty uReport"));
+        goto format_err;
+    }
+
+    post_state = post_ureport(json_ureport, &config);
+    free(json_ureport);
 
     if (!post_state)
     {

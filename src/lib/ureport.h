@@ -37,11 +37,15 @@ struct ureport_server_config
 struct abrt_post_state;
 
 #define post_ureport libreport_post_ureport
-struct post_state *post_ureport(problem_data_t *pd, struct ureport_server_config *config);
+struct post_state *post_ureport(const char *json_ureport,
+                                struct ureport_server_config *config);
 
 #define ureport_attach_rhbz libreport_ureport_attach_rhbz
 struct post_state *ureport_attach_rhbz(const char *bthash, int rhbz_bug_id,
                                        struct ureport_server_config *config);
+
+#define ureport_from_dump_dir libreport_ureport_from_dump_dir
+char *ureport_from_dump_dir(const char *dump_dir_path);
 
 #ifdef __cplusplus
 }
