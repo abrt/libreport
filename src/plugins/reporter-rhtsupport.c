@@ -163,6 +163,15 @@ int create_tarball(const char *tempfile, problem_data_t *problem_data)
     return 1; /* failure */
 }
 
+static
+char *get_param_string(const char *name, map_string_h *settings, const char *dflt)
+{
+    char *envname = xasprintf("RHTSupport_%s", name);
+    const char *envvar = getenv(envname);
+    free(envname);
+    return xstrdup(envvar ? envvar : (get_map_string_item_or_NULL(settings, name) ? : dflt));
+}
+
 int main(int argc, char **argv)
 {
     abrt_init(argv);
@@ -189,7 +198,8 @@ int main(int argc, char **argv)
         "\n"
         "If not specified, CONFFILE defaults to "CONF_DIR"/plugins/rhtsupport.conf\n"
         "Its lines should have 'PARAM = VALUE' format.\n"
-        "Recognized string parameters: URL, Login, Password.\n"
+        "Recognized string parameters: URL, Login, Password, BigFileURL.\n"
+        "Recognized numeric parameter: BigSizeMB.\n"
         "Recognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify.\n"
         "Parameters can be overridden via $RHTSupport_PARAM environment variables.\n"
         "\n"
@@ -233,21 +243,22 @@ int main(int argc, char **argv)
         VERB3 log("Loaded '%s'", fn);
         conf_file = g_list_remove(conf_file, fn);
     }
-    char* envvar;
-    char *url;
-    char *login;
-    char *password;
-    bool ssl_verify;
-    envvar = getenv("RHTSupport_URL");
-    url = xstrdup(envvar ? envvar : (get_map_string_item_or_NULL(settings, "URL") ? : "https://api.access.redhat.com/rs"));
-    envvar = getenv("RHTSupport_Login");
-    login = xstrdup(envvar ? envvar : get_map_string_item_or_empty(settings, "Login"));
-    envvar = getenv("RHTSupport_Password");
-    password = xstrdup(envvar ? envvar : get_map_string_item_or_empty(settings, "Password"));
-    envvar = getenv("RHTSupport_SSLVerify");
-    ssl_verify = string_to_bool(envvar ? envvar : get_map_string_item_or_empty(settings, "SSLVerify"));
+    char *url      = get_param_string("URL"       , settings, "https://api.access.redhat.com/rs");
+    char *login    = get_param_string("Login"     , settings, "");
+    char *password = get_param_string("Password"  , settings, "");
+    char *bigurl   = get_param_string("BigFileURL", settings, "ftp://dropbox.redhat.com/incoming/");
     if (!login[0] || !password[0])
         error_msg_and_die(_("Empty RHTS login or password"));
+    char* envvar;
+    envvar = getenv("RHTSupport_SSLVerify");
+    bool ssl_verify = string_to_bool(
+                envvar ? envvar : (get_map_string_item_or_NULL(settings, "SSLVerify") ? : "1")
+    );
+    envvar = getenv("RHTSupport_BigSizeMB");
+    unsigned bigsize = xatoi_positive(
+                /* RH has a 250m limit for web attachments (as of 2013) */
+                envvar ? envvar : (get_map_string_item_or_NULL(settings, "BigSizeMB") ? : "200")
+    );
     free_map_string(settings);
 
     if (opts & OPT_t)
@@ -374,6 +385,7 @@ int main(int argc, char **argv)
     if (tempfile_size <= QUERY_HINTS_IF_SMALLER_THAN)
     {
         /* Check for hints and show them if we have something */
+        log(_("Checking for hints"));
         result = get_rhts_hints(url,
                 login,
                 password,
@@ -478,13 +490,43 @@ int main(int argc, char **argv)
         result = NULL;
     }
 
-    /* Attach the tarball of -d DIR */
-    result_atch = attach_file_to_case(url,
-            login,
-            password,
-            ssl_verify,
-            tempfile
-    );
+    char *remote_filename = NULL;
+    if (bigsize != 0 && tempfile_size / (1024*1024) >= bigsize)
+    {
+        /* Upload tarball of -d DIR to "big file" FTP */
+        /* log(_("Uploading problem data to '%s'"), bigurl); - upload_file does this */
+        remote_filename = upload_file(bigurl, tempfile);
+    }
+    if (remote_filename)
+    {
+        log(_("Adding comment to case '%s'"), url);
+        /*
+         * Do not translate message below - it goes
+         * to a server where *other people* will read it.
+         */
+        char *comment_text = xasprintf(
+            "Problem data was uploaded to %s",
+            remote_filename
+        );
+        free(remote_filename);
+        result_atch = add_comment_to_case(url,
+                login, password,
+                ssl_verify,
+                comment_text
+        );
+        free(comment_text);
+    }
+    else
+    {
+        /* Attach the tarball of -d DIR */
+        log(_("Attaching problem data to case '%s'"), url);
+        result_atch = attach_file_to_case(url,
+                login, password,
+                ssl_verify,
+                tempfile
+
+        );
+    }
     if (result_atch->error)
     {
         if (!(opts & OPT_t))

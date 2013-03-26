@@ -426,6 +426,165 @@ create_new_case(const char* base_url,
 }
 
 //
+// Add case comment
+//
+// $ curl -X POST -H 'Content-Type: application/xml' --data
+//  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+//   <comment xmlns="http://www.redhat.com/gss/strata">
+//   <text>Test comment!  This can contain lots of information, etc.</text>
+//   </comment>'
+//   https://api.access.redhat.com/rs/cases/NNNNNNN/comments
+//
+static char*
+make_comment_data(const char *comment_text)
+{
+    char *retval;
+    xmlTextWriterPtr writer;
+    xmlBufferPtr buf;
+
+    buf = xxmlBufferCreate();
+    writer = xxmlNewTextWriterMemory(buf);
+
+    xxmlTextWriterStartDocument(writer, NULL, "UTF-8", "yes");
+    xxmlTextWriterStartElement(writer, "comment");
+    xxmlTextWriterWriteAttribute(writer, "xmlns",
+                                   "http://www.redhat.com/gss/strata");
+
+    xxmlTextWriterWriteElement(writer, "text", comment_text);
+
+    xxmlTextWriterEndDocument(writer);
+    retval = xstrdup((const char*)buf->content);
+    xmlFreeTextWriter(writer);
+    xmlBufferFree(buf);
+    return retval;
+}
+
+static rhts_result_t*
+post_comment_to_url(const char *url,
+                const char *username,
+                const char *password,
+                bool ssl_verify,
+                const char **additional_headers,
+                const char *comment_text)
+{
+    rhts_result_t *result = xzalloc(sizeof(*result));
+    char *url_copy = NULL;
+
+    char *xml = make_comment_data(comment_text);
+
+    int redirect_count = 0;
+    char *errmsg;
+    post_state_t *post_state;
+
+ redirect:
+    post_state = new_post_state(0
+            + POST_WANT_HEADERS
+            + POST_WANT_BODY
+            + POST_WANT_ERROR_MSG
+            + (ssl_verify ? POST_WANT_SSL_VERIFY : 0)
+    );
+    post_state->username = username;
+    post_state->password = password;
+
+    post_string(post_state, url, "application/xml", additional_headers, xml);
+
+    char *location = find_header_in_post_state(post_state, "Location:");
+
+    switch (post_state->http_resp_code)
+    {
+    case 404:
+        /* Not strictly necessary (default branch would deal with it too),
+         * but makes this typical error less cryptic:
+         * instead of returning html-encoded body, we show short concise message,
+         * and show offending URL (typos in which is a typical cause) */
+        result->error = -1;
+        result->msg = xasprintf("Error in HTTP POST, "
+                        "HTTP code: 404 (Not found), URL:'%s'", url);
+        break;
+
+    case 301: /* "301 Moved Permanently" (for example, used to move http:// to https://) */
+    case 302: /* "302 Found" (just in case) */
+    case 305: /* "305 Use Proxy" */
+        if (++redirect_count < 10 && location)
+        {
+            free(url_copy);
+            url = url_copy = xstrdup(location);
+            free_post_state(post_state);
+            goto redirect;
+        }
+        /* fall through */
+
+    default:
+        result->error = -1;
+        errmsg = post_state->curl_error_msg;
+        if (errmsg && errmsg[0])
+        {
+            result->msg = xasprintf(_("Error in comment creation: %s"), errmsg);
+        }
+        else
+        {
+            errmsg = find_header_in_post_state(post_state, "Strata-Message:");
+            if (!errmsg)
+                errmsg = post_state->body;
+            if (errmsg && errmsg[0])
+                result->msg = xasprintf(_("Error in comment creation, HTTP code: %d, server says: '%s'"),
+                        post_state->http_resp_code, errmsg);
+            else
+                result->msg = xasprintf(_("Error in comment creation, HTTP code: %d"),
+                        post_state->http_resp_code);
+        }
+        break;
+
+    case 200:
+    case 201:
+        /* Created successfully */
+        result->url = xstrdup(location); /* note: xstrdup(NULL) returns NULL */
+    } /* switch (HTTP code) */
+
+    result->http_resp_code = post_state->http_resp_code;
+    result->body = post_state->body;
+    post_state->body = NULL;
+
+    free_post_state(post_state);
+    free(xml);
+    free(url_copy);
+    return result;
+}
+
+rhts_result_t*
+add_comment_to_case(const char* base_url,
+                const char* username,
+                const char* password,
+                bool ssl_verify,
+                const char* comment_text)
+{
+    char *url = concat_path_file(base_url, "comments");
+    rhts_result_t *result = post_comment_to_url(url,
+                username,
+                password,
+                ssl_verify,
+    // NB! text_plain_header here was causing error 404 instead of 201 (Created)!
+    // NULL makes curl use "Accept: */*" instead and creation works.
+    // Likely a bug on the server!
+                (const char **) NULL, //text_plain_header,
+                comment_text
+    );
+    free(url);
+
+    if (!result->error && !result->url)
+    {
+        /* Creation returned valid code, but no location */
+        result->error = -1;
+        free(result->msg);
+        result->msg = xasprintf(_("Error in comment creation: no Location URL, HTTP code: %d"),
+                result->http_resp_code
+        );
+    }
+
+    return result;
+}
+
+//
 // Attach file to case
 //
 static rhts_result_t*
