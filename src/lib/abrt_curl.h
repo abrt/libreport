@@ -37,6 +37,12 @@ typedef struct abrt_post_state {
     const char  *password;
     /* Results of POST transaction: */
     int         http_resp_code;
+    /* cast from CURLcode enum.
+     * 0 = success.
+     * -1 = curl_easy_perform wasn't even reached (file open error, etc).
+     * Else curl_easy_perform's error (which is positive, see curl/curl.h).
+     */
+    int         curl_result;
     unsigned    header_cnt;
     char        **headers;
     char        *curl_error_msg;
@@ -59,8 +65,9 @@ enum {
     /* Must be -1! CURLOPT_POSTFIELDSIZE interprets -1 as "use strlen" */
     ABRT_POST_DATA_STRING = -1,
     ABRT_POST_DATA_FROMFILE = -2,
-    ABRT_POST_DATA_FROMFILE_AS_FORM_DATA = -3,
-    ABRT_POST_DATA_STRING_AS_FORM_DATA = -4,
+    ABRT_POST_DATA_FROMFILE_PUT = -3,
+    ABRT_POST_DATA_FROMFILE_AS_FORM_DATA = -4,
+    ABRT_POST_DATA_STRING_AS_FORM_DATA = -5,
 };
 int
 abrt_post(abrt_post_state_t *state,

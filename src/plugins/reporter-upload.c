@@ -20,58 +20,20 @@
 #include "abrt_curl.h"
 #include "internal_libreport.h"
 
-//TODO: use this for better logging
-#if 0
-/* "read local data from a file" callback */
-static size_t fread_with_reporting(void *ptr, size_t size, size_t nmemb, void *userdata)
-{
-    static time_t last_t; // hack
-
-    FILE *fp = (FILE*)userdata;
-    time_t t = time(NULL);
-
-    // Report current file position every 16 seconds
-    if (!(t & 0xf) && last_t != t)
-    {
-        last_t = t;
-        off_t cur_pos = ftello(fp);
-        fseeko(fp, 0, SEEK_END);
-        off_t sz = ftello(fp);
-        fseeko(fp, cur_pos, SEEK_SET);
-        log(_("Uploaded: %llu of %llu kbytes"),
-                (unsigned long long)cur_pos / 1024,
-                (unsigned long long)sz / 1024);
-    }
-
-    return fread(ptr, size, nmemb, fp);
-}
-#endif
-
 static int send_file(const char *url, const char *filename)
 {
-    FILE *fp = fopen(filename, "r");
-    if (!fp)
-    {
-        perror_msg("Can't open '%s'", filename);
-        return 1;
-    }
-
     /* we don't want to print the whole url as it may contain password
      * rhbz#856960
      * there can be '@' in the login or password so let's try to find the
      * first '@' from the end
      */
     const char *clean_url = strrchr(url, '@');
-    if (clean_url != NULL)
+    if (clean_url)
         clean_url++;
     else
         clean_url = url;
 
-
     log(_("Sending %s to %s"), filename, clean_url);
-
-    struct stat stbuf;
-    fstat(fileno(fp), &stbuf); /* never fails */
 
     char *whole_url;
     unsigned len = strlen(url);
@@ -80,45 +42,41 @@ static int send_file(const char *url, const char *filename)
     else
         whole_url = xstrdup(url);
 
-    CURL *curl = curl_easy_init();
-    if (!curl)
-    {
-        error_msg_and_die("Can't create curl handle");
-    }
-    /* Buffer[CURL_ERROR_SIZE] curl stores human readable error messages in.
-     * This may be more helpful than just return code from curl_easy_perform.
-     * curl will need it until curl_easy_cleanup. */
-    char curl_err_msg[CURL_ERROR_SIZE];
-    curl_err_msg[0] = '\0';
-    curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, curl_err_msg);
-    /* enable uploading */
-    curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
-    /* specify target */
-    curl_easy_setopt(curl, CURLOPT_URL, whole_url);
-    /* FILE handle: passed to the default callback, it will fread() it */
-    curl_easy_setopt(curl, CURLOPT_READDATA, fp);
-    curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)stbuf.st_size);
-
-    /* everything is done here; result 0 means success */
-    CURLcode result = curl_easy_perform_with_proxy(curl, whole_url);
+    abrt_post_state_t *state = new_abrt_post_state(ABRT_POST_WANT_ERROR_MSG);
+    abrt_post(state,
+                whole_url,
+                /*content_type:*/ "???",
+                /*additional_headers:*/ NULL,
+                /*data:*/ filename,
+                ABRT_POST_DATA_FROMFILE_PUT
+    );
     free(whole_url);
-    fclose(fp);
-    if (result != 0)
-        error_msg("Error while uploading: '%s'", curl_easy_strerror(result));
+
+    int error = (state->curl_result != 0);
+    if (error)
+    {
+	if (state->curl_error_msg)
+            error_msg("Error while uploading: '%s'", state->curl_error_msg);
+        else
+            /* for example, when source file can't be opened */
+            error_msg("Error while uploading");
+    }
     else
+    {
         /* This ends up a "reporting status message" in abrtd */
         log(_("Successfully sent %s to %s"), filename, clean_url);
+    }
 
-    curl_easy_cleanup(curl);
+    free_abrt_post_state(state);
 
-    return result;
+    return error;
 }
 
 static int create_and_upload_archive(
                 const char *dump_dir_name,
                 map_string_h *settings)
 {
-    int result = 0;
+    int result = 1; /* error */
 
     pid_t child;
     TAR* tar = NULL;
@@ -127,7 +85,7 @@ static int create_and_upload_archive(
 
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
-        exit(1); /* error msg is already logged by dd_opendir */
+        xfunc_die(); /* error msg is already logged by dd_opendir */
 
     /* Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing */
     log(_("Compressing data"));
@@ -230,6 +188,7 @@ static int create_and_upload_archive(
     }
     else
     {
+        result = 0; /* success */
         log(_("Archive is created: '%s'"), tempfile);
         free(tempfile);
         tempfile = NULL;

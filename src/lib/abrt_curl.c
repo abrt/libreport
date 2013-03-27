@@ -280,7 +280,7 @@ abrt_post(abrt_post_state_t *state,
         state = &localstate;
     }
 
-    state->http_resp_code = response_code = -1;
+    state->curl_result = state->http_resp_code = response_code = -1;
 
     CURL *handle = xcurl_easy_init();
 
@@ -292,7 +292,8 @@ abrt_post(abrt_post_state_t *state,
     // Shut off the built-in progress meter completely
     xcurl_easy_setopt_long(handle, CURLOPT_NOPROGRESS, 1);
 
-    if (g_verbose >= 2) {
+    if (g_verbose >= 2)
+    {
         // "Display a lot of verbose information about its operations.
         // Very useful for libcurl and/or protocol debugging and understanding.
         // The verbose information will be sent to stderr, or the stream set
@@ -306,37 +307,61 @@ abrt_post(abrt_post_state_t *state,
     xcurl_easy_setopt_ptr(handle, CURLOPT_URL, url);
 
     // Auth if configured
-    if (state->username) {
+    if (state->username)
+    {
         // bitmask of allowed auth methods
         xcurl_easy_setopt_long(handle, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         xcurl_easy_setopt_ptr(handle, CURLOPT_USERNAME, state->username);
         xcurl_easy_setopt_ptr(handle, CURLOPT_PASSWORD, (state->password ? state->password : ""));
     }
 
-    // Do a regular HTTP post. This also makes curl use
-    // a "Content-Type: application/x-www-form-urlencoded" header.
-    // (This is by far the most commonly used POST method).
-    xcurl_easy_setopt_long(handle, CURLOPT_POST, 1);
-    // Supply POST data...
-    struct curl_httppost* post = NULL;
-    struct curl_httppost* last = NULL;
-    FILE* data_file = NULL;
-    if (data_size == ABRT_POST_DATA_FROMFILE) {
+    if (data_size != ABRT_POST_DATA_FROMFILE_PUT)
+    {
+        // Do a HTTP POST. This also makes curl use
+        // a "Content-Type: application/x-www-form-urlencoded" header.
+        // (This is by far the most commonly used POST method).
+        xcurl_easy_setopt_long(handle, CURLOPT_POST, 1);
+    }
+    // else (only ABRT_POST_DATA_FROMFILE_PUT): do HTTP PUT.
+
+    struct curl_httppost *post = NULL;
+    struct curl_httppost *last = NULL;
+    FILE *data_file = NULL;
+    FILE *body_stream = NULL;
+    struct curl_slist *httpheader_list = NULL;
+
+    // Supply data...
+    if (data_size == ABRT_POST_DATA_FROMFILE
+     || data_size == ABRT_POST_DATA_FROMFILE_PUT
+    ) {
         // ...from a file
         data_file = fopen(data, "r");
         if (!data_file)
-//FIXME:
-            perror_msg_and_die("Can't open '%s'", data);
+        {
+            perror_msg("Can't open '%s'", data);
+            goto ret; // return -1
+        }
+
         xcurl_easy_setopt_ptr(handle, CURLOPT_READDATA, data_file);
         // Want to use custom read function
         xcurl_easy_setopt_ptr(handle, CURLOPT_READFUNCTION, (const void*)fread_with_reporting);
-        // Without this, curl would send "Content-Length: -1"
-        // servers don't like that: "413 Request Entity Too Large"
         fseeko(data_file, 0, SEEK_END);
         off_t sz = ftello(data_file);
         fseeko(data_file, 0, SEEK_SET);
-        xcurl_easy_setopt_off_t(handle, CURLOPT_POSTFIELDSIZE_LARGE, sz);
-    } else if (data_size == ABRT_POST_DATA_FROMFILE_AS_FORM_DATA) {
+        if (data_size == ABRT_POST_DATA_FROMFILE)
+        {
+            // Without this, curl would send "Content-Length: -1"
+            // servers don't like that: "413 Request Entity Too Large"
+            xcurl_easy_setopt_off_t(handle, CURLOPT_POSTFIELDSIZE_LARGE, sz);
+        }
+        else
+        {
+            xcurl_easy_setopt_long(handle, CURLOPT_UPLOAD, 1);
+            xcurl_easy_setopt_off_t(handle, CURLOPT_INFILESIZE_LARGE, sz);
+        }
+    }
+    else if (data_size == ABRT_POST_DATA_FROMFILE_AS_FORM_DATA)
+    {
         // ...from a file, in multipart/formdata format
         const char *basename = strrchr(data, '/');
         if (basename) basename++;
@@ -352,8 +377,10 @@ abrt_post(abrt_post_state_t *state,
 #else
         data_file = fopen(data, "r");
         if (!data_file)
-//FIXME:
-            perror_msg_and_die("Can't open '%s'", data);
+        {
+            perror_msg("Can't open '%s'", data);
+            goto ret; // return -1
+        }
         // Want to use custom read function
         xcurl_easy_setopt_ptr(handle, CURLOPT_READFUNCTION, (const void*)fread_with_reporting);
         // Need to know file size
@@ -375,10 +402,12 @@ abrt_post(abrt_post_state_t *state,
 //FIXME:
             error_msg_and_die("out of memory or read error (curl_formadd error code: %d)", (int)curlform_err);
         xcurl_easy_setopt_ptr(handle, CURLOPT_HTTPPOST, post);
-    } else if (data_size == ABRT_POST_DATA_STRING_AS_FORM_DATA) {
+    }
+    else if (data_size == ABRT_POST_DATA_STRING_AS_FORM_DATA)
+    {
         CURLFORMcode curlform_err = curl_formadd(&post, &last,
                         CURLFORM_PTRNAME, "file", // element name
-                        // curl bug - missing filename 
+                        // curl bug - missing filename
                         // http://curl.haxx.se/mail/lib-2011-07/0176.html
                         // https://github.com/bagder/curl/commit/45d883d
                         // fixed in curl-7.22.0~144
@@ -393,8 +422,10 @@ abrt_post(abrt_post_state_t *state,
         if (curlform_err != 0)
             error_msg_and_die("out of memory or read error (curl_formadd error code: %d)", (int)curlform_err);
         xcurl_easy_setopt_ptr(handle, CURLOPT_HTTPPOST, post);
-    } else {
-        // .. from a blob in memory
+    }
+    else
+    {
+        // ...from a blob in memory
         xcurl_easy_setopt_ptr(handle, CURLOPT_POSTFIELDS, data);
         // note1: if data_size == ABRT_POST_DATA_STRING == -1, curl will use strlen(data)
         xcurl_easy_setopt_long(handle, CURLOPT_POSTFIELDSIZE, data_size);
@@ -402,8 +433,6 @@ abrt_post(abrt_post_state_t *state,
         // I'm not sure CURLOPT_POSTFIELDSIZE_LARGE special-cases -1.
         // Not a big problem: memory blobs >4GB are very unlikely.
     }
-
-    struct curl_slist *httpheader_list = NULL;
 
     // Override "Content-Type:"
     if (data_size != ABRT_POST_DATA_FROMFILE_AS_FORM_DATA
@@ -458,7 +487,6 @@ abrt_post(abrt_post_state_t *state,
         xcurl_easy_setopt_ptr(handle, CURLOPT_HEADERFUNCTION, (void*)save_headers);
         xcurl_easy_setopt_ptr(handle, CURLOPT_WRITEHEADER, state);
     }
-    FILE* body_stream = NULL;
     if (state->flags & ABRT_POST_WANT_BODY)
     {
         body_stream = open_memstream(&state->body, &state->body_size);
@@ -474,7 +502,7 @@ abrt_post(abrt_post_state_t *state,
 
     // This is the place where everything happens.
     // Here errors are not limited to "out of memory", can't just die.
-    curl_err = curl_easy_perform_with_proxy(handle, url);
+    state->curl_result = curl_err = curl_easy_perform_with_proxy(handle, url);
     if (curl_err)
     {
         VERB2 log("curl_easy_perform: error %d", (int)curl_err);
@@ -495,7 +523,7 @@ abrt_post(abrt_post_state_t *state,
     curl_err = curl_easy_getinfo(handle, CURLINFO_RESPONSE_CODE, &response_code);
     die_if_curl_error(curl_err);
     state->http_resp_code = response_code;
-    VERB3 log("after curl_easy_perform: http code %ld body:'%s'", response_code, state->body);
+    VERB3 log("after curl_easy_perform: response_code:%ld body:'%s'", response_code, state->body);
 
  ret:
     curl_easy_cleanup(handle);
