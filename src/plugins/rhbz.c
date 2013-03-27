@@ -496,7 +496,7 @@ struct bug_info *rhbz_bug_info(struct abrt_xmlrpc *ax, int bug_id)
     if (strcmp(bz->bi_status, "CLOSED") == 0 && !bz->bi_resolution)
         error_msg_and_die(_("Bug %i is CLOSED, but it has no RESOLUTION"), bz->bi_id);
 
-    ret = (int*)rhbz_bug_read_item("dup_id", bug_item,
+    ret = (int*)rhbz_bug_read_item("dupe_of", bug_item,
                                    RHBZ_READ_INT);
     if (strcmp(bz->bi_status, "CLOSED") == 0
         && strcmp(bz->bi_resolution, "DUPLICATE") == 0
