@@ -34,6 +34,134 @@ static report_result_t *get_reported_to(const char *dump_dir_name)
     return reported_to;
 }
 
+static
+int create_tarball(const char *tempfile, problem_data_t *problem_data)
+{
+    reportfile_t *file = NULL;
+
+    int pipe_from_parent_to_child[2];
+    xpipe(pipe_from_parent_to_child);
+    pid_t child = fork();
+    if (child == 0)
+    {
+        /* child */
+        close(pipe_from_parent_to_child[1]);
+        xmove_fd(xopen3(tempfile, O_WRONLY | O_CREAT | O_EXCL, 0600), 1);
+        xmove_fd(pipe_from_parent_to_child[0], 0);
+        execlp("gzip", "gzip", NULL);
+        perror_msg_and_die("Can't execute '%s'", "gzip");
+    }
+    close(pipe_from_parent_to_child[0]);
+
+    TAR *tar = NULL;
+    if (tar_fdopen(&tar, pipe_from_parent_to_child[1], (char*)tempfile,
+                /*fileops:(standard)*/ NULL, O_WRONLY | O_CREAT, 0644, TAR_GNU) != 0)
+    {
+        goto ret;
+    }
+
+    file = new_reportfile();
+    {
+        GHashTableIter iter;
+        char *name;
+        struct problem_item *value;
+        g_hash_table_iter_init(&iter, problem_data);
+        while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
+        {
+            const char *content = value->content;
+            if (value->flags & CD_FLAG_TXT)
+            {
+                reportfile_add_binding_from_string(file, name, content);
+            }
+            else if (value->flags & CD_FLAG_BIN)
+            {
+                const char *basename = strrchr(content, '/');
+                if (basename)
+                    basename++;
+                else
+                    basename = content;
+                char *xml_name = concat_path_file("content", basename);
+                reportfile_add_binding_from_namedfile(file,
+                        /*on_disk_filename */ content,
+                        /*binding_name     */ name,
+                        /*recorded_filename*/ xml_name,
+                        /*binary           */ 1);
+                if (tar_append_file(tar, (char*)content, xml_name) != 0)
+                {
+                    free(xml_name);
+                    goto ret;
+                }
+                free(xml_name);
+            }
+        }
+    }
+    const char *signature = reportfile_as_string(file);
+    /*
+     * Note: this pointer points to string which is owned by
+     * "file" object, can't free "file" just yet.
+     */
+
+    /* Write out content.xml in the tarball's root */
+    {
+        unsigned len = strlen(signature);
+        unsigned len512 = (len + 511) & ~511;
+        char *block = (char*)memcpy(xzalloc(len512), signature, len);
+
+        th_set_type(tar, S_IFREG | 0644);
+        th_set_mode(tar, S_IFREG | 0644);
+      //th_set_link(tar, char *linkname);
+      //th_set_device(tar, dev_t device);
+      //th_set_user(tar, uid_t uid);
+      //th_set_group(tar, gid_t gid);
+        th_set_mtime(tar, time(NULL));
+        th_set_path(tar, (char*)"content.xml");
+        th_set_size(tar, len);
+        th_finish(tar); /* caclulate and store th xsum etc */
+
+        if (th_write(tar) != 0 /* writes header block */
+            /* writes content.xml, padded to 512 bytes */
+         || full_write(tar_fd(tar), block, len512) != len512
+         || tar_append_eof(tar) != 0 /* writes EOF blocks */
+         || tar_close(tar) != 0
+        ) {
+            free(block);
+            goto ret;
+        }
+        tar = NULL;
+        free(block);
+    }
+
+    /* We must be sure gzip finished, and finished successfully */
+    int status;
+    safe_waitpid(child, &status, 0);
+    child = -1;
+    if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
+    {
+        /* Hopefully, by this time child emitted more meaningful
+         * error message. But just in case it didn't:
+         */
+        goto ret;
+    }
+    return 0; /* success */
+
+ ret:
+    /* We must close write fd first, or else child will wait forever */
+    if (tar)
+        tar_close(tar);
+    //close(pipe_from_parent_to_child[1]); - tar_close() does it itself
+
+    /* Now wait for child to exit */
+    if (child > 0)
+    {
+        // Damn, selinux does not allow SIGKILLing our own child! wtf??
+        //kill(child, SIGKILL); /* just in case */
+        safe_waitpid(child, NULL, 0);
+    }
+
+    free_reportfile(file);
+    return 1; /* failure */
+}
+
 int main(int argc, char **argv)
 {
     abrt_init(argv);
@@ -205,10 +333,7 @@ int main(int argc, char **argv)
     log(_("Compressing data"));
 
     const char *errmsg = NULL;
-    TAR *tar = NULL;
-    pid_t child;
     char *tempfile = NULL;
-    reportfile_t *file = NULL;
     rhts_result_t *result = NULL;
     rhts_result_t *result_atch = NULL;
     char *dsc = NULL;
@@ -235,7 +360,6 @@ int main(int argc, char **argv)
         summary = strbuf_free_nobuf(buf_summary);
         dsc = make_description_bz(problem_data, CD_TEXT_ATT_SIZE_BZ);
     }
-    file = new_reportfile();
     char tmpdir_name[sizeof("/tmp/rhtsupport-"LIBREPORT_ISO_DATE_STRING_SAMPLE"-XXXXXX")];
     snprintf(tmpdir_name, sizeof(tmpdir_name), "/tmp/rhtsupport-%s-XXXXXX", iso_date_string(NULL));
     /* mkdtemp does mkdir(xxx, 0700), should be safe (is it?) */
@@ -247,107 +371,9 @@ int main(int argc, char **argv)
     /* Starting from here, we must perform cleanup on errors
      * (delete temp dir)
      */
-
     tempfile = xasprintf("%s/tmp-%s-%lu.tar.gz", tmpdir_name, iso_date_string(NULL), (long)getpid());
-
-    int pipe_from_parent_to_child[2];
-    xpipe(pipe_from_parent_to_child);
-    child = fork();
-    if (child == 0)
+    if (create_tarball(tempfile, problem_data) != 0)
     {
-        /* child */
-        close(pipe_from_parent_to_child[1]);
-        xmove_fd(xopen3(tempfile, O_WRONLY | O_CREAT | O_EXCL, 0600), 1);
-        xmove_fd(pipe_from_parent_to_child[0], 0);
-        execlp("gzip", "gzip", NULL);
-        perror_msg_and_die("Can't execute '%s'", "gzip");
-    }
-    close(pipe_from_parent_to_child[0]);
-
-    if (tar_fdopen(&tar, pipe_from_parent_to_child[1], tempfile,
-                /*fileops:(standard)*/ NULL, O_WRONLY | O_CREAT, 0644, TAR_GNU) != 0)
-    {
-        errmsg = _("Can't create temporary file in /tmp");
-        goto ret;
-    }
-
-    {
-        GHashTableIter iter;
-        char *name;
-        struct problem_item *value;
-        g_hash_table_iter_init(&iter, problem_data);
-        while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
-        {
-            const char *content = value->content;
-            if (value->flags & CD_FLAG_TXT)
-            {
-                reportfile_add_binding_from_string(file, name, content);
-            }
-            else if (value->flags & CD_FLAG_BIN)
-            {
-                const char *basename = strrchr(content, '/');
-                if (basename)
-                    basename++;
-                else
-                    basename = content;
-                char *xml_name = concat_path_file("content", basename);
-                reportfile_add_binding_from_namedfile(file,
-                        /*on_disk_filename */ content,
-                        /*binding_name     */ name,
-                        /*recorded_filename*/ xml_name,
-                        /*binary           */ 1);
-                if (tar_append_file(tar, (char*)content, xml_name) != 0)
-                {
-                    errmsg = _("Can't create temporary file in /tmp");
-                    free(xml_name);
-                    goto ret;
-                }
-                free(xml_name);
-            }
-        }
-    }
-
-    /* Write out content.xml in the tarball's root */
-    {
-        const char *signature = reportfile_as_string(file);
-        unsigned len = strlen(signature);
-        unsigned len512 = (len + 511) & ~511;
-        char *block = (char*)memcpy(xzalloc(len512), signature, len);
-
-        th_set_type(tar, S_IFREG | 0644);
-        th_set_mode(tar, S_IFREG | 0644);
-      //th_set_link(tar, char *linkname);
-      //th_set_device(tar, dev_t device);
-      //th_set_user(tar, uid_t uid);
-      //th_set_group(tar, gid_t gid);
-        th_set_mtime(tar, time(NULL));
-        th_set_path(tar, (char*)"content.xml");
-        th_set_size(tar, len);
-        th_finish(tar); /* caclulate and store th xsum etc */
-
-        if (th_write(tar) != 0 /* writes header block */
-            /* writes content.xml, padded to 512 bytes */
-         || full_write(tar_fd(tar), block, len512) != len512
-         || tar_append_eof(tar) != 0 /* writes EOF blocks */
-         || tar_close(tar) != 0
-        ) {
-            free(block);
-            errmsg = _("Can't create temporary file in /tmp");
-            goto ret;
-        }
-        tar = NULL;
-        free(block);
-    }
-
-    /* We must be sure gzip finished, and finished successfully */
-    int status;
-    safe_waitpid(child, &status, 0);
-    child = -1;
-    if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
-    {
-        /* Hopefully, by this time child emitted more meaningful
-         * error message. But just in case it didn't:
-         */
         errmsg = _("Can't create temporary file in /tmp");
         goto ret;
     }
@@ -466,22 +492,8 @@ int main(int argc, char **argv)
     /* else: error msg was already emitted by dd_opendir */
 
  ret:
-    /* We must close write fd first, or else child will wait forever */
-    if (tar)
-        tar_close(tar);
-    //close(pipe_from_parent_to_child[1]); - tar_close() does it itself
-
-    /* Now wait for child to exit */
-    if (child > 0)
-    {
-        // Damn, selinux does not allow SIGKILLing our own child! wtf??
-        //kill(child, SIGKILL); /* just in case */
-        safe_waitpid(child, NULL, 0);
-    }
-
     unlink(tempfile);
     free(tempfile);
-    free_reportfile(file);
     rmdir(tmpdir_name);
 
     /* Note: errmsg may be = result->msg, don't move this code block
