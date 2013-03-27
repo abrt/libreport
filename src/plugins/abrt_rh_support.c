@@ -357,17 +357,20 @@ post_case_to_url(const char* url,
         errmsg = post_state->curl_error_msg;
         if (errmsg && errmsg[0])
         {
-            result->msg = xasprintf(_("error in case creation: %s"), errmsg);
+            result->msg = xasprintf(_("Error in case creation at '%s': %s"),
+                    url, errmsg);
         }
         else
         {
             errmsg = post_state->body;
             if (errmsg && errmsg[0])
-                result->msg = xasprintf(_("error in case creation, HTTP code: %d, server says: '%s'"),
-                        post_state->http_resp_code, errmsg);
+                result->msg = xasprintf(_("Error in case creation at '%s',"
+                        " HTTP code: %d, server says: '%s'"),
+                        url, post_state->http_resp_code, errmsg);
             else
-                result->msg = xasprintf(_("error in case creation, HTTP code: %d"),
-                        post_state->http_resp_code);
+                result->msg = xasprintf(_("Error in case creation at '%s',"
+                        " HTTP code: %d"),
+                        url, post_state->http_resp_code);
         }
         break;
 
@@ -408,17 +411,18 @@ create_new_case(const char* base_url,
                 description,
                 component
     );
-    free(url);
 
     if (!result->error && !result->url)
     {
         /* Case Creation returned valid code, but no location */
         result->error = -1;
         free(result->msg);
-        result->msg = xasprintf(_("Error in case creation: no Location URL, HTTP code: %d"),
-                result->http_resp_code
+        result->msg = xasprintf(_("Error in case creation at '%s':"
+                " no Location URL, HTTP code: %d"),
+                url, result->http_resp_code
         );
     }
+    free(url);
 
     return result;
 }
@@ -517,7 +521,8 @@ post_comment_to_url(const char *url,
         errmsg = post_state->curl_error_msg;
         if (errmsg && errmsg[0])
         {
-            result->msg = xasprintf(_("Error in comment creation: %s"), errmsg);
+            result->msg = xasprintf(_("Error in comment creation at '%s': %s"),
+                        url, errmsg);
         }
         else
         {
@@ -525,11 +530,13 @@ post_comment_to_url(const char *url,
             if (!errmsg)
                 errmsg = post_state->body;
             if (errmsg && errmsg[0])
-                result->msg = xasprintf(_("Error in comment creation, HTTP code: %d, server says: '%s'"),
-                        post_state->http_resp_code, errmsg);
+                result->msg = xasprintf(_("Error in comment creation at '%s',"
+                        " HTTP code: %d, server says: '%s'"),
+                        url, post_state->http_resp_code, errmsg);
             else
-                result->msg = xasprintf(_("Error in comment creation, HTTP code: %d"),
-                        post_state->http_resp_code);
+                result->msg = xasprintf(_("Error in comment creation at '%s',"
+                        " HTTP code: %d"),
+                        url, post_state->http_resp_code);
         }
         break;
 
@@ -567,17 +574,18 @@ add_comment_to_case(const char* base_url,
                 (const char **) NULL, //text_plain_header,
                 comment_text
     );
-    free(url);
 
     if (!result->error && !result->url)
     {
         /* Creation returned valid code, but no location */
         result->error = -1;
         free(result->msg);
-        result->msg = xasprintf(_("Error in comment creation: no Location URL, HTTP code: %d"),
-                result->http_resp_code
+        result->msg = xasprintf(_("Error in comment creation at '%s':"
+                " no Location URL, HTTP code: %d"),
+                url, result->http_resp_code
         );
     }
+    free(url);
 
     return result;
 }
@@ -653,17 +661,20 @@ post_file_to_url(const char* url,
         errmsg = atch_state->curl_error_msg;
         if (errmsg && errmsg[0])
         {
-            result->msg = xasprintf("error in file upload: %s", errmsg);
+            result->msg = xasprintf("Error in file upload at '%s': %s",
+                    url, errmsg);
         }
         else
         {
             errmsg = atch_state->body;
             if (errmsg && errmsg[0])
-                result->msg = xasprintf("error in file upload, HTTP code: %d, server says: '%s'",
-                        atch_state->http_resp_code, errmsg);
+                result->msg = xasprintf("Error in file upload at '%s',"
+                        " HTTP code: %d, server says: '%s'",
+                        url, atch_state->http_resp_code, errmsg);
             else
-                result->msg = xasprintf("error in file upload, HTTP code: %d",
-                        atch_state->http_resp_code);
+                result->msg = xasprintf("Error in file upload at '%s',"
+                        " HTTP code: %d",
+                        url, atch_state->http_resp_code);
         }
         break;
 
