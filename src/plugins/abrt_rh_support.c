@@ -108,9 +108,11 @@ xxmlTextWriterWriteString(xmlTextWriterPtr writer, const char *content)
 #endif
 
 //
+// Reportfile helpers
+//
+
 // End the reportfile, and prepare it for delivery.
 // No more bindings can be added after this.
-//
 static void
 close_writer(reportfile_t* file)
 {
@@ -123,9 +125,7 @@ close_writer(reportfile_t* file)
     file->writer = NULL;
 }
 
-//
 // This allocates a reportfile_t structure and initializes it.
-//
 reportfile_t*
 new_reportfile(void)
 {
@@ -159,9 +159,7 @@ internal_reportfile_start_binding(reportfile_t* file, const char* name, int isbi
         xxmlTextWriterWriteAttribute(file->writer, "type", "text");
 }
 
-//
 // Add a new text binding
-//
 void
 reportfile_add_binding_from_string(reportfile_t* file, const char* name, const char* value)
 {
@@ -171,9 +169,7 @@ reportfile_add_binding_from_string(reportfile_t* file, const char* name, const c
     xxmlTextWriterEndElement(file->writer);
 }
 
-//
 // Add a new binding to a report whose value is represented as a file.
-//
 void
 reportfile_add_binding_from_namedfile(reportfile_t* file,
                 const char* on_disk_filename, /* unused so far */
@@ -189,9 +185,7 @@ reportfile_add_binding_from_namedfile(reportfile_t* file,
     free(href_name);
 }
 
-//
 // Return the contents of the reportfile as a string.
-//
 const char*
 reportfile_as_string(reportfile_t* file)
 {
@@ -222,9 +216,27 @@ void free_rhts_result(rhts_result_t *p)
 }
 
 //
-// create_new_case()
+// Common
 //
+static const char *const text_plain_header[] = {
+    "Accept: text/plain",
+    NULL
+};
 
+//
+// Creating new case
+// See
+// https://access.redhat.com/knowledge/docs/Red_Hat_Customer_Portal/integration_guide.html
+//
+// $ curl -X POST -H 'Content-Type: application/xml' --data
+//  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+//   <case xmlns="http://www.redhat.com/gss/strata">
+//   <summary>Example Case</summary>
+//   <description>Example created with cURL</description>
+//   <product>Red Hat Enterprise Linux</product><version>6.0</version>
+//   </case>'
+//   https://api.access.redhat.com/rs/cases
+//
 static char*
 make_case_data(const char* summary, const char* description,
                const char* product, const char* version,
@@ -261,52 +273,6 @@ make_case_data(const char* summary, const char* description,
     return retval;
 }
 
-#if 0 //unused
-static char*
-make_response(const char* title, const char* body,
-              const char* actualURL, const char* displayURL)
-{
-    char* retval;
-    xmlTextWriterPtr writer;
-    xmlBufferPtr buf;
-
-    buf = xxmlBufferCreate();
-    writer = xxmlNewTextWriterMemory(buf);
-
-    xxmlTextWriterStartDocument(writer, NULL, "UTF-8", "yes");
-    xxmlTextWriterStartElement(writer, "response");
-    if (title) {
-        xxmlTextWriterWriteElement(writer, "title", title);
-    }
-    if (body) {
-        xxmlTextWriterWriteElement(writer, "body", body);
-    }
-    if (actualURL || displayURL) {
-        xxmlTextWriterStartElement(writer, "URL");
-        if (actualURL) {
-            xxmlTextWriterWriteAttribute(writer, "href", actualURL);
-        }
-        if (displayURL) {
-            xxmlTextWriterWriteString(writer, displayURL);
-        }
-    }
-
-    xxmlTextWriterEndDocument(writer);
-    retval = xstrdup((const char*)buf->content);
-    xmlFreeTextWriter(writer);
-    xmlBufferFree(buf);
-    return retval;
-}
-//Example:
-//<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-//<response><title>Case Created and Report Attached</title><body></body><URL href="http://support-services-devel.gss.redhat.com:8080/Strata/cases/00005129/attachments/ccbf3e65-b941-3db7-a016-6a3831691a32">New Case URL</URL></response>
-#endif
-
-static const char *const text_plain_header[] = {
-    "Accept: text/plain",
-    NULL
-};
-
 static rhts_result_t*
 post_case_to_url(const char* url,
                 const char* username,
@@ -332,23 +298,23 @@ post_case_to_url(const char* url,
 
     int redirect_count = 0;
     char *errmsg;
-    abrt_post_state_t *case_state;
+    abrt_post_state_t *post_state;
 
- redirect_case:
-    case_state = new_abrt_post_state(0
+ redirect:
+    post_state = new_abrt_post_state(0
             + ABRT_POST_WANT_HEADERS
             + ABRT_POST_WANT_BODY
             + ABRT_POST_WANT_ERROR_MSG
             + (ssl_verify ? ABRT_POST_WANT_SSL_VERIFY : 0)
     );
-    case_state->username = username;
-    case_state->password = password;
+    post_state->username = username;
+    post_state->password = password;
 
-    abrt_post_string(case_state, url, "application/xml", additional_headers, case_data);
+    abrt_post_string(post_state, url, "application/xml", additional_headers, case_data);
 
-    char *case_location = find_header_in_abrt_post_state(case_state, "Location:");
+    char *location = find_header_in_abrt_post_state(post_state, "Location:");
 
-    switch (case_state->http_resp_code)
+    switch (post_state->http_resp_code)
     {
     case 404:
         /* Not strictly necessary (default branch would deal with it too),
@@ -363,12 +329,12 @@ post_case_to_url(const char* url,
     case 301: /* "301 Moved Permanently" (for example, used to move http:// to https://) */
     case 302: /* "302 Found" (just in case) */
     case 305: /* "305 Use Proxy" */
-        if (++redirect_count < 10 && case_location)
+        if (++redirect_count < 10 && location)
         {
             free(url_copy);
-            url = url_copy = xstrdup(case_location);
-            free_abrt_post_state(case_state);
-            goto redirect_case;
+            url = url_copy = xstrdup(location);
+            free_abrt_post_state(post_state);
+            goto redirect;
         }
         /* fall through */
 
@@ -388,40 +354,78 @@ post_case_to_url(const char* url,
         // '^M'
         // ' '  <------ body is useless
         result->error = -1;
-        errmsg = case_state->curl_error_msg;
+        errmsg = post_state->curl_error_msg;
         if (errmsg && errmsg[0])
         {
             result->msg = xasprintf(_("error in case creation: %s"), errmsg);
         }
         else
         {
-            errmsg = case_state->body;
+            errmsg = post_state->body;
             if (errmsg && errmsg[0])
                 result->msg = xasprintf(_("error in case creation, HTTP code: %d, server says: '%s'"),
-                        case_state->http_resp_code, errmsg);
+                        post_state->http_resp_code, errmsg);
             else
                 result->msg = xasprintf(_("error in case creation, HTTP code: %d"),
-                        case_state->http_resp_code);
+                        post_state->http_resp_code);
         }
         break;
 
     case 200:
     case 201:
         /* Cose created successfully */
-        result->url = xstrdup(case_location); /* note: xstrdup(NULL) returns NULL */
-        //result->msg = xstrdup("Case created");
+        result->url = xstrdup(location); /* note: xstrdup(NULL) returns NULL */
     } /* switch (HTTP code) */
 
-    result->http_resp_code = case_state->http_resp_code;
-    result->body = case_state->body;
-    case_state->body = NULL;
+    result->http_resp_code = post_state->http_resp_code;
+    result->body = post_state->body;
+    post_state->body = NULL;
 
-    free_abrt_post_state(case_state);
+    free_abrt_post_state(post_state);
     free(case_data);
     free(url_copy);
     return result;
 }
 
+rhts_result_t*
+create_new_case(const char* base_url,
+                const char* username,
+                const char* password,
+                bool ssl_verify,
+                const char* release,
+                const char* summary,
+                const char* description,
+                const char* component)
+{
+    char *url = concat_path_file(base_url, "cases");
+    rhts_result_t *result = post_case_to_url(url,
+                username,
+                password,
+                ssl_verify,
+                (const char **)text_plain_header,
+                release,
+                summary,
+                description,
+                component
+    );
+    free(url);
+
+    if (!result->error && !result->url)
+    {
+        /* Case Creation returned valid code, but no location */
+        result->error = -1;
+        free(result->msg);
+        result->msg = xasprintf(_("Error in case creation: no Location URL, HTTP code: %d"),
+                result->http_resp_code
+        );
+    }
+
+    return result;
+}
+
+//
+// Attach file to case
+//
 static rhts_result_t*
 post_file_to_url(const char* url,
                 const char* username,
@@ -520,41 +524,28 @@ post_file_to_url(const char* url,
 }
 
 rhts_result_t*
-create_new_case(const char* base_url,
+attach_file_to_case(const char* base_url,
                 const char* username,
                 const char* password,
                 bool ssl_verify,
-                const char* release,
-                const char* summary,
-                const char* description,
-                const char* component)
+                const char *file_name)
 {
-    char *url = concat_path_file(base_url, "cases");
-    rhts_result_t *result = post_case_to_url(url,
+    char *url = concat_path_file(base_url, "attachments");
+    rhts_result_t *result = post_file_to_url(url,
                 username,
                 password,
                 ssl_verify,
-                (const char **)text_plain_header,
-                release,
-                summary,
-                description,
-                component
+                /*post_as_form:*/ true,
+                (const char **) text_plain_header,
+                file_name
     );
     free(url);
-
-    if (!result->url)
-    {
-        /* Case Creation returned valid code, but no location */
-        result->error = -1;
-        free(result->msg);
-        result->msg = xasprintf(_("error in case creation: no Location URL, HTTP code: %d"),
-                result->http_resp_code
-        );
-    }
-
     return result;
 }
 
+//
+// Get hint
+//
 rhts_result_t*
 get_rhts_hints(const char* base_url,
                 const char* username,
@@ -579,26 +570,6 @@ get_rhts_hints(const char* base_url,
                 ssl_verify,
                 /*post_as_form:*/ false,
                 /*headers:*/ NULL,
-                file_name
-    );
-    free(url);
-    return result;
-}
-
-rhts_result_t*
-attach_file_to_case(const char* base_url,
-                const char* username,
-                const char* password,
-                bool ssl_verify,
-                const char *file_name)
-{
-    char *url = concat_path_file(base_url, "attachments");
-    rhts_result_t *result = post_file_to_url(url,
-                username,
-                password,
-                ssl_verify,
-                /*post_as_form:*/ true,
-                (const char **) text_plain_header,
                 file_name
     );
     free(url);
