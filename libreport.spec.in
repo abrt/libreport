@@ -471,6 +471,31 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/anaconda_event.conf
 
 %changelog
+* Wed Mar 27 2013 Jakub Filak <jfilak@redhat.com> 2.1.3-1
+- rhbz: get id of duplicate from correct field
+- change the "exited with" message with something less technical closes #143
+- spec: integration with satyr
+- Integration with satyr
+- dump_dir_accessible_by_uid(): clear errno if error didn't occur
+- reporter-rhtsupport: improve logging
+- reporter-rhtsupport: upload file to BigFileURL if it is large
+- dd: document used errno values in dump_dir_accessible_by_uid()
+- add rhel package with appropriate workflow definitions
+- add workflow definitions for RHEL
+- Add test for is_text_file
+- improve is_text_file() to not treat valid Unicode as bad_chars
+- reporter-rhtsupport: fix double-free error
+- reporter-upload: move file upload function to lib/
+- reporter-upload: factor out HTTP PUT upload
+- reporter-rhtsupport: skip hints check if uploaded data is really large
+- reporter-rhtsupport: make -t[CASE_ID] work without FILEs. Closes #140
+- reporter-rhtsupport: factor out tarball creation
+- Update debug build scripts
+- RHTS support: regularize order of functions and comments
+- fread_with_reporting: make progress indicator less noisy
+- fix name mangling define in the header
+- report-gtk: update excluded elements check boxes before emergency analysis event
+
 * Tue Mar 19 2013 Jakub Filak <jfilak@redhat.com> 2.1.2-1
 - always treat os-release as textual related to rhbz#922433
 - is_text_file(): bump allowable non-ASCII chars from 2% to 10%. Closes rhbz#922433
