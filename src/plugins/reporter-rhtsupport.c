@@ -259,18 +259,14 @@ int main(int argc, char **argv)
 
     if (opts & OPT_t)
     {
-        if (!*argv)
-            show_usage_and_die(program_usage_string, program_options);
-
         if (!case_no)
         {
-            /* -t */
+            /* -t: extract URL where we previously reported it */
             report_result_t *reported_to = get_reported_to(dump_dir_name);
             if (!reported_to || !reported_to->url)
                 error_msg_and_die("Can't attach: problem data in '%s' "
                         "was not reported to RHTSupport and therefore has no URL",
                         dump_dir_name);
-
             //log("URL:'%s'", reported_to->url);
             //log("MSG:'%s'", reported_to->msg);
             free(url);
@@ -287,50 +283,53 @@ int main(int argc, char **argv)
             free(url1);
         }
 
-        while (*argv)
+        if (*argv)
         {
-            log(_("Attaching '%s' to case '%s'"), *argv, url);
-            rhts_result_t *result = attach_file_to_case(url,
-                login,
-                password,
-                ssl_verify,
-                *argv
-            );
-            if (result->error)
-                error_msg_and_die("%s", result->msg);
-            log("Attachment URL:%s", result->url);
-            log("File attached successfully");
-            free_rhts_result(result);
-            argv++;
-        }
-
-        return 0;
-    }
-
-    if (*argv)
-        show_usage_and_die(program_usage_string, program_options);
-
-    /* Creating a new case */
-
-    report_result_t *reported_to = get_reported_to(dump_dir_name);
-    if (reported_to && reported_to->url && !(opts & OPT_f))
-    {
-        char *msg = xasprintf("This problem was already reported to RHTS (see '%s')."
-                        " Do you still want to create a RHTSupport ticket?",
-                        reported_to->url);
-        int yes = ask_yes_no(msg);
-        free(msg);
-        if (!yes)
+            /* -t[CASE] FILE: just attach files and exit */
+            while (*argv)
+            {
+                log(_("Attaching '%s' to case '%s'"), *argv, url);
+                rhts_result_t *result = attach_file_to_case(url,
+                    login,
+                    password,
+                    ssl_verify,
+                    *argv
+                );
+                if (result->error)
+                    error_msg_and_die("%s", result->msg);
+                log("Attachment URL:%s", result->url);
+                log("File attached successfully");
+                free_rhts_result(result);
+                argv++;
+            }
             return 0;
+        }
     }
-    free_report_result(reported_to);
+    else /* no -t: creating a new case */
+    {
+        if (*argv)
+            show_usage_and_die(program_usage_string, program_options);
+
+        report_result_t *reported_to = get_reported_to(dump_dir_name);
+        if (reported_to && reported_to->url && !(opts & OPT_f))
+        {
+            char *msg = xasprintf("This problem was already reported to RHTS (see '%s')."
+                            " Do you still want to create a RHTSupport ticket?",
+                            reported_to->url);
+            int yes = ask_yes_no(msg);
+            free(msg);
+            if (!yes)
+                return 0;
+        }
+        free_report_result(reported_to);
+    }
+
+    /* Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing */
+    log(_("Compressing data"));
 
     problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
     if (!problem_data)
         xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
-
-    /* Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing */
-    log(_("Compressing data"));
 
     const char *errmsg = NULL;
     char *tempfile = NULL;
@@ -349,7 +348,6 @@ int main(int argc, char **argv)
     package  = get_problem_item_content_or_NULL(problem_data, FILENAME_PACKAGE);
     reason   = get_problem_item_content_or_NULL(problem_data, FILENAME_REASON);
     function = get_problem_item_content_or_NULL(problem_data, FILENAME_CRASH_FUNCTION);
-
     {
         struct strbuf *buf_summary = strbuf_new();
         strbuf_append_strf(buf_summary, "[abrt] %s", package);
@@ -360,6 +358,7 @@ int main(int argc, char **argv)
         summary = strbuf_free_nobuf(buf_summary);
         dsc = make_description_bz(problem_data, CD_TEXT_ATT_SIZE_BZ);
     }
+
     char tmpdir_name[sizeof("/tmp/rhtsupport-"LIBREPORT_ISO_DATE_STRING_SAMPLE"-XXXXXX")];
     snprintf(tmpdir_name, sizeof(tmpdir_name), "/tmp/rhtsupport-%s-XXXXXX", iso_date_string(NULL));
     /* mkdtemp does mkdir(xxx, 0700), should be safe (is it?) */
@@ -367,7 +366,6 @@ int main(int argc, char **argv)
     {
         error_msg_and_die(_("Can't create a temporary directory in /tmp"));
     }
-
     /* Starting from here, we must perform cleanup on errors
      * (delete temp dir)
      */
@@ -377,6 +375,8 @@ int main(int argc, char **argv)
         errmsg = _("Can't create temporary file in /tmp");
         goto ret;
     }
+
+//TODO: fetch size, use it to decide whether to fetch hints
 
     /* Check for hints and show them if we have something */
     result = get_rhts_hints(url,
@@ -419,77 +419,86 @@ int main(int argc, char **argv)
         }
     }
     free_rhts_result(result);
-    /*result = NULL; - redundant, result is assigned just below */
+    result = NULL;
 
-    /* Send tempfile */
-    log(_("Creating a new case..."));
-    result = create_new_case(url,
-            login,
-            password,
-            ssl_verify,
-            release,
-            summary,
-            dsc,
-            package
-    );
-
-    if (result->error)
+    if (!(opts & OPT_t))
     {
-        /*
-         * Message can contain "...server says: 'multi-line <html> text'"
-         * Replace all '\n' with spaces:
-         * we want this message to be, logically, one log entry.
-         * IOW: one line, not many lines.
-         */
-        char *src, *dst;
-        errmsg = dst = src = result->msg;
-        while (1)
+        log(_("Creating a new case"));
+        result = create_new_case(url,
+                login,
+                password,
+                ssl_verify,
+                release,
+                summary,
+                dsc,
+                package
+        );
+        if (result->error)
         {
-            unsigned char c = *src++;
-            if (c == '\n')
-                c = ' ';
-            *dst++ = c;
-            if (c == '\0')
-                break;
+            /*
+             * Message can contain "...server says: 'multi-line <html> text'"
+             * Replace all '\n' with spaces:
+             * we want this message to be, logically, one log entry.
+             * IOW: one line, not many lines.
+             */
+            char *src, *dst;
+            errmsg = dst = src = result->msg;
+            while (1)
+            {
+                unsigned char c = *src++;
+                if (c == '\n')
+                    c = ' ';
+                *dst++ = c;
+                if (c == '\0')
+                    break;
+            }
+            /* Remove trailing spaces (usually produced by trailing '\n') */
+            while (--dst >= errmsg && *dst == ' ')
+                *dst = '\0';
+            goto ret;
         }
-        /* Remove trailing spaces (usually produced by trailing '\n') */
-        while (--dst >= errmsg && *dst == ' ')
-            *dst = '\0';
-        goto ret;
+        /* No error in case creation */
+        /* Record "reported_to" element */
+        struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+        if (dd)
+        {
+            char *msg = xasprintf("RHTSupport: TIME=%s URL=%s%s%s",
+                    iso_date_string(NULL),
+                    result->url,
+                    result->msg ? " MSG=" : "", result->msg ? result->msg : ""
+            );
+            add_reported_to(dd, msg);
+            free(msg);
+            dd_close(dd);
+            if (result->msg)
+                log("%s", result->msg);
+            log("URL=%s", result->url);
+        }
+        /* else: error msg was already emitted by dd_opendir */
+        url = result->url;
     }
 
-    /* No error in case creation. Attach the file. */
-    result_atch = attach_file_to_case(result->url,
-            login,
-            password,
-            ssl_verify,
+    /* Attach the tarball of -d DIR */
+    result_atch = attach_file_to_case(url,
+             login,
+             password,
+             ssl_verify,
             tempfile
     );
     if (result_atch->error)
     {
-        /* Error. Prepend "Case created" text to whatever error message there is,
-         * so that user knows that case _was_ created despite error in attaching.
-         */
-        log("Case created but report attachment failed: %s", result_atch->msg);
+        if (!(opts & OPT_t))
+        {
+            /* Prepend "Case created" text to whatever error message there is,
+             * so that user knows that case _was_ created despite error in attaching.
+             */
+            log("Case created but failed to attach problem data: %s", result_atch->msg);
+        }
+        else
+        {
+            log("Failed to attach problem data: %s", result_atch->msg);
+        }
     }
-
-    /* Record "reported_to" element */
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (dd)
-    {
-        char *msg = xasprintf("RHTSupport: TIME=%s URL=%s%s%s",
-                iso_date_string(NULL),
-                result->url,
-                result->msg ? " MSG=" : "", result->msg ? result->msg : ""
-        );
-        add_reported_to(dd, msg);
-        free(msg);
-        dd_close(dd);
-        if (result->msg)
-            log("%s", result->msg);
-        log("URL=%s", result->url);
-    }
-    /* else: error msg was already emitted by dd_opendir */
 
  ret:
     unlink(tempfile);
