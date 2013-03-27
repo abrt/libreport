@@ -70,6 +70,13 @@ create_new_case(const char* baseURL,
 );
 
 rhts_result_t*
+add_comment_to_case(const char* base_url,
+                const char* username,
+                const char* password,
+                bool ssl_verify,
+                const char* comment_text);
+
+rhts_result_t*
 attach_file_to_case(const char* baseURL,
                 const char* username,
                 const char* password,
