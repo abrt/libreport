@@ -274,21 +274,45 @@ int main(int argc, char **argv)
     {
         if (!case_no)
         {
-            /* -t: extract URL where we previously reported it */
+            /* -t: ask for it */
             report_result_t *reported_to = get_reported_to(dump_dir_name);
             if (!reported_to || !reported_to->url)
-                error_msg_and_die("Can't attach: problem data in '%s' "
-                        "was not reported to RHTSupport and therefore has no URL",
-                        dump_dir_name);
-            //log("URL:'%s'", reported_to->url);
-            //log("MSG:'%s'", reported_to->msg);
+            {
+                case_no = ask(_("Case number:"));
+                if (!case_no)
+                    perror_msg_and_die("ask");
+                if (case_no[0])
+                    goto got_case_no;
+                /* User just pressed [enter] (or [cancel] in GIU). */
+                error_msg_and_die(_("Reporting cancelled"));
+            }
+            /* We have a preexisting URL */
+            log(_("Note: was already reported to '%s'"), reported_to->url);
+#if 1
+            case_no = ask(_("Case number:"));
+#else
+            case_no = ask(_("Case number (default:previously reported case):"));
+#endif
+            if (!case_no)
+                perror_msg_and_die("ask");
+            if (case_no[0])
+                goto got_case_no;
+#if 1
+            error_msg_and_die(_("Reporting cancelled"));
+#else
+//GUI BUG: would like to use this, but in GUI, [cancel] in ask dialog
+//also results in ""!
+//Enabling this will make [cancel] in GUI to NOT cancel!
+            /* User just pressed [enter]. Use previous URL */
             free(url);
             url = reported_to->url;
             reported_to->url = NULL;
             free_report_result(reported_to);
+#endif
         }
         else
         {
+ got_case_no:;
             /* -tCASE */
             char *url1 = concat_path_file(url, "cases");
             free(url);

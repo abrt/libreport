@@ -910,7 +910,7 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
                 if (get_problem_data_item_or_NULL(g_cd, cfg->ec_creates_items))
                 {
                     green_choice = true;
-                    event_description = tmp_description = xasprintf(_("(not needed, '%s' already exists)"), cfg->ec_creates_items);
+                    tmp_description = xasprintf(_("(not needed, '%s' already exists)"), cfg->ec_creates_items);
                 }
             }
         }
@@ -919,9 +919,9 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
 
         //VERB2 log("adding button '%s' to box %p", event_name, box);
         char *event_label = xasprintf("%s%s%s",
-                        event_screen_name,
-                        (event_description ? " - " : ""),
-                        event_description ? event_description : ""
+                        event_description ? event_description : event_screen_name,
+                        tmp_description ? " - " : "",
+                        tmp_description ? tmp_description : ""
         );
         free(tmp_description);
 
