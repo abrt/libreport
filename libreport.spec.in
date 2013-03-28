@@ -343,6 +343,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/plugins/rhtsupport.conf
 %{_sysconfdir}/libreport/events/report_RHTSupport.xml
+%{_sysconfdir}/libreport/events/report_RHTSupportAttach.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/rhtsupport_event.conf
 %{_mandir}/man1/reporter-rhtsupport.1.gz
 %{_bindir}/reporter-rhtsupport
@@ -356,7 +357,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %{_mandir}/man*/reporter-upload.*
 %{_bindir}/reporter-upload
+%{_sysconfdir}/libreport/events/report_Tarball.xml
 %{_sysconfdir}/libreport/events/report_Uploader.xml
+%config(noreplace) %{_sysconfdir}/libreport/events.d/tarball_event.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/uploader_event.conf
 
 %changelog
