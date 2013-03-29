@@ -600,7 +600,7 @@ char *upload_file(const char *url, const char *filename)
     post_state_t *state = new_post_state(POST_WANT_ERROR_MSG);
     post(state,
                 whole_url,
-                /*content_type:*/ "???",
+                /*content_type:*/ "application/octet-stream",
                 /*additional_headers:*/ NULL,
                 /*data:*/ filename,
                 POST_DATA_FROMFILE_PUT
