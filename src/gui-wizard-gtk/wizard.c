@@ -2509,6 +2509,12 @@ static void set_auto_event_chain(GtkButton *button, gpointer user_data)
         on_page_prepare(g_assistant, gtk_notebook_get_nth_page(g_assistant, next_page_no), NULL);
     else
         gtk_notebook_set_current_page(g_assistant, next_page_no);
+
+    /* Show Next Step button which was hidden on Selector page in non-expert
+     * mode. Next Step button must be hidden because Selector page shows only
+     * workflow buttons in non-expert mode.
+     */
+    show_next_step_button();
 }
 
 static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback func)
