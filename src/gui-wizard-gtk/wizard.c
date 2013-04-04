@@ -1626,6 +1626,8 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                     response = xstrdup("<WRITE ERROR>");
                     log_response = response;
                 }
+                else
+                    response[len - 1] = '\0';
                 strbuf_append_char(cmd_output, ' ');
                 strbuf_append_str(cmd_output, log_response);
                 free(response);
