@@ -47,6 +47,7 @@ enum {
 // caller is reposible for freeing *product* and *version*
 static void parse_release(const char *release, char** product, char** version, int flags)
 {
+    /* Fedora has a single non-numeric release - Rawhide */
     if (strstr(release, "Rawhide"))
     {
         *product = xstrdup("Fedora");
@@ -54,6 +55,29 @@ static void parse_release(const char *release, char** product, char** version, i
         VERB3 log("%s: version:'%s' product:'%s'", __func__, *version, *product);
         return;
     }
+
+    /* openSUSE has two non-numeric releases - Factory and Tumbleweed
+       None of them is unfortunately identified in any of /etc/SuSE-brand,
+       /etc/SuSE-release or /etc/os-release. Keep this piece of code commented
+       just not to forget about that. */
+
+    /*
+    if (strstr(release, "Factory"))
+    {
+        *product = xstrdup("openSUSE");
+        *version = xstrdup("Factory");
+        VERB3 log("%s: version:'%s' product:'%s'", __func__, *version, *product);
+        return;
+    }
+
+    if (strstr(release, "Tumbleweed"))
+    {
+        *product = xstrdup("openSUSE");
+        *version = xstrdup("Tumbleweed");
+        VERB3 log("%s: version:'%s' product:'%s'", __func__, *version, *product);
+        return;
+    }
+    */
 
     bool it_is_rhel = false;
 
@@ -66,6 +90,10 @@ static void parse_release(const char *release, char** product, char** version, i
     {
         strbuf_append_str(buf_product, "Red Hat Enterprise Linux");
         it_is_rhel = true;
+    }
+    else if (strstr(release, "openSUSE"))
+    {
+        strbuf_append_str(buf_product, "openSUSE");
     }
     else
     {
