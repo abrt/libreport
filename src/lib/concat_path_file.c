@@ -33,3 +33,27 @@ char *concat_path_file(const char *path, const char *filename)
 		filename++;
 	return xasprintf("%s%s%s", path, (end != path && end[-1] != '/' ? "/" : ""), filename);
 }
+
+char *concat_path_basename(const char *path, const char *filename)
+{
+    char *abspath = realpath(filename, NULL);
+    char *base = strrchr((abspath ? abspath : filename), '/');
+
+    /* If realpath failed and filename is malicious (say, "/foo/.."),
+     * we may end up tricked into doing some bad things. Don't allow that.
+     */
+    char buf[sizeof("tmp-"LIBREPORT_ISO_DATE_STRING_SAMPLE"-%lu")];
+    if (base && base[1] != '\0' && base[1] != '.')
+    {
+        /* We have a slash and it's not "foo/" or "foo/.<something>" */
+        base++;
+    }
+    else
+    {
+        sprintf(buf, "tmp-%s-%lu", iso_date_string(NULL), (long)getpid());
+        base = buf;
+    }
+    char *name = concat_path_file(path, base);
+    free(abspath);
+    return name;
+}
