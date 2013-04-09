@@ -705,6 +705,7 @@ struct dump_dir *open_directory_for_writing(
 // Filenames in problem directory:
 // filled by a hook:
 #define FILENAME_TIME         "time"        /* mandatory */
+#define FILENAME_LAST_OCCURRENCE  "last_occurrence" /* optional */
 #define FILENAME_REASON       "reason"      /* mandatory? */
 #define FILENAME_UID          "uid"         /* mandatory? */
 /*
