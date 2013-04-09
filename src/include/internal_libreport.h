@@ -670,6 +670,7 @@ bool make_dir_recursive(char *dir, mode_t dir_mode);
 // Filenames in problem directory:
 // filled by a hook:
 #define FILENAME_TIME         "time"        /* mandatory */
+#define FILENAME_LAST_OCCURRENCE  "last_occurrence" /* optional */
 #define FILENAME_REASON       "reason"      /* mandatory? */
 #define FILENAME_UID          "uid"         /* mandatory? */
 /*
