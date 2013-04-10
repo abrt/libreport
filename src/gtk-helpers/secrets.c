@@ -996,7 +996,8 @@ static GVariant *create_secret_from_options(GDBusProxy *session, GList *options,
     {
         event_option_t *const op = (event_option_t *)iter->data;
         /* TODO : is it still necessary? Passwords are encrypted now. */
-        if (op->eo_type != OPTION_TYPE_PASSWORD || store_passwords)
+        if (op->eo_value != NULL &&
+                (op->eo_type != OPTION_TYPE_PASSWORD || store_passwords))
         {
             const char *byte = op->eo_name;
             while(byte[0] != '\0')
