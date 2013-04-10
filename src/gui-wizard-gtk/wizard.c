@@ -1530,6 +1530,12 @@ static void terminate_event_chain()
     hide_next_step_button();
 }
 
+static void cancel_processing(GtkLabel *status_label, const char *message)
+{
+    gtk_label_set_text(status_label, message ? message : _("Processing was canceled"));
+    terminate_event_chain();
+}
+
 static void update_command_run_log(const char* message, struct analyze_event_data *evd)
 {
     const bool it_is_a_dot = (message[0] == '.' && message[1] == '\0');
@@ -1823,19 +1829,20 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         {
             /* 256 means NOT_REPORTABLE */
             if (retval == 256)
-                gtk_label_set_text(evd->status_label, evd->success_msg);
+                cancel_processing(evd->status_label, evd->success_msg);
             else
             {
-                gtk_label_set_text(evd->status_label, evd->error_msg);
-
                 /* We use SIGTERM to stop event processing on user's request.
                  * So SIGTERM is not a failure.
                  */
-                if (WTERMSIG(run_state->process_status) != SIGTERM)
+                if (retval == EXIT_CANCEL_BY_USER || WTERMSIG(run_state->process_status) == SIGTERM)
+                    cancel_processing(evd->status_label, /* default message */ NULL);
+                else
+                {
+                    cancel_processing(evd->status_label, evd->error_msg);
                     on_failed_event(evd->event_name);
+                }
             }
-            /* If we were running -e EV1 -e EV2, stop if EV1 failed: */
-            terminate_event_chain();
         }
         else
             gtk_label_set_text(evd->status_label, evd->success_msg);
@@ -1919,9 +1926,8 @@ static void start_event_run(const char *event_name,
         if (!g_expert_mode)
         {
             char *msg = xasprintf(_("Processing interrupted: can't continue without writable directory."));
-            gtk_label_set_text(status_label, msg);
+            cancel_processing(status_label, msg);
             free(msg);
-            terminate_event_chain();
         }
         return; /* user refused to steal, or write error, etc... */
     }
@@ -2614,8 +2620,7 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
             {
                 free(event);
 
-                gtk_label_set_text(g_lbl_event_log, _("Processing was cancelled"));
-                terminate_event_chain();
+                cancel_processing(g_lbl_event_log, /* default message */ NULL);
                 current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
                 goto again;
             }
@@ -2628,9 +2633,8 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
                                 "(it is likely a known problem). %s"),
                                 problem_data_get_content_or_NULL(g_cd, FILENAME_NOT_REPORTABLE)
                 );
-                gtk_label_set_text(g_lbl_event_log, msg);
+                cancel_processing(g_lbl_event_log, msg);
                 free(msg);
-                terminate_event_chain();
                 current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
                 goto again;
             }
