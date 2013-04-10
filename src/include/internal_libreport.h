@@ -432,6 +432,11 @@ extern int logmode;
 #define xfunc_error_retval libreport_xfunc_error_retval
 extern int xfunc_error_retval;
 
+#define EXIT_CANCEL_BY_USER 69
+
+#define set_xfunc_error_retval libreport_set_xfunc_error_retval
+void set_xfunc_error_retval(int retval);
+
 /* Verbosity level */
 #define g_verbose libreport_g_verbose
 extern int g_verbose;

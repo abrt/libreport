@@ -24,6 +24,8 @@ tmpdir = None
 RETURN_OK = 0
 # serious problem, should be logged somewhere
 RETURN_FAILURE = 2
+# user canceled processing
+from report import EXIT_CANCEL_BY_USER as RETURN_CANCEL_BY_USER
 
 
 GETTEXT_PROGNAME = "abrt"

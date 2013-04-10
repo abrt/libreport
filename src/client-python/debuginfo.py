@@ -323,7 +323,7 @@ class DebugInfoDownload(YumBase):
                         )
             if self.noninteractive == False and not ask_yes_no(question):
                 print _("Download cancelled by user")
-                return RETURN_OK
+                return RETURN_CANCEL_BY_USER
 
         for pkg, files in package_files_dict.iteritems():
             dnlcb.downloaded_pkgs = downloaded_pkgs

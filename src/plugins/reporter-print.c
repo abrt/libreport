@@ -93,7 +93,10 @@ int main(int argc, char **argv)
                 free(msg);
 
                 if (response[0] == '\0' || response[0] == '\n')
+                {
+                    set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
                     error_msg_and_die(_("Cancelled by user."));
+                }
 
                 output_file = strtrim(response);
             }

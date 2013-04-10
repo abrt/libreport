@@ -26,6 +26,11 @@ int logmode = LOGMODE_STDIO;
 int xfunc_error_retval = EXIT_FAILURE;
 int g_verbose;
 
+void set_xfunc_error_retval(int retval)
+{
+    xfunc_error_retval = retval;
+}
+
 /* [p]error_msg[_and_die] must be safe after fork in multi-threaded programs.
  * Therefore we avoid stdio, fflush(), and use _exit() instead of exit().
  *
