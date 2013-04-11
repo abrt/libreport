@@ -941,6 +941,7 @@ int main(int argc, char **argv)
 
     if (abrt_hash)
     {
+        log(_("Looking for similar problems in bugzilla"));
         char *hash;
         if (prefixcmp(abrt_hash, "abrt_hash:"))
             hash = xasprintf("abrt_hash:%s", abrt_hash);
