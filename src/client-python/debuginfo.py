@@ -215,7 +215,7 @@ class DebugInfoDownload(YumBase):
         downloaded_pkgs = 0
         # nothing to download?
         if not files:
-            return
+            return RETURN_FAILURE
 
         #if verbose == 0:
         #    # this suppress yum messages about setting up repositories
@@ -223,8 +223,8 @@ class DebugInfoDownload(YumBase):
 
         # make yumdownloader work as non root user
         if not self.setCacheDir():
-            self.logger.error("Error: can't make cachedir, exiting")
-            exit(50)
+            print _("Error: can't make cachedir, exiting")
+            return RETURN_FAILURE
 
         # disable all not needed
         for repo in self.repos.listEnabled():
@@ -245,9 +245,9 @@ class DebugInfoDownload(YumBase):
                 self.repos.doSetup(thisrepo=str(r.id))
                 log1("enabled repo %s", rid)
                 setattr(r, "skip_if_unavailable", True)
-                # yes, we want async download otherwise our progressCallback
-                # is not called and the interanl yum is used, which cause
-                # artifacts in output
+                # yes, we want async download, otherwise our progressCallback
+                # is not called and the internal yum's one  is used,
+                # which causes artifacts on output
                 try:
                     setattr(r, "_async", False)
                 except Exception, ex:
