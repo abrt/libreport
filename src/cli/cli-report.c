@@ -782,17 +782,16 @@ int run_event_chain(const char *dump_dir_name, GList *chain, int interactive)
             break;
         if (retval == 0 && run_state->children_count == 0)
         {
-            printf("Error: no processing is specified for event '%s'", event_name);
+            printf("Error: no processing is specified for event '%s'\n", event_name);
             retval = 1;
         }
         else
         /* If program failed, or if it finished successfully without saying anything... */
         if (retval != 0 || !l_state.output_was_produced)
         {
-            if (WIFSIGNALED(run_state->process_status))
-                printf("(killed by signal %u)\n", WTERMSIG(run_state->process_status));
-            else
-                printf("(exited with %u)\n", retval);
+            char *msg = exit_status_as_string(event_name, run_state->process_status);
+            fputs(msg, stdout);
+            free(msg);
         }
         if (retval != 0)
             break;

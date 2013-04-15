@@ -753,3 +753,15 @@ static void run_event_stdio_error_and_die(const char *error_line, void *param)
 {
     error_msg_and_die("Can't write bytes to child's stdin");
 }
+
+char *exit_status_as_string(const char *progname, int status)
+{
+    char *msg;
+    if (WIFSIGNALED(status))
+        msg = xasprintf(_("('%s' was killed by signal %u)\n"), progname, WTERMSIG(status));
+    else if (status == 0)
+        msg = xasprintf(_("('%s' completed successfully)\n"), progname);
+    else
+        msg = xasprintf(_("('%s' exited with %u)\n"), progname, WEXITSTATUS(status));
+    return msg;
+}

@@ -246,6 +246,12 @@ int run_event_stdio_ask_yes_no_yesforever(const char *msg, const char *key, void
  */
 char *run_event_stdio_ask_password(const char *msg, void *param);
 
+
+/* A simple helper */
+#define exit_status_as_string libreport_exit_status_as_string
+char *exit_status_as_string(const char *progname, int status);
+
+
 #ifdef __cplusplus
 }
 #endif
