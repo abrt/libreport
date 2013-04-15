@@ -57,7 +57,6 @@ def set_verbosity(verbosity):
     verbose = verbosity
 
 def log(fmt, *args):
-    print verbose
     sys.stderr.write("%s\n" % (fmt % args))
 
 def log1(fmt, *args):
@@ -76,4 +75,3 @@ def error_msg(fmt, *args):
 def error_msg_and_die(fmt, *args):
     sys.stderr.write("%s\n" % (fmt % args))
     sys.exit(1)
-
