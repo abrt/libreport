@@ -49,7 +49,9 @@ static int create_and_upload_archive(
     /* Create a child gzip which will compress the data */
     /* SELinux guys are not happy with /tmp, using /var/run/abrt */
     /* Reverted back to /tmp for ABRT2 */
-    tempfile = xasprintf("/tmp/abrt-upload-%s-%lu.tar.gz", iso_date_string(NULL), (long)getpid());
+    tempfile = concat_path_basename("/tmp", dump_dir_name);
+    tempfile = append_to_malloced_string(tempfile, ".tar.gz");
+
     int pipe_from_parent_to_child[2];
     xpipe(pipe_from_parent_to_child);
     child = vfork();
