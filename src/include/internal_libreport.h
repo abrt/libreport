@@ -106,8 +106,6 @@ int suffixcmp(const char *str, const char *suffix);
 char *strtrim(char *str);
 #define strtrimch libreport_strtrimch
 char *strtrimch(char *str, int ch);
-#define concat_path_file libreport_concat_path_file
-char *concat_path_file(const char *path, const char *filename);
 #define append_to_malloced_string libreport_append_to_malloced_string
 char *append_to_malloced_string(char *mstr, const char *append);
 #define skip_whitespace libreport_skip_whitespace
@@ -117,6 +115,15 @@ char* skip_non_whitespace(const char *s);
 /* Like strcpy but can copy overlapping strings. */
 #define overlapping_strcpy libreport_overlapping_strcpy
 void overlapping_strcpy(char *dst, const char *src);
+
+#define concat_path_file libreport_concat_path_file
+char *concat_path_file(const char *path, const char *filename);
+/*
+ * Used to construct a name in a different directory with the basename
+ * similar to the old name, if possible.
+ */
+#define concat_path_basename libreport_concat_path_basename
+char *concat_path_basename(const char *path, const char *filename);
 
 /* A-la fgets, but malloced and of unlimited size */
 #define xmalloc_fgets libreport_xmalloc_fgets
@@ -276,7 +283,6 @@ double get_dirsize_find_largest_dir(
                 char **worst_dir, /* can be NULL */
                 const char *excluded /* can be NULL */
 );
-
 
 #define ndelay_on libreport_ndelay_on
 int ndelay_on(int fd);

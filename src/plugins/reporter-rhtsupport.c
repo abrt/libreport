@@ -406,7 +406,8 @@ int main(int argc, char **argv)
     /* Starting from here, we must perform cleanup on errors
      * (delete temp dir)
      */
-    tempfile = xasprintf("%s/tmp-%s-%lu.tar.gz", tmpdir_name, iso_date_string(NULL), (long)getpid());
+    tempfile = concat_path_basename(tmpdir_name, dump_dir_name);
+    tempfile = append_to_malloced_string(tempfile, ".tar.gz");
     if (create_tarball(tempfile, problem_data) != 0)
     {
         errmsg = _("Can't create temporary file in /tmp");
