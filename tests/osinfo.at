@@ -265,6 +265,76 @@ int main(void)
     test("" ,NULL ,NULL);
 
     return 0;
+}
+]])
+
+## ----------------------- ##
+## problem_data_get_osinfo ##
+## ----------------------- ##
+
+AT_TESTFUN([problem_data_get_osinfo],
+[[
+#include "internal_libreport.h"
+#include <assert.h>
+
+int main(void)
+{
+    g_verbose=3;
+
+    problem_data_t *pd = problem_data_new();
+    map_string_t *osinfo = new_map_string();
+    {
+        problem_data_add_text_noteditable(pd, FILENAME_OS_INFO,
+             "NAME=Fedora\n"
+             "VERSION_ID=19\n"
+             "PRETTY_NAME=\"Fedora 19 (Schrödinger\\'s Cat)\"\n");
+
+        problem_data_get_osinfo(pd, osinfo);
+        assert(0 == strcmp("Fedora", get_map_string_item_or_NULL(osinfo, OSINFO_NAME)));
+        free_map_string(osinfo);
+        problem_data_free(pd);
+    }
+    pd = problem_data_new();
+    osinfo = new_map_string();
+    {
+        problem_data_add_text_noteditable(pd, FILENAME_OS_RELEASE, "Fedora release 19 (Schrödinger's Cat)");
+
+        problem_data_get_osinfo(pd, osinfo);
+        assert(0 == strcmp("Fedora release 19 (Schrödinger's Cat)", get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME)));
+        free_map_string(osinfo);
+        problem_data_free(pd);
+    }
+    pd = problem_data_new();
+    osinfo = new_map_string();
+    {
+        problem_data_add_text_noteditable(pd, FILENAME_ROOTDIR, "/var/lib/mock");
+        problem_data_add_text_noteditable(pd, FILENAME_OS_INFO_IN_ROOTDIR,
+             "NAME=\"Red Hat Enterprise Linux Client\"\n"
+             "VERSION_ID=7.0\n"
+             "PRETTY_NAME=\"Red Hat Enterprise Linux Client 7.0 Beta (Maipo)\"\n");
+        problem_data_add_text_noteditable(pd, FILENAME_OS_INFO,
+             "NAME=Fedora\n"
+             "VERSION_ID=19\n"
+             "PRETTY_NAME=\"Fedora 19 (Schrödinger\\'s Cat)\"\n");
+
+        problem_data_get_osinfo(pd, osinfo);
+        assert(0 == strcmp("Red Hat Enterprise Linux Client", get_map_string_item_or_NULL(osinfo, OSINFO_NAME)));
+        free_map_string(osinfo);
+        problem_data_free(pd);
+    }
+    pd = problem_data_new();
+    osinfo = new_map_string();
+    {
+        problem_data_add_text_noteditable(pd, FILENAME_ROOTDIR, "/var/lib/mock");
+        problem_data_add_text_noteditable(pd, FILENAME_OS_RELEASE_IN_ROOTDIR, "Red Hat Enterprise Linux Client 7.0 Beta (Maipo)");
+        problem_data_add_text_noteditable(pd, FILENAME_OS_RELEASE, "Fedora release 19 (Schrödinger's Cat)");
+
+        problem_data_get_osinfo(pd, osinfo);
+        assert(0 == strcmp("Red Hat Enterprise Linux Client 7.0 Beta (Maipo)", get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME)));
+        free_map_string(osinfo);
+        problem_data_free(pd);
+    }
+
     return 0;
 }
 ]])
