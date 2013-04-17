@@ -149,7 +149,6 @@ static void parse_release(const char *release, char** product, char** version, i
     if ((flags & APPEND_MAJOR_VER_TO_RHEL_PRODUCT) && it_is_rhel)
     {
         char *v = buf_version->buf;
-
         /* Append "integer part" of version to product:
          * "10.2<anything>" -> append " 10"
          * "10 <anything>"  -> append " 10"
@@ -169,12 +168,125 @@ static void parse_release(const char *release, char** product, char** version, i
     VERB3 log("%s: version:'%s' product:'%s'", __func__, *version, *product);
 }
 
+static void unescape_osnifo_value(const char *source, char* dest)
+{
+    while (source[0] != '\0')
+    {
+        if (source[0] == '\\')
+        {   /* some characters may be escaped -> remove '\' */
+            ++source;
+            if (source[0] == '\0')
+                break;
+            *dest++ = *source++;
+        }
+        else if (source[0] == '\'' || source[0] == '"')
+        {   /* skip non escaped quotes and don't care where they are */
+            ++source;
+        }
+        else
+        {
+            *dest++ = *source++;
+        }
+    }
+    dest[0] = '\0';
+}
+
+void parse_osinfo(const char *osinfo_bytes, map_string_t *osinfo)
+{
+    const char *cursor = osinfo_bytes;
+    unsigned line = 0;
+    while (cursor[0] != '\0')
+    {
+        ++line;
+        if (cursor[0] == '#')
+            goto skip_line;
+
+        const char *key_end = strchrnul(cursor, '=');
+        if (key_end[0] == '\0')
+        {
+            VERB1 log("os-release:%u: non empty last line", line);
+            break;
+        }
+
+        if (key_end - cursor == 0)
+        {
+            VERB1 log("os-release:%u: 0 length key", line);
+            goto skip_line;
+        }
+
+        const char *value_end = strchrnul(cursor, '\n');
+        if (key_end > value_end)
+        {
+            VERB1 log("os-release:%u: missing '='", line);
+            goto skip_line;
+        }
+
+        char *key = xstrndup(cursor, key_end - cursor);
+        if (get_map_string_item_or_NULL(osinfo, key) != NULL)
+        {
+            VERB1 log("os-release:%u: redefines key '%s'", line, key);
+        }
+
+        char *value = xstrndup(key_end + 1, value_end - key_end - 1);
+        unescape_osnifo_value(value, value);
+
+        VERB3 log("os-release:%u: parsed line: '%s'='%s'", line, key, value);
+
+        /* The difference between replace and insert is that if the key already
+         * exists in the GHashTable, it gets replaced by the new key. The old
+         * key and the old value are freed. */
+        replace_map_string_item(osinfo, key, value);
+
+        cursor = value_end;
+        if (value_end[0] == '\0')
+        {
+            VERB1 log("os-release:%u: the last value is not terminated by newline", line);
+        }
+        else
+            ++cursor;
+
+        continue;
+  skip_line:
+        cursor = strchrnul(cursor, '\n');
+        cursor += (cursor[0] != '\0');
+    }
+}
+
 void parse_release_for_bz(const char *release, char** product, char** version)
 {
     /* Fedora/RH bugzilla uses "Red Hat Enterprise Linux N" product for RHEL */
     parse_release(release, product, version, 0
         | APPEND_MAJOR_VER_TO_RHEL_PRODUCT
     );
+}
+
+void parse_osinfo_for_bz(map_string_t *osinfo, char** product, char** version)
+{
+    const char *name = get_map_string_item_or_NULL(osinfo, "REDHAT_BUGZILLA_PRODUCT");
+    if (!name)
+        name = get_map_string_item_or_NULL(osinfo, OSINFO_NAME);
+
+    const char *version_id = get_map_string_item_or_NULL(osinfo, "REDHAT_BUGZILLA_PRODUCT_VERSION");
+    if (!version_id)
+        version_id = get_map_string_item_or_NULL(osinfo, OSINFO_VERSION_ID);
+
+    if (name && version_id)
+    {
+        *product = xstrdup(name);
+        *version = xstrdup(version_id);
+        return;
+    }
+
+    const char *pretty = get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME);
+    if (pretty)
+    {
+        parse_release_for_bz(pretty, product, version);
+        return;
+    }
+
+    /* something bad happend */
+    *product = NULL;
+    *version = NULL;
 }
 
 /*
@@ -210,4 +322,33 @@ void parse_release_for_rhts(const char *release, char** product, char** version)
     parse_release(release, product, version, 0
         | RETAIN_ALPHA_BETA_TAIL_IN_VER
     );
+}
+
+void parse_osinfo_for_rhts(map_string_t *osinfo, char** product, char** version)
+{
+    const char *name = get_map_string_item_or_NULL(osinfo, "REDHAT_SUPPORT_PRODUCT");
+    if (!name)
+        name = get_map_string_item_or_NULL(osinfo, OSINFO_NAME);
+
+    const char *version_id = get_map_string_item_or_NULL(osinfo, "REDHAT_SUPPORT_PRODUCT_VERSION");
+    if (!version_id)
+        version_id = get_map_string_item_or_NULL(osinfo, OSINFO_VERSION_ID);
+
+    if (name && version_id)
+    {
+        *product = xstrdup(name);
+        *version = xstrdup(version_id);
+        return;
+    }
+
+    const char *pretty = get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME);
+    if (pretty)
+    {
+        parse_release_for_rhts(pretty, product, version);
+        return;
+    }
+
+    /* something bad happend */
+    *product = NULL;
+    *version = NULL;
 }

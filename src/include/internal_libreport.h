@@ -602,6 +602,58 @@ char* make_description_logger(problem_data_t *problem_data, unsigned max_text_si
 //#define make_description_mailx libreport_make_description_mailx
 //char* make_description_mailx(problem_data_t *problem_data);
 
+/* See man os-release(5) for details */
+#define OSINFO_ID "ID"
+#define OSINFO_NAME "NAME"
+#define OSINFO_VERSION_ID "VERSION_ID"
+#define OSINFO_PRETTY_NAME "PRETTY_NAME"
+
+/* @brief Loads a text in format of os-release(5) in to a map
+ *
+ * Function doesn't check for format errors much. It just tries to avoid
+ * program errors. In case of error the function prints out a log message and
+ * continues in parsing.
+ *
+ * @param osinfo_bytes Non-NULL pointer to osinfo bytes.
+ * @param osinfo The map where result is stored
+ */
+#define parse_osinfo libreport_parse_osinfo
+void parse_osinfo(const char *osinfo_bytes, map_string_t *osinfo);
+
+/* @brief Builds product string and product's version string for Bugzilla
+ *
+ * At first tries to get strings from the os specific variables
+ * (REDHAT_BUGZILLA_PRODUCT, REDHAT_BUGZILLA_PRODUCT_VERSION) if no such
+ * variables are found, uses NAME key for the product and VERSION_ID key for
+ * the product's version. If neither NAME nor VERSION_ID are provided fallbacks
+ * to parsing of os_release which should be stored under PRETTY_NAME key.
+ *
+ * https://bugzilla.redhat.com/show_bug.cgi?id=950373
+ *
+ * @param osinfo Input data from which the values are built
+ * @param produc Non-NULL pointer where pointer to malloced string will be stored. Memory must be released by free()
+ * @param version Non-NULL pointer where pointer to malloced string will be stored. Memory must be released by free()
+ */
+#define parse_osinfo_for_bz libreport_parse_osinfo_for_bz
+void parse_osinfo_for_bz(map_string_t *osinfo, char **product, char **version);
+
+/* @brief Builds product string and product's version string for Red Hat Support
+ *
+ * At first tries to get strings from the os specific variables
+ * (REDHAT_SUPPORT_PRODUCT, REDHAT_SUPPORT_PRODUCT_VERSION) if no such
+ * variables are found, uses NAME key for the product and VERSION_ID key for
+ * the product's version. If no NAME nor VERSION_ID are provided fallbacks to
+ * parsing of os_release which should be stored under PRETTY_NAME key.
+ *
+ * https://bugzilla.redhat.com/show_bug.cgi?id=950373
+ *
+ * @param osinfo Input data from which the values are built
+ * @param produc Non-NULL pointer where pointer to malloced string will be stored. Memory must be released by free()
+ * @param version Non-NULL pointer where pointer to malloced string will be stored. Memory must be released by free()
+ */
+#define parse_osinfo_for_rhts libreport_parse_osinfo_for_rhts
+void parse_osinfo_for_rhts(map_string_t *osinfo, char **product, char **version);
+
 #define parse_release_for_bz libreport_parse_release_for_bz
 void parse_release_for_bz(const char *pRelease, char **product, char **version);
 #define parse_release_for_rhts libreport_parse_release_for_rhts
