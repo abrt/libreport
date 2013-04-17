@@ -92,6 +92,22 @@ char *problem_data_get_content_or_NULL(problem_data_t *problem_data, const char 
 /* Aborts if key is not found: */
 char *problem_data_get_content_or_die(problem_data_t *problem_data, const char *key);
 
+/**
+  @brief Loads key value pairs from os_info item in to the osinfo argument
+
+  The function expects that osinfo data are stored in format of os-release(5).
+
+  The Function at first step tries to load the data from os_info obtained from
+  chrooted directory. If the chrooted data doesn't exist the function loads
+  os_info from the data obtained from the standard path. If the os_info item is
+  missing the function adds PRETTY_NAME key with a content of the os_release
+  item.
+
+  @param problem_data Problem data object to read the os_info items
+  @param osinfo String string map where loaded key value pairs are saved
+ */
+void problem_data_get_osinfo(problem_data_t *problem_data, map_string_t *osinfo);
+
 int problem_data_send_to_abrt(problem_data_t* problem_data);
 
 /* Conversions between in-memory and on-disk formats */

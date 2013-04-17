@@ -555,3 +555,33 @@ gint cmp_problem_data(gconstpointer a, gconstpointer b, gpointer filename)
 
     return 1;
 }
+
+static bool problem_data_get_osinfo_from_items(problem_data_t *problem_data,
+        map_string_t *osinfo, const char *osinfo_name, const char *release_name)
+{
+    char *data = problem_data_get_content_or_NULL(problem_data, osinfo_name);
+    if (data)
+    {
+        parse_osinfo(data, osinfo);
+        return true;
+    }
+
+    data = problem_data_get_content_or_NULL(problem_data, release_name);
+    if (!data)
+        return false;
+
+    insert_map_string(osinfo, xstrdup(OSINFO_PRETTY_NAME), xstrdup(data));
+    return true;
+}
+
+void problem_data_get_osinfo(problem_data_t *problem_data, map_string_t *osinfo)
+{
+    char *rootdir = problem_data_get_content_or_NULL(problem_data, FILENAME_ROOTDIR);
+    if (rootdir &&
+        problem_data_get_osinfo_from_items(problem_data, osinfo,
+                FILENAME_OS_INFO_IN_ROOTDIR, FILENAME_OS_RELEASE_IN_ROOTDIR))
+        return;
+
+    problem_data_get_osinfo_from_items(problem_data, osinfo,
+                FILENAME_OS_INFO, FILENAME_OS_RELEASE);
+}
