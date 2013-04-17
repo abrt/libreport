@@ -707,7 +707,7 @@ struct bugzilla_struct {
     int         b_ssl_verify;
 };
 
-static void set_settings(struct bugzilla_struct *b, map_string_h *settings)
+static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
 {
     const char *environ;
 
@@ -913,7 +913,7 @@ int main(int argc, char **argv)
 
     export_abrt_envvars(0);
 
-    map_string_h *settings = new_map_string();
+    map_string_t *settings = new_map_string();
     struct bugzilla_struct rhbz = { 0 };
     {
         if (!conf_file)

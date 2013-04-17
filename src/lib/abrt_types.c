@@ -18,18 +18,18 @@
 */
 #include "internal_libreport.h"
 
-map_string_h *new_map_string(void)
+map_string_t *new_map_string(void)
 {
     return g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 }
 
-void free_map_string(map_string_h *ms)
+void free_map_string(map_string_t *ms)
 {
     if (ms)
         g_hash_table_destroy(ms);
 }
 
-const char *get_map_string_item_or_empty(map_string_h *ms, const char *key)
+const char *get_map_string_item_or_empty(map_string_t *ms, const char *key)
 {
     const char *v = (const char*)g_hash_table_lookup(ms, key);
     if (!v) v = "";

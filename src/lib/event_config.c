@@ -149,16 +149,16 @@ static void load_config_files(const char *dir_path)
         if (new_config)
             event_config = new_event_config(filename);
 
-        map_string_h *keys_and_values = new_map_string();
+        map_string_t *keys_and_values = new_map_string();
 
         load_conf_file(fullpath, keys_and_values, /*skipKeysWithoutValue:*/ false);
 
         /* Insert or replace every key/value from keys_and_values to event_config->option */
-        GHashTableIter iter;
-        char *name;
-        char *value;
-        g_hash_table_iter_init(&iter, keys_and_values);
-        while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
+        map_string_iter_t iter;
+        const char *name;
+        const char *value;
+        init_map_string_iter(&iter, keys_and_values);
+        while (next_map_string_iter(&iter, &name, &value))
         {
             event_option_t *opt;
             GList *elem = g_list_find_custom(event_config->options, name,

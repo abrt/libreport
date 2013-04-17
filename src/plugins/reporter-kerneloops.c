@@ -87,7 +87,7 @@ static CURLcode http_post_to_kerneloops_site(const char *url, const char *oopsda
 
 static void report_to_kerneloops(
                 const char *dump_dir_name,
-                map_string_h *settings)
+                map_string_t *settings)
 {
     problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
     if (!problem_data)
@@ -138,7 +138,7 @@ int main(int argc, char **argv)
     textdomain(PACKAGE);
 #endif
 
-    map_string_h *settings = new_map_string();
+    map_string_t *settings = new_map_string();
     const char *dump_dir_name = ".";
     GList *conf_file = NULL;
 

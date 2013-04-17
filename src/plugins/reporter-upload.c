@@ -22,7 +22,7 @@
 
 static int create_and_upload_archive(
                 const char *dump_dir_name,
-                map_string_h *settings)
+                map_string_t *settings)
 {
     int result = 1; /* error */
 
@@ -217,9 +217,9 @@ int main(int argc, char **argv)
 
     export_abrt_envvars(0);
 
-    map_string_h *settings = new_map_string();
+    map_string_t *settings = new_map_string();
     if (url)
-        g_hash_table_replace(settings, xstrdup("URL"), xstrdup(url));
+        replace_map_string_item(settings, xstrdup("URL"), xstrdup(url));
     if (conf_file)
         load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 

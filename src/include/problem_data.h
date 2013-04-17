@@ -22,7 +22,7 @@
 #ifndef LIBREPORT_PROBLEM_DATA_H_
 #define LIBREPORT_PROBLEM_DATA_H_
 
-#include <glib.h>
+#include "libreport_types.h"
 
 #ifdef __cplusplus
 extern "C" {
