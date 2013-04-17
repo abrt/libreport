@@ -85,6 +85,8 @@
 
 
 static char *load_text_file(const char *path, unsigned flags);
+static void copy_file_from_chroot(struct dump_dir* dd, const char *name,
+        const char *chroot_dir, const char *file_path);
 
 static bool isdigit_str(const char *str)
 {
@@ -627,12 +629,23 @@ void dd_create_basic_files(struct dump_dir *dd, uid_t uid, const char *chroot_di
     dd_save_text(dd, FILENAME_ARCHITECTURE, buf.machine);
     dd_save_text(dd, FILENAME_HOSTNAME, buf.nodename);
 
+    char *release = load_text_file("/etc/os-release",
+                        DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE | DD_OPEN_FOLLOW);
+    if (release)
+    {
+        dd_save_text(dd, FILENAME_OS_INFO, release);
+        free(release);
+    }
+
+    if (chroot_dir)
+        copy_file_from_chroot(dd, FILENAME_OS_INFO_IN_ROOTDIR, chroot_dir, "/etc/os-release");
+
     /* if release exists in dumpdir don't create it, but don't warn
      * if it doesn't
      * i.e: anaconda doesn't have /etc/{fedora,redhat}-release and trying to load it
      * results in errors: rhbz#725857
      */
-    char *release = dd_load_text_ext(dd, FILENAME_OS_RELEASE,
+    release = dd_load_text_ext(dd, FILENAME_OS_RELEASE,
                     DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
 
     if (!release)
@@ -651,14 +664,7 @@ void dd_create_basic_files(struct dump_dir *dd, uid_t uid, const char *chroot_di
 
         dd_save_text(dd, FILENAME_OS_RELEASE, release);
         if (chroot_dir)
-        {
-            free(release);
-            char *chrooted_name = concat_path_file(chroot_dir, "/etc/system-release");
-            release = load_text_file(chrooted_name, DD_OPEN_FOLLOW);
-            free(chrooted_name);
-            if (release[0])
-                dd_save_text(dd, FILENAME_OS_RELEASE_IN_ROOTDIR, release);
-        }
+            copy_file_from_chroot(dd, FILENAME_OS_RELEASE_IN_ROOTDIR, chroot_dir, "/etc/system-release");
     }
     free(release);
 }
@@ -921,6 +927,19 @@ static char *load_text_file(const char *path, unsigned flags)
     }
 
     return strbuf_free_nobuf(buf_content);
+}
+
+static void copy_file_from_chroot(struct dump_dir* dd, const char *name, const char *chroot_dir, const char *file_path)
+{
+    char *chrooted_name = concat_path_file(chroot_dir, file_path);
+    char *data = load_text_file(chrooted_name,
+                    DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE | DD_OPEN_FOLLOW);
+    free(chrooted_name);
+    if (data)
+    {
+        dd_save_text(dd, name, data);
+        free(data);
+    }
 }
 
 static bool save_binary_file(const char *path, const char* data, unsigned size, uid_t uid, gid_t gid, mode_t mode)

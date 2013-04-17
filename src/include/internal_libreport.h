@@ -729,6 +729,14 @@ struct dump_dir *open_directory_for_writing(
 #define FILENAME_CRASH_FUNCTION "crash_function"
 #define FILENAME_ARCHITECTURE "architecture"
 #define FILENAME_KERNEL       "kernel"
+/*
+ * From /etc/os-release
+ * os_release filename name is alredy occupied by /etc/redhat-release (see
+ * below) in sake of backward compatibility /etc/os-release is stored in
+ * os_info file
+ */
+#define FILENAME_OS_INFO      "os_info"
+#define FILENAME_OS_INFO_IN_ROOTDIR "os_info_in_rootdir"
 // From /etc/system-release or /etc/redhat-release
 #define FILENAME_OS_RELEASE   "os_release"
 #define FILENAME_OS_RELEASE_IN_ROOTDIR "os_release_in_rootdir"
