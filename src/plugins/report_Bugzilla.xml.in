@@ -35,10 +35,15 @@
             <default-value>yes</default-value>
         </option>
         <advanced-options>
-            <option type="text" name="Bugzilla_OSRelease">
-                <_label>OS release string</_label>
+            <option type="text" name="Bugzilla_Product">
+                <_label>Bugzilla product</_label>
                 <allow-empty>yes</allow-empty>
-                <_note-html>Specify this only if you modified your /etc/system-release file</_note-html>
+                <_note-html>Specify this only if you needed different product than specified in /etc/os-release</_note-html>
+            </option>
+            <option type="text" name="Bugzilla_ProductVersion">
+                <_label>Bugzilla product version</_label>
+                <allow-empty>yes</allow-empty>
+                <_note-html>Specify this only if you needed different product version than specified in /etc/os-release</_note-html>
             </option>
             <option type="text" name="http_proxy">
                 <_label>HTTP Proxy</_label>

@@ -702,7 +702,8 @@ struct bugzilla_struct {
     char *b_password;
     const char *b_bugzilla_url;
     const char *b_bugzilla_xmlrpc;
-    const char *b_os_release;
+    char *b_product;
+    char *b_product_version;
     const char *b_DontMatchComponents;
     int         b_ssl_verify;
 };
@@ -730,8 +731,30 @@ static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
     }
     b->b_bugzilla_xmlrpc = concat_path_file(b->b_bugzilla_url, "xmlrpc.cgi");
 
-    environ = getenv("Bugzilla_OSRelease");
-    b->b_os_release = environ ? environ : get_map_string_item_or_NULL(settings, "OSRelease");
+    environ = getenv("Bugzilla_Product");
+    if (environ)
+    {
+        b->b_product = xstrdup(environ);
+        environ = getenv("Bugzilla_ProductVersion");
+        if (environ)
+            b->b_product_version = xstrdup(environ);
+    }
+    else
+    {
+        const char *option = get_map_string_item_or_NULL(settings, "Product");
+        if (option)
+            b->b_product = xstrdup(option);
+        option = get_map_string_item_or_NULL(settings, "ProductVersion");
+        if (option)
+            b->b_product_version = xstrdup(option);
+    }
+
+    if (!b->b_product)
+    {   /* Compat, remove it later (2014?). */
+        environ = getenv("Bugzilla_OSRelease");
+        if (environ)
+            parse_release_for_bz(environ, &b->b_product, &b->b_product_version);
+    }
 
     environ = getenv("Bugzilla_SSLVerify");
     b->b_ssl_verify = string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "SSLVerify"));
@@ -1088,12 +1111,18 @@ int main(int argc, char **argv)
     const char *duphash   = problem_data_get_content_or_NULL(problem_data, FILENAME_DUPHASH);
 //COMPAT, remove after 2.1 release
     if (!duphash) duphash = problem_data_get_content_or_die(problem_data, "global_uuid");
-    if (!rhbz.b_os_release || !*rhbz.b_os_release) /* if not overridden or empty... */
+
+    if (!rhbz.b_product || !*rhbz.b_product) /* if not overridden or empty... */
     {
-        rhbz.b_os_release = problem_data_get_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
-//COMPAT, remove in abrt-2.1
-        if (!rhbz.b_os_release)
-            rhbz.b_os_release = problem_data_get_content_or_die(problem_data, "release");
+        free(rhbz.b_product);
+        free(rhbz.b_product_version);
+        map_string_t *osinfo = new_map_string();
+        problem_data_get_osinfo(problem_data, osinfo);
+        parse_osinfo_for_bz(osinfo, &rhbz.b_product, &rhbz.b_product_version);
+        free_map_string(osinfo);
+
+        if (!rhbz.b_product)
+            error_msg_and_die(_("Can't determine Bugzilla Product from problem data."));
     }
 
     if (opts & OPT_D)
@@ -1115,9 +1144,6 @@ int main(int argc, char **argv)
 
     login(client, &rhbz);
 
-    char *product = NULL;
-    char *version = NULL;
-    parse_release_for_bz(rhbz.b_os_release, &product, &version);
 
     int bug_id = 0;
 
@@ -1161,7 +1187,7 @@ int main(int argc, char **argv)
              * but we do add a note if cross-version potential dup exists.
              * For that, we search for cross version dups first:
              */
-            xmlrpc_value *crossver_bugs = rhbz_search_duphash(client, product, /*version:*/ NULL,
+            xmlrpc_value *crossver_bugs = rhbz_search_duphash(client, rhbz.b_product, /*version:*/ NULL,
                             component_substitute, duphash);
             unsigned crossver_bugs_count = rhbz_array_size(crossver_bugs);
             VERB3 log("Bugzilla has %i reports with duphash '%s' including cross-version ones",
@@ -1179,8 +1205,8 @@ int main(int argc, char **argv)
                  * match will make all newly detected crashes DUPed
                  * to a bug in a dead release.
                  */
-                xmlrpc_value *dup_bugs = rhbz_search_duphash(client, product, version,
-                                component_substitute, duphash);
+                xmlrpc_value *dup_bugs = rhbz_search_duphash(client, rhbz.b_product,
+                                rhbz.b_product_version, component_substitute, duphash);
                 unsigned dup_bugs_count = rhbz_array_size(dup_bugs);
                 VERB3 log("Bugzilla has %i reports with duphash '%s'",
                         dup_bugs_count, duphash);
@@ -1203,7 +1229,7 @@ int main(int argc, char **argv)
                 strbuf_append_strf(bzcomment_buf, "\nPotential duplicate: bug %u\n", crossver_id);
             char *bzcomment = strbuf_free_nobuf(bzcomment_buf);
             char *summary = create_summary_string(problem_data, comment_fmt_spec);
-            int new_id = rhbz_new_bug(client, problem_data, rhbz.b_os_release,
+            int new_id = rhbz_new_bug(client, problem_data, rhbz.b_product, rhbz.b_product_version,
                     summary, bzcomment,
                     group
             );
@@ -1315,7 +1341,8 @@ int main(int argc, char **argv)
     }
 
 #if 0  /* enable if you search for leaks (valgrind etc) */
-    free(product);
+    free(rhbz.b_product);
+    free(rhbz.b_product_version);
     problem_data_free(problem_data);
     free_bug_info(bz);
     abrt_xmlrpc_free_client(client);

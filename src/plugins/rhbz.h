@@ -86,7 +86,8 @@ int rhbz_get_bug_id_from_array0(xmlrpc_value *xml, unsigned ver);
 
 int rhbz_new_bug(struct abrt_xmlrpc *ax,
                 problem_data_t *problem_data,
-                const char *release,
+                const char *product,
+                const char *version,
                 const char *bzsummary,
                 const char *bzcomment,
                 GList *group);

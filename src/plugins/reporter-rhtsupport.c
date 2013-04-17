@@ -346,11 +346,7 @@ int main(int argc, char **argv)
     const char *function;
     const char *reason;
     const char *package;
-    const char *release;
 
-    release  = problem_data_get_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
-    if (!release) /* Old dump dir format compat. Remove in abrt-2.1 */
-        release = problem_data_get_content_or_NULL(problem_data, "release");
     package  = problem_data_get_content_or_NULL(problem_data, FILENAME_PACKAGE);
     reason   = problem_data_get_content_or_NULL(problem_data, FILENAME_REASON);
     function = problem_data_get_content_or_NULL(problem_data, FILENAME_CRASH_FUNCTION);
@@ -445,15 +441,33 @@ int main(int argc, char **argv)
     if (!(opts & OPT_t))
     {
         log(_("Creating a new case"));
+
+        char *product = NULL;
+        char *version = NULL;
+        map_string_t *osinfo = new_map_string();
+        problem_data_get_osinfo(problem_data, osinfo);
+        parse_osinfo_for_rhts(osinfo, &product, &version);
+        free_map_string(osinfo);
+
+        if (!product)
+        {   /* How can we help user sorting out this problem? */
+            error_msg_and_die(_("Can't determine RH Support Product from problem data."));
+        }
+
         result = create_new_case(url,
                 login,
                 password,
                 ssl_verify,
-                release,
+                product,
+                version,
                 summary,
                 dsc,
                 package
         );
+
+        free(version);
+        free(product);
+
         if (result->error)
         {
             /*

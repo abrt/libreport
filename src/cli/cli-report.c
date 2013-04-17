@@ -161,7 +161,33 @@ static void write_crash_report(problem_data_t *report, FILE *fp)
     write_crash_report_field(fp, report, FILENAME_KERNEL, _("# Kernel version"));
     write_crash_report_field(fp, report, FILENAME_PACKAGE, _("# Package"));
     write_crash_report_field(fp, report, FILENAME_REASON, _("# Reason of crash"));
-    write_crash_report_field(fp, report, FILENAME_OS_RELEASE, _("# Release string of the operating system"));
+
+    if (problem_data_get_item_or_NULL(report, FILENAME_ROOTDIR))
+    {
+        if (problem_data_get_item_or_NULL(report, FILENAME_OS_INFO_IN_ROOTDIR))
+        {
+            write_crash_report_field(fp, report, FILENAME_OS_INFO_IN_ROOTDIR,
+                    _("# os-release configuration file from root dir"));
+        }
+        else
+        {
+            write_crash_report_field(fp, report, FILENAME_OS_RELEASE_IN_ROOTDIR,
+                    _("# Release string of the operating system from root dir"));
+        }
+    }
+    else
+    {
+        if (problem_data_get_item_or_NULL(report, FILENAME_OS_INFO))
+        {
+            write_crash_report_field(fp, report, FILENAME_OS_INFO,
+                    _("# os-release configuration file"));
+        }
+        else
+        {
+            write_crash_report_field(fp, report, FILENAME_OS_RELEASE,
+                    _("# Release string of the operating system"));
+        }
+    }
 }
 
 /*
@@ -241,7 +267,23 @@ static int read_crash_report(problem_data_t *report, const char *text)
     result |= read_crash_report_field(text, report, FILENAME_KERNEL);
     result |= read_crash_report_field(text, report, FILENAME_PACKAGE);
     result |= read_crash_report_field(text, report, FILENAME_REASON);
-    result |= read_crash_report_field(text, report, FILENAME_OS_RELEASE);
+
+    if (problem_data_get_item_or_NULL(report, FILENAME_ROOTDIR))
+    {
+        if (problem_data_get_item_or_NULL(report, FILENAME_OS_INFO_IN_ROOTDIR))
+            result |= read_crash_report_field(text, report, FILENAME_OS_INFO_IN_ROOTDIR);
+        else
+            result |= read_crash_report_field(text, report, FILENAME_OS_RELEASE_IN_ROOTDIR);
+    }
+    else
+    {
+        if (problem_data_get_item_or_NULL(report, FILENAME_OS_INFO))
+            result |= read_crash_report_field(text, report, FILENAME_OS_INFO);
+        else
+            result |= read_crash_report_field(text, report, FILENAME_OS_RELEASE);
+    }
+
+
     return result;
 }
 

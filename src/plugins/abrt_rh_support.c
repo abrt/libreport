@@ -279,7 +279,8 @@ post_case_to_url(const char* url,
                 const char* password,
                 bool ssl_verify,
                 const char **additional_headers,
-                const char* release,
+                const char* product,
+                const char* version,
                 const char* summary,
                 const char* description,
                 const char* component)
@@ -287,14 +288,9 @@ post_case_to_url(const char* url,
     rhts_result_t *result = xzalloc(sizeof(*result));
     char *url_copy = NULL;
 
-    char *product = NULL;
-    char *version = NULL;
-    parse_release_for_rhts(release, &product, &version);
     char *case_data = make_case_data(summary, description,
                                          product, version,
                                          component);
-    free(product);
-    free(version);
 
     int redirect_count = 0;
     char *errmsg;
@@ -397,7 +393,8 @@ create_new_case(const char* base_url,
                 const char* username,
                 const char* password,
                 bool ssl_verify,
-                const char* release,
+                const char* product,
+                const char* version,
                 const char* summary,
                 const char* description,
                 const char* component)
@@ -408,7 +405,8 @@ create_new_case(const char* base_url,
                 password,
                 ssl_verify,
                 (const char **)text_plain_header,
-                release,
+                product,
+                version,
                 summary,
                 description,
                 component

@@ -99,24 +99,23 @@ static void ureport_add_int(struct json_object *ur, const char *key, int i)
 
 static void ureport_add_os(struct json_object *ur, problem_data_t *pd)
 {
-    /* paranoia - we only need OS_RELEASE_IN_ROOTDIR,
-       but check that ROOTDIR also exists */
-    char *pd_item = problem_data_get_content_or_NULL(pd, FILENAME_ROOTDIR);
-    if (pd_item)
-        pd_item = problem_data_get_content_or_NULL(pd, FILENAME_OS_RELEASE_IN_ROOTDIR);
+    char *name;
+    char *version;
+    map_string_t *osinfo = new_map_string();
+    problem_data_get_osinfo(pd, osinfo);
+    parse_osinfo_for_rhts(osinfo, &name, &version);
+    free_map_string(osinfo);
 
-    if (!pd_item)
-        pd_item = problem_data_get_content_or_NULL(pd, FILENAME_OS_RELEASE);
-
-    if (!pd_item)
+    if (!name || !version)
+    {
+        free(name);
+        free(version);
         return;
+    }
 
     struct json_object *jobject = json_object_new_object();
     if (!jobject)
         die_out_of_memory();
-
-    char *name, *version;
-    parse_release_for_rhts(pd_item, &name, &version);
 
     ureport_add_str(jobject, "name", name);
     ureport_add_str(jobject, "version", version);

@@ -523,7 +523,8 @@ struct bug_info *rhbz_bug_info(struct abrt_xmlrpc *ax, int bug_id)
 
 int rhbz_new_bug(struct abrt_xmlrpc *ax,
                 problem_data_t *problem_data,
-                const char *release,
+                const char *product,
+                const char *version,
                 const char *bzsummary,
                 const char *bzcomment,
                 GList *group)
@@ -535,13 +536,6 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
 
     const char *component    = problem_data_get_content_or_NULL(problem_data,
                                                                 FILENAME_COMPONENT);
-    if (!release)
-    {
-        release              = problem_data_get_content_or_NULL(problem_data,
-                                                                FILENAME_OS_RELEASE);
-        if (!release) /* Old dump dir format compat. Remove in abrt-2.1 */
-            release = problem_data_get_content_or_NULL(problem_data, "release");
-    }
     const char *arch         = problem_data_get_content_or_NULL(problem_data,
                                                                 FILENAME_ARCHITECTURE);
     const char *duphash      = problem_data_get_content_or_NULL(problem_data,
@@ -590,10 +584,6 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
         buf[2] = '.';
         buf[3] = '\0';
     }
-
-    char *product = NULL;
-    char *version = NULL;
-    parse_release_for_bz(release, &product, &version);
 
     xmlrpc_value* result = NULL;
     char *status_whiteboard = xasprintf("abrt_hash:%s", duphash);
@@ -646,8 +636,6 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
     }
 
     free(status_whiteboard);
-    free(product);
-    free(version);
     free(summary);
 
     if (!result)
