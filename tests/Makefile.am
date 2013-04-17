@@ -29,6 +29,7 @@ TESTSUITE_AT = \
   testsuite.at \
   strbuf.at \
   osrelease.at \
+  osinfo.at \
   is_text_file.at \
   taghyperlinks.at
 

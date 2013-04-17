@@ -1,0 +1,270 @@
+# -*- Autotest -*-
+
+AT_BANNER([osinfo])
+
+## ------------ ##
+## parse_osinfo ##
+## ------------ ##
+
+AT_TESTFUN([parse_osinfo],
+[[
+#include "internal_libreport.h"
+#include <assert.h>
+
+int main(void)
+{
+    g_verbose=3;
+    map_string_t *osinfo = new_map_string();
+    {
+        /* Test for empty input */
+        parse_osinfo("", osinfo);
+        free_map_string(osinfo);
+        osinfo = NULL;
+    }
+    osinfo = new_map_string();
+    {
+        /* Test for standard valid os-release*/
+        parse_osinfo(
+"# Very useful comment\n"
+"NAME=Fedora\n"
+"VERSION=\"19 (Schrödinger\\'s Cat)\"\n"
+"ID=fedora\n"
+"VERSION_ID=19\n"
+"PRETTY_NAME=\"Fedora 19 (Schrödinger\\'s Cat)\"\n"
+"ANSI_COLOR=\"0;34\"\n"
+"CPE_NAME=\"cpe:/o:fedoraproject:fedora:18\"\n", osinfo);
+        assert(0 == strcmp("Fedora", get_map_string_item_or_NULL(osinfo, OSINFO_NAME)));
+        assert(0 == strcmp("19 (Schrödinger's Cat)", get_map_string_item_or_NULL(osinfo, "VERSION")));
+        assert(0 == strcmp("fedora", get_map_string_item_or_NULL(osinfo, OSINFO_ID)));
+        assert(0 == strcmp("19", get_map_string_item_or_NULL(osinfo, OSINFO_VERSION_ID)));
+        assert(0 == strcmp("Fedora 19 (Schrödinger\'s Cat)", get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME)));
+        assert(0 == strcmp("0;34", get_map_string_item_or_NULL(osinfo, "ANSI_COLOR")));
+        assert(0 == strcmp("cpe:/o:fedoraproject:fedora:18", get_map_string_item_or_NULL(osinfo, "CPE_NAME")));
+        free_map_string(osinfo);
+        osinfo = NULL;
+    }
+    osinfo = new_map_string();
+    {
+        /* Test for standard os-release with few errors */
+        parse_osinfo(
+"# Very useful comment\n"
+"# FOO=blah\n"
+"NAME=Fedora\n"
+"VERSION\n"
+"ID=fedora\n"
+"# Comment in lines\n"
+"VERSION_ID=19\n"
+"=\"Fedora 19 (Schrödinger\\'s Cat)\"\n"
+"ANSI_COLOR=\"0;34\"\n"
+"# The next line misses new line character\n"
+"CPE_NAME=\"cpe:/o:fedoraproject:fedora:18\"", osinfo);
+        assert(NULL == get_map_string_item_or_NULL(osinfo, "FOO"));
+        assert(0 == strcmp("Fedora", get_map_string_item_or_NULL(osinfo, OSINFO_NAME)));
+        assert(NULL == get_map_string_item_or_NULL(osinfo, "VERSION"));
+        assert(0 == strcmp("fedora", get_map_string_item_or_NULL(osinfo, OSINFO_ID)));
+        assert(0 == strcmp("19", get_map_string_item_or_NULL(osinfo, OSINFO_VERSION_ID)));
+        assert(NULL == get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME));
+        assert(0 == strcmp("0;34", get_map_string_item_or_NULL(osinfo, "ANSI_COLOR")));
+        assert(0 == strcmp("cpe:/o:fedoraproject:fedora:18", get_map_string_item_or_NULL(osinfo, "CPE_NAME")));
+        free_map_string(osinfo);
+        osinfo = NULL;
+    }
+    return 0;
+}
+]])
+
+
+## ------------------- ##
+## parse_osinfo_for_bz ##
+## ------------------- ##
+
+AT_TESTFUN([parse_osinfo_for_bz],
+[[
+#include "internal_libreport.h"
+#include <assert.h>
+
+void test(const char *osinfo_bytes, const char *product, const char *version)
+{
+    map_string_t *osinfo = new_map_string();
+    parse_osinfo(osinfo_bytes, osinfo);
+
+    char *built_product = (char *)0xDEADBEAF;
+    char *built_version = (char *)0xDEADBEAF;
+    parse_osinfo_for_bz(osinfo, &built_product, &built_version);
+
+    if (product != NULL && built_product != NULL)
+    {
+        if (0 != strcmp(product, built_product))
+        {
+            fprintf(stderr, "'%s' != '%s'", product, built_product);
+            assert(!"Parsed version doesn't match with expected");
+        }
+    }
+    else if (product != built_product)
+        assert(!"Invalid result. Both should be NULL");
+
+    if (version != NULL && built_version != NULL)
+    {
+        if (0 != strcmp(version, built_version))
+        {
+            fprintf(stderr, "'%s' != '%s'", version, built_version);
+            assert(!"Parsed version doesn't match with expected");
+        }
+    }
+    else if (version != built_version)
+        assert(!"Invalid result. Both should be NULL");
+
+    free(built_version);
+    free(built_product);
+}
+
+int main(void)
+{
+    g_verbose=3;
+
+    test("NAME=Fedora\n"
+         "VERSION=\"19 (Schrödinger\\'s Cat)\"\n"
+         "ID=fedora\n"
+         "VERSION_ID=19\n"
+         "PRETTY_NAME=\"Fedora 19 (Schrödinger\\'s Cat)\"\n"
+         "ANSI_COLOR=\"0;34\"\n"
+         "CPE_NAME=\"cpe:/o:fedoraproject:fedora:18\"\n"
+         ,"Fedora", "19");
+
+    test("NAME=\"Red Hat Enterprise Linux Client\"\n"
+         "VERSION=\"7.0 Beta (Maipo)\"\n"
+         "ID=rhel\n"
+         "VERSION_ID=7.0\n"
+         "PRETTY_NAME=\"Red Hat Enterprise Linux Client 7.0 Beta (Maipo)\"\n"
+         "ANSI_COLOR=\"0;31\"\n"
+         "CPE_NAME=\"cpe:/o:redhat:enterprise_linux:7.0.0:beta:client\"\n"
+         "REDHAT_BUGZILLA_PRODUCT=\"Red Hat Enterprise Linux 7\"\n"
+         "REDHAT_BUGZILLA_PRODUCT_VERSION=7.1\n"
+         ,"Red Hat Enterprise Linux 7", "7.1");
+
+    test("NAME=\"Red Hat Enterprise Linux Client\"\n"
+         "VERSION=\"7.0 Beta (Maipo)\"\n"
+         "ID=rhel\n"
+         "VERSION_ID=7.0\n"
+         "PRETTY_NAME=\"Red Hat Enterprise Linux Client 7.0 Beta (Maipo)\"\n"
+         "ANSI_COLOR=\"0;31\"\n"
+         "CPE_NAME=\"cpe:/o:redhat:enterprise_linux:7.0.0:beta:client\"\n"
+         "REDHAT_BUGZILLA_PRODUCT=\"Red Hat Enterprise Linux 7\"\n"
+         ,"Red Hat Enterprise Linux 7", "7.0");
+
+    test("NAME=\"Red Hat Enterprise Linux Client\"\n"
+         "VERSION=\"7.0 Beta (Maipo)\"\n"
+         "ID=rhel\n"
+         "VERSION_ID=7.0\n"
+         "PRETTY_NAME=\"Red Hat Enterprise Linux Client 7.0 Beta (Maipo)\"\n"
+         "ANSI_COLOR=\"0;31\"\n"
+         "CPE_NAME=\"cpe:/o:redhat:enterprise_linux:7.0.0:beta:client\"\n"
+         "REDHAT_BUGZILLA_PRODUCT_VERSION=7.1\n"
+         ,"Red Hat Enterprise Linux Client", "7.1");
+
+    test("PRETTY_NAME=\"Red Hat Enterprise Linux Server release 6.2 Beta (Santiago)\"\n"
+         ,"Red Hat Enterprise Linux 6", "6.2");
+
+    test("" ,NULL ,NULL);
+
+    return 0;
+}
+]])
+
+## --------------------- ##
+## parse_osinfo_for_rhts ##
+## --------------------- ##
+
+AT_TESTFUN([parse_osinfo_for_rhts],
+[[
+#include "internal_libreport.h"
+#include <assert.h>
+
+void test(const char *osinfo_bytes, const char *product, const char *version)
+{
+    map_string_t *osinfo = new_map_string();
+    parse_osinfo(osinfo_bytes, osinfo);
+
+    char *built_product = (char *)0xDEADBEAF;
+    char *built_version = (char *)0xDEADBEAF;
+    parse_osinfo_for_rhts(osinfo, &built_product, &built_version);
+
+    if (product != NULL && built_product != NULL)
+    {
+        if (0 != strcmp(product, built_product))
+        {
+            fprintf(stderr, "'%s' != '%s'", product, built_product);
+            assert(!"Parsed version doesn't match with expected");
+        }
+    }
+    else if (product != built_product)
+        assert(!"Invalid result. Both should be NULL");
+
+    if (version != NULL && built_version != NULL)
+    {
+        if (0 != strcmp(version, built_version))
+        {
+            fprintf(stderr, "'%s' != '%s'", version, built_version);
+            assert(!"Parsed version doesn't match with expected");
+        }
+    }
+    else if (version != built_version)
+        assert(!"Invalid result. Both should be NULL");
+
+    free(built_version);
+    free(built_product);
+}
+
+int main(void)
+{
+    g_verbose=3;
+
+    test("NAME=Fedora\n"
+         "VERSION=\"19 (Schrödinger\\'s Cat)\"\n"
+         "ID=fedora\n"
+         "VERSION_ID=19\n"
+         "PRETTY_NAME=\"Fedora 19 (Schrödinger\\'s Cat)\"\n"
+         "ANSI_COLOR=\"0;34\"\n"
+         "CPE_NAME=\"cpe:/o:fedoraproject:fedora:18\"\n"
+         ,"Fedora", "19");
+
+    test("NAME=\"Red Hat Enterprise Linux Client\"\n"
+         "VERSION=\"7.0 Beta (Maipo)\"\n"
+         "ID=rhel\n"
+         "VERSION_ID=7.0\n"
+         "PRETTY_NAME=\"Red Hat Enterprise Linux Client 7.0 Beta (Maipo)\"\n"
+         "ANSI_COLOR=\"0;31\"\n"
+         "CPE_NAME=\"cpe:/o:redhat:enterprise_linux:7.0.0:beta:client\"\n"
+         "REDHAT_SUPPORT_PRODUCT=\"Red Hat Enterprise Linux 7\"\n"
+         "REDHAT_SUPPORT_PRODUCT_VERSION=7.1\n"
+         ,"Red Hat Enterprise Linux 7", "7.1");
+
+    test("NAME=\"Red Hat Enterprise Linux Client\"\n"
+         "VERSION=\"7.0 Beta (Maipo)\"\n"
+         "ID=rhel\n"
+         "VERSION_ID=7.0\n"
+         "PRETTY_NAME=\"Red Hat Enterprise Linux Client 7.0 Beta (Maipo)\"\n"
+         "ANSI_COLOR=\"0;31\"\n"
+         "CPE_NAME=\"cpe:/o:redhat:enterprise_linux:7.0.0:beta:client\"\n"
+         "REDHAT_SUPPORT_PRODUCT=\"Red Hat Enterprise Linux 7\"\n"
+         ,"Red Hat Enterprise Linux 7", "7.0");
+
+    test("NAME=\"Red Hat Enterprise Linux Client\"\n"
+         "VERSION=\"7.0 Beta (Maipo)\"\n"
+         "ID=rhel\n"
+         "VERSION_ID=7.0\n"
+         "PRETTY_NAME=\"Red Hat Enterprise Linux Client 7.0 Beta (Maipo)\"\n"
+         "ANSI_COLOR=\"0;31\"\n"
+         "CPE_NAME=\"cpe:/o:redhat:enterprise_linux:7.0.0:beta:client\"\n"
+         "REDHAT_SUPPORT_PRODUCT_VERSION=7.1\n"
+         ,"Red Hat Enterprise Linux Client", "7.1");
+
+    test("PRETTY_NAME=\"Red Hat Enterprise Linux Server release 6.2 Beta (Santiago)\"\n"
+         ,"Red Hat Enterprise Linux", "6.2 Beta");
+
+    test("" ,NULL ,NULL);
+
+    return 0;
+    return 0;
+}
+]])
