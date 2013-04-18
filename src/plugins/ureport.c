@@ -351,7 +351,7 @@ int main(int argc, char **argv)
     }
 
     /* -b, -a nor -r were specified - upload uReport from dump_dir */
-    int ret = 1; /* return 1 by default */
+    int ret = 1; /* "failure" (for now) */
     char *dest_url = concat_path_file(config.ur_url, REPORT_URL_SFX);
     config.ur_url = dest_url;
 
@@ -379,7 +379,7 @@ int main(int argc, char **argv)
     if (!response->is_error)
     {
         VERB1 log("is known: %s", response->value);
-        ret = 0;
+        ret = 0; /* "success" */
 
         if (response->bthash)
         {
@@ -403,7 +403,7 @@ int main(int argc, char **argv)
             log(_("This problem has already been reported."));
             if (response->message)
                 log(response->message);
-            log("THANKYOU");
+            ret = EXIT_STOP_EVENT_RUN;
         }
     }
     else

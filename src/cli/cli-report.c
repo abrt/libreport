@@ -466,7 +466,6 @@ static void ask_for_missing_settings(const char *event_name)
 /*** Event running ***/
 
 struct logging_state {
-    bool saw_THANKYOU;
     bool output_was_produced;
 };
 
@@ -476,10 +475,9 @@ static char *do_log(char *log_line, void *param)
     return log_line;
 }
 
-static char *do_log_and_check_for_THANKYOU(char *log_line, void *param)
+static char *do_log2(char *log_line, void *param)
 {
     struct logging_state *l_state = param;
-    l_state->saw_THANKYOU |= (strcmp("THANKYOU", log_line) == 0);
     l_state->output_was_produced |= (log_line[0] != '\0');
     return do_log(log_line, param);
 }
@@ -754,7 +752,7 @@ int select_and_run_one_event(const char *dump_dir_name, const char *pfx, int int
  * 3. Performs review of problem data if event requires review.
  * 4. Runs events commands.
  * 5. Terminates a chain run if any event from the chain requires termination
- *    (prints THANKYOU to stdout in the current implementation)
+ *    (i.e. if it existed with EXIT_STOP_EVENT_RUN).
  * 6. Terminates a chain run if any error occurs.
  * 7. Continues with processing of next event.
  */
@@ -763,13 +761,12 @@ int run_event_chain(const char *dump_dir_name, GList *chain, int interactive)
     struct logging_state l_state;
 
     struct run_event_state *run_state = new_run_event_state();
-    run_state->logging_callback = do_log_and_check_for_THANKYOU;
+    run_state->logging_callback = do_log2;
     run_state->logging_param = &l_state;
 
     int retval = 0;
     for (GList *eitem = chain; eitem; eitem = g_list_next(eitem))
     {
-        l_state.saw_THANKYOU = 0;
         l_state.output_was_produced = 0;
         const char *event_name = eitem->data;
         retval = interactive
@@ -794,8 +791,6 @@ int run_event_chain(const char *dump_dir_name, GList *chain, int interactive)
             free(msg);
         }
         if (retval != 0)
-            break;
-        if (l_state.saw_THANKYOU)
             break;
     }
 

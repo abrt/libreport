@@ -1561,17 +1561,7 @@ static void run_event_gtk_error(const char *error_line, void *param)
 static char *run_event_gtk_logging(char *log_line, void *param)
 {
     struct analyze_event_data *evd = (struct analyze_event_data *)param;
-
-    if (strcmp(log_line, "THANKYOU") == 0)
-    {
-        VERB1 log("Received a request for termination of processing of event chain. (Request: '%s')", log_line);
-        terminate_event_chain();
-        if (!g_expert_mode)
-            evd->success_msg = _("Processing finished.");
-    }
-    else
-        update_command_run_log(log_line, evd);
-
+    update_command_run_log(log_line, evd);
     return log_line;
 }
 
@@ -1725,6 +1715,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     struct analyze_event_data *evd = data;
     struct run_event_state *run_state = evd->run_state;
 
+    bool stop_requested = false;
     int retval = consume_event_command_output(run_state, g_dump_dir_name);
 
     if (retval < 0 && errno == EAGAIN)
@@ -1732,6 +1723,15 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         return TRUE; /* "please don't remove this event (yet)" */
 
     /* EOF/error */
+
+    if (WIFEXITED(run_state->process_status)
+     && WEXITSTATUS(run_state->process_status) == EXIT_STOP_EVENT_RUN
+    ) {
+        retval = 0;
+        run_state->process_status = 0;
+        stop_requested = true;
+        terminate_event_chain();
+    }
 
     unexport_event_config(evd->env_list);
     evd->env_list = NULL;
@@ -1793,7 +1793,8 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         dd_close(dd);
 
     /* Stop if exit code is not 0, or no more commands */
-    if (retval != 0
+    if (stop_requested
+     || retval != 0
      || spawn_next_command_in_evd(evd) < 0
     ) {
         VERB1 log("done running event on '%s': %d", g_dump_dir_name, retval);

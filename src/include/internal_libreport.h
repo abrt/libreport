@@ -432,7 +432,9 @@ extern int logmode;
 #define xfunc_error_retval libreport_xfunc_error_retval
 extern int xfunc_error_retval;
 
+/* A few magic exit codes */
 #define EXIT_CANCEL_BY_USER 69
+#define EXIT_STOP_EVENT_RUN 70
 
 #define set_xfunc_error_retval libreport_set_xfunc_error_retval
 void set_xfunc_error_retval(int retval);
