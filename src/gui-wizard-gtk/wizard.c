@@ -1346,7 +1346,7 @@ void update_gui_state_from_problem_data(int flags)
 struct analyze_event_data
 {
     struct run_event_state *run_state;
-    const char *event_name;
+    char *event_name;
     GList *env_list;
     GtkWidget *page_widget;
     GtkLabel *status_label;
@@ -1844,6 +1844,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         close(evd->fd);
         free_run_event_state(evd->run_state);
         strbuf_free(evd->event_log);
+        free(evd->event_name);
         free(evd);
 
         /* Inform abrt-gui that it is a good idea to rescan the directory */
@@ -1940,7 +1941,7 @@ static void start_event_run(const char *event_name,
      */
     struct analyze_event_data *evd = xzalloc(sizeof(*evd));
     evd->run_state = state;
-    evd->event_name = event_name;
+    evd->event_name = xstrdup(event_name);
     evd->env_list = env_list;
     evd->page_widget = page;
     evd->status_label = status_label;
