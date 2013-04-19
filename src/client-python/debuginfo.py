@@ -239,7 +239,7 @@ class DebugInfoDownload(YumBase):
         # setting-up repos one-by-one, so we can skip the broken ones...
         # this helps when users are using 3rd party repos like rpmfusion
         # in rawhide it results in: Can't find valid base url...
-        for r in self.repos.findRepos(pattern="*debuginfo*"):
+        for r in self.repos.findRepos(pattern="*debug*"):
             try:
                 rid = self.repos.enableRepo(r.id)
                 self.repos.doSetup(thisrepo=str(r.id))
