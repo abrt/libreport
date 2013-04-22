@@ -1349,7 +1349,6 @@ struct analyze_event_data
     char *event_name;
     GList *env_list;
     const char *success_msg;
-    const char *error_msg;
     GIOChannel *channel;
     struct strbuf *event_log;
     int event_log_state;
@@ -1830,7 +1829,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                     cancel_processing(g_lbl_event_log, /* default message */ NULL);
                 else
                 {
-                    cancel_processing(g_lbl_event_log, evd->error_msg);
+                    cancel_processing(g_lbl_event_log, _("Processing failed."));
                     on_failed_event(evd->event_name);
                 }
             }
@@ -1872,7 +1871,6 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 }
 
 static void start_event_run(const char *event_name,
-                const char *error_msg,
                 const char *success_msg
 ) {
     /* Start event asynchronously on the dump dir
@@ -1894,15 +1892,9 @@ static void start_event_run(const char *event_name,
         free_run_event_state(state);
 //TODO: better msg?
         char *msg = xasprintf(_("No processing for event '%s' is defined"), event_name);
-        if (g_expert_mode)
-            gtk_label_set_text(g_lbl_event_log, msg);
-        else
-        {
-            gtk_label_set_text(g_lbl_event_log, error_msg);
-            append_to_textview(g_tv_event_log, msg);
-            terminate_event_chain();
-        }
+        append_to_textview(g_tv_event_log, msg);
         free(msg);
+        cancel_processing(g_lbl_event_log, _("Processing failed."));
         return;
     }
 
@@ -1913,9 +1905,7 @@ static void start_event_run(const char *event_name,
         free_run_event_state(state);
         if (!g_expert_mode)
         {
-            char *msg = xasprintf(_("Processing interrupted: can't continue without writable directory."));
-            cancel_processing(g_lbl_event_log, msg);
-            free(msg);
+            cancel_processing(g_lbl_event_log, _("Processing interrupted: can't continue without writable directory."));
         }
         return; /* user refused to steal, or write error, etc... */
     }
@@ -1937,7 +1927,6 @@ static void start_event_run(const char *event_name,
     evd->run_state = state;
     evd->event_name = xstrdup(event_name);
     evd->env_list = env_list;
-    evd->error_msg = error_msg;
     evd->success_msg = success_msg;
     evd->event_log = strbuf_new();
     evd->fd = state->command_out_fd;
@@ -2276,8 +2265,6 @@ static gint select_next_page_no(gint current_page_no, gpointer data);
 static void setup_and_start_event_run(const char *event_name)
 {
     start_event_run(event_name,
-            g_expert_mode ? _("Processing failed. You can try another operation if available.")
-                          : _("Processing failed."),
             /* this event is the last event from the chain */
             is_processing_finished() ? _("Processing finished.")
                                      : _("Processing finished, please proceed to the next step.")
