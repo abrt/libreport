@@ -1348,9 +1348,6 @@ struct analyze_event_data
     struct run_event_state *run_state;
     char *event_name;
     GList *env_list;
-    GtkWidget *page_widget;
-    GtkLabel *status_label;
-    GtkTextView *tv_log;
     const char *success_msg;
     const char *error_msg;
     GIOChannel *channel;
@@ -1545,7 +1542,7 @@ static void update_command_run_log(const char* message, struct analyze_event_dat
 
     /* Don't append new line behind single dot */
     const char *log_msg = it_is_a_dot ? message : xasprintf("%s\n", message);
-    append_to_textview(evd->tv_log, log_msg);
+    append_to_textview(g_tv_event_log, log_msg);
     save_to_event_log(evd, log_msg);
 
     /* Because of single dot, see lines above */
@@ -1753,7 +1750,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
             /* If program failed, emit *error* line */
             evd->event_log_state = LOGSTATE_ERRLINE;
         }
-        append_to_textview(evd->tv_log, msg);
+        append_to_textview(g_tv_event_log, msg);
         save_to_event_log(evd, msg);
         free(msg);
     }
@@ -1798,7 +1795,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
      || spawn_next_command_in_evd(evd) < 0
     ) {
         VERB1 log("done running event on '%s': %d", g_dump_dir_name, retval);
-        append_to_textview(evd->tv_log, "\n");
+        append_to_textview(g_tv_event_log, "\n");
 
         /* Free child output buffer */
         strbuf_free(cmd_output);
@@ -1823,23 +1820,23 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         {
             /* 256 means NOT_REPORTABLE */
             if (retval == 256)
-                cancel_processing(evd->status_label, evd->success_msg);
+                cancel_processing(g_lbl_event_log, evd->success_msg);
             else
             {
                 /* We use SIGTERM to stop event processing on user's request.
                  * So SIGTERM is not a failure.
                  */
                 if (retval == EXIT_CANCEL_BY_USER || WTERMSIG(run_state->process_status) == SIGTERM)
-                    cancel_processing(evd->status_label, /* default message */ NULL);
+                    cancel_processing(g_lbl_event_log, /* default message */ NULL);
                 else
                 {
-                    cancel_processing(evd->status_label, evd->error_msg);
+                    cancel_processing(g_lbl_event_log, evd->error_msg);
                     on_failed_event(evd->event_name);
                 }
             }
         }
         else
-            gtk_label_set_text(evd->status_label, evd->success_msg);
+            gtk_label_set_text(g_lbl_event_log, evd->success_msg);
 
         /*g_source_remove(evd->event_source_id);*/
         close(evd->fd);
@@ -1875,10 +1872,6 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 }
 
 static void start_event_run(const char *event_name,
-                GtkWidget *page,
-                GtkTextView *tv_log,
-                GtkLabel *status_label,
-                const char *start_msg,
                 const char *error_msg,
                 const char *success_msg
 ) {
@@ -1902,11 +1895,11 @@ static void start_event_run(const char *event_name,
 //TODO: better msg?
         char *msg = xasprintf(_("No processing for event '%s' is defined"), event_name);
         if (g_expert_mode)
-            gtk_label_set_text(status_label, msg);
+            gtk_label_set_text(g_lbl_event_log, msg);
         else
         {
-            gtk_label_set_text(status_label, error_msg);
-            append_to_textview(tv_log, msg);
+            gtk_label_set_text(g_lbl_event_log, error_msg);
+            append_to_textview(g_tv_event_log, msg);
             terminate_event_chain();
         }
         free(msg);
@@ -1921,7 +1914,7 @@ static void start_event_run(const char *event_name,
         if (!g_expert_mode)
         {
             char *msg = xasprintf(_("Processing interrupted: can't continue without writable directory."));
-            cancel_processing(status_label, msg);
+            cancel_processing(g_lbl_event_log, msg);
             free(msg);
         }
         return; /* user refused to steal, or write error, etc... */
@@ -1944,9 +1937,6 @@ static void start_event_run(const char *event_name,
     evd->run_state = state;
     evd->event_name = xstrdup(event_name);
     evd->env_list = env_list;
-    evd->page_widget = page;
-    evd->status_label = status_label;
-    evd->tv_log = tv_log;
     evd->error_msg = error_msg;
     evd->success_msg = success_msg;
     evd->event_log = strbuf_new();
@@ -1964,10 +1954,10 @@ static void start_event_run(const char *event_name,
             evd
     );
 
-    gtk_label_set_text(status_label, start_msg);
+    gtk_label_set_text(g_lbl_event_log, _("Processing..."));
     VERB1 log("running event '%s' on '%s'", event_name, g_dump_dir_name);
     char *msg = xasprintf("--- Running %s ---\n", event_name);
-    append_to_textview(evd->tv_log, msg);
+    append_to_textview(g_tv_event_log, msg);
     free(msg);
 
     /* don't bother testing if they are visible, this is faster */
@@ -2286,10 +2276,6 @@ static gint select_next_page_no(gint current_page_no, gpointer data);
 static void setup_and_start_event_run(const char *event_name)
 {
     start_event_run(event_name,
-            pages[PAGENO_EVENT_PROGRESS].page_widget,
-            g_tv_event_log,
-            g_lbl_event_log,
-            _("Processing..."),
             g_expert_mode ? _("Processing failed. You can try another operation if available.")
                           : _("Processing failed."),
             /* this event is the last event from the chain */
