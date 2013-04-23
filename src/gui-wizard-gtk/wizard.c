@@ -3061,11 +3061,12 @@ static void create_details_treeview(void)
     GtkTreeViewColumn *column;
 
     renderer = gtk_cell_renderer_toggle_new();
-    g_tv_details_col_checkbox = column = gtk_tree_view_column_new_with_attributes(
+    column = gtk_tree_view_column_new_with_attributes(
                 _("Include"), renderer,
                 /* which "attr" of renderer to set from which COLUMN? (can be repeated) */
                 "active", DETAIL_COLUMN_CHECKBOX,
                 NULL);
+    g_tv_details_col_checkbox = column;
     gtk_tree_view_append_column(g_tv_details, column);
     /* This column has a handler */
     g_signal_connect(renderer, "toggled", G_CALLBACK(g_tv_details_checkbox_toggled), NULL);
@@ -3076,6 +3077,8 @@ static void create_details_treeview(void)
                 "text", DETAIL_COLUMN_NAME,
                 NULL);
     gtk_tree_view_append_column(g_tv_details, column);
+    /* This column has a clickable header for sorting */
+    gtk_tree_view_column_set_sort_column_id(column, DETAIL_COLUMN_NAME);
 
     g_tv_details_renderer_value = renderer = gtk_cell_renderer_text_new();
     g_signal_connect(renderer, "edited", G_CALLBACK(save_edited_one_liner), NULL);
@@ -3093,8 +3096,6 @@ static void create_details_treeview(void)
                 NULL);
     gtk_tree_view_append_column(g_tv_details, column);
     */
-
-    gtk_tree_view_column_set_sort_column_id(column, DETAIL_COLUMN_NAME);
 
     g_ls_details = gtk_list_store_new(DETAIL_NUM_COLUMNS, G_TYPE_BOOLEAN, G_TYPE_STRING, G_TYPE_STRING);
     gtk_tree_view_set_model(g_tv_details, GTK_TREE_MODEL(g_ls_details));
