@@ -3087,6 +3087,8 @@ static void create_details_treeview(void)
                 "text", DETAIL_COLUMN_VALUE,
                 NULL);
     gtk_tree_view_append_column(g_tv_details, column);
+    /* This column has a clickable header for sorting */
+    gtk_tree_view_column_set_sort_column_id(column, DETAIL_COLUMN_VALUE);
 
     /*
     renderer = gtk_cell_renderer_text_new();
