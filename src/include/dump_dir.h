@@ -35,6 +35,8 @@ enum {
     /* Open symlinks. dd_* funcs don't open symlinks by default */
     DD_OPEN_FOLLOW = (1 << 2),
     DD_OPEN_READONLY = (1 << 3),
+    DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE = (1 << 4),
+    DD_DONT_WAIT_FOR_LOCK = (1 << 5),
 };
 
 struct dump_dir {
@@ -63,10 +65,6 @@ void dd_sanitize_mode_and_owner(struct dump_dir *dd);
 DIR *dd_init_next_file(struct dump_dir *dd);
 int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name);
 
-enum {
-    /* DD_FAIL_QUIETLY_ENOENT bit is valid for dd_load_text_ext too, */
-    DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE = (DD_OPEN_READONLY << 1),
-};
 char* dd_load_text_ext(const struct dump_dir *dd, const char *name, unsigned flags);
 char* dd_load_text(const struct dump_dir *dd, const char *name);
 void dd_save_text(struct dump_dir *dd, const char *name, const char *data);

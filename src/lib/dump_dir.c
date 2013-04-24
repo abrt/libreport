@@ -295,7 +295,7 @@ static int dd_lock(struct dump_dir *dd, unsigned sleep_usec, int flags)
             strcpy(lock_buf + dirname_len, "/.lock");
             xunlink(lock_buf);
             VERB1 log("Unlocked '%s' (no or corrupted time file)", lock_buf);
-            if (--count == 0)
+            if (--count == 0 || flags & DD_DONT_WAIT_FOR_LOCK)
             {
                 errno = EISDIR; /* "this is an ordinary dir, not dump dir" */
                 return -1;
