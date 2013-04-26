@@ -436,6 +436,10 @@ int append_item(struct strbuf *result, const char *item_name, problem_data_t *pd
     if (strcmp(item_name, "%short_backtrace") == 0)
         return append_short_backtrace(result, pd, CD_TEXT_ATT_SIZE_BZ, print_item_name);
 
+    /* Compat with previously-existed ad-hockery: %reporter */
+    if (strcmp(item_name, "%reporter") == 0)
+        return append_text(result, "reporter", PACKAGE"-"VERSION, print_item_name);
+
     /* %oneline,%multiline,%text */
     bool oneline   = (strcmp(item_name+1, "oneline"  ) == 0);
     bool multiline = (strcmp(item_name+1, "multiline") == 0);
