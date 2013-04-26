@@ -17,7 +17,7 @@
 */
 #include "internal_libreport.h"
 
-static GHashTable *user_settings;
+static map_string_t *user_settings;
 static char *conf_path;
 
 static bool create_parentdir(char *path)
@@ -94,12 +94,8 @@ bool load_user_settings(const char *application_name)
     conf_path = get_conf_path(application_name);
 
     if (user_settings)
-        g_hash_table_destroy(user_settings);
-    user_settings = g_hash_table_new_full(
-            /*hash_func*/ g_str_hash,
-            /*key_equal_func:*/ g_str_equal,
-            /*key_destroy_func:*/ free,
-            /*value_destroy_func:*/ free);
+        free_map_string(user_settings);
+    user_settings = new_map_string();
 
     return load_conf_file(conf_path, user_settings, false);
 }
@@ -110,9 +106,9 @@ void set_user_setting(const char *name, const char *value)
         return;
 
     if (value)
-        g_hash_table_replace(user_settings, xstrdup(name), xstrdup(value));
+        replace_map_string_item(user_settings, xstrdup(name), xstrdup(value));
     else
-        g_hash_table_remove(user_settings, name);
+        remove_map_string_item(user_settings, name);
 }
 
 const char *get_user_setting(const char *name)
@@ -120,7 +116,7 @@ const char *get_user_setting(const char *name)
     if (!user_settings)
         return NULL;
 
-    return g_hash_table_lookup(user_settings, name);
+    return get_map_string_item_or_NULL(user_settings, name);
 }
 
 GList *load_forbidden_words(void)
