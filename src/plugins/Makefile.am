@@ -62,14 +62,13 @@ eventsconfdir = $(EVENTS_CONF_DIR)
 dist_eventsconf_DATA = \
     mailx_event.conf \
     print_event.conf \
-    bugzilla_event.conf \
     rhtsupport_event.conf \
     uploader_event.conf \
-    emergencyanalysis_event.conf \
-    bugzilla_anaconda_event.conf
+    emergencyanalysis_event.conf
 
 reporters_extra_dist =
 if BUILD_BUGZILLA
+dist_eventsconf_DATA += bugzilla_event.conf bugzilla_anaconda_event.conf
 reporters_extra_dist += report_Bugzilla.xml.in report_Bugzilla.conf
 endif
 

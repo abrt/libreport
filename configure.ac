@@ -104,8 +104,31 @@ XMLRPC_CLIENT_CFLAGS=`xmlrpc-c-config client --cflags 2> /dev/null`
 XMLRPC_CLIENT_LIBS=`xmlrpc-c-config client --libs 2> /dev/null`
 AC_SUBST(XMLRPC_CLIENT_CFLAGS)
 AC_SUBST(XMLRPC_CLIENT_LIBS)
+
+# enable bugzilla translations
+for FILE in `grep "#.*ugzilla.*" po/POTFILES.in`
+do
+  sed -ie "s,$FILE,${FILE:1}," po/POTFILES.in
+  sed -ie "\,^${FILE:1}$,d" po/POTFILES.skip
+done
 else
 AM_CONDITIONAL(BUILD_BUGZILLA, false)
+
+# disablie bugzilla translations
+for FILE in `grep "ugzilla" po/POTFILES.in`
+do
+  if test "${FILE:0:1}" = "#"
+  then
+    continue
+  fi
+
+  sed -ie "s,$FILE,#$FILE," po/POTFILES.in
+  grep "$FILE" po/POTFILES.skip > /dev/null 2>&1
+  if test $?
+  then
+    echo "$FILE" >> po/POTFILES.skip
+  fi
+done
 fi dnl end NO_BUGZILLA
 
 AC_PATH_PROG([PYTHON_CONFIG], [python-config], [no])
