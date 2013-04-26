@@ -105,8 +105,8 @@ XMLRPC_CLIENT_LIBS=`xmlrpc-c-config client --libs 2> /dev/null`
 AC_SUBST(XMLRPC_CLIENT_CFLAGS)
 AC_SUBST(XMLRPC_CLIENT_LIBS)
 
-# enable bugzilla translations
-for FILE in `grep "#.*ugzilla.*" po/POTFILES.in`
+# enable bugzilla & deps translations
+for FILE in `grep -e "#.*ugzilla.*" -e "#.*naconda.*" po/POTFILES.in`
 do
   sed -ie "s,$FILE,${FILE:1}," po/POTFILES.in
   sed -ie "\,^${FILE:1}$,d" po/POTFILES.skip
@@ -114,8 +114,8 @@ done
 else
 AM_CONDITIONAL(BUILD_BUGZILLA, false)
 
-# disablie bugzilla translations
-for FILE in `grep "ugzilla" po/POTFILES.in`
+# disablie bugzilla & deps translations
+for FILE in `grep -e "ugzilla" -e "naconda" po/POTFILES.in`
 do
   if test "${FILE:0:1}" = "#"
   then

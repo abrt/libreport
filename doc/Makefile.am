@@ -12,6 +12,7 @@ MAN1_TXT += report-cli.txt
 
 if BUILD_BUGZILLA
 MAN1_TXT += reporter-bugzilla.txt
+MAN1_TXT += report.txt
 endif
 
 MAN1_TXT += reporter-kerneloops.txt
@@ -19,7 +20,6 @@ MAN1_TXT += reporter-mailx.txt
 MAN1_TXT += reporter-print.txt
 MAN1_TXT += reporter-rhtsupport.txt
 MAN1_TXT += reporter-upload.txt
-MAN1_TXT += report.txt
 
 MAN5_TXT =
 MAN5_TXT += report_event.conf.txt

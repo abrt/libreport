@@ -2,7 +2,9 @@ pluginslibdir = $(PLUGINS_LIB_DIR)
 
 reporters_bin =
 if BUILD_BUGZILLA
-reporters_bin += reporter-bugzilla
+reporters_bin += \
+    reporter-bugzilla \
+    report
 endif
 
 if BUILD_UREPORT
@@ -14,8 +16,7 @@ bin_PROGRAMS = $(reporters_bin) \
     reporter-kerneloops \
     reporter-upload \
     reporter-mailx \
-    reporter-print \
-    report
+    reporter-print
 
 pluginsconfdir = $(PLUGINS_CONF_DIR)
 
@@ -218,6 +219,7 @@ reporter_print_CPPFLAGS = \
 reporter_print_LDADD = \
     ../lib/libreport.la
 
+if BUILD_BUGZILLA
 report_SOURCES = \
     report.c
 report_CPPFLAGS = \
@@ -235,6 +237,7 @@ report_CPPFLAGS = \
     -D_GNU_SOURCE
 report_LDADD = \
     ../lib/libreport.la
+endif
 
 if BUILD_UREPORT
 reporter_ureport_SOURCES = \
