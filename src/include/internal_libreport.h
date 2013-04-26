@@ -678,6 +678,16 @@ bool load_conf_file(const char *pPath, map_string_t *settings, bool skipKeysWith
 
 #define save_conf_file libreport_save_conf_file
 bool save_conf_file(const char *path, map_string_t *settings);
+
+#define save_app_conf_file libreport_save_app_conf_file
+bool save_app_conf_file(const char* application_name, map_string_t *settings);
+#define load_app_conf_file libreport_load_app_conf_file
+bool load_app_conf_file(const char *application_name, map_string_t *settings);
+#define set_app_user_setting libreport_set_app_user_setting
+void set_app_user_setting(map_string_t *settings, const char *name, const char *value);
+#define get_app_user_setting libreport_get_app_user_setting
+const char *get_app_user_setting(map_string_t *settings, const char *name);
+
 #define save_user_settings libreport_save_user_settings
 bool save_user_settings();
 #define load_user_settings libreport_load_user_settings
@@ -686,6 +696,7 @@ bool load_user_settings(const char *application_name);
 void set_user_setting(const char *name, const char *value);
 #define get_user_setting libreport_get_user_setting
 const char *get_user_setting(const char *name);
+
 #define load_forbidden_words libreport_load_forbidden_words
 GList *load_forbidden_words();
 #define get_file_list libreport_get_file_list

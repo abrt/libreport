@@ -79,6 +79,38 @@ static char *get_conf_path(const char *name)
     return conf;
 }
 
+
+bool save_app_conf_file(const char* application_name, map_string_t *settings)
+{
+    char *app_conf_path = get_conf_path(application_name);
+    bool result = save_conf_file(app_conf_path, settings);
+    free(app_conf_path);
+
+    return result;
+}
+
+bool load_app_conf_file(const char *application_name, map_string_t *settings)
+{
+    char *app_conf_path = get_conf_path(application_name);
+    bool result = load_conf_file(app_conf_path, settings, false);
+    free(app_conf_path);
+
+    return result;
+}
+
+void set_app_user_setting(map_string_t *settings, const char *name, const char *value)
+{
+    if (value)
+        replace_map_string_item(settings, xstrdup(name), xstrdup(value));
+    else
+        remove_map_string_item(settings, name);
+}
+
+const char *get_app_user_setting(map_string_t *settings, const char *name)
+{
+    return get_map_string_item_or_NULL(settings, name);
+}
+
 bool save_user_settings()
 {
     if (!conf_path || !user_settings)
@@ -104,11 +136,7 @@ void set_user_setting(const char *name, const char *value)
 {
     if (!user_settings)
         return;
-
-    if (value)
-        replace_map_string_item(user_settings, xstrdup(name), xstrdup(value));
-    else
-        remove_map_string_item(user_settings, name);
+    set_app_user_setting(user_settings, name, value);
 }
 
 const char *get_user_setting(const char *name)
@@ -116,7 +144,7 @@ const char *get_user_setting(const char *name)
     if (!user_settings)
         return NULL;
 
-    return get_map_string_item_or_NULL(user_settings, name);
+    return get_app_user_setting(user_settings, name);
 }
 
 GList *load_forbidden_words(void)
