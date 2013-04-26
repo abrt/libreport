@@ -51,6 +51,7 @@ struct ureport_server_response {
     char *message;
     char *bthash;
     GList *reported_to_list;
+    char *solution;
 };
 
 void free_ureport_server_response(struct ureport_server_response *resp)
@@ -58,11 +59,74 @@ void free_ureport_server_response(struct ureport_server_response *resp)
     if (!resp)
         return;
 
+    free(resp->solution);
     g_list_free_full(resp->reported_to_list, g_free);
     free(resp->bthash);
     free(resp->message);
     free(resp->value);
     free(resp);
+}
+
+static char *parse_solution_from_json_list(struct json_object *list, GList **reported_to)
+{
+    json_object *list_elem, *struct_elem;
+    const char *cause, *note, *url;
+    struct strbuf *solution_buf = strbuf_new();
+
+    const unsigned length = json_object_array_length(list);
+
+    const char *one_format = _("Your problem seems to be caused by %s\n\n%s\n");
+    if (length > 1)
+    {
+        strbuf_append_str(solution_buf, _("Your problem seems to be caused by one of the following:\n"));
+        one_format = "\n* %s\n\n%s\n";
+    }
+
+    bool empty = true;
+    for (unsigned i = 0; i < length; ++i)
+    {
+        list_elem = json_object_array_get_idx(list, i);
+        if (!list_elem)
+            continue;
+
+        struct_elem = json_object_object_get(list_elem, "cause");
+        if (!struct_elem)
+            continue;
+
+        cause = json_object_get_string(struct_elem);
+        if (!cause)
+            continue;
+
+        struct_elem = json_object_object_get(list_elem, "note");
+        if (!struct_elem)
+            continue;
+
+        note = json_object_get_string(struct_elem);
+        if (!note)
+            continue;
+
+        empty = false;
+        strbuf_append_strf(solution_buf, one_format, cause, note);
+
+        struct_elem = json_object_object_get(list_elem, "url");
+        if (!struct_elem)
+            continue;
+
+        url = json_object_get_string(struct_elem);
+        if (url)
+        {
+            char *reported_to_line = xasprintf("%s: URL=%s", cause, url);
+            *reported_to = g_list_append(*reported_to, reported_to_line);
+        }
+    }
+
+    if (empty)
+    {
+        strbuf_free(solution_buf);
+        return NULL;
+    }
+
+    return strbuf_free_nobuf(solution_buf);
 }
 
 /* reported_to json element should be a list of structures
@@ -165,6 +229,10 @@ static struct ureport_server_response *ureport_server_parse_json(json_object *js
         json_object *reported_to_list = json_object_object_get(json, "reported_to");
         if (reported_to_list)
             out_response->reported_to_list = parse_reported_to_from_json_list(reported_to_list);
+
+        json_object *solutions = json_object_object_get(json, "solutions");
+        if (solutions)
+            out_response->solution = parse_solution_from_json_list(solutions, &(out_response->reported_to_list));
 
         return out_response;
     }
@@ -381,21 +449,27 @@ int main(int argc, char **argv)
         VERB1 log("is known: %s", response->value);
         ret = 0; /* "success" */
 
+        dd = dd_opendir(dump_dir_path, /* flags */ 0);
+        if (!dd)
+            xfunc_die();
+
         if (response->bthash)
         {
-            dd = dd_opendir(dump_dir_path, /* flags */ 0);
-            if (!dd)
-                xfunc_die();
-
             char *msg = xasprintf("uReport: BTHASH=%s", response->bthash);
             add_reported_to(dd, msg);
             free(msg);
+        }
 
+        if (response->reported_to_list)
+        {
             for (GList *e = response->reported_to_list; e; e = g_list_next(e))
                 add_reported_to(dd, e->data);
-
-            dd_close(dd);
         }
+
+        if (response->solution)
+            dd_save_text(dd, FILENAME_NOT_REPORTABLE, response->solution);
+
+        dd_close(dd);
 
         /* If a reported problem is not known then emit NEEDMORE */
         if (strcmp("true", response->value) == 0)
@@ -403,6 +477,7 @@ int main(int argc, char **argv)
             log(_("This problem has already been reported."));
             if (response->message)
                 log(response->message);
+
             ret = EXIT_STOP_EVENT_RUN;
         }
     }
