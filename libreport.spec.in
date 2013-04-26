@@ -31,7 +31,7 @@ BuildRequires: btparser-devel
 ##satyr migration:
 #BuildRequires: satyr-devel
 BuildRequires: doxygen
-Requires: libreport-filesystem
+Requires: libreport-filesystem = %{version}-%{release}
 # required for update from old report library, otherwise we obsolete report-gtk
 # and all it's plugins, but don't provide the python bindings and the sealert
 # end-up with: can't import report.GtkIO
@@ -139,6 +139,7 @@ Summary: %{name}'s kerneloops reporter plugin
 Group: System Environment/Libraries
 Requires: curl
 Requires: %{name} = %{version}-%{release}
+Requires: libreport-web = %{version}-%{release}
 
 %description plugin-kerneloops
 This package contains plugin which sends kernel crash information to specified
@@ -172,6 +173,7 @@ email address.
 Summary: %{name}'s bugzilla plugin
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
+Requires: libreport-web = %{version}-%{release}
 Obsoletes: abrt-plugin-bugzilla < 2.0.4
 Provides: report-plugin-bugzilla = 0:0.23-1
 Obsoletes: report-plugin-bugzilla < 0:0.23-1
@@ -183,6 +185,7 @@ Summary: %{name}'s micro report plugin
 BuildRequires: json-c-devel
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
+Requires: libreport-web = %{version}-%{release}
 
 %description plugin-ureport
 Uploads micro-report to abrt server
@@ -194,6 +197,7 @@ Plugin to report bugs into the bugzilla.
 Summary: %{name}'s RHTSupport plugin
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
+Requires: libreport-web = %{version}-%{release}
 Obsoletes: abrt-plugin-rhtsupport < 2.0.4
 
 %description plugin-rhtsupport
@@ -213,6 +217,7 @@ Provides 'report' command-line tool.
 Summary: %{name}'s reportuploader plugin
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
+Requires: libreport-web = %{version}-%{release}
 Obsoletes: abrt-plugin-reportuploader < 2.0.4
 Provides: report-plugin-ftp = 0:0.23-1
 Obsoletes: report-plugin-ftp < 0:0.23-1
