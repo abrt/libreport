@@ -478,6 +478,44 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/events.d/bugzilla_anaconda_event.conf
 
 %changelog
+* Mon Apr 29 2013 Jakub Filak <jfilak@redhat.com> 2.1.4-1
+- spec: added missing requires to silence the rpmdiff rhbz#881305
+- ureport: save solutions in not-reportable item
+- added flag to not retry locking the incomplete problem dir
+- wizard: trivial - make value column click-sortable too
+- plugins: support /etc/os-release
+- unit tests: add test for problem data get osinfo
+- problem data: add function getting parsed osinfo
+- unit tests: add test for osinfo parsers
+- add function for parsing os-release
+- dd: add /etc/os-release to basic files
+- refactorize: map_string_t clean up
+- wizard: fix clickability of the item list column header
+- add test for parse_release + openSUSE
+- read and parse os_release on openSUSE
+- wizard: eliminate evd->error_msg member
+- wizard: remove a bunch of evd->foo members
+- debuginfo downloader should enable repos matching *debug* closes #138
+- Replace "THANKYOU" with EXIT_STOP_EVENT_RUN exit code (70)
+- wizard: trivial: make a copy for evd->event_name
+- gui/cli: unify and improve event exit code reporting #74
+- includes: add macro for last occurrence dump dir file
+- debuginfo downloader: fix DebugInfoDownload::download() error paths.
+- src/client-python/__init__.py: trivial bug fix (remove stray printout)
+- report-gtk: handle user cancellation gracefully
+- logging: refine errors reporting
+- emit a message when searching bugzilla for duplicates closes #151
+- reporter-upload: create tarball with the name based on directory's name
+- reporter-rhtsupport: generate archive name from problem dir name
+- added report-cli event for anaconda should help with rhbz#950544
+- ss: skip option holding NULL values
+- spec: added new event for anaconda reporting rhbz#926916
+- fixed reporting from bugzilla rhbz#926916
+- distinguish the event configuration by problem type in the UI closes #149
+- report-gtk: show Next Step btn at workflow start
+- curl upload helper: upload data with "application/octet-stream" content type
+- reporter-rhtsupport: fix hint query to use correct URL
+
 * Wed Mar 27 2013 Jakub Filak <jfilak@redhat.com> 2.1.3-1
 - rhbz: get id of duplicate from correct field
 - change the "exited with" message with something less technical closes #143
