@@ -2,6 +2,20 @@
 # platform-dependent
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
+%if 0%{?suse_version}
+  %bcond_with bugzilla
+
+  %define dbus_devel dbus-1-devel
+  %define nss_devel mozilla-nss-devel
+  %define libjson_devel libjson-devel
+%else
+  %bcond_without bugzilla
+
+  %define dbus_devel dbus-devel
+  %define nss_devel nss-devel
+  %define libjson_devel json-c-devel
+%endif
+
 Summary: Generic library for reporting various problems
 Name: libreport
 Version: @@LIBREPORT_VERSION@@
@@ -10,24 +24,26 @@ License: GPLv2+
 Group: System Environment/Libraries
 URL: https://fedorahosted.org/abrt/
 Source: https://fedorahosted.org/released/abrt/%{name}-%{version}.tar.gz
-BuildRequires: dbus-devel
+BuildRequires: %{dbus_devel}
 BuildRequires: gtk3-devel
 BuildRequires: curl-devel
 BuildRequires: desktop-file-utils
-BuildRequires: xmlrpc-c-devel
 BuildRequires: python-devel
 BuildRequires: gettext
 BuildRequires: libxml2-devel
 BuildRequires: libtar-devel
 BuildRequires: intltool
 BuildRequires: libtool
-BuildRequires: nss-devel
+BuildRequires: %{nss_devel}
 BuildRequires: texinfo
 BuildRequires: asciidoc
 BuildRequires: xmlto
 BuildRequires: newt-devel
 BuildRequires: libproxy-devel
 BuildRequires: btparser-devel
+%if %{with bugzilla}
+BuildRequires: xmlrpc-c-devel
+%endif
 ##satyr migration:
 #BuildRequires: satyr-devel
 BuildRequires: doxygen
@@ -169,6 +185,7 @@ Obsoletes: abrt-plugin-mailx < 2.0.4
 The simple reporter plugin which sends a report via mailx to a specified
 email address.
 
+%if %{with bugzilla}
 %package plugin-bugzilla
 Summary: %{name}'s bugzilla plugin
 Group: System Environment/Libraries
@@ -180,6 +197,10 @@ Obsoletes: report-plugin-bugzilla < 0:0.23-1
 Provides: report-config-bugzilla-redhat-com = 0:0.23-1
 Obsoletes: report-config-bugzilla-redhat-com < 0:0.23-1
 
+%description plugin-bugzilla
+Plugin to report bugs into the bugzilla.
+%endif
+
 %package plugin-ureport
 Summary: %{name}'s micro report plugin
 BuildRequires: json-c-devel
@@ -189,9 +210,6 @@ Requires: libreport-web = %{version}-%{release}
 
 %description plugin-ureport
 Uploads micro-report to abrt server
-
-%description plugin-bugzilla
-Plugin to report bugs into the bugzilla.
 
 %package plugin-rhtsupport
 Summary: %{name}'s RHTSupport plugin
@@ -203,6 +221,7 @@ Obsoletes: abrt-plugin-rhtsupport < 2.0.4
 %description plugin-rhtsupport
 Plugin to report bugs into RH support system.
 
+%if %{with bugzilla}
 %package compat
 Summary: %{name}'s compat layer for obsoleted 'report' package
 Group: System Environment/Libraries
@@ -212,6 +231,7 @@ Requires: %{name}-plugin-rhtsupport = %{version}-%{release}
 
 %description compat
 Provides 'report' command-line tool.
+%endif
 
 %package plugin-reportuploader
 Summary: %{name}'s reportuploader plugin
@@ -249,6 +269,7 @@ Default configuration for reporting bugs via Red Hat infrastructure
 used to easy configure the reporting process for Red Hat sytems. Just
 install this package and you're done.
 
+%if %{with bugzilla}
 %package anaconda
 Summary: Default configuration for reporting anaconda bugs
 Group: Applications/File
@@ -258,7 +279,7 @@ Requires: libreport-plugin-bugzilla
 %description anaconda
 Default configuration for reporting Anaconda problems using Fedora
 infrastructure or uploading the gathered data over ftp/scp...
-
+%endif
 
 %prep
 %setup -q
@@ -266,15 +287,17 @@ infrastructure or uploading the gathered data over ftp/scp...
 %build
 autoconf
 
-%if 0%{?fedora} < 18
-    %if 0%{?rhel} < 7
-        CFLAGS="%{optflags} -Werror" %configure --with-defaultdumpdirmode=0640 --disable-userownsdumpdir --disable-silent-rules
-    %else
-        CFLAGS="%{optflags} -Werror" %configure --enable-doxygen-docs --disable-silent-rules
-    %endif
-%else
-        CFLAGS="%{optflags} -Werror" %configure --enable-doxygen-docs --disable-silent-rules
+CFLAGS="%{optflags} -Werror" %configure \
+%if %{without bugzilla}
+        --without-bugzilla \
 %endif
+%if 0%{?rhel:%{rhel} < 7}
+        --with-defaultdumpdirmode=0640 \
+        --disable-userownsdumpdir \
+%else
+        --enable-doxygen-docs \
+%endif
+        --disable-silent-rules
 
 make %{?_smp_mflags}
 
@@ -421,6 +444,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #%{_mandir}/man1/reporter-ureport.1.gz
 %{_sysconfdir}/libreport/events/report_uReport.xml
 
+%if %{with bugzilla}
 %files plugin-bugzilla
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla.conf
@@ -434,6 +458,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 # FIXME: remove with the old gui
 %{_mandir}/man1/reporter-bugzilla.1.gz
 %{_bindir}/reporter-bugzilla
+%endif
 
 %files plugin-rhtsupport
 %defattr(-,root,root,-)
@@ -443,10 +468,12 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man1/reporter-rhtsupport.1.gz
 %{_bindir}/reporter-rhtsupport
 
+%if %{with bugzilla}
 %files compat
 %defattr(-,root,root,-)
 %{_bindir}/report
 %{_mandir}/man1/report.1.gz
+%endif
 
 %files plugin-reportuploader
 %defattr(-,root,root,-)
@@ -470,12 +497,14 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_sysconfdir}/libreport/workflows/workflow_RHELxorg.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_rhel.conf
 
+%if %{with bugzilla}
 %files anaconda
 %defattr(-,root,root,-)
 %{_sysconfdir}/libreport/workflows/workflow_AnacondaFedora.xml
 %{_sysconfdir}/libreport/workflows/workflow_AnacondaUpload.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/anaconda_event.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/bugzilla_anaconda_event.conf
+%endif
 
 %changelog
 * Mon Apr 29 2013 Jakub Filak <jfilak@redhat.com> 2.1.4-1
