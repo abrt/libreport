@@ -80,7 +80,7 @@ config_dialog_t *create_workflow_config_dialog(const char *workflow_name, GtkWin
                         NULL);
 
     gtk_window_set_resizable(GTK_WINDOW(dialog), true);
-    gtk_window_set_default_size(GTK_WINDOW(dialog), 450, -1);
+    gtk_window_set_default_size(GTK_WINDOW(dialog), 450, 450);
 
     if (parent_window != NULL)
     {
@@ -88,10 +88,17 @@ config_dialog_t *create_workflow_config_dialog(const char *workflow_name, GtkWin
         gtk_window_get_icon_name(parent_window));
     }
 
-    GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+    GtkWidget *scrolled = gtk_scrolled_window_new(NULL, NULL);
+    GtkWidget *content = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(scrolled), content);
+
+    GtkWidget *dialog_box = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+    gtk_box_pack_start(GTK_BOX(dialog_box), scrolled, false, true, 0);
 
     g_events_options = NULL;
     g_list_foreach(events, (GFunc)create_event_config_dialog_content_cb, content);
+
+    gtk_widget_show_all(GTK_WIDGET(scrolled));
 
     config_dialog_t *cdialog = new_config_dialog(dialog,
                                 g_events_options,

@@ -202,6 +202,11 @@ config_dialog_t *create_event_config_dialog_content(event_config_t *event, GtkWi
     gtk_grid_set_row_spacing(GTK_GRID(option_table), 2);
     g_object_set_data(G_OBJECT(option_table), "n-rows", (gpointer)-1);
 
+    gtk_widget_set_hexpand(option_table, TRUE);
+    gtk_widget_set_vexpand(option_table, TRUE);
+    gtk_widget_set_halign(option_table, GTK_ALIGN_FILL);
+    gtk_widget_set_valign(option_table, GTK_ALIGN_FILL);
+
     /* table to hold advanced options
      * hidden in expander which is visible only if there's at least
      * one advanced option
