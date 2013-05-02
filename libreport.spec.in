@@ -203,7 +203,7 @@ Plugin to report bugs into the bugzilla.
 
 %package plugin-ureport
 Summary: %{name}'s micro report plugin
-BuildRequires: json-c-devel
+BuildRequires: %{libjson_devel}
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-web = %{version}-%{release}
