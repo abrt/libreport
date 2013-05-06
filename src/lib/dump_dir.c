@@ -612,7 +612,10 @@ void dd_create_basic_files(struct dump_dir *dd, uid_t uid, const char *chroot_di
     {
         time_t t = time(NULL);
         sprintf(long_str, "%lu", (long)t);
+        /* first occurrence */
         dd_save_text(dd, FILENAME_TIME, long_str);
+        /* last occurrence */
+        dd_save_text(dd, FILENAME_LAST_OCCURRENCE, long_str);
     }
     free(time_str);
 
