@@ -213,7 +213,7 @@ static int dd_lock(struct dump_dir *dd, unsigned sleep_usec, int flags)
             strcpy(lock_buf + dirname_len, "/.lock");
             xunlink(lock_buf);
             VERB1 log("Unlocked '%s' (no time file)", lock_buf);
-            if (--count == 0)
+            if (--count == 0 || flags & DD_DONT_WAIT_FOR_LOCK)
             {
                 errno = EISDIR; /* "this is an ordinary dir, not dump dir" */
                 return -1;
@@ -930,4 +930,57 @@ void delete_dump_dir(const char *dirname)
     {
         dd_delete(dd);
     }
+}
+
+#if DUMP_DIR_OWNED_BY_USER == 0
+static bool uid_in_group(uid_t uid, gid_t gid)
+{
+    char **tmp;
+    struct passwd *pwd = getpwuid(uid);
+
+    if (!pwd)
+        return FALSE;
+
+    if (pwd->pw_gid == gid)
+        return TRUE;
+
+    struct group *grp = getgrgid(gid);
+    if (!(grp && grp->gr_mem))
+        return FALSE;
+
+    for (tmp = grp->gr_mem; *tmp != NULL; tmp++)
+    {
+        if (g_strcmp0(*tmp, pwd->pw_name) == 0)
+        {
+            VERB3 log("user %s belongs to group: %s",  pwd->pw_name, grp->gr_name);
+            return TRUE;
+        }
+    }
+
+    VERB2 log("user %s DOESN'T belong to group: %s",  pwd->pw_name, grp->gr_name);
+    return FALSE;
+}
+#endif
+
+int dump_dir_accessible_by_uid(const char *dirname, uid_t uid)
+{
+    struct stat statbuf;
+    if (stat(dirname, &statbuf) != 0 || !S_ISDIR(statbuf.st_mode))
+        errno = ENOTDIR;
+    else
+    {
+        errno = 0;
+
+#if DUMP_DIR_OWNED_BY_USER > 0
+        if (uid == 0 || (statbuf.st_mode & S_IROTH) || uid == statbuf.st_uid)
+#else
+        if (uid == 0 || (statbuf.st_mode & S_IROTH) || uid_in_group(uid, statbuf.st_gid))
+#endif
+        {
+            VERB1 log("directory '%s' is accessible by %ld uid", dirname, (long)uid);
+            return 1;
+        }
+    }
+
+    return 0;
 }
