@@ -90,7 +90,15 @@ config_dialog_t *create_workflow_config_dialog(const char *workflow_name, GtkWin
 
     GtkWidget *scrolled = gtk_scrolled_window_new(NULL, NULL);
     GtkWidget *content = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+
+#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 7) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 7 && GTK_MICRO_VERSION < 8))
+    /* http://developer.gnome.org/gtk3/unstable/GtkScrolledWindow.html#gtk-scrolled-window-add-with-viewport */
+    /* gtk_scrolled_window_add_with_viewport has been deprecated since version 3.8 and should not be used in newly-written code. */
     gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(scrolled), content);
+#else
+    /* gtk_container_add() will now automatically add a GtkViewport if the child doesn't implement GtkScrollable. */
+    gtk_container_add(GTK_CONTAINER(scrolled), content);
+#endif
 
     GtkWidget *dialog_box = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
     gtk_box_pack_start(GTK_BOX(dialog_box), scrolled, false, true, 0);
