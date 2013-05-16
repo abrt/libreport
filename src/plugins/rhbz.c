@@ -656,6 +656,13 @@ int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *bug_id,
 {
     func_entry();
 
+    if (strlen(data) == 0)
+    {
+        VERB1 log("not attaching an empty file: '%s'", filename);
+        /* Return SUCCESS */
+        return 0;
+    }
+
     char *fn = xasprintf("File: %s", filename);
     xmlrpc_value* result;
     int nomail_notify = !!IS_NOMAIL_NOTIFY(flags);
