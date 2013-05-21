@@ -122,6 +122,20 @@ void delete_dump_dir(const char *dirname);
  */
 int dump_dir_accessible_by_uid(const char *dirname, uid_t uid);
 
+enum {
+    DD_STAT_ACCESSIBLE_BY_UID = 1,
+    DD_STAT_OWNED_BY_UID = DD_STAT_ACCESSIBLE_BY_UID << 1,
+};
+
+/* Gets information about a dump directory for particular uid.
+ *
+ * If the directory doesn't exist the directory is not accessible and errno is
+ * set to ENOTDIR.
+ *
+ * Returns negative number if error occurred otherwise returns 0 or positive number.
+ */
+int dump_dir_stat_for_uid(const char *dirname, uid_t uid);
+
 /* creates not_reportable file in the problem directory and saves the
    reason to it, which prevents libreport from reporting the problem
    On success, zero is returned.

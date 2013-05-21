@@ -1275,25 +1275,47 @@ static bool uid_in_group(uid_t uid, gid_t gid)
 }
 #endif
 
-int dump_dir_accessible_by_uid(const char *dirname, uid_t uid)
+int dump_dir_stat_for_uid(const char *dirname, uid_t uid)
 {
     struct stat statbuf;
     if (stat(dirname, &statbuf) != 0 || !S_ISDIR(statbuf.st_mode))
-        errno = ENOTDIR;
-    else
     {
-        errno = 0;
+        VERB3 log("can't get stat of '%s': not a problem directory", dirname);
+        errno = ENOTDIR;
+        return -1;
+    }
+
+    errno = 0;
+
+    int ddstat = 0;
+    if (uid == 0 || (statbuf.st_mode & S_IROTH))
+    {
+        VERB3 log("directory '%s' is accessible by %ld uid", dirname, (long)uid);
+        ddstat |= DD_STAT_ACCESSIBLE_BY_UID;
+    }
 
 #if DUMP_DIR_OWNED_BY_USER > 0
-        if (uid == 0 || (statbuf.st_mode & S_IROTH) || uid == statbuf.st_uid)
+    if (uid == statbuf.st_uid)
 #else
-        if (uid == 0 || (statbuf.st_mode & S_IROTH) || uid_in_group(uid, statbuf.st_gid))
+    if (uid_in_group(uid, statbuf.st_gid))
 #endif
-        {
-            VERB1 log("directory '%s' is accessible by %ld uid", dirname, (long)uid);
-            return 1;
-        }
+    {
+        VERB3 log("%ld uid owns directory '%s'", (long)uid, dirname);
+        ddstat |= DD_STAT_ACCESSIBLE_BY_UID;
+        ddstat |= DD_STAT_OWNED_BY_UID;
     }
+
+    return ddstat;
+}
+
+int dump_dir_accessible_by_uid(const char *dirname, uid_t uid)
+{
+    int ddstat = dump_dir_stat_for_uid(dirname, uid);
+
+    if (ddstat >= 0)
+        return ddstat & DD_STAT_ACCESSIBLE_BY_UID;
+
+    VERB3 perror_msg("can't determine accessibility of '%s' by %ld uid", dirname, (long)uid);
 
     return 0;
 }
