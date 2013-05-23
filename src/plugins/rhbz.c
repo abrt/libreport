@@ -590,15 +590,29 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
 
     if (!group)
     {
-        result = abrt_xmlrpc_call(ax, "Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
-                                  "product", product,
-                                  "component", component,
-                                  "version", version,
-                                  "summary", (summary ? summary : bzsummary),
-                                  "description", bzcomment,
-                                  "status_whiteboard", status_whiteboard,
-                                  "platform", arch
-        );
+        if (arch)
+        {
+            result = abrt_xmlrpc_call(ax, "Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
+                                      "product", product,
+                                      "component", component,
+                                      "version", version,
+                                      "summary", (summary ? summary : bzsummary),
+                                      "description", bzcomment,
+                                      "status_whiteboard", status_whiteboard,
+                                      "platform", arch
+            );
+        }
+        else
+        {
+            result = abrt_xmlrpc_call(ax, "Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s})",
+                                      "product", product,
+                                      "component", component,
+                                      "version", version,
+                                      "summary", (summary ? summary : bzsummary),
+                                      "description", bzcomment,
+                                      "status_whiteboard", status_whiteboard,
+            );
+        }
     }
     else
     {
@@ -622,16 +636,32 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
             xmlrpc_DECREF(s);
         }
 
-        result = abrt_xmlrpc_call(ax, "Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s,s:s,s:A})",
-                                  "product", product,
-                                  "component", component,
-                                  "version", version,
-                                  "summary", (summary ? summary : bzsummary),
-                                  "description", bzcomment,
-                                  "status_whiteboard", status_whiteboard,
-                                  "platform", arch,
-                                  "groups", xmlrpc_groups
-        );
+        if (arch)
+        {
+            result = abrt_xmlrpc_call(ax, "Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s,s:s,s:A})",
+                                      "product", product,
+                                      "component", component,
+                                      "version", version,
+                                      "summary", (summary ? summary : bzsummary),
+                                      "description", bzcomment,
+                                      "status_whiteboard", status_whiteboard,
+                                      "platform", arch,
+                                      "groups", xmlrpc_groups
+            );
+
+        }
+        else
+        {
+            result = abrt_xmlrpc_call(ax, "Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s,s:A})",
+                                      "product", product,
+                                      "component", component,
+                                      "version", version,
+                                      "summary", (summary ? summary : bzsummary),
+                                      "description", bzcomment,
+                                      "status_whiteboard", status_whiteboard,
+                                      "groups", xmlrpc_groups
+            );
+        }
         xmlrpc_DECREF(xmlrpc_groups);
     }
 
