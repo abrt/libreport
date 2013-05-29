@@ -610,7 +610,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
                                       "version", version,
                                       "summary", (summary ? summary : bzsummary),
                                       "description", bzcomment,
-                                      "status_whiteboard", status_whiteboard,
+                                      "status_whiteboard", status_whiteboard
             );
         }
     }
