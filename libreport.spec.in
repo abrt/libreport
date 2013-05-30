@@ -290,7 +290,7 @@ CFLAGS="%{optflags} -Werror" %configure \
 %if %{without bugzilla}
         --without-bugzilla \
 %endif
-%if 0%{?rhel:%{rhel} < 7}
+%if 0%{?rhel:%{rhel} < 7}%{?fedora:%{fedora} < 18}
         --with-defaultdumpdirmode=0640 \
         --disable-userownsdumpdir \
 %else
