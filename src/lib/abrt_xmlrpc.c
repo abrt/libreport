@@ -141,6 +141,75 @@ xmlrpc_value *abrt_xmlrpc_call_full_va(xmlrpc_env *env, struct abrt_xmlrpc *ax,
     return result;
 }
 
+xmlrpc_value *abrt_xmlrpc_array_new(xmlrpc_env *env)
+{
+    xmlrpc_value *params = xmlrpc_array_new(env);
+    if (env->fault_occurred)
+        abrt_xmlrpc_die(env);
+
+    return params;
+}
+
+void abrt_xmlrpc_array_append_string(xmlrpc_env *env, xmlrpc_value *array, const char *value)
+{
+    xmlrpc_value *val = xmlrpc_string_new(env, value);
+    if (env->fault_occurred)
+        abrt_xmlrpc_die(env);
+
+    xmlrpc_array_append_item(env, array, val);
+    if (env->fault_occurred)
+        abrt_xmlrpc_die(env);
+
+    xmlrpc_DECREF(val);
+}
+
+xmlrpc_value *abrt_xmlrpc_params_new(xmlrpc_env *env)
+{
+    xmlrpc_value *params = xmlrpc_struct_new(env);
+    if (env->fault_occurred)
+        abrt_xmlrpc_die(env);
+
+    return params;
+}
+
+void abrt_xmlrpc_params_add_string(xmlrpc_env *env, xmlrpc_value *params, const char *name, const char *value)
+{
+    xmlrpc_value *val = xmlrpc_string_new(env, value);
+    if (env->fault_occurred)
+        abrt_xmlrpc_die(env);
+
+    xmlrpc_struct_set_value(env, params, name, val);
+    if (env->fault_occurred)
+        abrt_xmlrpc_die(env);
+
+    xmlrpc_DECREF(val);
+}
+
+void abrt_xmlrpc_params_add_array(xmlrpc_env *env, xmlrpc_value *params, const char *name, xmlrpc_value *value)
+{
+    xmlrpc_struct_set_value(env, params, name, value);
+    if (env->fault_occurred)
+        abrt_xmlrpc_die(env);
+}
+
+xmlrpc_value *abrt_xmlrpc_call_params(xmlrpc_env *env, struct abrt_xmlrpc *ax, const char *method, xmlrpc_value *params)
+{
+    xmlrpc_value *array = xmlrpc_array_new(env);
+    if (env->fault_occurred)
+        abrt_xmlrpc_die(env);
+
+    xmlrpc_array_append_item(env, array, params);
+    if (env->fault_occurred)
+        abrt_xmlrpc_die(env);
+
+    xmlrpc_value *result = NULL;
+    xmlrpc_client_call2(env, ax->ax_client, ax->ax_server_info, method,
+                        array, &result);
+
+    xmlrpc_DECREF(array);
+    return result;
+}
+
 xmlrpc_value *abrt_xmlrpc_call_full(xmlrpc_env *env, struct abrt_xmlrpc *ax,
                                     const char *method, const char *format, ...)
 {

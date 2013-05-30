@@ -585,85 +585,39 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
         buf[3] = '\0';
     }
 
-    xmlrpc_value* result = NULL;
     char *status_whiteboard = xasprintf("abrt_hash:%s", duphash);
 
-    if (!group)
-    {
-        if (arch)
-        {
-            result = abrt_xmlrpc_call(ax, "Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
-                                      "product", product,
-                                      "component", component,
-                                      "version", version,
-                                      "summary", (summary ? summary : bzsummary),
-                                      "description", bzcomment,
-                                      "status_whiteboard", status_whiteboard,
-                                      "platform", arch
-            );
-        }
-        else
-        {
-            result = abrt_xmlrpc_call(ax, "Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s})",
-                                      "product", product,
-                                      "component", component,
-                                      "version", version,
-                                      "summary", (summary ? summary : bzsummary),
-                                      "description", bzcomment,
-                                      "status_whiteboard", status_whiteboard
-            );
-        }
-    }
-    else
-    {
-        xmlrpc_env env;
-        xmlrpc_env_init(&env);
+    xmlrpc_env env;
+    xmlrpc_env_init(&env);
 
-        xmlrpc_value *xmlrpc_groups = xmlrpc_array_new(&env);
-        if (env.fault_occurred)
-            abrt_xmlrpc_die(&env);
+    xmlrpc_value *params = abrt_xmlrpc_params_new(&env);
+
+    abrt_xmlrpc_params_add_string(&env, params, "product", product);
+    abrt_xmlrpc_params_add_string(&env, params, "component", component);
+    abrt_xmlrpc_params_add_string(&env, params, "version", version);
+    abrt_xmlrpc_params_add_string(&env, params, "summary", (summary ? summary : bzsummary));
+    abrt_xmlrpc_params_add_string(&env, params, "description", bzcomment);
+    abrt_xmlrpc_params_add_string(&env, params, "status_whiteboard", status_whiteboard);
+
+    if(arch)
+        abrt_xmlrpc_params_add_string(&env, params, "platform", arch);
+
+    if (group)
+    {
+        xmlrpc_value *xmlrpc_groups = abrt_xmlrpc_array_new(&env);
 
         for (GList *l = group; l; l = l->next)
-        {
-            xmlrpc_value *s = xmlrpc_string_new(&env, (char *) l->data);
-            if (env.fault_occurred)
-                abrt_xmlrpc_die(&env);
+            abrt_xmlrpc_array_append_string(&env, xmlrpc_groups, l->data);
 
-            xmlrpc_array_append_item(&env, xmlrpc_groups, s);
-            if (env.fault_occurred)
-                abrt_xmlrpc_die(&env);
+        abrt_xmlrpc_params_add_array(&env, params, "groups", xmlrpc_groups);
 
-            xmlrpc_DECREF(s);
-        }
-
-        if (arch)
-        {
-            result = abrt_xmlrpc_call(ax, "Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s,s:s,s:A})",
-                                      "product", product,
-                                      "component", component,
-                                      "version", version,
-                                      "summary", (summary ? summary : bzsummary),
-                                      "description", bzcomment,
-                                      "status_whiteboard", status_whiteboard,
-                                      "platform", arch,
-                                      "groups", xmlrpc_groups
-            );
-
-        }
-        else
-        {
-            result = abrt_xmlrpc_call(ax, "Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s,s:A})",
-                                      "product", product,
-                                      "component", component,
-                                      "version", version,
-                                      "summary", (summary ? summary : bzsummary),
-                                      "description", bzcomment,
-                                      "status_whiteboard", status_whiteboard,
-                                      "groups", xmlrpc_groups
-            );
-        }
         xmlrpc_DECREF(xmlrpc_groups);
     }
+
+    xmlrpc_value* result = abrt_xmlrpc_call_params(&env, ax, "Bug.create", params);
+
+    xmlrpc_DECREF(params);
+    xmlrpc_env_clean(&env);
 
     free(status_whiteboard);
     free(summary);
