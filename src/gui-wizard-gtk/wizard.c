@@ -3142,9 +3142,8 @@ static void assistant_quit_cb(void *obj, void *data)
 static void on_btn_startcast(GtkWidget *btn, gpointer user_data)
 {
     const char *args[15];
-    args[0] = (char *) LIBEXEC_DIR"/abrt-screencast";
-    args[1] = concat_path_file(g_dump_dir_name, "screencast.ogv");
-    args[2] = NULL;
+    args[0] = (char *) "fros";
+    args[1] = NULL;
 
     pid_t castapp = 0;
     castapp = fork_execv_on_steroids(
@@ -3172,8 +3171,8 @@ static void on_btn_startcast(GtkWidget *btn, gpointer user_data)
 static bool is_screencast_available()
 {
     const char *args[3];
-    args[0] = (char *) LIBEXEC_DIR"/abrt-screencast";
-    args[1] = "is-available";
+    args[0] = (char *) "fros";
+    args[1] = "--is-available";
     args[2] = NULL;
 
     pid_t castapp = 0;
