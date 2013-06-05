@@ -139,7 +139,7 @@ static bool ureport_add_type(struct json_object *ur, problem_data_t *pd)
         ureport_add_str(ur, "type", "USERSPACE");
     else if (strcmp(pd_item, "Python") == 0)
         ureport_add_str(ur, "type", "PYTHON");
-    else if (strcmp(pd_item, "Kerneloops") == 0)
+    else if (strcmp(pd_item, "Kerneloops") == 0 || strcmp(pd_item, "vmcore") == 0)
         ureport_add_str(ur, "type", "KERNELOOPS");
     else
     {
