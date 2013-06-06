@@ -19,11 +19,11 @@ _reportclient_la_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     $(PYTHON_CFLAGS) \
     -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror \
-    -fPIE -Wl,-z,relro,now
+    -fPIE
 _reportclient_la_LDFLAGS = \
     -module \
     -avoid-version \
-    -export-symbols-regex init_reportclient
+    -export-symbols-regex init_reportclient \
+    -Wl,-z,relro -Wl,-z,now
 _reportclient_la_LIBADD = \
     ../lib/libreport.la

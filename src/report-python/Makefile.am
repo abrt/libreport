@@ -23,12 +23,12 @@ _pyreport_la_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     $(PYTHON_CFLAGS) \
     -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror \
-    -fPIE -Wl,-z,relro,now
+    -fPIE
 _pyreport_la_LDFLAGS = \
     -module \
     -avoid-version \
-    -export-symbols-regex init_pyreport
+    -export-symbols-regex init_pyreport \
+    -Wl,-z,relro -Wl,-z,now
 _pyreport_la_LIBADD = \
     ../lib/libreport.la
 
