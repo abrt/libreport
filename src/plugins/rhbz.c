@@ -707,7 +707,7 @@ int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *filename,
                              bug_id,
                              "description", fn,
                              "filename", filename,
-                             "contenttype", "text/plain",
+                             "contenttype", (flags & RHBZ_BINARY_ATTACHMENT) ? "application/octet-stream" : "text/plain",
                              "data", encoded64,
                              "nomail", nomail_notify);
 
@@ -733,18 +733,19 @@ int rhbz_attach_fd(struct abrt_xmlrpc *ax, const char *filename,
         return -1;
     }
 
-    /* bugzilla limit is 20MB */
-    /* attaching more then bugzilla's limit could cause that xmlrpc-c fails
+    /* bugzilla limit is 20MB
+     * attaching more then bugzilla's limit could cause that xmlrpc-c fails
      * somewhere inside itself.
-     * https://bugzilla.redhat.com/show_bug.cgi?id=741980 */
-    #define _20MB (20 * 1024 * 1024)
-
-    if (size >= _20MB )
+     * https://bugzilla.redhat.com/show_bug.cgi?id=741980
+     */
+    if (size >= (20 * 1024 * 1024))
     {
         error_msg("Can't upload '%s', it's too large (%llu bytes)", filename, (long long)size);
         return -1;
     }
     lseek(fd, 0, SEEK_SET);
+
+//TODO: need to have a method of attaching huge files (IOW: 1Gb read isn't good).
 
     char *data = xmalloc(size + 1);
     ssize_t r = full_read(fd, data, size);
@@ -818,7 +819,7 @@ int rhbz_attach_files(struct abrt_xmlrpc *ax, const char *bug_id,
                 close(fd);
                 continue;
             }
-            rhbz_attach_fd(ax, name, bug_id, fd, flags);
+            rhbz_attach_fd(ax, name, bug_id, fd, flags | RHBZ_BINARY_ATTACHMENT);
             close(fd);
         }
     }

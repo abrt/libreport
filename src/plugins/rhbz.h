@@ -31,12 +31,13 @@ extern "C" {
 #endif
 
 enum {
-    RHBZ_MANDATORY_MEMB = (1 << 0),
-    RHBZ_READ_STR       = (1 << 1),
-    RHBZ_READ_INT       = (1 << 2),
-    RHBZ_NOMAIL_NOTIFY  = (1 << 3),
-    RHBZ_PRIVATE        = (1 << 4),
-    RHBZ_ATTACH_BINARY_FILES = (1 << 5),
+    RHBZ_MANDATORY_MEMB      = (1 << 0),
+    RHBZ_READ_STR            = (1 << 1),
+    RHBZ_READ_INT            = (1 << 2),
+    RHBZ_NOMAIL_NOTIFY       = (1 << 3),
+    RHBZ_PRIVATE             = (1 << 4),
+    RHBZ_BINARY_ATTACHMENT   = (1 << 5),
+    RHBZ_ATTACH_BINARY_FILES = (1 << 6),
 };
 
 #define IS_MANDATORY(flags) ((flags) & RHBZ_MANDATORY_MEMB)
