@@ -165,7 +165,7 @@ int main(int argc, char **argv)
         xmlrpc_value *all_bugs = rhbz_get_member("bugs", result);
         xmlrpc_DECREF(result);
 
-        int all_bugs_size = rhbz_array_size(all_bugs);
+        unsigned all_bugs_size = rhbz_array_size(all_bugs);
         if (all_bugs_size > 0)
         {
             int bug_id = rhbz_bug_id(all_bugs);
@@ -302,7 +302,7 @@ int main(int argc, char **argv)
     if (!all_bugs)
         error_msg_and_die(_("Missing mandatory member 'bugs'"));
 
-    int all_bugs_size = rhbz_array_size(all_bugs);
+    unsigned all_bugs_size = rhbz_array_size(all_bugs);
     // When someone clones bug it has same duphash, so we can find more than 1.
     // Need to be checked if component is same.
     VERB3 log("Bugzilla has %i reports with same duphash '%s'",

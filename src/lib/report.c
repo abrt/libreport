@@ -175,7 +175,7 @@ int report_problem_in_memory(problem_data_t *pd, int flags)
     dd_close(dd);
     VERB2 log("Temp problem dir: '%s'", dir_name);
 
-    if (flags & LIBREPORT_NOWAIT)
+    if (!(flags & LIBREPORT_WAIT))
         flags |= LIBREPORT_DEL_DIR;
     result = report_problem_in_dir(dir_name, flags);
 

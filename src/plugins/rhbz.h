@@ -93,7 +93,7 @@ xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax, const char *component,
 
 xmlrpc_value *rhbz_get_member(const char *member, xmlrpc_value *xml);
 
-int rhbz_array_size(xmlrpc_value *xml);
+unsigned rhbz_array_size(xmlrpc_value *xml);
 
 int rhbz_bug_id(xmlrpc_value *xml);
 

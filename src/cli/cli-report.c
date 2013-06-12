@@ -333,11 +333,10 @@ static int run_report_editor(problem_data_t *problem_data)
         return 2;
     }
 
-    fseek(fp, 0, SEEK_END);
-    unsigned long size = ftell(fp);
-    fseek(fp, 0, SEEK_SET);
-
-    char *text = (char*)xmalloc(size + 1);
+    off_t size = fstat_st_size_or_die(fileno(fp));
+    if (size > INT_MAX/4)
+           size = INT_MAX/4; /* paranoia */
+    char *text = xmalloc(size + 1);
     if (fread(text, 1, size, fp) != size)
     {
         error_msg("Can't read '%s'", filename);

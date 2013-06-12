@@ -154,11 +154,11 @@ static GList *parse_comments(xmlrpc_value *result_xml)
     if (!comments_memb)
         return NULL;
 
-    int comments_memb_size = rhbz_array_size(comments_memb);
+    unsigned comments_memb_size = rhbz_array_size(comments_memb);
 
     xmlrpc_env env;
     xmlrpc_env_init(&env);
-    for (int i = 0; i < comments_memb_size; ++i)
+    for (unsigned i = 0; i < comments_memb_size; ++i)
     {
         xmlrpc_value* item = NULL;
         xmlrpc_array_read_item(&env, comments_memb, i, &item);
@@ -312,14 +312,14 @@ xmlrpc_value *rhbz_get_member(const char *member, xmlrpc_value *xml)
  * value. So it is usually not worth checking *envP.
  * die or return size of array
  */
-int rhbz_array_size(xmlrpc_value *xml)
+unsigned rhbz_array_size(xmlrpc_value *xml)
 {
     func_entry();
 
     xmlrpc_env env;
     xmlrpc_env_init(&env);
 
-    int size = xmlrpc_array_size(&env, xml);
+    unsigned size = xmlrpc_array_size(&env, xml);
     if (env.fault_occurred)
         abrt_xmlrpc_die(&env);
 
@@ -419,12 +419,12 @@ GList *rhbz_bug_cc(xmlrpc_value* result_xml)
     if (!cc_member)
         return NULL;
 
-    int array_size = rhbz_array_size(cc_member);
+    unsigned array_size = rhbz_array_size(cc_member);
 
     VERB3 log("count members on cc %i", array_size);
     GList *cc_list = NULL;
 
-    for (int i = 0; i < array_size; ++i)
+    for (unsigned i = 0; i < array_size; ++i)
     {
         xmlrpc_value* item = NULL;
         xmlrpc_array_read_item(&env, cc_member, i, &item);
