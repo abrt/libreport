@@ -508,6 +508,36 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Fri Jun 14 2013 Jakub Filak <jfilak@redhat.com> 2.1.5-1
+- configure.ac: Fix json-c detection for json-c >= 0.11
+- make the uploader event available for all report types
+- ureport: add conversion from abrt vmcore type to ureport KERNELOOPS type
+- fixed relro flags rhbz#812283
+- tweaked gitignore
+- bugzilla: make rhbz_new_bug() more legible
+- spec: fix Fedora < 18 configuration
+- fix the syntax bug in the last commit
+- rhbz: don't pass NULL in platform argument
+- add function getting information about dump dir for uid
+- spec: add anaconda configuration files
+- anaconda: add proper configuration
+- rhbz: do not try to attach empty files
+- cmp_problem_data: use 0 for value if element is missing
+- try to delete dump dirs using abrtd in the first step
+- workflow_config_dialog: get rid of deprecated warning
+- refactor: add functions for custom application conf
+- refactore: get rid of g_hash_table* calls in user_settings
+- workflow config: use scrollbars instead of enormous window size
+- spec: don't require recordmydesktop - rhbz#959475
+- create last_occurrence at the time of the first crash
+- spec: use the correct libjson pkg name in suse
+- updated translation
+- tweak SPEC for openSUSE abrt/abrt#589
+- do not build or install BZ dependencies when --without-bugzilla
+- do not build or install any piece of BZ when --without-bugzilla
+- reporter-bugzilla: remove recently added aux. files from bz reports
+- reporter-bugzilla: support new format keyword %reporter
+
 * Mon Apr 29 2013 Jakub Filak <jfilak@redhat.com> 2.1.4-1
 - spec: added missing requires to silence the rpmdiff rhbz#881305
 - ureport: save solutions in not-reportable item
