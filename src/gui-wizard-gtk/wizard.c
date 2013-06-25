@@ -3151,7 +3151,7 @@ static void on_btn_startcast(GtkWidget *btn, gpointer user_data)
                 (char **)args,
                 NULL,
                 /*env_vec:*/ NULL,
-                /*dir:*/ NULL,
+                g_dump_dir_name,
                 /*uid (ignored):*/ 0
     );
     gtk_widget_hide(GTK_WIDGET(g_wnd_assistant));
@@ -3181,7 +3181,7 @@ static bool is_screencast_available()
                 (char **)args,
                 NULL,
                 /*env_vec:*/ NULL,
-                /*dir:*/ NULL,
+                g_dump_dir_name,
                 /*uid (ignored):*/ 0
     );
 
