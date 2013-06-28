@@ -113,7 +113,7 @@ static GtkWidget *g_top_most_window;
 
 static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback func);
 static void set_auto_event_chain(GtkButton *button, gpointer user_data);
-static void setup_and_start_event_run(const char *event_name);
+static void start_event_run(const char *event_name);
 
 typedef struct
 {
@@ -1348,7 +1348,6 @@ struct analyze_event_data
     struct run_event_state *run_state;
     char *event_name;
     GList *env_list;
-    const char *success_msg;
     GIOChannel *channel;
     struct strbuf *event_log;
     int event_log_state;
@@ -1677,7 +1676,7 @@ static void on_btn_failed_cb(GtkButton *button)
 
     clear_warnings();
     update_ls_details_checkboxes(EMERGENCY_ANALYSIS_EVENT_NAME);
-    setup_and_start_event_run(EMERGENCY_ANALYSIS_EVENT_NAME);
+    start_event_run(EMERGENCY_ANALYSIS_EVENT_NAME);
 
     /* single shot button -> hide after click */
     gtk_widget_hide(GTK_WIDGET(button));
@@ -1802,11 +1801,6 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 
         /* Hide spinner and stop btn */
         gtk_widget_hide(GTK_WIDGET(g_spinner_event_log));
-        if (retval != 0)
-            gtk_widget_show(GTK_WIDGET(g_img_process_fail));
-        else
-            gtk_widget_show(GTK_WIDGET(g_img_process_ok));
-
         gtk_widget_hide(g_btn_stop);
         /* Enable (un-gray out) navigation buttons */
         gtk_widget_set_sensitive(g_btn_close, true);
@@ -1817,9 +1811,10 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 
         if (retval != 0)
         {
+            gtk_widget_show(GTK_WIDGET(g_img_process_fail));
             /* 256 means NOT_REPORTABLE */
             if (retval == 256)
-                cancel_processing(g_lbl_event_log, evd->success_msg);
+                cancel_processing(g_lbl_event_log, _("Processing was interrupted because the problem is not reportable."));
             else
             {
                 /* We use SIGTERM to stop event processing on user's request.
@@ -1835,7 +1830,11 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
             }
         }
         else
-            gtk_label_set_text(g_lbl_event_log, evd->success_msg);
+        {
+            gtk_widget_show(GTK_WIDGET(g_img_process_ok));
+            gtk_label_set_text(g_lbl_event_log, is_processing_finished() ? _("Processing finished.")
+                                                                         : _("Processing finished, please proceed to the next step."));
+        }
 
         /*g_source_remove(evd->event_source_id);*/
         close(evd->fd);
@@ -1870,9 +1869,8 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     return TRUE; /* "please don't remove this event (yet)" */
 }
 
-static void start_event_run(const char *event_name,
-                const char *success_msg
-) {
+static void start_event_run(const char *event_name)
+{
     /* Start event asynchronously on the dump dir
      * (synchronous run would freeze GUI until completion)
      */
@@ -1927,7 +1925,6 @@ static void start_event_run(const char *event_name,
     evd->run_state = state;
     evd->event_name = xstrdup(event_name);
     evd->env_list = env_list;
-    evd->success_msg = success_msg;
     evd->event_log = strbuf_new();
     evd->fd = state->command_out_fd;
 
@@ -2262,15 +2259,6 @@ static void highlight_forbidden(void)
 
 static gint select_next_page_no(gint current_page_no, gpointer data);
 
-static void setup_and_start_event_run(const char *event_name)
-{
-    start_event_run(event_name,
-            /* this event is the last event from the chain */
-            is_processing_finished() ? _("Processing finished.")
-                                     : _("Processing finished, please proceed to the next step.")
-    );
-}
-
 static char *get_next_processed_event(GList **events_list)
 {
     if (!events_list || !*events_list)
@@ -2445,7 +2433,7 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
          && g_event_selected[0]
         ) {
             clear_warnings();
-            setup_and_start_event_run(g_event_selected);
+            start_event_run(g_event_selected);
         }
     }
 
