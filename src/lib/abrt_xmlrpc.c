@@ -206,6 +206,9 @@ xmlrpc_value *abrt_xmlrpc_call_params(xmlrpc_env *env, struct abrt_xmlrpc *ax, c
     xmlrpc_client_call2(env, ax->ax_client, ax->ax_server_info, method,
                         array, &result);
 
+    if (env->fault_occurred)
+        abrt_xmlrpc_die(env);
+
     xmlrpc_DECREF(array);
     return result;
 }
