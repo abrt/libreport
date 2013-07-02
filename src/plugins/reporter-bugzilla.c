@@ -1240,6 +1240,11 @@ int main(int argc, char **argv)
             free(bzcomment);
             free(summary);
 
+            if (new_id == -1)
+            {
+                error_msg_and_die(_("Failed to create a new bug."));
+            }
+
             log(_("Adding attachments to bug %i"), new_id);
             char new_id_str[sizeof(int)*3 + 2];
             sprintf(new_id_str, "%i", new_id);
