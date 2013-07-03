@@ -609,7 +609,7 @@ char *upload_file(const char *url, const char *filename)
     int error = (state->curl_result != 0);
     if (error)
     {
-	if (state->curl_error_msg)
+        if (state->curl_error_msg)
             error_msg("Error while uploading: '%s'", state->curl_error_msg);
         else
             /* for example, when source file can't be opened */
