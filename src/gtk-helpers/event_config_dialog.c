@@ -219,6 +219,8 @@ config_dialog_t *create_event_config_dialog_content(event_config_t *event, GtkWi
     g_object_set_data(G_OBJECT(adv_option_table), "n-rows", (gpointer)-1);
 
     GtkWidget *adv_expander = gtk_expander_new(_("Advanced"));
+    /* resize the toplevel widget containing the expander upon resizing and collapsing. */
+    gtk_expander_set_resize_toplevel(GTK_EXPANDER(adv_expander), TRUE);
     gtk_container_add(GTK_CONTAINER(adv_expander), adv_option_table);
     g_object_set_data(G_OBJECT(option_table), "advanced-options", adv_option_table);
 
@@ -298,9 +300,6 @@ config_dialog_t *create_event_config_dialog(const char *event_name, GtkWindow *p
     /* Allow resize?
      * W/o resize, e.g. upload configuration hint looks awfully
      * line wrapped.
-     * With resize, there are some somewhat not nice effects:
-     * for one, opening an expander will enlarge window,
-     * but won't contract it back when expander is closed.
      */
     gtk_window_set_resizable(GTK_WINDOW(dialog), true);
     gtk_window_set_default_size(GTK_WINDOW(dialog), 450, -1);
