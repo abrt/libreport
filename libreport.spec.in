@@ -40,12 +40,10 @@ BuildRequires: asciidoc
 BuildRequires: xmlto
 BuildRequires: newt-devel
 BuildRequires: libproxy-devel
-BuildRequires: btparser-devel
+BuildRequires: satyr-devel >= 0.4
 %if %{with bugzilla}
 BuildRequires: xmlrpc-c-devel
 %endif
-##satyr migration:
-#BuildRequires: satyr-devel
 BuildRequires: doxygen
 Requires: libreport-filesystem = %{version}-%{release}
 # required for update from old report library, otherwise we obsolete report-gtk
@@ -53,6 +51,7 @@ Requires: libreport-filesystem = %{version}-%{release}
 # end-up with: can't import report.GtkIO
 # FIXME: can be removed when F15 will EOLed, needs to stay in rhel6!
 Requires: libreport-python
+Requires: satyr >= 0.4
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
