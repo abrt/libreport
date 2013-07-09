@@ -21,39 +21,8 @@
 #include "abrt_xmlrpc.h"
 #include "rhbz.h"
 
-/* btparser compatibility - once we move to satyr, the else branch of the ifdef
- * can be removed
- */
-#ifdef USE_SATYR
-
-#include <satyr/location.h>
-#include <satyr/gdb_stacktrace.h>
-#include <satyr/gdb_thread.h>
-#include <satyr/gdb_frame.h>
-#include <satyr/strbuf.h>
-
-#else /* USE_SATYR */
-
-#include <btparser/location.h>
-#include <btparser/backtrace.h>
-#include <btparser/thread.h>
-#include <btparser/frame.h>
-#include <btparser/strbuf.h>
-
-#define sr_location btp_location
-#define sr_location_init btp_location_init
-#define sr_gdb_stacktrace btp_backtrace
-#define sr_gdb_stacktrace_parse btp_backtrace_parse
-#define sr_gdb_stacktrace_get_optimized_thread btp_backtrace_get_optimized_thread
-#define sr_gdb_stacktrace_free btp_backtrace_free
-#define sr_gdb_thread btp_thread
-#define sr_gdb_thread_append_to_str btp_thread_append_to_str
-#define sr_gdb_thread_free btp_thread_free
-#define sr_strbuf btp_strbuf
-#define sr_strbuf_new btp_strbuf_new
-#define sr_strbuf_free_nobuf btp_strbuf_free_nobuf
-
-#endif /* USE_SATYR */
+#include <satyr/stacktrace.h>
+#include <satyr/abrt.h>
 
 struct section_t {
     char *name;
@@ -365,38 +334,38 @@ int append_short_backtrace(struct strbuf *result, problem_data_t *problem_data, 
 
     if (strlen(item->content) >= max_text_size)
     {
-        struct sr_location location;
-        sr_location_init(&location);
+        char *error_msg = NULL;
+        const char *analyzer = problem_data_get_content_or_NULL(problem_data, FILENAME_ANALYZER);
+        if (!analyzer)
+            return 0;
 
-        /* sr_gdb_stacktrace_parse modifies the input parameter */
-        char *content = item->content;
-        struct sr_gdb_stacktrace *backtrace = sr_gdb_stacktrace_parse((const char **)&content, &location);
+        /* For CCpp crashes, use the GDB-produced backtrace which should be
+         * available by now. sr_abrt_type_from_analyzer returns SR_REPORT_CORE
+         * by default for CCpp crashes.
+         */
+        enum sr_report_type report_type = sr_abrt_type_from_analyzer(analyzer);
+        if (strcmp(analyzer, "CCpp") == 0)
+            report_type = SR_REPORT_GDB;
+
+        struct sr_stacktrace *backtrace = sr_stacktrace_parse(report_type,
+                item->content, &error_msg);
 
         if (!backtrace)
         {
-            log(_("Can't parse backtrace"));
+            log(_("Can't parse backtrace: %s"), error_msg);
+            free(error_msg);
             return 0;
         }
 
         /* Get optimized thread stack trace for 10 top most frames */
-        struct sr_gdb_thread *thread = sr_gdb_stacktrace_get_optimized_thread(backtrace, 10);
+        truncated = sr_stacktrace_to_short_text(backtrace, 10);
+        sr_stacktrace_free(backtrace);
 
-        sr_gdb_stacktrace_free(backtrace);
-
-        if (!thread)
+        if (!truncated)
         {
-            log(_("Can't find crash thread"));
+            log(_("Can't generate stacktrace description (no crash thread?)"));
             return 0;
         }
-
-        /* Cannot be NULL, it dies on memory error */
-        struct sr_strbuf *bt = sr_strbuf_new();
-
-        sr_gdb_thread_append_to_str(thread, bt, true);
-
-        sr_gdb_thread_free(thread);
-
-        truncated = sr_strbuf_free_nobuf(bt);
     }
 
     append_text(result,
