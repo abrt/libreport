@@ -39,10 +39,13 @@ dist_reportpluginsconf_DATA = $(reporters_plugin_conf) \
     mailx.conf
 
 eventsdir = $(EVENTS_DIR)
+eventsconfdir = $(EVENTS_CONF_DIR)
 
 reporters_events =
+reporters_events_conf =
 if BUILD_BUGZILLA
-reporters_events += report_Bugzilla.xml report_Bugzilla.conf
+reporters_events += report_Bugzilla.xml
+reporters_events_conf += report_Bugzilla.conf
 endif
 
 if BUILD_UREPORT
@@ -50,7 +53,6 @@ reporters_events += report_uReport.xml
 endif
 
 dist_events_DATA = $(reporters_events) \
-    report_Logger.conf \
     report_Logger.xml \
     report_Mailx.xml \
     report_RHTSupport.xml \
@@ -58,11 +60,14 @@ dist_events_DATA = $(reporters_events) \
     report_Uploader.xml \
     report_EmergencyAnalysis.xml
 
+dist_eventsconf_DATA = $(reporters_events_conf) \
+    report_Logger.conf
+
 @INTLTOOL_XML_RULE@
 
-eventsconfdir = $(EVENTS_CONF_DIR)
+eventsdefdir = $(EVENTS_DEFINITION_DIR)
 
-dist_eventsconf_DATA = \
+dist_eventsdef_DATA = \
     mailx_event.conf \
     print_event.conf \
     rhtsupport_event.conf \
@@ -71,7 +76,7 @@ dist_eventsconf_DATA = \
 
 reporters_extra_dist =
 if BUILD_BUGZILLA
-dist_eventsconf_DATA += bugzilla_event.conf bugzilla_anaconda_event.conf
+dist_eventsdef_DATA += bugzilla_event.conf bugzilla_anaconda_event.conf
 reporters_extra_dist += report_Bugzilla.xml.in report_Bugzilla.conf
 endif
 

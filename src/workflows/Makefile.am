@@ -15,14 +15,14 @@ dist_workflows_DATA += \
     workflow_AnacondaUpload.xml
 endif
 
-workflowsconfdir = $(WORKFLOWS_CONF_DIR)
+workflowsdefdir = $(WORKFLOWS_DEFINITION_DIR)
 
-dist_workflowsconf_DATA =\
+dist_workflowsdef_DATA =\
     report_fedora.conf \
     report_rhel.conf
 
 if BUILD_BUGZILLA
-dist_workflowsconf_DATA += \
+dist_workflowsdef_DATA += \
     anaconda_event.conf
 endif
 

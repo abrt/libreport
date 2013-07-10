@@ -310,6 +310,8 @@ find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 mkdir -p $RPM_BUILD_ROOT/%{_initrddir}
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/%{name}/events.d/
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/%{name}/events/
+mkdir -p $RPM_BUILD_ROOT/%{_datadir}/%{name}/events/
+mkdir -p $RPM_BUILD_ROOT/%{_datadir}/%{name}/workflows/
 
 # After everything is installed, remove info dir
 rm -f $RPM_BUILD_ROOT/%{_infodir}/dir
@@ -353,6 +355,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %dir %{_sysconfdir}/%{name}/
 %dir %{_sysconfdir}/%{name}/events.d/
 %dir %{_sysconfdir}/%{name}/events/
+%dir %{_datadir}/%{name}/events/
+%dir %{_datadir}/%{name}/workflows/
 %dir %{_sysconfdir}/%{name}/plugins/
 
 %files devel
@@ -407,7 +411,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libexecdir}/abrt-screencast
 %{_libdir}/libreport-gtk.so.*
 %config(noreplace) %{_sysconfdir}/libreport/events.d/emergencyanalysis_event.conf
-%config(noreplace) %{_sysconfdir}/libreport/events/report_EmergencyAnalysis.xml
+%{_datadir}/%{name}/events/report_EmergencyAnalysis.xml
 
 %files gtk-devel
 %defattr(-,root,root,-)
@@ -417,14 +421,14 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files plugin-kerneloops
 %defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/libreport/events/report_Kerneloops.xml
+%{_datadir}/%{name}/events/report_Kerneloops.xml
 %{_mandir}/man*/reporter-kerneloops.*
 %{_bindir}/reporter-kerneloops
 
 %files plugin-logger
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/events/report_Logger.conf
-%config(noreplace) %{_sysconfdir}/libreport/events/report_Logger.xml
+%{_datadir}/%{name}/events/report_Logger.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/print_event.conf
 %{_bindir}/reporter-print
 %{_mandir}/man*/reporter-print.*
@@ -432,7 +436,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files plugin-mailx
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/plugins/mailx.conf
-%config(noreplace) %{_sysconfdir}/libreport/events/report_Mailx.xml
+%{_datadir}/%{name}/events/report_Mailx.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/mailx_event.conf
 %{_mandir}/man*/reporter-mailx.*
 %{_bindir}/reporter-mailx
@@ -441,7 +445,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %{_bindir}/reporter-ureport
 #%{_mandir}/man1/reporter-ureport.1.gz
-%config(noreplace) %{_sysconfdir}/libreport/events/report_uReport.xml
+%{_datadir}/%{name}/events/report_uReport.xml
 
 %if %{with bugzilla}
 %files plugin-bugzilla
@@ -451,7 +455,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla_formatdup.conf
 %config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla_format_libreport.conf
 %config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla_format_kernel.conf
-%config(noreplace) %{_sysconfdir}/libreport/events/report_Bugzilla.xml
+%{_datadir}/%{name}/events/report_Bugzilla.xml
 %config(noreplace) %{_sysconfdir}/libreport/events/report_Bugzilla.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/bugzilla_event.conf
 # FIXME: remove with the old gui
@@ -462,7 +466,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files plugin-rhtsupport
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/plugins/rhtsupport.conf
-%config(noreplace) %{_sysconfdir}/libreport/events/report_RHTSupport.xml
+%{_datadir}/%{name}/events/report_RHTSupport.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/rhtsupport_event.conf
 %{_mandir}/man1/reporter-rhtsupport.1.gz
 %{_bindir}/reporter-rhtsupport
@@ -478,29 +482,29 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %{_mandir}/man*/reporter-upload.*
 %{_bindir}/reporter-upload
-%config(noreplace) %{_sysconfdir}/libreport/events/report_Uploader.xml
+%{_datadir}/%{name}/events/report_Uploader.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/uploader_event.conf
-%config(noreplace) %{_sysconfdir}/libreport/workflows/workflow_Upload.xml
+%{_datadir}/%{name}/workflows/workflow_Upload.xml
 
 %files fedora
 %defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/libreport/workflows/workflow_Fedora.xml
+%{_datadir}/%{name}/workflows/workflow_Fedora.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_fedora.conf
 
 %files rhel
 %defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/libreport/workflows/workflow_RHELCCpp.xml
-%config(noreplace) %{_sysconfdir}/libreport/workflows/workflow_RHELKerneloops.xml
-%config(noreplace) %{_sysconfdir}/libreport/workflows/workflow_RHELPython.xml
-%config(noreplace) %{_sysconfdir}/libreport/workflows/workflow_RHELvmcore.xml
-%config(noreplace) %{_sysconfdir}/libreport/workflows/workflow_RHELxorg.xml
+%{_datadir}/%{name}/workflows/workflow_RHELCCpp.xml
+%{_datadir}/%{name}/workflows/workflow_RHELKerneloops.xml
+%{_datadir}/%{name}/workflows/workflow_RHELPython.xml
+%{_datadir}/%{name}/workflows/workflow_RHELvmcore.xml
+%{_datadir}/%{name}/workflows/workflow_RHELxorg.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_rhel.conf
 
 %if %{with bugzilla}
 %files anaconda
 %defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/libreport/workflows/workflow_AnacondaFedora.xml
-%config(noreplace) %{_sysconfdir}/libreport/workflows/workflow_AnacondaUpload.xml
+%{_datadir}/%{name}/workflows/workflow_AnacondaFedora.xml
+%{_datadir}/%{name}/workflows/workflow_AnacondaUpload.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/anaconda_event.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/bugzilla_anaconda_event.conf
 %config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla_format_anaconda.conf
