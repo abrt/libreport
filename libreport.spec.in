@@ -309,14 +309,14 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files plugin-kerneloops
 %defattr(-,root,root,-)
-%{_sysconfdir}/libreport/events/report_Kerneloops.xml
+%config %{_sysconfdir}/libreport/events/report_Kerneloops.xml
 %{_mandir}/man*/reporter-kerneloops.*
 %{_bindir}/reporter-kerneloops
 
 %files plugin-logger
 %defattr(-,root,root,-)
-%{_sysconfdir}/libreport/events/report_Logger.conf
-%{_sysconfdir}/libreport/events/report_Logger.xml
+%config(noreplace) %{_sysconfdir}/libreport/events/report_Logger.conf
+%config %{_sysconfdir}/libreport/events/report_Logger.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/print_event.conf
 %{_bindir}/reporter-print
 %{_mandir}/man*/reporter-print.*
@@ -324,7 +324,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files plugin-mailx
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/plugins/mailx.conf
-%{_sysconfdir}/libreport/events/report_Mailx.xml
+%config %{_sysconfdir}/libreport/events/report_Mailx.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/mailx_event.conf
 %{_mandir}/man*/reporter-mailx.*
 %{_bindir}/reporter-mailx
@@ -332,7 +332,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files plugin-bugzilla
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla.conf
-%{_sysconfdir}/libreport/events/report_Bugzilla.xml
+%config %{_sysconfdir}/libreport/events/report_Bugzilla.xml
 %config(noreplace) %{_sysconfdir}/libreport/events/report_Bugzilla.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/bugzilla_event.conf
 # FIXME: remove with the old gui
@@ -342,8 +342,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files plugin-rhtsupport
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/plugins/rhtsupport.conf
-%{_sysconfdir}/libreport/events/report_RHTSupport.xml
-%{_sysconfdir}/libreport/events/report_RHTSupportAttach.xml
+%config %{_sysconfdir}/libreport/events/report_RHTSupport.xml
+%config %{_sysconfdir}/libreport/events/report_RHTSupportAttach.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/rhtsupport_event.conf
 %{_mandir}/man1/reporter-rhtsupport.1.gz
 %{_bindir}/reporter-rhtsupport
@@ -357,8 +357,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %{_mandir}/man*/reporter-upload.*
 %{_bindir}/reporter-upload
-%{_sysconfdir}/libreport/events/report_Tarball.xml
-%{_sysconfdir}/libreport/events/report_Uploader.xml
+%config %{_sysconfdir}/libreport/events/report_Tarball.xml
+%config %{_sysconfdir}/libreport/events/report_Uploader.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/tarball_event.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/uploader_event.conf
 
