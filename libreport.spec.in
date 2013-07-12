@@ -415,6 +415,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files newt
 %defattr(-,root,root,-)
 %{_bindir}/report-newt
+%{_mandir}/man1/report-newt.1.gz
 
 %files gtk
 %defattr(-,root,root,-)
@@ -423,6 +424,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libdir}/libreport-gtk.so.*
 %config(noreplace) %{_sysconfdir}/libreport/events.d/emergencyanalysis_event.conf
 %{_datadir}/%{name}/events/report_EmergencyAnalysis.xml
+%{_mandir}/man1/report-gtk.1.gz
 
 %files gtk-devel
 %defattr(-,root,root,-)
@@ -455,7 +457,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files plugin-ureport
 %defattr(-,root,root,-)
 %{_bindir}/reporter-ureport
-#%{_mandir}/man1/reporter-ureport.1.gz
+%{_mandir}/man1/reporter-ureport.1.gz
 %{_datadir}/%{name}/events/report_uReport.xml
 
 %if %{with bugzilla}
