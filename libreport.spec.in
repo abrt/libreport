@@ -76,7 +76,7 @@ Development libraries and headers for libreport
 
 %package web
 Summary: Library providing network API for libreport
-Group: Libraries
+Group: System Environment/Libraries
 Requires: libreport = %{version}-%{release}
 
 %description web
@@ -253,6 +253,7 @@ Plugin to report bugs into anonymous FTP site associated with ticketing system.
 %package fedora
 Summary: Default configuration for reporting bugs via Fedora infrastructure
 Group: Applications/File
+Requires: %{name} = %{version}-%{release}
 
 %description fedora
 Default configuration for reporting bugs via Fedora infrastructure
@@ -262,6 +263,7 @@ install this package and you're done.
 %package rhel
 Summary: Default configuration for reporting bugs via Red Hat infrastructure
 Group: Applications/File
+Requires: %{name} = %{version}-%{release}
 
 %description rhel
 Default configuration for reporting bugs via Red Hat infrastructure
@@ -272,8 +274,9 @@ install this package and you're done.
 %package anaconda
 Summary: Default configuration for reporting anaconda bugs
 Group: Applications/File
-Requires: libreport-plugin-reportuploader
-Requires: libreport-plugin-bugzilla
+Requires: %{name} = %{version}-%{release}
+Requires: libreport-plugin-reportuploader = %{version}-%{release}
+Requires: libreport-plugin-bugzilla = %{version}-%{release}
 
 %description anaconda
 Default configuration for reporting Anaconda problems using Fedora
@@ -341,6 +344,13 @@ fi
 %posttrans gtk
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
+
+%post web -p /sbin/ldconfig
+
+
+%postun web -p /sbin/ldconfig
+
+
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %doc README COPYING
@@ -384,10 +394,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files web
 %defattr(-,root,root,-)
-%{_libdir}/libreport-web.so*
+%{_libdir}/libreport-web.so.*
 
 %files web-devel
 %defattr(-,root,root,-)
+%{_libdir}/libreport-web.so
 %{_includedir}/libreport/libreport_curl.h
 %{_libdir}/pkgconfig/libreport-web.pc
 
