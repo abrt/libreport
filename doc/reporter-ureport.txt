@@ -1,0 +1,47 @@
+reporter-ureport(1)
+=================
+
+NAME
+----
+reporter-ureport - Reports ABRT problems in format of micro report
+
+SYNOPSIS
+--------
+'reporter-ureport' [-v] [-u URL] [-k] [-a bthash -b bug-id] [-r] [-d DIR]
+
+DESCRIPTION
+-----------
+The tool reads problem directory DIR, assembles an micro report from the loaded
+problem data and sends the micro report to uReport server for updating
+statistics and fast analysis. The results of the analysis are stored in problem
+data in form of problems elements. 'reporter-ureport' updates 'reported_to'
+element with links to duplicates and saves solutions in 'not-reportable' element.
+
+
+OPTIONS
+-------
+-a, --attach BTHASH::
+   bthash of uReport to attach
+
+-b, --bug-id NUM::
+   Attach RHBZ bug (requires -a)
+
+-d DIR::
+   Path to problem directory.
+
+-k,--insecure::
+   Allow insecure connection to ureport server
+
+-r, --attach-reported-to::
+   Attach contents of reported_to
+
+-v::
+   Be more verbose. Can be given multiple times.
+
+-u, --url URL::
+   Specify server URL
+
+
+AUTHORS
+-------
+* ABRT team

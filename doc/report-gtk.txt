@@ -1,0 +1,44 @@
+report-gtk(1)
+===========
+
+NAME
+----
+report-gtk - GUI tool to analyze and report ABRT problems
+
+SYNOPSIS
+--------
+'report-gtk' [-vpdx] [-e EVENT] [-g GUI_FILE] PROBLEM_DIR
+
+DESCRIPTION
+-----------
+'report-gtk' is a graphical tool that reports application crashes and other
+problems caught by abrtd daemon, or created by other programs using libreport.
+report-gtk works with a single problem saved in specified PROBLEM_DIR.
+In the expert mode it enables access to and manipulation of problem data.
+
+OPTIONS
+-------
+-d, --delete::
+    Remove PROBLEM_DIR after reporting
+
+-e EVENT::
+    Run only theset EVENTs on PROBLEM_DIR
+
+-g FILE::
+    Alternate GUI file
+
+-p::
+    Add program names to log
+
+-v, --verbose::
+    Be verbose
+
+-V, --version::
+    Display version and exit
+
+-x, --expert::
+    Enabled advanced features
+
+AUTHORS
+-------
+* ABRT team
