@@ -45,6 +45,35 @@ int main(void)
     }
     osinfo = new_map_string();
     {
+        /* Test for standard valid os-release*/
+        parse_osinfo(
+"NAME=Fedora\n"
+"VERSION=\"20 (Rawhide)\"\n"
+"ID=fedora\n"
+"VERSION_ID=20\n"
+"PRETTY_NAME=\"Fedora 20 (Rawhide)\"\n"
+"ANSI_COLOR=\"0;34\"\n"
+"CPE_NAME=\"cpe:/o:fedoraproject:fedora:20\"\n"
+"REDHAT_BUGZILLA_PRODUCT=\"Fedora\"\n"
+"REDHAT_BUGZILLA_PRODUCT_VERSION=Rawhide\n"
+"REDHAT_SUPPORT_PRODUCT=\"Fedora\"\n"
+"REDHAT_SUPPORT_PRODUCT_VERSION=Rawhide\n", osinfo);
+        assert(0 == strcmp("Fedora", get_map_string_item_or_NULL(osinfo, OSINFO_NAME)));
+        assert(0 == strcmp("20 (Rawhide)", get_map_string_item_or_NULL(osinfo, "VERSION")));
+        assert(0 == strcmp("fedora", get_map_string_item_or_NULL(osinfo, OSINFO_ID)));
+        assert(0 == strcmp("20", get_map_string_item_or_NULL(osinfo, OSINFO_VERSION_ID)));
+        assert(0 == strcmp("Fedora 20 (Rawhide)", get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME)));
+        assert(0 == strcmp("0;34", get_map_string_item_or_NULL(osinfo, "ANSI_COLOR")));
+        assert(0 == strcmp("cpe:/o:fedoraproject:fedora:20", get_map_string_item_or_NULL(osinfo, "CPE_NAME")));
+        assert(0 == strcmp("Fedora", get_map_string_item_or_NULL(osinfo, "REDHAT_BUGZILLA_PRODUCT")));
+        assert(0 == strcmp("Rawhide", get_map_string_item_or_NULL(osinfo, "REDHAT_BUGZILLA_PRODUCT_VERSION")));
+        assert(0 == strcmp("Fedora", get_map_string_item_or_NULL(osinfo, "REDHAT_SUPPORT_PRODUCT")));
+        assert(0 == strcmp("Rawhide", get_map_string_item_or_NULL(osinfo, "REDHAT_SUPPORT_PRODUCT_VERSION")));
+        free_map_string(osinfo);
+        osinfo = NULL;
+    }
+    osinfo = new_map_string();
+    {
         /* Test for standard os-release with few errors */
         parse_osinfo(
 "# Very useful comment\n"
@@ -130,6 +159,19 @@ int main(void)
          "ANSI_COLOR=\"0;34\"\n"
          "CPE_NAME=\"cpe:/o:fedoraproject:fedora:18\"\n"
          ,"Fedora", "19");
+
+    test("NAME=Fedora\n"
+         "VERSION=\"20 (Rawhide)\"\n"
+         "ID=fedora\n"
+         "VERSION_ID=20\n"
+         "PRETTY_NAME=\"Fedora 20 (Rawhide)\"\n"
+         "ANSI_COLOR=\"0;34\"\n"
+         "CPE_NAME=\"cpe:/o:fedoraproject:fedora:20\"\n"
+         "REDHAT_BUGZILLA_PRODUCT=\"Fedora\"\n"
+         "REDHAT_BUGZILLA_PRODUCT_VERSION=Rawhide\n"
+         "REDHAT_SUPPORT_PRODUCT=\"Fedora\"\n"
+         "REDHAT_SUPPORT_PRODUCT_VERSION=Rawhide\n"
+         ,"Fedora", "Rawhide");
 
     test("NAME=\"Red Hat Enterprise Linux Client\"\n"
          "VERSION=\"7.0 Beta (Maipo)\"\n"
@@ -227,6 +269,19 @@ int main(void)
          "ANSI_COLOR=\"0;34\"\n"
          "CPE_NAME=\"cpe:/o:fedoraproject:fedora:18\"\n"
          ,"Fedora", "19");
+
+    test("NAME=Fedora\n"
+         "VERSION=\"20 (Rawhide)\"\n"
+         "ID=fedora\n"
+         "VERSION_ID=20\n"
+         "PRETTY_NAME=\"Fedora 20 (Rawhide)\"\n"
+         "ANSI_COLOR=\"0;34\"\n"
+         "CPE_NAME=\"cpe:/o:fedoraproject:fedora:20\"\n"
+         "REDHAT_BUGZILLA_PRODUCT=\"Fedora\"\n"
+         "REDHAT_BUGZILLA_PRODUCT_VERSION=Rawhide\n"
+         "REDHAT_SUPPORT_PRODUCT=\"Fedora\"\n"
+         "REDHAT_SUPPORT_PRODUCT_VERSION=Rawhide\n"
+         ,"Fedora", "Rawhide");
 
     test("NAME=\"Red Hat Enterprise Linux Client\"\n"
          "VERSION=\"7.0 Beta (Maipo)\"\n"
