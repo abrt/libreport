@@ -145,6 +145,25 @@ int main(int argc, char **argv)
 
     load_workflow_config_data(WORKFLOWS_DIR);
 
+    /* list of workflows applicable to the currently processed problem */
+    GHashTable *possible_workflows = load_workflow_config_data_from_list(
+                list_possible_events_glist(g_dump_dir_name, "workflow"),
+                WORKFLOWS_DIR);
+
+    /* if we have only 1 workflow, we can use the events from it as default */
+    if (!expert_mode && g_auto_event_list == NULL && g_hash_table_size(possible_workflows) == 1)
+    {
+        GHashTableIter iter;
+        gpointer key, value;
+
+        g_hash_table_iter_init(&iter, possible_workflows);
+        if (g_hash_table_iter_next(&iter, &key, &value))
+        {
+            VERB1 log("autoselected workflow: '%s'", (char *)key);
+            g_auto_event_list = wf_get_event_names((workflow_t *)value);
+        }
+    }
+
     problem_data_reload_from_dump_dir();
 
     create_assistant(expert_mode);
