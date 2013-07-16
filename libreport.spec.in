@@ -229,6 +229,7 @@ Requires: libreport-web = %{version}-%{release}
 %description plugin-reportuploader
 Plugin to report bugs into anonymous FTP site associated with ticketing system.
 
+%if 0%{?fedora}
 %package fedora
 Summary: Default configuration for reporting bugs via Fedora infrastructure
 Group: Applications/File
@@ -238,7 +239,9 @@ Requires: %{name} = %{version}-%{release}
 Default configuration for reporting bugs via Fedora infrastructure
 used to easy configure the reporting process for Fedora sytems. Just
 install this package and you're done.
+%endif
 
+%if 0%{?rhel}
 %package rhel
 Summary: Default configuration for reporting bugs via Red Hat infrastructure
 Group: Applications/File
@@ -248,6 +251,7 @@ Requires: %{name} = %{version}-%{release}
 Default configuration for reporting bugs via Red Hat infrastructure
 used to easy configure the reporting process for Red Hat sytems. Just
 install this package and you're done.
+%endif
 
 %if %{with bugzilla}
 %package anaconda
@@ -297,6 +301,22 @@ mkdir -p $RPM_BUILD_ROOT/%{_datadir}/%{name}/workflows/
 
 # After everything is installed, remove info dir
 rm -f $RPM_BUILD_ROOT/%{_infodir}/dir
+
+# Remove unwanted Fedora specific workflow configuration files
+%if 0%{!?fedora:1}
+rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_Fedora.xml
+rm -f $RPM_BUILD_ROOT/%{_sysconfdir}/libreport/workflows.d/report_fedora.conf
+%endif
+
+# Remove unwanted RHEL specific workflow configuration files
+%if 0%{!?rhel:1}
+rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELCCpp.xml
+rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELKerneloops.xml
+rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELPython.xml
+rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELvmcore.xml
+rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELxorg.xml
+rm -f $RPM_BUILD_ROOT/%{_sysconfdir}/libreport/workflows.d/report_rhel.conf
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -478,11 +498,14 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/events.d/uploader_event.conf
 %{_datadir}/%{name}/workflows/workflow_Upload.xml
 
+%if 0%{?fedora}
 %files fedora
 %defattr(-,root,root,-)
 %{_datadir}/%{name}/workflows/workflow_Fedora.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_fedora.conf
+%endif
 
+%if 0%{?rhel}
 %files rhel
 %defattr(-,root,root,-)
 %{_datadir}/%{name}/workflows/workflow_RHELCCpp.xml
@@ -491,6 +514,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/%{name}/workflows/workflow_RHELvmcore.xml
 %{_datadir}/%{name}/workflows/workflow_RHELxorg.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_rhel.conf
+%endif
 
 %if %{with bugzilla}
 %files anaconda
