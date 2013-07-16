@@ -20,7 +20,7 @@ rpm:
 	./gen-version
 	autoconf --force
 	$(MAKE) dist
-	rpmbuild $(RPM_DIRS) -ba libreport.spec
+	rpmbuild $(RPM_DIRS) $(RPM_FLAGS) -ba libreport.spec
 
 srpm:
 	./gen-version
