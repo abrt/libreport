@@ -1,7 +1,11 @@
 workflowsdir = $(WORKFLOWS_DIR)
 
 dist_workflows_DATA = \
-    workflow_Fedora.xml \
+    workflow_FedoraCCpp.xml \
+    workflow_FedoraKerneloops.xml \
+    workflow_FedoraPython.xml \
+    workflow_FedoraVmcore.xml \
+    workflow_FedoraXorg.xml \
     workflow_Upload.xml \
     workflow_RHELCCpp.xml \
     workflow_RHELKerneloops.xml \
@@ -29,7 +33,11 @@ endif
 @INTLTOOL_XML_RULE@
 
 EXTRA_DIST = \
-    workflow_Fedora.xml.in \
+    workflow_FedoraCCpp.xml.in \
+    workflow_FedoraKerneloops.xml.in \
+    workflow_FedoraPython.xml.in \
+    workflow_FedoraVmcore.xml.in \
+    workflow_FedoraXorg.xml.in \
     workflow_Upload.xml.in \
     workflow_RHELCCpp.xml.in \
     workflow_RHELKerneloops.xml.in \
