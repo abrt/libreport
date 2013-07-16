@@ -304,7 +304,11 @@ rm -f $RPM_BUILD_ROOT/%{_infodir}/dir
 
 # Remove unwanted Fedora specific workflow configuration files
 %if 0%{!?fedora:1}
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_Fedora.xml
+rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraCCpp.xml
+rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraKerneloops.xml
+rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraPython.xml
+rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraVmcore.xml
+rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraXorg.xml
 rm -f $RPM_BUILD_ROOT/%{_sysconfdir}/libreport/workflows.d/report_fedora.conf
 %endif
 
@@ -501,7 +505,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %if 0%{?fedora}
 %files fedora
 %defattr(-,root,root,-)
-%{_datadir}/%{name}/workflows/workflow_Fedora.xml
+%{_datadir}/%{name}/workflows/workflow_FedoraCCpp.xml
+%{_datadir}/%{name}/workflows/workflow_FedoraKerneloops.xml
+%{_datadir}/%{name}/workflows/workflow_FedoraPython.xml
+%{_datadir}/%{name}/workflows/workflow_FedoraVmcore.xml
+%{_datadir}/%{name}/workflows/workflow_FedoraXorg.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_fedora.conf
 %endif
 
