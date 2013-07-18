@@ -595,7 +595,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 - do not build or install BZ dependencies when --without-bugzilla
 - do not build or install any piece of BZ when --without-bugzilla
 - reporter-bugzilla: remove recently added aux. files from bz reports
-- reporter-bugzilla: support new format keyword %reporter
+- reporter-bugzilla: support new format keyword %%reporter
 
 * Mon Apr 29 2013 Jakub Filak <jfilak@redhat.com> 2.1.4-1
 - spec: added missing requires to silence the rpmdiff rhbz#881305
@@ -662,7 +662,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 * Tue Mar 19 2013 Jakub Filak <jfilak@redhat.com> 2.1.2-1
 - always treat os-release as textual related to rhbz#922433
-- is_text_file(): bump allowable non-ASCII chars from 2% to 10%. Closes rhbz#922433
+- is_text_file(): bump allowable non-ASCII chars from 2%% to 10%%. Closes rhbz#922433
 - report-gtk: don't clear warnings after reporting is finished
 - report-gtk: show tabs only in verbose expert mode
 - ureport: improve messages. Closes #579
@@ -699,7 +699,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 - make [p]error_msg[_and_die] more fork-in-multithreaded-app safe
 - Suppress "initialization discards 'const' qualifier" build failure
 - Make forking code paths more robust.
-- curl_debug: fix use of "%.*s" (need to pass an int, not size_t)
+- curl_debug: fix use of "%%.*s" (need to pass an int, not size_t)
 - report-gtk: gtk_scrolled_window_add_with_viewport has been deprecated since gtk-3.7.8
 - curl_debug: prettify debug output
 - report-gtk: gtk_scrolled_window_add_with_viewport has been deprecated
@@ -758,7 +758,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 - don't require recordmydesktop on RHEL rhbz#891512
 - fixed the relro flags rhbz#812283
 - bugzilla_format_kernel.conf: Attach dmesg element. Closes rhbz#826058
-- bugzilla_format_kernel.conf: fix %summary
+- bugzilla_format_kernel.conf: fix %%summary
 - Make get_dirsize_find_largest_dir less talkative.
 - Minor fixes: robustify start_command(), fix style, fix English in msgs
 - Fix typo, remove c-format from a not c-formatted message
@@ -770,9 +770,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 - bugzilla_format[_libreport].conf: include uid. Closes trac#865
 - bugzilla_format{,_libreport}.conf: exclude many more one-liners
 - Create bugzilla_format_{libreport,kernel}.conf and install them.
-- reporter-bz: implement %summary in -F FMTFILE
+- reporter-bz: implement %%summary in -F FMTFILE
 - reporter-bz: make binary attachments have "application/octet-stream" MIME-type
-- reporter-bz: implement %attach in -F FMTFILE
+- reporter-bz: implement %%attach in -F FMTFILE
 - reporter-bz: reinstate "short backtrace" generation
 - make make_description_item_multiline() static
 - reporter-bz: add -F FMTFILE option
