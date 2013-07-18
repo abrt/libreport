@@ -1,0 +1,38 @@
+forbidden_words.conf(5)
+=======================
+
+NAME
+----
+forbidden_words.conf - configuration file for libreport.
+
+DESCRIPTION
+-----------
+This configuration file specifies which words are highlighted in User Interface
+during the process of reporting a problem for the purpose of warning a user and
+getting his attention before he publish security sensitive data.
+
+The configuration format is one line per forbidden word.
+
+Users can provide own file with the list of forbidden words which will be
+appended to the list of forbidden words loaded from
+/etc/libreport/forbidden_words.conf
+
+EXAMPLES
+--------
+System configuration:
+
+/etc/libreport/forbidden_words.conf
+
+    password
+    login
+    mastercard
+
+User configuration:
+
+$XDG_CONFIG_HOME/abrt/settings/forbidden_words.conf
+
+    usersecretpassword
+
+AUTHOR
+------
+* ABRT team

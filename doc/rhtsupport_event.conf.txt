@@ -1,0 +1,42 @@
+rhtsupport_event.conf(5)
+=======================
+
+NAME
+----
+rhtsupport_event.conf - configuration file for libreport.
+
+DESCRIPTION
+-----------
+This configuration file provides definitions for events which use
+'reporter-rhtsupport'.
+
+By default the file contains definition for single 'report_RHTSupport' event
+applicable for all problem types.
+
+report_RHTSupport event configuration file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The configuration for report_RHTSupport event is read from /etc/libreport/events/report_RHTSupport.conf file if exists.
+
+The configuration file contains values for options defined in /usr/share/libreport/events/report_RHTSupport.xml
+
+Configuration file lines should have 'PARAM = VALUE' format. The parameters are:
+
+'RHTSupport_URL'::
+	Address of the Red Hat support portal
+
+'RHTSupport_Login'::
+	Red Hat customer user name
+
+'RHTSupport_Password'::
+	Red Hat customer user password
+
+'RHTSupport_SSLVerify'::
+	Use yes/true/on/1 to verify server's SSL certificate. (default: yes)
+
+SEE ALSO
+--------
+report_event.conf(5), reporter-rhtsupport(1)
+
+AUTHOR
+------
+* ABRT team

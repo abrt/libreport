@@ -1,0 +1,42 @@
+mailx_event.conf(5)
+=====================
+
+NAME
+----
+mailx_event.conf - configuration file for libreport.
+
+DESCRIPTION
+-----------
+This configuration file provides definitions for events which uses
+'reporter-mailx'.
+
+By default the file contains definition for 'report_Mailx', 'notify' and
+'notify-dup' events for all problem types.
+
+report_Mailx event configuration file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The configuration for report_Mailx event is read from /etc/libreport/events/report_Mailx.conf file if exists.
+
+The configuration file contains values for options defined in /usr/share/libreport/events/report_Mailx.xml
+
+Configuration file lines should have 'PARAM = VALUE' format. The parameters are:
+
+'Mailx_Subject'::
+   Message subject
+
+'Mailx_EmailFrom'::
+   Sender's email
+
+'Mailx_EmailTo'::
+   Recipient's email
+
+'Mailx_SendBinaryData'::
+   Send binary files like coredump
+
+SEE ALSO
+--------
+report_event.conf(5), reporter-mailx(1)
+
+AUTHOR
+------
+* ABRT team

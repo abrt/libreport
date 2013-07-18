@@ -1,0 +1,45 @@
+report_Bugzilla.conf(5)
+=====================
+
+NAME
+----
+report_Bugzilla.conf - libreport's configuration file for 'report_Bugzilla' events.
+
+DESCRIPTION
+-----------
+This configuration file contains values for options defined in
+/usr/share/libreport/events/report_Bugzilla.xml
+
+Configuration file lines should have 'PARAM = VALUE' format. The parameters are:
+
+'Bugzilla_Login'::
+	Login to Bugzilla account.
+
+'Bugzilla_Password'::
+	Password to Bugzilla account.
+
+'Bugzilla_BugzillaURL'::
+	Bugzilla HTTP(S) address. (default: https://bugzilla.redhat.com)
+
+'Bugzilla_SSLVerify'::
+	Use yes/true/on/1 to verify server's SSL certificate. (default: yes)
+
+'Bugzilla_Product'::
+	Product bug field value. Useful if you needed different product than specified in /etc/os-release
+
+'Bugzilla_ProductVersion'::
+	Version bug field value. Useful if you needed different product version than specified in /etc/os-release
+
+'http_proxy'::
+	the proxy server to use for HTTP
+
+'HTTPS_PROXY'::
+	the proxy server to use for HTTPS
+
+SEE ALSO
+--------
+report_event.conf(5), reporter-bugzilla(1), bugzilla_event.conf(5)
+
+AUTHOR
+------
+* ABRT team

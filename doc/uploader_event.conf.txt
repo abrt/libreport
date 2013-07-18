@@ -1,0 +1,42 @@
+uploader_event.conf(5)
+=====================
+
+NAME
+----
+uploader_event.conf - configuration file for libreport.
+
+DESCRIPTION
+-----------
+This configuration file provides definitions for events which use
+'reporter-uploader'.
+
+By default the file contains definition for single 'report_Uploader' event
+applicable for all problem types.
+
+report_Uploader event configuration file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The configuration for report_Uploader event is read from /etc/libreport/events/report_Uploader.conf file if exists.
+
+The configuration file contains values for options defined in /usr/share/libreport/events/report_Uploader.xml
+
+Configuration file lines should have 'PARAM = VALUE' format. The parameters are:
+
+'Upload_URL'::
+	Configured upload URL
+
+'http_proxy'::
+	the proxy server to use for HTTP
+
+'HTTPS_PROXY'::
+	the proxy server to use for HTTPS
+
+'FTP_PROXY'::
+	the proxy server to use for FTP
+
+SEE ALSO
+--------
+report_event.conf(5), reporter-uploader(1)
+
+AUTHOR
+------
+* ABRT team
