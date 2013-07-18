@@ -311,6 +311,7 @@ rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraVmcore.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraXorg.xml
 rm -f $RPM_BUILD_ROOT/%{_sysconfdir}/libreport/workflows.d/report_fedora.conf
 rm -f $RPM_BUILD_ROOT%{_mandir}/man5/report_fedora.conf.5
+rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_AnacondaFedora.xml
 %endif
 
 # Remove unwanted RHEL specific workflow configuration files
@@ -322,6 +323,7 @@ rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELvmcore.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELxorg.xml
 rm -f $RPM_BUILD_ROOT/%{_sysconfdir}/libreport/workflows.d/report_rhel.conf
 rm -f $RPM_BUILD_ROOT%{_mandir}/man5/report_rhel.conf.5
+rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_AnacondaRHEL.xml
 %endif
 
 %clean
@@ -547,7 +549,12 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %if %{with bugzilla}
 %files anaconda
 %defattr(-,root,root,-)
+%if 0%{?fedora}
 %{_datadir}/%{name}/workflows/workflow_AnacondaFedora.xml
+%endif
+%if 0%{?rhel}
+%{_datadir}/%{name}/workflows/workflow_AnacondaRHEL.xml
+%endif
 %{_datadir}/%{name}/workflows/workflow_AnacondaUpload.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/anaconda_event.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/bugzilla_anaconda_event.conf
