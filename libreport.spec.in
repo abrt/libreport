@@ -310,6 +310,7 @@ rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraPython.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraVmcore.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraXorg.xml
 rm -f $RPM_BUILD_ROOT/%{_sysconfdir}/libreport/workflows.d/report_fedora.conf
+rm -f $RPM_BUILD_ROOT%{_mandir}/man5/report_fedora.conf.5
 %endif
 
 # Remove unwanted RHEL specific workflow configuration files
@@ -320,6 +321,7 @@ rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELPython.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELvmcore.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELxorg.xml
 rm -f $RPM_BUILD_ROOT/%{_sysconfdir}/libreport/workflows.d/report_rhel.conf
+rm -f $RPM_BUILD_ROOT%{_mandir}/man5/report_rhel.conf.5
 %endif
 
 %clean
@@ -362,6 +364,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libdir}/libreport.so.*
 %{_libdir}/libabrt_dbus.so.*
 %{_mandir}/man5/report_event.conf.5*
+%{_mandir}/man5/forbidden_words.conf.5*
 
 %files filesystem
 %defattr(-,root,root,-)
@@ -426,6 +429,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libexecdir}/abrt-screencast
 %{_libdir}/libreport-gtk.so.*
 %config(noreplace) %{_sysconfdir}/libreport/events.d/emergencyanalysis_event.conf
+%{_mandir}/man5/emergencyanalysis_event.conf.5.*
 %{_datadir}/%{name}/events/report_EmergencyAnalysis.xml
 %{_mandir}/man1/report-gtk.1.gz
 
@@ -444,8 +448,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files plugin-logger
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/events/report_Logger.conf
+%{_mandir}/man5/report_Logger.conf.5.*
 %{_datadir}/%{name}/events/report_Logger.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/print_event.conf
+%{_mandir}/man5/print_event.conf.5.*
 %{_bindir}/reporter-print
 %{_mandir}/man*/reporter-print.*
 
@@ -454,6 +460,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/plugins/mailx.conf
 %{_datadir}/%{name}/events/report_Mailx.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/mailx_event.conf
+%{_mandir}/man5/mailx.conf.5.*
+%{_mandir}/man5/mailx_event.conf.5.*
 %{_mandir}/man*/reporter-mailx.*
 %{_bindir}/reporter-mailx
 
@@ -476,6 +484,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/events.d/bugzilla_event.conf
 # FIXME: remove with the old gui
 %{_mandir}/man1/reporter-bugzilla.1.gz
+%{_mandir}/man5/report_Bugzilla.conf.5.*
+%{_mandir}/man5/bugzilla_event.conf.5.*
+%{_mandir}/man5/bugzilla.conf.5.*
+%{_mandir}/man5/bugzilla_format.conf.5.*
+%{_mandir}/man5/bugzilla_formatdup.conf.5.*
+%{_mandir}/man5/bugzilla_format_libreport.conf.5.*
+%{_mandir}/man5/bugzilla_format_kernel.conf.5.*
 %{_bindir}/reporter-bugzilla
 %endif
 
@@ -485,6 +500,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/%{name}/events/report_RHTSupport.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/rhtsupport_event.conf
 %{_mandir}/man1/reporter-rhtsupport.1.gz
+%{_mandir}/man5/rhtsupport.conf.5.*
+%{_mandir}/man5/rhtsupport_event.conf.5.*
 %{_bindir}/reporter-rhtsupport
 
 %if %{with bugzilla}
@@ -497,6 +514,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files plugin-reportuploader
 %defattr(-,root,root,-)
 %{_mandir}/man*/reporter-upload.*
+%{_mandir}/man5/uploader_event.conf.5.*
 %{_bindir}/reporter-upload
 %{_datadir}/%{name}/events/report_Uploader.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/uploader_event.conf
@@ -511,6 +529,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/%{name}/workflows/workflow_FedoraVmcore.xml
 %{_datadir}/%{name}/workflows/workflow_FedoraXorg.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_fedora.conf
+%{_mandir}/man5/report_fedora.conf.5.*
 %endif
 
 %if 0%{?rhel}
@@ -522,6 +541,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/%{name}/workflows/workflow_RHELvmcore.xml
 %{_datadir}/%{name}/workflows/workflow_RHELxorg.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_rhel.conf
+%{_mandir}/man5/report_rhel.conf.5.*
 %endif
 
 %if %{with bugzilla}
@@ -533,6 +553,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/events.d/bugzilla_anaconda_event.conf
 %config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla_format_anaconda.conf
 %config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla_formatdup_anaconda.conf
+%{_mandir}/man5/anaconda_event.conf.5.*
+%{_mandir}/man5/bugzilla_anaconda_event.conf.5.*
+%{_mandir}/man5/bugzilla_format_anaconda.conf.5.*
+%{_mandir}/man5/bugzilla_formatdup_anaconda.conf.5.*
 %endif
 
 %changelog
