@@ -90,6 +90,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
                 const char *version,
                 const char *bzsummary,
                 const char *bzcomment,
+                bool private,
                 GList *group);
 
 int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *bug_id,

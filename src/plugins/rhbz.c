@@ -527,6 +527,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
                 const char *version,
                 const char *bzsummary,
                 const char *bzcomment,
+                bool private,
                 GList *group)
 {
     func_entry();
@@ -602,16 +603,24 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
     if(arch)
         abrt_xmlrpc_params_add_string(&env, params, "platform", arch);
 
-    if (group)
+    if (private)
     {
-        xmlrpc_value *xmlrpc_groups = abrt_xmlrpc_array_new(&env);
+        if (group)
+        {
+            xmlrpc_value *xmlrpc_groups = abrt_xmlrpc_array_new(&env);
 
-        for (GList *l = group; l; l = l->next)
-            abrt_xmlrpc_array_append_string(&env, xmlrpc_groups, l->data);
+            for (GList *l = group; l; l = l->next)
+                abrt_xmlrpc_array_append_string(&env, xmlrpc_groups, l->data);
 
-        abrt_xmlrpc_params_add_array(&env, params, "groups", xmlrpc_groups);
+            abrt_xmlrpc_params_add_array(&env, params, "groups", xmlrpc_groups);
 
-        xmlrpc_DECREF(xmlrpc_groups);
+            xmlrpc_DECREF(xmlrpc_groups);
+        }
+        else
+        {
+            error_msg(_("A private ticket creation has been requested, but no groups were specified, please see https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets for more info"));
+            return -1;
+        }
     }
 
     xmlrpc_value* result = abrt_xmlrpc_call_params(&env, ax, "Bug.create", params);

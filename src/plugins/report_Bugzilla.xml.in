@@ -34,6 +34,11 @@
             <_description>Check SSL key validity</_description>
             <default-value>yes</default-value>
         </option>
+        <option type="bool" name="Bugzilla_CreatePrivate">
+            <_label>Restrict access</_label>
+            <_description>Restrict access to the created bugzilla ticket allowing only users from specified groups to view it (see advanced settings for more details)</_description>
+            <default-value>no</default-value>
+        </option>
         <advanced-options>
             <option type="text" name="Bugzilla_Product">
                 <_label>Bugzilla product</_label>
@@ -54,6 +59,12 @@
                 <_label>HTTPS Proxy</_label>
                 <allow-empty>yes</allow-empty>
                 <_note-html>Sets the proxy server to use for HTTPS</_note-html>
+            </option>
+            <option type="text" name="Bugzilla_PrivateGroups">
+                <_label>Groups</_label>
+                <allow-empty>yes</allow-empty>
+                <default-value>group_218</default-value>
+                <_note-html>Restrict the access to specified groups &lt;a href="https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets"&gt;?&lt;/a&gt;</_note-html>
             </option>
         </advanced-options>
     </options>

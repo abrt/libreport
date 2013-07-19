@@ -679,6 +679,8 @@ struct bugzilla_struct {
     char *b_product_version;
     const char *b_DontMatchComponents;
     int         b_ssl_verify;
+    int         b_create_private;
+    GList       *b_private_groups;
 };
 
 static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
@@ -734,6 +736,23 @@ static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
 
     environ = getenv("Bugzilla_DontMatchComponents");
     b->b_DontMatchComponents = environ ? environ : get_map_string_item_or_empty(settings, "DontMatchComponents");
+
+    environ = getenv("Bugzilla_CreatePrivate");
+    b->b_create_private = string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "Bugzilla_CreatePrivate"));
+    VERB1 log("create private bz ticket: '%s'", b->b_create_private ? "YES": "NO");
+
+    environ = getenv("Bugzilla_PrivateGroups");
+    GList *groups = parse_list(environ ? environ : get_map_string_item_or_empty(settings, "Bugzilla_PrivateGroups"));
+    if (b->b_private_groups == NULL)
+    {
+        b->b_private_groups = groups;
+        VERB1 log("groups: '%p'", b->b_private_groups);
+    }
+    else if (groups)
+    {
+        g_list_free_full(groups, free);
+        error_msg(_("Warning, private ticket groups already specified as cmdline argument, ignoring the env variable and configuration"));
+    }
 }
 
 static
@@ -887,7 +906,7 @@ int main(int argc, char **argv)
     char *abrt_hash = NULL;
     char *ticket_no = NULL;
     char *debug_str = NULL;
-    GList *group = NULL;
+    struct bugzilla_struct rhbz = { 0 };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
@@ -900,7 +919,7 @@ int main(int argc, char **argv)
         OPT_BOOL(     'f', NULL, NULL,                       _("Force reporting even if this problem is already reported")),
         OPT_BOOL(     'w', NULL, NULL,                       _("Add bugzilla user to CC list [of bug with this ID]")),
         OPT_STRING(   'h', "duphash", &abrt_hash, "DUPHASH", _("Print BUG_ID which has given DUPHASH")),
-        OPT_LIST(     'g', "group", &group      , "GROUP"  , _("Restrict access to this group only")),
+        OPT_LIST(     'g', "group", &rhbz.b_private_groups , "GROUP"  , _("Restrict access to this group only")),
         OPT_OPTSTRING('D', "debug", &debug_str  , "STR"    , _("Debug")),
         OPT_END()
     };
@@ -910,7 +929,7 @@ int main(int argc, char **argv)
     export_abrt_envvars(0);
 
     map_string_t *settings = new_map_string();
-    struct bugzilla_struct rhbz = { 0 };
+
     {
         if (!conf_file)
             conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/bugzilla.conf");
@@ -1202,10 +1221,12 @@ int main(int argc, char **argv)
                 strbuf_append_strf(bzcomment_buf, "\nPotential duplicate: bug %u\n", crossver_id);
             char *bzcomment = strbuf_free_nobuf(bzcomment_buf);
             char *summary = create_summary_string(problem_data, comment_fmt_spec);
-            int new_id = rhbz_new_bug(client, problem_data, rhbz.b_product, rhbz.b_product_version,
+            int new_id = rhbz_new_bug(client,
+                    problem_data, rhbz.b_product, rhbz.b_product_version,
                     summary, bzcomment,
-                    group
-            );
+                    (rhbz.b_create_private | (opts & OPT_g)), // either we got Bugzilla_CreatePrivate from settings or -g was specified on cmdline
+                    rhbz.b_private_groups
+                    );
             free(bzcomment);
             free(summary);
 
