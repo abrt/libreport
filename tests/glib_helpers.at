@@ -1,0 +1,40 @@
+# -*- Autotest -*-
+
+AT_BANNER([glib helpers])
+
+## -------------------------- ##
+## parse comma separated list ##
+## -------------------------- ##
+
+AT_TESTFUN([parse_list],
+[[
+#include "internal_libreport.h"
+#include <assert.h>
+
+/* Test parsing different release strings */
+int test(const char *list, const char *strings[])
+{
+    GList *l = parse_list(list);
+    char **tmp = (char **)strings;
+    int retval = 0;
+
+    while(l != NULL) {
+        log("is: '%s'", (char *)l->data);
+        log("should be: '%s'", *tmp);
+        retval |= strcmp((char *)l->data, *(tmp++)) != 0;
+        if (retval)
+            break; // no need to continue further
+        l = g_list_next(l);
+    }
+
+    return retval;
+}
+
+int main(void)
+{
+    const char *string_list = "hello,world,fedora,redhat";
+    const char *strings[] = {"hello", "world", "fedora", "redhat"};
+
+    assert(test(string_list, strings) == 0);
+}
+]])

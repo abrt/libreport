@@ -31,7 +31,8 @@ TESTSUITE_AT = \
   osrelease.at \
   osinfo.at \
   is_text_file.at \
-  taghyperlinks.at
+  taghyperlinks.at \
+  glib_helpers.at
 
 EXTRA_DIST += $(TESTSUITE_AT)
 TESTSUITE = $(srcdir)/testsuite
