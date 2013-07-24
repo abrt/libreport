@@ -76,8 +76,8 @@ static int run_ask_yes_no_save_generic_result_dialog(ask_yes_no_dialog_flags fla
                                                GTK_BUTTONS_NONE,
                                                "%s", message);
 
-    gtk_dialog_add_button(GTK_DIALOG(dialog), GTK_STOCK_YES, GTK_RESPONSE_YES);
-    GtkWidget *no_button = gtk_dialog_add_button(GTK_DIALOG(dialog), GTK_STOCK_NO, GTK_RESPONSE_NO);
+    gtk_dialog_add_button(GTK_DIALOG(dialog), _("_Yes"), GTK_RESPONSE_YES);
+    GtkWidget *no_button = gtk_dialog_add_button(GTK_DIALOG(dialog), _("_No"), GTK_RESPONSE_NO);
 
     gint response = GTK_RESPONSE_NO;
     g_signal_connect(G_OBJECT(dialog), "response",

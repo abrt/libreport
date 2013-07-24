@@ -73,9 +73,9 @@ config_dialog_t *create_workflow_config_dialog(const char *workflow_name, GtkWin
                         /*title:*/ wf_get_screen_name(workflow) ? wf_get_screen_name(workflow) : workflow_name,
                         parent_window,
                         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                        GTK_STOCK_CANCEL,
+                        _("_Cancel"),
                         GTK_RESPONSE_CANCEL,
-                        GTK_STOCK_OK,
+                        _("_OK"),
                         GTK_RESPONSE_APPLY,
                         NULL);
 

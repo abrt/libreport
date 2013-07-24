@@ -4,7 +4,7 @@
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">gtk-media-record</property>
+    <property name="icon_name">media-record</property>
   </object>
   <object class="GtkWindow" id="window0">
     <property name="can_focus">False</property>
@@ -303,13 +303,11 @@
             <property name="can_focus">False</property>
             <child>
               <object class="GtkButton" id="button_cfg1">
-                <property name="label">gtk-preferences</property>
+                <property name="label">_Preferences</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_underline">True</property>
-                <property name="use_stock">True</property>
-                <property name="image_position">right</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -405,7 +403,7 @@
                 <property name="can_focus">True</property>
                 <property name="invisible_char">●</property>
                 <property name="invisible_char_set">True</property>
-                <property name="secondary_icon_stock">gtk-find</property>
+                <property name="secondary_icon_name">edit-find</property>
                 <property name="primary_icon_activatable">False</property>
               </object>
               <packing>
@@ -607,24 +605,10 @@
               </packing>
             </child>
             <child>
-              <object class="GtkImage" id="img_process_ok">
-                <property name="can_focus">False</property>
-                <property name="no_show_all">True</property>
-                <property name="stock">gtk-apply</property>
-                <property name="icon-size">1</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="padding">5</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkImage" id="img_process_fail">
                 <property name="can_focus">False</property>
                 <property name="no_show_all">True</property>
-                <property name="stock">gtk-dialog-error</property>
+                <property name="icon_name">dialog-error</property>
                 <property name="icon-size">1</property>
               </object>
               <packing>

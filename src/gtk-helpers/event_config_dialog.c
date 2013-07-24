@@ -262,8 +262,13 @@ config_dialog_t *create_event_config_dialog_content(event_config_t *event, GtkWi
         GtkWidget *keyring_warn_lbl =
         gtk_label_new(
           _("Secret Service is not available, your settings won't be saved!"));
-        static const GdkColor red = { .red = 0xffff };
-        gtk_widget_modify_fg(keyring_warn_lbl, GTK_STATE_NORMAL, &red);
+        static const GdkRGBA red = {
+            .red   = 1.0,
+            .green = 0.0,
+            .blue  = 0.0,
+            .alpha = 1.0,
+        };
+        gtk_widget_override_color(keyring_warn_lbl, GTK_STATE_FLAG_NORMAL, &red);
         gtk_box_pack_start(GTK_BOX(content), keyring_warn_lbl, false, false, 0);
     }
 
@@ -291,9 +296,9 @@ config_dialog_t *create_event_config_dialog(const char *event_name, GtkWindow *p
                         /*title:*/ec_get_screen_name(event) ? ec_get_screen_name(event) : event_name,
                         parent_window,
                         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                        GTK_STOCK_CANCEL,
+                        _("_Cancel"),
                         GTK_RESPONSE_CANCEL,
-                        GTK_STOCK_OK,
+                        _("_OK"),
                         GTK_RESPONSE_APPLY,
                         NULL);
 
@@ -343,9 +348,9 @@ int show_event_config_dialog(const char *event_name, GtkWindow *parent)
                         /*title:*/ec_get_screen_name(event) ? ec_get_screen_name(event) : event_name,
                         parent_window,
                         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                        GTK_STOCK_CANCEL,
+                        _("_Cancel"),
                         GTK_RESPONSE_CANCEL,
-                        GTK_STOCK_OK,
+                        _("_OK"),
                         GTK_RESPONSE_APPLY,
                         NULL);
 

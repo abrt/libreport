@@ -104,7 +104,6 @@ static GtkEventBox *g_ev_search_up;
 static GtkEventBox *g_ev_search_down;
 static GtkSpinner *g_spinner_event_log;
 static GtkImage *g_img_process_fail;
-static GtkImage *g_img_process_ok;
 
 static GtkButton *g_btn_startcast;
 static GtkExpander *g_exp_report_log;
@@ -749,8 +748,8 @@ static void tv_details_row_activated(
         GtkWidget *scrolled = gtk_scrolled_window_new(NULL, NULL);
         GtkWidget *textview = gtk_text_view_new();
 
-        gtk_dialog_add_button(GTK_DIALOG(dialog), GTK_STOCK_SAVE, GTK_RESPONSE_OK);
-        gtk_dialog_add_button(GTK_DIALOG(dialog), GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL);
+        gtk_dialog_add_button(GTK_DIALOG(dialog), _("_Save"), GTK_RESPONSE_OK);
+        gtk_dialog_add_button(GTK_DIALOG(dialog), _("_Cancel"), GTK_RESPONSE_CANCEL);
 
         gtk_box_pack_start(GTK_BOX(vbox), scrolled, TRUE, TRUE, 0);
         gtk_widget_set_size_request(scrolled, 640, 480);
@@ -1046,13 +1045,21 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
             GtkWidget *child = gtk_bin_get_child(GTK_BIN(button));
             if (child)
             {
-                static const GdkColor red = { .red = 0xffff };
-                static const GdkColor green = { .green = 0x7fff };
-                const GdkColor *color = (green_choice ? &green : &red);
+                static const GdkRGBA red = {
+                    .red   = 1.0,
+                    .green = 0.0,
+                    .blue  = 0.0,
+                    .alpha = 1.0,
+                };
+                static const GdkRGBA green = {
+                    .red   = 0.0,
+                    .green = 0.5,
+                    .blue  = 0.0,
+                    .alpha = 1.0,
+                };
+                const GdkRGBA *color = (green_choice ? &green : &red);
                 //gtk_widget_modify_text(button, GTK_STATE_NORMAL, color);
-                gtk_widget_modify_fg(child, GTK_STATE_NORMAL, color);
-                gtk_widget_modify_fg(child, GTK_STATE_ACTIVE, color);
-                gtk_widget_modify_fg(child, GTK_STATE_PRELIGHT, color);
+                gtk_widget_override_color(child, GTK_STATE_FLAG_NORMAL, color);
             }
         }
 
@@ -1148,7 +1155,7 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
         {
             GtkWidget *tab_lbl = gtk_label_new((char *)name);
             GtkWidget *tev = gtk_text_view_new();
-            gtk_widget_modify_font(GTK_WIDGET(tev), g_monospace_font);
+            gtk_widget_override_font(GTK_WIDGET(tev), g_monospace_font);
             load_text_to_text_view(GTK_TEXT_VIEW(tev), (char *)name);
             /* init searching */
             GtkTextBuffer *buf = gtk_text_view_get_buffer(GTK_TEXT_VIEW(tev));
@@ -1831,7 +1838,6 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         }
         else
         {
-            gtk_widget_show(GTK_WIDGET(g_img_process_ok));
             gtk_label_set_text(g_lbl_event_log, is_processing_finished() ? _("Processing finished.")
                                                                          : _("Processing finished, please proceed to the next step."));
         }
@@ -1948,7 +1954,6 @@ static void start_event_run(const char *event_name)
 
     /* don't bother testing if they are visible, this is faster */
     gtk_widget_hide(GTK_WIDGET(g_img_process_fail));
-    gtk_widget_hide(GTK_WIDGET(g_img_process_ok));
 
     gtk_widget_show(GTK_WIDGET(g_spinner_event_log));
     gtk_widget_show(g_btn_stop);
@@ -2809,8 +2814,8 @@ static void on_btn_add_file(GtkButton *button)
             "Attach File",
             GTK_WINDOW(g_wnd_assistant),
             GTK_FILE_CHOOSER_ACTION_OPEN,
-            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-            GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+            _("_Cancel"), GTK_RESPONSE_CANCEL,
+            _("_Open"), GTK_RESPONSE_ACCEPT,
             NULL
     );
     char *filename = NULL;
@@ -3009,20 +3014,24 @@ static void add_pages(void)
     g_ev_search_up         = GTK_EVENT_BOX(    gtk_builder_get_object(g_builder, "ev_search_up"));
     g_ev_search_down       = GTK_EVENT_BOX(    gtk_builder_get_object(g_builder, "ev_search_down"));
     g_spinner_event_log    = GTK_SPINNER(      gtk_builder_get_object(g_builder, "spinner_event_log"));
-    g_img_process_ok       = GTK_IMAGE(      gtk_builder_get_object(g_builder, "img_process_ok"));
     g_img_process_fail     = GTK_IMAGE(      gtk_builder_get_object(g_builder, "img_process_fail"));
     g_btn_startcast        = GTK_BUTTON(    gtk_builder_get_object(g_builder, "btn_startcast"));
     g_exp_report_log       = GTK_EXPANDER(     gtk_builder_get_object(g_builder, "expand_report"));
 
     gtk_widget_set_no_show_all(GTK_WIDGET(g_spinner_event_log), true);
 
-    gtk_widget_modify_font(GTK_WIDGET(g_tv_event_log), g_monospace_font);
+    gtk_widget_override_font(GTK_WIDGET(g_tv_event_log), g_monospace_font);
     fix_all_wrapped_labels(GTK_WIDGET(g_assistant));
 
     /* Configure btn on select analyzers page */
+    GtkWidget *img_config_btn = gtk_image_new_from_icon_name("preferences-system", GTK_ICON_SIZE_BUTTON);
     GtkWidget *config_btn = GTK_WIDGET(gtk_builder_get_object(g_builder, "button_cfg1"));
     if (config_btn)
+    {
         g_signal_connect(G_OBJECT(config_btn), "clicked", G_CALLBACK(on_show_event_list_cb), NULL);
+        gtk_button_set_image(GTK_BUTTON(config_btn), img_config_btn);
+        gtk_button_set_image_position(GTK_BUTTON(config_btn), GTK_POS_RIGHT);
+    }
 
     g_signal_connect(g_cb_no_comment, "toggled", G_CALLBACK(on_no_comment_toggled), NULL);
 
@@ -3036,9 +3045,9 @@ static void add_pages(void)
     g_signal_connect(G_OBJECT(g_ev_search_down), "button-press-event", G_CALLBACK(search_down), NULL);
 
     /* Set color of the comment evenbox */
-    GdkColor color;
-    gdk_color_parse("#CC3333", &color);
-    gtk_widget_modify_bg(GTK_WIDGET(g_eb_comment), GTK_STATE_NORMAL, &color);
+    GdkRGBA color;
+    gdk_rgba_parse(&color, "#CC3333");
+    gtk_widget_override_color(GTK_WIDGET(g_eb_comment), GTK_STATE_FLAG_NORMAL, &color);
 
     g_signal_connect(g_tv_details, "key-press-event", G_CALLBACK(on_key_press_event_in_item_list), NULL);
 }
@@ -3199,14 +3208,16 @@ void create_assistant(bool expert_mode)
      */
     gtk_notebook_set_show_tabs(g_assistant, (g_verbose != 0 && g_expert_mode));
 
-    g_btn_close = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
-    g_btn_stop = gtk_button_new_from_stock(GTK_STOCK_STOP);
+    g_btn_close = gtk_button_new_with_mnemonic(_("_Close"));
+    gtk_button_set_image(GTK_BUTTON(g_btn_close), gtk_image_new_from_icon_name("window-close", GTK_ICON_SIZE_BUTTON));
+    g_btn_stop = gtk_button_new_with_mnemonic(_("_Stop"));
+    gtk_button_set_image(GTK_BUTTON(g_btn_stop), gtk_image_new_from_icon_name("process-close", GTK_ICON_SIZE_BUTTON));
     gtk_widget_set_no_show_all(g_btn_stop, true); /* else gtk_widget_hide won't work */
     g_btn_onfail = gtk_button_new_with_label(_("Upload for analysis"));
-    gtk_button_set_image(GTK_BUTTON(g_btn_onfail), gtk_image_new_from_stock(GTK_STOCK_GO_UP, GTK_ICON_SIZE_BUTTON));
-    gtk_button_set_image_position(GTK_BUTTON(g_btn_onfail), GTK_POS_LEFT);
+    gtk_button_set_image(GTK_BUTTON(g_btn_onfail), gtk_image_new_from_icon_name("go-up", GTK_ICON_SIZE_BUTTON));
     gtk_widget_set_no_show_all(g_btn_onfail, true); /* else gtk_widget_hide won't work */
-    g_btn_next = gtk_button_new_from_stock(GTK_STOCK_GO_FORWARD);
+    g_btn_next = gtk_button_new_with_mnemonic(_("_Forward"));
+    gtk_button_set_image(GTK_BUTTON(g_btn_next), gtk_image_new_from_icon_name("go-next", GTK_ICON_SIZE_BUTTON));
     gtk_widget_set_no_show_all(g_btn_next, true); /* else gtk_widget_hide won't work */
 
     g_box_buttons = GTK_BOX(gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0));
@@ -3232,7 +3243,7 @@ void create_assistant(bool expert_mode)
         gtk_widget_set_visible(GTK_WIDGET(vbox), TRUE);
         gtk_box_pack_start(vbox, GTK_WIDGET(g_box_warning_labels), false, false, 5);
 
-        GtkWidget *image = gtk_image_new_from_stock(GTK_STOCK_DIALOG_WARNING, GTK_ICON_SIZE_DIALOG);
+        GtkWidget *image = gtk_image_new_from_icon_name("dialog-warning", GTK_ICON_SIZE_DIALOG);
         gtk_widget_set_visible(image, TRUE);
 
         g_widget_warnings_area = GTK_WIDGET(gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0));

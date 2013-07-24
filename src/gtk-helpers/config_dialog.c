@@ -306,7 +306,7 @@ GtkWindow *create_config_list_window(GHashTable *configs, GtkWindow *parent)
     GtkWidget *btn_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL,5);
     GtkWidget *configure_btn = gtk_button_new_with_mnemonic(_("C_onfigure"));
     GtkWidget *align = gtk_alignment_new(0, 0, 0, 0);
-    GtkWidget *close_btn = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
+    GtkWidget *close_btn = gtk_button_new_with_mnemonic(_("_Close"));
     GtkSizeGroup *sg = gtk_size_group_new(GTK_SIZE_GROUP_BOTH);
     //force apply and close to have the same size
     gtk_size_group_add_widget(sg, close_btn);
