@@ -17,8 +17,40 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "internal_libreport.h"
+#include <glib-object.h>
 
 #define LIST_DELIMITER ","
+
+void glib_init(void)
+{
+#if (GLIB_MAJOR_VERSION == 2 && GLIB_MINOR_VERSION < 35)
+    /* Became deprecated in glib-2.35.1 (branch 2.36 commit df02fa1e4cc61a2c7f3aafdf1a6534a831f1c0d6) */
+    g_type_init();
+#endif
+
+    /* This is not necessary but is IMO is good to know that:
+     *
+     * If want to be defensive and ensure we're linked to GObject
+     * call the following function [1]:
+     *
+     * g_type_ensure(G_TYPE_OBJECT);
+     *
+     *
+     * See glib README -> Notes about GLib 2.36, 1st paragraph
+     *
+     * 1: https://bugzilla.gnome.org/show_bug.cgi?id=691077
+     */
+
+    /* Help with mysterious bug */
+    if (g_verbose > 0)
+    {
+        const gchar *version_mismatch = glib_check_version(GLIB_MAJOR_VERSION,
+                                                           GLIB_MINOR_VERSION,
+                                                           GLIB_MICRO_VERSION);
+        if (version_mismatch != NULL)
+            log("Running GLib incompatible version: %s", version_mismatch);
+    }
+}
 
 /*
  * Parser comma separated list of strings to Glist

@@ -281,6 +281,11 @@ bool is_in_comma_separated_list(const char *value, const char *list);
 #define is_in_comma_separated_list_of_glob_patterns libreport_is_in_comma_separated_list_of_glob_patterns
 bool is_in_comma_separated_list_of_glob_patterns(const char *value, const char *list);
 
+/* Calls GLib version appropriate initialization function.
+ */
+#define glib_init libreport_glib_init
+void glib_init(void);
+
 /* Frees every element'd data using free(),
  * then frees list itself using g_list_free(list):
  */
