@@ -118,6 +118,7 @@ libreport_web_la_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DEVENTS_DIR=\"$(EVENTS_DIR)\" \
     $(GLIB_CFLAGS) \
+    $(GOBJECT_CFLAGS) \
     $(CURL_CFLAGS) \
     $(PROXY_CFLAGS) \
     $(LIBXML_CFLAGS) \
@@ -129,6 +130,7 @@ libreport_web_la_LDFLAGS = \
     -version-info 0:1:0
 libreport_web_la_LIBADD = \
     $(GLIB_LIBS) \
+    $(GOBJECT_LIBS) \
     $(CURL_LIBS) \
     $(PROXY_LIBS) \
     $(LIBXML_LIBS) \
