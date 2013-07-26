@@ -29,6 +29,9 @@
 extern "C" {
 #endif
 
+/* Utility function */
+int create_symlink_lockfile(const char *filename, const char *pid_str);
+
 enum {
     DD_FAIL_QUIETLY_ENOENT = (1 << 0),
     DD_FAIL_QUIETLY_EACCES = (1 << 1),
@@ -45,7 +48,7 @@ struct dump_dir {
     int locked;
     uid_t dd_uid;
     gid_t dd_gid;
-    /* mode fo saved files */
+    /* mode of saved files */
     mode_t mode;
     time_t dd_time;
 };

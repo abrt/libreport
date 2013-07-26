@@ -116,7 +116,7 @@ static bool exist_file_dir(const char *path)
  *
  * Any possible failure will be logged.
  */
-static long int parse_time_file(const char *filename)
+static time_t parse_time_file(const char *filename)
 {
     /* Open input file, and parse it. */
     int fd = open(filename, O_RDONLY | O_NOFOLLOW);
@@ -126,7 +126,7 @@ static long int parse_time_file(const char *filename)
         return -1;
     }
 
-    /* ~ maximal number of digits for positive time stamp string*/
+    /* ~ maximal number of digits for positive time stamp string */
     char time_buf[sizeof(time_t) * 3 + 1];
     ssize_t rdsz = read(fd, time_buf, sizeof(time_buf));
 
@@ -145,7 +145,7 @@ static long int parse_time_file(const char *filename)
     if (rdsz == sizeof(time_buf))
     {
         VERB2 error_msg("File '%s' is too long to be valid unix "
-                        "time stamp (max size %zdB)", filename, sizeof(time_buf));
+                        "time stamp (max size %u)", filename, (int)sizeof(time_buf));
         return -1;
     }
 
@@ -156,37 +156,25 @@ static long int parse_time_file(const char *filename)
         rdsz--;
     time_buf[rdsz] = '\0';
 
+    /* Note that on some architectures (x32) time_t is "long long" */
+
     errno = 0;    /* To distinguish success/failure after call */
     char *endptr;
-    long val = strtol(time_buf, &endptr, /* base */ 10);
+    long long val = strtoll(time_buf, &endptr, /* base */ 10);
+    const long long MAX_TIME_T = (1ULL << (sizeof(time_t)*8 - 1)) - 1;
 
     /* Check for various possible errors */
-    if ((errno == ERANGE && (val == LONG_MAX || val == LONG_MIN))
-            || (errno != 0 && val == 0))
-    {
+    if (errno
+     || (*endptr != '\0')
+     || val > MAX_TIME_T
+     || !isdigit_str(time_buf) /* this filters out "-num", "   num", "" */
+    ) {
         VERB2 perror_msg("File '%s' doesn't contain valid unix "
                          "time stamp ('%s')", filename, time_buf);
         return -1;
     }
 
-    if (endptr == time_buf)
-    {
-        VERB2 error_msg("No digits were found in file '%s'", filename);
-        return -1;
-    }
-
-    if (*endptr != '\0')
-    {
-        VERB2 error_msg("Further characters after number: '%s' in file '%s'", endptr, filename);
-        return -1;
-    }
-
-    if (val < 0)
-    {
-        VERB2 error_msg("Negative time found in file '%s'", filename);
-    }
-
-    /* If we got here, strtol() successfully parsed a number */
+    /* If we got here, strtoll() successfully parsed a number */
     return val;
 }
 
@@ -195,7 +183,7 @@ static long int parse_time_file(const char *filename)
  *  0: failed to lock (someone else has it locked)
  *  1: success
  */
-static int get_and_set_lock(const char* lock_file, const char* pid)
+int create_symlink_lockfile(const char* lock_file, const char* pid)
 {
     while (symlink(pid, lock_file) != 0)
     {
@@ -271,7 +259,7 @@ static int dd_lock(struct dump_dir *dd, unsigned sleep_usec, int flags)
  retry:
     while (1)
     {
-        int r = get_and_set_lock(lock_buf, pid_buf);
+        int r = create_symlink_lockfile(lock_buf, pid_buf);
         if (r < 0)
             return r; /* error */
         if (r > 0)
