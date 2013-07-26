@@ -98,7 +98,8 @@ Requires: libreport = %{version}-%{release}
 Provides: report = 0:0.23-1
 Obsoletes: report < 0:0.23-1
 # in report the rhtsupport is in the main package, so we need to install it too
-%if 0%{?rhel} >= 6
+# report is only in RHEL6, we do not need to carry the dependency to newer RHELs
+%if 0%{?rhel} == 6
 Requires: libreport-plugin-rhtsupport = %{version}-%{release}
 %endif
 
@@ -259,7 +260,11 @@ Summary: Default configuration for reporting anaconda bugs
 Group: Applications/File
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-plugin-reportuploader = %{version}-%{release}
+%if 0%{?rhel}
+Requires: libreport-plugin-rhtsupport = %{version}-%{release}
+%else
 Requires: libreport-plugin-bugzilla = %{version}-%{release}
+%endif
 
 %description anaconda
 Default configuration for reporting Anaconda problems or uploading the gathered
