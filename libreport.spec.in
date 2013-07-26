@@ -567,6 +567,45 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Fri Jul 26 2013 Jakub Filak <jfilak@redhat.com> 2.1.6-1
+- add related packages version in emergency event
+- replace functions deprecated in Gtk-3.10 with their substitutes
+- add missing compiler flags for g_type_init()
+- fixed the bugzilla private group names rhbz#985881
+- add helper function for GLib initialization
+- spec: double up percent signs in chagelog entries
+- spec: make anaconda package description more generic
+- spec: install RHEL anaconda work flow
+- workflows: add Anaconda work flow for RHEL
+- spec: install all manual pages
+- add all missing manual pages for configuration files
+- spec: install only documentation files
+- test: added unit test for parse_list
+- added options to create private bz tickets rhbz#803772
+- skip the workflow selection if there is only 1 available closes #167
+- make rpm: add $RPM_FLAGS aux variable
+- spec: added new workflow files rhbz#866027
+- added missing workflows for Fedora rhbz#866027
+- spec: build only workflow subpkg relevant for host's OS
+- add Fedora Rawhide's os-release to os-release parsers unit tests
+- spec: drop unnecessary Obsoletes and Provides
+- spec: add manual pages to packages
+- add several missing manual pages
+- fix rpmlint issues in the spec file
+- move non-conf XML files from /etc/libreport/ to /usr/share/libreport/
+- spec: replace btparser with satyr
+- Update satyr support, drop btparser compatibility
+- fixed typo in config file related #866027
+- resize the config window upon collapsing Advanced section
+- spec: specify all config files
+- fix indentation error
+- rhbz: test xmlrpc env for errors in abrt_xmlrpc_call_params()
+- rhbz: test rhbz_new_bug() return value for errors
+- wizard: show accurate messages
+- pass the problem_dir to the screencasting application closes #165
+- spec: add dependency on fros rhbz#958979
+- use fros instead of hard dependency on recordmydesktop rhbz#958979
+
 * Fri Jun 14 2013 Jakub Filak <jfilak@redhat.com> 2.1.5-1
 - configure.ac: Fix json-c detection for json-c >= 0.11
 - make the uploader event available for all report types
