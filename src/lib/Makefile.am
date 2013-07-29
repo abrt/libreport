@@ -68,11 +68,13 @@ libreport_la_CPPFLAGS = \
     -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
     -DDUMP_DIR_OWNED_BY_USER=$(DUMP_DIR_OWNED_BY_USER) \
     $(GLIB_CFLAGS) \
+    $(GOBJECT_CFLAGS) \
     -D_GNU_SOURCE
 libreport_la_LDFLAGS = \
     -version-info 0:1:0
 libreport_la_LIBADD = \
-    $(GLIB_LIBS)
+    $(GLIB_LIBS) \
+    $(GOBJECT_LIBS)
 
 libreportconfdir = $(CONF_DIR)
 dist_libreportconf_DATA = \
@@ -118,7 +120,6 @@ libreport_web_la_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DEVENTS_DIR=\"$(EVENTS_DIR)\" \
     $(GLIB_CFLAGS) \
-    $(GOBJECT_CFLAGS) \
     $(CURL_CFLAGS) \
     $(PROXY_CFLAGS) \
     $(LIBXML_CFLAGS) \
@@ -130,7 +131,6 @@ libreport_web_la_LDFLAGS = \
     -version-info 0:1:0
 libreport_web_la_LIBADD = \
     $(GLIB_LIBS) \
-    $(GOBJECT_LIBS) \
     $(CURL_LIBS) \
     $(PROXY_LIBS) \
     $(LIBXML_LIBS) \
