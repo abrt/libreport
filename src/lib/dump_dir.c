@@ -397,17 +397,18 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
              */
             error_msg("'%s' is not a problem directory", dir);
         }
-        else if (errno == ENOENT || errno == ENOTDIR)
-        {
-            if (!(flags & DD_FAIL_QUIETLY_ENOENT))
-                error_msg("'%s' does not exist", dir);
-        }
         else
         {
-            if (!(flags & DD_FAIL_QUIETLY_EACCES))
-            {
  cant_access:
-                perror_msg("Can't access '%s'", dir);
+            if (errno == ENOENT || errno == ENOTDIR)
+            {
+                if (!(flags & DD_FAIL_QUIETLY_ENOENT))
+                    error_msg("'%s' does not exist", dir);
+            }
+            else
+            {
+                if (!(flags & DD_FAIL_QUIETLY_EACCES))
+                    perror_msg("Can't access '%s'", dir);
             }
         }
         dd_close(dd);
