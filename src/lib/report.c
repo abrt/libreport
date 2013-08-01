@@ -185,7 +185,7 @@ int report_problem_in_dir(const char *dirname, int flags)
 int report_problem_in_memory(problem_data_t *pd, int flags)
 {
     int result = 0;
-    struct dump_dir *dd = create_dump_dir_from_problem_data(pd, "/tmp"/* /var/tmp ?? */);
+    struct dump_dir *dd = create_dump_dir_from_problem_data(pd, LARGE_DATA_TMP_DIR);
     if (!dd)
         return -1;
     char *dir_name = xstrdup(dd->dd_dirname);

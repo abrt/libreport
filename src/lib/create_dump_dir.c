@@ -89,9 +89,9 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
             }
         }
 //TODO: try user's home dir obtained by getpwuid(getuid())?
-        /* Try /tmp */
+        /* Try system temporary directory */
         if (!dd)
-            dd = try_dd_create("/tmp", problem_id, uid);
+            dd = try_dd_create(LARGE_DATA_TMP_DIR, problem_id, uid);
     }
 
     if (!dd) /* try_dd_create() already emitted the error message */

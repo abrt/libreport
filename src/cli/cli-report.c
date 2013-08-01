@@ -341,7 +341,7 @@ static int launch_editor(const char *path)
 static int run_report_editor(problem_data_t *problem_data)
 {
     /* Open a temporary file and write the crash report to it. */
-    char filename[] = "/tmp/abrt-report.XXXXXX";
+    char filename[] = LARGE_DATA_TMP_DIR"/abrt-report.XXXXXX";
     int fd = mkstemp(filename);
     if (fd == -1) /* errno is set */
     {

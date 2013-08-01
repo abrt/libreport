@@ -361,12 +361,12 @@ int main(int argc, char **argv)
         dsc = make_description_bz(problem_data, CD_TEXT_ATT_SIZE_BZ);
     }
 
-    char tmpdir_name[sizeof("/tmp/rhtsupport-"LIBREPORT_ISO_DATE_STRING_SAMPLE"-XXXXXX")];
-    snprintf(tmpdir_name, sizeof(tmpdir_name), "/tmp/rhtsupport-%s-XXXXXX", iso_date_string(NULL));
+    char tmpdir_name[sizeof(LARGE_DATA_TMP_DIR"/rhtsupport-"LIBREPORT_ISO_DATE_STRING_SAMPLE"-XXXXXX")];
+    snprintf(tmpdir_name, sizeof(tmpdir_name), LARGE_DATA_TMP_DIR"/rhtsupport-%s-XXXXXX", iso_date_string(NULL));
     /* mkdtemp does mkdir(xxx, 0700), should be safe (is it?) */
     if (mkdtemp(tmpdir_name) == NULL)
     {
-        error_msg_and_die(_("Can't create a temporary directory in /tmp"));
+        error_msg_and_die(_("Can't create a temporary directory in "LARGE_DATA_TMP_DIR));
     }
     /* Starting from here, we must perform cleanup on errors
      * (delete temp dir)
@@ -375,7 +375,7 @@ int main(int argc, char **argv)
     tempfile = append_to_malloced_string(tempfile, ".tar.gz");
     if (create_tarball(tempfile, problem_data) != 0)
     {
-        errmsg = _("Can't create temporary file in /tmp");
+        errmsg = _("Can't create temporary file in "LARGE_DATA_TMP_DIR);
         goto ret;
     }
 

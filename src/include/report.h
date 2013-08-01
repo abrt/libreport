@@ -40,7 +40,7 @@ enum {
 int report_problem_in_dir(const char *dirname, int flags);
 
 /* Reports a problem stored in problem_data_t.
- * It's first saved to /tmp and then processed as a dump dir.
+ * It's first saved to a temporary directory and then processed as a dump dir.
  */
 int report_problem_in_memory(problem_data_t *pd, int flags);
 

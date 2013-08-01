@@ -10,6 +10,7 @@ report_cli_CPPFLAGS = \
     -I$(srcdir)/../lib \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    -DLARGE_DATA_TMP_DIR=\"$(LARGE_DATA_TMP_DIR)\" \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
     $(LIBREPORT_CFLAGS)

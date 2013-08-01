@@ -49,7 +49,8 @@ static int create_and_upload_archive(
     /* Create a child gzip which will compress the data */
     /* SELinux guys are not happy with /tmp, using /var/run/abrt */
     /* Reverted back to /tmp for ABRT2 */
-    tempfile = concat_path_basename("/tmp", dump_dir_name);
+    /* Changed again to /var/tmp because of Fedora feature tmp-on-tmpfs */
+    tempfile = concat_path_basename(LARGE_DATA_TMP_DIR, dump_dir_name);
     tempfile = append_to_malloced_string(tempfile, ".tar.gz");
 
     int pipe_from_parent_to_child[2];
@@ -75,7 +76,7 @@ static int create_and_upload_archive(
     if (tar_fdopen(&tar, pipe_from_parent_to_child[1], tempfile,
                 /*fileops:(standard)*/ NULL, O_WRONLY | O_CREAT, 0644, TAR_GNU) != 0)
     {
-        errmsg = "Can't create temporary file in /tmp";
+        errmsg = "Can't create temporary file in "LARGE_DATA_TMP_DIR;
         goto ret;
     }
 
@@ -98,7 +99,7 @@ static int create_and_upload_archive(
             //}
             if (tar_append_file(tar, full_name, short_name) != 0)
             {
-                errmsg = "Can't create temporary file in /tmp";
+                errmsg = "Can't create temporary file in "LARGE_DATA_TMP_DIR;
                 free(short_name);
                 free(full_name);
                 goto ret;
@@ -114,7 +115,7 @@ static int create_and_upload_archive(
     /* Close tar writer... */
     if (tar_append_eof(tar) != 0 || tar_close(tar) != 0)
     {
-        errmsg = "Can't create temporary file in /tmp";
+        errmsg = "Can't create temporary file in "LARGE_DATA_TMP_DIR;
         goto ret;
     }
     tar = NULL;
@@ -125,13 +126,13 @@ static int create_and_upload_archive(
     if (status != 0)
     {
         /* We assume the error was out-of-disk-space or out-of-quota */
-        errmsg = "Can't create temporary file in /tmp";
+        errmsg = "Can't create temporary file in "LARGE_DATA_TMP_DIR;
         goto ret;
     }
 
     /* Upload the tarball */
     /* Upload from /tmp to /tmp + deletion -> BAD, exclude this possibility */
-    if (url && url[0] && strcmp(url, "file:///tmp/") != 0)
+    if (url && url[0] && strcmp(url, "file://"LARGE_DATA_TMP_DIR"/") != 0)
     {
         char *remote_name = upload_file(url, tempfile);
         result = (remote_name == NULL); /* error if NULL */
@@ -184,7 +185,7 @@ int main(int argc, char **argv)
         "& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
         "\n"
         "Uploads compressed tarball of problem directory DIR to URL.\n"
-        "If URL is not specified, creates tarball in /tmp and exits.\n"
+        "If URL is not specified, creates tarball in "LARGE_DATA_TMP_DIR" and exits.\n"
         "\n"
         "URL should have form 'protocol://[user[:pass]@]host/dir/[file.tar.gz]'\n"
         "where protocol can be http(s), ftp, scp, or file.\n"

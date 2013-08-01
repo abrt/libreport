@@ -216,6 +216,12 @@ AC_ARG_WITH(debugdumpsdir,
                            [Directory where debugdumps are created])],
             [DEBUG_DUMPS_DIR="$withval"])
 
+AC_ARG_WITH(largedatatmpdir,
+            [AS_HELP_STRING([--with-largedatatmpdir=DIR],
+                           [Directory where potentially large data are created (default: /var/tmp)])],
+            [], [with_largedatatmpdir="/var/tmp"])
+AC_SUBST([LARGE_DATA_TMP_DIR], [$with_largedatatmpdir])
+
 AC_ARG_WITH([defaultdumpdirmode],
             AS_HELP_STRING([--with-defaultdumpdirmode=OCTAL-MODE],
                            [Default dump dir mode (default: 0660)]),
