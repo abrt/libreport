@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Eun-Ju Kim  <eukim@redhat.com>, 2011-2012.
+# eukim <eukim@redhat.com>, 2011-2012
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-18 16:27+0200\n"
-"PO-Revision-Date: 2012-10-09 06:23+0000\n"
-"Last-Translator: eukim <eukim@redhat.com>\n"
+"POT-Creation-Date: 2013-08-06 13:55+0200\n"
+"PO-Revision-Date: 2013-07-24 11:22+0000\n"
+"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
 "Language-Team: Korean (http://www.transifex.com/projects/p/fedora/language/"
 "ko/)\n"
 "Language: ko\n"
@@ -136,7 +136,7 @@ msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr ""
 "vi를 실행할 수 없습니다: $TERM, $VISUAL, $EDITOR등이 설정되지 않았습니다"
 
-#: ../src/cli/cli-report.c:362
+#: ../src/cli/cli-report.c:361
 msgid ""
 "\n"
 "The report has been updated"
@@ -144,7 +144,7 @@ msgstr ""
 "\n"
 "보고서가 변경되었습니다"
 
-#: ../src/cli/cli-report.c:364
+#: ../src/cli/cli-report.c:363
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -153,78 +153,78 @@ msgstr ""
 "보고서에서 변경 사항을 감지하지 못했습니다"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/cli-report.c:396 ../src/gui-wizard-gtk/wizard.c:1606
+#: ../src/cli/cli-report.c:395 ../src/gui-wizard-gtk/wizard.c:1608
 #: ../src/lib/client.c:51 ../src/lib/run_event.c:476
 msgid "y"
 msgstr "y"
 
-#: ../src/cli/cli-report.c:397 ../src/lib/client.c:52
+#: ../src/cli/cli-report.c:396 ../src/lib/client.c:52
 #: ../src/lib/run_event.c:476
 msgid "N"
 msgstr "N"
 
-#: ../src/cli/cli-report.c:501
+#: ../src/cli/cli-report.c:500
 msgid "Your input is not valid, because of:"
 msgstr "다음과 같은 이유로 입력이 유효하지 않습니다: "
 
-#: ../src/cli/cli-report.c:504
+#: ../src/cli/cli-report.c:503
 #, c-format
 msgid "Bad value for '%s': %s"
 msgstr "'%s'에 대해 잘못된 값: %s "
 
-#: ../src/cli/cli-report.c:606
+#: ../src/cli/cli-report.c:605
 #, c-format
 msgid "How you would like to analyze the problem?\n"
 msgstr "어떻게 문제를 분석하시겠습니까?\n"
 
-#: ../src/cli/cli-report.c:624
+#: ../src/cli/cli-report.c:623
 msgid "Select analyzer: "
 msgstr "분석 프로그램 선택: "
 
-#: ../src/cli/cli-report.c:631
+#: ../src/cli/cli-report.c:630
 #, c-format
 msgid "You have chosen number out of range"
 msgstr "범위를 벗어난 번호를 선택하셨습니다 "
 
-#: ../src/cli/cli-report.c:640
+#: ../src/cli/cli-report.c:639
 msgid "Invalid input, program exiting..."
 msgstr "잘못된 입력, 프로그램 종료 중..."
 
-#: ../src/cli/cli-report.c:704
+#: ../src/cli/cli-report.c:703
 msgid "What additional information would you like to collect?"
 msgstr "수집하고자 하는 추가 정보는 무엇입니까?  "
 
-#: ../src/cli/cli-report.c:717
+#: ../src/cli/cli-report.c:716
 msgid "Select collector(s): "
 msgstr "수집기 선택: "
 
-#: ../src/cli/cli-report.c:765 ../src/gui-wizard-gtk/wizard.c:1257
+#: ../src/cli/cli-report.c:764 ../src/gui-wizard-gtk/wizard.c:1259
 #: ../src/report-newt/report-newt.c:334
 msgid "(no description)"
 msgstr "(설명 없음) "
 
-#: ../src/cli/cli-report.c:798
+#: ../src/cli/cli-report.c:797
 #, c-format
 msgid "There were %d errors while collecting additional data\n"
 msgstr "추가 데이터를 수집하는 도중 %d 오류가 발생했습니다\n"
 
-#: ../src/cli/cli-report.c:857 ../src/gui-wizard-gtk/wizard.c:2077
+#: ../src/cli/cli-report.c:856 ../src/gui-wizard-gtk/wizard.c:2081
 msgid "Reporting..."
 msgstr "보고 중..."
 
-#: ../src/cli/cli-report.c:872 ../src/report-newt/report-newt.c:55
+#: ../src/cli/cli-report.c:871 ../src/report-newt/report-newt.c:55
 msgid "How would you like to report the problem?"
 msgstr "어떻게 문제를 보고하시겠습니까? "
 
-#: ../src/cli/cli-report.c:882
+#: ../src/cli/cli-report.c:881
 msgid "Select reporter(s): "
 msgstr "보고서 선택: "
 
-#: ../src/cli/cli-report.c:898
+#: ../src/cli/cli-report.c:897
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "백트레이스가 사용 불가능하므로 보고하지 않습니다."
 
-#: ../src/cli/cli-report.c:902
+#: ../src/cli/cli-report.c:901
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -233,63 +233,63 @@ msgstr ""
 "\"debuginfo-install %s\" 명령을 사용하여 수동으로 debuginfo를 설치하신 후 다"
 "시 시도해 보십시오 \n"
 
-#: ../src/cli/cli-report.c:924
+#: ../src/cli/cli-report.c:923
 #, c-format
 msgid "Problem reported via %d report events (%d errors)\n"
 msgstr "%d 보고 이벤트를 통해 문제가 보고되었습니다 (%d 오류)\n"
 
-#: ../src/client-python/debuginfo.py:32
+#: ../src/client-python/debuginfo.py:56
 msgid "Extracting cpio from {0}"
 msgstr "{0}에서 cpio 추출 중 "
 
-#: ../src/client-python/debuginfo.py:37
+#: ../src/client-python/debuginfo.py:61
 msgid "Can't write to '{0}': {1}"
 msgstr "'{0}'에 작성할 수 없음: {1}"
 
-#: ../src/client-python/debuginfo.py:51
+#: ../src/client-python/debuginfo.py:76
 msgid "Can't extract package '{0}'"
 msgstr "패키지 '{0}'을(를) 추출할 수 없습니다 "
 
-#: ../src/client-python/debuginfo.py:59
+#: ../src/client-python/debuginfo.py:84
 msgid "Caching files from {0} made from {1}"
 msgstr "{1}에서 만들어진 {0}에서 파일을 캐시 중 "
 
-#: ../src/client-python/debuginfo.py:78
+#: ../src/client-python/debuginfo.py:103
 msgid "Can't extract files from '{0}'"
 msgstr "'{0}'에서 파일을 추출할 수 없음 "
 
-#: ../src/client-python/debuginfo.py:87
+#: ../src/client-python/debuginfo.py:112
 msgid "Can't remove '{0}': {1}"
 msgstr "'{0}'을(를) 제거할 수 없음: {1}"
 
 #. print (_("Downloading (%i of %i) %s: %3u%%")
 #. % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
 #. )
-#: ../src/client-python/debuginfo.py:113 ../src/client-python/debuginfo.py:124
+#: ../src/client-python/debuginfo.py:138 ../src/client-python/debuginfo.py:149
 msgid "Downloading ({0} of {1}) {2}: {3:3}%"
 msgstr "{2} 다운로드 중 ({1}중 {0}): {3:3}%"
 
 #. self.conf.cache = os.geteuid() != 0
 #. Setup yum (Ts, RPM db, Repo & Sack)
 #. doConfigSetup() takes some time, let user know what we are doing
-#: ../src/client-python/debuginfo.py:147
+#: ../src/client-python/debuginfo.py:172
 msgid "Initializing yum"
 msgstr "yum 초기화 중 "
 
-#: ../src/client-python/debuginfo.py:155
+#: ../src/client-python/debuginfo.py:180
 msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
 msgstr "yum 초기화 오류 (YumBase.doConfigSetup): '{0!s}'"
 
-#: ../src/client-python/debuginfo.py:186
+#: ../src/client-python/debuginfo.py:228
 msgid "Can't disable repository '{0!s}': {1!s}"
 msgstr "리포지터리 '{0!s}'를 비활성화할 수 없습니다: {1!s}"
 
 #. This takes some time, let user know what we are doing
-#: ../src/client-python/debuginfo.py:189
+#: ../src/client-python/debuginfo.py:231
 msgid "Setting up yum repositories"
 msgstr "yum 리포지터리 설정 중 "
 
-#: ../src/client-python/debuginfo.py:200
+#: ../src/client-python/debuginfo.py:242
 msgid "Can't setup {0}: {1}, disabling"
 msgstr "{0}을 설정할 수 없습니다: {1}, 비활성화 중 "
 
@@ -297,51 +297,51 @@ msgstr "{0}을 설정할 수 없습니다: {1}, 비활성화 중 "
 #. Looks like this is the moment when yum talks to remote servers,
 #. which takes time (sometimes minutes), let user know why
 #. we have "paused":
-#: ../src/client-python/debuginfo.py:207
+#: ../src/client-python/debuginfo.py:249
 msgid "Looking for needed packages in repositories"
 msgstr "리포지터리에서 필요한 패키지를 검색 중 "
 
-#: ../src/client-python/debuginfo.py:211
+#: ../src/client-python/debuginfo.py:253
 msgid "Error retrieving metadata: '{0!s}'"
 msgstr "메타데이터를 검색하는 동안 오류가 발생했습니다:  '{0!s}'"
 
-#: ../src/client-python/debuginfo.py:221
+#: ../src/client-python/debuginfo.py:263
 msgid "Error retrieving filelists: '{0!s}'"
 msgstr "파일 목록을 가져오는 도중 오류가 발생했습니다: '{0!s}'"
 
-#: ../src/client-python/debuginfo.py:254
+#: ../src/client-python/debuginfo.py:296
 msgid "Can't find packages for {0} debuginfo files"
 msgstr "{0} 디버그 정보 파일에 해당하는 패키지를 찾을 수 없습니다 "
 
-#: ../src/client-python/debuginfo.py:256
+#: ../src/client-python/debuginfo.py:298
 msgid "Packages to download: {0}"
 msgstr "다운로드할 패키지: {0}"
 
-#: ../src/client-python/debuginfo.py:257
+#: ../src/client-python/debuginfo.py:299
 msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
 msgstr "{0:.2f}Mb 다운로드 중, 설치 크기: {1:.2f}Mb. 계속 진행하시겠습니까? "
 
-#: ../src/client-python/debuginfo.py:262
+#: ../src/client-python/debuginfo.py:304
 msgid "Download cancelled by user"
 msgstr "사용자에 의해 다운로드가 취소되있습니다 "
 
-#: ../src/client-python/debuginfo.py:296
+#: ../src/client-python/debuginfo.py:331
 msgid "Downloading package {0} failed"
 msgstr "패키지 {0} 다운로드에 실패했습니다 "
 
 #. recursively delete the temp dir on failure
-#: ../src/client-python/debuginfo.py:302
+#: ../src/client-python/debuginfo.py:337
 msgid "Unpacking failed, aborting download..."
 msgstr "압축 풀기에 실패했습니다, 다운로드를 취소합니다..."
 
 #. Was: "All downloaded packages have been extracted, removing..."
 #. but it was appearing even if no packages were in fact extracted
 #. (say, when there was one package, and it has download error).
-#: ../src/client-python/debuginfo.py:312
+#: ../src/client-python/debuginfo.py:347
 msgid "Removing {0}"
 msgstr "{0} 제거 중 "
 
-#: ../src/client-python/debuginfo.py:316
+#: ../src/client-python/debuginfo.py:351
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
 msgstr "%s을(를) 제거할 수 없음, 오류 로그가 포함되어 있을 수 있음 "
@@ -510,28 +510,28 @@ msgstr "다음 단계로 이동 "
 msgid "(click here to view/edit)"
 msgstr "(보기/편집하려면 여기를 클릭) "
 
-#: ../src/gui-wizard-gtk/wizard.c:1097
+#: ../src/gui-wizard-gtk/wizard.c:1098
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(바이너리 파일, %llu 바이트) "
 
-#: ../src/gui-wizard-gtk/wizard.c:1265
+#: ../src/gui-wizard-gtk/wizard.c:1267
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu 바이트, %u 파일 "
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1812
+#: ../src/gui-wizard-gtk/wizard.c:1816
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "이벤트 '%s'에 대한 처리가 정의되지 않음 "
 
-#: ../src/gui-wizard-gtk/wizard.c:1934
+#: ../src/gui-wizard-gtk/wizard.c:1938
 #, c-format
 msgid "Reporting disabled because the rating does not contain a number '%s'."
 msgstr "rating에 숫자 '%s'이(가) 들어있지 않기 때문에 보고가 비활성화됩니다.  "
 
-#: ../src/gui-wizard-gtk/wizard.c:1957
+#: ../src/gui-wizard-gtk/wizard.c:1961
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -540,43 +540,43 @@ msgstr ""
 "오.  "
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1963
+#: ../src/gui-wizard-gtk/wizard.c:1967
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "백트레이스가 비활성화되었기 때문에 보고가 비활성화되었습니다. "
 
-#: ../src/gui-wizard-gtk/wizard.c:2049
+#: ../src/gui-wizard-gtk/wizard.c:2053
 msgid "Analyzing..."
 msgstr "분석 중... "
 
-#: ../src/gui-wizard-gtk/wizard.c:2050
+#: ../src/gui-wizard-gtk/wizard.c:2054
 msgid "Analyzing failed. You can try another analyzer if available."
 msgstr "분석 실패했습니다. 사용 가능한 다른 분석 프로그램을 시도해 보십시오."
 
-#: ../src/gui-wizard-gtk/wizard.c:2051
+#: ../src/gui-wizard-gtk/wizard.c:2055
 msgid "Analyzing finished. You can proceed to the next step."
 msgstr "분석 완료했습니다. 다음 단계를 진행할 수 있습니다. "
 
-#: ../src/gui-wizard-gtk/wizard.c:2078
+#: ../src/gui-wizard-gtk/wizard.c:2082
 msgid "Reporting failed. You can try another reporter if available."
 msgstr "보고 실패했습니다. 사용 가능한 다른 보고서를 시도해 보십시오. "
 
-#: ../src/gui-wizard-gtk/wizard.c:2079
+#: ../src/gui-wizard-gtk/wizard.c:2083
 msgid "Reporting finished. You can proceed to the next step."
 msgstr "보고 완료했습니다. 다음 단계를 진행할 수 있습니다."
 
-#: ../src/gui-wizard-gtk/wizard.c:2106
+#: ../src/gui-wizard-gtk/wizard.c:2110
 msgid "Collecting..."
 msgstr "수집 중..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2107
+#: ../src/gui-wizard-gtk/wizard.c:2111
 msgid "Collecting failed. You can try another collector if available."
 msgstr "수집 실패했습니다. 사용 가능한 다른 수집기를 시도해 보십시오."
 
-#: ../src/gui-wizard-gtk/wizard.c:2108
+#: ../src/gui-wizard-gtk/wizard.c:2112
 msgid "Collecting finished. You can proceed to the next step."
 msgstr "수집 완료했습니다. 다음 단계를 진행할 수 있습니다. "
 
-#: ../src/gui-wizard-gtk/wizard.c:2243
+#: ../src/gui-wizard-gtk/wizard.c:2247
 msgid ""
 "Possible sensitive data detected, please review the highlighted tabs "
 "carefully."
@@ -584,34 +584,34 @@ msgstr ""
 "기밀 데이터일 수 있는 자료가 감지되었습니다. 강조 표시된 탭을 주의해서 살펴보"
 "십시오. "
 
-#: ../src/gui-wizard-gtk/wizard.c:2539
+#: ../src/gui-wizard-gtk/wizard.c:2543
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s'은(는) 정상적인 파일이 아님 "
 
-#: ../src/gui-wizard-gtk/wizard.c:2555
+#: ../src/gui-wizard-gtk/wizard.c:2559
 msgid "You are trying to copy a file onto itself"
 msgstr "파일을 파일 자체에 복사하려고 합니다 "
 
-#: ../src/gui-wizard-gtk/wizard.c:2562
+#: ../src/gui-wizard-gtk/wizard.c:2566
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "'%s'을(를) 복사할 수 없습니다: %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2577
+#: ../src/gui-wizard-gtk/wizard.c:2581
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "항목 '%s'이 이미 존재하고 있기 때문에 변경할 수 없습니다 "
 
-#: ../src/gui-wizard-gtk/wizard.c:2833
+#: ../src/gui-wizard-gtk/wizard.c:2837
 msgid "Include"
 msgstr "포함 "
 
-#: ../src/gui-wizard-gtk/wizard.c:2843
+#: ../src/gui-wizard-gtk/wizard.c:2847
 msgid "Name"
 msgstr "이름"
 
-#: ../src/gui-wizard-gtk/wizard.c:2851
+#: ../src/gui-wizard-gtk/wizard.c:2855
 msgid "Value"
 msgstr "값 "
 
@@ -770,35 +770,66 @@ msgstr "지원되지 않는 옵션 유형 "
 msgid "Usage: "
 msgstr "사용법: "
 
-#: ../src/lib/abrt_curl.c:208 ../src/plugins/reporter-upload.c:41
+#: ../src/lib/abrt_curl.c:220
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "업로드됨: %llu 중 %llu 킬로바이트  "
+
+#: ../src/lib/abrt_curl.c:558
+#, c-format
+msgid "Sending %s to %s"
+msgstr "%s을(를) %s에 전송 중 "
+
+#. This ends up a "reporting status message" in abrtd
+#: ../src/lib/abrt_curl.c:590
+#, c-format
+msgid "Successfully sent %s to %s"
+msgstr "%s을(를) %s에 성공적으로 전송 "
 
 #: ../src/lib/problem_data.c:166
 #, c-format
 msgid "Essential element '%s' is missing, can't continue"
 msgstr "필수 요소 '%s'가 누락되어 있습니다, 계속 진행할 수 없습니다 "
 
-#: ../src/plugins/abrt_rh_support.c:394
+#: ../src/plugins/abrt_rh_support.c:360
 #, c-format
-msgid "error in case creation: %s"
-msgstr "생성 시 오류 발생: %s "
+msgid "Error in case creation at '%s': %s"
+msgstr ""
 
-#: ../src/plugins/abrt_rh_support.c:400
+#: ../src/plugins/abrt_rh_support.c:367
 #, c-format
-msgid "error in case creation, HTTP code: %d, server says: '%s'"
-msgstr "생성 시 오류 발생, HTTP 코드: %d, 서버: '%s' "
+msgid "Error in case creation at '%s', HTTP code: %d, server says: '%s'"
+msgstr ""
 
-#: ../src/plugins/abrt_rh_support.c:403
+#: ../src/plugins/abrt_rh_support.c:371
 #, c-format
-msgid "error in case creation, HTTP code: %d"
-msgstr "생성 시 오류 발생, HTTP 코드: %d "
+msgid "Error in case creation at '%s', HTTP code: %d"
+msgstr ""
 
-#: ../src/plugins/abrt_rh_support.c:550
+#: ../src/plugins/abrt_rh_support.c:420
 #, c-format
-msgid "error in case creation: no Location URL, HTTP code: %d"
-msgstr "생성 시 오류 발생: URL이 없음, HTTP 코드: %d "
+msgid "Error in case creation at '%s': no Location URL, HTTP code: %d"
+msgstr ""
+
+#: ../src/plugins/abrt_rh_support.c:524
+#, c-format
+msgid "Error in comment creation at '%s': %s"
+msgstr ""
+
+#: ../src/plugins/abrt_rh_support.c:533
+#, c-format
+msgid "Error in comment creation at '%s', HTTP code: %d, server says: '%s'"
+msgstr ""
+
+#: ../src/plugins/abrt_rh_support.c:537
+#, c-format
+msgid "Error in comment creation at '%s', HTTP code: %d"
+msgstr ""
+
+#: ../src/plugins/abrt_rh_support.c:583
+#, c-format
+msgid "Error in comment creation at '%s': no Location URL, HTTP code: %d"
+msgstr ""
 
 #: ../src/plugins/report.c:37
 msgid ""
@@ -864,6 +895,7 @@ msgstr "Bugzilla 계정 사용자 이름 "
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:7
+#: ../src/plugins/report_RHTSupportAttach.xml.in.h:7
 msgid "Password"
 msgstr "암호 "
 
@@ -873,11 +905,13 @@ msgstr "Bugzilla 계정 암호 "
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:10
 #: ../src/plugins/report_RHTSupport.xml.in.h:9
+#: ../src/plugins/report_RHTSupportAttach.xml.in.h:9
 msgid "Verify SSL"
 msgstr "SSL 확인 "
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:11
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
+#: ../src/plugins/report_RHTSupportAttach.xml.in.h:10
 msgid "Check SSL key validity"
 msgstr "SSL 키 유효성 확인 "
 
@@ -970,32 +1004,53 @@ msgid "Send binary files like coredump"
 msgstr "코어덤프와 같은 바이너리 파일 전송 "
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:1
-msgid "Red Hat Customer Support"
-msgstr "Red Hat 고객 지원 "
+msgid "New Red Hat Support case"
+msgstr ""
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:2
-msgid "Report to Red Hat support"
-msgstr "Red Hat 지원팀에 보고 "
+msgid "Create new Red Hat Support case"
+msgstr ""
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:3
+#: ../src/plugins/report_RHTSupportAttach.xml.in.h:3
 msgid "RH Portal URL"
 msgstr "RH 포털 URL "
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:4
+#: ../src/plugins/report_RHTSupportAttach.xml.in.h:4
 msgid "Address of the Red Hat support portal"
 msgstr "Red Hat 지원 포털 주소 "
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:5
+#: ../src/plugins/report_RHTSupportAttach.xml.in.h:5
 msgid "Username"
 msgstr "사용자이름 "
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:6
+#: ../src/plugins/report_RHTSupportAttach.xml.in.h:6
 msgid "Red Hat customer user name"
 msgstr "Red Hat 고객 사용자 이름 "
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:8
+#: ../src/plugins/report_RHTSupportAttach.xml.in.h:8
 msgid "Red Hat customer password"
 msgstr "Red Hat 고객 암호 "
+
+#: ../src/plugins/report_RHTSupportAttach.xml.in.h:1
+msgid "Existing Red Hat Support case"
+msgstr ""
+
+#: ../src/plugins/report_RHTSupportAttach.xml.in.h:2
+msgid "Add to existing Red Hat Support case"
+msgstr ""
+
+#: ../src/plugins/report_Tarball.xml.in.h:1
+msgid "Save to tar archive"
+msgstr ""
+
+#: ../src/plugins/report_Tarball.xml.in.h:2
+msgid "Save the problem data to a *.tar.gz in /tmp"
+msgstr ""
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report uploader"
@@ -1019,8 +1074,8 @@ msgstr ""
 
 #: ../src/plugins/report_Uploader.xml.in.h:5
 msgid ""
-"Examples: ftp://[user[:pass]@]host/dir/[file.tar.gz], scp://[user[:pass]@]"
-"host/dir/[file.tar.gz], file:///dir/[file.tar.gz]"
+"Examples: ftp://[user[:pass]@]host/dir/[file.tar.gz], scp://[user[:"
+"pass]@]host/dir/[file.tar.gz], file:///dir/[file.tar.gz]"
 msgstr ""
 "예: ftp://[user[:pass]@]host/dir/[file.tar.gz], scp://[user[:pass]@]host/dir/"
 "[file.tar.gz], file:///dir/[file.tar.gz]"
@@ -1078,13 +1133,13 @@ msgstr ""
 #: ../src/plugins/reporter-bugzilla.c:110
 #: ../src/plugins/reporter-kerneloops.c:166
 #: ../src/plugins/reporter-mailx.c:173 ../src/plugins/reporter-print.c:56
-#: ../src/plugins/reporter-rhtsupport.c:84
-#: ../src/plugins/reporter-upload.c:300
+#: ../src/plugins/reporter-rhtsupport.c:224
+#: ../src/plugins/reporter-upload.c:211
 msgid "Dump directory"
 msgstr "덤프 디렉토리 "
 
 #: ../src/plugins/reporter-bugzilla.c:111
-#: ../src/plugins/reporter-rhtsupport.c:85
+#: ../src/plugins/reporter-rhtsupport.c:225
 msgid "Configuration file (may be given many times)"
 msgstr "설정 파일 (여러번 주어질 수 있음) "
 
@@ -1097,7 +1152,7 @@ msgid "When creating bug, attach binary files too"
 msgstr "버그 생성 시 바이너리 파일도 첨부합니다 "
 
 #: ../src/plugins/reporter-bugzilla.c:114
-#: ../src/plugins/reporter-rhtsupport.c:87
+#: ../src/plugins/reporter-rhtsupport.c:227
 msgid "Force reporting even if this problem is already reported"
 msgstr "이 문제가 이미 보고되어 있는 경우에도 강제로 보고합니다 "
 
@@ -1222,7 +1277,7 @@ msgstr ""
 "\n"
 "지정하지 않을 경우, CONFFILE에 따라 다음과 같이 기본 설정됩니다. "
 
-#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:301
+#: ../src/plugins/reporter-mailx.c:174 ../src/plugins/reporter-upload.c:212
 msgid "Config file"
 msgstr "설정 파일 "
 
@@ -1271,7 +1326,7 @@ msgstr "보고서는 %s에 첨부되어 있음 "
 msgid "The report was stored to %s"
 msgstr "보고서는 %s에 저장되어 있음 "
 
-#: ../src/plugins/reporter-rhtsupport.c:54
+#: ../src/plugins/reporter-rhtsupport.c:193
 msgid ""
 "\n"
 "& [-v] [-c CONFFILE] -d DIR\n"
@@ -1291,51 +1346,79 @@ msgstr ""
 "\n"
 "지정하지 않을 경우 CONFFILE에 따라 다음과 같이 기본 설정됩니다. "
 
-#: ../src/plugins/reporter-rhtsupport.c:86
+#: ../src/plugins/reporter-rhtsupport.c:226
 msgid "Upload FILEs [to case with this ID]"
 msgstr "FILE 업로드 [이 ID를 갖는 사례에] "
 
-#: ../src/plugins/reporter-rhtsupport.c:121
+#: ../src/plugins/reporter-rhtsupport.c:252
 msgid "Empty RHTS login or password"
 msgstr "빈 RHTS 로그인 또는 암호 "
 
-#: ../src/plugins/reporter-rhtsupport.c:164
+#: ../src/plugins/reporter-rhtsupport.c:281
+#: ../src/plugins/reporter-rhtsupport.c:292
+msgid "Case number:"
+msgstr ""
+
+#. User just pressed [enter] (or [cancel] in GIU).
+#: ../src/plugins/reporter-rhtsupport.c:287
+#: ../src/plugins/reporter-rhtsupport.c:301
+msgid "Reporting cancelled"
+msgstr ""
+
+#. We have a preexisting URL
+#: ../src/plugins/reporter-rhtsupport.c:290
+#, c-format
+msgid "Note: was already reported to '%s'"
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:294
+msgid "Case number (default:previously reported case):"
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:328
 #, c-format
 msgid "Attaching '%s' to case '%s'"
 msgstr "'%s'을(를) 사례 '%s'에 추가 중 "
 
-#. create_problem_data_for_reporting already emitted error msg
 #. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../src/plugins/reporter-rhtsupport.c:205
-#: ../src/plugins/reporter-upload.c:133
+#: ../src/plugins/reporter-rhtsupport.c:365
+#: ../src/plugins/reporter-upload.c:39
 msgid "Compressing data"
 msgstr "데이터 압축 중 "
 
-#: ../src/plugins/reporter-rhtsupport.c:244
+#: ../src/plugins/reporter-rhtsupport.c:404
 msgid "Can't create a temporary directory in /tmp"
 msgstr "/tmp에 임시 디렉토리를 생성할 수 없음 "
 
-#. Hopefully, by this time child emitted more meaningful
-#. * error message. But just in case it didn't:
-#.
-#: ../src/plugins/reporter-rhtsupport.c:270
-#: ../src/plugins/reporter-rhtsupport.c:301
-#: ../src/plugins/reporter-rhtsupport.c:335
-#: ../src/plugins/reporter-rhtsupport.c:351
+#: ../src/plugins/reporter-rhtsupport.c:413
 msgid "Can't create temporary file in /tmp"
 msgstr "/tmp에 임시 파일을 생성할 수 없음 "
 
-#: ../src/plugins/reporter-rhtsupport.c:387
+#. Check for hints and show them if we have something
+#: ../src/plugins/reporter-rhtsupport.c:422
+msgid "Checking for hints"
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:454
 msgid "Do you still want to create a RHTSupport ticket?"
 msgstr "RHTSupport 티켓을 정말로 생성하시겠습니까? "
 
-#. result = NULL; - redundant, result is assigned just below
-#. Send tempfile
-#: ../src/plugins/reporter-rhtsupport.c:399
-msgid "Creating a new case..."
-msgstr "새 사례 생성 중..."
+#: ../src/plugins/reporter-rhtsupport.c:468
+msgid "Creating a new case"
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:536
+#, c-format
+msgid "Adding comment to case '%s'"
+msgstr ""
+
+#. Attach the tarball of -d DIR
+#: ../src/plugins/reporter-rhtsupport.c:556
+#, c-format
+msgid "Attaching problem data to case '%s'"
+msgstr ""
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:202
 msgid "Documentation which might be relevant: "
@@ -1345,23 +1428,13 @@ msgstr "관련 가능성이 있는 문서: "
 msgid "Updates which possibly help: "
 msgstr "도움이 될 수 있는 업데이트: "
 
-#: ../src/plugins/reporter-upload.c:71
-#, c-format
-msgid "Sending %s to %s"
-msgstr "%s을(를) %s에 전송 중 "
-
-#. This ends up a "reporting status message" in abrtd
-#: ../src/plugins/reporter-upload.c:110
-#, c-format
-msgid "Successfully sent %s to %s"
-msgstr "%s을(를) %s에 성공적으로 전송 "
-
-#: ../src/plugins/reporter-upload.c:233
+#. success
+#: ../src/plugins/reporter-upload.c:144
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "아카이브가 생성됨: '%s' "
 
-#: ../src/plugins/reporter-upload.c:273
+#: ../src/plugins/reporter-upload.c:184
 msgid ""
 "& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
@@ -1400,7 +1473,7 @@ msgstr ""
 "인식되는 문자열 매개 변수는 URL입니다. \n"
 "매개 변수는 $Upload_URL을 통해 덮어쓰기될 수 있습니다. "
 
-#: ../src/plugins/reporter-upload.c:302
+#: ../src/plugins/reporter-upload.c:213
 msgid "Base URL to upload to"
 msgstr "업로드할 기본 URL "
 
@@ -1433,12 +1506,12 @@ msgstr "크래시 스레드를 찾을 수 없음 "
 msgid "New bug id: %i"
 msgstr "새 버그 id: %i "
 
-#: ../src/plugins/rhbz.c:791
+#: ../src/plugins/rhbz.c:792
 #, c-format
 msgid "Not attaching empty file '%s'"
 msgstr "빈 파일 '%s'을 첨부하지 않음 "
 
-#: ../src/plugins/rhbz.c:850
+#: ../src/plugins/rhbz.c:851
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla는 버그 %d의 부모 버그를 찾을 수 없습니다 "
