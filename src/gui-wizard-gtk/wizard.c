@@ -522,6 +522,24 @@ static void open_browse_if_link(GtkWidget *text_view, GtkTextIter *iter)
 
         if (url != 0)
         {
+            /* http://techbase.kde.org/KDE_System_Administration/Environment_Variables#KDE_FULL_SESSION */
+            if (getenv("KDE_FULL_SESSION") != NULL)
+            {
+                gint exitcode;
+                gchar *arg[3];
+                /* kde-open is from kdebase-runtime, it should be there. */
+                arg[0] = (char *) "kde-open";
+                arg[1] = (char *) url;
+                arg[2] = NULL;
+
+                const gboolean spawn_ret = g_spawn_sync(NULL, arg, NULL,
+                                 G_SPAWN_SEARCH_PATH | G_SPAWN_STDOUT_TO_DEV_NULL,
+                                 NULL, NULL, NULL, NULL, &exitcode, NULL);
+
+                if (spawn_ret)
+                    break;
+            }
+
             GError *error = NULL;
             if (!gtk_show_uri(/* use default screen */ NULL, url, GDK_CURRENT_TIME, &error))
                 error_msg("Can't open url '%s': %s", url, error->message);
