@@ -1976,6 +1976,7 @@ static void add_warning(const char *warning)
 
     gtk_misc_set_alignment(GTK_MISC(warning_lbl), 0.0, 0.0);
     gtk_label_set_justify(GTK_LABEL(warning_lbl), GTK_JUSTIFY_LEFT);
+    gtk_label_set_line_wrap(GTK_LABEL(warning_lbl), TRUE);
     gtk_box_pack_start(g_box_warning_labels, warning_lbl, false, false, 0);
     gtk_widget_show(warning_lbl);
 }
