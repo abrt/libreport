@@ -39,6 +39,7 @@ static
 int create_tarball(const char *tempfile, problem_data_t *problem_data)
 {
     reportfile_t *file = NULL;
+    int retval = 0; /* everything is ok so far .. */
 
     int pipe_from_parent_to_child[2];
     xpipe(pipe_from_parent_to_child);
@@ -58,7 +59,7 @@ int create_tarball(const char *tempfile, problem_data_t *problem_data)
     if (tar_fdopen(&tar, pipe_from_parent_to_child[1], (char*)tempfile,
                 /*fileops:(standard)*/ NULL, O_WRONLY | O_CREAT, 0644, TAR_GNU) != 0)
     {
-        goto ret;
+        goto ret_fail;
     }
 
     file = new_reportfile();
@@ -90,7 +91,7 @@ int create_tarball(const char *tempfile, problem_data_t *problem_data)
                 if (tar_append_file(tar, (char*)content, xml_name) != 0)
                 {
                     free(xml_name);
-                    goto ret;
+                    goto ret_fail;
                 }
                 free(xml_name);
             }
@@ -126,7 +127,7 @@ int create_tarball(const char *tempfile, problem_data_t *problem_data)
          || tar_close(tar) != 0
         ) {
             free(block);
-            goto ret;
+            goto ret_fail;
         }
         tar = NULL;
         free(block);
@@ -141,11 +142,12 @@ int create_tarball(const char *tempfile, problem_data_t *problem_data)
         /* Hopefully, by this time child emitted more meaningful
          * error message. But just in case it didn't:
          */
-        goto ret;
+        goto ret_fail;
     }
-    return 0; /* success */
+    goto ret_clean; /* success */
 
- ret:
+ret_fail:
+    retval = 1; /* failure */
     /* We must close write fd first, or else child will wait forever */
     if (tar)
         tar_close(tar);
@@ -159,8 +161,10 @@ int create_tarball(const char *tempfile, problem_data_t *problem_data)
         safe_waitpid(child, NULL, 0);
     }
 
+ret_clean:
+    /* now it's safe to free file */
     free_reportfile(file);
-    return 1; /* failure */
+    return retval;
 }
 
 static
