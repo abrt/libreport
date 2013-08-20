@@ -4,14 +4,15 @@
 # 
 # Translators:
 # Dominik <dominikla@gmail.com>, 2012
+# mond <milan.ondrasovic@gmail.com>, 2013
 # Richard Marko <rissko@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: https://fedorahosted.org/abrt/report\n"
-"POT-Creation-Date: 2013-05-02 09:29+0200\n"
-"PO-Revision-Date: 2013-05-02 07:30+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"POT-Creation-Date: 2013-07-19 19:34+0200\n"
+"PO-Revision-Date: 2013-08-20 10:48+0000\n"
+"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
 "Language-Team: Slovak (http://www.transifex.com/projects/p/fedora/language/sk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,24 +26,24 @@ msgid ""
 "   or: & [-vspy] -e EVENT PROBLEM_DIR\n"
 "   or: & [-vspy] -d PROBLEM_DIR\n"
 "   or: & [-vspy] -x PROBLEM_DIR"
-msgstr ""
+msgstr "& [-vsp] -L[PREFIX] [PROBLEM_DIR]\nalebo: & [-vspy] -e EVENT PROBLEM_DIR\nalebo: & [-vspy] -d PROBLEM_DIR\nalebo: & [-vspy] -x PROBLEM_DIR"
 
 #. short_name long_name  value    parameter_name  help
 #: ../src/cli/cli.c:84
 msgid "List possible events [which start with PREFIX]"
-msgstr "Zobraziť dostupné udalosti [začínajúce na PREFIX]"
+msgstr "Zobraziť zoznam možných udalostí [začínajúce na PREFIX]"
 
 #: ../src/cli/cli.c:85 ../src/gui-wizard-gtk/main.c:123
 msgid "Run only these events"
-msgstr ""
+msgstr "Spúšťať len tieto udalosti"
 
 #: ../src/cli/cli.c:86 ../src/gui-wizard-gtk/main.c:122
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "Odstrániť PROBLEM_DIR po ohláseni"
 
 #: ../src/cli/cli.c:87 ../src/gui-wizard-gtk/main.c:124
 msgid "Expert mode"
-msgstr ""
+msgstr "Režim 'expert'"
 
 #: ../src/cli/cli.c:88 ../src/report-newt/report-newt.c:393
 msgid "Display version and exit"
@@ -50,7 +51,7 @@ msgstr "Zobraziť verziu a ukončiť"
 
 #: ../src/cli/cli.c:89
 msgid "Noninteractive: don't ask questions, assume 'yes'"
-msgstr "Neinteraktívne: nepýtať sa žiadne otázky, predpokladať 'áno'"
+msgstr "Neinteraktívne: nepýtať sa otázky, predpokladať 'áno'"
 
 #: ../src/cli/cli.c:91
 msgid "Log to syslog"
@@ -105,19 +106,19 @@ msgstr "# Balíček"
 
 #: ../src/cli/cli-report.c:163
 msgid "# Reason of crash"
-msgstr "# Dôvody pádu"
+msgstr "# Dôvod pádu"
 
 #: ../src/cli/cli-report.c:170
 msgid "# os-release configuration file from root dir"
-msgstr ""
+msgstr "# os-release konfiguračný súbor z koreňového adresára"
 
 #: ../src/cli/cli-report.c:175
 msgid "# Release string of the operating system from root dir"
-msgstr ""
+msgstr "# Vydanie operačného systému z koreňového adresára"
 
 #: ../src/cli/cli-report.c:183
 msgid "# os-release configuration file"
-msgstr ""
+msgstr "# os-release konfiguračný súbor"
 
 #: ../src/cli/cli-report.c:188
 msgid "# Release string of the operating system"
@@ -131,7 +132,7 @@ msgstr "Nemožno spustiť vi: $TERM, $VISUAL a $EDITOR nie sú nastavené"
 msgid ""
 "\n"
 "The report has been updated"
-msgstr "\nSpráva bola aktualizovaná"
+msgstr "\nToto hlásenie bolo aktualizované"
 
 #: ../src/cli/cli-report.c:405
 msgid ""
@@ -146,18 +147,18 @@ msgstr "Váš vstup nie je platný, kvôli:"
 #: ../src/cli/cli-report.c:495
 #, c-format
 msgid "Bad value for '%s': %s"
-msgstr "Zlá hodnota pre '%s': %s"
+msgstr "Nesprávna hodnota pre '%s': %s"
 
 #: ../src/cli/cli-report.c:693
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data. Do you want "
 "to continue?"
-msgstr ""
+msgstr "Udalosť '%s' vyžaduje povolenie k odoslaniu potencionálne citlivých údajov. Chcete pokračovať?"
 
 #: ../src/cli/cli-report.c:752
 msgid "Select an event to run: "
-msgstr ""
+msgstr "Zvoľte udalosť pre spustenie:"
 
 #: ../src/cli/cli-report.c:760
 msgid "You have chosen number out of range"
@@ -165,7 +166,7 @@ msgstr "Vybrali ste číslo mimo rozsah"
 
 #: ../src/cli/cli-report.c:764
 msgid "Invalid input, exiting."
-msgstr ""
+msgstr "Neplatný vstup, ukončovanie."
 
 #: ../src/client-python/debuginfo.py:56
 msgid "Extracting cpio from {0}"
@@ -202,7 +203,7 @@ msgstr "Sťahujem ({0} z {1}) {2}: {3:3}%"
 msgid ""
 "Problem '{0!s}' occured while downloading from mirror: '{1!s}'. Trying next "
 "one"
-msgstr ""
+msgstr "Problém '{0!s}' nastal pri sťahovaní z odkazu: '{1!s}'. Pripájanie k ďalšiemu odkazu"
 
 #. self.conf.cache = os.geteuid() != 0
 #. Setup yum (Ts, RPM db, Repo & Sack)
@@ -217,11 +218,11 @@ msgstr "Chyba pri spúšťaní yum-u (YumBase.doConfigSetup): '{0!s}'"
 
 #: ../src/client-python/debuginfo.py:226
 msgid "Error: can't make cachedir, exiting"
-msgstr ""
+msgstr "Chyba: nemožno vytvoriť cachedir, ukončovanie"
 
 #: ../src/client-python/debuginfo.py:235
 msgid "Can't disable repository '{0!s}': {1!s}"
-msgstr ""
+msgstr "Nemožno zablokovať repozitár '{0!s}': {1!s}"
 
 #. This takes some time, let user know what we are doing
 #: ../src/client-python/debuginfo.py:238
@@ -230,7 +231,7 @@ msgstr "Nastavujem repozitáre yum-u"
 
 #: ../src/client-python/debuginfo.py:255
 msgid "Can't disable async download, the output might contain artifacts!"
-msgstr ""
+msgstr "Nemožno zakázať asynchrónne sťahovanie, výstup môže obsahovať artefakty!"
 
 #: ../src/client-python/debuginfo.py:257
 msgid "Can't setup {0}: {1}, disabling"
@@ -282,7 +283,7 @@ msgstr "Rozbaľovanie zlyhalo, prerušujem sťahovanie"
 #. (say, when there was one package, and it has download error).
 #: ../src/client-python/debuginfo.py:368
 msgid "Removing {0}"
-msgstr "Mažem {0}"
+msgstr "Vymazávam {0}"
 
 #: ../src/client-python/debuginfo.py:372
 #, python-format
@@ -296,11 +297,11 @@ msgstr "Nepýtať sa znovu"
 #. if event has no xml description
 #: ../src/gtk-helpers/config_dialog.c:153
 msgid "No description available"
-msgstr ""
+msgstr "Žiadny popis nie je prístupný."
 
 #: ../src/gtk-helpers/config_dialog.c:274
 msgid "Configuration"
-msgstr ""
+msgstr "Konfigurácia"
 
 #. we can't use this, because we want the workflows first and hashtable
 #. * doesn't return the items in the order they were added
@@ -310,78 +311,78 @@ msgstr ""
 #: ../src/gtk-helpers/config_dialog.c:299
 #: ../src/gtk-helpers/config_dialog.c:350
 msgid "Workflows"
-msgstr ""
+msgstr "Workflows"
 
 #: ../src/gtk-helpers/config_dialog.c:301
 #: ../src/gtk-helpers/config_dialog.c:303
 #: ../src/gtk-helpers/config_dialog.c:353
 msgid "Events"
-msgstr ""
+msgstr "Udalosti"
 
 #: ../src/gtk-helpers/config_dialog.c:307
 msgid "C_onfigure"
-msgstr ""
+msgstr "K_configurovať"
 
 #: ../src/gtk-helpers/event_config_dialog.c:136
 msgid "Show password"
 msgstr "Ukázať heslo"
 
-#: ../src/gtk-helpers/event_config_dialog.c:216
+#: ../src/gtk-helpers/event_config_dialog.c:221
 msgid "Advanced"
 msgstr "Rozšírené"
 
-#: ../src/gtk-helpers/event_config_dialog.c:234
+#: ../src/gtk-helpers/event_config_dialog.c:241
 msgid "Don't store passwords"
 msgstr "Neukladať heslá"
 
-#: ../src/gtk-helpers/event_config_dialog.c:257
+#: ../src/gtk-helpers/event_config_dialog.c:264
 msgid "Secret Service is not available, your settings won't be saved!"
-msgstr ""
+msgstr "Secret Service nie je dostupné, Vaše nastavenia nebudú uložené!"
 
 #: ../src/gtk-helpers/secrets.c:171
 #, c-format
 msgid "Can't connect over DBus to name '%s' path '%s' interface '%s': %s"
-msgstr ""
+msgstr "Nemožno pripojiť prostredníctvom DBus k: názov '%s' cesta '%s' rozhranie '%s': %s"
 
 #: ../src/gtk-helpers/secrets.c:191
 #, c-format
 msgid "Can't call method '%s' over DBus on path '%s' interface '%s': %s"
-msgstr ""
+msgstr "Nemožno zavolať metódu '%s' z DBus, cesta '%s' rozhranie '%s': %s"
 
 #: ../src/gtk-helpers/secrets.c:549
 msgid ""
 "A timeout was reached while waiting for a prompt result from the DBus Secret"
 " Service."
-msgstr ""
+msgstr "Časový limit bol dosiahnutý pri čakaní na výsledok z DBus Secret Service"
 
 #: ../src/gtk-helpers/secrets.c:552
 msgid ""
 "Do you want to stop waiting and continue in reporting without properly "
 "loaded configuration?"
-msgstr ""
+msgstr "Prajete si ukončiť čakanie a pokračovať v ohlasovaní bez správne načítanej konfigurácie?"
 
 #: ../src/gtk-helpers/secrets.c:862
 #, c-format
 msgid "D-Bus Secrets Service ReadAlias('%s') method failed: %s"
-msgstr ""
+msgstr "D-Bus Secret Service ReadAlias('%s') metóda zlyhala: %s"
 
 #. if the error wasn't about invalid properties we have an another problem
 #: ../src/gtk-helpers/secrets.c:1104
 #, c-format
 msgid "Can't create a secret item for event '%s': %s"
-msgstr ""
+msgstr "Nemožno vytvoriť skrytú položku pre udalosť '%s': %s"
 
 #: ../src/gtk-helpers/secrets.c:1286
 #, c-format
 msgid "can't get secret value of '%s': %s"
-msgstr ""
+msgstr "nemožno obdržať skrytú hodnotu '%s': %s"
 
 #: ../src/gui-wizard-gtk/main.c:105
 msgid ""
 "& [-vpdx] [-e EVENT]... [-g GUI_FILE] PROBLEM_DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified PROBLEM_DIR"
-msgstr ""
+msgstr "& [-vpdx] [-e EVENT]... [-g GUI_FILE] PROBLEM_DIR\n\nGUI nástroj pre analýzu a ohlásenie problému v špecifikovanom PROBLEM_DIR"
 
 #: ../src/gui-wizard-gtk/main.c:120
 msgid "Alternate GUI file"
@@ -393,7 +394,7 @@ msgid ""
 "Wrong settings detected for %s, reporting will probably fail if you continue with the current configuration.\n"
 "\n"
 "Read more about the configuration at: https://fedorahosted.org/abrt/wiki/AbrtConfiguration"
-msgstr ""
+msgstr "Boli zistené nesprávne nastavenia pre %s, ohlasovanie pravdepodobne zlyhá ak budete pokračovať s aktuálnou konfiguráciou.\n\nDočítajte sa viac o konfigurácii na: https://fedorahosted.org/abrt/wiki/AbrtConfiguration"
 
 #: ../src/gui-wizard-gtk/wizard.c:304
 #, c-format
@@ -401,7 +402,7 @@ msgid ""
 "Wrong settings detected for <b>%s</b>, reporting will probably fail if you continue with the current configuration.\n"
 "\n"
 "<a href=\"https://fedorahosted.org/abrt/wiki/AbrtConfiguration\">Read more about the configuration</a>"
-msgstr ""
+msgstr "Boli zistené nesprávne nastavenia pre <b>%s</b>, ohlasovanie pravdepodobne zlyhá ak budete pokračovať s aktuálnou konfiguráciou.\n\n<a href=\"https://fedorahosted.org/abrt/wiki/AbrtConfiguration\">Dočítajte sa viac o konfigurácii</a>"
 
 #: ../src/gui-wizard-gtk/wizard.c:322
 #, c-format
@@ -423,17 +424,17 @@ msgstr "Zobraziť/editovať textový súbor"
 msgid ""
 "No reporting targets are defined for this problem. Check configuration in "
 "/etc/libreport/*"
-msgstr ""
+msgstr "Žiadne cieľe pre hlásenia nie sú definované. Skontrolujte konfiguráciu v /etc/libreport/*"
 
 #: ../src/gui-wizard-gtk/wizard.c:1008
 #, c-format
 msgid "(requires: %s)"
-msgstr ""
+msgstr "(požaduje: %s)"
 
 #: ../src/gui-wizard-gtk/wizard.c:1022
 #, c-format
 msgid "(not needed, data already exist: %s)"
-msgstr ""
+msgstr "(nie je potrebné, dáta už existujú: %s)"
 
 #: ../src/gui-wizard-gtk/wizard.c:1175
 msgid "(click here to view/edit)"
@@ -453,144 +454,147 @@ msgstr "(žiadny popis)"
 msgid "%llu bytes, %u files"
 msgstr "%llu byte-ov, %u súborov"
 
-#: ../src/gui-wizard-gtk/wizard.c:1531
+#: ../src/gui-wizard-gtk/wizard.c:1530
 msgid "Processing was canceled"
-msgstr ""
+msgstr "Spracovanie bolo zrušené"
 
-#: ../src/gui-wizard-gtk/wizard.c:1695
+#: ../src/gui-wizard-gtk/wizard.c:1694
 msgid ""
 "Processing of the problem failed. This can have many reasons but there are two most common:\n"
 "\t▫ <b>network connection problems</b>\n"
 "\t▫ <b>corrupted problem data</b>\n"
-msgstr ""
+msgstr "Spracovanie problému zlyhalo. Spomedzi mnoho dôvodov dva najčastejšie sú:\n<b>problémy so sieťovým pripojením</b>\n<b>poškodené údaje o probléme</b>\n"
 
-#: ../src/gui-wizard-gtk/wizard.c:1700
+#: ../src/gui-wizard-gtk/wizard.c:1699
 msgid ""
 "If you want to help us, please click on the upload button and provide all problem data for a deep analysis.\n"
 "<i>Before you do that, please consider the security risks. Problem data may contain sensitive information like passwords.\n"
 "The uploaded data are stored in a protected storage and only a limited number of persons can read them.</i>"
+msgstr "Ak nám chcete pomôcť, prosím kliknite na tlačítko odoslať a poskytnite veškeré údaje o probléme pre dôkladnú analýzu.\n<i>Avšak ešte predtým zvážte možné bezpečnostné riziká. Údaje môžu obsahovať citlivé informácie ako sú napríklad heslá.\nOdoslané údaje sú uchované v chránenenej oblasti do ktorej ma prístup len obmedzený počet osôb.</i>"
+
+#: ../src/gui-wizard-gtk/wizard.c:1817
+msgid "Processing was interrupted because the problem is not reportable."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1832 ../src/gui-wizard-gtk/wizard.c:1897
+#: ../src/gui-wizard-gtk/wizard.c:1827 ../src/gui-wizard-gtk/wizard.c:1895
 msgid "Processing failed."
-msgstr ""
+msgstr "Spracovanie zlyhalo."
+
+#. No next event, go to progress page and finish
+#: ../src/gui-wizard-gtk/wizard.c:1835 ../src/gui-wizard-gtk/wizard.c:2520
+msgid "Processing finished."
+msgstr "Spracovanie ukončené."
+
+#: ../src/gui-wizard-gtk/wizard.c:1836
+msgid "Processing finished, please proceed to the next step."
+msgstr "Spracovanie ukončené, prosím pristúpte k ďalšiemu kroku."
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1894
+#: ../src/gui-wizard-gtk/wizard.c:1892
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "Nie je definované žiadne spracovanie pre udalosť '%s'"
 
-#: ../src/gui-wizard-gtk/wizard.c:1908
+#: ../src/gui-wizard-gtk/wizard.c:1906
 msgid "Processing interrupted: can't continue without writable directory."
-msgstr ""
+msgstr "Spracovanie prerušené: nemožno pokračovať bez zapisovateľného priečinka."
 
-#: ../src/gui-wizard-gtk/wizard.c:1946
+#: ../src/gui-wizard-gtk/wizard.c:1943
 msgid "Processing..."
-msgstr ""
+msgstr "Spracovávam..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2005
+#: ../src/gui-wizard-gtk/wizard.c:2002
 msgid "Cannot check backtrace rating because of invalid event name"
-msgstr ""
+msgstr "Nemožno skontrolovať backtrace rating z dôvodu neplatného názvu udalosti"
 
-#: ../src/gui-wizard-gtk/wizard.c:2258
+#: ../src/gui-wizard-gtk/wizard.c:2255
 msgid ""
 "Possible sensitive data detected, please review the highlighted tabs "
 "carefully."
 msgstr "Detekované citilivé dáta, prosím skontrolujte zvýraznené záložky."
 
-#. this event is the last event from the chain
-#. No next event, go to progress page and finish
-#: ../src/gui-wizard-gtk/wizard.c:2269 ../src/gui-wizard-gtk/wizard.c:2532
-msgid "Processing finished."
-msgstr ""
-
-#: ../src/gui-wizard-gtk/wizard.c:2270
-msgid "Processing finished, please proceed to the next step."
-msgstr ""
-
-#: ../src/gui-wizard-gtk/wizard.c:2552
+#: ../src/gui-wizard-gtk/wizard.c:2540
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
 "Do you want to continue?"
-msgstr ""
+msgstr "Udalosť '%s' vyžaduje povolenie k odoslaniu potecionálne citlivých údajov. Chcete pokračovať?"
 
-#: ../src/gui-wizard-gtk/wizard.c:2600
+#: ../src/gui-wizard-gtk/wizard.c:2588
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
-msgstr ""
+msgstr "Tento problém by nemal byť ohlásený (jedná sa pravdepodobne o známy problém). %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2847
+#: ../src/gui-wizard-gtk/wizard.c:2835
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' nie je bežný súbor"
 
-#: ../src/gui-wizard-gtk/wizard.c:2861
+#: ../src/gui-wizard-gtk/wizard.c:2849
 msgid "You are trying to copy a file onto itself"
 msgstr "Pokúšate sa skopírovať súbor sám na seba"
 
-#: ../src/gui-wizard-gtk/wizard.c:2868
+#: ../src/gui-wizard-gtk/wizard.c:2856
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "Nie je možné skopírovať '%s': %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2883
+#: ../src/gui-wizard-gtk/wizard.c:2871
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "Položka '%s' už existuje a nie je možné ju meniť"
 
-#: ../src/gui-wizard-gtk/wizard.c:3065
+#: ../src/gui-wizard-gtk/wizard.c:3053
 msgid "Include"
 msgstr "Zahrnúť"
 
-#: ../src/gui-wizard-gtk/wizard.c:3076
+#: ../src/gui-wizard-gtk/wizard.c:3064
 msgid "Name"
 msgstr "Názov"
 
-#: ../src/gui-wizard-gtk/wizard.c:3086
+#: ../src/gui-wizard-gtk/wizard.c:3074
 msgid "Value"
 msgstr "Hodnota"
 
-#: ../src/gui-wizard-gtk/wizard.c:3120
+#: ../src/gui-wizard-gtk/wizard.c:3108
 msgid "Problem description"
 msgstr "Popis problému"
 
-#: ../src/gui-wizard-gtk/wizard.c:3121
+#: ../src/gui-wizard-gtk/wizard.c:3109
 msgid "Select how to report this problem"
-msgstr ""
+msgstr "Vyberte ako ohlásiť tento problém"
 
-#: ../src/gui-wizard-gtk/wizard.c:3122
+#: ../src/gui-wizard-gtk/wizard.c:3110
 msgid "Provide additional information"
 msgstr "Poskytnúť dodatočné informácie"
 
-#: ../src/gui-wizard-gtk/wizard.c:3123
+#: ../src/gui-wizard-gtk/wizard.c:3111
 msgid "Review the data"
 msgstr "Skontrolovať dáta"
 
-#: ../src/gui-wizard-gtk/wizard.c:3124
+#: ../src/gui-wizard-gtk/wizard.c:3112
 msgid "Confirm data to report"
 msgstr "Skontrolovať dáta k ohláseniu"
 
-#: ../src/gui-wizard-gtk/wizard.c:3125
+#: ../src/gui-wizard-gtk/wizard.c:3113
 msgid "Processing"
-msgstr ""
+msgstr "Spracovávanie"
 
-#: ../src/gui-wizard-gtk/wizard.c:3126
+#: ../src/gui-wizard-gtk/wizard.c:3114
 msgid "Processing done"
-msgstr ""
+msgstr "Spracovávanie ukončené"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3218
+#: ../src/gui-wizard-gtk/wizard.c:3205
 msgid "Upload for analysis"
-msgstr ""
+msgstr "Odoslať na analýzu"
 
-#: ../src/gui-wizard-gtk/wizard.c:3310
+#: ../src/gui-wizard-gtk/wizard.c:3297
 msgid ""
 "In order to enable the built-in screencasting functionality the package recordmydesktop has to be installed. Please run the following command if you want to install it.\n"
 "\n"
 "<b>su -c \"yum install recordmydesktop\"</b>"
-msgstr ""
+msgstr "Aby bolo možné aktivovať zabudovanú screencasting funkcionalitu, balíček recordmydesktop musí byť nainštalovaný. Prosím spustite nasledovný príkaz ak si prajete zahájiť inštaláciu.\n\n<b>su -c \"yum install recordmydesktop\"</b>"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
 msgid ""
@@ -619,15 +623,15 @@ msgstr "Pre pokračovanie musíte vyplniť postup..."
 msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
-msgstr "<b>Vaše komentáre sú verejné</b> Môžu byť zahrnuté do verejne viditeľných správ o problémoch."
+msgstr "<b>Vaše komentáre sú verejné.</b> Môžu byť zahrnuté do verejne viditeľných správ o problémoch."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "If you don't know how to describe it, you can"
-msgstr ""
+msgstr "Ak neviete ako to opísať, môžte"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "add a screencast"
-msgstr ""
+msgstr "pridať screencast"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "I don't know what caused this problem"
@@ -643,7 +647,7 @@ msgstr "Použite toto tlačítko pre generovanie backtrace s viac informáciami,
 msgid ""
 "Please review the data before it gets reported. Depending on reporter "
 "chosen, it may end up publicly visible."
-msgstr ""
+msgstr "Porosím skontrolujte údaje pred nahlásením. V závislosti na zvolenom reportérovi, je možné, že údaje budú verejnosti prístupné."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid "Size:"
@@ -655,7 +659,7 @@ msgstr "Pripojiť súbor"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid "I reviewed the data and _agree with submitting it"
-msgstr "Skontroloval som dáta a suhl_asím s ich odoslaním"
+msgstr "Skontroloval som dáta a _suhlasím s ich odoslaním"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:14
 msgid ""
@@ -666,7 +670,7 @@ msgstr "Ak ohlasujete problém na vzdialený server, uistite sa, že ste zmazali
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid "Processing did not start yet"
-msgstr ""
+msgstr "Spracovávanie ešte nie je zahájené"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "Show log"
@@ -674,31 +678,48 @@ msgstr "Zobraziť log"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "Reporting has finished. You can close this window now."
-msgstr "Hlásenie skončilo. Teraz môžte zatvoriť okno."
+msgstr "Hlásenie ukončené. Teraz môžte zatvoriť okno."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid ""
 "If you want to report the problem to a different destination, collect "
 "additional information, or provide a better problem description and repeat "
 "reporting process, press 'Forward'."
-msgstr "Ak si želáte nahlásiť problém na iné miesto, zozbierať ďalšie informácie či poskytnuť lepší popis problému a zopakovať proces hlásenia problému, stlačte 'Vpred'."
+msgstr "Ak si želáte nahlásiť problém na iné miesto, zozbierať ďalšie informácie, či poskytnuť lepší popis problému a zopakovať proces nahlásenia, stlačte 'Vpred'."
 
-#: ../src/include/internal_libreport.h:906
+#: ../src/include/internal_libreport.h:919
 msgid "Be verbose"
-msgstr ""
+msgstr "Aktivovať verbose režim"
 
-#: ../src/include/internal_libreport.h:907
-#: ../src/plugins/reporter-bugzilla.c:921
+#: ../src/include/internal_libreport.h:920
+#: ../src/plugins/reporter-bugzilla.c:905
 #: ../src/plugins/reporter-kerneloops.c:166
 #: ../src/plugins/reporter-mailx.c:173 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:223
 #: ../src/plugins/reporter-upload.c:211
 msgid "Problem directory"
-msgstr ""
+msgstr "Priečinok s problémom"
 
-#: ../src/lib/abrt_sock.c:150
+#: ../src/lib/abrt_sock.c:158
 #, c-format
 msgid "Can't delete: '%s'"
+msgstr "Nemožno zmazať: '%s'"
+
+#: ../src/lib/abrt_sock.c:194
+msgid "locked by another process"
+msgstr ""
+
+#: ../src/lib/abrt_sock.c:203
+msgid "permission denied"
+msgstr ""
+
+#: ../src/lib/abrt_sock.c:206
+msgid "not a problem directory"
+msgstr ""
+
+#: ../src/lib/abrt_sock.c:215
+#, c-format
+msgid "Can't delete '%s': %s"
 msgstr ""
 
 #: ../src/lib/client.c:51 ../src/lib/client.c:77
@@ -711,22 +732,22 @@ msgstr "N"
 
 #: ../src/lib/client.c:79
 msgid "f"
-msgstr ""
+msgstr "f"
 
 #: ../src/lib/create_dump_dir.c:39
 #, c-format
 msgid "Missing required item: '%s'"
-msgstr ""
+msgstr "Chýba požadovaná položka: '%s'"
 
 #: ../src/lib/create_dump_dir.c:54
 #, c-format
 msgid "uid value is not valid: '%s'"
-msgstr ""
+msgstr "uid hodnota nie je platná: '%s'"
 
 #: ../src/lib/curl.c:226
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
-msgstr "Odoslané: %llu z %llu kbytov"
+msgstr "Odoslané: %llu z %llu kbyte-v"
 
 #: ../src/lib/curl.c:591
 #, c-format
@@ -764,21 +785,21 @@ msgstr "Nepodporovaný typ voľby"
 
 #: ../src/lib/event_config.c:420
 msgid "Reporting disabled because the rating does not contain a number."
-msgstr ""
+msgstr "Nemožno ohlásiť problém pretože hodnotenie neobsahuje číslo."
 
 #: ../src/lib/event_config.c:421
 msgid "Please report this problem to ABRT project developers."
-msgstr ""
+msgstr "Prosím nahláste tento problém vývojárom ABRT project."
 
 #: ../src/lib/event_config.c:427
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
-msgstr "backtrace je nekompletný, prosím uistite sa, že ste poskytli kroky ako je možné to zopakovať."
+msgstr "Backtrace je nekompletný, prosím uistite sa, že ste poskytli kroky pre reprodukciu."
 
 #: ../src/lib/event_config.c:428
 msgid "The backtrace probably can't help developer to diagnose the bug."
-msgstr ""
+msgstr "Backtrace pravdepodobne nepomôže vývojárom diagnostikovať chybu."
 
 #: ../src/lib/event_config.c:434
 msgid "Reporting disabled because the backtrace is unusable."
@@ -789,29 +810,11 @@ msgstr "Hlásenie problémov je zakázané pretože backtrace je nepoužiteľný
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again."
-msgstr ""
+msgstr "Prosím skúste nainštalovať debuginfo manuálne použitím príkazu: \"debuginfo-install %s\" a následne pokus zopakujte."
 
 #: ../src/lib/event_config.c:440
 msgid "A proper debuginfo is probably missing or the coredump is corrupted."
-msgstr ""
-
-#: ../src/lib/json.c:134
-#, c-format
-msgid "Missing problem element '%s'"
-msgstr ""
-
-#: ../src/lib/json.c:146
-#, c-format
-msgid "An unsupported value '%s' in problem element '%s'"
-msgstr ""
-
-#: ../src/lib/json.c:291
-msgid "Can't create an uReport without 'type'"
-msgstr ""
-
-#: ../src/lib/json.c:328 ../src/plugins/ureport.c:429
-msgid "Not uploading an empty uReport"
-msgstr ""
+msgstr "Vhodné debuginfo pravdepodobne chýbajú alebo coredump je poškodený."
 
 #: ../src/lib/parse_options.c:58
 msgid "Usage: "
@@ -825,57 +828,57 @@ msgstr "Základná položka '%s' chýba, nie je možné pokračovať"
 #: ../src/lib/run_event.c:761
 #, c-format
 msgid "('%s' was killed by signal %u)\n"
-msgstr ""
+msgstr "('%s' bol ukončený signálom %u)\n"
 
 #: ../src/lib/run_event.c:763
 #, c-format
 msgid "('%s' completed successfully)\n"
-msgstr ""
+msgstr "('%s' bolo úspešne ukončené)\n"
 
 #: ../src/lib/run_event.c:765
 #, c-format
 msgid "('%s' exited with %u)\n"
-msgstr ""
+msgstr "('%s' skončil s %u)\n"
 
 #: ../src/plugins/abrt_rh_support.c:356
 #, c-format
 msgid "Error in case creation at '%s': %s"
-msgstr ""
+msgstr "Chyba pri vytváraní prípadu v '%s': %s"
 
 #: ../src/plugins/abrt_rh_support.c:365
 #, c-format
 msgid "Error in case creation at '%s', HTTP code: %d, server says: '%s'"
-msgstr ""
+msgstr "Chyba pri vytváraní prípadu v '%s', HTTP kód: %d, odpoveď serveru: '%s'"
 
 #: ../src/plugins/abrt_rh_support.c:369
 #, c-format
 msgid "Error in case creation at '%s', HTTP code: %d"
-msgstr ""
+msgstr "Chyba pri vytváraní prípadu v '%s', HTTP kód: %d"
 
 #: ../src/plugins/abrt_rh_support.c:420
 #, c-format
 msgid "Error in case creation at '%s': no Location URL, HTTP code: %d"
-msgstr ""
+msgstr "Chyba pri vytváraní prípadu v '%s': chýba URL, HTTP kód: %d"
 
 #: ../src/plugins/abrt_rh_support.c:524
 #, c-format
 msgid "Error in comment creation at '%s': %s"
-msgstr ""
+msgstr "Chyba pri vytváraní komentáru v '%s': %s"
 
 #: ../src/plugins/abrt_rh_support.c:533
 #, c-format
 msgid "Error in comment creation at '%s', HTTP code: %d, server says: '%s'"
-msgstr ""
+msgstr "Chyba pri vytváraní komentáru v '%s', HTTP kód: %d, odpoveď serveru: '%s'"
 
 #: ../src/plugins/abrt_rh_support.c:537
 #, c-format
 msgid "Error in comment creation at '%s', HTTP code: %d"
-msgstr ""
+msgstr "Chyba pri vytváraní komentáru v '%s', HTTP kód: %d"
 
 #: ../src/plugins/abrt_rh_support.c:583
 #, c-format
 msgid "Error in comment creation at '%s': no Location URL, HTTP code: %d"
-msgstr ""
+msgstr "Chyba pri vytváraní prípadu v '%s': chýba URL, HTTP kód: %d"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:1
 msgid "Bugzilla"
@@ -883,7 +886,7 @@ msgstr "Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:2
 msgid "Report to Bugzilla bug tracker"
-msgstr "Nahlásiť problém do Bugzilly"
+msgstr "Nahlásiť problém na Bugzillu"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:3
 msgid "Bugzilla URL"
@@ -901,7 +904,7 @@ msgstr "bugzilla.redhat.com účet je možné vytvoriť na &lt;a href=\"https://
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:6
 msgid "User name"
-msgstr "Používateľské heslo"
+msgstr "Meno užívateľa"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:7
 msgid "Bugzilla account user name"
@@ -929,59 +932,80 @@ msgid "Check SSL key validity"
 msgstr "Kontrolovať validnosť SSL kľúča"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:12
-msgid "Bugzilla product"
+msgid "Restrict access"
 msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:13
 msgid ""
-"Specify this only if you needed different product than specified in /etc/os-"
-"release"
+"Restrict access to the created bugzilla ticket allowing only users from "
+"specified groups to view it (see advanced settings for more details)"
 msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:14
-msgid "Bugzilla product version"
-msgstr ""
+msgid "Bugzilla product"
+msgstr "Produkt Bugzilly"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:15
 msgid ""
-"Specify this only if you needed different product version than specified in "
-"/etc/os-release"
-msgstr ""
+"Specify this only if you needed different product than specified in /etc/os-"
+"release"
+msgstr "Toto uveďte len v prípade ak potrebujete rozdielny produkt od uvedeného v\n/etc/os-release"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:16
+msgid "Bugzilla product version"
+msgstr "Verzia produktu Bugzilly"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:17
+msgid ""
+"Specify this only if you needed different product version than specified in "
+"/etc/os-release"
+msgstr "Toto uveďte len v prípade ak potrebujete rozdielnu verziu produktu od uvedenej v\n/etc/os-release"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:18
 #: ../src/plugins/report_Kerneloops.xml.in.h:5
 #: ../src/plugins/report_RHTSupport.xml.in.h:11
 #: ../src/plugins/report_Uploader.xml.in.h:6
 #: ../src/plugins/report_uReport.xml.in.h:7
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:4
 msgid "HTTP Proxy"
-msgstr ""
+msgstr "HTTP Proxy"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:17
+#: ../src/plugins/report_Bugzilla.xml.in.h:19
 #: ../src/plugins/report_Kerneloops.xml.in.h:6
 #: ../src/plugins/report_RHTSupport.xml.in.h:12
 #: ../src/plugins/report_Uploader.xml.in.h:7
 #: ../src/plugins/report_uReport.xml.in.h:8
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:5
 msgid "Sets the proxy server to use for HTTP"
-msgstr ""
+msgstr "Nastaví proxy server na použitie pre HTTP"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:18
+#: ../src/plugins/report_Bugzilla.xml.in.h:20
 #: ../src/plugins/report_Kerneloops.xml.in.h:7
 #: ../src/plugins/report_RHTSupport.xml.in.h:13
 #: ../src/plugins/report_Uploader.xml.in.h:8
 #: ../src/plugins/report_uReport.xml.in.h:9
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:6
 msgid "HTTPS Proxy"
-msgstr ""
+msgstr "HTTPS Proxy"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:19
+#: ../src/plugins/report_Bugzilla.xml.in.h:21
 #: ../src/plugins/report_Kerneloops.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:14
 #: ../src/plugins/report_Uploader.xml.in.h:9
 #: ../src/plugins/report_uReport.xml.in.h:10
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:7
 msgid "Sets the proxy server to use for HTTPS"
+msgstr "Nastaví proxy server na použitie pre HTTPS"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:22
+msgid "Groups"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:23
+msgid ""
+"Restrict the access to specified groups &lt;a "
+"href=\"https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
+"tickets\"&gt;?&lt;/a&gt;"
 msgstr ""
 
 #: ../src/plugins/report.c:37
@@ -995,7 +1019,7 @@ msgid ""
 "first one invokes upload to RHTSupport and second - to Bugzilla.\n"
 "\n"
 "Configuration (such as login data) can be supplied via files\n"
-msgstr "& [-v] --target TARGET --ticket ID FILE...\n\nNahrá súbor(y) FILEs k špecifickému tiketu na cieľ TARGET.\n\nTento nástroj je určený k zjednodušeniu prechodu z balíčku report k balíčku libreport. Možné ciele (TARGETs) sú 'strata' a 'bugzilla',\nprvý z nich vykonáva upload na RHTSupport a druhý do Bugzilly.\n\nKonfigurácia (ako napríklad login dáta) môže byť zadaná pomocou súborov\n"
+msgstr "& [-v] --target TARGET --ticket ID FILE...\n\nNahrá súbor(y) FILEs k špecifickému tiketu na cieľ TARGET.\n\nTento nástroj je určený k zjednodušeniu prechodu z balíčku report k balíčku\nlibreport. Možné ciele (TARGETs) sú 'strata' a 'bugzilla',\nprvý z nich vykonáva upload na RHTSupport a druhý do Bugzilly.\n\nKonfigurácia (ako napríklad login dáta) môže byť zadaná pomocou súborov\n"
 
 #: ../src/plugins/report.c:59
 msgid "'strata' or 'bugzilla'"
@@ -1005,41 +1029,42 @@ msgstr "'strata' alebo 'bugzilla'"
 msgid "Ticket/case ID"
 msgstr "Tiket/ID prípadu"
 
-#: ../src/plugins/reporter-bugzilla.c:377
-msgid "Can't parse backtrace"
+#: ../src/plugins/reporter-bugzilla.c:355
+#, c-format
+msgid "Can't parse backtrace: %s"
 msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:388
-msgid "Can't find crash thread"
+#: ../src/plugins/reporter-bugzilla.c:366
+msgid "Can't generate stacktrace description (no crash thread?)"
 msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:773
+#: ../src/plugins/reporter-bugzilla.c:757
 msgid "Can't continue without login"
-msgstr ""
+msgstr "Nemožno pokračovať bez prihlásenia"
 
-#: ../src/plugins/reporter-bugzilla.c:786
+#: ../src/plugins/reporter-bugzilla.c:770
 msgid "Can't continue without password"
-msgstr ""
+msgstr "Nemožno pokračovať bez hesla"
 
-#: ../src/plugins/reporter-bugzilla.c:795
+#: ../src/plugins/reporter-bugzilla.c:779
 #, c-format
 msgid "Logging into Bugzilla at %s"
 msgstr "Prihlasovanie do Bugzilly na %s"
 
-#: ../src/plugins/reporter-bugzilla.c:799
+#: ../src/plugins/reporter-bugzilla.c:783
 msgid "Invalid password or login. Please enter your BZ login:"
-msgstr ""
+msgstr "Neplatné heslo alebo meno. Prosím zadajte svoje BZ prihlasovacie údaje:"
 
-#: ../src/plugins/reporter-bugzilla.c:802
+#: ../src/plugins/reporter-bugzilla.c:786
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
-msgstr ""
+msgstr "Neplatné heslo alebo meno. Prosím zadajte heslo pre '%s':"
 
-#: ../src/plugins/reporter-bugzilla.c:837
+#: ../src/plugins/reporter-bugzilla.c:821
 msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
-msgstr ""
+msgstr "Návratová hodnota Bug.search(quicksearch) neobsahuje súčasť 'bugs'"
 
-#: ../src/plugins/reporter-bugzilla.c:855
+#: ../src/plugins/reporter-bugzilla.c:839
 msgid ""
 "\n"
 "& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\n"
@@ -1076,135 +1101,139 @@ msgid ""
 "Option -w adds bugzilla user to bug's CC list.\n"
 "\n"
 "If not specified, CONFFILE defaults to "
-msgstr ""
+msgstr "\n& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\nalebo:\n& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\nalebo:\n& [-v] [-c CONFFILE]... [-d DIR] -t[ID] -w\nalebo:\n& [-v] [-c CONFFILE]... -h DUPHASH\n\nOhlasuje problémy na Bugzillu.\n\nTento nástroj načíta priečinok DIR. Potom zaháji prihlásenie na Bugzillu a \npokúsi sa nájsť bug s rovnakým abrt_hash:HEXSTRING vo 'Whiteboard'.\n\nAk taký bug nie je nájdený, potom je vytvorený nový. Prvky DIR sú \nuskladnené v bugu ako súčasť popisu alebo ako prílohy, záleží na ich \ntype a veľkosti.\n\nV opačnom prípade, ak taký bug nie je nájdený a je označený ako\nCLOSED_DUPLICATE(uzavretý duplikát), program prehľadáva reťazec\nduplikátov dokiaľ nenarazí na non-DUPLICATE(neduplikovanú) chybu.  \nNový komentár k nájdenej chybe je pridaný.\n\nURL k novej alebo modifikovanej chybe je vypísané na stdout.\n\nPrepínač -t odošle FILEs do už vytvoreného bugu na Bugzilla stránke.\nID bugu je obdržané z priečinku špecifikovaného v -d DIR.\nAk údaje o probléme v DIR neboli nikdy odoslané na Bugzillu, odoslanie \nnebude možné vykonať.\n\nPrepínač -tID odošle FILEs k chybe so špecifikovaným ID na Bugzilla stránke.\n-d DIR je ignorované.\n\nPrepínač -w pridá bugzilla používateľa do CC zoznamu konkrétnej chyby.\n\nAk nie je zadané, sú použité predvolené nastavenia."
 
-#: ../src/plugins/reporter-bugzilla.c:922
+#: ../src/plugins/reporter-bugzilla.c:906
 #: ../src/plugins/reporter-rhtsupport.c:224
 msgid "Configuration file (may be given many times)"
 msgstr "Konfiguračný súbor (môže byť daný viac krát)"
 
-#: ../src/plugins/reporter-bugzilla.c:923
+#: ../src/plugins/reporter-bugzilla.c:907
 msgid "Formatting file for initial comment"
-msgstr ""
+msgstr "Formátovanie súboru pre počiatočný komentár"
 
-#: ../src/plugins/reporter-bugzilla.c:924
+#: ../src/plugins/reporter-bugzilla.c:908
 msgid "Formatting file for duplicates"
-msgstr ""
+msgstr "Formátovanie súboru pre duplikáty"
 
-#: ../src/plugins/reporter-bugzilla.c:925
+#: ../src/plugins/reporter-bugzilla.c:909
 msgid "Attach FILEs [to bug with this ID]"
 msgstr "Pripojiť SUBORy [k problému s týmto ID]"
 
-#: ../src/plugins/reporter-bugzilla.c:926
+#: ../src/plugins/reporter-bugzilla.c:910
 msgid "When creating bug, attach binary files too"
 msgstr "Pripojiť binárne súbory pri vytváraní chyby"
 
-#: ../src/plugins/reporter-bugzilla.c:927
+#: ../src/plugins/reporter-bugzilla.c:911
 #: ../src/plugins/reporter-rhtsupport.c:226
 msgid "Force reporting even if this problem is already reported"
-msgstr "Vynútiť hlásenie problému aj pokiaľ už bol tento problém ohlásený"
+msgstr "Vynútiť ohlásenie problému aj pokiaľ už bol tento problém ohlásený"
 
-#: ../src/plugins/reporter-bugzilla.c:928
+#: ../src/plugins/reporter-bugzilla.c:912
 msgid "Add bugzilla user to CC list [of bug with this ID]"
-msgstr ""
+msgstr "Pridať bugzilla používateľa do CC zoznamu [bug s týmto ID]"
 
-#: ../src/plugins/reporter-bugzilla.c:929
+#: ../src/plugins/reporter-bugzilla.c:913
 msgid "Print BUG_ID which has given DUPHASH"
-msgstr ""
+msgstr "Vypísať BUG_ID ktorý dal DUPHASH"
 
-#: ../src/plugins/reporter-bugzilla.c:930
+#: ../src/plugins/reporter-bugzilla.c:914
 msgid "Restrict access to this group only"
-msgstr ""
+msgstr "Obmedziť prístup iba tejto skupine"
 
-#: ../src/plugins/reporter-bugzilla.c:931
+#: ../src/plugins/reporter-bugzilla.c:915
 msgid "Debug"
-msgstr ""
+msgstr "Debug"
 
-#: ../src/plugins/reporter-bugzilla.c:973
+#: ../src/plugins/reporter-bugzilla.c:957
 msgid "Looking for similar problems in bugzilla"
-msgstr ""
+msgstr "Hľadanie podobných problémov na bugzille"
 
-#: ../src/plugins/reporter-bugzilla.c:1000
+#: ../src/plugins/reporter-bugzilla.c:984
 msgid "Login is not provided by configuration. Please enter your BZ login:"
-msgstr ""
+msgstr "Prihlásenie nie je poskytnuté konfiguráciou. Prosím zadajte svoje BZ prihlasovacie údaje:"
 
-#: ../src/plugins/reporter-bugzilla.c:1006
+#: ../src/plugins/reporter-bugzilla.c:990
 #, c-format
 msgid ""
 "Password is not provided by configuration. Please enter the password for "
 "'%s':"
-msgstr ""
+msgstr "Heslo nie je poskytnuté konfiguráciou. Prosím zadajte heslo pre '%s':"
 
-#: ../src/plugins/reporter-bugzilla.c:1025
+#: ../src/plugins/reporter-bugzilla.c:1009
 msgid ""
 "Can't get Bugzilla ID because this problem has not yet been reported to "
 "Bugzilla."
-msgstr ""
+msgstr "Nepodarilo sa obdržať Bugzilla ID pretože tento problém ešte nebol nahlásený na Bugzille."
 
-#: ../src/plugins/reporter-bugzilla.c:1032
+#: ../src/plugins/reporter-bugzilla.c:1016
 #, c-format
 msgid ""
 "This problem has been reported to Bugzilla '%s' which differs from the "
 "configured Bugzilla '%s'."
-msgstr ""
+msgstr "Tento problém bol nahlásený na Bugzillu '%s', ktorá sa líši od nakonfigurovanej Bugzilly '%s'."
 
-#: ../src/plugins/reporter-bugzilla.c:1036
+#: ../src/plugins/reporter-bugzilla.c:1020
 #, c-format
 msgid "Malformed url to Bugzilla '%s'."
-msgstr ""
+msgstr "Nesprávne formulované URL pre Bugzillu '%s'."
 
-#: ../src/plugins/reporter-bugzilla.c:1040
+#: ../src/plugins/reporter-bugzilla.c:1024
 #, c-format
 msgid "Using Bugzilla ID '%s'"
-msgstr ""
+msgstr "Bugzilla ID '%s' sa momentálne používa"
 
-#: ../src/plugins/reporter-bugzilla.c:1074
-#: ../src/plugins/reporter-bugzilla.c:1324
+#: ../src/plugins/reporter-bugzilla.c:1058
+#: ../src/plugins/reporter-bugzilla.c:1315
 msgid "Logging out"
 msgstr "Odhlasujem"
 
-#: ../src/plugins/reporter-bugzilla.c:1125
+#: ../src/plugins/reporter-bugzilla.c:1109
 msgid "Can't determine Bugzilla Product from problem data."
-msgstr ""
+msgstr "Nepodarilo sa určiť Bugzilla Product z údajov o probléme"
 
-#: ../src/plugins/reporter-bugzilla.c:1176
+#: ../src/plugins/reporter-bugzilla.c:1160
 msgid "Checking for duplicates"
 msgstr "Hľadám duplikáty"
 
 #. Create new bug
-#: ../src/plugins/reporter-bugzilla.c:1222
+#: ../src/plugins/reporter-bugzilla.c:1206
 msgid "Creating a new bug"
 msgstr "Vytváram novú chybu"
 
-#: ../src/plugins/reporter-bugzilla.c:1239
+#: ../src/plugins/reporter-bugzilla.c:1227
+msgid "Failed to create a new bug."
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:1230
 #, c-format
 msgid "Adding attachments to bug %i"
 msgstr "Pridávam prílohy k chybe %i"
 
-#: ../src/plugins/reporter-bugzilla.c:1258
+#: ../src/plugins/reporter-bugzilla.c:1249
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Chyba už bola nahlásená: %i"
 
-#: ../src/plugins/reporter-bugzilla.c:1279
+#: ../src/plugins/reporter-bugzilla.c:1270
 #, c-format
 msgid "Adding %s to CC list"
-msgstr ""
+msgstr "Pridávanie %s do CC zoznamu"
 
-#: ../src/plugins/reporter-bugzilla.c:1296
+#: ../src/plugins/reporter-bugzilla.c:1287
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Pridávam nový komentár k chybe %d"
 
-#: ../src/plugins/reporter-bugzilla.c:1310
+#: ../src/plugins/reporter-bugzilla.c:1301
 msgid "Attaching better backtrace"
 msgstr "Pridávam lepší backtrace"
 
-#: ../src/plugins/reporter-bugzilla.c:1318
+#: ../src/plugins/reporter-bugzilla.c:1309
 msgid "Found the same comment in the bug history, not adding a new one"
 msgstr "Nájdený rovnaký komentár v histórií chyby, nepridávam nový"
 
-#: ../src/plugins/reporter-bugzilla.c:1327
+#: ../src/plugins/reporter-bugzilla.c:1318
 #, c-format
 msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
 msgstr "Stav: %s%s%s %s/show_bug.cgi?id=%u"
@@ -1271,7 +1300,7 @@ msgstr "Výstupný súbor"
 
 #: ../src/plugins/reporter-print.c:58
 msgid "Append to, or overwrite FILE"
-msgstr "Pridať do, alebo prepísať SUBOR"
+msgstr "Pridať do, alebo prepísať SÚBOR"
 
 #: ../src/plugins/reporter-print.c:59
 msgid "Create reported_to in DIR"
@@ -1342,7 +1371,7 @@ msgstr "Nie je možné vytvoriť dočasný súbor v adresári /tmp"
 #. Check for hints and show them if we have something
 #: ../src/plugins/reporter-rhtsupport.c:387
 msgid "Checking for hints"
-msgstr ""
+msgstr "Vyhľadávanie tipov a rád"
 
 #: ../src/plugins/reporter-rhtsupport.c:429
 msgid "Do you still want to create a RHTSupport ticket?"
@@ -1350,23 +1379,23 @@ msgstr "Želáte si stále vytvoriť RHTSupport tiket?"
 
 #: ../src/plugins/reporter-rhtsupport.c:443
 msgid "Creating a new case"
-msgstr ""
+msgstr "Vytváranie nového prípadu"
 
 #. How can we help user sorting out this problem?
 #: ../src/plugins/reporter-rhtsupport.c:454
 msgid "Can't determine RH Support Product from problem data."
-msgstr ""
+msgstr "Nepodarilo sa určiť RH Support Product z údajov o probléme"
 
 #: ../src/plugins/reporter-rhtsupport.c:529
 #, c-format
 msgid "Adding comment to case '%s'"
-msgstr ""
+msgstr "Pridávanie komentáru k prípadu '%s'"
 
 #. Attach the tarball of -d DIR
 #: ../src/plugins/reporter-rhtsupport.c:549
 #, c-format
 msgid "Attaching problem data to case '%s'"
-msgstr ""
+msgstr "Pridávanie údajov o probléme k prípadu '%s'"
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:202
 msgid "Documentation which might be relevant: "
@@ -1537,41 +1566,41 @@ msgstr "Kam chcete nahrať tar archív so správou o probléme v tvare login:pas
 #: ../src/plugins/report_Uploader.xml.in.h:5
 msgid ""
 "Examples:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]"
-msgstr ""
+msgstr "Príklady:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]"
 
 #: ../src/plugins/report_Uploader.xml.in.h:10
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:8
 msgid "FTP Proxy"
-msgstr ""
+msgstr "FTP Proxy"
 
 #: ../src/plugins/report_Uploader.xml.in.h:11
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:9
 msgid "Sets the proxy server to use for FTP"
-msgstr ""
+msgstr "Nastaví proxy server na použitie pre FTP"
 
 #: ../src/plugins/report_uReport.xml.in.h:1
 msgid "uReport"
-msgstr ""
+msgstr "uReport"
 
 #: ../src/plugins/report_uReport.xml.in.h:2
 msgid "Sends ureports to FAF server"
-msgstr ""
+msgstr "Posiela ureports to FAF server"
 
 #: ../src/plugins/report_uReport.xml.in.h:3
 msgid "uReport Server URL"
-msgstr ""
+msgstr "uReport Server URL"
 
 #: ../src/plugins/report_uReport.xml.in.h:4
 msgid "Address of uReport webservice"
-msgstr ""
+msgstr "Adresa webovej služby uReport"
 
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:1
 msgid "Emergency analysis"
-msgstr ""
+msgstr "Núdzová analýza"
 
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:2
 msgid "Upload the problem data for further analysis"
-msgstr ""
+msgstr "Odoslať údaje o probléme pre ďalšiu analýzu"
 
 #: ../src/plugins/rhbz.c:409
 #, c-format
@@ -1588,7 +1617,14 @@ msgstr "Chyba %i je označená ako CLOSED (uzavretá) ale chýba riešenie"
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
 msgstr "Chyba %i je ozačená ako CLOSED (uzavretá) a DUPLICATE (duplikát), avšak chýba DUP_ID (id duplikátu)"
 
-#: ../src/plugins/rhbz.c:649
+#: ../src/plugins/rhbz.c:621
+msgid ""
+"A private ticket creation has been requested, but no groups were specified, "
+"please see https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
+"tickets for more info"
+msgstr ""
+
+#: ../src/plugins/rhbz.c:642
 #, c-format
 msgid "New bug id: %i"
 msgstr "Nová chyba, ID: %i"
@@ -1601,15 +1637,15 @@ msgstr "Bugzilla nenašla rodičovskú chybu k chybe %d"
 #: ../src/plugins/abrt-screencast:87
 #, c-format
 msgid "Encoding: {0!s}% complete"
-msgstr ""
+msgstr "Enkódovanie: {0!s}% completných"
 
 #: ../src/plugins/abrt-screencast:124
 msgid "Select window"
-msgstr ""
+msgstr "Vybrať okno"
 
 #: ../src/plugins/abrt-screencast:256
 msgid "Usage: abrt-screencast -o OUTPUT_FILE"
-msgstr ""
+msgstr "Použitie: abrt-screencast -o OUTPUT_FILE(výstupný súbor)"
 
 #: ../src/plugins/ureport.c:78
 #, c-format
@@ -1617,32 +1653,32 @@ msgid ""
 "Your problem seems to be caused by %s\n"
 "\n"
 "%s\n"
-msgstr ""
+msgstr "%s je pravdepodobne príčina Vášho problému\n\n%s\n"
 
 #: ../src/plugins/ureport.c:81
 msgid "Your problem seems to be caused by one of the following:\n"
-msgstr ""
+msgstr "Váš problém vyzerá byť zapríčinený jednou z nasledujúcich príčin:\n"
 
 #: ../src/plugins/ureport.c:247
 #, c-format
 msgid "Failed to upload uReport to the server '%s' with curl: %s"
-msgstr ""
+msgstr "Nepodarilo sa odoslať uReport na server '%s' s curl: %s"
 
 #: ../src/plugins/ureport.c:253
 #, c-format
 msgid "The URL '%s' does not exist (got error 404 from server)"
-msgstr ""
+msgstr "URL '%s' neexistuje (chybový kód 404)"
 
 #: ../src/plugins/ureport.c:259
 #, c-format
 msgid "The server at '%s' encountered an internal error (got error 500)"
-msgstr ""
+msgstr "Server na '%s' narazil na internú chybu (chybový kód 500)"
 
 #: ../src/plugins/ureport.c:265
 #, c-format
 msgid ""
 "The server at '%s' is currently can't handle the request (got error 503)"
-msgstr ""
+msgstr "Server na '%s' nemôže spracovať požiadavku (chybový kód 503)"
 
 #. can't print better error message
 #: ../src/plugins/ureport.c:274
@@ -1650,97 +1686,101 @@ msgstr ""
 msgid ""
 "Unexpected HTTP response from '%s': %d\n"
 "%s"
-msgstr ""
+msgstr "Neočakávaná HTTP odpoveď od '%s': %d\n%s"
 
 #: ../src/plugins/ureport.c:282
 #, c-format
 msgid ""
 "Unable to parse response from ureport server at '%s':\n"
 "%s"
-msgstr ""
+msgstr "Nepodarilo sa analyzovať odpoveď z ureport serveru na '%s':\n%s"
 
 #: ../src/plugins/ureport.c:291
 #, c-format
 msgid "The response from '%s' has invalid format"
-msgstr ""
+msgstr "Odpoveď od '%s' má neplatný formát"
 
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
 #: ../src/plugins/ureport.c:297
 #, c-format
 msgid "Type mismatch has been detected in the response from '%s'"
-msgstr ""
+msgstr "Typová nezhoda bola detekovaná v odpovedi od '%s'"
 
 #: ../src/plugins/ureport.c:319
 #, c-format
 msgid "The server at '%s' responded with an error: '%s'"
-msgstr ""
+msgstr "Server na '%s' odpovedal s chybou: '%s'"
 
 #: ../src/plugins/ureport.c:351
 msgid "Specify server URL"
-msgstr ""
+msgstr "Špecifikovať server URL"
 
 #: ../src/plugins/ureport.c:353
 msgid "Allow insecure connection to ureport server"
-msgstr ""
+msgstr "Umožniť nezabezpečené pripojenie k ureport serveru."
 
 #: ../src/plugins/ureport.c:355
 msgid "bthash of uReport to attach"
-msgstr ""
+msgstr "bthash of uReport k pripojeniu"
 
 #: ../src/plugins/ureport.c:357
 msgid "Attach RHBZ bug (requires -a)"
-msgstr ""
+msgstr "Pripojiť RHBZ bug (požaduje -a)"
 
 #: ../src/plugins/ureport.c:359
 msgid "Attach contents of reported_to"
-msgstr ""
+msgstr "Pripojiť obsah reported_to"
 
 #: ../src/plugins/ureport.c:364
 msgid ""
 "& [-v] [-u URL] [-k] [-a bthash -b bug-id] [-r] [-d DIR]\n"
 "\n"
 "Upload micro report or add an attachment to a micro report"
-msgstr ""
+msgstr "& [-v] [-u URL] [-k] [-a bthash -b bug-id] [-r] [-d DIR]\n\nOdoslať mikro-hlásenie alebo pridať prílohu k mikro-hláseniu"
 
 #: ../src/plugins/ureport.c:379
 msgid "You need to specify bug ID to attach."
-msgstr ""
+msgstr "Pre pripojenie je potrebné špecifikovať bug ID."
 
 #: ../src/plugins/ureport.c:381
 msgid "You need to specify bthash of the uReport to attach."
-msgstr ""
+msgstr "Pre pripojenie je potrebné špecifikovať bthash uReport-u."
 
 #: ../src/plugins/ureport.c:396
 msgid "This problem does not have an uReport assigned."
-msgstr ""
+msgstr "Tento problem nemá priradený uReport."
 
 #: ../src/plugins/ureport.c:399
 msgid "This problem has not been reported to Bugzilla."
-msgstr ""
+msgstr "Tento problém nebol ohlásený na Bugzille."
 
 #: ../src/plugins/ureport.c:406
 #, c-format
 msgid "Unable to find bug ID in bugzilla URL '%s'"
-msgstr ""
+msgstr "Nepodarilo sa nájsť bug ID v Bugzilla URL '%s'"
 
 #: ../src/plugins/ureport.c:411
 #, c-format
 msgid "Unable to parse bug ID from bugzilla URL '%s'"
-msgstr ""
+msgstr "Nepodarilo sa analyzovať bug ID u Bugzilla URL '%s'"
+
+#: ../src/plugins/ureport.c:429
+msgid "Not uploading an empty uReport"
+msgstr "Nemožno odoslať prázdny uReport"
 
 #: ../src/plugins/ureport.c:438
 msgid "Failed on submitting the problem"
-msgstr ""
+msgstr "Podanie problému zlyhalo"
 
 #: ../src/plugins/ureport.c:477
 msgid "This problem has already been reported."
-msgstr ""
+msgstr "Tento problém už bol nahlásený."
 
 #: ../src/plugins/ureport.c:486
 #, c-format
 msgid "Server responded with an error: '%s'"
-msgstr ""
+msgstr "Server odpovedal s chybou: '%s'"
 
 #: ../src/report-newt/report-newt.c:55
 msgid "How would you like to report the problem?"
@@ -1750,7 +1790,7 @@ msgstr "Ako by ste chceli nahlásiť problém?"
 #: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:259
 #: ../src/report-newt/report-newt.c:337 ../src/report-newt/report-newt.c:352
 msgid "Ok"
-msgstr "Ok"
+msgstr "OK"
 
 #: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:146
 msgid "Cancel"
@@ -1778,7 +1818,7 @@ msgid ""
 "& [-d] DIR\n"
 "\n"
 "newt tool to report problem saved in specified DIR"
-msgstr ""
+msgstr "& [-d] DIR\n\nnewt nástroj slúžiaci na nahlásenie problému uloženého v DIR"
 
 #: ../src/report-newt/report-newt.c:392
 msgid "Remove DIR after reporting"
@@ -1786,25 +1826,48 @@ msgstr "Zmazať DIR po ohlásení problému"
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:1
 msgid "Report a bug to Fedora maintainers"
-msgstr ""
+msgstr "Nahlásiť chybu správcom Fedory"
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:2
-#: ../src/workflows/workflow_Fedora.xml.in.h:2
 msgid "Process the report using the Fedora infrastructure"
-msgstr ""
+msgstr "Spracovať oznámenie za použitia infraštrútury Fedory."
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
 #: ../src/workflows/workflow_Upload.xml.in.h:1
 msgid "Upload the problem data to a server"
-msgstr ""
+msgstr "Odoslať údaje o probléme na server"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:2
 #: ../src/workflows/workflow_Upload.xml.in.h:2
 msgid "Analyze the problem locally and upload the data via scp or ftp"
+msgstr "Analyzovať problém lokálne a odoslať data použitím scp alebo ftp"
+
+#: ../src/workflows/workflow_FedoraCCpp.xml.in.h:1
+#: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:1
+#: ../src/workflows/workflow_FedoraPython.xml.in.h:1
+#: ../src/workflows/workflow_FedoraVmcore.xml.in.h:1
+#: ../src/workflows/workflow_FedoraXorg.xml.in.h:1
+msgid "Report to Fedora"
+msgstr "Nahlásiť na Fedoru"
+
+#: ../src/workflows/workflow_FedoraCCpp.xml.in.h:2
+msgid "Process the C/C++ crash using the Fedora infrastructure"
 msgstr ""
 
-#: ../src/workflows/workflow_Fedora.xml.in.h:1
-msgid "Report to Fedora"
+#: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:2
+msgid "Process the kerneloops using the Fedora infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_FedoraPython.xml.in.h:2
+msgid "Process the python exception using the Fedora infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_FedoraVmcore.xml.in.h:2
+msgid "Process the kernel crash using the Fedora infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_FedoraXorg.xml.in.h:2
+msgid "Process the X Server problem using the Fedora infrastructure"
 msgstr ""
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
@@ -1813,24 +1876,24 @@ msgstr ""
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:1
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:1
 msgid "Report to Red Hat"
-msgstr ""
+msgstr "Nahlásiť na Red Hat"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the Red Hat infrastructure"
-msgstr ""
+msgstr "Spracovávať C/C++ pády za použitia infraštruktúry Red Hat-u"
 
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:2
 msgid "Process the kerneloops using the Red Hat infrastructure"
-msgstr ""
+msgstr "Spracovávať kerneloops za použitia infraštruktúry Red Hat-u"
 
 #: ../src/workflows/workflow_RHELPython.xml.in.h:2
 msgid "Process the python exception using the Red Hat infrastructure"
-msgstr ""
+msgstr "Spracovávať výnimky python-u za použitia infraštruktúry Red Hat-u"
 
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:2
 msgid "Process the kernel crash using the Red Hat infrastructure"
-msgstr ""
+msgstr "Spracovávať pády kernel-u za použitia infraštruktúry Red Hat-u"
 
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:2
 msgid "Process the X Server problem using the Red Hat infrastructure"
-msgstr ""
+msgstr "Spracovávať problémy X Serveru za použitia infraštruktúry Red Hat-u"

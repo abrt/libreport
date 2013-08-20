@@ -8,9 +8,11 @@
 # Alex Nik <rage.iz.me@gmail.com>, 2012
 # Artyom Kunyov <artkun@guitarplayer.ru>, 2012
 # Artyom Kunyov <artkun@guitarplayer.ru>, 2012
+# Dmitry Pozdnyakov <d.o.pozdnyakov@gmail.com>, 2013
 # George <kir_george@mail.ru>, 2012
 # georgev <george.vardo@gmail.com>, 2012
 # triplepointfive <iya777@yandex.ru>, 2012
+# Mikhail Zholobov <legal90@gmail.com>, 2013
 # Misha Shnurapet <shnurapet@fedoraproject.org>, 2011-2012
 # Yulia <ypoyarko@redhat.com>, 2011-2012
 # Yulia <yulia.poyarkova@redhat.com>, 2011-2012
@@ -20,9 +22,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: https://fedorahosted.org/abrt/report\n"
-"POT-Creation-Date: 2013-05-02 09:29+0200\n"
-"PO-Revision-Date: 2013-05-02 07:30+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"POT-Creation-Date: 2013-07-19 19:34+0200\n"
+"PO-Revision-Date: 2013-08-20 10:48+0000\n"
+"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
 "Language-Team: Russian <trans-ru@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,7 +38,7 @@ msgid ""
 "   or: & [-vspy] -e EVENT PROBLEM_DIR\n"
 "   or: & [-vspy] -d PROBLEM_DIR\n"
 "   or: & [-vspy] -x PROBLEM_DIR"
-msgstr ""
+msgstr "& [-vsp] -L[PREFIX] [PROBLEM_DIR]\nили: & [-vspy] -e EVENT PROBLEM_DIR\nили: & [-vspy] -d PROBLEM_DIR\nили: & [-vspy] -x PROBLEM_DIR"
 
 #. short_name long_name  value    parameter_name  help
 #: ../src/cli/cli.c:84
@@ -49,11 +51,11 @@ msgstr "Запустить только эти события"
 
 #: ../src/cli/cli.c:86 ../src/gui-wizard-gtk/main.c:122
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "Удалить PROBLEM_DIR после отправки отчета"
 
 #: ../src/cli/cli.c:87 ../src/gui-wizard-gtk/main.c:124
 msgid "Expert mode"
-msgstr ""
+msgstr "Расширенные настройки"
 
 #: ../src/cli/cli.c:88 ../src/report-newt/report-newt.c:393
 msgid "Display version and exit"
@@ -65,7 +67,7 @@ msgstr "Автоматически «Да» на все вопросы"
 
 #: ../src/cli/cli.c:91
 msgid "Log to syslog"
-msgstr "Запись в журнал"
+msgstr "Запись в системный журнал"
 
 #: ../src/cli/cli.c:92 ../src/gui-wizard-gtk/main.c:121
 msgid "Add program names to log"
@@ -120,15 +122,15 @@ msgstr "# Причина сбоя"
 
 #: ../src/cli/cli-report.c:170
 msgid "# os-release configuration file from root dir"
-msgstr ""
+msgstr "# файл конфигурации релиза ОС из корневой директории"
 
 #: ../src/cli/cli-report.c:175
 msgid "# Release string of the operating system from root dir"
-msgstr ""
+msgstr "# Строка выпуска операционной системы из корневой директории"
 
 #: ../src/cli/cli-report.c:183
 msgid "# os-release configuration file"
-msgstr ""
+msgstr "# файл конфигурации релиза ОС"
 
 #: ../src/cli/cli-report.c:188
 msgid "# Release string of the operating system"
@@ -152,7 +154,7 @@ msgstr "\nОтчёт не изменялся"
 
 #: ../src/cli/cli-report.c:491
 msgid "Your input is not valid, because of:"
-msgstr "Ввод недействителен. Причина:"
+msgstr "Неправильный ввод. Причина:"
 
 #: ../src/cli/cli-report.c:495
 #, c-format
@@ -164,11 +166,11 @@ msgstr "Неверное значение для «%s»: %s"
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data. Do you want "
 "to continue?"
-msgstr ""
+msgstr "Событию '%s' требуется разрешение на отправку вероятно конфиденциальных данных. Вы хотите продолжить?"
 
 #: ../src/cli/cli-report.c:752
 msgid "Select an event to run: "
-msgstr ""
+msgstr "Выберите действие для запуска:"
 
 #: ../src/cli/cli-report.c:760
 msgid "You have chosen number out of range"
@@ -176,7 +178,7 @@ msgstr "Число выходит за пределы допустимого д�
 
 #: ../src/cli/cli-report.c:764
 msgid "Invalid input, exiting."
-msgstr ""
+msgstr "Ошибочный ввод, выход."
 
 #: ../src/client-python/debuginfo.py:56
 msgid "Extracting cpio from {0}"
@@ -213,7 +215,7 @@ msgstr "Загружается ({0} из {1}) {2}: {3:3}%"
 msgid ""
 "Problem '{0!s}' occured while downloading from mirror: '{1!s}'. Trying next "
 "one"
-msgstr ""
+msgstr "Произошла ошибка '{0!s}' при загрузке с зеркала '{1!s}'. Попытка продолжить с другим зеркалом..."
 
 #. self.conf.cache = os.geteuid() != 0
 #. Setup yum (Ts, RPM db, Repo & Sack)
@@ -228,7 +230,7 @@ msgstr "Ошибка инициализации yum (YumBase.doConfigSetup): '{0
 
 #: ../src/client-python/debuginfo.py:226
 msgid "Error: can't make cachedir, exiting"
-msgstr ""
+msgstr "Ошибка: невозможно выполнить cachedir, аварийное завершение"
 
 #: ../src/client-python/debuginfo.py:235
 msgid "Can't disable repository '{0!s}': {1!s}"
@@ -241,7 +243,7 @@ msgstr "Настройка репозиториев yum"
 
 #: ../src/client-python/debuginfo.py:255
 msgid "Can't disable async download, the output might contain artifacts!"
-msgstr ""
+msgstr "Невозможно отключить асинхронную загрузку, возможны искажения в выводе!"
 
 #: ../src/client-python/debuginfo.py:257
 msgid "Can't setup {0}: {1}, disabling"
@@ -307,11 +309,11 @@ msgstr "Больше не спрашивать"
 #. if event has no xml description
 #: ../src/gtk-helpers/config_dialog.c:153
 msgid "No description available"
-msgstr ""
+msgstr "Описание отсутствует"
 
 #: ../src/gtk-helpers/config_dialog.c:274
 msgid "Configuration"
-msgstr ""
+msgstr "Конфигурация"
 
 #. we can't use this, because we want the workflows first and hashtable
 #. * doesn't return the items in the order they were added
@@ -321,38 +323,38 @@ msgstr ""
 #: ../src/gtk-helpers/config_dialog.c:299
 #: ../src/gtk-helpers/config_dialog.c:350
 msgid "Workflows"
-msgstr ""
+msgstr "Рабочие процессы"
 
 #: ../src/gtk-helpers/config_dialog.c:301
 #: ../src/gtk-helpers/config_dialog.c:303
 #: ../src/gtk-helpers/config_dialog.c:353
 msgid "Events"
-msgstr ""
+msgstr "События"
 
 #: ../src/gtk-helpers/config_dialog.c:307
 msgid "C_onfigure"
-msgstr ""
+msgstr "Н_астроить"
 
 #: ../src/gtk-helpers/event_config_dialog.c:136
 msgid "Show password"
 msgstr "Показать пароль"
 
-#: ../src/gtk-helpers/event_config_dialog.c:216
+#: ../src/gtk-helpers/event_config_dialog.c:221
 msgid "Advanced"
 msgstr "Дополнительно"
 
-#: ../src/gtk-helpers/event_config_dialog.c:234
+#: ../src/gtk-helpers/event_config_dialog.c:241
 msgid "Don't store passwords"
 msgstr "Не хранить пароли"
 
-#: ../src/gtk-helpers/event_config_dialog.c:257
+#: ../src/gtk-helpers/event_config_dialog.c:264
 msgid "Secret Service is not available, your settings won't be saved!"
 msgstr "Secret Service не доступен, Ваши настройки не будут сохранены!"
 
 #: ../src/gtk-helpers/secrets.c:171
 #, c-format
 msgid "Can't connect over DBus to name '%s' path '%s' interface '%s': %s"
-msgstr ""
+msgstr "Невозможно соединение через DBus к имени '%s' пути '%s'интерфейсу '%s': %s"
 
 #: ../src/gtk-helpers/secrets.c:191
 #, c-format
@@ -363,13 +365,13 @@ msgstr "Невозможно вызвать метод '%s' через DBus по
 msgid ""
 "A timeout was reached while waiting for a prompt result from the DBus Secret"
 " Service."
-msgstr ""
+msgstr "Превышено время ожидания ответа от DBus Secret Service."
 
 #: ../src/gtk-helpers/secrets.c:552
 msgid ""
 "Do you want to stop waiting and continue in reporting without properly "
 "loaded configuration?"
-msgstr ""
+msgstr "Вы желаете прервать ожидание и продолжить составление отчёта с неверно выгруженной конфигурацией?"
 
 #: ../src/gtk-helpers/secrets.c:862
 #, c-format
@@ -380,19 +382,19 @@ msgstr "D-Bus Secrets Service ReadAlias('%s') метод не сработал: 
 #: ../src/gtk-helpers/secrets.c:1104
 #, c-format
 msgid "Can't create a secret item for event '%s': %s"
-msgstr ""
+msgstr "Не могу создать секретный элемент для события '%s': %s"
 
 #: ../src/gtk-helpers/secrets.c:1286
 #, c-format
 msgid "can't get secret value of '%s': %s"
-msgstr ""
+msgstr "Не могу получить секретное значение '%s': %s"
 
 #: ../src/gui-wizard-gtk/main.c:105
 msgid ""
 "& [-vpdx] [-e EVENT]... [-g GUI_FILE] PROBLEM_DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified PROBLEM_DIR"
-msgstr ""
+msgstr "& [-vpdx] [-e EVENT]... [-g GUI_FILE] PROBLEM_DIR\n\nГрафическая утилита анализа и сообщения об ошибках хранится в PROBLEM_DIR"
 
 #: ../src/gui-wizard-gtk/main.c:120
 msgid "Alternate GUI file"
@@ -404,7 +406,7 @@ msgid ""
 "Wrong settings detected for %s, reporting will probably fail if you continue with the current configuration.\n"
 "\n"
 "Read more about the configuration at: https://fedorahosted.org/abrt/wiki/AbrtConfiguration"
-msgstr ""
+msgstr "Неверные настройки %s, служба отчётов может не работать, если продолжить.\n\nПодробнее о конфигурировании: https://fedorahosted.org/abrt/wiki/AbrtConfiguration"
 
 #: ../src/gui-wizard-gtk/wizard.c:304
 #, c-format
@@ -412,7 +414,7 @@ msgid ""
 "Wrong settings detected for <b>%s</b>, reporting will probably fail if you continue with the current configuration.\n"
 "\n"
 "<a href=\"https://fedorahosted.org/abrt/wiki/AbrtConfiguration\">Read more about the configuration</a>"
-msgstr ""
+msgstr "Неверные настройки <b>%s</b>, служба отчётов может не работать, если продолжить.\n\n<a href=\"https://fedorahosted.org/abrt/wiki/AbrtConfiguration\">Руководство по настройке</a>"
 
 #: ../src/gui-wizard-gtk/wizard.c:322
 #, c-format
@@ -464,144 +466,147 @@ msgstr "(нет описания)"
 msgid "%llu bytes, %u files"
 msgstr "%llu Б, файлов: %u"
 
-#: ../src/gui-wizard-gtk/wizard.c:1531
+#: ../src/gui-wizard-gtk/wizard.c:1530
 msgid "Processing was canceled"
-msgstr ""
+msgstr "Обработка была отменена"
 
-#: ../src/gui-wizard-gtk/wizard.c:1695
+#: ../src/gui-wizard-gtk/wizard.c:1694
 msgid ""
 "Processing of the problem failed. This can have many reasons but there are two most common:\n"
 "\t▫ <b>network connection problems</b>\n"
 "\t▫ <b>corrupted problem data</b>\n"
-msgstr ""
+msgstr "Ошибка обработки ошибки, наиболее частые (из множества возможных) причины:⏎\n⇥▫ <b>проблемы сетевого соединения</b>\n⇥▫ <b>повреждены данные об ошибке</b>\n"
 
-#: ../src/gui-wizard-gtk/wizard.c:1700
+#: ../src/gui-wizard-gtk/wizard.c:1699
 msgid ""
 "If you want to help us, please click on the upload button and provide all problem data for a deep analysis.\n"
 "<i>Before you do that, please consider the security risks. Problem data may contain sensitive information like passwords.\n"
 "The uploaded data are stored in a protected storage and only a limited number of persons can read them.</i>"
+msgstr "Если Вы хотите помочь проекту, нажмите, пожалуйста, кнопку \"загрузить\" и предоставьте данные для подробного изучения.\n<i>Пожалуйста, примите во внимание существование определённой угрозе безопасности, так как сведения об ошибке могут содержать важную информацию вроде паролей.\nЗагруженные данные хранятся на защищённом хранилище, и лишь ограниченный круг лиц имеет доступ к ним.</i>"
+
+#: ../src/gui-wizard-gtk/wizard.c:1817
+msgid "Processing was interrupted because the problem is not reportable."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1832 ../src/gui-wizard-gtk/wizard.c:1897
+#: ../src/gui-wizard-gtk/wizard.c:1827 ../src/gui-wizard-gtk/wizard.c:1895
 msgid "Processing failed."
 msgstr "Обработка невозможна."
 
+#. No next event, go to progress page and finish
+#: ../src/gui-wizard-gtk/wizard.c:1835 ../src/gui-wizard-gtk/wizard.c:2520
+msgid "Processing finished."
+msgstr "Обработка завершена."
+
+#: ../src/gui-wizard-gtk/wizard.c:1836
+msgid "Processing finished, please proceed to the next step."
+msgstr "Обработка завершена, пожалуйста, перейдите к следующему шагу."
+
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1894
+#: ../src/gui-wizard-gtk/wizard.c:1892
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "Не задан метод обработки события «%s»"
 
-#: ../src/gui-wizard-gtk/wizard.c:1908
+#: ../src/gui-wizard-gtk/wizard.c:1906
 msgid "Processing interrupted: can't continue without writable directory."
 msgstr "Обработка прервана: продолжение невозможно без записи каталога."
 
-#: ../src/gui-wizard-gtk/wizard.c:1946
+#: ../src/gui-wizard-gtk/wizard.c:1943
 msgid "Processing..."
 msgstr "Обработка..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2005
+#: ../src/gui-wizard-gtk/wizard.c:2002
 msgid "Cannot check backtrace rating because of invalid event name"
 msgstr "Невозможно проверить рейтинг трассировки, так как неверно указано имя события"
 
-#: ../src/gui-wizard-gtk/wizard.c:2258
+#: ../src/gui-wizard-gtk/wizard.c:2255
 msgid ""
 "Possible sensitive data detected, please review the highlighted tabs "
 "carefully."
 msgstr "Возможно наличие конфиденциальных данных. Проверьте выделенный текст."
 
-#. this event is the last event from the chain
-#. No next event, go to progress page and finish
-#: ../src/gui-wizard-gtk/wizard.c:2269 ../src/gui-wizard-gtk/wizard.c:2532
-msgid "Processing finished."
-msgstr "Обработка завершена."
-
-#: ../src/gui-wizard-gtk/wizard.c:2270
-msgid "Processing finished, please proceed to the next step."
-msgstr "Обработка завершена, пожалуйста, перейдите к следующему шагу."
-
-#: ../src/gui-wizard-gtk/wizard.c:2552
+#: ../src/gui-wizard-gtk/wizard.c:2540
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
 "Do you want to continue?"
 msgstr "Событию '%s' требуется разрешение на отправку вероятно конфиденциальных данных. Вы хотите продолжить?"
 
-#: ../src/gui-wizard-gtk/wizard.c:2600
+#: ../src/gui-wizard-gtk/wizard.c:2588
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
-msgstr ""
+msgstr "Похоже, что это - известная проблема, сообщение необязательно. %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2847
+#: ../src/gui-wizard-gtk/wizard.c:2835
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "\"%s\" не является текстовым файлом"
 
-#: ../src/gui-wizard-gtk/wizard.c:2861
+#: ../src/gui-wizard-gtk/wizard.c:2849
 msgid "You are trying to copy a file onto itself"
 msgstr "Вы пытаетесь скопировать файл в тот же файл"
 
-#: ../src/gui-wizard-gtk/wizard.c:2868
+#: ../src/gui-wizard-gtk/wizard.c:2856
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "Копирование \"%s\" невозможно: %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2883
+#: ../src/gui-wizard-gtk/wizard.c:2871
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "\"%s\" уже существует и не может быть изменён"
 
-#: ../src/gui-wizard-gtk/wizard.c:3065
+#: ../src/gui-wizard-gtk/wizard.c:3053
 msgid "Include"
 msgstr "Включить"
 
-#: ../src/gui-wizard-gtk/wizard.c:3076
+#: ../src/gui-wizard-gtk/wizard.c:3064
 msgid "Name"
 msgstr "Имя"
 
-#: ../src/gui-wizard-gtk/wizard.c:3086
+#: ../src/gui-wizard-gtk/wizard.c:3074
 msgid "Value"
 msgstr "Значение"
 
-#: ../src/gui-wizard-gtk/wizard.c:3120
+#: ../src/gui-wizard-gtk/wizard.c:3108
 msgid "Problem description"
 msgstr "Описание проблемы"
 
-#: ../src/gui-wizard-gtk/wizard.c:3121
+#: ../src/gui-wizard-gtk/wizard.c:3109
 msgid "Select how to report this problem"
-msgstr ""
+msgstr "Выберите способ отправки отчета"
 
-#: ../src/gui-wizard-gtk/wizard.c:3122
+#: ../src/gui-wizard-gtk/wizard.c:3110
 msgid "Provide additional information"
 msgstr "Дополнительные сведения"
 
-#: ../src/gui-wizard-gtk/wizard.c:3123
+#: ../src/gui-wizard-gtk/wizard.c:3111
 msgid "Review the data"
 msgstr "Просмотр информации"
 
-#: ../src/gui-wizard-gtk/wizard.c:3124
+#: ../src/gui-wizard-gtk/wizard.c:3112
 msgid "Confirm data to report"
 msgstr "Подтвердите отправку данных"
 
-#: ../src/gui-wizard-gtk/wizard.c:3125
+#: ../src/gui-wizard-gtk/wizard.c:3113
 msgid "Processing"
 msgstr "Обработка"
 
-#: ../src/gui-wizard-gtk/wizard.c:3126
+#: ../src/gui-wizard-gtk/wizard.c:3114
 msgid "Processing done"
 msgstr "Обработка завершена"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3218
+#: ../src/gui-wizard-gtk/wizard.c:3205
 msgid "Upload for analysis"
-msgstr ""
+msgstr "Загрузка для дальнейшего изучения"
 
-#: ../src/gui-wizard-gtk/wizard.c:3310
+#: ../src/gui-wizard-gtk/wizard.c:3297
 msgid ""
 "In order to enable the built-in screencasting functionality the package recordmydesktop has to be installed. Please run the following command if you want to install it.\n"
 "\n"
 "<b>su -c \"yum install recordmydesktop\"</b>"
-msgstr ""
+msgstr "Для поддержки встроенного вещания с экрана, требуется установка пакета recordmydesktop. Пожалуйста, используйте для установки этого пакета команду:\n\n<b>su -c \"yum install recordmydesktop\"</b>"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
 msgid ""
@@ -634,11 +639,11 @@ msgstr "<b>Комментарии открыты для чтения.</b> Они
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "If you don't know how to describe it, you can"
-msgstr ""
+msgstr "Если Вы затрудняетесь с описанием, Вы можете"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "add a screencast"
-msgstr ""
+msgstr "Добавить вещание с экрана"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "I don't know what caused this problem"
@@ -694,12 +699,12 @@ msgid ""
 "reporting process, press 'Forward'."
 msgstr "Чтобы изменить получателя отчёта, подробно опишите проблему и создайте отчёт заново, нажав «Вперёд»."
 
-#: ../src/include/internal_libreport.h:906
+#: ../src/include/internal_libreport.h:919
 msgid "Be verbose"
 msgstr "Опишите подробно"
 
-#: ../src/include/internal_libreport.h:907
-#: ../src/plugins/reporter-bugzilla.c:921
+#: ../src/include/internal_libreport.h:920
+#: ../src/plugins/reporter-bugzilla.c:905
 #: ../src/plugins/reporter-kerneloops.c:166
 #: ../src/plugins/reporter-mailx.c:173 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:223
@@ -707,10 +712,27 @@ msgstr "Опишите подробно"
 msgid "Problem directory"
 msgstr "Проблемный каталог"
 
-#: ../src/lib/abrt_sock.c:150
+#: ../src/lib/abrt_sock.c:158
 #, c-format
 msgid "Can't delete: '%s'"
 msgstr "Невозможно удалить: '%s'"
+
+#: ../src/lib/abrt_sock.c:194
+msgid "locked by another process"
+msgstr ""
+
+#: ../src/lib/abrt_sock.c:203
+msgid "permission denied"
+msgstr ""
+
+#: ../src/lib/abrt_sock.c:206
+msgid "not a problem directory"
+msgstr ""
+
+#: ../src/lib/abrt_sock.c:215
+#, c-format
+msgid "Can't delete '%s': %s"
+msgstr ""
 
 #: ../src/lib/client.c:51 ../src/lib/client.c:77
 msgid "y"
@@ -718,11 +740,11 @@ msgstr "д"
 
 #: ../src/lib/client.c:52 ../src/lib/client.c:78
 msgid "N"
-msgstr "н"
+msgstr "Н"
 
 #: ../src/lib/client.c:79
 msgid "f"
-msgstr ""
+msgstr " "
 
 #: ../src/lib/create_dump_dir.c:39
 #, c-format
@@ -732,7 +754,7 @@ msgstr "Пропущен требуемый предмет: '%s'"
 #: ../src/lib/create_dump_dir.c:54
 #, c-format
 msgid "uid value is not valid: '%s'"
-msgstr ""
+msgstr "Неверное значение uid: '%s'"
 
 #: ../src/lib/curl.c:226
 #, c-format
@@ -789,7 +811,7 @@ msgstr "Неполный протокол сбоя.  Опишите действ
 
 #: ../src/lib/event_config.c:428
 msgid "The backtrace probably can't help developer to diagnose the bug."
-msgstr ""
+msgstr "Вероятно, трассировка не помогла разработчику выловить ошибку."
 
 #: ../src/lib/event_config.c:434
 msgid "Reporting disabled because the backtrace is unusable."
@@ -806,24 +828,6 @@ msgstr "Пожалуйста установите debuginfo вручную, ис
 msgid "A proper debuginfo is probably missing or the coredump is corrupted."
 msgstr "Возможно правильный debuginfo отсутствует или поврежден дамп памяти."
 
-#: ../src/lib/json.c:134
-#, c-format
-msgid "Missing problem element '%s'"
-msgstr ""
-
-#: ../src/lib/json.c:146
-#, c-format
-msgid "An unsupported value '%s' in problem element '%s'"
-msgstr ""
-
-#: ../src/lib/json.c:291
-msgid "Can't create an uReport without 'type'"
-msgstr ""
-
-#: ../src/lib/json.c:328 ../src/plugins/ureport.c:429
-msgid "Not uploading an empty uReport"
-msgstr ""
-
 #: ../src/lib/parse_options.c:58
 msgid "Usage: "
 msgstr "Формат: "
@@ -836,57 +840,57 @@ msgstr "Отсутствует обязательный элемент \"%s\". �
 #: ../src/lib/run_event.c:761
 #, c-format
 msgid "('%s' was killed by signal %u)\n"
-msgstr ""
+msgstr "('%s' был убит сигналом %u)\n"
 
 #: ../src/lib/run_event.c:763
 #, c-format
 msgid "('%s' completed successfully)\n"
-msgstr ""
+msgstr "('%s' завершился без ошибок)\n"
 
 #: ../src/lib/run_event.c:765
 #, c-format
 msgid "('%s' exited with %u)\n"
-msgstr ""
+msgstr "('%s' завершился с кодом выхода %u)\n"
 
 #: ../src/plugins/abrt_rh_support.c:356
 #, c-format
 msgid "Error in case creation at '%s': %s"
-msgstr ""
+msgstr "Ошибка при запросе '%s': %s"
 
 #: ../src/plugins/abrt_rh_support.c:365
 #, c-format
 msgid "Error in case creation at '%s', HTTP code: %d, server says: '%s'"
-msgstr ""
+msgstr "Ошибка при запросе '%s', код ответа HTTP: %d, ответ сервера: '%s'"
 
 #: ../src/plugins/abrt_rh_support.c:369
 #, c-format
 msgid "Error in case creation at '%s', HTTP code: %d"
-msgstr ""
+msgstr "Ошибка при запросе '%s', код ответа HTTP: %d"
 
 #: ../src/plugins/abrt_rh_support.c:420
 #, c-format
 msgid "Error in case creation at '%s': no Location URL, HTTP code: %d"
-msgstr ""
+msgstr "Ошибка при запросе '%s': отсутствует ссылка-указатель, код ответа HTTP: %d"
 
 #: ../src/plugins/abrt_rh_support.c:524
 #, c-format
 msgid "Error in comment creation at '%s': %s"
-msgstr ""
+msgstr "Ошибка при создании комментария '%s': %s"
 
 #: ../src/plugins/abrt_rh_support.c:533
 #, c-format
 msgid "Error in comment creation at '%s', HTTP code: %d, server says: '%s'"
-msgstr ""
+msgstr "Ошибка при создании комментария '%s', код ответа HTTP: %d, ответ сервера: '%s'"
 
 #: ../src/plugins/abrt_rh_support.c:537
 #, c-format
 msgid "Error in comment creation at '%s', HTTP code: %d"
-msgstr ""
+msgstr "Ошибка при создании комментария '%s', код ответа HTTP: %d"
 
 #: ../src/plugins/abrt_rh_support.c:583
 #, c-format
 msgid "Error in comment creation at '%s': no Location URL, HTTP code: %d"
-msgstr ""
+msgstr "Ошибка при создании комментария '%s': отсутствует ссылка-указатель, код ответа HTTP: %d"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:1
 msgid "Bugzilla"
@@ -940,59 +944,80 @@ msgid "Check SSL key validity"
 msgstr "Проверить ключ SSL"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:12
-msgid "Bugzilla product"
+msgid "Restrict access"
 msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:13
 msgid ""
-"Specify this only if you needed different product than specified in /etc/os-"
-"release"
+"Restrict access to the created bugzilla ticket allowing only users from "
+"specified groups to view it (see advanced settings for more details)"
 msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:14
-msgid "Bugzilla product version"
-msgstr ""
+msgid "Bugzilla product"
+msgstr "Разработка Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:15
 msgid ""
-"Specify this only if you needed different product version than specified in "
-"/etc/os-release"
-msgstr ""
+"Specify this only if you needed different product than specified in /etc/os-"
+"release"
+msgstr "Укажите, только если нужно отличное от указанного в /etc/os-release"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:16
+msgid "Bugzilla product version"
+msgstr "Версия разработки Bugzilla"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:17
+msgid ""
+"Specify this only if you needed different product version than specified in "
+"/etc/os-release"
+msgstr "Укажите, только если нужна версия разработки, отличная от указанной в /etc/os-release"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:18
 #: ../src/plugins/report_Kerneloops.xml.in.h:5
 #: ../src/plugins/report_RHTSupport.xml.in.h:11
 #: ../src/plugins/report_Uploader.xml.in.h:6
 #: ../src/plugins/report_uReport.xml.in.h:7
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:4
 msgid "HTTP Proxy"
-msgstr ""
+msgstr "HTTP-прокси"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:17
+#: ../src/plugins/report_Bugzilla.xml.in.h:19
 #: ../src/plugins/report_Kerneloops.xml.in.h:6
 #: ../src/plugins/report_RHTSupport.xml.in.h:12
 #: ../src/plugins/report_Uploader.xml.in.h:7
 #: ../src/plugins/report_uReport.xml.in.h:8
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:5
 msgid "Sets the proxy server to use for HTTP"
-msgstr ""
+msgstr "Выбирает прокси-сервер для использования с HTTP"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:18
+#: ../src/plugins/report_Bugzilla.xml.in.h:20
 #: ../src/plugins/report_Kerneloops.xml.in.h:7
 #: ../src/plugins/report_RHTSupport.xml.in.h:13
 #: ../src/plugins/report_Uploader.xml.in.h:8
 #: ../src/plugins/report_uReport.xml.in.h:9
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:6
 msgid "HTTPS Proxy"
-msgstr ""
+msgstr "HTTPS-прокси"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:19
+#: ../src/plugins/report_Bugzilla.xml.in.h:21
 #: ../src/plugins/report_Kerneloops.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:14
 #: ../src/plugins/report_Uploader.xml.in.h:9
 #: ../src/plugins/report_uReport.xml.in.h:10
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:7
 msgid "Sets the proxy server to use for HTTPS"
+msgstr "Выбирает прокси-сервер для использования с HTTPS"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:22
+msgid "Groups"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:23
+msgid ""
+"Restrict the access to specified groups &lt;a "
+"href=\"https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
+"tickets\"&gt;?&lt;/a&gt;"
 msgstr ""
 
 #: ../src/plugins/report.c:37
@@ -1016,41 +1041,42 @@ msgstr "«strata» или «bugzilla»"
 msgid "Ticket/case ID"
 msgstr "ID запроса"
 
-#: ../src/plugins/reporter-bugzilla.c:377
-msgid "Can't parse backtrace"
-msgstr "Невозможно анализировать трассировку"
+#: ../src/plugins/reporter-bugzilla.c:355
+#, c-format
+msgid "Can't parse backtrace: %s"
+msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:388
-msgid "Can't find crash thread"
-msgstr "Невозможно обнаружить причину поломки"
+#: ../src/plugins/reporter-bugzilla.c:366
+msgid "Can't generate stacktrace description (no crash thread?)"
+msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:773
+#: ../src/plugins/reporter-bugzilla.c:757
 msgid "Can't continue without login"
-msgstr ""
+msgstr "Необходимо указать имя"
 
-#: ../src/plugins/reporter-bugzilla.c:786
+#: ../src/plugins/reporter-bugzilla.c:770
 msgid "Can't continue without password"
-msgstr ""
+msgstr "Необходимо указать пароль"
 
-#: ../src/plugins/reporter-bugzilla.c:795
+#: ../src/plugins/reporter-bugzilla.c:779
 #, c-format
 msgid "Logging into Bugzilla at %s"
 msgstr "Вход в Bugzilla: %s"
 
-#: ../src/plugins/reporter-bugzilla.c:799
+#: ../src/plugins/reporter-bugzilla.c:783
 msgid "Invalid password or login. Please enter your BZ login:"
-msgstr ""
+msgstr "Неверное имя или пароль. Пожалуйста, введите ваше имя в Bugzilla:"
 
-#: ../src/plugins/reporter-bugzilla.c:802
+#: ../src/plugins/reporter-bugzilla.c:786
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
-msgstr ""
+msgstr "Неверное имя или пароль. Пожалуйста, введите ваш пароль для '%s':"
 
-#: ../src/plugins/reporter-bugzilla.c:837
+#: ../src/plugins/reporter-bugzilla.c:821
 msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
-msgstr ""
+msgstr "Возвращаемое значение функции Bug.search(quicksearch) не содержит членов типа 'bugs'"
 
-#: ../src/plugins/reporter-bugzilla.c:855
+#: ../src/plugins/reporter-bugzilla.c:839
 msgid ""
 "\n"
 "& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\n"
@@ -1087,135 +1113,139 @@ msgid ""
 "Option -w adds bugzilla user to bug's CC list.\n"
 "\n"
 "If not specified, CONFFILE defaults to "
-msgstr ""
+msgstr "\n& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\nили:\n& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\nили:\n& [-v] [-c CONFFILE]... [-d DIR] -t[ID] -w\nили:\n& [-v] [-c CONFFILE]... -h DUPHASH\n\nЭта утилита читает содержимое DIR, затем, соединившись с Bugzilla, пытается найти ошибку с таким же значением abrt_hash:HEXSTRING в 'Whiteboard'.\n\nЕсли таковая ошибка не найдена, она создаётся в Bugzilla. Части DIR сохраняются как описание или вложения (в зависимости от размера).\n\nВ противном случае, если таковая ошибка находится, но имеет метку CLOSED DUPLICATE, утилита ищет первородную ошибку (не имеющею таковой метки), затем - добавляет новый комментарий к ней.\n\nСсылка на новую или обновлённую ошибку выводится на стандартный вывод и сохраняется в конструкции 'reported_to'.\n\nКлюч -t подгружает файлы к уже существующей в Bugzilla ошибке, её ID получается из директории DIR (с ключом -d). Если сведения об ошибке не были предоставлены в Bugzilla до момента отправки ошибки, то отправка аварийно завершается.\n\nКлюч -tlD загружает файлы к сообщению об ошибке с определённый ID в Bugzilla, ключ -d игнорируется.\n\nКлюч -w добавляет пользователя Bugzilla в список получателей копии.\n\nЕсли не задано иного, CONFILE по-умолчанию"
 
-#: ../src/plugins/reporter-bugzilla.c:922
+#: ../src/plugins/reporter-bugzilla.c:906
 #: ../src/plugins/reporter-rhtsupport.c:224
 msgid "Configuration file (may be given many times)"
 msgstr "Файл конфигурации (можно указать несколько)"
 
-#: ../src/plugins/reporter-bugzilla.c:923
+#: ../src/plugins/reporter-bugzilla.c:907
 msgid "Formatting file for initial comment"
-msgstr ""
+msgstr "Подготавливаю файл для первого комментария"
 
-#: ../src/plugins/reporter-bugzilla.c:924
+#: ../src/plugins/reporter-bugzilla.c:908
 msgid "Formatting file for duplicates"
-msgstr ""
+msgstr "Подготавливается файл для повторных сообщений"
 
-#: ../src/plugins/reporter-bugzilla.c:925
+#: ../src/plugins/reporter-bugzilla.c:909
 msgid "Attach FILEs [to bug with this ID]"
 msgstr "Вложить файлы [в запрос с этим ID]"
 
-#: ../src/plugins/reporter-bugzilla.c:926
+#: ../src/plugins/reporter-bugzilla.c:910
 msgid "When creating bug, attach binary files too"
 msgstr "Включать двоичные файлы в отчёт"
 
-#: ../src/plugins/reporter-bugzilla.c:927
+#: ../src/plugins/reporter-bugzilla.c:911
 #: ../src/plugins/reporter-rhtsupport.c:226
 msgid "Force reporting even if this problem is already reported"
 msgstr "Создать отчёт, даже если об этой проблеме уже сообщалось"
 
-#: ../src/plugins/reporter-bugzilla.c:928
+#: ../src/plugins/reporter-bugzilla.c:912
 msgid "Add bugzilla user to CC list [of bug with this ID]"
-msgstr ""
+msgstr "Добавить пользователя в список получателей копии рассылки [по ошибке с данным ID]"
 
-#: ../src/plugins/reporter-bugzilla.c:929
+#: ../src/plugins/reporter-bugzilla.c:913
 msgid "Print BUG_ID which has given DUPHASH"
-msgstr ""
+msgstr "Вывести BUG_ID, полученный DUPHASH"
 
-#: ../src/plugins/reporter-bugzilla.c:930
+#: ../src/plugins/reporter-bugzilla.c:914
 msgid "Restrict access to this group only"
-msgstr ""
+msgstr "Ограничить доступ только к этой группе"
 
-#: ../src/plugins/reporter-bugzilla.c:931
+#: ../src/plugins/reporter-bugzilla.c:915
 msgid "Debug"
-msgstr ""
+msgstr "Отладка"
 
-#: ../src/plugins/reporter-bugzilla.c:973
+#: ../src/plugins/reporter-bugzilla.c:957
 msgid "Looking for similar problems in bugzilla"
-msgstr ""
+msgstr "Поиск похожих ошибок в Bugzilla"
 
-#: ../src/plugins/reporter-bugzilla.c:1000
+#: ../src/plugins/reporter-bugzilla.c:984
 msgid "Login is not provided by configuration. Please enter your BZ login:"
-msgstr ""
+msgstr "Логин не получен из конфигурации, пожалуйста, введите Ваш BZ логин вручную:"
 
-#: ../src/plugins/reporter-bugzilla.c:1006
+#: ../src/plugins/reporter-bugzilla.c:990
 #, c-format
 msgid ""
 "Password is not provided by configuration. Please enter the password for "
 "'%s':"
-msgstr ""
+msgstr "Пароль не задан настройками, пожалуйста введите пароль для '%s':"
 
-#: ../src/plugins/reporter-bugzilla.c:1025
+#: ../src/plugins/reporter-bugzilla.c:1009
 msgid ""
 "Can't get Bugzilla ID because this problem has not yet been reported to "
 "Bugzilla."
-msgstr ""
+msgstr "Не могу определить ID в Bugzilla, так как об этой ошибке ещё не было сообщено."
 
-#: ../src/plugins/reporter-bugzilla.c:1032
+#: ../src/plugins/reporter-bugzilla.c:1016
 #, c-format
 msgid ""
 "This problem has been reported to Bugzilla '%s' which differs from the "
 "configured Bugzilla '%s'."
-msgstr ""
+msgstr "Об этой было сообщено в Bugzilla '%s', что отличается от настроенного Bugzilla '%s'."
 
-#: ../src/plugins/reporter-bugzilla.c:1036
+#: ../src/plugins/reporter-bugzilla.c:1020
 #, c-format
 msgid "Malformed url to Bugzilla '%s'."
-msgstr ""
+msgstr "Неверно составленная ссылка в Bugzilla '%s'."
 
-#: ../src/plugins/reporter-bugzilla.c:1040
+#: ../src/plugins/reporter-bugzilla.c:1024
 #, c-format
 msgid "Using Bugzilla ID '%s'"
-msgstr ""
+msgstr "Используется ID Bugzilla '%s'"
 
-#: ../src/plugins/reporter-bugzilla.c:1074
-#: ../src/plugins/reporter-bugzilla.c:1324
+#: ../src/plugins/reporter-bugzilla.c:1058
+#: ../src/plugins/reporter-bugzilla.c:1315
 msgid "Logging out"
 msgstr "Выход"
 
-#: ../src/plugins/reporter-bugzilla.c:1125
+#: ../src/plugins/reporter-bugzilla.c:1109
 msgid "Can't determine Bugzilla Product from problem data."
-msgstr ""
+msgstr "Невозможно определить версию разработки Bugzilla в данных об ошибке."
 
-#: ../src/plugins/reporter-bugzilla.c:1176
+#: ../src/plugins/reporter-bugzilla.c:1160
 msgid "Checking for duplicates"
 msgstr "Поиск дубликатов"
 
 #. Create new bug
-#: ../src/plugins/reporter-bugzilla.c:1222
+#: ../src/plugins/reporter-bugzilla.c:1206
 msgid "Creating a new bug"
 msgstr "Создаётся новый запрос"
 
-#: ../src/plugins/reporter-bugzilla.c:1239
+#: ../src/plugins/reporter-bugzilla.c:1227
+msgid "Failed to create a new bug."
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:1230
 #, c-format
 msgid "Adding attachments to bug %i"
 msgstr "Присоединяются файлы к %i"
 
-#: ../src/plugins/reporter-bugzilla.c:1258
+#: ../src/plugins/reporter-bugzilla.c:1249
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Запрос уже существует: %i"
 
-#: ../src/plugins/reporter-bugzilla.c:1279
+#: ../src/plugins/reporter-bugzilla.c:1270
 #, c-format
 msgid "Adding %s to CC list"
-msgstr ""
+msgstr "%s добавляется в список получателей копии"
 
-#: ../src/plugins/reporter-bugzilla.c:1296
+#: ../src/plugins/reporter-bugzilla.c:1287
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Добавление комментария в %d"
 
-#: ../src/plugins/reporter-bugzilla.c:1310
+#: ../src/plugins/reporter-bugzilla.c:1301
 msgid "Attaching better backtrace"
 msgstr "Добавление более подходящего протокола..."
 
-#: ../src/plugins/reporter-bugzilla.c:1318
+#: ../src/plugins/reporter-bugzilla.c:1309
 msgid "Found the same comment in the bug history, not adding a new one"
 msgstr "Этот комментарий уже есть в запросе. Добавление отменено."
 
-#: ../src/plugins/reporter-bugzilla.c:1327
+#: ../src/plugins/reporter-bugzilla.c:1318
 #, c-format
 msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
 msgstr "Статус: %s%s%s %s/show_bug.cgi?id=%u"
@@ -1353,7 +1383,7 @@ msgstr "Не удалось создать временный файл в /tmp"
 #. Check for hints and show them if we have something
 #: ../src/plugins/reporter-rhtsupport.c:387
 msgid "Checking for hints"
-msgstr ""
+msgstr "Поиск существующих решений"
 
 #: ../src/plugins/reporter-rhtsupport.c:429
 msgid "Do you still want to create a RHTSupport ticket?"
@@ -1361,23 +1391,23 @@ msgstr "Вы все еще хотите создать запрос RHTSupport?"
 
 #: ../src/plugins/reporter-rhtsupport.c:443
 msgid "Creating a new case"
-msgstr ""
+msgstr "Создаётся новый запрос"
 
 #. How can we help user sorting out this problem?
 #: ../src/plugins/reporter-rhtsupport.c:454
 msgid "Can't determine RH Support Product from problem data."
-msgstr ""
+msgstr "Невозможно определить версию разработки RH Support в данных об ошибке."
 
 #: ../src/plugins/reporter-rhtsupport.c:529
 #, c-format
 msgid "Adding comment to case '%s'"
-msgstr ""
+msgstr "Добавление комментария к ошибке '%s'"
 
 #. Attach the tarball of -d DIR
 #: ../src/plugins/reporter-rhtsupport.c:549
 #, c-format
 msgid "Attaching problem data to case '%s'"
-msgstr ""
+msgstr "Присоединение данных об ошибке к '%s'"
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:202
 msgid "Documentation which might be relevant: "
@@ -1548,17 +1578,17 @@ msgstr "Отправить *.tar на адрес в формате «имя:па
 #: ../src/plugins/report_Uploader.xml.in.h:5
 msgid ""
 "Examples:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]"
-msgstr ""
+msgstr "Примеры: ftp://[user[:pass]@]host/dir/[file.tar.gz], scp://[user[:pass]@]host/dir/[file.tar.gz], file:///dir/[file.tar.gz]"
 
 #: ../src/plugins/report_Uploader.xml.in.h:10
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:8
 msgid "FTP Proxy"
-msgstr ""
+msgstr "FTP-прокси"
 
 #: ../src/plugins/report_Uploader.xml.in.h:11
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:9
 msgid "Sets the proxy server to use for FTP"
-msgstr ""
+msgstr "Выбирает прокси-сервер для использования с FTP"
 
 #: ../src/plugins/report_uReport.xml.in.h:1
 msgid "uReport"
@@ -1578,11 +1608,11 @@ msgstr "Адрес web-сервиса uReport "
 
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:1
 msgid "Emergency analysis"
-msgstr ""
+msgstr "Экстренный анализ"
 
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:2
 msgid "Upload the problem data for further analysis"
-msgstr ""
+msgstr "Загружаются сведения об ошибке для дальнейшего изучения"
 
 #: ../src/plugins/rhbz.c:409
 #, c-format
@@ -1599,7 +1629,14 @@ msgstr "Запрос %i закрыт без решения"
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
 msgstr "Запрос %i закрыт как ДУБЛИКАТ, но DUP_ID отсутствует"
 
-#: ../src/plugins/rhbz.c:649
+#: ../src/plugins/rhbz.c:621
+msgid ""
+"A private ticket creation has been requested, but no groups were specified, "
+"please see https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
+"tickets for more info"
+msgstr ""
+
+#: ../src/plugins/rhbz.c:642
 #, c-format
 msgid "New bug id: %i"
 msgstr "ID нового запроса: %i"
@@ -1616,11 +1653,11 @@ msgstr ""
 
 #: ../src/plugins/abrt-screencast:124
 msgid "Select window"
-msgstr ""
+msgstr "Выберите окно"
 
 #: ../src/plugins/abrt-screencast:256
 msgid "Usage: abrt-screencast -o OUTPUT_FILE"
-msgstr ""
+msgstr "Использование: abrt-screencast -o OUTPUT_FILE"
 
 #: ../src/plugins/ureport.c:78
 #, c-format
@@ -1628,32 +1665,32 @@ msgid ""
 "Your problem seems to be caused by %s\n"
 "\n"
 "%s\n"
-msgstr ""
+msgstr "Ваша ошибка, по-видимому, вызвана %s\n\n%s\n"
 
 #: ../src/plugins/ureport.c:81
 msgid "Your problem seems to be caused by one of the following:\n"
-msgstr ""
+msgstr "Ваша ошибка, по-видимому, вызвана чем-то из перечисленного:\n"
 
 #: ../src/plugins/ureport.c:247
 #, c-format
 msgid "Failed to upload uReport to the server '%s' with curl: %s"
-msgstr ""
+msgstr "Ошибка отправки отчёта на сервер '%s' посредством cURL: %s"
 
 #: ../src/plugins/ureport.c:253
 #, c-format
 msgid "The URL '%s' does not exist (got error 404 from server)"
-msgstr ""
+msgstr "Не существует URL '%s' (ошибка 404)"
 
 #: ../src/plugins/ureport.c:259
 #, c-format
 msgid "The server at '%s' encountered an internal error (got error 500)"
-msgstr ""
+msgstr "Произошла внутренняя ошибка сервера '%s' (ошибка 500)"
 
 #: ../src/plugins/ureport.c:265
 #, c-format
 msgid ""
 "The server at '%s' is currently can't handle the request (got error 503)"
-msgstr ""
+msgstr "Сервер '%s' не может обработать запрос (ошибка 503)"
 
 #. can't print better error message
 #: ../src/plugins/ureport.c:274
@@ -1661,35 +1698,35 @@ msgstr ""
 msgid ""
 "Unexpected HTTP response from '%s': %d\n"
 "%s"
-msgstr ""
+msgstr "Неверный ответ сервера '%s': %d\n%s"
 
 #: ../src/plugins/ureport.c:282
 #, c-format
 msgid ""
 "Unable to parse response from ureport server at '%s':\n"
 "%s"
-msgstr ""
+msgstr "Невозможно обработать ответ сервера '%s':\n%s"
 
 #: ../src/plugins/ureport.c:291
 #, c-format
 msgid "The response from '%s' has invalid format"
-msgstr ""
+msgstr "Неверный формат ответа '%s'"
 
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
 #: ../src/plugins/ureport.c:297
 #, c-format
 msgid "Type mismatch has been detected in the response from '%s'"
-msgstr ""
+msgstr "Обнаружено несоответствие типов в ответе '%s'"
 
 #: ../src/plugins/ureport.c:319
 #, c-format
 msgid "The server at '%s' responded with an error: '%s'"
-msgstr ""
+msgstr "Сервер '%s' ответил сообщением об ошибке: '%s'"
 
 #: ../src/plugins/ureport.c:351
 msgid "Specify server URL"
-msgstr ""
+msgstr "Укажите URL сервера"
 
 #: ../src/plugins/ureport.c:353
 msgid "Allow insecure connection to ureport server"
@@ -1697,61 +1734,65 @@ msgstr "Разрешить небезопасное соединение с се
 
 #: ../src/plugins/ureport.c:355
 msgid "bthash of uReport to attach"
-msgstr ""
+msgstr "bthash uReport для присоединения"
 
 #: ../src/plugins/ureport.c:357
 msgid "Attach RHBZ bug (requires -a)"
-msgstr ""
+msgstr "Присоединить баг RHBZ (требует ключа -a) "
 
 #: ../src/plugins/ureport.c:359
 msgid "Attach contents of reported_to"
-msgstr ""
+msgstr "Присоединить содержимое reported_to"
 
 #: ../src/plugins/ureport.c:364
 msgid ""
 "& [-v] [-u URL] [-k] [-a bthash -b bug-id] [-r] [-d DIR]\n"
 "\n"
 "Upload micro report or add an attachment to a micro report"
-msgstr ""
+msgstr "& [-v] [-u URL] [-k] [-a bthash -b bug-id] [-r] [-d DIR]⏎\n⏎\nОтправить микроотчёт или присоединить вложение к микроотчёту."
 
 #: ../src/plugins/ureport.c:379
 msgid "You need to specify bug ID to attach."
-msgstr ""
+msgstr "Для присоединения, необходимо указать конкретный ID ошибки."
 
 #: ../src/plugins/ureport.c:381
 msgid "You need to specify bthash of the uReport to attach."
-msgstr ""
+msgstr "Для присоединения, необходимо указать bthash uReport."
 
 #: ../src/plugins/ureport.c:396
 msgid "This problem does not have an uReport assigned."
-msgstr ""
+msgstr "Для этой ошибки нет присоединённых микроотчётов."
 
 #: ../src/plugins/ureport.c:399
 msgid "This problem has not been reported to Bugzilla."
-msgstr ""
+msgstr "Об этой ошибке не было сообщено в Bugzilla."
 
 #: ../src/plugins/ureport.c:406
 #, c-format
 msgid "Unable to find bug ID in bugzilla URL '%s'"
-msgstr ""
+msgstr "Невозможно найти ID ошибки в ссылке Bugzilla '%s'"
 
 #: ../src/plugins/ureport.c:411
 #, c-format
 msgid "Unable to parse bug ID from bugzilla URL '%s'"
-msgstr ""
+msgstr "Невозможно выделить ID ошибки из ссылки Bugzilla '%s'"
+
+#: ../src/plugins/ureport.c:429
+msgid "Not uploading an empty uReport"
+msgstr "Загрузка пустого uReport невозможна"
 
 #: ../src/plugins/ureport.c:438
 msgid "Failed on submitting the problem"
-msgstr ""
+msgstr "Не удалось отправить сообщение об ошибке"
 
 #: ../src/plugins/ureport.c:477
 msgid "This problem has already been reported."
-msgstr ""
+msgstr "Об этой ошибке уже сообщено."
 
 #: ../src/plugins/ureport.c:486
 #, c-format
 msgid "Server responded with an error: '%s'"
-msgstr ""
+msgstr "Ответ сервера об ошибке: '%s'"
 
 #: ../src/report-newt/report-newt.c:55
 msgid "How would you like to report the problem?"
@@ -1797,25 +1838,48 @@ msgstr "Удалить DIR после отправки отчёта"
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:1
 msgid "Report a bug to Fedora maintainers"
-msgstr ""
+msgstr "Сообщить об ошибке разработчикам Fedora"
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:2
-#: ../src/workflows/workflow_Fedora.xml.in.h:2
 msgid "Process the report using the Fedora infrastructure"
-msgstr ""
+msgstr "Подготовить отчёт, используя средства Fedora"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
 #: ../src/workflows/workflow_Upload.xml.in.h:1
 msgid "Upload the problem data to a server"
-msgstr ""
+msgstr "Загрузить сведения об ошибке на сервер"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:2
 #: ../src/workflows/workflow_Upload.xml.in.h:2
 msgid "Analyze the problem locally and upload the data via scp or ftp"
+msgstr "Проанализировать сведения на этом компьютере и загрузить данные посредством scp или ftp"
+
+#: ../src/workflows/workflow_FedoraCCpp.xml.in.h:1
+#: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:1
+#: ../src/workflows/workflow_FedoraPython.xml.in.h:1
+#: ../src/workflows/workflow_FedoraVmcore.xml.in.h:1
+#: ../src/workflows/workflow_FedoraXorg.xml.in.h:1
+msgid "Report to Fedora"
+msgstr "Сообщить в Fedora"
+
+#: ../src/workflows/workflow_FedoraCCpp.xml.in.h:2
+msgid "Process the C/C++ crash using the Fedora infrastructure"
 msgstr ""
 
-#: ../src/workflows/workflow_Fedora.xml.in.h:1
-msgid "Report to Fedora"
+#: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:2
+msgid "Process the kerneloops using the Fedora infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_FedoraPython.xml.in.h:2
+msgid "Process the python exception using the Fedora infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_FedoraVmcore.xml.in.h:2
+msgid "Process the kernel crash using the Fedora infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_FedoraXorg.xml.in.h:2
+msgid "Process the X Server problem using the Fedora infrastructure"
 msgstr ""
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
@@ -1824,24 +1888,24 @@ msgstr ""
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:1
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:1
 msgid "Report to Red Hat"
-msgstr ""
+msgstr "Сообщить в Red Hat"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the Red Hat infrastructure"
-msgstr ""
+msgstr "Проанализировать сбой C/C++ с использованием средств Red Hat"
 
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:2
 msgid "Process the kerneloops using the Red Hat infrastructure"
-msgstr ""
+msgstr "Проанализировать kerneloops с использованием средств Red Hat"
 
 #: ../src/workflows/workflow_RHELPython.xml.in.h:2
 msgid "Process the python exception using the Red Hat infrastructure"
-msgstr ""
+msgstr "Проанализировать исключение Python с использованием средств Red Hat"
 
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:2
 msgid "Process the kernel crash using the Red Hat infrastructure"
-msgstr ""
+msgstr "Проанализировать сбой ядра с использованием средств Red Hat"
 
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:2
 msgid "Process the X Server problem using the Red Hat infrastructure"
-msgstr ""
+msgstr "Проанализировать ошибку X Server с использованием средств Red Hat"

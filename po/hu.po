@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: https://fedorahosted.org/abrt/report\n"
-"POT-Creation-Date: 2013-05-02 09:29+0200\n"
-"PO-Revision-Date: 2013-05-02 07:30+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"POT-Creation-Date: 2013-07-19 19:34+0200\n"
+"PO-Revision-Date: 2013-08-20 10:48+0000\n"
+"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
 "Language-Team: Hungarian <trans-hu@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -108,15 +108,15 @@ msgstr "# Az összeomlás oka"
 
 #: ../src/cli/cli-report.c:170
 msgid "# os-release configuration file from root dir"
-msgstr ""
+msgstr "# os-release konfigurációs fájl a root mappából"
 
 #: ../src/cli/cli-report.c:175
 msgid "# Release string of the operating system from root dir"
-msgstr ""
+msgstr "# Kiadási szövege az operációs rendszernek a root mappából"
 
 #: ../src/cli/cli-report.c:183
 msgid "# os-release configuration file"
-msgstr ""
+msgstr "# os-release konfigurációs fájl"
 
 #: ../src/cli/cli-report.c:188
 msgid "# Release string of the operating system"
@@ -216,7 +216,7 @@ msgstr "Yum előkészítése sikertelen (YumBase.doConfigSetup): '{0!s}'"
 
 #: ../src/client-python/debuginfo.py:226
 msgid "Error: can't make cachedir, exiting"
-msgstr ""
+msgstr "Hiba: cache mappa nem készíthető célon, kilépés"
 
 #: ../src/client-python/debuginfo.py:235
 msgid "Can't disable repository '{0!s}': {1!s}"
@@ -325,15 +325,15 @@ msgstr "Beállítás_ok"
 msgid "Show password"
 msgstr "Jelszó megjelenítése"
 
-#: ../src/gtk-helpers/event_config_dialog.c:216
+#: ../src/gtk-helpers/event_config_dialog.c:221
 msgid "Advanced"
 msgstr "Haladó"
 
-#: ../src/gtk-helpers/event_config_dialog.c:234
+#: ../src/gtk-helpers/event_config_dialog.c:241
 msgid "Don't store passwords"
 msgstr "Jelszavakat ne tárolja"
 
-#: ../src/gtk-helpers/event_config_dialog.c:257
+#: ../src/gtk-helpers/event_config_dialog.c:264
 msgid "Secret Service is not available, your settings won't be saved!"
 msgstr "Gnome kulcskarika nem elérhető, a beállításai nem kerülnek mentésre"
 
@@ -452,139 +452,142 @@ msgstr "(nincs leírás)"
 msgid "%llu bytes, %u files"
 msgstr "%llu byte, %u fájl"
 
-#: ../src/gui-wizard-gtk/wizard.c:1531
+#: ../src/gui-wizard-gtk/wizard.c:1530
 msgid "Processing was canceled"
-msgstr ""
+msgstr "Feldolgozás megszakítva"
 
-#: ../src/gui-wizard-gtk/wizard.c:1695
+#: ../src/gui-wizard-gtk/wizard.c:1694
 msgid ""
 "Processing of the problem failed. This can have many reasons but there are two most common:\n"
 "\t▫ <b>network connection problems</b>\n"
 "\t▫ <b>corrupted problem data</b>\n"
 msgstr "Hiba feldolgozása sikertelen. Ennek több oka is lehet, de a két leggyakoribb:\n\t▫ <b>hálózati problémák</b>\n\t▫ <b>sérült adatok a problémáról</b>\n"
 
-#: ../src/gui-wizard-gtk/wizard.c:1700
+#: ../src/gui-wizard-gtk/wizard.c:1699
 msgid ""
 "If you want to help us, please click on the upload button and provide all problem data for a deep analysis.\n"
 "<i>Before you do that, please consider the security risks. Problem data may contain sensitive information like passwords.\n"
 "The uploaded data are stored in a protected storage and only a limited number of persons can read them.</i>"
 msgstr "Ha segíteni szeretne nekünk, kérem kattintson a feltöltő gombra és adja meg az összes felmerült probléma adatait egy alaposabb elemzésre.\n<i> Mielőtt még megtenné, kérem vegye figyelembe a biztonsági kockázatokat. A probléma adatai érzékeny információkat is tartalmazhatnak, mint jelszavak.\nA feltöltött adatok egy védett tárhelyen kerülnek elhelyezésre és csak néhány személy férhet hozzá, olvashatja azokat. </i>"
 
-#: ../src/gui-wizard-gtk/wizard.c:1832 ../src/gui-wizard-gtk/wizard.c:1897
+#: ../src/gui-wizard-gtk/wizard.c:1817
+msgid "Processing was interrupted because the problem is not reportable."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1827 ../src/gui-wizard-gtk/wizard.c:1895
 msgid "Processing failed."
 msgstr "Feldolgozás sikertelen."
 
+#. No next event, go to progress page and finish
+#: ../src/gui-wizard-gtk/wizard.c:1835 ../src/gui-wizard-gtk/wizard.c:2520
+msgid "Processing finished."
+msgstr "Feldolgozás befejeződött."
+
+#: ../src/gui-wizard-gtk/wizard.c:1836
+msgid "Processing finished, please proceed to the next step."
+msgstr "Feldolgozás befejeződött, kérem folytassa a következő lépéssel."
+
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1894
+#: ../src/gui-wizard-gtk/wizard.c:1892
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "Nincs meghatározva feldolgozás a '%s' eseményhez"
 
-#: ../src/gui-wizard-gtk/wizard.c:1908
+#: ../src/gui-wizard-gtk/wizard.c:1906
 msgid "Processing interrupted: can't continue without writable directory."
 msgstr "Feldolgozás megszakítva: nem folytatható írható mappa nélkül"
 
-#: ../src/gui-wizard-gtk/wizard.c:1946
+#: ../src/gui-wizard-gtk/wizard.c:1943
 msgid "Processing..."
 msgstr "Feldolgozás..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2005
+#: ../src/gui-wizard-gtk/wizard.c:2002
 msgid "Cannot check backtrace rating because of invalid event name"
 msgstr "Nem ellenőrizhető a nyomkövetés minősítése mivel hibás az esemény neve"
 
-#: ../src/gui-wizard-gtk/wizard.c:2258
+#: ../src/gui-wizard-gtk/wizard.c:2255
 msgid ""
 "Possible sensitive data detected, please review the highlighted tabs "
 "carefully."
 msgstr "Valószínűleg érzékeny adatok találhatóak a tartalomban, kérem tekintse át a kiemelt részeket figyelmesen."
 
-#. this event is the last event from the chain
-#. No next event, go to progress page and finish
-#: ../src/gui-wizard-gtk/wizard.c:2269 ../src/gui-wizard-gtk/wizard.c:2532
-msgid "Processing finished."
-msgstr "Feldolgozás befejeződött."
-
-#: ../src/gui-wizard-gtk/wizard.c:2270
-msgid "Processing finished, please proceed to the next step."
-msgstr "Feldolgozás befejeződött, kérem folytassa a következő lépéssel."
-
-#: ../src/gui-wizard-gtk/wizard.c:2552
+#: ../src/gui-wizard-gtk/wizard.c:2540
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
 "Do you want to continue?"
 msgstr "Az esemény: %s - engedélyre van szügsége hogy elküldhessen valószínűleg érzékeny "
 
-#: ../src/gui-wizard-gtk/wizard.c:2600
+#: ../src/gui-wizard-gtk/wizard.c:2588
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
 msgstr "A problémát inkább ne jelentse (ez egy ismert problémának tűnik). %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2847
+#: ../src/gui-wizard-gtk/wizard.c:2835
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' nem egy szokványos fájl"
 
-#: ../src/gui-wizard-gtk/wizard.c:2861
+#: ../src/gui-wizard-gtk/wizard.c:2849
 msgid "You are trying to copy a file onto itself"
 msgstr "Önmagára próbálja másolni a fájlt"
 
-#: ../src/gui-wizard-gtk/wizard.c:2868
+#: ../src/gui-wizard-gtk/wizard.c:2856
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "Az '%s' nem másolható: %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2883
+#: ../src/gui-wizard-gtk/wizard.c:2871
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "Az '%s' elem már létezik és nem módosítható"
 
-#: ../src/gui-wizard-gtk/wizard.c:3065
+#: ../src/gui-wizard-gtk/wizard.c:3053
 msgid "Include"
 msgstr "Hozzáadva"
 
-#: ../src/gui-wizard-gtk/wizard.c:3076
+#: ../src/gui-wizard-gtk/wizard.c:3064
 msgid "Name"
 msgstr "Név"
 
-#: ../src/gui-wizard-gtk/wizard.c:3086
+#: ../src/gui-wizard-gtk/wizard.c:3074
 msgid "Value"
 msgstr "Értéke"
 
-#: ../src/gui-wizard-gtk/wizard.c:3120
+#: ../src/gui-wizard-gtk/wizard.c:3108
 msgid "Problem description"
 msgstr "Probléma leírása"
 
-#: ../src/gui-wizard-gtk/wizard.c:3121
+#: ../src/gui-wizard-gtk/wizard.c:3109
 msgid "Select how to report this problem"
 msgstr "Válassza ki hogyan jelenti a problémát"
 
-#: ../src/gui-wizard-gtk/wizard.c:3122
+#: ../src/gui-wizard-gtk/wizard.c:3110
 msgid "Provide additional information"
 msgstr "További infirmációk megadása"
 
-#: ../src/gui-wizard-gtk/wizard.c:3123
+#: ../src/gui-wizard-gtk/wizard.c:3111
 msgid "Review the data"
 msgstr "Adatok áttekintése"
 
-#: ../src/gui-wizard-gtk/wizard.c:3124
+#: ../src/gui-wizard-gtk/wizard.c:3112
 msgid "Confirm data to report"
 msgstr "Erősítse meg az adatokat a jelentéshez"
 
-#: ../src/gui-wizard-gtk/wizard.c:3125
+#: ../src/gui-wizard-gtk/wizard.c:3113
 msgid "Processing"
 msgstr "Feldolgozás"
 
-#: ../src/gui-wizard-gtk/wizard.c:3126
+#: ../src/gui-wizard-gtk/wizard.c:3114
 msgid "Processing done"
 msgstr "Feldolgozás kész"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3218
+#: ../src/gui-wizard-gtk/wizard.c:3205
 msgid "Upload for analysis"
 msgstr "Feltöltés elemzésre"
 
-#: ../src/gui-wizard-gtk/wizard.c:3310
+#: ../src/gui-wizard-gtk/wizard.c:3297
 msgid ""
 "In order to enable the built-in screencasting functionality the package recordmydesktop has to be installed. Please run the following command if you want to install it.\n"
 "\n"
@@ -682,12 +685,12 @@ msgid ""
 "reporting process, press 'Forward'."
 msgstr "Ha szeretné jelenteni a problémát egy másik célra is, vagy további információt gyűjtene, vagy jobb leírást adna a korábbi helyett és megismételné a folyamatot, kérem kattintson a 'Folytatás' gombra."
 
-#: ../src/include/internal_libreport.h:906
+#: ../src/include/internal_libreport.h:919
 msgid "Be verbose"
 msgstr "Legyen részletes"
 
-#: ../src/include/internal_libreport.h:907
-#: ../src/plugins/reporter-bugzilla.c:921
+#: ../src/include/internal_libreport.h:920
+#: ../src/plugins/reporter-bugzilla.c:905
 #: ../src/plugins/reporter-kerneloops.c:166
 #: ../src/plugins/reporter-mailx.c:173 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:223
@@ -695,10 +698,27 @@ msgstr "Legyen részletes"
 msgid "Problem directory"
 msgstr "Hibagyűjtő mappa"
 
-#: ../src/lib/abrt_sock.c:150
+#: ../src/lib/abrt_sock.c:158
 #, c-format
 msgid "Can't delete: '%s'"
 msgstr "Nem törölhető: '%s'"
+
+#: ../src/lib/abrt_sock.c:194
+msgid "locked by another process"
+msgstr ""
+
+#: ../src/lib/abrt_sock.c:203
+msgid "permission denied"
+msgstr ""
+
+#: ../src/lib/abrt_sock.c:206
+msgid "not a problem directory"
+msgstr ""
+
+#: ../src/lib/abrt_sock.c:215
+#, c-format
+msgid "Can't delete '%s': %s"
+msgstr ""
 
 #: ../src/lib/client.c:51 ../src/lib/client.c:77
 msgid "y"
@@ -794,24 +814,6 @@ msgstr "Kérem próbálja meg a debuginfo csomagokat kézzel telepíteni ennek a
 msgid "A proper debuginfo is probably missing or the coredump is corrupted."
 msgstr "A helyes debuginfo csomag hiányzik, vagy a coredump hibás."
 
-#: ../src/lib/json.c:134
-#, c-format
-msgid "Missing problem element '%s'"
-msgstr ""
-
-#: ../src/lib/json.c:146
-#, c-format
-msgid "An unsupported value '%s' in problem element '%s'"
-msgstr ""
-
-#: ../src/lib/json.c:291
-msgid "Can't create an uReport without 'type'"
-msgstr ""
-
-#: ../src/lib/json.c:328 ../src/plugins/ureport.c:429
-msgid "Not uploading an empty uReport"
-msgstr ""
-
 #: ../src/lib/parse_options.c:58
 msgid "Usage: "
 msgstr "Használata: "
@@ -824,57 +826,57 @@ msgstr "Alapvető '%s' komponens  hiányzik, nem folytatható"
 #: ../src/lib/run_event.c:761
 #, c-format
 msgid "('%s' was killed by signal %u)\n"
-msgstr ""
+msgstr "('%s' megszakítva - SIG %u)\n"
 
 #: ../src/lib/run_event.c:763
 #, c-format
 msgid "('%s' completed successfully)\n"
-msgstr ""
+msgstr "('%s' befejeződött sikeresen)\n\n"
 
 #: ../src/lib/run_event.c:765
 #, c-format
 msgid "('%s' exited with %u)\n"
-msgstr ""
+msgstr "('%s' kilépett ezzel: %u )\n"
 
 #: ../src/plugins/abrt_rh_support.c:356
 #, c-format
 msgid "Error in case creation at '%s': %s"
-msgstr ""
+msgstr "Hiba az eset összeállításakor - '%s' : %s"
 
 #: ../src/plugins/abrt_rh_support.c:365
 #, c-format
 msgid "Error in case creation at '%s', HTTP code: %d, server says: '%s'"
-msgstr ""
+msgstr "Hiba az eset összeállításakor - '%s', HTTP kód: %d, kiszolgáló válasza: '%s'"
 
 #: ../src/plugins/abrt_rh_support.c:369
 #, c-format
 msgid "Error in case creation at '%s', HTTP code: %d"
-msgstr ""
+msgstr "hiba az eset összeállításakor - '%s', HTTP kód: %d"
 
 #: ../src/plugins/abrt_rh_support.c:420
 #, c-format
 msgid "Error in case creation at '%s': no Location URL, HTTP code: %d"
-msgstr ""
+msgstr "Hiba az eset összeállításakor - '%s': nincs lokációs URL, HTTP kód: %d"
 
 #: ../src/plugins/abrt_rh_support.c:524
 #, c-format
 msgid "Error in comment creation at '%s': %s"
-msgstr ""
+msgstr "Hiba hozzászólás készítésekor - '%s': %s"
 
 #: ../src/plugins/abrt_rh_support.c:533
 #, c-format
 msgid "Error in comment creation at '%s', HTTP code: %d, server says: '%s'"
-msgstr ""
+msgstr "Hiba a hozzászólás elkészítésekor - '%s', HTTP kód: %d, kiszolgáló válasza: '%s'"
 
 #: ../src/plugins/abrt_rh_support.c:537
 #, c-format
 msgid "Error in comment creation at '%s', HTTP code: %d"
-msgstr ""
+msgstr "Hiba a hozzászólás elkészítésekor - '%s', HTTP kód: %d"
 
 #: ../src/plugins/abrt_rh_support.c:583
 #, c-format
 msgid "Error in comment creation at '%s': no Location URL, HTTP code: %d"
-msgstr ""
+msgstr "Hiba az eset összeállításakor itt - '%s': nincs lokációs URL, HTTP kód: %d"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:1
 msgid "Bugzilla"
@@ -928,59 +930,80 @@ msgid "Check SSL key validity"
 msgstr "Ellenőrizze a SSL kulcs érvényességét"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:12
-msgid "Bugzilla product"
+msgid "Restrict access"
 msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:13
 msgid ""
-"Specify this only if you needed different product than specified in /etc/os-"
-"release"
+"Restrict access to the created bugzilla ticket allowing only users from "
+"specified groups to view it (see advanced settings for more details)"
 msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:14
-msgid "Bugzilla product version"
-msgstr ""
+msgid "Bugzilla product"
+msgstr "Bugzilla termék"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:15
 msgid ""
-"Specify this only if you needed different product version than specified in "
-"/etc/os-release"
-msgstr ""
+"Specify this only if you needed different product than specified in /etc/os-"
+"release"
+msgstr "Csak akkor definiálja ezt, ha szükséges más termékhez, mint az '/etc/os-release'-ben meghatározott "
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:16
+msgid "Bugzilla product version"
+msgstr "Bugzilla termék verziója"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:17
+msgid ""
+"Specify this only if you needed different product version than specified in "
+"/etc/os-release"
+msgstr "Csak akkor definiálja ezt, ha szükséges más termékhez, mint az '/etc/os-release'-ben meghatározott "
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:18
 #: ../src/plugins/report_Kerneloops.xml.in.h:5
 #: ../src/plugins/report_RHTSupport.xml.in.h:11
 #: ../src/plugins/report_Uploader.xml.in.h:6
 #: ../src/plugins/report_uReport.xml.in.h:7
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:4
 msgid "HTTP Proxy"
-msgstr ""
+msgstr "HTTP Proxy"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:17
+#: ../src/plugins/report_Bugzilla.xml.in.h:19
 #: ../src/plugins/report_Kerneloops.xml.in.h:6
 #: ../src/plugins/report_RHTSupport.xml.in.h:12
 #: ../src/plugins/report_Uploader.xml.in.h:7
 #: ../src/plugins/report_uReport.xml.in.h:8
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:5
 msgid "Sets the proxy server to use for HTTP"
-msgstr ""
+msgstr "HTTP használathoz egy proxy szervert állít be"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:18
+#: ../src/plugins/report_Bugzilla.xml.in.h:20
 #: ../src/plugins/report_Kerneloops.xml.in.h:7
 #: ../src/plugins/report_RHTSupport.xml.in.h:13
 #: ../src/plugins/report_Uploader.xml.in.h:8
 #: ../src/plugins/report_uReport.xml.in.h:9
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:6
 msgid "HTTPS Proxy"
-msgstr ""
+msgstr "HTTPS Proxy"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:19
+#: ../src/plugins/report_Bugzilla.xml.in.h:21
 #: ../src/plugins/report_Kerneloops.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:14
 #: ../src/plugins/report_Uploader.xml.in.h:9
 #: ../src/plugins/report_uReport.xml.in.h:10
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:7
 msgid "Sets the proxy server to use for HTTPS"
+msgstr "HTTPS használatához egy proxy szervert állít be"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:22
+msgid "Groups"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:23
+msgid ""
+"Restrict the access to specified groups &lt;a "
+"href=\"https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
+"tickets\"&gt;?&lt;/a&gt;"
 msgstr ""
 
 #: ../src/plugins/report.c:37
@@ -1004,41 +1027,42 @@ msgstr "'strata' vagy 'bugzilla'"
 msgid "Ticket/case ID"
 msgstr "Tikett / eset ID"
 
-#: ../src/plugins/reporter-bugzilla.c:377
-msgid "Can't parse backtrace"
-msgstr "Nyomkövetési információ nem értelmezhető"
+#: ../src/plugins/reporter-bugzilla.c:355
+#, c-format
+msgid "Can't parse backtrace: %s"
+msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:388
-msgid "Can't find crash thread"
-msgstr "Összeomlási szál nem található"
+#: ../src/plugins/reporter-bugzilla.c:366
+msgid "Can't generate stacktrace description (no crash thread?)"
+msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:773
+#: ../src/plugins/reporter-bugzilla.c:757
 msgid "Can't continue without login"
 msgstr "Nem folytathatja bejelentkezés nélkül"
 
-#: ../src/plugins/reporter-bugzilla.c:786
+#: ../src/plugins/reporter-bugzilla.c:770
 msgid "Can't continue without password"
 msgstr "Nem folytathatja jelszó nélkül"
 
-#: ../src/plugins/reporter-bugzilla.c:795
+#: ../src/plugins/reporter-bugzilla.c:779
 #, c-format
 msgid "Logging into Bugzilla at %s"
 msgstr "Bejeletkezés a Bugzilla rendszerbe: %s"
 
-#: ../src/plugins/reporter-bugzilla.c:799
+#: ../src/plugins/reporter-bugzilla.c:783
 msgid "Invalid password or login. Please enter your BZ login:"
 msgstr "Helytelen jelszó vagy bejelentkezési név. Kérem adja meg a BZ bejelentkezési nevét:"
 
-#: ../src/plugins/reporter-bugzilla.c:802
+#: ../src/plugins/reporter-bugzilla.c:786
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
 msgstr "Helytelen jelszó vagy bejelentkezési név. Kérem adja meg a jelszavát '%s' számára:"
 
-#: ../src/plugins/reporter-bugzilla.c:837
+#: ../src/plugins/reporter-bugzilla.c:821
 msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
 msgstr "Bug.search(quicksearch) visszaadott értéke nem tartalmazott 'bugs' részt"
 
-#: ../src/plugins/reporter-bugzilla.c:855
+#: ../src/plugins/reporter-bugzilla.c:839
 msgid ""
 "\n"
 "& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\n"
@@ -1077,133 +1101,137 @@ msgid ""
 "If not specified, CONFFILE defaults to "
 msgstr "\n& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\nvagy:\n& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\nvagy:\n& [-v] [-c CONFFILE]... [-d DIR] -t[ID] -w\nvagy:\n& [-v] [-c CONFFILE]... -h DUPHASH\n\nBejelenti a hibát a  Bugzilla nyomkövetőjébe.\n\nAz eszköz a DIR mappát olvassa. Majd logolja a Bugzilla kiszolgálóba és megpróbál hibát találni\nugyanazzal az abrt_hash:HEXSTRING alapján a 'Whiteboard'-ban.\n\nHa ilyen hiba nem található, akkor egy új hibajegy készül. A DIR mappa elemei\na hiba leíró és csatolmány részeként kerülnek tárolásra,\na típusától és méretétől függően.\n\nMáskülönben, ha ilyen hiba megtalálható már, megjelölésre kerül mint CLOSED DUPLICATE,\nés az eszköz követi a láncot addig, míg nem talál nem duplikált hibát. \nAz eszköz majd új megjegyzést csatol a talált hibához.\n\nAz újonnan felvett vagy módosított hiba URL-je megjelenik a stdout kimeneten mentésre\nkerül a 'reported_to' elemben.\n\nOpció -t feltölti a FILE-okat a már elkészített hibajegyhez a Bugzilla oldalára.\nA hiba ID-je a -d DIR-ben meghatározott mappából kerül letöltésre.\nHa a bejelentett probléma adatai még sosem kerültek a Bugzilla-ba, a feltöltés sikertelen lesz.\n\nOpció -tID feltölti FILE-okat a hibajegyhez a meghatározott ID-vel a Bugzilla oldalára.\n-d DIR kihagyásra kerül.\n\nOpció -w hozzáadja a bugzilla felhasználót a bug's CC listájához.\n\nIf not specified, CONFFILE defaults to "
 
-#: ../src/plugins/reporter-bugzilla.c:922
+#: ../src/plugins/reporter-bugzilla.c:906
 #: ../src/plugins/reporter-rhtsupport.c:224
 msgid "Configuration file (may be given many times)"
 msgstr "Konfigurációs fájl (többször is szerepelhet)"
 
-#: ../src/plugins/reporter-bugzilla.c:923
+#: ../src/plugins/reporter-bugzilla.c:907
 msgid "Formatting file for initial comment"
 msgstr "Fájl formázása kezdeti megjegyzéshez"
 
-#: ../src/plugins/reporter-bugzilla.c:924
+#: ../src/plugins/reporter-bugzilla.c:908
 msgid "Formatting file for duplicates"
 msgstr "Fájl formázása a duplikátumokhoz"
 
-#: ../src/plugins/reporter-bugzilla.c:925
+#: ../src/plugins/reporter-bugzilla.c:909
 msgid "Attach FILEs [to bug with this ID]"
 msgstr "Mellékeljen fájlokat [ehhez a hibához ezzel az ID-vel]"
 
-#: ../src/plugins/reporter-bugzilla.c:926
+#: ../src/plugins/reporter-bugzilla.c:910
 msgid "When creating bug, attach binary files too"
 msgstr "ha hibajelentést készít, mellékeljen bináris fájlokat is"
 
-#: ../src/plugins/reporter-bugzilla.c:927
+#: ../src/plugins/reporter-bugzilla.c:911
 #: ../src/plugins/reporter-rhtsupport.c:226
 msgid "Force reporting even if this problem is already reported"
 msgstr "Jelentse be akkor is ha ezt a problémát már bejelentették"
 
-#: ../src/plugins/reporter-bugzilla.c:928
+#: ../src/plugins/reporter-bugzilla.c:912
 msgid "Add bugzilla user to CC list [of bug with this ID]"
 msgstr "Bugzilla felhasználó hozzáadása a CC listához [ezzel az azonosítóval rendelkező hibához]"
 
-#: ../src/plugins/reporter-bugzilla.c:929
+#: ../src/plugins/reporter-bugzilla.c:913
 msgid "Print BUG_ID which has given DUPHASH"
 msgstr "Nyomtassa a BUG_ID-t aminek DUPHASH értéket adott"
 
-#: ../src/plugins/reporter-bugzilla.c:930
+#: ../src/plugins/reporter-bugzilla.c:914
 msgid "Restrict access to this group only"
 msgstr "Szűkítse le a hozzáférését csak erre a csoportra"
 
-#: ../src/plugins/reporter-bugzilla.c:931
+#: ../src/plugins/reporter-bugzilla.c:915
 msgid "Debug"
 msgstr "Hibakeresés"
 
-#: ../src/plugins/reporter-bugzilla.c:973
+#: ../src/plugins/reporter-bugzilla.c:957
 msgid "Looking for similar problems in bugzilla"
-msgstr ""
+msgstr "Hasonló problémák keresése a bugzillában"
 
-#: ../src/plugins/reporter-bugzilla.c:1000
+#: ../src/plugins/reporter-bugzilla.c:984
 msgid "Login is not provided by configuration. Please enter your BZ login:"
 msgstr "Bejelentkezési azonosítója nem lett megadva a konfigurációban. Kérem adja meg a BZ azonosítóját:"
 
-#: ../src/plugins/reporter-bugzilla.c:1006
+#: ../src/plugins/reporter-bugzilla.c:990
 #, c-format
 msgid ""
 "Password is not provided by configuration. Please enter the password for "
 "'%s':"
 msgstr "Jelszó nem került megadásra a konfigurációban. Kérem adja meg a jelszavát '%s' számára: "
 
-#: ../src/plugins/reporter-bugzilla.c:1025
+#: ../src/plugins/reporter-bugzilla.c:1009
 msgid ""
 "Can't get Bugzilla ID because this problem has not yet been reported to "
 "Bugzilla."
 msgstr "Bugzilla ID nem elérhető mivel a probléma még nem került bejelentésre."
 
-#: ../src/plugins/reporter-bugzilla.c:1032
+#: ../src/plugins/reporter-bugzilla.c:1016
 #, c-format
 msgid ""
 "This problem has been reported to Bugzilla '%s' which differs from the "
 "configured Bugzilla '%s'."
 msgstr "Ez a probléma már bejelentésre került a Bugzilla '%s' nyomkövetőre, ami különbözik a beállított Bugzilla '%s'-től."
 
-#: ../src/plugins/reporter-bugzilla.c:1036
+#: ../src/plugins/reporter-bugzilla.c:1020
 #, c-format
 msgid "Malformed url to Bugzilla '%s'."
 msgstr "Hibás url a Bugzilla '%s' számára."
 
-#: ../src/plugins/reporter-bugzilla.c:1040
+#: ../src/plugins/reporter-bugzilla.c:1024
 #, c-format
 msgid "Using Bugzilla ID '%s'"
 msgstr "Bugzilla ID '%s' felhasználásával"
 
-#: ../src/plugins/reporter-bugzilla.c:1074
-#: ../src/plugins/reporter-bugzilla.c:1324
+#: ../src/plugins/reporter-bugzilla.c:1058
+#: ../src/plugins/reporter-bugzilla.c:1315
 msgid "Logging out"
 msgstr "Kijelentkezés"
 
-#: ../src/plugins/reporter-bugzilla.c:1125
+#: ../src/plugins/reporter-bugzilla.c:1109
 msgid "Can't determine Bugzilla Product from problem data."
-msgstr ""
+msgstr "Bugzilla termék nem meghatározható a probléma adataiból"
 
-#: ../src/plugins/reporter-bugzilla.c:1176
+#: ../src/plugins/reporter-bugzilla.c:1160
 msgid "Checking for duplicates"
 msgstr "Duplikátumok ellenőrzése"
 
 #. Create new bug
-#: ../src/plugins/reporter-bugzilla.c:1222
+#: ../src/plugins/reporter-bugzilla.c:1206
 msgid "Creating a new bug"
 msgstr "Új jelentés készül"
 
-#: ../src/plugins/reporter-bugzilla.c:1239
+#: ../src/plugins/reporter-bugzilla.c:1227
+msgid "Failed to create a new bug."
+msgstr ""
+
+#: ../src/plugins/reporter-bugzilla.c:1230
 #, c-format
 msgid "Adding attachments to bug %i"
 msgstr "Mellékletek hozzáadása a %i hibához"
 
-#: ../src/plugins/reporter-bugzilla.c:1258
+#: ../src/plugins/reporter-bugzilla.c:1249
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "A hiba már bejelentésre került: %i"
 
-#: ../src/plugins/reporter-bugzilla.c:1279
+#: ../src/plugins/reporter-bugzilla.c:1270
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "%s hozzáadása a listához"
 
-#: ../src/plugins/reporter-bugzilla.c:1296
+#: ../src/plugins/reporter-bugzilla.c:1287
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Új megjegyzés hozzáfűzése a %d hibához"
 
-#: ../src/plugins/reporter-bugzilla.c:1310
+#: ../src/plugins/reporter-bugzilla.c:1301
 msgid "Attaching better backtrace"
 msgstr "Pontosabb nyomonkövetés mellékelése"
 
-#: ../src/plugins/reporter-bugzilla.c:1318
+#: ../src/plugins/reporter-bugzilla.c:1309
 msgid "Found the same comment in the bug history, not adding a new one"
 msgstr "Ugyanazon megjegyzés található meg a hiba korábbi bejegyzéseiben, nincs új hozzáfűzés"
 
-#: ../src/plugins/reporter-bugzilla.c:1327
+#: ../src/plugins/reporter-bugzilla.c:1318
 #, c-format
 msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
 msgstr "Státusz: %s%s%s %s/show_bug.cgi?id=%u"
@@ -1341,7 +1369,7 @@ msgstr "Nem lehetséges az átmeneti fájl létrehozása a /tmp mappában"
 #. Check for hints and show them if we have something
 #: ../src/plugins/reporter-rhtsupport.c:387
 msgid "Checking for hints"
-msgstr ""
+msgstr "Tanácsok keresése"
 
 #: ../src/plugins/reporter-rhtsupport.c:429
 msgid "Do you still want to create a RHTSupport ticket?"
@@ -1354,18 +1382,18 @@ msgstr "Új hibaeset készítése"
 #. How can we help user sorting out this problem?
 #: ../src/plugins/reporter-rhtsupport.c:454
 msgid "Can't determine RH Support Product from problem data."
-msgstr ""
+msgstr "Nem meghatározható az RH Support Product a probléma adataiból."
 
 #: ../src/plugins/reporter-rhtsupport.c:529
 #, c-format
 msgid "Adding comment to case '%s'"
-msgstr ""
+msgstr "Új megjegyzés hozzáfűzése a '%s' esethez"
 
 #. Attach the tarball of -d DIR
 #: ../src/plugins/reporter-rhtsupport.c:549
 #, c-format
 msgid "Attaching problem data to case '%s'"
-msgstr ""
+msgstr "Probléma adatainak mellékelése az '%s' esethez"
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:202
 msgid "Documentation which might be relevant: "
@@ -1541,12 +1569,12 @@ msgstr "Példák:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user
 #: ../src/plugins/report_Uploader.xml.in.h:10
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:8
 msgid "FTP Proxy"
-msgstr ""
+msgstr "FTP Proxy"
 
 #: ../src/plugins/report_Uploader.xml.in.h:11
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:9
 msgid "Sets the proxy server to use for FTP"
-msgstr ""
+msgstr "FTP használatához egy proxy szervert állít be"
 
 #: ../src/plugins/report_uReport.xml.in.h:1
 msgid "uReport"
@@ -1587,7 +1615,14 @@ msgstr "A %i számú hiba LEZÁRVA, de nincs MEGOLDÁSA"
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
 msgstr "Az %i számú hiba LEZÁRVA mint DUPLIKÁLT, de nincs DUP_ID-je."
 
-#: ../src/plugins/rhbz.c:649
+#: ../src/plugins/rhbz.c:621
+msgid ""
+"A private ticket creation has been requested, but no groups were specified, "
+"please see https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
+"tickets for more info"
+msgstr ""
+
+#: ../src/plugins/rhbz.c:642
 #, c-format
 msgid "New bug id: %i"
 msgstr "Új hiba ID: %i"
@@ -1616,32 +1651,32 @@ msgid ""
 "Your problem seems to be caused by %s\n"
 "\n"
 "%s\n"
-msgstr ""
+msgstr "A problémáját valószínűleg ez okozta: %s\n\n%s\n"
 
 #: ../src/plugins/ureport.c:81
 msgid "Your problem seems to be caused by one of the following:\n"
-msgstr ""
+msgstr "A problémáját valószínűleg ezek közül az egyik okozta:\n"
 
 #: ../src/plugins/ureport.c:247
 #, c-format
 msgid "Failed to upload uReport to the server '%s' with curl: %s"
-msgstr ""
+msgstr "uReport feltöltése nem sikerült a '%s' szerverre curl segítségével: %s"
 
 #: ../src/plugins/ureport.c:253
 #, c-format
 msgid "The URL '%s' does not exist (got error 404 from server)"
-msgstr ""
+msgstr "Az URL '%s' nem létezik (404 a kiszolgálótól)"
 
 #: ../src/plugins/ureport.c:259
 #, c-format
 msgid "The server at '%s' encountered an internal error (got error 500)"
-msgstr ""
+msgstr "A kiszolgáló '%s' belső hibát észlelt (ERROR 500)"
 
 #: ../src/plugins/ureport.c:265
 #, c-format
 msgid ""
 "The server at '%s' is currently can't handle the request (got error 503)"
-msgstr ""
+msgstr "A kiszolgáló - '%s' jelenleg nem tudja fogadni a kérést (ERROR 503)"
 
 #. can't print better error message
 #: ../src/plugins/ureport.c:274
@@ -1649,31 +1684,31 @@ msgstr ""
 msgid ""
 "Unexpected HTTP response from '%s': %d\n"
 "%s"
-msgstr ""
+msgstr "Váratlan HTTP státuszkód innen '%s' : %d\n%s"
 
 #: ../src/plugins/ureport.c:282
 #, c-format
 msgid ""
 "Unable to parse response from ureport server at '%s':\n"
 "%s"
-msgstr ""
+msgstr "Értelmezhetetlen a beérkezett válasz a ureport kiszolgálótól itt - '%s':\n%s"
 
 #: ../src/plugins/ureport.c:291
 #, c-format
 msgid "The response from '%s' has invalid format"
-msgstr ""
+msgstr "Kiszolgáló válasz adatai innen - '%s' helytelen formátumúak"
 
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
 #: ../src/plugins/ureport.c:297
 #, c-format
 msgid "Type mismatch has been detected in the response from '%s'"
-msgstr ""
+msgstr "Típus eltérés érzékelve a válaszban innen - '%s'"
 
 #: ../src/plugins/ureport.c:319
 #, c-format
 msgid "The server at '%s' responded with an error: '%s'"
-msgstr ""
+msgstr "A '%s' kiszolgáló hibával válaszolt: '%s'"
 
 #: ../src/plugins/ureport.c:351
 msgid "Specify server URL"
@@ -1728,9 +1763,13 @@ msgstr "Nem található a hiba ID száma bugzilla URL '%s' részéből."
 msgid "Unable to parse bug ID from bugzilla URL '%s'"
 msgstr "Értelmezhetetlen a hiba ID száma bugzilla URL '%s' részéből."
 
+#: ../src/plugins/ureport.c:429
+msgid "Not uploading an empty uReport"
+msgstr "Üres uReport nem tölthető fel"
+
 #: ../src/plugins/ureport.c:438
 msgid "Failed on submitting the problem"
-msgstr ""
+msgstr "Sikertelen a hiba beküldése"
 
 #: ../src/plugins/ureport.c:477
 msgid "This problem has already been reported."
@@ -1739,7 +1778,7 @@ msgstr "A hiba már bejelentésre került."
 #: ../src/plugins/ureport.c:486
 #, c-format
 msgid "Server responded with an error: '%s'"
-msgstr ""
+msgstr "Kiszolgáló hibával válaszolt: '%s'"
 
 #: ../src/report-newt/report-newt.c:55
 msgid "How would you like to report the problem?"
@@ -1785,10 +1824,9 @@ msgstr "Mappa eltávoltása jelentés után"
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:1
 msgid "Report a bug to Fedora maintainers"
-msgstr ""
+msgstr "Jelentse a hibát a Fedora karbantartóinak"
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:2
-#: ../src/workflows/workflow_Fedora.xml.in.h:2
 msgid "Process the report using the Fedora infrastructure"
 msgstr "Dolgozza fel a jelentést a Fedora Infrastructure segítségével"
 
@@ -1802,9 +1840,33 @@ msgstr "A probléma adatainak feltöltése a kiszolgálóra"
 msgid "Analyze the problem locally and upload the data via scp or ftp"
 msgstr "Elemezze a problémát helyben és töltse fel az adatokat scp vagy ftp segítségével"
 
-#: ../src/workflows/workflow_Fedora.xml.in.h:1
+#: ../src/workflows/workflow_FedoraCCpp.xml.in.h:1
+#: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:1
+#: ../src/workflows/workflow_FedoraPython.xml.in.h:1
+#: ../src/workflows/workflow_FedoraVmcore.xml.in.h:1
+#: ../src/workflows/workflow_FedoraXorg.xml.in.h:1
 msgid "Report to Fedora"
 msgstr "Jelentse a Fedorának"
+
+#: ../src/workflows/workflow_FedoraCCpp.xml.in.h:2
+msgid "Process the C/C++ crash using the Fedora infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:2
+msgid "Process the kerneloops using the Fedora infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_FedoraPython.xml.in.h:2
+msgid "Process the python exception using the Fedora infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_FedoraVmcore.xml.in.h:2
+msgid "Process the kernel crash using the Fedora infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_FedoraXorg.xml.in.h:2
+msgid "Process the X Server problem using the Fedora infrastructure"
+msgstr ""
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1
@@ -1812,24 +1874,24 @@ msgstr "Jelentse a Fedorának"
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:1
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:1
 msgid "Report to Red Hat"
-msgstr ""
+msgstr "Jelentés a Red Hat számára"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the Red Hat infrastructure"
-msgstr ""
+msgstr "C/C++ ütközés feldolgozása a Red Hat infrastruktúra alkalmazásával"
 
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:2
 msgid "Process the kerneloops using the Red Hat infrastructure"
-msgstr ""
+msgstr "Kernelhiba feldolgozása a Red Hat infrastruktúra alkalmazásával"
 
 #: ../src/workflows/workflow_RHELPython.xml.in.h:2
 msgid "Process the python exception using the Red Hat infrastructure"
-msgstr ""
+msgstr "Python kivétel hiba feldolgozása a Red Hat infrastruktúra alkalmazásával"
 
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:2
 msgid "Process the kernel crash using the Red Hat infrastructure"
-msgstr ""
+msgstr "Kernel ütközés feldolgozása a Red Hat infrastruktúra alkalmazásával"
 
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:2
 msgid "Process the X Server problem using the Red Hat infrastructure"
-msgstr ""
+msgstr "X kiszolgáló hiba feldolgozása a Red Hat infrastruktúra alkalmazásával"
