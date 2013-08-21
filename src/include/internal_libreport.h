@@ -85,6 +85,8 @@ int vdprintf(int d, const char *format, va_list ap);
 #undef ARRAY_SIZE
 #define ARRAY_SIZE(x) ((unsigned)(sizeof(x) / sizeof((x)[0])))
 
+/* consts used across whole libreport */
+#define CREATE_PRIVATE_TICKET "ABRT_CREATE_PRIVATE_TICKET"
 
 /* Pull in entire public libreport API */
 #include "dump_dir.h"

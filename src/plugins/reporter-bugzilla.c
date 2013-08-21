@@ -737,8 +737,15 @@ static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
     environ = getenv("Bugzilla_DontMatchComponents");
     b->b_DontMatchComponents = environ ? environ : get_map_string_item_or_empty(settings, "DontMatchComponents");
 
-    environ = getenv("Bugzilla_CreatePrivate");
-    b->b_create_private = string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "Bugzilla_CreatePrivate"));
+    environ = getenv(CREATE_PRIVATE_TICKET);
+    if (environ)
+        b->b_create_private = string_to_bool(environ);
+
+    if (!b->b_create_private)
+    {
+        environ = getenv("Bugzilla_CreatePrivate");
+        b->b_create_private = string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "Bugzilla_CreatePrivate"));
+    }
     VERB1 log("create private bz ticket: '%s'", b->b_create_private ? "YES": "NO");
 
     environ = getenv("Bugzilla_PrivateGroups");

@@ -76,6 +76,9 @@ static int run_ask_yes_no_save_generic_result_dialog(ask_yes_no_dialog_flags fla
                                                GTK_BUTTONS_NONE,
                                                "%s", message);
 
+    /* let's try to use the text as markup
+     * this allows us to use hyperlinks to man pages  */
+    gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), message);
     gtk_dialog_add_button(GTK_DIALOG(dialog), _("_Yes"), GTK_RESPONSE_YES);
     GtkWidget *no_button = gtk_dialog_add_button(GTK_DIALOG(dialog), _("_No"), GTK_RESPONSE_NO);
 

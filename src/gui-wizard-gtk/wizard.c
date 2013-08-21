@@ -2275,8 +2275,22 @@ static void highlight_forbidden(void)
 {
     GList *forbidden_words = load_forbidden_words();
 
-    if (highligh_words_in_tabs(forbidden_words))
+    if (highligh_words_in_tabs(forbidden_words)) {
+        int response = run_ask_yes_no_save_result_dialog(
+            CREATE_PRIVATE_TICKET,
+            _("Possible sensitive data detected, "
+            "do you want to restrict access to the report?\n\n"
+            "<a href=\"https://github.com/abrt/abrt/wiki/FAQ#reports-with-restricted-access\">"
+            "Read more about reports with restricted access</a>"),
+            g_wnd_assistant);
+
+        if (response)
+        {
+            xsetenv(CREATE_PRIVATE_TICKET, "1");
+            add_warning(_("A private ticket has been requested."));
+        }
         add_warning(_("Possible sensitive data detected, please review the highlighted tabs carefully."));
+    }
 
     list_free_with_free(forbidden_words);
 }
