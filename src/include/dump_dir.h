@@ -51,6 +51,7 @@ struct dump_dir {
     /* mode of saved files */
     mode_t mode;
     time_t dd_time;
+    char *dd_type;
 };
 
 void dd_close(struct dump_dir *dd);

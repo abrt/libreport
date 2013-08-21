@@ -242,6 +242,30 @@ int create_symlink_lockfile(const char* lock_file, const char* pid)
     return 1;
 }
 
+static const char *dd_check(struct dump_dir *dd)
+{
+    unsigned dirname_len = strlen(dd->dd_dirname);
+    char filename_buf[FILENAME_MAX+1];
+    strcpy(filename_buf, dd->dd_dirname);
+    strcpy(filename_buf + dirname_len, "/"FILENAME_TIME);
+    dd->dd_time = parse_time_file(filename_buf);
+    if (dd->dd_time < 0)
+    {
+        VERB1 log("Missing file: "FILENAME_TIME);
+        return FILENAME_TIME;
+    }
+
+    strcpy(filename_buf + dirname_len, "/"FILENAME_TYPE);
+    dd->dd_type = load_text_file(filename_buf, DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    if (!dd->dd_type || (strlen(dd->dd_type) == 0))
+    {
+        VERB1 log("Missing or empty file: "FILENAME_TYPE);
+        return FILENAME_TYPE;
+    }
+
+    return NULL;
+}
+
 static int dd_lock(struct dump_dir *dd, unsigned sleep_usec, int flags)
 {
     if (dd->locked)
@@ -256,6 +280,7 @@ static int dd_lock(struct dump_dir *dd, unsigned sleep_usec, int flags)
     strcpy(lock_buf + dirname_len, "/.lock");
 
     unsigned count = NO_TIME_FILE_COUNT;
+
  retry:
     while (1)
     {
@@ -271,18 +296,16 @@ static int dd_lock(struct dump_dir *dd, unsigned sleep_usec, int flags)
     /* Are we called by dd_opendir (as opposed to dd_create)? */
     if (sleep_usec == WAIT_FOR_OTHER_PROCESS_USLEEP) /* yes */
     {
-        strcpy(lock_buf + dirname_len, "/"FILENAME_TIME);
-        dd->dd_time = parse_time_file(lock_buf);
-        if (dd->dd_time < 0)
+        const char *missing_file = dd_check(dd);
+        /* some of the required files don't exist. We managed to lock the directory
+         * which was just created by somebody else, or is almost deleted
+         * by delete_file_dir.
+         * Unlock and back off.
+         */
+        if (missing_file)
         {
-            /* time file doesn't exist. We managed to lock the directory
-             * which was just created by somebody else, or is almost deleted
-             * by delete_file_dir.
-             * Unlock and back off.
-             */
-            strcpy(lock_buf + dirname_len, "/.lock");
             xunlink(lock_buf);
-            VERB1 log("Unlocked '%s' (no or corrupted time file)", lock_buf);
+            VERB1 log("Unlocked '%s' (no or corrupted '%s' file)", lock_buf, missing_file);
             if (--count == 0 || flags & DD_DONT_WAIT_FOR_LOCK)
             {
                 errno = EISDIR; /* "this is an ordinary dir, not dump dir" */
@@ -340,6 +363,7 @@ void dd_close(struct dump_dir *dd)
         /* free(dd->next_dir); - WRONG! */
     }
 
+    free(dd->dd_type);
     free(dd->dd_dirname);
     free(dd);
 }
@@ -375,14 +399,11 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
              && S_ISDIR(stat_buf.st_mode)
              && access(dir, R_OK) == 0
             ) {
-                char *time_file_name = concat_path_file(dir, FILENAME_TIME);
-                dd->dd_time = parse_time_file(time_file_name);
-                if (dd->dd_time < 0)
+                if(dd_check(dd) != NULL)
                 {
                     dd_close(dd);
                     dd = NULL;
                 }
-                free(time_file_name);
                 return dd;
             }
         }
