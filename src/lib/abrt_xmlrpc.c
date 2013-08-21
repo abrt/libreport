@@ -48,9 +48,10 @@ struct abrt_xmlrpc *abrt_xmlrpc_new_client(const char *url, int ssl_verify)
      * XMLRPC_XML_SIZE_LIMIT_DEFAULT is #defined to (512*1024) in xmlrpc-c/base.h
      *
      * Users reported trouble with 733402 byte long responses, hope raising the
-     * limit to 4*512k is enough
+     * limit to 4*512k is enough.
+     * #961520 (2013-05-09): apparently 4*512k is still too small, making it 8*512k.
      */
-    xmlrpc_limit_set(XMLRPC_XML_SIZE_LIMIT_ID, 4 * XMLRPC_XML_SIZE_LIMIT_DEFAULT);
+    xmlrpc_limit_set(XMLRPC_XML_SIZE_LIMIT_ID, 8 * XMLRPC_XML_SIZE_LIMIT_DEFAULT);
 
     struct xmlrpc_curl_xportparms curl_parms;
     memset(&curl_parms, 0, sizeof(curl_parms));
