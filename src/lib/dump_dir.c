@@ -832,6 +832,12 @@ static int delete_file_dir(const char *dir, bool skip_lock_file)
 
 int dd_delete(struct dump_dir *dd)
 {
+    if (!dd->locked)
+    {
+        error_msg("unlocked problem directory %s cannot be deleted", dd->dd_dirname);
+        return -1;
+    }
+    
     int r = delete_file_dir(dd->dd_dirname, /*skip_lock_file:*/ true);
     dd->locked = 0; /* delete_file_dir already removed .lock */
     dd_close(dd);
@@ -1235,6 +1241,12 @@ report_result_t *find_in_reported_to(struct dump_dir *dd, const char *prefix)
 
 int dd_rename(struct dump_dir *dd, const char *new_path)
 {
+    if (!dd->locked)
+    {
+        error_msg("unlocked problem directory %s cannot be renamed", dd->dd_dirname);
+        return -1;
+    }
+    
     int res = rename(dd->dd_dirname, new_path);
     if (res == 0)
     {
