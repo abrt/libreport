@@ -30,3 +30,7 @@ typedef struct file_obj
     char *filename;
     char *fullpath; //the full path with extension
 } file_obj_t;
+
+void free_file_obj(file_obj_t *f);
+const char *fo_get_fullpath(file_obj_t *fo);
+const char *fo_get_filename(file_obj_t *fo);

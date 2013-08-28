@@ -31,14 +31,21 @@ GList *get_file_list(const char *path, const char *ext_filter)
     struct dirent *dent;
     while ((dent = readdir(dir)) != NULL)
     {
-        char *ext = strrchr(dent->d_name, '.');
-        if (!ext)
+        /* skip . and .. */
+        if (strcmp(dent->d_name, ".") == 0 || strcmp(dent->d_name, "..") == 0)
             continue;
-        if (ext_filter && strcmp(ext + 1, ext_filter) != 0)
-            continue;
-
         char *fullname = concat_path_file(path, dent->d_name);
-        *ext = '\0';
+        char *ext = NULL;
+
+        if (ext_filter)
+        {
+            ext = strrchr(dent->d_name, '.');
+            if (!ext)
+                continue;
+            if (ext_filter && strcmp(ext + 1, ext_filter) != 0)
+                continue;
+            *ext = '\0';
+        }
 
 //TODO: get rid of special handling of symlinks?
         struct stat buf;
@@ -50,20 +57,30 @@ GList *get_file_list(const char *path, const char *ext_filter)
             GError *error = NULL;
             gchar *link = g_file_read_link(fullname, &error);
             if (error != NULL)
-                error_msg_and_die("Error reading symlink '%s': %s", fullname, error->message);
+            {
+                error_msg("Error reading symlink '%s': %s", fullname, error->message);
+                goto next;
+            }
 
             gchar *target = g_path_get_basename(link);
-            char *ext = strrchr(target, '.');
+            VERB3 log("Symlink '%s' is pointing to '%s'", link, target);
+            if (ext_filter)
+            {
+                char *ext = strrchr(target, '.');
 
-//FIXME: why "xml"? Shouldn't it be ext_filter?
-            if (!ext || 0 != strcmp(ext + 1, "xml"))
-                error_msg_and_die("Invalid event symlink '%s': expected it to"
-                                  " point to another xml file", fullname);
-            *ext = '\0';
-            //@@TODO symlink handling is broken!!
-            //g_hash_table_replace(g_event_config_symlinks, xstrdup(dent->d_name), target);
+                if (!ext || 0 != strcmp(ext + 1, ext_filter))
+                {
+                    error_msg("Invalid event symlink '%s': expected it to"
+                              " point to another '%s' file", fullname, ext_filter);
+                    goto next;
+                }
+                *ext = '\0';
+            }
+            free(fullname);
+            fullname = concat_path_file(path, target);
+            files = g_list_prepend(files, new_file_obj(fullname, target));
             g_free(link);
-            /* don't free target, it is owned by the hash table now */
+            g_free(target);
 
             goto next;
         }

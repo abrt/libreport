@@ -36,3 +36,13 @@ void free_file_obj(file_obj_t *f)
     free(f->filename);
     free(f);
 }
+
+const char *fo_get_fullpath(file_obj_t *fo)
+{
+    return fo->fullpath;
+}
+
+const char *fo_get_filename(file_obj_t *fo)
+{
+    return fo->filename;
+}
