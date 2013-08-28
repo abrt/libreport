@@ -324,6 +324,29 @@ class DebugInfoDownload(YumBase):
             if self.noninteractive == False and not ask_yes_no(question):
                 print _("Download cancelled by user")
                 return RETURN_CANCEL_BY_USER
+            # set up tmp and cache dirs so that we can check free space in both
+            retval = self.setup_tmp_dirs()
+            if retval != RETURN_OK:
+                return retval
+            # check if there is enough free space in both tmp and cache
+            res = os.statvfs(self.tmpdir)
+            tmp_space = float(res.f_bsize * res.f_bavail) / (1024*1024)
+            if (todownload_size / (1024*1024)) > tmp_space:
+                question = _("Warning: Not enough free space in tmp dir '{0}'"
+                             " ({1:.2f}Mb left). Continue?").format(
+                    self.tmpdir, tmp_space)
+                if not self.noninteractive and not ask_yes_no(question):
+                    print _("Download cancelled by user")
+                    return RETURN_CANCEL_BY_USER
+            res = os.statvfs(self.cachedir)
+            cache_space = float(res.f_bsize * res.f_bavail) / (1024*1024)
+            if (installed_size / (1024*1024)) > cache_space:
+                question = _("Warning: Not enough free space in cache dir "
+                             "'{0}' ({1:.2f}Mb left). Continue?").format(
+                    self.cachedir, cache_space)
+                if not self.noninteractive and not ask_yes_no(question):
+                    print _("Download cancelled by user")
+                    return RETURN_CANCEL_BY_USER
 
         for pkg, files in package_files_dict.iteritems():
             dnlcb.downloaded_pkgs = downloaded_pkgs
