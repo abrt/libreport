@@ -7,6 +7,7 @@ import sys
 import os
 import time
 import errno
+import shutil
 
 old_stdout = -1
 def mute_stdout():
@@ -358,9 +359,22 @@ class DebugInfoDownload(YumBase):
             if retval != RETURN_OK:
                 return retval
 
-            local = os.path.join(self.tmpdir, local)
-            pkg.localpath = local # Hack: to set the localpath we want
-            err = self.downloadPkgs(pkglist=[pkg])
+            remote_path = pkg.returnSimple('remote_url')
+            # check if the pkg is in a local repo and copy it if it is
+            err = None
+            if remote_path.startswith('file:///'):
+                pkg_path = remote_path[7:]
+                log2("copying from local repo: %s", remote)
+                try:
+                    shutil.copy(pkg_path, self.tmpdir)
+                except OSError, ex:
+                    print _("Cannot copy file '{0}': {1}").format(pkg_path, ex)
+                    continue
+            else:
+                # pkg is in a remote repo, we need to download it to tmpdir
+                local = os.path.join(self.tmpdir, local)
+                pkg.localpath = local # Hack: to set the localpath we want
+                err = self.downloadPkgs(pkglist=[pkg])
             # normalize the name
             # just str(pkg) doesn't work because it can have epoch
             pkg_nvra = pkg.name + "-" + pkg.version + "-" + pkg.release + "." + pkg.arch
