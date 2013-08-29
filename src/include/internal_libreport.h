@@ -749,8 +749,10 @@ struct dump_dir *open_directory_for_writing(
 // Bumped up to 500k: saw 375252 byte anaconda traceback file
 // Bumped up to 1M: bugzilla.redhat.com/show_bug.cgi?id=746727
 // mentions 853646 byte anaconda-tb-* file.
+// Bumped up to 8M: bugzilla.redhat.com/show_bug.cgi?id=887570
+// (anaconda-tb file of 1.38 MBytes)
 //
-#define CD_MAX_TEXT_SIZE (1024*1024)
+#define CD_MAX_TEXT_SIZE (8*1024*1024)
 
 // Text bigger than this usually is attached, not added inline
 // was 2k, 20kb is too much, let's try 4kb
