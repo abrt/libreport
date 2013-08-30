@@ -1,6 +1,7 @@
 from subprocess import Popen, PIPE
 from yum import _, YumBase
 from yum.callbacks import DownloadBaseCallback
+from yum.Errors import YumBaseError
 from reportclient import *
 from reportclient import _
 import sys
@@ -183,9 +184,9 @@ class DebugInfoDownload(YumBase):
             # cannot open Packages index using db3 - Permission denied (13)
             # yum.Errors.YumBaseError: Error: rpmdb open failed
             self.doConfigSetup()
-        except Exception, e:
+        except YumBaseError, ex:
             unmute_stdout()
-            print _("Error initializing yum (YumBase.doConfigSetup): '{0!s}'").format(e)
+            print _("Error initializing yum (YumBase.doConfigSetup): '{0!s}'").format(ex)
             #return 1 - can't do this in constructor
             exit(1)
         unmute_stdout()
@@ -232,7 +233,7 @@ class DebugInfoDownload(YumBase):
             try:
                 repo.close()
                 self.repos.disableRepo(repo.id)
-            except Exception, ex:
+            except YumBaseError, ex:
                 print _("Can't disable repository '{0!s}': {1!s}").format(repo.id, str(ex))
 
         # This takes some time, let user know what we are doing
@@ -251,10 +252,10 @@ class DebugInfoDownload(YumBase):
                 # which causes artifacts on output
                 try:
                     setattr(r, "_async", False)
-                except Exception, ex:
+                except (NameError, AttributeError), ex:
                     print ex
                     print _("Can't disable async download, the output might contain artifacts!")
-            except Exception, ex:
+            except YumBaseError, ex:
                 print _("Can't setup {0}: {1}, disabling").format(r.id, ex)
                 self.repos.disableRepo(r.id)
 
@@ -265,8 +266,8 @@ class DebugInfoDownload(YumBase):
         print _("Looking for needed packages in repositories")
         try:
             self.repos.populateSack(mdtype='metadata', cacheonly=1)
-        except Exception, e:
-            print _("Error retrieving metadata: '{0!s}'").format(e)
+        except YumBaseError, ex:
+            print _("Error retrieving metadata: '{0!s}'").format(ex)
             #we don't want to die here, some metadata might be already retrieved
             # so there is a chance we already have what we need
             #return 1
@@ -278,7 +279,7 @@ class DebugInfoDownload(YumBase):
             # repodata/7e6632b82c91a2e88a66ad848e231f14c48259cbf3a1c3e992a77b1fc0e9d2f6-filelists.sqlite.bz2
             # from fedora-debuginfo: [Errno 256] No more mirrors to try.
             self.repos.populateSack(mdtype='filelists', cacheonly=1)
-        except Exception, ex:
+        except YumBaseError, ex:
             print _("Error retrieving filelists: '{0!s}'").format(ex)
             # we don't want to die here, some repos might be already processed
             # so there is a chance we already have what we need
@@ -384,7 +385,7 @@ class DebugInfoDownload(YumBase):
                 # which prevents cleanup later. Fix it:
                 try:
                     os.unlink(self.tmpdir + "/" + package_file_name)
-                except:
+                except OSError:
                     pass
                 print (_("Downloading package {0} failed").format(pkg))
             else:
