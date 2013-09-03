@@ -228,7 +228,8 @@ class DebugInfoDownload(YumBase):
     This class is used to manage download of debuginfos.
     """
 
-    def __init__(self, cache, tmp, keep_rpms=False, noninteractive=True):
+    def __init__(self, cache, tmp, repo_pattern="*debug*", keep_rpms=False,
+                 noninteractive=True):
         self.old_stdout = -1
         self.cachedir = cache
         self.tmpdir = tmp
@@ -236,6 +237,7 @@ class DebugInfoDownload(YumBase):
         TMPDIR = tmp
         self.keeprpms = keep_rpms
         self.noninteractive = noninteractive
+        self.repo_pattern=repo_pattern
         YumBase.__init__(self)
         self.mute_stdout()
         #self.conf.cache = os.geteuid() != 0
@@ -336,7 +338,7 @@ class DebugInfoDownload(YumBase):
         # setting-up repos one-by-one, so we can skip the broken ones...
         # this helps when users are using 3rd party repos like rpmfusion
         # in rawhide it results in: Can't find valid base url...
-        for r in self.repos.findRepos(pattern="*debug*"):
+        for r in self.repos.findRepos(pattern=self.repo_pattern):
             try:
                 rid = self.repos.enableRepo(r.id)
                 self.repos.doSetup(thisrepo=str(r.id))
