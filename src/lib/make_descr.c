@@ -85,18 +85,14 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
             continue;
 
         if ((item->flags & CD_FLAG_TXT)
-         && strlen(item->content) <= max_text_size
+         && !strchr(item->content, '\n')
         ) {
             char *formatted = problem_item_format(item);
             char *output = formatted ? formatted : item->content;
-            char *eol = strchr(output, '\n');
-            if (!eol)
-            {
-                int pad = 16 - (strlen(key) + 2);
-                if (pad < 0) pad = 0;
-                strbuf_append_strf(buf_dsc, "%s: %*s%s\n", key, pad, "", output);
-                empty = false;
-            }
+            int pad = 16 - (strlen(key) + 2);
+            if (pad < 0) pad = 0;
+            strbuf_append_strf(buf_dsc, "%s: %*s%s\n", key, pad, "", output);
+            empty = false;
             free(formatted);
         }
     }
