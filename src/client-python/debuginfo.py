@@ -1,30 +1,34 @@
-from subprocess import Popen, PIPE
-from yum import _, YumBase
-from yum.callbacks import DownloadBaseCallback
-from yum.Errors import YumBaseError
-from reportclient import *
-from reportclient import _
+"""
+    This module provides classes and functions used to download and manage
+    debuginfos.
+"""
+
 import sys
 import os
 import time
 import errno
 import shutil
+from subprocess import Popen
 
-old_stdout = -1
-def mute_stdout():
-    if verbose < 2:
-        global old_stdout
-        old_stdout = sys.stdout
-        sys.stdout = open("/dev/null", "w")
+from yum import _, YumBase
+from yum.callbacks import DownloadBaseCallback
+from yum.Errors import YumBaseError
 
-def unmute_stdout():
-    if verbose < 2:
-        if old_stdout != -1:
-            sys.stdout = old_stdout
-        else:
-            print "ERR: unmute called without mute?"
+from reportclient import (_, log1, log2, RETURN_OK, RETURN_FAILURE,
+                          RETURN_CANCEL_BY_USER, verbose, ask_yes_no,
+                          error_msg)
+
+TMPDIR=""
 
 def ensure_abrt_uid(fn):
+    """
+    Ensures that the function is called using abrt's uid and gid
+
+    Returns:
+        Either an unchanged function object or a wrapper function object for
+        the function.
+    """
+
     import pwd
     current_uid = os.getuid()
     current_gid = os.getgid()
@@ -35,6 +39,16 @@ def ensure_abrt_uid(fn):
         return fn
 
     def wrapped(*args, **kwargs):
+        """
+        Wrapper function around the called function.
+
+        Sets up uid and gid to match abrt's and after the function finishes
+        rolls its uid and gid back.
+
+        Returns:
+            Return value of the wrapped function.
+        """
+
         # switch to abrt
         os.setegid(abrt.pw_gid)
         os.seteuid(abrt.pw_uid)
@@ -52,6 +66,21 @@ def ensure_abrt_uid(fn):
 # files is not used...
 @ensure_abrt_uid
 def unpack_rpm(package_file_name, files, tmp_dir, destdir, keeprpm, exact_files=False):
+    """
+    Unpacks a single rpm located in tmp_dir into destdir.
+
+    Arguments:
+        package_file_name - name of the rpm file
+        files - files to extract from the rpm
+        tmp_dir - temporary directory where the rpm file is located
+        destdir - destination directory for the rpm package extraction
+        keeprpm - check if the user wants to delete rpms from the tmp directory
+        exact_files - extract only specified files
+
+    Returns:
+        RETURN_FAILURE in case of a serious problem
+    """
+
     package_full_path = tmp_dir + "/" + package_file_name
     log1("Extracting %s to %s", package_full_path, destdir)
     log2("%s", files)
@@ -106,15 +135,30 @@ def unpack_rpm(package_file_name, files, tmp_dir, destdir, keeprpm, exact_files=
         return RETURN_FAILURE
 
 def clean_up():
-    if tmpdir:
+    """
+    Removes the temporary directory.
+    """
+
+    if TMPDIR:
         try:
-            shutil.rmtree(tmpdir)
+            shutil.rmtree(TMPDIR)
         except OSError, ex:
             if ex.errno != errno.ENOENT:
-                error_msg(_("Can't remove '{0}': {1}").format(tmpdir, ex))
+                error_msg(_("Can't remove '{0}': {1}").format(TMPDIR, ex))
 
 class MyDownloadCallback(DownloadBaseCallback):
+    """
+    This class serves as a download progress handler for yum's progress bar.
+    """
+
     def __init__(self, total_pkgs):
+        """
+        Sets up instance variables
+
+        Arguments:
+            total_pkgs - number of packages to download
+        """
+
         self.total_pkgs = total_pkgs
         self.downloaded_pkgs = 0
         self.last_pct = 0
@@ -122,6 +166,16 @@ class MyDownloadCallback(DownloadBaseCallback):
         DownloadBaseCallback.__init__(self)
 
     def updateProgress(self, name, frac, fread, ftime):
+        """
+        A method used to update the progress
+
+        Arguments:
+            name - filename
+            frac - progress fracment (0 -> 1)
+            fread - formated string containing BytesRead
+            ftime - formated string containing remaining or elapsed time
+        """
+
         pct = int(frac * 100)
         if pct == self.last_pct:
             log2("percentage is the same, not updating progress")
@@ -159,6 +213,10 @@ class MyDownloadCallback(DownloadBaseCallback):
         sys.stdout.flush()
 
 def downloadErrorCallback(callBackObj):
+    """
+    A callback function for mirror errors.
+    """
+
     print _("Problem '{0!s}' occured while downloading from mirror: '{1!s}'. Trying next one").format(
         callBackObj.exception, callBackObj.mirror)
     # explanation of the return value can be found here:
@@ -166,15 +224,20 @@ def downloadErrorCallback(callBackObj):
     return {'fail':0}
 
 class DebugInfoDownload(YumBase):
+    """
+    This class is used to manage download of debuginfos.
+    """
+
     def __init__(self, cache, tmp, keep_rpms=False, noninteractive=True):
+        self.old_stdout = -1
         self.cachedir = cache
         self.tmpdir = tmp
-        global tmpdir
-        tmpdir = tmp
+        global TMPDIR
+        TMPDIR = tmp
         self.keeprpms = keep_rpms
         self.noninteractive = noninteractive
         YumBase.__init__(self)
-        mute_stdout()
+        self.mute_stdout()
         #self.conf.cache = os.geteuid() != 0
         # Setup yum (Ts, RPM db, Repo & Sack)
         # doConfigSetup() takes some time, let user know what we are doing
@@ -185,11 +248,31 @@ class DebugInfoDownload(YumBase):
             # yum.Errors.YumBaseError: Error: rpmdb open failed
             self.doConfigSetup()
         except YumBaseError, ex:
-            unmute_stdout()
+            self.unmute_stdout()
             print _("Error initializing yum (YumBase.doConfigSetup): '{0!s}'").format(ex)
             #return 1 - can't do this in constructor
             exit(1)
-        unmute_stdout()
+        self.unmute_stdout()
+
+    def mute_stdout(self):
+        """
+        Links sys.stdout with /dev/null and saves the old stdout
+        """
+
+        if verbose < 2:
+            self.old_stdout = sys.stdout
+            sys.stdout = open("/dev/null", "w")
+
+    def unmute_stdout(self):
+        """
+        Replaces sys.stdout by stdout saved using mute
+        """
+
+        if verbose < 2:
+            if self.old_stdout != -1:
+                sys.stdout = self.old_stdout
+            else:
+                print "ERR: unmute called without mute?"
 
     @ensure_abrt_uid
     def setup_tmp_dirs(self):
@@ -210,7 +293,19 @@ class DebugInfoDownload(YumBase):
 
     # return value will be used as exitcode. So 0 = ok, !0 - error
     def download(self, files, download_exact_files=False):
-        """ @files - """
+        """
+        Downloads rpms into a temporary directory
+
+        Arguments:
+            package_files_dict - a dict containing {pkg: file list} entries
+            total_pkgs - total number of packages to download
+            download_exact_files - extract only specified files
+
+        Returns:
+            RETURN_OK if all goes well.
+            RETURN_FAILURE in case it cannot set up either of the directories.
+        """
+
         installed_size = 0
         total_pkgs = 0
         todownload_size = 0
@@ -394,7 +489,7 @@ class DebugInfoDownload(YumBase):
                 if unpack_result == RETURN_FAILURE:
                     # recursively delete the temp dir on failure
                     print _("Unpacking failed, aborting download...")
-                    clean_up()
+                    self.cleanup_tmp_dir()
                     return RETURN_FAILURE
 
             downloaded_pkgs += 1
@@ -413,15 +508,29 @@ class DebugInfoDownload(YumBase):
 
 def build_ids_to_path(pfx, build_ids):
     """
+    Transforms build ids into a path.
+
     build_id1=${build_id:0:2}
     build_id2=${build_id:2}
     file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
     """
+
     return ["%s/usr/lib/debug/.build-id/%s/%s.debug" % (pfx, b_id[:2], b_id[2:]) for b_id in build_ids]
 
 # beware this finds only missing libraries, but not the executable itself ..
 
 def filter_installed_debuginfos(build_ids, cache_dirs):
+    """
+    Checks for installed debuginfos.
+
+    Arguments:
+        build_ids - string containing build ids
+        cache_dirs - list of cache directories
+
+    Returns:
+        List of missing debuginfo files.
+    """
+
     files = build_ids_to_path("", build_ids)
     missing = []
 
