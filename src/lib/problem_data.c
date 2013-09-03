@@ -37,9 +37,12 @@ char *problem_item_format(struct problem_item *item)
     {
         errno = 0;
         char *end;
-        time_t time = strtol(item->content, &end, 10);
-        if (!errno && !*end && end != item->content)
-        {
+        /* On x32 arch, time_t is wider than long. Must use strtoll */
+        long long ll = strtoll(item->content, &end, 10);
+        time_t time = ll;
+        if (!errno && *end == '\0' && end != item->content
+         && ll == time /* there was no truncation in long long -> time_t conv */
+        ) {
             char timeloc[256];
             int success = strftime(timeloc, sizeof(timeloc), "%c", localtime(&time));
             if (success)
