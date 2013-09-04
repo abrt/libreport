@@ -638,9 +638,15 @@ void dd_create_basic_files(struct dump_dir *dd, uid_t uid, const char *chroot_di
 
     struct utsname buf;
     uname(&buf); /* never fails */
-    dd_save_text(dd, FILENAME_KERNEL, buf.release);
-    dd_save_text(dd, FILENAME_ARCHITECTURE, buf.machine);
-    dd_save_text(dd, FILENAME_HOSTNAME, buf.nodename);
+    /* Check if files already exist in dumpdir as they might have
+     * more relevant information about the problem
+     */
+    if (!dd_exist(dd, FILENAME_KERNEL))
+        dd_save_text(dd, FILENAME_KERNEL, buf.release);
+    if (!dd_exist(dd, FILENAME_ARCHITECTURE))
+        dd_save_text(dd, FILENAME_ARCHITECTURE, buf.machine);
+    if (!dd_exist(dd, FILENAME_HOSTNAME))
+        dd_save_text(dd, FILENAME_HOSTNAME, buf.nodename);
 
     char *release = load_text_file("/etc/os-release",
                         DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE | DD_OPEN_FOLLOW);
@@ -837,7 +843,7 @@ int dd_delete(struct dump_dir *dd)
         error_msg("unlocked problem directory %s cannot be deleted", dd->dd_dirname);
         return -1;
     }
-    
+
     int r = delete_file_dir(dd->dd_dirname, /*skip_lock_file:*/ true);
     dd->locked = 0; /* delete_file_dir already removed .lock */
     dd_close(dd);
@@ -1246,7 +1252,7 @@ int dd_rename(struct dump_dir *dd, const char *new_path)
         error_msg("unlocked problem directory %s cannot be renamed", dd->dd_dirname);
         return -1;
     }
-    
+
     int res = rename(dd->dd_dirname, new_path);
     if (res == 0)
     {
