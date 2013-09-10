@@ -208,6 +208,12 @@ void sha1_hash(sha1_ctx_t *ctx, const void *buffer, size_t len);
 #define sha1_end libreport_sha1_end
 void sha1_end(sha1_ctx_t *ctx, void *resbuf);
 
+/* Helpers to hash a string: */
+#define str_to_sha1 libreport_str_to_sha1
+const uint8_t *str_to_sha1(uint8_t result[SHA1_RESULT_LEN], const char *str);
+#define str_to_sha1str libreport_str_to_sha1str
+const char    *str_to_sha1str(char result[SHA1_RESULT_LEN*2 + 1], const char *str);
+
 
 #define xatou libreport_xatou
 unsigned xatou(const char *numstr);

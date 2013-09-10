@@ -224,3 +224,22 @@ static void common64_end(sha1_ctx_t *ctx, int swap_needed)
 		bufpos = 0;
 	}
 }
+
+/* Utility helpers */
+
+const uint8_t *str_to_sha1(uint8_t hash_bytes[SHA1_RESULT_LEN], const char *str)
+{
+    sha1_ctx_t sha1ctx;
+    sha1_begin(&sha1ctx);
+    sha1_hash(&sha1ctx, str, strlen(str));
+    sha1_end(&sha1ctx, hash_bytes);
+    return hash_bytes;
+}
+
+const char *str_to_sha1str(char result[SHA1_RESULT_LEN*2 + 1], const char *str)
+{
+    uint8_t hash_bytes[SHA1_RESULT_LEN];
+    str_to_sha1(hash_bytes, str);
+    bin2hex(result, (void*)hash_bytes, SHA1_RESULT_LEN)[0] = '\0';
+    return result;
+}
