@@ -571,6 +571,36 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Wed Sep 11 2013 Jakub Filak <jfilak@redhat.com> 2.1.7-1
+- Fix problem_item_format() to work properly after 2038 on x32. #691
+- Use proper json-c requirement in libreport-web.pc.
+- abrt-cli info: even -s 10 should show one-liners. #690
+- add checks for existing dumpdir items - closes #164
+- Create helper functions for sha1-hashing strings. #694
+- can now use custom repo filters for enabling repos, related abrt/abrt#688
+- add docstrings, remove global variable - related #171
+- fixed exception handling - closes #173
+- added checks for locked dump directory to dd_* functions, closes #133
+- fixed the symlinks handling in get_file_list abrt/abrt#686
+- make the build in the the build directory to not pollute the source tree
+- fixed debugInfoDownload so that it can process local repos - closes #48
+- Increase text size limit from 1Mb to 8 MB. rhbz#887570.
+- print warning when there is not engough free space for debuginfos, closes #170
+- autogen.sh: improve dependency parser
+- ignore directories without type element - rhbz#958968
+- abrt_xmlrpc: increase XML_SIZE_LIMIT to 4 mbytes. rhbz#961520.
+- ask user to create a private report if it contains sensitive data - rhbz#960549
+- updated translation rhbz#860555
+- updated transifex url
+- do not leak file rhbz#997871
+- in KDE session open URLs in kde-open
+- report-gtk: use wrapped text for warning labels
+- spec: remove abrt-screencast
+- remove obsoleted abrt-screencast
+- Fix create_symlink_lockfile() to not emit ENOENT when asked not to.
+- do not store potentially big data in /tmp
+- New public function create_symlink_lockfile()
+
 * Fri Jul 26 2013 Jakub Filak <jfilak@redhat.com> 2.1.6-1
 - add related packages version in emergency event
 - replace functions deprecated in Gtk-3.10 with their substitutes
