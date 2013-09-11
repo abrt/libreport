@@ -183,12 +183,19 @@ AS_HELP_STRING([--with-ureport],[use uReport plugin (default is YES)]),
 LIBREPORT_PARSE_WITH([ureport]))
 if test -z "$NO_UREPORT"; then
 AM_CONDITIONAL(BUILD_UREPORT, true)
-PKG_CHECK_MODULES([JSON_C], [json],,[
-    PKG_CHECK_MODULES([JSON_C], [json-c])
+PKG_CHECK_MODULES([JSON_C], [json], [
+    JSON_C_PACKAGE=json
+], [
+    PKG_CHECK_MODULES([JSON_C], [json-c], [
+        JSON_C_PACKAGE=json-c
+    ])
 ])
 else
 AM_CONDITIONAL(BUILD_UREPORT, false)
+JSON_C_PACKAGE=
 fi dnl end NO_UREPORT
+
+AC_SUBST([JSON_C_PACKAGE])
 
 PKG_PROG_PKG_CONFIG
 
