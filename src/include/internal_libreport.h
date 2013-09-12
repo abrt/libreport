@@ -867,6 +867,7 @@ struct dump_dir *open_directory_for_writing(
 #define FILENAME_PKG_ARCH      "pkg_arch"
 #define FILENAME_USERNAME      "username"
 #define FILENAME_ABRT_VERSION  "abrt_version"
+#define FILENAME_EXPLOITABLE   "exploitable"
 
 // Not stored as files, added "on the fly":
 #define CD_DUMPDIR            "Directory"
