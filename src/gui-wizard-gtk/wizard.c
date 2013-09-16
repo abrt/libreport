@@ -2190,6 +2190,8 @@ static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words)
         PangoAttrList *attrs = pango_attr_list_new();
         PangoAttribute *foreground_attr = pango_attr_foreground_new(65535, 0, 0);
         pango_attr_list_insert(attrs, foreground_attr);
+        PangoAttribute *underline_attr = pango_attr_underline_new(PANGO_UNDERLINE_SINGLE);
+        pango_attr_list_insert(attrs, underline_attr);
         gtk_label_set_attributes(GTK_LABEL(tab_lbl), attrs);
 
         /* The current order of the found words is defined by order of words in the
