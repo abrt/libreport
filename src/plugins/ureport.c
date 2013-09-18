@@ -25,6 +25,7 @@
 #define SERVER_URL "https://retrace.fedoraproject.org/faf"
 #define REPORT_URL_SFX "reports/new/"
 #define ATTACH_URL_SFX "reports/attach/"
+#define BTHASH_URL_SFX "reports/bthash/"
 
 /*
  * Loads uReport configuration from various sources.
@@ -420,6 +421,7 @@ int main(int argc, char **argv)
 
     /* -b, -a nor -r were specified - upload uReport from dump_dir */
     int ret = 1; /* "failure" (for now) */
+    const char *server_url = config.ur_url;
     char *dest_url = concat_path_file(config.ur_url, REPORT_URL_SFX);
     config.ur_url = dest_url;
 
@@ -458,6 +460,12 @@ int main(int argc, char **argv)
             char *msg = xasprintf("uReport: BTHASH=%s", response->bthash);
             add_reported_to(dd, msg);
             free(msg);
+
+            char *bthash_url = concat_path_file(server_url, BTHASH_URL_SFX);
+            msg = xasprintf("ABRT Server: URL=%s%s", bthash_url, response->bthash);
+            add_reported_to(dd, msg);
+            free(msg);
+            free(bthash_url);
         }
 
         if (response->reported_to_list)
