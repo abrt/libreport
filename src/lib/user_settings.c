@@ -147,12 +147,12 @@ const char *get_user_setting(const char *name)
     return get_app_user_setting(user_settings, name);
 }
 
-GList *load_forbidden_words(void)
+GList *load_words_from_file(const char* filename)
 {
-    const char *conf_file = "forbidden_words.conf";
+    const char *filename = "forbidden_words.conf";
     GList *words_list = NULL;
     GList *file_list = NULL;
-    file_list = g_list_prepend(file_list, concat_path_file(CONF_DIR, conf_file));
+    file_list = g_list_prepend(file_list, concat_path_file(CONF_DIR, filename));
     // get_conf_path adds .conf suffix, so we need to either change it or use it like this:
     file_list = g_list_prepend(file_list, get_conf_path("forbidden_words"));
     GList *file_list_cur = file_list;
