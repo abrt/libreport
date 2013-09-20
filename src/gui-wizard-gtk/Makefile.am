@@ -4,7 +4,9 @@ bin_PROGRAMS = report-gtk
 report_gtk_SOURCES = \
     wizard.h wizard.c \
     main.c \
-    wizard_glade.c
+    wizard_glade.c \
+    search_item.c search_item.h
+
 
 # Required for gtk_builder_connect_signals() to work correctly:
 # -g
@@ -42,7 +44,8 @@ EXTRA_DIST = $(GLADE_FILES)
 
 libreportconfdir = $(CONF_DIR)
 dist_libreportconf_DATA = \
-    forbidden_words.conf
+    forbidden_words.conf \
+    ignored_words.conf
 
 # For internal glade file storage in the binary:
 wizard.c: wizard_glade.c
