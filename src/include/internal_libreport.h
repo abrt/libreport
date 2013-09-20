@@ -710,8 +710,11 @@ void set_user_setting(const char *name, const char *value);
 #define get_user_setting libreport_get_user_setting
 const char *get_user_setting(const char *name);
 
+/* filename is expected to exist in CONF_DIR
+ * usually /etc/libreport
+ */
 #define load_forbidden_words libreport_load_forbidden_words
-GList *load_forbidden_words();
+GList *load_words_from_file(const char *filename);
 #define get_file_list libreport_get_file_list
 GList *get_file_list(const char *path, const char *ext);
 #define free_file_list libreport_free_file_list

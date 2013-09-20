@@ -26,6 +26,8 @@
 #define DEFAULT_HEIGHT  500
 
 #define EMERGENCY_ANALYSIS_EVENT_NAME "report_EmergencyAnalysis"
+#define FORBIDDEN_WORDS_BLACKLLIST "forbidden_words.conf"
+#define FORBIDDEN_WORDS_WHITELIST "allowed_words.conf"
 
 #if GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 22
 # define gtk_assistant_commit(...) ((void)0)
@@ -113,15 +115,6 @@ static GtkWidget *g_top_most_window;
 static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback func);
 static void set_auto_event_chain(GtkButton *button, gpointer user_data);
 static void start_event_run(const char *event_name);
-
-typedef struct
-{
-    int page; //which tab in notepad
-    GtkTextBuffer *buffer;
-    GtkTextView *tev;
-    GtkTextIter start;
-    GtkTextIter end;
-} search_item_t;
 
 static GList *g_search_result_list;
 static guint g_current_highlighted_word;
@@ -2100,14 +2093,8 @@ static void log_ready_state(void)
 }
 #endif
 
-static int compare_search_item(gconstpointer a, gconstpointer b)
-{
-    const search_item_t *lhs = a;
-    const search_item_t *rhs = b;
-    return gtk_text_iter_compare(&(lhs->start), &(rhs->start));
-}
 
-static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words)
+static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *forbidden_words, GList *allowed_words)
 {
     GtkTextBuffer *buffer = gtk_text_view_get_buffer(tev);
     gtk_text_buffer_set_modified(buffer, FALSE);
@@ -2158,7 +2145,13 @@ static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words)
     GtkTextIter end_match;
     int found = 0;
     GList *result = NULL;
-    for (GList *w = words; w; w = g_list_next(w))
+
+    for (GList *w = allowed_words; w; w = glist_next(w))
+    {
+
+    }
+
+    for (GList *w = forbidden_words; w; w = g_list_next(w))
     {
         gtk_text_buffer_get_start_iter(buffer, &start_find);
 
@@ -2246,7 +2239,7 @@ static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words)
     return found;
 }
 
-static gboolean highligh_words_in_tabs(GList *words)
+static gboolean highligh_words_in_tabs(GList *words,  GList *forbidden_words)
 {
     gboolean found = false;
 
@@ -2275,7 +2268,7 @@ static gboolean highligh_words_in_tabs(GList *words)
 
 static void highlight_forbidden(void)
 {
-    GList *forbidden_words = load_forbidden_words();
+    GList *forbidden_words = load_words_from_file(FORBIDDEN_WORDS_FILENAME);
 
     if (highligh_words_in_tabs(forbidden_words)) {
         int response = run_ask_yes_no_save_result_dialog(
@@ -2719,8 +2712,9 @@ static void unhighlight_widget(GtkWidget *widget, gpointer *user_data)
 
 static void rehighlight_forbidden_words(int page, GtkTextView *tev)
 {
-    GList *forbidden_words = load_forbidden_words();
-    highligh_words_in_textview(page, tev, forbidden_words);
+    GList *forbidden_words = load_words_from_file(FORBIDDEN_WORDS_FILENAME);
+    GList *allowed_words = load_words_from_file(FORBIDDEN_WORDS_WHITELIST);
+    highligh_words_in_textview(page, tev, forbidden_words, allowed_words);
     list_free_with_free(forbidden_words);
 
     /* Don't increment resp. decrement in search_down() resp. search_up() */
