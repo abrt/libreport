@@ -21,11 +21,14 @@
 #include "client.h"
 #include "internal_libreport_gtk.h"
 #include "wizard.h"
+#include "search_item.h"
 
 #define DEFAULT_WIDTH   800
 #define DEFAULT_HEIGHT  500
 
 #define EMERGENCY_ANALYSIS_EVENT_NAME "report_EmergencyAnalysis"
+#define FORBIDDEN_WORDS_BLACKLLIST "forbidden_words.conf"
+#define FORBIDDEN_WORDS_WHITELIST "ignored_words.conf"
 
 #if GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 22
 # define gtk_assistant_commit(...) ((void)0)
@@ -113,15 +116,6 @@ static GtkWidget *g_top_most_window;
 static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback func);
 static void set_auto_event_chain(GtkButton *button, gpointer user_data);
 static void start_event_run(const char *event_name);
-
-typedef struct
-{
-    int page; //which tab in notepad
-    GtkTextBuffer *buffer;
-    GtkTextView *tev;
-    GtkTextIter start;
-    GtkTextIter end;
-} search_item_t;
 
 static GList *g_search_result_list;
 static guint g_current_highlighted_word;
@@ -2100,20 +2094,59 @@ static void log_ready_state(void)
 }
 #endif
 
-static int compare_search_item(gconstpointer a, gconstpointer b)
-{
-    const search_item_t *lhs = a;
-    const search_item_t *rhs = b;
-    return gtk_text_iter_compare(&(lhs->start), &(rhs->start));
-}
-
-static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words)
+static GList *find_words_in_text_buffer(int page,
+                                        GtkTextView *tev,
+                                        GList *words,
+                                        GList *ignore_sitem_list,
+                                        GtkTextIter start_find,
+                                        GtkTextIter end_find
+                                        )
 {
     GtkTextBuffer *buffer = gtk_text_view_get_buffer(tev);
     gtk_text_buffer_set_modified(buffer, FALSE);
 
-    GtkTextIter start_find;
-    gtk_text_buffer_get_start_iter(buffer, &start_find);
+    GList *found_words = NULL;
+    GtkTextIter start_match;
+    GtkTextIter end_match;
+
+    for (GList *w = words; w; w = g_list_next(w))
+    {
+        gtk_text_buffer_get_start_iter(buffer, &start_find);
+
+        const char *search_word = w->data;
+        while (search_word && search_word[0] && gtk_text_iter_forward_search(&start_find, search_word,
+                    GTK_TEXT_SEARCH_TEXT_ONLY,
+                    &start_match,
+                    &end_match, NULL))
+        {
+            search_item_t *found_word = sitem_new(
+                    page,
+                    buffer,
+                    tev,
+                    start_match,
+                    end_match
+                );
+            int offset = gtk_text_iter_get_offset(&end_match);
+            gtk_text_buffer_get_iter_at_offset(buffer, &start_find, offset);
+
+            if (sitem_is_in_sitemlist(found_word, ignore_sitem_list))
+            {
+                sitem_free(found_word);
+                // don't count the word if it's part of some of the ignored words
+                continue;
+            }
+
+            found_words = g_list_prepend(found_words, found_word);
+        }
+    }
+
+    return found_words;
+}
+
+static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words, GList *ignored_words)
+{
+    GtkTextBuffer *buffer = gtk_text_view_get_buffer(tev);
+    gtk_text_buffer_set_modified(buffer, FALSE);
 
     GtkWidget *notebook_child = gtk_notebook_get_nth_page(g_notebook, page);
     GtkWidget *tab_lbl = gtk_notebook_get_tab_label(g_notebook, notebook_child);
@@ -2143,6 +2176,8 @@ static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words)
              after_buffer = current;
     }
 
+    GtkTextIter start_find;
+    gtk_text_buffer_get_start_iter(buffer, &start_find);
     GtkTextIter end_find;
     gtk_text_buffer_get_end_iter(buffer, &end_find);
 
@@ -2153,39 +2188,33 @@ static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words)
     gtk_label_set_attributes(GTK_LABEL(tab_lbl), NULL);
     pango_attr_list_unref(attrs);
 
-    /* Find current words */
-    GtkTextIter start_match;
-    GtkTextIter end_match;
-    int found = 0;
     GList *result = NULL;
-    for (GList *w = words; w; w = g_list_next(w))
+    GList *ignored_words_in_buffer = NULL;
+
+    ignored_words_in_buffer = find_words_in_text_buffer(page,
+                                                        tev,
+                                                        ignored_words,
+                                                        NULL,
+                                                        start_find,
+                                                        end_find);
+
+
+    result = find_words_in_text_buffer(page,
+                                       tev,
+                                       words,
+                                       ignored_words_in_buffer,
+                                       start_find,
+                                       end_find
+                                        );
+    for (GList *w = result; w; w = g_list_next(w))
     {
-        gtk_text_buffer_get_start_iter(buffer, &start_find);
-
-        const char *search_word = w->data;
-        while (search_word && search_word[0] && gtk_text_iter_forward_search(&start_find, search_word,
-                    GTK_TEXT_SEARCH_TEXT_ONLY,
-                    &start_match,
-                    &end_match, NULL))
-        {
-            ++found;
-
-            search_item_t * found_word = (search_item_t *)xmalloc(sizeof(search_item_t));
-            found_word->start = start_match;
-            found_word->end = end_match;
-            found_word->buffer = buffer;
-            found_word->tev = tev;
-            found_word->page = page;
-            result = g_list_prepend(result, found_word);
-
-            gtk_text_buffer_apply_tag_by_name(buffer, "search_result_bg",
-                                              &start_match, &end_match);
-            int offset = gtk_text_iter_get_offset(&end_match);
-            gtk_text_buffer_get_iter_at_offset(buffer, &start_find, offset);
-        }
+        search_item_t *item = (search_item_t *)w->data;
+        gtk_text_buffer_apply_tag_by_name(buffer, "search_result_bg",
+                                          sitem_get_start_iter(item),
+                                          sitem_get_end_iter(item));
     }
 
-    if (found)
+    if (result)
     {
         PangoAttrList *attrs = pango_attr_list_new();
         PangoAttribute *foreground_attr = pango_attr_foreground_new(65535, 0, 0);
@@ -2198,7 +2227,7 @@ static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words)
          * passed list. We have to order the words according to their occurrence in
          * the buffer.
          */
-        result = g_list_sort(result, compare_search_item);
+        result = g_list_sort(result, (GCompareFunc)sitem_compare);
 
         /* Put words of the buffer at the correct place */
         if (after_buffer == g_search_result_list)
@@ -2241,12 +2270,12 @@ static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words)
      * the currently highlighted word will be the first word in a next buffer.
      */
     if (bufferpos >= 0)
-        g_current_highlighted_word -= (bufferpos + (found == 0));
+        g_current_highlighted_word -= (bufferpos + (result == NULL));
 
-    return found;
+    return result != NULL;
 }
 
-static gboolean highligh_words_in_tabs(GList *words)
+static gboolean highligh_words_in_tabs(GList *forbidden_words,  GList *allowed_words)
 {
     gboolean found = false;
 
@@ -2267,7 +2296,7 @@ static gboolean highligh_words_in_tabs(GList *words)
             continue;
 
         GtkTextView *tev = GTK_TEXT_VIEW(gtk_bin_get_child(GTK_BIN(notebook_child)));
-        found |= highligh_words_in_textview(page, tev, words);
+        found |= highligh_words_in_textview(page, tev, forbidden_words, allowed_words);
     }
 
     return found;
@@ -2275,9 +2304,10 @@ static gboolean highligh_words_in_tabs(GList *words)
 
 static void highlight_forbidden(void)
 {
-    GList *forbidden_words = load_forbidden_words();
+    GList *forbidden_words = load_words_from_file(FORBIDDEN_WORDS_BLACKLLIST);
+    GList *allowed_words = load_words_from_file(FORBIDDEN_WORDS_WHITELIST);
 
-    if (highligh_words_in_tabs(forbidden_words)) {
+    if (highligh_words_in_tabs(forbidden_words, allowed_words)) {
         int response = run_ask_yes_no_save_result_dialog(
             CREATE_PRIVATE_TICKET,
             _("Possible sensitive data detected, "
@@ -2719,8 +2749,9 @@ static void unhighlight_widget(GtkWidget *widget, gpointer *user_data)
 
 static void rehighlight_forbidden_words(int page, GtkTextView *tev)
 {
-    GList *forbidden_words = load_forbidden_words();
-    highligh_words_in_textview(page, tev, forbidden_words);
+    GList *forbidden_words = load_words_from_file(FORBIDDEN_WORDS_BLACKLLIST);
+    GList *allowed_words = load_words_from_file(FORBIDDEN_WORDS_WHITELIST);
+    highligh_words_in_textview(page, tev, forbidden_words, allowed_words);
     list_free_with_free(forbidden_words);
 
     /* Don't increment resp. decrement in search_down() resp. search_up() */
@@ -2791,7 +2822,7 @@ static gboolean highlight_search(gpointer user_data)
     VERB1 log("searching: '%s'", gtk_entry_get_text(entry));
 
     GList *words = g_list_append(NULL, (gpointer)gtk_entry_get_text(entry));
-    highligh_words_in_tabs(words);
+    highligh_words_in_tabs(words, NULL);
     g_list_free(words);
 
     /* returning false will make glib to remove this event */
