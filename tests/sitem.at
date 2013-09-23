@@ -1,0 +1,146 @@
+# -*- Autotest -*-
+
+AT_BANNER([TextBuffer search])
+
+## -------------------------- ##
+## compares two search items  ##
+## -------------------------- ##
+
+AT_TESTFUN([sitem_compare],
+[[
+#include "search_item.h"
+#include <assert.h>
+
+/* comparing two items */
+int test()
+{
+    char text[] = "Some text";
+    GtkTextBuffer *buffer = gtk_text_buffer_new(gtk_text_tag_table_new());
+    gtk_text_buffer_insert_at_cursor(buffer, text, sizeof(text));
+    GtkTextIter start;
+    gtk_text_buffer_get_start_iter(buffer, &start);
+    GtkTextIter end;
+    gtk_text_buffer_get_end_iter(buffer, &end);
+
+    search_item_t *sitem1 = sitem_new(
+            0,
+            buffer,
+            NULL, //not needed, maybe we can remove it from the sitem struct?
+            start,
+            end
+        );
+
+    search_item_t *sitem2 = sitem_new(  //yes, it's the same, so it should return 0
+            0,
+            buffer,
+            NULL, //not needed, maybe we can remove it from the sitem struct?
+            start,
+            end
+        );
+
+    return sitem_compare(sitem1, sitem2);
+}
+
+int main(void)
+{
+    assert(test() == 0);
+
+    return 0;
+}
+]])
+
+AT_TESTFUN([sitem_is_in_sitemlist],
+[[
+#include "internal_libreport.h"
+#include "search_item.h"
+#include <assert.h>
+
+static GList *find_words_in_text_buffer(GtkTextBuffer *buffer, GList *words)
+{
+    GList *found_words = NULL;
+    GtkTextIter start;
+    GtkTextIter end;
+
+    for (GList *w = words; w; w = g_list_next(w))
+    {
+        gtk_text_buffer_get_start_iter(buffer, &start);
+
+        const char *search_word = w->data;
+        while (search_word && search_word[0] && gtk_text_iter_forward_search(&start, search_word,
+                    GTK_TEXT_SEARCH_TEXT_ONLY,
+                    &start,
+                    &end, NULL))
+        {
+            search_item_t *found_word = sitem_new(
+                    0,
+                    buffer,
+                    NULL,
+                    start,
+                    end
+                );
+            int offset = gtk_text_iter_get_offset(&end);
+            gtk_text_buffer_get_iter_at_offset(buffer, &start, offset);
+            found_words = g_list_prepend(found_words, found_word);
+        }
+    }
+
+    return found_words;
+}
+
+int test()
+{
+    const char text[] = "Some text with few words and I don't want lorem ipsum";
+    GtkTextBuffer *buffer = gtk_text_buffer_new(gtk_text_tag_table_new());
+    gtk_text_buffer_insert_at_cursor(buffer, text, sizeof(text));
+
+    const char *blacklist = "few,tex";
+    const char *whitelist = "few,text";
+    const char *whitelist_2 = "words";
+    GList *blacklist_in = parse_list(blacklist);
+    GList *whitelist_in = parse_list(whitelist);
+    GList *whitelist_not_in = parse_list(whitelist_2);
+
+    GList *blacklist_sitems = find_words_in_text_buffer(buffer, blacklist_in);
+    GList *whitelist_sitems = find_words_in_text_buffer(buffer, whitelist_in);
+    GList *whitelist_2_sitems = find_words_in_text_buffer(buffer, whitelist_not_in);
+
+    for(GList *sitems = blacklist_sitems; sitems; sitems = g_list_next(sitems))
+    {
+        if (!sitem_is_in_sitemlist((search_item_t *)sitems->data, whitelist_sitems))
+        {
+            printf("'%s' should be in list!\n", gtk_text_buffer_get_text
+                (
+                    buffer,
+                    sitem_get_start_iter((search_item_t *)sitems->data),
+                    sitem_get_end_iter((search_item_t *)sitems->data),
+                    false
+                )
+            );
+            return 1;
+        }
+
+        if (sitem_is_in_sitemlist((search_item_t *)sitems->data, whitelist_2_sitems))
+        {
+            printf("'%s' should NOT be in the list!\n", gtk_text_buffer_get_text
+                    (
+                        buffer,
+                        sitem_get_start_iter((search_item_t *)sitems->data),
+                        sitem_get_end_iter((search_item_t *)sitems->data),
+                        false
+                    )
+            );
+            return 1;
+        }
+
+    }
+
+    return 0;
+}
+
+int main(void)
+{
+    assert(test() == 0);
+
+    return 0;
+}
+]])
