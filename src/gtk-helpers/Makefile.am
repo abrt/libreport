@@ -15,7 +15,8 @@ libreport_gtk_la_SOURCES = \
     autowrapped_label.c \
     workflow_config_dialog.c \
     config_dialog.c \
-    ask_dialogs.c
+    ask_dialogs.c \
+    search_item.c search_item.h
 
 libreport_gtk_la_CPPFLAGS = \
     -I$(srcdir)/../include \

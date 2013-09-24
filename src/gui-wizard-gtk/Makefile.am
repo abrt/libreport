@@ -4,8 +4,7 @@ bin_PROGRAMS = report-gtk
 report_gtk_SOURCES = \
     wizard.h wizard.c \
     main.c \
-    wizard_glade.c \
-    search_item.c search_item.h
+    wizard_glade.c
 
 
 # Required for gtk_builder_connect_signals() to work correctly:

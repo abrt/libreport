@@ -17,6 +17,13 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+#ifndef SEARCH_ITEM_H_
+#define SEARCH_ITEM_H_
+
+
+#include <gtk/gtk.h>
+#include <stdbool.h>
+
 typedef struct
 {
     int page; //which tab in notepad
@@ -37,3 +44,5 @@ int sitem_compare(const search_item_t *item1, const search_item_t *item2);
 GtkTextIter *sitem_get_start_iter(search_item_t *item);
 GtkTextIter *sitem_get_end_iter(search_item_t *item);
 bool sitem_is_in_sitemlist(const search_item_t *item, GList *item_list);
+
+#endif //SEARCH_ITEM_H_
