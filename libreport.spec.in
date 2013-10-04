@@ -40,7 +40,7 @@ BuildRequires: asciidoc
 BuildRequires: xmlto
 BuildRequires: newt-devel
 BuildRequires: libproxy-devel
-BuildRequires: satyr-devel >= 0.4
+BuildRequires: satyr-devel >= 0.10
 %if %{with bugzilla}
 BuildRequires: xmlrpc-c-devel
 %endif
@@ -51,7 +51,7 @@ Requires: libreport-filesystem = %{version}-%{release}
 # end-up with: can't import report.GtkIO
 # FIXME: can be removed when F15 will EOLed, needs to stay in rhel6!
 Requires: libreport-python
-Requires: satyr >= 0.4
+Requires: satyr >= 0.10
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -572,6 +572,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Fri Oct 04 2013 Jakub Filak <jfilak@redhat.com> 2.1.8-1
+- disable rhel/fedora workflows for anaconda
+- added whitelist for sensitive data - rhbz#1009730 rhbz#896246
+- ureport: always add BTHASH link to a report
+- reprot-gtk: underline tab titles with sensitive information
+- introduce FILENAME_EXPLOITABLE; related to abrt/abrt#703
+
 * Wed Sep 11 2013 Jakub Filak <jfilak@redhat.com> 2.1.7-1
 - Fix problem_item_format() to work properly after 2038 on x32. #691
 - Use proper json-c requirement in libreport-web.pc.
