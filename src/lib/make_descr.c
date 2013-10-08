@@ -279,6 +279,24 @@ static const char *const blacklisted_items[] = {
     NULL
 };
 
+/* Items we don't want to include in email */
+static const char *const blacklisted_items_mailx[] = {
+    CD_DUMPDIR        ,
+    FILENAME_ANALYZER ,
+    FILENAME_TYPE     ,
+    FILENAME_COREDUMP ,
+    FILENAME_DUPHASH  ,
+    FILENAME_UUID     ,
+    FILENAME_COUNT    ,
+    FILENAME_TAINTED_SHORT,
+    FILENAME_ARCHITECTURE,
+    FILENAME_PACKAGE,
+    FILENAME_OS_RELEASE,
+    FILENAME_COMPONENT,
+    FILENAME_REASON,
+    NULL
+};
+
 char* make_description_bz(problem_data_t *problem_data, unsigned max_text_size)
 {
     return make_description(
@@ -294,6 +312,16 @@ char* make_description_logger(problem_data_t *problem_data, unsigned max_text_si
     return make_description(
                 problem_data,
                 (char**)blacklisted_items,
+                max_text_size,
+                MAKEDESC_SHOW_FILES | MAKEDESC_SHOW_MULTILINE
+    );
+}
+
+char* make_description_mailx(problem_data_t *problem_data, unsigned max_text_size)
+{
+    return make_description(
+                problem_data,
+                (char**)blacklisted_items_mailx,
                 max_text_size,
                 MAKEDESC_SHOW_FILES | MAKEDESC_SHOW_MULTILINE
     );

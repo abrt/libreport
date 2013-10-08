@@ -597,9 +597,8 @@ char *make_description_item_multiline(const char *name, const char* content);
 char* make_description_bz(problem_data_t *problem_data, unsigned max_text_size);
 #define make_description_logger libreport_make_description_logger
 char* make_description_logger(problem_data_t *problem_data, unsigned max_text_size);
-//UNUSED
-//#define make_description_mailx libreport_make_description_mailx
-//char* make_description_mailx(problem_data_t *problem_data);
+#define make_description_mailx libreport_make_description_mailx
+char* make_description_mailx(problem_data_t *problem_data, unsigned max_text_size);
 
 #define parse_release_for_bz libreport_parse_release_for_bz
 void parse_release_for_bz(const char *pRelease, char **product, char **version);
