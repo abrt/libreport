@@ -75,6 +75,7 @@ libreport_la_LDFLAGS = \
     -version-info 0:1:0
 libreport_la_LIBADD = \
     $(GLIB_LIBS) \
+    $(JOURNAL_LIBS) \
     $(GOBJECT_LIBS)
 
 libreportconfdir = $(CONF_DIR)

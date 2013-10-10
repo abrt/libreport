@@ -17,6 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <syslog.h>
+#include <systemd/sd-journal.h>
 #include "internal_libreport.h"
 
 void (*g_custom_logger)(const char*);
@@ -133,6 +134,16 @@ static void log_handler(int level,
     if ((flags & LOGMODE_CUSTOM) && g_custom_logger) {
         if(should_log(level))
             g_custom_logger(msg + prefix_len);
+    }
+
+    if (flags & LOGMODE_JOURNAL) {
+        if(should_log(level))
+            sd_journal_send("MESSAGE=%s", msg + prefix_len,
+                            "PRIORITY=%d", level,
+                            "CODE_FILE=%s", file,
+                            "CODE_LINE=%d", line,
+                            "CODE_FUNC=%s", func,
+                            NULL);
     }
 }
 
