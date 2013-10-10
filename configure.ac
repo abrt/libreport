@@ -155,6 +155,8 @@ PKG_CHECK_MODULES([PROXY], [libproxy-1.0], [
     AC_DEFINE([HAVE_PROXY], [1], [Use libproxy])
 ], [:])
 PKG_CHECK_MODULES([SATYR], [satyr])
+PKG_CHECK_MODULES([JOURNAL], [libsystemd-journal])
+
 
 AC_ARG_WITH(newt,
 AS_HELP_STRING([--with-newt],[use newt (default is YES)]),

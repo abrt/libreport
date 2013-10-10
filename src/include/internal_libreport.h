@@ -433,6 +433,7 @@ enum {
     LOGMODE_SYSLOG = (1 << 1),
     LOGMODE_BOTH = LOGMODE_SYSLOG + LOGMODE_STDIO,
     LOGMODE_CUSTOM = (1 << 2),
+    LOGMODE_JOURNAL = (1 << 3),
 };
 
 #define g_custom_logger libreport_g_custom_logger
