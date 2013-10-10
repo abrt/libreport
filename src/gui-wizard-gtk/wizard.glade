@@ -21,6 +21,7 @@
               <object class="GtkImage" id="image2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="margin_left">4</property>
                 <property name="stock">gtk-media-record</property>
                 <property name="icon-size">1</property>
               </object>
@@ -34,7 +35,13 @@
               <object class="GtkLabel" id="label10">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="margin_left">6</property>
+                <property name="margin_top">6</property>
+                <property name="margin_bottom">6</property>
                 <property name="label" translatable="yes">Possible sensitive data detected</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -57,6 +64,7 @@
               <object class="GtkBox" id="box4">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkCheckButton" id="private_ticket_cb">
                     <property name="label" translatable="yes">Restrict access to the report</property>
@@ -73,6 +81,22 @@
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkLabel" id="label11">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_top">13</property>
+                    <property name="label" translatable="yes">No one except Red Hat employes will be allowed to see the report with restricted access (not even you)</property>
+                    <attributes>
+                      <attribute name="style" value="italic"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkLinkButton" id="linkbutton1">
                     <property name="label" translatable="yes">Read more about reports with restricted access</property>
                     <property name="visible">True</property>
@@ -85,7 +109,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">1</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
               </object>
