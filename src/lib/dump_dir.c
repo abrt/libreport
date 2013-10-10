@@ -166,7 +166,7 @@ static time_t parse_time_file(const char *filename)
     /* Check for various possible errors */
     if (errno
      || (*endptr != '\0')
-     || val > MAX_TIME_T
+     || val >= MAX_TIME_T
      || !isdigit_str(time_buf) /* this filters out "-num", "   num", "" */
     ) {
         VERB2 perror_msg("File '%s' doesn't contain valid unix "
