@@ -40,13 +40,30 @@ void xfunc_die(void)
     _exit(xfunc_error_retval);
 }
 
-/* If set to 0, will use malloc for long messages */
-#define USE_ALLOCA 1
+static bool should_log(int level)
+{
+    // LOG_DEBUG = 7, LOG_INFO = 6, LOG_NOTICE = 5, LOG_WARNING = 4, LOG_ERR = 3
+    // output only messages with LOG_ERR by default, overridden by g_verbose
+    if(
+          (g_verbose == 0 && level <= LOG_WARNING) ||
+          (g_verbose == 1 && level <= LOG_NOTICE) ||
+          (g_verbose == 2 && level <= LOG_INFO) ||
+          (g_verbose == 3)
+      )
+      return true;
 
-static void verror_msg_helper(const char *s,
-                              va_list p,
-                              const char *strerr,
-                              int flags)
+    return false;
+}
+
+
+static void log_handler(int level,
+                        const char *format,
+                        va_list p,
+                        const char *strerr, /* perror messages */
+                        int flags,
+                        const char *file,
+                        int line,
+                        const char *func)
 {
     if (!logmode)
         return;
@@ -70,9 +87,9 @@ static void verror_msg_helper(const char *s,
     va_list p2;
     va_copy(p2, p);
     if (prefix_len < sizeof(buf))
-        used = vsnprintf(buf + prefix_len, sizeof(buf) - prefix_len, s, p2);
+        used = vsnprintf(buf + prefix_len, sizeof(buf) - prefix_len, format, p2);
     else
-        used = vsnprintf(buf, 0, s, p2);
+        used = vsnprintf(buf, 0, format, p2);
     va_end(p2);
 
     char *msg = buf;
@@ -80,35 +97,11 @@ static void verror_msg_helper(const char *s,
     /* +3 is for ": " before strerr and for terminating NUL */
     unsigned total_len = prefix_len + used + strerr_len + msgeol_len + 3;
 
-#if USE_ALLOCA
     if (total_len >= sizeof(buf))
     {
         msg = alloca(total_len);
-        used = vsnprintf(msg + prefix_len, total_len - prefix_len, s, p);
+        used = vsnprintf(msg + prefix_len, total_len - prefix_len, format, p);
     }
-#else
-#define LOGMODE_DIE ((unsigned)INT_MAX + 1)
-    char *malloced = NULL;
-    if (total_len >= sizeof(buf))
-    {
-        /* Nope, need to malloc the buffer.
-         * Can't use xmalloc: it calls error_msg_and_die on failure,
-         * that will result in a recursion.
-         */
-        msg = malloced = malloc(total_len);
-        if (!msg)
-        {
-            /* Same as xmalloc error */
-            msg = strcpy(buf, "Out of memory, exiting\n");
-            used = strlen(msg) - 1;
-            msgeol_len = 1; /* '\n' */
-            prefix_len = 0;
-            flags |= LOGMODE_DIE;
-            goto send_it;
-        }
-        used = vsnprintf(msg + prefix_len, total_len - prefix_len, s, p);
-    }
-#endif
 
     if (prefix_len) {
         char *p;
@@ -118,7 +111,7 @@ static void verror_msg_helper(const char *s,
         p[1] = ' ';
     }
     if (strerr) {
-        if (s[0]) {
+        if (format[0]) {
             msg[used++] = ':';
             msg[used++] = ' ';
         }
@@ -127,77 +120,69 @@ static void verror_msg_helper(const char *s,
     }
     strcpy(&msg[used], msg_eol);
 
-#if !USE_ALLOCA
- send_it:
-#endif
     if (flags & LOGMODE_STDIO) {
-        /*fflush(stdout); - unsafe after fork! */
-        full_write(STDERR_FILENO, msg, used + msgeol_len);
+        if(should_log(level))
+            full_write(STDERR_FILENO, msg, used + msgeol_len);
     }
     msg[used] = '\0'; /* remove msg_eol (usually "\n") */
     if (flags & LOGMODE_SYSLOG) {
-        syslog(LOG_ERR, "%s", msg + prefix_len);
+        if(should_log(level))
+            syslog(level, "%s", msg + prefix_len);
     }
+
     if ((flags & LOGMODE_CUSTOM) && g_custom_logger) {
-        g_custom_logger(msg + prefix_len);
+        if(should_log(level))
+            g_custom_logger(msg + prefix_len);
     }
-
-#if !USE_ALLOCA
-    free(malloced);
-
-    if (flags & LOGMODE_DIE)
-        xfunc_die();
-#endif
 }
 
-void log_msg(const char *s, ...)
+void log_wrapper(int level,
+                 const char *file,
+                 int line,
+                 const char *func,
+                 bool process_perror,
+                 bool use_custom_logger,
+                 const char *format,
+                 ...)
 {
     va_list p;
 
-    va_start(p, s);
-    verror_msg_helper(s, p, NULL, logmode);
+    va_start(p, format);
+    log_handler(level,
+                format,
+                p,
+                (process_perror && errno) ? strerror(errno) : NULL, /* Guard against "<error message>: Success" */
+                logmode | (use_custom_logger ? LOGMODE_CUSTOM : 0),
+                file,
+                line,
+                func);
     va_end(p);
 }
 
-void error_msg(const char *s, ...)
+void log_and_die_wrapper(int level,
+                         const char *file,
+                         int line,
+                         const char *func,
+                         bool process_perror,
+                         bool use_custom_logger,
+                         const char *format,
+                         ...)
 {
     va_list p;
 
-    va_start(p, s);
-    verror_msg_helper(s, p, NULL, (logmode | LOGMODE_CUSTOM));
-    va_end(p);
-}
-
-void error_msg_and_die(const char *s, ...)
-{
-    va_list p;
-
-    va_start(p, s);
-    verror_msg_helper(s, p, NULL, (logmode | LOGMODE_CUSTOM));
-    va_end(p);
-    xfunc_die();
-}
-
-void perror_msg(const char *s, ...)
-{
-    va_list p;
-
-    va_start(p, s);
-    /* Guard against "<error message>: Success" */
-    verror_msg_helper(s, p, errno ? strerror(errno) : NULL, (logmode | LOGMODE_CUSTOM));
-    va_end(p);
-}
-
-void perror_msg_and_die(const char *s, ...)
-{
-    va_list p;
-
-    va_start(p, s);
-    /* Guard against "<error message>: Success" */
-    verror_msg_helper(s, p, errno ? strerror(errno) : NULL, (logmode | LOGMODE_CUSTOM));
+    va_start(p, format);
+    log_handler(level,
+                format,
+                p,
+                (process_perror && errno) ? strerror(errno) : NULL, /* Guard against "<error message>: Success" */
+                logmode | (use_custom_logger ? LOGMODE_CUSTOM : 0),
+                file,
+                line,
+                func);
     va_end(p);
     xfunc_die();
 }
+
 
 void die_out_of_memory(void)
 {
