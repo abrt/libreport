@@ -187,6 +187,15 @@ static const gchar *const page_names[] =
     NULL
 };
 
+#define PRIVATE_TICKET_CB "private_ticket_cb"
+
+#define SENSITIVE_DATA_WARN "sensitive_data_warning"
+static const gchar *misc_widgets[] =
+{
+    SENSITIVE_DATA_WARN,
+    NULL
+};
+
 typedef struct
 {
     const gchar *name;
@@ -1974,12 +1983,21 @@ static void start_event_run(const char *event_name)
     gtk_widget_set_sensitive(g_btn_next, false);
 }
 
+/*
+ * the widget is added as a child of the VBox in the warning area
+ *
+ */
+static void add_widget_to_warning_area(GtkWidget *widget)
+{
+    g_warning_issued = true;
+    gtk_box_pack_start(g_box_warning_labels, widget, false, false, 0);
+    gtk_widget_show_all(widget);
+}
 
 /* Backtrace checkbox handling */
 
 static void add_warning(const char *warning)
 {
-    g_warning_issued = true;
     char *label_str = xasprintf("• %s", warning);
     GtkWidget *warning_lbl = gtk_label_new(NULL);
     gtk_label_set_markup(GTK_LABEL(warning_lbl), label_str);
@@ -1989,8 +2007,29 @@ static void add_warning(const char *warning)
     gtk_misc_set_alignment(GTK_MISC(warning_lbl), 0.0, 0.0);
     gtk_label_set_justify(GTK_LABEL(warning_lbl), GTK_JUSTIFY_LEFT);
     gtk_label_set_line_wrap(GTK_LABEL(warning_lbl), TRUE);
-    gtk_box_pack_start(g_box_warning_labels, warning_lbl, false, false, 0);
-    gtk_widget_show(warning_lbl);
+
+    add_widget_to_warning_area(warning_lbl);
+}
+
+static void on_sensitive_ticket_clicked_cb(GtkWidget *button, gpointer user_data)
+{
+    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
+    {
+        xsetenv(CREATE_PRIVATE_TICKET, "1");
+    }
+    else
+    {
+        safe_unsetenv(CREATE_PRIVATE_TICKET);
+    }
+}
+
+static void add_sensitive_data_warning(void)
+{
+    GtkWidget *sens_data_warn = GTK_WIDGET(gtk_builder_get_object(g_builder, SENSITIVE_DATA_WARN));
+    GtkButton *sens_ticket_cb = GTK_BUTTON(gtk_builder_get_object(g_builder, PRIVATE_TICKET_CB));
+
+    g_signal_connect(sens_ticket_cb, "toggled", G_CALLBACK(on_sensitive_ticket_clicked_cb), NULL);
+    add_widget_to_warning_area(GTK_WIDGET(sens_data_warn));
 }
 
 static void show_warnings(void)
@@ -2308,23 +2347,12 @@ static void highlight_forbidden(void)
     GList *allowed_words = load_words_from_file(FORBIDDEN_WORDS_WHITELIST);
 
     if (highligh_words_in_tabs(forbidden_words, allowed_words)) {
-        int response = run_ask_yes_no_save_result_dialog(
-            CREATE_PRIVATE_TICKET,
-            _("Possible sensitive data detected, "
-            "do you want to restrict access to the report?\n\n"
-            "<a href=\"https://github.com/abrt/abrt/wiki/FAQ#reports-with-restricted-access\">"
-            "Read more about reports with restricted access</a>"),
-            g_wnd_assistant);
-
-        if (response)
-        {
-            xsetenv(CREATE_PRIVATE_TICKET, "1");
-            add_warning(_("A private ticket has been requested."));
-        }
-        add_warning(_("Possible sensitive data detected, please review the highlighted tabs carefully."));
+        add_sensitive_data_warning();
+        show_warnings();
     }
 
     list_free_with_free(forbidden_words);
+    list_free_with_free(allowed_words);
 }
 
 static gint select_next_page_no(gint current_page_no, gpointer data);
@@ -2753,6 +2781,7 @@ static void rehighlight_forbidden_words(int page, GtkTextView *tev)
     GList *allowed_words = load_words_from_file(FORBIDDEN_WORDS_WHITELIST);
     highligh_words_in_textview(page, tev, forbidden_words, allowed_words);
     list_free_with_free(forbidden_words);
+    list_free_with_free(allowed_words);
 
     /* Don't increment resp. decrement in search_down() resp. search_up() */
     g_first_highlight = true;
@@ -3031,12 +3060,18 @@ static void on_next_btn_cb(GtkWidget *btn, gpointer user_data)
 static void add_pages(void)
 {
     GError *error = NULL;
+    g_builder = gtk_builder_new();
     if (!g_glade_file)
     {
-        /* Load UI from internal string */
+        /* Load pages from internal string */
         gtk_builder_add_objects_from_string(g_builder,
                 WIZARD_GLADE_CONTENTS, sizeof(WIZARD_GLADE_CONTENTS) - 1,
                 (gchar**)page_names,
+                &error);
+        /* load additional widgets from glade */
+        gtk_builder_add_objects_from_string(g_builder,
+                WIZARD_GLADE_CONTENTS, sizeof(WIZARD_GLADE_CONTENTS) - 1,
+                (gchar**)misc_widgets,
                 &error);
         if (error != NULL)
             error_msg_and_die("Error loading glade data: %s", error->message);
@@ -3262,7 +3297,6 @@ void create_assistant(bool expert_mode)
     g_expert_mode = expert_mode;
 
     g_monospace_font = pango_font_description_from_string("monospace");
-    g_builder = gtk_builder_new();
 
     g_assistant = GTK_NOTEBOOK(gtk_notebook_new());
 
