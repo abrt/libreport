@@ -88,7 +88,7 @@ static void load_workflow_config(const char *name,
         file_obj_t *file = (file_obj_t *)wf_file->data;
         workflow_t *workflow = new_workflow(file->filename);
         load_workflow_description_from_file(workflow, file->fullpath);
-        VERB1 log("Adding '%s' to workflows\n", file->filename);
+        log_notice("Adding '%s' to workflows\n", file->filename);
         g_hash_table_insert(wf_list, file->filename, workflow);
     }
 }
@@ -211,5 +211,5 @@ void wf_set_long_desc(workflow_t *w, const char* long_desc)
 void wf_add_event(workflow_t *w, event_config_t *ec)
 {
     w->events = g_list_append(w->events, ec);
-    VERB2 log("added to ev list: '%s'", ec_get_screen_name(ec));
+    log_info("added to ev list: '%s'", ec_get_screen_name(ec));
 }

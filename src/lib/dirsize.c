@@ -70,9 +70,9 @@ static bool this_is_a_dd(const char *dirname)
 }
 
 double get_dirsize_find_largest_dir(
-		const char *pPath,
-		char **worst_dir,
-		const char *excluded)
+        const char *pPath,
+        char **worst_dir,
+        const char *excluded)
 {
     if (worst_dir)
         *worst_dir = NULL;
@@ -114,7 +114,7 @@ double get_dirsize_find_largest_dir(
                 {
                     if (!this_is_a_dd(dname))
                     {
-                        VERB1 log("'%s' isn't a problem directory, probably a stray directory?", dname);
+                        log_notice("'%s' isn't a problem directory, probably a stray directory?", dname);
                     }
                     else
                     {

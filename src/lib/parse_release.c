@@ -52,7 +52,7 @@ static void parse_release(const char *release, char** product, char** version, i
     {
         *product = xstrdup("Fedora");
         *version = xstrdup("rawhide");
-        VERB3 log("%s: version:'%s' product:'%s'", __func__, *version, *product);
+        log_debug("%s: version:'%s' product:'%s'", __func__, *version, *product);
         return;
     }
 
@@ -66,7 +66,7 @@ static void parse_release(const char *release, char** product, char** version, i
     {
         *product = xstrdup("openSUSE");
         *version = xstrdup("Factory");
-        VERB3 log("%s: version:'%s' product:'%s'", __func__, *version, *product);
+        log_debug("%s: version:'%s' product:'%s'", __func__, *version, *product);
         return;
     }
 
@@ -74,7 +74,7 @@ static void parse_release(const char *release, char** product, char** version, i
     {
         *product = xstrdup("openSUSE");
         *version = xstrdup("Tumbleweed");
-        VERB3 log("%s: version:'%s' product:'%s'", __func__, *version, *product);
+        log_debug("%s: version:'%s' product:'%s'", __func__, *version, *product);
         return;
     }
     */
@@ -165,7 +165,7 @@ static void parse_release(const char *release, char** product, char** version, i
     *version = strbuf_free_nobuf(buf_version);
     *product = strbuf_free_nobuf(buf_product);
 
-    VERB3 log("%s: version:'%s' product:'%s'", __func__, *version, *product);
+    log_debug("%s: version:'%s' product:'%s'", __func__, *version, *product);
 }
 
 static void unescape_osnifo_value(const char *source, char* dest)
@@ -204,33 +204,33 @@ void parse_osinfo(const char *osinfo_bytes, map_string_t *osinfo)
         const char *key_end = strchrnul(cursor, '=');
         if (key_end[0] == '\0')
         {
-            VERB1 log("os-release:%u: non empty last line", line);
+            log_notice("os-release:%u: non empty last line", line);
             break;
         }
 
         if (key_end - cursor == 0)
         {
-            VERB1 log("os-release:%u: 0 length key", line);
+            log_notice("os-release:%u: 0 length key", line);
             goto skip_line;
         }
 
         const char *value_end = strchrnul(cursor, '\n');
         if (key_end > value_end)
         {
-            VERB1 log("os-release:%u: missing '='", line);
+            log_notice("os-release:%u: missing '='", line);
             goto skip_line;
         }
 
         char *key = xstrndup(cursor, key_end - cursor);
         if (get_map_string_item_or_NULL(osinfo, key) != NULL)
         {
-            VERB1 log("os-release:%u: redefines key '%s'", line, key);
+            log_notice("os-release:%u: redefines key '%s'", line, key);
         }
 
         char *value = xstrndup(key_end + 1, value_end - key_end - 1);
         unescape_osnifo_value(value, value);
 
-        VERB3 log("os-release:%u: parsed line: '%s'='%s'", line, key, value);
+        log_debug("os-release:%u: parsed line: '%s'='%s'", line, key, value);
 
         /* The difference between replace and insert is that if the key already
          * exists in the GHashTable, it gets replaced by the new key. The old
@@ -240,7 +240,7 @@ void parse_osinfo(const char *osinfo_bytes, map_string_t *osinfo)
         cursor = value_end;
         if (value_end[0] == '\0')
         {
-            VERB1 log("os-release:%u: the last value is not terminated by newline", line);
+            log_notice("os-release:%u: the last value is not terminated by newline", line);
         }
         else
             ++cursor;

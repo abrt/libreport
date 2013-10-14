@@ -122,7 +122,7 @@ static time_t parse_time_file(const char *filename)
     int fd = open(filename, O_RDONLY | O_NOFOLLOW);
     if (fd < 0)
     {
-        VERB2 perror_msg("Can't open '%s'", filename);
+        pwarn_msg("Can't open '%s'", filename);
         return -1;
     }
 
@@ -135,7 +135,7 @@ static time_t parse_time_file(const char *filename)
 
     if (rdsz == -1)
     {
-        VERB2 perror_msg("Can't read from '%s'", filename);
+        pwarn_msg("Can't read from '%s'", filename);
         return -1;
     }
     /* approximate maximal number of digits in timestamp is sizeof(time_t)*3 */
@@ -144,8 +144,8 @@ static time_t parse_time_file(const char *filename)
     /* than string representing maximal time stamp */
     if (rdsz == sizeof(time_buf))
     {
-        VERB2 error_msg("File '%s' is too long to be valid unix "
-                        "time stamp (max size %u)", filename, (int)sizeof(time_buf));
+        warn_msg("File '%s' is too long to be valid unix "
+                 "time stamp (max size %u)", filename, (int)sizeof(time_buf));
         return -1;
     }
 
@@ -169,7 +169,7 @@ static time_t parse_time_file(const char *filename)
      || val >= MAX_TIME_T
      || !isdigit_str(time_buf) /* this filters out "-num", "   num", "" */
     ) {
-        VERB2 perror_msg("File '%s' doesn't contain valid unix "
+        pwarn_msg("File '%s' doesn't contain valid unix "
                          "time stamp ('%s')", filename, time_buf);
         return -1;
     }
@@ -238,7 +238,7 @@ int create_symlink_lockfile(const char* lock_file, const char* pid)
         }
     }
 
-    VERB1 log("Locked '%s'", lock_file);
+    log_info("Locked '%s'", lock_file);
     return 1;
 }
 
@@ -251,7 +251,7 @@ static const char *dd_check(struct dump_dir *dd)
     dd->dd_time = parse_time_file(filename_buf);
     if (dd->dd_time < 0)
     {
-        VERB1 log("Missing file: "FILENAME_TIME);
+        log_warning("Missing file: "FILENAME_TIME);
         return FILENAME_TIME;
     }
 
@@ -259,7 +259,7 @@ static const char *dd_check(struct dump_dir *dd)
     dd->dd_type = load_text_file(filename_buf, DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     if (!dd->dd_type || (strlen(dd->dd_type) == 0))
     {
-        VERB1 log("Missing or empty file: "FILENAME_TYPE);
+        log_warning("Missing or empty file: "FILENAME_TYPE);
         return FILENAME_TYPE;
     }
 
@@ -305,7 +305,7 @@ static int dd_lock(struct dump_dir *dd, unsigned sleep_usec, int flags)
         if (missing_file)
         {
             xunlink(lock_buf);
-            VERB1 log("Unlocked '%s' (no or corrupted '%s' file)", lock_buf, missing_file);
+            log_warning("Unlocked '%s' (no or corrupted '%s' file)", lock_buf, missing_file);
             if (--count == 0 || flags & DD_DONT_WAIT_FOR_LOCK)
             {
                 errno = EISDIR; /* "this is an ordinary dir, not dump dir" */
@@ -332,7 +332,7 @@ static void dd_unlock(struct dump_dir *dd)
         strcpy(lock_buf + dirname_len, "/.lock");
         xunlink(lock_buf);
 
-        VERB1 log("Unlocked '%s'", lock_buf);
+        log_info("Unlocked '%s'", lock_buf);
     }
 }
 
@@ -886,7 +886,7 @@ int dd_chown(struct dump_dir *dd, uid_t new_uid)
         char *full_name;
         while (chown_res == 0 && dd_get_next_file(dd, /*short_name*/ NULL, &full_name))
         {
-            VERB3 log("chowning %s", full_name);
+            log_debug("chowning %s", full_name);
             chown_res = lchown(full_name, owners_uid, groups_gid);
             if (chown_res)
                 perror_msg("lchown('%s')", full_name);
@@ -1293,12 +1293,12 @@ static bool uid_in_group(uid_t uid, gid_t gid)
     {
         if (g_strcmp0(*tmp, pwd->pw_name) == 0)
         {
-            VERB3 log("user %s belongs to group: %s",  pwd->pw_name, grp->gr_name);
+            log_debug("user %s belongs to group: %s",  pwd->pw_name, grp->gr_name);
             return TRUE;
         }
     }
 
-    VERB2 log("user %s DOESN'T belong to group: %s",  pwd->pw_name, grp->gr_name);
+    log_info("user %s DOESN'T belong to group: %s",  pwd->pw_name, grp->gr_name);
     return FALSE;
 }
 #endif
@@ -1308,7 +1308,7 @@ int dump_dir_stat_for_uid(const char *dirname, uid_t uid)
     struct stat statbuf;
     if (stat(dirname, &statbuf) != 0 || !S_ISDIR(statbuf.st_mode))
     {
-        VERB3 log("can't get stat of '%s': not a problem directory", dirname);
+        log_debug("can't get stat of '%s': not a problem directory", dirname);
         errno = ENOTDIR;
         return -1;
     }
@@ -1318,7 +1318,7 @@ int dump_dir_stat_for_uid(const char *dirname, uid_t uid)
     int ddstat = 0;
     if (uid == 0 || (statbuf.st_mode & S_IROTH))
     {
-        VERB3 log("directory '%s' is accessible by %ld uid", dirname, (long)uid);
+        log_debug("directory '%s' is accessible by %ld uid", dirname, (long)uid);
         ddstat |= DD_STAT_ACCESSIBLE_BY_UID;
     }
 
@@ -1328,7 +1328,7 @@ int dump_dir_stat_for_uid(const char *dirname, uid_t uid)
     if (uid_in_group(uid, statbuf.st_gid))
 #endif
     {
-        VERB3 log("%ld uid owns directory '%s'", (long)uid, dirname);
+        log_debug("%ld uid owns directory '%s'", (long)uid, dirname);
         ddstat |= DD_STAT_ACCESSIBLE_BY_UID;
         ddstat |= DD_STAT_OWNED_BY_UID;
     }
@@ -1343,7 +1343,7 @@ int dump_dir_accessible_by_uid(const char *dirname, uid_t uid)
     if (ddstat >= 0)
         return ddstat & DD_STAT_ACCESSIBLE_BY_UID;
 
-    VERB3 perror_msg("can't determine accessibility of '%s' by %ld uid", dirname, (long)uid);
+    pwarn_msg("can't determine accessibility of '%s' by %ld uid", dirname, (long)uid);
 
     return 0;
 }

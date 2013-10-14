@@ -144,7 +144,7 @@ void problem_data_add_current_process_data(problem_data_t *pd)
         if (read > 0)
         {
             buf[read] = '\0';
-            VERB2 log("reporting initiated from: %s", buf);
+            log_info("reporting initiated from: %s", buf);
             problem_data_add_text_noteditable(pd, FILENAME_EXECUTABLE, buf);
         }
 

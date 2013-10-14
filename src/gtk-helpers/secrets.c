@@ -537,7 +537,7 @@ static void timeout_dialog_response_cb(GtkDialog *dialog, gint response_id, gpoi
  */
 static gboolean prompt_timeout_cb(gpointer user_data)
 {
-    VERB3 log("A timeout was reached while waiting for the DBus Secret Service to get prompt result.");
+    log_debug("A timeout was reached while waiting for the DBus Secret Service to get prompt result.");
     struct secrets_loop_env *env = (struct secrets_loop_env *)user_data;
 
     if (env->timeout_dialog == NULL)
@@ -851,7 +851,7 @@ static bool secrets_service_read_alias(const char *alias, struct secrets_object 
     else if (is_dbus_remote_error(error, NOT_IMPLEMENTED_READ_ALIAS_ERROR))
     {
         /* this code branch can be safely removed if KSecrets provides ReadAlias method*/
-        VERB1 log("D-Bus Secrets Service ReadAlias method failed,"
+        log_notice("D-Bus Secrets Service ReadAlias method failed,"
                   "going to search on the client side : %s", error->message);
         g_error_free(error);
 
@@ -1096,7 +1096,7 @@ static bool secrets_collection_create_text_item(struct secrets_object *collectio
         {
             if (is_dbus_remote_error(error, INVALID_PROPERTIES_ARGUMENTS_ERROR))
             {  /* it is OK - we know this error and we can safely continue */
-               VERB2 log("CreateItem failed, going to use other property names: %s", error->message);
+               log_info("CreateItem failed, going to use other property names: %s", error->message);
                continue;
             }
 
@@ -1223,7 +1223,7 @@ static bool get_default_collection(struct secrets_object **collection,
     {   /* the default collection wasn't found */
         /* a method caller requires to create a new collection */
         /* if the default collection doesn't exist */
-        VERB2 log("going to create a new default collection '"SECRETS_COLLECTION_LABEL"'"
+        log_info("going to create a new default collection '"SECRETS_COLLECTION_LABEL"'"
                   " with alias '"SECRETS_COLLECTION_ALIAS"'");
 
         *collection = secrets_service_create_collection(SECRETS_COLLECTION_LABEL,
@@ -1260,7 +1260,7 @@ static void load_event_options_from_item(GDBusProxy *session,
             {
                 free(option->eo_value);
                 option->eo_value = xstrdup(value);
-                VERB2 log("loaded event option : '%s' => '%s'", name, option->eo_value);
+                log_info("loaded event option : '%s' => '%s'", name, option->eo_value);
             }
         }
 
@@ -1286,7 +1286,7 @@ static void load_event_options_from_item(GDBusProxy *session,
                 error_msg(_("can't get secret value of '%s': %s"), (const char *)item->tag, error->message);
             else
             {
-                VERB1 log("can't get secret value: %s", error->message);
+                log_notice("can't get secret value: %s", error->message);
             }
 
             g_error_free(error);
@@ -1295,7 +1295,7 @@ static void load_event_options_from_item(GDBusProxy *session,
 
         if (g_variant_n_children(resp) == 0)
         {
-            VERB1 log("response from GetSecret() method doesn't contain data: '%s'", g_variant_print(resp, TRUE));
+            log_notice("response from GetSecret() method doesn't contain data: '%s'", g_variant_print(resp, TRUE));
             return;
         }
 
@@ -1313,7 +1313,7 @@ static void load_event_options_from_item(GDBusProxy *session,
          */
         if (g_variant_n_children(secret) != 4)
         {
-            VERB1 log("secret value has invalid structure: '%s'", g_variant_print(secret, TRUE));
+            log_notice("secret value has invalid structure: '%s'", g_variant_print(secret, TRUE));
             return;
         }
 
@@ -1328,7 +1328,7 @@ static void load_event_options_from_item(GDBusProxy *session,
             const size_t sz = strlen(data) + 1;
             if (sz > nelems)
             {   /* check next size, if is too big then trailing 0 is probably missing */
-                VERB1 log("broken secret value, atttempts to read %zdB but only %zdB are available)", sz, nelems);
+                log_notice("broken secret value, atttempts to read %zdB but only %zdB are available)", sz, nelems);
                 break;
             }
             nelems -= sz;
@@ -1337,7 +1337,7 @@ static void load_event_options_from_item(GDBusProxy *session,
             char *value = strchr(name, SECRETS_OPTION_VALUE_DELIMITER);
             if (!value)
             {
-                VERB1 log("secret value has invalid format: missing delimiter after option name");
+                log_notice("secret value has invalid format: missing delimiter after option name");
                 goto next_option;
             }
 
@@ -1348,7 +1348,7 @@ static void load_event_options_from_item(GDBusProxy *session,
             {
                 free(option->eo_value);
                 option->eo_value = xstrdup(value);
-                VERB2 log("loaded event option : '%s' => '%s'", name, option->eo_value);
+                log_info("loaded event option : '%s' => '%s'", name, option->eo_value);
             }
 
 next_option:
@@ -1374,14 +1374,14 @@ static void load_settings(GDBusProxy *session, struct secrets_object *collection
 {
     struct secrets_object *item = NULL;
     bool dismissed = false;
-    VERB2 log("looking for event config : '%s'", event_name);
+    log_info("looking for event config : '%s'", event_name);
     bool succ = find_item_by_event_name(collection, event_name, &item);
     if (succ && item)
     {
         succ = secrets_service_unlock_object(item, &dismissed);
         if (succ && !dismissed)
         {
-            VERB1 log("loading event config : '%s'", event_name);
+            log_notice("loading event config : '%s'", event_name);
             item->tag = (void *)event_name;
             load_event_options_from_item(session, ec->options, item);
         }
@@ -1419,7 +1419,7 @@ static bool save_options(struct secrets_object *collection,
 
     if (item)
     {   /* item exists, change a secret */
-        VERB2 log("updating event config : '%s'", event_name);
+        log_info("updating event config : '%s'", event_name);
         /* can't be dismissed */
         *dismissed = false;
         GVariant *const args = g_variant_new("(@(oayays))", secret);
@@ -1434,7 +1434,7 @@ static bool save_options(struct secrets_object *collection,
     else
     {   /* create a new item */
         GVariant *const attributes = create_lookup_attributes(event_name);
-        VERB2 log("creating event config : '%s'", event_name);
+        log_info("creating event config : '%s'", event_name);
         succ = secrets_collection_create_text_item(collection, event_name, attributes, secret, dismissed);
     }
 
@@ -1574,7 +1574,7 @@ void load_event_config_data_from_user_storage(GHashTable *event_config_list)
     }
     else
     {
-        VERB1 log("Can't load user's configuration due to unavailability of D-Bus Secrets Service");
+        log_notice("Can't load user's configuration due to unavailability of D-Bus Secrets Service");
     }
 }
 
@@ -1593,6 +1593,6 @@ void save_event_config_data_to_user_storage(const char *event_name,
         save_event_config(event_name, event_config->options, store_passwords);
     else
     {
-        VERB1 log("Can't save user's configuration due to unavailability of D-Bus secrets API");
+        log_notice("Can't save user's configuration due to unavailability of D-Bus secrets API");
     }
 }

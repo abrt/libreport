@@ -175,7 +175,7 @@ static GList *load_rule_list(GList *rule_list,
         if (*p == '\0' || *p == '#')
             goto next_line; /* empty or comment line, skip */
 
-        //VERB3 log("%s: line '%s'", __func__, p);
+        //log_debug("%s: line '%s'", __func__, p);
 
         /* Handle "include" directive */
         if (recursion_depth < MAX_recursion_depth
@@ -202,15 +202,15 @@ static GList *load_rule_list(GList *rule_list,
 
             glob_t globbuf;
             memset(&globbuf, 0, sizeof(globbuf));
-            //VERB3 log("%s: globbing '%s'", __func__, name_to_glob);
+            //log_debug("%s: globbing '%s'", __func__, name_to_glob);
             glob(name_to_glob, 0, NULL, &globbuf);
             free(name_to_glob);
             char **name = globbuf.gl_pathv;
             if (name) while (*name)
             {
-                //VERB3 log("%s: recursing into '%s'", __func__, *name);
+                //log_debug("%s: recursing into '%s'", __func__, *name);
                 rule_list = load_rule_list(rule_list, *name, recursion_depth + 1);
-                //VERB3 log("%s: returned from '%s'", __func__, *name);
+                //log_debug("%s: returned from '%s'", __func__, *name);
                 name++;
             }
             globfree(&globbuf);
@@ -236,9 +236,9 @@ static GList *load_rule_list(GList *rule_list,
         } /* end of word loop */
 
         if (cur_rule->conditions == NULL)
-            log("%s:%d: warning: command without conditions, this command will be executed for all events", conf_file_name, line_counter);
+            log_warning("%s:%d: warning: command without conditions, this command will be executed for all events", conf_file_name, line_counter);
 
-        VERB1 log("Adding '%s'", p);
+        log_notice("Adding '%s'", p);
         cur_rule->command = xstrdup(p);
 
         rule_list = g_list_append(rule_list, cur_rule);
@@ -359,7 +359,7 @@ static char* pop_next_command(GList **pp_rule_list,
                 /* Do values match? */
                 if (vals_differ) /* no */
                 {
-                    //VERB3 log("var '%s': '%.*s'!='%s', skipping line",
+                    //log_debug("var '%s': '%.*s'!='%s', skipping line",
                     //        p,
                     //        (int)(strchrnul(real_val, '\n') - real_val), real_val,
                     //        eq_sign);
@@ -434,7 +434,7 @@ int spawn_next_command(struct run_event_state *state,
      */
     state->children_count++;
 
-    VERB1 log("Executing '%s'", cmd);
+    log_notice("Executing '%s'", cmd);
 
     /* Export some useful environment variables for children */
     char *env_vec[4];
@@ -518,7 +518,7 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
                      *
                      * Print a wraning only and do not scary users with error messages.
                      */
-                    log("Warning: invalid input format (missing option name), using simple ask yes/no");
+                    log_warning("invalid input format (missing option name), using simple ask yes/no");
 
                     /* can't simply use 'goto ask_yes_no' because of different lenght of prefixes */
                     ans = state->ask_yes_no_callback(key, state->interaction_param);

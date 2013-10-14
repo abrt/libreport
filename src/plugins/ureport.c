@@ -448,7 +448,7 @@ int main(int argc, char **argv)
 
     if (!response->is_error)
     {
-        VERB1 log("is known: %s", response->value);
+        log_notice("is known: %s", response->value);
         ret = 0; /* "success" */
 
         dd = dd_opendir(dump_dir_path, /* flags */ 0);
