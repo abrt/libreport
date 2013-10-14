@@ -90,13 +90,13 @@ CURLcode curl_easy_perform_with_proxy(CURL *handle, const char *url)
         for (li = proxy_list, curl_err = 1; curl_err && li; li = g_list_next(li))
         {
             xcurl_easy_setopt_ptr(handle, CURLOPT_PROXY, li->data);
-            VERB1 log("Connecting to %s (using proxy server %s)", url, (const char *)li->data);
+            log_notice("Connecting to %s (using proxy server %s)", url, (const char *)li->data);
             curl_err = curl_easy_perform(handle);
         }
     }
     else
     {
-        VERB1 log("Connecting to %s", url);
+        log_notice("Connecting to %s", url);
         curl_err = curl_easy_perform(handle);
     }
 
@@ -186,7 +186,7 @@ save_headers(void *buffer_pv, size_t count, size_t nmemb, void *ptr)
         cnt = 0;
     }
 
-    VERB3 log("save_headers: header %d: '%s'", cnt, h);
+    log_debug("save_headers: header %d: '%s'", cnt, h);
     state->headers = (char**)xrealloc(state->headers, (cnt+2) * sizeof(state->headers[0]));
     state->headers[cnt] = h;
     state->header_cnt = ++cnt;
@@ -305,7 +305,7 @@ post(post_state_t *state,
     long response_code;
     post_state_t localstate;
 
-    VERB3 log("%s('%s','%s')", __func__, url, data);
+    log_debug("%s('%s','%s')", __func__, url, data);
 
     if (!state)
     {
@@ -538,11 +538,11 @@ post(post_state_t *state,
     state->curl_result = curl_err = curl_easy_perform_with_proxy(handle, url);
     if (curl_err)
     {
-        VERB2 log("curl_easy_perform: error %d", (int)curl_err);
+        log_info("curl_easy_perform: error %d", (int)curl_err);
         if (state->flags & POST_WANT_ERROR_MSG)
         {
             state->curl_error_msg = check_curl_error(curl_err, "curl_easy_perform");
-            VERB3 log("curl_easy_perform: error_msg: %s", state->curl_error_msg);
+            log_debug("curl_easy_perform: error_msg: %s", state->curl_error_msg);
         }
         goto ret;
     }
@@ -556,7 +556,7 @@ post(post_state_t *state,
     curl_err = curl_easy_getinfo(handle, CURLINFO_RESPONSE_CODE, &response_code);
     die_if_curl_error(curl_err);
     state->http_resp_code = response_code;
-    VERB3 log("after curl_easy_perform: response_code:%ld body:'%s'", response_code, state->body);
+    log_debug("after curl_easy_perform: response_code:%ld body:'%s'", response_code, state->body);
 
  ret:
     curl_easy_cleanup(handle);

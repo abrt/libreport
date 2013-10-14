@@ -106,7 +106,7 @@ char *sanitize_utf8(const char *src, uint32_t control_chars_to_sanitize)
     }
 
     if (sanitized)
-        VERB2 log("note: bad utf8, converted '%s' -> '%s'", initial_src, sanitized);
+        log_info("note: bad utf8, converted '%s' -> '%s'", initial_src, sanitized);
 
     return sanitized; /* usually NULL: the whole string is ok */
 }

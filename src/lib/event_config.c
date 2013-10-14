@@ -281,7 +281,7 @@ GList *export_event_config(const char *event_name)
             if (!opt->eo_value)
                 continue;
             char *var_val = xasprintf("%s=%s", opt->eo_name, opt->eo_value);
-            VERB3 log("Exporting '%s'", var_val);
+            log_debug("Exporting '%s'", var_val);
             env_list = g_list_prepend(env_list, var_val);
             putenv(var_val);
         }
@@ -295,7 +295,7 @@ void unexport_event_config(GList *env_list)
     while (env_list)
     {
         char *var_val = env_list->data;
-        VERB3 log("Unexporting '%s'", var_val);
+        log_debug("Unexporting '%s'", var_val);
         safe_unsetenv(var_val);
         env_list = g_list_remove(env_list, var_val);
         free(var_val);

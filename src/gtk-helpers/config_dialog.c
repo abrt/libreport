@@ -129,7 +129,7 @@ static void save_value_from_widget(gpointer data, gpointer user_data)
     {
         free(ow->option->eo_value);
         ow->option->eo_value = xstrdup(val);
-        VERB1 log("saved: %s:%s", ow->option->eo_name, ow->option->eo_value);
+        log_notice("saved: %s:%s", ow->option->eo_name, ow->option->eo_value);
     }
 }
 
@@ -144,7 +144,7 @@ void add_item_to_config_liststore(gpointer cdialog, gpointer inf, gpointer user_
     GtkListStore *list_store = (GtkListStore *)user_data;
     config_item_info_t *info = (config_item_info_t *)inf;
 
-    VERB1 log("adding '%s' to workflow list\n", ci_get_screen_name(info));
+    log_notice("adding '%s' to workflow list\n", ci_get_screen_name(info));
     char *label;
     if (ci_get_screen_name(info) != NULL && ci_get_description(info) != NULL)
         label = xasprintf("<b>%s</b>\n%s",ci_get_screen_name(info), ci_get_description(info));
@@ -254,7 +254,7 @@ static void on_configure_cb(GtkWidget *btn, gpointer user_data)
             cdialog->save_data(cdialog->data, name);
     }
     else if (result == GTK_RESPONSE_CANCEL)
-        VERB1 log("Cancelling on user request");
+        log_notice("Cancelling on user request");
 
     gtk_widget_hide(GTK_WIDGET(cdialog->dialog));
 }

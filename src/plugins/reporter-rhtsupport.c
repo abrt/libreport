@@ -242,9 +242,9 @@ int main(int argc, char **argv)
     while (conf_file)
     {
         const char *fn = (char *)conf_file->data;
-        VERB1 log("Loading settings from '%s'", fn);
+        log_notice("Loading settings from '%s'", fn);
         load_conf_file(fn, settings, /*skip key w/o values:*/ false);
-        VERB3 log("Loaded '%s'", fn);
+        log_debug("Loaded '%s'", fn);
         conf_file = g_list_remove(conf_file, fn);
     }
     char *url      = get_param_string("URL"       , settings, "https://api.access.redhat.com/rs");
