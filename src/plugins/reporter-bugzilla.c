@@ -884,6 +884,10 @@ int main(int argc, char **argv)
         "\n"
         "\nOption -w adds bugzilla user to bug's CC list."
         "\n"
+        "\nOption -r sets the last url from reporter_to element which is prefixed with"
+        "\nTRACKER_NAME to URL field. This option is applied only when a new bug is to be"
+        "\nfiled. The default value is 'ABRT Server'"
+        "\n"
         "\nIf not specified, CONFFILE defaults to "CONF_DIR"/plugins/bugzilla.conf"
         "\nIts lines should have 'PARAM = VALUE' format."
         "\nRecognized string parameters: BugzillaURL, Login, Password, OSRelease."
@@ -903,8 +907,9 @@ int main(int argc, char **argv)
         OPT_f = 1 << 7,
         OPT_w = 1 << 8,
         OPT_h = 1 << 9,
-        OPT_g = 1 << 10,
-        OPT_D = 1 << 11,
+        OPT_r = 1 << 10,
+        OPT_g = 1 << 11,
+        OPT_D = 1 << 12,
     };
     const char *dump_dir_name = ".";
     GList *conf_file = NULL;
@@ -912,6 +917,7 @@ int main(int argc, char **argv)
     const char *fmt_file2 = fmt_file;
     char *abrt_hash = NULL;
     char *ticket_no = NULL;
+    const char *tracker_str = "ABRT Server";
     char *debug_str = NULL;
     struct bugzilla_struct rhbz = { 0 };
     /* Keep enum above and order of options below in sync! */
@@ -926,6 +932,7 @@ int main(int argc, char **argv)
         OPT_BOOL(     'f', NULL, NULL,                       _("Force reporting even if this problem is already reported")),
         OPT_BOOL(     'w', NULL, NULL,                       _("Add bugzilla user to CC list [of bug with this ID]")),
         OPT_STRING(   'h', "duphash", &abrt_hash, "DUPHASH", _("Print BUG_ID which has given DUPHASH")),
+        OPT_STRING(   'r', "tracker", &tracker_str, "TRACKER_NAME", _("A name of bug tracker for an additional URL from 'reported_to'")),
         OPT_LIST(     'g', "group", &rhbz.b_private_groups , "GROUP"  , _("Restrict access to this group only")),
         OPT_OPTSTRING('D', "debug", &debug_str  , "STR"    , _("Debug")),
         OPT_END()
@@ -1240,6 +1247,22 @@ int main(int argc, char **argv)
             if (new_id == -1)
             {
                 error_msg_and_die(_("Failed to create a new bug."));
+            }
+
+            struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+            if (dd)
+            {
+                char *reported_to_prefix = xasprintf("%s:", tracker_str);
+                report_result_t *reported_to = find_in_reported_to(dd, tracker_str);
+                free(reported_to_prefix);
+                dd_close(dd);
+
+                if (reported_to && reported_to->url)
+                {
+                    log(_("Adding External URL to bug %i"), new_id);
+                    rhbz_set_url(client, new_id, reported_to->url);
+                    free_report_result(reported_to);
+                }
             }
 
             log(_("Adding attachments to bug %i"), new_id);
