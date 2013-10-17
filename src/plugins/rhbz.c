@@ -829,3 +829,16 @@ void rhbz_add_comment(struct abrt_xmlrpc *ax, int bug_id, const char *comment,
     if (result)
         xmlrpc_DECREF(result);
 }
+
+void rhbz_set_url(struct abrt_xmlrpc *ax, int bug_id, const char *url)
+{
+    func_entry();
+
+    xmlrpc_value *result = abrt_xmlrpc_call(ax, "Bug.update", "({s:i,s:s})",
+                              "ids", bug_id,
+                              "url", url
+    );
+
+    if (result)
+        xmlrpc_DECREF(result);
+}
