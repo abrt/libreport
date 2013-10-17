@@ -168,6 +168,32 @@ ret_clean:
 }
 
 static
+char *ask_rh_login(const char *message)
+{
+    char *login = ask(message);
+    if (login == NULL || login[0] == '\0')
+    {
+        set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
+        error_msg_and_die(_("Can't continue without login"));
+    }
+
+    return login;
+}
+
+static
+char *ask_rh_password(const char *message)
+{
+    char *password = ask_password(message);
+    if (password == NULL || password[0] == '\0')
+    {
+        set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
+        error_msg_and_die(_("Can't continue without password"));
+    }
+
+    return password;
+}
+
+static
 char *get_param_string(const char *name, map_string_t *settings, const char *dflt)
 {
     char *envname = xasprintf("RHTSupport_%s", name);
@@ -251,8 +277,21 @@ int main(int argc, char **argv)
     char *login    = get_param_string("Login"     , settings, "");
     char *password = get_param_string("Password"  , settings, "");
     char *bigurl   = get_param_string("BigFileURL", settings, "ftp://dropbox.redhat.com/incoming/");
-    if (!login[0] || !password[0])
-        error_msg_and_die(_("Empty RHTS login or password"));
+
+    if (login[0] == '\0')
+    {
+        free(login);
+        login = ask_rh_login(_("Login is not provided by configuration. Please enter your RHTS login:"));
+    }
+
+    if (password[0] == '\0')
+    {
+        free(password);
+        char *question = xasprintf(_("Password is not provided by configuration. Please enter the password for '%s':"), login);
+        password = ask_rh_password(question);
+        free(question);
+    }
+
     char* envvar;
     envvar = getenv("RHTSupport_SSLVerify");
     bool ssl_verify = string_to_bool(
