@@ -38,7 +38,7 @@ static int connect_to_abrtd_socket()
     int r = connect(socketfd, (struct sockaddr*)&local, sizeof(local));
     if (r != 0)
     {
-        VERB1 perror_msg("Can't connect to '%s'", SOCKET_FILE);
+        pwarn_msg("Can't connect to '%s'", SOCKET_FILE);
         close(socketfd);
         return -1;
     }
@@ -61,7 +61,7 @@ static int connect_to_abrtd_and_call_DeleteDebugDump(const char *dump_dir_name)
         int r = full_read(socketfd, response, sizeof(response) - 1);
         if (r >= 0)
         {
-            VERB1 log("Response via socket:'%.*s'", r, response);
+            log_notice("Response via socket:'%.*s'", r, response);
             /*  0123456789...  */
             /* "HTTP/1.1 200 " */
             response[5] = '1';
@@ -99,7 +99,7 @@ int problem_data_send_to_abrt(problem_data_t* problem_data)
             if (value->flags & CD_FLAG_BIN)
             {
                 /* sending files over the socket is not implemented yet */
-                log("Skipping binary file %s", name);
+                log_warning("Skipping binary file %s", name);
                 continue;
             }
 
@@ -120,7 +120,7 @@ int problem_data_send_to_abrt(problem_data_t* problem_data)
         int r = full_read(socketfd, response, sizeof(response) - 1);
         if (r >= 0)
         {
-            VERB1 log("Response via socket:'%.*s'", r, response);
+            log_notice("Response via socket:'%.*s'", r, response);
             /*  0123456789...  */
             /* "HTTP/1.1 200 " */
             response[5] = '1';
@@ -152,14 +152,14 @@ int delete_dump_dir_possibly_using_abrtd(const char *dump_dir_name)
             return 1;
     }
 
-    VERB1 log("Deleting '%s' via abrtd", dump_dir_name);
+    log_notice("Deleting '%s' via abrtd", dump_dir_name);
     const int res = connect_to_abrtd_and_call_DeleteDebugDump(dump_dir_name);
     if (res != 0)
         error_msg(_("Can't delete: '%s'"), dump_dir_name);
 
     return res;
 #else
-    VERB1 log("Deleting '%s' via abrtd", dump_dir_name);
+    log_notice("Deleting '%s' via abrtd", dump_dir_name);
     const int res = connect_to_abrtd_and_call_DeleteDebugDump(dump_dir_name);
     if (res == 200)
     {

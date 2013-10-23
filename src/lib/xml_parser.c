@@ -33,7 +33,7 @@ char *get_element_lang(struct my_parse_data *parse_data, const gchar **att_names
         {
             if (strcmp(att_values[i], parse_data->cur_locale) == 0)
             {
-                VERB3 log("found translation for: %s", parse_data->cur_locale);
+                log_debug("found translation for: %s", parse_data->cur_locale);
                 return xstrdup(att_values[i]);
             }
 
@@ -43,7 +43,7 @@ char *get_element_lang(struct my_parse_data *parse_data, const gchar **att_names
             if (short_locale_end
              && strncmp(att_values[i], parse_data->cur_locale, short_locale_end - parse_data->cur_locale) == 0
             ) {
-                VERB3 log("found translation for shortlocale: %s", parse_data->cur_locale);
+                log_debug("found translation for shortlocale: %s", parse_data->cur_locale);
                 return xstrndup(att_values[i], short_locale_end - parse_data->cur_locale);
             }
         }

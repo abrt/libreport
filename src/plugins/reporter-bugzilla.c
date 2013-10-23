@@ -534,7 +534,7 @@ int attach_text_item(struct abrt_xmlrpc *ax, const char *bug_id,
 {
     if (!(item->flags & CD_FLAG_TXT))
         return 0;
-    VERB3 log("attaching '%s' as text", item_name);
+    log_debug("attaching '%s' as text", item_name);
     int r = rhbz_attach_blob(ax, bug_id,
                 item_name, item->content, strlen(item->content),
                 RHBZ_NOMAIL_NOTIFY
@@ -564,7 +564,7 @@ int attach_binary_item(struct abrt_xmlrpc *ax, const char *bug_id,
         close(fd);
         return 0;
     }
-    VERB3 log("attaching '%s' as binary", item_name);
+    log_debug("attaching '%s' as binary", item_name);
     int r = rhbz_attach_fd(ax, bug_id, item_name, fd, RHBZ_NOMAIL_NOTIFY | RHBZ_BINARY_ATTACHMENT);
     close(fd);
     return (r == 0);
@@ -599,7 +599,7 @@ int attach_item(struct abrt_xmlrpc *ax, const char *bug_id,
         return 0;
     }
 
-    VERB3 log("Special item_name '%s', iterating for attach...", item_name);
+    log_debug("Special item_name '%s', iterating for attach...", item_name);
     int done = 0;
 
     /* Iterate over _sorted_ items */
@@ -633,7 +633,7 @@ int attach_item(struct abrt_xmlrpc *ax, const char *bug_id,
     g_list_free(sorted_names); /* names themselves are not freed */
 
 
-    VERB3 log("...Done iterating over '%s' for attach", item_name);
+    log_debug("...Done iterating over '%s' for attach", item_name);
 
     return done;
 }
@@ -746,14 +746,14 @@ static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
         environ = getenv("Bugzilla_CreatePrivate");
         b->b_create_private = string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "Bugzilla_CreatePrivate"));
     }
-    VERB1 log("create private bz ticket: '%s'", b->b_create_private ? "YES": "NO");
+    log_notice("create private bz ticket: '%s'", b->b_create_private ? "YES": "NO");
 
     environ = getenv("Bugzilla_PrivateGroups");
     GList *groups = parse_list(environ ? environ : get_map_string_item_or_empty(settings, "Bugzilla_PrivateGroups"));
     if (b->b_private_groups == NULL)
     {
         b->b_private_groups = groups;
-        VERB1 log("groups: '%p'", b->b_private_groups);
+        log_notice("groups: '%p'", b->b_private_groups);
     }
     else if (groups)
     {
@@ -825,7 +825,7 @@ xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax,
         strbuf_append_strf(query, " component:\"%s\"", component);
 
     char *s = strbuf_free_nobuf(query);
-    VERB3 log("search for '%s'", s);
+    log_debug("search for '%s'", s);
     xmlrpc_value *search = abrt_xmlrpc_call(ax, "Bug.search", "({s:s})",
                                          "quicksearch", s);
     free(s);
@@ -950,9 +950,9 @@ int main(int argc, char **argv)
         while (conf_file)
         {
             char *fn = (char *)conf_file->data;
-            VERB1 log("Loading settings from '%s'", fn);
+            log_notice("Loading settings from '%s'", fn);
             load_conf_file(fn, settings, /*skip key w/o values:*/ false);
-            VERB3 log("Loaded '%s'", fn);
+            log_debug("Loaded '%s'", fn);
             conf_file = g_list_delete_link(conf_file, conf_file);
         }
         set_settings(&rhbz, settings);
@@ -962,7 +962,7 @@ int main(int argc, char **argv)
         /*free_map_string(settings);*/
     }
 
-    VERB1 log("Initializing XML-RPC library");
+    log_notice("Initializing XML-RPC library");
     xmlrpc_env env;
     xmlrpc_env_init(&env);
     xmlrpc_client_setup_global_const(&env);
@@ -1055,7 +1055,7 @@ int main(int argc, char **argv)
             while (*argv)
             {
                 const char *filename = *argv++;
-                VERB1 log("Attaching file '%s' to bug %s", filename, ticket_no);
+                log_notice("Attaching file '%s' to bug %s", filename, ticket_no);
 
                 int fd = open(filename, O_RDONLY);
                 if (fd < 0)
@@ -1196,7 +1196,7 @@ int main(int argc, char **argv)
             xmlrpc_value *crossver_bugs = rhbz_search_duphash(client, rhbz.b_product, /*version:*/ NULL,
                             component_substitute, duphash);
             unsigned crossver_bugs_count = rhbz_array_size(crossver_bugs);
-            VERB3 log("Bugzilla has %i reports with duphash '%s' including cross-version ones",
+            log_debug("Bugzilla has %i reports with duphash '%s' including cross-version ones",
                     crossver_bugs_count, duphash);
             if (crossver_bugs_count > 0)
                 crossver_id = rhbz_get_bug_id_from_array0(crossver_bugs, rhbz_ver);
@@ -1214,7 +1214,7 @@ int main(int argc, char **argv)
                 xmlrpc_value *dup_bugs = rhbz_search_duphash(client, rhbz.b_product,
                                 rhbz.b_product_version, component_substitute, duphash);
                 unsigned dup_bugs_count = rhbz_array_size(dup_bugs);
-                VERB3 log("Bugzilla has %i reports with duphash '%s'",
+                log_debug("Bugzilla has %i reports with duphash '%s'",
                         dup_bugs_count, duphash);
                 if (dup_bugs_count > 0)
                     existing_id = rhbz_get_bug_id_from_array0(dup_bugs, rhbz_ver);

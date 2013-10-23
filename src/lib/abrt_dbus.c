@@ -148,7 +148,7 @@ static gboolean handle_dbus_fd(GIOChannel *gio, GIOCondition condition, gpointer
 {
     DBusWatch *watch = (DBusWatch*)data;
 
-    VERB3 log("%s(gio, condition:%x [bits:IN/PRI/OUT/ERR/HUP...], data)", __func__, (int)condition);
+    log_debug("%s(gio, condition:%x [bits:IN/PRI/OUT/ERR/HUP...], data)", __func__, (int)condition);
 
     /* Notify the D-Bus library when a previously-added watch
      * is ready for reading or writing, or has an exception such as a hangup.
@@ -171,7 +171,7 @@ static gboolean handle_dbus_fd(GIOChannel *gio, GIOCondition condition, gpointer
     dbus_watch_handle(watch, dbus_flags);
 
     while (dbus_connection_dispatch(g_dbus_conn) == DBUS_DISPATCH_DATA_REMAINS)
-        VERB3 log("%s: more data to process, looping", __func__);
+        log_debug("%s: more data to process, looping", __func__);
     return TRUE; /* "glib, do not remove this event source!" */
 }
 
@@ -184,7 +184,7 @@ typedef struct watch_app_info_t
 /* Callback: "dbus_watch_get_enabled() may return a different value than it did before" */
 static void toggled_watch(DBusWatch *watch, void* data)
 {
-    VERB3 log("%s(watch:%p, data)", __func__, watch);
+    log_debug("%s(watch:%p, data)", __func__, watch);
 
     watch_app_info_t* app_info = (watch_app_info_t*)dbus_watch_get_data(watch);
     if (dbus_watch_get_enabled(watch))
@@ -196,7 +196,7 @@ static void toggled_watch(DBusWatch *watch, void* data)
             int glib_flags = 0;
             if (dbus_flags & DBUS_WATCH_READABLE) glib_flags |= G_IO_IN;
             if (dbus_flags & DBUS_WATCH_WRITABLE) glib_flags |= G_IO_OUT;
-            VERB3 log(" adding watch to glib main loop. dbus_flags:%x glib_flags:%x", dbus_flags, glib_flags);
+            log_debug(" adding watch to glib main loop. dbus_flags:%x glib_flags:%x", dbus_flags, glib_flags);
             app_info->event_source_id = g_io_add_watch(app_info->channel, (GIOCondition)glib_flags, handle_dbus_fd, watch);
         }
         /* else: it was already enabled */
@@ -207,7 +207,7 @@ static void toggled_watch(DBusWatch *watch, void* data)
         {
             app_info->watch_enabled = false;
             /* does it free the hidden GSource too? */
-            VERB3 log(" removing watch from glib main loop");
+            log_debug(" removing watch from glib main loop");
             g_source_remove(app_info->event_source_id);
         }
         /* else: it was already disabled */
@@ -216,13 +216,13 @@ static void toggled_watch(DBusWatch *watch, void* data)
 /* Callback: "libdbus needs a new watch to be monitored by the main loop" */
 static dbus_bool_t add_watch(DBusWatch *watch, void* data)
 {
-    VERB3 log("%s(watch:%p, data)", __func__, watch);
+    log_debug("%s(watch:%p, data)", __func__, watch);
 
     watch_app_info_t* app_info = (watch_app_info_t*)xzalloc(sizeof(*app_info));
     dbus_watch_set_data(watch, app_info, free);
 
     int fd = dbus_watch_get_unix_fd(watch);
-    VERB3 log(" dbus_watch_get_unix_fd():%d", fd);
+    log_debug(" dbus_watch_get_unix_fd():%d", fd);
     app_info->channel = g_io_channel_unix_new(fd);
     /* _unconditionally_ adding it to event loop would be an error */
     toggled_watch(watch, data);
@@ -231,7 +231,7 @@ static dbus_bool_t add_watch(DBusWatch *watch, void* data)
 /* Callback: "libdbus no longer needs a watch to be monitored by the main loop" */
 static void remove_watch(DBusWatch *watch, void* data)
 {
-    VERB3 log("%s()", __func__);
+    log_debug("%s()", __func__);
     watch_app_info_t* app_info = (watch_app_info_t*)dbus_watch_get_data(watch);
     if (app_info->watch_enabled)
     {
@@ -244,13 +244,13 @@ static void remove_watch(DBusWatch *watch, void* data)
 /* Callback: "libdbus needs a new timeout to be monitored by the main loop" */
 static dbus_bool_t add_timeout(DBusTimeout *timeout, void* data)
 {
-    VERB3 log("%s()", __func__);
+    log_debug("%s()", __func__);
     return TRUE;
 }
 /* Callback: "libdbus no longer needs a timeout to be monitored by the main loop" */
 static void remove_timeout(DBusTimeout *timeout, void* data)
 {
-    VERB3 log("%s()", __func__);
+    log_debug("%s()", __func__);
 }
 /* Callback: "dbus_timeout_get_enabled() may return a different value than it did before" */
 static void timeout_toggled(DBusTimeout *timeout, void* data)
@@ -262,7 +262,7 @@ static void timeout_toggled(DBusTimeout *timeout, void* data)
 /* Callback: "DBusObjectPathVTable is unregistered (or its connection is freed)" */
 static void unregister_vtable(DBusConnection *conn, void* data)
 {
-    VERB3 log("%s()", __func__);
+    log_debug("%s()", __func__);
 }
 
 
@@ -300,7 +300,7 @@ void attach_dbus_conn_to_glib_main_loop(DBusConnection* conn,
 //                NULL, /* data */
 //                NULL /* free_data_function */
 //    )
-    VERB3 log("dbus_connection_set_watch_functions");
+    log_debug("dbus_connection_set_watch_functions");
     if (!dbus_connection_set_watch_functions(conn,
                 add_watch,
                 remove_watch,
@@ -311,7 +311,7 @@ void attach_dbus_conn_to_glib_main_loop(DBusConnection* conn,
     ) {
         die_out_of_memory();
     }
-    VERB3 log("dbus_connection_set_timeout_functions");
+    log_debug("dbus_connection_set_timeout_functions");
     if (!dbus_connection_set_timeout_functions(conn,
                 add_timeout,
                 remove_timeout,
@@ -330,7 +330,7 @@ void attach_dbus_conn_to_glib_main_loop(DBusConnection* conn,
             /* .unregister_function = */ unregister_vtable,
             /* .message_function    = */ message_received_func,
         };
-        VERB3 log("dbus_connection_register_object_path");
+        log_debug("dbus_connection_register_object_path");
         if (!dbus_connection_register_object_path(conn,
                     object_path,
                     &vtable,
