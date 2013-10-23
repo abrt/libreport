@@ -159,7 +159,7 @@ int main(int argc, char **argv)
         g_hash_table_iter_init(&iter, possible_workflows);
         if (g_hash_table_iter_next(&iter, &key, &value))
         {
-            VERB1 log("autoselected workflow: '%s'", (char *)key);
+            log_notice("autoselected workflow: '%s'", (char *)key);
             g_auto_event_list = wf_get_event_names((workflow_t *)value);
         }
     }

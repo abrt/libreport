@@ -67,7 +67,7 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
 
     char *problem_id = xasprintf("%s-%s.%ld-%lu"NEW_PD_SUFFIX, type, iso_date_string(&(tv.tv_sec)), (long)tv.tv_usec, (long)getpid());
 
-    VERB2 log("Saving to %s/%s with uid %d", base_dir_name, problem_id, uid);
+    log_info("Saving to %s/%s with uid %d", base_dir_name, problem_id, uid);
 
     struct dump_dir *dd;
     if (base_dir_name)
@@ -106,12 +106,12 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
         if (value->flags & CD_FLAG_BIN)
         {
             char *dest = concat_path_file(dd->dd_dirname, name);
-            VERB2 log("copying '%s' to '%s'", value->content, dest);
+            log_info("copying '%s' to '%s'", value->content, dest);
             off_t copied = copy_file(value->content, dest, DEFAULT_DUMP_DIR_MODE | S_IROTH);
             if (copied < 0)
                 error_msg("Can't copy %s to %s", value->content, dest);
             else
-                VERB2 log("copied %li bytes", (unsigned long)copied);
+                log_info("copied %li bytes", (unsigned long)copied);
             free(dest);
 
             continue;
@@ -136,7 +136,7 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
 
     problem_id[strlen(problem_id) - strlen(NEW_PD_SUFFIX)] = '\0';
     char* new_path = concat_path_file(base_dir_name, problem_id);
-    VERB2 log("Renaming from '%s' to '%s'", dd->dd_dirname, new_path);
+    log_info("Renaming from '%s' to '%s'", dd->dd_dirname, new_path);
     dd_rename(dd, new_path);
 
  ret:

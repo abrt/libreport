@@ -104,7 +104,7 @@ int main(int argc, char **argv)
             FILE *outstream = fopen(output_file, open_mode);
             if (!outstream)
             {
-                VERB1 perror_msg("fopen");
+                pwarn_msg("fopen");
                 msg = xasprintf(_("Can't open '%s' for writing. "
                                   "Please select another file:"), output_file);
                 continue;

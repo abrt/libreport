@@ -64,7 +64,7 @@ struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name
         dst_dir_name = xasprintf("%s/%s.%u", base_dir, base_name, (int)tv.tv_usec);
     }
 
-    VERB1 log("Creating copy in '%s'", dd_dst->dd_dirname);
+    log_notice("Creating copy in '%s'", dd_dst->dd_dirname);
     if (copy_file_recursive(dump_dir_name, dd_dst->dd_dirname) < 0)
     {
         /* error. copy_file_recursive already emitted error message */

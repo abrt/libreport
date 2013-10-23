@@ -978,7 +978,7 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
                 char *event_name,
                 GCallback func)
 {
-    //VERB2 log("removing all buttons from box %p", box);
+    //log_info("removing all buttons from box %p", box);
     gtk_container_foreach(GTK_CONTAINER(box), &remove_child_widget, NULL);
     g_list_foreach(*p_event_list, (GFunc)free_event_gui_data_t, NULL);
     g_list_free(*p_event_list);
@@ -1047,7 +1047,7 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
         if (!green_choice && !red_choice)
             g_black_event_count++;
 
-        //VERB2 log("adding button '%s' to box %p", event_name, box);
+        //log_info("adding button '%s' to box %p", event_name, box);
         char *event_label = xasprintf("%s%s%s",
                         event_screen_name,
                         (event_description ? " - " : ""),
@@ -1140,7 +1140,7 @@ static void save_items_from_notepad(void)
         tev = GTK_TEXT_VIEW(gtk_bin_get_child(GTK_BIN(notebook_child)));
         tab_lbl = gtk_notebook_get_tab_label(g_notebook, notebook_child);
         item_name = gtk_label_get_text(GTK_LABEL(tab_lbl));
-        VERB1 log("saving: '%s'", item_name);
+        log_notice("saving: '%s'", item_name);
 
         save_text_from_text_view(tev, item_name);
     }
@@ -1360,7 +1360,7 @@ void update_gui_state_from_problem_data(int flags)
         {
             g_event_selected = xstrdup(active_button->event_name);
         }
-        VERB2 log("g_event_selected='%s'", g_event_selected);
+        log_info("g_event_selected='%s'", g_event_selected);
     }
     /* We can't just do gtk_widget_show_all once in main:
      * We created new widgets (buttons). Need to make them visible.
@@ -1820,7 +1820,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
      || retval != 0
      || spawn_next_command_in_evd(evd) < 0
     ) {
-        VERB1 log("done running event on '%s': %d", g_dump_dir_name, retval);
+        log_notice("done running event on '%s': %d", g_dump_dir_name, retval);
         append_to_textview(g_tv_event_log, "\n");
 
         /* Free child output buffer */
@@ -1968,7 +1968,7 @@ static void start_event_run(const char *event_name)
     );
 
     gtk_label_set_text(g_lbl_event_log, _("Processing..."));
-    VERB1 log("running event '%s' on '%s'", event_name, g_dump_dir_name);
+    log_notice("running event '%s' on '%s'", event_name, g_dump_dir_name);
     char *msg = xasprintf("--- Running %s ---\n", event_name);
     append_to_textview(g_tv_event_log, msg);
     free(msg);
@@ -2059,7 +2059,7 @@ static bool check_minimal_bt_rating(const char *event_name)
         error_msg_and_die(_("Cannot check backtrace rating because of invalid event name"));
     else if (prefixcmp(event_name, "report") != 0)
     {
-        VERB2 log("No checks for bactrace rating because event '%s' doesn't report.", event_name);
+        log_info("No checks for bactrace rating because event '%s' doesn't report.", event_name);
         return acceptable_rating;
     }
     else
@@ -2370,7 +2370,7 @@ static char *get_next_processed_event(GList **events_list)
 
     if (event_name[event_len - 1] == '*')
     {
-        VERB2 log("Expanding event '%s'", event_name);
+        log_info("Expanding event '%s'", event_name);
 
         struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY);
         if (!dd)
@@ -2395,7 +2395,7 @@ static char *get_next_processed_event(GList **events_list)
 
             /* 'event1' */
             event_name = xstrdup(event_name);
-            VERB3 log("Adding a new expanded event '%s' to the processed list", event_name);
+            log_debug("Adding a new expanded event '%s' to the processed list", event_name);
 
             /* the last event is not added to the expanded list */
             ++next;
@@ -2416,7 +2416,7 @@ static char *get_next_processed_event(GList **events_list)
             *events_list = g_list_concat(expanded_list, *events_list);
         else
         {
-            VERB2 log("No event was expanded, will continue with the next one.");
+            log_info("No event was expanded, will continue with the next one.");
             /* no expanded event try the next event */
             return get_next_processed_event(events_list);
         }
@@ -2482,7 +2482,7 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
         {
             /* Skip intro screen */
             int n = select_next_page_no(pages[PAGENO_SUMMARY].page_no, NULL);
-            VERB2 log("switching to page_no:%d", n);
+            log_info("switching to page_no:%d", n);
             gtk_notebook_set_current_page(assistant, n);
             return;
         }
@@ -2526,7 +2526,7 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
 
     if (pages[PAGENO_EVENT_PROGRESS].page_widget == page)
     {
-        VERB2 log("g_event_selected:'%s'", g_event_selected);
+        log_info("g_event_selected:'%s'", g_event_selected);
         if (g_event_selected
          && g_event_selected[0]
         ) {
@@ -2550,7 +2550,7 @@ static void set_auto_event_chain(GtkButton *button, gpointer user_data)
 
     workflow_t *w = (workflow_t *)user_data;
     config_item_info_t *info = workflow_get_config_info(w);
-    VERB1 log("selected workflow '%s'", ci_get_screen_name(info));
+    log_notice("selected workflow '%s'", ci_get_screen_name(info));
 
     GList *wf_event_list = wf_get_event_list(w);
     while(wf_event_list)
@@ -2624,7 +2624,7 @@ static char *setup_next_processed_event(GList **events_list)
         return NULL;
     }
 
-    VERB1 log("selected -e EVENT:%s", event);
+    log_notice("selected -e EVENT:%s", event);
     return event;
 }
 
@@ -2649,7 +2649,7 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
     GtkWidget *page;
 
  again:
-    VERB1 log("%s: current_page_no:%d", __func__, current_page_no);
+    log_notice("%s: current_page_no:%d", __func__, current_page_no);
     current_page_no++;
     page = gtk_notebook_get_nth_page(g_assistant, current_page_no);
 
@@ -2759,7 +2759,7 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
         goto again;
     }
 
-    VERB1 log("%s: selected page #%d", __func__, current_page_no);
+    log_notice("%s: selected page #%d", __func__, current_page_no);
     return current_page_no;
 }
 
@@ -2848,7 +2848,7 @@ static gboolean highlight_search(gpointer user_data)
 {
     GtkEntry *entry = GTK_ENTRY(user_data);
 
-    VERB1 log("searching: '%s'", gtk_entry_get_text(entry));
+    log_notice("searching: '%s'", gtk_entry_get_text(entry));
 
     GList *words = g_list_append(NULL, (gpointer)gtk_entry_get_text(entry));
     highligh_words_in_tabs(words, NULL);
@@ -3092,7 +3092,7 @@ static void add_pages(void)
         pages[i].page_widget = page;
         pages[i].page_no = page_no++;
         gtk_notebook_append_page(g_assistant, page, gtk_label_new(pages[i].title));
-        VERB1 log("added page: %s", page_names[i]);
+        log_notice("added page: %s", page_names[i]);
     }
 
     /* Set pointers to objects we might need to work with */

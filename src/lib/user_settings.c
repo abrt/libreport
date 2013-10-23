@@ -177,7 +177,7 @@ GList *load_words_from_file(const char* filename)
         }
         else
         {
-            VERB1 log("Can't open %s", cur_file);
+            log_warning("Can't open %s", cur_file);
         }
 
         file_list_cur = g_list_next(file_list_cur);
