@@ -76,8 +76,7 @@ static void create_and_send_email(
     unsigned arg_size = 0;
     args = append_str_to_vector(args, &arg_size, "/bin/mailx");
 
-    //char *dsc = make_description_mailx(problem_data);
-    char *dsc = make_description_bz(problem_data, CD_TEXT_ATT_SIZE_LOGGER);
+    char *dsc = make_description_mailx(problem_data, CD_TEXT_ATT_SIZE_LOGGER);
 
     if (send_binary_data)
     {
