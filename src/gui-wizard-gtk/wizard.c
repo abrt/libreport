@@ -298,14 +298,10 @@ static void on_configure_event_cb(GtkWidget *button, gpointer user_data)
 static void show_event_opt_error_dialog(const char *event_name)
 {
     event_config_t *ec = get_event_config(event_name);
-    char *message = xasprintf(_("Wrong settings detected for %s, "
-                              "reporting will probably fail if you continue "
-                              "with the current configuration.\n\n"
+    char *message = xasprintf(_("%s is not properly configured. You can configure it now or provide the required information later.\n\n"
                               "Read more about the configuration at: https://fedorahosted.org/abrt/wiki/AbrtConfiguration"),
                                ec_get_screen_name(ec));
-    char *markup_message = xasprintf(_("Wrong settings detected for <b>%s</b>, "
-                              "reporting will probably fail if you continue "
-                              "with the current configuration.\n\n"
+    char *markup_message = xasprintf(_("<b>%s</b> is not properly configured. You can configure it now or provide the required information later.\n\n"
                               "<a href=\"https://fedorahosted.org/abrt/wiki/AbrtConfiguration\">Read more about the configuration</a>"),
                                ec_get_screen_name(ec));
     GtkWidget *wrong_settings = g_top_most_window = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),

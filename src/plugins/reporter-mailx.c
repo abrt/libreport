@@ -17,6 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "internal_libreport.h"
+#include "client.h"
 
 static void exec_and_feed_input(const char* text, char **args)
 {
@@ -53,6 +54,28 @@ static char** append_str_to_vector(char **vec, unsigned *size_p, const char *str
     return vec;
 }
 
+static char *ask_email_address(const char *type, const char *def_address)
+{
+    char *ask_text = xasprintf(_("Email address of %s was not specified. Would you like to do so now? If not, '%s' is to be used"), type, def_address);
+    const int ret = ask_yes_no(ask_text);
+    free(ask_text);
+
+    if (!ret)
+        return xstrdup(def_address);
+
+    ask_text = xasprintf(_("Please, type email address of %s:"), type);
+    char *address = ask(ask_text);
+    free(ask_text);
+
+    if (address == NULL || address[0] == '\0')
+    {
+        set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
+        error_msg_and_die(_("Can't continue without email address of %s"), type);
+    }
+
+    return address;
+}
+
 static void create_and_send_email(
                 const char *dump_dir_name,
                 map_string_t *settings,
@@ -66,9 +89,9 @@ static void create_and_send_email(
     env = getenv("Mailx_Subject");
     const char *subject = (env ? env : get_map_string_item_or_NULL(settings, "Subject") ? : "[abrt] full crash report");
     env = getenv("Mailx_EmailFrom");
-    const char *email_from = (env ? env : get_map_string_item_or_NULL(settings, "EmailFrom") ? : "user@localhost");
+    char *email_from = (env ? xstrdup(env) : xstrdup(get_map_string_item_or_NULL(settings, "EmailFrom")) ? : ask_email_address("sender", "user@localhost"));
     env = getenv("Mailx_EmailTo");
-    const char *email_to = (env ? env : get_map_string_item_or_NULL(settings, "EmailTo") ? : "root@localhost");
+    char *email_to = (env ? xstrdup(env) : xstrdup(get_map_string_item_or_NULL(settings, "EmailTo")) ? : ask_email_address("receiver", "root@localhost"));
     env = getenv("Mailx_SendBinaryData");
     bool send_binary_data = string_to_bool(env ? env : get_map_string_item_or_empty(settings, "SendBinaryData"));
 
@@ -99,6 +122,8 @@ static void create_and_send_email(
     args = append_str_to_vector(args, &arg_size, "-r");
     args = append_str_to_vector(args, &arg_size, email_from);
     args = append_str_to_vector(args, &arg_size, email_to);
+
+    free(email_from);
 
     /* This makes (some versions of) mailx to wait for child process to finish,
      * and to report its exit code, not useless "always 0" exit code.
@@ -131,6 +156,7 @@ static void create_and_send_email(
         }
     }
     log(_("Email was sent to: %s"), email_to);
+    free(email_to);
 }
 
 int main(int argc, char **argv)

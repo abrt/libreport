@@ -25,6 +25,11 @@ static int is_slave_mode()
     return getenv("REPORT_CLIENT_SLAVE") != NULL;
 }
 
+static int is_noninteractive_mode()
+{
+    return getenv("REPORT_CLIENT_NONINTERACTIVE") != NULL;
+}
+
 /* Returns 1 if echo has been changed from another state. */
 int set_echo(int enable)
 {
@@ -61,6 +66,13 @@ int ask_yes_no(const char *question)
         printf("%s [%s/%s] ", question, yes, no);
 
     fflush(stdout);
+
+    if (!is_slave_mode() && is_noninteractive_mode())
+    {
+        putchar('\n');
+        fflush(stdout);
+        return 0;
+    }
 
     char response[16];
     if (NULL == fgets(response, sizeof(response), stdin))
@@ -104,6 +116,13 @@ int ask_yes_no_yesforever(const char *key, const char *question)
 
     fflush(stdout);
 
+    if (!is_slave_mode() && is_noninteractive_mode())
+    {
+        putchar('\n');
+        fflush(stdout);
+        return 0;
+    }
+
     char response[16];
     if (NULL == fgets(response, sizeof(response), stdin))
         return 0;
@@ -129,6 +148,13 @@ char *ask(const char *question)
 
     fflush(stdout);
 
+    if (!is_slave_mode() && is_noninteractive_mode())
+    {
+        putchar('\n');
+        fflush(stdout);
+        return NULL;
+    }
+
     char *result = xmalloc_fgets(stdin);
     strtrimch(result, '\n');
 
@@ -143,6 +169,13 @@ char *ask_password(const char *question)
         printf("%s ", question);
 
     fflush(stdout);
+
+    if (!is_slave_mode() && is_noninteractive_mode())
+    {
+        putchar('\n');
+        fflush(stdout);
+        return NULL;
+    }
 
     bool changed = set_echo(false);
 
