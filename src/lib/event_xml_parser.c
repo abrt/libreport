@@ -41,11 +41,25 @@
 #define EXCL_BINARY_ELEMENT     "exclude-binary-items"
 #define ADV_OPTIONS_ELEMENT     "advanced-options"
 
+typedef struct
+{
+    event_config_t *values;
+    bool exact_name;
+    bool exact_description;
+    bool exact_long_description;
+} parsed_event_config_t;
+
+typedef struct
+{
+    event_option_t *values;
+    bool exact_label;
+    bool exact_note_html;
+} parsed_event_option_t;
 
 struct my_parse_data
 {
-    event_config_t *event_config;
-    event_option_t *cur_option;
+    parsed_event_config_t event_config;
+    parsed_event_option_t cur_option;
     const char *cur_locale;
     char *attribute_lang;
     bool in_adv_option;
@@ -108,21 +122,21 @@ static int cmp_event_option_name_with_string(gconstpointer a, gconstpointer b)
 
 static void consume_cur_option(struct my_parse_data *parse_data)
 {
-    event_option_t *opt = parse_data->cur_option;
+    event_option_t *opt = parse_data->cur_option.values;
     if (!opt)
         return;
-    parse_data->cur_option = NULL;
+    memset(&parse_data->cur_option, 0, sizeof(parse_data->cur_option));
 
-    event_config_t *event_config = parse_data->event_config;
+    parsed_event_config_t *event_config = &parse_data->event_config;
 
     /* Example of "nameless" option: <option type="hint-html">
      * The remaining code does not like "nameless" options
      * (strcmp would segfault, etc), so provide invented name:
      */
     if (!opt->eo_name)
-        opt->eo_name = xasprintf("%u", (unsigned)g_list_length(event_config->options));
+        opt->eo_name = xasprintf("%u", (unsigned)g_list_length(event_config->values->options));
 
-    GList *elem = g_list_find_custom(event_config->options, opt->eo_name, cmp_event_option_name_with_string);
+    GList *elem = g_list_find_custom(event_config->values->options, opt->eo_name, cmp_event_option_name_with_string);
     if (elem)
     {
         /* we already have option with such name */
@@ -143,7 +157,7 @@ static void consume_cur_option(struct my_parse_data *parse_data)
     else
     {
         //log("xml: new value %s='%s'", opt->eo_name, opt->eo_value);
-        event_config->options = g_list_append(event_config->options, opt);
+        event_config->values->options = g_list_append(event_config->values->options, opt);
     }
 }
 
@@ -165,13 +179,14 @@ static void start_element(GMarkupParseContext *context,
     }
     if (strcmp(element_name, OPTION_ELEMENT) == 0)
     {
-        if (parse_data->cur_option)
+        if (parse_data->cur_option.values)
         {
             error_msg("error, option nested in option");
             return;
         }
 
-        event_option_t *opt = parse_data->cur_option = new_event_option();
+        memset(&parse_data->cur_option, 0, sizeof(parse_data->cur_option));
+        event_option_t *opt = parse_data->cur_option.values = new_event_option();
         opt->is_advanced = (parse_data->in_adv_option == true);
         int i;
 
@@ -240,11 +255,11 @@ static void text(GMarkupParseContext *context,
          GError             **error)
 {
     struct my_parse_data *parse_data = user_data;
-    event_config_t *ui = parse_data->event_config;
+    event_config_t *ui = parse_data->event_config.values;
 
     const gchar *inner_element = g_markup_parse_context_get_element(context);
     char *text_copy = xstrndup(text, text_len);
-    event_option_t *opt = parse_data->cur_option;
+    event_option_t *opt = parse_data->cur_option.values;
     if (opt)
     {
         if (strcmp(inner_element, LABEL_ELEMENT) == 0)
@@ -257,10 +272,16 @@ static void text(GMarkupParseContext *context,
                 if (parse_data->attribute_lang[0] != '\0'
                  || !opt->eo_label /* && parse_data->attribute_lang is "" - always true */
                 ) {
-                    log_info("new label:'%s'", text_copy);
-                    free(opt->eo_label);
-                    opt->eo_label = text_copy;
-                    text_copy = NULL;
+                    if (!parse_data->cur_option.exact_label)
+                    {
+                        parse_data->cur_option.exact_label =
+                            (strcmp(parse_data->attribute_lang, parse_data->cur_locale) == 0);
+
+                        log_info("new label:'%s'", text_copy);
+                        free(opt->eo_label);
+                        opt->eo_label = text_copy;
+                        text_copy = NULL;
+                    }
                 }
             }
         }
@@ -287,10 +308,16 @@ static void text(GMarkupParseContext *context,
                 if (parse_data->attribute_lang[0] != '\0'
                  || !opt->eo_note_html /* && parse_data->attribute_lang is "" - always true */
                 ) {
-                    log_info("html note:'%s'", text_copy);
-                    free(opt->eo_note_html);
-                    opt->eo_note_html = text_copy;
-                    text_copy = NULL;
+                    if (!parse_data->cur_option.exact_note_html)
+                    {
+                        parse_data->cur_option.exact_note_html =
+                            (strcmp(parse_data->attribute_lang, parse_data->cur_locale) == 0);
+
+                        log_info("html note:'%s'", text_copy);
+                        free(opt->eo_note_html);
+                        opt->eo_note_html = text_copy;
+                        text_copy = NULL;
+                    }
                 }
             }
         }
@@ -338,10 +365,16 @@ static void text(GMarkupParseContext *context,
                 if (parse_data->attribute_lang[0] != '\0'
                  || !ec_get_screen_name(ui) /* && parse_data->attribute_lang is "" - always true */
                 ) {
-                    log_info("event name:'%s'", text_copy);
-                    ec_set_screen_name(ui, text_copy);
-                    free(text_copy);
-                    text_copy = NULL;
+                    if (!parse_data->event_config.exact_name)
+                    {
+                        parse_data->event_config.exact_name =
+                            (strcmp(parse_data->attribute_lang, parse_data->cur_locale) == 0);
+
+                        log_info("event name:'%s'", text_copy);
+                        ec_set_screen_name(ui, text_copy);
+                        free(text_copy);
+                        text_copy = NULL;
+                    }
                 }
             }
         }
@@ -357,9 +390,15 @@ static void text(GMarkupParseContext *context,
                 if (parse_data->attribute_lang[0] != '\0'
                  || !ec_get_description(ui) /* && parse_data->attribute_lang is "" - always true */
                 ) {
-                    ec_set_description(ui, text_copy);
-                    free(text_copy);
-                    text_copy = NULL;
+                    if (!parse_data->event_config.exact_description)
+                    {
+                        parse_data->event_config.exact_description =
+                            (strcmp(parse_data->attribute_lang, parse_data->cur_locale) == 0);
+
+                        ec_set_description(ui, text_copy);
+                        free(text_copy);
+                        text_copy = NULL;
+                    }
                 }
             }
         }
@@ -375,9 +414,16 @@ static void text(GMarkupParseContext *context,
                 if (parse_data->attribute_lang[0] != '\0'
                  || !ec_get_long_desc(ui) /* && parse_data->attribute_lang is "" - always true */
                 ) {
-                    ec_set_long_desc(ui, text_copy);
-                    free(text_copy);
-                    text_copy = NULL;
+
+                    if (!parse_data->event_config.exact_long_description)
+                    {
+                        parse_data->event_config.exact_long_description =
+                            (strcmp(parse_data->attribute_lang, parse_data->cur_locale) == 0);
+
+                        ec_set_long_desc(ui, text_copy);
+                        free(text_copy);
+                        text_copy = NULL;
+                    }
                 }
             }
         }
@@ -464,7 +510,7 @@ static void error(GMarkupParseContext *context,
 void load_event_description_from_file(event_config_t *event_config, const char* filename)
 {
     log_notice("loading event: '%s'", filename);
-    struct my_parse_data parse_data = { event_config, NULL, NULL, NULL };
+    struct my_parse_data parse_data = { {event_config, false, false, false}, {NULL, false, false}, NULL, NULL };
     parse_data.cur_locale = setlocale(LC_ALL, NULL);
 
     GMarkupParser parser;

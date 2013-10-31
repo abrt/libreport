@@ -25,6 +25,8 @@ struct my_parse_data
     const char *cur_locale;
     char *attribute_lang;
     bool in_event_list;
+    bool exact_name;
+    bool exact_description;
 };
 
 /**
