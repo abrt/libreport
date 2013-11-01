@@ -87,7 +87,8 @@ int create_tarball(const char *tempfile, problem_data_t *problem_data)
                         /*on_disk_filename */ content,
                         /*binding_name     */ name,
                         /*recorded_filename*/ xml_name,
-                        /*binary           */ 1);
+                        /*binary           */ !(value->flags & CD_FLAG_BIGTXT)
+                );
                 if (tar_append_file(tar, (char*)content, xml_name) != 0)
                 {
                     free(xml_name);

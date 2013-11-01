@@ -543,7 +543,7 @@ int attach_text_item(struct abrt_xmlrpc *ax, const char *bug_id,
 }
 
 static
-int attach_binary_item(struct abrt_xmlrpc *ax, const char *bug_id,
+int attach_file_item(struct abrt_xmlrpc *ax, const char *bug_id,
                 const char *item_name, struct problem_item *item)
 {
     if (!(item->flags & CD_FLAG_BIN))
@@ -564,8 +564,11 @@ int attach_binary_item(struct abrt_xmlrpc *ax, const char *bug_id,
         close(fd);
         return 0;
     }
-    log_debug("attaching '%s' as binary", item_name);
-    int r = rhbz_attach_fd(ax, bug_id, item_name, fd, RHBZ_NOMAIL_NOTIFY | RHBZ_BINARY_ATTACHMENT);
+    log_debug("attaching '%s' as file", item_name);
+    int flag = RHBZ_NOMAIL_NOTIFY;
+    if (!(item->flags & CD_FLAG_BIGTXT))
+        flag |= RHBZ_BINARY_ATTACHMENT;
+    int r = rhbz_attach_fd(ax, bug_id, item_name, fd, flag);
     close(fd);
     return (r == 0);
 }
@@ -582,7 +585,7 @@ int attach_item(struct abrt_xmlrpc *ax, const char *bug_id,
         if (item->flags & CD_FLAG_TXT)
             return attach_text_item(ax, bug_id, item_name, item);
         if (item->flags & CD_FLAG_BIN)
-            return attach_binary_item(ax, bug_id, item_name, item);
+            return attach_file_item(ax, bug_id, item_name, item);
         return 0;
     }
 
@@ -627,7 +630,7 @@ int attach_item(struct abrt_xmlrpc *ax, const char *bug_id,
                 done |= attach_text_item(ax, bug_id, name, item);
         }
         if ((item->flags & CD_FLAG_BIN) && binary)
-            done |= attach_binary_item(ax, bug_id, name, item);
+            done |= attach_file_item(ax, bug_id, name, item);
     }
 
     g_list_free(sorted_names); /* names themselves are not freed */

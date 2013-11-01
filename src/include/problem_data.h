@@ -38,6 +38,12 @@ enum {
     /* Show this element in "short" info (report-cli -l) */
     CD_FLAG_LIST          = (1 << 4),
     CD_FLAG_UNIXTIME      = (1 << 5),
+    /* If element is HUGE text, it is not read into memory (it can OOM the machine).
+     * Instead, it is treated as binary (CD_FLAG_BIN), but also has CD_FLAG_BIGTXT
+     * bit set in flags. This allows to set proper MIME type when it gets attached
+     * to a bug report etc.
+     */
+    CD_FLAG_BIGTXT        = (1 << 6),
 };
 
 struct problem_item {
