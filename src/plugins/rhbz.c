@@ -184,7 +184,7 @@ static unsigned find_best_bt_rating_in_comments(GList *comments)
         char *start_rating_line = strstr(comment_body, FILENAME_RATING": ");
         if (!start_rating_line)
         {
-            warn_msg("comment does not contain rating");
+            log_debug("comment does not contain rating");
             continue;
         }
 
