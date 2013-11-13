@@ -44,6 +44,10 @@ struct post_state *post_ureport(const char *json_ureport,
 struct post_state *ureport_attach_rhbz(const char *bthash, int rhbz_bug_id,
                                        struct ureport_server_config *config);
 
+#define ureport_attach_email libreport_ureport_attach_email
+struct post_state *ureport_attach_email(const char *bthash, const char *email,
+                                        struct ureport_server_config *config);
+
 #define ureport_from_dump_dir libreport_ureport_from_dump_dir
 char *ureport_from_dump_dir(const char *dump_dir_path);
 
