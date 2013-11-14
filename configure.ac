@@ -231,6 +231,13 @@ AC_ARG_WITH(largedatatmpdir,
             [], [with_largedatatmpdir="/var/tmp"])
 AC_SUBST([LARGE_DATA_TMP_DIR], [$with_largedatatmpdir])
 
+AC_ARG_WITH(augeaslenslibdir,
+            [AS_HELP_STRING([--with-augeaslenslibdir=DIR],
+                           [Directory for librepor lens (default: /usr/share/augeas/lenses)])],
+            [], [with_augeaslenslibdir="/usr/share/augeas/lenses"])
+AC_SUBST([AUGEAS_LENS_LIB_DIR], [$with_augeaslenslibdir])
+AC_PATH_PROG(AUGPARSE, augparse, no)
+
 AC_ARG_WITH([defaultdumpdirmode],
             AS_HELP_STRING([--with-defaultdumpdirmode=OCTAL-MODE],
                            [Default dump dir mode (default: 0660)]),
