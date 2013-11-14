@@ -103,3 +103,26 @@ bool load_conf_file(const char *path, map_string_t *settings, bool skipKeysWitho
 
     return true;
 }
+
+bool load_conf_file_from_dirs(const char *base_name, const char *const *directories, map_string_t *settings, bool skipKeysWithoutValue)
+{
+    if (NULL == directories || NULL == *directories)
+    {
+        log_error("No configuration directory specified");
+        return false;
+    }
+
+    bool result = true;
+    for (const char *const *dir = directories; *dir != NULL; ++dir)
+    {
+        char *conf_file = concat_path_file(*dir, base_name);
+        if (!load_conf_file(conf_file, settings, skipKeysWithoutValue))
+        {
+            perror_msg("Can't open '%s'", conf_file);
+            result = false;
+        }
+        free(conf_file);
+    }
+
+    return result;
+}
