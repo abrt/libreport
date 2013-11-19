@@ -2107,6 +2107,11 @@ static void on_no_comment_toggled(GtkToggleButton *togglebutton, gpointer user_d
     toggle_eb_comment();
 }
 
+static void on_log_changed(GtkTextBuffer *buffer, gpointer user_data)
+{
+    gtk_widget_show(GTK_WIDGET(g_exp_report_log));
+}
+
 
 static void on_show_event_list_cb(GtkWidget *button, gpointer user_data)
 {
@@ -3416,6 +3421,7 @@ void create_assistant(bool expert_mode)
     g_signal_connect (g_tv_event_log, "event-after", G_CALLBACK (event_after), NULL);
     g_signal_connect (g_tv_event_log, "motion-notify-event", G_CALLBACK (motion_notify_event), NULL);
     g_signal_connect (g_tv_event_log, "visibility-notify-event", G_CALLBACK (visibility_notify_event), NULL);
+    g_signal_connect (gtk_text_view_get_buffer(g_tv_event_log), "changed", G_CALLBACK (on_log_changed), NULL);
 
     hand_cursor = gdk_cursor_new (GDK_HAND2);
     regular_cursor = gdk_cursor_new (GDK_XTERM);
