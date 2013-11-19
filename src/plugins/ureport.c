@@ -272,7 +272,8 @@ static struct ureport_server_response *get_server_response(post_state_t *post_st
             && post_state->http_resp_code != 413)
     {
         /* can't print better error message */
-        error_msg(_("Unexpected HTTP response from '%s': %d\n%s"), config->ur_url, post_state->http_resp_code, post_state->body);
+        error_msg(_("Unexpected HTTP response from '%s': %d"), config->ur_url, post_state->http_resp_code);
+        log_notice("%s", post_state->body);
         return NULL;
     }
 
@@ -280,7 +281,8 @@ static struct ureport_server_response *get_server_response(post_state_t *post_st
 
     if (is_error(json))
     {
-        error_msg(_("Unable to parse response from ureport server at '%s':\n%s"), config->ur_url, post_state->body);
+        error_msg(_("Unable to parse response from ureport server at '%s"), config->ur_url);
+        log_notice("%s", post_state->body);
         json_object_put(json);
         return NULL;
     }
