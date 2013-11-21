@@ -725,6 +725,28 @@ static int run_event_on_dir_name_interactively(
     return retval;
 }
 
+static int choose_number_from_range(unsigned min, unsigned max, const char *message)
+{
+    unsigned picked;
+    unsigned ii;
+    for (ii = 0; ii < 3; ++ii)
+    {
+        char answer[16];
+
+        read_from_stdin(message, answer, sizeof(answer));
+        if (!*answer)
+            continue;
+
+        picked = xatou(answer);
+        if (min <= picked && picked <= max)
+            return picked;
+
+        printf("%s (%u - %u)\n", _("You have chosen number out of range"), min, max);
+    }
+
+    error_msg_and_die(_("Invalid input, exiting."));
+}
+
 static char *select_event_name(GList *list_options)
 {
     if (!list_options)
@@ -743,26 +765,7 @@ static char *select_event_name(GList *list_options)
         printf("%2i) %s\n", count, config ? ec_get_screen_name(config) : opt);
     }
 
-    unsigned picked;
-    unsigned ii;
-    for (ii = 0; ii < 3; ++ii)
-    {
-        char answer[16];
-
-        read_from_stdin(_("Select an event to run: "), answer, sizeof(answer));
-        if (!*answer)
-            continue;
-
-        picked = xatou(answer);
-        if (picked <= count && picked != 0)
-            break;
-
-        printf("%s\n", _("You have chosen number out of range"));
-    }
-
-    if (ii == 3)
-        error_msg_and_die(_("Invalid input, exiting."));
-
+    const unsigned picked = choose_number_from_range(1, count, _("Select an event to run: "));
     GList *chosen = g_list_nth(list_options, picked - 1);
     return xstrdup((char*)chosen->data);
 }
@@ -839,4 +842,44 @@ int run_event_chain(const char *dump_dir_name, GList *chain, int interactive)
     free_run_event_state(run_state);
 
     return retval;
+}
+
+static workflow_t *select_workflow(GHashTable *workflows)
+{
+    GHashTableIter iter;
+    gpointer key = NULL;
+    workflow_t *value = NULL;
+
+    g_hash_table_iter_init(&iter, workflows);
+
+    if (!g_hash_table_iter_next(&iter, &key, (gpointer *)&value))
+    {
+        error_msg("No workflow suitable for this problem was found!");
+        return NULL;
+    }
+
+    if (g_hash_table_size(workflows) == 1)
+    {
+        log_notice("autoselected workflow: '%s'", (char *)key);
+        return value;
+    }
+
+    workflow_t *help_wf_array[g_hash_table_size(workflows)];
+    unsigned count = 0;
+    do
+    {
+        help_wf_array[count] = value;
+        printf("%d %s\n  %s\n\n", ++count, wf_get_screen_name(value), wf_get_description(value));
+    }
+    while (g_hash_table_iter_next(&iter, &key, (gpointer *)&value));
+
+    const unsigned picked = choose_number_from_range(1, count, _("Select a workflow to run: "));
+    return help_wf_array[picked - 1];
+}
+
+int select_and_run_workflow(const char *dump_dir_name, GHashTable *workflows, int interactive)
+{
+    workflow_t *value = select_workflow(workflows);
+
+    return ((value == NULL) ? -1 : run_event_chain(dump_dir_name, wf_get_event_names(value), interactive));
 }
