@@ -7,7 +7,7 @@ reporter-ureport - Reports ABRT problems in format of micro report
 
 SYNOPSIS
 --------
-'reporter-ureport' [-v] [-u URL] [-k] [-a bthash -b bug-id] [-r] [-d DIR]
+'reporter-ureport' [-v] [-u URL] [-k] [-A -a bthash -B -b bug-id -E -e email] [-r] [-d DIR]
 
 DESCRIPTION
 -----------
@@ -15,25 +15,32 @@ The tool reads problem directory DIR, assembles an micro report from the loaded
 problem data and sends the micro report to uReport server for updating
 statistics and fast analysis. The results of the analysis are stored in problem
 data in form of problems elements. 'reporter-ureport' updates 'reported_to'
-element with links to duplicates and saves solutions in 'not-reportable' element.
-
 
 OPTIONS
 -------
 -a, --attach BTHASH::
-   bthash of uReport to attach
+   bthash of uReport to attach (conflicts with -A)
+
+-A, --attach-rt::
+   Attach to a bthash from reported_to (conflicts with -a)
 
 -b, --bug-id NUM::
    Attach RHBZ bug (requires -a)
 
--d DIR::
+-B, --bug-id-rt::
+   Attach last RHBZ bug from reported_to (requires -a|-A, conflicts with -b)
+
+-e, --email EMAIL::
+   Contact e-mail address (requires -a|-A, conflicts with -E)
+
+-E, --email-env::
+   Contact e-mail address from environment (requires -a|-A, conflicts with -e)
+
+-d, --problem-dir DIR::
    Path to problem directory.
 
--k,--insecure::
+-k, --insecure::
    Allow insecure connection to ureport server
-
--r, --attach-reported-to::
-   Attach contents of reported_to
 
 -v::
    Be more verbose. Can be given multiple times.
@@ -41,6 +48,19 @@ OPTIONS
 -u, --url URL::
    Specify server URL
 
+ENVIRONMENT VARIABLES
+---------------------
+Environment variables take precedence over values provided in
+the configuration file.
+
+'uReport_URL'::
+   Base sever HTTP(S) address.
+
+'uReport_SSLVerify'::
+   Use yes/true/on/1 to verify server's SSL certificate. (default: yes)
+
+'uReport_ContactEmail'::
+   Email address attached to a bthash on the server.
 
 AUTHORS
 -------
