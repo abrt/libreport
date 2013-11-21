@@ -7,7 +7,7 @@ reporter-ureport - Reports ABRT problems in format of micro report
 
 SYNOPSIS
 --------
-'reporter-ureport' [-v] [-u URL] [-k] [-A -a bthash -B -b bug-id -E -e email] [-r] [-d DIR]
+'reporter-ureport' [-v] [-c CONFFILE] [-u URL] [-k] [-A -a bthash -B -b bug-id -E -e email] [-r] [-d DIR]
 
 DESCRIPTION
 -----------
@@ -16,8 +16,27 @@ problem data and sends the micro report to uReport server for updating
 statistics and fast analysis. The results of the analysis are stored in problem
 data in form of problems elements. 'reporter-ureport' updates 'reported_to'
 
+Configuration file
+~~~~~~~~~~~~~~~~~~
+If not specified, CONFFILE defaults to /etc/libreport/plugins/ureport.conf.
+Configuration file lines should have 'PARAM = VALUE' format. The parameters are:
+
+'URL'::
+   Base sever HTTP(S) address.
+
+'SSLVerify'::
+   Use no/false/off/0 to disable verification of server's SSL certificate. (default: yes)
+
+'ContactEmail'::
+   Email address attached to a bthash on the server.
+
+Parameters can be overridden via $uReport_PARAM environment variables.
+
 OPTIONS
 -------
+-c FILE::
+   Path to configuration file
+
 -a, --attach BTHASH::
    bthash of uReport to attach (conflicts with -A)
 
@@ -61,6 +80,10 @@ the configuration file.
 
 'uReport_ContactEmail'::
    Email address attached to a bthash on the server.
+
+SEE ALSO
+--------
+ureport.conf(5)
 
 AUTHORS
 -------
