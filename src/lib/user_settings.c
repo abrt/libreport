@@ -16,58 +16,10 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "internal_libreport.h"
+#include <augeas.h>
 
 static map_string_t *user_settings;
 static char *conf_path;
-
-static bool create_parentdir(char *path)
-{
-    bool ret;
-    char *c;
-
-    c = g_path_get_dirname(path);
-    ret = g_mkdir_with_parents(c, 0700);
-    g_free(c);
-
-    return ret;
-}
-
-/* Returns false if write failed */
-bool save_conf_file(const char *path, map_string_t *settings)
-{
-    bool ret;
-    FILE *out;
-    char *temp_path;
-    const char *name, *value;
-    map_string_iter_t iter;
-
-    ret = false;
-
-    temp_path = xasprintf("%s.tmp", path);
-
-    if (create_parentdir(temp_path) != 0)
-        goto cleanup;
-
-    out = fopen(temp_path, "w");
-    if (!out)
-        goto cleanup;
-
-    init_map_string_iter(&iter, settings);
-    while (next_map_string_iter(&iter, &name, &value))
-        fprintf(out, "%s = \"%s\"\n", name, value);
-
-    fclose(out);
-
-    if (rename(temp_path, path) != 0)
-        goto cleanup;
-
-    ret = true; /* success */
-
-cleanup:
-    free(temp_path);
-
-    return ret;
-}
 
 static char *get_conf_path(const char *name)
 {
@@ -78,7 +30,6 @@ static char *get_conf_path(const char *name)
     free(s);
     return conf;
 }
-
 
 bool save_app_conf_file(const char* application_name, map_string_t *settings)
 {
