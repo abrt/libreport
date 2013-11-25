@@ -24,6 +24,7 @@ extern "C" {
 
 int select_and_run_one_event(const char *dump_dir_name, const char *pfx, int interactive);
 int run_event_chain(const char *dump_dir_name, GList *chain, int interactive);
+int select_and_run_workflow(const char *dump_dir_name, GHashTable *workflows, int interactive);
 
 #ifdef __cplusplus
 }
