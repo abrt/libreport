@@ -48,6 +48,7 @@ MAN5_TXT += report_rhel.conf.txt
 MAN5_TXT += rhtsupport.conf.txt
 MAN5_TXT += rhtsupport_event.conf.txt
 MAN5_TXT += uploader_event.conf.txt
+MAN5_TXT += ureport.conf.txt
 
 # Manual pages are generated from .txt via Docbook
 man1_MANS = ${MAN1_TXT:%.txt=%.1}

@@ -36,7 +36,8 @@ endif
 
 dist_reportpluginsconf_DATA = $(reporters_plugin_conf) \
     rhtsupport.conf \
-    mailx.conf
+    mailx.conf \
+    ureport.conf
 
 eventsdir = $(EVENTS_DIR)
 eventsconfdir = $(EVENTS_CONF_DIR)
@@ -251,6 +252,7 @@ reporter_ureport_CPPFLAGS = \
     -I$(srcdir)/../lib \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
+    -DPLUGINS_CONF_DIR=\"$(REPORT_PLUGINS_CONF_DIR)\" \
     -D_GNU_SOURCE
 reporter_ureport_LDADD = \
     ../lib/libreport.la \
