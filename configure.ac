@@ -156,6 +156,7 @@ PKG_CHECK_MODULES([PROXY], [libproxy-1.0], [
 ], [:])
 PKG_CHECK_MODULES([SATYR], [satyr])
 PKG_CHECK_MODULES([JOURNAL], [libsystemd-journal])
+PKG_CHECK_MODULES([AUGEAS], [augeas])
 
 
 AC_ARG_WITH(newt,
@@ -230,6 +231,13 @@ AC_ARG_WITH(largedatatmpdir,
                            [Directory where potentially large data are created (default: /var/tmp)])],
             [], [with_largedatatmpdir="/var/tmp"])
 AC_SUBST([LARGE_DATA_TMP_DIR], [$with_largedatatmpdir])
+
+AC_ARG_WITH(augeaslenslibdir,
+            [AS_HELP_STRING([--with-augeaslenslibdir=DIR],
+                           [Directory for librepor lens (default: /usr/share/augeas/lenses)])],
+            [], [with_augeaslenslibdir="/usr/share/augeas/lenses"])
+AC_SUBST([AUGEAS_LENS_LIB_DIR], [$with_augeaslenslibdir])
+AC_PATH_PROG(AUGPARSE, augparse, no)
 
 AC_ARG_WITH([defaultdumpdirmode],
             AS_HELP_STRING([--with-defaultdumpdirmode=OCTAL-MODE],
