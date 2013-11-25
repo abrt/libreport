@@ -75,8 +75,10 @@ int main(int argc, char** argv)
         OPT_v            = 1 << 6,
         OPT_s            = 1 << 7,
         OPT_p            = 1 << 8,
+        /* An virtual option used when no other operation is specified */
+        OPT_workflow     = 1 << 9,
         OPTMASK_op       = OPT_list_events|OPT_run_event|OPT_delete|OPT_expert|OPT_version,
-        OPTMASK_need_arg = OPT_run_event|OPT_delete|OPT_expert
+        OPTMASK_need_arg = OPT_run_event|OPT_delete|OPT_expert|OPT_workflow
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
@@ -94,9 +96,15 @@ int main(int argc, char** argv)
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
     unsigned op = (opts & OPTMASK_op);
-    if (!op || ((op-1) & op))
+    if (!op)
+    {
+        opts |= OPT_workflow;
+        op = OPT_workflow;
+    }
+    else if ((op-1) & op)
         /* "You must specify exactly one operation" */
         show_usage_and_die(program_usage_string, program_options);
+
     argv += optind;
     argc -= optind;
 
@@ -168,6 +176,20 @@ int main(int argc, char** argv)
         {
             dump_dir_name = steal_directory_if_needed(dump_dir_name);
             exitcode = select_and_run_one_event(dump_dir_name, pfx, !(opts & OPT_y));
+            break;
+        }
+        case OPT_workflow:
+        {
+            load_workflow_config_data(WORKFLOWS_DIR);
+
+            /* list of workflows applicable to the currently processed problem */
+            GHashTable *possible_workflows = load_workflow_config_data_from_list(
+                                    list_possible_events_glist(dump_dir_name, "workflow"),
+                                                    WORKFLOWS_DIR);
+
+            /* this may still directory even if no workflow will be run */
+            dump_dir_name = steal_directory_if_needed(dump_dir_name);
+            exitcode = select_and_run_workflow(dump_dir_name, possible_workflows, !(opts & OPT_y));
             break;
         }
     }
