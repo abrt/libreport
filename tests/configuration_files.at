@@ -429,9 +429,9 @@ int main(int argc, char **argv)
         insert_map_string(first, xstrdup("state"), xstrdup("done"));
 
         /* These commands must fail */
-        assert(!save_conf_file("/foo/blah/file.conf", first));
-        assert(!save_conf_file("../../../../../../../../../../../../../../../foo/blah/file.conf", first));
-        assert(!save_conf_file("/root/file.conf", first));
+        assert(!save_conf_file("/proc/cpuinfo/foo/blah/file.conf", first));
+        assert(!save_conf_file("../../../../../../../../../../../../../../../proc/cpuinfo/foo/blah/file.conf", first));
+        assert(!save_conf_file("/proc/cpuinfo/root/file.conf", first));
 
         //char tmpdir[] = "/tmp/libreport_save_conf_file.XXXXXX";
         char tmpdir[] = "/tmp";
