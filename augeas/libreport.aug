@@ -2,7 +2,7 @@ module Libreport =
     autoload xfm
 
     (* Define useful primitives *)
-    let value_sep    = del / = ?/ " = "
+    let value_sep    = del / ?= ?/ " = "
     let value_to_eol = store /([^ \t\n].*[^ \t\n]|[^ \t\n]?)/
     let eol          = del /\n/ "\n"
     let ident        = /[a-zA-Z][a-zA-Z_]+/
