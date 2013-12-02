@@ -2,7 +2,7 @@ module Libreport =
     autoload xfm
 
     (* Define useful primitives *)
-    let value_sep    = del / = ?/ " = "
+    let value_sep    = del / ?= ?/ " = "
     let value_to_eol = store /([^ \t\n].*[^ \t\n]|[^ \t\n]?)/
     let eol          = del /\n/ "\n"
     let ident        = /[a-zA-Z][a-zA-Z_]+/
@@ -20,7 +20,11 @@ module Libreport =
     let lns = ( comment | empty | option )*
 
     let filter = (incl "/etc/libreport/plugins/*")
+               . (incl "/etc/libreport/events/*")
                . (incl (Sys.getenv("HOME") . "/.config/abrt/settings/*"))
+               . (incl (Sys.getenv("XDG_CACHE_HOME") . "/abrt/events/*"))
+               . (incl (Sys.getenv("HOME") . "/.cache/abrt/events/*"))
+               . (excl "/etc/libreport/events/*.xml")
                . Util.stdexcl
 
     let xfm = transform lns filter

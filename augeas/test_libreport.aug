@@ -19,8 +19,8 @@ Password =
 DontMatchComponents = selinux-policy
 
 # for more info about these settings see: https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets
-# CreatePrivate = no
-# PrivateGroups = private
+CreatePrivate= no
+PrivateGroups=private
 "
 
     test Libreport.lns get conf =
@@ -43,5 +43,5 @@ DontMatchComponents = selinux-policy
         { "DontMatchComponents" = "selinux-policy" }
         {}
         { "#comment" = "for more info about these settings see: https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets" }
-        { "#comment" = "CreatePrivate = no" }
-        { "#comment" = "PrivateGroups = private" }
+        { "CreatePrivate" = "no" }
+        { "PrivateGroups" = "private" }
