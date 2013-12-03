@@ -122,7 +122,7 @@ static time_t parse_time_file(const char *filename)
     int fd = open(filename, O_RDONLY | O_NOFOLLOW);
     if (fd < 0)
     {
-        pwarn_msg("Can't open '%s'", filename);
+        VERB2 pwarn_msg("Can't open '%s'", filename);
         return -1;
     }
 
@@ -135,7 +135,7 @@ static time_t parse_time_file(const char *filename)
 
     if (rdsz == -1)
     {
-        pwarn_msg("Can't read from '%s'", filename);
+        VERB2 pwarn_msg("Can't read from '%s'", filename);
         return -1;
     }
     /* approximate maximal number of digits in timestamp is sizeof(time_t)*3 */
@@ -144,8 +144,8 @@ static time_t parse_time_file(const char *filename)
     /* than string representing maximal time stamp */
     if (rdsz == sizeof(time_buf))
     {
-        warn_msg("File '%s' is too long to be valid unix "
-                 "time stamp (max size %u)", filename, (int)sizeof(time_buf));
+        VERB2 warn_msg("File '%s' is too long to be valid unix "
+                       "time stamp (max size %u)", filename, (int)sizeof(time_buf));
         return -1;
     }
 
@@ -169,8 +169,8 @@ static time_t parse_time_file(const char *filename)
      || val >= MAX_TIME_T
      || !isdigit_str(time_buf) /* this filters out "-num", "   num", "" */
     ) {
-        pwarn_msg("File '%s' doesn't contain valid unix "
-                         "time stamp ('%s')", filename, time_buf);
+        VERB2 pwarn_msg("File '%s' doesn't contain valid unix "
+                        "time stamp ('%s')", filename, time_buf);
         return -1;
     }
 
@@ -1343,7 +1343,7 @@ int dump_dir_accessible_by_uid(const char *dirname, uid_t uid)
     if (ddstat >= 0)
         return ddstat & DD_STAT_ACCESSIBLE_BY_UID;
 
-    pwarn_msg("can't determine accessibility of '%s' by %ld uid", dirname, (long)uid);
+    VERB3 pwarn_msg("can't determine accessibility of '%s' by %ld uid", dirname, (long)uid);
 
     return 0;
 }
