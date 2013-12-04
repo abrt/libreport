@@ -581,6 +581,8 @@ enum {
     MAKEDESC_SHOW_MULTILINE = (1 << 1),
     MAKEDESC_SHOW_ONLY_LIST = (1 << 2),
     MAKEDESC_WHITELIST      = (1 << 3),
+    /* Include all URLs from FILENAME_REPORTED_TO element in the description text */
+    MAKEDESC_SHOW_URLS      = (1 << 4),
 };
 #define make_description libreport_make_description
 char *make_description(problem_data_t *problem_data, char **names_to_skip, unsigned max_text_size, unsigned desc_flags);
