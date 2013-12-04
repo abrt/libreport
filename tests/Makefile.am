@@ -34,7 +34,8 @@ TESTSUITE_AT = \
   taghyperlinks.at \
   glib_helpers.at \
   sitem.at \
-  configuration_files.at
+  configuration_files.at \
+  reported_to.at
 
 EXTRA_DIST += $(TESTSUITE_AT)
 TESTSUITE = $(srcdir)/testsuite

@@ -31,6 +31,7 @@ libreport_la_SOURCES = \
     spawn.c \
     dirsize.c \
     dump_dir.c \
+    reported_to.c \
     abrt_sock.c \
     get_cmdline.c \
     configuration_files.c \
