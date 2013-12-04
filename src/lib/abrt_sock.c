@@ -38,7 +38,7 @@ static int connect_to_abrtd_socket()
     int r = connect(socketfd, (struct sockaddr*)&local, sizeof(local));
     if (r != 0)
     {
-        pwarn_msg("Can't connect to '%s'", SOCKET_FILE);
+        VERB1 pwarn_msg("Can't connect to '%s'", SOCKET_FILE);
         close(socketfd);
         return -1;
     }
