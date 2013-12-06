@@ -35,7 +35,8 @@ TESTSUITE_AT = \
   glib_helpers.at \
   sitem.at \
   configuration_files.at \
-  reported_to.at
+  reported_to.at \
+  make_description.at
 
 EXTRA_DIST += $(TESTSUITE_AT)
 TESTSUITE = $(srcdir)/testsuite
