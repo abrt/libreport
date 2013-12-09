@@ -30,7 +30,7 @@ static report_result_t *get_reported_to(const char *dump_dir_name)
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         xfunc_die();
-    report_result_t *reported_to = find_in_reported_to(dd, "RHTSupport:");
+    report_result_t *reported_to = find_in_reported_to(dd, "RHTSupport");
     dd_close(dd);
     return reported_to;
 }

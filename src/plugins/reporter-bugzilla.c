@@ -1027,7 +1027,7 @@ int main(int argc, char **argv)
             struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
             if (!dd)
                 xfunc_die();
-            report_result_t *reported_to = find_in_reported_to(dd, "Bugzilla:");
+            report_result_t *reported_to = find_in_reported_to(dd, "Bugzilla");
             dd_close(dd);
 
             if (!reported_to || !reported_to->url)
@@ -1096,7 +1096,7 @@ int main(int argc, char **argv)
         struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
         if (!dd)
             xfunc_die();
-        report_result_t *reported_to = find_in_reported_to(dd, "Bugzilla:");
+        report_result_t *reported_to = find_in_reported_to(dd, "Bugzilla");
         dd_close(dd);
 
         if (reported_to && reported_to->url)
@@ -1255,9 +1255,7 @@ int main(int argc, char **argv)
             struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
             if (dd)
             {
-                char *reported_to_prefix = xasprintf("%s:", tracker_str);
                 report_result_t *reported_to = find_in_reported_to(dd, tracker_str);
-                free(reported_to_prefix);
                 dd_close(dd);
 
                 if (reported_to && reported_to->url)
