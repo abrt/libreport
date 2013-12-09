@@ -25,6 +25,9 @@
 #include <sys/types.h>
 #include <dirent.h>
 
+/* Fore GList */
+#include <glib.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -98,9 +101,12 @@ int dd_chown(struct dump_dir *dd, uid_t new_uid);
 
 
 /* reported_to handling */
+#define add_reported_to_data libreport_add_reported_to_data
+int add_reported_to_data(char **reported_to, const char *line);
 #define add_reported_to libreport_add_reported_to
 void add_reported_to(struct dump_dir *dd, const char *line);
 struct report_result {
+    char *label;
     char *url;
     char *msg;
     char *bthash;
@@ -111,9 +117,14 @@ struct report_result {
 typedef struct report_result report_result_t;
 #define free_report_result libreport_free_report_result
 void free_report_result(struct report_result *result);
+#define find_in_reported_to_data libreport_find_in_reported_to_data
+report_result_t *find_in_reported_to_data(const char *reported_to, const char *report_label);
 #define find_in_reported_to libreport_find_in_reported_to
-report_result_t *find_in_reported_to(struct dump_dir *dd, const char *prefix);
-/* TODO: GList *read_entire_reported_to(dd); */
+report_result_t *find_in_reported_to(struct dump_dir *dd, const char *report_label);
+#define read_entire_reported_to_data libreport_read_entire_reported_to_data
+GList *read_entire_reported_to_data(const char* reported_to);
+#define read_entire_reported_to libreport_read_entire_reported_to
+GList *read_entire_reported_to(struct dump_dir *dd);
 
 
 void delete_dump_dir(const char *dirname);

@@ -149,7 +149,7 @@ static void create_and_send_email(
         struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
         if (dd)
         {
-            char *msg = xasprintf("email: %s", email_to);
+            char *msg = xasprintf("email: URL=mailto:%s", email_to);
             add_reported_to(dd, msg);
             free(msg);
             dd_close(dd);

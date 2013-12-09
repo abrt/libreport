@@ -134,7 +134,7 @@ int main(int argc, char **argv)
             struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
             if (dd)
             {
-                char *msg = xasprintf("file: %s", output_file);
+                char *msg = xasprintf("file: URL=file://%s", output_file);
                 add_reported_to(dd, msg);
                 free(msg);
                 dd_close(dd);
