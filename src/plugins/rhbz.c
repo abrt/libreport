@@ -830,13 +830,19 @@ void rhbz_add_comment(struct abrt_xmlrpc *ax, int bug_id, const char *comment,
         xmlrpc_DECREF(result);
 }
 
-void rhbz_set_url(struct abrt_xmlrpc *ax, int bug_id, const char *url)
+void rhbz_set_url(struct abrt_xmlrpc *ax, int bug_id, const char *url, int flags)
 {
     func_entry();
 
-    xmlrpc_value *result = abrt_xmlrpc_call(ax, "Bug.update", "({s:i,s:s})",
+    const int nomail_notify = !!IS_NOMAIL_NOTIFY(flags);
+    xmlrpc_value *result = abrt_xmlrpc_call(ax, "Bug.update", "({s:i,s:s,s:i})",
                               "ids", bug_id,
-                              "url", url
+                              "url", url,
+
+                /* Undocumented argument but it works with Red Hat Bugzilla version 4.2.4-7
+                 * and version 4.4.rc1.b02
+                 */
+                              "nomail", nomail_notify
     );
 
     if (result)
