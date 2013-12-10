@@ -1261,7 +1261,7 @@ int main(int argc, char **argv)
                 if (reported_to && reported_to->url)
                 {
                     log(_("Adding External URL to bug %i"), new_id);
-                    rhbz_set_url(client, new_id, reported_to->url);
+                    rhbz_set_url(client, new_id, reported_to->url, RHBZ_NOMAIL_NOTIFY);
                     free_report_result(reported_to);
                 }
             }
