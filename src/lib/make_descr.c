@@ -97,7 +97,6 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
         }
     }
 
-    bool append_empty_line = !empty;
     if (desc_flags & MAKEDESC_SHOW_URLS)
     {
         const char *reported_to = problem_data_get_content_or_NULL(problem_data, FILENAME_REPORTED_TO);
@@ -105,6 +104,11 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
         {
             GList *reports = read_entire_reported_to_data(reported_to);
 
+            /* The value part begins on 17th column */
+            /*                        0123456789ABCDEF*/
+            const char *pad_prefix = "                ";
+            char *first_prefix = xasprintf("%s%*s", _("Reported:"), 16 - strlen(_("Reported:")), "");
+            const char *prefix     = first_prefix;
             for (GList *iter = reports; iter != NULL; iter = g_list_next(iter))
             {
                 const report_result_t *const report = (report_result_t *)iter->data;
@@ -112,21 +116,20 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
                 if (report->url == NULL)
                     continue;
 
-                if (append_empty_line)
-                    strbuf_append_char(buf_dsc, '\n');
-                append_empty_line = false;
-                empty = false;
+                strbuf_append_strf(buf_dsc, "%s%s\n", prefix, report->url);
 
-                int pad = 16 - (strlen(report->label) + 2);
-                if (pad < 0) pad = 0;
-                strbuf_append_strf(buf_dsc, "%s: %*s%s\n", report->label, pad, "", report->url);
+                if (prefix == first_prefix)
+                {   /* Only the first URL is prefixed by 'Reported:' */
+                    empty = false;
+                    prefix = pad_prefix;
+                }
             }
-
+            free(first_prefix);
             g_list_free_full(reports, (GDestroyNotify)free_report_result);
         }
     }
 
-    append_empty_line = !empty;
+    bool append_empty_line = !empty;
     if (desc_flags & MAKEDESC_SHOW_FILES)
     {
         /* Print file info. Format:
