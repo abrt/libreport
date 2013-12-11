@@ -579,6 +579,42 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Wed Dec 11 2013 Jakub Filak <jfilak@redhat.com> 2.1.10-1
+- make: filter out useless msgs in chagelog gen alg
+- bugzilla: no extra email notification on URL addition
+- Make make_description() output less confusing
+- Ensure 'long long unsigned' in printf format args
+- add unit test for make_description (SHOW_URLS)
+- make_description: add an option for URLs from reported_to
+- make reported_to handling more convenient
+- add accountsservice ignored words
+- Put back VERBn prefixes for few logging calls
+- debuginfo: fix clean_up function call
+- augeas: trim spaces arround '='
+- tests/configuration_files.at: fix save_conf_file() test failure
+- Add build/ to POTFILES.skip
+- spec: add augeas-devel to build requires
+- load/save configuration via augeas
+- create augeas lens for libreport
+- Fix typo in a string
+- spec: install ureport conf file and man page
+- Update reporter-ureport manual pages
+- ureport: add the configuration file
+- Update reporter-ureport manual page
+- anaconda: user a workflow in the report-cli event
+- report-cli: add support for workflows
+- wizard: do not show 'show log' expander if log is empty
+- ureport: print the error response body only in verbose mode
+- Load a config file from several directories
+- Export EXIT_STOP_EVENT_RUN in python modules
+- reporter-bugzilla: if adding to existing BZ, clearly flag comment as a dup.
+- Fix a small mistake in "Use log_ family instead of VERBn log calls" commit
+- ureport: implement attaching of contact email
+- Do not load "always editable" files if they are HUGE. Fixes rhbz1010167.
+- shorten default Bugzilla bug summary format
+- Update translations
+- XML parser: keep region specific translation texts
+
 * Sat Oct 26 2013 Jakub Filak <jfilak@redhat.com> 2.1.9-1
 - rephrase a message for missing configuration
 - ask for missing configuration instead of dying
