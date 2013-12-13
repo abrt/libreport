@@ -267,6 +267,17 @@ Requires: libreport-plugin-ureport = %{version}-%{release}
 Default configuration for reporting bugs to Red Hat Bugzilla used to easy
 configure the reporting process for Red Hat sytems. Just install this package
 and you're done.
+
+%package rhel-anaconda-bugzilla
+Summary: Default configuration for reporting anaconda bugs to Red Hat Bugzilla
+Group: Applications/File
+Requires: %{name} = %{version}-%{release}
+Requires: libreport-plugin-bugzilla = %{version}-%{release}
+
+%description rhel-anaconda-bugzilla
+Default configuration for reporting Anaconda problems to Red Hat Bugzilla used
+to easy configure the reporting process for Red Hat sytems. Just install this
+package and you're done.
 %endif
 
 %if %{with bugzilla}
@@ -578,6 +589,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/%{name}/workflows/workflow_RHELBugzillaXorg.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_rhel_bugzilla.conf
 %{_mandir}/man5/report_rhel_bugzilla.conf.5.*
+
+%files rhel-anaconda-bugzilla
+%defattr(-,root,root,-)
+%{_datadir}/%{name}/workflows/workflow_AnacondaRHELBugzilla.xml
 %endif
 
 %if %{with bugzilla}
