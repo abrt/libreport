@@ -45,6 +45,7 @@ MAN5_TXT += report_event.conf.txt
 MAN5_TXT += report_fedora.conf.txt
 MAN5_TXT += report_Logger.conf.txt
 MAN5_TXT += report_rhel.conf.txt
+MAN5_TXT += report_rhel_bugzilla.conf.txt
 MAN5_TXT += rhtsupport.conf.txt
 MAN5_TXT += rhtsupport_event.conf.txt
 MAN5_TXT += uploader_event.conf.txt
