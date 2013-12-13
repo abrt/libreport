@@ -433,12 +433,11 @@ int main(int argc, char **argv)
         assert(!save_conf_file("../../../../../../../../../../../../../../../foo/blah/file.conf", first));
         assert(!save_conf_file("/root/file.conf", first));
 
-        //char tmpdir[] = "/tmp/libreport_save_conf_file.XXXXXX";
-        char tmpdir[] = "/tmp";
+        char tmpdir[] = "/tmp/libreport_save_conf_file.XXXXXX";
 
         /* OK, I know that I should not use tmpnam() but I want to check */
         /* that save_conf_file() creates the directory */
-        //assert(tmpnam(tmpdir) != NULL);
+        assert(tmpnam(tmpdir) != NULL);
 
         char *conf_path = concat_path_file(tmpdir, CONF_NAME);
 
@@ -455,15 +454,54 @@ int main(int argc, char **argv)
 
         {
             map_string_t *second = new_map_string();
+
             unlink(CUSTOM_CONF);
             assert(save_conf_file(CUSTOM_CONF, first) || !"Saved at relative path");
             assert(load_conf_file(CUSTOM_CONF, second, 0) || !"Load the saved at relative path");
+
+            unlink(CUSTOM_CONF);
 
             assert(EQUAL == map_string_equals(first, second) || !"The loaded configuration equals to the saved configuration");
 
             free_map_string(second);
         }
 
+        free_map_string(first);
+    }
+
+    {   /* Test that keys removed from the conf map are also removed from the corresponding file */
+        map_string_t *first = new_map_string();
+        insert_map_string(first, xstrdup("success"), xstrdup("total"));
+        insert_map_string(first, xstrdup("failure"), xstrdup("none"));
+        insert_map_string(first, xstrdup("effort"), xstrdup("minimal"));
+        insert_map_string(first, xstrdup("state"), xstrdup("done"));
+
+        unlink(CUSTOM_CONF);
+        assert(save_conf_file(CUSTOM_CONF, first) || !"Saved at relative path");
+
+        remove_map_string_item(first, "failure");
+        remove_map_string_item(first, "state");
+        assert(save_conf_file(CUSTOM_CONF, first) || !"Saved updated configuration");
+
+        map_string_t *second = new_map_string();
+        assert(load_conf_file(CUSTOM_CONF, second, 0) || !"Load the updated conf from relative path");
+
+        assert(EQUAL == map_string_equals(first, second) || !"The loaded configuration equals to the saved configuration");
+
+        free_map_string(second);
+
+        remove_map_string_item(first, "success");
+        remove_map_string_item(first, "effort");
+        assert(save_conf_file(CUSTOM_CONF, first) || !"Saved empty configuration");
+
+        second = new_map_string();
+        assert(load_conf_file(CUSTOM_CONF, second, 0) || !"Load the empty conf from relative path");
+
+        assert(EQUAL == map_string_equals(first, second) || !"The loaded configuration equals to the empty configuration");
+
+        unlink(CUSTOM_CONF);
+
+        free_map_string(second);
         free_map_string(first);
     }
 
