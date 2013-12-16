@@ -17,7 +17,13 @@ if BUILD_BUGZILLA
 dist_workflows_DATA += \
     workflow_AnacondaFedora.xml \
     workflow_AnacondaRHEL.xml \
-    workflow_AnacondaUpload.xml
+    workflow_AnacondaRHELBugzilla.xml \
+    workflow_AnacondaUpload.xml \
+    workflow_RHELBugzillaCCpp.xml \
+    workflow_RHELBugzillaKerneloops.xml \
+    workflow_RHELBugzillaPython.xml \
+    workflow_RHELBugzillaVmcore.xml \
+    workflow_RHELBugzillaXorg.xml
 endif
 
 workflowsdefdir = $(WORKFLOWS_DEFINITION_DIR)
@@ -28,7 +34,8 @@ dist_workflowsdef_DATA =\
 
 if BUILD_BUGZILLA
 dist_workflowsdef_DATA += \
-    anaconda_event.conf
+    anaconda_event.conf \
+    report_rhel_bugzilla.conf
 endif
 
 @INTLTOOL_XML_RULE@
@@ -50,5 +57,11 @@ if BUILD_BUGZILLA
 EXTRA_DIST += \
     workflow_AnacondaFedora.xml.in \
     workflow_AnacondaRHEL.xml.in \
-    workflow_AnacondaUpload.xml.in
+    workflow_AnacondaRHELBugzilla.xml.in \
+    workflow_AnacondaUpload.xml.in \
+    workflow_RHELBugzillaCCpp.xml.in \
+    workflow_RHELBugzillaKerneloops.xml.in \
+    workflow_RHELBugzillaPython.xml.in \
+    workflow_RHELBugzillaVmcore.xml.in \
+    workflow_RHELBugzillaXorg.xml.in
 endif

@@ -253,8 +253,31 @@ Requires: %{name} = %{version}-%{release}
 
 %description rhel
 Default configuration for reporting bugs via Red Hat infrastructure
-used to easy configure the reporting process for Red Hat sytems. Just
+used to easily configure the reporting process for Red Hat systems. Just
 install this package and you're done.
+
+%package rhel-bugzilla
+Summary: Default configuration for reporting bugs to Red Hat Bugzilla
+Group: Applications/File
+Requires: %{name} = %{version}-%{release}
+Requires: libreport-plugin-bugzilla = %{version}-%{release}
+Requires: libreport-plugin-ureport = %{version}-%{release}
+
+%description rhel-bugzilla
+Default configuration for reporting bugs to Red Hat Bugzilla used to easily
+configure the reporting process for Red Hat systems. Just install this package
+and you're done.
+
+%package rhel-anaconda-bugzilla
+Summary: Default configuration for reporting anaconda bugs to Red Hat Bugzilla
+Group: Applications/File
+Requires: %{name} = %{version}-%{release}
+Requires: libreport-plugin-bugzilla = %{version}-%{release}
+
+%description rhel-anaconda-bugzilla
+Default configuration for reporting Anaconda problems to Red Hat Bugzilla used
+to easy configure the reporting process for Red Hat sytems. Just install this
+package and you're done.
 %endif
 
 %if %{with bugzilla}
@@ -556,6 +579,20 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/%{name}/workflows/workflow_RHELxorg.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_rhel.conf
 %{_mandir}/man5/report_rhel.conf.5.*
+
+%files rhel-bugzilla
+%defattr(-,root,root,-)
+%{_datadir}/%{name}/workflows/workflow_RHELBugzillaCCpp.xml
+%{_datadir}/%{name}/workflows/workflow_RHELBugzillaKerneloops.xml
+%{_datadir}/%{name}/workflows/workflow_RHELBugzillaPython.xml
+%{_datadir}/%{name}/workflows/workflow_RHELBugzillaVmcore.xml
+%{_datadir}/%{name}/workflows/workflow_RHELBugzillaXorg.xml
+%config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_rhel_bugzilla.conf
+%{_mandir}/man5/report_rhel_bugzilla.conf.5.*
+
+%files rhel-anaconda-bugzilla
+%defattr(-,root,root,-)
+%{_datadir}/%{name}/workflows/workflow_AnacondaRHELBugzilla.xml
 %endif
 
 %if %{with bugzilla}
