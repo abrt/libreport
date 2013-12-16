@@ -200,6 +200,63 @@ internal_aug_init(augeas **aug, const char *path)
     return true;
 }
 
+enum {
+    GAON_NO_FLAG = 0,   /* Explicit default value */
+    GAON_FAIL_ON_NOENT, /* Fail if configuration file does not exist */
+};
+
+#define IS_FAIL_ON_NOENT(f) ((f) & GAON_FAIL_ON_NOENT)
+
+/* Finds names of all options from a file placed on the real_path and returns
+ * the names in an array of strings.
+ *
+ * In default configuration, the function does no return FALSE if the
+ * configuration file does not exist. If you require this behavior, add
+ * GAON_FAIL_ON_NOENT to the flags.
+ */
+static bool internal_aug_get_all_option_names(augeas *aug, const char *real_path,
+        char ***matches, int *match_num, int flags)
+{
+    /* We expect that the file tree contains only option and #comment nodes */
+    char *aug_expr = xasprintf("/files%s/*[label() != \"#comment\"]", real_path);
+    *match_num = aug_match(aug, aug_expr, matches);
+    free(aug_expr);
+
+    if (*match_num < 0)
+    {
+        internal_aug_error_msg(aug, "An error occurred while searching for configuration options");
+        return false;
+    }
+
+    if (*match_num > 0)
+        return true;
+
+    /* match_num == 0 means 'no option found'; let's find out why */
+    struct stat buf;
+    if (0 != stat(real_path, &buf))
+    {
+        /* We expect that the path doesn't exist, therefore print ENOENT */
+        /* message in verbose mode and all other error messages in */
+        /* non-verbose mode. */
+        if (errno != ENOENT || g_verbose > 1)
+            perror_msg("Cannot read conf file '%s'", real_path);
+
+        /* Return FALSE on ENOENT only if flags contains GAON_FAIL_ON_NOENT. */
+        return (errno == ENOENT && !IS_FAIL_ON_NOENT(flags));
+    }
+    else if (!S_ISREG(buf.st_mode))
+    {
+        /* A user should know that the path to configuration file is not */
+        /* a regular file. */
+        error_msg("Configuration path '%s' is not a regular file", real_path);
+        return false;
+    }
+
+    /* The file is empty or contains only comments and new lines */
+    log_notice("Configuration file '%s' contains no option", real_path);
+    return true;
+}
+
 /* Returns false if any error occurs, else returns true.
  */
 bool load_conf_file(const char *path, map_string_t *settings, bool skipKeysWithoutValue)
@@ -217,40 +274,10 @@ bool load_conf_file(const char *path, map_string_t *settings, bool skipKeysWitho
     if (!internal_aug_init(&aug, real_path))
         goto finalize;
 
-    char *aug_expr = xasprintf("/files%s/*[label() != \"#comment\"]", real_path);
     char **matches = NULL;
-    const int match_num = aug_match(aug, aug_expr, &matches);
-    free(aug_expr);
-
-    if (match_num < 0)
-    {
-        internal_aug_error_msg(aug, "An error occurred while searching for configuration options");
+    int match_num = 0;
+    if (!internal_aug_get_all_option_names(aug, real_path, &matches, &match_num, GAON_FAIL_ON_NOENT))
         goto finalize;
-    }
-    if (match_num == 0)
-    {
-        struct stat buf;
-        if (0 != stat(real_path, &buf))
-        {
-            /* We expect that the path doesn't exist, therefore print ENOENT */
-            /* message in verbose mode and all other error messages in */
-            /* non-verbose mode. */
-            if (errno != ENOENT || g_verbose > 1)
-                perror_msg("Cannot read conf file '%s'", real_path);
-        }
-        else if (!S_ISREG(buf.st_mode))
-        {
-            /* A user should know that the path to configuration file is not */
-            /* a regular file. */
-            error_msg("Configuration path '%s' is not a regular file", real_path);
-        }
-        else
-        {
-            retval = true;
-            log_notice("Configuration file '%s' contains no option", real_path);
-        }
-        goto finalize;
-    }
 
     int i = 0;
     for (; i < match_num; ++i)
@@ -313,12 +340,23 @@ bool load_conf_file_from_dirs(const char *base_name, const char *const *director
     return result;
 }
 
+static int
+cmpstringp(const void *p1, const void *p2)
+{
+    /* The actual arguments to this function are "pointers to
+     * pointers to char", but strcmp(3) arguments are "pointers
+     * to char", hence the following cast plus dereference */
+    return strcmp(*(char *const *)p1, *(char *const *)p2);
+}
+
 /* Returns false if saving failed */
 bool save_conf_file(const char *path, map_string_t *settings)
 {
     bool retval = false;
     char real_path[PATH_MAX + 1];
     augeas *aug = NULL;
+    char **option_names = NULL;
+    int option_count = 0;
 
     if (!canonicalize_path(path, real_path))
     {
@@ -329,6 +367,14 @@ bool save_conf_file(const char *path, map_string_t *settings)
     if (!internal_aug_init(&aug, real_path))
         goto finalize;
 
+    /* Get all option names to be able to delete those which have
+     * no corresponding key in settings */
+    if (!internal_aug_get_all_option_names(aug, real_path, &option_names, &option_count, GAON_NO_FLAG))
+        goto finalize;
+
+    /* Sort the list of option names for bseach() */
+    qsort(option_names, option_count, sizeof(char *), cmpstringp);
+
     const char *name = NULL;
     const char *value = NULL;
     map_string_iter_t iter;
@@ -337,6 +383,28 @@ bool save_conf_file(const char *path, map_string_t *settings)
     {
         char *aug_path = xasprintf("/files%s/%s", real_path, name);
         const int ret = aug_set(aug, aug_path, value);
+
+        /* Check whether the name already exists and if it exists remark it by
+         * erasing its value from the list of option names.
+         * At the end we will go through the lif of option names and will
+         * remove those which won't be NULL from the configuration file */
+        char **opt = bsearch(&aug_path, option_names, option_count, sizeof(char *), cmpstringp);
+        if (opt != NULL)
+        {
+            free(*opt);
+
+            /* Move NULL at the end of the list. */
+            for (char **iter = opt; iter != option_names + (option_count - 1); ++iter)
+                *iter = (*(iter + 1));
+
+            --option_count;
+        }
+
+        /* FYI: the bsearch above can be moved below the following if statement
+         * but we need aug_path as the input for bsearch(), therefore I chose
+         * this form because it is one from the simplest, however, potentially
+         * less efficient in case where aug_set() failed (we could skip the
+         * search in that case). */
         free(aug_path);
         if (ret < 0)
         {
@@ -344,6 +412,27 @@ bool save_conf_file(const char *path, map_string_t *settings)
             goto finalize;
         }
     }
+
+    /* Go through the list of option names and remove those which were not
+     * found in settings */
+    for (int i = 0; i < option_count; ++i)
+    {
+        if (option_names[i] == NULL)
+            continue;
+
+        const int ret = aug_rm(aug, option_names[i]);
+        if (ret < 0)
+        {
+            internal_aug_error_msg(aug, "Cannot remove a configuration option from the file");
+            goto finalize;
+        }
+
+        free(option_names[i]);
+        option_names[i] = NULL;
+    }
+
+    /* Notify the finalize algorithm that we already freed all individual indexes */
+    option_count = 0;
 
     create_parentdir(real_path);
     if (aug_save(aug) < 0)
@@ -355,6 +444,14 @@ bool save_conf_file(const char *path, map_string_t *settings)
     retval = true;
 
 finalize:
+    for (int i = 0; i < option_count; ++i)
+    {
+        if (option_names[i] != NULL)
+            free(option_names[i]);
+    }
+
+    free(option_names);
+
     if (aug != NULL)
         aug_close(aug);
 
