@@ -111,24 +111,25 @@ static void internal_aug_error_msg(augeas *aug, const char *def_msg)
 {
     const char *err_msg = def_msg;
 
-    //if (aug_error(aug) != AUG_NOERROR)
+    if (aug_error(aug) != AUG_NOERROR)
     {
         /* Try to get the most detailed error. */
         err_msg = aug_error_details(aug);
-        error_msg("%s", err_msg);
 
         if (err_msg == NULL)
             /* The detailed error message was not provided. */
             /* Try to get a message elaborating the error code. */
             err_msg = aug_error_minor_message(aug);
 
-        error_msg("%s", err_msg);
         if (err_msg == NULL)
             /* No more detailed message for the error code. */
             /* Get a message for the error code. */
             err_msg = aug_error_message(aug);
 
-        error_msg("%s", err_msg);
+        if (err_msg == NULL)
+            /* Paranoia: aug_error_message() always return a message, */
+            /* at leas "No error" */
+            err_msg = def_msg;
     }
 
     error_msg("%s", err_msg);
