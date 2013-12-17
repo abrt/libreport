@@ -352,9 +352,17 @@ rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELKerneloops.xm
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELPython.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELvmcore.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELxorg.xml
-rm -f $RPM_BUILD_ROOT/%{_sysconfdir}/libreport/workflows.d/report_rhel.conf
-rm -f $RPM_BUILD_ROOT%{_mandir}/man5/report_rhel.conf.5
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_AnacondaRHEL.xml
+rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_AnacondaRHELBugzilla.xml
+rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELBugzillaCCpp.xml
+rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELBugzillaKerneloops.xml
+rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELBugzillaPython.xml
+rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELBugzillaVmcore.xml
+rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELBugzillaXorg.xml
+rm -f $RPM_BUILD_ROOT/%{_sysconfdir}/libreport/workflows.d/report_rhel.conf
+rm -f $RPM_BUILD_ROOT/%{_sysconfdir}/libreport/workflows.d/report_rhel_bugzilla.conf
+rm -f $RPM_BUILD_ROOT%{_mandir}/man5/report_rhel.conf.5
+rm -f $RPM_BUILD_ROOT%{_mandir}/man5/report_rhel_bugzilla.conf.5
 %endif
 
 %clean
