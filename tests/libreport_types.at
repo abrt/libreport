@@ -133,9 +133,9 @@ int main(int argc, char **argv)
         assert(retval == 69 || !"Modifies int(69) on '777foo'");
 
                                                  /*0123456789ABCDEF*/
-        replace_map_string_item(map, xstrdup(key), xstrdup("7777777777777777"));
-        assert(!try_get_map_string_item_as_int(map, key, &retval) || !"Converts '7777777777777777' to number");
-        assert(retval == 69 || !"Modifies int(69) on '7777777777777777'");
+        replace_map_string_item(map, xstrdup(key), xstrdup("77777777777777777777777777777777"));
+        assert(!try_get_map_string_item_as_int(map, key, &retval) || !"Converts '77777777777777777777777777777777' to number");
+        assert(retval == 69 || !"Modifies int(69) on '77777777777777777777777777777777'");
 
         free_map_string(map);
     }
