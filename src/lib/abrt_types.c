@@ -83,10 +83,15 @@ int try_get_map_string_item_as_int(map_string_t *ms, const char *key, int *value
     long raw_value = strtol(option, &endptr, 10);
 
     /* Check for various possible errors */
-    if ((raw_value > INT_MAX || raw_value < INT_MIN)
-            || (errno != 0 && raw_value == 0)
-            || (endptr == option) /* empty */
-            || (endptr[0] != '\0') /* trailing non-digits */)
+    if (raw_value > INT_MAX || raw_value < INT_MIN || errno == ERANGE)
+    {
+        log("Value of option '%s' is out of integer range", key);
+        return 0;
+    }
+
+    if ((errno != 0 && raw_value == 0)
+        || (endptr == option) /* empty */
+        || (endptr[0] != '\0') /* trailing non-digits */)
     {
         log("Value of option '%s' is not an integer", key);
         return 0;
