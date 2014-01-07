@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
-"Report-Msgid-Bugs-To: https://fedorahosted.org/abrt/report\n"
-"POT-Creation-Date: 2013-10-31 13:48+0100\n"
-"PO-Revision-Date: 2013-10-31 12:50+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-01-07 22:48+0100\n"
+"PO-Revision-Date: 2014-01-07 21:48+0000\n"
 "Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/fedora/language/it/)\n"
 "MIME-Version: 1.0\n"
@@ -34,35 +34,35 @@ msgid ""
 msgstr "& [-vsp] -L[PREFIX] [PROBLEM_DIR]\n   or: & [-vspy] -e EVENT PROBLEM_DIR\n   or: & [-vspy] -d PROBLEM_DIR\n   or: & [-vspy] -x PROBLEM_DIR"
 
 #. short_name long_name  value    parameter_name  help
-#: ../src/cli/cli.c:84
+#: ../src/cli/cli.c:86
 msgid "List possible events [which start with PREFIX]"
 msgstr "Elenca i possibili eventi [che iniziano con PREFIX]"
 
-#: ../src/cli/cli.c:85 ../src/gui-wizard-gtk/main.c:123
+#: ../src/cli/cli.c:87 ../src/gui-wizard-gtk/main.c:123
 msgid "Run only these events"
 msgstr "Esegui solo questi eventi"
 
-#: ../src/cli/cli.c:86 ../src/gui-wizard-gtk/main.c:122
+#: ../src/cli/cli.c:88 ../src/gui-wizard-gtk/main.c:122
 msgid "Remove PROBLEM_DIR after reporting"
 msgstr "Rimuovi PROBLEM_DIR dopo la segnalazione"
 
-#: ../src/cli/cli.c:87 ../src/gui-wizard-gtk/main.c:124
+#: ../src/cli/cli.c:89 ../src/gui-wizard-gtk/main.c:124
 msgid "Expert mode"
 msgstr "Modalità esperto"
 
-#: ../src/cli/cli.c:88 ../src/report-newt/report-newt.c:393
+#: ../src/cli/cli.c:90 ../src/report-newt/report-newt.c:393
 msgid "Display version and exit"
 msgstr "Mostra versione ed esci"
 
-#: ../src/cli/cli.c:89
+#: ../src/cli/cli.c:91
 msgid "Noninteractive: don't ask questions, assume 'yes'"
 msgstr "Noninteractive: nessuna conferma richiesta, assume sempre 'sì' come risposta "
 
-#: ../src/cli/cli.c:91
+#: ../src/cli/cli.c:93
 msgid "Log to syslog"
 msgstr "Log su syslog"
 
-#: ../src/cli/cli.c:92 ../src/gui-wizard-gtk/main.c:121
+#: ../src/cli/cli.c:94 ../src/gui-wizard-gtk/main.c:121
 msgid "Add program names to log"
 msgstr "Aggiungi i nomi dei programmi sul log"
 
@@ -161,17 +161,21 @@ msgid ""
 "to continue?"
 msgstr "L'evento '%s' richiede il permesso di inviare eventuali dati sensibili. Si vuole procedere?"
 
-#: ../src/cli/cli-report.c:752
-msgid "Select an event to run: "
-msgstr "Selezionare un evento da lanciare:"
-
-#: ../src/cli/cli-report.c:760
+#: ../src/cli/cli-report.c:744
 msgid "You have chosen number out of range"
 msgstr "E' stato scelto un numero fuori range"
 
-#: ../src/cli/cli-report.c:764
+#: ../src/cli/cli-report.c:747
 msgid "Invalid input, exiting."
 msgstr "Input invalido, uscita in corso."
+
+#: ../src/cli/cli-report.c:768
+msgid "Select an event to run: "
+msgstr "Selezionare un evento da lanciare:"
+
+#: ../src/cli/cli-report.c:876
+msgid "Select a workflow to run: "
+msgstr ""
 
 #: ../src/client-python/debuginfo.py:87
 msgid "Extracting cpio from {0}"
@@ -295,18 +299,18 @@ msgid "Downloading package {0} failed"
 msgstr "Processo di download del pacchetto {0} fallito"
 
 #. recursively delete the temp dir on failure
-#: ../src/client-python/debuginfo.py:493
+#: ../src/client-python/debuginfo.py:494
 msgid "Unpacking failed, aborting download..."
 msgstr "Decompressione fallita, interruzione del download in corso ..."
 
 #. Was: "All downloaded packages have been extracted, removing..."
 #. but it was appearing even if no packages were in fact extracted
 #. (say, when there was one package, and it has download error).
-#: ../src/client-python/debuginfo.py:503
+#: ../src/client-python/debuginfo.py:504
 msgid "Removing {0}"
 msgstr "Rimozione {0} in corso"
 
-#: ../src/client-python/debuginfo.py:507
+#: ../src/client-python/debuginfo.py:508
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
 msgstr "Impossibile rimuovere %s, probabilmente pesenta un log d'errore"
@@ -352,7 +356,7 @@ msgstr "Eventi"
 msgid "C_onfigure"
 msgstr "C_onfigura"
 
-#: ../src/gtk-helpers/config_dialog.c:309 ../src/gui-wizard-gtk/wizard.c:3307
+#: ../src/gtk-helpers/config_dialog.c:309 ../src/gui-wizard-gtk/wizard.c:3312
 msgid "_Close"
 msgstr ""
 
@@ -375,7 +379,7 @@ msgstr "Il Servizio Secret non è disponibile, le impostazioni non saranno salva
 #: ../src/gtk-helpers/event_config_dialog.c:299
 #: ../src/gtk-helpers/event_config_dialog.c:351
 #: ../src/gtk-helpers/workflow_config_dialog.c:76
-#: ../src/gui-wizard-gtk/wizard.c:769 ../src/gui-wizard-gtk/wizard.c:2908
+#: ../src/gui-wizard-gtk/wizard.c:769 ../src/gui-wizard-gtk/wizard.c:2913
 msgid "_Cancel"
 msgstr ""
 
@@ -531,7 +535,7 @@ msgid "Processing failed."
 msgstr "Elaborazione fallita."
 
 #. No next event, go to progress page and finish
-#: ../src/gui-wizard-gtk/wizard.c:1858 ../src/gui-wizard-gtk/wizard.c:2614
+#: ../src/gui-wizard-gtk/wizard.c:1858 ../src/gui-wizard-gtk/wizard.c:2619
 msgid "Processing finished."
 msgstr "Processo finito."
 
@@ -557,96 +561,96 @@ msgstr "Elaborazione..."
 msgid "Cannot check backtrace rating because of invalid event name"
 msgstr "Impossibile controllare il rating del backtrace a causa di un nome di evento non valido"
 
-#: ../src/gui-wizard-gtk/wizard.c:2634
+#: ../src/gui-wizard-gtk/wizard.c:2639
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
 "Do you want to continue?"
 msgstr "L'evento '%s' richiede il permesso di inviare eventuali dati sensibili.\nSi vuole procedere?"
 
-#: ../src/gui-wizard-gtk/wizard.c:2682
+#: ../src/gui-wizard-gtk/wizard.c:2687
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
 msgstr "Questo problema non dovrebbe essere riportato (è probabile che sia un problema noto). %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2909
+#: ../src/gui-wizard-gtk/wizard.c:2914
 msgid "_Open"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2931
+#: ../src/gui-wizard-gtk/wizard.c:2936
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' non è un file normale"
 
-#: ../src/gui-wizard-gtk/wizard.c:2945
+#: ../src/gui-wizard-gtk/wizard.c:2950
 msgid "You are trying to copy a file onto itself"
 msgstr "Si sta cercando di copiare un file su se stesso"
 
-#: ../src/gui-wizard-gtk/wizard.c:2952
+#: ../src/gui-wizard-gtk/wizard.c:2957
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "Impossibile copiare '%s': %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2967
+#: ../src/gui-wizard-gtk/wizard.c:2972
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "L'oggetto '%s' è già esistente e non è modificabile"
 
-#: ../src/gui-wizard-gtk/wizard.c:3159
+#: ../src/gui-wizard-gtk/wizard.c:3164
 msgid "Include"
 msgstr "Includi"
 
-#: ../src/gui-wizard-gtk/wizard.c:3170
+#: ../src/gui-wizard-gtk/wizard.c:3175
 msgid "Name"
 msgstr "Nome"
 
-#: ../src/gui-wizard-gtk/wizard.c:3180
+#: ../src/gui-wizard-gtk/wizard.c:3185
 msgid "Value"
 msgstr "Valore"
 
-#: ../src/gui-wizard-gtk/wizard.c:3214
+#: ../src/gui-wizard-gtk/wizard.c:3219
 msgid "Problem description"
 msgstr "Descrizione problema"
 
-#: ../src/gui-wizard-gtk/wizard.c:3215
+#: ../src/gui-wizard-gtk/wizard.c:3220
 msgid "Select how to report this problem"
 msgstr "Selezionare come riportare il problema"
 
-#: ../src/gui-wizard-gtk/wizard.c:3216
+#: ../src/gui-wizard-gtk/wizard.c:3221
 msgid "Provide additional information"
 msgstr "Fornire informazioni aggiuntive"
 
-#: ../src/gui-wizard-gtk/wizard.c:3217
+#: ../src/gui-wizard-gtk/wizard.c:3222
 msgid "Review the data"
 msgstr "Rivedere i dati"
 
-#: ../src/gui-wizard-gtk/wizard.c:3218
+#: ../src/gui-wizard-gtk/wizard.c:3223
 msgid "Confirm data to report"
 msgstr "Conferma dati da riportare"
 
-#: ../src/gui-wizard-gtk/wizard.c:3219
+#: ../src/gui-wizard-gtk/wizard.c:3224
 msgid "Processing"
 msgstr "Elaborazione"
 
-#: ../src/gui-wizard-gtk/wizard.c:3220
+#: ../src/gui-wizard-gtk/wizard.c:3225
 msgid "Processing done"
 msgstr "Elaborazione eseguita."
 
-#: ../src/gui-wizard-gtk/wizard.c:3309
+#: ../src/gui-wizard-gtk/wizard.c:3314
 msgid "_Stop"
 msgstr ""
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3312
+#: ../src/gui-wizard-gtk/wizard.c:3317
 msgid "Upload for analysis"
 msgstr "Carica per analisi"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3315
+#: ../src/gui-wizard-gtk/wizard.c:3320
 msgid "_Forward"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:3404
+#: ../src/gui-wizard-gtk/wizard.c:3409
 msgid ""
 "In order to enable the built-in screencasting functionality the package recordmydesktop has to be installed. Please run the following command if you want to install it.\n"
 "\n"
@@ -663,7 +667,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid ""
-"No one except Red Hat employes will be allowed to see the report with "
+"No one except Red Hat employees will be allowed to see the report with "
 "restricted access (not even you)"
 msgstr ""
 
@@ -762,15 +766,15 @@ msgid ""
 "reporting process, press 'Forward'."
 msgstr "Se si desidera riportare il problema ad una destinazione diversa, acquisire informazioni aggiuntive, o fornire una migliore descrizione del problema e ripetere il processo di riporto, premere 'Avanti'."
 
-#: ../src/include/internal_libreport.h:964
+#: ../src/include/internal_libreport.h:969
 msgid "Be verbose"
 msgstr "Sii verboso"
 
-#: ../src/include/internal_libreport.h:965
-#: ../src/plugins/reporter-bugzilla.c:926
+#: ../src/include/internal_libreport.h:970
+#: ../src/plugins/reporter-bugzilla.c:929
 #: ../src/plugins/reporter-kerneloops.c:166
 #: ../src/plugins/reporter-mailx.c:198 ../src/plugins/reporter-print.c:56
-#: ../src/plugins/reporter-rhtsupport.c:253
+#: ../src/plugins/reporter-rhtsupport.c:254
 #: ../src/plugins/reporter-upload.c:227
 msgid "Problem directory"
 msgstr "Directory del problema"
@@ -890,6 +894,10 @@ msgstr "Si prega di provare ad installare debuginfo manualmente con il comando: 
 #: ../src/lib/event_config.c:440
 msgid "A proper debuginfo is probably missing or the coredump is corrupted."
 msgstr "Un corretto debuginfo è probabilmente mancante o il coredump è corrotto."
+
+#: ../src/lib/make_descr.c:110
+msgid "Reported:"
+msgstr ""
 
 #: ../src/lib/parse_options.c:58
 msgid "Usage: "
@@ -1113,41 +1121,41 @@ msgstr "Non si può analizzare il backtrace: %s"
 msgid "Can't generate stacktrace description (no crash thread?)"
 msgstr "Non si riesce a generare la descrizione dello stacktrace (nessuna thread del crash?)"
 
-#: ../src/plugins/reporter-bugzilla.c:761
+#: ../src/plugins/reporter-bugzilla.c:764
 msgid ""
 "Warning, private ticket groups already specified as cmdline argument, "
 "ignoring the env variable and configuration"
 msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:772
-#: ../src/plugins/reporter-rhtsupport.c:177
+#: ../src/plugins/reporter-bugzilla.c:775
+#: ../src/plugins/reporter-rhtsupport.c:178
 msgid "Can't continue without login"
 msgstr "Non si può continuare senza login"
 
-#: ../src/plugins/reporter-bugzilla.c:785
-#: ../src/plugins/reporter-rhtsupport.c:190
+#: ../src/plugins/reporter-bugzilla.c:788
+#: ../src/plugins/reporter-rhtsupport.c:191
 msgid "Can't continue without password"
 msgstr "Non si può continuare senza password"
 
-#: ../src/plugins/reporter-bugzilla.c:794
+#: ../src/plugins/reporter-bugzilla.c:797
 #, c-format
 msgid "Logging into Bugzilla at %s"
 msgstr "Accesso in corso in Bugzilla in %s"
 
-#: ../src/plugins/reporter-bugzilla.c:798
+#: ../src/plugins/reporter-bugzilla.c:801
 msgid "Invalid password or login. Please enter your BZ login:"
 msgstr "Password o login invalida. Inserire il proprio login di BZ:"
 
-#: ../src/plugins/reporter-bugzilla.c:801
+#: ../src/plugins/reporter-bugzilla.c:804
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
 msgstr "Password o login non validi. Digitare la password per '%s':"
 
-#: ../src/plugins/reporter-bugzilla.c:836
+#: ../src/plugins/reporter-bugzilla.c:839
 msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
 msgstr "Bug.search(quicksearch) ha ritornato un valore che non contiene il membro 'bugs'"
 
-#: ../src/plugins/reporter-bugzilla.c:854
+#: ../src/plugins/reporter-bugzilla.c:857
 msgid ""
 "\n"
 "& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\n"
@@ -1190,147 +1198,147 @@ msgid ""
 "If not specified, CONFFILE defaults to "
 msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:927
-#: ../src/plugins/reporter-rhtsupport.c:254
+#: ../src/plugins/reporter-bugzilla.c:930
+#: ../src/plugins/reporter-rhtsupport.c:255
 msgid "Configuration file (may be given many times)"
 msgstr "File di configurazione (può essere dato numerose volte)"
 
-#: ../src/plugins/reporter-bugzilla.c:928
+#: ../src/plugins/reporter-bugzilla.c:931
 msgid "Formatting file for initial comment"
 msgstr "Formattando il file per commento iniziale"
 
-#: ../src/plugins/reporter-bugzilla.c:929
+#: ../src/plugins/reporter-bugzilla.c:932
 msgid "Formatting file for duplicates"
 msgstr "Formattando il file per i duplicati"
 
-#: ../src/plugins/reporter-bugzilla.c:930
+#: ../src/plugins/reporter-bugzilla.c:933
 msgid "Attach FILEs [to bug with this ID]"
 msgstr "Allega FILE [su bug con questo ID]"
 
-#: ../src/plugins/reporter-bugzilla.c:931
+#: ../src/plugins/reporter-bugzilla.c:934
 msgid "When creating bug, attach binary files too"
 msgstr "Durante la creazione del bug, allega anche i file binari"
 
-#: ../src/plugins/reporter-bugzilla.c:932
-#: ../src/plugins/reporter-rhtsupport.c:256
+#: ../src/plugins/reporter-bugzilla.c:935
+#: ../src/plugins/reporter-rhtsupport.c:257
 msgid "Force reporting even if this problem is already reported"
 msgstr "Forza il riporto anche se questo problema è già stato notificato."
 
-#: ../src/plugins/reporter-bugzilla.c:933
+#: ../src/plugins/reporter-bugzilla.c:936
 msgid "Add bugzilla user to CC list [of bug with this ID]"
 msgstr "Aggiungi l'utente bugzilla alla lista CC (del bug con questo ID)"
 
-#: ../src/plugins/reporter-bugzilla.c:934
+#: ../src/plugins/reporter-bugzilla.c:937
 msgid "Print BUG_ID which has given DUPHASH"
 msgstr "Stampa BUG_ID che ha dato DUPHASH"
 
-#: ../src/plugins/reporter-bugzilla.c:935
+#: ../src/plugins/reporter-bugzilla.c:938
 msgid "A name of bug tracker for an additional URL from 'reported_to'"
 msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:936
+#: ../src/plugins/reporter-bugzilla.c:939
 msgid "Restrict access to this group only"
 msgstr "Restringi l'accesso solo a questo gruppo"
 
-#: ../src/plugins/reporter-bugzilla.c:937
+#: ../src/plugins/reporter-bugzilla.c:940
 msgid "Debug"
 msgstr "Debug"
 
-#: ../src/plugins/reporter-bugzilla.c:979
+#: ../src/plugins/reporter-bugzilla.c:982
 msgid "Looking for similar problems in bugzilla"
 msgstr "Ricerca di problemi simili in bugzilla "
 
-#: ../src/plugins/reporter-bugzilla.c:1006
+#: ../src/plugins/reporter-bugzilla.c:1009
 msgid "Login is not provided by configuration. Please enter your BZ login:"
 msgstr "Il login non è incluso nella configurazione. Per cortesia inserisci il tuo login BZ:"
 
-#: ../src/plugins/reporter-bugzilla.c:1012
-#: ../src/plugins/reporter-rhtsupport.c:290
+#: ../src/plugins/reporter-bugzilla.c:1015
+#: ../src/plugins/reporter-rhtsupport.c:291
 #, c-format
 msgid ""
 "Password is not provided by configuration. Please enter the password for "
 "'%s':"
 msgstr "La password non è fornita dalla configurazione. Per cortesia digitare la password per '%s':"
 
-#: ../src/plugins/reporter-bugzilla.c:1031
+#: ../src/plugins/reporter-bugzilla.c:1034
 msgid ""
 "Can't get Bugzilla ID because this problem has not yet been reported to "
 "Bugzilla."
 msgstr "Non si può ottenere l'ID di Bugzilla perché questo problema non è stato ancora riportato a Bugzilla."
 
-#: ../src/plugins/reporter-bugzilla.c:1038
+#: ../src/plugins/reporter-bugzilla.c:1041
 #, c-format
 msgid ""
 "This problem has been reported to Bugzilla '%s' which differs from the "
 "configured Bugzilla '%s'."
 msgstr "Questo problema è stato riportato a Bugzilla '%s' che è diverso dal Bugzilla configurato  '%s'."
 
-#: ../src/plugins/reporter-bugzilla.c:1042
+#: ../src/plugins/reporter-bugzilla.c:1045
 #, c-format
 msgid "Malformed url to Bugzilla '%s'."
 msgstr "URL malformato a Bugzilla '%s'."
 
-#: ../src/plugins/reporter-bugzilla.c:1046
+#: ../src/plugins/reporter-bugzilla.c:1049
 #, c-format
 msgid "Using Bugzilla ID '%s'"
 msgstr "Utllizzando Bugzilla ID '%s'"
 
-#: ../src/plugins/reporter-bugzilla.c:1080
-#: ../src/plugins/reporter-bugzilla.c:1353
+#: ../src/plugins/reporter-bugzilla.c:1083
+#: ../src/plugins/reporter-bugzilla.c:1354
 msgid "Logging out"
 msgstr "Uscita in corso"
 
-#: ../src/plugins/reporter-bugzilla.c:1131
+#: ../src/plugins/reporter-bugzilla.c:1134
 msgid "Can't determine Bugzilla Product from problem data."
 msgstr "Non si riesce a determinare il Prodotto Bugzilla dai dati del problema"
 
-#: ../src/plugins/reporter-bugzilla.c:1182
+#: ../src/plugins/reporter-bugzilla.c:1185
 msgid "Checking for duplicates"
 msgstr "Controllo presenza duplicati in corso"
 
 #. Create new bug
-#: ../src/plugins/reporter-bugzilla.c:1228
+#: ../src/plugins/reporter-bugzilla.c:1231
 msgid "Creating a new bug"
 msgstr "Creazione di un nuovo bug in corso"
 
-#: ../src/plugins/reporter-bugzilla.c:1249
+#: ../src/plugins/reporter-bugzilla.c:1252
 msgid "Failed to create a new bug."
 msgstr "Non riuscita la creazione di un nuovo bug"
 
-#: ../src/plugins/reporter-bugzilla.c:1262
+#: ../src/plugins/reporter-bugzilla.c:1263
 #, c-format
 msgid "Adding External URL to bug %i"
 msgstr ""
 
-#: ../src/plugins/reporter-bugzilla.c:1268
+#: ../src/plugins/reporter-bugzilla.c:1269
 #, c-format
 msgid "Adding attachments to bug %i"
 msgstr "Aggiunta di allegati al bug %i in corso"
 
-#: ../src/plugins/reporter-bugzilla.c:1287
+#: ../src/plugins/reporter-bugzilla.c:1288
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Il bug è già stato riportato: %i"
 
-#: ../src/plugins/reporter-bugzilla.c:1308
+#: ../src/plugins/reporter-bugzilla.c:1309
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "Si aggiunge %s alla lista CC"
 
-#: ../src/plugins/reporter-bugzilla.c:1325
+#: ../src/plugins/reporter-bugzilla.c:1326
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Aggiunta di nuovo commento al bug %d in corso"
 
-#: ../src/plugins/reporter-bugzilla.c:1339
+#: ../src/plugins/reporter-bugzilla.c:1340
 msgid "Attaching better backtrace"
 msgstr "Associazione di miglior backtrace in corso"
 
-#: ../src/plugins/reporter-bugzilla.c:1347
+#: ../src/plugins/reporter-bugzilla.c:1348
 msgid "Found the same comment in the bug history, not adding a new one"
 msgstr "Trovato lo stesso commento nella cronologia del bug, nessun commento nuovo aggiunto"
 
-#: ../src/plugins/reporter-bugzilla.c:1356
+#: ../src/plugins/reporter-bugzilla.c:1357
 #, c-format
 msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
 msgstr "Stato: %s%s%s %s/show_bug.cgi?id=%u"
@@ -1354,7 +1362,7 @@ msgid ""
 "Parameter can be overridden via $KerneloopsReporter_SubmitURL."
 msgstr "& [-v] [-c CONFFILE]... -d DIR\n\nNotifica i kernel oops al sito kerneloops.org (o simile).\n\nI file con i nomi elencati in $EXCLUDE_FROM_REPORT non sono inclusi nel tarball.\n\nLe righe di CONFFILE dovrebbero avere il formato 'PARAM = VALUE'. \nParametro di stringa riconosciuto: SubmitURL.\nIl parametro può essere sovrascritto tramite $KerneloopsReporter_SubmitURL."
 
-#: ../src/plugins/reporter-kerneloops.c:167
+#: ../src/plugins/reporter-kerneloops.c:167 ../src/plugins/ureport.c:379
 msgid "Configuration file"
 msgstr "File di configurazione"
 
@@ -1439,7 +1447,7 @@ msgstr "Il riporto è stato aggiunto a %s"
 msgid "The report was stored to %s"
 msgstr "Il riporto è stato archiviato su %s"
 
-#: ../src/plugins/reporter-rhtsupport.c:222
+#: ../src/plugins/reporter-rhtsupport.c:223
 msgid ""
 "\n"
 "& [-v] [-c CONFFILE] -d DIR\n"
@@ -1451,15 +1459,15 @@ msgid ""
 "If not specified, CONFFILE defaults to "
 msgstr "\n& [-v] [-c CONFFILE] -d DIR\no:\n& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n\nNotifica un problema a RHTSupport.\n\nSe non specificato, CONFFILE esegue il default su "
 
-#: ../src/plugins/reporter-rhtsupport.c:255
+#: ../src/plugins/reporter-rhtsupport.c:256
 msgid "Upload FILEs [to case with this ID]"
 msgstr "Carica i FILE [sul caso con questo ID]"
 
-#: ../src/plugins/reporter-rhtsupport.c:284
+#: ../src/plugins/reporter-rhtsupport.c:285
 msgid "Login is not provided by configuration. Please enter your RHTS login:"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:340
+#: ../src/plugins/reporter-rhtsupport.c:341
 #, c-format
 msgid "Attaching '%s' to case '%s'"
 msgstr "Associazione di '%s' al caso '%s' in corso"
@@ -1469,44 +1477,44 @@ msgstr "Associazione di '%s' al caso '%s' in corso"
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
 #. doing
-#: ../src/plugins/reporter-rhtsupport.c:377
+#: ../src/plugins/reporter-rhtsupport.c:378
 #: ../src/plugins/reporter-upload.c:52
 msgid "Compressing data"
 msgstr "Compressione dati in corso"
 
-#: ../src/plugins/reporter-rhtsupport.c:412
+#: ../src/plugins/reporter-rhtsupport.c:413
 msgid "Can't create a temporary directory in "
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:421
+#: ../src/plugins/reporter-rhtsupport.c:422
 msgid "Can't create temporary file in "
 msgstr ""
 
 #. Check for hints and show them if we have something
-#: ../src/plugins/reporter-rhtsupport.c:430
+#: ../src/plugins/reporter-rhtsupport.c:431
 msgid "Checking for hints"
 msgstr "Controllo per suggerimenti in corso"
 
-#: ../src/plugins/reporter-rhtsupport.c:472
+#: ../src/plugins/reporter-rhtsupport.c:473
 msgid "Do you still want to create a RHTSupport ticket?"
 msgstr "Si desidera ancora creare un ticket per RHTSupport?"
 
-#: ../src/plugins/reporter-rhtsupport.c:486
+#: ../src/plugins/reporter-rhtsupport.c:487
 msgid "Creating a new case"
 msgstr "Sto creando un nuovo caso"
 
 #. How can we help user sorting out this problem?
-#: ../src/plugins/reporter-rhtsupport.c:497
+#: ../src/plugins/reporter-rhtsupport.c:498
 msgid "Can't determine RH Support Product from problem data."
 msgstr "Non si può determinare il prodotto di supporto RH dai dati del problema"
 
-#: ../src/plugins/reporter-rhtsupport.c:572
+#: ../src/plugins/reporter-rhtsupport.c:573
 #, c-format
 msgid "Adding comment to case '%s'"
 msgstr "Aggiunta in corso, di commento al caso '%s'"
 
 #. Attach the tarball of -d DIR
-#: ../src/plugins/reporter-rhtsupport.c:592
+#: ../src/plugins/reporter-rhtsupport.c:593
 #, c-format
 msgid "Attaching problem data to case '%s'"
 msgstr "Assegnazione in corso, dei dati del problema al caso '%s'"
@@ -1779,101 +1787,120 @@ msgstr "Il server in '%s' correntemente, non può gestire la richiesta (errore 5
 #. can't print better error message
 #: ../src/plugins/ureport.c:275
 #, c-format
-msgid ""
-"Unexpected HTTP response from '%s': %d\n"
-"%s"
-msgstr "Risposta HTTP inaspettata da  '%s': %d\n%s"
+msgid "Unexpected HTTP response from '%s': %d"
+msgstr ""
 
-#: ../src/plugins/ureport.c:283
+#: ../src/plugins/ureport.c:284
 #, c-format
-msgid ""
-"Unable to parse response from ureport server at '%s':\n"
-"%s"
-msgstr "Impossibile analizzare la risposta dal server ureport in'%s':\n%s"
+msgid "Unable to parse response from ureport server at '%s"
+msgstr ""
 
-#: ../src/plugins/ureport.c:292
+#: ../src/plugins/ureport.c:294
 #, c-format
 msgid "The response from '%s' has invalid format"
 msgstr "La risposta da  '%s' ha formato invalido"
 
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
-#: ../src/plugins/ureport.c:298
+#: ../src/plugins/ureport.c:300
 #, c-format
 msgid "Type mismatch has been detected in the response from '%s'"
 msgstr "Tipo non corrispondente è stato rilevato nella risposta da '%s'"
 
-#: ../src/plugins/ureport.c:320
+#: ../src/plugins/ureport.c:331
 #, c-format
 msgid "The server at '%s' responded with an error: '%s'"
 msgstr "Il server in '%s' ha risposto con un errore: '%s'"
 
-#: ../src/plugins/ureport.c:352
+#: ../src/plugins/ureport.c:376
 msgid "Specify server URL"
 msgstr "Specifica l'URL del server"
 
-#: ../src/plugins/ureport.c:354
+#: ../src/plugins/ureport.c:378
 msgid "Allow insecure connection to ureport server"
 msgstr "Permetti connessione insicura al server ureport"
 
-#: ../src/plugins/ureport.c:356
-msgid "bthash of uReport to attach"
-msgstr "bthash di uReport da allegare"
+#: ../src/plugins/ureport.c:381
+msgid "bthash of uReport to attach (conflicts with -A)"
+msgstr ""
 
-#: ../src/plugins/ureport.c:358
-msgid "Attach RHBZ bug (requires -a)"
-msgstr "Allega il bug di RHBZ (richiede -a)"
+#: ../src/plugins/ureport.c:383
+msgid "attach to a bthash from reported_to (conflicts with -a)"
+msgstr ""
 
-#: ../src/plugins/ureport.c:360
-msgid "Attach contents of reported_to"
-msgstr "Allega i contenuti di reported_to"
+#: ../src/plugins/ureport.c:385
+msgid "contact e-mail address (requires -a|-A, conflicts with -E)"
+msgstr ""
 
-#: ../src/plugins/ureport.c:365
+#: ../src/plugins/ureport.c:387
 msgid ""
-"& [-v] [-u URL] [-k] [-a bthash -b bug-id] [-r] [-d DIR]\n"
+"contact e-mail address from environment or configuration file (requires "
+"-a|-A, conflicts with -e)"
+msgstr ""
+
+#: ../src/plugins/ureport.c:389
+msgid "attach RHBZ bug (requires -a|-A, conflicts with -B)"
+msgstr ""
+
+#: ../src/plugins/ureport.c:391
+msgid ""
+"attach last RHBZ bug from reported_to (requires -a|-A, conflicts with -b)"
+msgstr ""
+
+#: ../src/plugins/ureport.c:396
+msgid ""
+"& [-v] [-c FILE] [-u URL] [-k] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
 "\n"
-"Upload micro report or add an attachment to a micro report"
-msgstr "& [-v] [-u URL] [-k] [-a bthash -b bug-id] [-r] [-d DIR]\n\nCarica micro report o aggiungi un allegato ad un micro report"
+"Upload micro report or add an attachment to a micro report\n"
+"\n"
+"Reads the default configuration from "
+msgstr ""
 
-#: ../src/plugins/ureport.c:380
-msgid "You need to specify bug ID to attach."
-msgstr "Occorre specificare l'ID del bug da allegare"
-
-#: ../src/plugins/ureport.c:382
-msgid "You need to specify bthash of the uReport to attach."
-msgstr "Occorre specificare il bthash dell'uReport da allegare."
-
-#: ../src/plugins/ureport.c:397
+#: ../src/plugins/ureport.c:440
 msgid "This problem does not have an uReport assigned."
 msgstr "Questo problema non ha un uReport assegnato"
 
-#: ../src/plugins/ureport.c:400
+#: ../src/plugins/ureport.c:453
 msgid "This problem has not been reported to Bugzilla."
 msgstr "Questo problema non è stato riportato in Bugzilla."
 
-#: ../src/plugins/ureport.c:407
+#: ../src/plugins/ureport.c:457
 #, c-format
 msgid "Unable to find bug ID in bugzilla URL '%s'"
 msgstr "Impossibile trovare l'ID del bug nell'URL di bugzilla '%s'"
 
-#: ../src/plugins/ureport.c:412
+#: ../src/plugins/ureport.c:462
 #, c-format
 msgid "Unable to parse bug ID from bugzilla URL '%s'"
 msgstr "Impossibile trovare l'ID del bug nell'URL di bugzilla '%s'"
 
-#: ../src/plugins/ureport.c:431
+#: ../src/plugins/ureport.c:475
+msgid ""
+"Neither environment variable 'uReport_ContactEmail' nor configuration option"
+" 'ContactEmail' is set"
+msgstr ""
+
+#: ../src/plugins/ureport.c:481
+msgid "You need to specify bug ID, contact email or both"
+msgstr ""
+
+#: ../src/plugins/ureport.c:499
+msgid "You need to specify bthash of the uReport to attach."
+msgstr "Occorre specificare il bthash dell'uReport da allegare."
+
+#: ../src/plugins/ureport.c:509
 msgid "Not uploading an empty uReport"
 msgstr "Non si carica un uReport vuoto"
 
-#: ../src/plugins/ureport.c:440
+#: ../src/plugins/ureport.c:518
 msgid "Failed on submitting the problem"
 msgstr "Fallito nell'invio del problema"
 
-#: ../src/plugins/ureport.c:485
+#: ../src/plugins/ureport.c:563
 msgid "This problem has already been reported."
 msgstr "Questo problema è già stato segnalato."
 
-#: ../src/plugins/ureport.c:494
+#: ../src/plugins/ureport.c:572
 #, c-format
 msgid "Server responded with an error: '%s'"
 msgstr "Il server ha risposto con un errore: '%s'"
@@ -1933,7 +1960,12 @@ msgid "Report a bug to Red Hat Support Tool"
 msgstr ""
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:2
+#: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:2
 msgid "Process the report using the Red Hat infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:1
+msgid "Report a bug to Red Hat Bugzilla"
 msgstr ""
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
@@ -1979,25 +2011,38 @@ msgstr "Processa il problema del server X utilizzando l'infrastruttura di Fedora
 #: ../src/workflows/workflow_RHELPython.xml.in.h:1
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:1
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:1
-msgid "Report to Red Hat"
-msgstr "Segnala a Red Hat"
+msgid "Report to Red Hat Customer Portal"
+msgstr ""
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
+#: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the Red Hat infrastructure"
 msgstr "Analizza il crash C/C++ usando l'infrastruttura di Red Hat"
 
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:2
+#: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:2
 msgid "Process the kerneloops using the Red Hat infrastructure"
 msgstr "Analizza i kerneloop usando l'infrastruttura di Red Hat"
 
 #: ../src/workflows/workflow_RHELPython.xml.in.h:2
+#: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:2
 msgid "Process the python exception using the Red Hat infrastructure"
 msgstr "Analizza l'eccezione di python usando l'infrastruttura di Red Hat"
 
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:2
+#: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:2
 msgid "Process the kernel crash using the Red Hat infrastructure"
 msgstr "Analizza il crash del kernel usando l'infrastruttura di Red Hat"
 
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:2
+#: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:2
 msgid "Process the X Server problem using the Red Hat infrastructure"
 msgstr "Analizza il problema del server X usando l'infrastruttura di Red Hat"
+
+#: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
+#: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
+#: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:1
+#: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:1
+#: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:1
+msgid "Report to Red Hat Bugzilla"
+msgstr ""
