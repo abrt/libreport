@@ -308,7 +308,7 @@ AC_SUBST(DUMP_DIR_OWNED_BY_USER)
  AM_MISSING_PROG([AUTOM4TE], [autom4te])
 # Needed by tests/atlocal.in.
 # CFLAGS may contain '-Werror=format-security'
-AC_SUBST([O0CFLAGS], [`echo $CFLAGS   | sed 's/-O[[0-9]] *//' | sed 's/-Werror\(=[^ ]*\)\?//g'`])
+AC_SUBST([O0CFLAGS], [`echo $CFLAGS   | sed 's/-O[[0-9]] *//' | sed 's/-Werror\(=[[^ ]]*\)\?//g'`])
 
 AC_CONFIG_HEADERS([config.h])
 
