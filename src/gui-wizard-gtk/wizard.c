@@ -1719,14 +1719,7 @@ _("Processing of the problem failed. This can have many reasons but there are tw
 "\t▫ <b>network connection problems</b>\n"\
 "\t▫ <b>corrupted problem data</b>\n"));
 
-    add_warning(
-_("If you want to help us, please click on the upload button and provide all problem data for a deep analysis.\n"\
-"<i>Before you do that, please consider the security risks. Problem data may contain sensitive information like passwords.\n"\
-"The uploaded data are stored in a protected storage and only a limited number of persons can read them.</i>"));
-
     show_warnings();
-
-    gtk_widget_show(g_btn_onfail);
 }
 
 static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, gpointer data)
