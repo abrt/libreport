@@ -624,6 +624,20 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Wed Jan 08 2014 Jakub Filak <jfilak@redhat.com> 2.1.11-1
+- Update translations
+- map_string_t: fix overflow detection in "to int conversion"
+- add type agnostic functions for map_string_t
+- %description spelling fix.
+- remove left over debug stmts from conf files fns
+- spec: remove RHEL files from non-RHEL builds
+- update titles of RHTS workflows
+- spec: add a package which ships Anaconda RHEL BZ WFS
+- add Anaconda Bugzilla reporting workflows for RHEL
+- spec: add a package which ships RHEL Bugzilla workflows
+- add Bugzilla reporting workflows for RHEL
+- remove file options not matching any setting
+
 * Wed Dec 11 2013 Jakub Filak <jfilak@redhat.com> 2.1.10-1
 - make: filter out useless msgs in chagelog gen alg
 - bugzilla: no extra email notification on URL addition
