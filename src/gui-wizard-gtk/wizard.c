@@ -2597,7 +2597,11 @@ static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback f
         gtk_label_set_use_markup(GTK_LABEL(label), true);
         gtk_widget_set_halign(label, GTK_ALIGN_START);
         gtk_widget_set_margin_top(label, 10);
+#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 11) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 11 && GTK_MICRO_VERSION < 2))
         gtk_widget_set_margin_left(label, 40);
+#else
+        gtk_widget_set_margin_start(label, 40);
+#endif
         gtk_widget_set_margin_bottom(label, 10);
         free(btn_label);
         g_signal_connect(button, "clicked", func, w);
