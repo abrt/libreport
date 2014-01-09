@@ -340,6 +340,7 @@ rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraKerneloops.
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraPython.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraVmcore.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraXorg.xml
+rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraLibreport.xml
 rm -f $RPM_BUILD_ROOT/%{_sysconfdir}/libreport/workflows.d/report_fedora.conf
 rm -f $RPM_BUILD_ROOT%{_mandir}/man5/report_fedora.conf.5
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_AnacondaFedora.xml
@@ -352,6 +353,7 @@ rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELKerneloops.xm
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELPython.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELvmcore.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELxorg.xml
+rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELLibreport.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_AnacondaRHEL.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_AnacondaRHELBugzilla.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELBugzillaCCpp.xml
@@ -359,6 +361,7 @@ rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELBugzillaKerne
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELBugzillaPython.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELBugzillaVmcore.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELBugzillaXorg.xml
+rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELBugzillaLibreport.xml
 rm -f $RPM_BUILD_ROOT/%{_sysconfdir}/libreport/workflows.d/report_rhel.conf
 rm -f $RPM_BUILD_ROOT/%{_sysconfdir}/libreport/workflows.d/report_rhel_bugzilla.conf
 rm -f $RPM_BUILD_ROOT%{_mandir}/man5/report_rhel.conf.5
@@ -573,6 +576,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/%{name}/workflows/workflow_FedoraPython.xml
 %{_datadir}/%{name}/workflows/workflow_FedoraVmcore.xml
 %{_datadir}/%{name}/workflows/workflow_FedoraXorg.xml
+%{_datadir}/%{name}/workflows/workflow_FedoraLibreport.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_fedora.conf
 %{_mandir}/man5/report_fedora.conf.5.*
 %endif
@@ -585,6 +589,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/%{name}/workflows/workflow_RHELPython.xml
 %{_datadir}/%{name}/workflows/workflow_RHELvmcore.xml
 %{_datadir}/%{name}/workflows/workflow_RHELxorg.xml
+%{_datadir}/%{name}/workflows/workflow_RHELLibreport.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_rhel.conf
 %{_mandir}/man5/report_rhel.conf.5.*
 
@@ -595,6 +600,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/%{name}/workflows/workflow_RHELBugzillaPython.xml
 %{_datadir}/%{name}/workflows/workflow_RHELBugzillaVmcore.xml
 %{_datadir}/%{name}/workflows/workflow_RHELBugzillaXorg.xml
+%{_datadir}/%{name}/workflows/workflow_RHELBugzillaLibreport.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_rhel_bugzilla.conf
 %{_mandir}/man5/report_rhel_bugzilla.conf.5.*
 
