@@ -6,6 +6,7 @@ dist_workflows_DATA = \
     workflow_FedoraPython.xml \
     workflow_FedoraVmcore.xml \
     workflow_FedoraXorg.xml \
+    workflow_FedoraLibreport.xml \
     workflow_Upload.xml \
     workflow_RHELCCpp.xml \
     workflow_RHELKerneloops.xml \
