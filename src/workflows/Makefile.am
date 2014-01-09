@@ -11,7 +11,8 @@ dist_workflows_DATA = \
     workflow_RHELKerneloops.xml \
     workflow_RHELPython.xml \
     workflow_RHELvmcore.xml \
-    workflow_RHELxorg.xml
+    workflow_RHELxorg.xml \
+    workflow_RHELLibreport.xml
 
 if BUILD_BUGZILLA
 dist_workflows_DATA += \
@@ -23,7 +24,8 @@ dist_workflows_DATA += \
     workflow_RHELBugzillaKerneloops.xml \
     workflow_RHELBugzillaPython.xml \
     workflow_RHELBugzillaVmcore.xml \
-    workflow_RHELBugzillaXorg.xml
+    workflow_RHELBugzillaXorg.xml \
+    workflow_RHELBugzillaLibreport.xml
 endif
 
 workflowsdefdir = $(WORKFLOWS_DEFINITION_DIR)
@@ -46,12 +48,14 @@ EXTRA_DIST = \
     workflow_FedoraPython.xml.in \
     workflow_FedoraVmcore.xml.in \
     workflow_FedoraXorg.xml.in \
+    workflow_FedoraLibreport.xml.in \
     workflow_Upload.xml.in \
     workflow_RHELCCpp.xml.in \
     workflow_RHELKerneloops.xml.in \
     workflow_RHELPython.xml.in \
     workflow_RHELvmcore.xml.in \
-    workflow_RHELxorg.xml.in
+    workflow_RHELxorg.xml.in \
+    workflow_RHELLibreport.xml.in
 
 if BUILD_BUGZILLA
 EXTRA_DIST += \
@@ -63,5 +67,6 @@ EXTRA_DIST += \
     workflow_RHELBugzillaKerneloops.xml.in \
     workflow_RHELBugzillaPython.xml.in \
     workflow_RHELBugzillaVmcore.xml.in \
-    workflow_RHELBugzillaXorg.xml.in
+    workflow_RHELBugzillaXorg.xml.in \
+    workflow_RHELBugzillaLibreport.xml.in
 endif
