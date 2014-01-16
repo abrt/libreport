@@ -30,8 +30,11 @@ extern "C" {
  */
 struct ureport_server_config
 {
-    const char *ur_url; ///< Web service URL
-    bool ur_ssl_verify; ///< Verify HOST and PEER certificates
+    const char *ur_url;   ///< Web service URL
+    bool ur_ssl_verify;   ///< Verify HOST and PEER certificates
+    char *ur_client_cert; ///< Path to certificate used for client
+                          ///< authentication (or NULL)
+    char *ur_client_key;  ///< Private key for the certificate
 };
 
 struct abrt_post_state;
