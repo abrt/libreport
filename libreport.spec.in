@@ -504,7 +504,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files plugin-mailx
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/plugins/mailx.conf
+%{_datadir}/%{name}/conf.d/plugins/mailx.conf
 %{_datadir}/%{name}/events/report_Mailx.xml
+%{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.mailx.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/mailx_event.conf
 %{_mandir}/man5/mailx.conf.5.*
 %{_mandir}/man5/mailx_event.conf.5.*
@@ -514,15 +516,18 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files plugin-ureport
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/plugins/ureport.conf
+%{_datadir}/%{name}/conf.d/plugins/ureport.conf
 %{_bindir}/reporter-ureport
 %{_mandir}/man1/reporter-ureport.1.gz
 %{_mandir}/man5/ureport.conf.5.gz
 %{_datadir}/%{name}/events/report_uReport.xml
+%{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.ureport.xml
 
 %if %{with bugzilla}
 %files plugin-bugzilla
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla.conf
+%{_datadir}/%{name}/conf.d/plugins/bugzilla.conf
 %config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla_format.conf
 %config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla_formatdup.conf
 %config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla_format_libreport.conf
@@ -530,6 +535,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/%{name}/events/report_Bugzilla.xml
 %config(noreplace) %{_sysconfdir}/libreport/events/report_Bugzilla.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/bugzilla_event.conf
+%{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.bugzilla.xml
 # FIXME: remove with the old gui
 %{_mandir}/man1/reporter-bugzilla.1.gz
 %{_mandir}/man5/report_Bugzilla.conf.5.*
@@ -545,7 +551,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files plugin-rhtsupport
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/plugins/rhtsupport.conf
+%{_datadir}/%{name}/conf.d/plugins/rhtsupport.conf
 %{_datadir}/%{name}/events/report_RHTSupport.xml
+%{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.rhtsupport.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/rhtsupport_event.conf
 %{_mandir}/man1/reporter-rhtsupport.1.gz
 %{_mandir}/man5/rhtsupport.conf.5.*
