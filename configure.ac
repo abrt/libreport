@@ -211,6 +211,7 @@ CONF_DIR='${sysconfdir}/${PACKAGE_NAME}'
 VAR_RUN='${localstatedir}/run'
 PLUGINS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/plugins'
 REPORT_PLUGINS_CONF_DIR='${sysconfdir}/libreport/plugins'
+DEFAULT_REPORT_PLUGINS_CONF_DIR='${datadir}/${PACKAGE_NAME}/conf.d/plugins'
 EVENTS_DIR='${pkgdatadir}/events'
 EVENTS_DEFINITION_DIR='${sysconfdir}/${PACKAGE_NAME}/events.d'
 EVENTS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/events'
@@ -258,6 +259,13 @@ AC_ARG_ENABLE([userownsdumpdir],
                               [Configure abrt to be owner of dump directories (default: user owns dump dir)])],
               [DUMP_DIR_OWNED_BY_USER=0])
 
+
+AC_ARG_WITH([dbusinterfacedir],
+                AS_HELP_STRING([--with-dbusinterfacedir=DIR], [Directory for dbus interface files]),
+                        [], [with_dbusinterfacedir=${datadir}/dbus-1/interfaces])
+AC_SUBST([dbusinterfacedir], [$with_dbusinterfacedir])
+
+
 AC_ARG_ENABLE(doxygen-docs,
     AS_HELP_STRING([--enable-doxygen-docs],
 	[build DOXYGEN documentation (requires Doxygen)]),
@@ -292,6 +300,7 @@ AC_SUBST(CONF_DIR)
 AC_SUBST(VAR_RUN)
 AC_SUBST(PLUGINS_CONF_DIR)
 AC_SUBST(REPORT_PLUGINS_CONF_DIR)
+AC_SUBST(DEFAULT_REPORT_PLUGINS_CONF_DIR)
 AC_SUBST(EVENTS_DEFINITION_DIR)
 AC_SUBST(EVENTS_CONF_DIR)
 AC_SUBST(EVENTS_DIR)
@@ -331,6 +340,7 @@ AC_CONFIG_FILES([
 	src/client-python/Makefile
 	po/Makefile.in
 	doc/Makefile
+	doc/plugins-dbus/Makefile
 	src/workflows/Makefile
 ])
 
