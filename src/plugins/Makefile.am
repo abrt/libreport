@@ -23,21 +23,25 @@ pluginsconfdir = $(PLUGINS_CONF_DIR)
 reportpluginsconfdir = $(REPORT_PLUGINS_CONF_DIR)
 
 reporters_plugin_conf =
+reporters_plugin_format_conf =
 if BUILD_BUGZILLA
-reporters_plugin_conf += bugzilla.conf \
-    bugzilla_format.conf \
+reporters_plugin_conf += bugzilla.conf
+reporters_plugin_format_conf += bugzilla_format.conf \
     bugzilla_formatdup.conf \
     bugzilla_format_libreport.conf \
     bugzilla_format_kernel.conf \
     bugzilla_format_anaconda.conf \
     bugzilla_formatdup_anaconda.conf
-
 endif
 
-dist_reportpluginsconf_DATA = $(reporters_plugin_conf) \
+defaultreportpluginsconfdir = $(DEFAULT_REPORT_PLUGINS_CONF_DIR)
+dist_defaultreportpluginsconf_DATA = $(reporters_plugin_conf) \
     rhtsupport.conf \
     mailx.conf \
     ureport.conf
+
+dist_reportpluginsconf_DATA = $(reporters_plugin_format_conf) \
+    $(dist_defaultreportpluginsconf_DATA)
 
 eventsdir = $(EVENTS_DIR)
 eventsconfdir = $(EVENTS_CONF_DIR)

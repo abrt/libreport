@@ -1,0 +1,14 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+ "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+
+<node name="/com/redhat/problems/configuration/mailx">
+    <annotation name="com.redhat.problems.ConfFile" value="/etc/libreport/plugins/mailx.conf" />
+    <annotation name="com.redhat.problems.DefaultConfFile" value="/usr/share/libreport/conf.d/plugins/mailx.conf" />
+
+    <interface name="com.redhat.problems.configuration.mailx">
+        <property name="Subject" type="s" access="readwrite" />
+        <property name="EmailFrom" type="s" access="readwrite" />
+        <property name="EmailTo" type="s" access="readwrite" />
+        <property name="SendBinaryData" type="b" access="readwrite" />
+    </interface>
+</node>
