@@ -295,12 +295,12 @@ GtkWindow *create_config_list_window(GHashTable *configs, GtkWindow *parent)
     //g_hash_table_foreach(configs, (GHFunc)add_config_tabs, config_nb);
 
     gpointer config = g_hash_table_lookup(configs, _("Workflows"));
-    if (config != NULL);
-    add_config_tabs(_("Workflows"), config, config_nb);
+    if (config != NULL)
+        add_config_tabs(_("Workflows"), config, config_nb);
 
     config = g_hash_table_lookup(configs, _("Events"));
-    if (config != NULL);
-    add_config_tabs(_("Events"), config, config_nb);
+    if (config != NULL)
+        add_config_tabs(_("Events"), config, config_nb);
 
     //buttons
     GtkWidget *btn_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL,5);
