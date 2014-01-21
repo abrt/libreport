@@ -206,7 +206,8 @@ GtkWidget *create_config_tab_content(const char *column_label,
     gtk_tree_view_append_column(GTK_TREE_VIEW(tv), column);
     /* "Please draw rows in alternating colors": */
     gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(tv), TRUE);
-    // TODO: gtk_tree_view_set_headers_visible(FALSE)? We have only one column anyway...
+    /* Hide Column Headers because we have only one - 'Events' - rhbz#1055633 */
+    gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(tv), FALSE);
     GtkTreeModel *model = gtk_tree_model_filter_new(GTK_TREE_MODEL(store), NULL);
     gtk_tree_model_filter_set_visible_func(GTK_TREE_MODEL_FILTER(model), config_filter_func, NULL, NULL);
 
@@ -287,6 +288,9 @@ GtkWindow *create_config_list_window(GHashTable *configs, GtkWindow *parent)
 
     GtkWidget *main_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
     GtkWidget *config_nb = gtk_notebook_new();
+    /* Hide Tabs because we have only one - 'Events' - rhbz#1055633 */
+    gtk_notebook_set_show_tabs(GTK_NOTEBOOK(config_nb), FALSE);
+
     gtk_box_pack_start(GTK_BOX(main_vbox), config_nb, 1, 1, 0);
 
     /* we can't use this, because we want the workflows first and hashtable
@@ -295,12 +299,12 @@ GtkWindow *create_config_list_window(GHashTable *configs, GtkWindow *parent)
     //g_hash_table_foreach(configs, (GHFunc)add_config_tabs, config_nb);
 
     gpointer config = g_hash_table_lookup(configs, _("Workflows"));
-    if (config != NULL);
-    add_config_tabs(_("Workflows"), config, config_nb);
+    if (config != NULL)
+        add_config_tabs(_("Workflows"), config, config_nb);
 
     config = g_hash_table_lookup(configs, _("Events"));
-    if (config != NULL);
-    add_config_tabs(_("Events"), config, config_nb);
+    if (config != NULL)
+        add_config_tabs(_("Events"), config, config_nb);
 
     //buttons
     GtkWidget *btn_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL,5);
@@ -343,11 +347,6 @@ void show_config_list_dialog(GtkWindow *parent)
     //TODO: free the hashtables somewhere!!
     GHashTable *events = load_event_config_data();
     load_event_config_data_from_user_storage(events);
-
-    GHashTable *workflows = load_workflow_config_data(WORKFLOWS_DIR);
-    load_workflow_config_data_from_user_storage(workflows);
-    GtkListStore *workflows_store = add_workflows_to_liststore(workflows);
-    g_hash_table_insert(confs, _("Workflows"), workflows_store);
 
     GtkListStore *events_store = add_events_to_liststore(events);
     g_hash_table_insert(confs, _("Events"), events_store);
