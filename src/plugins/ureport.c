@@ -28,9 +28,72 @@
 #define ATTACH_URL_SFX "reports/attach/"
 #define BTHASH_URL_SFX "reports/bthash/"
 
+#define RHSM_CERT_PATH "/etc/pki/consumer/cert.pem"
+#define RHSM_KEY_PATH "/etc/pki/consumer/key.pem"
+
 #define VALUE_FROM_CONF(opt, var, tr) do { const char *value = getenv("uReport_"opt); \
         if (!value) { value = get_map_string_item_or_NULL(settings, opt); } if (value) { var = tr(value); } \
     } while(0)
+
+static char *puppet_config_print(const char *key)
+{
+    char *command = xasprintf("puppet config print %s", key);
+    char *result = run_in_shell_and_save_output(0, command, NULL, NULL);
+    free(command);
+
+    /* run_in_shell_and_save_output always returns non-NULL */
+    if (result[0] != '/')
+        goto error;
+
+    char *newline = strchrnul(result, '\n');
+    if (!newline)
+        goto error;
+
+    *newline = '\0';
+    return result;
+error:
+    free(result);
+    error_msg_and_die("Unable to determine puppet %s path (puppet not installed?)", key);
+}
+
+static void parse_client_auth_paths(struct ureport_server_config *config, const char *client_auth)
+{
+    if (client_auth == NULL)
+        return;
+
+    if (strcmp(client_auth, "") == 0)
+    {
+        config->ur_client_cert = NULL;
+        config->ur_client_key = NULL;
+        log_notice("Not using client authentication");
+    }
+    else if (strcmp(client_auth, "rhsm") == 0)
+    {
+        config->ur_client_cert = xstrdup(RHSM_CERT_PATH);
+        config->ur_client_key = xstrdup(RHSM_KEY_PATH);
+    }
+    else if (strcmp(client_auth, "puppet") == 0)
+    {
+        config->ur_client_cert = puppet_config_print("hostcert");
+        config->ur_client_key = puppet_config_print("hostprivkey");
+    }
+    else
+    {
+        char *scratch = xstrdup(client_auth);
+        config->ur_client_cert = xstrdup(strtok(scratch, ":"));
+        config->ur_client_key = xstrdup(strtok(NULL, ":"));
+        free(scratch);
+
+        if (config->ur_client_cert == NULL || config->ur_client_key == NULL)
+            error_msg_and_die("Invalid client authentication specification");
+    }
+
+    if (config->ur_client_cert && config->ur_client_key)
+    {
+        log_notice("Using client certificate: %s", config->ur_client_cert);
+        log_notice("Using client private key: %s", config->ur_client_key);
+    }
+}
 
 /*
  * Loads uReport configuration from various sources.
@@ -44,6 +107,10 @@ static void load_ureport_server_config(struct ureport_server_config *config, map
 {
     VALUE_FROM_CONF("URL", config->ur_url, (const char *));
     VALUE_FROM_CONF("SSLVerify", config->ur_ssl_verify, string_to_bool);
+
+    const char *client_auth = NULL;
+    VALUE_FROM_CONF("SSLClientAuth", client_auth, (const char *));
+    parse_client_auth_paths(config, client_auth);
 }
 
 struct ureport_server_response {
@@ -243,7 +310,12 @@ static struct ureport_server_response *ureport_server_parse_json(json_object *js
 
 static struct ureport_server_response *get_server_response(post_state_t *post_state, struct ureport_server_config *config)
 {
-    if (post_state->errmsg[0] != '\0')
+    /* Previously, the condition here was (post_state->errmsg[0] != '\0')
+     * however when the server asks for optional client authentication and we do not have the certificates,
+     * then post_state->errmsg contains "NSS: client certificate not found (nickname not specified)" even though
+     * the request succeeded.
+     */
+    if (post_state->curl_result != CURLE_OK)
     {
         error_msg(_("Failed to upload uReport to the server '%s' with curl: %s"), config->ur_url, post_state->errmsg);
         return NULL;
@@ -349,6 +421,8 @@ int main(int argc, char **argv)
     struct ureport_server_config config = {
         .ur_url = NULL,
         .ur_ssl_verify = true,
+        .ur_client_cert = NULL,
+        .ur_client_key = NULL,
     };
 
     enum {
@@ -356,12 +430,14 @@ int main(int argc, char **argv)
         OPT_d = 1 << 1,
         OPT_u = 1 << 2,
         OPT_k = 1 << 3,
+        OPT_t = 1 << 4,
     };
 
     int ret = 1; /* "failure" (for now) */
     bool insecure = !config.ur_ssl_verify;
     const char *conf_file = CONF_FILE_PATH;
     const char *arg_server_url = NULL;
+    const char *client_auth = NULL;
     const char *dump_dir_path = ".";
     const char *ureport_hash = NULL;
     bool ureport_hash_from_rt = false;
@@ -376,6 +452,7 @@ int main(int argc, char **argv)
         OPT_STRING('u', "url", &arg_server_url, "URL", _("Specify server URL")),
         OPT_BOOL('k', "insecure", &insecure,
                           _("Allow insecure connection to ureport server")),
+        OPT_STRING('t', "auth", &client_auth, "SOURCE", _("Use client authentication")),
         OPT_STRING('c', NULL, &conf_file, "FILE", _("Configuration file")),
         OPT_STRING('a', "attach", &ureport_hash, "BTHASH",
                           _("bthash of uReport to attach (conflicts with -A)")),
@@ -393,7 +470,7 @@ int main(int argc, char **argv)
     };
 
     const char *program_usage_string = _(
-        "& [-v] [-c FILE] [-u URL] [-k] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
+        "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
         "\n"
         "Upload micro report or add an attachment to a micro report\n"
         "\n"
@@ -411,6 +488,8 @@ int main(int argc, char **argv)
         config.ur_url = arg_server_url;
     if (opts & OPT_k)
         config.ur_ssl_verify = !insecure;
+    if (opts & OPT_t)
+        parse_client_auth_paths(&config, client_auth);
 
     if (!config.ur_url)
         error_msg_and_die("You need to specify server URL");
@@ -580,6 +659,8 @@ format_err:
 
 finalize:
     free_map_string(settings);
+    free(config.ur_client_cert);
+    free(config.ur_client_key);
 
     return ret;
 }

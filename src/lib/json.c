@@ -68,7 +68,7 @@ char *new_json_attachment(const char *bthash, const char *type, const char *data
     return result;
 }
 
-struct post_state *post_ureport(const char *json_ureport, struct ureport_server_config *config)
+struct post_state *post_ureport(const char *json, struct ureport_server_config *config)
 {
     int flags = POST_WANT_BODY | POST_WANT_ERROR_MSG;
 
@@ -77,28 +77,11 @@ struct post_state *post_ureport(const char *json_ureport, struct ureport_server_
 
     struct post_state *post_state = new_post_state(flags);
 
-    static const char *headers[] = {
-        "Accept: application/json",
-        "Connection: close",
-        NULL,
-    };
-
-    post_string_as_form_data(post_state, config->ur_url, "application/json",
-                     headers, json_ureport);
-
-    return post_state;
-}
-
-static
-struct post_state *ureport_attach(const char *json_attachment,
-                                  struct ureport_server_config *config)
-{
-    int flags = POST_WANT_BODY | POST_WANT_ERROR_MSG;
-
-    if (config->ur_ssl_verify)
-        flags |= POST_WANT_SSL_VERIFY;
-
-    struct post_state *post_state = new_post_state(flags);
+    if (config->ur_client_cert && config->ur_client_key)
+    {
+        post_state->client_cert_path = config->ur_client_cert;
+        post_state->client_key_path = config->ur_client_key;
+    }
 
     static const char *headers[] = {
         "Accept: application/json",
@@ -107,7 +90,24 @@ struct post_state *ureport_attach(const char *json_attachment,
     };
 
     post_string_as_form_data(post_state, config->ur_url, "application/json",
-                             headers, json_attachment);
+                     headers, json);
+
+    /* Client authentication failed. Try again without client auth.
+     * CURLE_SSL_CONNECT_ERROR - cert not found/server doesnt trust the CA
+     * CURLE_SSL_CERTPROBLEM - malformed certificate/no permission
+     */
+    if ((post_state->curl_result == CURLE_SSL_CONNECT_ERROR
+         || post_state->curl_result == CURLE_SSL_CERTPROBLEM)
+            && config->ur_client_cert && config->ur_client_key)
+    {
+        warn_msg("Authentication failed. Retrying unauthenticated.");
+        free_post_state(post_state);
+        post_state = new_post_state(flags);
+
+        post_string_as_form_data(post_state, config->ur_url, "application/json",
+                         headers, json);
+
+    }
 
     return post_state;
 }
@@ -117,7 +117,7 @@ struct post_state *ureport_attach_rhbz(const char *bthash, int rhbz_bug_id,
 {
     char *str_bug_id = xasprintf("%d", rhbz_bug_id);
     char *json_attachment = new_json_attachment(bthash, "RHBZ", str_bug_id);
-    struct post_state *post_state = ureport_attach(json_attachment, config);
+    struct post_state *post_state = post_ureport(json_attachment, config);
     free(str_bug_id);
     free(json_attachment);
 
@@ -128,7 +128,7 @@ struct post_state *ureport_attach_email(const char *bthash, const char *email,
                                        struct ureport_server_config *config)
 {
     char *json_attachment = new_json_attachment(bthash, "email", email);
-    struct post_state *post_state = ureport_attach(json_attachment, config);
+    struct post_state *post_state = post_ureport(json_attachment, config);
     free(json_attachment);
 
     return post_state;
