@@ -417,7 +417,11 @@ bool check_problem_rating_usability(const event_config_t *cfg,
     const long rating = strtol(rating_str, &endptr, 10);
     if (errno != 0 || endptr == rating_str || *endptr != '\0')
     {
-        tmp_desc = xasprintf("%s '%s'.", _("Reporting disabled because the rating does not contain a number."), rating_str);
+        tmp_desc = xasprintf(
+                _("The problem cannot be reported due to an invalid data. " \
+                  "'%s' file does not contain a number."),
+                FILENAME_RATING);
+
         tmp_detail = xstrdup(_("Please report this problem to ABRT project developers."));
 
         result = false;
