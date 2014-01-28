@@ -408,26 +408,6 @@ static int run_report_editor(problem_data_t *problem_data)
 }
 
 /**
- * Asks user for a text response.
- * @param question
- *  Question displayed to user.
- * @param result
- *  Output array.
- * @param result_size
- *  Maximum byte count to be written.
- */
-static void read_from_stdin(const char *question, char *result, int result_size)
-{
-    assert(result_size > 1);
-    printf("%s", question);
-    fflush(NULL);
-    if (NULL == fgets(result, result_size, stdin))
-        result[0] = '\0';
-    // Remove the trailing newline
-    strchrnul(result, '\n')[0] = '\0';
-}
-
-/**
  *  Asks user for missing information
  */
 static void ask_for_missing_settings(const char *event_name)
@@ -731,17 +711,15 @@ static int choose_number_from_range(unsigned min, unsigned max, const char *mess
     unsigned ii;
     for (ii = 0; ii < 3; ++ii)
     {
-        char answer[16];
-
-        read_from_stdin(message, answer, sizeof(answer));
-        if (!*answer)
-            continue;
+        char *answer = ask(message);
 
         picked = xatou(answer);
         if (min <= picked && picked <= max)
             return picked;
 
-        printf("%s (%u - %u)\n", _("You have chosen number out of range"), min, max);
+        char *msg = xasprintf("%s (%u - %u)\n", _("You have chosen number out of range"), min, max);
+        alert(msg);
+        free(msg);
     }
 
     error_msg_and_die(_("Invalid input, exiting."));
