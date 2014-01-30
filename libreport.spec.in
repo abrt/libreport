@@ -644,6 +644,27 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Thu Jan 30 2014 Jakub Filak <jfilak@redhat.com> 2.1.12-1
+- fix loading of the user list of ignored words
+- report-cli: use the Client API for communication to user
+- add more forbidden words
+- a better message for invalid data in backtrace_rating
+- config dialog: remove ';' placed just behind if statement
+- add SSLClientAuth to ureport dbus config interface
+- ureport: add support for client-side authentication
+- Export plugin config dir in pkg-config
+- spec: install Java workflows
+- add Java reporting workflows
+- spec: install the dbus configuration interfaces
+- define DBus config interfaces for all plugins
+- make: add libreport workflow fedora to dist files
+- spec: install libreport type workflows
+- add a workflow for libreport type problems
+- configure: escape square braces
+- configure: remove all -Werror from O0CFLAGS
+- wizard: do not use deprecated gtk3 API
+- workflow_RHELvmcore: run analyze_VMcore too
+
 * Wed Jan 08 2014 Jakub Filak <jfilak@redhat.com> 2.1.11-1
 - Update translations
 - map_string_t: fix overflow detection in "to int conversion"
