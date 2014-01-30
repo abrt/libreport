@@ -18,17 +18,28 @@
 #include "internal_libreport.h"
 #include <augeas.h>
 
+#define BASE_DIR_FOR_USER_CONFIG_FILE "abrt/settings/"
+
 static map_string_t *user_settings;
 static char *conf_path;
 
-static char *get_conf_path(const char *name)
+static char *get_user_config_file_path(const char *name, const char *suffix)
 {
     char *s, *conf;
 
-    s = xasprintf("abrt/settings/%s.conf", name);
+    if (suffix != NULL)
+        s = xasprintf(BASE_DIR_FOR_USER_CONFIG_FILE"%s.%s", name, suffix);
+    else
+        s = xasprintf(BASE_DIR_FOR_USER_CONFIG_FILE"%s", name);
+
     conf = concat_path_file(g_get_user_config_dir(), s);
     free(s);
     return conf;
+}
+
+static char *get_conf_path(const char *name)
+{
+    return get_user_config_file_path(name, "conf");
 }
 
 bool save_app_conf_file(const char* application_name, map_string_t *settings)
@@ -103,8 +114,7 @@ GList *load_words_from_file(const char* filename)
     GList *words_list = NULL;
     GList *file_list = NULL;
     file_list = g_list_prepend(file_list, concat_path_file(CONF_DIR, filename));
-    // get_conf_path adds .conf suffix, so we need to either change it or use it like this:
-    file_list = g_list_prepend(file_list, get_conf_path("forbidden_words"));
+    file_list = g_list_prepend(file_list, get_user_config_file_path(filename, /*don't append suffix*/NULL));
     GList *file_list_cur = file_list;
 
     while(file_list_cur)
