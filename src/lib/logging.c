@@ -143,6 +143,7 @@ static void log_handler(int level,
                             "CODE_FILE=%s", file,
                             "CODE_LINE=%d", line,
                             "CODE_FUNC=%s", func,
+                            "SYSLOG_FACILITY=1",
                             NULL);
     }
 }
