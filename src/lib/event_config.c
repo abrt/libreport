@@ -229,7 +229,15 @@ GHashTable *load_event_config_data(void)
         event_files = g_list_delete_link(event_files, event_files);
     }
 
-    load_config_files(EVENTS_DIR);
+    /* EVENTS_DIR      -> /usr/share/libreport/events/$EVENT_NAME.xml
+     *   - event xml definition files
+     *
+     * EVENTS_CONF_DIR -> /etc/libreport/events/$EVENT_NAME.conf
+     *   - default values for xml definitions
+     *
+     * https://fedorahosted.org/abrt/wiki/AbrtConfiguration#Adjustingpluginconfiguration
+     */
+    load_config_files(EVENTS_CONF_DIR);
 
     char *cachedir;
     cachedir = concat_path_file(g_get_user_cache_dir(), "abrt/events");

@@ -20,7 +20,10 @@ module Libreport =
     let lns = ( comment | empty | option )*
 
     let filter = (incl "/etc/libreport/plugins/*")
+               . (incl "/etc/libreport/events/*")
                . (incl (Sys.getenv("HOME") . "/.config/abrt/settings/*"))
+               . (incl (Sys.getenv("XDG_CACHE_HOME") . "/abrt/events/*"))
+               . (incl (Sys.getenv("HOME") . "/.cache/abrt/events/*"))
                . Util.stdexcl
 
     let xfm = transform lns filter
