@@ -1,0 +1,60 @@
+# -*- Autotest -*-
+
+AT_BANNER([XML definitions])
+
+## ------------------------ ##
+## region_specific_language ##
+## ------------------------ ##
+
+AT_TESTFUN([region_specific_language],
+[[
+#include "internal_libreport.h"
+#include <locale.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+
+int main(void)
+{
+    g_verbose = 3;
+
+    setlocale(LC_ALL, "zh_CN");
+
+    {
+        event_config_t *event_config = new_event_config("event_test_definition");
+        load_event_description_from_file(event_config, "../../conf/event_test_definition.xml");
+        assert(strcmp("screen name", ec_get_screen_name(event_config)) == 0);
+        assert(strcmp("description", ec_get_description(event_config)) == 0);
+        assert(strcmp("long description", ec_get_long_desc(event_config)) == 0);
+
+        assert(event_config->options != NULL || !"At least one event option was loaded");
+
+        /* typeof(event_config->options) == (GList *) */
+        event_option_t *event_option = (event_option_t *)event_config->options->data;
+        assert(strcmp("label", event_option->eo_label) == 0);
+        assert(strcmp("note_html", event_option->eo_note_html) == 0);
+
+        /* Option description is not supported yet
+        assert(strcmp("description", event_option->eo_description) == 0);
+        */
+
+        free_event_config(event_config);
+    }
+
+    {
+        workflow_t *workflow = new_workflow("workflow_test_definition");
+        load_workflow_description_from_file(workflow, "../../conf/workflow_test_definition.xml");
+
+        assert(strcmp("screen name", wf_get_screen_name(workflow)) == 0);
+        assert(strcmp("description", wf_get_description(workflow)) == 0);
+
+        /* Long description is not supported yet
+        assert(strcmp("long description", wf_get_long_desc(workflow)) == 0);
+         */
+
+        free_workflow(workflow);
+    }
+
+    return EXIT_SUCCESS;
+}
+]])
