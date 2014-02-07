@@ -28,7 +28,7 @@ p_problem_data_dealloc(PyObject *pself)
     p_problem_data *self = (p_problem_data*)pself;
     problem_data_free(self->cd);
     self->cd = NULL;
-    self->ob_type->tp_free(pself);
+    Py_TYPE(self)->tp_free(pself);
 }
 
 static PyObject *
@@ -40,18 +40,6 @@ p_problem_data_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
     return (PyObject *)self;
 }
 
-//static int
-//p_problem_data_init(PyObject *pself, PyObject *args, PyObject *kwds)
-//{
-//    return 0;
-//}
-
-/*
-void problem_data_add(problem_data_t *problem_data,
-                const char *name,
-                const char *content,
-                unsigned flags);
-*/
 static PyObject *p_problem_data_add(PyObject *pself, PyObject *args)
 {
     p_problem_data *self = (p_problem_data*)pself;
@@ -152,7 +140,7 @@ static PyMethodDef p_problem_data_methods[] = {
 };
 
 PyTypeObject p_problem_data_type = {
-    PyObject_HEAD_INIT(NULL)
+    PyVarObject_HEAD_INIT(NULL, 0)
     .tp_name      = "report.problem_data",
     .tp_basicsize = sizeof(p_problem_data),
     .tp_flags     = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,

@@ -41,7 +41,7 @@ p_dump_dir_dealloc(PyObject *pself)
     p_dump_dir *self = (p_dump_dir*)pself;
     dd_close(self->dd);
     self->dd = NULL;
-    self->ob_type->tp_free(pself);
+    Py_TYPE(self)->tp_free(pself);
 }
 
 //static int
@@ -221,11 +221,15 @@ static int p_dd_is_non_null(PyObject *pself)
     return self->dd != NULL;
 }
 static PyNumberMethods p_dump_dir_number_methods = {
+#if PY_MAJOR_VERSION >= 3
+    .nb_bool = p_dd_is_non_null,
+#else
     .nb_nonzero = p_dd_is_non_null,
+#endif
 };
 
 PyTypeObject p_dump_dir_type = {
-    PyObject_HEAD_INIT(NULL)
+    PyVarObject_HEAD_INIT(NULL, 0)
     .tp_name      = "report.dump_dir",
     .tp_basicsize = sizeof(p_dump_dir),
     /* Py_TPFLAGS_BASETYPE means "can be subtyped": */

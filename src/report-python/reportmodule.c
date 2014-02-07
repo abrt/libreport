@@ -21,6 +21,23 @@
 #include "common.h"
 #include "internal_libreport.h"
 
+#if PY_MAJOR_VERSION >= 3
+  #define MOD_ERROR_VAL NULL
+  #define MOD_SUCCESS_VAL(val) val
+  #define MOD_INIT PyMODINIT_FUNC PyInit__py3report(void)
+  #define MOD_DEF(ob, name, doc, methods) \
+            static struct PyModuleDef moduledef = { \
+                          PyModuleDef_HEAD_INIT, name, doc, -1, methods, }; \
+          ob = PyModule_Create(&moduledef);
+#else
+  #define MOD_ERROR_VAL
+  #define MOD_SUCCESS_VAL(val)
+  #define MOD_INIT void init_pyreport(void)
+  #define MOD_DEF(ob, name, doc, methods) \
+            ob = Py_InitModule3(name, methods, doc);
+#endif
+
+static char module_doc[] = "Python wrapper for libreport";
 
 PyObject *ReportError;
 
@@ -37,34 +54,30 @@ static PyMethodDef module_methods[] = {
     { NULL }
 };
 
-#ifndef PyMODINIT_FUNC /* declarations for DLL import/export */
-#define PyMODINIT_FUNC void
-#endif
-PyMODINIT_FUNC
-init_pyreport(void)
+MOD_INIT
 {
     if (PyType_Ready(&p_problem_data_type) < 0)
     {
         printf("PyType_Ready(&p_problem_data_type) < 0\n");
-        return;
+        return MOD_ERROR_VAL;
     }
     if (PyType_Ready(&p_dump_dir_type) < 0)
     {
         printf("PyType_Ready(&p_dump_dir_type) < 0\n");
-        return;
+        return MOD_ERROR_VAL;
     }
     if (PyType_Ready(&p_run_event_state_type) < 0)
     {
         printf("PyType_Ready(&p_run_event_state_type) < 0\n");
-        return;
+        return MOD_ERROR_VAL;
     }
 
-    PyObject *m = Py_InitModule("_pyreport", module_methods);
-    //m = Py_InitModule3("_pyreport", module_methods, "Python wrapper for libreport");
-    if (!m)
+
+    PyObject *m;
+    MOD_DEF(m, "_pyreport", module_doc, module_methods);
+    if (m == NULL)
     {
-        printf("m == NULL\n");
-        return;
+        return MOD_ERROR_VAL;
     }
 
     /* init the exception object */
@@ -100,4 +113,6 @@ init_pyreport(void)
     PyModule_AddObject(m, "LIBREPORT_RUN_NEWT"   , Py_BuildValue("i", LIBREPORT_RUN_NEWT  ));
     PyModule_AddObject(m, "EXIT_CANCEL_BY_USER", Py_BuildValue("i", EXIT_CANCEL_BY_USER));
     PyModule_AddObject(m, "EXIT_STOP_EVENT_RUN", Py_BuildValue("i", EXIT_STOP_EVENT_RUN));
+
+    return MOD_SUCCESS_VAL(m);
 }
