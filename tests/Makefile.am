@@ -37,7 +37,8 @@ TESTSUITE_AT = \
   configuration_files.at \
   reported_to.at \
   make_description.at \
-  libreport_types.at
+  libreport_types.at \
+  xml_definition.at
 
 EXTRA_DIST += $(TESTSUITE_AT)
 TESTSUITE = $(srcdir)/testsuite
