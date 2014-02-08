@@ -165,7 +165,8 @@ void load_workflow_description_from_file(workflow_t *workflow, const char* filen
 {
     log_notice("loading workflow: '%s'", filename);
     struct my_parse_data parse_data = { workflow, NULL, NULL, 0, 0, 0};
-    parse_data.cur_locale = setlocale(LC_ALL, NULL);
+    parse_data.cur_locale = xstrdup(setlocale(LC_ALL, NULL));
+    strchrnul(parse_data.cur_locale, '.')[0] = '\0';
 
     GMarkupParser parser;
     memset(&parser, 0, sizeof(parser)); /* just in case */
@@ -194,4 +195,5 @@ void load_workflow_description_from_file(workflow_t *workflow, const char* filen
     g_markup_parse_context_free(context);
 
     free(parse_data.attribute_lang); /* just in case */
+    free(parse_data.cur_locale);
 }
