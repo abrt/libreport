@@ -22,7 +22,7 @@
 struct my_parse_data
 {
     workflow_t *workflow;
-    const char *cur_locale;
+    char *cur_locale;
     char *attribute_lang;
     bool in_event_list;
     bool exact_name;

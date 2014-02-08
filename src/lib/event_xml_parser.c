@@ -60,7 +60,7 @@ struct my_parse_data
 {
     parsed_event_config_t event_config;
     parsed_event_option_t cur_option;
-    const char *cur_locale;
+    char *cur_locale;
     char *attribute_lang;
     bool in_adv_option;
 };
@@ -511,7 +511,8 @@ void load_event_description_from_file(event_config_t *event_config, const char* 
 {
     log_notice("loading event: '%s'", filename);
     struct my_parse_data parse_data = { {event_config, false, false, false}, {NULL, false, false}, NULL, NULL };
-    parse_data.cur_locale = setlocale(LC_ALL, NULL);
+    parse_data.cur_locale = xstrdup(setlocale(LC_ALL, NULL));
+    strchrnul(parse_data.cur_locale, '.')[0] = '\0';
 
     GMarkupParser parser;
     memset(&parser, 0, sizeof(parser)); /* just in case */
@@ -541,4 +542,5 @@ void load_event_description_from_file(event_config_t *event_config, const char* 
 
     consume_cur_option(&parse_data); /* just in case */
     free(parse_data.attribute_lang); /* just in case */
+    free(parse_data.cur_locale);
 }
