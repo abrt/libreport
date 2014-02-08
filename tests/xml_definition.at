@@ -55,6 +55,85 @@ int main(void)
         free_workflow(workflow);
     }
 
+    setlocale(LC_ALL, "zh_CN.utf8");
+
+    {
+        event_config_t *event_config = new_event_config("event_test_definition");
+        load_event_description_from_file(event_config, "../../conf/event_test_definition.xml");
+        assert(strcmp("screen name", ec_get_screen_name(event_config)) == 0);
+        assert(strcmp("description", ec_get_description(event_config)) == 0);
+        assert(strcmp("long description", ec_get_long_desc(event_config)) == 0);
+
+        assert(event_config->options != NULL || !"At least one event option was loaded");
+
+        /* typeof(event_config->options) == (GList *) */
+        event_option_t *event_option = (event_option_t *)event_config->options->data;
+        assert(strcmp("label", event_option->eo_label) == 0);
+        assert(strcmp("note_html", event_option->eo_note_html) == 0);
+
+        /* Option description is not supported yet
+        assert(strcmp("description", event_option->eo_description) == 0);
+        */
+
+        free_event_config(event_config);
+    }
+
+    {
+        workflow_t *workflow = new_workflow("workflow_test_definition");
+        load_workflow_description_from_file(workflow, "../../conf/workflow_test_definition.xml");
+
+        assert(strcmp("screen name", wf_get_screen_name(workflow)) == 0);
+        assert(strcmp("description", wf_get_description(workflow)) == 0);
+
+        /* Long description is not supported yet
+        assert(strcmp("long description", wf_get_long_desc(workflow)) == 0);
+         */
+
+        free_workflow(workflow);
+    }
+
+    /*
+       XML definitions does not contain strings for zh_HK but there are strings
+       for zh_CN and followed by zh_TW. libreport should you string for zh_TW
+       and these strings are prefixed with "bad " string.
+     */
+    setlocale(LC_ALL, "zh_HK");
+
+    {
+        event_config_t *event_config = new_event_config("event_test_definition");
+        load_event_description_from_file(event_config, "../../conf/event_test_definition.xml");
+        assert(strcmp("bad screen name", ec_get_screen_name(event_config)) == 0);
+        assert(strcmp("bad description", ec_get_description(event_config)) == 0);
+        assert(strcmp("bad long description", ec_get_long_desc(event_config)) == 0);
+
+        assert(event_config->options != NULL || !"At least one event option was loaded");
+
+        /* typeof(event_config->options) == (GList *) */
+        event_option_t *event_option = (event_option_t *)event_config->options->data;
+        assert(strcmp("bad label", event_option->eo_label) == 0);
+        assert(strcmp("bad note_html", event_option->eo_note_html) == 0);
+
+        /* Option description is not supported yet
+        assert(strcmp("description", event_option->eo_description) == 0);
+        */
+
+        free_event_config(event_config);
+    }
+
+    {
+        workflow_t *workflow = new_workflow("workflow_test_definition");
+        load_workflow_description_from_file(workflow, "../../conf/workflow_test_definition.xml");
+
+        assert(strcmp("bad screen name", wf_get_screen_name(workflow)) == 0);
+        assert(strcmp("bad description", wf_get_description(workflow)) == 0);
+
+        /* Long description is not supported yet
+        assert(strcmp("bad long description", wf_get_long_desc(workflow)) == 0);
+         */
+
+        free_workflow(workflow);
+    }
+
     return EXIT_SUCCESS;
 }
 ]])
