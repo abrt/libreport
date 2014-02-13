@@ -12,7 +12,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-from _pyreport import *
+try:
+    from _pyreport import *
+except ImportError:
+    from report._py3report import *
+
 from report.io import TextIO, GTKIO, NewtIO
 
 #Compatibility with report package:
