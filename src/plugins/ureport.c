@@ -353,7 +353,7 @@ static struct ureport_server_response *get_server_response(post_state_t *post_st
 
     if (is_error(json))
     {
-        error_msg(_("Unable to parse response from ureport server at '%s"), config->ur_url);
+        error_msg(_("Unable to parse response from ureport server at '%s'"), config->ur_url);
         log_notice("%s", post_state->body);
         json_object_put(json);
         return NULL;
