@@ -6,6 +6,7 @@
 # antoniomontag <antonio.montagnani@alice.it>, 2013
 # Antonio Trande (sagitter), 2011
 # Francesco D'Aluisio <fdaluisio@fedoraproject.org>, 2011,2013
+# fvalen <fvalen@redhat.com>, 2014
 # fvalen <fvalen@redhat.com>, 2011, 2012
 # Luigi Votta <lewis41@fedoraproject.org>, 2013
 # Mauro Gaggiotti <mauro.gaggiotti@gmail.com>, 2012
@@ -16,8 +17,8 @@ msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-01-07 22:48+0100\n"
-"PO-Revision-Date: 2014-01-07 21:48+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"PO-Revision-Date: 2014-02-13 05:28+0000\n"
+"Last-Translator: fvalen <fvalen@redhat.com>\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/fedora/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -175,7 +176,7 @@ msgstr "Selezionare un evento da lanciare:"
 
 #: ../src/cli/cli-report.c:876
 msgid "Select a workflow to run: "
-msgstr ""
+msgstr "Seleziona un flusso di lavoro da eseguire:"
 
 #: ../src/client-python/debuginfo.py:87
 msgid "Extracting cpio from {0}"
@@ -282,17 +283,17 @@ msgstr "Processo di download cancellato dall'utente"
 #: ../src/client-python/debuginfo.py:434
 msgid ""
 "Warning: Not enough free space in tmp dir '{0}' ({1:.2f}Mb left). Continue?"
-msgstr ""
+msgstr "Attenzione: Spazio disponibile non sufficiente nella directory tmp '{0}' ({1:.2f}Mb left). Continuare?"
 
 #: ../src/client-python/debuginfo.py:443
 msgid ""
 "Warning: Not enough free space in cache dir '{0}' ({1:.2f}Mb left). "
 "Continue?"
-msgstr ""
+msgstr "Attenzione: Spazio disponibile non sufficiente nella directory cache '{0}' ({1:.2f}Mb left). Continuare?"
 
 #: ../src/client-python/debuginfo.py:469
 msgid "Cannot copy file '{0}': {1}"
-msgstr ""
+msgstr "Impossibile copiare il file '{0}': {1}"
 
 #: ../src/client-python/debuginfo.py:487
 msgid "Downloading package {0} failed"
@@ -317,11 +318,11 @@ msgstr "Impossibile rimuovere %s, probabilmente pesenta un log d'errore"
 
 #: ../src/gtk-helpers/ask_dialogs.c:82
 msgid "_Yes"
-msgstr ""
+msgstr "_Si"
 
 #: ../src/gtk-helpers/ask_dialogs.c:83
 msgid "_No"
-msgstr ""
+msgstr "_No"
 
 #: ../src/gtk-helpers/ask_dialogs.c:89
 msgid "Don't ask me again"
@@ -338,7 +339,6 @@ msgstr "Configurazione"
 
 #. we can't use this, because we want the workflows first and hashtable
 #. * doesn't return the items in the order they were added
-#. 
 #. g_hash_table_foreach(configs, (GHFunc)add_config_tabs, config_nb);
 #: ../src/gtk-helpers/config_dialog.c:297
 #: ../src/gtk-helpers/config_dialog.c:299
@@ -358,7 +358,7 @@ msgstr "C_onfigura"
 
 #: ../src/gtk-helpers/config_dialog.c:309 ../src/gui-wizard-gtk/wizard.c:3312
 msgid "_Close"
-msgstr ""
+msgstr "_Chiudi"
 
 #: ../src/gtk-helpers/event_config_dialog.c:136
 msgid "Show password"
@@ -381,13 +381,13 @@ msgstr "Il Servizio Secret non è disponibile, le impostazioni non saranno salva
 #: ../src/gtk-helpers/workflow_config_dialog.c:76
 #: ../src/gui-wizard-gtk/wizard.c:769 ../src/gui-wizard-gtk/wizard.c:2913
 msgid "_Cancel"
-msgstr ""
+msgstr "_Cancella"
 
 #: ../src/gtk-helpers/event_config_dialog.c:301
 #: ../src/gtk-helpers/event_config_dialog.c:353
 #: ../src/gtk-helpers/workflow_config_dialog.c:78
 msgid "_OK"
-msgstr ""
+msgstr "_OK"
 
 #: ../src/gtk-helpers/secrets.c:171
 #, c-format
@@ -444,7 +444,7 @@ msgid ""
 "%s is not properly configured. You can configure it now or provide the required information later.\n"
 "\n"
 "Read more about the configuration at: https://fedorahosted.org/abrt/wiki/AbrtConfiguration"
-msgstr ""
+msgstr "%s non è configurato correttamente. È possibile configurarlo ora o fornire più avanti le informazioni necessarie.\n\nMaggiori informazioni sulla configurazione sono disponibili in: https://fedorahosted.org/abrt/wiki/AbrtConfiguration"
 
 #: ../src/gui-wizard-gtk/wizard.c:304
 #, c-format
@@ -452,7 +452,7 @@ msgid ""
 "<b>%s</b> is not properly configured. You can configure it now or provide the required information later.\n"
 "\n"
 "<a href=\"https://fedorahosted.org/abrt/wiki/AbrtConfiguration\">Read more about the configuration</a>"
-msgstr ""
+msgstr "<b>%s</b> non è configurato correttamente. È possibile configurarlo ora o fornire più avanti le informazioni necessarie.\n\n<a href=\"https://fedorahosted.org/abrt/wiki/AbrtConfiguration\">Per maggiori informazioni sulla configurazione</a>"
 
 #: ../src/gui-wizard-gtk/wizard.c:320
 #, c-format
@@ -472,7 +472,7 @@ msgstr "Visualizza/modifica un file di testo"
 
 #: ../src/gui-wizard-gtk/wizard.c:768
 msgid "_Save"
-msgstr ""
+msgstr "_Salva"
 
 #: ../src/gui-wizard-gtk/wizard.c:987
 msgid ""
@@ -575,7 +575,7 @@ msgstr "Questo problema non dovrebbe essere riportato (è probabile che sia un p
 
 #: ../src/gui-wizard-gtk/wizard.c:2914
 msgid "_Open"
-msgstr ""
+msgstr "_Apri"
 
 #: ../src/gui-wizard-gtk/wizard.c:2936
 #, c-format
@@ -638,7 +638,7 @@ msgstr "Elaborazione eseguita."
 
 #: ../src/gui-wizard-gtk/wizard.c:3314
 msgid "_Stop"
-msgstr ""
+msgstr "_Stop"
 
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3317
@@ -648,7 +648,7 @@ msgstr "Carica per analisi"
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3320
 msgid "_Forward"
-msgstr ""
+msgstr "_Avanti"
 
 #: ../src/gui-wizard-gtk/wizard.c:3409
 msgid ""
@@ -659,21 +659,21 @@ msgstr "Per abilitare la funzionalità di registrazione il pacchetto recordmydes
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
 msgid "Possible sensitive data detected"
-msgstr ""
+msgstr "Rilevati possibili dati sensibili"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Restrict access to the report"
-msgstr ""
+msgstr "Limita l'accesso al report"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid ""
 "No one except Red Hat employees will be allowed to see the report with "
 "restricted access (not even you)"
-msgstr ""
+msgstr "Ad eccezione del personale di Red Hat, nessuno è in grado di visualizzare il report con un accesso limitato (neanche tu)"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid "Read more about reports with restricted access"
-msgstr ""
+msgstr "Ulteriori informazioni sui report con accesso limitato"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid ""
@@ -897,7 +897,7 @@ msgstr "Un corretto debuginfo è probabilmente mancante o il coredump è corrott
 
 #: ../src/lib/make_descr.c:110
 msgid "Reported:"
-msgstr ""
+msgstr "Riportato:"
 
 #: ../src/lib/parse_options.c:58
 msgid "Usage: "
@@ -1125,7 +1125,7 @@ msgstr "Non si riesce a generare la descrizione dello stacktrace (nessuna thread
 msgid ""
 "Warning, private ticket groups already specified as cmdline argument, "
 "ignoring the env variable and configuration"
-msgstr ""
+msgstr "Attenzione, i gruppi ticket privato sono già stati specificati come argomento di cmdline, la configurazione e la variabile env verranno ignorati"
 
 #: ../src/plugins/reporter-bugzilla.c:775
 #: ../src/plugins/reporter-rhtsupport.c:178
@@ -1234,7 +1234,7 @@ msgstr "Stampa BUG_ID che ha dato DUPHASH"
 
 #: ../src/plugins/reporter-bugzilla.c:938
 msgid "A name of bug tracker for an additional URL from 'reported_to'"
-msgstr ""
+msgstr "Un nome del bug tracker per un URL aggiuntivo di 'reported_to'"
 
 #: ../src/plugins/reporter-bugzilla.c:939
 msgid "Restrict access to this group only"
@@ -1308,7 +1308,7 @@ msgstr "Non riuscita la creazione di un nuovo bug"
 #: ../src/plugins/reporter-bugzilla.c:1263
 #, c-format
 msgid "Adding External URL to bug %i"
-msgstr ""
+msgstr "Aggiunta URL esterno al bug %i"
 
 #: ../src/plugins/reporter-bugzilla.c:1269
 #, c-format
@@ -1371,17 +1371,17 @@ msgstr "File di configurazione"
 msgid ""
 "Email address of %s was not specified. Would you like to do so now? If not, "
 "'%s' is to be used"
-msgstr ""
+msgstr "Non è stato specificato l'indirizzo email di %s. Desideri specificarlo ora? In caso contrario usare '%s'"
 
 #: ../src/plugins/reporter-mailx.c:66
 #, c-format
 msgid "Please, type email address of %s:"
-msgstr ""
+msgstr "Digitare l'indirizzo email di %s:"
 
 #: ../src/plugins/reporter-mailx.c:73
 #, c-format
 msgid "Can't continue without email address of %s"
-msgstr ""
+msgstr "Impossibile continuare senza l'indirizzo email di %s"
 
 #: ../src/plugins/reporter-mailx.c:135
 msgid "Sending an email..."
@@ -1465,7 +1465,7 @@ msgstr "Carica i FILE [sul caso con questo ID]"
 
 #: ../src/plugins/reporter-rhtsupport.c:285
 msgid "Login is not provided by configuration. Please enter your RHTS login:"
-msgstr ""
+msgstr "Il login non è incluso nella configurazione. Inserisci il tuo login RHTS:"
 
 #: ../src/plugins/reporter-rhtsupport.c:341
 #, c-format
@@ -1484,11 +1484,11 @@ msgstr "Compressione dati in corso"
 
 #: ../src/plugins/reporter-rhtsupport.c:413
 msgid "Can't create a temporary directory in "
-msgstr ""
+msgstr "Impossibile creare una directory temporanea in"
 
 #: ../src/plugins/reporter-rhtsupport.c:422
 msgid "Can't create temporary file in "
-msgstr ""
+msgstr "Impossibile creare il file temporaneo in"
 
 #. Check for hints and show them if we have something
 #: ../src/plugins/reporter-rhtsupport.c:431
@@ -1529,11 +1529,11 @@ msgstr "Aggiornmenti che possono essere utili:"
 
 #: ../src/plugins/reporter-upload.c:30
 msgid "Can't continue without URL"
-msgstr ""
+msgstr "Impossibile continuare senza URL"
 
 #: ../src/plugins/reporter-upload.c:61
 msgid "Upload URL is not provided by configuration. Please enter upload URL:"
-msgstr ""
+msgstr "Carica URL non è fornito dalla configurazione. Inserire carica URL: "
 
 #. success
 #: ../src/plugins/reporter-upload.c:159
@@ -1547,7 +1547,7 @@ msgid ""
 "\n"
 "Uploads compressed tarball of problem directory DIR to URL.\n"
 "If URL is not specified, creates tarball in "
-msgstr ""
+msgstr "& [-v] -d DIR [-c CONFFILE] [-u URL]\n\nCarica il tarball compresso della directory che descrive il problema DIR su URL.\nSe l'URL non è stato specificato creare il tarball in "
 
 #: ../src/plugins/reporter-upload.c:229
 msgid "Base URL to upload to"
@@ -1788,12 +1788,12 @@ msgstr "Il server in '%s' correntemente, non può gestire la richiesta (errore 5
 #: ../src/plugins/ureport.c:275
 #, c-format
 msgid "Unexpected HTTP response from '%s': %d"
-msgstr ""
+msgstr "Risposta HTTP non prevista da '%s': %d"
 
 #: ../src/plugins/ureport.c:284
 #, c-format
 msgid "Unable to parse response from ureport server at '%s"
-msgstr ""
+msgstr "Impossibile analizzare la risposta dal server ureport in'%s'"
 
 #: ../src/plugins/ureport.c:294
 #, c-format
@@ -1822,30 +1822,30 @@ msgstr "Permetti connessione insicura al server ureport"
 
 #: ../src/plugins/ureport.c:381
 msgid "bthash of uReport to attach (conflicts with -A)"
-msgstr ""
+msgstr "bthash di uReport da allegare (in conflitto con -A)"
 
 #: ../src/plugins/ureport.c:383
 msgid "attach to a bthash from reported_to (conflicts with -a)"
-msgstr ""
+msgstr "allega a un bthash di reported_to (in conflitto con -a)"
 
 #: ../src/plugins/ureport.c:385
 msgid "contact e-mail address (requires -a|-A, conflicts with -E)"
-msgstr ""
+msgstr "indirizzo e-mail (ha bisogno di -a|-A, in conflitto con -E)"
 
 #: ../src/plugins/ureport.c:387
 msgid ""
 "contact e-mail address from environment or configuration file (requires "
 "-a|-A, conflicts with -e)"
-msgstr ""
+msgstr "indirizzo e-mail dell'ambiente o file di configurazione (necessita di -a|-A, in conflitto con -e)"
 
 #: ../src/plugins/ureport.c:389
 msgid "attach RHBZ bug (requires -a|-A, conflicts with -B)"
-msgstr ""
+msgstr "allega bug RHBZ (necessita di -a|-A, in conflitto con -B)"
 
 #: ../src/plugins/ureport.c:391
 msgid ""
 "attach last RHBZ bug from reported_to (requires -a|-A, conflicts with -b)"
-msgstr ""
+msgstr "allega ultimo bug RHBZ di reported_to (necessita di -a|-A, in conflitto con -b)"
 
 #: ../src/plugins/ureport.c:396
 msgid ""
@@ -1854,7 +1854,7 @@ msgid ""
 "Upload micro report or add an attachment to a micro report\n"
 "\n"
 "Reads the default configuration from "
-msgstr ""
+msgstr "& [-v] [-c FILE] [-u URL] [-k] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n\nCarica un micro report o aggiunge un allegato ad un micro report\n\nLegge la configurazione predefinita da "
 
 #: ../src/plugins/ureport.c:440
 msgid "This problem does not have an uReport assigned."
@@ -1878,11 +1878,11 @@ msgstr "Impossibile trovare l'ID del bug nell'URL di bugzilla '%s'"
 msgid ""
 "Neither environment variable 'uReport_ContactEmail' nor configuration option"
 " 'ContactEmail' is set"
-msgstr ""
+msgstr "La variabile dell'ambiente 'uReport_ContactEmail' e l'opzione di configurazione 'ContactEmail' non sono stati impostati"
 
 #: ../src/plugins/ureport.c:481
 msgid "You need to specify bug ID, contact email or both"
-msgstr ""
+msgstr "Specificare l'ID del bug, l'email o entrambi"
 
 #: ../src/plugins/ureport.c:499
 msgid "You need to specify bthash of the uReport to attach."
@@ -1957,16 +1957,16 @@ msgstr "Processare il report usando la infrastruttura di Fedora"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:1
 msgid "Report a bug to Red Hat Support Tool"
-msgstr ""
+msgstr "Inviare un bug al Red Hat Support Tool"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:2
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:2
 msgid "Process the report using the Red Hat infrastructure"
-msgstr ""
+msgstr "Processare il report usando l'infrastruttura di Red Hat"
 
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:1
 msgid "Report a bug to Red Hat Bugzilla"
-msgstr ""
+msgstr "Inviare un bug al Red Hat Bugzilla"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
 #: ../src/workflows/workflow_Upload.xml.in.h:1
@@ -2012,7 +2012,7 @@ msgstr "Processa il problema del server X utilizzando l'infrastruttura di Fedora
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:1
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:1
 msgid "Report to Red Hat Customer Portal"
-msgstr ""
+msgstr "Segnalare al Portale Clienti di Red Hat"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
@@ -2045,4 +2045,4 @@ msgstr "Analizza il problema del server X usando l'infrastruttura di Red Hat"
 #: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:1
 msgid "Report to Red Hat Bugzilla"
-msgstr ""
+msgstr "Segnala a Red Hat Bugzilla"

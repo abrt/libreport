@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Geert Warrink <geert.warrink@onsnet.nu>, 2011-2013
+# Geert Warrink <geert.warrink@onsnet.nu>, 2011-2014
 # Richard E. van der Luit <nippur@fedoraproject.org>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-01-07 22:48+0100\n"
-"PO-Revision-Date: 2014-01-07 21:48+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"PO-Revision-Date: 2014-02-16 19:00+0000\n"
+"Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/fedora/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -169,7 +169,7 @@ msgstr "Selecteer een uit te voeren gebeurtenis:"
 
 #: ../src/cli/cli-report.c:876
 msgid "Select a workflow to run: "
-msgstr ""
+msgstr "Selecteer een uit te voeren verwerkvolgorde:"
 
 #: ../src/client-python/debuginfo.py:87
 msgid "Extracting cpio from {0}"
@@ -332,7 +332,6 @@ msgstr "Configuratie"
 
 #. we can't use this, because we want the workflows first and hashtable
 #. * doesn't return the items in the order they were added
-#. 
 #. g_hash_table_foreach(configs, (GHFunc)add_config_tabs, config_nb);
 #: ../src/gtk-helpers/config_dialog.c:297
 #: ../src/gtk-helpers/config_dialog.c:299
@@ -446,7 +445,7 @@ msgid ""
 "<b>%s</b> is not properly configured. You can configure it now or provide the required information later.\n"
 "\n"
 "<a href=\"https://fedorahosted.org/abrt/wiki/AbrtConfiguration\">Read more about the configuration</a>"
-msgstr "<b>%s</b> is niet jiost geconfigureerd. Je kunt het nu configureren of de vereiste informatie later aanbieden.\n\n<a href=\"https://fedorahosted.org/abrt/wiki/AbrtConfiguration\">Lees meer over de configuratie</a>"
+msgstr "<b>%s</b> is niet juist geconfigureerd. Je kunt het nu configureren of de vereiste informatie later aanbieden.\n\n<a href=\"https://fedorahosted.org/abrt/wiki/AbrtConfiguration\">Lees meer over de configuratie</a>"
 
 #: ../src/gui-wizard-gtk/wizard.c:320
 #, c-format
@@ -663,7 +662,7 @@ msgstr "Beperk toegang tot het rapport"
 msgid ""
 "No one except Red Hat employees will be allowed to see the report with "
 "restricted access (not even you)"
-msgstr ""
+msgstr "Het zal niemand behalve Red Hat medewerkers toegestaan worden om het rapport met beperkte toegang te bekijken (zelfs jij niet)"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid "Read more about reports with restricted access"
@@ -891,7 +890,7 @@ msgstr "Waarschijnlijk ontbreekt juiste debuginfo of is de coredump corrupt."
 
 #: ../src/lib/make_descr.c:110
 msgid "Reported:"
-msgstr ""
+msgstr "Aangemeld:"
 
 #: ../src/lib/parse_options.c:58
 msgid "Usage: "
@@ -1782,12 +1781,12 @@ msgstr "De server bij '%s' kan op dit moment het verzoek niet afhandelen (kreeg 
 #: ../src/plugins/ureport.c:275
 #, c-format
 msgid "Unexpected HTTP response from '%s': %d"
-msgstr ""
+msgstr "Onverwacht HTTP antwoord van '%s': %d"
 
 #: ../src/plugins/ureport.c:284
 #, c-format
 msgid "Unable to parse response from ureport server at '%s"
-msgstr ""
+msgstr "Kan antwoord van ureport server bij '%s' niet ontleden"
 
 #: ../src/plugins/ureport.c:294
 #, c-format
@@ -1816,30 +1815,30 @@ msgstr "Sta onbeveiligde verbinden met ureport server toe"
 
 #: ../src/plugins/ureport.c:381
 msgid "bthash of uReport to attach (conflicts with -A)"
-msgstr ""
+msgstr "bthash van uReport om toe te voegen (conflicteert met -A) "
 
 #: ../src/plugins/ureport.c:383
 msgid "attach to a bthash from reported_to (conflicts with -a)"
-msgstr ""
+msgstr "voeg toe aan een bthash van reported_to (conflicteert met -a)"
 
 #: ../src/plugins/ureport.c:385
 msgid "contact e-mail address (requires -a|-A, conflicts with -E)"
-msgstr ""
+msgstr "neem contact op met e-mail adres (vereist -a|-A, conflicteert met -E)"
 
 #: ../src/plugins/ureport.c:387
 msgid ""
 "contact e-mail address from environment or configuration file (requires "
 "-a|-A, conflicts with -e)"
-msgstr ""
+msgstr "neem contact op met e-mail adres van omgeving of configuratiebestand (vereist -a|-A, conflicteert met -e)"
 
 #: ../src/plugins/ureport.c:389
 msgid "attach RHBZ bug (requires -a|-A, conflicts with -B)"
-msgstr ""
+msgstr "voeg RHBZ bug toe (vereist -a|-A, conflicteert met -B)"
 
 #: ../src/plugins/ureport.c:391
 msgid ""
 "attach last RHBZ bug from reported_to (requires -a|-A, conflicts with -b)"
-msgstr ""
+msgstr "voeg laatste RHBZ bug toe van reported_to (vereist -a|-A, conflicteert met -b)"
 
 #: ../src/plugins/ureport.c:396
 msgid ""
@@ -1848,7 +1847,7 @@ msgid ""
 "Upload micro report or add an attachment to a micro report\n"
 "\n"
 "Reads the default configuration from "
-msgstr ""
+msgstr "& [-v] [-c BESTAND] [-u URL] [-k] [-A -a bthash -B -b bug-id -E -e email] [-d MAP]\n\nUpload micro rapport of voeg een aanhangsel toe aan een micro rapport\n\nLeest de standaard configuratie van"
 
 #: ../src/plugins/ureport.c:440
 msgid "This problem does not have an uReport assigned."
@@ -1872,11 +1871,11 @@ msgstr "Kan bug ID niet ontleden uit bugzilla URL '%s'"
 msgid ""
 "Neither environment variable 'uReport_ContactEmail' nor configuration option"
 " 'ContactEmail' is set"
-msgstr ""
+msgstr "Noch omgevingsvariable 'uReport_ContactEmail' noch configuratie optie 'ContactEmail' zijn ingesteld"
 
 #: ../src/plugins/ureport.c:481
 msgid "You need to specify bug ID, contact email or both"
-msgstr ""
+msgstr "Je moet bug ID of contact email specificeren of beide"
 
 #: ../src/plugins/ureport.c:499
 msgid "You need to specify bthash of the uReport to attach."
@@ -1960,7 +1959,7 @@ msgstr "Verwerk het rapport met gebruik van de Red Hat infrastructuur"
 
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:1
 msgid "Report a bug to Red Hat Bugzilla"
-msgstr ""
+msgstr "Rapporteer een bug aan Red Hat Bugzilla"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
 #: ../src/workflows/workflow_Upload.xml.in.h:1
@@ -2006,7 +2005,7 @@ msgstr "Verwerk het X Server probleem met de Fedora infrastructuur"
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:1
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:1
 msgid "Report to Red Hat Customer Portal"
-msgstr ""
+msgstr "Rapporteer aan Red Hat Customer Portal"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
@@ -2039,4 +2038,4 @@ msgstr "Verwerk het X Server probleem met gebruik van de Red Hat infrastructuur"
 #: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:1
 msgid "Report to Red Hat Bugzilla"
-msgstr ""
+msgstr "Rapporteer aan Red Hat Bugzilla"

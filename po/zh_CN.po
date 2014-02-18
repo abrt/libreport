@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Alick Zhao <alick9188@gmail.com>, 2012
+# Alick Zhao <alick9188@gmail.com>, 2012,2014
 # Christopher Meng <cickumqt@gmail.com>, 2013
 # crl0x7c2 <crl0x7c2@gmail.com>, 2011
 # excalc <excalc@live.cn>, 2012
@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-01-07 22:48+0100\n"
-"PO-Revision-Date: 2014-01-07 21:48+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"PO-Revision-Date: 2014-02-18 02:54+0000\n"
+"Last-Translator: Alick Zhao <alick9188@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/fedora/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -177,7 +177,7 @@ msgstr "选择一个要运行的事件："
 
 #: ../src/cli/cli-report.c:876
 msgid "Select a workflow to run: "
-msgstr ""
+msgstr "选择要运行的工作流："
 
 #: ../src/client-python/debuginfo.py:87
 msgid "Extracting cpio from {0}"
@@ -340,7 +340,6 @@ msgstr "配置"
 
 #. we can't use this, because we want the workflows first and hashtable
 #. * doesn't return the items in the order they were added
-#. 
 #. g_hash_table_foreach(configs, (GHFunc)add_config_tabs, config_nb);
 #: ../src/gtk-helpers/config_dialog.c:297
 #: ../src/gtk-helpers/config_dialog.c:299
@@ -671,7 +670,7 @@ msgstr "限制报告访问"
 msgid ""
 "No one except Red Hat employees will be allowed to see the report with "
 "restricted access (not even you)"
-msgstr ""
+msgstr "除了红帽雇员外的任何人均不可查看限制访问的报告（甚至包括您自己）"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid "Read more about reports with restricted access"
@@ -899,7 +898,7 @@ msgstr "可能丢失了正确的出错信息或者内核转储被污染。"
 
 #: ../src/lib/make_descr.c:110
 msgid "Reported:"
-msgstr ""
+msgstr "已报告："
 
 #: ../src/lib/parse_options.c:58
 msgid "Usage: "
@@ -1832,7 +1831,7 @@ msgstr ""
 
 #: ../src/plugins/ureport.c:385
 msgid "contact e-mail address (requires -a|-A, conflicts with -E)"
-msgstr ""
+msgstr "联系电子邮件地址 (需要 -a|-A，与 -E 冲突)"
 
 #: ../src/plugins/ureport.c:387
 msgid ""
@@ -1842,7 +1841,7 @@ msgstr ""
 
 #: ../src/plugins/ureport.c:389
 msgid "attach RHBZ bug (requires -a|-A, conflicts with -B)"
-msgstr ""
+msgstr "附上 RHBZ bug  (需要 -a|-A，与 -B 冲突)"
 
 #: ../src/plugins/ureport.c:391
 msgid ""
@@ -1884,7 +1883,7 @@ msgstr ""
 
 #: ../src/plugins/ureport.c:481
 msgid "You need to specify bug ID, contact email or both"
-msgstr ""
+msgstr "您需要指定 bug ID、联络电子邮件或者两者都指定。"
 
 #: ../src/plugins/ureport.c:499
 msgid "You need to specify bthash of the uReport to attach."
@@ -1968,7 +1967,7 @@ msgstr "使用红帽基础架构处理报告"
 
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:1
 msgid "Report a bug to Red Hat Bugzilla"
-msgstr ""
+msgstr "向 Red Hat Bugzilla 提交 bug 报告"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
 #: ../src/workflows/workflow_Upload.xml.in.h:1
@@ -2014,7 +2013,7 @@ msgstr "使用 Fedora 基础设施处理 X 服务器故障"
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:1
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:1
 msgid "Report to Red Hat Customer Portal"
-msgstr ""
+msgstr "向客户门户网站提交报告"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
@@ -2047,4 +2046,4 @@ msgstr "使用红帽基础架构处理 X 服务器问题"
 #: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:1
 msgid "Report to Red Hat Bugzilla"
-msgstr ""
+msgstr "向 Red Hat Bugzilla 提交报告"
