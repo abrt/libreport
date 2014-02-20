@@ -4,6 +4,7 @@ dist_workflows_DATA = \
     workflow_FedoraCCpp.xml \
     workflow_FedoraKerneloops.xml \
     workflow_FedoraPython.xml \
+    workflow_FedoraPython3.xml \
     workflow_FedoraVmcore.xml \
     workflow_FedoraXorg.xml \
     workflow_FedoraLibreport.xml \
@@ -50,6 +51,7 @@ EXTRA_DIST = \
     workflow_FedoraCCpp.xml.in \
     workflow_FedoraKerneloops.xml.in \
     workflow_FedoraPython.xml.in \
+    workflow_FedoraPython3.xml.in \
     workflow_FedoraVmcore.xml.in \
     workflow_FedoraXorg.xml.in \
     workflow_FedoraLibreport.xml.in \
