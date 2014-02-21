@@ -112,10 +112,8 @@ void free_event_config(event_config_t *p)
     free(p->ec_exclude_items_by_default);
     free(p->ec_include_items_by_default);
     free(p->ec_exclude_items_always);
-    GList *opt;
-    for (opt = p->options; opt; opt = opt->next)
-        free_event_option(opt->data);
-    g_list_free(p->options);
+    g_list_free_full(p->ec_imported_event_names, free);
+    g_list_free_full(p->options, (GDestroyNotify)free_event_option);
 
     free(p);
 }
@@ -282,22 +280,54 @@ GList *export_event_config(const char *event_name)
     event_config_t *config = get_event_config(event_name);
     if (config)
     {
+        GList *imported = config->ec_imported_event_names;
+        while (imported)
+        {
+            GList *exported = export_event_config(/*Event name*/imported->data);
+            while (exported)
+            {
+                if (!g_list_find_custom(env_list, exported->data, (GCompareFunc)strcmp))
+                    /* It is not necessary to make a copy of opt->eo_name */
+                    /* since its memory is owned by event_option_t and it */
+                    /* has global scope */
+                    env_list = g_list_prepend(env_list, exported->data);
+
+                exported = g_list_remove_link(exported, exported);
+            }
+
+            imported = g_list_next(imported);
+        }
+
         GList *lopt;
         for (lopt = config->options; lopt; lopt = lopt->next)
         {
             event_option_t *opt = lopt->data;
             if (!opt->eo_value)
                 continue;
-            char *var_val = xasprintf("%s=%s", opt->eo_name, opt->eo_value);
-            log_debug("Exporting '%s'", var_val);
-            env_list = g_list_prepend(env_list, var_val);
-            putenv(var_val);
+
+            log_debug("Exporting '%s=%s'", opt->eo_name, opt->eo_value);
+
+            /* Add the exported key only if it is not in the list */
+            if (!g_list_find_custom(env_list, opt->eo_name, (GCompareFunc)strcmp))
+                /* It is not necessary to make a copy of opt->eo_name */
+                /* since its memory is owned by opt and it has global scope */
+                env_list = g_list_prepend(env_list, opt->eo_name);
+
+            /* setenv() makes copies of strings */
+            xsetenv(opt->eo_name, opt->eo_value);
         }
     }
 
     return env_list;
 }
 
+/*
+ * Goes through given list and calls unsetnev() for each list item.
+ *
+ * Accepts a list of 'const char *' type items which contains names of exported
+ * environment variables and which was returned from export_event_config()
+ * function.
+ */
 void unexport_event_config(GList *env_list)
 {
     while (env_list)
@@ -305,8 +335,9 @@ void unexport_event_config(GList *env_list)
         char *var_val = env_list->data;
         log_debug("Unexporting '%s'", var_val);
         safe_unsetenv(var_val);
+
+        /* The list doesn't own memory of values: see export_event_config() */
         env_list = g_list_remove(env_list, var_val);
-        free(var_val);
     }
 }
 
