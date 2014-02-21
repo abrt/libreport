@@ -40,6 +40,7 @@
 #define EXCL_ALWAYS_ELEMENT     "exclude-items-always"
 #define EXCL_BINARY_ELEMENT     "exclude-binary-items"
 #define ADV_OPTIONS_ELEMENT     "advanced-options"
+#define IMPORT_OPTIONS_ELEMENT  "import-event-options"
 
 typedef struct
 {
@@ -208,6 +209,20 @@ static void start_element(GMarkupParseContext *context,
                 }
             }
         }
+    }
+    else
+    if (strcmp(element_name, IMPORT_OPTIONS_ELEMENT) == 0)
+    {
+        if (attribute_names[0] == NULL
+            || attribute_names[1] != NULL
+            || strcmp(attribute_names[0], "event") != 0)
+        {
+            error_msg("XML event configuration error: import-event-options element misses attribute 'event'");
+            return;
+        }
+
+        GList *head = parse_data->event_config.values->ec_imported_event_names;
+        parse_data->event_config.values->ec_imported_event_names = g_list_append(head, xstrdup(attribute_values[0]));
     }
     else
     if (strcmp(element_name, LABEL_ELEMENT) == 0
