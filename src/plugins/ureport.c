@@ -335,7 +335,7 @@ static struct ureport_server_response *get_server_response(post_state_t *post_st
 
     if (post_state->http_resp_code == 503)
     {
-        error_msg(_("The server at '%s' is currently can't handle the request (got error 503)"), config->ur_url);
+        error_msg(_("The server at '%s' currently can't handle the request (got error 503)"), config->ur_url);
         return NULL;
     }
 
@@ -353,7 +353,7 @@ static struct ureport_server_response *get_server_response(post_state_t *post_st
 
     if (is_error(json))
     {
-        error_msg(_("Unable to parse response from ureport server at '%s"), config->ur_url);
+        error_msg(_("Unable to parse response from ureport server at '%s'"), config->ur_url);
         log_notice("%s", post_state->body);
         json_object_put(json);
         return NULL;
