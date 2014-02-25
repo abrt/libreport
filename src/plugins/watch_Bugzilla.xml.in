@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<event>
+    <_name>Watch Bugzilla Bug</_name>
+    <_description>Adds your e-mail to CC List of Bugzilla bug</_description>
+
+    <requires-items>reported_to</requires-items>
+    <exclude-items-by-default>coredump,count,event_log,reported_to,vmcore</exclude-items-by-default>
+    <exclude-items-always/>
+    <exclude-binary-items>no</exclude-binary-items>
+    <include-items-by-default/>
+    <minimal-rating>0</minimal-rating>
+    <gui-review-elements>no</gui-review-elements>
+
+    <options>
+        <import-event-options event="report_Bugzilla"/>
+    </options>
+</event>
