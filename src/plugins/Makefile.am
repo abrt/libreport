@@ -49,7 +49,8 @@ eventsconfdir = $(EVENTS_CONF_DIR)
 reporters_events =
 reporters_events_conf =
 if BUILD_BUGZILLA
-reporters_events += report_Bugzilla.xml
+reporters_events += report_Bugzilla.xml \
+                    watch_Bugzilla.xml
 reporters_events_conf += report_Bugzilla.conf
 endif
 
@@ -82,7 +83,8 @@ dist_eventsdef_DATA = \
 reporters_extra_dist =
 if BUILD_BUGZILLA
 dist_eventsdef_DATA += bugzilla_event.conf bugzilla_anaconda_event.conf
-reporters_extra_dist += report_Bugzilla.xml.in report_Bugzilla.conf
+reporters_extra_dist += report_Bugzilla.xml.in report_Bugzilla.conf \
+                        watch_Bugzilla.xml.in
 endif
 
 if BUILD_UREPORT

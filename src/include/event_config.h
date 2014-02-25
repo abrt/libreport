@@ -81,6 +81,7 @@ typedef struct
     bool  ec_skip_review;
     bool  ec_sending_sensitive_data;
 
+    GList *ec_imported_event_names;
     GList *options;
 } event_config_t;
 
