@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Ani Peter <apeter@redhat.com>, 2012
+# Ani Peter <apeter@redhat.com>, 2012,2014
 # Rajeesh Nair <rajeeshrnair@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-07 22:48+0100\n"
-"PO-Revision-Date: 2014-01-07 21:48+0000\n"
+"POT-Creation-Date: 2014-02-26 09:32+0100\n"
+"PO-Revision-Date: 2014-02-26 08:32+0000\n"
 "Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: Malayalam (http://www.transifex.com/projects/p/fedora/language/ml/)\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +25,7 @@ msgid ""
 "   or: & [-vspy] -e EVENT PROBLEM_DIR\n"
 "   or: & [-vspy] -d PROBLEM_DIR\n"
 "   or: & [-vspy] -x PROBLEM_DIR"
-msgstr ""
+msgstr "& [-vsp] -L[PREFIX] [PROBLEM_DIR]\n   അല്ലെങ്കില്‍: & [-vspy] -e EVENT PROBLEM_DIR\n   അല്ലെങ്കില്‍: & [-vspy] -d PROBLEM_DIR\n   അല്ലെങ്കില്‍: & [-vspy] -x PROBLEM_DIR"
 
 #. short_name long_name  value    parameter_name  help
 #: ../src/cli/cli.c:86
@@ -38,11 +38,11 @@ msgstr "ഈ ഈവന്റുകള്‍ മാത്രം ഓടിയ്ക
 
 #: ../src/cli/cli.c:88 ../src/gui-wizard-gtk/main.c:122
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "രേഖപ്പെടുത്തിയശേഷം PROBLEM_DIR നീക്കം ചെയ്യുക"
 
 #: ../src/cli/cli.c:89 ../src/gui-wizard-gtk/main.c:124
 msgid "Expert mode"
-msgstr ""
+msgstr "എക്സ്പേര്‍ട്ട് മോഡ്"
 
 #: ../src/cli/cli.c:90 ../src/report-newt/report-newt.c:393
 msgid "Display version and exit"
@@ -109,15 +109,15 @@ msgstr "# തകരാറിനുള്ള കാരണം"
 
 #: ../src/cli/cli-report.c:170
 msgid "# os-release configuration file from root dir"
-msgstr ""
+msgstr "# റൂട്ട് ഡയറക്ടറിയില്‍ നിന്നുള്ള os-release ക്രമീകരണ ഫയല്‍"
 
 #: ../src/cli/cli-report.c:175
 msgid "# Release string of the operating system from root dir"
-msgstr ""
+msgstr "# റൂട്ട് ഡയറക്ടറിയില്‍ നിന്നുള്ള ഓപ്പറേറ്റിങ് സിസ്റ്റത്തിന്റെ റിലീസ് സ്ട്രിങ്"
 
 #: ../src/cli/cli-report.c:183
 msgid "# os-release configuration file"
-msgstr ""
+msgstr "# os-release ക്രമീകരണ ഫയല്‍"
 
 #: ../src/cli/cli-report.c:188
 msgid "# Release string of the operating system"
@@ -139,37 +139,37 @@ msgid ""
 "No changes were detected in the report"
 msgstr "\nഒരു മാറ്റങ്ങളും റിപോര്‍ട്ടില്‍ കാണിയ്ക്കുന്നില്ല"
 
-#: ../src/cli/cli-report.c:491
+#: ../src/cli/cli-report.c:471
 msgid "Your input is not valid, because of:"
 msgstr "നിങ്ങളുടെ ഇന്‍പുട്ട് തെറ്റാണു്, കാരണം:"
 
-#: ../src/cli/cli-report.c:495
+#: ../src/cli/cli-report.c:475
 #, c-format
 msgid "Bad value for '%s': %s"
 msgstr "'%s'-നുള്ള തെറ്റായ മൂല്ല്യം: %s"
 
-#: ../src/cli/cli-report.c:693
+#: ../src/cli/cli-report.c:673
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data. Do you want "
 "to continue?"
-msgstr ""
+msgstr "സാധ്യമായ സന്‍സിറ്റീവ് ഡേറ്റാ അയയ്ക്കുന്നതിനു്  '%s' ഇവന്റിനു് അനുമതി ആവശ്യമാണു്. നിങ്ങള്‍ക്കു് തുടരണമോ?"
 
-#: ../src/cli/cli-report.c:744
+#: ../src/cli/cli-report.c:720
 msgid "You have chosen number out of range"
 msgstr "പരിധിയ്ക്കു് പുറത്തുള്ള നംബര്‍ തെരഞ്ഞെടുത്തിരിയ്ക്കുന്നു"
 
-#: ../src/cli/cli-report.c:747
+#: ../src/cli/cli-report.c:725
 msgid "Invalid input, exiting."
-msgstr ""
+msgstr "തെറ്റായ ഇന്‍പുട്ട്, പുറത്തു് കടക്കുന്നു."
 
-#: ../src/cli/cli-report.c:768
+#: ../src/cli/cli-report.c:746
 msgid "Select an event to run: "
-msgstr ""
+msgstr "നടപ്പിലാക്കുന്നതിനുള്ളൊരു ഇവന്റ് തെരഞ്ഞെടുക്കുക: "
 
-#: ../src/cli/cli-report.c:876
+#: ../src/cli/cli-report.c:854
 msgid "Select a workflow to run: "
-msgstr ""
+msgstr "നടപ്പിലാക്കുന്നതിനുള്ള വര്‍ക്ക്ഫ്ലോ തെരഞ്ഞെടുക്കുക: "
 
 #: ../src/client-python/debuginfo.py:87
 msgid "Extracting cpio from {0}"
@@ -206,7 +206,7 @@ msgstr "({0} / {1}) ഡൌണ്‍ലോഡ് ചെയ്യുന്നു {
 msgid ""
 "Problem '{0!s}' occured while downloading from mirror: '{1!s}'. Trying next "
 "one"
-msgstr ""
+msgstr "മിറര്‍ ഡൌണ്‍ലോഡ് ചെയ്യുമ്പോള്‍ '{0!s}' സംഭവിച്ചു: '{1!s}'. അടുത്ത മിറര്‍ ഉപയോഗിച്ചു നോക്കുന്നു"
 
 #. self.conf.cache = os.geteuid() != 0
 #. Setup yum (Ts, RPM db, Repo & Sack)
@@ -221,7 +221,7 @@ msgstr "yum (YumBase.doConfigSetup) ആരംഭിയ്ക്കുന്ന�
 
 #: ../src/client-python/debuginfo.py:325
 msgid "Error: can't make cachedir, exiting"
-msgstr ""
+msgstr "പിശക്: cachedir തയ്യാറാക്കുവാനായില്ല, പുറത്തു് കടക്കുന്നു"
 
 #: ../src/client-python/debuginfo.py:334
 msgid "Can't disable repository '{0!s}': {1!s}"
@@ -234,7 +234,7 @@ msgstr "yum റിപ്പോസിറ്ററികള്‍ സജ്ജീ�
 
 #: ../src/client-python/debuginfo.py:354
 msgid "Can't disable async download, the output might contain artifacts!"
-msgstr ""
+msgstr "async ഡൌണ്‍ലോഡ് പ്രവര്‍ത്തന രഹിതമാക്കുവാനായില്ല, ഔട്ട്പുട്ട് ഉചിതമല്ല!"
 
 #: ../src/client-python/debuginfo.py:356
 msgid "Can't setup {0}: {1}, disabling"
@@ -276,17 +276,17 @@ msgstr "ഉപയോക്താവു് ഡൌണ്‍ലോഡ് ചെയ�
 #: ../src/client-python/debuginfo.py:434
 msgid ""
 "Warning: Not enough free space in tmp dir '{0}' ({1:.2f}Mb left). Continue?"
-msgstr ""
+msgstr "മുന്നറിയിപ്പു്: '{0}' എന്ന താല്‍ക്കാലിക ഡയറക്ടറിയില്‍ മതിയായ സ്ഥലമില്ല ({1:.2f}Mb ബാക്കി). മുമ്പോട്ട് തുടരണോ?"
 
 #: ../src/client-python/debuginfo.py:443
 msgid ""
 "Warning: Not enough free space in cache dir '{0}' ({1:.2f}Mb left). "
 "Continue?"
-msgstr ""
+msgstr "മുന്നറിയിപ്പു്: '{0}' എന്ന താല്‍ക്കാലിക ഡയറക്ടറിയില്‍ മതിയായ സ്ഥലമില്ല ({1:.2f}Mb ബാക്കി). മുമ്പോട്ട് തുടരണോ?"
 
 #: ../src/client-python/debuginfo.py:469
 msgid "Cannot copy file '{0}': {1}"
-msgstr ""
+msgstr "'{0}' ഫയല്‍ പകര്‍ത്തുവാന്‍ സാധ്യമല്ല: {1}"
 
 #: ../src/client-python/debuginfo.py:487
 msgid "Downloading package {0} failed"
@@ -311,11 +311,11 @@ msgstr "%s നീക്കം ചെയ്യുവാന്‍ സാധ്യ�
 
 #: ../src/gtk-helpers/ask_dialogs.c:82
 msgid "_Yes"
-msgstr ""
+msgstr "_ഉവ്വു്"
 
 #: ../src/gtk-helpers/ask_dialogs.c:83
 msgid "_No"
-msgstr ""
+msgstr "_ഇല്ല"
 
 #: ../src/gtk-helpers/ask_dialogs.c:89
 msgid "Don't ask me again"
@@ -324,35 +324,33 @@ msgstr "ഇനി ചോദിയ്ക്കരുതു്"
 #. if event has no xml description
 #: ../src/gtk-helpers/config_dialog.c:153
 msgid "No description available"
-msgstr ""
+msgstr "വിവരണം ലഭ്യമല്ല"
 
-#: ../src/gtk-helpers/config_dialog.c:274
+#: ../src/gtk-helpers/config_dialog.c:275
 msgid "Configuration"
-msgstr ""
+msgstr "ക്രമീകരണം"
 
 #. we can't use this, because we want the workflows first and hashtable
 #. * doesn't return the items in the order they were added
-#. 
 #. g_hash_table_foreach(configs, (GHFunc)add_config_tabs, config_nb);
-#: ../src/gtk-helpers/config_dialog.c:297
-#: ../src/gtk-helpers/config_dialog.c:299
-#: ../src/gtk-helpers/config_dialog.c:350
-msgid "Workflows"
-msgstr ""
-
 #: ../src/gtk-helpers/config_dialog.c:301
 #: ../src/gtk-helpers/config_dialog.c:303
-#: ../src/gtk-helpers/config_dialog.c:353
-msgid "Events"
-msgstr ""
+msgid "Workflows"
+msgstr "വര്‍ക്ക്ഫ്ലോ"
 
+#: ../src/gtk-helpers/config_dialog.c:305
 #: ../src/gtk-helpers/config_dialog.c:307
-msgid "C_onfigure"
-msgstr ""
+#: ../src/gtk-helpers/config_dialog.c:352
+msgid "Events"
+msgstr "ഇവന്റുകള്‍"
 
-#: ../src/gtk-helpers/config_dialog.c:309 ../src/gui-wizard-gtk/wizard.c:3312
+#: ../src/gtk-helpers/config_dialog.c:311
+msgid "C_onfigure"
+msgstr "ക്രമീ_കരിയ്ക്കുക"
+
+#: ../src/gtk-helpers/config_dialog.c:313 ../src/gui-wizard-gtk/wizard.c:3309
 msgid "_Close"
-msgstr ""
+msgstr "_അടയ്ക്കുക"
 
 #: ../src/gtk-helpers/event_config_dialog.c:136
 msgid "Show password"
@@ -373,60 +371,60 @@ msgstr "രഹസ്യസേവനങ്ങളൊന്നും ലഭ്യ�
 #: ../src/gtk-helpers/event_config_dialog.c:299
 #: ../src/gtk-helpers/event_config_dialog.c:351
 #: ../src/gtk-helpers/workflow_config_dialog.c:76
-#: ../src/gui-wizard-gtk/wizard.c:769 ../src/gui-wizard-gtk/wizard.c:2913
+#: ../src/gui-wizard-gtk/wizard.c:769 ../src/gui-wizard-gtk/wizard.c:2910
 msgid "_Cancel"
-msgstr ""
+msgstr "_റദ്ദാക്കുക"
 
 #: ../src/gtk-helpers/event_config_dialog.c:301
 #: ../src/gtk-helpers/event_config_dialog.c:353
 #: ../src/gtk-helpers/workflow_config_dialog.c:78
 msgid "_OK"
-msgstr ""
+msgstr "_ശരി"
 
 #: ../src/gtk-helpers/secrets.c:171
 #, c-format
 msgid "Can't connect over DBus to name '%s' path '%s' interface '%s': %s"
-msgstr ""
+msgstr "പേരു് '%s' പാഥ് '%s' ഇന്റര്‍ഫെയിസ് '%s'-ലേക്കു് ഡിബസ് കണക്ട് ചെയ്യുവാന്‍ സാധ്യമല്ല: %s"
 
 #: ../src/gtk-helpers/secrets.c:191
 #, c-format
 msgid "Can't call method '%s' over DBus on path '%s' interface '%s': %s"
-msgstr ""
+msgstr "പാഥ് '%s' ഇന്റര്‍ഫെയിസ് '%s'-ല്‍ ഡിബസില്‍ '%s' രീതി ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല: %s"
 
 #: ../src/gtk-helpers/secrets.c:549
 msgid ""
 "A timeout was reached while waiting for a prompt result from the DBus Secret"
 " Service."
-msgstr ""
+msgstr "ഡീബസ് സീക്രട്ട് സര്‍വീസില്‍ നിന്നും പെട്ടെന്നുള്ള ഫലത്തിനായി കാത്തിരിയ്ക്കുമ്പോള്‍ സമയപരിധി എത്തിയിരിയ്ക്കുന്നു."
 
 #: ../src/gtk-helpers/secrets.c:552
 msgid ""
 "Do you want to stop waiting and continue in reporting without properly "
 "loaded configuration?"
-msgstr ""
+msgstr "ശരിയായ ക്രമീകരണം ലഭ്യമാകാതെ നിങ്ങള്‍ക്കു് കാത്തിരിപ്പു് നിര്‍ത്തി രേഖപ്പെടുത്തന്നതുമായി മുമ്പോട്ട് തുടരണമോ?"
 
 #: ../src/gtk-helpers/secrets.c:862
 #, c-format
 msgid "D-Bus Secrets Service ReadAlias('%s') method failed: %s"
-msgstr ""
+msgstr "ഡീ-ബസ് സീക്രട്ട് സര്‍വീസ് ReadAlias('%s') രീതി പരാജയപ്പെട്ടു: %s"
 
 #. if the error wasn't about invalid properties we have an another problem
 #: ../src/gtk-helpers/secrets.c:1104
 #, c-format
 msgid "Can't create a secret item for event '%s': %s"
-msgstr ""
+msgstr "'%s' ഇവന്റിനു് ഒരു രഹസ്യ വസ്തു തയ്യാറാക്കുവാന്‍ സാധ്യമല്ല: %s"
 
 #: ../src/gtk-helpers/secrets.c:1286
 #, c-format
 msgid "can't get secret value of '%s': %s"
-msgstr ""
+msgstr "'%s'-ന്റെ രഹസ്യ മൂല്ല്യം ലഭ്യമായില്ല: %s"
 
 #: ../src/gui-wizard-gtk/main.c:105
 msgid ""
 "& [-vpdx] [-e EVENT]... [-g GUI_FILE] PROBLEM_DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified PROBLEM_DIR"
-msgstr ""
+msgstr "& [-vpdx] [-e EVENT]... [-g GUI_FILE] PROBLEM_DIR\n\nനല്‍കിയിരിയ്ക്കുന്ന PROBLEM_DIR-ല്‍ സൂക്ഷിച്ചിരിയ്ക്കുന്ന പ്രശ്നം നിരീക്ഷിച്ചു് രേഖപ്പെടുത്തുന്നതിനുള്ള ജിയുഐ പ്രയോഗം"
 
 #: ../src/gui-wizard-gtk/main.c:120
 msgid "Alternate GUI file"
@@ -437,16 +435,16 @@ msgstr "മറ്റൊരു ജിയുഐ ഫയല്‍"
 msgid ""
 "%s is not properly configured. You can configure it now or provide the required information later.\n"
 "\n"
-"Read more about the configuration at: https://fedorahosted.org/abrt/wiki/AbrtConfiguration"
-msgstr ""
+"Read more about the configuration at: https://access.redhat.com/site/articles/718083"
+msgstr "%s ശരിയായി ക്രമീകരിച്ചിട്ടില്ല. നിങ്ങള്‍ക്കിതു് ഇപ്പോള്‍ ക്രമീകരിയ്ക്കാം  അല്ലെങ്കില്‍ ആവശ്യമായ വിവരം പിന്നീടു് നല്‍കാം.\\n\n\\n\nക്രമീകരണത്തെപ്പറ്റി കൂടുതല്‍ അറിയുന്നതിനു്: https://access.redhat.com/site/articles/718083"
 
 #: ../src/gui-wizard-gtk/wizard.c:304
 #, c-format
 msgid ""
 "<b>%s</b> is not properly configured. You can configure it now or provide the required information later.\n"
 "\n"
-"<a href=\"https://fedorahosted.org/abrt/wiki/AbrtConfiguration\">Read more about the configuration</a>"
-msgstr ""
+"<a href=\"https://access.redhat.com/site/articles/718083\">Read more about the configuration</a>"
+msgstr "<b>%s</b> ശരിയായി ക്രമീകരിച്ചിട്ടില്ല. നിങ്ങള്‍ക്കിതു് ഇപ്പോള്‍ ക്രമീകരിയ്ക്കാം  അല്ലെങ്കില്‍ ആവശ്യമായ വിവരം പിന്നീടു് നല്‍കാം.\\n\n\\n\n<a href=\"https://access.redhat.com/site/articles/718083\">ക്രമീകരണത്തെപ്പറ്റി കൂടുതല്‍ അറിയുന്നതിനു്</a>"
 
 #: ../src/gui-wizard-gtk/wizard.c:320
 #, c-format
@@ -466,13 +464,13 @@ msgstr "ഒരു ടെക്സ്റ്റ് ഫയല്‍ കാണുക
 
 #: ../src/gui-wizard-gtk/wizard.c:768
 msgid "_Save"
-msgstr ""
+msgstr "സൂക്ഷിയ്ക്കു_ക"
 
 #: ../src/gui-wizard-gtk/wizard.c:987
 msgid ""
 "No reporting targets are defined for this problem. Check configuration in "
 "/etc/libreport/*"
-msgstr ""
+msgstr "ഈ പ്രശ്നത്തിനു് ലക്ഷ്യങ്ങള്‍ രേഖപ്പെടുത്തിയിട്ടില്ല. /etc/libreport/*-ല്‍ ക്രമീകരണം പരിശോധിയ്ക്കുക"
 
 #: ../src/gui-wizard-gtk/wizard.c:1024
 #, c-format
@@ -504,170 +502,163 @@ msgstr "%llu ബൈറ്റുകള്‍, %u ഫയലുകള്‍"
 
 #: ../src/gui-wizard-gtk/wizard.c:1554
 msgid "Processing was canceled"
-msgstr ""
+msgstr "പ്രവര്‍ത്തനം റദ്ദാക്കിയിരിയ്ക്കുന്നു"
 
 #: ../src/gui-wizard-gtk/wizard.c:1718
 msgid ""
 "Processing of the problem failed. This can have many reasons but there are two most common:\n"
 "\t▫ <b>network connection problems</b>\n"
 "\t▫ <b>corrupted problem data</b>\n"
-msgstr ""
+msgstr "പ്രശ്നം പരിഹരിയ്ക്കുന്നതില്‍ പരാജയപ്പെട്ടു. ഇതിനു് പല കാരണങ്ങള്‍ ഉണ്ടാവാം, പക്ഷേ രണ്ടു് പ്രധാനപ്പെട്ടവ:\n\t▫ <b>നെറ്റ്‌വര്‍ക്ക് കണക്ഷന്‍ പ്രശ്നങ്ങള്‍</b>\n\t▫ <b>തകരാറുള്ള ഡേറ്റാ</b>\n"
 
-#: ../src/gui-wizard-gtk/wizard.c:1723
-msgid ""
-"If you want to help us, please click on the upload button and provide all problem data for a deep analysis.\n"
-"<i>Before you do that, please consider the security risks. Problem data may contain sensitive information like passwords.\n"
-"The uploaded data are stored in a protected storage and only a limited number of persons can read them.</i>"
-msgstr ""
-
-#: ../src/gui-wizard-gtk/wizard.c:1841
+#: ../src/gui-wizard-gtk/wizard.c:1834
 msgid "Processing was interrupted because the problem is not reportable."
-msgstr ""
+msgstr "പ്രശ്നം രേഖപ്പെടുത്തുവാന്‍ സാധ്യമല്ല അതിനാല്‍ ഇടപാടില്‍ തടസ്സമുണ്ടായിരിയ്ക്കുന്നു."
 
-#: ../src/gui-wizard-gtk/wizard.c:1851 ../src/gui-wizard-gtk/wizard.c:1918
+#: ../src/gui-wizard-gtk/wizard.c:1844 ../src/gui-wizard-gtk/wizard.c:1911
 msgid "Processing failed."
 msgstr "സംസ്കരണം പരാജയപ്പെട്ടു."
 
 #. No next event, go to progress page and finish
-#: ../src/gui-wizard-gtk/wizard.c:1858 ../src/gui-wizard-gtk/wizard.c:2619
+#: ../src/gui-wizard-gtk/wizard.c:1851 ../src/gui-wizard-gtk/wizard.c:2616
 msgid "Processing finished."
 msgstr "സംസ്കരണം പൂര്‍ത്തിയായി."
 
-#: ../src/gui-wizard-gtk/wizard.c:1859
+#: ../src/gui-wizard-gtk/wizard.c:1852
 msgid "Processing finished, please proceed to the next step."
 msgstr "സംസ്കരണം പൂര്‍ത്തിയായി, അടുത്ത ഘട്ടത്തിലേക്ക് കടക്കാം."
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1915
+#: ../src/gui-wizard-gtk/wizard.c:1908
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "ഇവന്റ് '%s'-നു് ഒരു പ്രവര്‍ത്തനവും നിഷ്കര്‍ഷിച്ചിട്ടില്ല"
 
-#: ../src/gui-wizard-gtk/wizard.c:1929
+#: ../src/gui-wizard-gtk/wizard.c:1922
 msgid "Processing interrupted: can't continue without writable directory."
 msgstr "സംസ്കരണം തടസ്സപ്പെട്ടു: ഫയലുകള്‍ ചേര്‍ക്കാവുന്ന -എഴുതാവുന്ന- ഡയറക്‍ടറി ഇല്ലാതെ തുടരാനാവില്ല."
 
-#: ../src/gui-wizard-gtk/wizard.c:1966
+#: ../src/gui-wizard-gtk/wizard.c:1959
 msgid "Processing..."
 msgstr "സംസ്കരിക്കുന്നു..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2055
+#: ../src/gui-wizard-gtk/wizard.c:2048
 msgid "Cannot check backtrace rating because of invalid event name"
-msgstr ""
+msgstr "ഇവന്റിന്റെ തെറ്റായ പേരു് കാരണം ബാക്ക്ട്രെയിസ് റേറ്റിങ് പരിശോധിയ്ക്കുവാന്‍ സാധ്യമല്ല"
 
-#: ../src/gui-wizard-gtk/wizard.c:2639
+#: ../src/gui-wizard-gtk/wizard.c:2636
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
 "Do you want to continue?"
-msgstr ""
+msgstr "സാധ്യമായ സെന്‍സിറ്റീവ് ഡേറ്റാ അയയ്ക്കുന്നതിനു് '%s' ഇവന്റിനു് അനുമതി ആവശ്യമുണ്ടു്.\nനിങ്ങള്‍ക്കു് തുടരണമോ?"
 
-#: ../src/gui-wizard-gtk/wizard.c:2687
+#: ../src/gui-wizard-gtk/wizard.c:2684
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
-msgstr ""
+msgstr "ഈ പ്രശ്നം രേഖപ്പെടുവാന്‍ പാടില്ല (പരിചിതമായ പ്രശ്നമാകുന്നു). %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2914
+#: ../src/gui-wizard-gtk/wizard.c:2911
 msgid "_Open"
-msgstr ""
+msgstr "തു_റക്കുക"
 
-#: ../src/gui-wizard-gtk/wizard.c:2936
+#: ../src/gui-wizard-gtk/wizard.c:2933
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' ഒരു സാധാരണ ഫയലല്ല"
 
-#: ../src/gui-wizard-gtk/wizard.c:2950
+#: ../src/gui-wizard-gtk/wizard.c:2947
 msgid "You are trying to copy a file onto itself"
 msgstr "ഒരു ഫയലിനെ അതിലേക്കു് തന്നെ പകര്‍ത്തുവാനാണു് നിങ്ങള്‍ ശ്രമിയ്ക്കുന്നതു്"
 
-#: ../src/gui-wizard-gtk/wizard.c:2957
+#: ../src/gui-wizard-gtk/wizard.c:2954
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "'%s' പകര്‍ത്തുവാന്‍ സാധ്യമല്ല: %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2972
+#: ../src/gui-wizard-gtk/wizard.c:2969
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "'%s' നിലവിലുണ്ടു്, മാറ്റം വരുത്തുവാന്‍ സാധ്യമാകുന്നു"
 
-#: ../src/gui-wizard-gtk/wizard.c:3164
+#: ../src/gui-wizard-gtk/wizard.c:3161
 msgid "Include"
 msgstr "ഉള്‍പ്പെടുത്തേണ്ടതു്"
 
-#: ../src/gui-wizard-gtk/wizard.c:3175
+#: ../src/gui-wizard-gtk/wizard.c:3172
 msgid "Name"
 msgstr "പേരു്"
 
-#: ../src/gui-wizard-gtk/wizard.c:3185
+#: ../src/gui-wizard-gtk/wizard.c:3182
 msgid "Value"
 msgstr "മൂല്ല്യം"
 
-#: ../src/gui-wizard-gtk/wizard.c:3219
+#: ../src/gui-wizard-gtk/wizard.c:3216
 msgid "Problem description"
 msgstr "പ്രശ്ന വിവരണം"
 
-#: ../src/gui-wizard-gtk/wizard.c:3220
+#: ../src/gui-wizard-gtk/wizard.c:3217
 msgid "Select how to report this problem"
-msgstr ""
+msgstr "ഈ പ്രശ്നം എങ്ങനെ രേഖപ്പെടുത്തണമെന്നു് രേഖപ്പെടുത്തുക"
 
-#: ../src/gui-wizard-gtk/wizard.c:3221
+#: ../src/gui-wizard-gtk/wizard.c:3218
 msgid "Provide additional information"
 msgstr "കൂടുതല്‍ വിവരങ്ങള്‍ നല്‍കുക"
 
-#: ../src/gui-wizard-gtk/wizard.c:3222
+#: ../src/gui-wizard-gtk/wizard.c:3219
 msgid "Review the data"
 msgstr "ഡേറ്റാ നിരീക്ഷിയ്ക്കുക"
 
-#: ../src/gui-wizard-gtk/wizard.c:3223
+#: ../src/gui-wizard-gtk/wizard.c:3220
 msgid "Confirm data to report"
 msgstr "രേഖപ്പെടുത്തുന്നതിനു് ഡേറ്റാ ഉറപ്പാക്കുക"
 
-#: ../src/gui-wizard-gtk/wizard.c:3224
+#: ../src/gui-wizard-gtk/wizard.c:3221
 msgid "Processing"
 msgstr "സംസ്കരണം"
 
-#: ../src/gui-wizard-gtk/wizard.c:3225
+#: ../src/gui-wizard-gtk/wizard.c:3222
 msgid "Processing done"
 msgstr "സംസ്കരണം കഴിഞ്ഞു"
 
-#: ../src/gui-wizard-gtk/wizard.c:3314
+#: ../src/gui-wizard-gtk/wizard.c:3311
 msgid "_Stop"
-msgstr ""
+msgstr "നിര്‍ത്തു_ക"
+
+#. else gtk_widget_hide won't work
+#: ../src/gui-wizard-gtk/wizard.c:3314
+msgid "Upload for analysis"
+msgstr "നിരീക്ഷണത്തിനു് അപ്‌ലോഡ് ചെയ്യുക"
 
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3317
-msgid "Upload for analysis"
-msgstr ""
-
-#. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3320
 msgid "_Forward"
-msgstr ""
+msgstr "_മുമ്പോട്ട്"
 
-#: ../src/gui-wizard-gtk/wizard.c:3409
+#: ../src/gui-wizard-gtk/wizard.c:3406
 msgid ""
-"In order to enable the built-in screencasting functionality the package recordmydesktop has to be installed. Please run the following command if you want to install it.\n"
+"In order to enable the built-in screencasting functionality the package fros-gnome has to be installed. Please run the following command if you want to install it.\n"
 "\n"
-"<b>su -c \"yum install recordmydesktop\"</b>"
+"<b>su -c \"yum install fros-gnome\"</b>"
 msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
 msgid "Possible sensitive data detected"
-msgstr ""
+msgstr "സാധ്യമായ സെന്‍സിറ്റീവ് ഡേറ്റാ കണ്ടുപിടിച്ചിരിയ്ക്കുന്നു"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Restrict access to the report"
-msgstr ""
+msgstr "റിപോര്‍ട്ടിലേക്കുള്ള അനുമതി നിഷേധിച്ചിരിയ്ക്കുന്നു"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid ""
 "No one except Red Hat employees will be allowed to see the report with "
 "restricted access (not even you)"
-msgstr ""
+msgstr "Red Hat ജീവനക്കാര്‍ക്കു് മാത്രമേ അനുമതി നിഷേധിച്ചിരിയ്ക്കുന്ന റിപോര്‍ട്ട് കാണുവാന്‍ സാധ്യമാകൂ"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid "Read more about reports with restricted access"
-msgstr ""
+msgstr "അനമതിയില്ലാത്ത കൂടുതല്‍ റിപോര്‍ട്ടുകളെപ്പറ്റി വായിച്ചറിയുക"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid ""
@@ -700,11 +691,11 @@ msgstr "<b>നിങ്ങളുടെ അഭിപ്രായങ്ങള്�
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid "If you don't know how to describe it, you can"
-msgstr ""
+msgstr "എങ്ങനെ വിശദികരിയ്ക്കണമെന്നറിയില്ലെങ്കില്‍, നിങ്ങള്‍ക്കു്"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid "add a screencast"
-msgstr ""
+msgstr "സ്ക്രീന്‍കാസ്റ്റ് ചേര്‍ക്കാം"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid "I don't know what caused this problem"
@@ -762,7 +753,7 @@ msgstr "മറ്റൊരിടത്തേക്കു് നിങ്ങള�
 
 #: ../src/include/internal_libreport.h:969
 msgid "Be verbose"
-msgstr ""
+msgstr "വര്‍ബോസ്"
 
 #: ../src/include/internal_libreport.h:970
 #: ../src/plugins/reporter-bugzilla.c:929
@@ -771,7 +762,7 @@ msgstr ""
 #: ../src/plugins/reporter-rhtsupport.c:254
 #: ../src/plugins/reporter-upload.c:227
 msgid "Problem directory"
-msgstr ""
+msgstr "പ്രശ്നമുള്ള ഡയറക്ടറി"
 
 #: ../src/lib/abrt_sock.c:158
 #, c-format
@@ -780,20 +771,20 @@ msgstr "മായ്‌ക്കാനാവുന്നില്ല: '%s'"
 
 #: ../src/lib/abrt_sock.c:194
 msgid "locked by another process"
-msgstr ""
+msgstr "മറ്റൊരു പ്രക്രിയ പൂട്ടിയിരിയ്ക്കുന്നു"
 
 #: ../src/lib/abrt_sock.c:203
 msgid "permission denied"
-msgstr ""
+msgstr "അനുമതി നിഷേധിച്ചിരിയ്ക്കുന്നു "
 
 #: ../src/lib/abrt_sock.c:206
 msgid "not a problem directory"
-msgstr ""
+msgstr "പ്രശ്നമുള്ള ഡയറക്ടറിയല്ല"
 
 #: ../src/lib/abrt_sock.c:215
 #, c-format
 msgid "Can't delete '%s': %s"
-msgstr ""
+msgstr "'%s' വെട്ടി നീക്കുവാന്‍ സാധ്യമല്ല: %s"
 
 #: ../src/lib/client.c:56 ../src/lib/client.c:89
 msgid "y"
@@ -805,7 +796,7 @@ msgstr "N"
 
 #: ../src/lib/client.c:91
 msgid "f"
-msgstr ""
+msgstr "f"
 
 #: ../src/lib/create_dump_dir.c:39
 #, c-format
@@ -815,83 +806,83 @@ msgstr "നിര്‍ബന്ധമായും വേണ്ട '%s' കാ�
 #: ../src/lib/create_dump_dir.c:54
 #, c-format
 msgid "uid value is not valid: '%s'"
-msgstr ""
+msgstr "uid മൂല്ല്യം തെറ്റാണു്: '%s'"
 
 #: ../src/lib/curl.c:226
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "അപ്ലോഡ് ചെയ്തതു്: %llu/%llu kbytes"
 
-#: ../src/lib/curl.c:591
+#: ../src/lib/curl.c:598
 #, c-format
 msgid "Sending %s to %s"
 msgstr "%s, %s-ലേക്കു് അയയ്ക്കുന്നു"
 
 #. This ends up a "reporting status message" in abrtd
-#: ../src/lib/curl.c:623
+#: ../src/lib/curl.c:630
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "%s വിജയകരമായി %s-ലേക്കു് അയച്ചിരിയ്ക്കുന്നു"
 
-#: ../src/lib/event_config.c:309
+#: ../src/lib/event_config.c:348
 msgid "Missing mandatory value"
 msgstr "ലഭ്യമല്ലാത്ത നിര്‍ബന്ധമായ മൂല്ല്യം"
 
-#: ../src/lib/event_config.c:317
+#: ../src/lib/event_config.c:356
 #, c-format
 msgid "Invalid utf8 character '%c'"
 msgstr "തെറ്റായ utf8 അക്ഷരം '%c'"
 
-#: ../src/lib/event_config.c:330
+#: ../src/lib/event_config.c:369
 #, c-format
 msgid "Invalid number '%s'"
 msgstr "തെറ്റായ നംബര്‍ '%s'"
 
-#: ../src/lib/event_config.c:345
+#: ../src/lib/event_config.c:384
 #, c-format
 msgid "Invalid boolean value '%s'"
 msgstr "തെറ്റായ ബൂളിയന്‍ മൂല്ല്യം '%s'"
 
-#: ../src/lib/event_config.c:351
+#: ../src/lib/event_config.c:390
 msgid "Unsupported option type"
 msgstr "പിന്തുണ ലഭ്യമല്ലാത്ത ഐച്ഛിക രീതി"
 
-#: ../src/lib/event_config.c:420
+#: ../src/lib/event_config.c:459
 msgid "Reporting disabled because the rating does not contain a number."
-msgstr ""
+msgstr "റേറ്റിങില്‍ ഒരു അക്കമില്ല അതിനാല്‍ രേഖപ്പെടുത്തുന്നതു് പ്രവര്‍ത്തന രഹിതം."
 
-#: ../src/lib/event_config.c:421
+#: ../src/lib/event_config.c:460
 msgid "Please report this problem to ABRT project developers."
-msgstr ""
+msgstr "എബിആര്‍ടി സംരംഭ ഡവലപ്പര്‍മാരോടു് ഈ പ്രശ്നം ദയവായി രേഖപ്പെടുത്തുക."
 
-#: ../src/lib/event_config.c:427
+#: ../src/lib/event_config.c:466
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "ബാക്ക്ട്രെയിസ് പൂര്‍ണ്ണമല്ല, തയ്യാറാക്കുന്നതിനുള്ള ഉത്തമ രീതികള്‍ ദയവായി നല്‍കുക."
 
-#: ../src/lib/event_config.c:428
+#: ../src/lib/event_config.c:467
 msgid "The backtrace probably can't help developer to diagnose the bug."
-msgstr ""
+msgstr "ബഗ് തിരിച്ചറിയുവാന്‍ ബാക്ക്ട്രെയിസിനു് ഡവലപ്പറിനെ സഹായിയ്ക്കുവാനാകില്ല."
 
-#: ../src/lib/event_config.c:434
+#: ../src/lib/event_config.c:473
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "ബാക്ക്ട്രെയിസ് ഉപയോഗപ്രദമല്ല, അതിനാല്‍ റിപോര്‍ട്ട് ചെയ്യുന്നതു് നിര്‍ജീവമാക്കിയിരിക്കുന്നു."
 
-#: ../src/lib/event_config.c:438
+#: ../src/lib/event_config.c:477
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again."
-msgstr ""
+msgstr "\"debuginfo-install %s\" കമാന്‍ഡ് ഉപയോഗിച്ചു് debuginfo ഇന്‍സ്റ്റോള്‍ ചെയ്യുവാന്‍ ശ്രമിയ്ക്കുക."
 
-#: ../src/lib/event_config.c:440
+#: ../src/lib/event_config.c:479
 msgid "A proper debuginfo is probably missing or the coredump is corrupted."
-msgstr ""
+msgstr "ശരിയായൊരു debuginfo ലഭ്യമല്ല അല്ലെങ്കില്‍ coredump തകരാറില്‍."
 
 #: ../src/lib/make_descr.c:110
 msgid "Reported:"
-msgstr ""
+msgstr "രേഖപ്പെടുത്തിയതു്:"
 
 #: ../src/lib/parse_options.c:58
 msgid "Usage: "
@@ -905,57 +896,57 @@ msgstr "അത്യാവശ്യമായ '%s' ലഭ്യമല്ല, ത�
 #: ../src/lib/run_event.c:761
 #, c-format
 msgid "('%s' was killed by signal %u)\n"
-msgstr ""
+msgstr "('%s', %u സിഗ്നല്‍ ഉപയോഗിച്ചു് ഇല്ലതാക്കിയിരിയ്ക്കുന്നു)\n"
 
 #: ../src/lib/run_event.c:763
 #, c-format
 msgid "('%s' completed successfully)\n"
-msgstr ""
+msgstr "('%s' വിജയകരമായി പൂര്‍ത്തിയാക്കിയിരിയ്ക്കുന്നു)\n"
 
 #: ../src/lib/run_event.c:765
 #, c-format
 msgid "('%s' exited with %u)\n"
-msgstr ""
+msgstr "('%s', %u ഉപയോഗിച്ചു് പുറത്തു് കടന്നിരിയ്ക്കുന്നു)\n"
 
 #: ../src/plugins/abrt_rh_support.c:356
 #, c-format
 msgid "Error in case creation at '%s': %s"
-msgstr ""
+msgstr "'%s'-ല്‍ തയ്യാറാക്കുന്നതില്‍ പിശക്: %s"
 
 #: ../src/plugins/abrt_rh_support.c:365
 #, c-format
 msgid "Error in case creation at '%s', HTTP code: %d, server says: '%s'"
-msgstr ""
+msgstr "'%s', HTTP കോഡ്: %d-ല്‍ തയ്യാറാക്കുന്നതില്‍ പിശക്, സര്‍വര്‍ പറയുന്നതു്: '%s'"
 
 #: ../src/plugins/abrt_rh_support.c:369
 #, c-format
 msgid "Error in case creation at '%s', HTTP code: %d"
-msgstr ""
+msgstr "'%s', HTTP കോഡ്: %d-ല്‍ തയ്യാറാക്കുന്നതില്‍ പിശക്"
 
 #: ../src/plugins/abrt_rh_support.c:420
 #, c-format
 msgid "Error in case creation at '%s': no Location URL, HTTP code: %d"
-msgstr ""
+msgstr "'%s'-ല്‍ തയ്യാറാക്കുന്നതില്‍ പിശക്: സ്ഥാന യുആര്‍എല്‍ ലഭ്യമല്ല, എച്ടിടിപി കോഡ്: %d"
 
 #: ../src/plugins/abrt_rh_support.c:524
 #, c-format
 msgid "Error in comment creation at '%s': %s"
-msgstr ""
+msgstr "'%s'-ല്‍ കമന്റ് തയ്യാറാക്കുന്നതില്‍ പിശക്: %s"
 
 #: ../src/plugins/abrt_rh_support.c:533
 #, c-format
 msgid "Error in comment creation at '%s', HTTP code: %d, server says: '%s'"
-msgstr ""
+msgstr "'%s'-ല്‍ കമന്റ് തയ്യാറാക്കുന്നതില്‍ പിശക്, എച്ടിടിപി കോഡ്: %d, സര്‍വര്‍ പറയുന്നതു്: %s"
 
 #: ../src/plugins/abrt_rh_support.c:537
 #, c-format
 msgid "Error in comment creation at '%s', HTTP code: %d"
-msgstr ""
+msgstr "'%s'-ല്‍ കമന്റ് തയ്യാറാക്കുന്നതില്‍ പിശക്, എച്ടിടിപി കോഡ്: %d"
 
 #: ../src/plugins/abrt_rh_support.c:583
 #, c-format
 msgid "Error in comment creation at '%s': no Location URL, HTTP code: %d"
-msgstr ""
+msgstr "'%s'-ല്‍ കമന്റ് തയ്യാറാക്കുന്നതില്‍ പിശക്: സ്ഥാന യുആര്‍എല്‍ ലഭ്യമല്ല, എച്ടിടിപി കോഡ്: %d"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:1
 msgid "Bugzilla"
@@ -1010,33 +1001,33 @@ msgstr "എസ്എസ്എല്‍ കീയുടെ സാധുത പര
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:12
 msgid "Restrict access"
-msgstr ""
+msgstr "അനുമതി നിഷേധിയ്ക്കുക"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:13
 msgid ""
 "Restrict access to the created bugzilla ticket allowing only users from "
 "specified groups to view it (see advanced settings for more details)"
-msgstr ""
+msgstr "തയ്യാറാക്കിയ ബഗ്സിലാ ടിക്കറിലേക്കു് അനുമതി നിഷേധിച്ചിരിയ്ക്കുന്നു. ചില ഗ്രൂപ്പിലുള്ള ഉപയോക്താക്കള്‍ക്കു് മാത്രമേ ഇതു് കാണുവാന്‍ സാധ്യമാകൂ (കൂടുതല്‍ വിവരങ്ങള്‍ക്കായി അധികമായ സജ്ജീകരണങ്ങള്‍ കാണുക)"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:14
 msgid "Bugzilla product"
-msgstr ""
+msgstr "ബഗ്സില ഉല്‍പന്നം"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:15
 msgid ""
 "Specify this only if you needed different product than specified in /etc/os-"
 "release"
-msgstr ""
+msgstr "/etc/os-release-ല്‍ പറഞ്ഞിരിയ്ക്കുന്നതില്‍ വ്യത്യസ്ഥമായൊരു പ്രൊഡക്ട് ആവശ്യമുണ്ടെങ്കില്‍ മാത്രം ഇതു് നല്‍കുക"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:16
 msgid "Bugzilla product version"
-msgstr ""
+msgstr "ബഗ്സിലാ ഉല്‍പന്നത്തിന്റെ പതിപ്പു്"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:17
 msgid ""
 "Specify this only if you needed different product version than specified in "
 "/etc/os-release"
-msgstr ""
+msgstr "/etc/os-release-ല്‍ പറഞ്ഞിരിയ്ക്കുന്നതില്‍ വ്യത്യസ്ഥമായൊരു പ്രൊഡക്ടിന്റെ പതിപ്പു് ആവശ്യമുണ്ടെങ്കില്‍ മാത്രം ഇതു് നല്‍കുക"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:18
 #: ../src/plugins/report_Kerneloops.xml.in.h:5
@@ -1045,7 +1036,7 @@ msgstr ""
 #: ../src/plugins/report_uReport.xml.in.h:7
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:4
 msgid "HTTP Proxy"
-msgstr ""
+msgstr "എച്ടിടിപി പ്രോക്സി"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:19
 #: ../src/plugins/report_Kerneloops.xml.in.h:6
@@ -1054,7 +1045,7 @@ msgstr ""
 #: ../src/plugins/report_uReport.xml.in.h:8
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:5
 msgid "Sets the proxy server to use for HTTP"
-msgstr ""
+msgstr "എച്ടിടിപിയ്ക്കുള്ള ഉപയോഗത്തിനു് പ്രോക്സി സര്‍വര്‍ സജ്ജമാക്കുന്നു"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:20
 #: ../src/plugins/report_Kerneloops.xml.in.h:7
@@ -1063,7 +1054,7 @@ msgstr ""
 #: ../src/plugins/report_uReport.xml.in.h:9
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:6
 msgid "HTTPS Proxy"
-msgstr ""
+msgstr "എച്ടിടിപിഎസ് പ്രോക്സി"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:21
 #: ../src/plugins/report_Kerneloops.xml.in.h:8
@@ -1072,18 +1063,18 @@ msgstr ""
 #: ../src/plugins/report_uReport.xml.in.h:10
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:7
 msgid "Sets the proxy server to use for HTTPS"
-msgstr ""
+msgstr "എച്ടിടിപിഎസ് ഉപയോഗിയ്ക്കുന്നതിനുള്ള പ്രോക്സി സര്‍വര്‍ സജ്ജമാക്കുന്നു"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:22
 msgid "Groups"
-msgstr ""
+msgstr "ഗ്രൂപ്പുകള്‍"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:23
 msgid ""
 "Restrict the access to specified groups &lt;a "
 "href=\"https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
 "tickets\"&gt;?&lt;/a&gt;"
-msgstr ""
+msgstr "പ്രത്യേകം പറഞ്ഞിരിയ്ക്കുന്ന ഗ്രൂപ്പുകളില്‍ &lt;a href=\"https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets\"&gt;?&lt;/a&gt;, പ്രവേശനം നിഷേധിച്ചിരിയ്ക്കന്നു."
 
 #: ../src/plugins/report.c:37
 msgid ""
@@ -1109,27 +1100,27 @@ msgstr "ടിക്കറ്റ്/കേസ് ഐഡി"
 #: ../src/plugins/reporter-bugzilla.c:355
 #, c-format
 msgid "Can't parse backtrace: %s"
-msgstr ""
+msgstr "ബാക്ക്ട്രെയിസ് പാഴ്സ് ചെയ്യുവാന്‍ സാധ്യമല്ല: %s"
 
 #: ../src/plugins/reporter-bugzilla.c:366
 msgid "Can't generate stacktrace description (no crash thread?)"
-msgstr ""
+msgstr "സ്റ്റാക്ക്ട്രെയിസ് വിവരണം ലഭ്യമാക്കുവാന്‍ സാധ്യമായില്ല (ക്രാഷ് ത്രെഡില്ല?)"
 
 #: ../src/plugins/reporter-bugzilla.c:764
 msgid ""
 "Warning, private ticket groups already specified as cmdline argument, "
 "ignoring the env variable and configuration"
-msgstr ""
+msgstr "മുന്നറിയിപ്പു്, cmdline ആര്‍ഗ്യുമെന്റായി സ്വകാര്യ ടിക്കറ്റ് ഗ്രൂപ്പുകള്‍ നല്‍കിയിരിയ്ക്കുന്നു, എന്‍വയണ്മെന്റ് വേരിയബിളും ക്രമീകരണവും ഉപേക്ഷിയ്ക്കുന്നു"
 
 #: ../src/plugins/reporter-bugzilla.c:775
 #: ../src/plugins/reporter-rhtsupport.c:178
 msgid "Can't continue without login"
-msgstr ""
+msgstr "പ്രവേശിയ്ക്കാതെ തുടരുവാന്‍ സാധ്യമല്ല"
 
 #: ../src/plugins/reporter-bugzilla.c:788
 #: ../src/plugins/reporter-rhtsupport.c:191
 msgid "Can't continue without password"
-msgstr ""
+msgstr "രഹസ്യവാക്കില്ലാതെ തുടരുവാന്‍ സാധ്യമല്ല"
 
 #: ../src/plugins/reporter-bugzilla.c:797
 #, c-format
@@ -1138,16 +1129,16 @@ msgstr "%s-ല്‍ ബഗ്സിലയിലേക്കു് പ്രവ�
 
 #: ../src/plugins/reporter-bugzilla.c:801
 msgid "Invalid password or login. Please enter your BZ login:"
-msgstr ""
+msgstr "തെറ്റായ രഹസ്യവാക്ക് അല്ലെങ്കില്‍ പ്രവേശന നാമം. ദയവായി നിങ്ങളുടെ ബിസി പ്രവേശന നാമം നല്‍കുക:"
 
 #: ../src/plugins/reporter-bugzilla.c:804
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
-msgstr ""
+msgstr "തെറ്റായ രഹസ്യവാക്ക് അല്ലെങ്കില്‍ പ്രവേശനനാമം. '%s'-നുള്ള രഹസ്യവാക്ക് ദയവായി നല്‍കുക:"
 
 #: ../src/plugins/reporter-bugzilla.c:839
 msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
-msgstr ""
+msgstr "Bug.search(quicksearch) മൂല്ല്യത്തില്‍ 'bugs' അംഗങ്ങളില്ലാരുന്നു"
 
 #: ../src/plugins/reporter-bugzilla.c:857
 msgid ""
@@ -1190,7 +1181,7 @@ msgid ""
 "filed. The default value is 'ABRT Server'\n"
 "\n"
 "If not specified, CONFFILE defaults to "
-msgstr ""
+msgstr "\n& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\nഅല്ലെങ്കില്‍:\n& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\nഅല്ലെങ്കില്‍:\n& [-v] [-c CONFFILE]... [-d DIR] -t[ID] -w\nഅല്ലെങ്കില്‍:\n& [-v] [-c CONFFILE]... -h DUPHASH\n\nപ്രയോഗം DIR ലഭ്യമാക്കുന്നു. ശേഷം ബഗ്സിലയില്‍ പ്രവേശിച്ചു് 'Whiteboard'-ല്‍  ഒരേ abrt_hash:HEXSTRIN\nഉള്ള ബഗ് കണ്ടുപിടിയ്ക്കുവാന്‍ ശ്രമിയ്ക്കുന്നു.\n\nഇത്തരമൊരു ബഗ് ലഭ്യമായില്ലെങ്കില്‍, പുതിയൊരെണ്ണം ഉണ്ടാക്കുന്നു. ബഗിന്റെ തരവും വ്യാപ്തിയുമനുസരിച്ചു് \nDIR-യുടെ എലമെന്റുള്‍ ബഗിന്റെ വിവരണത്തിന്റെ ഭാഗം അല്ലെങ്കില്‍ അറ്റാച്ച്മെന്റായി\nബഗില്‍ സൂക്ഷിയ്ക്കുന്നു.\n\nഅഥവാ, ഇത്തരമൊരു ബഗ് ലഭ്യമായാല്‍, CLOSED DUPLICATE എന്നു് അടയാളപ്പെടുത്തുന്നു,\nഒരു ആവര്‍ത്തിച്ചുള്ള ബഗല്ലാത്തൊരെണ്ണം കണ്ടുപിടിയ്ക്കുന്നതു് വരെ പ്രയോഗം ചെയിന്‍ പിന്തുടരുന്നു.\nകണ്ടുപിടിച്ച ബഗിനു് പ്രയോഗം പുതിയ കമന്റ് ചേര്‍ക്കുന്നു.\n\nപുതിയ അല്ലെങ്കില്‍ മാറ്റം വരുത്തിയ യുആര്‍എല്‍  stdout-ലേക്കു് പ്രിന്റ് ചെയ്തു്\n'reported_to' എലമെന്റിലേക്കു് സൂക്ഷിയ്ക്കുന്നു.\n\n-t ഐച്ഛികം ബഗ്സിലാ സൈറ്റിലുള്ള തയ്യാറാക്കിയ ബഗിലേക്കു് ഫയല്‍ അപ്‌ലോഡ് ചെയ്യുന്നു.\n-d DIR എന്നു് ലഭ്യമാക്കിയ ഡയറക്ടറിയില്‍ നിന്നും ബഗ് ഐഡി ലഭ്യമാക്കുന്നു.\nDIR-ലുള്ള പ്രശ്നമുള്ള ഡേറ്റാ ബഗ്സിലയിലേക്കു് രേഖപ്പെടുത്തിയിട്ടില്ലെങ്കില്‍, അപ്‌ലോഡ് പരാജയപ്പെടുന്നു.\n\n-tID ഐച്ഛികം  ബഗ്സിലാ സൈറ്റില്‍ വ്യക്തമാക്കിയ ഐഡിയുള്ള ബഗിലേക്കു് ഫയല്‍ അപ്‌ലോഡ് ചെയ്യുന്നു.\n-d DIR ഉപേക്ഷിയ്ക്കുന്നു.\n\n-w ഐച്ഛികം ബഗ്സില ഉപയോക്താവിനെ  ബഗിന്റെ സിസി പട്ടികയിലേക്കു് ചേര്‍ക്കുന്നു.\n\n-r ഐച്ഛികം  reporter_to-ല്‍ നിന്നുള്ള അവസാന യുആര്‍എല്ലിലേക്കു് സജ്ജമാക്കുന്നു. ഇതു് യുആര്‍എല്‍ ഫീള്‍ഡിലേക്കു് \nTRACKER_NAME-നു് പ്രീഫിക്സ് ആകുന്നു. ഒരു പുതിയ ബഗ് ഫയല്‍ ചെയ്യുമ്പോള്‍ മാത്രം\nഈ ഐച്ഛികം അനുവദിയ്ക്കുന്നു.  സ്വതവേയുള്ള മൂല്ല്യം  'ABRT Server'\n\nനല്‍കിയിട്ടില്ലെങ്കില്‍,  CONFFILE സ്വതവേയിതാകുന്നു"
 
 #: ../src/plugins/reporter-bugzilla.c:930
 #: ../src/plugins/reporter-rhtsupport.c:255
@@ -1199,11 +1190,11 @@ msgstr "ക്രമീകരണ ഫയല്‍ (പല തവണ വേണമ�
 
 #: ../src/plugins/reporter-bugzilla.c:931
 msgid "Formatting file for initial comment"
-msgstr ""
+msgstr "പ്രാരംഭ കമന്റിനുള്ള ഫയല്‍ ഫോര്‍മാറ്റിങ്"
 
 #: ../src/plugins/reporter-bugzilla.c:932
 msgid "Formatting file for duplicates"
-msgstr ""
+msgstr "ആവര്‍ത്തനങ്ങള്‍ക്കുള്ള ഫയല്‍ ഫോര്‍മാറ്റിങ്"
 
 #: ../src/plugins/reporter-bugzilla.c:933
 msgid "Attach FILEs [to bug with this ID]"
@@ -1220,31 +1211,31 @@ msgstr "ഈ പ്രശ്നം മുമ്പു് രേഖപ്പെട
 
 #: ../src/plugins/reporter-bugzilla.c:936
 msgid "Add bugzilla user to CC list [of bug with this ID]"
-msgstr ""
+msgstr "സിസി പട്ടികയിലേക്കു് ബഗ്സിലയുടെ ഉപയോക്താവിനെ ചേര്‍ക്കുക [ഈ ഐഡിയുള്ള ബഗ്]"
 
 #: ../src/plugins/reporter-bugzilla.c:937
 msgid "Print BUG_ID which has given DUPHASH"
-msgstr ""
+msgstr "DUPHASH നല്‍കിയിട്ടുള്ള BUG_ID പ്രിന്റ് ചെയ്യുക"
 
 #: ../src/plugins/reporter-bugzilla.c:938
 msgid "A name of bug tracker for an additional URL from 'reported_to'"
-msgstr ""
+msgstr "'reported_to'-ല്‍ നിന്നും അധികമായൊരു യുആര്‍എല്ലിനുള്ള ബഗ് ട്രാക്കറിന്റെ പേരു്"
 
 #: ../src/plugins/reporter-bugzilla.c:939
 msgid "Restrict access to this group only"
-msgstr ""
+msgstr "ഈ ഗ്രൂപ്പിലേക്കു് മാത്രമുള്ള പ്രവേശനം നിഷേധിയ്ക്കുക"
 
 #: ../src/plugins/reporter-bugzilla.c:940
 msgid "Debug"
-msgstr ""
+msgstr "ഡീബഗ് ചെയ്യുക"
 
 #: ../src/plugins/reporter-bugzilla.c:982
 msgid "Looking for similar problems in bugzilla"
-msgstr ""
+msgstr "ബഗ്സിലയില്‍ ഇതുപോലുള്ള പ്രശ്നങ്ങള്‍ക്കായി തെരയുക"
 
 #: ../src/plugins/reporter-bugzilla.c:1009
 msgid "Login is not provided by configuration. Please enter your BZ login:"
-msgstr ""
+msgstr "ക്രമീകരണത്തിലൂടെ പ്രവേശനം നല്‍കുന്നില്ല. ദയവായി നിങ്ങളുടെ ബഗ്സിലാ പ്രവേശനനാമം നല്‍കുക:"
 
 #: ../src/plugins/reporter-bugzilla.c:1015
 #: ../src/plugins/reporter-rhtsupport.c:291
@@ -1252,30 +1243,30 @@ msgstr ""
 msgid ""
 "Password is not provided by configuration. Please enter the password for "
 "'%s':"
-msgstr ""
+msgstr "ക്രമീകരണം രഹസ്യവാക്ക് നല്‍കുന്നില്ല. '%s'-നുള്ള രഹസ്യവാക്ക് നല്‍കുക:"
 
 #: ../src/plugins/reporter-bugzilla.c:1034
 msgid ""
 "Can't get Bugzilla ID because this problem has not yet been reported to "
 "Bugzilla."
-msgstr ""
+msgstr "ബഗ്സില ഐഡി ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല കാരണം ഈ പ്രശ്നം ഇതുവരെ ബഗ്സിലയിലേക്കു് രേഖപ്പെടുത്തിയിട്ടില്ല."
 
 #: ../src/plugins/reporter-bugzilla.c:1041
 #, c-format
 msgid ""
 "This problem has been reported to Bugzilla '%s' which differs from the "
 "configured Bugzilla '%s'."
-msgstr ""
+msgstr "ഈ പ്രശ്നം '%s' ബഗ്സിലയിലേക്കു് രേഖപ്പെടുത്തിയിരിയ്ക്കുന്നു. ഇതു് ക്രമീകരിച്ചിട്ടുള്ള '%s' ബഗ്സിലയില്‍ നിന്നും വേറെയാകുന്നു."
 
 #: ../src/plugins/reporter-bugzilla.c:1045
 #, c-format
 msgid "Malformed url to Bugzilla '%s'."
-msgstr ""
+msgstr "'%s' ബഗ്സിലയിലേക്കുള്ള തെറ്റായ യുആര്‍എല്‍."
 
 #: ../src/plugins/reporter-bugzilla.c:1049
 #, c-format
 msgid "Using Bugzilla ID '%s'"
-msgstr ""
+msgstr "ബഗ്സിലാ ഐഡി '%s' ഉപയോഗിയ്ക്കുന്നു"
 
 #: ../src/plugins/reporter-bugzilla.c:1083
 #: ../src/plugins/reporter-bugzilla.c:1354
@@ -1284,7 +1275,7 @@ msgstr "പുറത്തു് കടക്കുന്നു"
 
 #: ../src/plugins/reporter-bugzilla.c:1134
 msgid "Can't determine Bugzilla Product from problem data."
-msgstr ""
+msgstr "പ്രശ്നമുള്ള ഡേറ്റയില്‍ നിന്നും ബഗ്സിലാ ഉല്‍പന്നം കണ്ടുപിടിയ്ക്കുവാന്‍ സാധ്യമല്ല"
 
 #: ../src/plugins/reporter-bugzilla.c:1185
 msgid "Checking for duplicates"
@@ -1297,12 +1288,12 @@ msgstr "ഒരു പുതിയ ബഗ് തയ്യാറാക്കുന
 
 #: ../src/plugins/reporter-bugzilla.c:1252
 msgid "Failed to create a new bug."
-msgstr ""
+msgstr "ഒരു പുതിയ ബഗ് തയ്യാറാക്കുന്നതില്‍ പരാജയപ്പെട്ടു."
 
 #: ../src/plugins/reporter-bugzilla.c:1263
 #, c-format
 msgid "Adding External URL to bug %i"
-msgstr ""
+msgstr "%i ബഗിലേക്കു് പുറമേയുള്ള യുആര്‍എല്‍ ചേര്‍ക്കുന്നു"
 
 #: ../src/plugins/reporter-bugzilla.c:1269
 #, c-format
@@ -1317,7 +1308,7 @@ msgstr "ബഗ് രേഖപ്പെടുത്തിയിട്ടുണ�
 #: ../src/plugins/reporter-bugzilla.c:1309
 #, c-format
 msgid "Adding %s to CC list"
-msgstr ""
+msgstr "സിസി പട്ടികയിലേക്കു് %s ചേര്‍ക്കുന്നു"
 
 #: ../src/plugins/reporter-bugzilla.c:1326
 #, c-format
@@ -1356,7 +1347,7 @@ msgid ""
 "Parameter can be overridden via $KerneloopsReporter_SubmitURL."
 msgstr "& [-v] [-c CONFFILE]... -d DIR\n\nkerneloops.org (അല്ലെങ്കില്‍ അതുപോലുള്ള) സൈറ്റിലേക്കു് കേര്‍ണല്‍ oops രേഖപ്പെടുത്തുന്നു.\n\n$EXCLUDE_FROM_REPORT-ല്‍ പേരുള്ള ഫയലുകള്‍ ടാര്‍ബോളില്‍\nഉള്‍പ്പെടുത്തിയിട്ടില്ല.\n\nCONFFILE വരികള്‍ 'PARAM = VALUE' ശൈലിയിലായിരിയ്ക്കണം.\nതിരിച്ചറിഞ്ഞ സ്ട്രിങ് പരാമീറ്റര്‍: SubmitURL.\n$KerneloopsReporter_SubmitURL ഉപയോഗിച്ചു് പരാമീറ്റര്‍ തിരുത്തുവാന്‍ സാധിയ്ക്കുന്നു."
 
-#: ../src/plugins/reporter-kerneloops.c:167 ../src/plugins/ureport.c:379
+#: ../src/plugins/reporter-kerneloops.c:167 ../src/plugins/ureport.c:456
 msgid "Configuration file"
 msgstr "ക്രമീകരണ ഫയല്‍"
 
@@ -1365,17 +1356,17 @@ msgstr "ക്രമീകരണ ഫയല്‍"
 msgid ""
 "Email address of %s was not specified. Would you like to do so now? If not, "
 "'%s' is to be used"
-msgstr ""
+msgstr "%s-ന്റെ ഈമെയില്‍ വിലാസം വ്യക്തമാക്കിയിട്ടില്ല. നിങ്ങള്‍ക്കിതു് നല്‍കണമോ? വേണ്ടെങ്കില്‍, '%s' ഉപയോഗിയ്ക്കേണ്ടതാകുന്നു"
 
 #: ../src/plugins/reporter-mailx.c:66
 #, c-format
 msgid "Please, type email address of %s:"
-msgstr ""
+msgstr "ദയവായി, %s-ന്റെ വിലാസം ടൈപ്പ് ചെയ്യുക:"
 
 #: ../src/plugins/reporter-mailx.c:73
 #, c-format
 msgid "Can't continue without email address of %s"
-msgstr ""
+msgstr "%s-ന്റെ ഈമെയില്‍ വിലാസമില്ലാതെ തുടരുവാന്‍ സാധ്യമല്ല"
 
 #: ../src/plugins/reporter-mailx.c:135
 msgid "Sending an email..."
@@ -1459,7 +1450,7 @@ msgstr "ഫയലുകള്‍ അപ്ലോഡ് ചെയ്യുക [ID
 
 #: ../src/plugins/reporter-rhtsupport.c:285
 msgid "Login is not provided by configuration. Please enter your RHTS login:"
-msgstr ""
+msgstr "ക്രമീകരണം പ്രവേശന നാമം ലഭ്യമാക്കുന്നില്ല. ദയവായി നിങ്ങളുടെ ആര്‍എച്ടിഎസ് പ്രവേശന നാമം നല്‍കുക:"
 
 #: ../src/plugins/reporter-rhtsupport.c:341
 #, c-format
@@ -1478,16 +1469,16 @@ msgstr "ഡേറ്റാ കംപ്രസ്സ് ചെയ്യുന്�
 
 #: ../src/plugins/reporter-rhtsupport.c:413
 msgid "Can't create a temporary directory in "
-msgstr ""
+msgstr "ഇതില്‍ താല്‍ക്കാലിക ഡയറക്ടറി തയ്യാറാക്കുവാന്‍ സാധ്യമല്ല"
 
 #: ../src/plugins/reporter-rhtsupport.c:422
 msgid "Can't create temporary file in "
-msgstr ""
+msgstr "ഇതില്‍ താല്‍ക്കാലിക ഫയല്‍ തയ്യാറാക്കുവാന്‍ സാധ്യമല്ല"
 
 #. Check for hints and show them if we have something
 #: ../src/plugins/reporter-rhtsupport.c:431
 msgid "Checking for hints"
-msgstr ""
+msgstr "സൂചനകള്‍ക്കായി പരിശോധിയ്ക്കുന്നു"
 
 #: ../src/plugins/reporter-rhtsupport.c:473
 msgid "Do you still want to create a RHTSupport ticket?"
@@ -1495,23 +1486,23 @@ msgstr "ഇനിയും നിങ്ങള്‍ക്കു് ഒരു RHT
 
 #: ../src/plugins/reporter-rhtsupport.c:487
 msgid "Creating a new case"
-msgstr ""
+msgstr "പുതിയൊരു കേസ് തയ്യാറാക്കുന്നു"
 
 #. How can we help user sorting out this problem?
 #: ../src/plugins/reporter-rhtsupport.c:498
 msgid "Can't determine RH Support Product from problem data."
-msgstr ""
+msgstr "പ്രശ്നമുള്ള ഡേറ്റയില്‍ നിന്നും RH പിന്തുണയുള്ള പ്രൊഡക്ട് കണ്ടുപിടിയ്ക്കുവാനായില്ല."
 
 #: ../src/plugins/reporter-rhtsupport.c:573
 #, c-format
 msgid "Adding comment to case '%s'"
-msgstr ""
+msgstr "'%s'-ലേക്കു് കമന്റ് ചേര്‍ക്കുന്നു"
 
 #. Attach the tarball of -d DIR
 #: ../src/plugins/reporter-rhtsupport.c:593
 #, c-format
 msgid "Attaching problem data to case '%s'"
-msgstr ""
+msgstr "'%s'-ലേക്കു് പ്രശ്നമുള്ള ഡേറ്റാ ചേര്‍ക്കുന്നു"
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:202
 msgid "Documentation which might be relevant: "
@@ -1523,11 +1514,11 @@ msgstr "സഹായകമാകുന്ന പരിഷ്കരണങ്ങ�
 
 #: ../src/plugins/reporter-upload.c:30
 msgid "Can't continue without URL"
-msgstr ""
+msgstr "യുആര്‍എല്‍ ഇല്ലാതെ തുടരുവാന്‍ സാധ്യമല്ല"
 
 #: ../src/plugins/reporter-upload.c:61
 msgid "Upload URL is not provided by configuration. Please enter upload URL:"
-msgstr ""
+msgstr "അപ്‌ലോഡ് യുആര്‍എല്‍ ക്രമീകരണം ലഭ്യമാക്കുന്നില്ല. ദയവായി അപ്‌ലോഡ് യുആര്‍എല്‍ നല്‍കുക:"
 
 #. success
 #: ../src/plugins/reporter-upload.c:159
@@ -1541,7 +1532,7 @@ msgid ""
 "\n"
 "Uploads compressed tarball of problem directory DIR to URL.\n"
 "If URL is not specified, creates tarball in "
-msgstr ""
+msgstr "& [-v] -d DIR [-c CONFFILE] [-u URL]\n\nപ്രശ്നമുള്ള ഡയറക്ടറി DIR-യുടെ കമ്പ്രസ്സ്ഡ് ടാര്‍ബോള്‍ URL-ലേക്കു് അപ്‌ലോഡ് ചെയ്യുന്നു.\nURL നല്‍കിയില്ലെങ്കില്‍, ഇതില്‍ ടാര്‍ബോള്‍ തയ്യാറാക്കുന്നു"
 
 #: ../src/plugins/reporter-upload.c:229
 msgid "Base URL to upload to"
@@ -1677,41 +1668,41 @@ msgstr "ടാര്‍ബോളിനൊപ്പം, login:password@url എന
 #: ../src/plugins/report_Uploader.xml.in.h:5
 msgid ""
 "Examples:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]"
-msgstr ""
+msgstr "ഉദാഹരണങ്ങള്‍:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]"
 
 #: ../src/plugins/report_Uploader.xml.in.h:10
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:8
 msgid "FTP Proxy"
-msgstr ""
+msgstr "എഫ്‌ടിപി പ്രോക്സി"
 
 #: ../src/plugins/report_Uploader.xml.in.h:11
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:9
 msgid "Sets the proxy server to use for FTP"
-msgstr ""
+msgstr "എഫ്‌ടിപി ഉപയോഗിയ്ക്കുന്നതിനുള്ള പ്രോക്സി സര്‍വര്‍ സജ്ജമാക്കുന്നു"
 
 #: ../src/plugins/report_uReport.xml.in.h:1
 msgid "uReport"
-msgstr ""
+msgstr "uReport"
 
 #: ../src/plugins/report_uReport.xml.in.h:2
 msgid "Sends ureports to FAF server"
-msgstr ""
+msgstr "എഫ്എഎഫ് സര്‍വറിലേക്കു് ureport അയയ്ക്കുന്നു"
 
 #: ../src/plugins/report_uReport.xml.in.h:3
 msgid "uReport Server URL"
-msgstr ""
+msgstr "uReport സര്‍വര്‍ യുആര്‍എല്‍"
 
 #: ../src/plugins/report_uReport.xml.in.h:4
 msgid "Address of uReport webservice"
-msgstr ""
+msgstr "uReport വെബ്സര്‍വീസിനുള്ള വിലാസം"
 
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:1
 msgid "Emergency analysis"
-msgstr ""
+msgstr "പെട്ടെന്നുള്ള നിരീക്ഷണം"
 
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:2
 msgid "Upload the problem data for further analysis"
-msgstr ""
+msgstr "കൂടുതല്‍ നിരീക്ഷണത്തിനു് പ്രശ്നമുള്ള ഡേറ്റാ അപ്‌ലോഡ് ചെയ്യുക"
 
 #: ../src/plugins/rhbz.c:409
 #, c-format
@@ -1733,7 +1724,7 @@ msgid ""
 "A private ticket creation has been requested, but no groups were specified, "
 "please see https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
 "tickets for more info"
-msgstr ""
+msgstr "ഒരു സ്വകാര്യ ടിക്കറ്റ് തയ്യാറാക്കുന്നതിനുള്ള ആവശ്യം നല്‍കിയിരിയ്ക്കുന്നു, പക്ഷേ ഒരു ഗ്രൂപ്പുകളും നല്‍കിയിട്ടില്ല. കൂടുതല്‍ വിവരങ്ങള്‍ക്കായി ദയവായി https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets കാണുക."
 
 #: ../src/plugins/rhbz.c:642
 #, c-format
@@ -1745,159 +1736,162 @@ msgstr "പുതിയ ബഗ് ഐഡി: %i"
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "ബഗ് %d-ന്റെ പേരന്റ് ലഭ്യമാക്കുവാന്‍ ബഗ്സിലയ്ക്കു് സാധ്യമായില്ല"
 
-#: ../src/plugins/ureport.c:79
+#: ../src/plugins/ureport.c:146
 #, c-format
 msgid ""
 "Your problem seems to be caused by %s\n"
 "\n"
 "%s\n"
-msgstr ""
+msgstr "%s-നാല്‍ പ്രശ്നമുണ്ടായിരിയ്ക്കുന്നു\n\n%s\n"
 
-#: ../src/plugins/ureport.c:82
+#: ../src/plugins/ureport.c:149
 msgid "Your problem seems to be caused by one of the following:\n"
-msgstr ""
+msgstr "ഇവയില്‍ ഒന്നാണു് നിങ്ങളുടെ പ്രശ്നത്തിനു് കാരണം:\n"
 
-#: ../src/plugins/ureport.c:248
+#: ../src/plugins/ureport.c:320
 #, c-format
 msgid "Failed to upload uReport to the server '%s' with curl: %s"
-msgstr ""
+msgstr "കേളിനൊപ്പം '%s' സര്‍വറിലേക്കു് uReport അപ്‌ലോഡ് ചെയ്യുന്നതില്‍ പരാജയപ്പെട്ടു: %s"
 
-#: ../src/plugins/ureport.c:254
+#: ../src/plugins/ureport.c:326
 #, c-format
 msgid "The URL '%s' does not exist (got error 404 from server)"
-msgstr ""
+msgstr "യുആര്‍എല്‍ '%s' നിലവിലില്ല (സര്‍വറില്‍ നിന്നും 404 പിശക് ലഭിച്ചിരിയ്ക്കുന്നു)"
 
-#: ../src/plugins/ureport.c:260
+#: ../src/plugins/ureport.c:332
 #, c-format
 msgid "The server at '%s' encountered an internal error (got error 500)"
-msgstr ""
+msgstr "'%s'-ലുള്ള സര്‍വറില്‍ ഒരു ആന്തരിക പിശക് (500 പിശക് ലഭിച്ചിരിയ്ക്കുന്നു)"
 
-#: ../src/plugins/ureport.c:266
+#: ../src/plugins/ureport.c:338
 #, c-format
-msgid ""
-"The server at '%s' is currently can't handle the request (got error 503)"
-msgstr ""
+msgid "The server at '%s' currently can't handle the request (got error 503)"
+msgstr "'%s'-ലുള്ള സര്‍വറിനു് ആവശ്യം കൈകാര്യം ചെയ്യുവാന്‍ സാധ്യമല്ല (പിശക് 503)"
 
 #. can't print better error message
-#: ../src/plugins/ureport.c:275
+#: ../src/plugins/ureport.c:347
 #, c-format
 msgid "Unexpected HTTP response from '%s': %d"
-msgstr ""
+msgstr "'%s'-ല്‍ നിന്നും അപ്രതീക്ഷിതമായ എച്ടിടിപി മറുപടി: %d"
 
-#: ../src/plugins/ureport.c:284
+#: ../src/plugins/ureport.c:356
 #, c-format
-msgid "Unable to parse response from ureport server at '%s"
-msgstr ""
+msgid "Unable to parse response from ureport server at '%s'"
+msgstr "'%s-ലുള്ള ureport സര്‍വറില്‍ നിന്നും മറുപടി പാഴ്സ് ചെയ്യുവാന്‍ സാധ്യമല്ല"
 
-#: ../src/plugins/ureport.c:294
+#: ../src/plugins/ureport.c:366
 #, c-format
 msgid "The response from '%s' has invalid format"
-msgstr ""
+msgstr "'%s'-ല്‍ നിന്നുള്ള മറുപടിയില്‍ തെറ്റായ ശൈലി"
 
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
-#: ../src/plugins/ureport.c:300
+#: ../src/plugins/ureport.c:372
 #, c-format
 msgid "Type mismatch has been detected in the response from '%s'"
-msgstr ""
+msgstr "'%s'-യില്‍ നിന്നുള്ള മറുപടിയില്‍ പൊരുത്തക്കേടുള്ള തരം"
 
-#: ../src/plugins/ureport.c:331
+#: ../src/plugins/ureport.c:403
 #, c-format
 msgid "The server at '%s' responded with an error: '%s'"
-msgstr ""
+msgstr "'%s'-ലുള്ള സര്‍വര്‍ ഒരു പിശകുമായി മറുപടി നല്‍കി: '%s'"
 
-#: ../src/plugins/ureport.c:376
+#: ../src/plugins/ureport.c:452
 msgid "Specify server URL"
-msgstr ""
+msgstr "സര്‍വറിന്റെ യുആര്‍എല്‍ നല്‍കുക"
 
-#: ../src/plugins/ureport.c:378
+#: ../src/plugins/ureport.c:454
 msgid "Allow insecure connection to ureport server"
-msgstr ""
+msgstr "ureport സര്‍വറിലേക്കു് സുരക്ഷിതമല്ലാത്ത കണക്ഷന്‍ അനുവദിയ്ക്കുക"
 
-#: ../src/plugins/ureport.c:381
+#: ../src/plugins/ureport.c:455
+msgid "Use client authentication"
+msgstr "ക്ലൈന്റിലേക്കുള്ള ആധികാരികത ഉറപ്പാക്കല്‍ സംവിധാനം ഉപയോഗിയ്ക്കുക"
+
+#: ../src/plugins/ureport.c:458
 msgid "bthash of uReport to attach (conflicts with -A)"
-msgstr ""
+msgstr "ചേര്‍ക്കുവാനുള്ള uReport-ന്റെ bthash (-A-മായി ചേരുന്നില്ല)"
 
-#: ../src/plugins/ureport.c:383
+#: ../src/plugins/ureport.c:460
 msgid "attach to a bthash from reported_to (conflicts with -a)"
-msgstr ""
+msgstr "reported_to-ല്‍ നിന്നുമുള്ള bthash-ലേക്കു് ചേര്‍ക്കുക (-a-യുമായി ചേരുന്നില്ല)"
 
-#: ../src/plugins/ureport.c:385
+#: ../src/plugins/ureport.c:462
 msgid "contact e-mail address (requires -a|-A, conflicts with -E)"
-msgstr ""
+msgstr "ഈമെയില്‍ വിലാസങ്ങള്‍ (-a|-A ആവശ്യമാണു്, -E-മായി ചേരുന്നില്ല)"
 
-#: ../src/plugins/ureport.c:387
+#: ../src/plugins/ureport.c:464
 msgid ""
 "contact e-mail address from environment or configuration file (requires "
 "-a|-A, conflicts with -e)"
-msgstr ""
+msgstr "എന്‍വയണ്മെന്റ് അല്ലെങ്കില്‍ ക്രമീകരണ ഫയലില്‍ നിന്നും ഈമെയില്‍ വിലാസം (-a|-A ആവശ്യമുണ്ടു്, -e-യുമായി ചേരുന്നില്ല)"
 
-#: ../src/plugins/ureport.c:389
+#: ../src/plugins/ureport.c:466
 msgid "attach RHBZ bug (requires -a|-A, conflicts with -B)"
-msgstr ""
+msgstr "RHBZ ബഗ് ചേര്‍ക്കുക (-a|-A ആവശ്യമുണ്ടു്, -B-യുമായി ചേരുന്നില്ല)"
 
-#: ../src/plugins/ureport.c:391
+#: ../src/plugins/ureport.c:468
 msgid ""
 "attach last RHBZ bug from reported_to (requires -a|-A, conflicts with -b)"
-msgstr ""
+msgstr "reported_to-ല്‍ നിന്നുള്ള അവസാന RHBZ ബഗ് ചേര്‍ക്കുക(-a|-A ആവശ്യമുണ്ടു്, -b-യുമായി ചേരുന്നില്ല)"
 
-#: ../src/plugins/ureport.c:396
+#: ../src/plugins/ureport.c:473
 msgid ""
-"& [-v] [-c FILE] [-u URL] [-k] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
+"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
 "\n"
 "Upload micro report or add an attachment to a micro report\n"
 "\n"
 "Reads the default configuration from "
-msgstr ""
+msgstr "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n\nമൈക്രോ റിപോര്‍ട്ട് അപ്‌ലോഡ് ചെയ്യുക അല്ലെങ്കില്‍ ഒരു മൈക്രോ റിപോര്‍ട്ടിലേക്കു് അറ്റാച്മെന്റ് ചേര്‍ക്കുക\n\nഇവിടെ നിന്നും സ്വതവേയുള്ള ക്രമീകരണം ലഭ്യമാക്കുന്നു"
 
-#: ../src/plugins/ureport.c:440
+#: ../src/plugins/ureport.c:519
 msgid "This problem does not have an uReport assigned."
-msgstr ""
+msgstr "ഈ പ്രശ്നത്തിനു് uReport നല്‍കിയിരിയ്ക്കുന്നു."
 
-#: ../src/plugins/ureport.c:453
+#: ../src/plugins/ureport.c:532
 msgid "This problem has not been reported to Bugzilla."
-msgstr ""
+msgstr "ഈ പ്രശ്നം ബഗ്സിലയിലേക്കു് രേഖപ്പെടുത്തിയിരിയ്ക്കുന്നു."
 
-#: ../src/plugins/ureport.c:457
+#: ../src/plugins/ureport.c:536
 #, c-format
 msgid "Unable to find bug ID in bugzilla URL '%s'"
-msgstr ""
+msgstr "'%s' ബഗ്സിലാ യുആര്‍എല്ലില്‍ ബഗ് ഐഡി കണ്ടുപിടിയ്ക്കുവാനായില്ല"
 
-#: ../src/plugins/ureport.c:462
+#: ../src/plugins/ureport.c:541
 #, c-format
 msgid "Unable to parse bug ID from bugzilla URL '%s'"
-msgstr ""
+msgstr "ബഗ്സിലാ യുആര്‍എല്‍ '%s'-ല്‍ നിന്നും ബഗ് ഐഡി പാഴ്സ് ചെയ്യുവാന്‍ സാധ്യമല്ല"
 
-#: ../src/plugins/ureport.c:475
+#: ../src/plugins/ureport.c:554
 msgid ""
 "Neither environment variable 'uReport_ContactEmail' nor configuration option"
 " 'ContactEmail' is set"
-msgstr ""
+msgstr "'uReport_ContactEmail' എന്‍വയണ്മെന്റ് വേരിയബിള്‍ അല്ലെങ്കില്‍ 'ContactEmail' ക്രമീകരണ ഐച്ഛികം സജ്ജമല്ല"
 
-#: ../src/plugins/ureport.c:481
+#: ../src/plugins/ureport.c:560
 msgid "You need to specify bug ID, contact email or both"
-msgstr ""
+msgstr "ബഗ് ഐഡി, ഈമെയില്‍ അല്ലെങ്കില്‍ രണ്ടും നല്‍കേണം"
 
-#: ../src/plugins/ureport.c:499
+#: ../src/plugins/ureport.c:578
 msgid "You need to specify bthash of the uReport to attach."
-msgstr ""
+msgstr "uReport-ന്റെ bthash ചേര്‍ക്കുന്നതിനു് നല്‍കേണ്ടതുണ്ടു്."
 
-#: ../src/plugins/ureport.c:509
+#: ../src/plugins/ureport.c:588
 msgid "Not uploading an empty uReport"
-msgstr ""
+msgstr "ഒരു കാലി uReport അപ്‌ലോഡ് ചെയ്യുവാന്‍ പാടില്ല"
 
-#: ../src/plugins/ureport.c:518
+#: ../src/plugins/ureport.c:597
 msgid "Failed on submitting the problem"
-msgstr ""
+msgstr "പ്രശ്നം സമര്‍പ്പിയ്ക്കുന്നതില്‍ പരാജയപ്പെട്ടു"
 
-#: ../src/plugins/ureport.c:563
+#: ../src/plugins/ureport.c:642
 msgid "This problem has already been reported."
-msgstr ""
+msgstr "ഈ പ്രശ്നം നിലവില്‍ രേഖപ്പെടുത്തിയിരിയ്ക്കുന്നു."
 
-#: ../src/plugins/ureport.c:572
+#: ../src/plugins/ureport.c:651
 #, c-format
 msgid "Server responded with an error: '%s'"
-msgstr ""
+msgstr "ഒരു പിശകോടെ സര്‍വര്‍ മറുപടി നല്‍കിയിരിയ്ക്കുന്നു: '%s'"
 
 #: ../src/report-newt/report-newt.c:55
 msgid "How would you like to report the problem?"
@@ -1935,7 +1929,7 @@ msgid ""
 "& [-d] DIR\n"
 "\n"
 "newt tool to report problem saved in specified DIR"
-msgstr ""
+msgstr "& [-d] DIR\n\nനല്‍കിയിരിയ്ക്കുന്ന DIR-ല്‍ സൂക്ഷിച്ചിരിയ്ക്കുന്ന പ്രശ്നം രേഖപ്പെടുത്തുന്നതിനുള്ള newt പ്രയോഗം"
 
 #: ../src/report-newt/report-newt.c:392
 msgid "Remove DIR after reporting"
@@ -1943,100 +1937,124 @@ msgstr "രേഖപ്പെടുത്തിയ ശേഷം DIR നീക്
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:1
 msgid "Report a bug to Fedora maintainers"
-msgstr ""
+msgstr "ഫെഡോറാ മെയിന്റയിനറുകള്‍ക്കു് ഒരു ബഗ് രേഖപ്പെടുത്തുക"
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:2
 msgid "Process the report using the Fedora infrastructure"
-msgstr ""
+msgstr "ഫെഡോറാ ഇന്‍ഫ്രാസ്ട്രക്ചര്‍ ഉപയോഗിച്ചു് റിപോര്‍ട്ട് നടപ്പിലാക്കുക"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:1
-msgid "Report a bug to Red Hat Support Tool"
-msgstr ""
+msgid "Report a bug to Red Hat Customer Portal"
+msgstr "Red Hat കസ്റ്റമര്‍ പോര്‍ട്ടലിലേക്കു് ഒരു ബഗ് രേഖപ്പെടുത്തുക"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:2
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:2
 msgid "Process the report using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat ഇന്‍ഫ്രാസ്ട്രക്ചര്‍ ഉപയോഗിച്ചു് റിപോര്‍ട്ട് നടപ്പിലാക്കുക"
 
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:1
 msgid "Report a bug to Red Hat Bugzilla"
-msgstr ""
+msgstr "Red Hat ബഗ്സിലയിലേക്കു് ഒരു ബഗ് രേഖപ്പെടുത്തുക"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
 #: ../src/workflows/workflow_Upload.xml.in.h:1
 msgid "Upload the problem data to a server"
-msgstr ""
+msgstr "സര്‍വറിലേക്കു് പ്രശ്നമുള്ള ഡേറ്റാ അപ്‌ലോഡ് ചെയ്യുക"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:2
 #: ../src/workflows/workflow_Upload.xml.in.h:2
 msgid "Analyze the problem locally and upload the data via scp or ftp"
-msgstr ""
+msgstr "സിസ്റ്റത്തില്‍ പ്രശ്നം നിരീക്ഷിച്ചു്, scp അല്ലെങ്കില്‍ ftp ഉപയോഗിച്ചു് ഡേറ്റാ അപ്‌ലോഡ് ചെയ്യുക"
 
 #: ../src/workflows/workflow_FedoraCCpp.xml.in.h:1
 #: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:1
 #: ../src/workflows/workflow_FedoraPython.xml.in.h:1
 #: ../src/workflows/workflow_FedoraVmcore.xml.in.h:1
 #: ../src/workflows/workflow_FedoraXorg.xml.in.h:1
+#: ../src/workflows/workflow_FedoraLibreport.xml.in.h:1
+#: ../src/workflows/workflow_FedoraJava.xml.in.h:1
 msgid "Report to Fedora"
-msgstr ""
+msgstr "ഫെഡോറയിലേക്കു് രേഖപ്പെടുത്തുക"
 
 #: ../src/workflows/workflow_FedoraCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the Fedora infrastructure"
-msgstr ""
+msgstr "ഫെഡോറാ ഇന്‍ഫ്രാസ്ട്രക്ചര്‍ ഉപയോഗിച്ചു് C/C++ ക്രാഷ് നടപ്പിലാക്കുക"
 
 #: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:2
 msgid "Process the kerneloops using the Fedora infrastructure"
-msgstr ""
+msgstr "ഫെഡോറാ ഇന്‍ഫ്രാസ്ട്രക്ചര്‍ ഉപയോഗിച്ചു് kerneloops നടപ്പിലാക്കുക"
 
 #: ../src/workflows/workflow_FedoraPython.xml.in.h:2
 msgid "Process the python exception using the Fedora infrastructure"
-msgstr ""
+msgstr "ഫെഡോറാ ഇന്‍ഫ്രാസ്ട്രക്ചര്‍ ഉപയോഗിച്ചു് പൈഥണ്‍ എക്സപ്ഷന്‍ നടപ്പിലാക്കുക"
 
 #: ../src/workflows/workflow_FedoraVmcore.xml.in.h:2
 msgid "Process the kernel crash using the Fedora infrastructure"
-msgstr ""
+msgstr "ഫെഡോറാ ഇന്‍ഫ്രാസ്ട്രക്ചര്‍ ഉപയോഗിച്ചു് കേര്‍ണല്‍ ക്രാഷ് നടപ്പിലാക്കുക"
 
 #: ../src/workflows/workflow_FedoraXorg.xml.in.h:2
 msgid "Process the X Server problem using the Fedora infrastructure"
-msgstr ""
+msgstr "ഫെഡോറാ ഇന്‍ഫ്രാസ്ട്രക്ചര്‍ ഉപയോഗിച്ചു് എക്സ് സര്‍വര്‍ പ്രശ്നം നടപ്പിലാക്കുക"
+
+#: ../src/workflows/workflow_FedoraLibreport.xml.in.h:2
+msgid "Process the problem using the Fedora infrastructure"
+msgstr "ഫെഡോറാ ഇന്‍ഫ്രാസ്ട്രക്ചര്‍ ഉപയോഗിച്ചു് പ്രശ്നം നടപ്പിലാക്കുക"
+
+#: ../src/workflows/workflow_FedoraJava.xml.in.h:2
+msgid "Process the Java exception using the Fedora infrastructure"
+msgstr "ഫെഡോറാ ഇന്‍ഫ്രാസ്ട്രക്ചര്‍ ഉപയോഗിച്ചു് ജാവാ എക്സെപ്ഷന്‍ നടപ്പിലാക്കുക"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1
 #: ../src/workflows/workflow_RHELPython.xml.in.h:1
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:1
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:1
+#: ../src/workflows/workflow_RHELLibreport.xml.in.h:1
+#: ../src/workflows/workflow_RHELJava.xml.in.h:1
 msgid "Report to Red Hat Customer Portal"
-msgstr ""
+msgstr "Red Hat കസ്റ്റമര്‍ പോര്‍ട്ടലിലേക്കു് രേഖപ്പെടുത്തുക"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat ഇന്‍ഫ്രാസ്ട്രക്ചര്‍ ഉപയോഗിച്ചു് C/C++ ക്രാഷ് നടപ്പിലാക്കുക"
 
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:2
 msgid "Process the kerneloops using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat ഇന്‍ഫ്രാസ്ട്രക്ചര്‍ ഉപയോഗിച്ചു് kerneloops നടപ്പിലാക്കുക"
 
 #: ../src/workflows/workflow_RHELPython.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:2
 msgid "Process the python exception using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat ഇന്‍ഫ്രാസ്ട്രക്ചര്‍ ഉപയോഗിച്ചു് പൈഥണ്‍ എക്സപ്ഷന്‍ നടപ്പിലാക്കുക"
 
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:2
 msgid "Process the kernel crash using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat ഇന്‍ഫ്രാസ്ട്രക്ചര്‍ ഉപയോഗിച്ചു് കേര്‍ണല്‍ ക്രാഷ് നടപ്പിലാക്കുക"
 
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:2
 msgid "Process the X Server problem using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat ഇന്‍ഫ്രാസ്ട്രക്ചര്‍ ഉപയോഗിച്ചു് എക്സ് സര്‍വര്‍ പ്രശ്നം നടപ്പിലാക്കുക"
+
+#: ../src/workflows/workflow_RHELLibreport.xml.in.h:2
+#: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:2
+msgid "Process the problem using the Red Hat infrastructure"
+msgstr "Red Hat ഇന്‍ഫ്രാസ്ട്രക്ചര്‍ ഉപയോഗിച്ചു് പ്രശ്നം നടപ്പിലാക്കുക"
+
+#: ../src/workflows/workflow_RHELJava.xml.in.h:2
+#: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
+msgid "Process the Java exception using the Red Hat infrastructure"
+msgstr "Red Hat ഇന്‍ഫ്രാസ്ട്രക്ചര്‍ ഉപയോഗിച്ചു് ജാവാ എക്സപ്ഷന്‍ നടപ്പിലാക്കുക"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:1
+#: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:1
+#: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:1
 msgid "Report to Red Hat Bugzilla"
-msgstr ""
+msgstr "Red Hat ബഗ്സിലയിലേക്കു് രേഖപ്പെടുത്തുക"

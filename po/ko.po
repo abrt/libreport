@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# eukim <eukim@redhat.com>, 2011, 2012
-# Frances Lovelock <raypotassium@gmail.com>, 2011, 2012
+# eukim <eukim@redhat.com>, 2011-2012
+# eukim <eukim@redhat.com>, 2014
+# Frances Lovelock <raypotassium@gmail.com>, 2011-2012
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-07 22:48+0100\n"
-"PO-Revision-Date: 2014-01-07 21:48+0000\n"
+"POT-Creation-Date: 2014-02-26 09:32+0100\n"
+"PO-Revision-Date: 2014-02-26 08:32+0000\n"
 "Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: Korean (http://www.transifex.com/projects/p/fedora/language/ko/)\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +26,7 @@ msgid ""
 "   or: & [-vspy] -e EVENT PROBLEM_DIR\n"
 "   or: & [-vspy] -d PROBLEM_DIR\n"
 "   or: & [-vspy] -x PROBLEM_DIR"
-msgstr ""
+msgstr "& [-vsp] -L[PREFIX] [PROBLEM_DIR]\n   또는: & [-vspy] -e EVENT PROBLEM_DIR\n   또는: & [-vspy] -d PROBLEM_DIR\n   또는: & [-vspy] -x PROBLEM_DIR"
 
 #. short_name long_name  value    parameter_name  help
 #: ../src/cli/cli.c:86
@@ -34,15 +35,15 @@ msgstr "사용 가능한 이벤트를 나열 [이는 PREFIX로 시작됨] "
 
 #: ../src/cli/cli.c:87 ../src/gui-wizard-gtk/main.c:123
 msgid "Run only these events"
-msgstr ""
+msgstr "이 이벤트만 실행합니다 "
 
 #: ../src/cli/cli.c:88 ../src/gui-wizard-gtk/main.c:122
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "보고 후 PROBLEM_DIR를 삭제합니다 "
 
 #: ../src/cli/cli.c:89 ../src/gui-wizard-gtk/main.c:124
 msgid "Expert mode"
-msgstr ""
+msgstr "전문가 모드 "
 
 #: ../src/cli/cli.c:90 ../src/report-newt/report-newt.c:393
 msgid "Display version and exit"
@@ -109,15 +110,15 @@ msgstr "# 크래시 원인"
 
 #: ../src/cli/cli-report.c:170
 msgid "# os-release configuration file from root dir"
-msgstr ""
+msgstr "# root 디렉토리에서 os-release 설정 파일 "
 
 #: ../src/cli/cli-report.c:175
 msgid "# Release string of the operating system from root dir"
-msgstr ""
+msgstr "# root 디렉토리에서 운영 체제의 릴리즈 문자열 "
 
 #: ../src/cli/cli-report.c:183
 msgid "# os-release configuration file"
-msgstr ""
+msgstr "# os-release 설정 파일 "
 
 #: ../src/cli/cli-report.c:188
 msgid "# Release string of the operating system"
@@ -139,37 +140,37 @@ msgid ""
 "No changes were detected in the report"
 msgstr "\n보고서에서 변경 사항을 감지하지 못했습니다"
 
-#: ../src/cli/cli-report.c:491
+#: ../src/cli/cli-report.c:471
 msgid "Your input is not valid, because of:"
 msgstr "다음과 같은 이유로 입력이 유효하지 않습니다: "
 
-#: ../src/cli/cli-report.c:495
+#: ../src/cli/cli-report.c:475
 #, c-format
 msgid "Bad value for '%s': %s"
 msgstr "'%s'에 대해 잘못된 값: %s "
 
-#: ../src/cli/cli-report.c:693
+#: ../src/cli/cli-report.c:673
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data. Do you want "
 "to continue?"
-msgstr ""
+msgstr "이벤트 '%s'에는 중요한 데이터를 전송하기 위한 권한이 필요합니다. 계속 진행하시겠습니까?"
 
-#: ../src/cli/cli-report.c:744
+#: ../src/cli/cli-report.c:720
 msgid "You have chosen number out of range"
 msgstr "범위를 벗어난 번호를 선택하셨습니다 "
 
-#: ../src/cli/cli-report.c:747
+#: ../src/cli/cli-report.c:725
 msgid "Invalid input, exiting."
-msgstr ""
+msgstr "잘못된 입력입니다. 프로그램을 종료합니다."
 
-#: ../src/cli/cli-report.c:768
+#: ../src/cli/cli-report.c:746
 msgid "Select an event to run: "
-msgstr ""
+msgstr "실행할 이벤트 선택:"
 
-#: ../src/cli/cli-report.c:876
+#: ../src/cli/cli-report.c:854
 msgid "Select a workflow to run: "
-msgstr ""
+msgstr "실행할 워크플로우 선택: "
 
 #: ../src/client-python/debuginfo.py:87
 msgid "Extracting cpio from {0}"
@@ -225,7 +226,7 @@ msgstr ""
 
 #: ../src/client-python/debuginfo.py:334
 msgid "Can't disable repository '{0!s}': {1!s}"
-msgstr ""
+msgstr "리포지터리 '{0!s}'를 비활성화할 수 없습니다: {1!s}"
 
 #. This takes some time, let user know what we are doing
 #: ../src/client-python/debuginfo.py:337
@@ -276,17 +277,17 @@ msgstr "사용자에 의해 다운로드가 취소되있습니다 "
 #: ../src/client-python/debuginfo.py:434
 msgid ""
 "Warning: Not enough free space in tmp dir '{0}' ({1:.2f}Mb left). Continue?"
-msgstr ""
+msgstr "경고: 임시 디렉토리 '{0}'에 여유 공간이 충분하지 않습니다. ({1:.2f}Mb 남음) 계속 진행하시겠습니까?"
 
 #: ../src/client-python/debuginfo.py:443
 msgid ""
 "Warning: Not enough free space in cache dir '{0}' ({1:.2f}Mb left). "
 "Continue?"
-msgstr ""
+msgstr "경고: 캐시 디렉토리 '{0}'에 여유 공간이 충분하지 않습니다 ({1:.2f}Mb 남음). 계속 진행하시겠습니까?"
 
 #: ../src/client-python/debuginfo.py:469
 msgid "Cannot copy file '{0}': {1}"
-msgstr ""
+msgstr "파일 '{0}'을 복사할 수 없음: {1}"
 
 #: ../src/client-python/debuginfo.py:487
 msgid "Downloading package {0} failed"
@@ -311,11 +312,11 @@ msgstr "%s을(를) 제거할 수 없음, 오류 로그가 포함되어 있을 �
 
 #: ../src/gtk-helpers/ask_dialogs.c:82
 msgid "_Yes"
-msgstr ""
+msgstr "예 (_Y)"
 
 #: ../src/gtk-helpers/ask_dialogs.c:83
 msgid "_No"
-msgstr ""
+msgstr "아니요 (_N)"
 
 #: ../src/gtk-helpers/ask_dialogs.c:89
 msgid "Don't ask me again"
@@ -326,33 +327,31 @@ msgstr "다시 묻지 않습니다 "
 msgid "No description available"
 msgstr ""
 
-#: ../src/gtk-helpers/config_dialog.c:274
+#: ../src/gtk-helpers/config_dialog.c:275
 msgid "Configuration"
-msgstr ""
+msgstr "설정 "
 
 #. we can't use this, because we want the workflows first and hashtable
 #. * doesn't return the items in the order they were added
-#. 
 #. g_hash_table_foreach(configs, (GHFunc)add_config_tabs, config_nb);
-#: ../src/gtk-helpers/config_dialog.c:297
-#: ../src/gtk-helpers/config_dialog.c:299
-#: ../src/gtk-helpers/config_dialog.c:350
+#: ../src/gtk-helpers/config_dialog.c:301
+#: ../src/gtk-helpers/config_dialog.c:303
 msgid "Workflows"
 msgstr ""
 
-#: ../src/gtk-helpers/config_dialog.c:301
-#: ../src/gtk-helpers/config_dialog.c:303
-#: ../src/gtk-helpers/config_dialog.c:353
-msgid "Events"
-msgstr ""
-
+#: ../src/gtk-helpers/config_dialog.c:305
 #: ../src/gtk-helpers/config_dialog.c:307
-msgid "C_onfigure"
-msgstr ""
+#: ../src/gtk-helpers/config_dialog.c:352
+msgid "Events"
+msgstr "이벤트 "
 
-#: ../src/gtk-helpers/config_dialog.c:309 ../src/gui-wizard-gtk/wizard.c:3312
+#: ../src/gtk-helpers/config_dialog.c:311
+msgid "C_onfigure"
+msgstr "설정 (_O)"
+
+#: ../src/gtk-helpers/config_dialog.c:313 ../src/gui-wizard-gtk/wizard.c:3309
 msgid "_Close"
-msgstr ""
+msgstr "종료 (_C)"
 
 #: ../src/gtk-helpers/event_config_dialog.c:136
 msgid "Show password"
@@ -373,15 +372,15 @@ msgstr ""
 #: ../src/gtk-helpers/event_config_dialog.c:299
 #: ../src/gtk-helpers/event_config_dialog.c:351
 #: ../src/gtk-helpers/workflow_config_dialog.c:76
-#: ../src/gui-wizard-gtk/wizard.c:769 ../src/gui-wizard-gtk/wizard.c:2913
+#: ../src/gui-wizard-gtk/wizard.c:769 ../src/gui-wizard-gtk/wizard.c:2910
 msgid "_Cancel"
-msgstr ""
+msgstr "취소 (_ C)"
 
 #: ../src/gtk-helpers/event_config_dialog.c:301
 #: ../src/gtk-helpers/event_config_dialog.c:353
 #: ../src/gtk-helpers/workflow_config_dialog.c:78
 msgid "_OK"
-msgstr ""
+msgstr "_OK"
 
 #: ../src/gtk-helpers/secrets.c:171
 #, c-format
@@ -437,7 +436,7 @@ msgstr "대체 GUI 파일 "
 msgid ""
 "%s is not properly configured. You can configure it now or provide the required information later.\n"
 "\n"
-"Read more about the configuration at: https://fedorahosted.org/abrt/wiki/AbrtConfiguration"
+"Read more about the configuration at: https://access.redhat.com/site/articles/718083"
 msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:304
@@ -445,7 +444,7 @@ msgstr ""
 msgid ""
 "<b>%s</b> is not properly configured. You can configure it now or provide the required information later.\n"
 "\n"
-"<a href=\"https://fedorahosted.org/abrt/wiki/AbrtConfiguration\">Read more about the configuration</a>"
+"<a href=\"https://access.redhat.com/site/articles/718083\">Read more about the configuration</a>"
 msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:320
@@ -466,7 +465,7 @@ msgstr "텍스트 파일 보기/편집 "
 
 #: ../src/gui-wizard-gtk/wizard.c:768
 msgid "_Save"
-msgstr ""
+msgstr "저장 (_S)"
 
 #: ../src/gui-wizard-gtk/wizard.c:987
 msgid ""
@@ -513,142 +512,135 @@ msgid ""
 "\t▫ <b>corrupted problem data</b>\n"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1723
-msgid ""
-"If you want to help us, please click on the upload button and provide all problem data for a deep analysis.\n"
-"<i>Before you do that, please consider the security risks. Problem data may contain sensitive information like passwords.\n"
-"The uploaded data are stored in a protected storage and only a limited number of persons can read them.</i>"
-msgstr ""
-
-#: ../src/gui-wizard-gtk/wizard.c:1841
+#: ../src/gui-wizard-gtk/wizard.c:1834
 msgid "Processing was interrupted because the problem is not reportable."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1851 ../src/gui-wizard-gtk/wizard.c:1918
+#: ../src/gui-wizard-gtk/wizard.c:1844 ../src/gui-wizard-gtk/wizard.c:1911
 msgid "Processing failed."
-msgstr ""
+msgstr "처리 실패했습니다."
 
 #. No next event, go to progress page and finish
-#: ../src/gui-wizard-gtk/wizard.c:1858 ../src/gui-wizard-gtk/wizard.c:2619
+#: ../src/gui-wizard-gtk/wizard.c:1851 ../src/gui-wizard-gtk/wizard.c:2616
 msgid "Processing finished."
-msgstr ""
+msgstr "처리 완료했습니다."
 
-#: ../src/gui-wizard-gtk/wizard.c:1859
+#: ../src/gui-wizard-gtk/wizard.c:1852
 msgid "Processing finished, please proceed to the next step."
 msgstr ""
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1915
+#: ../src/gui-wizard-gtk/wizard.c:1908
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "이벤트 '%s'에 대한 처리가 정의되지 않음 "
 
-#: ../src/gui-wizard-gtk/wizard.c:1929
+#: ../src/gui-wizard-gtk/wizard.c:1922
 msgid "Processing interrupted: can't continue without writable directory."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1966
+#: ../src/gui-wizard-gtk/wizard.c:1959
 msgid "Processing..."
-msgstr ""
+msgstr "처리 중..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2055
+#: ../src/gui-wizard-gtk/wizard.c:2048
 msgid "Cannot check backtrace rating because of invalid event name"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2639
+#: ../src/gui-wizard-gtk/wizard.c:2636
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
 "Do you want to continue?"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2687
+#: ../src/gui-wizard-gtk/wizard.c:2684
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2914
+#: ../src/gui-wizard-gtk/wizard.c:2911
 msgid "_Open"
-msgstr ""
+msgstr "열기 (_O)"
 
-#: ../src/gui-wizard-gtk/wizard.c:2936
+#: ../src/gui-wizard-gtk/wizard.c:2933
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s'은(는) 정상적인 파일이 아님 "
 
-#: ../src/gui-wizard-gtk/wizard.c:2950
+#: ../src/gui-wizard-gtk/wizard.c:2947
 msgid "You are trying to copy a file onto itself"
 msgstr "파일을 파일 자체에 복사하려고 합니다 "
 
-#: ../src/gui-wizard-gtk/wizard.c:2957
+#: ../src/gui-wizard-gtk/wizard.c:2954
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "'%s'을(를) 복사할 수 없습니다: %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2972
+#: ../src/gui-wizard-gtk/wizard.c:2969
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "항목 '%s'이 이미 존재하고 있기 때문에 변경할 수 없습니다 "
 
-#: ../src/gui-wizard-gtk/wizard.c:3164
+#: ../src/gui-wizard-gtk/wizard.c:3161
 msgid "Include"
 msgstr "포함 "
 
-#: ../src/gui-wizard-gtk/wizard.c:3175
+#: ../src/gui-wizard-gtk/wizard.c:3172
 msgid "Name"
 msgstr "이름"
 
-#: ../src/gui-wizard-gtk/wizard.c:3185
+#: ../src/gui-wizard-gtk/wizard.c:3182
 msgid "Value"
 msgstr "값 "
 
-#: ../src/gui-wizard-gtk/wizard.c:3219
+#: ../src/gui-wizard-gtk/wizard.c:3216
 msgid "Problem description"
 msgstr "문제 설명 "
 
-#: ../src/gui-wizard-gtk/wizard.c:3220
+#: ../src/gui-wizard-gtk/wizard.c:3217
 msgid "Select how to report this problem"
-msgstr ""
+msgstr "문제를 보고할 방법을 선택합니다 "
 
-#: ../src/gui-wizard-gtk/wizard.c:3221
+#: ../src/gui-wizard-gtk/wizard.c:3218
 msgid "Provide additional information"
 msgstr "추가 정보 제공 "
 
-#: ../src/gui-wizard-gtk/wizard.c:3222
+#: ../src/gui-wizard-gtk/wizard.c:3219
 msgid "Review the data"
 msgstr "데이터 검토 "
 
-#: ../src/gui-wizard-gtk/wizard.c:3223
+#: ../src/gui-wizard-gtk/wizard.c:3220
 msgid "Confirm data to report"
 msgstr "보고할 데이터 확인 "
 
-#: ../src/gui-wizard-gtk/wizard.c:3224
+#: ../src/gui-wizard-gtk/wizard.c:3221
 msgid "Processing"
-msgstr ""
+msgstr "처리 중 "
 
-#: ../src/gui-wizard-gtk/wizard.c:3225
+#: ../src/gui-wizard-gtk/wizard.c:3222
 msgid "Processing done"
-msgstr ""
+msgstr "처리 완료 "
 
-#: ../src/gui-wizard-gtk/wizard.c:3314
+#: ../src/gui-wizard-gtk/wizard.c:3311
 msgid "_Stop"
-msgstr ""
+msgstr "중지 (_ S)"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3317
+#: ../src/gui-wizard-gtk/wizard.c:3314
 msgid "Upload for analysis"
 msgstr ""
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3320
+#: ../src/gui-wizard-gtk/wizard.c:3317
 msgid "_Forward"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:3409
+#: ../src/gui-wizard-gtk/wizard.c:3406
 msgid ""
-"In order to enable the built-in screencasting functionality the package recordmydesktop has to be installed. Please run the following command if you want to install it.\n"
+"In order to enable the built-in screencasting functionality the package fros-gnome has to be installed. Please run the following command if you want to install it.\n"
 "\n"
-"<b>su -c \"yum install recordmydesktop\"</b>"
+"<b>su -c \"yum install fros-gnome\"</b>"
 msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
@@ -704,7 +696,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid "add a screencast"
-msgstr ""
+msgstr "스크린샷 추가 "
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid "I don't know what caused this problem"
@@ -771,12 +763,12 @@ msgstr ""
 #: ../src/plugins/reporter-rhtsupport.c:254
 #: ../src/plugins/reporter-upload.c:227
 msgid "Problem directory"
-msgstr ""
+msgstr "문제 디렉토리 "
 
 #: ../src/lib/abrt_sock.c:158
 #, c-format
 msgid "Can't delete: '%s'"
-msgstr ""
+msgstr "삭제할 수 없음: '%s'"
 
 #: ../src/lib/abrt_sock.c:194
 msgid "locked by another process"
@@ -788,12 +780,12 @@ msgstr ""
 
 #: ../src/lib/abrt_sock.c:206
 msgid "not a problem directory"
-msgstr ""
+msgstr "문제 디렉토리가 아닙니다 "
 
 #: ../src/lib/abrt_sock.c:215
 #, c-format
 msgid "Can't delete '%s': %s"
-msgstr ""
+msgstr "'%s'을(를) 삭제할 수 없습니다: %s"
 
 #: ../src/lib/client.c:56 ../src/lib/client.c:89
 msgid "y"
@@ -805,93 +797,93 @@ msgstr "N"
 
 #: ../src/lib/client.c:91
 msgid "f"
-msgstr ""
+msgstr "f"
 
 #: ../src/lib/create_dump_dir.c:39
 #, c-format
 msgid "Missing required item: '%s'"
-msgstr ""
+msgstr "필수 항목이 누락되어 있습니다: '%s'"
 
 #: ../src/lib/create_dump_dir.c:54
 #, c-format
 msgid "uid value is not valid: '%s'"
-msgstr ""
+msgstr "uid 값이 올바르지 않습니다: '%s'"
 
 #: ../src/lib/curl.c:226
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "업로드됨: %llu 중 %llu 킬로바이트  "
 
-#: ../src/lib/curl.c:591
+#: ../src/lib/curl.c:598
 #, c-format
 msgid "Sending %s to %s"
 msgstr "%s을(를) %s에 전송 중 "
 
 #. This ends up a "reporting status message" in abrtd
-#: ../src/lib/curl.c:623
+#: ../src/lib/curl.c:630
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "%s을(를) %s에 성공적으로 전송 "
 
-#: ../src/lib/event_config.c:309
+#: ../src/lib/event_config.c:348
 msgid "Missing mandatory value"
 msgstr "필요한 값 누락 "
 
-#: ../src/lib/event_config.c:317
+#: ../src/lib/event_config.c:356
 #, c-format
 msgid "Invalid utf8 character '%c'"
 msgstr "잘못된 utf8 문자 '%c'  "
 
-#: ../src/lib/event_config.c:330
+#: ../src/lib/event_config.c:369
 #, c-format
 msgid "Invalid number '%s'"
 msgstr "잘못된 번호 '%s'  "
 
-#: ../src/lib/event_config.c:345
+#: ../src/lib/event_config.c:384
 #, c-format
 msgid "Invalid boolean value '%s'"
 msgstr "잘못된 부울 값 '%s' "
 
-#: ../src/lib/event_config.c:351
+#: ../src/lib/event_config.c:390
 msgid "Unsupported option type"
 msgstr "지원되지 않는 옵션 유형 "
 
-#: ../src/lib/event_config.c:420
+#: ../src/lib/event_config.c:459
 msgid "Reporting disabled because the rating does not contain a number."
 msgstr ""
 
-#: ../src/lib/event_config.c:421
+#: ../src/lib/event_config.c:460
 msgid "Please report this problem to ABRT project developers."
-msgstr ""
+msgstr "ABRT 프로젝트 개발자에게 이 문제를 보고해 주십시오."
 
-#: ../src/lib/event_config.c:427
+#: ../src/lib/event_config.c:466
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "백트레이스가 불완전합니다. 재현을 위해 올바른 단계를 제공했는지 확인하십시오.  "
 
-#: ../src/lib/event_config.c:428
+#: ../src/lib/event_config.c:467
 msgid "The backtrace probably can't help developer to diagnose the bug."
 msgstr ""
 
-#: ../src/lib/event_config.c:434
+#: ../src/lib/event_config.c:473
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "백트레이스가 비활성화되었기 때문에 보고가 비활성화되었습니다. "
 
-#: ../src/lib/event_config.c:438
+#: ../src/lib/event_config.c:477
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again."
-msgstr ""
+msgstr "\"debuginfo-install %s\" 명령을 사용하여 debuginfo를 수동으로 설치하고 다시 시도하십시오."
 
-#: ../src/lib/event_config.c:440
+#: ../src/lib/event_config.c:479
 msgid "A proper debuginfo is probably missing or the coredump is corrupted."
 msgstr ""
 
 #: ../src/lib/make_descr.c:110
 msgid "Reported:"
-msgstr ""
+msgstr "보고됨:"
 
 #: ../src/lib/parse_options.c:58
 msgid "Usage: "
@@ -920,42 +912,42 @@ msgstr ""
 #: ../src/plugins/abrt_rh_support.c:356
 #, c-format
 msgid "Error in case creation at '%s': %s"
-msgstr ""
+msgstr "'%s'에 생성 시 오류 발생: %s "
 
 #: ../src/plugins/abrt_rh_support.c:365
 #, c-format
 msgid "Error in case creation at '%s', HTTP code: %d, server says: '%s'"
-msgstr ""
+msgstr "'%s'에 생성 시 오류 발생, HTTP 코드: %d, 서버: '%s' "
 
 #: ../src/plugins/abrt_rh_support.c:369
 #, c-format
 msgid "Error in case creation at '%s', HTTP code: %d"
-msgstr ""
+msgstr "'%s'에 생성 시 오류 발생, HTTP 코드: %d "
 
 #: ../src/plugins/abrt_rh_support.c:420
 #, c-format
 msgid "Error in case creation at '%s': no Location URL, HTTP code: %d"
-msgstr ""
+msgstr "'%s'에 생성 시 오류 발생: URL이 없음, HTTP 코드: %d "
 
 #: ../src/plugins/abrt_rh_support.c:524
 #, c-format
 msgid "Error in comment creation at '%s': %s"
-msgstr ""
+msgstr "'%s'에 코멘트 생성 시 오류 발생: %s "
 
 #: ../src/plugins/abrt_rh_support.c:533
 #, c-format
 msgid "Error in comment creation at '%s', HTTP code: %d, server says: '%s'"
-msgstr ""
+msgstr "'%s'에 코멘트 생성 시 오류 발생, HTTP 코드: %d, 서버: '%s' "
 
 #: ../src/plugins/abrt_rh_support.c:537
 #, c-format
 msgid "Error in comment creation at '%s', HTTP code: %d"
-msgstr ""
+msgstr "'%s'에 코멘트 생성 시 오류 발생, HTTP 코드: %d "
 
 #: ../src/plugins/abrt_rh_support.c:583
 #, c-format
 msgid "Error in comment creation at '%s': no Location URL, HTTP code: %d"
-msgstr ""
+msgstr "'%s'에 코멘트 생성 시 오류 발생: URL이 없음, HTTP 코드: %d "
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:1
 msgid "Bugzilla"
@@ -1036,7 +1028,7 @@ msgstr ""
 msgid ""
 "Specify this only if you needed different product version than specified in "
 "/etc/os-release"
-msgstr ""
+msgstr "/etc/os-release에 지정된 것 이외에 다른 제품 버전이 필요한 경우에만 이를 지정합니다 "
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:18
 #: ../src/plugins/report_Kerneloops.xml.in.h:5
@@ -1109,7 +1101,7 @@ msgstr "티켓/사례 ID "
 #: ../src/plugins/reporter-bugzilla.c:355
 #, c-format
 msgid "Can't parse backtrace: %s"
-msgstr ""
+msgstr "백트레이스를 구문 분석할 수 없음: %s"
 
 #: ../src/plugins/reporter-bugzilla.c:366
 msgid "Can't generate stacktrace description (no crash thread?)"
@@ -1124,12 +1116,12 @@ msgstr ""
 #: ../src/plugins/reporter-bugzilla.c:775
 #: ../src/plugins/reporter-rhtsupport.c:178
 msgid "Can't continue without login"
-msgstr ""
+msgstr "로그인 없이 계속 진행할 수 없습니다 "
 
 #: ../src/plugins/reporter-bugzilla.c:788
 #: ../src/plugins/reporter-rhtsupport.c:191
 msgid "Can't continue without password"
-msgstr ""
+msgstr "암호 없이 계속 진행할 수 없습니다 "
 
 #: ../src/plugins/reporter-bugzilla.c:797
 #, c-format
@@ -1275,7 +1267,7 @@ msgstr ""
 #: ../src/plugins/reporter-bugzilla.c:1049
 #, c-format
 msgid "Using Bugzilla ID '%s'"
-msgstr ""
+msgstr "Bugzilla ID '%s' 사용 "
 
 #: ../src/plugins/reporter-bugzilla.c:1083
 #: ../src/plugins/reporter-bugzilla.c:1354
@@ -1317,7 +1309,7 @@ msgstr "이미 버그가 보고되었음: %i "
 #: ../src/plugins/reporter-bugzilla.c:1309
 #, c-format
 msgid "Adding %s to CC list"
-msgstr ""
+msgstr "%s 를 CC 목록에 추가 중 "
 
 #: ../src/plugins/reporter-bugzilla.c:1326
 #, c-format
@@ -1356,7 +1348,7 @@ msgid ""
 "Parameter can be overridden via $KerneloopsReporter_SubmitURL."
 msgstr "& [-v] [-c CONFFILE]... -d DIR\n\nkerneloops.org (또는 유사한) 사이트에 커널 oops를 보고합니다.\n\n$EXCLUDE_FROM_REPORT에 나열된 이름으로된 파일은 tarball에\n포함되지 않습니다.\n\nCONFFILE 행에 'PARAM = VALUE' 형식이 있어야 합니다. \n인식되는 문자열 매개 변수는 SubmitURL입니다. \n매개 변수는 $KerneloopsReporter_SubmitURL을 통해 덮어쓰기 될 수 있습니다. "
 
-#: ../src/plugins/reporter-kerneloops.c:167 ../src/plugins/ureport.c:379
+#: ../src/plugins/reporter-kerneloops.c:167 ../src/plugins/ureport.c:456
 msgid "Configuration file"
 msgstr "설정 파일 "
 
@@ -1478,11 +1470,11 @@ msgstr "데이터 압축 중 "
 
 #: ../src/plugins/reporter-rhtsupport.c:413
 msgid "Can't create a temporary directory in "
-msgstr ""
+msgstr "임시 디렉토리를 생성할 수 없습니다 "
 
 #: ../src/plugins/reporter-rhtsupport.c:422
 msgid "Can't create temporary file in "
-msgstr ""
+msgstr "임시 파일을 생성할 수 없습니다 "
 
 #. Check for hints and show them if we have something
 #: ../src/plugins/reporter-rhtsupport.c:431
@@ -1495,7 +1487,7 @@ msgstr "RHTSupport 티켓을 정말로 생성하시겠습니까? "
 
 #: ../src/plugins/reporter-rhtsupport.c:487
 msgid "Creating a new case"
-msgstr ""
+msgstr "새로운 사례 생성 중 "
 
 #. How can we help user sorting out this problem?
 #: ../src/plugins/reporter-rhtsupport.c:498
@@ -1505,7 +1497,7 @@ msgstr ""
 #: ../src/plugins/reporter-rhtsupport.c:573
 #, c-format
 msgid "Adding comment to case '%s'"
-msgstr ""
+msgstr "사례 '%s'에 코멘트 추가 중"
 
 #. Attach the tarball of -d DIR
 #: ../src/plugins/reporter-rhtsupport.c:593
@@ -1523,7 +1515,7 @@ msgstr "도움이 될 수 있는 업데이트: "
 
 #: ../src/plugins/reporter-upload.c:30
 msgid "Can't continue without URL"
-msgstr ""
+msgstr "URL 없이 계속 진행할 수 없습니다 "
 
 #: ../src/plugins/reporter-upload.c:61
 msgid "Upload URL is not provided by configuration. Please enter upload URL:"
@@ -1677,7 +1669,7 @@ msgstr "login:password@url 형식으로된 보고서의 타볼 (tarball)을 업�
 #: ../src/plugins/report_Uploader.xml.in.h:5
 msgid ""
 "Examples:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]"
-msgstr ""
+msgstr "예:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]"
 
 #: ../src/plugins/report_Uploader.xml.in.h:10
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:8
@@ -1745,7 +1737,7 @@ msgstr "새 버그 id: %i "
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla는 버그 %d의 부모 버그를 찾을 수 없습니다 "
 
-#: ../src/plugins/ureport.c:79
+#: ../src/plugins/ureport.c:146
 #, c-format
 msgid ""
 "Your problem seems to be caused by %s\n"
@@ -1753,148 +1745,151 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: ../src/plugins/ureport.c:82
+#: ../src/plugins/ureport.c:149
 msgid "Your problem seems to be caused by one of the following:\n"
 msgstr ""
 
-#: ../src/plugins/ureport.c:248
+#: ../src/plugins/ureport.c:320
 #, c-format
 msgid "Failed to upload uReport to the server '%s' with curl: %s"
 msgstr ""
 
-#: ../src/plugins/ureport.c:254
+#: ../src/plugins/ureport.c:326
 #, c-format
 msgid "The URL '%s' does not exist (got error 404 from server)"
-msgstr ""
+msgstr "URL '%s'이 존재하지 않습니다 (서버에서 404 오류가 발생했습니다) "
 
-#: ../src/plugins/ureport.c:260
+#: ../src/plugins/ureport.c:332
 #, c-format
 msgid "The server at '%s' encountered an internal error (got error 500)"
 msgstr ""
 
-#: ../src/plugins/ureport.c:266
+#: ../src/plugins/ureport.c:338
 #, c-format
-msgid ""
-"The server at '%s' is currently can't handle the request (got error 503)"
+msgid "The server at '%s' currently can't handle the request (got error 503)"
 msgstr ""
 
 #. can't print better error message
-#: ../src/plugins/ureport.c:275
+#: ../src/plugins/ureport.c:347
 #, c-format
 msgid "Unexpected HTTP response from '%s': %d"
 msgstr ""
 
-#: ../src/plugins/ureport.c:284
+#: ../src/plugins/ureport.c:356
 #, c-format
-msgid "Unable to parse response from ureport server at '%s"
+msgid "Unable to parse response from ureport server at '%s'"
 msgstr ""
 
-#: ../src/plugins/ureport.c:294
+#: ../src/plugins/ureport.c:366
 #, c-format
 msgid "The response from '%s' has invalid format"
 msgstr ""
 
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
-#: ../src/plugins/ureport.c:300
+#: ../src/plugins/ureport.c:372
 #, c-format
 msgid "Type mismatch has been detected in the response from '%s'"
 msgstr ""
 
-#: ../src/plugins/ureport.c:331
+#: ../src/plugins/ureport.c:403
 #, c-format
 msgid "The server at '%s' responded with an error: '%s'"
 msgstr ""
 
-#: ../src/plugins/ureport.c:376
+#: ../src/plugins/ureport.c:452
 msgid "Specify server URL"
-msgstr ""
+msgstr "서버 URL을 지정합니다 "
 
-#: ../src/plugins/ureport.c:378
+#: ../src/plugins/ureport.c:454
 msgid "Allow insecure connection to ureport server"
-msgstr ""
+msgstr "ureport 서버에 비보안 연결을 허용합니다 "
 
-#: ../src/plugins/ureport.c:381
+#: ../src/plugins/ureport.c:455
+msgid "Use client authentication"
+msgstr "클라이언트 인증을 사용합니다 "
+
+#: ../src/plugins/ureport.c:458
 msgid "bthash of uReport to attach (conflicts with -A)"
 msgstr ""
 
-#: ../src/plugins/ureport.c:383
+#: ../src/plugins/ureport.c:460
 msgid "attach to a bthash from reported_to (conflicts with -a)"
 msgstr ""
 
-#: ../src/plugins/ureport.c:385
+#: ../src/plugins/ureport.c:462
 msgid "contact e-mail address (requires -a|-A, conflicts with -E)"
 msgstr ""
 
-#: ../src/plugins/ureport.c:387
+#: ../src/plugins/ureport.c:464
 msgid ""
 "contact e-mail address from environment or configuration file (requires "
 "-a|-A, conflicts with -e)"
 msgstr ""
 
-#: ../src/plugins/ureport.c:389
+#: ../src/plugins/ureport.c:466
 msgid "attach RHBZ bug (requires -a|-A, conflicts with -B)"
 msgstr ""
 
-#: ../src/plugins/ureport.c:391
+#: ../src/plugins/ureport.c:468
 msgid ""
 "attach last RHBZ bug from reported_to (requires -a|-A, conflicts with -b)"
 msgstr ""
 
-#: ../src/plugins/ureport.c:396
+#: ../src/plugins/ureport.c:473
 msgid ""
-"& [-v] [-c FILE] [-u URL] [-k] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
+"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
 "\n"
 "Upload micro report or add an attachment to a micro report\n"
 "\n"
 "Reads the default configuration from "
 msgstr ""
 
-#: ../src/plugins/ureport.c:440
+#: ../src/plugins/ureport.c:519
 msgid "This problem does not have an uReport assigned."
 msgstr ""
 
-#: ../src/plugins/ureport.c:453
+#: ../src/plugins/ureport.c:532
 msgid "This problem has not been reported to Bugzilla."
-msgstr ""
+msgstr "이 문제는 Bugzilla에 보고되지 않았습니다."
 
-#: ../src/plugins/ureport.c:457
+#: ../src/plugins/ureport.c:536
 #, c-format
 msgid "Unable to find bug ID in bugzilla URL '%s'"
-msgstr ""
+msgstr "bugzilla URL '%s'에 있는 버그 ID를 찾을 수 없습니다 "
 
-#: ../src/plugins/ureport.c:462
+#: ../src/plugins/ureport.c:541
 #, c-format
 msgid "Unable to parse bug ID from bugzilla URL '%s'"
-msgstr ""
+msgstr "bugzilla URL '%s'에서 버그 ID를 구문 분석할 수 없습니다 "
 
-#: ../src/plugins/ureport.c:475
+#: ../src/plugins/ureport.c:554
 msgid ""
 "Neither environment variable 'uReport_ContactEmail' nor configuration option"
 " 'ContactEmail' is set"
 msgstr ""
 
-#: ../src/plugins/ureport.c:481
+#: ../src/plugins/ureport.c:560
 msgid "You need to specify bug ID, contact email or both"
-msgstr ""
+msgstr "버그 ID, 연락 가능한 이메일 또는 두 가지 모두를 지정해야 합니다 "
 
-#: ../src/plugins/ureport.c:499
+#: ../src/plugins/ureport.c:578
 msgid "You need to specify bthash of the uReport to attach."
 msgstr ""
 
-#: ../src/plugins/ureport.c:509
+#: ../src/plugins/ureport.c:588
 msgid "Not uploading an empty uReport"
 msgstr ""
 
-#: ../src/plugins/ureport.c:518
+#: ../src/plugins/ureport.c:597
 msgid "Failed on submitting the problem"
-msgstr ""
+msgstr "문제를 제출하는데 실패했습니다 "
 
-#: ../src/plugins/ureport.c:563
+#: ../src/plugins/ureport.c:642
 msgid "This problem has already been reported."
-msgstr ""
+msgstr "이 문제는 이미 보고되었습니다."
 
-#: ../src/plugins/ureport.c:572
+#: ../src/plugins/ureport.c:651
 #, c-format
 msgid "Server responded with an error: '%s'"
 msgstr ""
@@ -1943,100 +1938,124 @@ msgstr "보고 후 DIR 삭제 "
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:1
 msgid "Report a bug to Fedora maintainers"
-msgstr ""
+msgstr "Fedora 관리자에게 버그를 보고합니다 "
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:2
 msgid "Process the report using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora 인프라를 사용하여 보고를 처리합니다 "
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:1
-msgid "Report a bug to Red Hat Support Tool"
+msgid "Report a bug to Red Hat Customer Portal"
 msgstr ""
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:2
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:2
 msgid "Process the report using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat 인프라를 사용하여 보고를 처리합니다 "
 
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:1
 msgid "Report a bug to Red Hat Bugzilla"
-msgstr ""
+msgstr "Red Hat Bugzilla에 버그 보고 "
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
 #: ../src/workflows/workflow_Upload.xml.in.h:1
 msgid "Upload the problem data to a server"
-msgstr ""
+msgstr "서버에 문제 데이터를 업로드"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:2
 #: ../src/workflows/workflow_Upload.xml.in.h:2
 msgid "Analyze the problem locally and upload the data via scp or ftp"
-msgstr ""
+msgstr "로컬에서 문제를 분석하고 scp 또는 ftp를 통해 데이터를 업로드합니다 "
 
 #: ../src/workflows/workflow_FedoraCCpp.xml.in.h:1
 #: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:1
 #: ../src/workflows/workflow_FedoraPython.xml.in.h:1
 #: ../src/workflows/workflow_FedoraVmcore.xml.in.h:1
 #: ../src/workflows/workflow_FedoraXorg.xml.in.h:1
+#: ../src/workflows/workflow_FedoraLibreport.xml.in.h:1
+#: ../src/workflows/workflow_FedoraJava.xml.in.h:1
 msgid "Report to Fedora"
-msgstr ""
+msgstr "Fedora에 보고 "
 
 #: ../src/workflows/workflow_FedoraCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora 인프라를 사용하여 C/C++ 충돌 문제를 처리합니다 "
 
 #: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:2
 msgid "Process the kerneloops using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora 인프라를 사용하여 kerneloop를 처리합니다"
 
 #: ../src/workflows/workflow_FedoraPython.xml.in.h:2
 msgid "Process the python exception using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora 인프라를 사용하여 python 예외를 처리합니다 "
 
 #: ../src/workflows/workflow_FedoraVmcore.xml.in.h:2
 msgid "Process the kernel crash using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora 인프라를 사용하여 커널 충돌 문제를 처리합니다 "
 
 #: ../src/workflows/workflow_FedoraXorg.xml.in.h:2
 msgid "Process the X Server problem using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora 인프라를 사용하여 X 서버 문제를 처리합니다 "
+
+#: ../src/workflows/workflow_FedoraLibreport.xml.in.h:2
+msgid "Process the problem using the Fedora infrastructure"
+msgstr "Fedora 인프라를 사용하여 문제를 처리합니다 "
+
+#: ../src/workflows/workflow_FedoraJava.xml.in.h:2
+msgid "Process the Java exception using the Fedora infrastructure"
+msgstr "Fedora 인프라를 사용하여  Java 예외를 처리합니다 "
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1
 #: ../src/workflows/workflow_RHELPython.xml.in.h:1
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:1
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:1
+#: ../src/workflows/workflow_RHELLibreport.xml.in.h:1
+#: ../src/workflows/workflow_RHELJava.xml.in.h:1
 msgid "Report to Red Hat Customer Portal"
-msgstr ""
+msgstr "Red Hat 고객 포털에 보고합니다 "
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat 인프라를 사용하여 C/C++ 충돌을 처리합니다 "
 
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:2
 msgid "Process the kerneloops using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat 인프라를 사용하여 kerneloop 처리 "
 
 #: ../src/workflows/workflow_RHELPython.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:2
 msgid "Process the python exception using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat 인프라를 사용하여 python 예외를 처리합니다 "
 
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:2
 msgid "Process the kernel crash using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat 인프라를 사용하여 커널 충돌을 처리합니다 "
 
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:2
 msgid "Process the X Server problem using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat 인프라를 사용하여 X 서버 문제를 처리합니다 "
+
+#: ../src/workflows/workflow_RHELLibreport.xml.in.h:2
+#: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:2
+msgid "Process the problem using the Red Hat infrastructure"
+msgstr "Red Hat 인프라를 사용하여 문제를 처리합니다 "
+
+#: ../src/workflows/workflow_RHELJava.xml.in.h:2
+#: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
+msgid "Process the Java exception using the Red Hat infrastructure"
+msgstr "Red Hat 인프라를 사용하여  Java 예외를 처리합니다 "
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:1
+#: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:1
+#: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:1
 msgid "Report to Red Hat Bugzilla"
-msgstr ""
+msgstr "Red Hat Bugzilla에 보고 "

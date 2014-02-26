@@ -3,13 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Valentin Laskov <laskov@festa.bg>, 2011-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-07 22:48+0100\n"
-"PO-Revision-Date: 2014-01-07 21:48+0000\n"
+"POT-Creation-Date: 2014-02-26 09:32+0100\n"
+"PO-Revision-Date: 2014-02-26 08:32+0000\n"
 "Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: Bulgarian (http://www.transifex.com/projects/p/fedora/language/bg/)\n"
 "MIME-Version: 1.0\n"
@@ -138,35 +137,35 @@ msgid ""
 "No changes were detected in the report"
 msgstr "\nНе бяха намерени промени в доклада"
 
-#: ../src/cli/cli-report.c:491
+#: ../src/cli/cli-report.c:471
 msgid "Your input is not valid, because of:"
 msgstr "Въведеното от Вас не е валидно, защото:"
 
-#: ../src/cli/cli-report.c:495
+#: ../src/cli/cli-report.c:475
 #, c-format
 msgid "Bad value for '%s': %s"
 msgstr "Грешна стойност за '%s': %s"
 
-#: ../src/cli/cli-report.c:693
+#: ../src/cli/cli-report.c:673
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data. Do you want "
 "to continue?"
 msgstr "Събитието '%s' изисква позволение, за да изпрати вероятно лични данни. Искате ли да продължите?"
 
-#: ../src/cli/cli-report.c:744
+#: ../src/cli/cli-report.c:720
 msgid "You have chosen number out of range"
 msgstr "Избрахте номер извън допустимите"
 
-#: ../src/cli/cli-report.c:747
+#: ../src/cli/cli-report.c:725
 msgid "Invalid input, exiting."
 msgstr "Невалидни данни, излизам."
 
-#: ../src/cli/cli-report.c:768
+#: ../src/cli/cli-report.c:746
 msgid "Select an event to run: "
 msgstr ""
 
-#: ../src/cli/cli-report.c:876
+#: ../src/cli/cli-report.c:854
 msgid "Select a workflow to run: "
 msgstr ""
 
@@ -325,31 +324,29 @@ msgstr "Не ме питай повече"
 msgid "No description available"
 msgstr "Няма налично описание"
 
-#: ../src/gtk-helpers/config_dialog.c:274
+#: ../src/gtk-helpers/config_dialog.c:275
 msgid "Configuration"
 msgstr "Конфигурация"
 
 #. we can't use this, because we want the workflows first and hashtable
 #. * doesn't return the items in the order they were added
-#. 
 #. g_hash_table_foreach(configs, (GHFunc)add_config_tabs, config_nb);
-#: ../src/gtk-helpers/config_dialog.c:297
-#: ../src/gtk-helpers/config_dialog.c:299
-#: ../src/gtk-helpers/config_dialog.c:350
+#: ../src/gtk-helpers/config_dialog.c:301
+#: ../src/gtk-helpers/config_dialog.c:303
 msgid "Workflows"
 msgstr ""
 
-#: ../src/gtk-helpers/config_dialog.c:301
-#: ../src/gtk-helpers/config_dialog.c:303
-#: ../src/gtk-helpers/config_dialog.c:353
+#: ../src/gtk-helpers/config_dialog.c:305
+#: ../src/gtk-helpers/config_dialog.c:307
+#: ../src/gtk-helpers/config_dialog.c:352
 msgid "Events"
 msgstr "Събития"
 
-#: ../src/gtk-helpers/config_dialog.c:307
+#: ../src/gtk-helpers/config_dialog.c:311
 msgid "C_onfigure"
 msgstr "К_онфигуриране"
 
-#: ../src/gtk-helpers/config_dialog.c:309 ../src/gui-wizard-gtk/wizard.c:3312
+#: ../src/gtk-helpers/config_dialog.c:313 ../src/gui-wizard-gtk/wizard.c:3309
 msgid "_Close"
 msgstr ""
 
@@ -372,7 +369,7 @@ msgstr "Услугата Secret Service не е налична, настройк
 #: ../src/gtk-helpers/event_config_dialog.c:299
 #: ../src/gtk-helpers/event_config_dialog.c:351
 #: ../src/gtk-helpers/workflow_config_dialog.c:76
-#: ../src/gui-wizard-gtk/wizard.c:769 ../src/gui-wizard-gtk/wizard.c:2913
+#: ../src/gui-wizard-gtk/wizard.c:769 ../src/gui-wizard-gtk/wizard.c:2910
 msgid "_Cancel"
 msgstr ""
 
@@ -436,7 +433,7 @@ msgstr "Алтернативен GUI файл"
 msgid ""
 "%s is not properly configured. You can configure it now or provide the required information later.\n"
 "\n"
-"Read more about the configuration at: https://fedorahosted.org/abrt/wiki/AbrtConfiguration"
+"Read more about the configuration at: https://access.redhat.com/site/articles/718083"
 msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:304
@@ -444,7 +441,7 @@ msgstr ""
 msgid ""
 "<b>%s</b> is not properly configured. You can configure it now or provide the required information later.\n"
 "\n"
-"<a href=\"https://fedorahosted.org/abrt/wiki/AbrtConfiguration\">Read more about the configuration</a>"
+"<a href=\"https://access.redhat.com/site/articles/718083\">Read more about the configuration</a>"
 msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:320
@@ -512,142 +509,135 @@ msgid ""
 "\t▫ <b>corrupted problem data</b>\n"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1723
-msgid ""
-"If you want to help us, please click on the upload button and provide all problem data for a deep analysis.\n"
-"<i>Before you do that, please consider the security risks. Problem data may contain sensitive information like passwords.\n"
-"The uploaded data are stored in a protected storage and only a limited number of persons can read them.</i>"
-msgstr ""
-
-#: ../src/gui-wizard-gtk/wizard.c:1841
+#: ../src/gui-wizard-gtk/wizard.c:1834
 msgid "Processing was interrupted because the problem is not reportable."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1851 ../src/gui-wizard-gtk/wizard.c:1918
+#: ../src/gui-wizard-gtk/wizard.c:1844 ../src/gui-wizard-gtk/wizard.c:1911
 msgid "Processing failed."
 msgstr "Обработката се провали."
 
 #. No next event, go to progress page and finish
-#: ../src/gui-wizard-gtk/wizard.c:1858 ../src/gui-wizard-gtk/wizard.c:2619
+#: ../src/gui-wizard-gtk/wizard.c:1851 ../src/gui-wizard-gtk/wizard.c:2616
 msgid "Processing finished."
 msgstr "Обработката завърши."
 
-#: ../src/gui-wizard-gtk/wizard.c:1859
+#: ../src/gui-wizard-gtk/wizard.c:1852
 msgid "Processing finished, please proceed to the next step."
 msgstr "Обработката завърши, моля, преминете към следващата стъпка."
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1915
+#: ../src/gui-wizard-gtk/wizard.c:1908
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "Не е дефинирана обработка на събитие '%s'"
 
-#: ../src/gui-wizard-gtk/wizard.c:1929
+#: ../src/gui-wizard-gtk/wizard.c:1922
 msgid "Processing interrupted: can't continue without writable directory."
 msgstr "Обработката е прекъсната: не мога да продължа без записваема директория."
 
-#: ../src/gui-wizard-gtk/wizard.c:1966
+#: ../src/gui-wizard-gtk/wizard.c:1959
 msgid "Processing..."
 msgstr "Обработка..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2055
+#: ../src/gui-wizard-gtk/wizard.c:2048
 msgid "Cannot check backtrace rating because of invalid event name"
 msgstr "Не мога да проверя рейтинга на обратното проследяване поради невалидно име на събитието"
 
-#: ../src/gui-wizard-gtk/wizard.c:2639
+#: ../src/gui-wizard-gtk/wizard.c:2636
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
 "Do you want to continue?"
 msgstr "Събитието '%s' изисква позволение за да изпрати вероятно лични данни.\nИскате ли да продължите?"
 
-#: ../src/gui-wizard-gtk/wizard.c:2687
+#: ../src/gui-wizard-gtk/wizard.c:2684
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
 msgstr "Проблемът не би трябвало да се докладва (като че ли е известен вече). %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2914
+#: ../src/gui-wizard-gtk/wizard.c:2911
 msgid "_Open"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2936
+#: ../src/gui-wizard-gtk/wizard.c:2933
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' не е нормален файл"
 
-#: ../src/gui-wizard-gtk/wizard.c:2950
+#: ../src/gui-wizard-gtk/wizard.c:2947
 msgid "You are trying to copy a file onto itself"
 msgstr "Опитвате се да копирате файл в самия него"
 
-#: ../src/gui-wizard-gtk/wizard.c:2957
+#: ../src/gui-wizard-gtk/wizard.c:2954
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "Не мога да копирам '%s': %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2972
+#: ../src/gui-wizard-gtk/wizard.c:2969
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "'%s' вече съществува и не може да бъде променено"
 
-#: ../src/gui-wizard-gtk/wizard.c:3164
+#: ../src/gui-wizard-gtk/wizard.c:3161
 msgid "Include"
 msgstr "Включи"
 
-#: ../src/gui-wizard-gtk/wizard.c:3175
+#: ../src/gui-wizard-gtk/wizard.c:3172
 msgid "Name"
 msgstr "Име"
 
-#: ../src/gui-wizard-gtk/wizard.c:3185
+#: ../src/gui-wizard-gtk/wizard.c:3182
 msgid "Value"
 msgstr "Стойност"
 
-#: ../src/gui-wizard-gtk/wizard.c:3219
+#: ../src/gui-wizard-gtk/wizard.c:3216
 msgid "Problem description"
 msgstr "Описание на проблема"
 
-#: ../src/gui-wizard-gtk/wizard.c:3220
+#: ../src/gui-wizard-gtk/wizard.c:3217
 msgid "Select how to report this problem"
 msgstr "Изберете как да докладваме този проблем"
 
-#: ../src/gui-wizard-gtk/wizard.c:3221
+#: ../src/gui-wizard-gtk/wizard.c:3218
 msgid "Provide additional information"
 msgstr "Предоставяне на допълнителна информация"
 
-#: ../src/gui-wizard-gtk/wizard.c:3222
+#: ../src/gui-wizard-gtk/wizard.c:3219
 msgid "Review the data"
 msgstr "Преглед на данните"
 
-#: ../src/gui-wizard-gtk/wizard.c:3223
+#: ../src/gui-wizard-gtk/wizard.c:3220
 msgid "Confirm data to report"
 msgstr "Потвърдете данните в доклада"
 
-#: ../src/gui-wizard-gtk/wizard.c:3224
+#: ../src/gui-wizard-gtk/wizard.c:3221
 msgid "Processing"
 msgstr "Обработка"
 
-#: ../src/gui-wizard-gtk/wizard.c:3225
+#: ../src/gui-wizard-gtk/wizard.c:3222
 msgid "Processing done"
 msgstr "Обработката завърши."
 
-#: ../src/gui-wizard-gtk/wizard.c:3314
+#: ../src/gui-wizard-gtk/wizard.c:3311
 msgid "_Stop"
 msgstr ""
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3317
+#: ../src/gui-wizard-gtk/wizard.c:3314
 msgid "Upload for analysis"
 msgstr ""
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3320
+#: ../src/gui-wizard-gtk/wizard.c:3317
 msgid "_Forward"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:3409
+#: ../src/gui-wizard-gtk/wizard.c:3406
 msgid ""
-"In order to enable the built-in screencasting functionality the package recordmydesktop has to be installed. Please run the following command if you want to install it.\n"
+"In order to enable the built-in screencasting functionality the package fros-gnome has to be installed. Please run the following command if you want to install it.\n"
 "\n"
-"<b>su -c \"yum install recordmydesktop\"</b>"
+"<b>su -c \"yum install fros-gnome\"</b>"
 msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
@@ -821,70 +811,70 @@ msgstr "невалидна uid стойност: '%s'"
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Качени: %llu от %llu kбайта"
 
-#: ../src/lib/curl.c:591
+#: ../src/lib/curl.c:598
 #, c-format
 msgid "Sending %s to %s"
 msgstr "Изпращане на %s към %s"
 
 #. This ends up a "reporting status message" in abrtd
-#: ../src/lib/curl.c:623
+#: ../src/lib/curl.c:630
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "Успешно е изпратен %s към %s"
 
-#: ../src/lib/event_config.c:309
+#: ../src/lib/event_config.c:348
 msgid "Missing mandatory value"
 msgstr "Липсва задължителна стойност"
 
-#: ../src/lib/event_config.c:317
+#: ../src/lib/event_config.c:356
 #, c-format
 msgid "Invalid utf8 character '%c'"
 msgstr "Невалиден utf8 знак '%c'"
 
-#: ../src/lib/event_config.c:330
+#: ../src/lib/event_config.c:369
 #, c-format
 msgid "Invalid number '%s'"
 msgstr "Невалидно число '%s'"
 
-#: ../src/lib/event_config.c:345
+#: ../src/lib/event_config.c:384
 #, c-format
 msgid "Invalid boolean value '%s'"
 msgstr "Невалидна двоична стойност '%s'"
 
-#: ../src/lib/event_config.c:351
+#: ../src/lib/event_config.c:390
 msgid "Unsupported option type"
 msgstr "Неподдържан тип опция"
 
-#: ../src/lib/event_config.c:420
+#: ../src/lib/event_config.c:459
 msgid "Reporting disabled because the rating does not contain a number."
 msgstr "Докладването е забранено понеже рейтингът не съдържа число."
 
-#: ../src/lib/event_config.c:421
+#: ../src/lib/event_config.c:460
 msgid "Please report this problem to ABRT project developers."
 msgstr "Мола, докладвайте този проблем на разработчиците в проекта ABRT."
 
-#: ../src/lib/event_config.c:427
+#: ../src/lib/event_config.c:466
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "Обратното проследяване е непълно, моля, проверете дали сте дали стъпки за възстановка."
 
-#: ../src/lib/event_config.c:428
+#: ../src/lib/event_config.c:467
 msgid "The backtrace probably can't help developer to diagnose the bug."
 msgstr ""
 
-#: ../src/lib/event_config.c:434
+#: ../src/lib/event_config.c:473
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Докладването е забранено понеже обратното проследяване е неизползваемо."
 
-#: ../src/lib/event_config.c:438
+#: ../src/lib/event_config.c:477
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again."
 msgstr "Моля, опитайте ръчно да инсталирате debuginfo чрез командата: \"debuginfo-install %s\" и опитайте отново."
 
-#: ../src/lib/event_config.c:440
+#: ../src/lib/event_config.c:479
 msgid "A proper debuginfo is probably missing or the coredump is corrupted."
 msgstr "Вероятно липсва подходящо debuginfo или coredump е повредено."
 
@@ -1355,7 +1345,7 @@ msgid ""
 "Parameter can be overridden via $KerneloopsReporter_SubmitURL."
 msgstr "& [-v] [-c CONFFILE]... -d DIR\n\nРапортува случаите oops на ядрото към kerneloops.org (или подобен) сайт.\n\nФайловете с имена, включени в $EXCLUDE_FROM_REPORT не се включват\nв архива.\n\nCONFFILE линиите трябва да имат формат 'PARAM = VALUE'.\nРазпознат низ параметър: SubmitURL.\nПараметърът може да бъде отменен чрез $KerneloopsReporter_SubmitURL."
 
-#: ../src/plugins/reporter-kerneloops.c:167 ../src/plugins/ureport.c:379
+#: ../src/plugins/reporter-kerneloops.c:167 ../src/plugins/ureport.c:456
 msgid "Configuration file"
 msgstr "Конфигурационен файл"
 
@@ -1744,7 +1734,7 @@ msgstr "ID на новия бъг: %i"
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla не можа да намери parent на бъг %d"
 
-#: ../src/plugins/ureport.c:79
+#: ../src/plugins/ureport.c:146
 #, c-format
 msgid ""
 "Your problem seems to be caused by %s\n"
@@ -1752,148 +1742,151 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: ../src/plugins/ureport.c:82
+#: ../src/plugins/ureport.c:149
 msgid "Your problem seems to be caused by one of the following:\n"
 msgstr ""
 
-#: ../src/plugins/ureport.c:248
+#: ../src/plugins/ureport.c:320
 #, c-format
 msgid "Failed to upload uReport to the server '%s' with curl: %s"
 msgstr ""
 
-#: ../src/plugins/ureport.c:254
+#: ../src/plugins/ureport.c:326
 #, c-format
 msgid "The URL '%s' does not exist (got error 404 from server)"
 msgstr ""
 
-#: ../src/plugins/ureport.c:260
+#: ../src/plugins/ureport.c:332
 #, c-format
 msgid "The server at '%s' encountered an internal error (got error 500)"
 msgstr ""
 
-#: ../src/plugins/ureport.c:266
+#: ../src/plugins/ureport.c:338
 #, c-format
-msgid ""
-"The server at '%s' is currently can't handle the request (got error 503)"
+msgid "The server at '%s' currently can't handle the request (got error 503)"
 msgstr ""
 
 #. can't print better error message
-#: ../src/plugins/ureport.c:275
+#: ../src/plugins/ureport.c:347
 #, c-format
 msgid "Unexpected HTTP response from '%s': %d"
 msgstr ""
 
-#: ../src/plugins/ureport.c:284
+#: ../src/plugins/ureport.c:356
 #, c-format
-msgid "Unable to parse response from ureport server at '%s"
+msgid "Unable to parse response from ureport server at '%s'"
 msgstr ""
 
-#: ../src/plugins/ureport.c:294
+#: ../src/plugins/ureport.c:366
 #, c-format
 msgid "The response from '%s' has invalid format"
 msgstr ""
 
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
-#: ../src/plugins/ureport.c:300
+#: ../src/plugins/ureport.c:372
 #, c-format
 msgid "Type mismatch has been detected in the response from '%s'"
 msgstr ""
 
-#: ../src/plugins/ureport.c:331
+#: ../src/plugins/ureport.c:403
 #, c-format
 msgid "The server at '%s' responded with an error: '%s'"
 msgstr ""
 
-#: ../src/plugins/ureport.c:376
+#: ../src/plugins/ureport.c:452
 msgid "Specify server URL"
 msgstr "Задаване URL на сървър"
 
-#: ../src/plugins/ureport.c:378
+#: ../src/plugins/ureport.c:454
 msgid "Allow insecure connection to ureport server"
 msgstr "Позволи несигурна връзка към ureport сървър"
 
-#: ../src/plugins/ureport.c:381
+#: ../src/plugins/ureport.c:455
+msgid "Use client authentication"
+msgstr ""
+
+#: ../src/plugins/ureport.c:458
 msgid "bthash of uReport to attach (conflicts with -A)"
 msgstr ""
 
-#: ../src/plugins/ureport.c:383
+#: ../src/plugins/ureport.c:460
 msgid "attach to a bthash from reported_to (conflicts with -a)"
 msgstr ""
 
-#: ../src/plugins/ureport.c:385
+#: ../src/plugins/ureport.c:462
 msgid "contact e-mail address (requires -a|-A, conflicts with -E)"
 msgstr ""
 
-#: ../src/plugins/ureport.c:387
+#: ../src/plugins/ureport.c:464
 msgid ""
 "contact e-mail address from environment or configuration file (requires "
 "-a|-A, conflicts with -e)"
 msgstr ""
 
-#: ../src/plugins/ureport.c:389
+#: ../src/plugins/ureport.c:466
 msgid "attach RHBZ bug (requires -a|-A, conflicts with -B)"
 msgstr ""
 
-#: ../src/plugins/ureport.c:391
+#: ../src/plugins/ureport.c:468
 msgid ""
 "attach last RHBZ bug from reported_to (requires -a|-A, conflicts with -b)"
 msgstr ""
 
-#: ../src/plugins/ureport.c:396
+#: ../src/plugins/ureport.c:473
 msgid ""
-"& [-v] [-c FILE] [-u URL] [-k] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
+"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
 "\n"
 "Upload micro report or add an attachment to a micro report\n"
 "\n"
 "Reads the default configuration from "
 msgstr ""
 
-#: ../src/plugins/ureport.c:440
+#: ../src/plugins/ureport.c:519
 msgid "This problem does not have an uReport assigned."
 msgstr "На този проблем не е присвоен uReport."
 
-#: ../src/plugins/ureport.c:453
+#: ../src/plugins/ureport.c:532
 msgid "This problem has not been reported to Bugzilla."
 msgstr "Този проблем не е докладван в Bugzilla."
 
-#: ../src/plugins/ureport.c:457
+#: ../src/plugins/ureport.c:536
 #, c-format
 msgid "Unable to find bug ID in bugzilla URL '%s'"
 msgstr "Не мога да намеря ID на бъга в bugzilla URL '%s'"
 
-#: ../src/plugins/ureport.c:462
+#: ../src/plugins/ureport.c:541
 #, c-format
 msgid "Unable to parse bug ID from bugzilla URL '%s'"
 msgstr "Не мога да извлека ID на бъга от bugzilla URL '%s'"
 
-#: ../src/plugins/ureport.c:475
+#: ../src/plugins/ureport.c:554
 msgid ""
 "Neither environment variable 'uReport_ContactEmail' nor configuration option"
 " 'ContactEmail' is set"
 msgstr ""
 
-#: ../src/plugins/ureport.c:481
+#: ../src/plugins/ureport.c:560
 msgid "You need to specify bug ID, contact email or both"
 msgstr ""
 
-#: ../src/plugins/ureport.c:499
+#: ../src/plugins/ureport.c:578
 msgid "You need to specify bthash of the uReport to attach."
 msgstr "Трябва да зададете bthash на uReport-а за прикрепяне."
 
-#: ../src/plugins/ureport.c:509
+#: ../src/plugins/ureport.c:588
 msgid "Not uploading an empty uReport"
 msgstr ""
 
-#: ../src/plugins/ureport.c:518
+#: ../src/plugins/ureport.c:597
 msgid "Failed on submitting the problem"
 msgstr ""
 
-#: ../src/plugins/ureport.c:563
+#: ../src/plugins/ureport.c:642
 msgid "This problem has already been reported."
 msgstr "Този проблем вече е докладван."
 
-#: ../src/plugins/ureport.c:572
+#: ../src/plugins/ureport.c:651
 #, c-format
 msgid "Server responded with an error: '%s'"
 msgstr ""
@@ -1949,7 +1942,7 @@ msgid "Process the report using the Fedora infrastructure"
 msgstr "Обработка на рапорта, използвайки инфраструктурата на Fedora"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:1
-msgid "Report a bug to Red Hat Support Tool"
+msgid "Report a bug to Red Hat Customer Portal"
 msgstr ""
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:2
@@ -1976,6 +1969,8 @@ msgstr "Анализиране на проблема локално и качв�
 #: ../src/workflows/workflow_FedoraPython.xml.in.h:1
 #: ../src/workflows/workflow_FedoraVmcore.xml.in.h:1
 #: ../src/workflows/workflow_FedoraXorg.xml.in.h:1
+#: ../src/workflows/workflow_FedoraLibreport.xml.in.h:1
+#: ../src/workflows/workflow_FedoraJava.xml.in.h:1
 msgid "Report to Fedora"
 msgstr "Рапорт към Fedora"
 
@@ -1999,11 +1994,21 @@ msgstr ""
 msgid "Process the X Server problem using the Fedora infrastructure"
 msgstr ""
 
+#: ../src/workflows/workflow_FedoraLibreport.xml.in.h:2
+msgid "Process the problem using the Fedora infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_FedoraJava.xml.in.h:2
+msgid "Process the Java exception using the Fedora infrastructure"
+msgstr ""
+
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1
 #: ../src/workflows/workflow_RHELPython.xml.in.h:1
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:1
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:1
+#: ../src/workflows/workflow_RHELLibreport.xml.in.h:1
+#: ../src/workflows/workflow_RHELJava.xml.in.h:1
 msgid "Report to Red Hat Customer Portal"
 msgstr ""
 
@@ -2032,10 +2037,22 @@ msgstr ""
 msgid "Process the X Server problem using the Red Hat infrastructure"
 msgstr ""
 
+#: ../src/workflows/workflow_RHELLibreport.xml.in.h:2
+#: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:2
+msgid "Process the problem using the Red Hat infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_RHELJava.xml.in.h:2
+#: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
+msgid "Process the Java exception using the Red Hat infrastructure"
+msgstr ""
+
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:1
+#: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:1
+#: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:1
 msgid "Report to Red Hat Bugzilla"
 msgstr ""
