@@ -660,6 +660,28 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Wed Mar 05 2014 Jakub Filak <jfilak@redhat.com> 2.2.0-1
+- Translation updates
+- Bugzilla: fedora_contrib_private group ID for the private bugs
+- remove invalid bytes from 'sv' strings
+- client API: return empty string instead of NULL
+- spec: add watch_Bugzilla.xml
+- introduce 'watch_Bugzilla' event
+- ignored words: add SSH_ASKPASS words
+- introduce import-event-options in xml event definitions
+- correct name of RH Customer Portal
+- Fix type in error message
+- Translation updates
+- add libpciaccess.so to the list of ignored keywords
+- spec: install workflows for python 3 type
+- add workflow for python 3 type
+- python: build python api for py3
+- Fix typo in error message
+- localization: properly handle locales with encoding suffix
+- event configuration: load default values from configuration directory
+- Provide SYSLOG_FACILITY when logging through journal
+- spec: fix a pair of typos in %description
+
 * Thu Jan 30 2014 Jakub Filak <jfilak@redhat.com> 2.1.12-1
 - fix loading of the user list of ignored words
 - report-cli: use the Client API for communication to user
