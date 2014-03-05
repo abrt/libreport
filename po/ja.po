@@ -5,15 +5,16 @@
 # Translators:
 # Hajime Taira <htaira@redhat.com>, 2013
 # Kiyoto Hashida <khashida@redhat.com>, 2011
+# noriko <noriko@fedoraproject.org>, 2014
 # noriko <noriko@fedoraproject.org>, 2011, 2012
-# Tomoyuki KATO <tomo@dream.daynight.jp>, 2012-2013
+# Tomoyuki KATO <tomo@dream.daynight.jp>, 2012-2014
 # 高一人参 @欠陥遺伝子 <www.carrotsoft@gmail.com>, 2011, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-07 22:48+0100\n"
-"PO-Revision-Date: 2014-01-07 21:48+0000\n"
+"POT-Creation-Date: 2014-03-05 10:38+0100\n"
+"PO-Revision-Date: 2014-03-05 09:38+0000\n"
 "Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: Japanese (http://www.transifex.com/projects/p/fedora/language/ja/)\n"
 "MIME-Version: 1.0\n"
@@ -142,37 +143,37 @@ msgid ""
 "No changes were detected in the report"
 msgstr "\n報告の中に変更は検出されませんでした。"
 
-#: ../src/cli/cli-report.c:491
+#: ../src/cli/cli-report.c:471
 msgid "Your input is not valid, because of:"
 msgstr "以下の理由でユーザーの入力は無効です:　"
 
-#: ../src/cli/cli-report.c:495
+#: ../src/cli/cli-report.c:475
 #, c-format
 msgid "Bad value for '%s': %s"
 msgstr "'%s' の不正な値: %s"
 
-#: ../src/cli/cli-report.c:693
+#: ../src/cli/cli-report.c:673
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data. Do you want "
 "to continue?"
 msgstr "イベント '%s' はおそらく機微な情報を送信する権限が必要です。続行したいですか?"
 
-#: ../src/cli/cli-report.c:744
+#: ../src/cli/cli-report.c:720
 msgid "You have chosen number out of range"
 msgstr "範囲外の数字を選択しました"
 
-#: ../src/cli/cli-report.c:747
+#: ../src/cli/cli-report.c:725
 msgid "Invalid input, exiting."
 msgstr "無効な入力です、終了しています..."
 
-#: ../src/cli/cli-report.c:768
+#: ../src/cli/cli-report.c:746
 msgid "Select an event to run: "
 msgstr "実行するイベントの選択: "
 
-#: ../src/cli/cli-report.c:876
+#: ../src/cli/cli-report.c:854
 msgid "Select a workflow to run: "
-msgstr ""
+msgstr "実行するワークフローの選択:"
 
 #: ../src/client-python/debuginfo.py:87
 msgid "Extracting cpio from {0}"
@@ -335,7 +336,6 @@ msgstr "設定"
 
 #. we can't use this, because we want the workflows first and hashtable
 #. * doesn't return the items in the order they were added
-#. 
 #. g_hash_table_foreach(configs, (GHFunc)add_config_tabs, config_nb);
 #: ../src/gtk-helpers/config_dialog.c:297
 #: ../src/gtk-helpers/config_dialog.c:299
@@ -353,7 +353,7 @@ msgstr "イベント"
 msgid "C_onfigure"
 msgstr "設定(_O)"
 
-#: ../src/gtk-helpers/config_dialog.c:309 ../src/gui-wizard-gtk/wizard.c:3312
+#: ../src/gtk-helpers/config_dialog.c:309 ../src/gui-wizard-gtk/wizard.c:3316
 msgid "_Close"
 msgstr "閉じる(_C)"
 
@@ -376,7 +376,7 @@ msgstr "シークレットサービスが利用できません、設定は保存
 #: ../src/gtk-helpers/event_config_dialog.c:299
 #: ../src/gtk-helpers/event_config_dialog.c:351
 #: ../src/gtk-helpers/workflow_config_dialog.c:76
-#: ../src/gui-wizard-gtk/wizard.c:769 ../src/gui-wizard-gtk/wizard.c:2913
+#: ../src/gui-wizard-gtk/wizard.c:769 ../src/gui-wizard-gtk/wizard.c:2917
 msgid "_Cancel"
 msgstr "キャンセル(_C)"
 
@@ -532,7 +532,7 @@ msgid "Processing failed."
 msgstr "処理に失敗しました。"
 
 #. No next event, go to progress page and finish
-#: ../src/gui-wizard-gtk/wizard.c:1858 ../src/gui-wizard-gtk/wizard.c:2619
+#: ../src/gui-wizard-gtk/wizard.c:1858 ../src/gui-wizard-gtk/wizard.c:2623
 msgid "Processing finished."
 msgstr "処理が完了しました。"
 
@@ -558,96 +558,96 @@ msgstr "処理しています..."
 msgid "Cannot check backtrace rating because of invalid event name"
 msgstr "無効なイベント名のためバックトレースのレーティングを確認できません"
 
-#: ../src/gui-wizard-gtk/wizard.c:2639
+#: ../src/gui-wizard-gtk/wizard.c:2643
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
 "Do you want to continue?"
 msgstr "イベント '%s' はおそらく機微な情報を送信する権限が必要です\n続行したいですか?"
 
-#: ../src/gui-wizard-gtk/wizard.c:2687
+#: ../src/gui-wizard-gtk/wizard.c:2691
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
 msgstr "この問題は報告されるべきではありません (おそらく既知の問題と思われます)。 %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2914
+#: ../src/gui-wizard-gtk/wizard.c:2918
 msgid "_Open"
 msgstr "開く(_O)"
 
-#: ../src/gui-wizard-gtk/wizard.c:2936
+#: ../src/gui-wizard-gtk/wizard.c:2940
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "「%s」は普通のファイルではありません"
 
-#: ../src/gui-wizard-gtk/wizard.c:2950
+#: ../src/gui-wizard-gtk/wizard.c:2954
 msgid "You are trying to copy a file onto itself"
 msgstr "ファイルをそのファイル自体にコピーしようとしています"
 
-#: ../src/gui-wizard-gtk/wizard.c:2957
+#: ../src/gui-wizard-gtk/wizard.c:2961
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "「%s」をコピーできません: %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2972
+#: ../src/gui-wizard-gtk/wizard.c:2976
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "アイテム「%s」はすでに存在しているため変更できません"
 
-#: ../src/gui-wizard-gtk/wizard.c:3164
+#: ../src/gui-wizard-gtk/wizard.c:3168
 msgid "Include"
 msgstr "含む"
 
-#: ../src/gui-wizard-gtk/wizard.c:3175
+#: ../src/gui-wizard-gtk/wizard.c:3179
 msgid "Name"
 msgstr "名前"
 
-#: ../src/gui-wizard-gtk/wizard.c:3185
+#: ../src/gui-wizard-gtk/wizard.c:3189
 msgid "Value"
 msgstr "値"
 
-#: ../src/gui-wizard-gtk/wizard.c:3219
+#: ../src/gui-wizard-gtk/wizard.c:3223
 msgid "Problem description"
 msgstr "問題の説明"
 
-#: ../src/gui-wizard-gtk/wizard.c:3220
+#: ../src/gui-wizard-gtk/wizard.c:3224
 msgid "Select how to report this problem"
 msgstr "この問題を報告する方法を選択してください"
 
-#: ../src/gui-wizard-gtk/wizard.c:3221
+#: ../src/gui-wizard-gtk/wizard.c:3225
 msgid "Provide additional information"
 msgstr "その他の情報の提供"
 
-#: ../src/gui-wizard-gtk/wizard.c:3222
+#: ../src/gui-wizard-gtk/wizard.c:3226
 msgid "Review the data"
 msgstr "データのレビュー"
 
-#: ../src/gui-wizard-gtk/wizard.c:3223
+#: ../src/gui-wizard-gtk/wizard.c:3227
 msgid "Confirm data to report"
 msgstr "報告するデータの確認"
 
-#: ../src/gui-wizard-gtk/wizard.c:3224
+#: ../src/gui-wizard-gtk/wizard.c:3228
 msgid "Processing"
 msgstr "処理しています"
 
-#: ../src/gui-wizard-gtk/wizard.c:3225
+#: ../src/gui-wizard-gtk/wizard.c:3229
 msgid "Processing done"
 msgstr "処理が完了しました"
 
-#: ../src/gui-wizard-gtk/wizard.c:3314
+#: ../src/gui-wizard-gtk/wizard.c:3318
 msgid "_Stop"
-msgstr ""
+msgstr "停止 (_S)"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3317
+#: ../src/gui-wizard-gtk/wizard.c:3321
 msgid "Upload for analysis"
 msgstr "分析のためにアップロードする"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3320
+#: ../src/gui-wizard-gtk/wizard.c:3324
 msgid "_Forward"
-msgstr ""
+msgstr "フォワード (_F)"
 
-#: ../src/gui-wizard-gtk/wizard.c:3409
+#: ../src/gui-wizard-gtk/wizard.c:3413
 msgid ""
 "In order to enable the built-in screencasting functionality the package recordmydesktop has to be installed. Please run the following command if you want to install it.\n"
 "\n"
@@ -664,8 +664,8 @@ msgstr "レポートへのアクセスを制限する"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid ""
-"No one except Red Hat employees will be allowed to see the report with "
-"restricted access (not even you)"
+"No one except Fedora Contrib group members will be allowed to see the report"
+" with restricted access (not even you)"
 msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
@@ -825,76 +825,79 @@ msgstr "UID 値が無効です: '%s'"
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "アップロード済み: 合計 %llu キロバイトの内 %llu キロバイト"
 
-#: ../src/lib/curl.c:591
+#: ../src/lib/curl.c:598
 #, c-format
 msgid "Sending %s to %s"
 msgstr "%s を %s に送信しています"
 
 #. This ends up a "reporting status message" in abrtd
-#: ../src/lib/curl.c:623
+#: ../src/lib/curl.c:630
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "%s を %s に正常に送信しました"
 
-#: ../src/lib/event_config.c:309
+#: ../src/lib/event_config.c:348
 msgid "Missing mandatory value"
 msgstr "必須の値がありません"
 
-#: ../src/lib/event_config.c:317
+#: ../src/lib/event_config.c:356
 #, c-format
 msgid "Invalid utf8 character '%c'"
 msgstr "無効な utf8 文字 '%c'"
 
-#: ../src/lib/event_config.c:330
+#: ../src/lib/event_config.c:369
 #, c-format
 msgid "Invalid number '%s'"
 msgstr "無効な数字 '%s'"
 
-#: ../src/lib/event_config.c:345
+#: ../src/lib/event_config.c:384
 #, c-format
 msgid "Invalid boolean value '%s'"
 msgstr "無効な boolean 値 '%s'"
 
-#: ../src/lib/event_config.c:351
+#: ../src/lib/event_config.c:390
 msgid "Unsupported option type"
 msgstr "サポートされていないオプションタイプ"
 
-#: ../src/lib/event_config.c:420
-msgid "Reporting disabled because the rating does not contain a number."
-msgstr "レーティングが数値を含んでいないため、報告が無効化されます。"
+#: ../src/lib/event_config.c:460
+#, c-format
+msgid ""
+"The problem cannot be reported due to an invalid data. '%s' file does not "
+"contain a number."
+msgstr "無効なデータがあり、問題を報告できません。'%s' ファイルが番号を含んでいません。"
 
-#: ../src/lib/event_config.c:421
+#: ../src/lib/event_config.c:464
 msgid "Please report this problem to ABRT project developers."
 msgstr "この問題を ABRT プロジェクト開発者に連絡してください。"
 
-#: ../src/lib/event_config.c:427
+#: ../src/lib/event_config.c:470
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "バックトレースが不完全です。再現手順が書かれているかどうか確認してください。"
 
-#: ../src/lib/event_config.c:428
+#: ../src/lib/event_config.c:471
 msgid "The backtrace probably can't help developer to diagnose the bug."
 msgstr "おそらくこのバックトレースはバグを診断するときに開発者の役に立ちません。"
 
-#: ../src/lib/event_config.c:434
+#: ../src/lib/event_config.c:477
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "バックトレースが利用できないため、報告機能が無効になっています。"
 
-#: ../src/lib/event_config.c:438
+#: ../src/lib/event_config.c:481
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again."
 msgstr "次のコマンドを使用して手動で debuginfo をインストールして、再び試してください: \"debuginfo-install %s\""
 
-#: ../src/lib/event_config.c:440
+#: ../src/lib/event_config.c:483
 msgid "A proper debuginfo is probably missing or the coredump is corrupted."
 msgstr "適切な debuginfo がおそらく見つかりません、またはコアダンプが破損しています。"
 
 #: ../src/lib/make_descr.c:110
 msgid "Reported:"
-msgstr ""
+msgstr "報告済み:"
 
 #: ../src/lib/parse_options.c:58
 msgid "Usage: "
@@ -1001,13 +1004,13 @@ msgstr "Bugzilla アカウントのパスワード"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:10
 #: ../src/plugins/report_RHTSupport.xml.in.h:9
-#: ../src/plugins/report_uReport.xml.in.h:5
+#: ../src/plugins/report_uReport.xml.in.h:7
 msgid "Verify SSL"
 msgstr "SSL を照合する"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:11
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
-#: ../src/plugins/report_uReport.xml.in.h:6
+#: ../src/plugins/report_uReport.xml.in.h:8
 msgid "Check SSL key validity"
 msgstr "SSL キーの妥当性をチェックする"
 
@@ -1045,7 +1048,7 @@ msgstr "/etc/os-release に指定された製品バージョンと異なる製�
 #: ../src/plugins/report_Kerneloops.xml.in.h:5
 #: ../src/plugins/report_RHTSupport.xml.in.h:11
 #: ../src/plugins/report_Uploader.xml.in.h:6
-#: ../src/plugins/report_uReport.xml.in.h:7
+#: ../src/plugins/report_uReport.xml.in.h:9
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:4
 msgid "HTTP Proxy"
 msgstr "HTTP プロキシ"
@@ -1054,7 +1057,7 @@ msgstr "HTTP プロキシ"
 #: ../src/plugins/report_Kerneloops.xml.in.h:6
 #: ../src/plugins/report_RHTSupport.xml.in.h:12
 #: ../src/plugins/report_Uploader.xml.in.h:7
-#: ../src/plugins/report_uReport.xml.in.h:8
+#: ../src/plugins/report_uReport.xml.in.h:10
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:5
 msgid "Sets the proxy server to use for HTTP"
 msgstr "HTTP のために使用するプロキシサーバーを設定する"
@@ -1063,7 +1066,7 @@ msgstr "HTTP のために使用するプロキシサーバーを設定する"
 #: ../src/plugins/report_Kerneloops.xml.in.h:7
 #: ../src/plugins/report_RHTSupport.xml.in.h:13
 #: ../src/plugins/report_Uploader.xml.in.h:8
-#: ../src/plugins/report_uReport.xml.in.h:9
+#: ../src/plugins/report_uReport.xml.in.h:11
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:6
 msgid "HTTPS Proxy"
 msgstr "HTTPS プロキシ"
@@ -1072,7 +1075,7 @@ msgstr "HTTPS プロキシ"
 #: ../src/plugins/report_Kerneloops.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:14
 #: ../src/plugins/report_Uploader.xml.in.h:9
-#: ../src/plugins/report_uReport.xml.in.h:10
+#: ../src/plugins/report_uReport.xml.in.h:12
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:7
 msgid "Sets the proxy server to use for HTTPS"
 msgstr "HTTPS のために使用するプロキシサーバーを設定する"
@@ -1359,7 +1362,7 @@ msgid ""
 "Parameter can be overridden via $KerneloopsReporter_SubmitURL."
 msgstr "& [-v] [-c CONFFILE]... -d DIR\n\nカーネル oops を kerneloops.org (または同様の) サイトに報告します。\n\n$EXCLUDE_FROM_REPORT に表示されている名前のファイルは \ntarball に含まれません。\n\nCONFFILE 行には「PARAM = VALUE」の形式を含ませなければなり\nません。 認識される文字列パラメータは SubmitURL です。\nパラメータは $KerneloopsReporter_SubmitURL で上書きできます。"
 
-#: ../src/plugins/reporter-kerneloops.c:167 ../src/plugins/ureport.c:379
+#: ../src/plugins/reporter-kerneloops.c:167 ../src/plugins/ureport.c:456
 msgid "Configuration file"
 msgstr "設定ファイル"
 
@@ -1708,6 +1711,14 @@ msgstr "uReport Server URL"
 msgid "Address of uReport webservice"
 msgstr "uReport ウェブサービスのアドレス"
 
+#: ../src/plugins/report_uReport.xml.in.h:5
+msgid "Watch already reported bugs"
+msgstr ""
+
+#: ../src/plugins/report_uReport.xml.in.h:6
+msgid "Adds your Bugzilla login to CC List of already reported bugs."
+msgstr ""
+
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:1
 msgid "Emergency analysis"
 msgstr "緊急分析"
@@ -1715,6 +1726,14 @@ msgstr "緊急分析"
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:2
 msgid "Upload the problem data for further analysis"
 msgstr "さらなる分析のために問題データをアップロードする"
+
+#: ../src/plugins/watch_Bugzilla.xml.in.h:1
+msgid "Watch Bugzilla Bug"
+msgstr ""
+
+#: ../src/plugins/watch_Bugzilla.xml.in.h:2
+msgid "Adds your e-mail to CC List of Bugzilla bug"
+msgstr ""
 
 #: ../src/plugins/rhbz.c:409
 #, c-format
@@ -1748,7 +1767,7 @@ msgstr "新しいバグ id: %i"
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla はバグ %d の親を見つけることが出来ません"
 
-#: ../src/plugins/ureport.c:79
+#: ../src/plugins/ureport.c:146
 #, c-format
 msgid ""
 "Your problem seems to be caused by %s\n"
@@ -1756,148 +1775,151 @@ msgid ""
 "%s\n"
 msgstr "あなたの問題は %s により引き起こされた可能性があります\n\n%s\n"
 
-#: ../src/plugins/ureport.c:82
+#: ../src/plugins/ureport.c:149
 msgid "Your problem seems to be caused by one of the following:\n"
 msgstr "あなたの問題は以下のどれかにより引き起こされた可能性があります:\n"
 
-#: ../src/plugins/ureport.c:248
+#: ../src/plugins/ureport.c:320
 #, c-format
 msgid "Failed to upload uReport to the server '%s' with curl: %s"
 msgstr "サーバー '%s' に curl を用いた uReport のアップロードに失敗しました: %s"
 
-#: ../src/plugins/ureport.c:254
+#: ../src/plugins/ureport.c:326
 #, c-format
 msgid "The URL '%s' does not exist (got error 404 from server)"
 msgstr "URL '%s' が存在しません (サーバーからエラー 404 の応答)"
 
-#: ../src/plugins/ureport.c:260
+#: ../src/plugins/ureport.c:332
 #, c-format
 msgid "The server at '%s' encountered an internal error (got error 500)"
 msgstr "'%s' のサーバーが内部エラーになりました (エラー 500)"
 
-#: ../src/plugins/ureport.c:266
+#: ../src/plugins/ureport.c:338
 #, c-format
-msgid ""
-"The server at '%s' is currently can't handle the request (got error 503)"
+msgid "The server at '%s' currently can't handle the request (got error 503)"
 msgstr "'%s' のサーバーが現在リクエストを処理できません (エラー 503)"
 
 #. can't print better error message
-#: ../src/plugins/ureport.c:275
+#: ../src/plugins/ureport.c:347
 #, c-format
 msgid "Unexpected HTTP response from '%s': %d"
-msgstr ""
+msgstr "'%s' より予期しない HTTP 応答です: %d"
 
-#: ../src/plugins/ureport.c:284
+#: ../src/plugins/ureport.c:356
 #, c-format
-msgid "Unable to parse response from ureport server at '%s"
-msgstr ""
+msgid "Unable to parse response from ureport server at '%s'"
+msgstr "'%s' の uReport サーバーからの応答を構文解析できません"
 
-#: ../src/plugins/ureport.c:294
+#: ../src/plugins/ureport.c:366
 #, c-format
 msgid "The response from '%s' has invalid format"
 msgstr "'%s' からの応答が無効な形式です"
 
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
-#: ../src/plugins/ureport.c:300
+#: ../src/plugins/ureport.c:372
 #, c-format
 msgid "Type mismatch has been detected in the response from '%s'"
 msgstr "型の不一致が '%s' からの応答に検出されました"
 
-#: ../src/plugins/ureport.c:331
+#: ../src/plugins/ureport.c:403
 #, c-format
 msgid "The server at '%s' responded with an error: '%s'"
 msgstr "'%s' のサーバーがエラーを応答しました: '%s'"
 
-#: ../src/plugins/ureport.c:376
+#: ../src/plugins/ureport.c:452
 msgid "Specify server URL"
 msgstr "サーバーの URL を指定します"
 
-#: ../src/plugins/ureport.c:378
+#: ../src/plugins/ureport.c:454
 msgid "Allow insecure connection to ureport server"
 msgstr "uReport サーバーに非セキュアな接続を許可する"
 
-#: ../src/plugins/ureport.c:381
+#: ../src/plugins/ureport.c:455
+msgid "Use client authentication"
+msgstr "クライアント認証を使用する"
+
+#: ../src/plugins/ureport.c:458
 msgid "bthash of uReport to attach (conflicts with -A)"
-msgstr ""
+msgstr "添付する uReport の bthash (-A と競合)"
 
-#: ../src/plugins/ureport.c:383
+#: ../src/plugins/ureport.c:460
 msgid "attach to a bthash from reported_to (conflicts with -a)"
-msgstr ""
+msgstr "reported_to からの bthash に添付する (-a と競合)"
 
-#: ../src/plugins/ureport.c:385
+#: ../src/plugins/ureport.c:462
 msgid "contact e-mail address (requires -a|-A, conflicts with -E)"
-msgstr ""
+msgstr "連絡先メールアドレス (-a|-A が必須、-E と競合)"
 
-#: ../src/plugins/ureport.c:387
+#: ../src/plugins/ureport.c:464
 msgid ""
 "contact e-mail address from environment or configuration file (requires "
 "-a|-A, conflicts with -e)"
-msgstr ""
+msgstr "環境または設定ファイルからの連絡先メールアドレス (-a|-A が必須、-e と競合)"
 
-#: ../src/plugins/ureport.c:389
+#: ../src/plugins/ureport.c:466
 msgid "attach RHBZ bug (requires -a|-A, conflicts with -B)"
-msgstr ""
+msgstr "RHBZ バグの添付 (-a|-A が必須、-B と競合)"
 
-#: ../src/plugins/ureport.c:391
+#: ../src/plugins/ureport.c:468
 msgid ""
 "attach last RHBZ bug from reported_to (requires -a|-A, conflicts with -b)"
-msgstr ""
+msgstr "reported_to からの最新の RHBZ を添付する (-a|-A が必須、-b と競合)"
 
-#: ../src/plugins/ureport.c:396
+#: ../src/plugins/ureport.c:473
 msgid ""
-"& [-v] [-c FILE] [-u URL] [-k] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
+"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
 "\n"
 "Upload micro report or add an attachment to a micro report\n"
 "\n"
 "Reads the default configuration from "
-msgstr ""
+msgstr "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n\nマイクロレポートをアップロードするかマイクロレポートに添付を追加します\n\nデフォルトの設定を次から読み込みます "
 
-#: ../src/plugins/ureport.c:440
+#: ../src/plugins/ureport.c:519
 msgid "This problem does not have an uReport assigned."
 msgstr "この問題は uReport が添付されていません。"
 
-#: ../src/plugins/ureport.c:453
+#: ../src/plugins/ureport.c:532
 msgid "This problem has not been reported to Bugzilla."
 msgstr "この問題は Bugzilla に報告されていません。"
 
-#: ../src/plugins/ureport.c:457
+#: ../src/plugins/ureport.c:536
 #, c-format
 msgid "Unable to find bug ID in bugzilla URL '%s'"
 msgstr "bugzilla URL '%s' にバグ ID を見つけられません"
 
-#: ../src/plugins/ureport.c:462
+#: ../src/plugins/ureport.c:541
 #, c-format
 msgid "Unable to parse bug ID from bugzilla URL '%s'"
 msgstr "bugzilla URL '%s' からバグ ID を構文解析できません"
 
-#: ../src/plugins/ureport.c:475
+#: ../src/plugins/ureport.c:554
 msgid ""
 "Neither environment variable 'uReport_ContactEmail' nor configuration option"
 " 'ContactEmail' is set"
-msgstr ""
+msgstr "環境変数 'uReport_ContactEmail' および設定オプション 'ContactEmail' のいずれも設定されていません"
 
-#: ../src/plugins/ureport.c:481
+#: ../src/plugins/ureport.c:560
 msgid "You need to specify bug ID, contact email or both"
-msgstr ""
+msgstr "バグ ID、連絡先メールのいずれかまたは両方を指定する必要があります"
 
-#: ../src/plugins/ureport.c:499
+#: ../src/plugins/ureport.c:578
 msgid "You need to specify bthash of the uReport to attach."
 msgstr "添付する uReport の bthash を指定する必要があります。"
 
-#: ../src/plugins/ureport.c:509
+#: ../src/plugins/ureport.c:588
 msgid "Not uploading an empty uReport"
 msgstr "空の uReport をアップロードしません"
 
-#: ../src/plugins/ureport.c:518
+#: ../src/plugins/ureport.c:597
 msgid "Failed on submitting the problem"
 msgstr "問題の提出に失敗しました"
 
-#: ../src/plugins/ureport.c:563
+#: ../src/plugins/ureport.c:642
 msgid "This problem has already been reported."
 msgstr "この問題はすでに報告されています。"
 
-#: ../src/plugins/ureport.c:572
+#: ../src/plugins/ureport.c:651
 #, c-format
 msgid "Server responded with an error: '%s'"
 msgstr "サーバーがエラーを応答しました: '%s'"
@@ -1953,8 +1975,8 @@ msgid "Process the report using the Fedora infrastructure"
 msgstr "Fedora インフラストレクチャーを使用して報告を処理する"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:1
-msgid "Report a bug to Red Hat Support Tool"
-msgstr "バグを Red Hat Support Tool に報告する"
+msgid "Report a bug to Red Hat Customer Portal"
+msgstr ""
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:2
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:2
@@ -1963,7 +1985,7 @@ msgstr "Red Hat インフラストラクチャーを使用して報告を処理�
 
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:1
 msgid "Report a bug to Red Hat Bugzilla"
-msgstr ""
+msgstr "Red Hat Bugzilla にバグを報告する"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
 #: ../src/workflows/workflow_Upload.xml.in.h:1
@@ -1978,8 +2000,11 @@ msgstr "問題をローカルに分析し、SCP または FTP 経由でデータ
 #: ../src/workflows/workflow_FedoraCCpp.xml.in.h:1
 #: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:1
 #: ../src/workflows/workflow_FedoraPython.xml.in.h:1
+#: ../src/workflows/workflow_FedoraPython3.xml.in.h:1
 #: ../src/workflows/workflow_FedoraVmcore.xml.in.h:1
 #: ../src/workflows/workflow_FedoraXorg.xml.in.h:1
+#: ../src/workflows/workflow_FedoraLibreport.xml.in.h:1
+#: ../src/workflows/workflow_FedoraJava.xml.in.h:1
 msgid "Report to Fedora"
 msgstr "Fedora に報告"
 
@@ -1995,6 +2020,10 @@ msgstr "Fedora インフラストラクチャーを使用して kerneloops を�
 msgid "Process the python exception using the Fedora infrastructure"
 msgstr "Fedora インフラストラクチャーを使用して Python 例外を処理する"
 
+#: ../src/workflows/workflow_FedoraPython3.xml.in.h:2
+msgid "Process the python 3 exception using the Fedora infrastructure"
+msgstr ""
+
 #: ../src/workflows/workflow_FedoraVmcore.xml.in.h:2
 msgid "Process the kernel crash using the Fedora infrastructure"
 msgstr "Fedora インフラストラクチャーを使用して kernel クラッシュを処理する"
@@ -2003,13 +2032,23 @@ msgstr "Fedora インフラストラクチャーを使用して kernel クラッ
 msgid "Process the X Server problem using the Fedora infrastructure"
 msgstr "Fedora インフラストラクチャーを使用して X サーバーの問題を処理する"
 
+#: ../src/workflows/workflow_FedoraLibreport.xml.in.h:2
+msgid "Process the problem using the Fedora infrastructure"
+msgstr "Fedora インフラストラクチャーを使って問題を処理します"
+
+#: ../src/workflows/workflow_FedoraJava.xml.in.h:2
+msgid "Process the Java exception using the Fedora infrastructure"
+msgstr "Fedora インストラクチャーを使って Java 例外を処理します"
+
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1
 #: ../src/workflows/workflow_RHELPython.xml.in.h:1
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:1
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:1
+#: ../src/workflows/workflow_RHELLibreport.xml.in.h:1
+#: ../src/workflows/workflow_RHELJava.xml.in.h:1
 msgid "Report to Red Hat Customer Portal"
-msgstr ""
+msgstr "Red Hat カスタマーポータルに報告します"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
@@ -2036,10 +2075,22 @@ msgstr "Red Hat インフラストラクチャーを使用して kernel クラ�
 msgid "Process the X Server problem using the Red Hat infrastructure"
 msgstr "Red Hat インフラストラクチャーを使用して X サーバーの問題を処理する"
 
+#: ../src/workflows/workflow_RHELLibreport.xml.in.h:2
+#: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:2
+msgid "Process the problem using the Red Hat infrastructure"
+msgstr "Red Hat インフラストラクチャーを使って問題を処理します"
+
+#: ../src/workflows/workflow_RHELJava.xml.in.h:2
+#: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
+msgid "Process the Java exception using the Red Hat infrastructure"
+msgstr "Red Hat インフラストラクチャーを使って Java 例外を処理します"
+
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:1
+#: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:1
+#: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:1
 msgid "Report to Red Hat Bugzilla"
-msgstr ""
+msgstr "Red Hat Bugzilla に報告します"

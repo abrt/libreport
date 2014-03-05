@@ -17,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-07 22:48+0100\n"
-"PO-Revision-Date: 2014-02-18 02:54+0000\n"
-"Last-Translator: Alick Zhao <alick9188@gmail.com>\n"
+"POT-Creation-Date: 2014-03-05 10:38+0100\n"
+"PO-Revision-Date: 2014-03-05 09:38+0000\n"
+"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/fedora/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -147,35 +147,35 @@ msgid ""
 "No changes were detected in the report"
 msgstr "\n未查出报告有更改"
 
-#: ../src/cli/cli-report.c:491
+#: ../src/cli/cli-report.c:471
 msgid "Your input is not valid, because of:"
 msgstr "您的输入无效，因为："
 
-#: ../src/cli/cli-report.c:495
+#: ../src/cli/cli-report.c:475
 #, c-format
 msgid "Bad value for '%s': %s"
 msgstr "'%s' 值错误：%s"
 
-#: ../src/cli/cli-report.c:693
+#: ../src/cli/cli-report.c:673
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data. Do you want "
 "to continue?"
 msgstr "事件 '%s' 请求允许发送可能包含敏感数据的文件。您想要继续么？"
 
-#: ../src/cli/cli-report.c:744
+#: ../src/cli/cli-report.c:720
 msgid "You have chosen number out of range"
 msgstr "您选择的数字超出了范围"
 
-#: ../src/cli/cli-report.c:747
+#: ../src/cli/cli-report.c:725
 msgid "Invalid input, exiting."
 msgstr "无效输入，正在退出。"
 
-#: ../src/cli/cli-report.c:768
+#: ../src/cli/cli-report.c:746
 msgid "Select an event to run: "
 msgstr "选择一个要运行的事件："
 
-#: ../src/cli/cli-report.c:876
+#: ../src/cli/cli-report.c:854
 msgid "Select a workflow to run: "
 msgstr "选择要运行的工作流："
 
@@ -357,7 +357,7 @@ msgstr "事件"
 msgid "C_onfigure"
 msgstr "配置（_O）"
 
-#: ../src/gtk-helpers/config_dialog.c:309 ../src/gui-wizard-gtk/wizard.c:3312
+#: ../src/gtk-helpers/config_dialog.c:309 ../src/gui-wizard-gtk/wizard.c:3316
 msgid "_Close"
 msgstr "关闭（_C）"
 
@@ -380,7 +380,7 @@ msgstr "保密服务不可用，您的设置将不会被保存！"
 #: ../src/gtk-helpers/event_config_dialog.c:299
 #: ../src/gtk-helpers/event_config_dialog.c:351
 #: ../src/gtk-helpers/workflow_config_dialog.c:76
-#: ../src/gui-wizard-gtk/wizard.c:769 ../src/gui-wizard-gtk/wizard.c:2913
+#: ../src/gui-wizard-gtk/wizard.c:769 ../src/gui-wizard-gtk/wizard.c:2917
 msgid "_Cancel"
 msgstr "取消（_C）"
 
@@ -536,7 +536,7 @@ msgid "Processing failed."
 msgstr "处理失败。"
 
 #. No next event, go to progress page and finish
-#: ../src/gui-wizard-gtk/wizard.c:1858 ../src/gui-wizard-gtk/wizard.c:2619
+#: ../src/gui-wizard-gtk/wizard.c:1858 ../src/gui-wizard-gtk/wizard.c:2623
 msgid "Processing finished."
 msgstr "处理结束。"
 
@@ -562,96 +562,96 @@ msgstr "处理中……"
 msgid "Cannot check backtrace rating because of invalid event name"
 msgstr "由于无效的事件名，无法检查回溯评级"
 
-#: ../src/gui-wizard-gtk/wizard.c:2639
+#: ../src/gui-wizard-gtk/wizard.c:2643
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
 "Do you want to continue?"
 msgstr "事件 '%s' 请求允许发布可能包含敏感数据的文件。\n您想要继续吗？"
 
-#: ../src/gui-wizard-gtk/wizard.c:2687
+#: ../src/gui-wizard-gtk/wizard.c:2691
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
 msgstr "该问题可能不应该汇报 (很有可能为已知问题)。%s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2914
+#: ../src/gui-wizard-gtk/wizard.c:2918
 msgid "_Open"
 msgstr "打开（_O）"
 
-#: ../src/gui-wizard-gtk/wizard.c:2936
+#: ../src/gui-wizard-gtk/wizard.c:2940
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' 不是普通文件"
 
-#: ../src/gui-wizard-gtk/wizard.c:2950
+#: ../src/gui-wizard-gtk/wizard.c:2954
 msgid "You are trying to copy a file onto itself"
 msgstr "您正在将文件复制到它本身"
 
-#: ../src/gui-wizard-gtk/wizard.c:2957
+#: ../src/gui-wizard-gtk/wizard.c:2961
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "无法复制 '%s'：%s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2972
+#: ../src/gui-wizard-gtk/wizard.c:2976
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "项目 '%s' 已存在且不可修改"
 
-#: ../src/gui-wizard-gtk/wizard.c:3164
+#: ../src/gui-wizard-gtk/wizard.c:3168
 msgid "Include"
 msgstr "包括"
 
-#: ../src/gui-wizard-gtk/wizard.c:3175
+#: ../src/gui-wizard-gtk/wizard.c:3179
 msgid "Name"
 msgstr "名称"
 
-#: ../src/gui-wizard-gtk/wizard.c:3185
+#: ../src/gui-wizard-gtk/wizard.c:3189
 msgid "Value"
 msgstr "值"
 
-#: ../src/gui-wizard-gtk/wizard.c:3219
+#: ../src/gui-wizard-gtk/wizard.c:3223
 msgid "Problem description"
 msgstr "问题描述"
 
-#: ../src/gui-wizard-gtk/wizard.c:3220
+#: ../src/gui-wizard-gtk/wizard.c:3224
 msgid "Select how to report this problem"
 msgstr "选择如何汇报此问题"
 
-#: ../src/gui-wizard-gtk/wizard.c:3221
+#: ../src/gui-wizard-gtk/wizard.c:3225
 msgid "Provide additional information"
 msgstr "提供附加信息"
 
-#: ../src/gui-wizard-gtk/wizard.c:3222
+#: ../src/gui-wizard-gtk/wizard.c:3226
 msgid "Review the data"
 msgstr "审核数据"
 
-#: ../src/gui-wizard-gtk/wizard.c:3223
+#: ../src/gui-wizard-gtk/wizard.c:3227
 msgid "Confirm data to report"
 msgstr "确认要上传的汇报数据"
 
-#: ../src/gui-wizard-gtk/wizard.c:3224
+#: ../src/gui-wizard-gtk/wizard.c:3228
 msgid "Processing"
 msgstr "处理中"
 
-#: ../src/gui-wizard-gtk/wizard.c:3225
+#: ../src/gui-wizard-gtk/wizard.c:3229
 msgid "Processing done"
 msgstr "处理完成"
 
-#: ../src/gui-wizard-gtk/wizard.c:3314
+#: ../src/gui-wizard-gtk/wizard.c:3318
 msgid "_Stop"
 msgstr "停止（_S）"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3317
+#: ../src/gui-wizard-gtk/wizard.c:3321
 msgid "Upload for analysis"
 msgstr "上传并分析"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3320
+#: ../src/gui-wizard-gtk/wizard.c:3324
 msgid "_Forward"
 msgstr "转发（_F）"
 
-#: ../src/gui-wizard-gtk/wizard.c:3409
+#: ../src/gui-wizard-gtk/wizard.c:3413
 msgid ""
 "In order to enable the built-in screencasting functionality the package recordmydesktop has to be installed. Please run the following command if you want to install it.\n"
 "\n"
@@ -668,9 +668,9 @@ msgstr "限制报告访问"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid ""
-"No one except Red Hat employees will be allowed to see the report with "
-"restricted access (not even you)"
-msgstr "除了红帽雇员外的任何人均不可查看限制访问的报告（甚至包括您自己）"
+"No one except Fedora Contrib group members will be allowed to see the report"
+" with restricted access (not even you)"
+msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid "Read more about reports with restricted access"
@@ -829,70 +829,73 @@ msgstr "UID 值无效: '%s'"
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "上传的：%llu kb 中的 %llu"
 
-#: ../src/lib/curl.c:591
+#: ../src/lib/curl.c:598
 #, c-format
 msgid "Sending %s to %s"
 msgstr "向 %s 发送 %s"
 
 #. This ends up a "reporting status message" in abrtd
-#: ../src/lib/curl.c:623
+#: ../src/lib/curl.c:630
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "成功向 %s 发送 %s"
 
-#: ../src/lib/event_config.c:309
+#: ../src/lib/event_config.c:348
 msgid "Missing mandatory value"
 msgstr "缺少必需值"
 
-#: ../src/lib/event_config.c:317
+#: ../src/lib/event_config.c:356
 #, c-format
 msgid "Invalid utf8 character '%c'"
 msgstr "无效的 utf8 字符 ‘%c'"
 
-#: ../src/lib/event_config.c:330
+#: ../src/lib/event_config.c:369
 #, c-format
 msgid "Invalid number '%s'"
 msgstr "无效的数字 '%s'"
 
-#: ../src/lib/event_config.c:345
+#: ../src/lib/event_config.c:384
 #, c-format
 msgid "Invalid boolean value '%s'"
 msgstr "无效的布尔值 '%s'"
 
-#: ../src/lib/event_config.c:351
+#: ../src/lib/event_config.c:390
 msgid "Unsupported option type"
 msgstr "不支持的操作类型"
 
-#: ../src/lib/event_config.c:420
-msgid "Reporting disabled because the rating does not contain a number."
-msgstr "报告被禁用因为评级不包含数字。"
+#: ../src/lib/event_config.c:460
+#, c-format
+msgid ""
+"The problem cannot be reported due to an invalid data. '%s' file does not "
+"contain a number."
+msgstr ""
 
-#: ../src/lib/event_config.c:421
+#: ../src/lib/event_config.c:464
 msgid "Please report this problem to ABRT project developers."
 msgstr "请报告此问题给 ABRT 项目开发者。"
 
-#: ../src/lib/event_config.c:427
+#: ../src/lib/event_config.c:470
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "回溯是不完整的，请确定您提供了重复该错误的完整步骤。"
 
-#: ../src/lib/event_config.c:428
+#: ../src/lib/event_config.c:471
 msgid "The backtrace probably can't help developer to diagnose the bug."
 msgstr "该回溯可能无法帮助开发者诊断 Bug。"
 
-#: ../src/lib/event_config.c:434
+#: ../src/lib/event_config.c:477
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "由于回溯不可用，已禁用汇报。"
 
-#: ../src/lib/event_config.c:438
+#: ../src/lib/event_config.c:481
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again."
 msgstr "请尝试使用命令: \"debuginfo-install %s\" 手动安装除错信息并再次尝试。"
 
-#: ../src/lib/event_config.c:440
+#: ../src/lib/event_config.c:483
 msgid "A proper debuginfo is probably missing or the coredump is corrupted."
 msgstr "可能丢失了正确的出错信息或者内核转储被污染。"
 
@@ -1005,13 +1008,13 @@ msgstr "Bugzilla 账户密码"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:10
 #: ../src/plugins/report_RHTSupport.xml.in.h:9
-#: ../src/plugins/report_uReport.xml.in.h:5
+#: ../src/plugins/report_uReport.xml.in.h:7
 msgid "Verify SSL"
 msgstr "确认 SSL"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:11
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
-#: ../src/plugins/report_uReport.xml.in.h:6
+#: ../src/plugins/report_uReport.xml.in.h:8
 msgid "Check SSL key validity"
 msgstr "查看 SSL 密钥是否可用"
 
@@ -1049,7 +1052,7 @@ msgstr "只当您所使用产品版本和 /etc/os-release 中不同时在此特�
 #: ../src/plugins/report_Kerneloops.xml.in.h:5
 #: ../src/plugins/report_RHTSupport.xml.in.h:11
 #: ../src/plugins/report_Uploader.xml.in.h:6
-#: ../src/plugins/report_uReport.xml.in.h:7
+#: ../src/plugins/report_uReport.xml.in.h:9
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:4
 msgid "HTTP Proxy"
 msgstr "HTTP 代理"
@@ -1058,7 +1061,7 @@ msgstr "HTTP 代理"
 #: ../src/plugins/report_Kerneloops.xml.in.h:6
 #: ../src/plugins/report_RHTSupport.xml.in.h:12
 #: ../src/plugins/report_Uploader.xml.in.h:7
-#: ../src/plugins/report_uReport.xml.in.h:8
+#: ../src/plugins/report_uReport.xml.in.h:10
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:5
 msgid "Sets the proxy server to use for HTTP"
 msgstr "设定用于 HTTP 的代理服务器"
@@ -1067,7 +1070,7 @@ msgstr "设定用于 HTTP 的代理服务器"
 #: ../src/plugins/report_Kerneloops.xml.in.h:7
 #: ../src/plugins/report_RHTSupport.xml.in.h:13
 #: ../src/plugins/report_Uploader.xml.in.h:8
-#: ../src/plugins/report_uReport.xml.in.h:9
+#: ../src/plugins/report_uReport.xml.in.h:11
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:6
 msgid "HTTPS Proxy"
 msgstr "HTTPS 代理"
@@ -1076,7 +1079,7 @@ msgstr "HTTPS 代理"
 #: ../src/plugins/report_Kerneloops.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:14
 #: ../src/plugins/report_Uploader.xml.in.h:9
-#: ../src/plugins/report_uReport.xml.in.h:10
+#: ../src/plugins/report_uReport.xml.in.h:12
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:7
 msgid "Sets the proxy server to use for HTTPS"
 msgstr "设定用于 HTTPS 的代理服务器"
@@ -1363,7 +1366,7 @@ msgid ""
 "Parameter can be overridden via $KerneloopsReporter_SubmitURL."
 msgstr "& [-v] [-c CONFFILE]... -d DIR\n\n向 kerneloops.org（或类似）网站报告内核错误。\n\n在 tarball 中不包括在 $EXCLUDE_FROM_REPORT 中\n列出的文件名。\n\nCONFFILE 行应使用 'PARAM = VALUE' 格式。\n可识别的字符串参数为：SubmitURL。\n可使用 $KerneloopsReporter_SubmitURL 覆盖参数。"
 
-#: ../src/plugins/reporter-kerneloops.c:167 ../src/plugins/ureport.c:379
+#: ../src/plugins/reporter-kerneloops.c:167 ../src/plugins/ureport.c:456
 msgid "Configuration file"
 msgstr "配置文件"
 
@@ -1712,6 +1715,14 @@ msgstr "uReport 服务器 URL"
 msgid "Address of uReport webservice"
 msgstr "uReport 网络服务器地址"
 
+#: ../src/plugins/report_uReport.xml.in.h:5
+msgid "Watch already reported bugs"
+msgstr ""
+
+#: ../src/plugins/report_uReport.xml.in.h:6
+msgid "Adds your Bugzilla login to CC List of already reported bugs."
+msgstr ""
+
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:1
 msgid "Emergency analysis"
 msgstr "紧急分析"
@@ -1719,6 +1730,14 @@ msgstr "紧急分析"
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:2
 msgid "Upload the problem data for further analysis"
 msgstr "提交问题数据用于深度分析"
+
+#: ../src/plugins/watch_Bugzilla.xml.in.h:1
+msgid "Watch Bugzilla Bug"
+msgstr ""
+
+#: ../src/plugins/watch_Bugzilla.xml.in.h:2
+msgid "Adds your e-mail to CC List of Bugzilla bug"
+msgstr ""
 
 #: ../src/plugins/rhbz.c:409
 #, c-format
@@ -1752,7 +1771,7 @@ msgstr "新 bug id：%i"
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla 无法找到 bug %d 的上级 bug"
 
-#: ../src/plugins/ureport.c:79
+#: ../src/plugins/ureport.c:146
 #, c-format
 msgid ""
 "Your problem seems to be caused by %s\n"
@@ -1760,148 +1779,151 @@ msgid ""
 "%s\n"
 msgstr "您的问题似乎由 %s 导致\n\n%s\n"
 
-#: ../src/plugins/ureport.c:82
+#: ../src/plugins/ureport.c:149
 msgid "Your problem seems to be caused by one of the following:\n"
 msgstr "您的问题似乎由以下原因之一导致：\n"
 
-#: ../src/plugins/ureport.c:248
+#: ../src/plugins/ureport.c:320
 #, c-format
 msgid "Failed to upload uReport to the server '%s' with curl: %s"
 msgstr "无法使用 curl 上传 uReport 至服务器 '%s'：%s"
 
-#: ../src/plugins/ureport.c:254
+#: ../src/plugins/ureport.c:326
 #, c-format
 msgid "The URL '%s' does not exist (got error 404 from server)"
 msgstr "URL '%s' 不存在(服务器返回错误 404)"
 
-#: ../src/plugins/ureport.c:260
+#: ../src/plugins/ureport.c:332
 #, c-format
 msgid "The server at '%s' encountered an internal error (got error 500)"
 msgstr "位于 '%s' 的服务器遇到内部错误(得知错误 500)"
 
-#: ../src/plugins/ureport.c:266
+#: ../src/plugins/ureport.c:338
 #, c-format
-msgid ""
-"The server at '%s' is currently can't handle the request (got error 503)"
-msgstr "位于 '%s' 的服务器当前无法响应请求(得到错误 503)"
+msgid "The server at '%s' currently can't handle the request (got error 503)"
+msgstr ""
 
 #. can't print better error message
-#: ../src/plugins/ureport.c:275
+#: ../src/plugins/ureport.c:347
 #, c-format
 msgid "Unexpected HTTP response from '%s': %d"
 msgstr ""
 
-#: ../src/plugins/ureport.c:284
+#: ../src/plugins/ureport.c:356
 #, c-format
-msgid "Unable to parse response from ureport server at '%s"
+msgid "Unable to parse response from ureport server at '%s'"
 msgstr ""
 
-#: ../src/plugins/ureport.c:294
+#: ../src/plugins/ureport.c:366
 #, c-format
 msgid "The response from '%s' has invalid format"
 msgstr "来自 '%s' 的响应包含无效格式"
 
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
-#: ../src/plugins/ureport.c:300
+#: ../src/plugins/ureport.c:372
 #, c-format
 msgid "Type mismatch has been detected in the response from '%s'"
 msgstr "在从 '%s' 得到的响应中检测到类型不匹配"
 
-#: ../src/plugins/ureport.c:331
+#: ../src/plugins/ureport.c:403
 #, c-format
 msgid "The server at '%s' responded with an error: '%s'"
 msgstr "位于 '%s' 的服务器响应错误：'%s'"
 
-#: ../src/plugins/ureport.c:376
+#: ../src/plugins/ureport.c:452
 msgid "Specify server URL"
 msgstr "指定服务器 URL"
 
-#: ../src/plugins/ureport.c:378
+#: ../src/plugins/ureport.c:454
 msgid "Allow insecure connection to ureport server"
 msgstr "允许使用非加密链接到 uReport 服务器"
 
-#: ../src/plugins/ureport.c:381
+#: ../src/plugins/ureport.c:455
+msgid "Use client authentication"
+msgstr ""
+
+#: ../src/plugins/ureport.c:458
 msgid "bthash of uReport to attach (conflicts with -A)"
 msgstr ""
 
-#: ../src/plugins/ureport.c:383
+#: ../src/plugins/ureport.c:460
 msgid "attach to a bthash from reported_to (conflicts with -a)"
 msgstr ""
 
-#: ../src/plugins/ureport.c:385
+#: ../src/plugins/ureport.c:462
 msgid "contact e-mail address (requires -a|-A, conflicts with -E)"
 msgstr "联系电子邮件地址 (需要 -a|-A，与 -E 冲突)"
 
-#: ../src/plugins/ureport.c:387
+#: ../src/plugins/ureport.c:464
 msgid ""
 "contact e-mail address from environment or configuration file (requires "
 "-a|-A, conflicts with -e)"
 msgstr ""
 
-#: ../src/plugins/ureport.c:389
+#: ../src/plugins/ureport.c:466
 msgid "attach RHBZ bug (requires -a|-A, conflicts with -B)"
 msgstr "附上 RHBZ bug  (需要 -a|-A，与 -B 冲突)"
 
-#: ../src/plugins/ureport.c:391
+#: ../src/plugins/ureport.c:468
 msgid ""
 "attach last RHBZ bug from reported_to (requires -a|-A, conflicts with -b)"
 msgstr ""
 
-#: ../src/plugins/ureport.c:396
+#: ../src/plugins/ureport.c:473
 msgid ""
-"& [-v] [-c FILE] [-u URL] [-k] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
+"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
 "\n"
 "Upload micro report or add an attachment to a micro report\n"
 "\n"
 "Reads the default configuration from "
 msgstr ""
 
-#: ../src/plugins/ureport.c:440
+#: ../src/plugins/ureport.c:519
 msgid "This problem does not have an uReport assigned."
 msgstr "该问题没有指派一个 uReport。"
 
-#: ../src/plugins/ureport.c:453
+#: ../src/plugins/ureport.c:532
 msgid "This problem has not been reported to Bugzilla."
 msgstr "该问题尚未汇报至 Bugzilla。"
 
-#: ../src/plugins/ureport.c:457
+#: ../src/plugins/ureport.c:536
 #, c-format
 msgid "Unable to find bug ID in bugzilla URL '%s'"
 msgstr "无法在 Bugzilla URL '%s' 中找到错误 ID"
 
-#: ../src/plugins/ureport.c:462
+#: ../src/plugins/ureport.c:541
 #, c-format
 msgid "Unable to parse bug ID from bugzilla URL '%s'"
 msgstr "无法处理来自 Bugzilla URL '%s' 中的错误 ID"
 
-#: ../src/plugins/ureport.c:475
+#: ../src/plugins/ureport.c:554
 msgid ""
 "Neither environment variable 'uReport_ContactEmail' nor configuration option"
 " 'ContactEmail' is set"
 msgstr ""
 
-#: ../src/plugins/ureport.c:481
+#: ../src/plugins/ureport.c:560
 msgid "You need to specify bug ID, contact email or both"
 msgstr "您需要指定 bug ID、联络电子邮件或者两者都指定。"
 
-#: ../src/plugins/ureport.c:499
+#: ../src/plugins/ureport.c:578
 msgid "You need to specify bthash of the uReport to attach."
 msgstr "您需要指定要添加的 uReport 的 bthash。"
 
-#: ../src/plugins/ureport.c:509
+#: ../src/plugins/ureport.c:588
 msgid "Not uploading an empty uReport"
 msgstr "不上传空白的 uReport"
 
-#: ../src/plugins/ureport.c:518
+#: ../src/plugins/ureport.c:597
 msgid "Failed on submitting the problem"
 msgstr "提交问题失败"
 
-#: ../src/plugins/ureport.c:563
+#: ../src/plugins/ureport.c:642
 msgid "This problem has already been reported."
 msgstr "该问题已经被汇报过了。"
 
-#: ../src/plugins/ureport.c:572
+#: ../src/plugins/ureport.c:651
 #, c-format
 msgid "Server responded with an error: '%s'"
 msgstr "服务响应错误：'%s'"
@@ -1957,8 +1979,8 @@ msgid "Process the report using the Fedora infrastructure"
 msgstr "使用 Fedora 基础设施处理报告"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:1
-msgid "Report a bug to Red Hat Support Tool"
-msgstr "为红帽支持工具汇报一个问题"
+msgid "Report a bug to Red Hat Customer Portal"
+msgstr ""
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:2
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:2
@@ -1982,8 +2004,11 @@ msgstr "本地分析问题并通过 scp 或 ftp 上传数据"
 #: ../src/workflows/workflow_FedoraCCpp.xml.in.h:1
 #: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:1
 #: ../src/workflows/workflow_FedoraPython.xml.in.h:1
+#: ../src/workflows/workflow_FedoraPython3.xml.in.h:1
 #: ../src/workflows/workflow_FedoraVmcore.xml.in.h:1
 #: ../src/workflows/workflow_FedoraXorg.xml.in.h:1
+#: ../src/workflows/workflow_FedoraLibreport.xml.in.h:1
+#: ../src/workflows/workflow_FedoraJava.xml.in.h:1
 msgid "Report to Fedora"
 msgstr "汇报至 Fedora"
 
@@ -1999,6 +2024,10 @@ msgstr "使用 Fedora 基础设施处理内核异常（Oops）"
 msgid "Process the python exception using the Fedora infrastructure"
 msgstr "使用 Fedora 基础设施处理 Python 异常"
 
+#: ../src/workflows/workflow_FedoraPython3.xml.in.h:2
+msgid "Process the python 3 exception using the Fedora infrastructure"
+msgstr ""
+
 #: ../src/workflows/workflow_FedoraVmcore.xml.in.h:2
 msgid "Process the kernel crash using the Fedora infrastructure"
 msgstr "使用 Fedora 基础设施处理内核崩溃"
@@ -2007,11 +2036,21 @@ msgstr "使用 Fedora 基础设施处理内核崩溃"
 msgid "Process the X Server problem using the Fedora infrastructure"
 msgstr "使用 Fedora 基础设施处理 X 服务器故障"
 
+#: ../src/workflows/workflow_FedoraLibreport.xml.in.h:2
+msgid "Process the problem using the Fedora infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_FedoraJava.xml.in.h:2
+msgid "Process the Java exception using the Fedora infrastructure"
+msgstr ""
+
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1
 #: ../src/workflows/workflow_RHELPython.xml.in.h:1
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:1
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:1
+#: ../src/workflows/workflow_RHELLibreport.xml.in.h:1
+#: ../src/workflows/workflow_RHELJava.xml.in.h:1
 msgid "Report to Red Hat Customer Portal"
 msgstr "向客户门户网站提交报告"
 
@@ -2040,10 +2079,22 @@ msgstr "使用红帽基础架构处理内核崩溃"
 msgid "Process the X Server problem using the Red Hat infrastructure"
 msgstr "使用红帽基础架构处理 X 服务器问题"
 
+#: ../src/workflows/workflow_RHELLibreport.xml.in.h:2
+#: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:2
+msgid "Process the problem using the Red Hat infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_RHELJava.xml.in.h:2
+#: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
+msgid "Process the Java exception using the Red Hat infrastructure"
+msgstr ""
+
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:1
+#: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:1
+#: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:1
 msgid "Report to Red Hat Bugzilla"
 msgstr "向 Red Hat Bugzilla 提交报告"
