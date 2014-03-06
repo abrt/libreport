@@ -125,7 +125,11 @@ static void save_value_from_widget(gpointer data, gpointer user_data)
         default:
             log("unsupported option type");
     }
-    if (val)
+
+    /* gtk_entry_get_text() returns empty string for empty text value */
+    /* so if value is empty and the old value is NULL then nothing has */
+    /* changed and we must not set option's value */
+    if (val && (val[0] != '\0' || ow->option->eo_value != NULL))
     {
         free(ow->option->eo_value);
         ow->option->eo_value = xstrdup(val);
