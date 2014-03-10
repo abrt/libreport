@@ -9,13 +9,14 @@
 # Jérôme Fenal <jfenal@gmail.com>, 2013
 # Kévin Raymond <shaiton@fedoraproject.org>, 2011
 # MarbolanGos Fabien <marbolangos@gmail.com>, 2013
+# Sam Friedmann <sam.friedmann@redhat.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-26 09:32+0100\n"
-"PO-Revision-Date: 2014-02-26 08:32+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"POT-Creation-Date: 2014-03-07 10:53+0100\n"
+"PO-Revision-Date: 2014-02-28 00:45+0000\n"
+"Last-Translator: Sam Friedmann <sam.friedmann@redhat.com>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/fedora/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -173,7 +174,7 @@ msgstr "Veuillez sélectionner un événement à lancer :"
 
 #: ../src/cli/cli-report.c:854
 msgid "Select a workflow to run: "
-msgstr ""
+msgstr "Sélectionnez un workflow à exécuter :"
 
 #: ../src/client-python/debuginfo.py:87
 msgid "Extracting cpio from {0}"
@@ -326,33 +327,33 @@ msgid "Don't ask me again"
 msgstr "Ne plus demander"
 
 #. if event has no xml description
-#: ../src/gtk-helpers/config_dialog.c:153
+#: ../src/gtk-helpers/config_dialog.c:157
 msgid "No description available"
 msgstr "Aucune description disponible"
 
-#: ../src/gtk-helpers/config_dialog.c:275
+#: ../src/gtk-helpers/config_dialog.c:279
 msgid "Configuration"
 msgstr "Configuration"
 
 #. we can't use this, because we want the workflows first and hashtable
 #. * doesn't return the items in the order they were added
 #. g_hash_table_foreach(configs, (GHFunc)add_config_tabs, config_nb);
-#: ../src/gtk-helpers/config_dialog.c:301
-#: ../src/gtk-helpers/config_dialog.c:303
+#: ../src/gtk-helpers/config_dialog.c:305
+#: ../src/gtk-helpers/config_dialog.c:307
 msgid "Workflows"
 msgstr "Workflows"
 
-#: ../src/gtk-helpers/config_dialog.c:305
-#: ../src/gtk-helpers/config_dialog.c:307
-#: ../src/gtk-helpers/config_dialog.c:352
+#: ../src/gtk-helpers/config_dialog.c:309
+#: ../src/gtk-helpers/config_dialog.c:311
+#: ../src/gtk-helpers/config_dialog.c:356
 msgid "Events"
 msgstr "Événements"
 
-#: ../src/gtk-helpers/config_dialog.c:311
+#: ../src/gtk-helpers/config_dialog.c:315
 msgid "C_onfigure"
 msgstr "C_onfigurer"
 
-#: ../src/gtk-helpers/config_dialog.c:313 ../src/gui-wizard-gtk/wizard.c:3309
+#: ../src/gtk-helpers/config_dialog.c:317 ../src/gui-wizard-gtk/wizard.c:3309
 msgid "_Close"
 msgstr "_Fermer"
 
@@ -440,7 +441,7 @@ msgid ""
 "%s is not properly configured. You can configure it now or provide the required information later.\n"
 "\n"
 "Read more about the configuration at: https://access.redhat.com/site/articles/718083"
-msgstr ""
+msgstr "%s n'est pas correctement configuré. Vous pouvez le faire maintenant ou fournir les informations requises plus tard.\n\nEn savoir plus sur la configuration à : https://access.redhat.com/site/articles/718083"
 
 #: ../src/gui-wizard-gtk/wizard.c:304
 #, c-format
@@ -448,7 +449,7 @@ msgid ""
 "<b>%s</b> is not properly configured. You can configure it now or provide the required information later.\n"
 "\n"
 "<a href=\"https://access.redhat.com/site/articles/718083\">Read more about the configuration</a>"
-msgstr ""
+msgstr "<b>%s</b> n'est pas correctement configuré. Vous pouvez le faire maintenant ou fournir les informations requises plus tard.\n\n<a href=\"https://access.redhat.com/site/articles/718083\">En savoir plus sur la configuration</a>"
 
 #: ../src/gui-wizard-gtk/wizard.c:320
 #, c-format
@@ -644,7 +645,7 @@ msgid ""
 "In order to enable the built-in screencasting functionality the package fros-gnome has to be installed. Please run the following command if you want to install it.\n"
 "\n"
 "<b>su -c \"yum install fros-gnome\"</b>"
-msgstr ""
+msgstr "Afin d'activer la fonctionnalité de diffusion d'écran interne, le paquet fros-gnome doit être installé. Veuillez exécuter la commande suivante si vous souhaitez l'installer.\n\n<b>su -c \"yum install fros-gnome\"</b>"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
 msgid "Possible sensitive data detected"
@@ -658,7 +659,7 @@ msgstr "Restreindre l'accès au rapport"
 msgid ""
 "No one except Red Hat employees will be allowed to see the report with "
 "restricted access (not even you)"
-msgstr ""
+msgstr "Personne, excepté les employés de Red Hat, ne sera autorisé à voir le rapport avec accès restreint (même pas vous)."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid "Read more about reports with restricted access"
@@ -886,7 +887,7 @@ msgstr "Des informations de débogage adéquates sont probablement manquantes, o
 
 #: ../src/lib/make_descr.c:110
 msgid "Reported:"
-msgstr ""
+msgstr "Rapporté :"
 
 #: ../src/lib/parse_options.c:58
 msgid "Usage: "
@@ -1770,18 +1771,18 @@ msgstr "Le serveur à « %s » a rencontré une erreur interne (erreur 500 ren
 #: ../src/plugins/ureport.c:338
 #, c-format
 msgid "The server at '%s' currently can't handle the request (got error 503)"
-msgstr ""
+msgstr "Le serveur à « %s » ne peut actuellement pas prendre en charge la demande (réception d'une erreur 503)"
 
 #. can't print better error message
 #: ../src/plugins/ureport.c:347
 #, c-format
 msgid "Unexpected HTTP response from '%s': %d"
-msgstr ""
+msgstr "Réponse HTTP inattendue de « %s » : %d"
 
 #: ../src/plugins/ureport.c:356
 #, c-format
 msgid "Unable to parse response from ureport server at '%s'"
-msgstr ""
+msgstr "Impossible d'analyser la réponse du serveur ureport à « %s »"
 
 #: ../src/plugins/ureport.c:366
 #, c-format
@@ -1810,34 +1811,34 @@ msgstr "Permettre les connexions non-sécurisées au serveur ureport"
 
 #: ../src/plugins/ureport.c:455
 msgid "Use client authentication"
-msgstr ""
+msgstr "Utilisez l'authentification client"
 
 #: ../src/plugins/ureport.c:458
 msgid "bthash of uReport to attach (conflicts with -A)"
-msgstr ""
+msgstr "bthash du uReport à attacher (en conflit avec -A)"
 
 #: ../src/plugins/ureport.c:460
 msgid "attach to a bthash from reported_to (conflicts with -a)"
-msgstr ""
+msgstr "attacher à un bthash à partir de reported_to (en conflit avec -a)"
 
 #: ../src/plugins/ureport.c:462
 msgid "contact e-mail address (requires -a|-A, conflicts with -E)"
-msgstr ""
+msgstr "adresse électronique (requiert -a|-A, en conflit avec -E)"
 
 #: ../src/plugins/ureport.c:464
 msgid ""
 "contact e-mail address from environment or configuration file (requires "
 "-a|-A, conflicts with -e)"
-msgstr ""
+msgstr "adresse électronique de l'environnement ou du fichier de configuration (requiert -a|-A, en conflit avec -e)"
 
 #: ../src/plugins/ureport.c:466
 msgid "attach RHBZ bug (requires -a|-A, conflicts with -B)"
-msgstr ""
+msgstr "attacher le bogue RHBZ (requiert -a|-A, en conflit avec -B)"
 
 #: ../src/plugins/ureport.c:468
 msgid ""
 "attach last RHBZ bug from reported_to (requires -a|-A, conflicts with -b)"
-msgstr ""
+msgstr "attacher le dernier bogue RHBZ à partir de reported_to (requiert -a|-A, en conflit avec -b)"
 
 #: ../src/plugins/ureport.c:473
 msgid ""
@@ -1846,7 +1847,7 @@ msgid ""
 "Upload micro report or add an attachment to a micro report\n"
 "\n"
 "Reads the default configuration from "
-msgstr ""
+msgstr "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n\nTéléverse un micro rapport ou ajoute une pièce jointe à un micro rapport\n\nLit la configuration par défaut à partir de "
 
 #: ../src/plugins/ureport.c:519
 msgid "This problem does not have an uReport assigned."
@@ -1870,11 +1871,11 @@ msgstr "Impossible d'analyser l'ID de défaut de l'URL bugzilla « %s »"
 msgid ""
 "Neither environment variable 'uReport_ContactEmail' nor configuration option"
 " 'ContactEmail' is set"
-msgstr ""
+msgstr "Ni la variable d'environnement « uReport_ContactEmail », ni l'option de configuration « ContactEmail » ne sont définis"
 
 #: ../src/plugins/ureport.c:560
 msgid "You need to specify bug ID, contact email or both"
-msgstr ""
+msgstr "Vous devez spécifier l'ID du bogue, l'adresse électronique, ou les deux"
 
 #: ../src/plugins/ureport.c:578
 msgid "You need to specify bthash of the uReport to attach."
@@ -1949,7 +1950,7 @@ msgstr "Traiter le rapport en utilisant l'infrastructure Fedora"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:1
 msgid "Report a bug to Red Hat Customer Portal"
-msgstr ""
+msgstr "Rapporter un bogue sur le Portail Client Red Hat"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:2
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:2
@@ -1958,7 +1959,7 @@ msgstr "Traiter le rapport en utilisant l'infrastructure Red Hat"
 
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:1
 msgid "Report a bug to Red Hat Bugzilla"
-msgstr ""
+msgstr "Rapporter un bogue sur Red Hat Bugzilla"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
 #: ../src/workflows/workflow_Upload.xml.in.h:1
@@ -2002,11 +2003,11 @@ msgstr "Traiter l'incident du serveur X en utilisant l'infrastructure Fedora"
 
 #: ../src/workflows/workflow_FedoraLibreport.xml.in.h:2
 msgid "Process the problem using the Fedora infrastructure"
-msgstr ""
+msgstr "Traiter le problème en utilisant l'infrastructure Fedora"
 
 #: ../src/workflows/workflow_FedoraJava.xml.in.h:2
 msgid "Process the Java exception using the Fedora infrastructure"
-msgstr ""
+msgstr "Traiter l'exception Java en utilisant l'infrastructure Fedora"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1
@@ -2016,7 +2017,7 @@ msgstr ""
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:1
 #: ../src/workflows/workflow_RHELJava.xml.in.h:1
 msgid "Report to Red Hat Customer Portal"
-msgstr ""
+msgstr "Rapporter sur le Portail Client Red Hat"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
@@ -2046,12 +2047,12 @@ msgstr "Traiter l'incident du serveur X en utilisant l'infrastructure Red Hat"
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:2
 msgid "Process the problem using the Red Hat infrastructure"
-msgstr ""
+msgstr "Traiter le problème en utilisant l'infrastructure Red Hat"
 
 #: ../src/workflows/workflow_RHELJava.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
 msgid "Process the Java exception using the Red Hat infrastructure"
-msgstr ""
+msgstr "Traiter l'exception Java en utilisant l'infrastructure Red Hat"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
@@ -2061,4 +2062,4 @@ msgstr ""
 #: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:1
 msgid "Report to Red Hat Bugzilla"
-msgstr ""
+msgstr "Rapporter sur Red Hat Bugzilla"
