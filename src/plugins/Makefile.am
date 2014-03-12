@@ -38,6 +38,7 @@ defaultreportpluginsconfdir = $(DEFAULT_REPORT_PLUGINS_CONF_DIR)
 dist_defaultreportpluginsconf_DATA = $(reporters_plugin_conf) \
     rhtsupport.conf \
     mailx.conf \
+    upload.conf \
     ureport.conf
 
 dist_reportpluginsconf_DATA = $(reporters_plugin_format_conf) \
@@ -160,6 +161,7 @@ reporter_upload_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
+    -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
