@@ -192,7 +192,7 @@ int main(int argc, char **argv)
 #endif
 
     const char *dump_dir_name = ".";
-    const char *conf_file = NULL;
+    const char *conf_file = CONF_DIR"/plugins/upload.conf";
     const char *url = NULL;
 
     /* Can't keep these strings/structs static: _() doesn't support that */
@@ -211,7 +211,8 @@ int main(int argc, char **argv)
         "Files with names listed in $EXCLUDE_FROM_REPORT are not included\n"
         "into the tarball.\n"
         "\n"
-        "CONFFILE lines should have 'PARAM = VALUE' format.\n"
+        "\n""If not specified, CONFFILE defaults to "CONF_DIR"/plugins/upload.conf"
+        "\n""Its lines should have 'PARAM = VALUE' format."
         "Recognized string parameter: URL.\n"
         "Parameter can be overridden via $Upload_URL."
     );
