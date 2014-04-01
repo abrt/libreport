@@ -101,10 +101,15 @@ static GtkListStore *g_ls_details;
 
 static GtkBox *g_box_buttons; //TODO: needs not be global
 static GtkNotebook *g_notebook;
+static GtkListStore *g_ls_sensitive_list;
+static GtkTreeView *g_tv_sensitive_list;
+static GtkTreeSelection *g_tv_sensitive_sel;
+static GtkRadioButton *g_rb_forbidden_words;
+static GtkRadioButton *g_rb_custom_search;
+static GtkExpander *g_exp_search;
+static gulong g_tv_sensitive_sel_hndlr;
 static gboolean g_warning_issued;
 
-static GtkEventBox *g_ev_search_up;
-static GtkEventBox *g_ev_search_down;
 static GtkSpinner *g_spinner_event_log;
 static GtkImage *g_img_process_fail;
 
@@ -116,10 +121,6 @@ static GtkWidget *g_top_most_window;
 static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback func);
 static void set_auto_event_chain(GtkButton *button, gpointer user_data);
 static void start_event_run(const char *event_name);
-
-static GList *g_search_result_list;
-static guint g_current_highlighted_word;
-static bool g_first_highlight = true;
 
 enum
 {
@@ -136,6 +137,15 @@ enum
 /* Search in bt */
 static guint g_timeout = 0;
 static GtkEntry *g_search_entry_bt;
+static const gchar *g_search_text;
+static search_item_t *g_current_highlighted_word;
+
+enum
+{
+    SEARCH_COLUMN_FILE,
+    SEARCH_COLUMN_TEXT,
+    SEARCH_COLUMN_ITEM,
+};
 
 static GtkBuilder *g_builder;
 static PangoFontDescription *g_monospace_font;
@@ -190,9 +200,11 @@ static const gchar *const page_names[] =
 #define PRIVATE_TICKET_CB "private_ticket_cb"
 
 #define SENSITIVE_DATA_WARN "sensitive_data_warning"
+#define SENSITIVE_LIST "ls_sensitive_words"
 static const gchar *misc_widgets[] =
 {
     SENSITIVE_DATA_WARN,
+    SENSITIVE_LIST,
     NULL
 };
 
@@ -2183,6 +2195,54 @@ static GList *find_words_in_text_buffer(int page,
     return found_words;
 }
 
+static void search_item_to_list_store_item(GtkListStore *store, GtkTreeIter *new_row,
+        const gchar *file_name, search_item_t *word)
+{
+    GtkTextIter *beg = gtk_text_iter_copy(&(word->start));
+    gtk_text_iter_backward_line(beg);
+
+    GtkTextIter *end = gtk_text_iter_copy(&(word->end));
+    /* the first call moves end variable at the end of the current line */
+    if (gtk_text_iter_forward_line(end))
+    {
+        /* the second call moves end variable at the end of the next line */
+        gtk_text_iter_forward_line(end);
+
+        /* don't include the last new which causes an empty line in the GUI list */
+        gtk_text_iter_backward_char(end);
+    }
+
+    gchar *tmp = gtk_text_buffer_get_text(word->buffer, beg, &(word->start),
+            /*don't include hidden chars*/FALSE);
+    gchar *prefix = g_markup_escape_text(tmp, /*NULL terminated string*/-1);
+    g_free(tmp);
+
+    tmp = gtk_text_buffer_get_text(word->buffer, &(word->start), &(word->end),
+            /*don't include hidden chars*/FALSE);
+    gchar *text = g_markup_escape_text(tmp, /*NULL terminated string*/-1);
+    g_free(tmp);
+
+    tmp = gtk_text_buffer_get_text(word->buffer, &(word->end), end,
+            /*don't include hidden chars*/FALSE);
+    gchar *suffix = g_markup_escape_text(tmp, /*NULL terminated string*/-1);
+    g_free(tmp);
+
+    char *content = xasprintf("%s<span foreground=\"red\">%s</span>%s", prefix, text, suffix);
+
+    g_free(suffix);
+    g_free(text);
+    g_free(prefix);
+
+    gtk_text_iter_free(end);
+    gtk_text_iter_free(beg);
+
+    gtk_list_store_set(store, new_row,
+            SEARCH_COLUMN_FILE, file_name,
+            SEARCH_COLUMN_TEXT, content,
+            SEARCH_COLUMN_ITEM, word,
+            -1);
+}
+
 static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words, GList *ignored_words)
 {
     GtkTextBuffer *buffer = gtk_text_view_get_buffer(tev);
@@ -2192,29 +2252,48 @@ static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words,
     GtkWidget *tab_lbl = gtk_notebook_get_tab_label(g_notebook, notebook_child);
 
     /* Remove old results */
-    int bufferpos = -1;
-    GList *after_buffer = NULL;
-    int allwordspos = 0;
-    int bufferwords = 0;
-    for (GList* item = g_search_result_list; item; ++allwordspos)
+    bool buffer_removing = false;
+
+    GtkTreeIter iter;
+    gboolean valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(g_ls_sensitive_list), &iter);
+
+    /* Turn off the changed callback during the update */
+    g_signal_handler_block(g_tv_sensitive_sel, g_tv_sensitive_sel_hndlr);
+
+    while (valid)
     {
-         GList* current = item;
-         item = g_list_next(item);
+        char *text = NULL;
+        search_item_t *word = NULL;
 
-         search_item_t *word = (search_item_t *)current->data;
-         if (word->buffer == buffer)
-         {
-             ++bufferwords;
+        gtk_tree_model_get(GTK_TREE_MODEL(g_ls_sensitive_list), &iter,
+                SEARCH_COLUMN_TEXT, &text,
+                SEARCH_COLUMN_ITEM, &word,
+                -1);
 
-             if (allwordspos < g_current_highlighted_word)
-                 ++bufferpos;
+        if (word->buffer == buffer)
+        {
+            buffer_removing = true;
 
-             g_search_result_list = g_list_delete_link(g_search_result_list, current);
-             free(word);
-         }
-         else if(after_buffer == NULL && bufferwords != 0)
-             after_buffer = current;
+            valid = gtk_list_store_remove(g_ls_sensitive_list, &iter);
+
+            free(text);
+
+            if (word == g_current_highlighted_word)
+                g_current_highlighted_word = NULL;
+
+            free(word);
+        }
+        else
+        {
+            if(buffer_removing)
+                break;
+
+            valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(g_ls_sensitive_list), &iter);
+        }
     }
+
+    /* Turn on the changed callback after the update */
+    g_signal_handler_unblock(g_tv_sensitive_sel, g_tv_sensitive_sel_hndlr);
 
     GtkTextIter start_find;
     gtk_text_buffer_get_start_iter(buffer, &start_find);
@@ -2246,6 +2325,7 @@ static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words,
                                        start_find,
                                        end_find
                                         );
+
     for (GList *w = result; w; w = g_list_next(w))
     {
         search_item_t *item = (search_item_t *)w->data;
@@ -2269,48 +2349,32 @@ static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words,
          */
         result = g_list_sort(result, (GCompareFunc)sitem_compare);
 
-        /* Put words of the buffer at the correct place */
-        if (after_buffer == g_search_result_list)
+        GList *search_result = result;
+        for ( ; search_result != NULL; search_result = g_list_next(search_result))
         {
-            /*
-             * The original list:
-             *   (buffer, after buffer)
-             */
-            g_search_result_list = g_list_concat(result, after_buffer);
-        }
-        else
-        {
-            /*
-             * The original:
-             *   (before buffer, buffer, after buffer)
-             * After removing buffer's words:
-             *   (before buffer, after buffer)
-             */
-            if (after_buffer && after_buffer->prev)
-            {
-                /* split to two lists (before buffer) and (after buffer) */
-                after_buffer->prev->next = NULL;
-                after_buffer->prev = NULL;
-            }
+            search_item_t *word = (search_item_t *)search_result->data;
 
-            /* create (before buffer, buffer) */
-            g_search_result_list = g_list_concat(g_search_result_list, result);
+            const gchar *file_name = gtk_label_get_text(GTK_LABEL(tab_lbl));
 
-            if (after_buffer)
-                /* create (before buffer, buffer, after buffer) */
-                g_search_result_list = g_list_concat(g_search_result_list, after_buffer);
+            /* Create a new row */
+            GtkTreeIter new_row;
+            if (valid)
+                /* iter variable is valid GtkTreeIter and it means that the results */
+                /* need to be inserted before this iterator, in this case iter points */
+                /* to the first word of another GtkTextView */
+                gtk_list_store_insert_before(g_ls_sensitive_list, &new_row, &iter);
+            else
+                /* the GtkTextView is the last one or the only one, insert the results */
+                /* at the end of the list store */
+                gtk_list_store_append(g_ls_sensitive_list, &new_row);
+
+            /* Assign values to the new row */
+            search_item_to_list_store_item(g_ls_sensitive_list, &new_row, file_name, word);
         }
     }
 
-    /* The bufferpos variable greater than 0 means that current word was in
-     * the buffer or the currently highlighted word was after all buffer's
-     * words, therefore we have to decrease the index of the currently
-     * highlighted word. If any word was found the highlighting process
-     * will start from the beginning of the buffer. If no word was found
-     * the currently highlighted word will be the first word in a next buffer.
-     */
-    if (bufferpos >= 0)
-        g_current_highlighted_word -= (bufferpos + (result == NULL));
+    g_list_free_full(ignored_words_in_buffer, free);
+    g_list_free(result);
 
     return result != NULL;
 }
@@ -2318,11 +2382,6 @@ static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words,
 static gboolean highligh_words_in_tabs(GList *forbidden_words,  GList *allowed_words)
 {
     gboolean found = false;
-
-    list_free_with_free(g_search_result_list);
-    g_search_result_list = NULL;
-    g_current_highlighted_word = 0;
-    g_first_highlight = true;
 
     gint n_pages = gtk_notebook_get_n_pages(g_notebook);
     int page = 0;
@@ -2339,21 +2398,24 @@ static gboolean highligh_words_in_tabs(GList *forbidden_words,  GList *allowed_w
         found |= highligh_words_in_textview(page, tev, forbidden_words, allowed_words);
     }
 
+    GtkTreeIter iter;
+    if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(g_ls_sensitive_list), &iter))
+        gtk_tree_selection_select_iter(g_tv_sensitive_sel, &iter);
+
     return found;
 }
 
-static void highlight_forbidden(void)
+static gboolean highlight_forbidden(void)
 {
     GList *forbidden_words = load_words_from_file(FORBIDDEN_WORDS_BLACKLLIST);
     GList *allowed_words = load_words_from_file(FORBIDDEN_WORDS_WHITELIST);
 
-    if (highligh_words_in_tabs(forbidden_words, allowed_words)) {
-        add_sensitive_data_warning();
-        show_warnings();
-    }
+    const gboolean result = highligh_words_in_tabs(forbidden_words, allowed_words);
 
     list_free_with_free(forbidden_words);
     list_free_with_free(allowed_words);
+
+    return result;
 }
 
 static gint select_next_page_no(gint current_page_no, gpointer data);
@@ -2491,7 +2553,15 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
 
     if (pages[PAGENO_EDIT_ELEMENTS].page_widget == page)
     {
-        highlight_forbidden();
+        if (highlight_forbidden())
+        {
+            add_sensitive_data_warning();
+            show_warnings();
+            gtk_expander_set_expanded(g_exp_search, TRUE);
+        }
+        else
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(g_rb_custom_search), TRUE);
+
         show_warnings();
     }
 
@@ -2768,18 +2838,6 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
     return current_page_no;
 }
 
-
-
-static void highlight_widget(GtkWidget *widget, gpointer *user_data)
-{
-    gtk_drag_highlight(widget);
-}
-
-static void unhighlight_widget(GtkWidget *widget, gpointer *user_data)
-{
-    gtk_drag_unhighlight(widget);
-}
-
 static void rehighlight_forbidden_words(int page, GtkTextView *tev)
 {
     GList *forbidden_words = load_words_from_file(FORBIDDEN_WORDS_BLACKLLIST);
@@ -2787,75 +2845,57 @@ static void rehighlight_forbidden_words(int page, GtkTextView *tev)
     highligh_words_in_textview(page, tev, forbidden_words, allowed_words);
     list_free_with_free(forbidden_words);
     list_free_with_free(allowed_words);
-
-    /* Don't increment resp. decrement in search_down() resp. search_up() */
-    g_first_highlight = true;
 }
 
-static void unhighlight_current_word(void)
+static void on_sensitive_word_selection_changed(GtkTreeSelection *sel, gpointer user_data)
 {
-    search_item_t *word = NULL;
-    word = (search_item_t *)g_list_nth_data(g_search_result_list, g_current_highlighted_word);
-    if (word)
+    search_item_t *old_word = g_current_highlighted_word;
+    g_current_highlighted_word = NULL;
+
+    if (old_word && FALSE == gtk_text_buffer_get_modified(old_word->buffer))
+        gtk_text_buffer_remove_tag_by_name(old_word->buffer, "current_result_bg", &(old_word->start), &(old_word->end));
+
+    GtkTreeModel *model;
+    GtkTreeIter iter;
+    if (!gtk_tree_selection_get_selected(sel, &model, &iter))
+        return;
+
+    search_item_t *new_word;
+    gtk_tree_model_get(model, &iter,
+            SEARCH_COLUMN_ITEM, &new_word,
+            -1);
+
+    if (gtk_text_buffer_get_modified(new_word->buffer))
     {
-        if (gtk_text_buffer_get_modified(word->buffer))
-            rehighlight_forbidden_words(word->page, word->tev);
+        if (g_search_text == NULL)
+            rehighlight_forbidden_words(new_word->page, new_word->tev);
         else
-            gtk_text_buffer_remove_tag_by_name(word->buffer, "current_result_bg", &(word->start), &(word->end));
-    }
-}
-
-static void highlight_current_word(void)
-{
-    search_item_t *word = NULL;
-    word = (search_item_t *)g_list_nth_data(g_search_result_list, g_current_highlighted_word);
-    if (word)
-    {
-        if (gtk_text_buffer_get_modified(word->buffer))
         {
-            rehighlight_forbidden_words(word->page, word->tev);
-            highlight_current_word();
-            return;
+            log_notice("searching again: '%s'", g_search_text);
+            GList *searched_words = g_list_append(NULL, (gpointer)g_search_text);
+            highligh_words_in_textview(new_word->page, new_word->tev, searched_words, NULL);
+            g_list_free(searched_words);
         }
 
-        gtk_notebook_set_current_page(g_notebook, word->page);
-        gtk_text_buffer_apply_tag_by_name(word->buffer, "current_result_bg", &(word->start), &(word->end));
-        gtk_text_buffer_place_cursor(word->buffer, &(word->start));
-        gtk_text_view_scroll_to_iter(word->tev, &(word->start), 0.0, false, 0, 0);
+        return;
     }
-}
 
-static void search_down(GtkWidget *widget, gpointer user_data)
-{
-    if (g_current_highlighted_word + !g_first_highlight < g_list_length(g_search_result_list))
-    {
-        unhighlight_current_word();
-        if (!g_first_highlight)
-            g_current_highlighted_word++;
-        g_first_highlight = false;
-        highlight_current_word();
-    }
-}
+    g_current_highlighted_word = new_word;
 
-static void search_up(GtkWidget *widget, gpointer user_data)
-{
-    if (g_current_highlighted_word + g_first_highlight > 0)
-    {
-        unhighlight_current_word();
-        if (!g_first_highlight)
-            g_current_highlighted_word--;
-        g_first_highlight = false;
-        highlight_current_word();
-    }
+    gtk_notebook_set_current_page(g_notebook, new_word->page);
+    gtk_text_buffer_apply_tag_by_name(new_word->buffer, "current_result_bg", &(new_word->start), &(new_word->end));
+    gtk_text_buffer_place_cursor(new_word->buffer, &(new_word->start));
+    gtk_text_view_scroll_to_iter(new_word->tev, &(new_word->start), 0.0, false, 0, 0);
 }
 
 static gboolean highlight_search(gpointer user_data)
 {
     GtkEntry *entry = GTK_ENTRY(user_data);
 
-    log_notice("searching: '%s'", gtk_entry_get_text(entry));
+    g_search_text = gtk_entry_get_text(entry);
 
-    GList *words = g_list_append(NULL, (gpointer)gtk_entry_get_text(entry));
+    log_notice("searching: '%s'", g_search_text);
+    GList *words = g_list_append(NULL, (gpointer)g_search_text);
     highligh_words_in_tabs(words, NULL);
     g_list_free(words);
 
@@ -2873,6 +2913,22 @@ static void search_timeout(GtkEntry *entry)
     if (g_timeout != 0)
         g_source_remove(g_timeout);
     g_timeout = g_timeout_add(500, &highlight_search, (gpointer)entry);
+}
+
+static void on_forbidden_words_toggled(GtkToggleButton *btn, gpointer user_data)
+{
+    g_search_text = NULL;
+    log_notice("nothing to search for, highlighting forbidden words instead");
+    highlight_forbidden();
+}
+
+static void on_custom_search_toggled(GtkToggleButton *btn, gpointer user_data)
+{
+    const gboolean custom_search = gtk_toggle_button_get_active(btn);
+    gtk_widget_set_sensitive(GTK_WIDGET(g_search_entry_bt), custom_search);
+
+    if (custom_search)
+        highlight_search(g_search_entry_bt);
 }
 
 static void save_edited_one_liner(GtkCellRendererText *renderer,
@@ -3044,7 +3100,6 @@ static gint on_key_press_event_in_item_list(GtkTreeView *treeview, GdkEventKey *
     return FALSE;
 }
 
-
 /* Initialization */
 
 /* wizard.glade file as a string WIZARD_GLADE_CONTENTS: */
@@ -3068,15 +3123,15 @@ static void add_pages(void)
     g_builder = gtk_builder_new();
     if (!g_glade_file)
     {
-        /* Load pages from internal string */
-        gtk_builder_add_objects_from_string(g_builder,
-                WIZARD_GLADE_CONTENTS, sizeof(WIZARD_GLADE_CONTENTS) - 1,
-                (gchar**)page_names,
-                &error);
         /* load additional widgets from glade */
         gtk_builder_add_objects_from_string(g_builder,
                 WIZARD_GLADE_CONTENTS, sizeof(WIZARD_GLADE_CONTENTS) - 1,
                 (gchar**)misc_widgets,
+                &error);
+        /* Load pages from internal string */
+        gtk_builder_add_objects_from_string(g_builder,
+                WIZARD_GLADE_CONTENTS, sizeof(WIZARD_GLADE_CONTENTS) - 1,
+                (gchar**)page_names,
                 &error);
         if (error != NULL)
             error_msg_and_die("Error loading glade data: %s", error->message);
@@ -3117,8 +3172,12 @@ static void add_pages(void)
     g_btn_add_file         = GTK_BUTTON(       gtk_builder_get_object(g_builder, "btn_add_file"));
     g_lbl_size             = GTK_LABEL(        gtk_builder_get_object(g_builder, "lbl_size"));
     g_notebook             = GTK_NOTEBOOK(     gtk_builder_get_object(g_builder, "notebook_edit"));
-    g_ev_search_up         = GTK_EVENT_BOX(    gtk_builder_get_object(g_builder, "ev_search_up"));
-    g_ev_search_down       = GTK_EVENT_BOX(    gtk_builder_get_object(g_builder, "ev_search_down"));
+    g_ls_sensitive_list    = GTK_LIST_STORE(   gtk_builder_get_object(g_builder, "ls_sensitive_words"));
+    g_tv_sensitive_list    = GTK_TREE_VIEW(    gtk_builder_get_object(g_builder, "tv_sensitive_words"));
+    g_tv_sensitive_sel     = GTK_TREE_SELECTION( gtk_builder_get_object(g_builder, "tv_sensitive_words_selection"));
+    g_rb_forbidden_words   = GTK_RADIO_BUTTON( gtk_builder_get_object(g_builder, "rb_forbidden_words"));
+    g_rb_custom_search     = GTK_RADIO_BUTTON( gtk_builder_get_object(g_builder, "rb_custom_search"));
+    g_exp_search           = GTK_EXPANDER(     gtk_builder_get_object(g_builder, "expander_search"));
     g_spinner_event_log    = GTK_SPINNER(      gtk_builder_get_object(g_builder, "spinner_event_log"));
     g_img_process_fail     = GTK_IMAGE(      gtk_builder_get_object(g_builder, "img_process_fail"));
     g_btn_startcast        = GTK_BUTTON(    gtk_builder_get_object(g_builder, "btn_startcast"));
@@ -3141,14 +3200,8 @@ static void add_pages(void)
 
     g_signal_connect(g_cb_no_comment, "toggled", G_CALLBACK(on_no_comment_toggled), NULL);
 
-    /* hook up the search arrows */
-    g_signal_connect(G_OBJECT(g_ev_search_up), "enter-notify-event", G_CALLBACK(highlight_widget), NULL);
-    g_signal_connect(G_OBJECT(g_ev_search_up), "leave-notify-event", G_CALLBACK(unhighlight_widget), NULL);
-    g_signal_connect(G_OBJECT(g_ev_search_up), "button-press-event", G_CALLBACK(search_up), NULL);
-
-    g_signal_connect(G_OBJECT(g_ev_search_down), "enter-notify-event", G_CALLBACK(highlight_widget), NULL);
-    g_signal_connect(G_OBJECT(g_ev_search_down), "leave-notify-event", G_CALLBACK(unhighlight_widget), NULL);
-    g_signal_connect(G_OBJECT(g_ev_search_down), "button-press-event", G_CALLBACK(search_down), NULL);
+    g_signal_connect(g_rb_forbidden_words, "toggled", G_CALLBACK(on_forbidden_words_toggled), NULL);
+    g_signal_connect(g_rb_custom_search, "toggled", G_CALLBACK(on_custom_search_toggled), NULL);
 
     /* Set color of the comment evenbox */
     GdkRGBA color;
@@ -3156,6 +3209,7 @@ static void add_pages(void)
     gtk_widget_override_color(GTK_WIDGET(g_eb_comment), GTK_STATE_FLAG_NORMAL, &color);
 
     g_signal_connect(g_tv_details, "key-press-event", G_CALLBACK(on_key_press_event_in_item_list), NULL);
+    g_tv_sensitive_sel_hndlr = g_signal_connect(g_tv_sensitive_sel, "changed", G_CALLBACK(on_sensitive_word_selection_changed), NULL);
 }
 
 static void create_details_treeview(void)
