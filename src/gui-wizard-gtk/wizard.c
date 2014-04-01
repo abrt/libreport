@@ -1608,6 +1608,13 @@ static void run_event_gtk_alert(const char *msg, void *args)
     log_request_response_communication(msg, NULL, (struct analyze_event_data *)args);
 }
 
+static void gtk_entry_emit_dialog_response_ok(GtkEntry *entry, GtkDialog *dialog)
+{
+    /* Don't close the dialogue if the entry is empty */
+    if (gtk_entry_get_text_length(entry) > 0)
+        gtk_dialog_response(dialog, GTK_RESPONSE_OK);
+}
+
 static char *ask_helper(const char *msg, void *args, bool password)
 {
     GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
@@ -1626,6 +1633,7 @@ static char *ask_helper(const char *msg, void *args, bool password)
      * g_object_set
      */
     g_object_set(G_OBJECT(textbox), "editable", TRUE, NULL);
+    g_signal_connect(textbox, "activate", G_CALLBACK(gtk_entry_emit_dialog_response_ok), dialog);
 
     if (password)
         gtk_entry_set_visibility(GTK_ENTRY(textbox), FALSE);
