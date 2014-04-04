@@ -18,7 +18,7 @@ int main(void)
 {
     g_verbose = 3;
 
-    setlocale(LC_ALL, "zh_CN");
+    assert(setlocale(LC_ALL, "zh_CN") != NULL || !"setlocale() failed");
 
     {
         event_config_t *event_config = new_event_config("event_test_definition");
@@ -55,7 +55,7 @@ int main(void)
         free_workflow(workflow);
     }
 
-    setlocale(LC_ALL, "zh_CN.utf8");
+    assert(setlocale(LC_ALL, "zh_CN.utf8") != NULL || !"setlocale() failed");
 
     {
         event_config_t *event_config = new_event_config("event_test_definition");
@@ -97,7 +97,7 @@ int main(void)
        for zh_CN and followed by zh_TW. libreport should you string for zh_TW
        and these strings are prefixed with "bad " string.
      */
-    setlocale(LC_ALL, "zh_HK");
+    assert(setlocale(LC_ALL, "zh_HK") != NULL || !"setlocale() failed");
 
     {
         event_config_t *event_config = new_event_config("event_test_definition");
