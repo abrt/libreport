@@ -151,7 +151,7 @@ def getVersion():
 
     return _hardcoded_default_version
 
-def createAlertSignature(component, hashmarkername, hashvalue, summary, alertSignature, executable=None):
+def createAlertSignature(component, hashmarkername, hashvalue, summary, alertSignature, executable=None, package=None):
     pd = problem_data()
     pd.add("component", component)
     pd.add("hashmarkername", hashmarkername)
@@ -160,6 +160,8 @@ def createAlertSignature(component, hashmarkername, hashvalue, summary, alertSig
     pd.add("description", alertSignature)
     if executable:
         pd.add("executable", executable)
+    if package:
+        pd.add("package", package)
     pd.add_basics()
 
     return pd
