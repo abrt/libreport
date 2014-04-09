@@ -1,0 +1,42 @@
+ignored_words.conf(5)
+=====================
+
+NAME
+----
+ignored_words.conf - configuration file for libreport.
+
+DESCRIPTION
+-----------
+This configuration file specifies which words are *NOT* highlighted in User
+Interface during the process of reporting a problem for the purpose of warning
+a user and getting his attention before he publish security sensitive data.
+
+The configuration format is one line per ignored word.
+
+Users can provide own file with the list of ignored words which will be
+appended to the list of ignored words loaded from
+/etc/libreport/ignored_words.conf
+
+EXAMPLES
+--------
+System configuration:
+
+/etc/libreport/ignored_words.conf
+
+    USER=
+    login.so
+    SSH_ASKPASS=
+
+User configuration:
+
+$XDG_CONFIG_HOME/abrt/settings/ignored_words.conf
+
+    libpassword.so
+
+SEE ALSO
+--------
+report-gtk(1), forbidden_words.conf(5)
+
+AUTHOR
+------
+* ABRT team

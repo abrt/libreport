@@ -38,6 +38,7 @@ MAN5_TXT += bugzilla_formatdup.conf.txt
 MAN5_TXT += bugzilla_format_kernel.conf.txt
 MAN5_TXT += bugzilla_format_libreport.conf.txt
 MAN5_TXT += emergencyanalysis_event.conf.txt
+MAN5_TXT += ignored_words.conf.txt
 MAN5_TXT += forbidden_words.conf.txt
 MAN5_TXT += mailx.conf.txt
 MAN5_TXT += mailx_event.conf.txt
