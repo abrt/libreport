@@ -42,6 +42,21 @@ OPTIONS
 CONFIGURATION
 -------------
 
+Dialogue answers
+~~~~~~~~~~~~~~~~
+
+During the reporting process report-gtk might show a dialogue asking for a
+decision to be made. Some of those dialogues provides an option to remember the
+answer. If it is requested to remember the answer, report-gtk saves the answer
+in $XDG_CONFIG_HOME/abrt/settings/report-gtk.conf
+
+If $XDG_CONFIG_HOME is not set, $HOME/.config is used instead.
+
+Sensitive data search
+~~~~~~~~~~~~~~~~~~~~~
+
+See forbidden_words.conf(5) and ignored_words.conf(5)
+
 Reporting work flow configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 These configuration files are placed in /usr/share/libreport/workflows.
@@ -90,6 +105,10 @@ Simple reporting work flow
   </events>
 </workflow>
 ------------
+
+SEE ALSO
+--------
+forbidden_words.conf(5), ignored_words.conf(5)
 
 AUTHORS
 -------
