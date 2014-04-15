@@ -207,6 +207,8 @@ void problem_data_add_file(problem_data_t *pd, const char *name, const char *pat
 
 char *problem_data_get_content_or_die(problem_data_t *problem_data, const char *key)
 {
+    INITIALIZE_LIBREPORT();
+
     struct problem_item *item = problem_data_get_item_or_NULL(problem_data, key);
     if (!item)
         error_msg_and_die(_("Essential element '%s' is missing, can't continue"), key);

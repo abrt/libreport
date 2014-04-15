@@ -191,6 +191,8 @@ static void add_option_to_table(gpointer data, gpointer user_data)
 
 config_dialog_t *create_event_config_dialog_content(event_config_t *event, GtkWidget *content)
 {
+    INITIALIZE_LIBREPORT();
+
     if (content == NULL)
         content = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 
@@ -285,6 +287,8 @@ config_dialog_t *create_event_config_dialog_content(event_config_t *event, GtkWi
 
 config_dialog_t *create_event_config_dialog(const char *event_name, GtkWindow *parent)
 {
+    INITIALIZE_LIBREPORT();
+
     event_config_t *event = get_event_config(event_name);
 
     if(!ec_is_configurable(event))
@@ -340,6 +344,8 @@ GtkListStore *add_events_to_liststore(GHashTable *events)
 
 int show_event_config_dialog(const char *event_name, GtkWindow *parent)
 {
+    INITIALIZE_LIBREPORT();
+
     event_config_t *event = get_event_config(event_name);
 
     GtkWindow *parent_window = parent ? parent : g_event_list_window;

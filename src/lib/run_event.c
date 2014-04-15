@@ -756,6 +756,8 @@ static void run_event_stdio_error_and_die(const char *error_line, void *param)
 
 char *exit_status_as_string(const char *progname, int status)
 {
+    INITIALIZE_LIBREPORT();
+
     char *msg;
     if (WIFSIGNALED(status))
         msg = xasprintf(_("('%s' was killed by signal %u)\n"), progname, WTERMSIG(status));
