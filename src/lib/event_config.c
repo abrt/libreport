@@ -395,6 +395,8 @@ static char *validate_event_option(event_option_t *opt)
 
 GHashTable *validate_event(const char *event_name)
 {
+    INITIALIZE_LIBREPORT();
+
     event_config_t *config = get_event_config(event_name);
     if (!config)
         return NULL;
@@ -435,6 +437,8 @@ bool check_problem_rating_usability(const event_config_t *cfg,
                                     char **description,
                                     char **detail)
 {
+    INITIALIZE_LIBREPORT();
+
     char *tmp_desc = NULL;
     char *tmp_detail = NULL;
     bool result = true;

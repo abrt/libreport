@@ -145,6 +145,8 @@ void dehydrate_config_dialog(GList *option_widgets)
 
 void add_item_to_config_liststore(gpointer cdialog, gpointer inf, gpointer user_data)
 {
+    INITIALIZE_LIBREPORT();
+
     GtkListStore *list_store = (GtkListStore *)user_data;
     config_item_info_t *info = (config_item_info_t *)inf;
 
@@ -272,6 +274,7 @@ static void on_close_cb(GtkWidget *btn, gpointer config_list_w)
 
 GtkWindow *create_config_list_window(GHashTable *configs, GtkWindow *parent)
 {
+    INITIALIZE_LIBREPORT();
 
     // config window
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -341,6 +344,8 @@ GtkWindow *create_config_list_window(GHashTable *configs, GtkWindow *parent)
 
 void show_config_list_dialog(GtkWindow *parent)
 {
+    INITIALIZE_LIBREPORT();
+
     GHashTable *confs = g_hash_table_new_full(
             /*hash_func*/ g_str_hash,
             /*key_equal_func:*/ g_str_equal,

@@ -50,9 +50,8 @@ int set_echo(int enable)
 
 int ask_yes_no(const char *question)
 {
-#if ENABLE_NLS
-    textdomain(PACKAGE);
-#endif
+    INITIALIZE_LIBREPORT();
+
     const char *yes = _("y");
     const char *no = _("N");
 
@@ -83,9 +82,8 @@ int ask_yes_no(const char *question)
 
 int ask_yes_no_yesforever(const char *key, const char *question)
 {
-#if ENABLE_NLS
-    textdomain(PACKAGE);
-#endif
+    INITIALIZE_LIBREPORT();
+
     const char *yes = _("y");
     const char *no = _("N");
     const char *forever = _("f");
