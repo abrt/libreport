@@ -30,11 +30,11 @@ from report import EXIT_CANCEL_BY_USER as RETURN_CANCEL_BY_USER
 from report import EXIT_STOP_EVENT_RUN as RETURN_STOP_EVENT_RUN
 
 
-GETTEXT_PROGNAME = "abrt"
+GETTEXT_PROGNAME = "libreport"
 import locale
 import gettext
 
-_ = lambda x: gettext.lgettext(x)
+_ = lambda x: gettext.ldgettext(GETTEXT_PROGNAME, x)
 
 def init_gettext():
     try:
@@ -48,7 +48,6 @@ def init_gettext():
     except AttributeError:
         pass
     gettext.bindtextdomain(GETTEXT_PROGNAME, '/usr/share/locale')
-    gettext.textdomain(GETTEXT_PROGNAME)
 
 init_gettext()
 

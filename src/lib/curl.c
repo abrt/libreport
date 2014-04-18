@@ -301,6 +301,8 @@ post(post_state_t *state,
                 const char *data,
                 off_t data_size)
 {
+    INITIALIZE_LIBREPORT();
+
     CURLcode curl_err;
     long response_code;
     post_state_t localstate;

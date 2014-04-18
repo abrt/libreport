@@ -54,6 +54,8 @@ static int run_ask_yes_no_save_generic_result_dialog(ask_yes_no_dialog_flags fla
                                                      const char *message,
                                                      GtkWindow *parent)
 {
+    INITIALIZE_LIBREPORT();
+
     const char *ask_result = get_user_setting(key);
 
     if (ask_result)

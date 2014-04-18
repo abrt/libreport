@@ -1493,6 +1493,8 @@ static void save_event_config(const char *event_name,
 
 bool is_event_config_user_storage_available()
 {
+    INITIALIZE_LIBREPORT();
+
     if (g_state == SBS_INITIAL)
         g_state = secrets_service_connect();
 
@@ -1507,6 +1509,8 @@ bool is_event_config_user_storage_available()
  */
 void load_single_event_config_data_from_user_storage(event_config_t *config)
 {
+    INITIALIZE_LIBREPORT();
+
     GHashTable *tmp = g_hash_table_new_full(
                 /*hash_func*/ g_str_hash,
                 /*key_equal_func:*/ g_str_equal,
@@ -1529,6 +1533,8 @@ void load_single_event_config_data_from_user_storage(event_config_t *config)
  */
 void load_event_config_data_from_user_storage(GHashTable *event_config_list)
 {
+    INITIALIZE_LIBREPORT();
+
     if (is_event_config_user_storage_available())
     {
         bool dismissed = false;
@@ -1589,6 +1595,8 @@ void save_event_config_data_to_user_storage(const char *event_name,
                                             const event_config_t *event_config,
                                             bool store_passwords)
 {
+    INITIALIZE_LIBREPORT();
+
     if (is_event_config_user_storage_available())
         save_event_config(event_name, event_config->options, store_passwords);
     else

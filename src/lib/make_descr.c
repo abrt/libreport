@@ -51,6 +51,8 @@ char *make_description_item_multiline(const char *name, const char *content)
 char *make_description(problem_data_t *problem_data, char **names_to_skip,
                        unsigned max_text_size, unsigned desc_flags)
 {
+    INITIALIZE_LIBREPORT();
+
     struct strbuf *buf_dsc = strbuf_new();
 
     const char *analyzer = problem_data_get_content_or_NULL(problem_data,
