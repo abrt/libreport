@@ -2228,7 +2228,8 @@ static GList *find_words_in_text_buffer(int page,
                                         GList *words,
                                         GList *ignore_sitem_list,
                                         GtkTextIter start_find,
-                                        GtkTextIter end_find
+                                        GtkTextIter end_find,
+                                        bool case_insensitive
                                         )
 {
     GtkTextBuffer *buffer = gtk_text_view_get_buffer(tev);
@@ -2244,7 +2245,7 @@ static GList *find_words_in_text_buffer(int page,
 
         const char *search_word = w->data;
         while (search_word && search_word[0] && gtk_text_iter_forward_search(&start_find, search_word,
-                    GTK_TEXT_SEARCH_TEXT_ONLY,
+                    GTK_TEXT_SEARCH_TEXT_ONLY | (case_insensitive ? GTK_TEXT_SEARCH_CASE_INSENSITIVE : 0),
                     &start_match,
                     &end_match, NULL))
         {
@@ -2320,7 +2321,7 @@ static void search_item_to_list_store_item(GtkListStore *store, GtkTreeIter *new
             -1);
 }
 
-static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words, GList *ignored_words)
+static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words, GList *ignored_words, bool case_insensitive)
 {
     GtkTextBuffer *buffer = gtk_text_view_get_buffer(tev);
     gtk_text_buffer_set_modified(buffer, FALSE);
@@ -2392,7 +2393,8 @@ static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words,
                                                         ignored_words,
                                                         NULL,
                                                         start_find,
-                                                        end_find);
+                                                        end_find,
+                                                        /*case sensitive*/false);
 
 
     result = find_words_in_text_buffer(page,
@@ -2400,7 +2402,8 @@ static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words,
                                        words,
                                        ignored_words_in_buffer,
                                        start_find,
-                                       end_find
+                                       end_find,
+                                       case_insensitive
                                         );
 
     for (GList *w = result; w; w = g_list_next(w))
@@ -2456,7 +2459,7 @@ static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words,
     return result != NULL;
 }
 
-static gboolean highligh_words_in_tabs(GList *forbidden_words,  GList *allowed_words)
+static gboolean highligh_words_in_tabs(GList *forbidden_words,  GList *allowed_words, bool case_insensitive)
 {
     gboolean found = false;
 
@@ -2472,7 +2475,7 @@ static gboolean highligh_words_in_tabs(GList *forbidden_words,  GList *allowed_w
             continue;
 
         GtkTextView *tev = GTK_TEXT_VIEW(gtk_bin_get_child(GTK_BIN(notebook_child)));
-        found |= highligh_words_in_textview(page, tev, forbidden_words, allowed_words);
+        found |= highligh_words_in_textview(page, tev, forbidden_words, allowed_words, case_insensitive);
     }
 
     GtkTreeIter iter;
@@ -2487,7 +2490,7 @@ static gboolean highlight_forbidden(void)
     GList *forbidden_words = load_words_from_file(FORBIDDEN_WORDS_BLACKLLIST);
     GList *allowed_words = load_words_from_file(FORBIDDEN_WORDS_WHITELIST);
 
-    const gboolean result = highligh_words_in_tabs(forbidden_words, allowed_words);
+    const gboolean result = highligh_words_in_tabs(forbidden_words, allowed_words, /*case sensitive*/false);
 
     list_free_with_free(forbidden_words);
     list_free_with_free(allowed_words);
@@ -2919,7 +2922,7 @@ static void rehighlight_forbidden_words(int page, GtkTextView *tev)
 {
     GList *forbidden_words = load_words_from_file(FORBIDDEN_WORDS_BLACKLLIST);
     GList *allowed_words = load_words_from_file(FORBIDDEN_WORDS_WHITELIST);
-    highligh_words_in_textview(page, tev, forbidden_words, allowed_words);
+    highligh_words_in_textview(page, tev, forbidden_words, allowed_words, /*case sensitive*/false);
     list_free_with_free(forbidden_words);
     list_free_with_free(allowed_words);
 }
@@ -2950,7 +2953,7 @@ static void on_sensitive_word_selection_changed(GtkTreeSelection *sel, gpointer 
         {
             log_notice("searching again: '%s'", g_search_text);
             GList *searched_words = g_list_append(NULL, (gpointer)g_search_text);
-            highligh_words_in_textview(new_word->page, new_word->tev, searched_words, NULL);
+            highligh_words_in_textview(new_word->page, new_word->tev, searched_words, NULL, /*case insensitive*/true);
             g_list_free(searched_words);
         }
 
@@ -2973,7 +2976,7 @@ static gboolean highlight_search(gpointer user_data)
 
     log_notice("searching: '%s'", g_search_text);
     GList *words = g_list_append(NULL, (gpointer)g_search_text);
-    highligh_words_in_tabs(words, NULL);
+    highligh_words_in_tabs(words, NULL, /*case insensitive*/true);
     g_list_free(words);
 
     /* returning false will make glib to remove this event */
