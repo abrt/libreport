@@ -62,7 +62,7 @@
 /* Must be after #include "config.h" */
 #if ENABLE_NLS
 # include <libintl.h>
-# define _(S) gettext(S)
+# define _(S) dgettext(PACKAGE, S)
 #else
 # define _(S) (S)
 #endif
@@ -925,6 +925,19 @@ enum {
 #define log_problem_data libreport_log_problem_data
 void log_problem_data(problem_data_t *problem_data, const char *pfx);
 
+extern int g_libreport_inited;
+void libreport_init(void);
+
+#define INITIALIZE_LIBREPORT() \
+    do \
+    { \
+        if (!g_libreport_inited) \
+        { \
+            g_libreport_inited = 1; \
+            libreport_init(); \
+        } \
+    } \
+    while (0)
 
 const char *abrt_init(char **argv);
 #define export_abrt_envvars libreport_export_abrt_envvars

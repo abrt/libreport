@@ -136,6 +136,8 @@ int problem_data_send_to_abrt(problem_data_t* problem_data)
 
 int delete_dump_dir_possibly_using_abrtd(const char *dump_dir_name)
 {
+    INITIALIZE_LIBREPORT();
+
 #if DUMP_DIR_OWNED_BY_USER == 0
     /* Try to delete it ourselves */
     struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);

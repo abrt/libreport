@@ -55,6 +55,8 @@ void export_abrt_envvars(int pfx)
 
 void show_usage_and_die(const char *usage, const struct options *opt)
 {
+    INITIALIZE_LIBREPORT();
+
     fputs(_("Usage: "), stderr);
     while (*usage)
     {

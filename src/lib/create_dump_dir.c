@@ -32,6 +32,8 @@ static struct dump_dir *try_dd_create(const char *base_dir_name, const char *dir
 
 struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data, const char *base_dir_name)
 {
+    INITIALIZE_LIBREPORT();
+
     char *type = problem_data_get_content_or_NULL(problem_data, FILENAME_ANALYZER);
 
     if (!type)

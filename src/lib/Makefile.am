@@ -54,7 +54,9 @@ libreport_la_SOURCES = \
     workflow.c \
     workflow_xml_parser.c \
     config_item_info.c \
-    xml_parser.c
+    xml_parser.c \
+    libreport_init.c
+
 libreport_la_CPPFLAGS = \
     -I$(srcdir)/../include \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
@@ -144,6 +146,8 @@ libreport_web_la_LIBADD = \
     $(SATYR_LIBS) \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS) \
     libreport.la
+
+DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 $(DESTDIR)/$(DEBUG_DUMPS_DIR):
 	$(mkdir_p) '$@'

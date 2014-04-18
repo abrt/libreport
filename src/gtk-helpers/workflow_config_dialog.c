@@ -64,6 +64,8 @@ void save_data_from_worfklow_dialog(gpointer data, /* not needed */ const char *
 
 config_dialog_t *create_workflow_config_dialog(const char *workflow_name, GtkWindow *parent)
 {
+    INITIALIZE_LIBREPORT();
+
     workflow_t *workflow = get_workflow(workflow_name);
     GList *events = wf_get_event_list(workflow);
 
