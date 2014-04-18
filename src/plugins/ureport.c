@@ -157,16 +157,13 @@ static char *parse_solution_from_json_list(struct json_object *list, GList **rep
         if (!list_elem)
             continue;
 
-        struct_elem = json_object_object_get(list_elem, "cause");
-        if (!struct_elem)
+        if (!json_object_object_get_ex(list_elem, "cause", &struct_elem))
             continue;
 
         cause = json_object_get_string(struct_elem);
-        if (!cause)
             continue;
 
-        struct_elem = json_object_object_get(list_elem, "note");
-        if (!struct_elem)
+        if (!json_object_object_get_ex(list_elem, "note", &struct_elem))
             continue;
 
         note = json_object_get_string(struct_elem);
@@ -176,8 +173,7 @@ static char *parse_solution_from_json_list(struct json_object *list, GList **rep
         empty = false;
         strbuf_append_strf(solution_buf, one_format, cause, note);
 
-        struct_elem = json_object_object_get(list_elem, "url");
-        if (!struct_elem)
+        if (!json_object_object_get_ex(list_elem, "url", &struct_elem))
             continue;
 
         url = json_object_get_string(struct_elem);
@@ -216,24 +212,21 @@ static GList *parse_reported_to_from_json_list(struct json_object *list)
         if (!list_elem)
             continue;
 
-        struct_elem = json_object_object_get(list_elem, "reporter");
-        if (!struct_elem)
+        if (!json_object_object_get_ex(list_elem, "reporter", &struct_elem))
             continue;
 
         reporter = json_object_get_string(struct_elem);
         if (!reporter)
             continue;
 
-        struct_elem = json_object_object_get(list_elem, "value");
-        if (!struct_elem)
+        if (!json_object_object_get_ex(list_elem, "value", &struct_elem))
             continue;
 
         value = json_object_get_string(struct_elem);
         if (!value)
             continue;
 
-        struct_elem = json_object_object_get(list_elem, "type");
-        if (!struct_elem)
+        if (!json_object_object_get_ex(list_elem, "type", &struct_elem))
             continue;
 
         type = json_object_get_string(struct_elem);
@@ -265,9 +258,8 @@ static GList *parse_reported_to_from_json_list(struct json_object *list)
  */
 static struct ureport_server_response *ureport_server_parse_json(json_object *json)
 {
-    json_object *obj = json_object_object_get(json, "error");
-
-    if (obj)
+    json_object *obj = NULL;
+    if (json_object_object_get_ex(json, "error", &obj))
     {
         struct ureport_server_response *out_response = xzalloc(sizeof(*out_response));
         out_response->is_error = true;
@@ -279,27 +271,25 @@ static struct ureport_server_response *ureport_server_parse_json(json_object *js
         return out_response;
     }
 
-    obj = json_object_object_get(json, "result");
-
-    if (obj)
+    if (json_object_object_get_ex(json, "result", &obj))
     {
         struct ureport_server_response *out_response = xzalloc(sizeof(*out_response));
         out_response->value = xstrdup(json_object_get_string(obj));
 
-        json_object *message = json_object_object_get(json, "message");
-        if (message)
+        json_object *message = NULL;
+        if (json_object_object_get_ex(json, "message", &message))
             out_response->message = xstrdup(json_object_get_string(message));
 
-        json_object *bthash = json_object_object_get(json, "bthash");
-        if (bthash)
+        json_object *bthash = NULL;
+        if (json_object_object_get_ex(json, "bthash", &bthash))
             out_response->bthash = xstrdup(json_object_get_string(bthash));
 
-        json_object *reported_to_list = json_object_object_get(json, "reported_to");
-        if (reported_to_list)
+        json_object *reported_to_list = NULL;
+        if (json_object_object_get_ex(json, "reported_to", &reported_to_list))
             out_response->reported_to_list = parse_reported_to_from_json_list(reported_to_list);
 
-        json_object *solutions = json_object_object_get(json, "solutions");
-        if (solutions)
+        json_object *solutions = NULL;
+        if (json_object_object_get_ex(json, "solutions", &solutions))
             out_response->solution = parse_solution_from_json_list(solutions, &(out_response->reported_to_list));
 
         return out_response;
