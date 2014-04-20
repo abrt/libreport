@@ -670,6 +670,16 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Sun Apr 20 2014 Jakub Filak <jfilak@redhat.com> 2.2.2-1
+- stop using deprecated json-c functions
+- bugzilla: try to avoid usage of 'private' group
+- spec: install ignored_words.conf manual page
+- wizard: extended the manual pages
+- localization: fix gettext
+- wizard: make the custom search case insensitive
+- use a better label for the forbidden words button
+- include 'package' in AVC bugzilla bug reports
+
 * Fri Apr 04 2014 Jakub Filak <jfilak@redhat.com> 2.2.1-1
 - update the list of ignored words
 - wizard: introduce the searched words list
