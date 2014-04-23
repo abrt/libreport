@@ -807,40 +807,6 @@ void login(struct abrt_xmlrpc *client, struct bugzilla_struct *rhbz)
     }
 }
 
-static
-xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax,
-                        const char *product,
-                        const char *version,
-                        const char *component,
-                        const char *duphash)
-{
-    struct strbuf *query = strbuf_new();
-
-    strbuf_append_strf(query, "ALL whiteboard:\"%s\"", duphash);
-
-    if (product)
-        strbuf_append_strf(query, " product:\"%s\"", product);
-
-    if (version)
-        strbuf_append_strf(query, " version:\"%s\"", version);
-
-    if (component)
-        strbuf_append_strf(query, " component:\"%s\"", component);
-
-    char *s = strbuf_free_nobuf(query);
-    log_debug("search for '%s'", s);
-    xmlrpc_value *search = abrt_xmlrpc_call(ax, "Bug.search", "({s:s})",
-                                         "quicksearch", s);
-    free(s);
-    xmlrpc_value *bugs = rhbz_get_member("bugs", search);
-    xmlrpc_DECREF(search);
-
-    if (!bugs)
-        error_msg_and_die(_("Bug.search(quicksearch) return value did not contain member 'bugs'"));
-
-    return bugs;
-}
-
 int main(int argc, char **argv)
 {
     abrt_init(argv);
