@@ -112,6 +112,10 @@ struct bug_info *rhbz_find_origin_bug_closed_duplicate(struct abrt_xmlrpc *ax,
                                                        struct bug_info *bi);
 unsigned rhbz_version(struct abrt_xmlrpc *ax);
 
+xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax,
+                        const char *product, const char *version, const char *component,
+                        const char *duphash);
+
 #ifdef __cplusplus
 }
 #endif
