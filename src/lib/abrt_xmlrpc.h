@@ -30,9 +30,13 @@
 extern "C" {
 #endif
 
+typedef void (*abrt_xmlrpc_destroy_fn)(void *);
+
 struct abrt_xmlrpc {
     xmlrpc_client *ax_client;
     xmlrpc_server_info *ax_server_info;
+    void *ax_session_data;
+    abrt_xmlrpc_destroy_fn ax_session_data_free;
 };
 
 xmlrpc_value *abrt_xmlrpc_array_new(xmlrpc_env *env);

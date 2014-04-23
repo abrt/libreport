@@ -106,6 +106,9 @@ void abrt_xmlrpc_free_client(struct abrt_xmlrpc *ax)
     if (ax->ax_client)
         xmlrpc_client_destroy(ax->ax_client);
 
+    if (ax->ax_session_data && ax->ax_session_data_free)
+        ax->ax_session_data_free(ax->ax_session_data);
+
     free(ax);
 }
 
