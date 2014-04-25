@@ -20,6 +20,12 @@
 #include "abrt_xmlrpc.h"
 #include "proxies.h"
 
+struct abrt_xmlrpc_param_pair
+{
+    char *name;
+    xmlrpc_value *value;
+};
+
 void abrt_xmlrpc_die(xmlrpc_env *env)
 {
     error_msg_and_die("fatal: %s", env->fault_string);
@@ -105,40 +111,135 @@ void abrt_xmlrpc_free_client(struct abrt_xmlrpc *ax)
     if (ax->ax_client)
         xmlrpc_client_destroy(ax->ax_client);
 
+    for (GList *iter = ax->ax_session_params; iter; iter = g_list_next(iter))
+    {
+        struct abrt_xmlrpc_param_pair *param_pair = (struct abrt_xmlrpc_param_pair *)iter->data;
+        xmlrpc_DECREF(param_pair->value);
+        free(param_pair->name);
+        free(param_pair);
+    }
+
+    g_list_free(ax->ax_session_params);
+
     free(ax);
 }
 
-/* die or return expected results */
-xmlrpc_value *abrt_xmlrpc_call(struct abrt_xmlrpc *ax,
-                               const char* method, const char* format, ...)
+void abrt_xmlrpc_client_add_session_param_string(xmlrpc_env *env, struct abrt_xmlrpc *ax,
+        const char *name, const char *value)
 {
-    xmlrpc_env env;
-    xmlrpc_env_init(&env);
+    struct abrt_xmlrpc_param_pair *new_ses_param = xmalloc(sizeof(*new_ses_param));
+    new_ses_param->name = xstrdup(name);
 
+    new_ses_param->value = xmlrpc_string_new(env, value);
+    if (env->fault_occurred)
+        abrt_xmlrpc_die(env);
+
+    ax->ax_session_params = g_list_append(ax->ax_session_params, new_ses_param);
+}
+
+/* internal helper function */
+static xmlrpc_value *abrt_xmlrpc_call_params_internal(xmlrpc_env *env, struct abrt_xmlrpc *ax, const char *method, xmlrpc_value *params)
+{
+    bool destroy_params = false;
+    if (xmlrpc_value_type(params) == XMLRPC_TYPE_NIL)
+    {
+        destroy_params = true;
+        params = abrt_xmlrpc_params_new(env);
+    }
+
+    if (xmlrpc_value_type(params) == XMLRPC_TYPE_STRUCT)
+    {
+        for (GList *iter = ax->ax_session_params; iter; iter = g_list_next(iter))
+        {
+            struct abrt_xmlrpc_param_pair *param_pair = (struct abrt_xmlrpc_param_pair *)iter->data;
+
+            xmlrpc_struct_set_value(env, params, param_pair->name, param_pair->value);
+            if (env->fault_occurred)
+                abrt_xmlrpc_die(env);
+        }
+    }
+    else
+    {
+        log("Bug: not yet supported XML RPC call type: argument type = '%s'", xmlrpc_type_name(xmlrpc_value_type(params)));
+    }
+
+    xmlrpc_value *array = abrt_xmlrpc_array_new(env);
+    xmlrpc_array_append_item(env, array, params);
+    if (env->fault_occurred)
+        abrt_xmlrpc_die(env);
+
+    xmlrpc_value *result = NULL;
+    xmlrpc_client_call2(env, ax->ax_client, ax->ax_server_info, method,
+                        array, &result);
+
+    xmlrpc_DECREF(array);
+
+    if (destroy_params)
+        xmlrpc_DECREF(params);
+
+    return result;
+}
+
+/* internal helper function */
+static
+xmlrpc_value *abrt_xmlrpc_call_full_va(xmlrpc_env *env, struct abrt_xmlrpc *ax,
+                                       const char *method, const char *format,
+                                       va_list args)
+{
     xmlrpc_value* param = NULL;
     const char* suffix;
-    va_list args;
 
-    va_start(args, format);
-    xmlrpc_build_value_va(&env, format, args, &param, &suffix);
+    xmlrpc_build_value_va(env, format, args, &param, &suffix);
     va_end(args);
-    if (env.fault_occurred)
-        abrt_xmlrpc_die(&env);
+    if (env->fault_occurred)
+        abrt_xmlrpc_die(env);
 
     xmlrpc_value* result = NULL;
     if (*suffix != '\0')
     {
         xmlrpc_env_set_fault_formatted(
-            &env, XMLRPC_INTERNAL_ERROR, "Junk after the argument "
+            env, XMLRPC_INTERNAL_ERROR, "Junk after the argument "
             "specifier: '%s'.  There must be exactly one argument.",
             suffix);
     }
     else
-    {
-        xmlrpc_client_call2(&env, ax->ax_client, ax->ax_server_info, method,
-                            param, &result);
-    }
+        result = abrt_xmlrpc_call_params_internal(env, ax, method, param);
+
     xmlrpc_DECREF(param);
+
+    return result;
+}
+
+xmlrpc_value *abrt_xmlrpc_array_new(xmlrpc_env *env)
+{
+    xmlrpc_value *params = xmlrpc_array_new(env);
+    if (env->fault_occurred)
+        abrt_xmlrpc_die(env);
+
+    return params;
+}
+
+xmlrpc_value *abrt_xmlrpc_params_new(xmlrpc_env *env)
+{
+    xmlrpc_value *params = xmlrpc_struct_new(env);
+    if (env->fault_occurred)
+        abrt_xmlrpc_die(env);
+
+    return params;
+}
+
+/* die or return expected results */
+xmlrpc_value *abrt_xmlrpc_call(struct abrt_xmlrpc *ax,
+                               const char *method, const char *format, ...)
+{
+    xmlrpc_env env;
+    xmlrpc_env_init(&env);
+
+    va_list args;
+    va_start(args, format);
+    xmlrpc_value *result = abrt_xmlrpc_call_full_va(&env, ax, method, format, args);
+    va_end(args);
+
     if (env.fault_occurred)
         abrt_xmlrpc_die(&env);
 
