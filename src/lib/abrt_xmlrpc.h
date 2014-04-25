@@ -23,6 +23,7 @@
  * include/xmlrpc-c/base.h: typedef int32_t xmlrpc_int32;
  */
 
+#include <glib.h>
 #include <xmlrpc-c/base.h>
 #include <xmlrpc-c/client.h>
 
@@ -33,10 +34,16 @@ extern "C" {
 struct abrt_xmlrpc {
     xmlrpc_client *ax_client;
     xmlrpc_server_info *ax_server_info;
+    GList *ax_session_params;
 };
+
+xmlrpc_value *abrt_xmlrpc_array_new(xmlrpc_env *env);
+
+xmlrpc_value *abrt_xmlrpc_params_new(xmlrpc_env *env);
 
 struct abrt_xmlrpc *abrt_xmlrpc_new_client(const char *url, int ssl_verify);
 void abrt_xmlrpc_free_client(struct abrt_xmlrpc *ax);
+void abrt_xmlrpc_client_add_session_param_string(xmlrpc_env *env, struct abrt_xmlrpc *ax, const char *name, const char *value);
 void abrt_xmlrpc_die(xmlrpc_env *env) __attribute__((noreturn));
 void abrt_xmlrpc_error(xmlrpc_env *env);
 

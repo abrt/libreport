@@ -162,7 +162,7 @@ static GList *rhbz_comments(struct abrt_xmlrpc *ax, int bug_id)
      *           <value><array>
      * ...
      */
-    xmlrpc_value *xml_response = abrt_xmlrpc_call(ax, "Bug.comments", "({s:(i)})",
+    xmlrpc_value *xml_response = abrt_xmlrpc_call(ax, "Bug.comments", "{s:(i)}",
                                                                       "ids", bug_id);
     /* bugs
      *     This is used for bugs specified in ids. This is a hash, where the
@@ -291,8 +291,18 @@ void rhbz_login(struct abrt_xmlrpc *ax, struct bugzilla_struct *b)
 {
     func_entry();
 
-    xmlrpc_value* result = abrt_xmlrpc_call(ax, "User.login", "({s:s,s:s})",
+    xmlrpc_value* result = abrt_xmlrpc_call(ax, "User.login", "{s:s,s:s}",
                                             "login", b->b_login, "password", b->b_password);
+
+    char *token = rhbz_bug_read_item("token", result, RHBZ_READ_STR);
+    if (token != NULL)
+    {
+        VERB3 log("Adding session param Bugzilla_token");
+        xmlrpc_env env;
+        xmlrpc_env_init(&env);
+        abrt_xmlrpc_client_add_session_param_string(&env, ax, "Bugzilla_token", token);
+        free(token);
+    }
 
 //TODO: with URL like http://bugzilla.redhat.com (that is, with http: instead of https:)
 //we are getting this error:
@@ -317,7 +327,7 @@ xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax, const char *component,
         strbuf_append_strf(query, " component:\"%s\"", component);
 
     VERB3 log("search for '%s'", query->buf);
-    xmlrpc_value *ret = abrt_xmlrpc_call(ax, "Bug.search", "({s:s})",
+    xmlrpc_value *ret = abrt_xmlrpc_call(ax, "Bug.search", "{s:s}",
                                          "quicksearch", query->buf);
     strbuf_free(query);
 
@@ -521,7 +531,7 @@ struct bug_info *rhbz_bug_info(struct abrt_xmlrpc *ax, int bug_id)
      *        <value><array><data>
      *        ...
      */
-    xmlrpc_value *xml_bug_response = abrt_xmlrpc_call(ax, "Bug.get", "({s:(i)})",
+    xmlrpc_value *xml_bug_response = abrt_xmlrpc_call(ax, "Bug.get", "{s:(i)}",
                                                           "ids", bug_id);
 
     xmlrpc_value *bugs_memb = rhbz_get_member("bugs", xml_bug_response);
@@ -722,7 +732,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
     char *status_whiteboard = xasprintf("abrt_hash:%s", duphash);
     if (depend_on_bug > -1)
     {
-        result = abrt_xmlrpc_call(ax, "Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s,s:s,s:i})",
+        result = abrt_xmlrpc_call(ax, "Bug.create", "{s:s,s:s,s:s,s:s,s:s,s:s,s:s,s:i}",
                                   "product", product,
                                   "component", component,
                                   "version", version,
@@ -734,7 +744,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
     }
     else
     {
-        result = abrt_xmlrpc_call(ax, "Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
+        result = abrt_xmlrpc_call(ax, "Bug.create", "{s:s,s:s,s:s,s:s,s:s,s:s,s:s}",
                                   "product", product,
                                   "component", component,
                                   "version", version,
@@ -779,7 +789,7 @@ int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *filename,
      *   6 -> base64,  two arguments (char* plain data which will be encoded by xmlrpc-c to base64,
      *                                size_t number of bytes to encode)
      */
-    result = abrt_xmlrpc_call(ax, "Bug.add_attachment", "({s:(s),s:s,s:s,s:s,s:6,s:i})",
+    result = abrt_xmlrpc_call(ax, "Bug.add_attachment", "{s:(s),s:s,s:s,s:s,s:6,s:i}",
                 "ids", bug_id,
                 "summary", fn,
                 "file_name", filename,
@@ -914,7 +924,7 @@ void rhbz_logout(struct abrt_xmlrpc *ax)
 {
     func_entry();
 
-    xmlrpc_value* result = abrt_xmlrpc_call(ax, "User.logout", "(s)", "");
+    xmlrpc_value* result = abrt_xmlrpc_call(ax, "User.logout", "{}");
     if (result)
         xmlrpc_DECREF(result);
 }
@@ -962,7 +972,7 @@ void rhbz_mail_to_cc(struct abrt_xmlrpc *ax, int bug_id, const char *mail, int f
     );
 #endif
     /* Bugzilla 4.0+ uses this API: */
-    result = abrt_xmlrpc_call(ax, "Bug.update", "({s:i,s:{s:(s),s:i}})",
+    result = abrt_xmlrpc_call(ax, "Bug.update", "{s:i,s:{s:(s),s:i}}",
                               "ids", bug_id,
                               "cc", "add", mail,
                                     "nomail", nomail_notify
@@ -999,7 +1009,7 @@ void rhbz_add_comment(struct abrt_xmlrpc *ax, int bug_id, const char *comment,
     int nomail_notify = !!IS_NOMAIL_NOTIFY(flags);
 
     xmlrpc_value *result;
-    result = abrt_xmlrpc_call(ax, "Bug.add_comment", "({s:i,s:s,s:b,s:i})",
+    result = abrt_xmlrpc_call(ax, "Bug.add_comment", "{s:i,s:s,s:b,s:i}",
                               "id", bug_id, "comment", comment,
                               "private", private, "nomail", nomail_notify);
 
