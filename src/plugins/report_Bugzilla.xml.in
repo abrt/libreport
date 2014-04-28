@@ -12,34 +12,29 @@
     <gui-review-elements>yes</gui-review-elements>
 
     <options>
-        <option type="text" name="Bugzilla_BugzillaURL">
-            <_label>Bugzilla URL</_label>
-            <allow-empty>no</allow-empty>
-            <_description>Address of Bugzilla server</_description>
-            <default-value>https://bugzilla.redhat.com</default-value>
-            <_note-html>You can create bugzilla.redhat.com account &lt;a href="https://bugzilla.redhat.com/createaccount.cgi"&gt;here&lt;/a&gt;</_note-html>
-        </option>
         <option type="text" name="Bugzilla_Login">
             <_label>User name</_label>
             <allow-empty>no</allow-empty>
             <_description>Bugzilla account user name</_description>
+            <_note-html>You can create bugzilla.redhat.com account &lt;a href="https://bugzilla.redhat.com/createaccount.cgi"&gt;here&lt;/a&gt;</_note-html>
         </option>
         <option type="password" name="Bugzilla_Password">
             <_label>Password</_label>
             <allow-empty>no</allow-empty>
             <_description>Bugzilla account password</_description>
         </option>
-        <option type="bool" name="Bugzilla_SSLVerify">
-            <_label>Verify SSL</_label>
-            <_description>Check SSL key validity</_description>
-            <default-value>yes</default-value>
-        </option>
-        <option type="bool" name="Bugzilla_CreatePrivate">
-            <_label>Restrict access</_label>
-            <_description>Restrict access to the created bugzilla ticket allowing only users from specified groups to view it (see advanced settings for more details)</_description>
-            <default-value>no</default-value>
-        </option>
         <advanced-options>
+            <option type="text" name="Bugzilla_BugzillaURL">
+                <_label>Bugzilla URL</_label>
+                <allow-empty>no</allow-empty>
+                <_description>Address of Bugzilla server</_description>
+                <default-value>https://bugzilla.redhat.com</default-value>
+            </option>
+            <option type="bool" name="Bugzilla_SSLVerify">
+                <_label>Verify SSL</_label>
+                <_description>Check SSL key validity</_description>
+                <default-value>yes</default-value>
+            </option>
             <option type="text" name="Bugzilla_Product">
                 <_label>Bugzilla product</_label>
                 <allow-empty>yes</allow-empty>
@@ -59,6 +54,11 @@
                 <_label>HTTPS Proxy</_label>
                 <allow-empty>yes</allow-empty>
                 <_note-html>Sets the proxy server to use for HTTPS</_note-html>
+            </option>
+            <option type="bool" name="Bugzilla_CreatePrivate">
+                <_label>Restrict access</_label>
+                <_description>Restrict access to the created bugzilla ticket allowing only users from specified groups to view it (see advanced settings for more details)</_description>
+                <default-value>no</default-value>
             </option>
             <option type="text" name="Bugzilla_PrivateGroups">
                 <_label>Groups</_label>
