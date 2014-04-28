@@ -237,7 +237,10 @@ config_dialog_t *create_event_config_dialog_content(event_config_t *event, GtkWi
     g_list_foreach(event->options, &add_option_to_table, option_table);
 
     /* if there is at least one password option, add checkbox to disable storing passwords */
-    if (has_password_option)
+    /* if the user storage is not available nothing is to be stored, so it is not necessary
+     * to bother with an extra checkbox about storing passwords */
+    if (is_event_config_user_storage_available()
+            && has_password_option)
     {
         unsigned last_row = add_one_row_to_grid(GTK_GRID(option_table));
         GtkWidget *pass_store_cb = gtk_check_button_new_with_label(_("Don't store passwords"));
