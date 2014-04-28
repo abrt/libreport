@@ -24,6 +24,7 @@
 struct workflow
 {
     config_item_info_t *info;
+    int priority; // direct correlation: higher number -> higher priority
 
     GList *events; //list of event_option_t
 };
@@ -193,6 +194,11 @@ const char *wf_get_long_desc(workflow_t *w)
     return ci_get_long_desc(workflow_get_config_info(w));
 }
 
+int wf_get_priority(workflow_t *w)
+{
+    return w->priority;
+}
+
 void wf_set_screen_name(workflow_t *w, const char* screen_name)
 {
     ci_set_screen_name(workflow_get_config_info(w), screen_name);
@@ -212,4 +218,19 @@ void wf_add_event(workflow_t *w, event_config_t *ec)
 {
     w->events = g_list_append(w->events, ec);
     log_info("added to ev list: '%s'", ec_get_screen_name(ec));
+}
+
+void wf_set_priority(workflow_t *w, int priority)
+{
+    w->priority = priority;
+}
+
+/*
+ * Returns a negative integer if the first value comes before the second, 0 if
+ * they are equal, or a positive integer if the first value comes after the
+ * second.
+ */
+int wf_priority_compare(const workflow_t *first, const workflow_t *second)
+{
+    return second->priority - first->priority;
 }

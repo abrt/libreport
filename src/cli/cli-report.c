@@ -824,32 +824,36 @@ int run_event_chain(const char *dump_dir_name, GList *chain, int interactive)
 
 static workflow_t *select_workflow(GHashTable *workflows)
 {
-    GHashTableIter iter;
-    gpointer key = NULL;
-    workflow_t *value = NULL;
+    GList *wf_list = g_hash_table_get_values(workflows);
 
-    g_hash_table_iter_init(&iter, workflows);
-
-    if (!g_hash_table_iter_next(&iter, &key, (gpointer *)&value))
+    if (wf_list == NULL)
     {
         error_msg("No workflow suitable for this problem was found!");
         return NULL;
     }
 
-    if (g_hash_table_size(workflows) == 1)
+    const guint wf_cnt = g_list_length(wf_list);
+    if (wf_cnt == 1)
     {
-        log_notice("autoselected workflow: '%s'", (char *)key);
-        return value;
+        workflow_t *wf_selected = (workflow_t *)wf_list->data;
+        log_notice("autoselected workflow: '%s'", (char *)wf_get_name(wf_selected));
+        g_list_free(wf_list);
+        return wf_selected;
     }
 
-    workflow_t *help_wf_array[g_hash_table_size(workflows)];
+    wf_list = g_list_sort(wf_list, (GCompareFunc)wf_priority_compare);
+
+    workflow_t *help_wf_array[wf_cnt];
     unsigned count = 0;
-    do
+
+    for(GList *wf_iter = wf_list; wf_iter; wf_iter = g_list_next(wf_iter))
     {
-        help_wf_array[count] = value;
-        printf("%d %s\n  %s\n\n", ++count, wf_get_screen_name(value), wf_get_description(value));
+        workflow_t *wf = (workflow_t *)wf_iter->data;
+        help_wf_array[count] = wf;
+        printf("%d %s\n  %s\n\n", ++count, wf_get_screen_name(wf), wf_get_description(wf));
     }
-    while (g_hash_table_iter_next(&iter, &key, (gpointer *)&value));
+
+    g_list_free(wf_list);
 
     const unsigned picked = choose_number_from_range(1, count, _("Select a workflow to run: "));
     return help_wf_array[picked - 1];

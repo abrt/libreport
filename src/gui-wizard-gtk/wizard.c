@@ -2736,10 +2736,12 @@ static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback f
                         list_possible_events_glist(g_dump_dir_name, "workflow"),
                         WORKFLOWS_DIR);
 
-    GList *keys = g_hash_table_get_keys(workflow_table);
-    while(keys)
+    GList *wf_list = g_hash_table_get_values(workflow_table);
+    wf_list = g_list_sort(wf_list, (GCompareFunc)wf_priority_compare);
+
+    for (GList *wf_iter = wf_list; wf_iter; wf_iter = g_list_next(wf_iter))
     {
-        workflow_t *w = g_hash_table_lookup(workflow_table, keys->data);
+        workflow_t *w = (workflow_t *)wf_iter->data;
         char *btn_label = xasprintf("<b>%s</b>\n%s", wf_get_screen_name(w), wf_get_description(w));
         GtkWidget *button = gtk_button_new_with_label(btn_label);
         GList *children = gtk_container_get_children(GTK_CONTAINER(button));
@@ -2756,9 +2758,9 @@ static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback f
         free(btn_label);
         g_signal_connect(button, "clicked", func, w);
         gtk_box_pack_start(box, button, true, false, 2);
-        keys = g_list_next(keys);
     }
 
+    g_list_free(wf_list);
 }
 
 static char *setup_next_processed_event(GList **events_list)

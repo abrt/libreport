@@ -69,6 +69,7 @@ Each file has XML formatting with the following DTD:
 <!ATTLIST name         xml:lang CDATA #IMPLIED>
 <!ELEMENT description (#PCDATA)>
 <!ATTLIST description  xml:lang CDATA #IMPLIED>
+<!ELEMENT priority =  (#PCDATA)>
 <!ELEMENT events =    (event)+>
 <!ELEMENT event =     (#PCDATA)>
 ------------
@@ -78,6 +79,10 @@ name::
 
 description::
    User visible description
+
+priority::
+   Priority of the workflow. Higher number means a more visible place in UI.
+   If not provided, 0 is used. The value is signed integer.
 
 events::
    List of executed events
@@ -98,6 +103,7 @@ Simple reporting work flow
   <name xml:lang="cs">Příklad</name>
   <description xml:lang="en">Example description</description>
   <description xml:lang="cs">Příklad popisu</description>
+  <priority>10</priority>
   <evetns>
      <event>analyze_example</event>
      <event>collect_example</event>
