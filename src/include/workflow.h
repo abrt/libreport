@@ -39,11 +39,21 @@ GList *wf_get_event_names(workflow_t *w);
 const char *wf_get_screen_name(workflow_t *w);
 const char *wf_get_description(workflow_t *w);
 const char *wf_get_long_desc(workflow_t *w);
+int wf_get_priority(workflow_t *w);
 
 void wf_set_screen_name(workflow_t *w, const char* screen_name);
 void wf_set_description(workflow_t *w, const char* description);
 void wf_set_long_desc(workflow_t *w, const char* long_desc);
 void wf_add_event(workflow_t *w, event_config_t *ec);
+void wf_set_priority(workflow_t *w, int priority);
+
+/*
+ * Returns a negative integer if the first value comes before the second, 0 if
+ * they are equal, or a positive integer if the first value comes after the
+ * second.
+ */
+int wf_priority_compare(const workflow_t *first, const workflow_t *second);
+
 GHashTable *load_workflow_config_data_from_list(GList *wf_names, const char *path);
 
 #endif

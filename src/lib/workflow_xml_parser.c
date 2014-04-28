@@ -26,6 +26,7 @@
 #define EVENT_ELEMENT           "event"
 #define DESCRIPTION_ELEMENT     "description"
 #define NAME_ELEMENT            "name"
+#define PRIORITY_ELEMENT        "priority"
 
 static void start_element(GMarkupParseContext *context,
                   const gchar *element_name,
@@ -134,9 +135,26 @@ static void text(GMarkupParseContext *context,
                 }
             }
         }
-
     }
 
+    else if(strcmp(inner_element, PRIORITY_ELEMENT) == 0)
+    {
+        log_debug("workflow priority:'%s'", text);
+
+        char *end = NULL;
+        long long val = strtoll(text, &end, 10);
+
+        if (text == end || end[0] != '\0'
+            || (errno == ERANGE && (val == LLONG_MAX || val == LLONG_MIN))
+            || (val > INT_MAX || val < INT_MIN)
+            || (errno != 0 && val == 0))
+        {
+            error_msg("Workflow's priority is not a number in range <%d,%d>", INT_MIN, INT_MAX);
+            return;
+        }
+
+        wf_set_priority(workflow, (int)val);
+    }
 }
 
   // Called for strings that should be re-saved verbatim in this same
