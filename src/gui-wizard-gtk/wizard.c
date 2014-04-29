@@ -289,59 +289,6 @@ static void remove_child_widget(GtkWidget *widget, gpointer unused)
     gtk_widget_destroy(widget);
 }
 
-static void on_configure_event_cb(GtkWidget *button, gpointer user_data)
-{
-    char *event_name = (char *)user_data;
-    if (event_name != NULL)
-    {
-        int result = show_event_config_dialog(event_name, GTK_WINDOW(g_top_most_window));
-        if (result == GTK_RESPONSE_APPLY)
-        {
-            GHashTable *errors = validate_event(event_name);
-            if (errors == NULL)
-            {
-                gtk_widget_destroy(g_top_most_window);
-                g_top_most_window = NULL;
-            }
-        }
-    }
-}
-
-static void show_event_opt_error_dialog(const char *event_name)
-{
-    event_config_t *ec = get_event_config(event_name);
-    char *message = xasprintf(_("%s is not properly configured. You can configure it now or provide the required information later.\n\n"
-                              "Read more about the configuration at: https://fedorahosted.org/abrt/wiki/AbrtConfiguration"),
-                               ec_get_screen_name(ec));
-    char *markup_message = xasprintf(_("<b>%s</b> is not properly configured. You can configure it now or provide the required information later.\n\n"
-                              "<a href=\"https://fedorahosted.org/abrt/wiki/AbrtConfiguration\">Read more about the configuration</a>"),
-                               ec_get_screen_name(ec));
-    GtkWidget *wrong_settings = g_top_most_window = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
-        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-        GTK_MESSAGE_WARNING,
-        GTK_BUTTONS_CLOSE,
-        message);
-
-    gtk_window_set_transient_for(GTK_WINDOW(wrong_settings), GTK_WINDOW(g_wnd_assistant));
-    gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(wrong_settings),
-                                    markup_message);
-    free(message);
-    free(markup_message);
-
-    GtkWidget *act_area = gtk_dialog_get_content_area(GTK_DIALOG(wrong_settings));
-    char * conf_btn_lbl = xasprintf(_("Con_figure %s"), ec_get_screen_name(ec));
-    GtkWidget *configure_event_btn = gtk_button_new_with_mnemonic(conf_btn_lbl);
-    g_signal_connect(configure_event_btn, "clicked", G_CALLBACK(on_configure_event_cb), (gpointer)event_name);
-    free(conf_btn_lbl);
-
-    gtk_box_pack_start(GTK_BOX(act_area), configure_event_btn, false, false, 0);
-    gtk_widget_show(configure_event_btn);
-
-
-    gtk_dialog_run(GTK_DIALOG(wrong_settings));
-    if (g_top_most_window)
-        gtk_widget_destroy(wrong_settings);
-}
 
 static void update_window_title(void)
 {
@@ -906,16 +853,14 @@ static gint find_by_button(gconstpointer a, gconstpointer button)
     return (evdata->toggle_button != button);
 }
 
-static int check_event_config(const char *event_name)
+static void check_event_config(const char *event_name)
 {
     GHashTable *errors = validate_event(event_name);
     if (errors != NULL)
     {
         g_hash_table_unref(errors);
-        show_event_opt_error_dialog(event_name);
-        return 1;
+        show_event_config_dialog(event_name, GTK_WINDOW(g_top_most_window));
     }
-    return 0;
 }
 
 static void event_rb_was_toggled(GtkButton *button, gpointer user_data)
@@ -2850,18 +2795,11 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
                 goto again;
             }
 
-            /* must set g_event_selected otherwise if the event was not
-             * configured the reporting process will be terminated even if a
-             * user configured the event on report-gtk's demand from
-             * check_event_config() function
-             */
             g_event_selected = event;
 
-            if (check_event_config(g_event_selected) != 0)
-            {
-                /* don't know what is the difference between this <<< */
-                goto again;
-            }
+            /* Notify a user that some configuration options miss values, but */
+            /* don't force him to provide them. */
+            check_event_config(g_event_selected);
 
             /* >>> and this but this is clearer
              * because it does exactly the same thing

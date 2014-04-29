@@ -299,8 +299,11 @@ config_dialog_t *create_event_config_dialog(const char *event_name, GtkWindow *p
 
     GtkWindow *parent_window = parent ? parent : g_event_list_window;
 
+    char *window_title = xasprintf("%s - Reporting Configuration",
+            ec_get_screen_name(event) ? ec_get_screen_name(event) : event_name);
+
     GtkWidget *dialog = gtk_dialog_new_with_buttons(
-                        /*title:*/ec_get_screen_name(event) ? ec_get_screen_name(event) : event_name,
+                        window_title,
                         parent_window,
                         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                         _("_Cancel"),
@@ -308,6 +311,8 @@ config_dialog_t *create_event_config_dialog(const char *event_name, GtkWindow *p
                         _("_OK"),
                         GTK_RESPONSE_APPLY,
                         NULL);
+
+    free(window_title);
 
     /* Allow resize?
      * W/o resize, e.g. upload configuration hint looks awfully
