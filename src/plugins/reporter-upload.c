@@ -58,7 +58,7 @@ static int create_and_upload_archive(
     const char* opt = getenv("Upload_URL");
     if (!opt)
         opt = get_map_string_item_or_empty(settings, "URL");
-    char *url = opt[0] != '\0' ? xstrdup(opt) : ask_url(_("Upload URL is not provided by configuration. Please enter upload URL:"));
+    char *url = opt[0] != '\0' ? xstrdup(opt) : ask_url(_("Please enter a URL (scp, ftp, etc.) where the problem data is to be exported:"));
 
     /* Create a child gzip which will compress the data */
     /* SELinux guys are not happy with /tmp, using /var/run/abrt */
