@@ -71,8 +71,11 @@ config_dialog_t *create_workflow_config_dialog(const char *workflow_name, GtkWin
 
     GtkWindow *parent_window = parent ? parent : g_parent_window;
 
+    char *window_title = xasprintf("%s - Reporting Configuration",
+            wf_get_screen_name(workflow) ? wf_get_screen_name(workflow) : workflow_name);
+
     GtkWidget *dialog = gtk_dialog_new_with_buttons(
-                        /*title:*/ wf_get_screen_name(workflow) ? wf_get_screen_name(workflow) : workflow_name,
+                        window_title,
                         parent_window,
                         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                         _("_Cancel"),
@@ -80,6 +83,8 @@ config_dialog_t *create_workflow_config_dialog(const char *workflow_name, GtkWin
                         _("_OK"),
                         GTK_RESPONSE_APPLY,
                         NULL);
+
+    free(window_title);
 
     gtk_window_set_resizable(GTK_WINDOW(dialog), true);
     gtk_window_set_default_size(GTK_WINDOW(dialog), 450, 450);
