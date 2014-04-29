@@ -319,7 +319,7 @@ config_dialog_t *create_event_config_dialog(const char *event_name, GtkWindow *p
     if (parent_window != NULL)
     {
         gtk_window_set_icon_name(GTK_WINDOW(dialog),
-        gtk_window_get_icon_name(parent_window));
+                                 gtk_window_get_icon_name(parent_window));
     }
 
     GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
@@ -349,53 +349,10 @@ int show_event_config_dialog(const char *event_name, GtkWindow *parent)
 {
     INITIALIZE_LIBREPORT();
 
-    event_config_t *event = get_event_config(event_name);
+    config_dialog_t *dialog = create_event_config_dialog(event_name, parent);
+    const int result = cdialog_run(dialog, event_name);
+    free(dialog);
 
-    GtkWindow *parent_window = parent ? parent : g_event_list_window;
-
-    GtkWidget *dialog = gtk_dialog_new_with_buttons(
-                        /*title:*/ec_get_screen_name(event) ? ec_get_screen_name(event) : event_name,
-                        parent_window,
-                        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                        _("_Cancel"),
-                        GTK_RESPONSE_CANCEL,
-                        _("_OK"),
-                        GTK_RESPONSE_APPLY,
-                        NULL);
-
-    /* Allow resize?
-     * W/o resize, e.g. upload configuration hint looks awfully
-     * line wrapped.
-     * With resize, there are some somewhat not nice effects:
-     * for one, opening an expander will enlarge window,
-     * but won't contract it back when expander is closed.
-     */
-    gtk_window_set_resizable(GTK_WINDOW(dialog), true);
-    gtk_window_set_default_size(GTK_WINDOW(dialog), 450, -1);
-
-    if (parent_window != NULL)
-    {
-        gtk_window_set_icon_name(GTK_WINDOW(dialog),
-                gtk_window_get_icon_name(parent_window));
-    }
-
-    GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-    content = cdialog_get_widget(create_event_config_dialog_content(event, content));
-
-    gtk_widget_show_all(content);
-
-    int result = gtk_dialog_run(GTK_DIALOG(dialog));
-    if (result == GTK_RESPONSE_APPLY)
-    {
-        dehydrate_config_dialog(g_option_list);
-        const char *const store_passwords_s = get_user_setting("store_passwords");
-        save_event_config_data_to_user_storage(event_name,
-                                               get_event_config(event_name),
-                                               !(store_passwords_s && !strcmp(store_passwords_s, "no")));
-    }
-    //else if (result == GTK_RESPONSE_CANCEL)
-    //    log("log");
-    gtk_widget_destroy(dialog);
     return result;
 }
 
