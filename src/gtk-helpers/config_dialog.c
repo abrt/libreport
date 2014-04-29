@@ -83,6 +83,28 @@ gpointer cdialog_get_data(config_dialog_t *cdialog)
     return cdialog->data;
 }
 
+int cdialog_run(config_dialog_t *cdialog, const char *name)
+{
+    if (cdialog == NULL || cdialog->dialog == NULL)
+    {
+        log("There is no configurable option for: '%s'", name);
+        return GTK_RESPONSE_REJECT;
+    }
+
+    const int result = gtk_dialog_run(GTK_DIALOG(cdialog->dialog));
+    if (result == GTK_RESPONSE_APPLY)
+    {
+        if (cdialog->save_data)
+            cdialog->save_data(cdialog->data, name);
+    }
+    else if (result == GTK_RESPONSE_CANCEL)
+        log_notice("Cancelling on user request");
+
+    gtk_widget_hide(GTK_WIDGET(cdialog->dialog));
+
+    return result;
+}
+
 static const void *get_column_value_from_row(GtkTreeView *treeview, int column, int type)
 {
     GtkTreeSelection *selection = gtk_tree_view_get_selection(treeview);
@@ -246,23 +268,7 @@ static void on_configure_cb(GtkWidget *btn, gpointer user_data)
     config_dialog_t *cdialog = (config_dialog_t *)get_column_value_from_row(tv, CONFIG_DIALOG, TYPE_POINTER);
     const char *name = (const char *)get_column_value_from_row(tv, COLUMN_NAME, TYPE_STR);
 
-
-    if (cdialog == NULL || cdialog->dialog == NULL)
-    {
-        log("There is no configurable option for: '%s'", name);
-        return;
-    }
-
-    int result = gtk_dialog_run(GTK_DIALOG(cdialog->dialog));
-    if (result == GTK_RESPONSE_APPLY)
-    {
-        if (cdialog->save_data)
-            cdialog->save_data(cdialog->data, name);
-    }
-    else if (result == GTK_RESPONSE_CANCEL)
-        log_notice("Cancelling on user request");
-
-    gtk_widget_hide(GTK_WIDGET(cdialog->dialog));
+    cdialog_run(cdialog, name);
 }
 
 static void on_close_cb(GtkWidget *btn, gpointer config_list_w)

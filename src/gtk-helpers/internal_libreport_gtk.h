@@ -80,6 +80,7 @@ void load_workflow_config_data_from_user_storage(GHashTable *workflows);
 void cdialog_set_widget(config_dialog_t *cdialog, GtkWidget *widget);
 GtkWidget *cdialog_get_widget(config_dialog_t *cdialog);
 gpointer cdialog_get_data(config_dialog_t *cdialog);
+int cdialog_run(config_dialog_t *cdialog, const char *name);
 
 void dehydrate_config_dialog(GList *option_widgets);
 
