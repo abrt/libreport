@@ -74,7 +74,7 @@ PKG_CHECK_MODULES([XMLRPC], [xmlrpc])
 PKG_CHECK_MODULES([XMLRPC_CLIENT], [xmlrpc_client])
 PKG_CHECK_MODULES([CURL], [libcurl])
 PKG_CHECK_MODULES([GNOME_KEYRING], [gnome-keyring-1])
-PKG_CHECK_MODULES([BTPARSER], [btparser])
+PKG_CHECK_MODULES([SATYR], [satyr])
 
 # Just PKG_CHECK_MODULES([PYTHON], [python]) works only with python2.7+
 # Below, if python is not found, we set up for python2.6 w/o checking:

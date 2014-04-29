@@ -27,11 +27,8 @@
 
 #include "internal_libreport.h"
 #include "rhbz.h"
-#include <btparser/location.h>
-#include <btparser/backtrace.h>
-#include <btparser/thread.h>
-#include <btparser/frame.h>
-#include <btparser/strbuf.h>
+#include <satyr/stacktrace.h>
+#include <satyr/abrt.h>
 
 #define MAX_HOPS            5
 
@@ -595,38 +592,38 @@ char *rhbz_get_backtrace_info(problem_data_t *problem_data, size_t max_text_size
 
     if (strlen(item->content) >= max_text_size)
     {
-        struct btp_location location;
-        btp_location_init(&location);
+        char *error_msg = NULL;
+        const char *analyzer = get_problem_item_content_or_NULL(problem_data, FILENAME_ANALYZER);
+        if (!analyzer)
+            return 0;
 
-        /* btp_backtrace_parse modifies the input parameter */
-        char *content = item->content;
-        struct btp_backtrace *backtrace = btp_backtrace_parse((const char **)&content, &location);
+        /* For CCpp crashes, use the GDB-produced backtrace which should be
+         * available by now. sr_abrt_type_from_analyzer returns SR_REPORT_CORE
+         * by default for CCpp crashes.
+         */
+        enum sr_report_type report_type = sr_abrt_type_from_analyzer(analyzer);
+        if (strcmp(analyzer, "CCpp") == 0)
+            report_type = SR_REPORT_GDB;
+
+        struct sr_stacktrace *backtrace = sr_stacktrace_parse(report_type,
+                item->content, &error_msg);
 
         if (!backtrace)
         {
-            log(_("Can't parse backtrace"));
-            return NULL;
+            log(_("Can't parse backtrace: %s"), error_msg);
+            free(error_msg);
+            return 0;
         }
 
         /* Get optimized thread stack trace for 10 top most frames */
-        struct btp_thread *thread = btp_backtrace_get_optimized_thread(backtrace, 10);
+        truncated = sr_stacktrace_to_short_text(backtrace, 10);
+        sr_stacktrace_free(backtrace);
 
-        btp_backtrace_free(backtrace);
-
-        if (!thread)
+        if (!truncated)
         {
-            log(_("Can't find crash thread"));
-            return NULL;
+            log(_("Can't generate stacktrace description (no crash thread?)"));
+            return 0;
         }
-
-        /* Cannot be NULL, it dies on memory error */
-        struct btp_strbuf *bt = btp_strbuf_new();
-
-        btp_thread_append_to_str(thread, bt, true);
-
-        btp_thread_free(thread);
-
-        truncated = btp_strbuf_free_nobuf(bt);
     }
 
     char *bt = make_description_item_multiline(truncated ? "truncated backtrace" : FILENAME_BACKTRACE,

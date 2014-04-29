@@ -77,6 +77,7 @@ reporter_bugzilla_CPPFLAGS = \
     -Wall -Wwrite-strings
 reporter_bugzilla_LDADD = \
     $(GLIB_LIBS) \
+    $(SATYR_LIBS) \
     ../lib/libabrt_web.la \
     ../lib/libreport.la
 
