@@ -856,102 +856,20 @@ void add_reported_to(struct dump_dir *dd, const char *line)
         error_msg_and_die("dump_dir is not opened"); /* bug */
 
     char *reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-    if (reported_to)
-    {
-        unsigned len_line = strlen(line);
-        char *p = reported_to;
-        while (*p)
-        {
-            if (strncmp(p, line, len_line) == 0 && (p[len_line] == '\n' || p[len_line] == '\0'))
-                goto ret;
-            p = strchrnul(p, '\n');
-            if (!*p)
-                break;
-            p++;
-        }
-        if (p != reported_to && p[-1] != '\n')
-            reported_to = append_to_malloced_string(reported_to, "\n");
-        reported_to = append_to_malloced_string(reported_to, line);
-        reported_to = append_to_malloced_string(reported_to, "\n");
-    }
-    else
-        reported_to = xasprintf("%s\n", line);
-    dd_save_text(dd, FILENAME_REPORTED_TO, reported_to);
- ret:
+    if (add_reported_to_data(&reported_to, line))
+        dd_save_text(dd, FILENAME_REPORTED_TO, reported_to);
+
     free(reported_to);
-}
-
-void free_report_result(struct report_result *result)
-{
-    if (!result)
-        return;
-    free(result->url);
-    free(result->msg);
-    free(result);
-}
-
-static report_result_t *parse_reported_line(const char *line)
-{
-    report_result_t *result = xzalloc(sizeof(*result));
-
-    //result->whole_line = xstrdup(line);
-    for (;;)
-    {
-        line = skip_whitespace(line);
-        if (!*line)
-            break;
-        const char *end = skip_non_whitespace(line);
-        if (strncmp(line, "MSG=", 4) == 0)
-        {
-            result->msg = xstrdup(line + 4);
-            /* MSG=... eats entire line: exiting the loop */
-            break;
-        }
-        if (strncmp(line, "URL=", 4) == 0)
-        {
-            free(result->url);
-            result->url = xstrndup(line + 4, end - (line + 4));
-        }
-        //else
-        //if (strncmp(line, "TIME=", 5) == 0)
-        //{
-        //    free(result->time);
-        //    result->time = foo(line + 5, end - (line + 5));
-        //}
-        //...
-        line = end;
-        continue;
-    }
-
-    return result;
 }
 
 report_result_t *find_in_reported_to(struct dump_dir *dd, const char *prefix)
 {
     char *reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO,
-                DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+            DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     if (!reported_to)
         return NULL;
 
-    /* Find *last* (most recent) line with this prefix */
-    unsigned prefix_len = strlen(prefix);
-    char *found = NULL;
-    char *p = reported_to;
-    while (*p)
-    {
-        if (strncmp(p, prefix, prefix_len) == 0)
-            found = p + prefix_len;
-        p = strchrnul(p, '\n');
-        if (*p)
-        {
-            *p = '\0'; /* EOL marker for parse_reported_line() below */
-            p++;
-        }
-    }
-
-    report_result_t *result = NULL;
-    if (found)
-        result = parse_reported_line(found);
+    report_result_t *result = find_in_reported_to_data(reported_to, prefix);
 
     free(reported_to);
     return result;

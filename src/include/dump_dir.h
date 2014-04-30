@@ -78,11 +78,15 @@ int dd_delete(struct dump_dir *dd);
 
 
 /* reported_to handling */
+#define add_reported_to_data libreport_add_reported_to_data
+int add_reported_to_data(char **reported_to, const char *line);
 #define add_reported_to libreport_add_reported_to
 void add_reported_to(struct dump_dir *dd, const char *line);
 struct report_result {
+    char *label;
     char *url;
     char *msg;
+    char *bthash;
     /* char *whole_line; */
     /* time_t timestamp; */
     /* ^^^ if you add more fields, don't forget to update free_report_result() */
@@ -90,6 +94,8 @@ struct report_result {
 typedef struct report_result report_result_t;
 #define free_report_result libreport_free_report_result
 void free_report_result(struct report_result *result);
+#define find_in_reported_to_data libreport_find_in_reported_to_data
+report_result_t *find_in_reported_to_data(const char *reported_to, const char *report_label);
 #define find_in_reported_to libreport_find_in_reported_to
 report_result_t *find_in_reported_to(struct dump_dir *dd, const char *prefix);
 /* TODO: GList *read_entire_reported_to(dd); */

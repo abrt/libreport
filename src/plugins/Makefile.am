@@ -7,6 +7,7 @@ bin_PROGRAMS = \
     reporter-upload \
     reporter-mailx \
     reporter-print \
+    reporter-ureport \
     report
 
 pluginsconfdir = $(PLUGINS_CONF_DIR)
@@ -16,7 +17,8 @@ reportpluginsconfdir = $(REPORT_PLUGINS_CONF_DIR)
 dist_reportpluginsconf_DATA = \
     bugzilla.conf \
     rhtsupport.conf \
-    mailx.conf
+    mailx.conf \
+    ureport.conf
 
 eventsdir = $(EVENTS_DIR)
 
@@ -30,7 +32,8 @@ dist_events_DATA = \
     report_RHTSupportAttach.xml \
     report_Kerneloops.xml \
     report_Tarball.xml \
-    report_Uploader.xml
+    report_Uploader.xml \
+    report_uReport.xml
 
 @INTLTOOL_XML_RULE@
 
@@ -54,7 +57,8 @@ EXTRA_DIST = \
     report_RHTSupportAttach.xml.in \
     report_Kerneloops.xml.in \
     report_Tarball.xml.in \
-    report_Uploader.xml.in
+    report_Uploader.xml.in \
+    report_uReport.xml.in
 
 $(DESTDIR)/$(DEBUG_INFO_DIR):
 	$(mkdir_p) '$@'
@@ -204,6 +208,19 @@ report_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 report_LDADD = \
+    ../lib/libreport.la
+
+reporter_ureport_SOURCES = \
+    ureport.c
+reporter_ureport_CPPFLAGS = \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    -DPLUGINS_CONF_DIR=\"$(REPORT_PLUGINS_CONF_DIR)\" \
+    -D_GNU_SOURCE
+reporter_ureport_LDADD = \
+    ../lib/libabrt_web.la \
     ../lib/libreport.la
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@

@@ -194,6 +194,11 @@ void sha1_hash(sha1_ctx_t *ctx, const void *buffer, size_t len);
 #define sha1_end libreport_sha1_end
 void sha1_end(sha1_ctx_t *ctx, void *resbuf);
 
+/* Helpers to hash a string: */
+#define str_to_sha1 libreport_str_to_sha1
+const uint8_t *str_to_sha1(uint8_t result[SHA1_RESULT_LEN], const char *str);
+#define str_to_sha1str libreport_str_to_sha1str
+const char    *str_to_sha1str(char result[SHA1_RESULT_LEN*2 + 1], const char *str);
 
 #define xatou libreport_xatou
 unsigned xatou(const char *numstr);
@@ -419,6 +424,10 @@ extern const char *msg_eol;
 extern int logmode;
 #define xfunc_error_retval libreport_xfunc_error_retval
 extern int xfunc_error_retval;
+
+/* A few magic exit codes */
+#define EXIT_CANCEL_BY_USER 69
+#define EXIT_STOP_EVENT_RUN 70
 
 /* Verbosity level */
 #define g_verbose libreport_g_verbose

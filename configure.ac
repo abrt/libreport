@@ -87,6 +87,8 @@ PKG_CHECK_MODULES([PROXY], [libproxy-1.0], [
     AC_DEFINE([HAVE_PROXY], [1], [Use libproxy])
 ], [:])
 
+PKG_CHECK_MODULES([JSON_C], [json])
+
 PKG_PROG_PKG_CONFIG
 
 AC_CHECK_HEADER([libtar.h], [],

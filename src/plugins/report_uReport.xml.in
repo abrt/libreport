@@ -7,16 +7,35 @@
     <gui-review-elements>no</gui-review-elements>
 
     <options>
+        <import-event-options event="watch_Bugzilla"/>
+
         <option type="text" name="uReport_URL">
             <_label>uReport Server URL</_label>
             <allow-empty>no</allow-empty>
             <_description>Address of uReport webservice</_description>
-            <default-value>https://retrace.fedoraproject.org/faf/reports/new/</default-value>
+            <default-value>https://retrace.fedoraproject.org/faf</default-value>
+        </option>
+        <option type="bool" name="uReport_WatchReportedBugs">
+            <_label>Watch already reported bugs</_label>
+            <_note-html>Adds your Bugzilla login to CC List of already reported bugs.</_note-html>
+            <default-value>yes</default-value>
         </option>
         <option type="bool" name="uReport_SSLVerify">
             <_label>Verify SSL</_label>
             <_description>Check SSL key validity</_description>
             <default-value>yes</default-value>
         </option>
+        <advanced-options>
+            <option type="text" name="http_proxy">
+                <_label>HTTP Proxy</_label>
+                <allow-empty>yes</allow-empty>
+                <_note-html>Sets the proxy server to use for HTTP</_note-html>
+            </option>
+            <option type="text" name="HTTPS_PROXY">
+                <_label>HTTPS Proxy</_label>
+                <allow-empty>yes</allow-empty>
+                <_note-html>Sets the proxy server to use for HTTPS</_note-html>
+            </option>
+        </advanced-options>
     </options>
 </event>

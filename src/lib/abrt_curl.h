@@ -35,6 +35,8 @@ typedef struct abrt_post_state {
     int         flags;
     const char  *username;
     const char  *password;
+    const char  *client_cert_path;
+    const char  *client_key_path;
     /* Results of POST transaction: */
     int         http_resp_code;
     /* cast from CURLcode enum.

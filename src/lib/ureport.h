@@ -30,14 +30,29 @@ extern "C" {
  */
 struct ureport_server_config
 {
-    const char *ur_url; ///< Web service URL
-    bool ur_ssl_verify; ///< Verify HOST and PEER certificates
+    const char *ur_url;   ///< Web service URL
+    bool ur_ssl_verify;   ///< Verify HOST and PEER certificates
+    char *ur_client_cert; ///< Path to certificate used for client
+                          ///< authentication (or NULL)
+    char *ur_client_key;  ///< Private key for the certificate
 };
 
 struct abrt_post_state;
 
 #define post_ureport libreport_post_ureport
-struct abrt_post_state *post_ureport(problem_data_t *pd, struct ureport_server_config *config);
+struct abrt_post_state *post_ureport(const char *json_ureport,
+                                struct ureport_server_config *config);
+
+#define ureport_attach_rhbz libreport_ureport_attach_rhbz
+struct abrt_post_state *ureport_attach_rhbz(const char *bthash, int rhbz_bug_id,
+                                       struct ureport_server_config *config);
+
+#define ureport_attach_email libreport_ureport_attach_email
+struct abrt_post_state *ureport_attach_email(const char *bthash, const char *email,
+                                        struct ureport_server_config *config);
+
+#define ureport_from_dump_dir libreport_ureport_from_dump_dir
+char *ureport_from_dump_dir(const char *dump_dir_path);
 
 #ifdef __cplusplus
 }

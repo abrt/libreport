@@ -15,10 +15,12 @@ MAN1_TXT += reporter-mailx.txt
 MAN1_TXT += reporter-print.txt
 MAN1_TXT += reporter-rhtsupport.txt
 MAN1_TXT += reporter-upload.txt
+MAN1_TXT += reporter-ureport.txt
 MAN1_TXT += report.txt
 
 MAN5_TXT =
 MAN5_TXT += report_event.conf.txt
+MAN5_TXT += ureport.conf.txt
 
 # Manual pages are generated from .txt via Docbook
 man1_MANS = ${MAN1_TXT:%.txt=%.1}
