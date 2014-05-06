@@ -53,7 +53,6 @@
 #endif
 #include <pwd.h>
 #include <grp.h>
-#include <glib.h>
 
 #ifdef HAVE_CONFIG_H
 # include "config.h"
@@ -93,6 +92,7 @@ int vdprintf(int d, const char *format, va_list ap);
 #include "problem_data.h"
 #include "report.h"
 #include "run_event.h"
+#include "libreport_types.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -559,22 +559,6 @@ struct strbuf *strbuf_prepend_strf(struct strbuf *strbuf,
 struct strbuf *strbuf_prepend_strfv(struct strbuf *strbuf,
                                     const char *format, va_list p);
 
-
-/* TODO: rename to map_string_t */
-typedef GHashTable map_string_h;
-#define new_map_string libreport_new_map_string
-map_string_h *new_map_string(void);
-#define free_map_string libreport_free_map_string
-void free_map_string(map_string_h *ms);
-#define get_map_string_item_or_empty libreport_get_map_string_item_or_empty
-const char *get_map_string_item_or_empty(map_string_h *ms, const char *key);
-static inline
-const char *get_map_string_item_or_NULL(map_string_h *ms, const char *key)
-{
-    return (const char*)g_hash_table_lookup(ms, key);
-}
-
-
 /* Returns command line of running program.
  * Caller is responsible to free() the returned value.
  * If the pid is not valid or command line can not be obtained,
@@ -627,10 +611,10 @@ void parse_release_for_rhts(const char *pRelease, char **product, char **version
  * @return if it success it returns true, otherwise it returns false.
  */
 #define load_conf_file libreport_load_conf_file
-bool load_conf_file(const char *pPath, map_string_h *settings, bool skipKeysWithoutValue);
+bool load_conf_file(const char *pPath, map_string_t *settings, bool skipKeysWithoutValue);
 
 #define save_conf_file libreport_save_conf_file
-bool save_conf_file(const char *path, map_string_h *settings);
+bool save_conf_file(const char *path, map_string_t *settings);
 #define save_user_settings libreport_save_user_settings
 bool save_user_settings();
 #define load_user_settings libreport_load_user_settings

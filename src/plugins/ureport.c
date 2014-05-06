@@ -103,7 +103,7 @@ static void parse_client_auth_paths(struct ureport_server_config *config, const 
  *
  * @param config a server configuration to be populated
  */
-static void load_ureport_server_config(struct ureport_server_config *config, map_string_h *settings)
+static void load_ureport_server_config(struct ureport_server_config *config, map_string_t *settings)
 {
     VALUE_FROM_CONF("URL", config->ur_url, (const char *));
     VALUE_FROM_CONF("SSLVerify", config->ur_ssl_verify, string_to_bool);
@@ -469,7 +469,7 @@ int main(int argc, char **argv)
 
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
-    map_string_h *settings = new_map_string();
+    map_string_t *settings = new_map_string();
     load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 
     load_ureport_server_config(&config, settings);

@@ -169,7 +169,7 @@ ret_clean:
 }
 
 static
-char *get_param_string(const char *name, map_string_h *settings, const char *dflt)
+char *get_param_string(const char *name, map_string_t *settings, const char *dflt)
 {
     char *envname = xasprintf("RHTSupport_%s", name);
     const char *envvar = getenv(envname);
@@ -237,7 +237,7 @@ int main(int argc, char **argv)
     export_abrt_envvars(0);
 
     /* Parse config, extract necessary params */
-    map_string_h *settings = new_map_string();
+    map_string_t *settings = new_map_string();
     if (!conf_file)
         conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/rhtsupport.conf");
     while (conf_file)

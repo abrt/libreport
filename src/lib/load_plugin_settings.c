@@ -21,7 +21,7 @@
 /* Returns false if open failed, else returns true.
  * TODO: better error detection?
  */
-bool load_conf_file(const char *pPath, map_string_h *settings, bool skipKeysWithoutValue)
+bool load_conf_file(const char *pPath, map_string_t *settings, bool skipKeysWithoutValue)
 {
     FILE *fp = stdin;
     if (strcmp(pPath, "-") != 0)
@@ -97,7 +97,7 @@ bool load_conf_file(const char *pPath, map_string_h *settings, bool skipKeysWith
         if (in_quote)
             goto free_line;
 
-        g_hash_table_replace(settings, xstrdup(line), xstrdup(value));
+        replace_map_string_item(settings, xstrdup(line), xstrdup(value));
  free_line:
         free(line);
     }

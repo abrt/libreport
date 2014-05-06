@@ -23,7 +23,7 @@
 
 #define XML_RPC_SUFFIX "/xmlrpc.cgi"
 
-static void set_settings(struct bugzilla_struct *b, map_string_h *settings)
+static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
 {
     const char *environ;
 
@@ -120,7 +120,7 @@ int main(int argc, char **argv)
 
     export_abrt_envvars(0);
 
-    map_string_h *settings = new_map_string();
+    map_string_t *settings = new_map_string();
     if (!conf_file)
         conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/bugzilla.conf");
     while (conf_file)

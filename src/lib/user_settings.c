@@ -39,11 +39,13 @@ static bool create_parentdir(char *path)
 }
 
 /* Returns false if write failed */
-bool save_conf_file(const char *path, map_string_h *settings)
+bool save_conf_file(const char *path, map_string_t *settings)
 {
     bool ret;
-    char *temp_path, *name, *value;
-    GHashTableIter iter;
+    char *temp_path;
+    const char *name;
+    const char *value;
+    map_string_iter_t iter;
 
     ret = false;
 
@@ -56,8 +58,8 @@ bool save_conf_file(const char *path, map_string_h *settings)
     if (!out)
         goto cleanup;
 
-    g_hash_table_iter_init(&iter, settings);
-    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
+    init_map_string_iter(&iter, settings);
+    while (next_map_string_iter(&iter, &name, &value))
         fprintf(out, "%s = \"%s\"\n", name, value);
 
     fclose(out);
