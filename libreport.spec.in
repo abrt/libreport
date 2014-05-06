@@ -27,8 +27,10 @@ BuildRequires: asciidoc
 BuildRequires: xmlto
 BuildRequires: newt-devel
 BuildRequires: libproxy-devel
-BuildRequires: btparser-devel >= 0.17
-Requires: libreport-filesystem
+BuildRequires: satyr-devel >= 0.11
+BuildRequires: augeas-devel
+BuildRequires: augeas
+Requires: libreport-filesystem = %{version}-%{release}
 # required for update from old report library, otherwise we obsolete report-gtk
 # and all it's plugins, but don't provide the python bindings and the sealert
 # end-up with: can't import report.GtkIO
@@ -266,6 +268,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libdir}/libabrt_web.so.*
 %exclude %{_libdir}/libabrt_web.so
 %{_mandir}/man5/report_event.conf.5*
+# filesystem package owns /usr/share/augeas/lenses directory
+%{_datadir}/augeas/lenses/libreport.aug
 
 %files filesystem
 %defattr(-,root,root,-)
