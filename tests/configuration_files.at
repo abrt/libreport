@@ -1,0 +1,473 @@
+# -*- Autotest -*-
+
+AT_BANNER([Configuration files])
+
+## ---------------##
+## load_conf_file ##
+## ---------------##
+
+AT_TESTFUN([load_conf_file],
+[[
+#include "internal_libreport.h"
+#include "stdlib.h"
+#include "stdio.h"
+
+#define CONF_PATH "../../conf/default/file.conf"
+
+typedef enum equal_result
+{
+    EQUAL,
+    DIFF_SIZE,
+    MISS_KEY,
+    DIFF_VALUE,
+} equal_result_t;
+
+equal_result_t map_string_equals(map_string_t *f, map_string_t *s)
+{
+    const guint fsize = g_hash_table_size(f);
+    const guint ssize = g_hash_table_size(s);
+    if (fsize != ssize)
+    {
+        fprintf(stdout, "instances are not equal in size: %u != %u\n", fsize, ssize);
+        return DIFF_SIZE;
+    }
+
+    map_string_iter_t iter;
+    gpointer fkey = NULL;
+    gpointer fvalue = NULL;
+
+    init_map_string_iter(&iter, f);
+    while(next_map_string_iter(&iter, (const char **)&fkey, (const char **)&fvalue))
+    {
+        gpointer skey = NULL;
+        gpointer svalue = NULL;
+
+        if (!g_hash_table_lookup_extended(s, fkey, &skey, &svalue))
+        {
+            fprintf(stdout, "second misses key '%s'\n", (const char *)fkey);
+            return MISS_KEY;
+        }
+
+        if (strcmp((const char *)fvalue, (const char *)svalue) != 0)
+        {
+            fprintf(stdout, "a value of '%s' differs: '%s' != '%s'\n", (const char *)fkey, (const char *)fvalue, (const char *)svalue);
+            return DIFF_VALUE;
+        }
+    }
+
+    return EQUAL;
+}
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    {
+        /* Self check */
+        map_string_t *first = new_map_string();
+        map_string_t *second = new_map_string();
+
+        assert(EQUAL == map_string_equals(first, first));
+        assert(EQUAL == map_string_equals(first, second));
+
+        insert_map_string(first, xstrdup("first"), xstrdup("1"));
+        insert_map_string(first, xstrdup("second"), xstrdup("2"));
+        insert_map_string(first, xstrdup("third"), xstrdup("3"));
+
+        assert(EQUAL == map_string_equals(first, first));
+
+        assert(DIFF_SIZE == map_string_equals(first, second));
+        assert(DIFF_SIZE == map_string_equals(second, first));
+
+        insert_map_string(second, xstrdup("first"), xstrdup("1"));
+        insert_map_string(second, xstrdup("second"), xstrdup("2"));
+        insert_map_string(second, xstrdup("third"), xstrdup("3"));
+
+        assert(EQUAL == map_string_equals(first, second));
+        assert(EQUAL == map_string_equals(second, first));
+
+        insert_map_string(first, xstrdup("fifth"), xstrdup("5"));
+        insert_map_string(second, xstrdup("fourth"), xstrdup("4"));
+
+        assert(MISS_KEY == map_string_equals(first, second));
+        assert(MISS_KEY == map_string_equals(second, first));
+
+        insert_map_string(first, xstrdup("fourth"), xstrdup("4"));
+        insert_map_string(second, xstrdup("fifth"), xstrdup("6"));
+
+        assert(DIFF_VALUE == map_string_equals(first, second));
+        assert(DIFF_VALUE == map_string_equals(second, first));
+
+        free_map_string(first);
+        free_map_string(second);
+    }
+
+    {
+        map_string_t *first = new_map_string();
+        insert_map_string(first, xstrdup("success"), xstrdup("\"total\""));
+        insert_map_string(first, xstrdup("failure"), xstrdup("\"none\""));
+        insert_map_string(first, xstrdup("effort"), xstrdup("\"minimal\""));
+        insert_map_string(first, xstrdup("state"), xstrdup("\"done\""));
+
+        map_string_t *second = new_map_string();
+
+        assert(load_conf_file(CONF_PATH, second, 0));
+
+        assert(EQUAL == map_string_equals(first, second) || !"The loaded configuration equals to the expected");
+
+        free_map_string(first);
+        free_map_string(second);
+    }
+
+    return 0;
+}
+]])
+
+
+
+## ------------------------ ##
+## load_conf_file_from_dirs ##
+## ------------------------ ##
+
+AT_TESTFUN([load_conf_file_from_dirs],
+[[
+#include "internal_libreport.h"
+
+#define CONF_NAME "file.conf"
+#define DEFAULT_DIR "../../conf/default"
+#define FIRST_DIR "../../conf/first"
+#define SECOND_DIR "../../conf/second"
+
+typedef enum equal_result
+{
+    EQUAL,
+    DIFF_SIZE,
+    MISS_KEY,
+    DIFF_VALUE,
+} equal_result_t;
+
+equal_result_t map_string_equals(map_string_t *f, map_string_t *s)
+{
+    const guint fsize = g_hash_table_size(f);
+    const guint ssize = g_hash_table_size(s);
+    if (fsize != ssize)
+    {
+        fprintf(stdout, "instances are not equal in size: %u != %u\n", fsize, ssize);
+        return DIFF_SIZE;
+    }
+
+    map_string_iter_t iter;
+    gpointer fkey = NULL;
+    gpointer fvalue = NULL;
+
+    init_map_string_iter(&iter, f);
+    while(next_map_string_iter(&iter, (const char **)&fkey, (const char **)&fvalue))
+    {
+        gpointer skey = NULL;
+        gpointer svalue = NULL;
+
+        if (!g_hash_table_lookup_extended(s, fkey, &skey, &svalue))
+        {
+            fprintf(stdout, "second misses key '%s'\n", (const char *)fkey);
+            return MISS_KEY;
+        }
+
+        if (strcmp((const char *)fvalue, (const char *)svalue) != 0)
+        {
+            fprintf(stdout, "a value of '%s' differs: '%s' != '%s'\n", (const char *)fkey, (const char *)fvalue, (const char *)svalue);
+            return DIFF_VALUE;
+        }
+    }
+
+    return EQUAL;
+}
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    {
+        /* Self check */
+        map_string_t *first = new_map_string();
+        map_string_t *second = new_map_string();
+
+        assert(EQUAL == map_string_equals(first, first));
+        assert(EQUAL == map_string_equals(first, second));
+
+        insert_map_string(first, xstrdup("first"), xstrdup("1"));
+        insert_map_string(first, xstrdup("second"), xstrdup("2"));
+        insert_map_string(first, xstrdup("third"), xstrdup("3"));
+
+        assert(EQUAL == map_string_equals(first, first));
+
+        assert(DIFF_SIZE == map_string_equals(first, second));
+        assert(DIFF_SIZE == map_string_equals(second, first));
+
+        insert_map_string(second, xstrdup("first"), xstrdup("1"));
+        insert_map_string(second, xstrdup("second"), xstrdup("2"));
+        insert_map_string(second, xstrdup("third"), xstrdup("3"));
+
+        assert(EQUAL == map_string_equals(first, second));
+        assert(EQUAL == map_string_equals(second, first));
+
+        insert_map_string(first, xstrdup("fifth"), xstrdup("5"));
+        insert_map_string(second, xstrdup("fourth"), xstrdup("4"));
+
+        assert(MISS_KEY == map_string_equals(first, second));
+        assert(MISS_KEY == map_string_equals(second, first));
+
+        insert_map_string(first, xstrdup("fourth"), xstrdup("4"));
+        insert_map_string(second, xstrdup("fifth"), xstrdup("6"));
+
+        assert(DIFF_VALUE == map_string_equals(first, second));
+        assert(DIFF_VALUE == map_string_equals(second, first));
+
+        free_map_string(first);
+        free_map_string(second);
+    }
+
+    {
+        map_string_t *first = new_map_string();
+        map_string_t *second = new_map_string();
+
+        assert(!load_conf_file_from_dirs(CONF_NAME, NULL, second, 0));
+
+        assert(EQUAL == map_string_equals(first, second) || !"Not empty");
+
+        free_map_string(first);
+        free_map_string(second);
+    }
+
+    {
+        const char *const dir_vec[] = {
+            NULL,
+        };
+
+        map_string_t *first = new_map_string();
+        map_string_t *second = new_map_string();
+
+        assert(!load_conf_file_from_dirs(CONF_NAME, dir_vec, second, 0));
+
+        assert(EQUAL == map_string_equals(first, second) || !"Not empty");
+
+        free_map_string(first);
+        free_map_string(second);
+    }
+
+    {
+        const char *const dir_vec[] = {
+            DEFAULT_DIR,
+            NULL,
+        };
+
+        map_string_t *first = new_map_string();
+        load_conf_file(DEFAULT_DIR"/"CONF_NAME, first, 0);
+
+        map_string_t *second = new_map_string();
+        assert(load_conf_file_from_dirs(CONF_NAME, dir_vec, second, 0));
+
+        assert(EQUAL == map_string_equals(first, second));
+
+        free_map_string(first);
+        free_map_string(second);
+    }
+
+    {
+        const char *const dir_vec[] = {
+            DEFAULT_DIR,
+            FIRST_DIR,
+            SECOND_DIR,
+            NULL,
+        };
+
+        map_string_t *first = new_map_string();
+        load_conf_file(DEFAULT_DIR"/"CONF_NAME, first, 0);
+        load_conf_file(FIRST_DIR"/"CONF_NAME, first, 0);
+        load_conf_file(SECOND_DIR"/"CONF_NAME, first, 0);
+
+        map_string_t *second = new_map_string();
+        assert(load_conf_file_from_dirs(CONF_NAME, dir_vec, second, 0));
+
+        assert(EQUAL == map_string_equals(first, second));
+
+        free_map_string(first);
+        free_map_string(second);
+    }
+
+    {
+        const char *const dir_vec[] = {
+            DEFAULT_DIR,
+            "/foo/blah",
+            FIRST_DIR,
+            SECOND_DIR,
+            NULL,
+        };
+
+        map_string_t *first = new_map_string();
+        load_conf_file(DEFAULT_DIR"/"CONF_NAME, first, 0);
+        load_conf_file(FIRST_DIR"/"CONF_NAME, first, 0);
+        load_conf_file(SECOND_DIR"/"CONF_NAME, first, 0);
+
+        map_string_t *second = new_map_string();
+        assert(!load_conf_file_from_dirs(CONF_NAME, dir_vec, second, 0));
+
+        assert(EQUAL == map_string_equals(first, second));
+
+        free_map_string(first);
+        free_map_string(second);
+    }
+
+    return 0;
+}
+]])
+
+
+## ---------------##
+## save_conf_file ##
+## ---------------##
+
+AT_TESTFUN([save_conf_file],
+[[
+#include "internal_libreport.h"
+
+#define CONF_NAME "file.conf"
+#define CUSTOM_CONF "../../conf/default/custom.conf"
+
+typedef enum equal_result
+{
+    EQUAL,
+    DIFF_SIZE,
+    MISS_KEY,
+    DIFF_VALUE,
+} equal_result_t;
+
+equal_result_t map_string_equals(map_string_t *f, map_string_t *s)
+{
+    const guint fsize = g_hash_table_size(f);
+    const guint ssize = g_hash_table_size(s);
+    if (fsize != ssize)
+    {
+        fprintf(stdout, "instances are not equal in size: %u != %u\n", fsize, ssize);
+        return DIFF_SIZE;
+    }
+
+    map_string_iter_t iter;
+    gpointer fkey = NULL;
+    gpointer fvalue = NULL;
+
+    init_map_string_iter(&iter, f);
+    while(next_map_string_iter(&iter, (const char **)&fkey, (const char **)&fvalue))
+    {
+        gpointer skey = NULL;
+        gpointer svalue = NULL;
+
+        if (!g_hash_table_lookup_extended(s, fkey, &skey, &svalue))
+        {
+            fprintf(stdout, "second misses key '%s'\n", (const char *)fkey);
+            return MISS_KEY;
+        }
+
+        if (strcmp((const char *)fvalue, (const char *)svalue) != 0)
+        {
+            fprintf(stdout, "a value of '%s' differs: '%s' != '%s'\n", (const char *)fkey, (const char *)fvalue, (const char *)svalue);
+            return DIFF_VALUE;
+        }
+    }
+
+    return EQUAL;
+}
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    {
+        /* Self check */
+        map_string_t *first = new_map_string();
+        map_string_t *second = new_map_string();
+
+        assert(EQUAL == map_string_equals(first, first));
+        assert(EQUAL == map_string_equals(first, second));
+
+        insert_map_string(first, xstrdup("first"), xstrdup("1"));
+        insert_map_string(first, xstrdup("second"), xstrdup("2"));
+        insert_map_string(first, xstrdup("third"), xstrdup("3"));
+
+        assert(EQUAL == map_string_equals(first, first));
+
+        assert(DIFF_SIZE == map_string_equals(first, second));
+        assert(DIFF_SIZE == map_string_equals(second, first));
+
+        insert_map_string(second, xstrdup("first"), xstrdup("1"));
+        insert_map_string(second, xstrdup("second"), xstrdup("2"));
+        insert_map_string(second, xstrdup("third"), xstrdup("3"));
+
+        assert(EQUAL == map_string_equals(first, second));
+        assert(EQUAL == map_string_equals(second, first));
+
+        insert_map_string(first, xstrdup("fifth"), xstrdup("5"));
+        insert_map_string(second, xstrdup("fourth"), xstrdup("4"));
+
+        assert(MISS_KEY == map_string_equals(first, second));
+        assert(MISS_KEY == map_string_equals(second, first));
+
+        insert_map_string(first, xstrdup("fourth"), xstrdup("4"));
+        insert_map_string(second, xstrdup("fifth"), xstrdup("6"));
+
+        assert(DIFF_VALUE == map_string_equals(first, second));
+        assert(DIFF_VALUE == map_string_equals(second, first));
+
+        free_map_string(first);
+        free_map_string(second);
+    }
+
+    {
+        map_string_t *first = new_map_string();
+        insert_map_string(first, xstrdup("success"), xstrdup("total"));
+        insert_map_string(first, xstrdup("failure"), xstrdup("none"));
+        insert_map_string(first, xstrdup("effort"), xstrdup("minimal"));
+        insert_map_string(first, xstrdup("state"), xstrdup("done"));
+
+        /* These commands must fail */
+        assert(!save_conf_file("/foo/blah/file.conf", first));
+        assert(!save_conf_file("../../../../../../../../../../../../../../../foo/blah/file.conf", first));
+        assert(!save_conf_file("/root/file.conf", first));
+
+        //char tmpdir[] = "/tmp/libreport_save_conf_file.XXXXXX";
+        char tmpdir[] = "/tmp";
+
+        /* OK, I know that I should not use tmpnam() but I want to check */
+        /* that save_conf_file() creates the directory */
+        //assert(tmpnam(tmpdir) != NULL);
+
+        char *conf_path = concat_path_file(tmpdir, CONF_NAME);
+
+        assert(save_conf_file(conf_path, first) || !"Save in not existing directory");
+
+        {
+            map_string_t *second = new_map_string();
+            assert(load_conf_file(conf_path, second, 0) || !"Loaded from not existing directory");
+
+            assert(EQUAL == map_string_equals(first, second) || !"The loaded configuration equals to the saved configuration");
+
+            free_map_string(second);
+        }
+
+        {
+            map_string_t *second = new_map_string();
+            unlink(CUSTOM_CONF);
+            assert(save_conf_file(CUSTOM_CONF, first) || !"Saved at relative path");
+            assert(load_conf_file(CUSTOM_CONF, second, 0) || !"Load the saved at relative path");
+
+            assert(EQUAL == map_string_equals(first, second) || !"The loaded configuration equals to the saved configuration");
+
+            free_map_string(second);
+        }
+
+        free_map_string(first);
+    }
+
+    return 0;
+}
+]])
+

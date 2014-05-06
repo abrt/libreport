@@ -29,7 +29,8 @@ TESTSUITE_AT = \
   testsuite.at \
   strbuf.at \
   osrelease.at \
-  taghyperlinks.at
+  taghyperlinks.at \
+  configuration_files.at
 
 EXTRA_DIST += $(TESTSUITE_AT)
 TESTSUITE = $(srcdir)/testsuite
@@ -42,6 +43,7 @@ atconfig: $(top_builddir)/config.status
 	(cd ${top_builddir} && ./config.status ${subdir}/atconfig)
 
 check-local: $(check_DATA)
+	export AUGEAS_LENS_LIB="$(AUGEAS_LENS_LIB_DIR):$(abs_top_builddir)/augeas"; \
 	$(SHELL) '$(TESTSUITE)' $(TESTSUITEFLAGS)
 
 installcheck-local: $(check_DATA)

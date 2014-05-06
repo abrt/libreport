@@ -16,64 +16,10 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "internal_libreport.h"
+#include <augeas.h>
 
 static GHashTable *user_settings;
 static char *conf_path;
-
-static bool create_parentdir(char *path)
-{
-    bool ret;
-    char *c;
-
-    /* in-place dirname() */
-    for (c = path + strlen(path); c > path && *c != '/'; c--)
-        ;
-    if (*c != '/')
-        return false;
-    *c = '\0';
-
-    ret = make_dir_recursive(path, 0755);
-    *c = '/'; /* restore path back */
-
-    return ret;
-}
-
-/* Returns false if write failed */
-bool save_conf_file(const char *path, map_string_t *settings)
-{
-    bool ret;
-    char *temp_path;
-    const char *name;
-    const char *value;
-    map_string_iter_t iter;
-
-    ret = false;
-
-    temp_path = xasprintf("%s.tmp", path);
-
-    if (!create_parentdir(temp_path))
-        goto cleanup;
-
-    FILE *out = fopen(temp_path, "w");
-    if (!out)
-        goto cleanup;
-
-    init_map_string_iter(&iter, settings);
-    while (next_map_string_iter(&iter, &name, &value))
-        fprintf(out, "%s = \"%s\"\n", name, value);
-
-    fclose(out);
-
-    if (!rename(temp_path, path))
-        goto cleanup;
-
-    ret = true; /* success */
-
-cleanup:
-    free(temp_path);
-
-    return ret;
-}
 
 static char *get_conf_path(const char *name)
 {
@@ -83,6 +29,37 @@ static char *get_conf_path(const char *name)
     conf = concat_path_file(HOME, s);
     free(s);
     return conf;
+}
+
+bool save_app_conf_file(const char* application_name, map_string_t *settings)
+{
+    char *app_conf_path = get_conf_path(application_name);
+    bool result = save_conf_file(app_conf_path, settings);
+    free(app_conf_path);
+
+    return result;
+}
+
+bool load_app_conf_file(const char *application_name, map_string_t *settings)
+{
+    char *app_conf_path = get_conf_path(application_name);
+    bool result = load_conf_file(app_conf_path, settings, false);
+    free(app_conf_path);
+
+    return result;
+}
+
+void set_app_user_setting(map_string_t *settings, const char *name, const char *value)
+{
+    if (value)
+        replace_map_string_item(settings, xstrdup(name), xstrdup(value));
+    else
+        remove_map_string_item(settings, name);
+}
+
+const char *get_app_user_setting(map_string_t *settings, const char *name)
+{
+    return get_map_string_item_or_NULL(settings, name);
 }
 
 bool save_user_settings()
