@@ -4,10 +4,17 @@ SUBDIRS = po src tests doc
 EXTRA_DIST = \
     libreport.pc.in \
     libreport-version \
-    asciidoc.conf
+    asciidoc.conf \
+    augeas/test_libreport.aug
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libreport.pc
+
+augeasdir = $(AUGEAS_LENS_LIB_DIR)
+dist_augeas_DATA = augeas/libreport.aug
+
+check-local:
+	$(AUGPARSE) -I $(top_builddir)/augeas $(top_builddir)/augeas/test_libreport.aug
 
 RPM_DIRS = --define "_sourcedir `pwd`" \
 	   --define "_rpmdir `pwd`" \
