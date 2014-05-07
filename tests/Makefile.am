@@ -30,7 +30,8 @@ TESTSUITE_AT = \
   strbuf.at \
   osrelease.at \
   taghyperlinks.at \
-  configuration_files.at
+  configuration_files.at \
+  libreport_types.at
 
 EXTRA_DIST += $(TESTSUITE_AT)
 TESTSUITE = $(srcdir)/testsuite
