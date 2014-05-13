@@ -1,0 +1,191 @@
+# -*- Autotest -*-
+
+AT_BANNER([make_description])
+
+## -------------- ##
+## flag_show_urls ##
+## -------------- ##
+
+AT_TESTFUN([flag_show_urls],
+[[
+#include "internal_libreport.h"
+#include <assert.h>
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    problem_data_t *pd = new_problem_data();
+
+    char *description = make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE, MAKEDESC_SHOW_URLS);
+
+    assert(description != NULL || !"Returns NULL for empty problem data");
+    assert(description[0] == '\0' || !"Returns non-empty description for empty problem data");
+
+    free(description);
+
+    add_to_problem_data(pd, FILENAME_REPORTED_TO, "Bugzilla: URL=https://bugzilla.redhat.com/1000000\n");
+
+    description = make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE, MAKEDESC_SHOW_URLS);
+    char *expected = xasprintf("%s: %*s%s\n",
+            "Bugzilla", 14 - strlen("Bugzilla"), "", "https://bugzilla.redhat.com/1000000");
+
+    if (strcmp(expected, description) != 0)
+    {
+        printf("E:\n'%s'\n\nC:\n'%s'\n", expected, description);
+        assert(!"The description for a single Bugzilla URL do not matches the expected description");
+    }
+
+    free(description);
+    free(expected);
+    free_problem_data(pd);
+
+    pd = new_problem_data();
+
+    add_to_problem_data(pd,
+        FILENAME_REPORTED_TO,
+            "Bugzilla: URL=https://bugzilla.redhat.com/1000000\n"
+            "ABRT Server: BTHASH=81680083BIGBOOBS\n"
+            "RHTSupport: TIME=12345678 URL=https://access.redhat.com/home MSG=The world's best IT support\n"
+            "ABRT Server: URL=https://bug-report.itos.redhat.com\n");
+
+    description = make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE, MAKEDESC_SHOW_URLS);
+    expected = xasprintf("%s: %*s%s\n%s: %*s%s\n%s: %*s%s\n",
+            "Bugzilla",    14 - strlen("Bugzilla"),    "", "https://bugzilla.redhat.com/1000000",
+            "RHTSupport",  14 - strlen("RHTSupport"),  "", "https://access.redhat.com/home",
+            "ABRT Server", 14 - strlen("ABRT Server"), "", "https://bug-report.itos.redhat.com");
+
+    if (strcmp(expected, description) != 0)
+    {
+        printf("E:\n'%s'\n\nC:\n'%s'\n", expected, description);
+        assert(!"The description do not matches the expected description");
+    }
+
+    free(description);
+    free(expected);
+    free_problem_data(pd);
+
+    pd = new_problem_data();
+
+    add_to_problem_data(pd, FILENAME_REPORTED_TO, "ABRT Server: BTHASH=81680083BIGBOOBS\n");
+
+    description = make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE, MAKEDESC_SHOW_URLS);
+
+    assert(description != NULL || !"Returns NULL for non empty problem data");
+    assert(description[0] == '\0' || !"Returns non-empty description for problem data without any URL");
+
+    free(description);
+    free_problem_data(pd);
+
+    pd = new_problem_data();
+
+    const int list_flags = CD_FLAG_TXT | CD_FLAG_ISNOTEDITABLE | CD_FLAG_LIST;
+
+    add_to_problem_data_ext(pd, FILENAME_PACKAGE, "libreport", list_flags);
+    add_to_problem_data_ext(pd, FILENAME_EXECUTABLE, "/usr/bin/sh", list_flags);
+    add_to_problem_data_ext(pd, FILENAME_COUNT, "0", list_flags);
+
+    add_to_problem_data(pd,
+        FILENAME_REPORTED_TO,
+            "Bugzilla: URL=https://bugzilla.redhat.com/1000000\n"
+            "ABRT Server: BTHASH=81680083BIGBOOBS\n"
+            "RHTSupport: TIME=12345678 URL=https://access.redhat.com/home MSG=The world's best IT support\n"
+            "ABRT Server: URL=https://bug-report.itos.redhat.com\n");
+
+    description = make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE, MAKEDESC_SHOW_ONLY_LIST | MAKEDESC_SHOW_URLS);
+
+    expected = xasprintf(
+            "%s: %*s%s\n"
+            "%s: %*s%s\n"
+            "%s: %*s%s\n"
+            "\n"
+            "%s: %*s%s\n"
+            "%s: %*s%s\n"
+            "%s: %*s%s\n",
+            FILENAME_COUNT,      14 - strlen(FILENAME_COUNT),      "", "0",
+            FILENAME_EXECUTABLE, 14 - strlen(FILENAME_EXECUTABLE), "", "/usr/bin/sh",
+            FILENAME_PACKAGE,    14 - strlen(FILENAME_PACKAGE),    "", "libreport",
+            "Bugzilla",          14 - strlen("Bugzilla"),          "", "https://bugzilla.redhat.com/1000000",
+            "RHTSupport",        14 - strlen("RHTSupport"),        "", "https://access.redhat.com/home",
+            "ABRT Server",       14 - strlen("ABRT Server"),       "", "https://bug-report.itos.redhat.com");
+
+    if (strcmp(expected, description) != 0)
+    {
+        printf("E:\n'%s'\n\nC:\n'%s'\n", expected, description);
+        assert(!"The description do not matches the expected description");
+    }
+
+    free(expected);
+    free(description);
+
+    const char *const backtrace = "Extremely long backtrace which does not make sense";
+    add_to_problem_data(pd, FILENAME_BACKTRACE, backtrace);
+
+    description = make_description(pd, /*skipped names*/NULL, strlen(backtrace) - 1, MAKEDESC_SHOW_FILES | MAKEDESC_SHOW_URLS);
+
+    expected = xasprintf(
+            "%s: %*s%s\n"
+            "%s: %*s%s\n"
+            "%s: %*s%s\n"
+            "\n"
+            "%s: %*s%s\n"
+            "%s: %*s%s\n"
+            "%s: %*s%s\n"
+            "\n"
+            "%s: %*sText file, %llu bytes\n"
+            "%s: %*sText file, %llu bytes\n",
+            FILENAME_COUNT,      14 - strlen(FILENAME_COUNT),      "", "0",
+            FILENAME_EXECUTABLE, 14 - strlen(FILENAME_EXECUTABLE), "", "/usr/bin/sh",
+            FILENAME_PACKAGE,    14 - strlen(FILENAME_PACKAGE),    "", "libreport",
+            "Bugzilla",          14 - strlen("Bugzilla"),          "", "https://bugzilla.redhat.com/1000000",
+            "RHTSupport",        14 - strlen("RHTSupport"),        "", "https://access.redhat.com/home",
+            "ABRT Server",       14 - strlen("ABRT Server"),       "", "https://bug-report.itos.redhat.com",
+            FILENAME_BACKTRACE,  14 - strlen(FILENAME_BACKTRACE),  "", strlen(backtrace),
+            FILENAME_REPORTED_TO,14 - strlen(FILENAME_REPORTED_TO),"", strlen(get_problem_item_content_or_NULL(pd, FILENAME_REPORTED_TO))
+            );
+
+    if (strcmp(expected, description) != 0)
+    {
+        printf("E:\n'%s'\n\nC:\n'%s'\n", expected, description);
+        assert(!"The description do not matches the expected description");
+    }
+
+    free(expected);
+    free(description);
+    free_problem_data(pd);
+
+    /* SHOW_URLS DID NOT BREAK THE OLD BEHAVIOUR */
+    pd = new_problem_data();
+
+    add_to_problem_data_ext(pd, FILENAME_PACKAGE, "libreport", list_flags);
+    add_to_problem_data_ext(pd, FILENAME_EXECUTABLE, "/usr/bin/sh", list_flags);
+    add_to_problem_data_ext(pd, FILENAME_COUNT, "0", list_flags);
+    add_to_problem_data(pd, FILENAME_BACKTRACE, backtrace);
+
+    description = make_description(pd, /*skipped names*/NULL, strlen(backtrace) - 1, MAKEDESC_SHOW_FILES);
+
+    expected = xasprintf(
+            "%s: %*s%s\n"
+            "%s: %*s%s\n"
+            "%s: %*s%s\n"
+            "\n"
+            "%s: %*sText file, %llu bytes\n",
+            FILENAME_COUNT,      14 - strlen(FILENAME_COUNT),      "", "0",
+            FILENAME_EXECUTABLE, 14 - strlen(FILENAME_EXECUTABLE), "", "/usr/bin/sh",
+            FILENAME_PACKAGE,    14 - strlen(FILENAME_PACKAGE),    "", "libreport",
+            FILENAME_BACKTRACE,  14 - strlen(FILENAME_BACKTRACE),  "", strlen(backtrace)
+            );
+
+    if (strcmp(expected, description) != 0)
+    {
+        printf("E:\n'%s'\n\nC:\n'%s'\n", expected, description);
+        assert(!"The description do not matches the expected description");
+    }
+
+    free(expected);
+    free(description);
+    free_problem_data(pd);
+
+    return 0;
+}
+]])

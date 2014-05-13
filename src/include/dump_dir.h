@@ -25,6 +25,9 @@
 #include <sys/types.h>
 #include <dirent.h>
 
+/* Fore GList */
+#include <glib.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -98,7 +101,10 @@ void free_report_result(struct report_result *result);
 report_result_t *find_in_reported_to_data(const char *reported_to, const char *report_label);
 #define find_in_reported_to libreport_find_in_reported_to
 report_result_t *find_in_reported_to(struct dump_dir *dd, const char *prefix);
-/* TODO: GList *read_entire_reported_to(dd); */
+#define read_entire_reported_to_data libreport_read_entire_reported_to_data
+GList *read_entire_reported_to_data(const char* reported_to);
+#define read_entire_reported_to libreport_read_entire_reported_to
+GList *read_entire_reported_to(struct dump_dir *dd);
 
 
 void delete_dump_dir(const char *dirname);

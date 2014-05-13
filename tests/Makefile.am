@@ -31,7 +31,9 @@ TESTSUITE_AT = \
   osrelease.at \
   taghyperlinks.at \
   configuration_files.at \
-  libreport_types.at
+  libreport_types.at \
+  reported_to.at \
+  make_description.at
 
 EXTRA_DIST += $(TESTSUITE_AT)
 TESTSUITE = $(srcdir)/testsuite

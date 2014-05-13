@@ -103,7 +103,7 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
     bool append_empty_line = !empty;
     if (desc_flags & MAKEDESC_SHOW_URLS)
     {
-        const char *reported_to = problem_data_get_content_or_NULL(problem_data, FILENAME_REPORTED_TO);
+        const char *reported_to = get_problem_item_content_or_NULL(problem_data, FILENAME_REPORTED_TO);
         if (reported_to != NULL)
         {
             GList *reports = read_entire_reported_to_data(reported_to);
@@ -125,7 +125,7 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
                 strbuf_append_strf(buf_dsc, "%s: %*s%s\n", report->label, pad, "", report->url);
             }
 
-            g_list_free_full(reports, (GDestroyNotify)free_report_result);
+            list_free_with_free(reports);
         }
     }
 
