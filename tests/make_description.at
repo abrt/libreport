@@ -140,8 +140,8 @@ int main(int argc, char **argv)
             "Bugzilla",          14 - strlen("Bugzilla"),          "", "https://bugzilla.redhat.com/1000000",
             "RHTSupport",        14 - strlen("RHTSupport"),        "", "https://access.redhat.com/home",
             "ABRT Server",       14 - strlen("ABRT Server"),       "", "https://bug-report.itos.redhat.com",
-            FILENAME_BACKTRACE,  14 - strlen(FILENAME_BACKTRACE),  "", strlen(backtrace),
-            FILENAME_REPORTED_TO,14 - strlen(FILENAME_REPORTED_TO),"", strlen(get_problem_item_content_or_NULL(pd, FILENAME_REPORTED_TO))
+            FILENAME_BACKTRACE,  14 - strlen(FILENAME_BACKTRACE),  "", (long long unsigned)strlen(backtrace),
+            FILENAME_REPORTED_TO,14 - strlen(FILENAME_REPORTED_TO),"", (long long unsigned)strlen(get_problem_item_content_or_NULL(pd, FILENAME_REPORTED_TO))
             );
 
     if (strcmp(expected, description) != 0)
@@ -173,7 +173,7 @@ int main(int argc, char **argv)
             FILENAME_COUNT,      14 - strlen(FILENAME_COUNT),      "", "0",
             FILENAME_EXECUTABLE, 14 - strlen(FILENAME_EXECUTABLE), "", "/usr/bin/sh",
             FILENAME_PACKAGE,    14 - strlen(FILENAME_PACKAGE),    "", "libreport",
-            FILENAME_BACKTRACE,  14 - strlen(FILENAME_BACKTRACE),  "", strlen(backtrace)
+            FILENAME_BACKTRACE,  14 - strlen(FILENAME_BACKTRACE),  "", (long long unsigned)strlen(backtrace)
             );
 
     if (strcmp(expected, description) != 0)
