@@ -84,6 +84,12 @@ struct abrt_post_state *post_ureport(const char *json, struct ureport_server_con
         post_state->client_key_path = config->ur_client_key;
     }
 
+    if (config->ur_client_cert && config->ur_client_key)
+    {
+        post_state->client_cert_path = config->ur_client_cert;
+        post_state->client_key_path = config->ur_client_key;
+    }
+
     static const char *headers[] = {
         "Accept: application/json",
         "Connection: close",

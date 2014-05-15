@@ -499,6 +499,13 @@ abrt_post(abrt_post_state_t *state,
         xcurl_easy_setopt_long(handle, CURLOPT_SSL_VERIFYPEER, 0);
         xcurl_easy_setopt_long(handle, CURLOPT_SSL_VERIFYHOST, 0);
     }
+    if (state->client_cert_path && state->client_key_path)
+    {
+        xcurl_easy_setopt_ptr(handle, CURLOPT_SSLCERTTYPE, "PEM");
+        xcurl_easy_setopt_ptr(handle, CURLOPT_SSLKEYTYPE, "PEM");
+        xcurl_easy_setopt_ptr(handle, CURLOPT_SSLCERT, state->client_cert_path);
+        xcurl_easy_setopt_ptr(handle, CURLOPT_SSLKEY, state->client_key_path);
+    }
 
     // This is the place where everything happens.
     // Here errors are not limited to "out of memory", can't just die.
