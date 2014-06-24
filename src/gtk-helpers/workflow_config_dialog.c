@@ -29,15 +29,23 @@ enum
 static GtkWindow *g_parent_window;
 static GHashTable *g_events_options = NULL;
 
-static void create_event_config_dialog_content_cb(event_config_t *ec, gpointer content)
+static void create_event_config_dialog_content_cb(event_config_t *ec, gpointer notebook)
 {
-    if (ec->options)
-    {
-        GtkWidget *ev_lbl = gtk_label_new(ec_get_screen_name(ec));
-        gtk_box_pack_start(GTK_BOX(content), ev_lbl, false, false, 0);
-    }
+    if (!ec->options)
+        return;
+
+    GtkWidget *ev_lbl = gtk_label_new(ec_get_screen_name(ec));
+
+    GtkWidget *content = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    gtk_widget_set_margin_left(content, 10);
+    gtk_widget_set_margin_top(content, 5);
+    gtk_widget_set_margin_right(content, 10);
+    gtk_widget_set_margin_bottom(content, 10);
 
     config_dialog_t *cdialog = create_event_config_dialog_content(ec, (GtkWidget *)content);
+
+    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), content, ev_lbl);
+
     if (g_events_options == NULL)
     {
         g_events_options = g_hash_table_new_full(
@@ -46,8 +54,8 @@ static void create_event_config_dialog_content_cb(event_config_t *ec, gpointer c
                     /*key_destroy_func:*/ g_free,
                     /*value_destroy_func:*/ NULL);
     }
-    g_hash_table_insert(g_events_options, ec, cdialog);
 
+    g_hash_table_insert(g_events_options, ec, cdialog);
 }
 
 static void save_event_config_data_foreach(event_config_t *ec,
@@ -96,7 +104,8 @@ config_dialog_t *create_workflow_config_dialog(const char *workflow_name, GtkWin
     }
 
     GtkWidget *scrolled = gtk_scrolled_window_new(NULL, NULL);
-    GtkWidget *content = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    GtkWidget *content = gtk_notebook_new();
+    gtk_notebook_set_tab_pos(GTK_NOTEBOOK(content), GTK_POS_LEFT);
 
 #if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 7) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 7 && GTK_MICRO_VERSION < 8))
     /* http://developer.gnome.org/gtk3/unstable/GtkScrolledWindow.html#gtk-scrolled-window-add-with-viewport */
