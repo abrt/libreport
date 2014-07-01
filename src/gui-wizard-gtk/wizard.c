@@ -2416,7 +2416,8 @@ static gboolean highligh_words_in_tabs(GList *forbidden_words,  GList *allowed_w
         GtkWidget *notebook_child = gtk_notebook_get_nth_page(g_notebook, page);
         GtkWidget *tab_lbl = gtk_notebook_get_tab_label(g_notebook, notebook_child);
 
-        if (strncmp(gtk_label_get_text(GTK_LABEL(tab_lbl)), "page 1", 5) == 0)
+        const char *const lbl_txt = gtk_label_get_text(GTK_LABEL(tab_lbl));
+        if (strncmp(lbl_txt, "page 1", 5) == 0 || strcmp(FILENAME_COMMENT, lbl_txt) == 0)
             continue;
 
         GtkTextView *tev = GTK_TEXT_VIEW(gtk_bin_get_child(GTK_BIN(notebook_child)));

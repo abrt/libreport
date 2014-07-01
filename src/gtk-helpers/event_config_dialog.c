@@ -189,6 +189,28 @@ static void add_option_to_table(gpointer data, gpointer user_data)
     free(option_label);
 }
 
+static GtkWidget *create_event_config_grid()
+{
+    GtkWidget *option_table = gtk_grid_new();
+
+    gtk_widget_set_margin_left(option_table, 5);
+    gtk_widget_set_margin_top(option_table, 5);
+    gtk_widget_set_margin_right(option_table, 5);
+    gtk_widget_set_margin_bottom(option_table, 5);
+
+    gtk_grid_set_row_homogeneous(GTK_GRID(option_table), FALSE);
+    gtk_grid_set_column_homogeneous(GTK_GRID(option_table), FALSE);
+    gtk_grid_set_row_spacing(GTK_GRID(option_table), 10);
+    g_object_set_data(G_OBJECT(option_table), "n-rows", (gpointer)-1);
+
+    gtk_widget_set_hexpand(option_table, TRUE);
+    gtk_widget_set_vexpand(option_table, TRUE);
+    gtk_widget_set_halign(option_table, GTK_ALIGN_FILL);
+    gtk_widget_set_valign(option_table, GTK_ALIGN_FILL);
+
+    return option_table;
+}
+
 config_dialog_t *create_event_config_dialog_content(event_config_t *event, GtkWidget *content)
 {
     INITIALIZE_LIBREPORT();
@@ -197,33 +219,17 @@ config_dialog_t *create_event_config_dialog_content(event_config_t *event, GtkWi
         content = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 
     //event_config_t *event = get_event_config(event_name);
+    GtkWidget *notebook_layout = gtk_notebook_new();
+    gtk_box_pack_start(GTK_BOX(content), notebook_layout, TRUE, TRUE, 0);
 
-    GtkWidget *option_table = gtk_grid_new();
-    gtk_grid_set_row_homogeneous(GTK_GRID(option_table), FALSE);
-    gtk_grid_set_column_homogeneous(GTK_GRID(option_table), FALSE);
-    gtk_grid_set_row_spacing(GTK_GRID(option_table), 2);
-    g_object_set_data(G_OBJECT(option_table), "n-rows", (gpointer)-1);
-
-    gtk_widget_set_hexpand(option_table, TRUE);
-    gtk_widget_set_vexpand(option_table, TRUE);
-    gtk_widget_set_halign(option_table, GTK_ALIGN_FILL);
-    gtk_widget_set_valign(option_table, GTK_ALIGN_FILL);
+    GtkWidget *option_table = create_event_config_grid();
 
     /* table to hold advanced options
      * hidden in expander which is visible only if there's at least
      * one advanced option
     */
+    GtkWidget *adv_option_table = create_event_config_grid();
 
-    GtkWidget *adv_option_table = gtk_grid_new();
-    gtk_grid_set_row_homogeneous(GTK_GRID(adv_option_table), FALSE);
-    gtk_grid_set_column_homogeneous(GTK_GRID(adv_option_table), FALSE);
-    gtk_grid_set_row_spacing(GTK_GRID(adv_option_table), 2);
-    g_object_set_data(G_OBJECT(adv_option_table), "n-rows", (gpointer)-1);
-
-    GtkWidget *adv_expander = gtk_expander_new(_("Advanced"));
-    /* resize the toplevel widget containing the expander upon resizing and collapsing. */
-    gtk_expander_set_resize_toplevel(GTK_EXPANDER(adv_expander), TRUE);
-    gtk_container_add(GTK_CONTAINER(adv_expander), adv_option_table);
     g_object_set_data(G_OBJECT(option_table), "advanced-options", adv_option_table);
 
     has_password_option = false;
@@ -253,11 +259,22 @@ config_dialog_t *create_event_config_dialog_content(event_config_t *event, GtkWi
         g_signal_connect(pass_store_cb, "toggled", G_CALLBACK(on_show_pass_store_cb), NULL);
     }
 
-    gtk_box_pack_start(GTK_BOX(content), option_table, false, false, 20);
+    GtkWidget *option_table_lbl = gtk_label_new_with_mnemonic(_("Basic"));
+    GtkWidget *option_table_scrl = gtk_scrolled_window_new(NULL, NULL);
+    gtk_container_add(GTK_CONTAINER(option_table_scrl), option_table);
+    gtk_notebook_append_page(GTK_NOTEBOOK(notebook_layout), option_table_scrl, option_table_lbl);
 
     /* add the adv_option_table to the dialog only if there is some adv option */
     if (g_list_length(gtk_container_get_children(GTK_CONTAINER(adv_option_table))) > 0)
-        gtk_box_pack_start(GTK_BOX(content), adv_expander, false, false, 0);
+    {
+        GtkWidget *adv_option_table_lbl = gtk_label_new_with_mnemonic(_("Advanced"));
+        GtkWidget *adv_option_table_scrl = gtk_scrolled_window_new(NULL, NULL);
+        gtk_container_add(GTK_CONTAINER(adv_option_table_scrl), adv_option_table);
+        gtk_notebook_append_page(GTK_NOTEBOOK(notebook_layout), adv_option_table_scrl, adv_option_table_lbl);
+    }
+    else
+        /* Do not show single tab 'Basic' */
+        gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook_layout), FALSE);
 
     /* add warning if secrets service is not available showing the nagging dialog
      * is considered "too heavy UI" be designers
@@ -319,7 +336,7 @@ config_dialog_t *create_event_config_dialog(const char *event_name, GtkWindow *p
      * line wrapped.
      */
     gtk_window_set_resizable(GTK_WINDOW(dialog), true);
-    gtk_window_set_default_size(GTK_WINDOW(dialog), 450, -1);
+    gtk_window_set_default_size(GTK_WINDOW(dialog), 450, 310);
 
     if (parent_window != NULL)
     {
