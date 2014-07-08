@@ -670,6 +670,24 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Tue Jul 08 2014 Jakub Filak <jfilak@redhat.com> 2.2.3-1
+- wizard: Do not highlight sensitive words in user's comment
+- bugzilla: show description for all configuration options
+- wizard: use a tab for Advanced opts instead of an expander
+- mailx: improve notification e-mail format
+- configure: Support cross compiling with python3
+- ignored words: add well known SELinux messages
+- reporter-upload: more descriptive message about missing URL
+- GUI: remove the intermediate configuration dialog
+- refactoring: unify event configuration dialogs
+- hide "Don't store password" checkbox
+- Bugzilla: move the advanced options to the advanced section
+- less confusing label for 'upload data' in Anaconda
+- define priorities for the existing workflows
+- Worklflow: order workflows according to their priority
+- Bugzilla: session parameters for XML RPC calls
+- Bugzilla: pass Bugzilla_token in all relevant XML RPC calls
+
 * Sun Apr 20 2014 Jakub Filak <jfilak@redhat.com> 2.2.2-1
 - stop using deprecated json-c functions
 - bugzilla: try to avoid usage of 'private' group
