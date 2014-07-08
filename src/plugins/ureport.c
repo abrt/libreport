@@ -435,6 +435,8 @@ int main(int argc, char **argv)
     bool rhbz_bug_from_rt = false;
     const char *email_address = NULL;
     bool email_address_from_env = false;
+    char *comment = NULL;
+    bool comment_file = NULL;
     struct dump_dir *dd = NULL;
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
@@ -456,11 +458,16 @@ int main(int argc, char **argv)
                           _("attach RHBZ bug (requires -a|-A, conflicts with -B)")),
         OPT_BOOL('B', "bug-id-rt", &rhbz_bug_from_rt,
                           _("attach last RHBZ bug from reported_to (requires -a|-A, conflicts with -b)")),
+        OPT_STRING('o', "comment", &comment, "DESCRIPTION",
+                          _("attach short text (requires -a|-A, conflicts with -D)")),
+        OPT_BOOL('O', "comment-file", &comment_file,
+                          _("attach short text from comment (requires -a|-A, conflicts with -d)")),
+
         OPT_END(),
     };
 
     const char *program_usage_string = _(
-        "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
+        "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-A -a bthash -B -b bug-id -E -e email -O -o comment] [-d DIR]\n"
         "\n"
         "Upload micro report or add an attachment to a micro report\n"
         "\n"
@@ -495,7 +502,10 @@ int main(int argc, char **argv)
     if (email_address && email_address_from_env)
         error_msg_and_die("You need to pass either -e bthash or -E");
 
-    if (ureport_hash_from_rt || rhbz_bug_from_rt)
+    if (comment && comment_file)
+        error_msg_and_die("You need to pass either -o comment or -O");
+
+    if (ureport_hash_from_rt || rhbz_bug_from_rt || comment_file)
     {
         dd = dd_opendir(dump_dir_path, DD_OPEN_READONLY);
         if (!dd)
@@ -533,6 +543,15 @@ int main(int argc, char **argv)
             free_report_result(bz_result);
         }
 
+        if (comment_file)
+        {
+            comment = dd_load_text(dd, FILENAME_COMMENT);
+            if (comment == NULL)
+                error_msg_and_die(_("Cannot attach comment from 'comment' file"));
+            if (comment[0] == '\0')
+                error_msg_and_die(_("'comment' file is empty"));
+        }
+
         dd_close(dd);
     }
 
@@ -546,8 +565,8 @@ int main(int argc, char **argv)
 
     if (ureport_hash)
     {
-        if (rhbz_bug < 0 && !email_address)
-            error_msg_and_die(_("You need to specify bug ID, contact email or both"));
+        if (rhbz_bug < 0 && !email_address && !comment)
+            error_msg_and_die(_("You need to specify bug ID, contact email, comment or all of them"));
 
         if (rhbz_bug >= 0)
         {
@@ -558,6 +577,12 @@ int main(int argc, char **argv)
         if (email_address)
         {
             if (perform_attach(&config, ureport_hash, (attach_handler)ureport_attach_email, (void *)email_address))
+                goto finalize;
+        }
+
+        if (comment)
+        {
+            if (perform_attach(&config, ureport_hash, (attach_handler)ureport_attach_comment, (void *)comment))
                 goto finalize;
         }
 
