@@ -133,3 +133,13 @@ struct post_state *ureport_attach_email(const char *bthash, const char *email,
 
     return post_state;
 }
+
+struct post_state *ureport_attach_comment(const char *bthash, const char *comment,
+                                       struct ureport_server_config *config)
+{
+    char *json_attachment = new_json_attachment(bthash, "comment", comment);
+    struct post_state *post_state = post_ureport(json_attachment, config);
+    free(json_attachment);
+
+    return post_state;
+}
