@@ -51,6 +51,10 @@ struct post_state *ureport_attach_rhbz(const char *bthash, int rhbz_bug_id,
 struct post_state *ureport_attach_email(const char *bthash, const char *email,
                                         struct ureport_server_config *config);
 
+#define ureport_attach_comment libreport_ureport_attach_comment
+struct post_state *ureport_attach_comment(const char *bthash, const char *comment,
+                                        struct ureport_server_config *config);
+
 #define ureport_from_dump_dir libreport_ureport_from_dump_dir
 char *ureport_from_dump_dir(const char *dump_dir_path);
 
