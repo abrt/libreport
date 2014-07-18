@@ -239,6 +239,14 @@ GtkWidget *create_config_tab_content(const char *column_label,
     gtk_tree_model_filter_set_visible_func(GTK_TREE_MODEL_FILTER(model), config_filter_func, NULL, NULL);
 
     gtk_tree_view_set_model(GTK_TREE_VIEW(tv), GTK_TREE_MODEL(model));
+
+    {   /* Selected the first row, so we do not need to call gtk_tree_view_scroll_to_cell() */
+        GtkTreeIter iter;
+        gtk_tree_model_get_iter_first(model, &iter);
+        GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(tv));
+        gtk_tree_selection_select_iter(selection, &iter);
+    }
+
     gtk_container_add(GTK_CONTAINER(scroll), tv);
 
     gtk_box_pack_start(GTK_BOX(main_vbox), scroll, true, true, 10);
