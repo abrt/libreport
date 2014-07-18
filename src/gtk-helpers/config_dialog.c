@@ -282,7 +282,17 @@ GtkWindow *create_config_list_window(GHashTable *configs, GtkWindow *parent)
     INITIALIZE_LIBREPORT();
 
     // config window
-    GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    GtkWidget *window = NULL;
+    if (parent != NULL)
+    {
+        window = gtk_dialog_new();
+        gtk_window_set_icon_name(GTK_WINDOW(window), gtk_window_get_icon_name(parent));
+        gtk_window_set_modal(GTK_WINDOW(window), TRUE);
+        gtk_window_set_transient_for(GTK_WINDOW(window), parent);
+    }
+    else
+        window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+
     gtk_container_set_border_width(GTK_CONTAINER(window), 5);
     gtk_window_set_title(GTK_WINDOW(window), _("Configuration"));
     gtk_window_set_default_size(GTK_WINDOW(window), 450, 400);
@@ -290,11 +300,6 @@ GtkWindow *create_config_list_window(GHashTable *configs, GtkWindow *parent)
                             ? GTK_WIN_POS_CENTER_ON_PARENT
                             : GTK_WIN_POS_CENTER);
 
-    if (parent != NULL)
-    {
-        gtk_window_set_modal(GTK_WINDOW(window), true);
-        gtk_window_set_transient_for(GTK_WINDOW(window), parent);
-    }
 
     //g_signal_connect(window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
@@ -334,7 +339,14 @@ GtkWindow *create_config_list_window(GHashTable *configs, GtkWindow *parent)
 
 
     gtk_box_pack_start(GTK_BOX(main_vbox), btn_box, 0, 0, 0);
-    gtk_container_add(GTK_CONTAINER(window), main_vbox);
+    if (parent != NULL)
+    {
+        GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(window));
+        gtk_box_pack_start(GTK_BOX(content), main_vbox, /*expand*/TRUE, /*fill*/TRUE, /*padding*/0);
+        gtk_widget_show_all(content);
+    }
+    else
+        gtk_container_add(GTK_CONTAINER(window), main_vbox);
 
     //gtk_widget_show_all(window);
     return GTK_WINDOW(window);
