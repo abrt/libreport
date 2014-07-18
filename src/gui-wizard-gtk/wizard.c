@@ -1129,6 +1129,10 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
         {
             GtkWidget *tab_lbl = gtk_label_new((char *)name);
             GtkWidget *tev = gtk_text_view_new();
+
+            if (strcmp(name, FILENAME_COMMENT) == 0 || strcmp(name, FILENAME_REASON) == 0)
+                gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(tev), GTK_WRAP_WORD);
+
             gtk_widget_override_font(GTK_WIDGET(tev), g_monospace_font);
             load_text_to_text_view(GTK_TEXT_VIEW(tev), (char *)name);
             /* init searching */
