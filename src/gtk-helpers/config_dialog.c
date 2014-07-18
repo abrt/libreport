@@ -18,6 +18,7 @@
 */
 
 #include <gtk/gtk.h>
+#include <gdk/gdk.h>
 #include "internal_libreport_gtk.h"
 
 enum
@@ -206,6 +207,40 @@ static gboolean config_filter_func(GtkTreeModel *model,
   return visible;
 }
 
+static void open_config_for_selected_row(GtkTreeView *tv)
+{
+    config_dialog_t *cdialog = (config_dialog_t *)get_column_value_from_row(tv, CONFIG_DIALOG, TYPE_POINTER);
+    const char *name = (const char *)get_column_value_from_row(tv, COLUMN_NAME, TYPE_STR);
+
+    cdialog_run(cdialog, name);
+}
+
+static gboolean on_key_press_event_cb(GtkWidget *btn, GdkEvent *event, gpointer user_data)
+{
+    GdkEventKey *ek = (GdkEventKey *)event;
+
+    if (ek->keyval == GDK_KEY_Return)
+    {
+        GtkTreeView *tv = (GtkTreeView *)user_data;
+        open_config_for_selected_row(tv);
+    }
+
+    return FALSE;
+}
+
+static gboolean on_button_press_event_cb(GtkWidget *btn, GdkEvent *event, gpointer user_data)
+{
+    GdkEventButton *eb = (GdkEventButton *)event;
+
+    if (eb->type == GDK_2BUTTON_PRESS)
+    {
+        GtkTreeView *tv = (GtkTreeView *)user_data;
+        open_config_for_selected_row(tv);
+    }
+
+    return FALSE;
+}
+
 GtkWidget *create_config_tab_content(const char *column_label,
                                       GtkListStore *store)
 {
@@ -216,6 +251,9 @@ GtkWidget *create_config_tab_content(const char *column_label,
                                     GTK_POLICY_AUTOMATIC);
     /* workflow list treeview */
     GtkWidget *tv = gtk_tree_view_new();
+    g_signal_connect(tv, "key-press-event", G_CALLBACK(on_key_press_event_cb), tv);
+    g_signal_connect(tv, "button-press-event", G_CALLBACK(on_button_press_event_cb), tv);
+
     /* column with workflow name and description */
     GtkCellRenderer *renderer;
     GtkTreeViewColumn *column;
@@ -272,11 +310,8 @@ static void on_configure_cb(GtkWidget *btn, gpointer user_data)
     GtkWidget *vbox = gtk_notebook_get_nth_page(nb, current_page_n);
     GList *children = gtk_container_get_children(GTK_CONTAINER(vbox));
     GtkScrolledWindow *sw = (GtkScrolledWindow *)children->data;
-    GtkTreeView *tv = (GtkTreeView *)gtk_bin_get_child(GTK_BIN(sw));
-    config_dialog_t *cdialog = (config_dialog_t *)get_column_value_from_row(tv, CONFIG_DIALOG, TYPE_POINTER);
-    const char *name = (const char *)get_column_value_from_row(tv, COLUMN_NAME, TYPE_STR);
 
-    cdialog_run(cdialog, name);
+    open_config_for_selected_row((GtkTreeView *)gtk_bin_get_child(GTK_BIN(sw)));
 }
 
 static void on_close_cb(GtkWidget *btn, gpointer config_list_w)
