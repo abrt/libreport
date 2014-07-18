@@ -81,8 +81,11 @@ static int run_ask_yes_no_save_generic_result_dialog(ask_yes_no_dialog_flags fla
     /* let's try to use the text as markup
      * this allows us to use hyperlinks to man pages  */
     gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), message);
-    gtk_dialog_add_button(GTK_DIALOG(dialog), _("_Yes"), GTK_RESPONSE_YES);
+    /* Follow GTK3's yes-no-buttons order:
+     * [No] [Yes]
+     */
     GtkWidget *no_button = gtk_dialog_add_button(GTK_DIALOG(dialog), _("_No"), GTK_RESPONSE_NO);
+    gtk_dialog_add_button(GTK_DIALOG(dialog), _("_Yes"), GTK_RESPONSE_YES);
 
     gint response = GTK_RESPONSE_NO;
     g_signal_connect(G_OBJECT(dialog), "response",
@@ -101,6 +104,8 @@ static int run_ask_yes_no_save_generic_result_dialog(ask_yes_no_dialog_flags fla
                      G_CALLBACK(on_toggle_ask_yes_no_yesforever_cb), (gpointer)no_button);
     }
 
+    /* Esc -> No, Enter -> Yes */
+    gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_YES);
     gtk_widget_show(ask_yes_no_cb);
     gtk_dialog_run(GTK_DIALOG(dialog));
 

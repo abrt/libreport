@@ -1635,6 +1635,7 @@ static char *ask_helper(const char *msg, void *args, bool password)
             GTK_BUTTONS_OK_CANCEL,
             "%s", msg);
     char *tagged_msg = tag_url(msg, "\n");
+    gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_OK);
     gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), tagged_msg);
     free(tagged_msg);
 
@@ -1687,6 +1688,8 @@ static int run_event_gtk_ask_yes_no(const char *msg, void *args)
     gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), tagged_msg);
     free(tagged_msg);
 
+    /* Esc -> No, Enter -> Yes */
+    gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_YES);
     const int ret = gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_YES;
 
     gtk_widget_destroy(dialog);
