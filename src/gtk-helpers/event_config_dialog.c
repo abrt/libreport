@@ -122,6 +122,7 @@ static void add_option_to_table(gpointer data, gpointer user_data)
                              /*left,top:*/ 0, last_row,
                              /*width,height:*/ 1, 1);
             option_input = gtk_entry_new();
+            gtk_entry_set_activates_default(GTK_ENTRY(option_input), TRUE);
             gtk_widget_set_hexpand(option_input, TRUE);
             if (option->eo_value != NULL)
                 gtk_entry_set_text(GTK_ENTRY(option_input), option->eo_value);
@@ -322,6 +323,9 @@ config_dialog_t *create_event_config_dialog(const char *event_name, GtkWindow *p
                         _("_OK"),
                         GTK_RESPONSE_APPLY,
                         NULL);
+
+
+    gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_APPLY);
 
     /* Allow resize?
      * W/o resize, e.g. upload configuration hint looks awfully

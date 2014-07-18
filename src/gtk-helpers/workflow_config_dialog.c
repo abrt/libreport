@@ -89,6 +89,8 @@ config_dialog_t *create_workflow_config_dialog(const char *workflow_name, GtkWin
                         GTK_RESPONSE_APPLY,
                         NULL);
 
+    gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_APPLY);
+
     gtk_window_set_resizable(GTK_WINDOW(dialog), true);
     gtk_window_set_default_size(GTK_WINDOW(dialog), 450, 450);
 
