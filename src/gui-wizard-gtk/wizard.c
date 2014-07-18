@@ -3490,10 +3490,10 @@ void create_assistant(bool expert_mode)
         gtk_widget_set_sensitive(GTK_WIDGET(g_btn_startcast), false);
         gtk_widget_set_tooltip_markup(GTK_WIDGET(g_btn_startcast),
           _("In order to enable the built-in screencasting "
-            "functionality the package recordmydesktop has to be installed. "
+            "functionality the package fros-recordmydesktop has to be installed. "
             "Please run the following command if you want to install it."
             "\n\n"
-            "<b>su -c \"yum install recordmydesktop\"</b>"
+            "<b>su -c \"yum install fros-recordmydesktop\"</b>"
             ));
     }
 
