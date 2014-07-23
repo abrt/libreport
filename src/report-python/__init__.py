@@ -23,6 +23,9 @@ import os
 
 SYSTEM_RELEASE_PATHS = ["/etc/system-release","/etc/redhat-release"]
 SYSTEM_RELEASE_DEPS = ["system-release", "redhat-release"]
+SYSTEM_OS_RELEASE_FILE = "/etc/os-release"
+OS_RELEASE_PRODUCT_FIELDS = ["REDHAT_BUGZILLA_PRODUCT", "REDHAT_SUPPORT_PRODUCT", "NAME"]
+OS_RELEASE_VERSION_FIELDS = ["REDHAT_BUGZILLA_VERSION", "REDHAT_SUPPORT_VERSION", "NAME"]
 
 _hardcoded_default_product = ""
 _hardcoded_default_version = ""
@@ -57,6 +60,57 @@ def getVersion_fromRPM():
         return ""
 """
 
+def parse_os_release_lines(osreleaselines):
+    osrel = {}
+
+    for line in osreleaselines:
+        kvp = line.split('=')
+        if len(kvp) < 2:
+            continue
+
+        key = kvp[0]
+        value = kvp[1]
+        if len(kvp) > 2:
+            value = "=".join(kvp[1:])
+
+        if value:
+            osrel[key] = value.strip('"')
+        else:
+            osrel[key] = value
+
+    return osrel
+
+# /etc/os-release file parser
+# see man os-release
+def parse_os_release_file(filepath):
+    osrel = {}
+    try:
+        with open(filepath) as osrelfil:
+            osrel = parse_os_release_lines(osrelfil)
+    except IOError as ex:
+        # I am sorry, but we do not support logging here :(
+        pass
+
+    return osrel
+
+def getProduct_fromOSRELEASE(file_path=SYSTEM_OS_RELEASE_FILE):
+    osrel = parse_os_release_file(file_path)
+
+    for pf in OS_RELEASE_PRODUCT_FIELDS:
+        if pf in osrel:
+            return osrel[pf]
+
+    return None
+
+def getVersion_fromOSRELEASE(file_path=SYSTEM_OS_RELEASE_FILE):
+    osrel = parse_os_release_file(file_path)
+
+    for vf in OS_RELEASE_VERSION_FIELDS:
+        if vf in osrel:
+            return osrel[vf]
+
+    return None
+
 def getProduct_fromFILE():
     for each_path in SYSTEM_RELEASE_PATHS:
         if os.path.exists(each_path):
@@ -69,7 +123,6 @@ def getProduct_fromFILE():
             content = file.read()
             if content.startswith("Red Hat Enterprise Linux"):
                 return "Red Hat Enterprise Linux"
-
             if content.startswith("Fedora"):
                 return "Fedora"
 
@@ -92,11 +145,11 @@ def getVersion_fromFILE():
             if content.find("Rawhide") > -1:
                 return "rawhide"
 
-            clist = content.split(" ")
-            i = clist.index("release")
-            return clist[i+1]
-        else:
-            return ""
+            i = content.find(" release")
+            if i > -1:
+                return content[i + len(" release"):]
+
+    return ""
 
 def getProduct_fromPRODUCT():
     try:
@@ -127,7 +180,7 @@ def getProduct():
        asking anaconda
        Always return as a string.
     """
-    for getter in (getProduct_fromFILE, getProduct_fromPRODUCT):
+    for getter in (getProduct_fromOSRELEASE, getProduct_fromFILE, getProduct_fromPRODUCT):
         product = getter()
         if product:
             return product
@@ -140,7 +193,7 @@ def getVersion():
        asking anaconda
        Always return as a string.
     """
-    for getter in (getVersion_fromFILE, getVersion_fromPRODUCT):
+    for getter in (getVersion_fromOSRELEASE, getVersion_fromFILE, getVersion_fromPRODUCT):
         version = getter()
         if version:
             return version
