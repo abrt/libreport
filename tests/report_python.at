@@ -1,0 +1,33 @@
+# -*- Autotest -*-
+
+AT_BANNER([report_python])
+
+## ----------------------- ##
+## get_from_etc_os_release ##
+## ----------------------- ##
+
+AT_PYTESTFUN([get_from_etc_os_release],
+[[import sys
+
+sys.path.insert(0, "../../../src/report-python/.libs")
+
+report = __import__("report-python", globals(), locals(), [], -1)
+sys.modules["report"] = report
+
+import os
+
+if not os.path.exists("/etc/os-release"):
+    print "Cannot run the test: '/etc/os-release' does not exist"
+    sys.exit(1)
+
+exit_code = 0
+if report.getProduct_fromOSRELEASE() != report.getProduct():
+    print "getProduct() did not return PRODUCT from /etc/os-release"
+    exit_code += 1
+
+if report.getVersion_fromOSRELEASE() != report.getVersion():
+    print "getVersion() did not return PRODUCT from /etc/os-release"
+    exit_code += 1
+
+sys.exit(exit_code)
+]])

@@ -24,4 +24,17 @@ AT_COMPILE([$1])
 AT_CHECK([./$1], 0, [ignore], [ignore])
 AT_CLEANUP])
 
+# ------------------------
+# AT_PYTESTFUN(NAME, SOURCE)
+# ------------------------
+
+# Create a test named NAME by running Python file with contents SOURCE.  The
+# stdout and stderr output of the Python program is ignored by Autotest.
+
+m4_define([AT_PYTESTFUN],
+[AT_SETUP([$1])
+AT_DATA([$1], [$2])
+AT_CHECK([PYTHONPATH=../../../src python ./$1], 0, [ignore], [ignore])
+AT_CLEANUP])
+
 AT_INIT

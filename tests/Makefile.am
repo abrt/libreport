@@ -38,7 +38,8 @@ TESTSUITE_AT = \
   reported_to.at \
   make_description.at \
   libreport_types.at \
-  xml_definition.at
+  xml_definition.at \
+  report_python.at
 
 EXTRA_DIST += $(TESTSUITE_AT)
 TESTSUITE = $(srcdir)/testsuite
