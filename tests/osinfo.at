@@ -393,3 +393,55 @@ int main(void)
     return 0;
 }
 ]])
+
+## ------------------- ##
+## parse_osinfo_python ##
+## ------------------- ##
+
+AT_PYTESTFUN([parse_osinfo_python],
+[[import sys
+
+sys.path.insert(0, "../../../src/report-python/.libs")
+
+report = __import__("report-python", globals(), locals(), [], -1)
+sys.modules["report"] = report
+
+lines = [
+    'NAME=fedora',
+    'VERSION="20 (Heisenbug)"',
+    'ID=fedora',
+    'VERSION_ID=20',
+    'PRETTY_NAME="Fedora 20 (Heisenbug)"',
+    'ANSI_COLOR="0;34"',
+    'CPE_NAME="cpe:/o:fedoraproject:fedora:20"',
+    'HOME_URL="https://fedoraproject.org/"',
+    'BUG_REPORT_URL="https://bugzilla.redhat.com/"',
+    'REDHAT_BUGZILLA_PRODUCT="Fedora"',
+    'REDHAT_BUGZILLA_PRODUCT_VERSION=20',
+    'REDHAT_SUPPORT_PRODUCT="Fedora"',
+    'REDHAT_SUPPORT_PRODUCT_VERSION=20',
+]
+
+expected = {
+    'NAME':'fedora',
+    'VERSION':'20 (Heisenbug)',
+    'ID':'fedora',
+    'VERSION_ID':'20',
+    'PRETTY_NAME':'Fedora 20 (Heisenbug)',
+    'ANSI_COLOR':'0;34',
+    'CPE_NAME':'cpe:/o:fedoraproject:fedora:20',
+    'HOME_URL':'https://fedoraproject.org/',
+    'BUG_REPORT_URL':'https://bugzilla.redhat.com/',
+    'REDHAT_BUGZILLA_PRODUCT':'Fedora',
+    'REDHAT_BUGZILLA_PRODUCT_VERSION':'20',
+    'REDHAT_SUPPORT_PRODUCT':'Fedora',
+    'REDHAT_SUPPORT_PRODUCT_VERSION':'20'
+}
+
+osrel = report.parse_os_release_lines(lines)
+
+print sorted(expected.items())
+print sorted(osrel.items())
+
+sys.exit(not bool(osrel == expected))
+]])
