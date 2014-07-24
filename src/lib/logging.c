@@ -66,7 +66,7 @@ static void log_handler(int level,
                         int line,
                         const char *func)
 {
-    if (!logmode)
+    if (!logmode || !should_log(level))
         return;
 
     /* This is ugly and costs +60 bytes compared to multiple
@@ -122,29 +122,25 @@ static void log_handler(int level,
     strcpy(&msg[used], msg_eol);
 
     if (flags & LOGMODE_STDIO) {
-        if(should_log(level))
-            full_write(STDERR_FILENO, msg, used + msgeol_len);
+        full_write(STDERR_FILENO, msg, used + msgeol_len);
     }
     msg[used] = '\0'; /* remove msg_eol (usually "\n") */
     if (flags & LOGMODE_SYSLOG) {
-        if(should_log(level))
-            syslog(level, "%s", msg + prefix_len);
+        syslog(level, "%s", msg + prefix_len);
     }
 
     if ((flags & LOGMODE_CUSTOM) && g_custom_logger) {
-        if(should_log(level))
-            g_custom_logger(msg + prefix_len);
+        g_custom_logger(msg + prefix_len);
     }
 
     if (flags & LOGMODE_JOURNAL) {
-        if(should_log(level))
-            sd_journal_send("MESSAGE=%s", msg + prefix_len,
-                            "PRIORITY=%d", level,
-                            "CODE_FILE=%s", file,
-                            "CODE_LINE=%d", line,
-                            "CODE_FUNC=%s", func,
-                            "SYSLOG_FACILITY=1",
-                            NULL);
+        sd_journal_send("MESSAGE=%s", msg + prefix_len,
+                        "PRIORITY=%d", level,
+                        "CODE_FILE=%s", file,
+                        "CODE_LINE=%d", line,
+                        "CODE_FUNC=%s", func,
+                        "SYSLOG_FACILITY=1",
+                        NULL);
     }
 }
 
