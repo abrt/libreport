@@ -260,9 +260,11 @@ reporter_ureport_CPPFLAGS = \
     -I$(srcdir)/../lib \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
+    $(JSON_C_CFLAGS) \
     -DPLUGINS_CONF_DIR=\"$(REPORT_PLUGINS_CONF_DIR)\" \
     -D_GNU_SOURCE
 reporter_ureport_LDADD = \
+    $(JSON_C_LIBS) \
     ../lib/libreport.la \
     ../lib/libreport-web.la
 endif
