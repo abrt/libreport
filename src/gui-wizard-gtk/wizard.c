@@ -261,12 +261,19 @@ static void wrap_fixer(GtkWidget *widget, gpointer data_unused)
     {
         GtkLabel *label = (GtkLabel*)widget;
         //const char *txt = gtk_label_get_label(label);
+#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 5))
         GtkMisc *misc = (GtkMisc*)widget;
         gfloat yalign; // = 111;
         gint ypad; // = 111;
         if (gtk_label_get_line_wrap(label)
          && (gtk_misc_get_alignment(misc, NULL, &yalign), yalign == 0)
          && (gtk_misc_get_padding(misc, NULL, &ypad), ypad == 0)
+#else
+        if (gtk_label_get_line_wrap(label)
+         && (gtk_widget_get_halign(widget) == GTK_ALIGN_START)
+         && (gtk_widget_get_margin_top(widget) == 0)
+         && (gtk_widget_get_margin_bottom(widget) == 0)
+#endif
         ) {
             //log("label '%s' set to autowrap", txt);
             make_label_autowrap_on_resize(label);
@@ -942,7 +949,12 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
     if (!event_name || !event_name[0])
     {
         GtkWidget *lbl = gtk_label_new(_("No reporting targets are defined for this problem. Check configuration in /etc/libreport/*"));
+#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 5))
         gtk_misc_set_alignment(GTK_MISC(lbl), /*x*/ 0.0, /*y*/ 0.0);
+#else
+        gtk_widget_set_halign (lbl, GTK_ALIGN_START);
+        gtk_widget_set_valign (lbl, GTK_ALIGN_END);
+#endif
         make_label_autowrap_on_resize(GTK_LABEL(lbl));
         gtk_box_pack_start(box, lbl, /*expand*/ true, /*fill*/ false, /*padding*/ 0);
         return NULL;
@@ -1487,12 +1499,13 @@ static void hide_next_step_button()
     /* 1. hide next button */
     gtk_widget_hide(g_btn_next);
     /* 2. move close button to the last position */
-    gtk_box_reorder_child(g_box_buttons, g_btn_close, 3);
+    gtk_box_set_child_packing(g_box_buttons, g_btn_close, false, false, 5, GTK_PACK_END);
 }
 
 static void show_next_step_button()
 {
-    gtk_box_reorder_child(g_box_buttons, g_btn_close, 0);
+    gtk_box_set_child_packing(g_box_buttons, g_btn_close, false, false, 5, GTK_PACK_START);
+
     gtk_widget_show(g_btn_next);
 }
 
@@ -2044,7 +2057,12 @@ static void add_warning(const char *warning)
     /* should be safe to free it, gtk calls strdup() to copy it */
     free(label_str);
 
+#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 5))
     gtk_misc_set_alignment(GTK_MISC(warning_lbl), 0.0, 0.0);
+#else
+    gtk_widget_set_halign (warning_lbl, GTK_ALIGN_START);
+    gtk_widget_set_valign (warning_lbl, GTK_ALIGN_END);
+#endif
     gtk_label_set_justify(GTK_LABEL(warning_lbl), GTK_JUSTIFY_LEFT);
     gtk_label_set_line_wrap(GTK_LABEL(warning_lbl), TRUE);
 
@@ -3415,17 +3433,16 @@ void create_assistant(bool expert_mode)
     gtk_box_pack_start(g_box_buttons, g_btn_stop, false, false, 5);
     gtk_box_pack_start(g_box_buttons, g_btn_onfail, false, false, 5);
     /* Btns above are to the left, the rest are to the right: */
+#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 5))
     GtkWidget *w = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);
     gtk_box_pack_start(g_box_buttons, w, true, true, 5);
     gtk_box_pack_start(g_box_buttons, g_btn_next, false, false, 5);
+#else
+    gtk_widget_set_valign(GTK_WIDGET(g_btn_next), GTK_ALIGN_END);
+    gtk_box_pack_end(g_box_buttons, g_btn_next, false, false, 5);
+#endif
 
     {   /* Warnings area widget definition start */
-        GtkWidget *alignment_left = gtk_alignment_new(0.5,0.5,1,1);
-        gtk_widget_set_visible(alignment_left, TRUE);
-
-        GtkWidget *alignment_right = gtk_alignment_new(0.5,0.5,1,1);
-        gtk_widget_set_visible(alignment_right, TRUE);
-
         g_box_warning_labels = GTK_BOX(gtk_box_new(GTK_ORIENTATION_VERTICAL, 0));
         gtk_widget_set_visible(GTK_WIDGET(g_box_warning_labels), TRUE);
 
@@ -3439,10 +3456,24 @@ void create_assistant(bool expert_mode)
         g_widget_warnings_area = GTK_WIDGET(gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0));
         gtk_widget_set_visible(g_widget_warnings_area, FALSE);
         gtk_widget_set_no_show_all(g_widget_warnings_area, TRUE);
+
+#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 5))
+        GtkWidget *alignment_left = gtk_alignment_new(0.5,0.5,1,1);
+        gtk_widget_set_visible(alignment_left, TRUE);
         gtk_box_pack_start(GTK_BOX(g_widget_warnings_area), alignment_left, true, false, 0);
+#else
+        gtk_widget_set_valign(GTK_WIDGET(image), GTK_ALIGN_CENTER);
+        gtk_widget_set_valign(GTK_WIDGET(vbox), GTK_ALIGN_CENTER);
+#endif
+
         gtk_box_pack_start(GTK_BOX(g_widget_warnings_area), image, false, false, 5);
         gtk_box_pack_start(GTK_BOX(g_widget_warnings_area), GTK_WIDGET(vbox), false, false, 0);
+
+#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 5))
         gtk_box_pack_start(GTK_BOX(g_widget_warnings_area), alignment_right, true, false, 0);
+        GtkWidget *alignment_right = gtk_alignment_new(0.5,0.5,1,1);
+        gtk_widget_set_visible(alignment_right, TRUE);
+#endif
     }   /* Warnings area widget definition end */
 
     g_box_assistant = GTK_BOX(gtk_box_new(GTK_ORIENTATION_VERTICAL, 0));

@@ -366,7 +366,7 @@ GtkWindow *create_config_list_window(GHashTable *configs, GtkWindow *parent)
     //buttons
     GtkWidget *btn_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL,5);
     GtkWidget *configure_btn = gtk_button_new_with_mnemonic(_("C_onfigure"));
-    GtkWidget *align = gtk_alignment_new(0, 0, 0, 0);
+
     GtkWidget *close_btn = gtk_button_new_with_mnemonic(_("_Close"));
     GtkSizeGroup *sg = gtk_size_group_new(GTK_SIZE_GROUP_BOTH);
     //force apply and close to have the same size
@@ -377,8 +377,13 @@ GtkWindow *create_config_list_window(GHashTable *configs, GtkWindow *parent)
     g_signal_connect(close_btn, "clicked", (GCallback)on_close_cb, window);
 
     gtk_box_pack_start(GTK_BOX(btn_box), close_btn, 0, 0, 5);
+#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 5))
+    GtkWidget *align = gtk_alignment_new(0, 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(btn_box), align, true, true, 5);
     gtk_box_pack_start(GTK_BOX(btn_box), configure_btn, 0, 0, 5);
+#else
+    gtk_box_pack_end(GTK_BOX(btn_box), configure_btn, 0, 0, 5);
+#endif
 
 
     gtk_box_pack_start(GTK_BOX(main_vbox), btn_box, 0, 0, 0);
