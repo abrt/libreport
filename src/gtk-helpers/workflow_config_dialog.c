@@ -37,9 +37,14 @@ static void create_event_config_dialog_content_cb(event_config_t *ec, gpointer n
     GtkWidget *ev_lbl = gtk_label_new(ec_get_screen_name(ec));
 
     GtkWidget *content = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 11) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 11 && GTK_MICRO_VERSION < 2))
     gtk_widget_set_margin_left(content, 10);
-    gtk_widget_set_margin_top(content, 5);
     gtk_widget_set_margin_right(content, 10);
+#else
+    gtk_widget_set_margin_start(content, 10);
+    gtk_widget_set_margin_end(content, 10);
+#endif
+    gtk_widget_set_margin_top(content, 5);
     gtk_widget_set_margin_bottom(content, 10);
 
     config_dialog_t *cdialog = create_event_config_dialog_content(ec, (GtkWidget *)content);
