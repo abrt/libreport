@@ -229,6 +229,39 @@ static bool check_minimal_bt_rating(const char *event_name);
 static char *get_next_processed_event(GList **events_list);
 static void on_next_btn_cb(GtkWidget *btn, gpointer user_data);
 
+/* wizard.glade file as a string WIZARD_GLADE_CONTENTS: */
+#include "wizard_glade.c"
+
+static GtkBuilder *make_builder()
+{
+    GError *error = NULL;
+    GtkBuilder *builder = gtk_builder_new();
+    if (!g_glade_file)
+    {
+        /* load additional widgets from glade */
+        gtk_builder_add_objects_from_string(builder,
+                WIZARD_GLADE_CONTENTS, sizeof(WIZARD_GLADE_CONTENTS) - 1,
+                (gchar**)misc_widgets,
+                &error);
+        /* Load pages from internal string */
+        gtk_builder_add_objects_from_string(builder,
+                WIZARD_GLADE_CONTENTS, sizeof(WIZARD_GLADE_CONTENTS) - 1,
+                (gchar**)page_names,
+                &error);
+        if (error != NULL)
+            error_msg_and_die("Error loading glade data: %s", error->message);
+    }
+    else
+    {
+        /* -g FILE: load IU from it */
+        gtk_builder_add_objects_from_file(builder, g_glade_file, (gchar**)page_names, &error);
+        if (error != NULL)
+            error_msg_and_die("Can't load %s: %s", g_glade_file, error->message);
+    }
+
+    return builder;
+}
+
 static void label_wrapper(GtkWidget *widget, gpointer data_unused)
 {
     if (GTK_IS_CONTAINER(widget))
@@ -2108,11 +2141,15 @@ static void on_sensitive_ticket_clicked_cb(GtkWidget *button, gpointer user_data
 
 static void add_sensitive_data_warning(void)
 {
-    GtkWidget *sens_data_warn = GTK_WIDGET(gtk_builder_get_object(g_builder, SENSITIVE_DATA_WARN));
-    GtkButton *sens_ticket_cb = GTK_BUTTON(gtk_builder_get_object(g_builder, PRIVATE_TICKET_CB));
+    GtkBuilder *builder = make_builder();
+
+    GtkWidget *sens_data_warn = GTK_WIDGET(gtk_builder_get_object(builder, SENSITIVE_DATA_WARN));
+    GtkButton *sens_ticket_cb = GTK_BUTTON(gtk_builder_get_object(builder, PRIVATE_TICKET_CB));
 
     g_signal_connect(sens_ticket_cb, "toggled", G_CALLBACK(on_sensitive_ticket_clicked_cb), NULL);
     add_widget_to_warning_area(GTK_WIDGET(sens_data_warn));
+
+    g_object_unref(builder);
 }
 
 static void show_warnings(void)
@@ -3173,9 +3210,6 @@ static gint on_key_press_event_in_item_list(GtkTreeView *treeview, GdkEventKey *
 
 /* Initialization */
 
-/* wizard.glade file as a string WIZARD_GLADE_CONTENTS: */
-#include "wizard_glade.c"
-
 static void on_next_btn_cb(GtkWidget *btn, gpointer user_data)
 {
     gint current_page_no = gtk_notebook_get_current_page(g_assistant);
@@ -3190,30 +3224,7 @@ static void on_next_btn_cb(GtkWidget *btn, gpointer user_data)
 
 static void add_pages(void)
 {
-    GError *error = NULL;
-    g_builder = gtk_builder_new();
-    if (!g_glade_file)
-    {
-        /* load additional widgets from glade */
-        gtk_builder_add_objects_from_string(g_builder,
-                WIZARD_GLADE_CONTENTS, sizeof(WIZARD_GLADE_CONTENTS) - 1,
-                (gchar**)misc_widgets,
-                &error);
-        /* Load pages from internal string */
-        gtk_builder_add_objects_from_string(g_builder,
-                WIZARD_GLADE_CONTENTS, sizeof(WIZARD_GLADE_CONTENTS) - 1,
-                (gchar**)page_names,
-                &error);
-        if (error != NULL)
-            error_msg_and_die("Error loading glade data: %s", error->message);
-    }
-    else
-    {
-        /* -g FILE: load IU from it */
-        gtk_builder_add_objects_from_file(g_builder, g_glade_file, (gchar**)page_names, &error);
-        if (error != NULL)
-            error_msg_and_die("Can't load %s: %s", g_glade_file, error->message);
-    }
+    g_builder = make_builder();
 
     int i;
     int page_no = 0;
