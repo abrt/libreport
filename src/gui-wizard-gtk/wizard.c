@@ -3470,9 +3470,9 @@ void create_assistant(bool expert_mode)
         gtk_box_pack_start(GTK_BOX(g_widget_warnings_area), GTK_WIDGET(vbox), false, false, 0);
 
 #if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 5))
-        gtk_box_pack_start(GTK_BOX(g_widget_warnings_area), alignment_right, true, false, 0);
         GtkWidget *alignment_right = gtk_alignment_new(0.5,0.5,1,1);
         gtk_widget_set_visible(alignment_right, TRUE);
+        gtk_box_pack_start(GTK_BOX(g_widget_warnings_area), alignment_right, true, false, 0);
 #endif
     }   /* Warnings area widget definition end */
 
