@@ -72,6 +72,55 @@ void problem_data_reload_from_dump_dir(void)
     g_cd = new_cd;
 }
 
+static void
+preferences_activated(GSimpleAction *action,
+                           GVariant *parameter,
+                           gpointer data)
+{
+    GtkApplication *app = GTK_APPLICATION(data);
+    show_config_list_dialog(GTK_WINDOW(gtk_application_get_active_window(app)));
+}
+
+static void
+quit_activated(GSimpleAction *action,
+                           GVariant *parameter,
+                           gpointer data)
+{
+    g_application_quit(G_APPLICATION(data));
+}
+
+static GActionEntry app_entries[] =
+{
+    { "preferences", preferences_activated, NULL, NULL, NULL },
+    { "quit", quit_activated, NULL, NULL, NULL }
+};
+
+static void
+startup_wizard(GApplication *app,
+                gpointer user_data)
+{
+    g_action_map_add_action_entries(G_ACTION_MAP (app),
+            app_entries, G_N_ELEMENTS (app_entries),
+            app);
+
+    GMenu *app_menu = g_menu_new();
+    g_menu_append(app_menu, _("Preferences"), "app.preferences");
+
+    GMenu *service_app_menu_sec = g_menu_new();
+    g_menu_append(service_app_menu_sec, _("Quit"), "app.quit");
+    g_menu_append_section(app_menu, /*no title*/NULL, G_MENU_MODEL(service_app_menu_sec));
+
+    gtk_application_set_app_menu (GTK_APPLICATION (app), G_MENU_MODEL(app_menu));
+}
+
+static void
+activate_wizard(GApplication *app,
+                gpointer user_data)
+{
+    create_assistant(GTK_APPLICATION(app), (bool)user_data);
+    update_gui_state_from_problem_data(UPDATE_SELECTED_EVENT);
+}
+
 int main(int argc, char **argv)
 {
     bool expert_mode = false;
@@ -166,14 +215,13 @@ int main(int argc, char **argv)
 
     problem_data_reload_from_dump_dir();
 
-    create_assistant(expert_mode);
-
     g_custom_logger = &show_error_as_msgbox;
-
-    update_gui_state_from_problem_data(UPDATE_SELECTED_EVENT);
-
+    GtkApplication *app = gtk_application_new("org.freedesktop.libreport.report", G_APPLICATION_FLAGS_NONE);
+    g_signal_connect(app, "activate", G_CALLBACK(activate_wizard), (gpointer)expert_mode);
+    g_signal_connect(app, "startup",  G_CALLBACK(startup_wizard),  NULL);
     /* Enter main loop */
-    gtk_main();
+    g_application_run(G_APPLICATION(app), argc, argv);
+    g_object_unref(app);
 
     if (opts & OPT_d)
         delete_dump_dir_possibly_using_abrtd(g_dump_dir_name);
