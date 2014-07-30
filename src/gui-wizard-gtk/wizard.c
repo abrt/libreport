@@ -2174,12 +2174,6 @@ static void on_log_changed(GtkTextBuffer *buffer, gpointer user_data)
     gtk_widget_show(GTK_WIDGET(g_exp_report_log));
 }
 
-
-static void on_show_event_list_cb(GtkWidget *button, gpointer user_data)
-{
-    show_config_list_dialog(GTK_WINDOW(g_wnd_assistant));
-}
-
 #if 0
 static void log_ready_state(void)
 {
@@ -3237,16 +3231,6 @@ static void add_pages(void)
     gtk_widget_override_font(GTK_WIDGET(g_tv_event_log), g_monospace_font);
     fix_all_wrapped_labels(GTK_WIDGET(g_assistant));
 
-    /* Configure btn on select analyzers page */
-    GtkWidget *img_config_btn = gtk_image_new_from_icon_name("preferences-system", GTK_ICON_SIZE_BUTTON);
-    GtkWidget *config_btn = GTK_WIDGET(gtk_builder_get_object(g_builder, "button_cfg1"));
-    if (config_btn)
-    {
-        g_signal_connect(G_OBJECT(config_btn), "clicked", G_CALLBACK(on_show_event_list_cb), NULL);
-        gtk_button_set_image(GTK_BUTTON(config_btn), img_config_btn);
-        gtk_button_set_image_position(GTK_BUTTON(config_btn), GTK_POS_RIGHT);
-    }
-
     g_signal_connect(g_cb_no_comment, "toggled", G_CALLBACK(on_no_comment_toggled), NULL);
 
     g_signal_connect(g_rb_forbidden_words, "toggled", G_CALLBACK(on_forbidden_words_toggled), NULL);
@@ -3342,7 +3326,7 @@ static void assistant_quit_cb(void *obj, void *data)
         g_loaded_texts = NULL;
     }
 
-    gtk_main_quit();
+    gtk_widget_destroy(GTK_WIDGET(data));
 }
 
 static void on_btn_startcast(GtkWidget *btn, gpointer user_data)
@@ -3398,7 +3382,7 @@ static bool is_screencast_available()
     return status == 0;
 }
 
-void create_assistant(bool expert_mode)
+void create_assistant(GtkApplication *app, bool expert_mode)
 {
     g_loaded_texts = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 
@@ -3487,7 +3471,7 @@ void create_assistant(bool expert_mode)
     gtk_widget_hide(g_btn_onfail);
     gtk_widget_show(g_btn_next);
 
-    g_wnd_assistant = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
+    g_wnd_assistant = GTK_WINDOW(gtk_application_window_new(app));
     gtk_container_add(GTK_CONTAINER(g_wnd_assistant), GTK_WIDGET(g_box_assistant));
 
     gtk_window_set_default_size(g_wnd_assistant, DEFAULT_WIDTH, DEFAULT_HEIGHT);
@@ -3502,12 +3486,12 @@ void create_assistant(bool expert_mode)
 
     create_details_treeview();
 
-    g_signal_connect(g_btn_close, "clicked", G_CALLBACK(assistant_quit_cb), NULL);
+    g_signal_connect(g_btn_close, "clicked", G_CALLBACK(assistant_quit_cb), g_wnd_assistant);
     g_signal_connect(g_btn_stop, "clicked", G_CALLBACK(on_btn_cancel_event), NULL);
     g_signal_connect(g_btn_onfail, "clicked", G_CALLBACK(on_btn_failed_cb), NULL);
     g_signal_connect(g_btn_next, "clicked", G_CALLBACK(on_next_btn_cb), NULL);
 
-    g_signal_connect(g_wnd_assistant, "destroy", G_CALLBACK(assistant_quit_cb), NULL);
+    g_signal_connect(g_wnd_assistant, "destroy", G_CALLBACK(assistant_quit_cb), g_wnd_assistant);
     g_signal_connect(g_assistant, "switch-page", G_CALLBACK(on_page_prepare), NULL);
 
     g_signal_connect(g_tb_approve_bt, "toggled", G_CALLBACK(on_bt_approve_toggle), NULL);
