@@ -2911,17 +2911,20 @@ static void on_sensitive_word_selection_changed(GtkTreeSelection *sel, gpointer 
     gtk_text_view_scroll_to_iter(new_word->tev, &(new_word->start), 0.0, false, 0, 0);
 }
 
-static gboolean highlight_search(gpointer user_data)
+static void highlight_search(GtkEntry *entry)
 {
-    GtkEntry *entry = GTK_ENTRY(user_data);
-
     g_search_text = gtk_entry_get_text(entry);
 
     log_notice("searching: '%s'", g_search_text);
     GList *words = g_list_append(NULL, (gpointer)g_search_text);
     highligh_words_in_tabs(words, NULL);
     g_list_free(words);
+}
 
+static gboolean highlight_search_on_timeout(gpointer user_data)
+{
+    g_timeout = 0;
+    highlight_search(GTK_ENTRY(user_data));
     /* returning false will make glib to remove this event */
     return false;
 }
@@ -2935,7 +2938,7 @@ static void search_timeout(GtkEntry *entry)
      */
     if (g_timeout != 0)
         g_source_remove(g_timeout);
-    g_timeout = g_timeout_add(500, &highlight_search, (gpointer)entry);
+    g_timeout = g_timeout_add(500, &highlight_search_on_timeout, (gpointer)entry);
 }
 
 static void on_forbidden_words_toggled(GtkToggleButton *btn, gpointer user_data)
