@@ -68,6 +68,7 @@ static GtkWidget *g_btn_stop;
 static GtkWidget *g_btn_close;
 static GtkWidget *g_btn_next;
 static GtkWidget *g_btn_onfail;
+static GtkWidget *g_btn_repeat;
 
 static GtkBox *g_box_events;
 static GtkBox *g_box_workflows;
@@ -228,6 +229,39 @@ static void add_warning(const char *warning);
 static bool check_minimal_bt_rating(const char *event_name);
 static char *get_next_processed_event(GList **events_list);
 static void on_next_btn_cb(GtkWidget *btn, gpointer user_data);
+
+/* wizard.glade file as a string WIZARD_GLADE_CONTENTS: */
+#include "wizard_glade.c"
+
+static GtkBuilder *make_builder()
+{
+    GError *error = NULL;
+    GtkBuilder *builder = gtk_builder_new();
+    if (!g_glade_file)
+    {
+        /* load additional widgets from glade */
+        gtk_builder_add_objects_from_string(builder,
+                WIZARD_GLADE_CONTENTS, sizeof(WIZARD_GLADE_CONTENTS) - 1,
+                (gchar**)misc_widgets,
+                &error);
+        /* Load pages from internal string */
+        gtk_builder_add_objects_from_string(builder,
+                WIZARD_GLADE_CONTENTS, sizeof(WIZARD_GLADE_CONTENTS) - 1,
+                (gchar**)page_names,
+                &error);
+        if (error != NULL)
+            error_msg_and_die("Error loading glade data: %s", error->message);
+    }
+    else
+    {
+        /* -g FILE: load IU from it */
+        gtk_builder_add_objects_from_file(builder, g_glade_file, (gchar**)page_names, &error);
+        if (error != NULL)
+            error_msg_and_die("Can't load %s: %s", g_glade_file, error->message);
+    }
+
+    return builder;
+}
 
 static void label_wrapper(GtkWidget *widget, gpointer data_unused)
 {
@@ -1123,6 +1157,31 @@ static void remove_tabs_from_notebook(GtkNotebook *notebook)
         */
         gtk_notebook_remove_page(notebook, 0); //we need to always the page 0
     }
+
+    /* Turn off the changed callback during the update */
+    g_signal_handler_block(g_tv_sensitive_sel, g_tv_sensitive_sel_hndlr);
+
+    g_current_highlighted_word = NULL;
+
+    GtkTreeIter iter;
+    gboolean valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(g_ls_sensitive_list), &iter);
+    while (valid)
+    {
+        char *text = NULL;
+        search_item_t *word = NULL;
+
+        gtk_tree_model_get(GTK_TREE_MODEL(g_ls_sensitive_list), &iter,
+                SEARCH_COLUMN_TEXT, &text,
+                SEARCH_COLUMN_ITEM, &word,
+                -1);
+
+        free(text);
+        free(word);
+
+        valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(g_ls_sensitive_list), &iter);
+    }
+    gtk_list_store_clear(g_ls_sensitive_list);
+    g_signal_handler_unblock(g_tv_sensitive_sel, g_tv_sensitive_sel_hndlr);
 }
 
 static void append_item_to_ls_details(gpointer name, gpointer value, gpointer data)
@@ -1509,9 +1568,18 @@ static void show_next_step_button()
     gtk_widget_show(g_btn_next);
 }
 
-static void terminate_event_chain()
+enum {
+ TERMINATE_NOFLAGS    = 0,
+ TERMINATE_WITH_RERUN = 1 << 0,
+};
+
+static void terminate_event_chain(int flags)
 {
     if (g_expert_mode)
+        return;
+
+    hide_next_step_button();
+    if ((flags & TERMINATE_WITH_RERUN))
         return;
 
     free(g_event_selected);
@@ -1519,14 +1587,12 @@ static void terminate_event_chain()
 
     g_list_free_full(g_auto_event_list, free);
     g_auto_event_list = NULL;
-
-    hide_next_step_button();
 }
 
-static void cancel_processing(GtkLabel *status_label, const char *message)
+static void cancel_processing(GtkLabel *status_label, const char *message, int terminate_flags)
 {
     gtk_label_set_text(status_label, message ? message : _("Processing was canceled"));
-    terminate_event_chain();
+    terminate_event_chain(terminate_flags);
 }
 
 static void update_command_run_log(const char* message, struct analyze_event_data *evd)
@@ -1691,6 +1757,25 @@ static void on_btn_failed_cb(GtkButton *button)
     gtk_widget_hide(GTK_WIDGET(button));
 }
 
+static gint select_next_page_no(gint current_page_no, gpointer data);
+static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer user_data);
+
+static void on_btn_repeat_cb(GtkButton *button)
+{
+    g_auto_event_list = g_list_prepend(g_auto_event_list, g_event_selected);
+    g_event_selected = NULL;
+
+    show_next_step_button();
+    clear_warnings();
+
+    const gint current_page_no = gtk_notebook_get_current_page(g_assistant);
+    const int next_page_no = select_next_page_no(pages[PAGENO_SUMMARY].page_no, NULL);
+    if (current_page_no == next_page_no)
+        on_page_prepare(g_assistant, gtk_notebook_get_nth_page(g_assistant, next_page_no), NULL);
+    else
+        gtk_notebook_set_current_page(g_assistant, next_page_no);
+}
+
 static void on_failed_event(const char *event_name)
 {
     /* Don't show the 'on failure' button if the processed event
@@ -1700,14 +1785,25 @@ static void on_failed_event(const char *event_name)
         return;
 
    add_warning(
-_("Processing of the problem failed. This can have many reasons but there are two most common:\n"\
+_("Processing of the problem failed. This can have many reasons but there are three most common:\n"\
 "\t▫ <b>network connection problems</b>\n"\
-"\t▫ <b>corrupted problem data</b>\n"));
+"\t▫ <b>corrupted problem data</b>\n"\
+"\t▫ <b>invalid configuration</b>"
+));
+
+    if (!g_expert_mode)
+    {
+        add_warning(
+_("If you want to update the configuration and try to report again, please open <b>Preferences</b> item\n"
+"in the application menu and after applying the configuration changes click <b>Repeat</b> button."));
+        gtk_widget_show(g_btn_repeat);
+    }
 
     add_warning(
-_("If you want to help us, please click on the upload button and provide all problem data for a deep analysis.\n"\
-"<i>Before you do that, please consider the security risks. Problem data may contain sensitive information like passwords.\n"\
-"The uploaded data are stored in a protected storage and only a limited number of persons can read them.</i>"));
+_("If you are sure that this problem is not caused by network problems neither by invalid configuration\n"
+"and want to help us, please click on the upload button and provide all problem data for a deep analysis.\n"\
+"<i>Before you do that, please consider the security risks. Problem data may contain sensitive information like\n"\
+"passwords. The uploaded data are stored in a protected storage and only a limited number of persons can read them.</i>"));
 
     show_warnings();
 
@@ -1734,7 +1830,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         retval = 0;
         run_state->process_status = 0;
         stop_requested = true;
-        terminate_event_chain();
+        terminate_event_chain(TERMINATE_NOFLAGS);
     }
 
     unexport_event_config(evd->env_list);
@@ -1823,17 +1919,17 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
             gtk_widget_show(GTK_WIDGET(g_img_process_fail));
             /* 256 means NOT_REPORTABLE */
             if (retval == 256)
-                cancel_processing(g_lbl_event_log, _("Processing was interrupted because the problem is not reportable."));
+                cancel_processing(g_lbl_event_log, _("Processing was interrupted because the problem is not reportable."), TERMINATE_NOFLAGS);
             else
             {
                 /* We use SIGTERM to stop event processing on user's request.
                  * So SIGTERM is not a failure.
                  */
                 if (retval == EXIT_CANCEL_BY_USER || WTERMSIG(run_state->process_status) == SIGTERM)
-                    cancel_processing(g_lbl_event_log, /* default message */ NULL);
+                    cancel_processing(g_lbl_event_log, /* default message */ NULL, TERMINATE_NOFLAGS);
                 else
                 {
-                    cancel_processing(g_lbl_event_log, _("Processing failed."));
+                    cancel_processing(g_lbl_event_log, _("Processing failed."), TERMINATE_WITH_RERUN);
                     on_failed_event(evd->event_name);
                 }
             }
@@ -1972,7 +2068,7 @@ static void start_event_run(const char *event_name)
         char *msg = xasprintf(_("No processing for event '%s' is defined"), event_name);
         append_to_textview(g_tv_event_log, msg);
         free(msg);
-        cancel_processing(g_lbl_event_log, _("Processing failed."));
+        cancel_processing(g_lbl_event_log, _("Processing failed."), TERMINATE_NOFLAGS);
         return;
     }
 
@@ -1983,7 +2079,7 @@ static void start_event_run(const char *event_name)
         free_run_event_state(state);
         if (!g_expert_mode)
         {
-            cancel_processing(g_lbl_event_log, _("Processing interrupted: can't continue without writable directory."));
+            cancel_processing(g_lbl_event_log, _("Processing interrupted: can't continue without writable directory."), TERMINATE_NOFLAGS);
         }
         return; /* user refused to steal, or write error, etc... */
     }
@@ -2083,11 +2179,15 @@ static void on_sensitive_ticket_clicked_cb(GtkWidget *button, gpointer user_data
 
 static void add_sensitive_data_warning(void)
 {
-    GtkWidget *sens_data_warn = GTK_WIDGET(gtk_builder_get_object(g_builder, SENSITIVE_DATA_WARN));
-    GtkButton *sens_ticket_cb = GTK_BUTTON(gtk_builder_get_object(g_builder, PRIVATE_TICKET_CB));
+    GtkBuilder *builder = make_builder();
+
+    GtkWidget *sens_data_warn = GTK_WIDGET(gtk_builder_get_object(builder, SENSITIVE_DATA_WARN));
+    GtkButton *sens_ticket_cb = GTK_BUTTON(gtk_builder_get_object(builder, PRIVATE_TICKET_CB));
 
     g_signal_connect(sens_ticket_cb, "toggled", G_CALLBACK(on_sensitive_ticket_clicked_cb), NULL);
     add_widget_to_warning_area(GTK_WIDGET(sens_data_warn));
+
+    g_object_unref(builder);
 }
 
 static void show_warnings(void)
@@ -2466,8 +2566,6 @@ static gboolean highlight_forbidden(void)
     return result;
 }
 
-static gint select_next_page_no(gint current_page_no, gpointer data);
-
 static char *get_next_processed_event(GList **events_list)
 {
     if (!events_list || !*events_list)
@@ -2579,6 +2677,8 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
     }
 
     gtk_widget_hide(g_btn_onfail);
+    if (!g_expert_mode)
+        gtk_widget_hide(g_btn_repeat);
     /* Save text fields if changed */
     /* Must be called before any GUI operation because the following two
      * functions causes recreating of the text items tabs, thus all updates to
@@ -2799,7 +2899,7 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
             {
                 free(event);
 
-                cancel_processing(g_lbl_event_log, /* default message */ NULL);
+                cancel_processing(g_lbl_event_log, /* default message */ NULL, TERMINATE_NOFLAGS);
                 current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
                 goto again;
             }
@@ -2812,7 +2912,7 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
                                 "(it is likely a known problem). %s"),
                                 problem_data_get_content_or_NULL(g_cd, FILENAME_NOT_REPORTABLE)
                 );
-                cancel_processing(g_lbl_event_log, msg);
+                cancel_processing(g_lbl_event_log, msg, TERMINATE_NOFLAGS);
                 free(msg);
                 current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
                 goto again;
@@ -2931,17 +3031,20 @@ static void on_sensitive_word_selection_changed(GtkTreeSelection *sel, gpointer 
     gtk_text_view_scroll_to_iter(new_word->tev, &(new_word->start), 0.0, false, 0, 0);
 }
 
-static gboolean highlight_search(gpointer user_data)
+static void highlight_search(GtkEntry *entry)
 {
-    GtkEntry *entry = GTK_ENTRY(user_data);
-
     g_search_text = gtk_entry_get_text(entry);
 
     log_notice("searching: '%s'", g_search_text);
     GList *words = g_list_append(NULL, (gpointer)g_search_text);
     highligh_words_in_tabs(words, NULL, /*case insensitive*/true);
     g_list_free(words);
+}
 
+static gboolean highlight_search_on_timeout(gpointer user_data)
+{
+    g_timeout = 0;
+    highlight_search(GTK_ENTRY(user_data));
     /* returning false will make glib to remove this event */
     return false;
 }
@@ -2955,7 +3058,7 @@ static void search_timeout(GtkEntry *entry)
      */
     if (g_timeout != 0)
         g_source_remove(g_timeout);
-    g_timeout = g_timeout_add(500, &highlight_search, (gpointer)entry);
+    g_timeout = g_timeout_add(500, &highlight_search_on_timeout, (gpointer)entry);
 }
 
 static void on_forbidden_words_toggled(GtkToggleButton *btn, gpointer user_data)
@@ -3145,9 +3248,6 @@ static gint on_key_press_event_in_item_list(GtkTreeView *treeview, GdkEventKey *
 
 /* Initialization */
 
-/* wizard.glade file as a string WIZARD_GLADE_CONTENTS: */
-#include "wizard_glade.c"
-
 static void on_next_btn_cb(GtkWidget *btn, gpointer user_data)
 {
     gint current_page_no = gtk_notebook_get_current_page(g_assistant);
@@ -3162,30 +3262,7 @@ static void on_next_btn_cb(GtkWidget *btn, gpointer user_data)
 
 static void add_pages(void)
 {
-    GError *error = NULL;
-    g_builder = gtk_builder_new();
-    if (!g_glade_file)
-    {
-        /* load additional widgets from glade */
-        gtk_builder_add_objects_from_string(g_builder,
-                WIZARD_GLADE_CONTENTS, sizeof(WIZARD_GLADE_CONTENTS) - 1,
-                (gchar**)misc_widgets,
-                &error);
-        /* Load pages from internal string */
-        gtk_builder_add_objects_from_string(g_builder,
-                WIZARD_GLADE_CONTENTS, sizeof(WIZARD_GLADE_CONTENTS) - 1,
-                (gchar**)page_names,
-                &error);
-        if (error != NULL)
-            error_msg_and_die("Error loading glade data: %s", error->message);
-    }
-    else
-    {
-        /* -g FILE: load IU from it */
-        gtk_builder_add_objects_from_file(g_builder, g_glade_file, (gchar**)page_names, &error);
-        if (error != NULL)
-            error_msg_and_die("Can't load %s: %s", g_glade_file, error->message);
-    }
+    g_builder = make_builder();
 
     int i;
     int page_no = 0;
@@ -3408,6 +3485,8 @@ void create_assistant(GtkApplication *app, bool expert_mode)
     g_btn_onfail = gtk_button_new_with_label(_("Upload for analysis"));
     gtk_button_set_image(GTK_BUTTON(g_btn_onfail), gtk_image_new_from_icon_name("go-up", GTK_ICON_SIZE_BUTTON));
     gtk_widget_set_no_show_all(g_btn_onfail, true); /* else gtk_widget_hide won't work */
+    g_btn_repeat = gtk_button_new_with_label(_("Repeat"));
+    gtk_widget_set_no_show_all(g_btn_repeat, true); /* else gtk_widget_hide won't work */
     g_btn_next = gtk_button_new_with_mnemonic(_("_Forward"));
     gtk_button_set_image(GTK_BUTTON(g_btn_next), gtk_image_new_from_icon_name("go-next", GTK_ICON_SIZE_BUTTON));
     gtk_widget_set_no_show_all(g_btn_next, true); /* else gtk_widget_hide won't work */
@@ -3416,6 +3495,7 @@ void create_assistant(GtkApplication *app, bool expert_mode)
     gtk_box_pack_start(g_box_buttons, g_btn_close, false, false, 5);
     gtk_box_pack_start(g_box_buttons, g_btn_stop, false, false, 5);
     gtk_box_pack_start(g_box_buttons, g_btn_onfail, false, false, 5);
+    gtk_box_pack_start(g_box_buttons, g_btn_repeat, false, false, 5);
     /* Btns above are to the left, the rest are to the right: */
 #if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 5))
     GtkWidget *w = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);
@@ -3469,6 +3549,7 @@ void create_assistant(GtkApplication *app, bool expert_mode)
     gtk_widget_show_all(GTK_WIDGET(g_box_buttons));
     gtk_widget_hide(g_btn_stop);
     gtk_widget_hide(g_btn_onfail);
+    gtk_widget_hide(g_btn_repeat);
     gtk_widget_show(g_btn_next);
 
     g_wnd_assistant = GTK_WINDOW(gtk_application_window_new(app));
@@ -3489,6 +3570,7 @@ void create_assistant(GtkApplication *app, bool expert_mode)
     g_signal_connect(g_btn_close, "clicked", G_CALLBACK(assistant_quit_cb), g_wnd_assistant);
     g_signal_connect(g_btn_stop, "clicked", G_CALLBACK(on_btn_cancel_event), NULL);
     g_signal_connect(g_btn_onfail, "clicked", G_CALLBACK(on_btn_failed_cb), NULL);
+    g_signal_connect(g_btn_repeat, "clicked", G_CALLBACK(on_btn_repeat_cb), NULL);
     g_signal_connect(g_btn_next, "clicked", G_CALLBACK(on_next_btn_cb), NULL);
 
     g_signal_connect(g_wnd_assistant, "destroy", G_CALLBACK(assistant_quit_cb), g_wnd_assistant);
