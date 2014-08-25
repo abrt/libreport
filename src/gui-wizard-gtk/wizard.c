@@ -69,6 +69,7 @@ static GtkWidget *g_btn_close;
 static GtkWidget *g_btn_next;
 static GtkWidget *g_btn_onfail;
 static GtkWidget *g_btn_repeat;
+static GtkWidget *g_btn_detail;
 
 static GtkBox *g_box_events;
 static GtkBox *g_box_workflows;
@@ -2673,6 +2674,7 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
         clear_warnings();
     }
 
+    gtk_widget_hide(g_btn_detail);
     gtk_widget_hide(g_btn_onfail);
     if (!g_expert_mode)
         gtk_widget_hide(g_btn_repeat);
@@ -2710,31 +2712,12 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
         show_warnings();
     }
 
-    if (pages[PAGENO_SUMMARY].page_widget == page
-     || pages[PAGENO_REVIEW_DATA].page_widget == page
-    ) {
-        GtkWidget *w = GTK_WIDGET(g_tv_details);
-        GtkContainer *c = GTK_CONTAINER(gtk_widget_get_parent(w));
-        if (c)
-            gtk_container_remove(c, w);
-        gtk_container_add(pages[PAGENO_SUMMARY].page_widget == page ?
-                        g_container_details1 : g_container_details2,
-                w
-        );
-        /* Make checkbox column visible only on the last page */
-        gtk_tree_view_column_set_visible(g_tv_details_col_checkbox,
-                (pages[PAGENO_REVIEW_DATA].page_widget == page)
-        );
-
-        if (pages[PAGENO_REVIEW_DATA].page_widget == page)
-        {
-            gtk_widget_set_sensitive(g_btn_next, gtk_toggle_button_get_active(g_tb_approve_bt));
-            update_ls_details_checkboxes(g_event_selected);
-        }
-    }
+    if (pages[PAGENO_REVIEW_DATA].page_widget == page)
+        update_ls_details_checkboxes(g_event_selected);
 
     if (pages[PAGENO_EDIT_COMMENT].page_widget == page)
     {
+        gtk_widget_show(g_btn_detail);
         gtk_widget_set_sensitive(g_btn_next, false);
         on_comment_changed(gtk_text_view_get_buffer(g_tv_comment), NULL);
     }
@@ -3192,6 +3175,12 @@ static void on_btn_add_file(GtkButton *button)
     }
 }
 
+static void on_btn_detail(GtkButton *button)
+{
+    GtkWidget *pdd = problem_details_dialog_new(g_cd, g_wnd_assistant);
+    gtk_dialog_run(GTK_DIALOG(pdd));
+}
+
 /* [Del] key handling in item list */
 static void delete_item(GtkTreeView *treeview)
 {
@@ -3317,6 +3306,8 @@ static void add_pages(void)
 
     g_signal_connect(g_tv_details, "key-press-event", G_CALLBACK(on_key_press_event_in_item_list), NULL);
     g_tv_sensitive_sel_hndlr = g_signal_connect(g_tv_sensitive_sel, "changed", G_CALLBACK(on_sensitive_word_selection_changed), NULL);
+
+
 }
 
 static void create_details_treeview(void)
@@ -3487,6 +3478,8 @@ void create_assistant(GtkApplication *app, bool expert_mode)
     g_btn_next = gtk_button_new_with_mnemonic(_("_Forward"));
     gtk_button_set_image(GTK_BUTTON(g_btn_next), gtk_image_new_from_icon_name("go-next-symbolic", GTK_ICON_SIZE_BUTTON));
     gtk_widget_set_no_show_all(g_btn_next, true); /* else gtk_widget_hide won't work */
+    g_btn_detail = gtk_button_new_with_mnemonic(_("Details"));
+    gtk_widget_set_no_show_all(g_btn_detail, true); /* else gtk_widget_hide won't work */
 
     g_box_buttons = GTK_BOX(gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0));
     gtk_box_pack_start(g_box_buttons, g_btn_close, false, false, 5);
@@ -3497,10 +3490,12 @@ void create_assistant(GtkApplication *app, bool expert_mode)
 #if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 5))
     GtkWidget *w = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);
     gtk_box_pack_start(g_box_buttons, w, true, true, 5);
+    gtk_box_pack_start(g_box_buttons, g_btn_detail, false, false, 5);
     gtk_box_pack_start(g_box_buttons, g_btn_next, false, false, 5);
 #else
     gtk_widget_set_valign(GTK_WIDGET(g_btn_next), GTK_ALIGN_END);
     gtk_box_pack_end(g_box_buttons, g_btn_next, false, false, 5);
+    gtk_box_pack_end(g_box_buttons, g_btn_detail, false, false, 5);
 #endif
 
     {   /* Warnings area widget definition start */
@@ -3564,6 +3559,9 @@ void create_assistant(GtkApplication *app, bool expert_mode)
 
     create_details_treeview();
 
+    ProblemDetailsWidget *details = problem_details_widget_new(g_cd);
+    gtk_container_add(GTK_CONTAINER(g_container_details1), GTK_WIDGET(details));
+
     g_signal_connect(g_btn_close, "clicked", G_CALLBACK(assistant_quit_cb), g_wnd_assistant);
     g_signal_connect(g_btn_stop, "clicked", G_CALLBACK(on_btn_cancel_event), NULL);
     g_signal_connect(g_btn_onfail, "clicked", G_CALLBACK(on_btn_failed_cb), NULL);
@@ -3577,6 +3575,7 @@ void create_assistant(GtkApplication *app, bool expert_mode)
     g_signal_connect(gtk_text_view_get_buffer(g_tv_comment), "changed", G_CALLBACK(on_comment_changed), NULL);
 
     g_signal_connect(g_btn_add_file, "clicked", G_CALLBACK(on_btn_add_file), NULL);
+    g_signal_connect(g_btn_detail, "clicked", G_CALLBACK(on_btn_detail), NULL);
 
     if (is_screencast_available()) {
         /* we need to override the activate-link handler, because we use
