@@ -393,31 +393,12 @@ static void load_text_to_text_view(GtkTextView *tv, const char *name)
     /* a result of xstrdup() is freed */
     g_hash_table_insert(g_loaded_texts, (gpointer)xstrdup(name), (gpointer)1);
 
-    GtkTextBuffer *tb = gtk_text_view_get_buffer(tv);
-
     const char *str = g_cd ? problem_data_get_content_or_NULL(g_cd, name) : NULL;
     /* Bad: will choke at any text with non-Unicode parts: */
     /* gtk_text_buffer_set_text(tb, (str ? str : ""), -1);*/
     /* Start torturing ourself instead: */
 
-    GtkTextIter beg_iter, end_iter;
-    gtk_text_buffer_get_iter_at_offset(tb, &beg_iter, 0);
-    gtk_text_buffer_get_iter_at_offset(tb, &end_iter, -1);
-    gtk_text_buffer_delete(tb, &beg_iter, &end_iter);
-
-    if (!str)
-        return;
-
-    const gchar *end;
-    while (!g_utf8_validate(str, -1, &end))
-    {
-        gtk_text_buffer_insert_at_cursor(tb, str, end - str);
-        char buf[8];
-        unsigned len = snprintf(buf, sizeof(buf), "<%02X>", (unsigned char)*end);
-        gtk_text_buffer_insert_at_cursor(tb, buf, len);
-        str = end + 1;
-    }
-    gtk_text_buffer_insert_at_cursor(tb, str, strlen(str));
+    reload_text_to_text_view(tv, str);
 }
 
 static gchar *get_malloced_string_from_text_view(GtkTextView *tv)

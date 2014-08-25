@@ -20,6 +20,8 @@
 #define INTERNAL_LIBREPORT_GTK_H_
 
 #include <gtk/gtk.h>
+#include "problem_details_dialog.h"
+#include "problem_details_widget.h"
 #include "report.h"
 #include "internal_libreport.h"
 
@@ -95,6 +97,10 @@ struct url_token
 
 #define find_url_tokens libreport_find_url_tokens
 GList *find_url_tokens(const char *line);
+
+
+#define reload_text_to_text_view libreport_reload_text_to_text_view
+void reload_text_to_text_view(GtkTextView *tv, const char *text);
 
 /* Ask dialogs */
 
