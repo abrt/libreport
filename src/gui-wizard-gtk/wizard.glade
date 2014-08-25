@@ -405,13 +405,7 @@
                 <property name="can_focus">True</property>
                 <property name="shadow_type">out</property>
                 <child>
-                  <object class="GtkTreeView" id="tv_details">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <child internal-child="selection">
-                      <object class="GtkTreeSelection" id="treeview-selection1"/>
-                    </child>
-                  </object>
+                  <placeholder/>
                 </child>
               </object>
             </child>
@@ -676,7 +670,13 @@
             <property name="can_focus">True</property>
             <property name="shadow_type">out</property>
             <child>
-              <placeholder/>
+              <object class="GtkTreeView" id="tv_details">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <child internal-child="selection">
+                  <object class="GtkTreeSelection" id="treeview-selection"/>
+                </child>
+              </object>
             </child>
           </object>
           <packing>
