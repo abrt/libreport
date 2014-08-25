@@ -3,12 +3,15 @@ libreport_gtk_includedir = \
     $(includedir)/libreport
 
 libreport_gtk_include_HEADERS = \
-    internal_libreport_gtk.h
+    internal_libreport_gtk.h \
+    problem_details_widget.h \
+    problem_details_dialog.h
 
 lib_LTLIBRARIES = \
     libreport-gtk.la
 
 libreport_gtk_la_SOURCES = \
+    utils.c \
     event_config_dialog.c \
     secrets.c \
     hyperlinks.c \
@@ -16,11 +19,14 @@ libreport_gtk_la_SOURCES = \
     workflow_config_dialog.c \
     config_dialog.c \
     ask_dialogs.c \
-    search_item.c search_item.h
+    search_item.c search_item.h \
+    problem_details_widget.c problem_details_widget.h \
+    problem_details_dialog.c problem_details_dialog.h
 
 libreport_gtk_la_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
+    -Wno-error=unused-local-typedefs \
     $(GTK_CFLAGS) \
     $(GLIB_CFLAGS) \
     $(GIO_CFLAGS) \
