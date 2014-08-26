@@ -251,7 +251,7 @@ static const char *dd_check(struct dump_dir *dd)
     dd->dd_time = parse_time_file(filename_buf);
     if (dd->dd_time < 0)
     {
-        log_warning("Missing file: "FILENAME_TIME);
+        log_debug("Missing file: "FILENAME_TIME);
         return FILENAME_TIME;
     }
 
@@ -259,7 +259,7 @@ static const char *dd_check(struct dump_dir *dd)
     dd->dd_type = load_text_file(filename_buf, DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     if (!dd->dd_type || (strlen(dd->dd_type) == 0))
     {
-        log_warning("Missing or empty file: "FILENAME_TYPE);
+        log_debug("Missing or empty file: "FILENAME_TYPE);
         return FILENAME_TYPE;
     }
 
@@ -305,7 +305,7 @@ static int dd_lock(struct dump_dir *dd, unsigned sleep_usec, int flags)
         if (missing_file)
         {
             xunlink(lock_buf);
-            log_warning("Unlocked '%s' (no or corrupted '%s' file)", lock_buf, missing_file);
+            log_notice("Unlocked '%s' (no or corrupted '%s' file)", lock_buf, missing_file);
             if (--count == 0 || flags & DD_DONT_WAIT_FOR_LOCK)
             {
                 errno = EISDIR; /* "this is an ordinary dir, not dump dir" */
