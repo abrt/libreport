@@ -1752,6 +1752,16 @@ static bool event_need_review(const char *event_name)
 
 static void on_btn_failed_cb(GtkButton *button)
 {
+    /* Since the Repeat button has been introduced, the event chain isn't
+     * terminated upon a failure in order to be able to continue in processing
+     * in the retry action.
+     *
+     * Now, user decided to run the emergency analysis instead of trying to
+     * reconfigure libreport, so we have to terminate the event chain.
+     */
+    gtk_widget_hide(g_btn_repeat);
+    terminate_event_chain(TERMINATE_NOFLAGS);
+
     /* Show detailed log */
     gtk_expander_set_expanded(g_exp_report_log, TRUE);
 
