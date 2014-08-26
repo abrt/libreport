@@ -3494,17 +3494,17 @@ void create_assistant(GtkApplication *app, bool expert_mode)
     gtk_notebook_set_show_tabs(g_assistant, (g_verbose != 0 && g_expert_mode));
 
     g_btn_close = gtk_button_new_with_mnemonic(_("_Close"));
-    gtk_button_set_image(GTK_BUTTON(g_btn_close), gtk_image_new_from_icon_name("window-close", GTK_ICON_SIZE_BUTTON));
+    gtk_button_set_image(GTK_BUTTON(g_btn_close), gtk_image_new_from_icon_name("window-close-symbolic", GTK_ICON_SIZE_BUTTON));
     g_btn_stop = gtk_button_new_with_mnemonic(_("_Stop"));
-    gtk_button_set_image(GTK_BUTTON(g_btn_stop), gtk_image_new_from_icon_name("process-close", GTK_ICON_SIZE_BUTTON));
+    gtk_button_set_image(GTK_BUTTON(g_btn_stop), gtk_image_new_from_icon_name("process-close-symbolic", GTK_ICON_SIZE_BUTTON));
     gtk_widget_set_no_show_all(g_btn_stop, true); /* else gtk_widget_hide won't work */
     g_btn_onfail = gtk_button_new_with_label(_("Upload for analysis"));
-    gtk_button_set_image(GTK_BUTTON(g_btn_onfail), gtk_image_new_from_icon_name("go-up", GTK_ICON_SIZE_BUTTON));
+    gtk_button_set_image(GTK_BUTTON(g_btn_onfail), gtk_image_new_from_icon_name("go-up-symbolic", GTK_ICON_SIZE_BUTTON));
     gtk_widget_set_no_show_all(g_btn_onfail, true); /* else gtk_widget_hide won't work */
     g_btn_repeat = gtk_button_new_with_label(_("Repeat"));
     gtk_widget_set_no_show_all(g_btn_repeat, true); /* else gtk_widget_hide won't work */
     g_btn_next = gtk_button_new_with_mnemonic(_("_Forward"));
-    gtk_button_set_image(GTK_BUTTON(g_btn_next), gtk_image_new_from_icon_name("go-next", GTK_ICON_SIZE_BUTTON));
+    gtk_button_set_image(GTK_BUTTON(g_btn_next), gtk_image_new_from_icon_name("go-next-symbolic", GTK_ICON_SIZE_BUTTON));
     gtk_widget_set_no_show_all(g_btn_next, true); /* else gtk_widget_hide won't work */
 
     g_box_buttons = GTK_BOX(gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0));
@@ -3530,7 +3530,7 @@ void create_assistant(GtkApplication *app, bool expert_mode)
         gtk_widget_set_visible(GTK_WIDGET(vbox), TRUE);
         gtk_box_pack_start(vbox, GTK_WIDGET(g_box_warning_labels), false, false, 5);
 
-        GtkWidget *image = gtk_image_new_from_icon_name("dialog-warning", GTK_ICON_SIZE_DIALOG);
+        GtkWidget *image = gtk_image_new_from_icon_name("dialog-warning-symbolic", GTK_ICON_SIZE_DIALOG);
         gtk_widget_set_visible(image, TRUE);
 
         g_widget_warnings_area = GTK_WIDGET(gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0));
