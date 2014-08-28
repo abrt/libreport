@@ -2724,7 +2724,10 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
     }
 
     if (pages[PAGENO_REVIEW_DATA].page_widget == page)
+    {
         update_ls_details_checkboxes(g_event_selected);
+        gtk_widget_set_sensitive(g_btn_next, gtk_toggle_button_get_active(g_tb_approve_bt));
+    }
 
     if (pages[PAGENO_EDIT_COMMENT].page_widget == page)
     {
