@@ -57,6 +57,7 @@ static char *g_event_selected;
 static unsigned g_black_event_count = 0;
 
 static pid_t g_event_child_pid = 0;
+static guint g_event_source_id = 0;
 
 static bool g_expert_mode;
 
@@ -1586,10 +1587,18 @@ static void update_event_log_on_disk(const char *str)
     dd_close(dd);
 }
 
+static bool cancel_event_run()
+{
+    if (g_event_child_pid <= 0)
+        return false;
+
+    kill(- g_event_child_pid, SIGTERM);
+    return true;
+}
+
 static void on_btn_cancel_event(GtkButton *button)
 {
-    if (g_event_child_pid > 0)
-        kill(- g_event_child_pid, SIGTERM);
+    cancel_event_run();
 }
 
 static bool is_processing_finished()
@@ -1987,8 +1996,10 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                                                                          : _("Processing finished, please proceed to the next step."));
         }
 
-        /*g_source_remove(evd->event_source_id);*/
+        g_source_remove(g_event_source_id);
+        g_event_source_id = 0;
         close(evd->fd);
+        g_io_channel_unref(evd->channel);
         free_run_event_state(evd->run_state);
         strbuf_free(evd->event_log);
         free(evd->event_name);
@@ -2085,7 +2096,7 @@ static void start_event_run(const char *event_name)
 
     ndelay_on(evd->fd);
     evd->channel = g_io_channel_unix_new(evd->fd);
-    /*evd->event_source_id = */ g_io_add_watch(evd->channel,
+    g_event_source_id = g_io_add_watch(evd->channel,
             G_IO_IN | G_IO_ERR | G_IO_HUP, /* need HUP to detect EOF w/o any data */
             consume_cmd_output,
             evd
@@ -3368,13 +3379,23 @@ static void init_pages(void)
 
 static void assistant_quit_cb(void *obj, void *data)
 {
+    /* Suppress execution of consume_cmd_output() */
+    if (g_event_source_id != 0)
+    {
+        g_source_remove(g_event_source_id);
+        g_event_source_id = 0;
+    }
+
+    cancel_event_run();
+
     if (g_loaded_texts)
     {
         g_hash_table_destroy(g_loaded_texts);
         g_loaded_texts = NULL;
     }
 
-    gtk_widget_destroy(GTK_WIDGET(data));
+    gtk_widget_destroy(GTK_WIDGET(g_wnd_assistant));
+    g_wnd_assistant = (void *)0xdeadbeaf;
 }
 
 static void on_btn_startcast(GtkWidget *btn, gpointer user_data)
@@ -3526,13 +3547,13 @@ void create_assistant(GtkApplication *app, bool expert_mode)
 
     create_details_treeview();
 
-    g_signal_connect(g_btn_close, "clicked", G_CALLBACK(assistant_quit_cb), g_wnd_assistant);
+    g_signal_connect(g_btn_close, "clicked", G_CALLBACK(assistant_quit_cb), NULL);
     g_signal_connect(g_btn_stop, "clicked", G_CALLBACK(on_btn_cancel_event), NULL);
     g_signal_connect(g_btn_onfail, "clicked", G_CALLBACK(on_btn_failed_cb), NULL);
     g_signal_connect(g_btn_repeat, "clicked", G_CALLBACK(on_btn_repeat_cb), NULL);
     g_signal_connect(g_btn_next, "clicked", G_CALLBACK(on_next_btn_cb), NULL);
 
-    g_signal_connect(g_wnd_assistant, "destroy", G_CALLBACK(assistant_quit_cb), g_wnd_assistant);
+    g_signal_connect(g_wnd_assistant, "destroy", G_CALLBACK(assistant_quit_cb), NULL);
     g_signal_connect(g_assistant, "switch-page", G_CALLBACK(on_page_prepare), NULL);
 
     g_signal_connect(g_tb_approve_bt, "toggled", G_CALLBACK(on_bt_approve_toggle), NULL);
