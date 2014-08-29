@@ -132,7 +132,11 @@ static void create_and_send_email(
      */
     putenv((char*)"sendwait=1");
 
-    log(_("Sending an email..."));
+    if (notify_only)
+        log(_("Sending a notification email to: %s"), email_to);
+    else
+        log(_("Sending an email..."));
+
     exec_and_feed_input(dsc, args);
 
     free(dsc);
@@ -154,8 +158,9 @@ static void create_and_send_email(
             free(msg);
             dd_close(dd);
         }
+        log(_("Email was sent to: %s"), email_to);
     }
-    log(_("Email was sent to: %s"), email_to);
+
     free(email_to);
 }
 
