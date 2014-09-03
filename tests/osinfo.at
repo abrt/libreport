@@ -401,6 +401,7 @@ int main(void)
 AT_PYTESTFUN([parse_osinfo_python],
 [[import sys
 
+sys.path.insert(0, "../../../src/report-python")
 sys.path.insert(0, "../../../src/report-python/.libs")
 
 report = __import__("report-python", globals(), locals(), [], -1)
