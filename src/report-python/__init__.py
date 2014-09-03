@@ -13,7 +13,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 from _pyreport import *
-from report.io import TextIO, GTKIO, NewtIO
+
+try:
+    from report.io import TextIO, GTKIO, NewtIO
+except ImportError:
+    # Support testing
+    _temp = __import__("io", globals(), locals(), ["TextIO", "GTKIO", "NewtIO"], -1)
+    TextIO = _temp.TextIO
+    GTKIO = _temp.GTKIO
+    NewtIO = _temp.NewtIO
 
 #Compatibility with report package:
 # Author(s): Gavin Romig-Koch <gavin@redhat.com>
