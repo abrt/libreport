@@ -188,3 +188,41 @@ int main(int argc, char **argv)
     return 0;
 }
 ]])
+
+## -------------- ##
+## not_reportable ##
+## -------------- ##
+
+AT_TESTFUN([not_reportable],
+[[
+
+#include "internal_libreport.h"
+#include <assert.h>
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    problem_data_t *pd = problem_data_new();
+
+    problem_data_add_text_noteditable(pd, FILENAME_NOT_REPORTABLE, "not-reportable");
+
+    char *description = make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE,
+                                         MAKEDESC_SHOW_URLS);
+
+    char *expected = xasprintf("%s: %*s%s\n",
+            "Reported", 14 - strlen("Reported"), "", "cannot be reported");
+
+    if (strstr(description, expected) == NULL)
+    {
+        printf("E:\n'%s'\n\nC:\n'%s'\n", expected, description);
+        assert(!"The description for not-reportable do not matches the expected description");
+    }
+
+    free(description);
+    free(expected);
+    problem_data_free(pd);
+
+    return 0;
+}
+
+]])
