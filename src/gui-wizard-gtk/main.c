@@ -216,7 +216,7 @@ int main(int argc, char **argv)
     problem_data_reload_from_dump_dir();
 
     g_custom_logger = &show_error_as_msgbox;
-    GtkApplication *app = gtk_application_new("org.freedesktop.libreport.report", G_APPLICATION_FLAGS_NONE);
+    GtkApplication *app = gtk_application_new("org.freedesktop.libreport.report", G_APPLICATION_NON_UNIQUE);
     g_signal_connect(app, "activate", G_CALLBACK(activate_wizard), (gpointer)expert_mode);
     g_signal_connect(app, "startup",  G_CALLBACK(startup_wizard),  NULL);
     /* Enter main loop */
