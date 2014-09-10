@@ -26,6 +26,14 @@ extern "C" {
 #endif
 
 /*
+ * uReport generation configuration
+ */
+struct ureport_preferences
+{
+    GList *urp_auth_items;  ///< list of file names included in 'auth' key
+};
+
+/*
  * uReport server configuration
  */
 struct ureport_server_config
@@ -35,6 +43,8 @@ struct ureport_server_config
     char *ur_client_cert; ///< Path to certificate used for client
                           ///< authentication (or NULL)
     char *ur_client_key;  ///< Private key for the certificate
+
+    struct ureport_preferences ur_prefs; ///< configuration for uReport generation
 };
 
 struct abrt_post_state;
@@ -53,6 +63,10 @@ struct abrt_post_state *ureport_attach_email(const char *bthash, const char *ema
 
 #define ureport_from_dump_dir libreport_ureport_from_dump_dir
 char *ureport_from_dump_dir(const char *dump_dir_path);
+
+#define ureport_from_dump_dir_ext libreport_ureport_from_dump_dir_ext
+char *ureport_from_dump_dir_ext(const char *dump_dir_path,
+                                const struct ureport_preferences *preferences);
 
 #ifdef __cplusplus
 }

@@ -108,6 +108,19 @@ static void load_ureport_server_config(struct ureport_server_config *config, map
     VALUE_FROM_CONF("URL", config->ur_url, (const char *));
     VALUE_FROM_CONF("SSLVerify", config->ur_ssl_verify, string_to_bool);
 
+    bool include_auth = false;
+    VALUE_FROM_CONF("IncludeAuthData", include_auth, string_to_bool);
+
+    if (include_auth)
+    {
+        const char *auth_items = NULL;
+        VALUE_FROM_CONF("AuthDataItems", auth_items, (const char *));
+        config->ur_prefs.urp_auth_items = parse_list(auth_items);
+
+        if (config->ur_prefs.urp_auth_items == NULL)
+            log("IncludeAuthData set to 'yes' but AuthDataItems is empty.");
+    }
+
     const char *client_auth = NULL;
     VALUE_FROM_CONF("SSLClientAuth", client_auth, (const char *));
     parse_client_auth_paths(config, client_auth);
@@ -413,6 +426,9 @@ int main(int argc, char **argv)
         .ur_ssl_verify = true,
         .ur_client_cert = NULL,
         .ur_client_key = NULL,
+        {
+            .urp_auth_items = NULL,
+        },
     };
 
     enum {
@@ -421,6 +437,7 @@ int main(int argc, char **argv)
         OPT_u = 1 << 2,
         OPT_k = 1 << 3,
         OPT_t = 1 << 4,
+        OPT_i = 1 << 5,
     };
 
     int ret = 1; /* "failure" (for now) */
@@ -428,6 +445,7 @@ int main(int argc, char **argv)
     const char *conf_file = CONF_FILE_PATH;
     const char *arg_server_url = NULL;
     const char *client_auth = NULL;
+    GList *auth_items = NULL;
     const char *dump_dir_path = ".";
     const char *ureport_hash = NULL;
     bool ureport_hash_from_rt = false;
@@ -443,6 +461,7 @@ int main(int argc, char **argv)
         OPT_BOOL('k', "insecure", &insecure,
                           _("Allow insecure connection to ureport server")),
         OPT_STRING('t', "auth", &client_auth, "SOURCE", _("Use client authentication")),
+        OPT_LIST('i', "auth_items", &auth_items, "AUTH_ITEMS", _("Additional files included in 'auth' key")),
         OPT_STRING('c', NULL, &conf_file, "FILE", _("Configuration file")),
         OPT_STRING('a', "attach", &ureport_hash, "BTHASH",
                           _("bthash of uReport to attach (conflicts with -A)")),
@@ -461,6 +480,8 @@ int main(int argc, char **argv)
 
     const char *program_usage_string = _(
         "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
+        "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-i AUTH_ITEMS]\\\n"
+        "  [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
         "\n"
         "Upload micro report or add an attachment to a micro report\n"
         "\n"
@@ -480,6 +501,11 @@ int main(int argc, char **argv)
         config.ur_ssl_verify = !insecure;
     if (opts & OPT_t)
         parse_client_auth_paths(&config, client_auth);
+    if (opts & OPT_i)
+    {
+        g_list_free_full(config.ur_prefs.urp_auth_items, free);
+        config.ur_prefs.urp_auth_items = auth_items;
+    }
 
     if (!config.ur_url)
         error_msg_and_die("You need to specify server URL");
@@ -572,7 +598,7 @@ int main(int argc, char **argv)
     char *dest_url = concat_path_file(config.ur_url, REPORT_URL_SFX);
     config.ur_url = dest_url;
 
-    char *json_ureport = ureport_from_dump_dir(dump_dir_path);
+    char *json_ureport = ureport_from_dump_dir_ext(dump_dir_path, &(config.ur_prefs));
     if (!json_ureport)
     {
         error_msg(_("Not uploading an empty uReport"));
@@ -648,6 +674,9 @@ format_err:
     free(dest_url);
 
 finalize:
+    if (config.ur_prefs.urp_auth_items != auth_items)
+        g_list_free_full(config.ur_prefs.urp_auth_items, free);
+
     free_map_string(settings);
     free(config.ur_client_cert);
     free(config.ur_client_key);
