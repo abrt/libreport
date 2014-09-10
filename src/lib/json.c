@@ -37,7 +37,7 @@ static void ureport_add_str(struct json_object *ur, const char *key,
     json_object_object_add(ur, key, jstring);
 }
 
-char *ureport_from_dump_dir(const char *dump_dir_path)
+char *ureport_from_dump_dir_ext(const char *dump_dir_path, const struct ureport_preferences *preferences)
 {
     char *error_message;
     struct sr_report *report = sr_abrt_report_from_dir(dump_dir_path,
@@ -46,10 +46,40 @@ char *ureport_from_dump_dir(const char *dump_dir_path)
     if (!report)
         error_msg_and_die("%s", error_message);
 
+    if (preferences != NULL && preferences->urp_auth_items != NULL)
+    {
+        struct dump_dir *dd = dd_opendir(dump_dir_path, DD_OPEN_READONLY);
+        if (!dd)
+            xfunc_die(); /* dd_opendir() already printed an error message */
+
+        GList *iter = preferences->urp_auth_items;
+        for ( ; iter != NULL; iter = g_list_next(iter))
+        {
+            const char *key = (const char *)iter->data;
+            char *value = dd_load_text_ext(dd, key,
+                    DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE | DD_FAIL_QUIETLY_ENOENT);
+
+            if (value == NULL)
+            {
+                perror_msg("Cannot include '%s' in 'auth'", key);
+                continue;
+            }
+
+            sr_report_add_auth(report, key, value);
+        }
+
+        dd_close(dd);
+    }
+
     char *json_ureport = sr_report_to_json(report);
     sr_report_free(report);
 
     return json_ureport;
+}
+
+char *ureport_from_dump_dir(const char *dump_dir_path)
+{
+    return ureport_from_dump_dir_ext(dump_dir_path, /*no preferences*/NULL);
 }
 
 char *new_json_attachment(const char *bthash, const char *type, const char *data)
