@@ -44,6 +44,14 @@ Configuration file lines should have 'PARAM = VALUE' format. The parameters are:
 'ContactEmail'::
    Email address attached to a bthash on the server.
 
+'IncludeAuthData'::
+   If this option is set to 'yes', uploaded uReport will contain 'auth' object
+   consisting from key value pairs made from CSV list stored in 'AuthDataItems'
+   option. Keys are file names and values are bites of these files.
+
+'AuthDataItems'::
+   CSV list of files included in the 'auth' uReport object.
+
 Parameters can be overridden via $uReport_PARAM environment variables.
 
 OPTIONS
@@ -85,6 +93,9 @@ OPTIONS
 -u, --url URL::
    Specify server URL
 
+-i AUTH_DATA_ITEMS::
+   List of dump dir files included in the 'auth' uReport object.
+
 ENVIRONMENT VARIABLES
 ---------------------
 Environment variables take precedence over values provided in
@@ -98,6 +109,12 @@ the configuration file.
 
 'uReport_ContactEmail'::
    Email address attached to a bthash on the server.
+
+'uReport_IncludeAuthData'::
+   See IncludeAuthData configuration option for details.
+
+'uReport_AuthDataItems'::
+   See AuthDataItems configuration option for details.
 
 SEE ALSO
 --------
