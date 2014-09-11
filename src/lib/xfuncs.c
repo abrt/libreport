@@ -107,6 +107,27 @@ char* xstrndup(const char *s, int n)
     return (char*) memcpy(t, s, n);
 }
 
+char *xstrdup_between(const char *src, const char *open, const char *close)
+{
+    const char *start = strstr(src, open);
+    if (start == NULL)
+    {
+        VERB3 log("Open tag not found: '%s'", open);
+        return NULL;
+    }
+
+    start += strlen(open);
+
+    const char *stop = strstr(start, close);
+    if (stop == NULL)
+    {
+        VERB3 log("Close tag not found: '%s'", close);
+        return NULL;
+    }
+
+    return xstrndup(start, stop - start);
+}
+
 void xpipe(int filedes[2])
 {
     if (pipe(filedes))

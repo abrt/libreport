@@ -313,6 +313,8 @@ void* xzalloc(size_t size);
 char* xstrdup(const char *s);
 #define xstrndup libreport_xstrndup
 char* xstrndup(const char *s, int n);
+#define xstrdup_between libreport_xstrdup_between
+char* xstrdup_between(const char *s, const char *open, const char *close);
 
 #define xpipe libreport_xpipe
 void xpipe(int filedes[2]);
