@@ -113,14 +113,25 @@ struct post_state *post_ureport(const char *json, struct ureport_server_config *
         post_state->client_key_path = config->ur_client_key;
     }
 
-    static const char *headers[] = {
-        "Accept: application/json",
-        "Connection: close",
-        NULL,
-    };
+    char **headers = xmalloc(sizeof(char *) * (3 + size_map_string(config->ur_http_headers)));
+    headers[0] = (char *)"Accept: application/json";
+    headers[1] = (char *)"Connection: close";
+    headers[2] = NULL;
+
+    if (config->ur_http_headers != NULL)
+    {
+        unsigned i = 2;
+        const char *header;
+        const char *value;
+        map_string_iter_t iter;
+        init_map_string_iter(&iter, config->ur_http_headers);
+        while (next_map_string_iter(&iter, &header, &value))
+            headers[i++] = xasprintf("%s: %s", header, value);
+        headers[i] = NULL;
+    }
 
     post_string_as_form_data(post_state, config->ur_url, "application/json",
-                     headers, json);
+                    (const char **)headers, json);
 
     /* Client authentication failed. Try again without client auth.
      * CURLE_SSL_CONNECT_ERROR - cert not found/server doesnt trust the CA
@@ -135,9 +146,13 @@ struct post_state *post_ureport(const char *json, struct ureport_server_config *
         post_state = new_post_state(flags);
 
         post_string_as_form_data(post_state, config->ur_url, "application/json",
-                         headers, json);
+                         (const char **)headers, json);
 
     }
+
+    for (unsigned i = size_map_string(config->ur_http_headers); i != 0; --i)
+        free(headers[i + 1]);
+    free(headers);
 
     return post_state;
 }
