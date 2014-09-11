@@ -31,6 +31,12 @@
 #define RHSM_CERT_PATH "/etc/pki/consumer/cert.pem"
 #define RHSM_KEY_PATH "/etc/pki/consumer/key.pem"
 
+#define RHAP_PEM_DIR_PATH "/etc/pki/entitlement"
+#define RHAP_ENT_DATA_BEGIN_TAG "-----BEGIN ENTITLEMENT DATA-----"
+#define RHAP_ENT_DATA_END_TAG "-----END ENTITLEMENT DATA-----"
+#define RHAP_SIG_DATA_BEGIN_TAG "-----BEGIN RSA SIGNATURE-----"
+#define RHAP_SIG_DATA_END_TAG "-----END RSA SIGNATURE-----"
+
 #define VALUE_FROM_CONF(opt, var, tr) do { const char *value = getenv("uReport_"opt); \
         if (!value) { value = get_map_string_item_or_NULL(settings, opt); } if (value) { var = tr(value); } \
     } while(0)
@@ -72,6 +78,88 @@ static void parse_client_auth_paths(struct ureport_server_config *config, const 
         config->ur_client_cert = xstrdup(RHSM_CERT_PATH);
         config->ur_client_key = xstrdup(RHSM_KEY_PATH);
     }
+    else if (strcmp(client_auth, "rhsm-entitlement") == 0)
+    {
+        GList *certs = get_file_list(RHAP_PEM_DIR_PATH, "pem");
+        if (g_list_length(certs) != 2)
+        {
+            VERB1 log(RHAP_PEM_DIR_PATH" does not contain unique cert-key files pair");
+            VERB1 log("Not using client authentication");
+            return;
+        }
+
+        const char *cert = NULL;
+        const char *key = NULL;
+
+        file_obj_t *fst = (file_obj_t *)certs->data;
+        file_obj_t *scn = (file_obj_t *)certs->next->data;
+
+        if (strlen(fo_get_filename(fst)) < strlen(fo_get_filename(scn)))
+        {
+            cert = fo_get_filename(fst);
+            key = fo_get_filename(scn);
+
+            config->ur_client_cert = xstrdup(fo_get_fullpath(fst));
+            config->ur_client_key = xstrdup(fo_get_fullpath(scn));
+        }
+        else
+        {
+            cert = fo_get_filename(scn);
+            key = fo_get_filename(fst);
+
+            config->ur_client_cert = xstrdup(fo_get_fullpath(scn));
+            config->ur_client_key = xstrdup(fo_get_fullpath(fst));
+        }
+
+        const bool iscomplement = prefixcmp(key, cert) != 0 || strcmp("-key", key + strlen(cert)) != 0;
+        g_list_free_full(certs, (GDestroyNotify)free_file_obj);
+
+        if (iscomplement)
+        {
+            VERB1 log("Key file '%s' isn't complement to cert file '%s'",
+                    config->ur_client_key, config->ur_client_cert);
+            VERB1 log("Not using client authentication");
+
+            free(config->ur_client_cert);
+            free(config->ur_client_key);
+            config->ur_client_cert = NULL;
+            config->ur_client_key = NULL;
+
+            return;
+        }
+
+        char *certdata = xmalloc_open_read_close(config->ur_client_cert, /*no size limit*/NULL);
+        if (certdata != NULL)
+        {
+            char *ent_data = xstrdup_between(certdata,
+                    RHAP_ENT_DATA_BEGIN_TAG, RHAP_ENT_DATA_END_TAG);
+
+            char *sig_data = xstrdup_between(certdata,
+                    RHAP_SIG_DATA_BEGIN_TAG, RHAP_SIG_DATA_END_TAG);
+
+            if (ent_data != NULL && sig_data != NULL)
+            {
+                ent_data = strremovech(ent_data, '\n');
+                insert_map_string(config->ur_http_headers,
+                        xstrdup("X-RH-Entitlement-Data"),
+                        xasprintf(RHAP_ENT_DATA_BEGIN_TAG"%s"RHAP_ENT_DATA_END_TAG, ent_data));
+
+                sig_data = strremovech(sig_data, '\n');
+                insert_map_string(config->ur_http_headers,
+                        xstrdup("X-RH-Entitlement-Sig"),
+                        xasprintf(RHAP_SIG_DATA_BEGIN_TAG"%s"RHAP_SIG_DATA_END_TAG, sig_data));
+            }
+            else
+            {
+                VERB1 log("Cert file '%s' doesn't contain Entitlement and RSA Signature sections", config->ur_client_cert);
+                VERB1 log("Not using HTTP authentication headers");
+            }
+
+            free(sig_data);
+            free(ent_data);
+            free(certdata);
+        }
+    }
     else if (strcmp(client_auth, "puppet") == 0)
     {
         config->ur_client_cert = puppet_config_print("hostcert");
@@ -83,7 +171,6 @@ static void parse_client_auth_paths(struct ureport_server_config *config, const 
         config->ur_client_cert = xstrdup(strtok(scratch, ":"));
         config->ur_client_key = xstrdup(strtok(NULL, ":"));
         free(scratch);
-
         if (config->ur_client_cert == NULL || config->ur_client_key == NULL)
             error_msg_and_die("Invalid client authentication specification");
     }
@@ -426,10 +513,13 @@ int main(int argc, char **argv)
         .ur_ssl_verify = true,
         .ur_client_cert = NULL,
         .ur_client_key = NULL,
+        .ur_http_headers = NULL,
         {
             .urp_auth_items = NULL,
         },
     };
+
+    config.ur_http_headers = new_map_string();
 
     enum {
         OPT_v = 1 << 0,
@@ -676,6 +766,8 @@ format_err:
 finalize:
     if (config.ur_prefs.urp_auth_items != auth_items)
         g_list_free_full(config.ur_prefs.urp_auth_items, free);
+
+    free_map_string(config.ur_http_headers);
 
     free_map_string(settings);
     free(config.ur_client_cert);

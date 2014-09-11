@@ -120,11 +120,22 @@ struct abrt_post_state *post_ureport(const char *json, struct ureport_server_con
         post_state->client_key_path = config->ur_client_key;
     }
 
-    static const char *headers[] = {
-        "Accept: application/json",
-        "Connection: close",
-        NULL,
-    };
+    char **headers = xmalloc(sizeof(char *) * (3 + size_map_string(config->ur_http_headers)));
+    headers[0] = (char *)"Accept: application/json";
+    headers[1] = (char *)"Connection: close";
+    headers[2] = NULL;
+
+    if (config->ur_http_headers != NULL)
+    {
+        unsigned i = 2;
+        const char *header;
+        const char *value;
+        map_string_iter_t iter;
+        init_map_string_iter(&iter, config->ur_http_headers);
+        while (next_map_string_iter(&iter, &header, &value))
+            headers[i++] = xasprintf("%s: %s", header, value);
+        headers[i] = NULL;
+    }
 
     abrt_post_string_as_form_data(post_state, config->ur_url, "application/json",
                      (const char **)headers, json);
@@ -143,8 +154,11 @@ struct abrt_post_state *post_ureport(const char *json, struct ureport_server_con
 
         abrt_post_string_as_form_data(post_state, config->ur_url, "application/json",
                          (const char **)headers, json);
-
     }
+
+    for (unsigned i = size_map_string(config->ur_http_headers); i != 0; --i)
+        free(headers[i + 1]);
+    free(headers);
 
     return post_state;
 }

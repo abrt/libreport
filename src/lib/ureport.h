@@ -43,6 +43,7 @@ struct ureport_server_config
     char *ur_client_cert; ///< Path to certificate used for client
                           ///< authentication (or NULL)
     char *ur_client_key;  ///< Private key for the certificate
+    map_string_t *ur_http_headers; ///< Additional HTTP headers
 
     struct ureport_preferences ur_prefs; ///< configuration for uReport generation
 };
