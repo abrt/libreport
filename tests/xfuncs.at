@@ -1,0 +1,56 @@
+# -*- Autotest -*-
+
+AT_BANNER([xfuncs])
+
+## --------------- ##
+## xstrdup_between ##
+## --------------- ##
+
+AT_TESTFUN([xstrdup_between],
+[[#include "internal_libreport.h"
+#include <assert.h>
+#include <string.h>
+#include <stdio.h>
+
+#define DEBUG_PRINT(e, r, o, c, s) \
+        fprintf(stderr, "Expected: '%s'\nFound:    '%s'\nOpen:     '%s'\nClose:    '%s'\nSource:   '%s'\n", e, r, o, c, s)
+
+void test(const char *src, const char *open, const char *close, const char *exp)
+{
+    char *res = xstrdup_between(src, open, close);
+
+    if (exp == NULL && res != NULL)
+    {
+        DEBUG_PRINT("NULL", res, open, close, src);
+        assert(!"Found non-existing section.");
+    }
+    else if (exp != NULL && res == NULL)
+    {
+        DEBUG_PRINT(exp, "NULL", open, close, src);
+        assert(!"Didn't find section.");
+    }
+    else if (exp == NULL && res == NULL)
+        return;
+    else if (strcmp(res, exp) != 0)
+    {
+        DEBUG_PRINT(exp, res, open, close, src);
+        assert(!"Invalid selection.");
+    }
+
+    free(res);
+}
+
+
+int main(void)
+{
+    g_verbose=3;
+
+    test("<a>foo blah</a>", "<?>", "</a>", NULL);
+    test("<a>foo blah</a>", "<a>", "</?>", NULL);
+    test("<a></a>", "<a>", "</a>", "");
+    test("@.$.@GOOD.$.", "@.$.@", ".$.", "GOOD");
+
+    return 0;
+}
+
+]])
