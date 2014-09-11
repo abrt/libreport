@@ -33,6 +33,15 @@ typedef GHashTable map_string_t;
 map_string_t *new_map_string(void);
 #define free_map_string libreport_free_map_string
 void free_map_string(map_string_t *ms);
+#define size_map_string libreport_size_map_string
+static inline
+unsigned size_map_string(map_string_t *ms)
+{
+    if (ms == NULL)
+        return 0;
+
+    return g_hash_table_size(ms);
+}
 #define insert_map_string_item libreport_insert_map_string_item
 static inline
 void insert_map_string(map_string_t *ms, char *key, char *value)
