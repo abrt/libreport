@@ -254,7 +254,7 @@ endif
 
 if BUILD_UREPORT
 reporter_ureport_SOURCES = \
-    ureport.c
+    reporter-ureport.c
 reporter_ureport_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \

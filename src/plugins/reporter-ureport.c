@@ -718,7 +718,7 @@ int main(int argc, char **argv)
         goto format_err;
     }
 
-    post_state = post_ureport(json_ureport, &config);
+    post_state = ureport_post(json_ureport, &config);
     free(json_ureport);
 
     if (!post_state)
