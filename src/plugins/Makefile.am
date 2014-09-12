@@ -211,15 +211,17 @@ report_LDADD = \
     ../lib/libreport.la
 
 reporter_ureport_SOURCES = \
-    ureport.c
+    reporter-ureport.c
 reporter_ureport_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
+    $(JSON_C_CFLAGS) \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -DPLUGINS_CONF_DIR=\"$(REPORT_PLUGINS_CONF_DIR)\" \
     -D_GNU_SOURCE
 reporter_ureport_LDADD = \
+    $(JSON_C_LIBS) \
     ../lib/libabrt_web.la \
     ../lib/libreport.la
 

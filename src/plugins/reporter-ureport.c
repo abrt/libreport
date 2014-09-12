@@ -17,7 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include <json/json.h>
+#include <json.h>
 #include "internal_libreport.h"
 #include "ureport.h"
 #include "abrt_curl.h"
@@ -695,7 +695,7 @@ int main(int argc, char **argv)
         goto format_err;
     }
 
-    post_state = post_ureport(json_ureport, &config);
+    post_state = ureport_post(json_ureport, &config);
     free(json_ureport);
 
     if (!post_state)

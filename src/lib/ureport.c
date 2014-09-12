@@ -1,6 +1,6 @@
 /*
-    Copyright (C) 2012  ABRT team
-    Copyright (C) 2012  RedHat Inc
+    Copyright (C) 2012,2014  ABRT team
+    Copyright (C) 2012,2014  RedHat Inc
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include <json/json.h>
+#include <json.h>
 
 #include <satyr/abrt.h>
 #include <satyr/report.h>
@@ -82,7 +82,7 @@ char *ureport_from_dump_dir(const char *dump_dir_path)
     return ureport_from_dump_dir_ext(dump_dir_path, /*no preferences*/NULL);
 }
 
-char *new_json_attachment(const char *bthash, const char *type, const char *data)
+static char *new_json_attachment(const char *bthash, const char *type, const char *data)
 {
     struct json_object *attachment = json_object_new_object();
     if (!attachment)
@@ -98,7 +98,7 @@ char *new_json_attachment(const char *bthash, const char *type, const char *data
     return result;
 }
 
-struct abrt_post_state *post_ureport(const char *json, struct ureport_server_config *config)
+struct abrt_post_state *ureport_post(const char *json, struct ureport_server_config *config)
 {
 
     int flags = ABRT_POST_WANT_BODY | ABRT_POST_WANT_ERROR_MSG;
@@ -168,7 +168,7 @@ struct abrt_post_state *ureport_attach_rhbz(const char *bthash, int rhbz_bug_id,
 {
     char *str_bug_id = xasprintf("%d", rhbz_bug_id);
     char *json_attachment = new_json_attachment(bthash, "RHBZ", str_bug_id);
-    struct abrt_post_state *post_state = post_ureport(json_attachment, config);
+    struct abrt_post_state *post_state = ureport_post(json_attachment, config);
     free(str_bug_id);
     free(json_attachment);
 
@@ -179,7 +179,7 @@ struct abrt_post_state *ureport_attach_email(const char *bthash, const char *ema
                                        struct ureport_server_config *config)
 {
     char *json_attachment = new_json_attachment(bthash, "email", email);
-    struct abrt_post_state *post_state = post_ureport(json_attachment, config);
+    struct abrt_post_state *post_state = ureport_post(json_attachment, config);
     free(json_attachment);
 
     return post_state;

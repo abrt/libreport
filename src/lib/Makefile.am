@@ -64,12 +64,14 @@ libreport_la_CPPFLAGS = \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DEVENTS_DIR=\"$(EVENTS_DIR)\" \
     -DBIN_DIR=\"$(bindir)\" \
+    $(JSON_C_CFLAGS) \
     $(GLIB_CFLAGS) \
     $(AUGEAS_CFLAGS) \
     -D_GNU_SOURCE
 libreport_la_LDFLAGS = \
     -version-info 0:1:0
 libreport_la_LIBADD = \
+    $(JSON_C_LIBS) \
     $(GLIB_LIBS) \
     $(JOURNAL_LIBS) \
     $(AUGEAS_LIBS)
@@ -101,8 +103,8 @@ libabrt_dbus_la_LIBADD = \
 libabrt_web_la_SOURCES = \
     abrt_curl.h abrt_curl.c \
     abrt_xmlrpc.h abrt_xmlrpc.c \
-    proxies.h proxies.c json.c \
-    ureport.h
+    proxies.h proxies.c \
+    ureport.c
 libabrt_web_la_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror \
     -I$(srcdir)/../include \

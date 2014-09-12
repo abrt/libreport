@@ -50,8 +50,8 @@ struct ureport_server_config
 
 struct abrt_post_state;
 
-#define post_ureport libreport_post_ureport
-struct abrt_post_state *post_ureport(const char *json_ureport,
+#define ureport_post libreport_ureport_post
+struct abrt_post_state *ureport_post(const char *json_ureport,
                                 struct ureport_server_config *config);
 
 #define ureport_attach_rhbz libreport_ureport_attach_rhbz
