@@ -89,6 +89,22 @@ char *strtrimch(char *str, int ch)
     return str;
 }
 
+/*
+ * Removes character from a string.
+ * Modifies the string in-place. Returns the updated string.
+ */
+char *strremovech(char *str, int ch)
+{
+    char *ret = str;
+    char *res = str;
+    for ( ; *str != '\0'; ++str)
+        if (*str != ch)
+            *(res++) = *str;
+
+    *res = '\0';
+    return ret;
+}
+
 
 struct strbuf *strbuf_new(void)
 {
