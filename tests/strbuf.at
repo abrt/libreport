@@ -71,3 +71,26 @@ int main(void)
   return 0;
 }
 ]])
+
+
+## ----------- ##
+## strremovech ##
+## ----------- ##
+
+AT_TESTFUN([strremovech],
+[[
+#include "internal_libreport.h"
+#include <assert.h>
+int main(void)
+{
+    char test[] = "Hello , world!";
+
+    if (strcmp(strremovech(test, ' '), "Hello,world!") != 0)
+    {
+        fprintf(stderr, "Expected: 'Hello,world!'\nResult  : '%s'", test);
+        assert(!"Failed to remove space");
+    }
+
+    return 0;
+}
+]])
