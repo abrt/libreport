@@ -119,7 +119,25 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
             char *output = formatted ? formatted : item->content;
             int pad = 16 - (strlen(key) + 2);
             if (pad < 0) pad = 0;
-            strbuf_append_strf(buf_dsc, "%s: %*s%s\n", key, pad, "", output);
+            bool done = false;
+            if (strcmp(FILENAME_REASON, key) == 0)
+            {
+                const char *crash_func = problem_data_get_content_or_NULL(problem_data,
+                                                                          FILENAME_CRASH_FUNCTION);
+                if((done = (bool)crash_func))
+                    strbuf_append_strf(buf_dsc, "%s: %*s%s(): %s\n", key, pad, "", crash_func, output);
+            }
+            else if (strcmp(FILENAME_UID, key) == 0)
+            {
+                const char *username = problem_data_get_content_or_NULL(problem_data,
+                                                                          FILENAME_USERNAME);
+                if((done = (bool)username))
+                    strbuf_append_strf(buf_dsc, "%s: %*s%s (%s)\n", key, pad, "", output, username);
+            }
+
+            if (!done)
+                strbuf_append_strf(buf_dsc, "%s: %*s%s\n", key, pad, "", output);
+
             empty = false;
             free(formatted);
         }
