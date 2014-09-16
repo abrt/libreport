@@ -48,6 +48,32 @@ char *make_description_item_multiline(const char *name, const char *content)
     return strbuf_free_nobuf(buf);
 }
 
+static int list_cmp(const char *s1, const char *s2)
+{
+    static const char *const list_order[] = {
+            FILENAME_REASON    ,
+            FILENAME_TIME      ,
+            FILENAME_CMDLINE   ,
+            FILENAME_PACKAGE   ,
+            FILENAME_UID       ,
+            FILENAME_COUNT     ,
+            NULL
+    };
+    int s1_index = index_of_string_in_list(s1, (char**) list_order);
+    int s2_index = index_of_string_in_list(s2, (char**) list_order);
+
+    if(s1_index < 0 && s2_index < 0)
+        return strcmp(s1, s2);
+
+    if(s1_index < 0)
+        return 1;
+
+    if(s2_index < 0)
+        return -1;
+
+    return s1_index - s2_index;
+}
+
 char *make_description(problem_data_t *problem_data, char **names_to_skip,
                        unsigned max_text_size, unsigned desc_flags)
 {
@@ -59,7 +85,7 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
                                                             FILENAME_ANALYZER);
 
     GList *list = g_hash_table_get_keys(problem_data);
-    list = g_list_sort(list, (GCompareFunc)strcmp);
+    list = g_list_sort(list, (GCompareFunc)list_cmp);
     GList *l;
 
     /* Print one-liners. Format:
