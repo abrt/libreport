@@ -100,7 +100,7 @@ int main(int argc, char **argv)
     ureport_server_config_load(&config, settings);
 
     if (opts & OPT_u)
-        config.ur_url = arg_server_url;
+        ureport_server_config_set_url(&config, xstrdup(arg_server_url));
     if (opts & OPT_k)
         config.ur_ssl_verify = !insecure;
     if (opts & OPT_t)
