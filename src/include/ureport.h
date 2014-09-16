@@ -23,6 +23,8 @@
 extern "C" {
 #endif
 
+#include "internal_libreport.h"
+
 #define UREPORT_CONF_FILE_PATH PLUGINS_CONF_DIR"/ureport.conf"
 
 #define UREPORT_OPTION_VALUE_FROM_CONF(settings, opt, var, tr) do { const char *value = getenv("uReport_"opt); \
@@ -50,6 +52,8 @@ struct ureport_server_config
     char *ur_client_cert; ///< Path to certificate used for client
                           ///< authentication (or NULL)
     char *ur_client_key;  ///< Private key for the certificate
+    char *ur_username;    ///< username for basic HTTP auth
+    char *ur_password;    ///< password for basic HTTP auth
     map_string_t *ur_http_headers; ///< Additional HTTP headers
 
     struct ureport_preferences ur_prefs; ///< configuration for uReport generation
@@ -97,6 +101,18 @@ ureport_server_config_load(struct ureport_server_config *config,
 void
 ureport_server_config_set_client_auth(struct ureport_server_config *config,
                                       const char *client_auth);
+
+/*
+ * Configure user name and password for HTTP Basic authentication
+ *
+ * @param config Configured structure
+ * @param username User name
+ * @param password Password
+ */
+#define ureport_server_config_set_basic_auth libreport_ureport_server_config_set_basic_auth
+void
+ureport_server_config_set_basic_auth(struct ureport_server_config *config,
+                                     const char *username, const char *password);
 
 /*
  * uReport server response
