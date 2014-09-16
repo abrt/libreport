@@ -7,7 +7,7 @@ reporter-rhtsupport - Reports problem to RHTSupport.
 
 SYNOPSIS
 --------
-'reporter-rhtsupport' [-v] [-c CONFFILE] -d DIR
+'reporter-rhtsupport' [-v] [-c CONFFILE] [-u -C UR_CONFFILE] -d DIR
 
 Or:
 
@@ -17,6 +17,9 @@ DESCRIPTION
 -----------
 The tool reads problem directory DIR. Then it logs in to RHTSupport
 and creates a new case.
+
+The tool can be configured to submit an uReport to RHTSupport together with
+creating a new case.
 
 The URL to new case is printed to stdout and recorded in 'reported_to'
 element in DIR.
@@ -30,6 +33,9 @@ If problem data in DIR was never reported to RHTSupport, upload will fail.
 Option -tCASE uploads FILEs to the case CASE on RHTSupport site.
 -d DIR is ignored.
 
+Option -u uploads uReport along with creating a new case. uReport configuration
+is loaded from UR_CONFFILE which defaults to
+/etc/libreport/plugins/ureport.conf.
 
 Configuration file
 ~~~~~~~~~~~~~~~~~~
@@ -46,6 +52,10 @@ Configuration file lines should have 'PARAM = VALUE' format. The parameters are:
 
 'SSLVerify'::
 	Use yes/true/on/1 to verify server's SSL certificate. (default: yes)
+
+'SubmitUReport'::
+	Use yes/true/on/1 to enable submitting uReport together wit creating a new
+	case. (default: no)
 
 Parameters can be overridden via $RHTSupport_PARAM environment variables.
 
@@ -70,6 +80,17 @@ OPTIONS
 
 -t[ID]::
    Upload FILEs to the already created case on RHTSupport site.
+
+-u::
+   Submit uReport together with creating a new case.
+
+-C UR_CONFFILE::
+   Configuration file for submitting uReports.
+
+FILES
+-----
+/etc/libreport/plugins/rhtsupport.conf::
+    Configuration file.
 
 SEE ALSO
 --------

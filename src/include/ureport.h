@@ -47,7 +47,7 @@ struct ureport_preferences
  */
 struct ureport_server_config
 {
-    const char *ur_url;   ///< Web service URL
+    char *ur_url;         ///< Web service URL
     bool ur_ssl_verify;   ///< Verify HOST and PEER certificates
     char *ur_client_cert; ///< Path to certificate used for client
                           ///< authentication (or NULL)
@@ -89,6 +89,17 @@ ureport_server_config_destroy(struct ureport_server_config *config);
 void
 ureport_server_config_load(struct ureport_server_config *config,
                            map_string_t *settings);
+
+/*
+ * Configure HTTP(S) URL to server's index page
+ *
+ * @param config Where the url is stored
+ * @param server_url Index URL
+ */
+#define ureport_server_config_set_url libreport_ureport_server_config_set_url
+void
+ureport_server_config_set_url(struct ureport_server_config *config,
+                              char *server_url);
 
 /*
  * Configure client certificate paths
