@@ -111,6 +111,8 @@ int suffixcmp(const char *str, const char *suffix);
 char *strtrim(char *str);
 #define strtrimch libreport_strtrimch
 char *strtrimch(char *str, int ch);
+#define strremovech libreport_strremovech
+char *strremovech(char *str, int ch);
 #define append_to_malloced_string libreport_append_to_malloced_string
 char *append_to_malloced_string(char *mstr, const char *append);
 #define skip_whitespace libreport_skip_whitespace
@@ -327,6 +329,8 @@ void* xzalloc(size_t size);
 char* xstrdup(const char *s);
 #define xstrndup libreport_xstrndup
 char* xstrndup(const char *s, int n);
+#define xstrdup_between libreport_xstrdup_between
+char* xstrdup_between(const char *s, const char *open, const char *close);
 
 #define xpipe libreport_xpipe
 void xpipe(int filedes[2]);
