@@ -506,8 +506,12 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/events/report_Logger.conf
 %{_mandir}/man5/report_Logger.conf.5.*
 %{_datadir}/%{name}/events/report_Logger.xml
+%{_datadir}/%{name}/workflows/workflow_Logger.xml
+%{_datadir}/%{name}/workflows/workflow_LoggerCCpp.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/print_event.conf
+%config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_logger.conf
 %{_mandir}/man5/print_event.conf.5.*
+%{_mandir}/man5/report_logger.conf.5.*
 %{_bindir}/reporter-print
 %{_mandir}/man*/reporter-print.*
 
@@ -517,9 +521,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/%{name}/conf.d/plugins/mailx.conf
 %{_datadir}/%{name}/events/report_Mailx.xml
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.mailx.xml
+%{_datadir}/%{name}/workflows/workflow_Mailx.xml
+%{_datadir}/%{name}/workflows/workflow_MailxCCpp.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/mailx_event.conf
+%config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_mailx.conf
 %{_mandir}/man5/mailx.conf.5.*
 %{_mandir}/man5/mailx_event.conf.5.*
+%{_mandir}/man5/report_mailx.conf.5.*
 %{_mandir}/man*/reporter-mailx.*
 %{_bindir}/reporter-mailx
 
@@ -581,10 +589,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %{_mandir}/man*/reporter-upload.*
 %{_mandir}/man5/uploader_event.conf.5.*
+%{_mandir}/man5/report_uploader.conf.5.*
 %{_bindir}/reporter-upload
-%{_datadir}/%{name}/events/report_Uploader.xml
+%config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_uploader.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/uploader_event.conf
+%{_datadir}/%{name}/events/report_Uploader.xml
 %{_datadir}/%{name}/workflows/workflow_Upload.xml
+%{_datadir}/%{name}/workflows/workflow_UploadCCpp.xml
 
 %if 0%{?fedora}
 %files fedora
