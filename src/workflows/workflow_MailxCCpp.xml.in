@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow>
+    <_name>Send the problem data via email</_name>
+    <_description>Analyze the problem locally and send information via email</_description>
+    <priority>-99</priority>
+
+    <events>
+        <event>collect_*</event>
+        <event>analyze_CCpp</event>
+        <event>report_Mailx</event>
+    </events>
+</workflow>
