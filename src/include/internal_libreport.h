@@ -287,6 +287,9 @@ char *run_in_shell_and_save_output(int flags,
 #define is_in_string_list libreport_is_in_string_list
 bool is_in_string_list(const char *name, char **v);
 
+#define index_of_string_in_list libreport_index_of_string_in_list
+int index_of_string_in_list(const char *name, char **v);
+
 #define is_in_comma_separated_list libreport_is_in_comma_separated_list
 bool is_in_comma_separated_list(const char *value, const char *list);
 #define is_in_comma_separated_list_of_glob_patterns libreport_is_in_comma_separated_list_of_glob_patterns

@@ -1,0 +1,36 @@
+# -*- Autotest -*-
+
+AT_BANNER([string_list])
+
+## ----------------------- ##
+## index_of_string_in_list ##
+## ----------------------- ##
+
+AT_TESTFUN([index_of_string_in_list],
+[[
+#include "internal_libreport.h"
+#include <assert.h>
+int main(void)
+{
+    static const char *const list_order[] = {
+            FILENAME_REASON    ,
+            FILENAME_TIME      ,
+            FILENAME_CMDLINE   ,
+            FILENAME_PACKAGE   ,
+            FILENAME_UID       ,
+            FILENAME_COUNT     ,
+            NULL
+    };
+
+    int index = index_of_string_in_list(FILENAME_REASON, (char**) list_order);
+    assert(index == 0);
+
+    index = index_of_string_in_list(FILENAME_COUNT, (char**) list_order);
+    assert(index == 5);
+
+    index = index_of_string_in_list("other", (char**) list_order);
+    assert(index < 0);
+
+    return 0;
+}
+]])

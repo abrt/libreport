@@ -450,9 +450,10 @@ void problem_data_load_from_dump_dir(problem_data_t *problem_data, struct dump_d
         static const char *const list_files[] = {
             FILENAME_UID       ,
             FILENAME_PACKAGE   ,
-            FILENAME_EXECUTABLE,
+            FILENAME_CMDLINE   ,
             FILENAME_TIME      ,
             FILENAME_COUNT     ,
+            FILENAME_REASON    ,
             NULL
         };
         if (is_in_string_list(short_name, (char**)list_files))

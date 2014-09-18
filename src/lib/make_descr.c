@@ -48,6 +48,32 @@ char *make_description_item_multiline(const char *name, const char *content)
     return strbuf_free_nobuf(buf);
 }
 
+static int list_cmp(const char *s1, const char *s2)
+{
+    static const char *const list_order[] = {
+            FILENAME_REASON    ,
+            FILENAME_TIME      ,
+            FILENAME_CMDLINE   ,
+            FILENAME_PACKAGE   ,
+            FILENAME_UID       ,
+            FILENAME_COUNT     ,
+            NULL
+    };
+    int s1_index = index_of_string_in_list(s1, (char**) list_order);
+    int s2_index = index_of_string_in_list(s2, (char**) list_order);
+
+    if(s1_index < 0 && s2_index < 0)
+        return strcmp(s1, s2);
+
+    if(s1_index < 0)
+        return 1;
+
+    if(s2_index < 0)
+        return -1;
+
+    return s1_index - s2_index;
+}
+
 char *make_description(problem_data_t *problem_data, char **names_to_skip,
                        unsigned max_text_size, unsigned desc_flags)
 {
@@ -59,7 +85,7 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
                                                             FILENAME_ANALYZER);
 
     GList *list = g_hash_table_get_keys(problem_data);
-    list = g_list_sort(list, (GCompareFunc)strcmp);
+    list = g_list_sort(list, (GCompareFunc)list_cmp);
     GList *l;
 
     /* Print one-liners. Format:
@@ -93,7 +119,25 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
             char *output = formatted ? formatted : item->content;
             int pad = 16 - (strlen(key) + 2);
             if (pad < 0) pad = 0;
-            strbuf_append_strf(buf_dsc, "%s: %*s%s\n", key, pad, "", output);
+            bool done = false;
+            if (strcmp(FILENAME_REASON, key) == 0)
+            {
+                const char *crash_func = problem_data_get_content_or_NULL(problem_data,
+                                                                          FILENAME_CRASH_FUNCTION);
+                if((done = (bool)crash_func))
+                    strbuf_append_strf(buf_dsc, "%s: %*s%s(): %s\n", key, pad, "", crash_func, output);
+            }
+            else if (strcmp(FILENAME_UID, key) == 0)
+            {
+                const char *username = problem_data_get_content_or_NULL(problem_data,
+                                                                          FILENAME_USERNAME);
+                if((done = (bool)username))
+                    strbuf_append_strf(buf_dsc, "%s: %*s%s (%s)\n", key, pad, "", output, username);
+            }
+
+            if (!done)
+                strbuf_append_strf(buf_dsc, "%s: %*s%s\n", key, pad, "", output);
+
             empty = false;
             free(formatted);
         }

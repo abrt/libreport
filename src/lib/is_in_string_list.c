@@ -28,3 +28,13 @@ bool is_in_string_list(const char *name, char **v)
     }
     return false;
 }
+
+int index_of_string_in_list(const char *name, char **v)
+{
+    for(int i = 0; v[i]; ++i)
+    {
+        if (strcmp(v[i], name) == 0)
+            return i;
+    }
+    return -1;
+}
