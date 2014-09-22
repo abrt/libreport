@@ -1,0 +1,46 @@
+report_mailx.conf(5)
+====================
+
+NAME
+----
+report_mailx.conf - configuration file for libreport.
+
+DESCRIPTION
+-----------
+This configuration file specifies which of the work flow definitions
+are applicable to analyzing problems and send information via email.
+
+All applicable work flows are presented to users in User Interface as
+possibilities for processing of any problems. A particular work flow becomes
+applicable if its conditions are satisfied.
+
+This configuration file consists from condition lines. Each condition line must
+start with EVENT=workflow_NAME where "workflow_" is constant prefix and
+"workflow_NAME" is base name of path to reporting work flow configuration file.
+
+The rest of condition line has form VAR=VAL, VAR!=VAL or VAL~=REGEX, where VAR
+is a name of problem directory element to be checked (for example,
+"executable", "package", hostname" etc). The condition may consists
+from as many element checks as it is necessary.
+
+All condition lines in this configuration file are commented out by default.
+Therefore all applicable work flows from this file are not presented to users in
+User Interface. For enable this extension uncomment all condition line in this
+configuration file.
+
+EXAMPLES
+--------
+Condition line::
+    EVENT=workflow_MailxCCpp analyzer=CCpp
+
+The condition line above expects existence of
+/usr/share/libreport/workflows/workflow_MailxCCpp.xml
+
+SEE ALSO
+--------
+report-gtk(1)
+
+AUTHOR
+------
+* ABRT team
+
