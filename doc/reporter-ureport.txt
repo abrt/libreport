@@ -29,8 +29,10 @@ Configuration file lines should have 'PARAM = VALUE' format. The parameters are:
 
 'SSLClientAuth'::
    If this option is set, client-side SSL certificate is used to authenticate
-   to the server so that it knows which machine it came from. Possible values
-   are:
+   to the server so that it knows which machine it came from. Assigning any value to
+   this option changes the default value of IncludeAuthData to yes.
+
+   Possible values are:
 
    'rhsm';;
       Uses the system certificate that is used for Red Hat subscription management.
@@ -48,6 +50,9 @@ Configuration file lines should have 'PARAM = VALUE' format. The parameters are:
    If this option is set to 'yes', uploaded uReport will contain 'auth' object
    consisting from key value pairs made from CSV list stored in 'AuthDataItems'
    option. Keys are file names and values are bites of these files.
+
+   The default value is no, unless you set SSLClientAuth to some value. In that
+   case, the default value is yes.
 
 'AuthDataItems'::
    CSV list of files included in the 'auth' uReport object.
