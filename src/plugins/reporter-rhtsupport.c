@@ -215,6 +215,56 @@ char *submit_ureport(const char *dump_dir_name, struct ureport_server_config *co
 }
 
 static
+bool check_for_hints(const char *url, const char *login, const char *password, bool ssl_verify, const char *tempfile)
+{
+    rhts_result_t *result = get_rhts_hints(url, login, password, ssl_verify, tempfile);
+#if 0 /* testing */
+    log("ERR:%d", result->error);
+    log("MSG:'%s'", result->msg);
+    log("BODY:'%s'", result->body);
+    result->error = 0;
+    result->body = xstrdup(
+            "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
+            "<problems xmlns=\"http://www.redhat.com/gss/strata\">"
+            "<link uri=\"http://access.redhat.com/\" rel=\"help\">The main Red Hat Support web site</link>"
+            "<property name=\"content\">an ABRT report</property>"
+            "<problem>"
+            "<property name=\"source\">a backtrace in the ABRT report</property>"
+            "<link uri=\"https://avalon-ci.gss.redhat.com/kb/docs/DOC-22029\" rel=\"suggestion\">[RHEL 5.3] EVO autocompletion lookup hang</link>"
+            "</problem>"
+            "</problems>"
+            );
+#endif
+    if (result->error)
+    {
+        /* We don't use result->msg here because it looks like this:
+         *  Error in file upload at 'URL', HTTP code: 404,
+         *  server says: '<?xml...?><error...><code>404</code><message>...</message></error>'
+         * TODO: make server send bare textual msgs, not XML.
+         */
+        error_msg("Error in file upload at '%s', HTTP code: %d", url, result->http_resp_code);
+    }
+    else if (result->body)
+    {
+        /* The message might contain URLs to known solutions and such */
+        char *hint = parse_response_from_RHTS_hint_xml2txt(result->body);
+        if (hint)
+        {
+            hint = append_to_malloced_string(hint, " ");
+            hint = append_to_malloced_string(hint,
+                    _("Do you still want to create a RHTSupport ticket?")
+                    );
+            int create_ticket = ask_yes_no(hint);
+            free(hint);
+            if (!create_ticket)
+                return true;
+        }
+    }
+    free_rhts_result(result);
+    return false;
+}
+
+static
 char *get_param_string(const char *name, map_string_t *settings, const char *dflt)
 {
     char *envname = xasprintf("RHTSupport_%s", name);
@@ -514,53 +564,6 @@ int main(int argc, char **argv)
 
     off_t tempfile_size = stat_st_size_or_die(tempfile);
 
-    if (tempfile_size <= QUERY_HINTS_IF_SMALLER_THAN)
-    {
-        /* Check for hints and show them if we have something */
-        log(_("Checking for hints"));
-        result = get_rhts_hints(url,
-                login,
-                password,
-                ssl_verify,
-                tempfile
-        );
-#if 0 /* testing */
-        log("ERR:%d", result->error);
-        log("MSG:'%s'", result->msg);
-        log("BODY:'%s'", result->body);
-        result->error = 0;
-        result->body = xstrdup(
-        "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
-        "<problems xmlns=\"http://www.redhat.com/gss/strata\">"
-          "<link uri=\"http://access.redhat.com/\" rel=\"help\">The main Red Hat Support web site</link>"
-          "<property name=\"content\">an ABRT report</property>"
-          "<problem>"
-            "<property name=\"source\">a backtrace in the ABRT report</property>"
-            "<link uri=\"https://avalon-ci.gss.redhat.com/kb/docs/DOC-22029\" rel=\"suggestion\">[RHEL 5.3] EVO autocompletion lookup hang</link>"
-          "</problem>"
-        "</problems>"
-        );
-#endif
-        if (result->error == 0 && result->body)
-        {
-            /* The message might contain URLs to known solutions and such */
-            char *hint = parse_response_from_RHTS_hint_xml2txt(result->body);
-            if (hint)
-            {
-                hint = append_to_malloced_string(hint, " ");
-                hint = append_to_malloced_string(hint,
-                        _("Do you still want to create a RHTSupport ticket?")
-                );
-                int create_ticket = ask_yes_no(hint);
-                free(hint);
-                if (!create_ticket)
-                    goto ret;
-            }
-        }
-        free_rhts_result(result);
-        result = NULL;
-    }
-
     if (!(opts & OPT_t))
     {
         char *bthash = NULL;
@@ -576,6 +579,19 @@ int main(int argc, char **argv)
             log(_("Sending ABRT crash statistics data"));
 
             bthash = submit_ureport(dump_dir_name, &urconf);
+        }
+
+        if (tempfile_size <= QUERY_HINTS_IF_SMALLER_THAN)
+        {
+            /* Check for hints and show them if we have something */
+            log(_("Checking for hints"));
+            if (check_for_hints(url, login, password, ssl_verify, tempfile))
+            {
+                ureport_server_config_destroy(&urconf);
+                free_map_string(ursettings);
+                free(bthash);
+                goto ret;
+            }
         }
 
         log(_("Creating a new case"));
