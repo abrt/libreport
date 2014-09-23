@@ -231,7 +231,12 @@ ureport_server_config_load(struct ureport_server_config *config,
     UREPORT_OPTION_VALUE_FROM_CONF(settings, "URL", config->ur_url, xstrdup);
     UREPORT_OPTION_VALUE_FROM_CONF(settings, "SSLVerify", config->ur_ssl_verify, string_to_bool);
 
-    bool include_auth = false;
+    const char *client_auth = NULL;
+    UREPORT_OPTION_VALUE_FROM_CONF(settings, "SSLClientAuth", client_auth, (const char *));
+    ureport_server_config_set_client_auth(config, client_auth);
+
+    /* If SSLClientAuth is configured, include the auth items by default. */
+    bool include_auth = !!config->ur_client_cert;
     UREPORT_OPTION_VALUE_FROM_CONF(settings, "IncludeAuthData", include_auth, string_to_bool);
 
     if (include_auth)
@@ -243,10 +248,6 @@ ureport_server_config_load(struct ureport_server_config *config,
         if (config->ur_prefs.urp_auth_items == NULL)
             log_warning("IncludeAuthData set to 'yes' but AuthDataItems is empty.");
     }
-
-    const char *client_auth = NULL;
-    UREPORT_OPTION_VALUE_FROM_CONF(settings, "SSLClientAuth", client_auth, (const char *));
-    ureport_server_config_set_client_auth(config, client_auth);
 }
 
 void
