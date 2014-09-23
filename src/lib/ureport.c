@@ -30,6 +30,8 @@
 
 #define BTHASH_URL_SFX "reports/bthash/"
 
+#define RHSM_WEB_SERVICE_URL "https://api.access.redhat.com/rs/telemetry/abrt"
+
 #define RHSM_CERT_PATH "/etc/pki/consumer/cert.pem"
 #define RHSM_KEY_PATH "/etc/pki/consumer/key.pem"
 
@@ -38,6 +40,7 @@
 #define RHSMENT_ENT_DATA_END_TAG "-----END ENTITLEMENT DATA-----"
 #define RHSMENT_SIG_DATA_BEGIN_TAG "-----BEGIN RSA SIGNATURE-----"
 #define RHSMENT_SIG_DATA_END_TAG "-----END RSA SIGNATURE-----"
+
 
 static char *
 puppet_config_print(const char *key)
@@ -87,11 +90,17 @@ ureport_server_config_set_client_auth(struct ureport_server_config *config,
     }
     else if (strcmp(client_auth, "rhsm") == 0)
     {
+        if (config->ur_url == NULL)
+            ureport_server_config_set_url(config, xstrdup(RHSM_WEB_SERVICE_URL));
+
         config->ur_client_cert = xstrdup(RHSM_CERT_PATH);
         config->ur_client_key = xstrdup(RHSM_KEY_PATH);
     }
     else if (strcmp(client_auth, "rhsm-entitlement") == 0)
     {
+        if (config->ur_url == NULL)
+            ureport_server_config_set_url(config, xstrdup(RHSM_WEB_SERVICE_URL));
+
         GList *certs = get_file_list(RHSMENT_PEM_DIR_PATH, "pem");
         if (g_list_length(certs) != 2)
         {
