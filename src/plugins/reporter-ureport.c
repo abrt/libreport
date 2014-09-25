@@ -22,6 +22,8 @@
 #include "ureport.h"
 #include "libreport_curl.h"
 
+#define DEFAULT_WEB_SERVICE_URL "https://retrace.fedoraproject.org/faf"
+
 int main(int argc, char **argv)
 {
     setlocale(LC_ALL, "");
@@ -117,7 +119,7 @@ int main(int argc, char **argv)
     }
 
     if (!config.ur_url)
-        error_msg_and_die("You need to specify server URL");
+        ureport_server_config_set_url(&config, xstrdup(DEFAULT_WEB_SERVICE_URL));
 
     if (ureport_hash && ureport_hash_from_rt)
         error_msg_and_die("You need to pass either -a bthash or -A");
