@@ -61,6 +61,14 @@ error:
 }
 
 void
+ureport_server_config_set_url(struct ureport_server_config *config,
+                              char *server_url)
+{
+    free(config->ur_url);
+    config->ur_url = server_url;
+}
+
+void
 ureport_server_config_set_client_auth(struct ureport_server_config *config,
                                       const char *client_auth)
 {
@@ -210,7 +218,7 @@ void
 ureport_server_config_load(struct ureport_server_config *config,
                            map_string_t *settings)
 {
-    UREPORT_OPTION_VALUE_FROM_CONF(settings, "URL", config->ur_url, (const char *));
+    UREPORT_OPTION_VALUE_FROM_CONF(settings, "URL", config->ur_url, xstrdup);
     UREPORT_OPTION_VALUE_FROM_CONF(settings, "SSLVerify", config->ur_ssl_verify, string_to_bool);
 
     bool include_auth = false;
@@ -247,6 +255,9 @@ ureport_server_config_init(struct ureport_server_config *config)
 void
 ureport_server_config_destroy(struct ureport_server_config *config)
 {
+    free(config->ur_url);
+    config->ur_url = DESTROYED_POINTER;
+
     free(config->ur_client_cert);
     config->ur_client_cert = DESTROYED_POINTER;
 
