@@ -69,8 +69,12 @@ ureport_server_config_set_client_auth(struct ureport_server_config *config,
 
     if (strcmp(client_auth, "") == 0)
     {
+        free(config->ur_client_cert);
         config->ur_client_cert = NULL;
+
+        free(config->ur_client_key);
         config->ur_client_key = NULL;
+
         log_notice("Not using client authentication");
     }
     else if (strcmp(client_auth, "rhsm") == 0)
@@ -180,7 +184,26 @@ ureport_server_config_set_client_auth(struct ureport_server_config *config,
     {
         log_notice("Using client certificate: %s", config->ur_client_cert);
         log_notice("Using client private key: %s", config->ur_client_key);
+
+        free(config->ur_username);
+        config->ur_username = NULL;
+
+        free(config->ur_password);
+        config->ur_password = NULL;
     }
+}
+
+void
+ureport_server_config_set_basic_auth(struct ureport_server_config *config,
+                                     const char *login, const char *password)
+{
+    ureport_server_config_set_client_auth(config, "");
+
+    free(config->ur_username);
+    config->ur_username = xstrdup(login);
+
+    free(config->ur_password);
+    config->ur_password = xstrdup(password);
 }
 
 void
@@ -215,6 +238,8 @@ ureport_server_config_init(struct ureport_server_config *config)
     config->ur_ssl_verify = true;
     config->ur_client_cert = NULL;
     config->ur_client_key = NULL;
+    config->ur_username = NULL;
+    config->ur_password = NULL;
     config->ur_http_headers = new_map_string();
     config->ur_prefs.urp_auth_items = NULL;
 }
@@ -227,6 +252,12 @@ ureport_server_config_destroy(struct ureport_server_config *config)
 
     free(config->ur_client_key);
     config->ur_client_key = DESTROYED_POINTER;
+
+    free(config->ur_username);
+    config->ur_username = DESTROYED_POINTER;
+
+    free(config->ur_password);
+    config->ur_password = DESTROYED_POINTER;
 
     g_list_free_full(config->ur_prefs.urp_auth_items, free);
     config->ur_prefs.urp_auth_items = DESTROYED_POINTER;
@@ -617,6 +648,11 @@ ureport_do_post(const char *json, struct ureport_server_config *config,
     {
         post_state->client_cert_path = config->ur_client_cert;
         post_state->client_key_path = config->ur_client_key;
+    }
+    else if (config->ur_username && config->ur_password)
+    {
+        post_state->username = config->ur_username;
+        post_state->password = config->ur_password;
     }
 
     char **headers = xmalloc(sizeof(char *) * (3 + size_map_string(config->ur_http_headers)));
