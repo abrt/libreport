@@ -1266,53 +1266,74 @@ int main(int argc, char **argv)
         }
     }
 
-    if (strcmp(bz->bi_status, "CLOSED") != 0)
-    {
-        /* Add user's login to CC if not there already */
-        if (strcmp(bz->bi_reporter, rhbz.b_login) != 0
-         && !g_list_find_custom(bz->bi_cc_list, rhbz.b_login, (GCompareFunc)g_strcmp0)
-        ) {
-            log(_("Adding %s to CC list"), rhbz.b_login);
-            rhbz_mail_to_cc(client, bz->bi_id, rhbz.b_login, RHBZ_NOMAIL_NOTIFY);
-        }
+    /* We used to skip adding the comment to CLOSED bugs:
+     *
+     * if (strcmp(bz->bi_status, "CLOSED") != 0)
+     * {
+     *
+     * But that condition has been added without a good explanation of the
+     * reason for doing so:
+     *
+     * ABRT commit 1bf37ad93e87f065347fdb7224578d55cca8d384
+     *
+     * -    if (bug_id > 0)
+     * +    if (strcmp(bz.bug_status, "CLOSED") != 0)
+     *
+     *
+     * From my point of view, there is no good reason to not add the comment to
+     * such a bug. The reporter spent several minutes waiting for the backtrace
+     * and we don't want to make the reporters feel that they spent their time
+     * in vain and I think that adding comments to already closed bugs doesn't
+     * hurt the maintainers (at least not me).
+     *
+     * Plenty of new comments might convince the maintainer to reconsider the
+     * bug's status.
+     */
 
-        /* Add comment and bt */
-        const char *comment = problem_data_get_content_or_NULL(problem_data, FILENAME_COMMENT);
-        if (comment && comment[0])
-        {
-            GList *comment_fmt_spec = load_bzrep_conf_file(fmt_file2);
-            struct strbuf *bzcomment_buf = strbuf_new();
-            generate_bz_comment(bzcomment_buf, problem_data, comment_fmt_spec);
-            char *bzcomment = strbuf_free_nobuf(bzcomment_buf);
+    /* Add user's login to CC if not there already */
+    if (strcmp(bz->bi_reporter, rhbz.b_login) != 0
+     && !g_list_find_custom(bz->bi_cc_list, rhbz.b_login, (GCompareFunc)g_strcmp0)
+    ) {
+        log(_("Adding %s to CC list"), rhbz.b_login);
+        rhbz_mail_to_cc(client, bz->bi_id, rhbz.b_login, RHBZ_NOMAIL_NOTIFY);
+    }
+
+    /* Add comment and bt */
+    const char *comment = problem_data_get_content_or_NULL(problem_data, FILENAME_COMMENT);
+    if (comment && comment[0])
+    {
+        GList *comment_fmt_spec = load_bzrep_conf_file(fmt_file2);
+        struct strbuf *bzcomment_buf = strbuf_new();
+        generate_bz_comment(bzcomment_buf, problem_data, comment_fmt_spec);
+        char *bzcomment = strbuf_free_nobuf(bzcomment_buf);
 //TODO: free_comment_fmt_spec(comment_fmt_spec);
 
-            int dup_comment = is_comment_dup(bz->bi_comments, bzcomment);
-            if (!dup_comment)
-            {
-                log(_("Adding new comment to bug %d"), bz->bi_id);
-                rhbz_add_comment(client, bz->bi_id, bzcomment, 0);
-                free(bzcomment);
+        int dup_comment = is_comment_dup(bz->bi_comments, bzcomment);
+        if (!dup_comment)
+        {
+            log(_("Adding new comment to bug %d"), bz->bi_id);
+            rhbz_add_comment(client, bz->bi_id, bzcomment, 0);
+            free(bzcomment);
 
-                const char *bt = problem_data_get_content_or_NULL(problem_data, FILENAME_BACKTRACE);
-                unsigned rating = 0;
-                const char *rating_str = problem_data_get_content_or_NULL(problem_data, FILENAME_RATING);
-                /* python doesn't have rating file */
-                if (rating_str)
-                    rating = xatou(rating_str);
-                if (bt && rating > bz->bi_best_bt_rating)
-                {
-                    char bug_id_str[sizeof(int)*3 + 2];
-                    sprintf(bug_id_str, "%i", bz->bi_id);
-                    log(_("Attaching better backtrace"));
-                    rhbz_attach_blob(client, bug_id_str, FILENAME_BACKTRACE, bt, strlen(bt),
-                                     RHBZ_NOMAIL_NOTIFY);
-                }
-            }
-            else
+            const char *bt = problem_data_get_content_or_NULL(problem_data, FILENAME_BACKTRACE);
+            unsigned rating = 0;
+            const char *rating_str = problem_data_get_content_or_NULL(problem_data, FILENAME_RATING);
+            /* python doesn't have rating file */
+            if (rating_str)
+                rating = xatou(rating_str);
+            if (bt && rating > bz->bi_best_bt_rating)
             {
-                free(bzcomment);
-                log(_("Found the same comment in the bug history, not adding a new one"));
+                char bug_id_str[sizeof(int)*3 + 2];
+                sprintf(bug_id_str, "%i", bz->bi_id);
+                log(_("Attaching better backtrace"));
+                rhbz_attach_blob(client, bug_id_str, FILENAME_BACKTRACE, bt, strlen(bt),
+                                 RHBZ_NOMAIL_NOTIFY);
             }
+        }
+        else
+        {
+            free(bzcomment);
+            log(_("Found the same comment in the bug history, not adding a new one"));
         }
     }
 
