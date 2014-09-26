@@ -216,6 +216,17 @@ struct ureport_server_response *
 ureport_submit(const char *json_ureport, struct ureport_server_config *config);
 
 /*
+ * Build a new uReport attachement from give arguments
+ *
+ * @param bthash ID of uReport
+ * @param type Type of attachement recognized by uReport Server
+ * @param data Attached data
+ * @returm Malloced JSON string
+ */
+char *
+ureport_json_attachment_new(const char *bthash, const char *type, const char *data);
+
+/*
  * Attach given string to uReport
  *
  * @param bthash uReport identifier
