@@ -27,6 +27,22 @@
 
 #define QUERY_HINTS_IF_SMALLER_THAN  (8*1024*1024)
 
+static void ask_rh_credentials(char **login, char **password);
+
+#define INVALID_CREDENTIALS_LOOP(l, p, r, fncall) \
+    do {\
+        r = fncall;\
+        if (r->error == 0 || r->http_resp_code != 401 ) { break; }\
+        ask_rh_credentials(&l, &p);\
+        free_rhts_result(r);\
+    } while (1)
+
+#define STRCPY_IF_NOT_EQUAL(dest, src) \
+    do { if (strcmp(dest, src) != 0 ) { \
+        free(dest); \
+        dest = xstrdup(src); \
+    } } while (0)
+
 static report_result_t *get_reported_to(const char *dump_dir_name)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
@@ -170,6 +186,38 @@ ret_clean:
 }
 
 static
+struct ureport_server_response *ureport_do_post_credentials(const char *json, struct ureport_server_config *config, const char *action)
+{
+    struct abrt_post_state *post_state = NULL;
+    while (1)
+    {
+        post_state = ureport_do_post(json, config, action);
+
+        if (post_state == NULL)
+        {
+            error_msg(_("Failed on submitting the problem"));
+            return NULL;
+        }
+
+        if (post_state->http_resp_code != 401)
+            break;
+
+        free_abrt_post_state(post_state);
+
+        char *login = NULL;
+        char *password = NULL;
+        ask_rh_credentials(&login, &password);
+        ureport_server_config_set_basic_auth(config, login, password);
+        free(password);
+        free(login);
+    }
+
+    struct ureport_server_response *resp = ureport_server_response_from_reply(post_state, config);
+    free(post_state);
+    return resp;
+}
+
+static
 char *submit_ureport(const char *dump_dir_name, struct ureport_server_config *conf)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
@@ -191,7 +239,7 @@ char *submit_ureport(const char *dump_dir_name, struct ureport_server_config *co
     if (json == NULL)
         return NULL;
 
-    struct ureport_server_response *resp = ureport_submit(json, conf);
+    struct ureport_server_response *resp = ureport_do_post_credentials(json, conf, UREPORT_SUBMIT_ACTION);
     free(json);
     if (resp == NULL)
         return NULL;
@@ -215,9 +263,14 @@ char *submit_ureport(const char *dump_dir_name, struct ureport_server_config *co
 }
 
 static
-bool check_for_hints(const char *url, const char *login, const char *password, bool ssl_verify, const char *tempfile)
+bool check_for_hints(const char *url, char **login, char **password, bool ssl_verify, const char *tempfile)
 {
-    rhts_result_t *result = get_rhts_hints(url, login, password, ssl_verify, tempfile);
+    rhts_result_t *result = NULL;
+
+    INVALID_CREDENTIALS_LOOP((*login), (*password),
+            result, get_rhts_hints(url, *login, *password, ssl_verify, tempfile)
+    );
+
 #if 0 /* testing */
     log("ERR:%d", result->error);
     log("MSG:'%s'", result->msg);
@@ -262,6 +315,39 @@ bool check_for_hints(const char *url, const char *login, const char *password, b
     }
     free_rhts_result(result);
     return false;
+}
+
+static
+char *ask_rh_login(const char *message)
+{
+    char *login = ask(message);
+    if (login == NULL || login[0] == '\0')
+        error_msg_and_die(_("Can't continue without login"));
+
+    return login;
+}
+
+static
+char *ask_rh_password(const char *message)
+{
+    char *password = ask_password(message);
+    if (password == NULL || password[0] == '\0')
+        error_msg_and_die(_("Can't continue without password"));
+
+    return password;
+}
+
+static
+void ask_rh_credentials(char **login, char **password)
+{
+    free(*login);
+    free(*password);
+
+    *login = ask_rh_login(_("Invalid password or login. Please enter your Red Hat login:"));
+
+    char *question = xasprintf(_("Invalid password or login. Please enter the password for '%s':"), *login);
+    *password = ask_rh_password(question);
+    free(question);
 }
 
 static
@@ -579,13 +665,17 @@ int main(int argc, char **argv)
             log(_("Sending ABRT crash statistics data"));
 
             bthash = submit_ureport(dump_dir_name, &urconf);
+
+            /* Ensure that we will use the updated credentials */
+            STRCPY_IF_NOT_EQUAL(login, urconf.ur_username);
+            STRCPY_IF_NOT_EQUAL(password, urconf.ur_password);
         }
 
         if (tempfile_size <= QUERY_HINTS_IF_SMALLER_THAN)
         {
             /* Check for hints and show them if we have something */
             log(_("Checking for hints"));
-            if (check_for_hints(url, login, password, ssl_verify, tempfile))
+            if (check_for_hints(url, &login, &password, ssl_verify, tempfile))
             {
                 ureport_server_config_destroy(&urconf);
                 free_map_string(ursettings);
@@ -595,15 +685,11 @@ int main(int argc, char **argv)
         }
 
         log(_("Creating a new case"));
-        result = create_new_case(url,
-                login,
-                password,
-                ssl_verify,
-                release,
-                summary,
-                dsc,
-                package
+        INVALID_CREDENTIALS_LOOP(login, password,
+                result, create_new_case(url, login, password, ssl_verify,
+                                        release, summary, dsc, package)
         );
+
         if (result->error)
         {
             /*
@@ -650,7 +736,19 @@ int main(int argc, char **argv)
         if (bthash)
         {
             log(_("Linking ABRT crash statistics record with the case"));
-            ureport_attach_string(bthash, "RHCID", result->url, &urconf);
+
+            /* Make sure we use the current credentials */
+            ureport_server_config_set_basic_auth(&urconf, login, password);
+
+            /* Do attach */
+            char *json = ureport_json_attachment_new(bthash, "RHCID", result->url);
+            struct ureport_server_response *resp = ureport_do_post_credentials(json, &urconf, UREPORT_ATTACH_ACTION);
+            ureport_server_response_free(resp);
+            free(json);
+
+            /* Update the credentials */
+            STRCPY_IF_NOT_EQUAL(login, urconf.ur_username);
+            STRCPY_IF_NOT_EQUAL(password, urconf.ur_password);
         }
 
         url = result->url;
@@ -682,10 +780,8 @@ int main(int argc, char **argv)
             remote_filename
         );
         free(remote_filename);
-        result_atch = add_comment_to_case(url,
-                login, password,
-                ssl_verify,
-                comment_text
+        INVALID_CREDENTIALS_LOOP(login, password,
+                result_atch, add_comment_to_case(url, login, password, ssl_verify, comment_text)
         );
         free(comment_text);
     }
@@ -693,11 +789,8 @@ int main(int argc, char **argv)
     {
         /* Attach the tarball of -d DIR */
         log(_("Attaching problem data to case '%s'"), url);
-        result_atch = attach_file_to_case(url,
-                login, password,
-                ssl_verify,
-                tempfile
-
+        INVALID_CREDENTIALS_LOOP(login, password,
+                result_atch, attach_file_to_case(url, login, password, ssl_verify, tempfile)
         );
     }
     if (result_atch->error)
