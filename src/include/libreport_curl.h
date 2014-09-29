@@ -119,8 +119,19 @@ post_file_as_form(post_state_t *state,
                      filename, POST_DATA_FROMFILE_AS_FORM_DATA);
 }
 
+enum {
+    UPLOAD_FILE_NOFLAGS = 0,
+    UPLOAD_FILE_HANDLE_ACCESS_DENIALS = 1 << 0,
+};
+
 #define upload_file libreport_upload_file
 char *upload_file(const char *url, const char *filename);
+
+#define upload_file_ext libreport_upload_file_ext
+char *upload_file_ext(post_state_t *post_state,
+                const char *url,
+                const char *filename,
+                int flags);
 
 #ifdef __cplusplus
 }
