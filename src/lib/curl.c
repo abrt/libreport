@@ -17,6 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "internal_libreport.h"
+#include "client.h"
 #include "libreport_curl.h"
 #include "proxies.h"
 
@@ -586,6 +587,15 @@ post(post_state_t *state,
  */
 char *upload_file(const char *url, const char *filename)
 {
+    post_state_t *state = new_post_state(POST_WANT_ERROR_MSG);
+    char *retval = upload_file_ext(state, url, filename, UPLOAD_FILE_NOFLAGS);
+    free_post_state(state);
+
+    return retval;
+}
+
+char *upload_file_ext(post_state_t *state, const char *url, const char *filename, int flags)
+{
     /* we don't want to print the whole url as it may contain password
      * rhbz#856960
      * there can be '@' in the login or password so let's try to find the
@@ -597,8 +607,6 @@ char *upload_file(const char *url, const char *filename)
     else
         clean_url = url;
 
-    log(_("Sending %s to %s"), filename, clean_url);
-
     char *whole_url;
     unsigned len = strlen(url);
     if (len > 0 && url[len-1] == '/')
@@ -606,7 +614,25 @@ char *upload_file(const char *url, const char *filename)
     else
         whole_url = xstrdup(url);
 
-    post_state_t *state = new_post_state(POST_WANT_ERROR_MSG);
+
+    const char *username_bck = state->username;
+    const char *password_bck = state->password;
+    char *username = NULL;
+    char *password = NULL;
+
+    /* work around bug in libssh2(curl with scp://)
+     * libssh2_aget_disconnect() calls close(0)
+     * https://bugzilla.redhat.com/show_bug.cgi?id=1147717
+     */
+    int stdin_bck = dup(0);
+
+    /*
+     * Well, goto seems to be the most elegant syntax form here :(
+     * This label is used to re-try the upload with an updated credentials.
+     */
+  do_post:
+
+    log(_("Sending %s to %s"), filename, clean_url);
     post(state,
                 whole_url,
                 /*content_type:*/ "application/octet-stream",
@@ -614,6 +640,8 @@ char *upload_file(const char *url, const char *filename)
                 /*data:*/ filename,
                 POST_DATA_FROMFILE_PUT
     );
+
+    dup2(stdin_bck, 0);
 
     int error = (state->curl_result != 0);
     if (error)
@@ -623,6 +651,34 @@ char *upload_file(const char *url, const char *filename)
         else
             /* for example, when source file can't be opened */
             error_msg("Error while uploading");
+
+        if ((flags & UPLOAD_FILE_HANDLE_ACCESS_DENIALS) &&
+                (state->curl_result == CURLE_LOGIN_DENIED
+                 || state->curl_result == CURLE_REMOTE_ACCESS_DENIED))
+        {
+            char *msg = xasprintf(_("Please enter user name for '%s':"), clean_url);
+            free(username);
+            username = ask(msg);
+            free(msg);
+            if (username != NULL && username[0] != '\0')
+            {
+                msg = xasprintf(_("Please enter password for '%s':"), username);
+                free(password);
+                password = ask_password(msg);
+                free(msg);
+                /* What about empty password? */
+                if (password != NULL && password[0] != '\0')
+                {
+                    state->username = username;
+                    state->password = password;
+                    /*
+                     * Re-try with new credentials
+                     */
+                    goto do_post;
+                }
+            }
+        }
+
         free(whole_url);
         whole_url = NULL;
     }
@@ -632,7 +688,13 @@ char *upload_file(const char *url, const char *filename)
         log(_("Successfully sent %s to %s"), filename, clean_url);
     }
 
-    free_post_state(state);
+    close(stdin_bck);
+
+    free(password);
+    free(username);
+
+    state->username = username_bck;
+    state->password = password_bck;
 
     return whole_url;
 }
