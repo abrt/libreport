@@ -148,9 +148,31 @@ static int create_and_upload_archive(
     /* Upload from /tmp to /tmp + deletion -> BAD, exclude this possibility */
     if (url && url[0] && strcmp(url, "file://"LARGE_DATA_TMP_DIR"/") != 0)
     {
-        char *remote_name = upload_file(url, tempfile);
+        post_state_t *state = new_post_state(POST_WANT_ERROR_MSG);
+        state->username = getenv("Upload_Username");
+        char *password_inp = NULL;
+        if (state->username != NULL && state->username[0] != '\0')
+        {
+            /* Load Password only if Username is configured, it doesn't make */
+            /* much sense to load Password without Username. */
+            state->password = getenv("Upload_Password");
+            if (state->password == NULL && state->password[0] == '\0')
+            {
+                /* Be permissive and nice, ask only once and don't check */
+                /* the result. User can dismiss this prompt but the upload */
+                /* may work somehow??? */
+                char *msg = xasprintf(_("Please enter password for uploading:"), state->username);
+                state->password = password_inp = ask_password(msg);
+                free(msg);
+            }
+        }
+
+        char *remote_name = upload_file_ext(state, url, tempfile, UPLOAD_FILE_HANDLE_ACCESS_DENIALS);
+
         result = (remote_name == NULL); /* error if NULL */
         free(remote_name);
+        free(password_inp);
+        free_post_state(state);
         /* cleanup code will delete tempfile */
     }
     else
