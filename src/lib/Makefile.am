@@ -72,6 +72,7 @@ libreport_la_CPPFLAGS = \
     -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
     -DDUMP_DIR_OWNED_BY_USER=$(DUMP_DIR_OWNED_BY_USER) \
     -DLARGE_DATA_TMP_DIR=\"$(LARGE_DATA_TMP_DIR)\" \
+    $(JSON_C_CFLAGS) \
     $(GLIB_CFLAGS) \
     $(GOBJECT_CFLAGS) \
     $(AUGEAS_CFLAGS) \
@@ -79,6 +80,7 @@ libreport_la_CPPFLAGS = \
 libreport_la_LDFLAGS = \
     -version-info 0:1:0
 libreport_la_LIBADD = \
+    $(JSON_C_LIBS) \
     $(GLIB_LIBS) \
     $(JOURNAL_LIBS) \
     $(GOBJECT_LIBS) \
@@ -113,7 +115,7 @@ libreport_web_o += abrt_xmlrpc.h abrt_xmlrpc.c
 endif
 
 if BUILD_UREPORT
-libreport_web_o += ureport.h json.c
+libreport_web_o += ureport.c
 endif
 
 libreport_web_la_SOURCES = $(libreport_web_o) \
