@@ -113,7 +113,7 @@ libreport_web_o += abrt_xmlrpc.h abrt_xmlrpc.c
 endif
 
 if BUILD_UREPORT
-libreport_web_o += ureport.h json.c
+libreport_web_o += ureport.c
 endif
 
 libreport_web_la_SOURCES = $(libreport_web_o) \
