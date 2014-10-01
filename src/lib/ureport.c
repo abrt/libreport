@@ -742,7 +742,7 @@ ureport_submit(const char *json, struct ureport_server_config *config)
     return resp;
 }
 
-static char *
+char *
 ureport_json_attachment_new(const char *bthash, const char *type, const char *data)
 {
     struct json_object *attachment = json_object_new_object();
