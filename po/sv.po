@@ -3,16 +3,17 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Göran Uddeborg <goeran@uddeborg.se>, 2011,2013
-# Warrakkk <mick.ohrberg@gmail.com>, 2013
+# Göran Uddeborg <goeran@uddeborg.se>, 2011,2013-2014
+# Mick Ohrberg <mick.ohrberg@gmail.com>, 2013
+# Mick Ohrberg <mick.ohrberg@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-07 10:53+0100\n"
-"PO-Revision-Date: 2014-02-27 16:06+0000\n"
+"POT-Creation-Date: 2014-10-02 15:44+0200\n"
+"PO-Revision-Date: 2014-10-02 13:38+0000\n"
 "Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
-"Language-Team: Swedish (http://www.transifex.com/projects/p/fedora/language/sv/)\n"
+"Language-Team: Swedish (http://www.transifex.com/projects/p/libreport/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -32,15 +33,15 @@ msgstr "& [-vsp] -L[PREFIX] [PROBLEMKATALOG]\n   eller: & [-vspy] -e HÄNDELSE P
 msgid "List possible events [which start with PREFIX]"
 msgstr "Lista möjliga händelser [som börjar med PREFIX]"
 
-#: ../src/cli/cli.c:87 ../src/gui-wizard-gtk/main.c:123
+#: ../src/cli/cli.c:87 ../src/gui-wizard-gtk/main.c:172
 msgid "Run only these events"
 msgstr "Kör endast dessa händelser"
 
-#: ../src/cli/cli.c:88 ../src/gui-wizard-gtk/main.c:122
+#: ../src/cli/cli.c:88 ../src/gui-wizard-gtk/main.c:171
 msgid "Remove PROBLEM_DIR after reporting"
 msgstr "Radera PROBLEM_KAT efter rapportering"
 
-#: ../src/cli/cli.c:89 ../src/gui-wizard-gtk/main.c:124
+#: ../src/cli/cli.c:89 ../src/gui-wizard-gtk/main.c:173
 msgid "Expert mode"
 msgstr "Exportläge"
 
@@ -56,7 +57,7 @@ msgstr "Icke interaktiv: fråga inte frågor, anta ”ja”"
 msgid "Log to syslog"
 msgstr "Logga till syslog"
 
-#: ../src/cli/cli.c:94 ../src/gui-wizard-gtk/main.c:121
+#: ../src/cli/cli.c:94 ../src/gui-wizard-gtk/main.c:170
 msgid "Add program names to log"
 msgstr "Lägg till programnamn till loggen"
 
@@ -169,7 +170,7 @@ msgstr "Välj en händelse att köra: "
 
 #: ../src/cli/cli-report.c:854
 msgid "Select a workflow to run: "
-msgstr ""
+msgstr "Välj ett arbetsflöde att köra: "
 
 #: ../src/client-python/debuginfo.py:87
 msgid "Extracting cpio from {0}"
@@ -309,75 +310,81 @@ msgstr "Tar bort {0}"
 msgid "Can't remove %s, probably contains an error log"
 msgstr "Kan inte ta bort %s, innehåller sannolikt en fellogg"
 
-#: ../src/gtk-helpers/ask_dialogs.c:82
-msgid "_Yes"
-msgstr "_Ja"
-
-#: ../src/gtk-helpers/ask_dialogs.c:83
+#. Follow GTK3's yes-no-buttons order:
+#. * [No] [Yes]
+#: ../src/gtk-helpers/ask_dialogs.c:87
 msgid "_No"
 msgstr "_Nej"
 
-#: ../src/gtk-helpers/ask_dialogs.c:89
+#: ../src/gtk-helpers/ask_dialogs.c:88
+msgid "_Yes"
+msgstr "_Ja"
+
+#: ../src/gtk-helpers/ask_dialogs.c:94
 msgid "Don't ask me again"
 msgstr "Fråga inte igen"
 
 #. if event has no xml description
-#: ../src/gtk-helpers/config_dialog.c:157
+#: ../src/gtk-helpers/config_dialog.c:159
 msgid "No description available"
 msgstr "Ingen beskrivning finns"
 
-#: ../src/gtk-helpers/config_dialog.c:279
+#: ../src/gtk-helpers/config_dialog.c:282
 msgid "Configuration"
 msgstr "Konfiguration"
 
 #. we can't use this, because we want the workflows first and hashtable
 #. * doesn't return the items in the order they were added
 #. g_hash_table_foreach(configs, (GHFunc)add_config_tabs, config_nb);
-#: ../src/gtk-helpers/config_dialog.c:305
-#: ../src/gtk-helpers/config_dialog.c:307
+#: ../src/gtk-helpers/config_dialog.c:308
+#: ../src/gtk-helpers/config_dialog.c:310
 msgid "Workflows"
 msgstr "Arbetsflöden"
 
-#: ../src/gtk-helpers/config_dialog.c:309
-#: ../src/gtk-helpers/config_dialog.c:311
-#: ../src/gtk-helpers/config_dialog.c:356
+#: ../src/gtk-helpers/config_dialog.c:312
+#: ../src/gtk-helpers/config_dialog.c:314
+#: ../src/gtk-helpers/config_dialog.c:361
 msgid "Events"
 msgstr "Händelser"
 
-#: ../src/gtk-helpers/config_dialog.c:315
+#: ../src/gtk-helpers/config_dialog.c:318
 msgid "C_onfigure"
 msgstr "K_onfiguration"
 
-#: ../src/gtk-helpers/config_dialog.c:317 ../src/gui-wizard-gtk/wizard.c:3309
+#: ../src/gtk-helpers/config_dialog.c:320 ../src/gui-wizard-gtk/wizard.c:3472
 msgid "_Close"
 msgstr "_Stäng"
 
-#: ../src/gtk-helpers/event_config_dialog.c:136
+#: ../src/gtk-helpers/event_config_dialog.c:137
 msgid "Show password"
 msgstr "Visa lösenord"
 
-#: ../src/gtk-helpers/event_config_dialog.c:221
-msgid "Advanced"
-msgstr "Avancerat"
-
-#: ../src/gtk-helpers/event_config_dialog.c:241
+#: ../src/gtk-helpers/event_config_dialog.c:250
 msgid "Don't store passwords"
 msgstr "Spara inte lösenord"
 
-#: ../src/gtk-helpers/event_config_dialog.c:264
+#: ../src/gtk-helpers/event_config_dialog.c:260
+msgid "Basic"
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:268
+msgid "Advanced"
+msgstr "Avancerat"
+
+#: ../src/gtk-helpers/event_config_dialog.c:284
 msgid "Secret Service is not available, your settings won't be saved!"
 msgstr "Secret Service är inte tillgänglig, dina inställningar kommer inte att sparas!"
 
-#: ../src/gtk-helpers/event_config_dialog.c:299
-#: ../src/gtk-helpers/event_config_dialog.c:351
-#: ../src/gtk-helpers/workflow_config_dialog.c:76
-#: ../src/gui-wizard-gtk/wizard.c:769 ../src/gui-wizard-gtk/wizard.c:2910
+#: ../src/gtk-helpers/event_config_dialog.c:321
+#: ../src/gtk-helpers/event_config_dialog.c:378
+#: ../src/gtk-helpers/workflow_config_dialog.c:86
+#: ../src/gui-wizard-gtk/wizard.c:822 ../src/gui-wizard-gtk/wizard.c:3101
 msgid "_Cancel"
 msgstr "_Avbryt"
 
-#: ../src/gtk-helpers/event_config_dialog.c:301
-#: ../src/gtk-helpers/event_config_dialog.c:353
-#: ../src/gtk-helpers/workflow_config_dialog.c:78
+#: ../src/gtk-helpers/event_config_dialog.c:323
+#: ../src/gtk-helpers/event_config_dialog.c:380
+#: ../src/gtk-helpers/workflow_config_dialog.c:88
 msgid "_OK"
 msgstr "_OK"
 
@@ -419,232 +426,254 @@ msgstr "Kan inte skapa en hemlig post för händelsen ”%s”: %s"
 msgid "can't get secret value of '%s': %s"
 msgstr "kan inte hämta hemligt värde för ”%s”: %s"
 
-#: ../src/gui-wizard-gtk/main.c:105
+#: ../src/gui-wizard-gtk/main.c:107
+msgid "Preferences"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/main.c:110
+msgid "Quit"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/main.c:154
 msgid ""
 "& [-vpdx] [-e EVENT]... [-g GUI_FILE] PROBLEM_DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified PROBLEM_DIR"
 msgstr "& [-vpdx] [-e HÄNDELSE]… [-g GRAFIKFIL] PROBLEMKATALOG\n\nGrafiskt verktyg för att analysera och rapportera problem sparade i angiven PROBLEMKATALOG"
 
-#: ../src/gui-wizard-gtk/main.c:120
+#: ../src/gui-wizard-gtk/main.c:169
 msgid "Alternate GUI file"
 msgstr "Alternativ fil för grafiskt gränssnitt"
 
-#: ../src/gui-wizard-gtk/wizard.c:301
+#: ../src/gui-wizard-gtk/wizard.c:354
 #, c-format
 msgid ""
 "%s is not properly configured. You can configure it now or provide the required information later.\n"
 "\n"
 "Read more about the configuration at: https://access.redhat.com/site/articles/718083"
-msgstr ""
+msgstr "%s är inte ordentligt konfigurerad.  Du kan konfigurera den nu eller ge den nödvändiga informationen senare.\n\nLäs mer om konfigurationen på: https://access.redhat.com/site/articles/718083"
 
-#: ../src/gui-wizard-gtk/wizard.c:304
+#: ../src/gui-wizard-gtk/wizard.c:357
 #, c-format
 msgid ""
 "<b>%s</b> is not properly configured. You can configure it now or provide the required information later.\n"
 "\n"
 "<a href=\"https://access.redhat.com/site/articles/718083\">Read more about the configuration</a>"
-msgstr ""
+msgstr "<b>%s</b> är inte ordentligt konfigurerad.  Du kan konfigurera den nu eller ge den nödvändiga informationen senare.\n\n<a href=\"https://access.redhat.com/site/articles/718083\">Läs mer om konfigurationen</a>"
 
-#: ../src/gui-wizard-gtk/wizard.c:320
+#: ../src/gui-wizard-gtk/wizard.c:373
 #, c-format
 msgid "Con_figure %s"
 msgstr "Kon_figurera %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:347
+#: ../src/gui-wizard-gtk/wizard.c:400
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved data?"
 msgstr "Behöver en skrivbar katalog, men ”%s” är inte skrivbar.  Flytta den till ”%s” och arbeta med det flyttade datan?"
 
-#: ../src/gui-wizard-gtk/wizard.c:760
+#: ../src/gui-wizard-gtk/wizard.c:813
 msgid "View/edit a text file"
 msgstr "Visa/redigera en textfil"
 
-#: ../src/gui-wizard-gtk/wizard.c:768
+#: ../src/gui-wizard-gtk/wizard.c:821
 msgid "_Save"
 msgstr "_Spara"
 
-#: ../src/gui-wizard-gtk/wizard.c:987
+#: ../src/gui-wizard-gtk/wizard.c:1040
 msgid ""
 "No reporting targets are defined for this problem. Check configuration in "
 "/etc/libreport/*"
 msgstr "Inga rapporteringsmål har angetts för detta problem. Kontrollera konfigurationen i /etc/libreport/*"
 
-#: ../src/gui-wizard-gtk/wizard.c:1024
+#: ../src/gui-wizard-gtk/wizard.c:1077
 #, c-format
 msgid "(requires: %s)"
 msgstr "(kräver: %s)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1038
+#: ../src/gui-wizard-gtk/wizard.c:1091
 #, c-format
 msgid "(not needed, data already exist: %s)"
 msgstr "(ej nödvändigt, datan finns redan: %s)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1199
+#: ../src/gui-wizard-gtk/wizard.c:1277
 msgid "(click here to view/edit)"
 msgstr "(klicka här för att se/redigera)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1210
+#: ../src/gui-wizard-gtk/wizard.c:1288
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(binär fil, %llu byte)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1317 ../src/report-newt/report-newt.c:334
+#: ../src/gui-wizard-gtk/wizard.c:1395 ../src/report-newt/report-newt.c:334
 msgid "(no description)"
 msgstr "(ingen beskrivning)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1325
+#: ../src/gui-wizard-gtk/wizard.c:1403
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu byte, %u filer"
 
-#: ../src/gui-wizard-gtk/wizard.c:1554
+#: ../src/gui-wizard-gtk/wizard.c:1647
 msgid "Processing was canceled"
 msgstr "Bearbetningen avbröts"
 
-#: ../src/gui-wizard-gtk/wizard.c:1718
+#: ../src/gui-wizard-gtk/wizard.c:1851
 msgid ""
-"Processing of the problem failed. This can have many reasons but there are two most common:\n"
+"Processing of the problem failed. This can have many reasons but there are three most common:\n"
 "\t▫ <b>network connection problems</b>\n"
 "\t▫ <b>corrupted problem data</b>\n"
-msgstr "Bearbetningen av problemet misslyckades.  Detta kan ha många orsaker men de två vanligaste är:\n\t▫ <b>problem med nätverksanslutningen</b>\n\t▫ <b>trasiga problemdata</b>\n"
+"\t▫ <b>invalid configuration</b>"
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1834
+#: ../src/gui-wizard-gtk/wizard.c:1860
+msgid ""
+"If you want to update the configuration and try to report again, please open <b>Preferences</b> item\n"
+"in the application menu and after applying the configuration changes click <b>Repeat</b> button."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1978
 msgid "Processing was interrupted because the problem is not reportable."
 msgstr "Bearbetning avbröts för att problemet inte är rapporterbart."
 
-#: ../src/gui-wizard-gtk/wizard.c:1844 ../src/gui-wizard-gtk/wizard.c:1911
+#: ../src/gui-wizard-gtk/wizard.c:1988 ../src/gui-wizard-gtk/wizard.c:2057
 msgid "Processing failed."
 msgstr "Bearbetning misslyckades."
 
 #. No next event, go to progress page and finish
-#: ../src/gui-wizard-gtk/wizard.c:1851 ../src/gui-wizard-gtk/wizard.c:2616
+#: ../src/gui-wizard-gtk/wizard.c:1995 ../src/gui-wizard-gtk/wizard.c:2818
 msgid "Processing finished."
 msgstr "Bearbetning avslutad."
 
-#: ../src/gui-wizard-gtk/wizard.c:1852
+#: ../src/gui-wizard-gtk/wizard.c:1996
 msgid "Processing finished, please proceed to the next step."
 msgstr "Bearbetning avslutad, fortsätt till nästa steg."
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1908
+#: ../src/gui-wizard-gtk/wizard.c:2054
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "Ingen bearbetning för händelsen ”%s” är definierad"
 
-#: ../src/gui-wizard-gtk/wizard.c:1922
+#: ../src/gui-wizard-gtk/wizard.c:2068
 msgid "Processing interrupted: can't continue without writable directory."
 msgstr "Bearbetning avbruten: det går inte fortsätta utan en skrivbar katalog."
 
-#: ../src/gui-wizard-gtk/wizard.c:1959
+#: ../src/gui-wizard-gtk/wizard.c:2105
 msgid "Processing..."
 msgstr "Bearbetar..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2048
+#: ../src/gui-wizard-gtk/wizard.c:2198
 msgid "Cannot check backtrace rating because of invalid event name"
 msgstr "Det går inte kontrollera stackspårningsvärdering med ett ogiltigt händelsenamn"
 
-#: ../src/gui-wizard-gtk/wizard.c:2636
+#: ../src/gui-wizard-gtk/wizard.c:2838
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
 "Do you want to continue?"
 msgstr "Händelsen '%s' kräver tillstånd att skicka möjlig känslig data.\nVill du fortsätta?"
 
-#: ../src/gui-wizard-gtk/wizard.c:2684
+#: ../src/gui-wizard-gtk/wizard.c:2886
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
 msgstr "Detta problem bör inte rapporteras (det är förmodligen ett känt problem). %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2911
+#: ../src/gui-wizard-gtk/wizard.c:3102
 msgid "_Open"
 msgstr "_Öppna"
 
-#: ../src/gui-wizard-gtk/wizard.c:2933
+#: ../src/gui-wizard-gtk/wizard.c:3124
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "”%s” är inte en vanlig fil"
 
-#: ../src/gui-wizard-gtk/wizard.c:2947
+#: ../src/gui-wizard-gtk/wizard.c:3138
 msgid "You are trying to copy a file onto itself"
 msgstr "Du försöker kopiera en fil på sig själv"
 
-#: ../src/gui-wizard-gtk/wizard.c:2954
+#: ../src/gui-wizard-gtk/wizard.c:3145
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "Det går inte att kopiera ”%s”: %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2969
+#: ../src/gui-wizard-gtk/wizard.c:3160
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "Post ”%s” finns redan och går inte att ändra"
 
-#: ../src/gui-wizard-gtk/wizard.c:3161
+#: ../src/gui-wizard-gtk/wizard.c:3314
 msgid "Include"
 msgstr "Inkludera"
 
-#: ../src/gui-wizard-gtk/wizard.c:3172
+#: ../src/gui-wizard-gtk/wizard.c:3325
 msgid "Name"
 msgstr "Namn"
 
-#: ../src/gui-wizard-gtk/wizard.c:3182
+#: ../src/gui-wizard-gtk/wizard.c:3335
 msgid "Value"
 msgstr "Värde"
 
-#: ../src/gui-wizard-gtk/wizard.c:3216
+#: ../src/gui-wizard-gtk/wizard.c:3369
 msgid "Problem description"
 msgstr "Problembeskrivning"
 
-#: ../src/gui-wizard-gtk/wizard.c:3217
+#: ../src/gui-wizard-gtk/wizard.c:3370
 msgid "Select how to report this problem"
 msgstr "Välj hur problemet skall rapporteras"
 
-#: ../src/gui-wizard-gtk/wizard.c:3218
+#: ../src/gui-wizard-gtk/wizard.c:3371
 msgid "Provide additional information"
 msgstr "Ge ytterligare information"
 
-#: ../src/gui-wizard-gtk/wizard.c:3219
+#: ../src/gui-wizard-gtk/wizard.c:3372
 msgid "Review the data"
 msgstr "Granska data"
 
-#: ../src/gui-wizard-gtk/wizard.c:3220
+#: ../src/gui-wizard-gtk/wizard.c:3373
 msgid "Confirm data to report"
 msgstr "Bekräfta data att rapportera"
 
-#: ../src/gui-wizard-gtk/wizard.c:3221
+#: ../src/gui-wizard-gtk/wizard.c:3374
 msgid "Processing"
 msgstr "Bearbetar"
 
-#: ../src/gui-wizard-gtk/wizard.c:3222
+#: ../src/gui-wizard-gtk/wizard.c:3375
 msgid "Processing done"
 msgstr "Bearbetning avslutad."
 
-#: ../src/gui-wizard-gtk/wizard.c:3311
+#: ../src/gui-wizard-gtk/wizard.c:3474
 msgid "_Stop"
 msgstr "_Stopp"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3314
+#: ../src/gui-wizard-gtk/wizard.c:3477
 msgid "Upload for analysis"
 msgstr "Skicka för analys"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3317
+#: ../src/gui-wizard-gtk/wizard.c:3480
+msgid "Repeat"
+msgstr ""
+
+#. else gtk_widget_hide won't work
+#: ../src/gui-wizard-gtk/wizard.c:3483
 msgid "_Forward"
 msgstr "_Framåt"
 
-#: ../src/gui-wizard-gtk/wizard.c:3406
+#: ../src/gui-wizard-gtk/wizard.c:3575
 msgid ""
 "In order to enable the built-in screencasting functionality the package fros-gnome has to be installed. Please run the following command if you want to install it.\n"
 "\n"
 "<b>su -c \"yum install fros-gnome\"</b>"
-msgstr ""
+msgstr "För att aktivera den inbyggda skärminspelningsfunktionen måste paketet fros-gnome vara installerat.  Kör följande kommando om du vill installera det.\n\n<b>su -c \"yum install fros-gnome\"</b>"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
-msgid "Possible sensitive data detected"
-msgstr "Möjligen känslig information upptäckt"
+msgid ""
+"Possible sensitive data detected, feel free to edit the report and remove "
+"them."
+msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Restrict access to the report"
@@ -654,7 +683,7 @@ msgstr "Begränsa åtkomst till rapporten"
 msgid ""
 "No one except Red Hat employees will be allowed to see the report with "
 "restricted access (not even you)"
-msgstr ""
+msgstr "Ingen utom anställda på Red Hat kommer tillåtas se rapporter med begränsad åtkomst (inte ens du)"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid "Read more about reports with restricted access"
@@ -714,112 +743,146 @@ msgid ""
 msgstr "Granska datan innan den rapporteras. Beroende på vald rapportering kan den bli offentligt synlig."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:15
+msgid "Forbidden words"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:16
+msgid "Custom"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:17
+msgid "Clear the search bar to see the list of security sensitive words."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:18
+msgid "file"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:19
+msgid "data"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:20
+msgid "Search"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:21
 msgid "Size:"
 msgstr "Storlek:"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:16
+#: ../src/gui-wizard-gtk/wizard.glade.h:22
 msgid "Attach a file"
 msgstr "Bifoga en fil"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:17
+#: ../src/gui-wizard-gtk/wizard.glade.h:23
 msgid "I reviewed the data and _agree with submitting it"
 msgstr "Jag granskade datan och _godkänner att lämna in den"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:18
+#: ../src/gui-wizard-gtk/wizard.glade.h:24
 msgid ""
 "If you are reporting to a remote server, make sure you removed all private "
 "data (such as usernames and passwords). Backtrace, command line, environment"
 " variables are the typical items in need of examining."
 msgstr "Om du rapporterar till en fjärrserver, se till att du har tagit bort all personlig information (till exempel användarnamn och lösenord).  Stackspår, kommandorad, miljövariabler är de saker som typiskt behöver undersökas."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:19
+#: ../src/gui-wizard-gtk/wizard.glade.h:25
 msgid "Processing did not start yet"
 msgstr "Bearbetning har inte börjat ännu"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:20
+#: ../src/gui-wizard-gtk/wizard.glade.h:26
 msgid "Show log"
 msgstr "Visa logg"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:21
+#: ../src/gui-wizard-gtk/wizard.glade.h:27
 msgid "Reporting has finished. You can close this window now."
 msgstr "Rapporteringen är avslutad.  Du kan stänga detta fönster nu."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:22
+#: ../src/gui-wizard-gtk/wizard.glade.h:28
 msgid ""
 "If you want to report the problem to a different destination, collect "
 "additional information, or provide a better problem description and repeat "
 "reporting process, press 'Forward'."
 msgstr "Om du vill rapportera problemet till en annan destination, samla in ytterligare information eller ge en bättre problembeskrivning och upprepa rapporteringen, tryck på ”Framåt”."
 
-#: ../src/include/internal_libreport.h:969
+#: ../src/include/internal_libreport.h:989
 msgid "Be verbose"
 msgstr "Var utförlig"
 
-#: ../src/include/internal_libreport.h:970
-#: ../src/plugins/reporter-bugzilla.c:929
+#: ../src/include/internal_libreport.h:990
+#: ../src/plugins/reporter-bugzilla.c:895
 #: ../src/plugins/reporter-kerneloops.c:166
 #: ../src/plugins/reporter-mailx.c:198 ../src/plugins/reporter-print.c:56
-#: ../src/plugins/reporter-rhtsupport.c:254
-#: ../src/plugins/reporter-upload.c:227
+#: ../src/plugins/reporter-rhtsupport.c:456
+#: ../src/plugins/reporter-upload.c:249
 msgid "Problem directory"
 msgstr "Problemkatalog"
 
-#: ../src/lib/abrt_sock.c:158
+#: ../src/lib/abrt_sock.c:160
 #, c-format
 msgid "Can't delete: '%s'"
 msgstr "Det går inte att radera: '%s'"
 
-#: ../src/lib/abrt_sock.c:194
+#: ../src/lib/abrt_sock.c:196
 msgid "locked by another process"
 msgstr "låst av en annan process"
 
-#: ../src/lib/abrt_sock.c:203
+#: ../src/lib/abrt_sock.c:205
 msgid "permission denied"
 msgstr "åtkomst nekas"
 
-#: ../src/lib/abrt_sock.c:206
+#: ../src/lib/abrt_sock.c:208
 msgid "not a problem directory"
 msgstr "inte en problemkatalog"
 
-#: ../src/lib/abrt_sock.c:215
+#: ../src/lib/abrt_sock.c:217
 #, c-format
 msgid "Can't delete '%s': %s"
 msgstr "Det går inte att radera: ”%s”: %s"
 
-#: ../src/lib/client.c:56 ../src/lib/client.c:89
+#: ../src/lib/client.c:55 ../src/lib/client.c:87
 msgid "y"
 msgstr "j"
 
-#: ../src/lib/client.c:57 ../src/lib/client.c:90
+#: ../src/lib/client.c:56 ../src/lib/client.c:88
 msgid "N"
 msgstr "N"
 
-#: ../src/lib/client.c:91
+#: ../src/lib/client.c:89
 msgid "f"
 msgstr "f"
 
-#: ../src/lib/create_dump_dir.c:39
+#: ../src/lib/create_dump_dir.c:41
 #, c-format
 msgid "Missing required item: '%s'"
 msgstr "Nödvändig del saknas: '%s'"
 
-#: ../src/lib/create_dump_dir.c:54
+#: ../src/lib/create_dump_dir.c:56
 #, c-format
 msgid "uid value is not valid: '%s'"
 msgstr "uid-värde är ogiltigt: '%s'"
 
-#: ../src/lib/curl.c:226
+#: ../src/lib/curl.c:227
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Skickade: %llu av %llu kbyte"
 
-#: ../src/lib/curl.c:598
+#: ../src/lib/curl.c:635
 #, c-format
 msgid "Sending %s to %s"
 msgstr "Skickar %s till %s"
 
+#: ../src/lib/curl.c:659
+#, c-format
+msgid "Please enter user name for '%s':"
+msgstr ""
+
+#: ../src/lib/curl.c:665
+#, c-format
+msgid "Please enter password for '%s':"
+msgstr ""
+
 #. This ends up a "reporting status message" in abrtd
-#: ../src/lib/curl.c:630
+#: ../src/lib/curl.c:688
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "Skickade %s till %s"
@@ -847,63 +910,131 @@ msgstr "Ogiltigt booleskt värde ”%s”"
 msgid "Unsupported option type"
 msgstr "Flaggtypen stödjs inte"
 
-#: ../src/lib/event_config.c:459
+#: ../src/lib/event_config.c:463
 msgid "Reporting disabled because the rating does not contain a number."
 msgstr "Rapportering avslagen eftersom värderingen inte innehåller ett tal."
 
-#: ../src/lib/event_config.c:460
+#: ../src/lib/event_config.c:464
 msgid "Please report this problem to ABRT project developers."
 msgstr "Rapportera detta problem till projektutvecklarna för ABRT."
 
-#: ../src/lib/event_config.c:466
+#: ../src/lib/event_config.c:470
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "Stackspåret är ofullständigt, se till att du ger steg för att återskapa."
 
-#: ../src/lib/event_config.c:467
+#: ../src/lib/event_config.c:471
 msgid "The backtrace probably can't help developer to diagnose the bug."
 msgstr "Stackspåret kan förmodligen inte hjälpa en utvecklar att diagnostisera felet."
 
-#: ../src/lib/event_config.c:473
+#: ../src/lib/event_config.c:477
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Rapportering avslagen för att stackspåret är oanvändbart."
 
-#: ../src/lib/event_config.c:477
+#: ../src/lib/event_config.c:481
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again."
 msgstr "Försök att installera felsökningsinformation manuellt med kommandot: ”debuginfo-install %s” och försök igen"
 
-#: ../src/lib/event_config.c:479
+#: ../src/lib/event_config.c:483
 msgid "A proper debuginfo is probably missing or the coredump is corrupted."
 msgstr "Tillbörlig felsökningsinformation saknas troligen, eller kärndumpen är trasig."
 
-#: ../src/lib/make_descr.c:110
+#: ../src/lib/ureport.c:325
+#, c-format
+msgid ""
+"Your problem seems to be caused by %s\n"
+"\n"
+"%s\n"
+msgstr "Ditt problem verkar orsakas av %s\n\n%s\n"
+
+#: ../src/lib/ureport.c:328
+msgid "Your problem seems to be caused by one of the following:\n"
+msgstr "Ditt problem verkar orsakas av en av följande:\n"
+
+#: ../src/lib/ureport.c:498
+#, c-format
+msgid "Failed to upload uReport to the server '%s' with curl: %s"
+msgstr "Misslyckades att skicka uReport till servern ”%s” med curl: %s"
+
+#: ../src/lib/ureport.c:504
+#, c-format
+msgid "The URL '%s' does not exist (got error 404 from server)"
+msgstr "URL:en ”%s” finns inte (fick felet 404 från servern)"
+
+#: ../src/lib/ureport.c:510
+#, c-format
+msgid "The server at '%s' encountered an internal error (got error 500)"
+msgstr "Servern på ”%s” stötte på ett internt fel (fick felet 500)"
+
+#: ../src/lib/ureport.c:516
+#, c-format
+msgid "The server at '%s' currently can't handle the request (got error 503)"
+msgstr "Servern på ”%s” kan för närvarande inte hantera begäran (fick fel 503)"
+
+#. can't print better error message
+#: ../src/lib/ureport.c:525
+#, c-format
+msgid "Unexpected HTTP response from '%s': %d"
+msgstr "Oväntat HTTP-svar från ”%s”: %d"
+
+#: ../src/lib/ureport.c:534
+#, c-format
+msgid "Unable to parse response from ureport server at '%s'"
+msgstr "Kan inte tolka svaret från ureport-servern på ”%s”"
+
+#: ../src/lib/ureport.c:544
+#, c-format
+msgid "The response from '%s' has invalid format"
+msgstr "Svaret från ”%s” har ogiltigt format"
+
+#. HTTP CODE 202 means that call was successful but the response
+#. has an error message
+#: ../src/lib/ureport.c:550
+#, c-format
+msgid "Type mismatch has been detected in the response from '%s'"
+msgstr "Typer som inte stämmer överens har hittats i svaret från ”%s”"
+
+#: ../src/lib/ureport.c:735 ../src/plugins/reporter-rhtsupport.c:198
+msgid "Failed on submitting the problem"
+msgstr "Misslyckades att skicka problemet"
+
+#: ../src/lib/ureport.c:777
+#, c-format
+msgid "The server at '%s' responded with an error: '%s'"
+msgstr "Servern på ”%s” svarade med ett fel: ”%s”"
+
+#: ../src/lib/make_descr.c:149 ../src/lib/make_descr.c:160
 msgid "Reported:"
+msgstr "Rapporterad:"
+
+#: ../src/lib/make_descr.c:149
+msgid "cannot be reported"
 msgstr ""
 
-#: ../src/lib/parse_options.c:58
+#: ../src/lib/parse_options.c:60
 msgid "Usage: "
 msgstr "Användning: "
 
-#: ../src/lib/problem_data.c:212
+#: ../src/lib/problem_data.c:214
 #, c-format
 msgid "Essential element '%s' is missing, can't continue"
 msgstr "Nödvändigt element '%s' saknas, det går inte att fortsätta"
 
-#: ../src/lib/run_event.c:761
+#: ../src/lib/run_event.c:763
 #, c-format
 msgid "('%s' was killed by signal %u)\n"
 msgstr "(”%s” dödades av signal %u)\n"
 
-#: ../src/lib/run_event.c:763
+#: ../src/lib/run_event.c:765
 #, c-format
 msgid "('%s' completed successfully)\n"
 msgstr "(”%s” avslutades riktigt)\n"
 
-#: ../src/lib/run_event.c:765
+#: ../src/lib/run_event.c:767
 #, c-format
 msgid "('%s' exited with %u)\n"
 msgstr "(”%s” avslutade med %u)\n"
@@ -971,6 +1102,7 @@ msgid ""
 msgstr "Du kan skapa ett konto på bugzilla.redhat.com &lt;a href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;här&lt;/a&gt;"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:6
+#: ../src/plugins/report_Uploader.xml.in.h:6
 msgid "User name"
 msgstr "Användarnamn"
 
@@ -980,6 +1112,7 @@ msgstr "Bugzillakontots användarnamn"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:7
+#: ../src/plugins/report_Uploader.xml.in.h:8
 msgid "Password"
 msgstr "Lösenord"
 
@@ -1032,7 +1165,7 @@ msgstr "Ange detta endast om du behövde en annan produktversion än som angavs 
 #: ../src/plugins/report_Bugzilla.xml.in.h:18
 #: ../src/plugins/report_Kerneloops.xml.in.h:5
 #: ../src/plugins/report_RHTSupport.xml.in.h:11
-#: ../src/plugins/report_Uploader.xml.in.h:6
+#: ../src/plugins/report_Uploader.xml.in.h:10
 #: ../src/plugins/report_uReport.xml.in.h:7
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:4
 msgid "HTTP Proxy"
@@ -1041,7 +1174,7 @@ msgstr "HTTP-proxy"
 #: ../src/plugins/report_Bugzilla.xml.in.h:19
 #: ../src/plugins/report_Kerneloops.xml.in.h:6
 #: ../src/plugins/report_RHTSupport.xml.in.h:12
-#: ../src/plugins/report_Uploader.xml.in.h:7
+#: ../src/plugins/report_Uploader.xml.in.h:11
 #: ../src/plugins/report_uReport.xml.in.h:8
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:5
 msgid "Sets the proxy server to use for HTTP"
@@ -1050,7 +1183,7 @@ msgstr "Anger proxyservern som skall användas för HTTP"
 #: ../src/plugins/report_Bugzilla.xml.in.h:20
 #: ../src/plugins/report_Kerneloops.xml.in.h:7
 #: ../src/plugins/report_RHTSupport.xml.in.h:13
-#: ../src/plugins/report_Uploader.xml.in.h:8
+#: ../src/plugins/report_Uploader.xml.in.h:12
 #: ../src/plugins/report_uReport.xml.in.h:9
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:6
 msgid "HTTPS Proxy"
@@ -1059,7 +1192,7 @@ msgstr "HTTPS-proxy"
 #: ../src/plugins/report_Bugzilla.xml.in.h:21
 #: ../src/plugins/report_Kerneloops.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:14
-#: ../src/plugins/report_Uploader.xml.in.h:9
+#: ../src/plugins/report_Uploader.xml.in.h:13
 #: ../src/plugins/report_uReport.xml.in.h:10
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:7
 msgid "Sets the proxy server to use for HTTPS"
@@ -1113,12 +1246,12 @@ msgid ""
 msgstr "Varning, privata ärendegrupper finns redan angivna som kommandoradsargument, ingorerar miljövariabeln och konfigurationen"
 
 #: ../src/plugins/reporter-bugzilla.c:775
-#: ../src/plugins/reporter-rhtsupport.c:178
+#: ../src/plugins/reporter-rhtsupport.c:327
 msgid "Can't continue without login"
 msgstr "Kan inte fortsätta utan inloggning"
 
 #: ../src/plugins/reporter-bugzilla.c:788
-#: ../src/plugins/reporter-rhtsupport.c:191
+#: ../src/plugins/reporter-rhtsupport.c:340
 msgid "Can't continue without password"
 msgstr "Kan inte fortsätta utan lösenord"
 
@@ -1132,15 +1265,12 @@ msgid "Invalid password or login. Please enter your BZ login:"
 msgstr "Ogiltigt lösenord eller inloggning.  Ange din BZ-inloggning:"
 
 #: ../src/plugins/reporter-bugzilla.c:804
+#: ../src/plugins/reporter-rhtsupport.c:354
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
 msgstr "Ogiltigt lösenord eller inloggning.  Ange lösenordet för ”%s”:"
 
-#: ../src/plugins/reporter-bugzilla.c:839
-msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
-msgstr "Bug.search(quicksearch) returvärde innehöll inte medlemmen ”bugs” "
-
-#: ../src/plugins/reporter-bugzilla.c:857
+#: ../src/plugins/reporter-bugzilla.c:823
 msgid ""
 "\n"
 "& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\n"
@@ -1183,147 +1313,147 @@ msgid ""
 "If not specified, CONFFILE defaults to "
 msgstr "\n& [-vbf] [-g GRUPPNAMN]… [-c KONFFIL]… [-F FMTFIL] [-A FMTFIL2] -d KAT\neller:\n& [-v] [-c KONFFIL]… [-d KAT] -t[ID] FIL…\neller:\n& [-v] [-c KONFFIL]… [-d KAT] -t[ID] -w\neller:\n& [-v] [-c KONFFIL]… -h DUPHASH\n\nRapporterar problem till Bugzilla.\n\nVerktyget läser KAT.  Sedan loggar det in på Bugzilla och försöker hitta en\nrapport med samma abrt_hash:HEXSTRING i \"Whiteboard\".\n\nOm ingen sådan rapport finns skapas en ny felrapport.  Bitar från KAT\nlagras i felrapporten som en del av felbeskrivningen eller som bilagor,\nberoende på deras typ och storlek.\n\nAnnars, om en sådan rapport finns och är markerad som CLOSED DUPLICATE,\nföljer verktyget kedjan av dubletter tills det hittar en rapport som inte\när en dublett.  Verktyget lägger till en ny kommentar till den funna\nrapporten.\n\nFlaggan -t skickar FILer till en redan skapat rapport på Bugzillasajten.\nRapport-ID:t hämtas från katalogen som anges av -d KAT.  Om problemdatan\ni KAT aldrig rapporterades till Bugzilla misslyckas skickandet.\n\nFlaggan -tID skickar FILer till rapporten med angivet ID på Bugzillaszjten.\n-d KAT ignoreras.\n\nFlaggan -w lägger till bugzillaanvändare till rapportens CC-lista.\n\nFlaggan -r sätter den sista url:en från elementet reporter_to som har prefixet\nTRACKER_NAME i URL-fältet.  Denna flagga används endast när ett nytt fel skall\nrapporteras.  Standardvärdet är ”ABRT Server”\n\nOm inte annat anges är standardvärdet på KONFFIL "
 
-#: ../src/plugins/reporter-bugzilla.c:930
-#: ../src/plugins/reporter-rhtsupport.c:255
+#: ../src/plugins/reporter-bugzilla.c:896
+#: ../src/plugins/reporter-rhtsupport.c:457
 msgid "Configuration file (may be given many times)"
 msgstr "Konfigurationsfil (kan anges flera gånger)"
 
-#: ../src/plugins/reporter-bugzilla.c:931
+#: ../src/plugins/reporter-bugzilla.c:897
 msgid "Formatting file for initial comment"
 msgstr "Formaterar filen för första kommentar"
 
-#: ../src/plugins/reporter-bugzilla.c:932
+#: ../src/plugins/reporter-bugzilla.c:898
 msgid "Formatting file for duplicates"
 msgstr "Formaterar filer för dubbletter"
 
-#: ../src/plugins/reporter-bugzilla.c:933
+#: ../src/plugins/reporter-bugzilla.c:899
 msgid "Attach FILEs [to bug with this ID]"
 msgstr "Bifoga FILer [till felrapport med detta ID]"
 
-#: ../src/plugins/reporter-bugzilla.c:934
+#: ../src/plugins/reporter-bugzilla.c:900
 msgid "When creating bug, attach binary files too"
 msgstr "När ett fel skapas, bifoga då även binära filer"
 
-#: ../src/plugins/reporter-bugzilla.c:935
-#: ../src/plugins/reporter-rhtsupport.c:257
+#: ../src/plugins/reporter-bugzilla.c:901
+#: ../src/plugins/reporter-rhtsupport.c:459
 msgid "Force reporting even if this problem is already reported"
 msgstr "Tvinga rapportering även om detta problem redan rapporterats"
 
-#: ../src/plugins/reporter-bugzilla.c:936
+#: ../src/plugins/reporter-bugzilla.c:902
 msgid "Add bugzilla user to CC list [of bug with this ID]"
 msgstr "Lägg till bugzilla-användare till CC-listan [till felet med detta ID]"
 
-#: ../src/plugins/reporter-bugzilla.c:937
+#: ../src/plugins/reporter-bugzilla.c:903
 msgid "Print BUG_ID which has given DUPHASH"
 msgstr "Visa BUG_ID med given DUPHASH"
 
-#: ../src/plugins/reporter-bugzilla.c:938
+#: ../src/plugins/reporter-bugzilla.c:904
 msgid "A name of bug tracker for an additional URL from 'reported_to'"
 msgstr "Ett namn på en felhanterare för en ytterligare URL från ”reported_to”"
 
-#: ../src/plugins/reporter-bugzilla.c:939
+#: ../src/plugins/reporter-bugzilla.c:905
 msgid "Restrict access to this group only"
 msgstr "Begränsa åtkomst till endast denna grupp"
 
-#: ../src/plugins/reporter-bugzilla.c:940
+#: ../src/plugins/reporter-bugzilla.c:906
 msgid "Debug"
 msgstr "Felsök"
 
-#: ../src/plugins/reporter-bugzilla.c:982
+#: ../src/plugins/reporter-bugzilla.c:948
 msgid "Looking for similar problems in bugzilla"
 msgstr "Letar efter liknande problem i bugzilla"
 
-#: ../src/plugins/reporter-bugzilla.c:1009
+#: ../src/plugins/reporter-bugzilla.c:975
 msgid "Login is not provided by configuration. Please enter your BZ login:"
 msgstr "Inloggning tillhandahålls inte av konfigurationen.  Ange din BZ-inloggning:"
 
-#: ../src/plugins/reporter-bugzilla.c:1015
-#: ../src/plugins/reporter-rhtsupport.c:291
+#: ../src/plugins/reporter-bugzilla.c:981
+#: ../src/plugins/reporter-rhtsupport.c:495
 #, c-format
 msgid ""
 "Password is not provided by configuration. Please enter the password for "
 "'%s':"
 msgstr "Lösenord tillhandahålls inte av konfigurationen.  Angi lösenordet för ”%s”:"
 
-#: ../src/plugins/reporter-bugzilla.c:1034
+#: ../src/plugins/reporter-bugzilla.c:1000
 msgid ""
 "Can't get Bugzilla ID because this problem has not yet been reported to "
 "Bugzilla."
 msgstr "Kan inte hämta Bugzilla-ID eftersom detta problem inte har rapporterats till Bugzilla ännu."
 
-#: ../src/plugins/reporter-bugzilla.c:1041
+#: ../src/plugins/reporter-bugzilla.c:1007
 #, c-format
 msgid ""
 "This problem has been reported to Bugzilla '%s' which differs from the "
 "configured Bugzilla '%s'."
 msgstr "Detta problem har inte rapporterats till Bugzilla ”%s” vilket skiljer sig från den konfigurerade Bugzillan ”%s”."
 
-#: ../src/plugins/reporter-bugzilla.c:1045
+#: ../src/plugins/reporter-bugzilla.c:1011
 #, c-format
 msgid "Malformed url to Bugzilla '%s'."
 msgstr "Felformaterad url till Bugzilla ”%s”."
 
-#: ../src/plugins/reporter-bugzilla.c:1049
+#: ../src/plugins/reporter-bugzilla.c:1015
 #, c-format
 msgid "Using Bugzilla ID '%s'"
 msgstr "Använder Bugzilla-ID ”%s”"
 
-#: ../src/plugins/reporter-bugzilla.c:1083
-#: ../src/plugins/reporter-bugzilla.c:1354
+#: ../src/plugins/reporter-bugzilla.c:1049
+#: ../src/plugins/reporter-bugzilla.c:1341
 msgid "Logging out"
 msgstr "Loggar ut"
 
-#: ../src/plugins/reporter-bugzilla.c:1134
+#: ../src/plugins/reporter-bugzilla.c:1100
 msgid "Can't determine Bugzilla Product from problem data."
 msgstr "Kan inte avgöra Bugzilla-produkt från problemdata."
 
-#: ../src/plugins/reporter-bugzilla.c:1185
+#: ../src/plugins/reporter-bugzilla.c:1151
 msgid "Checking for duplicates"
 msgstr "Söker efter dubbletter"
 
 #. Create new bug
-#: ../src/plugins/reporter-bugzilla.c:1231
+#: ../src/plugins/reporter-bugzilla.c:1197
 msgid "Creating a new bug"
 msgstr "Skapar en ny felrapport"
 
-#: ../src/plugins/reporter-bugzilla.c:1252
+#: ../src/plugins/reporter-bugzilla.c:1218
 msgid "Failed to create a new bug."
 msgstr "Misslyckades att skapar en ny felrapport."
 
-#: ../src/plugins/reporter-bugzilla.c:1263
+#: ../src/plugins/reporter-bugzilla.c:1229
 #, c-format
 msgid "Adding External URL to bug %i"
 msgstr "Lägger till extern URL fel %i"
 
-#: ../src/plugins/reporter-bugzilla.c:1269
+#: ../src/plugins/reporter-bugzilla.c:1235
 #, c-format
 msgid "Adding attachments to bug %i"
 msgstr "Inkluderar tillägg till fel %i"
 
-#: ../src/plugins/reporter-bugzilla.c:1288
+#: ../src/plugins/reporter-bugzilla.c:1254
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Felet är redan rapporterat: %i"
 
-#: ../src/plugins/reporter-bugzilla.c:1309
+#: ../src/plugins/reporter-bugzilla.c:1297
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "Lägger till %s till CC-listan"
 
-#: ../src/plugins/reporter-bugzilla.c:1326
+#: ../src/plugins/reporter-bugzilla.c:1314
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Lägg till ny kommentar till fel(%d)"
 
-#: ../src/plugins/reporter-bugzilla.c:1340
+#: ../src/plugins/reporter-bugzilla.c:1328
 msgid "Attaching better backtrace"
 msgstr "Lägger till bättre stackspår"
 
-#: ../src/plugins/reporter-bugzilla.c:1348
+#: ../src/plugins/reporter-bugzilla.c:1336
 msgid "Found the same comment in the bug history, not adding a new one"
 msgstr "Hittade samma kommentar i bugghistoriken, lägger inte till en ny"
 
-#: ../src/plugins/reporter-bugzilla.c:1357
+#: ../src/plugins/reporter-bugzilla.c:1344
 #, c-format
 msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
 msgstr "Status: %s%s%s %s/show_bug.cgi?id=%u"
@@ -1347,7 +1477,8 @@ msgid ""
 "Parameter can be overridden via $KerneloopsReporter_SubmitURL."
 msgstr "& [-v] [-c KONFFIL]… -d KAT\n\nRapporter kärn-oops till kerneloops.org (eller liknande) webbplats.\n\nFiler med namn som anges i $EXCLUDE_FROM_REPORT ingår inte i tar-arkivet.\n\nKONFFIL-rader skall ha formatet ”PARAM = VÄRDE”.\nKänd strängparameter: SubmitURL.\nParameter kan åsidosättas via $KerneloopsReporter_SubmitURL."
 
-#: ../src/plugins/reporter-kerneloops.c:167 ../src/plugins/ureport.c:456
+#: ../src/plugins/reporter-kerneloops.c:167
+#: ../src/plugins/reporter-ureport.c:71
 msgid "Configuration file"
 msgstr "Konfigurationsfil"
 
@@ -1386,7 +1517,7 @@ msgid ""
 "If not specified, CONFFILE defaults to "
 msgstr "& [-v] -d KAT [-c KONFFIL] \n\nSkickar innehållet i en problemkatalog via e-post\n\nOm den inte anges, är standard för KONFFIL "
 
-#: ../src/plugins/reporter-mailx.c:199 ../src/plugins/reporter-upload.c:228
+#: ../src/plugins/reporter-mailx.c:199 ../src/plugins/reporter-upload.c:250
 msgid "Config file"
 msgstr "Konfigurationsfil"
 
@@ -1432,27 +1563,49 @@ msgstr "Rapporten lades till till %s"
 msgid "The report was stored to %s"
 msgstr "Rapporten lagrades i %s"
 
-#: ../src/plugins/reporter-rhtsupport.c:223
+#: ../src/plugins/reporter-rhtsupport.c:259
+#: ../src/plugins/reporter-ureport.c:232
+#, c-format
+msgid "Server responded with an error: '%s'"
+msgstr "Servern svarade med ett fel: ”%s”"
+
+#: ../src/plugins/reporter-rhtsupport.c:308
+msgid "Do you still want to create a RHTSupport ticket?"
+msgstr "Vill du fortfarande skapa en problemrapport för RHTSupport?"
+
+#: ../src/plugins/reporter-rhtsupport.c:352
+msgid "Invalid password or login. Please enter your Red Hat login:"
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:420
 msgid ""
 "\n"
 "& [-v] [-c CONFFILE] -d DIR\n"
 "or:\n"
-"& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
+"& [-v] [-c CONFFILE] [-d DIR] -t[ID] [-u -C UR_CONFFILE] FILE...\n"
 "\n"
 "Reports a problem to RHTSupport.\n"
 "\n"
 "If not specified, CONFFILE defaults to "
-msgstr "\n& [-v] [-c KONFFIL] -d KAT\neller:\n& [-v] [-c KONFFIL] [-d KAT] -t[ID] FIL…\n\nRapporterar ett problem att RHTSupport.\n\nOm den inte anges, är standard för KONFFIL "
+msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:256
+#: ../src/plugins/reporter-rhtsupport.c:458
 msgid "Upload FILEs [to case with this ID]"
 msgstr "Skicka FILer [till fall med detta ID]"
 
-#: ../src/plugins/reporter-rhtsupport.c:285
+#: ../src/plugins/reporter-rhtsupport.c:460
+msgid "Submit uReport before creating a new case"
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:461
+msgid "Configuration file for uReport"
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:489
 msgid "Login is not provided by configuration. Please enter your RHTS login:"
 msgstr "Inloggning tillhandahålls inte av konfigurationen.  Ange din RHTS-inloggning:"
 
-#: ../src/plugins/reporter-rhtsupport.c:341
+#: ../src/plugins/reporter-rhtsupport.c:551
 #, c-format
 msgid "Attaching '%s' to case '%s'"
 msgstr "Bifogar ”%s” till ärende ”%s”"
@@ -1462,44 +1615,48 @@ msgstr "Bifogar ”%s” till ärende ”%s”"
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
 #. doing
-#: ../src/plugins/reporter-rhtsupport.c:378
+#: ../src/plugins/reporter-rhtsupport.c:588
 #: ../src/plugins/reporter-upload.c:52
 msgid "Compressing data"
 msgstr "Komprimerar data"
 
-#: ../src/plugins/reporter-rhtsupport.c:413
+#: ../src/plugins/reporter-rhtsupport.c:623
 msgid "Can't create a temporary directory in "
 msgstr "Det går inte att skapa en temporärkatalog i "
 
-#: ../src/plugins/reporter-rhtsupport.c:422
+#: ../src/plugins/reporter-rhtsupport.c:632
 msgid "Can't create temporary file in "
 msgstr "Det går inte att skapa en temporärfil i "
 
+#: ../src/plugins/reporter-rhtsupport.c:650
+msgid "Sending ABRT crash statistics data"
+msgstr ""
+
 #. Check for hints and show them if we have something
-#: ../src/plugins/reporter-rhtsupport.c:431
+#: ../src/plugins/reporter-rhtsupport.c:662
 msgid "Checking for hints"
 msgstr "Söker efter ledtrådar"
 
-#: ../src/plugins/reporter-rhtsupport.c:473
-msgid "Do you still want to create a RHTSupport ticket?"
-msgstr "Vill du fortfarande skapa en problemrapport för RHTSupport?"
-
-#: ../src/plugins/reporter-rhtsupport.c:487
+#: ../src/plugins/reporter-rhtsupport.c:672
 msgid "Creating a new case"
 msgstr "Skapar ett nytt ärende"
 
 #. How can we help user sorting out this problem?
-#: ../src/plugins/reporter-rhtsupport.c:498
+#: ../src/plugins/reporter-rhtsupport.c:683
 msgid "Can't determine RH Support Product from problem data."
 msgstr "Kan inte avgöra RH-support-produkt från problemdata."
 
-#: ../src/plugins/reporter-rhtsupport.c:573
+#: ../src/plugins/reporter-rhtsupport.c:739
+msgid "Linking ABRT crash statistics record with the case"
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:774
 #, c-format
 msgid "Adding comment to case '%s'"
 msgstr "Lägger till kommentar till ärendet ”%s”"
 
 #. Attach the tarball of -d DIR
-#: ../src/plugins/reporter-rhtsupport.c:593
+#: ../src/plugins/reporter-rhtsupport.c:792
 #, c-format
 msgid "Attaching problem data to case '%s'"
 msgstr "Bifogar problemdata till ärendet ”%s”"
@@ -1520,13 +1677,20 @@ msgstr "Kan inte fortsätta utan URL"
 msgid "Upload URL is not provided by configuration. Please enter upload URL:"
 msgstr "Sändnings-URL tillhandahålls inte av konfigurationen.  Ange en sändnings-URL:"
 
+#. Be permissive and nice, ask only once and don't check
+#. the result. User can dismiss this prompt but the upload
+#. may work somehow???
+#: ../src/plugins/reporter-upload.c:164
+msgid "Please enter password for uploading:"
+msgstr ""
+
 #. success
-#: ../src/plugins/reporter-upload.c:159
+#: ../src/plugins/reporter-upload.c:181
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "Arkivet är skapat: ”%s”"
 
-#: ../src/plugins/reporter-upload.c:200
+#: ../src/plugins/reporter-upload.c:222
 msgid ""
 "& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
@@ -1534,7 +1698,7 @@ msgid ""
 "If URL is not specified, creates tarball in "
 msgstr "& [-v] -d KAT [-c KONFFIL] [-u URL]\n\nSkickar ett komprimerat tar-arkiv av problemkatalogen KAT till URL.\nOm URL inte anges skapas tar-arkivet i "
 
-#: ../src/plugins/reporter-upload.c:229
+#: ../src/plugins/reporter-upload.c:251
 msgid "Base URL to upload to"
 msgstr "Bas-URL att skicka till"
 
@@ -1647,8 +1811,8 @@ msgid "Red Hat customer password"
 msgstr "Red Hats kundlösenord"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
-msgid "Report uploader"
-msgstr "Rapportskickare"
+msgid "Report Uploader"
+msgstr ""
 
 #: ../src/plugins/report_Uploader.xml.in.h:2
 msgid "Upload as tar.gz file (via FTP/SCP/...)"
@@ -1670,12 +1834,20 @@ msgid ""
 "Examples:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]"
 msgstr "Exempel:&#xA;ftp://[anv[:lösen]@]värd/kat/[fil.tar.gz]&#xA;scp://[anv[:lösen]@]värd/kat/[fil.tar.gz]&#xA;fil:///kat/[fil.tar.gz]"
 
-#: ../src/plugins/report_Uploader.xml.in.h:10
+#: ../src/plugins/report_Uploader.xml.in.h:7
+msgid "Use this field if you do not want to have user name in URL"
+msgstr ""
+
+#: ../src/plugins/report_Uploader.xml.in.h:9
+msgid "Use this field if you do not want to have password in URL"
+msgstr ""
+
+#: ../src/plugins/report_Uploader.xml.in.h:14
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:8
 msgid "FTP Proxy"
 msgstr "FTP-proxy"
 
-#: ../src/plugins/report_Uploader.xml.in.h:11
+#: ../src/plugins/report_Uploader.xml.in.h:15
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:9
 msgid "Sets the proxy server to use for FTP"
 msgstr "Anger proxyservern som skall användas för FTP"
@@ -1704,194 +1876,135 @@ msgstr "Nödlägesanalys"
 msgid "Upload the problem data for further analysis"
 msgstr "Skicka problemdatan för vidare analys"
 
-#: ../src/plugins/rhbz.c:409
+#: ../src/plugins/rhbz.c:417
 #, c-format
 msgid "Looks like corrupted xml response, because '%s' member is missing."
 msgstr "Ser ut som ett skadat xml-svar, eftersom ”%s”-medlem saknas."
 
-#: ../src/plugins/rhbz.c:497
+#: ../src/plugins/rhbz.c:505
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
 msgstr "Fel %i är STÄNGD, men den har LÖSNING"
 
-#: ../src/plugins/rhbz.c:505
+#: ../src/plugins/rhbz.c:513
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
 msgstr "Fel %i är STÄNGD som DUPLIKAT, men det har ingen DUP_ID"
 
-#: ../src/plugins/rhbz.c:621
+#: ../src/plugins/rhbz.c:629
 msgid ""
 "A private ticket creation has been requested, but no groups were specified, "
 "please see https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
 "tickets for more info"
 msgstr "Begäran av ett privat ärende har gjorts, men inga grupper angavs, se https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets för mer information"
 
-#: ../src/plugins/rhbz.c:642
+#: ../src/plugins/rhbz.c:650
 #, c-format
 msgid "New bug id: %i"
 msgstr "Nytt fel-id: %i"
 
-#: ../src/plugins/rhbz.c:757
+#: ../src/plugins/rhbz.c:770
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla kunde inte hitta föräldern till felet %d"
 
-#: ../src/plugins/ureport.c:146
-#, c-format
-msgid ""
-"Your problem seems to be caused by %s\n"
-"\n"
-"%s\n"
-msgstr "Ditt problem verkar orsakas av %s\n\n%s\n"
+#: ../src/plugins/rhbz.c:893
+msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
+msgstr "Bug.search(quicksearch) returvärde innehöll inte medlemmen ”bugs” "
 
-#: ../src/plugins/ureport.c:149
-msgid "Your problem seems to be caused by one of the following:\n"
-msgstr "Ditt problem verkar orsakas av en av följande:\n"
-
-#: ../src/plugins/ureport.c:320
-#, c-format
-msgid "Failed to upload uReport to the server '%s' with curl: %s"
-msgstr "Misslyckades att skicka uReport till servern ”%s” med curl: %s"
-
-#: ../src/plugins/ureport.c:326
-#, c-format
-msgid "The URL '%s' does not exist (got error 404 from server)"
-msgstr "URL:en ”%s” finns inte (fick felet 404 från servern)"
-
-#: ../src/plugins/ureport.c:332
-#, c-format
-msgid "The server at '%s' encountered an internal error (got error 500)"
-msgstr "Servern på ”%s” stötte på ett internt fel (fick felet 500)"
-
-#: ../src/plugins/ureport.c:338
-#, c-format
-msgid "The server at '%s' currently can't handle the request (got error 503)"
-msgstr ""
-
-#. can't print better error message
-#: ../src/plugins/ureport.c:347
-#, c-format
-msgid "Unexpected HTTP response from '%s': %d"
-msgstr ""
-
-#: ../src/plugins/ureport.c:356
-#, c-format
-msgid "Unable to parse response from ureport server at '%s'"
-msgstr ""
-
-#: ../src/plugins/ureport.c:366
-#, c-format
-msgid "The response from '%s' has invalid format"
-msgstr "Svaret från ”%s” har ogiltigt format"
-
-#. HTTP CODE 202 means that call was successful but the response
-#. has an error message
-#: ../src/plugins/ureport.c:372
-#, c-format
-msgid "Type mismatch has been detected in the response from '%s'"
-msgstr "Typer som inte stämmer överens har hittats i svaret från ”%s”"
-
-#: ../src/plugins/ureport.c:403
-#, c-format
-msgid "The server at '%s' responded with an error: '%s'"
-msgstr "Servern på ”%s” svarade med ett fel: ”%s”"
-
-#: ../src/plugins/ureport.c:452
+#: ../src/plugins/reporter-ureport.c:66
 msgid "Specify server URL"
 msgstr "Ange server-URL"
 
-#: ../src/plugins/ureport.c:454
+#: ../src/plugins/reporter-ureport.c:68
 msgid "Allow insecure connection to ureport server"
 msgstr "Tillåt osäker koppling till ureportserver"
 
-#: ../src/plugins/ureport.c:455
+#: ../src/plugins/reporter-ureport.c:69
 msgid "Use client authentication"
+msgstr "Använd klientautenticering"
+
+#: ../src/plugins/reporter-ureport.c:70
+msgid "Additional files included in 'auth' key"
 msgstr ""
 
-#: ../src/plugins/ureport.c:458
+#: ../src/plugins/reporter-ureport.c:73
 msgid "bthash of uReport to attach (conflicts with -A)"
-msgstr ""
+msgstr "bthash av uReport att bifoga (står i konflikt med -A)"
 
-#: ../src/plugins/ureport.c:460
+#: ../src/plugins/reporter-ureport.c:75
 msgid "attach to a bthash from reported_to (conflicts with -a)"
-msgstr ""
+msgstr "bifoga en bthash från reported_to (står i konflikt med -a)"
 
-#: ../src/plugins/ureport.c:462
+#: ../src/plugins/reporter-ureport.c:77
 msgid "contact e-mail address (requires -a|-A, conflicts with -E)"
-msgstr ""
+msgstr "epostadress för kontakt (förutsätter -a|-A, står i konflikt med -E)"
 
-#: ../src/plugins/ureport.c:464
+#: ../src/plugins/reporter-ureport.c:79
 msgid ""
 "contact e-mail address from environment or configuration file (requires "
 "-a|-A, conflicts with -e)"
-msgstr ""
+msgstr "epostadress för kontakt från miljö eller konfigurationsfil (förutsätter -a|-A, står i konflikt med -e)"
 
-#: ../src/plugins/ureport.c:466
+#: ../src/plugins/reporter-ureport.c:81
 msgid "attach RHBZ bug (requires -a|-A, conflicts with -B)"
-msgstr ""
+msgstr "bifoga RHBZ-rapport (förutsätter -a|-A, står i konflikt med -B)"
 
-#: ../src/plugins/ureport.c:468
+#: ../src/plugins/reporter-ureport.c:83
 msgid ""
 "attach last RHBZ bug from reported_to (requires -a|-A, conflicts with -b)"
-msgstr ""
+msgstr "bifoga senaste RHBZ-rapport från reported_to (förutsätter -a|-A, står i konflikt med -b)"
 
-#: ../src/plugins/ureport.c:473
+#: ../src/plugins/reporter-ureport.c:88
 msgid ""
 "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
+"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-i AUTH_ITEMS]\\\n"
+"  [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
 "\n"
 "Upload micro report or add an attachment to a micro report\n"
 "\n"
 "Reads the default configuration from "
 msgstr ""
 
-#: ../src/plugins/ureport.c:519
+#: ../src/plugins/reporter-ureport.c:139
 msgid "This problem does not have an uReport assigned."
 msgstr "Detta problem har ingen tilldelad uReport."
 
-#: ../src/plugins/ureport.c:532
+#: ../src/plugins/reporter-ureport.c:152
 msgid "This problem has not been reported to Bugzilla."
 msgstr "Detta problem har inte rapporterats till Bugzilla."
 
-#: ../src/plugins/ureport.c:536
+#: ../src/plugins/reporter-ureport.c:156
 #, c-format
 msgid "Unable to find bug ID in bugzilla URL '%s'"
 msgstr "Kan inte hitta fel-ID i bugzilla-URL:en ”%s”"
 
-#: ../src/plugins/ureport.c:541
+#: ../src/plugins/reporter-ureport.c:161
 #, c-format
 msgid "Unable to parse bug ID from bugzilla URL '%s'"
 msgstr "Kan inte läsa ut fel-ID från bugzilla-URL:en ”%s”"
 
-#: ../src/plugins/ureport.c:554
+#: ../src/plugins/reporter-ureport.c:174
 msgid ""
 "Neither environment variable 'uReport_ContactEmail' nor configuration option"
 " 'ContactEmail' is set"
-msgstr ""
+msgstr "Varken miljövariabeln ”uReport_ContactEmail” eller konfigurationsflaggan ”ContactEmail” är satt"
 
-#: ../src/plugins/ureport.c:560
+#: ../src/plugins/reporter-ureport.c:180
 msgid "You need to specify bug ID, contact email or both"
-msgstr ""
+msgstr "Du behöver ange fel-ID, epost för kontakt eller båda delarana"
 
-#: ../src/plugins/ureport.c:578
+#: ../src/plugins/reporter-ureport.c:198
 msgid "You need to specify bthash of the uReport to attach."
 msgstr "Du måste ange uReportens bthash för att bifoga."
 
-#: ../src/plugins/ureport.c:588
+#: ../src/plugins/reporter-ureport.c:203
 msgid "Not uploading an empty uReport"
 msgstr "Skickar inte en tom uReport"
 
-#: ../src/plugins/ureport.c:597
-msgid "Failed on submitting the problem"
-msgstr "Misslyckades att skicka problemet"
-
-#: ../src/plugins/ureport.c:642
+#: ../src/plugins/reporter-ureport.c:224
 msgid "This problem has already been reported."
 msgstr "Detta problem har redan rapporterats."
-
-#: ../src/plugins/ureport.c:651
-#, c-format
-msgid "Server responded with an error: '%s'"
-msgstr "Servern svarade med ett fel: ”%s”"
 
 #: ../src/report-newt/report-newt.c:55
 msgid "How would you like to report the problem?"
@@ -1945,7 +2058,7 @@ msgstr "Bearbeta rapporten med Fedoras infrastruktur"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:1
 msgid "Report a bug to Red Hat Customer Portal"
-msgstr ""
+msgstr "Rapportera ett fel till Red Hat Customer Portal"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:2
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:2
@@ -1954,14 +2067,16 @@ msgstr "Bearbeta rapporten med Red Hats infrastruktur"
 
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:1
 msgid "Report a bug to Red Hat Bugzilla"
-msgstr ""
+msgstr "Rapportera ett fel till Red Hat Bugzilla"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
+#: ../src/workflows/workflow_UploadCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Upload.xml.in.h:1
 msgid "Upload the problem data to a server"
 msgstr "Skicka problemdata till en server"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:2
+#: ../src/workflows/workflow_UploadCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Upload.xml.in.h:2
 msgid "Analyze the problem locally and upload the data via scp or ftp"
 msgstr "Analysera problemet lokalt och skicka datan via scp eller ftp"
@@ -1998,10 +2113,32 @@ msgstr "Bearbeta X-serverproblemet med Fedoras infrastruktur"
 
 #: ../src/workflows/workflow_FedoraLibreport.xml.in.h:2
 msgid "Process the problem using the Fedora infrastructure"
-msgstr ""
+msgstr "Bearbeta problemet med Fedoras infrastruktur"
 
 #: ../src/workflows/workflow_FedoraJava.xml.in.h:2
 msgid "Process the Java exception using the Fedora infrastructure"
+msgstr "Bearbeta Java-undantaget med Fedoras infrastruktur"
+
+#: ../src/workflows/workflow_LoggerCCpp.xml.in.h:1
+#: ../src/workflows/workflow_Logger.xml.in.h:1
+msgid "Export the problem data information to a text file"
+msgstr ""
+
+#: ../src/workflows/workflow_LoggerCCpp.xml.in.h:2
+#: ../src/workflows/workflow_Logger.xml.in.h:2
+msgid ""
+"Analyze the problem locally and export the problem data information to a "
+"text file"
+msgstr ""
+
+#: ../src/workflows/workflow_MailxCCpp.xml.in.h:1
+#: ../src/workflows/workflow_Mailx.xml.in.h:1
+msgid "Send the problem data via email"
+msgstr ""
+
+#: ../src/workflows/workflow_MailxCCpp.xml.in.h:2
+#: ../src/workflows/workflow_Mailx.xml.in.h:2
+msgid "Analyze the problem locally and send information via email"
 msgstr ""
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
@@ -2012,7 +2149,7 @@ msgstr ""
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:1
 #: ../src/workflows/workflow_RHELJava.xml.in.h:1
 msgid "Report to Red Hat Customer Portal"
-msgstr ""
+msgstr "Rapportera till Red Hats kundportal"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
@@ -2042,12 +2179,12 @@ msgstr "Bearbeta X-serverproblemet med Red Hats infrastruktur"
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:2
 msgid "Process the problem using the Red Hat infrastructure"
-msgstr ""
+msgstr "Bearbeta problemet med Red Hats infrastruktur"
 
 #: ../src/workflows/workflow_RHELJava.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
 msgid "Process the Java exception using the Red Hat infrastructure"
-msgstr ""
+msgstr "Bearbeta Java-undantaget med Red Hats infrastruktur"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
@@ -2057,4 +2194,4 @@ msgstr ""
 #: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:1
 msgid "Report to Red Hat Bugzilla"
-msgstr ""
+msgstr "Rapportera till Red Hat Bugzilla"
