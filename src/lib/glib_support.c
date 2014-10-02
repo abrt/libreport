@@ -60,6 +60,9 @@ void glib_init(void)
  */
 GList *parse_list(const char* list)
 {
+    if (list == NULL)
+        return NULL;
+
     GList *l = NULL;
 
     char *saved_ptr = NULL;
