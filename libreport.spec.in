@@ -99,6 +99,7 @@ Summary: Python bindings for report-libs
 # Is group correct here? -
 Group: System Environment/Libraries
 Requires: libreport = %{version}-%{release}
+Requires: yum
 Provides: report = 0:0.23-1
 Obsoletes: report < 0:0.23-1
 # in report the rhtsupport is in the main package, so we need to install it too
@@ -684,6 +685,71 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Fri Oct 03 2014 Jakub Filak <jfilak@redhat.com> 2.3.0-1
+- lib: process NULL arg as an empty list in parse_list()
+- uploader: correct capitalization of the event name
+- upload: read credentials from environment variables
+- lib: handle access denials in upload_file()
+- ureport: include AuthDataItems if SSLClientAuth is configured
+- ureport: provide default URLs
+- rhtsupport: check for hints only when creating a new case
+- rhtsupport: submit ureport and attach case ID to ureport
+- bugzilla: add comment to closed bugs too
+- ureport: support HTTP Basic authentication
+- spec: install ureport.h
+- ureport: aggressive refactorization of uReport source
+- ureport: publish ureport.h and refactore uReport source
+- doc: updated manpages reporter-*
+- man_page: corrected man pages
+- make dist: use tar-ustar due to long filenames
+- augeas: exclude bugzilla format configurations
+- spec: update the spec file to work with the last commit
+- workflow: add new workflows
+- ureport: use additional HTTP headers with 'rhsm-entitlement' cert auth
+- lib: add strremovech(str, ch)
+- lib: add wrapper for g_hash_table_size()
+- lib: add xstrdup_between(str, open, close)
+- ureport: enabled inclusion of Authentication data
+- make_desc: add reason to the list
+- lib: use userfriendly order in the make_description
+- lib: add function index_of_string_in_list
+- spec: update the spec file to work with the last commit.
+- Fix bugzilla bug formating for libreport analyzer
+- wizard: make report-gtk's application nonunique
+- lib: make_description show not-reportable
+- report: parse release/version from os-release
+- wizard: "Next" button insensitive on the review page by default
+- wizard: don't work with destroyed widgets
+- gui: fix build with older gtk
+- spec: install Problem Details stuff
+- gui: port to Problem Details suite
+- gui: Problem Details suite
+- gui: use -symbolic icons
+- mailx: print only one log message in notify_only mode
+- lib: don't spit unnecessary debug messages
+- wizard: terminate event chain after the emergency analysis
+- Get rid of deprecation warnings introduced with gtk-3.13.6
+- gui: add "Repeat" button
+- gui: reload destroyed sensitive data warn widgets from the galde
+- gui: don't remove already removed GTimeoutSource
+- gui: clear the sensitive cache between two event runs
+- gui: conver report-gtk to GtkApplication
+- gui: simplify the event selector page
+- gui: generate the glade file with glade-3.18
+- gui: fix build errors introduced in the previous commit
+- gui: port to gtk-3.13
+- ureport: include json.h accordingly to json-c CFLAGS
+- json: include json.h accordingly to json-c CFLAGS
+- logging: test log level at first step
+- gui: close ask dialogues on Enter key
+- gui: apply configuration dialogues changes on Enter key
+- gui: support Enter & 2Click in Preferences list
+- wizard: fix help text for screencasting
+- gui: wrap lines for human readable files
+- gui: select the first in the configuration list
+- gui: make preferences dialogue modal for parents
+- ureport: implement attaching of user comments
+
 * Tue Jul 08 2014 Jakub Filak <jfilak@redhat.com> 2.2.3-1
 - wizard: Do not highlight sensitive words in user's comment
 - bugzilla: show description for all configuration options
