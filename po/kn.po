@@ -3,15 +3,18 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# shanky <prasad.mvs@gmail.com>, 2014
 # shankar <svenkate@redhat.com>, 2011, 2012
+# shankar <svenkate@redhat.com>, 2014
+# shanky <prasad.mvs@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-05 10:38+0100\n"
-"PO-Revision-Date: 2014-03-05 09:37+0000\n"
+"POT-Creation-Date: 2014-10-06 13:45+0200\n"
+"PO-Revision-Date: 2014-10-06 11:45+0000\n"
 "Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
-"Language-Team: Kannada (http://www.transifex.com/projects/p/fedora/language/kn/)\n"
+"Language-Team: Kannada (http://www.transifex.com/projects/p/libreport/language/kn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,24 +27,24 @@ msgid ""
 "   or: & [-vspy] -e EVENT PROBLEM_DIR\n"
 "   or: & [-vspy] -d PROBLEM_DIR\n"
 "   or: & [-vspy] -x PROBLEM_DIR"
-msgstr ""
+msgstr "& [-vsp] -L[PREFIX] [PROBLEM_DIR]\n   ಅಥವ: & [-vspy] -e EVENT PROBLEM_DIR\n   ಅಥವ: & [-vspy] -d PROBLEM_DIR\n   ಅಥವ: & [-vspy] -x PROBLEM_DIR"
 
 #. short_name long_name  value    parameter_name  help
 #: ../src/cli/cli.c:86
 msgid "List possible events [which start with PREFIX]"
 msgstr "ಸಾಧ್ಯವಿರುವ ಘಟನೆಗಳ ಪಟ್ಟಿ [ಇದು PREFIX ಇಂದ ಆರಂಭಗೊಳ್ಳುತ್ತದೆ]"
 
-#: ../src/cli/cli.c:87 ../src/gui-wizard-gtk/main.c:123
+#: ../src/cli/cli.c:87 ../src/gui-wizard-gtk/main.c:172
 msgid "Run only these events"
-msgstr ""
+msgstr "ಕೇವಲ ಈ ಘಟನೆಗಳನ್ನು ಮಾತ್ರ ಚಲಾಯಿಸು"
 
-#: ../src/cli/cli.c:88 ../src/gui-wizard-gtk/main.c:122
+#: ../src/cli/cli.c:88 ../src/gui-wizard-gtk/main.c:171
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "ವರದಿ ಮಾಡಿದ ನಂತರ PROBLEM_DIR ಅನ್ನು ತೆಗೆದುಹಾಕು"
 
-#: ../src/cli/cli.c:89 ../src/gui-wizard-gtk/main.c:124
+#: ../src/cli/cli.c:89 ../src/gui-wizard-gtk/main.c:173
 msgid "Expert mode"
-msgstr ""
+msgstr "ನುರಿತ ಸ್ಥಿತಿ"
 
 #: ../src/cli/cli.c:90 ../src/report-newt/report-newt.c:393
 msgid "Display version and exit"
@@ -55,7 +58,7 @@ msgstr "ಸಂವಾದಾತ್ಮಕವಲ್ಲದ: ಯಾವುದೆ ಪ್
 msgid "Log to syslog"
 msgstr "syslog ಗೆ ದಾಖಲಿಸು"
 
-#: ../src/cli/cli.c:94 ../src/gui-wizard-gtk/main.c:121
+#: ../src/cli/cli.c:94 ../src/gui-wizard-gtk/main.c:170
 msgid "Add program names to log"
 msgstr "ಪ್ರೊಗ್ರಾಮ್‌ನ ಹೆಸರುಗಳನ್ನು ದಾಖಲೆಗೆ ಸೇರಿಸು"
 
@@ -108,15 +111,15 @@ msgstr "# ಕುಸಿತದ ಕಾರಣ"
 
 #: ../src/cli/cli-report.c:170
 msgid "# os-release configuration file from root dir"
-msgstr ""
+msgstr "# ರೂಟ್ dir ಇಂದ os-ಬಿಡುಗಡೆ ಸಂರಚನೆ ಕಡತ"
 
 #: ../src/cli/cli-report.c:175
 msgid "# Release string of the operating system from root dir"
-msgstr ""
+msgstr "# ರೂಟ್ ಕೋಶದಿಂದ ಕಾರ್ಯ ವ್ಯವಸ್ಥೆಯ ಬಿಡುಗಡೆ ವಾಕ್ಯಾಂಶ"
 
 #: ../src/cli/cli-report.c:183
 msgid "# os-release configuration file"
-msgstr ""
+msgstr "# os-ಬಿಡುಗಡೆ ಸಂರಚನೆ ಕಡತ"
 
 #: ../src/cli/cli-report.c:188
 msgid "# Release string of the operating system"
@@ -152,7 +155,7 @@ msgstr "'%s' ಗಾಗಿನ ತಪ್ಪು ಮೌಲ್ಯ: %s"
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data. Do you want "
 "to continue?"
-msgstr ""
+msgstr "ಸಂಭಾವ್ಯ ಸೂಕ್ಷ್ಮಸಂವೇದಿ ದತ್ತಾಂಶವನ್ನು ಕಳುಹಿಸಲು '%s' ಘಟನೆಗೆ ಅನುಮತಿಯ ಅಗತ್ಯವಿದೆ. ನೀವು ಮುಂದುವರೆಯಲು ಬಯಸುವಿರಾ?"
 
 #: ../src/cli/cli-report.c:720
 msgid "You have chosen number out of range"
@@ -160,37 +163,43 @@ msgstr "ನೀವು ವ್ಯಾಪ್ತಿಯ ಹೊರಗಿನ ಸಂಖ್
 
 #: ../src/cli/cli-report.c:725
 msgid "Invalid input, exiting."
-msgstr ""
+msgstr "ಅಮಾನ್ಯವಾದ ಇನ್‌ಪುಟ್, ನಿರ್ಗಮಿಸಲಾಗುತ್ತಿದೆ."
 
 #: ../src/cli/cli-report.c:746
 msgid "Select an event to run: "
-msgstr ""
+msgstr "ಚಲಾಯಿಸಲು ಒಂದು ಘಟನೆಯನ್ನು ಆರಿಸಿ:"
 
-#: ../src/cli/cli-report.c:854
+#: ../src/cli/cli-report.c:858
 msgid "Select a workflow to run: "
-msgstr ""
+msgstr "ಚಲಾಯಿಸಲು ಒಂದು ಕಾರ್ಯಹರಿವನ್ನು ಆರಿಸಿ:"
 
 #: ../src/client-python/debuginfo.py:87
+#, python-brace-format
 msgid "Extracting cpio from {0}"
 msgstr "{0} ಇಂದ cpio ಅನ್ನು ಹೊರತೆಗೆಯಲಾಗುತ್ತಿದೆ"
 
 #: ../src/client-python/debuginfo.py:92
+#, python-brace-format
 msgid "Can't write to '{0}': {1}"
 msgstr "'{0}' ಗೆ ಬರೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: {1}"
 
 #: ../src/client-python/debuginfo.py:107
+#, python-brace-format
 msgid "Can't extract package '{0}'"
 msgstr "'{0}' ಎಂಬ ಪ್ಯಾಕೇಜನ್ನು ಹೊರತೆಗೆಯಲಾಗಿಲ್ಲ"
 
 #: ../src/client-python/debuginfo.py:115
+#, python-brace-format
 msgid "Caching files from {0} made from {1}"
 msgstr "{1} ಇಂದ ಮಾಡಲಾದ {0} ಇಂದ ಕಡತಗಳನ್ನು ಶೇಖರಿಸಿಡಲಾಗುತ್ತಿದೆ"
 
 #: ../src/client-python/debuginfo.py:134
+#, python-brace-format
 msgid "Can't extract files from '{0}'"
 msgstr "'{0}' ಇಂದ ಕಡತಗಳನ್ನು ಹೊರತೆಗೆಯಲಾಗಿಲ್ಲ"
 
 #: ../src/client-python/debuginfo.py:147
+#, python-brace-format
 msgid "Can't remove '{0}': {1}"
 msgstr "'{0}' ಅನ್ನು ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: {1}"
 
@@ -198,6 +207,7 @@ msgstr "'{0}' ಅನ್ನು ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯ�
 #. % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
 #. )
 #: ../src/client-python/debuginfo.py:194 ../src/client-python/debuginfo.py:205
+#, python-brace-format
 msgid "Downloading ({0} of {1}) {2}: {3:3}%"
 msgstr "({1} ರಲ್ಲಿ {0}) {2} ಅನ್ನು ಇಳಿಸಿಕೊಳ್ಳಲಾಗುತ್ತಿದೆ: {3:3}%"
 
@@ -205,7 +215,7 @@ msgstr "({1} ರಲ್ಲಿ {0}) {2} ಅನ್ನು ಇಳಿಸಿಕೊಳ�
 msgid ""
 "Problem '{0!s}' occured while downloading from mirror: '{1!s}'. Trying next "
 "one"
-msgstr ""
+msgstr "ಮಿರರ್ ಇಂದ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿಕೊಳ್ಳುವಾಗ '{0!s}' ತೊಂದರೆಯು ಉಂಟಾಗಿದೆ: '{1!s}'. ಮುಂದಿನದನ್ನು ಪ್ರಯತ್ನಿಸಲಾಗುತ್ತಿದೆ"
 
 #. self.conf.cache = os.geteuid() != 0
 #. Setup yum (Ts, RPM db, Repo & Sack)
@@ -220,11 +230,11 @@ msgstr "yum ಅನ್ನು ಆರಂಭಿಸುವಲ್ಲಿ ದೋಷ (YumB
 
 #: ../src/client-python/debuginfo.py:325
 msgid "Error: can't make cachedir, exiting"
-msgstr ""
+msgstr "ದೋಷ: cachedir ಅನ್ನು ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ, ನಿರ್ಗಮಿಸಲಾಗುತ್ತಿದೆ"
 
 #: ../src/client-python/debuginfo.py:334
 msgid "Can't disable repository '{0!s}': {1!s}"
-msgstr ""
+msgstr "'{0!s}' ರೆಪೊಸಿಟರಿಯನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿಲ್ಲ: {1!s}"
 
 #. This takes some time, let user know what we are doing
 #: ../src/client-python/debuginfo.py:337
@@ -233,11 +243,12 @@ msgstr "yum ರೆಪೊಸಿಟರಿಗಳನ್ನು ಸಿದ್ಧಗೊ�
 
 #: ../src/client-python/debuginfo.py:354
 msgid "Can't disable async download, the output might contain artifacts!"
-msgstr ""
+msgstr "async ಇಳಿಕೆಯನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗಿಲ್ಲ, ಔಟ್‌ಪುಟ್ ಆರ್ಟಿಫ್ಯಾಕ್ಟುಗಳನ್ನು ಹೊಂದಿರಬಹುದು!"
 
 #: ../src/client-python/debuginfo.py:356
+#, python-brace-format
 msgid "Can't setup {0}: {1}, disabling"
-msgstr "{0} ಅನ್ನು ಸಿದ್ಧಗೊಳಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: {1}, ಅಶಕ್ತಗೊಳಿಸಲಾಗುತ್ತಿದೆ"
+msgstr "{0} ಅನ್ನು ಸಿದ್ಧಗೊಳಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: {1}, ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗುತ್ತಿದೆ"
 
 #. This is somewhat "magic", it unpacks the metadata making it usable.
 #. Looks like this is the moment when yum talks to remote servers,
@@ -256,14 +267,17 @@ msgid "Error retrieving filelists: '{0!s}'"
 msgstr "ಕಡತಪಟ್ಟಿಗಳನ್ನು ಹಿಂದಕ್ಕೆ ಪಡೆಯುವಲ್ಲಿ ದೋಷ: '{0!s}'"
 
 #: ../src/client-python/debuginfo.py:416
+#, python-brace-format
 msgid "Can't find packages for {0} debuginfo files"
 msgstr "{0} debuginfo ಕಡತಗಳಿಗಾಗಿ ಪ್ಯಾಕೇಜುಗಳನ್ನು ಪತ್ತೆ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
 #: ../src/client-python/debuginfo.py:418
+#, python-brace-format
 msgid "Packages to download: {0}"
 msgstr "ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಪ್ಯಾಕೇಜುಗಳು: {0}"
 
 #: ../src/client-python/debuginfo.py:419
+#, python-brace-format
 msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
 msgstr "{0:.2f}Mb ಅನ್ನು ಇಳಿಸಿಕೊಳ್ಳಲಾಗುತ್ತಿದೆ, ಅನುಸ್ಥಾಪಿಸಲಾದ ಗಾತ್ರ: {1:.2f}Mb. ಮುಂದುವರೆಯಬೇಕೆ?"
 
@@ -273,21 +287,25 @@ msgid "Download cancelled by user"
 msgstr "ಇಳಿಕೆಯನ್ನು ಬಳಕೆದಾರರಿಂದ ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ"
 
 #: ../src/client-python/debuginfo.py:434
+#, python-brace-format
 msgid ""
 "Warning: Not enough free space in tmp dir '{0}' ({1:.2f}Mb left). Continue?"
-msgstr ""
+msgstr "ಎಚ್ಚರಿಕೆ: tmp dir '{0}' ನಲ್ಲಿ ಸಾಕಷ್ಟು ಖಾಲಿ ಸ್ಥಳವಿಲ್ಲ ({1:.2f}Mb ಬಾಕಿ ಇದೆ). ಮುಂದುವರೆಯುವುದೆ?"
 
 #: ../src/client-python/debuginfo.py:443
+#, python-brace-format
 msgid ""
 "Warning: Not enough free space in cache dir '{0}' ({1:.2f}Mb left). "
 "Continue?"
-msgstr ""
+msgstr "ಎಚ್ಚರಿಕೆ: ಕ್ಯಾಶ್ dir '{0}' ನಲ್ಲಿ ಸಾಕಷ್ಟು ಖಾಲಿ ಸ್ಥಳವಿಲ್ಲ ({1:.2f}Mb ಬಾಕಿ ಇದೆ). ಮುಂದುವರೆಯುವುದೆ?"
 
 #: ../src/client-python/debuginfo.py:469
+#, python-brace-format
 msgid "Cannot copy file '{0}': {1}"
-msgstr ""
+msgstr "'{0}' ಕಡತವನ್ನು ಪ್ರತಿ ಮಾಡಲಾಗಿಲ್ಲ: {1}"
 
 #: ../src/client-python/debuginfo.py:487
+#, python-brace-format
 msgid "Downloading package {0} failed"
 msgstr "{0} ಎಂಬ ಪ್ಯಾಕೇಜಿನ ಇಳಿಕೆಯು ವಿಫಲಗೊಂಡಿದೆ"
 
@@ -300,6 +318,7 @@ msgstr "ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಪ್ಯಾಕೇಜುಗ�
 #. but it was appearing even if no packages were in fact extracted
 #. (say, when there was one package, and it has download error).
 #: ../src/client-python/debuginfo.py:504
+#, python-brace-format
 msgid "Removing {0}"
 msgstr "{0} ಅನ್ನು ತೆಗೆದುಹಾಕಲಾಗುತ್ತಿದೆ"
 
@@ -308,366 +327,448 @@ msgstr "{0} ಅನ್ನು ತೆಗೆದುಹಾಕಲಾಗುತ್ತಿ�
 msgid "Can't remove %s, probably contains an error log"
 msgstr "%s ಅನ್ನು ತೆಗೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ, ಬಹುಷಃ ದಿನಚರಿಯಲ್ಲಿ ದೋಷವಿರಬೇಕು"
 
-#: ../src/gtk-helpers/ask_dialogs.c:82
-msgid "_Yes"
-msgstr ""
-
-#: ../src/gtk-helpers/ask_dialogs.c:83
+#. Follow GTK3's yes-no-buttons order:
+#. * [No] [Yes]
+#: ../src/gtk-helpers/ask_dialogs.c:87
 msgid "_No"
-msgstr ""
+msgstr "ಇಲ್ಲ (_N)"
 
-#: ../src/gtk-helpers/ask_dialogs.c:89
+#: ../src/gtk-helpers/ask_dialogs.c:88
+msgid "_Yes"
+msgstr "ಹೌದು (_Y)"
+
+#: ../src/gtk-helpers/ask_dialogs.c:94
 msgid "Don't ask me again"
 msgstr "ಪುನಃ ಇನ್ನೊಮ್ಮೆ ನನ್ನನ್ನು ಕೇಳಬೇಡ"
 
 #. if event has no xml description
-#: ../src/gtk-helpers/config_dialog.c:153
+#: ../src/gtk-helpers/config_dialog.c:182
 msgid "No description available"
-msgstr ""
+msgstr "ಯಾವುದೆ ವಿವರಣೆಯು ಲಭ್ಯವಿಲ್ಲ"
 
-#: ../src/gtk-helpers/config_dialog.c:274
+#: ../src/gtk-helpers/config_dialog.c:345
 msgid "Configuration"
-msgstr ""
+msgstr "ಸಂರಚನೆ"
 
 #. we can't use this, because we want the workflows first and hashtable
 #. * doesn't return the items in the order they were added
 #. g_hash_table_foreach(configs, (GHFunc)add_config_tabs, config_nb);
-#: ../src/gtk-helpers/config_dialog.c:297
-#: ../src/gtk-helpers/config_dialog.c:299
-#: ../src/gtk-helpers/config_dialog.c:350
+#: ../src/gtk-helpers/config_dialog.c:363
+#: ../src/gtk-helpers/config_dialog.c:365
+#: ../src/gtk-helpers/config_dialog.c:430
 msgid "Workflows"
-msgstr ""
+msgstr "ಕಾರ್ಯಹರಿವುಗಳು"
 
-#: ../src/gtk-helpers/config_dialog.c:301
-#: ../src/gtk-helpers/config_dialog.c:303
-#: ../src/gtk-helpers/config_dialog.c:353
+#: ../src/gtk-helpers/config_dialog.c:367
+#: ../src/gtk-helpers/config_dialog.c:369
+#: ../src/gtk-helpers/config_dialog.c:433
 msgid "Events"
-msgstr ""
+msgstr "ಘಟನೆಗಳು"
 
-#: ../src/gtk-helpers/config_dialog.c:307
+#: ../src/gtk-helpers/config_dialog.c:373
 msgid "C_onfigure"
-msgstr ""
+msgstr "ಸಂರಚಿಸು (_o)"
 
-#: ../src/gtk-helpers/config_dialog.c:309 ../src/gui-wizard-gtk/wizard.c:3316
+#: ../src/gtk-helpers/config_dialog.c:375 ../src/gui-wizard-gtk/wizard.c:3492
 msgid "_Close"
-msgstr ""
+msgstr "ಮುಚ್ಚು (_C)"
 
-#: ../src/gtk-helpers/event_config_dialog.c:136
+#: ../src/gtk-helpers/event_config_dialog.c:144
 msgid "Show password"
 msgstr "ಗುಪ್ತಪದವನ್ನು ತೋರಿಸು"
 
-#: ../src/gtk-helpers/event_config_dialog.c:221
-msgid "Advanced"
-msgstr "ಸುಧಾರಿತ"
-
-#: ../src/gtk-helpers/event_config_dialog.c:241
+#: ../src/gtk-helpers/event_config_dialog.c:275
 msgid "Don't store passwords"
 msgstr "ಗುಪ್ತಪದಗಳನ್ನು ನೆನಪಿಟ್ಟುಕೊಳ್ಳಬೇಡ"
 
-#: ../src/gtk-helpers/event_config_dialog.c:264
+#: ../src/gtk-helpers/event_config_dialog.c:285
+msgid "Basic"
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:293
+msgid "Advanced"
+msgstr "ಸುಧಾರಿತ"
+
+#: ../src/gtk-helpers/event_config_dialog.c:309
 msgid "Secret Service is not available, your settings won't be saved!"
-msgstr ""
+msgstr "ಸೀಕ್ರೆಟ್ ಸರ್ವಿಸ್ ಲಭ್ಯವಿಲ್ಲ, ನಿಮ್ಮ ಸಿದ್ಧತೆಗಳನ್ನು ಉಳಿಸಲಾಗುವುದಿಲ್ಲ!"
 
-#: ../src/gtk-helpers/event_config_dialog.c:299
-#: ../src/gtk-helpers/event_config_dialog.c:351
-#: ../src/gtk-helpers/workflow_config_dialog.c:76
-#: ../src/gui-wizard-gtk/wizard.c:769 ../src/gui-wizard-gtk/wizard.c:2917
+#: ../src/gtk-helpers/event_config_dialog.c:349
+#: ../src/gtk-helpers/workflow_config_dialog.c:94
+#: ../src/gui-wizard-gtk/wizard.c:758 ../src/gui-wizard-gtk/wizard.c:3113
 msgid "_Cancel"
-msgstr ""
+msgstr "ರದ್ದುಗೊಳಿಸು (_C)"
 
-#: ../src/gtk-helpers/event_config_dialog.c:301
-#: ../src/gtk-helpers/event_config_dialog.c:353
-#: ../src/gtk-helpers/workflow_config_dialog.c:78
+#: ../src/gtk-helpers/event_config_dialog.c:351
+#: ../src/gtk-helpers/workflow_config_dialog.c:96
 msgid "_OK"
-msgstr ""
+msgstr "ಸರಿ (_O)"
 
 #: ../src/gtk-helpers/secrets.c:171
 #, c-format
 msgid "Can't connect over DBus to name '%s' path '%s' interface '%s': %s"
-msgstr ""
+msgstr "DBus ಮುಖಾಂತರ '%s' ಮಾರ್ಗ '%s' ಸಂಪರ್ಕಸಾಧನ '%s' ಕ್ಕೆ ಸಂಪರ್ಕಸಾಧಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
 
 #: ../src/gtk-helpers/secrets.c:191
 #, c-format
 msgid "Can't call method '%s' over DBus on path '%s' interface '%s': %s"
-msgstr ""
+msgstr "'%s' ವಿಧಾನವನ್ನು DBus ಮೂಲಕ '%s' ಮಾರ್ಗದಲ್ಲಿ '%s' ಸಂಪರ್ಕಸಾಧನದ ಮುಖಾಂತರ ಕರೆಯಲಾಗಿಲ್ಲ: %s"
 
 #: ../src/gtk-helpers/secrets.c:549
 msgid ""
 "A timeout was reached while waiting for a prompt result from the DBus Secret"
 " Service."
-msgstr ""
+msgstr "DBus ಸಿಕ್ರೆಟ್ ಸರ್ವಿಸ್ ಇಂದ ಪ್ರಾಂಪ್ಟ್ ಫಲಿತಾಂಶಕ್ಕಾಗಿ ಕಾಯುವ ಸಮಯದಲ್ಲಿ ಒಂದು ಕಾಲಾವಧಿ ತೀರಿಕೆಯನ್ನು ತಲುಪಿದೆ."
 
 #: ../src/gtk-helpers/secrets.c:552
 msgid ""
 "Do you want to stop waiting and continue in reporting without properly "
 "loaded configuration?"
-msgstr ""
+msgstr "ನೀವು ಕಾಯುವುದನ್ನು ನಿಲ್ಲಿಸಿ ಸರಿಯಾಗಿ ಲೋಡ್ ಆಗದೆ ಇರುವ ಸಂರಚನೆಯನ್ನು ಬಳಸಿಕೊಂಡು ವರದಿ ಮಾಡುವಿಕೆಯನ್ನು ಮುಂದುವರೆಸಲು ಬಯಸುವಿರಾ?"
 
 #: ../src/gtk-helpers/secrets.c:862
 #, c-format
 msgid "D-Bus Secrets Service ReadAlias('%s') method failed: %s"
-msgstr ""
+msgstr "D-Bus Secrets Service ReadAlias('%s') ವಿಧಾನವು ವಿಫಲಗೊಂಡಿದೆ: %s"
 
 #. if the error wasn't about invalid properties we have an another problem
 #: ../src/gtk-helpers/secrets.c:1104
 #, c-format
 msgid "Can't create a secret item for event '%s': %s"
-msgstr ""
+msgstr "'%s' ಘಟನೆಗಾಗಿ ಒಂದು ಸಿಕ್ರೇಟ್ ಅಂಶವನ್ನು ರಚಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
 
 #: ../src/gtk-helpers/secrets.c:1286
 #, c-format
 msgid "can't get secret value of '%s': %s"
+msgstr "'%s' ಗಾಗಿ ಸೀಕ್ರೆಟ್ ಮೌಲ್ಯವನ್ನು ಪಡೆಯಲಾಗಿಲ್ಲ: %s"
+
+#: ../src/gtk-helpers/problem_details_widget.c:191
+#, c-format
+msgid "$DATA_DIRECTORY/%s (binary file, %s)"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/main.c:105
+#: ../src/gtk-helpers/problem_details_dialog.c:30
+msgid "Problem details"
+msgstr ""
+
+#: ../src/gtk-helpers/problem_details_dialog.c:33
+msgid "OK"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/main.c:107
+msgid "Preferences"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/main.c:110
+msgid "Quit"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/main.c:154
 msgid ""
 "& [-vpdx] [-e EVENT]... [-g GUI_FILE] PROBLEM_DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified PROBLEM_DIR"
-msgstr ""
+msgstr "& [-vpdx] [-e EVENT]... [-g GUI_FILE] PROBLEM_DIR\n\nನಿಶ್ಚಿತ PROBLEM_DIR ಯಲ್ಲಿ ಉಳಿಸಲಾದ ತೊಂದರೆಯನ್ನು ವಿಶ್ಲೇಷಿಸುವ ಮತ್ತು ವರದಿ ಮಾಡುವ GUI ಉಪಕರಣ"
 
-#: ../src/gui-wizard-gtk/main.c:120
+#: ../src/gui-wizard-gtk/main.c:169
 msgid "Alternate GUI file"
 msgstr "ಪರ್ಯಾಯ GUI ಕಡತ"
 
-#: ../src/gui-wizard-gtk/wizard.c:301
-#, c-format
-msgid ""
-"%s is not properly configured. You can configure it now or provide the required information later.\n"
-"\n"
-"Read more about the configuration at: https://fedorahosted.org/abrt/wiki/AbrtConfiguration"
-msgstr ""
-
-#: ../src/gui-wizard-gtk/wizard.c:304
-#, c-format
-msgid ""
-"<b>%s</b> is not properly configured. You can configure it now or provide the required information later.\n"
-"\n"
-"<a href=\"https://fedorahosted.org/abrt/wiki/AbrtConfiguration\">Read more about the configuration</a>"
-msgstr ""
-
-#: ../src/gui-wizard-gtk/wizard.c:320
-#, c-format
-msgid "Con_figure %s"
-msgstr "%s ಅನ್ನು ಸಂರಚಿಸು (_f)"
-
-#: ../src/gui-wizard-gtk/wizard.c:347
+#: ../src/gui-wizard-gtk/wizard.c:355
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved data?"
 msgstr "ಬರೆಯಬಹುದಾದ ಕೋಶದ ಅಗತ್ಯವಿದೆ, ಆದರೆ '%s' ಎಂಬುದಕ್ಕೆ ಬರೆಯಲು ಅಸಾಧ್ಯವಾಗಿದೆ. ಅದನ್ನು '%s' ಗೆ ಸ್ಥಳಾಂತರಿಸಿ ಮತ್ತು ಸ್ಥಳಾಂತರಿಸಲಾದ ದತ್ತಾಂಶದೊಂದಿಗೆ ಕೆಲಸ ಮಾಡಲು ಬಯಸುವಿರಾ?"
 
-#: ../src/gui-wizard-gtk/wizard.c:760
+#: ../src/gui-wizard-gtk/wizard.c:749
 msgid "View/edit a text file"
 msgstr "ಒಂದು ಪಠ್ಯ ಕಡತವನ್ನು ನೋಡಿ/ಸಂಪಾದಿಸಿ"
 
-#: ../src/gui-wizard-gtk/wizard.c:768
+#: ../src/gui-wizard-gtk/wizard.c:757
 msgid "_Save"
-msgstr ""
+msgstr "ಉಳಿಸು (_S)"
 
-#: ../src/gui-wizard-gtk/wizard.c:987
+#: ../src/gui-wizard-gtk/wizard.c:974
 msgid ""
 "No reporting targets are defined for this problem. Check configuration in "
 "/etc/libreport/*"
-msgstr ""
+msgstr "ಈ ತೊಂದರೆಗಾಗಿ ಯಾವುದೆ ವರದಿ ಮಾಡುವ ಗುರಿಗಳನ್ನು ಸೂಚಿಸಲಾಗಿಲ್ಲ. /etc/libreport/* ನಲ್ಲಿ ಸಂರಚನೆಯನ್ನು ಪರಿಶೀಲಿಸಿ"
 
-#: ../src/gui-wizard-gtk/wizard.c:1024
+#: ../src/gui-wizard-gtk/wizard.c:1016
 #, c-format
 msgid "(requires: %s)"
-msgstr ""
+msgstr "(ಇದರ ಅಗತ್ಯವಿದೆ: %s)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1038
+#: ../src/gui-wizard-gtk/wizard.c:1030
 #, c-format
 msgid "(not needed, data already exist: %s)"
-msgstr ""
+msgstr "(ಅಗತ್ಯವಿಲ್ಲ, ದತ್ತಾಂಶವು ಈಗಾಗಲೆ ಇದೆ: %s)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1199
+#: ../src/gui-wizard-gtk/wizard.c:1220
 msgid "(click here to view/edit)"
 msgstr "(ನೋಡಲು/ಸಂಪಾದಿಸಲು ಇಲ್ಲಿ ಕ್ಲಿಕ್‌ ಮಾಡಿ)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1210
+#: ../src/gui-wizard-gtk/wizard.c:1231
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(ಬೈನರಿ ಕಡತ, %llu ಬೈಟ್‌ಗಳು)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1317 ../src/report-newt/report-newt.c:334
+#: ../src/gui-wizard-gtk/wizard.c:1338 ../src/report-newt/report-newt.c:334
 msgid "(no description)"
 msgstr "(ಯಾವುದೆ ವಿವರಣೆ ಇಲ್ಲ)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1325
+#: ../src/gui-wizard-gtk/wizard.c:1346
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu ಬೈಟ್‌ಗಳು, %u ಕಡತಗಳು"
 
-#: ../src/gui-wizard-gtk/wizard.c:1554
+#: ../src/gui-wizard-gtk/wizard.c:1591
 msgid "Processing was canceled"
-msgstr ""
+msgstr "ಸಂಸ್ಕರಣೆಯನ್ನು ರದ್ದುಗೊಳಿಸಲಾಗಿತ್ತು"
 
-#: ../src/gui-wizard-gtk/wizard.c:1718
+#: ../src/gui-wizard-gtk/wizard.c:1795
 msgid ""
-"Processing of the problem failed. This can have many reasons but there are two most common:\n"
+"Processing of the problem failed. This can have many reasons but there are three most common:\n"
 "\t▫ <b>network connection problems</b>\n"
 "\t▫ <b>corrupted problem data</b>\n"
+"\t▫ <b>invalid configuration</b>"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1723
+#: ../src/gui-wizard-gtk/wizard.c:1804
 msgid ""
-"If you want to help us, please click on the upload button and provide all problem data for a deep analysis.\n"
-"<i>Before you do that, please consider the security risks. Problem data may contain sensitive information like passwords.\n"
-"The uploaded data are stored in a protected storage and only a limited number of persons can read them.</i>"
+"If you want to update the configuration and try to report again, please open <b>Preferences</b> item\n"
+"in the application menu and after applying the configuration changes click <b>Repeat</b> button."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1841
+#: ../src/gui-wizard-gtk/wizard.c:1810
+msgid ""
+"If you are sure that this problem is not caused by network problems neither by invalid configuration\n"
+"and want to help us, please click on the upload button and provide all problem data for a deep analysis.\n"
+"<i>Before you do that, please consider the security risks. Problem data may contain sensitive information like\n"
+"passwords. The uploaded data are stored in a protected storage and only a limited number of persons can read them.</i>"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1929
 msgid "Processing was interrupted because the problem is not reportable."
-msgstr ""
+msgstr "ತೊಂದರೆಯನ್ನು ವರದಿ ಮಾಡಲು ಸಾಧ್ಯವಾಗದೆ ಇರುವ ಕಾರಣದಿಂದಾಗಿ ಸಂಸ್ಕರಣೆಗೆ ತಡೆಯುಂಟಾಗಿದೆ."
 
-#: ../src/gui-wizard-gtk/wizard.c:1851 ../src/gui-wizard-gtk/wizard.c:1918
+#: ../src/gui-wizard-gtk/wizard.c:1939 ../src/gui-wizard-gtk/wizard.c:2080
 msgid "Processing failed."
-msgstr ""
+msgstr "ಸಂಸ್ಕರಣೆಯು ವಿಫಲಗೊಂಡಿದೆ."
 
 #. No next event, go to progress page and finish
-#: ../src/gui-wizard-gtk/wizard.c:1858 ../src/gui-wizard-gtk/wizard.c:2623
+#: ../src/gui-wizard-gtk/wizard.c:1946 ../src/gui-wizard-gtk/wizard.c:2837
 msgid "Processing finished."
+msgstr "ಸಂಸ್ಕರಣೆಯು ಪೂರ್ಣಗೊಂಡಿದೆ."
+
+#: ../src/gui-wizard-gtk/wizard.c:1947
+msgid "Processing finished, please proceed to the next step."
+msgstr "ಸಂಸ್ಕರಣೆಯು ಪೂರ್ಣಗೊಂಡಿದೆ, ದಯವಿಟ್ಟು ಮುಂದಿನ ಹಂತಕ್ಕೆ ಹೋಗಿ."
+
+#: ../src/gui-wizard-gtk/wizard.c:1987
+msgid ""
+"Private ticket is requested but the group name 'private' has been deprecated. We kindly ask you to use 'fedora_contrib_private' group name. Click Yes button or update the configuration manually. Or click No button, if you really want to use 'private' group.\n"
+"\n"
+"If you are not sure what this dialogue means, please trust us and click Yes button.\n"
+"\n"
+"Read more about the private bug reports at:\n"
+"https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets\n"
+"https://bugzilla.redhat.com/show_bug.cgi?id=1044653\n"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1859
-msgid "Processing finished, please proceed to the next step."
+#: ../src/gui-wizard-gtk/wizard.c:1995
+msgid ""
+"Private ticket is requested but the group name <i>private</i> has been deprecated. We kindly ask you to use <i>fedora_contrib_private</i> group name. Click Yes button or update the configuration manually. Or click No button, if you really want to use <i>private</i> group.\n"
+"\n"
+"If you are not sure what this dialogue means, please trust us and click Yes button.\n"
+"\n"
+"Read more about the private bug reports at:\n"
+"<a href=\"https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets\">https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets</a>\n"
+"<a href=\"https://bugzilla.redhat.com/show_bug.cgi?id=1044653\">https://bugzilla.redhat.com/show_bug.cgi?id=1044653</a>\n"
 msgstr ""
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1915
+#: ../src/gui-wizard-gtk/wizard.c:2077
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "'%s' ಘಟನೆಗಾಗಿ ಯಾವುದೆ ಸಂಸ್ಕರಣೆಯನ್ನು ಸೂಚಿಸಲಾಗಿಲ್ಲ"
 
-#: ../src/gui-wizard-gtk/wizard.c:1929
+#: ../src/gui-wizard-gtk/wizard.c:2091
 msgid "Processing interrupted: can't continue without writable directory."
-msgstr ""
+msgstr "ಸಂಸ್ಕರಣೆಗೆ ತಡೆಯುಂಟಾಗಿದೆ: ಬರೆಯಬಹುದಾದ ಕೋಶವು ಇಲ್ಲದೆ ಮುಂದುವರೆಯಲು ಸಾಧ್ಯವಿಲ್ಲ."
 
-#: ../src/gui-wizard-gtk/wizard.c:1966
+#: ../src/gui-wizard-gtk/wizard.c:2128
 msgid "Processing..."
-msgstr ""
+msgstr "ಸಂಸ್ಕರಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2055
+#: ../src/gui-wizard-gtk/wizard.c:2226
 msgid "Cannot check backtrace rating because of invalid event name"
-msgstr ""
+msgstr "ಅಮಾನ್ಯವಾದ ಘಟನೆಯ ಹೆಸರಿನ ಕಾರಣ ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ರೇಟಿಂಗ್ ಅನ್ನು ಪರಿಶೀಲಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/gui-wizard-gtk/wizard.c:2643
+#: ../src/gui-wizard-gtk/wizard.c:2857
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
 "Do you want to continue?"
-msgstr ""
+msgstr "ಸಂಭಾವ್ಯ ಸೂಕ್ಷ್ಮಸಂವೇದಿ ದತ್ತಾಂಶವನ್ನು ಕಳುಹಿಸಲು '%s' ಘಟನೆಗೆ ಅನುಮತಿಯ ಅಗತ್ಯವಿದೆ. \nನೀವು ಮುಂದುವರೆಯಲು ಬಯಸುವಿರಾ?"
 
-#: ../src/gui-wizard-gtk/wizard.c:2691
+#: ../src/gui-wizard-gtk/wizard.c:2905
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
-msgstr ""
+msgstr "ತೊಂದರೆಯನ್ನು ವರದಿ ಮಾಡಬಾರದು (ಇದು ಬಹುಷಃ ಒಂದು ಗೊತ್ತಿರುವ ತೊಂದರೆ). %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2918
+#: ../src/gui-wizard-gtk/wizard.c:3114
 msgid "_Open"
-msgstr ""
+msgstr "ತೆರೆ (_O)"
 
-#: ../src/gui-wizard-gtk/wizard.c:2940
+#: ../src/gui-wizard-gtk/wizard.c:3136
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' ಎನ್ನುವುದು ಒಂದು ಸಾಮಾನ್ಯವಾದ ಕಡತವಲ್ಲ"
 
-#: ../src/gui-wizard-gtk/wizard.c:2954
+#: ../src/gui-wizard-gtk/wizard.c:3150
 msgid "You are trying to copy a file onto itself"
 msgstr "ನೀವು ಒಂದು ಕಡತವನ್ನು ಪುನಃ ಅದಕ್ಕೆ ಅಂಟಿಸಲು ಪ್ರಯತ್ನಿಸುತ್ತಿದ್ದೀರಿ"
 
-#: ../src/gui-wizard-gtk/wizard.c:2961
+#: ../src/gui-wizard-gtk/wizard.c:3157
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "'%s' ನ ಪ್ರತಿ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2976
+#: ../src/gui-wizard-gtk/wizard.c:3172
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "'%s' ಎಂಬ ಅಂಶವು ಈಗಾಗಲೆ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ ಮತ್ತು ಅದನ್ನು ಮಾರ್ಪಡಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ"
 
-#: ../src/gui-wizard-gtk/wizard.c:3168
+#: ../src/gui-wizard-gtk/wizard.c:3334
 msgid "Include"
 msgstr "ಒಳಗೊಳ್ಳಿಸು"
 
-#: ../src/gui-wizard-gtk/wizard.c:3179
+#: ../src/gui-wizard-gtk/wizard.c:3345
 msgid "Name"
 msgstr "ಹೆಸರು"
 
-#: ../src/gui-wizard-gtk/wizard.c:3189
+#: ../src/gui-wizard-gtk/wizard.c:3355
 msgid "Value"
 msgstr "ಮೌಲ್ಯ"
 
-#: ../src/gui-wizard-gtk/wizard.c:3223
+#: ../src/gui-wizard-gtk/wizard.c:3389
 msgid "Problem description"
 msgstr "ತೊಂದರೆಯ ವಿವರಣೆ"
 
-#: ../src/gui-wizard-gtk/wizard.c:3224
+#: ../src/gui-wizard-gtk/wizard.c:3390
 msgid "Select how to report this problem"
-msgstr ""
+msgstr "ಈ ತೊಂದರೆಯನ್ನು ಹೇಗೆ ವರದಿ ಮಾಡಬೇಕು ಎನ್ನುವುದನ್ನು ಆರಿಸಿ"
 
-#: ../src/gui-wizard-gtk/wizard.c:3225
+#: ../src/gui-wizard-gtk/wizard.c:3391
 msgid "Provide additional information"
 msgstr "ಹೆಚ್ಚಿನ ಮಾಹಿತಿಯನ್ನು ಒದಗಿಸಿ"
 
-#: ../src/gui-wizard-gtk/wizard.c:3226
+#: ../src/gui-wizard-gtk/wizard.c:3392
 msgid "Review the data"
 msgstr "ದತ್ತಾಂಶವನ್ನು ಅವಲೋಕಿಸಿ"
 
-#: ../src/gui-wizard-gtk/wizard.c:3227
+#: ../src/gui-wizard-gtk/wizard.c:3393
 msgid "Confirm data to report"
 msgstr "ವರದಿ ಮಾಡಲು ದತ್ತಾಂಶವನ್ನು ಖಚಿತಪಡಿಸಿ"
 
-#: ../src/gui-wizard-gtk/wizard.c:3228
+#: ../src/gui-wizard-gtk/wizard.c:3394
 msgid "Processing"
-msgstr ""
+msgstr "ಸಂಸ್ಕರಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../src/gui-wizard-gtk/wizard.c:3229
+#: ../src/gui-wizard-gtk/wizard.c:3395
 msgid "Processing done"
-msgstr ""
+msgstr "ಸಂಸ್ಕರಿಸುವಿಕೆಯು ಮುಗಿದಿದೆ"
 
-#: ../src/gui-wizard-gtk/wizard.c:3318
+#: ../src/gui-wizard-gtk/wizard.c:3494
 msgid "_Stop"
-msgstr ""
+msgstr "ನಿಲ್ಲಿಸು (_S)"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3321
+#: ../src/gui-wizard-gtk/wizard.c:3497
 msgid "Upload for analysis"
+msgstr "ವಿಶ್ಲೇಷಣೆಗಾಗಿ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ"
+
+#. else gtk_widget_hide won't work
+#: ../src/gui-wizard-gtk/wizard.c:3500
+msgid "Repeat"
 msgstr ""
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3324
+#: ../src/gui-wizard-gtk/wizard.c:3502
 msgid "_Forward"
-msgstr ""
+msgstr "ಮುಂದಕ್ಕೆ (_F)"
 
-#: ../src/gui-wizard-gtk/wizard.c:3413
+#. else gtk_widget_hide won't work
+#: ../src/gui-wizard-gtk/wizard.c:3505 ../src/gui-wizard-gtk/wizard.glade.h:14
+msgid "Details"
+msgstr "ವಿವರಗಳು"
+
+#: ../src/gui-wizard-gtk/wizard.c:3615
 msgid ""
-"In order to enable the built-in screencasting functionality the package recordmydesktop has to be installed. Please run the following command if you want to install it.\n"
+"In order to enable the built-in screencasting functionality the package fros-recordmydesktop has to be installed. Please run the following command if you want to install it.\n"
 "\n"
-"<b>su -c \"yum install recordmydesktop\"</b>"
+"<b>su -c \"yum install fros-recordmydesktop\"</b>"
 msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
-msgid "Possible sensitive data detected"
-msgstr ""
+msgid ""
+"Use this button to generate more informative backtrace after you installed "
+"additional debug packages"
+msgstr "ಹೆಚ್ಚುವರಿ ದೋಷನಿವಾರಣ ಪ್ಯಾಕೇಜುಗಳನ್ನು ನೀವು ಅನುಸ್ಥಾಪಿಸಿದ ನಂತರ ಹೆಚ್ಚು ಮಾಹಿತಿಯುಕ್ತ ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ಉತ್ಪಾದಿಸಲು ಈ ಗುಂಡಿಯನ್ನು ಬಳಸಿ"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
-msgid "Restrict access to the report"
-msgstr ""
+msgid ""
+"Please review the data before it gets reported. Depending on reporter "
+"chosen, it may end up publicly visible."
+msgstr "ದತ್ತಾಂಶವನ್ನು ವರದಿ ಮಾಡುವ ಮೊದಲು ದಯವಿಟ್ಟು ಅದನ್ನು ಅವಲೋಕಿಸಿ. ವರದಿ ಮಾಡುವ ಉಪಕರಣದ ಮೇಲೆ ಅವಲಂಬಿತವಾಗಿ, ಇದು ಸಾರ್ವಜನಿಕವಾಗಿ ಕಾಣಿಸಿಕೊಳ್ಳುವ ಸಾಧ್ಯತೆ ಇದೆ."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
-msgid ""
-"No one except Fedora Contrib group members will be allowed to see the report"
-" with restricted access (not even you)"
+msgid "Sensitive words"
 msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
-msgid "Read more about reports with restricted access"
+msgid "Custom"
 msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
+msgid "Clear the search bar to see the list of security sensitive words."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:6
+msgid "file"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:7
+msgid "data"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:8
+msgid "Search"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:9
+msgid ""
+"Possible sensitive data detected, feel free to edit the report and remove "
+"them."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:10
+msgid "Restrict access to the report"
+msgstr "ವರದಿಗೆ ನಿಲುಕನ್ನು ನಿರ್ಬಂಧಿಸು"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:11
+msgid ""
+"No one except Fedora Contrib group members will be allowed to see the report"
+" with restricted access (not even you)"
+msgstr "ನಿರ್ಬಂಧಿತ ನಿಲುಕಿನ ಮುಖಾಂತರ Fedora Contrib ಗುಂಪಿನ ಸದಸ್ಯರು ಹೊರತುಪಡಿಸಿ ಬೇರೆ ಯಾರೂ ಸಹ ವರದಿಯನ್ನು ನೋಡಲು ಸಾಧ್ಯವಿರುವುದಿಲ್ಲ (ನೀವೂ ಕೂಡ)"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:12
+msgid "Read more about reports with restricted access"
+msgstr "ವರದಿಗಳ ನಿರ್ಬಂಧಿತ ನಿಲುಕಿನ ಕುರಿತು ಇನ್ನಷ್ಟು ಓದಿ"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid ""
 "On the following screens, you will be asked to describe how the problem "
 "occurred, to choose how to analyze the problem (if needed), to review "
@@ -675,158 +776,152 @@ msgid ""
 "'Forward' to proceed."
 msgstr "ಮುಂದಿನ ತೆರೆಗಳಲ್ಲಿ, ತೊಂದರೆಯು ಹೇಗೆ ಸಂಭವಿಸಿತು ಎಂದು ವಿವರಿಸಿ, ತೊಂದರೆಯನ್ನು ಹೇಗೆ ವಿಶ್ಲೇಷಿಸಬೇಕು (ಅಗತ್ಯವಿದ್ದಲ್ಲಿ), ಸಂಗ್ರಹಿಸಲಾದ ದತ್ತಾಂಶವನ್ನು ಅವಲೋಕಿಸಿ, ಹಾಗು ತೊಂದರೆಯನ್ನು ಎಲ್ಲಿ ವರದಿ ಮಾಡಬೇಕು ಎಂದು ಆರಿಸಿ, ಎಂದು ನಿಮ್ಮನ್ನು ಕೇಳಲಾಗುತ್ತದೆ. ಮುಂದುವರೆಯಲು 'ಮುಂದಕ್ಕೆ' ಅನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:6
-msgid "Details"
-msgstr "ವಿವರಗಳು"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:7
+#: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid ""
 "How did this problem happen (step-by-step)? How can it be reproduced? Any "
 "additional comments useful for diagnosing the problem? Please use English if"
 " possible."
 msgstr "ಈ ತೊಂದರೆಯು ಹೇಗೆ ಎದುರಾಯಿತು (ಹಂತ-ಹಂತವಾಗಿ)? ಇದು ಇನ್ನೊಮ್ಮೆ ಆಗುವಂತೆ ಮಾಡುವುದು ಹೇಗೆ? ತೊಂದರೆಯನ್ನು ಪತ್ತೆ ಮಾಡಲು ಅಗತ್ಯವಿರುವ ಏನಾದರೂ ಹೆಚ್ಚುವರಿ ಟಿಪ್ಪಣಿಗಳಿವೆಯೆ? ಸಾಧ್ಯವಾದಷ್ಟು ಮಟ್ಟಿಗೆ ಇಂಗ್ಲೀಷ್ ಭಾಷೆಯನ್ನು ಬಳಸಿ."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:8
+#: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "You need to fill the how to before you can proceed..."
 msgstr "ನೀವು ಮುಂದುವರೆಯುವ ಮೊದಲು 'ಹೇಗೆ' ಎನ್ನುವುದನ್ನು ತುಂಬಿಸಬೇಕು..."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:9
+#: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
 msgstr "<b>ನಿಮ್ಮ ಟಿಪ್ಪಣಿಗಳು ಖಾಸಗಿಯಾಗಿಲ್ಲ.</b> ಅದನ್ನು ಸಾರ್ವಜನಿಕವಾಗಿ ಕಾಣಿಸಿಕೊಳ್ಳುವ ತೊಂದರೆ ವರದಿಯಲ್ಲಿ ಸೇರಿಸಲಾಗಬಹುದು."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:10
+#: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid "If you don't know how to describe it, you can"
-msgstr ""
+msgstr "ಅದನ್ನು ಹೇಗೆ ನಿರ್ಬಂಧಿಸಬೇಕು ಎಂದು ನಿಮಗೆ ತಿಳಿದಿರದೆ ಇದ್ದಲ್ಲಿ, ನೀವು ಹೀಗೆ ಮಾಡಬಹುದು"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:11
+#: ../src/gui-wizard-gtk/wizard.glade.h:19
 msgid "add a screencast"
-msgstr ""
+msgstr "ಒಂದು ಸ್ಕ್ರೀನ್‌ಕ್ಯಾಸ್ಟನ್ನು ಸೇರಿಸಿ"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:12
+#: ../src/gui-wizard-gtk/wizard.glade.h:20
 msgid "I don't know what caused this problem"
 msgstr "ತೊಂದರೆಗೆ ಕಾರಣವೇನು ಎಂದು ನನಗೆ ತಿಳಿದಿಲ್ಲ"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:13
-msgid ""
-"Use this button to generate more informative backtrace after you installed "
-"additional debug packages"
-msgstr "ಹೆಚ್ಚುವರಿ ದೋಷನಿವಾರಣ ಪ್ಯಾಕೇಜುಗಳನ್ನು ನೀವು ಅನುಸ್ಥಾಪಿಸಿದ ನಂತರ ಹೆಚ್ಚು ಮಾಹಿತಿಯುಕ್ತ ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ಉತ್ಪಾದಿಸಲು ಈ ಗುಂಡಿಯನ್ನು ಬಳಸಿ"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:14
-msgid ""
-"Please review the data before it gets reported. Depending on reporter "
-"chosen, it may end up publicly visible."
-msgstr ""
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:15
+#: ../src/gui-wizard-gtk/wizard.glade.h:21
 msgid "Size:"
 msgstr "ಗಾತ್ರ:"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:16
+#: ../src/gui-wizard-gtk/wizard.glade.h:22
 msgid "Attach a file"
 msgstr "ಕಡತವನ್ನು ಲಗತ್ತಿಸಿ"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:17
+#: ../src/gui-wizard-gtk/wizard.glade.h:23
 msgid "I reviewed the data and _agree with submitting it"
 msgstr "ನಾನು ದತ್ತಾಂಶವನ್ನು ಅವಲೋಕಿಸಿದ್ದೇನೆ ಮತ್ತು ಅದನ್ನು ಸಲ್ಲಿಸಲು ಒಪ್ಪಿಗೆ ನೀಡುತ್ತೇನೆ (_a)"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:18
+#: ../src/gui-wizard-gtk/wizard.glade.h:24
 msgid ""
 "If you are reporting to a remote server, make sure you removed all private "
 "data (such as usernames and passwords). Backtrace, command line, environment"
 " variables are the typical items in need of examining."
 msgstr "ನೀವು ಒಂದು ದೂರದ ಪೂರೈಕೆಗಣಕಕ್ಕೆ ವರದಿ ಮಾಡುತ್ತಿದ್ದರೆ, ಎಲ್ಲಾ ಖಾಸಗಿ ಮಾಹಿತಿಯನ್ನು (ಬಳಕೆದಾರಹೆಸರುಗಳು ಮತ್ತು ಗುಪ್ತಪದಗಳಂತವು) ತೆಗೆದುಹಾಕಿದ್ದೀರಿ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ. ಪರಿಶೀಲನೆಗಾಗಿ ಬ್ಯಾಕ್‌ಟ್ರೇಸ್, ಆಜ್ಞಾ ಸಾಲು, ಪರಿಸರ ವೇರಿಯೇಬಲ್‌ಗಳಂತಹ ಸಾಮಾನ್ಯ ಮಾಹಿತಿಗಳ ಅಗತ್ಯವಿರುತ್ತದೆ."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:19
+#: ../src/gui-wizard-gtk/wizard.glade.h:25
 msgid "Processing did not start yet"
-msgstr ""
+msgstr "ಸಂಸ್ಕರಣೆಯು ಇನ್ನೂ ಸಹ ಆರಂಭಗೊಂಡಿಲ್ಲ"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:20
+#: ../src/gui-wizard-gtk/wizard.glade.h:26
 msgid "Show log"
 msgstr "ದಿನಚರಿಯನ್ನು ತೋರಿಸು"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:21
+#: ../src/gui-wizard-gtk/wizard.glade.h:27
 msgid "Reporting has finished. You can close this window now."
 msgstr "ವರದಿ ಮಾಡುವಿಕೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಲಾಗಿದೆ. ನೀವು ಈಗ ಈ ವಿಂಡೊವನ್ನು ಮುಚ್ಚಬಹುದು."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:22
+#: ../src/gui-wizard-gtk/wizard.glade.h:28
 msgid ""
 "If you want to report the problem to a different destination, collect "
 "additional information, or provide a better problem description and repeat "
 "reporting process, press 'Forward'."
 msgstr "ನೀವು ತೊಂದರೆಯನ್ನು ಬೇರೊಂದು ಸ್ಥಳಕ್ಕೆ ವರದಿ ಮಾಡಲು ಬಯಸಿದಲ್ಲಿ, ಹೆಚ್ಚುವರಿ ಮಾಹಿತಿಯನ್ನು ಸಂಗ್ರಹಿಸಿ, ಅಥವ ತೊಂದರೆಯ ಇನ್ನೂ ಉತ್ತಮ ವಿವರಣೆಯನ್ನು ಒದಗಿಸಿ ಮತ್ತು ವರದಿಯ ಪ್ರಕ್ರಿಯೆಯನ್ನು ಪುನರಾವರ್ತಿಸಿ, 'ಮುಂದಕ್ಕೆ' ಅನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ."
 
-#: ../src/include/internal_libreport.h:969
+#: ../src/include/internal_libreport.h:989
 msgid "Be verbose"
-msgstr ""
+msgstr "ವರ್ಬೋಸ್ ಆಗಿರು"
 
-#: ../src/include/internal_libreport.h:970
-#: ../src/plugins/reporter-bugzilla.c:929
+#: ../src/include/internal_libreport.h:990
+#: ../src/plugins/reporter-bugzilla.c:895
 #: ../src/plugins/reporter-kerneloops.c:166
-#: ../src/plugins/reporter-mailx.c:198 ../src/plugins/reporter-print.c:56
-#: ../src/plugins/reporter-rhtsupport.c:254
-#: ../src/plugins/reporter-upload.c:227
+#: ../src/plugins/reporter-mailx.c:203 ../src/plugins/reporter-print.c:56
+#: ../src/plugins/reporter-rhtsupport.c:390
+#: ../src/plugins/reporter-upload.c:250
 msgid "Problem directory"
-msgstr ""
+msgstr "ತೊಂದರೆಯ ಕೋಶ"
 
-#: ../src/lib/abrt_sock.c:158
+#: ../src/lib/abrt_sock.c:160
 #, c-format
 msgid "Can't delete: '%s'"
-msgstr ""
+msgstr "ಅಳಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ: '%s'"
 
-#: ../src/lib/abrt_sock.c:194
+#: ../src/lib/abrt_sock.c:196
 msgid "locked by another process"
-msgstr ""
+msgstr "ಇನ್ನೊಂದು ಪ್ರಕ್ರಿಯೆಯಿಂದ ಲಾಕ್ ಆಗಿದೆ"
 
-#: ../src/lib/abrt_sock.c:203
+#: ../src/lib/abrt_sock.c:205
 msgid "permission denied"
-msgstr ""
+msgstr "ಅನುಮತಿಯನ್ನು ನಿರಾಕರಿಸಲಾಗಿದೆ"
 
-#: ../src/lib/abrt_sock.c:206
+#: ../src/lib/abrt_sock.c:208
 msgid "not a problem directory"
-msgstr ""
+msgstr "ಒಂದು ತೊಂದರೆಯ ಕೋಶವಲ್ಲ"
 
-#: ../src/lib/abrt_sock.c:215
+#: ../src/lib/abrt_sock.c:217
 #, c-format
 msgid "Can't delete '%s': %s"
-msgstr ""
+msgstr "'%s' ಅನ್ನು ಅಳಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ: %s"
 
-#: ../src/lib/client.c:56 ../src/lib/client.c:89
+#: ../src/lib/client.c:55 ../src/lib/client.c:87
 msgid "y"
 msgstr "y"
 
-#: ../src/lib/client.c:57 ../src/lib/client.c:90
+#: ../src/lib/client.c:56 ../src/lib/client.c:88
 msgid "N"
 msgstr "N"
 
-#: ../src/lib/client.c:91
+#: ../src/lib/client.c:89
 msgid "f"
-msgstr ""
+msgstr "f"
 
-#: ../src/lib/create_dump_dir.c:39
+#: ../src/lib/create_dump_dir.c:41
 #, c-format
 msgid "Missing required item: '%s'"
-msgstr ""
+msgstr "ಅಗತ್ಯವಿರುವ ಅಂಶವು ಕಾಣಿಸುತ್ತಿಲ್ಲ: '%s'"
 
-#: ../src/lib/create_dump_dir.c:54
+#: ../src/lib/create_dump_dir.c:56
 #, c-format
 msgid "uid value is not valid: '%s'"
-msgstr ""
+msgstr "uid ಮೌಲ್ಯವು ಮಾನ್ಯವಾಗಿಲ್ಲ: '%s'"
 
-#: ../src/lib/curl.c:226
+#: ../src/lib/curl.c:227
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "ಅಪ್‌ಲೋಡ್ ಮಾಡಲಾಗಿದ್ದು: %llu, %llu kbytes ನಲ್ಲಿ"
 
-#: ../src/lib/curl.c:598
+#: ../src/lib/curl.c:635
 #, c-format
 msgid "Sending %s to %s"
 msgstr "%s ಅನ್ನು %s ಗೆ ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ"
 
+#: ../src/lib/curl.c:659
+#, c-format
+msgid "Please enter user name for '%s':"
+msgstr ""
+
+#: ../src/lib/curl.c:665
+#, c-format
+msgid "Please enter password for '%s':"
+msgstr ""
+
 #. This ends up a "reporting status message" in abrtd
-#: ../src/lib/curl.c:630
+#: ../src/lib/curl.c:688
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "%s ಅನ್ನು %s ಗೆ ಯಶಸ್ವಿಯಾಗಿ ಕಳುಹಿಸಲಾಗಿದೆ"
@@ -854,109 +949,177 @@ msgstr "ಅಮಾನ್ಯವಾದ ಬೂಲಿಯನ್ ಮೌಲ್ಯ '%s'"
 msgid "Unsupported option type"
 msgstr "ಬೆಂಬಲವಿಲ್ಲದ ಆಯ್ಕೆಯ ಬಗೆ"
 
-#: ../src/lib/event_config.c:460
+#: ../src/lib/event_config.c:464
 #, c-format
 msgid ""
 "The problem cannot be reported due to an invalid data. '%s' file does not "
 "contain a number."
-msgstr ""
+msgstr "ತಪ್ಪು ದತ್ತಾಂಶದ ಕಾರಣ ತೊಂದರೆಯನ್ನು ವರದಿ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ. '%s' ಕಡತವು ಒಂದು ಸಂಖ್ಯೆಯನ್ನು ಹೊಂದಿರುವುದಿಲ್ಲ."
 
-#: ../src/lib/event_config.c:464
+#: ../src/lib/event_config.c:468
 msgid "Please report this problem to ABRT project developers."
-msgstr ""
+msgstr "ದಯವಿಟ್ಟು ಈ ತೊಂದರೆಯನ್ನು ABRT ಯೋಜನಾ ವಿಕಸನೆಗಾರರಿಗೆ ವರದಿ ಮಾಡಿ."
 
-#: ../src/lib/event_config.c:470
+#: ../src/lib/event_config.c:474
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅಪೂರ್ಣಗೊಂಡಿದೆ, ಇದನ್ನು ಮರಳಿ ಉತ್ಪಾದಿಸಲು ವಿವರಣೆಯುಕ್ತ ಸೂಚನೆಗಳನ್ನು ಒದಗಿಸಿದ್ದೀರಿ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ."
 
-#: ../src/lib/event_config.c:471
+#: ../src/lib/event_config.c:475
 msgid "The backtrace probably can't help developer to diagnose the bug."
-msgstr ""
-
-#: ../src/lib/event_config.c:477
-msgid "Reporting disabled because the backtrace is unusable."
-msgstr "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಬಳಸಲು ಯೋಗ್ಯವಾಗಿರದೆ ಇರುವುದರಿಂದ ವರದಿ ಮಾಡುವುದನ್ನು ಅಶಕ್ತಗೊಳಿಸಲಾಗಿದೆ."
+msgstr "ದೋಷದ ಕಾರಣವನ್ನು ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಬಹುಷಃ ವಿಕಸನೆಗಾರರಿಗೆ ಯಾವುದೆ ನೆರವನ್ನು ನೀಡುವುದಿಲ್ಲ."
 
 #: ../src/lib/event_config.c:481
+msgid "Reporting disabled because the backtrace is unusable."
+msgstr "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಬಳಸಲು ಯೋಗ್ಯವಾಗಿರದೆ ಇರುವುದರಿಂದ ವರದಿ ಮಾಡುವುದನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ."
+
+#: ../src/lib/event_config.c:485
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again."
-msgstr ""
+msgstr "ದಯವಿಟ್ಟು \"debuginfo-install %s\" ಅನ್ನು ಬಳಸಿ debuginfo ಅನ್ನು ಅನುಸ್ಥಾಪಿಸಲು ಪ್ರಯತ್ನಿಸಿ ನಂತರ ಇನ್ನೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ."
 
-#: ../src/lib/event_config.c:483
+#: ../src/lib/event_config.c:487
 msgid "A proper debuginfo is probably missing or the coredump is corrupted."
-msgstr ""
+msgstr "ಒಂದು ಸರಿಯಾದ debuginfo ಕಾಣಿಸುತ್ತಿಲ್ಲ ಅಥವ ಕೋರ್-ಡಂಪ್ ಹಾಳಾಗಿದೆ."
 
-#: ../src/lib/make_descr.c:110
+#: ../src/lib/ureport.c:324
+#, c-format
+msgid ""
+"Your problem seems to be caused by %s\n"
+"\n"
+"%s\n"
+msgstr "ನಿಮ್ಮ ತೊಂದರೆಯು ಬಹುಷಃ %s ಇಂದ ಆಗಿರಬಹುದು\n\n%s\n"
+
+#: ../src/lib/ureport.c:327
+msgid "Your problem seems to be caused by one of the following:\n"
+msgstr "ನಿಮ್ಮ ತೊಂದರೆಯು ಬಹುಷಃ ಈ ಕೆಳಗಿನವುಗಳಲ್ಲಿ ಒಂದರಿಂದ ಆಗಿರಬಹುದು:\n"
+
+#: ../src/lib/ureport.c:497
+#, c-format
+msgid "Failed to upload uReport to the server '%s' with curl: %s"
+msgstr "uReport ಅನ್ನು ಈ curl ಅನ್ನು ಹೊಂದಿರುವ '%s' ಪೂರೈಕೆಗಣಕಕ್ಕೆ ಅಪ್‌ಲೋಡ್ ಮಾಡಲು ವಿಫಲಗೊಂಡಿದೆ: %s"
+
+#: ../src/lib/ureport.c:503
+#, c-format
+msgid "The URL '%s' does not exist (got error 404 from server)"
+msgstr "URL '%s' ಅಸ್ತಿತ್ವದಲ್ಲಿಲ್ಲ (ಪೂರೈಕೆಗಣಕದಿಂದ 404 ದೋಷವು ಕಂಡುಬಂದಿದೆ)"
+
+#: ../src/lib/ureport.c:509
+#, c-format
+msgid "The server at '%s' encountered an internal error (got error 500)"
+msgstr "'%s' ನಲ್ಲಿರುವ ಪೂರೈಕೆಗಣಕಕ್ಕೆ ಒಂದು ಆಂತರಿಕ ದೋಷವು ಎದುರಾಗಿದೆ (ದೋಷ 500 ಕಂಡುಬಂದಿದೆ)"
+
+#: ../src/lib/ureport.c:515
+#, c-format
+msgid "The server at '%s' currently can't handle the request (got error 503)"
+msgstr "'%s' ಎಂಬಲ್ಲಿರುವ ಪೂರೈಕೆಗಣಕವು ಪ್ರಸಕ್ತ ಮನವಿಯನ್ನು ನಿಭಾಯಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ (503 ದೋಷವು ಎದುರಾಗಿದೆ)"
+
+#. can't print better error message
+#: ../src/lib/ureport.c:524
+#, c-format
+msgid "Unexpected HTTP response from '%s': %d"
+msgstr "'%s' ಇಂದ ಅನಿರೀಕ್ಷಿತ HTTP ಪ್ರತಿಕ್ರಿಯೆ: %d"
+
+#: ../src/lib/ureport.c:533
+#, c-format
+msgid "Unable to parse response from ureport server at '%s'"
+msgstr "'%s ಎಂಬಲ್ಲಿರುವ ureport ಪೂರೈಕೆಗಣಕದಿಂದ ಪ್ರತಿಕ್ರಿಯೆಯನ್ನು ಪಾರ್ಸ್ ಮಾಡಲಾಗಿಲ್ಲ"
+
+#: ../src/lib/ureport.c:543
+#, c-format
+msgid "The response from '%s' has invalid format"
+msgstr "'%s' ಇಂದ ಬಂದ ಪ್ರತಿಕ್ರಿಯೆಯು ಅಮಾನ್ಯವಾದ ವಿನ್ಯಾಸವನ್ನು ಹೊಂದಿದೆ"
+
+#. HTTP CODE 202 means that call was successful but the response
+#. has an error message
+#: ../src/lib/ureport.c:549
+#, c-format
+msgid "Type mismatch has been detected in the response from '%s'"
+msgstr "'%s' ಇಂದ ಬಂದ ಪ್ರತಿಕ್ರಿಯೆಯಲ್ಲಿ ಹೊಂದಾಣಿಕೆಯಾಗದ ಬಗೆಯು ಕಂಡುಬಂದಿದೆ"
+
+#: ../src/lib/ureport.c:734
+msgid "Failed on submitting the problem"
+msgstr "ತೊಂದರೆಯನ್ನು ಸಲ್ಲಿಸುವಲ್ಲಿ ವಿಫಲತೆ"
+
+#: ../src/lib/ureport.c:776
+#, c-format
+msgid "The server at '%s' responded with an error: '%s'"
+msgstr "'%s' ನಲ್ಲಿನ ಪೂರೈಕೆಗಣಕವು ಒಂದು ದೋಷದೊಂದಿಗೆ ಪ್ರತಿಕ್ರಿಯಿಸಿದೆ: '%s'"
+
+#: ../src/lib/make_descr.c:149 ../src/lib/make_descr.c:160
 msgid "Reported:"
+msgstr "ವರದಿ ಮಾಡಿದ್ದು:"
+
+#: ../src/lib/make_descr.c:149
+msgid "cannot be reported"
 msgstr ""
 
-#: ../src/lib/parse_options.c:58
+#: ../src/lib/parse_options.c:60
 msgid "Usage: "
 msgstr "ಬಳಕೆ: "
 
-#: ../src/lib/problem_data.c:212
+#: ../src/lib/problem_data.c:214
 #, c-format
 msgid "Essential element '%s' is missing, can't continue"
 msgstr "ಅಗತ್ಯ ಘಟಕವಾದಂತಹ '%s' ಕಾಣಿಸುತ್ತಿಲ್ಲ, ಮುಂದುವರೆಯಲು ಸಾಧ್ಯವಿಲ್ಲ"
 
-#: ../src/lib/run_event.c:761
-#, c-format
-msgid "('%s' was killed by signal %u)\n"
-msgstr ""
-
 #: ../src/lib/run_event.c:763
 #, c-format
-msgid "('%s' completed successfully)\n"
-msgstr ""
+msgid "('%s' was killed by signal %u)\n"
+msgstr "('%s' ಅನ್ನು %u ಸಂಕೇತದಿಂದ ನಿಲ್ಲಿಸಲಾಗಿದೆ)\n"
 
 #: ../src/lib/run_event.c:765
 #, c-format
+msgid "('%s' completed successfully)\n"
+msgstr "('%s' ಸಂಪೂರ್ಣವಾಗಿ ಯಶಸ್ವಿಯಾಗಿದೆ)\n"
+
+#: ../src/lib/run_event.c:767
+#, c-format
 msgid "('%s' exited with %u)\n"
-msgstr ""
+msgstr "('%s' ಎನ್ನುವುದು %u ಇಂದ ನಿರ್ಗಮಿಸಿದೆ)\n"
 
 #: ../src/plugins/abrt_rh_support.c:356
 #, c-format
 msgid "Error in case creation at '%s': %s"
-msgstr ""
+msgstr "'%s' ನಲ್ಲಿ ಸಂದರ್ಭವನ್ನು ರಚಿಸುವಲ್ಲಿ ದೋಷ: %s"
 
 #: ../src/plugins/abrt_rh_support.c:365
 #, c-format
 msgid "Error in case creation at '%s', HTTP code: %d, server says: '%s'"
-msgstr ""
+msgstr "'%s' ನಲ್ಲಿ ಸಂದರ್ಭವನ್ನು ರಚಿಸುವಲ್ಲಿ ದೋಷ, HTTP ಸಂಕೇತ: %d, ಪೂರೈಕೆಗಣಕವು ಹೀಗೆ ಹೇಳುತ್ತದೆ: '%s'"
 
 #: ../src/plugins/abrt_rh_support.c:369
 #, c-format
 msgid "Error in case creation at '%s', HTTP code: %d"
-msgstr ""
+msgstr "'%s' ನಲ್ಲಿ ಸಂದರ್ಭವನ್ನು ರಚಿಸುವಲ್ಲಿ ದೋಷ, HTTP ಸಂಕೇತ: %d"
 
 #: ../src/plugins/abrt_rh_support.c:420
 #, c-format
 msgid "Error in case creation at '%s': no Location URL, HTTP code: %d"
-msgstr ""
+msgstr "'%s' ನಲ್ಲಿ ಸಂದರ್ಭವನ್ನು ರಚಿಸುವಲ್ಲಿ ದೋಷ: ಯಾವುದೆ ಸ್ಥಳ URL ಇಲ್ಲ, HTTP ಸಂಕೇತ: %d"
 
 #: ../src/plugins/abrt_rh_support.c:524
 #, c-format
 msgid "Error in comment creation at '%s': %s"
-msgstr ""
+msgstr "'%s' ನಲ್ಲಿ ಟಿಪ್ಪಣಿಯನ್ನು ರಚಿಸುವಲ್ಲಿ ದೋಷ: %s"
 
 #: ../src/plugins/abrt_rh_support.c:533
 #, c-format
 msgid "Error in comment creation at '%s', HTTP code: %d, server says: '%s'"
-msgstr ""
+msgstr "'%s' ನಲ್ಲಿ ಟಿಪ್ಪಣಿಯನ್ನು ರಚಿಸುವಲ್ಲಿ ದೋಷ, HTTP ಸಂಕೇತ: %d, ಪೂರೈಕೆಗಣಕವು ಹೀಗೆ ಹೇಳುತ್ತದೆ: '%s'"
 
 #: ../src/plugins/abrt_rh_support.c:537
 #, c-format
 msgid "Error in comment creation at '%s', HTTP code: %d"
-msgstr ""
+msgstr "'%s' ನಲ್ಲಿ ಟಿಪ್ಪಣಿಯನ್ನು ರಚಿಸುವಲ್ಲಿ ದೋಷ, HTTP ಸಂಕೇತ: %d"
 
 #: ../src/plugins/abrt_rh_support.c:583
 #, c-format
 msgid "Error in comment creation at '%s': no Location URL, HTTP code: %d"
-msgstr ""
+msgstr "'%s' ನಲ್ಲಿ ಟಿಪ್ಪಣಿಯನ್ನು ರಚಿಸುವಲ್ಲಿ ದೋಷ: ಯಾವುದೆ ಸ್ಥಳ URL ಇಲ್ಲ, HTTP ಸಂಕೇತ: %d"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:1
 msgid "Bugzilla"
@@ -967,12 +1130,13 @@ msgid "Report to Bugzilla bug tracker"
 msgstr "ಬಗ್‌ಝಿಲ್ಲಾ ದೋಷ ಟ್ರಾಕರಿಗೆ ವರದಿ ಮಾಡು"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:3
-msgid "Bugzilla URL"
-msgstr "ಬಗ್‌ಝಿಲ್ಲಾ URL"
+#: ../src/plugins/report_Uploader.xml.in.h:6
+msgid "User name"
+msgstr "ಬಳಕೆದಾರನ ಹೆಸರು"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:4
-msgid "Address of Bugzilla server"
-msgstr "ಬಗ್‌ಝಿಲ್ಲಾ ಪರಿಚಾರಕದ ವಿಳಾಸ"
+msgid "Bugzilla account user name"
+msgstr "ಬಗ್‌ಝಿಲ್ಲಾ ಖಾತೆ ಬಳಕೆದಾರ ಹೆಸರು"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:5
 msgid ""
@@ -981,21 +1145,22 @@ msgid ""
 msgstr "ನೀವು bugzilla.redhat.com ಖಾತೆಯನ್ನು &lt;a href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;ಇಲ್ಲಿ &lt;/a&gt; ರಚಿಸಬಹುದು"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:6
-msgid "User name"
-msgstr "ಬಳಕೆದಾರನ ಹೆಸರು"
-
-#: ../src/plugins/report_Bugzilla.xml.in.h:7
-msgid "Bugzilla account user name"
-msgstr "ಬಗ್‌ಝಿಲ್ಲಾ ಖಾತೆ ಬಳಕೆದಾರ ಹೆಸರು"
-
-#: ../src/plugins/report_Bugzilla.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:7
+#: ../src/plugins/report_Uploader.xml.in.h:8
 msgid "Password"
 msgstr "ಗುಪ್ತಪದ"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:9
+#: ../src/plugins/report_Bugzilla.xml.in.h:7
 msgid "Bugzilla account password"
 msgstr "ಬಗ್‌ಝಿಲ್ಲಾ ಖಾತೆ ಗುಪ್ತಪದ"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:8
+msgid "Bugzilla URL"
+msgstr "ಬಗ್‌ಝಿಲ್ಲಾ URL"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:9
+msgid "Address of Bugzilla server"
+msgstr "ಬಗ್‌ಝಿಲ್ಲಾ ಪೂರೈಕೆಗಣಕದ ವಿಳಾಸ"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:10
 #: ../src/plugins/report_RHTSupport.xml.in.h:9
@@ -1010,81 +1175,81 @@ msgid "Check SSL key validity"
 msgstr "SSL ಕೀಲಿಯ ಮಾನ್ಯತೆಯನ್ನು ಪರಿಶೀಲಿಸಿ"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:12
-msgid "Restrict access"
-msgstr ""
+msgid "Bugzilla product"
+msgstr "ಬಗ್‌ಝಿಲ್ಲಾ ಉತ್ಪನ್ನ"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:13
 msgid ""
-"Restrict access to the created bugzilla ticket allowing only users from "
-"specified groups to view it (see advanced settings for more details)"
-msgstr ""
+"Specify this only if you needed different product than specified in /etc/os-"
+"release"
+msgstr "ಅಗತ್ಯವಿರುವ ಉತ್ಪನ್ನವು /etc/os-release ನಲ್ಲಿ ಸೂಚಿಸಲಾದುದಕ್ಕಿಂತ ಭಿನ್ನವಾಗಿದ್ದರೆ ಮಾತ್ರ ಇದನ್ನು ಸೂಚಿಸಿ."
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:14
-msgid "Bugzilla product"
-msgstr ""
+msgid "Bugzilla product version"
+msgstr "ಬಗ್‌ಝಿಲ್ಲಾ ಉತ್ಪನ್ನ ಆವೃತ್ತಿ"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:15
 msgid ""
-"Specify this only if you needed different product than specified in /etc/os-"
-"release"
-msgstr ""
-
-#: ../src/plugins/report_Bugzilla.xml.in.h:16
-msgid "Bugzilla product version"
-msgstr ""
-
-#: ../src/plugins/report_Bugzilla.xml.in.h:17
-msgid ""
 "Specify this only if you needed different product version than specified in "
 "/etc/os-release"
-msgstr ""
+msgstr "ಅಗತ್ಯವಿರುವ ಉತ್ಪನ್ನದ ಆವೃತ್ತಿಯು /etc/os-release ನಲ್ಲಿ ಸೂಚಿಸಲಾದುದಕ್ಕಿಂತ ಭಿನ್ನವಾಗಿದ್ದರೆ ಮಾತ್ರ ಇದನ್ನು ಸೂಚಿಸಿ."
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:18
+#: ../src/plugins/report_Bugzilla.xml.in.h:16
 #: ../src/plugins/report_Kerneloops.xml.in.h:5
 #: ../src/plugins/report_RHTSupport.xml.in.h:11
-#: ../src/plugins/report_Uploader.xml.in.h:6
+#: ../src/plugins/report_Uploader.xml.in.h:10
 #: ../src/plugins/report_uReport.xml.in.h:9
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:4
 msgid "HTTP Proxy"
-msgstr ""
+msgstr "HTTP ಪ್ರಾಕ್ಸಿ"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:19
+#: ../src/plugins/report_Bugzilla.xml.in.h:17
 #: ../src/plugins/report_Kerneloops.xml.in.h:6
 #: ../src/plugins/report_RHTSupport.xml.in.h:12
-#: ../src/plugins/report_Uploader.xml.in.h:7
+#: ../src/plugins/report_Uploader.xml.in.h:11
 #: ../src/plugins/report_uReport.xml.in.h:10
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:5
 msgid "Sets the proxy server to use for HTTP"
-msgstr ""
+msgstr "HTTP ಗಾಗಿ ಬಳಸಲು ಪ್ರಾಕ್ಸಿ ಪೂರೈಕೆಗಣಕವನ್ನು ಹೊಂದಿಸುತ್ತದೆ"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:20
+#: ../src/plugins/report_Bugzilla.xml.in.h:18
 #: ../src/plugins/report_Kerneloops.xml.in.h:7
 #: ../src/plugins/report_RHTSupport.xml.in.h:13
-#: ../src/plugins/report_Uploader.xml.in.h:8
+#: ../src/plugins/report_Uploader.xml.in.h:12
 #: ../src/plugins/report_uReport.xml.in.h:11
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:6
 msgid "HTTPS Proxy"
-msgstr ""
+msgstr "HTTPS ಪ್ರಾಕ್ಸಿ"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:21
+#: ../src/plugins/report_Bugzilla.xml.in.h:19
 #: ../src/plugins/report_Kerneloops.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:14
-#: ../src/plugins/report_Uploader.xml.in.h:9
+#: ../src/plugins/report_Uploader.xml.in.h:13
 #: ../src/plugins/report_uReport.xml.in.h:12
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:7
 msgid "Sets the proxy server to use for HTTPS"
-msgstr ""
+msgstr "HTTPS ಗಾಗಿ ಬಳಸಲು ಪ್ರಾಕ್ಸಿ ಪೂರೈಕೆಗಣಕವನ್ನು ಹೊಂದಿಸುತ್ತದೆ"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:20
+msgid "Restrict access"
+msgstr "ನಿರ್ಬಂಧಿತ ನಿಲುಕು"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:21
+msgid ""
+"Restrict access to the created bugzilla ticket allowing only users from "
+"specified groups to view it (see advanced settings for more details)"
+msgstr "ರಚಿಸಲಾದ ಬಗ್‌ಝಿಲ್ಲಾ ಟಿಕೆಟ್‌ಗೆ ನಿರ್ಬಂಧಿತ ನಿಲುಕನ್ನು ಒದಗಿಸುವುದರಿಂದ ಕೇವಲ ನಿರ್ದಿಷ್ಟ ಗುಂಪುಗಳ ಬಳಕೆದಾರರು ಮಾತ್ರ ಅದನ್ನು ನೋಡಲು ಸಾಧ್ಯವಿರುತ್ತದೆ (ಹೆಚ್ಚಿನ ವಿವರಗಳಿಗಾಗಿ ಸುಧಾರಿತ ಸಿದ್ಧತೆಗಳು ಅನ್ನು ನೋಡಿ)"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:22
 msgid "Groups"
-msgstr ""
+msgstr "ಗುಂಪುಗಳು"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:23
 msgid ""
 "Restrict the access to specified groups &lt;a "
 "href=\"https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
 "tickets\"&gt;?&lt;/a&gt;"
-msgstr ""
+msgstr "ನಿಶ್ಚಿತ ಗುಂಪುಗಳು ಮಾತ್ರ ನಿಲುಕಿಸಿಕೊಳ್ಳುವಂತೆ ನಿರ್ಬಂಧಿಸಿ &lt;a href=\"https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets\"&gt;?&lt;/a&gt;"
 
 #: ../src/plugins/report.c:37
 msgid ""
@@ -1105,32 +1270,32 @@ msgstr "'strata' ಅಥವ 'bugzilla'"
 
 #: ../src/plugins/report.c:60
 msgid "Ticket/case ID"
-msgstr "ಟಿಕೆಟ್/ಕೇಸ್ ID"
+msgstr "ಟಿಕೆಟ್/ಪ್ರಕರಣ ID"
 
 #: ../src/plugins/reporter-bugzilla.c:355
 #, c-format
 msgid "Can't parse backtrace: %s"
-msgstr ""
+msgstr "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ಪಾರ್ಸ್ ಮಾಡಲಾಗಿಲ್ಲ: %s"
 
 #: ../src/plugins/reporter-bugzilla.c:366
 msgid "Can't generate stacktrace description (no crash thread?)"
-msgstr ""
+msgstr "ಸ್ಟ್ಯಾಕ್‌ಟ್ರೇಸ್ ವಿವರಣೆಯನ್ನು ಉತ್ಪಾದಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ (ಯಾವುದೆ ಕ್ರಾಶ್ ತ್ರೆಡ್ ಇಲ್ಲವೆ?)"
 
 #: ../src/plugins/reporter-bugzilla.c:764
 msgid ""
 "Warning, private ticket groups already specified as cmdline argument, "
 "ignoring the env variable and configuration"
-msgstr ""
+msgstr "ಎಚ್ಚರಿಕೆ, ಖಾಸಗಿ ಟಿಕೆಟ್ ಗುಂಪುಗಳನ್ನು cmdline ಆರ್ಗ್ಯುಮೆಂಟ್‌ ರೂಪದಲ್ಲಿ ಈಗಾಗಲೆ ಸೂಚಿಸಲಾಗಿದೆ, env ವೇರಿಯೇಬಲ್ ಮತ್ತು ಸಂರಚನೆಯನ್ನು ಕಡೆಗಣಿಸಲಾಗುತ್ತಿದೆ"
 
 #: ../src/plugins/reporter-bugzilla.c:775
-#: ../src/plugins/reporter-rhtsupport.c:178
+#: ../src/plugins/reporter-rhtsupport.c:274
 msgid "Can't continue without login"
-msgstr ""
+msgstr "ಲಾಗಿನ್ ಆಗದೆ ಮುಂದುವರೆಯಲು ಸಾಧ್ಯವಿಲ್ಲ"
 
 #: ../src/plugins/reporter-bugzilla.c:788
-#: ../src/plugins/reporter-rhtsupport.c:191
+#: ../src/plugins/reporter-rhtsupport.c:287
 msgid "Can't continue without password"
-msgstr ""
+msgstr "ಗುಪ್ತಪದ ನೀಡದೆ ಮುಂದುವರೆಯಲು ಸಾಧ್ಯವಿಲ್ಲ"
 
 #: ../src/plugins/reporter-bugzilla.c:797
 #, c-format
@@ -1139,18 +1304,14 @@ msgstr "%s ಎಂಬಲ್ಲಿ ಬಗ್‌ಝಿಲ್ಲಾಗೆ ಪ್ರ�
 
 #: ../src/plugins/reporter-bugzilla.c:801
 msgid "Invalid password or login. Please enter your BZ login:"
-msgstr ""
+msgstr "ಮಾನ್ಯವಲ್ಲದ ಗುಪ್ತಪದ ಅಥವ ಲಾಗಿನ್. ದಯವಿಟ್ಟು ನಿಮ್ಮ BZ ಲಾಗಿನ್ ಅನ್ನು ನಮೂದಿಸಿ:"
 
 #: ../src/plugins/reporter-bugzilla.c:804
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
-msgstr ""
+msgstr "ಮಾನ್ಯವಲ್ಲದ ಗುಪ್ತಪದ ಅಥವ ಲಾಗಿನ್. ದಯವಿಟ್ಟು '%s' ಗಾಗಿ ಗುಪ್ತಪದವನ್ನು ನಮೂದಿಸಿ:"
 
-#: ../src/plugins/reporter-bugzilla.c:839
-msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
-msgstr ""
-
-#: ../src/plugins/reporter-bugzilla.c:857
+#: ../src/plugins/reporter-bugzilla.c:823
 msgid ""
 "\n"
 "& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\n"
@@ -1191,149 +1352,149 @@ msgid ""
 "filed. The default value is 'ABRT Server'\n"
 "\n"
 "If not specified, CONFFILE defaults to "
-msgstr ""
+msgstr "\n& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\nಅಥವ:\n& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\nಅಥವ:\n& [-v] [-c CONFFILE]... [-d DIR] -t[ID] -w\nಅಥವ:\n& [-v] [-c CONFFILE]... -h DUPHASH\n\nಬಗ್‌ಝಿಲ್ಲಾಗೆ ತೊಂದರೆತನ್ನು ವರದಿ ಮಾಡುತ್ತದೆ.\n\nಉಪಕರಣವು DIR ಅನ್ನು ಓದುತ್ತದೆ. ನಂತರ ಅದು ಬಗ್‌ಝಿಲ್ಲಾಗೆ ಲಾಗ್‌ ಇನ್‌ ಆಗಿ ಅದೆ \nabrt_hash:HEXSTRING ಅನ್ನು ಹೊಂದಿರುವ ದೋಷವರದಿಗಾಗಿ 'ವೈಟ್‌ಬೋರ್ಡ್'ನಲ್ಲಿ ಹುಡುಕುತ್ತದೆ.\n\nಅಂತಹ ಯಾವುದೆ ದೋಷವರದಿ ಕಂಡುಬರದೆ ಇದ್ದಲ್ಲಿ, ಒಂದು ಹೊಸ ದೋಷ ವರದಿಯನ್ನು ರಚಿಸಲಾಗುತ್ತದೆ. DIRನ\nಅಂಶಗಳನ್ನು ಅವುಗಳ ಬಗೆ ಮತ್ತು ಗಾತ್ರದ ಮೇರೆಗೆ ದೋಷದಲ್ಲಿ ದೋಷ ವರದಿಯ ಅಥವ ಲಗತ್ತಿನ \nರೂಪದಲ್ಲಿ ಶೇಖರಿಸಿ ಇರಿಸಲಾಗುತ್ತದೆ.\n\nಇಲ್ಲದೆ ಹೋದಲ್ಲಿ, ಅಂತಹ ಯಾವುದಾದರೂ ದೋಷವರದಿ ಕಂಡುಬಂದರೆ ಮತ್ತು ಅದನ್ನು CLOSED DUPLICATE ಎಂದು ಗುರುತುಹಾಕಲಾಗಿದ್ದಲ್ಲಿ,\nಉಪಕರಣವು ಒಂದುnon-DUPLICATE ದೋಷವರದಿಯು ಕಾಣಿಸುವವರೆಗೆ ಸರಪಳಿಯಲ್ಲಿ ಹುಡುಕುತ್ತಾ ಸಾಗುತ್ತದೆ.\nಆ ದೋಷವರದಿಯಲ್ಲಿ ಒಂದು ಟಿಪ್ಪಣಿಯನ್ನು ಸೇರಿಸುತ್ತದೆ.\n\nಹೊಸ ಅಥವ ಮಾರ್ಪಡಿಸಲಾದ ದೋಷವರದಿಯ URL ಅನ್ನು stdout ಗೆ ಮುದ್ರಿಸಲಾಗುತ್ತದೆ ಮತ್ತು \n'reported_to' ಘಟಕಕ್ಕೆ ದಾಖಲಿಸಲಾಗುತ್ತದೆ.\n\n-t ಆಯ್ಕೆಯು ಬಗ್‌ಝಿಲ್ಲಾ ತಾಣದಲ್ಲಿ ಈಗಾಗಲೆ ರಚಿಸಲಾದ ದೋಷವರದಿಗೆ FILEಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡುತ್ತದೆ.\nದೋಷವರದಿ ID ಯನ್ನು -d DIR ಇಂದ ಸೂಚಿಸಲಾದ ಕೋಶದಿಂದ ಪಡೆದುಕೊಳ್ಳಲಾಗುತ್ತದೆ.\nDIR ನಲ್ಲಿನ ತೊಂದರೆಯ ದತ್ತಾಂಶವನ್ನು ಬಗ್‌ಝಿಲ್ಲಾಗೆ ಎಂದಿಗೂ ಸಹ ವರದಿ ಮಾಡಿರದೆ ಇದ್ದಲ್ಲಿ, ಅಪ್‌ಲೋಡ್ ಮಾಡುವಿಕೆ ವಿಫಲಗೊಳ್ಳುತ್ತದೆ.\n\nಆಯ್ಕೆ -tID ಎನ್ನುವುದು ಬಗ್‌ಝಿಲ್ಲಾ ತಾಣದಲ್ಲಿನ ನಿಶ್ಚಿತ ID ಅನ್ನು ಹೊಂದಿರುವ ದೋಷವರದಿಗೆ FILE ಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡುತ್ತದೆ .\n-d DIR ಅನ್ನು ಕಡೆಗಣಿಸಲಾಗಿದೆ.n\n-w ಆಯ್ಕೆಯು ದೋಷವರದಿಯ CC ಪಟ್ಟಿಗೆ ಬಗ್‌ಝಿಲ್ಲಾ ಬಳಕೆದಾರನನ್ನು ಸೇರಿಸುತ್ತದೆ.\n\n-r ಆಯ್ಕೆಯು URL ಸ್ಥಳದಲ್ಲಿ TRACKER_NAME ಎಂದು ಪೂರ್ವನಮೂದಿತಗೊಂಡಿರುವ (ಪ್ರಿಫಿಕ್ಸ್) reporter_to element ನಿಂದ\nಕೊನೆಯ url ಅನ್ನು ಹೊಂದಿಸುತ್ತದೆ. ಈ ಆಯ್ಕೆಯನ್ನು ಕೇವಲ ಹೊಸ ದೋಷವರದಿಯನ್ನು ಸಲ್ಲಿಸುವಾಗ ಮಾತ್ರ ಅನ್ವಯಿಸಲಾಗುತ್ತದೆ\nಪೂರ್ವನಿಯೋಜಿತ ಮೌಲ್ಯವು 'ABRT Server' ಆಗಿರುತ್ತದೆ\n\nಸೂಚಿಸಲಾಗಿರದೆ ಇದ್ದಲ್ಲಿ, CONFFILE ಇದಕ್ಕೆ ಪೂರ್ವನಿಯೋಜಿತಗೊಳ್ಳುತ್ತದೆ"
 
-#: ../src/plugins/reporter-bugzilla.c:930
-#: ../src/plugins/reporter-rhtsupport.c:255
+#: ../src/plugins/reporter-bugzilla.c:896
+#: ../src/plugins/reporter-rhtsupport.c:391
 msgid "Configuration file (may be given many times)"
 msgstr "ಸಂರಚನಾ ಕಡತ (ಹಲವು ಬಾರಿ ಒದಗಿಸಬಹುದು)"
 
-#: ../src/plugins/reporter-bugzilla.c:931
+#: ../src/plugins/reporter-bugzilla.c:897
 msgid "Formatting file for initial comment"
-msgstr ""
+msgstr "ಆರಂಭಿಕ ಟಿಪ್ಪಣಿಗಾಗಿ ಕಡತವನ್ನು ಫಾರ್ಮ್ಯಾಟ್ ಮಾಡಲಾಗುತ್ತಿದೆ"
 
-#: ../src/plugins/reporter-bugzilla.c:932
+#: ../src/plugins/reporter-bugzilla.c:898
 msgid "Formatting file for duplicates"
-msgstr ""
+msgstr "ನಕಲು ಪ್ರತಿಗಾಗಿ ಕಡತವನ್ನು ಫಾರ್ಮ್ಯಾಟ್ ಮಾಡಲಾಗುತ್ತಿದೆ"
 
-#: ../src/plugins/reporter-bugzilla.c:933
+#: ../src/plugins/reporter-bugzilla.c:899
 msgid "Attach FILEs [to bug with this ID]"
 msgstr "FILEಗಳನ್ನು ಲಗತ್ತಿಸು [ಈ ID ಯನ್ನು ಹೊಂದಿರುವ ದೋಷಕ್ಕೆ]"
 
-#: ../src/plugins/reporter-bugzilla.c:934
+#: ../src/plugins/reporter-bugzilla.c:900
 msgid "When creating bug, attach binary files too"
 msgstr "ದೋಷವರದಿಯನ್ನು ರಚಿಸುವಾಗ ಬೈನರಿ ಕಡತಗಳನ್ನೂ ಸಹ ಲಗತ್ತಿಸಿ"
 
-#: ../src/plugins/reporter-bugzilla.c:935
-#: ../src/plugins/reporter-rhtsupport.c:257
+#: ../src/plugins/reporter-bugzilla.c:901
+#: ../src/plugins/reporter-rhtsupport.c:393
 msgid "Force reporting even if this problem is already reported"
 msgstr "ಈ ತೊಂದರೆಯನ್ನು ಈಗಾಗಲೆ ವರದಿಮಾಡಲಾಗಿದ್ದರೂ ಸಹ ಮತ್ತೊಮ್ಮೆ ವರದಿ ಮಾಡುವಂತೆ ಒತ್ತಾಯಪಡಿಸು"
 
-#: ../src/plugins/reporter-bugzilla.c:936
+#: ../src/plugins/reporter-bugzilla.c:902
 msgid "Add bugzilla user to CC list [of bug with this ID]"
-msgstr ""
+msgstr "ಬಗ್‌ಝಿಲ್ಲಾ ಬಳಕೆದಾರನನ್ನು CC ಪಟ್ಟಿಗೆ ಸೇರಿಸಲಾಗುತ್ತಿದೆ [ಈ ID ಯನ್ನು ಹೊಂದಿರುವ ಬಗ್‌ನ]"
 
-#: ../src/plugins/reporter-bugzilla.c:937
+#: ../src/plugins/reporter-bugzilla.c:903
 msgid "Print BUG_ID which has given DUPHASH"
-msgstr ""
+msgstr "DUPHASH ಇಂದ ಒದಗಿಸಿದ BUG_ID ಯನ್ನು ಮುದ್ರಿಸು"
 
-#: ../src/plugins/reporter-bugzilla.c:938
+#: ../src/plugins/reporter-bugzilla.c:904
 msgid "A name of bug tracker for an additional URL from 'reported_to'"
-msgstr ""
+msgstr "'reported_to' ಇಂದ ಹೆಚ್ಚುವರಿ URL ಗಾಗಿ ದೋಷವರದಿ ಟ್ರಾಕರಿನ ಹೆಸರು"
 
-#: ../src/plugins/reporter-bugzilla.c:939
+#: ../src/plugins/reporter-bugzilla.c:905
 msgid "Restrict access to this group only"
-msgstr ""
+msgstr "ಈ ಗುಂಪು ಮಾತ್ರ ನೋಡುವತೆ ನಿರ್ಬಂಧಿಸು"
 
-#: ../src/plugins/reporter-bugzilla.c:940
+#: ../src/plugins/reporter-bugzilla.c:906
 msgid "Debug"
-msgstr ""
+msgstr "ದೋಷನಿದಾನ"
 
-#: ../src/plugins/reporter-bugzilla.c:982
+#: ../src/plugins/reporter-bugzilla.c:948
 msgid "Looking for similar problems in bugzilla"
-msgstr ""
+msgstr "ಬಗ್‌ಝಿಲ್ಲಾದಲ್ಲಿ ಇದೇ ರೀತಿಯ ತೊಂದರೆಗಳಿಗಾಗಿ ಹುಡುಕಲಾಗುತ್ತಿದೆ"
 
-#: ../src/plugins/reporter-bugzilla.c:1009
+#: ../src/plugins/reporter-bugzilla.c:975
 msgid "Login is not provided by configuration. Please enter your BZ login:"
-msgstr ""
+msgstr "ಲಾಗಿನ್ ಅನ್ನು ಸಂರಚನೆಯಿಂದ ಒದಗಿಸಲಾಗಿಲ್ಲ. ದಯವಿಟ್ಟು ನಿಮ್ಮ BZ ಲಾಗಿನ್ ಮಾಹಿತಿಯನ್ನು ನಮೂದಿಸಿ:"
 
-#: ../src/plugins/reporter-bugzilla.c:1015
-#: ../src/plugins/reporter-rhtsupport.c:291
+#: ../src/plugins/reporter-bugzilla.c:981
+#: ../src/plugins/reporter-rhtsupport.c:429
 #, c-format
 msgid ""
 "Password is not provided by configuration. Please enter the password for "
 "'%s':"
-msgstr ""
+msgstr "ಗುಪ್ತಪದವನ್ನು ಸಂರಚನೆಯಿಂದ ಒದಗಿಸಲಾಗಿಲ್ಲ. ದಯವಿಟ್ಟು '%s' ಗಾಗಿನ ಲಾಗಿನ್ ಮಾಹಿತಿಯನ್ನು ನಮೂದಿಸಿ:"
 
-#: ../src/plugins/reporter-bugzilla.c:1034
+#: ../src/plugins/reporter-bugzilla.c:1000
 msgid ""
 "Can't get Bugzilla ID because this problem has not yet been reported to "
 "Bugzilla."
-msgstr ""
+msgstr "ಬಗ್‌ಝಿಲ್ಲಾ ID ಅನ್ನು ಪಡೆಯಲಾಗಿಲ್ಲ ಏಕೆಂದರೆ ಈ ತೊಂದರೆಯನ್ನು ಈಗಾಗಲೆ ಬಗ್‌ಝಿಲ್ಲಾಗೆ ವರದಿಮಾಡಲಾಗಿಲ್ಲ."
 
-#: ../src/plugins/reporter-bugzilla.c:1041
+#: ../src/plugins/reporter-bugzilla.c:1007
 #, c-format
 msgid ""
 "This problem has been reported to Bugzilla '%s' which differs from the "
 "configured Bugzilla '%s'."
-msgstr ""
+msgstr "ಈ ತೊಂದರೆಯನ್ನು ಈಗಾಗಲೆ ಬಗ್‌ಝಿಲ್ಲಾ '%s' ಗೆ ವರದಿಮಾಡಲಾಗಿದ್ದು, ಇದು ಸಂರಚಿಸಲಾದ ಬಗ್‌ಝಿಲ್ಲಾ '%s' ದ ಹೋಲಿಕೆಯಲ್ಲಿ ಭಿನ್ನವಾಗಿದೆ."
 
-#: ../src/plugins/reporter-bugzilla.c:1045
+#: ../src/plugins/reporter-bugzilla.c:1011
 #, c-format
 msgid "Malformed url to Bugzilla '%s'."
-msgstr ""
+msgstr "ಬಗ್‌ಝಿಲ್ಲಾ '%s' ನ url ತಪ್ಪಾಗಿದೆ."
 
-#: ../src/plugins/reporter-bugzilla.c:1049
+#: ../src/plugins/reporter-bugzilla.c:1015
 #, c-format
 msgid "Using Bugzilla ID '%s'"
-msgstr ""
+msgstr "ಬಗ್‌ಝಿಲ್ಲಾ ID '%s' ಅನ್ನು ಬಳಸಲಾಗುತ್ತಿದೆ"
 
-#: ../src/plugins/reporter-bugzilla.c:1083
-#: ../src/plugins/reporter-bugzilla.c:1354
+#: ../src/plugins/reporter-bugzilla.c:1049
+#: ../src/plugins/reporter-bugzilla.c:1341
 msgid "Logging out"
 msgstr "ನಿರ್ಗಮಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../src/plugins/reporter-bugzilla.c:1134
+#: ../src/plugins/reporter-bugzilla.c:1100
 msgid "Can't determine Bugzilla Product from problem data."
-msgstr ""
+msgstr "ತೊಂದರೆಯ ದತ್ತಾಂಶದಿಂದ ಬಗ್‌ಝಿಲ್ಲಾ ಉತ್ಪನ್ನವನ್ನು ನಿರ್ಧರಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ."
 
-#: ../src/plugins/reporter-bugzilla.c:1185
+#: ../src/plugins/reporter-bugzilla.c:1151
 msgid "Checking for duplicates"
 msgstr "ನಕಲು ಪ್ರತಿಗಳಿಗಾಗಿ ಹುಡುಕಲಾಗುತ್ತಿದೆ"
 
 #. Create new bug
-#: ../src/plugins/reporter-bugzilla.c:1231
+#: ../src/plugins/reporter-bugzilla.c:1197
 msgid "Creating a new bug"
 msgstr "ಹೊಸ ದೋಷವನ್ನು ರಚಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../src/plugins/reporter-bugzilla.c:1252
+#: ../src/plugins/reporter-bugzilla.c:1218
 msgid "Failed to create a new bug."
-msgstr ""
+msgstr "ಒಂದು ಹೊಸ ದೋಷವರದಿಯನ್ನು ರಚಿಸಲು ವಿಫಲಗೊಂಡಿದೆ."
 
-#: ../src/plugins/reporter-bugzilla.c:1263
+#: ../src/plugins/reporter-bugzilla.c:1229
 #, c-format
 msgid "Adding External URL to bug %i"
-msgstr ""
+msgstr "%i ಎಂಬ ದೋಷವರದಿ ಬಾಹ್ಯ URL ಅನ್ನು ಸೇರಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../src/plugins/reporter-bugzilla.c:1269
+#: ../src/plugins/reporter-bugzilla.c:1235
 #, c-format
 msgid "Adding attachments to bug %i"
-msgstr "%i ಎಂಬ ದೋಷಕ್ಕೆ ಲಗತ್ತನ್ನು ಸೇರಿಸಲಾಗುತ್ತಿದೆ"
+msgstr "%i ಎಂಬ ದೋಷವರದಿಗೆ ಲಗತ್ತನ್ನು ಸೇರಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../src/plugins/reporter-bugzilla.c:1288
+#: ../src/plugins/reporter-bugzilla.c:1254
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "ದೋಷವನ್ನು ಈಗಾಗಲೆ ವರದಿ ಮಾಡಲಾಗಿದೆ: %i"
 
-#: ../src/plugins/reporter-bugzilla.c:1309
+#: ../src/plugins/reporter-bugzilla.c:1297
 #, c-format
 msgid "Adding %s to CC list"
-msgstr ""
+msgstr "%s ಅನ್ನು CC ಪಟ್ಟಿಗೆ ಸೇರಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../src/plugins/reporter-bugzilla.c:1326
+#: ../src/plugins/reporter-bugzilla.c:1314
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "%d ದೋಷಕ್ಕೆ ಹೊಸ ಟಿಪ್ಪಣಿಯನ್ನು ಸೇರಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../src/plugins/reporter-bugzilla.c:1340
+#: ../src/plugins/reporter-bugzilla.c:1328
 msgid "Attaching better backtrace"
 msgstr "ಉತ್ತಮವಾದ ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ಲಗತ್ತಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../src/plugins/reporter-bugzilla.c:1348
+#: ../src/plugins/reporter-bugzilla.c:1336
 msgid "Found the same comment in the bug history, not adding a new one"
 msgstr "ದೋಷದ ಇತಿಹಾಸದಲ್ಲಿ ಕೆಲವು ಟಿಪ್ಪಣಿಯು ಕಂಡುಬಂದಿದೆ, ಹೊಸತ್ಯಾವುದನ್ನೂ ಸಹ ಸೇರಿಸಲಾಗುತ್ತಿಲ್ಲ"
 
-#: ../src/plugins/reporter-bugzilla.c:1357
+#: ../src/plugins/reporter-bugzilla.c:1344
 #, c-format
 msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
 msgstr "ಸ್ಥಿತಿ: %s%s%s %s/show_bug.cgi?id=%u"
@@ -1357,7 +1518,8 @@ msgid ""
 "Parameter can be overridden via $KerneloopsReporter_SubmitURL."
 msgstr "& [-v] [-c CONFFILE]... -d DIR\n\nReports kernel oops to kerneloops.org (or similar) site.\n\nFiles with names listed in $EXCLUDE_FROM_REPORT are not included\ninto the tarball.\n\nCONFFILE lines should have 'PARAM = VALUE' format.\nRecognized string parameter: SubmitURL.\nParameter can be overridden via $KerneloopsReporter_SubmitURL."
 
-#: ../src/plugins/reporter-kerneloops.c:167 ../src/plugins/ureport.c:456
+#: ../src/plugins/reporter-kerneloops.c:167
+#: ../src/plugins/reporter-ureport.c:73
 msgid "Configuration file"
 msgstr "ಸಂರಚನಾ ಕಡತ"
 
@@ -1366,28 +1528,33 @@ msgstr "ಸಂರಚನಾ ಕಡತ"
 msgid ""
 "Email address of %s was not specified. Would you like to do so now? If not, "
 "'%s' is to be used"
-msgstr ""
+msgstr "%s ನ ವಿಅಂಚೆ ವಿಳಾಸವನ್ನು ಸೂಚಿಸಲಾಗಿಲ್ಲ. ನೀವು ಹಾಗೆ ಮಾಡಲು ಬಯಸುವಿರಾ? ಇಲ್ಲದೆ ಹೋದಲ್ಲಿ, '%s' ಅನ್ನು ಬಳಸಲಾಗುತ್ತದೆ"
 
 #: ../src/plugins/reporter-mailx.c:66
 #, c-format
 msgid "Please, type email address of %s:"
-msgstr ""
+msgstr "ದಯವಿಟ್ಟು, %s ನ ವಿಅಂಚೆ ವಿಳಾಸವನ್ನು ನಮೂದಿಸಿ:"
 
 #: ../src/plugins/reporter-mailx.c:73
 #, c-format
 msgid "Can't continue without email address of %s"
+msgstr "%s ನ ವಿಅಂಚೆ ವಿಳಾಸವಿಲ್ಲದೆ ಮುಂದುವರೆಯಲು ಸಾಧ್ಯವಿಲ್ಲ"
+
+#: ../src/plugins/reporter-mailx.c:136
+#, c-format
+msgid "Sending a notification email to: %s"
 msgstr ""
 
-#: ../src/plugins/reporter-mailx.c:135
+#: ../src/plugins/reporter-mailx.c:138
 msgid "Sending an email..."
 msgstr "ಒಂದು ಇಮೈಲ್ ಅನ್ನು ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../src/plugins/reporter-mailx.c:158
+#: ../src/plugins/reporter-mailx.c:161
 #, c-format
 msgid "Email was sent to: %s"
 msgstr "ಇಮೈಲನ್ನು ಇಲ್ಲಿಗೆ ಕಳುಹಿಸಲಾಗಿದೆ: %s"
 
-#: ../src/plugins/reporter-mailx.c:178
+#: ../src/plugins/reporter-mailx.c:183
 msgid ""
 "& [-v] -d DIR [-c CONFFILE]\n"
 "\n"
@@ -1396,13 +1563,13 @@ msgid ""
 "If not specified, CONFFILE defaults to "
 msgstr "& [-v] -d DIR [-c CONFFILE]\n\nSends contents of a problem directory DIR via email\n\nIf not specified, CONFFILE defaults to "
 
-#: ../src/plugins/reporter-mailx.c:199 ../src/plugins/reporter-upload.c:228
+#: ../src/plugins/reporter-mailx.c:204 ../src/plugins/reporter-upload.c:251
 msgid "Config file"
 msgstr "ಸಂರಚನಾ ಕಡತ"
 
-#: ../src/plugins/reporter-mailx.c:200
+#: ../src/plugins/reporter-mailx.c:205
 msgid "Notify only (Do not mark the report as sent)"
-msgstr ""
+msgstr "ಕೇವಲ ಸೂಚಿಸು (ವರದಿಯನ್ನು ಕಳುಹಿಸಲಾಗಿದೆ ಎಂದು ಗುರುತುಹಾಕಬೇಡ)"
 
 #: ../src/plugins/reporter-print.c:42
 msgid ""
@@ -1442,77 +1609,99 @@ msgstr "ವರದಿಯನ್ನು %s ಗೆ ಸೇರಿಸಲಾಗಿದೆ"
 msgid "The report was stored to %s"
 msgstr "ವರದಿಯನ್ನು %s ಗೆ ಶೇಖರಿಸಲಾಗಿದೆ"
 
-#: ../src/plugins/reporter-rhtsupport.c:223
+#: ../src/plugins/reporter-rhtsupport.c:211
+#: ../src/plugins/reporter-ureport.c:255
+#, c-format
+msgid "Server responded with an error: '%s'"
+msgstr "ಪೂರೈಕೆಗಣಕವು ಒಂದು ದೋಷದೊಂದಿಗೆ ಪ್ರತಿಕ್ರಿಯಿಸಿದೆ: '%s'"
+
+#: ../src/plugins/reporter-rhtsupport.c:255
+msgid "Do you still want to create a RHTSupport ticket?"
+msgstr "ಆದರೂ ಸಹ ನೀವು RHTSupport ಟಿಕೆಟ್ ಅನ್ನು ರಚಿಸಲು ಬಯಸುವಿರಾ?"
+
+#: ../src/plugins/reporter-rhtsupport.c:354
 msgid ""
 "\n"
 "& [-v] [-c CONFFILE] -d DIR\n"
 "or:\n"
-"& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
+"& [-v] [-c CONFFILE] [-d DIR] -t[ID] [-u -C UR_CONFFILE] FILE...\n"
 "\n"
 "Reports a problem to RHTSupport.\n"
 "\n"
 "If not specified, CONFFILE defaults to "
-msgstr "\n& [-v] [-c CONFFILE] -d DIR\nor:\n& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n\nReports a problem to RHTSupport.\n\nIf not specified, CONFFILE defaults to "
-
-#: ../src/plugins/reporter-rhtsupport.c:256
-msgid "Upload FILEs [to case with this ID]"
-msgstr "FILEಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡು [ಈ ID ಯನ್ನು ಹೊಂದಿರುವ ಕೇಸ್‌ಗೆ]"
-
-#: ../src/plugins/reporter-rhtsupport.c:285
-msgid "Login is not provided by configuration. Please enter your RHTS login:"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:341
+#: ../src/plugins/reporter-rhtsupport.c:392
+msgid "Upload FILEs [to case with this ID]"
+msgstr "FILEಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡು [ಈ ID ಯನ್ನು ಹೊಂದಿರುವ ಪ್ರಕರಣಕ್ಕೆ]"
+
+#: ../src/plugins/reporter-rhtsupport.c:394
+msgid "Submit uReport before creating a new case"
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:395
+msgid "Configuration file for uReport"
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:423
+msgid "Login is not provided by configuration. Please enter your RHTS login:"
+msgstr "ಲಾಗಿನ್ ಅನ್ನು ಸಂರಚನೆಯಿಂದ ಒದಗಿಸಲಾಗಿಲ್ಲ. ದಯವಿಟ್ಟು ನಿಮ್ಮ RHTS ಲಾಗಿನ್ ಮಾಹಿತಿಯನ್ನು ನಮೂದಿಸಿ:"
+
+#: ../src/plugins/reporter-rhtsupport.c:485
 #, c-format
 msgid "Attaching '%s' to case '%s'"
-msgstr "'%s' ಅನ್ನು '%s' ಎಂಬ ಕೇಸ್‌ಗೆ ಲಗತ್ತಿಸಲಾಗುತ್ತಿದೆ"
+msgstr "'%s' ಅನ್ನು '%s' ಎಂಬ ಪ್ರಕರಣಕ್ಕೆ ಲಗತ್ತಿಸಲಾಗುತ್ತಿದೆ"
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are
 #. doing
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
 #. doing
-#: ../src/plugins/reporter-rhtsupport.c:378
+#: ../src/plugins/reporter-rhtsupport.c:522
 #: ../src/plugins/reporter-upload.c:52
 msgid "Compressing data"
 msgstr "ದತ್ತಾಂಶವನ್ನು ಸಂಕುಚನಗೊಳಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../src/plugins/reporter-rhtsupport.c:413
+#: ../src/plugins/reporter-rhtsupport.c:557
 msgid "Can't create a temporary directory in "
-msgstr ""
+msgstr "ಇಲ್ಲಿ ಒಂದು ತಾತ್ಕಾಲಿಕ ಕೋಶವನ್ನು ರಚಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ"
 
-#: ../src/plugins/reporter-rhtsupport.c:422
+#: ../src/plugins/reporter-rhtsupport.c:566
 msgid "Can't create temporary file in "
+msgstr "ಇಲ್ಲಿ ಒಂದು ತಾತ್ಕಾಲಿಕ ಕಡತವನ್ನು ರಚಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ"
+
+#: ../src/plugins/reporter-rhtsupport.c:584
+msgid "Sending ABRT crash statistics data"
 msgstr ""
 
 #. Check for hints and show them if we have something
-#: ../src/plugins/reporter-rhtsupport.c:431
+#: ../src/plugins/reporter-rhtsupport.c:592
 msgid "Checking for hints"
-msgstr ""
+msgstr "ಸುಳಿವಿಗಾಗಿ ಹುಡುಕಲಾಗುತ್ತಿದೆ"
 
-#: ../src/plugins/reporter-rhtsupport.c:473
-msgid "Do you still want to create a RHTSupport ticket?"
-msgstr "ಆದರೂ ಸಹ ನೀವು RHTSupport ಟಿಕೆಟ್ ಅನ್ನು ರಚಿಸಲು ಬಯಸುವಿರಾ?"
-
-#: ../src/plugins/reporter-rhtsupport.c:487
+#: ../src/plugins/reporter-rhtsupport.c:602
 msgid "Creating a new case"
-msgstr ""
+msgstr "ಹೊಸ ಪ್ರಕರಣವನ್ನು ರಚಿಸಲಾಗುತ್ತಿದೆ"
 
 #. How can we help user sorting out this problem?
-#: ../src/plugins/reporter-rhtsupport.c:498
+#: ../src/plugins/reporter-rhtsupport.c:613
 msgid "Can't determine RH Support Product from problem data."
+msgstr "ತೊಂದರೆಯ ದತ್ತಾಂಶದಿಂದ RH ಸಪೋರ್ಟ್ ಉತ್ಪನ್ನವನ್ನು ನಿರ್ಧರಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ."
+
+#: ../src/plugins/reporter-rhtsupport.c:675
+msgid "Linking ABRT crash statistics record with the case"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:573
+#: ../src/plugins/reporter-rhtsupport.c:698
 #, c-format
 msgid "Adding comment to case '%s'"
-msgstr ""
+msgstr "'%s' ಪ್ರಕರಣಕ್ಕೆ ಹೊಸ ಟಿಪ್ಪಣಿಯನ್ನು ಸೇರಿಸಲಾಗುತ್ತಿದೆ"
 
 #. Attach the tarball of -d DIR
-#: ../src/plugins/reporter-rhtsupport.c:593
+#: ../src/plugins/reporter-rhtsupport.c:718
 #, c-format
 msgid "Attaching problem data to case '%s'"
-msgstr ""
+msgstr "'%s' ಪ್ರಕರಣಕ್ಕೆ ತೊಂದರೆಯ ಪ್ರಕರಣವನ್ನು ಲಗತ್ತಿಸಲಾಗುತ್ತಿದೆ"
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:202
 msgid "Documentation which might be relevant: "
@@ -1524,27 +1713,36 @@ msgstr "ನೆರವಾಗಬಹುದಾದ ಅಪ್‌ಡೇಟ್‌ಗಳ�
 
 #: ../src/plugins/reporter-upload.c:30
 msgid "Can't continue without URL"
-msgstr ""
+msgstr "URL ಇಲ್ಲದೆ ಮುಂದುವರೆಯಲು ಸಾಧ್ಯವಿಲ್ಲ"
 
 #: ../src/plugins/reporter-upload.c:61
-msgid "Upload URL is not provided by configuration. Please enter upload URL:"
+msgid ""
+"Please enter a URL (scp, ftp, etc.) where the problem data is to be "
+"exported:"
+msgstr ""
+
+#. Be permissive and nice, ask only once and don't check
+#. the result. User can dismiss this prompt but the upload
+#. may work somehow???
+#: ../src/plugins/reporter-upload.c:164
+msgid "Please enter password for uploading:"
 msgstr ""
 
 #. success
-#: ../src/plugins/reporter-upload.c:159
+#: ../src/plugins/reporter-upload.c:181
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "ಆರ್ಕೈವ್ ಅನ್ನು ರಚಿಸಲಾಗಿದೆ: '%s'"
 
-#: ../src/plugins/reporter-upload.c:200
+#: ../src/plugins/reporter-upload.c:222
 msgid ""
 "& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
 "Uploads compressed tarball of problem directory DIR to URL.\n"
 "If URL is not specified, creates tarball in "
-msgstr ""
+msgstr "& [-v] -d DIR [-c CONFFILE] [-u URL]\n\nತೊಂದರೆಯ ಕೋಶ DIR ನ ಸಂಕುಚನಗೊಳಿಸಲಾದ ಟಾರ್ಬಾಲ್ ಅನ್ನು URL ಗೆ ಅಪ್‌ಲೋಡ್ ಮಾಡುತ್ತದೆ.\nURL ಅನ್ನು ಒದಗಿಸಲಾಗಿರದೆ ಇದ್ದಲ್ಲಿ, ಇದರಲ್ಲಿ ಟಾರ್ಬಾಲ್ ಅನ್ನು ರಚಿಸುತ್ತದೆ "
 
-#: ../src/plugins/reporter-upload.c:229
+#: ../src/plugins/reporter-upload.c:252
 msgid "Base URL to upload to"
 msgstr "ಅಪ್‌ಲೋಡ್ ಮಾಡಬೇಕಿರುವ ಮೂಲ URL"
 
@@ -1562,7 +1760,7 @@ msgstr "Kerneloops URL"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:4
 msgid "Oops server url"
-msgstr "Oops ಪರಿಚಾರಕದ url"
+msgstr "Oops ಪೂರೈಕೆಗಣಕದ url"
 
 #: ../src/plugins/report_Logger.xml.in.h:1
 msgid "Logger"
@@ -1657,8 +1855,8 @@ msgid "Red Hat customer password"
 msgstr "Red Hat ಕಸ್ಟಮರ್ ಗುಪ್ತಪದ"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
-msgid "Report uploader"
-msgstr "ವರದಿ ಅಪ್‌ಲೋಡರ್"
+msgid "Report Uploader"
+msgstr ""
 
 #: ../src/plugins/report_Uploader.xml.in.h:2
 msgid "Upload as tar.gz file (via FTP/SCP/...)"
@@ -1678,246 +1876,210 @@ msgstr "ನೀವು ಟಾರ್ಬಾಲ್ ಅನ್ನು ವರದಿಯೊ
 #: ../src/plugins/report_Uploader.xml.in.h:5
 msgid ""
 "Examples:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]"
+msgstr "ಉದಾಹರಣೆಗಳು:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]"
+
+#: ../src/plugins/report_Uploader.xml.in.h:7
+msgid "Use this field if you do not want to have user name in URL"
 msgstr ""
 
-#: ../src/plugins/report_Uploader.xml.in.h:10
+#: ../src/plugins/report_Uploader.xml.in.h:9
+msgid "Use this field if you do not want to have password in URL"
+msgstr ""
+
+#: ../src/plugins/report_Uploader.xml.in.h:14
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:8
 msgid "FTP Proxy"
-msgstr ""
+msgstr "FTP ಪ್ರಾಕ್ಸಿ"
 
-#: ../src/plugins/report_Uploader.xml.in.h:11
+#: ../src/plugins/report_Uploader.xml.in.h:15
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:9
 msgid "Sets the proxy server to use for FTP"
-msgstr ""
+msgstr "FTP ಗಾಗಿ ಬಳಸಲು ಪ್ರಾಕ್ಸಿ ಪೂರೈಕೆಗಣಕವನ್ನು ಹೊಂದಿಸುತ್ತದೆ"
 
 #: ../src/plugins/report_uReport.xml.in.h:1
 msgid "uReport"
-msgstr ""
+msgstr "uReport"
 
 #: ../src/plugins/report_uReport.xml.in.h:2
 msgid "Sends ureports to FAF server"
-msgstr ""
+msgstr "FAF ಪೂರೈಕೆಗಣಕಕ್ಕೆ ureports ಅನ್ನು ಕಳುಹಿಸುತ್ತದೆ"
 
 #: ../src/plugins/report_uReport.xml.in.h:3
 msgid "uReport Server URL"
-msgstr ""
+msgstr "uReport ಪೂರೈಕೆಗಣಕದ URL"
 
 #: ../src/plugins/report_uReport.xml.in.h:4
 msgid "Address of uReport webservice"
-msgstr ""
+msgstr "uReport ಜಾಲಸೇವೆಯ ವಿಳಾಸ"
 
 #: ../src/plugins/report_uReport.xml.in.h:5
 msgid "Watch already reported bugs"
-msgstr ""
+msgstr "ಈಗಾಗಲೆ ವರದಿ ಮಾಡಲಾದ ದೋಷಗಳನ್ನು ಗಮನಿಸು"
 
 #: ../src/plugins/report_uReport.xml.in.h:6
 msgid "Adds your Bugzilla login to CC List of already reported bugs."
-msgstr ""
+msgstr "ಈಗಾಗಲೆ ವರದಿ ಮಾಡಿದ ದೋಷಗಳ CC ಪಟ್ಟಿಗೆ ನಿಮ್ಮ Bugzilla ಲಾಗಿನ್ ಅನ್ನು ಸೇರಿಸುತ್ತದೆ."
 
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:1
 msgid "Emergency analysis"
-msgstr ""
+msgstr "ತುರ್ತು ವಿಶ್ಲೇಷಣೆ"
 
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:2
 msgid "Upload the problem data for further analysis"
-msgstr ""
+msgstr "ತೊಂದರೆಯ ಮಾಹಿತಿಯನ್ನು ಹೆಚ್ಚಿನ ವಿಶ್ಲೇಷಣೆಗಾಗಿ ಅಪ್‌ಲೋಡ್ ಮಾಡುತ್ತದೆ"
 
 #: ../src/plugins/watch_Bugzilla.xml.in.h:1
 msgid "Watch Bugzilla Bug"
-msgstr ""
+msgstr "ಬಗ್‌ಝಿಲ್ಲಾ ಬಗ್ ಅನ್ನು ಗಮನಿಸಿ"
 
 #: ../src/plugins/watch_Bugzilla.xml.in.h:2
 msgid "Adds your e-mail to CC List of Bugzilla bug"
-msgstr ""
+msgstr " ನಿಮ್ಮ ವಿ-ಅಂಚೆಯನ್ನು Bugzilla ದೋಷದ CC ಪಟ್ಟಿಗೆ ಸೇರಿಸುತ್ತದೆ"
 
-#: ../src/plugins/rhbz.c:409
+#: ../src/plugins/rhbz.c:417
 #, c-format
 msgid "Looks like corrupted xml response, because '%s' member is missing."
 msgstr "ತಪ್ಪಾದ xml ಪ್ರತಿಕ್ರಿಯೆ ಎಂದು ತೋರುತ್ತಿದೆ, ಏಕೆಂದರೆ '%s' ಸದಸ್ಯ ಕಾಣಿಸುತ್ತಿಲ್ಲ."
 
-#: ../src/plugins/rhbz.c:497
+#: ../src/plugins/rhbz.c:505
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
 msgstr "%i ದೋಷವು CLOSED ಆಗಿದೆ, ಆದರೆ ಇದು RESOLUTION ಅಲ್ಲ"
 
-#: ../src/plugins/rhbz.c:505
+#: ../src/plugins/rhbz.c:513
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
 msgstr "%i ದೋಷವನ್ನು DUPLICATE ಎಂದು CLOSED ಮಾಡಲಾಗಿದೆ, ಆದರೆ ಇದು DUP_ID ಹೊಂದಿಲ್ಲ"
 
-#: ../src/plugins/rhbz.c:621
+#: ../src/plugins/rhbz.c:629
 msgid ""
 "A private ticket creation has been requested, but no groups were specified, "
 "please see https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
 "tickets for more info"
-msgstr ""
+msgstr "ಒಂದು ಖಾಸಗಿ ಟಿಕೆಟ್ ರಚನೆಗೆ ಮನವಿ ಮಾಡಲಾಗಿದೆ, ಆದರೆ ಯಾವುದೆ ಗುಂಪನ್ನು ಸೂಚಿಸಲಾಗಿಲ್ಲ, ದಯವಿಟ್ಟು ಹೆಚ್ಚಿನ ಮಾಹಿತಿಗಾಗಿ https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets ಅನ್ನು ನೋಡಿ"
 
-#: ../src/plugins/rhbz.c:642
+#: ../src/plugins/rhbz.c:650
 #, c-format
 msgid "New bug id: %i"
 msgstr "ಹೊಸ ದೋಷ id: %i"
 
-#: ../src/plugins/rhbz.c:757
+#: ../src/plugins/rhbz.c:770
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "%d ನ ಮೂಲ ದೋಷವನ್ನು ಬಗ್‌ಝಿಲ್ಲಾದಿಂದ ಪತ್ತೆ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/plugins/ureport.c:146
-#, c-format
-msgid ""
-"Your problem seems to be caused by %s\n"
-"\n"
-"%s\n"
-msgstr ""
+#: ../src/plugins/rhbz.c:893
+msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
+msgstr "Bug.search(quicksearch) ಮರಳಿಸಿದ ಮೌಲ್ಯವು 'bugs' ಅಂಶವನ್ನು ಹೊಂದಿಲ್ಲ"
 
-#: ../src/plugins/ureport.c:149
-msgid "Your problem seems to be caused by one of the following:\n"
-msgstr ""
-
-#: ../src/plugins/ureport.c:320
-#, c-format
-msgid "Failed to upload uReport to the server '%s' with curl: %s"
-msgstr ""
-
-#: ../src/plugins/ureport.c:326
-#, c-format
-msgid "The URL '%s' does not exist (got error 404 from server)"
-msgstr ""
-
-#: ../src/plugins/ureport.c:332
-#, c-format
-msgid "The server at '%s' encountered an internal error (got error 500)"
-msgstr ""
-
-#: ../src/plugins/ureport.c:338
-#, c-format
-msgid "The server at '%s' currently can't handle the request (got error 503)"
-msgstr ""
-
-#. can't print better error message
-#: ../src/plugins/ureport.c:347
-#, c-format
-msgid "Unexpected HTTP response from '%s': %d"
-msgstr ""
-
-#: ../src/plugins/ureport.c:356
-#, c-format
-msgid "Unable to parse response from ureport server at '%s'"
-msgstr ""
-
-#: ../src/plugins/ureport.c:366
-#, c-format
-msgid "The response from '%s' has invalid format"
-msgstr ""
-
-#. HTTP CODE 202 means that call was successful but the response
-#. has an error message
-#: ../src/plugins/ureport.c:372
-#, c-format
-msgid "Type mismatch has been detected in the response from '%s'"
-msgstr ""
-
-#: ../src/plugins/ureport.c:403
-#, c-format
-msgid "The server at '%s' responded with an error: '%s'"
-msgstr ""
-
-#: ../src/plugins/ureport.c:452
+#: ../src/plugins/reporter-ureport.c:68
 msgid "Specify server URL"
-msgstr ""
+msgstr "ಪೂರೈಕೆಗಣಕದ URL ಅನ್ನು ಸೂಚಿಸಿ"
 
-#: ../src/plugins/ureport.c:454
+#: ../src/plugins/reporter-ureport.c:70
 msgid "Allow insecure connection to ureport server"
-msgstr ""
+msgstr "ureport ಪೂರೈಕೆಗಣಕಕ್ಕೆ ಸುರಕ್ಷಿತ ಸಂಪರ್ಕವನ್ನು ಅನುಮತಿಸು"
 
-#: ../src/plugins/ureport.c:455
+#: ../src/plugins/reporter-ureport.c:71
 msgid "Use client authentication"
+msgstr "ಕ್ಲೈಂಟ್ ದೃಢೀಕರಣವನ್ನು ಬಳಸು"
+
+#: ../src/plugins/reporter-ureport.c:72
+msgid "Additional files included in 'auth' key"
 msgstr ""
 
-#: ../src/plugins/ureport.c:458
+#: ../src/plugins/reporter-ureport.c:75
 msgid "bthash of uReport to attach (conflicts with -A)"
-msgstr ""
+msgstr "ಲಗತ್ತಿಸಬೇಕಿರುವ uReport ನ bthash (-A ನೊಂದಿಗೆ ತಿಕ್ಕಾಟವಾಗುತ್ತದೆ)"
 
-#: ../src/plugins/ureport.c:460
+#: ../src/plugins/reporter-ureport.c:77
 msgid "attach to a bthash from reported_to (conflicts with -a)"
-msgstr ""
+msgstr "reported_to ಇಂದ bthash ಗೆ ಲಗತ್ತಿಸಿ (-a ನೊಂದಿಗೆ ತಿಕ್ಕಾಟವಾಗುತ್ತದೆ)"
 
-#: ../src/plugins/ureport.c:462
+#: ../src/plugins/reporter-ureport.c:79
 msgid "contact e-mail address (requires -a|-A, conflicts with -E)"
-msgstr ""
+msgstr "ಸಂಪರ್ಕಸಿಬೇಕಿರುವ ವಿ-ಅಂಚೆ ವಿಳಾಸ (-a|-A ಅಗತ್ಯವಿದೆ, -E ನೊಂದಿಗೆ ತಿಕ್ಕಾಟವಾಗುತ್ತದೆ)"
 
-#: ../src/plugins/ureport.c:464
+#: ../src/plugins/reporter-ureport.c:81
 msgid ""
 "contact e-mail address from environment or configuration file (requires "
 "-a|-A, conflicts with -e)"
-msgstr ""
+msgstr "ಪರಿಸರ ಅಥವ ಸಂರಚನೆ ಕಡತದಿಂದ ಸಂಪರ್ಕಸಿಬೇಕಿರುವ ವಿ-ಅಂಚೆ ವಿಳಾಸ (-a|-A ಅಗತ್ಯವಿದೆ, -E ನೊಂದಿಗೆ ತಿಕ್ಕಾಟವಾಗುತ್ತದೆ)"
 
-#: ../src/plugins/ureport.c:466
+#: ../src/plugins/reporter-ureport.c:83
 msgid "attach RHBZ bug (requires -a|-A, conflicts with -B)"
-msgstr ""
+msgstr "RHBZ ದೋಷವರದಿಯನ್ನು ಲಗತ್ತಿಸಿ (-a|-A ಅಗತ್ಯವಿದೆ, -B ನೊಂದಿಗೆ ತಿಕ್ಕಾಟವಾಗುತ್ತದೆ)"
 
-#: ../src/plugins/ureport.c:468
+#: ../src/plugins/reporter-ureport.c:85
 msgid ""
 "attach last RHBZ bug from reported_to (requires -a|-A, conflicts with -b)"
+msgstr "reported_to ಇಂದ ಕಡೆಯ RHBZ ದೋಷವರದಿಯನ್ನು ಲಗತ್ತಿಸಿ (-a|-A ಅಗತ್ಯವಿದೆ, -b ನೊಂದಿಗೆ ತಿಕ್ಕಾಟವಾಗುತ್ತದೆ)"
+
+#: ../src/plugins/reporter-ureport.c:87
+msgid "attach short text (requires -a|-A, conflicts with -D)"
 msgstr ""
 
-#: ../src/plugins/ureport.c:473
+#: ../src/plugins/reporter-ureport.c:89
+msgid "attach short text from comment (requires -a|-A, conflicts with -d)"
+msgstr ""
+
+#: ../src/plugins/reporter-ureport.c:94
 msgid ""
-"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
+"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-i AUTH_ITEMS]\\\n"
+"  [-A -a bthash -B -b bug-id -E -e email -O -o comment] [-d DIR]\n"
 "\n"
 "Upload micro report or add an attachment to a micro report\n"
 "\n"
 "Reads the default configuration from "
 msgstr ""
 
-#: ../src/plugins/ureport.c:519
+#: ../src/plugins/reporter-ureport.c:147
 msgid "This problem does not have an uReport assigned."
-msgstr ""
+msgstr "ಈ ತೊಂದರೆಯು ನಿಯೋಜಿತಗೊಂಡ ಒಂದು uReport ಅನ್ನು ಹೊಂದಿಲ್ಲ."
 
-#: ../src/plugins/ureport.c:532
+#: ../src/plugins/reporter-ureport.c:160
 msgid "This problem has not been reported to Bugzilla."
-msgstr ""
+msgstr "ಈ ತೊಂದರೆಯನ್ನು ಈಗಾಗಲೆ ಬಗ್‌ಝಿಲ್ಲಾಗೆ ವರದಿಮಾಡಲಾಗಿಲ್ಲ."
 
-#: ../src/plugins/ureport.c:536
+#: ../src/plugins/reporter-ureport.c:164
 #, c-format
 msgid "Unable to find bug ID in bugzilla URL '%s'"
-msgstr ""
+msgstr "ಬಗ್‌ಝಿಲ್ಲಾ URL '%s' ನಲ್ಲಿ ದೋಷದ ID ಕಂಡುಬಂದಿಲ್ಲ"
 
-#: ../src/plugins/ureport.c:541
+#: ../src/plugins/reporter-ureport.c:169
 #, c-format
 msgid "Unable to parse bug ID from bugzilla URL '%s'"
+msgstr "ಬಗ್‌ಝಿಲ್ಲಾ URL '%s' ಇಂದ ದೋಷದ ID ಅನ್ನು ಪಾರ್ಸ್ ಮಾಡಲಾಗಿಲ್ಲ"
+
+#: ../src/plugins/reporter-ureport.c:178
+msgid "Cannot attach comment from 'comment' file"
 msgstr ""
 
-#: ../src/plugins/ureport.c:554
+#: ../src/plugins/reporter-ureport.c:180
+msgid "'comment' file is empty"
+msgstr ""
+
+#: ../src/plugins/reporter-ureport.c:191
 msgid ""
 "Neither environment variable 'uReport_ContactEmail' nor configuration option"
 " 'ContactEmail' is set"
+msgstr "ಪರಿಸರ ವೇರಿಯಬಲ್ 'uReport_ContactEmail' ಆಗಲಿ ಅಥವ ಸಂರಚನಾ ಆಯ್ಕೆ  'ContactEmail' ಅನ್ನು ಹೊಂದಿಸಲಾಗಿಲ್ಲ"
+
+#: ../src/plugins/reporter-ureport.c:197
+msgid "You need to specify bug ID, contact email, comment or all of them"
 msgstr ""
 
-#: ../src/plugins/ureport.c:560
-msgid "You need to specify bug ID, contact email or both"
-msgstr ""
-
-#: ../src/plugins/ureport.c:578
+#: ../src/plugins/reporter-ureport.c:221
 msgid "You need to specify bthash of the uReport to attach."
-msgstr ""
+msgstr "ನೀವು ಲಗತ್ತಿಸಲು uReport ನ bthash ಅನ್ನು ಸೂಚಿಸಬೇಕಾಗುತ್ತದೆ."
 
-#: ../src/plugins/ureport.c:588
+#: ../src/plugins/reporter-ureport.c:226
 msgid "Not uploading an empty uReport"
-msgstr ""
+msgstr "ಒಂದು ಖಾಲಿ uReport ಅನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿಲ್ಲ"
 
-#: ../src/plugins/ureport.c:597
-msgid "Failed on submitting the problem"
-msgstr ""
-
-#: ../src/plugins/ureport.c:642
+#: ../src/plugins/reporter-ureport.c:247
 msgid "This problem has already been reported."
-msgstr ""
-
-#: ../src/plugins/ureport.c:651
-#, c-format
-msgid "Server responded with an error: '%s'"
-msgstr ""
+msgstr "ಈ ತೊಂದರೆಯನ್ನು ಈಗಾಗಲೆ ವರದಿಮಾಡಲಾಗಿದೆ."
 
 #: ../src/report-newt/report-newt.c:55
 msgid "How would you like to report the problem?"
@@ -1955,7 +2117,7 @@ msgid ""
 "& [-d] DIR\n"
 "\n"
 "newt tool to report problem saved in specified DIR"
-msgstr ""
+msgstr "& [-d] DIR\n\nನಿಶ್ಚಿತ DIR ನಲ್ಲಿ ಉಳಿಸಲಾದ ತೊಂದರೆಯನ್ನು ವರದಿ ಮಾಡಲು newt ಉಪಕರಣ"
 
 #: ../src/report-newt/report-newt.c:392
 msgid "Remove DIR after reporting"
@@ -1963,33 +2125,31 @@ msgstr "ವರದಿ ಮಾಡಿದ ನಂತರ DIR ಅನ್ನು ತೆಗ�
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:1
 msgid "Report a bug to Fedora maintainers"
-msgstr ""
+msgstr "ಒಂದು ದೋಷವನ್ನು Fedora ಮೇಲ್ವಿಚಾರಕರಿಗೆ ವರದಿ ಮಾಡಿ"
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:2
 msgid "Process the report using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora ಮೂಲಸೌಕರ್ಯವನ್ನು ಬಳಸಿಕೊಂಡು ವರದಿಯನ್ನು ಸಂಸ್ಕರಿಸು"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:1
 msgid "Report a bug to Red Hat Customer Portal"
-msgstr ""
+msgstr "Red Hat ಕಸ್ಟಮರ್ ಪೋರ್ಟಲ್‌ಗೆ ದೋಷವನ್ನು ವರದಿ ಮಾಡಿ"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:2
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:2
 msgid "Process the report using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat ಮೂಲಸೌಕರ್ಯವನ್ನು ಬಳಸಿಕೊಂಡು ವರದಿಯನ್ನು ಸಂಸ್ಕರಿಸು"
 
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:1
 msgid "Report a bug to Red Hat Bugzilla"
-msgstr ""
+msgstr "Red Hat ಬಗ್‌ಝಿಲ್ಲಾಗೆ ಒಂದು ದೋಷವನ್ನು ವರದಿ ಮಾಡಿ"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
-#: ../src/workflows/workflow_Upload.xml.in.h:1
-msgid "Upload the problem data to a server"
+msgid "Export the problem data for manual reporting"
 msgstr ""
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:2
-#: ../src/workflows/workflow_Upload.xml.in.h:2
-msgid "Analyze the problem locally and upload the data via scp or ftp"
+msgid "Upload the data via scp or ftp to a remote destination"
 msgstr ""
 
 #: ../src/workflows/workflow_FedoraCCpp.xml.in.h:1
@@ -2001,39 +2161,71 @@ msgstr ""
 #: ../src/workflows/workflow_FedoraLibreport.xml.in.h:1
 #: ../src/workflows/workflow_FedoraJava.xml.in.h:1
 msgid "Report to Fedora"
-msgstr ""
+msgstr "Fedora ಗೆ ವರದಿ ಮಾಡಿ"
 
 #: ../src/workflows/workflow_FedoraCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora ಮೂಲಸೌಕರ್ಯವನ್ನು ಬಳಸಿಕೊಂಡು C/C++ ಕುಸಿತವನ್ನು ಸಂಸ್ಕರಿಸು"
 
 #: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:2
 msgid "Process the kerneloops using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora ಮೂಲಸೌಕರ್ಯವನ್ನು ಬಳಸಿಕೊಂಡು kerneloops ಅನ್ನು ಸಂಸ್ಕರಿಸು"
 
 #: ../src/workflows/workflow_FedoraPython.xml.in.h:2
 msgid "Process the python exception using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora ಮೂಲಸೌಕರ್ಯವನ್ನು ಬಳಸಿಕೊಂಡು python ಆಕ್ಷೇಪಣೆಯನ್ನು ಸಂಸ್ಕರಿಸು"
 
 #: ../src/workflows/workflow_FedoraPython3.xml.in.h:2
 msgid "Process the python 3 exception using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora ಮೂಲಸೌಕರ್ಯವನ್ನು ಬಳಸಿಕೊಂಡು python 3 ಆಕ್ಷೇಪಣೆಯನ್ನು ಸಂಸ್ಕರಿಸು"
 
 #: ../src/workflows/workflow_FedoraVmcore.xml.in.h:2
 msgid "Process the kernel crash using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora ಮೂಲಸೌಕರ್ಯವನ್ನು ಬಳಸಿಕೊಂಡು ಕರ್ನಲ್ ಕುಸಿತವನ್ನು ಸಂಸ್ಕರಿಸು"
 
 #: ../src/workflows/workflow_FedoraXorg.xml.in.h:2
 msgid "Process the X Server problem using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora ಮೂಲಸೌಕರ್ಯವನ್ನು ಬಳಸಿಕೊಂಡು X ಸರ್ವರ್ ಅನ್ನು ಸಂಸ್ಕರಿಸು"
 
 #: ../src/workflows/workflow_FedoraLibreport.xml.in.h:2
 msgid "Process the problem using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora ಮೂಲಸೌಕರ್ಯವನ್ನು ಬಳಸಿಕೊಂಡು ತೊಂದರೆಯನ್ನು ಸಂಸ್ಕರಿಸು"
 
 #: ../src/workflows/workflow_FedoraJava.xml.in.h:2
 msgid "Process the Java exception using the Fedora infrastructure"
+msgstr "Fedora ಮೂಲಸೌಕರ್ಯವನ್ನು ಬಳಸಿಕೊಂಡು Java ಆಕ್ಷೇಪಣೆಯನ್ನು ಸಂಸ್ಕರಿಸು"
+
+#: ../src/workflows/workflow_LoggerCCpp.xml.in.h:1
+#: ../src/workflows/workflow_Logger.xml.in.h:1
+msgid "Export the problem data information to a text file"
 msgstr ""
+
+#: ../src/workflows/workflow_LoggerCCpp.xml.in.h:2
+#: ../src/workflows/workflow_Logger.xml.in.h:2
+msgid ""
+"Analyze the problem locally and export the problem data information to a "
+"text file"
+msgstr ""
+
+#: ../src/workflows/workflow_MailxCCpp.xml.in.h:1
+#: ../src/workflows/workflow_Mailx.xml.in.h:1
+msgid "Send the problem data via email"
+msgstr ""
+
+#: ../src/workflows/workflow_MailxCCpp.xml.in.h:2
+#: ../src/workflows/workflow_Mailx.xml.in.h:2
+msgid "Analyze the problem locally and send information via email"
+msgstr ""
+
+#: ../src/workflows/workflow_UploadCCpp.xml.in.h:1
+#: ../src/workflows/workflow_Upload.xml.in.h:1
+msgid "Upload the problem data to a server"
+msgstr "ತೊಂದರೆಯ ಮಾಹಿತಿಯನ್ನು ಒಂದು ಪೂರೈಕೆಗಣಕಕ್ಕೆ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ"
+
+#: ../src/workflows/workflow_UploadCCpp.xml.in.h:2
+#: ../src/workflows/workflow_Upload.xml.in.h:2
+msgid "Analyze the problem locally and upload the data via scp or ftp"
+msgstr "ತೊಂದರೆಯನ್ನು ಸ್ಥಳೀಯವಾಗಿ ವಿಶ್ಲೇಷಿಸಿ ಮತ್ತು ದತ್ತಾಂಶವನ್ನು scp ಅಥವ ftp ಮೂಲಕ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1
@@ -2043,42 +2235,42 @@ msgstr ""
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:1
 #: ../src/workflows/workflow_RHELJava.xml.in.h:1
 msgid "Report to Red Hat Customer Portal"
-msgstr ""
+msgstr "Red Hat ಕಸ್ಟಮರ್ ಪೋರ್ಟಲ್‌ಗೆ ವರದಿ ಮಾಡಿ"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat ಮೂಲಸೌಕರ್ಯವನ್ನು ಬಳಸಿಕೊಂಡು C/C++ ಕುಸಿತವನ್ನು ಸಂಸ್ಕರಿಸು"
 
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:2
 msgid "Process the kerneloops using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat ಮೂಲಸೌಕರ್ಯವನ್ನು ಬಳಸಿಕೊಂಡು kerneloops ಅನ್ನು ಸಂಸ್ಕರಿಸು"
 
 #: ../src/workflows/workflow_RHELPython.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:2
 msgid "Process the python exception using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat ಮೂಲಸೌಕರ್ಯವನ್ನು ಬಳಸಿಕೊಂಡು python ಆಕ್ಷೇಪಣೆಯನ್ನು ಸಂಸ್ಕರಿಸು"
 
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:2
 msgid "Process the kernel crash using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat ಮೂಲಸೌಕರ್ಯವನ್ನು ಬಳಸಿಕೊಂಡು ಕರ್ನಲ್ ಕುಸಿತವನ್ನು ಸಂಸ್ಕರಿಸು"
 
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:2
 msgid "Process the X Server problem using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat ಮೂಲಸೌಕರ್ಯವನ್ನು ಬಳಸಿಕೊಂಡು X ಸರ್ವರ್ ಅನ್ನು ಸಂಸ್ಕರಿಸು"
 
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:2
 msgid "Process the problem using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat ಮೂಲಸೌಕರ್ಯವನ್ನು ಬಳಸಿಕೊಂಡು ತೊಂದರೆಯನ್ನು ಸಂಸ್ಕರಿಸು"
 
 #: ../src/workflows/workflow_RHELJava.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
 msgid "Process the Java exception using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat ಮೂಲಸೌಕರ್ಯವನ್ನು ಬಳಸಿಕೊಂಡು Java ಆಕ್ಷೇಪಣೆಯನ್ನು ಸಂಸ್ಕರಿಸು"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
@@ -2088,4 +2280,4 @@ msgstr ""
 #: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:1
 msgid "Report to Red Hat Bugzilla"
-msgstr ""
+msgstr "Red Hat ಬಗ್‌ಝಿಲ್ಲಾ ವರದಿ ಮಾಡು"
