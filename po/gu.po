@@ -4,15 +4,16 @@
 # 
 # Translators:
 # , 2011, 2012
-# kepatel <kepatel@redhat.com>, 2014
+# Keralkumar Patel <kepatel@redhat.com>, 2014
+# sweta <swkothar@redhat.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-05 10:38+0100\n"
-"PO-Revision-Date: 2014-03-05 09:37+0000\n"
+"POT-Creation-Date: 2014-10-06 13:45+0200\n"
+"PO-Revision-Date: 2014-10-06 11:45+0000\n"
 "Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
-"Language-Team: Gujarati (http://www.transifex.com/projects/p/fedora/language/gu/)\n"
+"Language-Team: Gujarati (http://www.transifex.com/projects/p/libreport/language/gu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -32,15 +33,15 @@ msgstr "& [-vsp] -L[PREFIX] [PROBLEM_DIR]\nor: & [-vspy] -e EVENT PROBLEM_DIR\no
 msgid "List possible events [which start with PREFIX]"
 msgstr "શક્ય ઘટનાઓની યાદી કરો [કે જે PREFIX સાથે શરૂ થાય છે]"
 
-#: ../src/cli/cli.c:87 ../src/gui-wizard-gtk/main.c:123
+#: ../src/cli/cli.c:87 ../src/gui-wizard-gtk/main.c:172
 msgid "Run only these events"
 msgstr "માત્ર આ ઘટનાઓ ચલાવો"
 
-#: ../src/cli/cli.c:88 ../src/gui-wizard-gtk/main.c:122
+#: ../src/cli/cli.c:88 ../src/gui-wizard-gtk/main.c:171
 msgid "Remove PROBLEM_DIR after reporting"
 msgstr "અહેવાલ આપ્યા પછી PROBLEM_DIR દૂર કરો"
 
-#: ../src/cli/cli.c:89 ../src/gui-wizard-gtk/main.c:124
+#: ../src/cli/cli.c:89 ../src/gui-wizard-gtk/main.c:173
 msgid "Expert mode"
 msgstr "નિષ્ણાત સ્થિતિ"
 
@@ -56,7 +57,7 @@ msgstr "બિનઆંતરિક: પ્રશ્ર્નો પૂછો �
 msgid "Log to syslog"
 msgstr "syslog માં લૉગ લો"
 
-#: ../src/cli/cli.c:94 ../src/gui-wizard-gtk/main.c:121
+#: ../src/cli/cli.c:94 ../src/gui-wizard-gtk/main.c:170
 msgid "Add program names to log"
 msgstr "લૉગ રાખવા માટે કાર્યક્રમ નામો ઉમેરો"
 
@@ -153,7 +154,7 @@ msgstr "'%s' માટે ખરાબ કિંમત: %s"
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data. Do you want "
 "to continue?"
-msgstr ""
+msgstr "ઘટના '%s' ને સંભવિત સંવેદનશીલ માહિતી મોકલવા માટે પરવાનગીની જરૂર છે. શું તમે ચાલુ રાખવા માંગો છો?"
 
 #: ../src/cli/cli-report.c:720
 msgid "You have chosen number out of range"
@@ -167,31 +168,37 @@ msgstr "અયોગ્ય ઇનપુટ, બહાર નીકળી રહ�
 msgid "Select an event to run: "
 msgstr "ચલાવવા માટે ઘટના પસંદ કરો: "
 
-#: ../src/cli/cli-report.c:854
+#: ../src/cli/cli-report.c:858
 msgid "Select a workflow to run: "
-msgstr ""
+msgstr "ચલાવવા માટે કામગીરી પસંદ કરો: "
 
 #: ../src/client-python/debuginfo.py:87
+#, python-brace-format
 msgid "Extracting cpio from {0}"
 msgstr "{0} માંથી cpio ને બહાર કાઢી રહ્યા છે"
 
 #: ../src/client-python/debuginfo.py:92
+#, python-brace-format
 msgid "Can't write to '{0}': {1}"
 msgstr "'{0}' માં લખી શકાતુ નથી: {1}"
 
 #: ../src/client-python/debuginfo.py:107
+#, python-brace-format
 msgid "Can't extract package '{0}'"
 msgstr "પેકેજ '{0}' ને કાઢી શકાતુ નથી"
 
 #: ../src/client-python/debuginfo.py:115
+#, python-brace-format
 msgid "Caching files from {0} made from {1}"
 msgstr "{1} માંથી બનાવેલ {0}  માંથી ફાઇલોનું કેશ કરી રહ્યા છે"
 
 #: ../src/client-python/debuginfo.py:134
+#, python-brace-format
 msgid "Can't extract files from '{0}'"
 msgstr "'{0}' માંથી ફાઇલોને કાઢી શકાતુ નથી"
 
 #: ../src/client-python/debuginfo.py:147
+#, python-brace-format
 msgid "Can't remove '{0}': {1}"
 msgstr "'{0}' ને દૂર કરી શકાતુ નથી: {1}"
 
@@ -199,6 +206,7 @@ msgstr "'{0}' ને દૂર કરી શકાતુ નથી: {1}"
 #. % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
 #. )
 #: ../src/client-python/debuginfo.py:194 ../src/client-python/debuginfo.py:205
+#, python-brace-format
 msgid "Downloading ({0} of {1}) {2}: {3:3}%"
 msgstr "({1}) {2} નું {0}) ડાઉનલોડ કરી રહ્યા છે: {3:3}%"
 
@@ -237,6 +245,7 @@ msgid "Can't disable async download, the output might contain artifacts!"
 msgstr "async ડાઉનલોડ નિષ્ક્રિય કરી શકતા નથી, આઉટપુટ માનવીય વસ્તુઓ સમાવી શકે છે!"
 
 #: ../src/client-python/debuginfo.py:356
+#, python-brace-format
 msgid "Can't setup {0}: {1}, disabling"
 msgstr "{0} ને સુયોજિત કરી શકતા નથી: {1}, નિષ્ક્રિય કરી રહ્યા છે"
 
@@ -257,14 +266,17 @@ msgid "Error retrieving filelists: '{0!s}'"
 msgstr "ફાઇલયાદીને પ્રાપ્ત કરતી વખતે ભૂલ: '{0!s}'"
 
 #: ../src/client-python/debuginfo.py:416
+#, python-brace-format
 msgid "Can't find packages for {0} debuginfo files"
 msgstr "{0} debuginfo ફાઇલો માટે પેકેજોને શોધી શકાતા નથી"
 
 #: ../src/client-python/debuginfo.py:418
+#, python-brace-format
 msgid "Packages to download: {0}"
 msgstr "ડાઉનલોડ કરવા માટે પેકેજો: {0}"
 
 #: ../src/client-python/debuginfo.py:419
+#, python-brace-format
 msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
 msgstr "{0:.2f}Mb ડાઉનલોડ કરી રહ્યા છે, સ્થાપિત થયેલ માપ: {1:.2f}Mb. ચાલુ રાખો?"
 
@@ -274,21 +286,25 @@ msgid "Download cancelled by user"
 msgstr "વપરાશકર્તા દ્દારા રદ થયેલ ડાઉનલોડ"
 
 #: ../src/client-python/debuginfo.py:434
+#, python-brace-format
 msgid ""
 "Warning: Not enough free space in tmp dir '{0}' ({1:.2f}Mb left). Continue?"
 msgstr "ચેતવણી: tmp ડિરેક્ટરી '{0}' માં પૂરતી ખાલી જગ્યા નથી ({1:.2f}Mb બાકી). ચાલુ રાખવું છે?"
 
 #: ../src/client-python/debuginfo.py:443
+#, python-brace-format
 msgid ""
 "Warning: Not enough free space in cache dir '{0}' ({1:.2f}Mb left). "
 "Continue?"
 msgstr "ચેતવણી: કેશ ડિરેક્ટરી '{0}' માં પૂરતી ખાલી જગ્યા નથી ({1:.2f}Mb બાકી). ચાલુ રાખવું છે?"
 
 #: ../src/client-python/debuginfo.py:469
+#, python-brace-format
 msgid "Cannot copy file '{0}': {1}"
 msgstr "ફાઇલ '{0}' ની નકલ કરી શકતા નથી: {1}"
 
 #: ../src/client-python/debuginfo.py:487
+#, python-brace-format
 msgid "Downloading package {0} failed"
 msgstr "પેકેજ {0} ડાઉનલોડ કરતી વખતે નિષ્ફળતા"
 
@@ -301,6 +317,7 @@ msgstr "નિકાળતી વખતે નિષ્ફળતા, ડાઉ�
 #. but it was appearing even if no packages were in fact extracted
 #. (say, when there was one package, and it has download error).
 #: ../src/client-python/debuginfo.py:504
+#, python-brace-format
 msgid "Removing {0}"
 msgstr "{0} દૂર કરી રહ્યા છે"
 
@@ -309,366 +326,448 @@ msgstr "{0} દૂર કરી રહ્યા છે"
 msgid "Can't remove %s, probably contains an error log"
 msgstr "%s ને દૂર કરી શકાતુ નથી, કદાચ ભૂલ લૉગ સમાવે છે"
 
-#: ../src/gtk-helpers/ask_dialogs.c:82
-msgid "_Yes"
-msgstr "હા "
-
-#: ../src/gtk-helpers/ask_dialogs.c:83
+#. Follow GTK3's yes-no-buttons order:
+#. * [No] [Yes]
+#: ../src/gtk-helpers/ask_dialogs.c:87
 msgid "_No"
 msgstr "ના"
 
-#: ../src/gtk-helpers/ask_dialogs.c:89
+#: ../src/gtk-helpers/ask_dialogs.c:88
+msgid "_Yes"
+msgstr "હા "
+
+#: ../src/gtk-helpers/ask_dialogs.c:94
 msgid "Don't ask me again"
 msgstr "ફરીથી મને પૂછો નહિં"
 
 #. if event has no xml description
-#: ../src/gtk-helpers/config_dialog.c:153
+#: ../src/gtk-helpers/config_dialog.c:182
 msgid "No description available"
 msgstr "કોઇ વર્ણન ઉપલબ્ધ નથી"
 
-#: ../src/gtk-helpers/config_dialog.c:274
+#: ../src/gtk-helpers/config_dialog.c:345
 msgid "Configuration"
 msgstr "રૂપરેખાંકન"
 
 #. we can't use this, because we want the workflows first and hashtable
 #. * doesn't return the items in the order they were added
 #. g_hash_table_foreach(configs, (GHFunc)add_config_tabs, config_nb);
-#: ../src/gtk-helpers/config_dialog.c:297
-#: ../src/gtk-helpers/config_dialog.c:299
-#: ../src/gtk-helpers/config_dialog.c:350
+#: ../src/gtk-helpers/config_dialog.c:363
+#: ../src/gtk-helpers/config_dialog.c:365
+#: ../src/gtk-helpers/config_dialog.c:430
 msgid "Workflows"
 msgstr "કામગીરી"
 
-#: ../src/gtk-helpers/config_dialog.c:301
-#: ../src/gtk-helpers/config_dialog.c:303
-#: ../src/gtk-helpers/config_dialog.c:353
+#: ../src/gtk-helpers/config_dialog.c:367
+#: ../src/gtk-helpers/config_dialog.c:369
+#: ../src/gtk-helpers/config_dialog.c:433
 msgid "Events"
 msgstr "ઘટનાઓ"
 
-#: ../src/gtk-helpers/config_dialog.c:307
+#: ../src/gtk-helpers/config_dialog.c:373
 msgid "C_onfigure"
 msgstr "રૂપરેખાંકન કરો "
 
-#: ../src/gtk-helpers/config_dialog.c:309 ../src/gui-wizard-gtk/wizard.c:3316
+#: ../src/gtk-helpers/config_dialog.c:375 ../src/gui-wizard-gtk/wizard.c:3492
 msgid "_Close"
 msgstr "બંધ કરો"
 
-#: ../src/gtk-helpers/event_config_dialog.c:136
+#: ../src/gtk-helpers/event_config_dialog.c:144
 msgid "Show password"
 msgstr "પાસવર્ડને બતાવો"
 
-#: ../src/gtk-helpers/event_config_dialog.c:221
-msgid "Advanced"
-msgstr "ઉન્નત"
-
-#: ../src/gtk-helpers/event_config_dialog.c:241
+#: ../src/gtk-helpers/event_config_dialog.c:275
 msgid "Don't store passwords"
 msgstr "પાસવર્ડોને સંગ્રહ કરી શકાતુ નથી"
 
-#: ../src/gtk-helpers/event_config_dialog.c:264
+#: ../src/gtk-helpers/event_config_dialog.c:285
+msgid "Basic"
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:293
+msgid "Advanced"
+msgstr "ઉન્નત"
+
+#: ../src/gtk-helpers/event_config_dialog.c:309
 msgid "Secret Service is not available, your settings won't be saved!"
 msgstr "ગુપ્ત સેવા ઉપલબ્ધ નથી, તમારા સુયોજનો સંગ્રહાશે નહિ!"
 
-#: ../src/gtk-helpers/event_config_dialog.c:299
-#: ../src/gtk-helpers/event_config_dialog.c:351
-#: ../src/gtk-helpers/workflow_config_dialog.c:76
-#: ../src/gui-wizard-gtk/wizard.c:769 ../src/gui-wizard-gtk/wizard.c:2917
+#: ../src/gtk-helpers/event_config_dialog.c:349
+#: ../src/gtk-helpers/workflow_config_dialog.c:94
+#: ../src/gui-wizard-gtk/wizard.c:758 ../src/gui-wizard-gtk/wizard.c:3113
 msgid "_Cancel"
 msgstr "રદ કરો "
 
-#: ../src/gtk-helpers/event_config_dialog.c:301
-#: ../src/gtk-helpers/event_config_dialog.c:353
-#: ../src/gtk-helpers/workflow_config_dialog.c:78
+#: ../src/gtk-helpers/event_config_dialog.c:351
+#: ../src/gtk-helpers/workflow_config_dialog.c:96
 msgid "_OK"
 msgstr "બરાબર"
 
 #: ../src/gtk-helpers/secrets.c:171
 #, c-format
 msgid "Can't connect over DBus to name '%s' path '%s' interface '%s': %s"
-msgstr ""
+msgstr "નામ '%s' માર્ગ '%s' ઇન્ટરફેસ '%s' પર DBus જોડ શકતા નથી: %s"
 
 #: ../src/gtk-helpers/secrets.c:191
 #, c-format
 msgid "Can't call method '%s' over DBus on path '%s' interface '%s': %s"
-msgstr ""
+msgstr "માર્ગ '%s' ઇન્ટરફેસ '%s' પર DBus પર '%s' પદ્ધતિ કૉલ કરી શકાતું નથી: %s"
 
 #: ../src/gtk-helpers/secrets.c:549
 msgid ""
 "A timeout was reached while waiting for a prompt result from the DBus Secret"
 " Service."
-msgstr ""
+msgstr "DBus ગુપ્ત સેવાથી પોમ્પ્ટ પરીણામ માટે રાહ જોઇ રહ્યુ છે જ્યારે સમયસમાપ્તિ પહોચી હતી."
 
 #: ../src/gtk-helpers/secrets.c:552
 msgid ""
 "Do you want to stop waiting and continue in reporting without properly "
 "loaded configuration?"
-msgstr ""
+msgstr "તમે રાહ જોવી બંધ કરવા અને યોગ્ય રીતે લોડ થયેલ રૂપરેખાંકન વિના અહેવાલમાં ચાલુ રાખવા માંગો છો?"
 
 #: ../src/gtk-helpers/secrets.c:862
 #, c-format
 msgid "D-Bus Secrets Service ReadAlias('%s') method failed: %s"
-msgstr ""
+msgstr "D-Bus ગુપ્ત સેવા ReadAlias('%s') રીત માટે નીષ્ફળ:%s"
 
 #. if the error wasn't about invalid properties we have an another problem
 #: ../src/gtk-helpers/secrets.c:1104
 #, c-format
 msgid "Can't create a secret item for event '%s': %s"
-msgstr ""
+msgstr "'%s' ઘટના માટે ગુપ્ત બાબત બનાવી શકતા નથી:%s"
 
 #: ../src/gtk-helpers/secrets.c:1286
 #, c-format
 msgid "can't get secret value of '%s': %s"
 msgstr "'%s':%s નું ખાનગી મુલ્ય મેળવી શકાતુ નથી"
 
-#: ../src/gui-wizard-gtk/main.c:105
+#: ../src/gtk-helpers/problem_details_widget.c:191
+#, c-format
+msgid "$DATA_DIRECTORY/%s (binary file, %s)"
+msgstr ""
+
+#: ../src/gtk-helpers/problem_details_dialog.c:30
+msgid "Problem details"
+msgstr ""
+
+#: ../src/gtk-helpers/problem_details_dialog.c:33
+msgid "OK"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/main.c:107
+msgid "Preferences"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/main.c:110
+msgid "Quit"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/main.c:154
 msgid ""
 "& [-vpdx] [-e EVENT]... [-g GUI_FILE] PROBLEM_DIR\n"
 "\n"
 "GUI tool to analyze and report problem saved in specified PROBLEM_DIR"
 msgstr "&[-vpdx] [-e EVENT]...[-g GUI_FILE] PROBLEM_DIR\n GUI tool to analyze and report problem saved in specified PROBLEM_DIR"
 
-#: ../src/gui-wizard-gtk/main.c:120
+#: ../src/gui-wizard-gtk/main.c:169
 msgid "Alternate GUI file"
 msgstr "વારાફરતી GUI ફાઇલ"
 
-#: ../src/gui-wizard-gtk/wizard.c:301
-#, c-format
-msgid ""
-"%s is not properly configured. You can configure it now or provide the required information later.\n"
-"\n"
-"Read more about the configuration at: https://fedorahosted.org/abrt/wiki/AbrtConfiguration"
-msgstr ""
-
-#: ../src/gui-wizard-gtk/wizard.c:304
-#, c-format
-msgid ""
-"<b>%s</b> is not properly configured. You can configure it now or provide the required information later.\n"
-"\n"
-"<a href=\"https://fedorahosted.org/abrt/wiki/AbrtConfiguration\">Read more about the configuration</a>"
-msgstr ""
-
-#: ../src/gui-wizard-gtk/wizard.c:320
-#, c-format
-msgid "Con_figure %s"
-msgstr "%s રૂપરેખાંકિત કરો (_f)"
-
-#: ../src/gui-wizard-gtk/wizard.c:347
+#: ../src/gui-wizard-gtk/wizard.c:355
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved data?"
 msgstr "લખી શકાય તેવી ડિરેક્ટરીની જરૂર છે, પરંતુ '%s' ને લખી શકાય તેમ નથી. '%s' માં તેને ખસેડો અને ખસેડેલ માહિતી પર ચલાવો?"
 
-#: ../src/gui-wizard-gtk/wizard.c:760
+#: ../src/gui-wizard-gtk/wizard.c:749
 msgid "View/edit a text file"
 msgstr "લખાણ ફાઇલને દર્શાવો/ફેરફાર કરો"
 
-#: ../src/gui-wizard-gtk/wizard.c:768
+#: ../src/gui-wizard-gtk/wizard.c:757
 msgid "_Save"
 msgstr "સંગ્રહો"
 
-#: ../src/gui-wizard-gtk/wizard.c:987
+#: ../src/gui-wizard-gtk/wizard.c:974
 msgid ""
 "No reporting targets are defined for this problem. Check configuration in "
 "/etc/libreport/*"
-msgstr ""
+msgstr "આ સમસ્યા માટે અહેવાલ લક્ષ્યો વ્યાખ્યાયિત થયેલ નથી.  /etc/libreport/* માં રૂપરેખાંકન તપાસો"
 
-#: ../src/gui-wizard-gtk/wizard.c:1024
+#: ../src/gui-wizard-gtk/wizard.c:1016
 #, c-format
 msgid "(requires: %s)"
 msgstr "(જરૂરી: %s)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1038
+#: ../src/gui-wizard-gtk/wizard.c:1030
 #, c-format
 msgid "(not needed, data already exist: %s)"
 msgstr "(જરૂરી નથી,'%s' માં ડેટા પહેલેથી જ અસ્તિત્વ ધરાવે છે )"
 
-#: ../src/gui-wizard-gtk/wizard.c:1199
+#: ../src/gui-wizard-gtk/wizard.c:1220
 msgid "(click here to view/edit)"
 msgstr "(જોવા/ફેરફાર કરવા માટે અહિંયા ક્લિક કરો)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1210
+#: ../src/gui-wizard-gtk/wizard.c:1231
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(બાઇનરી ફાઇલ, %llu બાઇટ્સ)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1317 ../src/report-newt/report-newt.c:334
+#: ../src/gui-wizard-gtk/wizard.c:1338 ../src/report-newt/report-newt.c:334
 msgid "(no description)"
 msgstr "(વર્ણન નથી)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1325
+#: ../src/gui-wizard-gtk/wizard.c:1346
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu બાઇટ્સ, %u ફાઇલો"
 
-#: ../src/gui-wizard-gtk/wizard.c:1554
+#: ../src/gui-wizard-gtk/wizard.c:1591
 msgid "Processing was canceled"
 msgstr "પ્રક્રિયા રદ થઇ ગઇ"
 
-#: ../src/gui-wizard-gtk/wizard.c:1718
+#: ../src/gui-wizard-gtk/wizard.c:1795
 msgid ""
-"Processing of the problem failed. This can have many reasons but there are two most common:\n"
+"Processing of the problem failed. This can have many reasons but there are three most common:\n"
 "\t▫ <b>network connection problems</b>\n"
 "\t▫ <b>corrupted problem data</b>\n"
+"\t▫ <b>invalid configuration</b>"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1723
+#: ../src/gui-wizard-gtk/wizard.c:1804
 msgid ""
-"If you want to help us, please click on the upload button and provide all problem data for a deep analysis.\n"
-"<i>Before you do that, please consider the security risks. Problem data may contain sensitive information like passwords.\n"
-"The uploaded data are stored in a protected storage and only a limited number of persons can read them.</i>"
+"If you want to update the configuration and try to report again, please open <b>Preferences</b> item\n"
+"in the application menu and after applying the configuration changes click <b>Repeat</b> button."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1841
+#: ../src/gui-wizard-gtk/wizard.c:1810
+msgid ""
+"If you are sure that this problem is not caused by network problems neither by invalid configuration\n"
+"and want to help us, please click on the upload button and provide all problem data for a deep analysis.\n"
+"<i>Before you do that, please consider the security risks. Problem data may contain sensitive information like\n"
+"passwords. The uploaded data are stored in a protected storage and only a limited number of persons can read them.</i>"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1929
 msgid "Processing was interrupted because the problem is not reportable."
-msgstr ""
+msgstr "પ્રક્રિયા વિક્ષેપિત હતી કારણ કે સમસ્યા અહેવાલ આપી શકતી નથી"
 
-#: ../src/gui-wizard-gtk/wizard.c:1851 ../src/gui-wizard-gtk/wizard.c:1918
+#: ../src/gui-wizard-gtk/wizard.c:1939 ../src/gui-wizard-gtk/wizard.c:2080
 msgid "Processing failed."
 msgstr "પ્રક્રિયા નિષ્ફળ."
 
 #. No next event, go to progress page and finish
-#: ../src/gui-wizard-gtk/wizard.c:1858 ../src/gui-wizard-gtk/wizard.c:2623
+#: ../src/gui-wizard-gtk/wizard.c:1946 ../src/gui-wizard-gtk/wizard.c:2837
 msgid "Processing finished."
 msgstr "પ્રક્રિયા સમાપ્ત."
 
-#: ../src/gui-wizard-gtk/wizard.c:1859
+#: ../src/gui-wizard-gtk/wizard.c:1947
 msgid "Processing finished, please proceed to the next step."
 msgstr "પ્રક્રિયા સમાપ્ત, મહેરબાની કરી  આગળનાં તબક્કામાં આગળ વધો."
 
+#: ../src/gui-wizard-gtk/wizard.c:1987
+msgid ""
+"Private ticket is requested but the group name 'private' has been deprecated. We kindly ask you to use 'fedora_contrib_private' group name. Click Yes button or update the configuration manually. Or click No button, if you really want to use 'private' group.\n"
+"\n"
+"If you are not sure what this dialogue means, please trust us and click Yes button.\n"
+"\n"
+"Read more about the private bug reports at:\n"
+"https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets\n"
+"https://bugzilla.redhat.com/show_bug.cgi?id=1044653\n"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1995
+msgid ""
+"Private ticket is requested but the group name <i>private</i> has been deprecated. We kindly ask you to use <i>fedora_contrib_private</i> group name. Click Yes button or update the configuration manually. Or click No button, if you really want to use <i>private</i> group.\n"
+"\n"
+"If you are not sure what this dialogue means, please trust us and click Yes button.\n"
+"\n"
+"Read more about the private bug reports at:\n"
+"<a href=\"https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets\">https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets</a>\n"
+"<a href=\"https://bugzilla.redhat.com/show_bug.cgi?id=1044653\">https://bugzilla.redhat.com/show_bug.cgi?id=1044653</a>\n"
+msgstr ""
+
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:1915
+#: ../src/gui-wizard-gtk/wizard.c:2077
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "ઘટના '%s' માટે પ્રક્રિયા વ્યાખ્યાયિત થયેલ નથી"
 
-#: ../src/gui-wizard-gtk/wizard.c:1929
+#: ../src/gui-wizard-gtk/wizard.c:2091
 msgid "Processing interrupted: can't continue without writable directory."
 msgstr "પ્રક્રિયા વિક્ષેપિત: લેખિત યાદી વગર ચાલુ રાખશો નહી."
 
-#: ../src/gui-wizard-gtk/wizard.c:1966
+#: ../src/gui-wizard-gtk/wizard.c:2128
 msgid "Processing..."
 msgstr "પ્રક્રિયામાં..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2055
+#: ../src/gui-wizard-gtk/wizard.c:2226
 msgid "Cannot check backtrace rating because of invalid event name"
-msgstr ""
+msgstr "અમાન્ય ઘટના નામના કારણે બેકટ્રેસ રેટિંગ ચકાસણી કરી શકતા નથી"
 
-#: ../src/gui-wizard-gtk/wizard.c:2643
+#: ../src/gui-wizard-gtk/wizard.c:2857
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
 "Do you want to continue?"
 msgstr "ઘટના '%s' ને સંભવિત સંવેદનશીલ માહિતી મોકલવા માટે પરવાનગીની જરૂર છે.\nશું તમે ચાલુ રાખવા માંગો છો?"
 
-#: ../src/gui-wizard-gtk/wizard.c:2691
+#: ../src/gui-wizard-gtk/wizard.c:2905
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
-msgstr ""
+msgstr "આ સમસ્યાનો અહેવાલ જોઇએ નહીં(તે સંભવિત જાણીતી સમસ્યા છે).%s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2918
+#: ../src/gui-wizard-gtk/wizard.c:3114
 msgid "_Open"
 msgstr "ખોલો"
 
-#: ../src/gui-wizard-gtk/wizard.c:2940
+#: ../src/gui-wizard-gtk/wizard.c:3136
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' એ સામાન્ય ફાઇલ નથી"
 
-#: ../src/gui-wizard-gtk/wizard.c:2954
+#: ../src/gui-wizard-gtk/wizard.c:3150
 msgid "You are trying to copy a file onto itself"
 msgstr "તમે પોતાનાં પર ફાઇલની નકલ કરવાનો પ્રયત્ન કરી રહ્યા છે"
 
-#: ../src/gui-wizard-gtk/wizard.c:2961
+#: ../src/gui-wizard-gtk/wizard.c:3157
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "'%s' ની નકલ કરી શકાતી નથી: %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:2976
+#: ../src/gui-wizard-gtk/wizard.c:3172
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "વસ્તુ '%s' પહેલેથી જ અસ્તિત્વ ધરાવે છે અને બદલી શકાય તેમ નથી"
 
-#: ../src/gui-wizard-gtk/wizard.c:3168
+#: ../src/gui-wizard-gtk/wizard.c:3334
 msgid "Include"
 msgstr "સમાવો"
 
-#: ../src/gui-wizard-gtk/wizard.c:3179
+#: ../src/gui-wizard-gtk/wizard.c:3345
 msgid "Name"
 msgstr "નામ"
 
-#: ../src/gui-wizard-gtk/wizard.c:3189
+#: ../src/gui-wizard-gtk/wizard.c:3355
 msgid "Value"
 msgstr "કિંમત"
 
-#: ../src/gui-wizard-gtk/wizard.c:3223
+#: ../src/gui-wizard-gtk/wizard.c:3389
 msgid "Problem description"
 msgstr "સમસ્યા વર્ણન"
 
-#: ../src/gui-wizard-gtk/wizard.c:3224
+#: ../src/gui-wizard-gtk/wizard.c:3390
 msgid "Select how to report this problem"
 msgstr "આ સમસ્યાનો અહેવાલ કેવી રીતે આપવો તે પસંદ કરો"
 
-#: ../src/gui-wizard-gtk/wizard.c:3225
+#: ../src/gui-wizard-gtk/wizard.c:3391
 msgid "Provide additional information"
 msgstr "વધારાની જાણકારીને પૂરી પાડો"
 
-#: ../src/gui-wizard-gtk/wizard.c:3226
+#: ../src/gui-wizard-gtk/wizard.c:3392
 msgid "Review the data"
 msgstr "માહિતીનું રિવ્યૂ કરો"
 
-#: ../src/gui-wizard-gtk/wizard.c:3227
+#: ../src/gui-wizard-gtk/wizard.c:3393
 msgid "Confirm data to report"
 msgstr "અહેવાલ કરવા માટે માહિતીની ખાતરી કરો"
 
-#: ../src/gui-wizard-gtk/wizard.c:3228
+#: ../src/gui-wizard-gtk/wizard.c:3394
 msgid "Processing"
 msgstr "પ્રક્રિયામાં"
 
-#: ../src/gui-wizard-gtk/wizard.c:3229
+#: ../src/gui-wizard-gtk/wizard.c:3395
 msgid "Processing done"
 msgstr "પ્રક્રિયા પૂર્ણ"
 
-#: ../src/gui-wizard-gtk/wizard.c:3318
+#: ../src/gui-wizard-gtk/wizard.c:3494
 msgid "_Stop"
 msgstr "થોભો"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3321
+#: ../src/gui-wizard-gtk/wizard.c:3497
 msgid "Upload for analysis"
 msgstr "વિશ્લેષણ માટે અપલોડ કરો"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3324
+#: ../src/gui-wizard-gtk/wizard.c:3500
+msgid "Repeat"
+msgstr ""
+
+#. else gtk_widget_hide won't work
+#: ../src/gui-wizard-gtk/wizard.c:3502
 msgid "_Forward"
 msgstr "આગળ ધપાવો"
 
-#: ../src/gui-wizard-gtk/wizard.c:3413
+#. else gtk_widget_hide won't work
+#: ../src/gui-wizard-gtk/wizard.c:3505 ../src/gui-wizard-gtk/wizard.glade.h:14
+msgid "Details"
+msgstr "વિગતો"
+
+#: ../src/gui-wizard-gtk/wizard.c:3615
 msgid ""
-"In order to enable the built-in screencasting functionality the package recordmydesktop has to be installed. Please run the following command if you want to install it.\n"
+"In order to enable the built-in screencasting functionality the package fros-recordmydesktop has to be installed. Please run the following command if you want to install it.\n"
 "\n"
-"<b>su -c \"yum install recordmydesktop\"</b>"
+"<b>su -c \"yum install fros-recordmydesktop\"</b>"
 msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
-msgid "Possible sensitive data detected"
-msgstr ""
+msgid ""
+"Use this button to generate more informative backtrace after you installed "
+"additional debug packages"
+msgstr "તમે વધારાનાં ડિબગ પેકેજોને સ્થાપિત કરો પછી વધારે માહિતીપૂર્ણ બેકટ્રેસને ઉત્પન્ન કરવા માટે આ બટનને વાપરો"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
-msgid "Restrict access to the report"
-msgstr "અહેવાલ પૂરતી જ પરવાનગી મર્યાદિત રાખો"
+msgid ""
+"Please review the data before it gets reported. Depending on reporter "
+"chosen, it may end up publicly visible."
+msgstr "મહેરબાની કરીને તે અહેવાલ મેળવતા પહેલાં ડેટાનુ નિરીક્ષણ કરો. પત્રકારની પસંદ  પર આધાર રાખીને, તેને જાહેરમાં દેખાય તેમ અંત કરી શકે છે."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
-msgid ""
-"No one except Fedora Contrib group members will be allowed to see the report"
-" with restricted access (not even you)"
+msgid "Sensitive words"
 msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
-msgid "Read more about reports with restricted access"
+msgid "Custom"
 msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
+msgid "Clear the search bar to see the list of security sensitive words."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:6
+msgid "file"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:7
+msgid "data"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:8
+msgid "Search"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:9
+msgid ""
+"Possible sensitive data detected, feel free to edit the report and remove "
+"them."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:10
+msgid "Restrict access to the report"
+msgstr "અહેવાલ પૂરતી જ પરવાનગી મર્યાદિત રાખો"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:11
+msgid ""
+"No one except Fedora Contrib group members will be allowed to see the report"
+" with restricted access (not even you)"
+msgstr "Fedora કર્મચારીઓ સિવાય કોઈ એક મર્યાદિત પ્રવેશ સાથે (તમે પણ નહી) અહેવાલ જોવા પરવાનગી આપવામાં આવશે "
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:12
+msgid "Read more about reports with restricted access"
+msgstr "મર્યાદિત પરવાનગી સાથે અહેવાલો વિશે વધુ વાંચો"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid ""
 "On the following screens, you will be asked to describe how the problem "
 "occurred, to choose how to analyze the problem (if needed), to review "
@@ -676,158 +775,152 @@ msgid ""
 "'Forward' to proceed."
 msgstr "નીચેની સ્ક્રીનો પર, કેવી રીતે સમસ્યા ઉદ્ભવી તેનાં વર્ણન માટે તમે પૂછશો, કેવી રીતે સમસ્યાનું વિશ્ર્લેષણ કરવું તે પસંદ કરવા માટે (જો જરૂરી હોય તો), સંગ્રહ થયેલ માહિતીનું રિવ્યૂ કરવા માટે, અને સમસ્યાને ક્યાં અહેવાલ કરવી જોઇએ તે પસંદ કરવા માટે. આગળ ધપાવા માટે 'આગળ ધપાવો' પર ક્લિક કરો."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:6
-msgid "Details"
-msgstr "વિગતો"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:7
+#: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid ""
 "How did this problem happen (step-by-step)? How can it be reproduced? Any "
 "additional comments useful for diagnosing the problem? Please use English if"
 " possible."
 msgstr "કેવી રીતે આ સમસ્યા ઉદ્ભવી (ક્રમશ:)? તેને કેવી રીતે ફરી ઉત્પન્ન કરી શકાય? કોઇપણ વધારાની ટિપ્પણીઓ સમસ્યાનું નિદાન કરવા માટે ઉપયોગી છે? મહેરબાની કરીને અંગ્રેજી વાપરો જો શક્ય હોય તો."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:8
+#: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "You need to fill the how to before you can proceed..."
 msgstr "તમે પ્રક્રિયા કરી શકો છો તે પહેલાં તમે કેવી રીતે ભરો તે જરૂરી છે..."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:9
+#: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
 msgstr "<b>તમારી ટિપ્પણીઓ ખાનગી નથી.</b> તેઓ સાર્વજનિક રીતે દૃશ્યમાન સમસ્યા અહેવાલોમાં સમાવેલ હોઇ શકે છે."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:10
+#: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid "If you don't know how to describe it, you can"
 msgstr "જો તમે તેને કેવી રીતે વર્ણવવુ તે જાણતા નથી, તમે કરી શકો."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:11
+#: ../src/gui-wizard-gtk/wizard.glade.h:19
 msgid "add a screencast"
 msgstr "સ્ક્રીનકાસ્ટ ઉમેરો"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:12
+#: ../src/gui-wizard-gtk/wizard.glade.h:20
 msgid "I don't know what caused this problem"
 msgstr "હું જાણતો નથી કે કોનાં કારણે આ સમસ્યા ઉદ્ભવી"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:13
-msgid ""
-"Use this button to generate more informative backtrace after you installed "
-"additional debug packages"
-msgstr "તમે વધારાનાં ડિબગ પેકેજોને સ્થાપિત કરો પછી વધારે માહિતીપૂર્ણ બેકટ્રેસને ઉત્પન્ન કરવા માટે આ બટનને વાપરો"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:14
-msgid ""
-"Please review the data before it gets reported. Depending on reporter "
-"chosen, it may end up publicly visible."
-msgstr ""
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:15
+#: ../src/gui-wizard-gtk/wizard.glade.h:21
 msgid "Size:"
 msgstr "માપ:"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:16
+#: ../src/gui-wizard-gtk/wizard.glade.h:22
 msgid "Attach a file"
 msgstr "ફાઇલને જોડો"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:17
+#: ../src/gui-wizard-gtk/wizard.glade.h:23
 msgid "I reviewed the data and _agree with submitting it"
 msgstr "મેં માહિતીનું રિવ્યૂ કર્યુ અને તેને સમાવવા સંમત છુ (_a)"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:18
+#: ../src/gui-wizard-gtk/wizard.glade.h:24
 msgid ""
 "If you are reporting to a remote server, make sure you removed all private "
 "data (such as usernames and passwords). Backtrace, command line, environment"
 " variables are the typical items in need of examining."
 msgstr "જો તમે દૂરસ્થ સર્વરમાં અહેવાલ કરી રહ્યા હોય તો, ખાતરી કરો કે બધી ખાનગી માહિતીને દૂર કરેલ છે (જેવી કે વપરાશકર્તાનામ અને પાસવર્ડ). બેકટ્રેસ, આદેશ વાકય, પર્યાવરણ ચલો એ નિરીક્ષણ કરવા માટે લાક્ષણિક વસ્તુઓ છે."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:19
+#: ../src/gui-wizard-gtk/wizard.glade.h:25
 msgid "Processing did not start yet"
 msgstr "પ્રક્રિયા હજુ સુધી ચાલુ થઇ નથી"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:20
+#: ../src/gui-wizard-gtk/wizard.glade.h:26
 msgid "Show log"
 msgstr "લૉગ બતાવો"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:21
+#: ../src/gui-wizard-gtk/wizard.glade.h:27
 msgid "Reporting has finished. You can close this window now."
 msgstr "અહેવાલીકરણ સમાપ્ત થયેલ છે. તમે હવે આ વિન્ડોને બંધ કરી શકો છો."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:22
+#: ../src/gui-wizard-gtk/wizard.glade.h:28
 msgid ""
 "If you want to report the problem to a different destination, collect "
 "additional information, or provide a better problem description and repeat "
 "reporting process, press 'Forward'."
 msgstr "જો તમે વિવિધ સ્થળમાં સમસ્યાનો અહેવાલ કરવા માંગો તો, વધારાની જાણકારીને ભેગી કરો, અથવા સારામાં સારી સમસ્યા વર્ણનને પૂરી પાડો અને અહેવાલીકરણ પ્રક્રિયા વારંવાર કરો, 'આગળ ધપાવો' દબાવો."
 
-#: ../src/include/internal_libreport.h:969
+#: ../src/include/internal_libreport.h:989
 msgid "Be verbose"
-msgstr ""
+msgstr "વર્બોઝ રહો"
 
-#: ../src/include/internal_libreport.h:970
-#: ../src/plugins/reporter-bugzilla.c:929
+#: ../src/include/internal_libreport.h:990
+#: ../src/plugins/reporter-bugzilla.c:895
 #: ../src/plugins/reporter-kerneloops.c:166
-#: ../src/plugins/reporter-mailx.c:198 ../src/plugins/reporter-print.c:56
-#: ../src/plugins/reporter-rhtsupport.c:254
-#: ../src/plugins/reporter-upload.c:227
+#: ../src/plugins/reporter-mailx.c:203 ../src/plugins/reporter-print.c:56
+#: ../src/plugins/reporter-rhtsupport.c:390
+#: ../src/plugins/reporter-upload.c:250
 msgid "Problem directory"
 msgstr "સમસ્યા ડિરેક્ટરી"
 
-#: ../src/lib/abrt_sock.c:158
+#: ../src/lib/abrt_sock.c:160
 #, c-format
 msgid "Can't delete: '%s'"
 msgstr "કાઢી શકાતુ નથી: '%s'"
 
-#: ../src/lib/abrt_sock.c:194
+#: ../src/lib/abrt_sock.c:196
 msgid "locked by another process"
 msgstr "અન્ય પ્રક્રિયા દ્વારા તાળું મરાયેલું છે"
 
-#: ../src/lib/abrt_sock.c:203
+#: ../src/lib/abrt_sock.c:205
 msgid "permission denied"
 msgstr "પરવાનગી નામંજૂર"
 
-#: ../src/lib/abrt_sock.c:206
+#: ../src/lib/abrt_sock.c:208
 msgid "not a problem directory"
 msgstr "સમસ્યા નથી એવી ડિરેક્ટરી"
 
-#: ../src/lib/abrt_sock.c:215
+#: ../src/lib/abrt_sock.c:217
 #, c-format
 msgid "Can't delete '%s': %s"
 msgstr "'%s' કાઢી શકાતુ નથી: %s"
 
-#: ../src/lib/client.c:56 ../src/lib/client.c:89
+#: ../src/lib/client.c:55 ../src/lib/client.c:87
 msgid "y"
 msgstr "y"
 
-#: ../src/lib/client.c:57 ../src/lib/client.c:90
+#: ../src/lib/client.c:56 ../src/lib/client.c:88
 msgid "N"
 msgstr "N"
 
-#: ../src/lib/client.c:91
+#: ../src/lib/client.c:89
 msgid "f"
 msgstr "f"
 
-#: ../src/lib/create_dump_dir.c:39
+#: ../src/lib/create_dump_dir.c:41
 #, c-format
 msgid "Missing required item: '%s'"
 msgstr "જરૂરી વસ્તુની ગેરહાજરી:'%s'"
 
-#: ../src/lib/create_dump_dir.c:54
+#: ../src/lib/create_dump_dir.c:56
 #, c-format
 msgid "uid value is not valid: '%s'"
-msgstr ""
+msgstr "uid મુલ્ય કાયદેસર નથી:'%s' "
 
-#: ../src/lib/curl.c:226
+#: ../src/lib/curl.c:227
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "અપલોડેડ: %llu kbytes નું %llu"
 
-#: ../src/lib/curl.c:598
+#: ../src/lib/curl.c:635
 #, c-format
 msgid "Sending %s to %s"
 msgstr "%s માં %s ને મોકલી રહ્યા છે"
 
+#: ../src/lib/curl.c:659
+#, c-format
+msgid "Please enter user name for '%s':"
+msgstr ""
+
+#: ../src/lib/curl.c:665
+#, c-format
+msgid "Please enter password for '%s':"
+msgstr ""
+
 #. This ends up a "reporting status message" in abrtd
-#: ../src/lib/curl.c:630
+#: ../src/lib/curl.c:688
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "%s માં %s ને સફળતાપૂર્વક મોકલ્યું"
@@ -855,69 +948,137 @@ msgstr "અયોગ્ય બુલિયન કિંમત '%s'"
 msgid "Unsupported option type"
 msgstr "બિનઆધારભૂત વિકલ્પ પ્રકાર"
 
-#: ../src/lib/event_config.c:460
+#: ../src/lib/event_config.c:464
 #, c-format
 msgid ""
 "The problem cannot be reported due to an invalid data. '%s' file does not "
 "contain a number."
-msgstr ""
+msgstr "સમસ્યા અયોગ્ય માહિતીને કારણે અહેવાલ કરી શકાતી નથી, '%s' ફાઇલ નંબરને સમાવી શકતુ નથી."
 
-#: ../src/lib/event_config.c:464
+#: ../src/lib/event_config.c:468
 msgid "Please report this problem to ABRT project developers."
-msgstr ""
+msgstr "મહેરબાની કરીને ABRT પ્રોજેક્ટ વિકાસકર્તાને આ સમસ્યાના અહેવાલની જાણ કરો"
 
-#: ../src/lib/event_config.c:470
+#: ../src/lib/event_config.c:474
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "બેકટ્રેસ એ અપૂરતુ છે, મહેરબાની કરીને ખાતરી કરો કે પુન:ઉત્પન્ન કરવા માટે સારાં પગલાઓ પૂરા પાડો છો."
 
-#: ../src/lib/event_config.c:471
+#: ../src/lib/event_config.c:475
 msgid "The backtrace probably can't help developer to diagnose the bug."
-msgstr ""
+msgstr "બેકટ્રેસ કદાચ ભૂલ નિદાન માટે વપરાશકર્તાને મદદ કરી શકે નહી."
 
-#: ../src/lib/event_config.c:477
+#: ../src/lib/event_config.c:481
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "અહેવાલ કરવાનું નિષ્ક્રિય થયેલ છે કારણ કે બેકટ્રેસ ઉપયોગ કરી શકાય તેવુ નથી."
 
-#: ../src/lib/event_config.c:481
+#: ../src/lib/event_config.c:485
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again."
-msgstr ""
+msgstr "મહેરબાની કરીને આદેશની મદદથી જાતેજ ડિબગ જાણકારીને સ્થાપિત કરવાનો પ્રયત્ન કરો: \"debuginfo-install %s\" અને ફરીથી પ્રયત્ન કરો "
 
-#: ../src/lib/event_config.c:483
+#: ../src/lib/event_config.c:487
 msgid "A proper debuginfo is probably missing or the coredump is corrupted."
-msgstr ""
+msgstr "યોગ્ય ડિબગ માહિતી કદાચ ગુમ થયેલ છે અથવા કોરદમ્પ બગડેલ હોય છે."
 
-#: ../src/lib/make_descr.c:110
+#: ../src/lib/ureport.c:324
+#, c-format
+msgid ""
+"Your problem seems to be caused by %s\n"
+"\n"
+"%s\n"
+msgstr "તમારી સમસ્યા %s ના કારણે હોય તેવુ લાગે\n\n%s\n"
+
+#: ../src/lib/ureport.c:327
+msgid "Your problem seems to be caused by one of the following:\n"
+msgstr "તમારી સમસ્યા નીચેનામાંથી એક ને કારણે હોય તેવુ જણાય છે\n"
+
+#: ../src/lib/ureport.c:497
+#, c-format
+msgid "Failed to upload uReport to the server '%s' with curl: %s"
+msgstr "   કર્લ સાથે '%s' સર્વર uReport અપલોડ કરવામાં નિષ્ફળ:%s"
+
+#: ../src/lib/ureport.c:503
+#, c-format
+msgid "The URL '%s' does not exist (got error 404 from server)"
+msgstr "URL '%s' અસ્તિત્વમાં નથી(સર્વરમાંથી 404 ભૂલ મળી)"
+
+#: ../src/lib/ureport.c:509
+#, c-format
+msgid "The server at '%s' encountered an internal error (got error 500)"
+msgstr " સર્વર %s' પર અચાનક આંતરિક ભૂલ આવી (500 ભૂલ મળી)"
+
+#: ../src/lib/ureport.c:515
+#, c-format
+msgid "The server at '%s' currently can't handle the request (got error 503)"
+msgstr "'%s' પર હાલમાં સર્વર વિનંતીને ઉકેલ કરી શકતા નથી (503 ભૂલ મળી)"
+
+#. can't print better error message
+#: ../src/lib/ureport.c:524
+#, c-format
+msgid "Unexpected HTTP response from '%s': %d"
+msgstr "'%s' માંથી અનિચ્છનીય HTTP પ્રતિસાદ:%d"
+
+#: ../src/lib/ureport.c:533
+#, c-format
+msgid "Unable to parse response from ureport server at '%s'"
+msgstr "'%s' પર ureport સર્વરમાંથી જવાબ વિશ્લેશિત કરવામાં અસમર્થ છે"
+
+#: ../src/lib/ureport.c:543
+#, c-format
+msgid "The response from '%s' has invalid format"
+msgstr "'%s' માંથી અમાન્ય ફોર્મેટ પાસે જવાબ"
+
+#. HTTP CODE 202 means that call was successful but the response
+#. has an error message
+#: ../src/lib/ureport.c:549
+#, c-format
+msgid "Type mismatch has been detected in the response from '%s'"
+msgstr "'%s' દ્વારા ખોટી જોડણી ના પ્રકાર  જવાબમાં શોધી કાઢે છે"
+
+#: ../src/lib/ureport.c:734
+msgid "Failed on submitting the problem"
+msgstr "સમસ્યાને રજુ કરવામાં નીષ્ફળતા"
+
+#: ../src/lib/ureport.c:776
+#, c-format
+msgid "The server at '%s' responded with an error: '%s'"
+msgstr "સર્વર '%s' માં ક્ષતિવાળો પ્રત્યુત્તર આપ્યો:'%s'"
+
+#: ../src/lib/make_descr.c:149 ../src/lib/make_descr.c:160
 msgid "Reported:"
 msgstr "અહેવાલ અપાયેલ:"
 
-#: ../src/lib/parse_options.c:58
+#: ../src/lib/make_descr.c:149
+msgid "cannot be reported"
+msgstr ""
+
+#: ../src/lib/parse_options.c:60
 msgid "Usage: "
 msgstr "વપરાશ: "
 
-#: ../src/lib/problem_data.c:212
+#: ../src/lib/problem_data.c:214
 #, c-format
 msgid "Essential element '%s' is missing, can't continue"
 msgstr "જરૂરી ઘટક '%s' એ ગેરહાજર છે, ચાલુ કરી શકાતુ નથી"
 
-#: ../src/lib/run_event.c:761
-#, c-format
-msgid "('%s' was killed by signal %u)\n"
-msgstr ""
-
 #: ../src/lib/run_event.c:763
 #, c-format
-msgid "('%s' completed successfully)\n"
-msgstr ""
+msgid "('%s' was killed by signal %u)\n"
+msgstr "(%u આદેશ દ્વારા '%s' નો નાશ થયો હતો)\n"
 
 #: ../src/lib/run_event.c:765
 #, c-format
+msgid "('%s' completed successfully)\n"
+msgstr "('%s' સફતાથી પૂર્ણ)\n"
+
+#: ../src/lib/run_event.c:767
+#, c-format
 msgid "('%s' exited with %u)\n"
-msgstr ""
+msgstr "(%u સાથે '%s' બહાર જાય)\n"
 
 #: ../src/plugins/abrt_rh_support.c:356
 #, c-format
@@ -968,12 +1129,13 @@ msgid "Report to Bugzilla bug tracker"
 msgstr "બગઝીલા ભૂલ ટ્રેકરને અહેવાલ કરો"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:3
-msgid "Bugzilla URL"
-msgstr "બગઝીલા URL"
+#: ../src/plugins/report_Uploader.xml.in.h:6
+msgid "User name"
+msgstr "વપરાશકર્તા નામ"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:4
-msgid "Address of Bugzilla server"
-msgstr "બગઝીલા સર્વરનું સરનામું"
+msgid "Bugzilla account user name"
+msgstr "બગઝીલા ખાતા વપરાશકર્તા નામ"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:5
 msgid ""
@@ -982,21 +1144,22 @@ msgid ""
 msgstr "તમે bugzilla.redhat.com ખાતાને બનાવી શકો છો &lt;a href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:6
-msgid "User name"
-msgstr "વપરાશકર્તા નામ"
-
-#: ../src/plugins/report_Bugzilla.xml.in.h:7
-msgid "Bugzilla account user name"
-msgstr "બગઝીલા ખાતા વપરાશકર્તા નામ"
-
-#: ../src/plugins/report_Bugzilla.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:7
+#: ../src/plugins/report_Uploader.xml.in.h:8
 msgid "Password"
 msgstr "પાસવર્ડ"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:9
+#: ../src/plugins/report_Bugzilla.xml.in.h:7
 msgid "Bugzilla account password"
 msgstr "બગઝીલા ખાતા પાસવર્ડ"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:8
+msgid "Bugzilla URL"
+msgstr "બગઝીલા URL"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:9
+msgid "Address of Bugzilla server"
+msgstr "બગઝીલા સર્વરનું સરનામું"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:10
 #: ../src/plugins/report_RHTSupport.xml.in.h:9
@@ -1011,70 +1174,70 @@ msgid "Check SSL key validity"
 msgstr "SSL કી યોગ્યતાને ચકાસો"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:12
-msgid "Restrict access"
-msgstr "મર્યાદિત પરવાનગી"
-
-#: ../src/plugins/report_Bugzilla.xml.in.h:13
-msgid ""
-"Restrict access to the created bugzilla ticket allowing only users from "
-"specified groups to view it (see advanced settings for more details)"
-msgstr ""
-
-#: ../src/plugins/report_Bugzilla.xml.in.h:14
 msgid "Bugzilla product"
 msgstr "બગઝીલા પ્રૉડક્ટ"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:15
+#: ../src/plugins/report_Bugzilla.xml.in.h:13
 msgid ""
 "Specify this only if you needed different product than specified in /etc/os-"
 "release"
-msgstr ""
+msgstr "આ સ્પષ્ટ કરો જો તમે / etc / OS-પ્રકાશનમાં સ્પષ્ટ કરતાં અલગ ઉત્પાદન જરૂરી હોય "
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:16
+#: ../src/plugins/report_Bugzilla.xml.in.h:14
 msgid "Bugzilla product version"
 msgstr "બગઝીલા પ્રૉડક્ટ આવૃત્તી"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:17
+#: ../src/plugins/report_Bugzilla.xml.in.h:15
 msgid ""
 "Specify this only if you needed different product version than specified in "
 "/etc/os-release"
-msgstr ""
+msgstr "આ સ્પષ્ટ કરો જો તમે / etc / OS-પ્રકાશનમાં સ્પષ્ટ કરતાં અલગ ઉત્પાદન આવૃત્તિ જરૂરી હોય "
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:18
+#: ../src/plugins/report_Bugzilla.xml.in.h:16
 #: ../src/plugins/report_Kerneloops.xml.in.h:5
 #: ../src/plugins/report_RHTSupport.xml.in.h:11
-#: ../src/plugins/report_Uploader.xml.in.h:6
+#: ../src/plugins/report_Uploader.xml.in.h:10
 #: ../src/plugins/report_uReport.xml.in.h:9
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:4
 msgid "HTTP Proxy"
 msgstr "HTTP પ્રોક્સી"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:19
+#: ../src/plugins/report_Bugzilla.xml.in.h:17
 #: ../src/plugins/report_Kerneloops.xml.in.h:6
 #: ../src/plugins/report_RHTSupport.xml.in.h:12
-#: ../src/plugins/report_Uploader.xml.in.h:7
+#: ../src/plugins/report_Uploader.xml.in.h:11
 #: ../src/plugins/report_uReport.xml.in.h:10
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:5
 msgid "Sets the proxy server to use for HTTP"
 msgstr "HTTPS માટે વાપરવાનું પ્રોક્સી સર્વર સુયોજીત કરે છે"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:20
+#: ../src/plugins/report_Bugzilla.xml.in.h:18
 #: ../src/plugins/report_Kerneloops.xml.in.h:7
 #: ../src/plugins/report_RHTSupport.xml.in.h:13
-#: ../src/plugins/report_Uploader.xml.in.h:8
+#: ../src/plugins/report_Uploader.xml.in.h:12
 #: ../src/plugins/report_uReport.xml.in.h:11
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:6
 msgid "HTTPS Proxy"
 msgstr "HTTPS પ્રોક્સી"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:21
+#: ../src/plugins/report_Bugzilla.xml.in.h:19
 #: ../src/plugins/report_Kerneloops.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:14
-#: ../src/plugins/report_Uploader.xml.in.h:9
+#: ../src/plugins/report_Uploader.xml.in.h:13
 #: ../src/plugins/report_uReport.xml.in.h:12
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:7
 msgid "Sets the proxy server to use for HTTPS"
 msgstr "HTTPS માટે વાપરવાનું પ્રોક્સી સર્વર સુયોજીત કરે છે"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:20
+msgid "Restrict access"
+msgstr "મર્યાદિત પરવાનગી"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:21
+msgid ""
+"Restrict access to the created bugzilla ticket allowing only users from "
+"specified groups to view it (see advanced settings for more details)"
+msgstr "ચોક્કસ જૂથોમાંથી વપરાશકર્તાઓ માત્ર  તેને જોવા માટે પરવાનગી આપે છે  Bugzilla ટિકિટ બનાવી વપરાશ પ્રતિબંધિત છે (વધુ વિગતો માટે એડ્વાન્સ સુયોજનો જુઓ)"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:22
 msgid "Groups"
@@ -1085,7 +1248,7 @@ msgid ""
 "Restrict the access to specified groups &lt;a "
 "href=\"https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
 "tickets\"&gt;?&lt;/a&gt;"
-msgstr ""
+msgstr "સ્પષ્ટ કરેલ જૂથોમાં પરવાનગી નિયંત્રિત કરો અને તે;a href=\"https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets\">?</a>"
 
 #: ../src/plugins/report.c:37
 msgid ""
@@ -1115,21 +1278,21 @@ msgstr "બેકટ્રેસનું પદચ્છેદન કરી શ
 
 #: ../src/plugins/reporter-bugzilla.c:366
 msgid "Can't generate stacktrace description (no crash thread?)"
-msgstr ""
+msgstr "સ્ટેકટ્રેસ વર્ણન ઉત્પન કરી શકાતુ નથી(વિચાર તોડાતો નથી?)"
 
 #: ../src/plugins/reporter-bugzilla.c:764
 msgid ""
 "Warning, private ticket groups already specified as cmdline argument, "
 "ignoring the env variable and configuration"
-msgstr ""
+msgstr "ચેતવણી, ખાનગી ટિકિટ જૂથો પહેલાથી  EnV ચલ અને રૂપરેખાંકન અવગણીને cmdline ની જેમ દલીલ સ્પષ્ટ કરો, "
 
 #: ../src/plugins/reporter-bugzilla.c:775
-#: ../src/plugins/reporter-rhtsupport.c:178
+#: ../src/plugins/reporter-rhtsupport.c:274
 msgid "Can't continue without login"
 msgstr "લોગઇન વગર ચાલુ રાખી શકશો નહી"
 
 #: ../src/plugins/reporter-bugzilla.c:788
-#: ../src/plugins/reporter-rhtsupport.c:191
+#: ../src/plugins/reporter-rhtsupport.c:287
 msgid "Can't continue without password"
 msgstr "પાસવર્ડ વગર ચાલુ રાખી શકશો નહી"
 
@@ -1140,18 +1303,14 @@ msgstr "%s પર બગઝીલામાં પ્રવેશ કરી ર�
 
 #: ../src/plugins/reporter-bugzilla.c:801
 msgid "Invalid password or login. Please enter your BZ login:"
-msgstr ""
+msgstr "પાસવર્ડ અથવા પ્રવેશ અમાન્ય. મહેરબાની કરીને તમારો BZ પ્રવેશ દાખલ કરો:"
 
 #: ../src/plugins/reporter-bugzilla.c:804
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
-msgstr ""
+msgstr "પાસવર્ડ અથવા પ્રવેશ અમાન્ય. મહેરબાની કરીને '%s' માટે પાસવર્ડ દાખલ કરો"
 
-#: ../src/plugins/reporter-bugzilla.c:839
-msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
-msgstr ""
-
-#: ../src/plugins/reporter-bugzilla.c:857
+#: ../src/plugins/reporter-bugzilla.c:823
 msgid ""
 "\n"
 "& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\n"
@@ -1192,149 +1351,149 @@ msgid ""
 "filed. The default value is 'ABRT Server'\n"
 "\n"
 "If not specified, CONFFILE defaults to "
-msgstr ""
+msgstr "\n& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\nor:\n& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\nor:\n& [-v] [-c CONFFILE]... [-d DIR] -t[ID] -w\nor:\n& [-v] [-c CONFFILE]... -h DUPHASH\n\nBugzilla માં સમસ્યાનો અહેવાલ કરે છે.\n\n સાધન DIR ને વાંચે છે. પછી તે Bugzilla માં પ્રવેશે છે અને\n'Whiteboard' માં સરખા abrt_hash:HEXSTRING સાથે ભૂલ શોધવાનો પ્રયત્ન કરે છે.\n\n જો આવી ભૂલ મળી ન હોય તો, પછી નવી ભૂલ બનાવેલ છે. DIR નાં ઘટકો ભૂલ વર્ણનનાં ભાગ તરીકે અથવા જોડાણો તરીકે ભૂલમાં સંગ્રહેલ છે, તેનાં પ્રકાર અને માપ પર આધાર રાખી રહ્યુ છે.\n\n નહિં તો, જો આવી ભૂલ મળી હોય તો અને તે CLOSED DUPLICATE તરીકે ચિહ્નિત થયેલ છે, સાધન નકલોની કતારને અનૂસરે છે જ્યાંસુધી તે non-DUPLICATE ભૂલને શોધે. સાધન મળેલ ભૂલમાં નવી ટિપ્પણીને ઉમેરે છે.\n\n નવી અથવા ફેરફાર થયેલ ભૂલમાં URL stdout માટે છાપેલ છે અને 'reported_to' element માં અહેવાલ થયેલ છે.\n\nબગઝીલા સાઇટ પર પહેલેથી જ બનાવવામાં ભૂલ  માટે વિકલ્પ-T અપલોડ ફાઇલો કરો.\nભૂલ ID દ્વારા-D DIR સ્પષ્ટ ડિરેક્ટરી મેળવાય છે.\nજો DIR માં સમસ્યા માહિતીને  બગઝીલાના અહેવાલની  જાણ ન હતી, તો અપલોડ નિષ્ફળ જશે.\n\nબગઝીલા સાઇટ પર સ્પષ્ટ ID સાથે ભૂલ કરવા માટે વિકલ્પ-tid ફાઇલો અપલોડ કરો.\n-D DIR અવગણવામાં આવે છે.\n\nવિકલ્પ-W ની ભૂલ CC યાદીમાં Bugzilla વપરાશકર્તા ઉમેરે છે.\n\nવિકલ્પ-r ની URL ક્ષેત્ર માટે TRACKER_NAME સાથે ઉપસર્ગ થયેલ છે, જે reporter_to તત્વ ના છેલ્લા URL સુયોજિત કરે છે.\nઆ વિકલ્પ નવી ભૂલ નોંધાઇ હોય છે ત્યારે જ લાગુ પડે છે\nમૂળભૂત કિંમત 'ABRT સર્વર' છે\n\nજો સ્પષ્ટ થયેલ નહિં હોય, તો CONFFILE મૂળભૂત છે"
 
-#: ../src/plugins/reporter-bugzilla.c:930
-#: ../src/plugins/reporter-rhtsupport.c:255
+#: ../src/plugins/reporter-bugzilla.c:896
+#: ../src/plugins/reporter-rhtsupport.c:391
 msgid "Configuration file (may be given many times)"
 msgstr "રૂપરેખાંકન ફાઇલ (ઘણી વખત આપી શકાય છે)"
 
-#: ../src/plugins/reporter-bugzilla.c:931
+#: ../src/plugins/reporter-bugzilla.c:897
 msgid "Formatting file for initial comment"
-msgstr ""
+msgstr "પ્રારંભિક ટિપ્પણી માટે ફાઇલની ગોઠવણી કરી રહ્યા છે"
 
-#: ../src/plugins/reporter-bugzilla.c:932
+#: ../src/plugins/reporter-bugzilla.c:898
 msgid "Formatting file for duplicates"
 msgstr "નકલો માટે ચકાસી રહ્યા છે"
 
-#: ../src/plugins/reporter-bugzilla.c:933
+#: ../src/plugins/reporter-bugzilla.c:899
 msgid "Attach FILEs [to bug with this ID]"
 msgstr "ફાઇલો જોડો [આ ID સાથે ભૂલમાં]"
 
-#: ../src/plugins/reporter-bugzilla.c:934
+#: ../src/plugins/reporter-bugzilla.c:900
 msgid "When creating bug, attach binary files too"
 msgstr "જ્યારે ભૂલનો અહેવાલ કરી રહ્યા હોય ત્યારે, બાઇનરી ફાઇલોને પણ જોડો"
 
-#: ../src/plugins/reporter-bugzilla.c:935
-#: ../src/plugins/reporter-rhtsupport.c:257
+#: ../src/plugins/reporter-bugzilla.c:901
+#: ../src/plugins/reporter-rhtsupport.c:393
 msgid "Force reporting even if this problem is already reported"
 msgstr "અહેવાલ કરવાનું દબાણ કરો જો આ સમસ્યા પેહલેથી જ અહેવાલ થયેલ છે"
 
-#: ../src/plugins/reporter-bugzilla.c:936
+#: ../src/plugins/reporter-bugzilla.c:902
 msgid "Add bugzilla user to CC list [of bug with this ID]"
-msgstr ""
+msgstr "CC યાદીમાં બગઝીલા વપરાશકર્તા ઉમેરો [આ ID સાથે ભૂલ]"
 
-#: ../src/plugins/reporter-bugzilla.c:937
+#: ../src/plugins/reporter-bugzilla.c:903
 msgid "Print BUG_ID which has given DUPHASH"
-msgstr ""
+msgstr "DUPHASH આપવામાં આવ્યુ છે  BUG_ID છાપો"
 
-#: ../src/plugins/reporter-bugzilla.c:938
+#: ../src/plugins/reporter-bugzilla.c:904
 msgid "A name of bug tracker for an additional URL from 'reported_to'"
-msgstr ""
+msgstr "'reported_to' માંથી વધારાના URL માટે ભૂલ ટ્રેકરનું નામ"
 
-#: ../src/plugins/reporter-bugzilla.c:939
+#: ../src/plugins/reporter-bugzilla.c:905
 msgid "Restrict access to this group only"
 msgstr "માત્ર આ જૂથ પૂરતી જ પરવાનગી મર્યાદિત રાખો"
 
-#: ../src/plugins/reporter-bugzilla.c:940
+#: ../src/plugins/reporter-bugzilla.c:906
 msgid "Debug"
 msgstr "ડિબગ"
 
-#: ../src/plugins/reporter-bugzilla.c:982
+#: ../src/plugins/reporter-bugzilla.c:948
 msgid "Looking for similar problems in bugzilla"
 msgstr "બગઝીલામાં સરખી સમસ્યાઓ માટે જોવાય છે"
 
-#: ../src/plugins/reporter-bugzilla.c:1009
+#: ../src/plugins/reporter-bugzilla.c:975
 msgid "Login is not provided by configuration. Please enter your BZ login:"
-msgstr ""
+msgstr "પ્રવેશ રૂપરેખા દ્વારા પૂરો પાડવામાં આવેલ નથી. મહેરબાની કરીને તમારાે BZ પ્રવેશ દાખલ કરો:"
 
-#: ../src/plugins/reporter-bugzilla.c:1015
-#: ../src/plugins/reporter-rhtsupport.c:291
+#: ../src/plugins/reporter-bugzilla.c:981
+#: ../src/plugins/reporter-rhtsupport.c:429
 #, c-format
 msgid ""
 "Password is not provided by configuration. Please enter the password for "
 "'%s':"
-msgstr ""
+msgstr "પાસવર્ડ રૂપરેખાંકન દ્વારા પૂરો પાડવામાં આવેલ નથી. મહેરબાની કરીને '%s' માટે પાસવર્ડ દાખલ કરો"
 
-#: ../src/plugins/reporter-bugzilla.c:1034
+#: ../src/plugins/reporter-bugzilla.c:1000
 msgid ""
 "Can't get Bugzilla ID because this problem has not yet been reported to "
 "Bugzilla."
-msgstr ""
+msgstr "બગઝીલા ID મળી શકે નહી કારણકે  આ સમસ્યાની હજુ સુધી બગઝીલામાં જાણ કરવામાં આવી નથી."
 
-#: ../src/plugins/reporter-bugzilla.c:1041
+#: ../src/plugins/reporter-bugzilla.c:1007
 #, c-format
 msgid ""
 "This problem has been reported to Bugzilla '%s' which differs from the "
 "configured Bugzilla '%s'."
-msgstr ""
+msgstr "આ સમસ્યા બગઝીલા '%s' માટે જણાવવામાં આવે છે જે રૂપરેખાંકિત બગઝીલા '%s' માંથી અલગ પડે છે."
 
-#: ../src/plugins/reporter-bugzilla.c:1045
+#: ../src/plugins/reporter-bugzilla.c:1011
 #, c-format
 msgid "Malformed url to Bugzilla '%s'."
-msgstr ""
+msgstr "બગઝીલા '%s' માટે દૂષિત URL."
 
-#: ../src/plugins/reporter-bugzilla.c:1049
+#: ../src/plugins/reporter-bugzilla.c:1015
 #, c-format
 msgid "Using Bugzilla ID '%s'"
 msgstr "'%s' બગઝીલા ID નો ઉપયોગ કરી રહ્યા છે"
 
-#: ../src/plugins/reporter-bugzilla.c:1083
-#: ../src/plugins/reporter-bugzilla.c:1354
+#: ../src/plugins/reporter-bugzilla.c:1049
+#: ../src/plugins/reporter-bugzilla.c:1341
 msgid "Logging out"
 msgstr "બહાર નીકળી રહ્યા છે"
 
-#: ../src/plugins/reporter-bugzilla.c:1134
+#: ../src/plugins/reporter-bugzilla.c:1100
 msgid "Can't determine Bugzilla Product from problem data."
-msgstr ""
+msgstr "સમસ્યા માહિતીમાંથી બગઝીલા ઉત્પાદન નક્કી કરી શકાતું નથી."
 
-#: ../src/plugins/reporter-bugzilla.c:1185
+#: ../src/plugins/reporter-bugzilla.c:1151
 msgid "Checking for duplicates"
 msgstr "નકલો માટે ચકાસી રહ્યા છે"
 
 #. Create new bug
-#: ../src/plugins/reporter-bugzilla.c:1231
+#: ../src/plugins/reporter-bugzilla.c:1197
 msgid "Creating a new bug"
 msgstr "નવી ભૂલને બનાવી રહ્યા છે"
 
-#: ../src/plugins/reporter-bugzilla.c:1252
+#: ../src/plugins/reporter-bugzilla.c:1218
 msgid "Failed to create a new bug."
 msgstr "નવી ભૂલને બનાવવામાં નિષ્ફળ રહ્યા છે"
 
-#: ../src/plugins/reporter-bugzilla.c:1263
+#: ../src/plugins/reporter-bugzilla.c:1229
 #, c-format
 msgid "Adding External URL to bug %i"
 msgstr "ભૂલ %i માં બહારનું URL ઉમેરી રહ્યા છે"
 
-#: ../src/plugins/reporter-bugzilla.c:1269
+#: ../src/plugins/reporter-bugzilla.c:1235
 #, c-format
 msgid "Adding attachments to bug %i"
 msgstr "ભૂલ %i માં જોડાણોને ઉમેરી રહ્યા છે"
 
-#: ../src/plugins/reporter-bugzilla.c:1288
+#: ../src/plugins/reporter-bugzilla.c:1254
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "ભૂલ પહેલેથી જ અહેવાલ થયેલ છે: %i"
 
-#: ../src/plugins/reporter-bugzilla.c:1309
+#: ../src/plugins/reporter-bugzilla.c:1297
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "CC યાદીમાં %s ને ઉમેરો"
 
-#: ../src/plugins/reporter-bugzilla.c:1326
+#: ../src/plugins/reporter-bugzilla.c:1314
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "ભૂલ %d માં નવી ટિપ્પણીને ઉમેરી રહ્યા છે"
 
-#: ../src/plugins/reporter-bugzilla.c:1340
+#: ../src/plugins/reporter-bugzilla.c:1328
 msgid "Attaching better backtrace"
 msgstr "સારામાં સારા બેકટ્રેસને જોડી રહ્યા છે"
 
-#: ../src/plugins/reporter-bugzilla.c:1348
+#: ../src/plugins/reporter-bugzilla.c:1336
 msgid "Found the same comment in the bug history, not adding a new one"
 msgstr "ભૂલ ઇતિહાસમાં એજ ટિપ્પણી મળી, નવાં એકને ઉમેરતા નથી"
 
-#: ../src/plugins/reporter-bugzilla.c:1357
+#: ../src/plugins/reporter-bugzilla.c:1344
 #, c-format
 msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
 msgstr "પરિસ્થિતિ: %s%s%s %s/show_bug.cgi?id=%u"
@@ -1358,7 +1517,8 @@ msgid ""
 "Parameter can be overridden via $KerneloopsReporter_SubmitURL."
 msgstr "& [-v] [-c CONFFILE]... -d DIR\n\nkerneloops.org (અથવા તેનાં જેવી) સાઇટમાં કર્નલ oops નો અહેવાલ કરે છે.\n\n$EXCLUDE_FROM_REPORT માં યાદી થયેલ નામો સાથે ફાઇલો ટારબોલમાં સમાવેલ નથી.\n\nCONFFILE વાક્યો પાસે 'PARAM = VALUE' બંધારણ હોવુ જ જોઇએ.\nઓળખાયેલ શબ્દમાળા પરિમાણ: SubmitURL.\nપરિમાણ $KerneloopsReporter_SubmitURL મારફતે ઉપર લખી શકાય છે."
 
-#: ../src/plugins/reporter-kerneloops.c:167 ../src/plugins/ureport.c:456
+#: ../src/plugins/reporter-kerneloops.c:167
+#: ../src/plugins/reporter-ureport.c:73
 msgid "Configuration file"
 msgstr "રૂપરેખાંકન ફાઇલ"
 
@@ -1367,28 +1527,33 @@ msgstr "રૂપરેખાંકન ફાઇલ"
 msgid ""
 "Email address of %s was not specified. Would you like to do so now? If not, "
 "'%s' is to be used"
-msgstr ""
+msgstr "%s નું ઇમેઇલ સરનામું સ્પષ્ટ થયેલ નથી. તમે હવે આમ કરવા માંગો છો?  જો નહિં, તો '%s' નો ઉપયોગ કરી શકાય છે"
 
 #: ../src/plugins/reporter-mailx.c:66
 #, c-format
 msgid "Please, type email address of %s:"
-msgstr ""
+msgstr "મહેરબાની કરીને, %s: નુ ઇમેલ સરનામુ ટાઇપ કરો"
 
 #: ../src/plugins/reporter-mailx.c:73
 #, c-format
 msgid "Can't continue without email address of %s"
 msgstr "%s ના ઇમેલ સરનામા વગર ચાલુ રાખી શકશો નહી"
 
-#: ../src/plugins/reporter-mailx.c:135
+#: ../src/plugins/reporter-mailx.c:136
+#, c-format
+msgid "Sending a notification email to: %s"
+msgstr ""
+
+#: ../src/plugins/reporter-mailx.c:138
 msgid "Sending an email..."
 msgstr "ઇમેલ મોકલી રહ્યા છે..."
 
-#: ../src/plugins/reporter-mailx.c:158
+#: ../src/plugins/reporter-mailx.c:161
 #, c-format
 msgid "Email was sent to: %s"
 msgstr "ઇમેઇલ તેમાં મોકલેલ હતુ: %s"
 
-#: ../src/plugins/reporter-mailx.c:178
+#: ../src/plugins/reporter-mailx.c:183
 msgid ""
 "& [-v] -d DIR [-c CONFFILE]\n"
 "\n"
@@ -1397,11 +1562,11 @@ msgid ""
 "If not specified, CONFFILE defaults to "
 msgstr "& [-v] -d DIR [-c CONFFILE]\n\nઇમેઇલ દ્દારા સમસ્યા ડિરેક્ટરીનાં સમાવિષ્ટોને મોકલે છે\n\nજો સ્પષ્ટ થયેલ ન હોય તો, CONFFILE એ તેમાં મૂળભૂત છે"
 
-#: ../src/plugins/reporter-mailx.c:199 ../src/plugins/reporter-upload.c:228
+#: ../src/plugins/reporter-mailx.c:204 ../src/plugins/reporter-upload.c:251
 msgid "Config file"
 msgstr "રૂપરેખાંકન ફાઇલ"
 
-#: ../src/plugins/reporter-mailx.c:200
+#: ../src/plugins/reporter-mailx.c:205
 msgid "Notify only (Do not mark the report as sent)"
 msgstr "ફક્ત સૂચિત કરો (મોકલ્યા પ્રમાણે અહેવાલને ચિહ્નત ન કરો)"
 
@@ -1443,27 +1608,45 @@ msgstr "અહેવાલ %s માં જોડાયેલ હતો"
 msgid "The report was stored to %s"
 msgstr "અહેવાલ %s માં સંગ્રહ થયેલ હતો"
 
-#: ../src/plugins/reporter-rhtsupport.c:223
+#: ../src/plugins/reporter-rhtsupport.c:211
+#: ../src/plugins/reporter-ureport.c:255
+#, c-format
+msgid "Server responded with an error: '%s'"
+msgstr "સર્વરે ક્ષતિવાળો પ્રત્યુત્તર આપ્યો: '%s'"
+
+#: ../src/plugins/reporter-rhtsupport.c:255
+msgid "Do you still want to create a RHTSupport ticket?"
+msgstr "શું તમને હજુ RHTSupport ટિકીટ બનાવવાની ઇચ્છા છે?"
+
+#: ../src/plugins/reporter-rhtsupport.c:354
 msgid ""
 "\n"
 "& [-v] [-c CONFFILE] -d DIR\n"
 "or:\n"
-"& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
+"& [-v] [-c CONFFILE] [-d DIR] -t[ID] [-u -C UR_CONFFILE] FILE...\n"
 "\n"
 "Reports a problem to RHTSupport.\n"
 "\n"
 "If not specified, CONFFILE defaults to "
-msgstr "\n& [-v] [-c CONFFILE] -d DIR\nor:\n& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n\nRHTSupport માં સમસ્યાનો અહેવાલ થાય છે.\n\nજો સ્પષ્ટ થયેલ ન હોય તો, CONFFILE એ તેમાં મૂળભૂત છે"
+msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:256
+#: ../src/plugins/reporter-rhtsupport.c:392
 msgid "Upload FILEs [to case with this ID]"
 msgstr "અપલોડ FILEs [આ ID સાથેની સ્થિતિમાં]"
 
-#: ../src/plugins/reporter-rhtsupport.c:285
-msgid "Login is not provided by configuration. Please enter your RHTS login:"
+#: ../src/plugins/reporter-rhtsupport.c:394
+msgid "Submit uReport before creating a new case"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:341
+#: ../src/plugins/reporter-rhtsupport.c:395
+msgid "Configuration file for uReport"
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:423
+msgid "Login is not provided by configuration. Please enter your RHTS login:"
+msgstr "પ્રવેશ રૂપરેખાંકન દ્વારા પૂરી પાડવામાં આવેલ નથી. મહેરબાની કરીને તમારો RHTS પ્રવેશ દાખલ કરો:"
+
+#: ../src/plugins/reporter-rhtsupport.c:485
 #, c-format
 msgid "Attaching '%s' to case '%s'"
 msgstr "સ્થિતિ '%s' માં '%s' ને જોડી રહ્યા છે"
@@ -1473,44 +1656,48 @@ msgstr "સ્થિતિ '%s' માં '%s' ને જોડી રહ્ય�
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
 #. doing
-#: ../src/plugins/reporter-rhtsupport.c:378
+#: ../src/plugins/reporter-rhtsupport.c:522
 #: ../src/plugins/reporter-upload.c:52
 msgid "Compressing data"
 msgstr "માહિતીને સંકોચી રહ્યા છે"
 
-#: ../src/plugins/reporter-rhtsupport.c:413
+#: ../src/plugins/reporter-rhtsupport.c:557
 msgid "Can't create a temporary directory in "
 msgstr "માં કામચલાઉ ડિરેક્ટરીને બનાવી શકતા નથી"
 
-#: ../src/plugins/reporter-rhtsupport.c:422
+#: ../src/plugins/reporter-rhtsupport.c:566
 msgid "Can't create temporary file in "
 msgstr "માં કામચલાઉ ફાઇલ બનાવી શકતા નથી"
 
+#: ../src/plugins/reporter-rhtsupport.c:584
+msgid "Sending ABRT crash statistics data"
+msgstr ""
+
 #. Check for hints and show them if we have something
-#: ../src/plugins/reporter-rhtsupport.c:431
+#: ../src/plugins/reporter-rhtsupport.c:592
 msgid "Checking for hints"
 msgstr "સંકેતો માટે ચકાસી રહ્યા છે"
 
-#: ../src/plugins/reporter-rhtsupport.c:473
-msgid "Do you still want to create a RHTSupport ticket?"
-msgstr "શું તમને હજુ RHTSupport ટિકીટ બનાવવાની ઇચ્છા છે?"
-
-#: ../src/plugins/reporter-rhtsupport.c:487
+#: ../src/plugins/reporter-rhtsupport.c:602
 msgid "Creating a new case"
 msgstr "નવી સ્થિતિને બનાવી રહ્યા છે"
 
 #. How can we help user sorting out this problem?
-#: ../src/plugins/reporter-rhtsupport.c:498
+#: ../src/plugins/reporter-rhtsupport.c:613
 msgid "Can't determine RH Support Product from problem data."
+msgstr "સમસ્યા માહિતીમાંથી RH આધાર ઉત્પાદન નક્કી કરી શકાતું નથી."
+
+#: ../src/plugins/reporter-rhtsupport.c:675
+msgid "Linking ABRT crash statistics record with the case"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:573
+#: ../src/plugins/reporter-rhtsupport.c:698
 #, c-format
 msgid "Adding comment to case '%s'"
 msgstr "સ્થિતિ '%s' માં ટિપ્પણીને ઉમેરી રહ્યા છે"
 
 #. Attach the tarball of -d DIR
-#: ../src/plugins/reporter-rhtsupport.c:593
+#: ../src/plugins/reporter-rhtsupport.c:718
 #, c-format
 msgid "Attaching problem data to case '%s'"
 msgstr "સ્થિતિ '%s' માં સમસ્યા સ્થિતિને જોડાઇ રહ્યા છે"
@@ -1528,24 +1715,33 @@ msgid "Can't continue without URL"
 msgstr "URL વગર ચાલુ રાખી શકશો નહી"
 
 #: ../src/plugins/reporter-upload.c:61
-msgid "Upload URL is not provided by configuration. Please enter upload URL:"
+msgid ""
+"Please enter a URL (scp, ftp, etc.) where the problem data is to be "
+"exported:"
+msgstr ""
+
+#. Be permissive and nice, ask only once and don't check
+#. the result. User can dismiss this prompt but the upload
+#. may work somehow???
+#: ../src/plugins/reporter-upload.c:164
+msgid "Please enter password for uploading:"
 msgstr ""
 
 #. success
-#: ../src/plugins/reporter-upload.c:159
+#: ../src/plugins/reporter-upload.c:181
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "પેટી બનાવેલ છે: '%s'"
 
-#: ../src/plugins/reporter-upload.c:200
+#: ../src/plugins/reporter-upload.c:222
 msgid ""
 "& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
 "Uploads compressed tarball of problem directory DIR to URL.\n"
 "If URL is not specified, creates tarball in "
-msgstr ""
+msgstr "& [-v] -d DIR [-c CONFFILE] [-u URL]\n\nઅપલોડ URL માટે સમસ્યા યાદી DIR માં દબાવેલુ ટારબોલ.\nજો URL સ્પષ્ટ થયેલ નહિં હોય, તો ટારબોલમાં બનાવે"
 
-#: ../src/plugins/reporter-upload.c:229
+#: ../src/plugins/reporter-upload.c:252
 msgid "Base URL to upload to"
 msgstr "તેમાં અપલોડ કરવા માટે આધાર URL"
 
@@ -1658,8 +1854,8 @@ msgid "Red Hat customer password"
 msgstr "Red Hat કસ્ટમર પાસવર્ડ"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
-msgid "Report uploader"
-msgstr "અપલોડરનો અહેવાલ"
+msgid "Report Uploader"
+msgstr ""
 
 #: ../src/plugins/report_Uploader.xml.in.h:2
 msgid "Upload as tar.gz file (via FTP/SCP/...)"
@@ -1679,14 +1875,22 @@ msgstr "login:password@url ફોર્મમાં તમે ક્યાં �
 #: ../src/plugins/report_Uploader.xml.in.h:5
 msgid ""
 "Examples:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]"
+msgstr "ઉદાહરણ:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]"
+
+#: ../src/plugins/report_Uploader.xml.in.h:7
+msgid "Use this field if you do not want to have user name in URL"
 msgstr ""
 
-#: ../src/plugins/report_Uploader.xml.in.h:10
+#: ../src/plugins/report_Uploader.xml.in.h:9
+msgid "Use this field if you do not want to have password in URL"
+msgstr ""
+
+#: ../src/plugins/report_Uploader.xml.in.h:14
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:8
 msgid "FTP Proxy"
 msgstr "FTP પ્રોક્સી"
 
-#: ../src/plugins/report_Uploader.xml.in.h:11
+#: ../src/plugins/report_Uploader.xml.in.h:15
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:9
 msgid "Sets the proxy server to use for FTP"
 msgstr "FTP માટે વાપરવાનું પ્રોક્સી સર્વર સુયોજીત કરે છે"
@@ -1697,7 +1901,7 @@ msgstr "uReport"
 
 #: ../src/plugins/report_uReport.xml.in.h:2
 msgid "Sends ureports to FAF server"
-msgstr ""
+msgstr "FAF સર્વરને uરિપોર્ટ મોકલો"
 
 #: ../src/plugins/report_uReport.xml.in.h:3
 msgid "uReport Server URL"
@@ -1709,15 +1913,15 @@ msgstr "Uરિપોર્ટ વેબસર્વિસનું સરના
 
 #: ../src/plugins/report_uReport.xml.in.h:5
 msgid "Watch already reported bugs"
-msgstr ""
+msgstr "પહેલેથી અહેવાલ થયેલ ભૂલોને જુઓ"
 
 #: ../src/plugins/report_uReport.xml.in.h:6
 msgid "Adds your Bugzilla login to CC List of already reported bugs."
-msgstr ""
+msgstr "પહેલેથી અહેવાલ થયેલ ભૂલોની CC યાદીમાં તમારાં બગઝીલા પ્રવેશને ઉમેરે છે."
 
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:1
 msgid "Emergency analysis"
-msgstr ""
+msgstr "કટોકટી પૃથક્કરણ"
 
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:2
 msgid "Upload the problem data for further analysis"
@@ -1725,200 +1929,156 @@ msgstr "સમસ્યા માહિતીને વધારેના પૃ
 
 #: ../src/plugins/watch_Bugzilla.xml.in.h:1
 msgid "Watch Bugzilla Bug"
-msgstr ""
+msgstr "બગઝીલા ભૂલને જુઓ"
 
 #: ../src/plugins/watch_Bugzilla.xml.in.h:2
 msgid "Adds your e-mail to CC List of Bugzilla bug"
-msgstr ""
+msgstr "બગઝીલા ભૂલની CC યાદીમાં તમારાં ઇમેઇલને ઉમેરે છે"
 
-#: ../src/plugins/rhbz.c:409
+#: ../src/plugins/rhbz.c:417
 #, c-format
 msgid "Looks like corrupted xml response, because '%s' member is missing."
 msgstr "એવું લાગે છે તે ભાંગેલ xml જવાબ, કારણ કે '%s' સભ્ય ગુમ થયેલ છે."
 
-#: ../src/plugins/rhbz.c:497
+#: ../src/plugins/rhbz.c:505
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
 msgstr "Bug %i એ CLOSED છે, પરંતુ તેની પાસે RESOLUTION નથી"
 
-#: ../src/plugins/rhbz.c:505
+#: ../src/plugins/rhbz.c:513
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
 msgstr "Bug %i એ DUPLICATE તરીકે CLOSED છે, પરંતુ તેની પાસે DUP_ID નથી"
 
-#: ../src/plugins/rhbz.c:621
+#: ../src/plugins/rhbz.c:629
 msgid ""
 "A private ticket creation has been requested, but no groups were specified, "
 "please see https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
 "tickets for more info"
-msgstr ""
+msgstr "ખાનગી ટિકિટ બનાવટ માટે વિનંતી કરવામાં આવી છે, પરંતુ જૂથો સ્પષ્ટ કરવામાં આવ્યા નથી, મહેરબાની કરીને વધારે માહિતી માટે  https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets જુઓ"
 
-#: ../src/plugins/rhbz.c:642
+#: ../src/plugins/rhbz.c:650
 #, c-format
 msgid "New bug id: %i"
 msgstr "નવી ભૂલ id: %i"
 
-#: ../src/plugins/rhbz.c:757
+#: ../src/plugins/rhbz.c:770
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "બગઝીલા ભૂલ %d નાં મુખ્યને શોધી શક્યુ નહિં"
 
-#: ../src/plugins/ureport.c:146
-#, c-format
-msgid ""
-"Your problem seems to be caused by %s\n"
-"\n"
-"%s\n"
-msgstr ""
+#: ../src/plugins/rhbz.c:893
+msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
+msgstr "ભૂલ.  'ભૂલો' સભ્યમાં પરત કિંમત શોધવું (ઝડપથી શોધવું) ન હતુ"
 
-#: ../src/plugins/ureport.c:149
-msgid "Your problem seems to be caused by one of the following:\n"
-msgstr ""
-
-#: ../src/plugins/ureport.c:320
-#, c-format
-msgid "Failed to upload uReport to the server '%s' with curl: %s"
-msgstr ""
-
-#: ../src/plugins/ureport.c:326
-#, c-format
-msgid "The URL '%s' does not exist (got error 404 from server)"
-msgstr ""
-
-#: ../src/plugins/ureport.c:332
-#, c-format
-msgid "The server at '%s' encountered an internal error (got error 500)"
-msgstr ""
-
-#: ../src/plugins/ureport.c:338
-#, c-format
-msgid "The server at '%s' currently can't handle the request (got error 503)"
-msgstr ""
-
-#. can't print better error message
-#: ../src/plugins/ureport.c:347
-#, c-format
-msgid "Unexpected HTTP response from '%s': %d"
-msgstr ""
-
-#: ../src/plugins/ureport.c:356
-#, c-format
-msgid "Unable to parse response from ureport server at '%s'"
-msgstr ""
-
-#: ../src/plugins/ureport.c:366
-#, c-format
-msgid "The response from '%s' has invalid format"
-msgstr ""
-
-#. HTTP CODE 202 means that call was successful but the response
-#. has an error message
-#: ../src/plugins/ureport.c:372
-#, c-format
-msgid "Type mismatch has been detected in the response from '%s'"
-msgstr ""
-
-#: ../src/plugins/ureport.c:403
-#, c-format
-msgid "The server at '%s' responded with an error: '%s'"
-msgstr ""
-
-#: ../src/plugins/ureport.c:452
+#: ../src/plugins/reporter-ureport.c:68
 msgid "Specify server URL"
 msgstr "સર્વર URL સ્પષ્ટ કરો"
 
-#: ../src/plugins/ureport.c:454
+#: ../src/plugins/reporter-ureport.c:70
 msgid "Allow insecure connection to ureport server"
 msgstr "ureport સર્વરમાં અસુરક્ષિત જોડાણને પરવાનગી આપો"
 
-#: ../src/plugins/ureport.c:455
+#: ../src/plugins/reporter-ureport.c:71
 msgid "Use client authentication"
 msgstr "ક્લાયન્ટ સત્તાધિકરણ વાપરો"
 
-#: ../src/plugins/ureport.c:458
+#: ../src/plugins/reporter-ureport.c:72
+msgid "Additional files included in 'auth' key"
+msgstr ""
+
+#: ../src/plugins/reporter-ureport.c:75
 msgid "bthash of uReport to attach (conflicts with -A)"
-msgstr ""
+msgstr "જોડે uReport ના bthash (-A સાથે તકરાર)"
 
-#: ../src/plugins/ureport.c:460
+#: ../src/plugins/reporter-ureport.c:77
 msgid "attach to a bthash from reported_to (conflicts with -a)"
-msgstr ""
+msgstr "Reported_to માંથી bthash સાથે જોડે છે (-a સાથે વિરોધ)"
 
-#: ../src/plugins/ureport.c:462
+#: ../src/plugins/reporter-ureport.c:79
 msgid "contact e-mail address (requires -a|-A, conflicts with -E)"
-msgstr ""
+msgstr "ઈ મેલ સરનામું સંપર્ક (a|A ની જરૂરીયાત, E સાથે વિરોધ)"
 
-#: ../src/plugins/ureport.c:464
+#: ../src/plugins/reporter-ureport.c:81
 msgid ""
 "contact e-mail address from environment or configuration file (requires "
 "-a|-A, conflicts with -e)"
-msgstr ""
+msgstr "વાતાવરણ અથવા રૂપરેખાંકન ફાઈલમાંથી ઈ મેલ સરનામુંનો સંપર્ક  (-a|-A ની જરૂરીયાત, -e સાથે વિરોધ)"
 
-#: ../src/plugins/ureport.c:466
+#: ../src/plugins/reporter-ureport.c:83
 msgid "attach RHBZ bug (requires -a|-A, conflicts with -B)"
-msgstr ""
+msgstr "RHBZ ભૂલ જોડો (a|A ની જરૂરીયાત, B સાથે વિરોધ)"
 
-#: ../src/plugins/ureport.c:468
+#: ../src/plugins/reporter-ureport.c:85
 msgid ""
 "attach last RHBZ bug from reported_to (requires -a|-A, conflicts with -b)"
+msgstr "reported_to માંથી છેલ્લી RHBZ ભૂલ જોડો (-a|-A ની જરૂરીયાત, -b સાથે વિરોધ)"
+
+#: ../src/plugins/reporter-ureport.c:87
+msgid "attach short text (requires -a|-A, conflicts with -D)"
 msgstr ""
 
-#: ../src/plugins/ureport.c:473
+#: ../src/plugins/reporter-ureport.c:89
+msgid "attach short text from comment (requires -a|-A, conflicts with -d)"
+msgstr ""
+
+#: ../src/plugins/reporter-ureport.c:94
 msgid ""
-"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
+"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-i AUTH_ITEMS]\\\n"
+"  [-A -a bthash -B -b bug-id -E -e email -O -o comment] [-d DIR]\n"
 "\n"
 "Upload micro report or add an attachment to a micro report\n"
 "\n"
 "Reads the default configuration from "
 msgstr ""
 
-#: ../src/plugins/ureport.c:519
+#: ../src/plugins/reporter-ureport.c:147
 msgid "This problem does not have an uReport assigned."
-msgstr ""
+msgstr "આ સમસ્યા uReport ને સોંપાયેલ નથી. "
 
-#: ../src/plugins/ureport.c:532
+#: ../src/plugins/reporter-ureport.c:160
 msgid "This problem has not been reported to Bugzilla."
-msgstr ""
+msgstr "આ સમસ્યાનો બગઝીલામાં અહેવાલ થયેલ નથી."
 
-#: ../src/plugins/ureport.c:536
+#: ../src/plugins/reporter-ureport.c:164
 #, c-format
 msgid "Unable to find bug ID in bugzilla URL '%s'"
-msgstr ""
+msgstr " Bugzilla URL '%s' માં ભૂલ ID ને શોધવામાં અસમર્થ"
 
-#: ../src/plugins/ureport.c:541
+#: ../src/plugins/reporter-ureport.c:169
 #, c-format
 msgid "Unable to parse bug ID from bugzilla URL '%s'"
+msgstr "Bugzilla URL '%s' માંથી ભૂલ ID ને વિશ્લેશિત કરવામાં અસમર્થ"
+
+#: ../src/plugins/reporter-ureport.c:178
+msgid "Cannot attach comment from 'comment' file"
 msgstr ""
 
-#: ../src/plugins/ureport.c:554
+#: ../src/plugins/reporter-ureport.c:180
+msgid "'comment' file is empty"
+msgstr ""
+
+#: ../src/plugins/reporter-ureport.c:191
 msgid ""
 "Neither environment variable 'uReport_ContactEmail' nor configuration option"
 " 'ContactEmail' is set"
+msgstr " બેમાંથી પર્યાવરણ ચલ 'uReport_ContactEmail' અથવા રૂપરેખાંકન વિકલ્પ 'ContactEmail' સુયોજિત છે"
+
+#: ../src/plugins/reporter-ureport.c:197
+msgid "You need to specify bug ID, contact email, comment or all of them"
 msgstr ""
 
-#: ../src/plugins/ureport.c:560
-msgid "You need to specify bug ID, contact email or both"
-msgstr ""
-
-#: ../src/plugins/ureport.c:578
+#: ../src/plugins/reporter-ureport.c:221
 msgid "You need to specify bthash of the uReport to attach."
-msgstr ""
+msgstr "તમે uReport જોડી ને bthash સ્પષ્ટ કરવાની જરૂર છે."
 
-#: ../src/plugins/ureport.c:588
+#: ../src/plugins/reporter-ureport.c:226
 msgid "Not uploading an empty uReport"
-msgstr ""
+msgstr "ખાલી uરિપોર્ટ અપલોડ થતો નથી"
 
-#: ../src/plugins/ureport.c:597
-msgid "Failed on submitting the problem"
-msgstr ""
-
-#: ../src/plugins/ureport.c:642
+#: ../src/plugins/reporter-ureport.c:247
 msgid "This problem has already been reported."
 msgstr " આ સમસ્યા માટે પેહલેથી જ અહેવાલ થયેલ છે"
-
-#: ../src/plugins/ureport.c:651
-#, c-format
-msgid "Server responded with an error: '%s'"
-msgstr "સર્વરે ક્ષતિવાળો પ્રત્યુત્તર આપ્યો: '%s'"
 
 #: ../src/report-newt/report-newt.c:55
 msgid "How would you like to report the problem?"
@@ -1956,7 +2116,7 @@ msgid ""
 "& [-d] DIR\n"
 "\n"
 "newt tool to report problem saved in specified DIR"
-msgstr ""
+msgstr "& [-d] DIR\n\nસ્પષ્ટ થયેલ DIR માં સંગ્રહ થયેલ સમસ્યાનો અહેવાલ કરવા માટે નવું સાધન"
 
 #: ../src/report-newt/report-newt.c:392
 msgid "Remove DIR after reporting"
@@ -1964,33 +2124,31 @@ msgstr "અહેવાલીકરણ પછી DIR દૂર કરો"
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:1
 msgid "Report a bug to Fedora maintainers"
-msgstr ""
+msgstr "Fedora મેન્ટેન કરનારમાં  ભૂલનો અહેવાલ આપો"
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:2
 msgid "Process the report using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedoraના માળખાના ઉપયોગથી અહેવાલ પર પ્રક્રિયા કરો"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:1
 msgid "Report a bug to Red Hat Customer Portal"
-msgstr ""
+msgstr "Red hat ગ્રાહક પોર્ટલની ભૂલનો અહેવાલ"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:2
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:2
 msgid "Process the report using the Red Hat infrastructure"
-msgstr ""
+msgstr "RED HATના માળખાના ઉપયોગથી અહેવાલ પર પ્રક્રિયા કરો"
 
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:1
 msgid "Report a bug to Red Hat Bugzilla"
 msgstr "Red Hat બગઝીલ્લામાં ભૂલનો અહેવાલ આપો"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
-#: ../src/workflows/workflow_Upload.xml.in.h:1
-msgid "Upload the problem data to a server"
-msgstr "સમસ્યા માહિતીને સર્વર પર અપલોડ કરો"
+msgid "Export the problem data for manual reporting"
+msgstr ""
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:2
-#: ../src/workflows/workflow_Upload.xml.in.h:2
-msgid "Analyze the problem locally and upload the data via scp or ftp"
+msgid "Upload the data via scp or ftp to a remote destination"
 msgstr ""
 
 #: ../src/workflows/workflow_FedoraCCpp.xml.in.h:1
@@ -2006,35 +2164,67 @@ msgstr "Fedora ને અહેવાલ આપો"
 
 #: ../src/workflows/workflow_FedoraCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedoraના માળખાના ઉપયોગથી C/C++ તોડવા પર પ્રક્રિયા કરો"
 
 #: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:2
 msgid "Process the kerneloops using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedoraના માળખાના ઉપયોગથી મુખ્ય લુપ પર પ્રક્રિયા કરો"
 
 #: ../src/workflows/workflow_FedoraPython.xml.in.h:2
 msgid "Process the python exception using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedoraના માળખાના ઉપયોગથી પઇથન અપવાદ પર પ્રક્રિયા કરો"
 
 #: ../src/workflows/workflow_FedoraPython3.xml.in.h:2
 msgid "Process the python 3 exception using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedoraના માળખાના ઉપયોગથી પઇથન અપવાદ પર પ્રક્રિયા કરો"
 
 #: ../src/workflows/workflow_FedoraVmcore.xml.in.h:2
 msgid "Process the kernel crash using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedoraના માળખાના ઉપયોગથી મુખ્યભાગને તોડવા પર પ્રક્રિયા કરો"
 
 #: ../src/workflows/workflow_FedoraXorg.xml.in.h:2
 msgid "Process the X Server problem using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedoraના માળખાના ઉપયોગથી X સર્વરની સમસ્યા પર પ્રક્રિયા કરો"
 
 #: ../src/workflows/workflow_FedoraLibreport.xml.in.h:2
 msgid "Process the problem using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedoraના માળખાના ઉપયોગથી સમસ્યા પર પ્રક્રિયા કરો"
 
 #: ../src/workflows/workflow_FedoraJava.xml.in.h:2
 msgid "Process the Java exception using the Fedora infrastructure"
+msgstr "Fedoraના માળખાના ઉપયોગથી java ના અપવાદ પર પ્રક્રિયા કરો"
+
+#: ../src/workflows/workflow_LoggerCCpp.xml.in.h:1
+#: ../src/workflows/workflow_Logger.xml.in.h:1
+msgid "Export the problem data information to a text file"
 msgstr ""
+
+#: ../src/workflows/workflow_LoggerCCpp.xml.in.h:2
+#: ../src/workflows/workflow_Logger.xml.in.h:2
+msgid ""
+"Analyze the problem locally and export the problem data information to a "
+"text file"
+msgstr ""
+
+#: ../src/workflows/workflow_MailxCCpp.xml.in.h:1
+#: ../src/workflows/workflow_Mailx.xml.in.h:1
+msgid "Send the problem data via email"
+msgstr ""
+
+#: ../src/workflows/workflow_MailxCCpp.xml.in.h:2
+#: ../src/workflows/workflow_Mailx.xml.in.h:2
+msgid "Analyze the problem locally and send information via email"
+msgstr ""
+
+#: ../src/workflows/workflow_UploadCCpp.xml.in.h:1
+#: ../src/workflows/workflow_Upload.xml.in.h:1
+msgid "Upload the problem data to a server"
+msgstr "સમસ્યા માહિતીને સર્વર પર અપલોડ કરો"
+
+#: ../src/workflows/workflow_UploadCCpp.xml.in.h:2
+#: ../src/workflows/workflow_Upload.xml.in.h:2
+msgid "Analyze the problem locally and upload the data via scp or ftp"
+msgstr "સ્થાનિક રીતે સમસ્યા વિશ્લેષક અને scp અથવા ftp મારફતે માહિતી અપલોડ"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1
@@ -2049,37 +2239,37 @@ msgstr "Red hat ગ્રાહક પોર્ટલનો અહેવાલ"
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hatના માળખાના ઉપયોગથી C/C++ તોડવા પર પ્રક્રિયા કરો"
 
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:2
 msgid "Process the kerneloops using the Red Hat infrastructure"
-msgstr ""
+msgstr "RED HATના માળખાના ઉપયોગથી મુખ્ય લુપ પર પ્રક્રિયા કરો"
 
 #: ../src/workflows/workflow_RHELPython.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:2
 msgid "Process the python exception using the Red Hat infrastructure"
-msgstr ""
+msgstr "RED HATના માળખાના ઉપયોગથી પાઇથન અપવાદ પર પ્રક્રિયા કરો"
 
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:2
 msgid "Process the kernel crash using the Red Hat infrastructure"
-msgstr ""
+msgstr "RED HATના માળખાના ઉપયોગથી મુખ્યભાગને તોડવા પર પ્રક્રિયા કરો"
 
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:2
 msgid "Process the X Server problem using the Red Hat infrastructure"
-msgstr ""
+msgstr "RED HATના માળખાના ઉપયોગથી X સર્વરની સમસ્યા પર પ્રક્રિયા કરો"
 
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:2
 msgid "Process the problem using the Red Hat infrastructure"
-msgstr ""
+msgstr "RED HATના માળખાના ઉપયોગથી સમસ્યા પર પ્રક્રિયા કરો"
 
 #: ../src/workflows/workflow_RHELJava.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
 msgid "Process the Java exception using the Red Hat infrastructure"
-msgstr ""
+msgstr "RED HATના માળખાના ઉપયોગથી java ના અપવાદ પર પ્રક્રિયા કરો"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
