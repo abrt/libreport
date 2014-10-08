@@ -156,7 +156,7 @@ static int create_and_upload_archive(
             /* Load Password only if Username is configured, it doesn't make */
             /* much sense to load Password without Username. */
             state->password = getenv("Upload_Password");
-            if (state->password == NULL && state->password[0] == '\0')
+            if (state->password == NULL)
             {
                 /* Be permissive and nice, ask only once and don't check */
                 /* the result. User can dismiss this prompt but the upload */
