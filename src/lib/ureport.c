@@ -339,6 +339,7 @@ parse_solution_from_json_list(struct json_object *list,
             continue;
 
         cause = json_object_get_string(struct_elem);
+        if (!cause)
             continue;
 
         if (!json_object_object_get_ex(list_elem, "note", &struct_elem))
