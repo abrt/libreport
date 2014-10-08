@@ -263,6 +263,16 @@ char *submit_ureport(const char *dump_dir_name, struct ureport_server_config *co
 }
 
 static
+void attach_to_ureport(struct ureport_server_config *conf,
+        const char *bthash, const char *attach_id, const char *data)
+{
+    char *json = ureport_json_attachment_new(bthash, attach_id, data);
+    struct ureport_server_response *resp = ureport_do_post_credentials(json, conf, UREPORT_ATTACH_ACTION);
+    ureport_server_response_free(resp);
+    free(json);
+}
+
+static
 bool check_for_hints(const char *url, char **login, char **password, bool ssl_verify, const char *tempfile)
 {
     rhts_result_t *result = NULL;
@@ -740,11 +750,17 @@ int main(int argc, char **argv)
             /* Make sure we use the current credentials */
             ureport_server_config_set_basic_auth(&urconf, login, password);
 
-            /* Do attach */
-            char *json = ureport_json_attachment_new(bthash, "RHCID", result->url);
-            struct ureport_server_response *resp = ureport_do_post_credentials(json, &urconf, UREPORT_ATTACH_ACTION);
-            ureport_server_response_free(resp);
-            free(json);
+            /* Attach Customer Case ID*/
+            attach_to_ureport(&urconf, bthash, "RHCID", result->url);
+
+            /* Attach Contact e-mail if configured */
+            const char *email = NULL;
+            UREPORT_OPTION_VALUE_FROM_CONF(ursettings, "ContactEmail", email, (const char *));
+            if (email != NULL)
+            {
+                log(_("Linking ABRT crash statistics record with contact email: '%s'"), email);
+                attach_to_ureport(&urconf, bthash, "email", email);
+            }
 
             /* Update the credentials */
             STRCPY_IF_NOT_EQUAL(login, urconf.ur_username);
