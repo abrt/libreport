@@ -21,7 +21,6 @@
 #include "internal_libreport.h"
 #include "client.h"
 #include "abrt_curl.h"
-#include "abrt_xmlrpc.h"
 #include "abrt_rh_support.h"
 #include "reporter-rhtsupport.h"
 
@@ -506,13 +505,14 @@ int main(int argc, char **argv)
     );
     free_map_string(settings);
 
-    VERB1 log("Initializing XML-RPC library");
-    xmlrpc_env env;
-    xmlrpc_env_init(&env);
-    xmlrpc_client_setup_global_const(&env);
-    if (env.fault_occurred)
-        error_msg_and_die("XML-RPC Fault: %s(%d)", env.fault_string, env.fault_code);
-    xmlrpc_env_clean(&env);
+    char *base_api_url = xstrdup(url);
+    char *bthash = NULL;
+
+    map_string_t *ursettings = new_map_string();
+    struct ureport_server_config urconf;
+
+    prepare_ureport_configuration(urconf_file, ursettings, &urconf,
+            url, login, password, ssl_verify);
 
     if (opts & OPT_t)
     {
@@ -603,6 +603,17 @@ int main(int argc, char **argv)
                 return 0;
         }
         free_report_result(reported_to);
+
+        if (submit_ur)
+        {
+            log(_("Sending ABRT crash statistics data"));
+
+            bthash = submit_ureport(dump_dir_name, &urconf);
+
+            /* Ensure that we will use the updated credentials */
+            STRCPY_IF_NOT_EQUAL(login, urconf.ur_username);
+            STRCPY_IF_NOT_EQUAL(password, urconf.ur_password);
+        }
     }
 
     /* Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing */
@@ -662,30 +673,11 @@ int main(int argc, char **argv)
 
     if (!(opts & OPT_t))
     {
-        char *bthash = NULL;
-
-        map_string_t *ursettings = new_map_string();
-        struct ureport_server_config urconf;
-
-        prepare_ureport_configuration(urconf_file, ursettings, &urconf,
-                url, login, password, ssl_verify);
-
-        if (submit_ur)
-        {
-            log(_("Sending ABRT crash statistics data"));
-
-            bthash = submit_ureport(dump_dir_name, &urconf);
-
-            /* Ensure that we will use the updated credentials */
-            STRCPY_IF_NOT_EQUAL(login, urconf.ur_username);
-            STRCPY_IF_NOT_EQUAL(password, urconf.ur_password);
-        }
-
         if (tempfile_size <= QUERY_HINTS_IF_SMALLER_THAN)
         {
             /* Check for hints and show them if we have something */
             log(_("Checking for hints"));
-            if (check_for_hints(url, &login, &password, ssl_verify, tempfile))
+            if (check_for_hints(base_api_url, &login, &password, ssl_verify, tempfile))
             {
                 ureport_server_config_destroy(&urconf);
                 free_map_string(ursettings);
@@ -771,10 +763,6 @@ int main(int argc, char **argv)
         result->url = NULL;
         free_rhts_result(result);
         result = NULL;
-
-        ureport_server_config_destroy(&urconf);
-        free_map_string(ursettings);
-        free(bthash);
     }
 
     char *remote_filename = NULL;
@@ -841,6 +829,11 @@ int main(int argc, char **argv)
     free_rhts_result(result_atch);
     free_rhts_result(result);
 
+    ureport_server_config_destroy(&urconf);
+    free_map_string(ursettings);
+    free(bthash);
+
+    free(base_api_url);
     free(url);
     free(login);
     free(password);
