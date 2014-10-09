@@ -526,6 +526,13 @@ int main(int argc, char **argv)
     free_map_string(settings);
 
     char *base_api_url = xstrdup(url);
+    char *bthash = NULL;
+
+    map_string_t *ursettings = new_map_string();
+    struct ureport_server_config urconf;
+
+    prepare_ureport_configuration(urconf_file, ursettings, &urconf,
+            url, login, password, ssl_verify);
 
     if (opts & OPT_t)
     {
@@ -592,6 +599,17 @@ int main(int argc, char **argv)
                 return 0;
         }
         free_report_result(reported_to);
+
+        if (submit_ur)
+        {
+            log(_("Sending ABRT crash statistics data"));
+
+            bthash = submit_ureport(dump_dir_name, &urconf);
+
+            /* Ensure that we will use the updated credentials */
+            STRCPY_IF_NOT_EQUAL(login, urconf.ur_username);
+            STRCPY_IF_NOT_EQUAL(password, urconf.ur_password);
+        }
     }
 
     /* Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing */
@@ -647,25 +665,6 @@ int main(int argc, char **argv)
 
     if (!(opts & OPT_t))
     {
-        char *bthash = NULL;
-
-        map_string_t *ursettings = new_map_string();
-        struct ureport_server_config urconf;
-
-        prepare_ureport_configuration(urconf_file, ursettings, &urconf,
-                url, login, password, ssl_verify);
-
-        if (submit_ur)
-        {
-            log(_("Sending ABRT crash statistics data"));
-
-            bthash = submit_ureport(dump_dir_name, &urconf);
-
-            /* Ensure that we will use the updated credentials */
-            STRCPY_IF_NOT_EQUAL(login, urconf.ur_username);
-            STRCPY_IF_NOT_EQUAL(password, urconf.ur_password);
-        }
-
         if (tempfile_size <= QUERY_HINTS_IF_SMALLER_THAN)
         {
             /* Check for hints and show them if we have something */
@@ -772,10 +771,6 @@ int main(int argc, char **argv)
         result->url = NULL;
         free_rhts_result(result);
         result = NULL;
-
-        ureport_server_config_destroy(&urconf);
-        free_map_string(ursettings);
-        free(bthash);
     }
 
     char *remote_filename = NULL;
@@ -841,6 +836,10 @@ int main(int argc, char **argv)
 
     free_rhts_result(result_atch);
     free_rhts_result(result);
+
+    ureport_server_config_destroy(&urconf);
+    free_map_string(ursettings);
+    free(bthash);
 
     free(base_api_url);
     free(url);
