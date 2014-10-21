@@ -6,10 +6,10 @@ CC='@CC@'
 LIBTOOL="$abs_top_builddir/libtool"
 
 # We want no optimization.
-CFLAGS="@O0CFLAGS@ -I$abs_top_builddir/src/include -I$abs_top_builddir/src/lib -I$abs_top_builddir/src/gtk-helpers -D_GNU_SOURCE @GLIB_CFLAGS@"
+CFLAGS="@O0CFLAGS@ -I$abs_top_builddir/src/include -I$abs_top_builddir/src/lib -I$abs_top_builddir/src/gtk-helpers -D_GNU_SOURCE @GLIB_CFLAGS@ @GTK_CFLAGS@ -DDEFAULT_DUMP_DIR_MODE=@DEFAULT_DUMP_DIR_MODE@"
 
 # Are special link options needed?
-LDFLAGS="@LDFLAGS@ $abs_top_builddir/src/lib/libreport.la $abs_top_builddir/src/gtk-helpers/libreport-gtk.la"
+LDFLAGS="@LDFLAGS@"
 
 # Are special libraries needed?
-LIBS="@LIBS@"
+LIBS="@LIBS@ $abs_top_builddir/src/lib/libreport.la $abs_top_builddir/src/gtk-helpers/libreport-gtk.la $abs_top_builddir/src/lib/libabrt_web.la"
