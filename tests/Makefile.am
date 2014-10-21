@@ -34,7 +34,8 @@ TESTSUITE_AT = \
   libreport_types.at \
   reported_to.at \
   make_description.at \
-  xfuncs.at
+  xfuncs.at \
+  ureport.at
 
 EXTRA_DIST += $(TESTSUITE_AT)
 TESTSUITE = $(srcdir)/testsuite
