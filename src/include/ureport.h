@@ -233,7 +233,7 @@ ureport_json_attachment_new(const char *bthash, const char *type, const char *da
  * @param type Type of attachment
  * @param data Attached data
  * @param config Configuration used in communication
- * @return False in case of any error; otherwise True
+ * @return True in case of any error; otherwise False
  */
 #define ureport_attach_string libreport_ureport_attach_string
 bool
@@ -247,7 +247,7 @@ ureport_attach_string(const char *bthash, const char *type, const char *data,
  * @param type Type of attachment
  * @param data Attached data
  * @param config Configuration used in communication
- * @return False in case of any error; otherwise True
+ * @return True in case of any error; otherwise False
  */
 #define ureport_attach_int libreport_ureport_attach_int
 bool
