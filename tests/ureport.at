@@ -1,0 +1,1101 @@
+# -*- Autotest -*-
+
+AT_BANNER([ureport])
+
+## ---------------------------- ##
+##  ureport_server_config_init  ##
+## ---------------------------- ##
+
+AT_TESTFUN([ureport_server_config_init],
+[[
+#include "internal_libreport.h"
+#include "ureport.h"
+#include <assert.h>
+
+#define DESTROYED_POINTER (void *)0xdeadbeef
+
+int main(void)
+{
+    g_verbose=3;
+
+    struct ureport_server_config config;
+    ureport_server_config_init(&config);
+
+    assert(config.ur_url == NULL);
+    assert(config.ur_ssl_verify == true);
+    assert(config.ur_client_cert == NULL);
+    assert(config.ur_client_key == NULL);
+    assert(config.ur_username == NULL);
+    assert(config.ur_password == NULL);
+    assert(config.ur_http_headers != NULL);
+    assert(config.ur_prefs.urp_auth_items == NULL);
+
+    config.ur_url = (char *)"url";
+    config.ur_ssl_verify = false;
+    config.ur_client_cert = (char *)"cert";
+    config.ur_client_key = (char *)"key";
+    config.ur_username = (char *)"username";
+    config.ur_password = (char *)"password";
+    free_map_string(config.ur_http_headers);
+    config.ur_prefs.urp_auth_items = DESTROYED_POINTER;
+
+    ureport_server_config_init(&config);
+
+    assert(config.ur_url == NULL);
+    assert(config.ur_ssl_verify == true);
+    assert(config.ur_client_cert == NULL);
+    assert(config.ur_client_key == NULL);
+    assert(config.ur_username == NULL);
+    assert(config.ur_password == NULL);
+    assert(config.ur_http_headers != NULL);
+    assert(config.ur_prefs.urp_auth_items == NULL);
+
+    return 0;
+}
+]])
+
+## ------------------------------- ##
+##  ureport_server_config_destroy  ##
+## ------------------------------- ##
+
+AT_TESTFUN([ureport_server_config_destroy],
+[[
+#include "internal_libreport.h"
+#include "ureport.h"
+#include <assert.h>
+
+#define DESTROYED_POINTER (void *)0xdeadbeef
+
+int main(void)
+{
+    g_verbose=3;
+
+    struct ureport_server_config config;
+    ureport_server_config_init(&config);
+
+    config.ur_url = strdup("url");
+    config.ur_client_cert = strdup("cert");
+    config.ur_client_key = strdup("key");
+    config.ur_username = strdup("username");
+    config.ur_password = strdup("password");
+
+    assert(strcmp(config.ur_url, "url") == 0);
+    assert(strcmp(config.ur_client_cert, "cert") == 0);
+    assert(strcmp(config.ur_client_key, "key") == 0);
+    assert(strcmp(config.ur_username, "username") == 0);
+    assert(strcmp(config.ur_password , "password") == 0);
+
+    ureport_server_config_destroy(&config);
+
+    assert(config.ur_url == DESTROYED_POINTER);
+    assert(config.ur_client_cert == DESTROYED_POINTER);
+    assert(config.ur_client_key == DESTROYED_POINTER);
+    assert(config.ur_username == DESTROYED_POINTER);
+    assert(config.ur_password == DESTROYED_POINTER);
+    assert(config.ur_prefs.urp_auth_items == DESTROYED_POINTER);
+    assert(config.ur_http_headers == DESTROYED_POINTER);
+
+    return 0;
+}
+]])
+
+## ---------------------------- ##
+##  ureport_server_config_load  ##
+## ---------------------------- ##
+
+AT_TESTFUN([ureport_server_config_load],
+[[
+#include "internal_libreport.h"
+#include "ureport.h"
+#include <assert.h>
+
+int main(void)
+{
+    g_verbose=3;
+
+    /* value from env */
+    /* IncludeAuthData set to 'no' */
+    struct ureport_server_config config;
+    ureport_server_config_init(&config);
+
+    setenv("uReport_URL", "env_url", 1);
+    setenv("uReport_SSLVerify", "yes", 1);
+    setenv("SSLClientAuth", "", 1);
+    setenv("uReport_IncludeAuthData", "no", 1);
+    setenv("uReport_AuthDataItems", "hostname", 1);
+
+    map_string_t *settings = new_map_string();
+
+    ureport_server_config_load(&config, settings);
+
+    assert(strcmp(config.ur_url, "env_url") == 0);
+    assert(config.ur_ssl_verify == true);
+
+    GList *l = config.ur_prefs.urp_auth_items;
+    assert(l == NULL);
+
+    ureport_server_config_destroy(&config);
+
+    /* value from env */
+    /* IncludeAuthData set to 'yes' but AuthDataItems is empty. */
+    ureport_server_config_init(&config);
+
+    setenv("uReport_URL", "env_url", 1);
+    setenv("uReport_SSLVerify", "yes", 1);
+    setenv("SSLClientAuth", "", 1);
+    setenv("uReport_IncludeAuthData", "yes", 1);
+    setenv("uReport_AuthDataItems", "", 1);
+
+    ureport_server_config_load(&config, settings);
+
+    assert(strcmp(config.ur_url, "env_url") == 0);
+    assert(config.ur_ssl_verify == true);
+
+    l = config.ur_prefs.urp_auth_items;
+    assert(l == NULL);
+
+    ureport_server_config_destroy(&config);
+
+    /* value from env */
+    /* IncludeAuthData set to 'yes' */
+    ureport_server_config_init(&config);
+
+    setenv("uReport_URL", "env_url", 1);
+    setenv("uReport_SSLVerify", "no", 1);
+    setenv("SSLClientAuth", "", 1);
+    setenv("uReport_IncludeAuthData", "yes", 1);
+    setenv("uReport_AuthDataItems", "hostname, time", 1);
+
+    ureport_server_config_load(&config, settings);
+
+    assert(strcmp(config.ur_url, "env_url") == 0);
+    assert(config.ur_ssl_verify == false);
+
+    l = config.ur_prefs.urp_auth_items;
+    assert(strcmp(l->data, "hostname") == 0);
+    assert(strcmp(l->next->data, "time") == 0);
+
+    ureport_server_config_destroy(&config);
+
+    /* value from settings */
+    /* IncludeAuthData set to 'no' */
+    ureport_server_config_init(&config);
+
+    unsetenv("uReport_URL");
+    unsetenv("uReport_SSLVerify");
+    unsetenv("uReport_IncludeAuthData");
+    unsetenv("uReport_AuthDataItems");
+
+    insert_map_string(settings, xstrdup("URL"), xstrdup("settings_url"));
+    insert_map_string(settings, xstrdup("SSLVerify"), xstrdup("yes"));
+    insert_map_string(settings, xstrdup("SSLClientAuth"), xstrdup(""));
+    insert_map_string(settings, xstrdup("IncludeAuthData"), xstrdup("no"));
+    insert_map_string(settings, xstrdup("AuthDataItems"), xstrdup("hostname"));
+
+    ureport_server_config_load(&config, settings);
+
+    assert(strcmp(config.ur_url, "settings_url") == 0);
+    assert(config.ur_ssl_verify == true);
+
+    l = config.ur_prefs.urp_auth_items;
+    assert(l == NULL);
+
+    ureport_server_config_destroy(&config);
+    free_map_string(settings);
+
+    /* value from settings */
+    /* IncludeAuthData set to 'yes' but AuthDataItems is empty. */
+    ureport_server_config_init(&config);
+
+    settings = new_map_string();
+    insert_map_string(settings, xstrdup("URL"), xstrdup("settings_url"));
+    insert_map_string(settings, xstrdup("SSLVerify"), xstrdup("yes"));
+    insert_map_string(settings, xstrdup("SSLClientAuth"), xstrdup(""));
+    insert_map_string(settings, xstrdup("IncludeAuthData"), xstrdup("yes"));
+    insert_map_string(settings, xstrdup("AuthDataItems"), xstrdup(""));
+
+    ureport_server_config_load(&config, settings);
+
+    assert(strcmp(config.ur_url, "settings_url") == 0);
+    assert(config.ur_ssl_verify == true);
+
+    l = config.ur_prefs.urp_auth_items;
+    assert(l == NULL);
+
+    ureport_server_config_destroy(&config);
+    free_map_string(settings);
+
+    /* value from settings */
+    /* IncludeAuthData set to 'yes' */
+    ureport_server_config_init(&config);
+
+    settings = new_map_string();
+    insert_map_string(settings, xstrdup("URL"), xstrdup("settings_url"));
+    insert_map_string(settings, xstrdup("SSLVerify"), xstrdup("no"));
+    insert_map_string(settings, xstrdup("SSLClientAuth"), xstrdup(""));
+    insert_map_string(settings, xstrdup("IncludeAuthData"), xstrdup("yes"));
+    insert_map_string(settings, xstrdup("AuthDataItems"), xstrdup("hostname, type"));
+
+    ureport_server_config_load(&config, settings);
+
+    assert(strcmp(config.ur_url, "settings_url") == 0);
+    assert(config.ur_ssl_verify == false);
+
+    l = config.ur_prefs.urp_auth_items;
+    assert(strcmp(l->data, "hostname") == 0);
+    assert(strcmp(l->next->data, "type") == 0);
+
+    ureport_server_config_destroy(&config);
+    free_map_string(settings);
+
+    return 0;
+}
+]])
+
+
+## ------------------------------- ##
+##  ureport_server_config_set_url  ##
+## ------------------------------- ##
+
+AT_TESTFUN([ureport_server_config_set_url],
+[[
+#include "internal_libreport.h"
+#include "ureport.h"
+#include <assert.h>
+
+#define DESTROYED_POINTER (void *)0xdeadbeef
+
+int main(void)
+{
+    g_verbose=3;
+
+    struct ureport_server_config config;
+    ureport_server_config_init(&config);
+
+    ureport_server_config_set_url(&config, strdup("url"));
+
+    assert(strcmp(config.ur_url, "url") == 0);
+
+    ureport_server_config_set_url(&config, strdup("next.url"));
+
+    assert(strcmp(config.ur_url, "next.url") == 0);
+
+    ureport_server_config_destroy(&config);
+
+    return 0;
+}
+]])
+
+## --------------------------------------- ##
+##  ureport_server_config_set_client_auth  ##
+## --------------------------------------- ##
+
+AT_TESTFUN([ureport_server_config_set_client_auth],
+[[
+#include "internal_libreport.h"
+#include "ureport.h"
+#include <assert.h>
+
+#define DESTROYED_POINTER (void *)0xdeadbeef
+#define RHSM_WEB_SERVICE_URL "https://api.access.redhat.com/rs/telemetry/abrt"
+
+#define TESTING_CERTS_CORRECT_DIR_PATH "../../ureport/certs/correct"
+#define TESTING_CERTS_INCORRECT_CONTENT_DIR_PATH "../../ureport/certs/incorrect_content"
+#define TESTING_PYTHONPATH "../../ureport/"
+#define WRONG_TESTING_PYTHONPATH "../../ureportxxxxxx/"
+
+#define RHSMENT_PEM_DIR_PATH "/etc/pki/entitlement"
+
+#define RHSMENT_ENT_DATA_BEGIN_TAG "-----BEGIN ENTITLEMENT DATA-----"
+#define RHSMENT_ENT_DATA_END_TAG "-----END ENTITLEMENT DATA-----"
+#define RHSMENT_SIG_DATA_BEGIN_TAG "-----BEGIN RSA SIGNATURE-----"
+#define RHSMENT_SIG_DATA_END_TAG "-----END RSA SIGNATURE-----"
+
+char *my_strdup(const char *str)
+{
+    if (str == NULL)
+        return NULL;
+    else
+        return strdup(str);
+}
+
+void set_ureport_server_config(struct ureport_server_config *config,
+                                const char *url,
+                                bool ver,
+                                const char *cert,
+                                const char *key,
+                                const char *uname,
+                                const char *passwd)
+{
+    config->ur_url = my_strdup(url);
+    config->ur_ssl_verify = ver;
+    config->ur_client_cert = my_strdup(cert);
+    config->ur_client_key = my_strdup(key);
+    config->ur_username = my_strdup(uname);
+    config->ur_password = my_strdup(passwd);
+
+    return;
+}
+
+void my_assert(const char *str1, const char *str2)
+{
+    if (str1 == NULL || str2 == NULL)
+        assert( str1 == NULL && str2 == NULL );
+    else
+        assert(strcmp(str1, str2) == 0);
+
+    return;
+}
+
+void assert_ureport_server_config(struct ureport_server_config *config,
+                                const char *url,
+                                bool ver,
+                                const char *cert,
+                                const char *key,
+                                const char *username,
+                                const char *password)
+{
+    my_assert(config->ur_url, url);
+    assert(config->ur_ssl_verify == ver);
+    my_assert(config->ur_client_cert, cert);
+    my_assert(config->ur_client_key, key);
+    my_assert(config->ur_username, username);
+    my_assert(config->ur_password , password);
+
+    return;
+}
+
+int test_ureport_server_config_set_client_auth_exit_code(struct ureport_server_config *config,
+                                                         const char *client_auth)
+{
+    ureport_server_config_init(config);
+
+    pid_t pid = fork();
+    if (pid < 0)
+    {
+        perror_msg("fork");
+        return -1;
+    }
+
+    if (pid == 0)
+    {
+        ureport_server_config_set_client_auth(config, client_auth);
+        exit(0);
+    }
+    int status;
+    wait(&status);
+
+    ureport_server_config_destroy(config);
+
+    return status;
+}
+
+int main(void)
+{
+    g_verbose=3;
+
+    struct ureport_server_config config;
+    ureport_server_config_init(&config);
+
+    ureport_server_config_set_client_auth(&config, NULL);
+
+    set_ureport_server_config(&config, "url", true, "cert", "key", "username", "passwd");
+
+    /* client_auth == NULL */
+    ureport_server_config_set_client_auth(&config, NULL);
+    assert_ureport_server_config(&config, "url", true, "cert", "key", "username", "passwd");
+
+    /* client_auth == "" */
+    ureport_server_config_set_client_auth(&config, "");
+    assert_ureport_server_config(&config, "url", true, NULL, NULL, "username", "passwd");
+
+    ureport_server_config_destroy(&config);
+
+    /* client_auth == rhsm */
+    /* ur_url == NULL */
+    /* no certs */
+    char *empty_cert_dir = mkdtemp(strdup("/tmp/cert_XXXXXX"));
+    assert(empty_cert_dir);
+    setenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH", empty_cert_dir, 1);
+
+    int status = test_ureport_server_config_set_client_auth_exit_code(&config, "rhsm");
+    assert(status != 0 && status != -1);
+
+    assert(rmdir(empty_cert_dir) == 0);
+
+    /* client_auth == rhsm */
+    /* ur_url == NULL */
+    /* certs exists (incorrect content) */
+
+    setenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH", TESTING_CERTS_INCORRECT_CONTENT_DIR_PATH, 1);
+
+    status = test_ureport_server_config_set_client_auth_exit_code(&config, "rhsm");
+    assert(status != 0 && status != -1);
+
+    /* client_auth == rhsm */
+    /* ur_url == NULL */
+    /* certs exists (correct) */
+    ureport_server_config_init(&config);
+
+    setenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH", TESTING_CERTS_CORRECT_DIR_PATH, 1);
+
+    ureport_server_config_set_client_auth(&config, "rhsm");
+
+    assert_ureport_server_config(&config, RHSM_WEB_SERVICE_URL, true,
+                                TESTING_CERTS_CORRECT_DIR_PATH"/cert.pem",
+                                TESTING_CERTS_CORRECT_DIR_PATH"/cert-key.pem",
+                                NULL, NULL);
+
+    char *ent = xasprintf(RHSMENT_ENT_DATA_BEGIN_TAG"%s"RHSMENT_ENT_DATA_END_TAG, "entitlementdata");
+    assert(0 == strcmp(ent,
+                        get_map_string_item_or_NULL(config.ur_http_headers, "X-RH-Entitlement-Data")));
+
+    char *sig= xasprintf(RHSMENT_SIG_DATA_BEGIN_TAG"%s"RHSMENT_SIG_DATA_END_TAG, "rsasignature");
+    assert(0 == strcmp(sig,
+                        get_map_string_item_or_NULL(config.ur_http_headers, "X-RH-Entitlement-Sig")));
+
+    free(ent);
+    free(sig);
+    ureport_server_config_destroy(&config);
+
+    /* client_auth == cert:key */
+    /* ur_url == NULL */
+    ureport_server_config_init(&config);
+    set_ureport_server_config(&config, NULL, true, NULL, NULL, "username", "passwd");
+    ureport_server_config_set_client_auth(&config, "cert:key");
+    assert_ureport_server_config(&config, NULL, true, "cert", "key", NULL, NULL);
+
+    ureport_server_config_destroy(&config);
+
+    /* client_auth == cert:key */
+    /* ur_url != NULL */
+    ureport_server_config_init(&config);
+    set_ureport_server_config(&config, "url", true, NULL, NULL, "username", "passwd");
+    ureport_server_config_set_client_auth(&config, "cert:key");
+    assert_ureport_server_config(&config, "url", true, "cert", "key", NULL, NULL);
+
+    ureport_server_config_destroy(&config);
+
+    /* wrong client_auth */
+    int ret_val = test_ureport_server_config_set_client_auth_exit_code(&config, "cert:");
+    assert(ret_val != 0 && ret_val != -1);
+    ret_val = test_ureport_server_config_set_client_auth_exit_code(&config, ":key");
+    assert(ret_val != 0 && ret_val != -1);
+    ret_val = test_ureport_server_config_set_client_auth_exit_code(&config, "cert");
+    assert(ret_val != 0 && ret_val != -1);
+
+/* rhsm_config_get_entitlement_cert_dir */
+/* certs exists (correct content) */
+    unsetenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH");
+    setenv("PYTHONPATH", TESTING_PYTHONPATH, 1);
+
+    ureport_server_config_init(&config);
+    ureport_server_config_set_client_auth(&config, "rhsm");
+
+    char *abs_path_cert = realpath(TESTING_CERTS_CORRECT_DIR_PATH"/cert.pem", NULL);
+    char *abs_path_key = realpath(TESTING_CERTS_CORRECT_DIR_PATH"/cert-key.pem", NULL);
+
+    assert_ureport_server_config(&config, RHSM_WEB_SERVICE_URL, true,
+                                abs_path_cert,
+                                abs_path_key,
+                                NULL, NULL);
+    free(abs_path_cert);
+    free(abs_path_key);
+
+    ent = xasprintf(RHSMENT_ENT_DATA_BEGIN_TAG"%s"RHSMENT_ENT_DATA_END_TAG, "entitlementdata");
+    assert(0 == strcmp(ent,
+                        get_map_string_item_or_NULL(config.ur_http_headers, "X-RH-Entitlement-Data")));
+
+    sig= xasprintf(RHSMENT_SIG_DATA_BEGIN_TAG"%s"RHSMENT_SIG_DATA_END_TAG, "rsasignature");
+    assert(0 == strcmp(sig,
+                        get_map_string_item_or_NULL(config.ur_http_headers, "X-RH-Entitlement-Sig")));
+
+    free(ent);
+    free(sig);
+    ureport_server_config_destroy(&config);
+
+    /* python script fails, '/etc/pki/entitlement' is returned  */
+
+    /* set cert dir path to '/etc/pki/entitlement' */
+    /* store return value of ureport_server_config_set_client_auth */
+    setenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH", RHSMENT_PEM_DIR_PATH, 1);
+
+    int exp_ret_val = test_ureport_server_config_set_client_auth_exit_code(&config, "rhsm");
+
+    /* Do the same with unset LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH and wrong PYTHONPATH */
+    /* function rhsm_config_get_entitlement_cert_dir has to return RHSMENT_PEM_DIR_PATH */
+    unsetenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH");
+    setenv("PYTHONPATH", WRONG_TESTING_PYTHONPATH, 1);
+
+    int rec_ret_val = test_ureport_server_config_set_client_auth_exit_code(&config, "rhsm");
+
+    /* we expect the same return value */
+//    assert(exp_ret_val == rec_ret_val);
+
+    return 0;
+}
+]])
+
+## -------------------------------------- ##
+##  ureport_server_config_set_basic_auth  ##
+## -------------------------------------- ##
+
+AT_TESTFUN([ureport_server_config_set_basic_auth],
+[[
+#include "internal_libreport.h"
+#include "ureport.h"
+#include <assert.h>
+
+void my_assert(const char *str1, const char *str2)
+{
+    if (str1 == NULL || str2 == NULL)
+        assert( str1 == NULL && str2 == NULL );
+    else
+        assert(strcmp(str1, str2) == 0);
+
+    return;
+}
+
+void assert_ureport_server_config(struct ureport_server_config *config,
+                                const char *url,
+                                bool ver,
+                                const char *cert,
+                                const char *key,
+                                const char *username,
+                                const char *password)
+{
+    my_assert(config->ur_url, url);
+    assert(config->ur_ssl_verify == ver);
+    my_assert(config->ur_client_cert, cert);
+    my_assert(config->ur_client_key, key);
+    my_assert(config->ur_username, username);
+    my_assert(config->ur_password , password);
+
+    return;
+}
+
+int main(void)
+{
+    g_verbose=3;
+
+    struct ureport_server_config config;
+    ureport_server_config_init(&config);
+
+    ureport_server_config_set_basic_auth(&config, NULL, NULL);
+    assert_ureport_server_config(&config, NULL, true, NULL, NULL, NULL, NULL);
+
+    ureport_server_config_set_basic_auth(&config, "usr", NULL);
+    assert_ureport_server_config(&config, NULL, true, NULL, NULL, "usr", NULL);
+
+    ureport_server_config_set_basic_auth(&config, NULL, "passwd");
+    assert_ureport_server_config(&config, NULL, true, NULL, NULL, NULL, "passwd");
+
+    ureport_server_config_set_basic_auth(&config, "usr", "passwd");
+    assert_ureport_server_config(&config, NULL, true, NULL, NULL, "usr", "passwd");
+
+    return 0;
+}
+]])
+
+## ------------------------------------ ##
+##  ureport_server_response_from_reply  ##
+## ------------------------------------ ##
+
+AT_TESTFUN([ureport_server_response_from_reply],
+[[
+#include "internal_libreport.h"
+#include "ureport.h"
+#include <assert.h>
+#include "libreport_curl.h"
+
+
+int main(void)
+{
+
+    /* curl_resul is not CURL_OK */
+    struct post_state ps;
+
+    ps.curl_result = 1;
+    strcpy(ps.errmsg, "err");
+    ps.body = (char *)"body";
+
+    struct ureport_server_config config;
+    ureport_server_config_init(&config);
+
+    ureport_server_config_set_url(&config, strdup("url"));
+
+    assert(ureport_server_response_from_reply(&ps, &config) == NULL);
+
+    /* curl_resul is CURLE_OK */
+    /* http_resp_code == 404 */
+    ps.curl_result = CURLE_OK;
+    ps.http_resp_code = 404;
+
+    assert(ureport_server_response_from_reply(&ps, &config) == NULL);
+
+    ps.http_resp_code = 500;
+    assert(ureport_server_response_from_reply(&ps, &config) == NULL);
+
+    ps.http_resp_code = 503;
+    assert(ureport_server_response_from_reply(&ps, &config) == NULL);
+
+    ps.http_resp_code = 404;
+    assert(ureport_server_response_from_reply(&ps, &config) == NULL);
+
+    ps.http_resp_code = 201;
+    assert(ureport_server_response_from_reply(&ps, &config) == NULL);
+
+    /* unable parse json */
+    ps.http_resp_code = 202;
+    assert(ureport_server_response_from_reply(&ps, &config) == NULL);
+
+    /* correct json && invalid format */
+    ps.body = (char *)"{ \"resultxxxxxxxx\" : true }";
+    assert(ureport_server_response_from_reply(&ps, &config) == NULL);
+
+    /* correct json && valid format */
+    ps.body = (char *)"{ 'result' : true, \
+                         'message': 'message', \
+                         'bthash': '691cf824e3e07457156125636e86c50279e29496', \
+                         'reported_to': [ { 'type': 'url', \
+                         'value': 'value', \
+                         'reporter': 'ABRT Server' } ] }";
+
+    struct ureport_server_response *response = ureport_server_response_from_reply(&ps, &config);
+    assert(strcmp(response->urr_value, "true") == 0);
+    assert(strcmp(response->urr_message, "message") == 0);
+    assert(strcmp(response->urr_bthash, "691cf824e3e07457156125636e86c50279e29496") == 0);
+
+    GList *urr_reported_to_list = response->urr_reported_to_list;
+    assert(strcmp(urr_reported_to_list->data, "ABRT Server: URL=value") == 0);
+
+    ureport_server_response_free(response);
+
+    return 0;
+
+}
+]])
+
+## ----------------------------------------- ##
+##  ureport_server_response_save_in_dump_dir ##
+## ----------------------------------------- ##
+
+AT_TESTFUN([ureport_server_response_save_in_dump_dir],
+[[
+#include "internal_libreport.h"
+#include "ureport.h"
+#include <assert.h>
+#include "libreport_curl.h"
+#include "dump_dir.h"
+#include "problem_data.h"
+
+int main(void)
+{
+    g_verbose=3;
+
+    /* reported to*/
+    struct post_state ps;
+    ps.curl_result = CURLE_OK;
+    ps.http_resp_code = 202;
+    ps.body = (char *)"{ 'result' : true, \
+                         'message': 'message', \
+                         'bthash': '691cf824e3e07457156125636e86c50279e29496', \
+                         'reported_to': [ { 'type': 'url', \
+                         'value': 'value', \
+                         'reporter': 'ABRT Server' } ] }";
+
+    struct ureport_server_config config;
+    ureport_server_config_init(&config);
+    ureport_server_config_set_url(&config, strdup("url"));
+
+    struct dump_dir *dd = dd_create("./test", (uid_t)-1L, DEFAULT_DUMP_DIR_MODE);
+    assert(dd != NULL);
+    dd_create_basic_files(dd, (uid_t)-1L, NULL);
+    dd_save_text(dd, FILENAME_TYPE, "CCpp");
+    dd_close(dd);
+
+    struct ureport_server_response *response = ureport_server_response_from_reply(&ps, &config);
+    assert(ureport_server_response_save_in_dump_dir(response, "./test", &config));
+
+    /* dump dir do not exist */
+    assert(false == ureport_server_response_save_in_dump_dir(response, "not_existing_dir", &config));
+
+    dd = dd_opendir("./test", 0);
+    char *reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO, DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+
+    assert(strstr(reported_to, "uReport: BTHASH=691cf824e3e07457156125636e86c50279e29496") != NULL);
+    assert(strstr(reported_to, "url/reports/bthash/691cf824e3e07457156125636e86c50279e29496") != NULL);
+    assert(strstr(reported_to, "ABRT Server: URL=value") != NULL);
+    /* not-reportable must not exist */
+    assert(!dd_exist(dd, FILENAME_NOT_REPORTABLE));
+
+    free(config.ur_url);
+    ureport_server_response_free(response);
+    free(reported_to);
+    dd_close(dd);
+    delete_dump_dir("./test");
+
+    /* not-reportable*/
+    ps.curl_result = CURLE_OK;
+    ps.http_resp_code = 202;
+    ps.body = (char *)"{ 'result' : true, \
+                         'message': 'message', \
+                         'solutions': [ { 'cause': 'solution_cause', \
+                         'url': 'solution_url', \
+                         'note': 'solution_note' } ], \
+                         'bthash': '691cf824e3e07457156125636e86c50279e29496', \
+                         'reported_to': [ { 'type': 'url', \
+                         'value': 'value', \
+                         'reporter': 'ABRT Server' } ] }";
+
+    ureport_server_config_init(&config);
+    ureport_server_config_set_url(&config, strdup("url"));
+
+    dd = dd_create("./test", (uid_t)-1L, DEFAULT_DUMP_DIR_MODE);
+    assert(dd != NULL);
+    dd_create_basic_files(dd, (uid_t)-1L, NULL);
+    dd_save_text(dd, FILENAME_TYPE, "CCpp");
+    dd_close(dd);
+
+    response = ureport_server_response_from_reply(&ps, &config);
+    assert(ureport_server_response_save_in_dump_dir(response, "./test", &config));
+
+    dd = dd_opendir("./test", 0);
+    reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO, DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+
+    assert(strstr(reported_to, "uReport: BTHASH=691cf824e3e07457156125636e86c50279e29496") != NULL);
+    assert(strstr(reported_to, "url/reports/bthash/691cf824e3e07457156125636e86c50279e29496") != NULL);
+    assert(strstr(reported_to, "ABRT Server: URL=value") != NULL);
+    /* not-reportable must exist */
+    char *not_reportable = dd_load_text_ext(dd, FILENAME_NOT_REPORTABLE, DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+
+    assert(strstr(not_reportable, "Your problem seems to be caused by solution_cause") != NULL);
+
+
+    free(config.ur_url);
+    ureport_server_response_free(response);
+    free(reported_to);
+    free(not_reportable);
+    dd_close(dd);
+    delete_dump_dir("./test");
+
+    return 0;
+
+}
+]])
+
+
+## --------------------------------------- ##
+##  ureport_server_response_get_report_url ##
+## --------------------------------------- ##
+
+AT_TESTFUN([ureport_server_response_get_report_url],
+[[
+#include "internal_libreport.h"
+#include "ureport.h"
+#include <assert.h>
+#include "libreport_curl.h"
+#include "problem_data.h"
+
+#define BTHASH_URL_SFX "reports/bthash/"
+
+int main(void)
+{
+    g_verbose=3;
+
+    /* reported to*/
+    struct post_state ps;
+    ps.curl_result = CURLE_OK;
+    ps.http_resp_code = 202;
+    ps.body = (char *)"{ 'result' : true, \
+                         'message': 'message', \
+                         'bthash': '691cf824e3e07457156125636e86c50279e29496', \
+                         'reported_to': [ { 'type': 'url', \
+                         'value': 'value', \
+                         'reporter': 'ABRT Server' } ] }";
+
+    struct ureport_server_config config;
+    ureport_server_config_init(&config);
+    ureport_server_config_set_url(&config, strdup("url"));
+
+    struct ureport_server_response *response = ureport_server_response_from_reply(&ps, &config);
+
+    char *report_url = ureport_server_response_get_report_url(response, &config);
+
+    char *expect_bthash_url = concat_path_file(config.ur_url, BTHASH_URL_SFX);
+    char *expect_report_url = concat_path_file(expect_bthash_url, response->urr_bthash);
+    free(expect_bthash_url);
+
+    assert(strcmp(report_url, expect_report_url) == 0);
+
+    free(config.ur_url);
+    free(expect_report_url);
+    free(report_url);
+    ureport_server_response_free(response);
+
+    return 0;
+}
+]])
+
+## ---------------- ##
+##  ureport_do_post ##
+## ---------------- ##
+
+AT_TESTFUN([ureport_do_post],
+[[
+#include "internal_libreport.h"
+#include "ureport.h"
+#include <assert.h>
+#include "libreport_curl.h"
+#include "problem_data.h"
+
+int main(void)
+{
+    g_verbose=3;
+
+    struct dump_dir *dd = dd_create("./test", (uid_t)-1L, DEFAULT_DUMP_DIR_MODE);
+    assert(dd != NULL);
+    dd_create_basic_files(dd, (uid_t)-1L, NULL);
+    dd_save_text(dd, FILENAME_TYPE, "CCpp");
+    dd_save_text(dd, FILENAME_ANALYZER, "CCpp");
+    dd_save_text(dd, FILENAME_PKG_EPOCH, "pkg_epoch");
+    dd_save_text(dd, FILENAME_PKG_ARCH, "pkg_arch");
+    dd_save_text(dd, FILENAME_PKG_RELEASE, "pkg_release");
+    dd_save_text(dd, FILENAME_PKG_VERSION, "pkg_version");
+    dd_save_text(dd, FILENAME_PKG_NAME, "pkg_name");
+    const char *bt = "{ \"signal\": 6, \"executable\": \"/usr/bin/will_abort\" }";
+    dd_save_text(dd, FILENAME_CORE_BACKTRACE, bt);
+    dd_close(dd);
+
+    char *json = ureport_from_dump_dir_ext("./test", NULL);
+
+    /* wrong url */
+    struct ureport_server_config config;
+    ureport_server_config_init(&config);
+    struct post_state *post_state = ureport_do_post(json, &config, "not_exist");
+    assert(post_state->curl_result == CURLE_COULDNT_RESOLVE_HOST);
+
+    free(post_state);
+    free(json);
+    ureport_server_config_destroy(&config);
+    delete_dump_dir("./test");
+
+    return 0;
+}
+]])
+
+## --------------- ##
+##  ureport_submit ##
+## --------------- ##
+
+AT_TESTFUN([ureport_submit],
+[[
+#include "internal_libreport.h"
+#include "ureport.h"
+#include <assert.h>
+#include "libreport_curl.h"
+#include "problem_data.h"
+
+int main(void)
+{
+    g_verbose=3;
+
+    struct dump_dir *dd = dd_create("./test", (uid_t)-1L, DEFAULT_DUMP_DIR_MODE);
+    assert(dd != NULL);
+    dd_create_basic_files(dd, (uid_t)-1L, NULL);
+    dd_save_text(dd, FILENAME_TYPE, "CCpp");
+    dd_save_text(dd, FILENAME_ANALYZER, "CCpp");
+    dd_save_text(dd, FILENAME_PKG_EPOCH, "pkg_epoch");
+    dd_save_text(dd, FILENAME_PKG_ARCH, "pkg_arch");
+    dd_save_text(dd, FILENAME_PKG_RELEASE, "pkg_release");
+    dd_save_text(dd, FILENAME_PKG_VERSION, "pkg_version");
+    dd_save_text(dd, FILENAME_PKG_NAME, "pkg_name");
+    const char *bt = "{ \"signal\": 6, \"executable\": \"/usr/bin/will_abort\" }";
+    dd_save_text(dd, FILENAME_CORE_BACKTRACE, bt);
+    dd_close(dd);
+
+    char *json = ureport_from_dump_dir_ext("./test", NULL);
+
+    /* wrong url */
+    struct ureport_server_config config;
+    ureport_server_config_init(&config);
+    struct ureport_server_response *response = ureport_submit(json, &config);
+
+    assert(response == NULL);
+
+    ureport_server_response_free(response);
+    free(json);
+    ureport_server_config_destroy(&config);
+    delete_dump_dir("./test");
+
+    return 0;
+}
+]])
+
+## --------------------------- ##
+## ureport_json_attachment_new ##
+## --------------------------- ##
+
+AT_TESTFUN([ureport_json_attachment_new],
+[[
+#include "internal_libreport.h"
+#include "ureport.h"
+#include <assert.h>
+#include "libreport_curl.h"
+#include "problem_data.h"
+
+int main(void)
+{
+    g_verbose=3;
+
+    char *json = ureport_json_attachment_new("data_bthash", "data_type", "data_data");
+    assert(strcmp(json, "{ \"bthash\": \"data_bthash\", \"type\": \"data_type\", \"data\": \"data_data\" }") == 0);
+    free(json);
+
+    json = ureport_json_attachment_new("", "", "");
+    assert(strcmp(json, "{ \"bthash\": \"\", \"type\": \"\", \"data\": \"\" }") == 0);
+    free(json);
+
+    return 0;
+}
+]])
+
+## --------------------- ##
+## ureport_attach_string ##
+## --------------------- ##
+
+AT_TESTFUN([ureport_attach_string],
+[[
+#include "internal_libreport.h"
+#include "ureport.h"
+#include <assert.h>
+#include "libreport_curl.h"
+#include "problem_data.h"
+
+int main(void)
+{
+    g_verbose=3;
+
+    /* wrong url */
+    struct ureport_server_config config;
+    ureport_server_config_init(&config);
+
+    bool res = ureport_attach_string("691cf824e3e07457156125636e86c50279e29496", "email", "abrt@email.com", &config);
+    assert(res == true);
+
+    ureport_server_config_destroy(&config);
+
+    return 0;
+}
+]])
+
+## ------------------ ##
+## ureport_attach_int ##
+## ------------------ ##
+
+AT_TESTFUN([ureport_attach_int],
+[[
+#include "internal_libreport.h"
+#include "ureport.h"
+#include <assert.h>
+#include "libreport_curl.h"
+#include "problem_data.h"
+
+int main(void)
+{
+    g_verbose=3;
+
+    /* wrong url */
+    struct ureport_server_config config;
+    ureport_server_config_init(&config);
+
+    bool res = ureport_attach_int("691cf824e3e07457156125636e86c50279e29496", "count", 5, &config);
+    assert(res == true);
+
+    ureport_server_config_destroy(&config);
+
+    return 0;
+}
+]])
+
+## ------------------------- ##
+## ureport_from_dump_dir_ext ##
+## ------------------------- ##
+
+AT_TESTFUN([ureport_from_dump_dir_ext],
+[[
+#include "internal_libreport.h"
+#include "ureport.h"
+#include <assert.h>
+#include "libreport_curl.h"
+#include "problem_data.h"
+
+int main(void)
+{
+    g_verbose=3;
+
+    struct dump_dir *dd = dd_create("./test", (uid_t)-1L, DEFAULT_DUMP_DIR_MODE);
+    assert(dd != NULL);
+    dd_create_basic_files(dd, (uid_t)-1L, NULL);
+    dd_save_text(dd, FILENAME_TYPE, "CCpp");
+    dd_save_text(dd, FILENAME_ANALYZER, "CCpp");
+    dd_save_text(dd, FILENAME_PKG_EPOCH, "pkg_epoch");
+    dd_save_text(dd, FILENAME_PKG_ARCH, "pkg_arch");
+    dd_save_text(dd, FILENAME_PKG_RELEASE, "pkg_release");
+    dd_save_text(dd, FILENAME_PKG_VERSION, "pkg_version");
+    dd_save_text(dd, FILENAME_PKG_NAME, "pkg_name");
+    const char *bt = "{ \"signal\": 6, \"executable\": \"/usr/bin/will_abort\" }";
+    dd_save_text(dd, FILENAME_CORE_BACKTRACE, bt);
+    dd_close(dd);
+
+    /* no auth */
+    char *ureport = ureport_from_dump_dir_ext("./test", NULL);
+    assert(strstr(ureport, "auth") == NULL);
+    free(ureport);
+
+    /* auth */
+    dd = dd_opendir("./test", 0);
+    dd_save_text(dd, FILENAME_HOSTNAME, "env_hostname");
+    dd_close(dd);
+
+    struct ureport_server_config config;
+    ureport_server_config_init(&config);
+
+    map_string_t *settings = new_map_string();
+
+    setenv("uReport_IncludeAuthData", "yes", 1);
+    setenv("uReport_AuthDataItems", "hostname", 1);
+
+    ureport_server_config_load(&config, settings);
+
+    ureport = ureport_from_dump_dir_ext("./test", &config.ur_prefs);
+    assert(strstr(ureport, "auth") != NULL);
+    assert(strstr(ureport, "\"hostname\": \"env_hostname\"") != NULL);
+    free(ureport);
+
+    ureport_server_config_destroy(&config);
+    free_map_string(settings);
+
+    /* auth with unknown uReport_AuthDataItems */
+    ureport_server_config_init(&config);
+
+    settings = new_map_string();
+
+    setenv("uReport_AuthDataItems", "hostname, unknown", 1);
+
+    ureport_server_config_load(&config, settings);
+
+    ureport = ureport_from_dump_dir_ext("./test", &config.ur_prefs);
+    assert(strstr(ureport, "auth") != NULL);
+    assert(strstr(ureport, "\"hostname\": \"env_hostname\"") != NULL);
+    assert(strstr(ureport, "unknown") == NULL);
+    free(ureport);
+
+    ureport_server_config_destroy(&config);
+    free_map_string(settings);
+    delete_dump_dir("./test");
+
+    return 0;
+}
+]])
+

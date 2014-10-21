@@ -41,7 +41,8 @@ TESTSUITE_AT = \
   xml_definition.at \
   report_python.at \
   xfuncs.at \
-  string_list.at
+  string_list.at \
+  ureport.at
 
 EXTRA_DIST += $(TESTSUITE_AT)
 TESTSUITE = $(srcdir)/testsuite
