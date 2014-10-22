@@ -274,6 +274,7 @@ void attach_to_ureport(struct ureport_server_config *conf,
 static
 bool check_for_hints(const char *url, char **login, char **password, bool ssl_verify, const char *tempfile)
 {
+    bool retval = false;
     rhts_result_t *result = NULL;
 
     INVALID_CREDENTIALS_LOOP((*login), (*password),
@@ -316,14 +317,18 @@ bool check_for_hints(const char *url, char **login, char **password, bool ssl_ve
             hint = append_to_malloced_string(hint,
                     _("Do you still want to create a RHTSupport ticket?")
                     );
-            int create_ticket = ask_yes_no(hint);
+
+            /*
+             * 'Yes' to the create ticket question means no hints were found.
+             */
+            retval = !ask_yes_no(hint);
+
             free(hint);
-            if (!create_ticket)
-                return true;
         }
     }
+
     free_rhts_result(result);
-    return false;
+    return retval;
 }
 
 static
