@@ -32,9 +32,6 @@
 
 #define RHSM_WEB_SERVICE_URL "https://api.access.redhat.com/rs/telemetry/abrt"
 
-#define RHSM_CERT_PATH "/etc/pki/consumer/cert.pem"
-#define RHSM_KEY_PATH "/etc/pki/consumer/key.pem"
-
 #define RHSMENT_PEM_DIR_PATH "/etc/pki/entitlement"
 #define RHSMENT_ENT_DATA_BEGIN_TAG "-----BEGIN ENTITLEMENT DATA-----"
 #define RHSMENT_ENT_DATA_END_TAG "-----END ENTITLEMENT DATA-----"
@@ -89,14 +86,6 @@ ureport_server_config_set_client_auth(struct ureport_server_config *config,
         VERB2 log("Not using client authentication");
     }
     else if (strcmp(client_auth, "rhsm") == 0)
-    {
-        if (config->ur_url == NULL)
-            ureport_server_config_set_url(config, xstrdup(RHSM_WEB_SERVICE_URL));
-
-        config->ur_client_cert = xstrdup(RHSM_CERT_PATH);
-        config->ur_client_key = xstrdup(RHSM_KEY_PATH);
-    }
-    else if (strcmp(client_auth, "rhsm-entitlement") == 0)
     {
         if (config->ur_url == NULL)
             ureport_server_config_set_url(config, xstrdup(RHSM_WEB_SERVICE_URL));
