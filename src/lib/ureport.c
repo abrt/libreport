@@ -102,52 +102,44 @@ ureport_server_config_set_client_auth(struct ureport_server_config *config,
             ureport_server_config_set_url(config, xstrdup(RHSM_WEB_SERVICE_URL));
 
         GList *certs = get_file_list(RHSMENT_PEM_DIR_PATH, "pem");
-        if (g_list_length(certs) != 2)
+        if (g_list_length(certs) < 2)
         {
+            g_list_free_full(certs, (GDestroyNotify)free_file_obj);
+
             VERB2 log(RHSMENT_PEM_DIR_PATH" does not contain unique cert-key files pair");
             VERB2 log("Not using client authentication");
             return;
         }
 
-        const char *cert = NULL;
-        const char *key = NULL;
-
-        file_obj_t *fst = (file_obj_t *)certs->data;
-        file_obj_t *scn = (file_obj_t *)certs->next->data;
-
-        if (strlen(fo_get_filename(fst)) < strlen(fo_get_filename(scn)))
+        /* Use the last non-key file found. */
+        file_obj_t *cert = NULL;
+        for (GList *iter = certs; iter != NULL; iter = g_list_next(iter))
         {
-            cert = fo_get_filename(fst);
-            key = fo_get_filename(scn);
+            file_obj_t *tmp = (file_obj_t *)iter->data;
+            const char *file_name = fo_get_filename(tmp);
 
-            config->ur_client_cert = xstrdup(fo_get_fullpath(fst));
-            config->ur_client_key = xstrdup(fo_get_fullpath(scn));
-        }
-        else
-        {
-            cert = fo_get_filename(scn);
-            key = fo_get_filename(fst);
-
-            config->ur_client_cert = xstrdup(fo_get_fullpath(scn));
-            config->ur_client_key = xstrdup(fo_get_fullpath(fst));
+            if (suffixcmp(file_name, "-key"))
+                cert = tmp;
         }
 
-        const bool iscomplement = prefixcmp(key, cert) != 0 || strcmp("-key", key + strlen(cert)) != 0;
-        g_list_free_full(certs, (GDestroyNotify)free_file_obj);
-
-        if (iscomplement)
+        if (cert == NULL)
         {
-            VERB2 log("Key file '%s' isn't complement to cert file '%s'",
-                    config->ur_client_key, config->ur_client_cert);
-            VERB2 log("Not using client authentication");
+            g_list_free_full(certs, (GDestroyNotify)free_file_obj);
 
-            free(config->ur_client_cert);
-            free(config->ur_client_key);
-            config->ur_client_cert = NULL;
-            config->ur_client_key = NULL;
-
+            VERB1 log(RHSMENT_PEM_DIR_PATH" contains only key files");
+            VERB1 log("Not using client authentication");
             return;
         }
+
+        config->ur_client_cert = xstrdup(fo_get_fullpath(cert));
+        /* Yes, the key file may not exists. I over took this code from
+         * sos-uploader and they are pretty happy with this approach, so why
+         * shouldn't we?. */
+        config->ur_client_key = xasprintf("%s/%s-key.pem", RHSMENT_PEM_DIR_PATH, fo_get_filename(cert));
+
+        VERB3 log("Using cert files: '%s' : '%s'", config->ur_client_cert, config->ur_client_key);
+
+        g_list_free_full(certs, (GDestroyNotify)free_file_obj);
 
         char *certdata = xmalloc_open_read_close(config->ur_client_cert, /*no size limit*/NULL);
         if (certdata != NULL)
