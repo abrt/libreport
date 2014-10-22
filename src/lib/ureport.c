@@ -31,7 +31,6 @@
 
 #define RHSM_WEB_SERVICE_URL "https://api.access.redhat.com/rs/telemetry/abrt"
 
-#define RHSMENT_PEM_DIR_PATH "/etc/pki/entitlement"
 #define RHSMENT_ENT_DATA_BEGIN_TAG "-----BEGIN ENTITLEMENT DATA-----"
 #define RHSMENT_ENT_DATA_END_TAG "-----END ENTITLEMENT DATA-----"
 #define RHSMENT_SIG_DATA_BEGIN_TAG "-----BEGIN RSA SIGNATURE-----"
@@ -68,6 +67,33 @@ ureport_server_config_set_url(struct ureport_server_config *config,
     config->ur_url = server_url;
 }
 
+static char *
+rhsm_config_get_entitlement_cert_dir(void)
+{
+    char *result = getenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH");
+    if (result != NULL)
+        return xstrdup(result);
+
+    result = run_in_shell_and_save_output(0,
+            "python -c \"from rhsm.config import initConfig; print(initConfig().get('rhsm', 'entitlementCertDir'))\"",
+            NULL, NULL);
+
+    /* run_in_shell_and_save_output always returns non-NULL */
+    if (result[0] != '/')
+        goto error;
+
+    char *newline = strchrnul(result, '\n');
+    if (!newline)
+        goto error;
+
+    *newline = '\0';
+    return result;
+error:
+    error_msg("Failed to get 'rhsm':'entitlementCertDir' from rhsm.config python module.");
+    free(result);
+    return NULL;
+}
+
 void
 ureport_server_config_set_client_auth(struct ureport_server_config *config,
                                       const char *client_auth)
@@ -90,13 +116,21 @@ ureport_server_config_set_client_auth(struct ureport_server_config *config,
         if (config->ur_url == NULL)
             ureport_server_config_set_url(config, xstrdup(RHSM_WEB_SERVICE_URL));
 
-        GList *certs = get_file_list(RHSMENT_PEM_DIR_PATH, "pem");
+        char *rhsm_dir = rhsm_config_get_entitlement_cert_dir();
+        if (rhsm_dir == NULL)
+        {
+            log_notice("Not using client authentication");
+            return;
+        }
+
+        GList *certs = get_file_list(rhsm_dir, "pem");
         if (g_list_length(certs) < 2)
         {
             g_list_free_full(certs, (GDestroyNotify)free_file_obj);
 
-            log_notice(RHSMENT_PEM_DIR_PATH" does not contain unique cert-key files pair");
+            log_notice("'%s' does not contain a cert-key files pair", rhsm_dir);
             log_notice("Not using client authentication");
+            free(rhsm_dir);
             return;
         }
 
@@ -115,8 +149,9 @@ ureport_server_config_set_client_auth(struct ureport_server_config *config,
         {
             g_list_free_full(certs, (GDestroyNotify)free_file_obj);
 
-            log_notice(RHSMENT_PEM_DIR_PATH" contains only key files");
+            log_notice("'%s' does not contain a cert file (only keys)", rhsm_dir);
             log_notice("Not using client authentication");
+            free(rhsm_dir);
             return;
         }
 
@@ -124,7 +159,8 @@ ureport_server_config_set_client_auth(struct ureport_server_config *config,
         /* Yes, the key file may not exists. I over took this code from
          * sos-uploader and they are pretty happy with this approach, so why
          * shouldn't we?. */
-        config->ur_client_key = xasprintf("%s/%s-key.pem", RHSMENT_PEM_DIR_PATH, fo_get_filename(cert));
+        config->ur_client_key = xasprintf("%s/%s-key.pem", rhsm_dir, fo_get_filename(cert));
+        free(rhsm_dir);
 
         log_debug("Using cert files: '%s' : '%s'", config->ur_client_cert, config->ur_client_key);
 
