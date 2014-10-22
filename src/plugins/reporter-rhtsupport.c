@@ -376,18 +376,18 @@ void prepare_ureport_configuration(const char *urcfile,
     load_conf_file(urcfile, settings, false);
     ureport_server_config_init(urconf);
 
-    char *url = NULL;
-    UREPORT_OPTION_VALUE_FROM_CONF(settings, "URL", url, xstrdup);
-    if (url == NULL)
-    {
-        ureport_server_config_set_url(urconf, concat_path_file(portal_url, "/telemetry/abrt"));
-        urconf->ur_ssl_verify = ssl_verify;
-    }
-    else
-    {
-        UREPORT_OPTION_VALUE_FROM_CONF(settings, "SSLVerify", urconf->ur_ssl_verify, string_to_bool);
-        ureport_server_config_set_url(urconf, url);
-    }
+    /* The following lines cause that we always use URL from ureport's
+     * configuration becuase the GUI reporter always exports uReport_URL env
+     * var.
+     *
+     *   char *url = NULL;
+     *   UREPORT_OPTION_VALUE_FROM_CONF(settings, "URL", url, xstrdup);
+     *   if (url != NULL)
+     *       ureport_server_config_set_url(urconf, url);
+     */
+
+    ureport_server_config_set_url(urconf, concat_path_file(portal_url, "/telemetry/abrt"));
+    urconf->ur_ssl_verify = ssl_verify;
 
     ureport_server_config_set_basic_auth(urconf, login, password);
 
