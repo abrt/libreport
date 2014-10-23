@@ -32,6 +32,7 @@
 
 #define RHSM_WEB_SERVICE_URL "https://api.access.redhat.com/rs/telemetry/abrt"
 
+#define RHSMENT_PEM_DIR_PATH "/etc/pki/entitlement"
 #define RHSMENT_ENT_DATA_BEGIN_TAG "-----BEGIN ENTITLEMENT DATA-----"
 #define RHSMENT_ENT_DATA_END_TAG "-----END ENTITLEMENT DATA-----"
 #define RHSMENT_SIG_DATA_BEGIN_TAG "-----BEGIN RSA SIGNATURE-----"
@@ -92,7 +93,7 @@ rhsm_config_get_entitlement_cert_dir(void)
 error:
     error_msg("Failed to get 'rhsm':'entitlementCertDir' from rhsm.config python module.");
     free(result);
-    return NULL;
+    return xstrdup(RHSMENT_PEM_DIR_PATH);
 }
 
 void
