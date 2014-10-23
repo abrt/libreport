@@ -209,6 +209,9 @@ BuildRequires: %{libjson_devel}
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-web = %{version}-%{release}
+%if 0%{?rhel}
+Requires: python-rhsm
+%endif
 
 %description plugin-ureport
 Uploads micro-report to abrt server
