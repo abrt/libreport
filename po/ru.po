@@ -19,9 +19,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-02 15:44+0200\n"
-"PO-Revision-Date: 2014-10-02 13:38+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"POT-Creation-Date: 2014-10-13 17:42+0200\n"
+"PO-Revision-Date: 2014-10-22 02:35+0000\n"
+"Last-Translator: Yulia <yulia.poyarkova@redhat.com>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/libreport/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -374,7 +374,7 @@ msgstr "Не хранить пароли"
 
 #: ../src/gtk-helpers/event_config_dialog.c:260
 msgid "Basic"
-msgstr ""
+msgstr "Основные"
 
 #: ../src/gtk-helpers/event_config_dialog.c:268
 msgid "Advanced"
@@ -382,7 +382,7 @@ msgstr "Дополнительно"
 
 #: ../src/gtk-helpers/event_config_dialog.c:284
 msgid "Secret Service is not available, your settings won't be saved!"
-msgstr "Secret Service не доступен, Ваши настройки не будут сохранены!"
+msgstr "Secret Service недоступен. Ваши настройки не будут сохранены."
 
 #: ../src/gtk-helpers/event_config_dialog.c:321
 #: ../src/gtk-helpers/event_config_dialog.c:378
@@ -437,11 +437,11 @@ msgstr "Не могу получить секретное значение '%s':
 
 #: ../src/gui-wizard-gtk/main.c:107
 msgid "Preferences"
-msgstr ""
+msgstr "Настройки"
 
 #: ../src/gui-wizard-gtk/main.c:110
 msgid "Quit"
-msgstr ""
+msgstr "Выход"
 
 #: ../src/gui-wizard-gtk/main.c:154
 msgid ""
@@ -534,13 +534,13 @@ msgid ""
 "\t▫ <b>network connection problems</b>\n"
 "\t▫ <b>corrupted problem data</b>\n"
 "\t▫ <b>invalid configuration</b>"
-msgstr ""
+msgstr "Не удалось обработать ошибку. Наиболее вероятные причины:\n⇥▫ <b>проблемы сетевого соединения</b>;\n⇥▫ <b>повреждены данные об ошибке</b>;\n⇥▫ <b>ошибки конфигурации</b>."
 
 #: ../src/gui-wizard-gtk/wizard.c:1860
 msgid ""
 "If you want to update the configuration and try to report again, please open <b>Preferences</b> item\n"
 "in the application menu and after applying the configuration changes click <b>Repeat</b> button."
-msgstr ""
+msgstr "Чтобы обновить конфигурацию и заново отправить отчет, откройте меню <b>Настройки</b>.\nПрименив изменения, нажмите кнопку <b>Повторить</b>."
 
 #: ../src/gui-wizard-gtk/wizard.c:1978
 msgid "Processing was interrupted because the problem is not reportable."
@@ -664,7 +664,7 @@ msgstr "Загрузка для дальнейшего изучения"
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3480
 msgid "Repeat"
-msgstr ""
+msgstr "Повторить"
 
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3483
@@ -676,13 +676,13 @@ msgid ""
 "In order to enable the built-in screencasting functionality the package fros-gnome has to be installed. Please run the following command if you want to install it.\n"
 "\n"
 "<b>su -c \"yum install fros-gnome\"</b>"
-msgstr "Для поддержки встроенной функциональности видеозахвата экрана потребуется установить пакет fros-gnome:\n\n<b>su -c \"yum install fros-gnome\"</b>"
+msgstr "Для поддержки видеозахвата экрана потребуется установить пакет fros-gnome:\n\n<b>su -c \"yum install fros-gnome\"</b>"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
 msgid ""
 "Possible sensitive data detected, feel free to edit the report and remove "
 "them."
-msgstr ""
+msgstr "Обнаружены возможные конфиденциальные данные. По желанию их можно удалить из отчета."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Restrict access to the report"
@@ -753,27 +753,27 @@ msgstr "Пожалуйста, просмотрите данные перед о�
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid "Forbidden words"
-msgstr ""
+msgstr "Запрещенные слова"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "Custom"
-msgstr ""
+msgstr "Дополнительно"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "Clear the search bar to see the list of security sensitive words."
-msgstr ""
+msgstr "Очистите строку поиска, чтобы просмотреть список слов, которые могут быть связаны с конфиденциальными данными."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid "file"
-msgstr ""
+msgstr "файл"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:19
 msgid "data"
-msgstr ""
+msgstr "данные"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:20
 msgid "Search"
-msgstr ""
+msgstr "Поиск"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:21
 msgid "Size:"
@@ -821,7 +821,7 @@ msgstr "Опишите подробно"
 #: ../src/plugins/reporter-bugzilla.c:895
 #: ../src/plugins/reporter-kerneloops.c:166
 #: ../src/plugins/reporter-mailx.c:198 ../src/plugins/reporter-print.c:56
-#: ../src/plugins/reporter-rhtsupport.c:456
+#: ../src/plugins/reporter-rhtsupport.c:466
 #: ../src/plugins/reporter-upload.c:249
 msgid "Problem directory"
 msgstr "Проблемный каталог"
@@ -850,20 +850,20 @@ msgstr "Не удается удалить «%s»: %s"
 
 #: ../src/lib/client.c:55 ../src/lib/client.c:87
 msgid "y"
-msgstr "д"
+msgstr "y"
 
 #: ../src/lib/client.c:56 ../src/lib/client.c:88
 msgid "N"
-msgstr "Н"
+msgstr "N"
 
 #: ../src/lib/client.c:89
 msgid "f"
-msgstr " "
+msgstr "f"
 
 #: ../src/lib/create_dump_dir.c:41
 #, c-format
 msgid "Missing required item: '%s'"
-msgstr "Пропущен требуемый предмет: '%s'"
+msgstr "Пропущен обязательный элемент: «%s»"
 
 #: ../src/lib/create_dump_dir.c:56
 #, c-format
@@ -883,12 +883,12 @@ msgstr "%s отправляется в %s..."
 #: ../src/lib/curl.c:659
 #, c-format
 msgid "Please enter user name for '%s':"
-msgstr ""
+msgstr "Введите имя пользователя для «%s»:"
 
 #: ../src/lib/curl.c:665
 #, c-format
 msgid "Please enter password for '%s':"
-msgstr ""
+msgstr "Введите пароль «%s»:"
 
 #. This ends up a "reporting status message" in abrtd
 #: ../src/lib/curl.c:688
@@ -964,54 +964,54 @@ msgstr "Ваша ошибка, по-видимому, вызвана %s\n\n%s\n"
 msgid "Your problem seems to be caused by one of the following:\n"
 msgstr "Ваша ошибка, по-видимому, вызвана чем-то из перечисленного:\n"
 
-#: ../src/lib/ureport.c:498
+#: ../src/lib/ureport.c:499
 #, c-format
 msgid "Failed to upload uReport to the server '%s' with curl: %s"
 msgstr "Ошибка отправки отчёта на сервер '%s' посредством cURL: %s"
 
-#: ../src/lib/ureport.c:504
+#: ../src/lib/ureport.c:505
 #, c-format
 msgid "The URL '%s' does not exist (got error 404 from server)"
 msgstr "Не существует URL '%s' (ошибка 404)"
 
-#: ../src/lib/ureport.c:510
+#: ../src/lib/ureport.c:511
 #, c-format
 msgid "The server at '%s' encountered an internal error (got error 500)"
 msgstr "Произошла внутренняя ошибка сервера '%s' (ошибка 500)"
 
-#: ../src/lib/ureport.c:516
+#: ../src/lib/ureport.c:517
 #, c-format
 msgid "The server at '%s' currently can't handle the request (got error 503)"
 msgstr "Сервер «%s» не может обработать запрос (ошибка 503)"
 
 #. can't print better error message
-#: ../src/lib/ureport.c:525
+#: ../src/lib/ureport.c:526
 #, c-format
 msgid "Unexpected HTTP response from '%s': %d"
 msgstr "Неожиданный ответ '%s': %d"
 
-#: ../src/lib/ureport.c:534
+#: ../src/lib/ureport.c:535
 #, c-format
 msgid "Unable to parse response from ureport server at '%s'"
 msgstr "Не удалось обработать ответ сервера ureport «%s»"
 
-#: ../src/lib/ureport.c:544
+#: ../src/lib/ureport.c:545
 #, c-format
 msgid "The response from '%s' has invalid format"
 msgstr "Неверный формат ответа '%s'"
 
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
-#: ../src/lib/ureport.c:550
+#: ../src/lib/ureport.c:551
 #, c-format
 msgid "Type mismatch has been detected in the response from '%s'"
 msgstr "Обнаружено несоответствие типов в ответе '%s'"
 
-#: ../src/lib/ureport.c:735 ../src/plugins/reporter-rhtsupport.c:198
+#: ../src/lib/ureport.c:736 ../src/plugins/reporter-rhtsupport.c:198
 msgid "Failed on submitting the problem"
 msgstr "Не удалось отправить сообщение об ошибке"
 
-#: ../src/lib/ureport.c:777
+#: ../src/lib/ureport.c:778
 #, c-format
 msgid "The server at '%s' responded with an error: '%s'"
 msgstr "Сервер '%s' ответил сообщением об ошибке: '%s'"
@@ -1022,7 +1022,7 @@ msgstr "Отправлено:"
 
 #: ../src/lib/make_descr.c:149
 msgid "cannot be reported"
-msgstr ""
+msgstr "не может быть отправлено"
 
 #: ../src/lib/parse_options.c:60
 msgid "Usage: "
@@ -1036,7 +1036,7 @@ msgstr "Отсутствует обязательный элемент \"%s\". �
 #: ../src/lib/run_event.c:763
 #, c-format
 msgid "('%s' was killed by signal %u)\n"
-msgstr "('%s' был убит сигналом %u)\n"
+msgstr "('%s' был прерван сигналом %u)\n"
 
 #: ../src/lib/run_event.c:765
 #, c-format
@@ -1242,7 +1242,7 @@ msgstr "ID запроса"
 #: ../src/plugins/reporter-bugzilla.c:355
 #, c-format
 msgid "Can't parse backtrace: %s"
-msgstr "Не удается анализировать трассировку: %s"
+msgstr "Не удалось обработать данные обратной трассировки: %s"
 
 #: ../src/plugins/reporter-bugzilla.c:366
 msgid "Can't generate stacktrace description (no crash thread?)"
@@ -1255,12 +1255,12 @@ msgid ""
 msgstr "Предупреждение. Группы частных запросов уже заданы с помощью аргумента командной строки, поэтому переменная окружения и другие параметры будут проигнорированы."
 
 #: ../src/plugins/reporter-bugzilla.c:775
-#: ../src/plugins/reporter-rhtsupport.c:327
+#: ../src/plugins/reporter-rhtsupport.c:337
 msgid "Can't continue without login"
 msgstr "Необходимо указать имя"
 
 #: ../src/plugins/reporter-bugzilla.c:788
-#: ../src/plugins/reporter-rhtsupport.c:340
+#: ../src/plugins/reporter-rhtsupport.c:350
 msgid "Can't continue without password"
 msgstr "Необходимо указать пароль"
 
@@ -1274,7 +1274,7 @@ msgid "Invalid password or login. Please enter your BZ login:"
 msgstr "Неверное имя или пароль. Пожалуйста, введите ваше имя в Bugzilla:"
 
 #: ../src/plugins/reporter-bugzilla.c:804
-#: ../src/plugins/reporter-rhtsupport.c:354
+#: ../src/plugins/reporter-rhtsupport.c:364
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
 msgstr "Неверное имя или пароль. Пожалуйста, введите ваш пароль для '%s':"
@@ -1323,7 +1323,7 @@ msgid ""
 msgstr "\n& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\nили\n& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\nили\n& [-v] [-c CONFFILE]... [-d DIR] -t[ID] -w\nили\n& [-v] [-c CONFFILE]... -h DUPHASH\n\nЭта утилита читает содержимое DIR, затем подключается с Bugzilla и ищет\nотчет с таким же значением abrt_hash:HEXSTRING в поле «Whiteboard».\n\nЕсли ничего не найдено, будет создан новый отчет. Части DIR сохраняются \nкак описание или вложения (в зависимости от размера).\n\nЕсли отчет уже существует и отмечен как CLOSED DUPLICATE, в исходный отчет \nбудет добавлен комментарий.\n\nСсылка на новый или измененный отчет будет выведена в stdout и сохранена\nв конструкции 'reported_to'.\n\nКлюч -t подгружает файлы в существующий отчет Bugzilla. \nИдентификатор отчета будет получен из каталога DIR (с ключом -d). \nЕсли сведения об ошибке до этого момента не отправлялись в Bugzilla, \nпопытка отправки завершится неудачей.\n\nКлюч -tlD загружает файлы в отчет с заданным идентификатором; \nпри этом ключ -d игнорируется.\n\nКлюч -w добавляет пользователя Bugzilla в список получателей копии.\n\nПо умолчанию CONFILE содержит "
 
 #: ../src/plugins/reporter-bugzilla.c:896
-#: ../src/plugins/reporter-rhtsupport.c:457
+#: ../src/plugins/reporter-rhtsupport.c:467
 msgid "Configuration file (may be given many times)"
 msgstr "Файл конфигурации (можно указать несколько)"
 
@@ -1344,7 +1344,7 @@ msgid "When creating bug, attach binary files too"
 msgstr "Включать двоичные файлы в отчёт"
 
 #: ../src/plugins/reporter-bugzilla.c:901
-#: ../src/plugins/reporter-rhtsupport.c:459
+#: ../src/plugins/reporter-rhtsupport.c:469
 msgid "Force reporting even if this problem is already reported"
 msgstr "Создать отчёт, даже если об этой проблеме уже сообщалось"
 
@@ -1377,7 +1377,7 @@ msgid "Login is not provided by configuration. Please enter your BZ login:"
 msgstr "Логин не получен из конфигурации, пожалуйста, введите Ваш BZ логин вручную:"
 
 #: ../src/plugins/reporter-bugzilla.c:981
-#: ../src/plugins/reporter-rhtsupport.c:495
+#: ../src/plugins/reporter-rhtsupport.c:505
 #, c-format
 msgid ""
 "Password is not provided by configuration. Please enter the password for "
@@ -1578,15 +1578,15 @@ msgstr "Отчёт сохранён в %s"
 msgid "Server responded with an error: '%s'"
 msgstr "Ответ сервера об ошибке: '%s'"
 
-#: ../src/plugins/reporter-rhtsupport.c:308
+#: ../src/plugins/reporter-rhtsupport.c:318
 msgid "Do you still want to create a RHTSupport ticket?"
 msgstr "Вы все еще хотите создать запрос RHTSupport?"
 
-#: ../src/plugins/reporter-rhtsupport.c:352
+#: ../src/plugins/reporter-rhtsupport.c:362
 msgid "Invalid password or login. Please enter your Red Hat login:"
-msgstr ""
+msgstr "Неверное имя или пароль. Введите свое имя входа Red Hat:"
 
-#: ../src/plugins/reporter-rhtsupport.c:420
+#: ../src/plugins/reporter-rhtsupport.c:430
 msgid ""
 "\n"
 "& [-v] [-c CONFFILE] -d DIR\n"
@@ -1596,76 +1596,81 @@ msgid ""
 "Reports a problem to RHTSupport.\n"
 "\n"
 "If not specified, CONFFILE defaults to "
-msgstr ""
+msgstr "\n& [-v] [-c CONFFILE] -d DIR\nили:\n& [-v] [-c CONFFILE] [-d DIR] -t[ID] [-u -C UR_CONFFILE] ФАЙЛ..\n\nОтправляет отчет в службу поддержки Red Hat.\n\nЕсли CONFILE не задан, по умолчанию используется "
 
-#: ../src/plugins/reporter-rhtsupport.c:458
+#: ../src/plugins/reporter-rhtsupport.c:468
 msgid "Upload FILEs [to case with this ID]"
 msgstr "Отправить файлы в запрос с этим ID"
 
-#: ../src/plugins/reporter-rhtsupport.c:460
+#: ../src/plugins/reporter-rhtsupport.c:470
 msgid "Submit uReport before creating a new case"
-msgstr ""
+msgstr "Отправить uReport до создания нового отчета"
 
-#: ../src/plugins/reporter-rhtsupport.c:461
+#: ../src/plugins/reporter-rhtsupport.c:471
 msgid "Configuration file for uReport"
-msgstr ""
+msgstr "Файл конфигурации uReport"
 
-#: ../src/plugins/reporter-rhtsupport.c:489
+#: ../src/plugins/reporter-rhtsupport.c:499
 msgid "Login is not provided by configuration. Please enter your RHTS login:"
 msgstr "Конфигурация не содержит имя входа. Введите имя входа RHTS:"
 
-#: ../src/plugins/reporter-rhtsupport.c:551
+#: ../src/plugins/reporter-rhtsupport.c:568
 #, c-format
 msgid "Attaching '%s' to case '%s'"
 msgstr "Добавление «%s» в запрос «%s»"
+
+#: ../src/plugins/reporter-rhtsupport.c:605
+msgid "Sending ABRT crash statistics data"
+msgstr "Отправка статистики сбоев ABRT"
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are
 #. doing
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
 #. doing
-#: ../src/plugins/reporter-rhtsupport.c:588
+#: ../src/plugins/reporter-rhtsupport.c:616
 #: ../src/plugins/reporter-upload.c:52
 msgid "Compressing data"
 msgstr "Сжатие данных..."
 
-#: ../src/plugins/reporter-rhtsupport.c:623
+#: ../src/plugins/reporter-rhtsupport.c:651
 msgid "Can't create a temporary directory in "
 msgstr "Не удалось создать временный каталог в "
 
-#: ../src/plugins/reporter-rhtsupport.c:632
+#: ../src/plugins/reporter-rhtsupport.c:660
 msgid "Can't create temporary file in "
 msgstr "Не удалось создать временный файл в "
 
-#: ../src/plugins/reporter-rhtsupport.c:650
-msgid "Sending ABRT crash statistics data"
-msgstr ""
-
 #. Check for hints and show them if we have something
-#: ../src/plugins/reporter-rhtsupport.c:662
+#: ../src/plugins/reporter-rhtsupport.c:671
 msgid "Checking for hints"
 msgstr "Поиск существующих решений"
 
-#: ../src/plugins/reporter-rhtsupport.c:672
+#: ../src/plugins/reporter-rhtsupport.c:681
 msgid "Creating a new case"
 msgstr "Создаётся новый запрос"
 
 #. How can we help user sorting out this problem?
-#: ../src/plugins/reporter-rhtsupport.c:683
+#: ../src/plugins/reporter-rhtsupport.c:692
 msgid "Can't determine RH Support Product from problem data."
 msgstr "Невозможно определить версию разработки RH Support в данных об ошибке."
 
-#: ../src/plugins/reporter-rhtsupport.c:739
+#: ../src/plugins/reporter-rhtsupport.c:748
 msgid "Linking ABRT crash statistics record with the case"
-msgstr ""
+msgstr "Связь статистики сбоев ABRT с запросом"
 
-#: ../src/plugins/reporter-rhtsupport.c:774
+#: ../src/plugins/reporter-rhtsupport.c:761
+#, c-format
+msgid "Linking ABRT crash statistics record with contact email: '%s'"
+msgstr "Связь записи статистики сбоя ABRT с адресом: %s"
+
+#: ../src/plugins/reporter-rhtsupport.c:785
 #, c-format
 msgid "Adding comment to case '%s'"
 msgstr "Добавление комментария к ошибке '%s'"
 
 #. Attach the tarball of -d DIR
-#: ../src/plugins/reporter-rhtsupport.c:792
+#: ../src/plugins/reporter-rhtsupport.c:803
 #, c-format
 msgid "Attaching problem data to case '%s'"
 msgstr "Присоединение данных об ошибке к '%s'"
@@ -1691,7 +1696,7 @@ msgstr "Конфигурация не содержит адрес для отп�
 #. may work somehow???
 #: ../src/plugins/reporter-upload.c:164
 msgid "Please enter password for uploading:"
-msgstr ""
+msgstr "Введите пароль для отправки:"
 
 #. success
 #: ../src/plugins/reporter-upload.c:181
@@ -1821,7 +1826,7 @@ msgstr "Пароль пользователя Red Hat"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report Uploader"
-msgstr ""
+msgstr "Отправитель отчета"
 
 #: ../src/plugins/report_Uploader.xml.in.h:2
 msgid "Upload as tar.gz file (via FTP/SCP/...)"
@@ -1845,11 +1850,11 @@ msgstr "Примеры: ftp://[user[:pass]@]host/dir/[file.tar.gz], scp://[user[
 
 #: ../src/plugins/report_Uploader.xml.in.h:7
 msgid "Use this field if you do not want to have user name in URL"
-msgstr ""
+msgstr "Используйте это поле, чтобы исключить имя пользователя из строки URL"
 
 #: ../src/plugins/report_Uploader.xml.in.h:9
 msgid "Use this field if you do not want to have password in URL"
-msgstr ""
+msgstr "Используйте это поле, чтобы исключить пароль из строки URL"
 
 #: ../src/plugins/report_Uploader.xml.in.h:14
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:8
@@ -1935,7 +1940,7 @@ msgstr "Использовать аутентификацию клиента"
 
 #: ../src/plugins/reporter-ureport.c:70
 msgid "Additional files included in 'auth' key"
-msgstr ""
+msgstr "Дополнительные файлы включены в ключ «auth»"
 
 #: ../src/plugins/reporter-ureport.c:73
 msgid "bthash of uReport to attach (conflicts with -A)"
@@ -1973,7 +1978,7 @@ msgid ""
 "Upload micro report or add an attachment to a micro report\n"
 "\n"
 "Reads the default configuration from "
-msgstr ""
+msgstr "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-i AUTH_ITEMS]\\\n[-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n\nОтправить микроотчет, присоединив вложение\n\nПолучает стандартные настройки из  "
 
 #: ../src/plugins/reporter-ureport.c:139
 msgid "This problem does not have an uReport assigned."
@@ -2005,7 +2010,7 @@ msgstr "Необходимо указать идентификатор отче�
 
 #: ../src/plugins/reporter-ureport.c:198
 msgid "You need to specify bthash of the uReport to attach."
-msgstr "Для присоединения, необходимо указать bthash uReport."
+msgstr "Для вложения необходимо указать bthash uReport."
 
 #: ../src/plugins/reporter-ureport.c:203
 msgid "Not uploading an empty uReport"
@@ -2131,24 +2136,24 @@ msgstr "Обработать исключение Java, используя ср�
 #: ../src/workflows/workflow_LoggerCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Logger.xml.in.h:1
 msgid "Export the problem data information to a text file"
-msgstr ""
+msgstr "Экспорт информации об ошибке в текстовый файл"
 
 #: ../src/workflows/workflow_LoggerCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Logger.xml.in.h:2
 msgid ""
 "Analyze the problem locally and export the problem data information to a "
 "text file"
-msgstr ""
+msgstr "Проанализировать сведения локально и сохранить результаты в текстовый файл"
 
 #: ../src/workflows/workflow_MailxCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Mailx.xml.in.h:1
 msgid "Send the problem data via email"
-msgstr ""
+msgstr "Отправить сведения о проблеме по электронной почте"
 
 #: ../src/workflows/workflow_MailxCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Mailx.xml.in.h:2
 msgid "Analyze the problem locally and send information via email"
-msgstr ""
+msgstr "Проанализировать сведения локально и отправить результаты по электронной почте"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1

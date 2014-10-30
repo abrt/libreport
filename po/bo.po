@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-02 15:44+0200\n"
-"PO-Revision-Date: 2014-10-02 13:38+0000\n"
+"POT-Creation-Date: 2014-10-13 17:42+0200\n"
+"PO-Revision-Date: 2014-10-13 15:42+0000\n"
 "Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: Tibetan (http://www.transifex.com/projects/p/libreport/language/bo/)\n"
 "MIME-Version: 1.0\n"
@@ -809,7 +809,7 @@ msgstr ""
 #: ../src/plugins/reporter-bugzilla.c:895
 #: ../src/plugins/reporter-kerneloops.c:166
 #: ../src/plugins/reporter-mailx.c:198 ../src/plugins/reporter-print.c:56
-#: ../src/plugins/reporter-rhtsupport.c:456
+#: ../src/plugins/reporter-rhtsupport.c:466
 #: ../src/plugins/reporter-upload.c:249
 msgid "Problem directory"
 msgstr ""
@@ -952,54 +952,54 @@ msgstr ""
 msgid "Your problem seems to be caused by one of the following:\n"
 msgstr ""
 
-#: ../src/lib/ureport.c:498
+#: ../src/lib/ureport.c:499
 #, c-format
 msgid "Failed to upload uReport to the server '%s' with curl: %s"
 msgstr ""
 
-#: ../src/lib/ureport.c:504
+#: ../src/lib/ureport.c:505
 #, c-format
 msgid "The URL '%s' does not exist (got error 404 from server)"
 msgstr ""
 
-#: ../src/lib/ureport.c:510
+#: ../src/lib/ureport.c:511
 #, c-format
 msgid "The server at '%s' encountered an internal error (got error 500)"
 msgstr ""
 
-#: ../src/lib/ureport.c:516
+#: ../src/lib/ureport.c:517
 #, c-format
 msgid "The server at '%s' currently can't handle the request (got error 503)"
 msgstr ""
 
 #. can't print better error message
-#: ../src/lib/ureport.c:525
+#: ../src/lib/ureport.c:526
 #, c-format
 msgid "Unexpected HTTP response from '%s': %d"
 msgstr ""
 
-#: ../src/lib/ureport.c:534
+#: ../src/lib/ureport.c:535
 #, c-format
 msgid "Unable to parse response from ureport server at '%s'"
 msgstr ""
 
-#: ../src/lib/ureport.c:544
+#: ../src/lib/ureport.c:545
 #, c-format
 msgid "The response from '%s' has invalid format"
 msgstr ""
 
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
-#: ../src/lib/ureport.c:550
+#: ../src/lib/ureport.c:551
 #, c-format
 msgid "Type mismatch has been detected in the response from '%s'"
 msgstr ""
 
-#: ../src/lib/ureport.c:735 ../src/plugins/reporter-rhtsupport.c:198
+#: ../src/lib/ureport.c:736 ../src/plugins/reporter-rhtsupport.c:198
 msgid "Failed on submitting the problem"
 msgstr ""
 
-#: ../src/lib/ureport.c:777
+#: ../src/lib/ureport.c:778
 #, c-format
 msgid "The server at '%s' responded with an error: '%s'"
 msgstr ""
@@ -1243,12 +1243,12 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:775
-#: ../src/plugins/reporter-rhtsupport.c:327
+#: ../src/plugins/reporter-rhtsupport.c:337
 msgid "Can't continue without login"
 msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:788
-#: ../src/plugins/reporter-rhtsupport.c:340
+#: ../src/plugins/reporter-rhtsupport.c:350
 msgid "Can't continue without password"
 msgstr ""
 
@@ -1262,7 +1262,7 @@ msgid "Invalid password or login. Please enter your BZ login:"
 msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:804
-#: ../src/plugins/reporter-rhtsupport.c:354
+#: ../src/plugins/reporter-rhtsupport.c:364
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
 msgstr ""
@@ -1311,7 +1311,7 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:896
-#: ../src/plugins/reporter-rhtsupport.c:457
+#: ../src/plugins/reporter-rhtsupport.c:467
 msgid "Configuration file (may be given many times)"
 msgstr ""
 
@@ -1332,7 +1332,7 @@ msgid "When creating bug, attach binary files too"
 msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:901
-#: ../src/plugins/reporter-rhtsupport.c:459
+#: ../src/plugins/reporter-rhtsupport.c:469
 msgid "Force reporting even if this problem is already reported"
 msgstr ""
 
@@ -1365,7 +1365,7 @@ msgid "Login is not provided by configuration. Please enter your BZ login:"
 msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:981
-#: ../src/plugins/reporter-rhtsupport.c:495
+#: ../src/plugins/reporter-rhtsupport.c:505
 #, c-format
 msgid ""
 "Password is not provided by configuration. Please enter the password for "
@@ -1566,15 +1566,15 @@ msgstr ""
 msgid "Server responded with an error: '%s'"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:308
+#: ../src/plugins/reporter-rhtsupport.c:318
 msgid "Do you still want to create a RHTSupport ticket?"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:352
+#: ../src/plugins/reporter-rhtsupport.c:362
 msgid "Invalid password or login. Please enter your Red Hat login:"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:420
+#: ../src/plugins/reporter-rhtsupport.c:430
 msgid ""
 "\n"
 "& [-v] [-c CONFFILE] -d DIR\n"
@@ -1586,25 +1586,29 @@ msgid ""
 "If not specified, CONFFILE defaults to "
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:458
+#: ../src/plugins/reporter-rhtsupport.c:468
 msgid "Upload FILEs [to case with this ID]"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:460
+#: ../src/plugins/reporter-rhtsupport.c:470
 msgid "Submit uReport before creating a new case"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:461
+#: ../src/plugins/reporter-rhtsupport.c:471
 msgid "Configuration file for uReport"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:489
+#: ../src/plugins/reporter-rhtsupport.c:499
 msgid "Login is not provided by configuration. Please enter your RHTS login:"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:551
+#: ../src/plugins/reporter-rhtsupport.c:568
 #, c-format
 msgid "Attaching '%s' to case '%s'"
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:605
+msgid "Sending ABRT crash statistics data"
 msgstr ""
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are
@@ -1612,48 +1616,49 @@ msgstr ""
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
 #. doing
-#: ../src/plugins/reporter-rhtsupport.c:588
+#: ../src/plugins/reporter-rhtsupport.c:616
 #: ../src/plugins/reporter-upload.c:52
 msgid "Compressing data"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:623
+#: ../src/plugins/reporter-rhtsupport.c:651
 msgid "Can't create a temporary directory in "
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:632
+#: ../src/plugins/reporter-rhtsupport.c:660
 msgid "Can't create temporary file in "
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:650
-msgid "Sending ABRT crash statistics data"
-msgstr ""
-
 #. Check for hints and show them if we have something
-#: ../src/plugins/reporter-rhtsupport.c:662
+#: ../src/plugins/reporter-rhtsupport.c:671
 msgid "Checking for hints"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:672
+#: ../src/plugins/reporter-rhtsupport.c:681
 msgid "Creating a new case"
 msgstr ""
 
 #. How can we help user sorting out this problem?
-#: ../src/plugins/reporter-rhtsupport.c:683
+#: ../src/plugins/reporter-rhtsupport.c:692
 msgid "Can't determine RH Support Product from problem data."
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:739
+#: ../src/plugins/reporter-rhtsupport.c:748
 msgid "Linking ABRT crash statistics record with the case"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:774
+#: ../src/plugins/reporter-rhtsupport.c:761
+#, c-format
+msgid "Linking ABRT crash statistics record with contact email: '%s'"
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:785
 #, c-format
 msgid "Adding comment to case '%s'"
 msgstr ""
 
 #. Attach the tarball of -d DIR
-#: ../src/plugins/reporter-rhtsupport.c:792
+#: ../src/plugins/reporter-rhtsupport.c:803
 #, c-format
 msgid "Attaching problem data to case '%s'"
 msgstr ""

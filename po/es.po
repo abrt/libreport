@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-02 15:44+0200\n"
-"PO-Revision-Date: 2014-10-02 13:38+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"POT-Creation-Date: 2014-10-13 17:42+0200\n"
+"PO-Revision-Date: 2014-10-28 03:41+0000\n"
+"Last-Translator: Gladys Guerrero <gguerrer@redhat.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/libreport/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -370,7 +370,7 @@ msgstr "No almacenar contraseñas"
 
 #: ../src/gtk-helpers/event_config_dialog.c:260
 msgid "Basic"
-msgstr ""
+msgstr "Básicas"
 
 #: ../src/gtk-helpers/event_config_dialog.c:268
 msgid "Advanced"
@@ -433,11 +433,11 @@ msgstr "No se puede obtener el valor secreto de '%s': %s"
 
 #: ../src/gui-wizard-gtk/main.c:107
 msgid "Preferences"
-msgstr ""
+msgstr "Preferencias"
 
 #: ../src/gui-wizard-gtk/main.c:110
 msgid "Quit"
-msgstr ""
+msgstr "Salir"
 
 #: ../src/gui-wizard-gtk/main.c:154
 msgid ""
@@ -530,13 +530,13 @@ msgid ""
 "\t▫ <b>network connection problems</b>\n"
 "\t▫ <b>corrupted problem data</b>\n"
 "\t▫ <b>invalid configuration</b>"
-msgstr ""
+msgstr "Falló el procesamiento del problema. Puede haber muchas razones pero las tres más comunes son:\n\t▫ <b>problemas de conexión de red</b>\n\t▫ <b>datos de problemas corruptos</b>\n\t▫ <b>configuración no válida</b>"
 
 #: ../src/gui-wizard-gtk/wizard.c:1860
 msgid ""
 "If you want to update the configuration and try to report again, please open <b>Preferences</b> item\n"
 "in the application menu and after applying the configuration changes click <b>Repeat</b> button."
-msgstr ""
+msgstr "Si desea actualizar la configuración e intentar reportar otra vez, por favor abra <b>Preferences</b> item\nen el menú de aplicaciones y después de aplicar los cambios haga clie en el botón<b>Repetir</b>."
 
 #: ../src/gui-wizard-gtk/wizard.c:1978
 msgid "Processing was interrupted because the problem is not reportable."
@@ -660,7 +660,7 @@ msgstr "Cargando para análisis"
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3480
 msgid "Repeat"
-msgstr ""
+msgstr "Repetir"
 
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3483
@@ -678,7 +678,7 @@ msgstr "Al fin de habilitar la funcionalidad incorporada de grabación de pantal
 msgid ""
 "Possible sensitive data detected, feel free to edit the report and remove "
 "them."
-msgstr ""
+msgstr "Se detectaron posibles datos confidenciales, puede editar el reporte y retirarlos. "
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Restrict access to the report"
@@ -749,27 +749,27 @@ msgstr "Por favor, revise los datos antes de informarlos. Dependiendo del inform
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid "Forbidden words"
-msgstr ""
+msgstr "Palabras prohibidas"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "Custom"
-msgstr ""
+msgstr "Personalizar"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "Clear the search bar to see the list of security sensitive words."
-msgstr ""
+msgstr "Limpie la barra de búsqueda para ver la lista de palabras sensibles de seguridad. "
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid "file"
-msgstr ""
+msgstr "archivo"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:19
 msgid "data"
-msgstr ""
+msgstr "datos"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:20
 msgid "Search"
-msgstr ""
+msgstr "búsqueda"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:21
 msgid "Size:"
@@ -817,7 +817,7 @@ msgstr "Sea profuso"
 #: ../src/plugins/reporter-bugzilla.c:895
 #: ../src/plugins/reporter-kerneloops.c:166
 #: ../src/plugins/reporter-mailx.c:198 ../src/plugins/reporter-print.c:56
-#: ../src/plugins/reporter-rhtsupport.c:456
+#: ../src/plugins/reporter-rhtsupport.c:466
 #: ../src/plugins/reporter-upload.c:249
 msgid "Problem directory"
 msgstr "Directorio del problema"
@@ -879,12 +879,12 @@ msgstr "Enviando %s a %s"
 #: ../src/lib/curl.c:659
 #, c-format
 msgid "Please enter user name for '%s':"
-msgstr ""
+msgstr "Por favor ingrese el nombre para '%s':"
 
 #: ../src/lib/curl.c:665
 #, c-format
 msgid "Please enter password for '%s':"
-msgstr ""
+msgstr "Por favor ingrese la contraseña para '%s':"
 
 #. This ends up a "reporting status message" in abrtd
 #: ../src/lib/curl.c:688
@@ -960,54 +960,54 @@ msgstr "Su problema parece haber sido causado por %s\n\n%s\n"
 msgid "Your problem seems to be caused by one of the following:\n"
 msgstr "Su problema parece haber sido causado por algo de lo siguiente:\n"
 
-#: ../src/lib/ureport.c:498
+#: ../src/lib/ureport.c:499
 #, c-format
 msgid "Failed to upload uReport to the server '%s' with curl: %s"
 msgstr "Fallo al subir uReport al servidor ‘%s’ con curl: %s"
 
-#: ../src/lib/ureport.c:504
+#: ../src/lib/ureport.c:505
 #, c-format
 msgid "The URL '%s' does not exist (got error 404 from server)"
 msgstr "La URL ‘%s' no existe (obteniendo error 404 del servidor)"
 
-#: ../src/lib/ureport.c:510
+#: ../src/lib/ureport.c:511
 #, c-format
 msgid "The server at '%s' encountered an internal error (got error 500)"
 msgstr "El servidor en ‘%s’ encontró un error interno (obtuvo error 500)"
 
-#: ../src/lib/ureport.c:516
+#: ../src/lib/ureport.c:517
 #, c-format
 msgid "The server at '%s' currently can't handle the request (got error 503)"
 msgstr "El servidor en '%s' no puede manejar actualmente  la solicitud (obtuvo el error 503)"
 
 #. can't print better error message
-#: ../src/lib/ureport.c:525
+#: ../src/lib/ureport.c:526
 #, c-format
 msgid "Unexpected HTTP response from '%s': %d"
 msgstr "Respuesta HTTP inesperada desde '%s': %d"
 
-#: ../src/lib/ureport.c:534
+#: ../src/lib/ureport.c:535
 #, c-format
 msgid "Unable to parse response from ureport server at '%s'"
 msgstr "No se pudo analizar la respuesta del servidor ureport en '%s'"
 
-#: ../src/lib/ureport.c:544
+#: ../src/lib/ureport.c:545
 #, c-format
 msgid "The response from '%s' has invalid format"
 msgstr "La respuesta desde ‘%s’ tiene formato no válido"
 
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
-#: ../src/lib/ureport.c:550
+#: ../src/lib/ureport.c:551
 #, c-format
 msgid "Type mismatch has been detected in the response from '%s'"
 msgstr "Se ha detectado un desajuste de tipo en la respuesta desde ‘%s’"
 
-#: ../src/lib/ureport.c:735 ../src/plugins/reporter-rhtsupport.c:198
+#: ../src/lib/ureport.c:736 ../src/plugins/reporter-rhtsupport.c:198
 msgid "Failed on submitting the problem"
 msgstr "Fallo al presentar el problema"
 
-#: ../src/lib/ureport.c:777
+#: ../src/lib/ureport.c:778
 #, c-format
 msgid "The server at '%s' responded with an error: '%s'"
 msgstr "El servidor en ‘%s’ respondió con un error: ‘%s’"
@@ -1018,7 +1018,7 @@ msgstr "Reportado:"
 
 #: ../src/lib/make_descr.c:149
 msgid "cannot be reported"
-msgstr ""
+msgstr "no puede ser reportado"
 
 #: ../src/lib/parse_options.c:60
 msgid "Usage: "
@@ -1251,12 +1251,12 @@ msgid ""
 msgstr "Advertencia, los grupos de tiquetes privados ya se han especificado como argumento cmdline, se ignoran la variable env y configuración"
 
 #: ../src/plugins/reporter-bugzilla.c:775
-#: ../src/plugins/reporter-rhtsupport.c:327
+#: ../src/plugins/reporter-rhtsupport.c:337
 msgid "Can't continue without login"
 msgstr "No puede entrar sin iniciar sesión"
 
 #: ../src/plugins/reporter-bugzilla.c:788
-#: ../src/plugins/reporter-rhtsupport.c:340
+#: ../src/plugins/reporter-rhtsupport.c:350
 msgid "Can't continue without password"
 msgstr "No puede continuar sin contraseña"
 
@@ -1270,7 +1270,7 @@ msgid "Invalid password or login. Please enter your BZ login:"
 msgstr "Contraseña o usuario no válidos. Por favor, introduzca su nombre de usuario BZ:"
 
 #: ../src/plugins/reporter-bugzilla.c:804
-#: ../src/plugins/reporter-rhtsupport.c:354
+#: ../src/plugins/reporter-rhtsupport.c:364
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
 msgstr "Contraseña o usuario no válidos. Por favor, introduzca su  contraseña para '%s'"
@@ -1319,7 +1319,7 @@ msgid ""
 msgstr "\n& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\nor:\n& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\nor:\n& [-v] [-c CONFFILE]... [-d DIR] -t[ID] -w\nor:\n& [-v] [-c CONFFILE]... -h DUPHASH\n\nReporta el problema a Bugzilla.\n\nLa herramienta lee DIR. Luego ingresa en Bugzilla y busca el error con el mismo abrt_hash:HEXSTRING en 'Whiteboard'.\n\nSi dicho error no se encuentra, entonces se reporta un nuevo error. Los elementos de DIR\nse almacenan en el error como parte de su descripción y como anexos según e tipo y tamaño.\n\nDe lo contrario, si tal error se encuentra y se marca como CLOSED DUPLICATE, la herramienta sigue la cadena de duplicados hasta que encuentra un error non-DUPLICATE.\nLa herramienta añade un nuevo comentario para el error encontrado.\n\nLa URL al error nuevo o modificado se imprime al stdout y registra en el elemento\n'reported_to'.\n\nOption -t carga ARCHIVOS al error creado en el sitio de Bugzilla.\nEl ID de error se recupera desde el directorio especificado por -d DIR.\nSi los datos del problema en DIR nunca se reportaron a Bugzilla, la carga fallará.\n\nOption -tID uploads FILEs to the bug with specified ID on Bugzilla site.\n-d DIR is ignored.\n\nOption -w adds bugzilla user to bug's CC list.\n\nOption -r establece la última url desde el elemento reporter_to, el cual se prefija con el campo\nTRACKER_NAME a URL. Esta opción se aplica únicamente al nuevo error que va a ser reportado. El valor predeterminado es 'ABRT Server'\n\nSi no se especifica, CONFFILE se predetermina a "
 
 #: ../src/plugins/reporter-bugzilla.c:896
-#: ../src/plugins/reporter-rhtsupport.c:457
+#: ../src/plugins/reporter-rhtsupport.c:467
 msgid "Configuration file (may be given many times)"
 msgstr "Archivo de configuración (puede darse muchas veces)"
 
@@ -1340,7 +1340,7 @@ msgid "When creating bug, attach binary files too"
 msgstr "Al crear error, también anexe los archivos binarios "
 
 #: ../src/plugins/reporter-bugzilla.c:901
-#: ../src/plugins/reporter-rhtsupport.c:459
+#: ../src/plugins/reporter-rhtsupport.c:469
 msgid "Force reporting even if this problem is already reported"
 msgstr "Forzar el reporte incluso si este problema ya ha sido reportado"
 
@@ -1373,7 +1373,7 @@ msgid "Login is not provided by configuration. Please enter your BZ login:"
 msgstr "El usuario no ha sido proporcionado. Por favor, introduzca su nombre de usuario BZ:"
 
 #: ../src/plugins/reporter-bugzilla.c:981
-#: ../src/plugins/reporter-rhtsupport.c:495
+#: ../src/plugins/reporter-rhtsupport.c:505
 #, c-format
 msgid ""
 "Password is not provided by configuration. Please enter the password for "
@@ -1492,12 +1492,12 @@ msgstr "Archivo de configuración"
 msgid ""
 "Email address of %s was not specified. Would you like to do so now? If not, "
 "'%s' is to be used"
-msgstr "La dirección de correo-e no se especificó. ¿Desea hacerlo ahora? Si no, '%s' deberá utilizarse"
+msgstr "La dirección de correo-e %s  no se especificó. ¿Desea hacerlo ahora? Si no, '%s' deberá utilizarse"
 
 #: ../src/plugins/reporter-mailx.c:66
 #, c-format
 msgid "Please, type email address of %s:"
-msgstr "Por favor, escriba la dirección de correo-e de %s"
+msgstr "Por favor, escriba la dirección de correo-e de %s: "
 
 #: ../src/plugins/reporter-mailx.c:73
 #, c-format
@@ -1574,15 +1574,15 @@ msgstr "Se guardó el reporte en %s"
 msgid "Server responded with an error: '%s'"
 msgstr "El servidor respondió con un error: ‘%s’"
 
-#: ../src/plugins/reporter-rhtsupport.c:308
+#: ../src/plugins/reporter-rhtsupport.c:318
 msgid "Do you still want to create a RHTSupport ticket?"
 msgstr "¿Aún desea crear un tiquete de soporteRHT?"
 
-#: ../src/plugins/reporter-rhtsupport.c:352
+#: ../src/plugins/reporter-rhtsupport.c:362
 msgid "Invalid password or login. Please enter your Red Hat login:"
-msgstr ""
+msgstr "Contraseña o nombre de inicio no válidos. Por favor ingrese su nombre de inicio Red Hat: "
 
-#: ../src/plugins/reporter-rhtsupport.c:420
+#: ../src/plugins/reporter-rhtsupport.c:430
 msgid ""
 "\n"
 "& [-v] [-c CONFFILE] -d DIR\n"
@@ -1592,76 +1592,81 @@ msgid ""
 "Reports a problem to RHTSupport.\n"
 "\n"
 "If not specified, CONFFILE defaults to "
-msgstr ""
+msgstr "\n& [-v] [-c CONFFILE] -d DIR\nor:\n& [-v] [-c CONFFILE] [-d DIR] -t[ID] [-u -C UR_CONFFILE] FILE...\n\nReporta un problema a RHTSupport.\n\nSi no se especifica, CONFFILE se predetermina a  "
 
-#: ../src/plugins/reporter-rhtsupport.c:458
+#: ../src/plugins/reporter-rhtsupport.c:468
 msgid "Upload FILEs [to case with this ID]"
 msgstr "Cargue ARCHIVOS [para caso con este ID]"
 
-#: ../src/plugins/reporter-rhtsupport.c:460
+#: ../src/plugins/reporter-rhtsupport.c:470
 msgid "Submit uReport before creating a new case"
-msgstr ""
+msgstr "Envía uReport antes de crear un nuevo caso"
 
-#: ../src/plugins/reporter-rhtsupport.c:461
+#: ../src/plugins/reporter-rhtsupport.c:471
 msgid "Configuration file for uReport"
-msgstr ""
+msgstr "Archivo de configuración para uReport"
 
-#: ../src/plugins/reporter-rhtsupport.c:489
+#: ../src/plugins/reporter-rhtsupport.c:499
 msgid "Login is not provided by configuration. Please enter your RHTS login:"
 msgstr "La configuración no proporcionó el nombre de inicio. Por favor ingrese su nombre de RHTS:"
 
-#: ../src/plugins/reporter-rhtsupport.c:551
+#: ../src/plugins/reporter-rhtsupport.c:568
 #, c-format
 msgid "Attaching '%s' to case '%s'"
 msgstr "Anexa %s' para caso '%s'"
+
+#: ../src/plugins/reporter-rhtsupport.c:605
+msgid "Sending ABRT crash statistics data"
+msgstr "Datos de estadísticas de envío de caídas  ABRT"
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are
 #. doing
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
 #. doing
-#: ../src/plugins/reporter-rhtsupport.c:588
+#: ../src/plugins/reporter-rhtsupport.c:616
 #: ../src/plugins/reporter-upload.c:52
 msgid "Compressing data"
 msgstr "Comprensión de datos "
 
-#: ../src/plugins/reporter-rhtsupport.c:623
+#: ../src/plugins/reporter-rhtsupport.c:651
 msgid "Can't create a temporary directory in "
 msgstr "No se puede crear un directorio temporal en"
 
-#: ../src/plugins/reporter-rhtsupport.c:632
+#: ../src/plugins/reporter-rhtsupport.c:660
 msgid "Can't create temporary file in "
 msgstr "No se puede crear un archivo temporal en"
 
-#: ../src/plugins/reporter-rhtsupport.c:650
-msgid "Sending ABRT crash statistics data"
-msgstr ""
-
 #. Check for hints and show them if we have something
-#: ../src/plugins/reporter-rhtsupport.c:662
+#: ../src/plugins/reporter-rhtsupport.c:671
 msgid "Checking for hints"
 msgstr "Comprobando sugerencias"
 
-#: ../src/plugins/reporter-rhtsupport.c:672
+#: ../src/plugins/reporter-rhtsupport.c:681
 msgid "Creating a new case"
 msgstr "Creando un nuevo caso"
 
 #. How can we help user sorting out this problem?
-#: ../src/plugins/reporter-rhtsupport.c:683
+#: ../src/plugins/reporter-rhtsupport.c:692
 msgid "Can't determine RH Support Product from problem data."
 msgstr "No se puede determinar el producto Soporte RH desde los datos del problema."
 
-#: ../src/plugins/reporter-rhtsupport.c:739
+#: ../src/plugins/reporter-rhtsupport.c:748
 msgid "Linking ABRT crash statistics record with the case"
-msgstr ""
+msgstr "Registro de enlace de estadísticas de caídas ABRT con el caso"
 
-#: ../src/plugins/reporter-rhtsupport.c:774
+#: ../src/plugins/reporter-rhtsupport.c:761
+#, c-format
+msgid "Linking ABRT crash statistics record with contact email: '%s'"
+msgstr "Registro de enlace de estadísticas de caídas ABRT con contacto de correo-e: '%s'"
+
+#: ../src/plugins/reporter-rhtsupport.c:785
 #, c-format
 msgid "Adding comment to case '%s'"
 msgstr "Añadiendo comentario a caso ‘%s’"
 
 #. Attach the tarball of -d DIR
-#: ../src/plugins/reporter-rhtsupport.c:792
+#: ../src/plugins/reporter-rhtsupport.c:803
 #, c-format
 msgid "Attaching problem data to case '%s'"
 msgstr "Adjuntando datos de problema a caso ‘%s’"
@@ -1687,7 +1692,7 @@ msgstr "La configuración no proporcionó el nombre de inicio. Por favor ingrese
 #. may work somehow???
 #: ../src/plugins/reporter-upload.c:164
 msgid "Please enter password for uploading:"
-msgstr ""
+msgstr "Por favor ingrese para cargar: "
 
 #. success
 #: ../src/plugins/reporter-upload.c:181
@@ -1817,7 +1822,7 @@ msgstr "Contraseña de cliente de Red Hat"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report Uploader"
-msgstr ""
+msgstr "Registre Uploader"
 
 #: ../src/plugins/report_Uploader.xml.in.h:2
 msgid "Upload as tar.gz file (via FTP/SCP/...)"
@@ -1841,11 +1846,11 @@ msgstr "Ejemplos:&#xA;ftp://[usuario[:clave]@]equipo/dir/[archivo.tar.gz]&#xA;sc
 
 #: ../src/plugins/report_Uploader.xml.in.h:7
 msgid "Use this field if you do not want to have user name in URL"
-msgstr ""
+msgstr "Use este campo si desea tener un nombre de usuario en URL"
 
 #: ../src/plugins/report_Uploader.xml.in.h:9
 msgid "Use this field if you do not want to have password in URL"
-msgstr ""
+msgstr "Use este campo si deseas tener contraseña en URL"
 
 #: ../src/plugins/report_Uploader.xml.in.h:14
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:8
@@ -1931,7 +1936,7 @@ msgstr "Usar autenticación de cliente"
 
 #: ../src/plugins/reporter-ureport.c:70
 msgid "Additional files included in 'auth' key"
-msgstr ""
+msgstr "Archivos adicionales incluidos en llave 'auth'"
 
 #: ../src/plugins/reporter-ureport.c:73
 msgid "bthash of uReport to attach (conflicts with -A)"
@@ -1969,7 +1974,7 @@ msgid ""
 "Upload micro report or add an attachment to a micro report\n"
 "\n"
 "Reads the default configuration from "
-msgstr ""
+msgstr "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-i AUTH_ITEMS]\\\n  [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n\nCarga el micro reporte o añade un adjunto al micro reporte\n\nLee la configuración predeterminada desde"
 
 #: ../src/plugins/reporter-ureport.c:139
 msgid "This problem does not have an uReport assigned."
@@ -2127,24 +2132,24 @@ msgstr "Procesar la excepción de Java mediante la infraestructura de Fedora"
 #: ../src/workflows/workflow_LoggerCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Logger.xml.in.h:1
 msgid "Export the problem data information to a text file"
-msgstr ""
+msgstr "Exportar la información de datos de problemas a un archivo de texto"
 
 #: ../src/workflows/workflow_LoggerCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Logger.xml.in.h:2
 msgid ""
 "Analyze the problem locally and export the problem data information to a "
 "text file"
-msgstr ""
+msgstr "Analizar  el problema de forma local y exporte datos del problema al archivo de texto"
 
 #: ../src/workflows/workflow_MailxCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Mailx.xml.in.h:1
 msgid "Send the problem data via email"
-msgstr ""
+msgstr "Enviar datos del problema vía correo-e"
 
 #: ../src/workflows/workflow_MailxCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Mailx.xml.in.h:2
 msgid "Analyze the problem locally and send information via email"
-msgstr ""
+msgstr "Analizar el problema a nivel local y enviar la información por correo-e"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1

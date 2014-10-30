@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libreport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-02 15:44+0200\n"
-"PO-Revision-Date: 2014-10-02 13:38+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"POT-Creation-Date: 2014-10-13 17:42+0200\n"
+"PO-Revision-Date: 2014-10-13 16:12+0000\n"
+"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/projects/p/libreport/language/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -363,7 +363,7 @@ msgstr "Не зберігати паролів"
 
 #: ../src/gtk-helpers/event_config_dialog.c:260
 msgid "Basic"
-msgstr ""
+msgstr "Основне"
 
 #: ../src/gtk-helpers/event_config_dialog.c:268
 msgid "Advanced"
@@ -426,11 +426,11 @@ msgstr "не вдалося отримати значення ключа «%s»:
 
 #: ../src/gui-wizard-gtk/main.c:107
 msgid "Preferences"
-msgstr ""
+msgstr "Параметри"
 
 #: ../src/gui-wizard-gtk/main.c:110
 msgid "Quit"
-msgstr ""
+msgstr "Вийти"
 
 #: ../src/gui-wizard-gtk/main.c:154
 msgid ""
@@ -523,13 +523,13 @@ msgid ""
 "\t▫ <b>network connection problems</b>\n"
 "\t▫ <b>corrupted problem data</b>\n"
 "\t▫ <b>invalid configuration</b>"
-msgstr ""
+msgstr "Спроба обробки проблеми зазнала невдачі. Причин у проблеми може бути декілька, але найпоширенішими є ці три:\n\t▫ <b>проблеми зі з’єднанням з мережею</b>\n\t▫ <b>пошкоджені дані щодо проблеми</b>\n\t▫ <b>некоректні налаштування</b>"
 
 #: ../src/gui-wizard-gtk/wizard.c:1860
 msgid ""
 "If you want to update the configuration and try to report again, please open <b>Preferences</b> item\n"
 "in the application menu and after applying the configuration changes click <b>Repeat</b> button."
-msgstr ""
+msgstr "Якщо ви хочете оновити налаштування і спробувати повторно надіслати звіт, будь ласка, скористайтеся пунктом <b>Параметри</b>\nу меню програми, а після застосування змін у налаштуваннях натисніть кнопку <b>Повторити</b>."
 
 #: ../src/gui-wizard-gtk/wizard.c:1978
 msgid "Processing was interrupted because the problem is not reportable."
@@ -653,7 +653,7 @@ msgstr "Вивантажити для аналізу"
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3480
 msgid "Repeat"
-msgstr ""
+msgstr "Повторити"
 
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3483
@@ -671,7 +671,7 @@ msgstr "З метою вмикання вбудованих можливосте
 msgid ""
 "Possible sensitive data detected, feel free to edit the report and remove "
 "them."
-msgstr ""
+msgstr "Виявлено ймовірно конфіденційні дані. Ви можете виконати редагування звіту з метою їхнього вилучення."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Restrict access to the report"
@@ -742,27 +742,27 @@ msgstr "Будь ласка, ознайомтеся з даними, перш н
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid "Forbidden words"
-msgstr ""
+msgstr "Заборонені слова"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "Custom"
-msgstr ""
+msgstr "Нетиповий"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "Clear the search bar to see the list of security sensitive words."
-msgstr ""
+msgstr "Спорожнити смужку пошуку, щоб побачити список слів, які може бути пов’язано із конфіденційними даними."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid "file"
-msgstr ""
+msgstr "файл"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:19
 msgid "data"
-msgstr ""
+msgstr "дані"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:20
 msgid "Search"
-msgstr ""
+msgstr "Пошук"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:21
 msgid "Size:"
@@ -810,7 +810,7 @@ msgstr "Докладні повідомлення"
 #: ../src/plugins/reporter-bugzilla.c:895
 #: ../src/plugins/reporter-kerneloops.c:166
 #: ../src/plugins/reporter-mailx.c:198 ../src/plugins/reporter-print.c:56
-#: ../src/plugins/reporter-rhtsupport.c:456
+#: ../src/plugins/reporter-rhtsupport.c:466
 #: ../src/plugins/reporter-upload.c:249
 msgid "Problem directory"
 msgstr "Каталог проблеми"
@@ -872,12 +872,12 @@ msgstr "Надсилання %s до %s"
 #: ../src/lib/curl.c:659
 #, c-format
 msgid "Please enter user name for '%s':"
-msgstr ""
+msgstr "Будь ласка, вкажіть ім’я користувача «%s»:"
 
 #: ../src/lib/curl.c:665
 #, c-format
 msgid "Please enter password for '%s':"
-msgstr ""
+msgstr "Будь ласка, вкажіть пароль до «%s»:"
 
 #. This ends up a "reporting status message" in abrtd
 #: ../src/lib/curl.c:688
@@ -953,54 +953,54 @@ msgstr "Здається, вашу проблему спричинено %s\n\n%
 msgid "Your problem seems to be caused by one of the following:\n"
 msgstr "Здається, вашу проблему спричинено однією з таких причин:\n"
 
-#: ../src/lib/ureport.c:498
+#: ../src/lib/ureport.c:499
 #, c-format
 msgid "Failed to upload uReport to the server '%s' with curl: %s"
 msgstr "Не вдалося вивантажити uReport на сервер «%s» за допомогою curl: %s"
 
-#: ../src/lib/ureport.c:504
+#: ../src/lib/ureport.c:505
 #, c-format
 msgid "The URL '%s' does not exist (got error 404 from server)"
 msgstr "Сторінки з адресою «%s» не існує (отримано повідомлення про помилку 404 від сервера)"
 
-#: ../src/lib/ureport.c:510
+#: ../src/lib/ureport.c:511
 #, c-format
 msgid "The server at '%s' encountered an internal error (got error 500)"
 msgstr "На сервері за адресою «%s» сталася внутрішня помилка (отримано повідомлення про помилку 500)"
 
-#: ../src/lib/ureport.c:516
+#: ../src/lib/ureport.c:517
 #, c-format
 msgid "The server at '%s' currently can't handle the request (got error 503)"
 msgstr "Сервер за адресою «%s» зараз не здатен обробити запит (отримано повідомлення про помилку 503)"
 
 #. can't print better error message
-#: ../src/lib/ureport.c:525
+#: ../src/lib/ureport.c:526
 #, c-format
 msgid "Unexpected HTTP response from '%s': %d"
 msgstr "Неочікувана відповідь HTTP від «%s»: %d"
 
-#: ../src/lib/ureport.c:534
+#: ../src/lib/ureport.c:535
 #, c-format
 msgid "Unable to parse response from ureport server at '%s'"
 msgstr "Не вдалося обробити відповідь від сервера ureport за адресою «%s»"
 
-#: ../src/lib/ureport.c:544
+#: ../src/lib/ureport.c:545
 #, c-format
 msgid "The response from '%s' has invalid format"
 msgstr "Відповідь від «%s» створено у некоректному форматі"
 
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
-#: ../src/lib/ureport.c:550
+#: ../src/lib/ureport.c:551
 #, c-format
 msgid "Type mismatch has been detected in the response from '%s'"
 msgstr "У відповіді від «%s» виявлено невідповідність типів"
 
-#: ../src/lib/ureport.c:735 ../src/plugins/reporter-rhtsupport.c:198
+#: ../src/lib/ureport.c:736 ../src/plugins/reporter-rhtsupport.c:198
 msgid "Failed on submitting the problem"
 msgstr "Не вдалося надіслати дані проблеми"
 
-#: ../src/lib/ureport.c:777
+#: ../src/lib/ureport.c:778
 #, c-format
 msgid "The server at '%s' responded with an error: '%s'"
 msgstr "Сервер за адресою «%s» повідомив про помилку: «%s»"
@@ -1011,7 +1011,7 @@ msgstr "Повідомлено:"
 
 #: ../src/lib/make_descr.c:149
 msgid "cannot be reported"
-msgstr ""
+msgstr "не може бути відзвітовано"
 
 #: ../src/lib/parse_options.c:60
 msgid "Usage: "
@@ -1244,12 +1244,12 @@ msgid ""
 msgstr "Попередження: групи закритих квитків вже вказано у аргументі командного рядка, ігноруємо значення змінної середовища та запис налаштувань."
 
 #: ../src/plugins/reporter-bugzilla.c:775
-#: ../src/plugins/reporter-rhtsupport.c:327
+#: ../src/plugins/reporter-rhtsupport.c:337
 msgid "Can't continue without login"
 msgstr "Продовження неможливе без зазначення облікового запису"
 
 #: ../src/plugins/reporter-bugzilla.c:788
-#: ../src/plugins/reporter-rhtsupport.c:340
+#: ../src/plugins/reporter-rhtsupport.c:350
 msgid "Can't continue without password"
 msgstr "Продовження неможливе без зазначення пароля"
 
@@ -1263,7 +1263,7 @@ msgid "Invalid password or login. Please enter your BZ login:"
 msgstr "Некоректний пароль або ім’я користувача. Будь ласка, вкажіть назву вашого облікового запису у системі стеження за вадами:"
 
 #: ../src/plugins/reporter-bugzilla.c:804
-#: ../src/plugins/reporter-rhtsupport.c:354
+#: ../src/plugins/reporter-rhtsupport.c:364
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
 msgstr "Некоректний пароль або помилкова назва облікового запису. Будь ласка, вкажіть пароль для «%s»:"
@@ -1312,7 +1312,7 @@ msgid ""
 msgstr "\n& [-vbf] [-g НАЗВА-ГРУПИ]... [-c ФАЙЛ_НАЛАШТУВАНЬ]... [-F ФАЙЛ_ФОРМАТУВАННЯ] [-A ФАЙЛ_ФОРМАТУВАННЯ2] -d КАТАЛОГ\nабо\n& [-v] [-c ФАЙЛ_НАЛАШТУВАНЬ]... [-d КАТАЛОГ] -t[ІД] ФАЙЛ...\nабо\n& [-v] [-c ФАЙЛ_НАЛАШТУВАНЬ]... [-d КАТАЛОГ] -t[ІД] -w\nабо\n& [-v] [-c ФАЙЛ_НАЛАШТУВАНЬ]... -h DUPHASH\n\nСповістити про проблему за допомогою Bugzilla.\n\nПрограма виконує читання даних з каталогу КАТАЛОГ. Після цього входить\nдо Bugzilla і намагається знайти ваду з тим самим значенням\nabrt_hash:ШІСТНАДЦЯТКОВИЙ_РЯДОК у полі «Whiteboard».\n\nЯкщо такої вади виявлено не буде, буде створено нове повідомлення щодо вади.\nДані з каталогу КАТАЛОГ буде збережено у повідомленні як частину опису або\nдолучення, залежно від типу і розміру даних.\n\nЯкщо ж ваду буде знайдено, а повідомлення щодо неї буде позначено\nміткою CLOSED DUPLICATE, програма спробує пройти ланцюжком дублікатів, аж\nдоки не знайде ваду без позначки DUPLICATE.\nПісля цього до знайденого повідомлення буде додано новий коментар.\n\nАдресну нового або зміненого повідомлення про ваду буде виведено до stdout\nі записано у елементі «reported_to».\n\nУ разі використання параметра -t ФАЙЛИ буде вивантажено до вже створеного\nповідомлення про ваду на сайті Bugzilla.\nІдентифікатор (ІД) вади буде отримано з каталогу, вказаного за допомогою\n-d КАТАЛОГ.\nЯкщо дані щодо проблеми у каталозі КАТАЛОГ ще ніколи не повідомлялися за\nдопомогою Bugzilla, вивантаження зазнає невдачі.\n\nВикористання параметра -tІД надає змогу вивантажити ФАЙЛИ до повідомлення\nпро ваду з вказаним ідентифікатором Bugzilla ІД.\n-d КАТАЛОГ у цьому випадку буде проігноровано.\n\nЗа допомогою параметра -w можна додати користувача до списку обміну\nповідомленнями щодо вади.\n\nЗа допомогою параметра -r можна встановити у полі адреси останню адресу з елемента\nreporter_to, до якої буде додано вміст TRACKER_NAME. Цей параметр застосовується\nлише під час створення нових звітів щодо вад. Типовим значенням є «ABRT Server».\n\nЯкщо не вказано явно, типовим значенням параметра ФАЙЛ_НАЛАШТУВАНЬ є "
 
 #: ../src/plugins/reporter-bugzilla.c:896
-#: ../src/plugins/reporter-rhtsupport.c:457
+#: ../src/plugins/reporter-rhtsupport.c:467
 msgid "Configuration file (may be given many times)"
 msgstr "Файл налаштувань (можна вказувати декілька файлів)"
 
@@ -1333,7 +1333,7 @@ msgid "When creating bug, attach binary files too"
 msgstr "Долучити до звіту щодо вади бінарні файли"
 
 #: ../src/plugins/reporter-bugzilla.c:901
-#: ../src/plugins/reporter-rhtsupport.c:459
+#: ../src/plugins/reporter-rhtsupport.c:469
 msgid "Force reporting even if this problem is already reported"
 msgstr "Створити звіт, навіть якщо про цю проблему вже було повідомлено"
 
@@ -1366,7 +1366,7 @@ msgid "Login is not provided by configuration. Please enter your BZ login:"
 msgstr "У налаштуваннях не вказано облікового запису користувача. Будь ласка, вкажіть ім’я вашого користувача Bugzilla:"
 
 #: ../src/plugins/reporter-bugzilla.c:981
-#: ../src/plugins/reporter-rhtsupport.c:495
+#: ../src/plugins/reporter-rhtsupport.c:505
 #, c-format
 msgid ""
 "Password is not provided by configuration. Please enter the password for "
@@ -1567,15 +1567,15 @@ msgstr "Звіт було збережено до %s"
 msgid "Server responded with an error: '%s'"
 msgstr "Сервер повідомив про помилку: «%s»"
 
-#: ../src/plugins/reporter-rhtsupport.c:308
+#: ../src/plugins/reporter-rhtsupport.c:318
 msgid "Do you still want to create a RHTSupport ticket?"
 msgstr "Хочете створити повідомлення для RHTSupport?"
 
-#: ../src/plugins/reporter-rhtsupport.c:352
+#: ../src/plugins/reporter-rhtsupport.c:362
 msgid "Invalid password or login. Please enter your Red Hat login:"
-msgstr ""
+msgstr "Некоректний пароль або ім’я користувача. Будь ласка, вкажіть назву вашого облікового запису у системі стеження за вадами Red Hat:"
 
-#: ../src/plugins/reporter-rhtsupport.c:420
+#: ../src/plugins/reporter-rhtsupport.c:430
 msgid ""
 "\n"
 "& [-v] [-c CONFFILE] -d DIR\n"
@@ -1585,76 +1585,81 @@ msgid ""
 "Reports a problem to RHTSupport.\n"
 "\n"
 "If not specified, CONFFILE defaults to "
-msgstr ""
+msgstr "\n& [-v] [-c ФАЙЛ_НАЛАШТУВАНЬ] -d КАТАЛОГ\nабо:\n& [-v] [-c ФАЙЛ_НАЛАШТУВАНЬ] [-d КАТАЛОГ] -t[ІД] [-u -C ФАЙЛ_НАЛАШТУВАНЬ_UR] ФАЙЛ...\n\nНадсилає звіт щодо вади до RHTSupport.\n\nЯкщо не вказано ФАЙЛ_НАЛАШТУВАНЬ, типові значення буде взято з "
 
-#: ../src/plugins/reporter-rhtsupport.c:458
+#: ../src/plugins/reporter-rhtsupport.c:468
 msgid "Upload FILEs [to case with this ID]"
 msgstr "Вивантажити ФАЙЛи [до запису випадку з вказаним ідентифікатором]"
 
-#: ../src/plugins/reporter-rhtsupport.c:460
+#: ../src/plugins/reporter-rhtsupport.c:470
 msgid "Submit uReport before creating a new case"
-msgstr ""
+msgstr "Надіслати uReport до створення нового запису випадку"
 
-#: ../src/plugins/reporter-rhtsupport.c:461
+#: ../src/plugins/reporter-rhtsupport.c:471
 msgid "Configuration file for uReport"
-msgstr ""
+msgstr "Файл налаштувань uReport"
 
-#: ../src/plugins/reporter-rhtsupport.c:489
+#: ../src/plugins/reporter-rhtsupport.c:499
 msgid "Login is not provided by configuration. Please enter your RHTS login:"
 msgstr "У налаштуваннях не вказано облікового запису користувача. Будь ласка, вкажіть ім’я вашого користувача у RHTS:"
 
-#: ../src/plugins/reporter-rhtsupport.c:551
+#: ../src/plugins/reporter-rhtsupport.c:568
 #, c-format
 msgid "Attaching '%s' to case '%s'"
 msgstr "Долучення «%s» до випадку «%s»"
+
+#: ../src/plugins/reporter-rhtsupport.c:605
+msgid "Sending ABRT crash statistics data"
+msgstr "Надсилання статистичних даних ABRT щодо аварії"
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are
 #. doing
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
 #. doing
-#: ../src/plugins/reporter-rhtsupport.c:588
+#: ../src/plugins/reporter-rhtsupport.c:616
 #: ../src/plugins/reporter-upload.c:52
 msgid "Compressing data"
 msgstr "Стискання даних"
 
-#: ../src/plugins/reporter-rhtsupport.c:623
+#: ../src/plugins/reporter-rhtsupport.c:651
 msgid "Can't create a temporary directory in "
 msgstr "Не вдалося створити тимчасовий каталог у"
 
-#: ../src/plugins/reporter-rhtsupport.c:632
+#: ../src/plugins/reporter-rhtsupport.c:660
 msgid "Can't create temporary file in "
 msgstr "Не вдалося створити тимчасовий файл у"
 
-#: ../src/plugins/reporter-rhtsupport.c:650
-msgid "Sending ABRT crash statistics data"
-msgstr ""
-
 #. Check for hints and show them if we have something
-#: ../src/plugins/reporter-rhtsupport.c:662
+#: ../src/plugins/reporter-rhtsupport.c:671
 msgid "Checking for hints"
 msgstr "Шукаємо підказки"
 
-#: ../src/plugins/reporter-rhtsupport.c:672
+#: ../src/plugins/reporter-rhtsupport.c:681
 msgid "Creating a new case"
 msgstr "Створення нового випадку"
 
 #. How can we help user sorting out this problem?
-#: ../src/plugins/reporter-rhtsupport.c:683
+#: ../src/plugins/reporter-rhtsupport.c:692
 msgid "Can't determine RH Support Product from problem data."
 msgstr "Не вдалося визначити продукт для служби підтримки RH для даних проблеми."
 
-#: ../src/plugins/reporter-rhtsupport.c:739
+#: ../src/plugins/reporter-rhtsupport.c:748
 msgid "Linking ABRT crash statistics record with the case"
-msgstr ""
+msgstr "Пов’язування запису статистичних даних щодо аварії ABRT з випадком"
 
-#: ../src/plugins/reporter-rhtsupport.c:774
+#: ../src/plugins/reporter-rhtsupport.c:761
+#, c-format
+msgid "Linking ABRT crash statistics record with contact email: '%s'"
+msgstr "Пов’язування запису статистичних даних щодо аварії ABRT з адресою електронної пошти для зв’язку: «%s»"
+
+#: ../src/plugins/reporter-rhtsupport.c:785
 #, c-format
 msgid "Adding comment to case '%s'"
 msgstr "Додаємо коментар до запису випадку «%s»"
 
 #. Attach the tarball of -d DIR
-#: ../src/plugins/reporter-rhtsupport.c:792
+#: ../src/plugins/reporter-rhtsupport.c:803
 #, c-format
 msgid "Attaching problem data to case '%s'"
 msgstr "Долучаємо дані проблеми до запису випадку «%s»"
@@ -1680,7 +1685,7 @@ msgstr "У налаштуваннях не вказано адреси для в
 #. may work somehow???
 #: ../src/plugins/reporter-upload.c:164
 msgid "Please enter password for uploading:"
-msgstr ""
+msgstr "Будь ласка, вкажіть пароль для вивантаження:"
 
 #. success
 #: ../src/plugins/reporter-upload.c:181
@@ -1810,7 +1815,7 @@ msgstr "Пароль користувача Red Hat"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report Uploader"
-msgstr ""
+msgstr "Вивантажувач звітів"
 
 #: ../src/plugins/report_Uploader.xml.in.h:2
 msgid "Upload as tar.gz file (via FTP/SCP/...)"
@@ -1834,11 +1839,11 @@ msgstr "Приклади:&#xA;ftp://[користувач[:пароль]@]вуз
 
 #: ../src/plugins/report_Uploader.xml.in.h:7
 msgid "Use this field if you do not want to have user name in URL"
-msgstr ""
+msgstr "Скористайтеся цим полем, якщо ви хочете вилучити ім’я користувача з адреси"
 
 #: ../src/plugins/report_Uploader.xml.in.h:9
 msgid "Use this field if you do not want to have password in URL"
-msgstr ""
+msgstr "Скористайтеся цим полем, якщо ви хочете вилучити пароль з адреси"
 
 #: ../src/plugins/report_Uploader.xml.in.h:14
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:8
@@ -1924,7 +1929,7 @@ msgstr "Розпізнавання клієнта"
 
 #: ../src/plugins/reporter-ureport.c:70
 msgid "Additional files included in 'auth' key"
-msgstr ""
+msgstr "Додаткові файли, включені до ключа «auth»"
 
 #: ../src/plugins/reporter-ureport.c:73
 msgid "bthash of uReport to attach (conflicts with -A)"
@@ -1962,7 +1967,7 @@ msgid ""
 "Upload micro report or add an attachment to a micro report\n"
 "\n"
 "Reads the default configuration from "
-msgstr ""
+msgstr "& [-v] [-c ФАЙЛ] [-u АДРЕСА] [-k] [-t ДЖЕРЕЛО] [-A -a bthash -B -b ід_вади -E -e ел_пошта] [-d КАТАЛОГ]\n& [-v] [-c ФАЙЛ] [-u АДРЕСА] [-k] [-t ДЖЕРЕЛО] [-i AUTH_ITEMS]\\\n  [-A -a bthash -B -b ід_вади -E -e ел_пошта] [-d КАТАЛОГ]\n\nВивантажити мікрозвіт або додати долучення до мікрозвіту\n\nТипові параметри налаштувань буде отримано з "
 
 #: ../src/plugins/reporter-ureport.c:139
 msgid "This problem does not have an uReport assigned."
@@ -2120,24 +2125,24 @@ msgstr "Обробити дані щодо виключення Java за доп
 #: ../src/workflows/workflow_LoggerCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Logger.xml.in.h:1
 msgid "Export the problem data information to a text file"
-msgstr ""
+msgstr "Експортувати дані щодо даних щодо проблеми до текстового файла"
 
 #: ../src/workflows/workflow_LoggerCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Logger.xml.in.h:2
 msgid ""
 "Analyze the problem locally and export the problem data information to a "
 "text file"
-msgstr ""
+msgstr "Проаналізувати проблему локально і експортувати дані щодо даних щодо проблеми до текстового файла"
 
 #: ../src/workflows/workflow_MailxCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Mailx.xml.in.h:1
 msgid "Send the problem data via email"
-msgstr ""
+msgstr "Надіслати дані щодо проблеми електронною поштою"
 
 #: ../src/workflows/workflow_MailxCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Mailx.xml.in.h:2
 msgid "Analyze the problem locally and send information via email"
-msgstr ""
+msgstr "Проаналізувати дані проблеми локально і надіслати інформацію електронною поштою"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1
