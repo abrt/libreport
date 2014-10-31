@@ -640,6 +640,7 @@ ureport_from_dump_dir_ext(const char *dump_dir_path, const struct ureport_prefer
             }
 
             sr_report_add_auth(report, key, value);
+            free(value);
         }
 
         dd_close(dd);
