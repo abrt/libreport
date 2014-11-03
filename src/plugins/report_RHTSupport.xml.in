@@ -11,12 +11,8 @@
     <minimal-rating>0</minimal-rating>
 
     <options>
-        <option type="text" name="RHTSupport_URL">
-            <_label>RH Portal URL</_label>
-            <allow-empty>no</allow-empty>
-            <_description>Address of the Red Hat support portal</_description>
-            <default-value>https://api.access.redhat.com/rs</default-value>
-        </option>
+        <import-event-options event="report_uReport"/>
+
         <option type="text" name="RHTSupport_Login">
             <_label>Username</_label>
             <_description>Red Hat customer user name</_description>
@@ -37,6 +33,12 @@
                 <_label>Submit uReport</_label>
                 <_note-html>Submit &lt;a href="https://access.redhat.com/articles/642323"&gt;micro-report&lt;/a&gt; when creating a new case. </_note-html>
                 <default-value>yes</default-value>
+            </option>
+            <option type="text" name="RHTSupport_URL">
+                <_label>RH Portal URL</_label>
+                <allow-empty>no</allow-empty>
+                <_description>Address of the Red Hat support portal</_description>
+                <default-value>https://api.access.redhat.com/rs</default-value>
             </option>
             <option type="text" name="http_proxy">
                 <_label>HTTP Proxy</_label>
