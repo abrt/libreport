@@ -339,12 +339,24 @@ void set_ureport_server_config(struct ureport_server_config *config,
 
 void my_assert(const char *str1, const char *str2)
 {
-    if (str1 == NULL || str2 == NULL)
-        assert( str1 == NULL && str2 == NULL );
-    else
-        assert(strcmp(str1, str2) == 0);
+    if (str1 == str2)
+        return;
 
-    return;
+    if (str1 == NULL && str2 != NULL)
+    {
+        fprintf(stderr, "Assertion failed: NULL == '%s'\n", str2);
+        abort();
+    }
+    else if (str1 != NULL && str2 == NULL)
+    {
+        fprintf(stderr, "Assertion failed: '%s' == NULL\n", str1);
+        abort();
+    }
+    else if (strcmp(str1, str2) != 0)
+    {
+        fprintf(stderr, "Assertion failed: '%s' == '%s'\n", str1, str2);
+        abort();
+    }
 }
 
 void assert_ureport_server_config(struct ureport_server_config *config,
@@ -365,8 +377,10 @@ void assert_ureport_server_config(struct ureport_server_config *config,
     return;
 }
 
-int test_ureport_server_config_set_client_auth_exit_code(struct ureport_server_config *config,
-                                                         const char *client_auth)
+int test_ureport_server_config_set_client_auth_exit_code_ext(struct ureport_server_config *config,
+                                                             const char *client_auth,
+                                                             const char *cert_file,
+                                                             const char *key_file)
 {
     ureport_server_config_init(config);
 
@@ -380,6 +394,8 @@ int test_ureport_server_config_set_client_auth_exit_code(struct ureport_server_c
     if (pid == 0)
     {
         ureport_server_config_set_client_auth(config, client_auth);
+        assert((cert_file == (void *)-1) || (cert_file == NULL && config->ur_client_cert == NULL) || (strcmp(cert_file, config->ur_client_cert) == 0));
+        assert((key_file == (void *)-1) || (key_file == NULL && config->ur_client_cert == NULL) || (strcmp(key_file, config->ur_client_key) == 0));
         exit(0);
     }
     int status;
@@ -388,6 +404,12 @@ int test_ureport_server_config_set_client_auth_exit_code(struct ureport_server_c
     ureport_server_config_destroy(config);
 
     return status;
+}
+
+int test_ureport_server_config_set_client_auth_exit_code(struct ureport_server_config *config,
+                                                         const char *client_auth)
+{
+    return test_ureport_server_config_set_client_auth_exit_code_ext(config, client_auth, (void *)-1, (void *)-1);
 }
 
 int main(void)
@@ -418,8 +440,8 @@ int main(void)
     assert(empty_cert_dir);
     setenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH", empty_cert_dir, 1);
 
-    int status = test_ureport_server_config_set_client_auth_exit_code(&config, "rhsm");
-    assert(status != 0 && status != -1);
+    int status = test_ureport_server_config_set_client_auth_exit_code_ext(&config, "rhsm", NULL, NULL);
+    assert(status == 0);
 
     assert(rmdir(empty_cert_dir) == 0);
 
@@ -429,8 +451,8 @@ int main(void)
 
     setenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH", TESTING_CERTS_INCORRECT_CONTENT_DIR_PATH, 1);
 
-    status = test_ureport_server_config_set_client_auth_exit_code(&config, "rhsm");
-    assert(status != 0 && status != -1);
+    status = test_ureport_server_config_set_client_auth_exit_code_ext(&config, "rhsm", NULL, NULL);
+    assert(status == 0);
 
     /* client_auth == rhsm */
     /* ur_url == NULL */
@@ -548,12 +570,24 @@ AT_TESTFUN([ureport_server_config_set_basic_auth],
 
 void my_assert(const char *str1, const char *str2)
 {
-    if (str1 == NULL || str2 == NULL)
-        assert( str1 == NULL && str2 == NULL );
-    else
-        assert(strcmp(str1, str2) == 0);
+    if (str1 == str2)
+        return;
 
-    return;
+    if (str1 == NULL && str2 != NULL)
+    {
+        fprintf(stderr, "Assertion failed: NULL == '%s'\n", str2);
+        abort();
+    }
+    else if (str1 != NULL && str2 == NULL)
+    {
+        fprintf(stderr, "Assertion failed: '%s' == NULL\n", str1);
+        abort();
+    }
+    else if (strcmp(str1, str2) != 0)
+    {
+        fprintf(stderr, "Assertion failed: '%s' == '%s'\n", str1, str2);
+        abort();
+    }
 }
 
 void assert_ureport_server_config(struct ureport_server_config *config,
