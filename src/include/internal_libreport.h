@@ -910,6 +910,10 @@ struct dump_dir *open_directory_for_writing(
 #define FILENAME_ABRT_VERSION  "abrt_version"
 #define FILENAME_EXPLOITABLE   "exploitable"
 
+/* File names related to Anaconda problems
+ */
+#define FILENAME_KICKSTART_CFG "ks.cfg"
+
 // Not stored as files, added "on the fly":
 #define CD_DUMPDIR            "Directory"
 
