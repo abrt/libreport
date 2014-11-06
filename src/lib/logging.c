@@ -1,6 +1,6 @@
 /*
     Copyright (C) 2010  ABRT team
-    Copyright (C) 2010  RedHat Inc
+    Copyright (C) 2010, 2014  RedHat Inc
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <syslog.h>
+/* Suppress automatic CODE_* fields as we handle those here */
+#define SD_JOURNAL_SUPPRESS_LOCATION
 #include <systemd/sd-journal.h>
 #include "internal_libreport.h"
 
