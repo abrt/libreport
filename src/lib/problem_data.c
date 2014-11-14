@@ -261,6 +261,7 @@ static const char *const editable_files[] = {
     //FILENAME_COUNT      ,
     //FILENAME_REPORTED_TO,
     //FILENAME_EVENT_LOG  ,
+    FILENAME_KICKSTART_CFG,
     NULL
 };
 static bool is_editable_file(const char *file_name)
