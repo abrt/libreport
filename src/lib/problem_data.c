@@ -262,6 +262,7 @@ static const char *const editable_files[] = {
     //FILENAME_REPORTED_TO,
     //FILENAME_EVENT_LOG  ,
     FILENAME_KICKSTART_CFG,
+    FILENAME_ANACONDA_TB,
     NULL
 };
 static bool is_editable_file(const char *file_name)
