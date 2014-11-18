@@ -1185,7 +1185,7 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
     //FIXME: use the human-readable problem_item_format(item) instead of item->content.
     if (item->flags & CD_FLAG_TXT)
     {
-        if (item->flags & CD_FLAG_ISEDITABLE)
+        if (item->flags & CD_FLAG_ISEDITABLE && strcmp(name, FILENAME_ANACONDA_TB) != 0)
         {
             GtkWidget *tab_lbl = gtk_label_new((char *)name);
             GtkWidget *tev = gtk_text_view_new();
