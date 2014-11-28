@@ -913,6 +913,7 @@ struct dump_dir *open_directory_for_writing(
 /* File names related to Anaconda problems
  */
 #define FILENAME_KICKSTART_CFG "ks.cfg"
+#define FILENAME_ANACONDA_TB   "anaconda-tb"
 
 // Not stored as files, added "on the fly":
 #define CD_DUMPDIR            "Directory"
