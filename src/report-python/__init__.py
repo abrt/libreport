@@ -236,7 +236,7 @@ def createPythonUnhandledExceptionSignature(**kwargs):
             raise AttributeError("missing argument {0}".format(arg))
 
     pd = problem_data()
-    for (key, value) in kwargs.iteritems():
+    for (key, value) in kwargs.items():
         pd.add(key, value)
     product = getProduct()
     if product:

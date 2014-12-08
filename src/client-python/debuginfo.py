@@ -84,7 +84,7 @@ def unpack_rpm(package_file_name, files, tmp_dir, destdir, keeprpm, exact_files=
     package_full_path = tmp_dir + "/" + package_file_name
     log1("Extracting %s to %s", package_full_path, destdir)
     log2("%s", files)
-    print _("Extracting cpio from {0}").format(package_full_path)
+    print(_("Extracting cpio from {0}").format(package_full_path))
     unpacked_cpio_path = tmp_dir + "/unpacked.cpio"
     try:
         unpacked_cpio = open(unpacked_cpio_path, 'wb')
@@ -447,7 +447,7 @@ class DebugInfoDownload(YumBase):
                     print _("Download cancelled by user")
                     return RETURN_CANCEL_BY_USER
 
-        for pkg, files in package_files_dict.iteritems():
+        for pkg, files in package_files_dict.items():
             dnlcb.downloaded_pkgs = downloaded_pkgs
             repo.cache = 0
             remote = pkg.returnSimple('relativepath')
