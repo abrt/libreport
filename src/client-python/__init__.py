@@ -76,3 +76,4 @@ def error_msg(fmt, *args):
 def error_msg_and_die(fmt, *args):
     sys.stderr.write("%s\n" % (fmt % args))
     sys.exit(1)
+

@@ -22,10 +22,10 @@ handler = ExceptionHandler(config, intf, ReverseExceptionDump)
 handler.install(None)
 
 
-print "handler set up, about to divide by zero"
+print("handler set up, about to divide by zero")
 
 zero = 0
-print 1 / zero
+print(1 / zero)
 
-print "should have crashed"
+print("should have crashed")
 
