@@ -148,3 +148,104 @@ char* get_environ(pid_t pid)
     snprintf(path, sizeof(path), "/proc/%lu/environ", (long)pid);
     return get_escaped(path, '\n');
 }
+
+char* get_executable(pid_t pid)
+{
+    char buf[sizeof("/proc/%lu/exe") + sizeof(long)*3];
+
+    sprintf(buf, "/proc/%lu/exe", (long)pid);
+    char *executable = malloc_readlink(buf);
+    if (!executable)
+        return NULL;
+    /* find and cut off " (deleted)" from the path */
+    char *deleted = executable + strlen(executable) - strlen(" (deleted)");
+    if (deleted > executable && strcmp(deleted, " (deleted)") == 0)
+    {
+        *deleted = '\0';
+        log_info("File '%s' seems to be deleted", executable);
+    }
+    /* find and cut off prelink suffixes from the path */
+    char *prelink = executable + strlen(executable) - strlen(".#prelink#.XXXXXX");
+    if (prelink > executable && strncmp(prelink, ".#prelink#.", strlen(".#prelink#.")) == 0)
+    {
+        log_info("File '%s' seems to be a prelink temporary file", executable);
+        *prelink = '\0';
+    }
+    return executable;
+}
+
+char* get_cwd(pid_t pid)
+{
+    char buf[sizeof("/proc/%lu/cwd") + sizeof(long)*3];
+    sprintf(buf, "/proc/%lu/cwd", (long)pid);
+    return malloc_readlink(buf);
+}
+
+char* get_rootdir(pid_t pid)
+{
+    char buf[sizeof("/proc/%lu/root") + sizeof(long)*3];
+    sprintf(buf, "/proc/%lu/root", (long)pid);
+    return malloc_readlink(buf);
+}
+
+int get_fsuid(const char *proc_pid_status)
+{
+    int real, euid, saved;
+    /* if we fail to parse the uid, then make it root only readable to be safe */
+    int fs_uid = 0;
+
+    const char *line = proc_pid_status; /* never NULL */
+    for (;;)
+    {
+        if (strncmp(line, "Uid", 3) == 0)
+        {
+            int n = sscanf(line, "Uid:\t%d\t%d\t%d\t%d\n", &real, &euid, &saved, &fs_uid);
+            if (n != 4)
+                return -1;
+            break;
+        }
+        line = strchr(line, '\n');
+        if (!line)
+            break;
+        line++;
+    }
+
+    return fs_uid;
+}
+
+int dump_fd_info(const char *dest_filename, char *source_filename, int source_base_ofs)
+{
+    FILE *fp = fopen(dest_filename, "w");
+    if (!fp)
+        return 0;
+
+    /*TODO: BUG: there might be holes as programs can close any fd at any time*/
+    unsigned fd = 0;
+    while (fd <= 99999) /* paranoia check */
+    {
+        sprintf(source_filename + source_base_ofs, "fd/%u", fd);
+        char *name = malloc_readlink(source_filename);
+        if (!name)
+            break;
+        fprintf(fp, "%u:%s\n", fd, name);
+        free(name);
+
+        sprintf(source_filename + source_base_ofs, "fdinfo/%u", fd);
+        fd++;
+        FILE *in = fopen(source_filename, "r");
+        if (!in)
+            continue;
+        char buf[128];
+        while (fgets(buf, sizeof(buf)-1, in))
+        {
+            /* in case the line is not terminated, terminate it */
+            char *eol = strchrnul(buf, '\n');
+            eol[0] = '\n';
+            eol[1] = '\0';
+            fputs(buf, fp);
+        }
+        fclose(in);
+    }
+    fclose(fp);
+    return 1;
+}

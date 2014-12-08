@@ -191,3 +191,17 @@ void* xmalloc_xopen_read_close(const char *filename, size_t *maxsz_p)
         perror_msg_and_die("Can't read '%s'", filename);
     return buf;
 }
+
+char* malloc_readlink(const char *linkname)
+{
+    char buf[PATH_MAX + 1];
+    int len;
+
+    len = readlink(linkname, buf, sizeof(buf)-1);
+    if (len >= 0)
+    {
+        buf[len] = '\0';
+        return xstrdup(buf);
+    }
+    return NULL;
+}

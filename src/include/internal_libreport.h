@@ -178,6 +178,8 @@ void* xmalloc_read(int fd, size_t *maxsz_p);
 void* xmalloc_open_read_close(const char *filename, size_t *maxsz_p);
 #define xmalloc_xopen_read_close libreport_xmalloc_xopen_read_close
 void* xmalloc_xopen_read_close(const char *filename, size_t *maxsz_p);
+#define malloc_readlink libreport_malloc_readlink
+char* malloc_readlink(const char *linkname);
 
 
 /* Returns malloc'ed block */
@@ -625,6 +627,16 @@ struct strbuf *strbuf_prepend_strfv(struct strbuf *strbuf,
 char* get_cmdline(pid_t pid);
 #define get_environ libreport_get_environ
 char* get_environ(pid_t pid);
+#define get_executable libreport_get_executable
+char *get_executable(pid_t pid);
+#define get_cwd libreport_get_cwd
+char* get_cwd(pid_t pid);
+#define get_rootdir libreport_get_rootdir
+char* get_rootdir(pid_t pid);
+#define get_fsuid libreport_get_fsuid
+int get_fsuid(const char *proc_pid_status);
+#define dump_fd_info libreport_dump_fd_info
+int dump_fd_info(const char *dest_filename, char *source_filename, int source_base_ofs);
 
 /* Takes ptr to time_t, or NULL if you want to use current time.
  * Returns "YYYY-MM-DD-hh:mm:ss" string.
