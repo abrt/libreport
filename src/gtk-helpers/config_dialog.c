@@ -18,6 +18,7 @@
 */
 
 #include <gtk/gtk.h>
+#include <gdk/gdk.h>
 #include "internal_libreport_gtk.h"
 
 enum
@@ -81,6 +82,28 @@ GtkWidget *cdialog_get_widget(config_dialog_t *cdialog)
 gpointer cdialog_get_data(config_dialog_t *cdialog)
 {
     return cdialog->data;
+}
+
+int cdialog_run(config_dialog_t *cdialog, const char *name)
+{
+    if (cdialog == NULL || cdialog->dialog == NULL)
+    {
+        log("There is no configurable option for: '%s'", name);
+        return GTK_RESPONSE_REJECT;
+    }
+
+    const int result = gtk_dialog_run(GTK_DIALOG(cdialog->dialog));
+    if (result == GTK_RESPONSE_APPLY)
+    {
+        if (cdialog->save_data)
+            cdialog->save_data(cdialog->data, name);
+    }
+    else if (result == GTK_RESPONSE_CANCEL)
+        log_notice("Cancelling on user request");
+
+    gtk_widget_hide(GTK_WIDGET(cdialog->dialog));
+
+    return result;
 }
 
 static const void *get_column_value_from_row(GtkTreeView *treeview, int column, int type)
@@ -184,6 +207,40 @@ static gboolean config_filter_func(GtkTreeModel *model,
   return visible;
 }
 
+static void open_config_for_selected_row(GtkTreeView *tv)
+{
+    config_dialog_t *cdialog = (config_dialog_t *)get_column_value_from_row(tv, CONFIG_DIALOG, TYPE_POINTER);
+    const char *name = (const char *)get_column_value_from_row(tv, COLUMN_NAME, TYPE_STR);
+
+    cdialog_run(cdialog, name);
+}
+
+static gboolean on_key_press_event_cb(GtkWidget *btn, GdkEvent *event, gpointer user_data)
+{
+    GdkEventKey *ek = (GdkEventKey *)event;
+
+    if (ek->keyval == GDK_KEY_Return)
+    {
+        GtkTreeView *tv = (GtkTreeView *)user_data;
+        open_config_for_selected_row(tv);
+    }
+
+    return FALSE;
+}
+
+static gboolean on_button_press_event_cb(GtkWidget *btn, GdkEvent *event, gpointer user_data)
+{
+    GdkEventButton *eb = (GdkEventButton *)event;
+
+    if (eb->type == GDK_2BUTTON_PRESS)
+    {
+        GtkTreeView *tv = (GtkTreeView *)user_data;
+        open_config_for_selected_row(tv);
+    }
+
+    return FALSE;
+}
+
 GtkWidget *create_config_tab_content(const char *column_label,
                                       GtkListStore *store)
 {
@@ -194,6 +251,9 @@ GtkWidget *create_config_tab_content(const char *column_label,
                                     GTK_POLICY_AUTOMATIC);
     /* workflow list treeview */
     GtkWidget *tv = gtk_tree_view_new();
+    g_signal_connect(tv, "key-press-event", G_CALLBACK(on_key_press_event_cb), tv);
+    g_signal_connect(tv, "button-press-event", G_CALLBACK(on_button_press_event_cb), tv);
+
     /* column with workflow name and description */
     GtkCellRenderer *renderer;
     GtkTreeViewColumn *column;
@@ -243,27 +303,8 @@ static void on_configure_cb(GtkWidget *btn, gpointer user_data)
     GtkWidget *vbox = gtk_notebook_get_nth_page(nb, current_page_n);
     GList *children = gtk_container_get_children(GTK_CONTAINER(vbox));
     GtkScrolledWindow *sw = (GtkScrolledWindow *)children->data;
-    GtkTreeView *tv = (GtkTreeView *)gtk_bin_get_child(GTK_BIN(sw));
-    config_dialog_t *cdialog = (config_dialog_t *)get_column_value_from_row(tv, CONFIG_DIALOG, TYPE_POINTER);
-    const char *name = (const char *)get_column_value_from_row(tv, COLUMN_NAME, TYPE_STR);
 
-
-    if (cdialog == NULL || cdialog->dialog == NULL)
-    {
-        log("There is no configurable option for: '%s'", name);
-        return;
-    }
-
-    int result = gtk_dialog_run(GTK_DIALOG(cdialog->dialog));
-    if (result == GTK_RESPONSE_APPLY)
-    {
-        if (cdialog->save_data)
-            cdialog->save_data(cdialog->data, name);
-    }
-    else if (result == GTK_RESPONSE_CANCEL)
-        log_notice("Cancelling on user request");
-
-    gtk_widget_hide(GTK_WIDGET(cdialog->dialog));
+    open_config_for_selected_row((GtkTreeView *)gtk_bin_get_child(GTK_BIN(sw)));
 }
 
 static void on_close_cb(GtkWidget *btn, gpointer config_list_w)
