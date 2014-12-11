@@ -159,6 +159,17 @@ int dump_dir_stat_for_uid(const char *dirname, uid_t uid);
 */
 int dd_mark_as_notreportable(struct dump_dir *dd, const char *reason);
 
+typedef int (*save_data_call_back)(struct dump_dir *, void *args);
+
+/* Saves data in a new dump directory
+ *
+ * Creates a new dump directory in "problem dump location", adds the basic
+ * information to the new directory, calls given callback to allow callees to
+ * customize the dump dir contents (save problem data) and commits the dump
+ * directory (makes the directory visible for a problem daemon).
+ */
+struct dump_dir *create_dump_dir(const char *base_dir_name, const char *type,
+        uid_t uid, save_data_call_back save_data, void *args);
 #ifdef __cplusplus
 }
 #endif

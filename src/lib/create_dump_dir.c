@@ -30,35 +30,9 @@ static struct dump_dir *try_dd_create(const char *base_dir_name, const char *dir
     return dd;
 }
 
-struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data, const char *base_dir_name)
+struct dump_dir *create_dump_dir(const char *base_dir_name, const char *type, uid_t uid, save_data_call_back save_data, void *args)
 {
     INITIALIZE_LIBREPORT();
-
-    char *type = problem_data_get_content_or_NULL(problem_data, FILENAME_ANALYZER);
-
-    if (!type)
-    {
-        error_msg(_("Missing required item: '%s'"), FILENAME_ANALYZER);
-        return NULL;
-    }
-
-    uid_t uid = (uid_t)-1L;
-    char *uid_str = problem_data_get_content_or_NULL(problem_data, FILENAME_UID);
-
-    if (uid_str)
-    {
-        char *endptr;
-        errno = 0;
-        long val = strtol(uid_str, &endptr, 10);
-
-        if (errno != 0 || endptr == uid_str || *endptr != '\0' || INT_MAX < val)
-        {
-            error_msg(_("uid value is not valid: '%s'"), uid_str);
-            return NULL;
-        }
-
-        uid = (uid_t)val;
-    }
 
     struct timeval tv;
     if (gettimeofday(&tv, NULL) < 0)
@@ -99,6 +73,34 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
     if (!dd) /* try_dd_create() already emitted the error message */
         goto ret;
 
+    if (save_data(dd, args))
+    {
+        dd_delete(dd);
+        dd = NULL;
+        goto ret;
+    }
+
+    /* need to create basic files AFTER we save the pd to dump_dir
+     * otherwise we can't skip already created files like in case when
+     * reporting from anaconda where we can't read /etc/{system,redhat}-release
+     * and os_release is taken from anaconda
+     */
+    dd_create_basic_files(dd, uid, NULL);
+
+    problem_id[strlen(problem_id) - strlen(NEW_PD_SUFFIX)] = '\0';
+    char* new_path = concat_path_file(base_dir_name, problem_id);
+    log_info("Renaming from '%s' to '%s'", dd->dd_dirname, new_path);
+    dd_rename(dd, new_path);
+
+ ret:
+    free(problem_id);
+    return dd;
+}
+
+int save_problem_data_in_dump_dir(struct dump_dir *dd, problem_data_t *problem_data)
+{
+    INITIALIZE_LIBREPORT();
+
     GHashTableIter iter;
     char *name;
     struct problem_item *value;
@@ -129,19 +131,38 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
         dd_save_text(dd, name, value->content);
     }
 
-    /* need to create basic files AFTER we save the pd to dump_dir
-     * otherwise we can't skip already created files like in case when
-     * reporting from anaconda where we can't read /etc/{system,redhat}-release
-     * and os_release is taken from anaconda
-     */
-    dd_create_basic_files(dd, uid, NULL);
+    return 0;
+}
 
-    problem_id[strlen(problem_id) - strlen(NEW_PD_SUFFIX)] = '\0';
-    char* new_path = concat_path_file(base_dir_name, problem_id);
-    log_info("Renaming from '%s' to '%s'", dd->dd_dirname, new_path);
-    dd_rename(dd, new_path);
+struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data, const char *base_dir_name)
+{
+    INITIALIZE_LIBREPORT();
 
- ret:
-    free(problem_id);
-    return dd;
+    char *type = problem_data_get_content_or_NULL(problem_data, FILENAME_ANALYZER);
+
+    if (!type)
+    {
+        error_msg(_("Missing required item: '%s'"), FILENAME_ANALYZER);
+        return NULL;
+    }
+
+    uid_t uid = (uid_t)-1L;
+    char *uid_str = problem_data_get_content_or_NULL(problem_data, FILENAME_UID);
+
+    if (uid_str)
+    {
+        char *endptr;
+        errno = 0;
+        long val = strtol(uid_str, &endptr, 10);
+
+        if (errno != 0 || endptr == uid_str || *endptr != '\0' || INT_MAX < val)
+        {
+            error_msg(_("uid value is not valid: '%s'"), uid_str);
+            return NULL;
+        }
+
+        uid = (uid_t)val;
+    }
+
+    return create_dump_dir(base_dir_name, type, uid, (save_data_call_back)save_problem_data_in_dump_dir, problem_data);
 }
