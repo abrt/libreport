@@ -109,15 +109,7 @@ int save_problem_data_in_dump_dir(struct dump_dir *dd, problem_data_t *problem_d
     {
         if (value->flags & CD_FLAG_BIN)
         {
-            char *dest = concat_path_file(dd->dd_dirname, name);
-            log_info("copying '%s' to '%s'", value->content, dest);
-            off_t copied = copy_file(value->content, dest, DEFAULT_DUMP_DIR_MODE | S_IROTH);
-            if (copied < 0)
-                error_msg("Can't copy %s to %s", value->content, dest);
-            else
-                log_info("copied %li bytes", (unsigned long)copied);
-            free(dest);
-
+            dd_copy_file(dd, name, value->content);
             continue;
         }
 
