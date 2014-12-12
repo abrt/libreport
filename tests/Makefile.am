@@ -42,14 +42,15 @@ TESTSUITE_AT = \
   report_python.at \
   xfuncs.at \
   string_list.at \
-  ureport.at
+  ureport.at \
+  problem_report.at
 
 EXTRA_DIST += $(TESTSUITE_AT)
 TESTSUITE = $(srcdir)/testsuite
 MAINTAINERCLEANFILES = Makefile.in $(TESTSUITE)
 check_DATA = atconfig atlocal $(TESTSUITE)
 DISTCLEANFILES = atconfig
-EXTRA_DIST += atlocal.in conf ureport
+EXTRA_DIST += atlocal.in conf ureport valgrind.supp
 
 atconfig: $(top_builddir)/config.status
 	(cd ${top_builddir} && ./config.status ${subdir}/atconfig)
@@ -68,3 +69,12 @@ AUTOTEST = $(AUTOM4TE) --language=autotest
 $(TESTSUITE): $(TESTSUITE_AT) $(srcdir)/package.m4
 	$(AUTOTEST) -I '$(srcdir)' -o $@.tmp $@.at
 	mv $@.tmp $@
+
+.PHONY: maintainer-check-valgrind
+maintainer-check-valgrind: $(check_DATA)
+	$(MAKE) check-local \
+		PRE_AT_CHECK='$(abs_top_builddir)/libtool --mode=execute $(VALGRIND)' \
+		VALGRIND_OPTS='--tool=memcheck --leak-check=full --show-reachable=yes --error-exitcode=1 --suppressions=$(abs_top_builddir)/tests/valgrind.supp -q'
+
+.PHONY: maintainer-check
+maintainer-check: maintainer-check-valgrind

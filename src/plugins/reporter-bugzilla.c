@@ -17,514 +17,10 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "internal_libreport.h"
+#include "problem_report.h"
 #include "client.h"
 #include "abrt_xmlrpc.h"
 #include "rhbz.h"
-
-#include <satyr/stacktrace.h>
-#include <satyr/abrt.h>
-
-struct section_t {
-    char *name;
-    GList *items;
-};
-typedef struct section_t section_t;
-
-
-/* Utility functions */
-
-static
-GList* split_string_on_char(const char *str, char ch)
-{
-    GList *list = NULL;
-    for (;;)
-    {
-        const char *delim = strchrnul(str, ch);
-        list = g_list_prepend(list, xstrndup(str, delim - str));
-        if (*delim == '\0')
-            break;
-        str = delim + 1;
-    }
-    return g_list_reverse(list);
-}
-
-static
-int compare_item_name(const char *lookup, const char *name)
-{
-    if (lookup[0] == '-')
-        lookup++;
-    else if (strncmp(lookup, "%bare_", 6) == 0)
-        lookup += 6;
-    return strcmp(lookup, name);
-}
-
-static
-int is_item_name_in_section(const section_t *lookup, const char *name)
-{
-    if (g_list_find_custom(lookup->items, name, (GCompareFunc)compare_item_name))
-        return 0; /* "found it!" */
-    return 1;
-}
-
-static
-bool is_explicit_or_forbidden(const char *name, GList *comment_fmt_spec)
-{
-    return g_list_find_custom(comment_fmt_spec, name, (GCompareFunc)is_item_name_in_section);
-}
-
-static
-GList* load_bzrep_conf_file(const char *path)
-{
-    FILE *fp = stdin;
-    if (strcmp(path, "-") != 0)
-    {
-        fp = fopen(path, "r");
-        if (!fp)
-            return NULL;
-    }
-
-    GList *sections = NULL;
-
-    char *line;
-    while ((line = xmalloc_fgetline(fp)) != NULL)
-    {
-        /* Skip comments */
-        char first = *skip_whitespace(line);
-        if (first == '#')
-            goto free_line;
-
-        /* Handle trailing backslash continuation */
- check_continuation: ;
-        unsigned len = strlen(line);
-        if (len && line[len-1] == '\\')
-        {
-            line[len-1] = '\0';
-            char *next_line = xmalloc_fgetline(fp);
-            if (next_line)
-            {
-                line = append_to_malloced_string(line, next_line);
-                free(next_line);
-                goto check_continuation;
-            }
-        }
-
-        /* We are reusing line buffer to form temporary
-         * "key\0values\0..." in its beginning
-         */
-        bool summary_line = false;
-        char *value = NULL;
-        char *src;
-        char *dst;
-        for (src = dst = line; *src; src++)
-        {
-            char c = *src;
-            /* did we reach the value list? */
-            if (!value && c == ':' && src[1] == ':')
-            {
-                *dst++ = '\0'; /* terminate key */
-                src += 2;
-                value = dst; /* remember where value starts */
-                summary_line = (strcmp(line, "%summary") == 0);
-                if (summary_line)
-                {
-                    value = src;
-                    break;
-                }
-                continue;
-            }
-            /* skip whitespace in value list */
-            if (value && isspace(c))
-                continue;
-            *dst++ = c; /* store next key or value char */
-        }
-
-        GList *item_list = NULL;
-        if (summary_line)
-        {
-            /* %summary is special */
-            item_list = g_list_append(NULL, xstrdup(skip_whitespace(value)));
-        }
-        else
-        {
-            *dst = '\0'; /* terminate value (or key) */
-            if (value)
-                item_list = split_string_on_char(value, ',');
-        }
-
-        section_t *sec = xzalloc(sizeof(*sec));
-        sec->name = xstrdup(line);
-        sec->items = item_list;
-        sections = g_list_prepend(sections, sec);
-
- free_line:
-        free(line);
-    }
-
-    if (fp != stdin)
-        fclose(fp);
-
-    return g_list_reverse(sections);
-}
-
-
-/* Summary generation */
-
-#define MAX_OPT_DEPTH 10
-static
-char *format_percented_string(const char *str, problem_data_t *pd)
-{
-    size_t old_pos[MAX_OPT_DEPTH] = { 0 };
-    int okay[MAX_OPT_DEPTH] = { 1 };
-    int opt_depth = 1;
-    struct strbuf *result = strbuf_new();
-
-    while (*str) {
-        switch (*str) {
-        default:
-            strbuf_append_char(result, *str);
-            str++;
-            break;
-        case '\\':
-            if (str[1])
-                str++;
-            strbuf_append_char(result, *str);
-            str++;
-            break;
-        case '[':
-            if (str[1] == '[' && opt_depth < MAX_OPT_DEPTH)
-            {
-                old_pos[opt_depth] = result->len;
-                okay[opt_depth] = 1;
-                opt_depth++;
-                str += 2;
-            } else {
-                strbuf_append_char(result, *str);
-                str++;
-            }
-            break;
-        case ']':
-            if (str[1] == ']' && opt_depth > 1)
-            {
-                opt_depth--;
-                if (!okay[opt_depth])
-                {
-                    result->len = old_pos[opt_depth];
-                    result->buf[result->len] = '\0';
-                }
-                str += 2;
-            } else {
-                strbuf_append_char(result, *str);
-                str++;
-            }
-            break;
-        case '%': ;
-            char *nextpercent = strchr(++str, '%');
-            if (!nextpercent)
-            {
-                error_msg_and_die("Unterminated %%element%%: '%s'", str - 1);
-            }
-
-            *nextpercent = '\0';
-            const problem_item *item = problem_data_get_item_or_NULL(pd, str);
-            *nextpercent = '%';
-
-            if (item && (item->flags & CD_FLAG_TXT))
-                strbuf_append_str(result, item->content);
-            else
-                okay[opt_depth - 1] = 0;
-            str = nextpercent + 1;
-            break;
-        }
-    }
-
-    if (opt_depth > 1)
-    {
-        error_msg_and_die("Unbalanced [[ ]] bracket");
-    }
-
-    if (!okay[0])
-    {
-        error_msg("Undefined variable outside of [[ ]] bracket");
-    }
-
-    return strbuf_free_nobuf(result);
-}
-
-static
-char *create_summary_string(problem_data_t *pd, GList *comment_fmt_spec)
-{
-    GList *l = comment_fmt_spec;
-    while (l)
-    {
-        section_t *sec = l->data;
-        l = l->next;
-
-        /* Find %summary" */
-        if (strcmp(sec->name, "%summary") != 0)
-            continue;
-
-        GList *item = sec->items;
-        if (!item)
-            /* not supposed to happen, there will be at least "" */
-            error_msg_and_die("BUG in %%summary parser");
-
-        const char *str = item->data;
-        return format_percented_string(str, pd);
-    }
-
-    return format_percented_string("%reason%", pd);
-}
-
-
-/* BZ comment generation */
-
-static
-int append_text(struct strbuf *result, const char *item_name, const char *content, bool print_item_name)
-{
-    char *eol = strchrnul(content, '\n');
-    if (eol[0] == '\0' || eol[1] == '\0')
-    {
-        /* one-liner */
-        int pad = 16 - (strlen(item_name) + 2);
-        if (pad < 0)
-            pad = 0;
-        if (print_item_name)
-            strbuf_append_strf(result,
-                    eol[0] == '\0' ? "%s: %*s%s\n" : "%s: %*s%s",
-                    item_name, pad, "", content
-            );
-        else
-            strbuf_append_strf(result,
-                    eol[0] == '\0' ? "%s\n" : "%s",
-                    content
-            );
-    }
-    else
-    {
-        /* multi-line item */
-        if (print_item_name)
-            strbuf_append_strf(result, "%s:\n", item_name);
-        for (;;)
-        {
-            eol = strchrnul(content, '\n');
-            strbuf_append_strf(result,
-                    /* For %bare_multiline_item, we don't want to print colons */
-                    (print_item_name ? ":%.*s\n" : "%.*s\n"),
-                    (int)(eol - content), content
-            );
-            if (eol[0] == '\0' || eol[1] == '\0')
-                break;
-            content = eol + 1;
-        }
-    }
-    return 1;
-}
-
-static
-int append_short_backtrace(struct strbuf *result, problem_data_t *problem_data, size_t max_text_size, bool print_item_name)
-{
-    const problem_item *item = problem_data_get_item_or_NULL(problem_data,
-                                                             FILENAME_BACKTRACE);
-    if (!item)
-        return 0; /* "I did not print anything" */
-    if (!(item->flags & CD_FLAG_TXT))
-        return 0; /* "I did not print anything" */
-
-    char *truncated = NULL;
-
-    if (strlen(item->content) >= max_text_size)
-    {
-        char *error_msg = NULL;
-        const char *analyzer = problem_data_get_content_or_NULL(problem_data, FILENAME_ANALYZER);
-        if (!analyzer)
-            return 0;
-
-        /* For CCpp crashes, use the GDB-produced backtrace which should be
-         * available by now. sr_abrt_type_from_analyzer returns SR_REPORT_CORE
-         * by default for CCpp crashes.
-         */
-        enum sr_report_type report_type = sr_abrt_type_from_analyzer(analyzer);
-        if (strcmp(analyzer, "CCpp") == 0)
-            report_type = SR_REPORT_GDB;
-
-        struct sr_stacktrace *backtrace = sr_stacktrace_parse(report_type,
-                item->content, &error_msg);
-
-        if (!backtrace)
-        {
-            log(_("Can't parse backtrace: %s"), error_msg);
-            free(error_msg);
-            return 0;
-        }
-
-        /* Get optimized thread stack trace for 10 top most frames */
-        truncated = sr_stacktrace_to_short_text(backtrace, 10);
-        sr_stacktrace_free(backtrace);
-
-        if (!truncated)
-        {
-            log(_("Can't generate stacktrace description (no crash thread?)"));
-            return 0;
-        }
-    }
-
-    append_text(result,
-                /*item_name:*/ truncated ? "truncated_backtrace" : FILENAME_BACKTRACE,
-                /*content:*/   truncated ? truncated             : item->content,
-                print_item_name
-    );
-    free(truncated);
-    return 1;
-}
-
-static
-int append_item(struct strbuf *result, const char *item_name, problem_data_t *pd, GList *comment_fmt_spec)
-{
-    bool print_item_name = (strncmp(item_name, "%bare_", strlen("%bare_")) != 0);
-    if (!print_item_name)
-        item_name += strlen("%bare_");
-
-    if (item_name[0] != '%')
-    {
-        struct problem_item *item = problem_data_get_item_or_NULL(pd, item_name);
-        if (!item)
-            return 0; /* "I did not print anything" */
-        if (!(item->flags & CD_FLAG_TXT))
-            return 0; /* "I did not print anything" */
-
-        char *formatted = problem_item_format(item);
-        char *content = formatted ? formatted : item->content;
-        append_text(result, item_name, content, print_item_name);
-        free(formatted);
-        return 1; /* "I printed something" */
-    }
-
-    /* Special item name */
-
-    /* Compat with previously-existed ad-hockery: %short_backtrace */
-    if (strcmp(item_name, "%short_backtrace") == 0)
-        return append_short_backtrace(result, pd, CD_TEXT_ATT_SIZE_BZ, print_item_name);
-
-    /* Compat with previously-existed ad-hockery: %reporter */
-    if (strcmp(item_name, "%reporter") == 0)
-        return append_text(result, "reporter", PACKAGE"-"VERSION, print_item_name);
-
-    /* %oneline,%multiline,%text */
-    bool oneline   = (strcmp(item_name+1, "oneline"  ) == 0);
-    bool multiline = (strcmp(item_name+1, "multiline") == 0);
-    bool text      = (strcmp(item_name+1, "text"     ) == 0);
-    if (!oneline && !multiline && !text)
-    {
-        log("Unknown or unsupported element specifier '%s'", item_name);
-        return 0; /* "I did not print anything" */
-    }
-
-    int printed = 0;
-
-    /* Iterate over _sorted_ items */
-    GList *sorted_names = g_hash_table_get_keys(pd);
-    sorted_names = g_list_sort(sorted_names, (GCompareFunc)strcmp);
-
-    /* %text => do as if %oneline, then repeat as if %multiline */
-    if (text)
-        oneline = 1;
-
- again: ;
-    GList *l = sorted_names;
-    while (l)
-    {
-        const char *name = l->data;
-        l = l->next;
-        struct problem_item *item = g_hash_table_lookup(pd, name);
-        if (!item)
-            continue; /* paranoia, won't happen */
-
-        if (!(item->flags & CD_FLAG_TXT))
-            continue;
-
-        if (is_explicit_or_forbidden(name, comment_fmt_spec))
-            continue;
-
-        char *formatted = problem_item_format(item);
-        char *content = formatted ? formatted : item->content;
-        char *eol = strchrnul(content, '\n');
-        bool is_oneline = (eol[0] == '\0' || eol[1] == '\0');
-        if (oneline == is_oneline)
-            printed |= append_text(result, name, content, print_item_name);
-        free(formatted);
-    }
-    if (text && oneline)
-    {
-        /* %text, and we just did %oneline. Repeat as if %multiline */
-        oneline = 0;
-        /*multiline = 1; - not checked in fact, so why bother setting? */
-        goto again;
-    }
-
-    g_list_free(sorted_names); /* names themselves are not freed */
-
-    return printed;
-}
-
-static
-void generate_bz_comment(struct strbuf *result, problem_data_t *pd, GList *comment_fmt_spec)
-{
-    bool last_line_is_empty = true;
-    GList *l = comment_fmt_spec;
-    while (l)
-    {
-        section_t *sec = l->data;
-        l = l->next;
-
-        /* Skip special sections such as "%attach" */
-        if (sec->name[0] == '%')
-            continue;
-
-        if (sec->items)
-        {
-            /* "Text: item[,item]..." */
-            struct strbuf *output = strbuf_new();
-            GList *item = sec->items;
-            while (item)
-            {
-                const char *str = item->data;
-                item = item->next;
-                if (str[0] == '-') /* "-name", ignore it */
-                    continue;
-                append_item(output, str, pd, comment_fmt_spec);
-            }
-
-            if (output->len != 0)
-            {
-                strbuf_append_strf(result,
-                            sec->name[0] ? "%s:\n%s" : "%s%s",
-                            sec->name,
-                            output->buf
-                );
-                last_line_is_empty = false;
-            }
-            strbuf_free(output);
-        }
-        else
-        {
-            /* Just "Text" (can be "") */
-
-            /* Filter out consecutive empty lines */
-            if (sec->name[0] != '\0' || !last_line_is_empty)
-                strbuf_append_strf(result, "%s\n", sec->name);
-            last_line_is_empty = (sec->name[0] == '\0');
-        }
-    }
-
-    /* Nuke any trailing empty lines */
-    while (result->len >= 1
-     && result->buf[result->len-1] == '\n'
-     && (result->len == 1 || result->buf[result->len-2] == '\n')
-    ) {
-        result->buf[--result->len] = '\0';
-    }
-}
-
 
 /* BZ attachments */
 
@@ -572,104 +68,6 @@ int attach_file_item(struct abrt_xmlrpc *ax, const char *bug_id,
     close(fd);
     return (r == 0);
 }
-
-static
-int attach_item(struct abrt_xmlrpc *ax, const char *bug_id,
-                const char *item_name, problem_data_t *pd, GList *comment_fmt_spec)
-{
-    if (item_name[0] != '%')
-    {
-        struct problem_item *item = problem_data_get_item_or_NULL(pd, item_name);
-        if (!item)
-            return 0;
-        if (item->flags & CD_FLAG_TXT)
-            return attach_text_item(ax, bug_id, item_name, item);
-        if (item->flags & CD_FLAG_BIN)
-            return attach_file_item(ax, bug_id, item_name, item);
-        return 0;
-    }
-
-    /* Special item name */
-
-    /* %oneline,%multiline,%text,%binary */
-    bool oneline   = (strcmp(item_name+1, "oneline"  ) == 0);
-    bool multiline = (strcmp(item_name+1, "multiline") == 0);
-    bool text      = (strcmp(item_name+1, "text"     ) == 0);
-    bool binary    = (strcmp(item_name+1, "binary"   ) == 0);
-    if (!oneline && !multiline && !text && !binary)
-    {
-        log("Unknown or unsupported element specifier '%s'", item_name);
-        return 0;
-    }
-
-    log_debug("Special item_name '%s', iterating for attach...", item_name);
-    int done = 0;
-
-    /* Iterate over _sorted_ items */
-    GList *sorted_names = g_hash_table_get_keys(pd);
-    sorted_names = g_list_sort(sorted_names, (GCompareFunc)strcmp);
-
-    GList *l = sorted_names;
-    while (l)
-    {
-        const char *name = l->data;
-        l = l->next;
-        struct problem_item *item = g_hash_table_lookup(pd, name);
-        if (!item)
-            continue; /* paranoia, won't happen */
-
-        if (is_explicit_or_forbidden(name, comment_fmt_spec))
-            continue;
-
-        if ((item->flags & CD_FLAG_TXT) && !binary)
-        {
-            char *content = item->content;
-            char *eol = strchrnul(content, '\n');
-            bool is_oneline = (eol[0] == '\0' || eol[1] == '\0');
-            if (text || oneline == is_oneline)
-                done |= attach_text_item(ax, bug_id, name, item);
-        }
-        if ((item->flags & CD_FLAG_BIN) && binary)
-            done |= attach_file_item(ax, bug_id, name, item);
-    }
-
-    g_list_free(sorted_names); /* names themselves are not freed */
-
-
-    log_debug("...Done iterating over '%s' for attach", item_name);
-
-    return done;
-}
-
-static
-int attach_files(struct abrt_xmlrpc *ax, const char *bug_id,
-                problem_data_t *pd, GList *comment_fmt_spec)
-{
-    int done = 0;
-    GList *l = comment_fmt_spec;
-    while (l)
-    {
-        section_t *sec = l->data;
-        l = l->next;
-
-        /* Find %attach" */
-        if (strcmp(sec->name, "%attach") != 0)
-            continue;
-
-        GList *item = sec->items;
-        while (item)
-        {
-            const char *str = item->data;
-            item = item->next;
-            if (str[0] == '-') /* "-name", ignore it */
-                continue;
-            done |= attach_item(ax, bug_id, str, pd, comment_fmt_spec);
-        }
-    }
-
-    return done;
-}
-
 
 /* Main */
 
@@ -1102,18 +500,29 @@ int main(int argc, char **argv)
 
     if (opts & OPT_D)
     {
-        GList *comment_fmt_spec = load_bzrep_conf_file(fmt_file);
-        struct strbuf *bzcomment_buf = strbuf_new();
-        generate_bz_comment(bzcomment_buf, problem_data, comment_fmt_spec);
-        char *bzcomment = strbuf_free_nobuf(bzcomment_buf);
-        char *summary = create_summary_string(problem_data, comment_fmt_spec);
+        problem_formatter_t *pf = problem_formatter_new();
+
+        if (problem_formatter_load_file(pf, fmt_file))
+            error_msg_and_die("Invalid format file: %s", fmt_file);
+
+        problem_report_t *pr = NULL;
+        if (problem_formatter_generate_report(pf, problem_data, &pr))
+            error_msg_and_die("Failed to format bug report from problem data");
+
         printf("summary: %s\n"
                 "\n"
                 "%s"
-                , summary, bzcomment
+                "\n"
+                , problem_report_get_summary(pr)
+                , problem_report_get_description(pr)
         );
-        free(bzcomment);
-        free(summary);
+
+        puts("attachments:");
+        for (GList *a = problem_report_get_attachments(pr); a != NULL; a = g_list_next(a))
+            printf(" %s\n", (const char *)a->data);
+
+        problem_report_free(pr);
+        problem_formatter_free(pf);
         exit(0);
     }
 
@@ -1196,22 +605,29 @@ int main(int argc, char **argv)
             /* Create new bug */
             log(_("Creating a new bug"));
 
-            GList *comment_fmt_spec = load_bzrep_conf_file(fmt_file);
+            problem_formatter_t *pf = problem_formatter_new();
 
-            struct strbuf *bzcomment_buf = strbuf_new();
-            generate_bz_comment(bzcomment_buf, problem_data, comment_fmt_spec);
+            if (problem_formatter_load_file(pf, fmt_file))
+                error_msg_and_die("Invalid format file: %s", fmt_file);
+
+            problem_report_t *pr = NULL;
+            if (problem_formatter_generate_report(pf, problem_data, &pr))
+                error_msg_and_die("Failed to format problem data");
+
             if (crossver_id >= 0)
-                strbuf_append_strf(bzcomment_buf, "\nPotential duplicate: bug %u\n", crossver_id);
-            char *bzcomment = strbuf_free_nobuf(bzcomment_buf);
-            char *summary = create_summary_string(problem_data, comment_fmt_spec);
+                problem_report_buffer_printf(
+                        problem_report_get_buffer(pr, PR_SEC_DESCRIPTION),
+                        "\nPotential duplicate: bug %u\n", crossver_id);
+
+            problem_formatter_free(pf);
+
             int new_id = rhbz_new_bug(client,
                     problem_data, rhbz.b_product, rhbz.b_product_version,
-                    summary, bzcomment,
+                    problem_report_get_summary(pr),
+                    problem_report_get_description(pr),
                     (rhbz.b_create_private | (opts & OPT_g)), // either we got Bugzilla_CreatePrivate from settings or -g was specified on cmdline
                     rhbz.b_private_groups
                     );
-            free(bzcomment);
-            free(summary);
 
             if (new_id == -1)
             {
@@ -1236,9 +652,17 @@ int main(int argc, char **argv)
             char new_id_str[sizeof(int)*3 + 2];
             sprintf(new_id_str, "%i", new_id);
 
-            attach_files(client, new_id_str, problem_data, comment_fmt_spec);
-
-//TODO: free_comment_fmt_spec(comment_fmt_spec);
+            for (GList *a = problem_report_get_attachments(pr); a != NULL; a = g_list_next(a))
+            {
+                const char *item_name = (const char *)a->data;
+                struct problem_item *item = problem_data_get_item_or_NULL(problem_data, item_name);
+                if (!item)
+                    continue;
+                else if (item->flags & CD_FLAG_TXT)
+                    attach_text_item(client, new_id_str, item_name, item);
+                else if (item->flags & CD_FLAG_BIN)
+                    attach_file_item(client, new_id_str, item_name, item);
+            }
 
             bz = new_bug_info();
             bz->bi_status = xstrdup("NEW");
@@ -1302,18 +726,21 @@ int main(int argc, char **argv)
     const char *comment = problem_data_get_content_or_NULL(problem_data, FILENAME_COMMENT);
     if (comment && comment[0])
     {
-        GList *comment_fmt_spec = load_bzrep_conf_file(fmt_file2);
-        struct strbuf *bzcomment_buf = strbuf_new();
-        generate_bz_comment(bzcomment_buf, problem_data, comment_fmt_spec);
-        char *bzcomment = strbuf_free_nobuf(bzcomment_buf);
-//TODO: free_comment_fmt_spec(comment_fmt_spec);
+        problem_formatter_t *pf = problem_formatter_new();
+        if (problem_formatter_load_file(pf, fmt_file2))
+            error_msg_and_die("Invalid duplicate format file: '%s", fmt_file2);
+
+        problem_report_t *pr;
+        if (problem_formatter_generate_report(pf, problem_data, &pr))
+            error_msg_and_die("Failed to format duplicate comment from problem data");
+
+        const char *bzcomment = problem_report_get_description(pr);
 
         int dup_comment = is_comment_dup(bz->bi_comments, bzcomment);
         if (!dup_comment)
         {
             log(_("Adding new comment to bug %d"), bz->bi_id);
             rhbz_add_comment(client, bz->bi_id, bzcomment, 0);
-            free(bzcomment);
 
             const char *bt = problem_data_get_content_or_NULL(problem_data, FILENAME_BACKTRACE);
             unsigned rating = 0;
@@ -1331,10 +758,10 @@ int main(int argc, char **argv)
             }
         }
         else
-        {
-            free(bzcomment);
             log(_("Found the same comment in the bug history, not adding a new one"));
-        }
+
+        problem_report_free(pr);
+        problem_formatter_free(pf);
     }
 
  log_out:
