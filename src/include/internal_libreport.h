@@ -723,12 +723,16 @@ void parse_release_for_rhts(const char *pRelease, char **product, char **version
  */
 #define load_conf_file libreport_load_conf_file
 bool load_conf_file(const char *pPath, map_string_t *settings, bool skipKeysWithoutValue);
+#define load_plugin_conf_file libreport_load_plugin_conf_file
+bool load_plugin_conf_file(const char *name, map_string_t *settings, bool skipKeysWithoutValue);
 
 #define load_conf_file_from_dirs libreport_load_conf_file_from_dirs
 bool load_conf_file_from_dirs(const char *base_name, const char *const *directories, map_string_t *settings, bool skipKeysWithoutValue);
 
 #define save_conf_file libreport_save_conf_file
 bool save_conf_file(const char *path, map_string_t *settings);
+#define save_plugin_conf_file libreport_save_plugin_conf_file
+bool save_plugin_conf_file(const char *name, map_string_t *settings);
 
 #define save_app_conf_file libreport_save_app_conf_file
 bool save_app_conf_file(const char* application_name, map_string_t *settings);
