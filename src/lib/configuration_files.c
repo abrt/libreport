@@ -254,7 +254,7 @@ static bool internal_aug_get_all_option_names(augeas *aug, const char *real_path
     }
 
     /* The file is empty or contains only comments and new lines */
-    log_notice("Configuration file '%s' contains no option", real_path);
+    log_info("Configuration file '%s' contains no option", real_path);
     return true;
 }
 
@@ -297,7 +297,7 @@ bool load_conf_file(const char *path, map_string_t *settings, bool skipKeysWitho
             goto cleanup;
         }
 
-        log_notice("Loaded option '%s' = '%s'", option, value);
+        log_info("Loaded option '%s' = '%s'", option, value);
 
         if (!skipKeysWithoutValue || value[0] != '\0')
             replace_map_string_item(settings, xstrdup(option), xstrdup(value));
