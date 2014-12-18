@@ -29,6 +29,23 @@ void free_map_string(map_string_t *ms)
         g_hash_table_destroy(ms);
 }
 
+map_string_t *clone_map_string(map_string_t *ms)
+{
+    if (ms == NULL)
+        return NULL;
+
+    map_string_t *clone = new_map_string();
+
+    const char *key;
+    const char *value;
+    map_string_iter_t iter;
+    init_map_string_iter(&iter, ms);
+    while(next_map_string_iter(&iter, &key, &value))
+        insert_map_string(clone, xstrdup(key), xstrdup(value));
+
+    return clone;
+}
+
 const char *get_map_string_item_or_empty(map_string_t *ms, const char *key)
 {
     const char *v = (const char*)g_hash_table_lookup(ms, key);
