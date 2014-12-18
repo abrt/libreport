@@ -43,7 +43,8 @@ int main(int argc, char **argv)
         OPT_u = 1 << 2,
         OPT_k = 1 << 3,
         OPT_t = 1 << 4,
-        OPT_i = 1 << 5,
+        OPT_h = 1 << 5,
+        OPT_i = 1 << 6,
     };
 
     int ret = 1; /* "failure" (for now) */
@@ -51,6 +52,7 @@ int main(int argc, char **argv)
     const char *conf_file = UREPORT_CONF_FILE_PATH;
     const char *arg_server_url = NULL;
     const char *client_auth = NULL;
+    const char *http_auth = NULL;
     GList *auth_items = NULL;
     const char *dump_dir_path = ".";
     const char *ureport_hash = NULL;
@@ -67,6 +69,7 @@ int main(int argc, char **argv)
         OPT_BOOL('k', "insecure", &insecure,
                           _("Allow insecure connection to ureport server")),
         OPT_STRING('t', "auth", &client_auth, "SOURCE", _("Use client authentication")),
+        OPT_STRING('h', "http-auth", &http_auth, "CREDENTIALS", _("Use HTTP Authentication")),
         OPT_LIST('i', "auth_items", &auth_items, "AUTH_ITEMS", _("Additional files included in 'auth' key")),
         OPT_STRING('c', NULL, &conf_file, "FILE", _("Configuration file")),
         OPT_STRING('a', "attach", &ureport_hash, "BTHASH",
@@ -85,8 +88,8 @@ int main(int argc, char **argv)
     };
 
     const char *program_usage_string = _(
-        "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
-        "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-i AUTH_ITEMS]\\\n"
+        "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
+        "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-i AUTH_ITEMS]\\\n"
         "  [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
         "\n"
         "Upload micro report or add an attachment to a micro report\n"
@@ -107,6 +110,8 @@ int main(int argc, char **argv)
         config.ur_ssl_verify = !insecure;
     if (opts & OPT_t)
         ureport_server_config_set_client_auth(&config, client_auth);
+    if (opts & OPT_h)
+        ureport_server_config_load_basic_auth(&config, http_auth);
     if (opts & OPT_i)
     {
         g_list_free_full(config.ur_prefs.urp_auth_items, free);
