@@ -254,7 +254,7 @@ static bool internal_aug_get_all_option_names(augeas *aug, const char *real_path
     }
 
     /* The file is empty or contains only comments and new lines */
-    log_notice("Configuration file '%s' contains no option", real_path);
+    log_info("Configuration file '%s' contains no option", real_path);
     return true;
 }
 
@@ -297,7 +297,7 @@ bool load_conf_file(const char *path, map_string_t *settings, bool skipKeysWitho
             goto cleanup;
         }
 
-        log_notice("Loaded option '%s' = '%s'", option, value);
+        log_info("Loaded option '%s' = '%s'", option, value);
 
         if (!skipKeysWithoutValue || value[0] != '\0')
             replace_map_string_item(settings, xstrdup(option), xstrdup(value));
@@ -339,6 +339,20 @@ bool load_conf_file_from_dirs(const char *base_name, const char *const *director
     }
 
     return result;
+}
+
+bool load_plugin_conf_file(const char *name, map_string_t *settings, bool skipKeysWithoutValue)
+{
+    const char *dirs[] = {
+        PLUGINS_CONF_DIR,
+        NULL,
+    };
+
+    const char *plugins_conf_dir = getenv("LIBREPORT_DEBUG_PLUGINS_CONF_DIR");
+    if (plugins_conf_dir != NULL)
+        dirs[0] = plugins_conf_dir;
+
+    return load_conf_file_from_dirs(name, dirs, settings, skipKeysWithoutValue);
 }
 
 static int
@@ -457,4 +471,17 @@ finalize:
         aug_close(aug);
 
     return retval;
+}
+
+bool save_plugin_conf_file(const char *name, map_string_t *settings)
+{
+    const char *plugins_conf_dir = getenv("LIBREPORT_DEBUG_PLUGINS_CONF_DIR");
+    if (plugins_conf_dir == NULL)
+        plugins_conf_dir = PLUGINS_CONF_DIR;
+
+    char *conf_path = concat_path_file(plugins_conf_dir, name);
+    bool ret = save_conf_file(conf_path, settings);
+    free(conf_path);
+
+    return ret;
 }
