@@ -109,6 +109,8 @@ AT_TESTFUN([ureport_server_config_load],
 #include "ureport.h"
 #include <assert.h>
 
+#define TESTING_CERTS_CORRECT_DIR_PATH "../../ureport/certs/correct"
+
 int main(void)
 {
     g_verbose=3;
@@ -247,6 +249,73 @@ int main(void)
 
     ureport_server_config_destroy(&config);
     free_map_string(settings);
+
+    /* value from env */
+    /* HTTPAuth set to 'username:password' */
+    /* SSLClientAuth set to 'rhsm' */
+    ureport_server_config_init(&config);
+
+    settings = new_map_string();
+
+    setenv("uReport_SSLClientAuth", "rhsm", 1);
+    setenv("uReport_HTTPAuth", "username:password", 1);
+    setenv("uReport_AuthDataItems", "hostname, time", 1);
+
+    setenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH", TESTING_CERTS_CORRECT_DIR_PATH, 1);
+
+    ureport_server_config_load(&config, settings);
+
+    assert(strcmp(config.ur_username, "username") == 0);
+    assert(strcmp(config.ur_password, "password") == 0);
+
+    assert(config.ur_client_cert == NULL);
+    assert(config.ur_client_key == NULL);
+    assert(size_map_string(config.ur_http_headers) == 0);
+
+    l = config.ur_prefs.urp_auth_items;
+    assert(strcmp(l->data, "hostname") == 0);
+    assert(strcmp(l->next->data, "time") == 0);
+
+    unsetenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH");
+
+    unsetenv("uReport_SSLClientAuth");
+    unsetenv("uReport_HTTPAuth");
+    unsetenv("uReport_AuthDataItems");
+
+    free_map_string(settings);
+
+    ureport_server_config_destroy(&config);
+
+    /* value from settings */
+    /* HTTPAuth set to 'username:password' */
+    /* SSLClientAuth set to 'rhsm' */
+    ureport_server_config_init(&config);
+
+    settings = new_map_string();
+    insert_map_string(settings, xstrdup("SSLClientAuth"), xstrdup("rhsm"));
+    insert_map_string(settings, xstrdup("HTTPAuth"), xstrdup("rhn-username:rhn-password"));
+    insert_map_string(settings, xstrdup("AuthDataItems"), xstrdup("hostname, type"));
+
+    setenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH", TESTING_CERTS_CORRECT_DIR_PATH, 1);
+
+    ureport_server_config_load(&config, settings);
+
+    assert(strcmp(config.ur_username, "rhn-username") == 0);
+    assert(strcmp(config.ur_password, "rhn-password") == 0);
+
+    assert(config.ur_client_cert == NULL);
+    assert(config.ur_client_key == NULL);
+    assert(size_map_string(config.ur_http_headers) == 0);
+
+    l = config.ur_prefs.urp_auth_items;
+    assert(strcmp(l->data, "hostname") == 0);
+    assert(strcmp(l->next->data, "type") == 0);
+
+    unsetenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH");
+
+    free_map_string(settings);
+
+    ureport_server_config_destroy(&config);
 
     return 0;
 }
@@ -1133,3 +1202,79 @@ int main(void)
 }
 ]])
 
+
+## ------------------------------------- ##
+## ureport_server_config_load_basic_auth ##
+## ------------------------------------- ##
+
+AT_TESTFUN([ureport_server_config_load_basic_auth],
+[[
+#include "internal_libreport.h"
+#include "ureport.h"
+#include <assert.h>
+#include "libreport_curl.h"
+#include "problem_data.h"
+
+int main(void)
+{
+    g_verbose=3;
+
+    {
+        struct ureport_server_config config;
+        ureport_server_config_init(&config);
+
+        ureport_server_config_load_basic_auth(&config, "username:password");
+
+        assert(strcmp(config.ur_username, "username") == 0);
+        assert(strcmp(config.ur_password, "password") == 0);
+
+        ureport_server_config_destroy(&config);
+    }
+
+    {
+        struct ureport_server_config config;
+        ureport_server_config_init(&config);
+
+        setenv("LIBREPORT_DEBUG_PLUGINS_CONF_DIR", "../../ureport-rhts-credentials/", 1);
+
+        ureport_server_config_load_basic_auth(&config, "rhts-credentials");
+
+        assert(strcmp(config.ur_username, "rhn-user-name") == 0);
+        assert(strcmp(config.ur_password, "rhn-password") == 0);
+        assert(strcmp(config.ur_url, "https://api.access.redhat.com/rs/telemetry/abrt") == 0);
+
+        unsetenv("LIBREPORT_DEBUG_PLUGINS_CONF_DIR");
+        ureport_server_config_destroy(&config);
+    }
+
+    {
+        pid_t pid = fork();
+        if (pid < 0)
+        {
+            perror_msg("fork");
+            return -1;
+        }
+
+        if (pid == 0)
+        {
+            struct ureport_server_config config;
+            ureport_server_config_init(&config);
+
+            setenv("REPORT_CLIENT_NONINTERACTIVE", "1", 1);
+            ureport_server_config_load_basic_auth(&config, "username");
+
+            ureport_server_config_destroy(&config);
+
+            exit(0);
+        }
+
+        int status;
+        wait(&status);
+
+        assert(WIFEXITED(status));
+        assert(WEXITSTATUS(status) != 0);
+    }
+
+    return 0;
+}
+]])

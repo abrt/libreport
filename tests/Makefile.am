@@ -50,7 +50,7 @@ TESTSUITE = $(srcdir)/testsuite
 MAINTAINERCLEANFILES = Makefile.in $(TESTSUITE)
 check_DATA = atconfig atlocal $(TESTSUITE)
 DISTCLEANFILES = atconfig
-EXTRA_DIST += atlocal.in conf ureport valgrind.supp
+EXTRA_DIST += atlocal.in conf ureport valgrind.supp ureport-rhts-credentials
 
 atconfig: $(top_builddir)/config.status
 	(cd ${top_builddir} && ./config.status ${subdir}/atconfig)

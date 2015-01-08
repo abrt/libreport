@@ -44,6 +44,19 @@ Configuration file lines should have 'PARAM = VALUE' format. The parameters are:
    '<cert_path>:<key_path>';;
       Manually supply paths to certificate and the corresponding key in PEM format.
 
+'HTTPAuth'::
+   Use the configured values to as HTTP Basic Authentication credentials.
+   Assigning any value to this option changes the default value of
+   IncludeAuthData to yes.
+
+   Possible values are::
+
+   'rhts-credentials';;
+      Uses Login= and Password= values from /etc/libreport/plugins/rhtsupport.conf.
+
+   '<user_name>:<password>';;
+      Manually supply credentials.
+
 'ContactEmail'::
    Email address attached to a bthash on the server.
 
@@ -92,6 +105,10 @@ OPTIONS
 -t, --auth SOURCE::
    Enables client authentication. See 'SSLClientAuth' configuration file
    option for list of possible values.
+
+-h, --http-auth CREDENTIALS::
+   Enables client authentication via HTTP Authentication. See 'HTTPAuth'
+   configuration file option for list of possible values.
 
 -v::
    Be more verbose. Can be given multiple times.

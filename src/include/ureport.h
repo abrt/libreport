@@ -126,6 +126,23 @@ ureport_server_config_set_basic_auth(struct ureport_server_config *config,
                                      const char *username, const char *password);
 
 /*
+ * Configure user name and password for HTTP Basic authentication according to
+ * user preferences.
+ *
+ *  "rhts-credentials" - Uses Login= and Password= from rhtsupport.conf
+ *  "<user_name>:<password>" - Manually supply user name and password.
+ *  "<user_name>" - Manually supply user name and be asked for password.
+ *
+ * The function uses ask_password() function from client.h
+ *
+ * @param config Configured structure
+ * @param http_auth_pref User HTTP Authentication preferences
+ */
+void
+ureport_server_config_load_basic_auth(struct ureport_server_config *config,
+                                      const char *http_auth_pref);
+
+/*
  * uReport server response
  */
 struct ureport_server_response

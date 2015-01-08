@@ -22,6 +22,7 @@
 #include <satyr/report.h>
 
 #include "internal_libreport.h"
+#include "client.h"
 #include "ureport.h"
 #include "libreport_curl.h"
 
@@ -248,18 +249,79 @@ ureport_server_config_set_basic_auth(struct ureport_server_config *config,
 }
 
 void
+ureport_server_config_load_basic_auth(struct ureport_server_config *config,
+                                      const char *http_auth_pref)
+{
+    if (http_auth_pref == NULL)
+        return;
+
+    map_string_t *settings = NULL;
+
+    char *tmp_password = NULL;
+    char *tmp_username = NULL;
+    const char *username = NULL;
+    const char *password = NULL;
+
+    if (strcmp(http_auth_pref, "rhts-credentials") == 0)
+    {
+        settings = new_map_string();
+
+        if (!load_plugin_conf_file("rhtsupport.conf", settings, /*skip key w/o values:*/ false))
+            error_msg_and_die("Could not get RHTSupport credentials");
+
+        username = get_map_string_item_or_NULL(settings, "Login");
+        password = get_map_string_item_or_NULL(settings, "Password");
+
+        if (config->ur_url == NULL)
+            ureport_server_config_set_url(config, xstrdup(RHSM_WEB_SERVICE_URL));
+    }
+    else
+    {
+        username = tmp_username = xstrdup(http_auth_pref);
+        password = strchr(tmp_username, ':');
+
+        if (password != NULL)
+            /* It is "char *", see strchr() few lines above. */
+            *((char *)(password++)) = '\0';
+    }
+
+    if (password == NULL)
+    {
+        char *message = xasprintf("Please provide uReport server password for user '%s':", username);
+        password = tmp_password = ask_password(message);
+        free(message);
+
+        if (strcmp(password, "") == 0)
+            error_msg_and_die("Cannot continue without uReport server password!");
+    }
+
+    ureport_server_config_set_basic_auth(config, username, password);
+
+    free(tmp_password);
+    free(tmp_username);
+    free_map_string(settings);
+}
+
+void
 ureport_server_config_load(struct ureport_server_config *config,
                            map_string_t *settings)
 {
     UREPORT_OPTION_VALUE_FROM_CONF(settings, "URL", config->ur_url, xstrdup);
     UREPORT_OPTION_VALUE_FROM_CONF(settings, "SSLVerify", config->ur_ssl_verify, string_to_bool);
 
+    const char *http_auth_pref = NULL;
+    UREPORT_OPTION_VALUE_FROM_CONF(settings, "HTTPAuth", http_auth_pref, (const char *));
+    ureport_server_config_load_basic_auth(config, http_auth_pref);
+
     const char *client_auth = NULL;
-    UREPORT_OPTION_VALUE_FROM_CONF(settings, "SSLClientAuth", client_auth, (const char *));
-    ureport_server_config_set_client_auth(config, client_auth);
+    if (http_auth_pref == NULL)
+    {
+        UREPORT_OPTION_VALUE_FROM_CONF(settings, "SSLClientAuth", client_auth, (const char *));
+        ureport_server_config_set_client_auth(config, client_auth);
+    }
 
     /* If SSLClientAuth is configured, include the auth items by default. */
-    bool include_auth = !!config->ur_client_cert;
+    bool include_auth = config->ur_client_cert != NULL || config->ur_username != NULL;
     UREPORT_OPTION_VALUE_FROM_CONF(settings, "IncludeAuthData", include_auth, string_to_bool);
 
     if (include_auth)
