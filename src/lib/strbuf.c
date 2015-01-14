@@ -37,6 +37,66 @@ int suffixcmp(const char *str, const char *suffix)
         return strcmp(str + len_minus_suflen, suffix);
 }
 
+char *trim_all_whitespace(const char *str)
+{
+    char *trim = xzalloc(sizeof(char) * strlen(str) + 1);
+    int i = 0;
+    while (*str)
+    {
+        if (!isspace(*str))
+            trim[i++] = *str;
+        str++;
+    }
+
+    return trim;
+}
+
+/* If str is longer than max allowed length then
+ * try to find first ' ' from the end of acceptable long str string
+ *
+ * If ' ' is found replace string after that by "..."
+ *
+ * If ' ' is NOT found in maximal allowed range, cut str string on
+ * lenght (MAX_SUMMARY_LENGTH - strlen("...")) and append "..."
+ *
+ * If MAX_LENGTH is 15 and max allowed cut is 5:
+ *
+ *   0123456789ABCDEF -> 0123456789AB...
+ *   0123456789 BCDEF -> 0123456789 ...
+ *   012345 789ABCDEF -> 012345 789AB...
+ */
+char *
+shorten_string_to_length(const char *str, unsigned length)
+{
+    char *dup_str = xstrdup(str);
+    if (strlen(str) > length)
+    {
+        char *max_end = dup_str + (length - strlen("..."));
+
+        /* maximal number of characters to cut due to attempt cut dup_str
+         * string after last ' '
+         */
+        int max_cut = 16;
+
+        /* start looking for ' ' one char before the last possible character */
+        char *buf = max_end - 1;
+        while (buf[0] != ' ' && max_cut--)
+            --buf;
+
+        if (buf[0] != ' ')
+            buf = max_end;
+        else
+            ++buf;
+
+        buf[0] = '.';
+        buf[1] = '.';
+        buf[2] = '.';
+        buf[3] = '\0';
+    }
+
+    return dup_str;
+}
+
 /*
  * Trims whitespace characters both from left and right side of a string.
  * Modifies the string in-place. Returns the trimmed string.
