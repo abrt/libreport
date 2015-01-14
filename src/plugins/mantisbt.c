@@ -207,7 +207,7 @@ soap_request_new_for_method(const char *method)
     free(xml_str);
 
     if (doc == NULL)
-        error_msg_and_die(_("SOAP: Failed to parse xml."));
+        error_msg_and_die(_("SOAP: Failed to parse xml during creating request."));
 
     soap_request_t *req = soap_request_new();
 
@@ -424,7 +424,7 @@ response_values_at_depth_by_name(const char *xml, const char *name, int depth)
 {
     xmlDocPtr doc = xmlParseDoc(BAD_CAST xml);
     if (doc == NULL)
-        error_msg_and_die(_("SOAP: Failed to parse xml."));
+        error_msg_and_die(_("SOAP: Failed to parse xml (searching value at depth by name)."));
 
     xmlTextReaderPtr reader = xmlReaderWalker(doc);
     if (reader == NULL)
@@ -496,7 +496,7 @@ response_get_id_of_relatedto_issue(const char *xml)
 {
     xmlDocPtr doc = xmlParseDoc(BAD_CAST xml);
     if (doc == NULL)
-        error_msg_and_die(_("SOAP: Failed to parse xml."));
+        error_msg_and_die(_("SOAP: Failed to parse xml (get related to issue)."));
 
     xmlTextReaderPtr reader = xmlReaderWalker(doc);
     if (reader == NULL)
