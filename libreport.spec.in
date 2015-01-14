@@ -193,6 +193,25 @@ Requires: libreport-web = %{version}-%{release}
 Plugin to report bugs into the bugzilla.
 %endif
 
+%package plugin-mantisbt
+Summary: %{name}'s mantisbt plugin
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+Requires: libreport-web = %{version}-%{release}
+
+%description plugin-mantisbt
+Plugin to report bugs into the mantisbt.
+
+%package centos
+Summary: %{name}'s CentOS Bug Tracker workflow
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+Requires: libreport-web = %{version}-%{release}
+Requires: libreport-plugin-mantisbt = %{version}-%{release}
+
+%description centos
+Workflows to report issues into the CentOS Bug Tracker.
+
 %package plugin-ureport
 Summary: %{name}'s micro report plugin
 BuildRequires: %{libjson_devel}
@@ -573,6 +592,29 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man5/bugzilla_format_kernel.conf.5.*
 %{_bindir}/reporter-bugzilla
 %endif
+
+%files plugin-mantisbt
+%defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/libreport/plugins/mantisbt.conf
+%{_datadir}/%{name}/conf.d/plugins/mantisbt.conf
+%config(noreplace) %{_sysconfdir}/libreport/plugins/mantisbt_format.conf
+%config(noreplace) %{_sysconfdir}/libreport/plugins/mantisbt_formatdup.conf
+%{_bindir}/reporter-mantisbt
+
+%files centos
+%{_datadir}/%{name}/workflows/workflow_CentOSCCpp.xml
+%{_datadir}/%{name}/workflows/workflow_CentOSKerneloops.xml
+%{_datadir}/%{name}/workflows/workflow_CentOSPython.xml
+%{_datadir}/%{name}/workflows/workflow_CentOSPython3.xml
+%{_datadir}/%{name}/workflows/workflow_CentOSVmcore.xml
+%{_datadir}/%{name}/workflows/workflow_CentOSXorg.xml
+%{_datadir}/%{name}/workflows/workflow_CentOSLibreport.xml
+%{_datadir}/%{name}/workflows/workflow_CentOSJava.xml
+%config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_centos.conf
+%{_datadir}/%{name}/events/report_CentOSBugTracker.xml
+%config(noreplace) %{_sysconfdir}/libreport/events/report_CentOSBugTracker.conf
+# report_CentOSBugTracker events are shipped by libreport package
+%config(noreplace) %{_sysconfdir}/libreport/events.d/centos_report_event.conf
 
 %files plugin-rhtsupport
 %defattr(-,root,root,-)
