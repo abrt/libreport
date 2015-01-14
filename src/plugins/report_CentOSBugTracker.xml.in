@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<event>
+    <_name>CentOS Bug Tracker</_name>
+    <_description>Report to CentOS Bug Tracker</_description>
+
+    <requires-items>component,duphash,os_release</requires-items>
+    <exclude-items-by-default>coredump,count,event_log,reported_to,vmcore</exclude-items-by-default>
+    <exclude-items-always></exclude-items-always>
+    <exclude-binary-items>no</exclude-binary-items>
+    <include-items-by-default></include-items-by-default>
+    <minimal-rating>3</minimal-rating>
+    <gui-review-elements>yes</gui-review-elements>
+
+    <options>
+        <option type="text" name="Mantisbt_Login">
+            <_label>User name</_label>
+            <allow-empty>no</allow-empty>
+            <_description>CentOS Bug Tracker account user name</_description>
+            <_note-html>You can create bugs.centos.org account &lt;a href="https://bugs.centos.org/signup_page.php"&gt;here&lt;/a&gt;</_note-html>
+        </option>
+        <option type="password" name="Mantisbt_Password">
+            <_label>Password</_label>
+            <allow-empty>no</allow-empty>
+            <_description>CentOS Bug Tracker account password</_description>
+        </option>
+        <advanced-options>
+            <option type="text" name="Mantisbt_MantisbtURL">
+                <_label>CentOS Bug Tracker URL</_label>
+                <allow-empty>no</allow-empty>
+                <_note-html>Address of CentOS Bug Tracker server</_note-html>
+                <default-value>https://bugs.centos.org</default-value>
+            </option>
+            <option type="bool" name="Mantisbt_SSLVerify">
+                <_label>Verify SSL</_label>
+                <_note-html>Check SSL key validity</_note-html>
+                <default-value>yes</default-value>
+            </option>
+            <option type="text" name="Mantisbt_Project">
+                <_label>CentOS Bug Tracker project</_label>
+                <allow-empty>yes</allow-empty>
+                <_note-html>Specify this only if you needed different project than specified in /etc/os-release</_note-html>
+            </option>
+            <option type="text" name="Mantisbt_ProjectVersion">
+                <_label>CentOS Bug Tracker project version</_label>
+                <allow-empty>yes</allow-empty>
+                <_note-html>Specify this only if you needed different project version than specified in /etc/os-release</_note-html>
+            </option>
+            <option type="text" name="http_proxy">
+                <_label>HTTP Proxy</_label>
+                <allow-empty>yes</allow-empty>
+                <_note-html>Sets the proxy server to use for HTTP</_note-html>
+            </option>
+            <option type="text" name="HTTPS_PROXY">
+                <_label>HTTPS Proxy</_label>
+                <allow-empty>yes</allow-empty>
+                <_note-html>Sets the proxy server to use for HTTPS</_note-html>
+            </option>
+            <option type="bool" name="Mantisbt_CreatePrivate">
+                <_label>Restrict access</_label>
+                <_note-html>Restrict access to the created CentOS Bug Tracker issue allowing only users from specified groups to view it (see advanced settings for more details)</_note-html>
+                <default-value>no</default-value>
+            </option>
+        </advanced-options>
+    </options>
+</event>

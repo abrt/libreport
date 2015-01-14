@@ -7,6 +7,11 @@ reporters_bin += \
     report
 endif
 
+if BUILD_MANTISBT
+reporters_bin += \
+    reporter-mantisbt
+endif
+
 if BUILD_UREPORT
 reporters_bin +=  reporter-ureport
 endif
@@ -34,6 +39,12 @@ reporters_plugin_format_conf += bugzilla_format.conf \
     bugzilla_formatdup_anaconda.conf
 endif
 
+if BUILD_MANTISBT
+reporters_plugin_conf += mantisbt.conf
+reporters_plugin_format_conf += mantisbt_format.conf \
+    mantisbt_formatdup.conf
+endif
+
 defaultreportpluginsconfdir = $(DEFAULT_REPORT_PLUGINS_CONF_DIR)
 dist_defaultreportpluginsconf_DATA = $(reporters_plugin_conf) \
     rhtsupport.conf \
@@ -51,6 +62,12 @@ reporters_events_conf =
 if BUILD_BUGZILLA
 reporters_events += report_Bugzilla.xml
 reporters_events_conf += report_Bugzilla.conf
+endif
+
+if BUILD_MANTISBT
+reporters_events += report_CentOSBugTracker.xml
+
+reporters_events_conf += report_CentOSBugTracker.conf
 endif
 
 if BUILD_UREPORT
@@ -77,7 +94,8 @@ dist_eventsdef_DATA = \
     print_event.conf \
     rhtsupport_event.conf \
     uploader_event.conf \
-    emergencyanalysis_event.conf
+    emergencyanalysis_event.conf \
+    centos_report_event.conf
 
 reporters_extra_dist =
 if BUILD_BUGZILLA
@@ -121,6 +139,29 @@ reporter_bugzilla_CPPFLAGS = \
 reporter_bugzilla_LDADD = \
     $(GLIB_LIBS) \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS) \
+    ../lib/libreport-web.la \
+    ../lib/libreport.la
+endif
+
+if BUILD_MANTISBT
+reporter_mantisbt_SOURCES = \
+    reporter-mantisbt.c mantisbt.c mantisbt.h
+reporter_mantisbt_CPPFLAGS = \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    -DBIN_DIR=\"$(bindir)\" \
+    -DCONF_DIR=\"$(CONF_DIR)\" \
+    -DLOCALSTATEDIR='"$(localstatedir)"' \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
+    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
+    -DPLUGINS_CONF_DIR=\"$(REPORT_PLUGINS_CONF_DIR)\" \
+    $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    $(LIBXML_CFLAGS) \
+    -D_GNU_SOURCE
+reporter_mantisbt_LDADD = \
+    $(GLIB_LIBS) \
     ../lib/libreport-web.la \
     ../lib/libreport.la
 endif

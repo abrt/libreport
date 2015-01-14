@@ -131,6 +131,39 @@ do
 done
 fi dnl end NO_BUGZILLA
 
+AC_ARG_WITH(mantisbt,
+AS_HELP_STRING([--with-mantisbt],[use MantisBT plugin (default is YES)]),
+LIBREPORT_PARSE_WITH([mantisbt]))
+
+if test -z "$NO_MANTISBT"; then
+AM_CONDITIONAL(BUILD_MANTISBT, true)
+
+# enable mantisbt & deps translations
+for FILE in `grep -e "#.*antisbt.*" -e "#.*naconda.*" po/POTFILES.in`
+do
+  sed -ie "s,$FILE,${FILE:1}," po/POTFILES.in
+  sed -ie "\,^${FILE:1}$,d" po/POTFILES.skip
+done
+else
+AM_CONDITIONAL(BUILD_MANTISBT, false)
+
+# disablie mantisbt & deps translations
+for FILE in `grep -e "antisbt" -e "naconda" po/POTFILES.in`
+do
+  if test "${FILE:0:1}" = "#"
+  then
+    continue
+  fi
+
+  sed -ie "s,$FILE,#$FILE," po/POTFILES.in
+  grep "$FILE" po/POTFILES.skip > /dev/null 2>&1
+  if test $?
+  then
+    echo "$FILE" >> po/POTFILES.skip
+  fi
+done
+fi dnl end NO_MANTISBT
+
 AC_PATH_PROG([PYTHON_CONFIG], [python-config], [no])
 [if test "$PYTHON_CONFIG" = "no"]
 [then]

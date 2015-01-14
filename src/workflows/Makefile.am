@@ -22,6 +22,18 @@ dist_workflows_DATA = \
     workflow_Logger.xml \
     workflow_LoggerCCpp.xml
 
+if BUILD_MANTISBT
+dist_workflows_DATA += \
+    workflow_CentOSCCpp.xml \
+    workflow_CentOSKerneloops.xml \
+    workflow_CentOSPython.xml \
+    workflow_CentOSPython3.xml \
+    workflow_CentOSVmcore.xml \
+    workflow_CentOSXorg.xml \
+    workflow_CentOSLibreport.xml \
+    workflow_CentOSJava.xml
+endif
+
 if BUILD_BUGZILLA
 dist_workflows_DATA += \
     workflow_AnacondaFedora.xml \
@@ -44,7 +56,8 @@ dist_workflowsdef_DATA =\
     report_rhel.conf \
     report_mailx.conf \
     report_logger.conf \
-    report_uploader.conf
+    report_uploader.conf \
+    report_centos.conf
 
 if BUILD_BUGZILLA
 dist_workflowsdef_DATA += \
