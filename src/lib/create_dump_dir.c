@@ -130,11 +130,11 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
 {
     INITIALIZE_LIBREPORT();
 
-    char *type = problem_data_get_content_or_NULL(problem_data, FILENAME_ANALYZER);
+    char *type = problem_data_get_content_or_NULL(problem_data, FILENAME_TYPE);
 
     if (!type)
     {
-        error_msg(_("Missing required item: '%s'"), FILENAME_ANALYZER);
+        error_msg(_("Missing required item: '%s'"), FILENAME_TYPE);
         return NULL;
     }
 

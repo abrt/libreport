@@ -832,12 +832,18 @@ struct dump_dir *open_directory_for_writing(
 #define FILENAME_LAST_OCCURRENCE  "last_occurrence" /* optional */
 #define FILENAME_REASON       "reason"      /* mandatory? */
 #define FILENAME_UID          "uid"         /* mandatory? */
+
 /*
  * "analyzer" is to be gradually changed to "type":
  * For now, we fetch and look at "analyzer" element,
  * but we always save both "analyzer" and "type" (with same contents).
  * By 2013, we switch to looking at "type". Then we will stop generating
  * "analyzer" element.
+ * ----
+ * Update 2015: based on the recent changes where we have introduced several
+ * tools generating one problem type, we have decided to retain 'analyzer'
+ * file, but it shall contain string identifier of a tool that created the
+ * problem.
  */
 #define FILENAME_ANALYZER     "analyzer"
 #define FILENAME_TYPE         "type"
