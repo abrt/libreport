@@ -192,7 +192,7 @@ set_settings(mantisbt_settings_t *m, map_string_t *settings)
 
     if (!m->m_create_private)
     {
-        environ = getenv("Mantsbt_CreatePrivate");
+        environ = getenv("Mantisbt_CreatePrivate");
         m->m_create_private = string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "CreatePrivate"));
     }
     log_notice("create private MantisBT ticket: '%s'", m->m_create_private ? "YES": "NO");
