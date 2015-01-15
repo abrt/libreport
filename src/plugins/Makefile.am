@@ -66,6 +66,12 @@ reporters_events += report_Bugzilla.xml \
 reporters_events_conf += report_Bugzilla.conf
 endif
 
+if BUILD_MANTISBT
+reporters_events += report_CentOSBugTracker.xml
+
+reporters_events_conf += report_CentOSBugTracker.conf
+endif
+
 if BUILD_UREPORT
 reporters_events += report_uReport.xml
 endif
