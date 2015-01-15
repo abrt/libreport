@@ -24,6 +24,7 @@
 #include "internal_libreport.h"
 #include "libreport_curl.h"
 #include "mantisbt.h"
+#include "client.h"
 
 /*
  * SOAP
@@ -50,13 +51,18 @@
 
 #define MAX_SUMMARY_LENGTH  128
 #define CUSTOMFIELD_DUPHASH "abrt_hash"
-#define CUSTOMFIELD_DUPHASH_ID "1"
-#define CUSTOMFIELD_URL_ID "2"
+#define CUSTOMFIELD_URL "URL"
 #define MAX_HOPS 5
 
 /* MantisBT limit is 2MB by default
  */
 #define MANTISBT_MAX_FILE_UPLOAD_SIZE (2 * 1024 * 1024)
+
+typedef struct mantisbt_custom_fields
+{
+    char *cf_abrt_hash_id;
+    char *cf_url_id;
+} mantisbt_custom_fields_t;
 
 /*
  * MantisBT settings issue info
@@ -70,6 +76,7 @@ mantisbt_settings_free(mantisbt_settings_t *s)
     free(s->m_login);
     free(s->m_password);
     free(s->m_project);
+    free(s->m_project_id);
     free(s->m_project_version);
 }
 
@@ -272,6 +279,7 @@ soap_add_new_issue_parameters(soap_request_t *req,
                                const char *description,
                                const char *additional_information,
                                bool private,
+                               mantisbt_custom_fields_t *fields,
                                const char *duphash,
                                const char *tracker_url)
 {
@@ -291,19 +299,27 @@ soap_add_new_issue_parameters(soap_request_t *req,
     xmlNodePtr view_node = soap_node_add_child_node(issue_node, "view_state", SOAP_OBJECTREF, /* content */ NULL);
     soap_node_add_child_node(view_node, "name", SOAP_STRING, (private) ? "private" : "public");
 
-    // custom fields (duphash and URL to tracker)
-    xmlNodePtr duphash_node = soap_node_add_child_node(issue_node, "custom_fields", SOAP_CUSTOMFIELD_ARRAY, /* content */ NULL);
-    xmlNodePtr item_node = soap_node_add_child_node(duphash_node, "item", SOAP_CUSTOMFIELD, /* content */ NULL);
-    xmlNodePtr field_node = soap_node_add_child_node(item_node, "field", SOAP_OBJECTREF, /* content */ NULL);
-    soap_node_add_child_node(field_node, "id", SOAP_INTEGER, /* custom_field name */ CUSTOMFIELD_DUPHASH_ID);
-    soap_node_add_child_node(item_node, "value", SOAP_STRING, duphash);
+    /* if any custom field exists */
+    xmlNodePtr duphash_node;
+    if (fields->cf_abrt_hash_id != NULL || fields->cf_url_id != NULL)
+        duphash_node = soap_node_add_child_node(issue_node, "custom_fields", SOAP_CUSTOMFIELD_ARRAY, /* content */ NULL);
 
-    // if tracker url exists, attach it to the issue
-    if (tracker_url != NULL)
+    // custom fields (duphash and URL to tracker)
+    xmlNodePtr item_node, field_node;
+    if (fields->cf_abrt_hash_id != NULL)
     {
         item_node = soap_node_add_child_node(duphash_node, "item", SOAP_CUSTOMFIELD, /* content */ NULL);
         field_node = soap_node_add_child_node(item_node, "field", SOAP_OBJECTREF, /* content */ NULL);
-        soap_node_add_child_node(field_node, "id", SOAP_INTEGER, /* custom_field name */ CUSTOMFIELD_URL_ID);
+        soap_node_add_child_node(field_node, "id", SOAP_INTEGER, /* custom_field id */ fields->cf_abrt_hash_id);
+        soap_node_add_child_node(item_node, "value", SOAP_STRING, duphash);
+    }
+
+    // if tracker url exists, attach it to the issue
+    if (tracker_url != NULL && fields->cf_url_id != NULL)
+    {
+        item_node = soap_node_add_child_node(duphash_node, "item", SOAP_CUSTOMFIELD, /* content */ NULL);
+        field_node = soap_node_add_child_node(item_node, "field", SOAP_OBJECTREF, /* content */ NULL);
+        soap_node_add_child_node(field_node, "id", SOAP_INTEGER, /* custom_field */ fields->cf_url_id);
         soap_node_add_child_node(item_node, "value", SOAP_STRING, tracker_url);
     }
 
@@ -558,6 +574,13 @@ response_get_return_value(const char *xml)
     return (l != NULL) ? atoi(l->data) : -1;
 }
 
+static char*
+response_get_return_value_as_string(const char *xml)
+{
+    GList *l = response_values_at_depth_by_name(xml, "return", 3);
+    return (l != NULL) ? l->data : NULL;
+}
+
 static char *
 response_get_error_msg(const char *xml)
 {
@@ -769,7 +792,7 @@ mantisbt_search_by_abrt_hash(mantisbt_settings_t *settings, const char *abrt_has
     soap_request_t *req = soap_request_new_for_method("mc_search_issues");
     soap_request_add_credentials_parameter(req, settings);
 
-    soap_request_add_method_parameter(req, "project_id", SOAP_INTEGER, "1");
+    soap_request_add_method_parameter(req, "project_id", SOAP_INTEGER, settings->m_project_id);
 
     /* 'hide_status : -2' means, searching within all status */
     char *filter = xasprintf("{\"hide_status\":\"-2\",\"abrt_hash\":\"%s\"}", abrt_hash);
@@ -834,6 +857,63 @@ mantisbt_search_duplicate_issues(mantisbt_settings_t *settings, const char *proj
     return ids;
 }
 
+static char *
+custom_field_get_id_from_name(GList *ids, GList *names, const char *name)
+{
+    GList *i = ids;
+    GList *n = names;
+    for (; i != NULL; i = i->next, n = n->next)
+    {
+        if (strcmp(n->data, name) == 0)
+            return i->data;
+    }
+
+    return NULL;
+}
+
+static void
+custom_field_ask(const char *name)
+{
+    char *msg = xasprintf(_("MantisBT doesn't contain custom field '%s', which is required for full functionality of the reporter. Do you still want to create a new issue?"), name);
+    int yes = ask_yes_no(msg);
+    free(msg);
+
+    if (!yes)
+    {
+        set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
+        xfunc_die();
+    }
+
+    return;
+}
+
+static void
+mantisbt_get_custom_fields(const mantisbt_settings_t *settings, mantisbt_custom_fields_t *fields, const char *project_id)
+{
+    soap_request_t *req = soap_request_new_for_method("mc_project_get_custom_fields");
+    soap_request_add_credentials_parameter(req, settings);
+    soap_request_add_method_parameter(req, "project_id", SOAP_INTEGER, project_id);
+
+    mantisbt_result_t *result = mantisbt_soap_call(settings, req);
+    soap_request_free(req);
+
+    if (result->mr_http_resp_code != 200)
+        error_msg_and_die(_("Failed to get custom fields"));
+
+    GList *ids = response_values_at_depth_by_name(result->mr_body, "id", -1);
+    GList *names = response_values_at_depth_by_name(result->mr_body, "name", -1);
+
+    mantisbt_result_free(result);
+
+    if ((fields->cf_abrt_hash_id = custom_field_get_id_from_name(ids, names, CUSTOMFIELD_DUPHASH)) == NULL)
+        custom_field_ask(CUSTOMFIELD_DUPHASH);
+
+    if ((fields->cf_url_id = custom_field_get_id_from_name(ids, names, CUSTOMFIELD_URL)) == NULL)
+        custom_field_ask(CUSTOMFIELD_URL);
+
+    return;
+}
+
 int
 mantisbt_create_new_issue(const mantisbt_settings_t *settings,
                    problem_data_t *problem_data,
@@ -849,9 +929,12 @@ mantisbt_create_new_issue(const mantisbt_settings_t *settings,
     const char *description = problem_report_get_description(pr);
     const char *additional_information = problem_report_get_section(pr, PR_SEC_ADDITIONAL_INFO);
 
+    mantisbt_custom_fields_t fields;
+    mantisbt_get_custom_fields(settings, &fields, settings->m_project_id);
+
     soap_request_t *req = soap_request_new_for_method("mc_issue_add");
     soap_request_add_credentials_parameter(req, settings);
-    soap_add_new_issue_parameters(req, settings->m_project, settings->m_project_version, category, summary, description, additional_information, settings->m_create_private, duphash, tracker_url);
+    soap_add_new_issue_parameters(req, settings->m_project, settings->m_project_version, category, summary, description, additional_information, settings->m_create_private, &fields, duphash, tracker_url);
 
     mantisbt_result_t *result = mantisbt_soap_call(settings, req);
     soap_request_free(req);
@@ -947,4 +1030,21 @@ mantisbt_add_issue_note(const mantisbt_settings_t *settings, int issue_id, const
 
     mantisbt_result_free(result);
     return id;
+}
+
+void
+mantisbt_get_project_id_from_name(mantisbt_settings_t *settings)
+{
+    soap_request_t *req = soap_request_new_for_method("mc_project_get_id_from_name");
+    soap_request_add_credentials_parameter(req, settings);
+    soap_node_add_child_node(req->sr_method, "project_name", SOAP_STRING, settings->m_project);
+
+    mantisbt_result_t *result = mantisbt_soap_call(settings, req);
+
+    if (result->mr_http_resp_code != 200)
+        error_msg_and_die(_("Failed to get project id from name"));
+
+    settings->m_project_id = response_get_return_value_as_string(result->mr_body);
+
+    return;
 }
