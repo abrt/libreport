@@ -212,6 +212,16 @@ Requires: libreport-web = %{version}-%{release}
 %description plugin-mantisbt
 Plugin to report bugs into the mantisbt.
 
+%package workflow-centos
+Summary: %{name}'s CentOS Bug Tracker workflow
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+Requires: libreport-web = %{version}-%{release}
+Requires: libreport-plugin-mantisbt = %{version}-%{release}
+
+%description workflow-centos
+Workflows to report issues into the CentOS Bug Tracker.
+
 %package plugin-ureport
 Summary: %{name}'s micro report plugin
 BuildRequires: %{libjson_devel}
@@ -612,6 +622,19 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/plugins/mantisbt_format.conf
 %config(noreplace) %{_sysconfdir}/libreport/plugins/mantisbt_formatdup.conf
 %{_bindir}/reporter-mantisbt
+
+%files workflow-centos
+%{_datadir}/%{name}/workflows/workflow_CentOSCCpp.xml
+%{_datadir}/%{name}/workflows/workflow_CentOSKerneloops.xml
+%{_datadir}/%{name}/workflows/workflow_CentOSPython.xml
+%{_datadir}/%{name}/workflows/workflow_CentOSPython3.xml
+%{_datadir}/%{name}/workflows/workflow_CentOSVmcore.xml
+%{_datadir}/%{name}/workflows/workflow_CentOSXorg.xml
+%{_datadir}/%{name}/workflows/workflow_CentOSLibreport.xml
+%{_datadir}/%{name}/workflows/workflow_CentOSJava.xml
+%config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_centos.conf
+%{_datadir}/%{name}/events/report_CentOSBugTracker.xml
+%config(noreplace) %{_sysconfdir}/libreport/events/report_CentOSBugTracker.conf
 
 %files plugin-rhtsupport
 %defattr(-,root,root,-)
