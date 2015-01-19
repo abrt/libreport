@@ -133,41 +133,6 @@ static GList *rhbz_comments(struct abrt_xmlrpc *ax, int bug_id)
     return g_list_reverse(comments);
 }
 
-static char *trim_all_whitespace(const char *str)
-{
-    func_entry();
-
-    char *trim = xzalloc(sizeof(char) * strlen(str) + 1);
-    int i = 0;
-    while (*str)
-    {
-        if (!isspace(*str))
-            trim[i++] = *str;
-        str++;
-    }
-
-    return trim;
-}
-
-int is_comment_dup(GList *comments, const char *comment)
-{
-    func_entry();
-
-    char * const trim_comment = trim_all_whitespace(comment);
-    bool same_comments = false;
-
-    for (GList *l = comments; l && !same_comments; l = l->next)
-    {
-        const char * const comment_body = (const char *) l->data;
-        char * const trim_comment_body = trim_all_whitespace(comment_body);
-        same_comments = (strcmp(trim_comment_body, trim_comment) == 0);
-        free(trim_comment_body);
-    }
-
-    free(trim_comment);
-    return same_comments;
-}
-
 static unsigned find_best_bt_rating_in_comments(GList *comments)
 {
     func_entry();
@@ -553,46 +518,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
     if (!duphash) duphash    = problem_data_get_content_or_NULL(problem_data,
                                                                 "global_uuid");
 
-    /* If summary is longer than max allowed summary length then
-     * try to find first ' ' from the end of acceptable long summary string
-     *
-     * If ' ' is found replace string after that by "..."
-     *
-     * If ' ' is NOT found in maximal allowed range, cut summary string on
-     * lenght (MAX_SUMMARY_LENGTH - strlen("...")) and append "..."
-     *
-     * If MAX_SUMMARY_LENGTH is 15 and max allowed cut is 5:
-     *
-     *   0123456789ABCDEF -> 0123456789AB...
-     *   0123456789 BCDEF -> 0123456789 ...
-     *   012345 789ABCDEF -> 012345 789AB...
-     */
-    char *summary = NULL;
-    if (strlen(bzsummary) > MAX_SUMMARY_LENGTH)
-    {
-        summary = xstrdup(bzsummary);
-        char *max_end = summary + (MAX_SUMMARY_LENGTH - strlen("..."));
-
-        /* maximal number of characters to cut due to attempt cut summary
-         * string after last ' '
-         */
-        int max_cut = 16;
-
-        /* start looking for ' ' one char before the last possible character */
-        char *buf = max_end - 1;
-        while (buf[0] != ' ' && max_cut--)
-            --buf;
-
-        if (buf[0] != ' ')
-            buf = max_end;
-        else
-            ++buf;
-
-        buf[0] = '.';
-        buf[1] = '.';
-        buf[2] = '.';
-        buf[3] = '\0';
-    }
+    char *summary = shorten_string_to_length(bzsummary, MAX_SUMMARY_LENGTH);
 
     char *status_whiteboard = xasprintf("abrt_hash:%s", duphash);
 
@@ -604,7 +530,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
     abrt_xmlrpc_params_add_string(&env, params, "product", product);
     abrt_xmlrpc_params_add_string(&env, params, "component", component);
     abrt_xmlrpc_params_add_string(&env, params, "version", version);
-    abrt_xmlrpc_params_add_string(&env, params, "summary", (summary ? summary : bzsummary));
+    abrt_xmlrpc_params_add_string(&env, params, "summary", summary);
     abrt_xmlrpc_params_add_string(&env, params, "description", bzcomment);
     abrt_xmlrpc_params_add_string(&env, params, "status_whiteboard", status_whiteboard);
 

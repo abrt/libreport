@@ -203,6 +203,15 @@ Requires: libreport-web = %{version}-%{release}
 Plugin to report bugs into the bugzilla.
 %endif
 
+%package plugin-mantisbt
+Summary: %{name}'s mantisbt plugin
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+Requires: libreport-web = %{version}-%{release}
+
+%description plugin-mantisbt
+Plugin to report bugs into the mantisbt.
+
 %package plugin-ureport
 Summary: %{name}'s micro report plugin
 BuildRequires: %{libjson_devel}
@@ -470,6 +479,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_includedir}/libreport/problem_details_widget.h
 %{_includedir}/libreport/problem_details_dialog.h
 %{_includedir}/libreport/ureport.h
+%{_includedir}/libreport/reporters.h
 # Private api headers:
 %{_includedir}/libreport/internal_abrt_dbus.h
 %{_includedir}/libreport/internal_libreport.h
@@ -594,6 +604,14 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man5/bugzilla_format_kernel.conf.5.*
 %{_bindir}/reporter-bugzilla
 %endif
+
+%files plugin-mantisbt
+%defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/libreport/plugins/mantisbt.conf
+%{_datadir}/%{name}/conf.d/plugins/mantisbt.conf
+%config(noreplace) %{_sysconfdir}/libreport/plugins/mantisbt_format.conf
+%config(noreplace) %{_sysconfdir}/libreport/plugins/mantisbt_formatdup.conf
+%{_bindir}/reporter-mantisbt
 
 %files plugin-rhtsupport
 %defattr(-,root,root,-)

@@ -98,6 +98,7 @@ int vdprintf(int d, const char *format, va_list ap);
 #include "workflow.h"
 #include "file_obj.h"
 #include "libreport_types.h"
+#include "reporters.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -107,6 +108,10 @@ extern "C" {
 int prefixcmp(const char *str, const char *prefix);
 #define suffixcmp libreport_suffixcmp
 int suffixcmp(const char *str, const char *suffix);
+#define trim_all_whitespace libreport_trim_all_whitespace
+char *trim_all_whitespace(const char *str);
+#define shorten_string_to_length libreport_shorten_string_to_length
+char *shorten_string_to_length(const char *str, unsigned length);
 #define strtrim libreport_strtrim
 char *strtrim(char *str);
 #define strtrimch libreport_strtrimch

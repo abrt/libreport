@@ -101,8 +101,6 @@ int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *bug_id,
 int rhbz_attach_fd(struct abrt_xmlrpc *ax, const char *bug_id,
                 const char *att_name, int fd, int flags);
 
-int is_comment_dup(GList *comments, const char *comment);
-
 GList *rhbz_bug_cc(xmlrpc_value *result_xml);
 
 struct bug_info *rhbz_bug_info(struct abrt_xmlrpc *ax, int bug_id);
