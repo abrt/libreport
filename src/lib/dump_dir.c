@@ -244,7 +244,6 @@ int create_symlink_lockfile(const char* lock_file, const char* pid)
 }
 
 static const char *dd_check(struct dump_dir *dd)
-
 {
     unsigned dirname_len = strlen(dd->dd_dirname);
     char filename_buf[FILENAME_MAX+1];
