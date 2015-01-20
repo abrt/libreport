@@ -216,6 +216,7 @@ int create_symlink_lockfile(const char* lock_file, const char* pid)
         if (strcmp(pid_buf, pid) == 0)
         {
             log("Lock file '%s' is already locked by us", lock_file);
+            errno = EALREADY;
             return 0;
         }
         if (isdigit_str(pid_buf))
@@ -243,6 +244,7 @@ int create_symlink_lockfile(const char* lock_file, const char* pid)
 }
 
 static const char *dd_check(struct dump_dir *dd)
+
 {
     unsigned dirname_len = strlen(dd->dd_dirname);
     char filename_buf[FILENAME_MAX+1];
@@ -287,11 +289,17 @@ static int dd_lock(struct dump_dir *dd, unsigned sleep_usec, int flags)
         int r = create_symlink_lockfile(lock_buf, pid_buf);
         if (r < 0)
             return r; /* error */
-        if (r > 0)
+        if (r > 0 || errno == EALREADY)
             break; /* locked successfully */
         /* Other process has the lock, wait for it to go away */
         usleep(sleep_usec);
     }
+
+    /* Reset errno to 0 only if errno is EALREADY (used by
+     * create_symlink_lockfile() to signal that the dump directory is already
+     * locked by us) */
+    if (!(dd->owns_lock = (errno != EALREADY)))
+        errno = 0;
 
     /* Are we called by dd_opendir (as opposed to dd_create)? */
     if (sleep_usec == WAIT_FOR_OTHER_PROCESS_USLEEP) /* yes */
@@ -304,8 +312,10 @@ static int dd_lock(struct dump_dir *dd, unsigned sleep_usec, int flags)
          */
         if (missing_file)
         {
-            xunlink(lock_buf);
-            log_notice("Unlocked '%s' (no or corrupted '%s' file)", lock_buf, missing_file);
+            if (dd->owns_lock)
+                xunlink(lock_buf);
+
+            log_warning("Unlocked '%s' (no or corrupted '%s' file)", lock_buf, missing_file);
             if (--count == 0 || flags & DD_DONT_WAIT_FOR_LOCK)
             {
                 errno = EISDIR; /* "this is an ordinary dir, not dump dir" */
@@ -324,13 +334,16 @@ static void dd_unlock(struct dump_dir *dd)
 {
     if (dd->locked)
     {
-        dd->locked = 0;
-
         unsigned dirname_len = strlen(dd->dd_dirname);
         char lock_buf[dirname_len + sizeof("/.lock")];
         strcpy(lock_buf, dd->dd_dirname);
         strcpy(lock_buf + dirname_len, "/.lock");
-        xunlink(lock_buf);
+
+        if (dd->owns_lock)
+            xunlink(lock_buf);
+
+        dd->owns_lock = 0;
+        dd->locked = 0;
 
         log_info("Unlocked '%s'", lock_buf);
     }

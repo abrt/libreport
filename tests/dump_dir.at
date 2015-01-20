@@ -1,0 +1,51 @@
+# -*- Autotest -*-
+
+AT_BANNER([dump_dir])
+
+## -------------- ##
+## recursive_lock ##
+## -------------- ##
+
+AT_TESTFUN([recursive_lock],
+[[
+#include "internal_libreport.h"
+#include <errno.h>
+#include <assert.h>
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    char *path = tmpnam(NULL);
+    struct dump_dir *dd = dd_create(path, -1L, DEFAULT_DUMP_DIR_MODE);
+
+    char *lock_path = concat_path_file(path, ".lock");
+    struct stat buf;
+
+    assert(dd);
+
+    assert(lstat(lock_path, &buf) == 0 && S_ISLNK(buf.st_mode));
+
+    dd_create_basic_files(dd, -1L, "/");
+    dd_save_text(dd, "type", "custom");
+
+    struct dump_dir *dd2 = dd_opendir(path, DD_OPEN_READONLY);
+    assert(dd2->owns_lock == 0);
+
+    struct dump_dir *dd3 = dd_opendir(path, 0);
+    assert(dd3->owns_lock == 0);
+
+    dd_close(dd2);
+    assert(lstat(lock_path, &buf) == 0 && S_ISLNK(buf.st_mode));
+
+    dd_close(dd3);
+    assert(lstat(lock_path, &buf) == 0 && S_ISLNK(buf.st_mode));
+
+    dd_close(dd);
+
+    assert(stat(lock_path, &buf) != 0 && errno == ENOENT);
+    free(lock_path);
+
+    return 0;
+}
+]])
