@@ -42,7 +42,8 @@ TESTSUITE_AT = \
   report_python.at \
   xfuncs.at \
   string_list.at \
-  ureport.at
+  ureport.at \
+  dump_dir.at
 
 EXTRA_DIST += $(TESTSUITE_AT)
 TESTSUITE = $(srcdir)/testsuite

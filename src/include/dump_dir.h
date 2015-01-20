@@ -55,6 +55,12 @@ struct dump_dir {
     mode_t mode;
     time_t dd_time;
     char *dd_type;
+
+    /* In case of recursive locking the first caller owns the lock and is
+     * responsible for unlocking. The consecutive dd_lock() callers acquire the
+     * lock but are not able to unlock the dump directory.
+     */
+    int owns_lock;
 };
 
 void dd_close(struct dump_dir *dd);
