@@ -31,6 +31,7 @@ libreport_gtk_la_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     $(GIO_CFLAGS) \
     -DWORKFLOWS_DIR=\"$(WORKFLOWS_DIR)\" \
+    -DGDK_DISABLE_DEPRECATION_WARNINGS \
     -D_GNU_SOURCE
 libreport_gtk_la_LDFLAGS = \
     -version-info 0:1:0

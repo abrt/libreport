@@ -22,6 +22,7 @@ report_gtk_CFLAGS = \
     -DICON_DIR=\"${datadir}/abrt/icons/hicolor/48x48/status\" \
     -DWORKFLOWS_DIR=\"$(WORKFLOWS_DIR)\" \
     -DLIBEXEC_DIR=\"$(libexecdir)\" \
+    -DGDK_DISABLE_DEPRECATION_WARNINGS \
     $(GLIB_CFLAGS) \
     $(GTK_CFLAGS) \
     -D_GNU_SOURCE
