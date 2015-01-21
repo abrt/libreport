@@ -158,6 +158,11 @@ off_t copy_file(const char *src_name, const char *dst_name, int mode);
 #define copy_file_recursive libreport_copy_file_recursive
 int copy_file_recursive(const char *source, const char *dest);
 
+#define decompress_fd libreport_decompress_fd
+int decompress_fd(int fdi, int fdo);
+#define decompress_file libreport_decompress_file
+int decompress_file(const char *path_in, const char *path_out, mode_t mode_out);
+
 // NB: will return short read on error, not -1,
 // if some data was read before error occurred
 #define xread libreport_xread

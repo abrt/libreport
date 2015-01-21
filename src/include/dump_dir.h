@@ -77,6 +77,7 @@ char* dd_load_text(const struct dump_dir *dd, const char *name);
 void dd_save_text(struct dump_dir *dd, const char *name, const char *data);
 void dd_save_binary(struct dump_dir *dd, const char *name, const char *data, unsigned size);
 int dd_copy_file(struct dump_dir *dd, const char *name, const char *source_path);
+int dd_copy_file_unpack(struct dump_dir *dd, const char *name, const char *source_path);
 /* Returns value less than 0 if any error occured; otherwise returns size of an
  * item in Bytes. If an item does not exist returns 0 instead of an error
  * value.
