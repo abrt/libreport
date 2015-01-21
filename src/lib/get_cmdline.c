@@ -148,3 +148,161 @@ char* get_environ(pid_t pid)
     snprintf(path, sizeof(path), "/proc/%lu/environ", (long)pid);
     return get_escaped(path, '\n');
 }
+
+char* get_executable(pid_t pid)
+{
+    char buf[sizeof("/proc/%lu/exe") + sizeof(long)*3];
+
+    sprintf(buf, "/proc/%lu/exe", (long)pid);
+    char *executable = malloc_readlink(buf);
+    if (!executable)
+        return NULL;
+    /* find and cut off " (deleted)" from the path */
+    char *deleted = executable + strlen(executable) - strlen(" (deleted)");
+    if (deleted > executable && strcmp(deleted, " (deleted)") == 0)
+    {
+        *deleted = '\0';
+        log_info("File '%s' seems to be deleted", executable);
+    }
+    /* find and cut off prelink suffixes from the path */
+    char *prelink = executable + strlen(executable) - strlen(".#prelink#.XXXXXX");
+    if (prelink > executable && strncmp(prelink, ".#prelink#.", strlen(".#prelink#.")) == 0)
+    {
+        log_info("File '%s' seems to be a prelink temporary file", executable);
+        *prelink = '\0';
+    }
+    return executable;
+}
+
+char* get_cwd(pid_t pid)
+{
+    char buf[sizeof("/proc/%lu/cwd") + sizeof(long)*3];
+    sprintf(buf, "/proc/%lu/cwd", (long)pid);
+    return malloc_readlink(buf);
+}
+
+char* get_rootdir(pid_t pid)
+{
+    char buf[sizeof("/proc/%lu/root") + sizeof(long)*3];
+    sprintf(buf, "/proc/%lu/root", (long)pid);
+    return malloc_readlink(buf);
+}
+
+int get_fsuid(const char *proc_pid_status)
+{
+    int real, euid, saved;
+    /* if we fail to parse the uid, then make it root only readable to be safe */
+    int fs_uid = 0;
+
+    const char *line = proc_pid_status; /* never NULL */
+    for (;;)
+    {
+        if (strncmp(line, "Uid", 3) == 0)
+        {
+            int n = sscanf(line, "Uid:\t%d\t%d\t%d\t%d\n", &real, &euid, &saved, &fs_uid);
+            if (n != 4)
+                return -1;
+            break;
+        }
+        line = strchr(line, '\n');
+        if (!line)
+            break;
+        line++;
+    }
+
+    return fs_uid;
+}
+
+int dump_fd_info(const char *dest_filename, const char *proc_pid_fd_path)
+{
+    DIR *proc_fd_dir = NULL;
+    int proc_fdinfo_fd = -1;
+    char *buffer = NULL;
+    FILE *stream = NULL;
+    const char *fddelim = "";
+    struct dirent *dent = NULL;
+    int r = 0;
+
+    proc_fd_dir = opendir(proc_pid_fd_path);
+    if (!proc_fd_dir)
+    {
+        r = -errno;
+        goto dumpfd_cleanup;
+    }
+
+    proc_fdinfo_fd = openat(dirfd(proc_fd_dir), "../fdinfo", O_DIRECTORY|O_NOFOLLOW|O_CLOEXEC|O_PATH);
+    if (proc_fdinfo_fd < 0)
+    {
+        r = -errno;
+        goto dumpfd_cleanup;
+    }
+
+    stream = fopen(dest_filename, "w");
+    if (!stream)
+    {
+        r = -ENOMEM;
+        goto dumpfd_cleanup;
+    }
+
+    while (1)
+    {
+        errno = 0;
+        dent = readdir(proc_fd_dir);
+        if (dent == NULL)
+        {
+            if (errno > 0)
+            {
+                r = -errno;
+                goto dumpfd_cleanup;
+            }
+            break;
+        }
+        else if (dot_or_dotdot(dent->d_name))
+            continue;
+
+        FILE *fdinfo = NULL;
+        char *fdname = NULL;
+        char line[LINE_MAX];
+        int fd;
+
+        fdname = malloc_readlinkat(dirfd(proc_fd_dir), dent->d_name);
+
+        fprintf(stream, "%s%s:%s\n", fddelim, dent->d_name, fdname);
+        fddelim = "\n";
+
+        /* Use the directory entry from /proc/[pid]/fd with /proc/[pid]/fdinfo */
+        fd = openat(proc_fdinfo_fd, dent->d_name, O_NOFOLLOW|O_CLOEXEC|O_RDONLY);
+        if (fd < 0)
+            goto dumpfd_next_fd;
+
+        fdinfo = fdopen(fd, "re");
+        if (fdinfo == NULL)
+            goto dumpfd_next_fd;
+
+        while (fgets(line, sizeof(line)-1, fdinfo))
+        {
+            /* in case the line is not terminated, terminate it */
+            char *eol = strchrnul(line, '\n');
+            eol[0] = '\n';
+            eol[1] = '\0';
+            fputs(line, stream);
+        }
+
+dumpfd_next_fd:
+        fclose(fdinfo);
+        free(fdname);
+    }
+
+dumpfd_cleanup:
+    errno = 0;
+    fclose(stream);
+
+    if (r == 0 && errno != 0)
+        r = -errno;
+
+    closedir(proc_fd_dir);
+    close(proc_fdinfo_fd);
+    free(buffer);
+
+    return r;
+}

@@ -132,6 +132,15 @@ problem_data_t *create_problem_data_for_reporting(const char *dump_dir_name);
 */
 struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data, const char *base_dir_name);
 
+/**
+  @brief Saves the problem data object in opened dump directory
+
+  @param dd Dump directory
+  @param problem_data Problem data object to save
+  @return 0 on success; otherwise non-zero value
+ */
+int save_problem_data_in_dump_dir(struct dump_dir *dd, problem_data_t *problem_data);
+
 #ifdef __cplusplus
 }
 #endif

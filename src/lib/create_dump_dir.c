@@ -30,35 +30,9 @@ static struct dump_dir *try_dd_create(const char *base_dir_name, const char *dir
     return dd;
 }
 
-struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data, const char *base_dir_name)
+struct dump_dir *create_dump_dir(const char *base_dir_name, const char *type, uid_t uid, save_data_call_back save_data, void *args)
 {
     INITIALIZE_LIBREPORT();
-
-    char *type = problem_data_get_content_or_NULL(problem_data, FILENAME_ANALYZER);
-
-    if (!type)
-    {
-        error_msg(_("Missing required item: '%s'"), FILENAME_ANALYZER);
-        return NULL;
-    }
-
-    uid_t uid = (uid_t)-1L;
-    char *uid_str = problem_data_get_content_or_NULL(problem_data, FILENAME_UID);
-
-    if (uid_str)
-    {
-        char *endptr;
-        errno = 0;
-        long val = strtol(uid_str, &endptr, 10);
-
-        if (errno != 0 || endptr == uid_str || *endptr != '\0' || INT_MAX < val)
-        {
-            error_msg(_("uid value is not valid: '%s'"), uid_str);
-            return NULL;
-        }
-
-        uid = (uid_t)val;
-    }
 
     struct timeval tv;
     if (gettimeofday(&tv, NULL) < 0)
@@ -99,34 +73,11 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
     if (!dd) /* try_dd_create() already emitted the error message */
         goto ret;
 
-    GHashTableIter iter;
-    char *name;
-    struct problem_item *value;
-    g_hash_table_iter_init(&iter, problem_data);
-    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
+    if (save_data(dd, args))
     {
-        if (value->flags & CD_FLAG_BIN)
-        {
-            char *dest = concat_path_file(dd->dd_dirname, name);
-            log_info("copying '%s' to '%s'", value->content, dest);
-            off_t copied = copy_file(value->content, dest, DEFAULT_DUMP_DIR_MODE | S_IROTH);
-            if (copied < 0)
-                error_msg("Can't copy %s to %s", value->content, dest);
-            else
-                log_info("copied %li bytes", (unsigned long)copied);
-            free(dest);
-
-            continue;
-        }
-
-        /* only files should contain '/' and those are handled earlier */
-        if (name[0] == '.' || strchr(name, '/'))
-        {
-            error_msg("Problem data field name contains disallowed chars: '%s'", name);
-            continue;
-        }
-
-        dd_save_text(dd, name, value->content);
+        dd_delete(dd);
+        dd = NULL;
+        goto ret;
     }
 
     /* need to create basic files AFTER we save the pd to dump_dir
@@ -144,4 +95,66 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
  ret:
     free(problem_id);
     return dd;
+}
+
+int save_problem_data_in_dump_dir(struct dump_dir *dd, problem_data_t *problem_data)
+{
+    INITIALIZE_LIBREPORT();
+
+    GHashTableIter iter;
+    char *name;
+    struct problem_item *value;
+    g_hash_table_iter_init(&iter, problem_data);
+    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
+    {
+        if (value->flags & CD_FLAG_BIN)
+        {
+            dd_copy_file(dd, name, value->content);
+            continue;
+        }
+
+        /* only files should contain '/' and those are handled earlier */
+        if (name[0] == '.' || strchr(name, '/'))
+        {
+            error_msg("Problem data field name contains disallowed chars: '%s'", name);
+            continue;
+        }
+
+        dd_save_text(dd, name, value->content);
+    }
+
+    return 0;
+}
+
+struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data, const char *base_dir_name)
+{
+    INITIALIZE_LIBREPORT();
+
+    char *type = problem_data_get_content_or_NULL(problem_data, FILENAME_TYPE);
+
+    if (!type)
+    {
+        error_msg(_("Missing required item: '%s'"), FILENAME_TYPE);
+        return NULL;
+    }
+
+    uid_t uid = (uid_t)-1L;
+    char *uid_str = problem_data_get_content_or_NULL(problem_data, FILENAME_UID);
+
+    if (uid_str)
+    {
+        char *endptr;
+        errno = 0;
+        long val = strtol(uid_str, &endptr, 10);
+
+        if (errno != 0 || endptr == uid_str || *endptr != '\0' || INT_MAX < val)
+        {
+            error_msg(_("uid value is not valid: '%s'"), uid_str);
+            return NULL;
+        }
+
+        uid = (uid_t)val;
+    }
+
+    return create_dump_dir(base_dir_name, type, uid, (save_data_call_back)save_problem_data_in_dump_dir, problem_data);
 }

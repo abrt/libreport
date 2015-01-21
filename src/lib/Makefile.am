@@ -20,6 +20,7 @@ libreport_la_SOURCES = \
     logging.c \
     copyfd.c \
     copy_file_recursive.c \
+    compress.c \
     concat_path_file.c \
     append_to_malloced_string.c \
     overlapping_strcpy.c \
@@ -75,6 +76,7 @@ libreport_la_CPPFLAGS = \
     -DDUMP_DIR_OWNED_BY_USER=$(DUMP_DIR_OWNED_BY_USER) \
     -DLARGE_DATA_TMP_DIR=\"$(LARGE_DATA_TMP_DIR)\" \
     $(GLIB_CFLAGS) \
+    $(LZMA_CFLAGS) \
     $(GOBJECT_CFLAGS) \
     $(AUGEAS_CFLAGS) \
     $(SATYR_CFLAGS) \
@@ -83,6 +85,7 @@ libreport_la_LDFLAGS = \
     -version-info 0:1:0
 libreport_la_LIBADD = \
     $(GLIB_LIBS) \
+    $(LZMA_LIBS) \
     $(JOURNAL_LIBS) \
     $(GOBJECT_LIBS) \
     $(AUGEAS_LIBS) \

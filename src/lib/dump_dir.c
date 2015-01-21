@@ -1298,3 +1298,36 @@ int dd_mark_as_notreportable(struct dump_dir *dd, const char *reason)
     dd_save_text(dd, FILENAME_NOT_REPORTABLE, reason);
     return 0;
 }
+
+int dd_copy_file(struct dump_dir *dd, const char *name, const char *source_path)
+{
+    char *dest = concat_path_file(dd->dd_dirname, name);
+
+    log_debug("copying '%s' to '%s'", source_path, dest);
+
+    off_t copied = copy_file(source_path, dest, DEFAULT_DUMP_DIR_MODE | S_IROTH);
+    if (copied < 0)
+        error_msg("Can't copy %s to %s", source_path, dest);
+    else
+        log_debug("copied %li bytes", (unsigned long)copied);
+
+    free(dest);
+    return copied < 0;
+}
+
+int dd_copy_file_unpack(struct dump_dir *dd, const char *name, const char *source_path)
+{
+    char *dest = concat_path_file(dd->dd_dirname, name);
+
+    log_debug("unpacking '%s' to '%s'", source_path, dest);
+
+    off_t copied = decompress_file(source_path, dest, DEFAULT_DUMP_DIR_MODE | S_IROTH);
+    if (copied != 0)
+        error_msg("Can't copy %s to %s", source_path, dest);
+    else
+        log_debug("unpackaged file '%s'", dest);
+
+    free(dest);
+    return copied < 0;
+
+}
