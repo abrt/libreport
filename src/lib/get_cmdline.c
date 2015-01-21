@@ -213,39 +213,96 @@ int get_fsuid(const char *proc_pid_status)
     return fs_uid;
 }
 
-int dump_fd_info(const char *dest_filename, char *source_filename, int source_base_ofs)
+int dump_fd_info(const char *dest_filename, const char *proc_pid_fd_path)
 {
-    FILE *fp = fopen(dest_filename, "w");
-    if (!fp)
-        return 0;
+    DIR *proc_fd_dir = NULL;
+    int proc_fdinfo_fd = -1;
+    char *buffer = NULL;
+    FILE *stream = NULL;
+    const char *fddelim = "";
+    struct dirent *dent = NULL;
+    int r = 0;
 
-    /*TODO: BUG: there might be holes as programs can close any fd at any time*/
-    unsigned fd = 0;
-    while (fd <= 99999) /* paranoia check */
+    proc_fd_dir = opendir(proc_pid_fd_path);
+    if (!proc_fd_dir)
     {
-        sprintf(source_filename + source_base_ofs, "fd/%u", fd);
-        char *name = malloc_readlink(source_filename);
-        if (!name)
-            break;
-        fprintf(fp, "%u:%s\n", fd, name);
-        free(name);
+        r = -errno;
+        goto dumpfd_cleanup;
+    }
 
-        sprintf(source_filename + source_base_ofs, "fdinfo/%u", fd);
-        fd++;
-        FILE *in = fopen(source_filename, "r");
-        if (!in)
+    proc_fdinfo_fd = openat(dirfd(proc_fd_dir), "../fdinfo", O_DIRECTORY|O_NOFOLLOW|O_CLOEXEC|O_PATH);
+    if (proc_fdinfo_fd < 0)
+    {
+        r = -errno;
+        goto dumpfd_cleanup;
+    }
+
+    stream = fopen(dest_filename, "w");
+    if (!stream)
+    {
+        r = -ENOMEM;
+        goto dumpfd_cleanup;
+    }
+
+    while (1)
+    {
+        errno = 0;
+        dent = readdir(proc_fd_dir);
+        if (dent == NULL)
+        {
+            if (errno > 0)
+            {
+                r = -errno;
+                goto dumpfd_cleanup;
+            }
+            break;
+        }
+        else if (dot_or_dotdot(dent->d_name))
             continue;
-        char buf[128];
-        while (fgets(buf, sizeof(buf)-1, in))
+
+        FILE *fdinfo = NULL;
+        char *fdname = NULL;
+        char line[LINE_MAX];
+        int fd;
+
+        fdname = malloc_readlinkat(dirfd(proc_fd_dir), dent->d_name);
+
+        fprintf(stream, "%s%s:%s\n", fddelim, dent->d_name, fdname);
+        fddelim = "\n";
+
+        /* Use the directory entry from /proc/[pid]/fd with /proc/[pid]/fdinfo */
+        fd = openat(proc_fdinfo_fd, dent->d_name, O_NOFOLLOW|O_CLOEXEC|O_RDONLY);
+        if (fd < 0)
+            goto dumpfd_next_fd;
+
+        fdinfo = fdopen(fd, "re");
+        if (fdinfo == NULL)
+            goto dumpfd_next_fd;
+
+        while (fgets(line, sizeof(line)-1, fdinfo))
         {
             /* in case the line is not terminated, terminate it */
-            char *eol = strchrnul(buf, '\n');
+            char *eol = strchrnul(line, '\n');
             eol[0] = '\n';
             eol[1] = '\0';
-            fputs(buf, fp);
+            fputs(line, stream);
         }
-        fclose(in);
+
+dumpfd_next_fd:
+        fclose(fdinfo);
+        free(fdname);
     }
-    fclose(fp);
-    return 1;
+
+dumpfd_cleanup:
+    errno = 0;
+    fclose(stream);
+
+    if (r == 0 && errno != 0)
+        r = -errno;
+
+    closedir(proc_fd_dir);
+    close(proc_fdinfo_fd);
+    free(buffer);
+
+    return r;
 }

@@ -185,6 +185,8 @@ void* xmalloc_open_read_close(const char *filename, size_t *maxsz_p);
 void* xmalloc_xopen_read_close(const char *filename, size_t *maxsz_p);
 #define malloc_readlink libreport_malloc_readlink
 char* malloc_readlink(const char *linkname);
+#define malloc_readlinkat libreport_malloc_readlinkat
+char* malloc_readlinkat(int dir_fd, const char *linkname);
 
 
 /* Returns malloc'ed block */
@@ -641,7 +643,7 @@ char* get_rootdir(pid_t pid);
 #define get_fsuid libreport_get_fsuid
 int get_fsuid(const char *proc_pid_status);
 #define dump_fd_info libreport_dump_fd_info
-int dump_fd_info(const char *dest_filename, char *source_filename, int source_base_ofs);
+int dump_fd_info(const char *dest_filename, const char *proc_pid_fd_path);
 
 /* Takes ptr to time_t, or NULL if you want to use current time.
  * Returns "YYYY-MM-DD-hh:mm:ss" string.

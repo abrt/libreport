@@ -194,10 +194,15 @@ void* xmalloc_xopen_read_close(const char *filename, size_t *maxsz_p)
 
 char* malloc_readlink(const char *linkname)
 {
+    return malloc_readlinkat(AT_FDCWD, linkname);
+}
+
+char* malloc_readlinkat(int dir_fd, const char *linkname)
+{
     char buf[PATH_MAX + 1];
     int len;
 
-    len = readlink(linkname, buf, sizeof(buf)-1);
+    len = readlinkat(dir_fd, linkname, buf, sizeof(buf)-1);
     if (len >= 0)
     {
         buf[len] = '\0';
