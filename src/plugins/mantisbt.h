@@ -52,6 +52,7 @@ typedef struct mantisbt_settings
     const char *m_mantisbt_url;
     const char *m_mantisbt_soap_url;
     char *m_project;
+    char *m_project_id;
     char *m_project_version;
     const char *m_DontMatchComponents;
     int         m_ssl_verify;
@@ -124,7 +125,7 @@ int mantisbt_create_new_issue(const mantisbt_settings_t *settings, problem_data_
 mantisbt_issue_info_t * mantisbt_get_issue_info(const mantisbt_settings_t *settings, int issue_id);
 int mantisbt_add_issue_note(const mantisbt_settings_t *settings, int issue_id, const char *note);
 
-
+void mantisbt_get_project_id_from_name(mantisbt_settings_t *settings);
 
 #ifdef __cplusplus
 }

@@ -325,6 +325,7 @@ int main(int argc, char **argv)
      * verification of credentials.
      */
     verify_credentials(&mbt_settings);
+    mantisbt_get_project_id_from_name(&mbt_settings);
 
     if (abrt_hash)
     {
@@ -501,9 +502,8 @@ int main(int argc, char **argv)
              * but we do add a note if cross-version potential dup exists.
              * For that, we search for cross version dups first:
              */
-            //TODO project will be number not string
             // SOAP API searching method is not in the final version, it's possible the project will be string
-            GList *crossver_bugs_ids = mantisbt_search_duplicate_issues(&mbt_settings,/* mbt_settings.m_project */ "1", category_substitute, /*version*/ NULL, duphash);
+            GList *crossver_bugs_ids = mantisbt_search_duplicate_issues(&mbt_settings, mbt_settings.m_project_id, category_substitute, /*version*/ NULL, duphash);
 
             unsigned crossver_bugs_count = g_list_length(crossver_bugs_ids);
             log_debug("MantisBT has %i reports with duphash '%s' including cross-version ones",
@@ -513,9 +513,8 @@ int main(int argc, char **argv)
 
             if (crossver_bugs_count > 0)
             {
-                //TODO project will be not name but id
                 // SOAP API searching method is not in the final version, it's possible the project will be string
-                GList *dup_bugs_ids = mantisbt_search_duplicate_issues(&mbt_settings, /* mbt_settings.m_project */ "1", category_substitute, mbt_settings.m_project_version, duphash);
+                GList *dup_bugs_ids = mantisbt_search_duplicate_issues(&mbt_settings, mbt_settings.m_project_id, category_substitute, mbt_settings.m_project_version, duphash);
 
                 unsigned dup_bugs_count =  g_list_length(dup_bugs_ids);
                 log_debug("MantisBT has %i reports with duphash '%s'",
