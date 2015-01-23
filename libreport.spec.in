@@ -635,6 +635,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_centos.conf
 %{_datadir}/%{name}/events/report_CentOSBugTracker.xml
 %config(noreplace) %{_sysconfdir}/libreport/events/report_CentOSBugTracker.conf
+# report_CentOSBugTracker events are shipped by libreport package
+%config(noreplace) %{_sysconfdir}/libreport/events.d/centos_report_event.conf
 
 %files plugin-rhtsupport
 %defattr(-,root,root,-)
