@@ -29,9 +29,14 @@ extern "C" {
 
 #define SOAP_STRING "ns2:string"
 #define SOAP_INTEGER "ns2:integer"
+#define SOAP_INTEGERARRAY "ns2:IntegerArray"
+#define SOAP_STRINGARRAY "ns2:StringArray"
 #define SOAP_ISSUEDATA "ns3:IssueData"
 #define SOAP_OBJECTREF "ns3:ObjectRef"
 #define SOAP_CUSTOMFIELD_ARRAY "ns2:CustomFieldValueForIssueDataArray"
+#define SOAP_FILTER_CUSTOMFIELD "ns2:FilterCustomField"
+#define SOAP_FILTER_CUSTOMFIELD_ARRAY "ns2:FilterCustomFieldArray"
+#define SOAP_FILTER_SEARCH_DATA "ns2:FilterSearchData"
 #define SOAP_CUSTOMFIELD "ns2:CustomFieldValueForIssueData"
 #define SOAP_BASE64 "SOAP-ENC:base64"
 #define SOAP_ISSUENOTE "ns3:IssueNoteData"
@@ -116,8 +121,8 @@ int mantisbt_attach_file(const mantisbt_settings_t *settings, const char *bug_id
                     const char *att_name, const char *data);
 
 GList * mantisbt_search_by_abrt_hash(mantisbt_settings_t *settings, const char *abrt_hash);
-GList * mantisbt_search_duplicate_issues(mantisbt_settings_t *settings, const char *project,
-                            const char *category, const char *version, const char *abrt_hash);
+GList * mantisbt_search_duplicate_issues(mantisbt_settings_t *settings, const char *category,
+                    const char *version, const char *abrt_hash);
 
 int mantisbt_create_new_issue(const mantisbt_settings_t *settings, problem_data_t *problem_data,
                        const problem_report_t *pr, const char *tracker_url);
