@@ -96,7 +96,8 @@ dist_eventsdef_DATA = \
     print_event.conf \
     rhtsupport_event.conf \
     uploader_event.conf \
-    emergencyanalysis_event.conf
+    emergencyanalysis_event.conf \
+    centos_report_event.conf
 
 reporters_extra_dist =
 if BUILD_BUGZILLA
