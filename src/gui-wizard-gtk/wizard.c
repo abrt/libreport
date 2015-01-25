@@ -2424,13 +2424,13 @@ static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words,
                 SEARCH_COLUMN_ITEM, &word,
                 -1);
 
+        free(text);
+
         if (word->buffer == buffer)
         {
             buffer_removing = true;
 
             valid = gtk_list_store_remove(g_ls_sensitive_list, &iter);
-
-            free(text);
 
             if (word == g_current_highlighted_word)
                 g_current_highlighted_word = NULL;
@@ -2794,9 +2794,12 @@ static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback f
 {
     gtk_container_foreach(GTK_CONTAINER(box), &remove_child_widget, NULL);
 
+    GList *possible_workflows = list_possible_events_glist(g_dump_dir_name, "workflow");
     GHashTable *workflow_table = load_workflow_config_data_from_list(
-                        list_possible_events_glist(g_dump_dir_name, "workflow"),
+                        possible_workflows,
                         WORKFLOWS_DIR);
+    g_list_free_full(possible_workflows, free);
+    g_object_set_data_full(G_OBJECT(box), "workflows", workflow_table, (GDestroyNotify)g_hash_table_destroy);
 
     GList *wf_list = g_hash_table_get_values(workflow_table);
     wf_list = g_list_sort(wf_list, (GCompareFunc)wf_priority_compare);
@@ -2817,6 +2820,7 @@ static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback f
         gtk_widget_set_margin_start(label, 40);
 #endif
         gtk_widget_set_margin_bottom(label, 10);
+        g_list_free(children);
         free(btn_label);
         g_signal_connect(button, "clicked", func, w);
         gtk_box_pack_start(box, button, true, false, 2);

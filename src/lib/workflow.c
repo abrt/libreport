@@ -90,7 +90,7 @@ static void load_workflow_config(const char *name,
         workflow_t *workflow = new_workflow(file->filename);
         load_workflow_description_from_file(workflow, file->fullpath);
         log_notice("Adding '%s' to workflows\n", file->filename);
-        g_hash_table_insert(wf_list, file->filename, workflow);
+        g_hash_table_insert(wf_list, xstrdup(file->filename), workflow);
     }
 }
 
@@ -104,12 +104,14 @@ GHashTable *load_workflow_config_data_from_list(GList *wf_names,
                          g_free,
                          (GDestroyNotify) free_workflow
         );
+
     GList *workflow_files = get_file_list(path, "xml");
     while(wfs)
     {
         load_workflow_config((const char *)wfs->data, workflow_files, wf_list);
         wfs = g_list_next(wfs);
     }
+    free_file_list(workflow_files);
 
     return wf_list;
 }
