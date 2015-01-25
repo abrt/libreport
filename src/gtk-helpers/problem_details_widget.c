@@ -305,6 +305,7 @@ problem_details_widget_populate(ProblemDetailsWidget *self)
             line = xasprintf("%s", uid ? uid : username);
 
         problem_details_widget_add_single_line(self, "user", line);
+        free(line);
     }
 
     { /* Type/Analyzer: CCpp */
