@@ -66,6 +66,12 @@ reporters_events += report_Bugzilla.xml \
 reporters_events_conf += report_Bugzilla.conf
 endif
 
+if BUILD_MANTISBT
+reporters_events += report_CentOSBugTracker.xml
+
+reporters_events_conf += report_CentOSBugTracker.conf
+endif
+
 if BUILD_UREPORT
 reporters_events += report_uReport.xml
 endif
@@ -90,7 +96,8 @@ dist_eventsdef_DATA = \
     print_event.conf \
     rhtsupport_event.conf \
     uploader_event.conf \
-    emergencyanalysis_event.conf
+    emergencyanalysis_event.conf \
+    centos_report_event.conf
 
 reporters_extra_dist =
 if BUILD_BUGZILLA
