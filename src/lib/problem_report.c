@@ -451,19 +451,19 @@ append_short_backtrace(struct strbuf *result, problem_data_t *problem_data, size
         log_debug("'backtrace' exceeds the text file size, going to append its short version");
 
         char *error_msg = NULL;
-        const char *analyzer = problem_data_get_content_or_NULL(problem_data, FILENAME_ANALYZER);
-        if (!analyzer)
+        const char *type = problem_data_get_content_or_NULL(problem_data, FILENAME_TYPE);
+        if (!type)
         {
-            log_debug("Problem data does not contain '"FILENAME_ANALYZER"' file");
+            log_debug("Problem data does not contain '"FILENAME_TYPE"' file");
             return 0;
         }
 
         /* For CCpp crashes, use the GDB-produced backtrace which should be
-         * available by now. sr_abrt_type_from_analyzer returns SR_REPORT_CORE
+         * available by now. sr_abrt_type_from_type returns SR_REPORT_CORE
          * by default for CCpp crashes.
          */
-        enum sr_report_type report_type = sr_abrt_type_from_analyzer(analyzer);
-        if (strcmp(analyzer, "CCpp") == 0)
+        enum sr_report_type report_type = sr_abrt_type_from_type(type);
+        if (strcmp(type, "CCpp") == 0)
         {
             log_debug("Successfully identified 'CCpp' abrt type");
             report_type = SR_REPORT_GDB;
