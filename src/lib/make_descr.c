@@ -20,7 +20,7 @@
 
 static bool rejected_name(const char *name, char **v, int flags)
 {
-    bool r = is_in_string_list(name, v);
+    bool r = is_in_string_list(name, (const char *const *)v);
     if (flags & MAKEDESC_WHITELIST)
          r = !r;
     return r;
@@ -59,8 +59,8 @@ static int list_cmp(const char *s1, const char *s2)
             FILENAME_COUNT     ,
             NULL
     };
-    int s1_index = index_of_string_in_list(s1, (char**) list_order);
-    int s2_index = index_of_string_in_list(s2, (char**) list_order);
+    int s1_index = index_of_string_in_list(s1, list_order);
+    int s2_index = index_of_string_in_list(s2, list_order);
 
     if(s1_index < 0 && s2_index < 0)
         return strcmp(s1, s2);
