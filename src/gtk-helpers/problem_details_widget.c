@@ -232,7 +232,7 @@ static void
 problem_data_entry_to_grid_row_one_line(const char *item_name, problem_item *item, ProblemDetailsWidget *self)
 {
     if (((item->flags & CD_FLAG_TXT) && (strchr(item->content, '\n') == NULL))
-             && !is_in_string_list(item_name, (char **)items_auto_blacklist))
+             && !is_in_string_list(item_name, items_auto_blacklist))
         problem_details_widget_add_single_line(self, item_name, item->content);
 }
 
@@ -240,7 +240,7 @@ static void
 problem_data_entry_to_grid_row_multi_line(const char *item_name, problem_item *item, ProblemDetailsWidget *self)
 {
     if (((item->flags & CD_FLAG_TXT) && (strchr(item->content, '\n') != NULL))
-            && !is_in_string_list(item_name, (char **)items_auto_blacklist))
+            && !is_in_string_list(item_name, items_auto_blacklist))
         problem_details_widget_add_multi_line(self, item_name, item->content);
 }
 
@@ -248,7 +248,7 @@ static void
 problem_data_entry_to_grid_row_binary(const char *item_name, problem_item *item, ProblemDetailsWidget *self)
 {
     if ((item->flags & CD_FLAG_BIN)
-            && !is_in_string_list(item_name, (char **)items_auto_blacklist))
+            && !is_in_string_list(item_name, items_auto_blacklist))
         problem_details_widget_add_binary(self, item_name, item->content);
 }
 
