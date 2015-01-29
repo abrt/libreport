@@ -19,6 +19,7 @@
 #ifndef LIBREPORT_TYPES_H_
 #define LIBREPORT_TYPES_H_
 
+#include <stdbool.h>
 #include <glib.h>
 
 typedef gchar **string_vector_ptr_t;

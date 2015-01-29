@@ -45,7 +45,6 @@
 #include <termios.h>
 #include <time.h>
 #include <unistd.h>
-#include <stdbool.h>
 /* Try to pull in PATH_MAX */
 #include <limits.h>
 #include <sys/param.h>
