@@ -503,7 +503,7 @@ int main(int argc, char **argv)
              * For that, we search for cross version dups first:
              */
             // SOAP API searching method is not in the final version, it's possible the project will be string
-            GList *crossver_bugs_ids = mantisbt_search_duplicate_issues(&mbt_settings, mbt_settings.m_project_id, category_substitute, /*version*/ NULL, duphash);
+            GList *crossver_bugs_ids = mantisbt_search_duplicate_issues(&mbt_settings, category_substitute, /*version*/ NULL, duphash);
 
             unsigned crossver_bugs_count = g_list_length(crossver_bugs_ids);
             log_debug("MantisBT has %i reports with duphash '%s' including cross-version ones",
@@ -514,7 +514,7 @@ int main(int argc, char **argv)
             if (crossver_bugs_count > 0)
             {
                 // SOAP API searching method is not in the final version, it's possible the project will be string
-                GList *dup_bugs_ids = mantisbt_search_duplicate_issues(&mbt_settings, mbt_settings.m_project_id, category_substitute, mbt_settings.m_project_version, duphash);
+                GList *dup_bugs_ids = mantisbt_search_duplicate_issues(&mbt_settings, category_substitute, mbt_settings.m_project_version, duphash);
 
                 unsigned dup_bugs_count =  g_list_length(dup_bugs_ids);
                 log_debug("MantisBT has %i reports with duphash '%s'",

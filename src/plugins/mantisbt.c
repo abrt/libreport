@@ -786,19 +786,52 @@ mantisbt_attach_file(const mantisbt_settings_t *settings, const char *bug_id,
     return ret;
 }
 
+static void
+soap_filter_add_new_array_parameter(xmlNodePtr filter_node, const char *name, const char *type, const char *value)
+{
+    const char *array_type = NULL;
+    if( strcmp(type, SOAP_INTEGER) == 0 )
+        array_type = SOAP_INTEGERARRAY;
+    else
+        array_type = SOAP_STRINGARRAY;
+
+    xmlNodePtr filter_item = soap_node_add_child_node(filter_node, name, array_type, /* content */ NULL);
+    soap_node_add_child_node(filter_item, "item", type, value);
+}
+
+static void
+soap_filter_custom_fields_add_new_item(xmlNodePtr filter_node, const char *custom_field_name, const char *value)
+{
+    xmlNodePtr item_node = soap_node_add_child_node(filter_node, "item", SOAP_FILTER_CUSTOMFIELD, /* content */ NULL);
+
+    xmlNodePtr field_node = soap_node_add_child_node(item_node, "field", SOAP_OBJECTREF, /* content */ NULL);
+    soap_node_add_child_node(field_node, "name", SOAP_STRING, custom_field_name);
+
+    xmlNodePtr value_node = soap_node_add_child_node(item_node, "value", SOAP_STRINGARRAY, /* content */ NULL);
+    soap_node_add_child_node(value_node, "item", SOAP_STRING, value);
+}
+
 GList *
 mantisbt_search_by_abrt_hash(mantisbt_settings_t *settings, const char *abrt_hash)
 {
-    soap_request_t *req = soap_request_new_for_method("mc_search_issues");
+    soap_request_t *req = soap_request_new_for_method("mc_filter_search_issues");
     soap_request_add_credentials_parameter(req, settings);
 
-    soap_request_add_method_parameter(req, "project_id", SOAP_INTEGER, settings->m_project_id);
+    xmlNodePtr filter_node = soap_node_add_child_node(req->sr_method, "filter", SOAP_FILTER_SEARCH_DATA, /* content */ NULL);
 
-    /* 'hide_status : -2' means, searching within all status */
-    char *filter = xasprintf("{\"hide_status\":\"-2\",\"abrt_hash\":\"%s\"}", abrt_hash);
-    soap_request_add_method_parameter(req, "filter", SOAP_STRING, filter);
+    soap_filter_add_new_array_parameter(filter_node, "project_id", SOAP_INTEGERARRAY, settings->m_project_id);
+
+    /* 'hide_status_is : -2' means, searching within all status */
+    soap_filter_add_new_array_parameter(filter_node, "hide_status_id", SOAP_INTEGERARRAY, "-2");
+
+    // custom fields
+    xmlNodePtr custom_fields_node = soap_node_add_child_node(filter_node, "custom_fields", SOAP_FILTER_CUSTOMFIELD_ARRAY, /* content */ NULL);
+
+    // custom field 'abrt_hash'
+    soap_filter_custom_fields_add_new_item(custom_fields_node, "abrt_hash", abrt_hash);
+
     soap_request_add_method_parameter(req, "page_number", SOAP_INTEGER, "1");
-    soap_request_add_method_parameter(req, "per_page", SOAP_INTEGER, /* -1 means get all issues */"-1");
+    soap_request_add_method_parameter(req, "per_page", SOAP_INTEGER, /* -1 means get all issues */ "-1");
 
     mantisbt_result_t *result = mantisbt_soap_call(settings, req);
     soap_request_free(req);
@@ -806,38 +839,43 @@ mantisbt_search_by_abrt_hash(mantisbt_settings_t *settings, const char *abrt_has
     if (result->mr_error == -1)
     {
         error_msg(_("Failed to search MantisBT issue by duphash: '%s'"), result->mr_msg);
-        free(filter);
         mantisbt_result_free(result);
         return NULL;
     }
 
     GList *ids = response_get_main_ids_list(result->mr_body);
 
-    free(filter);
-
     return ids;
 }
 
 GList *
-mantisbt_search_duplicate_issues(mantisbt_settings_t *settings, const char *project, const char *category,
-                        const char *version, const char *abrt_hash)
+mantisbt_search_duplicate_issues(mantisbt_settings_t *settings, const char *category,
+                                     const char *version, const char *abrt_hash)
 {
-    soap_request_t *req = soap_request_new_for_method("mc_search_issues");
+    soap_request_t *req = soap_request_new_for_method("mc_filter_search_issues");
     soap_request_add_credentials_parameter(req, settings);
 
-    soap_request_add_method_parameter(req, "project_id", SOAP_INTEGER, project);
+    xmlNodePtr filter_node = soap_node_add_child_node(req->sr_method, "filter", SOAP_FILTER_SEARCH_DATA, /* content */ NULL);
 
-    char *filter;
+    soap_filter_add_new_array_parameter(filter_node, "project_id", SOAP_INTEGERARRAY, settings->m_project_id);
 
-    /* 'hide_status : -2' means, searching within all status */
-    if (version == NULL)
-       filter = xasprintf("{\"hide_status\":\"-2\",\"show_category\":\"%s\", \"abrt_hash\":\"%s\"}", category, abrt_hash);
-    else
-       filter = xasprintf("{\"hide_status\":\"-2\",\"os_build\":\"%s\", \"show_category\":\"%s\", \"abrt_hash\":\"%s\"}", version, category, abrt_hash);
+    /* 'hide_status_is : -2' means, searching within all status */
+    soap_filter_add_new_array_parameter(filter_node, "hide_status_id", SOAP_INTEGERARRAY, "-2");
 
-    soap_request_add_method_parameter(req, "filter", SOAP_STRING, filter);
+    soap_filter_add_new_array_parameter(filter_node, "category", SOAP_STRINGARRAY, category);
+
+    // custom fields
+    xmlNodePtr custom_fields_node = soap_node_add_child_node(filter_node, "custom_fields", SOAP_FILTER_CUSTOMFIELD_ARRAY, /* content */ NULL);
+
+    // custom field 'abrt_hash'
+    soap_filter_custom_fields_add_new_item(custom_fields_node, "abrt_hash", abrt_hash);
+
+    // version
+    if (version != NULL)
+        soap_filter_add_new_array_parameter(filter_node, "os_build", SOAP_STRINGARRAY, version);
+
     soap_request_add_method_parameter(req, "page_number", SOAP_INTEGER, "1");
-    soap_request_add_method_parameter(req, "per_page", SOAP_INTEGER, /* -1 means get all issues */"-1");
+    soap_request_add_method_parameter(req, "per_page", SOAP_INTEGER, /* -1 means get all issues */ "-1");
 
     mantisbt_result_t *result = mantisbt_soap_call(settings, req);
     soap_request_free(req);
@@ -846,13 +884,10 @@ mantisbt_search_duplicate_issues(mantisbt_settings_t *settings, const char *proj
     {
         error_msg(_("Failed to search MantisBT duplicate issue: '%s'"), result->mr_msg);
         mantisbt_result_free(result);
-        free(filter);
         return NULL;
     }
 
     GList *ids = response_get_main_ids_list(result->mr_body);
-
-    free(filter);
 
     return ids;
 }
