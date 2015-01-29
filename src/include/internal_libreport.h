@@ -749,6 +749,9 @@ bool load_conf_file(const char *pPath, map_string_t *settings, bool skipKeysWith
 #define load_plugin_conf_file libreport_load_plugin_conf_file
 bool load_plugin_conf_file(const char *name, map_string_t *settings, bool skipKeysWithoutValue);
 
+#define get_user_conf_base_dir libreport_get_user_conf_base_dir
+const char *get_user_conf_base_dir(void);
+
 #define load_conf_file_from_dirs libreport_load_conf_file_from_dirs
 bool load_conf_file_from_dirs(const char *base_name, const char *const *directories, map_string_t *settings, bool skipKeysWithoutValue);
 
