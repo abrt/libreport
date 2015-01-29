@@ -318,6 +318,15 @@ finalize:
     return retval;
 }
 
+const char *get_user_conf_base_dir(void)
+{
+    static char *base_dir = NULL;
+    if (base_dir == NULL)
+        base_dir = concat_path_file(g_get_user_config_dir(), "abrt/settings/");
+
+    return base_dir;
+}
+
 bool load_conf_file_from_dirs(const char *base_name, const char *const *directories, map_string_t *settings, bool skipKeysWithoutValue)
 {
     if (NULL == directories || NULL == *directories)
