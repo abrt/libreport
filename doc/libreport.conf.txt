@@ -13,6 +13,14 @@ applications to different bug targets like Bugzilla, ftp, trac, etc...
 The configuration file consists of items in the format "Option = Value".
 A description of each item follows:
 
+AlwaysExcludedElements = 'name, name1, name2'::
+   A colon separated list of problem element names (problem element is usually
+   represented by a single file in a directory (i.e. environment variables are
+   stored in 'environ' file)). The list is used by libreport and its plugins to
+   exclude the listed problem elements from reports. If you do not want to
+   include some information in reports, add the name of problem element that
+   contain this information on this list.
+
 FILES
 -----
 /etc/libreport/libreport.conf::

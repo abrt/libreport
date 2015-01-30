@@ -26,6 +26,9 @@ const char *g_progname;
 
 const char *abrt_init(char **argv)
 {
+    if (!load_global_configuration())
+        error_msg_and_die("Cannot continue without libreport global configuration.");
+
     char *env_verbose = getenv("ABRT_VERBOSE");
     if (env_verbose)
         g_verbose = atoi(env_verbose);
