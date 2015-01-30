@@ -10,7 +10,7 @@ libreport_include_HEADERS = \
     run_event.h \
     libreport_curl.h \
     workflow.h \
-    \
+    global_configuration.h \
     config_item_info.h \
     file_obj.h \
     internal_libreport.h \
