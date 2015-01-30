@@ -452,11 +452,14 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %doc README COPYING
+%config(noreplace) %{_sysconfdir}/%{name}/libreport.conf
 %config(noreplace) %{_sysconfdir}/%{name}/report_event.conf
 %config(noreplace) %{_sysconfdir}/%{name}/forbidden_words.conf
 %config(noreplace) %{_sysconfdir}/%{name}/ignored_words.conf
+%{_datadir}/%{name}/conf.d/libreport.conf
 %{_libdir}/libreport.so.*
 %{_libdir}/libabrt_dbus.so.*
+%{_mandir}/man5/libreport.conf.5*
 %{_mandir}/man5/report_event.conf.5*
 %{_mandir}/man5/forbidden_words.conf.5*
 %{_mandir}/man5/ignored_words.conf.5*
@@ -491,6 +494,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_includedir}/libreport/problem_details_dialog.h
 %{_includedir}/libreport/ureport.h
 %{_includedir}/libreport/reporters.h
+%{_includedir}/libreport/global_configuration.h
 # Private api headers:
 %{_includedir}/libreport/internal_abrt_dbus.h
 %{_includedir}/libreport/internal_libreport.h
