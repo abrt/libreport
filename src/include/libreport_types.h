@@ -23,6 +23,7 @@
 #include <glib.h>
 
 typedef gchar **string_vector_ptr_t;
+typedef const gchar *const *const_string_vector_const_ptr_t;
 
 #define string_vector_new_from_string libreport_string_vector_new_from_string
 string_vector_ptr_t string_vector_new_from_string(const char *vector);

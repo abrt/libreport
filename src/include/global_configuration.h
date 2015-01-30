@@ -32,6 +32,9 @@ bool load_global_configuration(void);
 #define free_global_configuration libreport_free_global_configuration
 void free_global_configuration(void);
 
+#define get_global_always_excluded_elements libreport_get_global_always_excluded_elements
+string_vector_ptr_t get_global_always_excluded_elements(void);
+
 #ifdef __cplusplus
 }
 #endif

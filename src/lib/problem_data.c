@@ -483,56 +483,16 @@ problem_data_t *create_problem_data_from_dump_dir(struct dump_dir *dd)
     return problem_data;
 }
 
-/*
- * Returns NULL-terminated char *vector[]. Result itself must be freed,
- * but do no free list elements. IOW: do free(result), but never free(result[i])!
- * If comma_separated_list is NULL or "", returns NULL.
- */
-static char **build_exclude_vector(const char *comma_separated_list)
-{
-    char **exclude_items = NULL;
-    if (comma_separated_list && comma_separated_list[0])
-    {
-        /* even w/o commas, we'll need two elements:
-         * exclude_items[0] = "name"
-         * exclude_items[1] = NULL
-         */
-        unsigned cnt = 2;
-
-        const char *cp = comma_separated_list;
-        while (*cp)
-            if (*cp++ == ',')
-                cnt++;
-
-        /* We place the string directly after the char *vector[cnt]: */
-        exclude_items = xzalloc(cnt * sizeof(exclude_items[0]) + (cp - comma_separated_list) + 1);
-        char *p = strcpy((char*)&exclude_items[cnt], comma_separated_list);
-
-        char **pp = exclude_items;
-        *pp++ = p;
-        while (*p)
-        {
-            if (*p++ == ',')
-            {
-                p[-1] = '\0';
-                *pp++ = p;
-            }
-        }
-    }
-
-    return exclude_items;
-}
-
 problem_data_t *create_problem_data_for_reporting(const char *dump_dir_name)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return NULL; /* dd_opendir already emitted error msg */
-    char **exclude_items = build_exclude_vector(getenv("EXCLUDE_FROM_REPORT"));
+    string_vector_ptr_t exclude_items = get_global_always_excluded_elements();
     problem_data_t *problem_data = problem_data_new();
     problem_data_load_from_dump_dir(problem_data, dd, exclude_items);
     dd_close(dd);
-    free(exclude_items);
+    string_vector_free(exclude_items);
     return problem_data;
 }
 

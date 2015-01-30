@@ -96,12 +96,12 @@ static int create_and_upload_archive(
 
     /* Write data to the tarball */
     {
-        char *exclude_from_report = getenv("EXCLUDE_FROM_REPORT");
+        string_vector_ptr_t exclude_from_report = get_global_always_excluded_elements();
         dd_init_next_file(dd);
         char *short_name, *full_name;
         while (dd_get_next_file(dd, &short_name, &full_name))
         {
-            if (exclude_from_report && is_in_comma_separated_list(short_name, exclude_from_report))
+            if (exclude_from_report && is_in_string_list(short_name, (const_string_vector_const_ptr_t)exclude_from_report))
                 goto next;
 
             // dd_get_next_file guarantees that it's a REG:

@@ -22,6 +22,8 @@
 #include "internal_libreport_gtk.h"
 #include "wizard.h"
 #include "search_item.h"
+#include "libreport_types.h"
+#include "global_configuration.h"
 
 #define DEFAULT_WIDTH   800
 #define DEFAULT_HEIGHT  500
@@ -1257,10 +1259,14 @@ static void update_ls_details_checkboxes(const char *event_name)
     char *name;
     struct problem_item *item;
     g_hash_table_iter_init(&iter, g_cd);
+    string_vector_ptr_t global_exclude = get_global_always_excluded_elements();
     while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&item))
     {
         /* Decide whether item is allowed, required, and what's the default */
         item->allowed_by_reporter = 1;
+        if (global_exclude)
+            item->allowed_by_reporter = !is_in_string_list(name, (const_string_vector_const_ptr_t)global_exclude);
+
         if (cfg)
         {
             if (is_in_comma_separated_list_of_glob_patterns(name, cfg->ec_exclude_items_always))

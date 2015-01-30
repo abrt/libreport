@@ -108,3 +108,23 @@ static void assert_global_configuration_initialized(void)
         error_msg_and_die("libreport global settings contains invalid data: '"name"'"); \
     opt;\
     })
+
+string_vector_ptr_t get_global_always_excluded_elements(void)
+{
+    assert_global_configuration_initialized();
+
+    char *env_exclude = getenv("EXCLUDE_FROM_REPORT");
+    const char *gc_exclude = get_map_string_item_or_NULL(s_global_settings, OPT_NAME_EXCLUDED_ELEMENTS);
+
+    if (env_exclude != NULL && gc_exclude == NULL)
+        return string_vector_new_from_string(env_exclude);
+
+    if (env_exclude == NULL && gc_exclude != NULL)
+        return string_vector_new_from_string(gc_exclude);
+
+    char *joined_exclude = xasprintf("%s,%s", env_exclude, gc_exclude);
+    string_vector_ptr_t ret = string_vector_new_from_string(joined_exclude);
+    free(joined_exclude);
+
+    return ret;
+}
