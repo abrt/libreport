@@ -40,6 +40,7 @@ MAN5_TXT += bugzilla_format_analyzer_libreport.conf.txt
 MAN5_TXT += emergencyanalysis_event.conf.txt
 MAN5_TXT += ignored_words.conf.txt
 MAN5_TXT += forbidden_words.conf.txt
+MAN5_TXT += libreport.conf.txt
 MAN5_TXT += mailx.conf.txt
 MAN5_TXT += mailx_event.conf.txt
 MAN5_TXT += print_event.conf.txt

@@ -1,4 +1,11 @@
 # libreport - the stuff shared among most of abrt (like xmalloc, logging)
+
+confdir = $(CONF_DIR)
+dist_conf_DATA = libreport.conf
+
+defaultconfdir = $(DEFAULT_CONF_DIR)
+dist_defaultconf_DATA = $(dist_conf_DATA)
+
 lib_LTLIBRARIES = \
     libreport.la \
     libreport-web.la \
@@ -58,7 +65,8 @@ libreport_la_SOURCES = \
     config_item_info.c \
     xml_parser.c \
     libreport_init.c \
-    reporters.c
+    reporters.c \
+    global_configuration.c
 
 libreport_la_CPPFLAGS = \
     -I$(srcdir)/../include \

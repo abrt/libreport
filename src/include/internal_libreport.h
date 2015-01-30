@@ -89,6 +89,7 @@ int vdprintf(int d, const char *format, va_list ap);
 #define CREATE_PRIVATE_TICKET "ABRT_CREATE_PRIVATE_TICKET"
 
 /* Pull in entire public libreport API */
+#include "global_configuration.h"
 #include "dump_dir.h"
 #include "event_config.h"
 #include "problem_data.h"

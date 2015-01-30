@@ -274,6 +274,7 @@ AC_CHECK_HEADER([libtar.h], [],
 AC_CHECK_HEADERS([locale.h])
 
 CONF_DIR='${sysconfdir}/${PACKAGE_NAME}'
+DEFAULT_CONF_DIR='${datadir}/${PACKAGE_NAME}/conf.d'
 VAR_RUN='${localstatedir}/run'
 PLUGINS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/plugins'
 REPORT_PLUGINS_CONF_DIR='${sysconfdir}/libreport/plugins'
@@ -363,6 +364,7 @@ fi
 AM_CONDITIONAL(DOXYGEN_DOCS_ENABLED, test "$enable_doxygen_docs" = "yes")
 
 AC_SUBST(CONF_DIR)
+AC_SUBST(DEFAULT_CONF_DIR)
 AC_SUBST(VAR_RUN)
 AC_SUBST(PLUGINS_CONF_DIR)
 AC_SUBST(REPORT_PLUGINS_CONF_DIR)
