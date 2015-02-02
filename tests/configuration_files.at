@@ -321,6 +321,43 @@ int main(int argc, char **argv)
 }
 ]])
 
+## ---------------------------- ##
+## load_conf_file_from_dirs_ext ##
+## ---------------------------- ##
+
+AT_TESTFUN([load_conf_file_from_dirs_ext],
+[[
+#include "internal_libreport.h"
+
+#define CONF_NAME "file.conf"
+
+int main(void)
+{
+    g_verbose = 3;
+
+    {
+        const char *const dir_vec[] = {
+            "../../conf/second",
+            "/org/freedesktop/problems/invalid",
+            NULL,
+        };
+
+        int dir_flags_vec[] = {
+            CONF_DIR_FLAG_NONE,
+            CONF_DIR_FLAG_OPTIONAL,
+            -1,
+        };
+
+        map_string_t *settings = new_map_string();
+
+        assert(load_conf_file_from_dirs_ext(CONF_NAME, dir_vec, dir_flags_vec, settings, 0));
+
+        free_map_string(settings);
+    }
+}
+]])
+
+
 
 ## ---------------##
 ## save_conf_file ##
