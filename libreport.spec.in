@@ -213,14 +213,14 @@ Requires: libreport-web = %{version}-%{release}
 %description plugin-mantisbt
 Plugin to report bugs into the mantisbt.
 
-%package workflow-centos
+%package centos
 Summary: %{name}'s CentOS Bug Tracker workflow
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-web = %{version}-%{release}
 Requires: libreport-plugin-mantisbt = %{version}-%{release}
 
-%description workflow-centos
+%description centos
 Workflows to report issues into the CentOS Bug Tracker.
 
 %package plugin-ureport
@@ -624,7 +624,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/plugins/mantisbt_formatdup.conf
 %{_bindir}/reporter-mantisbt
 
-%files workflow-centos
+%files centos
 %{_datadir}/%{name}/workflows/workflow_CentOSCCpp.xml
 %{_datadir}/%{name}/workflows/workflow_CentOSKerneloops.xml
 %{_datadir}/%{name}/workflows/workflow_CentOSPython.xml
