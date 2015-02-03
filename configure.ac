@@ -409,6 +409,7 @@ AC_CONFIG_FILES([
 	src/report-newt/Makefile
 	src/plugins/Makefile
 	src/client-python/Makefile
+	src/client-python/reportclient/Makefile
 	po/Makefile.in
 	doc/Makefile
 	doc/plugins-dbus/Makefile
