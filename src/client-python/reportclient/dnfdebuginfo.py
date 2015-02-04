@@ -24,8 +24,13 @@ import shutil
 import dnf
 import dnf.rpm
 from dnf.exceptions import DownloadError, RepoError
+from dnf.callback import (STATUS_OK,
+                          STATUS_DRPM,
+                          STATUS_ALREADY_EXISTS,
+                          STATUS_MIRROR,
+                          STATUS_FAILED)
 
-from reportclient import (_, log2)
+from reportclient import (_, log1, log2)
 from reportclient.debuginfo import DebugInfoDownload
 
 class DNFProgress(dnf.callback.DownloadProgress):
@@ -41,8 +46,15 @@ class DNFProgress(dnf.callback.DownloadProgress):
         # downloaded package is already in a local cache, DNF doesn't call
         # progress() callback at all but yet we want to inform user about that
         # progress.
-        log2("Finished a package")
-        self.observer.update(str(payload), 100)
+        if status in [STATUS_OK, STATUS_DRPM, STATUS_ALREADY_EXISTS]:
+            self.observer.update(str(payload), 100)
+        elif status == STATUS_MIRROR:
+            # In this case dnf (librepo) tries other mirror if available
+            log1("Mirror failed: %s" % (msg or "DNF did not provide more details"))
+        elif status in STATUS_FAILED:
+            log2("Downloading failed: %s" % (msg or "DNF did not provide more details"))
+        else:
+            sys.stderr.write("Unknown DNF download status: %s\n" % (msg))
 
     def progress(self, payload, done):
         log2("Updated a package")
