@@ -839,8 +839,6 @@ mantisbt_search_by_abrt_hash(mantisbt_settings_t *settings, const char *abrt_has
 
     xmlNodePtr filter_node = soap_node_add_child_node(req->sr_method, "filter", SOAP_FILTER_SEARCH_DATA, /* content */ NULL);
 
-    soap_filter_add_new_array_parameter(filter_node, "project_id", SOAP_INTEGERARRAY, settings->m_project_id);
-
     /* 'hide_status_is : -2' means, searching within all status */
     soap_filter_add_new_array_parameter(filter_node, "hide_status_id", SOAP_INTEGERARRAY, "-2");
 
@@ -1094,6 +1092,9 @@ mantisbt_add_issue_note(const mantisbt_settings_t *settings, int issue_id, const
 void
 mantisbt_get_project_id_from_name(mantisbt_settings_t *settings)
 {
+    if (settings->m_project == NULL)
+        error_msg_and_die(_("The MantisBT project has not been deretmined."));
+
     soap_request_t *req = soap_request_new_for_method("mc_project_get_id_from_name");
     soap_request_add_credentials_parameter(req, settings);
     soap_node_add_child_node(req->sr_method, "project_name", SOAP_STRING, settings->m_project);

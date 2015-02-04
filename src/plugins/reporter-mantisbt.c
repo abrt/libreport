@@ -169,17 +169,17 @@ set_settings(mantisbt_settings_t *m, map_string_t *settings, struct dump_dir *dd
         free(m->m_project);
         free(m->m_project_version);
 
-        map_string_t *osinfo = new_map_string();
+        if (dd != NULL)
+        {
+            map_string_t *osinfo = new_map_string();
 
-        char *os_info_data = dd_load_text(dd, FILENAME_OS_INFO);
-        parse_osinfo(os_info_data, osinfo);
-        free(os_info_data);
+            char *os_info_data = dd_load_text(dd, FILENAME_OS_INFO);
+            parse_osinfo(os_info_data, osinfo);
+            free(os_info_data);
 
-        parse_osinfo_for_mantisbt(osinfo, &m->m_project, &m->m_project_version);
-        free_map_string(osinfo);
-
-        if (!m->m_project)
-            error_msg_and_die(_("Can't determine MantisBT project from problem data."));
+            parse_osinfo_for_mantisbt(osinfo, &m->m_project, &m->m_project_version);
+            free_map_string(osinfo);
+        }
     }
 
     environ = getenv("Mantisbt_SSLVerify");
@@ -313,9 +313,13 @@ int main(int argc, char **argv)
             conf_file = g_list_delete_link(conf_file, conf_file);
         }
 
-        struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-        if (!dd)
-            error_msg_and_die(_("Can't open problem dir '%s'."), dump_dir_name);
+        struct dump_dir *dd = NULL;
+        if (abrt_hash == NULL)
+        {
+            dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+            if (!dd)
+                error_msg_and_die(_("Can't open problem dir '%s'."), dump_dir_name);
+        }
 
         set_settings(&mbt_settings, settings, dd);
         dd_close(dd);
@@ -333,7 +337,6 @@ int main(int argc, char **argv)
      * verification of credentials.
      */
     verify_credentials(&mbt_settings);
-    mantisbt_get_project_id_from_name(&mbt_settings);
 
     if (abrt_hash)
     {
@@ -348,6 +351,8 @@ int main(int argc, char **argv)
         response_values_free(ids);
         return EXIT_SUCCESS;
     }
+
+    mantisbt_get_project_id_from_name(&mbt_settings);
 
     if (opts & OPT_t)
     {
