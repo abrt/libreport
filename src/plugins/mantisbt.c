@@ -1052,7 +1052,8 @@ mantisbt_get_issue_info(const mantisbt_settings_t *settings, int issue_id)
 
     /* looking for bt rating in additional information too */
     char *add_info = response_get_additioanl_information(result->mr_body);
-    issue_info->mii_notes = g_list_append (issue_info->mii_notes, add_info);
+    if (add_info != NULL)
+        issue_info->mii_notes = g_list_append (issue_info->mii_notes, add_info);
     issue_info->mii_attachments = response_values_at_depth_by_name(result->mr_body, "filename", -1);
     issue_info->mii_best_bt_rating = comments_find_best_bt_rating(issue_info->mii_notes);
 
