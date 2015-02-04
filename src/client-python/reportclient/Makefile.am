@@ -2,7 +2,9 @@ clientexecdir = $(pyexecdir)/reportclient
 
 clientexec_PYTHON = \
     __init__.py \
-    debuginfo.py
+    debuginfo.py \
+    dnfdebuginfo.py \
+    yumdebuginfo.py
 
 clientexec_LTLIBRARIES = _reportclient.la
 
