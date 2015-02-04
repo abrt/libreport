@@ -951,7 +951,7 @@ mantisbt_get_custom_fields(const mantisbt_settings_t *settings, mantisbt_custom_
     soap_request_free(req);
 
     if (result->mr_http_resp_code != 200)
-        error_msg_and_die(_("Failed to get custom fields"));
+        error_msg_and_die(_("Failed to get custom fields for '%s' project"), settings->m_project);
 
     GList *ids = response_values_at_depth_by_name(result->mr_body, "id", -1);
     GList *names = response_values_at_depth_by_name(result->mr_body, "name", -1);
