@@ -186,6 +186,7 @@ class YumDebugInfoDownload(DebugInfoDownload):
     def download_package(self, pkg):
         remote = pkg.returnSimple('relativepath')
         local = os.path.basename(remote)
+        local = os.path.join(self.tmpdir, local)
 
         remote_path = pkg.returnSimple('remote_url')
         # check if the pkg is in a local repo and copy it if it is
@@ -194,15 +195,14 @@ class YumDebugInfoDownload(DebugInfoDownload):
             pkg_path = remote_path[7:]
             log2("copying from local repo: %s", remote)
             try:
-                shutil.copy(pkg_path, self.tmpdir)
+                shutil.copy(pkg_path, local)
             except OSError as ex:
                 err = _("Cannot copy file '{0}': {1}").format(pkg_path, str(ex))
         else:
             # pkg is in a remote repo, we need to download it to tmpdir
-            local = os.path.join(self.tmpdir, local)
             pkg.localpath = local # Hack: to set the localpath we want
             err = self.base.downloadPkgs(pkglist=[pkg])
 
         # normalize the name
         # just str(pkg) doesn't work because it can have epoch
-        return (pkg.name + "-" + pkg.version + "-" + pkg.release + "." + pkg.arch + ".rpm", err)
+        return (local, err)

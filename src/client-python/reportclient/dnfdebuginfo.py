@@ -114,10 +114,4 @@ class DNFDebugInfoDownload(DebugInfoDownload):
         except DownloadError as ex:
             return (None, str(ex))
 
-        # move the rmp from DNF cache to ABRT tmp
-        # - we want to delete rpms
-        # - we cannot do that from DNF cache because we run as 'abrt:abrt'
-        #   but the dnf directory is owned by 'root:root'
-        shutil.move(pkg.localPkg(), self.tmpdir)
-
-        return (os.path.basename(pkg.localPkg()), None)
+        return (pkg.localPkg(), None)

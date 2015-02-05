@@ -78,23 +78,21 @@ def ensure_abrt_uid(fn):
 # ..that can lead to: foo.c No such file and directory
 # files is not used...
 @ensure_abrt_uid
-def unpack_rpm(package_file_name, files, tmp_dir, destdir, keeprpm, exact_files=False):
+def unpack_rpm(package_full_path, files, tmp_dir, destdir, exact_files=False):
     """
     Unpacks a single rpm located in tmp_dir into destdir.
 
     Arguments:
-        package_file_name - name of the rpm file
+        package_full_path - full file system path to the rpm file
         files - files to extract from the rpm
         tmp_dir - temporary directory where the rpm file is located
         destdir - destination directory for the rpm package extraction
-        keeprpm - check if the user wants to delete rpms from the tmp directory
         exact_files - extract only specified files
 
     Returns:
         RETURN_FAILURE in case of a serious problem
     """
 
-    package_full_path = tmp_dir + "/" + package_file_name
     log1("Extracting %s to %s", package_full_path, destdir)
     log2("%s", files)
     print(_("Extracting cpio from {0}").format(package_full_path))
@@ -111,10 +109,6 @@ def unpack_rpm(package_file_name, files, tmp_dir, destdir, keeprpm, exact_files=
 
     if retcode == 0:
         log1("cpio written OK")
-        if not keeprpm:
-            log1("keeprpms = False, removing %s", package_full_path)
-            #print _("Removing temporary rpm file")
-            os.unlink(package_full_path)
     else:
         unpacked_cpio.close()
         print(_("Can't extract package '{0}'").format(package_full_path))
@@ -125,7 +119,7 @@ def unpack_rpm(package_file_name, files, tmp_dir, destdir, keeprpm, exact_files=
     # and open it for reading
     unpacked_cpio = open(unpacked_cpio_path, 'rb')
 
-    print(_("Caching files from {0} made from {1}").format("unpacked.cpio", package_file_name))
+    print(_("Caching files from {0} made from {1}").format("unpacked.cpio", os.path.basename(package_full_path)))
 
     file_patterns = ""
     cpio_args = ["cpio", "-idu"]
@@ -364,25 +358,29 @@ class DebugInfoDownload(object):
 
         for pkg, files in package_files_dict.items():
             # Download
-            package_file_name, err = self.download_package(pkg)
+            package_full_path, err = self.download_package(pkg)
 
             if err:
                 # I observed a zero-length file left on error,
                 # which prevents cleanup later. Fix it:
                 try:
-                    os.unlink(self.tmpdir + "/" + package_file_name)
+                    os.unlink(package_full_path)
                 except OSError:
                     pass
                 print(_("Downloading package {0} failed").format(pkg))
             else:
-                unpack_result = unpack_rpm(package_file_name, files, self.tmpdir,
-                                           self.cachedir, self.keeprpms,
-                                           exact_files=download_exact_files)
+                unpack_result = unpack_rpm(package_full_path, files, self.tmpdir,
+                                           self.cachedir, exact_files=download_exact_files)
+
                 if unpack_result == RETURN_FAILURE:
                     # recursively delete the temp dir on failure
                     print(_("Unpacking failed, aborting download..."))
                     clean_up(self.tmpdir)
                     return RETURN_FAILURE
+
+                if not self.keeprpms:
+                    log1("keeprpms = False, removing %s", package_full_path)
+                    os.unlink(package_full_path)
 
             progress_observer.downloaded_pkgs += 1
 
