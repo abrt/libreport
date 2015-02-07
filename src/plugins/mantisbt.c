@@ -588,6 +588,13 @@ response_get_error_msg(const char *xml)
     return (l != NULL) ? xstrdup(l->data) : NULL;
 }
 
+static char *
+response_get_additioanl_information(const char *xml)
+{
+    GList *l = response_values_at_depth_by_name(xml, "additional_information", -1);
+    return (l != NULL) ? xstrdup(l->data) : NULL;
+}
+
 void
 response_values_free(GList *values)
 {
@@ -1031,6 +1038,10 @@ mantisbt_get_issue_info(const mantisbt_settings_t *settings, int issue_id)
 
     /* notes are stored in <text> element */
     issue_info->mii_notes = response_values_at_depth_by_name(result->mr_body, "text", -1);
+
+    /* looking for bt rating in additional information too */
+    char *add_info = response_get_additioanl_information(result->mr_body);
+    issue_info->mii_notes = g_list_append (issue_info->mii_notes, add_info);
     issue_info->mii_attachments = response_values_at_depth_by_name(result->mr_body, "filename", -1);
     issue_info->mii_best_bt_rating = comments_find_best_bt_rating(issue_info->mii_notes);
 

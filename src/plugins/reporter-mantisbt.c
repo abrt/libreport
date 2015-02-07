@@ -40,15 +40,6 @@ parse_osinfo_for_mantisbt(map_string_t *osinfo, char** project, char** version)
         return;
     }
 
-    /*
-     * TODO parse prety name
-    const char *pretty = get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME);
-    if (pretty)
-    {
-        return;
-    }
-     */
-
     /* something bad happend */
     *project = NULL;
     *version = NULL;
@@ -132,7 +123,7 @@ verify_credentials(mantisbt_settings_t *settings)
 }
 
 static void
-set_settings(mantisbt_settings_t *m, map_string_t *settings)
+set_settings(mantisbt_settings_t *m, map_string_t *settings, struct dump_dir *dd)
 {
     const char *environ;
 
@@ -173,11 +164,22 @@ set_settings(mantisbt_settings_t *m, map_string_t *settings)
             m->m_project_version = xstrdup(option);
     }
 
-    if (!m->m_project)
+    if (!m->m_project || !*m->m_project) /* if not overridden or empty... */
     {
-        environ = getenv("Mantisbt_OSRelease");
-        if (environ)
-            parse_release_for_bz(environ, &m->m_project, &m->m_project_version);
+        free(m->m_project);
+        free(m->m_project_version);
+
+        map_string_t *osinfo = new_map_string();
+
+        char *os_info_data = dd_load_text(dd, FILENAME_OS_INFO);
+        parse_osinfo(os_info_data, osinfo);
+        free(os_info_data);
+
+        parse_osinfo_for_mantisbt(osinfo, &m->m_project, &m->m_project_version);
+        free_map_string(osinfo);
+
+        if (!m->m_project)
+            error_msg_and_die(_("Can't determine MantisBT project from problem data."));
     }
 
     environ = getenv("Mantisbt_SSLVerify");
@@ -310,7 +312,13 @@ int main(int argc, char **argv)
             log_debug("Loaded '%s'", fn);
             conf_file = g_list_delete_link(conf_file, conf_file);
         }
-        set_settings(&mbt_settings, settings);
+
+        struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+        if (!dd)
+            error_msg_and_die(_("Can't open problem dir '%s'."), dump_dir_name);
+
+        set_settings(&mbt_settings, settings, dd);
+        dd_close(dd);
         /* WRONG! set_settings() does not copy the strings, it merely sets up pointers
          * to settings[] dictionary:
          */
@@ -414,21 +422,6 @@ int main(int argc, char **argv)
 
     const char *category = problem_data_get_content_or_die(problem_data, FILENAME_COMPONENT);
     const char *duphash   = problem_data_get_content_or_die(problem_data, FILENAME_DUPHASH);
-
-    if (!mbt_settings.m_project || !*mbt_settings.m_project) /* if not overridden or empty... */
-    {
-        free(mbt_settings.m_project);
-        free(mbt_settings.m_project_version);
-        map_string_t *osinfo = new_map_string();
-        problem_data_get_osinfo(problem_data, osinfo);
-        // TODO it does not work well now
-        parse_osinfo_for_mantisbt(osinfo, &mbt_settings.m_project, &mbt_settings.m_project_version);
-
-        free_map_string(osinfo);
-
-        if (!mbt_settings.m_project)
-            error_msg_and_die(_("Can't determine MantisBT project from problem data."));
-    }
 
     if (opts & OPT_D)
     {
