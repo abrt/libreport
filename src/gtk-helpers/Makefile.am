@@ -5,7 +5,8 @@ libreport_gtk_includedir = \
 libreport_gtk_include_HEADERS = \
     internal_libreport_gtk.h \
     problem_details_widget.h \
-    problem_details_dialog.h
+    problem_details_dialog.h \
+    problem_utils.h
 
 lib_LTLIBRARIES = \
     libreport-gtk.la
@@ -21,7 +22,8 @@ libreport_gtk_la_SOURCES = \
     ask_dialogs.c \
     search_item.c search_item.h \
     problem_details_widget.c problem_details_widget.h \
-    problem_details_dialog.c problem_details_dialog.h
+    problem_details_dialog.c problem_details_dialog.h \
+    desktop-utils.c problem_utils.h
 
 libreport_gtk_la_CPPFLAGS = \
     -I$(srcdir)/../include \
