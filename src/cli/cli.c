@@ -116,7 +116,7 @@ int main(int argc, char** argv)
          * FALSE == FALSE (need arg but havent).
          * OPT_list_events is an exception, it can be used in both cases.
          */
-        ((!(opts & OPTMASK_need_arg) == argc) && (op != OPT_list_events))
+        (((!(opts & OPTMASK_need_arg)) == argc) && (op != OPT_list_events))
     ) {
         show_usage_and_die(program_usage_string, program_options);
     }
