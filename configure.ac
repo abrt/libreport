@@ -241,7 +241,7 @@ LIBREPORT_PARSE_WITH([gtk]))
 if test -z "$NO_GTK"; then
 AM_CONDITIONAL(BUILD_GTK, true)
 PKG_CHECK_MODULES([GTK], [gtk+-3.0])
-PKG_CHECK_MODULES([GIO], [gio-2.0])
+PKG_CHECK_MODULES([GIO], [gio-2.0 gio-unix-2.0])
 else
 AM_CONDITIONAL(BUILD_GTK, false)
 fi dnl end NO_GTK
