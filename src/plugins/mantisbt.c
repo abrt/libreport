@@ -300,6 +300,7 @@ soap_add_new_issue_parameters(soap_request_t *req,
     soap_node_add_child_node(view_node, "name", SOAP_STRING, (private) ? "private" : "public");
 
     /* if any custom field exists */
+    int custom_fields_count = 0;
     xmlNodePtr duphash_node;
     if (fields->cf_abrt_hash_id != NULL || fields->cf_url_id != NULL)
         duphash_node = soap_node_add_child_node(issue_node, "custom_fields", SOAP_CUSTOMFIELD_ARRAY, /* content */ NULL);
@@ -312,6 +313,7 @@ soap_add_new_issue_parameters(soap_request_t *req,
         field_node = soap_node_add_child_node(item_node, "field", SOAP_OBJECTREF, /* content */ NULL);
         soap_node_add_child_node(field_node, "id", SOAP_INTEGER, /* custom_field id */ fields->cf_abrt_hash_id);
         soap_node_add_child_node(item_node, "value", SOAP_STRING, duphash);
+        ++custom_fields_count;
     }
 
     // if tracker url exists, attach it to the issue
@@ -321,6 +323,17 @@ soap_add_new_issue_parameters(soap_request_t *req,
         field_node = soap_node_add_child_node(item_node, "field", SOAP_OBJECTREF, /* content */ NULL);
         soap_node_add_child_node(field_node, "id", SOAP_INTEGER, /* custom_field */ fields->cf_url_id);
         soap_node_add_child_node(item_node, "value", SOAP_STRING, tracker_url);
+        ++custom_fields_count;
+    }
+
+    if (custom_fields_count > 0)
+    {
+        char *type = xasprintf("%s[%i]", SOAP_CUSTOMFIELD, custom_fields_count);
+
+        if (xmlNewProp(duphash_node, BAD_CAST "ns3:arrayType", BAD_CAST type) == NULL)
+            error_msg_and_die(_("SOAP: Failed to create a new property in custom fields."));
+
+        free(type);
     }
 
     soap_node_add_child_node(issue_node, "os_build", SOAP_STRING, version);
