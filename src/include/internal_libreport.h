@@ -92,6 +92,7 @@ int vdprintf(int d, const char *format, va_list ap);
 #include "problem_data.h"
 #include "report.h"
 #include "run_event.h"
+#include "file_obj.h"
 #include "libreport_types.h"
 
 #ifdef __cplusplus
@@ -631,6 +632,14 @@ void set_user_setting(const char *name, const char *value);
 const char *get_user_setting(const char *name);
 #define load_forbidden_words libreport_load_forbidden_words
 GList *load_forbidden_words();
+#define  get_file_list libreport_get_file_list
+GList *get_file_list(const char *path, const char *ext);
+#define free_file_list libreport_free_file_list
+void free_file_list(GList *filelist);
+#define new_file_obj libreport_new_file_obj
+file_obj_t *new_file_obj(const char* fullpath, const char* filename);
+#define free_file_obj libreport_free_file_obj
+void free_file_obj(file_obj_t *f);
 
 /* Connect to abrtd over unix domain socket, issue DELETE command */
 int delete_dump_dir_possibly_using_abrtd(const char *dump_dir_name);

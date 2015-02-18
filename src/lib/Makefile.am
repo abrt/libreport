@@ -49,7 +49,10 @@ libreport_la_SOURCES = \
     user_settings.c \
     client.c \
     reported_to.c \
-    utf8.c
+    utf8.c \
+    file_list.c \
+    file_obj.c
+
 libreport_la_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror \
     -I$(srcdir)/../include \
