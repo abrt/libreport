@@ -306,3 +306,406 @@ dumpfd_cleanup:
 
     return r;
 }
+
+int get_env_variable(pid_t pid, const char *name, char **value)
+{
+    char path[sizeof("/proc/%lu/environ") + sizeof(long)*3];
+    snprintf(path, sizeof(path), "/proc/%lu/environ", (long)pid);
+
+    FILE *fenv = fopen(path, "re");
+    if (fenv == NULL)
+    {
+        pwarn_msg("Failed to open environ file");
+        return -errno;
+    }
+
+    size_t len = strlen(name);
+    int c = 0;
+    while (c != EOF)
+    {
+        long i = 0;
+        /* Check variable name */
+        while ((c = fgetc(fenv)) != EOF && (i < len && c == name[i++]))
+            ;
+
+        if (c == EOF)
+            break;
+
+        const int skip = (c != '=' || name[i] != '\0');
+        i = 0;
+
+        /* Read to the end of variable entry */
+        while ((c = fgetc(fenv)) != EOF && c !='\0')
+            ++i;
+
+        /* Go to the next entry if the read entry isn't the searched variable */
+        if (skip)
+            continue;
+
+        *value = xmalloc(i+1);
+
+        /* i+1 because we didn't count '\0'  */
+        if (fseek(fenv, -(i+1), SEEK_CUR) < 0)
+            error_msg_and_die("Failed to seek");
+
+        if (fread(*value, 1, i, fenv) != i)
+            error_msg_and_die("Failed to read value");
+
+        (*value)[i] = '\0';
+
+        break;
+    }
+
+    fclose(fenv);
+    return 0;
+}
+
+int get_ns_ids(pid_t pid, struct ns_ids *ids)
+{
+    int r = 0;
+    static char ns_dir_path[sizeof("/proc/%lu/ns") + sizeof(long)*3];
+    sprintf(ns_dir_path, "/proc/%lu/ns", (long)pid);
+
+    DIR *ns_dir_fd = opendir(ns_dir_path);
+    if (ns_dir_fd == NULL)
+    {
+        pwarn_msg("Failed to open ns path");
+        return -errno;
+    }
+
+    for (size_t i = 0; i < ARRAY_SIZE(libreport_proc_namespaces); ++i)
+    {
+        struct stat stbuf;
+        if (fstatat(dirfd(ns_dir_fd), libreport_proc_namespaces[i], &stbuf, /* flags */0) != 0)
+        {
+            if (errno != ENOENT)
+            {
+                r = (i + 1);
+                goto get_ns_ids_cleanup;
+            }
+
+            ids->nsi_ids[i] = PROC_NS_UNSUPPORTED;
+            continue;
+        }
+
+        ids->nsi_ids[i] = stbuf.st_ino;
+    }
+
+get_ns_ids_cleanup:
+    closedir(ns_dir_fd);
+
+    return r;
+}
+
+int dump_namespace_diff(const char *dest_filename, pid_t base_pid, pid_t tested_pid)
+{
+    struct ns_ids base_ids;
+    struct ns_ids tested_ids;
+
+    if (get_ns_ids(base_pid, &base_ids) != 0)
+    {
+        log_notice("Failed to get base namesapce IDs");
+        return -1;
+    }
+
+    if (get_ns_ids(tested_pid, &tested_ids) != 0)
+    {
+        log_notice("Failed to get tested namesapce IDs");
+        return -2;
+    }
+
+    FILE *fout = fopen(dest_filename, "we");
+    if (fout == NULL)
+    {
+        pwarn_msg("Failed to create %s", dest_filename);
+        return -3;
+    }
+
+    for (size_t i = 0; i < ARRAY_SIZE(libreport_proc_namespaces); ++i)
+    {
+        const char *status = "unknown";
+
+        if (base_ids.nsi_ids[i] != PROC_NS_UNSUPPORTED)
+            status = base_ids.nsi_ids[i] == tested_ids.nsi_ids[i] ? "default" : "own";
+
+        fprintf(fout, "%s : %s\n", libreport_proc_namespaces[i], status);
+    }
+
+    fclose(fout);
+    return 0;
+}
+
+void mountinfo_destroy(struct mountinfo *mntnf)
+{
+    for (size_t i = 0; i < ARRAY_SIZE(mntnf->mntnf_items); ++i)
+        free(mntnf->mntnf_items[i]);
+}
+
+int get_mountinfo_for_mount_point(FILE *fin, struct mountinfo *mntnf, const char *mnt_point)
+{
+    int r = 0;
+
+    memset(mntnf->mntnf_items, 0, sizeof(mntnf->mntnf_items));
+
+    long pos_bck = 0;
+    int c = 0;
+    int pre_c;
+    unsigned fn;
+    while (1)
+    {
+        pos_bck = ftell(fin);
+        if (pos_bck < 0)
+        {
+            pwarn_msg("ftell");
+            r = -1;
+            goto get_mount_info_cleanup;
+        }
+
+        fn = 0;
+        pre_c = c;
+        while ((c = fgetc(fin)) != EOF)
+        {
+            /* read till eol count fields (words with escaped space) */
+            fn += (c == '\n' || (pre_c != '\\' && c == ' '));
+            /* the 4th field is mount point */
+            if (fn >= 4)
+                break;
+        }
+
+        if (c == EOF)
+        {
+            if (pre_c != '\n')
+            {
+                log_notice("Mountinfo line does not have enough fields %d\n", fn);
+                r = 1;
+            }
+            goto get_mount_info_cleanup;
+        }
+
+        const char *ptr = mnt_point;
+        /* compare mnt_point to the 4th field value */
+        while (((c = fgetc(fin)) != EOF) && (*ptr != '\0') && (c == *ptr))
+            ++ptr;
+
+        if (c == EOF)
+        {
+            log_notice("Mountinfo line does not have root field\n");
+            r = 1;
+            goto get_mount_info_cleanup;
+        }
+
+        /* if true, then the current line is the one we are looking for */
+        if (*ptr == '\0' && c == ' ')
+            break;
+
+        /* go to the next line */
+        while (((c = fgetc(fin)) != EOF) && c != '\n')
+            ;
+
+        if (c == EOF)
+        {
+            r = -1;
+            goto get_mount_info_cleanup;
+        }
+    }
+
+    /* seek to the beginning of current line */
+    fseek(fin, pos_bck, SEEK_SET);
+    for (fn = 0; fn < ARRAY_SIZE(mntnf->mntnf_items); )
+    {
+        pos_bck = ftell(fin);
+        if (pos_bck < 0)
+        {
+            pwarn_msg("ftell");
+            r = -1;
+            goto get_mount_info_cleanup;
+        }
+
+        /* read entire field (a word with escaped space) */
+        while ((c = fgetc(fin)) != EOF && (pre_c == '\\' || c != ' ') && c != '\n')
+            ;
+
+        if (c == EOF && fn != (ARRAY_SIZE(mntnf->mntnf_items) - 1))
+        {
+            log_notice("Unexpected end of file");
+            r = 1;
+            goto get_mount_info_cleanup;
+        }
+
+        /* we are standing on ' ', so len is +1 longer than the string we want to copy*/
+        const long pos_cur = ftell(fin);
+        if (pos_cur < 0)
+        {
+            pwarn_msg("ftell");
+            r = -1;
+            goto get_mount_info_cleanup;
+        }
+
+        size_t len = (pos_cur - pos_bck);
+        mntnf->mntnf_items[fn] = xmalloc(sizeof(char) * (len));
+
+        --len; /* we are standing on ' ' */
+
+        if (fseek(fin, pos_bck, SEEK_SET) < 0)
+        {
+            pwarn_msg("fseek");
+            goto get_mount_info_cleanup;
+        }
+
+        if (fread(mntnf->mntnf_items[fn], sizeof(char), len, fin) != len)
+        {
+            pwarn_msg("fread");
+            goto get_mount_info_cleanup;
+        }
+
+        mntnf->mntnf_items[fn][len] = '\0';
+
+        if (fseek(fin, 1, SEEK_CUR) < 0)
+        {
+            pwarn_msg("fseek");
+            goto get_mount_info_cleanup;
+        }
+
+        /* ignore optional fields
+           'shared:X' 'master:X' 'propagate_from:X' 'unbindable'
+         */
+        if (   strncmp("shared:", mntnf->mntnf_items[fn], strlen("shared:")) == 0
+            || strncmp("master:", mntnf->mntnf_items[fn], strlen("master:")) == 0
+            || strncmp("propagate_from:", mntnf->mntnf_items[fn], strlen("propagate_from:")) == 0
+            || strncmp("unbindable", mntnf->mntnf_items[fn], strlen("unbindable")) == 0)
+        {
+            free(mntnf->mntnf_items[fn]);
+            mntnf->mntnf_items[fn] = NULL;
+            continue;
+        }
+
+        ++fn;
+    }
+
+get_mount_info_cleanup:
+    if (r)
+        mountinfo_destroy(mntnf);
+
+    return r;
+}
+
+static int proc_ns_eq(struct ns_ids *lhs_ids, struct ns_ids *rhs_ids, int neg)
+{
+    for (size_t i = 0; i < ARRAY_SIZE(lhs_ids->nsi_ids); ++i)
+        if (    lhs_ids->nsi_ids[i] != PROC_NS_UNSUPPORTED
+             && (neg ? lhs_ids->nsi_ids[i] == rhs_ids->nsi_ids[i]
+                     : lhs_ids->nsi_ids[i] != rhs_ids->nsi_ids[i]))
+            return 1;
+
+    return 0;
+}
+
+static int get_process_ppid(pid_t pid, pid_t *ppid)
+{
+    int r = 0;
+    static char stat_path[sizeof("/proc/%lu/stat") + sizeof(long)*3];
+    sprintf(stat_path, "/proc/%lu/stat", (long)pid);
+
+    FILE *stat_file = fopen(stat_path, "re");
+    if (stat_file == NULL)
+    {
+        pwarn_msg("Failed to open stat file");
+        r = -1;
+        goto get_process_ppid_cleanup;
+    }
+
+    int p = fscanf(stat_file, "%*d %*s %*c %d", ppid);
+    if (p != 1)
+    {
+        log_notice("Failed to parse stat line %d\n", p);
+        r = -2;
+        goto get_process_ppid_cleanup;
+    }
+
+get_process_ppid_cleanup:
+    if (stat_file != NULL)
+        fclose(stat_file);
+
+    return r;
+}
+
+int process_is_fully_isolated(pid_t pid)
+{
+    struct ns_ids pid_ids;
+    struct ns_ids init_ids;
+
+    if (get_ns_ids(pid, &pid_ids) != 0)
+    {
+        log_notice("Failed to get process's IDs");
+        return -1;
+    }
+
+    if (get_ns_ids(1, &init_ids) != 0)
+    {
+        log_notice("Failed to get PID1's IDs");
+        return -2;
+    }
+
+    /* If any pid's NS equals init's NS, then pid is not running in a container. */
+    return proc_ns_eq(&init_ids, &pid_ids, /*neg*/1) == 0;
+}
+
+int get_pid_of_container(pid_t pid, pid_t *init_pid)
+{
+    pid_t cpid = pid;
+    pid_t ppid = 0;
+
+    struct ns_ids pid_ids;
+    if (get_ns_ids(pid, &pid_ids) != 0)
+    {
+        log_notice("Failed to get process's IDs");
+        return -1;
+    }
+
+    while (1)
+    {
+        if (get_process_ppid(cpid, &ppid) != 0)
+            return -1;
+
+        if (ppid == 1)
+            break;
+
+        struct ns_ids ppid_ids;
+        if (get_ns_ids(ppid, &ppid_ids) != 0)
+        {
+            log_notice("Failed to get parent's IDs");
+            return -2;
+        }
+
+        /* If any pid's  NS differs from parent's NS, then parent is pid's container. */
+        if (proc_ns_eq(&pid_ids, &ppid_ids, 0) != 0)
+            break;
+
+        cpid = ppid;
+    }
+
+    *init_pid = ppid;
+    return 0;
+}
+
+int process_has_own_root(pid_t pid)
+{
+    static char root_path[sizeof("/proc/%lu/root") + sizeof(long)*3];
+    sprintf(root_path, "/proc/%lu/root", (long)pid);
+
+    struct stat root_buf;
+    if (stat("/", &root_buf) < 0)
+    {
+        perror_msg("Failed to get stat for '/'");
+        return -1;
+    }
+
+    struct stat proc_buf;
+    if (stat(root_path, &proc_buf) < 0)
+    {
+        perror_msg("Failed to get stat for '%s'", root_path);
+        return -2;
+    }
+
+    return proc_buf.st_ino != root_buf.st_ino;
+}
