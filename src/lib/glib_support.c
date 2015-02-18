@@ -18,6 +18,34 @@
 */
 #include "internal_libreport.h"
 
+#define LIST_DELIMITER ","
+
+/*
+ * Parser comma separated list of strings to Glist
+ *
+ * @param list comma separated list of strings
+ * @returns GList or null if the list is empty
+ */
+GList *parse_list(const char* list)
+{
+    if (list == NULL)
+        return NULL;
+
+    GList *l = NULL;
+
+    char *saved_ptr = NULL;
+    char *tmp_list = xstrdup(list);
+    char *item = strtok_r(tmp_list, LIST_DELIMITER, &saved_ptr);
+    while (item)
+    {
+        l = g_list_append(l, strtrim(xstrdup(item)));
+        item = strtok_r(NULL, LIST_DELIMITER, &saved_ptr);
+    }
+
+    free(tmp_list);
+    return l;
+}
+
 void list_free_with_free(GList *list)
 {
     GList *li;
