@@ -48,7 +48,7 @@ int main(int argc, char **argv)
     };
 
     int ret = 1; /* "failure" (for now) */
-    bool insecure = !config.ur_ssl_verify;
+    int insecure = !config.ur_ssl_verify;
     const char *conf_file = UREPORT_CONF_FILE_PATH;
     const char *arg_server_url = NULL;
     const char *client_auth = NULL;
@@ -56,11 +56,11 @@ int main(int argc, char **argv)
     GList *auth_items = NULL;
     const char *dump_dir_path = ".";
     const char *ureport_hash = NULL;
-    bool ureport_hash_from_rt = false;
+    int ureport_hash_from_rt = 0;
     int rhbz_bug = -1;
-    bool rhbz_bug_from_rt = false;
+    int rhbz_bug_from_rt = 0;
     const char *email_address = NULL;
-    bool email_address_from_env = false;
+    int email_address_from_env = 0;
     struct dump_dir *dd = NULL;
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
