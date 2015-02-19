@@ -34,7 +34,7 @@
 
 /* fprint string */
 #define SOAP_TEMPLATE \
-    "<SOAP-ENV:Envelope xmlns:ns3=\"http://futureware.biz/mantisconnect\" " \
+    "<SOAP-ENV:Envelope xmlns:ns3=\"http://schemas.xmlsoap.org/soap/encoding/\" " \
         "xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" " \
         "xmlns:ns0=\"http://schemas.xmlsoap.org/soap/encoding/\" " \
         "xmlns:ns1=\"http://schemas.xmlsoap.org/soap/envelope/\" " \
@@ -839,8 +839,6 @@ mantisbt_search_by_abrt_hash(mantisbt_settings_t *settings, const char *abrt_has
 
     xmlNodePtr filter_node = soap_node_add_child_node(req->sr_method, "filter", SOAP_FILTER_SEARCH_DATA, /* content */ NULL);
 
-    soap_filter_add_new_array_parameter(filter_node, "project_id", SOAP_INTEGERARRAY, settings->m_project_id);
-
     /* 'hide_status_is : -2' means, searching within all status */
     soap_filter_add_new_array_parameter(filter_node, "hide_status_id", SOAP_INTEGERARRAY, "-2");
 
@@ -953,7 +951,7 @@ mantisbt_get_custom_fields(const mantisbt_settings_t *settings, mantisbt_custom_
     soap_request_free(req);
 
     if (result->mr_http_resp_code != 200)
-        error_msg_and_die(_("Failed to get custom fields"));
+        error_msg_and_die(_("Failed to get custom fields for '%s' project"), settings->m_project);
 
     GList *ids = response_values_at_depth_by_name(result->mr_body, "id", -1);
     GList *names = response_values_at_depth_by_name(result->mr_body, "name", -1);
@@ -1054,7 +1052,8 @@ mantisbt_get_issue_info(const mantisbt_settings_t *settings, int issue_id)
 
     /* looking for bt rating in additional information too */
     char *add_info = response_get_additioanl_information(result->mr_body);
-    issue_info->mii_notes = g_list_append (issue_info->mii_notes, add_info);
+    if (add_info != NULL)
+        issue_info->mii_notes = g_list_append (issue_info->mii_notes, add_info);
     issue_info->mii_attachments = response_values_at_depth_by_name(result->mr_body, "filename", -1);
     issue_info->mii_best_bt_rating = comments_find_best_bt_rating(issue_info->mii_notes);
 
@@ -1094,6 +1093,9 @@ mantisbt_add_issue_note(const mantisbt_settings_t *settings, int issue_id, const
 void
 mantisbt_get_project_id_from_name(mantisbt_settings_t *settings)
 {
+    if (settings->m_project == NULL)
+        error_msg_and_die(_("The MantisBT project has not been deretmined."));
+
     soap_request_t *req = soap_request_new_for_method("mc_project_get_id_from_name");
     soap_request_add_credentials_parameter(req, settings);
     soap_node_add_child_node(req->sr_method, "project_name", SOAP_STRING, settings->m_project);
