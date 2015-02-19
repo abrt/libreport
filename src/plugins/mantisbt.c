@@ -34,7 +34,7 @@
 
 /* fprint string */
 #define SOAP_TEMPLATE \
-    "<SOAP-ENV:Envelope xmlns:ns3=\"http://futureware.biz/mantisconnect\" " \
+    "<SOAP-ENV:Envelope xmlns:ns3=\"http://schemas.xmlsoap.org/soap/encoding/\" " \
         "xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" " \
         "xmlns:ns0=\"http://schemas.xmlsoap.org/soap/encoding/\" " \
         "xmlns:ns1=\"http://schemas.xmlsoap.org/soap/envelope/\" " \
