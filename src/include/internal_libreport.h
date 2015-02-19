@@ -667,8 +667,6 @@ struct ns_ids {
 
 #define get_ns_ids libreport_get_ns_ids
 int get_ns_ids(pid_t pid, struct ns_ids *ids);
-#define process_is_fully_isolated libreport_process_is_fully_isolated
-int process_is_fully_isolated(pid_t pid);
 #define process_has_own_root libreport_process_has_own_root
 int process_has_own_root(pid_t pid);
 #define get_pid_of_container libreport_get_pid_of_container

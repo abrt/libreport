@@ -629,27 +629,6 @@ get_process_ppid_cleanup:
     return r;
 }
 
-int process_is_fully_isolated(pid_t pid)
-{
-    struct ns_ids pid_ids;
-    struct ns_ids init_ids;
-
-    if (get_ns_ids(pid, &pid_ids) != 0)
-    {
-        log_notice("Failed to get process's IDs");
-        return -1;
-    }
-
-    if (get_ns_ids(1, &init_ids) != 0)
-    {
-        log_notice("Failed to get PID1's IDs");
-        return -2;
-    }
-
-    /* If any pid's NS equals init's NS, then pid is not running in a container. */
-    return proc_ns_eq(&init_ids, &pid_ids, /*neg*/1) == 0;
-}
-
 int get_pid_of_container(pid_t pid, pid_t *init_pid)
 {
     pid_t cpid = pid;
