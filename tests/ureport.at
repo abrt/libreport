@@ -463,6 +463,7 @@ int test_ureport_server_config_set_client_auth_exit_code_ext(struct ureport_serv
     if (pid == 0)
     {
         ureport_server_config_set_client_auth(config, client_auth);
+        fprintf(stderr, "Test out: %s, %s\n", config->ur_client_cert, config->ur_client_key);
         assert((cert_file == (void *)-1) || (cert_file == NULL && config->ur_client_cert == NULL) || (strcmp(cert_file, config->ur_client_cert) == 0));
         assert((key_file == (void *)-1) || (key_file == NULL && config->ur_client_cert == NULL) || (strcmp(key_file, config->ur_client_key) == 0));
         exit(0);
@@ -509,6 +510,7 @@ int main(void)
     assert(empty_cert_dir);
     setenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH", empty_cert_dir, 1);
 
+    puts("RHSM empty dir");
     int status = test_ureport_server_config_set_client_auth_exit_code_ext(&config, "rhsm", NULL, NULL);
     assert(status == 0);
 
@@ -520,6 +522,7 @@ int main(void)
 
     setenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH", TESTING_CERTS_INCORRECT_CONTENT_DIR_PATH, 1);
 
+    puts("RHSM incorrect dir");
     status = test_ureport_server_config_set_client_auth_exit_code_ext(&config, "rhsm", NULL, NULL);
     assert(status == 0);
 
@@ -568,10 +571,13 @@ int main(void)
     ureport_server_config_destroy(&config);
 
     /* wrong client_auth */
+    puts("only cert");
     int ret_val = test_ureport_server_config_set_client_auth_exit_code(&config, "cert:");
     assert(ret_val != 0 && ret_val != -1);
+    puts("only key");
     ret_val = test_ureport_server_config_set_client_auth_exit_code(&config, ":key");
     assert(ret_val != 0 && ret_val != -1);
+    puts("cert without :");
     ret_val = test_ureport_server_config_set_client_auth_exit_code(&config, "cert");
     assert(ret_val != 0 && ret_val != -1);
 
@@ -611,6 +617,7 @@ int main(void)
     /* store return value of ureport_server_config_set_client_auth */
     setenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH", RHSMENT_PEM_DIR_PATH, 1);
 
+    puts("Set client auth RHSM empty dir");
     int exp_ret_val = test_ureport_server_config_set_client_auth_exit_code(&config, "rhsm");
 
     /* Do the same with unset LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH and wrong PYTHONPATH */
@@ -618,6 +625,7 @@ int main(void)
     unsetenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH");
     setenv("PYTHONPATH", WRONG_TESTING_PYTHONPATH, 1);
 
+    puts("Set client auth invalid python path");
     int rec_ret_val = test_ureport_server_config_set_client_auth_exit_code(&config, "rhsm");
 
     /* we expect the same return value */
@@ -709,14 +717,14 @@ AT_TESTFUN([ureport_server_response_from_reply],
 #include "internal_libreport.h"
 #include "ureport.h"
 #include <assert.h>
-#include "libreport_curl.h"
+#include "abrt_curl.h"
 
 
 int main(void)
 {
 
     /* curl_resul is not CURL_OK */
-    struct post_state ps;
+    struct abrt_post_state ps;
 
     ps.curl_result = 1;
     strcpy(ps.errmsg, "err");
@@ -788,16 +796,17 @@ AT_TESTFUN([ureport_server_response_save_in_dump_dir],
 #include "internal_libreport.h"
 #include "ureport.h"
 #include <assert.h>
-#include "libreport_curl.h"
+#include "abrt_curl.h"
 #include "dump_dir.h"
 #include "problem_data.h"
+#define DEFAULT_DUMP_DIR_MODE 0640
 
 int main(void)
 {
     g_verbose=3;
 
     /* reported to*/
-    struct post_state ps;
+    struct abrt_post_state ps;
     ps.curl_result = CURLE_OK;
     ps.http_resp_code = 202;
     ps.body = (char *)"{ 'result' : true, \
@@ -897,7 +906,7 @@ AT_TESTFUN([ureport_server_response_get_report_url],
 #include "internal_libreport.h"
 #include "ureport.h"
 #include <assert.h>
-#include "libreport_curl.h"
+#include "abrt_curl.h"
 #include "problem_data.h"
 
 #define BTHASH_URL_SFX "reports/bthash/"
@@ -907,7 +916,7 @@ int main(void)
     g_verbose=3;
 
     /* reported to*/
-    struct post_state ps;
+    struct abrt_post_state ps;
     ps.curl_result = CURLE_OK;
     ps.http_resp_code = 202;
     ps.body = (char *)"{ 'result' : true, \
@@ -949,8 +958,9 @@ AT_TESTFUN([ureport_do_post],
 #include "internal_libreport.h"
 #include "ureport.h"
 #include <assert.h>
-#include "libreport_curl.h"
+#include "abrt_curl.h"
 #include "problem_data.h"
+#define DEFAULT_DUMP_DIR_MODE 0640
 
 int main(void)
 {
@@ -975,7 +985,7 @@ int main(void)
     /* wrong url */
     struct ureport_server_config config;
     ureport_server_config_init(&config);
-    struct post_state *post_state = ureport_do_post(json, &config, "not_exist");
+    struct abrt_post_state *post_state = ureport_do_post(json, &config, "not_exist");
     assert(post_state->curl_result == CURLE_COULDNT_RESOLVE_HOST);
 
     free(post_state);
@@ -996,8 +1006,9 @@ AT_TESTFUN([ureport_submit],
 #include "internal_libreport.h"
 #include "ureport.h"
 #include <assert.h>
-#include "libreport_curl.h"
+#include "abrt_curl.h"
 #include "problem_data.h"
+#define DEFAULT_DUMP_DIR_MODE 0640
 
 int main(void)
 {
@@ -1044,7 +1055,7 @@ AT_TESTFUN([ureport_json_attachment_new],
 #include "internal_libreport.h"
 #include "ureport.h"
 #include <assert.h>
-#include "libreport_curl.h"
+#include "abrt_curl.h"
 #include "problem_data.h"
 
 int main(void)
@@ -1072,7 +1083,7 @@ AT_TESTFUN([ureport_attach_string],
 #include "internal_libreport.h"
 #include "ureport.h"
 #include <assert.h>
-#include "libreport_curl.h"
+#include "abrt_curl.h"
 #include "problem_data.h"
 
 int main(void)
@@ -1101,7 +1112,7 @@ AT_TESTFUN([ureport_attach_int],
 #include "internal_libreport.h"
 #include "ureport.h"
 #include <assert.h>
-#include "libreport_curl.h"
+#include "abrt_curl.h"
 #include "problem_data.h"
 
 int main(void)
@@ -1130,8 +1141,9 @@ AT_TESTFUN([ureport_from_dump_dir_ext],
 #include "internal_libreport.h"
 #include "ureport.h"
 #include <assert.h>
-#include "libreport_curl.h"
+#include "abrt_curl.h"
 #include "problem_data.h"
+#define DEFAULT_DUMP_DIR_MODE 0640
 
 int main(void)
 {
@@ -1212,7 +1224,7 @@ AT_TESTFUN([ureport_server_config_load_basic_auth],
 #include "internal_libreport.h"
 #include "ureport.h"
 #include <assert.h>
-#include "libreport_curl.h"
+#include "abrt_curl.h"
 #include "problem_data.h"
 
 int main(void)
