@@ -253,7 +253,8 @@ int main(int argc, char **argv)
         "\nRecognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify, CreatePrivate."
         "\nParameters can be overridden via $Mantisbt_PARAM environment variables."
         "\n"
-        "\nFMTFILE and FMTFILE2 default to "CONF_DIR"/plugins/mantisbt_format.conf"
+        "\nFMTFILE default to "CONF_DIR"/plugins/mantisbt_format.conf."
+        "\nFMTFILE2 default to "CONF_DIR"/plugins/mantisbt_formatdup.conf."
     );
 
     enum {
@@ -272,7 +273,7 @@ int main(int argc, char **argv)
     const char *dump_dir_name = ".";
     GList *conf_file = NULL;
     const char *fmt_file = CONF_DIR"/plugins/mantisbt_format.conf";
-    const char *fmt_file2 = fmt_file;
+    const char *fmt_file2 = CONF_DIR"/plugins/mantisbt_formatdup.conf";
     char *abrt_hash = NULL;
     char *ticket_no = NULL;
     const char *tracker_str = "ABRT Server";
