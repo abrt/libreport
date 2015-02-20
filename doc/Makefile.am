@@ -25,6 +25,7 @@ MAN1_TXT += reporter-print.txt
 MAN1_TXT += reporter-rhtsupport.txt
 MAN1_TXT += reporter-upload.txt
 MAN1_TXT += reporter-ureport.txt
+MAN1_TXT += reporter-mantisbt.txt
 
 MAN5_TXT =
 MAN5_TXT += anaconda_event.conf.txt
@@ -37,6 +38,9 @@ MAN5_TXT += bugzilla_formatdup_anaconda.conf.txt
 MAN5_TXT += bugzilla_formatdup.conf.txt
 MAN5_TXT += bugzilla_format_kernel.conf.txt
 MAN5_TXT += bugzilla_format_analyzer_libreport.conf.txt
+MAN5_TXT += mantisbt.conf.txt
+MAN5_TXT += mantisbt_format.conf.txt
+MAN5_TXT += mantisbt_formatdup.conf.txt
 MAN5_TXT += emergencyanalysis_event.conf.txt
 MAN5_TXT += ignored_words.conf.txt
 MAN5_TXT += forbidden_words.conf.txt
@@ -47,20 +51,25 @@ MAN5_TXT += print_event.conf.txt
 MAN5_TXT += report_Bugzilla.conf.txt
 MAN5_TXT += report_event.conf.txt
 MAN5_TXT += report_fedora.conf.txt
+MAN5_TXT += report_centos.conf.txt
 MAN5_TXT += report_Logger.conf.txt
 MAN5_TXT += report_rhel.conf.txt
 MAN5_TXT += report_rhel_bugzilla.conf.txt
 MAN5_TXT += report_logger.conf.txt
 MAN5_TXT += report_mailx.conf.txt
 MAN5_TXT += report_uploader.conf.txt
+MAN5_TXT += report_CentOSBugTracker.conf.txt
 MAN5_TXT += rhtsupport.conf.txt
 MAN5_TXT += rhtsupport_event.conf.txt
 MAN5_TXT += uploader_event.conf.txt
 MAN5_TXT += ureport.conf.txt
 
+MAN5_PREFORMATTED =
+MAN5_PREFORMATTED += centos_report_event.conf.5
+
 # Manual pages are generated from .txt via Docbook
 man1_MANS = ${MAN1_TXT:%.txt=%.1}
-man5_MANS = ${MAN5_TXT:%.txt=%.5}
+man5_MANS = ${MAN5_TXT:%.txt=%.5} ${MAN5_PREFORMATTED}
 
 SUFFIXES = .1 .5
 
@@ -75,5 +84,5 @@ SUFFIXES = .1 .5
                                     --conf-file ../asciidoc.conf \
                                     -alibreport_version=$(PACKAGE_VERSION) -o $@ $<
 
-EXTRA_DIST = $(MAN1_TXT) $(MAN5_TXT)
+EXTRA_DIST = $(MAN1_TXT) $(MAN5_TXT) $(MAN5_PREFORMATTED)
 CLEANFILES = $(man1_MANS)
