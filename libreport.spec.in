@@ -743,6 +743,105 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Fri Feb 20 2015 Jakub Filak <jfilak@redhat.com> 2.4.0-1
+- ignored words: add a few 'key' and 'access' words
+- ignored words: fix a typo in SHELL=/sbin/nologin
+- ignored words: "passed" is not a dirty word
+- lib: remove unused function related to containers
+- lib: add container utility functions
+- lib: add global configuration option for excluded elements
+- spec: install global_configuration stuff
+- lib: introduce global configuration
+- conf files: be able to make directories optional
+- lib: introduce a new function returning base user conf directory
+- includes: move stdbool.h to libreport_types.h
+- utils: make arguments of a list func const
+- fix several memory leaks
+- cli: fix gcc-5 warning
+- gui: Add test application for desktop file utils
+- spec: Add new header to the RPM package
+- gui: Add helper to get an app from a command-line
+- reporter-mantisbt: change SOAP API namespace
+- reporter-mantisbt: add property (array size) to the <custom_fields> item
+- reporter-mantisbt: bug fix - additional information can be NULL
+- reporter-mantisbt: better error message
+- reporter-mantisbt: fix the parameter -h bug
+- reporter-mantisbt: changed loading project name from os_info
+- reporter-mantisbt: temporarily removed event 'post_report'
+- reporter-mantisbt: fixed loading project name from os_info
+- mantis-reporter: not attaching backtrace with the same rating
+- spec: rename workflow-centos sub-package
+- problem_report: switch from analyzer to type
+- spec: update spec file to work with last commit
+- mantis-reporter: added definition of the report_CentOSBugTracker event
+- reporter-mantisbt: added workflow for CentOS
+- reporter-mantisbt: update searching methods
+- build: launch configure from autogen.sh
+- disable gdk deprecation warnings
+- bugzilla: remove already removed code
+- rewrite dump_fd_info()
+- switch from 'analyzer' to 'type'
+- spec: add xz-devel to the build requirements
+- dump_dir: introduce dd_copy_file_unpack()
+- dump_dir: introduce dd_copy_file()
+- Whitespace fix
+- dump_dir: allow (semi)recursive locking
+- Translation updates
+- translations: move from transifex to zanata
+- reporter-mantisbt: added 'get ids from names' functionality
+- reporter-mantisbt: fixed typos
+- reporter-mantisbt: changed error messages
+- ureport: correct variable initializations
+- Do not use 'bool' in OPT_BOOL() macro : it expects 'int'
+- spec: changed spec file to work with reporter-mantisbt
+- reporter-mantisbt: first version of the reporter-mantisbt
+- spec: changed spec file to work with last commit
+- lib: created a new lib file for reporters
+- ureport: introduce HTTPAuth
+- lib: add a clone function for map_string_t
+- lib: add functions to load/save plugin conf files
+- lib: make config files loading quiter
+- dump_dir: add function for creating a dump dir in dump location
+- gui: try to reduce false positive sensitive words
+- gui: ignore (a|A)ccesib(ility|le) words
+- spec: reflect changes due to Problem Report API
+- bugzilla: port to Problem Format API
+- lib: add Problem Format API
+- lib: add /proc/[pid]/utils
+- report, client: fix minor python3 incompatibilities
+- forbidden words: add OpenStack related strings
+- ureport: uReport_ContactEmail setting can be left empty
+- anaconda: mark anaconda-tb as editable file and remove rootpw lines
+- Revert "ureport: use 'rhsm' ssl client auth by default"
+- spec: update the URL
+- Prevent duplicate values for CODE_* fields being logged to journal.
+- problem_data: make ks.cfg file editable
+- wizard: put rootpw on the forbidden words list
+- anaconda: auto-remove rootpw lines
+- spec: dump the log files of failed unit tests
+- Revert "ureport: consistently die on all client auth errors"
+- rhtsupport: move RH Portal URL c. o. to Advanced section
+- rhtsupport: be able to turn uReport off from GUI
+- ureport: be able to configure ContactEmail from GUI
+- ureport: use 'rhsm' ssl client auth by default
+- doc: fix asciidoc misrendering
+- ureport: fix a memory leak related to AuthDataItems
+- ureport: wrong description of two functions in ureport.h
+- ureport: fall back to the hardcoded rhsm cert dir
+- spec: ureport requires python-rhsm on rhel
+- rhtsupport: do not leak the hints results
+- rhtsupport: never use uReport URL from ureport.config
+- ureport: consistently die on all client auth errors
+- ureport: get rhsm entitlement cert dir from rhsm conf
+- ureport: use entit certs with 'rhsm' and drop 'rhsm-entitlement'
+- ureport: allow multiple cert file in rhsm-entitlement dir
+- rhtsupport: send ureport before creating description
+- ureport: document rhsm-entitlement in the man page
+- rhtsupport: attach the contact email to bthash
+- rhtsupport: re-prompt for credentials
+- lib: fix a bug in ureport response parser
+- upload: don't ask for password if the env var is empty string
+
 * Fri Oct 03 2014 Jakub Filak <jfilak@redhat.com> 2.3.0-1
 - lib: process NULL arg as an empty list in parse_list()
 - uploader: correct capitalization of the event name
