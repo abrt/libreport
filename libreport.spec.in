@@ -41,7 +41,7 @@ BuildRequires: asciidoc
 BuildRequires: xmlto
 BuildRequires: newt-devel
 BuildRequires: libproxy-devel
-BuildRequires: satyr-devel >= 0.11
+BuildRequires: satyr-devel >= 0.16
 %if %{with bugzilla}
 BuildRequires: xmlrpc-c-devel
 %endif
@@ -56,7 +56,7 @@ Requires: libreport-filesystem = %{version}-%{release}
 # end-up with: can't import report.GtkIO
 # FIXME: can be removed when F15 will EOLed, needs to stay in rhel6!
 Requires: libreport-python
-Requires: satyr >= 0.11
+Requires: satyr >= 0.16
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
