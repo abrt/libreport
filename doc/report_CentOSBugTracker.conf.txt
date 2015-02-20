@@ -1,0 +1,45 @@
+report_CentOSBugTracker.conf(5)
+===============================
+
+NAME
+----
+report_CentOSBugTracker.conf - libreport's configuration file for 'report_CentOSBugTracker' events.
+
+DESCRIPTION
+-----------
+This configuration file contains values for options defined in
+/usr/share/libreport/events/report_CentOSBugTracker.xml
+
+Configuration file lines should have 'PARAM = VALUE' format. The parameters are:
+
+'Mantisbt_Login'::
+	Login to MantisBT account.
+
+'Mantisbt_Password'::
+	Password to MantisBT account.
+
+'Mantisbt_MantisbtURL'::
+	MantisBT HTTP(S) address. (default: https://bugs.centos.org)
+
+'Mantisbt_SSLVerify'::
+	Use yes/true/on/1 to verify server's SSL certificate. (default: yes)
+
+'Mantisbt_Project'::
+	Project issue field value. Useful if you needed different project than specified in /etc/os-release
+
+'Mantisbt_ProjectVersion'::
+	Version issue field value. Useful if you needed different project version than specified in /etc/os-release
+
+'http_proxy'::
+	the proxy server to use for HTTP
+
+'HTTPS_PROXY'::
+	the proxy server to use for HTTPS
+
+SEE ALSO
+--------
+report_event.conf(5), reporter-mantisbt(1)
+
+AUTHOR
+------
+* ABRT team
