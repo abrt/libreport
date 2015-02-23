@@ -628,6 +628,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/plugins/mantisbt_format.conf
 %config(noreplace) %{_sysconfdir}/libreport/plugins/mantisbt_formatdup.conf
 %{_bindir}/reporter-mantisbt
+%{_mandir}/man1/reporter-mantisbt.1.gz
+%{_mandir}/man5/mantisbt.conf.5.*
+%{_mandir}/man5/mantisbt_format.conf.5.*
+%{_mandir}/man5/mantisbt_formatdup.conf.5.*
 
 %files centos
 %{_datadir}/%{name}/workflows/workflow_CentOSCCpp.xml
@@ -639,10 +643,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/%{name}/workflows/workflow_CentOSLibreport.xml
 %{_datadir}/%{name}/workflows/workflow_CentOSJava.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_centos.conf
+%{_mandir}/man5/report_centos.conf.5.*
 %{_datadir}/%{name}/events/report_CentOSBugTracker.xml
 %config(noreplace) %{_sysconfdir}/libreport/events/report_CentOSBugTracker.conf
+%{_mandir}/man5/report_CentOSBugTracker.conf.5.*
 # report_CentOSBugTracker events are shipped by libreport package
 %config(noreplace) %{_sysconfdir}/libreport/events.d/centos_report_event.conf
+%{_mandir}/man5/centos_report_event.conf.5.gz
 
 %files plugin-rhtsupport
 %defattr(-,root,root,-)
