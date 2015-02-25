@@ -199,6 +199,15 @@ Obsoletes: report-config-scp < 0:0.23-1
 %description plugin-reportuploader
 Plugin to report bugs into anonymous FTP site associated with ticketing system.
 
+%package plugin-ureport
+Summary: %{name}'s micro report plugin
+BuildRequires: json-c-devel
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+
+%description plugin-ureport
+Uploads micro-report to abrt server
+
 %prep
 %setup -q
 
@@ -361,6 +370,14 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config %{_sysconfdir}/libreport/events/report_Uploader.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/tarball_event.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/uploader_event.conf
+
+%files plugin-ureport
+%defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/libreport/plugins/ureport.conf
+%config %{_sysconfdir}/libreport/events/report_uReport.xml
+%{_bindir}/reporter-ureport
+%{_mandir}/man1/reporter-ureport.1.gz
+%{_mandir}/man5/ureport.conf.5.gz
 
 %changelog
 * Wed Jun 01 2011 Jiri Moskovcak <jmoskovc@redhat.com> 2.0.2-1
