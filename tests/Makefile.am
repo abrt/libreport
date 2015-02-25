@@ -37,7 +37,7 @@ TESTSUITE = $(srcdir)/testsuite
 MAINTAINERCLEANFILES = Makefile.in $(TESTSUITE)
 check_DATA = atconfig atlocal $(TESTSUITE)
 DISTCLEANFILES = atconfig
-EXTRA_DIST += atlocal.in
+EXTRA_DIST += atlocal.in conf
 
 atconfig: $(top_builddir)/config.status
 	(cd ${top_builddir} && ./config.status ${subdir}/atconfig)
