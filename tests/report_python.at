@@ -23,11 +23,11 @@ if not os.path.exists("/etc/os-release"):
 
 exit_code = 0
 if report.getProduct_fromOSRELEASE() != report.getProduct():
-    print "getProduct() did not return PRODUCT from /etc/os-release"
+    print "getProduct('{0}') did not return PRODUCT='{1}' from /etc/os-release".format(report.getProduct(), report.getProduct_fromOSRELEASE())
     exit_code += 1
 
 if report.getVersion_fromOSRELEASE() != report.getVersion():
-    print "getVersion() did not return PRODUCT from /etc/os-release"
+    print "getVersion('{0}') did not return PRODUCT_VERSION='{1}' from /etc/os-release".format(report.getVersion(), report.getVersion_fromOSRELEASE())
     exit_code += 1
 
 sys.exit(exit_code)
