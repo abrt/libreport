@@ -30,7 +30,7 @@ file_obj_t *new_file_obj(const char* fullpath, const char* filename)
 void free_file_obj(file_obj_t *f)
 {
     if (f == NULL)
-        return
+        return;
 
     free(f->fullpath);
     free(f->filename);
