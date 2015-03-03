@@ -12,11 +12,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-from reportclient._reportclient import *
-
 import shutil
 import sys
 import os
+
+if sys.version_info[0] == 2:
+    from reportclient._reportclient import *
+else:
+    from reportclient._reportclient3 import *
 
 tmpdir = None
 

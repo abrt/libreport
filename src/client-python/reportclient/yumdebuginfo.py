@@ -126,7 +126,7 @@ class YumDebugInfoDownload(DebugInfoDownload):
                 # which causes artifacts on output
                 try:
                     setattr(r, "_async", False)
-                except (NameError, AttributeError), ex:
+                except (NameError, AttributeError) as ex:
                     print(str(ex))
                     print(_("Can't disable async download, the output might contain artifacts!"))
             except YumBaseError as ex:
