@@ -33,7 +33,7 @@ SYSTEM_RELEASE_PATHS = ["/etc/system-release","/etc/redhat-release"]
 SYSTEM_RELEASE_DEPS = ["system-release", "redhat-release"]
 SYSTEM_OS_RELEASE_FILE = "/etc/os-release"
 OS_RELEASE_PRODUCT_FIELDS = ["REDHAT_BUGZILLA_PRODUCT", "REDHAT_SUPPORT_PRODUCT", "NAME"]
-OS_RELEASE_VERSION_FIELDS = ["REDHAT_BUGZILLA_VERSION", "REDHAT_SUPPORT_VERSION", "NAME"]
+OS_RELEASE_VERSION_FIELDS = ["REDHAT_BUGZILLA_PRODUCT_VERSION", "REDHAT_SUPPORT_PRODUCT_VERSION", "VERSION_ID"]
 
 _hardcoded_default_product = ""
 _hardcoded_default_version = ""
@@ -72,6 +72,9 @@ def parse_os_release_lines(osreleaselines):
     osrel = {}
 
     for line in osreleaselines:
+        if line.endswith("\n"):
+            line = line[:-1]
+
         kvp = line.split('=')
         if len(kvp) < 2:
             continue
