@@ -2,6 +2,74 @@
 
 AT_BANNER([report_python])
 
+## ------------------------- ##
+## arbitrary_etc_os_releases ##
+## ------------------------- ##
+
+AT_PYTESTFUN([arbitrary_etc_os_releases],
+[[import sys
+import tempfile
+import os
+
+sys.path.insert(0, "../../../src/report-python")
+sys.path.insert(0, "../../../src/report-python/.libs")
+
+report = __import__("report-python", globals(), locals(), [], -1)
+sys.modules["report"] = report
+
+
+PRODUCT_TEST_CASES = [
+    ("REDHAT_BUGZILLA_PRODUCT", "bugzilla-product"),
+    ("REDHAT_SUPPORT_PRODUCT", "support-product"),
+    ("NAME", "os-name")
+]
+
+VERSION_TEST_CASES = [
+    ("REDHAT_BUGZILLA_PRODUCT_VERSION", "bugzilla-product-version"),
+    ("REDHAT_SUPPORT_PRODUCT_VERSION", "support-product-version"),
+    ("VERSION_ID", "os-version-id")
+]
+
+def run_test(fields, getter, expected):
+    retval = True
+
+    osrelf = tempfile.NamedTemporaryFile(delete=False)
+    osrelf.write("ID=\"field-id\"\n")
+
+    for (field, value) in fields:
+        osrelf.write("%s=%s\n" %(field, value))
+
+    osrelf.write("PRETTY_NAME=\"field-pretty-name\"\n")
+    osrelf.close()
+
+    result = getter(file_path=osrelf.name)
+    if result != expected:
+        print("expected: '%s'" % (expected))
+        print("result  : '%s'" % (result))
+        retval = False
+
+    os.remove(osrelf.name)
+    return retval
+
+
+def verify_information_type(test_cases, stuffing, getter):
+    retval = 0
+    for i in xrange(0, len(test_cases)):
+        for j in xrange(len(test_cases), i, -1):
+            if not run_test(stuffing + test_cases[i:j], getter, test_cases[i][1]):
+                print("field   : '%s'" % (test_cases[i][0]))
+                retval += 1
+
+
+def main():
+    verify_information_type(PRODUCT_TEST_CASES, VERSION_TEST_CASES, report.getProduct_fromOSRELEASE)
+    verify_information_type(VERSION_TEST_CASES, PRODUCT_TEST_CASES, report.getVersion_fromOSRELEASE)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+]])
+
 ## ----------------------- ##
 ## get_from_etc_os_release ##
 ## ----------------------- ##
