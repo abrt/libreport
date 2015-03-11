@@ -106,3 +106,15 @@ EXTRA_DIST += \
     workflow_RHELBugzillaLibreport.xml.in \
     workflow_RHELBugzillaJava.xml.in
 endif
+
+if BUILD_MANTISBT
+EXTRA_DIST += \
+    workflow_CentOSCCpp.xml.in \
+    workflow_CentOSKerneloops.xml.in \
+    workflow_CentOSPython.xml.in \
+    workflow_CentOSPython3.xml.in \
+    workflow_CentOSVmcore.xml.in \
+    workflow_CentOSXorg.xml.in \
+    workflow_CentOSLibreport.xml.in \
+    workflow_CentOSJava.xml.in
+endif

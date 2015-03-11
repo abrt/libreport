@@ -110,6 +110,10 @@ if BUILD_UREPORT
 reporters_extra_dist += report_uReport.xml.in
 endif
 
+if BUILD_MANTISBT
+reporters_extra_dist += report_CentOSBugTracker.xml.in
+endif
+
 EXTRA_DIST = $(reporters_extra_dist) \
     report_Logger.conf \
     report_Logger.xml.in \
