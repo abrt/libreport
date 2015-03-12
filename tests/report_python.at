@@ -98,5 +98,11 @@ if report.getVersion_fromOSRELEASE() != report.getVersion():
     print "getVersion('{0}') did not return PRODUCT_VERSION='{1}' from /etc/os-release".format(report.getVersion(), report.getVersion_fromOSRELEASE())
     exit_code += 1
 
+if exit_code != 0:
+    print "++++ /etc/os-release ++++"
+    with open("/etc/os-release") as osrel:
+        sys.stdout.write(osrel.read())
+    print "^^^^ /etc/os-release ^^^^"
+
 sys.exit(exit_code)
 ]])
