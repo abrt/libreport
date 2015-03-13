@@ -95,7 +95,11 @@ Summary: Python bindings for report-libs
 # Is group correct here? -
 Group: System Environment/Libraries
 Requires: libreport = %{version}-%{release}
+%if 0%{?fedora} >= 22
+Requires: dnf
+%else
 Requires: yum
+%endif
 Provides: report = 0:0.23-1
 Obsoletes: report < 0:0.23-1
 # in report the rhtsupport is in the main package, so we need to install it too
