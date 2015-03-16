@@ -59,6 +59,7 @@ typedef struct problem_item problem_item;
 
 char *problem_item_format(struct problem_item *item);
 
+int problem_item_get_size(struct problem_item *item, unsigned long *size);
 
 /* In-memory problem data structure and accessors */
 

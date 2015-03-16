@@ -52,6 +52,25 @@ char *problem_item_format(struct problem_item *item)
     return NULL;
 }
 
+int problem_item_get_size(struct problem_item *item, unsigned long *size)
+{
+    if (item->flags & CD_FLAG_TXT)
+    {
+        *size = strlen(item->content);
+        return 0;
+    }
+
+    /* else if (item->flags & CD_FLAG_BIN) */
+    struct stat statbuf;
+    statbuf.st_size = 0;
+
+    if (stat(item->content, &statbuf) != 0)
+        return -errno;
+
+    *size = statbuf.st_size;
+    return 0;
+}
+
 /* problem_data["name"] = { "content", CD_FLAG_foo_bits } */
 
 problem_data_t *problem_data_new(void)
