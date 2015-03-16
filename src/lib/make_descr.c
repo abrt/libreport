@@ -216,12 +216,8 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
                     strbuf_append_char(buf_dsc, '\n');
                 append_empty_line = false;
 
-                struct stat statbuf;
-                int stat_err = 0;
-                if (item->flags & CD_FLAG_BIN)
-                    stat_err = stat(item->content, &statbuf);
-                else
-                    statbuf.st_size = strlen(item->content);
+                unsigned long size = 0;
+                int stat_err = problem_item_get_size(item, &size);
 
                 /* We don't print item->content for CD_FLAG_BIN, as it is
                  * always "/path/to/dump/dir/KEY" - not informative.
@@ -229,11 +225,11 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
                 int pad = 16 - (strlen(key) + 2);
                 if (pad < 0) pad = 0;
                 strbuf_append_strf(buf_dsc,
-                        (!stat_err ? "%s: %*s%s file, %llu bytes\n" : "%s: %*s%s file\n"),
+                        (!stat_err ? "%s: %*s%s file, %lu bytes\n" : "%s: %*s%s file\n"),
                         key,
                         pad, "",
                         ((item->flags & CD_FLAG_BIN) ? "Binary" : "Text"),
-                        (long long)statbuf.st_size
+                        size
                 );
                 empty = false;
             }
