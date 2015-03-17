@@ -19,6 +19,7 @@
 
 #include <gio/gdesktopappinfo.h>
 #include <string.h>
+#include <stdlib.h>
 #include "problem_utils.h"
 
 char *
@@ -229,5 +230,48 @@ problem_create_app_from_cmdline (const char *cmdline)
     g_list_free (shortlist);
     g_list_free_full (apps, g_object_unref);
     return app;
+}
+
+#define GIO_LAUNCHED_DESKTOP_FILE_PREFIX     "GIO_LAUNCHED_DESKTOP_FILE="
+#define GIO_LAUNCHED_DESKTOP_FILE_PID_PREFIX "GIO_LAUNCHED_DESKTOP_FILE_PID="
+
+GAppInfo *
+problem_create_app_from_env (const char **envp,
+			     pid_t        pid)
+{
+    GDesktopAppInfo *app;
+    guint i;
+    const char *desktop, *epid;
+
+    if (envp == NULL)
+        return NULL;
+    if (pid < 0)
+        return NULL;
+
+    desktop = epid = NULL;
+    for (i = 0; envp[i] != NULL; i++)
+    {
+        if (g_str_has_prefix (envp[i], GIO_LAUNCHED_DESKTOP_FILE_PREFIX))
+            desktop = envp[i] + strlen (GIO_LAUNCHED_DESKTOP_FILE_PREFIX);
+        else if (g_str_has_prefix (envp[i], GIO_LAUNCHED_DESKTOP_FILE_PID_PREFIX))
+            epid = envp[i] + strlen (GIO_LAUNCHED_DESKTOP_FILE_PID_PREFIX);
+
+        if (desktop && epid)
+            break;
+    }
+
+    if (!desktop || !epid)
+        return NULL;
+
+    /* Verify PID */
+    if (atoi (epid) != pid)
+        return NULL;
+
+    if (*desktop == '/')
+        app = g_desktop_app_info_new_from_filename (desktop);
+    else
+        app = g_desktop_app_info_new (desktop);
+
+    return (GAppInfo *) app;
 }
 

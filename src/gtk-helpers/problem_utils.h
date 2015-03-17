@@ -19,5 +19,7 @@
 
 #include <gio/gio.h>
 
-GAppInfo *problem_create_app_from_cmdline (const char *cmdline);
-char     *problem_get_argv0               (const char *cmdline);
+GAppInfo *problem_create_app_from_cmdline (const char  *cmdline);
+GAppInfo *problem_create_app_from_env     (const char **envp,
+                                           pid_t        pid);
+char     *problem_get_argv0               (const char  *cmdline);
