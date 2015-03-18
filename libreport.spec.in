@@ -752,6 +752,29 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Wed Mar 18 2015 Jakub Filak <jfilak@redhat.com> 2.5.0-1
+- spec: require dnf in libreport-python3
+- gui: Add helper to detect apps from their environment
+- problem_data: add a new function problem_item_get_size
+- require dnf instead of yum in f22+
+- build: add CentOS filest to EXTRA_DIST
+- reporter-mantisbt: add workflow_CentOS* and report_CentOS* to POTFILES.in
+- Port reportclient to python3
+- dnfdebuginfo: check the status of downloading
+- reportclient: return full path to downloaded debuginfo packages
+- reportclient: introduce DNF debug info downloader
+- build: create reportclient sub-directory
+- Python 3 compatibility
+- report-python: fix getVersion_fromOSRELEASE
+- ignored words: ignore lxqt-openssh-askpass
+- RHTSupport: include reported_to in Support cases
+- spec: don't pull libreport-python with libreport
+- spec: bump required satyr verion
+- reporter-mantisbt: adds man pages for reporter-mantisbt
+- spec: change spec file to work with last commit
+- reporter-mantisbt: set up default mantisbt.conf configuration
+- reporter-mantisbt: change default formating file for duplicate issues
+
 * Fri Feb 20 2015 Jakub Filak <jfilak@redhat.com> 2.4.0-1
 - ignored words: add a few 'key' and 'access' words
 - ignored words: fix a typo in SHELL=/sbin/nologin
