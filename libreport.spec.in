@@ -115,6 +115,8 @@ Python bindings for report-libs.
 Summary: Python 3 bindings for report-libs
 Group: System Environment/Libraries
 Requires: libreport = %{version}-%{release}
+# yum does not provide Python3 implementation
+Requires: dnf
 
 %description python3
 Python 3 bindings for report-libs.
