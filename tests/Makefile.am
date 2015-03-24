@@ -36,6 +36,7 @@ TESTSUITE_AT = \
   sitem.at \
   configuration_files.at \
   reported_to.at \
+  problem_data.at \
   make_description.at \
   libreport_types.at \
   xml_definition.at \

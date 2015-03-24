@@ -1,0 +1,143 @@
+# -*- Autotest -*-
+
+AT_BANNER([problem data])
+
+## ---------------- ##
+## problem_data_add ##
+## ---------------- ##
+
+AT_TESTFUN([problem_data_add],
+[[
+#include "problem_data.h"
+#include "internal_libreport.h"
+#include <assert.h>
+
+#define TEST_NAME "package"
+#define TEST_CONTENTS "libreport"
+#define TEST_FLAGS (CD_FLAG_TXT | CD_FLAG_ISNOTEDITABLE | CD_FLAG_UNIXTIME)
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    problem_data_t *data = problem_data_new();
+    problem_data_add(data, TEST_NAME, TEST_CONTENTS, TEST_FLAGS);
+
+    struct problem_item *itm = problem_data_get_item_or_NULL(data, TEST_NAME);
+
+    assert(strcmp(itm->content, TEST_CONTENTS) == 0);
+    assert(itm->flags == TEST_FLAGS);
+    assert(itm->size == PROBLEM_ITEM_UNINITIALIZED_SIZE);
+
+    problem_data_free(data);
+
+    return 0;
+}
+]])
+
+## -------------------- ##
+## problem_data_add_ext ##
+## -------------------- ##
+
+AT_TESTFUN([problem_data_add_ext],
+[[
+#include "problem_data.h"
+#include "internal_libreport.h"
+#include <assert.h>
+
+#define TEST_NAME "package"
+#define TEST_CONTENTS "libreport"
+#define TEST_FLAGS (CD_FLAG_TXT | CD_FLAG_ISNOTEDITABLE | CD_FLAG_UNIXTIME)
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    problem_data_t *data = problem_data_new();
+    struct problem_item *itm = problem_data_add_ext(data, TEST_NAME, TEST_CONTENTS, TEST_FLAGS, strlen(TEST_CONTENTS));
+
+    struct problem_item *found = problem_data_get_item_or_NULL(data, TEST_NAME);
+    assert(itm == found);
+
+    assert(strcmp(itm->content, TEST_CONTENTS) == 0);
+    assert(itm->flags == TEST_FLAGS);
+    assert(itm->size == strlen(TEST_CONTENTS));
+
+    problem_data_free(data);
+
+    return 0;
+}
+]])
+
+## ---------------------- ##
+## problem_item_get_size ##
+## ---------------------- ##
+
+AT_TESTFUN([problem_item_get_size],
+[[
+#include "problem_data.h"
+#include "internal_libreport.h"
+#include <assert.h>
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    problem_data_t *data = problem_data_new();
+
+    {
+        struct problem_item *itm = problem_data_add_ext(data, "1", "foo", CD_FLAG_TXT | CD_FLAG_ISNOTEDITABLE, PROBLEM_ITEM_UNINITIALIZED_SIZE);
+        const size_t old_size = strlen(itm->content);
+        {
+            size_t current_size = PROBLEM_ITEM_UNINITIALIZED_SIZE;
+            assert(problem_item_get_size(itm, &current_size) == 0);
+            assert(current_size != PROBLEM_ITEM_UNINITIALIZED_SIZE);
+            assert(current_size == old_size);
+        }
+        {
+            free(itm->content);
+            itm->content = NULL;
+            size_t current_size = PROBLEM_ITEM_UNINITIALIZED_SIZE;
+            assert(problem_item_get_size(itm, &current_size) == 0);
+            assert(current_size != PROBLEM_ITEM_UNINITIALIZED_SIZE);
+            assert(current_size == old_size);
+        }
+    }
+
+    {
+        char flnm[] = "/tmp/libreport.unittest.XXXXXXX";
+        int flds = mkstemp(flnm);
+        assert(flds >= 0);
+        /* sizeof(flnm) is strlen + '\0' */
+        assert(write(flds, flnm, strlen(flnm)) == strlen(flnm));
+        fsync(flds);
+
+        struct stat buf;
+        assert(fstat(flds, &buf) == 0);
+        assert(buf.st_size != 0);
+        size_t old_size = buf.st_size;
+
+        struct problem_item *itm = problem_data_add_ext(data, "2", flnm, CD_FLAG_BIN, PROBLEM_ITEM_UNINITIALIZED_SIZE);
+
+        {
+            size_t current_size = PROBLEM_ITEM_UNINITIALIZED_SIZE;
+            assert(problem_item_get_size(itm, &current_size) == 0);
+            assert(current_size != PROBLEM_ITEM_UNINITIALIZED_SIZE);
+            assert(current_size == old_size);
+        }
+        {
+            close(flds);
+            unlink(flnm);
+            assert(stat(flnm, &buf) != 0);
+            size_t current_size = PROBLEM_ITEM_UNINITIALIZED_SIZE;
+            assert(problem_item_get_size(itm, &current_size) == 0);
+            assert(current_size != PROBLEM_ITEM_UNINITIALIZED_SIZE);
+            assert(current_size == old_size);
+        }
+    }
+
+    problem_data_free(data);
+
+    return 0;
+}
+]])
