@@ -46,9 +46,12 @@ enum {
     CD_FLAG_BIGTXT        = (1 << 6),
 };
 
+#define PROBLEM_ITEM_UNINITIALIZED_SIZE ((unsigned long)-1)
+
 struct problem_item {
     char    *content;
     unsigned flags;
+    unsigned long size;
     /* Used by UI for presenting "item allowed/not allowed" checkboxes: */
     int      selected_by_user;     /* 0 "don't know", -1 "no", 1 "yes" */
     int      allowed_by_reporter;  /* 0 "no", 1 "yes" */
@@ -82,6 +85,11 @@ void problem_data_add(problem_data_t *problem_data,
                 const char *name,
                 const char *content,
                 unsigned flags);
+struct problem_item *problem_data_add_ext(problem_data_t *problem_data,
+                const char *name,
+                const char *content,
+                unsigned flags,
+                unsigned long size);
 void problem_data_add_text_noteditable(problem_data_t *problem_data,
                 const char *name,
                 const char *content);
