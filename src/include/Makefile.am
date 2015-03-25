@@ -5,7 +5,6 @@ libreport_include_HEADERS = \
     dump_dir.h \
     event_config.h \
     problem_data.h \
-    problem_report.h \
     report.h \
     run_event.h \
     libreport_curl.h \
