@@ -6,16 +6,17 @@
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
 # josep torne <josep.torne@gmail.com, 2011
 # Josep Torné <josep@substantiu.com>, 2014
+# Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>, 2015. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-05 07:33+0100\n"
+"POT-Creation-Date: 2015-04-08 13:06+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-10-06 07:45-0400\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"PO-Revision-Date: 2015-03-16 05:28-0400\n"
+"Last-Translator: Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>\n"
 "Language-Team: Catalan (http://www.transifex.com/projects/p/libreport/"
 "language/ca/)\n"
 "Language: ca\n"
@@ -29,23 +30,28 @@ msgid ""
 "   or: & [-vspy] -d PROBLEM_DIR\n"
 "   or: & [-vspy] -x PROBLEM_DIR"
 msgstr ""
+"& [-vsp] -L[PREFIX] [DIRECTORI_DEL_PROBLEMA]\n"
+"   o: & [-vspy] -e ESDEVENIMENT DIRECTORI_DEL_PROBLEMA\n"
+"   o: & [-vspy] -d DIRECTORI_DEL_PROBLEMA\n"
+"   o: & [-vspy] -x DIRECTORI_DEL_PROBLEMA"
 
 #. short_name long_name  value    parameter_name  help
 #: ../src/cli/cli.c:86
 msgid "List possible events [which start with PREFIX]"
-msgstr "Llista els possibles esdeveniments [que comencen per PREFIX]"
+msgstr "Llista els possibles esdeveniments [que comencen amb el PREFIX]"
 
 #: ../src/cli/cli.c:87 ../src/gui-wizard-gtk/main.c:172
 msgid "Run only these events"
-msgstr ""
+msgstr "Executa únicament aquests esdeveniments"
 
 #: ../src/cli/cli.c:88 ../src/gui-wizard-gtk/main.c:171
 msgid "Remove PROBLEM_DIR after reporting"
 msgstr ""
+"Elimina el DIRECTORI_DEL_PROBLEMA després de la presentació d'informes"
 
 #: ../src/cli/cli.c:89 ../src/gui-wizard-gtk/main.c:173
 msgid "Expert mode"
-msgstr ""
+msgstr "Mode expert"
 
 #: ../src/cli/cli.c:90 ../src/report-newt/report-newt.c:393
 msgid "Display version and exit"
@@ -53,7 +59,7 @@ msgstr "Visualitza la versió i surt"
 
 #: ../src/cli/cli.c:91
 msgid "Noninteractive: don't ask questions, assume 'yes'"
-msgstr "Noninteractive: no realitza preguntes, s'assumeix 'si'"
+msgstr "No interactiu: no facis preguntes, assumeix 'si'"
 
 #: ../src/cli/cli.c:93
 msgid "Log to syslog"
@@ -61,7 +67,7 @@ msgstr "Registra a syslog"
 
 #: ../src/cli/cli.c:94 ../src/gui-wizard-gtk/main.c:170
 msgid "Add program names to log"
-msgstr "Afegeix noms de programa a registrar "
+msgstr "Afegeix els noms dels programes al registre"
 
 #: ../src/cli/cli-report.c:132
 #, c-format
@@ -70,7 +76,7 @@ msgstr "# Aquest camp únicament és de lectura\n"
 
 #: ../src/cli/cli-report.c:152
 msgid "# Describe the circumstances of this crash below"
-msgstr "# Descriviu a continuació les circumstàncies d'aquesta fallida"
+msgstr "# Descriviu a continuació les circumstàncies d'aquesta pana"
 
 #: ../src/cli/cli-report.c:154
 msgid ""
@@ -78,7 +84,7 @@ msgid ""
 "# Check that it does not contain any sensitive data (passwords, etc.)"
 msgstr ""
 "# Traça inversa\n"
-"# Comproveu que no contingui cap dada que sigui perjudicial (contrasenyes, "
+"# Comproveu que no contingui cap dada que sigui sensible (contrasenyes, "
 "etcètera.)"
 
 #: ../src/cli/cli-report.c:156
@@ -87,7 +93,7 @@ msgstr "# Arquitectura"
 
 #: ../src/cli/cli-report.c:157
 msgid "# Command line"
-msgstr "# Línia de la comanda"
+msgstr "# Línia d'ordres"
 
 #: ../src/cli/cli-report.c:158
 msgid "# Component"
@@ -103,7 +109,7 @@ msgstr "# Executable"
 
 #: ../src/cli/cli-report.c:161
 msgid "# Kernel version"
-msgstr "# Versió del nucli de Linux"
+msgstr "# Versió del nucli del sistema operatiu"
 
 #: ../src/cli/cli-report.c:162
 msgid "# Package"
@@ -111,19 +117,20 @@ msgstr "# Paquet"
 
 #: ../src/cli/cli-report.c:163
 msgid "# Reason of crash"
-msgstr "# Motiu de la fallida"
+msgstr "# Motiu de la pana"
 
 #: ../src/cli/cli-report.c:170
 msgid "# os-release configuration file from root dir"
-msgstr ""
+msgstr "# Fitxer de configuració os-release des del directori arrel"
 
 #: ../src/cli/cli-report.c:175
 msgid "# Release string of the operating system from root dir"
 msgstr ""
+"# Cadena de text del llançament del sistema operatiu des del directori arrel"
 
 #: ../src/cli/cli-report.c:183
 msgid "# os-release configuration file"
-msgstr ""
+msgstr "# fitxer de configuració os-release"
 
 #: ../src/cli/cli-report.c:188
 msgid "# Release string of the operating system"
@@ -131,13 +138,13 @@ msgstr "# Cadena de text amb el llançament del sistema operatiu"
 
 #: ../src/cli/cli-report.c:319
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr "No es pot executar vi: $TERM, $VISUAL i $EDITOR no estan esablerts"
+msgstr "No es pot executar el vi: no s'han establert $TERM, $VISUAL i $EDITOR"
 
 #: ../src/cli/cli-report.c:403
 msgid "\n"
 "The report has been updated"
 msgstr "\n"
-"S'ha actualitzat l'informe"
+"L'informe ha estat actualitzat"
 
 #: ../src/cli/cli-report.c:405
 msgid "\n"
@@ -147,12 +154,12 @@ msgstr "\n"
 
 #: ../src/cli/cli-report.c:471
 msgid "Your input is not valid, because of:"
-msgstr "La vostra entrada no es vàlida degut a:"
+msgstr "La vostra entrada no es vàlida, degut a:"
 
 #: ../src/cli/cli-report.c:475
 #, c-format
 msgid "Bad value for '%s': %s"
-msgstr "Valor incorrecte per '%s': %s"
+msgstr "Valor no vàlid per '%s': %s"
 
 #: ../src/cli/cli-report.c:673
 #, c-format
@@ -160,184 +167,219 @@ msgid ""
 "Event '%s' requires permission to send possibly sensitive data. Do you want "
 "to continue?"
 msgstr ""
+"L'esdeveniment '%s' requereix el permís per enviar possibles dades sensibles."
+" Voleu continuar?"
 
 #: ../src/cli/cli-report.c:720
 msgid "You have chosen number out of range"
-msgstr "Heu escollit un número fora de rang"
+msgstr "Heu triat un número fora de rang"
 
 #: ../src/cli/cli-report.c:725
 msgid "Invalid input, exiting."
-msgstr ""
+msgstr "L'entrada no és vàlida, s'està sortint."
 
 #: ../src/cli/cli-report.c:746
 msgid "Select an event to run: "
-msgstr ""
+msgstr "Seleccioneu un esdeveniment a executar:"
 
 #: ../src/cli/cli-report.c:858
 msgid "Select a workflow to run: "
-msgstr ""
+msgstr "Seleccioneu un flux de treball a executar:"
 
-#: ../src/client-python/debuginfo.py:87
+#: ../src/client-python/reportclient/debuginfo.py:98
+#, python-brace-format
 msgid "Extracting cpio from {0}"
-msgstr ""
+msgstr "S'està extraient el cpio des de {0}"
 
-#: ../src/client-python/debuginfo.py:92
+#: ../src/client-python/reportclient/debuginfo.py:103
+#, python-brace-format
 msgid "Can't write to '{0}': {1}"
-msgstr ""
+msgstr "No es pot escriure a '{0}': {1}"
 
-#: ../src/client-python/debuginfo.py:107
+#: ../src/client-python/reportclient/debuginfo.py:114
+#, python-brace-format
 msgid "Can't extract package '{0}'"
-msgstr ""
+msgstr "No es pot extreure el paquet '{0}'"
 
-#: ../src/client-python/debuginfo.py:115
+#: ../src/client-python/reportclient/debuginfo.py:122
+#, python-brace-format
 msgid "Caching files from {0} made from {1}"
-msgstr ""
+msgstr "S'estan obtenint els fitxers de {0} fets a {1}"
 
-#: ../src/client-python/debuginfo.py:134
+#: ../src/client-python/reportclient/debuginfo.py:141
+#, python-brace-format
 msgid "Can't extract files from '{0}'"
-msgstr ""
+msgstr "No es poden extreure els fitxers des del '{0}'"
 
-#: ../src/client-python/debuginfo.py:147
+#: ../src/client-python/reportclient/debuginfo.py:154
+#, python-brace-format
 msgid "Can't remove '{0}': {1}"
-msgstr ""
+msgstr "No es pot eliminar '{0}': {1}"
 
 #. print (_("Downloading (%i of %i) %s: %3u%%")
 #. % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
 #. )
-#: ../src/client-python/debuginfo.py:194 ../src/client-python/debuginfo.py:205
+#: ../src/client-python/reportclient/debuginfo.py:197
+#: ../src/client-python/reportclient/debuginfo.py:208
+#, python-brace-format
 msgid "Downloading ({0} of {1}) {2}: {3:3}%"
+msgstr "S'estan baixant ({0} de {1}) {2}: {3:3}%"
+
+#: ../src/client-python/reportclient/debuginfo.py:308
+msgid "Initializing package manager"
 msgstr ""
 
-#: ../src/client-python/debuginfo.py:220
-msgid ""
-"Problem '{0!s}' occured while downloading from mirror: '{1!s}'. Trying next "
-"one"
-msgstr ""
-
-#. self.conf.cache = os.geteuid() != 0
-#. Setup yum (Ts, RPM db, Repo & Sack)
-#. doConfigSetup() takes some time, let user know what we are doing
-#: ../src/client-python/debuginfo.py:246
-msgid "Initializing yum"
-msgstr ""
-
-#: ../src/client-python/debuginfo.py:254
-msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
-msgstr ""
-
-#: ../src/client-python/debuginfo.py:325
-msgid "Error: can't make cachedir, exiting"
-msgstr ""
-
-#: ../src/client-python/debuginfo.py:334
-msgid "Can't disable repository '{0!s}': {1!s}"
-msgstr ""
-
+#. if verbose == 0:
+#. # this suppress yum messages about setting up repositories
+#. mute_stdout()
 #. This takes some time, let user know what we are doing
-#: ../src/client-python/debuginfo.py:337
-msgid "Setting up yum repositories"
+#: ../src/client-python/reportclient/debuginfo.py:315
+msgid "Setting up repositories"
 msgstr ""
 
-#: ../src/client-python/debuginfo.py:354
-msgid "Can't disable async download, the output might contain artifacts!"
-msgstr ""
-
-#: ../src/client-python/debuginfo.py:356
-msgid "Can't setup {0}: {1}, disabling"
-msgstr ""
-
-#. This is somewhat "magic", it unpacks the metadata making it usable.
-#. Looks like this is the moment when yum talks to remote servers,
-#. which takes time (sometimes minutes), let user know why
-#. we have "paused":
-#: ../src/client-python/debuginfo.py:363
+#. if verbose == 0:
+#. # re-enable the output to stdout
+#. unmute_stdout()
+#: ../src/client-python/reportclient/debuginfo.py:322
 msgid "Looking for needed packages in repositories"
-msgstr ""
+msgstr "S'estan cercant els paquets necessaris als dipòsits"
 
-#: ../src/client-python/debuginfo.py:367
-msgid "Error retrieving metadata: '{0!s}'"
-msgstr ""
-
-#: ../src/client-python/debuginfo.py:380
-msgid "Error retrieving filelists: '{0!s}'"
-msgstr ""
-
-#: ../src/client-python/debuginfo.py:416
+#: ../src/client-python/reportclient/debuginfo.py:326
+#, python-brace-format
 msgid "Can't find packages for {0} debuginfo files"
-msgstr ""
+msgstr "No es poden trobar els paquets per a {0} fitxers debuginfo"
 
-#: ../src/client-python/debuginfo.py:418
+#: ../src/client-python/reportclient/debuginfo.py:328
+#, python-brace-format
 msgid "Packages to download: {0}"
-msgstr ""
+msgstr "Paquets a baixar: {0}"
 
-#: ../src/client-python/debuginfo.py:419
+#: ../src/client-python/reportclient/debuginfo.py:329
+#, python-brace-format
 msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
-msgstr ""
+msgstr "{0:.2f}Mb de baixada, {1:.2f}Mb un cop instal·lat. Voleu continuar?"
 
-#: ../src/client-python/debuginfo.py:424 ../src/client-python/debuginfo.py:438
-#: ../src/client-python/debuginfo.py:447
+#: ../src/client-python/reportclient/debuginfo.py:334
+#: ../src/client-python/reportclient/debuginfo.py:344
+#: ../src/client-python/reportclient/debuginfo.py:353
 msgid "Download cancelled by user"
-msgstr ""
+msgstr "La baixada ha estat cancel·lada per l'usuari"
 
-#: ../src/client-python/debuginfo.py:434
+#: ../src/client-python/reportclient/debuginfo.py:340
+#, python-brace-format
 msgid ""
 "Warning: Not enough free space in tmp dir '{0}' ({1:.2f}Mb left). Continue?"
 msgstr ""
+"Advertència: No hi ha prou espai lliure en el directori temporal '{0}' "
+"(falten {1:.2f}Mb). Voleu continuar?"
 
-#: ../src/client-python/debuginfo.py:443
+#: ../src/client-python/reportclient/debuginfo.py:349
+#, python-brace-format
 msgid ""
 "Warning: Not enough free space in cache dir '{0}' ({1:.2f}Mb left). "
 "Continue?"
 msgstr ""
+"Advertència: No hi ha prou espai lliure en el directori de la memòria cau "
+"'{0}' (falten {1:.2f}Mb).Voleu continuar?"
 
-#: ../src/client-python/debuginfo.py:469
-msgid "Cannot copy file '{0}': {1}"
-msgstr ""
-
-#: ../src/client-python/debuginfo.py:487
+#: ../src/client-python/reportclient/debuginfo.py:370
+#, python-brace-format
 msgid "Downloading package {0} failed"
-msgstr ""
+msgstr "La baixada del paquet {0} ha fallat"
 
 #. recursively delete the temp dir on failure
-#: ../src/client-python/debuginfo.py:494
+#: ../src/client-python/reportclient/debuginfo.py:377
 msgid "Unpacking failed, aborting download..."
-msgstr ""
+msgstr "El desempaquetament ha fallat, s'està avortant la baixada..."
 
 #. Was: "All downloaded packages have been extracted, removing..."
 #. but it was appearing even if no packages were in fact extracted
 #. (say, when there was one package, and it has download error).
-#: ../src/client-python/debuginfo.py:504
+#: ../src/client-python/reportclient/debuginfo.py:391
+#, python-brace-format
 msgid "Removing {0}"
+msgstr "S'està eliminant {0}"
+
+#: ../src/client-python/reportclient/debuginfo.py:395
+#, python-brace-format
+msgid "Can't remove {0}, probably contains an error log"
 msgstr ""
 
-#: ../src/client-python/debuginfo.py:508
-#, python-format
-msgid "Can't remove %s, probably contains an error log"
+#: ../src/client-python/reportclient/dnfdebuginfo.py:81
+msgid "Error reading repository configuration: '{0!s}'"
 msgstr ""
+
+#: ../src/client-python/reportclient/dnfdebuginfo.py:98
+msgid "Error setting up repositories: '{0!s}'"
+msgstr ""
+
+#: ../src/client-python/reportclient/yumdebuginfo.py:64
+msgid ""
+"Problem '{0!s}' occured while downloading from mirror: '{1!s}'. Trying next "
+"one"
+msgstr ""
+"S'ha produït un problema '{0!s}' mentre es baixava des de la rèplica: "
+"'{1!s}'. S'està intentat amb la següent"
+
+#: ../src/client-python/reportclient/yumdebuginfo.py:96
+msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
+msgstr "Error en la inicialització del yum (YumBase.doConfigSetup): '{0!s}'"
+
+#: ../src/client-python/reportclient/yumdebuginfo.py:103
+msgid "Error: can't make cachedir, exiting"
+msgstr "Error: no es pot crear el directori de la memòria cau, s'està sortint"
+
+#: ../src/client-python/reportclient/yumdebuginfo.py:112
+msgid "Can't disable repository '{0!s}': {1!s}"
+msgstr "No es pot deshabilitar el dipòsit '{0!s}': {1!s}"
+
+#: ../src/client-python/reportclient/yumdebuginfo.py:131
+msgid "Can't disable async download, the output might contain artifacts!"
+msgstr ""
+"No es pot inhabilitar la baixada asíncrona, la sortida podria contenir "
+"artefactes!"
+
+#: ../src/client-python/reportclient/yumdebuginfo.py:133
+#, python-brace-format
+msgid "Can't setup {0}: {1}, disabling"
+msgstr "No es pot configurar {0}: {1}, s'està deshabilitant"
+
+#: ../src/client-python/reportclient/yumdebuginfo.py:143
+msgid "Error retrieving metadata: '{0!s}'"
+msgstr "Error en recuperar les metadades: '{0!s}'"
+
+#: ../src/client-python/reportclient/yumdebuginfo.py:156
+msgid "Error retrieving filelists: '{0!s}'"
+msgstr "Error en recuperar el llistat dels fitxers: '{0!s}'"
+
+#: ../src/client-python/reportclient/yumdebuginfo.py:200
+#, python-brace-format
+msgid "Cannot copy file '{0}': {1}"
+msgstr "No es pot copiar el fitxer'{0}': {1}"
 
 #. Follow GTK3's yes-no-buttons order:
 #. * [No] [Yes]
 #. 
 #: ../src/gtk-helpers/ask_dialogs.c:87
 msgid "_No"
-msgstr ""
+msgstr "_No"
 
 #: ../src/gtk-helpers/ask_dialogs.c:88
 msgid "_Yes"
-msgstr ""
+msgstr "_Si"
 
 #: ../src/gtk-helpers/ask_dialogs.c:94
 msgid "Don't ask me again"
-msgstr ""
+msgstr "No m'ho tornis a demanar"
 
 #. if event has no xml description
 #: ../src/gtk-helpers/config_dialog.c:182
 msgid "No description available"
-msgstr ""
+msgstr "Descripció no disponible"
 
 #: ../src/gtk-helpers/config_dialog.c:345
 msgid "Configuration"
-msgstr ""
+msgstr "Configuració"
 
 #. we can't use this, because we want the workflows first and hashtable
 #. * doesn't return the items in the order they were added
@@ -347,21 +389,21 @@ msgstr ""
 #: ../src/gtk-helpers/config_dialog.c:365
 #: ../src/gtk-helpers/config_dialog.c:430
 msgid "Workflows"
-msgstr ""
+msgstr "Fluxos de treball"
 
 #: ../src/gtk-helpers/config_dialog.c:367
 #: ../src/gtk-helpers/config_dialog.c:369
 #: ../src/gtk-helpers/config_dialog.c:433
 msgid "Events"
-msgstr ""
+msgstr "Esdeveniments"
 
 #: ../src/gtk-helpers/config_dialog.c:373
 msgid "C_onfigure"
-msgstr ""
+msgstr "C_onfigura"
 
-#: ../src/gtk-helpers/config_dialog.c:375 ../src/gui-wizard-gtk/wizard.c:3492
+#: ../src/gtk-helpers/config_dialog.c:375 ../src/gui-wizard-gtk/wizard.c:3502
 msgid "_Close"
-msgstr ""
+msgstr "_Tanca"
 
 #: ../src/gtk-helpers/event_config_dialog.c:144
 msgid "Show password"
@@ -369,89 +411,97 @@ msgstr "Mostra la contrasenya"
 
 #: ../src/gtk-helpers/event_config_dialog.c:275
 msgid "Don't store passwords"
-msgstr ""
+msgstr "No emmagatzemis contrasenyes"
 
 #: ../src/gtk-helpers/event_config_dialog.c:285
 msgid "Basic"
-msgstr ""
+msgstr "Bàsic"
 
 #: ../src/gtk-helpers/event_config_dialog.c:293
 msgid "Advanced"
-msgstr ""
+msgstr "Avançat"
 
 #: ../src/gtk-helpers/event_config_dialog.c:309
 msgid "Secret Service is not available, your settings won't be saved!"
 msgstr ""
+"El servei secret no està disponible, el vostres ajustos no es desaran!"
 
 #: ../src/gtk-helpers/event_config_dialog.c:349
 #: ../src/gtk-helpers/workflow_config_dialog.c:94
-#: ../src/gui-wizard-gtk/wizard.c:758 ../src/gui-wizard-gtk/wizard.c:3113
+#: ../src/gui-wizard-gtk/wizard.c:760 ../src/gui-wizard-gtk/wizard.c:3123
 msgid "_Cancel"
-msgstr ""
+msgstr "_Cancel·la"
 
 #: ../src/gtk-helpers/event_config_dialog.c:351
 #: ../src/gtk-helpers/workflow_config_dialog.c:96
 msgid "_OK"
-msgstr ""
+msgstr "D'ac_ord"
 
 #: ../src/gtk-helpers/secrets.c:171
 #, c-format
 msgid "Can't connect over DBus to name '%s' path '%s' interface '%s': %s"
 msgstr ""
+"No es pot connectar sobre el DBus al nom '%s' camí '%s' interfície '%s': %s"
 
 #: ../src/gtk-helpers/secrets.c:191
 #, c-format
 msgid "Can't call method '%s' over DBus on path '%s' interface '%s': %s"
 msgstr ""
+"No es pot cridar el mètode '%s' sobre el DBus al camí '%s' interfície '%s': "
+"%s"
 
 #: ../src/gtk-helpers/secrets.c:549
 msgid ""
 "A timeout was reached while waiting for a prompt result from the DBus Secret "
 "Service."
 msgstr ""
+"Es va arribar al temps d'expiració mentre s'esperava un resultat puntual del "
+"servei secret del DBus."
 
 #: ../src/gtk-helpers/secrets.c:552
 msgid ""
 "Do you want to stop waiting and continue in reporting without properly "
 "loaded configuration?"
 msgstr ""
+"Voleu aturar l'espera i continuar en la presentació d'informes sense una "
+"configuració carregada correctament?"
 
 #: ../src/gtk-helpers/secrets.c:862
 #, c-format
 msgid "D-Bus Secrets Service ReadAlias('%s') method failed: %s"
-msgstr ""
+msgstr "Ha fallat el mètode ReadAlias('%s') del servei secret del D-Bus: %s"
 
 #. if the error wasn't about invalid properties we have an another problem
 #: ../src/gtk-helpers/secrets.c:1104
 #, c-format
 msgid "Can't create a secret item for event '%s': %s"
-msgstr ""
+msgstr "No es pot crear un element secret per a l'esdeveniment '%s': %s"
 
 #: ../src/gtk-helpers/secrets.c:1286
 #, c-format
 msgid "can't get secret value of '%s': %s"
-msgstr ""
+msgstr "no es pot obtenir el valor del sevre de '%s': %s"
 
 #: ../src/gtk-helpers/problem_details_widget.c:191
 #, c-format
 msgid "$DATA_DIRECTORY/%s (binary file, %s)"
-msgstr ""
+msgstr "$DATA_DIRECTORY/%s (fitxer binari, %s)"
 
 #: ../src/gtk-helpers/problem_details_dialog.c:30
 msgid "Problem details"
-msgstr ""
+msgstr "Detalls del problema"
 
 #: ../src/gtk-helpers/problem_details_dialog.c:33
 msgid "OK"
-msgstr ""
+msgstr "D'acord"
 
 #: ../src/gui-wizard-gtk/main.c:107
 msgid "Preferences"
-msgstr ""
+msgstr "Preferències"
 
 #: ../src/gui-wizard-gtk/main.c:110
 msgid "Quit"
-msgstr ""
+msgstr "Surt"
 
 #: ../src/gui-wizard-gtk/main.c:154
 msgid ""
@@ -459,65 +509,73 @@ msgid ""
 "\n"
 "GUI tool to analyze and report problem saved in specified PROBLEM_DIR"
 msgstr ""
+"& [-vpdx] [-e ESDEVENIMENT]... [-g FITXER_IGU] DIRECTORI_DEL_PROBLEMA\n"
+"\n"
+"Eina gràfica per analitzar i informar del problema desat al "
+"DIRECTORI_DEL_PROBLEMA especificat"
 
 #: ../src/gui-wizard-gtk/main.c:169
 msgid "Alternate GUI file"
-msgstr "Fitxer GUI alternatiu"
+msgstr "Fitxer alternatiu de la interfície gràfica d'usuari"
 
-#: ../src/gui-wizard-gtk/wizard.c:355
+#: ../src/gui-wizard-gtk/wizard.c:357
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved data?"
 msgstr ""
+"Necessita un directori que es pugui escriure, però no es pot escriure a '%s'."
+" Mou a '%s' i opera amb les dades mogudes?"
 
-#: ../src/gui-wizard-gtk/wizard.c:749
+#: ../src/gui-wizard-gtk/wizard.c:751
 msgid "View/edit a text file"
 msgstr "Visualitza/edita un fitxer de text"
 
-#: ../src/gui-wizard-gtk/wizard.c:757
+#: ../src/gui-wizard-gtk/wizard.c:759
 msgid "_Save"
-msgstr ""
+msgstr "De_sa"
 
-#: ../src/gui-wizard-gtk/wizard.c:974
+#: ../src/gui-wizard-gtk/wizard.c:976
 msgid ""
 "No reporting targets are defined for this problem. Check configuration in /"
 "etc/libreport/*"
 msgstr ""
+"No s'han definit les destinacions de la presentació d'informes per aquest "
+"problema. Comproveu la configuració en /etc/libreport/*"
 
-#: ../src/gui-wizard-gtk/wizard.c:1016
+#: ../src/gui-wizard-gtk/wizard.c:1018
 #, c-format
 msgid "(requires: %s)"
-msgstr ""
+msgstr "(requereix: %s)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1030
+#: ../src/gui-wizard-gtk/wizard.c:1032
 #, c-format
 msgid "(not needed, data already exist: %s)"
-msgstr ""
+msgstr "(no és necessari, les dades ja existeixen: %s)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1220
+#: ../src/gui-wizard-gtk/wizard.c:1222
 msgid "(click here to view/edit)"
-msgstr "(cliqueu aquí per a visualitzar/editar)"
+msgstr "(feu clic aquí per a visualitzar-ho/editar-ho)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1231
+#: ../src/gui-wizard-gtk/wizard.c:1233
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(fitxer binari, %llu bytes)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1338 ../src/report-newt/report-newt.c:334
+#: ../src/gui-wizard-gtk/wizard.c:1344 ../src/report-newt/report-newt.c:334
 msgid "(no description)"
-msgstr "(cap descripció)"
+msgstr "(sense descripció)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1346
+#: ../src/gui-wizard-gtk/wizard.c:1352
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu bytes, %u fitxers"
 
-#: ../src/gui-wizard-gtk/wizard.c:1591
+#: ../src/gui-wizard-gtk/wizard.c:1597
 msgid "Processing was canceled"
-msgstr ""
+msgstr "S'ha cancel·lat el processament"
 
-#: ../src/gui-wizard-gtk/wizard.c:1795
+#: ../src/gui-wizard-gtk/wizard.c:1801
 msgid ""
 "Processing of the problem failed. This can have many reasons but there are "
 "three most common:\n"
@@ -525,16 +583,24 @@ msgid ""
 "\t▫ <b>corrupted problem data</b>\n"
 "\t▫ <b>invalid configuration</b>"
 msgstr ""
+"El processament del problema ha fallat. Això pot ser a causa de moltes "
+"raons, però n'hi ha tres que són les més comuns:\n"
+"\t▫ <b>hi ha problemes de connexió de xarxa</b>\n"
+"\t▫ <b>les dades del problema estan corrompudes</b>\n"
+"\t▫ <b>una configuració no vàlida</b>"
 
-#: ../src/gui-wizard-gtk/wizard.c:1804
+#: ../src/gui-wizard-gtk/wizard.c:1810
 msgid ""
 "If you want to update the configuration and try to report again, please open "
 "<b>Preferences</b> item\n"
 "in the application menu and after applying the configuration changes click "
 "<b>Repeat</b> button."
 msgstr ""
+"Si voleu actualitzar la configuració i provar d'informar de nou, obriu "
+"l'element <b>Preferències</b> en el menú de l'aplicació, després d'aplicar "
+"els canvis en la configuració feu clic al botó <b>Repeteix</b>."
 
-#: ../src/gui-wizard-gtk/wizard.c:1810
+#: ../src/gui-wizard-gtk/wizard.c:1816
 msgid ""
 "If you are sure that this problem is not caused by network problems neither "
 "by invalid configuration\n"
@@ -545,25 +611,34 @@ msgid ""
 "passwords. The uploaded data are stored in a protected storage and only a "
 "limited number of persons can read them.</i>"
 msgstr ""
+"Si esteu segurs que aquest problema no ha estat provocat per problemes a la "
+"xarxa ni per una configuració no vàlida i voleu ajudar-nos, feu clic al botó "
+"de pujar i proporcioneu totes les dades del problema per un anàlisi profund.\n"
+"<i>Abans de fer-ho, considereu els riscos de seguretat. Les dades del "
+"problema poden contenir informació sensible com contrasenyes. Les dades que "
+"es pugen s'emmagatzemen en un emmagatzematge protegit i només un nombre "
+"limitat de persones poden llegir-les.</i>"
 
-#: ../src/gui-wizard-gtk/wizard.c:1929
+#: ../src/gui-wizard-gtk/wizard.c:1935
 msgid "Processing was interrupted because the problem is not reportable."
 msgstr ""
+"Es va interrompre el processament perquè el problema no és dels que es poden "
+"informar."
 
-#: ../src/gui-wizard-gtk/wizard.c:1939 ../src/gui-wizard-gtk/wizard.c:2080
+#: ../src/gui-wizard-gtk/wizard.c:1945 ../src/gui-wizard-gtk/wizard.c:2086
 msgid "Processing failed."
-msgstr ""
+msgstr "El processament ha fallat."
 
 #. No next event, go to progress page and finish
-#: ../src/gui-wizard-gtk/wizard.c:1946 ../src/gui-wizard-gtk/wizard.c:2837
+#: ../src/gui-wizard-gtk/wizard.c:1952 ../src/gui-wizard-gtk/wizard.c:2847
 msgid "Processing finished."
-msgstr ""
+msgstr "El processament ha finalitzat."
 
-#: ../src/gui-wizard-gtk/wizard.c:1947
+#: ../src/gui-wizard-gtk/wizard.c:1953
 msgid "Processing finished, please proceed to the next step."
-msgstr ""
+msgstr "El processament ha finalitzat, continueu amb el següent pas."
 
-#: ../src/gui-wizard-gtk/wizard.c:1987
+#: ../src/gui-wizard-gtk/wizard.c:1993
 msgid ""
 "Private ticket is requested but the group name 'private' has been deprecated."
 " We kindly ask you to use 'fedora_contrib_private' group name. Click Yes "
@@ -577,8 +652,20 @@ msgid ""
 "https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets\n"
 "https://bugzilla.redhat.com/show_bug.cgi?id=1044653\n"
 msgstr ""
+"S'ha sol·licitat el tiquet privat però el nom del grup 'private' ha quedat "
+"en desús. Amablement us demanem que utilitzeu el nom del grup "
+"'fedora_contrib_private'. Feu clic al botó Sí o actualitzeu manualment la "
+"configuració. O bé feu clic al botó No, si realment voleu utilitzar el grup "
+"'private'.\n"
+"\n"
+"Si no esteu segur del significat d'aquest diàleg, si us plau, confieu en "
+"nosaltres i feu clic al botó Sí.\n"
+"\n"
+"Llegiu més sobre els informes d'errors privats a:\n"
+"https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets\n"
+"https://bugzilla.redhat.com/show_bug.cgi?id=1044653\n"
 
-#: ../src/gui-wizard-gtk/wizard.c:1995
+#: ../src/gui-wizard-gtk/wizard.c:2001
 msgid ""
 "Private ticket is requested but the group name <i>private</i> has been "
 "deprecated. We kindly ask you to use <i>fedora_contrib_private</i> group "
@@ -595,125 +682,149 @@ msgid ""
 "<a href=\"https://bugzilla.redhat.com/show_bug.cgi?id=1044653\">https://"
 "bugzilla.redhat.com/show_bug.cgi?id=1044653</a>\n"
 msgstr ""
+"S'ha sol·licitat el tiquet privat però el nom del grup <i>private</i> ha "
+"quedat en desús. Amablement us demanem que utilitzeu el nom del grup "
+"<i>fedora_contrib_private</i>. Feu clic al botó Sí o actualitzeu manualment "
+"la configuració. O bé feu clic al botó No, si realment voleu utilitzar el "
+"grup <i>private</i>.\n"
+"\n"
+"Si no esteu segur del significat d'aquest diàleg, si us plau, confieu en "
+"nosaltres i feu clic al botó Sí.\n"
+"\n"
+"Llegiu més sobre els informes d'errors privats a:\n"
+"<a href=\"https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
+"tickets\">https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
+"tickets</a>\n"
+"<a href=\"https://bugzilla.redhat.com/show_bug.cgi?id=1044653\">https://"
+"bugzilla.redhat.com/show_bug.cgi?id=1044653</a>\n"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:2077
+#: ../src/gui-wizard-gtk/wizard.c:2083
 #, c-format
 msgid "No processing for event '%s' is defined"
-msgstr "No s'ha definit cap procés per l'esdeveniment '%s'"
+msgstr "No s'ha definit cap processament per a l'esdeveniment '%s'"
 
-#: ../src/gui-wizard-gtk/wizard.c:2091
+#: ../src/gui-wizard-gtk/wizard.c:2097
 msgid "Processing interrupted: can't continue without writable directory."
 msgstr ""
+"S'ha interromput el processament: no es pot continuar sense un directori on "
+"s'hi pugui escriure."
 
-#: ../src/gui-wizard-gtk/wizard.c:2128
+#: ../src/gui-wizard-gtk/wizard.c:2134
 msgid "Processing..."
-msgstr ""
+msgstr "S'està processant..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2226
+#: ../src/gui-wizard-gtk/wizard.c:2232
 msgid "Cannot check backtrace rating because of invalid event name"
 msgstr ""
+"No es pot comprovar la qualificació de la traça inversa a causa del nom de "
+"l'esdeveniment no vàlid"
 
-#: ../src/gui-wizard-gtk/wizard.c:2857
+#: ../src/gui-wizard-gtk/wizard.c:2867
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
 "Do you want to continue?"
 msgstr ""
+"L'esdeveniment '%s' requereix el permís per enviar possibles dades sensibles."
+"\n"
+"Voleu continuar?"
 
-#: ../src/gui-wizard-gtk/wizard.c:2905
+#: ../src/gui-wizard-gtk/wizard.c:2915
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
 msgstr ""
+"Aquest problema no hauria de ser informat (el més probable és que sigui un "
+"problema conegut). %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:3114
+#: ../src/gui-wizard-gtk/wizard.c:3124
 msgid "_Open"
-msgstr ""
+msgstr "_Obre"
 
-#: ../src/gui-wizard-gtk/wizard.c:3136
+#: ../src/gui-wizard-gtk/wizard.c:3146
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' no és un fitxer normal"
 
-#: ../src/gui-wizard-gtk/wizard.c:3150
+#: ../src/gui-wizard-gtk/wizard.c:3160
 msgid "You are trying to copy a file onto itself"
 msgstr "Esteu intentant copiar un fitxer a si mateix"
 
-#: ../src/gui-wizard-gtk/wizard.c:3157
+#: ../src/gui-wizard-gtk/wizard.c:3167
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "No es pot copiar '%s': '%s"
 
-#: ../src/gui-wizard-gtk/wizard.c:3172
+#: ../src/gui-wizard-gtk/wizard.c:3182
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "L'ítem '%s' ja existeix i no es pot modificar"
 
-#: ../src/gui-wizard-gtk/wizard.c:3334
+#: ../src/gui-wizard-gtk/wizard.c:3344
 msgid "Include"
 msgstr "Incloure"
 
-#: ../src/gui-wizard-gtk/wizard.c:3345
+#: ../src/gui-wizard-gtk/wizard.c:3355
 msgid "Name"
 msgstr "Nom"
 
-#: ../src/gui-wizard-gtk/wizard.c:3355
+#: ../src/gui-wizard-gtk/wizard.c:3365
 msgid "Value"
 msgstr "Valor"
 
-#: ../src/gui-wizard-gtk/wizard.c:3389
+#: ../src/gui-wizard-gtk/wizard.c:3399
 msgid "Problem description"
 msgstr "Descripció del problema"
 
-#: ../src/gui-wizard-gtk/wizard.c:3390
+#: ../src/gui-wizard-gtk/wizard.c:3400
 msgid "Select how to report this problem"
-msgstr ""
+msgstr "Seleccioneu com informar d'aquest problema"
 
-#: ../src/gui-wizard-gtk/wizard.c:3391
+#: ../src/gui-wizard-gtk/wizard.c:3401
 msgid "Provide additional information"
 msgstr "Proporciona informació addicional "
 
-#: ../src/gui-wizard-gtk/wizard.c:3392
+#: ../src/gui-wizard-gtk/wizard.c:3402
 msgid "Review the data"
-msgstr ""
+msgstr "Revisa les dades"
 
-#: ../src/gui-wizard-gtk/wizard.c:3393
+#: ../src/gui-wizard-gtk/wizard.c:3403
 msgid "Confirm data to report"
 msgstr "Confirma les dades de l'informe"
 
-#: ../src/gui-wizard-gtk/wizard.c:3394
+#: ../src/gui-wizard-gtk/wizard.c:3404
 msgid "Processing"
 msgstr "S'està processant"
 
-#: ../src/gui-wizard-gtk/wizard.c:3395
+#: ../src/gui-wizard-gtk/wizard.c:3405
 msgid "Processing done"
-msgstr "El procés ha finalitzat"
+msgstr "El processament ha finalitzat"
 
-#: ../src/gui-wizard-gtk/wizard.c:3494
+#: ../src/gui-wizard-gtk/wizard.c:3504
 msgid "_Stop"
-msgstr ""
+msgstr "_Atura"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3497
+#: ../src/gui-wizard-gtk/wizard.c:3507
 msgid "Upload for analysis"
-msgstr ""
+msgstr "Puja per a l'anàlisi"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3500
+#: ../src/gui-wizard-gtk/wizard.c:3510
 msgid "Repeat"
-msgstr ""
+msgstr "Repeteix"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3502
+#: ../src/gui-wizard-gtk/wizard.c:3512
 msgid "_Forward"
-msgstr ""
+msgstr "_Endavant"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3505 ../src/gui-wizard-gtk/wizard.glade.h:14
+#: ../src/gui-wizard-gtk/wizard.c:3515 ../src/gui-wizard-gtk/wizard.glade.h:14
 msgid "Details"
 msgstr "Detalls"
 
-#: ../src/gui-wizard-gtk/wizard.c:3615
+#: ../src/gui-wizard-gtk/wizard.c:3625
 msgid ""
 "In order to enable the built-in screencasting functionality the package fros-"
 "recordmydesktop has to be installed. Please run the following command if you "
@@ -721,6 +832,11 @@ msgid ""
 "\n"
 "<b>su -c \"yum install fros-recordmydesktop\"</b>"
 msgstr ""
+"Per habilitar la funcionalitat incorporada d'screencasting el paquet fros-"
+"recordmydesktop ha d'estar instal·lat. Si us plau, executeu la següent ordre "
+"si voleu instal·lar-ho.\n"
+"\n"
+"<b>su -c \"yum install fros-recordmydesktop\"</b>"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
 msgid ""
@@ -735,50 +851,58 @@ msgid ""
 "Please review the data before it gets reported. Depending on reporter "
 "chosen, it may end up publicly visible."
 msgstr ""
+"Llegiu les dades abans que s'informi. En funció de l'informador triat, pot "
+"acabar estant visible públicament."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid "Sensitive words"
-msgstr ""
+msgstr "Paraules sensibles"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid "Custom"
-msgstr ""
+msgstr "Personalitza"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid "Clear the search bar to see the list of security sensitive words."
 msgstr ""
+"Neteja la barra de cerca per veure el llistat de les paraules sensibles de "
+"seguretat."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "file"
-msgstr ""
+msgstr "fitxer"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "data"
-msgstr ""
+msgstr "dades"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "Search"
-msgstr ""
+msgstr "Cerca"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid ""
 "Possible sensitive data detected, feel free to edit the report and remove "
 "them."
 msgstr ""
+"S'han detectat possibles dades sensibles, no dubteu en corregir l'informe i "
+"eliminar-les."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid "Restrict access to the report"
-msgstr ""
+msgstr "Restringix l'accés a aquest informe"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid ""
 "No one except Fedora Contrib group members will be allowed to see the report "
 "with restricted access (not even you)"
 msgstr ""
+"Ningú excepte el grup Fedora Contrib se li permetrà veure l'informe amb "
+"accés restringit (ni tan sols tu)"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid "Read more about reports with restricted access"
-msgstr ""
+msgstr "Conegueu més detalls quant als informes amb accés restringit"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid ""
@@ -798,13 +922,13 @@ msgid ""
 "additional comments useful for diagnosing the problem? Please use English if "
 "possible."
 msgstr ""
-"Com ha passat aquest problema (pas a pas)? Com es pot reproduir? Algun "
+"Com es va produir aquest problema (pas a pas)? Com es pot reproduir? Algun "
 "comentari addicional que sigui útil per diagnosticar el problema? Si us "
-"plau, si és possible escriviu en Anglès."
+"plau, si és possible feu-ho en anglès."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "Necessiteu omplir el com abans de que pugueu procedir..."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid ""
@@ -812,19 +936,19 @@ msgid ""
 "visible problem reports."
 msgstr ""
 "<b> Els vostres comentaris no són privats.</b> Es poden incloure en informes "
-"de problemes visibles públicament."
+"de problemes amb visibilitat pública."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid "If you don't know how to describe it, you can"
-msgstr ""
+msgstr "Si no sabeu com descriure-ho, podeu"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:19
 msgid "add a screencast"
-msgstr ""
+msgstr "afegir un enregistrament de l'escriptori"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:20
 msgid "I don't know what caused this problem"
-msgstr ""
+msgstr "No sé el que ha provocat aquest problema"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:21
 msgid "Size:"
@@ -836,7 +960,7 @@ msgstr "Adjunta un fitxer"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:23
 msgid "I reviewed the data and _agree with submitting it"
-msgstr "He revisat la informació i _accepto trametre-la"
+msgstr "He revisat la informació i _accepto la presentació"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:24
 msgid ""
@@ -844,14 +968,14 @@ msgid ""
 "data (such as usernames and passwords). Backtrace, command line, environment "
 "variables are the typical items in need of examining."
 msgstr ""
-"Si esteu informant cap a un servidor remot, assegureu-vos que tota la "
-"informació privada (com noms d'usuaris i contrasenyes) estigui treta. La "
-"traça inversa, línia de comanda, les variables d'entorn són els típics ítems "
-"que cal examinar."
+"Si esteu realitzant la presentació d'informes a un servidor remot, assegureu-"
+"vos que heu tret tota la informació privada (com ara noms d'usuaris i "
+"contrasenyes). La traça inversa, línia d'ordres, les variables d'entorn són "
+"els elements típics que cal examinar."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:25
 msgid "Processing did not start yet"
-msgstr "El procés encara no ha començat"
+msgstr "Encara no s'ha iniciat el processament"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:26
 msgid "Show log"
@@ -859,7 +983,8 @@ msgstr "Mostra el registre"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:27
 msgid "Reporting has finished. You can close this window now."
-msgstr "L'informe ha acabat. Podeu tancar aquesta finestra."
+msgstr ""
+"S'ha finalitzat la presentació d'informes. Podeu tancar aquesta finestra."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:28
 msgid ""
@@ -869,18 +994,18 @@ msgid ""
 msgstr ""
 "Si voleu informar el problema a una destinació diferent, recollir informació "
 "addicional o proporcionar una millor descripció del problema i repetir el "
-"procés de realitzar el llistat, pressioneu 'Endavant'."
+"procés de presentació d'informes, pressioneu 'Endavant'."
 
-#: ../src/include/internal_libreport.h:994
+#: ../src/include/internal_libreport.h:1095
 msgid "Be verbose"
-msgstr ""
+msgstr "Mostra informació detallada"
 
-#: ../src/include/internal_libreport.h:995
-#: ../src/plugins/reporter-bugzilla.c:895
+#: ../src/include/internal_libreport.h:1096
+#: ../src/plugins/reporter-bugzilla.c:293
 #: ../src/plugins/reporter-kerneloops.c:166
 #: ../src/plugins/reporter-mailx.c:203 ../src/plugins/reporter-print.c:56
 #: ../src/plugins/reporter-rhtsupport.c:471
-#: ../src/plugins/reporter-upload.c:250
+#: ../src/plugins/reporter-upload.c:250 ../src/plugins/reporter-mantisbt.c:285
 msgid "Problem directory"
 msgstr "Problema de directori"
 
@@ -891,20 +1016,20 @@ msgstr "No es pot esborrar '%s'"
 
 #: ../src/lib/abrt_sock.c:196
 msgid "locked by another process"
-msgstr ""
+msgstr "està bloquejat per un altre procés"
 
 #: ../src/lib/abrt_sock.c:205
 msgid "permission denied"
-msgstr ""
+msgstr "permís denegat"
 
 #: ../src/lib/abrt_sock.c:208
 msgid "not a problem directory"
-msgstr ""
+msgstr "no és un directori de problema"
 
 #: ../src/lib/abrt_sock.c:217
 #, c-format
 msgid "Can't delete '%s': %s"
-msgstr ""
+msgstr "No es pot eliminar '%s': %s"
 
 #: ../src/lib/client.c:55 ../src/lib/client.c:87
 msgid "y"
@@ -916,22 +1041,22 @@ msgstr "N"
 
 #: ../src/lib/client.c:89
 msgid "f"
-msgstr ""
+msgstr "f"
 
-#: ../src/lib/create_dump_dir.c:41
+#: ../src/lib/create_dump_dir.c:137
 #, c-format
 msgid "Missing required item: '%s'"
 msgstr "Falta l'ítem necessari: '%s'"
 
-#: ../src/lib/create_dump_dir.c:56
+#: ../src/lib/create_dump_dir.c:152
 #, c-format
 msgid "uid value is not valid: '%s'"
-msgstr ""
+msgstr "El valor de l'uid no és vàlid: '%s'"
 
 #: ../src/lib/curl.c:227
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
-msgstr "S'ha penjat: %llu of %llu kbytes"
+msgstr "S'han pujat: %llu de %llu kbytes"
 
 #: ../src/lib/curl.c:635
 #, c-format
@@ -941,12 +1066,12 @@ msgstr "S'està enviant %s a %s"
 #: ../src/lib/curl.c:659
 #, c-format
 msgid "Please enter user name for '%s':"
-msgstr ""
+msgstr "Introduïu el nom d'usuari per '%s':"
 
 #: ../src/lib/curl.c:665
 #, c-format
 msgid "Please enter password for '%s':"
-msgstr ""
+msgstr "Introduït la contrasenya per '%s':"
 
 #. This ends up a "reporting status message" in abrtd
 #: ../src/lib/curl.c:688
@@ -956,26 +1081,26 @@ msgstr "S'ha enviat satisfactòriament %s a %s"
 
 #: ../src/lib/event_config.c:348
 msgid "Missing mandatory value"
-msgstr "Manca valor obligatori"
+msgstr "Falta valor obligatori"
 
 #: ../src/lib/event_config.c:356
 #, c-format
 msgid "Invalid utf8 character '%c'"
-msgstr "Caràcter utf8 '%c' invàlid"
+msgstr "El caràcter utf8 '%c' no és vàlid"
 
 #: ../src/lib/event_config.c:369
 #, c-format
 msgid "Invalid number '%s'"
-msgstr "número '%s' invàlid"
+msgstr "El número '%s' no és vàlid"
 
 #: ../src/lib/event_config.c:384
 #, c-format
 msgid "Invalid boolean value '%s'"
-msgstr "valor booleà '%s' invàlid"
+msgstr "El valor booleà '%s' no és vàlid"
 
 #: ../src/lib/event_config.c:390
 msgid "Unsupported option type"
-msgstr "Tipus d'opció sense suport"
+msgstr "Tipus d'opció no suportada"
 
 #: ../src/lib/event_config.c:464
 #, c-format
@@ -983,28 +1108,34 @@ msgid ""
 "The problem cannot be reported due to an invalid data. '%s' file does not "
 "contain a number."
 msgstr ""
+"El problema no pot ser informat a causa d'unes dades no vàlides. el fitxer "
+"'%s' no conté un número."
 
 #: ../src/lib/event_config.c:468
 msgid "Please report this problem to ABRT project developers."
 msgstr ""
+"Si us plau, informeu d'aquest problema als desenvolupadors del projecte ABRT."
+""
 
 #: ../src/lib/event_config.c:474
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr ""
-"La traça inversa no és completa, si us plau assegureu que proporcioneu els "
-"passos que s'han de reproduir. "
+"La traça inversa està incompleta, si us plau assegureu-vos que proporcioneu "
+"els passos a reproduir. "
 
 #: ../src/lib/event_config.c:475
 msgid "The backtrace probably can't help developer to diagnose the bug."
 msgstr ""
+"La traça inversa probablement no pugui ajudar als desenvolupadors a "
+"diagnosticar l'error de programari."
 
 #: ../src/lib/event_config.c:481
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr ""
-"Els informes estan deshabilitats perquè no es pot utilitzar la traça inversa."
-""
+"La presentació d'informes està deshabilitada perquè la traça inversa és "
+"inutilitzable."
 
 #: ../src/lib/event_config.c:485
 #, c-format
@@ -1012,145 +1143,179 @@ msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again."
 msgstr ""
+"Si us plau, proveu d'instal·lar manualment el debuginfo mitjançant: "
+"\"debuginfo-install %s\" i torneu-ho a intentar."
 
 #: ../src/lib/event_config.c:487
 msgid "A proper debuginfo is probably missing or the coredump is corrupted."
-msgstr ""
+msgstr "Probablement falti un debuginfo adequat o el coredump està corromput."
 
-#: ../src/lib/ureport.c:348
+#: ../src/lib/ureport.c:410
 #, c-format
 msgid "Your problem seems to be caused by %s\n"
 "\n"
 "%s\n"
-msgstr ""
+msgstr "El vostre problema embla que estigui provocat per %s\n"
+"\n"
+"%s\n"
 
-#: ../src/lib/ureport.c:351
+#: ../src/lib/ureport.c:413
 msgid "Your problem seems to be caused by one of the following:\n"
-msgstr ""
+msgstr "El vostre problema embla que estigui provocat per un dels següents:\n"
 
-#: ../src/lib/ureport.c:522
+#: ../src/lib/ureport.c:584
 #, c-format
 msgid "Failed to upload uReport to the server '%s' with curl: %s"
-msgstr ""
+msgstr "Error en pujar l'uReport al servidor '%s' amb curl: %s"
 
-#: ../src/lib/ureport.c:528
+#: ../src/lib/ureport.c:590
 #, c-format
 msgid "The URL '%s' does not exist (got error 404 from server)"
-msgstr ""
+msgstr "No existeix la URL '%s' (es va obtenir un error 404 del servidor)"
 
-#: ../src/lib/ureport.c:534
+#: ../src/lib/ureport.c:596
 #, c-format
 msgid "The server at '%s' encountered an internal error (got error 500)"
 msgstr ""
+"El servidor a '%s' es va trobar amb un problema intern (es va obtenir un "
+"error 500)"
 
-#: ../src/lib/ureport.c:540
+#: ../src/lib/ureport.c:602
 #, c-format
 msgid "The server at '%s' currently can't handle the request (got error 503)"
 msgstr ""
+"El servidor a '%s' no pot tractar actualment la petició (es va obtenir un "
+"error 503)"
 
 #. can't print better error message
-#: ../src/lib/ureport.c:549
+#: ../src/lib/ureport.c:611
 #, c-format
 msgid "Unexpected HTTP response from '%s': %d"
-msgstr ""
+msgstr "Resposta HTTP inesperada de '%s': %d"
 
-#: ../src/lib/ureport.c:558
+#: ../src/lib/ureport.c:620
 #, c-format
 msgid "Unable to parse response from ureport server at '%s'"
 msgstr ""
+"No es pot analitzar sintàcticament la resposta del servidor ureport a '%s'"
 
-#: ../src/lib/ureport.c:568
+#: ../src/lib/ureport.c:630
 #, c-format
 msgid "The response from '%s' has invalid format"
-msgstr ""
+msgstr "La resposta de '%s' no té un format vàlid"
 
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
-#: ../src/lib/ureport.c:574
+#: ../src/lib/ureport.c:636
 #, c-format
 msgid "Type mismatch has been detected in the response from '%s'"
 msgstr ""
+"S'ha detectat una manca de concordança de tipus en la resposta de '%s'"
 
-#: ../src/lib/ureport.c:760 ../src/plugins/reporter-rhtsupport.c:198
+#: ../src/lib/ureport.c:822 ../src/plugins/reporter-rhtsupport.c:198
 msgid "Failed on submitting the problem"
-msgstr ""
+msgstr "Error en la presentació del problema"
 
-#: ../src/lib/ureport.c:802
+#: ../src/lib/ureport.c:864
 #, c-format
 msgid "The server at '%s' responded with an error: '%s'"
-msgstr ""
+msgstr "El servidor a '%s' va respondre amb un error: '%s'"
 
 #: ../src/lib/make_descr.c:149 ../src/lib/make_descr.c:160
 msgid "Reported:"
-msgstr ""
+msgstr "Informat:"
 
 #: ../src/lib/make_descr.c:149
 msgid "cannot be reported"
-msgstr ""
+msgstr "no pot ser informat"
 
-#: ../src/lib/parse_options.c:60
+#: ../src/lib/parse_options.c:63
 msgid "Usage: "
-msgstr "Sintaxi:"
+msgstr "Ús: "
 
-#: ../src/lib/problem_data.c:214
+#: ../src/lib/problem_data.c:252
 #, c-format
 msgid "Essential element '%s' is missing, can't continue"
+msgstr "Falta l'element essencial '%s' i no es pot continuar"
+
+#: ../src/lib/problem_report.c:477
+#, c-format
+msgid "Can't parse backtrace: %s"
+msgstr "No es pot analitzar sintàcticament la traça inversa: %s"
+
+#: ../src/lib/problem_report.c:488
+msgid "Can't generate stacktrace description (no crash thread?)"
+msgstr ""
+"No es pot generar la descripció de la traça de la pila (sense fil d'execució "
+"de la pana?)"
+
+#: ../src/lib/reporters.c:55
+msgid "Note does not contain rating"
 msgstr ""
 
 #: ../src/lib/run_event.c:763
 #, c-format
 msgid "('%s' was killed by signal %u)\n"
-msgstr ""
+msgstr "('%s' va ser matat per la senyal %u)\n"
 
 #: ../src/lib/run_event.c:765
 #, c-format
 msgid "('%s' completed successfully)\n"
-msgstr ""
+msgstr "(s'ha completat '%s' amb èxit)\n"
 
 #: ../src/lib/run_event.c:767
 #, c-format
 msgid "('%s' exited with %u)\n"
-msgstr ""
+msgstr "('%s' va sortir amb %u)\n"
 
 #: ../src/plugins/abrt_rh_support.c:356
 #, c-format
 msgid "Error in case creation at '%s': %s"
-msgstr ""
+msgstr "S'ha produït un error en la creació del cas a '%s': %s"
 
 #: ../src/plugins/abrt_rh_support.c:365
 #, c-format
 msgid "Error in case creation at '%s', HTTP code: %d, server says: '%s'"
 msgstr ""
+"S'ha produït un error en la creació del cas a '%s', codi HTTP: %d, el "
+"servidor va dir: '%s'"
 
 #: ../src/plugins/abrt_rh_support.c:369
 #, c-format
 msgid "Error in case creation at '%s', HTTP code: %d"
-msgstr ""
+msgstr "S'ha produït un error en la creació del cas a '%s', codi HTTP: %d"
 
 #: ../src/plugins/abrt_rh_support.c:420
 #, c-format
 msgid "Error in case creation at '%s': no Location URL, HTTP code: %d"
 msgstr ""
+"S'ha produït un error en la creació del cas a '%s': sense URL de "
+"localització, codi HTTP: %d"
 
 #: ../src/plugins/abrt_rh_support.c:524
 #, c-format
 msgid "Error in comment creation at '%s': %s"
-msgstr ""
+msgstr "S'ha produït un error en la creació del comentari a '%s': %s"
 
 #: ../src/plugins/abrt_rh_support.c:533
 #, c-format
 msgid "Error in comment creation at '%s', HTTP code: %d, server says: '%s'"
 msgstr ""
+"S'ha produït un error en la creació del comentari a '%s', codi HTTP code: "
+"%d, el servidor va dir: '%s'"
 
 #: ../src/plugins/abrt_rh_support.c:537
 #, c-format
 msgid "Error in comment creation at '%s', HTTP code: %d"
 msgstr ""
+"S'ha produït un error en la creació del comentari a '%s', codi HTTP: %d"
 
 #: ../src/plugins/abrt_rh_support.c:583
 #, c-format
 msgid "Error in comment creation at '%s': no Location URL, HTTP code: %d"
 msgstr ""
+"S'ha produït un error en la creació del comentari a '%s': sense URL de "
+"localització, codi HTTP: %d"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:1
 msgid "Bugzilla"
@@ -1158,26 +1323,28 @@ msgstr "Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:2
 msgid "Report to Bugzilla bug tracker"
-msgstr "Informa a Bugzilla bug tracker"
+msgstr "Informa al rastrejador d'errors de programari Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:3
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:3
 #: ../src/plugins/report_Uploader.xml.in.h:6
 msgid "User name"
 msgstr "Nom d'usuari"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:4
 msgid "Bugzilla account user name"
-msgstr "Nom d'usuari del compte de Bugzilla"
+msgstr "Nom d'usuari del compte Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:5
 msgid ""
 "You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
 "redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 msgstr ""
-"Podeu crear un compte de bugzilla.redhat.com &lt;a href=\"https://bugzilla."
-"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+"Podeu crear un compte a bugzilla.redhat.com &lt;a href=\"https://bugzilla."
+"redhat.com/createaccount.cgi\"&gt;aquí&lt;/a&gt;"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:6
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:6
 #: ../src/plugins/report_RHTSupport.xml.in.h:5
 #: ../src/plugins/report_Uploader.xml.in.h:8
 msgid "Password"
@@ -1189,99 +1356,115 @@ msgstr "Contrasenya del compte Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:8
 msgid "Bugzilla URL"
-msgstr "URL Bugzilla"
+msgstr "URL del Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:9
 msgid "Address of Bugzilla server"
-msgstr "Adreça del servidor Bugzilla"
+msgstr "Adreça del servidor del Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:10
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:10
 #: ../src/plugins/report_RHTSupport.xml.in.h:7
 #: ../src/plugins/report_uReport.xml.in.h:9
 msgid "Verify SSL"
-msgstr "Verifica SSL"
+msgstr "Verificació SSL"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:11
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:11
 #: ../src/plugins/report_RHTSupport.xml.in.h:8
 #: ../src/plugins/report_uReport.xml.in.h:10
 msgid "Check SSL key validity"
-msgstr "Reviseu la validesa de la clau SSL"
+msgstr "Comprova la validesa de la clau SSL"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:12
 msgid "Bugzilla product"
-msgstr ""
+msgstr "Producte del Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:13
 msgid ""
 "Specify this only if you needed different product than specified in /etc/os-"
 "release"
 msgstr ""
+"Únicament especifiqueu-ho si necessiteu un producte diferent a l'especificat "
+"a /etc/os-release"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:14
 msgid "Bugzilla product version"
-msgstr ""
+msgstr "Versió del producte del Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:15
 msgid ""
 "Specify this only if you needed different product version than specified in /"
 "etc/os-release"
 msgstr ""
+"Únicament especifiqueu-ho si necessiteu una versió de producte diferent a "
+"l'especificada a /etc/os-release"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:16
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:16
 #: ../src/plugins/report_Kerneloops.xml.in.h:5
 #: ../src/plugins/report_RHTSupport.xml.in.h:13
 #: ../src/plugins/report_Uploader.xml.in.h:10
 #: ../src/plugins/report_uReport.xml.in.h:11
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:4
 msgid "HTTP Proxy"
-msgstr ""
+msgstr "Servidor intermediari d'HTTP"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:17
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:17
 #: ../src/plugins/report_Kerneloops.xml.in.h:6
 #: ../src/plugins/report_RHTSupport.xml.in.h:14
 #: ../src/plugins/report_Uploader.xml.in.h:11
 #: ../src/plugins/report_uReport.xml.in.h:12
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:5
 msgid "Sets the proxy server to use for HTTP"
-msgstr ""
+msgstr "Estableix el servidor intermediari a utilitzar per a l'HTTP"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:18
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:18
 #: ../src/plugins/report_Kerneloops.xml.in.h:7
 #: ../src/plugins/report_RHTSupport.xml.in.h:15
 #: ../src/plugins/report_Uploader.xml.in.h:12
 #: ../src/plugins/report_uReport.xml.in.h:13
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:6
 msgid "HTTPS Proxy"
-msgstr ""
+msgstr "Servidor intermediari d'HTTPS"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:19
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:19
 #: ../src/plugins/report_Kerneloops.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:16
 #: ../src/plugins/report_Uploader.xml.in.h:13
 #: ../src/plugins/report_uReport.xml.in.h:14
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:7
 msgid "Sets the proxy server to use for HTTPS"
-msgstr ""
+msgstr "Estableix el servidor intermediari a utilitzar per a l'HTTPS"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:20
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:20
 msgid "Restrict access"
-msgstr ""
+msgstr "Restringix l'accés"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:21
 msgid ""
 "Restrict access to the created bugzilla ticket allowing only users from "
 "specified groups to view it (see advanced settings for more details)"
 msgstr ""
+"Restringix l'accés al tiquet creat del Bugzilla permetent que únicament ho "
+"vegin els usuaris dels grups indicats (consulteu els ajustos avançats per a "
+"més detalls)"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:22
 msgid "Groups"
-msgstr ""
+msgstr "Grups"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:23
 msgid ""
 "Restrict the access to specified groups &lt;a href=\"https://github.com/abrt/"
 "abrt/wiki/FAQ#creating-private-bugzilla-tickets\"&gt;?&lt;/a&gt;"
 msgstr ""
+"Restringix l'accés als grups indicats &lt;a href=\"https://github.com/abrt/"
+"abrt/wiki/FAQ#creating-private-bugzilla-tickets\"&gt;?&lt;/a&gt;"
 
 #: ../src/plugins/report.c:37
 msgid ""
@@ -1295,6 +1478,18 @@ msgid ""
 "\n"
 "Configuration (such as login data) can be supplied via files\n"
 msgstr ""
+"& [-v] --target OBJECTIU --ticket ID FITXER...\n"
+"\n"
+"Puja els FITXERs al tiquet especificat en l'OBJECTIU.\n"
+"\n"
+"Es proporciona aquesta eina per facilitar la transició dels usuaris del "
+"paquet d'informes\n"
+"al libreport. Els OBJECTIUs reconeguts són 'strata' i 'bugzilla', el primer "
+"invoca la pujada\n"
+"a RHTSupport mentre que el segon ho fa a Bugzilla.\n"
+"\n"
+"La configuració (com ara les dades d'inici de sessió) pot subministrar-se a "
+"través dels fitxers\n"
 
 #: ../src/plugins/report.c:59
 msgid "'strata' or 'bugzilla'"
@@ -1302,49 +1497,49 @@ msgstr "'strata' o 'bugzilla'"
 
 #: ../src/plugins/report.c:60
 msgid "Ticket/case ID"
-msgstr ""
+msgstr "Id. del tiquet/cas"
 
-#: ../src/plugins/reporter-bugzilla.c:355
-#, c-format
-msgid "Can't parse backtrace: %s"
-msgstr ""
-
-#: ../src/plugins/reporter-bugzilla.c:366
-msgid "Can't generate stacktrace description (no crash thread?)"
-msgstr ""
-
-#: ../src/plugins/reporter-bugzilla.c:764
+#: ../src/plugins/reporter-bugzilla.c:162
 msgid ""
 "Warning, private ticket groups already specified as cmdline argument, "
 "ignoring the env variable and configuration"
 msgstr ""
+"Advertència, els grups del tiquet privat ja es van especificar com a un "
+"argument en la línia d'ordres, s'està ignorant la variable env i la "
+"configuració"
 
-#: ../src/plugins/reporter-bugzilla.c:775
+#: ../src/plugins/reporter-bugzilla.c:173
 #: ../src/plugins/reporter-rhtsupport.c:342
+#: ../src/plugins/reporter-mantisbt.c:55
 msgid "Can't continue without login"
-msgstr ""
+msgstr "No es pot continuar sense iniciar la sessió"
 
-#: ../src/plugins/reporter-bugzilla.c:788
+#: ../src/plugins/reporter-bugzilla.c:186
 #: ../src/plugins/reporter-rhtsupport.c:355
+#: ../src/plugins/reporter-mantisbt.c:70
 msgid "Can't continue without password"
-msgstr ""
+msgstr "No es pot continuar sense la contrasenya"
 
-#: ../src/plugins/reporter-bugzilla.c:797
+#: ../src/plugins/reporter-bugzilla.c:195
 #, c-format
 msgid "Logging into Bugzilla at %s"
-msgstr "S'està registrant en Bugzilla a %s"
+msgstr "S'està iniciant la sessió Bugzilla a %s"
 
-#: ../src/plugins/reporter-bugzilla.c:801
+#: ../src/plugins/reporter-bugzilla.c:199
 msgid "Invalid password or login. Please enter your BZ login:"
 msgstr ""
+"La contrasenya o l'usuari no són vàlids. Introduïu el vostre usuari de "
+"Bugzilla:"
 
-#: ../src/plugins/reporter-bugzilla.c:804
+#: ../src/plugins/reporter-bugzilla.c:202
 #: ../src/plugins/reporter-rhtsupport.c:369
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
 msgstr ""
+"La contrasenya o l'usuari no són vàlids. Introduïu la contrasenya per a '%s':"
+""
 
-#: ../src/plugins/reporter-bugzilla.c:823
+#: ../src/plugins/reporter-bugzilla.c:221
 msgid ""
 "\n"
 "& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d "
@@ -1388,156 +1583,233 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"\n"
+"& [-vbf] [-g NOM-GRUP]... [-c FITXERCONF]... [-F FITXERFMT] [-A FITXERFMT2] -"
+"d DIR\n"
+"or:\n"
+"& [-v] [-c FITXERCONF]... [-d DIR] -t[ID] FITXER...\n"
+"or:\n"
+"& [-v] [-c FITXERCONF]... [-d DIR] -t[ID] -w\n"
+"or:\n"
+"& [-v] [-c FITXERCONF]... -h DUPHASH\n"
+"\n"
+"Informa del problema a Bugzilla.\n"
+"\n"
+"L'eina llegeix el DIR. Després es registra a Bugzilla i intenta de trobar un "
+"error \n"
+"de programari amb el mateix abrt_hash:HEXSTRING al 'Whiteboard'.\n"
+"\n"
+"Si no es troba l'error de programari, aleshores es crea un nou error de \n"
+"programari. Els elements del DIR s'emmagatzemen com a descripció de\n"
+"l'error de programari o com a adjunts, segons el seu tipus i mida.\n"
+"\n"
+"En cas contrari, si es troba l'error de programari i està marcat com CLOSED\n"
+"DUPLICATE, l'eina segueix la cadena dels duplicats fins que trobi un error "
+"de\n"
+"programari unnon-DUPLICATE. L'eina afegeix un nou comentari a l'error trobat."
+"\n"
+"\n"
+"La URL al nou/modificat error de programari i s'imprimeix per la sortida\n"
+"estàndard i s'enregistra a l'element 'reported_to'.\n"
+"\n"
+"L'opció -t puja els FITXERs a l'error de programari ja creat al lloc de "
+"Bugzilla. L'ID\n"
+"de l'error de programari es recupera del directori especificat amb -d DIR. "
+"Si les\n"
+"dades del problema del DIR no es van informar mai al Bugzilla, fallarà la "
+"pujada.\n"
+"\n"
+"L'opció -tID puja els FITXERs a l'error de programari amb l'ID especificat "
+"al lloc\n"
+"de Bugzilla. S'ignora -d DIR.\n"
+"\n"
+"L'opció -w afegeix l'usuari de bugzilla a la llista CC de l'error de "
+"programari.\n"
+"\n"
+"L'opció -r estableix l'última url de l'element reporter_to que està "
+"prefixada amb el\n"
+"TRACKER_NAME al camp URL. Aquesta opció s'aplica només quan s'omple un nou\n"
+"error. El valor per defecte és 'ABRT Server'\n"
+"\n"
+"Si no s'especifica, CONFFILE per defecte a"
 
-#: ../src/plugins/reporter-bugzilla.c:896
+#: ../src/plugins/reporter-bugzilla.c:294
 #: ../src/plugins/reporter-rhtsupport.c:472
+#: ../src/plugins/reporter-mantisbt.c:286
 msgid "Configuration file (may be given many times)"
 msgstr "Fitxer de configuració (pot ser donat moltes vegades)"
 
-#: ../src/plugins/reporter-bugzilla.c:897
+#: ../src/plugins/reporter-bugzilla.c:295
+#: ../src/plugins/reporter-mantisbt.c:287
 msgid "Formatting file for initial comment"
-msgstr ""
+msgstr "S'està donant format al fitxer per a un comentari inicial"
 
-#: ../src/plugins/reporter-bugzilla.c:898
+#: ../src/plugins/reporter-bugzilla.c:296
+#: ../src/plugins/reporter-mantisbt.c:288
 msgid "Formatting file for duplicates"
-msgstr ""
+msgstr "S'està donant format al fitxer per als duplicats"
 
-#: ../src/plugins/reporter-bugzilla.c:899
+#: ../src/plugins/reporter-bugzilla.c:297
 msgid "Attach FILEs [to bug with this ID]"
-msgstr "Adjunta FITXERs [a l'error amb aquest ID]"
+msgstr "Adjunta FITXERs [a l'error de programari amb aquest ID]"
 
-#: ../src/plugins/reporter-bugzilla.c:900
+#: ../src/plugins/reporter-bugzilla.c:298
 msgid "When creating bug, attach binary files too"
-msgstr "Quan es crei un error, adjunta també els fitxers binaris"
+msgstr ""
+"Quan es crei un error de programari, adjunta també els fitxers binaris"
 
-#: ../src/plugins/reporter-bugzilla.c:901
+#: ../src/plugins/reporter-bugzilla.c:299
 #: ../src/plugins/reporter-rhtsupport.c:474
+#: ../src/plugins/reporter-mantisbt.c:290
 msgid "Force reporting even if this problem is already reported"
 msgstr ""
+"Força la presentació d'informes encara que ja s'hagi informat del problema"
 
-#: ../src/plugins/reporter-bugzilla.c:902
+#: ../src/plugins/reporter-bugzilla.c:300
 msgid "Add bugzilla user to CC list [of bug with this ID]"
 msgstr ""
+"Afegeix l'usuari bugzilla a la llista CC [de l'error de programari amb "
+"aquest ID]"
 
-#: ../src/plugins/reporter-bugzilla.c:903
+#: ../src/plugins/reporter-bugzilla.c:301
+#: ../src/plugins/reporter-mantisbt.c:291
 msgid "Print BUG_ID which has given DUPHASH"
-msgstr ""
+msgstr "Imprimeix el BUG_ID que ha donat DUPHASH"
 
-#: ../src/plugins/reporter-bugzilla.c:904
+#: ../src/plugins/reporter-bugzilla.c:302
+#: ../src/plugins/reporter-mantisbt.c:292
 msgid "A name of bug tracker for an additional URL from 'reported_to'"
 msgstr ""
+"Un nom del seguidor de l'error de programari per a una URL addicional des de "
+"'reported_to'"
 
-#: ../src/plugins/reporter-bugzilla.c:905
+#: ../src/plugins/reporter-bugzilla.c:303
 msgid "Restrict access to this group only"
-msgstr ""
+msgstr "Restringeix l'accés a només aquest grup"
 
-#: ../src/plugins/reporter-bugzilla.c:906
+#: ../src/plugins/reporter-bugzilla.c:304
+#: ../src/plugins/reporter-mantisbt.c:294
 msgid "Debug"
-msgstr ""
+msgstr "Depura"
 
-#: ../src/plugins/reporter-bugzilla.c:948
+#: ../src/plugins/reporter-bugzilla.c:346
 msgid "Looking for similar problems in bugzilla"
-msgstr ""
+msgstr "S'estan cercant problemes similars al bugzilla"
 
-#: ../src/plugins/reporter-bugzilla.c:975
+#: ../src/plugins/reporter-bugzilla.c:373
 msgid "Login is not provided by configuration. Please enter your BZ login:"
 msgstr ""
+"En la configuració no s'ha proporcionat l'usuari. Introduïu el vostre usuari "
+"de BZ:"
 
-#: ../src/plugins/reporter-bugzilla.c:981
+#: ../src/plugins/reporter-bugzilla.c:379
 #: ../src/plugins/reporter-rhtsupport.c:510
 #, c-format
 msgid ""
 "Password is not provided by configuration. Please enter the password for "
 "'%s':"
 msgstr ""
+"No es proporciona la contrasenya amb la configuració. Si us plau, introduïu "
+"la contrasenya per '%s':"
 
-#: ../src/plugins/reporter-bugzilla.c:1000
+#: ../src/plugins/reporter-bugzilla.c:398
 msgid ""
 "Can't get Bugzilla ID because this problem has not yet been reported to "
 "Bugzilla."
 msgstr ""
+"No es pot obtenir l'ID de Bugzilla perquè aquest problema encara no ha estat "
+"informat a Bugzilla."
 
-#: ../src/plugins/reporter-bugzilla.c:1007
+#: ../src/plugins/reporter-bugzilla.c:405
 #, c-format
 msgid ""
 "This problem has been reported to Bugzilla '%s' which differs from the "
 "configured Bugzilla '%s'."
 msgstr ""
+"Aquest problema ha estat informat al Bugzilla '%s' que difereix del Bugzilla "
+"configurat '%s'."
 
-#: ../src/plugins/reporter-bugzilla.c:1011
+#: ../src/plugins/reporter-bugzilla.c:409
 #, c-format
 msgid "Malformed url to Bugzilla '%s'."
-msgstr ""
+msgstr "URL mal formada al Bugzilla '%s'."
 
-#: ../src/plugins/reporter-bugzilla.c:1015
+#: ../src/plugins/reporter-bugzilla.c:413
 #, c-format
 msgid "Using Bugzilla ID '%s'"
-msgstr ""
+msgstr "S'esta utilitzant l'Id. de Bugzilla '%s'"
 
-#: ../src/plugins/reporter-bugzilla.c:1049
-#: ../src/plugins/reporter-bugzilla.c:1341
+#: ../src/plugins/reporter-bugzilla.c:447
+#: ../src/plugins/reporter-bugzilla.c:768
 msgid "Logging out"
-msgstr "S'està finalitzant"
+msgstr "S'està tancant la sessió"
 
-#: ../src/plugins/reporter-bugzilla.c:1100
+#: ../src/plugins/reporter-bugzilla.c:498
 msgid "Can't determine Bugzilla Product from problem data."
 msgstr ""
+"No es pot determinar el producte Bugzilla a partir de les dades del problema."
+""
 
-#: ../src/plugins/reporter-bugzilla.c:1151
+#: ../src/plugins/reporter-bugzilla.c:560
+#: ../src/plugins/reporter-mantisbt.c:490
 msgid "Checking for duplicates"
 msgstr "S'està revisant si hi ha duplicats"
 
 #. Create new bug
-#: ../src/plugins/reporter-bugzilla.c:1197
+#: ../src/plugins/reporter-bugzilla.c:606
 msgid "Creating a new bug"
-msgstr "S'està creant un nou error"
+msgstr "S'està creant un nou error de programari"
 
-#: ../src/plugins/reporter-bugzilla.c:1218
+#: ../src/plugins/reporter-bugzilla.c:634
 msgid "Failed to create a new bug."
-msgstr ""
+msgstr "La creació del nou error de programari ha fallat."
 
-#: ../src/plugins/reporter-bugzilla.c:1229
+#: ../src/plugins/reporter-bugzilla.c:645
 #, c-format
 msgid "Adding External URL to bug %i"
-msgstr ""
+msgstr "S'està afegint la URL externa a l'error de programari %i"
 
-#: ../src/plugins/reporter-bugzilla.c:1235
+#: ../src/plugins/reporter-bugzilla.c:651
 #, c-format
 msgid "Adding attachments to bug %i"
-msgstr ""
+msgstr "S'estan afegint els adjunts a l'error de programari %i"
 
-#: ../src/plugins/reporter-bugzilla.c:1254
+#: ../src/plugins/reporter-bugzilla.c:678
+#: ../src/plugins/reporter-mantisbt.c:599
 #, c-format
 msgid "Bug is already reported: %i"
-msgstr "L'error ja s'ha informat: %i"
+msgstr "Ja s'ha informat de l'error de programari: %i"
 
-#: ../src/plugins/reporter-bugzilla.c:1297
+#: ../src/plugins/reporter-bugzilla.c:721
 #, c-format
 msgid "Adding %s to CC list"
-msgstr ""
+msgstr "S'està afegirnt %s a la llista de CC"
 
-#: ../src/plugins/reporter-bugzilla.c:1314
+#: ../src/plugins/reporter-bugzilla.c:742
 #, c-format
 msgid "Adding new comment to bug %d"
-msgstr "S'està afegint un nou comentari a l'error %d"
+msgstr "S'està afegint un nou comentari a l'error de programari %d"
 
-#: ../src/plugins/reporter-bugzilla.c:1328
+#: ../src/plugins/reporter-bugzilla.c:755
+#: ../src/plugins/reporter-mantisbt.c:649
 msgid "Attaching better backtrace"
-msgstr ""
+msgstr "S'està adjuntant millor la traça inversa"
 
-#: ../src/plugins/reporter-bugzilla.c:1336
+#: ../src/plugins/reporter-bugzilla.c:761
 msgid "Found the same comment in the bug history, not adding a new one"
 msgstr ""
+"S'ha trobat el mateix comentari en l'històric de l'error de programari, no "
+"se'n afegeix cap de nou"
 
-#: ../src/plugins/reporter-bugzilla.c:1344
+#: ../src/plugins/reporter-bugzilla.c:771
 #, c-format
 msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
-msgstr ""
+msgstr "Estat: %s%s%s %s/show_bug.cgi?id=%u"
 
 #: ../src/plugins/reporter-kerneloops.c:105
 #, c-format
 msgid "Submitting oops report to %s"
-msgstr "S'està trameten l'informe oops a %s"
+msgstr "S'està presentant l'informe oops a %s"
 
 #: ../src/plugins/reporter-kerneloops.c:147
 msgid ""
@@ -1552,9 +1824,20 @@ msgid ""
 "Recognized string parameter: SubmitURL.\n"
 "Parameter can be overridden via $KerneloopsReporter_SubmitURL."
 msgstr ""
+"& [-v] [-c FITXERCONF]... -d DIR\n"
+"\n"
+"Informa dels oops del nucli del sistema operatiu al lloc kerneloops.org (o "
+"similar).\n"
+"\n"
+"Els fitxers amb els noms llistats a $EXCLUDE_FROM_REPORT no estan inclosos\n"
+"al tarball.\n"
+"\n"
+"Les línies en FITXERCONF han de tenir el format 'PARÀMETRE = VALOR'.\n"
+"Paràmetre de cadena de text reconegut: SubmitURL.\n"
+"El paràmetre pot reemplaçar-se amb $KerneloopsReporter_SubmitURL."
 
 #: ../src/plugins/reporter-kerneloops.c:167
-#: ../src/plugins/reporter-ureport.c:73
+#: ../src/plugins/reporter-ureport.c:76
 msgid "Configuration file"
 msgstr "Fitxer de configuració"
 
@@ -1564,21 +1847,23 @@ msgid ""
 "Email address of %s was not specified. Would you like to do so now? If not, "
 "'%s' is to be used"
 msgstr ""
+"No es va especificar l'adreça de correu electrònic de %s. Voleu fer-ho ara? "
+"Si no ho feu s'utilitza '%s'"
 
 #: ../src/plugins/reporter-mailx.c:66
 #, c-format
 msgid "Please, type email address of %s:"
-msgstr ""
+msgstr "Escriviu l'adreça de correu electrònic de %s:"
 
 #: ../src/plugins/reporter-mailx.c:73
 #, c-format
 msgid "Can't continue without email address of %s"
-msgstr ""
+msgstr "No es pot continuar sense l'adreça de correu electrònic de %s"
 
 #: ../src/plugins/reporter-mailx.c:136
 #, c-format
 msgid "Sending a notification email to: %s"
-msgstr ""
+msgstr "S'està enviant un correu electrònic de notificació a: %s"
 
 #: ../src/plugins/reporter-mailx.c:138
 msgid "Sending an email..."
@@ -1587,7 +1872,7 @@ msgstr "S'està enviant un correu electrònic"
 #: ../src/plugins/reporter-mailx.c:161
 #, c-format
 msgid "Email was sent to: %s"
-msgstr ""
+msgstr "El correu electrònic es va enviar a: %s"
 
 #: ../src/plugins/reporter-mailx.c:183
 msgid ""
@@ -1597,6 +1882,12 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"& [-v] -d DIR [-c FITXERCONF]\n"
+"\n"
+"Envia els continguts d'un directori DIR de problema a través de correu "
+"electrònic\n"
+"\n"
+"Si no s'especifica, FITXERCONF per defecte a"
 
 #: ../src/plugins/reporter-mailx.c:204 ../src/plugins/reporter-upload.c:251
 msgid "Config file"
@@ -1604,7 +1895,7 @@ msgstr "Fitxer de configuració "
 
 #: ../src/plugins/reporter-mailx.c:205
 msgid "Notify only (Do not mark the report as sent)"
-msgstr ""
+msgstr "Tan sols notifica (no es marca l'informe com a enviat)"
 
 #: ../src/plugins/reporter-print.c:42
 msgid ""
@@ -1612,6 +1903,9 @@ msgid ""
 "\n"
 "Prints problem information to standard output or FILE"
 msgstr ""
+"& [-v] -d DIR [-o FITXER] [-a yes/no] [-r]\n"
+"\n"
+"Imprimeix la informació del problema a la sortida estàndard o al FITXER"
 
 #: ../src/plugins/reporter-print.c:57
 msgid "Output file"
@@ -1623,16 +1917,16 @@ msgstr "Afegeix a, o sobreescriu FILE"
 
 #: ../src/plugins/reporter-print.c:59
 msgid "Create reported_to in DIR"
-msgstr ""
+msgstr "Crea reported_to al DIR"
 
 #: ../src/plugins/reporter-print.c:98
 msgid "Cancelled by user."
-msgstr ""
+msgstr "Ha estat cancel·lat per l'usuari."
 
 #: ../src/plugins/reporter-print.c:108
 #, c-format
 msgid "Can't open '%s' for writing. Please select another file:"
-msgstr ""
+msgstr "No es pot obrir '%s' per a l'escriptura. Seleccioneu un altre fitxer:"
 
 #: ../src/plugins/reporter-print.c:143
 #, c-format
@@ -1645,18 +1939,20 @@ msgid "The report was stored to %s"
 msgstr "L'informe s'ha guardat a %s"
 
 #: ../src/plugins/reporter-rhtsupport.c:259
-#: ../src/plugins/reporter-ureport.c:255
+#: ../src/plugins/reporter-ureport.c:261
 #, c-format
 msgid "Server responded with an error: '%s'"
-msgstr ""
+msgstr "El servidor va respondre amb un error: '%s'"
 
 #: ../src/plugins/reporter-rhtsupport.c:319
 msgid "Do you still want to create a RHTSupport ticket?"
-msgstr ""
+msgstr "Encara voleu crear un tiquet RHTSupport?"
 
 #: ../src/plugins/reporter-rhtsupport.c:367
 msgid "Invalid password or login. Please enter your Red Hat login:"
 msgstr ""
+"La contrasenya o l'usuari no són vàlids. Introduïu el vostre usuari de Red "
+"Hat:"
 
 #: ../src/plugins/reporter-rhtsupport.c:435
 msgid ""
@@ -1669,22 +1965,32 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"\n"
+"& [-v] [-c FITXERCONF] -d DIR\n"
+"or:\n"
+"& [-v] [-c FITXERCONF] [-d DIR] -t[ID] [-u -C UR_FITXERCONF] FITXER...\n"
+"\n"
+"Informa d'un problema a RHTSupport.\n"
+"\n"
+"Si no s'especifica, FITXERCONF per defecte a"
 
 #: ../src/plugins/reporter-rhtsupport.c:473
 msgid "Upload FILEs [to case with this ID]"
-msgstr ""
+msgstr "Puja els FITXERs [per al cas amb aquest ID]"
 
 #: ../src/plugins/reporter-rhtsupport.c:475
 msgid "Submit uReport before creating a new case"
-msgstr ""
+msgstr "Presenta l'uReport abans de crear un nou cas"
 
 #: ../src/plugins/reporter-rhtsupport.c:476
 msgid "Configuration file for uReport"
-msgstr ""
+msgstr "Fitxer de configuració per a l'uReport"
 
 #: ../src/plugins/reporter-rhtsupport.c:504
 msgid "Login is not provided by configuration. Please enter your RHTS login:"
 msgstr ""
+"En la configuració no s'ha proporcionat l'usuari. Introduïu el vostre usuari "
+"de RHTS:"
 
 #: ../src/plugins/reporter-rhtsupport.c:573
 #, c-format
@@ -1693,7 +1999,7 @@ msgstr "S'està adjuntant '%s' al cas '%s'"
 
 #: ../src/plugins/reporter-rhtsupport.c:610
 msgid "Sending ABRT crash statistics data"
-msgstr ""
+msgstr "S'estan enviant les dades estadístiques de pana ABRT"
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing
 #. error msg is already logged by dd_opendir
@@ -1705,70 +2011,77 @@ msgstr "S'estan comprimint les dades"
 
 #: ../src/plugins/reporter-rhtsupport.c:656
 msgid "Can't create a temporary directory in "
-msgstr ""
+msgstr "No es pot crear un directori temporal a "
 
 #: ../src/plugins/reporter-rhtsupport.c:665
 msgid "Can't create temporary file in "
-msgstr ""
+msgstr "No es pot crear el fitxer temporal a "
 
 #. Check for hints and show them if we have something
 #: ../src/plugins/reporter-rhtsupport.c:676
 msgid "Checking for hints"
-msgstr ""
+msgstr "S'està revisant si hi ha consells"
 
 #: ../src/plugins/reporter-rhtsupport.c:686
 msgid "Creating a new case"
-msgstr ""
+msgstr "S'està creant un nou cas"
 
 #. How can we help user sorting out this problem?
 #: ../src/plugins/reporter-rhtsupport.c:697
 msgid "Can't determine RH Support Product from problem data."
 msgstr ""
+"No es pot determinar el RHSP (Red Hat Support Product) a partir de les dades "
+"del problema."
 
 #: ../src/plugins/reporter-rhtsupport.c:753
 msgid "Linking ABRT crash statistics record with the case"
 msgstr ""
+"S'estan enllaçant el registre de les estadístiques de pana ABRT amb el cas"
 
 #: ../src/plugins/reporter-rhtsupport.c:766
 #, c-format
 msgid "Linking ABRT crash statistics record with contact email: '%s'"
 msgstr ""
+"S'estan enllaçant el registre de les estadístiques de pana ABRT amb l'adreça "
+"de correu electrònic: '%s'"
 
 #: ../src/plugins/reporter-rhtsupport.c:790
 #, c-format
 msgid "Adding comment to case '%s'"
-msgstr ""
+msgstr "S'està afegint un comentari al cas '%s'"
 
 #. Attach the tarball of -d DIR
 #: ../src/plugins/reporter-rhtsupport.c:808
 #, c-format
 msgid "Attaching problem data to case '%s'"
-msgstr ""
+msgstr "S'estan adjuntant les dades del problema al cas '%s'"
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:202
 msgid "Documentation which might be relevant: "
-msgstr ""
+msgstr "Documentació que pot ser rellevant:"
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:210
 msgid "Updates which possibly help: "
-msgstr ""
+msgstr "Actualitzacions que possiblement ajudin:"
 
 #: ../src/plugins/reporter-upload.c:30
 msgid "Can't continue without URL"
-msgstr ""
+msgstr "No es pot continuar sense la URL"
 
 #: ../src/plugins/reporter-upload.c:61
 msgid ""
 "Please enter a URL (scp, ftp, etc.) where the problem data is to be exported:"
 ""
 msgstr ""
+"Si us plau, introduïu una URL (scp, ftp, etc.) on s'hagin d'exportar les "
+"dades del problema:"
 
 #. Be permissive and nice, ask only once and don't check
 #. the result. User can dismiss this prompt but the upload
 #. may work somehow???
 #: ../src/plugins/reporter-upload.c:164
 msgid "Please enter password for uploading:"
-msgstr ""
+msgstr "Introduïu la contrasenya per a la pujada:"
 
 #. success
 #: ../src/plugins/reporter-upload.c:181
@@ -1783,34 +2096,255 @@ msgid ""
 "Uploads compressed tarball of problem directory DIR to URL.\n"
 "If URL is not specified, creates tarball in "
 msgstr ""
+"& [-v] -d DIR [-c FITXERCONF] [-u URL]\n"
+"\n"
+"Puja un fitxer tarball del directori DIR del problema a la URL.\n"
+"Si no s'especifica la URL, es crea el tarball a"
 
 #: ../src/plugins/reporter-upload.c:252
 msgid "Base URL to upload to"
 msgstr "URL base per penjar a"
 
+#: ../src/plugins/reporter-mantisbt.c:82
+msgid "Please enter your MantisBT login:"
+msgstr ""
+
+#: ../src/plugins/reporter-mantisbt.c:86
+msgid "Please enter the password for"
+msgstr ""
+
+#: ../src/plugins/reporter-mantisbt.c:97
+msgid "Credentials are not provided by configuration."
+msgstr ""
+
+#: ../src/plugins/reporter-mantisbt.c:121
+msgid "Invalid password or login."
+msgstr ""
+
+#: ../src/plugins/reporter-mantisbt.c:215
+msgid ""
+"\n"
+"& [-vf] [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... [-d DIR] -t[ID] -w\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... -h DUPHASH\n"
+"\n"
+"Reports problem to MantisBT.\n"
+"\n"
+"The tool reads DIR. Then it tries to find an issue\n"
+"with the same abrt_hash in custom field 'abrt_hash'.\n"
+"\n"
+"If such issue is not found, then a new issue is created. Elements of DIR\n"
+"are stored in the issue as part of issue description or as attachments,\n"
+"depending on their type and size.\n"
+"\n"
+"Otherwise, if such issue is found and it is marked as CLOSED DUPLICATE,\n"
+"the tool follows the chain of duplicates until it finds a non-DUPLICATE "
+"issue.\n"
+"The tool adds a new comment to found issue.\n"
+"\n"
+"The URL to new or modified issue is printed to stdout and recorded in\n"
+"'reported_to' element.\n"
+"\n"
+"Option -t uploads FILEs to the already created issue on MantisBT site.\n"
+"The issue ID is retrieved from directory specified by -d DIR.\n"
+"If problem data in DIR was never reported to MantisBT, upload will fail.\n"
+"\n"
+"Option -tID uploads FILEs to the issue with specified ID on MantisBT site.\n"
+"-d DIR is ignored.\n"
+"\n"
+"Option -r sets the last url from reporter_to element which is prefixed with\n"
+"TRACKER_NAME to URL field. This option is applied only when a new issue is "
+"to be\n"
+"filed. The default value is 'ABRT Server'\n"
+"\n"
+"If not specified, CONFFILE defaults to "
+msgstr ""
+
+#: ../src/plugins/reporter-mantisbt.c:289
+msgid "Attach FILEs [to issue with this ID]"
+msgstr ""
+
+#: ../src/plugins/reporter-mantisbt.c:322
+#, c-format
+msgid "Can't open problem dir '%s'."
+msgstr ""
+
+#: ../src/plugins/reporter-mantisbt.c:344
+msgid "Looking for similar problems in MantisBT"
+msgstr ""
+
+#: ../src/plugins/reporter-mantisbt.c:372
+msgid ""
+"Can't get MantisBT ID because this problem has not yet been reported to "
+"MantisBT."
+msgstr ""
+
+#: ../src/plugins/reporter-mantisbt.c:379
+#, c-format
+msgid ""
+"This problem has been reported to MantisBT '%s' which differs from the "
+"configured MantisBT '%s'."
+msgstr ""
+
+#: ../src/plugins/reporter-mantisbt.c:383
+#, c-format
+msgid "Malformed url to MantisBT '%s'."
+msgstr ""
+
+#: ../src/plugins/reporter-mantisbt.c:387
+#, c-format
+msgid "Using MantisBT ID '%s'"
+msgstr ""
+
+#: ../src/plugins/reporter-mantisbt.c:395
+#, c-format
+msgid "Attaching file '%s' to issue %s"
+msgstr ""
+
+#: ../src/plugins/reporter-mantisbt.c:414
+#, c-format
+msgid ""
+"This problem was already reported to MantisBT (see '%s'). Do you still want "
+"to create a new issue?"
+msgstr ""
+
+#. Create new issue
+#: ../src/plugins/reporter-mantisbt.c:529
+msgid "Creating a new issue"
+msgstr ""
+
+#: ../src/plugins/reporter-mantisbt.c:534
+#, c-format
+msgid "Invalid format file: %s"
+msgstr ""
+
+#: ../src/plugins/reporter-mantisbt.c:538
+msgid "Failed to format problem data"
+msgstr ""
+
+#: ../src/plugins/reporter-mantisbt.c:557
+msgid "Adding External URL to issue"
+msgstr ""
+
+#: ../src/plugins/reporter-mantisbt.c:570
+#, c-format
+msgid "Adding attachments to issue %i"
+msgstr ""
+
+#: ../src/plugins/reporter-mantisbt.c:625
+#, c-format
+msgid "Invalid duplicate format file: '%s"
+msgstr ""
+
+#: ../src/plugins/reporter-mantisbt.c:629
+msgid "Failed to format duplicate comment from problem data"
+msgstr ""
+
+#: ../src/plugins/reporter-mantisbt.c:636
+#, c-format
+msgid "Adding new comment to issue %d"
+msgstr ""
+
+#: ../src/plugins/reporter-mantisbt.c:672
+msgid "Found the same comment in the issue history, not adding a new one"
+msgstr ""
+
+#: ../src/plugins/reporter-mantisbt.c:679
+#, c-format
+msgid "Status: %s%s%s %s/view.php?id=%u"
+msgstr ""
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:1
+msgid "CentOS Bug Tracker"
+msgstr ""
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:2
+#: ../src/workflows/workflow_CentOSCCpp.xml.in.h:1
+#: ../src/workflows/workflow_CentOSJava.xml.in.h:1
+#: ../src/workflows/workflow_CentOSKerneloops.xml.in.h:1
+#: ../src/workflows/workflow_CentOSLibreport.xml.in.h:1
+#: ../src/workflows/workflow_CentOSPython.xml.in.h:1
+#: ../src/workflows/workflow_CentOSPython3.xml.in.h:1
+#: ../src/workflows/workflow_CentOSVmcore.xml.in.h:1
+#: ../src/workflows/workflow_CentOSXorg.xml.in.h:1
+msgid "Report to CentOS Bug Tracker"
+msgstr ""
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:4
+msgid "CentOS Bug Tracker account user name"
+msgstr ""
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:5
+msgid ""
+"You can create bugs.centos.org account &lt;a href=\"https://bugs.centos.org/"
+"signup_page.php\"&gt;here&lt;/a&gt;"
+msgstr ""
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:7
+msgid "CentOS Bug Tracker account password"
+msgstr ""
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:8
+msgid "CentOS Bug Tracker URL"
+msgstr ""
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:9
+msgid "Address of CentOS Bug Tracker server"
+msgstr ""
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:12
+msgid "CentOS Bug Tracker project"
+msgstr ""
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:13
+msgid ""
+"Specify this only if you needed different project than specified in /etc/os-"
+"release"
+msgstr ""
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:14
+msgid "CentOS Bug Tracker project version"
+msgstr ""
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:15
+msgid ""
+"Specify this only if you needed different project version than specified in /"
+"etc/os-release"
+msgstr ""
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:21
+msgid ""
+"Restrict access to the created CentOS Bug Tracker issue allowing only users "
+"from specified groups to view it (see advanced settings for more details)"
+msgstr ""
+
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
 msgid "Kerneloops.org"
-msgstr ""
+msgstr "Kerneloops.org"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:2
 msgid "Send to kernel oops tracker"
-msgstr ""
+msgstr "Envia-ho a un rastrejador oops del nucli del sistema operatiu"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:3
 msgid "Kerneloops URL"
-msgstr ""
+msgstr "URL del Kerneloops"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:4
 msgid "Oops server url"
-msgstr ""
+msgstr "URL del servidor oops"
 
 #: ../src/plugins/report_Logger.xml.in.h:1
 msgid "Logger"
-msgstr ""
+msgstr "Enregistrador"
 
 #: ../src/plugins/report_Logger.xml.in.h:2
 msgid "Save as text file"
-msgstr ""
+msgstr "Desa-ho com un fitxer de text"
 
 #: ../src/plugins/report_Logger.xml.in.h:3
 msgid "Log File"
@@ -1830,7 +2364,7 @@ msgstr "Afegeix nous informes o sobreescriu l'antic."
 
 #: ../src/plugins/report_Mailx.xml.in.h:1
 msgid "Mailx"
-msgstr ""
+msgstr "Mailx"
 
 #: ../src/plugins/report_Mailx.xml.in.h:2
 msgid "Send via email"
@@ -1890,13 +2424,15 @@ msgstr "Contrasenya del client Red Hat"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:9
 msgid "Submit uReport"
-msgstr ""
+msgstr "Presenta l'uReport"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid ""
 "Submit &lt;a href=\"https://access.redhat.com/articles/642323\"&gt;micro-"
 "report&lt;/a&gt; when creating a new case."
 msgstr ""
+"Publica el &lt;a href=\"https://access.redhat.com/articles/642323\"&gt;micro-"
+"informe&lt;/a&gt; quan es crei un nou cas."
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:11
 msgid "RH Portal URL"
@@ -1908,11 +2444,11 @@ msgstr "Adreça del portal de suport Red Hat"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report Uploader"
-msgstr ""
+msgstr "Eina per pujar l'informe"
 
 #: ../src/plugins/report_Uploader.xml.in.h:2
 msgid "Upload as tar.gz file (via FTP/SCP/...)"
-msgstr ""
+msgstr "Puja-ho com un fitxer tar.gz (a través de FTP/SCP/...)"
 
 #: ../src/plugins/report_Uploader.xml.in.h:3
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:3
@@ -1924,226 +2460,453 @@ msgid ""
 "Where do you want to upload the tarball with report in form login:"
 "password@url"
 msgstr ""
-"on voleu penjar el tarball amb l'informe de la forma login:password@url"
+"On voleu pujar el tarball amb l'informe, amb el format usuari:"
+"contrasenya@url"
 
 #: ../src/plugins/report_Uploader.xml.in.h:5
 msgid ""
 "Examples:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:"
 "pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]"
 msgstr ""
+"Exemples:&#xA;ftp://[usuari[:contrasenya]@]amfitrió/dir/[fitxer.tar."
+"gz]&#xA;scp://[usuari[:contrasenya]@]amfitrió/dir/[fitxer.tar.gz]&#xA;file://"
+"/dir/[fitxer.tar.gz]"
 
 #: ../src/plugins/report_Uploader.xml.in.h:7
 msgid "Use this field if you do not want to have user name in URL"
-msgstr ""
+msgstr "Utilitzeu aquest camp si no voleu tenir el nom d'usuari a la URL"
 
 #: ../src/plugins/report_Uploader.xml.in.h:9
 msgid "Use this field if you do not want to have password in URL"
-msgstr ""
+msgstr "Utilitzeu aquest camp si no voleu tenir la contrasenya a la URL"
 
 #: ../src/plugins/report_Uploader.xml.in.h:14
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:8
 msgid "FTP Proxy"
-msgstr ""
+msgstr "Servidor intermediari d'FTP"
 
 #: ../src/plugins/report_Uploader.xml.in.h:15
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:9
 msgid "Sets the proxy server to use for FTP"
-msgstr ""
+msgstr "Estableix el servidor intermediari a utilitzar per a l'FTP"
 
 #: ../src/plugins/report_uReport.xml.in.h:1
 msgid "uReport"
-msgstr ""
+msgstr "uReport"
 
 #: ../src/plugins/report_uReport.xml.in.h:2
 msgid "Sends ureports to FAF server"
-msgstr ""
+msgstr "Envia els uReport als servidor FAF"
 
 #: ../src/plugins/report_uReport.xml.in.h:3
 msgid "uReport Server URL"
-msgstr ""
+msgstr "URL del servidor uReport"
 
 #: ../src/plugins/report_uReport.xml.in.h:4
 msgid "Address of uReport webservice"
-msgstr ""
+msgstr "Adreça del servei web uReport"
 
 #: ../src/plugins/report_uReport.xml.in.h:5
 msgid "Watch already reported bugs"
-msgstr ""
+msgstr "Observa els error de programari ja informats"
 
 #: ../src/plugins/report_uReport.xml.in.h:6
 msgid "Adds your Bugzilla login to CC List of already reported bugs."
 msgstr ""
+"Afegeix el vostre inici de sessió de Bugzilla a la llista CC dels error de "
+"programari ja informats."
 
 #: ../src/plugins/report_uReport.xml.in.h:7
 msgid "Contact email address"
-msgstr ""
+msgstr "Adreça de correu electrònic de contacte"
 
 #: ../src/plugins/report_uReport.xml.in.h:8
 msgid ""
 "Email address that can be used by ABRT server to inform you about news and "
 "updates"
 msgstr ""
+"Adreça de correu electrònic que pot ser utilitzada pel servidor ABRT per "
+"informar-vos sobre notícies i actualitzacions"
 
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:1
 msgid "Emergency analysis"
-msgstr ""
+msgstr "Anàlisi d'emergència"
 
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:2
 msgid "Upload the problem data for further analysis"
-msgstr ""
+msgstr "Puja les dades del problema per a l'anàlisi posterior"
 
 #: ../src/plugins/watch_Bugzilla.xml.in.h:1
 msgid "Watch Bugzilla Bug"
-msgstr ""
+msgstr "Observa l'error de programari Bugzilla"
 
 #: ../src/plugins/watch_Bugzilla.xml.in.h:2
 msgid "Adds your e-mail to CC List of Bugzilla bug"
 msgstr ""
+"Afegeix el vostre correu electrònic a la llista CC de l'error de programari "
+"de Bugzilla"
 
-#: ../src/plugins/rhbz.c:417
+#: ../src/plugins/rhbz.c:382
 #, c-format
 msgid "Looks like corrupted xml response, because '%s' member is missing."
 msgstr "Sembla una resposta xml corrupta degut a que manca el membre '%s'"
 
-#: ../src/plugins/rhbz.c:505
+#: ../src/plugins/rhbz.c:470
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
-msgstr "L'error %i està TANCAT, però no té RESOLUCIÓ"
+msgstr "L'error de programari %i s'ha TANCAT, però no té RESOLUCIÓ"
 
-#: ../src/plugins/rhbz.c:513
+#: ../src/plugins/rhbz.c:478
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
 msgstr ""
+"L'error de programari %i s'ha TANCAT com a DUPLICAT, però no té l'ID_DUP"
 
-#: ../src/plugins/rhbz.c:629
+#: ../src/plugins/rhbz.c:555
 msgid ""
 "A private ticket creation has been requested, but no groups were specified, "
 "please see https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
 "tickets for more info"
 msgstr ""
+"S'ha solicitat la creació d'un tiquet privat, pero no es van especificar els "
+"grups, si us plau, per a més informació consulteu https://github.com/abrt/"
+"abrt/wiki/FAQ#creating-private-bugzilla-tickets"
 
-#: ../src/plugins/rhbz.c:650
+#: ../src/plugins/rhbz.c:576
 #, c-format
 msgid "New bug id: %i"
-msgstr "Id d'error nou: %i"
+msgstr "Id. del nou error de programari: %i"
 
-#: ../src/plugins/rhbz.c:770
+#: ../src/plugins/rhbz.c:696
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "Bugzilla no ha pogut trobar un pare de l'error %d"
+msgstr "Bugzilla no ha pogut trobar el pare de l'error de programari %d"
 
-#: ../src/plugins/rhbz.c:893
+#: ../src/plugins/rhbz.c:819
 msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
 msgstr ""
+"El valor de retorn de Bug.search(quicksearch) no contenia cap membre 'bugs'"
 
-#: ../src/plugins/reporter-ureport.c:68
-msgid "Specify server URL"
+#: ../src/plugins/mantisbt.c:123
+#, c-format
+msgid "MantisBT couldn't find parent of issue %d"
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:178
+msgid "SOAP: Failed to get child element because of no parent."
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:187
+msgid "SOAP: Failed to get next element because of no node."
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:196
+msgid "SOAP: Failed to get child node because of no parent."
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:217
+msgid "SOAP: Failed to parse xml during creating request."
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:225
+msgid "SOAP: Failed to get xml root element."
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:238
+msgid ""
+"SOAP: Failed to add a new child node because of no node or no child name."
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:243
+msgid "SOAP: Failed to create a new xml child item."
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:248
+msgid "SOAP: Failed to create a new property."
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:258
+msgid "SOAP: Failed to add method parametr."
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:287
+msgid "SOAP: Failed to add new issue parametrs."
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:290
+msgid ""
+"SOAP: Failed to add new issue parameters because the required items are "
+"missing."
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:334
+msgid "SOAP: Failed to create a new property in custom fields."
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:352
+msgid ""
+"SOAP: Failed to create SOAP string because of invalid function arguments."
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:359
+msgid "SOAP: Failed to dump xml node."
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:373
+msgid "SOAP: Failed to print SOAP string."
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:380
+msgid "Failed to dump xml node."
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:456
+msgid "SOAP: Failed to parse xml (searching value at depth by name)."
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:460 ../src/plugins/mantisbt.c:503
+#: ../src/plugins/mantisbt.c:532
+msgid "SOAP: Failed to create xml text reader."
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:499
+msgid "SOAP: Failed to parse xml."
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:528
+msgid "SOAP: Failed to parse xml (get related to issue)."
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:645
+msgid "Url or request isn't specified."
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:673
+#, c-format
+msgid "Error in HTTP POST, HTTP code: 404 (Not found), URL:'%s'"
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:697
+#, c-format
+msgid "Error in MantisBT request at '%s': %s"
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:699
+#, c-format
+msgid "Error in MantisBT request at '%s'"
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:741
+#, c-format
+msgid "Failed to attach file: '%s'"
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:760
+#, c-format
+msgid "Can't lseek '%s'"
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:766
+#, c-format
+msgid "Can't upload '%s', it's too large (%llu bytes)"
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:776
+#, c-format
+msgid "Can't read '%s'"
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:792
+#, c-format
+msgid "Can't open '%s'"
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:859
+#, c-format
+msgid "Failed to search MantisBT issue by duphash: '%s'"
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:903
+#, c-format
+msgid "Failed to search MantisBT duplicate issue: '%s'"
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:930
+#, c-format
+msgid ""
+"MantisBT doesn't contain custom field '%s', which is required for full "
+"functionality of the reporter. Do you still want to create a new issue?"
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:954
+#, c-format
+msgid "Failed to get custom fields for '%s' project"
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:998
+#, c-format
+msgid "Failed to create a new issue: '%s'"
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:1024
+#, c-format
+msgid "Failed to get MantisBT issue: '%s'"
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:1038
+#, c-format
+msgid "Issue %i is CLOSED, but it has no RESOLUTION"
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:1046
+#, c-format
+msgid "Issue %i is CLOSED as DUPLICATE, but it has no DUPLICATE_ID"
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:1083
+#, c-format
+msgid "Failed to add MantisBT issue note: '%s'"
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:1097
+msgid "The MantisBT project has not been deretmined."
+msgstr ""
+
+#: ../src/plugins/mantisbt.c:1106
+msgid "Failed to get project id from name"
 msgstr ""
 
 #: ../src/plugins/reporter-ureport.c:70
-msgid "Allow insecure connection to ureport server"
-msgstr ""
-
-#: ../src/plugins/reporter-ureport.c:71
-msgid "Use client authentication"
-msgstr ""
+msgid "Specify server URL"
+msgstr "Especifica la URL del servidor"
 
 #: ../src/plugins/reporter-ureport.c:72
-msgid "Additional files included in 'auth' key"
+msgid "Allow insecure connection to ureport server"
+msgstr "Permet la connexió no segura al servidor uReport"
+
+#: ../src/plugins/reporter-ureport.c:73
+msgid "Use client authentication"
+msgstr "Utilitza l'autentificació del client"
+
+#: ../src/plugins/reporter-ureport.c:74
+msgid "Use HTTP Authentication"
 msgstr ""
 
 #: ../src/plugins/reporter-ureport.c:75
+msgid "Additional files included in 'auth' key"
+msgstr "Fitxers addicions que s'inclouen en la clau 'auth'"
+
+#: ../src/plugins/reporter-ureport.c:78
 msgid "bthash of uReport to attach (conflicts with -A)"
-msgstr ""
+msgstr "bthash de l'uReport a adjuntar (entra amb conflicte amb -A)"
 
-#: ../src/plugins/reporter-ureport.c:77
+#: ../src/plugins/reporter-ureport.c:80
 msgid "attach to a bthash from reported_to (conflicts with -a)"
-msgstr ""
+msgstr "adjunta a un bthash del reported_to (entra amb conflicte amb -A)"
 
-#: ../src/plugins/reporter-ureport.c:79
+#: ../src/plugins/reporter-ureport.c:82
 msgid "contact e-mail address (requires -a|-A, conflicts with -E)"
 msgstr ""
+"adreça de correu electrònic de contacte (requereix -a|-A, entra amb "
+"conflicte amb -E)"
 
-#: ../src/plugins/reporter-ureport.c:81
+#: ../src/plugins/reporter-ureport.c:84
 msgid ""
 "contact e-mail address from environment or configuration file (requires -a|-"
 "A, conflicts with -e)"
 msgstr ""
+"adreça de correu electrònic de contacte des de l'entorn o des del fitxer de "
+"configuració (requereix -a|-A, entra amb conflicte amb -e)"
 
-#: ../src/plugins/reporter-ureport.c:83
+#: ../src/plugins/reporter-ureport.c:86
 msgid "attach RHBZ bug (requires -a|-A, conflicts with -B)"
 msgstr ""
+"adjunta l'error de programari RHBZ (requereix -a|-A, entra amb conflicte amb "
+"-B)"
 
-#: ../src/plugins/reporter-ureport.c:85
+#: ../src/plugins/reporter-ureport.c:88
 msgid ""
 "attach last RHBZ bug from reported_to (requires -a|-A, conflicts with -b)"
 msgstr ""
+"adjunta l'error de programari RHBZ des de reported_to (requereix -a|-A, "
+"entra amb conflicte amb -b)"
 
-#: ../src/plugins/reporter-ureport.c:87
+#: ../src/plugins/reporter-ureport.c:90
 msgid "attach short text (requires -a|-A, conflicts with -D)"
-msgstr ""
+msgstr "adjunta un text breu (requereix -a|-A, entra amb conflicte amb -D)"
 
-#: ../src/plugins/reporter-ureport.c:89
+#: ../src/plugins/reporter-ureport.c:92
 msgid "attach short text from comment (requires -a|-A, conflicts with -d)"
 msgstr ""
+"adjunta un text breu des del comentari (requereix -a|-A, entra amb conflicte "
+"amb -d)"
 
-#: ../src/plugins/reporter-ureport.c:94
+#: ../src/plugins/reporter-ureport.c:97
 msgid ""
-"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-i AUTH_ITEMS]\\\n"
+"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS]\n"
 "  [-A -a bthash -B -b bug-id -E -e email -O -o comment] [-d DIR]\n"
+"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-i AUTH_ITEMS] "
+"[-d DIR]\n"
 "\n"
 "Upload micro report or add an attachment to a micro report\n"
 "\n"
 "Reads the default configuration from "
 msgstr ""
 
-#: ../src/plugins/reporter-ureport.c:147
+#: ../src/plugins/reporter-ureport.c:153
 msgid "This problem does not have an uReport assigned."
-msgstr ""
+msgstr "Aquest problema no té assignat un uReport."
 
-#: ../src/plugins/reporter-ureport.c:160
+#: ../src/plugins/reporter-ureport.c:166
 msgid "This problem has not been reported to Bugzilla."
-msgstr ""
+msgstr "Aquest problema no ha estat informat al Bugzilla."
 
-#: ../src/plugins/reporter-ureport.c:164
+#: ../src/plugins/reporter-ureport.c:170
 #, c-format
 msgid "Unable to find bug ID in bugzilla URL '%s'"
 msgstr ""
+"No es pot trobar l'Id. de l'error de programari en la URL del bugzilla '%s'"
 
-#: ../src/plugins/reporter-ureport.c:169
+#: ../src/plugins/reporter-ureport.c:175
 #, c-format
 msgid "Unable to parse bug ID from bugzilla URL '%s'"
 msgstr ""
+"No es pot analitzar sintàcticament l'Id. de l'error de programari des de la "
+"URL del bugzilla '%s'"
 
-#: ../src/plugins/reporter-ureport.c:178
+#: ../src/plugins/reporter-ureport.c:184
 msgid "Cannot attach comment from 'comment' file"
-msgstr ""
+msgstr "No es pot adjuntar el comentari des del fitxer 'comment'"
 
-#: ../src/plugins/reporter-ureport.c:180
+#: ../src/plugins/reporter-ureport.c:186
 msgid "'comment' file is empty"
-msgstr ""
+msgstr "El fitxer 'comment' està buit"
 
-#: ../src/plugins/reporter-ureport.c:191
+#: ../src/plugins/reporter-ureport.c:197
 msgid ""
 "Neither environment variable 'uReport_ContactEmail' nor configuration option "
 "'ContactEmail' is set"
 msgstr ""
+"No s'ha establert ni la variable d'entorn 'uReport_ContactEmail' ni l'opció "
+"de configuració 'ContactEmail'"
 
-#: ../src/plugins/reporter-ureport.c:197
+#: ../src/plugins/reporter-ureport.c:203
 msgid "You need to specify bug ID, contact email, comment or all of them"
 msgstr ""
+"Necessiteu especificar un Id. de l'error de programari, un correu electrònic "
+"de contacte, un comentari o tots ells"
 
-#: ../src/plugins/reporter-ureport.c:221
+#: ../src/plugins/reporter-ureport.c:227
 msgid "You need to specify bthash of the uReport to attach."
-msgstr ""
+msgstr "Heu d'especificar el bthash de l'uReport a adjuntar."
 
-#: ../src/plugins/reporter-ureport.c:226
+#: ../src/plugins/reporter-ureport.c:232
 msgid "Not uploading an empty uReport"
-msgstr ""
+msgstr "No s'està pujant un uReport buit"
 
-#: ../src/plugins/reporter-ureport.c:247
+#: ../src/plugins/reporter-ureport.c:253
 msgid "This problem has already been reported."
-msgstr ""
+msgstr "Aquest problema ja ha estat informat."
 
 #: ../src/report-newt/report-newt.c:55
 msgid "How would you like to report the problem?"
@@ -2157,7 +2920,7 @@ msgstr "D'acord"
 
 #: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:146
 msgid "Cancel"
-msgstr "Cancel·lar"
+msgstr "Cancel·la"
 
 #: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:337
 msgid "Error"
@@ -2165,7 +2928,7 @@ msgstr "Error"
 
 #: ../src/report-newt/report-newt.c:256
 msgid "Reporting"
-msgstr "S'està realitzant l'informe"
+msgstr "Presentació d'informes"
 
 #: ../src/report-newt/report-newt.c:276
 #, c-format
@@ -2181,38 +2944,74 @@ msgid "& [-d] DIR\n"
 "\n"
 "newt tool to report problem saved in specified DIR"
 msgstr ""
+"& [-d] DIR\n"
+"\n"
+"la nova eina per informar del problema desat al DIR especificat"
 
 #: ../src/report-newt/report-newt.c:392
 msgid "Remove DIR after reporting"
-msgstr "Elimina DIR després de realitzar el llistat"
+msgstr "Elimina el DIR després de la presentació d'informes"
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:1
 msgid "Report a bug to Fedora maintainers"
-msgstr ""
+msgstr "Informa d'un error de programari als mantenidors de Fedora"
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:2
 msgid "Process the report using the Fedora infrastructure"
-msgstr ""
+msgstr "Processa l'informe mitjançant la infraestructura de Fedora"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:1
 msgid "Report a bug to Red Hat Customer Portal"
-msgstr ""
+msgstr "Informa d'un error de programari al portal dels clients de Red Hat"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:2
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:2
 msgid "Process the report using the Red Hat infrastructure"
-msgstr ""
+msgstr "Processa l'informe mitjançant la infraestructura de Red Hat"
 
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:1
 msgid "Report a bug to Red Hat Bugzilla"
-msgstr ""
+msgstr "Informa d'un error de programari al Bugzilla de Red Hat"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
 msgid "Export the problem data for manual reporting"
 msgstr ""
+"Exporta les dades del problema per a una presentació d'informes manual"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:2
 msgid "Upload the data via scp or ftp to a remote destination"
+msgstr "Puja les dades a través d'scp o ftp a una destinació remota"
+
+#: ../src/workflows/workflow_CentOSCCpp.xml.in.h:2
+msgid "Process the C/C++ crash using the CentOS infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_CentOSJava.xml.in.h:2
+msgid "Process the Java exception using the CentOS infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_CentOSKerneloops.xml.in.h:2
+msgid "Process the kerneloops using the CentOS infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_CentOSLibreport.xml.in.h:2
+msgid "Process the problem using the CentOS infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_CentOSPython.xml.in.h:2
+msgid "Process the python exception using the CentOS infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_CentOSPython3.xml.in.h:2
+msgid "Process the python 3 exception using the CentOS infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_CentOSVmcore.xml.in.h:2
+msgid "Process the kernel crash using the CentOS infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_CentOSXorg.xml.in.h:2
+msgid "Process the X Server problem using the CentOS infrastructure"
 msgstr ""
 
 #: ../src/workflows/workflow_FedoraCCpp.xml.in.h:1
@@ -2224,44 +3023,48 @@ msgstr ""
 #: ../src/workflows/workflow_FedoraLibreport.xml.in.h:1
 #: ../src/workflows/workflow_FedoraJava.xml.in.h:1
 msgid "Report to Fedora"
-msgstr ""
+msgstr "Informa a Fedora"
 
 #: ../src/workflows/workflow_FedoraCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the Fedora infrastructure"
-msgstr ""
+msgstr "Processa les panes de C/C++ mitjançant la infraestructura de Fedora"
 
 #: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:2
 msgid "Process the kerneloops using the Fedora infrastructure"
-msgstr ""
+msgstr "Processa els kerneloops mitjançant la infraestructura de Fedora"
 
 #: ../src/workflows/workflow_FedoraPython.xml.in.h:2
 msgid "Process the python exception using the Fedora infrastructure"
-msgstr ""
+msgstr "Processa l'excepció de python mitjançant la infraestructura de Fedora"
 
 #: ../src/workflows/workflow_FedoraPython3.xml.in.h:2
 msgid "Process the python 3 exception using the Fedora infrastructure"
 msgstr ""
+"Processa l'excepció de python 3 mitjançant la infraestructura de Fedora"
 
 #: ../src/workflows/workflow_FedoraVmcore.xml.in.h:2
 msgid "Process the kernel crash using the Fedora infrastructure"
 msgstr ""
+"Processa la pana del nucli del sistema operatiu mitjançant la "
+"infraestructura de Fedora"
 
 #: ../src/workflows/workflow_FedoraXorg.xml.in.h:2
 msgid "Process the X Server problem using the Fedora infrastructure"
 msgstr ""
+"Processa el problema de l'X Server mitjançant la infraestructura de Fedora"
 
 #: ../src/workflows/workflow_FedoraLibreport.xml.in.h:2
 msgid "Process the problem using the Fedora infrastructure"
-msgstr ""
+msgstr "Processa el problema mitjançant la infraestructura de Fedora"
 
 #: ../src/workflows/workflow_FedoraJava.xml.in.h:2
 msgid "Process the Java exception using the Fedora infrastructure"
-msgstr ""
+msgstr "Processa l'excepció de Java mitjançant la infraestructura de Fedora"
 
 #: ../src/workflows/workflow_LoggerCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Logger.xml.in.h:1
 msgid "Export the problem data information to a text file"
-msgstr ""
+msgstr "Exporta la informació de les dades del problema a un fitxer de text"
 
 #: ../src/workflows/workflow_LoggerCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Logger.xml.in.h:2
@@ -2269,26 +3072,30 @@ msgid ""
 "Analyze the problem locally and export the problem data information to a "
 "text file"
 msgstr ""
+"Analitza localment el problema i exporta la informació de les dades del "
+"problema a un fitxer de text"
 
 #: ../src/workflows/workflow_MailxCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Mailx.xml.in.h:1
 msgid "Send the problem data via email"
-msgstr ""
+msgstr "Envia les dades del problema a través d'un correu electrònic"
 
 #: ../src/workflows/workflow_MailxCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Mailx.xml.in.h:2
 msgid "Analyze the problem locally and send information via email"
 msgstr ""
+"Analitza localment el problema i envia la informació a través d'un correu "
+"electrònic"
 
 #: ../src/workflows/workflow_UploadCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Upload.xml.in.h:1
 msgid "Upload the problem data to a server"
-msgstr ""
+msgstr "Puja les dades del problema a un servidor"
 
 #: ../src/workflows/workflow_UploadCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Upload.xml.in.h:2
 msgid "Analyze the problem locally and upload the data via scp or ftp"
-msgstr ""
+msgstr "Analitza localment el problema i puja les dades a través d'scp o ftp"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1
@@ -2298,42 +3105,46 @@ msgstr ""
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:1
 #: ../src/workflows/workflow_RHELJava.xml.in.h:1
 msgid "Report to Red Hat Customer Portal"
-msgstr ""
+msgstr "Informa al portal dels clients de Red Hat"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the Red Hat infrastructure"
-msgstr ""
+msgstr "Processa les panes de C/C++ mitjançant la infraestructura de Red Hat"
 
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:2
 msgid "Process the kerneloops using the Red Hat infrastructure"
-msgstr ""
+msgstr "Processa els kerneloops mitjançant la infraestructura de Red Hat"
 
 #: ../src/workflows/workflow_RHELPython.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:2
 msgid "Process the python exception using the Red Hat infrastructure"
 msgstr ""
+"Processa l'excepció de python mitjançant la infraestructura de Red Hat"
 
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:2
 msgid "Process the kernel crash using the Red Hat infrastructure"
 msgstr ""
+"Processa la pana del nucli del sistema operatiu mitjançant la "
+"infraestructura de Red Hat"
 
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:2
 msgid "Process the X Server problem using the Red Hat infrastructure"
 msgstr ""
+"Processa el problema de l'X Server mitjançant la infraestructura de Red Hat"
 
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:2
 msgid "Process the problem using the Red Hat infrastructure"
-msgstr ""
+msgstr "Processa el problema mitjançant la infraestructura de Red Hat"
 
 #: ../src/workflows/workflow_RHELJava.xml.in.h:2
 #: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
 msgid "Process the Java exception using the Red Hat infrastructure"
-msgstr ""
+msgstr "Processa l'excepció de Java mitjançant la infraestructura de Red Hat"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
@@ -2343,4 +3154,4 @@ msgstr ""
 #: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:1
 msgid "Report to Red Hat Bugzilla"
-msgstr ""
+msgstr "Informa al Bugzilla de Red Hat"
