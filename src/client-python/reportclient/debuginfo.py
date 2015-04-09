@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # coding=UTF-8
 
 ## Copyright (C) 2015 ABRT team <abrt-devel-list@redhat.com>
