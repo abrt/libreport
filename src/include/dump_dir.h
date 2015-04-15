@@ -43,6 +43,8 @@ enum {
     DD_OPEN_READONLY = (1 << 3),
     DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE = (1 << 4),
     DD_DONT_WAIT_FOR_LOCK = (1 << 5),
+    /* Create the new dump directory with parent directories (mkdir -p)*/
+    DD_CREATE_PARENTS = (1 << 6),
 };
 
 struct dump_dir {
@@ -66,7 +68,7 @@ struct dump_dir {
 void dd_close(struct dump_dir *dd);
 
 struct dump_dir *dd_opendir(const char *dir, int flags);
-struct dump_dir *dd_create_skeleton(const char *dir, uid_t uid, mode_t mode);
+struct dump_dir *dd_create_skeleton(const char *dir, uid_t uid, mode_t mode, int flags);
 int dd_reset_ownership(struct dump_dir *dd);
 /* Pass uid = (uid_t)-1L to disable chown'ing of newly created files
  * (IOW: if you aren't running under root):
