@@ -467,7 +467,10 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
     return dd;
 }
 
-/* Create a fresh empty debug dump dir.
+/* Create a fresh empty debug dump dir which is owned bu the calling user. If
+ * you want to create the directory with meaningful ownership you should
+ * consider using dd_create() function or you can modify the ownership
+ * afterwards by calling dd_reset_ownership() function.
  *
  * ABRT owns dump dir:
  *   We should not allow users to write new files or write into existing ones,
@@ -523,7 +526,7 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
  *     this runs under 0:0
  *     - clients: setroubleshootd, abrt python
  */
-struct dump_dir *dd_create(const char *dir, uid_t uid, mode_t mode)
+struct dump_dir *dd_create_skeleton(const char *dir, uid_t uid, mode_t mode)
 {
     /* a little trick to copy read bits from file mode to exec bit of dir mode*/
     mode_t dir_mode = mode | ((mode & 0444) >> 2);
@@ -613,13 +616,38 @@ struct dump_dir *dd_create(const char *dir, uid_t uid, mode_t mode)
         else
             error_msg("User %lu does not exist, using gid 0", (long)uid);
 #endif
-
-        if (lchown(dir, dd->dd_uid, dd->dd_gid) == -1)
-        {
-            perror_msg("Can't change '%s' ownership to %lu:%lu", dir,
-                       (long)dd->dd_uid, (long)dd->dd_gid);
-        }
     }
+
+    return dd;
+}
+
+/* Resets ownership of the given directory to UID and GID according to values
+ * in dd_create_skeleton().
+ */
+int dd_reset_ownership(struct dump_dir *dd)
+{
+    if (!dd->locked)
+        error_msg_and_die("dump_dir is not opened"); /* bug */
+
+    const int r =lchown(dd->dd_dirname, dd->dd_uid, dd->dd_gid);
+    if (r < 0)
+    {
+        perror_msg("Can't change '%s' ownership to %lu:%lu", dd->dd_dirname,
+                   (long)dd->dd_uid, (long)dd->dd_gid);
+    }
+    return r;
+}
+
+/* Calls dd_create_skeleton() and dd_reset_ownership().
+ */
+struct dump_dir *dd_create(const char *dir, uid_t uid, mode_t mode)
+{
+    struct dump_dir *dd = dd_create_skeleton(dir, uid, mode);
+    if (dd == NULL)
+        return NULL;
+
+    /* ignore results */
+    dd_reset_ownership(dd);
 
     return dd;
 }
