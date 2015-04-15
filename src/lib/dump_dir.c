@@ -514,7 +514,7 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
  *     this runs under 0:0
  *     - clients: setroubleshootd, abrt python
  */
-struct dump_dir *dd_create_skeleton(const char *dir, uid_t uid, mode_t mode)
+struct dump_dir *dd_create_skeleton(const char *dir, uid_t uid, mode_t mode, int flags)
 {
     /* a little trick to copy read bits from file mode to exec bit of dir mode*/
     mode_t dir_mode = mode | ((mode & 0444) >> 2);
@@ -547,7 +547,13 @@ struct dump_dir *dd_create_skeleton(const char *dir, uid_t uid, mode_t mode)
      * the user to replace any file in the directory, changing security-sensitive data
      * (e.g. "uid", "analyzer", "executable")
      */
-    if (g_mkdir_with_parents(dd->dd_dirname, dir_mode) != 0)
+    int r;
+    if ((flags & DD_CREATE_PARENTS))
+        r = g_mkdir_with_parents(dd->dd_dirname, dir_mode);
+    else
+        r = mkdir(dd->dd_dirname, dir_mode);
+
+    if (r != 0)
     {
         perror_msg("Can't create directory '%s'", dir);
         dd_close(dd);
@@ -627,7 +633,7 @@ int dd_reset_ownership(struct dump_dir *dd)
  */
 struct dump_dir *dd_create(const char *dir, uid_t uid, mode_t mode)
 {
-    struct dump_dir *dd = dd_create_skeleton(dir, uid, mode);
+    struct dump_dir *dd = dd_create_skeleton(dir, uid, mode, DD_CREATE_PARENTS);
     if (dd == NULL)
         return NULL;
 
