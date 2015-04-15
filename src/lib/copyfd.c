@@ -149,16 +149,16 @@ off_t copyfd_eof(int fd1, int fd2, int flags)
 	return full_fd_action(fd1, fd2, 0, flags);
 }
 
-off_t copy_file(const char *src_name, const char *dst_name, int mode)
+off_t copy_file_ext(const char *src_name, const char *dst_name, int mode, uid_t uid, gid_t gid, int src_flags, int dst_flags)
 {
     off_t r;
-    int src = open(src_name, O_RDONLY);
+    int src = open(src_name, src_flags);
     if (src < 0)
     {
         perror_msg("Can't open '%s'", src_name);
         return -1;
     }
-    int dst = open(dst_name, O_WRONLY | O_TRUNC | O_CREAT, mode);
+    int dst = open(dst_name, dst_flags, mode);
     if (dst < 0)
     {
         close(src);
@@ -167,6 +167,21 @@ off_t copy_file(const char *src_name, const char *dst_name, int mode)
     }
     r = copyfd_eof(src, dst, /*flags:*/ 0);
     close(src);
+    if (uid != (uid_t)-1L)
+    {
+        if (fchown(dst, uid, gid) == -1)
+        {
+            perror_msg("Can't change '%s' ownership to %lu:%lu", dst_name, (long)uid, (long)gid);
+            close(dst);
+            unlink(dst_name);
+            return -1;
+        }
+    }
     close(dst);
     return r;
+}
+
+off_t copy_file(const char *src_name, const char *dst_name, int mode)
+{
+    return copy_file_ext(src_name, dst_name, mode, -1, -1, O_RDONLY, O_WRONLY | O_TRUNC | O_CREAT);
 }
