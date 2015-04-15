@@ -60,6 +60,8 @@ struct dump_dir {
 void dd_close(struct dump_dir *dd);
 
 struct dump_dir *dd_opendir(const char *dir, int flags);
+struct dump_dir *dd_create_skeleton(const char *dir, uid_t uid, mode_t mode);
+int dd_reset_ownership(struct dump_dir *dd);
 /* Pass uid = (uid_t)-1L to disable chown'ing of newly created files
  * (IOW: if you aren't running under root):
  */
