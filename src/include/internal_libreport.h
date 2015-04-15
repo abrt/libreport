@@ -153,6 +153,8 @@ off_t copyfd_eof(int src_fd, int dst_fd, int flags);
 off_t copyfd_size(int src_fd, int dst_fd, off_t size, int flags);
 #define copyfd_exact_size libreport_copyfd_exact_size
 void copyfd_exact_size(int src_fd, int dst_fd, off_t size);
+#define copy_file_ext libreport_copy_file_ext
+off_t copy_file_ext(const char *src_name, const char *dst_name, int mode, uid_t uid, gid_t gid, int src_flags, int dst_flags);
 #define copy_file libreport_copy_file
 off_t copy_file(const char *src_name, const char *dst_name, int mode);
 #define copy_file_recursive libreport_copy_file_recursive
