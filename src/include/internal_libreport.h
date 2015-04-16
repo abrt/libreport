@@ -647,6 +647,8 @@ char* get_cwd(pid_t pid);
 char* get_rootdir(pid_t pid);
 #define get_fsuid libreport_get_fsuid
 int get_fsuid(const char *proc_pid_status);
+#define dump_fd_info_ext libreport_dump_fd_info_ext
+int dump_fd_info_ext(const char *dest_filename, const char *proc_pid_fd_path, uid_t uid, gid_t gid);
 #define dump_fd_info libreport_dump_fd_info
 int dump_fd_info(const char *dest_filename, const char *proc_pid_fd_path);
 #define get_env_variable libreport_get_env_variable
@@ -671,6 +673,8 @@ int get_ns_ids(pid_t pid, struct ns_ids *ids);
 int process_has_own_root(pid_t pid);
 #define get_pid_of_container libreport_get_pid_of_container
 int get_pid_of_container(pid_t pid, pid_t *init_pid);
+#define dump_namespace_diff_ext libreport_dump_namespace_diff_ext
+int dump_namespace_diff_ext(const char *dest_filename, pid_t base_pid, pid_t tested_pid, uid_t uid, gid_t gid);
 #define dump_namespace_diff libreport_dump_namespace_diff
 int dump_namespace_diff(const char *dest_filename, pid_t base_pid, pid_t tested_pid);
 
