@@ -65,7 +65,7 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
     g_hash_table_iter_init(&iter, problem_data);
     while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
-        if (name[0] == '.' || strchr(name, '/'))
+        if (!str_is_correct_filename(name))
         {
             error_msg("Problem data field name contains disallowed chars: '%s'", name);
             goto next;
