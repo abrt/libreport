@@ -128,6 +128,12 @@ char *concat_path_file(const char *path, const char *filename);
 #define concat_path_basename libreport_concat_path_basename
 char *concat_path_basename(const char *path, const char *filename);
 
+/* Allows all printable characters except '/',
+ * the string must not exceed 64 characters of length
+ * and must not equal neither "." nor ".." (these strings may appear in the string) */
+#define str_is_correct_filename libreport_str_is_correct_filename
+bool str_is_correct_filename(const char *str);
+
 /* A-la fgets, but malloced and of unlimited size */
 #define xmalloc_fgets libreport_xmalloc_fgets
 char *xmalloc_fgets(FILE *file);

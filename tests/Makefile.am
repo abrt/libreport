@@ -35,7 +35,8 @@ TESTSUITE_AT = \
   reported_to.at \
   make_description.at \
   xfuncs.at \
-  ureport.at
+  ureport.at \
+  dump_dir.at
 
 EXTRA_DIST += $(TESTSUITE_AT)
 TESTSUITE = $(srcdir)/testsuite
