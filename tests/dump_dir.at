@@ -49,3 +49,49 @@ int main(int argc, char **argv)
     return 0;
 }
 ]])
+
+## ----------------------- ##
+## str_is_correct_filename ##
+## ----------------------- ##
+
+AT_TESTFUN([str_is_correct_filename],
+[[
+#include "internal_libreport.h"
+#include <assert.h>
+#
+int main(void)
+{
+    g_verbose = 3;
+
+    assert(str_is_correct_filename("") == false);
+    assert(str_is_correct_filename("/") == false);
+    assert(str_is_correct_filename("//") == false);
+    assert(str_is_correct_filename(".") == false);
+    assert(str_is_correct_filename(".") == false);
+    assert(str_is_correct_filename("..") == false);
+    assert(str_is_correct_filename("..") == false);
+    assert(str_is_correct_filename("/.") == false);
+    assert(str_is_correct_filename("//.") == false);
+    assert(str_is_correct_filename("./") == false);
+    assert(str_is_correct_filename(".//") == false);
+    assert(str_is_correct_filename("/./") == false);
+    assert(str_is_correct_filename("/..") == false);
+    assert(str_is_correct_filename("//..") == false);
+    assert(str_is_correct_filename("../") == false);
+    assert(str_is_correct_filename("..//") == false);
+    assert(str_is_correct_filename("/../") == false);
+    assert(str_is_correct_filename("/.././") == false);
+
+    assert(str_is_correct_filename("looks-good-but-evil/") == false);
+    assert(str_is_correct_filename("looks-good-but-evil/../../") == false);
+
+    assert(str_is_correct_filename(".meta-data") == true);
+    assert(str_is_correct_filename("..meta-meta-data") == true);
+    assert(str_is_correct_filename("meta-..-data") == true);
+
+    assert(str_is_correct_filename("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890+-") == true);
+    assert(str_is_correct_filename("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890+-=") == false);
+
+    return 0;
+}
+]])
