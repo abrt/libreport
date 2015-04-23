@@ -57,3 +57,28 @@ char *concat_path_basename(const char *path, const char *filename)
     free(abspath);
     return name;
 }
+
+bool str_is_correct_filename(const char *str)
+{
+#define NOT_PRINTABLE(c) (c < ' ' || c == 0x7f)
+
+    if (NOT_PRINTABLE(*str) || *str == '/' || *str == '\0')
+        return false;
+    ++str;
+
+    if (NOT_PRINTABLE(*str) || *str =='/' || (*str == '\0' && *(str-1) == '.'))
+        return false;
+    ++str;
+
+    if (NOT_PRINTABLE(*str) || *str =='/' || (*str == '\0' && *(str-1) == '.' && *(str-2) == '.'))
+        return false;
+    ++str;
+
+    for (unsigned i = 0; *str != '\0' && i < 61; ++str, ++i)
+        if (NOT_PRINTABLE(*str) || *str == '/')
+            return false;
+
+    return *str == '\0';
+
+#undef NOT_PRINTABLE
+}
