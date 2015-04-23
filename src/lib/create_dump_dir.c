@@ -107,16 +107,15 @@ int save_problem_data_in_dump_dir(struct dump_dir *dd, problem_data_t *problem_d
     g_hash_table_iter_init(&iter, problem_data);
     while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
-        if (value->flags & CD_FLAG_BIN)
+        if (!str_is_correct_filename(name))
         {
-            dd_copy_file(dd, name, value->content);
+            error_msg("Problem data field name contains disallowed chars: '%s'", name);
             continue;
         }
 
-        /* only files should contain '/' and those are handled earlier */
-        if (name[0] == '.' || strchr(name, '/'))
+        if (value->flags & CD_FLAG_BIN)
         {
-            error_msg("Problem data field name contains disallowed chars: '%s'", name);
+            dd_copy_file(dd, name, value->content);
             continue;
         }
 
@@ -135,6 +134,12 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
     if (!type)
     {
         error_msg(_("Missing required item: '%s'"), FILENAME_TYPE);
+        return NULL;
+    }
+
+    if (!str_is_correct_filename(type))
+    {
+        error_msg(_("'%s' is not correct file name"), FILENAME_TYPE);
         return NULL;
     }
 

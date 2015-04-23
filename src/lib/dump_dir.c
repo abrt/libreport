@@ -357,6 +357,9 @@ static inline struct dump_dir *dd_init(void)
 
 int dd_exist(const struct dump_dir *dd, const char *path)
 {
+    if (!str_is_correct_filename(path))
+        error_msg_and_die("Cannot test existence. '%s' is not a valid file name", path);
+
     char *full_path = concat_path_file(dd->dd_dirname, path);
     int ret = exist_file_dir(full_path);
     free(full_path);
@@ -1059,6 +1062,15 @@ char* dd_load_text_ext(const struct dump_dir *dd, const char *name, unsigned fla
 //    if (!dd->locked)
 //        error_msg_and_die("dump_dir is not opened"); /* bug */
 
+    if (!str_is_correct_filename(name))
+    {
+        error_msg("Cannot load text. '%s' is not a valid file name", name);
+        if ((flags & DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE))
+            return NULL;
+
+        xfunc_die();
+    }
+
     /* Compat with old abrt dumps. Remove in abrt-2.1 */
     if (strcmp(name, "release") == 0)
         name = FILENAME_OS_RELEASE;
@@ -1080,6 +1092,9 @@ void dd_save_text(struct dump_dir *dd, const char *name, const char *data)
     if (!dd->locked)
         error_msg_and_die("dump_dir is not opened"); /* bug */
 
+    if (!str_is_correct_filename(name))
+        error_msg_and_die("Cannot save text. '%s' is not a valid file name", name);
+
     char *full_path = concat_path_file(dd->dd_dirname, name);
     save_binary_file(full_path, data, strlen(data), dd->dd_uid, dd->dd_gid, dd->mode);
     free(full_path);
@@ -1090,6 +1105,9 @@ void dd_save_binary(struct dump_dir* dd, const char* name, const char* data, uns
     if (!dd->locked)
         error_msg_and_die("dump_dir is not opened"); /* bug */
 
+    if (!str_is_correct_filename(name))
+        error_msg_and_die("Cannot save binary. '%s' is not a valid file name", name);
+
     char *full_path = concat_path_file(dd->dd_dirname, name);
     save_binary_file(full_path, data, size, dd->dd_uid, dd->dd_gid, dd->mode);
     free(full_path);
@@ -1097,6 +1115,9 @@ void dd_save_binary(struct dump_dir* dd, const char* name, const char* data, uns
 
 long dd_get_item_size(struct dump_dir *dd, const char *name)
 {
+    if (!str_is_correct_filename(name))
+        error_msg_and_die("Cannot get item size. '%s' is not a valid file name", name);
+
     long size = -1;
     char *iname = concat_path_file(dd->dd_dirname, name);
     struct stat statbuf;
@@ -1120,6 +1141,9 @@ int dd_delete_item(struct dump_dir *dd, const char *name)
 {
     if (!dd->locked)
         error_msg_and_die("dump_dir is not opened"); /* bug */
+
+    if (!str_is_correct_filename(name))
+        error_msg_and_die("Cannot delete item. '%s' is not a valid file name", name);
 
     char *path = concat_path_file(dd->dd_dirname, name);
     int res = unlink(path);
@@ -1335,6 +1359,9 @@ int dd_mark_as_notreportable(struct dump_dir *dd, const char *reason)
 
 int dd_copy_file(struct dump_dir *dd, const char *name, const char *source_path)
 {
+    if (!str_is_correct_filename(name))
+        error_msg_and_die("Cannot test existence. '%s' is not a valid file name", name);
+
     char *dest = concat_path_file(dd->dd_dirname, name);
 
     log_debug("copying '%s' to '%s'", source_path, dest);
@@ -1351,6 +1378,9 @@ int dd_copy_file(struct dump_dir *dd, const char *name, const char *source_path)
 
 int dd_copy_file_unpack(struct dump_dir *dd, const char *name, const char *source_path)
 {
+    if (!str_is_correct_filename(name))
+        error_msg_and_die("Cannot test existence. '%s' is not a valid file name", name);
+
     char *dest = concat_path_file(dd->dd_dirname, name);
 
     log_debug("unpacking '%s' to '%s'", source_path, dest);
