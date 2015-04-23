@@ -30,7 +30,7 @@ static struct dump_dir *try_dd_create(const char *base_dir_name, const char *dir
     return dd;
 }
 
-struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data, const char *base_dir_name)
+struct dump_dir *create_dump_dir_from_problem_data_ext(problem_data_t *problem_data, const char *base_dir_name, uid_t uid)
 {
     INITIALIZE_LIBREPORT();
 
@@ -48,23 +48,8 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
         return NULL;
     }
 
-    uid_t uid = (uid_t)-1L;
-    char *uid_str = problem_data_get_content_or_NULL(problem_data, FILENAME_UID);
-
-    if (uid_str)
-    {
-        char *endptr;
-        errno = 0;
-        long val = strtol(uid_str, &endptr, 10);
-
-        if (errno != 0 || endptr == uid_str || *endptr != '\0' || INT_MAX < val)
-        {
-            error_msg(_("uid value is not valid: '%s'"), uid_str);
-            return NULL;
-        }
-
-        uid = (uid_t)val;
-    }
+    if (uid == (uid_t)-1L)
+        uid = 0;
 
     struct timeval tv;
     if (gettimeofday(&tv, NULL) < 0)
@@ -139,7 +124,8 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
      * reporting from anaconda where we can't read /etc/{system,redhat}-release
      * and os_release is taken from anaconda
      */
-    dd_create_basic_files(dd, uid, NULL);
+    const uid_t crashed_uid = problem_data_get_content_or_NULL(problem_data, FILENAME_UID) == NULL ? uid : /*uid already saved*/-1;
+    dd_create_basic_files(dd, crashed_uid, NULL);
 
     problem_id[strlen(problem_id) - strlen(NEW_PD_SUFFIX)] = '\0';
     char* new_path = concat_path_file(base_dir_name, problem_id);
@@ -149,4 +135,27 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
  ret:
     free(problem_id);
     return dd;
+}
+
+struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data, const char *base_dir_name)
+{
+    uid_t uid = (uid_t)-1L;
+    char *uid_str = problem_data_get_content_or_NULL(problem_data, FILENAME_UID);
+
+    if (uid_str)
+    {
+        char *endptr;
+        errno = 0;
+        long val = strtol(uid_str, &endptr, 10);
+
+        if (errno != 0 || endptr == uid_str || *endptr != '\0' || INT_MAX < val)
+        {
+            error_msg(_("uid value is not valid: '%s'"), uid_str);
+            return NULL;
+        }
+
+        uid = (uid_t)val;
+    }
+
+    return create_dump_dir_from_problem_data_ext(problem_data, base_dir_name, uid);
 }
