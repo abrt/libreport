@@ -51,6 +51,11 @@ enum {
     DD_DONT_WAIT_FOR_LOCK = (1 << 5),
     /* Create the new dump directory with parent directories (mkdir -p)*/
     DD_CREATE_PARENTS = (1 << 6),
+    /* Initializes internal data, opens file descriptors and returns the
+     * structure. This flag is useful for testing whether a directory
+     * exists and to perform stat operations.
+     */
+    DD_OPEN_FD_ONLY = (1 << 7),
 };
 
 struct dump_dir {
@@ -74,7 +79,21 @@ struct dump_dir {
 
 void dd_close(struct dump_dir *dd);
 
+/* Opens the given path
+ */
 struct dump_dir *dd_opendir(const char *dir, int flags);
+
+/* Re-opens a dump_dir opened with DD_OPEN_FD_ONLY.
+ *
+ * The passed dump_dir must not be used any more and the return value must be
+ * used instead.
+ *
+ * The passed flags must not contain DD_OPEN_FD_ONLY.
+ *
+ * The passed dump_dir must not be already locked.
+ */
+struct dump_dir *dd_fdopendir(struct dump_dir *dd, int flags);
+
 struct dump_dir *dd_create_skeleton(const char *dir, uid_t uid, mode_t mode, int flags);
 int dd_reset_ownership(struct dump_dir *dd);
 /* Pass uid = (uid_t)-1L to disable chown'ing of newly created files
@@ -155,6 +174,11 @@ void delete_dump_dir(const char *dirname);
  * Returns non zero if dump dir is accessible otherwise return 0 value.
  */
 int dump_dir_accessible_by_uid(const char *dirname, uid_t uid);
+/* Returns the same information as dump_dir_accessible_by_uid
+ *
+ * The passed dump_dir can be opened with DD_OPEN_FD_ONLY
+ */
+int dd_accessible_by_uid(struct dump_dir *dd, uid_t uid);
 
 enum {
     DD_STAT_ACCESSIBLE_BY_UID = 1,
@@ -169,6 +193,11 @@ enum {
  * Returns negative number if error occurred otherwise returns 0 or positive number.
  */
 int dump_dir_stat_for_uid(const char *dirname, uid_t uid);
+/* Returns the same information as dump_dir_stat_for_uid
+ *
+ * The passed dump_dir can be opened with DD_OPEN_FD_ONLY
+ */
+int dd_stat_for_uid(struct dump_dir *dd, uid_t uid);
 
 /* creates not_reportable file in the problem directory and saves the
    reason to it, which prevents libreport from reporting the problem
