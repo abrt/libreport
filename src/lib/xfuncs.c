@@ -331,6 +331,12 @@ int xopen(const char *pathname, int flags)
     return xopen3(pathname, flags, 0666);
 }
 
+void xunlinkat(int dir_fd, const char *pathname, int flags)
+{
+    if (unlinkat(dir_fd, pathname, flags))
+        perror_msg_and_die("Can't remove file '%s'", pathname);
+}
+
 void xunlink(const char *pathname)
 {
     if (unlink(pathname))
@@ -359,19 +365,27 @@ int open_or_warn(const char *pathname, int flags)
  * do not report the type, they report DT_UNKNOWN for every dirent
  * (and this is not a bug in filesystem, this is allowed by standards).
  */
-int is_regular_file(struct dirent *dent, const char *dirname)
+int is_regular_file_at(struct dirent *dent, int dir_fd)
 {
     if (dent->d_type == DT_REG)
         return 1;
     if (dent->d_type != DT_UNKNOWN)
         return 0;
 
-    char *fullname = xasprintf("%s/%s", dirname, dent->d_name);
     struct stat statbuf;
-    int r = lstat(fullname, &statbuf);
-    free(fullname);
+    int r = fstatat(dir_fd, dent->d_name, &statbuf, AT_SYMLINK_NOFOLLOW);
 
     return r == 0 && S_ISREG(statbuf.st_mode);
+}
+
+int is_regular_file(struct dirent *dent, const char *dirname)
+{
+    int dir_fd = open(dirname, O_DIRECTORY);
+    if (dir_fd < 0)
+        return 0;
+    int r = is_regular_file_at(dent, dir_fd);
+    close(dir_fd);
+    return r;
 }
 
 /* Is it "." or ".."? */

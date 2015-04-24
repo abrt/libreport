@@ -228,14 +228,14 @@ static const char *const always_text_files[] = {
     FILENAME_BACKTRACE,
     NULL
 };
-static char* is_text_file(const char *name, ssize_t *sz)
+static char* is_text_file_at(int dir_fd, const char *name, ssize_t *sz)
 {
     /* We were using magic.h API to check for file being text, but it thinks
      * that file containing just "0" is not text (!!)
      * So, we do it ourself.
      */
 
-    int fd = open(name, O_RDONLY);
+    int fd = secure_openat_read(dir_fd, name);
     if (fd < 0)
         return NULL; /* it's not text (because it does not exist! :) */
 
@@ -324,7 +324,7 @@ void load_problem_data_from_dump_dir(problem_data_t *problem_data, struct dump_d
 
         if (!editable)
         {
-            text = is_text_file(full_name, &sz);
+            text = is_text_file_at(dd->dd_fd, short_name, &sz);
             if (!text)
             {
                 add_to_problem_data_ext(problem_data,

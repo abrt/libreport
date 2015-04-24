@@ -32,6 +32,13 @@
 extern "C" {
 #endif
 
+/* Utility function */
+
+/* Opens filename for reading relatively to a directory represented by dir_fd.
+ * The function fails if the file is symbolic link, directory or hard link.
+ */
+int secure_openat_read(int dir_fd, const char *filename);
+
 enum {
     DD_FAIL_QUIETLY_ENOENT = (1 << 0),
     DD_FAIL_QUIETLY_EACCES = (1 << 1),
@@ -50,8 +57,10 @@ struct dump_dir {
     int locked;
     uid_t dd_uid;
     gid_t dd_gid;
-    /* mode fo saved files */
+    /* mode of saved files */
     mode_t mode;
+    time_t dd_time;
+    int dd_fd;
 };
 
 void dd_close(struct dump_dir *dd);
