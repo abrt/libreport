@@ -406,6 +406,8 @@ int xopen3(const char *pathname, int flags, int mode);
 int xopen(const char *pathname, int flags);
 #define xunlink libreport_xunlink
 void xunlink(const char *pathname);
+#define xunlinkat libreport_xunlinkat
+void xunlinkat(int dir_fd, const char *pathname, int flags);
 
 /* Just testing dent->d_type == DT_REG is wrong: some filesystems
  * do not report the type, they report DT_UNKNOWN for every dirent
@@ -415,6 +417,8 @@ void xunlink(const char *pathname);
  */
 #define is_regular_file libreport_is_regular_file
 int is_regular_file(struct dirent *dent, const char *dirname);
+#define is_regular_file_at libreport_is_regular_file_at
+int is_regular_file_at(struct dirent *dent, int dir_fd);
 
 #define dot_or_dotdot libreport_dot_or_dotdot
 bool dot_or_dotdot(const char *filename);

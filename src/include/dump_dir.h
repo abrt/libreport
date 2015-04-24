@@ -34,6 +34,12 @@ extern "C" {
 
 /* Utility function */
 int create_symlink_lockfile(const char *filename, const char *pid_str);
+int create_symlink_lockfile_at(int dir_fd, const char *filename, const char *pid_str);
+
+/* Opens filename for reading relatively to a directory represented by dir_fd.
+ * The function fails if the file is symbolic link, directory or hard link.
+ */
+int secure_openat_read(int dir_fd, const char *filename);
 
 enum {
     DD_FAIL_QUIETLY_ENOENT = (1 << 0),
@@ -57,6 +63,7 @@ struct dump_dir {
     mode_t mode;
     time_t dd_time;
     char *dd_type;
+    int dd_fd;
 };
 
 void dd_close(struct dump_dir *dd);
