@@ -2,6 +2,162 @@
 
 AT_BANNER([dump_dir])
 
+## --------- ##
+## dd_sanity ##
+## --------- ##
+
+AT_TESTFUN([dd_sanity],
+[[
+#include "internal_libreport.h"
+#include <errno.h>
+#include <assert.h>
+
+void validate_dump_dir_contents(struct dump_dir *dd)
+{
+    int items = 0;
+    assert(dd_exist(dd, FILENAME_TIME));
+    ++items;
+
+    assert(dd_exist(dd, FILENAME_KERNEL));
+    ++items;
+
+    assert(dd_exist(dd, FILENAME_HOSTNAME));
+    ++items;
+
+    assert(dd_exist(dd, FILENAME_ARCHITECTURE));
+    ++items;
+
+    assert(dd_exist(dd, FILENAME_OS_INFO));
+    ++items;
+
+    assert(dd_exist(dd, FILENAME_OS_RELEASE));
+    ++items;
+
+    assert(dd_exist(dd, FILENAME_OS_RELEASE));
+    ++items;
+
+    assert(dd_exist(dd, FILENAME_TYPE));
+    ++items;
+
+    assert(dd_exist(dd, FILENAME_LAST_OCCURRENCE));
+    ++items;
+
+    assert(dd_exist(dd, "at_test_text"));
+    assert(dd_get_item_size(dd, "at_test_text") == 3);
+    ++items;
+
+    assert(dd_exist(dd, "at_test_binary"));
+    assert(dd_get_item_size(dd, "at_test_binary") == 4);
+    ++items;
+
+    assert(dd_exist(dd, "at_test_services"));
+    ++items;
+
+    dd_save_text(dd, "at_test_to_delete", "deleted");
+    assert(dd_exist(dd, "at_test_to_delete"));
+    dd_delete_item(dd, "at_test_to_delete");
+    assert(!dd_exist(dd, "at_test_to_delete"));
+
+    DIR *d1 = dd_init_next_file(dd);
+    assert(d1 != NULL);
+
+    int counter = 0;
+    char *short_name, *full_name;
+    while (dd_get_next_file(dd, &short_name, &full_name))
+    {
+        ++counter;
+
+
+        printf("Iter = %s\n", short_name);
+
+        assert(short_name != NULL);
+        assert(full_name != NULL);
+        assert(strcmp(short_name, strrchr(full_name, '/') + 1) == 0);
+        assert(strncmp(dd->dd_dirname, full_name, strlen(dd->dd_dirname)) == 0);
+        assert(full_name[strlen(dd->dd_dirname)] == '/');
+    }
+
+    printf("Items = %d, Counter = %d\n", items, counter);
+    assert(items == counter);
+
+    DIR *d2 = dd_init_next_file(dd);
+    assert(d2 != NULL);
+
+    while (dd_get_next_file(dd, &short_name, &full_name))
+        --counter;
+
+    assert(counter == 0);
+}
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    char template[] = "/tmp/XXXXXX/dump_dir";
+
+    char *last_slash = strrchr(template, '/');
+    *last_slash = '\0';
+
+    if (mkdtemp(template) == NULL) {
+        perror("mkdtemp()");
+        return EXIT_FAILURE;
+    }
+
+    *last_slash = '/';
+
+    printf("Dump dir path: %s\n", template);
+
+    fprintf(stderr, "Create new dump directory\n");
+    struct dump_dir *dd = dd_create(template, (uid_t)-1, 0640);
+    assert(dd != NULL || !"Cannot create new dump directory");
+
+    dd_create_basic_files(dd, geteuid(), NULL);
+    dd_save_text(dd, FILENAME_TYPE, "attest");
+
+    dd_save_text(dd, "at_test_text", "foo");
+    assert(dd_exist(dd, "at_test_text"));
+
+    dd_save_binary(dd, "at_test_binary", "blah", 4);
+    assert(dd_exist(dd, "at_test_binary"));
+
+    dd_copy_file(dd, "at_test_services", "/etc/services");
+
+    fprintf(stderr, "Test newly created dump directory\n");
+    validate_dump_dir_contents(dd);
+    dd_close(dd);
+
+
+    fprintf(stderr, "Test opened dump directory\n");
+    dd = dd_opendir(template, /*for writing*/0);
+    assert(dd != NULL || !"Cannot open the dump directory");
+    validate_dump_dir_contents(dd);
+    dd_close(dd);
+
+
+    fprintf(stderr, "Test renamed dump directory\n");
+    dd = dd_opendir(template, /*for writing*/0);
+    assert(dd != NULL || !"Cannot open the dump directory second time");
+
+    *(last_slash+1) = 'X';
+    assert(dd_rename(dd, template) == 0 || !"Cannot rename the dump directory");
+
+    validate_dump_dir_contents(dd);
+    dd_close(dd);
+
+
+    fprintf(stderr, "Test opened renamed dump directory\n");
+    assert(dd != NULL || !"Cannot open the renamed dump directory");
+    dd = dd_opendir(template, /*for writing*/0);
+    validate_dump_dir_contents(dd);
+
+    assert(dd_delete(dd) == 0);
+
+    *last_slash = '\0';
+    assert(rmdir(template) == 0);
+    return EXIT_SUCCESS;
+}
+]])
+
 ## -------------- ##
 ## recursive_lock ##
 ## -------------- ##

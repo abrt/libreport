@@ -124,16 +124,17 @@ decompress_fd(int fdi, int fdo)
 }
 
 int
-decompress_file(const char *path_in, const char *path_out, mode_t mode_out)
+decompress_file_ext_at(const char *path_in, int dir_fd, const char *path_out, mode_t mode_out,
+                       uid_t uid, gid_t gid, int src_flags, int dst_flags)
 {
-    int fdi = open(path_in, O_RDONLY | O_CLOEXEC);
+    int fdi = open(path_in, src_flags);
     if (fdi < 0)
     {
         perror_msg("Could not open file: %s", path_in);
         return -1;
     }
 
-    int fdo = open(path_out, O_WRONLY | O_CLOEXEC | O_EXCL | O_CREAT, mode_out);
+    int fdo = openat(dir_fd, path_out, dst_flags, mode_out);
     if (fdo < 0)
     {
         close(fdi);
@@ -143,10 +144,24 @@ decompress_file(const char *path_in, const char *path_out, mode_t mode_out)
 
     int ret = decompress_fd(fdi, fdo);
     close(fdi);
+    if (uid != (uid_t)-1L)
+    {
+        if (fchown(fdo, uid, gid) == -1)
+        {
+            perror_msg("Can't change ownership of '%s' to %lu:%lu", path_out, (long)uid, (long)gid);
+            ret = -1;
+        }
+    }
     close(fdo);
 
     if (ret != 0)
-        unlink(path_out);
+        unlinkat(dir_fd, path_out, /*only files*/0);
 
     return ret;
+}
+
+int decompress_file(const char *path_in, const char *path_out, mode_t mode_out)
+{
+    return decompress_file_ext_at(path_in, AT_FDCWD, path_out, mode_out, -1, -1,
+            O_RDONLY, O_WRONLY | O_CREAT | O_EXCL | O_TRUNC);
 }
