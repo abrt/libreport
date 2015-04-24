@@ -65,7 +65,13 @@ struct dump_dir {
 
 void dd_close(struct dump_dir *dd);
 
+/* Opens the given path and returns the resulting file descriptor.
+ */
+int dd_openfd(const char *dir);
 struct dump_dir *dd_opendir(const char *dir, int flags);
+/* Skips dd_openfd(dir) and uses the given file descriptor instead
+ */
+struct dump_dir *dd_fdopendir(int dir_fd, const char *dir, int flags);
 struct dump_dir *dd_create_skeleton(const char *dir, uid_t uid, mode_t mode, int flags);
 int dd_reset_ownership(struct dump_dir *dd);
 /* Pass uid = (uid_t)-1L to disable chown'ing of newly created files
@@ -129,6 +135,7 @@ void delete_dump_dir(const char *dirname);
  * Returns non zero if dump dir is accessible otherwise return 0 value.
  */
 int dump_dir_accessible_by_uid(const char *dirname, uid_t uid);
+int fdump_dir_accessible_by_uid(int dir_fd, uid_t uid);
 
 #ifdef __cplusplus
 }

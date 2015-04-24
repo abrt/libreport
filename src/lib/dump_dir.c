@@ -391,12 +391,8 @@ static char* rm_trailing_slashes(const char *dir)
     return xstrndup(dir, len);
 }
 
-struct dump_dir *dd_opendir(const char *dir, int flags)
+static struct dump_dir *dd_do_open(struct dump_dir *dd, int flags)
 {
-    struct dump_dir *dd = dd_init();
-
-    dir = dd->dd_dirname = rm_trailing_slashes(dir);
-    dd->dd_fd = open(dir, O_DIRECTORY | O_NOFOLLOW);
     struct stat stat_buf;
     if (dd->dd_fd < 0)
         goto cant_access;
@@ -435,19 +431,20 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
              * directory when run without arguments, because its option -d DIR
              * defaults to "."!
              */
-            error_msg("'%s' is not a problem directory", dir);
-        }
-        else if (errno == ENOENT || errno == ENOTDIR)
-        {
-            if (!(flags & DD_FAIL_QUIETLY_ENOENT))
-                error_msg("'%s' does not exist", dir);
+            error_msg("'%s' is not a problem directory", dd->dd_dirname);
         }
         else
         {
-            if (!(flags & DD_FAIL_QUIETLY_EACCES))
-            {
  cant_access:
-                perror_msg("Can't access '%s'", dir);
+            if (errno == ENOENT || errno == ENOTDIR)
+            {
+                if (!(flags & DD_FAIL_QUIETLY_ENOENT))
+                    error_msg("'%s' does not exist", dd->dd_dirname);
+            }
+            else
+            {
+                if (!(flags & DD_FAIL_QUIETLY_EACCES))
+                    perror_msg("Can't access '%s'", dd->dd_dirname);
             }
         }
         dd_close(dd);
@@ -461,7 +458,7 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
         /* In case caller would want to create more files, he'll need uid:gid */
         if (fstat(dd->dd_fd, &stat_buf) != 0)
         {
-            error_msg("Can't stat '%s'", dir);
+            error_msg("Can't stat '%s'", dd->dd_dirname);
             dd_close(dd);
             return NULL;
         }
@@ -470,6 +467,34 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
     }
 
     return dd;
+}
+
+int dd_openfd(const char *dir)
+{
+    return open(dir, O_DIRECTORY | O_NOFOLLOW);
+}
+
+struct dump_dir *dd_fdopendir(int dir_fd, const char *dir, int flags)
+{
+    struct dump_dir *dd = dd_init();
+
+    dd->dd_dirname = rm_trailing_slashes(dir);
+    dd->dd_fd = dir_fd;
+
+    /* Do not interpret errno in dd_do_open() if dd_fd < 0 */
+    errno = 0;
+    return dd_do_open(dd, flags);
+}
+
+struct dump_dir *dd_opendir(const char *dir, int flags)
+{
+    struct dump_dir *dd = dd_init();
+
+    dd->dd_dirname = rm_trailing_slashes(dir);
+    /* dd_do_open validates dd_fd */
+    dd->dd_fd = dd_openfd(dir);
+
+    return dd_do_open(dd, flags);
 }
 
 /* Create a fresh empty debug dump dir which is owned bu the calling user. If
@@ -1130,25 +1155,79 @@ static bool uid_in_group(uid_t uid, gid_t gid)
 }
 #endif
 
-int dump_dir_accessible_by_uid(const char *dirname, uid_t uid)
+enum {
+    DD_STAT_ACCESSIBLE_BY_UID = 1,
+    DD_STAT_OWNED_BY_UID = DD_STAT_ACCESSIBLE_BY_UID << 1,
+};
+
+static int fdump_dir_stat_for_uid(int dir_fd, uid_t uid)
 {
     struct stat statbuf;
-    if (stat(dirname, &statbuf) != 0 || !S_ISDIR(statbuf.st_mode))
-        errno = ENOTDIR;
-    else
+    if (fstat(dir_fd, &statbuf) != 0 || !S_ISDIR(statbuf.st_mode))
     {
-        errno = 0;
+        VERB3 log("can't get stat: not a problem directory");
+        errno = ENOTDIR;
+        return -1;
+    }
+
+    errno = 0;
+
+    int ddstat = 0;
+    if (uid == 0 || (statbuf.st_mode & S_IROTH))
+    {
+        VERB3 log("directory is accessible by %ld uid", (long)uid);
+        ddstat |= DD_STAT_ACCESSIBLE_BY_UID;
+    }
 
 #if DUMP_DIR_OWNED_BY_USER > 0
-        if (uid == 0 || (statbuf.st_mode & S_IROTH) || uid == statbuf.st_uid)
+    if (uid == 0 || (statbuf.st_mode & S_IROTH) || uid == statbuf.st_uid)
 #else
-        if (uid == 0 || (statbuf.st_mode & S_IROTH) || uid_in_group(uid, statbuf.st_gid))
+    if (uid == 0 || (statbuf.st_mode & S_IROTH) || uid_in_group(uid, statbuf.st_gid))
 #endif
-        {
-            VERB1 log("directory '%s' is accessible by %ld uid", dirname, (long)uid);
-            return 1;
-        }
+    {
+        VERB3 log("%ld uid owns directory", (long)uid);
+        ddstat |= DD_STAT_ACCESSIBLE_BY_UID;
+        ddstat |= DD_STAT_OWNED_BY_UID;
     }
+
+    return ddstat;
+}
+
+static int dump_dir_stat_for_uid(const char *dirname, uid_t uid)
+{
+    int dir_fd = open(dirname, O_DIRECTORY | O_NOFOLLOW);
+    if (dir_fd < 0)
+    {
+        VERB3 log("can't open '%s': not a problem directory", dirname);
+        errno = ENOTDIR;
+        return -1;
+    }
+
+    int r = fdump_dir_stat_for_uid(dir_fd, uid);
+    close(dir_fd);
+    return r;
+}
+
+int fdump_dir_accessible_by_uid(int dir_fd, uid_t uid)
+{
+    int ddstat = fdump_dir_stat_for_uid(dir_fd, uid);
+
+    if (ddstat >= 0)
+        return ddstat & DD_STAT_ACCESSIBLE_BY_UID;
+
+    VERB3 perror_msg("can't determine accessibility for %ld uid", (long)uid);
+
+    return 0;
+}
+
+int dump_dir_accessible_by_uid(const char *dirname, uid_t uid)
+{
+    int ddstat = dump_dir_stat_for_uid(dirname, uid);
+
+    if (ddstat >= 0)
+        return ddstat & DD_STAT_ACCESSIBLE_BY_UID;
+
+    VERB3 perror_msg("can't determine accessibility of '%s' by %ld uid", dirname, (long)uid);
 
     return 0;
 }
