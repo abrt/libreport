@@ -249,8 +249,8 @@ AC_PATH_PROG(AUGPARSE, augparse, no)
 
 AC_ARG_WITH([defaultdumpdirmode],
             AS_HELP_STRING([--with-defaultdumpdirmode=OCTAL-MODE],
-                           [Default dump dir mode (default: 0660)]),
-            [], [with_defaultdumpdirmode="0660"])
+                           [Default dump dir mode (default: 0640)]),
+            [], [with_defaultdumpdirmode="0640"])
 AC_SUBST([DEFAULT_DUMP_DIR_MODE], [$with_defaultdumpdirmode])
 
 DUMP_DIR_OWNED_BY_USER=1
