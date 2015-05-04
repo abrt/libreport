@@ -27,6 +27,7 @@ import time
 import errno
 import shutil
 from subprocess import Popen
+import tempfile
 
 from reportclient import (_, log1, log2, RETURN_OK, RETURN_FAILURE,
                           RETURN_CANCEL_BY_USER, verbose, ask_yes_no,
@@ -127,17 +128,23 @@ def unpack_rpm(package_full_path, files, tmp_dir, destdir, exact_files=False):
             file_patterns += "." + filename + " "
         cpio_args = ["cpio", "-idu", file_patterns.strip()]
 
-    with open("/dev/null", "w") as null:
+    with tempfile.NamedTemporaryFile(prefix='abrt-unpacking-', dir='/tmp',
+                                     delete=False) as log_file:
+        log_file_name = log_file.name
         cpio = Popen(cpio_args, cwd=destdir, bufsize=-1,
-                     stdin=unpacked_cpio, stdout=null, stderr=null)
+                     stdin=unpacked_cpio, stdout=log_file, stderr=log_file)
         retcode = cpio.wait()
+
+    unpacked_cpio.close()
 
     if retcode == 0:
         log1("files extracted OK")
         #print _("Removing temporary cpio file")
+        os.unlink(log_file_name)
         os.unlink(unpacked_cpio_path)
     else:
-        print(_("Can't extract files from '{0}'").format(unpacked_cpio_path))
+        print(_("Can't extract files from '{0}'. For more information see '{1}'")
+              .format(unpacked_cpio_path, log_file_name))
         return RETURN_FAILURE
 
 def clean_up(tmp_dir):
