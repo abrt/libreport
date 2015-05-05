@@ -397,7 +397,10 @@ void dd_close(struct dump_dir *dd)
         return;
 
     dd_unlock(dd);
-    close(dd->dd_fd);
+
+    if (dd->dd_fd >= 0)
+        close(dd->dd_fd);
+
     if (dd->next_dir)
     {
         closedir(dd->next_dir);
