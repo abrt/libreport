@@ -141,7 +141,7 @@ int secure_openat_read(int dir_fd, const char *pathname)
 
     if (!S_ISREG(path_sb.st_mode) || path_sb.st_nlink > 1)
     {
-        log_notice("Path isn't a regular file or has more links (%lu)", path_sb.st_nlink);
+        log_notice("Path isn't a regular file or has more links (%lu)", (unsigned long)path_sb.st_nlink);
         errno = EINVAL;
         close(path_fd);
         return -1;
