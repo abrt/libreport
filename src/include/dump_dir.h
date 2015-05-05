@@ -34,6 +34,12 @@ extern "C" {
 
 /* Utility function */
 int create_symlink_lockfile(const char *filename, const char *pid_str);
+int create_symlink_lockfile_at(int dir_fd, const char *filename, const char *pid_str);
+
+/* Opens filename for reading relatively to a directory represented by dir_fd.
+ * The function fails if the file is symbolic link, directory or hard link.
+ */
+int secure_openat_read(int dir_fd, const char *filename);
 
 enum {
     DD_FAIL_QUIETLY_ENOENT = (1 << 0),
@@ -43,6 +49,8 @@ enum {
     DD_OPEN_READONLY = (1 << 3),
     DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE = (1 << 4),
     DD_DONT_WAIT_FOR_LOCK = (1 << 5),
+    /* Create the new dump directory with parent directories (mkdir -p)*/
+    DD_CREATE_PARENTS = (1 << 6),
 };
 
 struct dump_dir {
@@ -55,11 +63,20 @@ struct dump_dir {
     mode_t mode;
     time_t dd_time;
     char *dd_type;
+    int dd_fd;
 };
 
 void dd_close(struct dump_dir *dd);
 
+/* Opens the given path and returns the resulting file descriptor.
+ */
+int dd_openfd(const char *dir);
 struct dump_dir *dd_opendir(const char *dir, int flags);
+/* Skips dd_openfd(dir) and uses the given file descriptor instead
+ */
+struct dump_dir *dd_fdopendir(int dir_fd, const char *dir, int flags);
+struct dump_dir *dd_create_skeleton(const char *dir, uid_t uid, mode_t mode, int flags);
+int dd_reset_ownership(struct dump_dir *dd);
 /* Pass uid = (uid_t)-1L to disable chown'ing of newly created files
  * (IOW: if you aren't running under root):
  */
@@ -136,6 +153,7 @@ void delete_dump_dir(const char *dirname);
  * Returns non zero if dump dir is accessible otherwise return 0 value.
  */
 int dump_dir_accessible_by_uid(const char *dirname, uid_t uid);
+int fdump_dir_accessible_by_uid(int dir_fd, uid_t uid);
 
 enum {
     DD_STAT_ACCESSIBLE_BY_UID = 1,
@@ -150,6 +168,7 @@ enum {
  * Returns negative number if error occurred otherwise returns 0 or positive number.
  */
 int dump_dir_stat_for_uid(const char *dirname, uid_t uid);
+int fdump_dir_stat_for_uid(int dir_fd, uid_t uid);
 
 /* creates not_reportable file in the problem directory and saves the
    reason to it, which prevents libreport from reporting the problem

@@ -132,6 +132,12 @@ char *concat_path_file(const char *path, const char *filename);
 #define concat_path_basename libreport_concat_path_basename
 char *concat_path_basename(const char *path, const char *filename);
 
+/* Allows all printable characters except '/',
+ * the string must not exceed 64 characters of length
+ * and must not equal neither "." nor ".." (these strings may appear in the string) */
+#define str_is_correct_filename libreport_str_is_correct_filename
+bool str_is_correct_filename(const char *str);
+
 /* A-la fgets, but malloced and of unlimited size */
 #define xmalloc_fgets libreport_xmalloc_fgets
 char *xmalloc_fgets(FILE *file);
@@ -153,6 +159,8 @@ off_t copyfd_eof(int src_fd, int dst_fd, int flags);
 off_t copyfd_size(int src_fd, int dst_fd, off_t size, int flags);
 #define copyfd_exact_size libreport_copyfd_exact_size
 void copyfd_exact_size(int src_fd, int dst_fd, off_t size);
+#define copy_file_ext libreport_copy_file_ext
+off_t copy_file_ext(const char *src_name, const char *dst_name, int mode, uid_t uid, gid_t gid, int src_flags, int dst_flags);
 #define copy_file libreport_copy_file
 off_t copy_file(const char *src_name, const char *dst_name, int mode);
 #define copy_file_recursive libreport_copy_file_recursive
@@ -398,6 +406,8 @@ int xopen3(const char *pathname, int flags, int mode);
 int xopen(const char *pathname, int flags);
 #define xunlink libreport_xunlink
 void xunlink(const char *pathname);
+#define xunlinkat libreport_xunlinkat
+void xunlinkat(int dir_fd, const char *pathname, int flags);
 
 /* Just testing dent->d_type == DT_REG is wrong: some filesystems
  * do not report the type, they report DT_UNKNOWN for every dirent
@@ -407,6 +417,8 @@ void xunlink(const char *pathname);
  */
 #define is_regular_file libreport_is_regular_file
 int is_regular_file(struct dirent *dent, const char *dirname);
+#define is_regular_file_at libreport_is_regular_file_at
+int is_regular_file_at(struct dirent *dent, int dir_fd);
 
 #define dot_or_dotdot libreport_dot_or_dotdot
 bool dot_or_dotdot(const char *filename);

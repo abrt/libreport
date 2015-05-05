@@ -131,6 +131,7 @@ problem_data_t *create_problem_data_for_reporting(const char *dump_dir_name);
   @param base_dir_name Location to store the problem data
 */
 struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data, const char *base_dir_name);
+struct dump_dir *create_dump_dir_from_problem_data_ext(problem_data_t *problem_data, const char *base_dir_name, uid_t uid);
 
 #ifdef __cplusplus
 }
