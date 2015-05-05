@@ -917,6 +917,7 @@ static int delete_file_dir(int dir_fd, bool skip_lock_file)
     if (unlink_lock_file)
         xunlinkat(dir_fd, ".lock", /*only files*/0);
 
+    closedir(d);
     return 0;
 }
 
