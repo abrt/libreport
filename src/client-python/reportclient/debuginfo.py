@@ -23,6 +23,7 @@
 
 import sys
 import os
+import pwd
 import time
 import errno
 import shutil
@@ -42,7 +43,6 @@ def ensure_abrt_uid(fn):
         the function.
     """
 
-    import pwd
     current_uid = os.getuid()
     current_gid = os.getgid()
     abrt = pwd.getpwnam("abrt")
@@ -381,6 +381,14 @@ class DebugInfoDownload(object):
                 if unpack_result == RETURN_FAILURE:
                     # recursively delete the temp dir on failure
                     print(_("Unpacking failed, aborting download..."))
+
+                    s = os.stat(self.cachedir)
+                    abrt = pwd.getpwnam("abrt")
+                    if (s.st_uid != abrt.pw_uid) or (s.st_gid != abrt.pw_gid):
+                        print(_("'{0}' must be owned by abrt. "
+                                 "Please run '# chown -R abrt.abrt {0}' "
+                                 "to fix the issue.").format(self.cachedir))
+
                     clean_up(self.tmpdir)
                     return RETURN_FAILURE
 
