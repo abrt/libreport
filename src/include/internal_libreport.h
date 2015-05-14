@@ -666,6 +666,8 @@ char* get_cwd(pid_t pid);
 char* get_rootdir(pid_t pid);
 #define get_fsuid libreport_get_fsuid
 int get_fsuid(const char *proc_pid_status);
+#define get_fsgid libreport_get_fsgid
+int get_fsgid(const char *proc_pid_status);
 #define dump_fd_info_ext libreport_dump_fd_info_ext
 int dump_fd_info_ext(const char *dest_filename, const char *proc_pid_fd_path, uid_t uid, gid_t gid);
 #define dump_fd_info libreport_dump_fd_info

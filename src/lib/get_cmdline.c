@@ -188,21 +188,26 @@ char* get_rootdir(pid_t pid)
     return malloc_readlink(buf);
 }
 
-int get_fsuid(const char *proc_pid_status)
+static int get_proc_fs_id(const char *proc_pid_status, char type)
 {
-    int real, euid, saved;
-    /* if we fail to parse the uid, then make it root only readable to be safe */
-    int fs_uid = 0;
+    char id_type[] = "_id";
+    id_type[0] = type;
+
+    int real, e_id, saved;
+    int fs_id = 0;
 
     const char *line = proc_pid_status; /* never NULL */
     for (;;)
     {
-        if (strncmp(line, "Uid", 3) == 0)
+        if (strncmp(line, id_type, 3) == 0)
         {
-            int n = sscanf(line, "Uid:\t%d\t%d\t%d\t%d\n", &real, &euid, &saved, &fs_uid);
+            int n = sscanf(line, "%*cid:\t%d\t%d\t%d\t%d\n", &real, &e_id, &saved, &fs_id);
             if (n != 4)
+            {
+                error_msg("Failed to parser /proc/[pid]/status: invalid format of '%cui:' line", type);
                 return -1;
-            break;
+            }
+            return fs_id;
         }
         line = strchr(line, '\n');
         if (!line)
@@ -210,7 +215,18 @@ int get_fsuid(const char *proc_pid_status)
         line++;
     }
 
-    return fs_uid;
+    error_msg("Failed to parser /proc/[pid]/status: not found '%cui:' line", type);
+    return -2;
+}
+
+int get_fsuid(const char *proc_pid_status)
+{
+    return get_proc_fs_id(proc_pid_status, /*UID*/'U');
+}
+
+int get_fsgid(const char *proc_pid_status)
+{
+    return get_proc_fs_id(proc_pid_status, /*GID*/'G');
 }
 
 int dump_fd_info_ext(const char *dest_filename, const char *proc_pid_fd_path, uid_t uid, gid_t gid)
