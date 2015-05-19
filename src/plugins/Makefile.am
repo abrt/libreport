@@ -42,7 +42,9 @@ endif
 if BUILD_MANTISBT
 reporters_plugin_conf += mantisbt.conf
 reporters_plugin_format_conf += mantisbt_format.conf \
-    mantisbt_formatdup.conf
+    mantisbt_formatdup.conf \
+    mantisbt_format_analyzer_libreport.conf \
+    mantisbt_formatdup_analyzer_libreport.conf
 endif
 
 defaultreportpluginsconfdir = $(DEFAULT_REPORT_PLUGINS_CONF_DIR)
