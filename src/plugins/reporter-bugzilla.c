@@ -196,7 +196,7 @@ void login(struct abrt_xmlrpc *client, struct bugzilla_struct *rhbz)
     while (!rhbz_login(client, rhbz->b_login, rhbz->b_password))
     {
         free(rhbz->b_login);
-        rhbz->b_login = ask_bz_login(_("Invalid password or login. Please enter your BZ login:"));
+        rhbz->b_login = ask_bz_login(_("Invalid password or login. Please enter your Bugzilla login:"));
 
         free(rhbz->b_password);
         char *question = xasprintf(_("Invalid password or login. Please enter the password for '%s':"), rhbz->b_login);
@@ -370,7 +370,7 @@ int main(int argc, char **argv)
     if (rhbz.b_login[0] == '\0')
     {
         free(rhbz.b_login);
-        rhbz.b_login = ask_bz_login(_("Login is not provided by configuration. Please enter your BZ login:"));
+        rhbz.b_login = ask_bz_login(_("Login is not provided by configuration. Please enter your Bugzilla login:"));
     }
 
     if (rhbz.b_password[0] == '\0')
