@@ -15,14 +15,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-01-31 11:19-0500\n"
+"PO-Revision-Date: 2015-04-08 12:40-0400\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.com/projects/p/libreport/"
 "language/pl/)\n"
 "Language: pl\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Zanata 3.5.1\n"
+"X-Generator: Zanata 3.6.2\n"
 
 #: ../src/cli/cli.c:63
 msgid ""
@@ -227,7 +227,7 @@ msgstr "Pobieranie ({0} z {1}) {2}: {3:3}%"
 
 #: ../src/client-python/reportclient/debuginfo.py:308
 msgid "Initializing package manager"
-msgstr ""
+msgstr "Inicjowanie menedżera pakietów"
 
 #. if verbose == 0:
 #. # this suppress yum messages about setting up repositories
@@ -235,7 +235,7 @@ msgstr ""
 #. This takes some time, let user know what we are doing
 #: ../src/client-python/reportclient/debuginfo.py:315
 msgid "Setting up repositories"
-msgstr ""
+msgstr "Ustawianie repozytoriów"
 
 #. if verbose == 0:
 #. # re-enable the output to stdout
@@ -304,15 +304,15 @@ msgstr "Usuwanie {0}"
 #: ../src/client-python/reportclient/debuginfo.py:395
 #, python-brace-format
 msgid "Can't remove {0}, probably contains an error log"
-msgstr ""
+msgstr "Nie można usunąć {0}, prawdopodobnie zawiera dziennik błędów"
 
 #: ../src/client-python/reportclient/dnfdebuginfo.py:81
 msgid "Error reading repository configuration: '{0!s}'"
-msgstr ""
+msgstr "Błąd podczas odczytywania konfiguracji repozytorium: \"{0!s}\""
 
 #: ../src/client-python/reportclient/dnfdebuginfo.py:98
 msgid "Error setting up repositories: '{0!s}'"
-msgstr ""
+msgstr "Błąd podczas ustawiania repozytoriów: \"{0!s}\""
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:64
 msgid ""
@@ -1239,7 +1239,7 @@ msgstr "Nie można utworzyć opisu wyjątku stosu (brak powiązanej awarii?)"
 
 #: ../src/lib/reporters.c:55
 msgid "Note does not contain rating"
-msgstr ""
+msgstr "Uwaga nie zawiera oceny"
 
 #: ../src/lib/run_event.c:763
 #, c-format
@@ -1579,10 +1579,10 @@ msgstr ""
 "w polu \"Whiteboard\".\n"
 "\n"
 "Jeśli taki błąd nie zostanie odnaleziony, to zostanie utworzony nowy.\n"
-"Elementy KATALOGU są przechowywane w bugu jako część opisu błędu lub jako\n"
+"Elementy KATALOGU są przechowywane w błędzie jako część opisu błędu lub jako\n"
 "załączniki, w zależności od ich typu i rozmiaru.\n"
 "\n"
-"W przeciwnym przypadku, jeśli taki błąd zostanie odnaleziono i jest\n"
+"W przeciwnym przypadku, jeśli taki błąd zostanie odnaleziony i jest\n"
 "oznaczony jako ZAMKNIĘTY DUPLIKAT, to narzędzie podąża za ciągiem\n"
 "duplikatów, aż odnajdzie błąd nie będący DUPLIKATEM. Następnie dodaje\n"
 "nowy komentarz do odnalezionego błędu.\n"
@@ -1663,7 +1663,7 @@ msgstr "Debuguj"
 
 #: ../src/plugins/reporter-bugzilla.c:346
 msgid "Looking for similar problems in bugzilla"
-msgstr "Wyszukiwanie podobnych problemów w Bugzilli"
+msgstr "Wyszukiwanie podobnych problemów w serwisie Bugzilla"
 
 #: ../src/plugins/reporter-bugzilla.c:373
 msgid "Login is not provided by configuration. Please enter your BZ login:"
@@ -1764,7 +1764,7 @@ msgstr "Dołączanie lepszego wyjątku"
 #: ../src/plugins/reporter-bugzilla.c:761
 msgid "Found the same comment in the bug history, not adding a new one"
 msgstr ""
-"Odnaleziono taki sam komentarz z historii błędu, nowy nie zostanie dodany"
+"Odnaleziono taki sam komentarz w historii błędu, nowy nie zostanie dodany"
 
 #: ../src/plugins/reporter-bugzilla.c:771
 #, c-format
@@ -2064,19 +2064,19 @@ msgstr "Podstawowy adres URL, do którego wysłać"
 
 #: ../src/plugins/reporter-mantisbt.c:82
 msgid "Please enter your MantisBT login:"
-msgstr ""
+msgstr "Login serwisu MantisBT:"
 
 #: ../src/plugins/reporter-mantisbt.c:86
 msgid "Please enter the password for"
-msgstr ""
+msgstr "Hasło dla"
 
 #: ../src/plugins/reporter-mantisbt.c:97
 msgid "Credentials are not provided by configuration."
-msgstr ""
+msgstr "Konfiguracja nie dostarcza danych uwierzytelniających."
 
 #: ../src/plugins/reporter-mantisbt.c:121
 msgid "Invalid password or login."
-msgstr ""
+msgstr "Nieprawidłowe hasło lub login."
 
 #: ../src/plugins/reporter-mantisbt.c:215
 msgid ""
@@ -2120,25 +2120,68 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"\n"
+"& [-vf] [-c PLIK_KONFIGURACJI]... [-F PLIK_FMT] [-A PLIK_FMT2] -d KATALOG\n"
+"lub:\n"
+"& [-v] [-c PLIK_KONFIGURACJI] [-d KATALOG] -t[IDENTYFIKATOR] PLIK...\n"
+"lub:\n"
+"& [-v] [-c PLIK_KONFIGURACJI]... [-d KATALOG] -t[IDENTYFIKATOR] -w\n"
+"lub:\n"
+"& [-v] [-c PLIK_KONFIGURACJI]... -h SUMA_DUPLIKATU\n"
+"\n"
+"Zgłasza problemy w serwisie MantisBT.\n"
+"\n"
+"Narzędzie odczytuje KATALOG. Następnie próbuje odnaleźć błąd\n"
+"o tym samym abrt_hash w polu \"abrt_hash\".\n"
+"\n"
+"Jeśli taki błąd nie zostanie odnaleziony, to zostanie utworzony nowy.\n"
+"Elementy KATALOGU są przechowywane w błędzie jako część opisu błędu\n"
+"lub jako załączniki, w zależności od ich typu i rozmiaru.\n"
+"\n"
+"W przeciwnym przypadku, jeśli taki błąd zostanie odnaleziony i jest\n"
+"oznaczony jako ZAMKNIĘTY DUPLIKAT, to narzędzie podąża za ciągiem\n"
+"duplikatów, aż odnajdzie błąd nie będący DUPLIKATEM. Następnie dodaje\n"
+"nowy komentarz do odnalezionego błędu.\n"
+"\n"
+"Adres URL do nowego lub zmodyfikowanego błędu jest wyświetlana w\n"
+"standardowym wyjściu i nagrywana w elemencie \"reported_to\".\n"
+"\n"
+"Opcja -t wysyła PLIKI do już utworzonego błędu w serwisie MantisBT.\n"
+"Identyfikator błędu jest pobierany z katalogu podanego przez opcję\n"
+"-d KATALOG. Jeśli dane problemu w KATALOGU nigdy nie zostały zgłoszone\n"
+"w serwisie MantisBT, to wysłanie się nie powiedzie.\n"
+"\n"
+"Opcja -tID wysyła PLIKI do błędu o podanym identyfikatorze w\n"
+"serwisie MantisBT. Opcja -d KATALOG jest ignorowana.\n"
+"\n"
+"Opcja -w dodaje użytkownika Bugzilli do listy CC błędu.\n"
+"\n"
+"Opcja -r ustawia ostatni adres URL z elementu reporter_to, który zawiera\n"
+"przedrostek TRACKER_NAME w polu URL. Ta opcja jest zastosowywana tylko,\n"
+"jeśli zgłoszony ma zostać nowy błąd. Domyślna wartość to \"ABRT Server\"\n"
+"\n"
+"Jeśli nie podano, domyślnym PLIKIEM_KONFIGURACJI jest "
 
 #: ../src/plugins/reporter-mantisbt.c:289
 msgid "Attach FILEs [to issue with this ID]"
-msgstr ""
+msgstr "Dołącza PLIKI [do błędu o tym identyfikatorze]"
 
 #: ../src/plugins/reporter-mantisbt.c:322
 #, c-format
 msgid "Can't open problem dir '%s'."
-msgstr ""
+msgstr "Nie można otworzyć katalogu problemu \"%s\"."
 
 #: ../src/plugins/reporter-mantisbt.c:344
 msgid "Looking for similar problems in MantisBT"
-msgstr ""
+msgstr "Wyszukiwanie podobnych problemów w serwisie MantisBT"
 
 #: ../src/plugins/reporter-mantisbt.c:372
 msgid ""
 "Can't get MantisBT ID because this problem has not yet been reported to "
 "MantisBT."
 msgstr ""
+"Nie można uzyskać identyfikatora serwisu MantisBT, ponieważ ten problem nie "
+"został jeszcze w nim zgłoszony."
 
 #: ../src/plugins/reporter-mantisbt.c:379
 #, c-format
@@ -2146,21 +2189,23 @@ msgid ""
 "This problem has been reported to MantisBT '%s' which differs from the "
 "configured MantisBT '%s'."
 msgstr ""
+"Ten problem został zgłoszony w serwisie MantisBT \"%s\", który różni się od "
+"skonfigurowanego serwisu MantisBT \"%s\"."
 
 #: ../src/plugins/reporter-mantisbt.c:383
 #, c-format
 msgid "Malformed url to MantisBT '%s'."
-msgstr ""
+msgstr "Błędnie sformatowany adres URL do serwisu MantisBT \"%s\"."
 
 #: ../src/plugins/reporter-mantisbt.c:387
 #, c-format
 msgid "Using MantisBT ID '%s'"
-msgstr ""
+msgstr "Używanie identyfikatora serwisu MantisBT \"%s\""
 
 #: ../src/plugins/reporter-mantisbt.c:395
 #, c-format
 msgid "Attaching file '%s' to issue %s"
-msgstr ""
+msgstr "Dołączanie pliku \"%s\" do błędu \"%s\""
 
 #: ../src/plugins/reporter-mantisbt.c:414
 #, c-format
@@ -2168,56 +2213,60 @@ msgid ""
 "This problem was already reported to MantisBT (see '%s'). Do you still want "
 "to create a new issue?"
 msgstr ""
+"Ten problem został zgłoszony w serwisie MantisBT (proszę zobaczyć \"%s\"). "
+"Nadal utworzyć nowy błąd?"
 
 #. Create new issue
 #: ../src/plugins/reporter-mantisbt.c:529
 msgid "Creating a new issue"
-msgstr ""
+msgstr "Tworzenie nowego błędu"
 
 #: ../src/plugins/reporter-mantisbt.c:534
 #, c-format
 msgid "Invalid format file: %s"
-msgstr ""
+msgstr "Nieprawidłowy format pliku: %s"
 
 #: ../src/plugins/reporter-mantisbt.c:538
 msgid "Failed to format problem data"
-msgstr ""
+msgstr "Sformatowanie danych problemu się nie powiodło"
 
 #: ../src/plugins/reporter-mantisbt.c:557
 msgid "Adding External URL to issue"
-msgstr ""
+msgstr "Dodawanie zewnętrznego adresu URL do błędu"
 
 #: ../src/plugins/reporter-mantisbt.c:570
 #, c-format
 msgid "Adding attachments to issue %i"
-msgstr ""
+msgstr "Dodawanie załączników do błędu %i"
 
 #: ../src/plugins/reporter-mantisbt.c:625
 #, c-format
 msgid "Invalid duplicate format file: '%s"
-msgstr ""
+msgstr "Nieprawidłowy podwójny pliku formatu: %s"
 
 #: ../src/plugins/reporter-mantisbt.c:629
 msgid "Failed to format duplicate comment from problem data"
 msgstr ""
+"Sformatowanie podwójnego komentarza z danych problemu się nie powiodło"
 
 #: ../src/plugins/reporter-mantisbt.c:636
 #, c-format
 msgid "Adding new comment to issue %d"
-msgstr ""
+msgstr "Dodawanie nowego komentarza do błędu %d"
 
 #: ../src/plugins/reporter-mantisbt.c:672
 msgid "Found the same comment in the issue history, not adding a new one"
 msgstr ""
+"Odnaleziono taki sam komentarz w historii błędu, nowy nie zostanie dodany"
 
 #: ../src/plugins/reporter-mantisbt.c:679
 #, c-format
 msgid "Status: %s%s%s %s/view.php?id=%u"
-msgstr ""
+msgstr "Stan: %s%s%s %s/view.php?id=%u"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:1
 msgid "CentOS Bug Tracker"
-msgstr ""
+msgstr "System śledzenia błędów projektu CentOS"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:2
 #: ../src/workflows/workflow_CentOSCCpp.xml.in.h:1
@@ -2229,55 +2278,64 @@ msgstr ""
 #: ../src/workflows/workflow_CentOSVmcore.xml.in.h:1
 #: ../src/workflows/workflow_CentOSXorg.xml.in.h:1
 msgid "Report to CentOS Bug Tracker"
-msgstr ""
+msgstr "Zgłasza w systemie śledzenia błędów projektu CentOS"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:4
 msgid "CentOS Bug Tracker account user name"
-msgstr ""
+msgstr "Nazwa konta użytkownika w systemie śledzenia błędów projektu CentOS"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:5
 msgid ""
 "You can create bugs.centos.org account &lt;a href=\"https://bugs.centos.org/"
 "signup_page.php\"&gt;here&lt;/a&gt;"
 msgstr ""
+"Można utworzyć konto w witrynie bugs.centos.org <a href=\"https://bugs."
+"centos.org/signup_page.php\">pod tym adresem</a>"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:7
 msgid "CentOS Bug Tracker account password"
-msgstr ""
+msgstr "hasło konta w systemie śledzenia błędów projektu CentOS"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:8
 msgid "CentOS Bug Tracker URL"
-msgstr ""
+msgstr "Adres URL systemu śledzenia błędów projektu CentOS"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:9
 msgid "Address of CentOS Bug Tracker server"
-msgstr ""
+msgstr "Adres serwera systemu śledzenia błędów projektu CentOS"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:12
 msgid "CentOS Bug Tracker project"
-msgstr ""
+msgstr "Projekt systemu śledzenia błędów projektu CentOS"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:13
 msgid ""
 "Specify this only if you needed different project than specified in /etc/os-"
 "release"
 msgstr ""
+"Należy to podać tylko, jeśli wymagany jest projekt inny niż podany w pliku /"
+"etc/os-release"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:14
 msgid "CentOS Bug Tracker project version"
-msgstr ""
+msgstr "Wersja projektu systemu śledzenia błędów projektu CentOS"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:15
 msgid ""
 "Specify this only if you needed different project version than specified in /"
 "etc/os-release"
 msgstr ""
+"Należy to podać tylko, jeśli wymagana jest wersja projektu inna niż podana w "
+"pliku /etc/os-release"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:21
 msgid ""
 "Restrict access to the created CentOS Bug Tracker issue allowing only users "
 "from specified groups to view it (see advanced settings for more details)"
 msgstr ""
+"Ogranicza dostęp do utworzonego zgłoszenia w systemie śledzenia błędów "
+"projektu CentOS, umożliwiając wyświetlanie go tylko użytkownikom z podanych "
+"grup (więcej informacji znajduje się w zaawansowanych ustawieniach)"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
 msgid "Kerneloops.org"
@@ -2542,146 +2600,164 @@ msgstr "Wartość zwrotna Bug.search(quicksearch) nie zawiera elementu \"bugs\""
 #: ../src/plugins/mantisbt.c:123
 #, c-format
 msgid "MantisBT couldn't find parent of issue %d"
-msgstr ""
+msgstr "MantisBT nie może odnaleźć nadrzędnego błędu %d"
 
 #: ../src/plugins/mantisbt.c:178
 msgid "SOAP: Failed to get child element because of no parent."
 msgstr ""
+"SOAP: uzyskanie elementu potomnego się nie powiodło z powodu braku elementu "
+"nadrzędnego."
 
 #: ../src/plugins/mantisbt.c:187
 msgid "SOAP: Failed to get next element because of no node."
 msgstr ""
+"SOAP: uzyskanie następnego elementu się nie powiodło z powodu braku węzła."
 
 #: ../src/plugins/mantisbt.c:196
 msgid "SOAP: Failed to get child node because of no parent."
 msgstr ""
+"SOAP: uzyskanie węzła potomnego się nie powiodło z powodu braku elementu "
+"nadrzędnego."
 
 #: ../src/plugins/mantisbt.c:217
 msgid "SOAP: Failed to parse xml during creating request."
 msgstr ""
+"SOAP: przetworzenie kodu XML podczas tworzenia żądania się nie powiodło."
 
 #: ../src/plugins/mantisbt.c:225
 msgid "SOAP: Failed to get xml root element."
-msgstr ""
+msgstr "SOAP: uzyskanie głównego elementu kodu XML się nie powiodło."
 
 #: ../src/plugins/mantisbt.c:238
 msgid ""
 "SOAP: Failed to add a new child node because of no node or no child name."
 msgstr ""
+"SOAP: dodanie nowego węzła potomnego się nie powiodło z powodu braku nazwy "
+"węzła lub elementu potomnego."
 
 #: ../src/plugins/mantisbt.c:243
 msgid "SOAP: Failed to create a new xml child item."
-msgstr ""
+msgstr "SOAP: utworzenie nowego elementu potomnego kodu XML się nie powiodło."
 
 #: ../src/plugins/mantisbt.c:248
 msgid "SOAP: Failed to create a new property."
-msgstr ""
+msgstr "SOAP: utworzenie nowej właściwości się nie powiodło."
 
 #: ../src/plugins/mantisbt.c:258
 msgid "SOAP: Failed to add method parametr."
-msgstr ""
+msgstr "SOAP: dodanie parametru metody się nie powiodło."
 
 #: ../src/plugins/mantisbt.c:287
 msgid "SOAP: Failed to add new issue parametrs."
-msgstr ""
+msgstr "SOAP: dodanie nowych parametrów błędu się nie powiodło."
 
 #: ../src/plugins/mantisbt.c:290
 msgid ""
 "SOAP: Failed to add new issue parameters because the required items are "
 "missing."
 msgstr ""
+"SOAP: dodanie nowych parametrów błędu się nie powiodło z powodu braku "
+"wymaganych elementów."
 
 #: ../src/plugins/mantisbt.c:334
 msgid "SOAP: Failed to create a new property in custom fields."
 msgstr ""
+"SOAP: utworzenie nowej właściwości w polach użytkownika się nie powiodło."
 
 #: ../src/plugins/mantisbt.c:352
 msgid ""
 "SOAP: Failed to create SOAP string because of invalid function arguments."
 msgstr ""
+"SOAP: utworzenie ciągu SOAP się nie powiodło z powodu nieprawidłowych "
+"parametrów funkcji."
 
 #: ../src/plugins/mantisbt.c:359
 msgid "SOAP: Failed to dump xml node."
-msgstr ""
+msgstr "SOAP: zrzucenie węzła kodu XML się nie powiodło."
 
 #: ../src/plugins/mantisbt.c:373
 msgid "SOAP: Failed to print SOAP string."
-msgstr ""
+msgstr "SOAP: wyświetlenie ciągu SOAP się nie powiodło."
 
 #: ../src/plugins/mantisbt.c:380
 msgid "Failed to dump xml node."
-msgstr ""
+msgstr "Zrzucenie węzła kodu XML się nie powiodło."
 
 #: ../src/plugins/mantisbt.c:456
 msgid "SOAP: Failed to parse xml (searching value at depth by name)."
 msgstr ""
+"SOAP: przetworzenie kodu XML się nie powiodło (wyszukiwanie wartości w głębi "
+"według nazwy)."
 
 #: ../src/plugins/mantisbt.c:460 ../src/plugins/mantisbt.c:503
 #: ../src/plugins/mantisbt.c:532
 msgid "SOAP: Failed to create xml text reader."
-msgstr ""
+msgstr "SOAP: utworzenie czytnika tekstu kodu XML się nie powiodło."
 
 #: ../src/plugins/mantisbt.c:499
 msgid "SOAP: Failed to parse xml."
-msgstr ""
+msgstr "SOAP: przetworzenie kodu XML się nie powiodło."
 
 #: ../src/plugins/mantisbt.c:528
 msgid "SOAP: Failed to parse xml (get related to issue)."
 msgstr ""
+"SOAP: przetworzenie kodu XML się nie powiodło (\"get\" związane z błędem)."
 
 #: ../src/plugins/mantisbt.c:645
 msgid "Url or request isn't specified."
-msgstr ""
+msgstr "Nie podano adresu URL lub żądania."
 
 #: ../src/plugins/mantisbt.c:673
 #, c-format
 msgid "Error in HTTP POST, HTTP code: 404 (Not found), URL:'%s'"
-msgstr ""
+msgstr "Błąd w HTTP POST, kod HTTP: 404 (nie odnaleziono), adres URL: \"%s\""
 
 #: ../src/plugins/mantisbt.c:697
 #, c-format
 msgid "Error in MantisBT request at '%s': %s"
-msgstr ""
+msgstr "Błąd w żądaniu MantisBT w \"%s\": %s"
 
 #: ../src/plugins/mantisbt.c:699
 #, c-format
 msgid "Error in MantisBT request at '%s'"
-msgstr ""
+msgstr "Błąd w żądaniu MantisBT w \"%s\""
 
 #: ../src/plugins/mantisbt.c:741
 #, c-format
 msgid "Failed to attach file: '%s'"
-msgstr ""
+msgstr "Dołączenie pliku się nie powiodło: \"%s\""
 
 #: ../src/plugins/mantisbt.c:760
 #, c-format
 msgid "Can't lseek '%s'"
-msgstr ""
+msgstr "Nie można wykonać lseek na \"%s\""
 
 #: ../src/plugins/mantisbt.c:766
 #, c-format
 msgid "Can't upload '%s', it's too large (%llu bytes)"
-msgstr ""
+msgstr "Nie można wysłać \"%s\", jest za duże (bajty: %llu)"
 
 #: ../src/plugins/mantisbt.c:776
 #, c-format
 msgid "Can't read '%s'"
-msgstr ""
+msgstr "Nie można odczytać \"%s\""
 
 #: ../src/plugins/mantisbt.c:792
 #, c-format
 msgid "Can't open '%s'"
-msgstr ""
+msgstr "Nie można otworzyć \"%s\""
 
 #: ../src/plugins/mantisbt.c:859
 #, c-format
 msgid "Failed to search MantisBT issue by duphash: '%s'"
 msgstr ""
+"Wyszukanie błędu w serwisie MantisBT według sumy duplikatu się nie powiodło: "
+"\"%s\""
 
 #: ../src/plugins/mantisbt.c:903
 #, c-format
 msgid "Failed to search MantisBT duplicate issue: '%s'"
-msgstr ""
+msgstr "Wyszukanie duplikatu błędu w serwisie MantisBT się nie powiodło: \"%s\""
 
 #: ../src/plugins/mantisbt.c:930
 #, c-format
@@ -2689,44 +2765,48 @@ msgid ""
 "MantisBT doesn't contain custom field '%s', which is required for full "
 "functionality of the reporter. Do you still want to create a new issue?"
 msgstr ""
+"Serwis MantisBT nie zawiera pola użytkownika \"%s\", które jest wymagane do "
+"pełnej funkcjonalności mechanizmu zgłaszania. Nadal utworzyć nowy błąd?"
 
 #: ../src/plugins/mantisbt.c:954
 #, c-format
 msgid "Failed to get custom fields for '%s' project"
-msgstr ""
+msgstr "Uzyskanie pola użytkownika dla projektu \"%s\" się nie powiodło"
 
 #: ../src/plugins/mantisbt.c:998
 #, c-format
 msgid "Failed to create a new issue: '%s'"
-msgstr ""
+msgstr "Utworzenie nowego błędu się nie powiodło: \"%s\""
 
 #: ../src/plugins/mantisbt.c:1024
 #, c-format
 msgid "Failed to get MantisBT issue: '%s'"
-msgstr ""
+msgstr "Uzyskanie błędu w serwisie MantisBT się nie powiodło: \"%s\""
 
 #: ../src/plugins/mantisbt.c:1038
 #, c-format
 msgid "Issue %i is CLOSED, but it has no RESOLUTION"
-msgstr ""
+msgstr "Błąd %i jest ZAMKNIĘTY, ale nie posiada ROZWIĄZANIA"
 
 #: ../src/plugins/mantisbt.c:1046
 #, c-format
 msgid "Issue %i is CLOSED as DUPLICATE, but it has no DUPLICATE_ID"
 msgstr ""
+"Błąd %i jest ZAMKNIĘTY jako DUPLIKAT, ale nie posiada "
+"IDENTYFIKATORA_DUPLIKATU"
 
 #: ../src/plugins/mantisbt.c:1083
 #, c-format
 msgid "Failed to add MantisBT issue note: '%s'"
-msgstr ""
+msgstr "Dodanie uwagi do błędu w serwisie MantisBT się nie powiodło: \"%s\""
 
 #: ../src/plugins/mantisbt.c:1097
 msgid "The MantisBT project has not been deretmined."
-msgstr ""
+msgstr "Nie ustalono projektu MantisBT."
 
 #: ../src/plugins/mantisbt.c:1106
 msgid "Failed to get project id from name"
-msgstr ""
+msgstr "Uzyskanie identyfikatora projektu z nazwy się nie powiodło"
 
 #: ../src/plugins/reporter-ureport.c:70
 msgid "Specify server URL"
@@ -2742,7 +2822,7 @@ msgstr "Użycie uwierzytelniania klienta"
 
 #: ../src/plugins/reporter-ureport.c:74
 msgid "Use HTTP Authentication"
-msgstr ""
+msgstr "Użycie uwierzytelniania HTTP"
 
 #: ../src/plugins/reporter-ureport.c:75
 msgid "Additional files included in 'auth' key"
@@ -2796,6 +2876,14 @@ msgid ""
 "\n"
 "Reads the default configuration from "
 msgstr ""
+"& [-v] [-c PLIK] [-u URL] [-k] [-t ŹRÓDŁO] [-h DANE_UWIERZYTELNIAJĄCE]\n"
+"  [-A -a suma-bt -B -b id-błędu -E -e e-mail -O -o komentarz] [-d KATALOG]\n"
+"& [-v] [-c PLIK] [-u URL] [-k] [-t ŹRÓDŁO] [-h DANE_UWIERZYTELNIAJĄCE]\n"
+"  [-i ELEMENTY_UWIERZYTELNIANIA] [-d KATALOG]\n"
+"\n"
+"Wysyła mikrozgłozenie lub dodaje załącznik do mikrozgłoszenia\n"
+"\n"
+"Odczytuje domyślną konfigurację z "
 
 #: ../src/plugins/reporter-ureport.c:153
 msgid "This problem does not have an uReport assigned."
@@ -2924,35 +3012,38 @@ msgstr "Wysyła dane przez SCP lub FTP do zdalnego położenia"
 
 #: ../src/workflows/workflow_CentOSCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the CentOS infrastructure"
-msgstr ""
+msgstr "Przetwarza awarię C/C++ używając infrastruktury projektu CentOS"
 
 #: ../src/workflows/workflow_CentOSJava.xml.in.h:2
 msgid "Process the Java exception using the CentOS infrastructure"
 msgstr ""
+"Przetwarza wyjątek języka Java używając infrastruktury projektu CentOS"
 
 #: ../src/workflows/workflow_CentOSKerneloops.xml.in.h:2
 msgid "Process the kerneloops using the CentOS infrastructure"
-msgstr ""
+msgstr "Przetwarza awarię oops jądra używając infrastruktury projektu CentOS"
 
 #: ../src/workflows/workflow_CentOSLibreport.xml.in.h:2
 msgid "Process the problem using the CentOS infrastructure"
-msgstr ""
+msgstr "Przetwarza problem używając infrastruktury projektu CentOS"
 
 #: ../src/workflows/workflow_CentOSPython.xml.in.h:2
 msgid "Process the python exception using the CentOS infrastructure"
 msgstr ""
+"Przetwarza wyjątek języka Python używając infrastruktury projektu CentOS"
 
 #: ../src/workflows/workflow_CentOSPython3.xml.in.h:2
 msgid "Process the python 3 exception using the CentOS infrastructure"
 msgstr ""
+"Przetwarza wyjątek języka Python 3 używając infrastruktury projektu CentOS"
 
 #: ../src/workflows/workflow_CentOSVmcore.xml.in.h:2
 msgid "Process the kernel crash using the CentOS infrastructure"
-msgstr ""
+msgstr "Przetwarza awarię jądra używając infrastruktury projektu CentOS"
 
 #: ../src/workflows/workflow_CentOSXorg.xml.in.h:2
 msgid "Process the X Server problem using the CentOS infrastructure"
-msgstr ""
+msgstr "Przetwarza problem serwera X używając infrastruktury projektu CentOS"
 
 #: ../src/workflows/workflow_FedoraCCpp.xml.in.h:1
 #: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:1
@@ -2998,7 +3089,7 @@ msgstr "Przetwarza problem używając infrastruktury Projektu Fedora"
 #: ../src/workflows/workflow_FedoraJava.xml.in.h:2
 msgid "Process the Java exception using the Fedora infrastructure"
 msgstr ""
-"Przetwarza wyjątek języka java używając infrastruktury Projektu Fedora"
+"Przetwarza wyjątek języka Java używając infrastruktury Projektu Fedora"
 
 #: ../src/workflows/workflow_LoggerCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Logger.xml.in.h:1
