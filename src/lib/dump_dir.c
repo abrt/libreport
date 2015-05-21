@@ -582,7 +582,7 @@ struct dump_dir *dd_create(const char *dir, uid_t uid, mode_t mode)
     if (uid != (uid_t)-1L)
     {
         dd->dd_uid = 0;
-        dd->dd_uid = 0;
+        dd->dd_gid = 0;
 
 #if DUMP_DIR_OWNED_BY_USER > 0
         /* Check crashed application's uid */
