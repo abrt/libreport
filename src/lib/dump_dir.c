@@ -593,19 +593,37 @@ struct dump_dir *dd_create_skeleton(const char *dir, uid_t uid, mode_t mode, int
     {
         /* Get ABRT's user id */
         dd->dd_uid = 0;
+        dd->dd_gid = 0;
+
+#if DUMP_DIR_OWNED_BY_USER > 0
+        /* Check crashed application's uid */
+        struct passwd *pw = getpwuid(uid);
+        if (pw)
+            dd->dd_uid = pw->pw_uid;
+        else
+            error_msg("User %lu does not exist, using uid 0", (long)uid);
+
+        /* Get ABRT's group gid */
+        struct group *gr = getgrnam("abrt");
+        if (gr)
+            dd->dd_gid = gr->gr_gid;
+        else
+            error_msg("Group 'abrt' does not exist, using gid 0");
+#else
+        /* Get ABRT's user uid */
         struct passwd *pw = getpwnam("abrt");
         if (pw)
             dd->dd_uid = pw->pw_uid;
         else
             error_msg("user 'abrt' does not exist, using uid 0");
 
-        /* Get crashed application's group id */
-        /*dd->dd_gid = 0; - dd_init did this already */
+        /* Get crashed application's gid */
         pw = getpwuid(uid);
         if (pw)
             dd->dd_gid = pw->pw_gid;
         else
             error_msg("User %lu does not exist, using gid 0", (long)uid);
+#endif
     }
 
     return dd;

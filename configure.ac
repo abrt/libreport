@@ -128,6 +128,13 @@ AC_PATH_PROG(AUGPARSE, augparse, no)
     [exit 1]
 [fi]
 
+DUMP_DIR_OWNED_BY_USER=1
+AC_ARG_ENABLE([userownsdumpdir],
+              [AC_HELP_STRING([--enable-userownsdumpdir],
+                              [Configure abrt to be owner of dump directories (default: user owns dump dir)])],
+              [DUMP_DIR_OWNED_BY_USER=0])
+AC_SUBST(DUMP_DIR_OWNED_BY_USER)
+
 AC_SUBST(CONF_DIR)
 AC_SUBST(VAR_RUN)
 AC_SUBST(PLUGINS_CONF_DIR)

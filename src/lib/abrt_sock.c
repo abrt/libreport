@@ -48,7 +48,14 @@ static int connect_to_abrtd_and_call_DeleteDebugDump(const char *dump_dir_name)
             /* "HTTP/1.1 200 " */
             response[5] = '1';
             response[7] = '1';
-            result = strncmp(response, "HTTP/1.1 200 ", strlen("HTTP/1.1 200 "));
+            if (strncmp(response, "HTTP/1.1 ", strlen("HTTP/1.1 ")) == 0
+                    && isdigit(response[9])
+                    && isdigit(response[10])
+                    && isdigit(response[11])
+                    && response[12] == ' ')
+            {
+                result = (response[9] - '0') * 100 + (response[10] - '0') * 10 + (response[11] - '0');
+            }
         }
     }
     else
@@ -62,6 +69,10 @@ static int connect_to_abrtd_and_call_DeleteDebugDump(const char *dump_dir_name)
 
 int delete_dump_dir_possibly_using_abrtd(const char *dump_dir_name)
 {
+    /* The old schema "abrt:user" causes ABRT to move dump directories to
+     * user's home, so in the old schema we try to delete it ourselves first
+     * and then we try to use abrtd. */
+#if DUMP_DIR_OWNED_BY_USER == 0
     /* Try to delete it ourselves */
     struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
     if (dd)
@@ -83,4 +94,61 @@ int delete_dump_dir_possibly_using_abrtd(const char *dump_dir_name)
         error_msg(_("Can't delete: '%s'"), dump_dir_name);
 
     return res;
+#else
+    VERB2 log("Deleting '%s' via abrtd", dump_dir_name);
+    const int res = connect_to_abrtd_and_call_DeleteDebugDump(dump_dir_name);
+    if (res == 200)
+    {
+        /*
+         * Deleted
+         */
+        return 0;
+    }
+
+    /*
+     * An error occurred but we can still try to delete it directly
+     */
+
+    /* Using NULL in order to easily detect a buggy error message */
+    const char *error_reason = NULL;
+    /* Used only for error messages */
+    char num_buf[sizeof(int)*3 + 1];
+
+    if (res < 0 || res == 400)
+    {
+        /*  -1 : an error in communication
+         * 400 : bad request or abrtd refused to delete the directory outside of the dump location
+         *
+         * Try to delete it ourselves
+         */
+        struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
+        if (dd)
+        {
+            if (dd->locked) /* it is not readonly */
+                return dd_delete(dd);
+
+            error_reason = _("locked by another process");
+            dd_close(dd);
+        }
+    }
+    else
+    {
+        switch (res)
+        {
+            case 403:
+                error_reason = _("permission denied");
+                break;
+            case 404:
+                error_reason = _("not a problem directory");
+                break;
+            default:
+                snprintf(num_buf, sizeof(num_buf), "%d", res);
+                error_reason = num_buf;
+                break;
+        }
+    }
+
+    error_msg(_("Can't delete '%s': %s"), dump_dir_name, error_reason);
+    return 1;
+#endif
 }
