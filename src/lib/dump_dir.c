@@ -1000,8 +1000,10 @@ char* dd_load_text_ext(const struct dump_dir *dd, const char *name, unsigned fla
     if (!str_is_correct_filename(name))
     {
         error_msg("Cannot load text. '%s' is not a valid file name", name);
-        if (!(flags & DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE))
-            xfunc_die();
+        if ((flags & DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE))
+            return NULL;
+
+        xfunc_die();
     }
 
     /* Compat with old abrt dumps. Remove in abrt-2.1 */
