@@ -30,13 +30,11 @@
 
 #define BTHASH_URL_SFX "reports/bthash/"
 
-#define RHSM_WEB_SERVICE_URL "https://api.access.redhat.com/rs/telemetry/abrt"
+#define RHSM_WEB_SERVICE_URL "https://cert-api.access.redhat.com/rs/telemetry/abrt"
 
-#define RHSMENT_PEM_DIR_PATH "/etc/pki/entitlement"
-#define RHSMENT_ENT_DATA_BEGIN_TAG "-----BEGIN ENTITLEMENT DATA-----"
-#define RHSMENT_ENT_DATA_END_TAG "-----END ENTITLEMENT DATA-----"
-#define RHSMENT_SIG_DATA_BEGIN_TAG "-----BEGIN RSA SIGNATURE-----"
-#define RHSMENT_SIG_DATA_END_TAG "-----END RSA SIGNATURE-----"
+#define RHSMCON_PEM_DIR_PATH "/etc/pki/consumer"
+#define RHSMCON_CERT_NAME "cert.pem"
+#define RHSMCON_KEY_NAME "key.pem"
 
 
 static char *
@@ -70,14 +68,14 @@ ureport_server_config_set_url(struct ureport_server_config *config,
 }
 
 static char *
-rhsm_config_get_entitlement_cert_dir(void)
+rhsm_config_get_consumer_cert_dir(void)
 {
-    char *result = getenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH");
+    char *result = getenv("LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH");
     if (result != NULL)
         return xstrdup(result);
 
     result = run_in_shell_and_save_output(0,
-            "python -c \"from rhsm.config import initConfig; print(initConfig().get('rhsm', 'entitlementCertDir'))\"",
+            "python -c \"from rhsm.config import initConfig; print(initConfig().get('rhsm', 'consumerCertDir'))\"",
             NULL, NULL);
 
     /* run_in_shell_and_save_output always returns non-NULL */
@@ -92,8 +90,19 @@ rhsm_config_get_entitlement_cert_dir(void)
     return result;
 error:
     free(result);
-    error_msg("Failed to get 'rhsm':'entitlementCertDir' from rhsm.config python module. Using "RHSMENT_PEM_DIR_PATH);
-    return xstrdup(RHSMENT_PEM_DIR_PATH);
+    error_msg("Failed to get 'rhsm':'consumerCertDir' from rhsm.config python module. Using "RHSMCON_PEM_DIR_PATH);
+    return xstrdup(RHSMCON_PEM_DIR_PATH);
+}
+
+static bool
+certificate_exist(char *cert_name)
+{
+    if (access(cert_name, F_OK) != 0)
+    {
+        log_notice("RHSM consumer certificate '%s' does not exist.", cert_name);
+        return false;
+    }
+    return true;
 }
 
 void
@@ -118,93 +127,26 @@ ureport_server_config_set_client_auth(struct ureport_server_config *config,
         if (config->ur_url == NULL)
             ureport_server_config_set_url(config, xstrdup(RHSM_WEB_SERVICE_URL));
 
-        char *rhsm_dir = rhsm_config_get_entitlement_cert_dir();
-        if (rhsm_dir == NULL)
+        /* always returns non-NULL */
+        char *rhsm_dir = rhsm_config_get_consumer_cert_dir();
+
+        char *cert_full_name = concat_path_file(rhsm_dir, RHSMCON_CERT_NAME);
+        char *key_full_name = concat_path_file(rhsm_dir, RHSMCON_KEY_NAME);
+
+        if (certificate_exist(cert_full_name) && certificate_exist(key_full_name))
         {
-            log_notice("Not using client authentication");
-            return;
+            config->ur_client_cert = cert_full_name;
+            config->ur_client_key = key_full_name;
+            log_debug("Using cert files: '%s' : '%s'", config->ur_client_cert, config->ur_client_key);
+        }
+        else
+        {
+            free(cert_full_name);
+            free(key_full_name);
+            log_notice("Using the default configuration for uReports.");
         }
 
-        GList *certs = get_file_list(rhsm_dir, "pem");
-        if (g_list_length(certs) < 2)
-        {
-            g_list_free_full(certs, (GDestroyNotify)free_file_obj);
-
-            log_notice("'%s' does not contain a cert-key files pair", rhsm_dir);
-            log_notice("Not using client authentication");
-            free(rhsm_dir);
-            return;
-        }
-
-        /* Use the last non-key file found. */
-        file_obj_t *cert = NULL;
-        for (GList *iter = certs; iter != NULL; iter = g_list_next(iter))
-        {
-            file_obj_t *tmp = (file_obj_t *)iter->data;
-            const char *file_name = fo_get_filename(tmp);
-
-            if (suffixcmp(file_name, "-key"))
-                cert = tmp;
-        }
-
-        if (cert == NULL)
-        {
-            g_list_free_full(certs, (GDestroyNotify)free_file_obj);
-
-            log_notice("'%s' does not contain a cert file (only keys)", rhsm_dir);
-            log_notice("Not using client authentication");
-            free(rhsm_dir);
-            return;
-        }
-
-        config->ur_client_cert = xstrdup(fo_get_fullpath(cert));
-        /* Yes, the key file may not exists. I over took this code from
-         * sos-uploader and they are pretty happy with this approach, so why
-         * shouldn't we?. */
-        config->ur_client_key = xasprintf("%s/%s-key.pem", rhsm_dir, fo_get_filename(cert));
         free(rhsm_dir);
-
-        log_debug("Using cert files: '%s' : '%s'", config->ur_client_cert, config->ur_client_key);
-
-        g_list_free_full(certs, (GDestroyNotify)free_file_obj);
-
-        char *certdata = xmalloc_open_read_close(config->ur_client_cert, /*no size limit*/NULL);
-        if (certdata != NULL)
-        {
-            char *ent_data = xstrdup_between(certdata,
-                    RHSMENT_ENT_DATA_BEGIN_TAG, RHSMENT_ENT_DATA_END_TAG);
-
-            char *sig_data = xstrdup_between(certdata,
-                    RHSMENT_SIG_DATA_BEGIN_TAG, RHSMENT_SIG_DATA_END_TAG);
-
-            if (ent_data != NULL && sig_data != NULL)
-            {
-                ent_data = strremovech(ent_data, '\n');
-                insert_map_string(config->ur_http_headers,
-                        xstrdup("X-RH-Entitlement-Data"),
-                        xasprintf(RHSMENT_ENT_DATA_BEGIN_TAG"%s"RHSMENT_ENT_DATA_END_TAG, ent_data));
-
-                sig_data = strremovech(sig_data, '\n');
-                insert_map_string(config->ur_http_headers,
-                        xstrdup("X-RH-Entitlement-Sig"),
-                        xasprintf(RHSMENT_SIG_DATA_BEGIN_TAG"%s"RHSMENT_SIG_DATA_END_TAG, sig_data));
-            }
-            else
-            {
-                log_notice("Cert file '%s' doesn't contain Entitlement and RSA Signature sections", config->ur_client_cert);
-                log_notice("Not using client authentication");
-
-                free(config->ur_client_cert);
-                config->ur_client_cert = NULL;
-
-                free(config->ur_client_key);
-                config->ur_client_key = NULL;
-            }
-
-            free(sig_data);
-            free(ent_data);
-            free(certdata);
-        }
     }
     else if (strcmp(client_auth, "puppet") == 0)
     {
