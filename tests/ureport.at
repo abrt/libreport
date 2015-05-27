@@ -261,7 +261,7 @@ int main(void)
     setenv("uReport_HTTPAuth", "username:password", 1);
     setenv("uReport_AuthDataItems", "hostname, time", 1);
 
-    setenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH", TESTING_CERTS_CORRECT_DIR_PATH, 1);
+    setenv("LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH", TESTING_CERTS_CORRECT_DIR_PATH, 1);
 
     ureport_server_config_load(&config, settings);
 
@@ -276,7 +276,7 @@ int main(void)
     assert(strcmp(l->data, "hostname") == 0);
     assert(strcmp(l->next->data, "time") == 0);
 
-    unsetenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH");
+    unsetenv("LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH");
 
     unsetenv("uReport_SSLClientAuth");
     unsetenv("uReport_HTTPAuth");
@@ -296,7 +296,7 @@ int main(void)
     insert_map_string(settings, xstrdup("HTTPAuth"), xstrdup("rhn-username:rhn-password"));
     insert_map_string(settings, xstrdup("AuthDataItems"), xstrdup("hostname, type"));
 
-    setenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH", TESTING_CERTS_CORRECT_DIR_PATH, 1);
+    setenv("LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH", TESTING_CERTS_CORRECT_DIR_PATH, 1);
 
     ureport_server_config_load(&config, settings);
 
@@ -311,7 +311,7 @@ int main(void)
     assert(strcmp(l->data, "hostname") == 0);
     assert(strcmp(l->next->data, "type") == 0);
 
-    unsetenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH");
+    unsetenv("LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH");
 
     free_map_string(settings);
 
@@ -366,19 +366,17 @@ AT_TESTFUN([ureport_server_config_set_client_auth],
 #include <assert.h>
 
 #define DESTROYED_POINTER (void *)0xdeadbeef
-#define RHSM_WEB_SERVICE_URL "https://api.access.redhat.com/rs/telemetry/abrt"
+#define RHSM_WEB_SERVICE_URL "https://cert-api.access.redhat.com/rs/telemetry/abrt"
 
 #define TESTING_CERTS_CORRECT_DIR_PATH "../../ureport/certs/correct"
-#define TESTING_CERTS_INCORRECT_CONTENT_DIR_PATH "../../ureport/certs/incorrect_content"
+#define TESTING_CERTS_INCORRECT_ONLY_CERT_DIR_PATH "../../ureport/certs/only_cert"
+#define TESTING_CERTS_INCORRECT_ONLY_KEY_DIR_PATH "../../ureport/certs/only_key"
 #define TESTING_PYTHONPATH "../../ureport/"
 #define WRONG_TESTING_PYTHONPATH "../../ureportxxxxxx/"
 
-#define RHSMENT_PEM_DIR_PATH "/etc/pki/entitlement"
-
-#define RHSMENT_ENT_DATA_BEGIN_TAG "-----BEGIN ENTITLEMENT DATA-----"
-#define RHSMENT_ENT_DATA_END_TAG "-----END ENTITLEMENT DATA-----"
-#define RHSMENT_SIG_DATA_BEGIN_TAG "-----BEGIN RSA SIGNATURE-----"
-#define RHSMENT_SIG_DATA_END_TAG "-----END RSA SIGNATURE-----"
+#define RHSMCON_PEM_DIR_PATH "/etc/pki/consumer"
+#define RHSMCON_CERT_NAME "cert.pem"
+#define RHSMCON_KEY_NAME "key.pem"
 
 char *my_strdup(const char *str)
 {
@@ -507,7 +505,7 @@ int main(void)
     /* no certs */
     char *empty_cert_dir = mkdtemp(strdup("/tmp/cert_XXXXXX"));
     assert(empty_cert_dir);
-    setenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH", empty_cert_dir, 1);
+    setenv("LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH", empty_cert_dir, 1);
 
     int status = test_ureport_server_config_set_client_auth_exit_code_ext(&config, "rhsm", NULL, NULL);
     assert(status == 0);
@@ -516,9 +514,18 @@ int main(void)
 
     /* client_auth == rhsm */
     /* ur_url == NULL */
-    /* certs exists (incorrect content) */
+    /* certs exists (only RHSMCON_CERT_NAME exists) */
 
-    setenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH", TESTING_CERTS_INCORRECT_CONTENT_DIR_PATH, 1);
+    setenv("LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH", TESTING_CERTS_INCORRECT_ONLY_CERT_DIR_PATH, 1);
+
+    status = test_ureport_server_config_set_client_auth_exit_code_ext(&config, "rhsm", NULL, NULL);
+    assert(status == 0);
+
+    /* client_auth == rhsm */
+    /* ur_url == NULL */
+    /* certs exists (only RHSMCON_KEY_NAME exists) */
+
+    setenv("LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH", TESTING_CERTS_INCORRECT_ONLY_KEY_DIR_PATH, 1);
 
     status = test_ureport_server_config_set_client_auth_exit_code_ext(&config, "rhsm", NULL, NULL);
     assert(status == 0);
@@ -528,25 +535,15 @@ int main(void)
     /* certs exists (correct) */
     ureport_server_config_init(&config);
 
-    setenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH", TESTING_CERTS_CORRECT_DIR_PATH, 1);
+    setenv("LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH", TESTING_CERTS_CORRECT_DIR_PATH, 1);
 
     ureport_server_config_set_client_auth(&config, "rhsm");
 
     assert_ureport_server_config(&config, RHSM_WEB_SERVICE_URL, true,
                                 TESTING_CERTS_CORRECT_DIR_PATH"/cert.pem",
-                                TESTING_CERTS_CORRECT_DIR_PATH"/cert-key.pem",
+                                TESTING_CERTS_CORRECT_DIR_PATH"/key.pem",
                                 NULL, NULL);
 
-    char *ent = xasprintf(RHSMENT_ENT_DATA_BEGIN_TAG"%s"RHSMENT_ENT_DATA_END_TAG, "entitlementdata");
-    assert(0 == strcmp(ent,
-                        get_map_string_item_or_NULL(config.ur_http_headers, "X-RH-Entitlement-Data")));
-
-    char *sig= xasprintf(RHSMENT_SIG_DATA_BEGIN_TAG"%s"RHSMENT_SIG_DATA_END_TAG, "rsasignature");
-    assert(0 == strcmp(sig,
-                        get_map_string_item_or_NULL(config.ur_http_headers, "X-RH-Entitlement-Sig")));
-
-    free(ent);
-    free(sig);
     ureport_server_config_destroy(&config);
 
     /* client_auth == cert:key */
@@ -575,16 +572,16 @@ int main(void)
     ret_val = test_ureport_server_config_set_client_auth_exit_code(&config, "cert");
     assert(ret_val != 0 && ret_val != -1);
 
-/* rhsm_config_get_entitlement_cert_dir */
+/* rhsm_config_get_consumer_cert_dir */
 /* certs exists (correct content) */
-    unsetenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH");
+    unsetenv("LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH");
     setenv("PYTHONPATH", TESTING_PYTHONPATH, 1);
 
     ureport_server_config_init(&config);
     ureport_server_config_set_client_auth(&config, "rhsm");
 
     char *abs_path_cert = realpath(TESTING_CERTS_CORRECT_DIR_PATH"/cert.pem", NULL);
-    char *abs_path_key = realpath(TESTING_CERTS_CORRECT_DIR_PATH"/cert-key.pem", NULL);
+    char *abs_path_key = realpath(TESTING_CERTS_CORRECT_DIR_PATH"/key.pem", NULL);
 
     assert_ureport_server_config(&config, RHSM_WEB_SERVICE_URL, true,
                                 abs_path_cert,
@@ -593,29 +590,19 @@ int main(void)
     free(abs_path_cert);
     free(abs_path_key);
 
-    ent = xasprintf(RHSMENT_ENT_DATA_BEGIN_TAG"%s"RHSMENT_ENT_DATA_END_TAG, "entitlementdata");
-    assert(0 == strcmp(ent,
-                        get_map_string_item_or_NULL(config.ur_http_headers, "X-RH-Entitlement-Data")));
-
-    sig= xasprintf(RHSMENT_SIG_DATA_BEGIN_TAG"%s"RHSMENT_SIG_DATA_END_TAG, "rsasignature");
-    assert(0 == strcmp(sig,
-                        get_map_string_item_or_NULL(config.ur_http_headers, "X-RH-Entitlement-Sig")));
-
-    free(ent);
-    free(sig);
     ureport_server_config_destroy(&config);
 
-    /* python script fails, '/etc/pki/entitlement' is returned  */
+    /* python script fails, '/etc/pki/consumer' is returned  */
 
-    /* set cert dir path to '/etc/pki/entitlement' */
+    /* set cert dir path to '/etc/pki/consumer' */
     /* store return value of ureport_server_config_set_client_auth */
-    setenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH", RHSMENT_PEM_DIR_PATH, 1);
+    setenv("LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH", RHSMCON_PEM_DIR_PATH, 1);
 
     int exp_ret_val = test_ureport_server_config_set_client_auth_exit_code(&config, "rhsm");
 
-    /* Do the same with unset LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH and wrong PYTHONPATH */
-    /* function rhsm_config_get_entitlement_cert_dir has to return RHSMENT_PEM_DIR_PATH */
-    unsetenv("LIBREPORT_DEBUG_RHSMENT_PEM_DIR_PATH");
+    /* Do the same with unset LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH and wrong PYTHONPATH */
+    /* function rhsm_config_get_consumer_cert_dir has to return RHSMCON_PEM_DIR_PATH */
+    unsetenv("LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH");
     setenv("PYTHONPATH", WRONG_TESTING_PYTHONPATH, 1);
 
     int rec_ret_val = test_ureport_server_config_set_client_auth_exit_code(&config, "rhsm");
@@ -1215,6 +1202,8 @@ AT_TESTFUN([ureport_server_config_load_basic_auth],
 #include "libreport_curl.h"
 #include "problem_data.h"
 
+#define RHSM_WEB_SERVICE_URL "https://cert-api.access.redhat.com/rs/telemetry/abrt"
+
 int main(void)
 {
     g_verbose=3;
@@ -1241,7 +1230,7 @@ int main(void)
 
         assert(strcmp(config.ur_username, "rhn-user-name") == 0);
         assert(strcmp(config.ur_password, "rhn-password") == 0);
-        assert(strcmp(config.ur_url, "https://api.access.redhat.com/rs/telemetry/abrt") == 0);
+        assert(strcmp(config.ur_url, RHSM_WEB_SERVICE_URL) == 0);
 
         unsetenv("LIBREPORT_DEBUG_PLUGINS_CONF_DIR");
         ureport_server_config_destroy(&config);
