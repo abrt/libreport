@@ -638,7 +638,21 @@ int main(int argc, char **argv)
             if (dd)
             {
                 report_result_t *reported_to = find_in_reported_to(dd, tracker_str);
+                char *extra = dd_load_text_ext(dd, "extra-cc",
+				DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE |
+				DD_FAIL_QUIETLY_ENOENT);
+
                 dd_close(dd);
+
+                if (extra != NULL) {
+                    char *email = strtok(extra, "\n");
+                    while (email != NULL) {
+                        log(_("Adding extra cc %s to bug report\n"), email);
+                        rhbz_mail_to_cc(client, new_id, email, /* require mail notify */ 0);
+                        email = strtok(NULL, "\n");
+                    }
+                    free(extra);
+                }
 
                 if (reported_to && reported_to->url)
                 {
