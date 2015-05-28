@@ -158,6 +158,177 @@ int main(int argc, char **argv)
 }
 ]])
 
+## --------------------- ##
+## dd_create_open_delete ##
+## --------------------- ##
+
+AT_TESTFUN([dd_create_open_delete],
+[[
+#include "internal_libreport.h"
+#include <errno.h>
+#include <assert.h>
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    char template[] = "/tmp/XXXXXX/dump_dir";
+
+    char *last_slash = strrchr(template, '/');
+    *last_slash = '\0';
+
+    if (mkdtemp(template) == NULL) {
+        perror("mkdtemp()");
+        return EXIT_FAILURE;
+    }
+
+    *last_slash = '/';
+
+    struct dump_dir *dd = dd_create(template, (uid_t)-1, 0640);
+    assert(strcmp(dd->dd_dirname, template) == 0);
+    assert(dd->dd_fd >= 0);
+    assert(dd->dd_md_fd >= 0);
+
+    struct stat dd_st;
+    assert(fstat(dd->dd_fd, &dd_st) == 0);
+
+    struct stat md_st;
+    assert(fstat(dd->dd_md_fd, &md_st) == 0);
+
+    assert(dd_st.st_uid == md_st.st_uid);
+    assert(dd_st.st_gid == md_st.st_gid);
+    assert((dd_st.st_mode & 0666) == (md_st.st_mode & 0666));
+
+    struct stat path_md_st;
+    assert(fstatat(dd->dd_fd, ".libreport", &path_md_st, 0) == 0);
+    assert(md_st.st_ino = path_md_st.st_ino);
+
+    dd_create_basic_files(dd, (uid_t)-1, NULL);
+    dd_save_text(dd, FILENAME_TYPE, "attest");
+
+    dd_close(dd);
+    dd = NULL;
+
+    dd = dd_opendir(template, 0);
+    assert(dd != NULL);
+    assert(strcmp(dd->dd_dirname, template) == 0);
+    assert(dd->dd_fd >= 0);
+    assert(dd->dd_md_fd < 0);
+
+    dd_delete(dd);
+
+    assert(stat(template, &dd_st) != 0);
+
+    *last_slash = '\0';
+    assert(rmdir(template) == 0);
+    return EXIT_SUCCESS;
+}
+]])
+
+## -------------------------- ##
+## dd_sanitize_mode_and_owner ##
+## -------------------------- ##
+
+AT_TESTFUN([dd_sanitize_mode_and_owner],
+[[
+#include "internal_libreport.h"
+#include <errno.h>
+#include <assert.h>
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    char template[] = "/tmp/XXXXXX/dump_dir";
+
+    char *last_slash = strrchr(template, '/');
+    *last_slash = '\0';
+
+    if (mkdtemp(template) == NULL) {
+        perror("mkdtemp()");
+        return EXIT_FAILURE;
+    }
+
+    *last_slash = '/';
+
+    /* Prepare a directory for chmod test, use mode 0600 and chmod it to 0640 */
+    struct dump_dir *dd = dd_create(template, (uid_t)-1, 0600);
+    assert(dd != NULL);
+
+    {
+        struct stat path_md_st;
+        assert((fstatat(dd->dd_fd, ".libreport", &path_md_st, 0) == 0) || !"Failed initialize meta-data");
+        assert((path_md_st.st_mode & 0077) == 0);
+    }
+
+    dd_create_basic_files(dd, (uid_t)-1, NULL);
+    dd_save_text(dd, FILENAME_TYPE, "attest");
+
+    dd_close(dd);
+
+    /* initialize meta-data */
+    dd = dd_opendir(template, DD_OPEN_FD_ONLY);
+    /* reopen for writing */
+    dd = dd_fdopendir(dd, /*for writing*/0);
+    assert(dd != NULL);
+
+    assert(fchmod(dd->dd_fd, 0750) == 0);
+    dd->mode = 0640;
+
+    fprintf(stderr, "Going to sanitize\n");
+    dd_sanitize_mode_and_owner(dd);
+    fprintf(stderr, "Sanitized\n");
+
+    {
+        DIR *d = opendir(template);
+        struct dirent *dent;
+        while ((dent = readdir(d)) != NULL)
+        {
+            if (   strcmp(".", dent->d_name) == 0
+                || strcmp("..", dent->d_name) == 0
+                || strcmp(".lock", dent->d_name) == 0
+                || strcmp(".libreport", dent->d_name) == 0
+                )
+                continue;
+
+            struct stat sb;
+            printf("Testing element: %s\n", dent->d_name);
+            assert(fstatat(dd->dd_fd, dent->d_name, &sb, 0) == 0 || !"Cannot stat a regular element");
+            assert((sb.st_mode & 0777) == 0640 || !"Failed to chmod a regular element");
+        }
+        closedir(d);
+    }
+
+    {
+        struct stat path_md_st;
+        assert(fstatat(dd->dd_fd, ".libreport", &path_md_st, 0) == 0 || !"Cannot stat meta-data directory");
+        assert((path_md_st.st_mode & 0777) == 0750 || !"Failed chmod meta-data");
+    }
+
+    int md_dir_fd = openat(dd->dd_fd, ".libreport", O_DIRECTORY);
+    assert(md_dir_fd >= 0 || !"Cannot open meta-data directory");
+    DIR *d = fdopendir(md_dir_fd);
+    struct dirent *dent;
+    while ((dent = readdir(d)) != NULL)
+    {
+        if (strcmp(".", dent->d_name) == 0 || strcmp("..", dent->d_name) == 0)
+            continue;
+
+        struct stat sb;
+        printf("Testing meta-data: %s\n", dent->d_name);
+        assert(fstatat(md_dir_fd, dent->d_name, &sb, 0) == 0 || !"Cannot stat meta-data file");
+        assert((sb.st_mode & 0777) == 0640 || !"Failed to chmod a meta-data file");
+    }
+
+    closedir(d);
+    dd_delete(dd);
+
+    *last_slash = '\0';
+    assert(rmdir(template) == 0);
+    return EXIT_SUCCESS;
+}
+]])
+
 ## -------------- ##
 ## recursive_lock ##
 ## -------------- ##

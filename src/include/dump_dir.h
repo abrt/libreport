@@ -75,6 +75,10 @@ struct dump_dir {
      */
     int owns_lock;
     int dd_fd;
+    /* Never use this member directly, it is intialized on demand in
+     * dd_get_meta_data_dir_fd()
+     */
+    int dd_md_fd;
 };
 
 void dd_close(struct dump_dir *dd);
