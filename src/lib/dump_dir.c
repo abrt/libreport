@@ -88,6 +88,7 @@
 // parent dump directory. It is not a fatal error, if the meta-data directory
 // does not exist (backward compatibility).
 #define META_DATA_DIR_NAME             ".libreport"
+#define META_DATA_FILE_OWNER           "owner"
 
 enum {
     /* Try to create meta-data dir if it does not exist */
@@ -106,6 +107,8 @@ static char *load_text_file(const char *path, unsigned flags);
 static char *load_text_file_at(int dir_fd, const char *name, unsigned flags);
 static void copy_file_from_chroot(struct dump_dir* dd, const char *name,
         const char *chroot_dir, const char *file_path);
+static bool save_binary_file_at(int dir_fd, const char *name, const char* data,
+        unsigned size, uid_t uid, gid_t gid, mode_t mode);
 
 static bool isdigit_str(const char *str)
 {
@@ -135,6 +138,22 @@ static bool exist_file_dir_at(int dir_fd, const char *name)
  */
 #define dd_validate_element_name(name) \
     (str_is_correct_filename(name) && (strcmp(META_DATA_DIR_NAME, name) != 0))
+
+/* nobody user should not own any file */
+static int get_no_owner_uid(uid_t *uid)
+{
+    struct passwd *pw = getpwnam("nobody");
+    if (pw == NULL)
+    {
+        perror_msg("can't get nobody's uid");
+        if (errno == 0)
+            return -ENOENT;
+        return -errno;
+    }
+
+    *uid = pw->pw_uid;
+    return 0;
+}
 
 /* Opens the file in the three following steps:
  * 1. open the file with O_PATH (get a file descriptor for operations with
@@ -611,6 +630,113 @@ static int dd_get_meta_data_dir_fd(struct dump_dir *dd, int flags)
     return dd->dd_md_fd;
 }
 
+/* Tries to safely overwrite the existing file.
+ *
+ * The functions writes the new value to a temporary file and if the temporary
+ * file is successfully created, then moves the tmp file to the old file name.
+ *
+ * If the meta-data directory does not exist, the function will try to create
+ * it.
+ */
+static int dd_meta_data_save_text(struct dump_dir *dd, const char *name, const char *data)
+{
+    if (!dd->locked)
+        error_msg_and_die("dump_dir is not opened"); /* bug */
+
+    if (!str_is_correct_filename(name))
+        error_msg_and_die("Cannot save meta-data. '%s' is not a valid file name", name);
+
+    int dd_md_fd = dd_get_meta_data_dir_fd(dd, DD_MD_GET_CREATE);
+    if (dd_md_fd < 0)
+    {
+        error_msg("Can't save meta-data: '%s'", name);
+        return dd_md_fd;
+    }
+
+    char *tmp_name = xasprintf("~%s.tmp", name);
+
+    int ret = -1;
+    if (!save_binary_file_at(dd_md_fd, tmp_name, data, strlen(data), dd->dd_uid, dd->dd_gid, dd->mode))
+        goto finito;
+
+    /* man 2 rename
+     *
+     * If newpath  already exists it will be atomically replaced (subject to a
+     * few conditions; see ERRORS below), so that there is no point at which
+     * another process attempting to access newpath will find it missing.
+     */
+    if (renameat(dd_md_fd, tmp_name, dd_md_fd, name))
+    {
+        ret = -errno;
+        perror_msg("Failed to move temporary file '%s' to '%s'", tmp_name, name);
+        goto finito;
+    }
+
+    ret = 0;
+
+finito:
+    free(tmp_name);
+    return ret;
+}
+
+int dd_set_owner(struct dump_dir *dd, uid_t owner)
+{
+    /* I was tempted to use the keyword static, but we should have reentracy
+     * always on mind. Who knows! */
+    char long_str[sizeof(long) * 3 + 2];
+
+    if (owner == (uid_t)-1)
+    {
+        owner = getuid();
+        if (owner < 0)
+            perror_msg_and_die("%s: getuid", __func__);
+    }
+
+    snprintf(long_str, sizeof(long_str), "%li", (long)owner);
+    const int ret = dd_meta_data_save_text(dd, META_DATA_FILE_OWNER, long_str);
+    if (ret < 0)
+        error_msg("The dump dir owner wasn't set to '%s'", long_str);
+    return ret;
+}
+
+int dd_set_no_owner(struct dump_dir *dd)
+{
+    uid_t no_owner_uid = (uid_t)-1;
+    int ret = get_no_owner_uid(&no_owner_uid);
+    if (ret < 0)
+        return ret;
+
+    return dd_set_owner(dd, no_owner_uid);
+}
+
+uid_t dd_get_owner(struct dump_dir *dd)
+{
+    static const long long MAX_UID_T = (1ULL << (sizeof(uid_t)*8 - 1)) - 1;
+
+    int dd_md_fd = dd_get_meta_data_dir_fd(dd, /*no create*/0);
+    if (dd_md_fd < 0)
+    {
+        log_info("No meta-data, using fs owner.");
+        return dd->dd_uid;
+    }
+
+    long long owner = -1;
+
+    int ret = read_number_from_file_at(dd_md_fd, META_DATA_FILE_OWNER, "UID",
+                                       sizeof(uid_t), MAX_UID_T, -1, &owner);
+
+    if (ret < 0)
+    {
+        if (ret != -ENOENT)
+            return ret;
+
+        log_info("No meta-data 'owner', using fs owner.");
+        return dd->dd_uid;
+    }
+
+    return (uid_t)owner;
+}
+
 /* A helper function useful for traversing directories.
  *
  * DIR* d opendir(dir_fd); ... closedir(d); closes also dir_fd but we want to
@@ -1026,6 +1152,12 @@ struct dump_dir *dd_create_skeleton(const char *dir, uid_t uid, mode_t mode, int
         goto fail;
     }
 
+    if (dd_set_owner(dd, dd->dd_uid) < 0)
+    {
+        log_debug("Failed to initialized 'owner'");
+        goto fail;
+    }
+
     if (uid != (uid_t)-1L)
     {
         dd->dd_uid = 0;
@@ -1087,6 +1219,11 @@ int dd_reset_ownership(struct dump_dir *dd)
     if (dd_chown_meta_data(dd, dd->dd_uid, dd->dd_gid) != 0)
         error_msg("Failed to reset ownership of meta-data");
 
+    /* We ignore failures above, so we will ignore failures here too.
+     * The meta-data owner already exist (created by dd_create_skeleton).
+     */
+    dd_set_owner(dd, dd->dd_uid);
+
     return r;
 }
 
@@ -1122,8 +1259,14 @@ void dd_create_basic_files(struct dump_dir *dd, uid_t uid, const char *chroot_di
     free(time_str);
 
     /* it doesn't make sense to create the uid file if uid == -1 */
+    /* and 'owner' is set since dd_create_skeleton */
     if (uid != (uid_t)-1L)
     {
+        /* Failure is not a problem here, because we still have the fs
+         * attributes and there is only a little chance that the old value
+         * gets lost. */
+        dd_set_owner(dd, uid);
+
         snprintf(long_str, sizeof(long_str), "%li", (long)uid);
         dd_save_text(dd, FILENAME_UID, long_str);
     }
@@ -1435,6 +1578,9 @@ next:
         dd->dd_uid = owners_uid;
         dd->dd_gid = groups_gid;
     }
+
+    if (chown_res == 0)
+        chown_res = dd_set_owner(dd, (long)dd->dd_uid);
 
     return chown_res;
 }
@@ -1812,7 +1958,45 @@ static bool uid_in_group(uid_t uid, gid_t gid)
 int dd_stat_for_uid(struct dump_dir *dd, uid_t uid)
 {
     int ddstat = 0;
-    if (uid == 0 || (dd->mode & S_IROTH))
+
+    if (uid == 0)
+    {
+        log_debug("directory accessible by super-user");
+        ddstat |= DD_STAT_ACCESSIBLE_BY_UID;
+    }
+
+#define DD_OWNER_FLAGS (DD_STAT_ACCESSIBLE_BY_UID | DD_STAT_OWNED_BY_UID)
+    if (dd->dd_uid == 0)
+    {
+        log_debug("directory owned by super-user: checking meta-data");
+
+        const uid_t owner = dd_get_owner(dd);
+
+        if (owner < 0)
+            goto fsattributes;
+
+        if (owner == uid)
+        {
+            log_debug("meta-data: %ld uid owns directory", (long)uid);
+            ddstat |= DD_OWNER_FLAGS;
+            goto finito;
+        }
+
+        uid_t no_owner_uid = (uid_t)-1;
+        int ret = get_no_owner_uid(&no_owner_uid);
+        if (   ret >= 0
+            && owner == no_owner_uid)
+        {
+            log_debug("meta-data: directory is accessible by %ld uid", (long)uid);
+            ddstat |= DD_STAT_ACCESSIBLE_BY_UID;
+            ddstat |= DD_STAT_NO_OWNER;
+        }
+
+        goto finito;
+    }
+
+fsattributes:
+    if (dd->mode & S_IROTH)
     {
         log_debug("directory is accessible by %ld uid", (long)uid);
         ddstat |= DD_STAT_ACCESSIBLE_BY_UID;
@@ -1824,11 +2008,14 @@ int dd_stat_for_uid(struct dump_dir *dd, uid_t uid)
     if (uid_in_group(uid, dd->dd_gid))
 #endif
     {
-        log_debug("%ld uid owns directory", (long)uid);
-        ddstat |= DD_STAT_ACCESSIBLE_BY_UID;
-        ddstat |= DD_STAT_OWNED_BY_UID;
+        log_debug("fs attributes: %ld uid owns directory", (long)uid);
+        ddstat |= DD_OWNER_FLAGS;
     }
 
+#undef DD_OWNER_FLAGS
+
+finito:
+    log_debug("UID=%d, %s: %o", uid, dd->dd_dirname, ddstat);
     return ddstat;
 }
 

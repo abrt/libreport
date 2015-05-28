@@ -141,6 +141,26 @@ int dd_rename(struct dump_dir *dd, const char *new_path);
  */
 int dd_chown(struct dump_dir *dd, uid_t new_uid);
 
+/* Sets a new owner (does NOT chown the directory)
+ *
+ * Does not validate the passed uid.
+ * The given dump_dir must be opened for writing.
+ */
+int dd_set_owner(struct dump_dir *dd, uid_t owner);
+
+/* Makes the dump directory owned by nobody.
+ *
+ * The directory will be accessible for all users.
+ * The given dump_dir must be opened for writing.
+ */
+int dd_set_no_owner(struct dump_dir *dd);
+
+/* Gets the owner
+ *
+ * If meta-data misses owner, returns fs owner.
+ * Can be used with DD_OPEN_FD_ONLY.
+ */
+uid_t dd_get_owner(struct dump_dir *dd);
 
 /* reported_to handling */
 #define add_reported_to_data libreport_add_reported_to_data
@@ -187,6 +207,7 @@ int dd_accessible_by_uid(struct dump_dir *dd, uid_t uid);
 enum {
     DD_STAT_ACCESSIBLE_BY_UID = 1,
     DD_STAT_OWNED_BY_UID = DD_STAT_ACCESSIBLE_BY_UID << 1,
+    DD_STAT_NO_OWNER = DD_STAT_OWNED_BY_UID << 1,
 };
 
 /* Gets information about a dump directory for particular uid.

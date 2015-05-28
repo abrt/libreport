@@ -203,6 +203,11 @@ int main(int argc, char **argv)
     assert(fstatat(dd->dd_fd, ".libreport", &path_md_st, 0) == 0);
     assert(md_st.st_ino = path_md_st.st_ino);
 
+    struct stat owner_md_st;
+    assert(fstatat(dd->dd_md_fd, "owner", &owner_md_st, 0) == 0);
+    assert((dd_st.st_mode & 0666) == (owner_md_st.st_mode & 0666));
+    assert(geteuid() == dd_get_owner(dd));
+
     dd_create_basic_files(dd, (uid_t)-1, NULL);
     dd_save_text(dd, FILENAME_TYPE, "attest");
 
@@ -325,6 +330,111 @@ int main(int argc, char **argv)
 
     *last_slash = '\0';
     assert(rmdir(template) == 0);
+    return EXIT_SUCCESS;
+}
+]])
+
+## -------- ##
+## dd_owner ##
+## -------- ##
+
+AT_TESTFUN([dd_owner],
+[[
+#include "internal_libreport.h"
+#include <errno.h>
+#include <assert.h>
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    char template[] = "/tmp/XXXXXX/dump_dir";
+
+    char *last_slash = strrchr(template, '/');
+    *last_slash = '\0';
+
+    if (mkdtemp(template) == NULL) {
+        perror("mkdtemp()");
+        return EXIT_FAILURE;
+    }
+
+    *last_slash = '/';
+
+    printf("Dump dir path: %s\n", template);
+
+    {
+        fprintf(stderr, "TEST === default owner\n");
+        struct dump_dir *dd = dd_create(template, (uid_t)-1, 0640);
+        assert(dd != NULL);
+
+        assert(geteuid() == dd_get_owner(dd));
+
+        assert(dd_delete(dd) == 0);
+    }
+
+    {
+        fprintf(stderr, "TEST === create basic files w/o UID\n");
+        struct dump_dir *dd = dd_create(template, (uid_t)-1, 0640);
+        assert(dd != NULL);
+
+        dd_create_basic_files(dd, (uid_t)-1, NULL);
+        assert(geteuid() == dd_get_owner(dd));
+
+        assert(dd_delete(dd) == 0);
+    }
+
+    {
+        fprintf(stderr, "TEST === create basic files with UID\n");
+        struct dump_dir *dd = dd_create(template, (uid_t)-1, 0640);
+        assert(dd != NULL);
+
+        dd_create_basic_files(dd, (geteuid() + 1), NULL);
+        assert((geteuid() + 1) == dd_get_owner(dd));
+
+        assert(dd_delete(dd) == 0);
+    }
+
+    {
+        fprintf(stderr, "TEST === set no owner\n");
+        struct dump_dir *dd = dd_create(template, (uid_t)-1, 0640);
+        assert(dd != NULL);
+
+        dd_set_no_owner(dd);
+
+        struct passwd *nobody_pw= getpwnam("nobody");
+        assert(nobody_pw != NULL);
+        assert(nobody_pw->pw_uid == dd_get_owner(dd));
+
+        assert(dd_delete(dd) == 0);
+    }
+
+    {
+        fprintf(stderr, "TEST === set artibrary owner\n");
+        struct dump_dir *dd = dd_create(template, (uid_t)-1, 0640);
+        assert(dd != NULL);
+
+        dd_set_owner(dd, (geteuid() + 2));
+        assert((geteuid() + 2) == dd_get_owner(dd));
+
+        assert(dd_delete(dd) == 0);
+    }
+
+    {
+        fprintf(stderr, "TEST === chown no owner\n");
+        struct dump_dir *dd = dd_create(template, (uid_t)-1, 0640);
+        assert(dd != NULL);
+
+        dd_set_no_owner(dd);
+        assert(geteuid() != dd_get_owner(dd));
+
+        dd_chown(dd, geteuid());
+        assert(geteuid() == dd_get_owner(dd));
+
+        assert(dd_delete(dd) == 0);
+    }
+    *last_slash = '\0';
+    assert(rmdir(template) == 0);
+
     return EXIT_SUCCESS;
 }
 ]])
