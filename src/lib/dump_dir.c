@@ -151,15 +151,14 @@ int secure_openat_read(int dir_fd, const char *filename)
     if (strchr(filename, '/'))
     {
         error_msg("Path must be file name without directory: '%s'", filename);
-        errno = EFAULT;
-        return -1;
+        return -EFAULT;
     }
 
     static char reopen_buf[sizeof("/proc/self/fd/") + 3*sizeof(int) + 1];
 
     int path_fd = openat(dir_fd, filename, O_PATH | O_NOFOLLOW);
     if (path_fd < 0)
-        return -1;
+        return -errno;
 
     struct stat path_sb;
     int r = fstat(path_fd, &path_sb);
@@ -167,15 +166,14 @@ int secure_openat_read(int dir_fd, const char *filename)
     {
         perror_msg("stat");
         close(path_fd);
-        return -1;
+        return -EINVAL;
     }
 
     if (!S_ISREG(path_sb.st_mode) || path_sb.st_nlink > 1)
     {
         log_notice("Path isn't a regular file or has more links (%lu)", (unsigned long)path_sb.st_nlink);
-        errno = EINVAL;
         close(path_fd);
-        return -1;
+        return -EINVAL;
     }
 
     if (snprintf(reopen_buf, sizeof(reopen_buf), "/proc/self/fd/%d", path_fd) >= sizeof(reopen_buf)) {
@@ -189,6 +187,85 @@ int secure_openat_read(int dir_fd, const char *filename)
     return fd;
 }
 
+static int read_number_from_file_at(int dir_fd, const char *filename, const char *typename,
+        size_t typesz, long long max, long long min, long long *value)
+{
+    const int fd = secure_openat_read(dir_fd, filename);
+    if (fd < 0)
+    {
+        log_warning("Can't open '%s'", filename);
+        return fd;
+    }
+
+    int ret = 0;
+    /* - xmalloc_read() does not count '\0' Byte
+     * - count on sign
+     * - count on '\n'
+     */
+    const size_t max_size = typesz * 3 + 2;
+    /* allow to read one extra Byte to be able to identify longer text */
+    size_t total_read = max_size + 1;
+    char *const value_buf = xmalloc_read(fd, &total_read);
+    /* Just reading, so no need to check the returned value. */
+
+    if (value_buf == NULL)
+    {
+        log_warning("Can't read from '%s'", filename);
+        ret = -EBADFD;
+        goto finito;
+    }
+
+    if (total_read >= max_size)
+    {
+        log_warning("File '%s' is too long to be valid %s "
+                   "(max size %u)", filename, typename, (int)sizeof(value_buf));
+        ret = -EMSGSIZE;
+        goto finito;
+    }
+
+    /* Our tools don't put trailing newline into one line files,
+     * but we allow such format too:
+     */
+    if (value_buf[total_read - 1] == '\n')
+        --total_read;
+    value_buf[total_read] = '\0';
+
+    errno = 0;    /* To distinguish success/failure after call */
+    char *endptr;
+    long long res = strtoll(value_buf, &endptr, /* base */ 10);
+
+    /* Check for various possible errors */
+    if (   (errno == ERANGE && (res == LONG_LONG_MAX || res == LONG_LONG_MIN))
+        || (errno != 0 && res == 0)
+        || (*endptr != '\0')
+        || endptr == value_buf
+    ) {
+        log_warning("File '%s' doesn't contain valid %s"
+                        "('%s')", filename, typename, value_buf);
+        ret = -EINVAL;
+        goto finito;
+    }
+
+    /* If the stored number is long long, this condition falsely indetify
+     * LONG_LONG_(MAX|MIN) as an value which is out of range.
+     */
+    if (res <= min || res >= max)
+    {
+        log_warning("File '%s' contains a number out-of-range of %s"
+                        "('%s')", filename, typename, value_buf);
+        ret = -ERANGE;
+        goto finito;
+    }
+
+    *value = res;
+
+finito:
+    close(fd);
+    free(value_buf);
+    /* If we got here, strtoll() successfully parsed a number */
+    return ret;
+}
+
 /* Returns value less than 0 if the file is not readable or
  * if the file doesn't contain valid unixt time stamp.
  *
@@ -196,64 +273,11 @@ int secure_openat_read(int dir_fd, const char *filename)
  */
 static time_t parse_time_file_at(int dir_fd, const char *filename)
 {
-    /* Open input file, and parse it. */
-    int fd = secure_openat_read(dir_fd, filename);
-    if (fd < 0)
-    {
-        VERB2 pwarn_msg("Can't open '%s'", filename);
-        return -1;
-    }
-
-    /* ~ maximal number of digits for positive time stamp string */
-    char time_buf[sizeof(time_t) * 3 + 1];
-    ssize_t rdsz = read(fd, time_buf, sizeof(time_buf));
-
-    /* Just reading, so no need to check the returned value. */
-    close(fd);
-
-    if (rdsz == -1)
-    {
-        VERB2 pwarn_msg("Can't read from '%s'", filename);
-        return -1;
-    }
-    /* approximate maximal number of digits in timestamp is sizeof(time_t)*3 */
-    /* buffer has this size + 1 byte for trailing '\0' */
-    /* if whole size of buffer was read then file is bigger */
-    /* than string representing maximal time stamp */
-    if (rdsz == sizeof(time_buf))
-    {
-        VERB2 warn_msg("File '%s' is too long to be valid unix "
-                       "time stamp (max size %u)", filename, (int)sizeof(time_buf));
-        return -1;
-    }
-
-    /* Our tools don't put trailing newline into time file,
-     * but we allow such format too:
-     */
-    if (rdsz > 0 && time_buf[rdsz - 1] == '\n')
-        rdsz--;
-    time_buf[rdsz] = '\0';
-
     /* Note that on some architectures (x32) time_t is "long long" */
-
-    errno = 0;    /* To distinguish success/failure after call */
-    char *endptr;
-    long long val = strtoll(time_buf, &endptr, /* base */ 10);
     const long long MAX_TIME_T = (1ULL << (sizeof(time_t)*8 - 1)) - 1;
-
-    /* Check for various possible errors */
-    if (errno
-     || (*endptr != '\0')
-     || val >= MAX_TIME_T
-     || !isdigit_str(time_buf) /* this filters out "-num", "   num", "" */
-    ) {
-        VERB2 pwarn_msg("File '%s' doesn't contain valid unix "
-                        "time stamp ('%s')", filename, time_buf);
-        return -1;
-    }
-
-    /* If we got here, strtoll() successfully parsed a number */
-    return val;
+    long long value = -1;
+    read_number_from_file_at(dir_fd, filename, "unix time stamp", sizeof(time_t), MAX_TIME_T, 0, &value);
+    return (time_t)value;
 }
 
 /* Return values:
