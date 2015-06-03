@@ -85,7 +85,8 @@ struct dump_dir *create_dump_dir(const char *base_dir_name, const char *type, ui
      * reporting from anaconda where we can't read /etc/{system,redhat}-release
      * and os_release is taken from anaconda
      */
-    dd_create_basic_files(dd, uid, NULL);
+    const uid_t crashed_uid = dd_exist(dd, FILENAME_UID) ? /*uid already saved*/-1 : uid;
+    dd_create_basic_files(dd, crashed_uid, NULL);
 
     problem_id[strlen(problem_id) - strlen(NEW_PD_SUFFIX)] = '\0';
     char* new_path = concat_path_file(base_dir_name, problem_id);
@@ -107,16 +108,15 @@ int save_problem_data_in_dump_dir(struct dump_dir *dd, problem_data_t *problem_d
     g_hash_table_iter_init(&iter, problem_data);
     while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
-        if (value->flags & CD_FLAG_BIN)
+        if (!str_is_correct_filename(name))
         {
-            dd_copy_file(dd, name, value->content);
+            error_msg("Problem data field name contains disallowed chars: '%s'", name);
             continue;
         }
 
-        /* only files should contain '/' and those are handled earlier */
-        if (name[0] == '.' || strchr(name, '/'))
+        if (value->flags & CD_FLAG_BIN)
         {
-            error_msg("Problem data field name contains disallowed chars: '%s'", name);
+            dd_copy_file(dd, name, value->content);
             continue;
         }
 
@@ -126,7 +126,7 @@ int save_problem_data_in_dump_dir(struct dump_dir *dd, problem_data_t *problem_d
     return 0;
 }
 
-struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data, const char *base_dir_name)
+struct dump_dir *create_dump_dir_from_problem_data_ext(problem_data_t *problem_data, const char *base_dir_name, uid_t uid)
 {
     INITIALIZE_LIBREPORT();
 
@@ -137,6 +137,19 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
         error_msg(_("Missing required item: '%s'"), FILENAME_TYPE);
         return NULL;
     }
+
+    if (!str_is_correct_filename(type))
+    {
+        error_msg(_("'%s' is not correct file name"), FILENAME_TYPE);
+        return NULL;
+    }
+
+    return create_dump_dir(base_dir_name, type, uid, (save_data_call_back)save_problem_data_in_dump_dir, problem_data);
+}
+
+struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data, const char *base_dir_name)
+{
+    INITIALIZE_LIBREPORT();
 
     uid_t uid = (uid_t)-1L;
     char *uid_str = problem_data_get_content_or_NULL(problem_data, FILENAME_UID);
@@ -156,5 +169,5 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
         uid = (uid_t)val;
     }
 
-    return create_dump_dir(base_dir_name, type, uid, (save_data_call_back)save_problem_data_in_dump_dir, problem_data);
+    return create_dump_dir_from_problem_data_ext(problem_data, base_dir_name, uid);
 }

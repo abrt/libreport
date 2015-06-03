@@ -188,21 +188,26 @@ char* get_rootdir(pid_t pid)
     return malloc_readlink(buf);
 }
 
-int get_fsuid(const char *proc_pid_status)
+static int get_proc_fs_id(const char *proc_pid_status, char type)
 {
-    int real, euid, saved;
-    /* if we fail to parse the uid, then make it root only readable to be safe */
-    int fs_uid = 0;
+    char id_type[] = "_id";
+    id_type[0] = type;
+
+    int real, e_id, saved;
+    int fs_id = 0;
 
     const char *line = proc_pid_status; /* never NULL */
     for (;;)
     {
-        if (strncmp(line, "Uid", 3) == 0)
+        if (strncmp(line, id_type, 3) == 0)
         {
-            int n = sscanf(line, "Uid:\t%d\t%d\t%d\t%d\n", &real, &euid, &saved, &fs_uid);
+            int n = sscanf(line, "%*cid:\t%d\t%d\t%d\t%d\n", &real, &e_id, &saved, &fs_id);
             if (n != 4)
+            {
+                error_msg("Failed to parser /proc/[pid]/status: invalid format of '%cui:' line", type);
                 return -1;
-            break;
+            }
+            return fs_id;
         }
         line = strchr(line, '\n');
         if (!line)
@@ -210,10 +215,21 @@ int get_fsuid(const char *proc_pid_status)
         line++;
     }
 
-    return fs_uid;
+    error_msg("Failed to parser /proc/[pid]/status: not found '%cui:' line", type);
+    return -2;
 }
 
-int dump_fd_info(const char *dest_filename, const char *proc_pid_fd_path)
+int get_fsuid(const char *proc_pid_status)
+{
+    return get_proc_fs_id(proc_pid_status, /*UID*/'U');
+}
+
+int get_fsgid(const char *proc_pid_status)
+{
+    return get_proc_fs_id(proc_pid_status, /*GID*/'G');
+}
+
+int dump_fd_info_ext(const char *dest_filename, const char *proc_pid_fd_path, uid_t uid, gid_t gid)
 {
     DIR *proc_fd_dir = NULL;
     int proc_fdinfo_fd = -1;
@@ -237,7 +253,7 @@ int dump_fd_info(const char *dest_filename, const char *proc_pid_fd_path)
         goto dumpfd_cleanup;
     }
 
-    stream = fopen(dest_filename, "w");
+    stream = fopen(dest_filename, "wex");
     if (!stream)
     {
         r = -ENOMEM;
@@ -295,7 +311,25 @@ dumpfd_next_fd:
 
 dumpfd_cleanup:
     errno = 0;
-    fclose(stream);
+
+    if (stream != NULL)
+    {
+        if (uid != (uid_t)-1L)
+        {
+            const int stream_fd = fileno(stream);
+            r = fchown(stream_fd, uid, gid);
+            if (r < 0)
+            {
+                perror_msg("Can't change '%s' ownership to %lu:%lu", dest_filename, (long)uid, (long)gid);
+                fclose(stream);
+                unlink(dest_filename);
+                stream = NULL;
+            }
+        }
+
+        if (stream != NULL)
+            fclose(stream);
+    }
 
     if (r == 0 && errno != 0)
         r = -errno;
@@ -305,6 +339,11 @@ dumpfd_cleanup:
     free(buffer);
 
     return r;
+}
+
+int dump_fd_info(const char *dest_filename, const char *proc_pid_fd_path)
+{
+    return dump_fd_info_ext(dest_filename, proc_pid_fd_path, /*UID*/-1, /*GID*/-1);
 }
 
 int get_env_variable(pid_t pid, const char *name, char **value)
@@ -397,7 +436,7 @@ get_ns_ids_cleanup:
     return r;
 }
 
-int dump_namespace_diff(const char *dest_filename, pid_t base_pid, pid_t tested_pid)
+int dump_namespace_diff_ext(const char *dest_filename, pid_t base_pid, pid_t tested_pid, uid_t uid, gid_t gid)
 {
     struct ns_ids base_ids;
     struct ns_ids tested_ids;
@@ -414,7 +453,7 @@ int dump_namespace_diff(const char *dest_filename, pid_t base_pid, pid_t tested_
         return -2;
     }
 
-    FILE *fout = fopen(dest_filename, "we");
+    FILE *fout = fopen(dest_filename, "wex");
     if (fout == NULL)
     {
         pwarn_msg("Failed to create %s", dest_filename);
@@ -431,8 +470,25 @@ int dump_namespace_diff(const char *dest_filename, pid_t base_pid, pid_t tested_
         fprintf(fout, "%s : %s\n", libreport_proc_namespaces[i], status);
     }
 
+    if (uid != (uid_t)-1L)
+    {
+        int fout_fd = fileno(fout);
+        if (fchown(fout_fd, uid, gid) < 0)
+        {
+            perror_msg("Can't change '%s' ownership to %lu:%lu", dest_filename, (long)uid, (long)gid);
+            fclose(fout);
+            unlink(dest_filename);
+            return -4;
+        }
+    }
+
     fclose(fout);
     return 0;
+}
+
+int dump_namespace_diff(const char *dest_filename, pid_t base_pid, pid_t tested_pid)
+{
+    return dump_namespace_diff_ext(dest_filename, base_pid, tested_pid, /*UID*/-1, /*GID*/-1);
 }
 
 void mountinfo_destroy(struct mountinfo *mntnf)

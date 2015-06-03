@@ -137,6 +137,12 @@ char *concat_path_file(const char *path, const char *filename);
 #define concat_path_basename libreport_concat_path_basename
 char *concat_path_basename(const char *path, const char *filename);
 
+/* Allows all printable characters except '/',
+ * the string must not exceed 64 characters of length
+ * and must not equal neither "." nor ".." (these strings may appear in the string) */
+#define str_is_correct_filename libreport_str_is_correct_filename
+bool str_is_correct_filename(const char *str);
+
 /* A-la fgets, but malloced and of unlimited size */
 #define xmalloc_fgets libreport_xmalloc_fgets
 char *xmalloc_fgets(FILE *file);
@@ -158,8 +164,14 @@ off_t copyfd_eof(int src_fd, int dst_fd, int flags);
 off_t copyfd_size(int src_fd, int dst_fd, off_t size, int flags);
 #define copyfd_exact_size libreport_copyfd_exact_size
 void copyfd_exact_size(int src_fd, int dst_fd, off_t size);
+#define copy_file_ext_at libreport_copy_file_ext_at
+off_t copy_file_ext_at(const char *src_name, int dir_fd, const char *name, int mode, uid_t uid, gid_t gid, int src_flags, int dst_flags);
+#define copy_file_ext(src_name, dst_name, mode, uid, gid, src_flags, dst_flags) \
+    copy_file_ext_at(src_name, AT_FDCWD, dst_name, mode, uid, gid, src_flags, dst_flags)
 #define copy_file libreport_copy_file
 off_t copy_file(const char *src_name, const char *dst_name, int mode);
+#define copy_file_at libreport_copy_file_at
+off_t copy_file_at(const char *src_name, int dir_fd, const char *name, int mode);
 #define copy_file_recursive libreport_copy_file_recursive
 int copy_file_recursive(const char *source, const char *dest);
 
@@ -167,6 +179,9 @@ int copy_file_recursive(const char *source, const char *dest);
 int decompress_fd(int fdi, int fdo);
 #define decompress_file libreport_decompress_file
 int decompress_file(const char *path_in, const char *path_out, mode_t mode_out);
+#define decompress_file_ext_at libreport_decompress_file_ext_at
+int decompress_file_ext_at(const char *path_in, int dir_fd, const char *path_out,
+        mode_t mode_out, uid_t uid, gid_t gid, int src_flags, int dst_flags);
 
 // NB: will return short read on error, not -1,
 // if some data was read before error occurred
@@ -412,6 +427,8 @@ int xopen3(const char *pathname, int flags, int mode);
 int xopen(const char *pathname, int flags);
 #define xunlink libreport_xunlink
 void xunlink(const char *pathname);
+#define xunlinkat libreport_xunlinkat
+void xunlinkat(int dir_fd, const char *pathname, int flags);
 
 /* Just testing dent->d_type == DT_REG is wrong: some filesystems
  * do not report the type, they report DT_UNKNOWN for every dirent
@@ -421,6 +438,8 @@ void xunlink(const char *pathname);
  */
 #define is_regular_file libreport_is_regular_file
 int is_regular_file(struct dirent *dent, const char *dirname);
+#define is_regular_file_at libreport_is_regular_file_at
+int is_regular_file_at(struct dirent *dent, int dir_fd);
 
 #define dot_or_dotdot libreport_dot_or_dotdot
 bool dot_or_dotdot(const char *filename);
@@ -647,6 +666,10 @@ char* get_cwd(pid_t pid);
 char* get_rootdir(pid_t pid);
 #define get_fsuid libreport_get_fsuid
 int get_fsuid(const char *proc_pid_status);
+#define get_fsgid libreport_get_fsgid
+int get_fsgid(const char *proc_pid_status);
+#define dump_fd_info_ext libreport_dump_fd_info_ext
+int dump_fd_info_ext(const char *dest_filename, const char *proc_pid_fd_path, uid_t uid, gid_t gid);
 #define dump_fd_info libreport_dump_fd_info
 int dump_fd_info(const char *dest_filename, const char *proc_pid_fd_path);
 #define get_env_variable libreport_get_env_variable
@@ -671,6 +694,8 @@ int get_ns_ids(pid_t pid, struct ns_ids *ids);
 int process_has_own_root(pid_t pid);
 #define get_pid_of_container libreport_get_pid_of_container
 int get_pid_of_container(pid_t pid, pid_t *init_pid);
+#define dump_namespace_diff_ext libreport_dump_namespace_diff_ext
+int dump_namespace_diff_ext(const char *dest_filename, pid_t base_pid, pid_t tested_pid, uid_t uid, gid_t gid);
 #define dump_namespace_diff libreport_dump_namespace_diff
 int dump_namespace_diff(const char *dest_filename, pid_t base_pid, pid_t tested_pid);
 

@@ -319,14 +319,14 @@ static const char *const always_text_files[] = {
     FILENAME_OS_RELEASE,
     NULL
 };
-static char* is_text_file(const char *name, ssize_t *sz)
+static char* is_text_file_at(int dir_fd, const char *name, ssize_t *sz)
 {
     /* We were using magic.h API to check for file being text, but it thinks
      * that file containing just "0" is not text (!!)
      * So, we do it ourself.
      */
 
-    int fd = open(name, O_RDONLY);
+    int fd = secure_openat_read(dir_fd, name);
     if (fd < 0)
         return NULL; /* it's not text (because it does not exist! :) */
 
@@ -439,7 +439,7 @@ void problem_data_load_from_dump_dir(problem_data_t *problem_data, struct dump_d
         }
 
         ssize_t sz = 4*1024;
-        char *text = is_text_file(full_name, &sz);
+        char *text = is_text_file_at(dd->dd_fd, short_name, &sz);
         if (!text || text == HUGE_TEXT)
         {
             int flag = !text ? CD_FLAG_BIN : (CD_FLAG_BIN+CD_FLAG_BIGTXT);

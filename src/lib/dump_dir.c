@@ -83,10 +83,32 @@
 #define RMDIR_FAIL_USLEEP              (10*1000)
 #define RMDIR_FAIL_COUNT                     50
 
+// A sub-directory of a dump directory where the meta-data such as owner are
+// stored. The meta-data directory must have same owner, group and mode as its
+// parent dump directory. It is not a fatal error, if the meta-data directory
+// does not exist (backward compatibility).
+#define META_DATA_DIR_NAME             ".libreport"
+#define META_DATA_FILE_OWNER           "owner"
+
+enum {
+    /* Try to create meta-data dir if it does not exist */
+    DD_MD_GET_CREATE = 1 << 0,
+};
+
+// a little trick to copy read bits from file mode to exec bit of dir mode
+// * mode of dump directory is in the form of 640 (no X) because we create
+//   files more often then we play with directories
+// * so if we want to get real mode of the directory we have to copy the read
+//   bits
+#define DD_MODE_TO_DIR_MODE(mode) ((mode) | (((mode) & 0444) >> 2))
+
 
 static char *load_text_file(const char *path, unsigned flags);
+static char *load_text_file_at(int dir_fd, const char *name, unsigned flags);
 static void copy_file_from_chroot(struct dump_dir* dd, const char *name,
         const char *chroot_dir, const char *file_path);
+static bool save_binary_file_at(int dir_fd, const char *name, const char* data,
+        unsigned size, uid_t uid, gid_t gid, mode_t mode);
 
 static bool isdigit_str(const char *str)
 {
@@ -98,10 +120,10 @@ static bool isdigit_str(const char *str)
     return true;
 }
 
-static bool exist_file_dir(const char *path)
+static bool exist_file_dir_at(int dir_fd, const char *name)
 {
     struct stat buf;
-    if (stat(path, &buf) == 0)
+    if (fstatat(dir_fd, name, &buf, AT_SYMLINK_NOFOLLOW) == 0)
     {
         if (S_ISDIR(buf.st_mode) || S_ISREG(buf.st_mode))
         {
@@ -111,71 +133,170 @@ static bool exist_file_dir(const char *path)
     return false;
 }
 
+/* A valid dump dir element name is correct filename and is not a name of any
+ * internal file or directory.
+ */
+#define dd_validate_element_name(name) \
+    (str_is_correct_filename(name) && (strcmp(META_DATA_DIR_NAME, name) != 0))
+
+/* nobody user should not own any file */
+static int get_no_owner_uid(uid_t *uid)
+{
+    struct passwd *pw = getpwnam("nobody");
+    if (pw == NULL)
+    {
+        perror_msg("can't get nobody's uid");
+        if (errno == 0)
+            return -ENOENT;
+        return -errno;
+    }
+
+    *uid = pw->pw_uid;
+    return 0;
+}
+
+/* Opens the file in the three following steps:
+ * 1. open the file with O_PATH (get a file descriptor for operations with
+ *    inode) and O_NOFOLLOW (do not dereference symbolick links)
+ * 2. stat the resulting file descriptor and fail if the opened file is not a
+ *    regular file or if the number of links is greater than 1 (that means that
+ *    the inode has more names (hard links))
+ * 3. "re-open" the file descriptor retrieved in the first step with O_RDONLY
+ *    by opening /proc/self/fd/$fd (then close the former file descriptor and
+ *    return the new one).
+ */
+int secure_openat_read(int dir_fd, const char *filename)
+{
+    if (strchr(filename, '/'))
+    {
+        error_msg("Path must be file name without directory: '%s'", filename);
+        return -EFAULT;
+    }
+
+    static char reopen_buf[sizeof("/proc/self/fd/") + 3*sizeof(int) + 1];
+
+    int path_fd = openat(dir_fd, filename, O_PATH | O_NOFOLLOW);
+    if (path_fd < 0)
+        return -errno;
+
+    struct stat path_sb;
+    int r = fstat(path_fd, &path_sb);
+    if (r < 0)
+    {
+        perror_msg("stat");
+        close(path_fd);
+        return -EINVAL;
+    }
+
+    if (!S_ISREG(path_sb.st_mode) || path_sb.st_nlink > 1)
+    {
+        log_notice("Path isn't a regular file or has more links (%lu)", (unsigned long)path_sb.st_nlink);
+        close(path_fd);
+        return -EINVAL;
+    }
+
+    if (snprintf(reopen_buf, sizeof(reopen_buf), "/proc/self/fd/%d", path_fd) >= sizeof(reopen_buf)) {
+        error_msg("BUG: too long path to a file descriptor");
+        abort();
+    }
+
+    const int fd = open(reopen_buf, O_RDONLY);
+    close(path_fd);
+
+    return fd;
+}
+
+static int read_number_from_file_at(int dir_fd, const char *filename, const char *typename,
+        size_t typesz, long long max, long long min, long long *value)
+{
+    const int fd = secure_openat_read(dir_fd, filename);
+    if (fd < 0)
+    {
+        log_warning("Can't open '%s'", filename);
+        return fd;
+    }
+
+    int ret = 0;
+    /* - xmalloc_read() does not count '\0' Byte
+     * - count on sign
+     * - count on '\n'
+     */
+    const size_t max_size = typesz * 3 + 2;
+    /* allow to read one extra Byte to be able to identify longer text */
+    size_t total_read = max_size + 1;
+    char *const value_buf = xmalloc_read(fd, &total_read);
+    /* Just reading, so no need to check the returned value. */
+
+    if (value_buf == NULL)
+    {
+        log_warning("Can't read from '%s'", filename);
+        ret = -EBADFD;
+        goto finito;
+    }
+
+    if (total_read >= max_size)
+    {
+        log_warning("File '%s' is too long to be valid %s "
+                   "(max size %u)", filename, typename, (int)sizeof(value_buf));
+        ret = -EMSGSIZE;
+        goto finito;
+    }
+
+    /* Our tools don't put trailing newline into one line files,
+     * but we allow such format too:
+     */
+    if (value_buf[total_read - 1] == '\n')
+        --total_read;
+    value_buf[total_read] = '\0';
+
+    errno = 0;    /* To distinguish success/failure after call */
+    char *endptr;
+    long long res = strtoll(value_buf, &endptr, /* base */ 10);
+
+    /* Check for various possible errors */
+    if (   (errno == ERANGE && (res == LONG_LONG_MAX || res == LONG_LONG_MIN))
+        || (errno != 0 && res == 0)
+        || (*endptr != '\0')
+        || endptr == value_buf
+    ) {
+        log_warning("File '%s' doesn't contain valid %s"
+                        "('%s')", filename, typename, value_buf);
+        ret = -EINVAL;
+        goto finito;
+    }
+
+    /* If the stored number is long long, this condition falsely indetify
+     * LONG_LONG_(MAX|MIN) as an value which is out of range.
+     */
+    if (res <= min || res >= max)
+    {
+        log_warning("File '%s' contains a number out-of-range of %s"
+                        "('%s')", filename, typename, value_buf);
+        ret = -ERANGE;
+        goto finito;
+    }
+
+    *value = res;
+
+finito:
+    close(fd);
+    free(value_buf);
+    /* If we got here, strtoll() successfully parsed a number */
+    return ret;
+}
+
 /* Returns value less than 0 if the file is not readable or
  * if the file doesn't contain valid unixt time stamp.
  *
  * Any possible failure will be logged.
  */
-static time_t parse_time_file(const char *filename)
+static time_t parse_time_file_at(int dir_fd, const char *filename)
 {
-    /* Open input file, and parse it. */
-    int fd = open(filename, O_RDONLY | O_NOFOLLOW);
-    if (fd < 0)
-    {
-        VERB2 pwarn_msg("Can't open '%s'", filename);
-        return -1;
-    }
-
-    /* ~ maximal number of digits for positive time stamp string */
-    char time_buf[sizeof(time_t) * 3 + 1];
-    ssize_t rdsz = read(fd, time_buf, sizeof(time_buf));
-
-    /* Just reading, so no need to check the returned value. */
-    close(fd);
-
-    if (rdsz == -1)
-    {
-        VERB2 pwarn_msg("Can't read from '%s'", filename);
-        return -1;
-    }
-    /* approximate maximal number of digits in timestamp is sizeof(time_t)*3 */
-    /* buffer has this size + 1 byte for trailing '\0' */
-    /* if whole size of buffer was read then file is bigger */
-    /* than string representing maximal time stamp */
-    if (rdsz == sizeof(time_buf))
-    {
-        VERB2 warn_msg("File '%s' is too long to be valid unix "
-                       "time stamp (max size %u)", filename, (int)sizeof(time_buf));
-        return -1;
-    }
-
-    /* Our tools don't put trailing newline into time file,
-     * but we allow such format too:
-     */
-    if (rdsz > 0 && time_buf[rdsz - 1] == '\n')
-        rdsz--;
-    time_buf[rdsz] = '\0';
-
     /* Note that on some architectures (x32) time_t is "long long" */
-
-    errno = 0;    /* To distinguish success/failure after call */
-    char *endptr;
-    long long val = strtoll(time_buf, &endptr, /* base */ 10);
     const long long MAX_TIME_T = (1ULL << (sizeof(time_t)*8 - 1)) - 1;
-
-    /* Check for various possible errors */
-    if (errno
-     || (*endptr != '\0')
-     || val >= MAX_TIME_T
-     || !isdigit_str(time_buf) /* this filters out "-num", "   num", "" */
-    ) {
-        VERB2 pwarn_msg("File '%s' doesn't contain valid unix "
-                        "time stamp ('%s')", filename, time_buf);
-        return -1;
-    }
-
-    /* If we got here, strtoll() successfully parsed a number */
-    return val;
+    long long value = -1;
+    read_number_from_file_at(dir_fd, filename, "unix time stamp", sizeof(time_t), MAX_TIME_T, 0, &value);
+    return (time_t)value;
 }
 
 /* Return values:
@@ -183,9 +304,9 @@ static time_t parse_time_file(const char *filename)
  *  0: failed to lock (someone else has it locked)
  *  1: success
  */
-int create_symlink_lockfile(const char* lock_file, const char* pid)
+int create_symlink_lockfile_at(int dir_fd, const char* lock_file, const char* pid)
 {
-    while (symlink(pid, lock_file) != 0)
+    while (symlinkat(pid, dir_fd, lock_file) != 0)
     {
         if (errno != EEXIST)
         {
@@ -198,7 +319,7 @@ int create_symlink_lockfile(const char* lock_file, const char* pid)
         }
 
         char pid_buf[sizeof(pid_t)*3 + 4];
-        ssize_t r = readlink(lock_file, pid_buf, sizeof(pid_buf) - 1);
+        ssize_t r = readlinkat(dir_fd, lock_file, pid_buf, sizeof(pid_buf) - 1);
         if (r < 0)
         {
             if (errno == ENOENT)
@@ -231,7 +352,7 @@ int create_symlink_lockfile(const char* lock_file, const char* pid)
             log("Lock file '%s' was locked by process %s, but it crashed?", lock_file, pid_buf);
         }
         /* The file may be deleted by now by other process. Ignore ENOENT */
-        if (unlink(lock_file) != 0 && errno != ENOENT)
+        if (unlinkat(dir_fd, lock_file, /*only files*/0) != 0 && errno != ENOENT)
         {
             perror_msg("Can't remove stale lock file '%s'", lock_file);
             errno = 0;
@@ -243,21 +364,21 @@ int create_symlink_lockfile(const char* lock_file, const char* pid)
     return 1;
 }
 
+int create_symlink_lockfile(const char *filename, const char *pid_str)
+{
+    return create_symlink_lockfile_at(AT_FDCWD, filename, pid_str);
+}
+
 static const char *dd_check(struct dump_dir *dd)
 {
-    unsigned dirname_len = strlen(dd->dd_dirname);
-    char filename_buf[FILENAME_MAX+1];
-    strcpy(filename_buf, dd->dd_dirname);
-    strcpy(filename_buf + dirname_len, "/"FILENAME_TIME);
-    dd->dd_time = parse_time_file(filename_buf);
+    dd->dd_time = parse_time_file_at(dd->dd_fd, FILENAME_TIME);
     if (dd->dd_time < 0)
     {
         log_debug("Missing file: "FILENAME_TIME);
         return FILENAME_TIME;
     }
 
-    strcpy(filename_buf + dirname_len, "/"FILENAME_TYPE);
-    dd->dd_type = load_text_file(filename_buf, DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    dd->dd_type = load_text_file_at(dd->dd_fd, FILENAME_TYPE, DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     if (!dd->dd_type || (strlen(dd->dd_type) == 0))
     {
         log_debug("Missing or empty file: "FILENAME_TYPE);
@@ -275,17 +396,12 @@ static int dd_lock(struct dump_dir *dd, unsigned sleep_usec, int flags)
     char pid_buf[sizeof(long)*3 + 2];
     snprintf(pid_buf, sizeof(pid_buf), "%lu", (long)getpid());
 
-    unsigned dirname_len = strlen(dd->dd_dirname);
-    char lock_buf[dirname_len + sizeof("/.lock")];
-    strcpy(lock_buf, dd->dd_dirname);
-    strcpy(lock_buf + dirname_len, "/.lock");
-
     unsigned count = NO_TIME_FILE_COUNT;
 
  retry:
     while (1)
     {
-        int r = create_symlink_lockfile(lock_buf, pid_buf);
+        int r = create_symlink_lockfile_at(dd->dd_fd, ".lock", pid_buf);
         if (r < 0)
             return r; /* error */
         if (r > 0 || errno == EALREADY)
@@ -312,9 +428,9 @@ static int dd_lock(struct dump_dir *dd, unsigned sleep_usec, int flags)
         if (missing_file)
         {
             if (dd->owns_lock)
-                xunlink(lock_buf);
+                xunlinkat(dd->dd_fd, ".lock", /*only files*/0);
 
-            log_warning("Unlocked '%s' (no or corrupted '%s' file)", lock_buf, missing_file);
+            log_warning("Unlocked '%s' (no or corrupted '%s' file)", dd->dd_dirname, missing_file);
             if (--count == 0 || flags & DD_DONT_WAIT_FOR_LOCK)
             {
                 errno = EISDIR; /* "this is an ordinary dir, not dump dir" */
@@ -333,18 +449,13 @@ static void dd_unlock(struct dump_dir *dd)
 {
     if (dd->locked)
     {
-        unsigned dirname_len = strlen(dd->dd_dirname);
-        char lock_buf[dirname_len + sizeof("/.lock")];
-        strcpy(lock_buf, dd->dd_dirname);
-        strcpy(lock_buf + dirname_len, "/.lock");
-
         if (dd->owns_lock)
-            xunlink(lock_buf);
+            xunlinkat(dd->dd_fd, ".lock", /*only files*/0);
 
         dd->owns_lock = 0;
         dd->locked = 0;
 
-        log_info("Unlocked '%s'", lock_buf);
+        log_info("Unlocked '%s/.lock'", dd->dd_dirname);
     }
 }
 
@@ -352,15 +463,27 @@ static inline struct dump_dir *dd_init(void)
 {
     struct dump_dir* dd = (struct dump_dir*)xzalloc(sizeof(struct dump_dir));
     dd->dd_time = -1;
+    dd->dd_fd = -1;
+    dd->dd_md_fd = -1;
     return dd;
 }
 
-int dd_exist(const struct dump_dir *dd, const char *path)
+int dd_exist(const struct dump_dir *dd, const char *name)
 {
-    char *full_path = concat_path_file(dd->dd_dirname, path);
-    int ret = exist_file_dir(full_path);
-    free(full_path);
+    if (!dd_validate_element_name(name))
+        error_msg_and_die("Cannot test existence. '%s' is not a valid file name", name);
+
+    const int ret = exist_file_dir_at(dd->dd_fd, name);
     return ret;
+}
+
+static void dd_close_meta_data_dir(struct dump_dir *dd)
+{
+    if (dd->dd_md_fd < 0)
+        return;
+
+    close(dd->dd_md_fd);
+    dd->dd_md_fd = -1;
 }
 
 void dd_close(struct dump_dir *dd)
@@ -369,6 +492,12 @@ void dd_close(struct dump_dir *dd)
         return;
 
     dd_unlock(dd);
+
+    if (dd->dd_fd >= 0)
+        close(dd->dd_fd);
+
+    dd_close_meta_data_dir(dd);
+
     if (dd->next_dir)
     {
         closedir(dd->next_dir);
@@ -380,6 +509,362 @@ void dd_close(struct dump_dir *dd)
     free(dd);
 }
 
+static int dd_create_subdir(int dd_fd, const char *dirname, uid_t dd_uid, gid_t dd_gid, mode_t dd_mode)
+{
+    if (mkdirat(dd_fd, dirname, dd_mode) < 0)
+    {
+        perror_msg("Can't create directory '%s'", dirname);
+        return -1;
+    }
+
+    int dd_md_fd = openat(dd_fd, dirname, O_DIRECTORY | O_NOFOLLOW);
+    if (dd_md_fd < 0)
+    {
+        perror_msg("Can't open newly created directory '%s'", dirname);
+        goto fail_open;
+    }
+
+    if (dd_uid != (uid_t)-1)
+    {
+        if (fchown(dd_md_fd, dd_uid, dd_gid) != 0)
+        {
+            perror_msg("Can't change owner and group of '%s'", dirname);
+            goto fail_modify;
+        }
+    }
+
+    /* mkdir's mode (above) can be affected by umask, fix it */
+    if (fchmod(dd_md_fd, dd_mode) == -1)
+    {
+        perror_msg("Can't change mode of '%s'", dirname);
+        goto fail_modify;
+    }
+
+    return dd_md_fd;
+fail_modify:
+    close(dd_md_fd);
+fail_open:
+    if (unlinkat(dd_fd, dirname, AT_REMOVEDIR) < 0)
+        perror_msg("Fialed to unlink '%s' while cleaning up after failure", dirname);
+    return -1;
+}
+
+/* Opens the meta-data directory, checks its file system attributes and returns
+ * its file descriptor.
+ *
+ * The meta-data directory must have the same file system attributes as the
+ * parent dump directory in order to avoid unexpected situations and detects
+ * program errors (it is an error to modify bits of the dump directory and
+ * forgot to update the meta-data directory).
+ *
+ * Keep on mind that the old dump directories might miss the meta-data directory
+ * so the return value -ENOENT does not necessarily need to be fatal.
+ */
+static int dd_open_meta_data_dir(struct dump_dir *dd)
+{
+    int md_dir_fd = openat(dd->dd_fd, META_DATA_DIR_NAME, O_DIRECTORY | O_NOFOLLOW);
+    if (md_dir_fd < 0)
+    {
+        md_dir_fd = -errno;
+
+        /* ENOENT is not critical */
+        if (errno != ENOENT)
+            log_warning("Can't open meta-data '"META_DATA_DIR_NAME"'");
+        else
+            log_info("The dump dir doesn't contain '"META_DATA_DIR_NAME"'");
+
+        goto finito;
+    }
+
+    struct stat md_sb;
+    if (fstat(md_dir_fd, &md_sb) < 0)
+    {
+        log_debug("Can't stat '"META_DATA_DIR_NAME"'");
+        goto fail;
+    }
+
+    /* Test only permission bits, ignore SUID, SGID, etc. */
+    const mode_t md_mode = md_sb.st_mode & 0777;
+    const mode_t dd_mode = DD_MODE_TO_DIR_MODE(dd->mode);
+
+    if (   md_sb.st_uid != dd->dd_uid
+        || md_sb.st_gid != dd->dd_gid
+        || md_mode != dd_mode)
+    {
+        log_debug("'"META_DATA_DIR_NAME"' has different attributes than the dump dir, '%d'='%d', '%d'='%d', %o = %o",
+                        md_sb.st_uid, dd->dd_uid, md_sb.st_gid, dd->dd_gid, md_mode, dd_mode);
+        goto fail;
+    }
+
+finito:
+    return md_dir_fd;
+
+fail:
+    close(md_dir_fd);
+
+    return -EINVAL;
+}
+
+/* Returns a file descriptor to the meta-data directory. Can be configured to
+ * create the directory if it does not exist.
+ *
+ * This function enables lazy initialization of the meta-data directory.
+ */
+static int dd_get_meta_data_dir_fd(struct dump_dir *dd, int flags)
+{
+    if (dd->dd_md_fd < 0)
+    {
+        dd->dd_md_fd = dd_open_meta_data_dir(dd);
+
+        if (    dd->dd_md_fd == -ENOENT
+             && (flags & DD_MD_GET_CREATE))
+        {
+            dd->dd_md_fd = dd_create_subdir(dd->dd_fd,
+                                            META_DATA_DIR_NAME,
+                                            dd->dd_uid,
+                                            dd->dd_gid,
+                                            DD_MODE_TO_DIR_MODE(dd->mode));
+        }
+    }
+
+    return dd->dd_md_fd;
+}
+
+/* Tries to safely overwrite the existing file.
+ *
+ * The functions writes the new value to a temporary file and if the temporary
+ * file is successfully created, then moves the tmp file to the old file name.
+ *
+ * If the meta-data directory does not exist, the function will try to create
+ * it.
+ */
+static int dd_meta_data_save_text(struct dump_dir *dd, const char *name, const char *data)
+{
+    if (!dd->locked)
+        error_msg_and_die("dump_dir is not opened"); /* bug */
+
+    if (!str_is_correct_filename(name))
+        error_msg_and_die("Cannot save meta-data. '%s' is not a valid file name", name);
+
+    int dd_md_fd = dd_get_meta_data_dir_fd(dd, DD_MD_GET_CREATE);
+    if (dd_md_fd < 0)
+    {
+        error_msg("Can't save meta-data: '%s'", name);
+        return dd_md_fd;
+    }
+
+    char *tmp_name = xasprintf("~%s.tmp", name);
+
+    int ret = -1;
+    if (!save_binary_file_at(dd_md_fd, tmp_name, data, strlen(data), dd->dd_uid, dd->dd_gid, dd->mode))
+        goto finito;
+
+    /* man 2 rename
+     *
+     * If newpath  already exists it will be atomically replaced (subject to a
+     * few conditions; see ERRORS below), so that there is no point at which
+     * another process attempting to access newpath will find it missing.
+     */
+    if (renameat(dd_md_fd, tmp_name, dd_md_fd, name))
+    {
+        ret = -errno;
+        perror_msg("Failed to move temporary file '%s' to '%s'", tmp_name, name);
+        goto finito;
+    }
+
+    ret = 0;
+
+finito:
+    free(tmp_name);
+    return ret;
+}
+
+int dd_set_owner(struct dump_dir *dd, uid_t owner)
+{
+    /* I was tempted to use the keyword static, but we should have reentracy
+     * always on mind. Who knows! */
+    char long_str[sizeof(long) * 3 + 2];
+
+    if (owner == (uid_t)-1)
+    {
+        owner = getuid();
+        if (owner < 0)
+            perror_msg_and_die("%s: getuid", __func__);
+    }
+
+    snprintf(long_str, sizeof(long_str), "%li", (long)owner);
+    const int ret = dd_meta_data_save_text(dd, META_DATA_FILE_OWNER, long_str);
+    if (ret < 0)
+        error_msg("The dump dir owner wasn't set to '%s'", long_str);
+    return ret;
+}
+
+int dd_set_no_owner(struct dump_dir *dd)
+{
+    uid_t no_owner_uid = (uid_t)-1;
+    int ret = get_no_owner_uid(&no_owner_uid);
+    if (ret < 0)
+        return ret;
+
+    return dd_set_owner(dd, no_owner_uid);
+}
+
+uid_t dd_get_owner(struct dump_dir *dd)
+{
+    static const long long MAX_UID_T = (1ULL << (sizeof(uid_t)*8 - 1)) - 1;
+
+    int dd_md_fd = dd_get_meta_data_dir_fd(dd, /*no create*/0);
+    if (dd_md_fd < 0)
+    {
+        log_info("No meta-data, using fs owner.");
+        return dd->dd_uid;
+    }
+
+    long long owner = -1;
+
+    int ret = read_number_from_file_at(dd_md_fd, META_DATA_FILE_OWNER, "UID",
+                                       sizeof(uid_t), MAX_UID_T, -1, &owner);
+
+    if (ret < 0)
+    {
+        if (ret != -ENOENT)
+            return ret;
+
+        log_info("No meta-data 'owner', using fs owner.");
+        return dd->dd_uid;
+    }
+
+    return (uid_t)owner;
+}
+
+/* A helper function useful for traversing directories.
+ *
+ * DIR* d opendir(dir_fd); ... closedir(d); closes also dir_fd but we want to
+ * keep it opened.
+ */
+static int fdreopen(int dir_fd, DIR **d)
+{
+    int opendir_fd = dup(dir_fd);
+    if (opendir_fd < 0)
+    {
+        perror_msg("dup(dir_fd)");
+        return -EBADFD;
+    }
+
+    lseek(opendir_fd, SEEK_SET, 0);
+    *d = fdopendir(opendir_fd);
+    if (!*d)
+    {
+        int ret = -errno;
+        close(opendir_fd);
+        perror_msg("fdopendir(dir_fd)");
+        return ret;
+    }
+
+    /* 'opendir_fd' will be closed with 'd' */
+    return 0;
+}
+
+/* A macro for going through the entries of a directory referenced as a file
+ * descriptor.
+ *
+ * Usage:
+ *
+ * FOREACH_REGULAR_FILE_AS_FD_AT_BEGIN(dir_fd)
+ * {
+ *      printf("Short name '%s'",    dent->d_name);
+ *      printf("File descriptor %d", fd);
+ * }
+ * FOREACH_REGULAR_FILE_AS_FD_AT_END
+ */
+
+#define FOREACH_REGULAR_FILE_AS_FD_AT_BEGIN(dir_fd) \
+    DIR *d; \
+    struct dirent *dent; \
+    if (fdreopen(dir_fd, &d) < 0) return -1; \
+    while ((dent = readdir(d)) != NULL) \
+    { \
+        if (dot_or_dotdot(dent->d_name)) continue; \
+        int fd = secure_openat_read(dirfd(d), dent->d_name); \
+        if (fd >= 0)
+
+#define FOREACH_REGULAR_FILE_AS_FD_AT_END \
+        close(fd); \
+    } \
+    closedir(d);
+
+
+/* Sets attributes of the meta-data directory and its contents to the same
+ * attributes of the parent dump directory.
+ */
+static int dd_sanitize_mode_meta_data(struct dump_dir *dd)
+{
+    if (!dd->locked)
+        error_msg_and_die("%s: dump_dir is not opened", __func__); /* bug */
+
+    int dd_md_fd = dd_get_meta_data_dir_fd(dd, /*no create*/0);
+    if (dd_md_fd < 0)
+        return 0;
+
+    int res = fchmod(dd_md_fd, DD_MODE_TO_DIR_MODE(dd->mode));
+    if (res < 0)
+    {
+        perror_msg("Failed to chmod meta-data sub-dir");
+        return res;
+    }
+
+    FOREACH_REGULAR_FILE_AS_FD_AT_BEGIN(dd_md_fd)
+    {
+        log_debug("chmoding %s", dent->d_name);
+
+        res = fchmod(fd, dd->mode);
+        if (res)
+        {
+            perror_msg("fchmod('%s')", dent->d_name);
+            break;
+        }
+    }
+    FOREACH_REGULAR_FILE_AS_FD_AT_END
+
+    return 0;
+}
+
+/* Sets owner and group of the meta-data directory and its contents to the same
+ * attributes of the parent dump directory.
+ */
+
+static int dd_chown_meta_data(struct dump_dir *dd, uid_t uid, gid_t gid)
+{
+    if (!dd->locked)
+        error_msg_and_die("%s: dump_dir is not opened", __func__); /* bug */
+
+    int dd_md_fd = dd_get_meta_data_dir_fd(dd, /*no create*/0);
+    if (dd_md_fd < 0)
+        return 0;
+
+    int res = fchown(dd_md_fd, uid, gid);
+    if (res < 0)
+    {
+        perror_msg("Failed to chown meta-data sub-dir");
+        return res;
+    }
+
+    FOREACH_REGULAR_FILE_AS_FD_AT_BEGIN(dd_md_fd)
+    {
+        log_debug("%s: chowning %s", __func__, dent->d_name);
+
+        res = fchown(fd, uid, gid);
+        if (res)
+        {
+            perror_msg("fchown('%s')", dent->d_name);
+            break;
+        }
+    }
+    FOREACH_REGULAR_FILE_AS_FD_AT_END
+
+    return res;
+}
+
 static char* rm_trailing_slashes(const char *dir)
 {
     unsigned len = strlen(dir);
@@ -388,37 +873,58 @@ static char* rm_trailing_slashes(const char *dir)
     return xstrndup(dir, len);
 }
 
-struct dump_dir *dd_opendir(const char *dir, int flags)
+static struct dump_dir *dd_do_open(struct dump_dir *dd, const char *dir, int flags)
 {
-    struct dump_dir *dd = dd_init();
+    if (dir != NULL)
+    {
+        dd->dd_dirname = rm_trailing_slashes(dir);
+        /* dd_do_open validates dd_fd */
+        dd->dd_fd = open(dd->dd_dirname, O_DIRECTORY | O_NOFOLLOW);
 
-    dir = dd->dd_dirname = rm_trailing_slashes(dir);
+        struct stat stat_buf;
+        if (dd->dd_fd < 0)
+            goto cant_access;
+        if (fstat(dd->dd_fd, &stat_buf) != 0)
+            goto cant_access;
 
-    struct stat stat_buf;
-    if (stat(dir, &stat_buf) != 0)
-        goto cant_access;
-    /* & 0666 should remove the executable bit */
-    dd->mode = (stat_buf.st_mode & 0666);
+        /* & 0666 should remove the executable bit */
+        dd->mode = (stat_buf.st_mode & 0666);
+
+        /* We want to have dd_uid and dd_gid always initialized. But we have to
+         * initialize it in the way which does not prevent non-privileged user
+         * from saving data in their dump directories.
+         *
+         * Non-privileged users are not allowed to change the group to
+         * 'abrt' so we have to use their GID.
+         *
+         * If the caller is super-user, we have to use dd's fs owner and fs
+         * group, because he can do everything and the data must be readable by
+         * the real owner.
+         *
+         * We always use fs uid, because non-privileged users must own the
+         * directory and super-user must use fs owner.
+         */
+        dd->dd_uid = stat_buf.st_uid;
+
+        /* We use fs group only if the caller is super-user, because we want to
+         * make sure non-privileged users can modify elements (libreport call
+         * chown(dd_uid, dd_gid) after modifying an element) and the modified
+         * elements do not have super-user's group.
+         */
+        dd->dd_gid = getegid();
+        if (geteuid() == 0)
+            dd->dd_gid = stat_buf.st_gid;
+
+        if ((flags & DD_OPEN_FD_ONLY))
+        {
+            dd->dd_md_fd = dd_open_meta_data_dir(dd);
+            return dd;
+        }
+    }
 
     errno = 0;
     if (dd_lock(dd, WAIT_FOR_OTHER_PROCESS_USLEEP, flags) < 0)
     {
-        if ((flags & DD_OPEN_READONLY) && errno == EACCES)
-        {
-            /* Directory is not writable. If it seems to be readable,
-             * return "read only" dd, not NULL */
-            if (stat(dir, &stat_buf) == 0
-             && S_ISDIR(stat_buf.st_mode)
-             && access(dir, R_OK) == 0
-            ) {
-                if(dd_check(dd) != NULL)
-                {
-                    dd_close(dd);
-                    dd = NULL;
-                }
-                return dd;
-            }
-        }
         if (errno == EISDIR)
         {
             /* EISDIR: dd_lock can lock the dir, but it sees no time file there,
@@ -428,46 +934,83 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
              * directory when run without arguments, because its option -d DIR
              * defaults to "."!
              */
-            error_msg("'%s' is not a problem directory", dir);
+            error_msg("'%s' is not a problem directory", dd->dd_dirname);
+            goto fail_with_close;
         }
-        else
-        {
- cant_access:
-            if (errno == ENOENT || errno == ENOTDIR)
-            {
-                if (!(flags & DD_FAIL_QUIETLY_ENOENT))
-                    error_msg("'%s' does not exist", dir);
-            }
-            else
-            {
-                if (!(flags & DD_FAIL_QUIETLY_EACCES))
-                    perror_msg("Can't access '%s'", dir);
-            }
-        }
-        dd_close(dd);
-        return NULL;
-    }
 
-    dd->dd_uid = (uid_t)-1L;
-    dd->dd_gid = (gid_t)-1L;
-    if (geteuid() == 0)
-    {
-        /* In case caller would want to create more files, he'll need uid:gid */
-        struct stat stat_buf;
-        if (stat(dir, &stat_buf) != 0 || !S_ISDIR(stat_buf.st_mode))
+        if (!(flags & DD_OPEN_READONLY))
         {
-            error_msg("Can't stat '%s', or it is not a directory", dir);
-            dd_close(dd);
-            return NULL;
+            log_debug("'%s' can't be opened for writing", dd->dd_dirname);
+            goto fail_with_close;
         }
-        dd->dd_uid = stat_buf.st_uid;
-        dd->dd_gid = stat_buf.st_gid;
+
+        if (errno != EACCES)
+        {
+            VERB3 perror_msg("failed to lock dump directory '%s'", dd->dd_dirname);
+            goto fail_with_close;
+        }
+
+        /* Directory is not writable. If it seems to be readable,
+         * return "read only" dd, not NULL
+         *
+         * Does the directory have 'r' flag?
+         */
+        if (faccessat(dd->dd_fd, ".", R_OK, AT_SYMLINK_NOFOLLOW) != 0)
+        {
+            VERB3 perror_msg("failed to lock dump directory '%s'", dd->dd_dirname);
+            goto fail_with_close;
+        }
+
+        /* dd_check prints out good log messages */
+        if(dd_check(dd) != NULL)
+            goto fail_with_close;
+
+        /* The dd is opened in READONLY moded, continue.*/
     }
 
     return dd;
+
+cant_access:
+    if (errno == ENOENT || errno == ENOTDIR)
+    {
+        if (!(flags & DD_FAIL_QUIETLY_ENOENT))
+            error_msg("'%s' does not exist", dd->dd_dirname);
+    }
+    else
+    {
+        if (!(flags & DD_FAIL_QUIETLY_EACCES))
+            perror_msg("Can't access '%s'", dd->dd_dirname);
+    }
+
+fail_with_close:
+    dd_close(dd);
+    return NULL;
 }
 
-/* Create a fresh empty debug dump dir.
+struct dump_dir *dd_fdopendir(struct dump_dir *dd, int flags)
+{
+    if ((flags & DD_OPEN_FD_ONLY))
+        error_msg_and_die("the passed flags must not contain DD_OPEN_FD_ONLY");
+
+    if (dd->dd_fd < 0)
+        error_msg_and_die("the dump directory was not initialized yet");
+
+    if (dd->locked)
+        error_msg_and_die("the dump directory is already locked");
+
+    return dd_do_open(dd, NULL, flags);
+}
+
+struct dump_dir *dd_opendir(const char *dir, int flags)
+{
+    struct dump_dir *dd = dd_init();
+    return dd_do_open(dd, dir, flags);
+}
+
+/* Create a fresh empty debug dump dir which is owned bu the calling user. If
+ * you want to create the directory with meaningful ownership you should
+ * consider using dd_create() function or you can modify the ownership
+ * afterwards by calling dd_reset_ownership() function.
  *
  * ABRT owns dump dir:
  *   We should not allow users to write new files or write into existing ones,
@@ -523,10 +1066,9 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
  *     this runs under 0:0
  *     - clients: setroubleshootd, abrt python
  */
-struct dump_dir *dd_create(const char *dir, uid_t uid, mode_t mode)
+struct dump_dir *dd_create_skeleton(const char *dir, uid_t uid, mode_t mode, int flags)
 {
-    /* a little trick to copy read bits from file mode to exec bit of dir mode*/
-    mode_t dir_mode = mode | ((mode & 0444) >> 2);
+    mode_t dir_mode = DD_MODE_TO_DIR_MODE(mode);
     struct dump_dir *dd = dd_init();
 
     dd->mode = mode;
@@ -548,37 +1090,74 @@ struct dump_dir *dd_create(const char *dir, uid_t uid, mode_t mode)
          * dd_create("dir/..") and similar are madness, refuse them.
          */
         error_msg("Bad dir name '%s'", dir);
-        dd_close(dd);
-        return NULL;
+        goto fail;
     }
 
     /* Was creating it with mode 0700 and user as the owner, but this allows
      * the user to replace any file in the directory, changing security-sensitive data
      * (e.g. "uid", "analyzer", "executable")
      */
-    if (g_mkdir_with_parents(dd->dd_dirname, dir_mode) != 0)
+    int r;
+    if ((flags & DD_CREATE_PARENTS))
+        r = g_mkdir_with_parents(dd->dd_dirname, dir_mode);
+    else
+        r = mkdir(dd->dd_dirname, dir_mode);
+
+    if (r != 0)
     {
         perror_msg("Can't create directory '%s'", dir);
-        dd_close(dd);
-        return NULL;
+        goto fail;
+    }
+
+    dd->dd_fd = open(dd->dd_dirname, O_DIRECTORY | O_NOFOLLOW);
+    if (dd->dd_fd < 0)
+    {
+        perror_msg("Can't open newly created directory '%s'", dir);
+        goto fail;
+    }
+
+    struct stat stat_sb;
+    if (fstat(dd->dd_fd, &stat_sb) < 0)
+    {
+        perror_msg("stat(%s)", dd->dd_dirname);
+        goto fail;
     }
 
     if (dd_lock(dd, CREATE_LOCK_USLEEP, /*flags:*/ 0) < 0)
-    {
-        dd_close(dd);
-        return NULL;
-    }
+        goto fail;
 
     /* mkdir's mode (above) can be affected by umask, fix it */
-    if (chmod(dir, dir_mode) == -1)
+    if (fchmod(dd->dd_fd, dir_mode) == -1)
     {
         perror_msg("Can't change mode of '%s'", dir);
-        dd_close(dd);
-        return NULL;
+        goto fail;
     }
 
-    dd->dd_uid = (uid_t)-1L;
-    dd->dd_gid = (gid_t)-1L;
+    /* Initiliaze dd_uid and dd_gid to sane values which reflect the reality.
+     */
+    dd->dd_uid = stat_sb.st_uid;
+    dd->dd_gid = stat_sb.st_gid;
+
+    /* Create META-DATA directory with real fs attributes which must be changed
+     * in dd_reset_ownership(), when populating of a new dump directory is
+     * done.
+     *
+     * It allows daemons to create a dump directory, populate the directory as
+     * root and then switch the ownership to the real user.
+     */
+    dd->dd_md_fd = dd_create_subdir(dd->dd_fd, META_DATA_DIR_NAME, dd->dd_uid, dd->dd_gid, dir_mode);
+    if (dd->dd_md_fd < 0)
+    {
+        error_msg("Can't create meta-data directory");
+        goto fail;
+    }
+
+    if (dd_set_owner(dd, dd->dd_uid) < 0)
+    {
+        log_debug("Failed to initialized 'owner'");
+        goto fail;
+    }
+
     if (uid != (uid_t)-1L)
     {
         dd->dd_uid = 0;
@@ -613,13 +1192,51 @@ struct dump_dir *dd_create(const char *dir, uid_t uid, mode_t mode)
         else
             error_msg("User %lu does not exist, using gid 0", (long)uid);
 #endif
-
-        if (lchown(dir, dd->dd_uid, dd->dd_gid) == -1)
-        {
-            perror_msg("Can't change '%s' ownership to %lu:%lu", dir,
-                       (long)dd->dd_uid, (long)dd->dd_gid);
-        }
     }
+
+    return dd;
+
+fail:
+    dd_close(dd);
+    return NULL;
+}
+
+/* Resets ownership of the given directory to UID and GID according to values
+ * in dd_create_skeleton().
+ */
+int dd_reset_ownership(struct dump_dir *dd)
+{
+    if (!dd->locked)
+        error_msg_and_die("dump_dir is not opened"); /* bug */
+
+    int r = fchown(dd->dd_fd, dd->dd_uid, dd->dd_gid);
+    if (r < 0)
+    {
+        perror_msg("Can't change '%s' ownership to %lu:%lu", dd->dd_dirname,
+                   (long)dd->dd_uid, (long)dd->dd_gid);
+    }
+
+    if (dd_chown_meta_data(dd, dd->dd_uid, dd->dd_gid) != 0)
+        error_msg("Failed to reset ownership of meta-data");
+
+    /* We ignore failures above, so we will ignore failures here too.
+     * The meta-data owner already exist (created by dd_create_skeleton).
+     */
+    dd_set_owner(dd, dd->dd_uid);
+
+    return r;
+}
+
+/* Calls dd_create_skeleton() and dd_reset_ownership().
+ */
+struct dump_dir *dd_create(const char *dir, uid_t uid, mode_t mode)
+{
+    struct dump_dir *dd = dd_create_skeleton(dir, uid, mode, DD_CREATE_PARENTS);
+    if (dd == NULL)
+        return NULL;
+
+    /* ignore results */
+    dd_reset_ownership(dd);
 
     return dd;
 }
@@ -642,8 +1259,14 @@ void dd_create_basic_files(struct dump_dir *dd, uid_t uid, const char *chroot_di
     free(time_str);
 
     /* it doesn't make sense to create the uid file if uid == -1 */
+    /* and 'owner' is set since dd_create_skeleton */
     if (uid != (uid_t)-1L)
     {
+        /* Failure is not a problem here, because we still have the fs
+         * attributes and there is only a little chance that the old value
+         * gets lost. */
+        dd_set_owner(dd, uid);
+
         snprintf(long_str, sizeof(long_str), "%li", (long)uid);
         dd_save_text(dd, FILENAME_UID, long_str);
     }
@@ -718,66 +1341,48 @@ void dd_sanitize_mode_and_owner(struct dump_dir *dd)
     if (!dd->locked)
         error_msg_and_die("dump_dir is not opened"); /* bug */
 
-    DIR *d = opendir(dd->dd_dirname);
-    if (!d)
-        return;
-
-    struct dirent *dent;
-    while ((dent = readdir(d)) != NULL)
+    dd_init_next_file(dd);
+    char *short_name;
+    while (dd_get_next_file(dd, &short_name, /*full_name*/ NULL))
     {
-        if (dent->d_name[0] == '.') /* ".lock", ".", ".."? skip */
-            continue;
-        char *full_path = concat_path_file(dd->dd_dirname, dent->d_name);
-        struct stat statbuf;
-        if (lstat(full_path, &statbuf) == 0 && S_ISREG(statbuf.st_mode))
-        {
-            if ((statbuf.st_mode & 0777) != dd->mode)
-            {
-                /* We open the file only for fchmod()
-                 *
-                 * We use fchmod() because chmod() changes the permissions of
-                 * the file specified whose pathname is given in path, which
-                 * is dereferenced if it is a symbolic link.
-                 */
-                int fd = open(full_path, O_RDONLY | O_NOFOLLOW, dd->mode);
-                if (fd >= 0)
-                {
-                    if (fchmod(fd, dd->mode) != 0)
-                    {
-                        perror_msg("Can't change '%s' mode to 0%o", full_path,
-                                   (unsigned)dd->mode);
-                    }
-                    close(fd);
-                }
-                else
-                {
-                    perror_msg("Can't open regular file '%s'", full_path);
-                }
-            }
-            if (statbuf.st_uid != dd->dd_uid || statbuf.st_gid != dd->dd_gid)
-            {
-                if (lchown(full_path, dd->dd_uid, dd->dd_gid) != 0)
-                {
-                    perror_msg("Can't change '%s' ownership to %lu:%lu", full_path,
-                               (long)dd->dd_uid, (long)dd->dd_gid);
-                }
-            }
-        }
-        free(full_path);
+        /* The current process has to have read access at least */
+        int fd = secure_openat_read(dd->dd_fd, short_name);
+        if (fd < 0)
+            goto next;
+
+        if (fchmod(fd, dd->mode) != 0)
+            perror_msg("Can't change '%s/%s' mode to 0%o", dd->dd_dirname, short_name,
+                       (unsigned)dd->mode);
+
+        if (fchown(fd, dd->dd_uid, dd->dd_gid) != 0)
+            perror_msg("Can't change '%s/%s' ownership to %lu:%lu", dd->dd_dirname, short_name,
+                       (long)dd->dd_uid, (long)dd->dd_gid);
+
+        close(fd);
+next:
+        free(short_name);
     }
-    closedir(d);
+
+    /* No need to check return value, the functions print good messages.
+     * There are two approaches for handling errors in libreport:
+     * - print out a warning message and keep status quo
+     * - terminate the process
+     */
+    dd_sanitize_mode_meta_data(dd);
+    dd_chown_meta_data(dd, dd->dd_uid, dd->dd_gid);
 }
 
-static int delete_file_dir(const char *dir, bool skip_lock_file)
+static int delete_file_dir(int dir_fd, bool skip_lock_file)
 {
-    DIR *d = opendir(dir);
-    if (!d)
+    DIR *d;
+    int ret = fdreopen(dir_fd, &d);
+    if (ret < 0)
     {
         /* The caller expects us to error out only if the directory
          * still exists (not deleted). If directory
          * *doesn't exist*, return 0 and clear errno.
          */
-        if (errno == ENOENT || errno == ENOTDIR)
+        if (ret == -ENOENT || ret == -ENOTDIR)
         {
             errno = 0;
             return 0;
@@ -796,26 +1401,35 @@ static int delete_file_dir(const char *dir, bool skip_lock_file)
             unlink_lock_file = true;
             continue;
         }
-        char *full_path = concat_path_file(dir, dent->d_name);
-        if (unlink(full_path) == -1 && errno != ENOENT)
+        if (unlinkat(dir_fd, dent->d_name, /*only files*/0) == -1 && errno != ENOENT)
         {
             int err = 0;
             if (errno == EISDIR)
             {
                 errno = 0;
-                err = delete_file_dir(full_path, /*skip_lock_file:*/ false);
+                int subdir_fd = openat(dir_fd, dent->d_name, O_DIRECTORY);
+                if (subdir_fd < 0)
+                {
+                    perror_msg("Can't open sub-dir'%s'", dent->d_name);
+                    closedir(d);
+                    return -1;
+                }
+                else
+                {
+                    err = delete_file_dir(subdir_fd, /*skip_lock_file:*/ false);
+                    close(subdir_fd);
+                    if (err == 0)
+                        unlinkat(dir_fd, dent->d_name, AT_REMOVEDIR);
+                }
             }
             if (errno || err)
             {
-                perror_msg("Can't remove '%s'", full_path);
-                free(full_path);
+                perror_msg("Can't remove '%s'", dent->d_name);
                 closedir(d);
                 return -1;
             }
         }
-        free(full_path);
     }
-    closedir(d);
 
     /* Here we know for sure that all files/subdirs we found via readdir
      * were deleted successfully. If rmdir below fails, we assume someone
@@ -823,29 +1437,40 @@ static int delete_file_dir(const char *dir, bool skip_lock_file)
      */
 
     if (unlink_lock_file)
-    {
-        char *full_path = concat_path_file(dir, ".lock");
-        xunlink(full_path);
-        free(full_path);
+        xunlinkat(dir_fd, ".lock", /*only files*/0);
 
-        unsigned cnt = RMDIR_FAIL_COUNT;
-        do {
-            if (rmdir(dir) == 0)
-                return 0;
-            /* Someone locked the dir after unlink, but before rmdir.
-             * This "someone" must be dd_lock().
-             * It detects this (by seeing that there is no time file)
-             * and backs off at once. So we need to just retry rmdir,
-             * with minimal sleep.
-             */
-            usleep(RMDIR_FAIL_USLEEP);
-        } while (--cnt != 0);
+    closedir(d);
+
+    return 0;
+}
+
+static int dd_delete_meta_data(struct dump_dir *dd)
+{
+    if (!dd->locked)
+    {
+        error_msg("Can't remove meta-data of unlocked problem directory %s", dd->dd_dirname);
+        return -1;
     }
 
-    int r = rmdir(dir);
-    if (r)
-        perror_msg("Can't remove directory '%s'", dir);
-    return r;
+    int dd_md_fd = dd_get_meta_data_dir_fd(dd, /*no create*/0);
+    if (dd_md_fd < 0)
+        return 0;
+
+    if (delete_file_dir(dd_md_fd, /*skip_lock_file:*/ true) != 0)
+    {
+        perror_msg("Can't remove meta-data from '"META_DATA_DIR_NAME"'");
+        return -2;
+    }
+
+    dd_close_meta_data_dir(dd);
+
+    if (unlinkat(dd->dd_fd, META_DATA_DIR_NAME, AT_REMOVEDIR))
+    {
+        perror_msg("Can't remove meta-data directory '"META_DATA_DIR_NAME"'");
+        return -3;
+    }
+
+    return 0;
 }
 
 int dd_delete(struct dump_dir *dd)
@@ -856,10 +1481,37 @@ int dd_delete(struct dump_dir *dd)
         return -1;
     }
 
-    int r = delete_file_dir(dd->dd_dirname, /*skip_lock_file:*/ true);
+    if (dd_delete_meta_data(dd) != 0)
+        return -2;
+
+    if (delete_file_dir(dd->dd_fd, /*skip_lock_file:*/ true) != 0)
+    {
+        perror_msg("Can't remove contents of directory '%s'", dd->dd_dirname);
+        return -2;
+    }
+
+    unsigned cnt = RMDIR_FAIL_COUNT;
+    do {
+        if (rmdir(dd->dd_dirname) == 0)
+            break;
+        /* Someone locked the dir after unlink, but before rmdir.
+         * This "someone" must be dd_lock().
+         * It detects this (by seeing that there is no time file)
+         * and backs off at once. So we need to just retry rmdir,
+         * with minimal sleep.
+         */
+        usleep(RMDIR_FAIL_USLEEP);
+    } while (--cnt != 0);
+
+    if (cnt == 0)
+    {
+        perror_msg("Can't remove directory '%s'", dd->dd_dirname);
+        return -3;
+    }
+
     dd->locked = 0; /* delete_file_dir already removed .lock */
     dd_close(dd);
-    return r;
+    return 0;
 }
 
 int dd_chown(struct dump_dir *dd, uid_t new_uid)
@@ -868,7 +1520,7 @@ int dd_chown(struct dump_dir *dd, uid_t new_uid)
         error_msg_and_die("dump_dir is not opened"); /* bug */
 
     struct stat statbuf;
-    if (!(stat(dd->dd_dirname, &statbuf) == 0 && S_ISDIR(statbuf.st_mode)))
+    if (fstat(dd->dd_fd, &statbuf) != 0)
     {
         perror_msg("stat('%s')", dd->dd_dirname);
         return 1;
@@ -889,29 +1541,52 @@ int dd_chown(struct dump_dir *dd, uid_t new_uid)
     gid_t groups_gid = pw->pw_gid;
 #endif
 
-    int chown_res = lchown(dd->dd_dirname, owners_uid, groups_gid);
+    int chown_res = fchown(dd->dd_fd, owners_uid, groups_gid);
     if (chown_res)
-        perror_msg("lchown('%s')", dd->dd_dirname);
+        perror_msg("fchown('%s')", dd->dd_dirname);
     else
     {
         dd_init_next_file(dd);
-        char *full_name;
-        while (chown_res == 0 && dd_get_next_file(dd, /*short_name*/ NULL, &full_name))
+        char *short_name;
+        while (chown_res == 0 && dd_get_next_file(dd, &short_name, /*full_name*/ NULL))
         {
-            log_debug("chowning %s", full_name);
-            chown_res = lchown(full_name, owners_uid, groups_gid);
+            /* The current process has to have read access at least */
+            int fd = secure_openat_read(dd->dd_fd, short_name);
+            if (fd < 0)
+                goto next;
+
+            log_debug("chowning %s", short_name);
+
+            chown_res = fchown(fd, owners_uid, groups_gid);
             if (chown_res)
-                perror_msg("lchown('%s')", full_name);
-            free(full_name);
+            {
+                perror_msg("fchownat('%s')", short_name);
+                break;
+            }
+
+            close(fd);
+next:
+            free(short_name);
         }
     }
+
+    if (chown_res == 0)
+        chown_res = dd_chown_meta_data(dd, owners_uid, groups_gid);
+
+    if (chown_res == 0)
+    {
+        dd->dd_uid = owners_uid;
+        dd->dd_gid = groups_gid;
+    }
+
+    if (chown_res == 0)
+        chown_res = dd_set_owner(dd, (long)dd->dd_uid);
 
     return chown_res;
 }
 
-static char *load_text_file(const char *path, unsigned flags)
+static char *load_text_from_file_descriptor(int fd, const char *path, int flags)
 {
-    int fd = open(path, O_RDONLY | ((flags & DD_OPEN_FOLLOW) ? 0 : O_NOFOLLOW));
     if (fd == -1)
     {
         if (!(flags & DD_FAIL_QUIETLY_ENOENT))
@@ -966,6 +1641,20 @@ static char *load_text_file(const char *path, unsigned flags)
     return strbuf_free_nobuf(buf_content);
 }
 
+static char *load_text_file_at(int dir_fd, const char *name, unsigned flags)
+{
+    assert(name[0] != '/');
+
+    const int fd = openat(dir_fd, name, O_RDONLY | ((flags & DD_OPEN_FOLLOW) ? 0 : O_NOFOLLOW));
+    return load_text_from_file_descriptor(fd, name, flags);
+}
+
+static char *load_text_file(const char *path, unsigned flags)
+{
+    const int fd = open(path, O_RDONLY | ((flags & DD_OPEN_FOLLOW) ? 0 : O_NOFOLLOW));
+    return load_text_from_file_descriptor(fd, path, flags);
+}
+
 static void copy_file_from_chroot(struct dump_dir* dd, const char *name, const char *chroot_dir, const char *file_path)
 {
     char *chrooted_name = concat_path_file(chroot_dir, file_path);
@@ -979,14 +1668,16 @@ static void copy_file_from_chroot(struct dump_dir* dd, const char *name, const c
     }
 }
 
-static bool save_binary_file(const char *path, const char* data, unsigned size, uid_t uid, gid_t gid, mode_t mode)
+static bool save_binary_file_at(int dir_fd, const char *name, const char* data, unsigned size, uid_t uid, gid_t gid, mode_t mode)
 {
+    assert(name[0] != '/');
+
     /* the mode is set by the caller, see dd_create() for security analysis */
-    unlink(path);
-    int fd = open(path, O_WRONLY | O_TRUNC | O_CREAT | O_NOFOLLOW, mode);
+    unlinkat(dir_fd, name, /*remove only files*/0);
+    int fd = openat(dir_fd, name, O_WRONLY | O_EXCL | O_CREAT | O_NOFOLLOW, mode);
     if (fd < 0)
     {
-        perror_msg("Can't open file '%s'", path);
+        perror_msg("Can't open file '%s'", name);
         return false;
     }
 
@@ -994,7 +1685,9 @@ static bool save_binary_file(const char *path, const char* data, unsigned size, 
     {
         if (fchown(fd, uid, gid) == -1)
         {
-            perror_msg("Can't change '%s' ownership to %lu:%lu", path, (long)uid, (long)gid);
+            perror_msg("Can't change '%s' ownership to %lu:%lu", name, (long)uid, (long)gid);
+            close(fd);
+            return false;
         }
     }
 
@@ -1006,14 +1699,16 @@ static bool save_binary_file(const char *path, const char* data, unsigned size, 
      */
     if (fchmod(fd, mode) == -1)
     {
-        perror_msg("Can't change mode of '%s'", path);
+        perror_msg("Can't change mode of '%s'", name);
+        close(fd);
+        return false;
     }
 
     unsigned r = full_write(fd, data, size);
     close(fd);
     if (r != size)
     {
-        error_msg("Can't save file '%s'", path);
+        error_msg("Can't save file '%s'", name);
         return false;
     }
 
@@ -1025,15 +1720,20 @@ char* dd_load_text_ext(const struct dump_dir *dd, const char *name, unsigned fla
 //    if (!dd->locked)
 //        error_msg_and_die("dump_dir is not opened"); /* bug */
 
+    if (!dd_validate_element_name(name))
+    {
+        error_msg("Cannot load text. '%s' is not a valid file name", name);
+        if ((flags & DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE))
+            return NULL;
+
+        xfunc_die();
+    }
+
     /* Compat with old abrt dumps. Remove in abrt-2.1 */
     if (strcmp(name, "release") == 0)
         name = FILENAME_OS_RELEASE;
 
-    char *full_path = concat_path_file(dd->dd_dirname, name);
-    char *ret = load_text_file(full_path, flags);
-    free(full_path);
-
-    return ret;
+    return load_text_file_at(dd->dd_fd, name, flags);
 }
 
 char* dd_load_text(const struct dump_dir *dd, const char *name)
@@ -1046,9 +1746,10 @@ void dd_save_text(struct dump_dir *dd, const char *name, const char *data)
     if (!dd->locked)
         error_msg_and_die("dump_dir is not opened"); /* bug */
 
-    char *full_path = concat_path_file(dd->dd_dirname, name);
-    save_binary_file(full_path, data, strlen(data), dd->dd_uid, dd->dd_gid, dd->mode);
-    free(full_path);
+    if (!dd_validate_element_name(name))
+        error_msg_and_die("Cannot save text. '%s' is not a valid file name", name);
+
+    save_binary_file_at(dd->dd_fd, name, data, strlen(data), dd->dd_uid, dd->dd_gid, dd->mode);
 }
 
 void dd_save_binary(struct dump_dir* dd, const char* name, const char* data, unsigned size)
@@ -1056,28 +1757,30 @@ void dd_save_binary(struct dump_dir* dd, const char* name, const char* data, uns
     if (!dd->locked)
         error_msg_and_die("dump_dir is not opened"); /* bug */
 
-    char *full_path = concat_path_file(dd->dd_dirname, name);
-    save_binary_file(full_path, data, size, dd->dd_uid, dd->dd_gid, dd->mode);
-    free(full_path);
+    if (!dd_validate_element_name(name))
+        error_msg_and_die("Cannot save binary. '%s' is not a valid file name", name);
+
+    save_binary_file_at(dd->dd_fd, name, data, size, dd->dd_uid, dd->dd_gid, dd->mode);
 }
 
 long dd_get_item_size(struct dump_dir *dd, const char *name)
 {
-    long size = -1;
-    char *iname = concat_path_file(dd->dd_dirname, name);
-    struct stat statbuf;
+    if (!dd_validate_element_name(name))
+        error_msg_and_die("Cannot get item size. '%s' is not a valid file name", name);
 
-    if (lstat(iname, &statbuf) == 0 && S_ISREG(statbuf.st_mode))
+    long size = -1;
+    struct stat statbuf;
+    int r = fstatat(dd->dd_fd, name, &statbuf, AT_SYMLINK_NOFOLLOW);
+
+    if (r == 0 && S_ISREG(statbuf.st_mode))
         size = statbuf.st_size;
     else
     {
         if (errno == ENOENT)
             size = 0;
         else
-            perror_msg("Can't get size of file '%s'", iname);
+            perror_msg("Can't get size of file '%s'", name);
     }
-
-    free(iname);
 
     return size;
 }
@@ -1087,18 +1790,19 @@ int dd_delete_item(struct dump_dir *dd, const char *name)
     if (!dd->locked)
         error_msg_and_die("dump_dir is not opened"); /* bug */
 
-    char *path = concat_path_file(dd->dd_dirname, name);
-    int res = unlink(path);
+    if (!dd_validate_element_name(name))
+        error_msg_and_die("Cannot delete item. '%s' is not a valid file name", name);
+
+    int res = unlinkat(dd->dd_fd, name, /*only files*/0);
 
     if (res < 0)
     {
         if (errno == ENOENT)
             errno = res = 0;
         else
-            perror_msg("Can't delete file '%s'", path);
+            perror_msg("Can't delete file '%s'", name);
     }
 
-    free(path);
     return res;
 }
 
@@ -1106,14 +1810,22 @@ DIR *dd_init_next_file(struct dump_dir *dd)
 {
 //    if (!dd->locked)
 //        error_msg_and_die("dump_dir is not opened"); /* bug */
+    int opendir_fd = dup(dd->dd_fd);
+    if (opendir_fd < 0)
+    {
+        perror_msg("dd_init_next_file: dup(dd_fd)");
+        return NULL;
+    }
 
     if (dd->next_dir)
         closedir(dd->next_dir);
 
-    dd->next_dir = opendir(dd->dd_dirname);
+    lseek(opendir_fd, SEEK_SET, 0);
+    dd->next_dir = fdopendir(opendir_fd);
     if (!dd->next_dir)
     {
         error_msg("Can't open directory '%s'", dd->dd_dirname);
+        close(opendir_fd);
     }
 
     return dd->next_dir;
@@ -1127,7 +1839,7 @@ int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name)
     struct dirent *dent;
     while ((dent = readdir(dd->next_dir)) != NULL)
     {
-        if (is_regular_file(dent, dd->dd_dirname))
+        if (is_regular_file_at(dent, dd->dd_fd))
         {
             if (short_name)
                 *short_name = xstrdup(dent->d_name);
@@ -1192,6 +1904,7 @@ int dd_rename(struct dump_dir *dd, const char *new_path)
         return -1;
     }
 
+    /* Keeps the opened file descriptor valid */
     int res = rename(dd->dd_dirname, new_path);
     if (res == 0)
     {
@@ -1242,37 +1955,92 @@ static bool uid_in_group(uid_t uid, gid_t gid)
 }
 #endif
 
-int dump_dir_stat_for_uid(const char *dirname, uid_t uid)
+int dd_stat_for_uid(struct dump_dir *dd, uid_t uid)
 {
-    struct stat statbuf;
-    if (stat(dirname, &statbuf) != 0 || !S_ISDIR(statbuf.st_mode))
+    int ddstat = 0;
+
+    if (uid == 0)
     {
-        log_debug("can't get stat of '%s': not a problem directory", dirname);
-        errno = ENOTDIR;
-        return -1;
+        log_debug("directory accessible by super-user");
+        ddstat |= DD_STAT_ACCESSIBLE_BY_UID;
     }
 
-    errno = 0;
-
-    int ddstat = 0;
-    if (uid == 0 || (statbuf.st_mode & S_IROTH))
+#define DD_OWNER_FLAGS (DD_STAT_ACCESSIBLE_BY_UID | DD_STAT_OWNED_BY_UID)
+    if (dd->dd_uid == 0)
     {
-        log_debug("directory '%s' is accessible by %ld uid", dirname, (long)uid);
+        log_debug("directory owned by super-user: checking meta-data");
+
+        const uid_t owner = dd_get_owner(dd);
+
+        if (owner < 0)
+            goto fsattributes;
+
+        if (owner == uid)
+        {
+            log_debug("meta-data: %ld uid owns directory", (long)uid);
+            ddstat |= DD_OWNER_FLAGS;
+            goto finito;
+        }
+
+        uid_t no_owner_uid = (uid_t)-1;
+        int ret = get_no_owner_uid(&no_owner_uid);
+        if (   ret >= 0
+            && owner == no_owner_uid)
+        {
+            log_debug("meta-data: directory is accessible by %ld uid", (long)uid);
+            ddstat |= DD_STAT_ACCESSIBLE_BY_UID;
+            ddstat |= DD_STAT_NO_OWNER;
+        }
+
+        goto finito;
+    }
+
+fsattributes:
+    if (dd->mode & S_IROTH)
+    {
+        log_debug("directory is accessible by %ld uid", (long)uid);
         ddstat |= DD_STAT_ACCESSIBLE_BY_UID;
     }
 
 #if DUMP_DIR_OWNED_BY_USER > 0
-    if (uid == statbuf.st_uid)
+    if (uid == dd->dd_uid)
 #else
-    if (uid_in_group(uid, statbuf.st_gid))
+    if (uid_in_group(uid, dd->dd_gid))
 #endif
     {
-        log_debug("%ld uid owns directory '%s'", (long)uid, dirname);
-        ddstat |= DD_STAT_ACCESSIBLE_BY_UID;
-        ddstat |= DD_STAT_OWNED_BY_UID;
+        log_debug("fs attributes: %ld uid owns directory", (long)uid);
+        ddstat |= DD_OWNER_FLAGS;
     }
 
+#undef DD_OWNER_FLAGS
+
+finito:
+    log_debug("UID=%d, %s: %o", uid, dd->dd_dirname, ddstat);
     return ddstat;
+}
+
+int dump_dir_stat_for_uid(const char *dirname, uid_t uid)
+{
+    struct dump_dir *dd = dd_opendir(dirname, DD_OPEN_FD_ONLY);
+    if (dd == NULL)
+        return -1;
+
+    int r = dd_stat_for_uid(dd, uid);
+    dd_close(dd);
+
+    return r;
+}
+
+int dd_accessible_by_uid(struct dump_dir *dd, uid_t uid)
+{
+    int ddstat = dd_stat_for_uid(dd, uid);
+
+    if (ddstat >= 0)
+        return ddstat & DD_STAT_ACCESSIBLE_BY_UID;
+
+    VERB3 pwarn_msg("can't determine accessibility for %ld uid", (long)uid);
+
+    return 0;
 }
 
 int dump_dir_accessible_by_uid(const char *dirname, uid_t uid)
@@ -1301,33 +2069,39 @@ int dd_mark_as_notreportable(struct dump_dir *dd, const char *reason)
 
 int dd_copy_file(struct dump_dir *dd, const char *name, const char *source_path)
 {
-    char *dest = concat_path_file(dd->dd_dirname, name);
+    if (!dd_validate_element_name(name))
+        error_msg_and_die("Cannot test existence. '%s' is not a valid file name", name);
 
-    log_debug("copying '%s' to '%s'", source_path, dest);
+    log_debug("copying '%s' to '%s' at '%s'", source_path, name, dd->dd_dirname);
 
-    off_t copied = copy_file(source_path, dest, DEFAULT_DUMP_DIR_MODE | S_IROTH);
+    unlinkat(dd->dd_fd, name, /*remove only files*/0);
+    off_t copied = copy_file_ext_at(source_path, dd->dd_fd, name, DEFAULT_DUMP_DIR_MODE,
+            dd->dd_uid, dd->dd_gid, O_RDONLY, O_WRONLY | O_TRUNC | O_EXCL | O_CREAT);
+
     if (copied < 0)
-        error_msg("Can't copy %s to %s", source_path, dest);
+        error_msg("Can't copy %s to %s at '%s'", source_path, name, dd->dd_dirname);
     else
         log_debug("copied %li bytes", (unsigned long)copied);
 
-    free(dest);
     return copied < 0;
 }
 
 int dd_copy_file_unpack(struct dump_dir *dd, const char *name, const char *source_path)
 {
-    char *dest = concat_path_file(dd->dd_dirname, name);
+    if (!dd_validate_element_name(name))
+        error_msg_and_die("Cannot test existence. '%s' is not a valid file name", name);
 
-    log_debug("unpacking '%s' to '%s'", source_path, dest);
+    log_debug("unpacking '%s' to '%s' at '%s'", source_path, name, dd->dd_dirname);
 
-    off_t copied = decompress_file(source_path, dest, DEFAULT_DUMP_DIR_MODE | S_IROTH);
+    unlinkat(dd->dd_fd, name, /*remove only files*/0);
+    off_t copied = decompress_file_ext_at(source_path, dd->dd_fd, name, DEFAULT_DUMP_DIR_MODE,
+            dd->dd_uid, dd->dd_gid, O_RDONLY, O_WRONLY | O_TRUNC | O_EXCL | O_CREAT);
+
     if (copied != 0)
-        error_msg("Can't copy %s to %s", source_path, dest);
+        error_msg("Can't copy %s to %s at '%s'", source_path, name, dd->dd_dirname);
     else
-        log_debug("unpackaged file '%s'", dest);
+        log_debug("unpackaged file '%s'", source_path);
 
-    free(dest);
     return copied < 0;
 
 }
