@@ -439,6 +439,97 @@ int main(int argc, char **argv)
 }
 ]])
 
+## ------- ##
+## dd_stat ##
+## ------- ##
+
+AT_TESTFUN([dd_stat],
+[[
+#include "internal_libreport.h"
+#include <errno.h>
+#include <assert.h>
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    char template[] = "/tmp/XXXXXX/dump_dir";
+
+    char *last_slash = strrchr(template, '/');
+    *last_slash = '\0';
+
+    if (mkdtemp(template) == NULL) {
+        perror("mkdtemp()");
+        return EXIT_FAILURE;
+    }
+
+    *last_slash = '/';
+
+    printf("Dump dir path: %s\n", template);
+
+    dd_g_super_user_uid = geteuid();
+
+    struct dump_dir *dd = dd_create(template, (uid_t)-1, 0640);
+    assert(dd != NULL || !"create new");
+    dd_create_basic_files(dd, geteuid(), NULL);
+    dd_save_text(dd, "type", "custom");
+    dd_close(dd);
+    dd = NULL;
+
+    dd = dd_opendir(template, DD_OPEN_FD_ONLY);
+    assert(dd != NULL || !"open fds");
+    {
+        const int fst_stat = dd_stat_for_uid(dd, geteuid());
+
+        assert(fst_stat & DD_STAT_OWNED_BY_UID);
+        assert(fst_stat & DD_STAT_ACCESSIBLE_BY_UID);
+        assert(!(fst_stat & DD_STAT_NO_OWNER));
+    }
+
+    dd = dd_fdopendir(dd, /*for writing*/0);
+    assert(dd != NULL || !"reopen for writing");
+
+    assert(dd_set_owner(dd, geteuid() + 1) == 0);
+    assert(dd_get_owner(dd) == geteuid() + 1);
+
+    {
+        const int scn_stat = dd_stat_for_uid(dd, geteuid() + 2);
+        assert(scn_stat == 0);
+    }
+
+    {
+        const int thr_stat = dd_stat_for_uid(dd, dd_g_super_user_uid);
+        assert(!(thr_stat & DD_STAT_OWNED_BY_UID));
+        assert(thr_stat & DD_STAT_ACCESSIBLE_BY_UID);
+        assert(!(thr_stat & DD_STAT_NO_OWNER));
+    }
+
+    assert(dd_set_no_owner(dd) == 0);
+    assert(dd_get_owner(dd) != geteuid() + 3);
+
+    {
+        const int frt_stat = dd_stat_for_uid(dd, geteuid() + 3);
+        assert(!(frt_stat & DD_STAT_OWNED_BY_UID));
+        assert(frt_stat & DD_STAT_ACCESSIBLE_BY_UID);
+        assert(frt_stat & DD_STAT_NO_OWNER);
+    }
+
+    {
+        const int fft_stat = dd_stat_for_uid(dd, dd_g_super_user_uid);
+        assert(!(fft_stat & DD_STAT_OWNED_BY_UID));
+        assert(fft_stat & DD_STAT_ACCESSIBLE_BY_UID);
+        assert(fft_stat & DD_STAT_NO_OWNER);
+    }
+
+    assert(dd_delete(dd) == 0);
+
+    *last_slash = '\0';
+    assert(rmdir(template) == 0);
+
+    return EXIT_SUCCESS;
+}
+]])
+
 ## -------------- ##
 ## recursive_lock ##
 ## -------------- ##
