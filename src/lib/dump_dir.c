@@ -692,11 +692,7 @@ int dd_set_owner(struct dump_dir *dd, uid_t owner)
     char long_str[sizeof(long) * 3 + 2];
 
     if (owner == (uid_t)-1)
-    {
-        owner = getuid();
-        if (owner < 0)
-            perror_msg_and_die("%s: getuid", __func__);
-    }
+        owner = dd->dd_uid;
 
     snprintf(long_str, sizeof(long_str), "%li", (long)owner);
     const int ret = dd_meta_data_save_text(dd, META_DATA_FILE_OWNER, long_str);
