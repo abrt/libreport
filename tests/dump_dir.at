@@ -532,3 +532,76 @@ int main(void)
     return 0;
 }
 ]])
+
+## --------------- ##
+## create_dump_dir ##
+## --------------- ##
+
+AT_TESTFUN([create_dump_dir],
+[[
+#include "internal_libreport.h"
+#include <assert.h>
+#
+int main(void)
+{
+    g_verbose = 3;
+
+    char template[] = "/tmp/XXXXXX";
+
+    if (mkdtemp(template) == NULL) {
+        perror("mkdtemp()");
+        return EXIT_FAILURE;
+    }
+
+    printf("Base dump dir path: %s\n", template);
+
+    dd_g_fs_group_gid = getegid();
+
+    problem_data_t *pd = problem_data_new();
+
+    problem_data_add_text_editable(pd, FILENAME_TYPE, "attest");
+
+    {
+        fprintf(stderr, "=== NO UID - geteuid() ===\n");
+        struct dump_dir *no_uid_dd_geteuid = create_dump_dir_from_problem_data_ext(pd, template, geteuid());
+        assert(no_uid_dd_geteuid != NULL);
+        assert(dd_get_owner(no_uid_dd_geteuid) == geteuid());
+        assert(dd_delete(no_uid_dd_geteuid) == 0);
+        fprintf(stderr, "=== NO UID - geteuid() ===\n");
+    }
+
+    {
+        fprintf(stderr, "=== NO UID - NO UID ===\n");
+        struct dump_dir *no_uid_dd_nouid = create_dump_dir_from_problem_data_ext(pd, template, (uid_t)-1L);
+        assert(no_uid_dd_nouid != NULL);
+        assert(dd_get_owner(no_uid_dd_nouid) == geteuid());
+        assert(dd_delete(no_uid_dd_nouid) == 0);
+        fprintf(stderr, "=== NO UID - NO UID ===\n");
+    }
+
+    char buf[sizeof(long)*3 + 2];
+    snprintf(buf, sizeof(buf), "%ld", (long)(geteuid() + 1));
+    problem_data_add_text_editable(pd, FILENAME_UID, buf);
+
+    {
+        fprintf(stderr, "=== UID - geteuid() ===\n");
+        struct dump_dir *uid_dd_geteuid = create_dump_dir_from_problem_data_ext(pd, template, geteuid());
+        assert(uid_dd_geteuid != NULL);
+        assert(dd_get_owner(uid_dd_geteuid) == (geteuid() + 1));
+        assert(dd_delete(uid_dd_geteuid) == 0);
+        fprintf(stderr, "=== UID - geteuid() ===\n");
+    }
+
+    {
+        fprintf(stderr, "=== UID - NO UID ===\n");
+        struct dump_dir *uid_dd_nouid = create_dump_dir_from_problem_data_ext(pd, template, (uid_t)-1L);
+        assert(uid_dd_nouid != NULL);
+        assert(dd_get_owner(uid_dd_nouid) == (geteuid() + 1));
+        assert(dd_delete(uid_dd_nouid) == 0);
+        fprintf(stderr, "=== UID - NO UID ===\n");
+    }
+
+    assert(rmdir(template) == 0);
+    return EXIT_SUCCESS;
+}
+]])
