@@ -247,8 +247,12 @@ const uint8_t *str_to_sha1(uint8_t result[SHA1_RESULT_LEN], const char *str);
 const char    *str_to_sha1str(char result[SHA1_RESULT_LEN*2 + 1], const char *str);
 
 
+#define try_atou libreport_try_atou
+int try_atou(const char *numstr, unsigned *value);
 #define xatou libreport_xatou
 unsigned xatou(const char *numstr);
+#define try_atoi libreport_try_atoi
+int try_atoi(const char *numstr, int *value);
 #define xatoi libreport_xatoi
 int xatoi(const char *numstr);
 /* Using xatoi() instead of naive atoi() is not always convenient -
@@ -258,6 +262,8 @@ int xatoi(const char *numstr);
  * It should really be named xatoi_nonnegative (since it allows 0),
  * but that would be too long.
  */
+#define try_atoi_positive libreport_try_atoi_positive
+int try_atoi_positive(const char *numstr, int *value);
 #define xatoi_positive libreport_xatoi_positive
 int xatoi_positive(const char *numstr);
 
