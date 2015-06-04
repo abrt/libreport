@@ -41,6 +41,32 @@ int create_symlink_lockfile_at(int dir_fd, const char *filename, const char *pid
  */
 int secure_openat_read(int dir_fd, const char *filename);
 
+/******************************************************************************/
+/* Global variables                                                           */
+/******************************************************************************/
+
+/* UID of super-user (default 0)
+ *
+ * This variable is used by the dd* functions when they access security
+ * sensitive elements. The functions will ONLY TRUST the contents of those
+ * elements that ARE OWNED by super-user.
+ */
+extern uid_t dd_g_super_user_uid;
+
+/* GID of a dump diretory created via dd_create() with uid != -1
+ *
+ * The default value is -1 which means that the dd* functions must ignore this
+ * variable.
+ *
+ * Initialize this variable only if you don't want to use the default group
+ * ('abrt').
+ */
+extern gid_t dd_g_fs_group_gid;
+
+/******************************************************************************/
+/* Dump Directory                                                             */
+/******************************************************************************/
+
 enum {
     DD_FAIL_QUIETLY_ENOENT = (1 << 0),
     DD_FAIL_QUIETLY_EACCES = (1 << 1),
