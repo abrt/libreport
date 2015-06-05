@@ -28,6 +28,7 @@ static PyMethodDef module_methods[] = {
     { "ask_password"              , p_ask_password            , METH_VARARGS },
     { "ask_yes_no"                , p_ask_yes_no              , METH_VARARGS },
     { "ask_yes_no_yesforever"     , p_ask_yes_no_yesforever   , METH_VARARGS },
+    { "ask_yes_no_save_result"    , p_ask_yes_no_save_result  , METH_VARARGS },
     { NULL }
 };
 
