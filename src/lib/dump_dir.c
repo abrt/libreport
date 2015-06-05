@@ -102,6 +102,12 @@ enum {
 //   bits
 #define DD_MODE_TO_DIR_MODE(mode) ((mode) | (((mode) & 0444) >> 2))
 
+/* Owner of trusted elements */
+uid_t dd_g_super_user_uid = 0;
+
+/* Group of new dump directories */
+gid_t dd_g_fs_group_gid = (gid_t)-1;
+
 
 static char *load_text_file(const char *path, unsigned flags);
 static char *load_text_file_at(int dir_fd, const char *name, unsigned flags);
@@ -686,11 +692,7 @@ int dd_set_owner(struct dump_dir *dd, uid_t owner)
     char long_str[sizeof(long) * 3 + 2];
 
     if (owner == (uid_t)-1)
-    {
-        owner = getuid();
-        if (owner < 0)
-            perror_msg_and_die("%s: getuid", __func__);
-    }
+        owner = dd->dd_uid;
 
     snprintf(long_str, sizeof(long_str), "%li", (long)owner);
     const int ret = dd_meta_data_save_text(dd, META_DATA_FILE_OWNER, long_str);
@@ -1171,12 +1173,17 @@ struct dump_dir *dd_create_skeleton(const char *dir, uid_t uid, mode_t mode, int
         else
             error_msg("User %lu does not exist, using uid 0", (long)uid);
 
-        /* Get ABRT's group gid */
-        struct group *gr = getgrnam("abrt");
-        if (gr)
-            dd->dd_gid = gr->gr_gid;
+        if (dd_g_fs_group_gid == (uid_t)-1)
+        {
+            /* Get ABRT's group gid */
+            struct group *gr = getgrnam("abrt");
+            if (gr)
+                dd->dd_gid = gr->gr_gid;
+            else
+                error_msg("Group 'abrt' does not exist, using gid 0");
+        }
         else
-            error_msg("Group 'abrt' does not exist, using gid 0");
+            dd->dd_gid = dd_g_fs_group_gid;
 #else
         /* Get ABRT's user uid */
         struct passwd *pw = getpwnam("abrt");
@@ -1959,14 +1966,14 @@ int dd_stat_for_uid(struct dump_dir *dd, uid_t uid)
 {
     int ddstat = 0;
 
-    if (uid == 0)
+    if (uid == dd_g_super_user_uid)
     {
         log_debug("directory accessible by super-user");
         ddstat |= DD_STAT_ACCESSIBLE_BY_UID;
     }
 
 #define DD_OWNER_FLAGS (DD_STAT_ACCESSIBLE_BY_UID | DD_STAT_OWNED_BY_UID)
-    if (dd->dd_uid == 0)
+    if (dd->dd_uid == dd_g_super_user_uid)
     {
         log_debug("directory owned by super-user: checking meta-data");
 

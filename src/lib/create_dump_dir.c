@@ -22,6 +22,18 @@
 
 #define NEW_PD_SUFFIX ".new"
 
+static uid_t parse_uid(const char *uid_str)
+{
+    assert(sizeof(uid_t) == sizeof(unsigned));
+
+    uid_t uid = (uid_t)-1;
+
+    if (try_atou(uid_str, &uid) != 0)
+        error_msg(_("uid value is not valid: '%s'"), uid_str);
+
+    return uid;
+}
+
 static struct dump_dir *try_dd_create(const char *base_dir_name, const char *dir_name, uid_t uid)
 {
     char *path = concat_path_file(base_dir_name, dir_name);
@@ -85,8 +97,37 @@ struct dump_dir *create_dump_dir(const char *base_dir_name, const char *type, ui
      * reporting from anaconda where we can't read /etc/{system,redhat}-release
      * and os_release is taken from anaconda
      */
-    const uid_t crashed_uid = dd_exist(dd, FILENAME_UID) ? /*uid already saved*/-1 : uid;
+    char *uid_str = dd_load_text_ext(dd, FILENAME_UID, DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    const uid_t crashed_uid = uid_str != NULL ? /*uid already saved*/-1 : uid;
     dd_create_basic_files(dd, crashed_uid, NULL);
+
+    /* If crashed uid is (uid_t)-1, then dd_create_basic_files() didn't set the
+     * dd owner and the dd owner remained on fs owner (the default owner used
+     * when creating a new dump directory).
+     *
+     * Our callers expect, that the dd owner is set to value of UID (it used to
+     * be the case before the dd owner was introduced), so we have to try to
+     * get UID from the dump directory, parse it and use the parse value.
+     * Errors are not critical, because the dump directory is already owned by
+     * the fs owner.
+     */
+    if (crashed_uid == (uid_t)-1 && uid_str != NULL)
+    {
+        uid_t owner_uid = parse_uid(uid_str);
+        if (owner_uid != (uid_t)-1)
+        {
+            log_notice("Changing owner of the new problem to: %s", uid_str);
+            /* Ignore errors, the old value is preseverd or fs uid will be used
+             * instead. The function prints out good error messges.*/
+            dd_set_owner(dd, owner_uid);
+        }
+        else
+            log_notice("Failed to parse UID, keeping the default owner.");
+    }
+    else
+        log_notice("No UID provided, keeping the default owner.");
+
+    free(uid_str);
 
     problem_id[strlen(problem_id) - strlen(NEW_PD_SUFFIX)] = '\0';
     char* new_path = concat_path_file(base_dir_name, problem_id);
@@ -156,17 +197,9 @@ struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data,
 
     if (uid_str)
     {
-        char *endptr;
-        errno = 0;
-        long val = strtol(uid_str, &endptr, 10);
-
-        if (errno != 0 || endptr == uid_str || *endptr != '\0' || INT_MAX < val)
-        {
-            error_msg(_("uid value is not valid: '%s'"), uid_str);
+        uid = parse_uid(uid_str);
+        if (uid == (uid_t)-1)
             return NULL;
-        }
-
-        uid = (uid_t)val;
     }
 
     return create_dump_dir_from_problem_data_ext(problem_data, base_dir_name, uid);
