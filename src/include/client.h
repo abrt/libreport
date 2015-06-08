@@ -32,6 +32,7 @@
  *   ASK_YES_NO_YESFOREVER Continue?
  */
 #define REPORT_PREFIX_ASK_YES_NO_YESFOREVER "ASK_YES_NO_YESFOREVER "
+#define REPORT_PREFIX_ASK_YES_NO_SAVE_RESULT "ASK_YES_NO_SAVE_RESULT "
 #define REPORT_PREFIX_ASK "ASK "
 #define REPORT_PREFIX_ASK_PASSWORD "ASK_PASSWORD "
 #define REPORT_PREFIX_ALERT "ALERT "
@@ -48,6 +49,9 @@ int ask_yes_no(const char *question);
 
 #define ask_yes_no_yesforever libreport_ask_yes_no_yesforever
 int ask_yes_no_yesforever(const char *key, const char *question);
+
+#define ask_yes_no_save_resutl libreport_ask_yes_no_save_result
+int ask_yes_no_save_result(const char *key, const char *question);
 
 #define ask libreport_ask
 char *ask(const char *question);

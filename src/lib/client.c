@@ -137,6 +137,68 @@ int ask_yes_no_yesforever(const char *key, const char *question)
     return ((is_slave_mode() && response[0] == 'y') || strncasecmp(yes, response, strlen(yes)) == 0);
 }
 
+int ask_yes_no_save_result(const char *key, const char *question)
+{
+    INITIALIZE_LIBREPORT();
+
+    const char *yes = _("y");
+    const char *no = _("N");
+    const char *forever = _("f");
+    const char *never = _("e");
+
+    {   /* Use response from REPORT_CLIENT_RESPONSE environment variable.
+         *
+         * The forever and never response is not allowed in this case.
+         * There is no serious reason for that, it is just decision.
+         * (It doesn't make much sense to allow the *_forever answer here.)
+         */
+        const char *env_response = getenv("REPORT_CLIENT_RESPONSE");
+        if (env_response)
+            return strncasecmp(yes, env_response, strlen(yes)) == 0;
+    }
+
+    {   /* Load an value for the key from user setting.
+         * YES means forever
+         * NO means never
+         * 'no_value' means ask me
+         */
+        const char *option = get_user_setting(key);
+        if (option)
+            return string_to_bool(option);
+    }
+
+    if (is_slave_mode())
+        printf(REPORT_PREFIX_ASK_YES_NO_SAVE_RESULT "%s %s\n", key, question);
+    else
+        printf("%s [%s/%s/%s/%s] ", question, yes, no, forever, never);
+
+    fflush(stdout);
+
+    if (!is_slave_mode() && is_noninteractive_mode())
+    {
+        putchar('\n');
+        fflush(stdout);
+        return 0;
+    }
+
+    char response[16];
+    if (NULL == fgets(response, sizeof(response), stdin))
+        return 0;
+
+    if ((is_slave_mode() && response[0] == 'f') || strncasecmp(forever, response, strlen(forever)) == 0)
+    {
+        set_user_setting(key, "yes");
+        return 1;
+    }
+    else if ((is_slave_mode() && response[0] == 'e') || strncasecmp(forever, response, strlen(never)) == 0)
+    {
+        set_user_setting(key, "no");
+        return 0;
+    }
+
+    return ((is_slave_mode() && response[0] == 'y') || strncasecmp(yes, response, strlen(yes)) == 0);
+}
+
 char *ask(const char *question)
 {
     if (is_slave_mode())
