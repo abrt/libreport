@@ -48,6 +48,11 @@ bool load_global_configuration(void)
     if (dirs[1] == NULL)
         dirs[1] = get_user_conf_base_dir();
 
+    return load_global_configuration_from_dirs(dirs, dir_flags);
+}
+
+bool load_global_configuration_from_dirs(const char *dirs[], int dir_flags[])
+{
     if (s_global_settings == NULL)
     {
         s_global_settings = new_map_string();
