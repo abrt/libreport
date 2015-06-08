@@ -130,7 +130,7 @@ string_vector_ptr_t get_global_always_excluded_elements(void)
     if (env_exclude == NULL && gc_exclude == NULL)
         return string_vector_new_from_string(NULL);
 
-    char *joined_exclude = xasprintf("%s,%s", env_exclude, gc_exclude);
+    char *joined_exclude = xasprintf("%s, %s", env_exclude, gc_exclude);
     string_vector_ptr_t ret = string_vector_new_from_string(joined_exclude);
     free(joined_exclude);
 
