@@ -45,7 +45,8 @@ TESTSUITE_AT = \
   string_list.at \
   ureport.at \
   problem_report.at \
-  dump_dir.at
+  dump_dir.at \
+  global_config.at
 
 EXTRA_DIST += $(TESTSUITE_AT)
 TESTSUITE = $(srcdir)/testsuite
