@@ -109,6 +109,22 @@ struct run_event_state {
     int (*ask_yes_no_yesforever_callback)(const char *key, const char *msg, void *interaction_param);
 
     /*
+     * Called when child command wants to know 'yes/no/forever/never' decision.
+     * The forever means that in next call the yes answer is returned
+     * immediately without asking. The never means that in next call the
+     * no answer is returned immediately without asking. The answer is stored
+     * in configuration under a passed key.
+     *
+     * The default value is run_event_stdio_ask_yes_no_save_result()
+     *
+     * @param key An option name used as a key in configuration
+     * @param msg An ask message produced by child command
+     * @param args An implementor args
+     * @return Return 0 if an answer is NO, otherwise return nonzero value.
+     */
+    int (*ask_yes_no_save_result_callback)(const char *key, const char *msg, void *interaction_param);
+
+    /*
      * Called when child wants to know a password.
      *
      * The default value is run_event_stdio_ask_password()
@@ -236,6 +252,20 @@ int run_event_stdio_ask_yes_no(const char *msg, void *param);
  * @return 0 if user's answer is 'no', otherwise non 0 value
  */
 int run_event_stdio_ask_yes_no_yesforever(const char *msg, const char *key, void *param);
+
+/*
+ * Prints the msg param on stdout and reads a response from stdin. To store the
+ * forever or never answer uses libreport's user settings API.
+ * Therefore if you want to get the forever or never stuff working you
+ * have to call load_user_setting() function before this function call and call
+ * save_user_settings() function after this function call.
+ *
+ * @param msg a printed message
+ * @param key a key under which the forever (yes) or never (no) answer is stored
+ * @param param ONLY NULL IS ALLOWED; other values are intended for internal use only
+ * @return 0 if user's answer is 'no', otherwise non 0 value
+ */
+int run_event_stdio_ask_yes_no_save_result(const char *msg, const char *key, void *param);
 
 /*
  * Prints the msg param on stdout and reads a response from stdin

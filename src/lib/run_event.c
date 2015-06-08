@@ -35,6 +35,7 @@ struct run_event_state *new_run_event_state()
     state->ask_callback = run_event_stdio_ask;
     state->ask_yes_no_callback = run_event_stdio_ask_yes_no;
     state->ask_yes_no_yesforever_callback= run_event_stdio_ask_yes_no_yesforever;
+    state->ask_yes_no_save_result_callback= run_event_stdio_ask_yes_no_save_result;
     state->ask_password_callback = run_event_stdio_ask_password;
 
     state->command_output = strbuf_new();
@@ -59,6 +60,7 @@ void make_run_event_state_forwarding(struct run_event_state *state)
     state->ask_callback = run_event_stdio_ask;
     state->ask_yes_no_callback = run_event_stdio_ask_yes_no;
     state->ask_yes_no_yesforever_callback= run_event_stdio_ask_yes_no_yesforever;
+    state->ask_yes_no_save_result_callback= run_event_stdio_ask_yes_no_save_result;
     state->ask_password_callback = run_event_stdio_ask_password;
 
     /*
@@ -532,6 +534,37 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
 
                 response = xstrdup(ans ? "y" : "N");
             }
+            /* wait for y/N/f/e response on the same line */
+            else if (prefixcmp(msg, REPORT_PREFIX_ASK_YES_NO_SAVE_RESULT) == 0)
+            {
+                /* example:
+                 *   ASK_YES_NO_SAVE_RESULT ask_before_delete Do you want to delete selected files?
+                 */
+                char *key = msg + sizeof(REPORT_PREFIX_ASK_YES_NO_SAVE_RESULT) - 1;
+                char *key_end = strchr(key, ' ');
+
+                bool ans = false;
+
+                if (!key_end)
+                {   /* example:
+                     *  ASK_YES_NO_YESFOREVER Continue?
+                     *
+                     * Print a wraning only and do not scary users with error messages.
+                     */
+                    log_warning("invalid input format (missing option name), using simple ask yes/no");
+
+                    /* can't simply use 'goto ask_yes_no' because of different lenght of prefixes */
+                    ans = state->ask_yes_no_callback(key, state->interaction_param);
+                }
+                else
+                {
+                    key_end[0] = '\0'; /* split 'key msg' to 'key' and 'msg' */
+                    ans = state->ask_yes_no_save_result_callback(key, key + strlen(key) + 1, state->interaction_param);
+                    key_end[0] = ' '; /* restore original message, not sure if it is necessary */
+                }
+
+                response = xstrdup(ans ? "y" : "N");
+            }
             /* wait for y/N response on the same line */
             else if (prefixcmp(msg, REPORT_PREFIX_ASK_YES_NO) == 0)
             {
@@ -736,6 +769,11 @@ int run_event_stdio_ask_yes_no(const char *msg, void *param)
 int run_event_stdio_ask_yes_no_yesforever(const char *key, const char *msg, void *param)
 {
     return ask_yes_no_yesforever(key, msg);
+}
+
+int run_event_stdio_ask_yes_no_save_result(const char *key, const char *msg, void *param)
+{
+    return ask_yes_no_save_result(key, msg);
 }
 
 char *run_event_stdio_ask_password(const char *msg, void *param)
