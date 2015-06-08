@@ -48,6 +48,11 @@ bool load_global_configuration(void)
     if (dirs[1] == NULL)
         dirs[1] = get_user_conf_base_dir();
 
+    return load_global_configuration_from_dirs(dirs, dir_flags);
+}
+
+bool load_global_configuration_from_dirs(const char *dirs[], int dir_flags[])
+{
     if (s_global_settings == NULL)
     {
         s_global_settings = new_map_string();
@@ -122,7 +127,10 @@ string_vector_ptr_t get_global_always_excluded_elements(void)
     if (env_exclude == NULL && gc_exclude != NULL)
         return string_vector_new_from_string(gc_exclude);
 
-    char *joined_exclude = xasprintf("%s,%s", env_exclude, gc_exclude);
+    if (env_exclude == NULL && gc_exclude == NULL)
+        return string_vector_new_from_string(NULL);
+
+    char *joined_exclude = xasprintf("%s, %s", env_exclude, gc_exclude);
     string_vector_ptr_t ret = string_vector_new_from_string(joined_exclude);
     free(joined_exclude);
 

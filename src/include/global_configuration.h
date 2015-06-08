@@ -29,6 +29,9 @@ extern "C" {
 #define load_global_configuration libreport_load_global_configuration
 bool load_global_configuration(void);
 
+#define load_global_configuration_from_dirs libreport_load_global_configuration_from_dirs
+bool load_global_configuration_from_dirs(const char *dirs[], int dir_flags[]);
+
 #define free_global_configuration libreport_free_global_configuration
 void free_global_configuration(void);
 
