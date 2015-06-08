@@ -3502,7 +3502,7 @@ void create_assistant(GtkApplication *app, bool expert_mode)
     g_btn_close = gtk_button_new_with_mnemonic(_("_Close"));
     gtk_button_set_image(GTK_BUTTON(g_btn_close), gtk_image_new_from_icon_name("window-close-symbolic", GTK_ICON_SIZE_BUTTON));
     g_btn_stop = gtk_button_new_with_mnemonic(_("_Stop"));
-    gtk_button_set_image(GTK_BUTTON(g_btn_stop), gtk_image_new_from_icon_name("process-close-symbolic", GTK_ICON_SIZE_BUTTON));
+    gtk_button_set_image(GTK_BUTTON(g_btn_stop), gtk_image_new_from_icon_name("process-stop-symbolic", GTK_ICON_SIZE_BUTTON));
     gtk_widget_set_no_show_all(g_btn_stop, true); /* else gtk_widget_hide won't work */
     g_btn_onfail = gtk_button_new_with_label(_("Upload for analysis"));
     gtk_button_set_image(GTK_BUTTON(g_btn_onfail), gtk_image_new_from_icon_name("go-up-symbolic", GTK_ICON_SIZE_BUTTON));
