@@ -41,7 +41,7 @@ BuildRequires: asciidoc
 BuildRequires: xmlto
 BuildRequires: newt-devel
 BuildRequires: libproxy-devel
-BuildRequires: satyr-devel >= 0.16
+BuildRequires: satyr-devel >= 0.18
 %if %{with bugzilla}
 BuildRequires: xmlrpc-c-devel
 %endif
@@ -51,7 +51,7 @@ BuildRequires: augeas-devel
 BuildRequires: augeas
 BuildRequires: xz-devel
 Requires: libreport-filesystem = %{version}-%{release}
-Requires: satyr >= 0.16
+Requires: satyr >= 0.18
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -756,6 +756,46 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Tue Jun 09 2015 Jakub Filak <jfilak@redhat.com> 2.6.0-1
+- report: wrap more dump dir functions
+- dd: document dd_create_basic_files
+- lib: add support for ask_yes_no_save_result
+- client-python: add python wrapper for 'ask_yes_no_save_result'
+- client: add function ask_yes_no_save_result
+- lib: correctly join env and file AlwaysExcludedElements values
+- lib: return an empty vector for empty AlwaysExcludedElements
+- lib: enable loading the global conf from a custom dir
+- fix missing icon for "stop" icon name
+- dd: don't use eUID for owner, use fs uid instead
+- dd: set owner to UID when creating dd from problem data
+- dd: make super-user UID and FS group configurable
+- lib: add utility functions parsing numbers
+- dd: add owner to meta-data
+- dd: add a function parsing number from fd
+- dd: add support for meta-data
+- lib: parse fsgid and don't fall back to 0
+- build: switch the default dump dir mode to 0640
+- lib: add alternative dd functions accepting fds
+- lib: fix races in dump directory handling code
+- lib: allow creating root owned problem directories from problem data
+- dd: harden functions against directory traversal issues
+- lib: add a function checking file names
+- dump_dir: allow hooks to create dump directory without parents
+- dump_dir: allow creating of a new dir w/o chowning it
+- lib: introduce a new function copy_file_ext
+- lib: make the dump proc data functions more robust
+- update po/Makefile.in.in
+- dumpdir: fix initialization of dd_gid
+- bugzilla: Spell Bugzilla, not BZ in UI
+- translations updates
+- spec: add files related to reporting AVCs by reporter-mantisbt
+- reporter-mantisbt: add event for reporting AVCs
+- report client: check owner of /var/cache/abrt-di when unpacking fails
+- report client: fix - close an unclosed file
+- report client: provide cpio log when unpacking fails
+- reporter-mantisbt: switch from 'analyzer' to 'type'
+- client-python: remove shebang from non-executable scripts
+
 * Thu Apr 09 2015 Jakub Filak <jfilak@redhat.com> 2.5.1-1
 - Translation updates
 - problem_data: cache problem_item size
