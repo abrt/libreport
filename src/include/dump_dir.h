@@ -131,6 +131,27 @@ int dd_reset_ownership(struct dump_dir *dd);
  */
 struct dump_dir *dd_create(const char *dir, uid_t uid, mode_t mode);
 
+/* Creates the basic files except 'type' and sets the dump dir owner to passed
+ * 'uid'.
+ *
+ * The file 'type' is required and must be added with dd_save_text().
+ *
+ * If you want to have owner different than the problem 'uid', than pass -1 and
+ * add the file 'uid' with dd_save_text()
+ *
+ * List of created files:
+ *   - time
+ *   - last_occurrence
+ *   - uid
+ *   - kernel
+ *   - architecture
+ *   - hostname
+ *   - os_info
+ *   - os_release
+ *
+ * If any of these files has a counterpart in a chroot directory (os_info,
+ * os_relase), creates an element with the prefix "root_"
+ */
 void dd_create_basic_files(struct dump_dir *dd, uid_t uid, const char *chroot_dir);
 int dd_exist(const struct dump_dir *dd, const char *path);
 void dd_sanitize_mode_and_owner(struct dump_dir *dd);

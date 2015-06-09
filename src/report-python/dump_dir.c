@@ -77,6 +77,42 @@ static PyObject *p_dd_delete(PyObject *pself, PyObject *args)
     Py_RETURN_NONE;
 }
 
+/* void dd_rename(struct dump_dir *dd, const char *new_name); */
+static PyObject *p_dd_rename(PyObject *pself, PyObject *args)
+{
+    p_dump_dir *self = (p_dump_dir*)pself;
+    if (!self->dd)
+    {
+        PyErr_SetString(ReportError, "dump dir is not open");
+        return NULL;
+    }
+    const char *new_name;
+    if (!PyArg_ParseTuple(args, "s", &new_name))
+    {
+        return NULL;
+    }
+    return Py_BuildValue("i", dd_rename(self->dd, new_name));
+}
+
+/* void dd_create_basic_files(struct dump_dir *dd, uid_t uid, const char *chroot_dir); */
+static PyObject *p_dd_create_basic_files(PyObject *pself, PyObject *args)
+{
+    p_dump_dir *self = (p_dump_dir*)pself;
+    if (!self->dd)
+    {
+        PyErr_SetString(ReportError, "dump dir is not open");
+        return NULL;
+    }
+    uid_t uid;
+    const char *chroot_dir = NULL;
+    if (!PyArg_ParseTuple(args, "i|z", &uid, &chroot_dir))
+    {
+        return NULL;
+    }
+    dd_create_basic_files(self->dd, uid, chroot_dir);
+    Py_RETURN_NONE;
+}
+
 /* int dd_exist(struct dump_dir *dd, const char *path); */
 static PyObject *p_dd_exist(PyObject *pself, PyObject *args)
 {
@@ -160,6 +196,24 @@ static PyObject *p_dd_save_binary(PyObject *pself, PyObject *args)
     Py_RETURN_NONE;
 }
 
+/* void dd_copy_file(struct dump_dir *dd, const char *name, const char *source_path); */
+static PyObject *p_dd_copy_file(PyObject *pself, PyObject *args)
+{
+    p_dump_dir *self = (p_dump_dir*)pself;
+    if (!self->dd)
+    {
+        PyErr_SetString(ReportError, "dump dir is not open");
+        return NULL;
+    }
+    const char *name;
+    const char *source_path;
+    if (!PyArg_ParseTuple(args, "ss", &name, &source_path))
+    {
+        return NULL;
+    }
+    return Py_BuildValue("i", dd_copy_file(self->dd, name, source_path));
+}
+
 /* int dd_delete_item(struct dump_dir *dd, const char *name); */
 static PyObject *p_dd_delete_item(PyObject *pself, PyObject *args)
 {
@@ -200,10 +254,13 @@ static PyMethodDef p_dump_dir_methods[] = {
     /* method_name, func, flags, doc_string */
     { "close"      , p_dd_close, METH_NOARGS, NULL },
     { "delete"     , p_dd_delete, METH_NOARGS, NULL },
+    { "rename"     , p_dd_rename, METH_VARARGS, NULL },
+    { "create_basic_files", p_dd_create_basic_files, METH_VARARGS, NULL },
     { "exist"      , p_dd_exist, METH_VARARGS, NULL },
     { "load_text"  , p_dd_load_text, METH_VARARGS, NULL },
     { "save_text"  , p_dd_save_text, METH_VARARGS, NULL },
     { "save_binary", p_dd_save_binary, METH_VARARGS, NULL },
+    { "copy_file"  , p_dd_copy_file, METH_VARARGS, NULL },
     { "delete_item", p_dd_delete_item, METH_VARARGS, NULL },
     { NULL }
 };
