@@ -147,10 +147,6 @@ Group: User Interface/Desktops
 Requires: libreport = %{version}-%{release}
 Requires: libreport-plugin-reportuploader = %{version}-%{release}
 Requires: fros >= 1.0
-%if 0%{?rhel} >= 6
-%else
-Requires: pygobject3
-%endif
 Provides: report-gtk = 0:0.23-1
 Obsoletes: report-gtk < 0:0.23-1
 
