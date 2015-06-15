@@ -190,7 +190,7 @@ int ask_yes_no_save_result(const char *key, const char *question)
         set_user_setting(key, "yes");
         return 1;
     }
-    else if ((is_slave_mode() && response[0] == 'e') || strncasecmp(forever, response, strlen(never)) == 0)
+    else if ((is_slave_mode() && response[0] == 'e') || strncasecmp(never, response, strlen(never)) == 0)
     {
         set_user_setting(key, "no");
         return 0;
