@@ -268,7 +268,7 @@ bool load_conf_file(const char *path, map_string_t *settings, bool skipKeysWitho
 
     if (!canonicalize_path(path, real_path))
     {
-        perror_msg("Cannot get real path for '%s'", path);
+        VERB3 perror_msg("Cannot get real path for '%s'", path);
         goto finalize;
     }
 
