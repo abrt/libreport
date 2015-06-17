@@ -72,6 +72,7 @@ class DNFDebugInfoDownload(DebugInfoDownload):
         self.progress = None
 
         self.base = dnf.Base()
+        self.base.logging.presetup()
 
     def prepare(self):
         try:
