@@ -12,9 +12,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import shutil
-import sys
 import os
+import sys
 
 if sys.version_info[0] == 2:
     from reportclient._reportclient import *
@@ -60,23 +59,27 @@ def set_verbosity(verbosity):
     global verbose
     verbose = verbosity
 
+
 def log(fmt, *args):
     sys.stderr.write("%s\n" % (fmt % args))
+
 
 def log1(fmt, *args):
     """ prints log message if verbosity >= 1 """
     if verbose >= 1:
         sys.stderr.write("%s\n" % (fmt % args))
 
+
 def log2(fmt, *args):
     """ prints log message if verbosity >= 2 """
     if verbose >= 2:
         sys.stderr.write("%s\n" % (fmt % args))
 
+
 def error_msg(fmt, *args):
     sys.stderr.write("%s\n" % (fmt % args))
+
 
 def error_msg_and_die(fmt, *args):
     sys.stderr.write("%s\n" % (fmt % args))
     sys.exit(1)
-

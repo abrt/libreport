@@ -34,6 +34,7 @@ from reportclient import (_, log1, log2, RETURN_OK, RETURN_FAILURE,
                           RETURN_CANCEL_BY_USER, verbose, ask_yes_no,
                           error_msg)
 
+
 def ensure_abrt_uid(fn):
     """
     Ensures that the function is called using abrt's uid and gid
@@ -74,6 +75,7 @@ def ensure_abrt_uid(fn):
 
     return wrapped
 
+
 # TODO: unpack just required debuginfo and not entire rpm?
 # ..that can lead to: foo.c No such file and directory
 # files is not used...
@@ -104,7 +106,7 @@ def unpack_rpm(package_full_path, files, tmp_dir, destdir, exact_files=False):
         return RETURN_FAILURE
 
     rpm2cpio = Popen(["rpm2cpio", package_full_path],
-                       stdout = unpacked_cpio, bufsize = -1)
+                     stdout=unpacked_cpio, bufsize=-1)
     retcode = rpm2cpio.wait()
 
     if retcode == 0:
@@ -147,6 +149,7 @@ def unpack_rpm(package_full_path, files, tmp_dir, destdir, exact_files=False):
               .format(unpacked_cpio_path, log_file_name))
         return RETURN_FAILURE
 
+
 def clean_up(tmp_dir):
     """
     Removes the temporary directory.
@@ -158,6 +161,7 @@ def clean_up(tmp_dir):
         except OSError as ex:
             if ex.errno != errno.ENOENT:
                 error_msg(_("Can't remove '{0}': {1}").format(tmp_dir, str(ex)))
+
 
 class DownloadProgress(object):
     """
@@ -193,17 +197,13 @@ class DownloadProgress(object):
         self.last_pct = pct
         # if run from terminal we can have fancy output
         if sys.stdout.isatty():
-            sys.stdout.write("\033[sDownloading (%i of %i) %s: %3u%%\033[u"
-                    % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
+            sys.stdout.write(
+                "\033[sDownloading ({0} of {1}) {2}: {3:3}%\033[u".format(
+                self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
             )
             if pct == 100:
-                #print (_("Downloading (%i of %i) %s: %3u%%")
-                #        % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
-                #)
                 print(_("Downloading ({0} of {1}) {2}: {3:3}%").format(
-                        self.downloaded_pkgs + 1, self.total_pkgs, name, pct
-                        )
-                )
+                      self.downloaded_pkgs + 1, self.total_pkgs, name, pct))
         # but we want machine friendly output when spawned from abrt-server
         else:
             t = time.time()
@@ -212,9 +212,7 @@ class DownloadProgress(object):
             # update only every 5 seconds
             if pct == 100 or self.last_time > t or t - self.last_time >= 5:
                 print(_("Downloading ({0} of {1}) {2}: {3:3}%").format(
-                        self.downloaded_pkgs + 1, self.total_pkgs, name, pct
-                        )
-                )
+                      self.downloaded_pkgs + 1, self.total_pkgs, name, pct))
                 self.last_time = t
                 if pct == 100:
                     self.last_time = 0
@@ -330,31 +328,37 @@ class DebugInfoDownload(object):
 
         if verbose != 0 or len(not_found) != 0:
             print(_("Can't find packages for {0} debuginfo files").format(len(not_found)))
+
         if verbose != 0 or len(package_files_dict) != 0:
             print(_("Packages to download: {0}").format(len(package_files_dict)))
-            question = _("Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?").format(
-                         todownload_size / (1024*1024),
-                         installed_size / (1024*1024)
-                        )
-            if self.noninteractive == False and not ask_yes_no(question):
+            question = _(
+                "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?") \
+                .format(todownload_size / (1024 * 1024),
+                        installed_size / (1024 * 1024))
+
+            if not self.noninteractive and not ask_yes_no(question):
                 print(_("Download cancelled by user"))
                 return RETURN_CANCEL_BY_USER
+
             # check if there is enough free space in both tmp and cache
             res = os.statvfs(self.tmpdir)
-            tmp_space = float(res.f_bsize * res.f_bavail) / (1024*1024)
-            if (todownload_size / (1024*1024)) > tmp_space:
+            tmp_space = float(res.f_bsize * res.f_bavail) / (1024 * 1024)
+            if (todownload_size / (1024 * 1024)) > tmp_space:
                 question = _("Warning: Not enough free space in tmp dir '{0}'"
                              " ({1:.2f}Mb left). Continue?").format(
-                    self.tmpdir, tmp_space)
+                                 self.tmpdir, tmp_space)
+
                 if not self.noninteractive and not ask_yes_no(question):
                     print(_("Download cancelled by user"))
                     return RETURN_CANCEL_BY_USER
+
             res = os.statvfs(self.cachedir)
-            cache_space = float(res.f_bsize * res.f_bavail) / (1024*1024)
-            if (installed_size / (1024*1024)) > cache_space:
+            cache_space = float(res.f_bsize * res.f_bavail) / (1024 * 1024)
+            if (installed_size / (1024 * 1024)) > cache_space:
                 question = _("Warning: Not enough free space in cache dir "
                              "'{0}' ({1:.2f}Mb left). Continue?").format(
-                    self.cachedir, cache_space)
+                                 self.cachedir, cache_space)
+
                 if not self.noninteractive and not ask_yes_no(question):
                     print(_("Download cancelled by user"))
                     return RETURN_CANCEL_BY_USER
@@ -386,8 +390,8 @@ class DebugInfoDownload(object):
                     abrt = pwd.getpwnam("abrt")
                     if (s.st_uid != abrt.pw_uid) or (s.st_gid != abrt.pw_gid):
                         print(_("'{0}' must be owned by abrt. "
-                                 "Please run '# chown -R abrt.abrt {0}' "
-                                 "to fix the issue.").format(self.cachedir))
+                                "Please run '# chown -R abrt.abrt {0}' "
+                                "to fix the issue.").format(self.cachedir))
 
                     clean_up(self.tmpdir)
                     return RETURN_FAILURE
@@ -410,6 +414,7 @@ class DebugInfoDownload(object):
 
         return RETURN_OK
 
+
 def build_ids_to_path(pfx, build_ids):
     """
     Transforms build ids into a path.
@@ -422,6 +427,7 @@ def build_ids_to_path(pfx, build_ids):
     return ["%s/usr/lib/debug/.build-id/%s/%s.debug" % (pfx, b_id[:2], b_id[2:]) for b_id in build_ids]
 
 # beware this finds only missing libraries, but not the executable itself ..
+
 
 def filter_installed_debuginfos(build_ids, cache_dirs):
     """
@@ -450,7 +456,7 @@ def filter_installed_debuginfos(build_ids, cache_dirs):
     if missing:
         files = missing
         missing = []
-    else: # nothing is missing, we can stop looking
+    else:  # nothing is missing, we can stop looking
         return missing
 
     for cache_dir in cache_dirs:
@@ -468,7 +474,7 @@ def filter_installed_debuginfos(build_ids, cache_dirs):
         if missing:
             files = missing
             missing = []
-        else: # nothing is missing, we can stop looking
+        else:  # nothing is missing, we can stop looking
             return missing
 
     return files

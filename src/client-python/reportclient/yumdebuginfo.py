@@ -17,13 +17,15 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Suite 500, Boston, MA  02110-1335  USA
 import os
+import shutil
 
 from yum import _, YumBase
 from yum.callbacks import DownloadBaseCallback
 from yum.Errors import YumBaseError
 
 from reportclient.debuginfo import DebugInfoDownload
-from reportclient import (_, log1, log2)
+from reportclient import (log1, log2, RETURN_FAILURE)
+
 
 class YumDownloadCallback(DownloadBaseCallback):
     """
@@ -55,6 +57,7 @@ class YumDownloadCallback(DownloadBaseCallback):
 
         self.observer.update(name, int(frac * 100))
 
+
 def downloadErrorCallback(callBackObj):
     """
     A callback function for mirror errors.
@@ -64,7 +67,7 @@ def downloadErrorCallback(callBackObj):
         str(callBackObj.exception), callBackObj.mirror))
     # explanation of the return value can be found here:
     # /usr/lib/python2.7/site-packages/urlgrabber/mirror.py
-    return {'fail':0}
+    return {'fail': 0}
 
 
 class YumDebugInfoDownload(DebugInfoDownload):
@@ -199,7 +202,7 @@ class YumDebugInfoDownload(DebugInfoDownload):
                 err = _("Cannot copy file '{0}': {1}").format(pkg_path, str(ex))
         else:
             # pkg is in a remote repo, we need to download it to tmpdir
-            pkg.localpath = local # Hack: to set the localpath we want
+            pkg.localpath = local  # Hack: to set the localpath we want
             err = self.base.downloadPkgs(pkglist=[pkg])
 
         # normalize the name

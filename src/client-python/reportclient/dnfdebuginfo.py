@@ -16,9 +16,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Suite 500, Boston, MA  02110-1335  USA
-import os
 import sys
-import shutil
 
 import dnf
 import dnf.rpm
@@ -31,6 +29,7 @@ from dnf.callback import (STATUS_OK,
 
 from reportclient import (_, log1, log2)
 from reportclient.debuginfo import DebugInfoDownload
+
 
 class DNFProgress(dnf.callback.DownloadProgress):
 
@@ -72,6 +71,7 @@ class DNFDebugInfoDownload(DebugInfoDownload):
         self.progress = None
 
         self.base = dnf.Base()
+        self.base.logging.presetup()
 
     def prepare(self):
         try:
@@ -104,7 +104,7 @@ class DNFDebugInfoDownload(DebugInfoDownload):
         todownload_size = 0
         installed_size = 0
         for debuginfo_path in files:
-            packages = i.filter(file=debuginfo_path);
+            packages = i.filter(file=debuginfo_path)
             if not packages:
                 log2("not found package for %s", debuginfo_path)
                 not_found.append(debuginfo_path)
