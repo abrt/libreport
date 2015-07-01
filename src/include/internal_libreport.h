@@ -946,6 +946,7 @@ struct dump_dir *open_directory_for_writing(
 #define FILENAME_TYPE         "type"
 #define FILENAME_EXECUTABLE   "executable"
 #define FILENAME_PID          "pid"
+#define FILENAME_TID          "tid"
 #define FILENAME_GLOBAL_PID   "global_pid"
 #define FILENAME_PWD          "pwd"
 #define FILENAME_ROOTDIR      "rootdir"
