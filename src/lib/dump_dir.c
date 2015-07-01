@@ -1748,6 +1748,18 @@ char* dd_load_text(const struct dump_dir *dd, const char *name)
     return dd_load_text_ext(dd, name, /*flags:*/ 0);
 }
 
+int dd_load_uint32(const struct dump_dir *dd, const char *name, uint32_t *value)
+{
+    long long parsed = -1;
+    const int ret = read_number_from_file_at(dd->dd_fd, name, "uint32_t",
+            sizeof(uint32_t), 1LL + UINT32_MAX, -1, &parsed);
+
+    if (ret == 0)
+        *value = (uint32_t)parsed;
+
+    return ret;
+}
+
 void dd_save_text(struct dump_dir *dd, const char *name, const char *data)
 {
     if (!dd->locked)

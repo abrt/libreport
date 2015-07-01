@@ -21,6 +21,8 @@
 #ifndef LIBREPORT_DUMP_DIR_H_
 #define LIBREPORT_DUMP_DIR_H_
 
+#include <stdint.h>
+
 /* For DIR */
 #include <sys/types.h>
 #include <dirent.h>
@@ -161,6 +163,7 @@ int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name);
 
 char* dd_load_text_ext(const struct dump_dir *dd, const char *name, unsigned flags);
 char* dd_load_text(const struct dump_dir *dd, const char *name);
+int dd_load_uint32(const struct dump_dir *dd, const char *name, uint32_t *value);
 void dd_save_text(struct dump_dir *dd, const char *name, const char *data);
 void dd_save_binary(struct dump_dir *dd, const char *name, const char *data, unsigned size);
 int dd_copy_file(struct dump_dir *dd, const char *name, const char *source_path);
