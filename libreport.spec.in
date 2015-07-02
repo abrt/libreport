@@ -752,6 +752,18 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Thu Jul 02 2015 Matej Habrnal <mhabrnal@redhat.com> 2.6.1-1
+- dd: add function loading uint32_t
+- ureport: add functionality to use consumer certificate
+- lib: improve client.h documentation
+- support new dump dir element 'tid'
+- reportclient: minor python style fixes
+- reportclient: fix dnf logging
+- lib: don't log attempts to load non-existent files
+- spec: use more appropriate url
+- lib: fix in dialog ask_yes_no_save_result
+- spec: remove an unnecessary Require on pygobject3
+
 * Tue Jun 09 2015 Jakub Filak <jfilak@redhat.com> 2.6.0-1
 - report: wrap more dump dir functions
 - dd: document dd_create_basic_files
