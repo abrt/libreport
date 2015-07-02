@@ -92,7 +92,7 @@ GList *parse_list(const char* list)
 
     char *tmp_list = xstrdup(list);
 
-    GList *l = parse_delimited_list(list, LIST_DELIMITER);
+    GList *l = parse_delimited_list(tmp_list, LIST_DELIMITER);
 
     free(tmp_list);
 
