@@ -186,6 +186,9 @@ int run_event_on_problem_data(struct run_event_state *state, problem_data_t *dat
  */
 char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const char *pfx);
 
+/* Like list_possible_events but accepts problem_data_t */
+char *list_possible_events_problem_data(problem_data_t *pd, const char *dump_dir_name, const char *pfx);
+
 /*
  * Returns a list of possible events for given problem directory
  *
@@ -193,6 +196,11 @@ char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const
  * @param pfx the prefix of the events "report", "workflow"
  */
 GList *list_possible_events_glist(const char *problem_dir_name,
+                                  const char *pfx);
+
+/* Like list_possible_events_glist but accepts problem_data_t */
+GList *list_possible_events_problem_data_glist(problem_data_t *pd,
+                                  const char *problem_dir_name,
                                   const char *pfx);
 
 /* Command line run event callback implemenetation */

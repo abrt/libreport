@@ -52,6 +52,32 @@ char *problem_item_format(struct problem_item *item)
     return NULL;
 }
 
+int problem_item_get_size(struct problem_item *item, unsigned long *size)
+{
+    if (item->size != PROBLEM_ITEM_UNINITIALIZED_SIZE)
+    {
+        *size = item->size;
+        return 0;
+    }
+
+    if (item->flags & CD_FLAG_TXT)
+    {
+        *size = item->size = strlen(item->content);
+        return 0;
+    }
+
+    /* else if (item->flags & CD_FLAG_BIN) */
+
+    struct stat statbuf;
+    statbuf.st_size = 0;
+
+    if (stat(item->content, &statbuf) != 0)
+        return -errno;
+
+    *size = item->size = statbuf.st_size;
+    return 0;
+}
+
 /* problem_data["name"] = { "content", CD_FLAG_foo_bits } */
 
 problem_data_t *problem_data_new(void)
@@ -162,10 +188,11 @@ void problem_data_add_current_process_data(problem_data_t *pd)
     }
 }
 
-void problem_data_add(problem_data_t *problem_data,
+struct problem_item *problem_data_add_ext(problem_data_t *problem_data,
                 const char *name,
                 const char *content,
-                unsigned flags)
+                unsigned flags,
+                unsigned long size)
 {
     if (!(flags & CD_FLAG_BIN))
         flags |= CD_FLAG_TXT;
@@ -175,7 +202,18 @@ void problem_data_add(problem_data_t *problem_data,
     struct problem_item *item = (struct problem_item *)xzalloc(sizeof(*item));
     item->content = xstrdup(content);
     item->flags = flags;
+    item->size = size;
     g_hash_table_replace(problem_data, xstrdup(name), item);
+
+    return item;
+}
+
+void problem_data_add(problem_data_t *problem_data,
+                const char *name,
+                const char *content,
+                unsigned flags)
+{
+    problem_data_add_ext(problem_data, name, content, flags, PROBLEM_ITEM_UNINITIALIZED_SIZE);
 }
 
 void problem_data_add_text_noteditable(problem_data_t *problem_data,
