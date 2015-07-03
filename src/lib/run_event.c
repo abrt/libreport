@@ -300,11 +300,17 @@ static int regcmp_lines(char *val, const char *regex)
 static char* pop_next_command(GList **pp_rule_list,
         char **pp_event_name,    /* reports EVENT value thru this, if not NULL on entry */
         struct dump_dir **pp_dd, /* use *pp_dd for access to dump dir, if non-NULL */
+        problem_data_t *pd,      /* use *pd for access to problem data, if non-NULL */
         const char *dump_dir_name,
         const char *pfx,
         unsigned pfx_len
 )
 {
+    /* It is an error to pass both, but we can recover from it and use only
+     * problem_data_t in that case */
+    if (pp_dd != NULL && pd != NULL)
+        error_msg("BUG: both dump dir and problem data passed to %s()", __func__);
+
     char *command = NULL;
     struct dump_dir *dd = pp_dd ? *pp_dd : NULL;
 
@@ -333,7 +339,7 @@ static char* pop_next_command(GList **pp_rule_list,
             else
             {
                 /* Read from dump dir and compare */
-                if (!dd)
+                if (!dd && pd == NULL)
                 {
                     /* Without dir to match, we assume match for all conditions */
                     if (!dump_dir_name)
@@ -351,10 +357,15 @@ static char* pop_next_command(GList **pp_rule_list,
                 /* Is it "VAR!=VAL"? */
                 int inverted = (eq_sign > cond_str && eq_sign[-1] == '!');
                 char *var_name = xstrndup(cond_str, eq_sign - cond_str - (regex|inverted));
-                char *real_val = dd_load_text_ext(dd, var_name, DD_FAIL_QUIETLY_ENOENT);
+                char *real_val = NULL;
+                char *free_me = NULL;
+                if (pd == NULL)
+                    free_me = real_val = dd_load_text_ext(dd, var_name, DD_FAIL_QUIETLY_ENOENT);
+                else
+                    real_val = problem_data_get_content_or_NULL(pd, var_name);
                 free(var_name);
                 int vals_differ = regex ? regcmp_lines(real_val, eq_sign + 1) : strcmp(real_val, eq_sign + 1);
-                free(real_val);
+                free(free_me);
                 if (inverted)
                     vals_differ = !vals_differ;
 
@@ -424,6 +435,7 @@ int spawn_next_command(struct run_event_state *state,
     char *cmd = pop_next_command(&state->rule_list,
                 NULL,          /* don't return event_name */
                 NULL,          /* NULL dd: we match by... */
+                NULL,          /* no problem data */
                 dump_dir_name, /* ...dirname */
                 event, strlen(event)+1 /* for this event name exactly (not prefix) */
     );
@@ -681,7 +693,8 @@ int run_event_on_problem_data(struct run_event_state *state, problem_data_t *dat
     return r;
 }
 
-char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const char *pfx)
+
+static char *_list_possible_events(struct dump_dir **dd, problem_data_t *pd, const char *dump_dir_name, const char *pfx)
 {
     struct strbuf *result = strbuf_new();
 
@@ -694,7 +707,8 @@ char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const
         char *event_name = NULL;
         char *cmd = pop_next_command(&rule_list,
                 &event_name,       /* return event_name */
-                (dd ? &dd : NULL), /* match this dd... */
+                dd,                /* match this dd... */
+                pd,                /* no problem data */
                 dump_dir_name,     /* ...or if NULL, this dirname */
                 pfx, pfx_len       /* for events with this prefix */
         );
@@ -728,24 +742,34 @@ char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const
     return strbuf_free_nobuf(result);
 }
 
+char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const char *pfx)
+{
+    return _list_possible_events((dd ? &dd : NULL), NULL, dump_dir_name, pfx);
+}
+
+char *list_possible_events_problem_data(problem_data_t *pd, const char *dump_dir_name, const char *pfx)
+{
+    return _list_possible_events(NULL, pd, dump_dir_name, pfx);
+}
+
 GList *list_possible_events_glist(const char *problem_dir_name,
                                   const char *pfx)
 {
     struct dump_dir *dd = dd_opendir(problem_dir_name, DD_OPEN_READONLY);
-    GList *l = NULL;
     char *events = list_possible_events(dd, problem_dir_name, pfx);
-    char *start = events;
-    char *end = strchr(events, '\n');
-
-    while(end)
-    {
-        *end = '\0';
-        l = g_list_append(l, xstrdup(start));
-        start = end + 1;
-        end = strchr(start, '\n');
-    }
-
+    GList *l = parse_delimited_list(events, "\n");
     dd_close(dd);
+    free(events);
+
+    return l;
+}
+
+GList *list_possible_events_problem_data_glist(problem_data_t *pd,
+                                  const char *problem_dir_name,
+                                  const char *pfx)
+{
+    char *events = list_possible_events_problem_data(pd, problem_dir_name, pfx);
+    GList *l = parse_delimited_list(events, "\n");
     free(events);
 
     return l;

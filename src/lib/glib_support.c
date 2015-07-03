@@ -53,6 +53,33 @@ void glib_init(void)
 }
 
 /*
+ * Parser a list of strings to Glist
+ *
+ * The function modifies the passed list.
+ *
+ * @param list a separated list of strings
+ * @param delim a set of bytes that delimit the tokens in the parsed string
+ * @returns GList or null if the list is empty
+ */
+GList *parse_delimited_list(char* list, const char *delim)
+{
+    if (list == NULL)
+        return NULL;
+
+    GList *l = NULL;
+
+    char *saved_ptr = NULL;
+    char *item = strtok_r(list, delim, &saved_ptr);
+    while (item)
+    {
+        l = g_list_append(l, strtrim(xstrdup(item)));
+        item = strtok_r(NULL, delim, &saved_ptr);
+    }
+
+    return l;
+}
+
+/*
  * Parser comma separated list of strings to Glist
  *
  * @param list comma separated list of strings
@@ -63,20 +90,15 @@ GList *parse_list(const char* list)
     if (list == NULL)
         return NULL;
 
-    GList *l = NULL;
-
-    char *saved_ptr = NULL;
     char *tmp_list = xstrdup(list);
-    char *item = strtok_r(tmp_list, LIST_DELIMITER, &saved_ptr);
-    while (item)
-    {
-        l = g_list_append(l, strtrim(xstrdup(item)));
-        item = strtok_r(NULL, LIST_DELIMITER, &saved_ptr);
-    }
+
+    GList *l = parse_delimited_list(tmp_list, LIST_DELIMITER);
 
     free(tmp_list);
+
     return l;
 }
+
 
 void list_free_with_free(GList *list)
 {
