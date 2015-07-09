@@ -417,7 +417,11 @@ static char* pop_next_command(GList **pp_rule_list,
                 if (pd == NULL)
                     free_me = real_val = dd_load_text_ext(dd, var_name, DD_FAIL_QUIETLY_ENOENT);
                 else
+                {
                     real_val = problem_data_get_content_or_NULL(pd, var_name);
+                    if (real_val == NULL)
+                        free_me = real_val = xstrdup("");
+                }
                 free(var_name);
                 int vals_differ = regex ? regcmp_lines(real_val, eq_sign + 1) : strcmp(real_val, eq_sign + 1);
                 free(free_me);
