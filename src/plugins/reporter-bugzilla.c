@@ -647,7 +647,7 @@ int main(int argc, char **argv)
                 if (extra != NULL) {
                     char *email = strtok(extra, "\n");
                     while (email != NULL) {
-                        log(_("Adding extra cc %s to bug report\n"), email);
+                        log(_("Adding extra cc %s to bug report"), email);
                         rhbz_mail_to_cc(client, new_id, email, /* require mail notify */ 0);
                         email = strtok(NULL, "\n");
                     }
