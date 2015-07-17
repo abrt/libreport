@@ -752,6 +752,14 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Fri Jul 17 2015 Jakub Filak <jfilak@redhat.com> 2.6.2-1
+- dd: extend the scope of DD_DONT_WAIT_FOR_LOCK
+- bugzilla: remove an extra new line from a log message
+- bugzilla: do not attach extra-cc element
+- lib: get possible events for problem_data_t
+- lib: parse list delimited by any character
+- bugzilla: Add check for extra-cc file
+
 * Thu Jul 02 2015 Matej Habrnal <mhabrnal@redhat.com> 2.6.1-1
 - dd: add function loading uint32_t
 - ureport: add functionality to use consumer certificate
