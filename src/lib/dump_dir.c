@@ -412,6 +412,11 @@ static int dd_lock(struct dump_dir *dd, unsigned sleep_usec, int flags)
             return r; /* error */
         if (r > 0 || errno == EALREADY)
             break; /* locked successfully */
+        if (flags & DD_DONT_WAIT_FOR_LOCK)
+        {
+            errno = EAGAIN;
+            return -1;
+        }
         /* Other process has the lock, wait for it to go away */
         usleep(sleep_usec);
     }
@@ -937,6 +942,12 @@ static struct dump_dir *dd_do_open(struct dump_dir *dd, const char *dir, int fla
              * defaults to "."!
              */
             error_msg("'%s' is not a problem directory", dd->dd_dirname);
+            goto fail_with_close;
+        }
+
+        if (errno == EAGAIN && (flags & DD_DONT_WAIT_FOR_LOCK))
+        {
+            log_debug("Can't access locked directory '%s'", dd->dd_dirname);
             goto fail_with_close;
         }
 
