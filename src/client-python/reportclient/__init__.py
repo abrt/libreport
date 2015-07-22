@@ -36,7 +36,7 @@ GETTEXT_PROGNAME = "libreport"
 import locale
 import gettext
 
-_ = lambda x: gettext.ldgettext(GETTEXT_PROGNAME, x)
+_ = lambda x: gettext.dgettext(GETTEXT_PROGNAME, x)
 
 def init_gettext():
     try:
