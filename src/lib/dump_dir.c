@@ -218,7 +218,7 @@ static int read_number_from_file_at(int dir_fd, const char *filename, const char
     const int fd = secure_openat_read(dir_fd, filename);
     if (fd < 0)
     {
-        log_warning("Can't open '%s'", filename);
+        log_info("Can't open '%s'", filename);
         return fd;
     }
 
@@ -235,14 +235,14 @@ static int read_number_from_file_at(int dir_fd, const char *filename, const char
 
     if (value_buf == NULL)
     {
-        log_warning("Can't read from '%s'", filename);
+        log_info("Can't read from '%s'", filename);
         ret = -EBADFD;
         goto finito;
     }
 
     if (total_read >= max_size)
     {
-        log_warning("File '%s' is too long to be valid %s "
+        log_info("File '%s' is too long to be valid %s "
                    "(max size %u)", filename, typename, (int)sizeof(value_buf));
         ret = -EMSGSIZE;
         goto finito;
@@ -265,7 +265,7 @@ static int read_number_from_file_at(int dir_fd, const char *filename, const char
         || (*endptr != '\0')
         || endptr == value_buf
     ) {
-        log_warning("File '%s' doesn't contain valid %s"
+        log_info("File '%s' doesn't contain valid %s"
                         "('%s')", filename, typename, value_buf);
         ret = -EINVAL;
         goto finito;
@@ -276,7 +276,7 @@ static int read_number_from_file_at(int dir_fd, const char *filename, const char
      */
     if (res <= min || res >= max)
     {
-        log_warning("File '%s' contains a number out-of-range of %s"
+        log_info("File '%s' contains a number out-of-range of %s"
                         "('%s')", filename, typename, value_buf);
         ret = -ERANGE;
         goto finito;
@@ -441,7 +441,7 @@ static int dd_lock(struct dump_dir *dd, unsigned sleep_usec, int flags)
             if (dd->owns_lock)
                 xunlinkat(dd->dd_fd, ".lock", /*only files*/0);
 
-            log_warning("Unlocked '%s' (no or corrupted '%s' file)", dd->dd_dirname, missing_file);
+            log_notice("Unlocked '%s' (no or corrupted '%s' file)", dd->dd_dirname, missing_file);
             if (--count == 0 || flags & DD_DONT_WAIT_FOR_LOCK)
             {
                 errno = EISDIR; /* "this is an ordinary dir, not dump dir" */
