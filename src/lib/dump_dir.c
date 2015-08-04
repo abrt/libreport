@@ -384,7 +384,16 @@ static const char *dd_check(struct dump_dir *dd)
         return FILENAME_TIME;
     }
 
-    dd->dd_type = load_text_file_at(dd->dd_fd, FILENAME_TYPE, DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    /* Do not warn about missing 'type' file in non-verbose modes.
+     *
+     * Handling of FILENAME_TYPE should be consistent with handling of
+     * FILENAME_TIME in the function parse_time_file_at() where the missing
+     * file message is printed by log_info() (in a verbose mode).
+     */
+    int load_flags = DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE;
+    if (g_verbose < 2) load_flags |= DD_FAIL_QUIETLY_ENOENT;
+
+    dd->dd_type = load_text_file_at(dd->dd_fd, FILENAME_TYPE, load_flags);
     if (!dd->dd_type || (strlen(dd->dd_type) == 0))
     {
         log_debug("Missing or empty file: "FILENAME_TYPE);
