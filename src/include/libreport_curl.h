@@ -70,6 +70,7 @@ enum {
     POST_DATA_FROMFILE_PUT = -3,
     POST_DATA_FROMFILE_AS_FORM_DATA = -4,
     POST_DATA_STRING_AS_FORM_DATA = -5,
+    POST_DATA_GET = -6,
 };
 int
 post(post_state_t *state,
@@ -78,6 +79,15 @@ post(post_state_t *state,
                 const char **additional_headers,
                 const char *data,
                 off_t data_size);
+static inline int
+get(post_state_t *state,
+                const char *url,
+                const char *content_type,
+                const char **additional_headers)
+{
+    return post(state, url, content_type, additional_headers,
+                     NULL, POST_DATA_GET);
+}
 static inline int
 post_string(post_state_t *state,
                 const char *url,

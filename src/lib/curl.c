@@ -351,7 +351,7 @@ post(post_state_t *state,
         xcurl_easy_setopt_ptr(handle, CURLOPT_PASSWORD, (state->password ? state->password : ""));
     }
 
-    if (data_size != POST_DATA_FROMFILE_PUT)
+    if (data_size != POST_DATA_FROMFILE_PUT && data_size != POST_DATA_GET)
     {
         // Do a HTTP POST. This also makes curl use
         // a "Content-Type: application/x-www-form-urlencoded" header.
@@ -459,7 +459,7 @@ post(post_state_t *state,
             error_msg_and_die("out of memory or read error (curl_formadd error code: %d)", (int)curlform_err);
         xcurl_easy_setopt_ptr(handle, CURLOPT_HTTPPOST, post);
     }
-    else
+    else if (data_size != POST_DATA_GET)
     {
         // ...from a blob in memory
         xcurl_easy_setopt_ptr(handle, CURLOPT_POSTFIELDS, data);
