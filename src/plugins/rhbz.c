@@ -520,7 +520,35 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
 
     char *summary = shorten_string_to_length(bzsummary, MAX_SUMMARY_LENGTH);
 
-    char *status_whiteboard = xasprintf("abrt_hash:%s", duphash);
+    struct strbuf *status_whiteboard = strbuf_new();
+    strbuf_append_strf(status_whiteboard, "abrt_hash:%s;", duphash);
+
+    {   /* Add fields from /etc/os-release to Whiteboard for simple metrics. */
+        map_string_t *osinfo = new_map_string();
+        problem_data_get_osinfo(problem_data, osinfo);
+
+        /* This is the highest abstraction level I am willing to introduce now.
+         *
+         * The lines below can be either reduced to the body of the for loop
+         * or the opts variable can be dynamically initialized
+         * or you can simply add an another /etc/os-release option name
+         * (e.g. BUILD_ID).
+         */
+        const char *const opts[] = { "VARIANT_ID", NULL };
+        for (const char *const *iter = opts; *iter != NULL; ++iter)
+        {
+            const char *v = get_map_string_item_or_NULL(osinfo, *iter);
+            if (v != NULL)
+            {
+                /* semi-colon (;) is the delimiter because /etc/os-release *_ID
+                 * options does not permit the ';' character in values
+                 */
+                strbuf_append_strf(status_whiteboard, "%s=%s;", *iter, v);
+            }
+        }
+
+        free_map_string(osinfo);
+    }
 
     xmlrpc_env env;
     xmlrpc_env_init(&env);
@@ -532,7 +560,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
     abrt_xmlrpc_params_add_string(&env, params, "version", version);
     abrt_xmlrpc_params_add_string(&env, params, "summary", summary);
     abrt_xmlrpc_params_add_string(&env, params, "description", bzcomment);
-    abrt_xmlrpc_params_add_string(&env, params, "status_whiteboard", status_whiteboard);
+    abrt_xmlrpc_params_add_string(&env, params, "status_whiteboard", status_whiteboard->buf);
 
     if(arch)
         abrt_xmlrpc_params_add_string(&env, params, "platform", arch);
@@ -562,7 +590,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
     xmlrpc_DECREF(params);
     xmlrpc_env_clean(&env);
 
-    free(status_whiteboard);
+    strbuf_free(status_whiteboard);
     free(summary);
 
     if (!result)
