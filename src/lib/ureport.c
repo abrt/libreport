@@ -564,7 +564,16 @@ ureport_server_response_from_reply(post_state_t *post_state,
      */
     if (post_state->curl_result != CURLE_OK)
     {
-        error_msg(_("Failed to upload uReport to the server '%s' with curl: %s"), config->ur_url, post_state->errmsg);
+        if (post_state->errmsg != NULL && strcmp( post_state->errmsg, "") != 0)
+            error_msg(_("Failed to upload uReport to the server '%s' with curl: %s"),
+                                                                    config->ur_url,
+                                                                    post_state->errmsg);
+        else
+            error_msg(_("Failed to upload uReport to the server '%s'"), config->ur_url);
+
+        if (post_state->curl_error_msg != NULL && strcmp(post_state->curl_error_msg, "") != 0)
+            error_msg(_("Error: %s"), post_state->curl_error_msg);
+
         return NULL;
     }
 
