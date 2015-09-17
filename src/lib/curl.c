@@ -542,6 +542,8 @@ post(post_state_t *state,
         xcurl_easy_setopt_ptr(handle, CURLOPT_SSLCERT, state->client_cert_path);
         xcurl_easy_setopt_ptr(handle, CURLOPT_SSLKEY, state->client_key_path);
     }
+    if (state->cert_authority_cert_path)
+        xcurl_easy_setopt_ptr(handle, CURLOPT_CAINFO, state->cert_authority_cert_path);
 
     // This is the place where everything happens.
     // Here errors are not limited to "out of memory", can't just die.

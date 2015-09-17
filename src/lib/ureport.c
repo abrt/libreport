@@ -37,6 +37,12 @@
 #define RHSMCON_CERT_NAME "cert.pem"
 #define RHSMCON_KEY_NAME "key.pem"
 
+/* Using the same template as for RHSM certificate, macro for cert dir path and
+ * macro for cert name. Cert path can be easily modified for example by reading
+ * an environment variable LIBREPORT_DEBUG_AUTHORITY_CERT_DIR_PATH
+ */
+#define CERT_AUTHORITY_CERT_PATH "/etc/redhat-access-insights"
+#define CERT_AUTHORITY_CERT_NAME "cert-api.access.redhat.com.pem"
 
 static char *
 puppet_config_print(const char *key)
@@ -106,6 +112,17 @@ certificate_exist(char *cert_name)
     return true;
 }
 
+static bool
+cert_authority_cert_exist(char *cert_name)
+{
+    if (access(cert_name, F_OK) != 0)
+    {
+        log_notice("Certs validating the server '%s' does not exist.", cert_name);
+        return false;
+    }
+    return true;
+}
+
 void
 ureport_server_config_set_client_auth(struct ureport_server_config *config,
                                       const char *client_auth)
@@ -134,6 +151,16 @@ ureport_server_config_set_client_auth(struct ureport_server_config *config,
         char *cert_full_name = concat_path_file(rhsm_dir, RHSMCON_CERT_NAME);
         char *key_full_name = concat_path_file(rhsm_dir, RHSMCON_KEY_NAME);
 
+        /* get authority certificate dir path from environment variable, if it
+         * is not set, use CERT_AUTHORITY_CERT_PATH
+         */
+        const char *authority_cert_dir_path = getenv("LIBREPORT_DEBUG_AUTHORITY_CERT_DIR_PATH");
+        if (authority_cert_dir_path == NULL)
+           authority_cert_dir_path = CERT_AUTHORITY_CERT_PATH;
+
+        char *cert_authority_cert_full_name = concat_path_file(authority_cert_dir_path,
+                                                                 CERT_AUTHORITY_CERT_NAME);
+
         if (certificate_exist(cert_full_name) && certificate_exist(key_full_name))
         {
             config->ur_client_cert = cert_full_name;
@@ -145,6 +172,16 @@ ureport_server_config_set_client_auth(struct ureport_server_config *config,
             free(cert_full_name);
             free(key_full_name);
             log_notice("Using the default configuration for uReports.");
+        }
+
+        if (cert_authority_cert_exist(cert_authority_cert_full_name))
+        {
+            config->ur_cert_authority_cert = cert_authority_cert_full_name;
+            log_debug("Using validating server cert: '%s'", config->ur_cert_authority_cert);
+        }
+        else
+        {
+            free(cert_authority_cert_full_name);
         }
 
         free(rhsm_dir);
@@ -286,6 +323,7 @@ ureport_server_config_init(struct ureport_server_config *config)
     config->ur_ssl_verify = true;
     config->ur_client_cert = NULL;
     config->ur_client_key = NULL;
+    config->ur_cert_authority_cert = NULL;
     config->ur_username = NULL;
     config->ur_password = NULL;
     config->ur_http_headers = new_map_string();
@@ -303,6 +341,9 @@ ureport_server_config_destroy(struct ureport_server_config *config)
 
     free(config->ur_client_key);
     config->ur_client_key = DESTROYED_POINTER;
+
+    free(config->ur_cert_authority_cert);
+    config->ur_cert_authority_cert = DESTROYED_POINTER;
 
     free(config->ur_username);
     config->ur_username = DESTROYED_POINTER;
@@ -525,7 +566,16 @@ ureport_server_response_from_reply(post_state_t *post_state,
      */
     if (post_state->curl_result != CURLE_OK)
     {
-        error_msg(_("Failed to upload uReport to the server '%s' with curl: %s"), config->ur_url, post_state->errmsg);
+        if (post_state->errmsg != NULL && strcmp( post_state->errmsg, "") != 0)
+            error_msg(_("Failed to upload uReport to the server '%s' with curl: %s"),
+                                                                    config->ur_url,
+                                                                    post_state->errmsg);
+        else
+            error_msg(_("Failed to upload uReport to the server '%s'"), config->ur_url);
+
+        if (post_state->curl_error_msg != NULL && strcmp(post_state->curl_error_msg, "") != 0)
+            error_msg(_("Error: %s"), post_state->curl_error_msg);
+
         return NULL;
     }
 
@@ -701,6 +751,7 @@ ureport_do_post(const char *json, struct ureport_server_config *config,
     {
         post_state->client_cert_path = config->ur_client_cert;
         post_state->client_key_path = config->ur_client_key;
+        post_state->cert_authority_cert_path = config->ur_cert_authority_cert;
     }
     else if (config->ur_username && config->ur_password)
     {
