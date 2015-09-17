@@ -707,7 +707,7 @@ int main(void)
     memset((void *)&ps, 0, sizeof(ps));
 
     ps.curl_result = 1;
-    strcpy(ps.errmsg, "err");
+    strcpy(ps.errmsg, "Artificial Error for the purpose of testing ability to recover from errors");
     ps.body = (char *)"body";
 
     struct ureport_server_config config;
