@@ -704,6 +704,7 @@ int main(void)
 
     /* curl_resul is not CURL_OK */
     struct post_state ps;
+    memset((void *)&ps, 0, sizeof(ps));
 
     ps.curl_result = 1;
     strcpy(ps.errmsg, "err");
