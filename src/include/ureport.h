@@ -52,6 +52,7 @@ struct ureport_server_config
     char *ur_client_cert; ///< Path to certificate used for client
                           ///< authentication (or NULL)
     char *ur_client_key;  ///< Private key for the certificate
+    char *ur_cert_authority_cert; ///< Certificate authority certificate
     char *ur_username;    ///< username for basic HTTP auth
     char *ur_password;    ///< password for basic HTTP auth
     map_string_t *ur_http_headers; ///< Additional HTTP headers
