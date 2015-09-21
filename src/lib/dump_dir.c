@@ -213,7 +213,7 @@ int secure_openat_read(int dir_fd, const char *filename)
 }
 
 static int read_number_from_file_at(int dir_fd, const char *filename, const char *typename,
-        size_t typesz, long long max, long long min, long long *value)
+        size_t typesz, unsigned long long min, unsigned long long max, unsigned long long *value)
 {
     const int fd = secure_openat_read(dir_fd, filename);
     if (fd < 0)
@@ -255,29 +255,44 @@ static int read_number_from_file_at(int dir_fd, const char *filename, const char
         --total_read;
     value_buf[total_read] = '\0';
 
+    const int neg = (value_buf[0] == '-');
+    /* if min equals 0, then we shall be to converting an unsigned number */
+    if (neg && 0 == min)
+    {
+        log_info("File '%s' contains a negative number ('%s')", filename, value_buf);
+        ret = -ERANGE;
+        goto finito;
+    }
+
     errno = 0;    /* To distinguish success/failure after call */
     char *endptr;
-    long long res = strtoll(value_buf, &endptr, /* base */ 10);
+    const unsigned long long res = strtoull(value_buf, &endptr, /* base */ 10);
 
     /* Check for various possible errors */
-    if (   (errno == ERANGE && (res == LONG_LONG_MAX || res == LONG_LONG_MIN))
-        || (errno != 0 && res == 0)
+    if (errno == ERANGE && (res == 0 || res == ULLONG_MAX))
+    {
+        log_info("File '%s' contains a number out-of-range of %s "
+                        "('%s')", filename, typename, value_buf);
+        ret = -ERANGE;
+        goto finito;
+    }
+
+    if (   (errno != 0 && res == 0)
         || (*endptr != '\0')
         || endptr == value_buf
     ) {
-        log_info("File '%s' doesn't contain valid %s"
+        log_info("File '%s' doesn't contain valid %s "
                         "('%s')", filename, typename, value_buf);
         ret = -EINVAL;
         goto finito;
     }
 
-    /* If the stored number is long long, this condition falsely indetify
-     * LONG_LONG_(MAX|MIN) as an value which is out of range.
-     */
-    if (res <= min || res >= max)
+    if ((neg ? res < min : res > max))
     {
-        log_info("File '%s' contains a number out-of-range of %s"
-                        "('%s')", filename, typename, value_buf);
+        log_info("File '%s' contains a number ('%s') %s of %s",
+                        filename, value_buf,
+                        neg ? "lower than minimum" : "greater than maximum",
+                        typename);
         ret = -ERANGE;
         goto finito;
     }
@@ -300,8 +315,8 @@ static time_t parse_time_file_at(int dir_fd, const char *filename)
 {
     /* Note that on some architectures (x32) time_t is "long long" */
     const long long MAX_TIME_T = (1ULL << (sizeof(time_t)*8 - 1)) - 1;
-    long long value = -1;
-    read_number_from_file_at(dir_fd, filename, "unix time stamp", sizeof(time_t), MAX_TIME_T, 0, &value);
+    unsigned long long value = 0;
+    read_number_from_file_at(dir_fd, filename, "unix time stamp", sizeof(time_t), 0, MAX_TIME_T, &value);
     return (time_t)value;
 }
 
@@ -736,10 +751,10 @@ uid_t dd_get_owner(struct dump_dir *dd)
         return dd->dd_uid;
     }
 
-    long long owner = -1;
+    unsigned long long owner = 0;
 
     int ret = read_number_from_file_at(dd_md_fd, META_DATA_FILE_OWNER, "UID",
-                                       sizeof(uid_t), MAX_UID_T, -1, &owner);
+                                       sizeof(uid_t), 0, MAX_UID_T, &owner);
 
     if (ret < 0)
     {
@@ -1768,14 +1783,50 @@ char* dd_load_text(const struct dump_dir *dd, const char *name)
     return dd_load_text_ext(dd, name, /*flags:*/ 0);
 }
 
+int dd_load_int32(const struct dump_dir *dd, const char *name, int32_t *value)
+{
+    unsigned long long parsed = 0;
+    const int ret = read_number_from_file_at(dd->dd_fd, name, "int32_t",
+            sizeof(int32_t), INT32_MIN, INT32_MAX, &parsed);
+
+    if (ret == 0)
+        *value = (int32_t)parsed;
+
+    return ret;
+}
+
 int dd_load_uint32(const struct dump_dir *dd, const char *name, uint32_t *value)
 {
-    long long parsed = -1;
+    unsigned long long parsed = 0;
     const int ret = read_number_from_file_at(dd->dd_fd, name, "uint32_t",
-            sizeof(uint32_t), 1LL + UINT32_MAX, -1, &parsed);
+            sizeof(uint32_t), 0, UINT32_MAX, &parsed);
 
     if (ret == 0)
         *value = (uint32_t)parsed;
+
+    return ret;
+}
+
+int dd_load_int64(const struct dump_dir *dd, const char *name, int64_t *value)
+{
+    unsigned long long parsed = 0;
+    const int ret = read_number_from_file_at(dd->dd_fd, name, "int64_t",
+            sizeof(int64_t), INT64_MIN, INT64_MAX, &parsed);
+
+    if (ret == 0)
+        *value = (int64_t)parsed;
+
+    return ret;
+}
+
+int dd_load_uint64(const struct dump_dir *dd, const char *name, uint64_t *value)
+{
+    unsigned long long parsed = 0;
+    const int ret = read_number_from_file_at(dd->dd_fd, name, "uint64_t",
+            sizeof(uint64_t), 0, UINT64_MAX, &parsed);
+
+    if (ret == 0)
+        *value = (uint64_t)parsed;
 
     return ret;
 }

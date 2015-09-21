@@ -697,9 +697,87 @@ int main(void)
 }
 ]])
 
-## --------------- ##
+## ------------- ##
+## dd_load_int32 ##
+## ------------- ##
+
+AT_TESTFUN([dd_load_int32],
+[[
+#include "internal_libreport.h"
+#include <assert.h>
+#
+int main(void)
+{
+    g_verbose = 3;
+
+    char template[] = "/tmp/XXXXXX";
+
+    if (mkdtemp(template) == NULL) {
+        perror("mkdtemp()");
+        return EXIT_FAILURE;
+    }
+
+    printf("Dump dir path: %s\n", template);
+
+    struct dump_dir *dd = dd_create(template, (uid_t)-1, 0640);
+    assert(dd != NULL || !"Cannot create new dump directory");
+
+    dd_create_basic_files(dd, geteuid(), NULL);
+    dd_save_text(dd, FILENAME_TYPE, "attest");
+
+    int32_t value;
+
+    dd_save_text(dd, "empty", "");
+    assert(dd_load_int32(dd, "empty", &value) == -EINVAL);
+
+    char *buf = NULL;
+    asprintf(&buf, "%lld", -1LL + INT32_MIN);
+    assert(buf != NULL);
+
+    dd_save_text(dd, "below_min", buf);
+    free(buf);
+
+    assert(dd_load_int32(dd, "below_min", &value) == -ERANGE);
+
+    asprintf(&buf, "%"PRId32, INT32_MIN);
+    dd_save_text(dd, "min", buf);
+    free(buf);
+
+    assert(dd_load_int32(dd, "min", &value) == 0);
+    assert(value == INT32_MIN || !"min");
+
+    asprintf(&buf, "%"PRId32, INT32_MAX);
+    assert(buf != NULL);
+
+    dd_save_text(dd, "max", buf);
+    free(buf);
+
+    assert(dd_load_int32(dd, "max", &value) == 0);
+    assert(value == INT32_MAX);
+
+    asprintf(&buf, "%lld", 1LL + INT32_MAX);
+    assert(buf != NULL);
+
+    dd_save_text(dd, "above_max", buf);
+    free(buf);
+
+    assert(dd_load_int32(dd, "above_max", &value) == -ERANGE);
+
+    dd_save_text(dd, "string_suffix", "123abc");
+    assert(dd_load_int32(dd, "string_suffix", &value) == -EINVAL);
+
+    dd_save_text(dd, "string", "abc");
+    assert(dd_load_int32(dd, "string", &value) == -EINVAL);
+
+    assert(dd_delete(dd) == 0);
+
+    return 0;
+}
+]])
+
+## -------------- ##
 ## dd_load_uint32 ##
-## --------------- ##
+## -------------- ##
 
 AT_TESTFUN([dd_load_uint32],
 [[
@@ -757,6 +835,135 @@ int main(void)
 
     dd_save_text(dd, "string", "abc");
     assert(dd_load_uint32(dd, "string", &value) == -EINVAL);
+
+    assert(dd_delete(dd) == 0);
+
+    return 0;
+}
+]])
+
+## ------------- ##
+## dd_load_int64 ##
+## ------------- ##
+
+AT_TESTFUN([dd_load_int64],
+[[
+#include "internal_libreport.h"
+#include <assert.h>
+
+int main(void)
+{
+    g_verbose = 3;
+
+    char template[] = "/tmp/XXXXXX";
+
+    if (mkdtemp(template) == NULL) {
+        perror("mkdtemp()");
+        return EXIT_FAILURE;
+    }
+
+    printf("Dump dir path: %s\n", template);
+
+    struct dump_dir *dd = dd_create(template, (uid_t)-1, 0640);
+    assert(dd != NULL || !"Cannot create new dump directory");
+
+    dd_create_basic_files(dd, geteuid(), NULL);
+    dd_save_text(dd, FILENAME_TYPE, "attest");
+
+    int64_t value;
+
+    dd_save_text(dd, "empty", "");
+    assert(dd_load_int64(dd, "empty", &value) == -EINVAL);
+
+    dd_save_text(dd, "below_min", "-9223372036854775809");
+    assert(dd_load_int64(dd, "below_min", &value) == -ERANGE);
+
+    char *buf = NULL;
+    asprintf(&buf, "%"PRId64, INT64_MIN);
+    assert(buf != NULL);
+    dd_save_text(dd, "min", buf);
+    assert(dd_load_int64(dd, "min", &value) == 0);
+    assert(value == INT64_MIN || !"min");
+    free(buf);
+
+    asprintf(&buf, "%"PRId64, INT64_MAX);
+    assert(buf != NULL);
+    dd_save_text(dd, "max", buf);
+    assert(dd_load_int64(dd, "max", &value) == 0);
+    assert(value == INT64_MAX);
+    free(buf);
+
+    dd_save_text(dd, "above_max", "9223372036854775808");
+    assert(dd_load_int64(dd, "above_max", &value) == -ERANGE);
+
+    dd_save_text(dd, "string_suffix", "123abc");
+    assert(dd_load_int64(dd, "string_suffix", &value) == -EINVAL);
+
+    dd_save_text(dd, "string", "abc");
+    assert(dd_load_int64(dd, "string", &value) == -EINVAL);
+
+    assert(dd_delete(dd) == 0);
+
+    return 0;
+}
+]])
+
+## --------------- ##
+## dd_load_uint64  ##
+## --------------- ##
+
+AT_TESTFUN([dd_load_uint64],
+[[
+#include "internal_libreport.h"
+#include <assert.h>
+
+int main(void)
+{
+    g_verbose = 3;
+
+    char template[] = "/tmp/XXXXXX";
+
+    if (mkdtemp(template) == NULL) {
+        perror("mkdtemp()");
+        return EXIT_FAILURE;
+    }
+
+    printf("Dump dir path: %s\n", template);
+
+    struct dump_dir *dd = dd_create(template, (uid_t)-1, 0640);
+    assert(dd != NULL || !"Cannot create new dump directory");
+
+    dd_create_basic_files(dd, geteuid(), NULL);
+    dd_save_text(dd, FILENAME_TYPE, "attest");
+
+    uint64_t value;
+
+    dd_save_text(dd, "empty", "");
+    assert(dd_load_uint64(dd, "empty", &value) == -EINVAL);
+
+    dd_save_text(dd, "below_min", "-1");
+    assert(dd_load_uint64(dd, "below_min", &value) == -ERANGE);
+
+    dd_save_text(dd, "min", "0");
+    assert(dd_load_uint64(dd, "min", &value) == 0);
+    assert(value == 0 || !"min");
+
+    char *buf = NULL;
+    asprintf(&buf, "%"PRIu64, UINT64_MAX);
+    assert(buf != NULL);
+    dd_save_text(dd, "max", buf);
+    assert(dd_load_uint64(dd, "max", &value) == 0);
+    assert(value == UINT64_MAX);
+    free(buf);
+
+    dd_save_text(dd, "above_max", "18446744073709551616");
+    assert(dd_load_uint64(dd, "above_max", &value) == -ERANGE);
+
+    dd_save_text(dd, "string_suffix", "123abc");
+    assert(dd_load_uint64(dd, "string_suffix", &value) == -EINVAL);
+
+    dd_save_text(dd, "string", "abc");
+    assert(dd_load_uint64(dd, "string", &value) == -EINVAL);
 
     assert(dd_delete(dd) == 0);
 
