@@ -176,6 +176,20 @@ void dd_save_text(struct dump_dir *dd, const char *name, const char *data);
 void dd_save_binary(struct dump_dir *dd, const char *name, const char *data, unsigned size);
 int dd_copy_file(struct dump_dir *dd, const char *name, const char *source_path);
 int dd_copy_file_unpack(struct dump_dir *dd, const char *name, const char *source_path);
+
+/* Creates/overwrites an element with data read from a file descriptor
+ *
+ * @param dd Dump directory
+ * @param name The name of the element
+ * @param fd The file descriptor
+ * @param flags libreport_copyfd_flags
+ * @param maxsize Limit for number of written Bytes. (0 for unlimited).
+ * @return Number of read Bytes. If the return value is greater than the maxsize
+ * the file descriptor content was truncated to the maxsize. The return value
+ * is not size of the file descriptor.
+ */
+off_t dd_copy_fd(struct dump_dir *dd, const char *name, int fd, int copy_flags, off_t maxsize);
+
 /* Returns value less than 0 if any error occured; otherwise returns size of an
  * item in Bytes. If an item does not exist returns 0 instead of an error
  * value.

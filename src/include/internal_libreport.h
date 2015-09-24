@@ -156,10 +156,31 @@ char *xmalloc_fgetline(FILE *file);
 char *xmalloc_fopen_fgetline_fclose(const char *filename);
 
 
-/* On error, copyfd_XX prints error messages and returns -1 */
-enum {
+typedef enum {
         COPYFD_SPARSE = 1 << 0,
-};
+} libreport_copyfd_flags;
+
+/* Writes up to 'size' Bytes from a file descriptor to a file in a directory
+ *
+ * If you need to write all Bytes of the file descriptor, pass 0 as the size.
+ *
+ * @param src The source file descriptor
+ * @param dir_fd A file descriptor for the parent directory of the destination file
+ * @param name The destination file name
+ * @param mode The destination file open mode
+ * @param uid The destination file's uid
+ * @param gid The destination file's gid
+ * @param open_flags The destination file open flags
+ * @param copy_flags libreport_copyfd_flags
+ * @param size The upper limit for written bytes (0 for no limit).
+ * @return Number of read Bytes on success. On errors, return -1 and prints out
+ * reasonable good error messages.
+ */
+#define copyfd_ext_at libreport_copyfd_ext_at
+off_t copyfd_ext_at(int src, int dir_fd, const char *name, int mode,
+        uid_t uid, gid_t gid, int open_flags, int copy_flags, off_t size);
+
+/* On error, copyfd_XX prints error messages and returns -1 */
 #define copyfd_eof libreport_copyfd_eof
 off_t copyfd_eof(int src_fd, int dst_fd, int flags);
 #define copyfd_size libreport_copyfd_size

@@ -2324,3 +2324,28 @@ finito:
 
     return result;
 }
+
+off_t dd_copy_fd(struct dump_dir *dd, const char *name, int fd, int copy_flags, off_t maxsize)
+{
+    if (!dd_validate_element_name(name))
+        error_msg_and_die("Cannot test existence. '%s' is not a valid file name", name);
+
+    log_debug("Saving data from file descriptor %d to '%s' at '%s'", fd, name, dd->dd_dirname);
+
+    unlinkat(dd->dd_fd, name, /*remove only files*/0);
+    off_t read = copyfd_ext_at(fd, dd->dd_fd, name, DEFAULT_DUMP_DIR_MODE,
+            dd->dd_uid, dd->dd_gid, O_WRONLY | O_CREAT | O_EXCL, copy_flags, maxsize);
+
+    if (read < 0)
+    {
+        error_msg("Can't copy file descriptor %d to %s at '%s'", fd, name, dd->dd_dirname);
+        /* Destroy the file to get rid of empty files and files with invalid owners */
+        unlinkat(dd->dd_fd, name, /*remove only files*/0);
+    }
+    else if (read > maxsize)
+        log_debug("Saved %lu Bytes (read %lu Bytes)", (unsigned long)maxsize, (unsigned long)read);
+    else
+        log_debug("Saved %lu Bytes", (unsigned long)read);
+
+    return read;
+}

@@ -53,6 +53,9 @@ void validate_dump_dir_contents(struct dump_dir *dd)
     assert(dd_exist(dd, "at_test_services"));
     ++items;
 
+    assert(dd_exist(dd, "at_test_passwd"));
+    ++items;
+
     dd_save_text(dd, "at_test_to_delete", "deleted");
     assert(dd_exist(dd, "at_test_to_delete"));
     dd_delete_item(dd, "at_test_to_delete");
@@ -121,6 +124,11 @@ int main(int argc, char **argv)
     assert(dd_exist(dd, "at_test_binary"));
 
     dd_copy_file(dd, "at_test_services", "/etc/services");
+
+    int passwd_fd = open("/etc/passwd", O_RDONLY);
+    assert(passwd_fd >= 0);
+    dd_copy_fd(dd, "at_test_passwd", passwd_fd, 0, 0);
+    close(passwd_fd);
 
     fprintf(stderr, "Test newly created dump directory\n");
     validate_dump_dir_contents(dd);
@@ -701,6 +709,125 @@ int main(void)
     assert(rmdir(template) == 0);
     return EXIT_SUCCESS;
 }
+]])
+
+## ---------- ##
+## dd_copy_fd ##
+## ---------- ##
+
+AT_TESTFUN([dd_copy_fd],
+[[
+#include "testsuite.h"
+
+void test(const char buffer[], const size_t buffer_size)
+{
+    char template[] = "/tmp/XXXXXX";
+
+    if (mkdtemp(template) == NULL) {
+        perror("mkdtemp()");
+        abort();
+    }
+
+    printf("Dump dir path: %s\n", template);
+
+    struct dump_dir *dd = dd_create(template, (uid_t)-1, 0640);
+    assert(dd != NULL || !"Cannot create new dump directory");
+
+    dd_create_basic_files(dd, geteuid(), NULL);
+
+    char tmpfile[] = "/tmp/libreport-attestsuite-dd_copy_fd.XXXXXX";
+    int tmpfd = mkstemp(tmpfile);
+    full_write(tmpfd, buffer, buffer_size);
+
+    {
+        assert((-1) != lseek(tmpfd, 0, SEEK_SET));
+
+        const off_t read_truncated = dd_copy_fd(dd, "truncated", tmpfd, 0, buffer_size/2);
+        TS_ASSERT_SIGNED_GE(read_truncated, buffer_size/2);
+        TS_ASSERT_SIGNED_EQ(dd_get_item_size(dd, "truncated"), buffer_size/2);
+        TS_ASSERT_SIGNED_EQ(dd_delete_item(dd, "truncated"), 0);
+    }
+
+    {
+        assert((-1) != lseek(tmpfd, 0, SEEK_SET));
+
+        const off_t read_exact = dd_copy_fd(dd, "exact", tmpfd, 0, buffer_size);
+        TS_ASSERT_SIGNED_EQ(read_exact, buffer_size);
+        TS_ASSERT_SIGNED_EQ(dd_get_item_size(dd, "exact"), buffer_size);
+        TS_ASSERT_SIGNED_EQ(dd_delete_item(dd, "exact"), 0);
+    }
+
+    {
+        assert((-1) != lseek(tmpfd, 0, SEEK_SET));
+
+        const off_t read_bigger = dd_copy_fd(dd, "bigger", tmpfd, 0, buffer_size * 2);
+        TS_ASSERT_SIGNED_EQ(read_bigger, buffer_size);
+        TS_ASSERT_SIGNED_EQ(dd_get_item_size(dd, "bigger"), buffer_size);
+        TS_ASSERT_SIGNED_EQ(dd_delete_item(dd, "bigger"), 0);
+    }
+
+    {
+        assert((-1) != lseek(tmpfd, 0, SEEK_SET));
+
+        const off_t read_no_limit = dd_copy_fd(dd, "no_limit", tmpfd, 0, 0);
+        TS_ASSERT_SIGNED_EQ(read_no_limit, buffer_size);
+        TS_ASSERT_SIGNED_EQ(dd_get_item_size(dd, "no_limit"), buffer_size);
+        TS_ASSERT_SIGNED_EQ(dd_delete_item(dd, "no_limit"), 0);
+    }
+
+    close(tmpfd);
+    unlink(tmpfile);
+    assert(dd_delete(dd) == 0);
+}
+
+TS_MAIN
+{
+    {
+        char buffer[1024*2];
+        memset(buffer, 'x', sizeof(buffer));
+        test(buffer, sizeof(buffer));
+    }
+
+    {
+        char buffer[1024*4];
+        memset(buffer, 'y', sizeof(buffer));
+        test(buffer, sizeof(buffer));
+    }
+
+    {
+        char buffer[1024*6];
+        memset(buffer, 'z', sizeof(buffer));
+        test(buffer, sizeof(buffer));
+    }
+
+
+    {
+        char template[] = "/tmp/XXXXXX";
+
+        if (mkdtemp(template) == NULL) {
+            perror("mkdtemp()");
+            return EXIT_FAILURE;
+        }
+
+        printf("Dump dir path: %s\n", template);
+
+        struct dump_dir *dd = dd_create(template, (uid_t)-1, 0640);
+        assert(dd != NULL || !"Cannot create new dump directory");
+
+        dd_create_basic_files(dd, geteuid(), NULL);
+
+        int opath_fd = open("/etc/services", O_PATH);
+        assert(opath_fd >= 0);
+        const off_t opath_read = dd_copy_fd(dd, "opath", opath_fd, 0, 0);
+        TS_ASSERT_SIGNED_EQ(opath_read, -1);
+        TS_ASSERT_SIGNED_EQ(dd_exist(dd, "opath"), 0);
+        close(opath_fd);
+
+        dd_delete(dd);
+    }
+}
+TS_RETURN_MAIN
+
 ]])
 
 ## ------------- ##

@@ -62,9 +62,9 @@ static off_t full_fd_action(int src_fd, int dst_fd, off_t size, int flags)
 	}
 
 	while (1) {
-		ssize_t rd;
+		ssize_t rd, towrite;
 
-		rd = safe_read(src_fd, buffer, size > buffer_size ? buffer_size : size);
+		rd = safe_read(src_fd, buffer, buffer_size);
 
 		if (!rd) { /* eof - all done */
 			if (last_was_seek) {
@@ -82,38 +82,41 @@ static off_t full_fd_action(int src_fd, int dst_fd, off_t size, int flags)
 			perror_msg("%s", msg_read_error);
 			break;
 		}
+		/* Add read Bytes before quiting the loop, because the caller
+		 * needs to be able to detect overflows (the return value > size). */
+		total += rd;
+		towrite = rd > size ? size : rd;
+		if (towrite == 0) {
+			/* no more Bytes to write - all done */
+			status = 0;
+			break;
+		}
 		/* dst_fd == -1 is a fake, else... */
 		if (dst_fd >= 0) {
 			if (flags & COPYFD_SPARSE) {
-				ssize_t cnt = rd;
+				ssize_t cnt = towrite;
 				while (--cnt >= 0)
 					if (buffer[cnt] != 0)
 						goto need2write;
-				if (lseek(dst_fd, rd, SEEK_CUR) < 0) {
+				if (lseek(dst_fd, towrite, SEEK_CUR) < 0) {
 					flags &= ~COPYFD_SPARSE;
 					goto need2write;
 				}
 				last_was_seek = 1;
 			} else {
  need2write:
-                                {
-				    ssize_t wr = full_write(dst_fd, buffer, rd);
-				    if (wr < rd) {
+				{
+				    ssize_t wr = full_write(dst_fd, buffer, towrite);
+				    if (wr < towrite) {
 				        perror_msg("%s", msg_write_error);
 				        break;
 				    }
 				    last_was_seek = 0;
-                                }
+				}
 			}
 		}
-		total += rd;
 		if (status < 0) { /* if we aren't copying till EOF... */
-			size -= rd;
-			if (!size) {
-				/* 'size' bytes copied - all done */
-				status = 0;
-				break;
-			}
+			size -= towrite;
 		}
 	}
  out:
@@ -125,10 +128,35 @@ static off_t full_fd_action(int src_fd, int dst_fd, off_t size, int flags)
 	return status ? -1 : total;
 }
 
+off_t copyfd_ext_at(int src, int dir_fd, const char *name, int mode, uid_t uid, gid_t gid, int open_flags, int copy_flags, off_t size)
+{
+    int dst = openat(dir_fd, name, open_flags, mode);
+    if (dst < 0)
+    {
+        perror_msg("Can't open '%s'", name);
+        return -1;
+    }
+    off_t r = full_fd_action(src, dst, size, copy_flags);
+    if (uid != (uid_t)-1L)
+    {
+        if (fchown(dst, uid, gid) == -1)
+        {
+            r = -2;
+            perror_msg("Can't change ownership of '%s' to %lu:%lu", name, (long)uid, (long)gid);
+        }
+    }
+    close(dst);
+    return r;
+}
+
 off_t copyfd_size(int fd1, int fd2, off_t size, int flags)
 {
 	if (size) {
-		return full_fd_action(fd1, fd2, size, flags);
+		off_t read = full_fd_action(fd1, fd2, size, flags);
+		/* full_fd_action() writes only up to the size Bytes but returns the
+		 * number of read Bytes. Callers of this function expect
+		 * the return value not being greater then the size argument. */
+		return read > size ? size : read;
 	}
 	return 0;
 }
@@ -158,26 +186,12 @@ off_t copy_file_ext_at(const char *src_name, int dir_fd, const char *name, int m
         perror_msg("Can't open '%s'", src_name);
         return -1;
     }
-    int dst = openat(dir_fd, name, dst_flags, mode);
-    if (dst < 0)
-    {
-        close(src);
-        perror_msg("Can't open '%s'", name);
-        return -1;
-    }
-    r = copyfd_eof(src, dst, /*flags:*/ 0);
-    close(src);
-    if (uid != (uid_t)-1L)
-    {
-        if (fchown(dst, uid, gid) == -1)
-        {
-            perror_msg("Can't change ownership of '%s' to %lu:%lu", name, (long)uid, (long)gid);
-            close(dst);
-            return -1;
-        }
-    }
-    close(dst);
 
+    r = copyfd_ext_at(src, dir_fd, name, mode, uid, gid, dst_flags,
+            /*copy flags*/0,
+            /*read all data*/0);
+
+    close(src);
     return r;
 }
 
