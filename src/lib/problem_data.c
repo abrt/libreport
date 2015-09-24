@@ -308,18 +308,13 @@ static bool is_editable_file(const char *file_name)
     return is_in_string_list(file_name, editable_files);
 }
 
-/* When is_text_file() returns this special pointer value,
- * the file in question is "text, but very large".
- */
-#define HUGE_TEXT ((char*)(long)1)
-
 static const char *const always_text_files[] = {
     FILENAME_CMDLINE  ,
     FILENAME_BACKTRACE,
     FILENAME_OS_RELEASE,
     NULL
 };
-static char* is_text_file_at(int dir_fd, const char *name, ssize_t *sz)
+static int is_text_file_at(int dir_fd, const char *name, char **content, ssize_t *sz, int *file_fd)
 {
     /* We were using magic.h API to check for file being text, but it thinks
      * that file containing just "0" is not text (!!)
@@ -328,24 +323,31 @@ static char* is_text_file_at(int dir_fd, const char *name, ssize_t *sz)
 
     int fd = secure_openat_read(dir_fd, name);
     if (fd < 0)
-        return NULL; /* it's not text (because it does not exist! :) */
+        return fd; /* it's not text (because it does not exist! :) */
 
     off_t size = lseek(fd, 0, SEEK_END);
     if (size < 0)
     {
         close(fd);
-        return NULL; /* it's not text (because there is an I/O error) */
+        return -EIO; /* it's not text (because there is an I/O error) */
     }
     lseek(fd, 0, SEEK_SET);
 
     unsigned char *buf = xmalloc(*sz);
     ssize_t r = full_read(fd, buf, *sz);
-    close(fd);
+
     if (r < 0)
     {
+        close(fd);
         free(buf);
-        return NULL; /* it's not text (because we can't read it) */
+        return -EIO; /* it's not text (because we can't read it) */
     }
+
+    if (file_fd == NULL)
+        close(fd);
+    else
+        *file_fd = fd;
+
     if (r < *sz)
         buf[r] = '\0';
     *sz = r;
@@ -384,7 +386,7 @@ static char* is_text_file_at(int dir_fd, const char *name, ssize_t *sz)
              * Not text for sure!
              */
             free(buf);
-            return NULL;
+            return CD_FLAG_BIN;
         }
         if (buf[i] == 0x7f)
             bad_chars++;
@@ -406,15 +408,87 @@ static char* is_text_file_at(int dir_fd, const char *name, ssize_t *sz)
         goto text; /* looks like text to me */
 
     free(buf);
-    return NULL; /* it's binary */
+    return CD_FLAG_BIN; /* it's binary */
 
  text:
     if (size > CD_MAX_TEXT_SIZE)
     {
         free(buf);
-        return HUGE_TEXT;
+        return CD_FLAG_BIN | CD_FLAG_BIGTXT;
     }
-    return (char*)buf;
+
+    *content = /* cast from (unsigned char *) to */(char *)buf;
+    return CD_FLAG_TXT;
+}
+
+
+static int _problem_data_load_dump_dir_element(struct dump_dir *dd, const char *name, char **content, int *type_flags, int *fd)
+{
+    int file_fd = -1;
+    int *file_fd_ptr = fd == NULL ? &file_fd : fd;
+
+#define IS_TEXT_FILE_AT_PROBE_SIZE 4*1024
+
+    ssize_t sz = IS_TEXT_FILE_AT_PROBE_SIZE;
+    char *text = NULL;
+    int r = is_text_file_at(dd->dd_fd, name, &text, &sz, file_fd_ptr);
+
+    if (r < 0)
+        return r;
+
+    *type_flags = r;
+
+    if ((r == CD_FLAG_BIN) || (r == (CD_FLAG_BIN | CD_FLAG_BIGTXT)))
+        goto finito;
+
+    if (r != CD_FLAG_TXT)
+    {
+        error_msg("Unrecognized is_text_file_at() return value");
+        abort();
+    }
+
+    if (sz >= IS_TEXT_FILE_AT_PROBE_SIZE) /* did is_text_file() read entire file? */
+    {
+        /* no, it didn't, we need to read it all */
+        free(text);
+        lseek(*file_fd_ptr, 0, SEEK_SET);
+        text = xmalloc_read(*file_fd_ptr, NULL);
+    }
+
+#undef IS_TEXT_FILE_AT_PROBE_SIZE
+
+    /* Strip '\n' from one-line elements: */
+    char *nl = strchr(text, '\n');
+    if (nl && nl[1] == '\0')
+        *nl = '\0';
+
+    /* Sanitize possibly corrupted utf8.
+     * Of control chars, allow only tab and newline.
+     */
+    char *sanitized = sanitize_utf8(text,
+            (SANITIZE_ALL & ~SANITIZE_LF & ~SANITIZE_TAB)
+    );
+
+    if (sanitized != NULL)
+    {
+        free(text);
+        text = sanitized;
+    }
+
+finito:
+    if (file_fd >= 0)
+        close(file_fd);
+
+    *content = text;
+    return 0;
+}
+
+int problem_data_load_dump_dir_element(struct dump_dir *dd, const char *name, char **content, int *type_flags, int *fd)
+{
+    if (!str_is_correct_filename(name))
+        return -EINVAL;
+
+    return _problem_data_load_dump_dir_element(dd, name, content, type_flags, fd);
 }
 
 void problem_data_load_from_dump_dir(problem_data_t *problem_data, struct dump_dir *dd, char **excluding)
@@ -438,69 +512,42 @@ void problem_data_load_from_dump_dir(problem_data_t *problem_data, struct dump_d
             goto next;
         }
 
-        ssize_t sz = 4*1024;
-        char *text = is_text_file_at(dd->dd_fd, short_name, &sz);
-        if (!text || text == HUGE_TEXT)
+        char *content = NULL;
+        int flags = 0;
+        int r = _problem_data_load_dump_dir_element(dd, short_name, &content, &flags, /*fd*/NULL);
+        if (r < 0)
         {
-            int flag = !text ? CD_FLAG_BIN : (CD_FLAG_BIN+CD_FLAG_BIGTXT);
-            problem_data_add(problem_data,
-                    short_name,
-                    full_name,
-                    flag + CD_FLAG_ISNOTEDITABLE
-            );
+            error_msg("Failed to load element %s: %s", short_name, strerror(-r));
             goto next;
         }
 
-        char *content;
-        if (sz < 4*1024) /* did is_text_file read entire file? */
+        if (flags & CD_FLAG_TXT)
         {
-            /* yes */
-            content = text;
+            if (is_editable_file(short_name))
+                flags |= CD_FLAG_ISEDITABLE;
+            else
+                flags |= CD_FLAG_ISNOTEDITABLE;
+
+            static const char *const list_files[] = {
+                FILENAME_UID       ,
+                FILENAME_PACKAGE   ,
+                FILENAME_CMDLINE   ,
+                FILENAME_TIME      ,
+                FILENAME_COUNT     ,
+                FILENAME_REASON    ,
+                NULL
+            };
+            if (is_in_string_list(short_name, list_files))
+                flags |= CD_FLAG_LIST;
+
+            if (strcmp(short_name, FILENAME_TIME) == 0)
+                flags |= CD_FLAG_UNIXTIME;
         }
         else
         {
-            /* no, need to read it all */
-            free(text);
-            content = dd_load_text(dd, short_name);
+            content = full_name;
+            full_name = NULL;
         }
-        /* Strip '\n' from one-line elements: */
-        char *nl = strchr(content, '\n');
-        if (nl && nl[1] == '\0')
-            *nl = '\0';
-
-        /* Sanitize possibly corrupted utf8.
-         * Of control chars, allow only tab and newline.
-         */
-        char *sanitized = sanitize_utf8(content,
-                (SANITIZE_ALL & ~SANITIZE_LF & ~SANITIZE_TAB)
-        );
-        if (sanitized)
-        {
-            free(content);
-            content = sanitized;
-        }
-
-        bool editable = is_editable_file(short_name);
-        int flags = 0;
-        if (editable)
-            flags |= CD_FLAG_TXT | CD_FLAG_ISEDITABLE;
-        else
-            flags |= CD_FLAG_TXT | CD_FLAG_ISNOTEDITABLE;
-
-        static const char *const list_files[] = {
-            FILENAME_UID       ,
-            FILENAME_PACKAGE   ,
-            FILENAME_CMDLINE   ,
-            FILENAME_TIME      ,
-            FILENAME_COUNT     ,
-            FILENAME_REASON    ,
-            NULL
-        };
-        if (is_in_string_list(short_name, list_files))
-            flags |= CD_FLAG_LIST;
-
-        if (strcmp(short_name, FILENAME_TIME) == 0)
-            flags |= CD_FLAG_UNIXTIME;
 
         problem_data_add(problem_data,
                 short_name,
