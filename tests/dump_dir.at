@@ -594,9 +594,9 @@ int main(void)
     assert(str_is_correct_filename("") == false);
     assert(str_is_correct_filename("/") == false);
     assert(str_is_correct_filename("//") == false);
+    assert(str_is_correct_filename("/a") == false);
+    assert(str_is_correct_filename("a/") == false);
     assert(str_is_correct_filename(".") == false);
-    assert(str_is_correct_filename(".") == false);
-    assert(str_is_correct_filename("..") == false);
     assert(str_is_correct_filename("..") == false);
     assert(str_is_correct_filename("/.") == false);
     assert(str_is_correct_filename("//.") == false);
@@ -617,6 +617,12 @@ int main(void)
     assert(str_is_correct_filename("..meta-meta-data") == true);
     assert(str_is_correct_filename("meta-..-data") == true);
 
+    assert(str_is_correct_filename("a") == true);
+    assert(str_is_correct_filename(".a") == true);
+    assert(str_is_correct_filename("a.") == true);
+    assert(str_is_correct_filename("ab") == true);
+    assert(str_is_correct_filename("abc") == true);
+    assert(str_is_correct_filename("abcd") == true);
     assert(str_is_correct_filename("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890+-") == true);
     assert(str_is_correct_filename("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890+-=") == false);
 

@@ -66,11 +66,15 @@ bool str_is_correct_filename(const char *str)
         return false;
     ++str;
 
-    if (NOT_PRINTABLE(*str) || *str =='/' || (*str == '\0' && *(str-1) == '.'))
+    if (*str == '\0')
+        return *(str-1) != '.';
+    if (NOT_PRINTABLE(*str) || *str == '/')
         return false;
     ++str;
 
-    if (NOT_PRINTABLE(*str) || *str =='/' || (*str == '\0' && *(str-1) == '.' && *(str-2) == '.'))
+    if (*str == '\0')
+        return !(*(str-2) == '.' && *(str-1) == '.');
+    if (NOT_PRINTABLE(*str) || *str == '/')
         return false;
     ++str;
 
