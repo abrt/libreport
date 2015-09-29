@@ -46,12 +46,13 @@ void xfunc_die(void)
 static bool should_log(int level)
 {
     // LOG_DEBUG = 7, LOG_INFO = 6, LOG_NOTICE = 5, LOG_WARNING = 4, LOG_ERR = 3
-    // output only messages with LOG_ERR by default, overridden by g_verbose
+    // output only messages with LOG_NOTICE by default, overridden by g_verbose
     if(
-          (g_verbose == 0 && level <= LOG_WARNING) ||
-          (g_verbose == 1 && level <= LOG_NOTICE) ||
-          (g_verbose == 2 && level <= LOG_INFO) ||
-          (g_verbose == 3)
+          (g_verbose == 0 && level <= LOG_NOTICE) ||
+          (g_verbose == 1 && level <= LOG_INFO) ||
+          (g_verbose == 2 && level <= LOG_DEBUG) ||
+          (g_verbose >= 3)
+
       )
       return true;
 
