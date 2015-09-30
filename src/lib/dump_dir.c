@@ -218,7 +218,7 @@ static int read_number_from_file_at(int dir_fd, const char *filename, const char
     const int fd = secure_openat_read(dir_fd, filename);
     if (fd < 0)
     {
-        log_info("Can't open '%s'", filename);
+        log_dd("Can't open '%s'", filename);
         return fd;
     }
 
@@ -381,7 +381,7 @@ int create_symlink_lockfile_at(int dir_fd, const char* lock_file, const char* pi
         }
     }
 
-    log_info("Locked '%s'", lock_file);
+    log_dd("Locked '%s'", lock_file);
     return 1;
 }
 
@@ -395,7 +395,7 @@ static const char *dd_check(struct dump_dir *dd)
     dd->dd_time = parse_time_file_at(dd->dd_fd, FILENAME_TIME);
     if (dd->dd_time < 0)
     {
-        log_debug("Missing file: "FILENAME_TIME);
+        log_dd("Missing file: "FILENAME_TIME);
         return FILENAME_TIME;
     }
 
@@ -411,7 +411,7 @@ static const char *dd_check(struct dump_dir *dd)
     dd->dd_type = load_text_file_at(dd->dd_fd, FILENAME_TYPE, load_flags);
     if (!dd->dd_type || (strlen(dd->dd_type) == 0))
     {
-        log_debug("Missing or empty file: "FILENAME_TYPE);
+        log_dd("Missing or empty file: "FILENAME_TYPE);
         return FILENAME_TYPE;
     }
 
@@ -465,7 +465,7 @@ static int dd_lock(struct dump_dir *dd, unsigned sleep_usec, int flags)
             if (dd->owns_lock)
                 xunlinkat(dd->dd_fd, ".lock", /*only files*/0);
 
-            log_notice("Unlocked '%s' (no or corrupted '%s' file)", dd->dd_dirname, missing_file);
+            log_dd("Unlocked '%s' (no or corrupted '%s' file)", dd->dd_dirname, missing_file);
             if (--count == 0 || flags & DD_DONT_WAIT_FOR_LOCK)
             {
                 errno = EISDIR; /* "this is an ordinary dir, not dump dir" */
@@ -490,7 +490,7 @@ static void dd_unlock(struct dump_dir *dd)
         dd->owns_lock = 0;
         dd->locked = 0;
 
-        log_info("Unlocked '%s/.lock'", dd->dd_dirname);
+        log_dd("Unlocked '%s/.lock'", dd->dd_dirname);
     }
 }
 

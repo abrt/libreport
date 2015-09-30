@@ -527,6 +527,9 @@ void die_out_of_memory(void) NORETURN;
 #define log_warning(...) log_standard(LOG_WARNING, __FILE__, __LINE__, __func__, __VA_ARGS__)
 #define log_error(...)   log_standard(LOG_ERR,     __FILE__, __LINE__, __func__, __VA_ARGS__)
 
+// specific subsystem debugging
+#define log_dd(...)  if(0) log_debug(__VA_ARGS__)
+
 #define log_standard(level, file, line, func, ...) log_wrapper(level, __FILE__, __LINE__, __func__, false, false, __VA_ARGS__)
 
 //                                            level,     file,     line,     func, perror, custom logger, format & args
