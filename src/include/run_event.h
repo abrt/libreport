@@ -156,6 +156,10 @@ void make_run_event_state_forwarding(struct run_event_state *state);
 
 
 /* Asynchronous command execution */
+struct rule {
+    GList *conditions;
+    char *command; /* never NULL */
+};
 
 /* Returns 0 if no commands found for this dump_dir_name+event, else >0 */
 int prepare_commands(struct run_event_state *state, const char *dump_dir_name, const char *event);
@@ -172,6 +176,16 @@ int spawn_next_command(struct run_event_state *state,
 /* Cleans up internal state created in prepare_commands */
 void free_commands(struct run_event_state *state);
 
+/* Load rule list from config file.
+ * Returns a list of all defined rules (struct rule)
+ * @param rule_list variable to append to or NONE to create new list
+ * @param conf_file_name path to configuration file
+ * @param recursion_depth internal recursion protection, should be 0
+ */
+GList *load_rule_list(GList *rule_list, const char *conf_file_name, unsigned recursion_depth);
+
+/* Cleans up rule list created by load_rule_list */
+void free_rule_list(GList *rule_list);
 
 /* Synchronous command execution */
 

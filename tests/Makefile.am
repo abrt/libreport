@@ -31,6 +31,7 @@ TESTSUITE_AT = \
   osrelease.at \
   osinfo.at \
   is_text_file.at \
+  load_rule_list.at \
   taghyperlinks.at \
   glib_helpers.at \
   sitem.at \
@@ -53,7 +54,7 @@ TESTSUITE = $(srcdir)/testsuite
 MAINTAINERCLEANFILES = Makefile.in $(TESTSUITE)
 check_DATA = atconfig atlocal $(TESTSUITE)
 DISTCLEANFILES = atconfig
-EXTRA_DIST += atlocal.in conf ureport valgrind.supp ureport-rhts-credentials
+EXTRA_DIST += atlocal.in conf rules ureport valgrind.supp ureport-rhts-credentials
 
 atconfig: $(top_builddir)/config.status
 	(cd ${top_builddir} && ./config.status ${subdir}/atconfig)
