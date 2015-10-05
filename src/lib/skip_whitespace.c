@@ -18,6 +18,13 @@
  */
 #include "internal_libreport.h"
 
+char* skip_blank(const char *s)
+{
+	while (isblank(*s)) ++s;
+
+	return (char *) s;
+}
+
 char* skip_whitespace(const char *s)
 {
 	/* NB: isspace('\0') returns 0 */

@@ -116,12 +116,8 @@ void make_run_event_state_forwarding(struct run_event_state *state)
  *      free_commands(state);
  * does not expose the way we select rules to execute.
  */
-struct rule {
-    GList *conditions;
-    char *command; /* never NULL */
-};
 
-static void free_rule_list(GList *rule_list)
+void free_rule_list(GList *rule_list)
 {
     while (rule_list)
     {
@@ -139,7 +135,7 @@ static void free_rule_list(GList *rule_list)
 /* Stop-gap measure against infinite recursion */
 #define MAX_recursion_depth 32
 
-static GList *load_rule_list(GList *rule_list,
+GList *load_rule_list(GList *rule_list,
                 const char *conf_file_name,
                 unsigned recursion_depth
 ) {
@@ -153,39 +149,124 @@ static GList *load_rule_list(GList *rule_list,
     /* Used only for better warning message */
     int line_counter = 0;
     /* Read and remember rules */
-    char *next_line = xmalloc_fgetline(conffile);
-    while (next_line)
+    char *next_line;
+    while (1)
     {
+        next_line = xmalloc_fgetline(conffile);
+        if(!next_line)
+        {
+            log_parser("EOF");
+            break;
+        }
+
+        if (*next_line == '\0' || *next_line == '#')
+        {
+            log_parser("empty or comment, skipping");
+            free(next_line);
+            continue;
+        }
+
+        log_parser("current line '%s'", next_line);
         /* Read and concatenate all lines in a rule */
         char *line = next_line;
         ++line_counter;
 
-        while (1)
+        if(strncmp(line, "EVENT", strlen("EVENT")) == 0)
         {
-            next_line = xmalloc_fgetline(conffile);
-            if (!next_line || !isblank(next_line[0]))
-                break;
+            log_parser("found EVENT");
 
-            ++line_counter;
-            char *old_line = line;
-            line = xasprintf("%s\n%s", line, next_line);
-            free(old_line);
-            free(next_line);
+            while (1)
+            {
+                long prev = ftell(conffile);
+                if (prev < 0)
+                    perror_msg_and_die("ftell");
+
+                next_line = xmalloc_fgetline(conffile);
+
+                log_parser("next_line is: '%s'", next_line);
+                /* stop merging new lines into this event
+                 * if we reach
+                 * EOF
+                 * line starting with:
+                 ** # (comment)
+                 ** EVENT
+                 ** include
+                 *
+                 * When adding another directive don't forget to add it to this if!
+                 */
+                if (    next_line == '\0'
+                     || *next_line == '#'
+                     || strncmp(next_line, "EVENT", strlen("EVENT")) == 0
+                     || strncmp(next_line, "include", strlen("include")) == 0
+                ){
+                    log_parser("found next EVENT or EOF, seeking back to prev line");
+
+                    if (fseek(conffile, prev, SEEK_SET) < 0)
+                        perror_msg_and_die("fseek");
+
+                    free(next_line);
+                    break;
+                }
+
+                ++line_counter;
+                char *tmp = xasprintf("%s\n%s", line, next_line);
+                free(line);
+                free(next_line);
+                line = tmp;
+            }
+
+            char *p = skip_whitespace(line);
+
+            /* Rule has form: [VAR=VAL]... PROG [ARGS] */
+            struct rule *cur_rule = xzalloc(sizeof(*cur_rule));
+
+            while (1) /* word loop */
+            {
+                log_parser("word loop, p is: '%s'", p);
+                char *end_word = skip_non_whitespace(p);
+                log_parser("end word: '%s'", end_word);
+
+                /* If there is no '=' in this word... */
+                char *line_val = strchr(p, '=');
+                log_parser("line val: '%s'", line_val);
+                if (!line_val || line_val >= end_word)
+                {
+                    log_parser("found start of a command");
+                    p = skip_whitespace(p);
+                    break; /* ...we found the start of a command */
+                }
+
+                char *const current_word = xstrndup(p, end_word - p);
+                cur_rule->conditions = g_list_append(cur_rule->conditions, current_word);
+                log_parser("adding condition '%s'", current_word);
+
+                /* Go to next word, but don't cross lines */
+                p = skip_blank(end_word);
+            } /* end of word loop */
+
+            if (g_list_length(cur_rule->conditions) == 0)
+            {
+                log_debug("Adding '%s' without conditions", p);
+            }
+            else if (g_verbose >= 3)
+            {
+                log("Adding '%s'\nwith conditions:", p);
+                for (GList *c = cur_rule->conditions; c != NULL; c = g_list_next(c))
+                    log("| %s", (const char *)c->data);
+            }
+
+            cur_rule->command = xstrdup(p);
+
+            rule_list = g_list_append(rule_list, cur_rule);
         }
-
-        char *p = skip_whitespace(line);
-        if (*p == '\0' || *p == '#')
-            goto next_line; /* empty or comment line, skip */
-
-        //log_debug("%s: line '%s'", __func__, p);
-
-        /* Handle "include" directive */
-        if (recursion_depth < MAX_recursion_depth
-         && strncmp(p, "include", strlen("include")) == 0
-         && isblank(p[strlen("include")])
+        else if (   recursion_depth < MAX_recursion_depth
+                 && strncmp(line, "include", strlen("include")) == 0
+                 && isblank(line[strlen("include")])
         ) {
+            log_parser("found include");
+
             /* "include GLOB_PATTERN" */
-            p = skip_whitespace(p + strlen("include"));
+            const char *p = skip_whitespace(line + strlen("include"));
 
             const char *last_slash;
             char *name_to_glob;
@@ -204,48 +285,22 @@ static GList *load_rule_list(GList *rule_list,
 
             glob_t globbuf;
             memset(&globbuf, 0, sizeof(globbuf));
-            //log_debug("%s: globbing '%s'", __func__, name_to_glob);
+            log_parser("globbing '%s'", name_to_glob);
             glob(name_to_glob, 0, NULL, &globbuf);
             free(name_to_glob);
             char **name = globbuf.gl_pathv;
             if (name) while (*name)
             {
-                //log_debug("%s: recursing into '%s'", __func__, *name);
+                log_parser("recursing into '%s'", *name);
                 rule_list = load_rule_list(rule_list, *name, recursion_depth + 1);
-                //log_debug("%s: returned from '%s'", __func__, *name);
+                log_parser("returned from '%s'", *name);
                 name++;
             }
             globfree(&globbuf);
-            goto next_line;
         }
+        else
+            log_parser("Unknown line found, ignoring: '%s'", line);
 
-        /* Rule has form: [VAR=VAL]... PROG [ARGS] */
-        struct rule *cur_rule = xzalloc(sizeof(*cur_rule));
-
-        while (1) /* word loop */
-        {
-            char *end_word = skip_non_whitespace(p);
-
-            /* If there is no '=' in this word... */
-            char *line_val = strchr(p, '=');
-            if (!line_val || line_val >= end_word)
-                break; /* ...we found the start of a command */
-
-            cur_rule->conditions = g_list_append(cur_rule->conditions, xstrndup(p, end_word - p));
-
-            /* Go to next word */
-            p = skip_whitespace(end_word);
-        } /* end of word loop */
-
-        if (cur_rule->conditions == NULL)
-            log_warning("%s:%d: warning: command without conditions, this command will be executed for all events", conf_file_name, line_counter);
-
-        log_notice("Adding '%s'", p);
-        cur_rule->command = xstrdup(p);
-
-        rule_list = g_list_append(rule_list, cur_rule);
-
- next_line:
         free(line);
     } /* end of line loop */
 
@@ -372,10 +427,6 @@ static char* pop_next_command(GList **pp_rule_list,
                 /* Do values match? */
                 if (vals_differ) /* no */
                 {
-                    //log_debug("var '%s': '%.*s'!='%s', skipping line",
-                    //        p,
-                    //        (int)(strchrnul(real_val, '\n') - real_val), real_val,
-                    //        eq_sign);
                     goto next_rule;
                 }
             }

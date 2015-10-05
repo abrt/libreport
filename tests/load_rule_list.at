@@ -1,0 +1,146 @@
+# -*- Autotest -*-
+
+AT_BANNER([load_rule_list])
+
+## ---------------------- ##
+## load_rule_list         ##
+## ---------------------- ##
+
+AT_TESTFUN([load_rule_list_rule_count],
+[[
+#include "internal_libreport.h"
+#include "run_event.h"
+#include <assert.h>
+
+static void
+check(const char *input,
+      int expected_rule_count) {
+
+    GList *rule_list = load_rule_list(NULL, input, 0);
+
+    assert(rule_list != NULL);
+    assert(g_list_length(rule_list) == expected_rule_count);
+    free_rule_list(rule_list);
+}
+
+int main(void)
+{
+    check("../../rules/simple", 1);
+    check("../../rules/oneline", 1);
+    check("../../rules/include_simple", 1);
+    check("../../rules/include_multiple", 4);
+    check("../../rules/include_right_after_event", 2);
+    check("../../rules/newline_in_event", 1);
+    check("../../rules/newline_condition", 1);
+    check("../../rules/comments", 2);
+    check("../../rules/consecutive_events", 2);
+}
+]])
+
+AT_TESTFUN([load_rule_list_empty],
+[[
+#include "internal_libreport.h"
+#include "run_event.h"
+#include <assert.h>
+
+static void
+check(const char *input) {
+
+    GList *rule_list = load_rule_list(NULL, input, 0);
+
+    assert(rule_list == NULL);
+}
+
+int main(void)
+{
+    check("../../rules/empty");
+    check("../../rules/only_comments");
+}
+]])
+
+AT_TESTFUN([load_rule_list_conditions],
+[[
+#include "internal_libreport.h"
+#include "run_event.h"
+#include <assert.h>
+
+static void
+check(const char *input,
+      const char ** expected_conditions) {
+
+    GList *rule_list = load_rule_list(NULL, input, 0);
+    GList *bck_list = rule_list;
+
+    int cond_id = 0;
+    assert(rule_list != NULL);
+    while (rule_list)
+    {
+        struct rule *cur_rule = rule_list->data;
+        assert(cur_rule->conditions != NULL);
+        GList *condition = cur_rule->conditions;
+        while (condition) {
+          char *cond_str = condition->data;
+          assert(cond_str != NULL);
+          assert(strcmp(cond_str, expected_conditions[cond_id++]) == 0);
+          condition = condition->next;
+        }
+
+        rule_list = rule_list->next;
+    }
+
+    // check that there are no more conditions in expected_conditions
+    assert(expected_conditions[cond_id] == NULL);
+
+    free_rule_list(bck_list);
+}
+
+int main(void)
+{
+    const char *expected1[] = { "EVENT=report-gui", NULL };
+    check("../../rules/simple", expected1);
+    check("../../rules/newline_in_event", expected1);
+
+    const char *expected2[] = { "EVENT=report-gui", "type=libreport", NULL };
+    check("../../rules/newline_condition", expected2);
+
+    const char *expected3[] = { "EVENT=test", "t=t", "x=2", "a=3", NULL };
+    check("../../rules/conditions", expected3);
+}
+]])
+
+
+AT_TESTFUN([load_rule_list_command],
+[[
+#include "internal_libreport.h"
+#include "run_event.h"
+#include <assert.h>
+
+static void
+check(const char *input,
+      const char *expected_command) {
+
+    GList *rule_list = load_rule_list(NULL, input, 0);
+    GList *bck_list = rule_list;
+
+    int cond_id = 0;
+    assert(rule_list != NULL);
+    while (rule_list)
+    {
+        struct rule *cur_rule = rule_list->data;
+        assert(cur_rule->command != NULL);
+        assert(strstr(cur_rule->command, expected_command) != NULL);
+
+        rule_list = rule_list->next;
+    }
+
+    free_rule_list(bck_list);
+}
+
+int main(void)
+{
+    check("../../rules/simple", "echo 'yes'");
+    check("../../rules/oneline", "command");
+    check("../../rules/newline_in_event", "echo 'yes'");
+    check("../../rules/newline_condition", "this_is_not_a_condition=pls");
+}
+]])

@@ -120,6 +120,8 @@ char *strtrimch(char *str, int ch);
 char *strremovech(char *str, int ch);
 #define append_to_malloced_string libreport_append_to_malloced_string
 char *append_to_malloced_string(char *mstr, const char *append);
+#define skip_blank libreport_skip_blank
+char* skip_blank(const char *s);
 #define skip_whitespace libreport_skip_whitespace
 char* skip_whitespace(const char *s);
 #define skip_non_whitespace libreport_skip_non_whitespace
@@ -526,6 +528,9 @@ void die_out_of_memory(void) NORETURN;
 #define log_notice(...)  log_standard(LOG_NOTICE,  __FILE__, __LINE__, __func__, __VA_ARGS__)
 #define log_warning(...) log_standard(LOG_WARNING, __FILE__, __LINE__, __func__, __VA_ARGS__)
 #define log_error(...)   log_standard(LOG_ERR,     __FILE__, __LINE__, __func__, __VA_ARGS__)
+
+// specific subsystem debugging
+#define log_parser(...)  if(0) log_debug(__VA_ARGS__)
 
 #define log_standard(level, file, line, func, ...) log_wrapper(level, __FILE__, __LINE__, __func__, false, false, __VA_ARGS__)
 
