@@ -19,7 +19,7 @@ Or:
 
 Or:
 
-'reporter-bugzilla' [-v] [-c CONFFILE]... -h DUPHASH
+'reporter-bugzilla' [-v] [-c CONFFILE]... -h DUPHASH [-p[PRODUCT]]
 
 DESCRIPTION
 -----------
@@ -157,6 +157,12 @@ OPTIONS
 -h::
 --duphash DUPHASH::
    Search in Bugzilla by abrt's DUPHASH and print BUG_ID.
+
+-p[PRODUCT], --product[PRODUCT]::
+   Specify a Bugzilla's product (ignored without -h). Default: "Fedora". If only -p
+   or --product without PRODUCT is presented either value from environment
+   variable 'Bugzilla_Product' in the first place or 'REDHAT_BUGZILLA_PRODUCT'
+   value from /etc/os-release is used.
 
 -g::
 --group GROUP::
