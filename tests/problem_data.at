@@ -243,7 +243,7 @@ int main(int argc, char **argv)
     memset(buffer, 'x', sizeof(buffer));
 
     {
-        int fd4k = openat(dd->dd_fd, "attestsuite-over4k", O_WRONLY | O_CREAT | O_TRUNC);
+        int fd4k = openat(dd->dd_fd, "attestsuite-over4k", O_WRONLY | O_CREAT | O_TRUNC, 0550);
         assert(fd4k >= 0);
         full_write(fd4k, buffer, sizeof(buffer));
         full_write(fd4k, buffer, sizeof(buffer));
@@ -251,7 +251,7 @@ int main(int argc, char **argv)
     }
 
     {
-        int bigfd = openat(dd->dd_fd, "attestsuite-bigtext", O_WRONLY | O_CREAT | O_TRUNC);
+        int bigfd = openat(dd->dd_fd, "attestsuite-bigtext", O_WRONLY | O_CREAT | O_TRUNC, 0550);
         assert(bigfd >= 0);
         for (int i = 3000; i > 0; --i)
             full_write(bigfd, buffer, sizeof(buffer));
