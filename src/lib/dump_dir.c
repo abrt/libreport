@@ -109,7 +109,7 @@ uid_t dd_g_super_user_uid = 0;
 gid_t dd_g_fs_group_gid = (gid_t)-1;
 
 
-static char *load_text_file(const char *path, unsigned flags);
+char *load_text_file(const char *path, unsigned flags);
 static char *load_text_file_at(int dir_fd, const char *name, unsigned flags);
 static void copy_file_from_chroot(struct dump_dir* dd, const char *name,
         const char *chroot_dir, const char *file_path);
@@ -1691,7 +1691,7 @@ static char *load_text_file_at(int dir_fd, const char *name, unsigned flags)
     return load_text_from_file_descriptor(fd, name, flags);
 }
 
-static char *load_text_file(const char *path, unsigned flags)
+char *load_text_file(const char *path, unsigned flags)
 {
     const int fd = open(path, O_RDONLY | ((flags & DD_OPEN_FOLLOW) ? 0 : O_NOFOLLOW));
     return load_text_from_file_descriptor(fd, path, flags);
