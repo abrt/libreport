@@ -495,8 +495,6 @@ static void save_text_if_changed(const char *name, const char *new_value)
 
 //FIXME: else: what to do with still-unsaved data in the widget??
         dd_close(dd);
-        problem_data_reload_from_dump_dir();
-        update_gui_state_from_problem_data(/* don't update selected event */ 0);
     }
 }
 
@@ -839,7 +837,11 @@ static void tv_details_row_activated(
         load_text_to_text_view(GTK_TEXT_VIEW(textview), item_name);
 
         if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_OK)
+        {
             save_text_from_text_view(GTK_TEXT_VIEW(textview), item_name);
+            problem_data_reload_from_dump_dir();
+            update_gui_state_from_problem_data(/* don't update selected event */ 0);
+        }
 
         gtk_widget_destroy(textview);
         gtk_widget_destroy(scrolled);
@@ -2662,7 +2664,8 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
      * these tabs will be lost */
     save_items_from_notepad();
     save_text_from_text_view(g_tv_comment, FILENAME_COMMENT);
-
+    problem_data_reload_from_dump_dir();
+    update_gui_state_from_problem_data(/* don't update selected event */ 0);
 
     if (pages[PAGENO_SUMMARY].page_widget == page)
     {
