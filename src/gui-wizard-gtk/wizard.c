@@ -519,13 +519,11 @@ static void save_text_if_changed(const char *name, const char *new_value)
         struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY);
         dd = steal_if_needed(dd);
         if (dd && dd->locked)
-        {
             dd_save_text(dd, name, new_value);
-        }
-//FIXME: else: what to do with still-unsaved data in the widget??
+        else
+            error_msg(_("Failed to save file '%s'"), name);
+
         dd_close(dd);
-        reload_problem_data_from_dump_dir();
-        update_gui_state_from_problem_data();
     }
 }
 
@@ -648,7 +646,11 @@ static void tv_details_row_activated(
         load_text_to_text_view(GTK_TEXT_VIEW(textview), item_name);
 
         if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_OK)
+        {
             save_text_from_text_view(GTK_TEXT_VIEW(textview), item_name);
+            reload_problem_data_from_dump_dir();
+            update_gui_state_from_problem_data();
+        }
 
         gtk_widget_destroy(textview);
         gtk_widget_destroy(scrolled);
@@ -2020,6 +2022,7 @@ static void on_btn_refresh_clicked(GtkButton *button)
 {
     /* Save what's changed */
     save_items_from_notepad();
+    reload_problem_data_from_dump_dir();
 
     /* Refresh GUI so that we see new analyze buttons */
     update_gui_state_from_problem_data();
@@ -2290,6 +2293,9 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
     save_items_from_notepad();
     save_text_from_text_view(g_tv_comment, FILENAME_COMMENT);
 
+    reload_problem_data_from_dump_dir();
+    update_gui_state_from_problem_data();
+
     if (pages[PAGENO_SUMMARY].page_widget == page
      || pages[PAGENO_REVIEW_DATA].page_widget == page
     ) {
@@ -2347,8 +2353,7 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
 #endif
 
     case PAGENO_EDIT_BACKTRACE:
-        if (!get_problem_item_content_or_NULL(g_cd, FILENAME_BACKTRACE))
-            goto again; /* no backtrace, skip this page */
+        /* There are plenty of other files that need to be reviewed and edited! */
         break;
 
     case PAGENO_ANALYZE_SELECTOR:
