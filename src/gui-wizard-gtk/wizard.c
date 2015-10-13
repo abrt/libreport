@@ -427,11 +427,14 @@ static void save_text_if_changed(const char *name, const char *new_value)
         old_value = "";
     if (strcmp(new_value, old_value) != 0)
     {
+        /* If the dump directory cannot be opened for writing, an error dialogue
+         * will pop up because g_custom_logger is set to &show_error_as_msgbox.*/
         struct dump_dir *dd = wizard_open_directory_for_writing(g_dump_dir_name);
         if (dd)
+            /* If this operation fails, an error dialogue will pop up because
+             * g_custom_logger is set to &show_error_as_msgbox.*/
             dd_save_text(dd, name, new_value);
 
-//FIXME: else: what to do with still-unsaved data in the widget??
         dd_close(dd);
     }
 }
