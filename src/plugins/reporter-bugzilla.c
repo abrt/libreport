@@ -24,6 +24,8 @@
 
 /* BZ attachments */
 
+#define DEFAULT_BUGZILLA_PRODUCT "Fedora"
+
 static
 int attach_text_item(struct abrt_xmlrpc *ax, const char *bug_id,
                 const char *item_name, struct problem_item *item)
@@ -224,7 +226,7 @@ int main(int argc, char **argv)
         "\nor:"
         "\n& [-v] [-c CONFFILE]... [-d DIR] -t[ID] -w"
         "\nor:"
-        "\n& [-v] [-c CONFFILE]... -h DUPHASH"
+        "\n& [-v] [-c CONFFILE]... -h DUPHASH [-p[PRODUCT]]"
         "\n"
         "\nReports problem to Bugzilla."
         "\n"
@@ -274,15 +276,17 @@ int main(int argc, char **argv)
         OPT_f = 1 << 7,
         OPT_w = 1 << 8,
         OPT_h = 1 << 9,
-        OPT_r = 1 << 10,
-        OPT_g = 1 << 11,
-        OPT_D = 1 << 12,
+        OPT_p = 1 << 10,
+        OPT_r = 1 << 11,
+        OPT_g = 1 << 12,
+        OPT_D = 1 << 13,
     };
     const char *dump_dir_name = ".";
     GList *conf_file = NULL;
     const char *fmt_file = CONF_DIR"/plugins/bugzilla_format.conf";
     const char *fmt_file2 = fmt_file;
     char *abrt_hash = NULL;
+    char *product = NULL;
     char *ticket_no = NULL;
     const char *tracker_str = "ABRT Server";
     char *debug_str = NULL;
@@ -299,6 +303,7 @@ int main(int argc, char **argv)
         OPT_BOOL(     'f', NULL, NULL,                       _("Force reporting even if this problem is already reported")),
         OPT_BOOL(     'w', NULL, NULL,                       _("Add bugzilla user to CC list [of bug with this ID]")),
         OPT_STRING(   'h', "duphash", &abrt_hash, "DUPHASH", _("Print BUG_ID which has given DUPHASH")),
+        OPT_OPTSTRING('p', "product", &product  , "PRODUCT", _("Specify a Bugzilla product (ignored without -h)")),
         OPT_STRING(   'r', "tracker", &tracker_str, "TRACKER_NAME", _("A name of bug tracker for an additional URL from 'reported_to'")),
         OPT_LIST(     'g', "group", &rhbz.b_private_groups , "GROUP"  , _("Restrict access to this group only")),
         OPT_OPTSTRING('D', "debug", &debug_str  , "STR"    , _("Debug")),
@@ -350,9 +355,48 @@ int main(int argc, char **argv)
         else
             hash = xstrdup(abrt_hash);
 
-        /* it's Fedora specific */
+        if (opts & OPT_p)
+        {
+            /* If only -p without following string is presented, using
+             * 'REDHAT_BUGZILLA_PRODUCT' value from /etc/os-release or value
+             * from environment variable 'Bugzilla_Product' is used.
+             */
+            if (product == NULL && (product = getenv("Bugzilla_Product")) == NULL)
+            {
+                char *os_release = load_text_file("/etc/os-release",
+                                DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE | DD_OPEN_FOLLOW);
+
+                if (os_release != NULL)
+                {
+                    map_string_t *os_release_map = new_map_string();
+                    parse_osinfo(os_release, os_release_map);
+
+                    product = xstrdup(get_map_string_item_or_NULL(os_release_map, "REDHAT_BUGZILLA_PRODUCT"));
+
+                    free_map_string(os_release_map);
+                    free(os_release);
+
+                    if (product == NULL)
+                        error_msg(_("Failed to get 'REDHAT_BUGZILLA_PRODUCT' from '/etc/os-release'."));
+                }
+                else
+                    error_msg(_("Failed to read '/etc/os-release' to get Bugzilla product."));
+            }
+        }
+
+        if (product == NULL)
+        {
+            /* Use DEFAULT_BUGZILLA_PRODUCT as default product due to backward compatibility */
+            product = xstrdup(DEFAULT_BUGZILLA_PRODUCT);
+
+            /* If parameter -p was used and product == NULL, some error occured */
+            if (opts & OPT_p)
+                error_msg(_("Using default product '%s'"), product);
+        }
+
+        log_debug("Using Bugzilla product '%s' to find duplicate bug", product);
         xmlrpc_value *all_bugs = rhbz_search_duphash(client,
-                                /*product:*/ "Fedora",
+                                /*product:*/ product,
                                 /*version:*/ NULL,
                                 /*component:*/ NULL,
                                 hash);

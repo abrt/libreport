@@ -161,6 +161,8 @@ void dd_sanitize_mode_and_owner(struct dump_dir *dd);
 DIR *dd_init_next_file(struct dump_dir *dd);
 int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name);
 
+char *load_text_file(const char *path, unsigned flags);
+
 char* dd_load_text_ext(const struct dump_dir *dd, const char *name, unsigned flags);
 char* dd_load_text(const struct dump_dir *dd, const char *name);
 int dd_load_int32(const struct dump_dir *dd, const char *name, int32_t *value);
