@@ -755,6 +755,27 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Thu Oct 15 2015 Matej Habrnal <mhabrnal@redhat.com> 2.6.3-1
+- wizard: correct comments in save_text_if_changed()
+- events: improve example
+- reporter-bugzilla: add parameter -p
+- wizard: fix save users changes after reviewing dump dir files
+- dd: make function load_text_file non-static
+- bugzilla: don't attach build_ids
+- run_event: rewrite event rule parser
+- dd: add convenience wrappers fro loading numbers
+- ureport: improve curl's error messages
+- ureport: use Red Hat Certificate Authority to make rhsm cert trusted
+- curl: add posibility to use own Certificate Authority cert
+- spec: add redhat-access-insights to Requires of l-p-rhtsupport
+- bugzilla: put VARIANT_ID= to Whiteboard
+- autogen: use dnf instead of yum to install dependencies
+- configure: use hex value for dump dir mode
+- curl: add a helper for HTTP GET
+- dd: don't warn about missing 'type' if the locking fails
+- dd: stop warning about corrupted mandatory files
+- Use a dgettext function returning strings instead of bytes
+
 * Fri Jul 17 2015 Jakub Filak <jfilak@redhat.com> 2.6.2-1
 - dd: extend the scope of DD_DONT_WAIT_FOR_LOCK
 - bugzilla: remove an extra new line from a log message
