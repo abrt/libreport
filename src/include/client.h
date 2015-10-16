@@ -15,10 +15,46 @@
     You should have received a copy of the GNU General Public License along
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+
+    @brief API for interaction with users
+
+    These functions should be used by all libreport plugins to make it possible
+    to use the plugins in EVENT scripts.
+
+    ## Communication Protocol
+
+    These functions work in two modes:
+     - MASTER : the called function will interact with user
+     - SLAVE  : the called function will interact with the master process
+
+    If the function is called in the slave mode, the function will prefix its
+    output with the relevant "REPORT_PREFIX_*" macro defined below. These
+    prefixes are detected by the master process so the master can react
+    appropriately to the slave's output.
+
+    In the master mode, the functions does not taint its output because
+    the output will be directly shown to users.
+
+    The mode is driven by the environment variable **REPORT_CLIENT_SLAVE**
+    If the variable is set to any value, the mode is SLAVE. In all other cases
+    the mode is MASTER.
+
+
+    ## Default answers
+
+    Another environment variable that controls behaviour of these functions is
+    **REPORT_CLIENT_NONINTERACTIVE**. If this variable is set to some value and
+    the mode is not SLAVE, the function call does not wait for response from
+    user but returns immediately with a default return value. The default
+    values must not cause any harm to users, so the boolean functions returns
+    false (the default answer is "No") and the string function returns ""
+    (the default answer is no answer).
 */
 
 #ifndef LIBREPORT_CLIENT_H_
 #define LIBREPORT_CLIENT_H_
+
 
 #define REPORT_PREFIX_ASK_YES_NO "ASK_YES_NO "
 /**
