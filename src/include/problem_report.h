@@ -15,6 +15,116 @@
     You should have received a copy of the GNU General Public License along
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+    @brief API for formating of problem data
+
+    These functions can be used to convert a problem data to its string
+    representation.
+
+    The output format can be parsed from a string:
+
+        problem_formatter_t *formatter = problem_formatter_new();
+        problem_formatter_load_string(formatter, MY_FORMAT_STRING);
+
+    or loaded from a file:
+
+        problem_formatter_t *formatter = problem_formatter_new();
+        problem_formatter_load_file(formatter, MY_FORMAT_FILE);
+
+    Once you have configured your formatter you can convert problem_data to
+    problem_report by calling:
+
+        problem_report_t *report;
+        if (problem_formatter_generate_report(formatter, data, &report) != 0)
+            errx(EXIT_FAILURE, "Problem data cannot be converted to problem report.");
+
+    Now you can print the report:
+
+        printf("Problem: %s\n", problem_report_get_summary());
+        printf("%s\n",          problem_report_get_description());
+
+        puts("Problem attachments:");
+        for (GList *a = problem_report_get_attachments(pr); a != NULL; a = g_list_next(a))
+            printf(" %s\n", a->data);
+
+    Format description:
+
+         ----
+         %summary:: summary format
+         %attach:: elemnt1[,element2]...
+         section:: element1[,element2]...
+         The literal text line to be added to report.
+         ----
+
+         Summary format is a line of text, where %element% is replaced by
+         text element's content, and [[...%element%...]] block is used only if
+         %element% exists. [[...]] blocks can nest.
+
+         Sections can be:
+         - %summary: bug summary format string.
+
+         - %attach: a list of elements to attach.
+
+         - text, double colon (::) and the list of comma-separated elements.
+           Text can be empty (":: elem1, elem2, elem3" works),
+           in this case "Text:" header line will be omitted.
+
+         - %description: this section is implicit and contains all text
+           sections unless another section was specified (%summary and %attach
+           are ignored when determining text section's placement)
+
+         - every text element belongs to the last specified section (%summary
+           and %attach sections are ignored). If no section was specified,
+           the text element belogns to %description.
+
+         - If none of elements exists, the section will not be created.
+
+         - Empty lines are NOT ignored.
+
+         Elements can be:
+         - problem directory element names, which get formatted as
+           <element_name>: <contents>
+           or
+           <element_name>:
+           :<contents>
+           :<contents>
+           :<contents>
+
+         - problem directory element names prefixed by "%bare_",
+           which is formatted as-is, without "<element_name>:" and colons
+
+         - %oneline, %multiline, %text wildcards, which select all corresponding
+           elements for output or attachment
+
+         - %binary wildcard, valid only for %attach section, instructs to attach
+           binary elements
+
+         - problem directory element names prefixed by "-",
+           which excludes given element from all wildcards
+
+         - Nonexistent elements are silently ignored.
+
+    You can add your own section:
+
+        problem_formatter_t *formatter = problem_formatter_new();
+        problem_formatter_add_section(formatter, "additional_info", PFFF_REQUIRED);
+
+    and then you can use the section in the formatting string:
+
+        problem_formatter_load_string(formatter,
+                "::comment\n"
+                "%additional_info:: maps");
+        problem_formatter_generate_report(formatter, data, &report);
+
+        printf("Problem: %s\n",         problem_report_get_summary());
+        printf("%s\n",                  problem_report_get_description());
+        printf("Additional info: %s\n", problem_report_get_section(report, "additiona_info"));
+
+    The lines above are equivalent to the following lines:
+
+        printf("Problem: %s\n",         problem_data_get_content_or_NULL(data, "reason"));
+        printf("%s\n",                  problem_data_get_content_or_NULL(data, "comment"));
+        printf("Additional info: %s\n", problem_data_get_content_or_NULL(data, "maps"));
 */
 #ifndef LIBREPORT_PROBLEM_REPORT_H
 #define LIBREPORT_PROBLEM_REPORT_H
@@ -195,7 +305,6 @@ int problem_formatter_add_section(problem_formatter_t *self, const char *name, i
  * unrecognized section).
  */
 int problem_formatter_load_string(problem_formatter_t* self, const char *fmt);
-
 
 /*
  * Loads a problem format from a file.
