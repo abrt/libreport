@@ -21,6 +21,9 @@
 #ifndef LIBREPORT_DUMP_DIR_H_
 #define LIBREPORT_DUMP_DIR_H_
 
+/* For const_string_vector_const_ptr_t */
+#include "libreport_types.h"
+
 #include <stdint.h>
 
 /* For DIR */
@@ -298,6 +301,30 @@ typedef int (*save_data_call_back)(struct dump_dir *, void *args);
  */
 struct dump_dir *create_dump_dir(const char *base_dir_name, const char *type,
         uid_t uid, save_data_call_back save_data, void *args);
+
+/* Creates a new archive from the dump directory contents
+ *
+ * The dd argument must be opened for reading.
+ *
+ * The archive_name must not exist. The file will be created with 0600 mode.
+ *
+ * The archive type is deduced from archive_name suffix. The supported archive
+ * suffixes are the following:
+ *   - '.tag.gz' (note: the implementation uses child gzip process)
+ *
+ * The archive will include only the files that are not in the exclude_elements
+ * list. See get_global_always_excluded_elements().
+ *
+ * The argument "flags" is currently unused.
+ *
+ * @return 0 on success; otherwise non-0 value. -ENOSYS if archive type is not
+ * supported. -EEXIST if the archive file already exists. -ECHILD if child
+ * process fails. Other negative values can be converted to errno values by
+ * turning them positive.
+ */
+int dd_create_archive(struct dump_dir *dd, const char *archive_name,
+        const_string_vector_const_ptr_t exclude_elements, int flags);
+
 #ifdef __cplusplus
 }
 #endif

@@ -90,6 +90,7 @@ libreport_la_CPPFLAGS = \
     $(SATYR_CFLAGS) \
     -D_GNU_SOURCE
 libreport_la_LDFLAGS = \
+    -ltar \
     -version-info 0:1:0
 libreport_la_LIBADD = \
     $(GLIB_LIBS) \
