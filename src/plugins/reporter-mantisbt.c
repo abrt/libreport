@@ -686,9 +686,10 @@ finish:
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (dd)
     {
-        char *msg = xasprintf("MantisBT: URL=%s/view.php?id=%u", mbt_settings.m_mantisbt_url, ii->mii_id);
-        add_reported_to(dd, msg);
-        free(msg);
+        report_result_t rr = { .label = (char *)"MantisBT" };
+        rr.url = xasprintf("%s/view.php?id=%u", mbt_settings.m_mantisbt_url, ii->mii_id);
+        add_reported_to_entry(dd, &rr);
+        free(rr.url);
         dd_close(dd);
     }
 
