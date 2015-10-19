@@ -53,6 +53,138 @@ int main(void)
 }
 ]])
 
+
+## -------------------------- ##
+## add_reported_to_entry_data ##
+## -------------------------- ##
+
+AT_TESTFUN([add_reported_to_entry_data],
+[[
+#include "internal_libreport.h"
+#include <assert.h>
+
+bool string_cmp(const char *orig, const char *other)
+{
+    if (strcmp(orig, other) == 0)
+        return true;
+
+    printf("Exp: '%s'\nGot: '%s'\n", orig, other);
+    return false;
+}
+
+int main(void)
+{
+    g_verbose=3;
+
+    setenv("TZ", "", 1);
+    setenv("LC_ALL", "C", 1);
+
+    {
+        char *reported_to = NULL;
+        report_result_t result = {
+            .label = NULL,
+        };
+
+        assert(add_reported_to_entry_data(&reported_to, &result) == -EINVAL || !"0 string");
+    }
+
+    {
+        char *reported_to = NULL;
+        report_result_t result = {
+            .label = (char *)"",
+        };
+
+        assert(add_reported_to_entry_data(&reported_to, &result) == -EINVAL || !"Empty string");
+    }
+
+    {
+        char *reported_to = NULL;
+        report_result_t result = {
+            .label = (char *)"Fo:",
+        };
+
+        assert(add_reported_to_entry_data(&reported_to, &result) == -EINVAL || !"Contains :");
+    }
+
+    {
+        char *reported_to = NULL;
+        report_result_t result = {
+            .label = (char *)"Foo = blah",
+        };
+
+        assert(add_reported_to_entry_data(&reported_to, &result) || !"Label contains = and space");
+        assert(reported_to != NULL);
+        assert(string_cmp("Foo = blah:\n", reported_to));
+    }
+
+    {
+        char *reported_to = NULL;
+        report_result_t result = {
+            .label = (char *)"OnlyURL",
+            .url = (char *)"http://test1.com",
+        };
+
+        assert(add_reported_to_entry_data(&reported_to, &result) || !"Only URL");
+        assert(reported_to != NULL);
+        assert(string_cmp("OnlyURL: URL=http://test1.com\n", reported_to));
+    }
+
+    {
+        char *reported_to = NULL;
+        report_result_t result = {
+            .label = (char *)"OnlyBTHASH",
+            .bthash = (char *)"0123456789ABCDEF",
+        };
+
+        assert(add_reported_to_entry_data(&reported_to, &result) || !"Only BTHASH");
+        assert(reported_to != NULL);
+        assert(string_cmp("OnlyBTHASH: BTHASH=0123456789ABCDEF\n", reported_to));
+    }
+
+    {
+        char *reported_to = NULL;
+        report_result_t result = {
+            .label = (char *)"OnlyMSG",
+            .msg = (char *)"Message = foo : blah!",
+        };
+
+        assert(add_reported_to_entry_data(&reported_to, &result) || !"Only MSG");
+        assert(reported_to != NULL);
+        assert(string_cmp("OnlyMSG: MSG=Message = foo : blah!\n", reported_to));
+    }
+
+    {
+        char *reported_to = NULL;
+        report_result_t result = {
+            .label = (char *)"OnlyTIME",
+            /* 2000-01-01-00:00:00 */
+            .timestamp = 946684800,
+        };
+
+        assert(add_reported_to_entry_data(&reported_to, &result) || !"Only MSG");
+        assert(reported_to != NULL);
+        assert(string_cmp("OnlyTIME: TIME=2000-01-01-00:00:00\n", reported_to));
+    }
+
+    {
+        char *reported_to = NULL;
+        report_result_t result = {
+            .label = (char *)"Everything",
+            /* 2000-01-01-00:00:00 */
+            .timestamp = 946684800,
+            .url = (char *)"http://epic.win",
+            .bthash = (char *)"0123456789ABCDEF",
+            .msg = (char *)"Exhausting libreport test!",
+        };
+
+        assert(add_reported_to_entry_data(&reported_to, &result) || !"Everything");
+        assert(reported_to != NULL);
+        assert(string_cmp("Everything: TIME=2000-01-01-00:00:00 URL=http://epic.win BTHASH=0123456789ABCDEF MSG=Exhausting libreport test!\n", reported_to));
+    }
+}
+]])
+
+
 ## ---------------------- ##
 ## parse_reported_to_data ##
 ## ---------------------- ##
@@ -87,6 +219,12 @@ bool parse_and_check(const char *reported_to, GList *expected)
             goto finish;
         }
 
+        if(e->timestamp != c->timestamp)
+        {
+            printf("Timestamps: '%lld' != '%lld'\n", e->timestamp, c->timestamp);
+            goto finish;
+        }
+
         if(!((e->url == NULL && c->url == NULL) || strcmp(e->url, c->url) == 0))
         {
             printf("'%s' != '%s'\n", e->url, c->url);
@@ -116,20 +254,26 @@ int main(void)
 {
     g_verbose=3;
 
+    setenv("TZ", "", 1);
+    setenv("LC_ALL", "C", 1);
+
 #define FIRST_LINE "Bugzilla: URL=https://goodluck.org"
+#define FOURTH_LINE "Bugzilla: TIME=invalid URL=https://goodluck.org"
     report_result_t first_result = {
         .label = (char *)"Bugzilla",
         .url   = (char *)"https://goodluck.org"
     };
 
 #define SECOND_LINE "ABRT Server: BTHASH=81680083BIGBOOBS"
+#define FIFTH_LINE "ABRT Server: TIME=invalid BTHASH=81680083BIGBOOBS"
     report_result_t second_result = {
         .label = (char *)"ABRT Server",
         .bthash = (char *)"81680083BIGBOOBS"
     };
 
-#define THIRD_LINE "RHTSupport: TIME=12345678 URL=https://access.redhat.com/home MSG=The world's best IT support"
+#define THIRD_LINE "RHTSupport: TIME=2000-01-01-00:00:00 URL=https://access.redhat.com/home MSG=The world's best IT support"
     report_result_t third_result = {
+        .timestamp = 946684800,
         .label = (char *)"RHTSupport",
         .url = (char *)"https://access.redhat.com/home",
         .msg = (char *)"The world's best IT support",
@@ -137,9 +281,11 @@ int main(void)
 
     GList *expected = g_list_append(NULL, &first_result);
     assert(parse_and_check(FIRST_LINE, expected));
+    assert(parse_and_check(FOURTH_LINE, expected));
 
     expected = g_list_append(expected, &second_result);
     assert(parse_and_check(FIRST_LINE"\n"SECOND_LINE, expected));
+    assert(parse_and_check(FIRST_LINE"\n"FIFTH_LINE, expected));
 
     expected = g_list_append(expected, &third_result);
     assert(parse_and_check(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE, expected));
