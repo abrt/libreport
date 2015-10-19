@@ -1959,6 +1959,18 @@ void add_reported_to(struct dump_dir *dd, const char *line)
     free(reported_to);
 }
 
+void add_reported_to_entry(struct dump_dir *dd, struct report_result *result)
+{
+    if (!dd->locked)
+        error_msg_and_die("dump_dir is not opened"); /* bug */
+
+    char *reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    if (add_reported_to_entry_data(&reported_to, result))
+        dd_save_text(dd, FILENAME_REPORTED_TO, reported_to);
+
+    free(reported_to);
+}
+
 report_result_t *find_in_reported_to(struct dump_dir *dd, const char *report_label)
 {
     char *reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO,
