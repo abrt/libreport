@@ -32,7 +32,7 @@ static char *ask_url(const char *message)
     return url;
 }
 
-static int interactive_upload_file(const char *url, const char *file_name)
+static int interactive_upload_file(const char *url, const char *file_name, char **remote_name)
 {
     post_state_t *state = new_post_state(POST_WANT_ERROR_MSG);
     state->username = getenv("Upload_Username");
@@ -53,19 +53,24 @@ static int interactive_upload_file(const char *url, const char *file_name)
         }
     }
 
-    char *remote_name = upload_file_ext(state, url, file_name, UPLOAD_FILE_HANDLE_ACCESS_DENIALS);
-    int result = (remote_name == NULL); /* error if NULL */
+    char *tmp = upload_file_ext(state, url, file_name, UPLOAD_FILE_HANDLE_ACCESS_DENIALS);
 
-    free(remote_name);
+    if (remote_name)
+        *remote_name = tmp;
+    else
+        free(tmp);
+
     free(password_inp);
     free_post_state(state);
 
-    return result;
+    /* return 0 on success */
+    return tmp == NULL;
 }
 
 static int create_and_upload_archive(
                 const char *dump_dir_name,
-                map_string_t *settings)
+                const char *url,
+                char **remote_name)
 {
     int result = 1; /* error */
     char* tempfile = NULL;
@@ -76,11 +81,6 @@ static int create_and_upload_archive(
     /* Changed again to /var/tmp because of Fedora feature tmp-on-tmpfs */
     tempfile = concat_path_basename(LARGE_DATA_TMP_DIR, dump_dir_name);
     tempfile = append_to_malloced_string(tempfile, ".tar.gz");
-
-    const char* opt = getenv("Upload_URL");
-    if (!opt)
-        opt = get_map_string_item_or_empty(settings, "URL");
-    char *url = opt[0] != '\0' ? xstrdup(opt) : ask_url(_("Please enter a URL (scp, ftp, etc.) where the problem data is to be exported:"));
 
     string_vector_ptr_t exclude_from_report = get_global_always_excluded_elements();
 
@@ -102,17 +102,16 @@ static int create_and_upload_archive(
     /* Upload the archive */
     /* Upload from /tmp to /tmp + deletion -> BAD, exclude this possibility */
     if (url && url[0] && strcmp(url, "file://"LARGE_DATA_TMP_DIR"/") != 0)
-        result = interactive_upload_file(url, tempfile);
+        result = interactive_upload_file(url, tempfile, remote_name);
     else
     {
         result = 0; /* success */
         log(_("Archive is created: '%s'"), tempfile);
-        free(tempfile);
+        *remote_name = tempfile;
         tempfile = NULL;
     }
 
  ret:
-    free(url);
     dd_close(dd);
 
     if (tempfile)
@@ -190,13 +189,35 @@ int main(int argc, char **argv)
     //ExcludeFiles = foo,bar*,b*z
 
     map_string_t *settings = new_map_string();
-    if (url)
-        replace_map_string_item(settings, xstrdup("URL"), xstrdup(url));
     if (conf_file)
         load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 
-    int result = create_and_upload_archive(dump_dir_name, settings);
+    char *input_url = NULL;
+    const char *conf_url = getenv("Upload_URL");
+    if (!conf_url || conf_url[0] == '\0')
+        conf_url = url;
+    if (!conf_url || conf_url[0] == '\0')
+        conf_url = get_map_string_item_or_empty(settings, "URL");
+    if (!conf_url || conf_url[0] == '\0')
+        conf_url = input_url = ask_url(_("Please enter a URL (scp, ftp, etc.) where the problem data is to be exported:"));
 
+    char *remote_name = NULL;
+    const int result = create_and_upload_archive(dump_dir_name, conf_url, &remote_name);
+    if (result != 0)
+        goto finito;
+
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (dd)
+    {
+        report_result_t rr = { .label = (char *)"upload" };
+        rr.url = remote_name,
+        add_reported_to_entry(dd, &rr);
+        dd_close(dd);
+    }
+    free(remote_name);
+
+finito:
+    free(input_url);
     free_map_string(settings);
     return result;
 }
