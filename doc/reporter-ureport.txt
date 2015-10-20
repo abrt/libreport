@@ -7,7 +7,7 @@ reporter-ureport - Reports ABRT problems in format of micro report
 
 SYNOPSIS
 --------
-'reporter-ureport' [-v] [-c CONFFILE] [-u URL] [-k] [-A -a bthash -B -b bug-id -E -e email] [-r] [-d DIR]
+'reporter-ureport' [-v] [-c CONFFILE] [-u URL] [-k] [-A -a bthash -B -b bug-id -E -e email -l DATA -L FIELD -T TYPE -r RESULT_TYPE] [-d DIR]
 
 DESCRIPTION
 -----------
@@ -118,6 +118,22 @@ OPTIONS
 
 -i AUTH_DATA_ITEMS::
    List of dump dir files included in the 'auth' uReport object.
+
+-l DATA::
+   Attach DATA (requires -T and -a|-A)
+
+-L REPORT_RESULT_FILED::
+   Attach the value of REPORT_RESULT_FILED member of the last report result
+   indentified by REPORT_RESULT_TYPE passed with -r option
+   (requires -r, -T and -a|-A).
+
+-T ATTACHMENT_TYPE::
+   Specifies the attachment type when attaching an arbitrary data to BTHASH
+   (takes effect only with -l or -L)
+
+-r REPORT_RESULT_TYP::
+   Used to single out report results ('reported_to' file lines) when attaching
+   an arbitrary data to BTHASH (takes effect only with -L)
 
 ENVIRONMENT VARIABLES
 ---------------------
