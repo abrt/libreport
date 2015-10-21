@@ -1157,6 +1157,28 @@ void show_usage_and_die(const char *usage, const struct options *opt) NORETURN;
  */
 struct abrt_post_state;
 
+/* Decomposes uri to its base elements, removes userinfo out of the hostname and
+ * composes a new uri without userinfo.
+ *
+ * The function does not validate the url.
+ *
+ * @param uri The uri that might contain userinfo
+ * @param result The userinfo free uri will be store here. Cannot be null. Must
+ * be de-allocated by free.
+ * @param scheme Scheme of the uri. Can be NULL. Result can be NULL. Result
+ * must be de-allocated by free.
+ * @param hostname Hostname of the uri. Can be NULL. Result can be NULL. Result
+ * must be de-allocated by free.
+ * @param username Username of the uri. Can be NULL. Result can be NULL. Result
+ * must be de-allocated by free.
+ * @param password Password of the uri. Can be NULL. Result can be NULL. Result
+ * must be de-allocated by free.
+ * @param location Location of the uri. Can be NULL. Result is never NULL. Result
+ * must be de-allocated by free.
+ */
+#define uri_userinfo_remove libreport_uri_userinfo_remove
+int uri_userinfo_remove(const char *uri, char **result, char **scheme, char **hostname, char **username, char **password, char **location);
+
 #ifdef __cplusplus
 }
 #endif
