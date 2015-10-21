@@ -1,0 +1,144 @@
+# -*- Autotest -*-
+
+AT_BANNER([uriparser])
+
+## ------------------- ##
+## uri_userinfo_remove ##
+## ------------------- ##
+
+AT_TESTFUN([uri_userinfo_remove],
+[[#include "internal_libreport.h"
+#include <assert.h>
+#include <string.h>
+#include <stdio.h>
+
+bool string_cmp(const char *message, const char *orig, const char *other)
+{
+    if (orig == NULL && other != NULL)
+    {
+        printf("%s: expected NULL got '%s'\n", message, other);
+        return false;
+    }
+
+    if (orig != NULL && other == NULL)
+    {
+        printf("%s: expected '%s' got NULL\n", message, orig);
+        return false;
+    }
+
+    if (orig == NULL && other == NULL)
+        return true;
+
+    if (strcmp(orig, other) == 0)
+        return true;
+
+    printf("%s: '%s' != '%s'\n", message, orig, other);
+    return false;
+}
+
+int test(int retval, const char *uri, const char *result, const char *scheme, const char *hostname, const char *username, const char *password, const char *location)
+{
+    int e = 0;
+    const char *names[] = {"result", "scheme", "hostname", "username", "password", "location"} ;
+    char *outputs[6];
+    const char *expected[6];
+
+    for (size_t i = 0; i < ARRAY_SIZE(outputs); ++i)
+        outputs[i] = (char *)0xDEADBEEF;
+
+    expected[0] = result;
+    expected[1] = scheme;
+    expected[2] = hostname;
+    expected[3] = username;
+    expected[4] = password;
+    expected[5] = location;
+
+    fprintf(stderr, "==== Testing: '%s'\n", uri);
+    fprintf(stdout, "==== Testing: '%s'\n", uri);
+
+    int r = uri_userinfo_remove(uri, &outputs[0], &outputs[1], &outputs[2], &outputs[3], &outputs[4], &outputs[5]);
+    if (r != retval)
+    {
+        printf("Invalid retval %d != %d\n", retval, r);
+        ++e;
+    }
+
+    if (r != -EINVAL)
+    {
+        for (size_t i = 0; i < ARRAY_SIZE(outputs); ++i)
+        {
+            if (outputs[i] == (char *)0xDEADBEEF)
+            {
+                printf("Not initialized argument '%s'\n", names[i]);
+                ++e;
+            }
+            else
+            {
+                e += !string_cmp(names[i], expected[i], outputs[i]);
+                free(outputs[i]);
+                outputs[i] = (char *)0xDEADBEEF;
+            }
+        }
+    }
+    else
+    {
+        for (size_t i = 0; i < ARRAY_SIZE(outputs); ++i)
+        {
+            if (outputs[i] != (char *)0xDEADBEEF)
+            {
+                printf("Touched argument '%s'\n", names[i]);
+                ++e;
+            }
+        }
+    }
+
+    fprintf(stderr, "== Test without arguments\n");
+    fprintf(stdout, "== Test without arguments\n");
+
+
+    r = uri_userinfo_remove(uri, &outputs[0], NULL, NULL, NULL, NULL, NULL);
+    if (r != retval)
+    {
+        printf("Invalid retval without arguments: %d != %d\n", retval, r);
+        ++e;
+    }
+
+    e += !string_cmp(names[0], result, outputs[0]);
+    free(outputs[0]);
+
+    return e;
+}
+
+int main(void)
+{
+    g_verbose=3;
+
+    int e = 0;
+    e += test(      0, "ftp://root:password@", "ftp://", "ftp:", "", "root", "password", "");
+    e += test(      0, "ftp://root:password@/", "ftp:///", "ftp:", "", "root", "password", "/");
+    e += test(      0, "ftp://root:password@/foo", "ftp:///foo", "ftp:", "", "root", "password", "/foo");
+    e += test(      0, "ftp://@", "ftp://", "ftp:", "", "", NULL, "");
+    e += test(      0, "ftp://@/", "ftp:///", "ftp:", "", "", NULL, "/");
+    e += test(      0, "ftp://@/foo", "ftp:///foo", "ftp:", "", "", NULL, "/foo");
+    e += test(      0, "ftp://:@", "ftp://", "ftp:", "", "", "", "");
+    e += test(      0, "ftp://:@/", "ftp:///", "ftp:", "", "", "", "/");
+    e += test(      0, "ftp://:@/foo", "ftp:///foo", "ftp:", "", "", "", "/foo");
+    e += test(      0, "root:password", "root:password", "root:", NULL, NULL, NULL, "password");
+    e += test(      0, "root:password@", "root:password@", "root:", NULL, NULL, NULL, "password@");
+    e += test(      0, "ftp://root:password", "ftp://root:password", "ftp:", "root:password", NULL, NULL, "");
+    e += test(      0, "scp:://root:password@localhost", "scp:://root:password@localhost", "scp:", NULL, NULL, NULL, "://root:password@localhost");
+    e += test(      0, "scp:///root:password@localhost", "scp:///root:password@localhost", "scp:", "", NULL, NULL, "/root:password@localhost");
+    e += test(      0, "ftp://root:password/", "ftp://root:password/", "ftp:", "root:password", NULL, NULL, "/");
+    e += test(      0, "scp://B@rt:P@ssw0rd@localhost/t@rget1?query=foo#head", "scp://localhost/t@rget1?query=foo#head", "scp:", "localhost", "B@rt", "P@ssw0rd", "/t@rget1?query=foo#head");
+    e += test(      0, "scp://B@rt@localhost/t@rget1?query=foo#head", "scp://localhost/t@rget1?query=foo#head", "scp:", "localhost", "B@rt", NULL, "/t@rget1?query=foo#head");
+    e += test(      0, "scp://B@rt:@localhost/t@rget1?query=foo#head", "scp://localhost/t@rget1?query=foo#head", "scp:", "localhost", "B@rt", "", "/t@rget1?query=foo#head");
+    e += test(      0, "scp://:P@ssw0rd@localhost/t@rget1?query=foo#head", "scp://localhost/t@rget1?query=foo#head", "scp:", "localhost", "", "P@ssw0rd", "/t@rget1?query=foo#head");
+    e += test(      0, "scp://@localhost/t@rget1?query=foo#head", "scp://localhost/t@rget1?query=foo#head", "scp:", "localhost", "", NULL, "/t@rget1?query=foo#head");
+    e += test(      0, "scp://:@localhost/t@rget1?query=foo#head", "scp://localhost/t@rget1?query=foo#head", "scp:", "localhost", "", "", "/t@rget1?query=foo#head");
+    e += test(      0, "password/root", "password/root", NULL, NULL, NULL, NULL, "password/root");
+    e += test(      0, "/password/root", "/password/root", NULL, NULL, NULL, NULL, "/password/root");
+    e += test(      0, "://root:passowrd@localhost", "://root:passowrd@localhost", NULL, NULL, NULL, NULL, "://root:passowrd@localhost");
+
+    return e;
+}
+]])
