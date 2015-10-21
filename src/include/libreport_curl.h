@@ -138,6 +138,15 @@ enum {
 #define upload_file libreport_upload_file
 char *upload_file(const char *url, const char *filename);
 
+/* Uploads filename to url.
+ *
+ * If url does not ends with '/', base name of filename will be amended.
+ *
+ * Fails if the url does not have scheme or hostname.
+ *
+ * @return Resulting URL on success (the URL does not contain userinfo);
+ * otherwise NULL.
+ */
 #define upload_file_ext libreport_upload_file_ext
 char *upload_file_ext(post_state_t *post_state,
                 const char *url,
