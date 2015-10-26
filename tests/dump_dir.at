@@ -8,9 +8,7 @@ AT_BANNER([dump_dir])
 
 AT_TESTFUN([dd_sanity],
 [[
-#include "internal_libreport.h"
-#include <errno.h>
-#include <assert.h>
+#include "testsuite.h"
 
 void validate_dump_dir_contents(struct dump_dir *dd)
 {
@@ -64,38 +62,42 @@ void validate_dump_dir_contents(struct dump_dir *dd)
     DIR *d1 = dd_init_next_file(dd);
     assert(d1 != NULL);
 
-    int counter = 0;
+    int items_counter = 0;
     char *short_name, *full_name;
     while (dd_get_next_file(dd, &short_name, &full_name))
     {
-        ++counter;
+        ++items_counter;
 
-
-        printf("Iter = %s\n", short_name);
-
-        assert(short_name != NULL);
-        assert(full_name != NULL);
-        assert(strcmp(short_name, strrchr(full_name, '/') + 1) == 0);
-        assert(strncmp(dd->dd_dirname, full_name, strlen(dd->dd_dirname)) == 0);
-        assert(full_name[strlen(dd->dd_dirname)] == '/');
+        TS_ASSERT_PTR_IS_NOT_NULL(short_name);
+        TS_ASSERT_PTR_IS_NOT_NULL(full_name);
+        TS_ASSERT_STRING_EQ(short_name, (strrchr(full_name, '/') + 1), NULL);
+        TS_ASSERT_STRING_BEGINS_WITH(full_name, dd->dd_dirname, NULL);
+        TS_ASSERT_CHAR_EQ_MESSAGE(full_name[strlen(dd->dd_dirname)], '/', full_name);
     }
 
-    printf("Items = %d, Counter = %d\n", items, counter);
-    assert(items == counter);
+    TS_ASSERT_SIGNED_EQ(items, items_counter);
+    TS_ASSERT_SIGNED_EQ(dd_get_items_count(dd), items);
+    TS_ASSERT_PTR_IS_NULL(dd->next_dir);
+    TS_ASSERT_SIGNED_EQ(dd_get_next_file(dd, NULL, NULL), 0);
 
-    DIR *d2 = dd_init_next_file(dd);
-    assert(d2 != NULL);
+    DIR *iterator_second_run = dd_init_next_file(dd);
+    TS_ASSERT_PTR_IS_NOT_NULL(iterator_second_run);
 
     while (dd_get_next_file(dd, &short_name, &full_name))
-        --counter;
+        --items_counter;
 
-    assert(counter == 0);
+    TS_ASSERT_SIGNED_OP_MESSAGE(items_counter, ==, 0, "Second run iterator goes through all items");
+
+    DIR *iterator_third_run = dd_init_next_file(dd);
+    TS_ASSERT_PTR_IS_NOT_NULL(iterator_third_run);
+    TS_ASSERT_PTR_IS_NOT_NULL(dd->next_dir);
+    dd_clear_next_file(dd);
+    TS_ASSERT_PTR_IS_NULL(dd->next_dir);
+    TS_ASSERT_SIGNED_OP_MESSAGE(dd_get_next_file(dd, NULL, NULL), ==, 0, "dd_clear_next_file(dd) stops iteration");
 }
 
-int main(int argc, char **argv)
+TS_MAIN
 {
-    g_verbose = 3;
-
     char template[] = "/tmp/XXXXXX/dump_dir";
 
     char *last_slash = strrchr(template, '/');
@@ -162,8 +164,8 @@ int main(int argc, char **argv)
 
     *last_slash = '\0';
     assert(rmdir(template) == 0);
-    return EXIT_SUCCESS;
 }
+TS_RETURN_MAIN
 ]])
 
 ## --------------------- ##

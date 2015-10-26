@@ -534,11 +534,7 @@ void dd_close(struct dump_dir *dd)
 
     dd_close_meta_data_dir(dd);
 
-    if (dd->next_dir)
-    {
-        closedir(dd->next_dir);
-        /* free(dd->next_dir); - WRONG! */
-    }
+    dd_clear_next_file(dd);
 
     free(dd->dd_type);
     free(dd->dd_dirname);
@@ -1897,6 +1893,28 @@ int dd_delete_item(struct dump_dir *dd, const char *name)
     return res;
 }
 
+int dd_get_items_count(struct dump_dir *dd)
+{
+    int retval = 0;
+
+    if (dd_init_next_file(dd) == NULL)
+        return -EIO;
+
+    while (dd_get_next_file(dd, NULL, NULL))
+    {
+        ++retval;
+
+        /* Check overflow */
+        if (retval < 0)
+        {
+            dd_clear_next_file(dd);
+            return -E2BIG;
+        }
+    }
+
+    return retval;
+}
+
 DIR *dd_init_next_file(struct dump_dir *dd)
 {
 //    if (!dd->locked)
@@ -1908,8 +1926,7 @@ DIR *dd_init_next_file(struct dump_dir *dd)
         return NULL;
     }
 
-    if (dd->next_dir)
-        closedir(dd->next_dir);
+    dd_clear_next_file(dd);
 
     lseek(opendir_fd, SEEK_SET, 0);
     dd->next_dir = fdopendir(opendir_fd);
@@ -1920,6 +1937,15 @@ DIR *dd_init_next_file(struct dump_dir *dd)
     }
 
     return dd->next_dir;
+}
+
+void dd_clear_next_file(struct dump_dir *dd)
+{
+    if (dd->next_dir == NULL)
+        return;
+
+    closedir(dd->next_dir);
+    dd->next_dir = NULL;
 }
 
 int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name)
@@ -1940,8 +1966,7 @@ int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name)
         }
     }
 
-    closedir(dd->next_dir);
-    dd->next_dir = NULL;
+    dd_clear_next_file(dd);
     return 0;
 }
 

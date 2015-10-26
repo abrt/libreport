@@ -139,4 +139,100 @@ FILE *g_testsuite_output_stream = 0;
     TS_ASSERT_SIGNED_OP_MESSAGE(actual, >=, expected, NULL)
 
 
+/*
+ * Testing of chars
+ */
+
+#define TS_ASSERT_CHAR_OP_MESSAGE(actual, operator, expected, message) \
+    do { \
+        char l_ts_lhs = (actual); \
+        char l_ts_rhs = (expected); \
+        if (l_ts_lhs operator l_ts_rhs) { \
+            TS_SUCCESS("%s ("#actual" "#operator" "#expected"): OK\n\tActual  : %c\n", message ? message : "Assert", l_ts_lhs); \
+        } \
+        else { \
+            TS_FAILURE("%s ("#actual" "#operator" "#expected"): FAILED\n\tActual  : %c\n\tExpected: %c\n", message ? message : "Assert", l_ts_lhs, l_ts_rhs); \
+        } \
+    } while(0)
+
+#define TS_ASSERT_CHAR_EQ_MESSAGE(actual, expected, message) \
+    TS_ASSERT_CHAR_OP_MESSAGE(actual, ==, expected, message)
+
+#define TS_ASSERT_CHAR_EQ(actual, expected) \
+    TS_ASSERT_CHAR_EQ_MESSAGE(actual, ==, expected, NULL)
+
+
+/*
+ * Testing of strings
+ */
+
+#define TS_ASSERT_STRING_EQ(actual, expected, message) \
+    do { \
+        const char *l_ts_lhs = (actual); \
+        const char *l_ts_rhs = (expected); \
+        if (l_ts_lhs == NULL && l_ts_rhs != NULL) { \
+            TS_FAILURE("%s ("#actual" == "#expected"): FAILED\n\tActual  : NULL\n\tExpected: %p\n", message ? message : "Assert", l_ts_rhs); \
+        } \
+        else if (l_ts_lhs != NULL && l_ts_rhs == NULL) { \
+            TS_FAILURE("%s ("#actual" == "#expected"): FAILED\n\tActual  : %s\n\tExpected: NULL\n", message ? message : "Assert", l_ts_lhs); \
+        } \
+        else if ((l_ts_rhs == NULL && l_ts_rhs == NULL)) { \
+            TS_SUCCESS("%s ("#actual" == "#expected"): OK\n\tActual  : NULL\n", message ? message : "Assert"); \
+        } \
+        else if (strcmp(l_ts_lhs, l_ts_rhs) == 0) { \
+            TS_SUCCESS("%s ("#actual" == "#expected"): OK\n\tActual  : %s\n", message ? message : "Assert", l_ts_lhs); \
+        } \
+        else { \
+            TS_FAILURE("%s ("#actual" == "#expected"): FAILED\n\tActual  : %s\n\tExpected: %s\n", message ? message : "Assert", l_ts_lhs, l_ts_rhs); \
+        } \
+    } while(0)
+
+#define TS_ASSERT_STRING_BEGINS_WITH(actual, prefix, message) \
+    do { \
+        const char *l_ts_lhs = (actual); \
+        const char *l_ts_rhs = (prefix); \
+        if (l_ts_lhs == NULL && l_ts_rhs != NULL) { \
+            TS_FAILURE("%s ("#actual" begins with "#prefix"): FAILED\n\tActual  : NULL\n\tExpected: %p\n", message ? message : "Assert", l_ts_rhs); \
+        } \
+        else if (l_ts_lhs != NULL && l_ts_rhs == NULL) { \
+            TS_FAILURE("%s ("#actual" begins with "#prefix"): FAILED\n\tActual  : %s\n\tExpected: NULL\n", message ? message : "Assert", l_ts_lhs); \
+        } \
+        else if ((l_ts_rhs == NULL && l_ts_rhs == NULL)) { \
+            TS_SUCCESS("%s ("#actual" begins with "#prefix"): OK\n\tActual  : NULL\n", message ? message : "Assert"); \
+        } \
+        else if (strncmp(l_ts_lhs, l_ts_rhs, strlen(l_ts_rhs)) == 0) { \
+            TS_SUCCESS("%s ("#actual" begins with "#prefix"): OK\n\tActual  : %s\n", message ? message : "Assert", l_ts_lhs); \
+        } \
+        else { \
+            TS_FAILURE("%s ("#actual" begins with "#prefix"): FAILED\n\tActual  : %s\n\tExpected: %s\n", message ? message : "Assert", l_ts_lhs, l_ts_rhs); \
+        } \
+    } while(0)
+
+
+/*
+ * Testing of pointers
+ */
+
+#define TS_ASSERT_PTR_OP_MESSAGE(actual, operator, expected, message) \
+    do { \
+        void *l_ts_lhs = (actual); \
+        void *l_ts_rhs = (expected); \
+        if (l_ts_lhs operator l_ts_rhs) { \
+            TS_SUCCESS("%s ("#actual" "#operator" "#expected"): OK\n\tActual  : %p\n", message ? message : "Assert", l_ts_lhs); \
+        } \
+        else { \
+            TS_FAILURE("%s ("#actual" "#operator" "#expected"): FAILED\n\tActual  : %p\n\tExpected: %p\n", message ? message : "Assert", l_ts_lhs, l_ts_rhs); \
+        } \
+    } while(0)
+
+#define TS_ASSERT_PTR_IS_NULL(actual) \
+    TS_ASSERT_PTR_OP_MESSAGE(actual, ==, NULL, NULL);
+
+#define TS_ASSERT_PTR_IS_NOT_NULL(actual) \
+    TS_ASSERT_PTR_OP_MESSAGE(actual, !=, NULL, NULL);
+
+#define TS_ASSERT_PTR_EQ(actual, expected) \
+    TS_ASSERT_PTR_OP_MESSAGE(actual, ==, expected, NULL);
+
+
 #endif/*LIBREPORT_TESTSUITE_H*/
