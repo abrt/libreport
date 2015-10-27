@@ -1893,6 +1893,21 @@ int dd_delete_item(struct dump_dir *dd, const char *name)
     return res;
 }
 
+static int _dd_get_next_file_dent(struct dump_dir *dd, struct dirent **dent)
+{
+    if (dd->next_dir == NULL)
+        return 0;
+
+    while ((*dent = readdir(dd->next_dir)) != NULL)
+    {
+        if (is_regular_file_at(*dent, dd->dd_fd))
+            return 1;
+    }
+
+    dd_clear_next_file(dd);
+    return 0;
+}
+
 int dd_get_items_count(struct dump_dir *dd)
 {
     int retval = 0;
@@ -1912,6 +1927,37 @@ int dd_get_items_count(struct dump_dir *dd)
         }
     }
 
+    return retval;
+}
+
+off_t dd_compute_size(struct dump_dir *dd, int flags)
+{
+    off_t retval = 0;
+
+    if (dd_init_next_file(dd) == NULL)
+        return -EIO;
+
+    struct stat statbuf;
+    struct dirent *dent;
+    while (_dd_get_next_file_dent(dd, &dent))
+    {
+        if (fstatat(dd->dd_fd, dent->d_name, &statbuf, AT_SYMLINK_NOFOLLOW) != 0)
+        {
+            retval = -errno;
+            goto finito;
+        }
+
+        retval += statbuf.st_size;
+        /* Check overflow */
+        if (retval < 0)
+        {
+            retval = -E2BIG;
+            goto finito;
+        }
+    }
+
+finito:
+    dd_clear_next_file(dd);
     return retval;
 }
 
@@ -1950,24 +1996,15 @@ void dd_clear_next_file(struct dump_dir *dd)
 
 int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name)
 {
-    if (dd->next_dir == NULL)
+    struct dirent *dent;
+    if (0 == _dd_get_next_file_dent(dd, &dent))
         return 0;
 
-    struct dirent *dent;
-    while ((dent = readdir(dd->next_dir)) != NULL)
-    {
-        if (is_regular_file_at(dent, dd->dd_fd))
-        {
-            if (short_name)
-                *short_name = xstrdup(dent->d_name);
-            if (full_name)
-                *full_name = concat_path_file(dd->dd_dirname, dent->d_name);
-            return 1;
-        }
-    }
-
-    dd_clear_next_file(dd);
-    return 0;
+    if (short_name)
+        *short_name = xstrdup(dent->d_name);
+    if (full_name)
+        *full_name = concat_path_file(dd->dd_dirname, dent->d_name);
+    return 1;
 }
 
 /* reported_to handling */

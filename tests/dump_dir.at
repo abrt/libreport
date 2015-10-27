@@ -1373,35 +1373,53 @@ int main(void)
 }
 ]])
 
-## ------------ ##
-## uid_in_group ##
-## ------------ ##
+## --------------- ##
+## dd_compute_size ##
+## --------------- ##
 
-AT_TESTFUN([uid_in_group],
+AT_TESTFUN([dd_compute_size],
 [[
-#include "internal_libreport.h"
-#include <libtar.h>
-#include <assert.h>
+#include "testsuite.h"
 
-int main(void)
+TS_MAIN
 {
-    // not existing user id
-    assert(uid_in_group((uid_t)-1, 0) == false);
+    char template[] = "/tmp/XXXXXX/dump_dir";
 
-    // root user is member of root group
-    assert(uid_in_group(0, 0) == true);
+    char *last_slash = strrchr(template, '/');
+    *last_slash = '\0';
 
-    // user root isn't member of not existing group
-    assert(uid_in_group(0, (gid_t)-1) == false);
+    if (mkdtemp(template) == NULL) {
+        perror("mkdtemp()");
+        return EXIT_FAILURE;
+    }
 
-    // user root isn't member of nobody group
-    gid_t nobody_gid = (gid_t)-1;
-    struct group *gr = getgrnam("nobody");
-    if (gr)
-        nobody_gid = gr->gr_gid;
+    struct dump_dir *dd = dd_create(template, (uid_t)-1, 0640);
 
-    assert(uid_in_group(0, nobody_gid) == false);
+    off_t expected = 0;
+    struct string_pair {
+        const char *first;
+        const char *second;
+        } pairs [] = {
+        { .first = "type", .second = "attestsuite" },
+        { .first = "analyzer", .second = "dd_compute_size" },
+        { .first = "time", .second = "1" },
+        { .first = "first", .second = "second" },
+        { .first = "foo", .second = "blah" },
+        { .first = "moo", .second = "cow" },
+        { .first = "rooster", .second = "cock-a-doodle-doo" },
+        { .first = "frog", .second = "ribbit" },
+        { .first = "pig", .second = "oink" },
+    };
 
-    return 0;
+    for (size_t i = 0; i < ARRAY_SIZE(pairs); ++i)
+    {
+        dd_save_text(dd, pairs[i].first, pairs[i].second);
+        expected += strlen(pairs[i].second);
+        assert(expected >= 0);
+    }
+
+    TS_ASSERT_SIGNED_EQ(dd_compute_size(dd, 0), expected);
 }
+TS_RETURN_MAIN
+
 ]])

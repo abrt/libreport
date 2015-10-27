@@ -242,6 +242,13 @@ int dd_rename(struct dump_dir *dd, const char *new_path);
  */
 int dd_chown(struct dump_dir *dd, uid_t new_uid);
 
+/* Returns the number of Bytes consumed by the dump directory.
+ *
+ * @param flags For the future needs (count also meta-data, ...).
+ * @return Negative number on errors (-errno). Otherwise size in Bytes.
+ */
+off_t dd_compute_size(struct dump_dir *dd, int flags);
+
 /* Sets a new owner (does NOT chown the directory)
  *
  * Does not validate the passed uid.
