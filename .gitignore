@@ -7,18 +7,22 @@
 *.lo
 *.la
 
+
 # ignore binaries
+src/client-python/reportclient/_reportclient.so
 src/gui-wizard-gtk/report-gtk
 src/cli/report-cli
 src/plugins/reporter-bugzilla
 src/plugins/reporter-kerneloops
 src/plugins/reporter-mailx
+src/plugins/reporter-mantisbt
 src/plugins/reporter-print
 src/plugins/reporter-rhtsupport
 src/plugins/reporter-upload
 src/plugins/reporter-ureport
 src/plugins/report
 src/report-newt/report-newt
+src/report-python/__init__.pyc
 src/gtk-helpers/test-desktop-utils
 
 # autotools
@@ -30,7 +34,9 @@ m4
 missing
 ABOUT-NLS
 aclocal.m4
+ar-lib
 autom4te.cache
+compile
 config.guess
 config.log
 config.h
@@ -80,6 +86,8 @@ src/gui-wizard-gtk/wizard_glade.c
 # testsuite
 tests/atconfig
 tests/atlocal
+tests/ureport/rhsm/__init__.pyc
+tests/ureport/rhsm/config.pyc
 tests/testsuite
 tests/testsuite.log
 tests/package.m4
@@ -93,6 +101,7 @@ libreport.spec
 libreport-version
 
 #generated api docs
+apidoc/Doxyfile
 apidoc/html/*
 !apidoc/html/Makefile.am
 

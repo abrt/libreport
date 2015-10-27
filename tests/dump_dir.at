@@ -970,3 +970,270 @@ int main(void)
     return 0;
 }
 ]])
+
+## ----------------- ##
+## dd_create_archive ##
+## ----------------- ##
+
+AT_TESTFUN([dd_create_archive],
+[[
+#include "internal_libreport.h"
+#include <libtar.h>
+#include <assert.h>
+
+void verify_archive(struct dump_dir *dd, const char *file_name,
+    const_string_vector_const_ptr_t included_files,
+    const_string_vector_const_ptr_t excluded_files)
+{
+    unsigned c = 0;
+    for (const_string_vector_const_ptr_t i = included_files; i && *i; ++i)
+        ++c;
+    int *check_array = xzalloc(c * sizeof(int));
+
+    int pipe_from_parent_to_child[2];
+    xpipe(pipe_from_parent_to_child);
+    pid_t child = fork();
+    if (child < 0)
+        perror_msg_and_die("vfork");
+
+    if (child == 0)
+    {
+        /* child */
+        close(pipe_from_parent_to_child[0]);
+        xmove_fd(xopen(file_name, O_RDONLY), 0);
+        xmove_fd(pipe_from_parent_to_child[1], 1);
+        execlp("gzip", "gzip", "-d", NULL);
+        perror_msg_and_die("Can't execute '%s'", "gzip");
+    }
+    close(pipe_from_parent_to_child[1]);
+
+    /* If child died (say, in xopen), then parent might get SIGPIPE.
+     * We want to properly unlock dd, therefore we must not die on SIGPIPE:
+     */
+    signal(SIGPIPE, SIG_IGN);
+
+    TAR* tar = NULL;
+    /* Create tar writer object */
+    if (tar_fdopen(&tar, pipe_from_parent_to_child[0], file_name,
+                /*fileops:(standard)*/ NULL, O_RDONLY, 0644, TAR_GNU) != 0)
+    {
+        fprintf(stderr, "Failed to open the pipe to gzip for archive: '%s'\n", file_name);
+        abort();
+    }
+
+    int r = 0;
+    const char *real_file = "/tmp/libreport-attest-extracted";
+    while ((r = th_read(tar)) == 0)
+    {
+        char *path = th_get_pathname(tar);
+
+        if (!TH_ISREG(tar))
+        {
+            fprintf(stderr, "Not regular file: '%s', found in archive: '%s'\n", path, file_name);
+            continue;
+        }
+
+        const_string_vector_const_ptr_t i = included_files;
+        for (c = 0; i && *i; ++i, ++c)
+        {
+            if (strcmp(*i, path) == 0)
+                break;
+        }
+
+        if (i && *i != NULL)
+        {
+            printf("Included file: '%s', found in archive '%s'\n", path, file_name);
+            check_array[c] += 1;
+
+            unlink(real_file);
+            if(tar_extract_regfile(tar, xstrdup(real_file)) != 0)
+            {
+                fprintf(stderr, "TAR failed to extract '%s' to '%s': %s\n", path, real_file, strerror(errno));
+                abort();
+            }
+
+            char *original = dd_load_text(dd, path);
+            assert(original != NULL);
+            assert(original[0] != '\0');
+
+            char *extracted = xmalloc_xopen_read_close("/tmp/libreport-attest-extracted", NULL);
+            assert(extracted != NULL);
+
+            if (strcmp(extracted, original) != 0)
+            {
+                fprintf(stderr, "Invalid file contents: '%s'\nExp: '%s'\nGot: '%s'\n", path, original, extracted);
+                abort();
+            }
+
+            free(original);
+            free(extracted);
+
+            continue;
+        }
+
+        i = excluded_files;
+        for (; i && *i; ++i)
+        {
+            if (strcmp(*i, path) == 0)
+                break;
+        }
+
+        if (i && *i != NULL)
+        {
+            fprintf(stderr, "Excluded file: '%s', found in archive '%s'\n", path, file_name);
+            abort();
+        }
+
+        fprintf(stderr, "Uncategorized file: '%s', found in archive '%s'\n", path, file_name);
+    }
+
+    if (r != 1)
+    {
+        fprintf(stderr, "th_read() failed: %s\n", strerror(errno));
+        abort();
+    }
+
+    tar_close(tar);
+
+    int status;
+    safe_waitpid(child, &status, 0);
+    if (status != 0)
+    {
+        fprintf(stderr, "gzip status code '%d'\n", status);
+        abort();
+    }
+
+    int err = 0;
+    const_string_vector_const_ptr_t i = included_files;
+    for (c = 0; i && *i; ++i, ++c)
+    {
+        switch (check_array[c])
+        {
+            case 0:
+                fprintf(stderr, "Not found included file: '%s', in archive: %s\n", *i, file_name);
+                ++err;
+                break;
+            case 1:
+                fprintf(stdout, "Found included file: '%s', in archive: %s\n", *i, file_name);
+                break;
+            default:
+                fprintf(stderr, "%d occurrences of included file: '%s', in archive: %s\n", check_array[c], *i, file_name);
+                ++err;
+                break;
+        }
+    }
+
+    if (err)
+        abort();
+
+    return;
+}
+
+int main(void)
+{
+    g_verbose = 3;
+
+    char template[] = "/tmp/XXXXXX";
+
+    if (mkdtemp(template) == NULL) {
+        perror("mkdtemp()");
+        return EXIT_FAILURE;
+    }
+
+    printf("Dump dir path: %s\n", template);
+
+    struct dump_dir *dd = dd_create(template, (uid_t)-1, 0640);
+    assert(dd != NULL || !"Cannot create new dump directory");
+
+
+#define COMMON_FILES "time", "last_occurrence", "uid", "kernel", \
+                     "architecture", "hostname", "os_info", "os_release", \
+                     "type", "count", "component", "program_log"
+#define SENSITIVE_FILES "environ", "backtrace", "secret_file", "private_file", \
+                        "useless_file"
+
+    dd_create_basic_files(dd, geteuid(), NULL);
+    dd_save_text(dd, FILENAME_TYPE, "attest");
+    dd_save_text(dd, FILENAME_COUNT, "1");
+    dd_save_text(dd, FILENAME_COMPONENT, "libreport-attest");
+    dd_save_text(dd, "program_log", "Something very important!");
+
+    const gchar *excluded_files[] = {
+        SENSITIVE_FILES,
+        NULL,
+    };
+
+    for (const gchar **iter = excluded_files; *iter; ++iter)
+        dd_save_text(dd, *iter, *iter);
+
+    /* Un-supported archive type */
+    {
+        fprintf(stderr, "TEST-CASE: Un-supported type\n");
+        fprintf(stdout, "TEST-CASE: Un-supported type\n");
+        const int r = dd_create_archive(dd, "/tmp/libreport-attest.omg", NULL, 0);
+        printf("dd_create_archive() == %d\n", r);
+        assert(r == -ENOSYS || !"Not supported");
+    }
+
+    /* File already exists. */
+    {
+        fprintf(stderr, "TEST-CASE: File exists\n");
+        fprintf(stdout, "TEST-CASE: File exists\n");
+        char file_contents[] = "Non emtpy file";
+        const char *file_name = "/tmp/libreport-attest.tar.gz";
+        FILE *test_file = fopen(file_name, "w");
+        assert(test_file != NULL);
+        assert(fprintf(test_file, "%s", file_contents) == strlen(file_contents));
+        fclose(test_file);
+
+        assert(dd_create_archive(dd, file_name, NULL, 0) == -EEXIST || !"Exists");
+
+        char *canary = xmalloc_xopen_read_close(file_name, NULL);
+        assert(canary != NULL);
+        assert(strcmp(canary, file_contents) == 0);
+    }
+
+    /* All elements */
+    {
+        fprintf(stderr, "TEST-CASE: Compress all elements\n");
+        fprintf(stdout, "TEST-CASE: Compress all elements\n");
+
+        const gchar *included_files[] = {
+            COMMON_FILES,
+            SENSITIVE_FILES,
+            NULL,
+        };
+
+        const char *file_name = "/tmp/libreport-attest-all.tar.gz";
+        unlink(file_name);
+        assert(dd_create_archive(dd, file_name, NULL, 0) == 0 || !"All elements");
+
+        verify_archive(dd, file_name, included_files, NULL);
+
+        unlink(file_name);
+    }
+
+    /* Excluded elements */
+    {
+        fprintf(stderr, "TEST-CASE: Exclude elements\n");
+        fprintf(stdout, "TEST-CASE: Exclude elements\n");
+
+        const char *included_files[] = {
+            COMMON_FILES,
+            NULL,
+        };
+
+        const char *file_name = "/tmp/libreport-attest-excluded.tar.gz";
+        unlink(file_name);
+        assert(dd_create_archive(dd, file_name, excluded_files, 0) == 0 || !"Excluded elements");
+
+        verify_archive(dd, file_name, included_files, excluded_files);
+
+        unlink(file_name);
+    }
+
+    assert(dd_delete(dd) == 0);
+
+    return 0;
+}
+]])

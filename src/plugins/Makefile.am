@@ -195,7 +195,6 @@ reporter_rhtsupport_CPPFLAGS = \
     $(LIBREPORT_CFLAGS) \
     $(LIBXML_CFLAGS) \
     -D_GNU_SOURCE
-reporter_rhtsupport_LDFLAGS = -ltar
 reporter_rhtsupport_LDADD = \
     $(GLIB_LIBS) \
     $(LIBXML_LIBS) \
@@ -219,7 +218,6 @@ reporter_upload_CPPFLAGS = \
     $(CURL_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE
-reporter_upload_LDFLAGS = -ltar
 reporter_upload_LDADD = \
     $(GLIB_LIBS) \
     ../lib/libreport-web.la \

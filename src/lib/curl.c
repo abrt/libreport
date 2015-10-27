@@ -600,27 +600,48 @@ char *upload_file_ext(post_state_t *state, const char *url, const char *filename
 {
     /* we don't want to print the whole url as it may contain password
      * rhbz#856960
-     * there can be '@' in the login or password so let's try to find the
-     * first '@' from the end
+     *
+     * jfilak:
+     * We want to print valid URLs in useful messages.
+     *
+     * The old code had this approach:
+     *   there can be '@' in the login or password so let's try to find the
+     *   first '@' from the end
+     *
+     * The new implementation decomposes URI to its base elements and uses only
+     * scheme and hostname for the logging purpose. These elements should not
+     * contain any sensitive information.
      */
-    const char *clean_url = strrchr(url, '@');
-    if (clean_url)
-        clean_url++;
-    else
-        clean_url = url;
-
-    char *whole_url;
-    unsigned len = strlen(url);
-    if (len > 0 && url[len-1] == '/')
-        whole_url = concat_path_file(url, strrchr(filename, '/') ? : filename);
-    else
-        whole_url = xstrdup(url);
-
-
     const char *username_bck = state->username;
     const char *password_bck = state->password;
+
+    char *whole_url = NULL;
+    char *scheme = NULL;
+    char *hostname = NULL;
     char *username = NULL;
     char *password = NULL;
+    char *clean_url = NULL;
+
+    if (uri_userinfo_remove(url, &clean_url, &scheme, &hostname, &username, &password, NULL) != 0)
+        goto finito;
+
+    if (scheme == NULL || hostname == NULL)
+    {
+        log_warning(_("Ingoring URL without scheme and hostname"));
+        goto finito;
+    }
+
+    if (username && (state->username == NULL || state->username[0] == '\0'))
+    {
+        state->username = username;
+        state->password = password;
+    }
+
+    unsigned len = strlen(clean_url);
+    if (len > 0 && clean_url[len-1] == '/')
+        whole_url = concat_path_file(clean_url, strrchr(filename, '/') ? : filename);
+    else
+        whole_url = xstrdup(clean_url);
 
     /* work around bug in libssh2(curl with scp://)
      * libssh2_aget_disconnect() calls close(0)
@@ -634,7 +655,9 @@ char *upload_file_ext(post_state_t *state, const char *url, const char *filename
      */
   do_post:
 
-    log(_("Sending %s to %s"), filename, clean_url);
+    /* Do not include the path part of the URL as it can contain sensitive data
+     * in case of typos */
+    log(_("Sending %s to %s//%s"), filename, scheme, hostname);
     post(state,
                 whole_url,
                 /*content_type:*/ "application/octet-stream",
@@ -658,13 +681,13 @@ char *upload_file_ext(post_state_t *state, const char *url, const char *filename
                 (state->curl_result == CURLE_LOGIN_DENIED
                  || state->curl_result == CURLE_REMOTE_ACCESS_DENIED))
         {
-            char *msg = xasprintf(_("Please enter user name for '%s':"), clean_url);
+            char *msg = xasprintf(_("Please enter user name for '%s//%s':"), scheme, hostname);
             free(username);
             username = ask(msg);
             free(msg);
             if (username != NULL && username[0] != '\0')
             {
-                msg = xasprintf(_("Please enter password for '%s':"), username);
+                msg = xasprintf(_("Please enter password for '%s//%s@%s':"), scheme, username, hostname);
                 free(password);
                 password = ask_password(msg);
                 free(msg);
@@ -687,13 +710,17 @@ char *upload_file_ext(post_state_t *state, const char *url, const char *filename
     else
     {
         /* This ends up a "reporting status message" in abrtd */
-        log(_("Successfully sent %s to %s"), filename, clean_url);
+        log(_("Successfully created %s"), whole_url);
     }
 
     close(stdin_bck);
 
+finito:
     free(password);
     free(username);
+    free(hostname);
+    free(scheme);
+    free(clean_url);
 
     state->username = username_bck;
     state->password = password_bck;

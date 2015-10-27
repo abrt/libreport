@@ -63,6 +63,11 @@ int main(int argc, char **argv)
     int email_address_from_env = 0;
     char *comment = NULL;
     int comment_file = 0;
+    char *attach_value = NULL;
+    char *attach_value_from_rt = NULL;
+    char *attach_value_from_rt_data = NULL;
+    char *report_result_type = NULL;
+    char *attach_type = NULL;
     struct dump_dir *dd = NULL;
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
@@ -90,12 +95,25 @@ int main(int argc, char **argv)
                           _("attach short text (requires -a|-A, conflicts with -D)")),
         OPT_BOOL('O', "comment-file", &comment_file,
                           _("attach short text from comment (requires -a|-A, conflicts with -d)")),
+
+        /* va l ue */
+        OPT_STRING('l', "value", &attach_value, "DATA",
+                          _("attach value (requires -a|-A and -T, conflicts with -L)")),
+        OPT_STRING('L', "value-rt", &attach_value_from_rt, "FIELD",
+                          _("attach data of FIELD [URL] of the last report result (requires -a|-A, -r and -T, conflicts with -l)")),
+
+        OPT_STRING('r', "report-result-type", &report_result_type, "REPORT_RESULT_TYPE",
+                          _("use REPORT_RESULT_TYPE when looking for FIELD in reported_to (used only with -L)")),
+        OPT_STRING('T', "type", &attach_type, "ATTACHMENT_TYPE",
+                          _("attach DATA as ureporte attachment ATTACHMENT_TYPE (used only with -l|-L)")),
         OPT_END(),
     };
 
     const char *program_usage_string = _(
         "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS]\n"
         "  [-A -a bthash -B -b bug-id -E -e email -O -o comment] [-d DIR]\n"
+        "  [-A -a bthash -T ATTACHMENT_TYPE -r REPORT_RESULT_TYPE -L RESULT_FIELD] [-d DIR]\n"
+        "  [-A -a bthash -T ATTACHMENT_TYPE -l DATA] [-d DIR]\n"
         "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-i AUTH_ITEMS] [-d DIR]\n"
         "\n"
         "Upload micro report or add an attachment to a micro report\n"
@@ -139,7 +157,24 @@ int main(int argc, char **argv)
     if (comment && comment_file)
         error_msg_and_die("You need to pass either -o comment or -O");
 
-    if (ureport_hash_from_rt || rhbz_bug_from_rt || comment_file)
+    if (attach_value && attach_value_from_rt)
+        error_msg_and_die("You need to pass either -l url or -L");
+
+    if ((attach_value || attach_value_from_rt) && attach_type == NULL)
+        error_msg_and_die("You need to pass -T together with -l and -L");
+
+    if (attach_value_from_rt)
+    {
+        if (report_result_type == NULL)
+            error_msg_and_die("You need to pass -r together with -L");
+
+        /* If you introduce a new recognized value, don't forget to update
+         * the documentation and the conditions below. */
+        if (strcmp(attach_value_from_rt, "URL") != 0)
+            error_msg_and_die("-L accepts only 'URL'");
+    }
+
+    if (ureport_hash_from_rt || rhbz_bug_from_rt || comment_file || attach_value_from_rt)
     {
         dd = dd_opendir(dump_dir_path, DD_OPEN_READONLY);
         if (!dd)
@@ -186,6 +221,25 @@ int main(int argc, char **argv)
                 error_msg_and_die(_("'comment' file is empty"));
         }
 
+        if (attach_value_from_rt)
+        {
+            report_result_t *result = find_in_reported_to(dd, report_result_type);
+
+            if (!result)
+                error_msg_and_die(_("This problem has not been reported to '%s'."), report_result_type);
+
+            /* If you introduce a new attach_value_from_rt recognized value,
+             * this condition will become invalid. */
+            if (!result->url)
+                error_msg_and_die(_("The report result '%s' is missing URL."), report_result_type);
+
+            /* Avoid the need to duplicate the string. */
+            attach_value = attach_value_from_rt_data = result->url;
+            result->url = NULL;
+
+            free_report_result(result);
+        }
+
         dd_close(dd);
     }
 
@@ -199,7 +253,7 @@ int main(int argc, char **argv)
 
     if (ureport_hash)
     {
-        if (rhbz_bug < 0 && !email_address && !comment)
+        if (rhbz_bug < 0 && !email_address && !comment && !attach_value)
             error_msg_and_die(_("You need to specify bug ID, contact email, comment or all of them"));
 
         if (rhbz_bug >= 0)
@@ -217,6 +271,12 @@ int main(int argc, char **argv)
         if (comment)
         {
             if (ureport_attach_string(ureport_hash, "comment", comment, &config))
+                goto finalize;
+        }
+
+        if (attach_value)
+        {
+            if (ureport_attach_string(ureport_hash, attach_type, attach_value, &config))
                 goto finalize;
         }
 
@@ -263,6 +323,8 @@ int main(int argc, char **argv)
     ureport_server_response_free(response);
 
 finalize:
+    free(attach_value_from_rt_data);
+
     if (config.ur_prefs.urp_auth_items == auth_items)
         config.ur_prefs.urp_auth_items = NULL;
 

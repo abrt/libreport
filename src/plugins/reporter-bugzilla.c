@@ -836,9 +836,10 @@ int main(int argc, char **argv)
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (dd)
     {
-        char *msg = xasprintf("Bugzilla: URL=%s/show_bug.cgi?id=%u", rhbz.b_bugzilla_url, bz->bi_id);
-        add_reported_to(dd, msg);
-        free(msg);
+        report_result_t rr = { .label = (char *)"Bugzilla" };
+        rr.url = xasprintf("%s/show_bug.cgi?id=%u", rhbz.b_bugzilla_url, bz->bi_id);
+        add_reported_to_entry(dd, &rr);
+        free(rr.url);
         dd_close(dd);
     }
 

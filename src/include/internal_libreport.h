@@ -734,6 +734,17 @@ int get_mountinfo_for_mount_point(FILE *fin, struct mountinfo *mntnf, const char
 #define iso_date_string libreport_iso_date_string
 char *iso_date_string(const time_t *pt);
 #define LIBREPORT_ISO_DATE_STRING_SAMPLE "YYYY-MM-DD-hh:mm:ss"
+#define LIBREPORT_ISO_DATE_STRING_FORMAT "%Y-%m-%d-%H:%M:%S"
+
+/* Parses date into integer UNIX time stamp
+ *
+ * @param date The parsed date string
+ * @param pt Return value
+ * @return 0 on success; otherwise non-0 number. -EINVAL if the parameter date
+ * does not match LIBREPORT_ISO_DATE_STRING_FORMAT
+ */
+#define iso_date_string_parse libreport_iso_date_string_parse
+int iso_date_string_parse(const char *date, time_t *pt);
 
 enum {
     MAKEDESC_SHOW_FILES     = (1 << 0),
@@ -1145,6 +1156,28 @@ void show_usage_and_die(const char *usage, const struct options *opt) NORETURN;
  * Resorting to just forward-declaring the struct we need.
  */
 struct abrt_post_state;
+
+/* Decomposes uri to its base elements, removes userinfo out of the hostname and
+ * composes a new uri without userinfo.
+ *
+ * The function does not validate the url.
+ *
+ * @param uri The uri that might contain userinfo
+ * @param result The userinfo free uri will be store here. Cannot be null. Must
+ * be de-allocated by free.
+ * @param scheme Scheme of the uri. Can be NULL. Result can be NULL. Result
+ * must be de-allocated by free.
+ * @param hostname Hostname of the uri. Can be NULL. Result can be NULL. Result
+ * must be de-allocated by free.
+ * @param username Username of the uri. Can be NULL. Result can be NULL. Result
+ * must be de-allocated by free.
+ * @param password Password of the uri. Can be NULL. Result can be NULL. Result
+ * must be de-allocated by free.
+ * @param location Location of the uri. Can be NULL. Result is never NULL. Result
+ * must be de-allocated by free.
+ */
+#define uri_userinfo_remove libreport_uri_userinfo_remove
+int uri_userinfo_remove(const char *uri, char **result, char **scheme, char **hostname, char **username, char **password, char **location);
 
 #ifdef __cplusplus
 }

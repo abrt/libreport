@@ -118,9 +118,9 @@ static void report_to_kerneloops(
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (dd)
     {
-        char *msg = xasprintf("kerneloops: URL=%s", submitURL);
-        add_reported_to(dd, msg);
-        free(msg);
+        report_result_t rr = { .label = (char *)"kerneloops" };
+        rr.url = (char *)submitURL;
+        add_reported_to_entry(dd, &rr);
         dd_close(dd);
     }
 

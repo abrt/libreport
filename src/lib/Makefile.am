@@ -66,7 +66,8 @@ libreport_la_SOURCES = \
     xml_parser.c \
     libreport_init.c \
     reporters.c \
-    global_configuration.c
+    global_configuration.c \
+    uriparser.c
 
 libreport_la_CPPFLAGS = \
     -I$(srcdir)/../include \
@@ -90,6 +91,7 @@ libreport_la_CPPFLAGS = \
     $(SATYR_CFLAGS) \
     -D_GNU_SOURCE
 libreport_la_LDFLAGS = \
+    -ltar \
     -version-info 0:1:0
 libreport_la_LIBADD = \
     $(GLIB_LIBS) \
