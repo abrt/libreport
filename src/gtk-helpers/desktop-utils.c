@@ -216,7 +216,11 @@ problem_create_app_from_cmdline (const char *cmdline)
         GAppInfo *a = l->data;
         char **dcmdargs;
 
-        dcmdargs = g_strsplit (g_app_info_get_commandline (a), " ", -1);
+        const char *commandline = g_app_info_get_commandline (a);
+        if (commandline == NULL)
+            continue;
+
+        dcmdargs = g_strsplit (commandline, " ", -1);
         remove_quotes (dcmdargs);
 
         if (compare_args (cmdargs, dcmdargs))
