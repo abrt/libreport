@@ -46,6 +46,12 @@ struct dump_dir *create_dump_dir(const char *base_dir_name, const char *type, ui
 {
     INITIALIZE_LIBREPORT();
 
+    if (!str_is_correct_filename(type))
+    {
+        error_msg(_("'%s' is not correct file name"), FILENAME_TYPE);
+        return NULL;
+    }
+
     struct timeval tv;
     if (gettimeofday(&tv, NULL) < 0)
     {
@@ -129,6 +135,11 @@ struct dump_dir *create_dump_dir(const char *base_dir_name, const char *type, ui
 
     free(uid_str);
 
+    char *type_str = dd_load_text_ext(dd, FILENAME_TYPE, DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    if (type_str == NULL)
+        dd_save_text(dd, FILENAME_TYPE, type);
+    free(type_str);
+
     problem_id[strlen(problem_id) - strlen(NEW_PD_SUFFIX)] = '\0';
     char* new_path = concat_path_file(base_dir_name, problem_id);
     log_info("Renaming from '%s' to '%s'", dd->dd_dirname, new_path);
@@ -176,12 +187,6 @@ struct dump_dir *create_dump_dir_from_problem_data_ext(problem_data_t *problem_d
     if (!type)
     {
         error_msg(_("Missing required item: '%s'"), FILENAME_TYPE);
-        return NULL;
-    }
-
-    if (!str_is_correct_filename(type))
-    {
-        error_msg(_("'%s' is not correct file name"), FILENAME_TYPE);
         return NULL;
     }
 

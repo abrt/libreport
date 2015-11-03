@@ -225,11 +225,20 @@ FILE *g_testsuite_output_stream = 0;
         } \
     } while(0)
 
+
+#define TS_ASSERT_PTR_IS_NULL_MESSAGE(actual, message) \
+    TS_ASSERT_PTR_OP_MESSAGE(actual, ==, NULL, message);
+
 #define TS_ASSERT_PTR_IS_NULL(actual) \
-    TS_ASSERT_PTR_OP_MESSAGE(actual, ==, NULL, NULL);
+    TS_ASSERT_PTR_IS_NULL_MESSAGE(actual, NULL);
+
+
+#define TS_ASSERT_PTR_IS_NOT_NULL_MESSAGE(actual, message) \
+    TS_ASSERT_PTR_OP_MESSAGE(actual, !=, NULL, message);
 
 #define TS_ASSERT_PTR_IS_NOT_NULL(actual) \
-    TS_ASSERT_PTR_OP_MESSAGE(actual, !=, NULL, NULL);
+    TS_ASSERT_PTR_IS_NOT_NULL_MESSAGE(actual, NULL);
+
 
 #define TS_ASSERT_PTR_EQ(actual, expected) \
     TS_ASSERT_PTR_OP_MESSAGE(actual, ==, expected, NULL);

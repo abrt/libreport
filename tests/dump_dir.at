@@ -640,19 +640,107 @@ int main(void)
 }
 ]])
 
-## --------------- ##
+
+## ----------------##
 ## create_dump_dir ##
-## --------------- ##
+## ----------------##
 
 AT_TESTFUN([create_dump_dir],
 [[
-#include "internal_libreport.h"
-#include <assert.h>
-#
-int main(void)
-{
-    g_verbose = 3;
+#include "testsuite.h"
 
+static int kill_canary(struct dump_dir *dd, void *args)
+{
+    int *cb_canary = (int *)args;
+    *cb_canary = 0;
+    return 0;
+}
+
+static int revive_canary(struct dump_dir *dd, void *args)
+{
+    int *cb_canary = (int *)args;
+    *cb_canary = 1;
+    return 1;
+}
+
+static int lay_an_egg(struct dump_dir *dd, void *args)
+{
+    const char *bird_kind = (const char *)args;
+    dd_save_text(dd, "egg", bird_kind);
+    return 0;
+}
+
+static int create_type(struct dump_dir *dd, void *args)
+{
+    const char *bird_kind = (const char *)args;
+    dd_save_text(dd, FILENAME_TYPE, bird_kind);
+    return 0;
+}
+
+TS_MAIN
+{
+    char template[] = "/tmp/XXXXXX";
+
+    if (mkdtemp(template) == NULL) {
+        perror("mkdtemp()");
+        return EXIT_FAILURE;
+    }
+
+    printf("Base dump dir path: %s\n", template);
+
+    {
+        int cb_canary = 1;
+        struct dump_dir *dd = create_dump_dir(template, "../attest", (uid_t)-1, &kill_canary, &cb_canary);
+        TS_ASSERT_PTR_IS_NULL_MESSAGE(dd, "TYPE cannot be relative path");
+        TS_ASSERT_SIGNED_EQ(1, cb_canary);
+    }
+
+    {
+        int cb_canary = 1;
+        struct dump_dir *dd = create_dump_dir(template, "/tmp/attest", (uid_t)-1, &kill_canary, &cb_canary);
+        TS_ASSERT_PTR_IS_NULL_MESSAGE(dd, "TYPE cannot be absolute path");
+        TS_ASSERT_SIGNED_EQ(1, cb_canary);
+    }
+
+    {
+        int cb_canary = 0;
+        struct dump_dir *dd = create_dump_dir(template, "attest", (uid_t)-1, &revive_canary, &cb_canary);
+        TS_ASSERT_PTR_IS_NULL_MESSAGE(dd, "Non-zero callback return value stops dump dir creation");
+        TS_ASSERT_SIGNED_EQ(1, cb_canary);
+    }
+
+    {
+        struct dump_dir *dd = create_dump_dir(template, "birds", (uid_t)-1, lay_an_egg, (void *)"canary");
+        TS_ASSERT_PTR_IS_NOT_NULL_MESSAGE(dd, "Created dump directory with valid TYPE");
+        TS_ASSERT_STRING_BEGINS_WITH(strrchr(dd->dd_dirname, '/') + 1, "birds", "Type was honored");
+        TS_ASSERT_STRING_EQ(dd_load_text(dd, FILENAME_TYPE), "birds", "'type' is created from the passed string");
+        TS_ASSERT_STRING_EQ(dd_load_text(dd, "egg"), "canary", "Call back saves durable data");
+        TS_ASSERT_SIGNED_EQ(dd_delete(dd), 0);
+    }
+
+    {
+        struct dump_dir *dd = create_dump_dir(template, "birds", (uid_t)-1, create_type, (void *)"canary");
+        TS_ASSERT_PTR_IS_NOT_NULL_MESSAGE(dd, "Created dump directory with valid TYPE");
+        TS_ASSERT_STRING_BEGINS_WITH(strrchr(dd->dd_dirname, '/') + 1, "birds", "Type was honored");
+        TS_ASSERT_STRING_EQ(dd_load_text(dd, FILENAME_TYPE), "canary", "'type' was not overwritten");
+        TS_ASSERT_SIGNED_EQ(dd_delete(dd), 0);
+    }
+}
+TS_RETURN_MAIN
+
+]])
+
+
+## --------------------------------- ##
+## create_dump_dir_from_problem_data ##
+## --------------------------------- ##
+
+AT_TESTFUN([create_dump_dir_from_problem_data],
+[[
+#include "testsuite.h"
+
+TS_MAIN
+{
     char template[] = "/tmp/XXXXXX";
 
     if (mkdtemp(template) == NULL) {
@@ -665,6 +753,19 @@ int main(void)
     dd_g_fs_group_gid = getegid();
 
     problem_data_t *pd = problem_data_new();
+
+    {
+        fprintf(stderr, "=== No FILENAME_TYPE in Problem Data ===\n");
+        struct dump_dir *no_type = create_dump_dir_from_problem_data(pd, template);
+        TS_ASSERT_PTR_IS_NULL_MESSAGE(no_type, "It's not possible to create dump directory without TYPE");
+    }
+
+    {
+        fprintf(stderr, "=== Prohibited name in FILENAME_TYPE in Problem Data ===\n");
+        problem_data_add_text_editable(pd, FILENAME_TYPE, "../attest");
+        struct dump_dir *prohibited_type = create_dump_dir_from_problem_data(pd, template);
+        TS_ASSERT_PTR_IS_NULL_MESSAGE(prohibited_type, "It's not possible to create dump directory with invalid TYPE");
+    }
 
     problem_data_add_text_editable(pd, FILENAME_TYPE, "attest");
 
@@ -709,8 +810,9 @@ int main(void)
     }
 
     assert(rmdir(template) == 0);
-    return EXIT_SUCCESS;
 }
+TS_RETURN_MAIN
+
 ]])
 
 ## ---------- ##
