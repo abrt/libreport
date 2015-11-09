@@ -19,6 +19,7 @@
 #ifndef ABRT_CURL_H_
 #define ABRT_CURL_H_
 
+#include "internal_libreport.h"
 #include <curl/curl.h>
 
 #ifdef __cplusplus
@@ -37,6 +38,9 @@ typedef struct abrt_post_state {
     const char  *password;
     const char  *client_cert_path;
     const char  *client_key_path;
+    /* SSH key files */
+    const char  *client_ssh_public_keyfile;
+    const char  *client_ssh_private_keyfile;
     /* Results of POST transaction: */
     int         http_resp_code;
     /* cast from CURLcode enum.
@@ -120,7 +124,7 @@ abrt_post_file_as_form(abrt_post_state_t *state,
 }
 
 #define upload_file libreport_upload_file
-char *upload_file(const char *url, const char *filename);
+char *upload_file(const char *url, const char *filename, map_string_t *settings);
 
 #ifdef __cplusplus
 }
