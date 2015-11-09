@@ -315,6 +315,12 @@ abrt_post(abrt_post_state_t *state,
         xcurl_easy_setopt_ptr(handle, CURLOPT_PASSWORD, (state->password ? state->password : ""));
     }
 
+    /* set SSH public and private keyfile if configured */
+    if (state->client_ssh_public_keyfile)
+        xcurl_easy_setopt_ptr(handle, CURLOPT_SSH_PUBLIC_KEYFILE, state->client_ssh_public_keyfile);
+    if (state->client_ssh_private_keyfile)
+        xcurl_easy_setopt_ptr(handle, CURLOPT_SSH_PRIVATE_KEYFILE, state->client_ssh_private_keyfile);
+
     if (data_size != ABRT_POST_DATA_FROMFILE_PUT)
     {
         // Do a HTTP POST. This also makes curl use
