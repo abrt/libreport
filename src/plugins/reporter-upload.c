@@ -32,16 +32,17 @@ static char *ask_url(const char *message)
     return url;
 }
 
-static int interactive_upload_file(const char *url, const char *file_name, char **remote_name)
+static int interactive_upload_file(const char *url, const char *file_name,
+                                   map_string_t *settings, char **remote_name)
 {
     post_state_t *state = new_post_state(POST_WANT_ERROR_MSG);
-    state->username = getenv("Upload_Username");
+    state->username = get_map_string_item_or_NULL(settings, "UploadUsername");
     char *password_inp = NULL;
     if (state->username != NULL && state->username[0] != '\0')
     {
         /* Load Password only if Username is configured, it doesn't make */
         /* much sense to load Password without Username. */
-        state->password = getenv("Upload_Password");
+        state->password = get_map_string_item_or_NULL(settings, "UploadPassword");
         if (state->password == NULL)
         {
             /* Be permissive and nice, ask only once and don't check */
@@ -52,6 +53,15 @@ static int interactive_upload_file(const char *url, const char *file_name, char 
             free(msg);
         }
     }
+
+    /* set SSH keys */
+    state->client_ssh_public_keyfile = get_map_string_item_or_NULL(settings, "SSHPublicKey");
+    state->client_ssh_private_keyfile = get_map_string_item_or_NULL(settings, "SSHPrivateKey");
+
+    if (state->client_ssh_public_keyfile != NULL)
+        log_debug("Using SSH public key '%s'", state->client_ssh_public_keyfile);
+    if (state->client_ssh_private_keyfile != NULL)
+        log_debug("Using SSH private key '%s'", state->client_ssh_private_keyfile);
 
     char *tmp = upload_file_ext(state, url, file_name, UPLOAD_FILE_HANDLE_ACCESS_DENIALS);
 
@@ -70,6 +80,7 @@ static int interactive_upload_file(const char *url, const char *file_name, char 
 static int create_and_upload_archive(
                 const char *dump_dir_name,
                 const char *url,
+                map_string_t *settings,
                 char **remote_name)
 {
     int result = 1; /* error */
@@ -102,7 +113,7 @@ static int create_and_upload_archive(
     /* Upload the archive */
     /* Upload from /tmp to /tmp + deletion -> BAD, exclude this possibility */
     if (url && url[0] && strcmp(url, "file://"LARGE_DATA_TMP_DIR"/") != 0)
-        result = interactive_upload_file(url, tempfile, remote_name);
+        result = interactive_upload_file(url, tempfile, settings, remote_name);
     else
     {
         result = 0; /* success */
@@ -137,10 +148,12 @@ int main(int argc, char **argv)
     const char *dump_dir_name = ".";
     const char *conf_file = CONF_DIR"/plugins/upload.conf";
     const char *url = NULL;
+    const char *ssh_public_key = NULL;
+    const char *ssh_private_key = NULL;
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+        "& [-v] -d DIR [-c CONFFILE] [-u URL] [-b FILE] [-r FILE]\n"
         "\n"
         "Uploads compressed tarball of problem directory DIR to URL.\n"
         "If URL is not specified, creates tarball in "LARGE_DATA_TMP_DIR" and exits.\n"
@@ -164,6 +177,8 @@ int main(int argc, char **argv)
         OPT_d = 1 << 1,
         OPT_c = 1 << 2,
         OPT_u = 1 << 3,
+        OPT_b = 1 << 4,
+        OPT_r = 1 << 5,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
@@ -171,6 +186,8 @@ int main(int argc, char **argv)
         OPT_STRING('d', NULL, &dump_dir_name, "DIR"     , _("Problem directory")),
         OPT_STRING('c', NULL, &conf_file    , "CONFFILE", _("Config file")),
         OPT_STRING('u', NULL, &url          , "URL"     , _("Base URL to upload to")),
+        OPT_STRING('b', "pubkey",  &ssh_public_key , "FILE" , _("SSH public key file")),
+        OPT_STRING('r', "key",     &ssh_private_key, "FILE" , _("SSH private key file")),
         OPT_END()
     };
     /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
@@ -201,8 +218,22 @@ int main(int argc, char **argv)
     if (!conf_url || conf_url[0] == '\0')
         conf_url = input_url = ask_url(_("Please enter a URL (scp, ftp, etc.) where the problem data is to be exported:"));
 
+    set_map_string_item_from_string(settings, "UploadUsername", getenv("Upload_Username"));
+    set_map_string_item_from_string(settings, "UploadPassword", getenv("Upload_Password"));
+
+    /* set SSH keys */
+    if (ssh_public_key)
+        set_map_string_item_from_string(settings, "SSHPublicKey", ssh_public_key);
+    else if (getenv("Upload_SSHPublicKey") != NULL)
+        set_map_string_item_from_string(settings, "SSHPublicKey", getenv("Upload_SSHPublicKey"));
+
+    if (ssh_private_key)
+        set_map_string_item_from_string(settings, "SSHPrivateKey", ssh_private_key);
+    else if (getenv("Upload_SSHPrivateKey") != NULL)
+        set_map_string_item_from_string(settings, "SSHPrivateKey", getenv("Upload_SSHPrivateKey"));
+
     char *remote_name = NULL;
-    const int result = create_and_upload_archive(dump_dir_name, conf_url, &remote_name);
+    const int result = create_and_upload_archive(dump_dir_name, conf_url, settings, &remote_name);
     if (result != 0)
         goto finito;
 
