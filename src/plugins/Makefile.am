@@ -87,7 +87,8 @@ dist_events_DATA = $(reporters_events) \
     report_EmergencyAnalysis.xml
 
 dist_eventsconf_DATA = $(reporters_events_conf) \
-    report_Logger.conf
+    report_Logger.conf \
+    report_Uploader.conf
 
 @INTLTOOL_XML_RULE@
 
