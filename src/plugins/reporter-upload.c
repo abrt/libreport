@@ -176,12 +176,14 @@ int main(int argc, char **argv)
 #endif
 
     const char *dump_dir_name = ".";
-    const char *conf_file = NULL;
+    const char *conf_file = CONF_DIR"/plugins/upload.conf";
     const char *url = NULL;
+    const char *ssh_public_key = NULL;
+    const char *ssh_private_key = NULL;
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+        "& [-v] -d DIR [-c CONFFILE] [-u URL] [-b FILE] [-r FILE]\n"
         "\n"
         "Uploads compressed tarball of problem directory DIR to URL.\n"
         "If URL is not specified, creates tarball in /tmp and exits.\n"
@@ -204,6 +206,8 @@ int main(int argc, char **argv)
         OPT_d = 1 << 1,
         OPT_c = 1 << 2,
         OPT_u = 1 << 3,
+        OPT_b = 1 << 4,
+        OPT_r = 1 << 5,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
@@ -211,6 +215,8 @@ int main(int argc, char **argv)
         OPT_STRING('d', NULL, &dump_dir_name, "DIR"     , _("Dump directory")),
         OPT_STRING('c', NULL, &conf_file    , "CONFFILE", _("Config file")),
         OPT_STRING('u', NULL, &url          , "URL"     , _("Base URL to upload to")),
+        OPT_STRING('b', "pubkey",  &ssh_public_key , "FILE" , _("SSH public key file")),
+        OPT_STRING('r', "key",     &ssh_private_key, "FILE" , _("SSH private key file")),
         OPT_END()
     };
     /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
@@ -222,6 +228,17 @@ int main(int argc, char **argv)
         replace_map_string_item(settings, xstrdup("URL"), xstrdup(url));
     if (conf_file)
         load_conf_file(conf_file, settings, /*skip key w/o values:*/ true);
+
+     /* set SSH keys */
+    if (ssh_public_key)
+        set_map_string_item_from_string(settings, "SSHPublicKey", ssh_public_key);
+    else if (getenv("Upload_SSHPublicKey") != NULL)
+        set_map_string_item_from_string(settings, "SSHPublicKey", getenv("Upload_SSHPublicKey"));
+
+    if (ssh_private_key)
+        set_map_string_item_from_string(settings, "SSHPrivateKey", ssh_private_key);
+    else if (getenv("Upload_SSHPrivateKey") != NULL)
+        set_map_string_item_from_string(settings, "SSHPrivateKey", getenv("Upload_SSHPrivateKey"));
 
     int result = create_and_upload_archive(dump_dir_name, settings);
 

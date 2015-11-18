@@ -20,7 +20,9 @@ MAN1_TXT += report.txt
 
 MAN5_TXT =
 MAN5_TXT += report_event.conf.txt
+MAN5_TXT += report_Uploader.conf.txt
 MAN5_TXT += ureport.conf.txt
+MAN5_TXT += upload.conf.txt
 
 # Manual pages are generated from .txt via Docbook
 man1_MANS = ${MAN1_TXT:%.txt=%.1}

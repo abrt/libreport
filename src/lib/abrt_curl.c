@@ -578,6 +578,19 @@ char *upload_file(const char *url, const char *filename, map_string_t *settings)
         whole_url = xstrdup(url);
 
     abrt_post_state_t *state = new_abrt_post_state(ABRT_POST_WANT_ERROR_MSG);
+
+    if (settings != NULL)
+    {
+        /* set SSH keys */
+        state->client_ssh_public_keyfile = get_map_string_item_or_NULL(settings, "SSHPublicKey");
+        state->client_ssh_private_keyfile = get_map_string_item_or_NULL(settings, "SSHPrivateKey");
+
+        if (state->client_ssh_public_keyfile != NULL)
+            VERB3 log("Using SSH public key '%s'", state->client_ssh_public_keyfile);
+        if (state->client_ssh_private_keyfile != NULL)
+            VERB3 log("Using SSH private key '%s'", state->client_ssh_private_keyfile);
+    }
+
     abrt_post(state,
                 whole_url,
                 /*content_type:*/ "???",
