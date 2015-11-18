@@ -775,7 +775,7 @@ int main(int argc, char **argv)
     {
         /* Upload tarball of -d DIR to "big file" FTP */
         /* log(_("Uploading problem data to '%s'"), bigurl); - upload_file does this */
-        remote_filename = upload_file(bigurl, tempfile);
+        remote_filename = upload_file(bigurl, tempfile, NULL);
     }
     if (remote_filename)
     {

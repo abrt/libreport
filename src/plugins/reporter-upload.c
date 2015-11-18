@@ -133,7 +133,7 @@ static int create_and_upload_archive(
     /* Upload from /tmp to /tmp + deletion -> BAD, exclude this possibility */
     if (url && url[0] && strcmp(url, "file:///tmp/") != 0)
     {
-        char *remote_name = upload_file(url, tempfile);
+        char *remote_name = upload_file(url, tempfile, settings);
         result = (remote_name == NULL); /* error if NULL */
         free(remote_name);
         /* cleanup code will delete tempfile */

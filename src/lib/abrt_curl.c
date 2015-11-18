@@ -555,7 +555,7 @@ abrt_post(abrt_post_state_t *state,
 /* Unlike post_file(),
  * this function will use PUT, not POST if url is "http(s)://..."
  */
-char *upload_file(const char *url, const char *filename)
+char *upload_file(const char *url, const char *filename, map_string_t *settings)
 {
     /* we don't want to print the whole url as it may contain password
      * rhbz#856960
