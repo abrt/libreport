@@ -7,7 +7,7 @@ reporter-upload - Uploads compressed tarball of problem directory.
 
 SYNOPSIS
 --------
-'reporter-upload' [-c CONFFILE]... [ -d DIR ] [ -u URL ]
+'reporter-upload' [-c CONFFILE]... [-d DIR] [-u URL] [-b FILE] [-r FILE]
 
 DESCRIPTION
 -----------
@@ -23,6 +23,12 @@ The options are:
 
 'URL'::
         The URL where tarball should be uploaded.
+
+'SSHPublicKey'::
+        The SSH public key.
+
+'SSHPrivateKey'::
+        The SSH private key.
 
 Integration with ABRT events
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -59,6 +65,13 @@ OPTIONS
    If URL ends with a slash, the archive name will be generated and appended
    to URL; otherwise, URL will be used as full file name.
 
+-b::
+--pubkey FILE::
+   Set SSH public key file.
+
+-r::
+--key FILE::
+   Set SSH private key file.
 
 ENVIRONMENT VARIABLES
 ---------------------
@@ -67,6 +80,21 @@ the configuration file.
 
 'Upload_URL'::
    The URL where should be the tarball uploaded.
+
+'Upload_SSHPublicKey'::
+   Path to SSH public key file
+
+'Upload_SSHPrivateKey'::
+   Path to SSH private key file
+
+FILES
+-----
+/etc/libreport/plugins/upload.conf::
+    Configuration file.
+
+SEE ALSO
+--------
+uploader_event.conf(5), report_uploader.conf(5)
 
 AUTHORS
 -------

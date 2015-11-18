@@ -18,7 +18,8 @@ dist_reportpluginsconf_DATA = \
     bugzilla.conf \
     rhtsupport.conf \
     mailx.conf \
-    ureport.conf
+    ureport.conf \
+    upload.conf
 
 eventsdir = $(EVENTS_DIR)
 
@@ -33,6 +34,7 @@ dist_events_DATA = \
     report_Kerneloops.xml \
     report_Tarball.xml \
     report_Uploader.xml \
+    report_Uploader.conf \
     submit_uReport.xml
 
 @INTLTOOL_XML_RULE@
@@ -118,6 +120,7 @@ reporter_upload_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
+    -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \

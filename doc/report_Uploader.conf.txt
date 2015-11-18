@@ -1,0 +1,31 @@
+report_Uploader.conf(5)
+======================
+
+NAME
+----
+report_Uploader.conf - libreport's configuration file for 'report_Uploader' events.
+
+DESCRIPTION
+-----------
+This configuration file contains values for options defined in
+/etc/libreport/events/report_Uploader.xml and is placed in
+/etc/libreport/events/report_Uploader.conf.
+
+Configuration file lines should have 'PARAM = VALUE' format. The parameters are:
+
+'Upload_URL'::
+    The URL where should be the tarball uploaded
+
+'Upload_SSHPublicKey'::
+    Path to SSH public key file
+
+'Upload_SSHPrivateKey'::
+    Path to SSH private key file
+
+SEE ALSO
+--------
+report_event.conf(5), reporter-upload(1)
+
+AUTHOR
+------
+* ABRT team
