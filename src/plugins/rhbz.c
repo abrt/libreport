@@ -816,6 +816,29 @@ void rhbz_set_url(struct abrt_xmlrpc *ax, int bug_id, const char *url, int flags
         xmlrpc_DECREF(result);
 }
 
+void rhbz_close_as_duplicate(struct abrt_xmlrpc *ax, int bug_id,
+                        int duplicate_bug,
+                        int flags)
+{
+    func_entry();
+
+    const int nomail_notify = !!IS_NOMAIL_NOTIFY(flags);
+    xmlrpc_value *result = abrt_xmlrpc_call(ax, "Bug.update", "{s:i,s:s,s:s,s:i,s:i}",
+                              "ids", bug_id,
+                              "status", "CLOSED",
+                              "resolution", "DUPLICATE",
+                              "dupe_of", duplicate_bug,
+
+                /* Undocumented argument but it works with Red Hat Bugzilla version 4.2.4-7
+                 * and version 4.4.rc1.b02
+                 */
+                              "nomail", nomail_notify
+    );
+
+    if (result)
+        xmlrpc_DECREF(result);
+}
+
 xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax,
                         const char *product,
                         const char *version,

@@ -74,6 +74,10 @@ void rhbz_add_comment(struct abrt_xmlrpc *ax, int bug_id, const char *comment,
 
 void rhbz_set_url(struct abrt_xmlrpc *ax, int bug_id, const char *url, int flags);
 
+void rhbz_close_as_duplicate(struct abrt_xmlrpc *ax, int bug_id,
+                             int duplicate_bug,
+                             int flags);
+
 void *rhbz_bug_read_item(const char *memb, xmlrpc_value *xml, int flags);
 
 void rhbz_logout(struct abrt_xmlrpc *ax);
