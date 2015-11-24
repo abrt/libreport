@@ -191,6 +191,15 @@ the configuration file.
 'Bugzilla_ProductVersion'::
 	Version bug field value. Useful if you needed different product version than specified in /etc/os-release
 
+'Bugzilla_PrivateGroups'::
+	List of Bugzilla group names that will be set to the new bug if Bugzilla_CreatePrivate equals 'yes'
+
+'Bugzilla_CreatePrivate'::
+	Use yes/no to control whether the new bug should have set groups listed in Bugzilla_PrivateGroups
+
+'Bugzilla_DontMatchComponents'::
+	Comma-separated list of package components (e.g. selinux-policy, anaconda) for which reporter-bugzilla should not use Bugzilla component match when searching for duplicate bug reports.
+
 'http_proxy'::
 	the proxy server to use for HTTP
 
