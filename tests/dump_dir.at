@@ -1579,6 +1579,14 @@ TS_MAIN
         TS_ASSERT_SIGNED_EQ(real_buf.st_size, dd_get_item_size(dd, FILENAME_TIME));
     }
 
+    {
+        TS_ASSERT_SIGNED_EQ(dd_delete_item(dd, test_file_full_path), -EINVAL);
+        TS_ASSERT_SIGNED_EQ(dd_delete_item(dd, "../libreport-test"), -EINVAL);
+        TS_ASSERT_SIGNED_EQ(dd_delete_item(dd, "foo-blah-does-not-exist"), 0);
+        TS_ASSERT_SIGNED_EQ(dd_delete_item(dd, "link-item"), 0);
+        TS_ASSERT_SIGNED_EQ(dd_delete_item(dd, "dir-item"), -1);
+    }
+
     /* A T _REMOVEDIR (0x200) interferes with autconf */
     assert(unlinkat(dd->dd_fd, "dir-item", 0x200) == 0);
     assert(unlink(test_file_full_path) == 0);

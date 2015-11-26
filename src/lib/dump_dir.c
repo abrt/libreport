@@ -1896,7 +1896,10 @@ int dd_delete_item(struct dump_dir *dd, const char *name)
         error_msg_and_die("dump_dir is not opened"); /* bug */
 
     if (!dd_validate_element_name(name))
-        error_msg_and_die("Cannot delete item. '%s' is not a valid file name", name);
+    {
+        error_msg("Cannot delete item. '%s' is not a valid file name", name);
+        return -EINVAL;
+    }
 
     int res = unlinkat(dd->dd_fd, name, /*only files*/0);
 
