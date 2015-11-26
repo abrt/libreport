@@ -1525,3 +1525,65 @@ TS_MAIN
 TS_RETURN_MAIN
 
 ]])
+
+
+## ----------------- ##
+## dd_items_handling ##
+## ----------------- ##
+
+AT_TESTFUN([dd_items_handling],
+[[
+#include "testsuite.h"
+#include "testsuite_tools.h"
+
+TS_MAIN
+{
+    struct dump_dir *dd = testsuite_dump_dir_create(-1, -1, 0);
+    dd_create_basic_files(dd, geteuid(), NULL);
+
+    char *base_dir = xstrndup(dd->dd_dirname, strrchr(dd->dd_dirname, '/') - dd->dd_dirname);
+    assert(base_dir != NULL);
+
+    char *test_file_full_path = concat_path_file(base_dir, "libreport-test");
+    FILE *test_file = fopen(test_file_full_path, "w");
+    assert(test_file != NULL);
+    fprintf(test_file, "dd_items_handling");
+    fclose(test_file);
+
+    assert(symlinkat(test_file_full_path, dd->dd_fd, "link-item") == 0);
+    assert(mkdirat(dd->dd_fd, "dir-item", 0777) == 0);
+
+    {
+        struct stat buf;
+        TS_ASSERT_SIGNED_EQ(dd_item_stat(dd, test_file_full_path, &buf), -EINVAL);
+        TS_ASSERT_SIGNED_EQ(dd_item_stat(dd, "../libreport-test", &buf), -EINVAL);
+        TS_ASSERT_SIGNED_EQ(dd_item_stat(dd, "foo-blah-does-not-exist", &buf), -ENOENT);
+        TS_ASSERT_SIGNED_EQ(dd_item_stat(dd, "link-item", &buf), -EMEDIUMTYPE);
+        TS_ASSERT_SIGNED_EQ(dd_item_stat(dd, "dir-item", &buf), -EMEDIUMTYPE);
+    }
+
+    {
+        TS_ASSERT_SIGNED_EQ(dd_get_item_size(dd, test_file_full_path), -1);
+        TS_ASSERT_SIGNED_EQ(dd_get_item_size(dd, "../libreport-test"), -1);
+        TS_ASSERT_SIGNED_EQ(dd_get_item_size(dd, "foo-blah-does-not-exist"), 0);
+        TS_ASSERT_SIGNED_EQ(dd_get_item_size(dd, "link-item"), -1);
+        TS_ASSERT_SIGNED_EQ(dd_get_item_size(dd, "dir-item"), -1);
+    }
+
+    {
+        struct stat buf, real_buf;
+        assert(fstatat(dd->dd_fd, FILENAME_TIME, &real_buf, 0) == 0);
+        TS_ASSERT_SIGNED_EQ(dd_item_stat(dd, FILENAME_TIME, &buf), 0);
+        TS_ASSERT_SIGNED_EQ(real_buf.st_ino, buf.st_ino);
+
+        TS_ASSERT_SIGNED_EQ(real_buf.st_size, dd_get_item_size(dd, FILENAME_TIME));
+    }
+
+    /* A T _REMOVEDIR (0x200) interferes with autconf */
+    assert(unlinkat(dd->dd_fd, "dir-item", 0x200) == 0);
+    assert(unlink(test_file_full_path) == 0);
+
+    testsuite_dump_dir_delete(dd);
+}
+TS_RETURN_MAIN
+]])

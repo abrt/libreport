@@ -30,6 +30,9 @@
 #include <sys/types.h>
 #include <dirent.h>
 
+/* For 'struct stat' */
+#include <sys/stat.h>
+
 /* Fore GList */
 #include <glib.h>
 
@@ -210,6 +213,16 @@ int dd_copy_file_unpack(struct dump_dir *dd, const char *name, const char *sourc
  * is not size of the file descriptor.
  */
 off_t dd_copy_fd(struct dump_dir *dd, const char *name, int fd, int copy_flags, off_t maxsize);
+
+/* Stats dump dir elements
+ *
+ * @param dd Dump Directory
+ * @param name The name of the element
+ * @param statbuf See 'man 2 stat'
+ * @return -EINVAL if name is invalid element name, -EMEDIUMTYPE if name is not
+ *  regular file, -errno on errors and 0 on success.
+ */
+int dd_item_stat(struct dump_dir *dd, const char *name, struct stat *statbuf);
 
 /* Returns value less than 0 if any error occured; otherwise returns size of an
  * item in Bytes. If an item does not exist returns 0 instead of an error

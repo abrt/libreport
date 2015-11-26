@@ -1850,24 +1850,42 @@ void dd_save_binary(struct dump_dir* dd, const char* name, const char* data, uns
     save_binary_file_at(dd->dd_fd, name, data, size, dd->dd_uid, dd->dd_gid, dd->mode);
 }
 
-long dd_get_item_size(struct dump_dir *dd, const char *name)
+int dd_item_stat(struct dump_dir *dd, const char *name, struct stat *statbuf)
 {
     if (!dd_validate_element_name(name))
-        error_msg_and_die("Cannot get item size. '%s' is not a valid file name", name);
+        return -EINVAL;
 
+    int r = fstatat(dd->dd_fd, name, statbuf, AT_SYMLINK_NOFOLLOW);
+
+    if (r != 0)
+        return -errno;
+
+    if (!S_ISREG(statbuf->st_mode))
+        return -EMEDIUMTYPE;
+
+    return 0;
+}
+
+long dd_get_item_size(struct dump_dir *dd, const char *name)
+{
     long size = -1;
     struct stat statbuf;
-    int r = fstatat(dd->dd_fd, name, &statbuf, AT_SYMLINK_NOFOLLOW);
+    int r = dd_item_stat(dd, name, &statbuf);
 
-    if (r == 0 && S_ISREG(statbuf.st_mode))
+    const char *error = NULL;
+    if (r == 0)
         size = statbuf.st_size;
+    else if (r == -ENOENT)
+        size = 0;
+    else if (r == -EINVAL)
+        error = "Is an invalid item name";
+    else if (r == -EMEDIUMTYPE)
+        error = "Is not a regular file";
     else
-    {
-        if (errno == ENOENT)
-            size = 0;
-        else
-            perror_msg("Can't get size of file '%s'", name);
-    }
+        error = strerror(errno);
+
+    if (error != NULL)
+        error_msg("Cannot get item size ('%s'): %s", name, error);
 
     return size;
 }
