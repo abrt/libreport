@@ -117,6 +117,34 @@ FILE *g_testsuite_output_stream = 0;
 
 
 /*
+ * Logical conditions
+ */
+
+#define _TS_ASSERT_BOOLEAN(expression, expected, message) \
+    do { \
+        const int result = (expression); \
+        if (result == expected) { \
+            TS_SUCCESS("%s ("#expression" == %s): OK\n", message ? message : "Assert", expected ? "TRUE" : "FALSE"); \
+        }\
+        else { \
+            TS_FAILURE("%s ("#expression" == %s): FAILED\n", message ? message : "Assert", expected ? "TRUE" : "FALSE"); \
+        }\
+    } while(0)
+
+
+#define TS_ASSERT_TRUE_MESSAGE(expression, message) \
+    _TS_ASSERT_BOOLEAN(expression, 1, message)
+
+#define TS_ASSERT_TRUE(expression) \
+    TS_ASSERT_TRUE_MESSAGE(expression, NULL)
+
+#define TS_ASSERT_FALSE_MESSAGE(expression, message) \
+    _TS_ASSERT_BOOLEAN(expression, 0, message)
+
+#define TS_ASSERT_FALSE(expression) \
+    TS_ASSERT_FALSE_MESSAGE(expression, NULL)
+
+/*
  * Testing of signed numbers
  */
 
@@ -208,6 +236,23 @@ FILE *g_testsuite_output_stream = 0;
         } \
     } while(0)
 
+#define TS_ASSERT_STRING_NULL_OR_EMPTY(actual, message) \
+    do { \
+        const char *l_ts_lhs = (actual); \
+        if (l_ts_lhs != NULL && l_ts_lhs[0] != '\0') { \
+            TS_FAILURE("%s ("#actual" is NULL or empty): FAILED\n\tActual  : %s\n", message ? message : "Assert", l_ts_lhs); \
+        } \
+        else if ((l_ts_lhs != NULL && l_ts_lhs[0] == '\0')) { \
+            TS_SUCCESS("%s ("#actual" is NULL or empty): OK\n\tActual  : is empty\n", message ? message : "Assert"); \
+        } \
+        else if (l_ts_lhs == NULL) { \
+            TS_SUCCESS("%s ("#actual" is NULL or empty): OK\n\tActual  : is NULL\n", message ? message : "Assert"); \
+        } \
+        else { \
+            TS_PRINTF("%s", "Invalid conditions in TS_ASSERT_STRING_NULL_OR_EMPTY"); \
+            abort(); \
+        } \
+    } while(0)
 
 /*
  * Testing of pointers

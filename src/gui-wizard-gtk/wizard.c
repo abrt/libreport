@@ -2195,14 +2195,7 @@ static void add_warning(const char *warning)
 
 static void on_sensitive_ticket_clicked_cb(GtkWidget *button, gpointer user_data)
 {
-    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
-    {
-        xsetenv(CREATE_PRIVATE_TICKET, "1");
-    }
-    else
-    {
-        safe_unsetenv(CREATE_PRIVATE_TICKET);
-    }
+    set_global_create_private_ticket(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)), /*transient*/0);
 }
 
 static void add_sensitive_data_warning(void)
