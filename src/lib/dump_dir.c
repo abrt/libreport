@@ -2061,6 +2061,7 @@ static bool uid_in_group(uid_t uid, gid_t gid)
 int dd_stat_for_uid(struct dump_dir *dd, uid_t uid)
 {
     int ddstat = 0;
+    bool uid_test;
 
     if (uid == dd_g_super_user_uid)
     {
@@ -2106,10 +2107,11 @@ fsattributes:
     }
 
 #if DUMP_DIR_OWNED_BY_USER > 0
-    if (uid == dd->dd_uid)
+    uid_test = uid == dd->dd_uid;
 #else
-    if (uid_in_group(uid, dd->dd_gid))
+    uid_test = uid_in_group(uid, dd->dd_gid);
 #endif
+    if (uid_test)
     {
         log_debug("fs attributes: %ld uid owns directory", (long)uid);
         ddstat |= DD_OWNER_FLAGS;
