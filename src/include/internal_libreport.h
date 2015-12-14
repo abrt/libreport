@@ -816,6 +816,15 @@ int delete_dump_dir_possibly_using_abrtd(const char *dump_dir_name);
 #define steal_directory libreport_steal_directory
 struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name);
 
+/* Resolves if the given user is in given group
+ *
+ * @param uid user ID
+ * @param gid group ID
+ * @returns TRUE in case the user is in the group otherwise returns FALSE
+ */
+#define uid_in_group libreport_uid_in_group
+bool uid_in_group(uid_t uid, gid_t gid);
+
 /* Tries to open dump_dir_name with writing access. If function needs to steal
  * directory calls ask_continue(new base dir, dump dir) callback to ask user
  * for permission. If ask_continue param is NULL the function thinks that an
