@@ -2028,8 +2028,7 @@ void delete_dump_dir(const char *dirname)
     }
 }
 
-#if DUMP_DIR_OWNED_BY_USER == 0
-static bool uid_in_group(uid_t uid, gid_t gid)
+bool uid_in_group(uid_t uid, gid_t gid)
 {
     char **tmp;
     struct passwd *pwd = getpwuid(uid);
@@ -2056,7 +2055,6 @@ static bool uid_in_group(uid_t uid, gid_t gid)
     log_info("user %s DOESN'T belong to group: %s",  pwd->pw_name, grp->gr_name);
     return FALSE;
 }
-#endif
 
 int dd_stat_for_uid(struct dump_dir *dd, uid_t uid)
 {
