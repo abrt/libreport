@@ -1237,3 +1237,36 @@ int main(void)
     return 0;
 }
 ]])
+
+## ------------ ##
+## uid_in_group ##
+## ------------ ##
+
+AT_TESTFUN([uid_in_group],
+[[
+#include "internal_libreport.h"
+#include <libtar.h>
+#include <assert.h>
+
+int main(void)
+{
+    // not existing user id
+    assert(uid_in_group((uid_t)-1, 0) == false);
+
+    // root user is member of root group
+    assert(uid_in_group(0, 0) == true);
+
+    // user root isn't member of not existing group
+    assert(uid_in_group(0, (gid_t)-1) == false);
+
+    // user root isn't member of nobody group
+    gid_t nobody_gid = (gid_t)-1;
+    struct group *gr = getgrnam("nobody");
+    if (gr)
+        nobody_gid = gr->gr_gid;
+
+    assert(uid_in_group(0, nobody_gid) == false);
+
+    return 0;
+}
+]])
