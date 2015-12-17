@@ -534,11 +534,7 @@ void dd_close(struct dump_dir *dd)
 
     dd_close_meta_data_dir(dd);
 
-    if (dd->next_dir)
-    {
-        closedir(dd->next_dir);
-        /* free(dd->next_dir); - WRONG! */
-    }
+    dd_clear_next_file(dd);
 
     free(dd->dd_type);
     free(dd->dd_dirname);
@@ -1854,24 +1850,42 @@ void dd_save_binary(struct dump_dir* dd, const char* name, const char* data, uns
     save_binary_file_at(dd->dd_fd, name, data, size, dd->dd_uid, dd->dd_gid, dd->mode);
 }
 
-long dd_get_item_size(struct dump_dir *dd, const char *name)
+int dd_item_stat(struct dump_dir *dd, const char *name, struct stat *statbuf)
 {
     if (!dd_validate_element_name(name))
-        error_msg_and_die("Cannot get item size. '%s' is not a valid file name", name);
+        return -EINVAL;
 
+    int r = fstatat(dd->dd_fd, name, statbuf, AT_SYMLINK_NOFOLLOW);
+
+    if (r != 0)
+        return -errno;
+
+    if (!S_ISREG(statbuf->st_mode))
+        return -EMEDIUMTYPE;
+
+    return 0;
+}
+
+long dd_get_item_size(struct dump_dir *dd, const char *name)
+{
     long size = -1;
     struct stat statbuf;
-    int r = fstatat(dd->dd_fd, name, &statbuf, AT_SYMLINK_NOFOLLOW);
+    int r = dd_item_stat(dd, name, &statbuf);
 
-    if (r == 0 && S_ISREG(statbuf.st_mode))
+    const char *error = NULL;
+    if (r == 0)
         size = statbuf.st_size;
+    else if (r == -ENOENT)
+        size = 0;
+    else if (r == -EINVAL)
+        error = "Is an invalid item name";
+    else if (r == -EMEDIUMTYPE)
+        error = "Is not a regular file";
     else
-    {
-        if (errno == ENOENT)
-            size = 0;
-        else
-            perror_msg("Can't get size of file '%s'", name);
-    }
+        error = strerror(errno);
+
+    if (error != NULL)
+        error_msg("Cannot get item size ('%s'): %s", name, error);
 
     return size;
 }
@@ -1882,7 +1896,10 @@ int dd_delete_item(struct dump_dir *dd, const char *name)
         error_msg_and_die("dump_dir is not opened"); /* bug */
 
     if (!dd_validate_element_name(name))
-        error_msg_and_die("Cannot delete item. '%s' is not a valid file name", name);
+    {
+        error_msg("Cannot delete item. '%s' is not a valid file name", name);
+        return -EINVAL;
+    }
 
     int res = unlinkat(dd->dd_fd, name, /*only files*/0);
 
@@ -1897,6 +1914,74 @@ int dd_delete_item(struct dump_dir *dd, const char *name)
     return res;
 }
 
+static int _dd_get_next_file_dent(struct dump_dir *dd, struct dirent **dent)
+{
+    if (dd->next_dir == NULL)
+        return 0;
+
+    while ((*dent = readdir(dd->next_dir)) != NULL)
+    {
+        if (is_regular_file_at(*dent, dd->dd_fd))
+            return 1;
+    }
+
+    dd_clear_next_file(dd);
+    return 0;
+}
+
+int dd_get_items_count(struct dump_dir *dd)
+{
+    int retval = 0;
+
+    if (dd_init_next_file(dd) == NULL)
+        return -EIO;
+
+    while (dd_get_next_file(dd, NULL, NULL))
+    {
+        ++retval;
+
+        /* Check overflow */
+        if (retval < 0)
+        {
+            dd_clear_next_file(dd);
+            return -E2BIG;
+        }
+    }
+
+    return retval;
+}
+
+off_t dd_compute_size(struct dump_dir *dd, int flags)
+{
+    off_t retval = 0;
+
+    if (dd_init_next_file(dd) == NULL)
+        return -EIO;
+
+    struct stat statbuf;
+    struct dirent *dent;
+    while (_dd_get_next_file_dent(dd, &dent))
+    {
+        if (fstatat(dd->dd_fd, dent->d_name, &statbuf, AT_SYMLINK_NOFOLLOW) != 0)
+        {
+            retval = -errno;
+            goto finito;
+        }
+
+        retval += statbuf.st_size;
+        /* Check overflow */
+        if (retval < 0)
+        {
+            retval = -E2BIG;
+            goto finito;
+        }
+    }
+
+finito:
+    dd_clear_next_file(dd);
+    return retval;
+}
+
 DIR *dd_init_next_file(struct dump_dir *dd)
 {
 //    if (!dd->locked)
@@ -1908,8 +1993,7 @@ DIR *dd_init_next_file(struct dump_dir *dd)
         return NULL;
     }
 
-    if (dd->next_dir)
-        closedir(dd->next_dir);
+    dd_clear_next_file(dd);
 
     lseek(opendir_fd, SEEK_SET, 0);
     dd->next_dir = fdopendir(opendir_fd);
@@ -1922,27 +2006,26 @@ DIR *dd_init_next_file(struct dump_dir *dd)
     return dd->next_dir;
 }
 
-int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name)
+void dd_clear_next_file(struct dump_dir *dd)
 {
     if (dd->next_dir == NULL)
-        return 0;
-
-    struct dirent *dent;
-    while ((dent = readdir(dd->next_dir)) != NULL)
-    {
-        if (is_regular_file_at(dent, dd->dd_fd))
-        {
-            if (short_name)
-                *short_name = xstrdup(dent->d_name);
-            if (full_name)
-                *full_name = concat_path_file(dd->dd_dirname, dent->d_name);
-            return 1;
-        }
-    }
+        return;
 
     closedir(dd->next_dir);
     dd->next_dir = NULL;
-    return 0;
+}
+
+int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name)
+{
+    struct dirent *dent;
+    if (0 == _dd_get_next_file_dent(dd, &dent))
+        return 0;
+
+    if (short_name)
+        *short_name = xstrdup(dent->d_name);
+    if (full_name)
+        *full_name = concat_path_file(dd->dd_dirname, dent->d_name);
+    return 1;
 }
 
 /* reported_to handling */
@@ -2323,4 +2406,29 @@ finito:
     }
 
     return result;
+}
+
+off_t dd_copy_fd(struct dump_dir *dd, const char *name, int fd, int copy_flags, off_t maxsize)
+{
+    if (!dd_validate_element_name(name))
+        error_msg_and_die("Cannot test existence. '%s' is not a valid file name", name);
+
+    log_debug("Saving data from file descriptor %d to '%s' at '%s'", fd, name, dd->dd_dirname);
+
+    unlinkat(dd->dd_fd, name, /*remove only files*/0);
+    off_t read = copyfd_ext_at(fd, dd->dd_fd, name, DEFAULT_DUMP_DIR_MODE,
+            dd->dd_uid, dd->dd_gid, O_WRONLY | O_CREAT | O_EXCL, copy_flags, maxsize);
+
+    if (read < 0)
+    {
+        error_msg("Can't copy file descriptor %d to %s at '%s'", fd, name, dd->dd_dirname);
+        /* Destroy the file to get rid of empty files and files with invalid owners */
+        unlinkat(dd->dd_fd, name, /*remove only files*/0);
+    }
+    else if (read > maxsize)
+        log_debug("Saved %lu Bytes (read %lu Bytes)", (unsigned long)maxsize, (unsigned long)read);
+    else
+        log_debug("Saved %lu Bytes", (unsigned long)read);
+
+    return read;
 }

@@ -30,6 +30,9 @@
 #include <sys/types.h>
 #include <dirent.h>
 
+/* For 'struct stat' */
+#include <sys/stat.h>
+
 /* Fore GList */
 #include <glib.h>
 
@@ -161,8 +164,29 @@ void dd_create_basic_files(struct dump_dir *dd, uid_t uid, const char *chroot_di
 int dd_exist(const struct dump_dir *dd, const char *path);
 void dd_sanitize_mode_and_owner(struct dump_dir *dd);
 
+/* Initializes an iterator going through all dump directory items.
+ *
+ * @returns NULL if the iterator cannot be initialized; otherwise returns
+ * the result of opendir(). Do not use the return value after the iteration is
+ * finished or after calling dd_clear_next_file().
+ */
 DIR *dd_init_next_file(struct dump_dir *dd);
+
+/* Iterates over all dump directory item names
+ *
+ * Initialize the iterator by calling dd_init_next_file(). When iteration is
+ * finished, calls dd_clear_next_file().
+ *
+ * @returns 1 if the next item was read; otherwise return 0.
+ */
 int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name);
+
+/* Destroys the next file iterator and cleans dump directory internal structures
+ *
+ * Calling dd_get_next_file() after this function returns will return 0. This
+ * function also invalidates the return value of dd_init_next_file().
+ */
+void dd_clear_next_file(struct dump_dir *dd);
 
 char *load_text_file(const char *path, unsigned flags);
 
@@ -176,11 +200,43 @@ void dd_save_text(struct dump_dir *dd, const char *name, const char *data);
 void dd_save_binary(struct dump_dir *dd, const char *name, const char *data, unsigned size);
 int dd_copy_file(struct dump_dir *dd, const char *name, const char *source_path);
 int dd_copy_file_unpack(struct dump_dir *dd, const char *name, const char *source_path);
+
+/* Creates/overwrites an element with data read from a file descriptor
+ *
+ * @param dd Dump directory
+ * @param name The name of the element
+ * @param fd The file descriptor
+ * @param flags libreport_copyfd_flags
+ * @param maxsize Limit for number of written Bytes. (0 for unlimited).
+ * @return Number of read Bytes. If the return value is greater than the maxsize
+ * the file descriptor content was truncated to the maxsize. The return value
+ * is not size of the file descriptor.
+ */
+off_t dd_copy_fd(struct dump_dir *dd, const char *name, int fd, int copy_flags, off_t maxsize);
+
+/* Stats dump dir elements
+ *
+ * @param dd Dump Directory
+ * @param name The name of the element
+ * @param statbuf See 'man 2 stat'
+ * @return -EINVAL if name is invalid element name, -EMEDIUMTYPE if name is not
+ *  regular file, -errno on errors and 0 on success.
+ */
+int dd_item_stat(struct dump_dir *dd, const char *name, struct stat *statbuf);
+
 /* Returns value less than 0 if any error occured; otherwise returns size of an
  * item in Bytes. If an item does not exist returns 0 instead of an error
  * value.
  */
 long dd_get_item_size(struct dump_dir *dd, const char *name);
+
+/* Returns the number of items in the dump directory (does not count meta-data).
+ *
+ * @return Negative number on errors (-errno). Otherwise number of dump
+ * directory items.
+ */
+int dd_get_items_count(struct dump_dir *dd);
+
 /* Deletes an item from dump directory
  * On success, zero is returned. On error, -1 is returned, and errno is set appropriately.
  * For more about errno see unlink documentation
@@ -198,6 +254,13 @@ int dd_rename(struct dump_dir *dd, const char *new_path);
  * On success, zero is returned. On error, -1 is returned.
  */
 int dd_chown(struct dump_dir *dd, uid_t new_uid);
+
+/* Returns the number of Bytes consumed by the dump directory.
+ *
+ * @param flags For the future needs (count also meta-data, ...).
+ * @return Negative number on errors (-errno). Otherwise size in Bytes.
+ */
+off_t dd_compute_size(struct dump_dir *dd, int flags);
 
 /* Sets a new owner (does NOT chown the directory)
  *

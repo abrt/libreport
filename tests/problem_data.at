@@ -368,3 +368,74 @@ int main(int argc, char **argv)
     return 0;
 }
 ]])
+
+
+## ---------------------------------- ##
+## problem_data_load_dump_dir_element ##
+## ---------------------------------- ##
+
+AT_TESTFUN([problem_data_load_dump_dir_element],
+[[
+#include "problem_data.h"
+#include "internal_libreport.h"
+#include <assert.h>
+
+void test(struct dump_dir *dd, const char *path, const char *exp_content, int exp_flags, int exp_retval)
+{
+    char *content = NULL;
+    int flags = -1;
+    int fd = -1;
+
+    int retval = problem_data_load_dump_dir_element(dd, path, &content, &flags, &fd);
+    fprintf(stderr, "'%-20s' -> retval = %10i, flags=%8x, fd=%10d, content='%s'\n", path, retval, flags, fd, content);
+
+    if (retval != 0)
+        assert(fd == -1);
+
+    assert(exp_retval == retval);
+    assert(exp_flags == flags);
+    assert((exp_content == NULL && content == NULL) || strcmp(exp_content, content) == 0);
+
+    if (content)
+        free(content);
+    if (fd >= 0)
+        close(fd);
+}
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    char template[] = "/tmp/XXXXXX";
+
+    if (mkdtemp(template) == NULL) {
+        perror("mkdtemp()");
+        return EXIT_FAILURE;
+    }
+
+    FILE *test_file = fopen("/tmp/libreport-test", "w");
+    assert(NULL != test_file);
+    fprintf(test_file, "problem_data_load_from_dump_dir");
+    fclose(test_file);
+
+    printf("Dump dir path: %s\n", template);
+
+    struct dump_dir *dd = dd_create(template, (uid_t)-1, 0640);
+    assert(dd != NULL || !"Cannot create new dump directory");
+
+    /* dd_create_basic_files() should create these files:
+       FILENAME_TIME, FILENAME_LAST_OCCURRENCE, FILENAME_UID, FILENAME_KERNEL,
+       FILENAME_ARCHITECTURE, FILENAME_HOSTNAME, FILENAME_OS_INFO, FILENAME_OS_RELEASE
+     */
+    dd_create_basic_files(dd, geteuid(), NULL);
+
+    test(dd, "/tmp/libreport-test", NULL, -1, -EINVAL);
+    test(dd, "../libreport-test", NULL, -1, -EINVAL);
+
+    char *os_rel = dd_load_text(dd, FILENAME_OS_RELEASE);
+    test(dd, FILENAME_OS_RELEASE, os_rel, CD_FLAG_TXT, 0);
+    free(os_rel);
+
+    dd_delete(dd);
+}
+]])

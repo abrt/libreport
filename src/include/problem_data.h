@@ -127,6 +127,19 @@ int problem_data_send_to_abrt(problem_data_t* problem_data);
 
 /* Conversions between in-memory and on-disk formats */
 
+/* Low level function reading data of dump dir elements
+ *
+ * @param dd Dump directory
+ * @param name Requested element
+ * @param content If the element is of type CD_FLAG_TXT, its contents will
+ *        loaded to malloced memory and the pointer will be store here.
+ * @param type_flags One of the following : CD_FLAG_BIN, CD_FLAG_TXT, (CD_FLAG_BIGTXT + CD_FLAG_BIN)
+ * @param fd If not NULL, the file descriptor used to read data will not be
+ *        closed and will be passed out of the function in this argument.
+ * @return On errors, negative number; otherwise 0.
+ */
+int problem_data_load_dump_dir_element(struct dump_dir *dd, const char *name, char **content, int *type_flags, int *fd);
+
 void problem_data_load_from_dump_dir(problem_data_t *problem_data, struct dump_dir *dd, char **excluding);
 
 problem_data_t *create_problem_data_from_dump_dir(struct dump_dir *dd);
