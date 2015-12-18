@@ -33,7 +33,7 @@
 
             ----
 
-            Assert (actual == expected): FAILED
+            [ FAILED ] 12: Assert (actual == expected)
                 Actual  : 0
                 Expected: 1
 
@@ -48,9 +48,12 @@
 
             ----
 
-            Custom messages (get_runtime_number() >= 1): FAILED
+            [ FAILED ] 3: Custom messages (get_runtime_number() >= 1)
                 Actual  : 0
                 Expected: 1
+
+    Note: the number right behind [ FAILED ] is line number where the failed
+          assert is located.
 */
 #ifndef LIBREPORT_TESTSUITE_H
 #define LIBREPORT_TESTSUITE_H
@@ -105,12 +108,14 @@ FILE *g_testsuite_output_stream = 0;
 
 #define TS_SUCCESS(format, ...) \
     do { \
+        TS_DEBUG_PRINTF("[   OK   ] %d: ", __LINE__); \
         TS_DEBUG_PRINTF(format, __VA_ARGS__); \
         ++g_testsuite_ok; \
     } while (0)
 
 #define TS_FAILURE(format, ...) \
     do { \
+        TS_PRINTF("[ FAILED ] %d: ", __LINE__); \
         TS_PRINTF(format, __VA_ARGS__); \
         ++g_testsuite_fails; \
     } while (0)
@@ -124,10 +129,10 @@ FILE *g_testsuite_output_stream = 0;
     do { \
         const int result = (expression); \
         if (result == expected) { \
-            TS_SUCCESS("%s ("#expression" == %s): OK\n", message ? message : "Assert", expected ? "TRUE" : "FALSE"); \
+            TS_SUCCESS("%s ("#expression" == %s)\n", message ? message : "Assert", expected ? "TRUE" : "FALSE"); \
         }\
         else { \
-            TS_FAILURE("%s ("#expression" == %s): FAILED\n", message ? message : "Assert", expected ? "TRUE" : "FALSE"); \
+            TS_FAILURE("%s ("#expression" == %s)\n", message ? message : "Assert", expected ? "TRUE" : "FALSE"); \
         }\
     } while(0)
 
@@ -153,10 +158,10 @@ FILE *g_testsuite_output_stream = 0;
         long long l_ts_lhs = (actual); \
         long long l_ts_rhs = (expected); \
         if (l_ts_lhs operator l_ts_rhs) { \
-            TS_SUCCESS("%s ("#actual" "#operator" "#expected"): OK\n\tActual  : %lld\n", message ? message : "Assert", l_ts_lhs); \
+            TS_SUCCESS("%s ("#actual" "#operator" "#expected")\n\tActual  : %lld\n", message ? message : "Assert", l_ts_lhs); \
         } \
         else { \
-            TS_FAILURE("%s ("#actual" "#operator" "#expected"): FAILED\n\tActual  : %lld\n\tExpected: %lld\n", message ? message : "Assert", l_ts_lhs, l_ts_rhs); \
+            TS_FAILURE("%s ("#actual" "#operator" "#expected")\n\tActual  : %lld\n\tExpected: %lld\n", message ? message : "Assert", l_ts_lhs, l_ts_rhs); \
         } \
     } while(0)
 
@@ -176,10 +181,10 @@ FILE *g_testsuite_output_stream = 0;
         char l_ts_lhs = (actual); \
         char l_ts_rhs = (expected); \
         if (l_ts_lhs operator l_ts_rhs) { \
-            TS_SUCCESS("%s ("#actual" "#operator" "#expected"): OK\n\tActual  : %c\n", message ? message : "Assert", l_ts_lhs); \
+            TS_SUCCESS("%s ("#actual" "#operator" "#expected")\n\tActual  : %c\n", message ? message : "Assert", l_ts_lhs); \
         } \
         else { \
-            TS_FAILURE("%s ("#actual" "#operator" "#expected"): FAILED\n\tActual  : %c\n\tExpected: %c\n", message ? message : "Assert", l_ts_lhs, l_ts_rhs); \
+            TS_FAILURE("%s ("#actual" "#operator" "#expected")\n\tActual  : %c\n\tExpected: %c\n", message ? message : "Assert", l_ts_lhs, l_ts_rhs); \
         } \
     } while(0)
 
@@ -199,19 +204,19 @@ FILE *g_testsuite_output_stream = 0;
         const char *l_ts_lhs = (actual); \
         const char *l_ts_rhs = (expected); \
         if (l_ts_lhs == NULL && l_ts_rhs != NULL) { \
-            TS_FAILURE("%s ("#actual" == "#expected"): FAILED\n\tActual  : NULL\n\tExpected: %p\n", message ? message : "Assert", l_ts_rhs); \
+            TS_FAILURE("%s ("#actual" == "#expected")\n\tActual  : NULL\n\tExpected: %p\n", message ? message : "Assert", l_ts_rhs); \
         } \
         else if (l_ts_lhs != NULL && l_ts_rhs == NULL) { \
-            TS_FAILURE("%s ("#actual" == "#expected"): FAILED\n\tActual  : %s\n\tExpected: NULL\n", message ? message : "Assert", l_ts_lhs); \
+            TS_FAILURE("%s ("#actual" == "#expected")\n\tActual  : %s\n\tExpected: NULL\n", message ? message : "Assert", l_ts_lhs); \
         } \
         else if ((l_ts_rhs == NULL && l_ts_rhs == NULL)) { \
-            TS_SUCCESS("%s ("#actual" == "#expected"): OK\n\tActual  : NULL\n", message ? message : "Assert"); \
+            TS_SUCCESS("%s ("#actual" == "#expected")\n\tActual  : NULL\n", message ? message : "Assert"); \
         } \
         else if (strcmp(l_ts_lhs, l_ts_rhs) == 0) { \
-            TS_SUCCESS("%s ("#actual" == "#expected"): OK\n\tActual  : %s\n", message ? message : "Assert", l_ts_lhs); \
+            TS_SUCCESS("%s ("#actual" == "#expected")\n\tActual  : %s\n", message ? message : "Assert", l_ts_lhs); \
         } \
         else { \
-            TS_FAILURE("%s ("#actual" == "#expected"): FAILED\n\tActual  : %s\n\tExpected: %s\n", message ? message : "Assert", l_ts_lhs, l_ts_rhs); \
+            TS_FAILURE("%s ("#actual" == "#expected")\n\tActual  : %s\n\tExpected: %s\n", message ? message : "Assert", l_ts_lhs, l_ts_rhs); \
         } \
     } while(0)
 
@@ -220,19 +225,19 @@ FILE *g_testsuite_output_stream = 0;
         const char *l_ts_lhs = (actual); \
         const char *l_ts_rhs = (prefix); \
         if (l_ts_lhs == NULL && l_ts_rhs != NULL) { \
-            TS_FAILURE("%s ("#actual" begins with "#prefix"): FAILED\n\tActual  : NULL\n\tExpected: %p\n", message ? message : "Assert", l_ts_rhs); \
+            TS_FAILURE("%s ("#actual" begins with "#prefix")\n\tActual  : NULL\n\tExpected: %p\n", message ? message : "Assert", l_ts_rhs); \
         } \
         else if (l_ts_lhs != NULL && l_ts_rhs == NULL) { \
-            TS_FAILURE("%s ("#actual" begins with "#prefix"): FAILED\n\tActual  : %s\n\tExpected: NULL\n", message ? message : "Assert", l_ts_lhs); \
+            TS_FAILURE("%s ("#actual" begins with "#prefix")\n\tActual  : %s\n\tExpected: NULL\n", message ? message : "Assert", l_ts_lhs); \
         } \
         else if ((l_ts_rhs == NULL && l_ts_rhs == NULL)) { \
-            TS_SUCCESS("%s ("#actual" begins with "#prefix"): OK\n\tActual  : NULL\n", message ? message : "Assert"); \
+            TS_SUCCESS("%s ("#actual" begins with "#prefix")\n\tActual  : NULL\n", message ? message : "Assert"); \
         } \
         else if (strncmp(l_ts_lhs, l_ts_rhs, strlen(l_ts_rhs)) == 0) { \
-            TS_SUCCESS("%s ("#actual" begins with "#prefix"): OK\n\tActual  : %s\n", message ? message : "Assert", l_ts_lhs); \
+            TS_SUCCESS("%s ("#actual" begins with "#prefix")\n\tActual  : %s\n", message ? message : "Assert", l_ts_lhs); \
         } \
         else { \
-            TS_FAILURE("%s ("#actual" begins with "#prefix"): FAILED\n\tActual  : %s\n\tExpected: %s\n", message ? message : "Assert", l_ts_lhs, l_ts_rhs); \
+            TS_FAILURE("%s ("#actual" begins with "#prefix")\n\tActual  : %s\n\tExpected: %s\n", message ? message : "Assert", l_ts_lhs, l_ts_rhs); \
         } \
     } while(0)
 
@@ -240,13 +245,13 @@ FILE *g_testsuite_output_stream = 0;
     do { \
         const char *l_ts_lhs = (actual); \
         if (l_ts_lhs != NULL && l_ts_lhs[0] != '\0') { \
-            TS_FAILURE("%s ("#actual" is NULL or empty): FAILED\n\tActual  : %s\n", message ? message : "Assert", l_ts_lhs); \
+            TS_FAILURE("%s ("#actual" is NULL or empty)\n\tActual  : %s\n", message ? message : "Assert", l_ts_lhs); \
         } \
         else if ((l_ts_lhs != NULL && l_ts_lhs[0] == '\0')) { \
-            TS_SUCCESS("%s ("#actual" is NULL or empty): OK\n\tActual  : is empty\n", message ? message : "Assert"); \
+            TS_SUCCESS("%s ("#actual" is NULL or empty)\n\tActual  : is empty\n", message ? message : "Assert"); \
         } \
         else if (l_ts_lhs == NULL) { \
-            TS_SUCCESS("%s ("#actual" is NULL or empty): OK\n\tActual  : is NULL\n", message ? message : "Assert"); \
+            TS_SUCCESS("%s ("#actual" is NULL or empty)\n\tActual  : is NULL\n", message ? message : "Assert"); \
         } \
         else { \
             TS_PRINTF("%s", "Invalid conditions in TS_ASSERT_STRING_NULL_OR_EMPTY"); \
@@ -263,10 +268,10 @@ FILE *g_testsuite_output_stream = 0;
         void *l_ts_lhs = (actual); \
         void *l_ts_rhs = (expected); \
         if (l_ts_lhs operator l_ts_rhs) { \
-            TS_SUCCESS("%s ("#actual" "#operator" "#expected"): OK\n\tActual  : %p\n", message ? message : "Assert", l_ts_lhs); \
+            TS_SUCCESS("%s ("#actual" "#operator" "#expected")\n\tActual  : %p\n", message ? message : "Assert", l_ts_lhs); \
         } \
         else { \
-            TS_FAILURE("%s ("#actual" "#operator" "#expected"): FAILED\n\tActual  : %p\n\tExpected: %p\n", message ? message : "Assert", l_ts_lhs, l_ts_rhs); \
+            TS_FAILURE("%s ("#actual" "#operator" "#expected")\n\tActual  : %p\n\tExpected: %p\n", message ? message : "Assert", l_ts_lhs, l_ts_rhs); \
         } \
     } while(0)
 
