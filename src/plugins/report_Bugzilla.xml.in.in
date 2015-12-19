@@ -27,9 +27,15 @@
         <option type="bool" name="Bugzilla_CreatePrivate">
                 <_label>Restrict access</_label>
                 <_note-html>Restrict access to the created bugzilla ticket allowing only users from specified groups to view it (see advanced settings for more details)</_note-html>
-                <default-value>no</default-value>
+                <default-value>@RED_HAT_BUGZILLA_CREATE_PRIVATE@</default-value>
         </option>
         <advanced-options>
+            <option type="text" name="Bugzilla_PrivateGroups">
+                <_label>Groups</_label>
+                <allow-empty>yes</allow-empty>
+                <default-value>@RED_HAT_BUGZILLA_PRIVATE_GROUPS@</default-value>
+                <_note-html>Restrict the access to specified groups &lt;a href="https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets"&gt;?&lt;/a&gt;</_note-html>
+            </option>
             <option type="text" name="Bugzilla_BugzillaURL">
                 <_label>Bugzilla URL</_label>
                 <allow-empty>no</allow-empty>
@@ -60,12 +66,6 @@
                 <_label>HTTPS Proxy</_label>
                 <allow-empty>yes</allow-empty>
                 <_note-html>Sets the proxy server to use for HTTPS</_note-html>
-            </option>
-            <option type="text" name="Bugzilla_PrivateGroups">
-                <_label>Groups</_label>
-                <allow-empty>yes</allow-empty>
-                <default-value>fedora_contrib_private</default-value>
-                <_note-html>Restrict the access to specified groups &lt;a href="https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets"&gt;?&lt;/a&gt;</_note-html>
             </option>
         </advanced-options>
     </options>
