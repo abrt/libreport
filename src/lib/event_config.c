@@ -67,6 +67,38 @@ void free_event_config(event_config_t *p)
     free(p);
 }
 
+bool ec_restricted_access_enabled(event_config_t *ec)
+{
+    if (!ec->ec_supports_restricted_access)
+    {
+        if (ec->ec_restricted_access_option != NULL)
+            log("Event '%s' does not support restricted access but has the option", ec->screen_name);
+
+        return false;
+    }
+
+    if (ec->ec_restricted_access_option == NULL)
+    {
+        VERB2 log("Event '%s' supports restricted access but is missing the option", ec->screen_name);
+        return false;
+    }
+
+    event_option_t *eo = get_event_option_from_list(ec->ec_restricted_access_option, ec->options);
+    if (eo == NULL)
+    {
+        log("Event '%s' supports restricted access but the option is not defined", ec->screen_name);
+        return false;
+    }
+
+    if (eo->eo_type != OPTION_TYPE_BOOL)
+    {
+        log("Restricted option '%s' of Event '%s' is not of 'bool' type",
+                    ec->ec_restricted_access_option, ec->screen_name);
+        return false;
+    }
+
+    return eo->eo_value != NULL && string_to_bool(eo->eo_value);
+}
 
 static int cmp_event_option_name_with_string(gconstpointer a, gconstpointer b)
 {

@@ -133,6 +133,22 @@ enum
     CLEAR_PREVIOUS_RESULT = 1 << 0,
 };
 
+static GtkWidget *g_sens_ticket;
+static GtkToggleButton *g_sens_ticket_cb;
+static GtkButton *g_privacy_info_btn;
+
+enum {
+    PRIV_WARN_SHOW_BTN      = 0x01,
+    PRIV_WARN_HIDE_BTN      = 0x02,
+    PRIV_WARN_SHOW_MSG      = 0x04,
+    PRIV_WARN_HIDE_MSG      = 0x08,
+    PRIV_WARN_BTN_CHECKED   = 0x10,
+    PRIV_WARN_BTN_UNCHECKED = 0x20,
+};
+
+static void private_ticket_creation_warning(int flags);
+static void update_private_ticket_creation_warning_for_selected_event(void);
+
 /* Search in bt */
 static guint g_timeout = 0;
 static GtkEntry *g_search_entry_bt;
@@ -1911,6 +1927,63 @@ static void clear_warnings()
     gtk_container_foreach(GTK_CONTAINER(g_box_warning_labels), &remove_child_widget, NULL);
 }
 
+static void on_sensitive_ticket_clicked_cb(GtkWidget *button, gpointer user_data)
+{
+    set_global_create_private_ticket(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)), /*transient*/0);
+}
+
+static void on_privacy_info_btn(GtkWidget *button, gpointer user_data)
+{
+    for (GList *r = g_list_selected_reporters; r; r = g_list_next(r))
+    {
+        event_config_t *cfg = get_event_config(r->data);
+        if (cfg == NULL || !cfg->ec_supports_restricted_access)
+            continue;
+
+        show_event_config_dialog(r->data, GTK_WINDOW(g_top_most_window));
+    }
+}
+
+static void private_ticket_creation_warning(int flags)
+{
+    if (flags & PRIV_WARN_HIDE_BTN)
+    {
+        gtk_widget_hide(GTK_WIDGET(g_sens_ticket));
+    }
+
+    if (flags & PRIV_WARN_SHOW_BTN)
+    {
+        gtk_widget_show_all(GTK_WIDGET(g_sens_ticket));
+        gtk_widget_show(GTK_WIDGET(g_sens_ticket));
+    }
+
+    if (flags & PRIV_WARN_BTN_UNCHECKED)
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(g_sens_ticket_cb), FALSE);
+
+    if (flags & PRIV_WARN_BTN_CHECKED)
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(g_sens_ticket_cb), TRUE);
+
+    if (flags & PRIV_WARN_HIDE_MSG)
+        clear_warnings();
+
+    if (flags & PRIV_WARN_SHOW_MSG)
+    {
+       add_warning(_("Possible sensitive data detected, feel free to edit the report and remove them."));
+       show_warnings();
+    }
+}
+
+static void add_sensitive_data_warning(void)
+{
+    int flags = PRIV_WARN_SHOW_MSG;
+
+    event_config_t *cfg = get_event_config(g_reporter_events_selected);
+    if (cfg != NULL && cfg->ec_supports_restricted_access)
+        flags |= PRIV_WARN_SHOW_BTN | PRIV_WARN_BTN_CHECKED;
+
+    private_ticket_creation_warning(flags);
+}
+
 static void check_bt_rating_and_allow_send(void)
 {
     int minimal_rating = 0;
@@ -2247,9 +2320,33 @@ static void highlight_forbidden()
     }
     if (found)
     {
-        add_warning(_("Possible sensitive data detected, please review the highlighted tabs carefully."));
+        add_sensitive_data_warning();
     }
     list_free_with_free(forbidden_words);
+}
+
+static void update_private_ticket_creation_warning_for_selected_event(void)
+{
+    const int global = get_global_create_private_ticket();
+    int local = 0;
+    int local_supported = 0;
+
+    for (GList *r = g_list_selected_reporters; r != NULL; r = g_list_next(r))
+    {
+        event_config_t *cfg = get_event_config(r->data);
+
+        local_supported = cfg != NULL && cfg->ec_supports_restricted_access;
+        local = local_supported && ec_restricted_access_enabled(cfg);
+    };
+
+    if (!global && !local_supported)
+        return;
+
+    int flags = PRIV_WARN_SHOW_BTN | PRIV_WARN_HIDE_MSG;
+    if (global || local)
+        flags |= PRIV_WARN_BTN_CHECKED;
+
+    private_ticket_creation_warning(flags);
 }
 
 static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer user_data)
@@ -2284,6 +2381,7 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
     if (pages[PAGENO_EDIT_BACKTRACE].page_widget == page)
     {
         clear_warnings();
+        update_private_ticket_creation_warning_for_selected_event();
         check_bt_rating_and_allow_send();
         highlight_forbidden();
         show_warnings();
@@ -2322,7 +2420,9 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
     }
 
     if (pages[PAGENO_EDIT_COMMENT].page_widget == page)
+    {
         on_comment_changed(gtk_text_view_get_buffer(g_tv_comment), NULL);
+    }
     //log_ready_state();
 }
 
@@ -2759,6 +2859,13 @@ static void add_pages()
     g_notebook             = GTK_NOTEBOOK(     gtk_builder_get_object(builder, "notebook_edit"));
     g_ev_search_up         = GTK_EVENT_BOX(     gtk_builder_get_object(builder, "ev_search_up"));
     g_ev_search_down       = GTK_EVENT_BOX(   gtk_builder_get_object(builder, "ev_search_down"));
+    g_sens_ticket          = GTK_WIDGET(       gtk_builder_get_object(builder, "sens_ticket"));
+    g_sens_ticket_cb       = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "sens_ticket_cb"));
+    g_privacy_info_btn     = GTK_BUTTON(       gtk_builder_get_object(builder, "privacy_info_btn"));
+
+    gtk_widget_hide(g_sens_ticket);
+    g_signal_connect(g_sens_ticket_cb, "toggled", G_CALLBACK(on_sensitive_ticket_clicked_cb), NULL);
+    g_signal_connect(g_privacy_info_btn, "clicked", G_CALLBACK(on_privacy_info_btn), NULL);
 
     gtk_widget_hide(g_widget_warnings_area);
 
@@ -2908,7 +3015,6 @@ void create_assistant(void)
     g_signal_connect(obj_assistant, "prepare", G_CALLBACK(on_page_prepare), NULL);
 
     add_pages();
-
     create_details_treeview();
 
     g_signal_connect(g_tb_approve_bt, "toggled", G_CALLBACK(on_bt_approve_toggle), NULL);

@@ -11,4 +11,5 @@ libreport_include_HEADERS = \
     file_obj.h \
     internal_libreport.h \
     internal_abrt_dbus.h \
-    ureport.h
+    ureport.h \
+    global_configuration.h

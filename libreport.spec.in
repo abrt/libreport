@@ -215,7 +215,8 @@ Uploads micro-report to abrt server
 
 %build
 autoconf
-%configure
+%configure --with-redhatbugzillacreateprivate=yes \
+           --with-redhatbugzillaprivategroups=redhat
 CFLAGS="-fno-strict-aliasing"
 make %{?_smp_mflags}
 
@@ -298,6 +299,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 # Private api headers:
 %{_includedir}/libreport/internal_abrt_dbus.h
 %{_includedir}/libreport/internal_libreport.h
+%{_includedir}/libreport/global_configuration.h
 %{_libdir}/libreport.so
 %{_libdir}/libabrt_dbus.so
 %{_libdir}/pkgconfig/libreport.pc

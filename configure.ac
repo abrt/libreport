@@ -65,6 +65,19 @@ AC_PATH_PROG([XMLTO], [xmlto], [no])
     [exit 1]
 [fi]
 
+AC_ARG_WITH([redhatbugzillacreateprivate],
+            AS_HELP_STRING([--with-redhatbugzillacreateprivate="yes/no"],
+                           [Whether the Red Hat Bugzilla plugin should open
+                            bugs private by default ("no")]),
+            [], [with_redhatbugzillacreateprivate="no"])
+AC_SUBST([RED_HAT_BUGZILLA_CREATE_PRIVATE], [$with_redhatbugzillacreateprivate])
+
+AC_ARG_WITH([redhatbugzillaprivategroups],
+            AS_HELP_STRING([--with-redhatbugzillaprivategroups="CSV"],
+                           [Name of groups separated by comma]),
+            [], [with_redhatbugzillaprivategroups="fedora_contrib_private"])
+AC_SUBST([RED_HAT_BUGZILLA_PRIVATE_GROUPS], [$with_redhatbugzillaprivategroups])
+
 PKG_CHECK_MODULES([GTK], [$GTK_VER])
 PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.21])
 PKG_CHECK_MODULES([DBUS], [dbus-1])
@@ -159,6 +172,7 @@ AC_CONFIG_FILES([
 	libreport.pc
 	src/include/Makefile
 	src/lib/Makefile
+	src/plugins/report_Bugzilla.xml.in
 	src/report-python/Makefile
 	src/Makefile
 	src/gtk-helpers/Makefile
@@ -170,6 +184,7 @@ AC_CONFIG_FILES([
 	src/client-python/Makefile
 	po/Makefile.in
 	doc/Makefile
+	tests/bugzilla_plugin.at
 ])
 
 #	src/plugins/Makefile

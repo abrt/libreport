@@ -1,0 +1,155 @@
+# -*- Autotest -*-
+
+AT_BANNER([global_config])
+
+## ------------------------ ##
+## always_excluded_elements ##
+## ------------------------ ##
+
+AT_TESTFUN([always_excluded_elements],
+[[
+#include "internal_libreport.h"
+#include <errno.h>
+#include <assert.h>
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+    char cwd_buf[PATH_MAX + 1];
+
+    static const char *dirs[] = {
+        NULL,
+        NULL,
+    };
+    dirs[0] = getcwd(cwd_buf, sizeof(cwd_buf));
+
+    static int dir_flags[] = {
+        CONF_DIR_FLAG_NONE,
+        -1,
+    };
+
+    unlink("libreport.conf");
+    FILE *lrf = fopen("libreport.conf", "wx");
+    assert(lrf != NULL);
+    fclose(lrf);
+
+    assert(load_global_configuration_from_dirs(dirs, dir_flags));
+
+    {
+        unsetenv("EXCLUDE_FROM_REPORT");
+        string_vector_ptr_t excluded = get_global_always_excluded_elements();
+
+        assert(excluded != NULL);
+        assert(excluded[0] == NULL);
+
+        string_vector_free(excluded);
+    }
+
+    {
+        setenv("EXCLUDE_FROM_REPORT", "hostname, environ, uid", 1);
+        string_vector_ptr_t excluded = get_global_always_excluded_elements();
+
+        assert(excluded != NULL);
+        assert(strcmp(excluded[0], "hostname") == 0);
+        assert(strcmp(excluded[1], "environ") == 0);
+        assert(strcmp(excluded[2], "uid") == 0);
+        assert(excluded[3] == NULL);
+
+        string_vector_free(excluded);
+    }
+
+    free_global_configuration();
+
+    unlink("libreport.conf");
+    lrf = fopen("libreport.conf", "wx");
+    assert(lrf != NULL);
+    fprintf(lrf, "AlwaysExcludedElements = maps, var_log_messages, proc_pid_status");
+    fclose(lrf);
+
+    assert(load_global_configuration_from_dirs(dirs, dir_flags));
+
+    {
+        unsetenv("EXCLUDE_FROM_REPORT");
+        string_vector_ptr_t excluded = get_global_always_excluded_elements();
+
+        assert(excluded != NULL);
+        assert(strcmp(excluded[0], "maps") == 0);
+        assert(strcmp(excluded[1], "var_log_messages") == 0);
+        assert(strcmp(excluded[2], "proc_pid_status") == 0);
+        assert(excluded[3] == NULL);
+
+        string_vector_free(excluded);
+    }
+
+    {
+        setenv("EXCLUDE_FROM_REPORT", "hostname, environ, uid", 1);
+        string_vector_ptr_t excluded = get_global_always_excluded_elements();
+
+        assert(excluded != NULL);
+        assert(strcmp(excluded[0], "hostname") == 0);
+        assert(strcmp(excluded[1], "environ") == 0);
+        assert(strcmp(excluded[2], "uid") == 0);
+        assert(strcmp(excluded[3], "maps") == 0);
+        assert(strcmp(excluded[4], "var_log_messages") == 0);
+        assert(strcmp(excluded[5], "proc_pid_status") == 0);
+        assert(excluded[6] == NULL);
+
+        string_vector_free(excluded);
+    }
+
+    unlink("libreport.conf");
+
+    return EXIT_SUCCESS;
+}
+]])
+
+
+## --------------------- ##
+## create_private_ticket ##
+## --------------------- ##
+
+AT_TESTFUN([create_private_ticket],
+[[
+#include "testsuite.h"
+
+TS_MAIN
+{
+    assert(load_global_configuration());
+
+    TS_ASSERT_FALSE_MESSAGE(get_global_create_private_ticket(), "False by default");
+
+    set_global_create_private_ticket(false, 0);
+
+    TS_ASSERT_FALSE_MESSAGE(get_global_create_private_ticket(), "Still false");
+
+    set_global_create_private_ticket(true, 0);
+
+    TS_ASSERT_TRUE_MESSAGE(get_global_create_private_ticket(), "Configuration accepted");
+    TS_ASSERT_STRING_EQ(getenv(CREATE_PRIVATE_TICKET), "1", "Correct ENVIRONMENT value");
+
+    set_global_create_private_ticket(true, 0);
+
+    TS_ASSERT_TRUE_MESSAGE(get_global_create_private_ticket(), "Configuration sanity");
+    TS_ASSERT_STRING_EQ(getenv(CREATE_PRIVATE_TICKET), "1", "Correct ENVIRONMENT value");
+
+    set_global_create_private_ticket(false, 0);
+
+    TS_ASSERT_FALSE_MESSAGE(get_global_create_private_ticket(), "Reverted back to False");
+    TS_ASSERT_STRING_NULL_OR_EMPTY(getenv(CREATE_PRIVATE_TICKET), "Correct ENVIRONMENT value");
+
+    xsetenv(CREATE_PRIVATE_TICKET, "1");
+
+    TS_ASSERT_TRUE_MESSAGE(get_global_create_private_ticket(), "Loaded from environment");
+
+    unsetenv(CREATE_PRIVATE_TICKET);
+
+    TS_ASSERT_FALSE_MESSAGE(get_global_create_private_ticket(), "Reflects environment");
+
+    xsetenv(CREATE_PRIVATE_TICKET, "0");
+
+    TS_ASSERT_FALSE_MESSAGE(get_global_create_private_ticket(), "Zero is false");
+
+    free_global_configuration();
+}
+TS_RETURN_MAIN
+]])

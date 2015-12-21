@@ -1,0 +1,125 @@
+# -*- Autotest -*-
+
+AT_BANNER([Bugzilla])
+
+## ------------------- ##
+## report_Bugzilla_xml ##
+## ------------------- ##
+
+AT_TESTFUN([report_Bugzilla_xml],
+[[
+#include "testsuite.h"
+
+TS_MAIN
+{
+    event_config_t *conf = new_event_config();
+    load_event_description_from_file(conf, "../../../src/plugins/report_Bugzilla.xml");
+
+    TS_ASSERT_STRING_EQ(conf->screen_name, "Bugzilla", "Screen name");
+    TS_ASSERT_STRING_EQ(conf->description, "Report to Bugzilla bug tracker", "Description");
+
+    TS_ASSERT_STRING_EQ(conf->ec_creates_items, NULL, "Not-defined create items");
+
+    TS_ASSERT_STRING_EQ(conf->ec_requires_items, "component,duphash,os_release", "Correct required items");
+
+    TS_ASSERT_STRING_EQ(conf->ec_exclude_items_by_default, "coredump,count,event_log,reported_to,vmcore", "Correct excluded items by default");
+
+    TS_ASSERT_STRING_EQ(conf->ec_exclude_items_always, NULL, "Not-defined excluded items always");
+
+    TS_ASSERT_FALSE(conf->ec_exclude_binary_items);
+
+    TS_ASSERT_STRING_EQ(conf->ec_include_items_by_default, NULL, "Not-defined included items by default");
+
+    TS_ASSERT_SIGNED_EQ(conf->ec_minimal_rating, 3);
+
+#if 0
+    TS_ASSERT_FALSE(conf->ec_skip_review);
+
+    TS_ASSERT_FALSE(conf->ec_sending_sensitive_data);
+#endif
+
+    TS_ASSERT_TRUE(conf->ec_supports_restricted_access);
+
+    event_option_t options[10] = {
+        { .eo_value = NULL, .eo_label = (char *)"User name",
+          .eo_note_html = (char *)"You can create bugzilla.redhat.com account <a href=\"https://bugzilla.redhat.com/createaccount.cgi\">here</a>",
+          .eo_type = OPTION_TYPE_TEXT, .eo_allow_empty = 0, .is_advanced = 0,
+        },
+        { .eo_value = NULL, .eo_label = (char *)"Password", .eo_note_html = NULL,
+          .eo_type = OPTION_TYPE_PASSWORD, .eo_allow_empty = 0, .is_advanced = 0,
+        },
+        { .eo_value = (char *)"no", .eo_label = (char *)"Restrict access",
+          .eo_note_html = (char *)"Restrict access to the created bugzilla ticket allowing only users from specified groups to view it (see advanced settings for more details)",
+          .eo_type = OPTION_TYPE_BOOL, .eo_allow_empty = 0, .is_advanced = 0,
+        },
+        { .eo_value = (char *)"fedora_contrib_private", .eo_label = (char *)"Groups",
+          .eo_note_html = (char *)"Restrict the access to specified groups <a href=\"https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets\">?</a>",
+          .eo_type = OPTION_TYPE_TEXT, .eo_allow_empty = 1, .is_advanced = 1,
+        },
+        { .eo_value = (char *)"https://bugzilla.redhat.com", .eo_label = (char *)"Bugzilla URL",
+          .eo_note_html = (char *)"Address of Bugzilla server",
+          .eo_type = OPTION_TYPE_TEXT, .eo_allow_empty = 0, .is_advanced = 1,
+        },
+        { .eo_value = (char *)"yes", .eo_label = (char *)"Verify SSL",
+          .eo_note_html = (char *)"Check SSL key validity",
+          .eo_type = OPTION_TYPE_BOOL, .eo_allow_empty = 0, .is_advanced = 1,
+        },
+        { .eo_value = NULL, .eo_label = (char *)"OS release string",
+          .eo_note_html = (char *)"Specify this only if you modified your /etc/system-release file",
+          .eo_type = OPTION_TYPE_TEXT, .eo_allow_empty = 1, .is_advanced = 1,
+        },
+#if 0
+        { .eo_value = NULL, .eo_label = (char *)"Bugzilla product",
+          .eo_note_html = (char *)"Specify this only if you needed different product than specified in /etc/os-release",
+          .eo_type = OPTION_TYPE_TEXT, .eo_allow_empty = 1, .is_advanced = 1,
+        },
+        { .eo_value = NULL, .eo_label = (char *)"Bugzilla product version",
+          .eo_note_html = (char *)"Specify this only if you needed different product version than specified in /etc/os-release",
+          .eo_type = OPTION_TYPE_TEXT, .eo_allow_empty = 1, .is_advanced = 1,
+        },
+        { .eo_value = NULL, .eo_label = (char *)"HTTP Proxy",
+          .eo_note_html = (char *)"Sets the proxy server to use for HTTP",
+          .eo_type = OPTION_TYPE_TEXT, .eo_allow_empty = 1, .is_advanced = 1,
+        },
+        { .eo_value = NULL, .eo_label = (char *)"HTTPS Proxy",
+          .eo_note_html = (char *)"Sets the proxy server to use for HTTPS",
+          .eo_type = OPTION_TYPE_TEXT, .eo_allow_empty = 1, .is_advanced = 1,
+        },
+#endif
+    };
+
+    const char *option_names[] = {
+        "Bugzilla_Login",
+        "Bugzilla_Password",
+        "Bugzilla_CreatePrivate",
+        "Bugzilla_PrivateGroups",
+        "Bugzilla_BugzillaURL",
+        "Bugzilla_SSLVerify",
+        "Bugzilla_OSRelease",
+#if 0
+        "Bugzilla_Product",
+        "Bugzilla_ProductVersion",
+        "http_proxy",
+        "HTTPS_PROXY"
+#endif
+    };
+
+    for (unsigned i = 0; i < ARRAY_SIZE(option_names); ++i) {
+        event_option_t *eo = get_event_option_from_list(option_names[i], conf->options);
+        TS_ASSERT_PTR_IS_NOT_NULL_MESSAGE(eo, option_names[i]);
+
+        if (eo == NULL)
+            continue;
+
+        TS_ASSERT_STRING_EQ(eo->eo_value, options[i].eo_value, option_names[i]);
+        TS_ASSERT_STRING_EQ(eo->eo_label, options[i].eo_label, option_names[i]);
+        TS_ASSERT_STRING_EQ(eo->eo_note_html, options[i].eo_note_html, option_names[i]);
+        TS_ASSERT_SIGNED_OP_MESSAGE(eo->eo_type, ==, options[i].eo_type, option_names[i]);
+        TS_ASSERT_SIGNED_OP_MESSAGE(eo->eo_allow_empty, ==, options[i].eo_allow_empty, option_names[i]);
+        TS_ASSERT_SIGNED_OP_MESSAGE(eo->is_advanced, ==, options[i].is_advanced, option_names[i]);
+    }
+
+    free_event_config(conf);
+}
+TS_RETURN_MAIN
+]])

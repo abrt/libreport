@@ -42,6 +42,26 @@ static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
 
     environ = getenv("Bugzilla_OSRelease");
     b->b_release = environ ? environ : get_map_string_item_or_NULL(settings, "OSRelease");
+
+    b->b_create_private = get_global_create_private_ticket();
+
+    if (!b->b_create_private)
+    {
+        environ = getenv("Bugzilla_CreatePrivate");
+        b->b_create_private = string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "Bugzilla_CreatePrivate"));
+    }
+
+    environ = getenv("Bugzilla_PrivateGroups");
+    GList *groups = parse_list(environ ? environ : get_map_string_item_or_empty(settings, "Bugzilla_PrivateGroups"));
+    if (b->b_private_groups == NULL)
+    {
+        b->b_private_groups = groups;
+    }
+    else if (groups)
+    {
+        g_list_free_full(groups, free);
+        error_msg(_("Warning, private ticket groups already specified as cmdline argument, ignoring the env variable and configuration"));
+    }
 }
 
 int main(int argc, char **argv)
@@ -61,7 +81,7 @@ int main(int argc, char **argv)
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
         "\n"
-        "& [-vbf] [-c CONFFILE] -d DIR\n"
+        "& [-vbf] [-g GROUP-NAME] [-c CONFFILE] -d DIR\n"
         "or:\n"
         "& [-v] [-c CONFFILE] [-d DIR] -t[ID] FILE...\n"
         "\n"
@@ -101,7 +121,11 @@ int main(int argc, char **argv)
         OPT_t = 1 << 3,
         OPT_b = 1 << 4,
         OPT_f = 1 << 5,
+        OPT_h = 1 << 6,
+        OPT_g = 1 << 7,
     };
+
+    INIT_BUGZILLA(rhbz);
 
     char *ticket_no = NULL, *abrt_hash = NULL;
     /* Keep enum above and order of options below in sync! */
@@ -113,11 +137,13 @@ int main(int argc, char **argv)
         OPT_BOOL(     'b', NULL, NULL,                   _("When creating bug, attach binary files too")),
         OPT_BOOL(     'f', NULL, NULL,                   _("Force reporting even if this problem is already reported")),
         OPT_STRING(   'h', "duphash", &abrt_hash, "DUPHASH", _("Find BUG-ID according to DUPHASH")),
+        OPT_LIST(     'g', "group", &rhbz.b_private_groups , "GROUP"  , _("Restrict access to this group only")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
     argv += optind;
 
+    load_global_configuration();
     export_abrt_envvars(0);
 
     map_string_t *settings = new_map_string();
@@ -131,6 +157,25 @@ int main(int argc, char **argv)
         VERB3 log("Loaded '%s'", fn);
         conf_file = g_list_delete_link(conf_file, conf_file);
     }
+    set_settings(&rhbz, settings);
+    /* either we got Bugzilla_CreatePrivate from settings or -g was specified on cmdline */
+    rhbz.b_create_private |= (opts & OPT_g);
+    VERB1 log("Create private bz ticket: '%s'", rhbz.b_create_private ? "YES": "NO");
+    if (g_verbose >= 1)
+    {
+        struct strbuf *buf = strbuf_new();
+
+        for (GList *g = rhbz.b_private_groups; g;)
+        {
+            strbuf_append_str(buf, g->data);
+            g = g_list_next(g);
+            if (g != NULL)
+                strbuf_append_str(buf, ", ");
+        }
+
+        log("Bug groups: '%s'", buf->buf);
+        strbuf_free(buf);
+    }
 
     VERB1 log("Initializing XML-RPC library");
     xmlrpc_env env;
@@ -139,9 +184,6 @@ int main(int argc, char **argv)
     if (env.fault_occurred)
         abrt_xmlrpc_die(&env);
     xmlrpc_env_clean(&env);
-
-    INIT_BUGZILLA(rhbz);
-    set_settings(&rhbz, settings);
 
     struct abrt_xmlrpc *client;
     client = abrt_xmlrpc_new_client(rhbz.b_bugzilla_xmlrpc, rhbz.b_ssl_verify);
@@ -308,11 +350,12 @@ int main(int argc, char **argv)
     VERB3 log("Bugzilla has %i reports with same duphash '%s'",
               all_bugs_size, duphash);
 
+    int existing_id = -1;
     int bug_id = -1;
     struct bug_info *bz = NULL;
     if (all_bugs_size > 0)
     {
-        bug_id = rhbz_bug_id(all_bugs);
+        existing_id = bug_id = rhbz_bug_id(all_bugs);
         xmlrpc_DECREF(all_bugs);
         bz = rhbz_bug_info(client, bug_id);
 
@@ -329,18 +372,48 @@ int main(int argc, char **argv)
             all_bugs_size = rhbz_array_size(all_bugs);
             if (all_bugs_size > 0)
             {
-                bug_id = rhbz_bug_id(all_bugs);
+                existing_id = bug_id = rhbz_bug_id(all_bugs);
                 bz = rhbz_bug_info(client, bug_id);
             }
             xmlrpc_DECREF(all_bugs);
         }
     }
 
-    if (all_bugs_size == 0)
+    if (existing_id < 0 || rhbz.b_create_private)
     {
+        if (existing_id >= 0)
+        {
+            char *msg = xasprintf(_(
+            "You have requested to make your data accessible only to a "
+            "specific group and this bug is a duplicate of bug: "
+            "%s/%u"
+            " "
+            "In case of bug duplicates a new comment is added to the "
+            "original bug report but access to the comments cannot be "
+            "restricted to a specific group."
+            " "
+            "Would you like to open a new bug report and close it as "
+            "DUPLICATE of the original one?"
+            " "
+            "Otherwise, the bug reporting procedure will be terminated."),
+            rhbz.b_bugzilla_url, existing_id);
+
+            int r = ask_yes_no(msg);
+            free(msg);
+
+            if (r == 0)
+            {
+                log(_("Logging out"));
+                rhbz_logout(client);
+
+                exit(EXIT_CANCEL_BY_USER);
+            }
+        }
+
         /* Create new bug */
         log(_("Creating a new bug"));
-        bug_id = rhbz_new_bug(client, problem_data, rhbz.b_release, bug_id);
+        bug_id = rhbz_new_bug(client, problem_data, rhbz.b_release, bug_id,
+                                rhbz.b_create_private, rhbz.b_private_groups);
 
         log(_("Adding attachments to bug %i"), bug_id);
         char bug_id_str[sizeof(int)*3 + 2];
@@ -354,6 +427,13 @@ int main(int argc, char **argv)
         bz = new_bug_info();
         bz->bi_status = xstrdup("NEW");
         bz->bi_id = bug_id;
+
+        if (existing_id >= 0)
+        {
+            log(_("Closing bug %i as duplicate of bug %i"), bug_id, existing_id);
+            rhbz_close_as_duplicate(client, bug_id, existing_id, RHBZ_NOMAIL_NOTIFY);
+        }
+
         goto log_out;
     }
 

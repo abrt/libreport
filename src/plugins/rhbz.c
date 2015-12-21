@@ -309,6 +309,29 @@ void rhbz_login(struct abrt_xmlrpc *ax, struct bugzilla_struct *b)
     xmlrpc_DECREF(result);
 }
 
+void rhbz_close_as_duplicate(struct abrt_xmlrpc *ax, int bug_id,
+                        int duplicate_bug,
+                        int flags)
+{
+    func_entry();
+
+    const int nomail_notify = !!IS_NOMAIL_NOTIFY(flags);
+    xmlrpc_value *result = abrt_xmlrpc_call(ax, "Bug.update", "{s:i,s:s,s:s,s:i,s:i}",
+                              "ids", bug_id,
+                              "status", "CLOSED",
+                              "resolution", "DUPLICATE",
+                              "dupe_of", duplicate_bug,
+
+                /* Undocumented argument but it works with Red Hat Bugzilla version 4.2.4-7
+                 * and version 4.4.rc1.b02
+                 */
+                              "nomail", nomail_notify
+    );
+
+    if (result)
+        xmlrpc_DECREF(result);
+}
+
 xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax, const char *component,
                                   const char *product, const char *duphash)
 {
@@ -636,7 +659,9 @@ char *rhbz_get_backtrace_info(problem_data_t *problem_data, size_t max_text_size
 /* suppress mail notify by {s:i} (nomail:1) (driven by flag) */
 int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
                  const char *release,
-                 int depend_on_bug)
+                 int depend_on_bug,
+                 bool private,
+                 GList *group)
 {
     func_entry();
 
@@ -724,32 +749,52 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
     char *version = NULL;
     parse_release_for_bz(release, &product, &version);
 
-    xmlrpc_value* result = NULL;
     char *summary = strbuf_free_nobuf(buf_summary);
     char *status_whiteboard = xasprintf("abrt_hash:%s", duphash);
+
+    xmlrpc_env env;
+    xmlrpc_env_init(&env);
+
+    xmlrpc_value *params = abrt_xmlrpc_params_new(&env);
+
+    abrt_xmlrpc_params_add_string(&env, params, "product", product);
+    abrt_xmlrpc_params_add_string(&env, params, "component", component);
+    abrt_xmlrpc_params_add_string(&env, params, "version", version);
+    abrt_xmlrpc_params_add_string(&env, params, "summary", summary);
+    abrt_xmlrpc_params_add_string(&env, params, "description", full_dsc);
+    abrt_xmlrpc_params_add_string(&env, params, "status_whiteboard", status_whiteboard);
+
     if (depend_on_bug > -1)
+        abrt_xmlrpc_params_add_int(&env, params, "dependson", depend_on_bug);
+
+    if(arch)
+        abrt_xmlrpc_params_add_string(&env, params, "platform", arch);
+
+    if (private)
     {
-        result = abrt_xmlrpc_call(ax, "Bug.create", "{s:s,s:s,s:s,s:s,s:s,s:s,s:s,s:i}",
-                                  "product", product,
-                                  "component", component,
-                                  "version", version,
-                                  "summary", summary,
-                                  "description", full_dsc,
-                                  "status_whiteboard", status_whiteboard,
-                                  "platform", arch,
-                                  "dependson", depend_on_bug);
+        if (group)
+        {
+            xmlrpc_value *xmlrpc_groups = abrt_xmlrpc_array_new(&env);
+
+            for (GList *l = group; l; l = l->next)
+                abrt_xmlrpc_array_append_string(&env, xmlrpc_groups, l->data);
+
+            abrt_xmlrpc_params_add_array(&env, params, "groups", xmlrpc_groups);
+
+            xmlrpc_DECREF(xmlrpc_groups);
+        }
+        else
+        {
+            error_msg(_("A private ticket creation has been requested, but no groups were specified"));
+            return -1;
+        }
     }
-    else
-    {
-        result = abrt_xmlrpc_call(ax, "Bug.create", "{s:s,s:s,s:s,s:s,s:s,s:s,s:s}",
-                                  "product", product,
-                                  "component", component,
-                                  "version", version,
-                                  "summary", summary,
-                                  "description", full_dsc,
-                                  "status_whiteboard", status_whiteboard,
-                                  "platform", arch);
-    }
+
+    xmlrpc_value* result = abrt_xmlrpc_call_params(&env, ax, "Bug.create", params);
+
+    xmlrpc_DECREF(params);
+    xmlrpc_env_clean(&env);
+
     free(status_whiteboard);
     free(product);
     free(version);

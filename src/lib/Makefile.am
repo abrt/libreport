@@ -51,7 +51,8 @@ libreport_la_SOURCES = \
     reported_to.c \
     utf8.c \
     file_list.c \
-    file_obj.c
+    file_obj.c \
+    global_configuration.c
 
 libreport_la_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror \

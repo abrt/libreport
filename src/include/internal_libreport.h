@@ -85,8 +85,11 @@ int vdprintf(int d, const char *format, va_list ap);
 #undef ARRAY_SIZE
 #define ARRAY_SIZE(x) ((unsigned)(sizeof(x) / sizeof((x)[0])))
 
+/* consts used across whole libreport */
+#define CREATE_PRIVATE_TICKET "ABRT_CREATE_PRIVATE_TICKET"
 
 /* Pull in entire public libreport API */
+#include "global_configuration.h"
 #include "dump_dir.h"
 #include "event_config.h"
 #include "problem_data.h"
@@ -640,9 +643,21 @@ bool load_conf_file(const char *pPath, map_string_t *settings, bool skipKeysWith
 #define load_plugin_conf_file libreport_load_plugin_conf_file
 bool load_plugin_conf_file(const char *name, map_string_t *settings, bool skipKeysWithoutValue);
 
+#define get_user_conf_base_dir libreport_get_user_conf_base_dir
+const char *get_user_conf_base_dir(void);
+
 #define load_conf_file_from_dirs libreport_load_conf_file_from_dirs
 bool load_conf_file_from_dirs(const char *base_name, const char *const *directories, map_string_t *settings, bool skipKeysWithoutValue);
 
+enum {
+    CONF_DIR_FLAG_NONE = 0,
+    CONF_DIR_FLAG_OPTIONAL = 1,
+};
+
+#define load_conf_file_from_dirs_ext libreport_load_conf_file_from_dirs_ext
+bool load_conf_file_from_dirs_ext(const char *base_name, const char *const *directories,
+                                  const int * dir_flags, map_string_t *settings,
+                                  bool skipKeysWithoutValue);
 
 #define save_conf_file libreport_save_conf_file
 bool save_conf_file(const char *path, map_string_t *settings);

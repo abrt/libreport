@@ -31,6 +31,8 @@
 #define NAME_ELEMENT            "name"
 #define DEFAULT_VALUE_ELEMENT   "default-value"
 #define MINIMAL_RATING_ELEMENT  "minimal-rating"
+#define SUPPORTS_RESTRICTED_ACCESS_ELEMENT "support-restricted-access"
+#define RESTRICTED_ACCESS_OPTION_ATTR "optionname"
 
 #define REQUIRES_ELEMENT        "requires-items"
 #define EXCL_BY_DEFAULT_ELEMENT "exclude-items-by-default"
@@ -201,6 +203,20 @@ static void start_element(GMarkupParseContext *context,
     ) {
         free(parse_data->attribute_lang);
         parse_data->attribute_lang = get_element_lang(parse_data, attribute_names, attribute_values);
+    }
+    else
+    if (strcmp(element_name, SUPPORTS_RESTRICTED_ACCESS_ELEMENT) == 0)
+    {
+        if ((     attribute_names[0] != NULL
+               && strcmp(attribute_names[0], RESTRICTED_ACCESS_OPTION_ATTR) != 0)
+            || attribute_names[1] != NULL)
+        {
+            error_msg("XML event configuration error: '%s' element misses attribute '%s'",
+                    SUPPORTS_RESTRICTED_ACCESS_ELEMENT, RESTRICTED_ACCESS_OPTION_ATTR);
+            return;
+        }
+
+        parse_data->event_config->ec_restricted_access_option = xstrdup(attribute_values[0]);
     }
 }
 
@@ -434,6 +450,11 @@ static void text(GMarkupParseContext *context,
                 log("invalid minimal-rating number '%s', set to default 4", text_copy);
                 ui->ec_minimal_rating = 4;
             }
+            goto ret;
+        }
+        if (strcmp(inner_element, SUPPORTS_RESTRICTED_ACCESS_ELEMENT) == 0)
+        {
+            ui->ec_supports_restricted_access = string_to_bool(text_copy);
             goto ret;
         }
     }
