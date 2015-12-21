@@ -681,6 +681,15 @@ struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name
 #define make_dir_recursive libreport_make_dir_recursive
 bool make_dir_recursive(char *dir, mode_t dir_mode);
 
+/* Resolves if the given user is in given group
+ *
+ * @param uid user ID
+ * @param gid group ID
+ * @returns TRUE in case the user is in the group otherwise returns FALSE
+ */
+#define uid_in_group libreport_uid_in_group
+bool uid_in_group(uid_t uid, gid_t gid);
+
 // Files bigger than this are never considered to be text.
 //
 // Started at 64k limit. But _some_ limit is necessary:
