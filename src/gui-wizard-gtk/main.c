@@ -152,7 +152,6 @@ int main(int argc, char **argv)
     g_custom_logger = &show_error_as_msgbox;
 
     reload_problem_data_from_dump_dir();
-
     update_gui_state_from_problem_data();
 
     /* Enter main loop */

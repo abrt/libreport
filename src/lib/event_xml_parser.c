@@ -31,6 +31,7 @@
 #define NAME_ELEMENT            "name"
 #define DEFAULT_VALUE_ELEMENT   "default-value"
 #define MINIMAL_RATING_ELEMENT  "minimal-rating"
+#define GUI_REVIEW_ELEMENTS     "gui-review-elements"
 #define SUPPORTS_RESTRICTED_ACCESS_ELEMENT "support-restricted-access"
 #define RESTRICTED_ACCESS_OPTION_ATTR "optionname"
 
@@ -450,6 +451,11 @@ static void text(GMarkupParseContext *context,
                 log("invalid minimal-rating number '%s', set to default 4", text_copy);
                 ui->ec_minimal_rating = 4;
             }
+            goto ret;
+        }
+        if (strcmp(inner_element, GUI_REVIEW_ELEMENTS) == 0)
+        {
+            ui->ec_skip_review = !string_to_bool(text_copy);
             goto ret;
         }
         if (strcmp(inner_element, SUPPORTS_RESTRICTED_ACCESS_ELEMENT) == 0)

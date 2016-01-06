@@ -43,6 +43,7 @@ static GtkAssistant *g_assistant;
 static char *g_analyze_event_selected;
 static unsigned g_collect_events_selected_count = 0;
 static char *g_reporter_events_selected;
+static char *g_reporter_events_executed;
 static unsigned g_black_event_count = 0;
 
 static pid_t g_event_child_pid = 0;
@@ -64,7 +65,6 @@ static GtkTextView *g_tv_collect_log;
 static GtkBox *g_box_reporters;
 /* List of event_gui_data's */
 static GList *g_list_reporters;
-static GList *g_list_selected_reporters;
 static GtkLabel *g_lbl_report_log;
 static GtkTextView *g_tv_report_log;
 static GtkProgressBar *g_pb_report;
@@ -229,6 +229,7 @@ typedef struct
     const gchar *title;
     GtkAssistantPageType type;
     GtkWidget *page_widget;
+    int page_no;
 } page_obj_t;
 
 static page_obj_t pages[NUM_PAGES];
@@ -270,15 +271,15 @@ static void init_pages()
      * Therefore we want to know reporters _before_ we go to bt page
      */
     init_page(&pages[6], PAGE_REPORTER_SELECTOR  , _("Select reporter")       , GTK_ASSISTANT_PAGE_CONTENT );
-    init_page(&pages[7], PAGE_EDIT_BACKTRACE     , _("Review the data")  , GTK_ASSISTANT_PAGE_CONTENT );
+    init_page(&pages[7], PAGE_EDIT_BACKTRACE     , _("Review the data")       , GTK_ASSISTANT_PAGE_CONTENT );
     init_page(&pages[8], PAGE_REVIEW_DATA        , _("Confirm data to report"), GTK_ASSISTANT_PAGE_CONFIRM );
     /* Was GTK_ASSISTANT_PAGE_PROGRESS, but we want to allow returning to it */
     init_page(&pages[9], PAGE_REPORT_PROGRESS    , _("Reporting")             , GTK_ASSISTANT_PAGE_INTRO   );
-    init_page(&pages[10], PAGE_REPORT_DONE        , _("Reporting done")        , GTK_ASSISTANT_PAGE_CONTENT );
+    init_page(&pages[10], PAGE_REPORT_DONE        , _("Reporting done")       , GTK_ASSISTANT_PAGE_CONTENT );
     /* We prevent user from reaching this page, as SUMMARY can't be navigated away
      * (must be always closed) and we don't want that
      */
-    init_page(&pages[11], PAGE_NOT_SHOWN          , ""                      , GTK_ASSISTANT_PAGE_SUMMARY );
+    init_page(&pages[11], PAGE_NOT_SHOWN          , ""                        , GTK_ASSISTANT_PAGE_SUMMARY );
 }
 
 static void wrap_fixer(GtkWidget *widget, gpointer data_unused)
@@ -778,13 +779,25 @@ static void analyze_rb_was_toggled(GtkButton *button, gpointer user_data)
     }
 }
 
+static void update_list_of_reporters(void)
+{
+    /* Update "list of reporters" label */
+    if (g_reporter_events_selected == NULL)
+    {
+        gtk_label_set_text(g_lbl_reporters, "<not available>");
+        return;
+    }
+
+    event_config_t *cfg = get_event_config(g_reporter_events_selected);
+    if (cfg && cfg->screen_name)
+        gtk_label_set_text(g_lbl_reporters, cfg->screen_name);
+    else
+        gtk_label_set_text(g_lbl_reporters, g_reporter_events_selected);
+}
+
 static void report_tb_was_toggled(GtkButton *button, gpointer user_data)
 {
     char *event_name = (char *)user_data;
-    struct strbuf *reporters_strbuf = strbuf_new();
-    struct strbuf *reporters_event_strbuf = strbuf_new();
-    char * reporters_string;
-
     /* if ((button && user_data)
      * prevents sigsegv which would happen when call from
      * line 990: ((void (*)(GtkButton*, gpointer*))func)(NULL, NULL);
@@ -793,8 +806,8 @@ static void report_tb_was_toggled(GtkButton *button, gpointer user_data)
     if ((button && user_data)
         && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)) == TRUE)
     {
-        if (g_list_find_custom(g_list_selected_reporters, event_name, (GCompareFunc)g_strcmp0) == NULL)
-            g_list_selected_reporters = g_list_prepend(g_list_selected_reporters, xstrdup(event_name));
+        free(g_reporter_events_selected);
+        g_reporter_events_selected = xstrdup(event_name);
 
         /* check only if it wasn't toggeld by update_event_checkboxes
            i.e: when user clicks "regenerate backtrace"
@@ -808,47 +821,9 @@ static void report_tb_was_toggled(GtkButton *button, gpointer user_data)
                 show_event_opt_error_dialog(event_name);
             }
         }
-
-    }
-    else
-    {
-        GList *l = g_list_find_custom(g_list_selected_reporters, event_name, (GCompareFunc)g_strcmp0);
-        if (l)
-        {
-            char *data = l->data;
-            g_list_selected_reporters = g_list_remove(g_list_selected_reporters, data);
-            free(data);
-        }
     }
 
-    gtk_assistant_set_page_complete(g_assistant,
-                pages[PAGENO_REPORTER_SELECTOR].page_widget,
-                g_list_selected_reporters != NULL /* true if at least one checkbox is active */
-    );
-
-    /* Update "list of reporters" label */
-    free(g_reporter_events_selected);
-    GList *li = g_list_selected_reporters;
-    while (li != NULL)
-    {
-        event_config_t *cfg = get_event_config(li->data);
-        strbuf_append_strf(reporters_event_strbuf,
-                            "%s%s",
-                            (reporters_event_strbuf->len != 0 ? ", " : ""),
-                            (li->data ? li->data : "")
-                            );
-
-        strbuf_append_strf(reporters_strbuf,
-                            "%s%s",
-                            (reporters_strbuf->len != 0 ? ", " : ""),
-                            (cfg->screen_name ? cfg->screen_name : li->data)
-                            );
-        li = g_list_next(li);
-    }
-    g_reporter_events_selected = strbuf_free_nobuf(reporters_event_strbuf);
-    reporters_string = strbuf_free_nobuf(reporters_strbuf);
-    gtk_label_set_text(g_lbl_reporters, reporters_string);
-    free(reporters_string); //we can, gtk copies the string
+    update_list_of_reporters();
 }
 
 static void collect_tb_was_toggled(GtkButton *button_unused, gpointer user_data_unused)
@@ -876,6 +851,11 @@ static void collect_tb_was_toggled(GtkButton *button_unused, gpointer user_data_
     /* The page is complete even if no checkbox is checked. */
 }
 
+enum {
+    EB_RADIO     = 0x1,
+    EB_MANDATORY = 0x2,
+};
+
 /* event_name contains "EVENT1\nEVENT2\nEVENT3\n".
  * Add new {radio/check}buttons to GtkBox for each EVENTn (type depends on bool radio).
  * Remember them in GList **p_event_list (list of event_gui_data_t's).
@@ -886,7 +866,7 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
                 GList **p_event_list,
                 char *event_name,
                 GCallback func,
-                bool radio)
+                int flags)
 {
     //VERB2 log("removing all buttons from box %p", box);
     gtk_container_foreach(GTK_CONTAINER(box), &remove_child_widget, NULL);
@@ -894,6 +874,7 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
     g_list_free(*p_event_list);
     *p_event_list = NULL;
 
+    const bool radio = (flags & EB_RADIO);
     if (radio)
         g_black_event_count = 0;
 
@@ -991,7 +972,7 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
         gtk_box_pack_start(box, button, /*expand*/ false, /*fill*/ false, /*padding*/ 0);
     }
 
-    if (radio)
+    if (!(flags & EB_MANDATORY))
     {
         const char *msg_proceed_to_reporting = _("Go to next step");
         GtkWidget *button = radio
@@ -1213,10 +1194,11 @@ static void update_ls_details_checkboxes()
  * data stored in events_gui_data list. Parameter func is the callback function
  * passed to the checkboxes.
  */
-static void update_event_checkboxes(GList **events_gui_data,
+static event_gui_data_t *update_event_checkboxes(GList **events_gui_data,
                 GtkBox *box,
                 char *events,
-                GCallback func)
+                GCallback func,
+                int flags)
 {
 
     /* Remember names of selected events */
@@ -1232,13 +1214,9 @@ static void update_event_checkboxes(GList **events_gui_data,
         }
     }
 
-
-
-    /* Delete old checkboxes and create new ones */
-    add_event_buttons(box, events_gui_data,
-                events, /*callback:*/ func,
-                /*radio:*/ false
-    );
+    /* Delete old buttons and create new ones */
+    event_gui_data_t *active_button = add_event_buttons(box, events_gui_data,
+                                        events, /*callback:*/ func, flags);
 
     /* Re-select new events which were selected before we deleted them */
     GList *li_new = *events_gui_data;
@@ -1260,6 +1238,8 @@ static void update_event_checkboxes(GList **events_gui_data,
     /* Update readiness state of event selector page
      * and eventually the "list of reporters" label */
     ((void (*)(GtkButton*, gpointer*))func)(NULL, NULL);
+
+    return active_button;
 }
 
 void update_gui_state_from_problem_data(void)
@@ -1291,7 +1271,7 @@ void update_gui_state_from_problem_data(void)
     /* Update analyze radio buttons */
     event_gui_data_t *active_button = add_event_buttons(g_box_analyzers, &g_list_analyzers,
                 g_analyze_events, G_CALLBACK(analyze_rb_was_toggled),
-                /*radio:*/ true
+                EB_RADIO
     );
     /* Update the value of currently selected analyzer */
     free(g_analyze_event_selected);
@@ -1303,12 +1283,21 @@ void update_gui_state_from_problem_data(void)
     VERB2 log("g_analyze_event_selected='%s'", g_analyze_event_selected);
 
     /* Update reporter checkboxes */
-    update_event_checkboxes(&g_list_reporters, g_box_reporters, g_report_events,
-                    G_CALLBACK(report_tb_was_toggled));
+    active_button = update_event_checkboxes(&g_list_reporters, g_box_reporters,
+                    g_report_events, G_CALLBACK(report_tb_was_toggled),
+                    EB_RADIO | EB_MANDATORY);
+
+    /* Update the value of currently selected reporter */
+    if (g_reporter_events_selected == NULL && active_button != NULL)
+    {
+        g_reporter_events_selected = xstrdup(active_button->event_name);
+        update_list_of_reporters();
+    }
+    VERB2 log("g_reporter_events_selected='%s'", g_reporter_events_selected);
 
     /* Update collector checkboxes in a similar way */
     update_event_checkboxes(&g_list_collectors, g_box_collectors, g_collect_events,
-                    G_CALLBACK(collect_tb_was_toggled));
+                    G_CALLBACK(collect_tb_was_toggled), EB_MANDATORY);
 
     /* We can't just do gtk_widget_show_all once in main:
      * We created new widgets (buttons). Need to make them visible.
@@ -1476,6 +1465,12 @@ static void on_btn_cancel_event(GtkButton *button)
 {
     if (g_event_child_pid > 0)
         kill(- g_event_child_pid, SIGTERM);
+}
+
+static bool event_need_review(const char *event_name)
+{
+    event_config_t *event_cfg = get_event_config(event_name);
+    return !event_cfg || !event_cfg->ec_skip_review;
 }
 
 static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, gpointer data)
@@ -1897,6 +1892,27 @@ static void start_event_run(const char *event_name,
     gtk_widget_set_sensitive(GTK_WIDGET(g_box_assist_nav), false);
 }
 
+static void start_reporting_event_run(void)
+{
+    if (g_reporter_events_selected == NULL)
+        return;
+
+    free(g_reporter_events_executed);
+    g_reporter_events_executed = g_reporter_events_selected;
+    g_reporter_events_selected = NULL;
+
+    start_event_run(g_reporter_events_executed,
+            NULL,
+            pages[PAGENO_REPORT_PROGRESS].page_widget,
+            g_tv_report_log,
+            g_lbl_report_log,
+            _("Reporting..."),
+            _("Reporting failed. You can try another reporter if available."),
+            _("Reporting finished. You can proceed to the next step.")
+    );
+}
+
+
 
 /* Backtrace checkbox handling */
 
@@ -1934,14 +1950,14 @@ static void on_sensitive_ticket_clicked_cb(GtkWidget *button, gpointer user_data
 
 static void on_privacy_info_btn(GtkWidget *button, gpointer user_data)
 {
-    for (GList *r = g_list_selected_reporters; r; r = g_list_next(r))
-    {
-        event_config_t *cfg = get_event_config(r->data);
-        if (cfg == NULL || !cfg->ec_supports_restricted_access)
-            continue;
+    if (g_reporter_events_selected == NULL)
+        return;
 
-        show_event_config_dialog(r->data, GTK_WINDOW(g_top_most_window));
-    }
+    event_config_t *cfg = get_event_config(g_reporter_events_selected);
+    if (cfg == NULL || !cfg->ec_supports_restricted_access)
+         return;
+
+    show_event_config_dialog(g_reporter_events_selected, GTK_WINDOW(g_top_most_window));
 }
 
 static void private_ticket_creation_warning(int flags)
@@ -2014,21 +2030,18 @@ static void check_bt_rating_and_allow_send(void)
                 send = false;
             }
 
-            GList *li = g_list_selected_reporters;
-            while (li != NULL)
+            if (g_reporter_events_selected)
             {
                 /* need to obey the highest minimal rating of all selected reporters
                  * FIXME: check this when selecting the reporter and allow select
                  * only usable ones
                  */
-                event_config_t *cfg = get_event_config((const char *)li->data);
-                if (cfg->ec_minimal_rating > minimal_rating)
+                event_config_t *cfg = get_event_config(g_reporter_events_selected);
+                if (cfg && cfg->ec_minimal_rating > minimal_rating)
                 {
                     minimal_rating = cfg->ec_minimal_rating;
-                    VERB1 log("%s reporter sets the minimal rating to: %i", (const char *)li->data, minimal_rating);
+                    VERB1 log("%s reporter sets the minimal rating to: %i", g_reporter_events_selected, minimal_rating);
                 }
-
-                li = g_list_next(li);
             };
 
             if (rating == minimal_rating) /* bt is usable, but not complete, so show a warning */
@@ -2101,7 +2114,7 @@ static void on_btn_refresh_clicked(GtkButton *button)
     update_gui_state_from_problem_data();
 
     /* Change page to analyzer selector - let user play with them */
-    gtk_assistant_set_current_page(g_assistant, PAGENO_ANALYZE_SELECTOR);
+    gtk_assistant_set_current_page(g_assistant, pages[PAGENO_ANALYZE_SELECTOR].page_no);
 }
 
 
@@ -2134,32 +2147,7 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
     }
 
     if (added_pages[page_no]->name == PAGE_REVIEW_DATA)
-    {
-        GList *reporters = NULL;
-        GList *li = g_list_reporters;
-        for (; li; li = li->next)
-        {
-            event_gui_data_t *event_gui_data = li->data;
-            if (gtk_toggle_button_get_active(event_gui_data->toggle_button) == TRUE)
-            {
-                reporters = g_list_append(reporters, event_gui_data->event_name);
-            }
-        }
-        if (reporters)
-        {
-            char *first_event_name = reporters->data;
-            reporters = g_list_remove(reporters, reporters->data);
-            start_event_run(first_event_name,
-                    reporters,
-                    pages[PAGENO_REPORT_PROGRESS].page_widget,
-                    g_tv_report_log,
-                    g_lbl_report_log,
-                    _("Reporting..."),
-                    _("Reporting failed. You can try another reporter if available."),
-                    _("Reporting finished. You can proceed to the next step.")
-            );
-        }
-    }
+        start_reporting_event_run();
 
     /* Run 'collect' events. */
     if (added_pages[page_no]->name == PAGE_COLLECT_SELECTOR)
@@ -2331,9 +2319,9 @@ static void update_private_ticket_creation_warning_for_selected_event(void)
     int local = 0;
     int local_supported = 0;
 
-    for (GList *r = g_list_selected_reporters; r != NULL; r = g_list_next(r))
+    if (g_reporter_events_selected)
     {
-        event_config_t *cfg = get_event_config(r->data);
+        event_config_t *cfg = get_event_config(g_reporter_events_selected);
 
         local_supported = cfg != NULL && cfg->ec_supports_restricted_access;
         local = local_supported && ec_restricted_access_enabled(cfg);
@@ -2376,6 +2364,9 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
     {
         g_active_pb = g_pb_report;
         g_active_lbl = g_lbl_report_log;
+
+        if (g_reporter_events_selected != NULL && !event_need_review(g_reporter_events_selected))
+            start_reporting_event_run();
     }
 
     if (pages[PAGENO_EDIT_BACKTRACE].page_widget == page)
@@ -2424,76 +2415,89 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
         on_comment_changed(gtk_text_view_get_buffer(g_tv_comment), NULL);
     }
     //log_ready_state();
+
+    if (pages[PAGENO_REPORTER_SELECTOR].page_widget == page)
+    {
+        gtk_assistant_set_page_complete(g_assistant,
+                    pages[PAGENO_REPORTER_SELECTOR].page_widget,
+                    /*Radio buttons used == always selected*/TRUE
+        );
+    }
 }
 
 static gint select_next_page_no(gint current_page_no, gpointer data)
 {
-    if (g_report_only)
-    {
-        /* In only-report mode, we only need to wrap back at the end */
-        GtkWidget *page = gtk_assistant_get_nth_page(g_assistant, current_page_no);
-        if (page == pages[PAGENO_REPORT_DONE].page_widget)
-            current_page_no = 0;
-        else
-            current_page_no++;
-        VERB2 log("%s: selected page #%d", __func__, current_page_no);
-        return current_page_no;
-    }
-
  again:
     current_page_no++;
 
-    switch (current_page_no)
-    {
 #if 0
-    case PAGENO_EDIT_COMMENT:
+    if (pages[PAGENO_EDIT_COMMENT].page_no == current_page_no)
+    {
         if (get_problem_item_content_or_NULL(g_cd, FILENAME_COMMENT))
             goto again; /* no comment, skip this page */
-        break;
+    }
 #endif
 
-    case PAGENO_EDIT_BACKTRACE:
-        /* There are plenty of other files that need to be reviewed and edited! */
-        break;
+    if (pages[PAGENO_EDIT_BACKTRACE].page_no == current_page_no)
+    {
+        if (g_reporter_events_selected != NULL && !event_need_review(g_reporter_events_selected))
+        {
+            current_page_no = pages[PAGENO_REPORT_PROGRESS].page_no-1;
 
-    case PAGENO_ANALYZE_SELECTOR:
+            gtk_assistant_set_page_complete(g_assistant,
+                                    pages[PAGENO_EDIT_BACKTRACE].page_widget,
+                                    TRUE);
+
+            gtk_assistant_set_page_complete(g_assistant,
+                                    pages[PAGENO_REVIEW_DATA].page_widget,
+                                    TRUE);
+            goto again;
+        }
+    }
+
+    if (pages[PAGENO_ANALYZE_SELECTOR].page_no == current_page_no)
+    {
         if (!g_analyze_events[0] || g_black_event_count == 0)
         {
             /* skip analyze selector page and analyze log page */
-            current_page_no = PAGENO_COLLECT_SELECTOR-1;
+            current_page_no = pages[PAGENO_COLLECT_SELECTOR].page_no-1;
             goto again;
         }
-        break;
+    }
 
-    case PAGENO_ANALYZE_PROGRESS:
+    if (pages[PAGENO_ANALYZE_PROGRESS].page_no == current_page_no)
+    {
         VERB2 log("%s: ANALYZE_PROGRESS: g_analyze_event_selected:'%s'",
                         __func__, g_analyze_event_selected);
         if (!g_analyze_event_selected || !g_analyze_event_selected[0])
             goto again; /* skip this page */
-        break;
+    }
 
-    case PAGENO_COLLECT_SELECTOR:
+    if (pages[PAGENO_COLLECT_SELECTOR].page_no == current_page_no)
+    {
         /* skip collection if there are no applicable events */
         if (!g_collect_events[0])
         {
-            current_page_no = PAGENO_REPORTER_SELECTOR-1;
+            current_page_no = pages[PAGENO_REPORTER_SELECTOR].page_no-1;
             goto again;
         }
-        break;
+    }
 
-    case PAGENO_COLLECT_PROGRESS:
+    if (pages[PAGENO_COLLECT_PROGRESS].page_no == current_page_no)
+    {
         /* skip progress page if no events were chosen */
         if (g_collect_events_selected_count == 0)
         {
-            current_page_no = PAGENO_REPORTER_SELECTOR-1;
+            current_page_no = pages[PAGENO_REPORTER_SELECTOR].page_no-1;
             goto again;
         }
-        break;
+    }
 
-    case PAGENO_NOT_SHOWN:
+    if (pages[PAGENO_NOT_SHOWN].page_no == current_page_no)
+    {
         /* No! this would SEGV (infinitely recurse into select_next_page_no) */
         /*gtk_assistant_commit(g_assistant);*/
-        current_page_no = PAGENO_ANALYZE_SELECTOR-1;
+        current_page_no = pages[PAGENO_ANALYZE_SELECTOR].page_no-1;
         goto again;
     }
 
@@ -2807,6 +2811,7 @@ static void add_pages()
         GtkWidget *page = GTK_WIDGET(gtk_builder_get_object(builder, page_names[i]));
 
         pages[i].page_widget = page;
+        pages[i].page_no = page_no;
         added_pages[page_no++] = &pages[i];
 
         gtk_assistant_append_page(g_assistant, page);

@@ -78,6 +78,7 @@ typedef struct
     char *ec_exclude_items_always;
     bool  ec_exclude_binary_items;
     long  ec_minimal_rating;
+    bool  ec_skip_review;
     bool  ec_supports_restricted_access;
     char *ec_restricted_access_option;
 

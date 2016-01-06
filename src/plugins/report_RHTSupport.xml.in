@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <event>
-    <_name>New Red Hat Support case</_name>
-    <_description>Create new Red Hat Support case</_description>
+    <_name>Ask Red Hat Support for help</_name>
+    <_description>Create new Red Hat Support case - I would like to be contacted by Red Hat Support</_description>
 
     <requires-items>package</requires-items>
     <exclude-items-by-default>count,event_log,vmcore</exclude-items-by-default>
@@ -11,7 +11,7 @@
     <minimal-rating>0</minimal-rating>
 
     <options>
-        <import-event-options event="submit_uReport"/>
+        <import-event-options event="report_uReport"/>
 
         <option type="text" name="RHTSupport_Login">
             <_label>Username</_label>
@@ -22,11 +22,6 @@
             <_label>Password</_label>
             <_description>Red Hat customer password</_description>
             <allow-empty>no</allow-empty>
-        </option>
-        <option type="bool" name="RHTSupport_SSLVerify">
-            <_label>Verify SSL</_label>
-            <_description>Check SSL key validity</_description>
-            <default-value>yes</default-value>
         </option>
         <advanced-options>
             <option type="bool" name="RHTSupport_SubmitUReport">
@@ -39,6 +34,11 @@
                 <allow-empty>no</allow-empty>
                 <_description>Address of the Red Hat support portal</_description>
                 <default-value>https://api.access.redhat.com/rs</default-value>
+            </option>
+            <option type="bool" name="RHTSupport_SSLVerify">
+                <_label>Verify SSL</_label>
+                <_description>Check SSL key validity</_description>
+                <default-value>yes</default-value>
             </option>
             <option type="text" name="http_proxy">
                 <_label>HTTP Proxy</_label>
