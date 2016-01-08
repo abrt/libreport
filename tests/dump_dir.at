@@ -920,12 +920,40 @@ TS_MAIN
 
         dd_create_basic_files(dd, geteuid(), NULL);
 
-        int opath_fd = open("/etc/services", O_PATH);
-        assert(opath_fd >= 0);
-        const off_t opath_read = dd_copy_fd(dd, "opath", opath_fd, 0, 0);
-        TS_ASSERT_SIGNED_EQ(opath_read, -1);
-        TS_ASSERT_SIGNED_EQ(dd_exist(dd, "opath"), 0);
-        close(opath_fd);
+        {
+            int opath_fd = open("/etc/services", O_PATH);
+            char buf[16] = {0};
+            if (read(opath_fd, buf, sizeof(buf)/sizeof(buf[0])) == -1)
+            {
+                assert(errno == EBADF || !"O_PATH fd can be read");
+                close(opath_fd);
+
+                opath_fd = open("/etc/services", O_PATH);
+                assert(opath_fd >= 0);
+
+                const off_t opath_read = dd_copy_fd(dd, "opath", opath_fd, 0, 0);
+                TS_ASSERT_SIGNED_EQ(opath_read, -1);
+                TS_ASSERT_SIGNED_EQ(dd_exist(dd, "opath"), 0);
+            }
+            close(opath_fd);
+        }
+
+        {
+            int wronly_fd = open("/tmp/libreport.testsuite", O_WRONLY | O_CREAT | O_TRUNC, 0600);
+            assert(wronly_fd >= 0 || !"Cannot create temporary file");
+            char buf[] = "Hello, world!";
+            assert(write(wronly_fd, buf, sizeof(buf)/sizeof(buf[0])) == sizeof(buf)/sizeof(buf[0]));
+            close(wronly_fd);
+
+            wronly_fd = open("/tmp/libreport.testsuite", O_WRONLY);
+            assert(wronly_fd >= 0 || !"Cannot re-open temporary file");
+
+            const off_t wronly_read = dd_copy_fd(dd, "wronly", wronly_fd, 0, 0);
+            TS_ASSERT_SIGNED_EQ(wronly_read, -1);
+            TS_ASSERT_SIGNED_EQ(dd_exist(dd, "wronly"), 0);
+
+            close(wronly_fd);
+        }
 
         dd_delete(dd);
     }
