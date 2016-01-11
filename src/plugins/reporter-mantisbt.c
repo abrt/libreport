@@ -188,9 +188,7 @@ set_settings(mantisbt_settings_t *m, map_string_t *settings, struct dump_dir *dd
     environ = getenv("Mantisbt_DontMatchComponents");
     m->m_DontMatchComponents = environ ? environ : get_map_string_item_or_empty(settings, "DontMatchComponents");
 
-    environ = getenv(CREATE_PRIVATE_TICKET);
-    if (environ)
-        m->m_create_private = string_to_bool(environ);
+    m->m_create_private = get_global_create_private_ticket();
 
     if (!m->m_create_private)
     {

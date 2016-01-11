@@ -140,9 +140,7 @@ static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
     environ = getenv("Bugzilla_DontMatchComponents");
     b->b_DontMatchComponents = environ ? environ : get_map_string_item_or_empty(settings, "DontMatchComponents");
 
-    environ = getenv(CREATE_PRIVATE_TICKET);
-    if (environ)
-        b->b_create_private = string_to_bool(environ);
+    b->b_create_private = get_global_create_private_ticket();
 
     if (!b->b_create_private)
     {

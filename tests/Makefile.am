@@ -49,7 +49,11 @@ TESTSUITE_AT = \
   dump_dir.at \
   global_config.at \
   iso_date.at \
-  uriparser.at
+  uriparser.at \
+  event_config.at
+
+TESTSUITE_AT_IN = \
+  bugzilla_plugin.at
 
 EXTRA_DIST += $(TESTSUITE_AT)
 TESTSUITE = $(srcdir)/testsuite
@@ -57,7 +61,8 @@ MAINTAINERCLEANFILES = Makefile.in $(TESTSUITE)
 check_DATA = atconfig atlocal $(TESTSUITE)
 DISTCLEANFILES = atconfig
 EXTRA_DIST += atlocal.in conf rules ureport valgrind.supp ureport-rhts-credentials \
-			  helpers/testsuite.h helpers/testsuite_tools.h
+			  helpers/testsuite.h helpers/testsuite_tools.h \
+			  bugzilla_plugin.at.in
 
 atconfig: $(top_builddir)/config.status
 	(cd ${top_builddir} && ./config.status ${subdir}/atconfig)
@@ -73,7 +78,7 @@ clean-local:
 	test ! -f '$(TESTSUITE)' || $(SHELL) '$(TESTSUITE)' --clean
 
 AUTOTEST = $(AUTOM4TE) --language=autotest
-$(TESTSUITE): $(TESTSUITE_AT) $(srcdir)/package.m4
+$(TESTSUITE): $(TESTSUITE_AT) $(TESTSUITE_AT_IN) $(srcdir)/package.m4
 	$(AUTOTEST) -I '$(srcdir)' -o $@.tmp $@.at
 	mv $@.tmp $@
 

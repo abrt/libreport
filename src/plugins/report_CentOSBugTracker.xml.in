@@ -10,6 +10,7 @@
     <include-items-by-default></include-items-by-default>
     <minimal-rating>3</minimal-rating>
     <gui-review-elements>yes</gui-review-elements>
+    <support-restricted-access optionname="Mantisbt_CreatePrivate">yes</support-restricted-access>
 
     <options>
         <option type="text" name="Mantisbt_Login">
@@ -22,6 +23,11 @@
             <_label>Password</_label>
             <allow-empty>no</allow-empty>
             <_description>CentOS Bug Tracker account password</_description>
+        </option>
+        <option type="bool" name="Mantisbt_CreatePrivate">
+            <_label>Restric access</_label>
+            <_note-html>The issue will be accessible only to users with access to 'Pivate Issues'</_note-html>
+            <default-value>no</default-value>
         </option>
         <advanced-options>
             <option type="text" name="Mantisbt_MantisbtURL">
@@ -54,11 +60,6 @@
                 <_label>HTTPS Proxy</_label>
                 <allow-empty>yes</allow-empty>
                 <_note-html>Sets the proxy server to use for HTTPS</_note-html>
-            </option>
-            <option type="bool" name="Mantisbt_CreatePrivate">
-                <_label>Restrict access</_label>
-                <_note-html>Restrict access to the created CentOS Bug Tracker issue allowing only users from specified groups to view it (see advanced settings for more details)</_note-html>
-                <default-value>no</default-value>
             </option>
         </advanced-options>
     </options>

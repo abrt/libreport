@@ -38,6 +38,21 @@ void free_global_configuration(void);
 #define get_global_always_excluded_elements libreport_get_global_always_excluded_elements
 string_vector_ptr_t get_global_always_excluded_elements(void);
 
+#define get_global_create_private_ticket libreport_get_global_create_private_ticket
+bool get_global_create_private_ticket(void);
+
+/**
+ * Configures the create private ticket global option
+ *
+ * The function changes the configuration only for the current process by
+ * default.
+ *
+ * @param enabled The option's value
+ * @param flags For future needs (enable persistent configuration)
+ */
+#define set_global_create_private_ticket libreport_set_global_create_private_ticket
+void set_global_create_private_ticket(bool enabled, int flags);
+
 #ifdef __cplusplus
 }
 #endif

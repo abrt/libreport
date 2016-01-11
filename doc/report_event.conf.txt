@@ -71,6 +71,8 @@ Each file has XML formatting with the following DTD:
 <!ELEMENT exclude-binary-items     ("yes"|"no")>
 <!ELEMENT minimal-rating           ("0"|"1"|"2"|"3"|"4")>
 <!ELEMENT gui-review-elements      ("yes"|"no")>
+<!ELEMENT support-restricted-access ("yes"|"no")>
+<!ATTLIST support-restricted-access optionname CDATA #IMPLIED>
 <!ELEMENT options          (option*,advanced-options)>
 <!ELEMENT advanced-options (option)*>
 <!ELEMENT option           (label+,description+,note-html+,allow-empty?,default-value?)>
@@ -116,6 +118,14 @@ gui-review-elements::
     If "yes", user must explicitly approve that all included problem elements
     can be published. If "no", the event is executed automatically. If not
     provided, "yes" is expected.
+
+support-restricted-access::
+    If "yes", the UI tools will offer the users to enter the new report with
+    restricted access. If "no", the UI tools will never offer the users to
+    enter the report with restricted access. "no" is the default value. The
+    element should have one argument named 'optionname' which defines name of
+    an option holding configuration of the restricted access feature. The
+    option must of 'bool' type.
 
 advanced-options::
     List of options which are hidden in the default view.

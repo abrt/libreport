@@ -80,6 +80,8 @@ typedef struct
     long  ec_minimal_rating;
     bool  ec_skip_review;
     bool  ec_sending_sensitive_data;
+    bool  ec_supports_restricted_access;
+    char *ec_restricted_access_option;
 
     GList *ec_imported_event_names;
     GList *options;
@@ -97,6 +99,11 @@ const char *ec_get_name(event_config_t *ec);
 const char *ec_get_long_desc(event_config_t *ec);
 void ec_set_long_desc(event_config_t *ec, const char *long_desc);
 bool ec_is_configurable(event_config_t* ec);
+
+/* Returns True if the event is configured to create ticket with restricted
+ * access.
+ */
+bool ec_restricted_access_enabled(event_config_t *ec);
 
 void free_event_config(event_config_t *p);
 
