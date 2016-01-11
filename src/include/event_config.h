@@ -78,6 +78,8 @@ typedef struct
     char *ec_exclude_items_always;
     bool  ec_exclude_binary_items;
     long  ec_minimal_rating;
+    bool  ec_supports_restricted_access;
+    char *ec_restricted_access_option;
 
     GList *options;
 } event_config_t;
@@ -85,6 +87,7 @@ typedef struct
 event_config_t *new_event_config(void);
 void free_event_config(event_config_t *p);
 
+bool ec_restricted_access_enabled(event_config_t *ec);
 
 void load_event_description_from_file(event_config_t *event_config, const char* filename);
 

@@ -1,0 +1,60 @@
+# -*- Autotest -*-
+
+AT_BANNER([Event config])
+
+## ----------------- ##
+## restricted_access ##
+## ----------------- ##
+
+AT_TESTFUN([restricted_access],
+[[
+
+#include "testsuite.h"
+
+TS_MAIN
+{
+    event_config_t *ect = new_event_config();
+
+    TS_ASSERT_FALSE(ect->ec_supports_restricted_access);
+    TS_ASSERT_PTR_IS_NULL(ect->ec_restricted_access_option);
+    TS_ASSERT_FALSE(ec_restricted_access_enabled(ect));
+
+    ect->ec_supports_restricted_access = true;
+
+    TS_ASSERT_PTR_IS_NULL(ect->ec_restricted_access_option);
+    TS_ASSERT_FALSE(ec_restricted_access_enabled(ect));
+
+    ect->ec_restricted_access_option = xstrdup("PrivateTicket");
+
+    TS_ASSERT_FALSE(ec_restricted_access_enabled(ect));
+
+    event_option_t *eot = new_event_option();
+    eot->eo_name = xstrdup("PrivateTicket");
+    eot->eo_value = NULL;
+
+    ect->options = g_list_prepend(ect->options, eot);
+
+    TS_ASSERT_FALSE(ec_restricted_access_enabled(ect));
+
+    eot->eo_type = OPTION_TYPE_BOOL;
+    eot->eo_value = xstrdup("no");
+
+    TS_ASSERT_FALSE(ec_restricted_access_enabled(ect));
+
+    free(eot->eo_value);
+    eot->eo_value = xstrdup("yes");
+
+    TS_ASSERT_TRUE(ec_restricted_access_enabled(ect));
+
+    eot->eo_type = OPTION_TYPE_NUMBER;
+
+    TS_ASSERT_FALSE(ec_restricted_access_enabled(ect));
+
+    ect->ec_supports_restricted_access = false;
+
+    TS_ASSERT_FALSE(ec_restricted_access_enabled(ect));
+
+    free_event_config(ect);
+}
+TS_RETURN_MAIN
+]])

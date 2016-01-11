@@ -50,7 +50,7 @@ dist_eventsconf_DATA = \
     uploader_event.conf
 
 EXTRA_DIST = \
-    report_Bugzilla.xml.in \
+    report_Bugzilla.xml.in.in \
     report_Bugzilla.conf \
     report_Logger.conf \
     report_Logger.xml.in \

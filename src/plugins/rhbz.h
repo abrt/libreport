@@ -69,6 +69,8 @@ struct bugzilla_struct {
 	const char *b_release;
 	char       *b_product;
 	int         b_ssl_verify;
+	int         b_create_private;
+	GList       *b_private_groups;
 };
 
 #define INIT_BUGZILLA(name)			\
@@ -88,6 +90,9 @@ void *rhbz_bug_read_item(const char *memb, xmlrpc_value *xml, int flags);
 
 void rhbz_logout(struct abrt_xmlrpc *ax);
 
+void rhbz_close_as_duplicate(struct abrt_xmlrpc *ax, int bug_id,
+                             int duplicate_bug, int flags);
+
 xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax, const char *component,
                                   const char *release, const char *duphash);
 
@@ -98,8 +103,8 @@ unsigned rhbz_array_size(xmlrpc_value *xml);
 int rhbz_bug_id(xmlrpc_value *xml);
 
 int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
-                 const char *release,
-                 int depend_on_bug);
+                 const char *release, int depend_on_bug, bool private,
+                 GList *group);
 
 xmlrpc_value *rhbz_array_item_at(xmlrpc_value *xml, int pos);
 

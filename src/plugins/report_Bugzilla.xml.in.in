@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<event>
+    <_name>Bugzilla</_name>
+    <_description>Report to Bugzilla bug tracker</_description>
+
+    <requires-items>component,duphash,os_release</requires-items>
+    <exclude-items-by-default>coredump,count,event_log,reported_to,vmcore</exclude-items-by-default>
+    <exclude-items-always></exclude-items-always>
+    <exclude-binary-items>no</exclude-binary-items>
+    <include-items-by-default></include-items-by-default>
+    <minimal-rating>3</minimal-rating>
+
+    <support-restricted-access optionname="Bugzilla_CreatePrivate">yes</support-restricted-access>
+
+    <options>
+        <option type="text" name="Bugzilla_Login">
+            <_label>User name</_label>
+            <allow-empty>no</allow-empty>
+            <_description>Bugzilla account user name</_description>
+            <_note-html>You can create bugzilla.redhat.com account &lt;a href="https://bugzilla.redhat.com/createaccount.cgi"&gt;here&lt;/a&gt;</_note-html>
+        </option>
+        <option type="password" name="Bugzilla_Password">
+            <_label>Password</_label>
+            <allow-empty>no</allow-empty>
+            <_description>Bugzilla account password</_description>
+        </option>
+        <option type="bool" name="Bugzilla_CreatePrivate">
+            <_label>Restrict access</_label>
+            <_note-html>Restrict access to the created bugzilla ticket allowing only users from specified groups to view it (see advanced settings for more details)</_note-html>
+            <default-value>@RED_HAT_BUGZILLA_CREATE_PRIVATE@</default-value>
+        </option>
+        <advanced-options>
+            <option type="text" name="Bugzilla_PrivateGroups">
+                <_label>Groups</_label>
+                <allow-empty>yes</allow-empty>
+                <default-value>@RED_HAT_BUGZILLA_PRIVATE_GROUPS@</default-value>
+                <_note-html>Restrict the access to specified groups &lt;a href="https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets"&gt;?&lt;/a&gt;</_note-html>
+            </option>
+            <option type="text" name="Bugzilla_BugzillaURL">
+                <_label>Bugzilla URL</_label>
+                <allow-empty>no</allow-empty>
+                <_note-html>Address of Bugzilla server</_note-html>
+                <default-value>https://bugzilla.redhat.com</default-value>
+            </option>
+            <option type="bool" name="Bugzilla_SSLVerify">
+                <_label>Verify SSL</_label>
+                <_note-html>Check SSL key validity</_note-html>
+                <default-value>yes</default-value>
+            </option>
+            <option type="text" name="Bugzilla_OSRelease">
+                <_label>OS release string</_label>
+                <allow-empty>yes</allow-empty>
+                <_note-html>Specify this only if you modified your /etc/system-release file</_note-html>
+            </option>
+        </advanced-options>
+    </options>
+</event>

@@ -31,6 +31,8 @@
 extern "C" {
 #endif
 
+typedef void (*abrt_xmlrpc_destroy_fn)(void *);
+
 struct abrt_xmlrpc {
     xmlrpc_client *ax_client;
     xmlrpc_server_info *ax_server_info;
@@ -38,8 +40,12 @@ struct abrt_xmlrpc {
 };
 
 xmlrpc_value *abrt_xmlrpc_array_new(xmlrpc_env *env);
+void abrt_xmlrpc_array_append_string(xmlrpc_env *env, xmlrpc_value *array, const char *value);
 
 xmlrpc_value *abrt_xmlrpc_params_new(xmlrpc_env *env);
+void abrt_xmlrpc_params_add_string(xmlrpc_env *env, xmlrpc_value *params, const char *name, const char *value);
+void abrt_xmlrpc_params_add_array(xmlrpc_env *env, xmlrpc_value *params, const char *name, xmlrpc_value *value);
+void abrt_xmlrpc_params_add_int(xmlrpc_env *env, xmlrpc_value *params, const char *name, int value);
 
 struct abrt_xmlrpc *abrt_xmlrpc_new_client(const char *url, int ssl_verify);
 void abrt_xmlrpc_free_client(struct abrt_xmlrpc *ax);
@@ -50,6 +56,12 @@ void abrt_xmlrpc_error(xmlrpc_env *env);
 /* die or return expected results */
 xmlrpc_value *abrt_xmlrpc_call(struct abrt_xmlrpc *ax,
                                const char *method, const char *format, ...);
+
+xmlrpc_value *abrt_xmlrpc_call_params(xmlrpc_env *env, struct abrt_xmlrpc *ax,
+                               const char *method, xmlrpc_value *params);
+
+xmlrpc_value *abrt_xmlrpc_call_full(xmlrpc_env *enf, struct abrt_xmlrpc *ax,
+                                   const char *method, const char *format, ...);
 
 #ifdef __cplusplus
 }
