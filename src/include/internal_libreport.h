@@ -804,6 +804,9 @@ bool uid_in_group(uid_t uid, gid_t gid);
 #define FILENAME_USERNAME      "username"
 #define FILENAME_ABRT_VERSION  "abrt_version"
 
+#define FILENAME_REPRODUCIBLE  "reproducible"
+#define FILENAME_REPRODUCER    "reproducer"
+
 // Not stored as files, added "on the fly":
 #define CD_DUMPDIR            "Directory"
 
