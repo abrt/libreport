@@ -638,6 +638,22 @@ int main(int argc, char **argv)
     const char *reason;
     const char *package;
     const char *release;
+    const char *count;
+
+    count = get_problem_item_content_or_NULL(problem_data, FILENAME_COUNT);
+    if (count != NULL
+        && strcmp(count, "1") == 0
+        /* the 'count' file can lie */
+        && get_problem_data_reproducible(problem_data) <= PROBLEM_REPRODUCIBLE_UNKNOWN)
+    {
+        int r = ask_yes_no(
+            _("The problem has only occurred once and the ability to reproduce "
+              "the problem is unknown. Please ensure you will be able to "
+              "provide detailed information to our Support Team. "
+              "Would you like to continue and open a new support case?"));
+        if (!r)
+            exit(EXIT_CANCEL_BY_USER);
+    }
 
     release  = get_problem_item_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
     if (!release) /* Old dump dir format compat. Remove in abrt-2.1 */
