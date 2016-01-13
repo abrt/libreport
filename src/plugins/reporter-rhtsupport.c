@@ -637,8 +637,10 @@ int main(int argc, char **argv)
     const char *function;
     const char *reason;
     const char *package;
+    const char *executable;
     const char *release;
     const char *count;
+    const char *vendor;
 
     count = get_problem_item_content_or_NULL(problem_data, FILENAME_COUNT);
     if (count != NULL
@@ -655,15 +657,41 @@ int main(int argc, char **argv)
             exit(EXIT_CANCEL_BY_USER);
     }
 
+    package  = get_problem_item_content_or_NULL(problem_data, FILENAME_PACKAGE);
+    vendor = get_problem_item_content_or_NULL(problem_data, FILENAME_PKG_VENDOR);
+    if (package && vendor && strcmp(vendor, "Red Hat, Inc.") != 0)
+    {
+        char *message = xasprintf(
+            _("The crashed program was released by '%s'. "
+              "Would you like to report the problem to Red Hat Support?"),
+              vendor);
+        int r = ask_yes_no(message);
+        free(message);
+        if (!r)
+            exit(EXIT_CANCEL_BY_USER);
+    }
+
+    executable  = get_problem_item_content_or_NULL(problem_data, FILENAME_EXECUTABLE);
+    if (!package)
+    {
+        char *message = xasprintf(
+            _("The program '%s' does not appear to be provided by Red Hat. "
+              "Would you like to report the problem to Red Hat Support?"),
+              executable);
+        int r = ask_yes_no(message);
+        free(message);
+        if (!r)
+            exit(EXIT_CANCEL_BY_USER);
+    }
+
     release  = get_problem_item_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
     if (!release) /* Old dump dir format compat. Remove in abrt-2.1 */
         release = get_problem_item_content_or_NULL(problem_data, "release");
-    package  = get_problem_item_content_or_NULL(problem_data, FILENAME_PACKAGE);
     reason   = get_problem_item_content_or_NULL(problem_data, FILENAME_REASON);
     function = get_problem_item_content_or_NULL(problem_data, FILENAME_CRASH_FUNCTION);
     {
         struct strbuf *buf_summary = strbuf_new();
-        strbuf_append_strf(buf_summary, "[abrt] %s", package);
+        strbuf_append_strf(buf_summary, "[abrt] %s", package ? package : executable);
         if (function && strlen(function) < 30)
             strbuf_append_strf(buf_summary, ": %s", function);
         if (reason)
