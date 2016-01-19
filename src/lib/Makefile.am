@@ -53,7 +53,8 @@ libreport_la_SOURCES = \
     utf8.c \
     file_list.c \
     file_obj.c \
-    global_configuration.c
+    global_configuration.c \
+    uriparser.c
 
 libreport_la_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror \
@@ -73,6 +74,7 @@ libreport_la_CPPFLAGS = \
     $(SATYR_CFLAGS) \
     -D_GNU_SOURCE
 libreport_la_LDFLAGS = \
+    -ltar \
     -version-info 0:1:0
 libreport_la_LIBADD = \
     $(JSON_C_LIBS) \

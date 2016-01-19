@@ -26,6 +26,11 @@ int logmode = LOGMODE_STDIO;
 int xfunc_error_retval = EXIT_FAILURE;
 int g_verbose;
 
+void set_xfunc_error_retval(int retval)
+{
+    xfunc_error_retval = retval;
+}
+
 void xfunc_die(void)
 {
     exit(xfunc_error_retval);

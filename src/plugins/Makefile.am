@@ -107,7 +107,6 @@ reporter_rhtsupport_CPPFLAGS = \
     $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
-reporter_rhtsupport_LDFLAGS = -ltar
 reporter_rhtsupport_LDADD = \
     $(GLIB_LIBS) \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS) \
@@ -131,7 +130,6 @@ reporter_upload_CPPFLAGS = \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
-reporter_upload_LDFLAGS = -ltar
 reporter_upload_LDADD = \
     $(GLIB_LIBS) \
     ../lib/libabrt_web.la \

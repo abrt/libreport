@@ -19,113 +19,45 @@
 #include <libtar.h>
 #include "abrt_curl.h"
 #include "internal_libreport.h"
+#include "client.h"
+
+static char *ask_url(const char *message)
+{
+    char *url = ask(message);
+    if (url == NULL || url[0] == '\0')
+    {
+        set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
+        error_msg_and_die(_("Can't continue without URL"));
+    }
+
+    return url;
+}
 
 static int create_and_upload_archive(
                 const char *dump_dir_name,
-                map_string_t *settings)
+                const char *url,
+                map_string_t *settings,
+                char **remote_name)
 {
     int result = 1; /* error */
-
-    pid_t child;
-    TAR* tar = NULL;
-    const char* errmsg = NULL;
-    char* tempfile = NULL;
 
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         xfunc_die(); /* error msg is already logged by dd_opendir */
 
-    /* Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing */
-    log(_("Compressing data"));
-
-//TODO:
-//Encrypt = yes
-//ArchiveType = .tar.bz2
-//ExcludeFiles = foo,bar*,b*z
-    char* env;
-    env = getenv("Upload_URL");
-    const char *url = (env ? env : get_map_string_item_or_empty(settings, "URL"));
-
     /* Create a child gzip which will compress the data */
     /* SELinux guys are not happy with /tmp, using /var/run/abrt */
     /* Reverted back to /tmp for ABRT2 */
+    char* tempfile = NULL;
     tempfile = concat_path_basename("/tmp", dump_dir_name);
     tempfile = append_to_malloced_string(tempfile, ".tar.gz");
 
-    int pipe_from_parent_to_child[2];
-    xpipe(pipe_from_parent_to_child);
-    child = vfork();
-    if (child == 0)
+    string_vector_ptr_t exclude_from_report = get_global_always_excluded_elements();
+    /* Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing */
+    log(_("Compressing data"));
+    if (dd_create_archive(dd, tempfile, exclude_from_report, 0) != 0)
     {
-        /* child */
-        close(pipe_from_parent_to_child[1]);
-        xmove_fd(pipe_from_parent_to_child[0], 0);
-        xmove_fd(xopen3(tempfile, O_WRONLY | O_CREAT | O_EXCL, 0600), 1);
-        execlp("gzip", "gzip", NULL);
-        perror_msg_and_die("Can't execute '%s'", "gzip");
-    }
-    close(pipe_from_parent_to_child[0]);
-
-    /* If child died (say, in xopen), then parent might get SIGPIPE.
-     * We want to properly unlock dd, therefore we must not die on SIGPIPE:
-     */
-    signal(SIGPIPE, SIG_IGN);
-
-    /* Create tar writer object */
-    if (tar_fdopen(&tar, pipe_from_parent_to_child[1], tempfile,
-                /*fileops:(standard)*/ NULL, O_WRONLY | O_CREAT, 0644, TAR_GNU) != 0)
-    {
-        errmsg = "Can't create temporary file in /tmp";
-        goto ret;
-    }
-
-    /* Write data to the tarball */
-    {
-        char *exclude_from_report = getenv("EXCLUDE_FROM_REPORT");
-        dd_init_next_file(dd);
-        char *short_name, *full_name;
-        while (dd_get_next_file(dd, &short_name, &full_name))
-        {
-            if (exclude_from_report && is_in_comma_separated_list(short_name, exclude_from_report))
-                goto next;
-
-            // dd_get_next_file guarantees that it's a REG:
-            //struct stat stbuf;
-            //if (stat(full_name, &stbuf) != 0)
-            // || !S_ISREG(stbuf.st_mode)
-            //) {
-            //     goto next;
-            //}
-            if (tar_append_file(tar, full_name, short_name) != 0)
-            {
-                errmsg = "Can't create temporary file in /tmp";
-                free(short_name);
-                free(full_name);
-                goto ret;
-            }
- next:
-            free(short_name);
-            free(full_name);
-        }
-    }
-    dd_close(dd);
-    dd = NULL;
-
-    /* Close tar writer... */
-    if (tar_append_eof(tar) != 0 || tar_close(tar) != 0)
-    {
-        errmsg = "Can't create temporary file in /tmp";
-        goto ret;
-    }
-    tar = NULL;
-    /* ...and check that gzip child finished successfully */
-    int status;
-    safe_waitpid(child, &status, 0);
-    child = -1;
-    if (status != 0)
-    {
-        /* We assume the error was out-of-disk-space or out-of-quota */
-        errmsg = "Can't create temporary file in /tmp";
+        error_msg("Can't create temporary file in /tmp");
         goto ret;
     }
 
@@ -133,39 +65,38 @@ static int create_and_upload_archive(
     /* Upload from /tmp to /tmp + deletion -> BAD, exclude this possibility */
     if (url && url[0] && strcmp(url, "file:///tmp/") != 0)
     {
-        char *remote_name = upload_file(url, tempfile, settings);
-        result = (remote_name == NULL); /* error if NULL */
-        free(remote_name);
-        /* cleanup code will delete tempfile */
+        char *tmp = upload_file(url, tempfile, settings);
+        if (remote_name)
+            *remote_name = tmp;
+        else
+            free(tmp);
+
+        result = (tmp == NULL);
     }
     else
     {
         result = 0; /* success */
         log(_("Archive is created: '%s'"), tempfile);
-        free(tempfile);
+        *remote_name = tempfile;
         tempfile = NULL;
     }
 
  ret:
     dd_close(dd);
-    if (tar)
-        tar_close(tar);
-    /* close(pipe_from_parent_to_child[1]); - tar_close() does it itself */
-    if (child > 0)
-        safe_waitpid(child, NULL, 0);
     if (tempfile)
     {
         unlink(tempfile);
         free(tempfile);
     }
-    if (errmsg)
-        error_msg_and_die("%s", errmsg);
 
     return result;
 }
 
 int main(int argc, char **argv)
 {
+    if (!load_global_configuration())
+        error_msg_and_die("Cannot continue without libreport global configuration.");
+
     abrt_init(argv);
 
     /* I18n */
@@ -240,8 +171,32 @@ int main(int argc, char **argv)
     else if (getenv("Upload_SSHPrivateKey") != NULL)
         set_map_string_item_from_string(settings, "SSHPrivateKey", getenv("Upload_SSHPrivateKey"));
 
-    int result = create_and_upload_archive(dump_dir_name, settings);
+    char *input_url = NULL;
+    const char *conf_url = getenv("Upload_URL");
+    if (!conf_url || conf_url[0] == '\0')
+        conf_url = url;
+    if (!conf_url || conf_url[0] == '\0')
+        conf_url = get_map_string_item_or_empty(settings, "URL");
+    if (!conf_url || conf_url[0] == '\0')
+        conf_url = input_url = ask_url(_("Please enter a URL (scp, ftp, etc.) where the problem data is to be exported:"));
 
+    char *remote_name = NULL;
+    const int result = create_and_upload_archive(dump_dir_name, conf_url, settings, &remote_name);
+    if (result != 0)
+        goto finito;
+
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (dd)
+    {
+        report_result_t rr = { .label = (char *)"upload" };
+        rr.url = remote_name,
+        add_reported_to_entry(dd, &rr);
+        dd_close(dd);
+    }
+    free(remote_name);
+
+finito:
+    free(input_url);
     free_map_string(settings);
     return result;
 }

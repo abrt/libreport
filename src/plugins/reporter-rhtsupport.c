@@ -835,13 +835,12 @@ int main(int argc, char **argv)
         struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
         if (dd)
         {
-            char *msg = xasprintf("RHTSupport: TIME=%s URL=%s%s%s",
-                    iso_date_string(NULL),
-                    result->url,
-                    result->msg ? " MSG=" : "", result->msg ? result->msg : ""
-            );
-            add_reported_to(dd, msg);
-            free(msg);
+            struct report_result rr = { .label = (char *)"RHTSupport" };
+            rr.url = result->url;
+            rr.msg = result->msg;
+            time(&rr.timestamp);
+            add_reported_to_entry(dd, &rr);
+
             dd_close(dd);
             if (result->msg)
                 log("%s", result->msg);

@@ -45,6 +45,45 @@ int add_reported_to_data(char **reported_to, const char *line)
     return 1;
 }
 
+int add_reported_to_entry_data(char **reported_to, struct report_result *result)
+{
+    if (NULL == result->label || result->label[0] == '\0')
+    {
+        log(_("Report result label mustn't be empty string."));
+        return -EINVAL;
+    }
+
+    if (strchr(result->label, ':') != NULL)
+    {
+        log(_("Report result label mustn't contain ':' character."));
+        return -EINVAL;
+    }
+
+    struct strbuf *buf = strbuf_new();
+    strbuf_append_strf(buf, "%s:", result->label);
+
+    if (result->timestamp != 0)
+    {
+        const char *const time = iso_date_string(&(result->timestamp));
+        strbuf_append_strf(buf, " TIME=%s", time);
+    }
+
+    if (result->url != NULL)
+        strbuf_append_strf(buf, " URL=%s", result->url);
+
+    if (result->bthash != NULL)
+        strbuf_append_strf(buf, " BTHASH=%s", result->bthash);
+
+    /* MSG must be last because the value is delimited by new line character */
+    if (result->msg != NULL)
+        strbuf_append_strf(buf, " MSG=%s", result->msg);
+
+    const int r = add_reported_to_data(reported_to, buf->buf);
+    strbuf_free(buf);
+
+    return r;
+}
+
 void free_report_result(struct report_result *result)
 {
     if (!result)
@@ -94,13 +133,15 @@ static report_result_t *parse_reported_line(const char *line, size_t label_len)
             free(result->bthash);
             result->bthash = xstrndup(line + 7, end - (line + 7));
         }
-        //else
-        //if (strncmp(line, "TIME=", 5) == 0)
-        //{
-        //    free(result->time);
-        //    result->time = foo(line + 5, end - (line + 5));
-        //}
-        //...
+        if (strncmp(line, "TIME=", 5) == 0)
+        {
+            char *datetime = xstrndup(line + 5, end - (line + 5));
+            const int r = iso_date_string_parse(datetime, &result->timestamp);
+            if (r != 0)
+                log(_("Ignored invalid ISO date of report result '%s'"), result->label);
+
+            free(datetime);
+        }
         line = end;
         continue;
     }

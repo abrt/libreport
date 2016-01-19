@@ -559,24 +559,18 @@ char *upload_file(const char *url, const char *filename, map_string_t *settings)
 {
     /* we don't want to print the whole url as it may contain password
      * rhbz#856960
-     * there can be '@' in the login or password so let's try to find the
-     * first '@' from the end
+     *
+     * jfilak:
+     * We want to print valid URLs in useful messages.
+     *
+     * The old code had this approach:
+     *   there can be '@' in the login or password so let's try to find the
+     *   first '@' from the end
+     *
+     * The new implementation decomposes URI to its base elements and uses only
+     * scheme and hostname for the logging purpose. These elements should not
+     * contain any sensitive information.
      */
-    const char *clean_url = strrchr(url, '@');
-    if (clean_url)
-        clean_url++;
-    else
-        clean_url = url;
-
-    log(_("Sending %s to %s"), filename, clean_url);
-
-    char *whole_url;
-    unsigned len = strlen(url);
-    if (len > 0 && url[len-1] == '/')
-        whole_url = concat_path_file(url, strrchr(filename, '/') ? : filename);
-    else
-        whole_url = xstrdup(url);
-
     abrt_post_state_t *state = new_abrt_post_state(ABRT_POST_WANT_ERROR_MSG);
 
     if (settings != NULL)
@@ -591,6 +585,35 @@ char *upload_file(const char *url, const char *filename, map_string_t *settings)
             VERB3 log("Using SSH private key '%s'", state->client_ssh_private_keyfile);
     }
 
+    char *whole_url = NULL;
+    char *scheme = NULL;
+    char *hostname = NULL;
+    char *username = NULL;
+    char *password = NULL;
+    char *clean_url = NULL;
+
+    if (uri_userinfo_remove(url, &clean_url, &scheme, &hostname, &username, &password, NULL) != 0)
+        goto finito;
+
+    if (scheme == NULL || hostname == NULL)
+    {
+        log(_("Ingoring URL without scheme and hostname"));
+        goto finito;
+    }
+
+    if (username && (state->username == NULL || state->username[0] == '\0'))
+    {
+        state->username = username;
+        state->password = password;
+    }
+
+    unsigned len = strlen(clean_url);
+    if (len > 0 && clean_url[len-1] == '/')
+        whole_url = concat_path_file(clean_url, strrchr(filename, '/') ? : filename);
+    else
+        whole_url = xstrdup(clean_url);
+
+    log(_("Sending %s to %s//%s"), filename, scheme, hostname);
     abrt_post(state,
                 whole_url,
                 /*content_type:*/ "???",
@@ -613,10 +636,17 @@ char *upload_file(const char *url, const char *filename, map_string_t *settings)
     else
     {
         /* This ends up a "reporting status message" in abrtd */
-        log(_("Successfully sent %s to %s"), filename, clean_url);
+        log(_("Successfully created %s"), whole_url);
     }
 
+finito:
     free_abrt_post_state(state);
+
+    free(password);
+    free(username);
+    free(hostname);
+    free(scheme);
+    free(clean_url);
 
     return whole_url;
 }
