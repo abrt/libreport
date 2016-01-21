@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <event>
-    <_name>uReport</_name>
-    <_description>Sends micro-reports to ABRT server</_description>
+    <_name>Submit anonymous crash report</_name>
+    <_description>Submit anonymous crash report - I do not want to be contacted by Red Hat Support</_description>
 
     <requires-items>analyzer,reason,executable,pkg_epoch,pkg_name,pkg_version,pkg_release,pkg_arch,os_release,architecture,core_backtrace</requires-items>
     <gui-review-elements>no</gui-review-elements>
+    <minimal-rating>0</minimal-rating>
 
     <options>
+        <!--
         <import-event-options event="watch_Bugzilla"/>
+        -->
 
         <option type="text" name="uReport_URL">
             <_label>uReport Server URL</_label>
@@ -15,22 +18,24 @@
             <_description>Address of uReport webservice</_description>
             <default-value>http://bug-report.itos.redhat.com</default-value>
         </option>
+        <!--
         <option type="bool" name="uReport_WatchReportedBugs">
             <_label>Watch already reported bugs</_label>
             <_note-html>Adds your Bugzilla login to CC List of already reported bugs.</_note-html>
             <default-value>yes</default-value>
         </option>
+        -->
         <option type="text" name="uReport_ContactEmail">
             <_label>Contact email address</_label>
             <allow-empty>yes</allow-empty>
             <_description>Email address that can be used by ABRT server to inform you about news and updates</_description>
         </option>
-        <option type="bool" name="uReport_SSLVerify">
-            <_label>Verify SSL</_label>
-            <_description>Check SSL key validity</_description>
-            <default-value>yes</default-value>
-        </option>
         <advanced-options>
+            <option type="bool" name="uReport_SSLVerify">
+                <_label>Verify SSL</_label>
+                <_description>Check SSL key validity</_description>
+                <default-value>yes</default-value>
+            </option>
             <option type="text" name="http_proxy">
                 <_label>HTTP Proxy</_label>
                 <allow-empty>yes</allow-empty>

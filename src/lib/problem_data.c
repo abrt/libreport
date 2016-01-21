@@ -493,3 +493,39 @@ gint cmp_problem_data(gconstpointer a, gconstpointer b, gpointer filename)
 
     return 1;
 }
+
+static const gchar const* reproducible_names[_PROBLEM_REPRODUCIBLE_MAX_] =
+{
+    "Not sure how to reproduce the problem",
+    "The problem is reproducible",
+    "The problem occurs regularly",
+};
+
+int get_problem_data_reproducible(problem_data_t *problem_data)
+{
+    const char *reproducible_str = get_problem_item_content_or_NULL(problem_data, FILENAME_REPRODUCIBLE);
+    if (reproducible_str == NULL)
+    {
+        VERB2 log("Cannot return Reproducible type: missing "FILENAME_REPRODUCIBLE);
+        return -1;
+    }
+
+    for (int i = 0; i < _PROBLEM_REPRODUCIBLE_MAX_; ++i)
+        if (strcmp(reproducible_str, reproducible_names[i]) == 0)
+            return i;
+
+    error_msg("Cannot return Reproducible type: invalid format of '%s'", FILENAME_REPRODUCIBLE);
+    return -1;
+}
+
+const char *get_problem_data_reproducible_name(int reproducible)
+{
+    if (reproducible < 0 || reproducible >= _PROBLEM_REPRODUCIBLE_MAX_)
+    {
+        error_msg("Cannot return Reproducible name: invalid code: %d", reproducible);
+        return NULL;
+    }
+
+    return reproducible_names[reproducible];
+}
+

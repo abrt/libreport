@@ -35,7 +35,7 @@ dist_events_DATA = \
     report_Tarball.xml \
     report_Uploader.xml \
     report_Uploader.conf \
-    submit_uReport.xml
+    report_uReport.xml
 
 @INTLTOOL_XML_RULE@
 
@@ -60,7 +60,7 @@ EXTRA_DIST = \
     report_Kerneloops.xml.in \
     report_Tarball.xml.in \
     report_Uploader.xml.in \
-    submit_uReport.xml.in
+    report_uReport.xml.in
 
 $(DESTDIR)/$(DEBUG_INFO_DIR):
 	$(mkdir_p) '$@'

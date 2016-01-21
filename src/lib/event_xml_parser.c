@@ -31,8 +31,10 @@
 #define NAME_ELEMENT            "name"
 #define DEFAULT_VALUE_ELEMENT   "default-value"
 #define MINIMAL_RATING_ELEMENT  "minimal-rating"
+#define GUI_REVIEW_ELEMENTS     "gui-review-elements"
 #define SUPPORTS_RESTRICTED_ACCESS_ELEMENT "support-restricted-access"
 #define RESTRICTED_ACCESS_OPTION_ATTR "optionname"
+#define REQUIRES_DETAILS        "requires-details"
 
 #define REQUIRES_ELEMENT        "requires-items"
 #define EXCL_BY_DEFAULT_ELEMENT "exclude-items-by-default"
@@ -452,9 +454,19 @@ static void text(GMarkupParseContext *context,
             }
             goto ret;
         }
+        if (strcmp(inner_element, GUI_REVIEW_ELEMENTS) == 0)
+        {
+            ui->ec_skip_review = !string_to_bool(text_copy);
+            goto ret;
+        }
         if (strcmp(inner_element, SUPPORTS_RESTRICTED_ACCESS_ELEMENT) == 0)
         {
             ui->ec_supports_restricted_access = string_to_bool(text_copy);
+            goto ret;
+        }
+        if (strcmp(inner_element, REQUIRES_DETAILS) == 0)
+        {
+            ui->ec_requires_details = string_to_bool(text_copy);
             goto ret;
         }
     }
