@@ -1,0 +1,698 @@
+# -*- Autotest -*-
+
+AT_BANNER([problem report])
+
+## ------- ##
+## summary ##
+## ------- ##
+
+AT_TESTFUN([summary],
+[[
+#include "problem_report.h"
+#include "internal_libreport.h"
+#include <assert.h>
+
+int main(int argc, char **argv)
+{
+    const char *const test_format_result[][2] = {
+        {
+            "%summary:: [abrt] trivial string",
+            "[abrt] trivial string"
+        },
+
+        {
+            "%summary:: [abrt] %package%",
+            "[abrt] libreport"
+        },
+
+        {
+            "%summary:: [abrt] %package%[[ : %crash_function%()]][[ : %does_not_exist%]][[ : %reason%]][[ TAINTED: %taint_flags%]]",
+            "[abrt] libreport : run_event() : Killed by SIGSEGV"
+        },
+
+        {
+            "%summary:: [abrt] %package%[[ : %crash_function%[[ : %does_not_exist%]]()]][[ : %reason%]]",
+            "[abrt] libreport : run_event() : Killed by SIGSEGV"
+        },
+
+        {
+            "%summary:: [abrt] %package%[[ : %does_not_exist%[[ : %crash_function%()]]]][[ : %reason%]]",
+            "[abrt] libreport : Killed by SIGSEGV"
+        },
+
+        {
+            "%summary:: [[%does_not_exist%]][[%once_more%]][abrt] %package%",
+            "[abrt] libreport"
+        },
+
+        {
+            "",
+            "Killed by SIGSEGV"
+        },
+    };
+
+    g_verbose = 3;
+
+    problem_data_t *data = new_problem_data();
+    add_to_problem_data(data, "package", "libreport");
+    add_to_problem_data(data, "crash_function", "run_event");
+    add_to_problem_data(data, "reason", "Killed by SIGSEGV");
+
+    for (size_t i = 0; i < sizeof(test_format_result)/sizeof(*test_format_result); ++i) {
+        problem_formatter_t *pf = problem_formatter_new();
+        assert(!problem_formatter_load_string(pf, test_format_result[i][0]));
+
+        problem_report_t *pr = NULL;
+        assert(!problem_formatter_generate_report(pf, data, &pr));
+        assert(pr != NULL);
+
+        const char *summary = problem_report_get_summary(pr);
+        assert(summary != NULL);
+
+        fprintf(stderr, "expected: '%s'\n", test_format_result[i][1]);
+        fprintf(stderr, "result  : '%s'\n", summary);
+
+        assert(strcmp(test_format_result[i][1], summary) == 0);
+
+        problem_report_free(pr);
+        problem_formatter_free(pf);
+    }
+
+    free_problem_data(data);
+
+    return 0;
+}
+]])
+
+## ---------- ##
+## desciption ##
+## ---------- ##
+
+AT_TESTFUN([description],
+[[
+#include "problem_report.h"
+#include "internal_libreport.h"
+#include <assert.h>
+
+int main(int argc, char **argv)
+{
+    const char *const test_format_result[][2] = {
+        {
+            "\n"\
+            "\n"\
+            "\n"\
+            "Single line\n"
+            "\n"\
+            "\n"\
+            "\n",
+
+            "Single line\n"
+        },
+
+        {
+            "\n"\
+            "\n"\
+            "\n"\
+            "Comment:: %bare_comment"
+            "\n"\
+            "\n"\
+            "\n"\
+            "Ad-hoc line\n"
+            "\n"\
+            "\n"\
+            "\n"\
+            "Additional:: package,\\\n"
+            "uuid,cwd\\\\"
+            ",user_name"
+            "\n"\
+            "\n",
+
+            "Comment:\n" \
+            "Hello, world!\n"
+            "\n"\
+            "\n"\
+            "Ad-hoc line\n"
+            "\n"\
+            "\n"\
+            "\n"\
+            "Additional:\n"\
+            "package:        libreport\n"\
+            "uuid:           123456789ABCDEF\n"\
+            "user_name:      abrt\n",
+        },
+
+        {
+            ":: %bare_description",
+
+            "I run will_segfault and\n"\
+            "it crashed as expected\n"
+        },
+
+        {
+            "User:: %bare_user_name,uid\n"\
+            "Additional info:: -uuid,%oneline,-comment,-package",
+
+            "User:\n"\
+            "abrt\n"\
+            "uid:            69\n"\
+            "Additional info:\n"\
+            "analyzer:       CCpp\n"\
+            "root:           /var/run/mock/abrt\n"\
+            "type:           CCpp\n"
+        },
+
+        {
+            ":: %reporter",
+            NULL /* do no check results*/
+        },
+
+        {
+            "Truncated backtrace:: %bare_%short_backtrace",
+
+            "Truncated backtrace:\n"
+            "Thread no. 0 (7 frames)\n"
+            " #1 crash at will_segfault.c:19\n"
+            " #2 varargs at will_segfault.c:31\n"
+            " #3 inlined at will_segfault.c:40\n"
+            " #4 f at will_segfault.c:45\n"
+            " #5 callback at will_segfault.c:50\n"
+            " #6 call_me_back at libwillcrash.c:8\n"
+            " #7 recursive at will_segfault.c:59\n"
+        },
+    };
+
+    g_verbose = 3;
+
+    problem_data_t *data = new_problem_data();
+    add_to_problem_data(data, "package", "libreport");
+    add_to_problem_data(data, "analyzer", "CCpp");
+    add_to_problem_data(data, "type", "CCpp");
+    add_to_problem_data(data, "comment", "Hello, world!");
+    add_to_problem_data(data, "uuid", "123456789ABCDEF");
+    add_to_problem_data(data, "uid", "69");
+    add_to_problem_data(data, "user_name", "abrt");
+    add_to_problem_data(data, "root", "/var/run/mock/abrt");
+    add_to_problem_data(data, "description", "I run will_segfault and\nit crashed as expected\n");
+    add_to_problem_data(data, "backtrace",
+"Thread 1 (LWP 11865):\n"\
+"#0  printf (__fmt=0x400acf \"Result: %d\\n\") at /usr/include/bits/stdio2.h:104\n"\
+"No locals.\n"\
+"#1  crash (p=p@entry=0x0) at will_segfault.c:19\n"\
+"i = <error reading variable i (Cannot access memory at address 0x0)>\n"\
+"#2  0x0000000000400964 in varargs (num_args=1, num_args@entry=2) at will_segfault.c:31\n"\
+"p = <optimized out>\n"\
+"ap = {{gp_offset = 24, fp_offset = 32767, overflow_arg_area = 0x7fff4fc8a0c0, reg_save_area = 0x7fff4fc8a080}}\n"\
+"#3  0x00000000004009be in inlined (p=0x0) at will_segfault.c:40\n"\
+"num = 42\n"\
+"#4  f (p=p@entry=0x0) at will_segfault.c:45\n"\
+"No locals.\n"\
+"#5  0x00000000004009e9 in callback (data=data@entry=0x0) at will_segfault.c:50\n"\
+"No locals.\n"\
+"#6  0x00000032f76006f9 in call_me_back (cb=cb@entry=0x4009e0 <callback>, data=data@entry=0x0) at libwillcrash.c:8\n"\
+"res = <optimized out>\n"\
+"#7  0x0000000000400a14 in recursive (i=i@entry=0) at will_segfault.c:59\n"\
+"p = <optimized out>\n"\
+"#8  0x0000000000400a00 in recursive (i=i@entry=1) at will_segfault.c:66\n"\
+"No locals.\n"\
+"#9  0x0000000000400a00 in recursive (i=i@entry=2) at will_segfault.c:66\n"\
+"No locals.\n"\
+"#10 0x0000000000400775 in main (argc=<optimized out>, argv=<optimized out>) at will_segfault.c:83\n"\
+"No locals.\n"\
+"From                To                  Syms Read   Shared Object Library\n"\
+"0x00000032f76005f0  0x00000032f7600712  Yes         /lib64/libwillcrash.so.0\n"\
+"0x0000003245c1f4f0  0x0000003245d6aca4  Yes         /lib64/libc.so.6\n"\
+"0x0000003245800b10  0x000000324581b6d0  Yes         /lib64/ld-linux-x86-64.so.2\n"\
+"$1 = 0x0\n"
+"No symbol \"__glib_assert_msg\" in current context.\n"\
+"rax            0xf      15\n"\
+"rbx            0x0      0\n"\
+"rcx            0x7ff96f752000   140709293531136\n"\
+"rdx            0x3245fb9a40     215922481728\n"\
+"rsi            0x7ff96f752000   140709293531136\n"\
+"rdi            0x1      1\n"\
+"rbp            0x400a30 0x400a30 <__libc_csu_init>\n"\
+"rsp            0x7fff4fc8a050   0x7fff4fc8a050\n"\
+"r8             0xffffffff       4294967295\n"\
+"r9             0x0      0\n"\
+"r10            0x22     34\n"\
+"r11            0x246    582\n"\
+"r12            0x40079f 4196255\n"\
+"r13            0x7fff4fc8a210   140734531936784\n"\
+"r14            0x0      0\n"\
+"r15            0x0      0\n"\
+"rip            0x4008ae 0x4008ae <crash+14>\n"\
+"eflags         0x10246  [ PF ZF IF RF ]\n"\
+"cs             0x33     51\n"\
+"ss             0x2b     43\n"\
+"ds             0x0      0\n"\
+"es             0x0      0\n"\
+"fs             0x0      0\n"\
+"gs             0x0      0\n"\
+"st0            0        (raw 0x00000000000000000000)\n"\
+"st1            0        (raw 0x00000000000000000000)\n"\
+"st2            0        (raw 0x00000000000000000000)\n"\
+"st3            0        (raw 0x00000000000000000000)\n"\
+"st4            0        (raw 0x00000000000000000000)\n"\
+"st5            0        (raw 0x00000000000000000000)\n"\
+"st6            0        (raw 0x00000000000000000000)\n"\
+"st7            0        (raw 0x00000000000000000000)\n"\
+"fctrl          0x37f    895\n"\
+"fstat          0x0      0\n"\
+"ftag           0xffff   65535\n"\
+"fiseg          0x0      0\n"\
+"fioff          0x0      0\n"\
+"foseg          0x0      0\n"\
+"fooff          0x0      0\n"\
+"fop            0x0      0\n"\
+"xmm0           {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"xmm1           {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x2f <repeats 16 times>}, v8_int16 = {0x2f2f, 0x2f2f, 0x2f2f, 0x2f2f, 0x2f2f, 0x2f2f, 0x2f2f, 0x2f2f}, v4_int32 = {0x2f2f2f2f, 0x2f2f2f2f, 0x2f2f2f2f, 0x2f2f2f2f}, v2_int64 = {0x2f2f2f2f2f2f2f2f, 0x2f2f2f2f2f2f2f2f}, uint128 = 0x2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f}\n"\
+"xmm2           {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"xmm3           {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 13 times>, 0xff, 0x0, 0x0}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xff00, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0xff00}, v2_int64 = {0x0, 0xff0000000000}, uint128 = 0x0000ff00000000000000000000000000}\n"\
+"xmm4           {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xff, 0x0, 0x0, 0x0, 0x0, 0x0}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0xff, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0xff0000, 0x0}, v2_int64 = {0x0, 0xff0000}, uint128 = 0x0000000000ff00000000000000000000}\n"\
+"xmm5           {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"xmm6           {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"xmm7           {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"xmm8           {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"xmm9           {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"xmm10          {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"xmm11          {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"xmm12          {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 14 times>, 0xff, 0x0}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xff}, v4_int32 = {0x0, 0x0, 0x0, 0xff0000}, v2_int64 = {0x0, 0xff000000000000}, uint128 = 0x00ff0000000000000000000000000000}\n"\
+"xmm13          {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"xmm14          {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"xmm15          {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"mxcsr          0x1f80   [ IM DM ZM OM UM PM ]\n"\
+"Dump of assembler code for function crash:\n"\
+"   0x00000000004008a0 <+0>:     push   %rbx\n"\
+"   0x00000000004008a1 <+1>:     mov    %rdi,%rbx\n"\
+"   0x00000000004008a4 <+4>:     mov    $0x400ac0,%edi\n"\
+"   0x00000000004008a9 <+9>:     callq  0x4006f0 <puts@plt>\n"\
+"   => 0x00000000004008ae <+14>:    mov    (%rbx),%edx\n"\
+"   0x00000000004008b0 <+16>:    mov    $0x400acf,%esi\n"\
+"   0x00000000004008b5 <+21>:    mov    $0x1,%edi\n"\
+"   0x00000000004008ba <+26>:    xor    %eax,%eax\n"\
+"   0x00000000004008bc <+28>:    callq  0x400740 <__printf_chk@plt>\n"\
+"   0x00000000004008c1 <+33>:    pop    %rbx\n"\
+"   0x00000000004008c2 <+34>:    retq\n"\
+"End of assembler dump.\n"
+            );
+
+    for (size_t i = 0; i < sizeof(test_format_result)/sizeof(*test_format_result); ++i) {
+        problem_formatter_t *pf = problem_formatter_new();
+        assert(!problem_formatter_load_string(pf, test_format_result[i][0]));
+
+        problem_report_t *pr = NULL;
+        assert(!problem_formatter_generate_report(pf, data, &pr));
+        assert(pr != NULL);
+
+        const char *summary = problem_report_get_description(pr);
+        assert(summary != NULL);
+
+        if (test_format_result[i][1] != NULL) {
+            fprintf(stderr, "####\n");
+            fprintf(stderr, "expected: '%s'\n", test_format_result[i][1]);
+            fprintf(stderr, "====\n");
+            fprintf(stderr, "result  : '%s'\n", summary);
+            fprintf(stderr, "####\n");
+
+            assert(strcmp(test_format_result[i][1], summary) == 0);
+        }
+
+        problem_report_free(pr);
+        problem_formatter_free(pf);
+    }
+
+    free_problem_data(data);
+
+    return 0;
+}
+]])
+
+## ------ ##
+## attach ##
+## ------ ##
+
+AT_TESTFUN([attach],
+[[
+#include "problem_report.h"
+#include "internal_libreport.h"
+#include <assert.h>
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    const char *fst[] = { "backtrace", "screenshot", "description", NULL };
+
+    struct test_case {
+        const char *format;
+        const char *const *files;
+    } cases [] = {
+        {
+            .format = "%attach:: %multiline,%binary,-coredump",
+            .files = fst,
+        }
+    };
+
+    problem_data_t *data = new_problem_data();
+    add_to_problem_data(data, "package", "libreport");
+    add_to_problem_data(data, "analyzer", "CCpp");
+    add_to_problem_data(data, "type", "CCpp");
+    add_to_problem_data(data, "comment", "Hello, world!");
+    add_to_problem_data(data, "uuid", "123456789ABCDEF");
+    add_to_problem_data(data, "uid", "69");
+    add_to_problem_data(data, "user_name", "abrt");
+    add_to_problem_data(data, "root", "/var/run/mock/abrt");
+    add_to_problem_data(data, "description", "I run will_segfault and\nit crashed as expected\n");
+    add_to_problem_data_ext(data, "screenshot", "/what/ever/path/to/screenshot", CD_FLAG_BIN + CD_FLAG_ISNOTEDITABLE);
+    add_to_problem_data_ext(data, "coredump", "/what/ever/path/to/coredump", CD_FLAG_BIN + CD_FLAG_ISNOTEDITABLE);
+
+    add_to_problem_data(data, "backtrace",
+"Thread 1 (LWP 11865):\n"\
+"#0  printf (__fmt=0x400acf \"Result: %d\\n\") at /usr/include/bits/stdio2.h:104\n"\
+"No locals.\n"\
+"#1  crash (p=p@entry=0x0) at will_segfault.c:19\n"\
+"i = <error reading variable i (Cannot access memory at address 0x0)>\n"\
+"#2  0x0000000000400964 in varargs (num_args=1, num_args@entry=2) at will_segfault.c:31\n"\
+"p = <optimized out>\n"\
+"ap = {{gp_offset = 24, fp_offset = 32767, overflow_arg_area = 0x7fff4fc8a0c0, reg_save_area = 0x7fff4fc8a080}}\n"\
+"#3  0x00000000004009be in inlined (p=0x0) at will_segfault.c:40\n"\
+"num = 42\n"\
+"#4  f (p=p@entry=0x0) at will_segfault.c:45\n"\
+"No locals.\n"\
+"#5  0x00000000004009e9 in callback (data=data@entry=0x0) at will_segfault.c:50\n"\
+"No locals.\n"\
+"#6  0x00000032f76006f9 in call_me_back (cb=cb@entry=0x4009e0 <callback>, data=data@entry=0x0) at libwillcrash.c:8\n"\
+"res = <optimized out>\n"\
+"#7  0x0000000000400a14 in recursive (i=i@entry=0) at will_segfault.c:59\n"\
+"p = <optimized out>\n"\
+"#8  0x0000000000400a00 in recursive (i=i@entry=1) at will_segfault.c:66\n"\
+"No locals.\n"\
+"#9  0x0000000000400a00 in recursive (i=i@entry=2) at will_segfault.c:66\n"\
+"No locals.\n"\
+"#10 0x0000000000400775 in main (argc=<optimized out>, argv=<optimized out>) at will_segfault.c:83\n"\
+"No locals.\n");
+
+    for (size_t i = 0; i < sizeof(cases)/sizeof(*cases); ++i) {
+        fprintf(stderr, "%s", cases[i].format);
+
+        problem_formatter_t *pf = problem_formatter_new();
+        assert(!problem_formatter_load_string(pf, cases[i].format));
+
+        problem_report_t *pr = NULL;
+        assert(!problem_formatter_generate_report(pf, data, &pr));
+        assert(pr != NULL);
+
+        const char *const *iter = cases[i].files;
+
+        if (*iter != NULL) {
+            assert(problem_report_get_attachments(pr));
+        }
+
+        /* GList *clone = g_list_copy_deep(problem_report_get_attachments(pr), (GCopyFunc)xstrdup, NULL); */
+        GList *clone = NULL;
+        for (GList *l = problem_report_get_attachments(pr); l != NULL; l = l->next)
+        {
+            printf("#### %s\n", l->data);
+            clone = g_list_append (clone, xstrdup(l->data));
+        }
+
+        while (*iter) {
+            fprintf(stderr, "%s", cases[i].format);
+            GList *item = g_list_find_custom(clone, *iter, (GCompareFunc)strcmp);
+
+            if (item == NULL) {
+                fprintf(stderr, "format:       '%s'\n", cases[i].format);
+                fprintf(stderr, "missing file: '%s'\n", *iter);
+                abort();
+            }
+            else {
+                free(item->data);
+                clone = g_list_delete_link(clone, item);
+            }
+
+            ++iter;
+        }
+
+        if (clone != NULL) {
+            for (GList *iter = clone; iter; iter = g_list_next(iter)) {
+                fprintf(stderr, "extra : '%s'\n", (const char *)iter->data);
+            }
+            abort();
+        }
+
+        problem_report_free(pr);
+        problem_formatter_free(pf);
+    }
+
+    free_problem_data(data);
+
+    return 0;
+}
+]])
+
+
+## -------------- ##
+## custom_section ##
+## -------------- ##
+
+AT_TESTFUN([custom_section],
+[[
+#include "problem_report.h"
+#include "internal_libreport.h"
+#include <assert.h>
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    struct test_case;
+    struct test_case {
+        const char *section_name;
+        int section_flags;
+        int retval_load;
+        int retval_generate;
+        const char *format;
+        const char *output;
+    } cases [] = {
+        {   .section_name = NULL,
+            .section_flags = 0,
+            .retval_load = 1,
+            .retval_generate = 0,
+            .format =
+                "%additional_info::\n"
+                ":: package,\\\n"
+                "uuid,cwd\\\\"
+                ",user_name"
+                ,
+            .output = NULL,
+        },
+
+        {   .section_name = "additional_info",
+            .section_flags = 0,
+            .retval_load = 0,
+            .retval_generate = 0,
+            .format =
+                "%additional_info::\n"
+                ":: package,\\\n"
+                "uuid,cwd\\\\"
+                ",user_name"
+                ,
+            .output =
+                "package:        libreport\n"
+                "uuid:           0123456789ABCDEF\n"
+                "user_name:      abrt\n"
+                ,
+        },
+
+        {   .section_name = "additional_info",
+            .section_flags = PFFF_REQUIRED,
+            .retval_load = 1,
+            .retval_generate = 0,
+            .format = "%summary:: [abrt] %package%\n:: %reporter\n",
+            .output = NULL,
+        },
+
+        {   .section_name = "additional_info",
+            .section_flags = 0,
+            .retval_load = 0,
+            .retval_generate = 0,
+            .format = "%summary:: [abrt] %package%\n:: %reporter\n",
+            .output = "",
+        },
+
+        {   .section_name = "additional_info",
+            .section_flags = 0,
+            .retval_load = 0,
+            .retval_generate = 0,
+            .format =
+                "%additional_info:: root\n"
+                "Info:: package,\\\n"
+                "uuid,cwd\\\\"
+                ",user_name"
+                ,
+            .output =
+                "Info:\n"
+                "package:        libreport\n"
+                "uuid:           0123456789ABCDEF\n"
+                "user_name:      abrt\n"
+                ,
+        },
+    };
+
+    problem_data_t *data = new_problem_data();
+    add_to_problem_data(data, "package", "libreport");
+    add_to_problem_data(data, "crash_function", "run_event");
+    add_to_problem_data(data, "reason", "Killed by SIGSEGV");
+    add_to_problem_data(data, "uuid", "0123456789ABCDEF");
+    add_to_problem_data(data, "user_name", "abrt");
+
+    for (size_t i = 0; i < sizeof(cases)/sizeof(*cases); ++i) {
+        fprintf(stderr, "#### Test case %zd ####\n", i + 1);
+
+        struct test_case *tcase = cases + i;
+        problem_formatter_t *pf = problem_formatter_new();
+
+        if (tcase->section_name != NULL) {
+            problem_formatter_add_section(pf, tcase->section_name, tcase->section_flags);
+        }
+
+        int r = problem_formatter_load_string(pf, tcase->format);
+        if (r != tcase->retval_load) {
+            fprintf(stderr, "Load : expected : %d , got : %d\n", tcase->retval_load, r);
+            abort();
+        }
+
+        if (tcase->retval_load != 0) {
+            goto next_test_case;
+        }
+
+        problem_report_t *pr = NULL;
+        r = problem_formatter_generate_report(pf, data, &pr);
+        if (r != tcase->retval_generate) {
+            fprintf(stderr, "Generaet : expected : %d , got : %d\n", tcase->retval_generate, r);
+            abort();
+        }
+
+        if (tcase->retval_generate != 0) {
+            goto next_test_case;
+        }
+
+        const char *output = problem_report_get_section(pr, tcase->section_name);
+        assert(output);
+
+        if (strcmp(output, tcase->output) != 0) {
+            fprintf(stderr, "expected:\n'%s'\n", tcase->output);
+            fprintf(stderr, "result  :\n'%s'\n", output);
+            abort();
+        }
+
+        problem_report_free(pr);
+
+next_test_case:
+        problem_formatter_free(pf);
+        fprintf(stderr, "#### Finished - Test case %zd ####\n", i + 1);
+    }
+
+    free_problem_data(data);
+
+    return 0;
+}
+]])
+
+## ------ ##
+## sanity ##
+## ------ ##
+
+AT_TESTFUN([sanity],
+[[
+#include "problem_report.h"
+#include "internal_libreport.h"
+#include <errno.h>
+#include <assert.h>
+
+void assert_equal_strings(const char *res, const char *exp)
+{
+    if (    (res == NULL && exp != NULL)
+        ||  (res != NULL && exp == NULL)
+        || ((res != NULL && exp != NULL) && strcmp(res, exp) != 0)
+        ) {
+        fprintf(stderr, "expected : '%s'\n", exp);
+        fprintf(stderr, "result   : '%s'\n", res);
+        abort();
+    }
+}
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    problem_formatter_t *pf = problem_formatter_new();
+
+    assert(problem_formatter_add_section(pf, "summary", 0) == -EEXIST);
+    assert(problem_formatter_add_section(pf, "description", 0) == -EEXIST);
+    assert(problem_formatter_add_section(pf, "attach", 0) == -EEXIST);
+
+    assert(problem_formatter_add_section(pf, "additional_info", 0) == 0);
+    assert(problem_formatter_add_section(pf, "additional_info", 0) == -EEXIST);
+
+    problem_data_t *data = new_problem_data();
+    add_to_problem_data(data, "package", "libreport");
+    add_to_problem_data(data, "crash_function", "run_event");
+    add_to_problem_data(data, "reason", "Killed by SIGSEGV");
+    add_to_problem_data(data, "comment", "Hello, world!");
+    add_to_problem_data(data, "root", "/var/run/mock/abrt");
+    add_to_problem_data(data, "user_name", "abrt");
+    //problem_data_add_file(data, "screenshot", "/what/ever/path/to/screenshot");
+
+    problem_formatter_load_string(pf,
+            "%summary:: [abrt] %package% : %reason%\n\n"
+            "Description:: %bare_comment\n\n"
+            "%attach:: screenshot\n\n"
+            "%additional_info::\n\n"
+            "User:: root,user_name,uid\n\n\n"
+            );
+
+    problem_report_t *pr = NULL;
+    problem_formatter_generate_report(pf, data, &pr);
+
+    assert_equal_strings(problem_report_get_summary(pr),
+                         "[abrt] libreport : Killed by SIGSEGV");
+
+    problem_report_buffer_printf(problem_report_get_buffer(pr, PR_SEC_SUMMARY), " - test");
+
+    assert_equal_strings(problem_report_get_summary(pr),
+                         "[abrt] libreport : Killed by SIGSEGV - test");
+
+
+    assert_equal_strings(problem_report_get_description(pr),
+            "Description:\nHello, world!\n");
+
+    problem_report_buffer_printf(problem_report_get_buffer(pr, PR_SEC_DESCRIPTION), "Test line\n");
+
+    assert_equal_strings(problem_report_get_description(pr),
+            "Description:\nHello, world!\nTest line\n");
+
+
+    assert_equal_strings(problem_report_get_section(pr, "additional_info"),
+            "User:\n"
+            "root:           /var/run/mock/abrt\n"
+            "user_name:      abrt\n"
+            );
+
+    problem_report_buffer_printf(problem_report_get_buffer(pr, "additional_info"), "uid:            42\n");
+
+    assert_equal_strings(problem_report_get_section(pr, "additional_info"),
+            "User:\n"
+            "root:           /var/run/mock/abrt\n"
+            "user_name:      abrt\n"
+            "uid:            42\n"
+            );
+
+
+    problem_report_free(pr);
+    free_problem_data(data);
+    problem_formatter_free(pf);
+
+    return 0;
+}
+]])

@@ -39,7 +39,8 @@ TESTSUITE_AT = \
   dump_dir.at \
   global_config.at \
   event_config.at \
-  problem_data.at
+  problem_data.at \
+  problem_report.at
 
 TESTSUITE_AT_IN = \
   bugzilla_plugin.at
