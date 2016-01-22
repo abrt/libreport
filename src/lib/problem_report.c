@@ -344,7 +344,8 @@ format_percented_string(const char *str, problem_data_t *pd, FILE *result)
                 opt_depth--;
                 if (!okay[opt_depth])
                 {
-                    fseek(result, old_pos[opt_depth], SEEK_SET);
+                    if (fseek(result, old_pos[opt_depth], SEEK_SET) < 0)
+                        perror_msg_and_die("fseek");
                     len = old_pos[opt_depth];
                 }
                 str += 2;
