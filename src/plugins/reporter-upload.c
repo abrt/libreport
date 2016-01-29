@@ -66,12 +66,12 @@ static int create_and_upload_archive(
     if (url && url[0] && strcmp(url, "file:///tmp/") != 0)
     {
         char *tmp = upload_file(url, tempfile, settings);
+        result = (tmp == NULL);
+
         if (remote_name)
             *remote_name = tmp;
         else
             free(tmp);
-
-        result = (tmp == NULL);
     }
     else
     {
