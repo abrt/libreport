@@ -7,7 +7,7 @@ reporter-ureport - Reports ABRT problems in format of micro report
 
 SYNOPSIS
 --------
-'reporter-ureport' [-v] [-c CONFFILE] [-u URL] [-k] [-A -a bthash -B -b bug-id -E -e email -l DATA -L FIELD -T TYPE -r RESULT_TYPE] [-d DIR]
+'reporter-ureport' [-v] [-c CONFFILE] [-u URL] [-k] [-A -a bthash -B -b bug-id -E -e email -O -o comment -l DATA -L FIELD -T TYPE -r RESULT_TYPE] [-d DIR]
 
 DESCRIPTION
 -----------
@@ -118,6 +118,12 @@ OPTIONS
 
 -i AUTH_DATA_ITEMS::
    List of dump dir files included in the 'auth' uReport object.
+
+-o, --comment DESCRIPTION::
+   Attach short text (requires -a|-A, conflicts with -D)
+
+-O, --comment-file::
+   Attach short text from comment (requires -a|-A, conflicts with -d)
 
 -l DATA::
    Attach DATA (requires -T and -a|-A)
