@@ -758,6 +758,46 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Thu Feb 02 2016 Matej Habrnal <mhabrnal@redhat.com> 2.6.4-1
+- doc: add option -o and -O into reporter-ureport man page
+- rhtsupport: use problme report API to create description
+- bugzilla: make the event configurable
+- report-gtk: offer users to create private ticket
+- bugzilla|centos: declare 'restricted access' support
+- event config: add support for 'restricted access'
+- lib: move CREATE_PRIVATE_TICKET to the global configuration
+- dd: dd_delete_item does not die
+- dd: add function getting stat of item
+- dd: correct handling of TYPE when creating dump directory
+- dd: add function computing dump dir file system size
+- dd: add function counting number of dd items
+- dd: add function copying file descriptor to element
+- dd: allow 1 and 2 letter long element names
+- problem_data: factor out function reading single problem element
+- formatdup: more universal comment
+- dd: make function uid_in_group() public
+- Refactoring conditional directives that break parts of statements.
+- bugzilla: actualize man pages
+- bugzilla: don't report private problem as comment
+- uploader: move username and password to the advanced options
+- uploader: allow empty username and password
+- spec: add uploader config files and related man page
+- uploader: add possibility to set SSH keyfiles
+- curl: add possibility to configure SSH keys
+- desktop-utils: deal with Destkop files without command line
+- ureport: enable attaching of arbitrary values
+- update .gitignore
+- uploader: save remote name in reported_to
+- curl: return URLs without userinfo
+- lib: add function for removing userinfo from URIs
+- plugins: port reporters to add_reported_to_entry
+- reported_to: add a function formatting reported_to lines
+- lib: introduce parser of ISO date strings
+- uploader: use shared dd_create_archive function
+- dd: add a function for compressing dumpdirs
+- problem_report: add examples to the documentation
+- client: document environment variables
+
 * Thu Oct 15 2015 Matej Habrnal <mhabrnal@redhat.com> 2.6.3-1
 - wizard: correct comments in save_text_if_changed()
 - events: improve example
