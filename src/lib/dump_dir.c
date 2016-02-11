@@ -17,6 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <sys/utsname.h>
+#include <libtar.h>
 #include "internal_libreport.h"
 
 // Locking logic:
@@ -1474,4 +1475,120 @@ int dd_mark_as_notreportable(struct dump_dir *dd, const char *reason)
 
     dd_save_text(dd, FILENAME_NOT_REPORTABLE, reason);
     return 0;
+}
+
+/* flags - for future needs */
+int dd_create_archive(struct dump_dir *dd, const char *archive_name,
+        const_string_vector_const_ptr_t exclude_elements, int flags)
+{
+    if (suffixcmp(archive_name, ".tar.gz") != 0)
+        return -ENOSYS;
+
+    int result = 0;
+    pid_t child;
+    TAR* tar = NULL;
+    int pipe_from_parent_to_child[2];
+    xpipe(pipe_from_parent_to_child);
+    child = fork();
+    if (child < 0)
+    {
+        result = -errno;
+        /* Don't die, let the caller to execute his clean-up code. */
+        perror_msg("vfork");
+        return result;
+    }
+    if (child == 0)
+    {
+        /* child */
+        close(pipe_from_parent_to_child[1]);
+        xmove_fd(pipe_from_parent_to_child[0], 0);
+
+        int fd = open(archive_name, O_WRONLY | O_CREAT | O_EXCL, 0600);
+        if (fd < 0)
+        {
+            /* This r might interfer with exit status of gzip, but it is
+             * very unlikely (man 1 gzip):
+             *   Exit status is normally 0; if an error occurs, exit status is
+             *   1. If a warning occurs, exit status is 2.
+             */
+            result = errno == EEXIST ? 100 : 3;
+            perror_msg("Can't open '%s'", archive_name);
+            exit(result);
+        }
+
+        xmove_fd(fd, 1);
+        execlp("gzip", "gzip", NULL);
+        perror_msg_and_die("Can't execute '%s'", "gzip");
+    }
+    close(pipe_from_parent_to_child[0]);
+
+    /* If child died (say, in xopen), then parent might get SIGPIPE.
+     * We want to properly unlock dd, therefore we must not die on SIGPIPE:
+     */
+    sighandler_t old_handler = signal(SIGPIPE, SIG_IGN);
+
+    /* Create tar writer object */
+    if (tar_fdopen(&tar, pipe_from_parent_to_child[1], (char *)archive_name,
+                /*fileops:(standard)*/ NULL, O_WRONLY | O_CREAT, 0644, TAR_GNU) != 0)
+    {
+        result = -errno;
+        log_warning(_("Failed to open TAR writer"));
+        goto finito;
+    }
+
+    /* Write data to the tarball */
+    dd_init_next_file(dd);
+    char *short_name, *full_name;
+    while (dd_get_next_file(dd, &short_name, &full_name))
+    {
+        if (!(exclude_elements && is_in_string_list(short_name, exclude_elements)))
+        {
+           if (tar_append_file(tar, full_name, short_name))
+               result = -errno;
+        }
+
+        free(short_name);
+        free(full_name);
+
+        if (result != 0)
+            goto finito;
+    }
+
+    /* Close tar writer... */
+    if (tar_append_eof(tar) != 0)
+    {
+        result = -errno;
+        log_warning(_("Failed to finalize TAR archive"));
+        goto finito;
+    }
+
+finito:
+    signal(SIGPIPE, old_handler);
+
+    if (tar != NULL && tar_close(tar) != 0)
+    {
+        result = -errno;
+        log_warning(_("Failed to close TAR writer"));
+    }
+
+    /* ...and check that gzip child finished successfully */
+    int status;
+    safe_waitpid(child, &status, 0);
+    if (status != 0)
+    {
+        result = -ECHILD;
+        if (WIFSIGNALED(status))
+            log_warning(_("gzip killed with signal %d"), WTERMSIG(status));
+        else if (WIFEXITED(status))
+        {
+            if (WEXITSTATUS(status) == 100)
+                result = -EEXIST;
+            else
+                log_warning(_("gzip exited with %d"), WEXITSTATUS(status));
+        }
+        else
+            log_warning(_("gzip process failed"));
+    }
+
+    return result;
 }
