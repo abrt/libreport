@@ -45,7 +45,6 @@
 #include <termios.h>
 #include <time.h>
 #include <unistd.h>
-#include <stdbool.h>
 /* Try to pull in PATH_MAX */
 #include <limits.h>
 #include <sys/param.h>
@@ -91,6 +90,7 @@ int vdprintf(int d, const char *format, va_list ap);
 
 /* Pull in entire public libreport API */
 #include "dump_dir.h"
+#include "global_configuration.h"
 #include "event_config.h"
 #include "problem_data.h"
 #include "report.h"

@@ -55,7 +55,8 @@ libreport_la_SOURCES = \
     workflow_xml_parser.c \
     config_item_info.c \
     xml_parser.c \
-    libreport_init.c
+    libreport_init.c \
+    global_configuration.c
 
 libreport_la_CPPFLAGS = \
     -I$(srcdir)/../include \
