@@ -105,7 +105,7 @@ int main(int argc, char **argv)
         OPT_STRING('r', "report-result-type", &report_result_type, "REPORT_RESULT_TYPE",
                           _("use REPORT_RESULT_TYPE when looking for FIELD in reported_to (used only with -L)")),
         OPT_STRING('T', "type", &attach_type, "ATTACHMENT_TYPE",
-                          _("attach DATA as ureporte attachment ATTACHMENT_TYPE (used only with -l|-L)")),
+                          _("attach DATA as ureport attachment ATTACHMENT_TYPE (used only with -l|-L)")),
         OPT_END(),
     };
 
