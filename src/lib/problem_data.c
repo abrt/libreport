@@ -303,7 +303,7 @@ static const char *const editable_files[] = {
 };
 static bool is_editable_file(const char *file_name)
 {
-    return is_in_string_list(file_name, (char**)editable_files);
+    return is_in_string_list(file_name, editable_files);
 }
 
 /* When is_text_file() returns this special pointer value,
@@ -353,7 +353,7 @@ static char* is_text_file_at(int dir_fd, const char *name, ssize_t *sz)
     if (base)
     {
         base++;
-        if (is_in_string_list(base, (char**)always_text_files))
+        if (is_in_string_list(base, always_text_files))
             goto text;
     }
 
@@ -423,7 +423,7 @@ void problem_data_load_from_dump_dir(problem_data_t *problem_data, struct dump_d
     dd_init_next_file(dd);
     while (dd_get_next_file(dd, &short_name, &full_name))
     {
-        if (excluding && is_in_string_list(short_name, excluding))
+        if (excluding && is_in_string_list(short_name, (const char *const *)excluding))
         {
             //log("Excluded:'%s'", short_name);
             goto next;
@@ -494,7 +494,7 @@ void problem_data_load_from_dump_dir(problem_data_t *problem_data, struct dump_d
             FILENAME_REASON    ,
             NULL
         };
-        if (is_in_string_list(short_name, (char**)list_files))
+        if (is_in_string_list(short_name, list_files))
             flags |= CD_FLAG_LIST;
 
         if (strcmp(short_name, FILENAME_TIME) == 0)

@@ -18,7 +18,7 @@
 */
 #include "internal_libreport.h"
 
-bool is_in_string_list(const char *name, char **v)
+bool is_in_string_list(const char *name, const char *const *v)
 {
     while (*v)
     {
@@ -29,7 +29,7 @@ bool is_in_string_list(const char *name, char **v)
     return false;
 }
 
-int index_of_string_in_list(const char *name, char **v)
+int index_of_string_in_list(const char *name, const char *const *v)
 {
     for(int i = 0; v[i]; ++i)
     {
