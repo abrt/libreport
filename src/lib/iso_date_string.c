@@ -33,7 +33,32 @@ char *iso_date_string(const time_t *pt)
     if (ptm->tm_year+1900 < 0 || ptm->tm_year+1900 > 9999)
         error_msg_and_die("Year=%d?? Aborting", ptm->tm_year+1900);
 
-    strftime(buf, sizeof(buf), "%Y-%m-%d-%H:%M:%S", ptm);
+    strftime(buf, sizeof(buf), LIBREPORT_ISO_DATE_STRING_FORMAT, ptm);
 
     return buf;
+}
+
+int iso_date_string_parse(const char *date, time_t *pt)
+{
+    struct tm local;
+    const char *r = strptime(date, LIBREPORT_ISO_DATE_STRING_FORMAT, &local);
+
+    if (r == NULL)
+    {
+        log_warning(_("String doesn't seem to be a date: '%s'"), date);
+        return -EINVAL;
+    }
+    if (*r != '\0')
+    {
+        log_warning(_("The date: '%s' has unrecognized suffix: '%s'"), date, r);
+        return -EINVAL;
+    }
+    if (local.tm_year < 70)
+    {
+        log_warning(_("The date: '%s' is out of UNIX time stamp range"), date);
+        return -EINVAL;
+    }
+
+    *pt = mktime(&local);
+    return 0;
 }
