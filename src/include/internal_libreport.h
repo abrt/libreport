@@ -744,6 +744,16 @@ const char *get_user_conf_base_dir(void);
 #define load_conf_file_from_dirs libreport_load_conf_file_from_dirs
 bool load_conf_file_from_dirs(const char *base_name, const char *const *directories, map_string_t *settings, bool skipKeysWithoutValue);
 
+enum {
+    CONF_DIR_FLAG_NONE = 0,
+    CONF_DIR_FLAG_OPTIONAL = 1,
+};
+
+#define load_conf_file_from_dirs_ext libreport_load_conf_file_from_dirs_ext
+bool load_conf_file_from_dirs_ext(const char *base_name, const char *const *directories,
+                                  const int * dir_flags, map_string_t *settings,
+                                  bool skipKeysWithoutValue);
+
 #define save_conf_file libreport_save_conf_file
 bool save_conf_file(const char *path, map_string_t *settings);
 #define save_plugin_conf_file libreport_save_plugin_conf_file
