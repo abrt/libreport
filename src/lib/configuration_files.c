@@ -318,7 +318,21 @@ finalize:
     return retval;
 }
 
+const char *get_user_conf_base_dir(void)
+{
+    static char *base_dir = NULL;
+    if (base_dir == NULL)
+        base_dir = concat_path_file(g_get_user_config_dir(), "abrt/settings/");
+
+    return base_dir;
+}
+
 bool load_conf_file_from_dirs(const char *base_name, const char *const *directories, map_string_t *settings, bool skipKeysWithoutValue)
+{
+    return load_conf_file_from_dirs_ext(base_name, directories, NULL, settings, skipKeysWithoutValue);
+}
+
+bool load_conf_file_from_dirs_ext(const char *base_name, const char *const *directories, const int *dir_flags, map_string_t *settings, bool skipKeysWithoutValue)
 {
     if (NULL == directories || NULL == *directories)
     {
@@ -327,13 +341,19 @@ bool load_conf_file_from_dirs(const char *base_name, const char *const *director
     }
 
     bool result = true;
-    for (const char *const *dir = directories; *dir != NULL; ++dir)
+    for (size_t i = 0; directories[i] != NULL; ++i)
     {
-        char *conf_file = concat_path_file(*dir, base_name);
+        char *conf_file = concat_path_file(directories[i], base_name);
         if (!load_conf_file(conf_file, settings, skipKeysWithoutValue))
         {
-            perror_msg("Can't open '%s'", conf_file);
-            result = false;
+            if (dir_flags && (dir_flags[i] & CONF_DIR_FLAG_OPTIONAL))
+                log_notice("Can't open '%s'", conf_file);
+            else
+            {
+                perror_msg("Can't open '%s'", conf_file);
+                result = false;
+            }
+
         }
         free(conf_file);
     }

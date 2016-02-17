@@ -43,7 +43,10 @@ TESTSUITE_AT = \
   xfuncs.at \
   string_list.at \
   ureport.at \
-  dump_dir.at
+  dump_dir.at \
+  global_config.at \
+  iso_date.at \
+  uriparser.at
 
 EXTRA_DIST += $(TESTSUITE_AT)
 TESTSUITE = $(srcdir)/testsuite

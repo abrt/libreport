@@ -21,6 +21,9 @@
 #ifndef LIBREPORT_DUMP_DIR_H_
 #define LIBREPORT_DUMP_DIR_H_
 
+/* For const_string_vector_const_ptr_t */
+#include "libreport_types.h"
+
 /* For DIR */
 #include <sys/types.h>
 #include <dirent.h>
@@ -118,20 +121,57 @@ int dd_chown(struct dump_dir *dd, uid_t new_uid);
 
 
 /* reported_to handling */
-#define add_reported_to_data libreport_add_reported_to_data
-int add_reported_to_data(char **reported_to, const char *line);
-#define add_reported_to libreport_add_reported_to
-void add_reported_to(struct dump_dir *dd, const char *line);
 struct report_result {
     char *label;
     char *url;
     char *msg;
     char *bthash;
-    /* char *whole_line; */
-    /* time_t timestamp; */
+    time_t timestamp;
     /* ^^^ if you add more fields, don't forget to update free_report_result() */
 };
 typedef struct report_result report_result_t;
+
+/* Appends a new unique line to the list of report results
+ *
+ * If the reported_to data already contains the given line, the line will not
+ * be added again.
+ *
+ * @param reported_to The data
+ * @param line The appended line
+ * @return 1 if the line was added at the end of the reported_to; otherwise 0.
+ */
+#define add_reported_to_data libreport_add_reported_to_data
+int add_reported_to_data(char **reported_to, const char *line);
+
+/* Appends a new unique entry to the list of report results
+ *
+ * result->label must be non-empty string which does not contain ':' character.
+ *
+ * The function converts the result to a valid reported_to line and calls
+ * add_reported_to_data().
+ *
+ * @param reported_to The data
+ * @param result The appended entry
+ * @return -EINVAL if result->label is invalid; otherwise return value of
+ * add_reported_to_data
+ */
+#define add_reported_to_entry_data libreport_add_reported_to_entry_data
+int add_reported_to_entry_data(char **reported_to, struct report_result *result);
+
+/* This is a wrapper of add_reported_to_data which accepts 'struct dump_dir *'
+ * in the first argument instead of 'char **'. The added line is stored in
+ * 'reported_to' dump directory file.
+ */
+#define add_reported_to libreport_add_reported_to
+void add_reported_to(struct dump_dir *dd, const char *line);
+
+/* This is a wrapper of add_reported_to_entry_data which accepts 'struct
+ * dump_dir *' in the first argument instead of 'char **'. The added entry is
+ * stored in 'reported_to' dump directory file.
+ */
+#define add_reported_to_entry libreport_add_reported_to_entry
+void add_reported_to_entry(struct dump_dir *dd, struct report_result *result);
+
 #define free_report_result libreport_free_report_result
 void free_report_result(struct report_result *result);
 #define find_in_reported_to_data libreport_find_in_reported_to_data
@@ -177,6 +217,29 @@ int fdump_dir_stat_for_uid(int dir_fd, uid_t uid);
      - this could probably happen only if the dump dir is not locked
 */
 int dd_mark_as_notreportable(struct dump_dir *dd, const char *reason);
+
+/* Creates a new archive from the dump directory contents
+ *
+ * The dd argument must be opened for reading.
+ *
+ * The archive_name must not exist. The file will be created with 0600 mode.
+ *
+ * The archive type is deduced from archive_name suffix. The supported archive
+ * suffixes are the following:
+ *   - '.tag.gz' (note: the implementation uses child gzip process)
+ *
+ * The archive will include only the files that are not in the exclude_elements
+ * list. See get_global_always_excluded_elements().
+ *
+ * The argument "flags" is currently unused.
+ *
+ * @return 0 on success; otherwise non-0 value. -ENOSYS if archive type is not
+ * supported. -EEXIST if the archive file already exists. -ECHILD if child
+ * process fails. Other negative values can be converted to errno values by
+ * turning them positive.
+ */
+int dd_create_archive(struct dump_dir *dd, const char *archive_name,
+        const_string_vector_const_ptr_t exclude_elements, int flags);
 
 #ifdef __cplusplus
 }

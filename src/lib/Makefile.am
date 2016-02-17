@@ -55,7 +55,9 @@ libreport_la_SOURCES = \
     workflow_xml_parser.c \
     config_item_info.c \
     xml_parser.c \
-    libreport_init.c
+    libreport_init.c \
+    global_configuration.c \
+    uriparser.c
 
 libreport_la_CPPFLAGS = \
     -I$(srcdir)/../include \
@@ -78,6 +80,7 @@ libreport_la_CPPFLAGS = \
     $(AUGEAS_CFLAGS) \
     -D_GNU_SOURCE
 libreport_la_LDFLAGS = \
+    -ltar \
     -version-info 0:1:0
 libreport_la_LIBADD = \
     $(JSON_C_LIBS) \

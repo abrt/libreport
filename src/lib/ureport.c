@@ -644,15 +644,18 @@ ureport_server_response_save_in_dump_dir(struct ureport_server_response *resp,
 
     if (resp->urr_bthash)
     {
-        char *msg = xasprintf("uReport: BTHASH=%s", resp->urr_bthash);
-        add_reported_to(dd, msg);
-        free(msg);
+        {
+            report_result_t rr = { .label = (char *)"uReport" };
+            rr.bthash = resp->urr_bthash;
+            add_reported_to_entry(dd, &rr);
+        }
 
-        char *report_url = ureport_server_response_get_report_url(resp, config);
-        msg = xasprintf("ABRT Server: URL=%s", report_url);
-        add_reported_to(dd, msg);
-        free(msg);
-        free(report_url);
+        {
+            report_result_t rr = { .label = (char *)"ABRT Server" };
+            rr.url = ureport_server_response_get_report_url(resp, config);
+            add_reported_to_entry(dd, &rr);
+            free(rr.url);
+        }
     }
 
     if (resp->urr_reported_to_list)

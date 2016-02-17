@@ -1,0 +1,106 @@
+# -*- Autotest -*-
+
+AT_BANNER([ISO_date])
+
+## --------------- ##
+## iso_date_string ##
+## --------------- ##
+
+AT_TESTFUN([iso_date_string],
+[[#include "internal_libreport.h"
+#include <assert.h>
+#include <string.h>
+#include <stdio.h>
+
+bool string_cmp(const char *orig, const char *other)
+{
+    if (strcmp(orig, other) == 0)
+        return true;
+
+    printf("'%s' != '%s'\n", orig, other);
+    return false;
+}
+
+int main(void)
+{
+    g_verbose=3;
+
+    setenv("TZ", "", 1);
+    setenv("LC_ALL", "C", 1);
+
+    time_t local[3];
+
+    time(&local[0]);
+    char *date = xstrdup(iso_date_string(NULL));
+
+    local[1] = local[0] + 1;
+    local[2] = local[0] + 2;
+    size_t i = 0;
+    for (; ARRAY_SIZE(local); ++i)
+    {
+        if (string_cmp(date, iso_date_string(local + i)))
+            break;
+    }
+    assert((i != ARRAY_SIZE(local)) || !"None of attempts hit result date");
+    free(date);
+
+    time_t y2k = 946684800;
+    assert(string_cmp("2000-01-01-00:00:00", iso_date_string(&y2k)));
+
+    return 0;
+}
+
+]])
+
+## --------------------- ##
+## iso_date_string_parse ##
+## --------------------- ##
+
+AT_TESTFUN([parse_numbers],
+[[#include "internal_libreport.h"
+#include <assert.h>
+#include <string.h>
+#include <stdio.h>
+
+int main(void)
+{
+    g_verbose=3;
+
+    setenv("TZ", "", 1);
+    setenv("LC_ALL", "C", 1);
+
+    {
+        time_t result = 0;
+        assert(iso_date_string_parse("", &result) == -EINVAL);
+    }
+
+    {
+        time_t result = 0;
+        assert(iso_date_string_parse("foo", &result) == -EINVAL);
+    }
+
+    {
+        time_t result = 0;
+        assert(iso_date_string_parse("1969-12-31-23:59:59", &result) == -EINVAL);
+    }
+
+    {
+        time_t result = 0;
+        assert(iso_date_string_parse("1970-01-01-00:00:00", &result) == 0);
+        assert(result == 0);
+    }
+
+    {
+        time_t result = 0;
+        assert(iso_date_string_parse("2000-01-01-00:00:00", &result) == 0);
+        assert(result == 946684800 || !"Y2k");
+    }
+
+    {
+        time_t result = 0;
+        assert(iso_date_string_parse("2000-01-01-00:00:00fooo", &result) == -EINVAL);
+    }
+
+    return 0;
+}
+]])

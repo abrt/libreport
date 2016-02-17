@@ -16,7 +16,6 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include <libtar.h>
 #include "libreport_curl.h"
 #include "internal_libreport.h"
 #include "client.h"
@@ -33,32 +32,49 @@ static char *ask_url(const char *message)
     return url;
 }
 
+static int interactive_upload_file(const char *url, const char *file_name, char **remote_name)
+{
+    post_state_t *state = new_post_state(POST_WANT_ERROR_MSG);
+    state->username = getenv("Upload_Username");
+    char *password_inp = NULL;
+    if (state->username != NULL && state->username[0] != '\0')
+    {
+        /* Load Password only if Username is configured, it doesn't make */
+        /* much sense to load Password without Username. */
+        state->password = getenv("Upload_Password");
+        if (state->password == NULL)
+        {
+            /* Be permissive and nice, ask only once and don't check */
+            /* the result. User can dismiss this prompt but the upload */
+            /* may work somehow??? */
+            char *msg = xasprintf(_("Please enter password for uploading:"), state->username);
+            state->password = password_inp = ask_password(msg);
+            free(msg);
+        }
+    }
+
+    char *tmp = upload_file_ext(state, url, file_name, UPLOAD_FILE_HANDLE_ACCESS_DENIALS);
+
+    if (remote_name)
+        *remote_name = tmp;
+    else
+        free(tmp);
+
+    free(password_inp);
+    free_post_state(state);
+
+    /* return 0 on success */
+    return tmp == NULL;
+}
+
 static int create_and_upload_archive(
                 const char *dump_dir_name,
-                map_string_t *settings)
+                const char *url,
+                char **remote_name)
 {
     int result = 1; /* error */
 
-    pid_t child;
-    TAR* tar = NULL;
-    const char* errmsg = NULL;
     char* tempfile = NULL;
-
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        xfunc_die(); /* error msg is already logged by dd_opendir */
-
-    /* Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing */
-    log(_("Compressing data"));
-
-//TODO:
-//Encrypt = yes
-//ArchiveType = .tar.bz2
-//ExcludeFiles = foo,bar*,b*z
-    const char* opt = getenv("Upload_URL");
-    if (!opt)
-        opt = get_map_string_item_or_empty(settings, "URL");
-    char *url = opt[0] != '\0' ? xstrdup(opt) : ask_url(_("Upload URL is not provided by configuration. Please enter upload URL:"));
 
     /* Create a child gzip which will compress the data */
     /* SELinux guys are not happy with /tmp, using /var/run/abrt */
@@ -67,137 +83,42 @@ static int create_and_upload_archive(
     tempfile = concat_path_basename(LARGE_DATA_TMP_DIR, dump_dir_name);
     tempfile = append_to_malloced_string(tempfile, ".tar.gz");
 
-    int pipe_from_parent_to_child[2];
-    xpipe(pipe_from_parent_to_child);
-    child = vfork();
-    if (child == 0)
-    {
-        /* child */
-        close(pipe_from_parent_to_child[1]);
-        xmove_fd(pipe_from_parent_to_child[0], 0);
-        xmove_fd(xopen3(tempfile, O_WRONLY | O_CREAT | O_EXCL, 0600), 1);
-        execlp("gzip", "gzip", NULL);
-        perror_msg_and_die("Can't execute '%s'", "gzip");
-    }
-    close(pipe_from_parent_to_child[0]);
+    string_vector_ptr_t exclude_from_report = get_global_always_excluded_elements();
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        xfunc_die(); /* error msg is already logged by dd_opendir */
 
-    /* If child died (say, in xopen), then parent might get SIGPIPE.
-     * We want to properly unlock dd, therefore we must not die on SIGPIPE:
-     */
-    signal(SIGPIPE, SIG_IGN);
-
-    /* Create tar writer object */
-    if (tar_fdopen(&tar, pipe_from_parent_to_child[1], tempfile,
-                /*fileops:(standard)*/ NULL, O_WRONLY | O_CREAT, 0644, TAR_GNU) != 0)
+    /* Compressing e.g. 0.5gig coredump takes a while. Let client know what we are doing */
+    log(_("Compressing data"));
+    if (dd_create_archive(dd, tempfile, (const char * const*)exclude_from_report, 0) != 0)
     {
-        errmsg = "Can't create temporary file in "LARGE_DATA_TMP_DIR;
+        log_error("Can't create temporary file in %s", LARGE_DATA_TMP_DIR);
         goto ret;
     }
 
-    /* Write data to the tarball */
-    {
-        char *exclude_from_report = getenv("EXCLUDE_FROM_REPORT");
-        dd_init_next_file(dd);
-        char *short_name, *full_name;
-        while (dd_get_next_file(dd, &short_name, &full_name))
-        {
-            if (exclude_from_report && is_in_comma_separated_list(short_name, exclude_from_report))
-                goto next;
-
-            // dd_get_next_file guarantees that it's a REG:
-            //struct stat stbuf;
-            //if (stat(full_name, &stbuf) != 0)
-            // || !S_ISREG(stbuf.st_mode)
-            //) {
-            //     goto next;
-            //}
-            if (tar_append_file(tar, full_name, short_name) != 0)
-            {
-                errmsg = "Can't create temporary file in "LARGE_DATA_TMP_DIR;
-                free(short_name);
-                free(full_name);
-                goto ret;
-            }
- next:
-            free(short_name);
-            free(full_name);
-        }
-    }
     dd_close(dd);
     dd = NULL;
 
-    /* Close tar writer... */
-    if (tar_append_eof(tar) != 0 || tar_close(tar) != 0)
-    {
-        errmsg = "Can't create temporary file in "LARGE_DATA_TMP_DIR;
-        goto ret;
-    }
-    tar = NULL;
-    /* ...and check that gzip child finished successfully */
-    int status;
-    safe_waitpid(child, &status, 0);
-    child = -1;
-    if (status != 0)
-    {
-        /* We assume the error was out-of-disk-space or out-of-quota */
-        errmsg = "Can't create temporary file in "LARGE_DATA_TMP_DIR;
-        goto ret;
-    }
-
-    /* Upload the tarball */
+    /* Upload the archive */
     /* Upload from /tmp to /tmp + deletion -> BAD, exclude this possibility */
     if (url && url[0] && strcmp(url, "file://"LARGE_DATA_TMP_DIR"/") != 0)
-    {
-        post_state_t *state = new_post_state(POST_WANT_ERROR_MSG);
-        state->username = getenv("Upload_Username");
-        char *password_inp = NULL;
-        if (state->username != NULL && state->username[0] != '\0')
-        {
-            /* Load Password only if Username is configured, it doesn't make */
-            /* much sense to load Password without Username. */
-            state->password = getenv("Upload_Password");
-            if (state->password == NULL)
-            {
-                /* Be permissive and nice, ask only once and don't check */
-                /* the result. User can dismiss this prompt but the upload */
-                /* may work somehow??? */
-                char *msg = xasprintf(_("Please enter password for uploading:"), state->username);
-                state->password = password_inp = ask_password(msg);
-                free(msg);
-            }
-        }
-
-        char *remote_name = upload_file_ext(state, url, tempfile, UPLOAD_FILE_HANDLE_ACCESS_DENIALS);
-
-        result = (remote_name == NULL); /* error if NULL */
-        free(remote_name);
-        free(password_inp);
-        free_post_state(state);
-        /* cleanup code will delete tempfile */
-    }
+        result = interactive_upload_file(url, tempfile, remote_name);
     else
     {
         result = 0; /* success */
         log(_("Archive is created: '%s'"), tempfile);
-        free(tempfile);
+        *remote_name = tempfile;
         tempfile = NULL;
     }
 
  ret:
-    free(url);
     dd_close(dd);
-    if (tar)
-        tar_close(tar);
-    /* close(pipe_from_parent_to_child[1]); - tar_close() does it itself */
-    if (child > 0)
-        safe_waitpid(child, NULL, 0);
+
     if (tempfile)
     {
         unlink(tempfile);
         free(tempfile);
     }
-    if (errmsg)
-        error_msg_and_die("%s", errmsg);
 
     return result;
 }
@@ -205,6 +126,9 @@ static int create_and_upload_archive(
 int main(int argc, char **argv)
 {
     abrt_init(argv);
+
+    if (!load_global_configuration())
+        error_msg_and_die("Cannot continue without libreport global configuration.");
 
     /* I18n */
     setlocale(LC_ALL, "");
@@ -255,14 +179,47 @@ int main(int argc, char **argv)
 
     export_abrt_envvars(0);
 
+    // 2015-10-16 (jfilak):
+    //   It looks like there is no demand for encryption and other archive
+    //   types. Configurable ExcludeFiles sounds reasonable to me, I am
+    //   not sure about globbing though.
+    //
+    //Encrypt = yes
+    //ArchiveType = .tar.bz2
+    //
+    //TODO:
+    //ExcludeFiles = foo,bar*,b*z
+
     map_string_t *settings = new_map_string();
-    if (url)
-        replace_map_string_item(settings, xstrdup("URL"), xstrdup(url));
     if (conf_file)
         load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 
-    int result = create_and_upload_archive(dump_dir_name, settings);
+    char *input_url = NULL;
+    const char *conf_url = getenv("Upload_URL");
+    if (!conf_url || conf_url[0] == '\0')
+        conf_url = url;
+    if (!conf_url || conf_url[0] == '\0')
+        conf_url = get_map_string_item_or_empty(settings, "URL");
+    if (!conf_url || conf_url[0] == '\0')
+        conf_url = input_url = ask_url(_("Please enter a URL (scp, ftp, etc.) where the problem data is to be exported:"));
 
+    char *remote_name = NULL;
+    const int result = create_and_upload_archive(dump_dir_name, conf_url, &remote_name);
+    if (result != 0)
+        goto finito;
+
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (dd)
+    {
+        report_result_t rr = { .label = (char *)"upload" };
+        rr.url = remote_name,
+        add_reported_to_entry(dd, &rr);
+        dd_close(dd);
+    }
+    free(remote_name);
+
+finito:
+    free(input_url);
     free_map_string(settings);
     return result;
 }

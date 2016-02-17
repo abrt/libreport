@@ -45,7 +45,6 @@
 #include <termios.h>
 #include <time.h>
 #include <unistd.h>
-#include <stdbool.h>
 /* Try to pull in PATH_MAX */
 #include <limits.h>
 #include <sys/param.h>
@@ -91,6 +90,7 @@ int vdprintf(int d, const char *format, va_list ap);
 
 /* Pull in entire public libreport API */
 #include "dump_dir.h"
+#include "global_configuration.h"
 #include "event_config.h"
 #include "problem_data.h"
 #include "report.h"
@@ -293,10 +293,10 @@ char *run_in_shell_and_save_output(int flags,
 /* Random utility functions */
 
 #define is_in_string_list libreport_is_in_string_list
-bool is_in_string_list(const char *name, char **v);
+bool is_in_string_list(const char *name, const char *const *v);
 
 #define index_of_string_in_list libreport_index_of_string_in_list
-int index_of_string_in_list(const char *name, char **v);
+int index_of_string_in_list(const char *name, const char *const *v);
 
 #define is_in_comma_separated_list libreport_is_in_comma_separated_list
 bool is_in_comma_separated_list(const char *value, const char *list);
@@ -644,6 +644,17 @@ char* get_environ(pid_t pid);
 #define iso_date_string libreport_iso_date_string
 char *iso_date_string(const time_t *pt);
 #define LIBREPORT_ISO_DATE_STRING_SAMPLE "YYYY-MM-DD-hh:mm:ss"
+#define LIBREPORT_ISO_DATE_STRING_FORMAT "%Y-%m-%d-%H:%M:%S"
+
+/* Parses date into integer UNIX time stamp
+ *
+ * @param date The parsed date string
+ * @param pt Return value
+ * @return 0 on success; otherwise non-0 number. -EINVAL if the parameter date
+ * does not match LIBREPORT_ISO_DATE_STRING_FORMAT
+ */
+#define iso_date_string_parse libreport_iso_date_string_parse
+int iso_date_string_parse(const char *date, time_t *pt);
 
 enum {
     MAKEDESC_SHOW_FILES     = (1 << 0),
@@ -738,8 +749,21 @@ bool load_conf_file(const char *pPath, map_string_t *settings, bool skipKeysWith
 #define load_plugin_conf_file libreport_load_plugin_conf_file
 bool load_plugin_conf_file(const char *name, map_string_t *settings, bool skipKeysWithoutValue);
 
+#define get_user_conf_base_dir libreport_get_user_conf_base_dir
+const char *get_user_conf_base_dir(void);
+
 #define load_conf_file_from_dirs libreport_load_conf_file_from_dirs
 bool load_conf_file_from_dirs(const char *base_name, const char *const *directories, map_string_t *settings, bool skipKeysWithoutValue);
+
+enum {
+    CONF_DIR_FLAG_NONE = 0,
+    CONF_DIR_FLAG_OPTIONAL = 1,
+};
+
+#define load_conf_file_from_dirs_ext libreport_load_conf_file_from_dirs_ext
+bool load_conf_file_from_dirs_ext(const char *base_name, const char *const *directories,
+                                  const int * dir_flags, map_string_t *settings,
+                                  bool skipKeysWithoutValue);
 
 #define save_conf_file libreport_save_conf_file
 bool save_conf_file(const char *path, map_string_t *settings);
@@ -1018,6 +1042,28 @@ void show_usage_and_die(const char *usage, const struct options *opt) NORETURN;
  * Resorting to just forward-declaring the struct we need.
  */
 struct abrt_post_state;
+
+/* Decomposes uri to its base elements, removes userinfo out of the hostname and
+ * composes a new uri without userinfo.
+ *
+ * The function does not validate the url.
+ *
+ * @param uri The uri that might contain userinfo
+ * @param result The userinfo free uri will be store here. Cannot be null. Must
+ * be de-allocated by free.
+ * @param scheme Scheme of the uri. Can be NULL. Result can be NULL. Result
+ * must be de-allocated by free.
+ * @param hostname Hostname of the uri. Can be NULL. Result can be NULL. Result
+ * must be de-allocated by free.
+ * @param username Username of the uri. Can be NULL. Result can be NULL. Result
+ * must be de-allocated by free.
+ * @param password Password of the uri. Can be NULL. Result can be NULL. Result
+ * must be de-allocated by free.
+ * @param location Location of the uri. Can be NULL. Result is never NULL. Result
+ * must be de-allocated by free.
+ */
+#define uri_userinfo_remove libreport_uri_userinfo_remove
+int uri_userinfo_remove(const char *uri, char **result, char **scheme, char **hostname, char **username, char **password, char **location);
 
 #ifdef __cplusplus
 }

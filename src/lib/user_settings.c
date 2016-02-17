@@ -18,21 +18,19 @@
 #include "internal_libreport.h"
 #include <augeas.h>
 
-#define BASE_DIR_FOR_USER_CONFIG_FILE "abrt/settings/"
-
 static map_string_t *user_settings;
 static char *conf_path;
 
 static char *get_user_config_file_path(const char *name, const char *suffix)
 {
-    char *s, *conf;
+    char *s = NULL;
+    char *conf;
 
     if (suffix != NULL)
-        s = xasprintf(BASE_DIR_FOR_USER_CONFIG_FILE"%s.%s", name, suffix);
-    else
-        s = xasprintf(BASE_DIR_FOR_USER_CONFIG_FILE"%s", name);
+        s = xasprintf("%s.%s", name, suffix);
 
-    conf = concat_path_file(g_get_user_config_dir(), s);
+    conf = concat_path_file(get_user_conf_base_dir(), s != NULL ? s : name);
+
     free(s);
     return conf;
 }
