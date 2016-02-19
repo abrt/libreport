@@ -27,16 +27,20 @@
 
 /* problem report format template */
 #define PROBLEM_REPORT_TEMPLATE \
-    "%summary:: [abrt] %pkg_name%[[: %crash_function%()]][[: %reason%]][[: TAINTED %tainted_short%]]\n" \
+    "%summary:: [abrt] [[%pkg_name%]][[: %crash_function%()]][[: %reason%]][[: TAINTED %tainted_short%]]\n" \
     "\n" \
     "Description of problem:: %bare_comment\n" \
     "\n" \
+    "Additional info::" \
+    "    count,reason,package,pkg_vendor,cmdline,executable,%reporter\n" \
+    "\n" \
+    "How reproducible:: %bare_reproducible\n" \
+    "\n" \
+    "Steps to reproduce:: %bare_reproducer\n" \
+    "\n" \
     "Truncated backtrace:: %bare_%short_backtrace\n" \
     "\n" \
-    "Other report identifiers:: %bare_reported_to\n" \
-    "\n" \
-    "Additional info::" \
-    "    count,reason,package,cmdline,executable,%reporter\n"
+    "Other report identifiers:: %bare_reported_to\n"
 
 #define ABRT_ELEMENTS_KB_ARTICLE "https://access.redhat.com/articles/2134281"
 
@@ -702,6 +706,10 @@ int main(int argc, char **argv)
             exit(EXIT_CANCEL_BY_USER);
     }
 
+    /* In the case there is no pkg_vendor file use "unknown vendor"  */
+    if (!vendor)
+        add_to_problem_data(problem_data, FILENAME_PKG_VENDOR, "unknown vendor");
+
     executable  = get_problem_item_content_or_NULL(problem_data, FILENAME_EXECUTABLE);
     if (!package)
     {
@@ -713,15 +721,16 @@ int main(int argc, char **argv)
         free(message);
         if (!r)
             exit(EXIT_CANCEL_BY_USER);
+
+        add_to_problem_data(problem_data, FILENAME_PACKAGE, "not belong to any package");
     }
 
-    package  = get_problem_item_content_or_NULL(problem_data, FILENAME_PACKAGE);
     release  = get_problem_item_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
 
     if (!release) /* Old dump dir format compat. Remove in abrt-2.1 */
         release = get_problem_item_content_or_NULL(problem_data, "release");
 
-     problem_formatter_t *pf = problem_formatter_new();
+    problem_formatter_t *pf = problem_formatter_new();
 
     /* formatting conf file was set */
     if (fmt_file)
