@@ -16,6 +16,7 @@ dist_workflows_DATA = \
     workflow_RHELxorg.xml \
     workflow_RHELLibreport.xml \
     workflow_RHELJava.xml \
+    workflow_uReport.xml \
     workflow_Mailx.xml \
     workflow_MailxCCpp.xml \
     workflow_Upload.xml \
@@ -55,6 +56,7 @@ workflowsdefdir = $(WORKFLOWS_DEFINITION_DIR)
 dist_workflowsdef_DATA =\
     report_fedora.conf \
     report_rhel.conf \
+    report_uReport.conf \
     report_mailx.conf \
     report_logger.conf \
     report_uploader.conf \
@@ -84,6 +86,7 @@ EXTRA_DIST = \
     workflow_RHELxorg.xml.in \
     workflow_RHELLibreport.xml.in \
     workflow_RHELJava.xml.in \
+    workflow_uReport.xml.in \
     workflow_Mailx.xml.in \
     workflow_MailxCCpp.xml.in \
     workflow_Upload.xml.in \
