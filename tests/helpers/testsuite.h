@@ -265,8 +265,8 @@ FILE *g_testsuite_output_stream = 0;
 
 #define TS_ASSERT_PTR_OP_MESSAGE(actual, operator, expected, message) \
     do { \
-        void *l_ts_lhs = (actual); \
-        void *l_ts_rhs = (expected); \
+        const void *l_ts_lhs = (actual); \
+        const void *l_ts_rhs = (expected); \
         if (l_ts_lhs operator l_ts_rhs) { \
             TS_SUCCESS("%s ("#actual" "#operator" "#expected")\n\tActual  : %p\n", message ? message : "Assert", l_ts_lhs); \
         } \

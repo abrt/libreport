@@ -439,3 +439,48 @@ int main(int argc, char **argv)
     dd_delete(dd);
 }
 ]])
+
+## ------------------------- ##
+## problem_data_reproducible ##
+## ------------------------- ##
+
+AT_TESTFUN([problem_data_reproducible],
+[[
+#include "testsuite.h"
+
+#define TEST_FLAGS (CD_FLAG_TXT | CD_FLAG_ISNOTEDITABLE | CD_FLAG_UNIXTIME)
+
+TS_MAIN
+{
+    TS_ASSERT_STRING_NULL_OR_EMPTY(get_problem_data_reproducible_name(-1), "Invalid value");
+    TS_ASSERT_PTR_IS_NOT_NULL(get_problem_data_reproducible_name(PROBLEM_REPRODUCIBLE_UNKNOWN));
+    TS_ASSERT_PTR_IS_NOT_NULL(get_problem_data_reproducible_name(PROBLEM_REPRODUCIBLE_YES));
+    TS_ASSERT_PTR_IS_NOT_NULL(get_problem_data_reproducible_name(PROBLEM_REPRODUCIBLE_RECURRENT));
+    TS_ASSERT_STRING_NULL_OR_EMPTY(get_problem_data_reproducible_name(_PROBLEM_REPRODUCIBLE_MAX_), "Upper boundary");
+    TS_ASSERT_STRING_NULL_OR_EMPTY(get_problem_data_reproducible_name(_PROBLEM_REPRODUCIBLE_MAX_ + 1), "Upper boundary + 1");
+    TS_ASSERT_SIGNED_EQ(_PROBLEM_REPRODUCIBLE_MAX_, 3);
+
+    problem_data_t *pd = problem_data_new();
+
+    TS_ASSERT_SIGNED_EQ(get_problem_data_reproducible(pd), -1);
+
+    problem_data_add(pd, FILENAME_REPRODUCIBLE,
+                     get_problem_data_reproducible_name(PROBLEM_REPRODUCIBLE_UNKNOWN), TEST_FLAGS);
+    TS_ASSERT_SIGNED_EQ(get_problem_data_reproducible(pd), PROBLEM_REPRODUCIBLE_UNKNOWN);
+
+    problem_data_add(pd, FILENAME_REPRODUCIBLE,
+                     get_problem_data_reproducible_name(PROBLEM_REPRODUCIBLE_YES), TEST_FLAGS);
+    TS_ASSERT_SIGNED_EQ(get_problem_data_reproducible(pd), PROBLEM_REPRODUCIBLE_YES);
+
+    problem_data_add(pd, FILENAME_REPRODUCIBLE,
+                     get_problem_data_reproducible_name(PROBLEM_REPRODUCIBLE_RECURRENT), TEST_FLAGS);
+    TS_ASSERT_SIGNED_EQ(get_problem_data_reproducible(pd), PROBLEM_REPRODUCIBLE_RECURRENT);
+
+    problem_data_add(pd, FILENAME_REPRODUCIBLE,
+                     get_problem_data_reproducible_name(_PROBLEM_REPRODUCIBLE_MAX_), TEST_FLAGS);
+    TS_ASSERT_SIGNED_EQ(get_problem_data_reproducible(pd), -1);
+
+    problem_data_free(pd);
+}
+TS_RETURN_MAIN
+]])
