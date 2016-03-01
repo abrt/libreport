@@ -82,6 +82,7 @@ typedef struct
     bool  ec_sending_sensitive_data;
     bool  ec_supports_restricted_access;
     char *ec_restricted_access_option;
+    bool  ec_requires_details;
 
     GList *ec_imported_event_names;
     GList *options;

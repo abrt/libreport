@@ -1082,6 +1082,10 @@ struct dump_dir *open_directory_for_writing(
 #define FILENAME_ABRT_VERSION  "abrt_version"
 #define FILENAME_EXPLOITABLE   "exploitable"
 
+/* reproducible element is used by functions from problem_data.h */
+#define FILENAME_REPRODUCIBLE  "reproducible"
+#define FILENAME_REPRODUCER    "reproducer"
+
 /* File names related to Anaconda problems
  */
 #define FILENAME_KICKSTART_CFG "ks.cfg"
