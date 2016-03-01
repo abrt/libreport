@@ -683,6 +683,34 @@ int main(int argc, char **argv)
             exit(EXIT_CANCEL_BY_USER);
     }
 
+    const char *vendor = NULL;
+    vendor = problem_data_get_content_or_NULL(problem_data, FILENAME_PKG_VENDOR);
+    if (package && vendor && strcmp(vendor, "Red Hat, Inc.") != 0)
+    {
+        char *message = xasprintf(
+            _("The crashed program was released by '%s'. "
+              "Would you like to report the problem to Red Hat Support?"),
+              vendor);
+        int r = ask_yes_no(message);
+        free(message);
+        if (!r)
+            exit(EXIT_CANCEL_BY_USER);
+    }
+
+    const char *executable = NULL;
+    executable  = problem_data_get_content_or_NULL(problem_data, FILENAME_EXECUTABLE);
+    if (!package)
+    {
+        char *message = xasprintf(
+            _("The program '%s' does not appear to be provided by Red Hat. "
+              "Would you like to report the problem to Red Hat Support?"),
+              executable);
+        int r = ask_yes_no(message);
+        free(message);
+        if (!r)
+            exit(EXIT_CANCEL_BY_USER);
+    }
+
     problem_formatter_t *pf = problem_formatter_new();
 
     /* formatting conf file was set */
