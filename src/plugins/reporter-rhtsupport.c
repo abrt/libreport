@@ -27,16 +27,20 @@
 
 /* problem report format template */
 #define PROBLEM_REPORT_TEMPLATE \
-    "%summary:: [abrt] %pkg_name%[[: %crash_function%()]][[: %reason%]][[: TAINTED %tainted_short%]]\n" \
+    "%summary:: [abrt] [[%pkg_name%]][[: %crash_function%()]][[: %reason%]][[: TAINTED %tainted_short%]]\n" \
     "\n" \
     "Description of problem:: %bare_comment\n" \
     "\n" \
+    "Additional info::" \
+    "    count,reason,package,pkg_vendor,cmdline,executable,%reporter\n" \
+    "\n" \
+    "How reproducible:: %bare_reproducible\n" \
+    "\n" \
+    "Steps to reproduce:: %bare_reproducer\n" \
+    "\n" \
     "Truncated backtrace:: %bare_%short_backtrace\n" \
     "\n" \
-    "Other report identifiers:: %bare_reported_to\n" \
-    "\n" \
-    "Additional info::" \
-    "    count,reason,package,cmdline,executable,%reporter\n"
+    "Other report identifiers:: %bare_reported_to\n"
 
 #define ABRT_ELEMENTS_KB_ARTICLE "https://access.redhat.com/articles/2134281"
 
@@ -677,6 +681,10 @@ int main(int argc, char **argv)
             exit(EXIT_CANCEL_BY_USER);
     }
 
+    /* In the case there is no pkg_vendor file use "unknown vendor"  */
+    if (!vendor)
+        problem_data_add_text_noteditable(problem_data, FILENAME_PKG_VENDOR, "unknown vendor");
+
     const char *executable = NULL;
     executable  = problem_data_get_content_or_NULL(problem_data, FILENAME_EXECUTABLE);
     if (!package)
@@ -689,6 +697,9 @@ int main(int argc, char **argv)
         free(message);
         if (!r)
             exit(EXIT_CANCEL_BY_USER);
+
+        problem_data_add_text_noteditable(problem_data, FILENAME_PACKAGE,
+                                         "not belong to any package");
     }
 
     char tmpdir_name[sizeof(LARGE_DATA_TMP_DIR"/rhtsupport-"LIBREPORT_ISO_DATE_STRING_SAMPLE"-XXXXXX")];
