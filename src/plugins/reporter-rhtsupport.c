@@ -73,7 +73,8 @@ static report_result_t *get_reported_to(const char *dump_dir_name)
 }
 
 static
-int create_tarball(const char *tempfile, problem_data_t *problem_data)
+int create_tarball(const char *tempfile, struct dump_dir *dd,
+     problem_data_t *problem_data)
 {
     reportfile_t *file = NULL;
     int retval = 0; /* everything is ok so far .. */
@@ -126,15 +127,28 @@ int create_tarball(const char *tempfile, problem_data_t *problem_data)
                         /*recorded_filename*/ xml_name,
                         /*binary           */ !(value->flags & CD_FLAG_BIGTXT)
                 );
-                if (tar_append_file(tar, (char*)content, xml_name) != 0)
-                {
-                    free(xml_name);
-                    goto ret_fail;
-                }
                 free(xml_name);
             }
         }
     }
+
+    /* append all files from dump dir */
+    dd_init_next_file(dd);
+    char *short_name, *full_name;
+    while (dd_get_next_file(dd, &short_name, &full_name))
+    {
+        char *uploaded_name = concat_path_file("content", short_name);
+        free(short_name);
+
+        if (tar_append_file(tar, full_name, uploaded_name) != 0)
+        {
+            free(full_name);
+            goto ret_fail;
+        }
+
+        free(full_name);
+    }
+
     const char *signature = reportfile_as_string(file);
     /*
      * Note: this pointer points to string which is owned by
@@ -200,6 +214,7 @@ ret_fail:
     }
 
 ret_clean:
+    dd_close(dd);
     /* now it's safe to free file */
     free_reportfile(file);
     return retval;
@@ -776,7 +791,11 @@ int main(int argc, char **argv)
     /* Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing */
     log(_("Compressing data"));
 
-    if (create_tarball(tempfile, problem_data) != 0)
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        xfunc_die(); /* error msg is already logged by dd_opendir */
+
+    if (create_tarball(tempfile, dd, problem_data) != 0)
     {
         errmsg = _("Can't create temporary file in "LARGE_DATA_TMP_DIR);
         goto ret;
@@ -849,7 +868,7 @@ int main(int argc, char **argv)
         }
         /* No error in case creation */
         /* Record "reported_to" element */
-        struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+        dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
         if (dd)
         {
             struct report_result rr = { .label = (char *)"RHTSupport" };
