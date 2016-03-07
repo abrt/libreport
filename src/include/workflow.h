@@ -23,6 +23,10 @@
 #include "event_config.h"
 #include "config_item_info.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct workflow workflow_t;
 
 extern GHashTable *g_workflow_list;
@@ -55,5 +59,9 @@ void wf_set_priority(workflow_t *w, int priority);
 int wf_priority_compare(const workflow_t *first, const workflow_t *second);
 
 GHashTable *load_workflow_config_data_from_list(GList *wf_names, const char *path);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
