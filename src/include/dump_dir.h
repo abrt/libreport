@@ -75,7 +75,7 @@ extern gid_t dd_g_fs_group_gid;
 /* Dump Directory                                                             */
 /******************************************************************************/
 
-enum {
+enum dump_dir_flags {
     DD_FAIL_QUIETLY_ENOENT = (1 << 0),
     DD_FAIL_QUIETLY_EACCES = (1 << 1),
     /* Open symlinks. dd_* funcs don't open symlinks by default */
@@ -132,8 +132,24 @@ struct dump_dir *dd_opendir(const char *dir, int flags);
  */
 struct dump_dir *dd_fdopendir(struct dump_dir *dd, int flags);
 
+/* Creates a new directory with internal files
+ *
+ * The functions creates a new directory which remains owned by the user of the
+ * process until dd_reset_ownership() is called.
+ *
+ * The function logs error messages in case of errors.
+ *
+ * @param dir Full file system path of the new directory
+ * @param uid Desired file system owner of the new directory or -1 if the owner
+ * should stay untouched even after calling dd_reset_ownership().
+ * @param mode File system mode of the new directory.
+ * @param flags See 'enum dump_dir_flags'
+ * @return Initialized struct dump_dir of NULL
+ */
 struct dump_dir *dd_create_skeleton(const char *dir, uid_t uid, mode_t mode, int flags);
+
 int dd_reset_ownership(struct dump_dir *dd);
+
 /* Pass uid = (uid_t)-1L to disable chown'ing of newly created files
  * (IOW: if you aren't running under root):
  */
