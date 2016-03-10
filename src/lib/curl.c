@@ -627,7 +627,7 @@ char *upload_file_ext(post_state_t *state, const char *url, const char *filename
 
     if (scheme == NULL || hostname == NULL)
     {
-        log_warning(_("Ingoring URL without scheme and hostname"));
+        log_warning(_("Ignoring URL without scheme and hostname"));
         goto finito;
     }
 
