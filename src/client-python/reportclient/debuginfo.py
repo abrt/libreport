@@ -150,7 +150,7 @@ def unpack_rpm(package_full_path, files, tmp_dir, destdir, exact_files=False):
         return RETURN_FAILURE
 
 
-def clean_up(tmp_dir):
+def clean_up(tmp_dir, silent=False):
     """
     Removes the temporary directory.
     """
@@ -159,7 +159,7 @@ def clean_up(tmp_dir):
         try:
             shutil.rmtree(tmp_dir)
         except OSError as ex:
-            if ex.errno != errno.ENOENT:
+            if ex.errno != errno.ENOENT and silent == False:
                 error_msg(_("Can't remove '{0}': {1}").format(tmp_dir, str(ex)))
 
 
