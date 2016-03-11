@@ -60,6 +60,16 @@ int wf_priority_compare(const workflow_t *first, const workflow_t *second);
 
 GHashTable *load_workflow_config_data_from_list(GList *wf_names, const char *path);
 
+/* The function loads all workflow XML configuration files placed in the given
+ * directory.
+ *
+ * @param directory File system path to directory with workflow XML
+ * configuration files.
+ * @returns A map where the key is workflow's name and the value is workflow_t *.
+ */
+#define load_workflow_config_data libreport_load_workflow_config_data
+GHashTable *load_workflow_config_data(const char* directory);
+
 #ifdef __cplusplus
 }
 #endif

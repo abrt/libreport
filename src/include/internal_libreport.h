@@ -912,8 +912,6 @@ void free_file_list(GList *filelist);
 file_obj_t *new_file_obj(const char* fullpath, const char* filename);
 #define free_file_obj libreport_free_file_obj
 void free_file_obj(file_obj_t *f);
-#define load_workflow_config_data libreport_load_workflow_config_data
-GHashTable *load_workflow_config_data(const char* path);
 #define parse_delimited_list libreport_parse_delimited_list
 GList *parse_delimited_list(char* list, const char *delim);
 #define parse_list libreport_parse_list
