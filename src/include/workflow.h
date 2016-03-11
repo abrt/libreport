@@ -38,8 +38,19 @@ void free_workflow(workflow_t *w);
 void load_workflow_description_from_file(workflow_t *w, const char *filename);
 config_item_info_t *workflow_get_config_info(workflow_t *w);
 const char *wf_get_name(workflow_t *w);
+
+/* Get a list of executed events configuration.
+ *
+ * @return A list of event_config_t *. Do not free the list.
+ */
 GList *wf_get_event_list(workflow_t *w);
+
+/* Get a list of the event names to execute.
+ *
+ * @return A list of char *. Free the list with g_list_free(list, free).
+ */
 GList *wf_get_event_names(workflow_t *w);
+
 const char *wf_get_screen_name(workflow_t *w);
 const char *wf_get_description(workflow_t *w);
 const char *wf_get_long_desc(workflow_t *w);
