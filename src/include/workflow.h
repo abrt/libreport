@@ -58,13 +58,21 @@ void wf_set_priority(workflow_t *w, int priority);
  */
 int wf_priority_compare(const workflow_t *first, const workflow_t *second);
 
+/* The function loads workflow XML configuration files for the workflows listed
+ * in the wf_names argument. The XML files are searched in a directory at path.
+ *
+ * @param wf_names Required workflow names
+ * @param path y File system path to directory with workflow XML
+ * configuration files. If NULL, the default 'WORKFLOWS_DIR' is used instead.
+ * @returns A map where the key is workflow's name and the value is workflow_t *.
+ */
 GHashTable *load_workflow_config_data_from_list(GList *wf_names, const char *path);
 
 /* The function loads all workflow XML configuration files placed in the given
  * directory.
  *
  * @param directory File system path to directory with workflow XML
- * configuration files.
+ * configuration files. If NULL, the default 'WORKFLOWS_DIR' is used instead.
  * @returns A map where the key is workflow's name and the value is workflow_t *.
  */
 #define load_workflow_config_data libreport_load_workflow_config_data
