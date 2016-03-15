@@ -42,6 +42,12 @@ BuildRequires: xmlto
 BuildRequires: newt-devel
 BuildRequires: libproxy-devel
 BuildRequires: satyr-devel >= 0.18
+
+%if 0%{?fedora} >= 24
+# A test case uses zh_CN locale to verify XML event translations
+BuildRequires: glibc-all-langpacks
+%endif
+
 %if %{with bugzilla}
 BuildRequires: xmlrpc-c-devel
 %endif
