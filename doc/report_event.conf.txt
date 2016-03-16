@@ -84,6 +84,7 @@ Each file has XML formatting with the following DTD:
 <!ATTLIST note-html        xml:lang CDATA #IMPLIED>
 <!ELEMENT allow-empty      ("yes"|"no")>
 <!ELEMENT default-value    (#PCDATA)>
+<!ELEMENT requires-details ("yes"|"no")>
 -------------
 
 name::
@@ -145,6 +146,11 @@ default-value::
 option:name::
     Name of exported environment variable name. libreport tools communicate
     through Environment Variables.
+
+requires-details::
+    If "yes", the UI tools will offer the users to fill "comment", "reproducer" and
+    "reproducible" during a reporting. If "no", only "comment" will be offered
+    to fill.
 
 EXAMPLES
 --------

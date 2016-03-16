@@ -91,6 +91,13 @@ static GtkLabel *g_lbl_cd_reason;
 static GtkTextView *g_tv_comment;
 static GtkEventBox *g_eb_comment;
 static GtkCheckButton *g_cb_no_comment;
+static GtkBox *g_vb_simple_details;
+
+static GtkComboBoxText *g_cmb_reproducible;
+static GtkTextView *g_tv_steps;
+static GtkLabel *g_lbl_complex_details_hint;
+static GtkBox *g_vb_complex_details;
+
 static GtkWidget *g_widget_warnings_area;
 static GtkBox *g_box_warning_labels;
 static GtkToggleButton *g_tb_approve_bt;
@@ -1130,6 +1137,51 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
     return active_button;
 }
 
+static bool isdigit_str(const char *str)
+{
+    do
+    {
+        if (*str < '0' || *str > '9') return false;
+        str++;
+    } while (*str);
+    return true;
+}
+
+static void update_reproducible_hints(void)
+{
+    int reproducible = gtk_combo_box_get_active(GTK_COMBO_BOX(g_cmb_reproducible));
+    switch(reproducible)
+    {
+        case -1:
+            return;
+
+        case PROBLEM_REPRODUCIBLE_UNKNOWN:
+            gtk_label_set_text(g_lbl_complex_details_hint,
+                    _("Since crashes without a known reproducer can be "
+                      "difficult to diagnose, please provide a comprehensive "
+                      "description of the problem you have encountered."));
+            break;
+
+        case PROBLEM_REPRODUCIBLE_YES:
+            gtk_label_set_text(g_lbl_complex_details_hint,
+                    _("Please provide a short description of the problem and "
+                      "please include the steps you have used to reproduce "
+                      "the problem."));
+            break;
+
+        case PROBLEM_REPRODUCIBLE_RECURRENT:
+            gtk_label_set_text(g_lbl_complex_details_hint,
+                    _("Please provide the steps you have used to reproduce the "
+                      "problem."));
+            break;
+
+        default:
+            error_msg("BUG: %s:%s:%d: forgotten 'how reproducible' value",
+                        __FILE__, __func__, __LINE__);
+            break;
+    }
+}
+
 struct cd_stats {
     off_t filesize;
     unsigned filecount;
@@ -1376,6 +1428,7 @@ void update_gui_state_from_problem_data(int flags)
     free(msg);
 
     load_text_to_text_view(g_tv_comment, FILENAME_COMMENT);
+    load_text_to_text_view(g_tv_steps, FILENAME_REPRODUCER);
 
     add_workflow_buttons(g_box_workflows, g_workflow_list,
                         G_CALLBACK(set_auto_event_chain));
@@ -1411,6 +1464,38 @@ void update_gui_state_from_problem_data(int flags)
      * We created new widgets (buttons). Need to make them visible.
      */
     gtk_widget_show_all(GTK_WIDGET(g_wnd_assistant));
+
+    /* Update Reproducible */
+    /* Try to get the old value */
+    const int reproducible = get_problem_data_reproducible(g_cd);
+    if (reproducible > -1)
+    {
+        gtk_combo_box_set_active(GTK_COMBO_BOX(g_cmb_reproducible), reproducible);
+        goto reproducible_done;
+    }
+
+    /* OK, no old value.
+     * Try to guess the reproducibility from the number of occurrences */
+    const char *count_str = problem_data_get_content_or_NULL(g_cd, FILENAME_COUNT);
+    if (   count_str == NULL
+        || strcmp(count_str, "0") == 0
+        || strcmp(count_str, "1") == 0
+        || strcmp(count_str, "2") == 0
+        || !isdigit_str(count_str))
+    {
+        gtk_combo_box_set_active(GTK_COMBO_BOX(g_cmb_reproducible), PROBLEM_REPRODUCIBLE_UNKNOWN);
+    }
+    else
+    {
+        int count = xatoi(count_str);
+        if (count < 5)
+            gtk_combo_box_set_active(GTK_COMBO_BOX(g_cmb_reproducible), PROBLEM_REPRODUCIBLE_YES);
+        else
+            gtk_combo_box_set_active(GTK_COMBO_BOX(g_cmb_reproducible), PROBLEM_REPRODUCIBLE_RECURRENT);
+    }
+
+reproducible_done:
+    update_reproducible_hints();
 }
 
 
@@ -1852,6 +1937,12 @@ _("If you are sure that this problem is not caused by network problems neither b
     gtk_widget_show(g_btn_onfail);
 }
 
+static bool event_requires_details(const char *event_name)
+{
+    event_config_t *cfg = get_event_config(event_name);
+    return cfg != NULL && cfg->ec_requires_details;
+}
+
 static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, gpointer data)
 {
     struct analyze_event_data *evd = data;
@@ -2247,18 +2338,53 @@ static void toggle_eb_comment(void)
     if (pages[PAGENO_EDIT_COMMENT].page_widget == NULL)
         return;
 
-    bool good =
-        gtk_text_buffer_get_char_count(gtk_text_view_get_buffer(g_tv_comment)) >= 10
-        || gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(g_cb_no_comment));
+    bool complex_details = g_event_selected
+                           && event_requires_details(g_event_selected);
+    bool good = false;
+    if (complex_details)
+    {
+        int reproducible = gtk_combo_box_get_active(GTK_COMBO_BOX(g_cmb_reproducible));
+        const int comment_chars = gtk_text_buffer_get_char_count(gtk_text_view_get_buffer(g_tv_comment));
+        const int steps_chars = gtk_text_buffer_get_char_count(gtk_text_view_get_buffer(g_tv_steps));
+        const int steps_lines = steps_chars == 0 ? 0 : gtk_text_buffer_get_line_count(gtk_text_view_get_buffer(g_tv_steps));
+        switch(reproducible)
+        {
+            case -1:
+                VERB1 log("Uninitialized 'How reproducible' combobox");
+                break;
+
+            case PROBLEM_REPRODUCIBLE_UNKNOWN:
+                good = comment_chars + (steps_chars * 2) >= 20;
+                break;
+
+            case PROBLEM_REPRODUCIBLE_YES:
+                good = comment_chars >= 10 && steps_lines;
+                break;
+
+            case PROBLEM_REPRODUCIBLE_RECURRENT:
+                good = comment_chars >= 10 || steps_lines;
+                break;
+
+            default:
+                error_msg("BUG: %s:%s:%d: forgotten 'how reproducible' value",
+                            __FILE__, __func__, __LINE__);
+                break;
+        }
+    }
+    else
+    {
+        good = gtk_text_buffer_get_char_count(gtk_text_view_get_buffer(g_tv_comment)) >= 10
+               || gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(g_cb_no_comment));
+
+        /* And show the eventbox with label */
+        if (good)
+            gtk_widget_hide(GTK_WIDGET(g_eb_comment));
+        else
+            gtk_widget_show(GTK_WIDGET(g_eb_comment));
+    }
 
     /* Allow next page only when the comment has at least 10 chars */
     gtk_widget_set_sensitive(g_btn_next, good);
-
-    /* And show the eventbox with label */
-    if (good)
-        gtk_widget_hide(GTK_WIDGET(g_eb_comment));
-    else
-        gtk_widget_show(GTK_WIDGET(g_eb_comment));
 }
 
 static void on_comment_changed(GtkTextBuffer *buffer, gpointer user_data)
@@ -2267,6 +2393,11 @@ static void on_comment_changed(GtkTextBuffer *buffer, gpointer user_data)
 }
 
 static void on_no_comment_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+{
+    toggle_eb_comment();
+}
+
+static void on_steps_changed(GtkTextBuffer *buffer, gpointer user_data)
 {
     toggle_eb_comment();
 }
@@ -2701,6 +2832,23 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
      * these tabs will be lost */
     save_items_from_notepad();
     save_text_from_text_view(g_tv_comment, FILENAME_COMMENT);
+    save_text_from_text_view(g_tv_steps, FILENAME_REPRODUCER);
+
+    int reproducible = gtk_combo_box_get_active(GTK_COMBO_BOX(g_cmb_reproducible));
+    if (reproducible > -1)
+    {
+        const char *reproducible_str = get_problem_data_reproducible_name(reproducible);
+        if (reproducible_str != NULL)
+        {
+            struct dump_dir *dd = wizard_open_directory_for_writing(g_dump_dir_name);
+            if (dd)
+                dd_save_text(dd, FILENAME_REPRODUCIBLE, reproducible_str);
+            else
+                error_msg(_("Failed to save file '%s'"), FILENAME_REPRODUCIBLE);
+
+            dd_close(dd);
+        }
+    }
     problem_data_reload_from_dump_dir();
     update_gui_state_from_problem_data(/* don't update selected event */ 0);
 
@@ -2743,6 +2891,12 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
 
     if (pages[PAGENO_EDIT_COMMENT].page_widget == page)
     {
+
+        bool complex_details = g_event_selected
+                               && event_requires_details(g_event_selected);
+
+        gtk_widget_set_visible(GTK_WIDGET(g_vb_simple_details), !complex_details);
+        gtk_widget_set_visible(GTK_WIDGET(g_vb_complex_details), complex_details);
         update_private_ticket_creation_warning_for_selected_event();
 
         gtk_widget_show(g_btn_detail);
@@ -2985,7 +3139,9 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
             exit(0);
         /* No! this would SEGV (infinitely recurse into select_next_page_no) */
         /*gtk_assistant_commit(g_assistant);*/
-        current_page_no = pages[PAGENO_EVENT_SELECTOR].page_no - 1;
+        gtk_widget_set_sensitive(pages[PAGENO_EVENT_SELECTOR].page_widget,
+                    /*Radio buttons used == always selected*/FALSE);
+        current_page_no = pages[PAGENO_EVENT_SELECTOR].page_no-1;
         goto again;
     }
 
@@ -3264,6 +3420,12 @@ static gint on_key_press_event_in_item_list(GtkTreeView *treeview, GdkEventKey *
     return FALSE;
 }
 
+static void on_reproducible_changed(GtkComboBox *widget, gpointer user_data)
+{
+    update_reproducible_hints();
+    toggle_eb_comment();
+}
+
 /* Initialization */
 
 static void on_next_btn_cb(GtkWidget *btn, gpointer user_data)
@@ -3317,9 +3479,14 @@ static void add_pages(void)
     g_rb_custom_search     = GTK_RADIO_BUTTON( gtk_builder_get_object(g_builder, "rb_custom_search"));
     g_exp_search           = GTK_EXPANDER(     gtk_builder_get_object(g_builder, "expander_search"));
     g_spinner_event_log    = GTK_SPINNER(      gtk_builder_get_object(g_builder, "spinner_event_log"));
-    g_img_process_fail     = GTK_IMAGE(      gtk_builder_get_object(g_builder, "img_process_fail"));
-    g_btn_startcast        = GTK_BUTTON(    gtk_builder_get_object(g_builder, "btn_startcast"));
+    g_img_process_fail     = GTK_IMAGE(        gtk_builder_get_object(g_builder, "img_process_fail"));
+    g_btn_startcast        = GTK_BUTTON(       gtk_builder_get_object(g_builder, "btn_startcast"));
     g_exp_report_log       = GTK_EXPANDER(     gtk_builder_get_object(g_builder, "expand_report"));
+    g_vb_simple_details    = GTK_BOX(          gtk_builder_get_object(g_builder, "vb_simple_details"));
+    g_cmb_reproducible     = GTK_COMBO_BOX_TEXT(gtk_builder_get_object(g_builder, "cmb_reproducible"));
+    g_tv_steps             = GTK_TEXT_VIEW(    gtk_builder_get_object(g_builder, "tv_steps"));
+    g_vb_complex_details   = GTK_BOX(          gtk_builder_get_object(g_builder, "vb_complex_details"));
+    g_lbl_complex_details_hint = GTK_LABEL(    gtk_builder_get_object(g_builder, "lbl_complex_details_hint"));
 
     gtk_widget_set_no_show_all(GTK_WIDGET(g_spinner_event_log), true);
 
@@ -3339,6 +3506,16 @@ static void add_pages(void)
     g_signal_connect(g_tv_details, "key-press-event", G_CALLBACK(on_key_press_event_in_item_list), NULL);
     g_tv_sensitive_sel_hndlr = g_signal_connect(g_tv_sensitive_sel, "changed", G_CALLBACK(on_sensitive_word_selection_changed), NULL);
 
+    gtk_combo_box_text_insert(g_cmb_reproducible, PROBLEM_REPRODUCIBLE_UNKNOWN, NULL,
+                            _("I have experienced this problem for the first time"));
+
+    gtk_combo_box_text_insert(g_cmb_reproducible, PROBLEM_REPRODUCIBLE_YES, NULL,
+                            _("I can reproduce this problem"));
+
+    gtk_combo_box_text_insert(g_cmb_reproducible, PROBLEM_REPRODUCIBLE_RECURRENT, NULL,
+                            _("This problem occurs repeatedly"));
+
+    g_signal_connect(g_cmb_reproducible, "changed", G_CALLBACK(on_reproducible_changed), NULL);
 
 }
 
@@ -3406,7 +3583,7 @@ static void init_pages(void)
 {
     init_page(&pages[0], PAGE_SUMMARY            , _("Problem description")   );
     init_page(&pages[1], PAGE_EVENT_SELECTOR     , _("Select how to report this problem"));
-    init_page(&pages[2], PAGE_EDIT_COMMENT,_("Provide additional information"));
+    init_page(&pages[2], PAGE_EDIT_COMMENT       , _("Provide additional information"));
     init_page(&pages[3], PAGE_EDIT_ELEMENTS      , _("Review the data")       );
     init_page(&pages[4], PAGE_REVIEW_DATA        , _("Confirm data to report"));
     init_page(&pages[5], PAGE_EVENT_PROGRESS     , _("Processing")            );
@@ -3637,6 +3814,7 @@ void create_assistant(GtkApplication *app, bool expert_mode)
 
     g_signal_connect(g_tb_approve_bt, "toggled", G_CALLBACK(on_bt_approve_toggle), NULL);
     g_signal_connect(gtk_text_view_get_buffer(g_tv_comment), "changed", G_CALLBACK(on_comment_changed), NULL);
+    g_signal_connect(gtk_text_view_get_buffer(g_tv_steps),   "changed", G_CALLBACK(on_steps_changed),   NULL);
 
     g_signal_connect(g_btn_add_file, "clicked", G_CALLBACK(on_btn_add_file), NULL);
     g_signal_connect(g_btn_detail, "clicked", G_CALLBACK(on_btn_detail), NULL);

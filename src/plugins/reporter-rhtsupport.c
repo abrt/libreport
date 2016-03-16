@@ -27,16 +27,20 @@
 
 /* problem report format template */
 #define PROBLEM_REPORT_TEMPLATE \
-    "%summary:: [abrt] %pkg_name%[[: %crash_function%()]][[: %reason%]][[: TAINTED %tainted_short%]]\n" \
+    "%summary:: [abrt] [[%pkg_name%]][[: %crash_function%()]][[: %reason%]][[: TAINTED %tainted_short%]]\n" \
     "\n" \
     "Description of problem:: %bare_comment\n" \
     "\n" \
+    "Additional info::" \
+    "    count,reason,package,pkg_vendor,cmdline,executable,%reporter\n" \
+    "\n" \
+    "How reproducible:: %bare_reproducible\n" \
+    "\n" \
+    "Steps to reproduce:: %bare_reproducer\n" \
+    "\n" \
     "Truncated backtrace:: %bare_%short_backtrace\n" \
     "\n" \
-    "Other report identifiers:: %bare_reported_to\n" \
-    "\n" \
-    "Additional info::" \
-    "    count,reason,package,cmdline,executable,%reporter\n"
+    "Other report identifiers:: %bare_reported_to\n"
 
 #define ABRT_ELEMENTS_KB_ARTICLE "https://access.redhat.com/articles/2134281"
 
@@ -69,7 +73,8 @@ static report_result_t *get_reported_to(const char *dump_dir_name)
 }
 
 static
-int create_tarball(const char *tempfile, problem_data_t *problem_data)
+int create_tarball(const char *tempfile, struct dump_dir *dd,
+     problem_data_t *problem_data)
 {
     reportfile_t *file = NULL;
     int retval = 0; /* everything is ok so far .. */
@@ -122,15 +127,28 @@ int create_tarball(const char *tempfile, problem_data_t *problem_data)
                         /*recorded_filename*/ xml_name,
                         /*binary           */ !(value->flags & CD_FLAG_BIGTXT)
                 );
-                if (tar_append_file(tar, (char*)content, xml_name) != 0)
-                {
-                    free(xml_name);
-                    goto ret_fail;
-                }
                 free(xml_name);
             }
         }
     }
+
+    /* append all files from dump dir */
+    dd_init_next_file(dd);
+    char *short_name, *full_name;
+    while (dd_get_next_file(dd, &short_name, &full_name))
+    {
+        char *uploaded_name = concat_path_file("content", short_name);
+        free(short_name);
+
+        if (tar_append_file(tar, full_name, uploaded_name) != 0)
+        {
+            free(full_name);
+            goto ret_fail;
+        }
+
+        free(full_name);
+    }
+
     const char *signature = reportfile_as_string(file);
     /*
      * Note: this pointer points to string which is owned by
@@ -196,6 +214,7 @@ ret_fail:
     }
 
 ret_clean:
+    dd_close(dd);
     /* now it's safe to free file */
     free_reportfile(file);
     return retval;
@@ -667,6 +686,57 @@ int main(int argc, char **argv)
     const char *dsc = NULL;
     const char *summary = NULL;
 
+    const char *count = NULL;
+    count = problem_data_get_content_or_NULL(problem_data, FILENAME_COUNT);
+    if (count != NULL
+        && strcmp(count, "1") == 0
+        /* the 'count' file can lie */
+        && get_problem_data_reproducible(problem_data) <= PROBLEM_REPRODUCIBLE_UNKNOWN)
+    {
+        int r = ask_yes_no(
+            _("The problem has only occurred once and the ability to reproduce "
+              "the problem is unknown. Please ensure you will be able to "
+              "provide detailed information to our Support Team. "
+              "Would you like to continue and open a new support case?"));
+        if (!r)
+            exit(EXIT_CANCEL_BY_USER);
+    }
+
+    const char *vendor = NULL;
+    vendor = problem_data_get_content_or_NULL(problem_data, FILENAME_PKG_VENDOR);
+    if (package && vendor && strcmp(vendor, "Red Hat, Inc.") != 0)
+    {
+        char *message = xasprintf(
+            _("The crashed program was released by '%s'. "
+              "Would you like to report the problem to Red Hat Support?"),
+              vendor);
+        int r = ask_yes_no(message);
+        free(message);
+        if (!r)
+            exit(EXIT_CANCEL_BY_USER);
+    }
+
+    /* In the case there is no pkg_vendor file use "unknown vendor"  */
+    if (!vendor)
+        problem_data_add_text_noteditable(problem_data, FILENAME_PKG_VENDOR, "unknown vendor");
+
+    const char *executable = NULL;
+    executable  = problem_data_get_content_or_NULL(problem_data, FILENAME_EXECUTABLE);
+    if (!package)
+    {
+        char *message = xasprintf(
+            _("The program '%s' does not appear to be provided by Red Hat. "
+              "Would you like to report the problem to Red Hat Support?"),
+              executable);
+        int r = ask_yes_no(message);
+        free(message);
+        if (!r)
+            exit(EXIT_CANCEL_BY_USER);
+
+        problem_data_add_text_noteditable(problem_data, FILENAME_PACKAGE,
+                                         "not belong to any package");
+    }
+
     problem_formatter_t *pf = problem_formatter_new();
 
     /* formatting conf file was set */
@@ -721,7 +791,11 @@ int main(int argc, char **argv)
     /* Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing */
     log(_("Compressing data"));
 
-    if (create_tarball(tempfile, problem_data) != 0)
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        xfunc_die(); /* error msg is already logged by dd_opendir */
+
+    if (create_tarball(tempfile, dd, problem_data) != 0)
     {
         errmsg = _("Can't create temporary file in "LARGE_DATA_TMP_DIR);
         goto ret;
@@ -794,7 +868,7 @@ int main(int argc, char **argv)
         }
         /* No error in case creation */
         /* Record "reported_to" element */
-        struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+        dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
         if (dd)
         {
             struct report_result rr = { .label = (char *)"RHTSupport" };
