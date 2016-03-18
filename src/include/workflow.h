@@ -38,8 +38,19 @@ void free_workflow(workflow_t *w);
 void load_workflow_description_from_file(workflow_t *w, const char *filename);
 config_item_info_t *workflow_get_config_info(workflow_t *w);
 const char *wf_get_name(workflow_t *w);
+
+/* Get a list of executed events configuration.
+ *
+ * @return A list of event_config_t *. Do not free the list.
+ */
 GList *wf_get_event_list(workflow_t *w);
+
+/* Get a list of the event names to execute.
+ *
+ * @return A list of char *. Free the list with g_list_free(list, free).
+ */
 GList *wf_get_event_names(workflow_t *w);
+
 const char *wf_get_screen_name(workflow_t *w);
 const char *wf_get_description(workflow_t *w);
 const char *wf_get_long_desc(workflow_t *w);
@@ -58,7 +69,25 @@ void wf_set_priority(workflow_t *w, int priority);
  */
 int wf_priority_compare(const workflow_t *first, const workflow_t *second);
 
+/* The function loads workflow XML configuration files for the workflows listed
+ * in the wf_names argument. The XML files are searched in a directory at path.
+ *
+ * @param wf_names Required workflow names
+ * @param path y File system path to directory with workflow XML
+ * configuration files. If NULL, the default 'WORKFLOWS_DIR' is used instead.
+ * @returns A map where the key is workflow's name and the value is workflow_t *.
+ */
 GHashTable *load_workflow_config_data_from_list(GList *wf_names, const char *path);
+
+/* The function loads all workflow XML configuration files placed in the given
+ * directory.
+ *
+ * @param directory File system path to directory with workflow XML
+ * configuration files. If NULL, the default 'WORKFLOWS_DIR' is used instead.
+ * @returns A map where the key is workflow's name and the value is workflow_t *.
+ */
+#define load_workflow_config_data libreport_load_workflow_config_data
+GHashTable *load_workflow_config_data(const char* directory);
 
 #ifdef __cplusplus
 }

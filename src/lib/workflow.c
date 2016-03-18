@@ -105,6 +105,9 @@ GHashTable *load_workflow_config_data_from_list(GList *wf_names,
                          (GDestroyNotify) free_workflow
         );
 
+    if (path == NULL)
+        path = WORKFLOWS_DIR;
+
     GList *workflow_files = get_file_list(path, "xml");
     while(wfs)
     {
@@ -130,6 +133,9 @@ GHashTable *load_workflow_config_data(const char *path)
                                         (GDestroyNotify) free_workflow
         );
     }
+
+    if (path == NULL)
+        path = WORKFLOWS_DIR;
 
     GList *workflow_files = get_file_list(path, "xml");
     while (workflow_files)
