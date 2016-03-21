@@ -38,6 +38,7 @@ defaultreportpluginsconfdir = $(DEFAULT_REPORT_PLUGINS_CONF_DIR)
 dist_defaultreportpluginsconf_DATA = $(reporters_plugin_conf) \
     rhtsupport.conf \
     mailx.conf \
+    upload.conf \
     ureport.conf
 
 dist_reportpluginsconf_DATA = $(reporters_plugin_format_conf) \
@@ -66,7 +67,8 @@ dist_events_DATA = $(reporters_events) \
     report_EmergencyAnalysis.xml
 
 dist_eventsconf_DATA = $(reporters_events_conf) \
-    report_Logger.conf
+    report_Logger.conf \
+    report_Uploader.conf
 
 @INTLTOOL_XML_RULE@
 
