@@ -149,7 +149,7 @@ int main(int argc, char **argv)
 #endif
 
     const char *dump_dir_name = ".";
-    const char *conf_file = NULL;
+    const char *conf_file = CONF_DIR"/plugins/upload.conf";
     const char *url = NULL;
     const char *ssh_public_key = NULL;
     const char *ssh_private_key = NULL;

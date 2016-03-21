@@ -160,6 +160,7 @@ reporter_upload_CPPFLAGS = \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
+    -DCONF_DIR=\"$(CONF_DIR)\" \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
