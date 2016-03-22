@@ -58,7 +58,7 @@ MAINTAINERCLEANFILES = Makefile.in $(TESTSUITE)
 check_DATA = atconfig atlocal $(TESTSUITE)
 DISTCLEANFILES = atconfig
 EXTRA_DIST += atlocal.in conf ureport ureport-rhts-credentials \
-              bugzilla_plugin.at.in
+              helpers/testsuite.h bugzilla_plugin.at.in
 
 atconfig: $(top_builddir)/config.status
 	(cd ${top_builddir} && ./config.status ${subdir}/atconfig)
