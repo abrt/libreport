@@ -95,6 +95,19 @@ AC_PATH_PROG([XMLRPC], [xmlrpc-c-config], [no])
     [exit 1]
 [fi]
 
+AC_ARG_WITH([redhatbugzillacreateprivate],
+            AS_HELP_STRING([--with-redhatbugzillacreateprivate="yes/no"],
+                           [Whether the Red Hat Bugzilla plugin should open
+                            bugs private by default ("yes")]),
+            [], [with_redhatbugzillacreateprivate="yes"])
+AC_SUBST([RED_HAT_BUGZILLA_CREATE_PRIVATE], [$with_redhatbugzillacreateprivate])
+
+AC_ARG_WITH([redhatbugzillaprivategroups],
+            AS_HELP_STRING([--with-redhatbugzillaprivategroups="CSV"],
+                           [Name of groups separated by comma]),
+            [], [with_redhatbugzillaprivategroups="redhat"])
+AC_SUBST([RED_HAT_BUGZILLA_PRIVATE_GROUPS], [$with_redhatbugzillaprivategroups])
+
 XMLRPC_CFLAGS=`xmlrpc-c-config --cflags 2> /dev/null`
 XMLRPC_LIBS=`xmlrpc-c-config --libs 2> /dev/null`
 AC_SUBST(XMLRPC_CFLAGS)
@@ -337,11 +350,13 @@ AC_CONFIG_FILES([
 	src/cli/Makefile
 	src/report-newt/Makefile
 	src/plugins/Makefile
+	src/plugins/report_Bugzilla.xml.in
 	src/client-python/Makefile
 	po/Makefile.in
 	doc/Makefile
 	doc/plugins-dbus/Makefile
 	src/workflows/Makefile
+	tests/bugzilla_plugin.at
 ])
 
 #	src/plugins/Makefile
