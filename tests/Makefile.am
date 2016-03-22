@@ -46,7 +46,8 @@ TESTSUITE_AT = \
   dump_dir.at \
   global_config.at \
   iso_date.at \
-  uriparser.at
+  uriparser.at \
+  event_config.at
 
 TESTSUITE_AT_IN = \
   bugzilla_plugin.at
