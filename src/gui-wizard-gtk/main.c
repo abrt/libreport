@@ -186,6 +186,7 @@ int main(int argc, char **argv)
 
     g_dump_dir_name = xstrdup(argv[0]);
 
+    load_global_configuration();
     /* load /etc/abrt/events/foo.{conf,xml} stuff
        and $XDG_CACHE_HOME/abrt/events/foo.conf */
     g_event_config_list = load_event_config_data();
