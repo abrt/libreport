@@ -907,6 +907,7 @@ int main(int argc, char **argv)
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
     argv += optind;
 
+    load_global_configuration();
     export_abrt_envvars(0);
 
     map_string_t *settings = new_map_string();
@@ -928,6 +929,8 @@ int main(int argc, char **argv)
          */
         /*free_map_string(settings);*/
     }
+    /* either we got Bugzilla_CreatePrivate from settings or -g was specified on cmdline */
+    rhbz.b_create_private |= (opts & OPT_g);
 
     log_notice("Initializing XML-RPC library");
     xmlrpc_env env;
@@ -1189,8 +1192,38 @@ int main(int argc, char **argv)
             }
         }
 
-        if (existing_id < 0)
+        if (existing_id < 0 || rhbz.b_create_private)
         {
+
+            if (existing_id >= 0)
+            {
+                char *msg = xasprintf(_(
+                "You have requested to make your data accessible only to a "
+                "specific group and this bug is a duplicate of bug: "
+                "%s/%u"
+                " "
+                "In case of bug duplicates a new comment is added to the "
+                "original bug report but access to the comments cannot be "
+                "restricted to a specific group."
+                " "
+                "Would you like to open a new bug report and close it as "
+                "DUPLICATE of the original one?"
+                " "
+                "Otherwise, the bug reporting procedure will be terminated."),
+                rhbz.b_bugzilla_url, existing_id);
+
+                int r = ask_yes_no(msg);
+                free(msg);
+
+                if (r == 0)
+                {
+                    log(_("Logging out"));
+                    rhbz_logout(client);
+
+                    exit(EXIT_CANCEL_BY_USER);
+                }
+            }
+
             /* Create new bug */
             log(_("Creating a new bug"));
 
@@ -1205,7 +1238,7 @@ int main(int argc, char **argv)
             int new_id = rhbz_new_bug(client,
                     problem_data, rhbz.b_product, rhbz.b_product_version,
                     summary, bzcomment,
-                    (rhbz.b_create_private | (opts & OPT_g)), // either we got Bugzilla_CreatePrivate from settings or -g was specified on cmdline
+                    rhbz.b_create_private,
                     rhbz.b_private_groups
                     );
             free(bzcomment);
@@ -1241,6 +1274,13 @@ int main(int argc, char **argv)
             bz = new_bug_info();
             bz->bi_status = xstrdup("NEW");
             bz->bi_id = new_id;
+
+            if (existing_id >= 0)
+            {
+                log(_("Closing bug %i as duplicate of bug %i"), new_id, existing_id);
+                rhbz_close_as_duplicate(client, new_id, existing_id, RHBZ_NOMAIL_NOTIFY);
+            }
+
             goto log_out;
         }
 
