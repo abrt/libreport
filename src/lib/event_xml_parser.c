@@ -577,6 +577,8 @@ void load_event_description_from_file(event_config_t *event_config, const char* 
         }
         fclose(fin);
     }
+    else
+        perror_msg("cannot load event description from file : '%s'", filename);
 
     g_markup_parse_context_free(context);
 
