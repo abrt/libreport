@@ -5,6 +5,7 @@
 
     <requires-items>analyzer,reason,executable,pkg_epoch,pkg_name,pkg_version,pkg_release,pkg_arch,os_release,architecture,core_backtrace</requires-items>
     <gui-review-elements>no</gui-review-elements>
+    <minimal-rating>0</minimal-rating>
 
     <options>
         <option type="text" name="uReport_URL">
@@ -18,12 +19,12 @@
             <_description>Email address that can be used by ABRT server to inform you about news and updates</_description>
             <allow-empty>yes</allow-empty>
         </option>
-        <option type="bool" name="uReport_SSLVerify">
-            <_label>Verify SSL</_label>
-            <_description>Check SSL key validity</_description>
-            <default-value>yes</default-value>
-        </option>
         <advanced-options>
+            <option type="bool" name="uReport_SSLVerify">
+                <_label>Verify SSL</_label>
+                <_description>Check SSL key validity</_description>
+                <default-value>yes</default-value>
+            </option>
             <option type="text" name="http_proxy">
                 <_label>HTTP Proxy</_label>
                 <allow-empty>yes</allow-empty>
