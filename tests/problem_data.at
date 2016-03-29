@@ -1,0 +1,415 @@
+# -*- Autotest -*-
+
+AT_BANNER([problem data])
+
+## ---------------- ##
+## problem_data_add ##
+## ---------------- ##
+
+AT_TESTFUN([problem_data_add],
+[[
+#include "problem_data.h"
+#include "internal_libreport.h"
+#include <assert.h>
+
+#define TEST_NAME "package"
+#define TEST_CONTENTS "libreport"
+#define TEST_FLAGS (CD_FLAG_TXT | CD_FLAG_ISNOTEDITABLE | CD_FLAG_UNIXTIME)
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    problem_data_t *data = problem_data_new();
+    problem_data_add(data, TEST_NAME, TEST_CONTENTS, TEST_FLAGS);
+
+    struct problem_item *itm = problem_data_get_item_or_NULL(data, TEST_NAME);
+
+    assert(strcmp(itm->content, TEST_CONTENTS) == 0);
+    assert(itm->flags == TEST_FLAGS);
+    assert(itm->size == PROBLEM_ITEM_UNINITIALIZED_SIZE);
+
+    problem_data_free(data);
+
+    return 0;
+}
+]])
+
+## -------------------- ##
+## problem_data_add_ext ##
+## -------------------- ##
+
+AT_TESTFUN([problem_data_add_ext],
+[[
+#include "problem_data.h"
+#include "internal_libreport.h"
+#include <assert.h>
+
+#define TEST_NAME "package"
+#define TEST_CONTENTS "libreport"
+#define TEST_FLAGS (CD_FLAG_TXT | CD_FLAG_ISNOTEDITABLE | CD_FLAG_UNIXTIME)
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    problem_data_t *data = problem_data_new();
+    struct problem_item *itm = problem_data_add_ext(data, TEST_NAME, TEST_CONTENTS, TEST_FLAGS, strlen(TEST_CONTENTS));
+
+    struct problem_item *found = problem_data_get_item_or_NULL(data, TEST_NAME);
+    assert(itm == found);
+
+    assert(strcmp(itm->content, TEST_CONTENTS) == 0);
+    assert(itm->flags == TEST_FLAGS);
+    assert(itm->size == strlen(TEST_CONTENTS));
+
+    problem_data_free(data);
+
+    return 0;
+}
+]])
+
+## ---------------------- ##
+## problem_item_get_size ##
+## ---------------------- ##
+
+AT_TESTFUN([problem_item_get_size],
+[[
+#include "problem_data.h"
+#include "internal_libreport.h"
+#include <assert.h>
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    problem_data_t *data = problem_data_new();
+
+    {
+        struct problem_item *itm = problem_data_add_ext(data, "1", "foo", CD_FLAG_TXT | CD_FLAG_ISNOTEDITABLE, PROBLEM_ITEM_UNINITIALIZED_SIZE);
+        const size_t old_size = strlen(itm->content);
+        {
+            size_t current_size = PROBLEM_ITEM_UNINITIALIZED_SIZE;
+            assert(problem_item_get_size(itm, &current_size) == 0);
+            assert(current_size != PROBLEM_ITEM_UNINITIALIZED_SIZE);
+            assert(current_size == old_size);
+        }
+        {
+            free(itm->content);
+            itm->content = NULL;
+            size_t current_size = PROBLEM_ITEM_UNINITIALIZED_SIZE;
+            assert(problem_item_get_size(itm, &current_size) == 0);
+            assert(current_size != PROBLEM_ITEM_UNINITIALIZED_SIZE);
+            assert(current_size == old_size);
+        }
+    }
+
+    {
+        char flnm[] = "/tmp/libreport.unittest.XXXXXXX";
+        int flds = mkstemp(flnm);
+        assert(flds >= 0);
+        /* sizeof(flnm) is strlen + '\0' */
+        assert(write(flds, flnm, strlen(flnm)) == strlen(flnm));
+        fsync(flds);
+
+        struct stat buf;
+        assert(fstat(flds, &buf) == 0);
+        assert(buf.st_size != 0);
+        size_t old_size = buf.st_size;
+
+        struct problem_item *itm = problem_data_add_ext(data, "2", flnm, CD_FLAG_BIN, PROBLEM_ITEM_UNINITIALIZED_SIZE);
+
+        {
+            size_t current_size = PROBLEM_ITEM_UNINITIALIZED_SIZE;
+            assert(problem_item_get_size(itm, &current_size) == 0);
+            assert(current_size != PROBLEM_ITEM_UNINITIALIZED_SIZE);
+            assert(current_size == old_size);
+        }
+        {
+            close(flds);
+            unlink(flnm);
+            assert(stat(flnm, &buf) != 0);
+            size_t current_size = PROBLEM_ITEM_UNINITIALIZED_SIZE;
+            assert(problem_item_get_size(itm, &current_size) == 0);
+            assert(current_size != PROBLEM_ITEM_UNINITIALIZED_SIZE);
+            assert(current_size == old_size);
+        }
+    }
+
+    problem_data_free(data);
+
+    return 0;
+}
+]])
+
+## ------------------------------- ##
+## problem_data_load_from_dump_dir ##
+## ------------------------------- ##
+
+AT_TESTFUN([problem_data_load_from_dump_dir],
+[[
+#include "problem_data.h"
+#include "internal_libreport.h"
+#include <assert.h>
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    char template[] = "/tmp/XXXXXX";
+
+    if (mkdtemp(template) == NULL) {
+        perror("mkdtemp()");
+        return EXIT_FAILURE;
+    }
+
+    printf("Dump dir path: %s\n", template);
+
+    struct dump_dir *dd = dd_create(template, (uid_t)-1, 0640);
+    assert(dd != NULL || !"Cannot create new dump directory");
+
+    /* dd_create_basic_files() should create these files:
+       FILENAME_TIME, FILENAME_LAST_OCCURRENCE, FILENAME_UID, FILENAME_KERNEL,
+       FILENAME_ARCHITECTURE, FILENAME_HOSTNAME, FILENAME_OS_INFO, FILENAME_OS_RELEASE
+     */
+    dd_create_basic_files(dd, geteuid(), NULL);
+
+    dd_save_text(dd, FILENAME_TYPE, "attest");
+    dd_save_text(dd, FILENAME_ANALYZER, "attest-problem_data");
+    dd_save_text(dd, FILENAME_DUPHASH, "0123456789ABCDEF");
+    dd_save_text(dd, FILENAME_UUID, "FEDCBA9876543210");
+    dd_save_text(dd, FILENAME_USERNAME, "perhaps_tester");
+    dd_save_text(dd, FILENAME_PACKAGE, "1:attest-1.1-3.x86_64");
+    dd_save_text(dd, FILENAME_PKG_EPOCH, "1");
+    dd_save_text(dd, FILENAME_PKG_NAME, "attest");
+    dd_save_text(dd, FILENAME_PKG_VERSION, "1.1");
+    dd_save_text(dd, FILENAME_PKG_RELEASE, "3");
+    dd_save_text(dd, FILENAME_PKG_ARCH, "x86_64");
+    dd_save_text(dd, FILENAME_CMDLINE, "$TESTSUITE.DIR/$NUM/problem_data_load_from_dump_dir foo blah");
+    dd_save_text(dd, FILENAME_EXECUTABLE, "$TESTSUITE.DIR/$NUM/problem_data_load_from_dump_dir");
+    dd_save_text(dd, FILENAME_ROOTDIR, "/");
+    dd_save_text(dd, FILENAME_PWD, "$TESTSUITE.DIR");
+    dd_save_text(dd, FILENAME_PID, "12345");
+    dd_save_text(dd, FILENAME_GLOBAL_PID, "12345");
+    dd_save_text(dd, FILENAME_TID, "12345");
+    dd_save_text(dd, FILENAME_COUNT, "1");
+    dd_save_text(dd, FILENAME_REASON, "Unit testing problem_data_load_from_dump_dir");
+    dd_save_text(dd, FILENAME_COMMENT, "Random comment");
+    dd_save_text(dd, FILENAME_BACKTRACE, "Pseudo-backtrace");
+    dd_save_text(dd, FILENAME_OPEN_FDS, "Opened FDs");
+    dd_save_text(dd, FILENAME_MAPS, "/proc/[pid]/maps");
+    dd_save_text(dd, FILENAME_SMAPS, "/proc/[pid]/smaps");
+    dd_save_text(dd, FILENAME_ENVIRON, "/proc/[pid]/environ");
+    dd_save_text(dd, FILENAME_LIMITS, "/proc/[pid]/limits");
+    dd_save_text(dd, FILENAME_CGROUP, "/proc/[pid]/cgroup");
+    dd_save_text(dd, FILENAME_PROC_PID_STATUS, "/proc/[pid]/status");
+    dd_save_text(dd, FILENAME_MOUNTINFO, "/proc/[pid]/mountinfo");
+    dd_save_text(dd, FILENAME_CRASH_FUNCTION, "main");
+    dd_save_text(dd, FILENAME_REMOTE, "0");
+    dd_save_text(dd, FILENAME_RATING, "4");
+    dd_save_text(dd, FILENAME_EXPLOITABLE, "6");
+    dd_save_text(dd, FILENAME_TAINTED, "Not tainted");
+    dd_save_text(dd, FILENAME_TAINTED_SHORT, "Not tainted");
+    dd_save_text(dd, FILENAME_TAINTED_LONG, "Not tainted");
+    dd_save_text(dd, FILENAME_NOT_REPORTABLE, "Despite 'not tainted' this problem cannot be reported.");
+    dd_save_text(dd, FILENAME_REPORTED_TO, "Bugzilla: URL=https://bugzilla.redhat.com/1000000");
+    dd_save_text(dd, FILENAME_EVENT_LOG, "--- report_Bugzilla has finished successfully ---");
+    dd_save_text(dd, FILENAME_KICKSTART_CFG, "kickstart.cfg");
+    dd_save_text(dd, FILENAME_ANACONDA_TB, "anaconda.tb");
+
+    dd_save_text(dd, FILENAME_NAMESPACES, "FILENAME_NAMESPACES");
+    dd_save_text(dd, FILENAME_OS_INFO_IN_ROOTDIR, "FILENAME_OS_INFO_IN_ROOTDIR");
+    dd_save_text(dd, FILENAME_OS_RELEASE_IN_ROOTDIR, "FILENAME_OS_RELEASE_IN_ROOTDIR");
+    dd_save_text(dd, FILENAME_KERNEL_LOG, "FILENAME_KERNEL_LOG");
+    dd_save_text(dd, FILENAME_DESCRIPTION, "FILENAME_DESCRIPTION");
+    dd_save_text(dd, FILENAME_CORE_BACKTRACE, "FILENAME_CORE_BACKTRACE");
+    dd_save_text(dd, FILENAME_REMOTE_RESULT, "FILENAME_REMOTE_RESULT");
+    dd_save_text(dd, FILENAME_ABRT_VERSION, "FILENAME_ABRT_VERSION");
+    dd_save_text(dd, FILENAME_CONTAINER, "FILENAME_CONTAINER");
+    dd_save_text(dd, FILENAME_CONTAINER_ID, "FILENAME_CONTAINER_ID");
+    dd_save_text(dd, FILENAME_CONTAINER_UUID, "FILENAME_CONTAINER_UUID");
+    dd_save_text(dd, FILENAME_CONTAINER_IMAGE, "FILENAME_CONTAINER_IMAGE");
+    dd_save_text(dd, FILENAME_CONTAINER_CMDLINE, "FILENAME_CONTAINER_CMDLINE");
+    dd_save_text(dd, FILENAME_DOCKER_INSPECT, "FILENAME_DOCKER_INSPECT");
+
+    dd_save_text(dd, "attestsuite-random-file", "random content");
+    dd_save_text(dd, "attestsuite-oneliner-newline", "newline\n");
+    dd_save_text(dd, "attestsuite-newline-followed", "newline\nfollowed");
+    dd_save_text(dd, "attestsuite-multi-line", "newline\nextra\n");
+    dd_save_text(dd, "attestsuite-tab", "tab\ttab");
+    dd_save_text(dd, "attestsuite-cr", "cr\rcr");
+
+    char buffer[1024*3];
+    memset(buffer, 'x', sizeof(buffer));
+
+    {
+        int fd4k = openat(dd->dd_fd, "attestsuite-over4k", O_WRONLY | O_CREAT | O_TRUNC, 0550);
+        assert(fd4k >= 0);
+        full_write(fd4k, buffer, sizeof(buffer));
+        full_write(fd4k, buffer, sizeof(buffer));
+        close(fd4k);
+    }
+
+    {
+        int bigfd = openat(dd->dd_fd, "attestsuite-bigtext", O_WRONLY | O_CREAT | O_TRUNC, 0550);
+        assert(bigfd >= 0);
+        for (int i = 3000; i > 0; --i)
+            full_write(bigfd, buffer, sizeof(buffer));
+        close(bigfd);
+    }
+
+    dd_copy_file(dd, FILENAME_BINARY, "/usr/bin/sh");
+    dd_copy_file(dd, FILENAME_COREDUMP, "/usr/bin/sh");
+    dd_copy_file(dd, FILENAME_VMCORE, "/usr/bin/sh");
+
+    static const char *const list_elements[] = { FILENAME_UID, FILENAME_PACKAGE,
+        FILENAME_CMDLINE, FILENAME_TIME, FILENAME_COUNT, FILENAME_REASON };
+
+    static const char *const editable_files[] = { FILENAME_COMMENT, FILENAME_BACKTRACE,
+        FILENAME_REASON, FILENAME_OPEN_FDS, FILENAME_CMDLINE, FILENAME_MAPS,
+        FILENAME_SMAPS, FILENAME_ENVIRON, FILENAME_HOSTNAME, FILENAME_REMOTE,
+        FILENAME_KICKSTART_CFG, FILENAME_ANACONDA_TB, };
+
+    static const char *const binary_files[] = { FILENAME_BINARY, FILENAME_COREDUMP,
+        FILENAME_VMCORE, };
+
+    problem_data_t *pd = problem_data_new();
+    problem_data_load_from_dump_dir(pd, dd, /*excluding*/NULL);
+
+    GHashTableIter pd_iter;
+    char *element_name;
+    struct problem_item *item;
+    g_hash_table_iter_init(&pd_iter, pd);
+    while (g_hash_table_iter_next(&pd_iter, (void**)&element_name, (void**)&item))
+    {
+        printf("Testing element : %s\n", element_name);
+
+        size_t i;
+        for (i = 0; i < ARRAY_SIZE(list_elements); ++i)
+        {
+            if (strcmp(element_name, list_elements[i]) == 0)
+            {
+                assert((item->flags & CD_FLAG_LIST));
+                break;
+            }
+        }
+        if (i == ARRAY_SIZE(list_elements))
+            assert(!(item->flags & CD_FLAG_LIST));
+
+        for (i = 0; i < ARRAY_SIZE(editable_files); ++i)
+        {
+            if (strcmp(element_name, editable_files[i]) == 0)
+            {
+                assert((item->flags & CD_FLAG_ISEDITABLE) && !(item->flags & CD_FLAG_ISNOTEDITABLE));
+                break;
+            }
+        }
+        if (i == ARRAY_SIZE(editable_files))
+            assert(!(item->flags & CD_FLAG_ISEDITABLE) && (item->flags & CD_FLAG_ISNOTEDITABLE));
+
+        for (i = 0; i < ARRAY_SIZE(binary_files); ++i)
+        {
+            if (strcmp(element_name, binary_files[i]) == 0)
+            {
+                assert((item->flags & CD_FLAG_BIN) && !(item->flags & CD_FLAG_TXT) && !(item->flags & CD_FLAG_BIGTXT));
+                break;
+            }
+        }
+        if (i == ARRAY_SIZE(binary_files))
+        {
+            if(strstr(element_name, "bigtext") == 0)
+                assert((item->flags & CD_FLAG_TXT) && !(item->flags & CD_FLAG_BIN) && !(item->flags & CD_FLAG_BIGTXT));
+            else
+                assert((item->flags & CD_FLAG_BIGTXT) && (item->flags & CD_FLAG_BIN) && !(item->flags & CD_FLAG_TXT));
+        }
+
+        if (strcmp(element_name, FILENAME_TIME) == 0)
+            assert(item->flags & CD_FLAG_UNIXTIME);
+        else
+            assert(!(item->flags & CD_FLAG_UNIXTIME));
+    }
+
+    {
+        char *cnt = problem_data_get_content_or_NULL(pd, "attestsuite-oneliner-newline");
+        assert(cnt != NULL && "attestsuite-oneliner-newline");
+        assert(strcmp(cnt, "newline") == 0);
+    }
+
+    {
+        char *cnt = problem_data_get_content_or_NULL(pd, "attestsuite-newline-followed");
+        assert(cnt != NULL && "attestsuite-newline-followed");
+        assert(strcmp(cnt, "newline\nfollowed") == 0);
+    }
+
+    {
+        char *cnt = problem_data_get_content_or_NULL(pd, "attestsuite-multi-line");
+        assert(cnt != NULL && "attestsuite-multi-line");
+        assert(strcmp(cnt, "newline\nextra\n") == 0);
+    }
+
+    {
+        char *cnt = problem_data_get_content_or_NULL(pd, "attestsuite-over4k");
+        assert(cnt != NULL && "attestsuite-over4k");
+        assert(strlen(cnt) == (2 * sizeof(buffer)));
+    }
+
+    {
+        char *cnt = problem_data_get_content_or_NULL(pd, "attestsuite-tab");
+        assert(cnt != NULL && "attestsuite-tab");
+        assert(strcmp(cnt, "tab\ttab") == 0);
+    }
+
+    {
+        char *cnt = problem_data_get_content_or_NULL(pd, "attestsuite-cr");
+        assert(cnt != NULL && "attestsuite-cr");
+        assert(strcmp(cnt, "cr[0D]cr") == 0);
+    }
+
+    return 0;
+}
+]])
+
+## ------------------------- ##
+## problem_data_reproducible ##
+## ------------------------- ##
+
+AT_TESTFUN([problem_data_reproducible],
+[[
+#include "testsuite.h"
+
+#define TEST_FLAGS (CD_FLAG_TXT | CD_FLAG_ISNOTEDITABLE | CD_FLAG_UNIXTIME)
+
+TS_MAIN
+{
+    TS_ASSERT_STRING_NULL_OR_EMPTY(get_problem_data_reproducible_name(-1), "Invalid value");
+    TS_ASSERT_PTR_IS_NOT_NULL(get_problem_data_reproducible_name(PROBLEM_REPRODUCIBLE_UNKNOWN));
+    TS_ASSERT_PTR_IS_NOT_NULL(get_problem_data_reproducible_name(PROBLEM_REPRODUCIBLE_YES));
+    TS_ASSERT_PTR_IS_NOT_NULL(get_problem_data_reproducible_name(PROBLEM_REPRODUCIBLE_RECURRENT));
+    TS_ASSERT_STRING_NULL_OR_EMPTY(get_problem_data_reproducible_name(_PROBLEM_REPRODUCIBLE_MAX_), "Upper boundary");
+    TS_ASSERT_STRING_NULL_OR_EMPTY(get_problem_data_reproducible_name(_PROBLEM_REPRODUCIBLE_MAX_ + 1), "Upper boundary + 1");
+    TS_ASSERT_SIGNED_EQ(_PROBLEM_REPRODUCIBLE_MAX_, 3);
+
+    problem_data_t *pd = problem_data_new();
+
+    TS_ASSERT_SIGNED_EQ(get_problem_data_reproducible(pd), -1);
+
+    problem_data_add(pd, FILENAME_REPRODUCIBLE,
+                     get_problem_data_reproducible_name(PROBLEM_REPRODUCIBLE_UNKNOWN), TEST_FLAGS);
+    TS_ASSERT_SIGNED_EQ(get_problem_data_reproducible(pd), PROBLEM_REPRODUCIBLE_UNKNOWN);
+
+    problem_data_add(pd, FILENAME_REPRODUCIBLE,
+                     get_problem_data_reproducible_name(PROBLEM_REPRODUCIBLE_YES), TEST_FLAGS);
+    TS_ASSERT_SIGNED_EQ(get_problem_data_reproducible(pd), PROBLEM_REPRODUCIBLE_YES);
+
+    problem_data_add(pd, FILENAME_REPRODUCIBLE,
+                     get_problem_data_reproducible_name(PROBLEM_REPRODUCIBLE_RECURRENT), TEST_FLAGS);
+    TS_ASSERT_SIGNED_EQ(get_problem_data_reproducible(pd), PROBLEM_REPRODUCIBLE_RECURRENT);
+
+    problem_data_add(pd, FILENAME_REPRODUCIBLE,
+                     get_problem_data_reproducible_name(_PROBLEM_REPRODUCIBLE_MAX_), TEST_FLAGS);
+    TS_ASSERT_SIGNED_EQ(get_problem_data_reproducible(pd), -1);
+
+    problem_data_free(pd);
+}
+TS_RETURN_MAIN
+]])
