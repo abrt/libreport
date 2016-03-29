@@ -948,6 +948,12 @@ struct dump_dir *open_directory_for_writing(
 #define FILENAME_PKG_VERSION   "pkg_version"
 #define FILENAME_PKG_RELEASE   "pkg_release"
 #define FILENAME_PKG_ARCH      "pkg_arch"
+
+/* RHEL packages - Red Hat, Inc. */
+#define FILENAME_PKG_VENDOR    "pkg_vendor"
+/* RHEL keys - https://access.redhat.com/security/team/key */
+#define FILENAME_PKG_FINGERPRINT "pkg_fingerprint"
+
 #define FILENAME_USERNAME      "username"
 #define FILENAME_ABRT_VERSION  "abrt_version"
 #define FILENAME_EXPLOITABLE   "exploitable"
