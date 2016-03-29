@@ -630,6 +630,23 @@ int main(int argc, char **argv)
     rhts_result_t *result_atch = NULL;
     char *dsc = NULL;
     char *summary = NULL;
+
+    const char *count = NULL;
+    count = problem_data_get_content_or_NULL(problem_data, FILENAME_COUNT);
+    if (count != NULL
+        && strcmp(count, "1") == 0
+        /* the 'count' file can lie */
+        && get_problem_data_reproducible(problem_data) <= PROBLEM_REPRODUCIBLE_UNKNOWN)
+    {
+        int r = ask_yes_no(
+            _("The problem has only occurred once and the ability to reproduce "
+              "the problem is unknown. Please ensure you will be able to "
+              "provide detailed information to our Support Team. "
+              "Would you like to continue and open a new support case?"));
+        if (!r)
+            exit(EXIT_CANCEL_BY_USER);
+    }
+
     const char *function;
     const char *reason;
     const char *package;
