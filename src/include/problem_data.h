@@ -142,6 +142,17 @@ problem_data_t *create_problem_data_for_reporting(const char *dump_dir_name);
 struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data, const char *base_dir_name);
 struct dump_dir *create_dump_dir_from_problem_data_ext(problem_data_t *problem_data, const char *base_dir_name, uid_t uid);
 
+enum {
+    PROBLEM_REPRODUCIBLE_UNKNOWN,
+    PROBLEM_REPRODUCIBLE_YES,
+    PROBLEM_REPRODUCIBLE_RECURRENT,
+
+    _PROBLEM_REPRODUCIBLE_MAX_,
+};
+
+int get_problem_data_reproducible(problem_data_t *problem_data);
+const char *get_problem_data_reproducible_name(int reproducible);
+
 #ifdef __cplusplus
 }
 #endif

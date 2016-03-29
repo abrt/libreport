@@ -35,6 +35,7 @@
 #define SENDING_SENSITIVE_DATA_ELEMENT  "sending-sensitive-data"
 #define SUPPORTS_RESTRICTED_ACCESS_ELEMENT "support-restricted-access"
 #define RESTRICTED_ACCESS_OPTION_ATTR "optionname"
+#define REQUIRES_DETAILS        "requires-details"
 
 #define REQUIRES_ELEMENT        "requires-items"
 #define EXCL_BY_DEFAULT_ELEMENT "exclude-items-by-default"
@@ -508,6 +509,10 @@ static void text(GMarkupParseContext *context,
         else if (strcmp(inner_element, SUPPORTS_RESTRICTED_ACCESS_ELEMENT) == 0)
         {
             ui->ec_supports_restricted_access = string_to_bool(text_copy);
+        }
+        else if (strcmp(inner_element, REQUIRES_DETAILS) == 0)
+        {
+            ui->ec_requires_details = string_to_bool(text_copy);
         }
     }
     free(text_copy);
