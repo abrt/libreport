@@ -19,17 +19,17 @@
             <_note-html>Examples:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]</_note-html>
             <default-value></default-value>
         </option>
-        <option type="text" name="Upload_Username">
-            <_label>User name</_label>
-            <allow-empty>no</allow-empty>
-            <_description>Use this field if you do not want to have user name in URL</_description>
-        </option>
-        <option type="password" name="Upload_Password">
-            <_label>Password</_label>
-            <allow-empty>no</allow-empty>
-            <_description>Use this field if you do not want to have password in URL</_description>
-        </option>
         <advanced-options>
+            <option type="text" name="Upload_Username">
+                <_label>User name</_label>
+                <allow-empty>yes</allow-empty>
+                <_description>Use this field if you do not want to have user name in URL</_description>
+            </option>
+            <option type="password" name="Upload_Password">
+                <_label>Password</_label>
+                <allow-empty>yes</allow-empty>
+                <_description>Use this field if you do not want to have password in URL</_description>
+            </option>
             <option type="text" name="http_proxy">
                 <_label>HTTP Proxy</_label>
                 <allow-empty>yes</allow-empty>
@@ -44,6 +44,16 @@
                 <_label>FTP Proxy</_label>
                 <allow-empty>yes</allow-empty>
                 <_note-html>Sets the proxy server to use for FTP</_note-html>
+            </option>
+            <option type="text" name="Upload_SSHPublicKey">
+                <_label>SSH Public key file</_label>
+                <allow-empty>yes</allow-empty>
+                <_note-html>Use this field to specify SSH public keyfile</_note-html>
+            </option>
+            <option type="text" name="Upload_SSHPrivateKey">
+                <_label>SSH Private key file</_label>
+                <allow-empty>yes</allow-empty>
+                <_note-html>Use this field to specify SSH private keyfile</_note-html>
             </option>
         </advanced-options>
     </options>

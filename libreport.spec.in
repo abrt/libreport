@@ -604,6 +604,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/%{name}/events/report_Uploader.xml
 %{_datadir}/%{name}/workflows/workflow_Upload.xml
 %{_datadir}/%{name}/workflows/workflow_UploadCCpp.xml
+%config(noreplace) %{_sysconfdir}/libreport/events/report_Uploader.conf
+%{_mandir}/man5/report_Uploader.conf.5.*
+%config(noreplace) %{_sysconfdir}/libreport/plugins/upload.conf
+%{_datadir}/%{name}/conf.d/plugins/upload.conf
+%{_mandir}/man5/upload.conf.5.*
 
 %if 0%{?fedora}
 %files fedora

@@ -38,6 +38,9 @@ typedef struct post_state {
     const char  *client_cert_path;
     const char  *client_key_path;
     const char  *cert_authority_cert_path;
+    /* SSH key files */
+    const char  *client_ssh_public_keyfile;
+    const char  *client_ssh_private_keyfile;
     /* Results of POST transaction: */
     int         http_resp_code;
     /* cast from CURLcode enum.
