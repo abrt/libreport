@@ -88,6 +88,39 @@ void ec_print(event_config_t *ec)
         );
 }
 
+bool ec_restricted_access_enabled(event_config_t *ec)
+{
+    if (!ec->ec_supports_restricted_access)
+    {
+        if (ec->ec_restricted_access_option != NULL)
+            log_warning("Event '%s' does not support restricted access but has the option", ec_get_name(ec));
+
+        return false;
+    }
+
+    if (ec->ec_restricted_access_option == NULL)
+    {
+        log_debug("Event '%s' supports restricted access but is missing the option", ec_get_name(ec));
+        return false;
+    }
+
+    event_option_t *eo = get_event_option_from_list(ec->ec_restricted_access_option, ec->options);
+    if (eo == NULL)
+    {
+        log_warning("Event '%s' supports restricted access but the option is not defined", ec_get_name(ec));
+        return false;
+    }
+
+    if (eo->eo_type != OPTION_TYPE_BOOL)
+    {
+        log_warning("Restricted option '%s' of Event '%s' is not of 'bool' type",
+                    ec->ec_restricted_access_option, ec_get_name(ec));
+        return false;
+    }
+
+    return eo->eo_value != NULL && string_to_bool(eo->eo_value);
+}
+
 void free_event_option(event_option_t *p)
 {
     if (!p)
@@ -112,6 +145,7 @@ void free_event_config(event_config_t *p)
     free(p->ec_exclude_items_by_default);
     free(p->ec_include_items_by_default);
     free(p->ec_exclude_items_always);
+    free(p->ec_restricted_access_option);
     g_list_free_full(p->ec_imported_event_names, free);
     g_list_free_full(p->options, (GDestroyNotify)free_event_option);
 

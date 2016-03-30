@@ -84,7 +84,7 @@ dist_eventsdef_DATA = \
 reporters_extra_dist =
 if BUILD_BUGZILLA
 dist_eventsdef_DATA += bugzilla_event.conf bugzilla_anaconda_event.conf
-reporters_extra_dist += report_Bugzilla.xml.in report_Bugzilla.conf
+reporters_extra_dist += report_Bugzilla.xml.in.in report_Bugzilla.conf
 endif
 
 if BUILD_UREPORT

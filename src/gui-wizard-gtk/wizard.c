@@ -124,6 +124,21 @@ static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback f
 static void set_auto_event_chain(GtkButton *button, gpointer user_data);
 static void start_event_run(const char *event_name);
 
+static GtkWidget *g_sens_ticket;
+static GtkToggleButton *g_sens_ticket_cb;
+
+enum {
+    PRIV_WARN_SHOW_BTN      = 0x01,
+    PRIV_WARN_HIDE_BTN      = 0x02,
+    PRIV_WARN_SHOW_MSG      = 0x04,
+    PRIV_WARN_HIDE_MSG      = 0x08,
+    PRIV_WARN_BTN_CHECKED   = 0x10,
+    PRIV_WARN_BTN_UNCHECKED = 0x20,
+};
+
+static void private_ticket_creation_warning(int flags);
+static void update_private_ticket_creation_warning_for_selected_event(void);
+
 enum
 {
     /* Note: need to update types in
@@ -202,11 +217,13 @@ static const gchar *const page_names[] =
 #define PRIVATE_TICKET_CB "private_ticket_cb"
 
 #define SENSITIVE_DATA_WARN "sensitive_data_warning"
+#define SENSITIVE_DATA_WARN_MSG "sensitive_data_warning_message"
 #define SENSITIVE_LIST "ls_sensitive_words"
 static const gchar *misc_widgets[] =
 {
     SENSITIVE_DATA_WARN,
     SENSITIVE_LIST,
+    PRIVATE_TICKET_CB,
     NULL
 };
 
@@ -956,6 +973,7 @@ static int check_event_config(const char *event_name)
     {
         g_hash_table_unref(errors);
         show_event_opt_error_dialog(event_name);
+        update_private_ticket_creation_warning_for_selected_event();
         return 1;
     }
     return 0;
@@ -2150,27 +2168,55 @@ static void add_warning(const char *warning)
 
 static void on_sensitive_ticket_clicked_cb(GtkWidget *button, gpointer user_data)
 {
-    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
+    set_global_create_private_ticket(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)), /*transient*/0);
+}
+
+static void on_privacy_info_btn(GtkWidget *button, gpointer user_data)
+{
+    if (g_event_selected == NULL)
+        return;
+
+    show_event_config_dialog(g_event_selected, GTK_WINDOW(g_top_most_window));
+}
+
+static void private_ticket_creation_warning(int flags)
+{
+    if (flags & PRIV_WARN_HIDE_BTN)
     {
-        xsetenv(CREATE_PRIVATE_TICKET, "1");
+        gtk_widget_hide(GTK_WIDGET(g_sens_ticket));
     }
-    else
+
+    if (flags & PRIV_WARN_SHOW_BTN)
     {
-        safe_unsetenv(CREATE_PRIVATE_TICKET);
+        gtk_widget_show_all(GTK_WIDGET(g_sens_ticket));
+        gtk_widget_show(GTK_WIDGET(g_sens_ticket));
+    }
+
+    if (flags & PRIV_WARN_BTN_UNCHECKED)
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(g_sens_ticket_cb), FALSE);
+
+    if (flags & PRIV_WARN_BTN_CHECKED)
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(g_sens_ticket_cb), TRUE);
+
+    if (flags & PRIV_WARN_HIDE_MSG)
+        clear_warnings();
+
+    if (flags & PRIV_WARN_SHOW_MSG)
+    {
+       add_warning(_("Possible sensitive data detected, feel free to edit the report and remove them."));
+       show_warnings();
     }
 }
 
 static void add_sensitive_data_warning(void)
 {
-    GtkBuilder *builder = make_builder();
+    int flags = PRIV_WARN_SHOW_MSG;
 
-    GtkWidget *sens_data_warn = GTK_WIDGET(gtk_builder_get_object(builder, SENSITIVE_DATA_WARN));
-    GtkButton *sens_ticket_cb = GTK_BUTTON(gtk_builder_get_object(builder, PRIVATE_TICKET_CB));
+    event_config_t *cfg = get_event_config(g_event_selected);
+    if (cfg != NULL && cfg->ec_supports_restricted_access)
+        flags |= PRIV_WARN_SHOW_BTN | PRIV_WARN_BTN_CHECKED;
 
-    g_signal_connect(sens_ticket_cb, "toggled", G_CALLBACK(on_sensitive_ticket_clicked_cb), NULL);
-    add_widget_to_warning_area(GTK_WIDGET(sens_data_warn));
-
-    g_object_unref(builder);
+    private_ticket_creation_warning(flags);
 }
 
 static void show_warnings(void)
@@ -2627,6 +2673,19 @@ static char *get_next_processed_event(GList **events_list)
     return event_name;
 }
 
+static void update_private_ticket_creation_warning_for_selected_event(void)
+{
+    event_config_t *cfg = get_event_config(g_event_selected);
+    if (cfg == NULL || !cfg->ec_supports_restricted_access)
+        return;
+
+    int flags = PRIV_WARN_SHOW_BTN | PRIV_WARN_HIDE_MSG;
+    if (ec_restricted_access_enabled(cfg))
+        flags |= PRIV_WARN_BTN_CHECKED;
+
+    private_ticket_creation_warning(flags);
+}
+
 static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer user_data)
 {
     //int page_no = gtk_assistant_get_current_page(g_assistant);
@@ -2669,6 +2728,11 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
 
     if (pages[PAGENO_SUMMARY].page_widget == page)
     {
+        if (get_global_create_private_ticket())
+            private_ticket_creation_warning(  PRIV_WARN_SHOW_BTN
+                                            | PRIV_WARN_BTN_CHECKED
+                                            | PRIV_WARN_HIDE_MSG);
+
         if (!g_expert_mode)
         {
             /* Skip intro screen */
@@ -2718,6 +2782,8 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
 
     if (pages[PAGENO_EDIT_COMMENT].page_widget == page)
     {
+        update_private_ticket_creation_warning_for_selected_event();
+
         gtk_widget_set_sensitive(g_btn_next, false);
         on_comment_changed(gtk_text_view_get_buffer(g_tv_comment), NULL);
     }
@@ -3527,6 +3593,28 @@ void create_assistant(GtkApplication *app, bool expert_mode)
     gtk_box_pack_start(g_box_assistant, GTK_WIDGET(g_assistant), true, true, 0);
 
     gtk_box_pack_start(g_box_assistant, GTK_WIDGET(g_widget_warnings_area), false, false, 0);
+
+    /* Private ticket warning */
+    {
+        g_sens_ticket = GTK_WIDGET(gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0));
+        gtk_widget_set_no_show_all(GTK_WIDGET(g_sens_ticket), TRUE);
+        gtk_widget_hide(GTK_WIDGET(g_sens_ticket));
+
+        g_sens_ticket_cb = GTK_TOGGLE_BUTTON(gtk_check_button_new_with_label(_("Restrict access to the report")));
+        gtk_widget_set_margin_start(GTK_WIDGET(g_sens_ticket_cb), 5);
+        gtk_widget_show(GTK_WIDGET(g_sens_ticket_cb));
+        g_signal_connect(g_sens_ticket_cb, "toggled", G_CALLBACK(on_sensitive_ticket_clicked_cb), NULL);
+
+        GtkLinkButton *privacy_info_btn = GTK_LINK_BUTTON(gtk_link_button_new_with_label("", _("Learn more about restricted access in the configuration")));
+        gtk_widget_show(GTK_WIDGET(privacy_info_btn));
+        g_signal_connect(privacy_info_btn, "clicked", G_CALLBACK(on_privacy_info_btn), NULL);
+
+        gtk_box_pack_start(GTK_BOX(g_sens_ticket), GTK_WIDGET(g_sens_ticket_cb), false, false, 5);
+        gtk_box_pack_start(GTK_BOX(g_sens_ticket), GTK_WIDGET(privacy_info_btn), false, false, 5);
+
+        gtk_box_pack_start(g_box_assistant, GTK_WIDGET(g_sens_ticket), false, true, 5);
+    }
+
     gtk_box_pack_start(g_box_assistant, GTK_WIDGET(g_box_buttons), false, false, 5);
 
     gtk_widget_show_all(GTK_WIDGET(g_box_buttons));

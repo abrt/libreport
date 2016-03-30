@@ -141,3 +141,25 @@ string_vector_ptr_t get_global_always_excluded_elements(void)
 
     return ret;
 }
+
+bool get_global_create_private_ticket(void)
+{
+    assert_global_configuration_initialized();
+
+    char *env_create_private = getenv(CREATE_PRIVATE_TICKET);
+
+    if (env_create_private == NULL)
+        return false;
+
+    return string_to_bool(env_create_private);
+}
+
+void set_global_create_private_ticket(bool enabled, int flags/*unused - persistent*/)
+{
+    assert_global_configuration_initialized();
+
+    if (enabled)
+        xsetenv(CREATE_PRIVATE_TICKET, "1");
+    else
+        safe_unsetenv(CREATE_PRIVATE_TICKET);
+}

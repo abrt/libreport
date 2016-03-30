@@ -102,3 +102,70 @@ int main(int argc, char **argv)
     return EXIT_SUCCESS;
 }
 ]])
+
+## --------------------- ##
+## create_private_ticket ##
+## --------------------- ##
+
+AT_TESTFUN([create_private_ticket],
+[[
+#include "testsuite.h"
+
+TS_MAIN
+{
+    char cwd_buf[PATH_MAX + 1];
+    static const char *dirs[] = {
+        NULL,
+        NULL,
+    };
+    dirs[0] = getcwd(cwd_buf, sizeof(cwd_buf));
+
+    static int dir_flags[] = {
+        CONF_DIR_FLAG_NONE,
+        -1,
+    };
+
+    unlink("libreport.conf");
+    FILE *lrf = fopen("libreport.conf", "wx");
+    assert(lrf != NULL);
+    fclose(lrf);
+
+    assert(load_global_configuration_from_dirs(dirs, dir_flags));
+
+    TS_ASSERT_FALSE_MESSAGE(get_global_create_private_ticket(), "False by default");
+
+    set_global_create_private_ticket(false, 0);
+
+    TS_ASSERT_FALSE_MESSAGE(get_global_create_private_ticket(), "Still false");
+
+    set_global_create_private_ticket(true, 0);
+
+    TS_ASSERT_TRUE_MESSAGE(get_global_create_private_ticket(), "Configuration accepted");
+    TS_ASSERT_STRING_EQ(getenv(CREATE_PRIVATE_TICKET), "1", "Correct ENVIRONMENT value");
+
+    set_global_create_private_ticket(true, 0);
+
+    TS_ASSERT_TRUE_MESSAGE(get_global_create_private_ticket(), "Configuration sanity");
+    TS_ASSERT_STRING_EQ(getenv(CREATE_PRIVATE_TICKET), "1", "Correct ENVIRONMENT value");
+
+    set_global_create_private_ticket(false, 0);
+
+    TS_ASSERT_FALSE_MESSAGE(get_global_create_private_ticket(), "Reverted back to False");
+    TS_ASSERT_STRING_NULL_OR_EMPTY(getenv(CREATE_PRIVATE_TICKET), "Correct ENVIRONMENT value");
+
+    xsetenv(CREATE_PRIVATE_TICKET, "1");
+
+    TS_ASSERT_TRUE_MESSAGE(get_global_create_private_ticket(), "Loaded from environment");
+
+    unsetenv(CREATE_PRIVATE_TICKET);
+
+    TS_ASSERT_FALSE_MESSAGE(get_global_create_private_ticket(), "Reflects environment");
+
+    xsetenv(CREATE_PRIVATE_TICKET, "0");
+
+    TS_ASSERT_FALSE_MESSAGE(get_global_create_private_ticket(), "Zero is false");
+
+    free_global_configuration();
+}
+TS_RETURN_MAIN
+]])

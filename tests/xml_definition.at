@@ -137,3 +137,54 @@ int main(void)
     return EXIT_SUCCESS;
 }
 ]])
+
+## ----------------- ##
+## restricted_access ##
+## ----------------- ##
+
+AT_TESTFUN([restricted_access],
+[[
+
+#include "testsuite.h"
+
+TS_MAIN
+{
+    {
+        event_config_t *event_config = new_event_config("event_test_definition");
+        load_event_description_from_file(event_config, "../../conf/event_no_support_restricted.xml");
+
+        TS_ASSERT_FALSE(event_config->ec_supports_restricted_access);
+        TS_ASSERT_PTR_IS_NULL(event_config->ec_restricted_access_option);
+
+        free_event_config(event_config);
+    }
+    {
+        event_config_t *event_config = new_event_config("event_test_definition");
+        load_event_description_from_file(event_config, "../../conf/event_implicit_no_support_restricted.xml");
+
+        TS_ASSERT_FALSE(event_config->ec_supports_restricted_access);
+        TS_ASSERT_PTR_IS_NULL(event_config->ec_restricted_access_option);
+
+        free_event_config(event_config);
+    }
+    {
+        event_config_t *event_config = new_event_config("event_test_definition");
+        load_event_description_from_file(event_config, "../../conf/event_support_restricted_no_option.xml");
+
+        TS_ASSERT_TRUE(event_config->ec_supports_restricted_access);
+        TS_ASSERT_PTR_IS_NULL(event_config->ec_restricted_access_option);
+
+        free_event_config(event_config);
+    }
+    {
+        event_config_t *event_config = new_event_config("event_test_definition");
+        load_event_description_from_file(event_config, "../../conf/event_support_restricted_with_option.xml");
+
+        TS_ASSERT_TRUE(event_config->ec_supports_restricted_access);
+        TS_ASSERT_STRING_EQ(event_config->ec_restricted_access_option, "Bugzilla_RestrictedAccess", "Loaded from configuration");
+
+        free_event_config(event_config);
+    }
+}
+TS_RETURN_MAIN
+]])
