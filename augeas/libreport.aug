@@ -14,7 +14,7 @@ module Libreport =
     let empty = [ del /[ \t]*\n/ "\n" ]
 
     (* Define option *)
-    let option = [ key ident . value_sep . value_to_eol . eol ]
+    let option = [ del /[ \t]*/ "" . key ident . value_sep . value_to_eol . eol ]
 
     (* Define lens *)
     let lns = ( comment | empty | option )*
