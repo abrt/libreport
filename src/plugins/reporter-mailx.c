@@ -18,6 +18,25 @@
 */
 #include "internal_libreport.h"
 #include "client.h"
+#include "problem_report.h"
+
+#define PR_DEFAULT_SUBJECT \
+    "[abrt] %pkg_name%[[: %crash_function%()]][[: %reason%]][[: TAINTED %tainted_short%]]"
+
+#define PR_MAILX_TEMPLATE \
+    "%%summary:: %s\n" \
+    "\n" \
+    "::" \
+    FILENAME_REASON","FILENAME_CRASH_FUNCTION"," \
+    FILENAME_CMDLINE","FILENAME_EXECUTABLE"," \
+    FILENAME_PACKAGE","FILENAME_COMPONENT","FILENAME_PID","FILENAME_PWD"," \
+    FILENAME_HOSTNAME","FILENAME_COUNT", %%oneline\n" \
+    "\n" \
+    "::" \
+    FILENAME_REPORTED_TO","FILENAME_BACKTRACE","FILENAME_CORE_BACKTRACE \
+    ", %%multiline"
+
+#define PR_ATTACH_BINARY "\n%attach:: %binary"
 
 static void exec_and_feed_input(const char* text, char **args)
 {
@@ -79,6 +98,7 @@ static char *ask_email_address(const char *type, const char *def_address)
 static void create_and_send_email(
                 const char *dump_dir_name,
                 map_string_t *settings,
+                const char *fmt_file,
                 bool notify_only)
 {
     problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
@@ -86,8 +106,6 @@ static void create_and_send_email(
         xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
     char* env;
-    env = getenv("Mailx_Subject");
-    const char *subject = (env ? env : get_map_string_item_or_NULL(settings, "Subject") ? : "[abrt] full crash report");
     env = getenv("Mailx_EmailFrom");
     char *email_from = (env ? xstrdup(env) : xstrdup(get_map_string_item_or_NULL(settings, "EmailFrom")) ? : ask_email_address("sender", "user@localhost"));
     env = getenv("Mailx_EmailTo");
@@ -99,22 +117,52 @@ static void create_and_send_email(
     unsigned arg_size = 0;
     args = append_str_to_vector(args, &arg_size, "/bin/mailx");
 
-    char *dsc = make_description_mailx(problem_data, CD_TEXT_ATT_SIZE_LOGGER);
-
-    if (send_binary_data)
+    problem_formatter_t *pf = problem_formatter_new();
+    /* formatting file is not set */
+    if (fmt_file == NULL)
     {
-        GHashTableIter iter;
-        char *name;
-        struct problem_item *value;
-        g_hash_table_iter_init(&iter, problem_data);
-        while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
-        {
-            if (value->flags & CD_FLAG_BIN)
-            {
-                args = append_str_to_vector(args, &arg_size, "-a");
-                args = append_str_to_vector(args, &arg_size, value->content);
-            }
-        }
+        env = getenv("Mailx_Subject");
+        const char *subject = (env ? env : get_map_string_item_or_NULL(settings, "Subject") ? : PR_DEFAULT_SUBJECT);
+
+        char *format_string = xasprintf(PR_MAILX_TEMPLATE, subject);
+
+        /* attaching binary file to the email */
+        if (send_binary_data)
+            format_string = append_to_malloced_string(format_string, PR_ATTACH_BINARY);
+
+        if (problem_formatter_load_string(pf, format_string))
+            error_msg_and_die("BUG: Invalid default problem report format string");
+
+        free(format_string);
+    }
+    else
+    {
+        if (problem_formatter_load_file(pf, fmt_file))
+            error_msg_and_die("Invalid format file: %s", fmt_file);
+    }
+
+    problem_report_t *pr = NULL;
+    if (problem_formatter_generate_report(pf, problem_data, &pr))
+        error_msg_and_die("Failed to format bug report from problem data");
+
+    const char *subject = problem_report_get_summary(pr);
+    const char *dsc = problem_report_get_description(pr);
+
+    log_debug("subject: %s\n"
+              "\n"
+              "%s"
+              "\n"
+              , subject
+              , dsc);
+
+    /* attaching files to the email */
+    for (GList *a = problem_report_get_attachments(pr); a != NULL; a = g_list_next(a))
+    {
+        log_debug("Attaching '%s' to the email", (const char *)a->data);
+        args = append_str_to_vector(args, &arg_size, "-a");
+        char *full_name = concat_path_file(realpath(dump_dir_name, NULL), a->data);
+        args = append_str_to_vector(args, &arg_size, full_name);
+        free(full_name);
     }
 
     args = append_str_to_vector(args, &arg_size, "-s");
@@ -135,7 +183,8 @@ static void create_and_send_email(
     log(_("Sending an email..."));
     exec_and_feed_input(dsc, args);
 
-    free(dsc);
+    problem_report_free(pr);
+    problem_formatter_free(pf);
 
     while (*args)
         free(*args++);
@@ -173,10 +222,11 @@ int main(int argc, char **argv)
 
     const char *dump_dir_name = ".";
     const char *conf_file = CONF_DIR"/plugins/mailx.conf";
+    const char *fmt_file = NULL;
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "& [-v] -d DIR [-c CONFFILE]"
+        "& [-v] -d DIR [-c CONFFILE] [-F FMTFILE]"
         "\n"
         "\n""Sends contents of a problem directory DIR via email"
         "\n"
@@ -191,13 +241,15 @@ int main(int argc, char **argv)
         OPT_v = 1 << 0,
         OPT_d = 1 << 1,
         OPT_c = 1 << 2,
-        OPT_n = 1 << 3,
+        OPT_F = 1 << 3,
+        OPT_n = 1 << 4,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_STRING('d', NULL, &dump_dir_name, "DIR"     , _("Problem directory")),
         OPT_STRING('c', NULL, &conf_file    , "CONFFILE", _("Config file")),
+        OPT_STRING('F', NULL, &fmt_file     , "FILE"    , _("Formatting file for an email")),
         OPT_BOOL('n', "notify-only", NULL  , _("Notify only (Do not mark the report as sent)")),
         OPT_END()
     };
@@ -208,7 +260,7 @@ int main(int argc, char **argv)
     map_string_t *settings = new_map_string();
     load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 
-    create_and_send_email(dump_dir_name, settings, /*notify_only*/(opts & OPT_n));
+    create_and_send_email(dump_dir_name, settings, fmt_file, /*notify_only*/(opts & OPT_n));
 
     free_map_string(settings);
     return 0;

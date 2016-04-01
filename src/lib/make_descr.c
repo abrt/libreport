@@ -290,52 +290,6 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
     return strbuf_free_nobuf(buf_dsc);
 }
 
-#ifdef UNUSED
-char* make_description_mailx(problem_data_t *problem_data)
-{
-    struct strbuf *buf_dsc = strbuf_new();
-    struct strbuf *buf_additional_files = strbuf_new();
-    struct strbuf *buf_duphash_file = strbuf_new();
-    struct strbuf *buf_common_files = strbuf_new();
-
-    GHashTableIter iter;
-    char *name;
-    struct problem_item *value;
-    g_hash_table_iter_init(&iter, problem_data);
-    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
-    {
-        if (value->flags & CD_FLAG_TXT)
-        {
-            if ((strcmp(name, FILENAME_DUPHASH) != 0)
-             && (strcmp(name, FILENAME_ARCHITECTURE) != 0)
-             && (strcmp(name, FILENAME_KERNEL) != 0)
-             && (strcmp(name, FILENAME_PACKAGE) != 0)
-            ) {
-                strbuf_append_strf(buf_additional_files, "%s\n-----\n%s\n\n", name, value->content);
-            }
-            else if (strcmp(name, FILENAME_DUPHASH) == 0)
-                strbuf_append_strf(buf_duphash_file, "%s\n-----\n%s\n\n", name, value->content);
-            else
-                strbuf_append_strf(buf_common_files, "%s\n-----\n%s\n\n", name, value->content);
-        }
-    }
-
-    char *common_files = strbuf_free_nobuf(buf_common_files);
-    char *duphash_file = strbuf_free_nobuf(buf_duphash_file);
-    char *additional_files = strbuf_free_nobuf(buf_additional_files);
-
-    strbuf_append_strf(buf_dsc, "Duplicate check\n=====\n%s\n\n", duphash_file);
-    strbuf_append_strf(buf_dsc, "Common information\n=====\n%s\n\n", common_files);
-    strbuf_append_strf(buf_dsc, "Additional information\n=====\n%s\n", additional_files);
-
-    free(common_files);
-    free(duphash_file);
-    free(additional_files);
-
-    return strbuf_free_nobuf(buf_dsc);
-}
-#endif
-
 /* Items we don't want to include to bz / logger */
 static const char *const blacklisted_items[] = {
     CD_DUMPDIR        ,
@@ -361,16 +315,6 @@ char* make_description_logger(problem_data_t *problem_data, unsigned max_text_si
     return make_description(
                 problem_data,
                 (char**)blacklisted_items,
-                max_text_size,
-                MAKEDESC_SHOW_FILES | MAKEDESC_SHOW_MULTILINE
-    );
-}
-
-char* make_description_mailx(problem_data_t *problem_data, unsigned max_text_size)
-{
-    return make_description(
-                problem_data,
-                (char**)blacklisted_items_mailx,
                 max_text_size,
                 MAKEDESC_SHOW_FILES | MAKEDESC_SHOW_MULTILINE
     );
