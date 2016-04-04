@@ -364,6 +364,7 @@ rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELvmcore.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELxorg.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELLibreport.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELJava.xml
+rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_uReport.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_AnacondaRHEL.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_AnacondaRHELBugzilla.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELBugzillaCCpp.xml
@@ -374,8 +375,10 @@ rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELBugzillaXorg.
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELBugzillaLibreport.xml
 rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELBugzillaJava.xml
 rm -f $RPM_BUILD_ROOT/%{_sysconfdir}/libreport/workflows.d/report_rhel.conf
+rm -f $RPM_BUILD_ROOT/%{_sysconfdir}/libreport/workflows.d/report_uReport.conf
 rm -f $RPM_BUILD_ROOT/%{_sysconfdir}/libreport/workflows.d/report_rhel_bugzilla.conf
 rm -f $RPM_BUILD_ROOT%{_mandir}/man5/report_rhel.conf.5
+rm -f $RPM_BUILD_ROOT%{_mandir}/man5/report_uReport.conf.5
 rm -f $RPM_BUILD_ROOT%{_mandir}/man5/report_rhel_bugzilla.conf.5
 %endif
 
@@ -634,8 +637,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/%{name}/workflows/workflow_RHELxorg.xml
 %{_datadir}/%{name}/workflows/workflow_RHELLibreport.xml
 %{_datadir}/%{name}/workflows/workflow_RHELJava.xml
+%{_datadir}/%{name}/workflows/workflow_uReport.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_rhel.conf
+%config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_uReport.conf
 %{_mandir}/man5/report_rhel.conf.5.*
+%{_mandir}/man5/report_uReport.conf.5.*
 
 %files rhel-bugzilla
 %defattr(-,root,root,-)

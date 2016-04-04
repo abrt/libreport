@@ -630,11 +630,56 @@ int main(int argc, char **argv)
     rhts_result_t *result_atch = NULL;
     char *dsc = NULL;
     char *summary = NULL;
+
+    const char *count = NULL;
+    count = problem_data_get_content_or_NULL(problem_data, FILENAME_COUNT);
+    if (count != NULL
+        && strcmp(count, "1") == 0
+        /* the 'count' file can lie */
+        && get_problem_data_reproducible(problem_data) <= PROBLEM_REPRODUCIBLE_UNKNOWN)
+    {
+        int r = ask_yes_no(
+            _("The problem has only occurred once and the ability to reproduce "
+              "the problem is unknown. Please ensure you will be able to "
+              "provide detailed information to our Support Team. "
+              "Would you like to continue and open a new support case?"));
+        if (!r)
+            exit(EXIT_CANCEL_BY_USER);
+    }
+
+    const char *vendor = NULL;
+    vendor = problem_data_get_content_or_NULL(problem_data, FILENAME_PKG_VENDOR);
+    const char *package = NULL;
+    package  = problem_data_get_content_or_NULL(problem_data, FILENAME_PACKAGE);
+
+    if (package && vendor && strcmp(vendor, "Red Hat, Inc.") != 0)
+    {
+        char *message = xasprintf(
+            _("The crashed program was released by '%s'. "
+              "Would you like to report the problem to Red Hat Support?"),
+              vendor);
+        int r = ask_yes_no(message);
+        free(message);
+        if (!r)
+            exit(EXIT_CANCEL_BY_USER);
+    }
+
+    const char *executable = NULL;
+    executable  = problem_data_get_content_or_NULL(problem_data, FILENAME_EXECUTABLE);
+    if (!package)
+    {
+        char *message = xasprintf(
+            _("The program '%s' does not appear to be provided by Red Hat. "
+              "Would you like to report the problem to Red Hat Support?"),
+              executable);
+        int r = ask_yes_no(message);
+        free(message);
+        if (!r)
+            exit(EXIT_CANCEL_BY_USER);
+    }
+
     const char *function;
     const char *reason;
-    const char *package;
-
-    package  = problem_data_get_content_or_NULL(problem_data, FILENAME_PACKAGE);
     reason   = problem_data_get_content_or_NULL(problem_data, FILENAME_REASON);
     function = problem_data_get_content_or_NULL(problem_data, FILENAME_CRASH_FUNCTION);
     {

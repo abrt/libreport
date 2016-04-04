@@ -48,6 +48,7 @@ MAN5_TXT += report_fedora.conf.txt
 MAN5_TXT += report_Logger.conf.txt
 MAN5_TXT += report_rhel.conf.txt
 MAN5_TXT += report_rhel_bugzilla.conf.txt
+MAN5_TXT += report_uReport.conf.txt
 MAN5_TXT += report_logger.conf.txt
 MAN5_TXT += report_mailx.conf.txt
 MAN5_TXT += report_uploader.conf.txt
