@@ -100,3 +100,40 @@ if report.getVersion_fromOSRELEASE() != report.getVersion():
 
 sys.exit(exit_code)
 ]])
+
+## ---------------------------------- ##
+## create_dump_dir_uid_does_not_exist ##
+## ---------------------------------- ##
+
+AT_PYTESTFUN([create_dump_dir_uid_does_not_exist],
+[[import sys
+
+sys.path.insert(0, "../../../src/report-python")
+sys.path.insert(0, "../../../src/report-python/.libs")
+
+report = __import__("report-python", globals(), locals(), [], -1)
+sys.modules["report"] = report
+
+import os
+
+cd = report.problem_data()
+cd.add_basics()
+dd = cd.create_dump_dir("/tmp/")
+print "dumpdir name:", dd.name
+
+stat_info = os.stat(dd.name)
+uid = stat_info.st_uid
+gid = stat_info.st_gid
+print "user uid", os.getuid()
+print "user gid", os.getgid()
+print "dumpdir uid: ", uid," gid: ",  gid
+
+exit_code = 0
+if os.getuid() != uid:
+    exit_code += 1
+
+if os.getgid() != gid:
+    exit_code += 1
+
+sys.exit(exit_code)
+]])
