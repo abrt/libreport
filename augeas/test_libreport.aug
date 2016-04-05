@@ -21,6 +21,10 @@ DontMatchComponents = selinux-policy
 # for more info about these settings see: https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets
 CreatePrivate= no
 PrivateGroups=private
+ Whitespace = start
+  Whitespace_two=start
+	Whitespace_three =start
+	 Whitespace_four= start
 "
 
     test Libreport.lns get conf =
@@ -45,3 +49,7 @@ PrivateGroups=private
         { "#comment" = "for more info about these settings see: https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets" }
         { "CreatePrivate" = "no" }
         { "PrivateGroups" = "private" }
+        { "Whitespace" = "start" }
+        { "Whitespace_two" = "start" }
+        { "Whitespace_three" = "start" }
+        { "Whitespace_four" = "start" }
