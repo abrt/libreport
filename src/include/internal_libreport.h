@@ -666,8 +666,6 @@ enum {
 };
 #define make_description libreport_make_description
 char *make_description(problem_data_t *problem_data, char **names_to_skip, unsigned max_text_size, unsigned desc_flags);
-#define make_description_bz libreport_make_description_bz
-char* make_description_bz(problem_data_t *problem_data, unsigned max_text_size);
 #define make_description_logger libreport_make_description_logger
 char* make_description_logger(problem_data_t *problem_data, unsigned max_text_size);
 #define make_description_mailx libreport_make_description_mailx
