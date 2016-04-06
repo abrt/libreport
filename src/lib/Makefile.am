@@ -38,6 +38,7 @@ libreport_la_SOURCES = \
     make_descr.c \
     run_event.c \
     problem_data.c \
+    problem_report.c \
     create_dump_dir.c \
     abrt_types.c \
     parse_release.c \
@@ -78,6 +79,7 @@ libreport_la_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     $(GOBJECT_CFLAGS) \
     $(AUGEAS_CFLAGS) \
+    $(SATYR_CFLAGS) \
     -D_GNU_SOURCE
 libreport_la_LDFLAGS = \
     -ltar \
@@ -87,7 +89,8 @@ libreport_la_LIBADD = \
     $(GLIB_LIBS) \
     $(JOURNAL_LIBS) \
     $(GOBJECT_LIBS) \
-    $(AUGEAS_LIBS)
+    $(AUGEAS_LIBS) \
+    $(SATYR_LIBS)
 
 libreportconfdir = $(CONF_DIR)
 dist_libreportconf_DATA = \

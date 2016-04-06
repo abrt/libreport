@@ -23,6 +23,26 @@
 #include "libreport_curl.h"
 #include "abrt_rh_support.h"
 #include "reporter-rhtsupport.h"
+#include "problem_report.h"
+
+/* problem report format template */
+#define PROBLEM_REPORT_TEMPLATE \
+    "%summary:: [abrt] [[%pkg_name%]][[: %crash_function%()]][[: %reason%]][[: TAINTED %tainted_short%]]\n" \
+    "\n" \
+    "Description of problem:: %bare_comment\n" \
+    "\n" \
+    "Additional info::" \
+    "    count,reason,package,pkg_vendor,cmdline,executable,%reporter\n" \
+    "\n" \
+    "How reproducible:: %bare_reproducible\n" \
+    "\n" \
+    "Steps to reproduce:: %bare_reproducer\n" \
+    "\n" \
+    "Truncated backtrace:: %bare_%short_backtrace\n" \
+    "\n" \
+    "Other report identifiers:: %bare_reported_to\n"
+
+#define ABRT_ELEMENTS_KB_ARTICLE "https://access.redhat.com/articles/2134281"
 
 #define QUERY_HINTS_IF_SMALLER_THAN  (8*1024*1024)
 
@@ -53,7 +73,8 @@ static report_result_t *get_reported_to(const char *dump_dir_name)
 }
 
 static
-int create_tarball(const char *tempfile, problem_data_t *problem_data)
+int create_tarball(const char *tempfile, struct dump_dir *dd,
+     problem_data_t *problem_data)
 {
     reportfile_t *file = NULL;
     int retval = 0; /* everything is ok so far .. */
@@ -106,15 +127,28 @@ int create_tarball(const char *tempfile, problem_data_t *problem_data)
                         /*recorded_filename*/ xml_name,
                         /*binary           */ !(value->flags & CD_FLAG_BIGTXT)
                 );
-                if (tar_append_file(tar, (char*)content, xml_name) != 0)
-                {
-                    free(xml_name);
-                    goto ret_fail;
-                }
                 free(xml_name);
             }
         }
     }
+
+    /* append all files from dump dir */
+    dd_init_next_file(dd);
+    char *short_name, *full_name;
+    while (dd_get_next_file(dd, &short_name, &full_name))
+    {
+        char *uploaded_name = concat_path_file("content", short_name);
+        free(short_name);
+
+        if (tar_append_file(tar, full_name, uploaded_name) != 0)
+        {
+            free(full_name);
+            goto ret_fail;
+        }
+
+        free(full_name);
+    }
+
     const char *signature = reportfile_as_string(file);
     /*
      * Note: this pointer points to string which is owned by
@@ -180,6 +214,7 @@ ret_fail:
     }
 
 ret_clean:
+    dd_close(dd);
     /* now it's safe to free file */
     free_reportfile(file);
     return retval;
@@ -429,11 +464,12 @@ int main(int argc, char **argv)
     const char *case_no = NULL;
     GList *conf_file = NULL;
     const char *urconf_file = UREPORT_CONF_FILE_PATH;
+    const char *fmt_file = NULL;
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
         "\n"
-        "& [-v] [-c CONFFILE] -d DIR\n"
+        "& [-v] [-c CONFFILE] [-F FMTFILE] -d DIR\n"
         "or:\n"
         "& [-v] [-c CONFFILE] [-d DIR] -t[ID] [-u -C UR_CONFFILE] FILE...\n"
         "\n"
@@ -464,6 +500,9 @@ int main(int argc, char **argv)
         OPT_t = 1 << 3,
         OPT_f = 1 << 4,
         OPT_u = 1 << 5,
+        OPT_C = 1 << 6,
+        OPT_F = 1 << 7,
+        OPT_D = 1 << 8,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
@@ -474,6 +513,8 @@ int main(int argc, char **argv)
         OPT_BOOL(     'f', NULL, NULL          ,         _("Force reporting even if this problem is already reported")),
         OPT_BOOL(     'u', NULL, NULL          ,         _("Submit uReport before creating a new case")),
         OPT_STRING(   'C', NULL, &urconf_file  , "FILE", _("Configuration file for uReport")),
+        OPT_STRING(   'F', NULL, &fmt_file     , "FILE", _("Formatting file for a new case")),
+        OPT_BOOL(     'D', NULL, NULL          ,         _("Debug")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
@@ -617,20 +658,11 @@ int main(int argc, char **argv)
         }
     }
 
-    /* Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing */
-    log(_("Compressing data"));
-
     problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
     if (!problem_data)
         xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
     const char *errmsg = NULL;
-    char *tempfile = NULL;
-    rhts_result_t *result = NULL;
-    rhts_result_t *result_atch = NULL;
-    char *dsc = NULL;
-    char *summary = NULL;
-
     const char *count = NULL;
     count = problem_data_get_content_or_NULL(problem_data, FILENAME_COUNT);
     if (count != NULL
@@ -664,6 +696,10 @@ int main(int argc, char **argv)
             exit(EXIT_CANCEL_BY_USER);
     }
 
+    /* In the case there is no pkg_vendor file use "unknown vendor"  */
+    if (!vendor)
+        problem_data_add_text_noteditable(problem_data, FILENAME_PKG_VENDOR, "unknown vendor");
+
     const char *executable = NULL;
     executable  = problem_data_get_content_or_NULL(problem_data, FILENAME_EXECUTABLE);
     if (!package)
@@ -676,21 +712,9 @@ int main(int argc, char **argv)
         free(message);
         if (!r)
             exit(EXIT_CANCEL_BY_USER);
-    }
 
-    const char *function;
-    const char *reason;
-    reason   = problem_data_get_content_or_NULL(problem_data, FILENAME_REASON);
-    function = problem_data_get_content_or_NULL(problem_data, FILENAME_CRASH_FUNCTION);
-    {
-        struct strbuf *buf_summary = strbuf_new();
-        strbuf_append_strf(buf_summary, "[abrt] %s", package);
-        if (function && strlen(function) < 30)
-            strbuf_append_strf(buf_summary, ": %s", function);
-        if (reason)
-            strbuf_append_strf(buf_summary, ": %s", reason);
-        summary = strbuf_free_nobuf(buf_summary);
-        dsc = make_description_bz(problem_data, CD_TEXT_ATT_SIZE_BZ);
+        problem_data_add_text_noteditable(problem_data, FILENAME_PACKAGE,
+                                         "not belong to any package");
     }
 
     char tmpdir_name[sizeof(LARGE_DATA_TMP_DIR"/rhtsupport-"LIBREPORT_ISO_DATE_STRING_SAMPLE"-XXXXXX")];
@@ -703,9 +727,76 @@ int main(int argc, char **argv)
     /* Starting from here, we must perform cleanup on errors
      * (delete temp dir)
      */
+    char *tempfile = NULL;
     tempfile = concat_path_basename(tmpdir_name, dump_dir_name);
     tempfile = append_to_malloced_string(tempfile, ".tar.gz");
-    if (create_tarball(tempfile, problem_data) != 0)
+
+    rhts_result_t *result = NULL;
+    rhts_result_t *result_atch = NULL;
+    package  = problem_data_get_content_or_NULL(problem_data, FILENAME_PACKAGE);
+
+    const char *dsc = NULL;
+    const char *summary = NULL;
+
+    problem_formatter_t *pf = problem_formatter_new();
+
+    /* formatting conf file was set */
+    if (fmt_file)
+    {
+        if (problem_formatter_load_file(pf, fmt_file))
+            error_msg_and_die("Invalid format file: %s", fmt_file);
+    }
+    /* using formatting template */
+    else
+    {
+        if (problem_formatter_load_string(pf, PROBLEM_REPORT_TEMPLATE))
+            error_msg_and_die("Invalid problem report format string");
+    }
+
+    problem_report_t *pr = NULL;
+    if (problem_formatter_generate_report(pf, problem_data, &pr))
+        error_msg_and_die("Failed to format bug report from problem data");
+
+    /* Add information about attachments into the description */
+    problem_report_buffer *dsc_buffer = problem_report_get_buffer(pr, PR_SEC_DESCRIPTION);
+
+    char *tarball_name = basename(tempfile);
+    problem_report_buffer_printf(dsc_buffer,
+            "\n"
+            "sosreport and other files were attached as '%s' to the case.\n"
+            "For more details about elements collected by ABRT see:\n"
+            "%s\n"
+            , tarball_name, ABRT_ELEMENTS_KB_ARTICLE);
+
+
+    summary = problem_report_get_summary(pr);
+    dsc = problem_report_get_description(pr);
+
+    /* debug */
+    if (opts & OPT_D)
+    {
+        printf("summary: %s\n"
+                "\n"
+                "%s"
+                "\n"
+                , summary
+                , dsc
+        );
+
+        problem_report_free(pr);
+        problem_formatter_free(pf);
+
+        exit(0);
+    }
+
+    /* Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing */
+    log(_("Compressing data"));
+
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        xfunc_die(); /* error msg is already logged by dd_opendir */
+
+    if (create_tarball(tempfile, dd, problem_data) != 0)
     {
         errmsg = _("Can't create temporary file in "LARGE_DATA_TMP_DIR);
         goto ret;
@@ -749,6 +840,8 @@ int main(int argc, char **argv)
 
         free(version);
         free(product);
+        problem_report_free(pr);
+        problem_formatter_free(pf);
 
         if (result->error)
         {
@@ -776,7 +869,7 @@ int main(int argc, char **argv)
         }
         /* No error in case creation */
         /* Record "reported_to" element */
-        struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+        dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
         if (dd)
         {
             struct report_result rr = { .label = (char *)"RHTSupport" };
@@ -878,9 +971,6 @@ int main(int argc, char **argv)
      */
     if (errmsg)
         error_msg_and_die("%s", errmsg);
-
-    free(summary);
-    free(dsc);
 
     free_rhts_result(result_atch);
     free_rhts_result(result);
