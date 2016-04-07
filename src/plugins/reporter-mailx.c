@@ -33,8 +33,8 @@
     FILENAME_HOSTNAME","FILENAME_COUNT", %%oneline\n" \
     "\n" \
     "::" \
-    FILENAME_REPORTED_TO","FILENAME_BACKTRACE","FILENAME_CORE_BACKTRACE \
-    ", %%multiline"
+    FILENAME_COMMENT","FILENAME_REPORTED_TO","FILENAME_BACKTRACE"," \
+    FILENAME_CORE_BACKTRACE", %%multiline"
 
 #define PR_ATTACH_BINARY "\n%attach:: %binary"
 
