@@ -1623,3 +1623,36 @@ TS_MAIN
 }
 TS_RETURN_MAIN
 ]])
+
+
+## ------------------- ##
+## dd_get_env_variable ##
+## ------------------- ##
+
+AT_TESTFUN([dd_get_env_variable],
+[[
+#include "testsuite.h"
+#include "testsuite_tools.h"
+
+TS_MAIN
+{
+    struct dump_dir *dd = testsuite_dump_dir_create(-1, -1, 0);
+
+    dd_create_basic_files(dd, geteuid(), NULL);
+
+    char *value = NULL;
+    TS_ASSERT_SIGNED_EQ(dd_get_env_variable(dd, "FROG", &value), -ENOENT);
+    TS_ASSERT_PTR_IS_NULL_MESSAGE(value, "Untouched return value on -ENOENT");
+
+    dd_save_text(dd, FILENAME_ENVIRON, "FROG=ribbit\nROOSTER=cockle-doodle-doo");
+
+    TS_ASSERT_FUNCTION(dd_get_env_variable(dd, "HORSE", &value));
+    TS_ASSERT_PTR_IS_NULL_MESSAGE(value, "Untouched return value on missing variable");
+
+    TS_ASSERT_FUNCTION(dd_get_env_variable(dd, "ROOSTER", &value));
+    TS_ASSERT_STRING_EQ(value, "cockle-doodle-doo", "Variable ROOSTER loaded from the dump dir");
+
+    testsuite_dump_dir_delete(dd);
+}
+TS_RETURN_MAIN
+]])
