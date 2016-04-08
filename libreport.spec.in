@@ -772,6 +772,43 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Fri Apr 08 2016 Matej Habrnal <mhabrnal@redhat.com> 2.7.0-1
+- ignored words: update ignored words
+- mailx: introduce debug parameter -D
+- mailx: mail formatting: add comment right after %oneline
+- mailx: use problem report api to define an emais' content
+- lib: remove unused function make_description_bz
+- augeas: trim spaces before key value
+- Revert "xml parser: be more verbose in case xml file cannot be opened"
+- xml parser: be more verbose in case xml file cannot be opened
+- spec: add workflows.d to filesystem package
+- makefile: define LANG in release target
+- mailx: stop creating dead.letter on mailx failures
+- workflows: add comments to ambiguous functions
+- workflows: NULL for the default configuration dir
+- workflows: publish the function loading configuration
+- build: fix build on Fedora24
+- augeas: exclude mantisbt format configurations
+- reporter-mantisbt: add missing '=' to conf file
+- curl: fix typo Ingoring -> Ignoring
+- rhtsupport: attach all dump dir's element to a new case
+- rhtsupport: add pkg_vendor, reproducer and reproducible to description
+- report client: add silent mode to clean_up()
+- doc: add documentation for requires-details attribute
+- rhtsupport: Discourage users from reporting in non Red Hat stuff
+- rhtsupport: Discourage users from opening one-shot crashes
+- report-gtk: Require Reproducer for RHTSupport
+- Add workflow for RHEL anonymous report
+- spec: add workflow for RHEL anonymous report files
+- wizard: fix the broken widget expansion
+- dd: add documentation of dd_create_skeleton
+- workflow: add extern C to the header file
+- Fix minor typos
+- Translation updates
+- translations: update zanata configuration
+- wizard: fix the broken "Show log" widget
+- wizard: remove the code correcting Bugzilla groups
+
 * Tue Feb 02 2016 Matej Habrnal <mhabrnal@redhat.com> 2.6.4-1
 - doc: add option -o and -O into reporter-ureport man page
 - rhtsupport: use problme report API to create description
