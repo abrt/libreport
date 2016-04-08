@@ -33,10 +33,15 @@
     FILENAME_HOSTNAME","FILENAME_COUNT", %%oneline\n" \
     "\n" \
     "::" \
-    FILENAME_REPORTED_TO","FILENAME_BACKTRACE","FILENAME_CORE_BACKTRACE \
-    ", %%multiline"
+    FILENAME_COMMENT","FILENAME_REPORTED_TO","FILENAME_BACKTRACE"," \
+    FILENAME_CORE_BACKTRACE", %%multiline"
 
 #define PR_ATTACH_BINARY "\n%attach:: %binary"
+
+enum {
+    RM_FLAG_NOTIFY = (1 << 0),
+    RM_FLAG_DEBUG  = (1 << 1)
+};
 
 static void exec_and_feed_input(const char* text, char **args)
 {
@@ -99,7 +104,7 @@ static void create_and_send_email(
                 const char *dump_dir_name,
                 map_string_t *settings,
                 const char *fmt_file,
-                bool notify_only)
+                int flag)
 {
     problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
     if (!problem_data)
@@ -112,10 +117,6 @@ static void create_and_send_email(
     char *email_to = (env ? xstrdup(env) : xstrdup(get_map_string_item_or_NULL(settings, "EmailTo")) ? : ask_email_address("receiver", "root@localhost"));
     env = getenv("Mailx_SendBinaryData");
     bool send_binary_data = string_to_bool(env ? env : get_map_string_item_or_empty(settings, "SendBinaryData"));
-
-    char **args = NULL;
-    unsigned arg_size = 0;
-    args = append_str_to_vector(args, &arg_size, "/bin/mailx");
 
     problem_formatter_t *pf = problem_formatter_new();
     /* formatting file is not set */
@@ -148,17 +149,33 @@ static void create_and_send_email(
     const char *subject = problem_report_get_summary(pr);
     const char *dsc = problem_report_get_description(pr);
 
-    log_debug("subject: %s\n"
-              "\n"
-              "%s"
-              "\n"
-              , subject
-              , dsc);
+    if (flag & RM_FLAG_DEBUG)
+    {
+        printf("subject: %s\n"
+                  "\n"
+                  "%s"
+                  "\n"
+                  , subject
+                  , dsc);
+
+        puts("attachments:");
+        for (GList *a = problem_report_get_attachments(pr); a != NULL; a = g_list_next(a))
+            printf(" %s\n", (const char *)a->data);
+
+        problem_report_free(pr);
+        problem_formatter_free(pf);
+        free(email_from);
+        free(email_to);
+        exit(0);
+    }
+
+    char **args = NULL;
+    unsigned arg_size = 0;
+    args = append_str_to_vector(args, &arg_size, "/bin/mailx");
 
     /* attaching files to the email */
     for (GList *a = problem_report_get_attachments(pr); a != NULL; a = g_list_next(a))
     {
-        log_debug("Attaching '%s' to the email", (const char *)a->data);
         args = append_str_to_vector(args, &arg_size, "-a");
         char *full_name = concat_path_file(realpath(dump_dir_name, NULL), a->data);
         args = append_str_to_vector(args, &arg_size, full_name);
@@ -186,7 +203,7 @@ static void create_and_send_email(
      */
     putenv((char*)"DEAD=/dev/null");
 
-    if (notify_only)
+    if (flag & RM_FLAG_NOTIFY)
         log(_("Sending a notification email to: %s"), email_to);
     else
         log(_("Sending an email..."));
@@ -203,7 +220,7 @@ static void create_and_send_email(
 
     problem_data_free(problem_data);
 
-    if (!notify_only)
+    if (!(flag & RM_FLAG_NOTIFY))
     {
         struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
         if (dd)
@@ -254,6 +271,7 @@ int main(int argc, char **argv)
         OPT_c = 1 << 2,
         OPT_F = 1 << 3,
         OPT_n = 1 << 4,
+        OPT_D = 1 << 5,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
@@ -262,6 +280,7 @@ int main(int argc, char **argv)
         OPT_STRING('c', NULL, &conf_file    , "CONFFILE", _("Config file")),
         OPT_STRING('F', NULL, &fmt_file     , "FILE"    , _("Formatting file for an email")),
         OPT_BOOL('n', "notify-only", NULL  , _("Notify only (Do not mark the report as sent)")),
+        OPT_BOOL(  'D', NULL, NULL          ,         _("Debug")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
@@ -271,7 +290,14 @@ int main(int argc, char **argv)
     map_string_t *settings = new_map_string();
     load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 
-    create_and_send_email(dump_dir_name, settings, fmt_file, /*notify_only*/(opts & OPT_n));
+    int flag = 0;
+    if (opts & OPT_n)
+        flag |= RM_FLAG_NOTIFY;
+
+    if (opts & OPT_D)
+        flag |= RM_FLAG_DEBUG;
+
+    create_and_send_email(dump_dir_name, settings, fmt_file, flag);
 
     free_map_string(settings);
     return 0;
