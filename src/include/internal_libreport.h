@@ -704,6 +704,8 @@ int get_fsgid(const char *proc_pid_status);
 int dump_fd_info_ext(const char *dest_filename, const char *proc_pid_fd_path, uid_t uid, gid_t gid);
 #define dump_fd_info libreport_dump_fd_info
 int dump_fd_info(const char *dest_filename, const char *proc_pid_fd_path);
+#define get_env_variable_ext libreport_get_env_variable_ext
+int get_env_variable_ext(int fd, char delim, const char *name, char **value);
 #define get_env_variable libreport_get_env_variable
 int get_env_variable(pid_t pid, const char *name, char **value);
 
