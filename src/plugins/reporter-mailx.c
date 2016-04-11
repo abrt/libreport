@@ -197,6 +197,12 @@ static void create_and_send_email(
      */
     putenv((char*)"sendwait=1");
 
+    /* Prevent mailx from creating dead.letter if sending fails. The file is
+     * useless in our case and if the reporter is called from abrtd, SELinux
+     * complains a lot about mailx touching ABRT data.
+     */
+    putenv((char*)"DEAD=/dev/null");
+
     log(_("Sending an email..."));
 
     if (flag & RM_FLAG_NOTIFY)
