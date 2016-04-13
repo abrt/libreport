@@ -48,9 +48,6 @@ struct dump_dir *create_dump_dir_from_problem_data_ext(problem_data_t *problem_d
         return NULL;
     }
 
-    if (uid == (uid_t)-1L)
-        uid = 0;
-
     struct timeval tv;
     if (gettimeofday(&tv, NULL) < 0)
     {
