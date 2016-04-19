@@ -204,7 +204,7 @@ FILE *g_testsuite_output_stream = 0;
         const char *l_ts_lhs = (actual); \
         const char *l_ts_rhs = (expected); \
         if (l_ts_lhs == NULL && l_ts_rhs != NULL) { \
-            TS_FAILURE("%s ("#actual" == "#expected")\n\tActual  : NULL\n\tExpected: %p\n", message ? message : "Assert", l_ts_rhs); \
+            TS_FAILURE("%s ("#actual" == "#expected")\n\tActual  : NULL\n\tExpected: %s\n", message ? message : "Assert", l_ts_rhs); \
         } \
         else if (l_ts_lhs != NULL && l_ts_rhs == NULL) { \
             TS_FAILURE("%s ("#actual" == "#expected")\n\tActual  : %s\n\tExpected: NULL\n", message ? message : "Assert", l_ts_lhs); \
@@ -293,5 +293,25 @@ FILE *g_testsuite_output_stream = 0;
 #define TS_ASSERT_PTR_EQ(actual, expected) \
     TS_ASSERT_PTR_OP_MESSAGE(actual, ==, expected, NULL);
 
+
+
+/*
+ * Standard functions returning non-0 on errors
+ */
+
+#define TS_ASSERT_FUNCTION_MESSAGE(call, message) \
+    do { \
+        const int l_ts_lhs = call; \
+        if (l_ts_lhs == 0) { \
+            TS_SUCCESS("%s ('"#call"')\n", message ? message : "Function SUCCEEDED"); \
+        } \
+        else { \
+            TS_FAILURE("%s ('"#call"')\n\tCode  : %d\n", message ? message : "Function FAILED", l_ts_lhs); \
+        } \
+    } while(0)
+
+
+#define TS_ASSERT_FUNCTION(call) \
+    TS_ASSERT_FUNCTION_MESSAGE(call, NULL)
 
 #endif/*LIBREPORT_TESTSUITE_H*/

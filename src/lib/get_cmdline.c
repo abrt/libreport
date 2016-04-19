@@ -346,15 +346,20 @@ int dump_fd_info(const char *dest_filename, const char *proc_pid_fd_path)
     return dump_fd_info_ext(dest_filename, proc_pid_fd_path, /*UID*/-1, /*GID*/-1);
 }
 
-int get_env_variable(pid_t pid, const char *name, char **value)
+int get_env_variable_ext(int fd, char delim, const char *name, char **value)
 {
-    char path[sizeof("/proc/%lu/environ") + sizeof(long)*3];
-    snprintf(path, sizeof(path), "/proc/%lu/environ", (long)pid);
+    int workfd = dup(fd);
+    if (workfd < 0)
+    {
+        perror_msg("dup()");
+        return -errno;
+    }
 
-    FILE *fenv = fopen(path, "re");
+    FILE *fenv = fdopen(workfd, "re");
     if (fenv == NULL)
     {
-        pwarn_msg("Failed to open environ file");
+        close(workfd);
+        perror_msg("fdopen()");
         return -errno;
     }
 
@@ -374,17 +379,18 @@ int get_env_variable(pid_t pid, const char *name, char **value)
         i = 0;
 
         /* Read to the end of variable entry */
-        while ((c = fgetc(fenv)) != EOF && c !='\0')
+        while ((c = fgetc(fenv)) != EOF && c != delim)
             ++i;
 
         /* Go to the next entry if the read entry isn't the searched variable */
         if (skip)
             continue;
 
+        const int eof = c != EOF;
         *value = xmalloc(i+1);
 
         /* i+1 because we didn't count '\0'  */
-        if (fseek(fenv, -(i+1), SEEK_CUR) < 0)
+        if (fseek(fenv, -(i+eof), SEEK_CUR) < 0)
             error_msg_and_die("Failed to seek");
 
         if (fread(*value, 1, i, fenv) != i)
@@ -398,6 +404,25 @@ int get_env_variable(pid_t pid, const char *name, char **value)
     fclose(fenv);
     return 0;
 }
+
+int get_env_variable(pid_t pid, const char *name, char **value)
+{
+    char path[sizeof("/proc/%lu/environ") + sizeof(long)*3];
+    snprintf(path, sizeof(path), "/proc/%lu/environ", (long)pid);
+
+    const int envfd = open(path, O_RDONLY);
+    if (envfd < 0)
+    {
+        pwarn_msg("Failed to open environ file");
+        return -errno;
+    }
+
+    const int r = get_env_variable_ext(envfd, '\0', name, value);
+    close(envfd);
+
+    return r;
+}
+
 
 int get_ns_ids(pid_t pid, struct ns_ids *ids)
 {

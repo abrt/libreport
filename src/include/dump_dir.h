@@ -212,6 +212,17 @@ int dd_load_int32(const struct dump_dir *dd, const char *name, int32_t *value);
 int dd_load_uint32(const struct dump_dir *dd, const char *name, uint32_t *value);
 int dd_load_int64(const struct dump_dir *dd, const char *name, int64_t *value);
 int dd_load_uint64(const struct dump_dir *dd, const char *name, uint64_t *value);
+
+/* Returns value of environment variable with given name.
+ *
+ * @param dd Dump directory
+ * @param name Variables's name
+ * @param value Return value.
+ * @return 0 no success, or negative value if an error occurred (-ENOENT if the
+ * given dd does not support environment variables).
+ */
+int dd_get_env_variable(struct dump_dir *dd, const char *name, char **value);
+
 void dd_save_text(struct dump_dir *dd, const char *name, const char *data);
 void dd_save_binary(struct dump_dir *dd, const char *name, const char *data, unsigned size);
 int dd_copy_file(struct dump_dir *dd, const char *name, const char *source_path);

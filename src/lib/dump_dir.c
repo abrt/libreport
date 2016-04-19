@@ -1828,6 +1828,17 @@ int dd_load_uint64(const struct dump_dir *dd, const char *name, uint64_t *value)
     return ret;
 }
 
+int dd_get_env_variable(struct dump_dir *dd, const char *name, char **value)
+{
+    const int fd = openat(dd->dd_fd, FILENAME_ENVIRON, O_RDONLY | O_NOFOLLOW);
+    if (fd < 0)
+        return -errno;
+
+    const int r  = get_env_variable_ext(fd, '\n', name, value);
+    close(fd);
+    return r;
+}
+
 void dd_save_text(struct dump_dir *dd, const char *name, const char *data)
 {
     if (!dd->locked)
