@@ -168,8 +168,20 @@ FILE *g_testsuite_output_stream = 0;
 #define TS_ASSERT_SIGNED_EQ(actual, expected) \
     TS_ASSERT_SIGNED_OP_MESSAGE(actual, ==, expected, NULL)
 
+#define TS_ASSERT_SIGNED_NEQ(actual, expected) \
+    TS_ASSERT_SIGNED_OP_MESSAGE(actual, !=, expected, NULL)
+
 #define TS_ASSERT_SIGNED_GE(actual, expected) \
     TS_ASSERT_SIGNED_OP_MESSAGE(actual, >=, expected, NULL)
+
+#define TS_ASSERT_SIGNED_GT(actual, expected) \
+    TS_ASSERT_SIGNED_OP_MESSAGE(actual, >, expected, NULL)
+
+#define TS_ASSERT_SIGNED_LE(actual, expected) \
+    TS_ASSERT_SIGNED_OP_MESSAGE(actual, <=, expected, NULL)
+
+#define TS_ASSERT_SIGNED_LT(actual, expected) \
+    TS_ASSERT_SIGNED_OP_MESSAGE(actual, <, expected, NULL)
 
 
 /*
