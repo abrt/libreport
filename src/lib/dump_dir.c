@@ -316,7 +316,7 @@ static time_t parse_time_file_at(int dir_fd, const char *filename)
 {
     /* Note that on some architectures (x32) time_t is "long long" */
     const long long MAX_TIME_T = (1ULL << (sizeof(time_t)*8 - 1)) - 1;
-    unsigned long long value = 0;
+    unsigned long long value = (time_t)-1;
     read_number_from_file_at(dir_fd, filename, "unix time stamp", sizeof(time_t), 0, MAX_TIME_T, &value);
     return (time_t)value;
 }
@@ -498,7 +498,7 @@ static void dd_unlock(struct dump_dir *dd)
 static inline struct dump_dir *dd_init(void)
 {
     struct dump_dir* dd = (struct dump_dir*)xzalloc(sizeof(struct dump_dir));
-    dd->dd_time = -1;
+    dd->dd_time = (time_t)-1;
     dd->dd_fd = -1;
     dd->dd_md_fd = -1;
     return dd;
@@ -763,6 +763,41 @@ uid_t dd_get_owner(struct dump_dir *dd)
     }
 
     return (uid_t)owner;
+}
+
+time_t dd_get_first_occurrence(struct dump_dir *dd)
+{
+    if (dd->dd_time == (time_t)-1)
+    {
+        log_debug("The dump directory wasn't opened");
+        errno = ENODATA;
+    }
+
+    return dd->dd_time;
+}
+
+time_t dd_get_last_occurrence(struct dump_dir *dd)
+{
+    const time_t first_occurrence = dd_get_first_occurrence(dd);
+    if (first_occurrence == (time_t)-1)
+        return -1;
+
+    /* Do not touch errno in case of errors, because this function claims
+     * to set errno only to ENODATA */
+    const int old_errno = errno;
+    time_t last_occurrence = parse_time_file_at(dd->dd_fd, FILENAME_LAST_OCCURRENCE);
+
+    if (last_occurrence < first_occurrence)
+    {
+        log_info("Adapting '%s' to monotonic time (+%lds)",
+                 FILENAME_LAST_OCCURRENCE, first_occurrence - last_occurrence);
+        last_occurrence = first_occurrence;
+    }
+    else if (last_occurrence < 0)
+        last_occurrence = first_occurrence;
+
+    errno = old_errno;
+    return last_occurrence;
 }
 
 /* A helper function useful for traversing directories.
@@ -1233,6 +1268,9 @@ struct dump_dir *dd_create_skeleton(const char *dir, uid_t uid, mode_t mode, int
 #endif
     }
 
+    /* Initialize dd_time to some sane value */
+    dd->dd_time = time(NULL);
+
     return dd;
 
 fail:
@@ -1284,18 +1322,19 @@ void dd_create_basic_files(struct dump_dir *dd, uid_t uid, const char *chroot_di
 {
     char long_str[sizeof(long) * 3 + 2];
 
-    char *time_str = dd_load_text_ext(dd, FILENAME_TIME,
-                    DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-    if (!time_str)
+    const time_t t = parse_time_file_at(dd->dd_fd, FILENAME_TIME);
+    if (t < 0)
     {
-        time_t t = time(NULL);
-        sprintf(long_str, "%lu", (long)t);
+        sprintf(long_str, "%lu", (long)dd->dd_time);
         /* first occurrence */
         dd_save_text(dd, FILENAME_TIME, long_str);
         /* last occurrence */
         dd_save_text(dd, FILENAME_LAST_OCCURRENCE, long_str);
     }
-    free(time_str);
+    else
+    {
+        dd->dd_time = t;
+    }
 
     /* it doesn't make sense to create the uid file if uid == -1 */
     /* and 'owner' is set since dd_create_skeleton */
@@ -1629,7 +1668,7 @@ static char *load_text_from_file_descriptor(int fd, const char *path, int flags)
     if (fd == -1)
     {
         if (!(flags & DD_FAIL_QUIETLY_ENOENT))
-            perror_msg("Can't open file '%s'", path);
+            perror_msg("Can't open file '%s' for reading", path);
         return (flags & DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE ? NULL : xstrdup(""));
     }
 
@@ -1716,7 +1755,7 @@ static bool save_binary_file_at(int dir_fd, const char *name, const char* data, 
     int fd = openat(dir_fd, name, O_WRONLY | O_EXCL | O_CREAT | O_NOFOLLOW, mode);
     if (fd < 0)
     {
-        perror_msg("Can't open file '%s'", name);
+        perror_msg("Can't open file '%s' for writing", name);
         return false;
     }
 

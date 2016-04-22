@@ -1656,3 +1656,112 @@ TS_MAIN
 }
 TS_RETURN_MAIN
 ]])
+
+
+## ----------------------- ##
+## dd_get_first_occurrence ##
+## ----------------------- ##
+
+AT_TESTFUN([dd_get_first_occurrence],
+[[
+#include "testsuite.h"
+#include "testsuite_tools.h"
+
+TS_MAIN
+{
+    {   /* No time file */
+        const time_t time_before_create = time(NULL);
+        struct dump_dir *dd = testsuite_dump_dir_create(-1, -1, 0);
+        TS_ASSERT_SIGNED_GE(dd_get_first_occurrence(dd), time_before_create);
+
+        const time_t time_backup = dd_get_first_occurrence(dd);
+        sleep(2);
+        TS_ASSERT_SIGNED_EQ(dd_get_first_occurrence(dd), time_backup);
+
+        sleep(2);
+        dd_create_basic_files(dd, geteuid(), NULL);
+        TS_ASSERT_SIGNED_EQ(dd_get_first_occurrence(dd), time_backup);
+
+        uint64_t saved;
+        TS_ASSERT_FUNCTION(dd_load_uint64(dd, FILENAME_TIME, &saved));
+        TS_ASSERT_SIGNED_EQ(saved, dd_get_first_occurrence(dd));
+
+        testsuite_dump_dir_delete(dd);
+    }
+
+    {   /* Invalid time file */
+        struct dump_dir *dd = testsuite_dump_dir_create(-1, -1, 0);
+        const time_t time_backup = dd_get_first_occurrence(dd);
+        dd_save_text(dd, FILENAME_TIME, "foo");
+        sleep(2);
+        dd_create_basic_files(dd, geteuid(), NULL);
+        TS_ASSERT_SIGNED_EQ(dd_get_first_occurrence(dd), time_backup);
+
+        testsuite_dump_dir_delete(dd);
+    }
+
+    {   /* Valid time file */
+        struct dump_dir *dd = testsuite_dump_dir_create(-1, -1, 0);
+        dd_save_text(dd, FILENAME_TIME, "1234567");
+        sleep(2);
+        dd_create_basic_files(dd, geteuid(), NULL);
+        TS_ASSERT_SIGNED_EQ(dd_get_first_occurrence(dd), 1234567);
+
+        testsuite_dump_dir_delete(dd);
+    }
+
+    { /* Impossible case = dd->dd_time == -1 */
+        struct dump_dir *dd = testsuite_dump_dir_create(-1, -1, 0);
+        dd->dd_time = -1;
+        errno = 0;
+        TS_ASSERT_SIGNED_EQ(dd_get_first_occurrence(dd), -1);
+        TS_ASSERT_SIGNED_EQ(errno, ENODATA);
+
+        testsuite_dump_dir_delete(dd);
+    }
+}
+TS_RETURN_MAIN
+]])
+
+## ----------------------- ##
+## dd_get_last_occurrence ##
+## ----------------------- ##
+
+AT_TESTFUN([dd_get_last_occurrence],
+[[
+#include "testsuite.h"
+#include "testsuite_tools.h"
+
+TS_MAIN
+{
+    struct dump_dir *dd = testsuite_dump_dir_create(-1, -1, 0);
+    TS_ASSERT_SIGNED_EQ(dd_get_last_occurrence(dd), dd_get_first_occurrence(dd));
+
+    dd->dd_time = (time_t)1234567;
+    dd_create_basic_files(dd, geteuid(), NULL);
+
+    TS_ASSERT_SIGNED_EQ(dd_get_last_occurrence(dd), dd_get_first_occurrence(dd));
+    TS_ASSERT_SIGNED_EQ(dd_get_last_occurrence(dd), 1234567);
+
+    dd_save_text(dd, FILENAME_LAST_OCCURRENCE, "123");
+    TS_ASSERT_SIGNED_EQ(dd_get_last_occurrence(dd), dd_get_first_occurrence(dd));
+    TS_ASSERT_SIGNED_EQ(dd_get_last_occurrence(dd), 1234567);
+
+    dd_save_text(dd, FILENAME_LAST_OCCURRENCE, "7654321");
+    TS_ASSERT_SIGNED_NEQ(dd_get_last_occurrence(dd), dd_get_first_occurrence(dd));
+    TS_ASSERT_SIGNED_EQ(dd_get_last_occurrence(dd), 7654321);
+
+    dd->dd_time = -1;
+    errno = 0;
+    TS_ASSERT_SIGNED_EQ(dd_get_last_occurrence(dd), -1);
+    TS_ASSERT_SIGNED_EQ(errno, ENODATA);
+
+    dd_delete_item(dd, FILENAME_LAST_OCCURRENCE);
+    errno = 0;
+    TS_ASSERT_SIGNED_EQ(dd_get_last_occurrence(dd), -1);
+    TS_ASSERT_SIGNED_EQ(errno, ENODATA);
+
+    testsuite_dump_dir_delete(dd);
+}
+TS_RETURN_MAIN
+]])

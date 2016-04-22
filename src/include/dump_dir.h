@@ -310,6 +310,25 @@ int dd_set_no_owner(struct dump_dir *dd);
  */
 uid_t dd_get_owner(struct dump_dir *dd);
 
+/* Returns UNIX time stamp of the first occurrence of the problem.
+ *
+ * @param dd Examined dump directory
+ * @returns On success, the value of time of the first occurrence in seconds
+ * since the Epoch is returned. On error, ((time_t) -1) is returned, and errno
+ * is set appropriately (ENODATA).
+ */
+time_t dd_get_first_occurrence(struct dump_dir *dd);
+
+/* Returns UNIX time stamp of the last occurrence of the problem.
+ *
+ * @param dd Examined dump directory
+ * @returns The returned value is never lower than the value returned by
+ * dd_get_first_occurrence(). On success, the value of time of the first
+ * occurrence in seconds since the Epoch is returned.On error, ((time_t) -1) is
+ * returned, and errno is set appropriately (ENODATA).
+ */
+time_t dd_get_last_occurrence(struct dump_dir *dd);
+
 /* reported_to handling */
 struct report_result {
     char *label;
