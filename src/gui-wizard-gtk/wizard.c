@@ -3352,7 +3352,7 @@ static void on_btn_add_file(GtkButton *button)
                 GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                 GTK_MESSAGE_WARNING,
                 GTK_BUTTONS_CLOSE,
-                message);
+                "%s", message);
             free(message);
             gtk_window_set_transient_for(GTK_WINDOW(dlg), GTK_WINDOW(g_wnd_assistant));
             gtk_dialog_run(GTK_DIALOG(dlg));

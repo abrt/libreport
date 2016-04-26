@@ -288,7 +288,7 @@ char *submit_ureport(const char *dump_dir_name, struct ureport_server_config *co
         ureport_server_response_save_in_dump_dir(resp, dump_dir_name, conf);
 
         if (resp->urr_message)
-            log(resp->urr_message);
+            log("%s", resp->urr_message);
     }
     else if (g_verbose > 2)
         error_msg(_("Server responded with an error: '%s'"), resp->urr_value);

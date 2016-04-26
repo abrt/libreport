@@ -312,7 +312,7 @@ int main(int argc, char **argv)
         {
             log(_("This problem has already been reported."));
             if (response->urr_message)
-                log(response->urr_message);
+                log("%s", response->urr_message);
 
             ret = EXIT_STOP_EVENT_RUN;
         }
