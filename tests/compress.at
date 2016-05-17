@@ -1,0 +1,137 @@
+# -*- Autotest -*-
+
+AT_BANNER([compress])
+
+m4_define([AT_TESTFUN_DECOMPRESS],
+[AT_TESTFUN([$1-decompression],
+[[#include "testsuite.h"
+#include <err.h>
+
+#define BASE64 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+#define PLAIN_CHUNKS (2*1024+3*64)
+
+TS_MAIN
+{
+    int pipes[2];
+    pipe(pipes);
+
+    char *compressedfilename = NULL;
+    int r = asprintf(&compressedfilename, "/tmp/libreport-attest-compress.%d.$1", getpid());
+    if (r < 0)
+        err(EXIT_FAILURE, "compressed file name");
+
+    pid_t child = fork();
+    if (child < 0)
+        err(EXIT_FAILURE, "fork");
+
+    if (child == 0)
+    {
+        close(pipes[1]);
+
+        close(STDIN_FILENO);
+        if (dup2(pipes[0], STDIN_FILENO) < 0)
+            err(EXIT_FAILURE, "dup2(pipes[0], STDIN_FILENO)");
+
+        unlink(compressedfilename);
+        int compressedfd = open(compressedfilename, O_WRONLY | O_CREAT | O_EXCL, 0440);
+        if (compressedfd < 0)
+            err(EXIT_FAILURE, "open(%s, O_WRONLY, O_CREAT | O_EXCL)", compressedfilename);
+
+        close(STDOUT_FILENO);
+        if (dup2(compressedfd, STDOUT_FILENO) < 0)
+            err(EXIT_FAILURE, "dup2(compressedfd, STDOUT_FILENO)");
+
+        execlp("$1", "$1", "-z", "-", NULL);
+        err(EXIT_FAILURE, "execlp('$1 - %s')", compressedfilename);
+    }
+
+    close(pipes[0]);
+
+    for (size_t i = 0; i < PLAIN_CHUNKS; ++i)
+    {
+        const int wrote = safe_write(pipes[1], BASE64, sizeof(BASE64) - 1);
+        if (wrote != sizeof(BASE64) - 1)
+            err(EXIT_FAILURE, "Failed to write to temp file");
+    }
+
+    close(pipes[1]);
+
+    int status = 0;
+    r = waitpid(child, &status, 0);
+    if (r < 0)
+        err(EXIT_FAILURE, "waitpid($1) failed");
+
+    if (WIFSIGNALED(status))
+        errx(EXIT_FAILURE, "$1 signaled with %d", WTERMSIG(r));
+
+    if (!WIFEXITED(status))
+        errx(EXIT_FAILURE, "Unhandled child status");
+
+    if (WEXITSTATUS(status) != 0)
+        errx(EXIT_FAILURE, "$1 exited with %d", WEXITSTATUS(r));
+
+    char plainfilename[] = "/tmp/libreport-attest-compress-plain.XXXXXX";
+    int fdo = mkstemp(plainfilename);
+    if (fdo < 0)
+        err(EXIT_FAILURE, "Failed to create temporary file");
+
+    int fdi = open(compressedfilename, O_RDONLY | O_NOFOLLOW);
+    if (fdi < 0)
+        err(EXIT_FAILURE, "Failed to open compressed file %s", compressedfilename);
+
+    TS_ASSERT_FUNCTION(decompress_fd(fdi, fdo));
+    close(fdi);
+
+    if (0 > lseek(fdo, 0L, SEEK_SET))
+        err(EXIT_FAILURE, "failed to seek decompressed %s", plainfilename);
+
+    int c = 0;
+    size_t sz = 0;
+    char buf[sizeof(BASE64)];
+    while ((r = safe_read(fdo, buf, sizeof(BASE64) - 1)) != EOF && r != 0)
+    {
+        c++;
+        sz += r;
+        buf[r] = '\0';
+
+        long old_failures = g_testsuite_fails;
+        TS_ASSERT_STRING_EQ(buf, BASE64, "Base64 decompressed chunk");
+
+        if (old_failures != g_testsuite_fails)
+            break;
+    }
+    close(fdo);
+
+    TS_ASSERT_SIGNED_EQ(c, PLAIN_CHUNKS);
+    TS_ASSERT_SIGNED_EQ(sz, PLAIN_CHUNKS * (sizeof(BASE64)-1));
+
+    if (g_testsuite_fails == 0)
+    {
+        unlink(compressedfilename);
+        unlink(plainfilename);
+    }
+    else
+    {
+        fprintf(stderr, "Compressed   : %s\n", compressedfilename);
+        fprintf(stderr, "Decompressed : %s\n", plainfilename);
+    }
+
+    free(compressedfilename);
+}
+TS_RETURN_MAIN
+]])
+])
+
+
+## --- ##
+## LZ4 ##
+## --- ##
+
+AT_TESTFUN_DECOMPRESS([lz4])
+
+
+## -- ##
+## XZ ##
+## -- ##
+
+AT_TESTFUN_DECOMPRESS([xz])
