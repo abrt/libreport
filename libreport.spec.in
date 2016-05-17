@@ -55,9 +55,12 @@ BuildRequires: doxygen
 BuildRequires: systemd-devel
 BuildRequires: augeas-devel
 BuildRequires: augeas
-BuildRequires: xz-devel
+BuildRequires: xz
+BuildRequires: lz4
 Requires: libreport-filesystem = %{version}-%{release}
 Requires: satyr >= 0.18
+Requires: xz
+Requires: lz4
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 

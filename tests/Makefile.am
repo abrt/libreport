@@ -51,7 +51,8 @@ TESTSUITE_AT = \
   iso_date.at \
   uriparser.at \
   event_config.at \
-  proc_helpers.at
+  proc_helpers.at \
+  compress.at
 
 TESTSUITE_AT_IN = \
   bugzilla_plugin.at

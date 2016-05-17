@@ -18,9 +18,20 @@
 */
 #include "internal_libreport.h"
 
-#include <lzma.h>
+#if HAVE_LZMA
+# include <lzma.h>
+#else
+# define LR_DECOMPRESS_FORK_EXECVP
+#endif
+
+#if HAVE_LZ4
+# include <lz4frame.h>
+#else
+# define LR_DECOMPRESS_FORK_EXECVP
+#endif
 
 static const uint8_t s_xz_magic[6] = { 0xFD, 0x37, 0x7A, 0x58, 0x5A, 0x00 };
+static const uint8_t s_lz4_magic[4] = { 0x04, 0x22, 0x4D, 0x18 };
 
 static bool
 is_format(const char *name, const uint8_t *header, size_t hl, const uint8_t *magic, size_t ml)
@@ -34,9 +45,68 @@ is_format(const char *name, const uint8_t *header, size_t hl, const uint8_t *mag
     return memcmp(header, magic, ml) == 0;
 }
 
+
+#ifdef LR_DECOMPRESS_FORK_EXECVP
+static int
+decompress_using_fork_execvp(const char** cmd, int fdi, int fdo)
+{
+    pid_t child = fork();
+    if (child < 0)
+    {
+        VERB1 perror_msg("fork() for decompression");
+        return -1;
+    }
+
+    if (child == 0)
+    {
+        close(STDIN_FILENO);
+        if (dup2(fdi, STDIN_FILENO) < 0)
+        {
+            VERB1 perror_msg("Decompression failed: dup2(fdi, STDIN_FILENO)");
+            exit(EXIT_FAILURE);
+        }
+
+        close(STDOUT_FILENO);
+        if (dup2(fdo, STDOUT_FILENO) < 0)
+        {
+            VERB1 perror_msg("Decompression failed: dup2(fdo, STDOUT_FILENO)");
+            exit(EXIT_FAILURE);
+        }
+
+        execvp(cmd[0], (char **)cmd);
+
+        VERB1 perror_msg("Decompression failed: execlp('%s')", cmd[0]);
+        exit(EXIT_FAILURE);
+    }
+
+    int status = 0;
+    int r = safe_waitpid(child, &status, 0);
+    if (r < 0)
+    {
+        VERB1 perror_msg("Decompression failed: waitpid($1) failed");
+        return -2;
+    }
+
+    if (!WIFEXITED(status))
+    {
+        log_info("Decompression process returned abnormally");
+        return -3;
+    }
+
+    if (WEXITSTATUS(status) != 0)
+    {
+        log_info("Decompression process exited with %d", WEXITSTATUS(r));
+        return -4;
+    }
+
+    return 0;
+}
+#endif
+
 static int
 decompress_fd_xz(int fdi, int fdo)
 {
+#if HAVE_LZMA
     uint8_t buf_in[BUFSIZ];
     uint8_t buf_out[BUFSIZ];
 
@@ -101,6 +171,95 @@ decompress_fd_xz(int fdi, int fdo)
     }
 
     return 0;
+#else /*HAVE_LZMA*/
+    const char *cmd[] = { "xzcat", "-d", "-", NULL };
+    return decompress_using_fork_execvp(cmd, fdi, fdo);
+#endif /*HAVE_LZMA*/
+}
+
+static int
+decompress_fd_lz4(int fdi, int fdo)
+{
+#if HAVE_LZ4
+    enum { LZ4_DEC_BUF_SIZE = 64*1024u };
+
+    LZ4F_decompressionContext_t ctx = NULL;
+    LZ4F_errorCode_t c;
+    char *buf = NULL;
+    char *src = NULL;
+    int r = 0;
+    struct stat fdist;
+
+    c = LZ4F_createDecompressionContext(&ctx, LZ4F_VERSION);
+    if (LZ4F_isError(c))
+    {
+        log_debug("Failed to initialized LZ4: %s", LZ4F_getErrorName(c));
+        r = -ENOMEM;
+        goto cleanup;
+    }
+
+    buf = malloc(LZ4_DEC_BUF_SIZE);
+    if (!buf)
+    {
+        r = -errno;
+        goto cleanup;
+    }
+
+    if (fstat(fdi, &fdist) < 0)
+    {
+        r = -errno;
+        log_debug("Failed to stat the input fd");
+        goto cleanup;
+    }
+
+    src = mmap(NULL, fdist.st_size, PROT_READ, MAP_PRIVATE, fdi, 0);
+    if (!src)
+    {
+        r = -errno;
+        log_debug("Failed to mmap the input fd");
+        goto cleanup;
+    }
+
+    off_t total_in = 0;
+    while (fdist.st_size != total_in)
+    {
+        size_t used = fdist.st_size - total_in;
+        size_t produced = LZ4_DEC_BUF_SIZE;
+
+        c = LZ4F_decompress(ctx, buf, &produced, src + total_in, &used, NULL);
+        if (LZ4F_isError(c))
+        {
+            log_debug("Failed to decode LZ4 block: %s", LZ4F_getErrorName(c));
+            r = -EBADMSG;
+            goto cleanup;
+        }
+
+        r = safe_write(fdo, buf, produced);
+        if (r < 0)
+        {
+            log_debug("Failed to write decoded block");
+            goto cleanup;
+        }
+
+        total_in += used;
+    }
+    r = 0;
+
+cleanup:
+    if (ctx != NULL)
+        LZ4F_freeDecompressionContext(ctx);
+
+    if (buf != NULL)
+        free(buf);
+
+    if (src != NULL)
+        munmap(src, fdist.st_size);
+
+    return r;
+#else /*HAVE_LZ4*/
+    const char *cmd[] = { "lz4cat", "-d", "-", NULL};
+    return decompress_using_fork_execvp(cmd, fdi, fdo);
+#endif /*HAVE_LZ4*/
 }
 
 int
@@ -118,6 +277,9 @@ decompress_fd(int fdi, int fdo)
 
     if (is_format("xz", header, sizeof(header), s_xz_magic, sizeof(s_xz_magic)))
         return decompress_fd_xz(fdi, fdo);
+
+    if (is_format("lz4", header, sizeof(header), s_lz4_magic, sizeof(s_lz4_magic)))
+        return decompress_fd_lz4(fdi, fdo);
 
     error_msg("Unsupported file format");
     return -1;

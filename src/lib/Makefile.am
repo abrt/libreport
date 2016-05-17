@@ -86,6 +86,7 @@ libreport_la_CPPFLAGS = \
     -DLARGE_DATA_TMP_DIR=\"$(LARGE_DATA_TMP_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LZMA_CFLAGS) \
+    $(LZ4_CFLAGS) \
     $(GOBJECT_CFLAGS) \
     $(AUGEAS_CFLAGS) \
     $(SATYR_CFLAGS) \
@@ -96,6 +97,7 @@ libreport_la_LDFLAGS = \
 libreport_la_LIBADD = \
     $(GLIB_LIBS) \
     $(LZMA_LIBS) \
+    $(LZ4_LIBS) \
     $(JOURNAL_LIBS) \
     $(GOBJECT_LIBS) \
     $(AUGEAS_LIBS) \

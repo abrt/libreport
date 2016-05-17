@@ -236,7 +236,8 @@ PKG_CHECK_MODULES([PROXY], [libproxy-1.0], [
 PKG_CHECK_MODULES([SATYR], [satyr])
 PKG_CHECK_MODULES([JOURNAL], [libsystemd-journal])
 PKG_CHECK_MODULES([AUGEAS], [augeas])
-PKG_CHECK_MODULES([LZMA], [liblzma])
+#PKG_CHECK_MODULES([LZMA], [liblzma])
+#PKG_CHECK_MODULES([LZ4], [liblz4])
 
 
 AC_ARG_WITH(newt,
