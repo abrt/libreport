@@ -18,7 +18,11 @@
 */
 #include "internal_libreport.h"
 
-#include <lzma.h>
+#if HAVE_LZMA
+# include <lzma.h>
+#else
+# define LR_DECOMPRESS_FORK_EXECVP
+#endif
 
 static const uint8_t s_xz_magic[6] = { 0xFD, 0x37, 0x7A, 0x58, 0x5A, 0x00 };
 
@@ -34,9 +38,68 @@ is_format(const char *name, const uint8_t *header, size_t hl, const uint8_t *mag
     return memcmp(header, magic, ml) == 0;
 }
 
+
+#ifdef LR_DECOMPRESS_FORK_EXECVP
+static int
+decompress_using_fork_execvp(const char** cmd, int fdi, int fdo)
+{
+    pid_t child = fork();
+    if (child < 0)
+    {
+        VERB1 perror_msg("fork() for decompression");
+        return -1;
+    }
+
+    if (child == 0)
+    {
+        close(STDIN_FILENO);
+        if (dup2(fdi, STDIN_FILENO) < 0)
+        {
+            VERB1 perror_msg("Decompression failed: dup2(fdi, STDIN_FILENO)");
+            exit(EXIT_FAILURE);
+        }
+
+        close(STDOUT_FILENO);
+        if (dup2(fdo, STDOUT_FILENO) < 0)
+        {
+            VERB1 perror_msg("Decompression failed: dup2(fdo, STDOUT_FILENO)");
+            exit(EXIT_FAILURE);
+        }
+
+        execvp(cmd[0], (char **)cmd);
+
+        VERB1 perror_msg("Decompression failed: execlp('%s')", cmd[0]);
+        exit(EXIT_FAILURE);
+    }
+
+    int status = 0;
+    int r = safe_waitpid(child, &status, 0);
+    if (r < 0)
+    {
+        VERB1 perror_msg("Decompression failed: waitpid($1) failed");
+        return -2;
+    }
+
+    if (!WIFEXITED(status))
+    {
+        log_info("Decompression process returned abnormally");
+        return -3;
+    }
+
+    if (WEXITSTATUS(status) != 0)
+    {
+        log_info("Decompression process exited with %d", WEXITSTATUS(r));
+        return -4;
+    }
+
+    return 0;
+}
+#endif
+
 static int
 decompress_fd_xz(int fdi, int fdo)
 {
+#if HAVE_LZMA
     uint8_t buf_in[BUFSIZ];
     uint8_t buf_out[BUFSIZ];
 
@@ -101,6 +164,10 @@ decompress_fd_xz(int fdi, int fdo)
     }
 
     return 0;
+#else /*HAVE_LZMA*/
+    const char *cmd[] = { "xzcat", "-d", "-", NULL };
+    return decompress_using_fork_execvp(cmd, fdi, fdo);
+#endif /*HAVE_LZMA*/
 }
 
 int
