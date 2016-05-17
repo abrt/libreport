@@ -803,6 +803,7 @@ int main(void)
     assert(dd != NULL);
     dd_create_basic_files(dd, (uid_t)-1L, NULL);
     dd_save_text(dd, FILENAME_TYPE, "CCpp");
+    dd_save_text(dd, FILENAME_COUNT, "1");
     dd_close(dd);
 
     struct ureport_server_response *response = ureport_server_response_from_reply(&ps, &config);
@@ -846,6 +847,7 @@ int main(void)
     assert(dd != NULL);
     dd_create_basic_files(dd, (uid_t)-1L, NULL);
     dd_save_text(dd, FILENAME_TYPE, "CCpp");
+    dd_save_text(dd, FILENAME_COUNT, "1");
     dd_close(dd);
 
     response = ureport_server_response_from_reply(&ps, &config);
@@ -956,6 +958,7 @@ int main(void)
     dd_save_text(dd, FILENAME_PKG_NAME, "pkg_name");
     const char *bt = "{ \"signal\": 6, \"executable\": \"/usr/bin/will_abort\" }";
     dd_save_text(dd, FILENAME_CORE_BACKTRACE, bt);
+    dd_save_text(dd, FILENAME_COUNT, "1");
     dd_close(dd);
 
     char *json = ureport_from_dump_dir_ext("./test", NULL);
@@ -1003,6 +1006,7 @@ int main(void)
     dd_save_text(dd, FILENAME_PKG_NAME, "pkg_name");
     const char *bt = "{ \"signal\": 6, \"executable\": \"/usr/bin/will_abort\" }";
     dd_save_text(dd, FILENAME_CORE_BACKTRACE, bt);
+    dd_save_text(dd, FILENAME_COUNT, "1");
     dd_close(dd);
 
     char *json = ureport_from_dump_dir_ext("./test", NULL);
@@ -1137,6 +1141,7 @@ int main(void)
     dd_save_text(dd, FILENAME_PKG_NAME, "pkg_name");
     const char *bt = "{ \"signal\": 6, \"executable\": \"/usr/bin/will_abort\" }";
     dd_save_text(dd, FILENAME_CORE_BACKTRACE, bt);
+    dd_save_text(dd, FILENAME_COUNT, "1");
     dd_close(dd);
 
     /* no auth */
