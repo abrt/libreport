@@ -775,6 +775,19 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Wed May 18 2016 Matej Habrnal <mhabrnal@redhat.com> 2.7.1-1
+- spec: compression updates
+- lib: add lz4 decompression
+- lib: avoid the need to link against lzma
+- all: format security
+- lib: add cgroup namespace
+- dd: introduce functions getting occurrence stamps
+- dd: introduce dd_get_env_variable
+- lib: add get env variable from a file
+- RHTSupport: include count in Support cases
+- lib: problem report API check fseek return code
+- ignored words: remove 'kwallet_jwakely' which I added wrongly
+
 * Fri Apr 08 2016 Matej Habrnal <mhabrnal@redhat.com> 2.7.0-1
 - ignored words: update ignored words
 - mailx: introduce debug parameter -D
