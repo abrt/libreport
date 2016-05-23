@@ -103,7 +103,7 @@ struct dump_dir *create_dump_dir(const char *base_dir_name, const char *type, ui
      * reporting from anaconda where we can't read /etc/{system,redhat}-release
      * and os_release is taken from anaconda
      */
-    char *uid_str = dd_load_text_ext(dd, FILENAME_UID, DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    char *uid_str = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     const uid_t crashed_uid = uid_str != NULL ? /*uid already saved*/-1 : uid;
     dd_create_basic_files(dd, crashed_uid, NULL);
 
