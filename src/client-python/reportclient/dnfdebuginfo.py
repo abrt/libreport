@@ -49,7 +49,7 @@ class DNFProgress(dnf.callback.DownloadProgress):
         elif status == STATUS_MIRROR:
             # In this case dnf (librepo) tries other mirror if available
             log1("Mirror failed: %s" % (msg or "DNF did not provide more details"))
-        elif status in STATUS_FAILED:
+        elif status == STATUS_FAILED:
             log2("Downloading failed: %s" % (msg or "DNF did not provide more details"))
         else:
             sys.stderr.write("Unknown DNF download status: %s\n" % (msg))
