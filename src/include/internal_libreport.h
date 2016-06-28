@@ -890,7 +890,7 @@ void set_app_user_setting(map_string_t *settings, const char *name, const char *
 const char *get_app_user_setting(map_string_t *settings, const char *name);
 
 #define save_user_settings libreport_save_user_settings
-bool save_user_settings();
+bool save_user_settings(void);
 #define load_user_settings libreport_load_user_settings
 bool load_user_settings(const char *application_name);
 #define set_user_setting libreport_set_user_setting
