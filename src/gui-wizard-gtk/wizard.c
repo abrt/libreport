@@ -2832,21 +2832,28 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
      * these tabs will be lost */
     save_items_from_notepad();
     save_text_from_text_view(g_tv_comment, FILENAME_COMMENT);
-    save_text_from_text_view(g_tv_steps, FILENAME_REPRODUCER);
 
-    int reproducible = gtk_combo_box_get_active(GTK_COMBO_BOX(g_cmb_reproducible));
-    if (reproducible > -1)
+    bool complex_details = g_event_selected
+                           && event_requires_details(g_event_selected);
+
+    if (complex_details)
     {
-        const char *reproducible_str = get_problem_data_reproducible_name(reproducible);
-        if (reproducible_str != NULL)
-        {
-            struct dump_dir *dd = wizard_open_directory_for_writing(g_dump_dir_name);
-            if (dd)
-                dd_save_text(dd, FILENAME_REPRODUCIBLE, reproducible_str);
-            else
-                error_msg(_("Failed to save file '%s'"), FILENAME_REPRODUCIBLE);
+        save_text_from_text_view(g_tv_steps, FILENAME_REPRODUCER);
 
-            dd_close(dd);
+        int reproducible = gtk_combo_box_get_active(GTK_COMBO_BOX(g_cmb_reproducible));
+        if (reproducible > -1)
+        {
+            const char *reproducible_str = get_problem_data_reproducible_name(reproducible);
+            if (reproducible_str != NULL)
+            {
+                struct dump_dir *dd = wizard_open_directory_for_writing(g_dump_dir_name);
+                if (dd)
+                    dd_save_text(dd, FILENAME_REPRODUCIBLE, reproducible_str);
+                else
+                    error_msg(_("Failed to save file '%s'"), FILENAME_REPRODUCIBLE);
+
+                dd_close(dd);
+            }
         }
     }
     problem_data_reload_from_dump_dir();
