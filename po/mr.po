@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-11 11:20+0100\n"
+"POT-Creation-Date: 2016-07-14 10:26+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,7 +19,7 @@ msgstr ""
 "language/mr/)\n"
 "Language: mr\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 3.8.2\n"
+"X-Generator: Zanata 3.8.4\n"
 
 #: ../src/cli/cli.c:63
 msgid ""
@@ -400,7 +400,7 @@ msgstr "घटना"
 msgid "C_onfigure"
 msgstr "संरचना (_o)"
 
-#: ../src/gtk-helpers/config_dialog.c:375 ../src/gui-wizard-gtk/wizard.c:3510
+#: ../src/gtk-helpers/config_dialog.c:375 ../src/gui-wizard-gtk/wizard.c:3687
 msgid "_Close"
 msgstr "बंद करा (_C)"
 
@@ -426,7 +426,7 @@ msgstr "गोपणीय सर्व्हिस उपलब्ध नाह
 
 #: ../src/gtk-helpers/event_config_dialog.c:349
 #: ../src/gtk-helpers/workflow_config_dialog.c:94
-#: ../src/gui-wizard-gtk/wizard.c:777 ../src/gui-wizard-gtk/wizard.c:3131
+#: ../src/gui-wizard-gtk/wizard.c:784 ../src/gui-wizard-gtk/wizard.c:3287
 msgid "_Cancel"
 msgstr "रद्द करा (_C)"
 
@@ -513,7 +513,7 @@ msgstr ""
 msgid "Alternate GUI file"
 msgstr "वैकल्पिक GUI फाइल"
 
-#: ../src/gui-wizard-gtk/wizard.c:373
+#: ../src/gui-wizard-gtk/wizard.c:380
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
@@ -522,15 +522,15 @@ msgstr ""
 "लेखनजोगी डिरेक्ट्रि पाहिजे, परंतु '%s' लेखनजोगी नाही. '%s' कडे हलवा व "
 "स्थानांतरीत डाटावर कार्य करा?"
 
-#: ../src/gui-wizard-gtk/wizard.c:768
+#: ../src/gui-wizard-gtk/wizard.c:775
 msgid "View/edit a text file"
 msgstr "मजकूर फाइलचे दृष्य/संपादन"
 
-#: ../src/gui-wizard-gtk/wizard.c:776
+#: ../src/gui-wizard-gtk/wizard.c:783
 msgid "_Save"
 msgstr "साठवा (_S)"
 
-#: ../src/gui-wizard-gtk/wizard.c:998
+#: ../src/gui-wizard-gtk/wizard.c:1005
 msgid ""
 "No reporting targets are defined for this problem. Check configuration in /"
 "etc/libreport/*"
@@ -538,39 +538,56 @@ msgstr ""
 "ह्या अडचणकरिता सादर करण्यजोगी लक्ष्य नाही. /etc/libreport/* मधील संरचना "
 "तपासा"
 
-#: ../src/gui-wizard-gtk/wizard.c:1040
+#: ../src/gui-wizard-gtk/wizard.c:1047
 #, c-format
 msgid "(requires: %s)"
 msgstr "(पाहिजे: %s)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1054
+#: ../src/gui-wizard-gtk/wizard.c:1061
 #, c-format
 msgid "(not needed, data already exist: %s)"
 msgstr "(आवश्यक नाही, डाटा आधीपासूनच अस्तित्वात आहे: %s)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1244
+#: ../src/gui-wizard-gtk/wizard.c:1160
+msgid ""
+"Since crashes without a known reproducer can be difficult to diagnose, "
+"please provide a comprehensive description of the problem you have "
+"encountered."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1167
+msgid ""
+"Please provide a short description of the problem and please include the "
+"steps you have used to reproduce the problem."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1174
+msgid "Please provide the steps you have used to reproduce the problem."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1296
 msgid "(click here to view/edit)"
 msgstr "(दृष्य/संपादित कराकरीता येथे क्लिक करा)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1255
+#: ../src/gui-wizard-gtk/wizard.c:1307
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(बाइनरी फाइल, %llu बाईट्स्)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1366 ../src/report-newt/report-newt.c:334
+#: ../src/gui-wizard-gtk/wizard.c:1418 ../src/report-newt/report-newt.c:334
 msgid "(no description)"
 msgstr "(वर्णन उपलब्ध नाही)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1374
+#: ../src/gui-wizard-gtk/wizard.c:1426
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu बाईट्स्, %u फाइल्स्"
 
-#: ../src/gui-wizard-gtk/wizard.c:1619
+#: ../src/gui-wizard-gtk/wizard.c:1704
 msgid "Processing was canceled"
 msgstr "विश्लेषण रद्द केले"
 
-#: ../src/gui-wizard-gtk/wizard.c:1830
+#: ../src/gui-wizard-gtk/wizard.c:1915
 msgid ""
 "Processing of the problem failed. This can have many reasons but there are "
 "three most common:\n"
@@ -579,7 +596,7 @@ msgid ""
 "\t▫ <b>invalid configuration</b>"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1839
+#: ../src/gui-wizard-gtk/wizard.c:1924
 msgid ""
 "If you want to update the configuration and try to report again, please open "
 "<b>Preferences</b> item\n"
@@ -587,7 +604,7 @@ msgid ""
 "<b>Repeat</b> button."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1845
+#: ../src/gui-wizard-gtk/wizard.c:1930
 msgid ""
 "If you are sure that this problem is not caused by network problems neither "
 "by invalid configuration\n"
@@ -599,48 +616,53 @@ msgid ""
 "limited number of persons can read them.</i>"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1964
+#: ../src/gui-wizard-gtk/wizard.c:2055
 msgid "Processing was interrupted because the problem is not reportable."
 msgstr "विश्लेषणमध्ये व्यत्य आले कारण अडचण सादर करण्याजोगी नाही."
 
-#: ../src/gui-wizard-gtk/wizard.c:1974 ../src/gui-wizard-gtk/wizard.c:2045
+#: ../src/gui-wizard-gtk/wizard.c:2065 ../src/gui-wizard-gtk/wizard.c:2136
 msgid "Processing failed."
 msgstr "विश्लेषण अपयशी."
 
 #. No next event, go to progress page and finish
-#: ../src/gui-wizard-gtk/wizard.c:1981 ../src/gui-wizard-gtk/wizard.c:2855
+#: ../src/gui-wizard-gtk/wizard.c:2072 ../src/gui-wizard-gtk/wizard.c:3009
 msgid "Processing finished."
 msgstr "विश्लेषण अपयशी."
 
-#: ../src/gui-wizard-gtk/wizard.c:1982
+#: ../src/gui-wizard-gtk/wizard.c:2073
 msgid "Processing finished, please proceed to the next step."
 msgstr "विश्लेषण पूर्ण झाले, कृपया पुढील टप्पा पहा."
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:2042
+#: ../src/gui-wizard-gtk/wizard.c:2133
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "घटना '%s' करीता विश्लेषण ठरवले नाही"
 
-#: ../src/gui-wizard-gtk/wizard.c:2056
+#: ../src/gui-wizard-gtk/wizard.c:2147
 msgid "Processing interrupted: can't continue without writable directory."
 msgstr "विश्लेषणमध्ये व्यत्यय: लेखनजोगी डिरेक्ट्रीविना पुढे जाणे अशक्य."
 
-#: ../src/gui-wizard-gtk/wizard.c:2093
+#: ../src/gui-wizard-gtk/wizard.c:2184
 msgid "Processing..."
 msgstr "विशेषीत करत आहे..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2179
+#: ../src/gui-wizard-gtk/wizard.c:2270
 msgid ""
 "Possible sensitive data detected, feel free to edit the report and remove "
 "them."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2219
+#: ../src/gui-wizard-gtk/wizard.c:2310
 msgid "Cannot check backtrace rating because of invalid event name"
 msgstr "अवैध घटनानावामुळे backtrace दर तपासणे अशक्य"
 
-#: ../src/gui-wizard-gtk/wizard.c:2875
+#: ../src/gui-wizard-gtk/wizard.c:2847
+#, c-format
+msgid "Failed to save file '%s'"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:3029
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
@@ -649,107 +671,119 @@ msgstr ""
 "संवेदनशील माहिती पाठवण्याकरिता घटना '%s' ला पारवानगी आवश्यक आहे.\n"
 "तुम्हाला पुढे जायचे?"
 
-#: ../src/gui-wizard-gtk/wizard.c:2923
+#: ../src/gui-wizard-gtk/wizard.c:3077
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
 msgstr "ही अडचण कळवू नका (हे संभाव्यतया अपरिचीत अडचण आहे). %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:3132
+#: ../src/gui-wizard-gtk/wizard.c:3288
 msgid "_Open"
 msgstr "उघडा (_O)"
 
-#: ../src/gui-wizard-gtk/wizard.c:3154
+#: ../src/gui-wizard-gtk/wizard.c:3310
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' सामान्य फाइल नाही"
 
-#: ../src/gui-wizard-gtk/wizard.c:3168
+#: ../src/gui-wizard-gtk/wizard.c:3324
 msgid "You are trying to copy a file onto itself"
 msgstr "तुम्ही फाइलचे प्रत स्वतःमध्ये बनवत आहात"
 
-#: ../src/gui-wizard-gtk/wizard.c:3175
+#: ../src/gui-wizard-gtk/wizard.c:3331
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "'%s': %s चे प्रत बनवणे अशक्य"
 
-#: ../src/gui-wizard-gtk/wizard.c:3190
+#: ../src/gui-wizard-gtk/wizard.c:3346
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "घटक '%s' आधिपासून अस्तित्वात आहे व संपादनजोगी नाही"
 
-#: ../src/gui-wizard-gtk/wizard.c:3352
+#: ../src/gui-wizard-gtk/wizard.c:3510
+msgid "I have experienced this problem for the first time"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:3513
+msgid "I can reproduce this problem"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:3516
+msgid "This problem occurs repeatedly"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:3529
 msgid "Include"
 msgstr "समाविष्ट करा"
 
-#: ../src/gui-wizard-gtk/wizard.c:3363
+#: ../src/gui-wizard-gtk/wizard.c:3540
 msgid "Name"
 msgstr "नाव"
 
-#: ../src/gui-wizard-gtk/wizard.c:3373
+#: ../src/gui-wizard-gtk/wizard.c:3550
 msgid "Value"
 msgstr "मूल्य"
 
-#: ../src/gui-wizard-gtk/wizard.c:3407
+#: ../src/gui-wizard-gtk/wizard.c:3584
 msgid "Problem description"
 msgstr "अडचणीचे वर्णन"
 
-#: ../src/gui-wizard-gtk/wizard.c:3408
+#: ../src/gui-wizard-gtk/wizard.c:3585
 msgid "Select how to report this problem"
 msgstr "ह्या अडचणीला कसे कळवायचे ते नीवडा"
 
-#: ../src/gui-wizard-gtk/wizard.c:3409
+#: ../src/gui-wizard-gtk/wizard.c:3586
 msgid "Provide additional information"
 msgstr "अगाऊ माहिती द्या"
 
-#: ../src/gui-wizard-gtk/wizard.c:3410
+#: ../src/gui-wizard-gtk/wizard.c:3587
 msgid "Review the data"
 msgstr "डाटाचे पुर्वावलोकन करा"
 
-#: ../src/gui-wizard-gtk/wizard.c:3411
+#: ../src/gui-wizard-gtk/wizard.c:3588
 msgid "Confirm data to report"
 msgstr "कळवण्यासाठी डाटाची खात्री करा"
 
-#: ../src/gui-wizard-gtk/wizard.c:3412
+#: ../src/gui-wizard-gtk/wizard.c:3589
 msgid "Processing"
 msgstr "विश्लेषण करत आहे"
 
-#: ../src/gui-wizard-gtk/wizard.c:3413
+#: ../src/gui-wizard-gtk/wizard.c:3590
 msgid "Processing done"
 msgstr "विश्लेषण झाले"
 
-#: ../src/gui-wizard-gtk/wizard.c:3512
+#: ../src/gui-wizard-gtk/wizard.c:3689
 msgid "_Stop"
 msgstr "थांबवा (_S)"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3515
+#: ../src/gui-wizard-gtk/wizard.c:3692
 msgid "Upload for analysis"
 msgstr "विश्लेषणकरिता अपलोड करा"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3518
+#: ../src/gui-wizard-gtk/wizard.c:3695
 msgid "Repeat"
 msgstr ""
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3520
+#: ../src/gui-wizard-gtk/wizard.c:3697
 msgid "_Forward"
 msgstr "पुढे (_F)"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3523 ../src/gui-wizard-gtk/wizard.glade.h:10
+#: ../src/gui-wizard-gtk/wizard.c:3700 ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid "Details"
 msgstr "तपशील"
 
-#: ../src/gui-wizard-gtk/wizard.c:3588
+#: ../src/gui-wizard-gtk/wizard.c:3765
 msgid "Restrict access to the report"
 msgstr "रिपोर्टकरिता प्रवेश प्रतिबंधीत करा"
 
-#: ../src/gui-wizard-gtk/wizard.c:3593
+#: ../src/gui-wizard-gtk/wizard.c:3770
 msgid "Learn more about restricted access in the configuration"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:3655
+#: ../src/gui-wizard-gtk/wizard.c:3833
 msgid ""
 "In order to enable the built-in screencasting functionality the package fros-"
 "recordmydesktop has to be installed. Please run the following command if you "
@@ -819,10 +853,24 @@ msgstr ""
 "विश्लेषणकरीता कोणत्याहि अगाऊ टिपण्णी? शक्य असल्यास कृपया इंग्रजीचा वापर करा."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
+msgid "How reproducible is this problem?"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:13
+msgid "How it can be reproduced (one step per line)?"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:14
+msgid ""
+"Please add a comprehensive description of the problem you have. This is a "
+"very long place holder."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid "You need to fill the how to before you can proceed..."
 msgstr "पुढे जाण्यापूर्वी तुम्हाला कसे भरायचे हे भरावे लागेल..."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:13
+#: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
@@ -830,31 +878,31 @@ msgstr ""
 "<b>तुमच्या टिपण्णी व्यक्तीगत नाही.</b> त्यांस सार्वजनिकपणे दृष्यास्पद अडचण "
 "अहवालांमध्ये समाविष्ट केले जाऊ शकते."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:14
-msgid "If you don't know how to describe it, you can"
-msgstr "वर्णन कसे करायचे हे माहिती नसल्यास, तुम्ही खालील करू शकता"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:15
-msgid "add a screencast"
-msgstr "स्क्रीनकास्ट समाविष्ट करा"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:16
+#: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "I don't know what caused this problem"
 msgstr "हि अडचण कशी निर्माण झाली, हे मला माहिती नाही"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:17
+#: ../src/gui-wizard-gtk/wizard.glade.h:18
+msgid "If you don't know how to describe it, you can"
+msgstr "वर्णन कसे करायचे हे माहिती नसल्यास, तुम्ही खालील करू शकता"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:19
+msgid "add a screencast"
+msgstr "स्क्रीनकास्ट समाविष्ट करा"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:20
 msgid "Size:"
 msgstr "आकार:"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:18
+#: ../src/gui-wizard-gtk/wizard.glade.h:21
 msgid "Attach a file"
 msgstr "फाइलची जोडणी करा"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:19
+#: ../src/gui-wizard-gtk/wizard.glade.h:22
 msgid "I reviewed the data and _agree with submitting it"
 msgstr "मी डाटाचे पुर्वावलोकन केले व त्यास सादर करण्यास मान्य करतो (_a)"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:20
+#: ../src/gui-wizard-gtk/wizard.glade.h:23
 msgid ""
 "If you are reporting to a remote server, make sure you removed all private "
 "data (such as usernames and passwords). Backtrace, command line, environment "
@@ -864,19 +912,19 @@ msgstr ""
 "पासवर्डस्) काढून टाकले याची खात्री करा. बॅकट्रेस, आदेश ओळ, एंवार्यंमेंट "
 "वेरियेबल्स् विश्लेषणकरीताचे विशेष घटके आहेत."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:21
+#: ../src/gui-wizard-gtk/wizard.glade.h:24
 msgid "Processing did not start yet"
 msgstr "विश्लेषण अजूनही सुरू झाले नाही"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:22
+#: ../src/gui-wizard-gtk/wizard.glade.h:25
 msgid "Show log"
 msgstr "लॉग दाखवा"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:23
+#: ../src/gui-wizard-gtk/wizard.glade.h:26
 msgid "Reporting has finished. You can close this window now."
 msgstr "रिपोर्टिंग समाप्त झाली. आत्ता हे पटल बंद करणे शक्य आहे."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:24
+#: ../src/gui-wizard-gtk/wizard.glade.h:27
 msgid ""
 "If you want to report the problem to a different destination, collect "
 "additional information, or provide a better problem description and repeat "
@@ -885,14 +933,14 @@ msgstr ""
 "अडचण वेगळ्या स्थानकडे कळवायचे असल्यास, अगाऊ माहिती गोळा करा, किंवा उत्तम "
 "अडचणीचे वर्णन व पद्धतीचा अहवाल द्या, 'पुढे' दाबा."
 
-#: ../src/include/internal_libreport.h:1175
+#: ../src/include/internal_libreport.h:1182
 msgid "Be verbose"
 msgstr "मजकूर दाखवा"
 
-#: ../src/include/internal_libreport.h:1176
+#: ../src/include/internal_libreport.h:1183
 #: ../src/plugins/reporter-bugzilla.c:295
-#: ../src/plugins/reporter-kerneloops.c:166 ../src/plugins/reporter-mailx.c:204
-#: ../src/plugins/reporter-print.c:56 ../src/plugins/reporter-rhtsupport.c:491
+#: ../src/plugins/reporter-kerneloops.c:166 ../src/plugins/reporter-mailx.c:279
+#: ../src/plugins/reporter-print.c:56 ../src/plugins/reporter-rhtsupport.c:510
 #: ../src/plugins/reporter-upload.c:186 ../src/plugins/reporter-mantisbt.c:283
 msgid "Problem directory"
 msgstr "अडचण डिरेक्ट्री"
@@ -956,7 +1004,7 @@ msgid "Uploaded: %llu of %llu kbytes"
 msgstr "अपलोड केले: %llu पैकी %llu किलाबाईटस्"
 
 #: ../src/lib/curl.c:636
-msgid "Ingoring URL without scheme and hostname"
+msgid "Ignoring URL without scheme and hostname"
 msgstr ""
 
 #. Do not include the path part of the URL as it can contain sensitive data
@@ -982,29 +1030,29 @@ msgstr ""
 msgid "Successfully created %s"
 msgstr ""
 
-#: ../src/lib/dump_dir.c:2350
+#: ../src/lib/dump_dir.c:2400
 msgid "Failed to open TAR writer"
 msgstr ""
 
-#: ../src/lib/dump_dir.c:2376
+#: ../src/lib/dump_dir.c:2426
 msgid "Failed to finalize TAR archive"
 msgstr ""
 
-#: ../src/lib/dump_dir.c:2386
+#: ../src/lib/dump_dir.c:2436
 msgid "Failed to close TAR writer"
 msgstr ""
 
-#: ../src/lib/dump_dir.c:2396
+#: ../src/lib/dump_dir.c:2446
 #, c-format
 msgid "gzip killed with signal %d"
 msgstr ""
 
-#: ../src/lib/dump_dir.c:2402
+#: ../src/lib/dump_dir.c:2452
 #, c-format
 msgid "gzip exited with %d"
 msgstr ""
 
-#: ../src/lib/dump_dir.c:2405
+#: ../src/lib/dump_dir.c:2455
 msgid "gzip process failed"
 msgstr ""
 
@@ -1153,7 +1201,7 @@ msgstr "'%s' पासून प्रतिसादमध्ये अवै�
 msgid "Type mismatch has been detected in the response from '%s'"
 msgstr "'%s' पासूनच्या प्रतिसादमध्ये टाइप मिसमॅच आढळले"
 
-#: ../src/lib/ureport.c:818 ../src/plugins/reporter-rhtsupport.c:214
+#: ../src/lib/ureport.c:818 ../src/plugins/reporter-rhtsupport.c:233
 msgid "Failed on submitting the problem"
 msgstr "अडचण सादर करताना अपयशी"
 
@@ -1179,12 +1227,12 @@ msgstr "वापर: "
 msgid "Essential element '%s' is missing, can't continue"
 msgstr "आवश्यक घटक '%s' आढळले नाही, पुढे जाणे अशक्य"
 
-#: ../src/lib/problem_report.c:477
+#: ../src/lib/problem_report.c:478
 #, c-format
 msgid "Can't parse backtrace: %s"
 msgstr "बॅकट्रेस: %s वाचणे अशक्य"
 
-#: ../src/lib/problem_report.c:488
+#: ../src/lib/problem_report.c:489
 msgid "Can't generate stacktrace description (no crash thread?)"
 msgstr "स्टॅकट्रेस वर्णन निर्माण करणे अशक्य (क्रॅश थ्रेड नाही?)"
 
@@ -1298,6 +1346,7 @@ msgid "Bugzilla account password"
 msgstr "बगजिला खाते पासवर्ड"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:8
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:8
 msgid "Restrict access"
 msgstr "प्रवेश प्रतिबंधीत"
 
@@ -1332,14 +1381,14 @@ msgstr "बगजिला सर्व्हरचा पत्ता"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:14
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:12
-#: ../src/plugins/report_RHTSupport.xml.in.h:7
+#: ../src/plugins/report_RHTSupport.xml.in.h:11
 #: ../src/plugins/report_uReport.xml.in.h:9
 msgid "Verify SSL"
 msgstr "SSL ची तापसणी करा"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:15
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:13
-#: ../src/plugins/report_RHTSupport.xml.in.h:8
+#: ../src/plugins/report_RHTSupport.xml.in.h:12
 #: ../src/plugins/report_uReport.xml.in.h:10
 msgid "Check SSL key validity"
 msgstr "SSL कि वैधता तपासा"
@@ -1448,13 +1497,13 @@ msgstr ""
 "वेरियेबल आणि संरचनाकडे दुर्लक्ष करत आहे"
 
 #: ../src/plugins/reporter-bugzilla.c:173
-#: ../src/plugins/reporter-rhtsupport.c:358
+#: ../src/plugins/reporter-rhtsupport.c:377
 #: ../src/plugins/reporter-mantisbt.c:55
 msgid "Can't continue without login"
 msgstr "प्रवेशविना पुढे जाणे अशक्य"
 
 #: ../src/plugins/reporter-bugzilla.c:186
-#: ../src/plugins/reporter-rhtsupport.c:371
+#: ../src/plugins/reporter-rhtsupport.c:390
 #: ../src/plugins/reporter-mantisbt.c:70
 msgid "Can't continue without password"
 msgstr "पासवर्डविना पुढे जाणे अशक्य"
@@ -1469,7 +1518,7 @@ msgid "Invalid password or login. Please enter your Bugzilla login:"
 msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:202
-#: ../src/plugins/reporter-rhtsupport.c:385
+#: ../src/plugins/reporter-rhtsupport.c:404
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
 msgstr "अवैध पासवर्ड किंवा प्रवेश. कृपया तुमचे '%s' करिता पासवर्ड द्या:"
@@ -1520,7 +1569,7 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:296
-#: ../src/plugins/reporter-rhtsupport.c:492
+#: ../src/plugins/reporter-rhtsupport.c:511
 #: ../src/plugins/reporter-mantisbt.c:284
 msgid "Configuration file (may be given many times)"
 msgstr "संरचना फाइल (एकापेक्षा जास्तवेळी देणे शक्य आहे)"
@@ -1544,7 +1593,7 @@ msgid "When creating bug, attach binary files too"
 msgstr "बग निर्माण करतेवेळी, बाइनरी फाइल्स् समाविष्ट करा"
 
 #: ../src/plugins/reporter-bugzilla.c:301
-#: ../src/plugins/reporter-rhtsupport.c:494
+#: ../src/plugins/reporter-rhtsupport.c:513
 #: ../src/plugins/reporter-mantisbt.c:288
 msgid "Force reporting even if this problem is already reported"
 msgstr "हि अडचण आधिपासूनच कळवली असल्यास रिपोर्टिंग जबरनपणे लागू करा"
@@ -1572,8 +1621,8 @@ msgstr "'reported_to' पासून अगाऊ URL करिता बग �
 msgid "Restrict access to this group only"
 msgstr "फक्त ह्या गटकरिताच प्रवेश प्रतिबंधीत करा"
 
-#: ../src/plugins/reporter-bugzilla.c:307
-#: ../src/plugins/reporter-rhtsupport.c:498
+#: ../src/plugins/reporter-bugzilla.c:307 ../src/plugins/reporter-mailx.c:283
+#: ../src/plugins/reporter-rhtsupport.c:517
 #: ../src/plugins/reporter-mantisbt.c:292
 msgid "Debug"
 msgstr "डिबग"
@@ -1601,7 +1650,7 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:423
-#: ../src/plugins/reporter-rhtsupport.c:532
+#: ../src/plugins/reporter-rhtsupport.c:551
 #, c-format
 msgid ""
 "Password is not provided by configuration. Please enter the password for "
@@ -1754,7 +1803,7 @@ msgstr ""
 msgid "Configuration file"
 msgstr "संरचना फाइल"
 
-#: ../src/plugins/reporter-mailx.c:59
+#: ../src/plugins/reporter-mailx.c:83
 #, c-format
 msgid ""
 "Email address of %s was not specified. Would you like to do so now? If not, "
@@ -1763,49 +1812,48 @@ msgstr ""
 "%s चा ईमेल पत्ता निर्देशीत केले नाही. तुम्हाला आत्ता करायला आवडेल? नसल्यास, "
 "'%s' चा वापर करा"
 
-#: ../src/plugins/reporter-mailx.c:66
+#: ../src/plugins/reporter-mailx.c:90
 #, c-format
 msgid "Please, type email address of %s:"
 msgstr "कृपया, %s चा ईमेल पत्ता टाइप करा:"
 
-#: ../src/plugins/reporter-mailx.c:73
+#: ../src/plugins/reporter-mailx.c:97
 #, c-format
 msgid "Can't continue without email address of %s"
 msgstr "%s च्या ईमेल पत्ताविना पुढे जाणे अशक्य"
 
-#: ../src/plugins/reporter-mailx.c:136
+#: ../src/plugins/reporter-mailx.c:207
 #, c-format
 msgid "Sending a notification email to: %s"
 msgstr ""
 
-#: ../src/plugins/reporter-mailx.c:138
+#: ../src/plugins/reporter-mailx.c:209
 msgid "Sending an email..."
 msgstr "ईमेल पाठवत आहे..."
 
-#: ../src/plugins/reporter-mailx.c:162
+#: ../src/plugins/reporter-mailx.c:234
 #, c-format
 msgid "Email was sent to: %s"
 msgstr "इमेल: %s करीता पाठवले"
 
-#: ../src/plugins/reporter-mailx.c:184
+#: ../src/plugins/reporter-mailx.c:257
 msgid ""
-"& [-v] -d DIR [-c CONFFILE]\n"
+"& [-v] -d DIR [-c CONFFILE] [-F FMTFILE]\n"
 "\n"
 "Sends contents of a problem directory DIR via email\n"
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
-"& [-v] -d DIR [-c CONFFILE]\n"
-"\n"
-"अडचण डिरेक्ट्री DIR ची अंतर्भुत माहिती इमेल तर्फे पाठवतो\n"
-"\n"
-"निर्देशीत नसल्यास, CONFFILE याकरीता पूर्वनिर्धारित असते "
 
-#: ../src/plugins/reporter-mailx.c:205 ../src/plugins/reporter-upload.c:187
+#: ../src/plugins/reporter-mailx.c:280 ../src/plugins/reporter-upload.c:187
 msgid "Config file"
 msgstr "काँफिग फाइल"
 
-#: ../src/plugins/reporter-mailx.c:206
+#: ../src/plugins/reporter-mailx.c:281
+msgid "Formatting file for an email"
+msgstr ""
+
+#: ../src/plugins/reporter-mailx.c:282
 msgid "Notify only (Do not mark the report as sent)"
 msgstr "फक्त सूचीत करा (अहवाल पाठवले म्हणून चिन्ह लावा)"
 
@@ -1850,21 +1898,21 @@ msgstr "%s करीता रिपोर्ट समाविष्ट के
 msgid "The report was stored to %s"
 msgstr "रिपोर्ट %s करीता साठवले गेले"
 
-#: ../src/plugins/reporter-rhtsupport.c:275
+#: ../src/plugins/reporter-rhtsupport.c:294
 #: ../src/plugins/reporter-ureport.c:321
 #, c-format
 msgid "Server responded with an error: '%s'"
 msgstr "सर्व्हरने त्रुटी: '%s' सह प्रतिसाद दिला"
 
-#: ../src/plugins/reporter-rhtsupport.c:335
+#: ../src/plugins/reporter-rhtsupport.c:354
 msgid "Do you still want to create a RHTSupport ticket?"
 msgstr "तुम्हाला तरिहि RHTSupport टिकिट निर्माण करायचे?"
 
-#: ../src/plugins/reporter-rhtsupport.c:383
+#: ../src/plugins/reporter-rhtsupport.c:402
 msgid "Invalid password or login. Please enter your Red Hat login:"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:452
+#: ../src/plugins/reporter-rhtsupport.c:471
 msgid ""
 "\n"
 "& [-v] [-c CONFFILE] [-F FMTFILE] -d DIR\n"
@@ -1876,81 +1924,102 @@ msgid ""
 "If not specified, CONFFILE defaults to "
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:493
+#: ../src/plugins/reporter-rhtsupport.c:512
 msgid "Upload FILEs [to case with this ID]"
 msgstr "FILEs अपलोड करीता [या ID सह घटना संलग्न करा]"
 
-#: ../src/plugins/reporter-rhtsupport.c:495
+#: ../src/plugins/reporter-rhtsupport.c:514
 msgid "Submit uReport before creating a new case"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:496
+#: ../src/plugins/reporter-rhtsupport.c:515
 msgid "Configuration file for uReport"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:497
+#: ../src/plugins/reporter-rhtsupport.c:516
 msgid "Formatting file for a new case"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:526
+#: ../src/plugins/reporter-rhtsupport.c:545
 msgid "Login is not provided by configuration. Please enter your RHTS login:"
 msgstr "संरचनातर्फे प्रवेश पुरवले नाही. कृपया RHTS प्रवेश द्या:"
 
-#: ../src/plugins/reporter-rhtsupport.c:595
+#: ../src/plugins/reporter-rhtsupport.c:614
 #, c-format
 msgid "Attaching '%s' to case '%s'"
 msgstr "घटना '%2$s' करीता '%1$s' समाविष्ट करत आहे"
 
-#: ../src/plugins/reporter-rhtsupport.c:632
+#: ../src/plugins/reporter-rhtsupport.c:651
 msgid "Sending ABRT crash statistics data"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:653
+#: ../src/plugins/reporter-rhtsupport.c:672
 msgid "Can't create a temporary directory in "
 msgstr "तात्पुर्ती डिरेक्ट्रीचे निर्माण अशक्य "
+
+#: ../src/plugins/reporter-rhtsupport.c:697
+msgid ""
+"The problem has only occurred once and the ability to reproduce the problem "
+"is unknown. Please ensure you will be able to provide detailed information "
+"to our Support Team. Would you like to continue and open a new support case?"
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:710
+#, c-format
+msgid ""
+"The crashed program was released by '%s'. Would you like to report the "
+"problem to Red Hat Support?"
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:728
+#, c-format
+msgid ""
+"The program '%s' does not appear to be provided by Red Hat. Would you like "
+"to report the problem to Red Hat Support?"
+msgstr ""
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing
 #. error msg is already logged by dd_opendir
 #. Compressing e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../src/plugins/reporter-rhtsupport.c:722
+#: ../src/plugins/reporter-rhtsupport.c:792
 #: ../src/plugins/reporter-upload.c:103
 msgid "Compressing data"
 msgstr "डाटा संकुचीत करत आहे"
 
-#: ../src/plugins/reporter-rhtsupport.c:726
+#: ../src/plugins/reporter-rhtsupport.c:800
 msgid "Can't create temporary file in "
 msgstr "यामध्ये तात्पुर्ती फाइल निर्माण करणे अशक्य"
 
 #. Check for hints and show them if we have something
-#: ../src/plugins/reporter-rhtsupport.c:737
+#: ../src/plugins/reporter-rhtsupport.c:811
 msgid "Checking for hints"
 msgstr "सूचनाकरिता तपासणी करत आहे"
 
-#: ../src/plugins/reporter-rhtsupport.c:747
+#: ../src/plugins/reporter-rhtsupport.c:821
 msgid "Creating a new case"
 msgstr "नविन घटना निर्माण करत आहेे"
 
 #. How can we help user sorting out this problem?
-#: ../src/plugins/reporter-rhtsupport.c:758
+#: ../src/plugins/reporter-rhtsupport.c:832
 msgid "Can't determine RH Support Product from problem data."
 msgstr "अडचण डाटापासून RH Support Product ओळखणे अशक्य."
 
-#: ../src/plugins/reporter-rhtsupport.c:814
+#: ../src/plugins/reporter-rhtsupport.c:888
 msgid "Linking ABRT crash statistics record with the case"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:827
+#: ../src/plugins/reporter-rhtsupport.c:901
 #, c-format
 msgid "Linking ABRT crash statistics record with contact email: '%s'"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:851
+#: ../src/plugins/reporter-rhtsupport.c:925
 #, c-format
 msgid "Adding comment to case '%s'"
 msgstr "घटना '%s' करिता टिपण्णी समाविष्ट करत आहे"
 
 #. Attach the tarball of -d DIR
-#: ../src/plugins/reporter-rhtsupport.c:869
+#: ../src/plugins/reporter-rhtsupport.c:943
 #, c-format
 msgid "Attaching problem data to case '%s'"
 msgstr "घटना '%s' करिता अडचण डाटा जोडत आहे"
@@ -2189,13 +2258,9 @@ msgstr ""
 msgid "CentOS Bug Tracker account password"
 msgstr ""
 
-#: ../src/plugins/report_CentOSBugTracker.xml.in.h:8
-msgid "Restric access"
-msgstr ""
-
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:9
 msgid ""
-"The issue will be accessible only to users with access to 'Pivate Issues'"
+"The issue will be accessible only to users with access to 'Private Issues'"
 msgstr ""
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:10
@@ -2326,21 +2391,21 @@ msgstr "Red Hat ग्राहक वापरकर्ता नाव"
 msgid "Red Hat customer password"
 msgstr "Red Hat ग्राहक पासवर्ड"
 
-#: ../src/plugins/report_RHTSupport.xml.in.h:9
+#: ../src/plugins/report_RHTSupport.xml.in.h:7
 msgid "Submit uReport"
 msgstr ""
 
-#: ../src/plugins/report_RHTSupport.xml.in.h:10
+#: ../src/plugins/report_RHTSupport.xml.in.h:8
 msgid ""
 "Submit &lt;a href=\"https://access.redhat.com/articles/642323\"&gt;micro-"
 "report&lt;/a&gt; when creating a new case."
 msgstr ""
 
-#: ../src/plugins/report_RHTSupport.xml.in.h:11
+#: ../src/plugins/report_RHTSupport.xml.in.h:9
 msgid "RH Portal URL"
 msgstr "RH पोर्टल URL"
 
-#: ../src/plugins/report_RHTSupport.xml.in.h:12
+#: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Address of the Red Hat support portal"
 msgstr "Red Hat सपोर्ट पोर्टलचा पत्ता"
 
@@ -2763,7 +2828,7 @@ msgstr ""
 
 #: ../src/plugins/reporter-ureport.c:108
 msgid ""
-"attach DATA as ureporte attachment ATTACHMENT_TYPE (used only with -l|-L)"
+"attach DATA as ureport attachment ATTACHMENT_TYPE (used only with -l|-L)"
 msgstr ""
 
 #: ../src/plugins/reporter-ureport.c:113
@@ -3022,6 +3087,16 @@ msgid "Analyze the problem locally and upload the data via scp or ftp"
 msgstr ""
 "स्थानीयरित्या अडचणीचे विश्लेषण करा आणि scp किंवा ftp द्वारे डाटा अपलोड करा"
 
+#: ../src/workflows/workflow_uReport.xml.in.h:1
+msgid "Submit anonymous crash report"
+msgstr ""
+
+#: ../src/workflows/workflow_uReport.xml.in.h:2
+msgid ""
+"Submit anonymous crash report - I do not want to be contacted by Red Hat "
+"Support"
+msgstr ""
+
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1
 #: ../src/workflows/workflow_RHELPython.xml.in.h:1
@@ -3029,43 +3104,20 @@ msgstr ""
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:1
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:1
 #: ../src/workflows/workflow_RHELJava.xml.in.h:1
-msgid "Report to Red Hat Customer Portal"
-msgstr "Red Hat Customer Portal ला कळवा"
+msgid "Ask Red Hat Support for help"
+msgstr ""
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
-msgid "Process the C/C++ crash using the Red Hat infrastructure"
-msgstr "Red Hat इंफ्रास्ट्रक्चरचा वापर करून C/C++ क्रॅश विश्लेषीत करा"
-
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:2
-msgid "Process the kerneloops using the Red Hat infrastructure"
-msgstr "Red Hat इंफ्रास्टक्चरचा वापर करून kerneloops विश्लेषीत करा"
-
 #: ../src/workflows/workflow_RHELPython.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:2
-msgid "Process the python exception using the Red Hat infrastructure"
-msgstr "Red Hat इंफ्रास्टक्चरचा वापर करून python अपवाद विश्लेषीत करा"
-
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:2
-msgid "Process the kernel crash using the Red Hat infrastructure"
-msgstr "Red Hat इंफ्रास्ट्रक्चरचा वापर करून कर्नल क्रॅश विश्लेषीत करा"
-
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:2
-msgid "Process the X Server problem using the Red Hat infrastructure"
-msgstr "Red Hat इंफ्रास्टक्चरचा वापर करून X Server अडचण विश्लेषीत करा"
-
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:2
-msgid "Process the problem using the Red Hat infrastructure"
-msgstr "Red Hat इंफ्रास्टक्चरचा वापर करून अडचण विश्लेषीत करा"
-
 #: ../src/workflows/workflow_RHELJava.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
-msgid "Process the Java exception using the Red Hat infrastructure"
-msgstr "Red Hat इंफ्रास्टक्चरचा वापर करून Java अपवाद विश्लेषीत करा"
+msgid ""
+"Create new Red Hat Support case - I would like to be contacted by Red Hat "
+"Support"
+msgstr ""
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
@@ -3076,3 +3128,31 @@ msgstr "Red Hat इंफ्रास्टक्चरचा वापर क�
 #: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:1
 msgid "Report to Red Hat Bugzilla"
 msgstr "Red Hat Bugzilla ला कळवा"
+
+#: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
+msgid "Process the C/C++ crash using the Red Hat infrastructure"
+msgstr "Red Hat इंफ्रास्ट्रक्चरचा वापर करून C/C++ क्रॅश विश्लेषीत करा"
+
+#: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:2
+msgid "Process the kerneloops using the Red Hat infrastructure"
+msgstr "Red Hat इंफ्रास्टक्चरचा वापर करून kerneloops विश्लेषीत करा"
+
+#: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:2
+msgid "Process the python exception using the Red Hat infrastructure"
+msgstr "Red Hat इंफ्रास्टक्चरचा वापर करून python अपवाद विश्लेषीत करा"
+
+#: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:2
+msgid "Process the kernel crash using the Red Hat infrastructure"
+msgstr "Red Hat इंफ्रास्ट्रक्चरचा वापर करून कर्नल क्रॅश विश्लेषीत करा"
+
+#: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:2
+msgid "Process the X Server problem using the Red Hat infrastructure"
+msgstr "Red Hat इंफ्रास्टक्चरचा वापर करून X Server अडचण विश्लेषीत करा"
+
+#: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:2
+msgid "Process the problem using the Red Hat infrastructure"
+msgstr "Red Hat इंफ्रास्टक्चरचा वापर करून अडचण विश्लेषीत करा"
+
+#: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
+msgid "Process the Java exception using the Red Hat infrastructure"
+msgstr "Red Hat इंफ्रास्टक्चरचा वापर करून Java अपवाद विश्लेषीत करा"

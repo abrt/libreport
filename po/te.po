@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-11 11:20+0100\n"
+"POT-Creation-Date: 2016-07-14 10:26+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,7 +19,7 @@ msgstr ""
 "language/te/)\n"
 "Language: te\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 3.8.2\n"
+"X-Generator: Zanata 3.8.4\n"
 
 #: ../src/cli/cli.c:63
 msgid ""
@@ -401,7 +401,7 @@ msgstr "ఘటనలు"
 msgid "C_onfigure"
 msgstr "ఆకృతీకరించు (_o)"
 
-#: ../src/gtk-helpers/config_dialog.c:375 ../src/gui-wizard-gtk/wizard.c:3510
+#: ../src/gtk-helpers/config_dialog.c:375 ../src/gui-wizard-gtk/wizard.c:3687
 msgid "_Close"
 msgstr "మూసివేయి (_C)"
 
@@ -427,7 +427,7 @@ msgstr "రహస్య సేవ అందుబాటులోలేదు, �
 
 #: ../src/gtk-helpers/event_config_dialog.c:349
 #: ../src/gtk-helpers/workflow_config_dialog.c:94
-#: ../src/gui-wizard-gtk/wizard.c:777 ../src/gui-wizard-gtk/wizard.c:3131
+#: ../src/gui-wizard-gtk/wizard.c:784 ../src/gui-wizard-gtk/wizard.c:3287
 msgid "_Cancel"
 msgstr "రద్దుచేయి (_C)"
 
@@ -514,7 +514,7 @@ msgstr ""
 msgid "Alternate GUI file"
 msgstr "ప్రత్యామ్నాయ GUI ఫైల్"
 
-#: ../src/gui-wizard-gtk/wizard.c:373
+#: ../src/gui-wizard-gtk/wizard.c:380
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
@@ -523,15 +523,15 @@ msgstr ""
 "వ్రాయుటకు వీలగు సంచయం అవసరం, అయితే '%s' వ్రాయుటకు వీలగునది కాదు, దానిని '%s' "
 "కు కదల్చి మరియు కదల్చిన డాటాపై ఆపరేట్ చేయవలెనా?"
 
-#: ../src/gui-wizard-gtk/wizard.c:768
+#: ../src/gui-wizard-gtk/wizard.c:775
 msgid "View/edit a text file"
 msgstr "పాఠపు ఫైలును దర్శించు/సరికూర్చు"
 
-#: ../src/gui-wizard-gtk/wizard.c:776
+#: ../src/gui-wizard-gtk/wizard.c:783
 msgid "_Save"
 msgstr "దాయి (_S)"
 
-#: ../src/gui-wizard-gtk/wizard.c:998
+#: ../src/gui-wizard-gtk/wizard.c:1005
 msgid ""
 "No reporting targets are defined for this problem. Check configuration in /"
 "etc/libreport/*"
@@ -539,39 +539,56 @@ msgstr ""
 "ఈ సమస్య కొరకు ఏ నివేదన లక్ష్యాలు నిర్వచింపలేదు. /etc/libreport/* నందు "
 "ఆకృతీకరణను పరిశీలించు"
 
-#: ../src/gui-wizard-gtk/wizard.c:1040
+#: ../src/gui-wizard-gtk/wizard.c:1047
 #, c-format
 msgid "(requires: %s)"
 msgstr "(కావలసింది: %s)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1054
+#: ../src/gui-wizard-gtk/wizard.c:1061
 #, c-format
 msgid "(not needed, data already exist: %s)"
 msgstr "(అవసరం లేదు, దత్తాంశం ఇప్పటికే ఉంది: %s)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1244
+#: ../src/gui-wizard-gtk/wizard.c:1160
+msgid ""
+"Since crashes without a known reproducer can be difficult to diagnose, "
+"please provide a comprehensive description of the problem you have "
+"encountered."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1167
+msgid ""
+"Please provide a short description of the problem and please include the "
+"steps you have used to reproduce the problem."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1174
+msgid "Please provide the steps you have used to reproduce the problem."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1296
 msgid "(click here to view/edit)"
 msgstr "(దర్శించు/సరిచేయి కు యిచట నొక్కు)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1255
+#: ../src/gui-wizard-gtk/wizard.c:1307
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(బైనరీ ఫైలు, %llu బెట్లు)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1366 ../src/report-newt/report-newt.c:334
+#: ../src/gui-wizard-gtk/wizard.c:1418 ../src/report-newt/report-newt.c:334
 msgid "(no description)"
 msgstr "(వివరణ లేదు)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1374
+#: ../src/gui-wizard-gtk/wizard.c:1426
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu బెట్లు, %u ఫైళ్ళు"
 
-#: ../src/gui-wizard-gtk/wizard.c:1619
+#: ../src/gui-wizard-gtk/wizard.c:1704
 msgid "Processing was canceled"
 msgstr "ప్రోసెసింగ్ రద్దైనది"
 
-#: ../src/gui-wizard-gtk/wizard.c:1830
+#: ../src/gui-wizard-gtk/wizard.c:1915
 msgid ""
 "Processing of the problem failed. This can have many reasons but there are "
 "three most common:\n"
@@ -580,7 +597,7 @@ msgid ""
 "\t▫ <b>invalid configuration</b>"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1839
+#: ../src/gui-wizard-gtk/wizard.c:1924
 msgid ""
 "If you want to update the configuration and try to report again, please open "
 "<b>Preferences</b> item\n"
@@ -588,7 +605,7 @@ msgid ""
 "<b>Repeat</b> button."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1845
+#: ../src/gui-wizard-gtk/wizard.c:1930
 msgid ""
 "If you are sure that this problem is not caused by network problems neither "
 "by invalid configuration\n"
@@ -600,48 +617,53 @@ msgid ""
 "limited number of persons can read them.</i>"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1964
+#: ../src/gui-wizard-gtk/wizard.c:2055
 msgid "Processing was interrupted because the problem is not reportable."
 msgstr "సమస్య నివేదించగలది కాని కారణంగా ప్రోసెసింగ్ ఆటంకపరచబడింది."
 
-#: ../src/gui-wizard-gtk/wizard.c:1974 ../src/gui-wizard-gtk/wizard.c:2045
+#: ../src/gui-wizard-gtk/wizard.c:2065 ../src/gui-wizard-gtk/wizard.c:2136
 msgid "Processing failed."
 msgstr "ప్రోసెసింగ్ విఫలమైంది."
 
 #. No next event, go to progress page and finish
-#: ../src/gui-wizard-gtk/wizard.c:1981 ../src/gui-wizard-gtk/wizard.c:2855
+#: ../src/gui-wizard-gtk/wizard.c:2072 ../src/gui-wizard-gtk/wizard.c:3009
 msgid "Processing finished."
 msgstr "ప్రోసెసింగ్ పూర్తైనది."
 
-#: ../src/gui-wizard-gtk/wizard.c:1982
+#: ../src/gui-wizard-gtk/wizard.c:2073
 msgid "Processing finished, please proceed to the next step."
 msgstr "ప్రోసెసింగ్ పూర్తైనది, దయచేసి తరువాతి అంచెకు వెళ్ళు."
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:2042
+#: ../src/gui-wizard-gtk/wizard.c:2133
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "ఘటన '%s' కొరకు యే క్రమణం నిర్వచించబడలేదు"
 
-#: ../src/gui-wizard-gtk/wizard.c:2056
+#: ../src/gui-wizard-gtk/wizard.c:2147
 msgid "Processing interrupted: can't continue without writable directory."
 msgstr "ప్రోసెసింగ్ ఆటంకపరచబడింది: వ్రాయదగ డైరెక్టరీ లేకుండా కొనసాగించలేదు."
 
-#: ../src/gui-wizard-gtk/wizard.c:2093
+#: ../src/gui-wizard-gtk/wizard.c:2184
 msgid "Processing..."
 msgstr "ప్రోసెసింగ్..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2179
+#: ../src/gui-wizard-gtk/wizard.c:2270
 msgid ""
 "Possible sensitive data detected, feel free to edit the report and remove "
 "them."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2219
+#: ../src/gui-wizard-gtk/wizard.c:2310
 msgid "Cannot check backtrace rating because of invalid event name"
 msgstr "చెల్లని ఘటన పేరు కారణంగా బ్యాక్‌ట్రేస్ రేటింగ్ పరిశీలించలేదు"
 
-#: ../src/gui-wizard-gtk/wizard.c:2875
+#: ../src/gui-wizard-gtk/wizard.c:2847
+#, c-format
+msgid "Failed to save file '%s'"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:3029
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
@@ -650,107 +672,119 @@ msgstr ""
 "సున్నితమైన దత్తాంశం పంపుటకు ఘటన '%s' కు అనుమతి కావాలి.\n"
 "మీరు కొనసాగించుదామని అనుకొంటున్నారా?"
 
-#: ../src/gui-wizard-gtk/wizard.c:2923
+#: ../src/gui-wizard-gtk/wizard.c:3077
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
 msgstr "ఈ సమస్యను నివేదించ కూడదు (ఇది తెలిసిన సమస్యే). %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:3132
+#: ../src/gui-wizard-gtk/wizard.c:3288
 msgid "_Open"
 msgstr "తెరువుము (_O)"
 
-#: ../src/gui-wizard-gtk/wizard.c:3154
+#: ../src/gui-wizard-gtk/wizard.c:3310
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' అనునది సాధారణ ఫైలు కాదు"
 
-#: ../src/gui-wizard-gtk/wizard.c:3168
+#: ../src/gui-wizard-gtk/wizard.c:3324
 msgid "You are trying to copy a file onto itself"
 msgstr "మీరు వొక ఫైలును దానిపైనే నకలుతీయుటకు ప్రయత్నిస్తున్నారు"
 
-#: ../src/gui-wizard-gtk/wizard.c:3175
+#: ../src/gui-wizard-gtk/wizard.c:3331
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "'%s' ను నకలుతీయలేక పోయింది: %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:3190
+#: ../src/gui-wizard-gtk/wizard.c:3346
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "అంశం '%s' యిప్పటికే వుంది మరియు దానిని సవరించలేము"
 
-#: ../src/gui-wizard-gtk/wizard.c:3352
+#: ../src/gui-wizard-gtk/wizard.c:3510
+msgid "I have experienced this problem for the first time"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:3513
+msgid "I can reproduce this problem"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:3516
+msgid "This problem occurs repeatedly"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:3529
 msgid "Include"
 msgstr "కలుపుకొని"
 
-#: ../src/gui-wizard-gtk/wizard.c:3363
+#: ../src/gui-wizard-gtk/wizard.c:3540
 msgid "Name"
 msgstr "పేరు"
 
-#: ../src/gui-wizard-gtk/wizard.c:3373
+#: ../src/gui-wizard-gtk/wizard.c:3550
 msgid "Value"
 msgstr "విలువ"
 
-#: ../src/gui-wizard-gtk/wizard.c:3407
+#: ../src/gui-wizard-gtk/wizard.c:3584
 msgid "Problem description"
 msgstr "సమస్య యొక్క వివరణ"
 
-#: ../src/gui-wizard-gtk/wizard.c:3408
+#: ../src/gui-wizard-gtk/wizard.c:3585
 msgid "Select how to report this problem"
 msgstr "ఈ సమస్యను ఎలా నివేదించాలో ఎంపికచేయి"
 
-#: ../src/gui-wizard-gtk/wizard.c:3409
+#: ../src/gui-wizard-gtk/wizard.c:3586
 msgid "Provide additional information"
 msgstr "అదనపు సమాచారాన్ని అందించుము"
 
-#: ../src/gui-wizard-gtk/wizard.c:3410
+#: ../src/gui-wizard-gtk/wizard.c:3587
 msgid "Review the data"
 msgstr "డాటాను పునఃపరిశీలించు"
 
-#: ../src/gui-wizard-gtk/wizard.c:3411
+#: ../src/gui-wizard-gtk/wizard.c:3588
 msgid "Confirm data to report"
 msgstr "నివేదించుటకు దత్తాంశమును నిర్థారించుము"
 
-#: ../src/gui-wizard-gtk/wizard.c:3412
+#: ../src/gui-wizard-gtk/wizard.c:3589
 msgid "Processing"
 msgstr "ప్రోసెసింగ్"
 
-#: ../src/gui-wizard-gtk/wizard.c:3413
+#: ../src/gui-wizard-gtk/wizard.c:3590
 msgid "Processing done"
 msgstr "ప్రోసెసింగ్ పూర్తైనది"
 
-#: ../src/gui-wizard-gtk/wizard.c:3512
+#: ../src/gui-wizard-gtk/wizard.c:3689
 msgid "_Stop"
 msgstr "ఆపివేయి(_S)"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3515
+#: ../src/gui-wizard-gtk/wizard.c:3692
 msgid "Upload for analysis"
 msgstr "విశ్లేషణ కు ఎగుమతిచేయి"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3518
+#: ../src/gui-wizard-gtk/wizard.c:3695
 msgid "Repeat"
 msgstr ""
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3520
+#: ../src/gui-wizard-gtk/wizard.c:3697
 msgid "_Forward"
 msgstr "ముందుకు (_F)"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3523 ../src/gui-wizard-gtk/wizard.glade.h:10
+#: ../src/gui-wizard-gtk/wizard.c:3700 ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid "Details"
 msgstr "వివరములు"
 
-#: ../src/gui-wizard-gtk/wizard.c:3588
+#: ../src/gui-wizard-gtk/wizard.c:3765
 msgid "Restrict access to the report"
 msgstr "నివేదిక అందుబాటును నిర్బందించు"
 
-#: ../src/gui-wizard-gtk/wizard.c:3593
+#: ../src/gui-wizard-gtk/wizard.c:3770
 msgid "Learn more about restricted access in the configuration"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:3655
+#: ../src/gui-wizard-gtk/wizard.c:3833
 msgid ""
 "In order to enable the built-in screencasting functionality the package fros-"
 "recordmydesktop has to be installed. Please run the following command if you "
@@ -822,10 +856,24 @@ msgstr ""
 " దయచేసి వీలైతే ఆంగ్లము వుపయోగించండి."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
+msgid "How reproducible is this problem?"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:13
+msgid "How it can be reproduced (one step per line)?"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:14
+msgid ""
+"Please add a comprehensive description of the problem you have. This is a "
+"very long place holder."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid "You need to fill the how to before you can proceed..."
 msgstr "మీరు కొనసాగుటకు ముందుగా యెలా అనునది మీరు నింపవలసి వుంటుంది..."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:13
+#: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
@@ -833,33 +881,33 @@ msgstr ""
 "<b>మీ వ్యాఖ్యానాలు వ్యక్తిగతమైనవి కావు.</b> అవి బహిర్గతంగా కనిపించు సమస్యా "
 "నివేదికలయందు చేర్చబడ గలవు."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:14
-msgid "If you don't know how to describe it, you can"
-msgstr "దానిని ఎలా వివరించాలో మీకు తెలియకపోతే, మీరు"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:15
-msgid "add a screencast"
-msgstr "స్క్రీన్‌కాస్ట్ జతచేయవచ్చు"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:16
+#: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "I don't know what caused this problem"
 msgstr "ఈ సమస్యకు యేది కారణమైనో నాకు తెలియదు"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:17
+#: ../src/gui-wizard-gtk/wizard.glade.h:18
+msgid "If you don't know how to describe it, you can"
+msgstr "దానిని ఎలా వివరించాలో మీకు తెలియకపోతే, మీరు"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:19
+msgid "add a screencast"
+msgstr "స్క్రీన్‌కాస్ట్ జతచేయవచ్చు"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:20
 msgid "Size:"
 msgstr "పరిమాణం:"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:18
+#: ../src/gui-wizard-gtk/wizard.glade.h:21
 msgid "Attach a file"
 msgstr "ఒక ఫైలు అనుభందించు"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:19
+#: ../src/gui-wizard-gtk/wizard.glade.h:22
 msgid "I reviewed the data and _agree with submitting it"
 msgstr ""
 "నేను డాటాను పునఃపరిశీలించాను మరియు దానిని అప్పజెప్పుటకు వొప్పుకుంటున్నాను "
 "(_a)"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:20
+#: ../src/gui-wizard-gtk/wizard.glade.h:23
 msgid ""
 "If you are reporting to a remote server, make sure you removed all private "
 "data (such as usernames and passwords). Backtrace, command line, environment "
@@ -869,19 +917,19 @@ msgstr ""
 "చూసుకొనండి (వాడుకరిపేర్లు మరియు సంకేతపదములు వంటివి). బ్యాక్‌ట్రేస్, కమాండ్ "
 "లైన్, యెన్విరాన్మెంట్ వేరియబుల్స్ అనునవి పరీక్షణలో ముఖ్యమైనవి."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:21
+#: ../src/gui-wizard-gtk/wizard.glade.h:24
 msgid "Processing did not start yet"
 msgstr "ప్రోసెసింగ్ ఇంకా ప్రారంభంకాలేదు"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:22
+#: ../src/gui-wizard-gtk/wizard.glade.h:25
 msgid "Show log"
 msgstr "లాగ్ చూపు"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:23
+#: ../src/gui-wizard-gtk/wizard.glade.h:26
 msgid "Reporting has finished. You can close this window now."
 msgstr "నివేదికరణ ముగిసినది. మీరు యీ విండోను మూసివేయవచ్చును."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:24
+#: ../src/gui-wizard-gtk/wizard.glade.h:27
 msgid ""
 "If you want to report the problem to a different destination, collect "
 "additional information, or provide a better problem description and repeat "
@@ -891,14 +939,14 @@ msgstr ""
 "సేకరించు, లేదా మంచి ప్రోబ్లమ్ వివరణను అందించు మరియు నివేదీకరణ ప్రోసెస్‌ను "
 "పునరావృతం చేయి, 'ముందుకు' వత్తుము."
 
-#: ../src/include/internal_libreport.h:1175
+#: ../src/include/internal_libreport.h:1182
 msgid "Be verbose"
 msgstr "వెర్బోస్ నందు ఉండు"
 
-#: ../src/include/internal_libreport.h:1176
+#: ../src/include/internal_libreport.h:1183
 #: ../src/plugins/reporter-bugzilla.c:295
-#: ../src/plugins/reporter-kerneloops.c:166 ../src/plugins/reporter-mailx.c:204
-#: ../src/plugins/reporter-print.c:56 ../src/plugins/reporter-rhtsupport.c:491
+#: ../src/plugins/reporter-kerneloops.c:166 ../src/plugins/reporter-mailx.c:279
+#: ../src/plugins/reporter-print.c:56 ../src/plugins/reporter-rhtsupport.c:510
 #: ../src/plugins/reporter-upload.c:186 ../src/plugins/reporter-mantisbt.c:283
 msgid "Problem directory"
 msgstr "సమస్య డైరెక్టరీ"
@@ -962,7 +1010,7 @@ msgid "Uploaded: %llu of %llu kbytes"
 msgstr "అప్‌లోడైంది: %llu బైట్లు మొత్తం %llu బైట్లలో"
 
 #: ../src/lib/curl.c:636
-msgid "Ingoring URL without scheme and hostname"
+msgid "Ignoring URL without scheme and hostname"
 msgstr ""
 
 #. Do not include the path part of the URL as it can contain sensitive data
@@ -988,29 +1036,29 @@ msgstr ""
 msgid "Successfully created %s"
 msgstr ""
 
-#: ../src/lib/dump_dir.c:2350
+#: ../src/lib/dump_dir.c:2400
 msgid "Failed to open TAR writer"
 msgstr ""
 
-#: ../src/lib/dump_dir.c:2376
+#: ../src/lib/dump_dir.c:2426
 msgid "Failed to finalize TAR archive"
 msgstr ""
 
-#: ../src/lib/dump_dir.c:2386
+#: ../src/lib/dump_dir.c:2436
 msgid "Failed to close TAR writer"
 msgstr ""
 
-#: ../src/lib/dump_dir.c:2396
+#: ../src/lib/dump_dir.c:2446
 #, c-format
 msgid "gzip killed with signal %d"
 msgstr ""
 
-#: ../src/lib/dump_dir.c:2402
+#: ../src/lib/dump_dir.c:2452
 #, c-format
 msgid "gzip exited with %d"
 msgstr ""
 
-#: ../src/lib/dump_dir.c:2405
+#: ../src/lib/dump_dir.c:2455
 msgid "gzip process failed"
 msgstr ""
 
@@ -1159,7 +1207,7 @@ msgstr "'%s' నుండి స్పందన చెల్లని ఫార�
 msgid "Type mismatch has been detected in the response from '%s'"
 msgstr "'%s' స్పందననందు టైప్ అసమానత గుర్తించబడెను"
 
-#: ../src/lib/ureport.c:818 ../src/plugins/reporter-rhtsupport.c:214
+#: ../src/lib/ureport.c:818 ../src/plugins/reporter-rhtsupport.c:233
 msgid "Failed on submitting the problem"
 msgstr "సమస్యను అప్పజెప్పుటకు విఫలమైంది"
 
@@ -1185,12 +1233,12 @@ msgstr "వాడుక: "
 msgid "Essential element '%s' is missing, can't continue"
 msgstr "తప్పనిసరి మూలకం '%s' తప్పిపోయింది, కొనసాగించలేము"
 
-#: ../src/lib/problem_report.c:477
+#: ../src/lib/problem_report.c:478
 #, c-format
 msgid "Can't parse backtrace: %s"
 msgstr "బ్యాక్‌ట్రేస్ పార్స్ చేయలేదు: %s"
 
-#: ../src/lib/problem_report.c:488
+#: ../src/lib/problem_report.c:489
 msgid "Can't generate stacktrace description (no crash thread?)"
 msgstr "స్టాక్‌ట్రేస్ వివరణ జనియింపచేయలేదు (ఏ క్రాష్ త్రెడ్ లేదా?)"
 
@@ -1306,6 +1354,7 @@ msgid "Bugzilla account password"
 msgstr "బగ్‌జిల్లా ఖాతా సంకేతపదం"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:8
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:8
 msgid "Restrict access"
 msgstr "ఏక్సెస్ నిర్భందించు"
 
@@ -1340,14 +1389,14 @@ msgstr "బగ్‌జిల్లా సర్వర్ చిరునామ�
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:14
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:12
-#: ../src/plugins/report_RHTSupport.xml.in.h:7
+#: ../src/plugins/report_RHTSupport.xml.in.h:11
 #: ../src/plugins/report_uReport.xml.in.h:9
 msgid "Verify SSL"
 msgstr "SSL నిర్థారించు"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:15
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:13
-#: ../src/plugins/report_RHTSupport.xml.in.h:8
+#: ../src/plugins/report_RHTSupport.xml.in.h:12
 #: ../src/plugins/report_uReport.xml.in.h:10
 msgid "Check SSL key validity"
 msgstr "SSL కీ నిర్థారణ పరిశీలించు"
@@ -1457,13 +1506,13 @@ msgstr ""
 "తెలుపబడెను, env వేరియబుల్ మరియు ఆకృతీకరణను విస్మరిస్తోంది"
 
 #: ../src/plugins/reporter-bugzilla.c:173
-#: ../src/plugins/reporter-rhtsupport.c:358
+#: ../src/plugins/reporter-rhtsupport.c:377
 #: ../src/plugins/reporter-mantisbt.c:55
 msgid "Can't continue without login"
 msgstr "లాగిన్ లేకుండా కొనసాగించలేదు"
 
 #: ../src/plugins/reporter-bugzilla.c:186
-#: ../src/plugins/reporter-rhtsupport.c:371
+#: ../src/plugins/reporter-rhtsupport.c:390
 #: ../src/plugins/reporter-mantisbt.c:70
 msgid "Can't continue without password"
 msgstr "సంకేతపదం లేకుండా కొనసాగించలేదు"
@@ -1478,7 +1527,7 @@ msgid "Invalid password or login. Please enter your Bugzilla login:"
 msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:202
-#: ../src/plugins/reporter-rhtsupport.c:385
+#: ../src/plugins/reporter-rhtsupport.c:404
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
 msgstr "చెల్లని సంకేతపదం లేదా లాగిన్. '%s' కొరకు సంకేతపదం ప్రవేశపెట్టండి:"
@@ -1529,7 +1578,7 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:296
-#: ../src/plugins/reporter-rhtsupport.c:492
+#: ../src/plugins/reporter-rhtsupport.c:511
 #: ../src/plugins/reporter-mantisbt.c:284
 msgid "Configuration file (may be given many times)"
 msgstr "ఆకృతీకరణ ఫైలు (చాలా సార్లు యివ్వబడెను)"
@@ -1553,7 +1602,7 @@ msgid "When creating bug, attach binary files too"
 msgstr "బగ్ సృష్టించునప్పుడు, బైనరీ ఫైళ్ళను కూడా అనుభందించుము"
 
 #: ../src/plugins/reporter-bugzilla.c:301
-#: ../src/plugins/reporter-rhtsupport.c:494
+#: ../src/plugins/reporter-rhtsupport.c:513
 #: ../src/plugins/reporter-mantisbt.c:288
 msgid "Force reporting even if this problem is already reported"
 msgstr "ఈ సమస్య యిప్పటికే నివేదించబడినప్పటికీ నివేదించుటకు వత్తిడిచేయి"
@@ -1580,8 +1629,8 @@ msgstr "'reported_to' నుండి అదనపు URL కొరకు బగ
 msgid "Restrict access to this group only"
 msgstr "ఏక్సెస్‌ను ఈ సమూహంకు మాత్రమే నిర్భందించుము"
 
-#: ../src/plugins/reporter-bugzilla.c:307
-#: ../src/plugins/reporter-rhtsupport.c:498
+#: ../src/plugins/reporter-bugzilla.c:307 ../src/plugins/reporter-mailx.c:283
+#: ../src/plugins/reporter-rhtsupport.c:517
 #: ../src/plugins/reporter-mantisbt.c:292
 msgid "Debug"
 msgstr "డీబగ్"
@@ -1609,7 +1658,7 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:423
-#: ../src/plugins/reporter-rhtsupport.c:532
+#: ../src/plugins/reporter-rhtsupport.c:551
 #, c-format
 msgid ""
 "Password is not provided by configuration. Please enter the password for "
@@ -1764,7 +1813,7 @@ msgstr ""
 msgid "Configuration file"
 msgstr "ఆకృతీకరణ పైలు"
 
-#: ../src/plugins/reporter-mailx.c:59
+#: ../src/plugins/reporter-mailx.c:83
 #, c-format
 msgid ""
 "Email address of %s was not specified. Would you like to do so now? If not, "
@@ -1773,49 +1822,48 @@ msgstr ""
 "ఈమెయిల్ చిరునామా %s తెలుపలేదు. మీరు ఇప్పుడు అలా చేయుటకు ఇష్టపడతారా? ఒకవేళ "
 "కాకపోతే, '%s' ఉపయోగించాలి"
 
-#: ../src/plugins/reporter-mailx.c:66
+#: ../src/plugins/reporter-mailx.c:90
 #, c-format
 msgid "Please, type email address of %s:"
 msgstr "దయచేసి, %s యొక్క ఈమెయిల్ చిరునామా టైపుచేయండి:"
 
-#: ../src/plugins/reporter-mailx.c:73
+#: ../src/plugins/reporter-mailx.c:97
 #, c-format
 msgid "Can't continue without email address of %s"
 msgstr "%s యొక్క ఈమెయిల్ చిరునామా లేకుండా కొనసాగించలేదు"
 
-#: ../src/plugins/reporter-mailx.c:136
+#: ../src/plugins/reporter-mailx.c:207
 #, c-format
 msgid "Sending a notification email to: %s"
 msgstr ""
 
-#: ../src/plugins/reporter-mailx.c:138
+#: ../src/plugins/reporter-mailx.c:209
 msgid "Sending an email..."
 msgstr "ఈమెయిల్ పంపుచున్నది..."
 
-#: ../src/plugins/reporter-mailx.c:162
+#: ../src/plugins/reporter-mailx.c:234
 #, c-format
 msgid "Email was sent to: %s"
 msgstr "ఈమెయిల్ పంపబడెను: %s"
 
-#: ../src/plugins/reporter-mailx.c:184
+#: ../src/plugins/reporter-mailx.c:257
 msgid ""
-"& [-v] -d DIR [-c CONFFILE]\n"
+"& [-v] -d DIR [-c CONFFILE] [-F FMTFILE]\n"
 "\n"
 "Sends contents of a problem directory DIR via email\n"
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
-"& [-v] -d DIR [-c CONFFILE]\n"
-"\n"
-"సమస్యాత్మక డైరెక్టరీ DIR యొక్క సారములు ఈమెయిల్ ద్వారా పంపబడును\n"
-"\n"
-"తెలుపకపోతే, CONFFILE దీనికి అప్రమేయమగును"
 
-#: ../src/plugins/reporter-mailx.c:205 ../src/plugins/reporter-upload.c:187
+#: ../src/plugins/reporter-mailx.c:280 ../src/plugins/reporter-upload.c:187
 msgid "Config file"
 msgstr "కాన్ఫిగ్ ఫైల్"
 
-#: ../src/plugins/reporter-mailx.c:206
+#: ../src/plugins/reporter-mailx.c:281
+msgid "Formatting file for an email"
+msgstr ""
+
+#: ../src/plugins/reporter-mailx.c:282
 msgid "Notify only (Do not mark the report as sent)"
 msgstr "కేవలం తెలుపు (నివేదికను పంపినట్లు గుర్తుంచవద్దు)"
 
@@ -1860,21 +1908,21 @@ msgstr "నివేదిక %s నకు చేర్చబడినది"
 msgid "The report was stored to %s"
 msgstr "నివేదిక %sనకు నిల్వవుంచబడింది"
 
-#: ../src/plugins/reporter-rhtsupport.c:275
+#: ../src/plugins/reporter-rhtsupport.c:294
 #: ../src/plugins/reporter-ureport.c:321
 #, c-format
 msgid "Server responded with an error: '%s'"
 msgstr "సేవిక ఒక దోషంతో స్పందించెను: '%s'"
 
-#: ../src/plugins/reporter-rhtsupport.c:335
+#: ../src/plugins/reporter-rhtsupport.c:354
 msgid "Do you still want to create a RHTSupport ticket?"
 msgstr "మీరు యింకా RHT తోడ్పాటు టికెట్‌ను సృష్టించాలని అనుకొనుచున్నారా?"
 
-#: ../src/plugins/reporter-rhtsupport.c:383
+#: ../src/plugins/reporter-rhtsupport.c:402
 msgid "Invalid password or login. Please enter your Red Hat login:"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:452
+#: ../src/plugins/reporter-rhtsupport.c:471
 msgid ""
 "\n"
 "& [-v] [-c CONFFILE] [-F FMTFILE] -d DIR\n"
@@ -1886,83 +1934,104 @@ msgid ""
 "If not specified, CONFFILE defaults to "
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:493
+#: ../src/plugins/reporter-rhtsupport.c:512
 msgid "Upload FILEs [to case with this ID]"
 msgstr "ఫైళ్ళను అప్‌లోడ్ చేయును [కేస్‌నకు యీ ఐడితో]"
 
-#: ../src/plugins/reporter-rhtsupport.c:495
+#: ../src/plugins/reporter-rhtsupport.c:514
 msgid "Submit uReport before creating a new case"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:496
+#: ../src/plugins/reporter-rhtsupport.c:515
 msgid "Configuration file for uReport"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:497
+#: ../src/plugins/reporter-rhtsupport.c:516
 msgid "Formatting file for a new case"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:526
+#: ../src/plugins/reporter-rhtsupport.c:545
 msgid "Login is not provided by configuration. Please enter your RHTS login:"
 msgstr ""
 "లాగిన్ అనునది ఆకృతీకరణ చేత అందించబడుటలేదు. దయచేసి మీ RHTS లాగిన్ "
 "ప్రవేశపెట్టండి:"
 
-#: ../src/plugins/reporter-rhtsupport.c:595
+#: ../src/plugins/reporter-rhtsupport.c:614
 #, c-format
 msgid "Attaching '%s' to case '%s'"
 msgstr "'%s' ను కేస్  '%s' కు అనుబందించుచున్నది."
 
-#: ../src/plugins/reporter-rhtsupport.c:632
+#: ../src/plugins/reporter-rhtsupport.c:651
 msgid "Sending ABRT crash statistics data"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:653
+#: ../src/plugins/reporter-rhtsupport.c:672
 msgid "Can't create a temporary directory in "
 msgstr "దీనినందు తాత్కాలిక సంచయం సృష్టించలేదు"
+
+#: ../src/plugins/reporter-rhtsupport.c:697
+msgid ""
+"The problem has only occurred once and the ability to reproduce the problem "
+"is unknown. Please ensure you will be able to provide detailed information "
+"to our Support Team. Would you like to continue and open a new support case?"
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:710
+#, c-format
+msgid ""
+"The crashed program was released by '%s'. Would you like to report the "
+"problem to Red Hat Support?"
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:728
+#, c-format
+msgid ""
+"The program '%s' does not appear to be provided by Red Hat. Would you like "
+"to report the problem to Red Hat Support?"
+msgstr ""
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing
 #. error msg is already logged by dd_opendir
 #. Compressing e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../src/plugins/reporter-rhtsupport.c:722
+#: ../src/plugins/reporter-rhtsupport.c:792
 #: ../src/plugins/reporter-upload.c:103
 msgid "Compressing data"
 msgstr "కంప్రెస్సింగ్ డాటా"
 
-#: ../src/plugins/reporter-rhtsupport.c:726
+#: ../src/plugins/reporter-rhtsupport.c:800
 msgid "Can't create temporary file in "
 msgstr "దీనినందు తాత్కాలిక ఫైలును సృష్టించలేదు"
 
 #. Check for hints and show them if we have something
-#: ../src/plugins/reporter-rhtsupport.c:737
+#: ../src/plugins/reporter-rhtsupport.c:811
 msgid "Checking for hints"
 msgstr "హింట్స్ కొరకు పరిశీలిస్తోంది"
 
-#: ../src/plugins/reporter-rhtsupport.c:747
+#: ../src/plugins/reporter-rhtsupport.c:821
 msgid "Creating a new case"
 msgstr "కొత్త కేస్ సృష్టిస్తోంది"
 
 #. How can we help user sorting out this problem?
-#: ../src/plugins/reporter-rhtsupport.c:758
+#: ../src/plugins/reporter-rhtsupport.c:832
 msgid "Can't determine RH Support Product from problem data."
 msgstr "సమస్య దత్తాంశము నుండి RH తోడ్పాటు ఉత్పత్తి నిర్ణయించలేదు."
 
-#: ../src/plugins/reporter-rhtsupport.c:814
+#: ../src/plugins/reporter-rhtsupport.c:888
 msgid "Linking ABRT crash statistics record with the case"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:827
+#: ../src/plugins/reporter-rhtsupport.c:901
 #, c-format
 msgid "Linking ABRT crash statistics record with contact email: '%s'"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:851
+#: ../src/plugins/reporter-rhtsupport.c:925
 #, c-format
 msgid "Adding comment to case '%s'"
 msgstr "కేస్ '%s' కు వ్యాఖ్య జతచేస్తోంది"
 
 #. Attach the tarball of -d DIR
-#: ../src/plugins/reporter-rhtsupport.c:869
+#: ../src/plugins/reporter-rhtsupport.c:943
 #, c-format
 msgid "Attaching problem data to case '%s'"
 msgstr "కేస్ '%s' కు సమస్య దత్తాంశం అనుబందిస్తోంది"
@@ -2201,13 +2270,9 @@ msgstr ""
 msgid "CentOS Bug Tracker account password"
 msgstr ""
 
-#: ../src/plugins/report_CentOSBugTracker.xml.in.h:8
-msgid "Restric access"
-msgstr ""
-
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:9
 msgid ""
-"The issue will be accessible only to users with access to 'Pivate Issues'"
+"The issue will be accessible only to users with access to 'Private Issues'"
 msgstr ""
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:10
@@ -2338,21 +2403,21 @@ msgstr "Red Hat వినియోగదారి వాడుకరి పే�
 msgid "Red Hat customer password"
 msgstr "Red Hat వినియోగదారి సంకేతపదం"
 
-#: ../src/plugins/report_RHTSupport.xml.in.h:9
+#: ../src/plugins/report_RHTSupport.xml.in.h:7
 msgid "Submit uReport"
 msgstr ""
 
-#: ../src/plugins/report_RHTSupport.xml.in.h:10
+#: ../src/plugins/report_RHTSupport.xml.in.h:8
 msgid ""
 "Submit &lt;a href=\"https://access.redhat.com/articles/642323\"&gt;micro-"
 "report&lt;/a&gt; when creating a new case."
 msgstr ""
 
-#: ../src/plugins/report_RHTSupport.xml.in.h:11
+#: ../src/plugins/report_RHTSupport.xml.in.h:9
 msgid "RH Portal URL"
 msgstr "RH పోర్టల్ URL"
 
-#: ../src/plugins/report_RHTSupport.xml.in.h:12
+#: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Address of the Red Hat support portal"
 msgstr "Red Hat తోడ్పాటు పోర్టల్ చిరునామా"
 
@@ -2775,7 +2840,7 @@ msgstr ""
 
 #: ../src/plugins/reporter-ureport.c:108
 msgid ""
-"attach DATA as ureporte attachment ATTACHMENT_TYPE (used only with -l|-L)"
+"attach DATA as ureport attachment ATTACHMENT_TYPE (used only with -l|-L)"
 msgstr ""
 
 #: ../src/plugins/reporter-ureport.c:113
@@ -3033,6 +3098,16 @@ msgid "Analyze the problem locally and upload the data via scp or ftp"
 msgstr ""
 "సమస్యను స్థానికంగా విశ్లేషించి దత్తాంశమును scp లేదా ftp ద్వారా ఎక్కించుము"
 
+#: ../src/workflows/workflow_uReport.xml.in.h:1
+msgid "Submit anonymous crash report"
+msgstr ""
+
+#: ../src/workflows/workflow_uReport.xml.in.h:2
+msgid ""
+"Submit anonymous crash report - I do not want to be contacted by Red Hat "
+"Support"
+msgstr ""
+
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1
 #: ../src/workflows/workflow_RHELPython.xml.in.h:1
@@ -3040,42 +3115,19 @@ msgstr ""
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:1
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:1
 #: ../src/workflows/workflow_RHELJava.xml.in.h:1
-msgid "Report to Red Hat Customer Portal"
-msgstr "Red Hat వినియోగదారి పోర్టల్‌కు నివేదించు"
-
-#: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
-msgid "Process the C/C++ crash using the Red Hat infrastructure"
-msgstr "Red Hat ఇన్ఫ్రాస్ట్రక్చర్ ఉపయోగించి C/C++ క్రాష్ ప్రోసెస్ చేయి"
-
-#: ../src/workflows/workflow_RHELKerneloops.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:2
-msgid "Process the kerneloops using the Red Hat infrastructure"
-msgstr "Red Hat ఇన్ఫ్రాస్ట్రక్చర్ ఉపయోగించి kerneloops ప్రోసెస్ చేయి"
-
-#: ../src/workflows/workflow_RHELPython.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:2
-msgid "Process the python exception using the Red Hat infrastructure"
-msgstr "Red Hat ఇన్ఫ్రాస్ట్రక్చర్ ఉపయోగించి పైథాన్ ఆక్షేపణను ప్రోసెస్ చేయి"
-
-#: ../src/workflows/workflow_RHELvmcore.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:2
-msgid "Process the kernel crash using the Red Hat infrastructure"
-msgstr "Red Hat ఇన్ఫ్రాస్ట్రక్చర్ ఉపయోగించి కెర్నల్ క్రాష్ ప్రోసెస్ చేయి"
-
-#: ../src/workflows/workflow_RHELxorg.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:2
-msgid "Process the X Server problem using the Red Hat infrastructure"
-msgstr "Red Hat ఇన్ఫ్రాస్ట్రక్చర్ ఉపయోగించి X సేవిక సమస్యను ప్రోసెస్ చేయుము"
-
-#: ../src/workflows/workflow_RHELLibreport.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:2
-msgid "Process the problem using the Red Hat infrastructure"
+msgid "Ask Red Hat Support for help"
 msgstr ""
 
+#: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
+#: ../src/workflows/workflow_RHELKerneloops.xml.in.h:2
+#: ../src/workflows/workflow_RHELPython.xml.in.h:2
+#: ../src/workflows/workflow_RHELvmcore.xml.in.h:2
+#: ../src/workflows/workflow_RHELxorg.xml.in.h:2
+#: ../src/workflows/workflow_RHELLibreport.xml.in.h:2
 #: ../src/workflows/workflow_RHELJava.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
-msgid "Process the Java exception using the Red Hat infrastructure"
+msgid ""
+"Create new Red Hat Support case - I would like to be contacted by Red Hat "
+"Support"
 msgstr ""
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
@@ -3087,3 +3139,31 @@ msgstr ""
 #: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:1
 msgid "Report to Red Hat Bugzilla"
 msgstr "Red Hat బగ్‌జిల్లాకు నివేదించుము"
+
+#: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
+msgid "Process the C/C++ crash using the Red Hat infrastructure"
+msgstr "Red Hat ఇన్ఫ్రాస్ట్రక్చర్ ఉపయోగించి C/C++ క్రాష్ ప్రోసెస్ చేయి"
+
+#: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:2
+msgid "Process the kerneloops using the Red Hat infrastructure"
+msgstr "Red Hat ఇన్ఫ్రాస్ట్రక్చర్ ఉపయోగించి kerneloops ప్రోసెస్ చేయి"
+
+#: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:2
+msgid "Process the python exception using the Red Hat infrastructure"
+msgstr "Red Hat ఇన్ఫ్రాస్ట్రక్చర్ ఉపయోగించి పైథాన్ ఆక్షేపణను ప్రోసెస్ చేయి"
+
+#: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:2
+msgid "Process the kernel crash using the Red Hat infrastructure"
+msgstr "Red Hat ఇన్ఫ్రాస్ట్రక్చర్ ఉపయోగించి కెర్నల్ క్రాష్ ప్రోసెస్ చేయి"
+
+#: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:2
+msgid "Process the X Server problem using the Red Hat infrastructure"
+msgstr "Red Hat ఇన్ఫ్రాస్ట్రక్చర్ ఉపయోగించి X సేవిక సమస్యను ప్రోసెస్ చేయుము"
+
+#: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:2
+msgid "Process the problem using the Red Hat infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
+msgid "Process the Java exception using the Red Hat infrastructure"
+msgstr ""

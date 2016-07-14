@@ -13,21 +13,22 @@
 # simonyanix <simonyan@fedoraproject.org>, 2012
 # Tommy He <lovenemesis@gmail.com>, 2012-2014
 # Wei Liu <LLIU@REDHAT.COM>, 2011, 2012
+# Leah Liu <lliu@redhat.com>, 2016. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-11 11:20+0100\n"
+"POT-Creation-Date: 2016-07-14 10:26+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-10-06 07:45-0400\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"PO-Revision-Date: 2016-03-06 09:02-0500\n"
+"Last-Translator: Leah Liu <lliu@redhat.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/"
 "libreport/language/zh_CN/)\n"
 "Language: zh-CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Zanata 3.8.2\n"
+"X-Generator: Zanata 3.8.4\n"
 
 #: ../src/cli/cli.c:63
 msgid ""
@@ -194,7 +195,7 @@ msgstr "从 {0} 中提取 cpio"
 #: ../src/client-python/reportclient/debuginfo.py:105
 #, python-brace-format
 msgid "Can't write to '{0}': {1}"
-msgstr "无法写入 '{0}'：{1}"
+msgstr "无法写入 '{0}': {1}"
 
 #: ../src/client-python/reportclient/debuginfo.py:116
 #, python-brace-format
@@ -209,7 +210,7 @@ msgstr "从 {0} 缓存来自 {1} 的文件"
 #: ../src/client-python/reportclient/debuginfo.py:148
 #, python-brace-format
 msgid "Can't extract files from '{0}'. For more information see '{1}'"
-msgstr ""
+msgstr "无法从 '{0}' 中提取文件。详情请查看 '{1}'"
 
 #: ../src/client-python/reportclient/debuginfo.py:163
 #, python-brace-format
@@ -224,7 +225,7 @@ msgstr "下载（{1} 中的 {0}）{2}：{3:3}%"
 
 #: ../src/client-python/reportclient/debuginfo.py:312
 msgid "Initializing package manager"
-msgstr ""
+msgstr "初始化软件包管理器"
 
 #. if verbose == 0:
 #. # this suppress yum messages about setting up repositories
@@ -232,7 +233,7 @@ msgstr ""
 #. This takes some time, let user know what we are doing
 #: ../src/client-python/reportclient/debuginfo.py:319
 msgid "Setting up repositories"
-msgstr ""
+msgstr "设置程序库"
 
 #. if verbose == 0:
 #. # re-enable the output to stdout
@@ -290,7 +291,7 @@ msgstr "提取失败，中断下载......"
 msgid ""
 "'{0}' must be owned by abrt. Please run '# chown -R abrt.abrt {0}' to fix "
 "the issue."
-msgstr ""
+msgstr "'{0}' 必须为 abrt 拥有。请运行 '# chown -R abrt.abrt {0}' 解决这个问题。"
 
 #. Was: "All downloaded packages have been extracted, removing..."
 #. but it was appearing even if no packages were in fact extracted
@@ -303,15 +304,15 @@ msgstr "正在删除 {0}"
 #: ../src/client-python/reportclient/debuginfo.py:413
 #, python-brace-format
 msgid "Can't remove {0}, probably contains an error log"
-msgstr ""
+msgstr "无法删除 {0}，可能包含错误记录。"
 
 #: ../src/client-python/reportclient/dnfdebuginfo.py:80
 msgid "Error reading repository configuration: '{0!s}'"
-msgstr ""
+msgstr "读取程序库配置出错：'{0!s}'"
 
 #: ../src/client-python/reportclient/dnfdebuginfo.py:97
 msgid "Error setting up repositories: '{0!s}'"
-msgstr ""
+msgstr "设置程序库出错：'{0!s}'"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:66
 msgid ""
@@ -397,7 +398,7 @@ msgstr "事件"
 msgid "C_onfigure"
 msgstr "配置（_O）"
 
-#: ../src/gtk-helpers/config_dialog.c:375 ../src/gui-wizard-gtk/wizard.c:3510
+#: ../src/gtk-helpers/config_dialog.c:375 ../src/gui-wizard-gtk/wizard.c:3687
 msgid "_Close"
 msgstr "关闭（_C）"
 
@@ -411,7 +412,7 @@ msgstr "不要保存密码"
 
 #: ../src/gtk-helpers/event_config_dialog.c:285
 msgid "Basic"
-msgstr ""
+msgstr "基本"
 
 #: ../src/gtk-helpers/event_config_dialog.c:293
 msgid "Advanced"
@@ -423,7 +424,7 @@ msgstr "保密服务不可用，您的设置将不会被保存！"
 
 #: ../src/gtk-helpers/event_config_dialog.c:349
 #: ../src/gtk-helpers/workflow_config_dialog.c:94
-#: ../src/gui-wizard-gtk/wizard.c:777 ../src/gui-wizard-gtk/wizard.c:3131
+#: ../src/gui-wizard-gtk/wizard.c:784 ../src/gui-wizard-gtk/wizard.c:3287
 msgid "_Cancel"
 msgstr "取消（_C）"
 
@@ -473,23 +474,23 @@ msgstr "无法获得 '%s' 的保密值: %s"
 #: ../src/gtk-helpers/problem_details_widget.c:191
 #, c-format
 msgid "$DATA_DIRECTORY/%s (binary file, %s)"
-msgstr ""
+msgstr "$DATA_DIRECTORY/%s（二进制文件，%s）"
 
 #: ../src/gtk-helpers/problem_details_dialog.c:30
 msgid "Problem details"
-msgstr ""
+msgstr "问题详情"
 
 #: ../src/gtk-helpers/problem_details_dialog.c:33
 msgid "OK"
-msgstr ""
+msgstr "确定"
 
 #: ../src/gui-wizard-gtk/main.c:107
 msgid "Preferences"
-msgstr ""
+msgstr "首选项"
 
 #: ../src/gui-wizard-gtk/main.c:110
 msgid "Quit"
-msgstr ""
+msgstr "退出"
 
 #: ../src/gui-wizard-gtk/main.c:154
 msgid ""
@@ -504,60 +505,77 @@ msgstr "& [-vpdx] [-e 事件]... [-g GUI 文件] 问题目录\n"
 msgid "Alternate GUI file"
 msgstr "备用 GUI 文件"
 
-#: ../src/gui-wizard-gtk/wizard.c:373
+#: ../src/gui-wizard-gtk/wizard.c:380
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved data?"
 msgstr "需要可写入的目录，但 '%s' 不是可写入目录。将其移动到 '%s'，并在移动后的数据中进行操作。"
 
-#: ../src/gui-wizard-gtk/wizard.c:768
+#: ../src/gui-wizard-gtk/wizard.c:775
 msgid "View/edit a text file"
 msgstr "查看/编辑文本文件"
 
-#: ../src/gui-wizard-gtk/wizard.c:776
+#: ../src/gui-wizard-gtk/wizard.c:783
 msgid "_Save"
 msgstr "保存（_S）"
 
-#: ../src/gui-wizard-gtk/wizard.c:998
+#: ../src/gui-wizard-gtk/wizard.c:1005
 msgid ""
 "No reporting targets are defined for this problem. Check configuration in /"
 "etc/libreport/*"
 msgstr "尚未给此类问题指定报告目的地。检查位于 /etc/libreport/* 中的配置文件"
 
-#: ../src/gui-wizard-gtk/wizard.c:1040
+#: ../src/gui-wizard-gtk/wizard.c:1047
 #, c-format
 msgid "(requires: %s)"
 msgstr "(需要: %s)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1054
+#: ../src/gui-wizard-gtk/wizard.c:1061
 #, c-format
 msgid "(not needed, data already exist: %s)"
 msgstr "(不必要，数据已经存在: %s)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1244
+#: ../src/gui-wizard-gtk/wizard.c:1160
+msgid ""
+"Since crashes without a known reproducer can be difficult to diagnose, "
+"please provide a comprehensive description of the problem you have "
+"encountered."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1167
+msgid ""
+"Please provide a short description of the problem and please include the "
+"steps you have used to reproduce the problem."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1174
+msgid "Please provide the steps you have used to reproduce the problem."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1296
 msgid "(click here to view/edit)"
 msgstr "（点击这里查看/编辑）"
 
-#: ../src/gui-wizard-gtk/wizard.c:1255
+#: ../src/gui-wizard-gtk/wizard.c:1307
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "（二进制文件，%llu字节）"
 
-#: ../src/gui-wizard-gtk/wizard.c:1366 ../src/report-newt/report-newt.c:334
+#: ../src/gui-wizard-gtk/wizard.c:1418 ../src/report-newt/report-newt.c:334
 msgid "(no description)"
 msgstr "（没有说明）"
 
-#: ../src/gui-wizard-gtk/wizard.c:1374
+#: ../src/gui-wizard-gtk/wizard.c:1426
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu字节，%u个文件"
 
-#: ../src/gui-wizard-gtk/wizard.c:1619
+#: ../src/gui-wizard-gtk/wizard.c:1704
 msgid "Processing was canceled"
 msgstr "处理被取消"
 
-#: ../src/gui-wizard-gtk/wizard.c:1830
+#: ../src/gui-wizard-gtk/wizard.c:1915
 msgid ""
 "Processing of the problem failed. This can have many reasons but there are "
 "three most common:\n"
@@ -565,16 +583,21 @@ msgid ""
 "\t▫ <b>corrupted problem data</b>\n"
 "\t▫ <b>invalid configuration</b>"
 msgstr ""
+"处理该问题失败。原因可能有很多种，但最常见的是以下三种情况：\n"
+"\t▫ <b>网络连接问题</b>\n"
+"\t▫ <b>问题数据受损</b>\n"
+"\t▫ <b>无效配置</b>"
 
-#: ../src/gui-wizard-gtk/wizard.c:1839
+#: ../src/gui-wizard-gtk/wizard.c:1924
 msgid ""
 "If you want to update the configuration and try to report again, please open "
 "<b>Preferences</b> item\n"
 "in the application menu and after applying the configuration changes click "
 "<b>Repeat</b> button."
-msgstr ""
+msgstr "如果要更新配置并尝试再次报告问题，请打开应用程序菜单中的 <b>首选项</b>，\n"
+"并在应用配置更改后，点击 <b>重新报告</b> 按钮。"
 
-#: ../src/gui-wizard-gtk/wizard.c:1845
+#: ../src/gui-wizard-gtk/wizard.c:1930
 msgid ""
 "If you are sure that this problem is not caused by network problems neither "
 "by invalid configuration\n"
@@ -585,49 +608,58 @@ msgid ""
 "passwords. The uploaded data are stored in a protected storage and only a "
 "limited number of persons can read them.</i>"
 msgstr ""
+"如果您确定这个问题既不是由网络问题造成，也不是由无效配置造成，\n"
+"并愿意帮助我们解决这个问题，请点击上传按钮提供问题数据供深入分析。\n"
+"<i>进行此操作前，请考虑安全风险。问题数据中可能包含敏感信息，比如\n"
+"密码。上传的数据将保存在受保护存储栈，且仅可由有限的人员读取。</i>"
 
-#: ../src/gui-wizard-gtk/wizard.c:1964
+#: ../src/gui-wizard-gtk/wizard.c:2055
 msgid "Processing was interrupted because the problem is not reportable."
 msgstr "由于该问题不可被汇报，处理已中止"
 
-#: ../src/gui-wizard-gtk/wizard.c:1974 ../src/gui-wizard-gtk/wizard.c:2045
+#: ../src/gui-wizard-gtk/wizard.c:2065 ../src/gui-wizard-gtk/wizard.c:2136
 msgid "Processing failed."
 msgstr "处理失败。"
 
 #. No next event, go to progress page and finish
-#: ../src/gui-wizard-gtk/wizard.c:1981 ../src/gui-wizard-gtk/wizard.c:2855
+#: ../src/gui-wizard-gtk/wizard.c:2072 ../src/gui-wizard-gtk/wizard.c:3009
 msgid "Processing finished."
 msgstr "处理结束。"
 
-#: ../src/gui-wizard-gtk/wizard.c:1982
+#: ../src/gui-wizard-gtk/wizard.c:2073
 msgid "Processing finished, please proceed to the next step."
 msgstr "处理结束，请前往下一步骤。"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:2042
+#: ../src/gui-wizard-gtk/wizard.c:2133
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "没有定义针对事件 `%s' 的处理"
 
-#: ../src/gui-wizard-gtk/wizard.c:2056
+#: ../src/gui-wizard-gtk/wizard.c:2147
 msgid "Processing interrupted: can't continue without writable directory."
 msgstr "处理被中断: 目录不可写入，无法继续。"
 
-#: ../src/gui-wizard-gtk/wizard.c:2093
+#: ../src/gui-wizard-gtk/wizard.c:2184
 msgid "Processing..."
 msgstr "处理中……"
 
-#: ../src/gui-wizard-gtk/wizard.c:2179
+#: ../src/gui-wizard-gtk/wizard.c:2270
 msgid ""
 "Possible sensitive data detected, feel free to edit the report and remove "
 "them."
-msgstr ""
+msgstr "探测到可能的敏感数据，请根据需要编辑该报告并将其删除。"
 
-#: ../src/gui-wizard-gtk/wizard.c:2219
+#: ../src/gui-wizard-gtk/wizard.c:2310
 msgid "Cannot check backtrace rating because of invalid event name"
 msgstr "由于无效的事件名，无法检查回溯评级"
 
-#: ../src/gui-wizard-gtk/wizard.c:2875
+#: ../src/gui-wizard-gtk/wizard.c:2847
+#, c-format
+msgid "Failed to save file '%s'"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:3029
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
@@ -635,107 +667,119 @@ msgid ""
 msgstr "事件 '%s' 请求允许发布可能包含敏感数据的文件。\n"
 "您想要继续吗？"
 
-#: ../src/gui-wizard-gtk/wizard.c:2923
+#: ../src/gui-wizard-gtk/wizard.c:3077
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
 msgstr "该问题可能不应该汇报 (很有可能为已知问题)。%s"
 
-#: ../src/gui-wizard-gtk/wizard.c:3132
+#: ../src/gui-wizard-gtk/wizard.c:3288
 msgid "_Open"
 msgstr "打开（_O）"
 
-#: ../src/gui-wizard-gtk/wizard.c:3154
+#: ../src/gui-wizard-gtk/wizard.c:3310
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' 不是普通文件"
 
-#: ../src/gui-wizard-gtk/wizard.c:3168
+#: ../src/gui-wizard-gtk/wizard.c:3324
 msgid "You are trying to copy a file onto itself"
 msgstr "您正在将文件复制到它本身"
 
-#: ../src/gui-wizard-gtk/wizard.c:3175
+#: ../src/gui-wizard-gtk/wizard.c:3331
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "无法复制 '%s'：%s"
 
-#: ../src/gui-wizard-gtk/wizard.c:3190
+#: ../src/gui-wizard-gtk/wizard.c:3346
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "项目 '%s' 已存在且不可修改"
 
-#: ../src/gui-wizard-gtk/wizard.c:3352
+#: ../src/gui-wizard-gtk/wizard.c:3510
+msgid "I have experienced this problem for the first time"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:3513
+msgid "I can reproduce this problem"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:3516
+msgid "This problem occurs repeatedly"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:3529
 msgid "Include"
 msgstr "包括"
 
-#: ../src/gui-wizard-gtk/wizard.c:3363
+#: ../src/gui-wizard-gtk/wizard.c:3540
 msgid "Name"
 msgstr "名称"
 
-#: ../src/gui-wizard-gtk/wizard.c:3373
+#: ../src/gui-wizard-gtk/wizard.c:3550
 msgid "Value"
 msgstr "值"
 
-#: ../src/gui-wizard-gtk/wizard.c:3407
+#: ../src/gui-wizard-gtk/wizard.c:3584
 msgid "Problem description"
 msgstr "问题描述"
 
-#: ../src/gui-wizard-gtk/wizard.c:3408
+#: ../src/gui-wizard-gtk/wizard.c:3585
 msgid "Select how to report this problem"
 msgstr "选择如何汇报此问题"
 
-#: ../src/gui-wizard-gtk/wizard.c:3409
+#: ../src/gui-wizard-gtk/wizard.c:3586
 msgid "Provide additional information"
 msgstr "提供附加信息"
 
-#: ../src/gui-wizard-gtk/wizard.c:3410
+#: ../src/gui-wizard-gtk/wizard.c:3587
 msgid "Review the data"
 msgstr "审核数据"
 
-#: ../src/gui-wizard-gtk/wizard.c:3411
+#: ../src/gui-wizard-gtk/wizard.c:3588
 msgid "Confirm data to report"
 msgstr "确认要上传的汇报数据"
 
-#: ../src/gui-wizard-gtk/wizard.c:3412
+#: ../src/gui-wizard-gtk/wizard.c:3589
 msgid "Processing"
 msgstr "处理中"
 
-#: ../src/gui-wizard-gtk/wizard.c:3413
+#: ../src/gui-wizard-gtk/wizard.c:3590
 msgid "Processing done"
 msgstr "处理完成"
 
-#: ../src/gui-wizard-gtk/wizard.c:3512
+#: ../src/gui-wizard-gtk/wizard.c:3689
 msgid "_Stop"
 msgstr "停止（_S）"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3515
+#: ../src/gui-wizard-gtk/wizard.c:3692
 msgid "Upload for analysis"
 msgstr "上传并分析"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3518
+#: ../src/gui-wizard-gtk/wizard.c:3695
 msgid "Repeat"
-msgstr ""
+msgstr "重新报告"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3520
+#: ../src/gui-wizard-gtk/wizard.c:3697
 msgid "_Forward"
 msgstr "转发（_F）"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3523 ../src/gui-wizard-gtk/wizard.glade.h:10
+#: ../src/gui-wizard-gtk/wizard.c:3700 ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid "Details"
 msgstr "详情"
 
-#: ../src/gui-wizard-gtk/wizard.c:3588
+#: ../src/gui-wizard-gtk/wizard.c:3765
 msgid "Restrict access to the report"
 msgstr "限制报告访问"
 
-#: ../src/gui-wizard-gtk/wizard.c:3593
+#: ../src/gui-wizard-gtk/wizard.c:3770
 msgid "Learn more about restricted access in the configuration"
-msgstr ""
+msgstr "了解更多有关配置中限制访问的信息"
 
-#: ../src/gui-wizard-gtk/wizard.c:3655
+#: ../src/gui-wizard-gtk/wizard.c:3833
 msgid ""
 "In order to enable the built-in screencasting functionality the package fros-"
 "recordmydesktop has to be installed. Please run the following command if you "
@@ -743,6 +787,9 @@ msgid ""
 "\n"
 "<b>su -c \"yum install fros-recordmydesktop\"</b>"
 msgstr ""
+"要启用内置截屏视频功能，则必须安装软件包 fros-recordmydesktop。如果要安装该软件包，请运行以下命令：\n"
+"\n"
+"<b>su -c \"yum install fros-recordmydesktop\"</b>"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
 msgid ""
@@ -758,27 +805,27 @@ msgstr "请在报告前检查数据。取决于选择的报告程序，内容可
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid "Sensitive words"
-msgstr ""
+msgstr "敏感词"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid "Custom"
-msgstr ""
+msgstr "自定义"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid "Clear the search bar to see the list of security sensitive words."
-msgstr ""
+msgstr "清空搜索栏查看安全性敏感词列表。"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "file"
-msgstr ""
+msgstr "文件"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "data"
-msgstr ""
+msgstr "数据"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "Search"
-msgstr ""
+msgstr "搜索"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid ""
@@ -796,73 +843,87 @@ msgid ""
 msgstr "这个问题是如何发生的（具体步骤）？怎样才可以复制？是否有其他可帮助诊断该问题的附加注释？请尽量使用英语。"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
+msgid "How reproducible is this problem?"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:13
+msgid "How it can be reproduced (one step per line)?"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:14
+msgid ""
+"Please add a comprehensive description of the problem you have. This is a "
+"very long place holder."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid "You need to fill the how to before you can proceed..."
 msgstr "执行前您需要填写如何进行......"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:13
+#: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
 msgstr "<b>您的注释不是保密的。</b>会将其包含在公开的问题报告中。"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:14
-msgid "If you don't know how to describe it, you can"
-msgstr "如果您不知道如何描述，您可以"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:15
-msgid "add a screencast"
-msgstr "添加屏幕录像"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:16
+#: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "I don't know what caused this problem"
 msgstr "我不知道造成这个问题的原因"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:17
+#: ../src/gui-wizard-gtk/wizard.glade.h:18
+msgid "If you don't know how to describe it, you can"
+msgstr "如果您不知道如何描述，您可以"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:19
+msgid "add a screencast"
+msgstr "添加屏幕录像"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:20
 msgid "Size:"
 msgstr "大小："
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:18
+#: ../src/gui-wizard-gtk/wizard.glade.h:21
 msgid "Attach a file"
 msgstr "附加文件"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:19
+#: ../src/gui-wizard-gtk/wizard.glade.h:22
 msgid "I reviewed the data and _agree with submitting it"
 msgstr "我已经检查了数据并且同意提交（_A）"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:20
+#: ../src/gui-wizard-gtk/wizard.glade.h:23
 msgid ""
 "If you are reporting to a remote server, make sure you removed all private "
 "data (such as usernames and passwords). Backtrace, command line, environment "
 "variables are the typical items in need of examining."
 msgstr "如果您是要向远程服务器报告，请确定删除所有私人数据（不如用户名和密码）。Backtrace、命令行、环境变量是检查所需的常规项目。"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:21
+#: ../src/gui-wizard-gtk/wizard.glade.h:24
 msgid "Processing did not start yet"
 msgstr "处理尚未开始"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:22
+#: ../src/gui-wizard-gtk/wizard.glade.h:25
 msgid "Show log"
 msgstr "显示日志"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:23
+#: ../src/gui-wizard-gtk/wizard.glade.h:26
 msgid "Reporting has finished. You can close this window now."
 msgstr "汇报已完成，您现在可以关闭这个窗口了。"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:24
+#: ../src/gui-wizard-gtk/wizard.glade.h:27
 msgid ""
 "If you want to report the problem to a different destination, collect "
 "additional information, or provide a better problem description and repeat "
 "reporting process, press 'Forward'."
 msgstr "如果您要向不同的地点报告这个问题、收集附加信息或者更好地描述这个问题并重复报告过程，请按“前进”。"
 
-#: ../src/include/internal_libreport.h:1175
+#: ../src/include/internal_libreport.h:1182
 msgid "Be verbose"
 msgstr "详细输出"
 
-#: ../src/include/internal_libreport.h:1176
+#: ../src/include/internal_libreport.h:1183
 #: ../src/plugins/reporter-bugzilla.c:295
-#: ../src/plugins/reporter-kerneloops.c:166 ../src/plugins/reporter-mailx.c:204
-#: ../src/plugins/reporter-print.c:56 ../src/plugins/reporter-rhtsupport.c:491
+#: ../src/plugins/reporter-kerneloops.c:166 ../src/plugins/reporter-mailx.c:279
+#: ../src/plugins/reporter-print.c:56 ../src/plugins/reporter-rhtsupport.c:510
 #: ../src/plugins/reporter-upload.c:186 ../src/plugins/reporter-mantisbt.c:283
 msgid "Problem directory"
 msgstr "问题目录"
@@ -903,7 +964,7 @@ msgstr "f"
 
 #: ../src/lib/client.c:147
 msgid "e"
-msgstr ""
+msgstr "e"
 
 #: ../src/lib/create_dump_dir.c:32
 #, c-format
@@ -913,7 +974,7 @@ msgstr "UID 值无效: '%s'"
 #: ../src/lib/create_dump_dir.c:51
 #, c-format
 msgid "'%s' is not correct file name"
-msgstr ""
+msgstr "'%s' 不是正确文件名"
 
 #: ../src/lib/create_dump_dir.c:189
 #, c-format
@@ -926,7 +987,7 @@ msgid "Uploaded: %llu of %llu kbytes"
 msgstr "上传的：%llu kb 中的 %llu"
 
 #: ../src/lib/curl.c:636
-msgid "Ingoring URL without scheme and hostname"
+msgid "Ignoring URL without scheme and hostname"
 msgstr ""
 
 #. Do not include the path part of the URL as it can contain sensitive data
@@ -934,49 +995,49 @@ msgstr ""
 #: ../src/lib/curl.c:666
 #, c-format
 msgid "Sending %s to %s//%s"
-msgstr ""
+msgstr "正在将 %s 发送至 %s//%s"
 
 #: ../src/lib/curl.c:690
 #, c-format
 msgid "Please enter user name for '%s//%s':"
-msgstr ""
+msgstr "请为 '%s//%s' 输入用户名称："
 
 #: ../src/lib/curl.c:696
 #, c-format
 msgid "Please enter password for '%s//%s@%s':"
-msgstr ""
+msgstr "请为 '%s//%s@%s' 输入密码："
 
 #. This ends up a "reporting status message" in abrtd
 #: ../src/lib/curl.c:719
 #, c-format
 msgid "Successfully created %s"
-msgstr ""
+msgstr "成功创建 %s"
 
-#: ../src/lib/dump_dir.c:2350
+#: ../src/lib/dump_dir.c:2400
 msgid "Failed to open TAR writer"
-msgstr ""
+msgstr "打开 TAR 写入程序失败"
 
-#: ../src/lib/dump_dir.c:2376
+#: ../src/lib/dump_dir.c:2426
 msgid "Failed to finalize TAR archive"
-msgstr ""
+msgstr "完成 TAR 归档失败"
 
-#: ../src/lib/dump_dir.c:2386
+#: ../src/lib/dump_dir.c:2436
 msgid "Failed to close TAR writer"
-msgstr ""
+msgstr "关闭 TAR 写入程序失败"
 
-#: ../src/lib/dump_dir.c:2396
+#: ../src/lib/dump_dir.c:2446
 #, c-format
 msgid "gzip killed with signal %d"
-msgstr ""
+msgstr "使用信号 %d 杀死 gzip"
 
-#: ../src/lib/dump_dir.c:2402
+#: ../src/lib/dump_dir.c:2452
 #, c-format
 msgid "gzip exited with %d"
-msgstr ""
+msgstr "以 %d 退出的 gzip"
 
-#: ../src/lib/dump_dir.c:2405
+#: ../src/lib/dump_dir.c:2455
 msgid "gzip process failed"
-msgstr ""
+msgstr "gzip 进程失败"
 
 #: ../src/lib/event_config.c:382
 msgid "Missing mandatory value"
@@ -1040,17 +1101,17 @@ msgstr "可能丢失了正确的出错信息或者内核转储被污染。"
 #: ../src/lib/iso_date_string.c:50
 #, c-format
 msgid "String doesn't seem to be a date: '%s'"
-msgstr ""
+msgstr "字符串好像不是一个日期：'%s'"
 
 #: ../src/lib/iso_date_string.c:55
 #, c-format
 msgid "The date: '%s' has unrecognized suffix: '%s'"
-msgstr ""
+msgstr "日期：'%s' 包含无法识别的后缀：'%s'"
 
 #: ../src/lib/iso_date_string.c:60
 #, c-format
 msgid "The date: '%s' is out of UNIX time stamp range"
-msgstr ""
+msgstr "日期：'%s' 在 UNIX 时间戳范围以外"
 
 #: ../src/lib/ureport.c:393
 #, c-format
@@ -1073,12 +1134,12 @@ msgstr "无法使用 curl 上传 uReport 至服务器 '%s'：%s"
 #: ../src/lib/ureport.c:572
 #, c-format
 msgid "Failed to upload uReport to the server '%s'"
-msgstr ""
+msgstr "将 uReport 上传到服务器 '%s' 失败"
 
 #: ../src/lib/ureport.c:575
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "错误：%s"
 
 #: ../src/lib/ureport.c:582
 #, c-format
@@ -1118,7 +1179,7 @@ msgstr "来自 '%s' 的响应包含无效格式"
 msgid "Type mismatch has been detected in the response from '%s'"
 msgstr "在从 '%s' 得到的响应中检测到类型不匹配"
 
-#: ../src/lib/ureport.c:818 ../src/plugins/reporter-rhtsupport.c:214
+#: ../src/lib/ureport.c:818 ../src/plugins/reporter-rhtsupport.c:233
 msgid "Failed on submitting the problem"
 msgstr "提交问题失败"
 
@@ -1133,7 +1194,7 @@ msgstr "已报告："
 
 #: ../src/lib/make_descr.c:149
 msgid "cannot be reported"
-msgstr ""
+msgstr "无法报告"
 
 #: ../src/lib/parse_options.c:63
 msgid "Usage: "
@@ -1144,31 +1205,31 @@ msgstr "用法："
 msgid "Essential element '%s' is missing, can't continue"
 msgstr "缺少重要元素 '%s'，无法继续。"
 
-#: ../src/lib/problem_report.c:477
+#: ../src/lib/problem_report.c:478
 #, c-format
 msgid "Can't parse backtrace: %s"
 msgstr "无法解析回溯：%s"
 
-#: ../src/lib/problem_report.c:488
+#: ../src/lib/problem_report.c:489
 msgid "Can't generate stacktrace description (no crash thread?)"
 msgstr "无法生成堆栈跟踪描述 (没有崩溃线程？)"
 
 #: ../src/lib/reported_to.c:52
 msgid "Report result label mustn't be empty string."
-msgstr ""
+msgstr "报告结果标签不得为空白字符串。"
 
 #: ../src/lib/reported_to.c:58
 msgid "Report result label mustn't contain ':' character."
-msgstr ""
+msgstr "报告结果标签不得包含 ':' 字符。"
 
 #: ../src/lib/reported_to.c:141
 #, c-format
 msgid "Ignored invalid ISO date of report result '%s'"
-msgstr ""
+msgstr "忽略报告结果 '%s' 的无效 ISO 日期"
 
 #: ../src/lib/reporters.c:55
 msgid "Note does not contain rating"
-msgstr ""
+msgstr "备注中不包含分级"
 
 #: ../src/lib/run_event.c:876
 #, c-format
@@ -1263,6 +1324,7 @@ msgid "Bugzilla account password"
 msgstr "Bugzilla 账户密码"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:8
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:8
 msgid "Restrict access"
 msgstr "访问限制"
 
@@ -1294,14 +1356,14 @@ msgstr "Bugzilla 服务器地址"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:14
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:12
-#: ../src/plugins/report_RHTSupport.xml.in.h:7
+#: ../src/plugins/report_RHTSupport.xml.in.h:11
 #: ../src/plugins/report_uReport.xml.in.h:9
 msgid "Verify SSL"
 msgstr "确认 SSL"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:15
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:13
-#: ../src/plugins/report_RHTSupport.xml.in.h:8
+#: ../src/plugins/report_RHTSupport.xml.in.h:12
 #: ../src/plugins/report_uReport.xml.in.h:10
 msgid "Check SSL key validity"
 msgstr "查看 SSL 密钥是否可用"
@@ -1403,16 +1465,16 @@ msgid ""
 msgstr "警告，已在命令行参数指定私有标签组，忽略环境变量和配置"
 
 #: ../src/plugins/reporter-bugzilla.c:173
-#: ../src/plugins/reporter-rhtsupport.c:358
+#: ../src/plugins/reporter-rhtsupport.c:377
 #: ../src/plugins/reporter-mantisbt.c:55
 msgid "Can't continue without login"
 msgstr "需要登录名才可继续"
 
 #: ../src/plugins/reporter-bugzilla.c:186
-#: ../src/plugins/reporter-rhtsupport.c:371
+#: ../src/plugins/reporter-rhtsupport.c:390
 #: ../src/plugins/reporter-mantisbt.c:70
 msgid "Can't continue without password"
-msgstr "需要密码才可继续"
+msgstr "没有密码则无法继续"
 
 #: ../src/plugins/reporter-bugzilla.c:195
 #, c-format
@@ -1421,10 +1483,10 @@ msgstr "在 %s 登录到 Bugzilla"
 
 #: ../src/plugins/reporter-bugzilla.c:199
 msgid "Invalid password or login. Please enter your Bugzilla login:"
-msgstr ""
+msgstr "无效密码或登录。请输入您的 Bugzilla 登录："
 
 #: ../src/plugins/reporter-bugzilla.c:202
-#: ../src/plugins/reporter-rhtsupport.c:385
+#: ../src/plugins/reporter-rhtsupport.c:404
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
 msgstr "无效的密码或登录名。请输入 '%s' 的密码:"
@@ -1473,9 +1535,49 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"\n"
+"& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d "
+"DIR\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... [-d DIR] -t[ID] -w\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... -h DUPHASH [-p[PRODUCT]]\n"
+"\n"
+"向 Bugzilla 报告问题。\n"
+"\n"
+"这个工具读取 DIR。然后它会登录到 Bugzilla，并尝试找到在 'Whiteboard' 中有同一 abrt_hash:HEXSTRING in "
+"'Whiteboard' 的 bug。\n"
+"\n"
+"如果没有找到这样的 bug，则会创建一个新 bug。 DIR 的元素\n"
+"是保存在 bug 中作为 bug 描述的一部分或附件，\n"
+"具体要看其类型和大小。\n"
+"\n"
+"反之，如果找到这样的 bug，则将其标记为 CLOSED DUPLICATE，\n"
+"该工具会沿着重复链查找，知道发现 non-DUPLICATE bug。\n"
+"在该工具中为找到的 bug 添加一条新注释。\n"
+"\n"
+"会在标准输出中显示新的或修改的 bug 的 URL，并建起记录在 \n"
+"'reported_to' element 中。\n"
+"\n"
+"选项 -t 会将 FILEs 上传到 Bugzilla 网站中已创建的 bug 中。\n"
+"根据 -d DIR 指定的目录检索 bug ID。\n"
+"若从未在 Bugzilla 中报告 DIR 中的问题数据，则上传会失败。\n"
+"\n"
+"选项 -tID 将 FILEs 上传到 Bugzilla 网站中指定 ID 的 bug 中。\n"
+"忽略 -d DIR。\n"
+"\n"
+"选项 -w 会在 bug 的 CC 列表中添加 bugzilla 用户。\n"
+"\n"
+"选项 -r 在 URL 字段设定 reporter_to 元素的最后一个 url ，该 url 的前缀\n"
+"为 TRACKER_NAME。这个选项只有在提交新 bug 时\n"
+"方可使用。默认值为 'ABRT Server'。\n"
+"\n"
+"若未指定，则 CONFFILE 默认为"
 
 #: ../src/plugins/reporter-bugzilla.c:296
-#: ../src/plugins/reporter-rhtsupport.c:492
+#: ../src/plugins/reporter-rhtsupport.c:511
 #: ../src/plugins/reporter-mantisbt.c:284
 msgid "Configuration file (may be given many times)"
 msgstr "配置文件（可在任意时间给出）"
@@ -1499,7 +1601,7 @@ msgid "When creating bug, attach binary files too"
 msgstr "生成 Bug 时也请附加二进制文件"
 
 #: ../src/plugins/reporter-bugzilla.c:301
-#: ../src/plugins/reporter-rhtsupport.c:494
+#: ../src/plugins/reporter-rhtsupport.c:513
 #: ../src/plugins/reporter-mantisbt.c:288
 msgid "Force reporting even if this problem is already reported"
 msgstr "即使已经报告过该问题依然强行报告"
@@ -1515,7 +1617,7 @@ msgstr "打印具备 DUPHASH 的 BUG_ID"
 
 #: ../src/plugins/reporter-bugzilla.c:304
 msgid "Specify a Bugzilla product (ignored without -h)"
-msgstr ""
+msgstr "指定 Bugzilla 产品（忽略没有 -h 的产品）"
 
 #: ../src/plugins/reporter-bugzilla.c:305
 #: ../src/plugins/reporter-mantisbt.c:290
@@ -1526,8 +1628,8 @@ msgstr "''reported_to'中附加 URL 所指 Bug 跟踪系统的名字"
 msgid "Restrict access to this group only"
 msgstr "仅限此组访问"
 
-#: ../src/plugins/reporter-bugzilla.c:307
-#: ../src/plugins/reporter-rhtsupport.c:498
+#: ../src/plugins/reporter-bugzilla.c:307 ../src/plugins/reporter-mailx.c:283
+#: ../src/plugins/reporter-rhtsupport.c:517
 #: ../src/plugins/reporter-mantisbt.c:292
 msgid "Debug"
 msgstr "除错"
@@ -1538,24 +1640,24 @@ msgstr "正在 Bugzilla 中寻找类似问题"
 
 #: ../src/plugins/reporter-bugzilla.c:380
 msgid "Failed to get 'REDHAT_BUGZILLA_PRODUCT' from '/etc/os-release'."
-msgstr ""
+msgstr "从 '/etc/os-release' 获取 'REDHAT_BUGZILLA_PRODUCT 失败。"
 
 #: ../src/plugins/reporter-bugzilla.c:383
 msgid "Failed to read '/etc/os-release' to get Bugzilla product."
-msgstr ""
+msgstr "读取 '/etc/os-release' 获取 Bugzilla 产品失败。"
 
 #: ../src/plugins/reporter-bugzilla.c:394
 #, c-format
 msgid "Using default product '%s'"
-msgstr ""
+msgstr "使用默认产品 '%s'"
 
 #: ../src/plugins/reporter-bugzilla.c:417
 msgid ""
 "Login is not provided by configuration. Please enter your Bugzilla login:"
-msgstr ""
+msgstr "配置未提供登录。请输入您的 Bugzilla 登录："
 
 #: ../src/plugins/reporter-bugzilla.c:423
-#: ../src/plugins/reporter-rhtsupport.c:532
+#: ../src/plugins/reporter-rhtsupport.c:551
 #, c-format
 msgid ""
 "Password is not provided by configuration. Please enter the password for "
@@ -1610,6 +1712,9 @@ msgid ""
 "report and close it as DUPLICATE of the original one? Otherwise, the bug "
 "reporting procedure will be terminated."
 msgstr ""
+"您要求只能由具体组访问您的数据，且这个 bug 是 bug  %s/%u 的重复。如果出现 bug 重复，可在最初的 bug "
+"报告中添加一条新注释，但那些注释仅限具体组可以访问。您是否要新建一个 bug 报告并将最初的那个报告作为 DUPLICATE 关闭。否则会终止 bug "
+"报告过程。"
 
 #. Create new bug
 #: ../src/plugins/reporter-bugzilla.c:696
@@ -1623,7 +1728,7 @@ msgstr "创建新 Bug 失败。"
 #: ../src/plugins/reporter-bugzilla.c:731
 #, c-format
 msgid "Adding extra cc %s to bug report"
-msgstr ""
+msgstr "在 bug 报告中添加额外 cc %s"
 
 #: ../src/plugins/reporter-bugzilla.c:740
 #, c-format
@@ -1638,7 +1743,7 @@ msgstr "在 Bug %i 中添加附件"
 #: ../src/plugins/reporter-bugzilla.c:768
 #, c-format
 msgid "Closing bug %i as duplicate of bug %i"
-msgstr ""
+msgstr "将 bug %i 作为 bug %i 的重复 bug 关闭"
 
 #: ../src/plugins/reporter-bugzilla.c:780
 #: ../src/plugins/reporter-mantisbt.c:597
@@ -1704,56 +1809,55 @@ msgstr ""
 msgid "Configuration file"
 msgstr "配置文件"
 
-#: ../src/plugins/reporter-mailx.c:59
+#: ../src/plugins/reporter-mailx.c:83
 #, c-format
 msgid ""
 "Email address of %s was not specified. Would you like to do so now? If not, "
 "'%s' is to be used"
 msgstr "未指定 %s 的电子邮箱。您想要现在制定吗？如果不，将使用 '%s'"
 
-#: ../src/plugins/reporter-mailx.c:66
+#: ../src/plugins/reporter-mailx.c:90
 #, c-format
 msgid "Please, type email address of %s:"
 msgstr "请输入 %s 的电子邮箱："
 
-#: ../src/plugins/reporter-mailx.c:73
+#: ../src/plugins/reporter-mailx.c:97
 #, c-format
 msgid "Can't continue without email address of %s"
 msgstr "需要 %s 的电子邮箱才可继续"
 
-#: ../src/plugins/reporter-mailx.c:136
+#: ../src/plugins/reporter-mailx.c:207
 #, c-format
 msgid "Sending a notification email to: %s"
-msgstr ""
+msgstr "正在发送通知邮件至：%s"
 
-#: ../src/plugins/reporter-mailx.c:138
+#: ../src/plugins/reporter-mailx.c:209
 msgid "Sending an email..."
 msgstr "发送电子邮件......"
 
-#: ../src/plugins/reporter-mailx.c:162
+#: ../src/plugins/reporter-mailx.c:234
 #, c-format
 msgid "Email was sent to: %s"
 msgstr "已发送电子邮件至：%s"
 
-#: ../src/plugins/reporter-mailx.c:184
+#: ../src/plugins/reporter-mailx.c:257
 msgid ""
-"& [-v] -d DIR [-c CONFFILE]\n"
+"& [-v] -d DIR [-c CONFFILE] [-F FMTFILE]\n"
 "\n"
 "Sends contents of a problem directory DIR via email\n"
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
-"& [-v] -d DIR [-c CONFFILE]\n"
-"\n"
-"使用电子邮件发送问题目录 DIR 中的内容\n"
-"\n"
-"如未指定，则 CONFFILE 默认为"
 
-#: ../src/plugins/reporter-mailx.c:205 ../src/plugins/reporter-upload.c:187
+#: ../src/plugins/reporter-mailx.c:280 ../src/plugins/reporter-upload.c:187
 msgid "Config file"
 msgstr "配置文件"
 
-#: ../src/plugins/reporter-mailx.c:206
+#: ../src/plugins/reporter-mailx.c:281
+msgid "Formatting file for an email"
+msgstr ""
+
+#: ../src/plugins/reporter-mailx.c:282
 msgid "Notify only (Do not mark the report as sent)"
 msgstr "仅通知(不将报告标记为已发送)"
 
@@ -1797,21 +1901,21 @@ msgstr "报告已被附加至 %s"
 msgid "The report was stored to %s"
 msgstr "报告已被保存至 %s"
 
-#: ../src/plugins/reporter-rhtsupport.c:275
+#: ../src/plugins/reporter-rhtsupport.c:294
 #: ../src/plugins/reporter-ureport.c:321
 #, c-format
 msgid "Server responded with an error: '%s'"
 msgstr "服务响应错误：'%s'"
 
-#: ../src/plugins/reporter-rhtsupport.c:335
+#: ../src/plugins/reporter-rhtsupport.c:354
 msgid "Do you still want to create a RHTSupport ticket?"
 msgstr "您还想生成 RHT 支持 ticket 吗？"
 
-#: ../src/plugins/reporter-rhtsupport.c:383
+#: ../src/plugins/reporter-rhtsupport.c:402
 msgid "Invalid password or login. Please enter your Red Hat login:"
-msgstr ""
+msgstr "无效密码或登录。请输入您的 Red Hat 登录："
 
-#: ../src/plugins/reporter-rhtsupport.c:452
+#: ../src/plugins/reporter-rhtsupport.c:471
 msgid ""
 "\n"
 "& [-v] [-c CONFFILE] [-F FMTFILE] -d DIR\n"
@@ -1822,85 +1926,114 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"\n"
+"& [-v] [-c CONFFILE] [-F FMTFILE] -d DIR\n"
+"or:\n"
+"& [-v] [-c CONFFILE] [-d DIR] -t[ID] [-u -C UR_CONFFILE] FILE...\n"
+"\n"
+"向 RHTSupport 报告问题。\n"
+"\n"
+"若未指定，则 CONFFILE 默认为"
 
-#: ../src/plugins/reporter-rhtsupport.c:493
+#: ../src/plugins/reporter-rhtsupport.c:512
 msgid "Upload FILEs [to case with this ID]"
 msgstr "将 FILE 上传【到使用这个 ID 的案例】"
 
-#: ../src/plugins/reporter-rhtsupport.c:495
+#: ../src/plugins/reporter-rhtsupport.c:514
 msgid "Submit uReport before creating a new case"
-msgstr ""
+msgstr "创建新问题单前请提交 uReport。"
 
-#: ../src/plugins/reporter-rhtsupport.c:496
+#: ../src/plugins/reporter-rhtsupport.c:515
 msgid "Configuration file for uReport"
-msgstr ""
+msgstr "uReport 的配置文件"
 
-#: ../src/plugins/reporter-rhtsupport.c:497
+#: ../src/plugins/reporter-rhtsupport.c:516
 msgid "Formatting file for a new case"
-msgstr ""
+msgstr "将文件格式化为新问题单"
 
-#: ../src/plugins/reporter-rhtsupport.c:526
+#: ../src/plugins/reporter-rhtsupport.c:545
 msgid "Login is not provided by configuration. Please enter your RHTS login:"
 msgstr "配置中未提供登录信息。请输入您的 RHTS 登录名:"
 
-#: ../src/plugins/reporter-rhtsupport.c:595
+#: ../src/plugins/reporter-rhtsupport.c:614
 #, c-format
 msgid "Attaching '%s' to case '%s'"
 msgstr "在案例 '%s' 中附加 '%s'"
 
-#: ../src/plugins/reporter-rhtsupport.c:632
+#: ../src/plugins/reporter-rhtsupport.c:651
 msgid "Sending ABRT crash statistics data"
-msgstr ""
+msgstr "正在发送 ABRT 崩溃统计数据"
 
-#: ../src/plugins/reporter-rhtsupport.c:653
+#: ../src/plugins/reporter-rhtsupport.c:672
 msgid "Can't create a temporary directory in "
 msgstr "无法创建临时目录于"
+
+#: ../src/plugins/reporter-rhtsupport.c:697
+msgid ""
+"The problem has only occurred once and the ability to reproduce the problem "
+"is unknown. Please ensure you will be able to provide detailed information "
+"to our Support Team. Would you like to continue and open a new support case?"
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:710
+#, c-format
+msgid ""
+"The crashed program was released by '%s'. Would you like to report the "
+"problem to Red Hat Support?"
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:728
+#, c-format
+msgid ""
+"The program '%s' does not appear to be provided by Red Hat. Would you like "
+"to report the problem to Red Hat Support?"
+msgstr ""
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing
 #. error msg is already logged by dd_opendir
 #. Compressing e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../src/plugins/reporter-rhtsupport.c:722
+#: ../src/plugins/reporter-rhtsupport.c:792
 #: ../src/plugins/reporter-upload.c:103
 msgid "Compressing data"
 msgstr "压缩数据"
 
-#: ../src/plugins/reporter-rhtsupport.c:726
+#: ../src/plugins/reporter-rhtsupport.c:800
 msgid "Can't create temporary file in "
 msgstr "无法创建临时文件于"
 
 #. Check for hints and show them if we have something
-#: ../src/plugins/reporter-rhtsupport.c:737
+#: ../src/plugins/reporter-rhtsupport.c:811
 msgid "Checking for hints"
 msgstr "检查是否有提示"
 
-#: ../src/plugins/reporter-rhtsupport.c:747
+#: ../src/plugins/reporter-rhtsupport.c:821
 msgid "Creating a new case"
 msgstr "创建一个新个案"
 
 #. How can we help user sorting out this problem?
-#: ../src/plugins/reporter-rhtsupport.c:758
+#: ../src/plugins/reporter-rhtsupport.c:832
 msgid "Can't determine RH Support Product from problem data."
-msgstr "无法从问题数据中确定红帽支持产品。"
+msgstr "无法从问题数据中确定 Red Hat 支持产品。"
 
-#: ../src/plugins/reporter-rhtsupport.c:814
+#: ../src/plugins/reporter-rhtsupport.c:888
 msgid "Linking ABRT crash statistics record with the case"
-msgstr ""
+msgstr "将 ABRT 崩溃统计记录与该问题单关联"
 
-#: ../src/plugins/reporter-rhtsupport.c:827
+#: ../src/plugins/reporter-rhtsupport.c:901
 #, c-format
 msgid "Linking ABRT crash statistics record with contact email: '%s'"
-msgstr ""
+msgstr "将 ABRT 崩溃统计记录与联系电子邮件关联：'%s'"
 
-#: ../src/plugins/reporter-rhtsupport.c:851
+#: ../src/plugins/reporter-rhtsupport.c:925
 #, c-format
 msgid "Adding comment to case '%s'"
 msgstr "添加评论至个案 '%s'"
 
 #. Attach the tarball of -d DIR
-#: ../src/plugins/reporter-rhtsupport.c:869
+#: ../src/plugins/reporter-rhtsupport.c:943
 #, c-format
 msgid "Attaching problem data to case '%s'"
-msgstr "添加问题数据至个案 '%s'"
+msgstr "添加问题数据至问题单 '%s'"
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:202
 msgid "Documentation which might be relevant: "
@@ -1919,7 +2052,7 @@ msgstr "需要 URL 才可继续"
 #. may work somehow???
 #: ../src/plugins/reporter-upload.c:51
 msgid "Please enter password for uploading:"
-msgstr ""
+msgstr "请输入密码以便上传："
 
 #. success
 #: ../src/plugins/reporter-upload.c:120
@@ -1934,6 +2067,10 @@ msgid ""
 "Uploads compressed tarball of problem directory DIR to URL.\n"
 "If URL is not specified, creates tarball in "
 msgstr ""
+"& [-v] -d DIR [-c CONFFILE] [-u URL] [-b FILE] [-r FILE]\n"
+"\n"
+"将问题目录的压缩 tarball 问卷上传到 URL。\n"
+"若未指定 URL，则请创建 tarball 于 "
 
 #: ../src/plugins/reporter-upload.c:188
 msgid "Base URL to upload to"
@@ -1941,33 +2078,33 @@ msgstr "要上传的基本 URL"
 
 #: ../src/plugins/reporter-upload.c:189
 msgid "SSH public key file"
-msgstr ""
+msgstr "SSH 公钥文件"
 
 #: ../src/plugins/reporter-upload.c:190
 msgid "SSH private key file"
-msgstr ""
+msgstr "SSH 私钥文件"
 
 #: ../src/plugins/reporter-upload.c:219
 msgid ""
 "Please enter a URL (scp, ftp, etc.) where the problem data is to be exported:"
 ""
-msgstr ""
+msgstr "请输入要导出问题数据的 URL（scp、ftp 等等）："
 
 #: ../src/plugins/reporter-mantisbt.c:82
 msgid "Please enter your MantisBT login:"
-msgstr ""
+msgstr "请输入您的 MantisBT 登录："
 
 #: ../src/plugins/reporter-mantisbt.c:86
 msgid "Please enter the password for"
-msgstr ""
+msgstr "请输入密码"
 
 #: ../src/plugins/reporter-mantisbt.c:97
 msgid "Credentials are not provided by configuration."
-msgstr ""
+msgstr "配置中未提供证书。"
 
 #: ../src/plugins/reporter-mantisbt.c:121
 msgid "Invalid password or login."
-msgstr ""
+msgstr "无效密码或登录。"
 
 #: ../src/plugins/reporter-mantisbt.c:213
 msgid ""
@@ -2011,104 +2148,141 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"\n"
+"& [-vf] [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... [-d DIR] -t[ID] -w\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... -h DUPHASH\n"
+"\n"
+"向 MantisBT 报告问题。\n"
+"\n"
+"该工具读取目录，之后尝试在自定义字段 'abrt_hash' 中查找\n"
+"包含相同  abrt_hash 的问题。\n"
+"\n"
+"如果这样的问题没有找到，那么将创建一个新的。目录中的\n"
+"元素将依据它们的类型和大小，分别做为问题描述或\n"
+"附件保存。\n"
+"\n"
+"否则，如果找到相同的问题并且被标识为 CLOSED DUPLICATE。\n"
+"该工具会查询重复记录链条直到找到一个non-DUPLICATE 问题为止。\n"
+"然后会在找到的问题中添加一条新注释。\n"
+"\n"
+"指向新创建或者修改的问题的 URL 将会打印至标准输出并保存到\n"
+"'reported_to' 元素中。\n"
+"\n"
+"选项 -t 上传指定文件到在 MantisBT 网站上已经存在的问题中。\n"
+"通过选项 -d DiR 在指定的目录中检索问题 ID。\n"
+"如果包含在指定目录中的问题数据从未报告至 MantisBT，上传会失败。\n"
+"\n"
+"选项 -tID 将文件上传到 MantisBT 网站中指定 ID 的问题中。\n"
+"选项 -d DIR 会被忽略。\n"
+"\n"
+"选项 -r 在 URL 字段中设定 reporter_to 元素的最后一个 url，\n"
+"该 url 使用 TRACKER_NAME 为前缀的。 该选项仅在提交一个新问题时使用。\n"
+"默认值为 'ABRT Server'\n"
+"\n"
+"如果未指定，CONFFILE 默认为"
 
 #: ../src/plugins/reporter-mantisbt.c:287
 msgid "Attach FILEs [to issue with this ID]"
-msgstr ""
+msgstr "添加 FILE [至使用这个 ID 的问题]"
 
 #: ../src/plugins/reporter-mantisbt.c:320
 #, c-format
 msgid "Can't open problem dir '%s'."
-msgstr ""
+msgstr "无法打开问题 dir '%s'。"
 
 #: ../src/plugins/reporter-mantisbt.c:342
 msgid "Looking for similar problems in MantisBT"
-msgstr ""
+msgstr "在 MantisBT 中查找类似问题"
 
 #: ../src/plugins/reporter-mantisbt.c:370
 msgid ""
 "Can't get MantisBT ID because this problem has not yet been reported to "
 "MantisBT."
-msgstr ""
+msgstr "无法取得 MantisBT ID 因为该问题尚未汇报至 MantisBT。"
 
 #: ../src/plugins/reporter-mantisbt.c:377
 #, c-format
 msgid ""
 "This problem has been reported to MantisBT '%s' which differs from the "
 "configured MantisBT '%s'."
-msgstr ""
+msgstr "该问题已经汇报至 MantisBT '%s' ，但与配置的 MantisBT '%s' 不同。"
 
 #: ../src/plugins/reporter-mantisbt.c:381
 #, c-format
 msgid "Malformed url to MantisBT '%s'."
-msgstr ""
+msgstr "MantisBT '%s' 中的畸形 url。"
 
 #: ../src/plugins/reporter-mantisbt.c:385
 #, c-format
 msgid "Using MantisBT ID '%s'"
-msgstr ""
+msgstr "使用 MantisBT ID '%s'"
 
 #: ../src/plugins/reporter-mantisbt.c:393
 #, c-format
 msgid "Attaching file '%s' to issue %s"
-msgstr ""
+msgstr "将文件 '%s' 附加到问题 %s 中"
 
 #: ../src/plugins/reporter-mantisbt.c:412
 #, c-format
 msgid ""
 "This problem was already reported to MantisBT (see '%s'). Do you still want "
 "to create a new issue?"
-msgstr ""
+msgstr "该问题已汇报至 MantisBT（请查看 '%s'）。还要生成新问题吗？"
 
 #. Create new issue
 #: ../src/plugins/reporter-mantisbt.c:527
 msgid "Creating a new issue"
-msgstr ""
+msgstr "生成新问题"
 
 #: ../src/plugins/reporter-mantisbt.c:532
 #, c-format
 msgid "Invalid format file: %s"
-msgstr ""
+msgstr "无效格式文件：%s"
 
 #: ../src/plugins/reporter-mantisbt.c:536
 msgid "Failed to format problem data"
-msgstr ""
+msgstr "格式化问题数据失败"
 
 #: ../src/plugins/reporter-mantisbt.c:555
 msgid "Adding External URL to issue"
-msgstr ""
+msgstr "在问题中添加外部　URL"
 
 #: ../src/plugins/reporter-mantisbt.c:568
 #, c-format
 msgid "Adding attachments to issue %i"
-msgstr ""
+msgstr "在问题 %i 中添加附件"
 
 #: ../src/plugins/reporter-mantisbt.c:623
 #, c-format
 msgid "Invalid duplicate format file: '%s"
-msgstr ""
+msgstr "无效重复格式文件：'%s"
 
 #: ../src/plugins/reporter-mantisbt.c:627
 msgid "Failed to format duplicate comment from problem data"
-msgstr ""
+msgstr "为问题数据格式和重复注释失败"
 
 #: ../src/plugins/reporter-mantisbt.c:634
 #, c-format
 msgid "Adding new comment to issue %d"
-msgstr ""
+msgstr "在问题 %d 中添加新注释"
 
 #: ../src/plugins/reporter-mantisbt.c:670
 msgid "Found the same comment in the issue history, not adding a new one"
-msgstr ""
+msgstr "在该问题历史记录中找到相同的注释，不要再添加新的注释。"
 
 #: ../src/plugins/reporter-mantisbt.c:677
 #, c-format
 msgid "Status: %s%s%s %s/view.php?id=%u"
-msgstr ""
+msgstr "状态：%s%s%s %s/view.php?id=%u"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:1
 msgid "CentOS Bug Tracker"
-msgstr ""
+msgstr "CentOS Bug 跟踪系统"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:2
 #: ../src/workflows/workflow_CentOSCCpp.xml.in.h:1
@@ -2120,58 +2294,56 @@ msgstr ""
 #: ../src/workflows/workflow_CentOSVmcore.xml.in.h:1
 #: ../src/workflows/workflow_CentOSXorg.xml.in.h:1
 msgid "Report to CentOS Bug Tracker"
-msgstr ""
+msgstr "向 CentOS Bug 跟踪系统报告"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:4
 msgid "CentOS Bug Tracker account user name"
-msgstr ""
+msgstr "CentOS Bug 跟踪系统帐户用户名"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:5
 msgid ""
 "You can create bugs.centos.org account &lt;a href=\"https://bugs.centos.org/"
 "signup_page.php\"&gt;here&lt;/a&gt;"
 msgstr ""
+"可创建 bugs.centos.org 帐户 &lt;a href=\"https://bugs.centos.org/signup_page."
+"php\"&gt;here&lt;/a&gt;"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:7
 msgid "CentOS Bug Tracker account password"
-msgstr ""
-
-#: ../src/plugins/report_CentOSBugTracker.xml.in.h:8
-msgid "Restric access"
-msgstr ""
+msgstr "CentOS Bug 跟踪系统帐户密码"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:9
 msgid ""
-"The issue will be accessible only to users with access to 'Pivate Issues'"
+"The issue will be accessible only to users with access to 'Private Issues'"
 msgstr ""
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:10
 msgid "CentOS Bug Tracker URL"
-msgstr ""
+msgstr "CentOS Bug 跟踪系统 URL"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:11
 msgid "Address of CentOS Bug Tracker server"
-msgstr ""
+msgstr "CentOS Bug 跟踪系统服务器地址"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:14
 msgid "CentOS Bug Tracker project"
-msgstr ""
+msgstr "CentOS Bug 跟踪系统项目"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:15
 msgid ""
 "Specify this only if you needed different project than specified in /etc/os-"
 "release"
-msgstr ""
+msgstr "只有在需要 /etc/os-release 中指定项目以外的项目时才指定此字段"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:16
 msgid "CentOS Bug Tracker project version"
-msgstr ""
+msgstr "CentOS Bug 跟踪系统项目版本"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:17
 msgid ""
 "Specify this only if you needed different project version than specified in /"
 "etc/os-release"
-msgstr ""
+msgstr "只有在需要 /etc/os-release 中所指定项目版本以外的版本时才指定此字段"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
 msgid "Kerneloops.org"
@@ -2255,11 +2427,11 @@ msgstr "发送类似内核转储的二进制文件"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:1
 msgid "Red Hat Customer Support"
-msgstr "红帽客户支持"
+msgstr "Red Hat 客户支持"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:2
 msgid "Report to Red Hat support"
-msgstr "汇报至红帽全球支持"
+msgstr "汇报至 Red Hat 全球支持"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:3
 msgid "Username"
@@ -2267,33 +2439,35 @@ msgstr "用户名"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:4
 msgid "Red Hat customer user name"
-msgstr "红帽客户用户名"
+msgstr "Red Hat 客户用户名"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:6
 msgid "Red Hat customer password"
-msgstr "红帽客户密码"
+msgstr "Red Hat 客户密码"
 
-#: ../src/plugins/report_RHTSupport.xml.in.h:9
+#: ../src/plugins/report_RHTSupport.xml.in.h:7
 msgid "Submit uReport"
-msgstr ""
+msgstr "提交 uReport"
 
-#: ../src/plugins/report_RHTSupport.xml.in.h:10
+#: ../src/plugins/report_RHTSupport.xml.in.h:8
 msgid ""
 "Submit &lt;a href=\"https://access.redhat.com/articles/642323\"&gt;micro-"
 "report&lt;/a&gt; when creating a new case."
 msgstr ""
+"生成新问题单时才提交 &lt;a href=\"https://access.redhat.com/articles/642323\"&gt;micro-"
+"report&lt;/a&gt;。"
 
-#: ../src/plugins/report_RHTSupport.xml.in.h:11
+#: ../src/plugins/report_RHTSupport.xml.in.h:9
 msgid "RH Portal URL"
-msgstr "红帽门户网站 URL"
+msgstr "RH 门户网站 URL"
 
-#: ../src/plugins/report_RHTSupport.xml.in.h:12
+#: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Address of the Red Hat support portal"
-msgstr "红帽支持门户网站地址"
+msgstr "Red Hat 支持门户网站地址"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report Uploader"
-msgstr ""
+msgstr "Report 上传工具"
 
 #: ../src/plugins/report_Uploader.xml.in.h:2
 msgid "Upload as tar.gz file (via FTP/SCP/...)"
@@ -2320,11 +2494,11 @@ msgstr ""
 
 #: ../src/plugins/report_Uploader.xml.in.h:7
 msgid "Use this field if you do not want to have user name in URL"
-msgstr ""
+msgstr "如果不想要在 URL 中出现用户名称则请使用这个字段"
 
 #: ../src/plugins/report_Uploader.xml.in.h:9
 msgid "Use this field if you do not want to have password in URL"
-msgstr ""
+msgstr "如果不想要在 URL 中出现密码则请使用这个字段"
 
 #: ../src/plugins/report_Uploader.xml.in.h:14
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:8
@@ -2338,19 +2512,19 @@ msgstr "设定用于 FTP 的代理服务器"
 
 #: ../src/plugins/report_Uploader.xml.in.h:16
 msgid "SSH Public key file"
-msgstr ""
+msgstr "SSH 公钥文件"
 
 #: ../src/plugins/report_Uploader.xml.in.h:17
 msgid "Use this field to specify SSH public keyfile"
-msgstr ""
+msgstr "使用这个字段指定 SSH 公钥文件"
 
 #: ../src/plugins/report_Uploader.xml.in.h:18
 msgid "SSH Private key file"
-msgstr ""
+msgstr "SSH 私钥文件"
 
 #: ../src/plugins/report_Uploader.xml.in.h:19
 msgid "Use this field to specify SSH private keyfile"
-msgstr ""
+msgstr "使用这个字段指定 SSH 私钥文件"
 
 #: ../src/plugins/report_uReport.xml.in.h:1
 msgid "uReport"
@@ -2378,13 +2552,13 @@ msgstr "添加您的 Bugzilla 账户到已经汇报 Bug 的抄送列表。"
 
 #: ../src/plugins/report_uReport.xml.in.h:7
 msgid "Contact email address"
-msgstr ""
+msgstr "联系人电子邮件地址"
 
 #: ../src/plugins/report_uReport.xml.in.h:8
 msgid ""
 "Email address that can be used by ABRT server to inform you about news and "
 "updates"
-msgstr ""
+msgstr "ABRT 服务器用来向您发送新闻和更新的电子邮件地址"
 
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:1
 msgid "Emergency analysis"
@@ -2443,191 +2617,191 @@ msgstr "Bug.search(quicksearch) 返回值未包含成员 'bugs'"
 #: ../src/plugins/mantisbt.c:123
 #, c-format
 msgid "MantisBT couldn't find parent of issue %d"
-msgstr ""
+msgstr "Bugzilla 无法找到问题 %d 的上级问题"
 
 #: ../src/plugins/mantisbt.c:178
 msgid "SOAP: Failed to get child element because of no parent."
-msgstr ""
+msgstr "SOAP：获取下级元素失败，因为没有上级元素。"
 
 #: ../src/plugins/mantisbt.c:187
 msgid "SOAP: Failed to get next element because of no node."
-msgstr ""
+msgstr "SOAP：获取下一个元素失败，因为没有节点。"
 
 #: ../src/plugins/mantisbt.c:196
 msgid "SOAP: Failed to get child node because of no parent."
-msgstr ""
+msgstr "SOAP：获取下级节点失败，因为没有上级节点。"
 
 #: ../src/plugins/mantisbt.c:217
 msgid "SOAP: Failed to parse xml during creating request."
-msgstr ""
+msgstr "SOAP：生成请求的过程中解析 xml 失败。"
 
 #: ../src/plugins/mantisbt.c:225
 msgid "SOAP: Failed to get xml root element."
-msgstr ""
+msgstr "SOAP：获取 xml root 元素失败。"
 
 #: ../src/plugins/mantisbt.c:238
 msgid ""
 "SOAP: Failed to add a new child node because of no node or no child name."
-msgstr ""
+msgstr "SOAP：添加新下级节点失败，因为没有节点或下级节点名称。"
 
 #: ../src/plugins/mantisbt.c:243
 msgid "SOAP: Failed to create a new xml child item."
-msgstr ""
+msgstr "SOAP：创建新 xml 下级项目失败。"
 
 #: ../src/plugins/mantisbt.c:248
 msgid "SOAP: Failed to create a new property."
-msgstr ""
+msgstr "SOAP：创建新属性失败。"
 
 #: ../src/plugins/mantisbt.c:258
 msgid "SOAP: Failed to add method parametr."
-msgstr ""
+msgstr "SOAP：添加新方法参数失败。"
 
 #: ../src/plugins/mantisbt.c:287
 msgid "SOAP: Failed to add new issue parametrs."
-msgstr ""
+msgstr "SOAP：添加新问题参数失败。"
 
 #: ../src/plugins/mantisbt.c:290
 msgid ""
 "SOAP: Failed to add new issue parameters because the required items are "
 "missing."
-msgstr ""
+msgstr "SOAP：添加新问题参数失败，因为缺少所需项目。"
 
 #: ../src/plugins/mantisbt.c:334
 msgid "SOAP: Failed to create a new property in custom fields."
-msgstr ""
+msgstr "SOAP：在自定义字段中创建新属性失败。"
 
 #: ../src/plugins/mantisbt.c:352
 msgid ""
 "SOAP: Failed to create SOAP string because of invalid function arguments."
-msgstr ""
+msgstr "SOAP：创建新 SOAP 字符串失败，因为有无效功能参数。"
 
 #: ../src/plugins/mantisbt.c:359
 msgid "SOAP: Failed to dump xml node."
-msgstr ""
+msgstr "SOAP：转储 xml 节点失败。"
 
 #: ../src/plugins/mantisbt.c:373
 msgid "SOAP: Failed to print SOAP string."
-msgstr ""
+msgstr "SOAP：输出 SOAP 字符串失败。"
 
 #: ../src/plugins/mantisbt.c:380
 msgid "Failed to dump xml node."
-msgstr ""
+msgstr "转储 xml 节点失败。"
 
 #: ../src/plugins/mantisbt.c:456
 msgid "SOAP: Failed to parse xml (searching value at depth by name)."
-msgstr ""
+msgstr "SOAP：解析 xml 失败（根据名称搜索深度值）"
 
 #: ../src/plugins/mantisbt.c:460 ../src/plugins/mantisbt.c:503
 #: ../src/plugins/mantisbt.c:532
 msgid "SOAP: Failed to create xml text reader."
-msgstr ""
+msgstr "SOAP：创建 xml 文本阅读器失败。"
 
 #: ../src/plugins/mantisbt.c:499
 msgid "SOAP: Failed to parse xml."
-msgstr ""
+msgstr "SOAP：解析 xml 失败。"
 
 #: ../src/plugins/mantisbt.c:528
 msgid "SOAP: Failed to parse xml (get related to issue)."
-msgstr ""
+msgstr "SOAP：解析 xml 失败（与问题关联）。"
 
 #: ../src/plugins/mantisbt.c:645
 msgid "Url or request isn't specified."
-msgstr ""
+msgstr "未指定 url 或请求。"
 
 #: ../src/plugins/mantisbt.c:673
 #, c-format
 msgid "Error in HTTP POST, HTTP code: 404 (Not found), URL:'%s'"
-msgstr ""
+msgstr "HTTP POST 出错，HTTP 代码：404 (Not found)，URL:'%s'"
 
 #: ../src/plugins/mantisbt.c:697
 #, c-format
 msgid "Error in MantisBT request at '%s': %s"
-msgstr ""
+msgstr " '%s' 中的 MantisBT 请求出错：%s"
 
 #: ../src/plugins/mantisbt.c:699
 #, c-format
 msgid "Error in MantisBT request at '%s'"
-msgstr ""
+msgstr " '%s' 中的 MantisBT 请求出错"
 
 #: ../src/plugins/mantisbt.c:741
 #, c-format
 msgid "Failed to attach file: '%s'"
-msgstr ""
+msgstr "附加文件失败：'%s'"
 
 #: ../src/plugins/mantisbt.c:760
 #, c-format
 msgid "Can't lseek '%s'"
-msgstr ""
+msgstr "无法定位 '%s'"
 
 #: ../src/plugins/mantisbt.c:766
 #, c-format
 msgid "Can't upload '%s', it's too large (%llu bytes)"
-msgstr ""
+msgstr "无法上传 '%s'，它太大（%llu 字节）"
 
 #: ../src/plugins/mantisbt.c:776
 #, c-format
 msgid "Can't read '%s'"
-msgstr ""
+msgstr "无法读取 '%s'"
 
 #: ../src/plugins/mantisbt.c:792
 #, c-format
 msgid "Can't open '%s'"
-msgstr ""
+msgstr "无法打开 '%s'"
 
 #: ../src/plugins/mantisbt.c:859
 #, c-format
 msgid "Failed to search MantisBT issue by duphash: '%s'"
-msgstr ""
+msgstr "根据 duphash 搜索 MantisBT 问题失败：'%s'"
 
 #: ../src/plugins/mantisbt.c:903
 #, c-format
 msgid "Failed to search MantisBT duplicate issue: '%s'"
-msgstr ""
+msgstr "搜索 MantisBT 重复问题失败：'%s'"
 
 #: ../src/plugins/mantisbt.c:930
 #, c-format
 msgid ""
 "MantisBT doesn't contain custom field '%s', which is required for full "
 "functionality of the reporter. Do you still want to create a new issue?"
-msgstr ""
+msgstr "MantisBT 不包含自定义字段 '%s'，必须有该字段报告程序方可实现全部功能。还要继续生成新问题吗？"
 
 #: ../src/plugins/mantisbt.c:954
 #, c-format
 msgid "Failed to get custom fields for '%s' project"
-msgstr ""
+msgstr "为 '%s' 项目获取自定义字段失败"
 
 #: ../src/plugins/mantisbt.c:998
 #, c-format
 msgid "Failed to create a new issue: '%s'"
-msgstr ""
+msgstr "生成新问题 '%s' 失败"
 
 #: ../src/plugins/mantisbt.c:1024
 #, c-format
 msgid "Failed to get MantisBT issue: '%s'"
-msgstr ""
+msgstr "获取 MantisBT 问题 '%s' 失败"
 
 #: ../src/plugins/mantisbt.c:1038
 #, c-format
 msgid "Issue %i is CLOSED, but it has no RESOLUTION"
-msgstr ""
+msgstr "问题 %i 已关闭，但并未提供解决方案。"
 
 #: ../src/plugins/mantisbt.c:1046
 #, c-format
 msgid "Issue %i is CLOSED as DUPLICATE, but it has no DUPLICATE_ID"
-msgstr ""
+msgstr "问题 %i 已作为重复问题关闭，但没有 DUPLICATE_ID。"
 
 #: ../src/plugins/mantisbt.c:1083
 #, c-format
 msgid "Failed to add MantisBT issue note: '%s'"
-msgstr ""
+msgstr "添加 MantisBT 问题注释失败：'%s'"
 
 #: ../src/plugins/mantisbt.c:1097
 msgid "The MantisBT project has not been deretmined."
-msgstr ""
+msgstr "尚未确定 MantisBT 项目。"
 
 #: ../src/plugins/mantisbt.c:1106
 msgid "Failed to get project id from name"
-msgstr ""
+msgstr "从名称中获取项目 id 失败"
 
 #: ../src/plugins/reporter-ureport.c:75
 msgid "Specify server URL"
@@ -2643,11 +2817,11 @@ msgstr "使用用户认证"
 
 #: ../src/plugins/reporter-ureport.c:79
 msgid "Use HTTP Authentication"
-msgstr ""
+msgstr "使用 HTTP 认证"
 
 #: ../src/plugins/reporter-ureport.c:80
 msgid "Additional files included in 'auth' key"
-msgstr ""
+msgstr "'auth' 密钥中包含的附加文件"
 
 #: ../src/plugins/reporter-ureport.c:83
 msgid "bthash of uReport to attach (conflicts with -A)"
@@ -2678,31 +2852,31 @@ msgstr "从 reported_to 附加最新 RHBZ 问题 (需要 -a|-A，与 -b 冲突)"
 
 #: ../src/plugins/reporter-ureport.c:95
 msgid "attach short text (requires -a|-A, conflicts with -D)"
-msgstr ""
+msgstr "附上短文本 （需要 -a|-A，与 -D 冲突）"
 
 #: ../src/plugins/reporter-ureport.c:97
 msgid "attach short text from comment (requires -a|-A, conflicts with -d)"
-msgstr ""
+msgstr "在注释中附上短文本 （需要 -a|-A，与 -d 冲突）"
 
 #: ../src/plugins/reporter-ureport.c:101
 msgid "attach value (requires -a|-A and -T, conflicts with -L)"
-msgstr ""
+msgstr "附上值 （需要 -a|-A 和 -T，与 -L 冲突）"
 
 #: ../src/plugins/reporter-ureport.c:103
 msgid ""
 "attach data of FIELD [URL] of the last report result (requires -a|-A, -r and "
 "-T, conflicts with -l)"
-msgstr ""
+msgstr "在最新报告结果中附上 FIELD [URL] 中的数据（需要 -a|-A、-r 和 -T，与 -l 冲突）"
 
 #: ../src/plugins/reporter-ureport.c:106
 msgid ""
 "use REPORT_RESULT_TYPE when looking for FIELD in reported_to (used only with "
 "-L)"
-msgstr ""
+msgstr "在 reported_to 中查找 FIELD 时使用 REPORT_RESULT_TYPE（仅与 -L 配合使用）"
 
 #: ../src/plugins/reporter-ureport.c:108
 msgid ""
-"attach DATA as ureporte attachment ATTACHMENT_TYPE (used only with -l|-L)"
+"attach DATA as ureport attachment ATTACHMENT_TYPE (used only with -l|-L)"
 msgstr ""
 
 #: ../src/plugins/reporter-ureport.c:113
@@ -2719,6 +2893,17 @@ msgid ""
 "\n"
 "Reads the default configuration from "
 msgstr ""
+"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS]\n"
+"  [-A -a bthash -B -b bug-id -E -e email -O -o comment] [-d DIR]\n"
+"  [-A -a bthash -T ATTACHMENT_TYPE -r REPORT_RESULT_TYPE -L RESULT_FIELD] [-"
+"d DIR]\n"
+"  [-A -a bthash -T ATTACHMENT_TYPE -l DATA] [-d DIR]\n"
+"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-i AUTH_ITEMS] "
+"[-d DIR]\n"
+"\n"
+"上传微报告或者在微报告中添加附件\n"
+"\n"
+"读取默认配置 "
 
 #: ../src/plugins/reporter-ureport.c:188
 msgid "This problem does not have an uReport assigned."
@@ -2740,21 +2925,21 @@ msgstr "无法处理来自 Bugzilla URL '%s' 中的 Bug ID"
 
 #: ../src/plugins/reporter-ureport.c:219
 msgid "Cannot attach comment from 'comment' file"
-msgstr ""
+msgstr "无法添加 'comment' 文件中的注释"
 
 #: ../src/plugins/reporter-ureport.c:221
 msgid "'comment' file is empty"
-msgstr ""
+msgstr "'comment' 文件为空"
 
 #: ../src/plugins/reporter-ureport.c:229
 #, c-format
 msgid "This problem has not been reported to '%s'."
-msgstr ""
+msgstr "已向 '%s' 报告了这个问题。"
 
 #: ../src/plugins/reporter-ureport.c:234
 #, c-format
 msgid "The report result '%s' is missing URL."
-msgstr ""
+msgstr "报告结果 '%s' 缺少 URL。"
 
 #: ../src/plugins/reporter-ureport.c:251
 msgid ""
@@ -2764,11 +2949,11 @@ msgstr "环境变量 'uReport_ContactEmail' 和配置选项 'ContactEmail' 都�
 
 #: ../src/plugins/reporter-ureport.c:257
 msgid "You need to specify bug ID, contact email, comment or all of them"
-msgstr ""
+msgstr "需要指定 bug ID、联络电子邮件、注释或上述全部内容。"
 
 #: ../src/plugins/reporter-ureport.c:287
 msgid "You need to specify bthash of the uReport to attach."
-msgstr "您需要指定要添加的 uReport 的 bthash。"
+msgstr "需要指定要添加的 uReport 的 bthash。"
 
 #: ../src/plugins/reporter-ureport.c:292
 msgid "Not uploading an empty uReport"
@@ -2831,56 +3016,56 @@ msgstr "使用 Fedora 基础架构处理报告"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:1
 msgid "Report a bug to Red Hat Customer Portal"
-msgstr "汇报一个 Bug 至红帽客户门户"
+msgstr "向 Red Hat 客户门户网站报告 bug"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:2
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:2
 msgid "Process the report using the Red Hat infrastructure"
-msgstr "使用红帽基础架构处理报告"
+msgstr "使用 Red Hat 基础架构处理报告"
 
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:1
 msgid "Report a bug to Red Hat Bugzilla"
-msgstr "向红帽 Bugzilla 提交 Bug 报告"
+msgstr "向 Red Hat Bugzilla 提交 Bug 报告"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
 msgid "Export the problem data for manual reporting"
-msgstr ""
+msgstr "从手动报告中导出问题数据"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:2
 msgid "Upload the data via scp or ftp to a remote destination"
-msgstr ""
+msgstr "通过 scp 或 ftp 向远程目标系统上传数据"
 
 #: ../src/workflows/workflow_CentOSCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the CentOS infrastructure"
-msgstr ""
+msgstr "使用 CentOS 基础架构处理 C/C++ 崩溃"
 
 #: ../src/workflows/workflow_CentOSJava.xml.in.h:2
 msgid "Process the Java exception using the CentOS infrastructure"
-msgstr ""
+msgstr "使用 CentOS 基础架构处理 Java 异常"
 
 #: ../src/workflows/workflow_CentOSKerneloops.xml.in.h:2
 msgid "Process the kerneloops using the CentOS infrastructure"
-msgstr ""
+msgstr "使用 CentOS 基础架构处理内核异常（kerneloops）"
 
 #: ../src/workflows/workflow_CentOSLibreport.xml.in.h:2
 msgid "Process the problem using the CentOS infrastructure"
-msgstr ""
+msgstr "使用 CentOS 基础架构处理问题"
 
 #: ../src/workflows/workflow_CentOSPython.xml.in.h:2
 msgid "Process the python exception using the CentOS infrastructure"
-msgstr ""
+msgstr "使用 CentOS 基础架构处理 Python 异常"
 
 #: ../src/workflows/workflow_CentOSPython3.xml.in.h:2
 msgid "Process the python 3 exception using the CentOS infrastructure"
-msgstr ""
+msgstr "使用 CentOS 基础架构处理 Python 3 异常"
 
 #: ../src/workflows/workflow_CentOSVmcore.xml.in.h:2
 msgid "Process the kernel crash using the CentOS infrastructure"
-msgstr ""
+msgstr "使用 CentOS 基础架构处理内核崩溃"
 
 #: ../src/workflows/workflow_CentOSXorg.xml.in.h:2
 msgid "Process the X Server problem using the CentOS infrastructure"
-msgstr ""
+msgstr "使用 CentOS 基础架构处理 X 服务器故障"
 
 #: ../src/workflows/workflow_FedoraCCpp.xml.in.h:1
 #: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:1
@@ -2891,7 +3076,7 @@ msgstr ""
 #: ../src/workflows/workflow_FedoraLibreport.xml.in.h:1
 #: ../src/workflows/workflow_FedoraJava.xml.in.h:1
 msgid "Report to Fedora"
-msgstr "汇报至 Fedora"
+msgstr "向 Fedora 汇报"
 
 #: ../src/workflows/workflow_FedoraCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the Fedora infrastructure"
@@ -2928,24 +3113,24 @@ msgstr "使用 Fedora 基础架构处理 Java 异常"
 #: ../src/workflows/workflow_LoggerCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Logger.xml.in.h:1
 msgid "Export the problem data information to a text file"
-msgstr ""
+msgstr "将问题数据信息导出为文本文件"
 
 #: ../src/workflows/workflow_LoggerCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Logger.xml.in.h:2
 msgid ""
 "Analyze the problem locally and export the problem data information to a "
 "text file"
-msgstr ""
+msgstr "本地分析该问题并将该问题数据信息导出为文本文件"
 
 #: ../src/workflows/workflow_MailxCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Mailx.xml.in.h:1
 msgid "Send the problem data via email"
-msgstr ""
+msgstr "通过电子邮件发送问题数据"
 
 #: ../src/workflows/workflow_MailxCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Mailx.xml.in.h:2
 msgid "Analyze the problem locally and send information via email"
-msgstr ""
+msgstr "在本地分析问题并通过电子邮件发送信息"
 
 #: ../src/workflows/workflow_UploadCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Upload.xml.in.h:1
@@ -2957,6 +3142,16 @@ msgstr "提交问题数据至服务器"
 msgid "Analyze the problem locally and upload the data via scp or ftp"
 msgstr "本地分析问题并通过 scp 或 ftp 上传数据"
 
+#: ../src/workflows/workflow_uReport.xml.in.h:1
+msgid "Submit anonymous crash report"
+msgstr ""
+
+#: ../src/workflows/workflow_uReport.xml.in.h:2
+msgid ""
+"Submit anonymous crash report - I do not want to be contacted by Red Hat "
+"Support"
+msgstr ""
+
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1
 #: ../src/workflows/workflow_RHELPython.xml.in.h:1
@@ -2964,43 +3159,20 @@ msgstr "本地分析问题并通过 scp 或 ftp 上传数据"
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:1
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:1
 #: ../src/workflows/workflow_RHELJava.xml.in.h:1
-msgid "Report to Red Hat Customer Portal"
-msgstr "向客户门户网站提交报告"
+msgid "Ask Red Hat Support for help"
+msgstr ""
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
-msgid "Process the C/C++ crash using the Red Hat infrastructure"
-msgstr "使用红帽基础架构处理 C/C++ 崩溃"
-
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:2
-msgid "Process the kerneloops using the Red Hat infrastructure"
-msgstr "使用红帽基础架构处理内核故障"
-
 #: ../src/workflows/workflow_RHELPython.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:2
-msgid "Process the python exception using the Red Hat infrastructure"
-msgstr "使用红帽基础架构处理 Python 异常"
-
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:2
-msgid "Process the kernel crash using the Red Hat infrastructure"
-msgstr "使用红帽基础架构处理内核崩溃"
-
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:2
-msgid "Process the X Server problem using the Red Hat infrastructure"
-msgstr "使用红帽基础架构处理 X 服务器问题"
-
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:2
-msgid "Process the problem using the Red Hat infrastructure"
-msgstr "使用红帽基础架构处理问题"
-
 #: ../src/workflows/workflow_RHELJava.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
-msgid "Process the Java exception using the Red Hat infrastructure"
-msgstr "使用红帽基础架构处理 Java 异常"
+msgid ""
+"Create new Red Hat Support case - I would like to be contacted by Red Hat "
+"Support"
+msgstr ""
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
@@ -3010,4 +3182,32 @@ msgstr "使用红帽基础架构处理 Java 异常"
 #: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:1
 msgid "Report to Red Hat Bugzilla"
-msgstr "向红帽 Bugzilla 提交报告"
+msgstr "向 Red Hat Bugzilla 提交报告"
+
+#: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
+msgid "Process the C/C++ crash using the Red Hat infrastructure"
+msgstr "使用 Red Hat 基础架构处理 C/C++ 崩溃"
+
+#: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:2
+msgid "Process the kerneloops using the Red Hat infrastructure"
+msgstr "使用 Red Hat 基础架构处理内核故障"
+
+#: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:2
+msgid "Process the python exception using the Red Hat infrastructure"
+msgstr "使用 Red Hat 基础架构处理 Python 异常"
+
+#: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:2
+msgid "Process the kernel crash using the Red Hat infrastructure"
+msgstr "使用 Red Hat 基础架构处理内核崩溃"
+
+#: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:2
+msgid "Process the X Server problem using the Red Hat infrastructure"
+msgstr "使用 Red Hat 基础架构处理 X 服务器问题"
+
+#: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:2
+msgid "Process the problem using the Red Hat infrastructure"
+msgstr "使用 Red Hat 基础架构处理问题"
+
+#: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
+msgid "Process the Java exception using the Red Hat infrastructure"
+msgstr "使用 Red Hat 基础架构处理 Java 异常"
