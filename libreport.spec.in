@@ -775,6 +775,15 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Mon Jul 18 2016 Matej Habrnal <mhabrnal@redhat.com> 2.7.2-1
+- Translation updates
+- wizard: do not create reproducible if complex_detail == no
+- include: save_user_settings function declaration isn’t a prototype
+- Bugzilla: fix typo in comment don -> don't
+- client-python: fix a typo in error check
+- dd: do not log missing uid file when creating new dump dir
+- build: update searched pkg names for systemd
+
 * Wed May 18 2016 Matej Habrnal <mhabrnal@redhat.com> 2.7.1-1
 - spec: compression updates
 - lib: add lz4 decompression
