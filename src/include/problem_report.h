@@ -99,6 +99,12 @@
          - %binary wildcard, valid only for %attach section, instructs to attach
            binary elements
 
+         - %short_backtrace is a reserved element that is replaced with contents
+           of backtrace file truncated to optimal number of frames
+
+         - %reporter is a reserved element that is replaced by name and version
+           of the software that created the report
+
          - problem directory element names prefixed by "-",
            which excludes given element from all wildcards
 
