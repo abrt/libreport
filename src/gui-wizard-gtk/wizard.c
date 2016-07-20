@@ -3841,7 +3841,7 @@ void create_assistant(GtkApplication *app, bool expert_mode)
             "functionality the package fros-recordmydesktop has to be installed. "
             "Please run the following command if you want to install it."
             "\n\n"
-            "<b>su -c \"yum install fros-recordmydesktop\"</b>"
+            "<b>su -c \"dnf install fros-recordmydesktop\"</b>"
             ));
     }
 
