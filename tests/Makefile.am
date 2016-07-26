@@ -52,7 +52,8 @@ TESTSUITE_AT = \
   uriparser.at \
   event_config.at \
   proc_helpers.at \
-  compress.at
+  compress.at \
+  forbidden_words.at
 
 TESTSUITE_AT_IN = \
   bugzilla_plugin.at

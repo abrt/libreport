@@ -1,0 +1,56 @@
+# -*- Autotest -*-
+
+AT_BANNER([Forbidden words])
+
+## -------------------- ##
+## load_words_from_file ##
+## -------------------- ##
+
+AT_TESTFUN([load_words_from_file],
+[[
+#include "testsuite.h"
+
+#define CONF_DIR_PATH "../../conf/default/"
+
+TS_MAIN
+{
+    GList *dynamic_words;
+
+    TS_ASSERT_STDERR_EQ_BEGIN
+    {
+        g_verbose = 0;
+        dynamic_words = load_words_from_file("certainly_missing_file.conf");
+        g_verbose = 3;
+    }
+    TS_ASSERT_STDERR_EQ_END("", "No error messages produced!");
+
+    TS_ASSERT_PTR_IS_NULL(dynamic_words);
+    g_list_free_full(dynamic_words, (GDestroyNotify)free);
+
+    const char *static_words[] = { "one", "two", "three", "four", NULL };
+    xsetenv("LIBREPORT_DEBUG_USER_CONF_BASE_DIR", CONF_DIR_PATH);
+
+    TS_ASSERT_STDERR_EQ_BEGIN
+    {
+        dynamic_words = load_words_from_file("test_ignored.conf");
+    }
+    TS_ASSERT_STDERR_EQ_END("Can't open /etc/libreport/test_ignored.conf: No such file or directory\n", "User notified about errors!");
+
+    TS_ASSERT_PTR_IS_NOT_NULL(dynamic_words);
+
+    const char **fptr = static_words;
+    GList *sptr = dynamic_words;
+    for (; *fptr && sptr; ++fptr, sptr = g_list_next(sptr))
+    {
+        const char *fval = *fptr;
+        const char *sval = sptr->data;
+
+        TS_ASSERT_STRING_EQ(fval, sval, "List item equals");
+    }
+
+    TS_ASSERT_TRUE_MESSAGE(*fptr == NULL && sptr == NULL, "instances are not equal in size");
+
+    g_list_free_full(dynamic_words, (GDestroyNotify)free);
+}
+TS_RETURN_MAIN
+]])
