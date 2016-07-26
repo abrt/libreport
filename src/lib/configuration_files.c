@@ -321,6 +321,11 @@ finalize:
 const char *get_user_conf_base_dir(void)
 {
     static char *base_dir = NULL;
+
+    const char *debug_base_dir = getenv("LIBREPORT_DEBUG_USER_CONF_BASE_DIR");
+    if (debug_base_dir != NULL)
+        return debug_base_dir;
+
     if (base_dir == NULL)
         base_dir = concat_path_file(g_get_user_config_dir(), "abrt/settings/");
 
