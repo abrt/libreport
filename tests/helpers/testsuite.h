@@ -326,4 +326,33 @@ FILE *g_testsuite_output_stream = 0;
 #define TS_ASSERT_FUNCTION(call) \
     TS_ASSERT_FUNCTION_MESSAGE(call, NULL)
 
+
+
+/*
+ * Testing of contents of file descriptors
+ */
+
+#define TS_ASSERT_STREAM_FD_CONTENTS_EQ_BEGIN(cfd) \
+    do { \
+        const int ts_bck_fd = cfd; \
+        const int ts_old_fd = xdup(ts_bck_fd); \
+        int ts_pipefd[2]; \
+        pipe(ts_pipefd); \
+        fcntl(ts_pipefd[0], F_SETFL, O_NONBLOCK); \
+        xmove_fd(ts_pipefd[1], ts_bck_fd); \
+
+#define TS_ASSERT_STREAM_FD_CONTENTS_EQ_END(expected, message) \
+        xmove_fd(ts_old_fd, ts_bck_fd); \
+        char *ts_fd_contents = xmalloc_read(ts_pipefd[0], NULL); \
+        close(ts_pipefd[0]); \
+        TS_ASSERT_STRING_EQ(ts_fd_contents, expected, message); \
+        free(ts_fd_contents); \
+    } while (0)
+
+#define TS_ASSERT_STDERR_EQ_BEGIN \
+    TS_ASSERT_STREAM_FD_CONTENTS_EQ_BEGIN(STDERR_FILENO)
+
+#define TS_ASSERT_STDERR_EQ_END(expected, message) \
+    TS_ASSERT_STREAM_FD_CONTENTS_EQ_END(expected, message)
+
 #endif/*LIBREPORT_TESTSUITE_H*/
