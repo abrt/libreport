@@ -134,9 +134,10 @@ GList *load_words_from_file(const char* filename)
             }
             fclose(fp);
         }
-        else
+        /* Don't disturb users with useless warnings about missing files. */
+        else if (errno != ENOENT || g_verbose >= 3)
         {
-            log_warning("Can't open %s", cur_file);
+            perror_msg("Can't open %s", cur_file);
         }
 
         file_list_cur = g_list_next(file_list_cur);
