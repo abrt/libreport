@@ -71,7 +71,13 @@ class DNFDebugInfoDownload(DebugInfoDownload):
         self.progress = None
 
         self.base = dnf.Base()
-        self.base.logging.presetup()
+        # bug resurfaces in different forms. if it appears again try uncommenting
+        ######   dnf pre API enforced
+        # self.base.logging.presetup()
+        ######   dnf 1.9 API enforced
+        # self.base._logging.presetup()
+        ######   dnf 2.0
+        # self.base._logging._presetup()
 
     def prepare(self):
         try:
