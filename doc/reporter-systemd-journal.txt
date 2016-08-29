@@ -1,0 +1,85 @@
+reporter-systemd-journal(1)
+==========================
+
+NAME
+----
+reporter-systemd-journal - Reports problem information into systemd journal.
+
+SYNOPSIS
+--------
+'reporter-systemd-journal' [-v] [-d DIR] [-m MESSAGEID] [-F FMTFILE] [-p NONE|ESSENTIAL|FULL] [-s SYSLOGID]
+
+DESCRIPTION
+-----------
+The tool reads problem directory DIR and sends its details into systemd journal
+as a message.
+If MESSAGEID is defined, the tool creates a catalog message as well.
+By parameter -p it can be specified how much detailed the report will be.
+
+Example:
+------------
+Catalog message:
+-- 13a16aacbc85495c96e3627cc64f5263
+Subject: testing reporter-systemd-journal message
+Defined-By: libreport
+
+Testing reporter-systemd-journal catalog message
+@PROBLEM_REPORT@
+This usually indicates a programming error in the crashing program.
+
+Formatting file:
+%summary:: Formatting reporter-systemd-journal message
+::%bare_%short_backtrace
+
+Reporting:
+# reporter-systemd-journal --message-id 13a16aacbc85495c96e3627cc64f5263 -F $FORMATTING_FILE
+
+Systemd journal catalog message:
+Sep 27 16:50:49 dhcp-24-126.brq.redhat.com reporter-systemd-journal[31675]: Formatting reporter-systemd-journal message
+-- Subject: testing reporter-systemd-journal message
+-- Defined-By: libreport
+--
+-- Testing reporter-systemd-journal catalog message
+--
+-- #1 crash in /usr/bin/will_segfault
+-- #2 varargs in /usr/bin/will_segfault
+-- #3 f in /usr/bin/will_segfault
+-- #4 callback in /usr/bin/will_segfault
+-- #5 call_me_back in /usr/lib64/libwillcrash.so.0.0.0
+--
+-- This usually indicates a programming error in the crashing program.
+------------
+
+OPTIONS
+-------
+-d DIR::
+   Path to problem directory.
+
+-m MESSAGEID::
+--message-id MESSAGEID::
+   Catalog message id.
+
+-F FMTFILE::
+   Formatting file for systemd journal catalog message.
+
+-p NONE|ESSENTIAL|FULL::
+--dump NONE|ESSENTIAL|FULL::
+   Defines how much detailed the report will be. NONE means only
+   default problem details, as reason, pid etc., are sent into journal.
+   ESSENTIAL means less important problem details are sent as well.
+   FULL means all text problem dir details are sent into journal.
+
+-s SYSLOGID::
+--syslog-id SYSLOGID::
+   Define SYSLOD_IDENTIFIER systemd journal field.
+
+-v::
+   Be more verbose. Can be given multiple times.
+
+SEE ALSO
+--------
+journalctl(1), systemd.journal-fields(7)
+
+AUTHORS
+-------
+* ABRT team
