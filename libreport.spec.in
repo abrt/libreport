@@ -189,6 +189,14 @@ Requires: %{name} = %{version}-%{release}
 %description plugin-logger
 The simple reporter plugin which writes a report to a specified file.
 
+%package plugin-systemd-journal
+Summary: %{name}'s systemd journal reporter plugin
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+
+%description plugin-systemd-journal
+The simple reporter plugin which writes a report to the systemd journal.
+
 %package plugin-mailx
 Summary: %{name}'s mailx reporter plugin
 Group: System Environment/Libraries
@@ -461,7 +469,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %postun web -p /sbin/ldconfig
 
-
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %doc README COPYING
@@ -583,6 +590,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man5/report_logger.conf.5.*
 %{_bindir}/reporter-print
 %{_mandir}/man*/reporter-print.*
+
+%files plugin-systemd-journal
+%defattr(-,root,root,-)
+%{_bindir}/reporter-systemd-journal
+%{_mandir}/man*/reporter-systemd-journal.*
 
 %files plugin-mailx
 %defattr(-,root,root,-)
