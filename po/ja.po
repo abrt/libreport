@@ -1,17 +1,19 @@
 # Noriko Mizumoto <noriko@redhat.com>, 2015. #zanata
+# Aiko Sasaki <asasaki@redhat.com>, 2016. #zanata
+# Kenzo Moriguchi <kmoriguc@redhat.com>, 2016. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-14 15:18+0200\n"
+"POT-Creation-Date: 2016-06-29 15:25+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-07-19 09:37-0400\n"
-"Last-Translator: Noriko Mizumoto <noriko@redhat.com>\n"
+"PO-Revision-Date: 2016-08-19 02:11-0400\n"
+"Last-Translator: Aiko Sasaki <asasaki@redhat.com>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"X-Generator: Zanata 3.6.2\n"
+"X-Generator: Zanata 3.9.5\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 # translation auto-copied from project libreport, version master, document libreport
@@ -130,12 +132,12 @@ msgstr "# クラッシュの理由"
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/cli/cli-report.c:170
 msgid "# os-release configuration file from root dir"
-msgstr "# ルートディレクトリから os-release 設定ファイル"
+msgstr "# ルートディレクトリーから os-release 設定ファイル"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/cli/cli-report.c:175
 msgid "# Release string of the operating system from root dir"
-msgstr "# ルートディレクトリからオペレーティングシステムのリリース文字列"
+msgstr "# ルートディレクトリーからオペレーティングシステムのリリース文字列"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/cli/cli-report.c:183
@@ -207,37 +209,31 @@ msgstr "実行するワークフローの選択:"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:87
-#, python-brace-format
 msgid "Extracting cpio from {0}"
 msgstr "cpio を {0} から抽出中"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:92
-#, python-brace-format
 msgid "Can't write to '{0}': {1}"
 msgstr "「{0}」 に書き込みできません: {1}"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:107
-#, python-brace-format
 msgid "Can't extract package '{0}'"
 msgstr "パッケージ「{0}」を抽出できません"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:115
-#, python-brace-format
 msgid "Caching files from {0} made from {1}"
 msgstr "{0} にある {1} から作成されたファイルをキャッシュ中"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:134
-#, python-brace-format
 msgid "Can't extract files from '{0}'"
 msgstr "「{0}」からファイルを抽出できません"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:147
-#, python-brace-format
 msgid "Can't remove '{0}': {1}"
 msgstr "「{0}」を削除できません: {1}"
 
@@ -246,7 +242,6 @@ msgstr "「{0}」を削除できません: {1}"
 #. % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
 #. )
 #: ../src/client-python/debuginfo.py:194 ../src/client-python/debuginfo.py:205
-#, python-brace-format
 msgid "Downloading ({0} of {1}) {2}: {3:3}%"
 msgstr "ダウンロード中 ({0} ／ {1}) {2}: {3:3}%"
 
@@ -273,7 +268,7 @@ msgstr "yum の初期化でエラー発生 (YumBase.doConfigSetup): '{0!s}'"
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:325
 msgid "Error: can't make cachedir, exiting"
-msgstr "エラー: キャッシュディレクトリを作成できません、終了します"
+msgstr "エラー: キャッシュディレクトリーを作成できません、終了します"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:334
@@ -284,7 +279,7 @@ msgstr "リポジトリー '{0!s}' を無効化できません: {1!s}"
 #. This takes some time, let user know what we are doing
 #: ../src/client-python/debuginfo.py:337
 msgid "Setting up yum repositories"
-msgstr "yum リポジトリの設定中"
+msgstr "yum リポジトリーの設定中"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:354
@@ -293,7 +288,6 @@ msgstr "非同期ダウンロードを無効化できません、出力に加工
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:356
-#, python-brace-format
 msgid "Can't setup {0}: {1}, disabling"
 msgstr "{0} を設定できません: {1}、 無効にしています"
 
@@ -304,7 +298,7 @@ msgstr "{0} を設定できません: {1}、 無効にしています"
 #. we have "paused":
 #: ../src/client-python/debuginfo.py:363
 msgid "Looking for needed packages in repositories"
-msgstr "必要なパッケージをリポジトリで検索中"
+msgstr "必要なパッケージをリポジトリーで検索中"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:367
@@ -318,19 +312,16 @@ msgstr "ファイル一覧の取得中にエラーが発生: '{0!s}'"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:416
-#, python-brace-format
 msgid "Can't find packages for {0} debuginfo files"
 msgstr "{0} debuginfo ファイルのパッケージが見つかりません"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:418
-#, python-brace-format
 msgid "Packages to download: {0}"
 msgstr "ダウンロードするパッケージ: {0}"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:419
-#, python-brace-format
 msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
 msgstr "ダウンロード中 {0:.2f}Mb、 インストールサイズ: {1:.2f}Mb、 続行しますか?"
 
@@ -342,28 +333,24 @@ msgstr "ユーザーによってダウンロードが取り消されました"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:434
-#, python-brace-format
 msgid ""
 "Warning: Not enough free space in tmp dir '{0}' ({1:.2f}Mb left). Continue?"
-msgstr "警告: 十分な空き容量が一時ディレクトリ '{0}' にありません (残り {1:.2f}MB)。続行しますか?"
+msgstr "警告: 十分な空き容量が一時ディレクトリー '{0}' にありません (残り {1:.2f}MB)。続行しますか?"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:443
-#, python-brace-format
 msgid ""
 "Warning: Not enough free space in cache dir '{0}' ({1:.2f}Mb left). "
 "Continue?"
-msgstr "警告: 十分な空き容量がキャッシュディレクトリ '{0}' にありません (残り {1:.2f}MB)。続行しますか?"
+msgstr "警告: 十分な空き容量がキャッシュディレクトリー '{0}' にありません (残り {1:.2f}MB)。続行しますか?"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:469
-#, python-brace-format
 msgid "Cannot copy file '{0}': {1}"
 msgstr "ファイル '{0}' をコピーできません: {1}"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:487
-#, python-brace-format
 msgid "Downloading package {0} failed"
 msgstr "パッケージ {0} のダウンロードに失敗しました "
 
@@ -378,7 +365,6 @@ msgstr "解凍に失敗しました、 ダウンロードを中止していま�
 #. but it was appearing even if no packages were in fact extracted
 #. (say, when there was one package, and it has download error).
 #: ../src/client-python/debuginfo.py:504
-#, python-brace-format
 msgid "Removing {0}"
 msgstr "{0} を削除中"
 
@@ -440,7 +426,7 @@ msgid "C_onfigure"
 msgstr "設定(_O)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gtk-helpers/config_dialog.c:361 ../src/gui-wizard-gtk/wizard.c:3472
+#: ../src/gtk-helpers/config_dialog.c:361 ../src/gui-wizard-gtk/wizard.c:3718
 msgid "_Close"
 msgstr "閉じる(_C)"
 
@@ -471,7 +457,7 @@ msgstr "シークレットサービスが利用できません、設定は保存
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/gtk-helpers/event_config_dialog.c:321
 #: ../src/gtk-helpers/workflow_config_dialog.c:86
-#: ../src/gui-wizard-gtk/wizard.c:822 ../src/gui-wizard-gtk/wizard.c:3101
+#: ../src/gui-wizard-gtk/wizard.c:844 ../src/gui-wizard-gtk/wizard.c:3325
 msgid "_Cancel"
 msgstr "キャンセル(_C)"
 
@@ -550,7 +536,7 @@ msgstr ""
 msgid "Alternate GUI file"
 msgstr "代替の GUI ファイル"
 
-#: ../src/gui-wizard-gtk/wizard.c:354
+#: ../src/gui-wizard-gtk/wizard.c:378
 #, c-format
 msgid ""
 "%s is not properly configured. You can configure it now or provide the "
@@ -563,7 +549,7 @@ msgstr ""
 "\n"
 "設定についての詳細を見る:  https://access.redhat.com/site/articles/718083"
 
-#: ../src/gui-wizard-gtk/wizard.c:357
+#: ../src/gui-wizard-gtk/wizard.c:381
 #, c-format
 msgid ""
 "<b>%s</b> is not properly configured. You can configure it now or provide "
@@ -576,76 +562,93 @@ msgstr ""
 "\n"
 "<a href=\"https://access.redhat.com/site/articles/718083\">設定についての詳細は見る</a>"
 
-#: ../src/gui-wizard-gtk/wizard.c:373
+#: ../src/gui-wizard-gtk/wizard.c:397
 #, c-format
 msgid "Con_figure %s"
 msgstr "%s の設定 (_F)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:400
+#: ../src/gui-wizard-gtk/wizard.c:424
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved data?"
-msgstr "書き込み可能なディレクトリが必要ですが、「%s」は書き込みできません。 「%s」に移動してから移動したデータで操作してみてください。"
+msgstr "書き込み可能なディレクトリーが必要ですが、「%s」は書き込みできません。 「%s」に移動してから移動したデータで操作してみてください。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:813
+#: ../src/gui-wizard-gtk/wizard.c:835
 msgid "View/edit a text file"
 msgstr "テキストファイルの表示/編集"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:821
+#: ../src/gui-wizard-gtk/wizard.c:843
 msgid "_Save"
 msgstr "保存(_S)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:1040
+#: ../src/gui-wizard-gtk/wizard.c:1067
 msgid ""
 "No reporting targets are defined for this problem. Check configuration in /"
 "etc/libreport/*"
 msgstr "この問題に対する報告ターゲットが定義されていません。 /etc/libreport/* にある設定を確認してください。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:1077
+#: ../src/gui-wizard-gtk/wizard.c:1104
 #, c-format
 msgid "(requires: %s)"
 msgstr "(必須: %s)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:1091
+#: ../src/gui-wizard-gtk/wizard.c:1118
 #, c-format
 msgid "(not needed, data already exist: %s)"
 msgstr "(必要ありません、データがすでに存在しません: %s)"
 
+#: ../src/gui-wizard-gtk/wizard.c:1217
+msgid ""
+"Since crashes without a known reproducer can be difficult to diagnose, "
+"please provide a comprehensive description of the problem you have "
+"encountered."
+msgstr "既知の再現ツールなしでクラッシュを診断することは容易でない場合があるため、発生した問題についての総合的な説明を記入してください。"
+
+#: ../src/gui-wizard-gtk/wizard.c:1224
+msgid ""
+"Please provide a short description of the problem and please include the "
+"steps you have used to reproduce the problem."
+msgstr "問題の簡単な説明を記入し、問題の再現手順を記載してください。"
+
+#: ../src/gui-wizard-gtk/wizard.c:1231
+msgid "Please provide the steps you have used to reproduce the problem."
+msgstr "問題の再現手順を記載してください。"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:1277
+#: ../src/gui-wizard-gtk/wizard.c:1349
 msgid "(click here to view/edit)"
 msgstr "(ここをクリックして 表示/編集)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:1288
+#: ../src/gui-wizard-gtk/wizard.c:1360
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(バイナリファイル、 %llu バイト)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:1395 ../src/report-newt/report-newt.c:334
+#: ../src/gui-wizard-gtk/wizard.c:1467 ../src/report-newt/report-newt.c:334
 msgid "(no description)"
 msgstr "(説明なし)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:1403
+#: ../src/gui-wizard-gtk/wizard.c:1475
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu バイト、 %u ファイル"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:1647
+#: ../src/gui-wizard-gtk/wizard.c:1752
 msgid "Processing was canceled"
 msgstr "処理が中断されました"
 
-#: ../src/gui-wizard-gtk/wizard.c:1851
+#: ../src/gui-wizard-gtk/wizard.c:1956
 msgid ""
 "Processing of the problem failed. This can have many reasons but there are "
 "three most common:\n"
@@ -658,7 +661,7 @@ msgstr ""
 "\t▫ <b>破損データによる問題</b>\n"
 "\t▫ <b>無効な設定</b>"
 
-#: ../src/gui-wizard-gtk/wizard.c:1860
+#: ../src/gui-wizard-gtk/wizard.c:1965
 msgid ""
 "If you want to update the configuration and try to report again, please open "
 "<b>Preferences</b> item\n"
@@ -670,50 +673,61 @@ msgstr ""
 "<b>Repeat</b> ボタン"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:1978
+#: ../src/gui-wizard-gtk/wizard.c:2089
 msgid "Processing was interrupted because the problem is not reportable."
 msgstr "問題が報告可能な形式ではなかったため、処理が中断されました。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:1988 ../src/gui-wizard-gtk/wizard.c:2057
+#: ../src/gui-wizard-gtk/wizard.c:2099 ../src/gui-wizard-gtk/wizard.c:2168
 msgid "Processing failed."
 msgstr "処理に失敗しました。"
 
 # translation auto-copied from project libreport, version master, document libreport
 #. No next event, go to progress page and finish
-#: ../src/gui-wizard-gtk/wizard.c:1995 ../src/gui-wizard-gtk/wizard.c:2818
+#: ../src/gui-wizard-gtk/wizard.c:2106 ../src/gui-wizard-gtk/wizard.c:3040
 msgid "Processing finished."
 msgstr "処理が完了しました。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:1996
+#: ../src/gui-wizard-gtk/wizard.c:2107
 msgid "Processing finished, please proceed to the next step."
 msgstr "処理が完了しました。次のステップに進んでください。"
 
 # translation auto-copied from project libreport, version master, document libreport
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:2054
+#: ../src/gui-wizard-gtk/wizard.c:2165
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "イベント '%s' のプロセッシングは定義されていません。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:2068
+#: ../src/gui-wizard-gtk/wizard.c:2179
 msgid "Processing interrupted: can't continue without writable directory."
-msgstr "処理を中断しました: 書き込み可能なディレクトリなしで続行できません。"
+msgstr "処理を中断しました: 書き込み可能なディレクトリーなしで続行できません。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:2105
+#: ../src/gui-wizard-gtk/wizard.c:2216
 msgid "Processing..."
 msgstr "処理しています..."
 
+#: ../src/gui-wizard-gtk/wizard.c:2297
+msgid ""
+"Possible sensitive data detected, feel free to edit the report and remove "
+"them."
+msgstr "機密の可能性があるデータを検出しました。機密情報はレポートを編集するといつでも削除できます。"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:2198
+#: ../src/gui-wizard-gtk/wizard.c:2337
 msgid "Cannot check backtrace rating because of invalid event name"
 msgstr "無効なイベント名のためバックトレースのレーティングを確認できません"
 
+#: ../src/gui-wizard-gtk/wizard.c:2869
+#, c-format
+msgid "Failed to save file '%s'"
+msgstr "ファイル '%s' の保存に失敗しました"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:2838
+#: ../src/gui-wizard-gtk/wizard.c:3060
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
@@ -722,112 +736,133 @@ msgstr "イベント '%s' はおそらく機微な情報を送信する権限が
 "続行したいですか?"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:2886
+#: ../src/gui-wizard-gtk/wizard.c:3108
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
 msgstr "この問題は報告されるべきではありません (おそらく既知の問題と思われます)。 %s"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3102
+#: ../src/gui-wizard-gtk/wizard.c:3326
 msgid "_Open"
 msgstr "開く(_O)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3124
+#: ../src/gui-wizard-gtk/wizard.c:3348
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "「%s」は普通のファイルではありません"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3138
+#: ../src/gui-wizard-gtk/wizard.c:3362
 msgid "You are trying to copy a file onto itself"
 msgstr "ファイルをそのファイル自体にコピーしようとしています"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3145
+#: ../src/gui-wizard-gtk/wizard.c:3369
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "「%s」をコピーできません: %s"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3160
+#: ../src/gui-wizard-gtk/wizard.c:3384
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "アイテム「%s」はすでに存在しているため変更できません"
 
+#: ../src/gui-wizard-gtk/wizard.c:3542
+msgid "I have experienced this problem for the first time"
+msgstr "この問題が発生したのは初めてです"
+
+#: ../src/gui-wizard-gtk/wizard.c:3545
+msgid "I can reproduce this problem"
+msgstr "この問題を再現できます"
+
+#: ../src/gui-wizard-gtk/wizard.c:3548
+msgid "This problem occurs repeatedly"
+msgstr "この問題は繰り返し発生しています"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3314
+#: ../src/gui-wizard-gtk/wizard.c:3560
 msgid "Include"
 msgstr "含む"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3325
+#: ../src/gui-wizard-gtk/wizard.c:3571
 msgid "Name"
 msgstr "名前"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3335
+#: ../src/gui-wizard-gtk/wizard.c:3581
 msgid "Value"
 msgstr "値"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3369
+#: ../src/gui-wizard-gtk/wizard.c:3615
 msgid "Problem description"
 msgstr "問題の説明"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3370
+#: ../src/gui-wizard-gtk/wizard.c:3616
 msgid "Select how to report this problem"
 msgstr "この問題を報告する方法を選択してください"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3371
+#: ../src/gui-wizard-gtk/wizard.c:3617
 msgid "Provide additional information"
 msgstr "その他の情報の提供"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3372
+#: ../src/gui-wizard-gtk/wizard.c:3618
 msgid "Review the data"
 msgstr "データのレビュー"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3373
+#: ../src/gui-wizard-gtk/wizard.c:3619
 msgid "Confirm data to report"
 msgstr "報告するデータの確認"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3374
+#: ../src/gui-wizard-gtk/wizard.c:3620
 msgid "Processing"
 msgstr "処理しています"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3375
+#: ../src/gui-wizard-gtk/wizard.c:3621
 msgid "Processing done"
 msgstr "処理が完了しました"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3474
+#: ../src/gui-wizard-gtk/wizard.c:3720
 msgid "_Stop"
 msgstr "中止 (_S)"
 
 # translation auto-copied from project libreport, version master, document libreport
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3477
+#: ../src/gui-wizard-gtk/wizard.c:3723
 msgid "Upload for analysis"
 msgstr "分析のためにアップロードする"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3480
+#: ../src/gui-wizard-gtk/wizard.c:3726
 msgid "Repeat"
 msgstr "繰り返す"
 
 # translation auto-copied from project libreport, version master, document libreport
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3483
+#: ../src/gui-wizard-gtk/wizard.c:3729
 msgid "_Forward"
 msgstr "転送 (_F)"
 
-#: ../src/gui-wizard-gtk/wizard.c:3575
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/gui-wizard-gtk/wizard.c:3780
+msgid "Restrict access to the report"
+msgstr "レポートへのアクセスを制限する"
+
+#: ../src/gui-wizard-gtk/wizard.c:3785
+msgid "Learn more about restricted access in the configuration"
+msgstr "設定内の制限されたアクセスについて詳しく知る"
+
+#: ../src/gui-wizard-gtk/wizard.c:3844
 msgid ""
 "In order to enable the built-in screencasting functionality the package fros-"
 "gnome has to be installed. Please run the following command if you want to "
@@ -840,30 +875,8 @@ msgstr ""
 "\n"
 "<b>su -c \"yum install fros-gnome\"</b>"
 
+# translation auto-copied from project libreport, version master, document libreport
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
-msgid ""
-"Possible sensitive data detected, feel free to edit the report and remove "
-"them."
-msgstr "機密の可能性があるデータを検出しました。機密情報はレポートを編集するといつでも削除できます。"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:2
-msgid "Restrict access to the report"
-msgstr "レポートへのアクセスを制限する"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:3
-msgid ""
-"No one except Red Hat employees will be allowed to see the report with "
-"restricted access (not even you)"
-msgstr "アクセスが禁止されたレポートは Red Hat 従業員を除き誰の閲覧も許可されません (レポート報告者も含む)"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:4
-msgid "Read more about reports with restricted access"
-msgstr "制限されたアクセスの報告の詳細を参照する"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid ""
 "On the following screens, you will be asked to describe how the problem "
 "occurred, to choose how to analyze the problem (if needed), to review "
@@ -873,12 +886,12 @@ msgstr ""
 "以下の画面で、問題が発生した順序の説明、問題分析法の選択(必要な場合)、収集データの再確認、及び問題報告先の選択などを依頼されます。「進む」を押して継続します。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:6
+#: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Details"
 msgstr "詳細"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:7
+#: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid ""
 "How did this problem happen (step-by-step)? How can it be reproduced? Any "
 "additional comments useful for diagnosing the problem? Please use English if "
@@ -887,17 +900,36 @@ msgstr ""
 "この問題がどのようにして発生したか順を追って説明してください。 再現方法を説明してください。 問題の診断に役立つそうなコメントが他にありますか? "
 "できれば英語でお願いします。"
 
+#: ../src/gui-wizard-gtk/wizard.glade.h:4
+msgid "How reproducible is this problem?"
+msgstr "この問題は再現可能ですか?"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:5
+msgid "How it can be reproduced (one step per line)?"
+msgstr "どのように再現できますか (1 行に 1 手順)?"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:6
+msgid ""
+"Please add a comprehensive description of the problem you have. This is a "
+"very long place holder."
+msgstr "問題の総合的な説明を記入してください。これは非常に長いプレースホルダーです。"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:8
+#: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "You need to fill the how to before you can proceed..."
 msgstr "方法を記入した後に次に進むことができます..."
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:9
+#: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
 msgstr "<b>コメントはプライベートではありません。</b>公共に見える問題報告に含まれるかも知れません。"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/gui-wizard-gtk/wizard.glade.h:9
+msgid "I don't know what caused this problem"
+msgstr "この問題の原因がわかりません。"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/gui-wizard-gtk/wizard.glade.h:10
@@ -911,64 +943,59 @@ msgstr "スクリーンキャストの追加"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
-msgid "I don't know what caused this problem"
-msgstr "この問題の原因がわかりません。"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid ""
 "Use this button to generate more informative backtrace after you installed "
 "additional debug packages"
 msgstr "追加のデバッグパッケージをインストールした後に、このボタンを使用してより情報を持つバックトレースを生成します"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:14
+#: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid ""
 "Please review the data before it gets reported. Depending on reporter "
 "chosen, it may end up publicly visible."
 msgstr "報告する前にデータを確認してください。選択した報告先によっては、一般公開される可能性があります。"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:15
+#: ../src/gui-wizard-gtk/wizard.glade.h:14
 msgid "Forbidden words"
 msgstr "禁止用語"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:16
+#: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid "Custom"
 msgstr "カスタム"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:17
+#: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "Clear the search bar to see the list of security sensitive words."
 msgstr "検索バーを消去して危険性のある用語の一覧を表示します。"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:18
+#: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "file"
 msgstr "ファイル"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:19
+#: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid "data"
 msgstr "データ"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:20
+#: ../src/gui-wizard-gtk/wizard.glade.h:19
 msgid "Search"
 msgstr "検索"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:21
+#: ../src/gui-wizard-gtk/wizard.glade.h:20
 msgid "Size:"
 msgstr "サイズ:　"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:22
+#: ../src/gui-wizard-gtk/wizard.glade.h:21
 msgid "Attach a file"
 msgstr "ファイルの添付"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:23
+#: ../src/gui-wizard-gtk/wizard.glade.h:22
 msgid "I reviewed the data and _agree with submitting it"
 msgstr "データを見直しました、 送信に同意します。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:24
+#: ../src/gui-wizard-gtk/wizard.glade.h:23
 msgid ""
 "If you are reporting to a remote server, make sure you removed all private "
 "data (such as usernames and passwords). Backtrace, command line, environment "
@@ -978,22 +1005,22 @@ msgstr ""
 "バックトレース、 コマンドライン、 環境変数などは特に注意が必要な事項になります。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:25
+#: ../src/gui-wizard-gtk/wizard.glade.h:24
 msgid "Processing did not start yet"
 msgstr "処理がまだ開始していません"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:26
+#: ../src/gui-wizard-gtk/wizard.glade.h:25
 msgid "Show log"
 msgstr "ログの表示"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:27
+#: ../src/gui-wizard-gtk/wizard.glade.h:26
 msgid "Reporting has finished. You can close this window now."
 msgstr "報告は終了しました。この画面を今閉じることができます。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:28
+#: ../src/gui-wizard-gtk/wizard.glade.h:27
 msgid ""
 "If you want to report the problem to a different destination, collect "
 "additional information, or provide a better problem description and repeat "
@@ -1002,19 +1029,19 @@ msgstr ""
 "異なる送信先に問題を報告したい場合は、追加情報を収集するか、又はより良い問題説明を提供して報告プロセスを繰り返した上で、「進む」を押します。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/include/internal_libreport.h:1007
+#: ../src/include/internal_libreport.h:1046
 msgid "Be verbose"
 msgstr "冗長な出力"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/include/internal_libreport.h:1008
-#: ../src/plugins/reporter-bugzilla.c:895
+#: ../src/include/internal_libreport.h:1047
+#: ../src/plugins/reporter-bugzilla.c:893
 #: ../src/plugins/reporter-kerneloops.c:166
-#: ../src/plugins/reporter-mailx.c:198 ../src/plugins/reporter-print.c:56
-#: ../src/plugins/reporter-rhtsupport.c:471
-#: ../src/plugins/reporter-upload.c:249
+#: ../src/plugins/reporter-mailx.c:280 ../src/plugins/reporter-print.c:56
+#: ../src/plugins/reporter-rhtsupport.c:510
+#: ../src/plugins/reporter-upload.c:188
 msgid "Problem directory"
-msgstr "問題ディレクトリ"
+msgstr "問題ディレクトリー"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/lib/abrt_sock.c:160
@@ -1035,7 +1062,7 @@ msgstr "権限がありません"
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/lib/abrt_sock.c:208
 msgid "not a problem directory"
-msgstr "問題ディレクトリではありません"
+msgstr "問題ディレクトリーではありません"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/lib/abrt_sock.c:217
@@ -1070,7 +1097,7 @@ msgid "'%s' is not correct file name"
 msgstr "'%s' は正しいファイル名ではありません"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/create_dump_dir.c:153
+#: ../src/lib/create_dump_dir.c:150
 #, c-format
 msgid "uid value is not valid: '%s'"
 msgstr "UID 値が無効です: '%s'"
@@ -1081,85 +1108,115 @@ msgstr "UID 値が無効です: '%s'"
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "アップロード済み: 合計 %llu キロバイトの内 %llu キロバイト"
 
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/curl.c:635
-#, c-format
-msgid "Sending %s to %s"
-msgstr "%s を %s に送信しています"
+#: ../src/lib/curl.c:636
+msgid "Ignoring URL without scheme and hostname"
+msgstr "スキームおよびホスト名なしの URL を無視しています"
 
-#: ../src/lib/curl.c:659
+#. Do not include the path part of the URL as it can contain sensitive data
+#. * in case of typos
+#: ../src/lib/curl.c:666
 #, c-format
-msgid "Please enter user name for '%s':"
-msgstr "'%s' のユーザー名を入力してください:"
+msgid "Sending %s to %s//%s"
+msgstr "%s を %s//%s に送信しています"
 
-#: ../src/lib/curl.c:665
+#: ../src/lib/curl.c:690
 #, c-format
-msgid "Please enter password for '%s':"
-msgstr "'%s' のパスワードを入力してください:"
+msgid "Please enter user name for '%s//%s':"
+msgstr "'%s//%s' のユーザー名を入力してください:"
 
-# translation auto-copied from project libreport, version master, document libreport
+#: ../src/lib/curl.c:696
+#, c-format
+msgid "Please enter password for '%s//%s@%s':"
+msgstr "'%s//%s@%s' のパスワードを入力してください:"
+
 #. This ends up a "reporting status message" in abrtd
-#: ../src/lib/curl.c:688
+#: ../src/lib/curl.c:719
 #, c-format
-msgid "Successfully sent %s to %s"
-msgstr "%s を %s に正常に送信しました"
+msgid "Successfully created %s"
+msgstr "%s が正常に作成されました"
+
+#: ../src/lib/dump_dir.c:1545
+msgid "Failed to open TAR writer"
+msgstr "TAR writer をオープンできませんでした"
+
+#: ../src/lib/dump_dir.c:1571
+msgid "Failed to finalize TAR archive"
+msgstr " TAR アーカイブを完了できませんでした"
+
+#: ../src/lib/dump_dir.c:1581
+msgid "Failed to close TAR writer"
+msgstr "TAR writer をクローズできませんでした"
+
+#: ../src/lib/dump_dir.c:1591
+#, c-format
+msgid "gzip killed with signal %d"
+msgstr "gzip がシグナル %d によりキルされました"
+
+#: ../src/lib/dump_dir.c:1597
+#, c-format
+msgid "gzip exited with %d"
+msgstr "gzip が %d で終了しました"
+
+#: ../src/lib/dump_dir.c:1600
+msgid "gzip process failed"
+msgstr "gzip プロセスが失敗しました"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/event_config.c:348
+#: ../src/lib/event_config.c:382
 msgid "Missing mandatory value"
 msgstr "必須の値がありません"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/event_config.c:356
+#: ../src/lib/event_config.c:390
 #, c-format
 msgid "Invalid utf8 character '%c'"
 msgstr "無効な utf8 文字 '%c'"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/event_config.c:369
+#: ../src/lib/event_config.c:403
 #, c-format
 msgid "Invalid number '%s'"
 msgstr "無効な数字 '%s'"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/event_config.c:384
+#: ../src/lib/event_config.c:418
 #, c-format
 msgid "Invalid boolean value '%s'"
 msgstr "無効な boolean 値 '%s'"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/event_config.c:390
+#: ../src/lib/event_config.c:424
 msgid "Unsupported option type"
 msgstr "サポートされていないオプションタイプ"
 
-#: ../src/lib/event_config.c:463
+#: ../src/lib/event_config.c:497
 msgid "Reporting disabled because the rating does not contain a number."
 msgstr "レーティングに数字がないため、報告機能が無効になっています。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/event_config.c:464
+#: ../src/lib/event_config.c:498
 msgid "Please report this problem to ABRT project developers."
 msgstr "この問題を ABRT プロジェクト開発者に連絡してください。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/event_config.c:470
+#: ../src/lib/event_config.c:504
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "バックトレースが不完全です。再現手順が書かれているかどうか確認してください。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/event_config.c:471
+#: ../src/lib/event_config.c:505
 msgid "The backtrace probably can't help developer to diagnose the bug."
 msgstr "おそらくこのバックトレースはバグを診断するときに開発者の役に立ちません。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/event_config.c:477
+#: ../src/lib/event_config.c:511
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "バックトレースが利用できないため、報告機能が無効になっています。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/event_config.c:481
+#: ../src/lib/event_config.c:515
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -1167,12 +1224,27 @@ msgid ""
 msgstr "次のコマンドを使用して手動で debuginfo をインストールして、再び試してください: \"debuginfo-install %s\""
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/event_config.c:483
+#: ../src/lib/event_config.c:517
 msgid "A proper debuginfo is probably missing or the coredump is corrupted."
 msgstr "適切な debuginfo がおそらく見つかりません、またはコアダンプが破損しています。"
 
+#: ../src/lib/iso_date_string.c:48
+#, c-format
+msgid "String doesn't seem to be a date: '%s'"
+msgstr "文字列は日付ではないようです: '%s'"
+
+#: ../src/lib/iso_date_string.c:53
+#, c-format
+msgid "The date: '%s' has unrecognized suffix: '%s'"
+msgstr "日付: '%s' には認識されない接尾辞があります: '%s'"
+
+#: ../src/lib/iso_date_string.c:58
+#, c-format
+msgid "The date: '%s' is out of UNIX time stamp range"
+msgstr "日付: '%s' が UNIX タイムスタンプの範囲外にあります"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/ureport.c:354
+#: ../src/lib/ureport.c:395
 #, c-format
 msgid "Your problem seems to be caused by %s\n"
 "\n"
@@ -1182,49 +1254,59 @@ msgstr "あなたの問題は %s により引き起こされた可能性があ�
 "%s\n"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/ureport.c:357
+#: ../src/lib/ureport.c:398
 msgid "Your problem seems to be caused by one of the following:\n"
 msgstr "あなたの問題は以下のどれかにより引き起こされた可能性があります:\n"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/ureport.c:528
+#: ../src/lib/ureport.c:570
 #, c-format
 msgid "Failed to upload uReport to the server '%s' with curl: %s"
 msgstr "サーバー '%s' に curl を用いた uReport のアップロードに失敗しました: %s"
 
+#: ../src/lib/ureport.c:574
+#, c-format
+msgid "Failed to upload uReport to the server '%s'"
+msgstr "uReport のサーバー '%s' へのアップロードに失敗しました"
+
+#: ../src/lib/ureport.c:577
+#, c-format
+msgid "Error: %s"
+msgstr "エラー: %s"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/ureport.c:534
+#: ../src/lib/ureport.c:584
 #, c-format
 msgid "The URL '%s' does not exist (got error 404 from server)"
 msgstr "URL '%s' が存在しません (サーバーからエラー 404 の応答)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/ureport.c:540
+#: ../src/lib/ureport.c:590
 #, c-format
 msgid "The server at '%s' encountered an internal error (got error 500)"
 msgstr "'%s' のサーバーが内部エラーになりました (エラー 500)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/ureport.c:546
+#: ../src/lib/ureport.c:596
 #, c-format
 msgid "The server at '%s' currently can't handle the request (got error 503)"
 msgstr "'%s' のサーバーが現在リクエストを処理できません (エラー 503)"
 
 # translation auto-copied from project libreport, version master, document libreport
 #. can't print better error message
-#: ../src/lib/ureport.c:555
+#: ../src/lib/ureport.c:605
 #, c-format
 msgid "Unexpected HTTP response from '%s': %d"
 msgstr "'%s' より予期しない HTTP 応答です: %d"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/ureport.c:564
+#: ../src/lib/ureport.c:614
 #, c-format
 msgid "Unable to parse response from ureport server at '%s'"
 msgstr "'%s' の uReport サーバーからの応答を構文解析できません"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/ureport.c:574
+#: ../src/lib/ureport.c:624
 #, c-format
 msgid "The response from '%s' has invalid format"
 msgstr "'%s' からの応答が無効な形式です"
@@ -1232,18 +1314,18 @@ msgstr "'%s' からの応答が無効な形式です"
 # translation auto-copied from project libreport, version master, document libreport
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
-#: ../src/lib/ureport.c:580
+#: ../src/lib/ureport.c:630
 #, c-format
 msgid "Type mismatch has been detected in the response from '%s'"
 msgstr "型の不一致が '%s' からの応答に検出されました"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/ureport.c:766 ../src/plugins/reporter-rhtsupport.c:198
+#: ../src/lib/ureport.c:820 ../src/plugins/reporter-rhtsupport.c:233
 msgid "Failed on submitting the problem"
 msgstr "問題の提出に失敗しました"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/ureport.c:808
+#: ../src/lib/ureport.c:862
 #, c-format
 msgid "The server at '%s' responded with an error: '%s'"
 msgstr "'%s' のサーバーがエラーを応答しました: '%s'"
@@ -1267,6 +1349,30 @@ msgstr "使用法: "
 #, c-format
 msgid "Essential element '%s' is missing, can't continue"
 msgstr "必須エレメントの「%s」がありません、 続行できません"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/lib/problem_report.c:478 ../src/plugins/reporter-bugzilla.c:355
+#, c-format
+msgid "Can't parse backtrace: %s"
+msgstr "バックトレースを解析できません: %s"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/lib/problem_report.c:489 ../src/plugins/reporter-bugzilla.c:366
+msgid "Can't generate stacktrace description (no crash thread?)"
+msgstr "スタックトレースの説明を生成できません (クラッシュスレッドがありませんか?)。"
+
+#: ../src/lib/reported_to.c:52
+msgid "Report result label mustn't be empty string."
+msgstr "レポート結果ラベルに空白の文字列を設定できません。"
+
+#: ../src/lib/reported_to.c:58
+msgid "Report result label mustn't contain ':' character."
+msgstr "レポート結果ラベルに ':' 文字を含めることはできません。"
+
+#: ../src/lib/reported_to.c:141
+#, c-format
+msgid "Ignored invalid ISO date of report result '%s'"
+msgstr "レポート結果 '%s' の無効な ISO 日付が無視されました"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/lib/run_event.c:791
@@ -1346,13 +1452,14 @@ msgstr "Bugzilla バグトラッカーに報告する"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/plugins/report_Bugzilla.xml.in.h:3
-msgid "Bugzilla URL"
-msgstr "Bugzilla URL"
+#: ../src/plugins/report_Uploader.xml.in.h:6
+msgid "User name"
+msgstr "ユーザー名"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/plugins/report_Bugzilla.xml.in.h:4
-msgid "Address of Bugzilla server"
-msgstr "Bugzilla サーバーのアドレス"
+msgid "Bugzilla account user name"
+msgstr "Bugzilla アカウントのユーザー名"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/plugins/report_Bugzilla.xml.in.h:5
@@ -1365,48 +1472,23 @@ msgstr ""
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/plugins/report_Bugzilla.xml.in.h:6
-#: ../src/plugins/report_Uploader.xml.in.h:6
-msgid "User name"
-msgstr "ユーザー名"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:7
-msgid "Bugzilla account user name"
-msgstr "Bugzilla アカウントのユーザー名"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:5
 #: ../src/plugins/report_Uploader.xml.in.h:8
 msgid "Password"
 msgstr "パスワード"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:9
+#: ../src/plugins/report_Bugzilla.xml.in.h:7
 msgid "Bugzilla account password"
 msgstr "Bugzilla アカウントのパスワード"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:10
-#: ../src/plugins/report_RHTSupport.xml.in.h:7
-#: ../src/plugins/report_uReport.xml.in.h:7
-msgid "Verify SSL"
-msgstr "SSL を照合する"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:11
-#: ../src/plugins/report_RHTSupport.xml.in.h:8
-#: ../src/plugins/report_uReport.xml.in.h:8
-msgid "Check SSL key validity"
-msgstr "SSL キーの妥当性をチェックする"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:12
+#: ../src/plugins/report_Bugzilla.xml.in.h:8
 msgid "Restrict access"
 msgstr "アクセス制限"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:13
+#: ../src/plugins/report_Bugzilla.xml.in.h:9
 msgid ""
 "Restrict access to the created bugzilla ticket allowing only users from "
 "specified groups to view it (see advanced settings for more details)"
@@ -1414,82 +1496,106 @@ msgstr ""
 "作成した Bugzilla チケットのアクセスを制限します。指定されたグループのユーザーのみが参照できます (詳細は高度な設定を参照してください)。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:14
-msgid "Bugzilla product"
-msgstr "Bugzilla 製品"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:15
-msgid ""
-"Specify this only if you needed different product than specified in /etc/os-"
-"release"
-msgstr "/etc/os-release に指定された製品と異なる製品が必要な場合のみ指定してください"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:16
-msgid "Bugzilla product version"
-msgstr "Bugzilla 製品バージョン"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:17
-msgid ""
-"Specify this only if you needed different product version than specified in /"
-"etc/os-release"
-msgstr "/etc/os-release に指定された製品バージョンと異なる製品が必要な場合のみ指定してください"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:18
-#: ../src/plugins/report_Kerneloops.xml.in.h:5
-#: ../src/plugins/report_RHTSupport.xml.in.h:13
-#: ../src/plugins/report_Uploader.xml.in.h:10
-#: ../src/plugins/report_uReport.xml.in.h:9
-#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:4
-msgid "HTTP Proxy"
-msgstr "HTTP プロキシ"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:19
-#: ../src/plugins/report_Kerneloops.xml.in.h:6
-#: ../src/plugins/report_RHTSupport.xml.in.h:14
-#: ../src/plugins/report_Uploader.xml.in.h:11
-#: ../src/plugins/report_uReport.xml.in.h:10
-#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:5
-msgid "Sets the proxy server to use for HTTP"
-msgstr "HTTP のために使用するプロキシサーバーを設定する"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:20
-#: ../src/plugins/report_Kerneloops.xml.in.h:7
-#: ../src/plugins/report_RHTSupport.xml.in.h:15
-#: ../src/plugins/report_Uploader.xml.in.h:12
-#: ../src/plugins/report_uReport.xml.in.h:11
-#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:6
-msgid "HTTPS Proxy"
-msgstr "HTTPS プロキシ"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:21
-#: ../src/plugins/report_Kerneloops.xml.in.h:8
-#: ../src/plugins/report_RHTSupport.xml.in.h:16
-#: ../src/plugins/report_Uploader.xml.in.h:13
-#: ../src/plugins/report_uReport.xml.in.h:12
-#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:7
-msgid "Sets the proxy server to use for HTTPS"
-msgstr "HTTPS のために使用するプロキシサーバーを設定する"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:22
+#: ../src/plugins/report_Bugzilla.xml.in.h:10
 msgid "Groups"
 msgstr "グループ"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:23
+#: ../src/plugins/report_Bugzilla.xml.in.h:11
 msgid ""
 "Restrict the access to specified groups &lt;a href=\"https://github.com/abrt/"
 "abrt/wiki/FAQ#creating-private-bugzilla-tickets\"&gt;?&lt;/a&gt;"
 msgstr ""
 "アクセス権を指定されたグループ &lt;a href=\"https://github.com/abrt/abrt/wiki/FAQ#creating-"
 "private-bugzilla-tickets\"&gt;?&lt;/a&gt; に制限します。"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/plugins/report_Bugzilla.xml.in.h:12
+msgid "Bugzilla URL"
+msgstr "Bugzilla URL"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/plugins/report_Bugzilla.xml.in.h:13
+msgid "Address of Bugzilla server"
+msgstr "Bugzilla サーバーのアドレス"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/plugins/report_Bugzilla.xml.in.h:14
+#: ../src/plugins/report_RHTSupport.xml.in.h:11
+#: ../src/plugins/report_uReport.xml.in.h:7
+msgid "Verify SSL"
+msgstr "SSL を照合する"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/plugins/report_Bugzilla.xml.in.h:15
+#: ../src/plugins/report_RHTSupport.xml.in.h:12
+#: ../src/plugins/report_uReport.xml.in.h:8
+msgid "Check SSL key validity"
+msgstr "SSL キーの妥当性をチェックする"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/plugins/report_Bugzilla.xml.in.h:16
+msgid "Bugzilla product"
+msgstr "Bugzilla 製品"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/plugins/report_Bugzilla.xml.in.h:17
+msgid ""
+"Specify this only if you needed different product than specified in /etc/os-"
+"release"
+msgstr "/etc/os-release に指定された製品と異なる製品が必要な場合のみ指定してください"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/plugins/report_Bugzilla.xml.in.h:18
+msgid "Bugzilla product version"
+msgstr "Bugzilla 製品バージョン"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/plugins/report_Bugzilla.xml.in.h:19
+msgid ""
+"Specify this only if you needed different product version than specified in /"
+"etc/os-release"
+msgstr "/etc/os-release に指定された製品バージョンと異なる製品が必要な場合のみ指定してください"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/plugins/report_Bugzilla.xml.in.h:20
+#: ../src/plugins/report_Kerneloops.xml.in.h:5
+#: ../src/plugins/report_RHTSupport.xml.in.h:13
+#: ../src/plugins/report_Uploader.xml.in.h:10
+#: ../src/plugins/report_uReport.xml.in.h:9
+#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:4
+msgid "HTTP Proxy"
+msgstr "HTTP プロキシー"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/plugins/report_Bugzilla.xml.in.h:21
+#: ../src/plugins/report_Kerneloops.xml.in.h:6
+#: ../src/plugins/report_RHTSupport.xml.in.h:14
+#: ../src/plugins/report_Uploader.xml.in.h:11
+#: ../src/plugins/report_uReport.xml.in.h:10
+#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:5
+msgid "Sets the proxy server to use for HTTP"
+msgstr "HTTP のために使用するプロキシーサーバーを設定する"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/plugins/report_Bugzilla.xml.in.h:22
+#: ../src/plugins/report_Kerneloops.xml.in.h:7
+#: ../src/plugins/report_RHTSupport.xml.in.h:15
+#: ../src/plugins/report_Uploader.xml.in.h:12
+#: ../src/plugins/report_uReport.xml.in.h:11
+#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:6
+msgid "HTTPS Proxy"
+msgstr "HTTPS プロキシー"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/plugins/report_Bugzilla.xml.in.h:23
+#: ../src/plugins/report_Kerneloops.xml.in.h:8
+#: ../src/plugins/report_RHTSupport.xml.in.h:16
+#: ../src/plugins/report_Uploader.xml.in.h:13
+#: ../src/plugins/report_uReport.xml.in.h:12
+#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:7
+msgid "Sets the proxy server to use for HTTPS"
+msgstr "HTTPS のために使用するプロキシーサーバーを設定する"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/plugins/report.c:37
@@ -1526,55 +1632,44 @@ msgid "Ticket/case ID"
 msgstr "チケット/ケース ID"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:355
-#, c-format
-msgid "Can't parse backtrace: %s"
-msgstr "バックトレースを解析できません: %s"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:366
-msgid "Can't generate stacktrace description (no crash thread?)"
-msgstr "スタックトレースの説明を生成できません (クラッシュスレッドがありませんか?)。"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:764
+#: ../src/plugins/reporter-bugzilla.c:762
 msgid ""
 "Warning, private ticket groups already specified as cmdline argument, "
 "ignoring the env variable and configuration"
 msgstr "警告、プライベートチケットがすでにコマンドライン引数として指定されています。環境変数と設定を無視します。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:775
-#: ../src/plugins/reporter-rhtsupport.c:342
+#: ../src/plugins/reporter-bugzilla.c:773
+#: ../src/plugins/reporter-rhtsupport.c:377
 msgid "Can't continue without login"
 msgstr "ログインせずに続行できません"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:788
-#: ../src/plugins/reporter-rhtsupport.c:355
+#: ../src/plugins/reporter-bugzilla.c:786
+#: ../src/plugins/reporter-rhtsupport.c:390
 msgid "Can't continue without password"
 msgstr "パスワードなしで続行できません"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:797
+#: ../src/plugins/reporter-bugzilla.c:795
 #, c-format
 msgid "Logging into Bugzilla at %s"
 msgstr "%s にある Bugzilla にログインしています"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:801
+#: ../src/plugins/reporter-bugzilla.c:799
 msgid "Invalid password or login. Please enter your BZ login:"
 msgstr "無効なパスワードまたはログイン名です。あなたの BZ ログイン名を入力してください:"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:804
-#: ../src/plugins/reporter-rhtsupport.c:369
+#: ../src/plugins/reporter-bugzilla.c:802
+#: ../src/plugins/reporter-rhtsupport.c:404
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
 msgstr "無効なパスワードまたはログイン名です。'%s' のパスワードを入力してください:"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:823
+#: ../src/plugins/reporter-bugzilla.c:821
 msgid ""
 "\n"
 "& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d "
@@ -1630,7 +1725,7 @@ msgstr ""
 "\n"
 "問題を Bugzilla に報告します。\n"
 "\n"
-"このツールは DIR で指定したディレクトリを読み込みます。\n"
+"このツールは DIR で指定したディレクトリーを読み込みます。\n"
 "そして、 Bugzilla にログインし、'Whiteboard' において同じ \n"
 "ABRT ハッシュ値 (16進の文字列) を持つバグを検索します。\n"
 "\n"
@@ -1646,7 +1741,7 @@ msgstr ""
 "'reported_to' 要素内に記録されます。\n"
 "\n"
 "オプション -t により Bugzilla サイトにすでに作成されたバグに FILE をアップロードします。\n"
-"バグ ID が -d DIR で指定されたディレクトリから取得されます。\n"
+"バグ ID が -d DIR で指定されたディレクトリーから取得されます。\n"
 "DIR にある問題データがまだ Bugzilla に報告されていなければ、アップロードが失敗します。\n"
 "\n"
 "オプション -tID により Bugzilla サイトにおいて指定された ID を持つバグに\n"
@@ -1661,75 +1756,76 @@ msgstr ""
 "指定されなければ、CONFFILE が初期値になります。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:896
-#: ../src/plugins/reporter-rhtsupport.c:472
+#: ../src/plugins/reporter-bugzilla.c:894
+#: ../src/plugins/reporter-rhtsupport.c:511
 msgid "Configuration file (may be given many times)"
 msgstr "設定ファイル (何回でも供給可能)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:897
+#: ../src/plugins/reporter-bugzilla.c:895
 msgid "Formatting file for initial comment"
 msgstr "初期コメントのためにファイルを整形しています"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:898
+#: ../src/plugins/reporter-bugzilla.c:896
 msgid "Formatting file for duplicates"
 msgstr "重複のためにファイルを整形しています"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:899
+#: ../src/plugins/reporter-bugzilla.c:897
 msgid "Attach FILEs [to bug with this ID]"
 msgstr "FILEs を添付する [この ID を持つバグに] "
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:900
+#: ../src/plugins/reporter-bugzilla.c:898
 msgid "When creating bug, attach binary files too"
 msgstr "バグを作成する時には、バイナリファイルも添付して下さい"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:901
-#: ../src/plugins/reporter-rhtsupport.c:474
+#: ../src/plugins/reporter-bugzilla.c:899
+#: ../src/plugins/reporter-rhtsupport.c:513
 msgid "Force reporting even if this problem is already reported"
 msgstr "この問題がすでに報告されている場合でも強制的に報告します"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:902
+#: ../src/plugins/reporter-bugzilla.c:900
 msgid "Add bugzilla user to CC list [of bug with this ID]"
 msgstr "bugzilla ユーザーを [この ID を持つバグの] CC 一覧に追加する"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:903
+#: ../src/plugins/reporter-bugzilla.c:901
 msgid "Print BUG_ID which has given DUPHASH"
 msgstr "指定された DUPHASH を持つ BUG_ID を表示します"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:904
+#: ../src/plugins/reporter-bugzilla.c:902
 msgid "A name of bug tracker for an additional URL from 'reported_to'"
 msgstr "'reported_to' からの追加 URL 用のバグトラッカーの名前"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:905
+#: ../src/plugins/reporter-bugzilla.c:903
 msgid "Restrict access to this group only"
 msgstr "アクセスをこのグループのみに制限する"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:906
+#: ../src/plugins/reporter-bugzilla.c:904 ../src/plugins/reporter-mailx.c:284
+#: ../src/plugins/reporter-rhtsupport.c:517
 msgid "Debug"
 msgstr "デバッグ"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:948
+#: ../src/plugins/reporter-bugzilla.c:949
 msgid "Looking for similar problems in bugzilla"
 msgstr "Bugzilla において同様の問題を検索中"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:975
+#: ../src/plugins/reporter-bugzilla.c:976
 msgid "Login is not provided by configuration. Please enter your BZ login:"
 msgstr "ログイン情報が設定により指定されていません。BZ ログイン情報を入力してください:"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:981
-#: ../src/plugins/reporter-rhtsupport.c:510
+#: ../src/plugins/reporter-bugzilla.c:982
+#: ../src/plugins/reporter-rhtsupport.c:551
 #, c-format
 msgid ""
 "Password is not provided by configuration. Please enter the password for "
@@ -1737,14 +1833,14 @@ msgid ""
 msgstr "パスワードが設定されていません。'%s' 向けのパスワードを入力してください:"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1000
+#: ../src/plugins/reporter-bugzilla.c:1001
 msgid ""
 "Can't get Bugzilla ID because this problem has not yet been reported to "
 "Bugzilla."
 msgstr "この問題がまだ Bugzilla に報告されていないので Bugzilla ID を取得できません。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1007
+#: ../src/plugins/reporter-bugzilla.c:1008
 #, c-format
 msgid ""
 "This problem has been reported to Bugzilla '%s' which differs from the "
@@ -1752,86 +1848,106 @@ msgid ""
 msgstr "この問題が Bugzilla '%s' に報告されました。設定された Bugzilla '%s' から変更されました。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1011
+#: ../src/plugins/reporter-bugzilla.c:1012
 #, c-format
 msgid "Malformed url to Bugzilla '%s'."
 msgstr "Bugzilla '%s' の不正な形式の URL。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1015
+#: ../src/plugins/reporter-bugzilla.c:1016
 #, c-format
 msgid "Using Bugzilla ID '%s'"
 msgstr "Bugzilla ID '%s' を使用しています"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1049
-#: ../src/plugins/reporter-bugzilla.c:1341
+#: ../src/plugins/reporter-bugzilla.c:1050
+#: ../src/plugins/reporter-bugzilla.c:1220
+#: ../src/plugins/reporter-bugzilla.c:1379
 msgid "Logging out"
 msgstr "ログアウトしています"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1100
+#: ../src/plugins/reporter-bugzilla.c:1101
 msgid "Can't determine Bugzilla Product from problem data."
 msgstr "問題データから Bugzilla 製品を判断できません"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1151
+#: ../src/plugins/reporter-bugzilla.c:1152
 msgid "Checking for duplicates"
 msgstr "重複をチェックしています"
 
+#: ../src/plugins/reporter-bugzilla.c:1201
+#, c-format
+msgid ""
+"You have requested to make your data accessible only to a specific group and "
+"this bug is a duplicate of bug: %s/%u In case of bug duplicates a new "
+"comment is added to the original bug report but access to the comments "
+"cannot be restricted to a specific group. Would you like to open a new bug "
+"report and close it as DUPLICATE of the original one? Otherwise, the bug "
+"reporting procedure will be terminated."
+msgstr ""
+"データにアクセスできるのを特定グループのみにする要求が出されましたが、このバグはバグ %s/%u "
+"の重複です。バグが重複する場合は新規のコメントが元のバグレポートに追加されますが、この場合、コメントへのアクセスを特定グループに制限できません。新規のバグレポートをオープンし、元のバグレポートの重複としてこのバグをクローズしますか? "
+"そうしない場合、バグレポート手順は終了します。"
+
 # translation auto-copied from project libreport, version master, document libreport
 #. Create new bug
-#: ../src/plugins/reporter-bugzilla.c:1197
+#: ../src/plugins/reporter-bugzilla.c:1228
 msgid "Creating a new bug"
 msgstr "新しいバグを作成しています"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1218
+#: ../src/plugins/reporter-bugzilla.c:1249
 msgid "Failed to create a new bug."
 msgstr "新規バグの作成に失敗しました。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1229
+#: ../src/plugins/reporter-bugzilla.c:1260
 #, c-format
 msgid "Adding External URL to bug %i"
 msgstr "外部 URL をバグ %i に追加します"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1235
+#: ../src/plugins/reporter-bugzilla.c:1266
 #, c-format
 msgid "Adding attachments to bug %i"
 msgstr "バグ %i に添付ファイルを追加しています"
 
+#: ../src/plugins/reporter-bugzilla.c:1280
+#, c-format
+msgid "Closing bug %i as duplicate of bug %i"
+msgstr "バグ %i をバグ %i の重複としてクローズしています"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1254
+#: ../src/plugins/reporter-bugzilla.c:1292
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "バグは既に報告済みです: %i　"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1297
+#: ../src/plugins/reporter-bugzilla.c:1335
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "%s を CC 一覧に追加しています"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1314
+#: ../src/plugins/reporter-bugzilla.c:1352
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "新しいコメントをバグ %d に追加しています"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1328
+#: ../src/plugins/reporter-bugzilla.c:1366
 msgid "Attaching better backtrace"
 msgstr "より適したバックトレースを添付中"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1336
+#: ../src/plugins/reporter-bugzilla.c:1374
 msgid "Found the same comment in the bug history, not adding a new one"
 msgstr "バグ履歴に同じコメントが見つかりました、 新しいコメントは追加しません"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1344
+#: ../src/plugins/reporter-bugzilla.c:1382
 #, c-format
 msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
 msgstr "状態: %s%s%s %s/show_bug.cgi?id=%u"
@@ -1869,12 +1985,12 @@ msgstr ""
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/plugins/reporter-kerneloops.c:167
-#: ../src/plugins/reporter-ureport.c:74
+#: ../src/plugins/reporter-ureport.c:79
 msgid "Configuration file"
 msgstr "設定ファイル"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-mailx.c:59
+#: ../src/plugins/reporter-mailx.c:83
 #, c-format
 msgid ""
 "Email address of %s was not specified. Would you like to do so now? If not, "
@@ -1882,50 +1998,58 @@ msgid ""
 msgstr "%s の電子メールアドレスが指定されませんでした。今すぐ設定したいですか? 設定しなければ、'%s' が使用されます。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-mailx.c:66
+#: ../src/plugins/reporter-mailx.c:90
 #, c-format
 msgid "Please, type email address of %s:"
 msgstr "%s の電子メールアドレスを入力してください:"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-mailx.c:73
+#: ../src/plugins/reporter-mailx.c:97
 #, c-format
 msgid "Can't continue without email address of %s"
 msgstr "%s の電子メールアドレスなしで続行できません"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-mailx.c:135
+#: ../src/plugins/reporter-mailx.c:206 ../src/plugins/reporter-mailx.c:211
 msgid "Sending an email..."
 msgstr "電子メールを送信しています...　"
 
+#: ../src/plugins/reporter-mailx.c:209
+#, c-format
+msgid "Sending a notification email to: %s"
+msgstr "電子メール通知を送信しています: %s"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-mailx.c:158
+#: ../src/plugins/reporter-mailx.c:237
 #, c-format
 msgid "Email was sent to: %s"
 msgstr "電子メールが送信されました: %s"
 
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-mailx.c:178
+#: ../src/plugins/reporter-mailx.c:258
 msgid ""
-"& [-v] -d DIR [-c CONFFILE]\n"
+"& [-v] -d DIR [-c CONFFILE] [-F FMTFILE]\n"
 "\n"
 "Sends contents of a problem directory DIR via email\n"
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
-"& [-v] -d DIR [-c CONFFILE]\n"
+"& [-v] -d DIR [-c CONFFILE] [-F FMTFILE]\n"
 "\n"
-"電子メールで問題の DIR ディレクトリのコンテンツを送信します\n"
+"電子メールで問題の DIR ディレクトリーのコンテンツを送信します\n"
 "\n"
-"指定しない場合、 CONFFILE は次にデフォルト設定されます"
+"指定しない場合、 CONFFILE により次のようにデフォルト設定されます。 "
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-mailx.c:199 ../src/plugins/reporter-upload.c:250
+#: ../src/plugins/reporter-mailx.c:281 ../src/plugins/reporter-upload.c:189
 msgid "Config file"
 msgstr "設定ファイル"
 
+#: ../src/plugins/reporter-mailx.c:282
+msgid "Formatting file for an email"
+msgstr "電子メールのためにファイルを整形しています"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-mailx.c:200
+#: ../src/plugins/reporter-mailx.c:283
 msgid "Notify only (Do not mark the report as sent)"
 msgstr "通知のみ（報告を送信としてマークしません）"
 
@@ -1966,37 +2090,37 @@ msgid "Can't open '%s' for writing. Please select another file:"
 msgstr "書き込みに「%s」を開くことができません。 別のファイルを選択してください:"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-print.c:143
+#: ../src/plugins/reporter-print.c:144
 #, c-format
 msgid "The report was appended to %s"
 msgstr "報告は %s に追記されました"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-print.c:143
+#: ../src/plugins/reporter-print.c:144
 #, c-format
 msgid "The report was stored to %s"
 msgstr "報告は %s に保存されました"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-rhtsupport.c:259
-#: ../src/plugins/reporter-ureport.c:237
+#: ../src/plugins/reporter-rhtsupport.c:294
+#: ../src/plugins/reporter-ureport.c:297
 #, c-format
 msgid "Server responded with an error: '%s'"
 msgstr "サーバーがエラーを応答しました: '%s'"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-rhtsupport.c:319
+#: ../src/plugins/reporter-rhtsupport.c:354
 msgid "Do you still want to create a RHTSupport ticket?"
 msgstr "RHTSupport チケットを本当に作成しますか?"
 
-#: ../src/plugins/reporter-rhtsupport.c:367
+#: ../src/plugins/reporter-rhtsupport.c:402
 msgid "Invalid password or login. Please enter your Red Hat login:"
 msgstr "パスワードまたはログインが無効です。Red Hat ログインを入力してください:"
 
-#: ../src/plugins/reporter-rhtsupport.c:435
+#: ../src/plugins/reporter-rhtsupport.c:471
 msgid ""
 "\n"
-"& [-v] [-c CONFFILE] -d DIR\n"
+"& [-v] [-c CONFFILE] [-F FMTFILE] -d DIR\n"
 "or:\n"
 "& [-v] [-c CONFFILE] [-d DIR] -t[ID] [-u -C UR_CONFFILE] FILE...\n"
 "\n"
@@ -2005,96 +2129,123 @@ msgid ""
 "If not specified, CONFFILE defaults to "
 msgstr ""
 "\n"
-"& [-v] [-c CONFFILE] -d DIR\n"
+"& [-v] [-c CONFFILE] [-F FMTFILE] -d DIR\n"
 "or:\n"
 "& [-v] [-c CONFFILE] [-d DIR] -t[ID] [-u -C UR_CONFFILE] FILE...\n"
 "\n"
 "RHTSupport に問題を報告します。\n"
 "\n"
-"指定しない場合、CONFFILE は次にデフォルト設定されます "
+"指定しない場合、CONFFILE は次にデフォルト設定されます"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-rhtsupport.c:473
+#: ../src/plugins/reporter-rhtsupport.c:512
 msgid "Upload FILEs [to case with this ID]"
 msgstr " [この ID が付いたケースへ] FILE をアップロードします"
 
-#: ../src/plugins/reporter-rhtsupport.c:475
+#: ../src/plugins/reporter-rhtsupport.c:514
 msgid "Submit uReport before creating a new case"
 msgstr "新規ケースを作成する前に uReport を送信します"
 
-#: ../src/plugins/reporter-rhtsupport.c:476
+#: ../src/plugins/reporter-rhtsupport.c:515
 msgid "Configuration file for uReport"
 msgstr "uReport の設定ファイル"
 
+#: ../src/plugins/reporter-rhtsupport.c:516
+msgid "Formatting file for a new case"
+msgstr "新規ケースのためにファイルを整形しています"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-rhtsupport.c:504
+#: ../src/plugins/reporter-rhtsupport.c:545
 msgid "Login is not provided by configuration. Please enter your RHTS login:"
 msgstr "ログイン情報が設定により指定されていません。RHTS ログイン情報を入力してください:"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-rhtsupport.c:573
+#: ../src/plugins/reporter-rhtsupport.c:614
 #, c-format
 msgid "Attaching '%s' to case '%s'"
 msgstr "'%s' をケース '%s' に添付しています"
 
-#: ../src/plugins/reporter-rhtsupport.c:610
+#: ../src/plugins/reporter-rhtsupport.c:651
 msgid "Sending ABRT crash statistics data"
 msgstr "ABRT クラッシュ統計データの送信中"
+
+#: ../src/plugins/reporter-rhtsupport.c:674
+msgid ""
+"The problem has only occurred once and the ability to reproduce the problem "
+"is unknown. Please ensure you will be able to provide detailed information "
+"to our Support Team. Would you like to continue and open a new support case?"
+msgstr ""
+"問題が 1 "
+"回発生しましたが、この問題を再現できるかどうかは不明です。必ず詳細情報をサポートチームに送ってください。このままサポートケースを作成しますか?"
+
+#: ../src/plugins/reporter-rhtsupport.c:690
+#, c-format
+msgid ""
+"The crashed program was released by '%s'. Would you like to report the "
+"problem to Red Hat Support?"
+msgstr "クラッシュしたプログラムは '%s' によってリリースされました。問題を Red Hat サポートに報告しますか?"
+
+#: ../src/plugins/reporter-rhtsupport.c:708
+#, c-format
+msgid ""
+"The program '%s' does not appear to be provided by Red Hat. Would you like "
+"to report the problem to Red Hat Support?"
+msgstr "プログラム '%s' は Red Hat によって提供されたものではないようです。問題を Red Hat サポートに報告しますか?"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/plugins/reporter-rhtsupport.c:725
+msgid "Can't create a temporary directory in "
+msgstr "次の場所に一時ディレクトリーを作成できません。"
 
 # translation auto-copied from project libreport, version master, document libreport
 #. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../src/plugins/reporter-rhtsupport.c:621
-#: ../src/plugins/reporter-upload.c:52
+#. Compressing e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#: ../src/plugins/reporter-rhtsupport.c:793
+#: ../src/plugins/reporter-upload.c:103
 msgid "Compressing data"
 msgstr "データの圧縮"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-rhtsupport.c:656
-msgid "Can't create a temporary directory in "
-msgstr "次の場所に一時ディレクトリを作成できません。"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-rhtsupport.c:665
+#: ../src/plugins/reporter-rhtsupport.c:801
 msgid "Can't create temporary file in "
 msgstr "次の場所に一時ファイルを作成できません。"
 
 # translation auto-copied from project libreport, version master, document libreport
 #. Check for hints and show them if we have something
-#: ../src/plugins/reporter-rhtsupport.c:676
+#: ../src/plugins/reporter-rhtsupport.c:812
 msgid "Checking for hints"
 msgstr "ヒントを確認中"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-rhtsupport.c:686
+#: ../src/plugins/reporter-rhtsupport.c:822
 msgid "Creating a new case"
 msgstr "新規ケースの作成中"
 
 # translation auto-copied from project libreport, version master, document libreport
 #. How can we help user sorting out this problem?
-#: ../src/plugins/reporter-rhtsupport.c:697
+#: ../src/plugins/reporter-rhtsupport.c:833
 msgid "Can't determine RH Support Product from problem data."
 msgstr "問題データから RH サポート製品を判断できません"
 
-#: ../src/plugins/reporter-rhtsupport.c:753
+#: ../src/plugins/reporter-rhtsupport.c:889
 msgid "Linking ABRT crash statistics record with the case"
 msgstr "ABRT クラッシュ統計記録をケースにリンク中"
 
-#: ../src/plugins/reporter-rhtsupport.c:766
+#: ../src/plugins/reporter-rhtsupport.c:902
 #, c-format
 msgid "Linking ABRT crash statistics record with contact email: '%s'"
 msgstr "ABRT クラッシュ統計記録を連絡先メールアドレスにリンク中: '%s'"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-rhtsupport.c:790
+#: ../src/plugins/reporter-rhtsupport.c:926
 #, c-format
 msgid "Adding comment to case '%s'"
 msgstr "ケース '%s' にコメントを追加中"
 
 # translation auto-copied from project libreport, version master, document libreport
 #. Attach the tarball of -d DIR
-#: ../src/plugins/reporter-rhtsupport.c:808
+#: ../src/plugins/reporter-rhtsupport.c:944
 #, c-format
 msgid "Attaching problem data to case '%s'"
 msgstr "問題データをケース '%s' に添付中"
@@ -2110,45 +2261,54 @@ msgid "Updates which possibly help: "
 msgstr "役に立つ可能性のある更新:"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-upload.c:30
+#: ../src/plugins/reporter-upload.c:29
 msgid "Can't continue without URL"
 msgstr "URL なしで続行できません"
-
-#: ../src/plugins/reporter-upload.c:61
-msgid "Upload URL is not provided by configuration. Please enter upload URL:"
-msgstr "アップロード URL が設定で指定されていません。アップロード URL を入力してください:"
 
 #. Be permissive and nice, ask only once and don't check
 #. the result. User can dismiss this prompt but the upload
 #. may work somehow???
-#: ../src/plugins/reporter-upload.c:164
+#: ../src/plugins/reporter-upload.c:51
 msgid "Please enter password for uploading:"
 msgstr "パスワードを入力してアップロードを行います:"
 
 # translation auto-copied from project libreport, version master, document libreport
 #. success
-#: ../src/plugins/reporter-upload.c:181
+#: ../src/plugins/reporter-upload.c:120
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "アーカイブが作成されました: '%s'　"
 
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-upload.c:222
+#: ../src/plugins/reporter-upload.c:159
 msgid ""
-"& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"& [-v] -d DIR [-c CONFFILE] [-u URL] [-b FILE] [-r FILE]\n"
 "\n"
 "Uploads compressed tarball of problem directory DIR to URL.\n"
 "If URL is not specified, creates tarball in "
 msgstr ""
-"& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"& [-v] -d DIR [-c CONFFILE] [-u URL] [-b FILE] [-r FILE]\n"
 "\n"
-"問題ディレクトリ DIR の圧縮済み tar ファイルを URL にアップロードします。\n"
-"URL を指定しない場合、以下のものが tar ファイルに含まれます。"
+"問題ディレクトリー DIR の圧縮済み tar ファイルを URL にアップロードします。\n"
+"URL を指定しない場合、以下のものが tar ファイルに含まれます。 "
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-upload.c:251
+#: ../src/plugins/reporter-upload.c:190
 msgid "Base URL to upload to"
 msgstr "アップロード先のベース URL"
+
+#: ../src/plugins/reporter-upload.c:191
+msgid "SSH public key file"
+msgstr "SSH 公開鍵ファイル"
+
+#: ../src/plugins/reporter-upload.c:192
+msgid "SSH private key file"
+msgstr "SSH 秘密鍵ファイル"
+
+#: ../src/plugins/reporter-upload.c:221
+msgid ""
+"Please enter a URL (scp, ftp, etc.) where the problem data is to be exported:"
+""
+msgstr "問題データのエクスポート先となる URL (scp、ftp など) を入力してください:"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
@@ -2275,11 +2435,11 @@ msgstr "Red Hat カスタマーユーザー名"
 msgid "Red Hat customer password"
 msgstr "Red Hat カスタマーパスワード"
 
-#: ../src/plugins/report_RHTSupport.xml.in.h:9
+#: ../src/plugins/report_RHTSupport.xml.in.h:7
 msgid "Submit uReport"
 msgstr "uReport の送信"
 
-#: ../src/plugins/report_RHTSupport.xml.in.h:10
+#: ../src/plugins/report_RHTSupport.xml.in.h:8
 msgid ""
 "Submit &lt;a href=\"https://access.redhat.com/articles/642323\"&gt;micro-"
 "report&lt;/a&gt; when creating a new case."
@@ -2288,12 +2448,12 @@ msgstr ""
 "report&lt;/a&gt; を送信します。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_RHTSupport.xml.in.h:11
+#: ../src/plugins/report_RHTSupport.xml.in.h:9
 msgid "RH Portal URL"
 msgstr "RH ポータルの URL"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_RHTSupport.xml.in.h:12
+#: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Address of the Red Hat support portal"
 msgstr "Red Hat サポートポータルのアドレス"
 
@@ -2340,13 +2500,29 @@ msgstr "URL にパスワードを入れたくない場合はこのフィール�
 #: ../src/plugins/report_Uploader.xml.in.h:14
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:8
 msgid "FTP Proxy"
-msgstr "FTP プロキシ"
+msgstr "FTP プロキシー"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/plugins/report_Uploader.xml.in.h:15
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:9
 msgid "Sets the proxy server to use for FTP"
-msgstr "FTP のために使用するプロキシサーバーを設定する"
+msgstr "FTP のために使用するプロキシーサーバーを設定する"
+
+#: ../src/plugins/report_Uploader.xml.in.h:16
+msgid "SSH Public key file"
+msgstr "SSH 公開鍵ファイル"
+
+#: ../src/plugins/report_Uploader.xml.in.h:17
+msgid "Use this field to specify SSH public keyfile"
+msgstr "このフィールドを使用して SSH 公開鍵ファイルを指定します"
+
+#: ../src/plugins/report_Uploader.xml.in.h:18
+msgid "SSH Private key file"
+msgstr "SSH 秘密鍵ファイル"
+
+#: ../src/plugins/report_Uploader.xml.in.h:19
+msgid "Use this field to specify SSH private keyfile"
+msgstr "このフィールドを使用して SSH 秘密鍵ファイルを指定します"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/plugins/report_uReport.xml.in.h:1
@@ -2426,73 +2602,97 @@ msgstr "新しいバグ id: %i"
 #: ../src/plugins/rhbz.c:770
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "Bugzilla はバグ %d の親を見つけることが出来ません"
+msgstr "Bugzilla はバグ %d の親を見つけることができません"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/rhbz.c:893
+#: ../src/plugins/rhbz.c:916
 msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
 msgstr "Bug.search(quicksearch) の返り値がメンバー 'bugs' を含みません"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:68
+#: ../src/plugins/reporter-ureport.c:73
 msgid "Specify server URL"
 msgstr "サーバーの URL を指定します"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:70
+#: ../src/plugins/reporter-ureport.c:75
 msgid "Allow insecure connection to ureport server"
 msgstr "uReport サーバーに非セキュアな接続を許可する"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:71
+#: ../src/plugins/reporter-ureport.c:76
 msgid "Use client authentication"
 msgstr "クライアント認証を使用する"
 
-#: ../src/plugins/reporter-ureport.c:72
+#: ../src/plugins/reporter-ureport.c:77
 msgid "Use HTTP Authentication"
 msgstr "HTTP 認証を使用する"
 
-#: ../src/plugins/reporter-ureport.c:73
+#: ../src/plugins/reporter-ureport.c:78
 msgid "Additional files included in 'auth' key"
 msgstr "'auth' キーに含ませる追加ファイル"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:76
+#: ../src/plugins/reporter-ureport.c:81
 msgid "bthash of uReport to attach (conflicts with -A)"
 msgstr "添付する uReport の bthash (-A と競合)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:78
+#: ../src/plugins/reporter-ureport.c:83
 msgid "attach to a bthash from reported_to (conflicts with -a)"
 msgstr "reported_to からの bthash に添付する (-a と競合)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:80
+#: ../src/plugins/reporter-ureport.c:85
 msgid "contact e-mail address (requires -a|-A, conflicts with -E)"
 msgstr "連絡先メールアドレス (-a|-A が必須、-E と競合)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:82
+#: ../src/plugins/reporter-ureport.c:87
 msgid ""
 "contact e-mail address from environment or configuration file (requires -a|-"
 "A, conflicts with -e)"
 msgstr "環境または設定ファイルからの連絡先メールアドレス (-a|-A が必須、-e と競合)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:84
+#: ../src/plugins/reporter-ureport.c:89
 msgid "attach RHBZ bug (requires -a|-A, conflicts with -B)"
 msgstr "RHBZ バグの添付 (-a|-A が必須、-B と競合)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:86
+#: ../src/plugins/reporter-ureport.c:91
 msgid ""
 "attach last RHBZ bug from reported_to (requires -a|-A, conflicts with -b)"
 msgstr "reported_to からの最新の RHBZ を添付する (-a|-A が必須、-b と競合)"
 
-#: ../src/plugins/reporter-ureport.c:91
+#: ../src/plugins/reporter-ureport.c:95
+msgid "attach value (requires -a|-A and -T, conflicts with -L)"
+msgstr "値の添付 (-a|-A と -T が必須、-L と競合)"
+
+#: ../src/plugins/reporter-ureport.c:97
+msgid ""
+"attach data of FIELD [URL] of the last report result (requires -a|-A, -r and "
+"-T, conflicts with -l)"
+msgstr "最新のレポート結果の FIELD [URL] のデータを添付 (-a|-A、 -r および -T が必須、-l と競合)"
+
+#: ../src/plugins/reporter-ureport.c:100
+msgid ""
+"use REPORT_RESULT_TYPE when looking for FIELD in reported_to (used only with "
+"-L)"
+msgstr "reported_to で FIELD を検索中に REPORT_RESULT_TYPE を使用  (-L のみと共に使用)"
+
+#: ../src/plugins/reporter-ureport.c:102
+msgid ""
+"attach DATA as ureporte attachment ATTACHMENT_TYPE (used only with -l|-L)"
+msgstr "ureporte 添付 ATTACHMENT_TYPE として DATA を添付 (-l|-L のみと共に使用)"
+
+#: ../src/plugins/reporter-ureport.c:107
 msgid ""
 "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-A -a bthash -B "
 "-b bug-id -E -e email] [-d DIR]\n"
+"  [-A -a bthash -T ATTACHMENT_TYPE -r REPORT_RESULT_TYPE -L RESULT_FIELD] [-"
+"d DIR]\n"
+"  [-A -a bthash -T ATTACHMENT_TYPE -l DATA] [-d DIR]\n"
 "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-i "
 "AUTH_ITEMS]\\\n"
 "  [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
@@ -2503,59 +2703,72 @@ msgid ""
 msgstr ""
 "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-A -a bthash -B "
 "-b bug-id -E -e email] [-d DIR]\n"
+"  [-A -a bthash -T ATTACHMENT_TYPE -r REPORT_RESULT_TYPE -L RESULT_FIELD] [-"
+"d DIR]\n"
+"  [-A -a bthash -T ATTACHMENT_TYPE -l DATA] [-d DIR]\n"
 "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-i "
 "AUTH_ITEMS]\\\n"
 "  [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
 "\n"
 "micro report を送信する、または micro report に添付ファイルを追加します\n"
 "\n"
-"デフォルト設定を次から読み込みます"
+"デフォルト設定を次から読み込みます "
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:144
+#: ../src/plugins/reporter-ureport.c:179
 msgid "This problem does not have an uReport assigned."
 msgstr "この問題は uReport が添付されていません。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:157
+#: ../src/plugins/reporter-ureport.c:192
 msgid "This problem has not been reported to Bugzilla."
 msgstr "この問題は Bugzilla に報告されていません。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:161
+#: ../src/plugins/reporter-ureport.c:196
 #, c-format
 msgid "Unable to find bug ID in bugzilla URL '%s'"
 msgstr "bugzilla URL '%s' にバグ ID を見つけられません"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:166
+#: ../src/plugins/reporter-ureport.c:201
 #, c-format
 msgid "Unable to parse bug ID from bugzilla URL '%s'"
 msgstr "bugzilla URL '%s' からバグ ID を構文解析できません"
 
+#: ../src/plugins/reporter-ureport.c:211
+#, c-format
+msgid "This problem has not been reported to '%s'."
+msgstr "この問題は '%s' に報告されていません。"
+
+#: ../src/plugins/reporter-ureport.c:216
+#, c-format
+msgid "The report result '%s' is missing URL."
+msgstr "レポート結果 '%s' に URL がありません。"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:179
+#: ../src/plugins/reporter-ureport.c:233
 msgid ""
 "Neither environment variable 'uReport_ContactEmail' nor configuration option "
 "'ContactEmail' is set"
 msgstr "環境変数 'uReport_ContactEmail' および設定オプション 'ContactEmail' のいずれも設定されていません"
 
-#: ../src/plugins/reporter-ureport.c:185
+#: ../src/plugins/reporter-ureport.c:239
 msgid "You need to specify bug ID, contact email or both"
 msgstr "バグ ID か連絡先メールアドレスのいずれかまたは両方を指定する必要があります"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:203
+#: ../src/plugins/reporter-ureport.c:263
 msgid "You need to specify bthash of the uReport to attach."
 msgstr "添付する uReport の bthash を指定する必要があります。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:208
+#: ../src/plugins/reporter-ureport.c:268
 msgid "Not uploading an empty uReport"
 msgstr "空の uReport をアップロードしません"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:229
+#: ../src/plugins/reporter-ureport.c:289
 msgid "This problem has already been reported."
 msgstr "この問題はすでに報告されています。"
 
@@ -2719,7 +2932,16 @@ msgstr "電子メールで問題データを送信する"
 msgid "Analyze the problem locally and send information via email"
 msgstr "問題をローカルに分析し。情報を電子メールで送信する"
 
-# translation auto-copied from project libreport, version master, document libreport
+#: ../src/workflows/workflow_uReport.xml.in.h:1
+msgid "Submit anonymous crash report"
+msgstr "匿名クラッシュレポートの提出"
+
+#: ../src/workflows/workflow_uReport.xml.in.h:2
+msgid ""
+"Submit anonymous crash report - I do not want to be contacted by Red Hat "
+"Support"
+msgstr "匿名クラッシュレポートの提出:  Red Hat サポートから連絡を受けることを希望しません"
+
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1
 #: ../src/workflows/workflow_RHELPython.xml.in.h:1
@@ -2727,50 +2949,20 @@ msgstr "問題をローカルに分析し。情報を電子メールで送信す
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:1
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:1
 #: ../src/workflows/workflow_RHELJava.xml.in.h:1
-msgid "Report to Red Hat Customer Portal"
-msgstr "Red Hat カスタマーポータルに報告する"
+msgid "Ask Red Hat Support for help"
+msgstr "Red Hat サポートの支援を依頼する"
 
-# translation auto-copied from project libreport, version master, document libreport
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
-msgid "Process the C/C++ crash using the Red Hat infrastructure"
-msgstr "Red Hat インフラストラクチャーを使用して C/C++ クラッシュを処理する"
-
-# translation auto-copied from project libreport, version master, document libreport
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:2
-msgid "Process the kerneloops using the Red Hat infrastructure"
-msgstr "Red Hat インフラストラクチャーを使用して kerneloops を処理する"
-
-# translation auto-copied from project libreport, version master, document libreport
 #: ../src/workflows/workflow_RHELPython.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:2
-msgid "Process the python exception using the Red Hat infrastructure"
-msgstr "Red Hat インフラストラクチャーを使用して Python 例外を処理する"
-
-# translation auto-copied from project libreport, version master, document libreport
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:2
-msgid "Process the kernel crash using the Red Hat infrastructure"
-msgstr "Red Hat インフラストラクチャーを使用して kernel クラッシュを処理する"
-
-# translation auto-copied from project libreport, version master, document libreport
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:2
-msgid "Process the X Server problem using the Red Hat infrastructure"
-msgstr "Red Hat インフラストラクチャーを使用して X サーバーの問題を処理する"
-
-# translation auto-copied from project libreport, version master, document libreport
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:2
-msgid "Process the problem using the Red Hat infrastructure"
-msgstr "Red Hat インフラストラクチャーを使って問題を処理します"
-
-# translation auto-copied from project libreport, version master, document libreport
 #: ../src/workflows/workflow_RHELJava.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
-msgid "Process the Java exception using the Red Hat infrastructure"
-msgstr "Red Hat インフラストラクチャーを使って Java 例外を処理します"
+msgid ""
+"Create new Red Hat Support case - I would like to be contacted by Red Hat "
+"Support"
+msgstr "新規 Red Hat サポートケースの作成:  Red Hat サポートから連絡を受けることを希望します"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
@@ -2782,3 +2974,38 @@ msgstr "Red Hat インフラストラクチャーを使って Java 例外を処�
 #: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:1
 msgid "Report to Red Hat Bugzilla"
 msgstr "Red Hat Bugzilla に報告します"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
+msgid "Process the C/C++ crash using the Red Hat infrastructure"
+msgstr "Red Hat インフラストラクチャーを使用して C/C++ クラッシュを処理する"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:2
+msgid "Process the kerneloops using the Red Hat infrastructure"
+msgstr "Red Hat インフラストラクチャーを使用して kerneloops を処理する"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:2
+msgid "Process the python exception using the Red Hat infrastructure"
+msgstr "Red Hat インフラストラクチャーを使用して Python 例外を処理する"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:2
+msgid "Process the kernel crash using the Red Hat infrastructure"
+msgstr "Red Hat インフラストラクチャーを使用して kernel クラッシュを処理する"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:2
+msgid "Process the X Server problem using the Red Hat infrastructure"
+msgstr "Red Hat インフラストラクチャーを使用して X サーバーの問題を処理する"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:2
+msgid "Process the problem using the Red Hat infrastructure"
+msgstr "Red Hat インフラストラクチャーを使って問題を処理します"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
+msgid "Process the Java exception using the Red Hat infrastructure"
+msgstr "Red Hat インフラストラクチャーを使って Java 例外を処理します"

@@ -1,17 +1,18 @@
 # Leah Liu <lliu@redhat.com>, 2015. #zanata
+# Leah Liu <lliu@redhat.com>, 2016. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-14 15:18+0200\n"
+"POT-Creation-Date: 2016-06-29 15:25+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-07-19 08:13-0400\n"
+"PO-Revision-Date: 2016-08-24 12:54-0400\n"
 "Last-Translator: Leah Liu <lliu@redhat.com>\n"
 "Language-Team: Chinese (China)\n"
 "Language: zh-CN\n"
-"X-Generator: Zanata 3.6.2\n"
+"X-Generator: Zanata 3.9.5\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 # translation auto-copied from project libreport, version master, document libreport
@@ -22,10 +23,10 @@ msgid ""
 "   or: & [-vspy] -d PROBLEM_DIR\n"
 "   or: & [-vspy] -x PROBLEM_DIR"
 msgstr ""
-"& [-vsp] -L[前缀] [问题目录]\n"
-"   or: & [-vspy] -e 事件 问题目录\n"
-"   or: & [-vspy] -d 问题目录\n"
-"   or: & [-vspy] -x 问题目录"
+"& [-vsp] -L[PREFIX] [PROBLEM_DIR]\n"
+"   or: & [-vspy] -e EVENT PROBLEM_DIR\n"
+"   or: & [-vspy] -d PROBLEM_DIR\n"
+"   or: & [-vspy] -x PROBLEM_DIR"
 
 # translation auto-copied from project libreport, version master, document libreport
 #. short_name long_name  value    parameter_name  help
@@ -207,37 +208,31 @@ msgstr "选择要运行的工作流："
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:87
-#, python-brace-format
 msgid "Extracting cpio from {0}"
 msgstr "从 {0} 中提取 cpio"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:92
-#, python-brace-format
 msgid "Can't write to '{0}': {1}"
 msgstr "无法写入 '{0}'：{1}"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:107
-#, python-brace-format
 msgid "Can't extract package '{0}'"
 msgstr "无法提取软件包 '{0}'"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:115
-#, python-brace-format
 msgid "Caching files from {0} made from {1}"
 msgstr "从 {0} 缓存来自 {1} 的文件"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:134
-#, python-brace-format
 msgid "Can't extract files from '{0}'"
 msgstr "无法从 '{0}' 中提取文件"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:147
-#, python-brace-format
 msgid "Can't remove '{0}': {1}"
 msgstr "无法删除 '{0}'：{1}"
 
@@ -246,7 +241,6 @@ msgstr "无法删除 '{0}'：{1}"
 #. % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
 #. )
 #: ../src/client-python/debuginfo.py:194 ../src/client-python/debuginfo.py:205
-#, python-brace-format
 msgid "Downloading ({0} of {1}) {2}: {3:3}%"
 msgstr "下载（{1} 中的 {0}）{2}：{3:3}%"
 
@@ -293,7 +287,6 @@ msgstr "无法禁用异步下载，输出可能存在假象！"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:356
-#, python-brace-format
 msgid "Can't setup {0}: {1}, disabling"
 msgstr "无法设置 {0}：{1}，禁用"
 
@@ -318,19 +311,16 @@ msgstr "检索文件列表出错：'{0!s}'"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:416
-#, python-brace-format
 msgid "Can't find packages for {0} debuginfo files"
 msgstr "无法为 {0} debuginfo 文件找到软件包"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:418
-#, python-brace-format
 msgid "Packages to download: {0}"
 msgstr "要下载的软件包：{0}"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:419
-#, python-brace-format
 msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
 msgstr "正在下载 {0:.2f}Mb，已安装：{1:.2f}Mb。继续吗？"
 
@@ -342,14 +332,12 @@ msgstr "用户取消下载"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:434
-#, python-brace-format
 msgid ""
 "Warning: Not enough free space in tmp dir '{0}' ({1:.2f}Mb left). Continue?"
 msgstr "警告：临时目录 '{0}' (剩余 {1:.2f}Mb)没有足够的空闲空间。继续？"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:443
-#, python-brace-format
 msgid ""
 "Warning: Not enough free space in cache dir '{0}' ({1:.2f}Mb left). "
 "Continue?"
@@ -357,13 +345,11 @@ msgstr "警告：缓存目录 '{0}' (剩余 {1:.2f}Mb) 中没有足够的空闲�
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:469
-#, python-brace-format
 msgid "Cannot copy file '{0}': {1}"
 msgstr "无法复制文件 '{0}': {1}"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/client-python/debuginfo.py:487
-#, python-brace-format
 msgid "Downloading package {0} failed"
 msgstr "下载软件包 {0} 失败"
 
@@ -378,7 +364,6 @@ msgstr "提取失败，中断下载......"
 #. but it was appearing even if no packages were in fact extracted
 #. (say, when there was one package, and it has download error).
 #: ../src/client-python/debuginfo.py:504
-#, python-brace-format
 msgid "Removing {0}"
 msgstr "正在删除 {0}"
 
@@ -440,7 +425,7 @@ msgid "C_onfigure"
 msgstr "配置（_O）"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gtk-helpers/config_dialog.c:361 ../src/gui-wizard-gtk/wizard.c:3472
+#: ../src/gtk-helpers/config_dialog.c:361 ../src/gui-wizard-gtk/wizard.c:3718
 msgid "_Close"
 msgstr "关闭（_C）"
 
@@ -471,7 +456,7 @@ msgstr "保密服务不可用，您的设置将不会被保存！"
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/gtk-helpers/event_config_dialog.c:321
 #: ../src/gtk-helpers/workflow_config_dialog.c:86
-#: ../src/gui-wizard-gtk/wizard.c:822 ../src/gui-wizard-gtk/wizard.c:3101
+#: ../src/gui-wizard-gtk/wizard.c:844 ../src/gui-wizard-gtk/wizard.c:3325
 msgid "_Cancel"
 msgstr "取消（_C）"
 
@@ -550,7 +535,7 @@ msgstr ""
 msgid "Alternate GUI file"
 msgstr "备用 GUI 文件"
 
-#: ../src/gui-wizard-gtk/wizard.c:354
+#: ../src/gui-wizard-gtk/wizard.c:378
 #, c-format
 msgid ""
 "%s is not properly configured. You can configure it now or provide the "
@@ -563,7 +548,7 @@ msgstr ""
 "\n"
 "有关配置的详情，请参考：https://access.redhat.com/site/articles/718083"
 
-#: ../src/gui-wizard-gtk/wizard.c:357
+#: ../src/gui-wizard-gtk/wizard.c:381
 #, c-format
 msgid ""
 "<b>%s</b> is not properly configured. You can configure it now or provide "
@@ -576,13 +561,13 @@ msgstr ""
 "\n"
 "<a href=\"https://access.redhat.com/site/articles/718083\">了解更多有关配置的信息</a>"
 
-#: ../src/gui-wizard-gtk/wizard.c:373
+#: ../src/gui-wizard-gtk/wizard.c:397
 #, c-format
 msgid "Con_figure %s"
 msgstr "配置（_f）%s"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:400
+#: ../src/gui-wizard-gtk/wizard.c:424
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
@@ -590,62 +575,79 @@ msgid ""
 msgstr "需要可写入的目录，但 '%s' 不是可写入目录。将其移动到 '%s'，并在移动后的数据中进行操作。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:813
+#: ../src/gui-wizard-gtk/wizard.c:835
 msgid "View/edit a text file"
 msgstr "查看/编辑文本文件"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:821
+#: ../src/gui-wizard-gtk/wizard.c:843
 msgid "_Save"
 msgstr "保存（_S）"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:1040
+#: ../src/gui-wizard-gtk/wizard.c:1067
 msgid ""
 "No reporting targets are defined for this problem. Check configuration in /"
 "etc/libreport/*"
 msgstr "尚未给此类问题指定报告目的地。检查位于 /etc/libreport/* 中的配置文件"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:1077
+#: ../src/gui-wizard-gtk/wizard.c:1104
 #, c-format
 msgid "(requires: %s)"
 msgstr "(需要: %s)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:1091
+#: ../src/gui-wizard-gtk/wizard.c:1118
 #, c-format
 msgid "(not needed, data already exist: %s)"
 msgstr "(不必要，数据已经存在: %s)"
 
+#: ../src/gui-wizard-gtk/wizard.c:1217
+msgid ""
+"Since crashes without a known reproducer can be difficult to diagnose, "
+"please provide a comprehensive description of the problem you have "
+"encountered."
+msgstr "由于系统故障无法出现，因此很难诊断，请提供您所遇到问题之完整描述。"
+
+#: ../src/gui-wizard-gtk/wizard.c:1224
+msgid ""
+"Please provide a short description of the problem and please include the "
+"steps you have used to reproduce the problem."
+msgstr "请提供该问题之简短描述，并包括您重现此问题的步骤。"
+
+#: ../src/gui-wizard-gtk/wizard.c:1231
+msgid "Please provide the steps you have used to reproduce the problem."
+msgstr "请提供用来重现此问题的步骤。"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:1277
+#: ../src/gui-wizard-gtk/wizard.c:1349
 msgid "(click here to view/edit)"
 msgstr "（点击这里查看/编辑）"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:1288
+#: ../src/gui-wizard-gtk/wizard.c:1360
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "（二进制文件，%llu字节）"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:1395 ../src/report-newt/report-newt.c:334
+#: ../src/gui-wizard-gtk/wizard.c:1467 ../src/report-newt/report-newt.c:334
 msgid "(no description)"
 msgstr "（没有说明）"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:1403
+#: ../src/gui-wizard-gtk/wizard.c:1475
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu字节，%u个文件"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:1647
+#: ../src/gui-wizard-gtk/wizard.c:1752
 msgid "Processing was canceled"
 msgstr "处理被取消"
 
-#: ../src/gui-wizard-gtk/wizard.c:1851
+#: ../src/gui-wizard-gtk/wizard.c:1956
 msgid ""
 "Processing of the problem failed. This can have many reasons but there are "
 "three most common:\n"
@@ -658,7 +660,7 @@ msgstr ""
 "\t▫ <b>问题数据受损</b>\n"
 "\t▫ <b>无效配置</b>"
 
-#: ../src/gui-wizard-gtk/wizard.c:1860
+#: ../src/gui-wizard-gtk/wizard.c:1965
 msgid ""
 "If you want to update the configuration and try to report again, please open "
 "<b>Preferences</b> item\n"
@@ -668,50 +670,61 @@ msgstr "如果要更新配置并尝试再次报告问题，请打开应用程序
 "并在应用配置更改后，点击 <b>重新报告</b> 按钮。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:1978
+#: ../src/gui-wizard-gtk/wizard.c:2089
 msgid "Processing was interrupted because the problem is not reportable."
 msgstr "由于无法报告该问题而中断处理。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:1988 ../src/gui-wizard-gtk/wizard.c:2057
+#: ../src/gui-wizard-gtk/wizard.c:2099 ../src/gui-wizard-gtk/wizard.c:2168
 msgid "Processing failed."
 msgstr "处理失败。"
 
 # translation auto-copied from project libreport, version master, document libreport
 #. No next event, go to progress page and finish
-#: ../src/gui-wizard-gtk/wizard.c:1995 ../src/gui-wizard-gtk/wizard.c:2818
+#: ../src/gui-wizard-gtk/wizard.c:2106 ../src/gui-wizard-gtk/wizard.c:3040
 msgid "Processing finished."
 msgstr "处理结束。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:1996
+#: ../src/gui-wizard-gtk/wizard.c:2107
 msgid "Processing finished, please proceed to the next step."
 msgstr "处理结束，请前往下一步骤。"
 
 # translation auto-copied from project libreport, version master, document libreport
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:2054
+#: ../src/gui-wizard-gtk/wizard.c:2165
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "没有定义针对事件 `%s' 的处理"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:2068
+#: ../src/gui-wizard-gtk/wizard.c:2179
 msgid "Processing interrupted: can't continue without writable directory."
 msgstr "处理被中断: 目录不可写入，无法继续。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:2105
+#: ../src/gui-wizard-gtk/wizard.c:2216
 msgid "Processing..."
 msgstr "处理中……"
 
+#: ../src/gui-wizard-gtk/wizard.c:2297
+msgid ""
+"Possible sensitive data detected, feel free to edit the report and remove "
+"them."
+msgstr "探测到可能的敏感数据，请根据需要编辑报告并删除该数据。"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:2198
+#: ../src/gui-wizard-gtk/wizard.c:2337
 msgid "Cannot check backtrace rating because of invalid event name"
 msgstr "由于无效的事件名，无法检查回溯评级"
 
+#: ../src/gui-wizard-gtk/wizard.c:2869
+#, c-format
+msgid "Failed to save file '%s'"
+msgstr "保存文件 '%s' 失败"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:2838
+#: ../src/gui-wizard-gtk/wizard.c:3060
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
@@ -720,112 +733,133 @@ msgstr "事件 '%s' 请求允许发布可能包含敏感数据的文件。\n"
 "您想要继续吗？"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:2886
+#: ../src/gui-wizard-gtk/wizard.c:3108
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
 msgstr "该问题可能不应该汇报 (很有可能为已知问题)。%s"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3102
+#: ../src/gui-wizard-gtk/wizard.c:3326
 msgid "_Open"
 msgstr "打开（_O）"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3124
+#: ../src/gui-wizard-gtk/wizard.c:3348
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' 不是普通文件"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3138
+#: ../src/gui-wizard-gtk/wizard.c:3362
 msgid "You are trying to copy a file onto itself"
 msgstr "您正在将文件复制到它本身"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3145
+#: ../src/gui-wizard-gtk/wizard.c:3369
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "无法复制 '%s'：%s"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3160
+#: ../src/gui-wizard-gtk/wizard.c:3384
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "项目 '%s' 已存在且不可修改"
 
+#: ../src/gui-wizard-gtk/wizard.c:3542
+msgid "I have experienced this problem for the first time"
+msgstr "我是第一次遇到这个问题"
+
+#: ../src/gui-wizard-gtk/wizard.c:3545
+msgid "I can reproduce this problem"
+msgstr "我可以重现这个问题"
+
+#: ../src/gui-wizard-gtk/wizard.c:3548
+msgid "This problem occurs repeatedly"
+msgstr "这个问题反复出现"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3314
+#: ../src/gui-wizard-gtk/wizard.c:3560
 msgid "Include"
 msgstr "包括"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3325
+#: ../src/gui-wizard-gtk/wizard.c:3571
 msgid "Name"
 msgstr "名称"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3335
+#: ../src/gui-wizard-gtk/wizard.c:3581
 msgid "Value"
 msgstr "值"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3369
+#: ../src/gui-wizard-gtk/wizard.c:3615
 msgid "Problem description"
 msgstr "问题描述"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3370
+#: ../src/gui-wizard-gtk/wizard.c:3616
 msgid "Select how to report this problem"
 msgstr "选择如何汇报此问题"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3371
+#: ../src/gui-wizard-gtk/wizard.c:3617
 msgid "Provide additional information"
 msgstr "提供附加信息"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3372
+#: ../src/gui-wizard-gtk/wizard.c:3618
 msgid "Review the data"
 msgstr "审核数据"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3373
+#: ../src/gui-wizard-gtk/wizard.c:3619
 msgid "Confirm data to report"
 msgstr "确认要上传的汇报数据"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3374
+#: ../src/gui-wizard-gtk/wizard.c:3620
 msgid "Processing"
 msgstr "处理中"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3375
+#: ../src/gui-wizard-gtk/wizard.c:3621
 msgid "Processing done"
 msgstr "处理完成"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.c:3474
+#: ../src/gui-wizard-gtk/wizard.c:3720
 msgid "_Stop"
 msgstr "停止（_S）"
 
 # translation auto-copied from project libreport, version master, document libreport
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3477
+#: ../src/gui-wizard-gtk/wizard.c:3723
 msgid "Upload for analysis"
 msgstr "上传并分析"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3480
+#: ../src/gui-wizard-gtk/wizard.c:3726
 msgid "Repeat"
 msgstr "重新报告"
 
 # translation auto-copied from project libreport, version master, document libreport
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3483
+#: ../src/gui-wizard-gtk/wizard.c:3729
 msgid "_Forward"
 msgstr "转发（_F）"
 
-#: ../src/gui-wizard-gtk/wizard.c:3575
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/gui-wizard-gtk/wizard.c:3780
+msgid "Restrict access to the report"
+msgstr "限制报告访问"
+
+#: ../src/gui-wizard-gtk/wizard.c:3785
+msgid "Learn more about restricted access in the configuration"
+msgstr "了解更多有关配置中限制访问的信息"
+
+#: ../src/gui-wizard-gtk/wizard.c:3844
 msgid ""
 "In order to enable the built-in screencasting functionality the package fros-"
 "gnome has to be installed. Please run the following command if you want to "
@@ -837,30 +871,8 @@ msgstr ""
 "\n"
 "<b>su -c \"yum install fros-gnome\"</b>"
 
+# translation auto-copied from project libreport, version master, document libreport
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
-msgid ""
-"Possible sensitive data detected, feel free to edit the report and remove "
-"them."
-msgstr "探测到可能的敏感数据，请根据需要编辑报告并删除该数据。"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:2
-msgid "Restrict access to the report"
-msgstr "限制报告访问"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:3
-msgid ""
-"No one except Red Hat employees will be allowed to see the report with "
-"restricted access (not even you)"
-msgstr "除 Red Hat 员工外，不允许任何人查看有限制访问的报告（您也不可以）"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:4
-msgid "Read more about reports with restricted access"
-msgstr "阅读更多关于限制访问的内容"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid ""
 "On the following screens, you will be asked to describe how the problem "
 "occurred, to choose how to analyze the problem (if needed), to review "
@@ -869,29 +881,48 @@ msgid ""
 msgstr "在下面的页面中，会询问您该问题是如何发生的，选择如何分析该问题（如果有必要），查看收集的信息，并选择向哪里报告该问题。点击“前进”继续。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:6
+#: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Details"
 msgstr "详情"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:7
+#: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid ""
 "How did this problem happen (step-by-step)? How can it be reproduced? Any "
 "additional comments useful for diagnosing the problem? Please use English if "
 "possible."
 msgstr "这个问题是如何发生的（具体步骤）？怎样才可以复制？是否有其他可帮助诊断该问题的附加注释？请尽量使用英语。"
 
+#: ../src/gui-wizard-gtk/wizard.glade.h:4
+msgid "How reproducible is this problem?"
+msgstr "如何重现这个问题？"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:5
+msgid "How it can be reproduced (one step per line)?"
+msgstr "如何重现这个问题（每行一步）？"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:6
+msgid ""
+"Please add a comprehensive description of the problem you have. This is a "
+"very long place holder."
+msgstr "请添加有关您所遇到问题的详细描述。在这里可以输入大量内容。"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:8
+#: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "You need to fill the how to before you can proceed..."
 msgstr "执行前您需要填写如何进行......"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:9
+#: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
 msgstr "<b>您的注释不是保密的。</b>会将其包含在公开的问题报告中。"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/gui-wizard-gtk/wizard.glade.h:9
+msgid "I don't know what caused this problem"
+msgstr "我不知道造成这个问题的原因"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/gui-wizard-gtk/wizard.glade.h:10
@@ -905,64 +936,59 @@ msgstr "添加屏幕录像"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
-msgid "I don't know what caused this problem"
-msgstr "我不知道造成这个问题的原因"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid ""
 "Use this button to generate more informative backtrace after you installed "
 "additional debug packages"
 msgstr "在您安装附加调试包后使用这个按钮来生成更多回溯信息"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:14
+#: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid ""
 "Please review the data before it gets reported. Depending on reporter "
 "chosen, it may end up publicly visible."
 msgstr "请在报告前检查数据。取决于选择的报告程序，内容可能会公开可见。"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:15
+#: ../src/gui-wizard-gtk/wizard.glade.h:14
 msgid "Forbidden words"
 msgstr "禁用单词"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:16
+#: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid "Custom"
 msgstr "自定义"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:17
+#: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "Clear the search bar to see the list of security sensitive words."
 msgstr "清除搜索栏查看安全性敏感词列表"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:18
+#: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "file"
 msgstr "文件"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:19
+#: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid "data"
 msgstr "数据"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:20
+#: ../src/gui-wizard-gtk/wizard.glade.h:19
 msgid "Search"
 msgstr "搜索"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:21
+#: ../src/gui-wizard-gtk/wizard.glade.h:20
 msgid "Size:"
 msgstr "大小："
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:22
+#: ../src/gui-wizard-gtk/wizard.glade.h:21
 msgid "Attach a file"
 msgstr "附加文件"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:23
+#: ../src/gui-wizard-gtk/wizard.glade.h:22
 msgid "I reviewed the data and _agree with submitting it"
 msgstr "我已经检查了数据并且同意提交（_A）"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:24
+#: ../src/gui-wizard-gtk/wizard.glade.h:23
 msgid ""
 "If you are reporting to a remote server, make sure you removed all private "
 "data (such as usernames and passwords). Backtrace, command line, environment "
@@ -970,22 +996,22 @@ msgid ""
 msgstr "如果您是要向远程服务器报告，请确定删除所有私人数据（不如用户名和密码）。Backtrace、命令行、环境变量是检查所需的常规项目。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:25
+#: ../src/gui-wizard-gtk/wizard.glade.h:24
 msgid "Processing did not start yet"
 msgstr "处理尚未开始"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:26
+#: ../src/gui-wizard-gtk/wizard.glade.h:25
 msgid "Show log"
 msgstr "显示日志"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:27
+#: ../src/gui-wizard-gtk/wizard.glade.h:26
 msgid "Reporting has finished. You can close this window now."
 msgstr "汇报已完成，您现在可以关闭这个窗口了。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/gui-wizard-gtk/wizard.glade.h:28
+#: ../src/gui-wizard-gtk/wizard.glade.h:27
 msgid ""
 "If you want to report the problem to a different destination, collect "
 "additional information, or provide a better problem description and repeat "
@@ -993,17 +1019,17 @@ msgid ""
 msgstr "如果您要向不同的地点报告这个问题、收集附加信息或者更好地描述这个问题并重复报告过程，请按“前进”。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/include/internal_libreport.h:1007
+#: ../src/include/internal_libreport.h:1046
 msgid "Be verbose"
 msgstr "详细输出"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/include/internal_libreport.h:1008
-#: ../src/plugins/reporter-bugzilla.c:895
+#: ../src/include/internal_libreport.h:1047
+#: ../src/plugins/reporter-bugzilla.c:893
 #: ../src/plugins/reporter-kerneloops.c:166
-#: ../src/plugins/reporter-mailx.c:198 ../src/plugins/reporter-print.c:56
-#: ../src/plugins/reporter-rhtsupport.c:471
-#: ../src/plugins/reporter-upload.c:249
+#: ../src/plugins/reporter-mailx.c:280 ../src/plugins/reporter-print.c:56
+#: ../src/plugins/reporter-rhtsupport.c:510
+#: ../src/plugins/reporter-upload.c:188
 msgid "Problem directory"
 msgstr "问题目录"
 
@@ -1061,7 +1087,7 @@ msgid "'%s' is not correct file name"
 msgstr "'%s' 不是正确的文件名"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/create_dump_dir.c:153
+#: ../src/lib/create_dump_dir.c:150
 #, c-format
 msgid "uid value is not valid: '%s'"
 msgstr "UID 值无效: '%s'"
@@ -1072,85 +1098,115 @@ msgstr "UID 值无效: '%s'"
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "上传的：%llu kb 中的 %llu"
 
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/curl.c:635
-#, c-format
-msgid "Sending %s to %s"
-msgstr "向 %s 发送 %s"
+#: ../src/lib/curl.c:636
+msgid "Ignoring URL without scheme and hostname"
+msgstr "将忽略没有方案和主机名的 URL"
 
-#: ../src/lib/curl.c:659
+#. Do not include the path part of the URL as it can contain sensitive data
+#. * in case of typos
+#: ../src/lib/curl.c:666
 #, c-format
-msgid "Please enter user name for '%s':"
-msgstr "请为 '%s' 输入用户名："
+msgid "Sending %s to %s//%s"
+msgstr "正在将 %s 发送至 %s//%s"
 
-#: ../src/lib/curl.c:665
+#: ../src/lib/curl.c:690
 #, c-format
-msgid "Please enter password for '%s':"
-msgstr "请为 '%s' 输入密码："
+msgid "Please enter user name for '%s//%s':"
+msgstr "请为 '%s//%s' 输入用户名称："
 
-# translation auto-copied from project libreport, version master, document libreport
+#: ../src/lib/curl.c:696
+#, c-format
+msgid "Please enter password for '%s//%s@%s':"
+msgstr "请为 '%s//%s@%s' 输入密码："
+
 #. This ends up a "reporting status message" in abrtd
-#: ../src/lib/curl.c:688
+#: ../src/lib/curl.c:719
 #, c-format
-msgid "Successfully sent %s to %s"
-msgstr "成功向 %s 发送 %s"
+msgid "Successfully created %s"
+msgstr "成功创建 %s"
+
+#: ../src/lib/dump_dir.c:1545
+msgid "Failed to open TAR writer"
+msgstr "打开 TAR 写入程序失败"
+
+#: ../src/lib/dump_dir.c:1571
+msgid "Failed to finalize TAR archive"
+msgstr "完成 TAR 归档失败"
+
+#: ../src/lib/dump_dir.c:1581
+msgid "Failed to close TAR writer"
+msgstr "关闭 TAR 写入程序失败"
+
+#: ../src/lib/dump_dir.c:1591
+#, c-format
+msgid "gzip killed with signal %d"
+msgstr "使用信号 %d 杀死 gzip"
+
+#: ../src/lib/dump_dir.c:1597
+#, c-format
+msgid "gzip exited with %d"
+msgstr "使用 %d 退出 gzip"
+
+#: ../src/lib/dump_dir.c:1600
+msgid "gzip process failed"
+msgstr "gzip 进程失败"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/event_config.c:348
+#: ../src/lib/event_config.c:382
 msgid "Missing mandatory value"
 msgstr "缺少必需值"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/event_config.c:356
+#: ../src/lib/event_config.c:390
 #, c-format
 msgid "Invalid utf8 character '%c'"
 msgstr "无效的 utf8 字符 ‘%c'"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/event_config.c:369
+#: ../src/lib/event_config.c:403
 #, c-format
 msgid "Invalid number '%s'"
 msgstr "无效的数字 '%s'"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/event_config.c:384
+#: ../src/lib/event_config.c:418
 #, c-format
 msgid "Invalid boolean value '%s'"
 msgstr "无效的布尔值 '%s'"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/event_config.c:390
+#: ../src/lib/event_config.c:424
 msgid "Unsupported option type"
 msgstr "不支持的操作类型"
 
-#: ../src/lib/event_config.c:463
+#: ../src/lib/event_config.c:497
 msgid "Reporting disabled because the rating does not contain a number."
 msgstr "由于分级栏中不包含数字而禁用报告。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/event_config.c:464
+#: ../src/lib/event_config.c:498
 msgid "Please report this problem to ABRT project developers."
 msgstr "请报告此问题给 ABRT 项目开发者。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/event_config.c:470
+#: ../src/lib/event_config.c:504
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "回溯是不完整的，请确定您提供了重复该错误的完整步骤。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/event_config.c:471
+#: ../src/lib/event_config.c:505
 msgid "The backtrace probably can't help developer to diagnose the bug."
 msgstr "该回溯可能无法帮助开发者诊断 Bug。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/event_config.c:477
+#: ../src/lib/event_config.c:511
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "由于回溯不可用，已禁用汇报。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/event_config.c:481
+#: ../src/lib/event_config.c:515
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -1158,12 +1214,27 @@ msgid ""
 msgstr "请尝试使用命令: \"debuginfo-install %s\" 手动安装除错信息并再次尝试。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/event_config.c:483
+#: ../src/lib/event_config.c:517
 msgid "A proper debuginfo is probably missing or the coredump is corrupted."
 msgstr "可能丢失了正确的出错信息或者内核转储被污染。"
 
+#: ../src/lib/iso_date_string.c:48
+#, c-format
+msgid "String doesn't seem to be a date: '%s'"
+msgstr "字符串好像不是一个日期：'%s'"
+
+#: ../src/lib/iso_date_string.c:53
+#, c-format
+msgid "The date: '%s' has unrecognized suffix: '%s'"
+msgstr "日期：'%s' 包含无法识别的后缀：'%s'"
+
+#: ../src/lib/iso_date_string.c:58
+#, c-format
+msgid "The date: '%s' is out of UNIX time stamp range"
+msgstr "日期：'%s' 在 UNIX 时间戳范围以外"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/ureport.c:354
+#: ../src/lib/ureport.c:395
 #, c-format
 msgid "Your problem seems to be caused by %s\n"
 "\n"
@@ -1173,49 +1244,59 @@ msgstr "您的问题似乎由 %s 导致\n"
 "%s\n"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/ureport.c:357
+#: ../src/lib/ureport.c:398
 msgid "Your problem seems to be caused by one of the following:\n"
 msgstr "您的问题似乎由以下原因之一导致：\n"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/ureport.c:528
+#: ../src/lib/ureport.c:570
 #, c-format
 msgid "Failed to upload uReport to the server '%s' with curl: %s"
 msgstr "无法使用 curl 上传 uReport 至服务器 '%s'：%s"
 
+#: ../src/lib/ureport.c:574
+#, c-format
+msgid "Failed to upload uReport to the server '%s'"
+msgstr "将 uReport 上传到服务器 '%s' 失败"
+
+#: ../src/lib/ureport.c:577
+#, c-format
+msgid "Error: %s"
+msgstr "错误：%s"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/ureport.c:534
+#: ../src/lib/ureport.c:584
 #, c-format
 msgid "The URL '%s' does not exist (got error 404 from server)"
 msgstr "URL '%s' 不存在(服务器返回错误 404)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/ureport.c:540
+#: ../src/lib/ureport.c:590
 #, c-format
 msgid "The server at '%s' encountered an internal error (got error 500)"
 msgstr "位于 '%s' 的服务器遇到内部错误(得知错误 500)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/ureport.c:546
+#: ../src/lib/ureport.c:596
 #, c-format
 msgid "The server at '%s' currently can't handle the request (got error 503)"
 msgstr "位于 '%s' 的服务器当前无法处理请求(得到错误 503)"
 
 # translation auto-copied from project libreport, version master, document libreport
 #. can't print better error message
-#: ../src/lib/ureport.c:555
+#: ../src/lib/ureport.c:605
 #, c-format
 msgid "Unexpected HTTP response from '%s': %d"
 msgstr "'%s' 中的意外 HTTP 响应：%d"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/ureport.c:564
+#: ../src/lib/ureport.c:614
 #, c-format
 msgid "Unable to parse response from ureport server at '%s'"
 msgstr "无法解析位于 '%s' 的 ureport 服务器的响应"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/ureport.c:574
+#: ../src/lib/ureport.c:624
 #, c-format
 msgid "The response from '%s' has invalid format"
 msgstr "来自 '%s' 的响应包含无效格式"
@@ -1223,18 +1304,18 @@ msgstr "来自 '%s' 的响应包含无效格式"
 # translation auto-copied from project libreport, version master, document libreport
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
-#: ../src/lib/ureport.c:580
+#: ../src/lib/ureport.c:630
 #, c-format
 msgid "Type mismatch has been detected in the response from '%s'"
 msgstr "在从 '%s' 得到的响应中检测到类型不匹配"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/ureport.c:766 ../src/plugins/reporter-rhtsupport.c:198
+#: ../src/lib/ureport.c:820 ../src/plugins/reporter-rhtsupport.c:233
 msgid "Failed on submitting the problem"
 msgstr "提交问题失败"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/lib/ureport.c:808
+#: ../src/lib/ureport.c:862
 #, c-format
 msgid "The server at '%s' responded with an error: '%s'"
 msgstr "位于 '%s' 的服务器响应错误：'%s'"
@@ -1258,6 +1339,30 @@ msgstr "用法："
 #, c-format
 msgid "Essential element '%s' is missing, can't continue"
 msgstr "缺少重要元素 '%s'，无法继续。"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/lib/problem_report.c:478 ../src/plugins/reporter-bugzilla.c:355
+#, c-format
+msgid "Can't parse backtrace: %s"
+msgstr "无法解析回溯：%s"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/lib/problem_report.c:489 ../src/plugins/reporter-bugzilla.c:366
+msgid "Can't generate stacktrace description (no crash thread?)"
+msgstr "无法生成堆栈跟踪描述 (没有崩溃线程？)"
+
+#: ../src/lib/reported_to.c:52
+msgid "Report result label mustn't be empty string."
+msgstr "报告结果标签不得为空白字符串。"
+
+#: ../src/lib/reported_to.c:58
+msgid "Report result label mustn't contain ':' character."
+msgstr "报告结果标签不得包含 ':' 字符。"
+
+#: ../src/lib/reported_to.c:141
+#, c-format
+msgid "Ignored invalid ISO date of report result '%s'"
+msgstr "忽略报告结果 '%s' 的无效 ISO 日期"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/lib/run_event.c:791
@@ -1337,13 +1442,14 @@ msgstr "汇报至 Bugzilla 缺陷跟踪系统"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/plugins/report_Bugzilla.xml.in.h:3
-msgid "Bugzilla URL"
-msgstr "Bugzilla URL"
+#: ../src/plugins/report_Uploader.xml.in.h:6
+msgid "User name"
+msgstr "用户名"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/plugins/report_Bugzilla.xml.in.h:4
-msgid "Address of Bugzilla server"
-msgstr "Bugzilla 服务器地址"
+msgid "Bugzilla account user name"
+msgstr "Bugzilla 账户用户名"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/plugins/report_Bugzilla.xml.in.h:5
@@ -1356,79 +1462,92 @@ msgstr ""
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/plugins/report_Bugzilla.xml.in.h:6
-#: ../src/plugins/report_Uploader.xml.in.h:6
-msgid "User name"
-msgstr "用户名"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:7
-msgid "Bugzilla account user name"
-msgstr "Bugzilla 账户用户名"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:5
 #: ../src/plugins/report_Uploader.xml.in.h:8
 msgid "Password"
 msgstr "密码"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:9
+#: ../src/plugins/report_Bugzilla.xml.in.h:7
 msgid "Bugzilla account password"
 msgstr "Bugzilla 账户密码"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:10
-#: ../src/plugins/report_RHTSupport.xml.in.h:7
-#: ../src/plugins/report_uReport.xml.in.h:7
-msgid "Verify SSL"
-msgstr "确认 SSL"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:11
-#: ../src/plugins/report_RHTSupport.xml.in.h:8
-#: ../src/plugins/report_uReport.xml.in.h:8
-msgid "Check SSL key validity"
-msgstr "查看 SSL 密钥是否可用"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:12
+#: ../src/plugins/report_Bugzilla.xml.in.h:8
 msgid "Restrict access"
 msgstr "访问限制"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:13
+#: ../src/plugins/report_Bugzilla.xml.in.h:9
 msgid ""
 "Restrict access to the created bugzilla ticket allowing only users from "
 "specified groups to view it (see advanced settings for more details)"
 msgstr "通过用户组限制可访问 Bug 的用户(了解更多请进入高级选项)"
 
 # translation auto-copied from project libreport, version master, document libreport
+#: ../src/plugins/report_Bugzilla.xml.in.h:10
+msgid "Groups"
+msgstr "组"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/plugins/report_Bugzilla.xml.in.h:11
+msgid ""
+"Restrict the access to specified groups &lt;a href=\"https://github.com/abrt/"
+"abrt/wiki/FAQ#creating-private-bugzilla-tickets\"&gt;?&lt;/a&gt;"
+msgstr ""
+"仅限特定组访问 &lt;a href=\"https://github.com/abrt/abrt/wiki/FAQ#creating-private-"
+"bugzilla-tickets\"&gt;?&lt;/a&gt;"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/plugins/report_Bugzilla.xml.in.h:12
+msgid "Bugzilla URL"
+msgstr "Bugzilla URL"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/plugins/report_Bugzilla.xml.in.h:13
+msgid "Address of Bugzilla server"
+msgstr "Bugzilla 服务器地址"
+
+# translation auto-copied from project libreport, version master, document libreport
 #: ../src/plugins/report_Bugzilla.xml.in.h:14
+#: ../src/plugins/report_RHTSupport.xml.in.h:11
+#: ../src/plugins/report_uReport.xml.in.h:7
+msgid "Verify SSL"
+msgstr "确认 SSL"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/plugins/report_Bugzilla.xml.in.h:15
+#: ../src/plugins/report_RHTSupport.xml.in.h:12
+#: ../src/plugins/report_uReport.xml.in.h:8
+msgid "Check SSL key validity"
+msgstr "查看 SSL 密钥是否可用"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/plugins/report_Bugzilla.xml.in.h:16
 msgid "Bugzilla product"
 msgstr "Bugzilla 产品"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:15
+#: ../src/plugins/report_Bugzilla.xml.in.h:17
 msgid ""
 "Specify this only if you needed different product than specified in /etc/os-"
 "release"
 msgstr "只当您使用的产品和 /etc/os-release 中不同时在此处特别指出"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:16
+#: ../src/plugins/report_Bugzilla.xml.in.h:18
 msgid "Bugzilla product version"
 msgstr "Bugzilla 产品版本"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:17
+#: ../src/plugins/report_Bugzilla.xml.in.h:19
 msgid ""
 "Specify this only if you needed different product version than specified in /"
 "etc/os-release"
 msgstr "只当您所使用产品版本和 /etc/os-release 中不同时在此特别指出"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:18
+#: ../src/plugins/report_Bugzilla.xml.in.h:20
 #: ../src/plugins/report_Kerneloops.xml.in.h:5
 #: ../src/plugins/report_RHTSupport.xml.in.h:13
 #: ../src/plugins/report_Uploader.xml.in.h:10
@@ -1438,7 +1557,7 @@ msgid "HTTP Proxy"
 msgstr "HTTP 代理"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:19
+#: ../src/plugins/report_Bugzilla.xml.in.h:21
 #: ../src/plugins/report_Kerneloops.xml.in.h:6
 #: ../src/plugins/report_RHTSupport.xml.in.h:14
 #: ../src/plugins/report_Uploader.xml.in.h:11
@@ -1448,7 +1567,7 @@ msgid "Sets the proxy server to use for HTTP"
 msgstr "设定用于 HTTP 的代理服务器"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:20
+#: ../src/plugins/report_Bugzilla.xml.in.h:22
 #: ../src/plugins/report_Kerneloops.xml.in.h:7
 #: ../src/plugins/report_RHTSupport.xml.in.h:15
 #: ../src/plugins/report_Uploader.xml.in.h:12
@@ -1458,7 +1577,7 @@ msgid "HTTPS Proxy"
 msgstr "HTTPS 代理"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:21
+#: ../src/plugins/report_Bugzilla.xml.in.h:23
 #: ../src/plugins/report_Kerneloops.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:16
 #: ../src/plugins/report_Uploader.xml.in.h:13
@@ -1466,20 +1585,6 @@ msgstr "HTTPS 代理"
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:7
 msgid "Sets the proxy server to use for HTTPS"
 msgstr "设定用于 HTTPS 的代理服务器"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:22
-msgid "Groups"
-msgstr "组"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_Bugzilla.xml.in.h:23
-msgid ""
-"Restrict the access to specified groups &lt;a href=\"https://github.com/abrt/"
-"abrt/wiki/FAQ#creating-private-bugzilla-tickets\"&gt;?&lt;/a&gt;"
-msgstr ""
-"仅限特定组访问 &lt;a href=\"https://github.com/abrt/abrt/wiki/FAQ#creating-private-"
-"bugzilla-tickets\"&gt;?&lt;/a&gt;"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/plugins/report.c:37
@@ -1515,55 +1620,44 @@ msgid "Ticket/case ID"
 msgstr "Ticket/案例 ID"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:355
-#, c-format
-msgid "Can't parse backtrace: %s"
-msgstr "无法解析回溯：%s"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:366
-msgid "Can't generate stacktrace description (no crash thread?)"
-msgstr "无法生成堆栈跟踪描述 (没有崩溃线程？)"
-
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:764
+#: ../src/plugins/reporter-bugzilla.c:762
 msgid ""
 "Warning, private ticket groups already specified as cmdline argument, "
 "ignoring the env variable and configuration"
 msgstr "警告，已在命令行参数指定私有标签组，忽略环境变量和配置"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:775
-#: ../src/plugins/reporter-rhtsupport.c:342
+#: ../src/plugins/reporter-bugzilla.c:773
+#: ../src/plugins/reporter-rhtsupport.c:377
 msgid "Can't continue without login"
 msgstr "需要登录名才可继续"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:788
-#: ../src/plugins/reporter-rhtsupport.c:355
+#: ../src/plugins/reporter-bugzilla.c:786
+#: ../src/plugins/reporter-rhtsupport.c:390
 msgid "Can't continue without password"
 msgstr "需要密码才可继续"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:797
+#: ../src/plugins/reporter-bugzilla.c:795
 #, c-format
 msgid "Logging into Bugzilla at %s"
 msgstr "在 %s 登录到 Bugzilla"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:801
+#: ../src/plugins/reporter-bugzilla.c:799
 msgid "Invalid password or login. Please enter your BZ login:"
 msgstr "无效的密码或登录名。请输入您的 BZ 登录名:"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:804
-#: ../src/plugins/reporter-rhtsupport.c:369
+#: ../src/plugins/reporter-bugzilla.c:802
+#: ../src/plugins/reporter-rhtsupport.c:404
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
 msgstr "无效的密码或登录名。请输入 '%s' 的密码:"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:823
+#: ../src/plugins/reporter-bugzilla.c:821
 msgid ""
 "\n"
 "& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d "
@@ -1645,75 +1739,76 @@ msgstr ""
 "如果未指定，配置文件默认为"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:896
-#: ../src/plugins/reporter-rhtsupport.c:472
+#: ../src/plugins/reporter-bugzilla.c:894
+#: ../src/plugins/reporter-rhtsupport.c:511
 msgid "Configuration file (may be given many times)"
 msgstr "配置文件（可在任意时间给出）"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:897
+#: ../src/plugins/reporter-bugzilla.c:895
 msgid "Formatting file for initial comment"
 msgstr "格式化文件用于首次评论"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:898
+#: ../src/plugins/reporter-bugzilla.c:896
 msgid "Formatting file for duplicates"
 msgstr "格式化文件用于副本"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:899
+#: ../src/plugins/reporter-bugzilla.c:897
 msgid "Attach FILEs [to bug with this ID]"
 msgstr "附加 FILE [可选指定 ID 的 Bug]"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:900
+#: ../src/plugins/reporter-bugzilla.c:898
 msgid "When creating bug, attach binary files too"
 msgstr "生成 Bug 时也请附加二进制文件"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:901
-#: ../src/plugins/reporter-rhtsupport.c:474
+#: ../src/plugins/reporter-bugzilla.c:899
+#: ../src/plugins/reporter-rhtsupport.c:513
 msgid "Force reporting even if this problem is already reported"
 msgstr "即使已经报告过该问题依然强行报告"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:902
+#: ../src/plugins/reporter-bugzilla.c:900
 msgid "Add bugzilla user to CC list [of bug with this ID]"
 msgstr "添加 Bugzilla 用户到[可选指定 ID 的 Bug]抄送列表上"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:903
+#: ../src/plugins/reporter-bugzilla.c:901
 msgid "Print BUG_ID which has given DUPHASH"
 msgstr "打印具备 DUPHASH 的 BUG_ID"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:904
+#: ../src/plugins/reporter-bugzilla.c:902
 msgid "A name of bug tracker for an additional URL from 'reported_to'"
 msgstr "''reported_to'中附加 URL 所指 Bug 跟踪系统的名字"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:905
+#: ../src/plugins/reporter-bugzilla.c:903
 msgid "Restrict access to this group only"
 msgstr "仅限此组访问"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:906
+#: ../src/plugins/reporter-bugzilla.c:904 ../src/plugins/reporter-mailx.c:284
+#: ../src/plugins/reporter-rhtsupport.c:517
 msgid "Debug"
 msgstr "除错"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:948
+#: ../src/plugins/reporter-bugzilla.c:949
 msgid "Looking for similar problems in bugzilla"
 msgstr "正在 Bugzilla 中寻找类似问题"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:975
+#: ../src/plugins/reporter-bugzilla.c:976
 msgid "Login is not provided by configuration. Please enter your BZ login:"
 msgstr "配置中未提供登录信息。请输入您的 BZ 登录名:"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:981
-#: ../src/plugins/reporter-rhtsupport.c:510
+#: ../src/plugins/reporter-bugzilla.c:982
+#: ../src/plugins/reporter-rhtsupport.c:551
 #, c-format
 msgid ""
 "Password is not provided by configuration. Please enter the password for "
@@ -1721,14 +1816,14 @@ msgid ""
 msgstr "配置中未提供密码。请输入用于 '%s' 的密码:"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1000
+#: ../src/plugins/reporter-bugzilla.c:1001
 msgid ""
 "Can't get Bugzilla ID because this problem has not yet been reported to "
 "Bugzilla."
 msgstr "无法取得 Bugzilla ID 因为该问题尚未汇报至 Bugzilla。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1007
+#: ../src/plugins/reporter-bugzilla.c:1008
 #, c-format
 msgid ""
 "This problem has been reported to Bugzilla '%s' which differs from the "
@@ -1736,86 +1831,106 @@ msgid ""
 msgstr "该问题已经汇报至 Bugzilla '%s' ，与预配置 Bugzilla '%s' 不同。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1011
+#: ../src/plugins/reporter-bugzilla.c:1012
 #, c-format
 msgid "Malformed url to Bugzilla '%s'."
 msgstr "连接至 Bugzilla '%s' 的 URL 不规范。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1015
+#: ../src/plugins/reporter-bugzilla.c:1016
 #, c-format
 msgid "Using Bugzilla ID '%s'"
 msgstr "使用 Bugzilla ID '%s'"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1049
-#: ../src/plugins/reporter-bugzilla.c:1341
+#: ../src/plugins/reporter-bugzilla.c:1050
+#: ../src/plugins/reporter-bugzilla.c:1220
+#: ../src/plugins/reporter-bugzilla.c:1379
 msgid "Logging out"
 msgstr "正在退出"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1100
+#: ../src/plugins/reporter-bugzilla.c:1101
 msgid "Can't determine Bugzilla Product from problem data."
 msgstr "无法从问题数据中确定 Bugzilla 产品。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1151
+#: ../src/plugins/reporter-bugzilla.c:1152
 msgid "Checking for duplicates"
 msgstr "正在检查该问题是否已经汇报"
 
+#: ../src/plugins/reporter-bugzilla.c:1201
+#, c-format
+msgid ""
+"You have requested to make your data accessible only to a specific group and "
+"this bug is a duplicate of bug: %s/%u In case of bug duplicates a new "
+"comment is added to the original bug report but access to the comments "
+"cannot be restricted to a specific group. Would you like to open a new bug "
+"report and close it as DUPLICATE of the original one? Otherwise, the bug "
+"reporting procedure will be terminated."
+msgstr ""
+"您要求只能由特定组访问您的数据，且这个 bug 是 bug  %s/%u 的重复。如果出现 bug 重复，可在最初的 bug "
+"报告中添加一条新注释，但那些注释仅限具体组可以访问。是否要新建一个 bug 报告，并将最初的那个报告作为 DUPLICATE 关闭。否则会终止 bug "
+"报告过程。"
+
 # translation auto-copied from project libreport, version master, document libreport
 #. Create new bug
-#: ../src/plugins/reporter-bugzilla.c:1197
+#: ../src/plugins/reporter-bugzilla.c:1228
 msgid "Creating a new bug"
 msgstr "正在创建新 Bug"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1218
+#: ../src/plugins/reporter-bugzilla.c:1249
 msgid "Failed to create a new bug."
 msgstr "创建新 Bug 失败。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1229
+#: ../src/plugins/reporter-bugzilla.c:1260
 #, c-format
 msgid "Adding External URL to bug %i"
 msgstr "添加外部 URL 至 Bug %i"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1235
+#: ../src/plugins/reporter-bugzilla.c:1266
 #, c-format
 msgid "Adding attachments to bug %i"
 msgstr "在 Bug %i 中添加附件"
 
+#: ../src/plugins/reporter-bugzilla.c:1280
+#, c-format
+msgid "Closing bug %i as duplicate of bug %i"
+msgstr "将 bug %i 作为 bug %i 的重复 bug 关闭"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1254
+#: ../src/plugins/reporter-bugzilla.c:1292
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "该 Bug 之前已经被汇报至：%i"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1297
+#: ../src/plugins/reporter-bugzilla.c:1335
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "正在添加 %s 至抄送列表"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1314
+#: ../src/plugins/reporter-bugzilla.c:1352
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "正在向 Bug %d 中添加新留言"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1328
+#: ../src/plugins/reporter-bugzilla.c:1366
 msgid "Attaching better backtrace"
 msgstr "附加更好的 backtrace"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1336
+#: ../src/plugins/reporter-bugzilla.c:1374
 msgid "Found the same comment in the bug history, not adding a new one"
 msgstr "如果在 Bug 历史记录中找到相同的注释则不要再添加"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-bugzilla.c:1344
+#: ../src/plugins/reporter-bugzilla.c:1382
 #, c-format
 msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
 msgstr "状态：%s%s%s %s/show_bug.cgi?id=%u"
@@ -1853,12 +1968,12 @@ msgstr ""
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/plugins/reporter-kerneloops.c:167
-#: ../src/plugins/reporter-ureport.c:74
+#: ../src/plugins/reporter-ureport.c:79
 msgid "Configuration file"
 msgstr "配置文件"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-mailx.c:59
+#: ../src/plugins/reporter-mailx.c:83
 #, c-format
 msgid ""
 "Email address of %s was not specified. Would you like to do so now? If not, "
@@ -1866,50 +1981,58 @@ msgid ""
 msgstr "未指定 %s 的电子邮箱。您想要现在制定吗？如果不，将使用 '%s'"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-mailx.c:66
+#: ../src/plugins/reporter-mailx.c:90
 #, c-format
 msgid "Please, type email address of %s:"
 msgstr "请输入 %s 的电子邮箱："
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-mailx.c:73
+#: ../src/plugins/reporter-mailx.c:97
 #, c-format
 msgid "Can't continue without email address of %s"
 msgstr "需要 %s 的电子邮箱才可继续"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-mailx.c:135
+#: ../src/plugins/reporter-mailx.c:206 ../src/plugins/reporter-mailx.c:211
 msgid "Sending an email..."
 msgstr "发送电子邮件......"
 
+#: ../src/plugins/reporter-mailx.c:209
+#, c-format
+msgid "Sending a notification email to: %s"
+msgstr "向 %s 发送通知邮件"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-mailx.c:158
+#: ../src/plugins/reporter-mailx.c:237
 #, c-format
 msgid "Email was sent to: %s"
 msgstr "已发送电子邮件至：%s"
 
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-mailx.c:178
+#: ../src/plugins/reporter-mailx.c:258
 msgid ""
-"& [-v] -d DIR [-c CONFFILE]\n"
+"& [-v] -d DIR [-c CONFFILE] [-F FMTFILE]\n"
 "\n"
 "Sends contents of a problem directory DIR via email\n"
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
-"& [-v] -d DIR [-c CONFFILE]\n"
+"& [-v] -d DIR [-c CONFFILE] [-F FMTFILE]\n"
 "\n"
-"使用电子邮件发送问题目录 DIR 中的内容\n"
+"Sends contents of a problem directory DIR via email\n"
 "\n"
-"如未指定，则 CONFFILE 默认为"
+"If not specified, CONFFILE defaults to "
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-mailx.c:199 ../src/plugins/reporter-upload.c:250
+#: ../src/plugins/reporter-mailx.c:281 ../src/plugins/reporter-upload.c:189
 msgid "Config file"
 msgstr "配置文件"
 
+#: ../src/plugins/reporter-mailx.c:282
+msgid "Formatting file for an email"
+msgstr "为某个电子邮件格式化文件"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-mailx.c:200
+#: ../src/plugins/reporter-mailx.c:283
 msgid "Notify only (Do not mark the report as sent)"
 msgstr "仅通知(不将报告标记为已发送)"
 
@@ -1950,37 +2073,37 @@ msgid "Can't open '%s' for writing. Please select another file:"
 msgstr "无法打开 '%s' 进行编写。请选择另一个文件："
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-print.c:143
+#: ../src/plugins/reporter-print.c:144
 #, c-format
 msgid "The report was appended to %s"
 msgstr "报告已被附加至 %s"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-print.c:143
+#: ../src/plugins/reporter-print.c:144
 #, c-format
 msgid "The report was stored to %s"
 msgstr "报告已被保存至 %s"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-rhtsupport.c:259
-#: ../src/plugins/reporter-ureport.c:237
+#: ../src/plugins/reporter-rhtsupport.c:294
+#: ../src/plugins/reporter-ureport.c:297
 #, c-format
 msgid "Server responded with an error: '%s'"
 msgstr "服务响应错误：'%s'"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-rhtsupport.c:319
+#: ../src/plugins/reporter-rhtsupport.c:354
 msgid "Do you still want to create a RHTSupport ticket?"
 msgstr "您还想生成 RHTSupport ticket 吗？"
 
-#: ../src/plugins/reporter-rhtsupport.c:367
+#: ../src/plugins/reporter-rhtsupport.c:402
 msgid "Invalid password or login. Please enter your Red Hat login:"
-msgstr "无效密码或登录。请输入您的 Red Hat 登录："
+msgstr "无效密码或登录。请输入您的红帽登录："
 
-#: ../src/plugins/reporter-rhtsupport.c:435
+#: ../src/plugins/reporter-rhtsupport.c:471
 msgid ""
 "\n"
-"& [-v] [-c CONFFILE] -d DIR\n"
+"& [-v] [-c CONFFILE] [-F FMTFILE] -d DIR\n"
 "or:\n"
 "& [-v] [-c CONFFILE] [-d DIR] -t[ID] [-u -C UR_CONFFILE] FILE...\n"
 "\n"
@@ -1989,96 +2112,121 @@ msgid ""
 "If not specified, CONFFILE defaults to "
 msgstr ""
 "\n"
-"& [-v] [-c CONFFILE] -d DIR\n"
-"或者：\n"
+"& [-v] [-c CONFFILE] [-F FMTFILE] -d DIR\n"
+"or:\n"
 "& [-v] [-c CONFFILE] [-d DIR] -t[ID] [-u -C UR_CONFFILE] FILE...\n"
 "\n"
-"向 RHTSupport 报告问题。\n"
+"Reports a problem to RHTSupport.\n"
 "\n"
-"如果未指定，则 CONFFILE 默认为"
+"If not specified, CONFFILE defaults to "
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-rhtsupport.c:473
+#: ../src/plugins/reporter-rhtsupport.c:512
 msgid "Upload FILEs [to case with this ID]"
 msgstr "将 FILE 上传【到使用这个 ID 的问题单】"
 
-#: ../src/plugins/reporter-rhtsupport.c:475
+#: ../src/plugins/reporter-rhtsupport.c:514
 msgid "Submit uReport before creating a new case"
 msgstr "创建新问题单前请提交 uReport"
 
-#: ../src/plugins/reporter-rhtsupport.c:476
+#: ../src/plugins/reporter-rhtsupport.c:515
 msgid "Configuration file for uReport"
 msgstr "为 uReport 配置文件"
 
+#: ../src/plugins/reporter-rhtsupport.c:516
+msgid "Formatting file for a new case"
+msgstr "为新问题单格式化文件"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-rhtsupport.c:504
+#: ../src/plugins/reporter-rhtsupport.c:545
 msgid "Login is not provided by configuration. Please enter your RHTS login:"
 msgstr "配置中未提供登录信息。请输入您的 RHTS 登录名:"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-rhtsupport.c:573
+#: ../src/plugins/reporter-rhtsupport.c:614
 #, c-format
 msgid "Attaching '%s' to case '%s'"
 msgstr "在问题单 '%s' 中附加 '%s'"
 
-#: ../src/plugins/reporter-rhtsupport.c:610
+#: ../src/plugins/reporter-rhtsupport.c:651
 msgid "Sending ABRT crash statistics data"
 msgstr "正在发送 ABRT 崩溃统计数据"
 
-# translation auto-copied from project libreport, version master, document libreport
-#. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing
-#. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../src/plugins/reporter-rhtsupport.c:621
-#: ../src/plugins/reporter-upload.c:52
-msgid "Compressing data"
-msgstr "正在压缩数据"
+#: ../src/plugins/reporter-rhtsupport.c:674
+msgid ""
+"The problem has only occurred once and the ability to reproduce the problem "
+"is unknown. Please ensure you will be able to provide detailed information "
+"to our Support Team. Would you like to continue and open a new support case?"
+msgstr "这个问题出现过一次，但尚不了解如何重现此问题。请确保可以为我们的支持团队提供详细信息。要继续并建立新支持问题单吗？"
+
+#: ../src/plugins/reporter-rhtsupport.c:690
+#, c-format
+msgid ""
+"The crashed program was released by '%s'. Would you like to report the "
+"problem to Red Hat Support?"
+msgstr "'%s' 已发布有故障的程序。是否要向红帽支持报告这个问题？"
+
+#: ../src/plugins/reporter-rhtsupport.c:708
+#, c-format
+msgid ""
+"The program '%s' does not appear to be provided by Red Hat. Would you like "
+"to report the problem to Red Hat Support?"
+msgstr "红帽未提供 '%s'。是否要向红帽报告这个问题？"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-rhtsupport.c:656
+#: ../src/plugins/reporter-rhtsupport.c:725
 msgid "Can't create a temporary directory in "
 msgstr "无法创建临时目录于"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-rhtsupport.c:665
+#. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing
+#. error msg is already logged by dd_opendir
+#. Compressing e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#: ../src/plugins/reporter-rhtsupport.c:793
+#: ../src/plugins/reporter-upload.c:103
+msgid "Compressing data"
+msgstr "正在压缩数据"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/plugins/reporter-rhtsupport.c:801
 msgid "Can't create temporary file in "
 msgstr "无法创建临时文件于"
 
 # translation auto-copied from project libreport, version master, document libreport
 #. Check for hints and show them if we have something
-#: ../src/plugins/reporter-rhtsupport.c:676
+#: ../src/plugins/reporter-rhtsupport.c:812
 msgid "Checking for hints"
 msgstr "检查是否有提示"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-rhtsupport.c:686
+#: ../src/plugins/reporter-rhtsupport.c:822
 msgid "Creating a new case"
 msgstr "创建一个新个案"
 
 # translation auto-copied from project libreport, version master, document libreport
 #. How can we help user sorting out this problem?
-#: ../src/plugins/reporter-rhtsupport.c:697
+#: ../src/plugins/reporter-rhtsupport.c:833
 msgid "Can't determine RH Support Product from problem data."
 msgstr "无法确定问题数据中的红帽支持产品。"
 
-#: ../src/plugins/reporter-rhtsupport.c:753
+#: ../src/plugins/reporter-rhtsupport.c:889
 msgid "Linking ABRT crash statistics record with the case"
 msgstr "正在将 ABRT 崩溃统计记录与该问题单关联"
 
-#: ../src/plugins/reporter-rhtsupport.c:766
+#: ../src/plugins/reporter-rhtsupport.c:902
 #, c-format
 msgid "Linking ABRT crash statistics record with contact email: '%s'"
 msgstr "正在将 ABRT 崩溃统计记录与联系人电子邮件关联：'%s'"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-rhtsupport.c:790
+#: ../src/plugins/reporter-rhtsupport.c:926
 #, c-format
 msgid "Adding comment to case '%s'"
 msgstr "添加评论至个案 '%s'"
 
 # translation auto-copied from project libreport, version master, document libreport
 #. Attach the tarball of -d DIR
-#: ../src/plugins/reporter-rhtsupport.c:808
+#: ../src/plugins/reporter-rhtsupport.c:944
 #, c-format
 msgid "Attaching problem data to case '%s'"
 msgstr "添加问题数据至个案 '%s'"
@@ -2094,45 +2242,54 @@ msgid "Updates which possibly help: "
 msgstr "可能有帮助的更新："
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-upload.c:30
+#: ../src/plugins/reporter-upload.c:29
 msgid "Can't continue without URL"
 msgstr "需要 URL 才可继续"
-
-#: ../src/plugins/reporter-upload.c:61
-msgid "Upload URL is not provided by configuration. Please enter upload URL:"
-msgstr "配置文件未提供上传 URL。请输入上传 URL："
 
 #. Be permissive and nice, ask only once and don't check
 #. the result. User can dismiss this prompt but the upload
 #. may work somehow???
-#: ../src/plugins/reporter-upload.c:164
+#: ../src/plugins/reporter-upload.c:51
 msgid "Please enter password for uploading:"
 msgstr "请输入上传所需密码："
 
 # translation auto-copied from project libreport, version master, document libreport
 #. success
-#: ../src/plugins/reporter-upload.c:181
+#: ../src/plugins/reporter-upload.c:120
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "生成归档：'%s'"
 
-# translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-upload.c:222
+#: ../src/plugins/reporter-upload.c:159
 msgid ""
-"& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"& [-v] -d DIR [-c CONFFILE] [-u URL] [-b FILE] [-r FILE]\n"
 "\n"
 "Uploads compressed tarball of problem directory DIR to URL.\n"
 "If URL is not specified, creates tarball in "
 msgstr ""
-"& [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"& [-v] -d DIR [-c CONFFILE] [-u URL] [-b FILE] [-r FILE]\n"
 "\n"
-"将指定问题目录的压缩档案包上传至指定 URL。\n"
-"如果未指定 URL，创建压缩档案包 "
+"Uploads compressed tarball of problem directory DIR to URL.\n"
+"If URL is not specified, creates tarball in "
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-upload.c:251
+#: ../src/plugins/reporter-upload.c:190
 msgid "Base URL to upload to"
 msgstr "要上传的基本 URL"
+
+#: ../src/plugins/reporter-upload.c:191
+msgid "SSH public key file"
+msgstr "SSH 公钥文件"
+
+#: ../src/plugins/reporter-upload.c:192
+msgid "SSH private key file"
+msgstr "SSH 私钥文件"
+
+#: ../src/plugins/reporter-upload.c:221
+msgid ""
+"Please enter a URL (scp, ftp, etc.) where the problem data is to be exported:"
+""
+msgstr "请输入要导出问题数据的 URL（scp、ftp 等等）："
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
@@ -2259,11 +2416,11 @@ msgstr "Red Hat 客户用户名"
 msgid "Red Hat customer password"
 msgstr "Red Hat 客户密码"
 
-#: ../src/plugins/report_RHTSupport.xml.in.h:9
+#: ../src/plugins/report_RHTSupport.xml.in.h:7
 msgid "Submit uReport"
 msgstr "提交 uReport"
 
-#: ../src/plugins/report_RHTSupport.xml.in.h:10
+#: ../src/plugins/report_RHTSupport.xml.in.h:8
 msgid ""
 "Submit &lt;a href=\"https://access.redhat.com/articles/642323\"&gt;micro-"
 "report&lt;/a&gt; when creating a new case."
@@ -2272,12 +2429,12 @@ msgstr ""
 "report&lt;/a&gt;"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_RHTSupport.xml.in.h:11
+#: ../src/plugins/report_RHTSupport.xml.in.h:9
 msgid "RH Portal URL"
 msgstr "Red Hat 门户网站 URL"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/report_RHTSupport.xml.in.h:12
+#: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Address of the Red Hat support portal"
 msgstr "Red Hat 支持门户网站地址"
 
@@ -2331,6 +2488,22 @@ msgstr "FTP 代理服务器"
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:9
 msgid "Sets the proxy server to use for FTP"
 msgstr "设定用于 FTP 的代理服务器"
+
+#: ../src/plugins/report_Uploader.xml.in.h:16
+msgid "SSH Public key file"
+msgstr "SSH 公钥文件"
+
+#: ../src/plugins/report_Uploader.xml.in.h:17
+msgid "Use this field to specify SSH public keyfile"
+msgstr "使用这个字段指定 SSH 公钥文件"
+
+#: ../src/plugins/report_Uploader.xml.in.h:18
+msgid "SSH Private key file"
+msgstr "SSH 私钥文件"
+
+#: ../src/plugins/report_Uploader.xml.in.h:19
+msgid "Use this field to specify SSH private keyfile"
+msgstr "使用这个字段指定 SSH 私钥文件"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/plugins/report_uReport.xml.in.h:1
@@ -2413,70 +2586,94 @@ msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla 无法找到 Bug %d 的父类 Bug"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/rhbz.c:893
+#: ../src/plugins/rhbz.c:916
 msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
 msgstr "Bug.search(quicksearch) 返回值未包含成员 'bugs'"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:68
+#: ../src/plugins/reporter-ureport.c:73
 msgid "Specify server URL"
 msgstr "指定服务器 URL"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:70
+#: ../src/plugins/reporter-ureport.c:75
 msgid "Allow insecure connection to ureport server"
 msgstr "允许使用非加密链接到 uReport 服务器"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:71
+#: ../src/plugins/reporter-ureport.c:76
 msgid "Use client authentication"
 msgstr "使用用户认证"
 
-#: ../src/plugins/reporter-ureport.c:72
+#: ../src/plugins/reporter-ureport.c:77
 msgid "Use HTTP Authentication"
 msgstr "使用 HTTP 认证"
 
-#: ../src/plugins/reporter-ureport.c:73
+#: ../src/plugins/reporter-ureport.c:78
 msgid "Additional files included in 'auth' key"
 msgstr "'auth' 密钥中包含的附加文件"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:76
+#: ../src/plugins/reporter-ureport.c:81
 msgid "bthash of uReport to attach (conflicts with -A)"
 msgstr "要附加的 uReport 的 bthash (与 -A 冲突)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:78
+#: ../src/plugins/reporter-ureport.c:83
 msgid "attach to a bthash from reported_to (conflicts with -a)"
 msgstr "从 reported_to 附加到 bthash (与 -a 冲突)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:80
+#: ../src/plugins/reporter-ureport.c:85
 msgid "contact e-mail address (requires -a|-A, conflicts with -E)"
 msgstr "联系电子邮件地址 (需要 -a|-A，与 -E 冲突)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:82
+#: ../src/plugins/reporter-ureport.c:87
 msgid ""
 "contact e-mail address from environment or configuration file (requires -a|-"
 "A, conflicts with -e)"
 msgstr "联系来自环境或配置文件中的电邮地址(需要 -a|-A，与 -e 冲突)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:84
+#: ../src/plugins/reporter-ureport.c:89
 msgid "attach RHBZ bug (requires -a|-A, conflicts with -B)"
 msgstr "附上 RHBZ bug  (需要 -a|-A，与 -B 冲突)"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:86
+#: ../src/plugins/reporter-ureport.c:91
 msgid ""
 "attach last RHBZ bug from reported_to (requires -a|-A, conflicts with -b)"
 msgstr "从 reported_to 附加最新 RHBZ 问题 (需要 -a|-A，与 -b 冲突)"
 
-#: ../src/plugins/reporter-ureport.c:91
+#: ../src/plugins/reporter-ureport.c:95
+msgid "attach value (requires -a|-A and -T, conflicts with -L)"
+msgstr "添加值 （需要 -a|-A 和 -T，与 -L 冲突）"
+
+#: ../src/plugins/reporter-ureport.c:97
+msgid ""
+"attach data of FIELD [URL] of the last report result (requires -a|-A, -r and "
+"-T, conflicts with -l)"
+msgstr "在最新报告结果中添加 FIELD [URL] 中的数据（需要 -a|-A、-r 和 -T，与 -l 冲突）"
+
+#: ../src/plugins/reporter-ureport.c:100
+msgid ""
+"use REPORT_RESULT_TYPE when looking for FIELD in reported_to (used only with "
+"-L)"
+msgstr "在 reported_to 中查找 FIELD 时使用 REPORT_RESULT_TYPE（仅可与 -L 配合使用）"
+
+#: ../src/plugins/reporter-ureport.c:102
+msgid ""
+"attach DATA as ureporte attachment ATTACHMENT_TYPE (used only with -l|-L)"
+msgstr "将 DATA 作为 ureporte 附件 ATTACHMENT_TYPE 添加（仅与 -l|-L 配合使用）"
+
+#: ../src/plugins/reporter-ureport.c:107
 msgid ""
 "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-A -a bthash -B "
 "-b bug-id -E -e email] [-d DIR]\n"
+"  [-A -a bthash -T ATTACHMENT_TYPE -r REPORT_RESULT_TYPE -L RESULT_FIELD] [-"
+"d DIR]\n"
+"  [-A -a bthash -T ATTACHMENT_TYPE -l DATA] [-d DIR]\n"
 "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-i "
 "AUTH_ITEMS]\\\n"
 "  [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
@@ -2487,59 +2684,72 @@ msgid ""
 msgstr ""
 "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-A -a bthash -B "
 "-b bug-id -E -e email] [-d DIR]\n"
+"  [-A -a bthash -T ATTACHMENT_TYPE -r REPORT_RESULT_TYPE -L RESULT_FIELD] [-"
+"d DIR]\n"
+"  [-A -a bthash -T ATTACHMENT_TYPE -l DATA] [-d DIR]\n"
 "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-i "
 "AUTH_ITEMS]\\\n"
 "  [-A -a bthash -B -b bug-id -E -e email] [-d DIR]\n"
 "\n"
-"上传微报告或者微报告中添加附件\n"
+"Upload micro report or add an attachment to a micro report\n"
 "\n"
-"读取默认配置于"
+"Reads the default configuration from "
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:144
+#: ../src/plugins/reporter-ureport.c:179
 msgid "This problem does not have an uReport assigned."
 msgstr "该问题没有指派一个 uReport。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:157
+#: ../src/plugins/reporter-ureport.c:192
 msgid "This problem has not been reported to Bugzilla."
 msgstr "该问题尚未汇报至 Bugzilla。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:161
+#: ../src/plugins/reporter-ureport.c:196
 #, c-format
 msgid "Unable to find bug ID in bugzilla URL '%s'"
 msgstr "无法在 Bugzilla URL '%s' 中找到 Bug ID"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:166
+#: ../src/plugins/reporter-ureport.c:201
 #, c-format
 msgid "Unable to parse bug ID from bugzilla URL '%s'"
 msgstr "无法处理来自 Bugzilla URL '%s' 中的 Bug ID"
 
+#: ../src/plugins/reporter-ureport.c:211
+#, c-format
+msgid "This problem has not been reported to '%s'."
+msgstr "已向 '%s' 报告了这个问题。"
+
+#: ../src/plugins/reporter-ureport.c:216
+#, c-format
+msgid "The report result '%s' is missing URL."
+msgstr "报告结果 '%s' 缺少 URL。"
+
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:179
+#: ../src/plugins/reporter-ureport.c:233
 msgid ""
 "Neither environment variable 'uReport_ContactEmail' nor configuration option "
 "'ContactEmail' is set"
 msgstr "环境变量 'uReport_ContactEmail' 和配置选项 'ContactEmail' 都未设置"
 
-#: ../src/plugins/reporter-ureport.c:185
+#: ../src/plugins/reporter-ureport.c:239
 msgid "You need to specify bug ID, contact email or both"
 msgstr "需要指定 bug ID、联系人电子邮件，或者二者均需指定。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:203
+#: ../src/plugins/reporter-ureport.c:263
 msgid "You need to specify bthash of the uReport to attach."
 msgstr "需要在附件中指定要添加 uReport 的 bthash。"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:208
+#: ../src/plugins/reporter-ureport.c:268
 msgid "Not uploading an empty uReport"
 msgstr "无法上传空白的 uReport"
 
 # translation auto-copied from project libreport, version master, document libreport
-#: ../src/plugins/reporter-ureport.c:229
+#: ../src/plugins/reporter-ureport.c:289
 msgid "This problem has already been reported."
 msgstr "已报告该问题。"
 
@@ -2703,7 +2913,16 @@ msgstr "通过电子邮件发送该问题数据"
 msgid "Analyze the problem locally and send information via email"
 msgstr "本地分析该问题并通过电子邮件发送信息"
 
-# translation auto-copied from project libreport, version master, document libreport
+#: ../src/workflows/workflow_uReport.xml.in.h:1
+msgid "Submit anonymous crash report"
+msgstr "提交匿名故障报告"
+
+#: ../src/workflows/workflow_uReport.xml.in.h:2
+msgid ""
+"Submit anonymous crash report - I do not want to be contacted by Red Hat "
+"Support"
+msgstr "提交匿名故障报告，使用 -l 是不希望红帽支持团队与其联络。"
+
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1
 #: ../src/workflows/workflow_RHELPython.xml.in.h:1
@@ -2711,50 +2930,20 @@ msgstr "本地分析该问题并通过电子邮件发送信息"
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:1
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:1
 #: ../src/workflows/workflow_RHELJava.xml.in.h:1
-msgid "Report to Red Hat Customer Portal"
-msgstr "向客户门户网站提交报告"
+msgid "Ask Red Hat Support for help"
+msgstr "向红帽支持寻求帮助"
 
-# translation auto-copied from project libreport, version master, document libreport
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
-msgid "Process the C/C++ crash using the Red Hat infrastructure"
-msgstr "使用红帽基础架构处理 C/C++ 崩溃"
-
-# translation auto-copied from project libreport, version master, document libreport
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:2
-msgid "Process the kerneloops using the Red Hat infrastructure"
-msgstr "使用红帽基础架构处理内核故障"
-
-# translation auto-copied from project libreport, version master, document libreport
 #: ../src/workflows/workflow_RHELPython.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:2
-msgid "Process the python exception using the Red Hat infrastructure"
-msgstr "使用红帽基础架构处理 Python 异常"
-
-# translation auto-copied from project libreport, version master, document libreport
 #: ../src/workflows/workflow_RHELvmcore.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:2
-msgid "Process the kernel crash using the Red Hat infrastructure"
-msgstr "使用红帽基础架构处理内核崩溃"
-
-# translation auto-copied from project libreport, version master, document libreport
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:2
-msgid "Process the X Server problem using the Red Hat infrastructure"
-msgstr "使用红帽基础架构处理 X 服务器问题"
-
-# translation auto-copied from project libreport, version master, document libreport
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:2
-msgid "Process the problem using the Red Hat infrastructure"
-msgstr "使用红帽基础架构处理问题"
-
-# translation auto-copied from project libreport, version master, document libreport
 #: ../src/workflows/workflow_RHELJava.xml.in.h:2
-#: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
-msgid "Process the Java exception using the Red Hat infrastructure"
-msgstr "使用红帽基础架构处理 Java 异常"
+msgid ""
+"Create new Red Hat Support case - I would like to be contacted by Red Hat "
+"Support"
+msgstr "生成新的红帽支持问题单 - 希望红帽支持团队与我联络"
 
 # translation auto-copied from project libreport, version master, document libreport
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
@@ -2766,3 +2955,38 @@ msgstr "使用红帽基础架构处理 Java 异常"
 #: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:1
 msgid "Report to Red Hat Bugzilla"
 msgstr "向红帽 Bugzilla 提交报告"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
+msgid "Process the C/C++ crash using the Red Hat infrastructure"
+msgstr "使用红帽基础架构处理 C/C++ 崩溃"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:2
+msgid "Process the kerneloops using the Red Hat infrastructure"
+msgstr "使用红帽基础架构处理内核故障"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:2
+msgid "Process the python exception using the Red Hat infrastructure"
+msgstr "使用红帽基础架构处理 Python 异常"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:2
+msgid "Process the kernel crash using the Red Hat infrastructure"
+msgstr "使用红帽基础架构处理内核崩溃"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:2
+msgid "Process the X Server problem using the Red Hat infrastructure"
+msgstr "使用红帽基础架构处理 X 服务器问题"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:2
+msgid "Process the problem using the Red Hat infrastructure"
+msgstr "使用红帽基础架构处理问题"
+
+# translation auto-copied from project libreport, version master, document libreport
+#: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
+msgid "Process the Java exception using the Red Hat infrastructure"
+msgstr "使用红帽基础架构处理 Java 异常"
