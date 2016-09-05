@@ -811,12 +811,7 @@ int main(int argc, char **argv)
             /* Check for hints and show them if we have something */
             log(_("Checking for hints"));
             if (check_for_hints(base_api_url, &login, &password, ssl_verify, tempfile))
-            {
-                ureport_server_config_destroy(&urconf);
-                free_map_string(ursettings);
-                free(bthash);
                 goto ret;
-            }
         }
 
         log(_("Creating a new case"));
