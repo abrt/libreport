@@ -144,6 +144,7 @@ struct dump_dir *create_dump_dir(const char *base_dir_name, const char *type, ui
     char* new_path = concat_path_file(base_dir_name, problem_id);
     log_info("Renaming from '%s' to '%s'", dd->dd_dirname, new_path);
     dd_rename(dd, new_path);
+    free(new_path);
 
  ret:
     free(problem_id);
