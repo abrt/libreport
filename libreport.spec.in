@@ -775,6 +775,17 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Fri Sep 09 2016 Jakub Filak <jfilak@redhat.com> 2.8.0-1
+- lib: fix a memory leak in create_dump_dir fn
+- rhtsupport: fix a double free of config at exit
+- autogen: fix typo in usage help string
+- debuginfo: dnf API logging workarounds list
+- lib: don't warn when user word file doesn't exist
+- testuite: add test for forbidden_words
+- lib: be able to define base conf dir at runtime
+- wizard: use dnf instead of yum in add a screencast note
+- problem_report: document resevered elements
+
 * Mon Jul 18 2016 Matej Habrnal <mhabrnal@redhat.com> 2.7.2-1
 - Translation updates
 - wizard: do not create reproducible if complex_detail == no
