@@ -9,6 +9,7 @@ dist_workflows_DATA = \
     workflow_FedoraXorg.xml \
     workflow_FedoraLibreport.xml \
     workflow_FedoraJava.xml \
+    workflow_FedoraJavaScript.xml \
     workflow_RHELCCpp.xml \
     workflow_RHELKerneloops.xml \
     workflow_RHELPython.xml \
@@ -16,6 +17,7 @@ dist_workflows_DATA = \
     workflow_RHELxorg.xml \
     workflow_RHELLibreport.xml \
     workflow_RHELJava.xml \
+    workflow_RHELJavaScript.xml \
     workflow_uReport.xml \
     workflow_Mailx.xml \
     workflow_MailxCCpp.xml \
@@ -33,7 +35,8 @@ dist_workflows_DATA += \
     workflow_CentOSVmcore.xml \
     workflow_CentOSXorg.xml \
     workflow_CentOSLibreport.xml \
-    workflow_CentOSJava.xml
+    workflow_CentOSJava.xml \
+    workflow_CentOSJavaScript.xml
 endif
 
 if BUILD_BUGZILLA
@@ -48,7 +51,8 @@ dist_workflows_DATA += \
     workflow_RHELBugzillaVmcore.xml \
     workflow_RHELBugzillaXorg.xml \
     workflow_RHELBugzillaLibreport.xml \
-    workflow_RHELBugzillaJava.xml
+    workflow_RHELBugzillaJava.xml \
+    workflow_RHELBugzillaJavaScript.xml
 endif
 
 workflowsdefdir = $(WORKFLOWS_DEFINITION_DIR)
@@ -79,6 +83,7 @@ EXTRA_DIST = \
     workflow_FedoraXorg.xml.in \
     workflow_FedoraLibreport.xml.in \
     workflow_FedoraJava.xml.in \
+    workflow_FedoraJavaScript.xml.in \
     workflow_RHELCCpp.xml.in \
     workflow_RHELKerneloops.xml.in \
     workflow_RHELPython.xml.in \
@@ -86,6 +91,7 @@ EXTRA_DIST = \
     workflow_RHELxorg.xml.in \
     workflow_RHELLibreport.xml.in \
     workflow_RHELJava.xml.in \
+    workflow_RHELJavaScript.xml.in \
     workflow_uReport.xml.in \
     workflow_Mailx.xml.in \
     workflow_MailxCCpp.xml.in \
@@ -107,7 +113,8 @@ EXTRA_DIST += \
     workflow_RHELBugzillaVmcore.xml.in \
     workflow_RHELBugzillaXorg.xml.in \
     workflow_RHELBugzillaLibreport.xml.in \
-    workflow_RHELBugzillaJava.xml.in
+    workflow_RHELBugzillaJava.xml.in \
+    workflow_RHELBugzillaJavaScript.xml.in
 endif
 
 if BUILD_MANTISBT
@@ -119,5 +126,6 @@ EXTRA_DIST += \
     workflow_CentOSVmcore.xml.in \
     workflow_CentOSXorg.xml.in \
     workflow_CentOSLibreport.xml.in \
-    workflow_CentOSJava.xml.in
+    workflow_CentOSJava.xml.in \
+    workflow_CentOSJavaScript.xml.in
 endif
