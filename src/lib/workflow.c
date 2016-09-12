@@ -89,7 +89,7 @@ static void load_workflow_config(const char *name,
         file_obj_t *file = (file_obj_t *)wf_file->data;
         workflow_t *workflow = new_workflow(file->filename);
         load_workflow_description_from_file(workflow, file->fullpath);
-        log_notice("Adding '%s' to workflows\n", file->filename);
+        log_info("Adding '%s' to workflows\n", file->filename);
         g_hash_table_insert(wf_list, xstrdup(file->filename), workflow);
     }
 }

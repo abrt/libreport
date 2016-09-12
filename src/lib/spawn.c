@@ -116,7 +116,7 @@ pid_t fork_execv_on_steroids(int flags,
 		}
 
 		/* This should be done BEFORE stderr redirect */
-		log_notice("Executing: %s", prog_as_string);
+		log_info("Executing: %s", prog_as_string);
 
 		if (flags & EXECFLG_ERR2OUT) {
 			/* Want parent to see errors in the same stream */

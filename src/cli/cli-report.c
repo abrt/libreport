@@ -836,7 +836,7 @@ static workflow_t *select_workflow(GHashTable *workflows)
     if (wf_cnt == 1)
     {
         workflow_t *wf_selected = (workflow_t *)wf_list->data;
-        log_notice("autoselected workflow: '%s'", (char *)wf_get_name(wf_selected));
+        log_info("autoselected workflow: '%s'", (char *)wf_get_name(wf_selected));
         g_list_free(wf_list);
         return wf_selected;
     }

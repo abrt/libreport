@@ -181,7 +181,7 @@ static void error(GMarkupParseContext *context,
 
 void load_workflow_description_from_file(workflow_t *workflow, const char* filename)
 {
-    log_notice("loading workflow: '%s'", filename);
+    log_info("loading workflow: '%s'", filename);
     struct my_parse_data parse_data = { workflow, NULL, NULL, 0, 0, 0};
     parse_data.cur_locale = xstrdup(setlocale(LC_ALL, NULL));
     strchrnul(parse_data.cur_locale, '.')[0] = '\0';

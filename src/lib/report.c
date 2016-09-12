@@ -144,7 +144,7 @@ int report_problem_in_dir(const char *dirname, int flags)
         /* No "report-cli/gui" event found, do it old-style */
 
         path = path1;
-        log_notice("Executing: %s", path);
+        log_info("Executing: %s", path);
         execv(path, args);
         /* Did not find the desired executable in the installation directory.
          * Trying to find it in PATH.

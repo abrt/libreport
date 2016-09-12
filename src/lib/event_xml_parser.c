@@ -549,7 +549,7 @@ static void error(GMarkupParseContext *context,
 
 void load_event_description_from_file(event_config_t *event_config, const char* filename)
 {
-    log_notice("loading event: '%s'", filename);
+    log_info("loading event: '%s'", filename);
     struct my_parse_data parse_data = { {event_config, false, false, false}, {NULL, false, false}, NULL, NULL };
     parse_data.cur_locale = xstrdup(setlocale(LC_ALL, NULL));
     strchrnul(parse_data.cur_locale, '.')[0] = '\0';

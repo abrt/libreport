@@ -499,7 +499,7 @@ int spawn_next_command(struct run_event_state *state,
      */
     state->children_count++;
 
-    log_notice("Executing '%s'", cmd);
+    log_info("Next command: '%s'", cmd);
 
     /* Export some useful environment variables for children */
     char *env_vec[4];
