@@ -325,7 +325,9 @@ ureport_server_config_init(struct ureport_server_config *config)
     config->ur_username = NULL;
     config->ur_password = NULL;
     config->ur_http_headers = new_map_string();
+
     config->ur_prefs.urp_auth_items = NULL;
+    config->ur_prefs.urp_flags = 0;
 }
 
 void
@@ -697,7 +699,13 @@ ureport_from_dump_dir_ext(const char *dump_dir_path, const struct ureport_prefer
                                                        &error_message);
 
     if (!report)
-        error_msg_and_die("%s", error_message);
+    {
+        if (NULL == preferences || !(preferences->urp_flags & UREPORT_PREF_FLAG_RETURN_ON_FAILURE))
+            error_msg_and_die("%s", error_message);
+
+        log_notice("%s", error_message);
+        return NULL;
+    }
 
     if (preferences != NULL && preferences->urp_auth_items != NULL)
     {

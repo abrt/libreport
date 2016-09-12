@@ -35,11 +35,20 @@ extern "C" {
 #define UREPORT_ATTACH_ACTION "reports/attach/"
 
 /*
+ * Flags for tweaking the way how uReports are generated.
+ */
+enum ureport_preferences_flags
+{
+    UREPORT_PREF_FLAG_RETURN_ON_FAILURE = 0x1, ///< Do not exit on failures
+};
+
+/*
  * uReport generation configuration
  */
 struct ureport_preferences
 {
-    GList *urp_auth_items;  ///< list of file names included in 'auth' key
+    GList *urp_auth_items;    ///< list of file names included in 'auth' key
+    int urp_flags;            ///< See enum ureport_preferences_flags
 };
 
 /*

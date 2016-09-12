@@ -272,7 +272,10 @@ char *submit_ureport(const char *dump_dir_name, struct ureport_server_config *co
 
     char *json = ureport_from_dump_dir(dump_dir_name);
     if (json == NULL)
+    {
+        log_notice(_("Failed to generate microreport from the problem data"));
         return NULL;
+    }
 
     struct ureport_server_response *resp = ureport_do_post_credentials(json, conf, UREPORT_SUBMIT_ACTION);
     free(json);
@@ -447,6 +450,8 @@ void prepare_ureport_configuration(const char *urcfile,
         UREPORT_OPTION_VALUE_FROM_CONF(settings, "AuthDataItems", auth_items, (const char *));
         urconf->ur_prefs.urp_auth_items = parse_list(auth_items);
     }
+
+    urconf->ur_prefs.urp_flags |= UREPORT_PREF_FLAG_RETURN_ON_FAILURE;
 }
 
 int main(int argc, char **argv)

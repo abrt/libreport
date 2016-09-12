@@ -286,10 +286,13 @@ int main(int argc, char **argv)
     if (!ureport_hash && (rhbz_bug >= 0 || email_address))
         error_msg_and_die(_("You need to specify bthash of the uReport to attach."));
 
-    char *json_ureport = ureport_from_dump_dir_ext(dump_dir_path, &(config.ur_prefs));
+    struct ureport_preferences *prefs = &(config.ur_prefs);
+    prefs->urp_flags |= UREPORT_PREF_FLAG_RETURN_ON_FAILURE;
+
+    char *json_ureport = ureport_from_dump_dir_ext(dump_dir_path, prefs);
     if (!json_ureport)
     {
-        error_msg(_("Not uploading an empty uReport"));
+        error_msg(_("Failed to generate microreport from the problem data"));
         goto finalize;
     }
 
