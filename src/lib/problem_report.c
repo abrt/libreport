@@ -438,16 +438,23 @@ append_text(struct strbuf *result, const char *item_name, const char *content, b
 static int
 append_short_backtrace(struct strbuf *result, problem_data_t *problem_data, size_t max_text_size, bool print_item_name)
 {
-    const problem_item *item = problem_data_get_item_or_NULL(problem_data,
-                                                             FILENAME_BACKTRACE);
-    if (!item)
-        return 0; /* "I did not print anything" */
-    if (!(item->flags & CD_FLAG_TXT))
-        return 0; /* "I did not print anything" */
+    const problem_item *backtrace_item = problem_data_get_item_or_NULL(problem_data,
+                                                                       FILENAME_BACKTRACE);
+    const problem_item *core_stacktrace_item = NULL;
+    if (!backtrace_item || !(backtrace_item->flags & CD_FLAG_TXT))
+    {
+        backtrace_item = NULL;
+
+        core_stacktrace_item = problem_data_get_item_or_NULL(problem_data,
+                                                             FILENAME_CORE_BACKTRACE);
+
+        if (!core_stacktrace_item || !(core_stacktrace_item->flags & CD_FLAG_TXT))
+            return 0;
+    }
 
     char *truncated = NULL;
 
-    if (strlen(item->content) >= max_text_size)
+    if (core_stacktrace_item || strlen(backtrace_item->content) >= max_text_size)
     {
         log_debug("'backtrace' exceeds the text file size, going to append its short version");
 
@@ -464,14 +471,14 @@ append_short_backtrace(struct strbuf *result, problem_data_t *problem_data, size
          * by default for CCpp crashes.
          */
         enum sr_report_type report_type = sr_abrt_type_from_type(type);
-        if (strcmp(type, "CCpp") == 0)
+        if (backtrace_item && strcmp(type, "CCpp") == 0)
         {
             log_debug("Successfully identified 'CCpp' abrt type");
             report_type = SR_REPORT_GDB;
         }
 
-        struct sr_stacktrace *backtrace = sr_stacktrace_parse(report_type,
-                item->content, &error_msg);
+        const char *content = backtrace_item ? backtrace_item->content : core_stacktrace_item->content;
+        struct sr_stacktrace *backtrace = sr_stacktrace_parse(report_type, content, &error_msg);
 
         if (!backtrace)
         {
@@ -495,9 +502,10 @@ append_short_backtrace(struct strbuf *result, problem_data_t *problem_data, size
         log_debug("'backtrace' is small enough to be included as is");
     }
 
+    /* full item content  */
     append_text(result,
                 /*item_name:*/ truncated ? "truncated_backtrace" : FILENAME_BACKTRACE,
-                /*content:*/   truncated ? truncated             : item->content,
+                /*content:*/   truncated ? truncated             : backtrace_item->content,
                 print_item_name
     );
     free(truncated);
