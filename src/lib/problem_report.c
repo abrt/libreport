@@ -436,7 +436,7 @@ append_text(struct strbuf *result, const char *item_name, const char *content, b
 }
 
 static int
-append_short_backtrace(struct strbuf *result, problem_data_t *problem_data, size_t max_text_size, bool print_item_name)
+append_short_backtrace(struct strbuf *result, problem_data_t *problem_data, bool print_item_name, problem_report_settings_t *settings)
 {
     const problem_item *backtrace_item = problem_data_get_item_or_NULL(problem_data,
                                                                        FILENAME_BACKTRACE);
@@ -454,7 +454,7 @@ append_short_backtrace(struct strbuf *result, problem_data_t *problem_data, size
 
     char *truncated = NULL;
 
-    if (core_stacktrace_item || strlen(backtrace_item->content) >= max_text_size)
+    if (core_stacktrace_item || strlen(backtrace_item->content) >= settings->prs_shortbt_max_text_size)
     {
         log_debug("'backtrace' exceeds the text file size, going to append its short version");
 
@@ -487,8 +487,8 @@ append_short_backtrace(struct strbuf *result, problem_data_t *problem_data, size
             return 0;
         }
 
-        /* Get optimized thread stack trace for 10 top most frames */
-        truncated = sr_stacktrace_to_short_text(backtrace, 10);
+        /* Get optimized thread stack trace for max_frames top most frames */
+        truncated = sr_stacktrace_to_short_text(backtrace, settings->prs_shortbt_max_frames);
         sr_stacktrace_free(backtrace);
 
         if (!truncated)
@@ -513,7 +513,7 @@ append_short_backtrace(struct strbuf *result, problem_data_t *problem_data, size
 }
 
 static int
-append_item(struct strbuf *result, const char *item_name, problem_data_t *pd, GList *comment_fmt_spec)
+append_item(struct strbuf *result, const char *item_name, problem_data_t *pd, GList *comment_fmt_spec, problem_report_settings_t *settings)
 {
     bool print_item_name = (strncmp(item_name, "%bare_", strlen("%bare_")) != 0);
     if (!print_item_name)
@@ -538,7 +538,7 @@ append_item(struct strbuf *result, const char *item_name, problem_data_t *pd, GL
 
     /* Compat with previously-existed ad-hockery: %short_backtrace */
     if (strcmp(item_name, "%short_backtrace") == 0)
-        return append_short_backtrace(result, pd, CD_TEXT_ATT_SIZE_BZ, print_item_name);
+        return append_short_backtrace(result, pd, print_item_name, settings);
 
     /* Compat with previously-existed ad-hockery: %reporter */
     if (strcmp(item_name, "%reporter") == 0)
@@ -609,7 +609,7 @@ append_item(struct strbuf *result, const char *item_name, problem_data_t *pd, GL
     } while (0)
 
 static void
-format_section(section_t *section, problem_data_t *pd, GList *comment_fmt_spec, FILE *result)
+format_section(section_t *section, problem_data_t *pd, GList *comment_fmt_spec, FILE *result, problem_report_settings_t *settings)
 {
     int empty_lines = -1;
 
@@ -627,7 +627,7 @@ format_section(section_t *section, problem_data_t *pd, GList *comment_fmt_spec, 
                 item = item->next;
                 if (str[0] == '-') /* "-name", ignore it */
                     continue;
-                append_item(output, str, pd, comment_fmt_spec);
+                append_item(output, str, pd, comment_fmt_spec, settings);
             }
 
             if (output->len != 0)
@@ -1029,7 +1029,29 @@ struct problem_formatter
     GList *pf_sections;         ///< parsed sections (struct section_t)
     GList *pf_extra_sections;   ///< user configured sections (struct extra_section)
     char  *pf_default_summary;  ///< default summary format
+    problem_report_settings_t pf_settings; ///< settings for report generating
 };
+
+static problem_report_settings_t
+problem_report_settings_init(void)
+{
+    problem_report_settings_t settings = {
+        .prs_shortbt_max_frames = 10,
+        .prs_shortbt_max_text_size = CD_TEXT_ATT_SIZE_BZ,
+    };
+
+    return settings;
+}
+
+problem_report_settings_t problem_formatter_get_settings(const problem_formatter_t *self)
+{
+    return self->pf_settings;
+}
+
+void problem_formatter_set_settings(problem_formatter_t *self, problem_report_settings_t settings)
+{
+    self->pf_settings = settings;
+}
 
 problem_formatter_t *
 problem_formatter_new(void)
@@ -1037,6 +1059,7 @@ problem_formatter_new(void)
     problem_formatter_t *self = xzalloc(sizeof(*self));
 
     self->pf_default_summary = xstrdup("%reason%");
+    self->pf_settings = problem_report_settings_init();
 
     return self;
 }
@@ -1169,6 +1192,8 @@ problem_formatter_load_file(problem_formatter_t *self, const char *path)
 int
 problem_formatter_generate_report(const problem_formatter_t *self, problem_data_t *data, problem_report_t **report)
 {
+    problem_report_settings_t settings = problem_formatter_get_settings(self);
+
     problem_report_t *pr = problem_report_new();
 
     for (GList *iter = self->pf_extra_sections; iter; iter = g_list_next(iter))
@@ -1198,7 +1223,7 @@ problem_formatter_generate_report(const problem_formatter_t *self, problem_data_
             if (buffer != NULL)
             {
                 log_debug("Formatting section : '%s'", section->name);
-                format_section(section, data, self->pf_sections, buffer);
+                format_section(section, data, self->pf_sections, buffer, &settings);
             }
             else
                 log_warning("Unsupported section '%s'", section->name);
