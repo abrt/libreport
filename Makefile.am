@@ -72,7 +72,8 @@ release:
 	echo "* $$(LANG='en_US.UTF-8' date +'%a %b %d %Y') $$(git config --get user.name) <$$(git config --get user.email)> $$NEW_VER-1" > /tmp/changelog.tmp; \
 	git log --oneline $$OLD_VER..HEAD | awk '{$$1=""; if (a[$$0]++ == 0) print "-" $$0} END {print ""}' | grep -v -e "- Merge" -e "- testsuite:" -e "- make:" >> /tmp/changelog.tmp; \
 	sed "$$(grep -n changelog libreport.spec.in | cut -f1 -d:)"'r /tmp/changelog.tmp' -i libreport.spec.in; \
-	git add libreport.spec.in; \
+	sed 's|DEF_VER=.*$$|DEF_VER='$$NEW_VER'|' -i gen-version; \
+	git add gen-version libreport.spec.in; \
 	git commit -m "New version $$NEW_VER"; \
 	git tag "$$NEW_VER"; \
 	echo -n "$$NEW_VER" > libreport-version
