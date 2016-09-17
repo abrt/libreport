@@ -1,1 +1,44 @@
-Generic library for reporting various problems. Please see INSTALL for build and install steps.
+libreport
+---------
+
+Generic library for reporting various problems to destinations like mailing
+lists, regular files, remote servers and bug tracking tools.
+
+The library operates on problem data stored in the form of regular files in
+a directory (so called dump directory).
+
+The library provides a low level API (dump_dir.h) for creating and modifying
+dump directories, a high level API allowing to avoid the need to work with dump
+directories (problem_data.h), and a set of tools that file reports.
+
+The library also provides an infrastructure (run_event.h, report_event.conf)
+for automatic execution of shell scripts working with dump directories.
+
+
+Supported report destinations
+-----------------------------
+- regular files  : reporter-print
+- e-mail         : reporter-mailx
+- ftp/scp        : reporter-upload
+- Bugzilla       : reporter-bugzilla (https://bugzilla.redhat.com)
+- MantisBT       : reporter-mantisbt (https://bugs.centos.org)
+- FAF            : reporter-ureport  (https://abrt.fedoraproject.org)
+
+- Linux Kernel Oops       : reporter-kerneloops (http://www.kerneloops.org/)
+- Red Hat Customer Portal : reporter-rhtsupport (https://access.redhat.com/)
+
+
+Installing
+----------
+
+Please see INSTALL for build and install steps.
+
+
+Technologies
+------------
+* satyr - https://github.com/abrt/satyr - backtrace processing, micro-reports
+* Python3 - https://www.python.org/
+* GLib2 - https://developer.gnome.org/glib/
+* Gtk3 - https://developer.gnome.org/gtk3
+* XML RPC for C and C++ - http://xmlrpc-c.sourceforge.net/
+* json-c - https://github.com/json-c/json-c
