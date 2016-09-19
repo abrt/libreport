@@ -93,6 +93,7 @@ AT_TESTFUN([description],
 #include "problem_report.h"
 #include "internal_libreport.h"
 #include <assert.h>
+#include "testsuite.h"
 
 int main(int argc, char **argv)
 {
@@ -314,7 +315,7 @@ int main(int argc, char **argv)
             fprintf(stderr, "result  : '%s'\n", summary);
             fprintf(stderr, "####\n");
 
-            assert(strcmp(test_format_result[i][1], summary) == 0);
+            TS_ASSERT_STRING_EQ(summary, test_format_result[i][1], "Correct summary");
         }
 
         problem_report_free(pr);
@@ -337,143 +338,7 @@ AT_TESTFUN([short_backtrace],
 #include "internal_libreport.h"
 #include <assert.h>
 
-void check(problem_data_t *data, const char *const test_format_result[])
-{
-    problem_formatter_t *pf = problem_formatter_new();
-    assert(!problem_formatter_load_string(pf, test_format_result[0]));
-
-    problem_report_t *pr = NULL;
-    assert(!problem_formatter_generate_report(pf, data, &pr));
-    assert(pr != NULL);
-
-    const char *summary = problem_report_get_description(pr);
-    assert(summary != NULL);
-
-    if (test_format_result[1] != NULL) {
-        fprintf(stderr, "####\n");
-        fprintf(stderr, "expected: '%s'\n", test_format_result[1]);
-        fprintf(stderr, "====\n");
-        fprintf(stderr, "result  : '%s'\n", summary);
-        fprintf(stderr, "####\n");
-
-        assert(strcmp(test_format_result[1], summary) == 0);
-    }
-
-    problem_report_free(pr);
-    problem_formatter_free(pf);
-}
-
-int main(int argc, char **argv)
-{
-    const char *const backtrace_result[2] = {
-        "Truncated backtrace:: %bare_%short_backtrace",
-
-        "Truncated backtrace:\n"
-        "Thread no. 0 (7 frames)\n"
-        " #1 crash at will_segfault.c:19\n"
-        " #2 varargs at will_segfault.c:31\n"
-        " #3 inlined at will_segfault.c:40\n"
-        " #4 f at will_segfault.c:45\n"
-        " #5 callback at will_segfault.c:50\n"
-        " #6 call_me_back at libwillcrash.c:8\n"
-        " #7 recursive at will_segfault.c:59\n"
-    };
-
-    const char *const core_backtrace_result[2] = {
-        "Truncated backtrace:: %bare_%short_backtrace",
-
-        "Truncated backtrace:\n"
-        "#1 crash in /usr/bin/will_segfault\n"
-        "#2 varargs in /usr/bin/will_segfault\n"
-        "#3 f in /usr/bin/will_segfault\n"
-        "#4 callback in /usr/bin/will_segfault\n"
-        "#5 call_me_back in /usr/lib64/libwillcrash.so.0.0.0\n"
-        "#6 recursive in /usr/bin/will_segfault\n"
-        "#7 recursive in /usr/bin/will_segfault\n"
-        "#8 recursive in /usr/bin/will_segfault\n"
-        "#9 main in /usr/bin/will_segfault\n"
-    };
-
-    g_verbose = 3;
-
-    problem_data_t *data = problem_data_new();
-    problem_data_add_text_noteditable(data, "package", "libreport");
-    problem_data_add_text_noteditable(data, "analyzer", "CCpp");
-    problem_data_add_text_noteditable(data, "type", "CCpp");
-    problem_data_add_text_noteditable(data, "comment", "Hello, world!");
-    problem_data_add_text_noteditable(data, "uuid", "123456789ABCDEF");
-    problem_data_add_text_noteditable(data, "uid", "69");
-    problem_data_add_text_noteditable(data, "user_name", "abrt");
-    problem_data_add_text_noteditable(data, "root", "/var/run/mock/abrt");
-    problem_data_add_text_noteditable(data, "description", "I run will_segfault and\nit crashed as expected\n");
-    problem_data_add_text_noteditable(data, "core_backtrace",
-"{   \"signal\": 11\n"\
-",   \"only_crash_thread\": true\n"\
-",   \"stacktrace\":\n"\
-"      [ {   \"crash_thread\": true\n"\
-"        ,   \"frames\":\n"\
-"              [ {   \"address\": 93894060571040\n"\
-"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
-"                ,   \"build_id_offset\": 2464\n"\
-"                ,   \"function_name\": \"crash\"\n"\
-"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
-"                }\n"\
-"              , {   \"address\": 93894060571239\n"\
-"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
-"                ,   \"build_id_offset\": 2663\n"\
-"                ,   \"function_name\": \"varargs\"\n"\
-"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
-"                }\n"\
-"              , {   \"address\": 93894060571294\n"\
-"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
-"                ,   \"build_id_offset\": 2718\n"\
-"                ,   \"function_name\": \"f\"\n"\
-"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
-"                }\n"\
-"              , {   \"address\": 93894060571337\n"\
-"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
-"                ,   \"build_id_offset\": 2761\n"\
-"                ,   \"function_name\": \"callback\"\n"\
-"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
-"                }\n"\
-"              , {   \"address\": 140458064176825\n"\
-"                ,   \"build_id\": \"61ee70f1ceca4897eadb680f1afaa669782c53cf\"\n"\
-"                ,   \"build_id_offset\": 1721\n"\
-"                ,   \"function_name\": \"call_me_back\"\n"\
-"                ,   \"file_name\": \"/usr/lib64/libwillcrash.so.0.0.0\"\n"\
-"                }\n"\
-"              , {   \"address\": 93894060571382\n"\
-"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
-"                ,   \"build_id_offset\": 2806\n"\
-"                ,   \"function_name\": \"recursive\"\n"\
-"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
-"                }\n"\
-"              , {   \"address\": 93894060571360\n"\
-"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
-"                ,   \"build_id_offset\": 2784\n"\
-"                ,   \"function_name\": \"recursive\"\n"\
-"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
-"                }\n"\
-"              , {   \"address\": 93894060571360\n"\
-"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
-"                ,   \"build_id_offset\": 2784\n"\
-"                ,   \"function_name\": \"recursive\"\n"\
-"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
-"                }\n"\
-"              , {   \"address\": 93894060570663\n"\
-"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
-"                ,   \"build_id_offset\": 2087\n"\
-"                ,   \"function_name\": \"main\"\n"\
-"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
-"                } ]\n"\
-"        } ]\n"\
-"}\n"
-    );
-
-    /* if only core_backtrace exist, use it */
-    check(data, core_backtrace_result);
-
-    problem_data_add_text_noteditable(data, "backtrace",
+#define BACKTRACE_CONTENT \
 "Thread 1 (LWP 11865):\n"\
 "#0  printf (__fmt=0x400acf \"Result: %d\\n\") at /usr/include/bits/stdio2.h:104\n"\
 "No locals.\n"\
@@ -502,7 +367,7 @@ int main(int argc, char **argv)
 "0x00000032f76005f0  0x00000032f7600712  Yes         /lib64/libwillcrash.so.0\n"\
 "0x0000003245c1f4f0  0x0000003245d6aca4  Yes         /lib64/libc.so.6\n"\
 "0x0000003245800b10  0x000000324581b6d0  Yes         /lib64/ld-linux-x86-64.so.2\n"\
-"$1 = 0x0\n"
+"$1 = 0x0\n"\
 "No symbol \"__glib_assert_msg\" in current context.\n"\
 "rax            0xf      15\n"\
 "rbx            0x0      0\n"\
@@ -574,9 +439,240 @@ int main(int argc, char **argv)
 "   0x00000000004008c1 <+33>:    pop    %rbx\n"\
 "   0x00000000004008c2 <+34>:    retq\n"\
 "End of assembler dump.\n"
-            );
 
-    check(data, backtrace_result);
+#define CORE_BACKTRACE_CONTENT \
+"{   \"signal\": 11\n"\
+",   \"only_crash_thread\": true\n"\
+",   \"stacktrace\":\n"\
+"      [ {   \"crash_thread\": true\n"\
+"        ,   \"frames\":\n"\
+"              [ {   \"address\": 93894060571040\n"\
+"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
+"                ,   \"build_id_offset\": 2464\n"\
+"                ,   \"function_name\": \"crash\"\n"\
+"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
+"                }\n"\
+"              , {   \"address\": 93894060571239\n"\
+"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
+"                ,   \"build_id_offset\": 2663\n"\
+"                ,   \"function_name\": \"varargs\"\n"\
+"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
+"                }\n"\
+"              , {   \"address\": 93894060571294\n"\
+"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
+"                ,   \"build_id_offset\": 2718\n"\
+"                ,   \"function_name\": \"f\"\n"\
+"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
+"                }\n"\
+"              , {   \"address\": 93894060571337\n"\
+"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
+"                ,   \"build_id_offset\": 2761\n"\
+"                ,   \"function_name\": \"callback\"\n"\
+"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
+"                }\n"\
+"              , {   \"address\": 140458064176825\n"\
+"                ,   \"build_id\": \"61ee70f1ceca4897eadb680f1afaa669782c53cf\"\n"\
+"                ,   \"build_id_offset\": 1721\n"\
+"                ,   \"function_name\": \"call_me_back\"\n"\
+"                ,   \"file_name\": \"/usr/lib64/libwillcrash.so.0.0.0\"\n"\
+"                }\n"\
+"              , {   \"address\": 93894060571382\n"\
+"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
+"                ,   \"build_id_offset\": 2806\n"\
+"                ,   \"function_name\": \"recursive\"\n"\
+"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
+"                }\n"\
+"              , {   \"address\": 93894060571360\n"\
+"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
+"                ,   \"build_id_offset\": 2784\n"\
+"                ,   \"function_name\": \"recursive\"\n"\
+"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
+"                }\n"\
+"              , {   \"address\": 93894060571360\n"\
+"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
+"                ,   \"build_id_offset\": 2784\n"\
+"                ,   \"function_name\": \"recursive\"\n"\
+"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
+"                }\n"\
+"              , {   \"address\": 93894060570663\n"\
+"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
+"                ,   \"build_id_offset\": 2087\n"\
+"                ,   \"function_name\": \"main\"\n"\
+"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
+"                } ]\n"\
+"        } ]\n"\
+"}\n"
+
+typedef struct backtrace_result {
+    const char *format;
+    const char *result;
+    int max_text_size;
+    int max_frames;
+} backtrace_result_t;
+
+void check(problem_data_t *data, backtrace_result_t br)
+{
+    problem_formatter_t *pf = problem_formatter_new();
+    assert(!problem_formatter_load_string(pf, br.format));
+
+    problem_report_t *pr = NULL;
+    problem_report_settings_t report_settings = problem_formatter_get_settings(pf);
+    if (br.max_frames >= 0)
+        report_settings.prs_shortbt_max_frames = br.max_frames;
+    if (br.max_text_size >= 0)
+        report_settings.prs_shortbt_max_text_size = br.max_text_size; /* always short bt */
+    problem_formatter_set_settings(pf, report_settings);
+
+    assert(!problem_formatter_generate_report(pf, data, &pr));
+    assert(pr != NULL);
+
+    const char *summary = problem_report_get_description(pr);
+    assert(summary != NULL);
+
+    if (br.result != NULL) {
+        fprintf(stderr, "####\n");
+        fprintf(stderr, "# max_text_size %d, max_frames %d\n", br.max_text_size, br.max_frames);
+        fprintf(stderr, "expected: '%s'\n", br.result);
+        fprintf(stderr, "====\n");
+        fprintf(stderr, "result  : '%s'\n", summary);
+        fprintf(stderr, "####\n");
+
+        assert(strcmp(br.result, summary) == 0);
+    }
+
+    problem_report_free(pr);
+    problem_formatter_free(pf);
+}
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    problem_data_t *data = problem_data_new();
+    problem_data_add_text_noteditable(data, "package", "libreport");
+    problem_data_add_text_noteditable(data, "analyzer", "CCpp");
+    problem_data_add_text_noteditable(data, "type", "CCpp");
+    problem_data_add_text_noteditable(data, "comment", "Hello, world!");
+    problem_data_add_text_noteditable(data, "uuid", "123456789ABCDEF");
+    problem_data_add_text_noteditable(data, "uid", "69");
+    problem_data_add_text_noteditable(data, "user_name", "abrt");
+    problem_data_add_text_noteditable(data, "root", "/var/run/mock/abrt");
+    problem_data_add_text_noteditable(data, "description", "I run will_segfault and\nit crashed as expected\n");
+    problem_data_add_text_noteditable(data, "core_backtrace", CORE_BACKTRACE_CONTENT);
+
+    backtrace_result_t core_backtrace_result[] = {
+        {
+            .format = "Truncated backtrace:: %bare_%short_backtrace",
+            .result = "Truncated backtrace:\n"
+                      "#1 crash in /usr/bin/will_segfault\n"
+                      "#2 varargs in /usr/bin/will_segfault\n"
+                      "#3 f in /usr/bin/will_segfault\n"
+                      "#4 callback in /usr/bin/will_segfault\n"
+                      "#5 call_me_back in /usr/lib64/libwillcrash.so.0.0.0\n"
+                      "#6 recursive in /usr/bin/will_segfault\n"
+                      "#7 recursive in /usr/bin/will_segfault\n"
+                      "#8 recursive in /usr/bin/will_segfault\n"
+                      "#9 main in /usr/bin/will_segfault\n",
+            .max_text_size = -1,
+            .max_frames = -1
+        },
+        {
+            .format = "Truncated backtrace:: %bare_%short_backtrace",
+            .result = "Truncated backtrace:\n"
+                      "#1 crash in /usr/bin/will_segfault\n"
+                      "#2 varargs in /usr/bin/will_segfault\n"
+                      "#3 f in /usr/bin/will_segfault\n"
+                      "#4 callback in /usr/bin/will_segfault\n"
+                      "#5 call_me_back in /usr/lib64/libwillcrash.so.0.0.0\n",
+            .max_text_size = -1,
+            .max_frames = 5
+        },
+        {
+            .format = "Truncated backtrace:: %bare_%short_backtrace",
+            .result = "Truncated backtrace:\n"
+                      "#1 crash in /usr/bin/will_segfault\n",
+            .max_text_size = -1,
+            .max_frames = 1
+        },
+        {
+            .format = "Truncated backtrace:: %bare_%short_backtrace",
+            .result = "Truncated backtrace:\n"
+                      "#1 crash in /usr/bin/will_segfault\n",
+            .max_text_size = 0,
+            .max_frames = 1
+        },
+        /* core_backtrase is always truncated */
+        {
+            .format = "Truncated backtrace:: %bare_%short_backtrace",
+            .result = "Truncated backtrace:\n"
+                      "#1 crash in /usr/bin/will_segfault\n",
+            .max_text_size = strlen(CORE_BACKTRACE_CONTENT) + 1,
+            .max_frames = 1
+        },
+    };
+
+    /* if only core_backtrace exist, use it */
+    for (size_t i = 0; i < sizeof(core_backtrace_result)/sizeof(*core_backtrace_result); ++i) {
+        check(data, core_backtrace_result[i]);
+    }
+
+    /* use backtrace, if core_backtrace and backtrace exist */
+    problem_data_add_text_noteditable(data, "backtrace", BACKTRACE_CONTENT);
+
+    backtrace_result_t backtrace_result[] = {
+        {
+            .format = "Truncated backtrace:: %bare_%short_backtrace",
+            .result = "Truncated backtrace:\n"
+                      "Thread no. 0 (7 frames)\n"
+                      " #1 crash at will_segfault.c:19\n"
+                      " #2 varargs at will_segfault.c:31\n"
+                      " #3 inlined at will_segfault.c:40\n"
+                      " #4 f at will_segfault.c:45\n"
+                      " #5 callback at will_segfault.c:50\n"
+                      " #6 call_me_back at libwillcrash.c:8\n"
+                      " #7 recursive at will_segfault.c:59\n",
+            .max_text_size = -1,
+            .max_frames = -1
+        },
+        {
+            .format = "Truncated backtrace:: %bare_%short_backtrace",
+            .result = "Truncated backtrace:\n"
+                      "Thread no. 0 (5 frames)\n"
+                      " #1 crash at will_segfault.c:19\n"
+                      " #2 varargs at will_segfault.c:31\n"
+                      " #3 inlined at will_segfault.c:40\n"
+                      " #4 f at will_segfault.c:45\n"
+                      " #5 callback at will_segfault.c:50\n",
+            .max_text_size = -1,
+            .max_frames = 5
+        },
+        {
+            .format = "Truncated backtrace:: %bare_%short_backtrace",
+            .result = "Truncated backtrace:\n"
+                      "Thread no. 0 (1 frames)\n"
+                      " #1 crash at will_segfault.c:19\n",
+            .max_text_size = -1,
+            .max_frames = 1
+        },
+        {
+            .format = "Truncated backtrace:: %bare_%short_backtrace",
+            .result = "Truncated backtrace:\n"
+                      "Thread no. 0 (1 frames)\n"
+                      " #1 crash at will_segfault.c:19\n",
+            .max_text_size = 0,
+            .max_frames = 1
+        },
+        {
+            .format = "Truncated backtrace:: %bare_%short_backtrace",
+            .result = "Truncated backtrace:\n"BACKTRACE_CONTENT,
+            .max_text_size = strlen(BACKTRACE_CONTENT) + 1,
+            .max_frames = 1
+        },
+    };
+
+    for (size_t i = 0; i < sizeof(backtrace_result)/sizeof(*backtrace_result); ++i) {
+        check(data, backtrace_result[i]);
+    }
 
     problem_data_free(data);
 
