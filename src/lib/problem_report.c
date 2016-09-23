@@ -21,6 +21,7 @@
 #include "internal_libreport.h"
 
 #include <satyr/stacktrace.h>
+#include <satyr/thread.h>
 #include <satyr/abrt.h>
 
 #include <assert.h>
@@ -486,6 +487,10 @@ append_short_backtrace(struct strbuf *result, problem_data_t *problem_data, bool
             free(error_msg);
             return 0;
         }
+
+        /* normalize */
+        struct sr_thread *thread = sr_stacktrace_find_crash_thread(backtrace);
+        sr_thread_normalize(thread);
 
         /* Get optimized thread stack trace for max_frames top most frames */
         truncated = sr_stacktrace_to_short_text(backtrace, settings->prs_shortbt_max_frames);
