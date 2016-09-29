@@ -2322,6 +2322,28 @@ int dd_copy_file(struct dump_dir *dd, const char *name, const char *source_path)
     return copied < 0;
 }
 
+int dd_copy_file_at(struct dump_dir *dd, const char *name, int src_dir_fd, const char *src_name)
+{
+    if (!dd_validate_element_name(name))
+        error_msg_and_die("Cannot test existence. '%s' is not a valid file name", name);
+
+    log_debug("copying file '%s' to element '%s' at '%s'", src_name, name, dd->dd_dirname);
+
+    unlinkat(dd->dd_fd, name, /*remove only files*/0);
+    off_t copied = copy_file_ext_2at(src_dir_fd, src_name, dd->dd_fd, name,
+            DEFAULT_DUMP_DIR_MODE,
+            dd->dd_uid, dd->dd_gid,
+            O_RDONLY,
+            O_WRONLY | O_TRUNC | O_EXCL | O_CREAT);
+
+    if (copied < 0)
+        error_msg("Can't copy file '%s' to element '%s' at '%s'", src_name, name, dd->dd_dirname);
+    else
+        log_debug("copied %li bytes", (unsigned long)copied);
+
+    return copied < 0;
+}
+
 int dd_copy_file_unpack(struct dump_dir *dd, const char *name, const char *source_path)
 {
     if (!dd_validate_element_name(name))

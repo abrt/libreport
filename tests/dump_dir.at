@@ -48,10 +48,23 @@ void validate_dump_dir_contents(struct dump_dir *dd)
     assert(dd_get_item_size(dd, "at_test_binary") == 4);
     ++items;
 
+    struct stat srv_buf;
+    stat("/etc/services", &srv_buf);
+
     assert(dd_exist(dd, "at_test_services"));
+    assert(dd_get_item_size(dd, "at_test_services") == srv_buf.st_size);
     ++items;
 
+    struct stat grp_buf;
+    stat("/etc/group", &grp_buf);
+    assert(dd_exist(dd, "at_test_group"));
+    assert(dd_get_item_size(dd, "at_test_group") == grp_buf.st_size);
+    ++items;
+
+    struct stat pwd_buf;
+    stat("/etc/passwd", &pwd_buf);
     assert(dd_exist(dd, "at_test_passwd"));
+    assert(dd_get_item_size(dd, "at_test_passwd") == pwd_buf.st_size);
     ++items;
 
     dd_save_text(dd, "at_test_to_delete", "deleted");
@@ -126,6 +139,11 @@ TS_MAIN
     assert(dd_exist(dd, "at_test_binary"));
 
     dd_copy_file(dd, "at_test_services", "/etc/services");
+
+    const int etc_dir_fd = open("/etc", O_DIRECTORY | O_PATH | O_CLOEXEC | O_EXCL);
+    assert(etc_dir_fd >= 0);
+    dd_copy_file_at(dd, "at_test_group", etc_dir_fd, "group");
+    close(etc_dir_fd);
 
     int passwd_fd = open("/etc/passwd", O_RDONLY);
     assert(passwd_fd >= 0);
