@@ -228,6 +228,16 @@ void dd_save_binary(struct dump_dir *dd, const char *name, const char *data, uns
 int dd_copy_file(struct dump_dir *dd, const char *name, const char *source_path);
 int dd_copy_file_unpack(struct dump_dir *dd, const char *name, const char *source_path);
 
+/* Create an item of the given name with contents of the given file (see man openat)
+ *
+ * @param dd Dump directory
+ * @param name Item's name
+ * @param src_dir_fd Source directory's file descriptor
+ * @param src_name Source file name
+ * @return 0 no success, or negative value if an error occurred
+ */
+int dd_copy_file_at(struct dump_dir *dd, const char *name, int src_dir_fd, const char *src_name);
+
 /* Creates/overwrites an element with data read from a file descriptor
  *
  * @param dd Dump directory

@@ -177,6 +177,24 @@ off_t copyfd_eof(int fd1, int fd2, int flags)
 	return full_fd_action(fd1, fd2, 0, flags);
 }
 
+off_t copy_file_ext_2at(int src_dir_fd, const char *src_name, int dir_fd, const char *name, int mode, uid_t uid, gid_t gid, int src_flags, int dst_flags)
+{
+    off_t r;
+    int src = openat(src_dir_fd, src_name, src_flags);
+    if (src < 0)
+    {
+        perror_msg("Can't open '%s'", src_name);
+        return -1;
+    }
+
+    r = copyfd_ext_at(src, dir_fd, name, mode, uid, gid, dst_flags,
+            /*copy flags*/0,
+            /*read all data*/0);
+
+    close(src);
+    return r;
+}
+
 off_t copy_file_ext_at(const char *src_name, int dir_fd, const char *name, int mode, uid_t uid, gid_t gid, int src_flags, int dst_flags)
 {
     off_t r;
