@@ -83,11 +83,11 @@ static char *append_escaped(char *start, const char *s)
     }
 }
 
-static char* get_escaped(const char *path, char separator)
+static char* get_escaped_at(int dir_fd, const char *name, char separator)
 {
     char *escaped = NULL;
 
-    int fd = open(path, O_RDONLY);
+    int fd = openat(dir_fd, name, O_RDONLY);
     if (fd >= 0)
     {
         char *dst = NULL;
@@ -135,26 +135,36 @@ static char* get_escaped(const char *path, char separator)
     return escaped;
 }
 
-char* get_cmdline(pid_t pid)
-{
-    char path[sizeof("/proc/%lu/cmdline") + sizeof(long)*3];
-    snprintf(path, sizeof(path), "/proc/%lu/cmdline", (long)pid);
-    return get_escaped(path, ' ');
+#define DEFINE_GET_PROC_FILE_WRAPPER_AT(FUNCTION_NAME) \
+char *FUNCTION_NAME(pid_t pid) \
+{ \
+    const int pid_proc_fd = open_proc_pid_dir(pid); \
+    if (pid_proc_fd < 0) \
+        return NULL; \
+    char *const r = FUNCTION_NAME##_at(pid_proc_fd); \
+    close(pid_proc_fd); \
+    return r; \
 }
 
-char* get_environ(pid_t pid)
+DEFINE_GET_PROC_FILE_WRAPPER_AT(get_cmdline)
+
+char* get_cmdline_at(int pid_proc_fd)
 {
-    char path[sizeof("/proc/%lu/environ") + sizeof(long)*3];
-    snprintf(path, sizeof(path), "/proc/%lu/environ", (long)pid);
-    return get_escaped(path, '\n');
+    return get_escaped_at(pid_proc_fd, "cmdline", ' ');
 }
 
-char* get_executable(pid_t pid)
-{
-    char buf[sizeof("/proc/%lu/exe") + sizeof(long)*3];
+DEFINE_GET_PROC_FILE_WRAPPER_AT(get_environ)
 
-    sprintf(buf, "/proc/%lu/exe", (long)pid);
-    char *executable = malloc_readlink(buf);
+char* get_environ_at(int pid_proc_fd)
+{
+    return get_escaped_at(pid_proc_fd, "environ", '\n');
+}
+
+DEFINE_GET_PROC_FILE_WRAPPER_AT(get_executable)
+
+char* get_executable_at(int pid_proc_fd)
+{
+    char *executable = malloc_readlinkat(pid_proc_fd, "exe");
     if (!executable)
         return NULL;
     /* find and cut off " (deleted)" from the path */
@@ -174,18 +184,18 @@ char* get_executable(pid_t pid)
     return executable;
 }
 
-char* get_cwd(pid_t pid)
+DEFINE_GET_PROC_FILE_WRAPPER_AT(get_cwd)
+
+char* get_cwd_at(int proc_pid_fd)
 {
-    char buf[sizeof("/proc/%lu/cwd") + sizeof(long)*3];
-    sprintf(buf, "/proc/%lu/cwd", (long)pid);
-    return malloc_readlink(buf);
+    return malloc_readlinkat(proc_pid_fd, "cwd");
 }
 
-char* get_rootdir(pid_t pid)
+DEFINE_GET_PROC_FILE_WRAPPER_AT(get_rootdir)
+
+char* get_rootdir_at(int pid_proc_dir_fd)
 {
-    char buf[sizeof("/proc/%lu/root") + sizeof(long)*3];
-    sprintf(buf, "/proc/%lu/root", (long)pid);
-    return malloc_readlink(buf);
+    return malloc_readlinkat(pid_proc_dir_fd, "root");
 }
 
 static int get_proc_fs_id(const char *proc_pid_status, char type)
@@ -229,34 +239,32 @@ int get_fsgid(const char *proc_pid_status)
     return get_proc_fs_id(proc_pid_status, /*GID*/'G');
 }
 
-int dump_fd_info_ext(const char *dest_filename, const char *proc_pid_fd_path, uid_t uid, gid_t gid)
+int dump_fd_info_at(int pid_proc_fd, FILE *dest)
 {
     DIR *proc_fd_dir = NULL;
     int proc_fdinfo_fd = -1;
-    char *buffer = NULL;
-    FILE *stream = NULL;
     const char *fddelim = "";
     struct dirent *dent = NULL;
     int r = 0;
 
-    proc_fd_dir = opendir(proc_pid_fd_path);
+    int proc_fd_dir_fd = openat(pid_proc_fd, "fd", O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC);
+    if (proc_fd_dir_fd < 0)
+    {
+        r = -errno;
+        goto dumpfd_cleanup;
+    }
+
+    proc_fd_dir = fdopendir(proc_fd_dir_fd);
     if (!proc_fd_dir)
     {
         r = -errno;
         goto dumpfd_cleanup;
     }
 
-    proc_fdinfo_fd = openat(dirfd(proc_fd_dir), "../fdinfo", O_DIRECTORY|O_NOFOLLOW|O_CLOEXEC|O_PATH);
+    proc_fdinfo_fd = openat(pid_proc_fd, "fdinfo", O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC | O_PATH);
     if (proc_fdinfo_fd < 0)
     {
         r = -errno;
-        goto dumpfd_cleanup;
-    }
-
-    stream = fopen(dest_filename, "wex");
-    if (!stream)
-    {
-        r = -ENOMEM;
         goto dumpfd_cleanup;
     }
 
@@ -283,7 +291,7 @@ int dump_fd_info_ext(const char *dest_filename, const char *proc_pid_fd_path, ui
 
         fdname = malloc_readlinkat(dirfd(proc_fd_dir), dent->d_name);
 
-        fprintf(stream, "%s%s:%s\n", fddelim, dent->d_name, fdname);
+        fprintf(dest, "%s%s:%s\n", fddelim, dent->d_name, fdname);
         fddelim = "\n";
 
         /* Use the directory entry from /proc/[pid]/fd with /proc/[pid]/fdinfo */
@@ -301,42 +309,82 @@ int dump_fd_info_ext(const char *dest_filename, const char *proc_pid_fd_path, ui
             char *eol = strchrnul(line, '\n');
             eol[0] = '\n';
             eol[1] = '\0';
-            fputs(line, stream);
+            fputs(line, dest);
         }
+        fclose(fdinfo);
 
 dumpfd_next_fd:
-        fclose(fdinfo);
         free(fdname);
     }
 
 dumpfd_cleanup:
+    closedir(proc_fd_dir);
+    close(proc_fdinfo_fd);
+
+    return r;
+}
+
+int dump_fd_info_ext(const char *dest_filename, const char *proc_pid_fd_path, uid_t uid, gid_t gid)
+{
+    int proc_fd_dir_fd = -1;
+    int pid_proc_fd = -1;
+    int dest_fd = -1;
+    FILE *dest = NULL;
+    int r = -1;
+
+    proc_fd_dir_fd = open(proc_pid_fd_path, O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC | O_PATH);
+    if (proc_fd_dir_fd < 0)
+    {
+        r = -errno;
+        goto dumpfd_cleanup;
+    }
+
+    pid_proc_fd = openat(proc_fd_dir_fd, "../", O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC | O_PATH);
+    if (pid_proc_fd < 0)
+    {
+        r = -errno;
+        goto dumpfd_cleanup;
+    }
+
+    dest_fd = open(dest_filename, O_CREAT | O_WRONLY | O_EXCL | O_CLOEXEC, 0600);
+    if (dest_fd < 0)
+    {
+        r = -errno;
+        goto dumpfd_cleanup;
+    }
+
+    dest = xfdopen(dest_fd, "w");
+    r = dump_fd_info_at(pid_proc_fd, dest);
+
+dumpfd_cleanup:
     errno = 0;
 
-    if (stream != NULL)
+    if ((dest_fd >= 0) && (uid != (uid_t)-1L))
     {
-        if (uid != (uid_t)-1L)
+        r = fchown(dest_fd, uid, gid);
+        if (r < 0)
         {
-            const int stream_fd = fileno(stream);
-            r = fchown(stream_fd, uid, gid);
-            if (r < 0)
-            {
-                perror_msg("Can't change '%s' ownership to %lu:%lu", dest_filename, (long)uid, (long)gid);
-                fclose(stream);
-                unlink(dest_filename);
-                stream = NULL;
-            }
+            perror_msg("Can't change '%s' ownership to %lu:%lu", dest_filename, (long)uid, (long)gid);
+            close(dest_fd);
+            unlink(dest_filename);
+            dest_fd = -1;
         }
-
-        if (stream != NULL)
-            fclose(stream);
     }
+
+    if (dest != NULL)
+    {
+        fclose(dest);
+        dest_fd = -1;
+    }
+
+    if (dest_fd >= 0)
+        close(dest_fd);
 
     if (r == 0 && errno != 0)
         r = -errno;
 
-    closedir(proc_fd_dir);
-    close(proc_fdinfo_fd);
-    free(buffer);
+    close(proc_fd_dir_fd);
+    close(pid_proc_fd);
 
     return r;
 }
@@ -423,66 +471,98 @@ int get_env_variable(pid_t pid, const char *name, char **value)
     return r;
 }
 
-
 int get_ns_ids(pid_t pid, struct ns_ids *ids)
 {
-    int r = 0;
-    static char ns_dir_path[sizeof("/proc/%lu/ns") + sizeof(long)*3];
-    sprintf(ns_dir_path, "/proc/%lu/ns", (long)pid);
+    const int proc_pid_fd = open_proc_pid_dir(pid);
+    const int r = get_ns_ids_at(proc_pid_fd, ids);
+    close(proc_pid_fd);
+    return r;
+}
 
-    DIR *ns_dir_fd = opendir(ns_dir_path);
-    if (ns_dir_fd == NULL)
+int get_ns_ids_at(int pid_proc_fd, struct ns_ids *ids)
+{
+    const int nsfd = openat(pid_proc_fd, "ns", O_DIRECTORY | O_PATH);
+    if (nsfd < 0)
     {
-        pwarn_msg("Failed to open ns path");
+        pwarn_msg("Failed to open /proc/[pid]/ns directory");
         return -errno;
     }
 
+    int r = 0;
     for (size_t i = 0; i < ARRAY_SIZE(libreport_proc_namespaces); ++i)
     {
+        const char *const ns_name = libreport_proc_namespaces[i];
         struct stat stbuf;
-        if (fstatat(dirfd(ns_dir_fd), libreport_proc_namespaces[i], &stbuf, /* flags */0) != 0)
+        if (fstatat(nsfd, ns_name, &stbuf, /* flags */0) < 0)
         {
             if (errno != ENOENT)
             {
-                r = (i + 1);
-                goto get_ns_ids_cleanup;
+                r = i + 1;
+                break;
             }
 
             ids->nsi_ids[i] = PROC_NS_UNSUPPORTED;
-            continue;
         }
-
-        ids->nsi_ids[i] = stbuf.st_ino;
+        else
+        {
+            ids->nsi_ids[i] = stbuf.st_ino;
+        }
     }
 
-get_ns_ids_cleanup:
-    closedir(ns_dir_fd);
-
+    close(nsfd);
     return r;
 }
 
 int dump_namespace_diff_ext(const char *dest_filename, pid_t base_pid, pid_t tested_pid, uid_t uid, gid_t gid)
 {
+    const int dest_fd = open(dest_filename, O_CREAT | O_WRONLY | O_EXCL | O_CLOEXEC | O_NOFOLLOW, 0600);
+    if (dest_fd < 0)
+    {
+        pwarn_msg("Failed to create %s", dest_filename);
+        return -3;
+    }
+
+    FILE *const dest = xfdopen(dest_fd, "a");
+
+    const int base_pid_proc_fd = open_proc_pid_dir(base_pid);
+    const int tested_pid_proc_fd = open_proc_pid_dir(tested_pid);
+
+    int r = dump_namespace_diff_at(base_pid_proc_fd, tested_pid_proc_fd, dest);
+
+    close(tested_pid_proc_fd);
+    close(base_pid_proc_fd);
+
+    if (uid != (uid_t)-1L)
+    {
+        if (fchown(dest_fd, uid, gid) < 0)
+        {
+            perror_msg("Can't change '%s' ownership to %lu:%lu", dest_filename, (long)uid, (long)gid);
+            r = -4;
+        }
+    }
+
+    fclose(dest);
+    if (r < 0)
+        unlink(dest_filename);
+
+    return r;
+}
+
+int dump_namespace_diff_at(int base_pid_proc_fd, int tested_pid_proc_fd, FILE *dest)
+{
     struct ns_ids base_ids;
     struct ns_ids tested_ids;
 
-    if (get_ns_ids(base_pid, &base_ids) != 0)
+    if (get_ns_ids_at(base_pid_proc_fd, &base_ids) != 0)
     {
         log_notice("Failed to get base namesapce IDs");
         return -1;
     }
 
-    if (get_ns_ids(tested_pid, &tested_ids) != 0)
+    if (get_ns_ids_at(tested_pid_proc_fd, &tested_ids) != 0)
     {
         log_notice("Failed to get tested namesapce IDs");
         return -2;
-    }
-
-    FILE *fout = fopen(dest_filename, "wex");
-    if (fout == NULL)
-    {
-        pwarn_msg("Failed to create %s", dest_filename);
-        return -3;
     }
 
     for (size_t i = 0; i < ARRAY_SIZE(libreport_proc_namespaces); ++i)
@@ -492,22 +572,9 @@ int dump_namespace_diff_ext(const char *dest_filename, pid_t base_pid, pid_t tes
         if (base_ids.nsi_ids[i] != PROC_NS_UNSUPPORTED)
             status = base_ids.nsi_ids[i] == tested_ids.nsi_ids[i] ? "default" : "own";
 
-        fprintf(fout, "%s : %s\n", libreport_proc_namespaces[i], status);
+        fprintf(dest, "%s : %s\n", libreport_proc_namespaces[i], status);
     }
 
-    if (uid != (uid_t)-1L)
-    {
-        int fout_fd = fileno(fout);
-        if (fchown(fout_fd, uid, gid) < 0)
-        {
-            perror_msg("Can't change '%s' ownership to %lu:%lu", dest_filename, (long)uid, (long)gid);
-            fclose(fout);
-            unlink(dest_filename);
-            return -4;
-        }
-    }
-
-    fclose(fout);
     return 0;
 }
 
@@ -681,29 +748,24 @@ static int proc_ns_eq(struct ns_ids *lhs_ids, struct ns_ids *rhs_ids, int neg)
     return 0;
 }
 
-static int get_process_ppid(pid_t pid, pid_t *ppid)
+static int get_process_ppid_at(int pid_proc_fd, pid_t *ppid)
 {
     int r = 0;
-    static char stat_path[sizeof("/proc/%lu/stat") + sizeof(long)*3];
-    sprintf(stat_path, "/proc/%lu/stat", (long)pid);
-
-    FILE *stat_file = fopen(stat_path, "re");
-    if (stat_file == NULL)
+    const int stat_fd = openat(pid_proc_fd, "stat", O_RDONLY | O_CLOEXEC);
+    if (stat_fd < 0)
     {
         pwarn_msg("Failed to open stat file");
-        r = -1;
-        goto get_process_ppid_cleanup;
+        return -1;
     }
 
-    int p = fscanf(stat_file, "%*d %*s %*c %d", ppid);
+    FILE *const stat_file = xfdopen(stat_fd, "r");
+    const int p = fscanf(stat_file, "%*d %*s %*c %d", ppid);
     if (p != 1)
     {
         log_notice("Failed to parse stat line %d\n", p);
         r = -2;
-        goto get_process_ppid_cleanup;
     }
 
-get_process_ppid_cleanup:
     if (stat_file != NULL)
         fclose(stat_file);
 
@@ -712,46 +774,95 @@ get_process_ppid_cleanup:
 
 int get_pid_of_container(pid_t pid, pid_t *init_pid)
 {
-    pid_t cpid = pid;
+    const int pid_proc_fd = open_proc_pid_dir(pid);
+    if (pid_proc_fd < 0)
+        return pid_proc_fd;
+    const int r = get_pid_of_container_at(pid_proc_fd, init_pid);
+    close (pid_proc_fd);
+    return r;
+}
+
+int get_pid_of_container_at(int pid_proc_fd, pid_t *init_pid)
+{
+    int r = 0;
     pid_t ppid = 0;
+    int cpid_proc_fd = dup(pid_proc_fd);
+    if (cpid_proc_fd < 0)
+    {
+        log_notice("Failed to duplicate /proc/[pid] directory FD");
+        return -4;
+    }
 
     struct ns_ids pid_ids;
-    if (get_ns_ids(pid, &pid_ids) != 0)
+    if (get_ns_ids_at(cpid_proc_fd, &pid_ids) != 0)
     {
         log_notice("Failed to get process's IDs");
+        close(cpid_proc_fd);
         return -1;
     }
 
     while (1)
     {
-        if (get_process_ppid(cpid, &ppid) != 0)
-            return -1;
+        if (get_process_ppid_at(cpid_proc_fd, &ppid) != 0)
+        {
+            r = -1;
+            break;
+        }
 
         if (ppid == 1)
             break;
 
-        struct ns_ids ppid_ids;
-        if (get_ns_ids(ppid, &ppid_ids) != 0)
+        const int ppid_proc_fd = open_proc_pid_dir(ppid);
+        if (ppid_proc_fd < 0)
         {
-            log_notice("Failed to get parent's IDs");
-            return -2;
+            log_notice("Failed to open parent's /proc/[pid] directory");
+            r = -3;
+            break;
+        }
+
+        struct ns_ids ppid_ids;
+        if (get_ns_ids_at(ppid_proc_fd, &ppid_ids) != 0)
+        {
+            log_notice("Failed to get parent's (%d) IDs", ppid);
+            close(ppid_proc_fd);
+            r = -2;
+            break;
         }
 
         /* If any pid's  NS differs from parent's NS, then parent is pid's container. */
         if (proc_ns_eq(&pid_ids, &ppid_ids, 0) != 0)
+        {
+            close(ppid_proc_fd);
             break;
+        }
 
-        cpid = ppid;
+        close(cpid_proc_fd);
+        cpid_proc_fd = ppid_proc_fd;
     }
 
-    *init_pid = ppid;
-    return 0;
+    close(cpid_proc_fd);
+
+    if (r == 0)
+        *init_pid = ppid;
+
+    return r;
 }
 
-int process_has_own_root(pid_t pid)
+int open_proc_pid_dir(pid_t pid)
 {
-    static char root_path[sizeof("/proc/%lu/root") + sizeof(long)*3];
-    sprintf(root_path, "/proc/%lu/root", (long)pid);
+    static char proc_dir_path[sizeof("/proc/%lu") + sizeof(long)*3];
+    sprintf(proc_dir_path, "/proc/%lu", (long)pid);
+    return open(proc_dir_path, O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC | O_PATH);
+}
+
+int process_has_own_root_at(int pid_proc_fd)
+{
+    struct stat proc_buf;
+    if (fstatat(pid_proc_fd, "root", &proc_buf, 0) < 0)
+    {
+        perror_msg("Failed to get stat for process' root");
+        return -2;
+    }
 
     struct stat root_buf;
     if (stat("/", &root_buf) < 0)
@@ -760,12 +871,20 @@ int process_has_own_root(pid_t pid)
         return -1;
     }
 
-    struct stat proc_buf;
-    if (stat(root_path, &proc_buf) < 0)
+    return proc_buf.st_ino != root_buf.st_ino;
+}
+
+int process_has_own_root(pid_t pid)
+{
+    const int pid_proc_fd = open_proc_pid_dir(pid);
+    if (pid_proc_fd < 0)
     {
-        perror_msg("Failed to get stat for '%s'", root_path);
-        return -2;
+        perror_msg("Cannot open directory of process %d", pid);
+        return -3;
     }
 
-    return proc_buf.st_ino != root_buf.st_ino;
+    const int ret = process_has_own_root_at(pid_proc_fd);
+    close(pid_proc_fd);
+
+    return ret;
 }

@@ -94,3 +94,804 @@ TS_MAIN
 TS_RETURN_MAIN
 ]])
 
+## ----------- ##
+## get_cmdline ##
+## ----------- ##
+
+AT_TESTFUN([get_cmdline], [[
+#include "testsuite.h"
+#include <err.h>
+
+void test(const char *program, const char *args[], const char *expected)
+{
+    int inout[2];
+    xpipe(inout);
+
+    pid_t pid = fork();
+    if (pid < 0) {
+        err(EXIT_FAILURE, "fork");
+    }
+
+    if (pid == 0) {
+        close(STDOUT_FILENO);
+        xdup2(inout[1], STDOUT_FILENO);
+        close(inout[0]);
+
+        execv(program, (char **)args);
+        err(EXIT_FAILURE, "exec(%s)", program);
+    }
+
+    close(inout[1]);
+    int status = 0;
+    if (safe_waitpid(pid, &status, 0) < 0) {
+        err(EXIT_FAILURE, "waitpid");
+    }
+
+    if (WEXITSTATUS(status) != 0) {
+        errx(EXIT_FAILURE, "Child not exited with 0");
+    }
+
+    const size_t buffer_size = strlen(expected) * 2;
+    char cmdline[buffer_size];
+    const ssize_t total = full_read(inout[0], cmdline, buffer_size);
+    close(inout[0]);
+
+    if (total < 0) {
+        err(EXIT_FAILURE, "full_read");
+    }
+
+    cmdline[total] = '\0';
+    TS_ASSERT_STRING_EQ(cmdline, expected, "/proc/[pid]/cmd");
+}
+
+TS_MAIN
+{
+    if (argc > 1) {
+        char *cmdline = NULL;
+        if (strcmp(argv[0], "get_cmdline") == 0) {
+            cmdline = get_cmdline(getpid());
+        }
+        else if (strcmp(argv[0], "get_cmdline_at") == 0) {
+            int pid_proc_fd = open("/proc/self", O_DIRECTORY);
+            if (pid_proc_fd < 0) {
+                err(EXIT_FAILURE, "open(/proc/self, O_DIRECTORY)");
+            }
+            cmdline = get_cmdline_at(pid_proc_fd);
+            close(pid_proc_fd);
+        }
+        else {
+            errx(EXIT_FAILURE, "Unsupported function type '%s'", argv[0]);
+        }
+
+        fprintf(stdout, "%s", cmdline);
+        fflush(stdout);
+        exit(EXIT_SUCCESS);
+    }
+
+    char *binary = malloc_readlink("/proc/self/exe");
+    const char *args[] = { NULL, "!fo\" \"o", "@blah", "b\na'r", "g\rea\t", "regular", NULL };
+
+#define EXPECTED " '!fo\\\" \\\"o' @blah 'b\\na\\'r' 'g\\rea\\t' regular"
+
+    args[0] = "get_cmdline";
+    test(binary, args, "get_cmdline" EXPECTED);
+
+    args[0] = "get_cmdline_at";
+    test(binary, args, "get_cmdline_at" EXPECTED);
+
+    free(binary);
+}
+TS_RETURN_MAIN
+]])
+
+## -------------- ##
+## get_executable ##
+## -------------- ##
+
+AT_TESTFUN([get_executable], [[
+#include "testsuite.h"
+#include <sys/sendfile.h>
+#include <err.h>
+
+#define PRELINK_BASENAME "/tmp/libreport.testsuite.get_executable"
+#
+void test(const char *program, const char *expected, const char *function, const char *argv1)
+{
+    int inout[2];
+    xpipe(inout);
+
+    pid_t pid = fork();
+    if (pid < 0) {
+        err(EXIT_FAILURE, "fork");
+    }
+
+    if (pid == 0) {
+        close(STDOUT_FILENO);
+        xdup2(inout[1], STDOUT_FILENO);
+        close(inout[0]);
+
+        const char *args[3] = { function, argv1, NULL };
+        execv(program, (char **)args);
+        err(EXIT_FAILURE, "execv(%s) : %d", program, errno);
+    }
+
+    close(inout[1]);
+    int status = 0;
+    if (safe_waitpid(pid, &status, 0) < 0) {
+        err(EXIT_FAILURE, "waitpid");
+    }
+
+    if (WEXITSTATUS(status) != 0) {
+        errx(EXIT_FAILURE, "Child not exited with 0");
+    }
+
+    const size_t buffer_size = strlen(expected) * 2;
+    char executable[buffer_size];
+    const ssize_t total = full_read(inout[0], executable, buffer_size);
+    close(inout[0]);
+
+    if (total < 0) {
+        err(EXIT_FAILURE, "full_read");
+    }
+
+    executable[total] = '\0';
+    TS_ASSERT_STRING_EQ(executable, expected, "/proc/[pid]/exe");
+}
+
+int copy_to_temporary(const char *source, char *dest)
+{
+    int dest_fd = mkstemp(dest);
+    if (dest_fd < 0) {
+        err(EXIT_FAILURE, "mkstemp(%s)", dest);
+    }
+
+    int src_fd = open(source, O_RDONLY);
+    if (src_fd < 0) {
+        err(EXIT_FAILURE, "open(%s, O_RDONLY)", source);
+    }
+
+    struct stat src_stat;
+    if (fstat(src_fd, &src_stat) < 0) {
+        err(EXIT_FAILURE, "fstat(%s)", source);
+    }
+
+    if (sendfile(dest_fd, src_fd, NULL, src_stat.st_size) < 0) {
+        err(EXIT_FAILURE, "splice(%s, %s, %zu)", source, dest, src_stat.st_size);
+    }
+
+    close(src_fd);
+
+    fchmod(dest_fd, src_stat.st_mode);
+    return dest_fd;
+}
+
+TS_MAIN
+{
+    if (argc > 1) {
+        if (strcmp(argv[1], "delete") == 0) {
+            char *binary = malloc_readlink("/proc/self/exe");
+            unlink(binary);
+            if (access(binary, R_OK) != -1 && errno != !ENOENT) {
+                err(EXIT_FAILURE, "failed to remove %s", binary);
+            }
+            free(binary);
+        }
+
+        char *executable = NULL;
+        if (strcmp(argv[0], "get_executable") == 0) {
+            executable = get_executable(getpid());
+        }
+        else if (strcmp(argv[0], "get_executable_at") == 0) {
+            int pid_proc_fd = open("/proc/self", O_DIRECTORY);
+            if (pid_proc_fd < 0) {
+                err(EXIT_FAILURE, "open(/proc/self, O_DIRECTORY)");
+            }
+            executable = get_executable_at(pid_proc_fd);
+            close(pid_proc_fd);
+        }
+        else {
+            errx(EXIT_FAILURE, "Unsupported function type '%s'", argv[0]);
+        }
+
+        fprintf(stdout, "%s", executable);
+        fflush(stdout);
+        exit(EXIT_SUCCESS);
+    }
+
+    {
+        char *binary = malloc_readlink("/proc/self/exe");
+
+        test(binary, binary, "get_executable", "keep");
+        test(binary, binary, "get_executable_at", "keep");
+
+        free(binary);
+    }
+
+    {
+        char binary[] = PRELINK_BASENAME ".#prelink#.XXXXXX";
+        int binary_fd = copy_to_temporary("/proc/self/exe", binary);
+        close(binary_fd);
+
+        test(binary, PRELINK_BASENAME, "get_executable", "keep");
+
+        unlink(binary);
+    }
+
+    {
+        char binary[] = PRELINK_BASENAME ".#prelink#.XXXXXX";
+        int binary_fd = copy_to_temporary("/proc/self/exe", binary);
+        close(binary_fd);
+
+        test(binary, PRELINK_BASENAME, "get_executable_at", "keep");
+
+        unlink(binary);
+    }
+
+    {
+        char binary[] = PRELINK_BASENAME ".#prelink#.XXXXXX";
+        int binary_fd = copy_to_temporary("/proc/self/exe", binary);
+        close(binary_fd);
+
+        test(binary, PRELINK_BASENAME, "get_executable", "delete");
+
+        if (unlink(binary) == 0) {
+            errx(EXIT_FAILURE, "should be already removed %s", binary);
+        }
+    }
+
+    {
+        char binary[] = PRELINK_BASENAME ".#prelink#.XXXXXX";
+        int binary_fd = copy_to_temporary("/proc/self/exe", binary);
+        close(binary_fd);
+
+        test(binary, PRELINK_BASENAME, "get_executable_at", "delete");
+
+        if (unlink(binary) == 0) {
+            errx(EXIT_FAILURE, "should be already removed %s", binary);
+        }
+    }
+
+    {
+        char binary[] = "/tmp/libreport.testsuite.get_executable.XXXXXX";
+        int binary_fd = copy_to_temporary("/proc/self/exe", binary);
+        close(binary_fd);
+
+        test(binary, binary, "get_executable", "delete");
+
+        if (unlink(binary) == 0) {
+            errx(EXIT_FAILURE, "should be already removed %s", binary);
+        }
+    }
+
+    {
+        char binary[] = "/tmp/libreport.testsuite.get_executable.XXXXXX";
+        int binary_fd = copy_to_temporary("/proc/self/exe", binary);
+        close(binary_fd);
+
+        test(binary, binary, "get_executable_at", "delete");
+
+        if (unlink(binary) == 0) {
+            errx(EXIT_FAILURE, "should be already removed %s", binary);
+        }
+    }
+}
+TS_RETURN_MAIN
+]])
+
+## ------- ##
+## get_cwd ##
+## ------- ##
+
+AT_TESTFUN([get_cwd], [[
+#include "testsuite.h"
+#include <sys/sendfile.h>
+#include <err.h>
+
+TS_MAIN
+{
+    char wd[PATH_MAX];
+    getcwd(wd, sizeof(wd));
+
+    char *cwd = get_cwd(getpid());
+    TS_ASSERT_STRING_EQ(cwd, wd, "get_cwd(getpid())");
+    free(cwd);
+
+
+    int pid_proc_fd = open("/proc/self", O_DIRECTORY | O_PATH);
+    if (pid_proc_fd < 0) {
+        err(EXIT_FAILURE, "open(/proc/self, O_DIRECTORY | O_PATH)");
+    }
+
+    char *cwd_at = get_cwd_at(pid_proc_fd);
+    TS_ASSERT_STRING_EQ(cwd_at, wd, "get_cwd_at(open(/proc/self))");
+    close(pid_proc_fd);
+    free(cwd_at);
+}
+TS_RETURN_MAIN
+]])
+
+## ----------- ##
+## get_rootdir ##
+## ----------- ##
+
+AT_TESTFUN([get_rootdir], [[
+#include "testsuite.h"
+#include <sys/sendfile.h>
+#include <err.h>
+
+TS_MAIN
+{
+    char *proc_self_root = malloc_readlink("/proc/self/root");
+
+    char *root_dir = get_rootdir(getpid());
+    TS_ASSERT_STRING_EQ(root_dir, proc_self_root, "get_rootdir(getpid())");
+    free(root_dir);
+
+
+    int pid_proc_fd = open("/proc/self", O_DIRECTORY | O_PATH);
+    if (pid_proc_fd < 0) {
+        err(EXIT_FAILURE, "open(/proc/self, O_DIRECTORY | O_PATH)");
+    }
+
+    char *root_dir_at = get_rootdir_at(pid_proc_fd);
+    TS_ASSERT_STRING_EQ(root_dir_at, proc_self_root, "get_rootdir_at(open(/proc/self))");
+    close(pid_proc_fd);
+    free(root_dir_at);
+}
+TS_RETURN_MAIN
+]])
+
+## ------------ ##
+## dump_fd_info ##
+## ------------ ##
+
+AT_TESTFUN([dump_fd_info], [[
+#include "testsuite.h"
+#include <sys/sendfile.h>
+#include <err.h>
+
+#define FILENAME_FORMAT "/tmp/libreport.testsuite.fdinfo.%d.%s"
+
+pid_t prepare_process(void)
+{
+    int toparent[2];
+    xpipe(toparent);
+
+    char *binary = malloc_readlink("/proc/self/exe");
+    pid_t pid = fork();
+    if (pid < 0) {
+        err(EXIT_FAILURE, "fork");
+    }
+
+    if (pid == 0) {
+        close(STDOUT_FILENO);
+        xdup2(toparent[1], STDOUT_FILENO);
+
+        DIR *fddir = opendir("/proc/self/fd");
+        struct dirent *dent;
+        while ((dent = readdir(fddir))) {
+            const int fd = atoi(dent->d_name);
+            if (fd != STDOUT_FILENO) {
+                close(fd);
+            }
+        }
+
+        execl(binary, "wait", NULL);
+        exit(EXIT_FAILURE);
+    }
+
+    close(toparent[1]);
+
+    free(binary);
+
+    /* Wait for child */
+    char buf[8];
+    if (full_read(toparent[0], buf, 8) < 0) {
+        fprintf(stderr, "Failed to read from child: %s\n", strerror(errno));
+        fflush(stderr);
+    }
+
+    close(toparent[0]);
+
+    return pid;
+}
+
+void kill_process(pid_t pid)
+{
+    /* Notify child */
+    kill(pid, SIGTERM);
+    int status = 0;
+    if (safe_waitpid(pid, &status, 0) < 0) {
+        fprintf(stderr, "Couldn't wait for child\n");
+    }
+    else if (!WIFSIGNALED(status) || WTERMSIG(status) != SIGTERM) {
+        fprintf(stderr, "Child was not TERMinated - %d\n", status);
+    }
+}
+
+void check_file_contents(const char *fdinfo_filename)
+{
+    struct fd {
+        int fd;
+        const char *file;
+    } fds[] = {
+        { .fd = 0, .file = "/etc/services", },
+        { .fd = 2, .file = "/etc/passwd", },
+        { .fd = 3, .file = "/etc/group", },
+    };
+
+    char *file = xmalloc_xopen_read_close(fdinfo_filename, NULL);
+    int fdno = 0;
+    char *cursor = file;
+    char *line = file;
+    char *end = file + strlen(file);
+    while (cursor < end) {
+        cursor = strchrnul(line, '\n');
+        if (*cursor != '\0') {
+            *cursor = '\0';
+        }
+        ++cursor;
+
+        if (fdno < (sizeof(fds)/sizeof(fds[0]))) {
+            int fd = 0;
+            char *file = NULL;
+            const int res = sscanf(line, "%d:%ms", &fd, &file);
+            TS_ASSERT_SIGNED_EQ(res, 2);
+            TS_ASSERT_SIGNED_EQ(fd, fds[fdno].fd);
+            TS_ASSERT_STRING_EQ(file, fds[fdno].file, "FD file name");
+            free(file);
+        }
+
+        line = cursor;
+        int fieldscnt = 0;
+        while (line < end) {
+            cursor = strchrnul(line, '\n');
+            if (*cursor != '\0') {
+                *cursor = '\0';
+            }
+            ++cursor;
+
+            if (strcmp(line, "") == 0) {
+                break;
+            }
+
+            int col = 0;
+            for (; col < strlen(line); ++col) {
+                if (line[col] == ':') {
+                    break;
+                }
+
+                TS_ASSERT_TRUE(line[col] != ' ' && line[col] != '\t');
+                if (!g_testsuite_last_ok) {
+                    break;
+                }
+            }
+            TS_ASSERT_SIGNED_NEQ(col, 0);
+            TS_ASSERT_SIGNED_LT(col, strlen(line));
+            if (g_testsuite_last_ok) {
+                TS_ASSERT_CHAR_EQ(line[col], ':');
+            }
+
+            fieldscnt += g_testsuite_last_ok;
+            line = cursor;
+        }
+        TS_ASSERT_SIGNED_GT(fieldscnt, 2);
+
+        ++fdno;
+        line = cursor;
+    }
+
+    TS_ASSERT_SIGNED_EQ(fdno, sizeof(fds)/sizeof(fds[0]));
+    free(file);
+}
+
+TS_MAIN
+{
+    if (strcmp(argv[0], "wait") == 0) {
+        FILE *services = fopen("/etc/services", "r");
+        FILE *passwd = fopen("/etc/passwd", "r");
+        FILE *group = fopen("/etc/group", "r");
+
+        /* Notify parent */
+        close(STDOUT_FILENO);
+
+        /* Wait for parent */
+        while (1) {
+            sleep(1);
+        }
+
+        fclose(group);
+        fclose(passwd);
+        fclose(services);
+        exit(EXIT_SUCCESS);
+    }
+
+    pid_t pid = prepare_process();
+
+    char proc_dir_path[strlen("/proc/%d/fd") + sizeof(pid_t) * 3];
+    if (sizeof(proc_dir_path) <= snprintf(proc_dir_path, sizeof(proc_dir_path), "/proc/%d/fd", pid)) {
+        errx(EXIT_FAILURE, "too small buffer for proc dir path");
+    }
+
+    {
+        TS_PRINTF("%s\n", "dump_fd_info");
+        char fdinfo_filename[strlen(FILENAME_FORMAT) + sizeof(pid_t) * 3 + strlen("dump_fd_info")];
+        if (sizeof(fdinfo_filename) <= snprintf(fdinfo_filename, sizeof(fdinfo_filename), FILENAME_FORMAT, pid, "dump_fd_info")) {
+            errx(EXIT_FAILURE, "too small buffer for file name");
+        }
+
+        TS_ASSERT_FUNCTION(dump_fd_info(fdinfo_filename, proc_dir_path));
+
+        struct stat st;
+        TS_ASSERT_FUNCTION(stat(fdinfo_filename, &st));
+        if (g_testsuite_last_ok) {
+            TS_ASSERT_SIGNED_EQ(st.st_mode & 0777, 0600);
+        }
+
+        check_file_contents(fdinfo_filename);
+
+        unlink(fdinfo_filename);
+    }
+
+    {
+        TS_PRINTF("%s\n", "dump_fd_info_ext");
+        char fdinfo_filename[strlen(FILENAME_FORMAT) + sizeof(pid_t) * 3 + strlen("dump_fd_info_ext")];
+        if (sizeof(fdinfo_filename) <= snprintf(fdinfo_filename, sizeof(fdinfo_filename), FILENAME_FORMAT, pid, "dump_fd_info_ext")) {
+            errx(EXIT_FAILURE, "too small buffer for file name");
+        }
+
+        const uid_t uid = getuid();
+        const gid_t gid = getgid();
+        TS_ASSERT_FUNCTION(dump_fd_info_ext(fdinfo_filename, proc_dir_path, uid, gid));
+
+        struct stat st;
+        TS_ASSERT_FUNCTION(stat(fdinfo_filename, &st));
+        if (g_testsuite_last_ok) {
+            TS_ASSERT_SIGNED_EQ(st.st_mode & 0777, 0600);
+        }
+
+        check_file_contents(fdinfo_filename);
+
+        unlink(fdinfo_filename);
+    }
+
+    {
+        TS_PRINTF("%s\n", "dump_fd_info_at");
+        char fdinfo_filename[strlen(FILENAME_FORMAT) + sizeof(pid_t) * 3 + strlen("dump_fd_info_at")];
+        if (sizeof(fdinfo_filename) <= snprintf(fdinfo_filename, sizeof(fdinfo_filename), FILENAME_FORMAT, pid, "dump_fd_info_at")) {
+            errx(EXIT_FAILURE, "too small buffer for file name");
+        }
+
+        FILE *dest = fopen(fdinfo_filename, "w");
+        const int pid_proc_fd = open_proc_pid_dir(pid);
+
+        TS_ASSERT_FUNCTION(dump_fd_info_at(pid_proc_fd, dest));
+
+        close(pid_proc_fd);
+        fclose(dest);
+
+        check_file_contents(fdinfo_filename);
+
+        unlink(fdinfo_filename);
+    }
+
+    kill_process(pid);
+}
+TS_RETURN_MAIN
+]])
+
+
+## ------------- ##
+## get_fs-u_g-id ##
+## ------------- ##
+
+AT_TESTFUN([get_fs-u_g-id], [[
+#include "testsuite.h"
+#include <sys/sendfile.h>
+#include <err.h>
+
+TS_MAIN
+{
+    char *proc_pid_status = xmalloc_xopen_read_close("/proc/self/status", NULL);
+    TS_ASSERT_SIGNED_EQ(get_fsuid(proc_pid_status), getuid());
+    TS_ASSERT_SIGNED_EQ(get_fsgid(proc_pid_status), getgid());
+    free(proc_pid_status);
+}
+TS_RETURN_MAIN
+]])
+
+
+## ---------- ##
+## get_ns_ids ##
+## ---------- ##
+
+AT_TESTFUN([get_ns_ids], [[
+#include "testsuite.h"
+#include <sys/sendfile.h>
+#include <err.h>
+
+void check(struct ns_ids *ids)
+{
+    const int nsfd = open("/proc/self/ns", O_DIRECTORY);
+    assert(nsfd >= 0);
+
+    for (size_t i = 0; i < ARRAY_SIZE(libreport_proc_namespaces); ++i) {
+        struct stat st;
+        if (fstatat(nsfd, libreport_proc_namespaces[i], &st, 0) < 0) {
+            TS_ASSERT_SIGNED_OP_MESSAGE(ids->nsi_ids[i], ==, PROC_NS_UNSUPPORTED, libreport_proc_namespaces[i]);
+        }
+        else {
+            TS_ASSERT_SIGNED_OP_MESSAGE(ids->nsi_ids[i], ==, st.st_ino, libreport_proc_namespaces[i]);
+        }
+    }
+
+    DIR *nsdir = fdopendir(nsfd);
+    assert(nsdir != NULL);
+
+    struct dirent *dent = NULL;
+    while ((dent = readdir(nsdir))) {
+        if (dot_or_dotdot(dent->d_name))
+            continue;
+
+        size_t i = 0;
+        for (; i < ARRAY_SIZE(libreport_proc_namespaces); ++i) {
+            if (strcmp(libreport_proc_namespaces[i], dent->d_name) == 0) {
+                break;
+            }
+        }
+        TS_ASSERT_SIGNED_OP_MESSAGE(i, <, ARRAY_SIZE(libreport_proc_namespaces), dent->d_name);
+
+        if (g_testsuite_last_ok) {
+            struct stat st;
+            TS_ASSERT_FUNCTION(fstatat(nsfd, dent->d_name, &st, 0));
+            TS_ASSERT_SIGNED_OP_MESSAGE(ids->nsi_ids[i], ==, st.st_ino, dent->d_name);
+        }
+    }
+
+    closedir(nsdir);
+}
+
+TS_MAIN
+{
+    TS_PRINTF("%s\n", "get_ns_ids");
+    struct ns_ids pid_ids;
+    TS_ASSERT_FUNCTION(get_ns_ids(getpid(), &pid_ids));
+    check(&pid_ids);
+
+    TS_PRINTF("%s\n", "get_ns_ids_at");
+    const int pid_proc_dir = open_proc_pid_dir(getpid());
+    struct ns_ids proc_ids;
+    TS_ASSERT_FUNCTION(get_ns_ids_at(pid_proc_dir, &proc_ids));
+    check(&proc_ids);
+    close(pid_proc_dir);
+}
+TS_RETURN_MAIN
+]])
+
+
+## ------------------- ##
+## dump_namespace_diff ##
+## ------------------- ##
+
+AT_TESTFUN([dump_namespace_diff], [[
+#include "testsuite.h"
+#include <err.h>
+
+#define FILENAME_FORMAT "/tmp/libreport.testsuite.namespace_diff.%d.%s"
+
+void check_file_contents(const char *filename)
+{
+    static const char *expected;
+    struct stat st;
+    if (stat("/proc/self/ns/cgroup", &st) < 0 && errno == ENOENT) {
+        expected = "ipc : default\n"
+                   "mnt : default\n"
+                   "net : default\n"
+                   "pid : default\n"
+                   "uts : default\n"
+                   "user : default\n"
+                   "cgroup : unknown\n";
+    }
+    else {
+        expected = "ipc : default\n"
+                   "mnt : default\n"
+                   "net : default\n"
+                   "pid : default\n"
+                   "uts : default\n"
+                   "user : default\n"
+                   "cgroup : default\n";
+    }
+
+    char *file = xmalloc_xopen_read_close(filename, NULL);
+    TS_ASSERT_STRING_EQ(file, expected, "Namespaces");
+    free(file);
+}
+
+TS_MAIN
+{
+    {
+        TS_PRINTF("%s\n", "dump_namespace_diff");
+        char filename[strlen(FILENAME_FORMAT) + sizeof(pid_t) * 3 + strlen("dump_namespace_diff")];
+        if (sizeof(filename) <= snprintf(filename, sizeof(filename), FILENAME_FORMAT, getpid(), "dump_namespace_diff")) {
+            errx(EXIT_FAILURE, "too small buffer for file name");
+        }
+
+        TS_ASSERT_FUNCTION(dump_namespace_diff(filename, getpid(), getppid()));
+
+        struct stat st;
+        TS_ASSERT_FUNCTION(stat(filename, &st));
+        if (g_testsuite_last_ok) {
+            TS_ASSERT_SIGNED_EQ(st.st_mode & 0777, 0600);
+        }
+
+        check_file_contents(filename);
+
+        unlink(filename);
+    }
+
+    {
+        TS_PRINTF("%s\n", "dump_namespace_diff_ext");
+        char filename[strlen(FILENAME_FORMAT) + sizeof(pid_t) * 3 + strlen("dump_namespace_diff_ext")];
+        if (sizeof(filename) <= snprintf(filename, sizeof(filename), FILENAME_FORMAT, getpid(), "dump_namespace_diff_ext")) {
+            errx(EXIT_FAILURE, "too small buffer for file name");
+        }
+
+        const uid_t uid = getuid();
+        const gid_t gid = getgid();
+        TS_ASSERT_FUNCTION(dump_namespace_diff_ext(filename, getpid(), getppid(), uid, gid));
+
+        struct stat st;
+        TS_ASSERT_FUNCTION(stat(filename, &st));
+        if (g_testsuite_last_ok) {
+            TS_ASSERT_SIGNED_EQ(st.st_mode & 0777, 0600);
+        }
+
+        check_file_contents(filename);
+
+        unlink(filename);
+    }
+
+    {
+        TS_PRINTF("%s\n", "dump_namespace_diff_at");
+        char filename[strlen(FILENAME_FORMAT) + sizeof(pid_t) * 3 + strlen("dump_namespace_diff_at")];
+        if (sizeof(filename) <= snprintf(filename, sizeof(filename), FILENAME_FORMAT, getppid(), "dump_namespace_diff_at")) {
+            errx(EXIT_FAILURE, "too small buffer for file name");
+        }
+
+        FILE *dest = fopen(filename, "w");
+        assert(dest != NULL);
+
+        const int pid_proc_fd = open_proc_pid_dir(getppid());
+
+        TS_ASSERT_FUNCTION(dump_namespace_diff_at(pid_proc_fd, pid_proc_fd, dest));
+
+        close(pid_proc_fd);
+        fclose(dest);
+
+        check_file_contents(filename);
+
+        unlink(filename);
+    }
+}
+TS_RETURN_MAIN
+]])
+
+
+## -------------------- ##
+## process_has_own_root ##
+## -------------------- ##
+
+AT_TESTFUN([process_has_own_root], [[
+#include "testsuite.h"
+#include <err.h>
+
+TS_MAIN
+{
+    TS_ASSERT_SIGNED_EQ(process_has_own_root(getpid()), 0);
+
+    const int pid_proc_fd = open_proc_pid_dir(getpid());
+    TS_ASSERT_SIGNED_EQ(process_has_own_root_at(pid_proc_fd), 0);
+    TS_ASSERT_FUNCTION(close(pid_proc_fd));
+}
+TS_RETURN_MAIN
+]])
