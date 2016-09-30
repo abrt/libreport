@@ -489,6 +489,8 @@ void xsetreuid(uid_t ruid, uid_t euid);
 #define xsetregid libreport_xsetregid
 void xsetregid(gid_t rgid, gid_t egid);
 
+#define xfdopen libreport_xfdopen
+FILE *xfdopen(int fd, const char *mode);
 
 /* Emit a string of hex representation of bytes */
 #define bin2hex libreport_bin2hex
