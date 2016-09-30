@@ -690,20 +690,35 @@ struct strbuf *strbuf_prepend_strfv(struct strbuf *strbuf,
  * If the pid is not valid or command line can not be obtained,
  * empty string is returned.
  */
+#define open_proc_pid_dir libreport_open_proc_pid_dir
+int open_proc_pid_dir(pid_t pid);
+#define get_cmdline_at libreport_get_cmdline_at
+char* get_cmdline_at(pid_t pid);
 #define get_cmdline libreport_get_cmdline
 char* get_cmdline(pid_t pid);
+#define get_environ_at libreport_get_environ_at
+char* get_environ_at(pid_t pid);
 #define get_environ libreport_get_environ
 char* get_environ(pid_t pid);
+#define get_executable_at libreport_get_executable_at
+char *get_executable_at(pid_t pid);
 #define get_executable libreport_get_executable
 char *get_executable(pid_t pid);
+#define get_cwd_at libreport_get_cwd_at
+char* get_cwd_at(pid_t pid);
 #define get_cwd libreport_get_cwd
 char* get_cwd(pid_t pid);
+#define get_rootdir_at libreport_get_rootdir_at
+char* get_rootdir_at(pid_t pid);
 #define get_rootdir libreport_get_rootdir
 char* get_rootdir(pid_t pid);
+
 #define get_fsuid libreport_get_fsuid
 int get_fsuid(const char *proc_pid_status);
 #define get_fsgid libreport_get_fsgid
 int get_fsgid(const char *proc_pid_status);
+#define dump_fd_info_at libreport_dump_fd_info_at
+int dump_fd_info_at(int pid_proc_fd, FILE *dest);
 #define dump_fd_info_ext libreport_dump_fd_info_ext
 int dump_fd_info_ext(const char *dest_filename, const char *proc_pid_fd_path, uid_t uid, gid_t gid);
 #define dump_fd_info libreport_dump_fd_info
@@ -727,12 +742,20 @@ struct ns_ids {
     ino_t nsi_ids[ARRAY_SIZE(libreport_proc_namespaces)];
 };
 
+#define get_ns_ids_at libreport_get_ns_ids_at
+int get_ns_ids_at(int pid_proc_fd, struct ns_ids *ids);
 #define get_ns_ids libreport_get_ns_ids
 int get_ns_ids(pid_t pid, struct ns_ids *ids);
+#define process_has_own_root_at libreport_process_has_own_root_at
+int process_has_own_root_at(int proc_pid_fd);
 #define process_has_own_root libreport_process_has_own_root
 int process_has_own_root(pid_t pid);
+#define get_pid_of_container_at libreport_get_pid_of_container_at
+int get_pid_of_container_at(int pid_proc_fd, pid_t *init_pid);
 #define get_pid_of_container libreport_get_pid_of_container
 int get_pid_of_container(pid_t pid, pid_t *init_pid);
+#define dump_namespace_diff_at libreport_dump_namespace_diff_at
+int dump_namespace_diff_at(int base_pid_proc_fd, int tested_pid_proc_fd, FILE *dest);
 #define dump_namespace_diff_ext libreport_dump_namespace_diff_ext
 int dump_namespace_diff_ext(const char *dest_filename, pid_t base_pid, pid_t tested_pid, uid_t uid, gid_t gid);
 #define dump_namespace_diff libreport_dump_namespace_diff
