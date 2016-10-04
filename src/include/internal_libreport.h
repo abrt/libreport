@@ -509,6 +509,11 @@ enum {
     LOGMODE_JOURNAL = (1 << 3),
 };
 
+enum libreport_diemode {
+    DIEMODE_EXIT = 0,
+    DIEMODE_ABORT = 1,
+};
+
 #define g_custom_logger libreport_g_custom_logger
 extern void (*g_custom_logger)(const char*);
 #define msg_prefix libreport_msg_prefix
@@ -526,6 +531,9 @@ extern int xfunc_error_retval;
 
 #define set_xfunc_error_retval libreport_set_xfunc_error_retval
 void set_xfunc_error_retval(int retval);
+
+#define set_xfunc_diemode libreport_set_xfunc_diemode
+void set_xfunc_diemode(enum libreport_diemode mode);
 
 /* Verbosity level */
 #define g_verbose libreport_g_verbose
