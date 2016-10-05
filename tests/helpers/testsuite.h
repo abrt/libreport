@@ -204,7 +204,7 @@ FILE *g_testsuite_output_stream = 0;
     TS_ASSERT_CHAR_OP_MESSAGE(actual, ==, expected, message)
 
 #define TS_ASSERT_CHAR_EQ(actual, expected) \
-    TS_ASSERT_CHAR_EQ_MESSAGE(actual, ==, expected, NULL)
+    TS_ASSERT_CHAR_EQ_MESSAGE(actual, expected, NULL)
 
 
 /*
