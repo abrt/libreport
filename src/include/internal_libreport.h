@@ -743,7 +743,7 @@ int get_env_variable(pid_t pid, const char *name, char **value);
 #define PROC_NS_ID_PID 3
 #define PROC_NS_ID_USER 4
 #define PROC_NS_ID_UTS 5
-#define PROC_NS_ID_CGROUP 5
+#define PROC_NS_ID_CGROUP 6
 static const char * libreport_proc_namespaces[] = { "ipc", "mnt", "net", "pid", "uts", "user", "cgroup" };
 
 struct ns_ids {
