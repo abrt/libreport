@@ -72,6 +72,9 @@ long g_testsuite_fails = 0;
 /* Number of successful asserts. For debugging purpose. */
 long g_testsuite_ok = 0;
 
+/* 1 if the last check succeeded, 0 of the last check failed */
+int g_testsuite_last_ok = 0;
+
 /* Enables additional log messages. */
 int g_testsuite_debug = 0;
 
@@ -111,6 +114,7 @@ FILE *g_testsuite_output_stream = 0;
         TS_DEBUG_PRINTF("[   OK   ] %d: ", __LINE__); \
         TS_DEBUG_PRINTF(format, __VA_ARGS__); \
         ++g_testsuite_ok; \
+        g_testsuite_last_ok = 1; \
     } while (0)
 
 #define TS_FAILURE(format, ...) \
@@ -118,6 +122,7 @@ FILE *g_testsuite_output_stream = 0;
         TS_PRINTF("[ FAILED ] %d: ", __LINE__); \
         TS_PRINTF(format, __VA_ARGS__); \
         ++g_testsuite_fails; \
+        g_testsuite_last_ok = 0; \
     } while (0)
 
 
