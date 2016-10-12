@@ -91,6 +91,17 @@ int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name);
 
 char* dd_load_text_ext(const struct dump_dir *dd, const char *name, unsigned flags);
 char* dd_load_text(const struct dump_dir *dd, const char *name);
+
+/* Returns value of environment variable with given name.
+ *
+ * @param dd Dump directory
+ * @param name Variables's name
+ * @param value Return value.
+ * @return 0 no success, or negative value if an error occurred (-ENOENT if the
+ * given dd does not support environment variables).
+ */
+int dd_get_env_variable(struct dump_dir *dd, const char *name, char **value);
+
 void dd_save_text(struct dump_dir *dd, const char *name, const char *data);
 void dd_save_binary(struct dump_dir *dd, const char *name, const char *data, unsigned size);
 /* Deletes an item from dump directory
