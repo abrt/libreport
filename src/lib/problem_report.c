@@ -786,6 +786,7 @@ memstream_get_string(struct memstream_buffer *self)
     assert(self->msb_stream != NULL);
 
     fflush(self->msb_stream);
+    self->msb_buffer[self->msb_size] = '\0';
 
     return self->msb_buffer;
 }
