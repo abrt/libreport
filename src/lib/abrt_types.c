@@ -97,6 +97,7 @@ int try_get_map_string_item_as_int(map_string_t *ms, const char *key, int *value
     GET_ITEM_OR_RETURN(option, ms, key);
 
     char *endptr = NULL;
+    errno = 0;
     long raw_value = strtol(option, &endptr, 10);
 
     /* Check for various possible errors */
