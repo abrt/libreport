@@ -118,6 +118,40 @@ int try_get_map_string_item_as_int(map_string_t *ms, const char *key, int *value
     return 1;
 }
 
+void set_map_string_item_from_uint(map_string_t *ms, const char *key, unsigned int value)
+{
+    char raw_value[sizeof(int)*3 + 1];
+    snprintf(raw_value, sizeof(raw_value), "%u", value);
+    set_map_string_item_from_string(ms, key, raw_value);
+}
+
+int try_get_map_string_item_as_uint(map_string_t *ms, const char *key, unsigned int *value)
+{
+    GET_ITEM_OR_RETURN(option, ms, key);
+
+    char *endptr = NULL;
+    errno = 0;
+    unsigned long raw_value = strtoul(option, &endptr, 10);
+
+    /* Check for various possible errors */
+    if (raw_value > UINT_MAX || errno == ERANGE)
+    {
+        log_warning("Value of option '%s' is out of unsigned integer range", key);
+        return 0;
+    }
+
+    if ((errno != 0 && raw_value == 0)
+        || (endptr == option) /* empty */
+        || (endptr[0] != '\0') /* trailing non-digits */)
+    {
+        log_warning("Value of option '%s' is not an unsigned integer", key);
+        return 0;
+    }
+
+    *value = (unsigned int)raw_value;
+    return 1;
+}
+
 void set_map_string_item_from_string(map_string_t *ms, const char *key, const char *value)
 {
     replace_map_string_item(ms, xstrdup(key), xstrdup(value));
