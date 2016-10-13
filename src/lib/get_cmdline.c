@@ -148,3 +148,63 @@ char* get_environ(pid_t pid)
     sprintf(path, "/proc/%lu/environ", (long)pid);
     return get_escaped(path, '\n');
 }
+
+int get_env_variable_ext(int fd, char delim, const char *name, char **value)
+{
+    int workfd = dup(fd);
+    if (workfd < 0)
+    {
+        perror_msg("dup()");
+        return -errno;
+    }
+
+    FILE *fenv = fdopen(workfd, "re");
+    if (fenv == NULL)
+    {
+        close(workfd);
+        perror_msg("fdopen()");
+        return -errno;
+    }
+
+    size_t len = strlen(name);
+    int c = 0;
+    while (c != EOF)
+    {
+        long i = 0;
+        /* Check variable name */
+        while ((c = fgetc(fenv)) != EOF && (i < len && c == name[i++]))
+            ;
+
+        if (c == EOF)
+            break;
+
+        const int skip = (c != '=' || name[i] != '\0');
+        i = 0;
+
+        /* Read to the end of variable entry */
+        while ((c = fgetc(fenv)) != EOF && c != delim)
+            ++i;
+
+        /* Go to the next entry if the read entry isn't the searched variable */
+        if (skip)
+            continue;
+
+        const int eof = c != EOF;
+        *value = xmalloc(i+1);
+
+        /* i+1 because we didn't count '\0'  */
+        if (fseek(fenv, -(i+eof), SEEK_CUR) < 0)
+            error_msg_and_die("Failed to seek");
+
+        if (fread(*value, 1, i, fenv) != i)
+            error_msg_and_die("Failed to read value");
+
+        (*value)[i] = '\0';
+
+        break;
+
+    }
+
+    fclose(fenv);
+    return 0;
+}

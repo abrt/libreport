@@ -597,6 +597,8 @@ struct strbuf *strbuf_prepend_strfv(struct strbuf *strbuf,
 char* get_cmdline(pid_t pid);
 #define get_environ libreport_get_environ
 char* get_environ(pid_t pid);
+#define get_env_variable_ext libreport_get_env_variable_ext
+int get_env_variable_ext(int fd, char delim, const char *name, char **value);
 
 /* Takes ptr to time_t, or NULL if you want to use current time.
  * Returns "YYYY-MM-DD-hh:mm:ss" string.
