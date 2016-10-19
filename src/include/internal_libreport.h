@@ -1138,6 +1138,11 @@ struct dump_dir *open_directory_for_writing(
 #define FILENAME_CONTAINER_CMDLINE "container_cmdline"
 #define FILENAME_DOCKER_INSPECT    "docker_inspect"
 
+/* Type of catched exception
+ * Optional.
+ */
+#define FILENAME_EXCEPTION_TYPE    "exception_type"
+
 // Not stored as files, added "on the fly":
 #define CD_DUMPDIR            "Directory"
 
