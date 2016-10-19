@@ -107,6 +107,12 @@ char *problem_data_get_content_or_NULL(problem_data_t *problem_data, const char 
 /* Aborts if key is not found: */
 char *problem_data_get_content_or_die(problem_data_t *problem_data, const char *key);
 
+/* Returns all element names stored in problem_data */
+static inline GList *problem_data_get_all_elements(problem_data_t *problem_data)
+{
+    return g_hash_table_get_keys(problem_data);
+}
+
 /**
   @brief Loads key value pairs from os_info item in to the osinfo argument
 
