@@ -83,6 +83,11 @@ void set_map_string_item_from_int(map_string_t *ms, const char *key, int value);
 #define try_get_map_string_item_as_int libreport_try_get_map_string_item_as_int
 int try_get_map_string_item_as_int(map_string_t *ms, const char *key, int *value);
 
+#define set_map_string_item_from_uint libreport_set_map_string_item_from_uint
+void set_map_string_item_from_uint(map_string_t *ms, const char *key, unsigned int value);
+#define try_get_map_string_item_as_uint libreport_try_get_map_string_item_as_uint
+int try_get_map_string_item_as_uint(map_string_t *ms, const char *key, unsigned int *value);
+
 #define set_map_string_item_from_string libreport_set_map_string_item_from_string
 void set_map_string_item_from_string(map_string_t *ms, const char *key, const char *value);
 #define try_get_map_string_item_as_string libreport_try_get_map_string_item_as_string
