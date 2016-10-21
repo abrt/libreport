@@ -274,8 +274,10 @@ static const char *const editable_files[] = {
     //FILENAME_EXECUTABLE ,
     //FILENAME_BINARY     ,
     FILENAME_OPEN_FDS   , /* user might want to hide sensitive file names */
+    FILENAME_MOUNTINFO  , /* user might want to hide sensitive file paths */
     //FILENAME_LIMITS     ,
     FILENAME_CMDLINE    ,
+    FILENAME_CONTAINER_CMDLINE,
     //FILENAME_CGROUP     ,
     //FILENAME_COREDUMP   ,
     FILENAME_BACKTRACE  ,

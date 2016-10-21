@@ -19,7 +19,8 @@ m4_define([AT_COMPILE],
 
 m4_define([AT_TESTFUN],
 [AT_SETUP([$1])
-AT_DATA([$1.c], [$2])
+AT_DATA([$1.c], [[#line] __line__ "__file__"
+$2])
 AT_COMPILE([$1])
 AT_CHECK([$PRE_AT_CHECK ./$1], 0, [ignore], [ignore])
 AT_CLEANUP])

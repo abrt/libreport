@@ -48,10 +48,23 @@ void validate_dump_dir_contents(struct dump_dir *dd)
     assert(dd_get_item_size(dd, "at_test_binary") == 4);
     ++items;
 
+    struct stat srv_buf;
+    stat("/etc/services", &srv_buf);
+
     assert(dd_exist(dd, "at_test_services"));
+    assert(dd_get_item_size(dd, "at_test_services") == srv_buf.st_size);
     ++items;
 
+    struct stat grp_buf;
+    stat("/etc/group", &grp_buf);
+    assert(dd_exist(dd, "at_test_group"));
+    assert(dd_get_item_size(dd, "at_test_group") == grp_buf.st_size);
+    ++items;
+
+    struct stat pwd_buf;
+    stat("/etc/passwd", &pwd_buf);
     assert(dd_exist(dd, "at_test_passwd"));
+    assert(dd_get_item_size(dd, "at_test_passwd") == pwd_buf.st_size);
     ++items;
 
     dd_save_text(dd, "at_test_to_delete", "deleted");
@@ -126,6 +139,11 @@ TS_MAIN
     assert(dd_exist(dd, "at_test_binary"));
 
     dd_copy_file(dd, "at_test_services", "/etc/services");
+
+    const int etc_dir_fd = open("/etc", O_DIRECTORY | O_PATH | O_CLOEXEC | O_EXCL);
+    assert(etc_dir_fd >= 0);
+    dd_copy_file_at(dd, "at_test_group", etc_dir_fd, "group");
+    close(etc_dir_fd);
 
     int passwd_fd = open("/etc/passwd", O_RDONLY);
     assert(passwd_fd >= 0);
@@ -1760,6 +1778,210 @@ TS_MAIN
     errno = 0;
     TS_ASSERT_SIGNED_EQ(dd_get_last_occurrence(dd), -1);
     TS_ASSERT_SIGNED_EQ(errno, ENODATA);
+
+    testsuite_dump_dir_delete(dd);
+}
+TS_RETURN_MAIN
+]])
+
+## ------------ ##
+## dd_open_item ##
+## ------------ ##
+
+AT_TESTFUN([dd_open_item], [[
+#include "testsuite.h"
+#include "testsuite_tools.h"
+
+TS_MAIN
+{
+    struct dump_dir *dd = testsuite_dump_dir_create(-1, -1, 0);
+    dd->dd_time = (time_t)1234567;
+    dd_create_basic_files(dd, geteuid(), NULL);
+
+    TS_ASSERT_SIGNED_EQ(dd_open_item(dd, "", O_RDWR), -EINVAL);
+    TS_ASSERT_SIGNED_EQ(dd_open_item(dd, "/", O_RDWR), -EINVAL);
+    TS_ASSERT_SIGNED_EQ(dd_open_item(dd, "//", O_RDWR), -EINVAL);
+    TS_ASSERT_SIGNED_EQ(dd_open_item(dd, "/a", O_RDWR), -EINVAL);
+    TS_ASSERT_SIGNED_EQ(dd_open_item(dd, "a/", O_RDWR), -EINVAL);
+    TS_ASSERT_SIGNED_EQ(dd_open_item(dd, ".", O_RDWR), -EINVAL);
+    TS_ASSERT_SIGNED_EQ(dd_open_item(dd, "..", O_RDWR), -EINVAL);
+    TS_ASSERT_SIGNED_EQ(dd_open_item(dd, "/.", O_RDWR), -EINVAL);
+    TS_ASSERT_SIGNED_EQ(dd_open_item(dd, "//.", O_RDWR), -EINVAL);
+    TS_ASSERT_SIGNED_EQ(dd_open_item(dd, "./", O_RDWR), -EINVAL);
+    TS_ASSERT_SIGNED_EQ(dd_open_item(dd, ".//", O_RDWR), -EINVAL);
+    TS_ASSERT_SIGNED_EQ(dd_open_item(dd, "/./", O_RDWR), -EINVAL);
+    TS_ASSERT_SIGNED_EQ(dd_open_item(dd, "/..", O_RDWR), -EINVAL);
+    TS_ASSERT_SIGNED_EQ(dd_open_item(dd, "//..", O_RDWR), -EINVAL);
+    TS_ASSERT_SIGNED_EQ(dd_open_item(dd, "../", O_RDWR), -EINVAL);
+    TS_ASSERT_SIGNED_EQ(dd_open_item(dd, "..//", O_RDWR), -EINVAL);
+    TS_ASSERT_SIGNED_EQ(dd_open_item(dd, "/../", O_RDWR), -EINVAL);
+    TS_ASSERT_SIGNED_EQ(dd_open_item(dd, "/.././", O_RDWR), -EINVAL);
+    TS_ASSERT_SIGNED_EQ(dd_open_item(dd, "looks-good-but-evil/", O_RDWR), -EINVAL);
+    TS_ASSERT_SIGNED_EQ(dd_open_item(dd, "looks-good-but-evil/../../", O_RDWR), -EINVAL);
+    TS_ASSERT_SIGNED_EQ(dd_open_item(dd, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890+-=", O_RDWR), -EINVAL);
+
+    const int fd_rdonly_noent = dd_open_item(dd, "nofile", O_RDONLY);
+    TS_ASSERT_SIGNED_LT(fd_rdonly_noent, 0);
+
+    const int fd_wronly_noent = dd_open_item(dd, "nofile", O_RDWR);
+    TS_ASSERT_SIGNED_GE(fd_wronly_noent, 0);
+    if (g_testsuite_last_ok) {
+        full_write_str(fd_wronly_noent, "fd_wronly_noent");
+        close(fd_wronly_noent);
+
+        char *const noent_contents = dd_load_text(dd, "nofile");
+        TS_ASSERT_STRING_EQ(noent_contents, "fd_wronly_noent", "Successfully wrote data");
+        free(noent_contents);
+    }
+
+    TS_ASSERT_SIGNED_EQ(dd_open_item(dd, "time", O_RDONLY | O_EXCL), -ENOTSUP);
+
+    const int fd_rdonly_time = dd_open_item(dd, "time", O_RDONLY);
+    TS_ASSERT_SIGNED_GE(fd_rdonly_time, 0);
+    if (g_testsuite_last_ok) {
+        char *time = dd_load_text(dd, "time");
+        TS_ASSERT_PTR_IS_NOT_NULL(time);
+
+        char rdonly_time_contents[16];
+        int bytes_rdonly_time = full_read(fd_rdonly_time, rdonly_time_contents, sizeof(rdonly_time_contents));
+        TS_ASSERT_SIGNED_GT(bytes_rdonly_time, 0);
+        if (bytes_rdonly_time > 0) {
+            rdonly_time_contents[bytes_rdonly_time] = '\0';
+            TS_ASSERT_STRING_EQ(rdonly_time_contents, time, "Read only time");
+        }
+        else {
+            TS_PRINTF("FD %d read error: %s\n", fd_rdonly_time, strerror(errno));
+        }
+        free(time);
+        close(fd_rdonly_time);
+    }
+
+    TS_ASSERT_SIGNED_EQ(dd_open_item(dd, "time", O_RDWR | O_EXCL), -ENOTSUP);
+
+    const int fd_rdwr_time = dd_open_item(dd, "time", O_RDWR);
+    TS_ASSERT_SIGNED_GE(fd_rdwr_time, 0);
+    if (g_testsuite_last_ok) {
+        full_write_str(fd_rdwr_time, "7654321");
+
+        TS_ASSERT_FUNCTION(lseek(fd_rdwr_time, 0, SEEK_SET));
+
+        char rdwr_time_contents[16];
+        int bytes_rdwr_time = full_read(fd_rdwr_time, rdwr_time_contents, sizeof(rdwr_time_contents));
+        close(fd_rdwr_time);
+
+        TS_ASSERT_SIGNED_GT(bytes_rdwr_time, 0);
+        if (g_testsuite_last_ok) {
+            rdwr_time_contents[bytes_rdwr_time] = '\0';
+
+            char *const time_contents = dd_load_text(dd, "time");
+            TS_ASSERT_STRING_EQ(rdwr_time_contents, "7654321", "Successfully wrote time data");
+            TS_ASSERT_STRING_EQ(time_contents, "7654321", "Successfully wrote time data");
+            TS_ASSERT_STRING_EQ(rdwr_time_contents, time_contents, "Read only time");
+            free(time_contents);
+
+        }
+        else {
+            TS_PRINTF("FD %d read error: %s\n", fd_rdwr_time, strerror(errno));
+        }
+    }
+
+    testsuite_dump_dir_delete(dd);
+}
+TS_RETURN_MAIN
+]])
+
+
+## ----------------- ##
+## dd_open_item_file ##
+## ----------------- ##
+
+AT_TESTFUN([dd_open_item_file], [[
+#include "testsuite.h"
+#include "testsuite_tools.h"
+
+TS_MAIN
+{
+    struct dump_dir *dd = testsuite_dump_dir_create(-1, -1, 0);
+    dd->dd_time = (time_t)1234567;
+    dd_create_basic_files(dd, geteuid(), NULL);
+
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "", O_RDWR));
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "/", O_RDWR));
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "//", O_RDWR));
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "/a", O_RDWR));
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "a/", O_RDWR));
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, ".", O_RDWR));
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "..", O_RDWR));
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "/.", O_RDWR));
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "//.", O_RDWR));
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "./", O_RDWR));
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, ".//", O_RDWR));
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "/./", O_RDWR));
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "/..", O_RDWR));
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "//..", O_RDWR));
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "../", O_RDWR));
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "..//", O_RDWR));
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "/../", O_RDWR));
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "/.././", O_RDWR));
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "looks-good-but-evil/", O_RDWR));
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "looks-good-but-evil/../../", O_RDWR));
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890+-=", O_RDWR));
+
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "nofile", O_RDONLY));
+
+    FILE *const f_rdwr_noent = dd_open_item_file(dd, "nofile", O_RDWR);
+    TS_ASSERT_PTR_IS_NOT_NULL(f_rdwr_noent);
+    if (g_testsuite_last_ok) {
+        fprintf(f_rdwr_noent, "%s", "f_rdwr_noent");
+        rewind(f_rdwr_noent);
+
+        char rdwr_contents[256];
+        TS_ASSERT_PTR_IS_NOT_NULL(fgets(rdwr_contents, sizeof(rdwr_contents), f_rdwr_noent));
+        TS_ASSERT_STRING_EQ(rdwr_contents, "f_rdwr_noent", "Successfully read data");
+        fclose(f_rdwr_noent);
+
+        char *const noent_contents = dd_load_text(dd, "nofile");
+        TS_ASSERT_STRING_EQ(noent_contents, "f_rdwr_noent", "Successfully wrote data");
+        free(noent_contents);
+    }
+
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "time", O_RDONLY | O_EXCL));
+
+    FILE *const f_rdonly_time = dd_open_item_file(dd, "time", O_RDONLY);
+    TS_ASSERT_PTR_IS_NOT_NULL(f_rdonly_time);
+    if (g_testsuite_last_ok) {
+        char *time = dd_load_text(dd, "time");
+        TS_ASSERT_PTR_IS_NOT_NULL(time);
+
+        char rdonly_time_contents[16];
+        char *const res = fgets(rdonly_time_contents, sizeof(rdonly_time_contents), f_rdonly_time);
+        TS_ASSERT_PTR_EQ(rdonly_time_contents, res);
+        if (g_testsuite_last_ok) {
+            TS_ASSERT_STRING_EQ(rdonly_time_contents, time, "Read only time");
+        }
+        else {
+            TS_PRINTF("File 'time' read error: %s\n", strerror(errno));
+        }
+        fclose(f_rdonly_time);
+    }
+
+    TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "time", O_RDWR | O_EXCL));
+
+    FILE *const f_rdwr_time = dd_open_item_file(dd, "time", O_RDWR);
+    TS_ASSERT_PTR_IS_NOT_NULL(f_rdwr_time);
+    if (g_testsuite_last_ok) {
+        fprintf(f_rdwr_time, "7654321");
+        rewind(f_rdwr_noent);
+
+        char rdwr_contents[256];
+        TS_ASSERT_PTR_IS_NOT_NULL(fgets(rdwr_contents, sizeof(rdwr_contents), f_rdwr_noent));
+        TS_ASSERT_STRING_EQ(rdwr_contents, "7654321", "Successfully read time data");
+        fclose(f_rdwr_time);
+
+        char *const time_contents = dd_load_text(dd, "time");
+        TS_ASSERT_STRING_EQ(time_contents, "7654321", "Successfully wrote time data");
+        free(time_contents);
+    }
 
     testsuite_dump_dir_delete(dd);
 }

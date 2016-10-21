@@ -25,6 +25,7 @@
 #include "libreport_types.h"
 
 #include <stdint.h>
+#include <stdio.h>
 
 /* For DIR */
 #include <sys/types.h>
@@ -228,6 +229,16 @@ void dd_save_binary(struct dump_dir *dd, const char *name, const char *data, uns
 int dd_copy_file(struct dump_dir *dd, const char *name, const char *source_path);
 int dd_copy_file_unpack(struct dump_dir *dd, const char *name, const char *source_path);
 
+/* Create an item of the given name with contents of the given file (see man openat)
+ *
+ * @param dd Dump directory
+ * @param name Item's name
+ * @param src_dir_fd Source directory's file descriptor
+ * @param src_name Source file name
+ * @return 0 no success, or negative value if an error occurred
+ */
+int dd_copy_file_at(struct dump_dir *dd, const char *name, int src_dir_fd, const char *src_name);
+
 /* Creates/overwrites an element with data read from a file descriptor
  *
  * @param dd Dump directory
@@ -269,6 +280,33 @@ int dd_get_items_count(struct dump_dir *dd);
  * For more about errno see unlink documentation
  */
 int dd_delete_item(struct dump_dir *dd, const char *name);
+
+/* Returns a file descriptor for the given name. The function is limited to open
+ * an element read only, write only or create new.
+ *
+ * O_RDONLY - opens an existing item for reading
+ * O_RDWR - removes an item, creates its file and opens the file for reading and writing
+ *
+ * @param dd Dump directory
+ * @param name The name of the item
+ * @param flags One of these : O_RDONLY, O_RDWR
+ * @return Negative number on error
+ */
+int dd_open_item(struct dump_dir *dd, const char *name, int flags);
+
+/* Returns a FILE for the given name. The function is limited to open
+ * an element read only, write only or create new.
+ *
+ * O_RDONLY - opens an existing file for reading
+ * O_RDWR - removes an item, creates its file and opens the file for reading and writing
+ *
+ * @param dd Dump directory
+ * @param name The name of the item
+ * @param flags One of these : O_RDONLY, O_RDWR
+ * @return NULL on error
+ */
+FILE *dd_open_item_file(struct dump_dir *dd, const char *name, int flags);
+
 /* Returns 0 if directory is deleted or not found */
 int dd_delete(struct dump_dir *dd);
 int dd_rename(struct dump_dir *dd, const char *new_path);

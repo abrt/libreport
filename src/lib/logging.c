@@ -27,11 +27,17 @@ const char *msg_prefix = "";
 const char *msg_eol = "\n";
 int logmode = LOGMODE_STDIO;
 int xfunc_error_retval = EXIT_FAILURE;
+static enum libreport_diemode xfunc_diemode = DIEMODE_EXIT;
 int g_verbose;
 
 void set_xfunc_error_retval(int retval)
 {
     xfunc_error_retval = retval;
+}
+
+void set_xfunc_diemode(enum libreport_diemode mode)
+{
+    xfunc_diemode = mode;
 }
 
 /* [p]error_msg[_and_die] must be safe after fork in multi-threaded programs.
@@ -40,6 +46,11 @@ void set_xfunc_error_retval(int retval)
  */
 void xfunc_die(void)
 {
+    char *const envmode = getenv("LIBREPORT_DIEMODE");
+    if (   xfunc_diemode == DIEMODE_ABORT
+        || (envmode != NULL && strcmp("abort", envmode) == 0))
+        abort();
+
     _exit(xfunc_error_retval);
 }
 

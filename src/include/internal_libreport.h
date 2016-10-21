@@ -187,6 +187,8 @@ off_t copyfd_eof(int src_fd, int dst_fd, int flags);
 off_t copyfd_size(int src_fd, int dst_fd, off_t size, int flags);
 #define copyfd_exact_size libreport_copyfd_exact_size
 void copyfd_exact_size(int src_fd, int dst_fd, off_t size);
+#define copy_file_ext_2at libreport_copy_file_ext_2at
+off_t copy_file_ext_2at(int src_dir_fd, const char *src_name, int dir_fd, const char *name, int mode, uid_t uid, gid_t gid, int src_flags, int dst_flags);
 #define copy_file_ext_at libreport_copy_file_ext_at
 off_t copy_file_ext_at(const char *src_name, int dir_fd, const char *name, int mode, uid_t uid, gid_t gid, int src_flags, int dst_flags);
 #define copy_file_ext(src_name, dst_name, mode, uid, gid, src_flags, dst_flags) \
@@ -487,6 +489,8 @@ void xsetreuid(uid_t ruid, uid_t euid);
 #define xsetregid libreport_xsetregid
 void xsetregid(gid_t rgid, gid_t egid);
 
+#define xfdopen libreport_xfdopen
+FILE *xfdopen(int fd, const char *mode);
 
 /* Emit a string of hex representation of bytes */
 #define bin2hex libreport_bin2hex
@@ -503,6 +507,11 @@ enum {
     LOGMODE_BOTH = LOGMODE_SYSLOG + LOGMODE_STDIO,
     LOGMODE_CUSTOM = (1 << 2),
     LOGMODE_JOURNAL = (1 << 3),
+};
+
+enum libreport_diemode {
+    DIEMODE_EXIT = 0,
+    DIEMODE_ABORT = 1,
 };
 
 #define g_custom_logger libreport_g_custom_logger
@@ -522,6 +531,9 @@ extern int xfunc_error_retval;
 
 #define set_xfunc_error_retval libreport_set_xfunc_error_retval
 void set_xfunc_error_retval(int retval);
+
+#define set_xfunc_diemode libreport_set_xfunc_diemode
+void set_xfunc_diemode(enum libreport_diemode mode);
 
 /* Verbosity level */
 #define g_verbose libreport_g_verbose
@@ -686,20 +698,35 @@ struct strbuf *strbuf_prepend_strfv(struct strbuf *strbuf,
  * If the pid is not valid or command line can not be obtained,
  * empty string is returned.
  */
+#define open_proc_pid_dir libreport_open_proc_pid_dir
+int open_proc_pid_dir(pid_t pid);
+#define get_cmdline_at libreport_get_cmdline_at
+char* get_cmdline_at(pid_t pid);
 #define get_cmdline libreport_get_cmdline
 char* get_cmdline(pid_t pid);
+#define get_environ_at libreport_get_environ_at
+char* get_environ_at(pid_t pid);
 #define get_environ libreport_get_environ
 char* get_environ(pid_t pid);
+#define get_executable_at libreport_get_executable_at
+char *get_executable_at(pid_t pid);
 #define get_executable libreport_get_executable
 char *get_executable(pid_t pid);
+#define get_cwd_at libreport_get_cwd_at
+char* get_cwd_at(pid_t pid);
 #define get_cwd libreport_get_cwd
 char* get_cwd(pid_t pid);
+#define get_rootdir_at libreport_get_rootdir_at
+char* get_rootdir_at(pid_t pid);
 #define get_rootdir libreport_get_rootdir
 char* get_rootdir(pid_t pid);
+
 #define get_fsuid libreport_get_fsuid
 int get_fsuid(const char *proc_pid_status);
 #define get_fsgid libreport_get_fsgid
 int get_fsgid(const char *proc_pid_status);
+#define dump_fd_info_at libreport_dump_fd_info_at
+int dump_fd_info_at(int pid_proc_fd, FILE *dest);
 #define dump_fd_info_ext libreport_dump_fd_info_ext
 int dump_fd_info_ext(const char *dest_filename, const char *proc_pid_fd_path, uid_t uid, gid_t gid);
 #define dump_fd_info libreport_dump_fd_info
@@ -716,19 +743,27 @@ int get_env_variable(pid_t pid, const char *name, char **value);
 #define PROC_NS_ID_PID 3
 #define PROC_NS_ID_USER 4
 #define PROC_NS_ID_UTS 5
-#define PROC_NS_ID_CGROUP 5
+#define PROC_NS_ID_CGROUP 6
 static const char * libreport_proc_namespaces[] = { "ipc", "mnt", "net", "pid", "uts", "user", "cgroup" };
 
 struct ns_ids {
     ino_t nsi_ids[ARRAY_SIZE(libreport_proc_namespaces)];
 };
 
+#define get_ns_ids_at libreport_get_ns_ids_at
+int get_ns_ids_at(int pid_proc_fd, struct ns_ids *ids);
 #define get_ns_ids libreport_get_ns_ids
 int get_ns_ids(pid_t pid, struct ns_ids *ids);
+#define process_has_own_root_at libreport_process_has_own_root_at
+int process_has_own_root_at(int proc_pid_fd);
 #define process_has_own_root libreport_process_has_own_root
 int process_has_own_root(pid_t pid);
+#define get_pid_of_container_at libreport_get_pid_of_container_at
+int get_pid_of_container_at(int pid_proc_fd, pid_t *init_pid);
 #define get_pid_of_container libreport_get_pid_of_container
 int get_pid_of_container(pid_t pid, pid_t *init_pid);
+#define dump_namespace_diff_at libreport_dump_namespace_diff_at
+int dump_namespace_diff_at(int base_pid_proc_fd, int tested_pid_proc_fd, FILE *dest);
 #define dump_namespace_diff_ext libreport_dump_namespace_diff_ext
 int dump_namespace_diff_ext(const char *dest_filename, pid_t base_pid, pid_t tested_pid, uid_t uid, gid_t gid);
 #define dump_namespace_diff libreport_dump_namespace_diff
