@@ -1,0 +1,73 @@
+# -*- Autotest -*-
+
+AT_BANNER([/proc helpers])
+
+## -------------------- ##
+## get_env_variable_ext ##
+## -------------------- ##
+
+AT_TESTFUN([get_env_variable_ext],
+[[
+
+#include "testsuite.h"
+
+void test_delim(char delim)
+{
+    const char *test_data[][2] = {
+            { "EMPTY", "" },
+            { "SATYR", "awesome" },
+            { "STUFF", "" },
+            { "OPENSOURCE", "brilliant" },
+            { "LIBREPORT", "great" },
+            { "TRICK", "" },
+            { "ABRT", "fabulous" },
+            { "SENTINEL", NULL}
+        };
+
+
+    char fdname[] = "/tmp/libreprt-testsuite.XXXXXX";
+    int fd = mkstemp(fdname);
+    assert(fd >= 0);
+    printf("Temporary file: %s\n", fdname);
+
+    int fddup = dup(fd);
+    assert(fddup >= 0);
+
+    FILE *f = fdopen(fddup, "w");
+    assert(f);
+
+    for (size_t i = 0; i < ARRAY_SIZE(test_data); ++i)
+    {
+        if (test_data[i][1] == NULL)
+            continue;
+
+        fprintf(f, "%s=%s", test_data[i][0], test_data[i][1]);
+
+        /* Do not add delimiter after the last entry */
+        if (i < ARRAY_SIZE(test_data) - 1)
+            fputc(delim, f);
+    }
+
+    fclose(f);
+
+    for (size_t i = ARRAY_SIZE(test_data); i != 0; --i)
+    {
+        lseek(fd, 0, SEEK_SET);
+        char *value = NULL;
+        printf("Looking for '%s'\n", test_data[i-1][0]);
+        TS_ASSERT_FUNCTION(get_env_variable_ext(fd, delim, test_data[i-1][0], &value));
+        TS_ASSERT_STRING_EQ(value, test_data[i-1][1], "Environment value at 'i'");
+        free(value);
+    }
+
+    close(fd);
+}
+
+TS_MAIN
+{
+    test_delim('\n');
+    test_delim('\0');
+}
+TS_RETURN_MAIN
+]])
+
