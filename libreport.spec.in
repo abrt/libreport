@@ -95,7 +95,7 @@ Development headers for libreport-web
 Summary: Python bindings for report-libs
 # Is group correct here? -
 Requires: libreport = %{version}-%{release}
-%if 0%{?fedora} >= 22
+%if 0%{?fedora}
 Requires: dnf
 %else
 Requires: yum
@@ -320,7 +320,7 @@ CFLAGS="%{optflags} -Werror" %configure \
 %if %{without bugzilla}
         --without-bugzilla \
 %endif
-%if 0%{?rhel:%{rhel} < 7}%{?fedora:%{fedora} < 18}
+%if 0%{?rhel} == 6
         --with-defaultdumpdirmode=0640 \
         --disable-userownsdumpdir \
 %else
