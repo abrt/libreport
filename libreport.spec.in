@@ -331,7 +331,6 @@ CFLAGS="%{optflags} -Werror" %configure \
 make %{?_smp_mflags}
 
 %install
-rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT mandir=%{_mandir}
 %find_lang %{name}
 
@@ -398,9 +397,6 @@ rm -f $RPM_BUILD_ROOT%{_mandir}/man5/report_rhel.conf.5
 rm -f $RPM_BUILD_ROOT%{_mandir}/man5/report_uReport.conf.5
 rm -f $RPM_BUILD_ROOT%{_mandir}/man5/report_rhel_bugzilla.conf.5
 %endif
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 %check
 make check|| {
