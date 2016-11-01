@@ -20,7 +20,6 @@ Name: libreport
 Version: @@LIBREPORT_VERSION@@
 Release: 1%{?dist}
 License: GPLv2+
-Group: System Environment/Libraries
 URL: https://abrt.readthedocs.org/
 Source: https://fedorahosted.org/released/abrt/%{name}-%{version}.tar.gz
 BuildRequires: %{dbus_devel}
@@ -61,22 +60,18 @@ Requires: satyr >= 0.18
 Requires: xz
 Requires: lz4
 
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
 %description
 Libraries providing API for reporting different problems in applications
 to different bug targets like Bugzilla, ftp, trac, etc...
 
 %package filesystem
 Summary: Filesystem layout for libreport
-Group: Applications/File
 
 %description filesystem
 Filesystem layout for libreport
 
 %package devel
 Summary: Development libraries and headers for libreport
-Group: Development/Libraries
 Requires: libreport = %{version}-%{release}
 
 %description devel
@@ -84,7 +79,6 @@ Development libraries and headers for libreport
 
 %package web
 Summary: Library providing network API for libreport
-Group: System Environment/Libraries
 Requires: libreport = %{version}-%{release}
 
 %description web
@@ -92,7 +86,6 @@ Library providing network API for libreport
 
 %package web-devel
 Summary: Development headers for libreport-web
-Group: Development/Libraries
 Requires: libreport-web = %{version}-%{release}
 
 %description web-devel
@@ -101,7 +94,6 @@ Development headers for libreport-web
 %package python
 Summary: Python bindings for report-libs
 # Is group correct here? -
-Group: System Environment/Libraries
 Requires: libreport = %{version}-%{release}
 %if 0%{?fedora} >= 22
 Requires: dnf
@@ -121,7 +113,6 @@ Python bindings for report-libs.
 
 %package python3
 Summary: Python 3 bindings for report-libs
-Group: System Environment/Libraries
 Requires: libreport = %{version}-%{release}
 # yum does not provide Python3 implementation
 Requires: dnf
@@ -131,7 +122,6 @@ Python 3 bindings for report-libs.
 
 %package cli
 Summary: %{name}'s command line interface
-Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 
 %description cli
@@ -140,7 +130,6 @@ with problem dump reports
 
 %package newt
 Summary: %{name}'s newt interface
-Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 Provides: report-newt = 0:0.23-1
 Obsoletes: report-newt < 0:0.23-1
@@ -151,7 +140,6 @@ bugs
 
 %package gtk
 Summary: GTK front-end for libreport
-Group: User Interface/Desktops
 Requires: libreport = %{version}-%{release}
 Requires: libreport-plugin-reportuploader = %{version}-%{release}
 Requires: fros >= 1.0
@@ -163,7 +151,6 @@ Applications for reporting bugs using libreport backend
 
 %package gtk-devel
 Summary: Development libraries and headers for libreport
-Group: Development/Libraries
 Requires: libreport-gtk = %{version}-%{release}
 
 %description gtk-devel
@@ -171,7 +158,6 @@ Development libraries and headers for libreport-gtk
 
 %package plugin-kerneloops
 Summary: %{name}'s kerneloops reporter plugin
-Group: System Environment/Libraries
 Requires: curl
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-web = %{version}-%{release}
@@ -182,7 +168,6 @@ server, usually to kerneloops.org.
 
 %package plugin-logger
 Summary: %{name}'s logger reporter plugin
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 
 %description plugin-logger
@@ -190,7 +175,6 @@ The simple reporter plugin which writes a report to a specified file.
 
 %package plugin-mailx
 Summary: %{name}'s mailx reporter plugin
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: mailx
 
@@ -201,7 +185,6 @@ email address.
 %if %{with bugzilla}
 %package plugin-bugzilla
 Summary: %{name}'s bugzilla plugin
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-web = %{version}-%{release}
 
@@ -211,7 +194,6 @@ Plugin to report bugs into the bugzilla.
 
 %package plugin-mantisbt
 Summary: %{name}'s mantisbt plugin
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-web = %{version}-%{release}
 
@@ -220,7 +202,6 @@ Plugin to report bugs into the mantisbt.
 
 %package centos
 Summary: %{name}'s CentOS Bug Tracker workflow
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-web = %{version}-%{release}
 Requires: libreport-plugin-mantisbt = %{version}-%{release}
@@ -231,7 +212,6 @@ Workflows to report issues into the CentOS Bug Tracker.
 %package plugin-ureport
 Summary: %{name}'s micro report plugin
 BuildRequires: %{libjson_devel}
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-web = %{version}-%{release}
 %if 0%{?rhel}
@@ -243,7 +223,6 @@ Uploads micro-report to abrt server
 
 %package plugin-rhtsupport
 Summary: %{name}'s RHTSupport plugin
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-web = %{version}-%{release}
 %if 0%{?rhel}
@@ -256,7 +235,6 @@ Plugin to report bugs into RH support system.
 %if %{with bugzilla}
 %package compat
 Summary: %{name}'s compat layer for obsoleted 'report' package
-Group: System Environment/Libraries
 Requires: libreport = %{version}-%{release}
 Requires: %{name}-plugin-bugzilla = %{version}-%{release}
 Requires: %{name}-plugin-rhtsupport = %{version}-%{release}
@@ -267,7 +245,6 @@ Provides 'report' command-line tool.
 
 %package plugin-reportuploader
 Summary: %{name}'s reportuploader plugin
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-web = %{version}-%{release}
 
@@ -277,7 +254,6 @@ Plugin to report bugs into anonymous FTP site associated with ticketing system.
 %if 0%{?fedora}
 %package fedora
 Summary: Default configuration for reporting bugs via Fedora infrastructure
-Group: Applications/File
 Requires: %{name} = %{version}-%{release}
 
 %description fedora
@@ -289,7 +265,6 @@ install this package and you're done.
 %if 0%{?rhel}
 %package rhel
 Summary: Default configuration for reporting bugs via Red Hat infrastructure
-Group: Applications/File
 Requires: %{name} = %{version}-%{release}
 
 %description rhel
@@ -299,7 +274,6 @@ install this package and you're done.
 
 %package rhel-bugzilla
 Summary: Default configuration for reporting bugs to Red Hat Bugzilla
-Group: Applications/File
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-plugin-bugzilla = %{version}-%{release}
 Requires: libreport-plugin-ureport = %{version}-%{release}
@@ -311,7 +285,6 @@ and you're done.
 
 %package rhel-anaconda-bugzilla
 Summary: Default configuration for reporting anaconda bugs to Red Hat Bugzilla
-Group: Applications/File
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-plugin-bugzilla = %{version}-%{release}
 
@@ -324,7 +297,6 @@ package and you're done.
 %if %{with bugzilla}
 %package anaconda
 Summary: Default configuration for reporting anaconda bugs
-Group: Applications/File
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-plugin-reportuploader = %{version}-%{release}
 %if 0%{?rhel}
