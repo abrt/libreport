@@ -131,8 +131,26 @@ int try_get_map_string_item_as_uint(map_string_t *ms, const char *key, unsigned 
     GET_ITEM_OR_RETURN(option, ms, key);
 
     char *endptr = NULL;
+
+    /* Check just negative number, positive ranges will be tested later */
+    long raw_signed_value = strtol(option, &endptr, 10);
+    if (raw_signed_value < 0)
+    {
+        log_warning("Value of option '%s' is out of unsigned integer range (bellow zero)", key);
+        return 0;
+    }
+
     errno = 0;
-    unsigned long raw_value = strtoul(option, &endptr, 10);
+    unsigned long raw_value;
+    if (raw_signed_value < INT_MAX)
+    {   // no need to convert it again, this is already between 0 and maximal value of strtol()
+        raw_value = raw_signed_value;
+    }
+    else
+    {
+        errno = 0;
+        raw_value = strtoul(option, &endptr, 10);
+    }
 
     /* Check for various possible errors */
     if (raw_value > UINT_MAX || errno == ERANGE)
