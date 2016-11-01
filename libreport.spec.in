@@ -433,8 +433,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %files -f %{name}.lang
-%defattr(-,root,root,-)
-%doc README COPYING
+%doc README
+%license COPYING
 %config(noreplace) %{_sysconfdir}/%{name}/libreport.conf
 %config(noreplace) %{_sysconfdir}/%{name}/report_event.conf
 %config(noreplace) %{_sysconfdir}/%{name}/forbidden_words.conf
@@ -450,7 +450,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/augeas/lenses/libreport.aug
 
 %files filesystem
-%defattr(-,root,root,-)
 %dir %{_sysconfdir}/%{name}/
 %dir %{_sysconfdir}/%{name}/events.d/
 %dir %{_sysconfdir}/%{name}/events/
@@ -460,7 +459,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %dir %{_sysconfdir}/%{name}/plugins/
 
 %files devel
-%defattr(-,root,root,-)
 # Public api headers:
 %doc apidoc/html/*.{html,png,css,js}
 %{_includedir}/libreport/libreport_types.h
@@ -490,37 +488,30 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %dir %{_includedir}/libreport
 
 %files web
-%defattr(-,root,root,-)
 %{_libdir}/libreport-web.so.*
 
 %files web-devel
-%defattr(-,root,root,-)
 %{_libdir}/libreport-web.so
 %{_includedir}/libreport/libreport_curl.h
 %{_libdir}/pkgconfig/libreport-web.pc
 
 %files python
-%defattr(-,root,root,-)
 %{python_sitearch}/report/*
 %{python_sitearch}/reportclient/*
 
 %files python3
-%defattr(-,root,root,-)
 %{python3_sitearch}/report/*
 %{python3_sitearch}/reportclient/*
 
 %files cli
-%defattr(-,root,root,-)
 %{_bindir}/report-cli
 %{_mandir}/man1/report-cli.1.gz
 
 %files newt
-%defattr(-,root,root,-)
 %{_bindir}/report-newt
 %{_mandir}/man1/report-newt.1.gz
 
 %files gtk
-%defattr(-,root,root,-)
 %{_bindir}/report-gtk
 %{_libdir}/libreport-gtk.so.*
 %config(noreplace) %{_sysconfdir}/libreport/events.d/emergencyanalysis_event.conf
@@ -529,19 +520,16 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man1/report-gtk.1.gz
 
 %files gtk-devel
-%defattr(-,root,root,-)
 %{_libdir}/libreport-gtk.so
 %{_includedir}/libreport/internal_libreport_gtk.h
 %{_libdir}/pkgconfig/libreport-gtk.pc
 
 %files plugin-kerneloops
-%defattr(-,root,root,-)
 %{_datadir}/%{name}/events/report_Kerneloops.xml
 %{_mandir}/man*/reporter-kerneloops.*
 %{_bindir}/reporter-kerneloops
 
 %files plugin-logger
-%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/events/report_Logger.conf
 %{_mandir}/man5/report_Logger.conf.5.*
 %{_datadir}/%{name}/events/report_Logger.xml
@@ -555,7 +543,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man*/reporter-print.*
 
 %files plugin-mailx
-%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/plugins/mailx.conf
 %{_datadir}/%{name}/conf.d/plugins/mailx.conf
 %{_datadir}/%{name}/events/report_Mailx.xml
@@ -571,7 +558,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/reporter-mailx
 
 %files plugin-ureport
-%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/plugins/ureport.conf
 %{_datadir}/%{name}/conf.d/plugins/ureport.conf
 %{_bindir}/reporter-ureport
@@ -582,7 +568,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %if %{with bugzilla}
 %files plugin-bugzilla
-%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla.conf
 %{_datadir}/%{name}/conf.d/plugins/bugzilla.conf
 %config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla_format.conf
@@ -607,7 +592,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %files plugin-mantisbt
-%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/plugins/mantisbt.conf
 %{_datadir}/%{name}/conf.d/plugins/mantisbt.conf
 %config(noreplace) %{_sysconfdir}/libreport/plugins/mantisbt_format.conf
@@ -642,7 +626,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man5/centos_report_event.conf.5.gz
 
 %files plugin-rhtsupport
-%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/plugins/rhtsupport.conf
 %{_datadir}/%{name}/conf.d/plugins/rhtsupport.conf
 %{_datadir}/%{name}/events/report_RHTSupport.xml
@@ -655,13 +638,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %if %{with bugzilla}
 %files compat
-%defattr(-,root,root,-)
 %{_bindir}/report
 %{_mandir}/man1/report.1.gz
 %endif
 
 %files plugin-reportuploader
-%defattr(-,root,root,-)
 %{_mandir}/man*/reporter-upload.*
 %{_mandir}/man5/uploader_event.conf.5.*
 %{_bindir}/reporter-upload
@@ -679,7 +660,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %if 0%{?fedora}
 %files fedora
-%defattr(-,root,root,-)
 %{_datadir}/%{name}/workflows/workflow_FedoraCCpp.xml
 %{_datadir}/%{name}/workflows/workflow_FedoraKerneloops.xml
 %{_datadir}/%{name}/workflows/workflow_FedoraPython.xml
@@ -695,7 +675,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %if 0%{?rhel}
 %files rhel
-%defattr(-,root,root,-)
 %{_datadir}/%{name}/workflows/workflow_RHELCCpp.xml
 %{_datadir}/%{name}/workflows/workflow_RHELKerneloops.xml
 %{_datadir}/%{name}/workflows/workflow_RHELPython.xml
@@ -711,7 +690,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man5/report_uReport.conf.5.*
 
 %files rhel-bugzilla
-%defattr(-,root,root,-)
 %{_datadir}/%{name}/workflows/workflow_RHELBugzillaCCpp.xml
 %{_datadir}/%{name}/workflows/workflow_RHELBugzillaKerneloops.xml
 %{_datadir}/%{name}/workflows/workflow_RHELBugzillaPython.xml
@@ -724,13 +702,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man5/report_rhel_bugzilla.conf.5.*
 
 %files rhel-anaconda-bugzilla
-%defattr(-,root,root,-)
 %{_datadir}/%{name}/workflows/workflow_AnacondaRHELBugzilla.xml
 %endif
 
 %if %{with bugzilla}
 %files anaconda
-%defattr(-,root,root,-)
 %if 0%{?fedora}
 %{_datadir}/%{name}/workflows/workflow_AnacondaFedora.xml
 %endif
