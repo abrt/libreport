@@ -1785,16 +1785,21 @@ static int create_new_file_at(int dir_fd, int omode, const char *name, uid_t uid
 
 static bool save_binary_file_at(int dir_fd, const char *name, const char* data, unsigned size, uid_t uid, gid_t gid, mode_t mode)
 {
-    int fd = create_new_file_at(dir_fd, O_WRONLY, name, uid, gid, mode);
-    unsigned r = full_write(fd, data, size);
+    const int fd = create_new_file_at(dir_fd, O_WRONLY, name, uid, gid, mode);
+    if (fd < 0)
+        goto fail;
+
+    const unsigned r = full_write(fd, data, size);
     close(fd);
     if (r != size)
-    {
-        error_msg("Can't save file '%s'", name);
-        return false;
-    }
+        goto fail;
 
     return true;
+
+fail:
+    error_msg("Can't save file '%s'", name);
+    return false;
+
 }
 
 char* dd_load_text_ext(const struct dump_dir *dd, const char *name, unsigned flags)
