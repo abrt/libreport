@@ -1929,58 +1929,64 @@ TS_MAIN
 
     TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "nofile", O_RDONLY));
 
-    FILE *const f_rdwr_noent = dd_open_item_file(dd, "nofile", O_RDWR);
-    TS_ASSERT_PTR_IS_NOT_NULL(f_rdwr_noent);
-    if (g_testsuite_last_ok) {
-        fprintf(f_rdwr_noent, "%s", "f_rdwr_noent");
-        rewind(f_rdwr_noent);
+    {
+        FILE *const f_rdwr_noent = dd_open_item_file(dd, "nofile", O_RDWR);
+        TS_ASSERT_PTR_IS_NOT_NULL(f_rdwr_noent);
+        if (g_testsuite_last_ok) {
+            fprintf(f_rdwr_noent, "%s", "f_rdwr_noent");
+            rewind(f_rdwr_noent);
 
-        char rdwr_contents[256];
-        TS_ASSERT_PTR_IS_NOT_NULL(fgets(rdwr_contents, sizeof(rdwr_contents), f_rdwr_noent));
-        TS_ASSERT_STRING_EQ(rdwr_contents, "f_rdwr_noent", "Successfully read data");
-        fclose(f_rdwr_noent);
+            char rdwr_contents[256];
+            TS_ASSERT_PTR_IS_NOT_NULL(fgets(rdwr_contents, sizeof(rdwr_contents), f_rdwr_noent));
+            TS_ASSERT_STRING_EQ(rdwr_contents, "f_rdwr_noent", "Successfully read data");
+            fclose(f_rdwr_noent);
 
-        char *const noent_contents = dd_load_text(dd, "nofile");
-        TS_ASSERT_STRING_EQ(noent_contents, "f_rdwr_noent", "Successfully wrote data");
-        free(noent_contents);
+            char *const noent_contents = dd_load_text(dd, "nofile");
+            TS_ASSERT_STRING_EQ(noent_contents, "f_rdwr_noent", "Successfully wrote data");
+            free(noent_contents);
+        }
     }
 
     TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "time", O_RDONLY | O_EXCL));
 
-    FILE *const f_rdonly_time = dd_open_item_file(dd, "time", O_RDONLY);
-    TS_ASSERT_PTR_IS_NOT_NULL(f_rdonly_time);
-    if (g_testsuite_last_ok) {
-        char *time = dd_load_text(dd, "time");
-        TS_ASSERT_PTR_IS_NOT_NULL(time);
-
-        char rdonly_time_contents[16];
-        char *const res = fgets(rdonly_time_contents, sizeof(rdonly_time_contents), f_rdonly_time);
-        TS_ASSERT_PTR_EQ(rdonly_time_contents, res);
+    {
+        FILE *const f_rdonly_time = dd_open_item_file(dd, "time", O_RDONLY);
+        TS_ASSERT_PTR_IS_NOT_NULL(f_rdonly_time);
         if (g_testsuite_last_ok) {
-            TS_ASSERT_STRING_EQ(rdonly_time_contents, time, "Read only time");
+            char *time = dd_load_text(dd, "time");
+            TS_ASSERT_PTR_IS_NOT_NULL(time);
+
+            char rdonly_time_contents[16];
+            char *const res = fgets(rdonly_time_contents, sizeof(rdonly_time_contents), f_rdonly_time);
+            TS_ASSERT_PTR_EQ(rdonly_time_contents, res);
+            if (g_testsuite_last_ok) {
+                TS_ASSERT_STRING_EQ(rdonly_time_contents, time, "Read only time");
+            }
+            else {
+                TS_PRINTF("File 'time' read error: %s\n", strerror(errno));
+            }
+            fclose(f_rdonly_time);
         }
-        else {
-            TS_PRINTF("File 'time' read error: %s\n", strerror(errno));
-        }
-        fclose(f_rdonly_time);
     }
 
     TS_ASSERT_PTR_IS_NULL(dd_open_item_file(dd, "time", O_RDWR | O_EXCL));
 
-    FILE *const f_rdwr_time = dd_open_item_file(dd, "time", O_RDWR);
-    TS_ASSERT_PTR_IS_NOT_NULL(f_rdwr_time);
-    if (g_testsuite_last_ok) {
-        fprintf(f_rdwr_time, "7654321");
-        rewind(f_rdwr_noent);
+    {
+        FILE *const f_rdwr_time = dd_open_item_file(dd, "time", O_RDWR);
+        TS_ASSERT_PTR_IS_NOT_NULL(f_rdwr_time);
+        if (g_testsuite_last_ok) {
+            fprintf(f_rdwr_time, "7654321");
+            rewind(f_rdwr_time);
 
-        char rdwr_contents[256];
-        TS_ASSERT_PTR_IS_NOT_NULL(fgets(rdwr_contents, sizeof(rdwr_contents), f_rdwr_noent));
-        TS_ASSERT_STRING_EQ(rdwr_contents, "7654321", "Successfully read time data");
-        fclose(f_rdwr_time);
+            char rdwr_contents[256];
+            TS_ASSERT_PTR_IS_NOT_NULL(fgets(rdwr_contents, sizeof(rdwr_contents), f_rdwr_time));
+            TS_ASSERT_STRING_EQ(rdwr_contents, "7654321", "Successfully read time data");
+            fclose(f_rdwr_time);
 
-        char *const time_contents = dd_load_text(dd, "time");
-        TS_ASSERT_STRING_EQ(time_contents, "7654321", "Successfully wrote time data");
-        free(time_contents);
+            char *const time_contents = dd_load_text(dd, "time");
+            TS_ASSERT_STRING_EQ(time_contents, "7654321", "Successfully wrote time data");
+            free(time_contents);
+        }
     }
 
     testsuite_dump_dir_delete(dd);
