@@ -1,4 +1,3 @@
-%{!?python_site: %define python_site %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(0)")}
 # platform-dependent
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
@@ -21,7 +20,6 @@ Name: libreport
 Version: @@LIBREPORT_VERSION@@
 Release: 1%{?dist}
 License: GPLv2+
-Group: System Environment/Libraries
 URL: https://abrt.readthedocs.org/
 Source: https://fedorahosted.org/released/abrt/%{name}-%{version}.tar.gz
 BuildRequires: %{dbus_devel}
@@ -62,22 +60,18 @@ Requires: satyr >= 0.18
 Requires: xz
 Requires: lz4
 
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
 %description
 Libraries providing API for reporting different problems in applications
 to different bug targets like Bugzilla, ftp, trac, etc...
 
 %package filesystem
 Summary: Filesystem layout for libreport
-Group: Applications/File
 
 %description filesystem
 Filesystem layout for libreport
 
 %package devel
 Summary: Development libraries and headers for libreport
-Group: Development/Libraries
 Requires: libreport = %{version}-%{release}
 
 %description devel
@@ -85,7 +79,6 @@ Development libraries and headers for libreport
 
 %package web
 Summary: Library providing network API for libreport
-Group: System Environment/Libraries
 Requires: libreport = %{version}-%{release}
 
 %description web
@@ -93,7 +86,6 @@ Library providing network API for libreport
 
 %package web-devel
 Summary: Development headers for libreport-web
-Group: Development/Libraries
 Requires: libreport-web = %{version}-%{release}
 
 %description web-devel
@@ -102,9 +94,8 @@ Development headers for libreport-web
 %package python
 Summary: Python bindings for report-libs
 # Is group correct here? -
-Group: System Environment/Libraries
 Requires: libreport = %{version}-%{release}
-%if 0%{?fedora} >= 22
+%if 0%{?fedora}
 Requires: dnf
 %else
 Requires: yum
@@ -122,7 +113,6 @@ Python bindings for report-libs.
 
 %package python3
 Summary: Python 3 bindings for report-libs
-Group: System Environment/Libraries
 Requires: libreport = %{version}-%{release}
 # yum does not provide Python3 implementation
 Requires: dnf
@@ -132,7 +122,6 @@ Python 3 bindings for report-libs.
 
 %package cli
 Summary: %{name}'s command line interface
-Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 
 %description cli
@@ -141,7 +130,6 @@ with problem dump reports
 
 %package newt
 Summary: %{name}'s newt interface
-Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 Provides: report-newt = 0:0.23-1
 Obsoletes: report-newt < 0:0.23-1
@@ -152,7 +140,6 @@ bugs
 
 %package gtk
 Summary: GTK front-end for libreport
-Group: User Interface/Desktops
 Requires: libreport = %{version}-%{release}
 Requires: libreport-plugin-reportuploader = %{version}-%{release}
 Requires: fros >= 1.0
@@ -164,7 +151,6 @@ Applications for reporting bugs using libreport backend
 
 %package gtk-devel
 Summary: Development libraries and headers for libreport
-Group: Development/Libraries
 Requires: libreport-gtk = %{version}-%{release}
 
 %description gtk-devel
@@ -172,7 +158,6 @@ Development libraries and headers for libreport-gtk
 
 %package plugin-kerneloops
 Summary: %{name}'s kerneloops reporter plugin
-Group: System Environment/Libraries
 Requires: curl
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-web = %{version}-%{release}
@@ -183,7 +168,6 @@ server, usually to kerneloops.org.
 
 %package plugin-logger
 Summary: %{name}'s logger reporter plugin
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 
 %description plugin-logger
@@ -191,7 +175,6 @@ The simple reporter plugin which writes a report to a specified file.
 
 %package plugin-mailx
 Summary: %{name}'s mailx reporter plugin
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: mailx
 
@@ -202,7 +185,6 @@ email address.
 %if %{with bugzilla}
 %package plugin-bugzilla
 Summary: %{name}'s bugzilla plugin
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-web = %{version}-%{release}
 
@@ -212,7 +194,6 @@ Plugin to report bugs into the bugzilla.
 
 %package plugin-mantisbt
 Summary: %{name}'s mantisbt plugin
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-web = %{version}-%{release}
 
@@ -221,7 +202,6 @@ Plugin to report bugs into the mantisbt.
 
 %package centos
 Summary: %{name}'s CentOS Bug Tracker workflow
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-web = %{version}-%{release}
 Requires: libreport-plugin-mantisbt = %{version}-%{release}
@@ -232,7 +212,6 @@ Workflows to report issues into the CentOS Bug Tracker.
 %package plugin-ureport
 Summary: %{name}'s micro report plugin
 BuildRequires: %{libjson_devel}
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-web = %{version}-%{release}
 %if 0%{?rhel}
@@ -244,7 +223,6 @@ Uploads micro-report to abrt server
 
 %package plugin-rhtsupport
 Summary: %{name}'s RHTSupport plugin
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-web = %{version}-%{release}
 %if 0%{?rhel}
@@ -257,7 +235,6 @@ Plugin to report bugs into RH support system.
 %if %{with bugzilla}
 %package compat
 Summary: %{name}'s compat layer for obsoleted 'report' package
-Group: System Environment/Libraries
 Requires: libreport = %{version}-%{release}
 Requires: %{name}-plugin-bugzilla = %{version}-%{release}
 Requires: %{name}-plugin-rhtsupport = %{version}-%{release}
@@ -268,7 +245,6 @@ Provides 'report' command-line tool.
 
 %package plugin-reportuploader
 Summary: %{name}'s reportuploader plugin
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-web = %{version}-%{release}
 
@@ -278,7 +254,6 @@ Plugin to report bugs into anonymous FTP site associated with ticketing system.
 %if 0%{?fedora}
 %package fedora
 Summary: Default configuration for reporting bugs via Fedora infrastructure
-Group: Applications/File
 Requires: %{name} = %{version}-%{release}
 
 %description fedora
@@ -290,7 +265,6 @@ install this package and you're done.
 %if 0%{?rhel}
 %package rhel
 Summary: Default configuration for reporting bugs via Red Hat infrastructure
-Group: Applications/File
 Requires: %{name} = %{version}-%{release}
 
 %description rhel
@@ -300,7 +274,6 @@ install this package and you're done.
 
 %package rhel-bugzilla
 Summary: Default configuration for reporting bugs to Red Hat Bugzilla
-Group: Applications/File
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-plugin-bugzilla = %{version}-%{release}
 Requires: libreport-plugin-ureport = %{version}-%{release}
@@ -312,7 +285,6 @@ and you're done.
 
 %package rhel-anaconda-bugzilla
 Summary: Default configuration for reporting anaconda bugs to Red Hat Bugzilla
-Group: Applications/File
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-plugin-bugzilla = %{version}-%{release}
 
@@ -325,7 +297,6 @@ package and you're done.
 %if %{with bugzilla}
 %package anaconda
 Summary: Default configuration for reporting anaconda bugs
-Group: Applications/File
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-plugin-reportuploader = %{version}-%{release}
 %if 0%{?rhel}
@@ -349,7 +320,7 @@ CFLAGS="%{optflags} -Werror" %configure \
 %if %{without bugzilla}
         --without-bugzilla \
 %endif
-%if 0%{?rhel:%{rhel} < 7}%{?fedora:%{fedora} < 18}
+%if 0%{?rhel} == 6
         --with-defaultdumpdirmode=0640 \
         --disable-userownsdumpdir \
 %else
@@ -360,8 +331,7 @@ CFLAGS="%{optflags} -Werror" %configure \
 make %{?_smp_mflags}
 
 %install
-rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT mandir=%{_mandir}
+make install DESTDIR=%{buildroot} mandir=%{_mandir}
 %find_lang %{name}
 
 # Remove byte-compiled python files generated by automake.
@@ -369,67 +339,64 @@ make install DESTDIR=$RPM_BUILD_ROOT mandir=%{_mandir}
 # for those which needs to be byte-compiled with different
 # version (python2/python3).
 # rpm can do this work and use the appropriate python version.
-find $RPM_BUILD_ROOT -name "*.py[co]" -delete
+find %{buildroot} -name "*.py[co]" -delete
 
 # remove all .la and .a files
-find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
-mkdir -p $RPM_BUILD_ROOT/%{_initrddir}
-mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/%{name}/events.d/
-mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/%{name}/events/
-mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/%{name}/workflows.d/
-mkdir -p $RPM_BUILD_ROOT/%{_datadir}/%{name}/events/
-mkdir -p $RPM_BUILD_ROOT/%{_datadir}/%{name}/workflows/
+find %{buildroot} -name '*.la' -or -name '*.a' | xargs rm -f
+mkdir -p %{buildroot}/%{_initrddir}
+mkdir -p %{buildroot}/%{_sysconfdir}/%{name}/events.d/
+mkdir -p %{buildroot}/%{_sysconfdir}/%{name}/events/
+mkdir -p %{buildroot}/%{_sysconfdir}/%{name}/workflows.d/
+mkdir -p %{buildroot}/%{_datadir}/%{name}/events/
+mkdir -p %{buildroot}/%{_datadir}/%{name}/workflows/
 
 # After everything is installed, remove info dir
-rm -f $RPM_BUILD_ROOT/%{_infodir}/dir
+rm -f %{buildroot}/%{_infodir}/dir
 
 # Remove unwanted Fedora specific workflow configuration files
 %if 0%{!?fedora:1}
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraCCpp.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraKerneloops.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraPython.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraPython3.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraVmcore.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraXorg.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraLibreport.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraJava.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_FedoraJavaScript.xml
-rm -f $RPM_BUILD_ROOT/%{_sysconfdir}/libreport/workflows.d/report_fedora.conf
-rm -f $RPM_BUILD_ROOT%{_mandir}/man5/report_fedora.conf.5
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_AnacondaFedora.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_FedoraCCpp.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_FedoraKerneloops.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_FedoraPython.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_FedoraPython3.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_FedoraVmcore.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_FedoraXorg.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_FedoraLibreport.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_FedoraJava.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_FedoraJavaScript.xml
+rm -f %{buildroot}/%{_sysconfdir}/libreport/workflows.d/report_fedora.conf
+rm -f %{buildroot}%{_mandir}/man5/report_fedora.conf.5
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_AnacondaFedora.xml
 %endif
 
 # Remove unwanted RHEL specific workflow configuration files
 %if 0%{!?rhel:1}
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELCCpp.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELKerneloops.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELPython.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELvmcore.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELxorg.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELLibreport.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELJava.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELJavaScript.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_uReport.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_AnacondaRHEL.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_AnacondaRHELBugzilla.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELBugzillaCCpp.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELBugzillaKerneloops.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELBugzillaPython.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELBugzillaVmcore.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELBugzillaXorg.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELBugzillaLibreport.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELBugzillaJava.xml
-rm -f $RPM_BUILD_ROOT/%{_datadir}/libreport/workflows/workflow_RHELBugzillaJavaScript.xml
-rm -f $RPM_BUILD_ROOT/%{_sysconfdir}/libreport/workflows.d/report_rhel.conf
-rm -f $RPM_BUILD_ROOT/%{_sysconfdir}/libreport/workflows.d/report_uReport.conf
-rm -f $RPM_BUILD_ROOT/%{_sysconfdir}/libreport/workflows.d/report_rhel_bugzilla.conf
-rm -f $RPM_BUILD_ROOT%{_mandir}/man5/report_rhel.conf.5
-rm -f $RPM_BUILD_ROOT%{_mandir}/man5/report_uReport.conf.5
-rm -f $RPM_BUILD_ROOT%{_mandir}/man5/report_rhel_bugzilla.conf.5
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELCCpp.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELKerneloops.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELPython.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELvmcore.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELxorg.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELLibreport.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELJava.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELJavaScript.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_uReport.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_AnacondaRHEL.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_AnacondaRHELBugzilla.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELBugzillaCCpp.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELBugzillaKerneloops.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELBugzillaPython.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELBugzillaVmcore.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELBugzillaXorg.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELBugzillaLibreport.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELBugzillaJava.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELBugzillaJavaScript.xml
+rm -f %{buildroot}/%{_sysconfdir}/libreport/workflows.d/report_rhel.conf
+rm -f %{buildroot}/%{_sysconfdir}/libreport/workflows.d/report_uReport.conf
+rm -f %{buildroot}/%{_sysconfdir}/libreport/workflows.d/report_rhel_bugzilla.conf
+rm -f %{buildroot}%{_mandir}/man5/report_rhel.conf.5
+rm -f %{buildroot}%{_mandir}/man5/report_uReport.conf.5
+rm -f %{buildroot}%{_mandir}/man5/report_rhel_bugzilla.conf.5
 %endif
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 %check
 make check|| {
@@ -466,8 +433,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %files -f %{name}.lang
-%defattr(-,root,root,-)
-%doc README COPYING
+%doc README
+%license COPYING
 %config(noreplace) %{_sysconfdir}/%{name}/libreport.conf
 %config(noreplace) %{_sysconfdir}/%{name}/report_event.conf
 %config(noreplace) %{_sysconfdir}/%{name}/forbidden_words.conf
@@ -483,7 +450,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/augeas/lenses/libreport.aug
 
 %files filesystem
-%defattr(-,root,root,-)
 %dir %{_sysconfdir}/%{name}/
 %dir %{_sysconfdir}/%{name}/events.d/
 %dir %{_sysconfdir}/%{name}/events/
@@ -493,7 +459,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %dir %{_sysconfdir}/%{name}/plugins/
 
 %files devel
-%defattr(-,root,root,-)
 # Public api headers:
 %doc apidoc/html/*.{html,png,css,js}
 %{_includedir}/libreport/libreport_types.h
@@ -523,37 +488,30 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %dir %{_includedir}/libreport
 
 %files web
-%defattr(-,root,root,-)
 %{_libdir}/libreport-web.so.*
 
 %files web-devel
-%defattr(-,root,root,-)
 %{_libdir}/libreport-web.so
 %{_includedir}/libreport/libreport_curl.h
 %{_libdir}/pkgconfig/libreport-web.pc
 
 %files python
-%defattr(-,root,root,-)
 %{python_sitearch}/report/*
 %{python_sitearch}/reportclient/*
 
 %files python3
-%defattr(-,root,root,-)
 %{python3_sitearch}/report/*
 %{python3_sitearch}/reportclient/*
 
 %files cli
-%defattr(-,root,root,-)
 %{_bindir}/report-cli
 %{_mandir}/man1/report-cli.1.gz
 
 %files newt
-%defattr(-,root,root,-)
 %{_bindir}/report-newt
 %{_mandir}/man1/report-newt.1.gz
 
 %files gtk
-%defattr(-,root,root,-)
 %{_bindir}/report-gtk
 %{_libdir}/libreport-gtk.so.*
 %config(noreplace) %{_sysconfdir}/libreport/events.d/emergencyanalysis_event.conf
@@ -562,19 +520,16 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man1/report-gtk.1.gz
 
 %files gtk-devel
-%defattr(-,root,root,-)
 %{_libdir}/libreport-gtk.so
 %{_includedir}/libreport/internal_libreport_gtk.h
 %{_libdir}/pkgconfig/libreport-gtk.pc
 
 %files plugin-kerneloops
-%defattr(-,root,root,-)
 %{_datadir}/%{name}/events/report_Kerneloops.xml
 %{_mandir}/man*/reporter-kerneloops.*
 %{_bindir}/reporter-kerneloops
 
 %files plugin-logger
-%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/events/report_Logger.conf
 %{_mandir}/man5/report_Logger.conf.5.*
 %{_datadir}/%{name}/events/report_Logger.xml
@@ -588,7 +543,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man*/reporter-print.*
 
 %files plugin-mailx
-%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/plugins/mailx.conf
 %{_datadir}/%{name}/conf.d/plugins/mailx.conf
 %{_datadir}/%{name}/events/report_Mailx.xml
@@ -604,7 +558,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/reporter-mailx
 
 %files plugin-ureport
-%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/plugins/ureport.conf
 %{_datadir}/%{name}/conf.d/plugins/ureport.conf
 %{_bindir}/reporter-ureport
@@ -615,7 +568,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %if %{with bugzilla}
 %files plugin-bugzilla
-%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla.conf
 %{_datadir}/%{name}/conf.d/plugins/bugzilla.conf
 %config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla_format.conf
@@ -640,7 +592,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %files plugin-mantisbt
-%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/plugins/mantisbt.conf
 %{_datadir}/%{name}/conf.d/plugins/mantisbt.conf
 %config(noreplace) %{_sysconfdir}/libreport/plugins/mantisbt_format.conf
@@ -675,7 +626,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man5/centos_report_event.conf.5.gz
 
 %files plugin-rhtsupport
-%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/plugins/rhtsupport.conf
 %{_datadir}/%{name}/conf.d/plugins/rhtsupport.conf
 %{_datadir}/%{name}/events/report_RHTSupport.xml
@@ -688,13 +638,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %if %{with bugzilla}
 %files compat
-%defattr(-,root,root,-)
 %{_bindir}/report
 %{_mandir}/man1/report.1.gz
 %endif
 
 %files plugin-reportuploader
-%defattr(-,root,root,-)
 %{_mandir}/man*/reporter-upload.*
 %{_mandir}/man5/uploader_event.conf.5.*
 %{_bindir}/reporter-upload
@@ -712,7 +660,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %if 0%{?fedora}
 %files fedora
-%defattr(-,root,root,-)
 %{_datadir}/%{name}/workflows/workflow_FedoraCCpp.xml
 %{_datadir}/%{name}/workflows/workflow_FedoraKerneloops.xml
 %{_datadir}/%{name}/workflows/workflow_FedoraPython.xml
@@ -728,7 +675,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %if 0%{?rhel}
 %files rhel
-%defattr(-,root,root,-)
 %{_datadir}/%{name}/workflows/workflow_RHELCCpp.xml
 %{_datadir}/%{name}/workflows/workflow_RHELKerneloops.xml
 %{_datadir}/%{name}/workflows/workflow_RHELPython.xml
@@ -744,7 +690,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man5/report_uReport.conf.5.*
 
 %files rhel-bugzilla
-%defattr(-,root,root,-)
 %{_datadir}/%{name}/workflows/workflow_RHELBugzillaCCpp.xml
 %{_datadir}/%{name}/workflows/workflow_RHELBugzillaKerneloops.xml
 %{_datadir}/%{name}/workflows/workflow_RHELBugzillaPython.xml
@@ -757,13 +702,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man5/report_rhel_bugzilla.conf.5.*
 
 %files rhel-anaconda-bugzilla
-%defattr(-,root,root,-)
 %{_datadir}/%{name}/workflows/workflow_AnacondaRHELBugzilla.xml
 %endif
 
 %if %{with bugzilla}
 %files anaconda
-%defattr(-,root,root,-)
 %if 0%{?fedora}
 %{_datadir}/%{name}/workflows/workflow_AnacondaFedora.xml
 %endif
