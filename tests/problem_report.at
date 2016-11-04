@@ -93,6 +93,7 @@ AT_TESTFUN([description],
 #include "problem_report.h"
 #include "internal_libreport.h"
 #include <assert.h>
+#include "testsuite.h"
 
 int main(int argc, char **argv)
 {
@@ -314,7 +315,7 @@ int main(int argc, char **argv)
             fprintf(stderr, "result  : '%s'\n", summary);
             fprintf(stderr, "####\n");
 
-            assert(strcmp(test_format_result[i][1], summary) == 0);
+            TS_ASSERT_STRING_EQ(summary, test_format_result[i][1], "Correct summary");
         }
 
         problem_report_free(pr);
@@ -327,6 +328,355 @@ int main(int argc, char **argv)
 }
 ]])
 
+## --------------- ##
+## short_backtrace ##
+## --------------- ##
+
+AT_TESTFUN([short_backtrace],
+[[
+#include "problem_report.h"
+#include "internal_libreport.h"
+#include <assert.h>
+
+#define BACKTRACE_CONTENT \
+"Thread 1 (LWP 11865):\n"\
+"#0  printf (__fmt=0x400acf \"Result: %d\\n\") at /usr/include/bits/stdio2.h:104\n"\
+"No locals.\n"\
+"#1  crash (p=p@entry=0x0) at will_segfault.c:19\n"\
+"i = <error reading variable i (Cannot access memory at address 0x0)>\n"\
+"#2  0x0000000000400964 in varargs (num_args=1, num_args@entry=2) at will_segfault.c:31\n"\
+"p = <optimized out>\n"\
+"ap = {{gp_offset = 24, fp_offset = 32767, overflow_arg_area = 0x7fff4fc8a0c0, reg_save_area = 0x7fff4fc8a080}}\n"\
+"#3  0x00000000004009be in inlined (p=0x0) at will_segfault.c:40\n"\
+"num = 42\n"\
+"#4  f (p=p@entry=0x0) at will_segfault.c:45\n"\
+"No locals.\n"\
+"#5  0x00000000004009e9 in callback (data=data@entry=0x0) at will_segfault.c:50\n"\
+"No locals.\n"\
+"#6  0x00000032f76006f9 in call_me_back (cb=cb@entry=0x4009e0 <callback>, data=data@entry=0x0) at libwillcrash.c:8\n"\
+"res = <optimized out>\n"\
+"#7  0x0000000000400a14 in recursive (i=i@entry=0) at will_segfault.c:59\n"\
+"p = <optimized out>\n"\
+"#8  0x0000000000400a00 in recursive (i=i@entry=1) at will_segfault.c:66\n"\
+"No locals.\n"\
+"#9  0x0000000000400a00 in recursive (i=i@entry=2) at will_segfault.c:66\n"\
+"No locals.\n"\
+"#10 0x0000000000400775 in main (argc=<optimized out>, argv=<optimized out>) at will_segfault.c:83\n"\
+"No locals.\n"\
+"From                To                  Syms Read   Shared Object Library\n"\
+"0x00000032f76005f0  0x00000032f7600712  Yes         /lib64/libwillcrash.so.0\n"\
+"0x0000003245c1f4f0  0x0000003245d6aca4  Yes         /lib64/libc.so.6\n"\
+"0x0000003245800b10  0x000000324581b6d0  Yes         /lib64/ld-linux-x86-64.so.2\n"\
+"$1 = 0x0\n"\
+"No symbol \"__glib_assert_msg\" in current context.\n"\
+"rax            0xf      15\n"\
+"rbx            0x0      0\n"\
+"rcx            0x7ff96f752000   140709293531136\n"\
+"rdx            0x3245fb9a40     215922481728\n"\
+"rsi            0x7ff96f752000   140709293531136\n"\
+"rdi            0x1      1\n"\
+"rbp            0x400a30 0x400a30 <__libc_csu_init>\n"\
+"rsp            0x7fff4fc8a050   0x7fff4fc8a050\n"\
+"r8             0xffffffff       4294967295\n"\
+"r9             0x0      0\n"\
+"r10            0x22     34\n"\
+"r11            0x246    582\n"\
+"r12            0x40079f 4196255\n"\
+"r13            0x7fff4fc8a210   140734531936784\n"\
+"r14            0x0      0\n"\
+"r15            0x0      0\n"\
+"rip            0x4008ae 0x4008ae <crash+14>\n"\
+"eflags         0x10246  [ PF ZF IF RF ]\n"\
+"cs             0x33     51\n"\
+"ss             0x2b     43\n"\
+"ds             0x0      0\n"\
+"es             0x0      0\n"\
+"fs             0x0      0\n"\
+"gs             0x0      0\n"\
+"st0            0        (raw 0x00000000000000000000)\n"\
+"st1            0        (raw 0x00000000000000000000)\n"\
+"st2            0        (raw 0x00000000000000000000)\n"\
+"st3            0        (raw 0x00000000000000000000)\n"\
+"st4            0        (raw 0x00000000000000000000)\n"\
+"st5            0        (raw 0x00000000000000000000)\n"\
+"st6            0        (raw 0x00000000000000000000)\n"\
+"st7            0        (raw 0x00000000000000000000)\n"\
+"fctrl          0x37f    895\n"\
+"fstat          0x0      0\n"\
+"ftag           0xffff   65535\n"\
+"fiseg          0x0      0\n"\
+"fioff          0x0      0\n"\
+"foseg          0x0      0\n"\
+"fooff          0x0      0\n"\
+"fop            0x0      0\n"\
+"xmm0           {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"xmm1           {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x2f <repeats 16 times>}, v8_int16 = {0x2f2f, 0x2f2f, 0x2f2f, 0x2f2f, 0x2f2f, 0x2f2f, 0x2f2f, 0x2f2f}, v4_int32 = {0x2f2f2f2f, 0x2f2f2f2f, 0x2f2f2f2f, 0x2f2f2f2f}, v2_int64 = {0x2f2f2f2f2f2f2f2f, 0x2f2f2f2f2f2f2f2f}, uint128 = 0x2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f}\n"\
+"xmm2           {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"xmm3           {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 13 times>, 0xff, 0x0, 0x0}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xff00, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0xff00}, v2_int64 = {0x0, 0xff0000000000}, uint128 = 0x0000ff00000000000000000000000000}\n"\
+"xmm4           {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xff, 0x0, 0x0, 0x0, 0x0, 0x0}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0xff, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0xff0000, 0x0}, v2_int64 = {0x0, 0xff0000}, uint128 = 0x0000000000ff00000000000000000000}\n"\
+"xmm5           {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"xmm6           {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"xmm7           {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"xmm8           {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"xmm9           {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"xmm10          {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"xmm11          {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"xmm12          {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 14 times>, 0xff, 0x0}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xff}, v4_int32 = {0x0, 0x0, 0x0, 0xff0000}, v2_int64 = {0x0, 0xff000000000000}, uint128 = 0x00ff0000000000000000000000000000}\n"\
+"xmm13          {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"xmm14          {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"xmm15          {v4_float = {0x0, 0x0, 0x0, 0x0}, v2_double = {0x0, 0x0}, v16_int8 = {0x0 <repeats 16 times>}, v8_int16 = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}, v4_int32 = {0x0, 0x0, 0x0, 0x0}, v2_int64 = {0x0, 0x0}, uint128 = 0x00000000000000000000000000000000}\n"\
+"mxcsr          0x1f80   [ IM DM ZM OM UM PM ]\n"\
+"Dump of assembler code for function crash:\n"\
+"   0x00000000004008a0 <+0>:     push   %rbx\n"\
+"   0x00000000004008a1 <+1>:     mov    %rdi,%rbx\n"\
+"   0x00000000004008a4 <+4>:     mov    $0x400ac0,%edi\n"\
+"   0x00000000004008a9 <+9>:     callq  0x4006f0 <puts@plt>\n"\
+"   => 0x00000000004008ae <+14>:    mov    (%rbx),%edx\n"\
+"   0x00000000004008b0 <+16>:    mov    $0x400acf,%esi\n"\
+"   0x00000000004008b5 <+21>:    mov    $0x1,%edi\n"\
+"   0x00000000004008ba <+26>:    xor    %eax,%eax\n"\
+"   0x00000000004008bc <+28>:    callq  0x400740 <__printf_chk@plt>\n"\
+"   0x00000000004008c1 <+33>:    pop    %rbx\n"\
+"   0x00000000004008c2 <+34>:    retq\n"\
+"End of assembler dump.\n"
+
+#define CORE_BACKTRACE_CONTENT \
+"{   \"signal\": 11\n"\
+",   \"only_crash_thread\": true\n"\
+",   \"stacktrace\":\n"\
+"      [ {   \"crash_thread\": true\n"\
+"        ,   \"frames\":\n"\
+"              [ {   \"address\": 93894060571040\n"\
+"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
+"                ,   \"build_id_offset\": 2464\n"\
+"                ,   \"function_name\": \"crash\"\n"\
+"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
+"                }\n"\
+"              , {   \"address\": 93894060571239\n"\
+"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
+"                ,   \"build_id_offset\": 2663\n"\
+"                ,   \"function_name\": \"varargs\"\n"\
+"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
+"                }\n"\
+"              , {   \"address\": 93894060571294\n"\
+"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
+"                ,   \"build_id_offset\": 2718\n"\
+"                ,   \"function_name\": \"f\"\n"\
+"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
+"                }\n"\
+"              , {   \"address\": 93894060571337\n"\
+"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
+"                ,   \"build_id_offset\": 2761\n"\
+"                ,   \"function_name\": \"callback\"\n"\
+"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
+"                }\n"\
+"              , {   \"address\": 140458064176825\n"\
+"                ,   \"build_id\": \"61ee70f1ceca4897eadb680f1afaa669782c53cf\"\n"\
+"                ,   \"build_id_offset\": 1721\n"\
+"                ,   \"function_name\": \"call_me_back\"\n"\
+"                ,   \"file_name\": \"/usr/lib64/libwillcrash.so.0.0.0\"\n"\
+"                }\n"\
+"              , {   \"address\": 93894060571382\n"\
+"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
+"                ,   \"build_id_offset\": 2806\n"\
+"                ,   \"function_name\": \"recursive\"\n"\
+"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
+"                }\n"\
+"              , {   \"address\": 93894060571360\n"\
+"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
+"                ,   \"build_id_offset\": 2784\n"\
+"                ,   \"function_name\": \"recursive\"\n"\
+"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
+"                }\n"\
+"              , {   \"address\": 93894060571360\n"\
+"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
+"                ,   \"build_id_offset\": 2784\n"\
+"                ,   \"function_name\": \"recursive\"\n"\
+"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
+"                }\n"\
+"              , {   \"address\": 93894060570663\n"\
+"                ,   \"build_id\": \"a4711308c3fe2f0699ea740b0fc13370629f52f2\"\n"\
+"                ,   \"build_id_offset\": 2087\n"\
+"                ,   \"function_name\": \"main\"\n"\
+"                ,   \"file_name\": \"/usr/bin/will_segfault\"\n"\
+"                } ]\n"\
+"        } ]\n"\
+"}\n"
+
+typedef struct backtrace_result {
+    const char *format;
+    const char *result;
+    int max_text_size;
+    int max_frames;
+} backtrace_result_t;
+
+void check(problem_data_t *data, backtrace_result_t br)
+{
+    problem_formatter_t *pf = problem_formatter_new();
+    assert(!problem_formatter_load_string(pf, br.format));
+
+    problem_report_t *pr = NULL;
+    problem_report_settings_t report_settings = problem_formatter_get_settings(pf);
+    if (br.max_frames >= 0)
+        report_settings.prs_shortbt_max_frames = br.max_frames;
+    if (br.max_text_size >= 0)
+        report_settings.prs_shortbt_max_text_size = br.max_text_size; /* always short bt */
+    problem_formatter_set_settings(pf, report_settings);
+
+    assert(!problem_formatter_generate_report(pf, data, &pr));
+    assert(pr != NULL);
+
+    const char *summary = problem_report_get_description(pr);
+    assert(summary != NULL);
+
+    if (br.result != NULL) {
+        fprintf(stderr, "####\n");
+        fprintf(stderr, "# max_text_size %d, max_frames %d\n", br.max_text_size, br.max_frames);
+        fprintf(stderr, "expected: '%s'\n", br.result);
+        fprintf(stderr, "====\n");
+        fprintf(stderr, "result  : '%s'\n", summary);
+        fprintf(stderr, "####\n");
+
+        assert(strcmp(br.result, summary) == 0);
+    }
+
+    problem_report_free(pr);
+    problem_formatter_free(pf);
+}
+
+int main(int argc, char **argv)
+{
+    g_verbose = 3;
+
+    problem_data_t *data = problem_data_new();
+    problem_data_add_text_noteditable(data, "package", "libreport");
+    problem_data_add_text_noteditable(data, "analyzer", "CCpp");
+    problem_data_add_text_noteditable(data, "type", "CCpp");
+    problem_data_add_text_noteditable(data, "comment", "Hello, world!");
+    problem_data_add_text_noteditable(data, "uuid", "123456789ABCDEF");
+    problem_data_add_text_noteditable(data, "uid", "69");
+    problem_data_add_text_noteditable(data, "user_name", "abrt");
+    problem_data_add_text_noteditable(data, "root", "/var/run/mock/abrt");
+    problem_data_add_text_noteditable(data, "description", "I run will_segfault and\nit crashed as expected\n");
+    problem_data_add_text_noteditable(data, "core_backtrace", CORE_BACKTRACE_CONTENT);
+
+    backtrace_result_t core_backtrace_result[] = {
+        {
+            .format = "Truncated backtrace:: %bare_%short_backtrace",
+            .result = "Truncated backtrace:\n"
+                      "#1 crash in /usr/bin/will_segfault\n"
+                      "#2 varargs in /usr/bin/will_segfault\n"
+                      "#3 f in /usr/bin/will_segfault\n"
+                      "#4 callback in /usr/bin/will_segfault\n"
+                      "#5 call_me_back in /usr/lib64/libwillcrash.so.0.0.0\n"
+                      "#6 recursive in /usr/bin/will_segfault\n"
+                      "#7 main in /usr/bin/will_segfault\n",
+            .max_text_size = -1,
+            .max_frames = -1
+        },
+        {
+            .format = "Truncated backtrace:: %bare_%short_backtrace",
+            .result = "Truncated backtrace:\n"
+                      "#1 crash in /usr/bin/will_segfault\n"
+                      "#2 varargs in /usr/bin/will_segfault\n"
+                      "#3 f in /usr/bin/will_segfault\n"
+                      "#4 callback in /usr/bin/will_segfault\n"
+                      "#5 call_me_back in /usr/lib64/libwillcrash.so.0.0.0\n",
+            .max_text_size = -1,
+            .max_frames = 5
+        },
+        {
+            .format = "Truncated backtrace:: %bare_%short_backtrace",
+            .result = "Truncated backtrace:\n"
+                      "#1 crash in /usr/bin/will_segfault\n",
+            .max_text_size = -1,
+            .max_frames = 1
+        },
+        {
+            .format = "Truncated backtrace:: %bare_%short_backtrace",
+            .result = "Truncated backtrace:\n"
+                      "#1 crash in /usr/bin/will_segfault\n",
+            .max_text_size = 0,
+            .max_frames = 1
+        },
+        /* core_backtrase is always truncated */
+        {
+            .format = "Truncated backtrace:: %bare_%short_backtrace",
+            .result = "Truncated backtrace:\n"
+                      "#1 crash in /usr/bin/will_segfault\n",
+            .max_text_size = strlen(CORE_BACKTRACE_CONTENT) + 1,
+            .max_frames = 1
+        },
+    };
+
+    /* if only core_backtrace exist, use it */
+    for (size_t i = 0; i < sizeof(core_backtrace_result)/sizeof(*core_backtrace_result); ++i) {
+        check(data, core_backtrace_result[i]);
+    }
+
+    /* use backtrace, if core_backtrace and backtrace exist */
+    problem_data_add_text_noteditable(data, "backtrace", BACKTRACE_CONTENT);
+
+    backtrace_result_t backtrace_result[] = {
+        {
+            .format = "Truncated backtrace:: %bare_%short_backtrace",
+            .result = "Truncated backtrace:\n"
+                      "Thread no. 0 (7 frames)\n"
+                      " #1 crash at will_segfault.c:19\n"
+                      " #2 varargs at will_segfault.c:31\n"
+                      " #3 inlined at will_segfault.c:40\n"
+                      " #4 f at will_segfault.c:45\n"
+                      " #5 callback at will_segfault.c:50\n"
+                      " #6 call_me_back at libwillcrash.c:8\n"
+                      " #7 recursive at will_segfault.c:59\n",
+            .max_text_size = -1,
+            .max_frames = -1
+        },
+        {
+            .format = "Truncated backtrace:: %bare_%short_backtrace",
+            .result = "Truncated backtrace:\n"
+                      "Thread no. 0 (5 frames)\n"
+                      " #1 crash at will_segfault.c:19\n"
+                      " #2 varargs at will_segfault.c:31\n"
+                      " #3 inlined at will_segfault.c:40\n"
+                      " #4 f at will_segfault.c:45\n"
+                      " #5 callback at will_segfault.c:50\n",
+            .max_text_size = -1,
+            .max_frames = 5
+        },
+        {
+            .format = "Truncated backtrace:: %bare_%short_backtrace",
+            .result = "Truncated backtrace:\n"
+                      "Thread no. 0 (1 frames)\n"
+                      " #1 crash at will_segfault.c:19\n",
+            .max_text_size = -1,
+            .max_frames = 1
+        },
+        {
+            .format = "Truncated backtrace:: %bare_%short_backtrace",
+            .result = "Truncated backtrace:\n"
+                      "Thread no. 0 (1 frames)\n"
+                      " #1 crash at will_segfault.c:19\n",
+            .max_text_size = 0,
+            .max_frames = 1
+        },
+        {
+            .format = "Truncated backtrace:: %bare_%short_backtrace",
+            .result = "Truncated backtrace:\n"BACKTRACE_CONTENT,
+            .max_text_size = strlen(BACKTRACE_CONTENT) + 1,
+            .max_frames = 1
+        },
+    };
+
+    for (size_t i = 0; i < sizeof(backtrace_result)/sizeof(*backtrace_result); ++i) {
+        check(data, backtrace_result[i]);
+    }
+
+    problem_data_free(data);
+
+    return 0;
+}
+]])
 ## ------ ##
 ## attach ##
 ## ------ ##

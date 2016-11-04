@@ -31,6 +31,7 @@ except ImportError:
 # ABRT Team
 
 import os
+import sys
 
 SYSTEM_RELEASE_PATHS = ["/etc/system-release","/etc/redhat-release"]
 SYSTEM_RELEASE_DEPS = ["system-release", "redhat-release"]
@@ -278,3 +279,24 @@ def report(pd, io):
         return result
 
     result = report_problem(pd)
+
+def run_event_on_problem_dir(dump_dir_name, event_name, log_err=False):
+    """Helper function handling a single event
+
+    Keyword arguments:
+    envet_name -- a name of handled event
+    problem_dir -- a path to problem directory
+
+    Returns True if the handled event was successfully executed; otherwise
+    returns False.
+
+    """
+    state = run_event_state()
+    ret = state.run_event_on_dir_name(dump_dir_name, event_name)
+
+    if state.children_count == 0 and ret == 0:
+        if log_err:
+            sys.stderr.write("No actions are found for event '%s'" % event_name)
+        return RETURN_FAILURE
+
+    return ret

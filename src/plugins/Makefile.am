@@ -21,7 +21,8 @@ bin_PROGRAMS = $(reporters_bin) \
     reporter-kerneloops \
     reporter-upload \
     reporter-mailx \
-    reporter-print
+    reporter-print \
+    reporter-systemd-journal
 
 pluginsconfdir = $(PLUGINS_CONF_DIR)
 
@@ -277,6 +278,24 @@ reporter_print_CPPFLAGS = \
     -D_GNU_SOURCE
 reporter_print_LDADD = \
     ../lib/libreport.la
+
+reporter_systemd_journal_SOURCES = \
+    reporter-systemd-journal.c
+reporter_systemd_journal_CPPFLAGS = \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    -DBIN_DIR=\"$(bindir)\" \
+    -DLOCALSTATEDIR='"$(localstatedir)"' \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
+    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
+    -DPLUGINS_CONF_DIR=\"$(REPORT_PLUGINS_CONF_DIR)\" \
+    $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    -D_GNU_SOURCE
+reporter_systemd_journal_LDADD = \
+    ../lib/libreport.la \
+    $(JOURNAL_LIBS)
 
 if BUILD_BUGZILLA
 report_SOURCES = \

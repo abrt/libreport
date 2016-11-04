@@ -162,6 +162,18 @@ struct problem_report;
 typedef struct problem_report problem_report_t;
 
 /*
+ * The problem report settings structure contains advance settings
+ * for report generating
+ */
+struct problem_report_settings
+{
+    int prs_shortbt_max_frames;       ///< generate only max top frames in %short_backtrace
+    size_t prs_shortbt_max_text_size; ///< short bt only if it is bigger then this
+};
+
+typedef struct problem_report_settings problem_report_settings_t;
+
+/*
  * Helpers for easily switching between FILE and struct strbuf
  */
 
@@ -332,6 +344,22 @@ int problem_formatter_load_file(problem_formatter_t* self, const char *path);
  * @return Zero on success, otherwise non-zero value.
  */
 int problem_formatter_generate_report(const problem_formatter_t *self, problem_data_t *data, problem_report_t **report);
+
+/*
+ * Returns problem report settings from given formatter
+ *
+ * @param self Problem formatter
+ * @return problem report settings
+ */
+problem_report_settings_t problem_formatter_get_settings(const problem_formatter_t *self);
+
+/*
+ * Sets problem report settings to given formatter
+ *
+ * @param self Problem formatter
+ * @param settings Problem report settings
+ */
+void problem_formatter_set_settings(problem_formatter_t *self, problem_report_settings_t settings);
 
 #ifdef __cplusplus
 }

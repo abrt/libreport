@@ -26,6 +26,7 @@ MAN1_TXT += reporter-rhtsupport.txt
 MAN1_TXT += reporter-upload.txt
 MAN1_TXT += reporter-ureport.txt
 MAN1_TXT += reporter-mantisbt.txt
+MAN1_TXT += reporter-systemd-journal.txt
 
 MAN5_TXT =
 MAN5_TXT += anaconda_event.conf.txt
