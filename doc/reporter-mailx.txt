@@ -46,39 +46,42 @@ Lines can be continued on the next line using trailing backslash.
 
 Format:
 
-   "%summary:: subject format"
-   "section:: element1[,element2]..."
-   The literal text line to be added to email. Can be empty.
-   (Empty lines are NOT ignored!)
+....
+%summary:: subject format
+section:: element1[,element2]...
 
-   Subject format is a line of text, where %element% is replaced by
-   text element's content, and [[...%element%...]] block is used only if
-   %element% exists. [[...]] blocks can nest.
+The literal text line to be added to email. Can be empty.
+(Empty lines are NOT ignored!)
 
-   Sections can be:
-   - %summary: email subject format string.
-   - %attach: a list of elements to attach.
-   - text, double colon (::) and the list of comma-separated elements.
+Subject format is a line of text, where %element% is replaced by
+text element's content, and [[...%element%...]] block is used only if
+%element% exists. [[...]] blocks can nest.
 
-   Elements can be:
-   - problem directory element names, which get formatted as
-     <element_name>: <contents>
-     or
-     <element_name>:
-     :<contents>
-     :<contents>
-     :<contents>
-   - problem directory element names prefixed by "%bare_",
-     which is formatted as-is, without "<element_name>:" and colons
-   - %oneline, %multiline, %text wildcards, which select all corresponding
-     elements for output or attachment
-   - %binary wildcard, valid only for %attach section, instructs to attach
-     binary elements
-   - problem directory element names prefixed by "-",
-     which excludes given element from all wildcards
+Sections can be:
+- %summary: email subject format string.
+- %attach: a list of elements to attach.
+- text, double colon (::) and the list of comma-separated elements.
 
-     Nonexistent elements are silently ignored.
-     If none of elements exists, the section will not be created.
+Elements can be:
+- problem directory element names, which get formatted as
+  <element_name>: <contents>
+  or
+  <element_name>:
+  :<contents>
+  :<contents>
+  :<contents>
+- problem directory element names prefixed by "%bare_",
+  which is formatted as-is, without "<element_name>:" and colons
+- %oneline, %multiline, %text wildcards, which select all corresponding
+  elements for output or attachment
+- %binary wildcard, valid only for %attach section, instructs to attach
+  binary elements
+- problem directory element names prefixed by "-",
+  which excludes given element from all wildcards
+
+Nonexistent elements are silently ignored.
+If none of elements exists, the section will not be created.
+....
 
 
 Integration with ABRT events
