@@ -754,10 +754,15 @@ struct ns_ids {
 int get_ns_ids_at(int pid_proc_fd, struct ns_ids *ids);
 #define get_ns_ids libreport_get_ns_ids
 int get_ns_ids(pid_t pid, struct ns_ids *ids);
+
+/* These functions require a privileged user and does not work correctly in
+ * processes running in own PID namespace
+ */
 #define process_has_own_root_at libreport_process_has_own_root_at
 int process_has_own_root_at(int proc_pid_fd);
 #define process_has_own_root libreport_process_has_own_root
 int process_has_own_root(pid_t pid);
+
 #define get_pid_of_container_at libreport_get_pid_of_container_at
 int get_pid_of_container_at(int pid_proc_fd, pid_t *init_pid);
 #define get_pid_of_container libreport_get_pid_of_container
