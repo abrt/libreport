@@ -875,23 +875,3 @@ TS_MAIN
 }
 TS_RETURN_MAIN
 ]])
-
-
-## -------------------- ##
-## process_has_own_root ##
-## -------------------- ##
-
-AT_TESTFUN([process_has_own_root], [[
-#include "testsuite.h"
-#include <err.h>
-
-TS_MAIN
-{
-    TS_ASSERT_SIGNED_EQ(process_has_own_root(getpid()), 0);
-
-    const int pid_proc_fd = open_proc_pid_dir(getpid());
-    TS_ASSERT_SIGNED_EQ(process_has_own_root_at(pid_proc_fd), 0);
-    TS_ASSERT_FUNCTION(close(pid_proc_fd));
-}
-TS_RETURN_MAIN
-]])

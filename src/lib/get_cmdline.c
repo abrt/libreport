@@ -865,9 +865,9 @@ int process_has_own_root_at(int pid_proc_fd)
     }
 
     struct stat root_buf;
-    if (stat("/", &root_buf) < 0)
+    if (stat("/proc/1/root", &root_buf) < 0)
     {
-        perror_msg("Failed to get stat for '/'");
+        perror_msg("Failed to get stat for '/proc/1/root'");
         return -1;
     }
 
