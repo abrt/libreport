@@ -308,7 +308,7 @@ int main(int argc, char **argv)
         problem_data_add_text_noteditable(problem_data, "crash_function", "??");
 
     /* Add SYSLOG_IDENTIFIER into problem data */
-    if (syslog_id)
+    if (syslog_id || (syslog_id = getenv("REPORTER_JOURNAL_SYSLOG_ID")))
         problem_data_add_text_noteditable(problem_data, SYSLOG_ID, syslog_id);
 
     /* Add MESSAGE_ID into problem data */
