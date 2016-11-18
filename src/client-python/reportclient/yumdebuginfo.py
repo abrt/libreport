@@ -73,10 +73,12 @@ def downloadErrorCallback(callBackObj):
 class YumDebugInfoDownload(DebugInfoDownload):
 
     def __init__(self, cache, tmp, repo_pattern="*debug*", keep_rpms=False,
-                 noninteractive=True):
+                 noninteractive=True, releasever=None):
         super(YumDebugInfoDownload, self).__init__(cache, tmp, repo_pattern, keep_rpms, noninteractive)
 
         self.base = YumBase()
+        if not releasever is None:
+            self.base.conf.substitutions['releasever'] = releasever
 
     def initialize_progress(self, updater):
         self.progress = YumDownloadCallback(updater)

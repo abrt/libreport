@@ -65,12 +65,15 @@ class DNFProgress(dnf.callback.DownloadProgress):
 class DNFDebugInfoDownload(DebugInfoDownload):
 
     def __init__(self, cache, tmp, repo_pattern="*debug*", keep_rpms=False,
-                 noninteractive=True):
+                 noninteractive=True, releasever=None):
         super(DNFDebugInfoDownload, self).__init__(cache, tmp, repo_pattern, keep_rpms, noninteractive)
 
         self.progress = None
 
         self.base = dnf.Base()
+        if not releasever is None:
+            self.base.conf.substitutions['releasever'] = releasever
+
         # bug resurfaces in different forms. if it appears again try uncommenting
         ######   dnf pre API enforced
         # self.base.logging.presetup()
