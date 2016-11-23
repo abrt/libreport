@@ -26,6 +26,12 @@ int report_problem_in_dir(const char *dirname, int flags)
     if (prgname)
         prgname = xasprintf("LIBREPORT_PRGNAME=%s", prgname);
 
+    if (flags & LIBREPORT_IGNORE_NOT_REPORTABLE)
+    {
+        load_global_configuration();
+        set_global_stop_on_not_reportable(false, 0);
+    }
+
     fflush(NULL);
 
     pid_t pid = fork();

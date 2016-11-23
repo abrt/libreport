@@ -98,6 +98,7 @@ init_pyreport(void)
     PyModule_AddObject(m, "LIBREPORT_DEL_DIR"    , Py_BuildValue("i", LIBREPORT_DEL_DIR    ));
     PyModule_AddObject(m, "LIBREPORT_RUN_CLI"    , Py_BuildValue("i", LIBREPORT_RUN_CLI    ));
     PyModule_AddObject(m, "LIBREPORT_RUN_NEWT"   , Py_BuildValue("i", LIBREPORT_RUN_NEWT  ));
+    PyModule_AddObject(m, "LIBREPORT_IGNORE_NOT_REPORTABLE", Py_BuildValue("i", LIBREPORT_IGNORE_NOT_REPORTABLE));
     PyModule_AddObject(m, "EXIT_CANCEL_BY_USER", Py_BuildValue("i", EXIT_CANCEL_BY_USER));
     PyModule_AddObject(m, "EXIT_STOP_EVENT_RUN", Py_BuildValue("i", EXIT_STOP_EVENT_RUN));
 }

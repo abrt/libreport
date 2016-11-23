@@ -53,6 +53,34 @@ bool get_global_create_private_ticket(void);
 #define set_global_create_private_ticket libreport_set_global_create_private_ticket
 void set_global_create_private_ticket(bool enabled, int flags);
 
+/**
+ * Returns logical true if the reporting process shall not start or contine if
+ * the not-reportable files exists.
+ *
+ * The option can be enabled by ABRT_STOP_ON_NOT_REPORTABLE environment
+ * variable.
+ *
+ * @return true if the process shall stop; otherwise the function returns
+ * false.
+ */
+#define get_global_stop_on_not_reportable libreport_get_global_stop_on_not_reportable
+bool get_global_stop_on_not_reportable(void);
+
+/**
+ * Configures the stop on not reportable global option
+ *
+ * The function changes the configuration only for the current process by
+ * default.
+ *
+ * The option can be enabled by ABRT_STOP_ON_NOT_REPORTABLE environment
+ * variable.
+ *
+ * @param enabled The option's value
+ * @param flags For future needs (enable persistent configuration)
+ */
+#define set_global_stop_on_not_reportable libreport_set_global_stop_on_not_reportable
+void set_global_stop_on_not_reportable(bool enabled, int flags);
+
 #ifdef __cplusplus
 }
 #endif

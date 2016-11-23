@@ -87,6 +87,7 @@ int vdprintf(int d, const char *format, va_list ap);
 
 /* consts used across whole libreport */
 #define CREATE_PRIVATE_TICKET "ABRT_CREATE_PRIVATE_TICKET"
+#define STOP_ON_NOT_REPORTABLE "ABRT_STOP_ON_NOT_REPORTABLE"
 
 /* Pull in entire public libreport API */
 #include "dump_dir.h"
