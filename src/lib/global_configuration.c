@@ -158,3 +158,25 @@ void set_global_create_private_ticket(bool enabled, int flags/*unused - persiste
     else
         safe_unsetenv(CREATE_PRIVATE_TICKET);
 }
+
+bool get_global_stop_on_not_reportable(void)
+{
+    assert_global_configuration_initialized();
+
+    char *env_create_private = getenv(STOP_ON_NOT_REPORTABLE);
+
+    if (env_create_private == NULL)
+        return true;
+
+    return string_to_bool(env_create_private);
+}
+
+void set_global_stop_on_not_reportable(bool enabled, int flags/*unused - persistent*/)
+{
+    assert_global_configuration_initialized();
+
+    if (enabled)
+        xsetenv(STOP_ON_NOT_REPORTABLE, "1");
+    else
+        xsetenv(STOP_ON_NOT_REPORTABLE, "0");
+}

@@ -130,7 +130,6 @@ static GtkExpander *g_exp_report_log;
 
 static GtkWidget *g_top_most_window;
 
-
 static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback func);
 static void set_auto_event_chain(GtkButton *button, gpointer user_data);
 static void start_event_run(const char *event_name);
@@ -2005,7 +2004,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
             dd_sanitize_mode_and_owner(dd);
     }
 
-    if (retval == 0 && !g_expert_mode)
+    if (retval == 0 && !g_expert_mode && get_global_stop_on_not_reportable())
     {
         /* Check whether NOT_REPORTABLE element appeared. If it did, we'll stop
          * even if exit code is "success".
@@ -3079,16 +3078,25 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
 
             if (problem_data_get_content_or_NULL(g_cd, FILENAME_NOT_REPORTABLE))
             {
-                free(event);
 
                 char *msg = xasprintf(_("This problem should not be reported "
                                 "(it is likely a known problem). %s"),
                                 problem_data_get_content_or_NULL(g_cd, FILENAME_NOT_REPORTABLE)
                 );
-                cancel_processing(g_lbl_event_log, msg, TERMINATE_NOFLAGS);
-                free(msg);
-                current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
-                goto again;
+
+                if (get_global_stop_on_not_reportable())
+                {
+                    free(event);
+                    cancel_processing(g_lbl_event_log, msg, TERMINATE_NOFLAGS);
+                    free(msg);
+                    current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
+                    goto again;
+                }
+                else
+                {
+                    log(msg);
+                    free(msg);
+                }
             }
 
             g_event_selected = event;
