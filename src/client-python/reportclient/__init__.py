@@ -33,6 +33,7 @@ from report import EXIT_STOP_EVENT_RUN as RETURN_STOP_EVENT_RUN
 
 
 GETTEXT_PROGNAME = "libreport"
+import os
 import locale
 import gettext
 
@@ -54,10 +55,18 @@ def init_gettext():
 init_gettext()
 
 verbose = 0
+ABRT_VERBOSE = os.getenv("ABRT_VERBOSE")
+if ABRT_VERBOSE:
+    try:
+        verbose = int(ABRT_VERBOSE)
+    except:
+        pass
+
 
 def set_verbosity(verbosity):
     global verbose
     verbose = verbosity
+    os.environ["ABRT_VERBOSE"] = str(verbose)
 
 
 def log(fmt, *args):
