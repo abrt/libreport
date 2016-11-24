@@ -257,7 +257,7 @@ cleanup:
 
     return r;
 #else /*HAVE_LZ4*/
-    const char *cmd[] = { "lz4cat", "-d", "-", NULL};
+    const char *cmd[] = { "lz4", "-cd", "-", NULL};
     return decompress_using_fork_execvp(cmd, fdi, fdo);
 #endif /*HAVE_LZ4*/
 }
