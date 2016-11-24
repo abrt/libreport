@@ -35,6 +35,9 @@ enum {
     LIBREPORT_DEL_DIR     = (1 << 6), /* delete directory after reporting (passes --delete to child) */
     LIBREPORT_RUN_CLI     = (1 << 7), /* run 'cli' instead of 'gui' */
     LIBREPORT_RUN_NEWT    = (1 << 8), /* run 'report-newt' */
+    LIBREPORT_IGNORE_NOT_REPORTABLE = (1 << 9), /* do not terminate the
+                                                  reporting process if the
+                                                  not-repotrable file exits. */
 };
 
 int report_problem_in_dir(const char *dirname, int flags);

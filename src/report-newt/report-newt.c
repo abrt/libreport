@@ -336,7 +336,9 @@ static int report(const char *dump_dir_name)
         dd_close(dd);
         newtWinMessage(_("Error"), _("Ok"), (char *)"%s", t);
         free(t);
-        return -1;
+
+        if (get_global_stop_on_not_reportable())
+            return -1;
     }
 
     dd_close(dd);

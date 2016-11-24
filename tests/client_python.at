@@ -1,0 +1,52 @@
+# -*- Autotest -*-
+
+AT_BANNER([client_python])
+
+## --------- ##
+## verbosity ##
+## --------- ##
+
+AT_PYTESTFUN([verbosity], [[
+import sys
+import os
+import unittest
+
+sys.path.insert(0, "../../../src/client-python")
+sys.path.insert(0, "../../../src/client-python/reportclient/.libs")
+
+
+class TestReportClientVerbose(unittest.TestCase):
+    def setUp(self):
+        try:
+            del os.environ["ABRT_VERBOSE"]
+        except:
+            pass
+        os.unsetenv("ABRT_VERBOSE")
+        self.reportclient = __import__("reportclient", globals(), locals(), [], -1)
+        sys.modules["reportclient"] = self.reportclient
+
+    def tearDown(self):
+        del sys.modules["reportclient"]
+
+    def test_default(self):
+        self.assertEquals(self.reportclient.verbose, 0)
+
+    def test_assign(self):
+        self.reportclient.set_verbosity(1)
+        self.assertEquals(self.reportclient.verbose, 1)
+        self.assertEquals(os.environ["ABRT_VERBOSE"], "1")
+
+    def test_load_from_environ(self):
+        os.environ["ABRT_VERBOSE"] = "2"
+        reload(self.reportclient)
+        self.assertEquals(self.reportclient.verbose, 2)
+
+    def test_recover_from_invalid_environ(self):
+        os.environ["ABRT_VERBOSE"] = "foo"
+        reload(self.reportclient)
+        self.assertEquals(self.reportclient.verbose, 0)
+
+
+if __name__ == "__main__":
+    unittest.main()
+]])

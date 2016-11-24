@@ -170,3 +170,70 @@ TS_MAIN
 }
 TS_RETURN_MAIN
 ]])
+
+
+## ---------------------- ##
+## stop_on_not_reportable ##
+## ---------------------- ##
+
+AT_TESTFUN([stop_on_not_reportable], [[
+#include "testsuite.h"
+
+TS_MAIN
+{
+    char cwd_buf[PATH_MAX + 1];
+    static const char *dirs[] = {
+        NULL,
+        NULL,
+    };
+    dirs[0] = getcwd(cwd_buf, sizeof(cwd_buf));
+
+    static int dir_flags[] = {
+        CONF_DIR_FLAG_NONE,
+        -1,
+    };
+
+    unlink("libreport.conf");
+    FILE *lrf = fopen("libreport.conf", "wx");
+    assert(lrf != NULL);
+    fclose(lrf);
+
+    assert(load_global_configuration_from_dirs(dirs, dir_flags));
+
+    TS_ASSERT_TRUE_MESSAGE(get_global_stop_on_not_reportable(), "True by default");
+
+    set_global_stop_on_not_reportable(true, 0);
+
+    TS_ASSERT_TRUE_MESSAGE(get_global_stop_on_not_reportable(), "Still true");
+
+    set_global_stop_on_not_reportable(false, 0);
+
+    TS_ASSERT_FALSE_MESSAGE(get_global_stop_on_not_reportable(), "Configuration accepted");
+    TS_ASSERT_STRING_EQ(getenv(STOP_ON_NOT_REPORTABLE), "0", "Correct ENVIRONMENT value");
+
+    set_global_stop_on_not_reportable(true, 0);
+
+    TS_ASSERT_TRUE_MESSAGE(get_global_stop_on_not_reportable(), "Configuration sanity");
+    TS_ASSERT_STRING_EQ(getenv(STOP_ON_NOT_REPORTABLE), "1", "Correct ENVIRONMENT value");
+
+    set_global_stop_on_not_reportable(false, 0);
+
+    TS_ASSERT_FALSE_MESSAGE(get_global_stop_on_not_reportable(), "Reverted back to False");
+    TS_ASSERT_STRING_EQ(getenv(STOP_ON_NOT_REPORTABLE), "0", "Correct ENVIRONMENT value");
+
+    xsetenv(STOP_ON_NOT_REPORTABLE, "1");
+
+    TS_ASSERT_TRUE_MESSAGE(get_global_stop_on_not_reportable(), "Loaded from environment");
+
+    unsetenv(STOP_ON_NOT_REPORTABLE);
+
+    TS_ASSERT_TRUE_MESSAGE(get_global_stop_on_not_reportable(), "Reflects environment");
+
+    xsetenv(STOP_ON_NOT_REPORTABLE, "0");
+
+    TS_ASSERT_FALSE_MESSAGE(get_global_stop_on_not_reportable(), "Zero is false");
+
+    free_global_configuration();
+}
+TS_RETURN_MAIN
+]])
