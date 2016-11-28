@@ -859,6 +859,20 @@ void parse_osinfo(const char *osinfo_bytes, map_string_t *osinfo);
 #define parse_osinfo_for_bz libreport_parse_osinfo_for_bz
 void parse_osinfo_for_bz(map_string_t *osinfo, char **product, char **version);
 
+/* @brief Extract BUG_REPORT_URL from os-release
+ *
+ * A default location for bug reports can be stored in os-release.
+ * This extracts the value if present and stores it in url.
+ * If unset, url will become NULL
+ *
+ * https://github.com/abrt/libreport/issues/459
+ *
+ * @param osinfo Input data from which the values are built
+ * @param url Non-NULL pointer where pointer to malloced string will be stored. Memory must be released by free()
+ */
+#define parse_osinfo_for_bug_url libreport_parse_osinfo_for_bug_url
+void parse_osinfo_for_bug_url(map_string_t *osinfo, char** url);
+
 /* @brief Builds product string and product's version string for Red Hat Support
  *
  * At first tries to get strings from the os specific variables

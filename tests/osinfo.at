@@ -213,6 +213,89 @@ int main(void)
 }
 ]])
 
+## ----------------------- ##
+## parse_osinfo_for_bugurl ##
+## ----------------------- ##
+
+AT_TESTFUN([parse_osinfo_for_bugurl],
+[[
+#include "internal_libreport.h"
+#include <assert.h>
+
+void test(const char *osinfo_bytes, const char *url)
+{
+    map_string_t *osinfo = new_map_string();
+    parse_osinfo(osinfo_bytes, osinfo);
+
+    char *default_BugzillaURL = (char *)0xDEADBEAF;
+    parse_osinfo_for_bug_url(osinfo, &default_BugzillaURL);
+
+    if (default_BugzillaURL != url)
+    {
+        fprintf(stderr, "'%s' != '%s'", default_BugzillaURL, url);
+        assert(!"Parsed url doesn't match with expected");
+    }
+
+    free(default_BugzillaURL);
+}
+
+int main(void)
+{
+    g_verbose=3;
+
+    test("" ,NULL);
+
+    test("NAME=Fedora\n"
+         "VERSION=\"19 (Schrödinger\\'s Cat)\"\n"
+         "ID=fedora\n"
+         "VERSION_ID=19\n"
+         "PRETTY_NAME=\"Fedora 19 (Schrödinger\\'s Cat)\"\n"
+         "ANSI_COLOR=\"0;34\"\n"
+         "CPE_NAME=\"cpe:/o:fedoraproject:fedora:18\"\n"
+         ,NULL);
+
+    test("NAME=Fedora\n"
+         "VERSION=\"20 (Rawhide)\"\n"
+         "ID=fedora\n"
+         "VERSION_ID=20\n"
+         "PRETTY_NAME=\"Fedora 20 (Rawhide)\"\n"
+         "ANSI_COLOR=\"0;34\"\n"
+         "CPE_NAME=\"cpe:/o:fedoraproject:fedora:20\"\n"
+         "REDHAT_BUGZILLA_PRODUCT=\"Fedora\"\n"
+         "REDHAT_BUGZILLA_PRODUCT_VERSION=Rawhide\n"
+         "REDHAT_SUPPORT_PRODUCT=\"Fedora\"\n"
+         "REDHAT_SUPPORT_PRODUCT_VERSION=Rawhide\n"
+         ,NULL);
+
+    test("NAME=\"Red Hat Enterprise Linux Client\"\n"
+         "VERSION=\"7.0 Beta (Maipo)\"\n"
+         "ID=rhel\n"
+         "VERSION_ID=7.0\n"
+         "PRETTY_NAME=\"Red Hat Enterprise Linux Client 7.0 Beta (Maipo)\"\n"
+         "ANSI_COLOR=\"0;31\"\n"
+         "CPE_NAME=\"cpe:/o:redhat:enterprise_linux:7.0.0:beta:client\"\n"
+         "BUG_REPORT_URL=\"http://bugzilla.redhat.com\"\n"
+         "REDHAT_BUGZILLA_PRODUCT=\"Red Hat Enterprise Linux 7\"\n"
+         "REDHAT_BUGZILLA_PRODUCT_VERSION=7.1\n"
+         ,"http://bugzilla.redhat.com");
+
+    test("NAME=\"Red Hat Enterprise Linux Client\"\n"
+         "VERSION=\"7.0 Beta (Maipo)\"\n"
+         "ID=rhel\n"
+         "VERSION_ID=7.0\n"
+         "PRETTY_NAME=\"Red Hat Enterprise Linux Client 7.0 Beta (Maipo)\"\n"
+         "ANSI_COLOR=\"0;31\"\n"
+         "CPE_NAME=\"cpe:/o:redhat:enterprise_linux:7.0.0:beta:client\"\n"
+         "BUG_REPORT_URL=\"notrfc\"\n"
+         "REDHAT_BUGZILLA_PRODUCT=\"Red Hat Enterprise Linux 7\"\n"
+         "REDHAT_BUGZILLA_PRODUCT_VERSION=7.1\n"
+         ,"notrfc");
+
+    return 0;
+}
+]])
+
+
 ## --------------------- ##
 ## parse_osinfo_for_rhts ##
 ## --------------------- ##
