@@ -86,6 +86,27 @@ struct bugzilla_struct {
     GList       *b_private_groups;
 };
 
+static void set_default_settings(map_string_t *osinfo, map_string_t *settings)
+{
+    char *default_BugzillaURL;
+    parse_osinfo_for_bug_url(osinfo, &default_BugzillaURL);
+    /* if BugzillaURL is defined in conf_file or env , it will replace this value */
+    set_map_string_item_from_string(settings, "BugzillaURL", default_BugzillaURL);
+    log_debug("Loaded BUG_REPORT_URL '%s' from os-release", default_BugzillaURL);
+    free(default_BugzillaURL);
+
+    char *default_Product;
+    char *default_ProductVersion;
+    parse_osinfo_for_bz(osinfo, &default_Product, &default_ProductVersion);
+    /* if Product or ProductVersion is defined in conf_file or env , it will replace this value */
+    set_map_string_item_from_string(settings, "Product", default_Product);
+    set_map_string_item_from_string(settings, "ProductVersion", default_ProductVersion);
+    log_debug("Loaded Product '%s' from os-release", default_Product);
+    log_debug("Loaded ProductVersion '%s' from os-release", default_ProductVersion);
+    free(default_Product);
+    free(default_ProductVersion);
+}
+
 static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
 {
     const char *environ;
@@ -97,7 +118,7 @@ static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
     b->b_password = xstrdup(environ ? environ : get_map_string_item_or_empty(settings, "Password"));
 
     environ = getenv("Bugzilla_BugzillaURL");
-    b->b_bugzilla_url = environ ? environ : get_map_string_item_or_empty(settings, "BugzillaURL");
+    b->b_bugzilla_url = xstrdup(environ ? environ : get_map_string_item_or_empty(settings, "BugzillaURL"));
     if (!b->b_bugzilla_url[0])
         b->b_bugzilla_url = "https://bugzilla.redhat.com";
     else
@@ -313,6 +334,19 @@ int main(int argc, char **argv)
     export_abrt_envvars(0);
 
     map_string_t *settings = new_map_string();
+    problem_data_t *problem_data;
+
+    /* pull in some defaults from os-release */
+    problem_data = create_problem_data_for_reporting(dump_dir_name);
+    if (!problem_data)
+        xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
+    else
+    {
+        map_string_t *osinfo = new_map_string();
+        problem_data_get_osinfo(problem_data, osinfo);
+        set_default_settings(osinfo, settings);
+        free_map_string(osinfo);
+    }
 
     {
         if (!conf_file)
@@ -519,10 +553,6 @@ int main(int argc, char **argv)
         }
         free_report_result(reported_to);
     }
-
-    problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
-    if (!problem_data)
-        xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
     const char *component = problem_data_get_content_or_die(problem_data, FILENAME_COMPONENT);
     const char *duphash   = problem_data_get_content_or_NULL(problem_data, FILENAME_DUPHASH);
