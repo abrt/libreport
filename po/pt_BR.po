@@ -13,8 +13,7 @@
 # Marina Vieira <djparanoiaprod@gmail.com>, 2012-2013
 # Ramilton Costa Gomes Junior <ramilton_costa@hotmail.com>, 2013
 # Ricardo Gyorfy <rgyorfy@redhat.com>, 2011
-# Marco Aurélio Krause <ouesten@me.com>, 2015. #zanata
-# Andrea <adallape@redhat.com>, 2016. #zanata
+# Daniel Lara <danniel@fedoraproject.org>, 2016. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -23,13 +22,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-03-18 02:23-0400\n"
-"Last-Translator: Andrea <adallape@redhat.com>\n"
+"PO-Revision-Date: 2016-09-06 02:44-0400\n"
+"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
 "libreport/language/pt_BR/)\n"
 "Language: pt-BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Zanata 3.8.4\n"
+"X-Generator: Zanata 3.9.6\n"
 
 #: ../src/cli/cli.c:63
 msgid ""
@@ -575,16 +574,22 @@ msgid ""
 "please provide a comprehensive description of the problem you have "
 "encountered."
 msgstr ""
+"Uma vez que quebras sem um reprodutor conhecido pode ser difícil de "
+"diagnosticar, por favor fornece uma descrição detalhada sobre o problema que "
+"você encontrou."
 
 #: ../src/gui-wizard-gtk/wizard.c:1167
 msgid ""
 "Please provide a short description of the problem and please include the "
 "steps you have used to reproduce the problem."
 msgstr ""
+"Por favor forneça uma breve descrição do problema e por favor inclua os "
+"passos que você utilizou para reproduzir o problema."
 
 #: ../src/gui-wizard-gtk/wizard.c:1174
 msgid "Please provide the steps you have used to reproduce the problem."
 msgstr ""
+"Por favor forneça os passos que você utilizou para reproduzir o problema."
 
 #: ../src/gui-wizard-gtk/wizard.c:1296
 msgid "(click here to view/edit)"
@@ -703,7 +708,7 @@ msgstr ""
 #: ../src/gui-wizard-gtk/wizard.c:2847
 #, c-format
 msgid "Failed to save file '%s'"
-msgstr ""
+msgstr "Falha ao salvar o arquivo '%s'"
 
 #: ../src/gui-wizard-gtk/wizard.c:3029
 #, c-format
@@ -747,15 +752,15 @@ msgstr "O item '%s' já existe e não é modificável"
 
 #: ../src/gui-wizard-gtk/wizard.c:3510
 msgid "I have experienced this problem for the first time"
-msgstr ""
+msgstr "Eu experimentei esse problema pela primeira vez"
 
 #: ../src/gui-wizard-gtk/wizard.c:3513
 msgid "I can reproduce this problem"
-msgstr ""
+msgstr "Eu posso reproduzir esse problema"
 
 #: ../src/gui-wizard-gtk/wizard.c:3516
 msgid "This problem occurs repeatedly"
-msgstr ""
+msgstr "Esse problema ocorre repetidamente"
 
 #: ../src/gui-wizard-gtk/wizard.c:3529
 msgid "Include"
@@ -908,17 +913,19 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid "How reproducible is this problem?"
-msgstr ""
+msgstr "Quão reproduzível é este problema?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid "How it can be reproduced (one step per line)?"
-msgstr ""
+msgstr "Como ele pode ser reproduzido (um passo por linha)?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:14
 msgid ""
 "Please add a comprehensive description of the problem you have. This is a "
 "very long place holder."
 msgstr ""
+"Por favor forneça uma descrição detalhada do problema  que você teve. Este é "
+"um espaço reservado muito grande."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid "You need to fill the how to before you can proceed..."
@@ -1061,7 +1068,7 @@ msgstr "Enviado: %llu de %llu kbytes"
 
 #: ../src/lib/curl.c:636
 msgid "Ignoring URL without scheme and hostname"
-msgstr ""
+msgstr "Ignorando URL sem esquema e nome de host"
 
 #. Do not include the path part of the URL as it can contain sensitive data
 #. * in case of typos
@@ -1966,6 +1973,11 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"& [-v] -d DIR [-c CONFFILE] [-F FMTFILE]\n"
+"\n"
+"Envia conteúdo de um DIR de diretório de problema via email\n"
+"\n"
+"Se não for especificado, o CONFFILE padroniza para"
 
 #: ../src/plugins/reporter-mailx.c:280 ../src/plugins/reporter-upload.c:187
 msgid "Config file"
@@ -1973,7 +1985,7 @@ msgstr "Arquivo config"
 
 #: ../src/plugins/reporter-mailx.c:281
 msgid "Formatting file for an email"
-msgstr ""
+msgstr "Formatando arquivo para um email"
 
 #: ../src/plugins/reporter-mailx.c:282
 msgid "Notify only (Do not mark the report as sent)"
@@ -2096,6 +2108,10 @@ msgid ""
 "is unknown. Please ensure you will be able to provide detailed information "
 "to our Support Team. Would you like to continue and open a new support case?"
 msgstr ""
+"O problema só ocorreu uma vez e a habilidade para reproduzir o problema é "
+"desconhecida. Por favor tenha certeza que você será capaz de fornecer "
+"informações detalhadas à nossa Equipe de Suporte. Você gostaria de continuar "
+"e abrir um novo caso de suporte?"
 
 #: ../src/plugins/reporter-rhtsupport.c:710
 #, c-format
@@ -2103,6 +2119,8 @@ msgid ""
 "The crashed program was released by '%s'. Would you like to report the "
 "problem to Red Hat Support?"
 msgstr ""
+"O programa quebrado foi lançado por '%s'. Você gostaria de relatar o "
+"problema ao Suporte Red Hat?"
 
 #: ../src/plugins/reporter-rhtsupport.c:728
 #, c-format
@@ -2110,6 +2128,8 @@ msgid ""
 "The program '%s' does not appear to be provided by Red Hat. Would you like "
 "to report the problem to Red Hat Support?"
 msgstr ""
+"O programa '%s' não aparenta ser fornecido pela Red Hat. Gostaria de relatar "
+"o problema ao Suporte Red Hat?"
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing
 #. error msg is already logged by dd_opendir
@@ -2455,6 +2475,8 @@ msgstr "Senha da conta CentOS Bug Tracker"
 msgid ""
 "The issue will be accessible only to users with access to 'Private Issues'"
 msgstr ""
+"O problema será acessível apenas para usuários com acesso para 'Problemas "
+"Privados'"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:10
 msgid "CentOS Bug Tracker URL"
@@ -3046,6 +3068,7 @@ msgstr ""
 msgid ""
 "attach DATA as ureport attachment ATTACHMENT_TYPE (used only with -l|-L)"
 msgstr ""
+"anexar DATA como anexo ureport ATTACHMENT_TYPE (utilize apenas com -l|-L)"
 
 #: ../src/plugins/reporter-ureport.c:113
 msgid ""
@@ -3322,13 +3345,15 @@ msgstr "Analisar o problema localmente e enviar os dados via scp ou ftp"
 
 #: ../src/workflows/workflow_uReport.xml.in.h:1
 msgid "Submit anonymous crash report"
-msgstr ""
+msgstr "Enviar relatório de quebra anônimo"
 
 #: ../src/workflows/workflow_uReport.xml.in.h:2
 msgid ""
 "Submit anonymous crash report - I do not want to be contacted by Red Hat "
 "Support"
 msgstr ""
+"Enviar relatório de quebra anônimo - Eu não quero ser contactado pelo "
+"Suporte Red Hat"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1
@@ -3338,7 +3363,7 @@ msgstr ""
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:1
 #: ../src/workflows/workflow_RHELJava.xml.in.h:1
 msgid "Ask Red Hat Support for help"
-msgstr ""
+msgstr "Peça ajuda ao Suporte Red Hat"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:2
@@ -3351,6 +3376,8 @@ msgid ""
 "Create new Red Hat Support case - I would like to be contacted by Red Hat "
 "Support"
 msgstr ""
+"Criar novo caso de Suporte Red Hat - Eu gostaria de ser contactado pelo "
+"Suporte Red Hat"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1

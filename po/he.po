@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Niv Baehr <bloop93@gmail.com>, 2016. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -11,13 +12,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-10-06 07:45-0400\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"PO-Revision-Date: 2016-11-28 01:47-0500\n"
+"Last-Translator: Niv Baehr <bloop93@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/projects/p/libreport/"
 "language/he/)\n"
 "Language: he\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 3.8.4\n"
+"X-Generator: Zanata 3.9.6\n"
 
 #: ../src/cli/cli.c:63
 msgid ""
@@ -26,6 +27,10 @@ msgid ""
 "   or: & [-vspy] -d PROBLEM_DIR\n"
 "   or: & [-vspy] -x PROBLEM_DIR"
 msgstr ""
+"& [-vsp] -L[PREFIX] [PROBLEM_DIR]\n"
+"   or: & [-vspy] -e EVENT PROBLEM_DIR\n"
+"   or: & [-vspy] -d PROBLEM_DIR\n"
+"   or: & [-vspy] -x PROBLEM_DIR"
 
 #. short_name long_name  value    parameter_name  help
 #: ../src/cli/cli.c:86
@@ -50,11 +55,11 @@ msgstr ""
 
 #: ../src/cli/cli.c:91
 msgid "Noninteractive: don't ask questions, assume 'yes'"
-msgstr ""
+msgstr "Noninteractive: don't ask questions, assume 'yes'"
 
 #: ../src/cli/cli.c:93
 msgid "Log to syslog"
-msgstr "רשום ליומן המערכת"
+msgstr "Log to syslog"
 
 #: ../src/cli/cli.c:94 ../src/gui-wizard-gtk/main.c:170
 msgid "Add program names to log"
@@ -111,15 +116,15 @@ msgstr "# Reason of crash"
 
 #: ../src/cli/cli-report.c:170
 msgid "# os-release configuration file from root dir"
-msgstr ""
+msgstr "# os-release configuration file from root dir"
 
 #: ../src/cli/cli-report.c:175
 msgid "# Release string of the operating system from root dir"
-msgstr ""
+msgstr "# Release string of the operating system from root dir"
 
 #: ../src/cli/cli-report.c:183
 msgid "# os-release configuration file"
-msgstr ""
+msgstr "# os-release configuration file"
 
 #: ../src/cli/cli-report.c:188
 msgid "# Release string of the operating system"
@@ -143,12 +148,12 @@ msgstr "\n"
 
 #: ../src/cli/cli-report.c:471
 msgid "Your input is not valid, because of:"
-msgstr ""
+msgstr "Your input is not valid, because of:"
 
 #: ../src/cli/cli-report.c:475
 #, c-format
 msgid "Bad value for '%s': %s"
-msgstr ""
+msgstr "Bad value for '%s': %s"
 
 #: ../src/cli/cli-report.c:673
 #, c-format
@@ -156,22 +161,24 @@ msgid ""
 "Event '%s' requires permission to send possibly sensitive data. Do you want "
 "to continue?"
 msgstr ""
+"Event '%s' requires permission to send possibly sensitive data. Do you want "
+"to continue?"
 
 #: ../src/cli/cli-report.c:720
 msgid "You have chosen number out of range"
-msgstr ""
+msgstr "You have chosen number out of range"
 
 #: ../src/cli/cli-report.c:725
 msgid "Invalid input, exiting."
-msgstr ""
+msgstr "Invalid input, exiting."
 
 #: ../src/cli/cli-report.c:746
 msgid "Select an event to run: "
-msgstr ""
+msgstr "Select an event to run: "
 
 #: ../src/cli/cli-report.c:858
 msgid "Select a workflow to run: "
-msgstr ""
+msgstr "Select a workflow to run: "
 
 #: ../src/client-python/reportclient/debuginfo.py:100
 #, python-brace-format
@@ -345,11 +352,11 @@ msgstr ""
 #. 
 #: ../src/gtk-helpers/ask_dialogs.c:87
 msgid "_No"
-msgstr ""
+msgstr "_לא"
 
 #: ../src/gtk-helpers/ask_dialogs.c:88
 msgid "_Yes"
-msgstr ""
+msgstr "_כן"
 
 #: ../src/gtk-helpers/ask_dialogs.c:94
 msgid "Don't ask me again"
@@ -362,7 +369,7 @@ msgstr ""
 
 #: ../src/gtk-helpers/config_dialog.c:345
 msgid "Configuration"
-msgstr ""
+msgstr "תצורה"
 
 #. we can't use this, because we want the workflows first and hashtable
 #. * doesn't return the items in the order they were added
@@ -378,31 +385,31 @@ msgstr ""
 #: ../src/gtk-helpers/config_dialog.c:369
 #: ../src/gtk-helpers/config_dialog.c:433
 msgid "Events"
-msgstr ""
+msgstr "אירועים"
 
 #: ../src/gtk-helpers/config_dialog.c:373
 msgid "C_onfigure"
-msgstr ""
+msgstr "קביעת ת_צורה"
 
 #: ../src/gtk-helpers/config_dialog.c:375 ../src/gui-wizard-gtk/wizard.c:3687
 msgid "_Close"
-msgstr ""
+msgstr "_סגירה"
 
 #: ../src/gtk-helpers/event_config_dialog.c:144
 msgid "Show password"
-msgstr "הצג סיסמה"
+msgstr "הצגת הססמה"
 
 #: ../src/gtk-helpers/event_config_dialog.c:275
 msgid "Don't store passwords"
-msgstr ""
+msgstr "אין לאחסן ססמאות"
 
 #: ../src/gtk-helpers/event_config_dialog.c:285
 msgid "Basic"
-msgstr ""
+msgstr "בסיסי"
 
 #: ../src/gtk-helpers/event_config_dialog.c:293
 msgid "Advanced"
-msgstr ""
+msgstr "מתקדם"
 
 #: ../src/gtk-helpers/event_config_dialog.c:309
 msgid "Secret Service is not available, your settings won't be saved!"
@@ -412,12 +419,12 @@ msgstr ""
 #: ../src/gtk-helpers/workflow_config_dialog.c:94
 #: ../src/gui-wizard-gtk/wizard.c:784 ../src/gui-wizard-gtk/wizard.c:3287
 msgid "_Cancel"
-msgstr ""
+msgstr "_ביטול"
 
 #: ../src/gtk-helpers/event_config_dialog.c:351
 #: ../src/gtk-helpers/workflow_config_dialog.c:96
 msgid "_OK"
-msgstr ""
+msgstr "_אישור"
 
 #: ../src/gtk-helpers/secrets.c:171
 #, c-format
@@ -464,19 +471,19 @@ msgstr ""
 
 #: ../src/gtk-helpers/problem_details_dialog.c:30
 msgid "Problem details"
-msgstr ""
+msgstr "פרטי הבעיה"
 
 #: ../src/gtk-helpers/problem_details_dialog.c:33
 msgid "OK"
-msgstr ""
+msgstr "אישור"
 
 #: ../src/gui-wizard-gtk/main.c:107
 msgid "Preferences"
-msgstr ""
+msgstr "העדפות"
 
 #: ../src/gui-wizard-gtk/main.c:110
 msgid "Quit"
-msgstr ""
+msgstr "יציאה"
 
 #: ../src/gui-wizard-gtk/main.c:154
 msgid ""
@@ -502,7 +509,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:783
 msgid "_Save"
-msgstr ""
+msgstr "_שמירה"
 
 #: ../src/gui-wizard-gtk/wizard.c:1005
 msgid ""
@@ -590,20 +597,20 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:2055
 msgid "Processing was interrupted because the problem is not reportable."
-msgstr ""
+msgstr "העיבוד נקטע משום שהבעיה אינה ניתנת לדיווח."
 
 #: ../src/gui-wizard-gtk/wizard.c:2065 ../src/gui-wizard-gtk/wizard.c:2136
 msgid "Processing failed."
-msgstr ""
+msgstr "העיבוד נכשל."
 
 #. No next event, go to progress page and finish
 #: ../src/gui-wizard-gtk/wizard.c:2072 ../src/gui-wizard-gtk/wizard.c:3009
 msgid "Processing finished."
-msgstr ""
+msgstr "העיבוד הסתיים."
 
 #: ../src/gui-wizard-gtk/wizard.c:2073
 msgid "Processing finished, please proceed to the next step."
-msgstr ""
+msgstr "העיבוד הסתיים, נא להמשיך לשלב הבא."
 
 #. TODO: better msg?
 #: ../src/gui-wizard-gtk/wizard.c:2133
@@ -617,7 +624,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:2184
 msgid "Processing..."
-msgstr ""
+msgstr "מעבד..."
 
 #: ../src/gui-wizard-gtk/wizard.c:2270
 msgid ""
@@ -644,11 +651,11 @@ msgstr ""
 #: ../src/gui-wizard-gtk/wizard.c:3077
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
-msgstr ""
+msgstr "אין לדווח על בעיה זו (כנראה בעיה מוכרת). %s"
 
 #: ../src/gui-wizard-gtk/wizard.c:3288
 msgid "_Open"
-msgstr ""
+msgstr "_פתיחה"
 
 #: ../src/gui-wizard-gtk/wizard.c:3310
 #, c-format
@@ -671,15 +678,15 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:3510
 msgid "I have experienced this problem for the first time"
-msgstr ""
+msgstr "זו הפעם הראשונה שנתקלתי בבעיה זו"
 
 #: ../src/gui-wizard-gtk/wizard.c:3513
 msgid "I can reproduce this problem"
-msgstr ""
+msgstr "אני יכול לשחזר את הבעיה"
 
 #: ../src/gui-wizard-gtk/wizard.c:3516
 msgid "This problem occurs repeatedly"
-msgstr ""
+msgstr "הבעיה חוזרת שוב ושוב"
 
 #: ../src/gui-wizard-gtk/wizard.c:3529
 msgid "Include"
@@ -695,19 +702,19 @@ msgstr "ערך"
 
 #: ../src/gui-wizard-gtk/wizard.c:3584
 msgid "Problem description"
-msgstr ""
+msgstr "תיאור הבעיה"
 
 #: ../src/gui-wizard-gtk/wizard.c:3585
 msgid "Select how to report this problem"
-msgstr ""
+msgstr "בחירת אופן הדיווח על הבעיה"
 
 #: ../src/gui-wizard-gtk/wizard.c:3586
 msgid "Provide additional information"
-msgstr ""
+msgstr "סיפוק מידע נוסף"
 
 #: ../src/gui-wizard-gtk/wizard.c:3587
 msgid "Review the data"
-msgstr ""
+msgstr "סקירת הנתונים"
 
 #: ../src/gui-wizard-gtk/wizard.c:3588
 msgid "Confirm data to report"
@@ -715,25 +722,25 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:3589
 msgid "Processing"
-msgstr ""
+msgstr "עיבוד"
 
 #: ../src/gui-wizard-gtk/wizard.c:3590
 msgid "Processing done"
-msgstr ""
+msgstr "העיבוד בוצע"
 
 #: ../src/gui-wizard-gtk/wizard.c:3689
 msgid "_Stop"
-msgstr ""
+msgstr "_הפסקה"
 
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3692
 msgid "Upload for analysis"
-msgstr ""
+msgstr "העלאה לניתוח"
 
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3695
 msgid "Repeat"
-msgstr ""
+msgstr "חזרה"
 
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3697
@@ -778,7 +785,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid "Sensitive words"
-msgstr ""
+msgstr "מילים רגישות"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid "Custom"
@@ -821,7 +828,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid "How it can be reproduced (one step per line)?"
-msgstr ""
+msgstr "כיצד ניתן לשחזרה (שלב אחד בכל שורה)?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:14
 msgid ""
@@ -1051,8 +1058,7 @@ msgstr ""
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
-msgstr ""
-"מידע הקריסה לא שלם. אנא וודא שסיפקת הסבר טוב על איך לגרום לקריסה להתרחש שוב."
+msgstr "מידע הקריסה אינו שלם. נא לוודא שסופקו השלבים לשחזור הבעיה."
 
 #: ../src/lib/event_config.c:509
 msgid "The backtrace probably can't help developer to diagnose the bug."
