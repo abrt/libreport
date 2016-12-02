@@ -74,7 +74,7 @@ release:
 	git log --oneline $$OLD_VER..HEAD | awk '{$$1=""; if (a[$$0]++ == 0) print "-" $$0} END {print ""}' | grep -v -e "- Merge" -e "- testsuite:" -e "- make:" >> /tmp/changelog.tmp; \
 	sed "$$(grep -n changelog libreport.spec.in | cut -f1 -d:)"'r /tmp/changelog.tmp' -i libreport.spec.in; \
 	sed -e "s/^## \[Unreleased\]/## [Unreleased]\n\n## [$$NEW_VER]/" \
-	    -e "s/^\[Unreleased\]: \(https:\/\/.*\/compare\)\(\/.*\)\.\.HEAD/[Unreleased]: \1\/$$NEW_VER..HEAD\n[$$NEW_VER] \1\2..$$NEW_VER/" \
+	    -e "s/^\[Unreleased\]: \(https:\/\/.*\/compare\)\(\/.*\)\.\.\.HEAD/[Unreleased]: \1\/$$NEW_VER...HEAD\n[$$NEW_VER]: \1\2...$$NEW_VER/" \
 	    -i CHANGELOG.md; \
 	sed 's|DEF_VER=.*$$|DEF_VER='$$NEW_VER'|' -i gen-version; \
 	git add gen-version libreport.spec.in CHANGELOG.md; \
