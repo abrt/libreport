@@ -737,6 +737,55 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Fri Dec 02 2016 Jakub Filak <jakub@thefilaks.net> 2.9.0-1
+- Translation updates
+- build: make the release-* targets smarter
+- add CHANGELOG.md
+- reporter-s-journal: enable SYSLOG_IDENTIFIER from env
+- report-python: add method run_event_on_problem_dir
+- lib: use lz4 instead of lz4cat
+- reportclient: honor ABRT_VERBOSE
+- tree-wide: introduce 'stop_on_not_reportable' option
+- client: add support for $releasever to debuginfo
+- lib: correct test for own root
+- workflows: run analyze_BodhiUpdates event on Fedora
+- man: fix formating
+- reporter-systemd-journal: introduce reporter-systemd-journal
+- problem_data: add function which returns all problem data keys
+- include: add exception_type element constant
+- spec: changes related to reporter-systemd-journal
+- problem_report: add normalization of crashed thread
+- problem_report: make generate report configurable
+- problem_report: use core_backtrace if there is no backtrace
+- lib: refuse to parse negative number as unsigned int
+- spec: simplify and remove old conditional
+- build: add gettext-devel to sysdeps
+- dd: add check for validity of new file FD
+- build: configure tree for debugging by default
+- spec: use %buildroot macro
+- spec: remove defattr which match the defaults
+- spec: do not clean buildroot
+- spec: remove Groups
+- spec: code cleanup
+- lib: fix a bug in dealing with errno
+- lib: add convenient wrappers for uint in map_string_t
+- problem_report: ensure C-string null terminator
+- lib: fix invalid cgroup namespace ID
+- lib: make die function configurable
+- lib: allow using FD of /proc/[pid] instead of pid_t
+- dd: add functions for opening dd item
+- lib: add xfdopen
+- problem data: search for sensitive words in more files
+- dd: add dd_copy_file_at
+- ignored words: add "systemd-logind" and "hawkey"
+- build: reset the default version with each release
+- doc: make README more verbose
+- tree-wide: produce less messages in NOTICE log lvl
+- ureport: less confusing logging
+- spec: install JavaScript workflows
+- workflow: add JavaScript workflows
+- bugzilla: stop including package details
+
 * Fri Sep 09 2016 Jakub Filak <jfilak@redhat.com> 2.8.0-1
 - lib: fix a memory leak in create_dump_dir fn
 - rhtsupport: fix a double free of config at exit

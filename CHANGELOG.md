@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.9.0]
 ### Added
 - Introduce new plugin for reporting problems to systemd-journal.
 - Add workflow definitions for reporting JavaScript stack traces.
@@ -40,4 +42,5 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.8.0...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.9.0..HEAD
+[2.9.0] https://github.com/abrt/libreport/compare/2.8.0...2.9.0
