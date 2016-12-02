@@ -42,5 +42,5 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.9.0..HEAD
-[2.9.0] https://github.com/abrt/libreport/compare/2.8.0...2.9.0
+[Unreleased]: https://github.com/abrt/libreport/compare/2.9.0...HEAD
+[2.9.0]: https://github.com/abrt/libreport/compare/2.8.0...2.9.0
