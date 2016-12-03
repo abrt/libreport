@@ -12,6 +12,18 @@ fi
 
 zanata-cli pull -B || exit 1
 
+ERR=false
+for pof in `ls -1 po/*.po`
+do
+    msgfmt --check-format $pof || {
+        ERR=true
+    }
+done
+
+if $ERR; then
+    exit 1
+fi
+
 for pof in `cd po && ls *.po`;
 do
     echo $pof | cut -f1 -d.
