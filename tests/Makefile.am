@@ -24,6 +24,11 @@ EXTRA_DIST = package.m4
 ## Test suite.  ##
 ## ------------ ##
 
+libreport_include_helpersdir = $(includedir)/libreport/helpers
+libreport_include_helpers_HEADERS = \
+	helpers/testsuite.h \
+	helpers/testsuite_tools.h
+
 TESTSUITE_AT = \
   local.at \
   testsuite.at \
@@ -65,7 +70,6 @@ MAINTAINERCLEANFILES = Makefile.in $(TESTSUITE)
 check_DATA = atconfig atlocal $(TESTSUITE)
 DISTCLEANFILES = atconfig
 EXTRA_DIST += atlocal.in conf rules ureport valgrind.supp ureport-rhts-credentials \
-			  helpers/testsuite.h helpers/testsuite_tools.h \
 			  bugzilla_plugin.at.in
 
 atconfig: $(top_builddir)/config.status
