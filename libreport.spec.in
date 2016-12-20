@@ -5,13 +5,11 @@
   %bcond_with bugzilla
 
   %define dbus_devel dbus-1-devel
-  %define nss_devel mozilla-nss-devel
   %define libjson_devel libjson-devel
 %else
   %bcond_without bugzilla
 
   %define dbus_devel dbus-devel
-  %define nss_devel nss-devel
   %define libjson_devel json-c-devel
 %endif
 
@@ -33,7 +31,6 @@ BuildRequires: libxml2-devel
 BuildRequires: libtar-devel
 BuildRequires: intltool
 BuildRequires: libtool
-BuildRequires: %{nss_devel}
 BuildRequires: texinfo
 BuildRequires: asciidoc
 BuildRequires: xmlto
