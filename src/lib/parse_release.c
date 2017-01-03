@@ -289,6 +289,19 @@ void parse_osinfo_for_bz(map_string_t *osinfo, char** product, char** version)
     *version = NULL;
 }
 
+void parse_osinfo_for_bug_url(map_string_t *osinfo, char** url)
+{
+    const char *os_bug_report_url = get_map_string_item_or_NULL(osinfo, "BUG_REPORT_URL");
+
+    if (os_bug_report_url)
+        *url = xstrdup(os_bug_report_url);
+    else
+        /* unset or something bad happend */
+        *url = NULL;
+
+    return;
+}
+
 /*
  * Note to developers: you can use
  * curl --silent -u $USER:$PASS "https://api.access.redhat.com/rs/products/Red%20Hat%20Enterprise%20Linux/versions" | xmllint --format -
