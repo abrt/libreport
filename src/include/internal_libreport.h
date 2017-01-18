@@ -1158,6 +1158,8 @@ struct dump_dir *open_directory_for_writing(
 #define FILENAME_CONTAINER_UUID    "container_uuid"
 #define FILENAME_CONTAINER_IMAGE   "container_image"
 #define FILENAME_CONTAINER_CMDLINE "container_cmdline"
+/* Container root file-system directory as seen from the host. */
+#define FILENAME_CONTAINER_ROOTFS  "container_rootfs"
 #define FILENAME_DOCKER_INSPECT    "docker_inspect"
 
 /* Type of catched exception
