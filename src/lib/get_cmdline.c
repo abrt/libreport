@@ -855,23 +855,72 @@ int open_proc_pid_dir(pid_t pid)
     return open(proc_dir_path, O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC | O_PATH);
 }
 
+/* Compare mount points of pid 1 and the tested pid.
+ * Bare in mind that /proc/[pid]/root might be affected by chroot and we want
+ * to be able to answer 'yes' also for chrooted processes within a container.
+ */
 int process_has_own_root_at(int pid_proc_fd)
 {
-    struct stat proc_buf;
-    if (fstatat(pid_proc_fd, "root", &proc_buf, 0) < 0)
+    int r = -1;
+    struct mountinfo pid_root;
+    errno = 0;
+    int mnt_fd = openat(pid_proc_fd, "mountinfo", O_RDONLY);
+    if (mnt_fd < 0)
     {
-        perror_msg("Failed to get stat for process' root");
-        return -2;
+        r = -errno;
+        pnotice_msg("failed to open '/proc/[pid]/mountinfo'");
+        return r;
     }
 
-    struct stat root_buf;
-    if (stat("/proc/1/root", &root_buf) < 0)
+    FILE *fin = fdopen(mnt_fd, "r");
+    if (fin == NULL)
     {
-        perror_msg("Failed to get stat for '/proc/1/root'");
-        return -1;
+        /* This can happen only if there is a bug or we ran out of memory */
+        r = -errno;
+        notice_msg("fdopen(openat([pid's fd], mountinfo))");
+
+        close(mnt_fd);
+        return r;
     }
 
-    return proc_buf.st_ino != root_buf.st_ino;
+    r = get_mountinfo_for_mount_point(fin, &pid_root, "/");
+    fclose(fin);
+    if (r)
+    {
+        log_notice("cannot get mount info for [pid]'s /");
+        return -ENOKEY;
+    }
+
+    struct mountinfo system_root;
+    fin = fopen("/proc/1/mountinfo", "r");
+    if (fin == NULL)
+    {
+        r = -errno;
+        pnotice_msg("fopen(/proc/1/mountinfo)");
+
+        mountinfo_destroy(&pid_root);
+        return r;
+    }
+
+    r = get_mountinfo_for_mount_point(fin, &system_root, "/");
+    fclose(fin);
+    if (r)
+    {
+        mountinfo_destroy(&pid_root);
+
+        log_notice("cannot get line for / from /proc/1/mountinfo");
+        return -ENOKEY;
+    }
+
+    /* Compare the fields 10 (mount source) and 4 (root). */
+    /* See man 5 proc for more details. */
+    r = (   strcmp(MOUNTINFO_MOUNT_SOURCE(system_root), MOUNTINFO_MOUNT_SOURCE(pid_root)) != 0
+         || strcmp(MOUNTINFO_ROOT        (system_root), MOUNTINFO_ROOT        (pid_root)) != 0);
+
+    mountinfo_destroy(&system_root);
+    mountinfo_destroy(&pid_root);
+
+    return r;
 }
 
 int process_has_own_root(pid_t pid)
