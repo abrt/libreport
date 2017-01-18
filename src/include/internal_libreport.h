@@ -577,6 +577,8 @@ void die_out_of_memory(void) NORETURN;
 #define perror_msg(...)         log_wrapper(LOG_ERR, __FILE__, __LINE__, __func__, true, true, __VA_ARGS__)
 #define warn_msg(...)           log_wrapper(LOG_WARNING, __FILE__, __LINE__, __func__, false, true, __VA_ARGS__)
 #define pwarn_msg(...)          log_wrapper(LOG_WARNING, __FILE__, __LINE__, __func__, true, true, __VA_ARGS__)
+#define notice_msg(...)         log_wrapper(LOG_NOTICE, __FILE__, __LINE__, __func__, false, true, __VA_ARGS__)
+#define pnotice_msg(...)        log_wrapper(LOG_NOTICE, __FILE__, __LINE__, __func__, true, true, __VA_ARGS__)
 #define error_msg_and_die(...)  log_and_die_wrapper(LOG_ERR, __FILE__, __LINE__, __func__, false, true, __VA_ARGS__)
 #define perror_msg_and_die(...) log_and_die_wrapper(LOG_ERR, __FILE__, __LINE__, __func__, true, true, __VA_ARGS__)
 
