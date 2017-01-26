@@ -24,6 +24,10 @@
 #include "testsuite.h"
 
 /* Creates a new dump directory in a new temporary directory
+ *
+ * @param uid Owner's uid
+ * @param mode Dump dir mode or -1 for the sane default value 0640.
+ * @param ts_falgs Unused
  */
 static struct dump_dir *testsuite_dump_dir_create(uid_t uid, mode_t mode, int ts_flags)
 {
