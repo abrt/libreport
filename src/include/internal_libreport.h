@@ -777,9 +777,24 @@ int dump_namespace_diff_ext(const char *dest_filename, pid_t base_pid, pid_t tes
 #define dump_namespace_diff libreport_dump_namespace_diff
 int dump_namespace_diff(const char *dest_filename, pid_t base_pid, pid_t tested_pid);
 
-#define MOUNTINFO_ROOT(val) (val.mntnf_items[3])
-#define MOUNTINFO_MOUNT_POINT(val) (val.mntnf_items[4])
-#define MOUNTINFO_MOUNT_SOURCE(val) (val.mntnf_items[8])
+enum
+{
+    MOUNTINFO_INDEX_MOUNT_ID,
+    MOUNTINFO_INDEX_PARENT_ID,
+    MOUNTINFO_INDEX_MAJOR_MINOR,
+    MOUNTINFO_INDEX_ROOT,
+    MOUNTINFO_INDEX_MOUNT_POINT,
+    MOUNTINFO_INDEX_MOUNT_OPTIONS,
+    MOUNTINFO_INDEX_OPTIONAL_FIELDS,
+    MOUNTINFO_INDEX_FS_TYPE,
+    MOUNTINFO_INDEX_MOUNT_SOURCE,
+    MOUNTINFO_INDEX_SUPER_OPITONS,
+    _MOUNTINFO_INDEX_MAX,
+};
+
+#define MOUNTINFO_ROOT(val) (val.mntnf_items[MOUNTINFO_INDEX_ROOT])
+#define MOUNTINFO_MOUNT_POINT(val) (val.mntnf_items[MOUNTINFO_INDEX_MOUNT_POINT])
+#define MOUNTINFO_MOUNT_SOURCE(val) (val.mntnf_items[MOUNTINFO_INDEX_MOUNT_SOURCE])
 
 struct mountinfo
 {
@@ -788,7 +803,7 @@ struct mountinfo
     /* 10 : mount source: filesystem specific information or "none" */
     /*      but it mount source is preceded by 0 or more optional fields */
     /*      so the effective value is 9 */
-    char *mntnf_items[10];
+    char *mntnf_items[_MOUNTINFO_INDEX_MAX];
 };
 #define mountinfo_destroy libreport_mountinfo_destroy
 void mountinfo_destroy(struct mountinfo *mntnf);

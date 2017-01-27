@@ -589,6 +589,39 @@ void mountinfo_destroy(struct mountinfo *mntnf)
         free(mntnf->mntnf_items[i]);
 }
 
+static int _read_mountinfo_word(FILE *fin)
+{
+    int c;
+    int pre_c = 0;
+    while ((c = fgetc(fin)) != EOF && (pre_c == '\\' || c != ' ') && c != '\n')
+        pre_c = c;
+
+    return c;
+}
+
+/* Reads a word from a file and checks if the word equals the given string. */
+static int _read_mountinfo_word_was(FILE *fin, const char *ptr)
+{
+    int c;
+    int pre_c = 0;
+    while (((c = fgetc(fin)) != EOF) && (*ptr != '\0') && (c == *ptr))
+    {
+        pre_c = c;
+        ++ptr;
+    }
+
+    const int read_full_word = ((pre_c != '\\' && c == ' ') || c == '\n' || c == EOF);
+    if (*ptr == '\0' && read_full_word)
+        return 0;
+
+    /* c cannot be NULL unless we are reading a binary file */
+    if (read_full_word)
+        return c;
+
+    /* Read rest of the word. */
+    return _read_mountinfo_word(fin);
+}
+
 int get_mountinfo_for_mount_point(FILE *fin, struct mountinfo *mntnf, const char *mnt_point)
 {
     int r = 0;
@@ -597,7 +630,6 @@ int get_mountinfo_for_mount_point(FILE *fin, struct mountinfo *mntnf, const char
 
     long pos_bck = 0;
     int c = 0;
-    int pre_c;
     unsigned fn;
     while (1)
     {
@@ -609,41 +641,31 @@ int get_mountinfo_for_mount_point(FILE *fin, struct mountinfo *mntnf, const char
             goto get_mount_info_cleanup;
         }
 
-        fn = 0;
-        pre_c = c;
-        while ((c = fgetc(fin)) != EOF)
+        /* the 5th field is mount point */
+        for (fn = 0; fn < 4; ++fn)
         {
-            /* read till eol count fields (words with escaped space) */
-            fn += (c == '\n' || (pre_c != '\\' && c == ' '));
-            /* the 4th field is mount point */
-            if (fn >= 4)
+            if ((c = _read_mountinfo_word(fin)) == EOF)
                 break;
         }
 
         if (c == EOF)
         {
-            if (pre_c != '\n')
-            {
-                log_notice("Mountinfo line does not have enough fields %d\n", fn);
-                r = 1;
-            }
-            goto get_mount_info_cleanup;
-        }
-
-        const char *ptr = mnt_point;
-        /* compare mnt_point to the 4th field value */
-        while (((c = fgetc(fin)) != EOF) && (*ptr != '\0') && (c == *ptr))
-            ++ptr;
-
-        if (c == EOF)
-        {
-            log_notice("Mountinfo line does not have root field\n");
+            log_notice("Mountinfo line does not have enough fields %d", fn);
             r = 1;
             goto get_mount_info_cleanup;
         }
 
+        /* compare mnt_point to the 5th field value */
+        c = _read_mountinfo_word_was(fin, mnt_point);
+        if (c == EOF)
+        {
+            log_notice("Mountinfo line does not have the mount point field");
+            r = 2;
+            goto get_mount_info_cleanup;
+        }
+
         /* if true, then the current line is the one we are looking for */
-        if (*ptr == '\0' && c == ' ')
+        if (c == 0)
             break;
 
         /* go to the next line */
@@ -652,7 +674,7 @@ int get_mountinfo_for_mount_point(FILE *fin, struct mountinfo *mntnf, const char
 
         if (c == EOF)
         {
-            r = -1;
+            r = -ENOKEY;
             goto get_mount_info_cleanup;
         }
     }
@@ -665,18 +687,25 @@ int get_mountinfo_for_mount_point(FILE *fin, struct mountinfo *mntnf, const char
         if (pos_bck < 0)
         {
             pwarn_msg("ftell");
-            r = -1;
+            r = -3;
             goto get_mount_info_cleanup;
         }
 
-        /* read entire field (a word with escaped space) */
-        while ((c = fgetc(fin)) != EOF && (pre_c == '\\' || c != ' ') && c != '\n')
-            ;
+        if (fn == MOUNTINFO_INDEX_OPTIONAL_FIELDS)
+        {
+            /* Eat all optional fields delimited by -. */
+            while((c = _read_mountinfo_word_was(fin, "-")) != 0 && c != EOF)
+                ;
+        }
+        else
+        {
+            c = _read_mountinfo_word(fin);
+        }
 
         if (c == EOF && fn != (ARRAY_SIZE(mntnf->mntnf_items) - 1))
         {
             log_notice("Unexpected end of file");
-            r = 1;
+            r = -ENODATA;
             goto get_mount_info_cleanup;
         }
 
@@ -685,14 +714,14 @@ int get_mountinfo_for_mount_point(FILE *fin, struct mountinfo *mntnf, const char
         if (pos_cur < 0)
         {
             pwarn_msg("ftell");
-            r = -1;
+            r = -4;
             goto get_mount_info_cleanup;
         }
 
         size_t len = (pos_cur - pos_bck);
         mntnf->mntnf_items[fn] = xmalloc(sizeof(char) * (len));
 
-        --len; /* we are standing on ' ' */
+        len -= c != EOF; /* we are standing on ' ' (except EOF) */
 
         if (fseek(fin, pos_bck, SEEK_SET) < 0)
         {
@@ -706,25 +735,20 @@ int get_mountinfo_for_mount_point(FILE *fin, struct mountinfo *mntnf, const char
             goto get_mount_info_cleanup;
         }
 
-        mntnf->mntnf_items[fn][len] = '\0';
+        if (fn == MOUNTINFO_INDEX_OPTIONAL_FIELDS)
+        {
+            /* Ignore ' -' that delimits optional fields. */
+            /* Handle also the case where optional fields contains only -. */
+            mntnf->mntnf_items[fn][len >= 2 ? len - 2 : 0] = '\0';
+        }
+        else
+            mntnf->mntnf_items[fn][len] = '\0';
 
-        if (fseek(fin, 1, SEEK_CUR) < 0)
+        /* Don't advance File if the last read character is EOF */
+        if (c != EOF && fseek(fin, 1, SEEK_CUR) < 0)
         {
             pwarn_msg("fseek");
             goto get_mount_info_cleanup;
-        }
-
-        /* ignore optional fields
-           'shared:X' 'master:X' 'propagate_from:X' 'unbindable'
-         */
-        if (   strncmp("shared:", mntnf->mntnf_items[fn], strlen("shared:")) == 0
-            || strncmp("master:", mntnf->mntnf_items[fn], strlen("master:")) == 0
-            || strncmp("propagate_from:", mntnf->mntnf_items[fn], strlen("propagate_from:")) == 0
-            || strncmp("unbindable", mntnf->mntnf_items[fn], strlen("unbindable")) == 0)
-        {
-            free(mntnf->mntnf_items[fn]);
-            mntnf->mntnf_items[fn] = NULL;
-            continue;
         }
 
         ++fn;

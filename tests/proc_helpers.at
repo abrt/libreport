@@ -769,6 +769,170 @@ TS_RETURN_MAIN
 ]])
 
 
+## ------------------------------ ##
+##  get_mountinfo_for_mount_point ##
+## ------------------------------ ##
+
+
+AT_TESTFUN([get_mountinfo_for_mount_point], [[
+#include "testsuite.h"
+#include <err.h>
+
+void test_get_mountinfo_for_mount_point(
+    const char *mount_point,
+    const char *description,
+    const char *input,
+    const char *error,
+    int exp_r,
+    const struct mountinfo *exp_mntnf)
+{
+    TS_PRINTF("++++ %s\n", description);
+
+    char *buf = NULL;
+
+    FILE *mntnf_file = fmemopen((void *)input, strlen(input), "r");
+    if (mntnf_file == NULL) {
+        err(EXIT_FAILURE, "open_memstream");
+    }
+
+    struct mountinfo mntnf;
+    int r;
+    TS_ASSERT_STREAM_FD_CONTENTS_EQ_BEGIN(STDERR_FILENO);
+    r = get_mountinfo_for_mount_point(mntnf_file, &mntnf, mount_point);
+    TS_ASSERT_STREAM_FD_CONTENTS_EQ_END(error, description);
+    TS_ASSERT_SIGNED_OP_MESSAGE(r, ==, exp_r, description);
+
+    if (r == 0 && exp_mntnf != NULL) {
+        TS_ASSERT_STRING_EQ(mntnf.mntnf_items[0], exp_mntnf->mntnf_items[0], "Item 0");
+        TS_ASSERT_STRING_EQ(mntnf.mntnf_items[1], exp_mntnf->mntnf_items[1], "Item 1");
+        TS_ASSERT_STRING_EQ(mntnf.mntnf_items[2], exp_mntnf->mntnf_items[2], "Item 2");
+        TS_ASSERT_STRING_EQ(mntnf.mntnf_items[3], exp_mntnf->mntnf_items[3], "Item 3");
+        TS_ASSERT_STRING_EQ(mntnf.mntnf_items[4], exp_mntnf->mntnf_items[4], "Item 4");
+        TS_ASSERT_STRING_EQ(mntnf.mntnf_items[5], exp_mntnf->mntnf_items[5], "Item 5");
+        TS_ASSERT_STRING_EQ(mntnf.mntnf_items[6], exp_mntnf->mntnf_items[6], "Item 6");
+        TS_ASSERT_STRING_EQ(mntnf.mntnf_items[7], exp_mntnf->mntnf_items[7], "Item 7");
+        TS_ASSERT_STRING_EQ(mntnf.mntnf_items[8], exp_mntnf->mntnf_items[8], "Item 8");
+        TS_ASSERT_STRING_EQ(mntnf.mntnf_items[9], exp_mntnf->mntnf_items[9], "Item 9");
+    }
+
+    fclose(mntnf_file);
+    free(buf);
+
+    TS_PRINTF("---- %s\n", description);
+}
+
+#define TS_MOUNT_INFO(f0, f1, f2, f3, f4, f5, f6, f7, f8, f9) \
+    ((struct mountinfo){ .mntnf_items = { (char *)f0, (char *)f1, (char *)f2, \
+                                          (char *)f3, (char *)f4, (char *)f5, \
+                                          (char *)f6, (char *)f7, (char *)f8, \
+                                          (char *)f9 } })
+
+
+TS_MAIN
+{
+    test_get_mountinfo_for_mount_point(
+        /* mount point */ "/",
+        /* description */ "Empty file",
+        /* input       */ "",
+        /* error       */ "Mountinfo line does not have enough fields 0\n",
+        /* exp_r       */ 1,
+        /* exp_mntnf   */ NULL
+    );
+
+    test_get_mountinfo_for_mount_point(
+        /* mount point */ "/",
+        /* description */ "Not-enough fields",
+        /* input       */ "12 34 567:10 ",
+        /* error       */ "Mountinfo line does not have enough fields 3\n",
+        /* exp_r       */ 1,
+        /* exp_mntnf   */ NULL
+    );
+
+    test_get_mountinfo_for_mount_point(
+        /* mount point */ "/",
+        /* description */ "Missing the mount point field",
+        /* input       */ "12 34 567:10 /foo ",
+        /* error       */ "Mountinfo line does not have the mount point field\n",
+        /* exp_r       */ 2,
+        /* exp_mntnf   */ NULL
+    );
+
+    test_get_mountinfo_for_mount_point(
+        /* mount point */ "/",
+        /* description */ "Not found mount point",
+        /* input       */ "12 34 567:10 /foo /bar ",
+        /* error       */ "",
+        /* exp_r       */ -ENOKEY,
+        /* exp_mntnf   */ NULL
+    );
+
+    test_get_mountinfo_for_mount_point(
+        /* mount point */ "/",
+        /* description */ "Unexpected end of file",
+        /* input       */ "12 34 567:10 /foo / rw,noatime",
+        /* error       */ "Unexpected end of file\n",
+        /* exp_r       */ -ENODATA,
+        /* exp_mntnf   */ NULL
+    );
+
+    test_get_mountinfo_for_mount_point(
+        /* mount point */ "/",
+        /* description */ "Escaped path: no mount point field",
+        /* input       */ "12 34 567:10 /foo\\ bar ",
+        /* error       */ "Mountinfo line does not have the mount point field\n",
+        /* exp_r       */ 2,
+        /* exp_mntnf   */ NULL
+    );
+
+    test_get_mountinfo_for_mount_point(
+        /* mount point */ "/",
+        /* description */ "Correct, matching line",
+        /* input       */ "12 34 567:10 /foo / rw,noatime shared:1 - xfs /dev/sda1 rw,seclabel,attr2",
+        /* error       */ "",
+        /* exp_r       */ 0,
+        /* exp_mntnf   */ &TS_MOUNT_INFO("12", "34", "567:10", "/foo", "/", "rw,noatime", "shared:1", "xfs", "/dev/sda1", "rw,seclabel,attr2")
+    );
+
+    test_get_mountinfo_for_mount_point(
+        /* mount point */ "/",
+        /* description */ "Correct, matching line, empty optional fields",
+        /* input       */ "12 34 567:10 /foo / rw,noatime - xfs /dev/sda1 rw,seclabel,attr2",
+        /* error       */ "",
+        /* exp_r       */ 0,
+        /* exp_mntnf   */ &TS_MOUNT_INFO("12", "34", "567:10", "/foo", "/", "rw,noatime", "", "xfs", "/dev/sda1", "rw,seclabel,attr2")
+    );
+
+    test_get_mountinfo_for_mount_point(
+        /* mount point */ "/",
+        /* description */ "Correct, matching line, several optional fields",
+        /* input       */ "12 34 567:10 /foo / rw,noatime shared:1 master:2 unbindable:3 - xfs /dev/sda1 rw,seclabel,attr2",
+        /* error       */ "",
+        /* exp_r       */ 0,
+        /* exp_mntnf   */ &TS_MOUNT_INFO("12", "34", "567:10", "/foo", "/", "rw,noatime", "shared:1 master:2 unbindable:3", "xfs", "/dev/sda1", "rw,seclabel,attr2")
+    );
+
+    test_get_mountinfo_for_mount_point(
+        /* mount point */ "/",
+        /* description */ "Escaped path: correct, matching line",
+        /* input       */ "12 34 567:10 /foo\\ bar / rw,noatime shared:1 - xfs /dev/sda1 rw,seclabel,attr2",
+        /* error       */ "",
+        /* exp_r       */ 0,
+        /* exp_mntnf   */ &TS_MOUNT_INFO("12", "34", "567:10", "/foo\\ bar", "/", "rw,noatime", "shared:1", "xfs", "/dev/sda1", "rw,seclabel,attr2")
+    );
+
+    test_get_mountinfo_for_mount_point(
+        /* mount point */ "/",
+        /* description */ "Escaped path: correct, matching line + escaped mount source",
+        /* input       */ "12 34 567:10 /foo\\ bar / rw,noatime shared:1 - xfs /dev/sda\\ 1 rw,seclabel,attr2",
+        /* error       */ "",
+        /* exp_r       */ 0,
+        /* exp_mntnf   */ &TS_MOUNT_INFO("12", "34", "567:10", "/foo\\ bar", "/", "rw,noatime", "shared:1", "xfs", "/dev/sda\\ 1", "rw,seclabel,attr2")
+    );
+}
+TS_RETURN_MAIN
+]])
+
+
 ## ------------------- ##
 ## dump_namespace_diff ##
 ## ------------------- ##
