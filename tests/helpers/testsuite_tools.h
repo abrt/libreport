@@ -48,7 +48,7 @@ static struct dump_dir *testsuite_dump_dir_create(uid_t uid, mode_t mode, int ts
 
     gid_t dd_default_gid_bck = dd_g_fs_group_gid;
 
-    if (getuid() != 0 && dd_g_fs_group_gid != (gid_t)-1) {
+    if (getuid() != 0 && dd_g_fs_group_gid == (gid_t)-1) {
         /* dd_create changes fsgid of the resulting directory and its files to
          * abrt's gid. However, this does not work for unprivileged users.
          * It is quiet common that test suites are not run under root user.
