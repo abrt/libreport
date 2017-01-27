@@ -875,3 +875,145 @@ TS_MAIN
 }
 TS_RETURN_MAIN
 ]])
+
+
+## -------------------- ##
+## process_has_own_root ##
+## -------------------- ##
+
+AT_TESTFUN([process_has_own_root], [[
+#include "testsuite.h"
+#include <sys/sendfile.h>
+#include <err.h>
+
+void write_cmd_output_to_fd(int fd, const char *cmd)
+{
+    FILE *proc = popen(cmd, "r");
+    if (proc == NULL) {
+        err(EXIT_FAILURE, cmd);
+    }
+
+    char *output = xmalloc_fgetline(proc);
+    TS_PRINTF("%s : %s\n", cmd, output);
+
+    full_write_str(fd, output);
+
+    free(output);
+    pclose(proc);
+}
+
+TS_MAIN
+{
+    char mock_pid_proc[] = "/tmp/libreport.testsuite.pid.XXXXXX";
+
+    if (mkdtemp(mock_pid_proc) == NULL) {
+        err(EXIT_FAILURE, "mkdtemp(%s)", mock_pid_proc);
+    }
+
+    const int mock_pid_proc_fd = open(mock_pid_proc, O_DIRECTORY);
+    if (mock_pid_proc_fd < 0) {
+        err(EXIT_FAILURE, "open(%s, O_DIRECTORY)", mock_pid_proc);
+    }
+
+    {
+        /* TODO: add test for open file descriptors */
+        const int r = process_has_own_root_at(mock_pid_proc_fd);
+        TS_ASSERT_SIGNED_EQ(r, -ENOENT);
+    }
+
+    /* Please, notice that the mode is intentionally 0000 - no read, no write,
+     * no execute access */
+    int mntnf_fd = openat(mock_pid_proc_fd, "mountinfo", O_RDWR | O_CREAT | O_EXCL, 0000);
+
+    {
+        /* TODO: add test for open file descriptors */
+        const int r = process_has_own_root_at(mock_pid_proc_fd);
+        TS_ASSERT_SIGNED_EQ(r, -EACCES);
+    }
+
+    /* Make the file readable & writable */
+    fchmod(mntnf_fd, 0600);
+
+    {
+        /* TODO: add test for open file descriptors */
+        const int r = process_has_own_root_at(mock_pid_proc_fd);
+        TS_ASSERT_SIGNED_EQ(r, -ENOKEY);
+    }
+
+    full_write_str(mntnf_fd, "36 35 98:0 /madeuproot /foo rw,noatime master:1 - ext3 /dev/myroot rw,errors=continue\n");
+    full_write_str(mntnf_fd, "37 38 99:0 /mnt3 /mnt4 rw,noatime master:2 - ext3 /dev/boot rw,errors=continue\n");
+
+    fsync(mntnf_fd);
+    lseek(mntnf_fd, 0, SEEK_SET);
+
+    TS_PRINTF("Made-up mountinfo created in %s\n", mock_pid_proc);
+
+    {
+        /* TODO: add test for open file descriptors */
+        const int r = process_has_own_root_at(mock_pid_proc_fd);
+        TS_ASSERT_SIGNED_EQ(r, -ENOKEY);
+    }
+
+    TS_PRINTF("Going to copy /proc/1/mountinfo to %s\n", mock_pid_proc);
+
+    const int pid1_mntnf_fd = open("/proc/1/mountinfo", O_RDONLY);
+    if (pid1_mntnf_fd < 0) {
+        err(EXIT_FAILURE, "/proc/1/mountinfo");
+    }
+
+    TS_PRINTF("Copying /proc/1/mountinfo to %s\n", mock_pid_proc);
+
+    {
+        int r = 0;
+
+        while ((r = sendfile(mntnf_fd, pid1_mntnf_fd, NULL, 65535)) > 0)
+            ;
+
+        if (r < 0) {
+            err(EXIT_FAILURE, "Cannot copy /proc/1/mountinfo to %s", mock_pid_proc);
+        }
+    }
+
+    close(pid1_mntnf_fd);
+
+    fsync(mntnf_fd);
+    lseek(mntnf_fd, 0, SEEK_SET);
+
+    TS_PRINTF("Copied /proc/1/mountinfo to %s\n", mock_pid_proc);
+
+    {
+        /* TODO: add test for open file descriptors */
+        const int r = process_has_own_root_at(mock_pid_proc_fd);
+        TS_ASSERT_SIGNED_EQ(r, 0);
+    }
+
+    /* Test different source directory. Swap / with \ in the mock mountinfo. */
+    fsync(mntnf_fd);
+    lseek(mntnf_fd, 0, SEEK_SET);
+
+    full_write_str(mntnf_fd, "12 34 567:89 /madeuproot / ");
+    write_cmd_output_to_fd(mntnf_fd, "findmnt -r -n -o VFS-OPTIONS,OPT-FIELDS -T /");
+    full_write_str(mntnf_fd, " - ");
+    write_cmd_output_to_fd(mntnf_fd, "findmnt -r -n -o FSTYPE,SOURCE,FS-OPTIONS -T /");
+
+    fsync(mntnf_fd);
+    lseek(mntnf_fd, 0, SEEK_SET);
+
+    {
+        /* TODO: add test for open file descriptors */
+        const int r = process_has_own_root_at(mock_pid_proc_fd);
+        TS_ASSERT_SIGNED_EQ(r, 1);
+    }
+
+    close(mntnf_fd);
+
+    if (unlinkat(mock_pid_proc_fd, "mountinfo", 0) < 0) {
+        perror("unlinkat(fd, mountinfo)");
+    }
+
+    if (unlink(mock_pid_proc) < 0) {
+        perror("unlink(/mock_pid_dir)");
+    }
+}
+TS_RETURN_MAIN
+]])
