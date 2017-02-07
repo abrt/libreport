@@ -769,6 +769,170 @@ TS_RETURN_MAIN
 ]])
 
 
+## ------------------------------ ##
+##  get_mountinfo_for_mount_point ##
+## ------------------------------ ##
+
+
+AT_TESTFUN([get_mountinfo_for_mount_point], [[
+#include "testsuite.h"
+#include <err.h>
+
+void test_get_mountinfo_for_mount_point(
+    const char *mount_point,
+    const char *description,
+    const char *input,
+    const char *error,
+    int exp_r,
+    const struct mountinfo *exp_mntnf)
+{
+    TS_PRINTF("++++ %s\n", description);
+
+    char *buf = NULL;
+
+    FILE *mntnf_file = fmemopen((void *)input, strlen(input), "r");
+    if (mntnf_file == NULL) {
+        err(EXIT_FAILURE, "open_memstream");
+    }
+
+    struct mountinfo mntnf;
+    int r;
+    TS_ASSERT_STREAM_FD_CONTENTS_EQ_BEGIN(STDERR_FILENO);
+    r = get_mountinfo_for_mount_point(mntnf_file, &mntnf, mount_point);
+    TS_ASSERT_STREAM_FD_CONTENTS_EQ_END(error, description);
+    TS_ASSERT_SIGNED_OP_MESSAGE(r, ==, exp_r, description);
+
+    if (r == 0 && exp_mntnf != NULL) {
+        TS_ASSERT_STRING_EQ(mntnf.mntnf_items[0], exp_mntnf->mntnf_items[0], "Item 0");
+        TS_ASSERT_STRING_EQ(mntnf.mntnf_items[1], exp_mntnf->mntnf_items[1], "Item 1");
+        TS_ASSERT_STRING_EQ(mntnf.mntnf_items[2], exp_mntnf->mntnf_items[2], "Item 2");
+        TS_ASSERT_STRING_EQ(mntnf.mntnf_items[3], exp_mntnf->mntnf_items[3], "Item 3");
+        TS_ASSERT_STRING_EQ(mntnf.mntnf_items[4], exp_mntnf->mntnf_items[4], "Item 4");
+        TS_ASSERT_STRING_EQ(mntnf.mntnf_items[5], exp_mntnf->mntnf_items[5], "Item 5");
+        TS_ASSERT_STRING_EQ(mntnf.mntnf_items[6], exp_mntnf->mntnf_items[6], "Item 6");
+        TS_ASSERT_STRING_EQ(mntnf.mntnf_items[7], exp_mntnf->mntnf_items[7], "Item 7");
+        TS_ASSERT_STRING_EQ(mntnf.mntnf_items[8], exp_mntnf->mntnf_items[8], "Item 8");
+        TS_ASSERT_STRING_EQ(mntnf.mntnf_items[9], exp_mntnf->mntnf_items[9], "Item 9");
+    }
+
+    fclose(mntnf_file);
+    free(buf);
+
+    TS_PRINTF("---- %s\n", description);
+}
+
+#define TS_MOUNT_INFO(f0, f1, f2, f3, f4, f5, f6, f7, f8, f9) \
+    ((struct mountinfo){ .mntnf_items = { (char *)f0, (char *)f1, (char *)f2, \
+                                          (char *)f3, (char *)f4, (char *)f5, \
+                                          (char *)f6, (char *)f7, (char *)f8, \
+                                          (char *)f9 } })
+
+
+TS_MAIN
+{
+    test_get_mountinfo_for_mount_point(
+        /* mount point */ "/",
+        /* description */ "Empty file",
+        /* input       */ "",
+        /* error       */ "Mountinfo line does not have enough fields 0\n",
+        /* exp_r       */ 1,
+        /* exp_mntnf   */ NULL
+    );
+
+    test_get_mountinfo_for_mount_point(
+        /* mount point */ "/",
+        /* description */ "Not-enough fields",
+        /* input       */ "12 34 567:10 ",
+        /* error       */ "Mountinfo line does not have enough fields 3\n",
+        /* exp_r       */ 1,
+        /* exp_mntnf   */ NULL
+    );
+
+    test_get_mountinfo_for_mount_point(
+        /* mount point */ "/",
+        /* description */ "Missing the mount point field",
+        /* input       */ "12 34 567:10 /foo ",
+        /* error       */ "Mountinfo line does not have the mount point field\n",
+        /* exp_r       */ 2,
+        /* exp_mntnf   */ NULL
+    );
+
+    test_get_mountinfo_for_mount_point(
+        /* mount point */ "/",
+        /* description */ "Not found mount point",
+        /* input       */ "12 34 567:10 /foo /bar ",
+        /* error       */ "",
+        /* exp_r       */ -ENOKEY,
+        /* exp_mntnf   */ NULL
+    );
+
+    test_get_mountinfo_for_mount_point(
+        /* mount point */ "/",
+        /* description */ "Unexpected end of file",
+        /* input       */ "12 34 567:10 /foo / rw,noatime",
+        /* error       */ "Unexpected end of file\n",
+        /* exp_r       */ -ENODATA,
+        /* exp_mntnf   */ NULL
+    );
+
+    test_get_mountinfo_for_mount_point(
+        /* mount point */ "/",
+        /* description */ "Escaped path: no mount point field",
+        /* input       */ "12 34 567:10 /foo\\ bar ",
+        /* error       */ "Mountinfo line does not have the mount point field\n",
+        /* exp_r       */ 2,
+        /* exp_mntnf   */ NULL
+    );
+
+    test_get_mountinfo_for_mount_point(
+        /* mount point */ "/",
+        /* description */ "Correct, matching line",
+        /* input       */ "12 34 567:10 /foo / rw,noatime shared:1 - xfs /dev/sda1 rw,seclabel,attr2",
+        /* error       */ "",
+        /* exp_r       */ 0,
+        /* exp_mntnf   */ &TS_MOUNT_INFO("12", "34", "567:10", "/foo", "/", "rw,noatime", "shared:1", "xfs", "/dev/sda1", "rw,seclabel,attr2")
+    );
+
+    test_get_mountinfo_for_mount_point(
+        /* mount point */ "/",
+        /* description */ "Correct, matching line, empty optional fields",
+        /* input       */ "12 34 567:10 /foo / rw,noatime - xfs /dev/sda1 rw,seclabel,attr2",
+        /* error       */ "",
+        /* exp_r       */ 0,
+        /* exp_mntnf   */ &TS_MOUNT_INFO("12", "34", "567:10", "/foo", "/", "rw,noatime", "", "xfs", "/dev/sda1", "rw,seclabel,attr2")
+    );
+
+    test_get_mountinfo_for_mount_point(
+        /* mount point */ "/",
+        /* description */ "Correct, matching line, several optional fields",
+        /* input       */ "12 34 567:10 /foo / rw,noatime shared:1 master:2 unbindable:3 - xfs /dev/sda1 rw,seclabel,attr2",
+        /* error       */ "",
+        /* exp_r       */ 0,
+        /* exp_mntnf   */ &TS_MOUNT_INFO("12", "34", "567:10", "/foo", "/", "rw,noatime", "shared:1 master:2 unbindable:3", "xfs", "/dev/sda1", "rw,seclabel,attr2")
+    );
+
+    test_get_mountinfo_for_mount_point(
+        /* mount point */ "/",
+        /* description */ "Escaped path: correct, matching line",
+        /* input       */ "12 34 567:10 /foo\\ bar / rw,noatime shared:1 - xfs /dev/sda1 rw,seclabel,attr2",
+        /* error       */ "",
+        /* exp_r       */ 0,
+        /* exp_mntnf   */ &TS_MOUNT_INFO("12", "34", "567:10", "/foo\\ bar", "/", "rw,noatime", "shared:1", "xfs", "/dev/sda1", "rw,seclabel,attr2")
+    );
+
+    test_get_mountinfo_for_mount_point(
+        /* mount point */ "/",
+        /* description */ "Escaped path: correct, matching line + escaped mount source",
+        /* input       */ "12 34 567:10 /foo\\ bar / rw,noatime shared:1 - xfs /dev/sda\\ 1 rw,seclabel,attr2",
+        /* error       */ "",
+        /* exp_r       */ 0,
+        /* exp_mntnf   */ &TS_MOUNT_INFO("12", "34", "567:10", "/foo\\ bar", "/", "rw,noatime", "shared:1", "xfs", "/dev/sda\\ 1", "rw,seclabel,attr2")
+    );
+}
+TS_RETURN_MAIN
+]])
+
+
 ## ------------------- ##
 ## dump_namespace_diff ##
 ## ------------------- ##
@@ -871,6 +1035,159 @@ TS_MAIN
         check_file_contents(filename);
 
         unlink(filename);
+    }
+}
+TS_RETURN_MAIN
+]])
+
+
+## -------------------- ##
+## process_has_own_root ##
+## -------------------- ##
+
+AT_TESTFUN([process_has_own_root], [[
+#include "testsuite.h"
+#include <sys/sendfile.h>
+#include <err.h>
+
+void write_cmd_output_to_fd(int fd, const char *cmd)
+{
+    FILE *proc = popen(cmd, "r");
+    if (proc == NULL) {
+        err(EXIT_FAILURE, "popen(%s)", cmd);
+    }
+
+    char *output = xmalloc_fgetline(proc);
+    TS_PRINTF("%s : %s\n", cmd, output);
+
+    const int retcode = pclose(proc);
+    if (retcode == -1) {
+        err(EXIT_FAILURE, "pclose(%s)", cmd);
+    }
+
+    if (retcode != 0) {
+        errx(EXIT_FAILURE, "non-0 status %d of '%s'", cmd);
+    }
+
+    if (output == NULL) {
+        errx(EXIT_FAILURE, "no output of '%s'", cmd);
+    }
+
+    full_write_str(fd, output);
+    free(output);
+}
+
+TS_MAIN
+{
+    char mock_pid_proc[] = "/tmp/libreport.testsuite.pid.XXXXXX";
+
+    if (mkdtemp(mock_pid_proc) == NULL) {
+        err(EXIT_FAILURE, "mkdtemp(%s)", mock_pid_proc);
+    }
+
+    const int mock_pid_proc_fd = open(mock_pid_proc, O_DIRECTORY);
+    if (mock_pid_proc_fd < 0) {
+        err(EXIT_FAILURE, "open(%s, O_DIRECTORY)", mock_pid_proc);
+    }
+
+    {
+        /* TODO: add test for open file descriptors */
+        const int r = process_has_own_root_at(mock_pid_proc_fd);
+        TS_ASSERT_SIGNED_EQ(r, -ENOENT);
+    }
+
+    /* Please, notice that the mode is intentionally 0000 - no read, no write,
+     * no execute access */
+    int mntnf_fd = openat(mock_pid_proc_fd, "mountinfo", O_RDWR | O_CREAT | O_EXCL, 0000);
+
+    {
+        /* TODO: add test for open file descriptors */
+        const int r = process_has_own_root_at(mock_pid_proc_fd);
+        TS_ASSERT_SIGNED_EQ(r, -EACCES);
+    }
+
+    /* Make the file readable & writable */
+    fchmod(mntnf_fd, 0600);
+
+    {
+        /* TODO: add test for open file descriptors */
+        const int r = process_has_own_root_at(mock_pid_proc_fd);
+        TS_ASSERT_SIGNED_EQ(r, -ENOKEY);
+    }
+
+    full_write_str(mntnf_fd, "36 35 98:0 /madeuproot /foo rw,noatime master:1 - ext3 /dev/myroot rw,errors=continue\n");
+    full_write_str(mntnf_fd, "37 38 99:0 /mnt3 /mnt4 rw,noatime master:2 - ext3 /dev/boot rw,errors=continue\n");
+
+    fsync(mntnf_fd);
+    lseek(mntnf_fd, 0, SEEK_SET);
+
+    TS_PRINTF("Made-up mountinfo created in %s\n", mock_pid_proc);
+
+    {
+        /* TODO: add test for open file descriptors */
+        const int r = process_has_own_root_at(mock_pid_proc_fd);
+        TS_ASSERT_SIGNED_EQ(r, -ENOKEY);
+    }
+
+    TS_PRINTF("Going to copy /proc/1/mountinfo to %s\n", mock_pid_proc);
+
+    const int pid1_mntnf_fd = open("/proc/1/mountinfo", O_RDONLY);
+    if (pid1_mntnf_fd < 0) {
+        err(EXIT_FAILURE, "/proc/1/mountinfo");
+    }
+
+    TS_PRINTF("Copying /proc/1/mountinfo to %s\n", mock_pid_proc);
+
+    {
+        int r = 0;
+
+        while ((r = sendfile(mntnf_fd, pid1_mntnf_fd, NULL, 65535)) > 0)
+            ;
+
+        if (r < 0) {
+            err(EXIT_FAILURE, "Cannot copy /proc/1/mountinfo to %s", mock_pid_proc);
+        }
+    }
+
+    close(pid1_mntnf_fd);
+
+    fsync(mntnf_fd);
+    lseek(mntnf_fd, 0, SEEK_SET);
+
+    TS_PRINTF("Copied /proc/1/mountinfo to %s\n", mock_pid_proc);
+
+    {
+        /* TODO: add test for open file descriptors */
+        const int r = process_has_own_root_at(mock_pid_proc_fd);
+        TS_ASSERT_SIGNED_EQ(r, 0);
+    }
+
+    /* Test different source directory. Swap / with \ in the mock mountinfo. */
+    fsync(mntnf_fd);
+    lseek(mntnf_fd, 0, SEEK_SET);
+
+    full_write_str(mntnf_fd, "12 34 567:89 /madeuproot / ");
+    write_cmd_output_to_fd(mntnf_fd, "findmnt -F /proc/1/mountinfo -r -n -o VFS-OPTIONS,OPT-FIELDS -T /");
+    full_write_str(mntnf_fd, " - ");
+    write_cmd_output_to_fd(mntnf_fd, "findmnt -F /proc/1/mountinfo -r -n -o FSTYPE,SOURCE,FS-OPTIONS -T /");
+
+    fsync(mntnf_fd);
+    lseek(mntnf_fd, 0, SEEK_SET);
+
+    {
+        /* TODO: add test for open file descriptors */
+        const int r = process_has_own_root_at(mock_pid_proc_fd);
+        TS_ASSERT_SIGNED_EQ(r, 1);
+    }
+
+    close(mntnf_fd);
+
+    if (unlinkat(mock_pid_proc_fd, "mountinfo", 0) < 0) {
+        perror("unlinkat(fd, mountinfo)");
+    }
+
+    if (rmdir(mock_pid_proc) < 0) {
+        perror("rmdir(/mock_pid_dir)");
     }
 }
 TS_RETURN_MAIN

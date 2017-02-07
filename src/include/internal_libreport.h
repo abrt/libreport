@@ -577,6 +577,8 @@ void die_out_of_memory(void) NORETURN;
 #define perror_msg(...)         log_wrapper(LOG_ERR, __FILE__, __LINE__, __func__, true, true, __VA_ARGS__)
 #define warn_msg(...)           log_wrapper(LOG_WARNING, __FILE__, __LINE__, __func__, false, true, __VA_ARGS__)
 #define pwarn_msg(...)          log_wrapper(LOG_WARNING, __FILE__, __LINE__, __func__, true, true, __VA_ARGS__)
+#define notice_msg(...)         log_wrapper(LOG_NOTICE, __FILE__, __LINE__, __func__, false, true, __VA_ARGS__)
+#define pnotice_msg(...)        log_wrapper(LOG_NOTICE, __FILE__, __LINE__, __func__, true, true, __VA_ARGS__)
 #define error_msg_and_die(...)  log_and_die_wrapper(LOG_ERR, __FILE__, __LINE__, __func__, false, true, __VA_ARGS__)
 #define perror_msg_and_die(...) log_and_die_wrapper(LOG_ERR, __FILE__, __LINE__, __func__, true, true, __VA_ARGS__)
 
@@ -775,9 +777,24 @@ int dump_namespace_diff_ext(const char *dest_filename, pid_t base_pid, pid_t tes
 #define dump_namespace_diff libreport_dump_namespace_diff
 int dump_namespace_diff(const char *dest_filename, pid_t base_pid, pid_t tested_pid);
 
-#define MOUNTINFO_ROOT(val) (val.mntnf_items[3])
-#define MOUNTINFO_MOUNT_POINT(val) (val.mntnf_items[4])
-#define MOUNTINFO_MOUNT_SOURCE(val) (val.mntnf_items[8])
+enum
+{
+    MOUNTINFO_INDEX_MOUNT_ID,
+    MOUNTINFO_INDEX_PARENT_ID,
+    MOUNTINFO_INDEX_MAJOR_MINOR,
+    MOUNTINFO_INDEX_ROOT,
+    MOUNTINFO_INDEX_MOUNT_POINT,
+    MOUNTINFO_INDEX_MOUNT_OPTIONS,
+    MOUNTINFO_INDEX_OPTIONAL_FIELDS,
+    MOUNTINFO_INDEX_FS_TYPE,
+    MOUNTINFO_INDEX_MOUNT_SOURCE,
+    MOUNTINFO_INDEX_SUPER_OPITONS,
+    _MOUNTINFO_INDEX_MAX,
+};
+
+#define MOUNTINFO_ROOT(val) (val.mntnf_items[MOUNTINFO_INDEX_ROOT])
+#define MOUNTINFO_MOUNT_POINT(val) (val.mntnf_items[MOUNTINFO_INDEX_MOUNT_POINT])
+#define MOUNTINFO_MOUNT_SOURCE(val) (val.mntnf_items[MOUNTINFO_INDEX_MOUNT_SOURCE])
 
 struct mountinfo
 {
@@ -786,7 +803,7 @@ struct mountinfo
     /* 10 : mount source: filesystem specific information or "none" */
     /*      but it mount source is preceded by 0 or more optional fields */
     /*      so the effective value is 9 */
-    char *mntnf_items[10];
+    char *mntnf_items[_MOUNTINFO_INDEX_MAX];
 };
 #define mountinfo_destroy libreport_mountinfo_destroy
 void mountinfo_destroy(struct mountinfo *mntnf);
@@ -1156,6 +1173,8 @@ struct dump_dir *open_directory_for_writing(
 #define FILENAME_CONTAINER_UUID    "container_uuid"
 #define FILENAME_CONTAINER_IMAGE   "container_image"
 #define FILENAME_CONTAINER_CMDLINE "container_cmdline"
+/* Container root file-system directory as seen from the host. */
+#define FILENAME_CONTAINER_ROOTFS  "container_rootfs"
 #define FILENAME_DOCKER_INSPECT    "docker_inspect"
 
 /* Type of catched exception

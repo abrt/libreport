@@ -5,6 +5,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- New element 'container_rootfs' has been introduced. The element should
+contain file system path of container's root directory.
+
+### Changed
+- Deciding if a process has own root is no longer based on comparing inodes of
+process' root and system root but mountinfo results are compared instead. This
+approach does correctly recognize chroot in a container.
+
+### Fixed
+- Fix several critical bugs affecting results in parsing of
+the /proc/[pid]/mountinfo file.
+
 
 ## [2.9.0]
 ### Added

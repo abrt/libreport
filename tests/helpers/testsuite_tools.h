@@ -24,6 +24,10 @@
 #include "testsuite.h"
 
 /* Creates a new dump directory in a new temporary directory
+ *
+ * @param uid Owner's uid
+ * @param mode Dump dir mode or -1 for the sane default value 0640.
+ * @param ts_falgs Unused
  */
 static struct dump_dir *testsuite_dump_dir_create(uid_t uid, mode_t mode, int ts_flags)
 {
@@ -42,8 +46,26 @@ static struct dump_dir *testsuite_dump_dir_create(uid_t uid, mode_t mode, int ts
 
     *last_slash = '/';
 
+    gid_t dd_default_gid_bck = dd_g_fs_group_gid;
+
+    if (getuid() != 0 && dd_g_fs_group_gid == (gid_t)-1) {
+        /* dd_create changes fsgid of the resulting directory and its files to
+         * abrt's gid. However, this does not work for unprivileged users.
+         * It is quiet common that test suites are not run under root user.
+         * We can leave this hack to users of the testsuite API but we believe
+         * that this situation is so common, that it is better to that
+         * automatically.
+         *
+         * If dd_g_fs_group_id == -1, then someone has changed intentionally
+         * and we should not touch it.
+         */
+        dd_g_fs_group_gid = getgid();
+    }
+
     struct dump_dir *dd = dd_create(dump_dir_name, uid, mode == (mode_t)-1 ? 0640 : mode);
     assert(dd != NULL);
+
+    dd_g_fs_group_gid = dd_default_gid_bck;
 
     return dd;
 }

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2015  ABRT team <crash-catcher@lists.fedorahosted.org>
+    Copyright (C) 2015-2017  ABRT team <crash-catcher@lists.fedorahosted.org>
     Copyright (C) 2015  RedHat inc.
 
     This program is free software; you can redistribute it and/or modify
@@ -20,8 +20,34 @@
 
     libreport testsuite helpers
 
+    These helpers should make writing of libreport tests very convenient. Here
+    is an example of how a test case can look like.
+
+        #include "testsuite.h"
+        #include "testsuite_tools.h"
+
+        TS_MAIN
+        {
+            struct dump_dir *dd = testsuite_dump_dir_create(getuid(), -1, 0);
+
+            TS_ASSERT_PTR_IS_NOT_NULL(dd);
+
+            testsuite_dump_dir_delete(dd);
+        }
+        TS_RETURN_MAIN
+
+    Both failed and successful asserts updates relevant global counters and the
+    TS_RETURN_MAIN macro includes the return statement with the value of the
+    failed asserts counter. Hence, the example test case exits with 1 if dd is
+    NULL.
+
+    ----
+
     Feel free to add whatever macro you need but please try to keep this file
     short and useful.
+
+    Please follow the rule where the actual value is on left side and the
+    expected values is on right side.
 
     Bare in mind usability and print as much accurate log messages as possible:
 
