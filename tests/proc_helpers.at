@@ -1054,16 +1054,27 @@ void write_cmd_output_to_fd(int fd, const char *cmd)
 {
     FILE *proc = popen(cmd, "r");
     if (proc == NULL) {
-        err(EXIT_FAILURE, cmd);
+        err(EXIT_FAILURE, "popen(%s)", cmd);
     }
 
     char *output = xmalloc_fgetline(proc);
     TS_PRINTF("%s : %s\n", cmd, output);
 
-    full_write_str(fd, output);
+    const int retcode = pclose(proc);
+    if (retcode == -1) {
+        err(EXIT_FAILURE, "pclose(%s)", cmd);
+    }
 
+    if (retcode != 0) {
+        errx(EXIT_FAILURE, "non-0 status %d of '%s'", cmd);
+    }
+
+    if (output == NULL) {
+        errx(EXIT_FAILURE, "no output of '%s'", cmd);
+    }
+
+    full_write_str(fd, output);
     free(output);
-    pclose(proc);
 }
 
 TS_MAIN
@@ -1156,9 +1167,9 @@ TS_MAIN
     lseek(mntnf_fd, 0, SEEK_SET);
 
     full_write_str(mntnf_fd, "12 34 567:89 /madeuproot / ");
-    write_cmd_output_to_fd(mntnf_fd, "findmnt -r -n -o VFS-OPTIONS,OPT-FIELDS -T /");
+    write_cmd_output_to_fd(mntnf_fd, "findmnt -F /proc/1/mountinfo -r -n -o VFS-OPTIONS,OPT-FIELDS -T /");
     full_write_str(mntnf_fd, " - ");
-    write_cmd_output_to_fd(mntnf_fd, "findmnt -r -n -o FSTYPE,SOURCE,FS-OPTIONS -T /");
+    write_cmd_output_to_fd(mntnf_fd, "findmnt -F /proc/1/mountinfo -r -n -o FSTYPE,SOURCE,FS-OPTIONS -T /");
 
     fsync(mntnf_fd);
     lseek(mntnf_fd, 0, SEEK_SET);
@@ -1175,8 +1186,8 @@ TS_MAIN
         perror("unlinkat(fd, mountinfo)");
     }
 
-    if (unlink(mock_pid_proc) < 0) {
-        perror("unlink(/mock_pid_dir)");
+    if (rmdir(mock_pid_proc) < 0) {
+        perror("rmdir(/mock_pid_dir)");
     }
 }
 TS_RETURN_MAIN
