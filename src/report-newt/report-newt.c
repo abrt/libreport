@@ -333,12 +333,16 @@ static int report(const char *dump_dir_name)
                             not_reportable ? " " : "",
                             reason ? : _("(no description)"));
 
-        dd_close(dd);
         newtWinMessage(_("Error"), _("Ok"), (char *)"%s", t);
         free(t);
+        free(not_reportable);
+        free(reason);
 
         if (get_global_stop_on_not_reportable())
+        {
+            dd_close(dd);
             return -1;
+        }
     }
 
     dd_close(dd);
