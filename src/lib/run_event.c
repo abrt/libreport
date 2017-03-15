@@ -183,7 +183,7 @@ GList *load_rule_list(GList *rule_list,
 
                 next_line = xmalloc_fgetline(conffile);
 
-                log_parser("next_line is: '%s'", next_line);
+                log_parser("next_line is: '%s'", next_line ? next_line : "EOF");
                 /* stop merging new lines into this event
                  * if we reach
                  * EOF
@@ -194,7 +194,7 @@ GList *load_rule_list(GList *rule_list,
                  *
                  * When adding another directive don't forget to add it to this if!
                  */
-                if (    next_line == '\0'
+                if (    !next_line
                      || *next_line == '#'
                      || strncmp(next_line, "EVENT", strlen("EVENT")) == 0
                      || strncmp(next_line, "include", strlen("include")) == 0
