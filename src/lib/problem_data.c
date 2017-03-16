@@ -649,7 +649,7 @@ void problem_data_get_osinfo(problem_data_t *problem_data, map_string_t *osinfo)
                 FILENAME_OS_INFO, FILENAME_OS_RELEASE);
 }
 
-static const gchar const* reproducible_names[_PROBLEM_REPRODUCIBLE_MAX_] =
+static const gchar *const reproducible_names[_PROBLEM_REPRODUCIBLE_MAX_] =
 {
     "Not sure how to reproduce the problem",
     "The problem is reproducible",
