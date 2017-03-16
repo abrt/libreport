@@ -735,6 +735,30 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Thu Mar 16 2017 Matej Habrnal <mhabrnal@redhat.com> 2.9.1-1
+- build: create tarball in release-* target
+- problem_data: fix double const
+- wizard: fix error found by -Werror=format-security
+- run_event: fix cmp between pointer and zero character
+- build: do not upload tarball to fedorahosted.org
+- spec: do not use fedorahosted.org as source
+- build: fix generating list of dependences in autogen.sh
+- build: generate new release entries with date
+- report-newt: free allocated variables, don't close dd twice
+- build: fix scratch-build target
+- changelog: reflect the PR
+- lib: several bug fixes in parsing of mountinfo
+- lib: correctly recognize chroot in container
+- lib: declare CONTAINER_ROOTS element name
+- lib: add more log wrappers for perror
+- reporter-bugzilla: use /etc/os-release for default url
+- configure.ac: Remove nss dependency
+- spec: include testsuite headers in the devel package
+- tests: include testsuite.h in the dist archive
+- maint: check pulled .po files for errors
+- build: fix bug in changelog generating in release target
+- changelog: fix typos
+
 * Fri Dec 02 2016 Jakub Filak <jakub@thefilaks.net> 2.9.0-1
 - Translation updates
 - build: make the release-* targets smarter

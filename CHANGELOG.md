@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.9.1] - 2017-03-16
 ### Added
 - New element 'container_rootfs' has been introduced. The element should
 contain file system path of container's root directory.
@@ -55,5 +57,6 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.9.0...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.9.1...HEAD
+[2.9.1]: https://github.com/abrt/libreport/compare/2.9.0...2.9.1
 [2.9.0]: https://github.com/abrt/libreport/compare/2.8.0...2.9.0
