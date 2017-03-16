@@ -82,3 +82,4 @@ release:
 	git tag "$$NEW_VER"; \
 	echo -n "$$NEW_VER" > libreport-version
 	autoconf --force
+	$(MAKE) dist
