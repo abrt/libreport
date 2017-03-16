@@ -3094,7 +3094,7 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
                 }
                 else
                 {
-                    log(msg);
+                    log("%s", msg);
                     free(msg);
                 }
             }
