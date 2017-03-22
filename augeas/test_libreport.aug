@@ -16,6 +16,8 @@ Password =
 # bugs in selinux-policy component.
 # (If you need to add more, the syntax is: \"component[,component...]\")
 #
+#       
+#		
 DontMatchComponents = selinux-policy
 
 # for more info about these settings see: https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets
@@ -25,6 +27,14 @@ PrivateGroups=private
   Whitespace_two=start
 	Whitespace_three =start
 	 Whitespace_four= start
+
+AssignmentWhitespace_a   =what
+     AssignmentWhitespace_b   =    an
+AssignmentWhitespace_c=   		 original
+  AssignmentWhitespace_d =      idea
+
+EOLWhitespace_a = nice      
+EOLWhitespace_b = nice 		 
 "
 
     test Libreport.lns get conf =
@@ -44,6 +54,8 @@ PrivateGroups=private
         { "#comment" = "bugs in selinux-policy component." }
         { "#comment" = "(If you need to add more, the syntax is: \"component[,component...]\")" }
         { "#comment" = "" }
+        { "#comment" = "" }
+        { "#comment" = "" }
         { "DontMatchComponents" = "selinux-policy" }
         {}
         { "#comment" = "for more info about these settings see: https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets" }
@@ -53,3 +65,11 @@ PrivateGroups=private
         { "Whitespace_two" = "start" }
         { "Whitespace_three" = "start" }
         { "Whitespace_four" = "start" }
+        {}
+        { "AssignmentWhitespace_a" = "what" }
+        { "AssignmentWhitespace_b" = "an" }
+        { "AssignmentWhitespace_c" = "original" }
+        { "AssignmentWhitespace_d" = "idea" }
+        {}
+        { "EOLWhitespace_a" = "nice" }
+        { "EOLWhitespace_b" = "nice" }
