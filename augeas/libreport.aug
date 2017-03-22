@@ -2,19 +2,24 @@ module Libreport =
     autoload xfm
 
     (* Define useful primitives *)
-    let value_sep    = del / ?= ?/ " = "
-    let value_to_eol = store /([^ \t\n].*[^ \t\n]|[^ \t\n]?)/
-    let eol          = del /\n/ "\n"
-    let ident        = /[a-zA-Z][a-zA-Z_]+/
+    let val_sep        = del /[ \t]*=[ \t]*/ " = "
+    let val            = store /([^ \t\n].*[^ \t\n]|[^ \t\n])/
+    let eol            = del /\n/ "\n"
+    let whitespace_eol = del /[ \t]*\n/ "\n"
+    let ident          = /[a-zA-Z][a-zA-Z_]+/
 
     (* Define comment *)
-    let comment = [ label "#comment" . del /#[ \t]*/ "# " . value_to_eol . eol ]
+    let commented_line = [ label "#comment" . del /#[ \t]*/ "# " . val . eol ]
+    let empty_comment  = [ label "#comment" . value "" . del /#[ \t]*/ "# " . eol ]
+    let comment        = commented_line | empty_comment
 
     (* Define empty *)
-    let empty = [ del /[ \t]*\n/ "\n" ]
+    let empty          = [ del /[ \t]*\n/ "\n" ]
 
     (* Define option *)
-    let option = [ del /[ \t]*/ "" . key ident . value_sep . value_to_eol . eol ]
+    let option_val     = [ del /[ \t]*/ "" . key ident . val_sep . val . whitespace_eol ]
+    let option_no_val  = [ value "" . del /[ \t]*/ "" . key ident . val_sep . eol ]
+    let option         = option_val | option_no_val
 
     (* Define lens *)
     let lns = ( comment | empty | option )*
