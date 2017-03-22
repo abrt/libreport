@@ -102,6 +102,7 @@ static void msg_content_free(msg_content_t *msg_c)
 #define BINARY_NAME "binary"
 #define SYSLOG_ID   "SYSLOG_IDENTIFIER"
 #define MESSAGE_ID  "MESSAGE_ID"
+#define DUMPDIR_PATH "DIR"
 
 enum {
     DUMP_NONE      = 1 << 0,
@@ -122,6 +123,9 @@ static const char *const fields_default[] = {
     FILENAME_EXCEPTION_TYPE ,
     FILENAME_REASON             ,
     FILENAME_CRASH_FUNCTION     ,
+    DUMPDIR_PATH                ,
+    FILENAME_UUID               ,
+    FILENAME_DUPHASH            ,
     NULL
 };
 
@@ -301,6 +305,12 @@ int main(int argc, char **argv)
 
     if (binary_name)
         problem_data_add_text_noteditable(problem_data, BINARY_NAME, binary_name);
+
+    /* add problem dir path into problem data */
+    char *abspath = realpath(dump_dir_name, NULL);
+    if (abspath)
+        problem_data_add_text_noteditable(problem_data, DUMPDIR_PATH, abspath);
+    free(abspath);
 
     /* crash_function element is neeeded by systemd journal messages, save ??, if it doesn't exist */
     const char *crash_function = problem_data_get_content_or_NULL(problem_data, FILENAME_CRASH_FUNCTION);
