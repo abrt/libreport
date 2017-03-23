@@ -126,6 +126,7 @@ static const char *const fields_default[] = {
     DUMPDIR_PATH                ,
     FILENAME_UUID               ,
     FILENAME_DUPHASH            ,
+    FILENAME_COUNT              ,
     NULL
 };
 
