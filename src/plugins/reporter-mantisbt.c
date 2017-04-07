@@ -62,8 +62,6 @@ static char *
 ask_mantisbt_password(const char *message)
 {
     char *password = ask_password(message);
-    /* TODO: this should be fixed in ask_password() as other tools have the same problem */
-    putchar('\n');
     if (password == NULL || password[0] == '\0')
     {
         set_xfunc_error_retval(EXIT_CANCEL_BY_USER);

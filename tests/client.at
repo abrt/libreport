@@ -1,0 +1,152 @@
+# -*- Autotest -*-
+
+AT_BANNER([Client])
+
+## ---------------- ##
+##     set_echo     ##
+## ---------------- ##
+
+AT_TESTFUN([set_echo],
+[[
+#include <assert.h>
+#include "client.h"
+#include "internal_libreport.h"
+#include <pty.h>
+
+#define ECHO_TEST (!(new_mode.c_lflag & ECHO))
+#define ECHONL_TEST (!(new_mode.c_lflag & ECHONL))
+
+int main (void)
+{
+    int master_pty;
+
+    pid_t pid = forkpty(&master_pty, NULL, NULL, NULL);
+    if (pid < 0) {
+        perror_msg_and_die("forkpty failed.");
+    }
+
+    if (pid == 0) {
+        int check, result, changed;
+        struct termios old_mode, new_mode;
+        assert(isatty(STDIN_FILENO) == 1);
+
+        check = tcgetattr(STDIN_FILENO, &new_mode);
+        assert(check == 0);
+        old_mode = new_mode;
+
+        new_mode.c_lflag |= ECHO;
+        new_mode.c_lflag &= ~(ECHONL);
+        check = tcsetattr(STDIN_FILENO, TCSANOW, &new_mode);
+        assert(check == 0);
+
+        changed = 0;
+        result = set_echo(changed);
+        check = tcgetattr(STDIN_FILENO, &new_mode);
+        assert(check == 0);
+        assert(result != changed);
+        assert(ECHO_TEST == 1);
+        assert(ECHONL_TEST == 0);
+
+        changed = 1;
+        result = set_echo(changed);
+        check = tcgetattr(STDIN_FILENO, &new_mode);
+        assert(check == 0);
+        assert(result == changed);
+        assert(ECHO_TEST == 0);
+        assert(ECHONL_TEST == 1);
+
+        new_mode.c_lflag &= ~(ECHO);
+        new_mode.c_lflag |= ECHONL;
+        check = tcsetattr(STDIN_FILENO, TCSANOW, &new_mode);
+        assert(check == 0);
+
+        changed = 0;
+        result = set_echo(changed);
+        check = tcgetattr(STDIN_FILENO, &new_mode);
+        assert(result == changed);
+        assert(ECHO_TEST == 1);
+        assert(ECHONL_TEST == 0);
+
+        new_mode.c_lflag |= ECHO;
+        new_mode.c_lflag &= ~(ECHONL);
+        check = tcsetattr(STDIN_FILENO, TCSANOW, &new_mode);
+        assert(check == 0);
+
+        changed = 1;
+        result = set_echo(changed);
+        check = tcgetattr(STDIN_FILENO, &new_mode);
+        assert(result != changed);
+        assert(ECHO_TEST == 0);
+        assert(ECHONL_TEST == 1);
+
+        new_mode.c_lflag &= ~(ECHO | ECHONL);
+        check = tcsetattr(STDIN_FILENO, TCSANOW, &new_mode);
+        assert(check == 0);
+
+        changed = 0;
+        result = set_echo(changed);
+        check = tcgetattr(STDIN_FILENO, &new_mode);
+        assert(result != changed);
+        assert(ECHO_TEST == 1);
+        assert(ECHONL_TEST == 0);
+
+        new_mode.c_lflag &= ~(ECHO | ECHONL);
+        check = tcsetattr(STDIN_FILENO, TCSANOW, &new_mode);
+        assert(check == 0);
+
+        changed = 1;
+        result = set_echo(changed);
+        check = tcgetattr(STDIN_FILENO, &new_mode);
+        assert(check == 0);
+        assert(result == changed);
+        assert(ECHO_TEST == 0);
+        assert(ECHONL_TEST == 1);
+
+        new_mode.c_lflag |= (ECHO | ECHONL);
+        check = tcsetattr(STDIN_FILENO, TCSANOW, &new_mode);
+        assert(check == 0);
+
+        changed = 0;
+        result = set_echo(changed);
+        check = tcgetattr(STDIN_FILENO, &new_mode);
+        assert(check == 0);
+        assert(result != changed);
+        assert(ECHO_TEST == 1);
+        assert(ECHONL_TEST == 0);
+
+        new_mode.c_lflag |= (ECHO | ECHONL);
+        check = tcsetattr(STDIN_FILENO, TCSANOW, &new_mode);
+        assert(check == 0);
+
+        changed = 1;
+        result = set_echo(changed);
+        check = tcgetattr(STDIN_FILENO, &new_mode);
+        assert(check == 0);
+        assert(result == changed);
+        assert(ECHO_TEST == 0);
+        assert(ECHONL_TEST == 1);
+
+        check = tcsetattr(STDIN_FILENO, TCSANOW, &old_mode);
+        assert(check == 0);
+
+        return 0;
+    }
+
+    int status;
+    if (safe_waitpid(pid, &status, 0) < 0) {
+        perror_msg_and_die("waitpid failed.");
+    }
+
+    if (WIFEXITED(status)) {
+        return WEXITSTATUS(status);
+    }
+    else if (WIFSIGNALED(status)) {
+        error_msg_and_die("Killed by signal %d.", WTERMSIG(status));
+    }
+    else {
+        error_msg_and_die("Test unexpectedly stopped/continued.");
+    }
+
+    return 0;
+}
+]])

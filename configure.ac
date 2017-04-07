@@ -239,6 +239,10 @@ PKG_CHECK_MODULES([AUGEAS], [augeas])
 #PKG_CHECK_MODULES([LZ4], [liblz4])
 
 
+AC_SEARCH_LIBS([forkpty], [util])
+AC_REPLACE_FUNCS([forkpty])
+
+
 AC_ARG_WITH(newt,
 AS_HELP_STRING([--with-newt],[use newt (default is YES)]),
 LIBREPORT_PARSE_WITH([newt]))
