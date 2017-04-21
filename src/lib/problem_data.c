@@ -303,6 +303,7 @@ static const char *const editable_files[] = {
     //FILENAME_EVENT_LOG  ,
     FILENAME_KICKSTART_CFG,
     FILENAME_ANACONDA_TB,
+    FILENAME_CPUINFO    , /* user might want to hide hw details not available to public */
     NULL
 };
 static bool is_editable_file(const char *file_name)
