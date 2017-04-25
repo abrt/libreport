@@ -58,3 +58,106 @@ TS_MAIN
 }
 TS_RETURN_MAIN
 ]])
+
+## ------------------------ ##
+## get_options_with_err_msg ##
+## ------------------------ ##
+
+AT_TESTFUN([get_options_with_err_msg], [[
+#include "testsuite.h"
+#include "internal_libreport.h"
+
+event_option_t* create_new_option(const char *n, const char *v, option_type_t t, int ae)
+{
+    event_option_t *op = new_event_option();
+    op->eo_name = xstrdup(n);
+    op->eo_value = NULL;
+    if(v != NULL)
+        op->eo_value = xstrdup(v);
+
+    op->eo_type = t;
+    op->eo_allow_empty = ae;
+
+    return op;
+}
+
+TS_MAIN
+{
+    GList *errors = NULL, *iter = NULL;
+    invalid_option_t *e_op;
+
+    if (!g_event_config_list)
+        g_event_config_list = g_hash_table_new_full(
+            g_str_hash, g_str_equal, free, (GDestroyNotify) free_event_config
+        );
+
+    {
+        event_config_t *evnt = new_event_config("Bugster0");
+        event_option_t *opt_login = create_new_option("Bugtest_Login", NULL, OPTION_TYPE_TEXT, 0);
+        event_option_t *opt_passwd = create_new_option("Bugtest_Password", NULL, OPTION_TYPE_PASSWORD, 0);
+        event_option_t *opt_url = create_new_option("Bugtest_URL", "bug.test", OPTION_TYPE_TEXT, 0);
+
+        evnt->options = g_list_append(evnt->options, opt_login);
+        evnt->options = g_list_append(evnt->options, opt_passwd);
+        evnt->options = g_list_append(evnt->options, opt_url);
+        g_hash_table_insert(g_event_config_list, xstrdup("Bugster0"), evnt);
+
+        errors = get_options_with_err_msg("Bugster0");
+        e_op = (invalid_option_t *)errors->data;
+
+        TS_ASSERT_STRING_EQ(e_op->invopt_name, "Bugtest_Login", "Show login first");
+
+        iter = g_list_next(errors);
+        e_op = (invalid_option_t *)iter->data;
+
+        TS_ASSERT_STRING_EQ(e_op->invopt_name, "Bugtest_Password", "Show password second");
+        TS_ASSERT_PTR_IS_NULL(g_list_next(iter));
+
+        g_list_free_full(errors, (GDestroyNotify)free_invalid_options);
+    }
+
+    {
+        event_config_t *evnt = new_event_config("Bugster1");
+        event_option_t *opt_login = create_new_option("Bugtest_Login", NULL, OPTION_TYPE_TEXT, 0);
+        event_option_t *opt_passwd = create_new_option("Bugtest_Password", NULL, OPTION_TYPE_PASSWORD, 0);
+        event_option_t *opt_url = create_new_option("Bugtest_URL", "bug.test", OPTION_TYPE_TEXT, 0);
+
+        evnt->options = g_list_append(evnt->options, opt_passwd);
+        evnt->options = g_list_append(evnt->options, opt_login);
+        evnt->options = g_list_append(evnt->options, opt_url);
+        g_hash_table_insert(g_event_config_list, xstrdup("Bugster1"), evnt);
+
+        errors = get_options_with_err_msg("Bugster1");
+        e_op = (invalid_option_t *)errors->data;
+
+        TS_ASSERT_STRING_EQ(e_op->invopt_name, "Bugtest_Password", "Show password first");
+
+        iter = g_list_next(errors);
+        e_op = (invalid_option_t *)iter->data;
+
+        TS_ASSERT_STRING_EQ(e_op->invopt_name, "Bugtest_Login", "Show login second");
+        TS_ASSERT_PTR_IS_NULL(g_list_next(iter));
+
+        g_list_free_full(errors, (GDestroyNotify)free_invalid_options);
+    }
+
+    {
+        event_config_t *evnt = new_event_config("Bugster2");
+        event_option_t *opt_login = create_new_option("Bugtest_Login", "login", OPTION_TYPE_TEXT, 0);
+        event_option_t *opt_passwd = create_new_option("Bugtest_Password", "password", OPTION_TYPE_PASSWORD, 0);
+        event_option_t *opt_url = create_new_option("Bugtest_URL", "bug.test", OPTION_TYPE_TEXT, 0);
+
+        evnt->options = g_list_append(evnt->options, opt_login);
+        evnt->options = g_list_append(evnt->options, opt_passwd);
+        evnt->options = g_list_append(evnt->options, opt_url);
+        g_hash_table_insert(g_event_config_list, xstrdup("Bugster2"), evnt);
+
+        errors = get_options_with_err_msg("Bugster2");
+
+        TS_ASSERT_PTR_IS_NULL(errors);
+    }
+
+    free_event_config_data();
+}
+TS_RETURN_MAIN
+]])

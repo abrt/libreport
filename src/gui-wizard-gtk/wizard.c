@@ -914,10 +914,10 @@ static gint find_by_button(gconstpointer a, gconstpointer button)
 
 static void check_event_config(const char *event_name)
 {
-    GHashTable *errors = validate_event(event_name);
+    GList *errors = get_options_with_err_msg(event_name);
     if (errors != NULL)
     {
-        g_hash_table_unref(errors);
+        g_list_free_full(errors, (GDestroyNotify)free_invalid_options);
         show_event_config_dialog(event_name, GTK_WINDOW(g_top_most_window));
         update_private_ticket_creation_warning_for_selected_event();
     }

@@ -93,15 +93,14 @@ static int select_reporters(GArray *reporters)
 
 static int configure_reporter(struct reporter *r, bool skip_if_valid)
 {
-    GHashTable *error_table;
-    GList *option;
+    GList *error_list, *option;
     event_option_t *opt;
     bool first = true, cancel = false;
     int num_opts, i;
     newtComponent text, *options, button_ok, button_cancel, form;
     newtGrid grid, ogrid, bgrid;
 
-    while ((error_table = validate_event(r->name)) ||
+    while ((error_list = get_options_with_err_msg(r->name)) ||
             (!skip_if_valid && first && r->config))
     {
         text = newtTextboxReflowed(0, 0, ec_get_screen_name(r->config) ?
@@ -151,19 +150,19 @@ static int configure_reporter(struct reporter *r, bool skip_if_valid)
         form = newtForm(NULL, NULL, 0);
         newtGridAddComponentsToForm(grid, form, 1);
 
-        if (!first && error_table)
+        if (!first && error_list)
         {
-            GHashTableIter iter;
-            char *opt_name, *err_msg, buf[4096];
+            GList *iter;
+            char buf[4096];
 
             /* Catenate the error messages */
             buf[0] = '\0';
-            for (g_hash_table_iter_init(&iter, error_table);
-                    g_hash_table_iter_next(&iter, (void**)&opt_name, (void**)&err_msg); )
+            for (iter = error_list; iter; iter = iter->next)
             {
-                opt = get_event_option_from_list(opt_name, r->config->options);
+                invalid_option_t *inv_data = (invalid_option_t *)iter->data;
+                opt = get_event_option_from_list(inv_data->invopt_name, r->config->options);
                 snprintf(buf + strlen(buf), sizeof (buf) - strlen(buf), "%s: %s\n",
-                        opt->eo_label ? opt->eo_label : opt->eo_name, err_msg);
+                        opt->eo_label ? opt->eo_label : opt->eo_name, inv_data->invopt_error);
             }
 
             newtWinMessage(_("Error"), _("Ok"), buf);
@@ -201,14 +200,14 @@ static int configure_reporter(struct reporter *r, bool skip_if_valid)
 
         free(options);
 
-        if (error_table)
-            g_hash_table_destroy(error_table);
+        if (error_list)
+            g_list_free_full(error_list,(GDestroyNotify)free_invalid_options);
         if (cancel)
             break;
         first = false;
     }
 
-    return !error_table;
+    return !error_list;
 }
 
 struct log {
