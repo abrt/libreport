@@ -442,9 +442,6 @@ static void ask_for_missing_settings(const char *event_name)
             case OPTION_TYPE_PASSWORD:
             {
                 opt->eo_value = ask_password(question);
-                /* Newline was not added by pressing Enter because ECHO was
-                   disabled, so add it now. */
-                puts("");
                 break;
             }
             case OPTION_TYPE_BOOL:

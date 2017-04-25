@@ -34,14 +34,26 @@ static int is_noninteractive_mode()
 int set_echo(int enable)
 {
     struct termios t;
+    int chvalue = 0;
     if (tcgetattr(STDIN_FILENO, &t) < 0)
         return 0;
 
-    /* No change needed? */
-    if (!(t.c_lflag & ECHO) == !enable)
+    /* ECHO flag change if needed */
+    if ((!(t.c_lflag & ECHO)) == enable)
+    {
+        t.c_lflag ^= ECHO;
+        chvalue = 1;
+    }
+    /* ECHONL flag change if needed */
+    if ((!(t.c_lflag & ECHONL)) != enable)
+    {
+        t.c_lflag ^= ECHONL;
+        chvalue = 1;
+    }
+
+    if (!chvalue)
         return 0;
 
-    t.c_lflag ^= ECHO;
     if (tcsetattr(STDIN_FILENO, TCSANOW, &t) < 0)
         perror_msg_and_die("tcsetattr");
 
