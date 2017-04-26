@@ -13,6 +13,8 @@
   %define libjson_devel json-c-devel
 %endif
 
+%define glib_ver 2.43
+
 Summary: Generic library for reporting various problems
 Name: libreport
 Version: @@LIBREPORT_VERSION@@
@@ -37,6 +39,7 @@ BuildRequires: xmlto
 BuildRequires: newt-devel
 BuildRequires: libproxy-devel
 BuildRequires: satyr-devel >= 0.18
+BuildRequires: glib2-devel >= %{glib_ver}
 
 %if 0%{?fedora} >= 24
 # A test case uses zh_CN locale to verify XML event translations
@@ -54,6 +57,7 @@ BuildRequires: xz
 BuildRequires: lz4
 Requires: libreport-filesystem = %{version}-%{release}
 Requires: satyr >= 0.18
+Requires: glib2 >= %{glib_ver}
 Requires: xz
 Requires: lz4
 
