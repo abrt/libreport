@@ -5,6 +5,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Add count field into default logs, not just FULL dump. It is useful to know
+if some problem occurred first time or is it problem that happens a lot.
+- Add journal entry PROBLEM_DIR. This features is requested by ABRT cockpit
+plugin.
+- Add newly added cpuinfo files into editable files list. This files are newly
+saved by ABRT because some bugs are related to HW acceleration.
+
+### Fixed
+- Fix libreport augeas for trailing whitespaces and around value separator (=)
+in libreport configs.
+- Update glib minimal version dependency, this bug caused update problems when
+updating libreport and pre-2.28 glib was installed.
+- Fix missing newline when asking for password.
+
 
 ## [2.9.1] - 2017-03-16
 ### Added
