@@ -22,6 +22,11 @@
 GHashTable *g_event_config_list;
 static GHashTable *g_event_config_symlinks;
 
+invalid_option_t *new_invalid_option(void)
+{
+    return xzalloc(sizeof(invalid_option_t));
+}
+
 event_option_t *new_event_option(void)
 {
     return xzalloc(sizeof(event_option_t));
@@ -119,6 +124,15 @@ bool ec_restricted_access_enabled(event_config_t *ec)
     }
 
     return eo->eo_value != NULL && string_to_bool(eo->eo_value);
+}
+
+void free_invalid_options(invalid_option_t *p)
+{
+    if (!p)
+        return;
+    free(p->invopt_name);
+    free(p->invopt_error);
+    free(p);
 }
 
 void free_event_option(event_option_t *p)
@@ -427,7 +441,7 @@ static char *validate_event_option(event_option_t *opt)
     return NULL;
 }
 
-GHashTable *validate_event(const char *event_name)
+GList *get_options_with_err_msg(const char *event_name)
 {
     INITIALIZE_LIBREPORT();
 
@@ -435,21 +449,23 @@ GHashTable *validate_event(const char *event_name)
     if (!config)
         return NULL;
 
-    GHashTable *errors = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
-    GList *li;
+    GList *iter, *err_list = NULL;
 
-    for (li = config->options; li; li = li->next)
+    for (iter = config->options; iter; iter = iter->next)
     {
-        event_option_t *opt = (event_option_t *)li->data;
+        event_option_t *opt = (event_option_t *)iter->data;
         char *err = validate_event_option(opt);
         if (err)
-            g_hash_table_insert(errors, xstrdup(opt->eo_name), err);
+        {
+            invalid_option_t *inv_opt = new_invalid_option();
+            inv_opt->invopt_name = xstrdup(opt->eo_name);
+            inv_opt->invopt_error = xstrdup(err);
+            err_list = g_list_prepend(err_list, inv_opt);
+        }
     }
 
-    if (g_hash_table_size(errors))
-        return errors;
-
-    g_hash_table_destroy(errors);
+    if (err_list != NULL)
+        return g_list_reverse(err_list);
 
     return NULL;
 }

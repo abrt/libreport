@@ -63,6 +63,17 @@ typedef struct
     bool is_advanced;
 } event_option_t;
 
+/*
+ * struct holds
+ *   invopt_name = name of the option with invalid value
+ *   invopt_error = string of the error message
+ */
+typedef struct
+{
+    char *invopt_name;
+    char *invopt_error;
+} invalid_option_t;
+
 event_option_t *new_event_option(void);
 void free_event_option(event_option_t *p);
 
@@ -108,6 +119,8 @@ bool ec_restricted_access_enabled(event_config_t *ec);
 
 void free_event_config(event_config_t *p);
 
+invalid_option_t *new_invalid_option(void);
+void free_invalid_options(invalid_option_t* p);
 
 void load_event_description_from_file(event_config_t *event_config, const char* filename);
 
@@ -126,7 +139,7 @@ extern GHashTable *g_event_config_list;   // for iterating through entire list o
 GList *export_event_config(const char *event_name);
 void unexport_event_config(GList *env_list);
 
-GHashTable *validate_event(const char *event_name);
+GList *get_options_with_err_msg(const char *event_name);
 
 /*
  * Checks usability of problem's backtrace rating against required rating level

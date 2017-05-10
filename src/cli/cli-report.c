@@ -414,19 +414,17 @@ static void ask_for_missing_settings(const char *event_name)
 {
     for (int i = 0; i < 3; ++i)
     {
-        GHashTable *error_table = validate_event(event_name);
-        if (!error_table)
+        GList *err_list = NULL, *iter = NULL;
+        err_list = get_options_with_err_msg(event_name);
+        if(!err_list)
             return;
 
         event_config_t *event_config = get_event_config(event_name);
 
-        GHashTableIter iter;
-        char *opt_name, *err_msg;
-        g_hash_table_iter_init(&iter, error_table);
-        while (g_hash_table_iter_next(&iter, (void**)&opt_name, (void**)&err_msg))
+        for (iter = err_list; iter; iter = iter->next)
         {
-            event_option_t *opt = get_event_option_from_list(opt_name,
-                                                             event_config->options);
+            invalid_option_t *err_data = (invalid_option_t *)iter->data;
+            event_option_t *opt = get_event_option_from_list(err_data->invopt_name, event_config->options);
 
             free(opt->eo_value);
             opt->eo_value = NULL;
@@ -459,25 +457,27 @@ static void ask_for_missing_settings(const char *event_name)
             free(question);
         }
 
-        g_hash_table_destroy(error_table);
+        g_list_free_full(err_list, (GDestroyNotify)free_invalid_options);
 
-        error_table = validate_event(event_name);
-        if (!error_table)
+        err_list = get_options_with_err_msg(event_name);
+        if (!err_list)
             return;
 
         alert(_("Your input is not valid, because of:"));
-        g_hash_table_iter_init(&iter, error_table);
-        while (g_hash_table_iter_next(&iter, (void**)&opt_name, (void**)&err_msg))
+        for (iter = err_list; iter; iter = iter -> next)
         {
-            char *msg = xasprintf(_("Bad value for '%s': %s"), opt_name, err_msg);
+            invalid_option_t *err_data = (invalid_option_t *)iter->data;
+            char *msg = xasprintf(_("Bad value for '%s': %s"),
+                                    err_data->invopt_name,
+                                    err_data->invopt_error);
             alert(msg);
             free(msg);
         }
 
-        g_hash_table_destroy(error_table);
+        g_list_free_full(err_list, (GDestroyNotify)free_invalid_options);
     }
 
-    /* we ask for 3 times and still don't have valid infromation */
+    /* we ask for 3 times and still don't have valid information */
     error_msg_and_die("Invalid input, exiting.");
 }
 

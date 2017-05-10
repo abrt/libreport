@@ -19,6 +19,8 @@ in libreport configs.
 - Update glib minimal version dependency, this bug caused update problems when
 updating libreport and pre-2.28 glib was installed.
 - Fix missing newline when asking for password.
+- Fix a bug causing inconsistent order of username and password fields when
+reporting bugs.
 
 
 ## [2.9.1] - 2017-03-16
