@@ -441,7 +441,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %postun web -p /sbin/ldconfig
 
 %files -f %{name}.lang
-%doc README
+%doc README.md
 %license COPYING
 %config(noreplace) %{_sysconfdir}/%{name}/libreport.conf
 %config(noreplace) %{_sysconfdir}/%{name}/report_event.conf
