@@ -203,13 +203,9 @@ static GtkWidget *create_event_config_grid()
 {
     GtkWidget *option_table = gtk_grid_new();
 
-#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 11) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 11 && GTK_MICRO_VERSION < 2))
-    gtk_widget_set_margin_left(option_table, 5);
-    gtk_widget_set_margin_right(option_table, 5);
-#else
     gtk_widget_set_margin_start(option_table, 5);
     gtk_widget_set_margin_end(option_table, 5);
-#endif
+
     gtk_widget_set_margin_top(option_table, 5);
     gtk_widget_set_margin_bottom(option_table, 5);
 
