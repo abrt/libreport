@@ -1002,12 +1002,10 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
     if (!event_name || !event_name[0])
     {
         GtkWidget *lbl = gtk_label_new(_("No reporting targets are defined for this problem. Check configuration in /etc/libreport/*"));
-#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 5))
-        gtk_misc_set_alignment(GTK_MISC(lbl), /*x*/ 0.0, /*y*/ 0.0);
-#else
+
         gtk_widget_set_halign (lbl, GTK_ALIGN_START);
         gtk_widget_set_valign (lbl, GTK_ALIGN_END);
-#endif
+
         make_label_autowrap_on_resize(GTK_LABEL(lbl));
         gtk_box_pack_start(box, lbl, /*expand*/ true, /*fill*/ false, /*padding*/ 0);
         return NULL;
@@ -2217,12 +2215,10 @@ static void add_warning(const char *warning)
     /* should be safe to free it, gtk calls strdup() to copy it */
     free(label_str);
 
-#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 5))
-    gtk_misc_set_alignment(GTK_MISC(warning_lbl), 0.0, 0.0);
-#else
+
     gtk_widget_set_halign (warning_lbl, GTK_ALIGN_START);
     gtk_widget_set_valign (warning_lbl, GTK_ALIGN_END);
-#endif
+
     gtk_label_set_justify(GTK_LABEL(warning_lbl), GTK_JUSTIFY_LEFT);
     gtk_label_set_line_wrap(GTK_LABEL(warning_lbl), TRUE);
 
@@ -2988,11 +2984,8 @@ static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback f
         gtk_label_set_use_markup(GTK_LABEL(label), true);
         gtk_widget_set_halign(label, GTK_ALIGN_START);
         gtk_widget_set_margin_top(label, 10);
-#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 11) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 11 && GTK_MICRO_VERSION < 2))
-        gtk_widget_set_margin_left(label, 40);
-#else
         gtk_widget_set_margin_start(label, 40);
-#endif
+
         gtk_widget_set_margin_bottom(label, 10);
         g_list_free(children);
         free(btn_label);
@@ -3721,16 +3714,11 @@ void create_assistant(GtkApplication *app, bool expert_mode)
     gtk_box_pack_start(g_box_buttons, g_btn_onfail, false, false, 5);
     gtk_box_pack_start(g_box_buttons, g_btn_repeat, false, false, 5);
     /* Btns above are to the left, the rest are to the right: */
-#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 5))
-    GtkWidget *w = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);
-    gtk_box_pack_start(g_box_buttons, w, true, true, 5);
-    gtk_box_pack_start(g_box_buttons, g_btn_detail, false, false, 5);
-    gtk_box_pack_start(g_box_buttons, g_btn_next, false, false, 5);
-#else
+
     gtk_widget_set_valign(GTK_WIDGET(g_btn_next), GTK_ALIGN_END);
     gtk_box_pack_end(g_box_buttons, g_btn_next, false, false, 5);
     gtk_box_pack_end(g_box_buttons, g_btn_detail, false, false, 5);
-#endif
+
 
     {   /* Warnings area widget definition start */
         g_box_warning_labels = GTK_BOX(gtk_box_new(GTK_ORIENTATION_VERTICAL, 0));
@@ -3747,23 +3735,15 @@ void create_assistant(GtkApplication *app, bool expert_mode)
         gtk_widget_set_visible(g_widget_warnings_area, FALSE);
         gtk_widget_set_no_show_all(g_widget_warnings_area, TRUE);
 
-#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 5))
-        GtkWidget *alignment_left = gtk_alignment_new(0.5,0.5,1,1);
-        gtk_widget_set_visible(alignment_left, TRUE);
-        gtk_box_pack_start(GTK_BOX(g_widget_warnings_area), alignment_left, true, false, 0);
-#else
+	
         gtk_widget_set_valign(GTK_WIDGET(image), GTK_ALIGN_CENTER);
         gtk_widget_set_valign(GTK_WIDGET(vbox), GTK_ALIGN_CENTER);
-#endif
+
 
         gtk_box_pack_start(GTK_BOX(g_widget_warnings_area), image, false, false, 5);
         gtk_box_pack_start(GTK_BOX(g_widget_warnings_area), GTK_WIDGET(vbox), false, false, 0);
 
-#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 5))
-        GtkWidget *alignment_right = gtk_alignment_new(0.5,0.5,1,1);
-        gtk_widget_set_visible(alignment_right, TRUE);
-        gtk_box_pack_start(GTK_BOX(g_widget_warnings_area), alignment_right, true, false, 0);
-#endif
+
     }   /* Warnings area widget definition end */
 
     g_box_assistant = GTK_BOX(gtk_box_new(GTK_ORIENTATION_VERTICAL, 0));

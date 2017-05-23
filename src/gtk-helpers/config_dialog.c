@@ -271,12 +271,6 @@ GtkWidget *create_config_tab_content(const char *column_label,
     gtk_tree_view_column_set_sort_column_id(column, COLUMN_NAME);
     gtk_tree_view_append_column(GTK_TREE_VIEW(tv), column);
 
-#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 6))
-    /* https://bugzilla.gnome.org/show_bug.cgi?id=733312 */
-    /* "Please draw rows in alternating colors": */
-    gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(tv), TRUE);
-#endif
-
     // TODO: gtk_tree_view_set_headers_visible(FALSE)? We have only one column anyway...
     GtkTreeModel *model = gtk_tree_model_filter_new(GTK_TREE_MODEL(store), NULL);
     gtk_tree_model_filter_set_visible_func(GTK_TREE_MODEL_FILTER(model), config_filter_func, NULL, NULL);
@@ -382,13 +376,9 @@ GtkWindow *create_config_list_window(GHashTable *configs, GtkWindow *parent)
     g_signal_connect(close_btn, "clicked", (GCallback)on_close_cb, window);
 
     gtk_box_pack_start(GTK_BOX(btn_box), close_btn, 0, 0, 5);
-#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 5))
-    GtkWidget *align = gtk_alignment_new(0, 0, 0, 0);
-    gtk_box_pack_start(GTK_BOX(btn_box), align, true, true, 5);
-    gtk_box_pack_start(GTK_BOX(btn_box), configure_btn, 0, 0, 5);
-#else
+
     gtk_box_pack_end(GTK_BOX(btn_box), configure_btn, 0, 0, 5);
-#endif
+
 
 
     gtk_box_pack_start(GTK_BOX(main_vbox), btn_box, 0, 0, 0);
