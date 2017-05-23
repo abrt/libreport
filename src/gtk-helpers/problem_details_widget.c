@@ -119,17 +119,10 @@ problem_details_widget_add_single_line(ProblemDetailsWidget *self, const char *n
     gtk_widget_set_hexpand(value, TRUE);
     gtk_widget_override_font(GTK_WIDGET(value), self->priv->font);
 
-#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 11) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 11 && GTK_MICRO_VERSION < 2))
-    gtk_widget_set_margin_left(label, 20);
-    gtk_widget_set_margin_right(label, 20);
-
-    gtk_widget_set_margin_left(value, 5);
-#else
     gtk_widget_set_margin_start(label, 20);
     gtk_widget_set_margin_end(label, 20);
 
     gtk_widget_set_margin_start(value, 5);
-#endif
 
     const gulong row = problem_details_widget_append_row(self);
 
