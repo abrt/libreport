@@ -35,16 +35,12 @@ static GtkWidget *gtk_label_new_justify_left(const gchar *label_str)
 {
     GtkWidget *label = gtk_label_new(label_str);
     gtk_label_set_justify(GTK_LABEL(label), GTK_JUSTIFY_LEFT);
-#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 5))
-    gtk_misc_set_alignment(GTK_MISC(label), /*xalign:*/ 0, /*yalign:*/ 0.5);
-    /* Make some space between label and input field to the right of it: */
-    gtk_misc_set_padding(GTK_MISC(label), /*xpad:*/ 5, /*ypad:*/ 0);
-#else
+
     gtk_widget_set_halign (label, GTK_ALIGN_START);
     /* Make some space between label and input field to the right of it: */
     gtk_widget_set_margin_start(label, 5);
     gtk_widget_set_margin_end(label, 5);
-#endif
+
     return label;
 }
 
@@ -153,12 +149,10 @@ static void add_option_to_table(gpointer data, gpointer user_data)
         case OPTION_TYPE_HINT_HTML:
             label = gtk_label_new(option_label);
             gtk_label_set_use_markup(GTK_LABEL(label), TRUE);
-#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 5))
-            gtk_misc_set_alignment(GTK_MISC(label), /*x,yalign:*/ 0.0, 0.0);
-#else
+
             gtk_widget_set_halign(label, GTK_ALIGN_START);
             gtk_widget_set_valign(label, GTK_ALIGN_START);
-#endif
+
             make_label_autowrap_on_resize(GTK_LABEL(label));
 
             last_row = add_one_row_to_grid(option_table);
@@ -190,12 +184,10 @@ static void add_option_to_table(gpointer data, gpointer user_data)
     {
         label = gtk_label_new(option->eo_note_html);
         gtk_label_set_use_markup(GTK_LABEL(label), TRUE);
-#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 5))
-        gtk_misc_set_alignment(GTK_MISC(label), /*x,yalign:*/ 0.0, 0.0);
-#else
+
         gtk_widget_set_halign(label, GTK_ALIGN_START);
         gtk_widget_set_valign(label, GTK_ALIGN_START);
-#endif
+
         make_label_autowrap_on_resize(GTK_LABEL(label));
 
         last_row = add_one_row_to_grid(option_table);

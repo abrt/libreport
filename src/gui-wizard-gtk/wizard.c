@@ -1002,12 +1002,10 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
     if (!event_name || !event_name[0])
     {
         GtkWidget *lbl = gtk_label_new(_("No reporting targets are defined for this problem. Check configuration in /etc/libreport/*"));
-#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 5))
-        gtk_misc_set_alignment(GTK_MISC(lbl), /*x*/ 0.0, /*y*/ 0.0);
-#else
+
         gtk_widget_set_halign (lbl, GTK_ALIGN_START);
         gtk_widget_set_valign (lbl, GTK_ALIGN_END);
-#endif
+
         make_label_autowrap_on_resize(GTK_LABEL(lbl));
         gtk_box_pack_start(box, lbl, /*expand*/ true, /*fill*/ false, /*padding*/ 0);
         return NULL;
@@ -2217,12 +2215,9 @@ static void add_warning(const char *warning)
     /* should be safe to free it, gtk calls strdup() to copy it */
     free(label_str);
 
-#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 5))
-    gtk_misc_set_alignment(GTK_MISC(warning_lbl), 0.0, 0.0);
-#else
     gtk_widget_set_halign (warning_lbl, GTK_ALIGN_START);
     gtk_widget_set_valign (warning_lbl, GTK_ALIGN_END);
-#endif
+
     gtk_label_set_justify(GTK_LABEL(warning_lbl), GTK_JUSTIFY_LEFT);
     gtk_label_set_line_wrap(GTK_LABEL(warning_lbl), TRUE);
 

@@ -61,8 +61,9 @@ static void rewrap_label_to_parent_size(GtkWidget *widget,
 void make_label_autowrap_on_resize(GtkLabel *label)
 {
     // So far, only tested to work on labels which were set up as:
-    //gtk_label_set_justify(label, GTK_JUSTIFY_LEFT);
-    //gtk_misc_set_alignment(GTK_MISC(label), /*x,yalign:*/ 0.0, 0.0);
+    // gtk_label_set_justify(label, GTK_JUSTIFY_LEFT);
+    // gtk_widget_set_halign (label, GTK_ALIGN_START);
+    // gtk_widget_set_valign (label, GTK_ALIGN_END);
     // yalign != 0 definitely breaks things!
     // also, <property name="ypad">NONZERO</property> would be bad
 
