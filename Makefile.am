@@ -7,6 +7,8 @@ EXTRA_DIST = \
     asciidoc.conf \
     augeas/test_libreport.aug
 
+dist_doc_DATA = README.md
+
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libreport.pc
 pkgconfig_DATA += libreport-web.pc
