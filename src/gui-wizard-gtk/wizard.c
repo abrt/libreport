@@ -342,25 +342,15 @@ static void wrap_fixer(GtkWidget *widget, gpointer data_unused)
     {
         GtkLabel *label = (GtkLabel*)widget;
         //const char *txt = gtk_label_get_label(label);
-#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 5))
-        GtkMisc *misc = (GtkMisc*)widget;
-        gfloat yalign; // = 111;
-        gint ypad; // = 111;
         if (gtk_label_get_line_wrap(label)
-         && (gtk_misc_get_alignment(misc, NULL, &yalign), yalign == 0)
-         && (gtk_misc_get_padding(misc, NULL, &ypad), ypad == 0)
-#else
-        if (gtk_label_get_line_wrap(label)
-         && (gtk_widget_get_halign(widget) == GTK_ALIGN_START)
-         && (gtk_widget_get_margin_top(widget) == 0)
-         && (gtk_widget_get_margin_bottom(widget) == 0)
-#endif
+          && (gtk_widget_get_halign(widget) == GTK_ALIGN_START)
+          && (gtk_widget_get_margin_top(widget) == 0)
+          && (gtk_widget_get_margin_bottom(widget) == 0)
         ) {
             //log("label '%s' set to autowrap", txt);
             make_label_autowrap_on_resize(label);
             return;
         }
-        //log("label '%s' not set to autowrap %g %d", txt, yalign, ypad);
     }
 }
 
@@ -801,14 +791,8 @@ static void tv_details_row_activated(
         gtk_widget_set_size_request(scrolled, 640, 480);
         gtk_widget_show(scrolled);
 
-#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 7) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 7 && GTK_MICRO_VERSION < 8))
-        /* http://developer.gnome.org/gtk3/unstable/GtkScrolledWindow.html#gtk-scrolled-window-add-with-viewport */
-        /* gtk_scrolled_window_add_with_viewport has been deprecated since version 3.8 and should not be used in newly-written code. */
-        gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(scrolled), textview);
-#else
         /* gtk_container_add() will now automatically add a GtkViewport if the child doesn't implement GtkScrollable. */
         gtk_container_add(GTK_CONTAINER(scrolled), textview);
-#endif
 
         gtk_widget_show(textview);
 
