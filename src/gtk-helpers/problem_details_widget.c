@@ -49,6 +49,8 @@
     FILENAME_HOSTNAME, \
     FILENAME_COUNT
 
+static GtkCssProvider *g_provider = NULL;
+
 static const char *items_orderlist[] = {
     ORDERED_ITEMS,
     NULL,
@@ -66,7 +68,6 @@ static const char *items_auto_blacklist[] = {
 };
 
 struct ProblemDetailsWidgetPrivate {
-    PangoFontDescription *font;
     gulong rows;
     problem_data_t *problem_data;
 };
@@ -74,6 +75,17 @@ struct ProblemDetailsWidgetPrivate {
 G_DEFINE_TYPE(ProblemDetailsWidget, problem_details_widget, GTK_TYPE_GRID)
 
 static void problem_details_widget_finalize(GObject *object);
+
+static void load_css_style()
+{
+    g_provider = gtk_css_provider_new();
+    gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
+                                              GTK_STYLE_PROVIDER(g_provider),
+                                              GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    const gchar *data = "#value {font-family: monospace;}";
+    gtk_css_provider_load_from_data(g_provider, data, -1, NULL);
+    g_object_unref (g_provider);
+}
 
 static void
 problem_details_widget_class_init(ProblemDetailsWidgetClass *klass)
@@ -107,6 +119,9 @@ problem_details_widget_append_row(ProblemDetailsWidget *self)
 static void
 problem_details_widget_add_single_line(ProblemDetailsWidget *self, const char *name, const char *content)
 {
+    if (g_provider == NULL)
+        load_css_style();
+
     GtkWidget *label = gtk_label_new(name);
     gtk_widget_set_halign(label, GTK_ALIGN_START);
     gtk_widget_set_valign(label, GTK_ALIGN_START);
@@ -117,7 +132,7 @@ problem_details_widget_add_single_line(ProblemDetailsWidget *self, const char *n
     gtk_label_set_line_wrap_mode(GTK_LABEL(value), GTK_WRAP_WORD);
     gtk_widget_set_halign(value, GTK_ALIGN_START);
     gtk_widget_set_hexpand(value, TRUE);
-    gtk_widget_override_font(GTK_WIDGET(value), self->priv->font);
+    gtk_widget_set_name(GTK_WIDGET(value), "value");
 
     gtk_widget_set_margin_start(label, 20);
     gtk_widget_set_margin_end(label, 20);
@@ -133,6 +148,9 @@ problem_details_widget_add_single_line(ProblemDetailsWidget *self, const char *n
 static void
 problem_details_widget_add_multi_line(ProblemDetailsWidget *self, const char *name, const char *content)
 {
+    if (g_provider == NULL)
+        load_css_style();
+
 #if 0
     GtkWidget *value = gtk_text_view_new();
     gtk_text_view_set_editable(GTK_TEXT_VIEW(value), FALSE);
@@ -157,7 +175,7 @@ problem_details_widget_add_multi_line(ProblemDetailsWidget *self, const char *na
     gtk_label_set_selectable(GTK_LABEL(value), TRUE);
 #endif
 
-    gtk_widget_override_font(GTK_WIDGET(value), self->priv->font);
+    gtk_widget_set_name(GTK_WIDGET(value), "value");
 
     GtkWidget *expander = gtk_expander_new(name);
     gtk_widget_set_hexpand(expander, TRUE);
@@ -356,7 +374,6 @@ static void
 problem_details_widget_init(ProblemDetailsWidget *self)
 {
     self->priv = PROBLEM_DETAILS_WIDGET_GET_PRIVATE(self);
-    self->priv->font = pango_font_description_from_string("monospace");
     self->priv->rows = 0;
     self->priv->problem_data = NULL;
 }
