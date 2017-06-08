@@ -559,7 +559,11 @@ static void open_browse_if_link(GtkWidget *text_view, GtkTextIter *iter)
             }
 
             GError *error = NULL;
+#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 22) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 22 && GTK_MICRO_VERSION < 5))
             if (!gtk_show_uri(/* use default screen */ NULL, url, GDK_CURRENT_TIME, &error))
+#else
+            if (!gtk_show_uri_on_window(NULL, url, GDK_CURRENT_TIME, &error))
+#endif
                 error_msg("Can't open url '%s': %s", url, error->message);
 
             break;
@@ -697,8 +701,8 @@ static gboolean visibility_notify_event(GtkWidget *text_view, GdkEventVisibility
     gint wx, wy, bx, by;
 
     GdkWindow *win = gtk_text_view_get_window(GTK_TEXT_VIEW(text_view), GTK_TEXT_WINDOW_TEXT);
-    GdkDeviceManager *device_manager = gdk_display_get_device_manager(gdk_window_get_display (win));
-    GdkDevice *pointer = gdk_device_manager_get_client_pointer(device_manager);
+    GdkSeat *display_seat = gdk_display_get_default_seat(gdk_window_get_display(win));
+    GdkDevice *pointer = gdk_seat_get_pointer(display_seat);
     gdk_window_get_device_position(gtk_widget_get_window(text_view), pointer, &wx, &wy, NULL);
 
     gtk_text_view_window_to_buffer_coords(GTK_TEXT_VIEW(text_view),
@@ -3829,8 +3833,8 @@ void create_assistant(GtkApplication *app, bool expert_mode)
     g_signal_connect (g_tv_event_log, "visibility-notify-event", G_CALLBACK (visibility_notify_event), NULL);
     g_signal_connect (gtk_text_view_get_buffer(g_tv_event_log), "changed", G_CALLBACK (on_log_changed), NULL);
 
-    hand_cursor = gdk_cursor_new (GDK_HAND2);
-    regular_cursor = gdk_cursor_new (GDK_XTERM);
+    hand_cursor = gdk_cursor_new_for_display(gdk_display_get_default(), GDK_HAND2);
+    regular_cursor = gdk_cursor_new_for_display(gdk_display_get_default(), GDK_XTERM);
 
     /* switch to right starting page */
     on_page_prepare(g_assistant, gtk_notebook_get_nth_page(g_assistant, 0), NULL);
