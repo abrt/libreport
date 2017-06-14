@@ -63,6 +63,8 @@ static guint g_event_source_id = 0;
 
 static bool g_expert_mode;
 
+static GtkCssProvider *g_provider = NULL;
+
 static GtkNotebook *g_assistant;
 static GtkWindow *g_wnd_assistant;
 static GtkBox *g_box_assistant;
@@ -176,7 +178,6 @@ enum
 };
 
 static GtkBuilder *g_builder;
-static PangoFontDescription *g_monospace_font;
 
 /* THE PAGE FLOW
  * page_0: introduction/summary
@@ -295,6 +296,20 @@ static GtkBuilder *make_builder()
     return builder;
 }
 
+static void load_css_style()
+{
+    g_provider = gtk_css_provider_new();
+    gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
+                                              GTK_STYLE_PROVIDER(g_provider),
+                                              GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    const gchar *data = "#green_color {color: rgba(0%, 50%, 0%, 1);}\
+                         #red_color {color: rgba(100%, 0%, 0%, 1);}\
+                         #tev, #g_tv_event_log {font-family: monospace;}\
+                         #g_eb_comment {color: #CC3333;}";
+    gtk_css_provider_load_from_data(g_provider, data, -1, NULL);
+    g_object_unref (g_provider);
+}
+
 static void label_wrapper(GtkWidget *widget, gpointer data_unused)
 {
     if (GTK_IS_CONTAINER(widget))
@@ -327,25 +342,15 @@ static void wrap_fixer(GtkWidget *widget, gpointer data_unused)
     {
         GtkLabel *label = (GtkLabel*)widget;
         //const char *txt = gtk_label_get_label(label);
-#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION < 5))
-        GtkMisc *misc = (GtkMisc*)widget;
-        gfloat yalign; // = 111;
-        gint ypad; // = 111;
         if (gtk_label_get_line_wrap(label)
-         && (gtk_misc_get_alignment(misc, NULL, &yalign), yalign == 0)
-         && (gtk_misc_get_padding(misc, NULL, &ypad), ypad == 0)
-#else
-        if (gtk_label_get_line_wrap(label)
-         && (gtk_widget_get_halign(widget) == GTK_ALIGN_START)
-         && (gtk_widget_get_margin_top(widget) == 0)
-         && (gtk_widget_get_margin_bottom(widget) == 0)
-#endif
+          && (gtk_widget_get_halign(widget) == GTK_ALIGN_START)
+          && (gtk_widget_get_margin_top(widget) == 0)
+          && (gtk_widget_get_margin_bottom(widget) == 0)
         ) {
             //log("label '%s' set to autowrap", txt);
             make_label_autowrap_on_resize(label);
             return;
         }
-        //log("label '%s' not set to autowrap %g %d", txt, yalign, ypad);
     }
 }
 
@@ -554,7 +559,11 @@ static void open_browse_if_link(GtkWidget *text_view, GtkTextIter *iter)
             }
 
             GError *error = NULL;
+#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 22) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 22 && GTK_MICRO_VERSION < 5))
             if (!gtk_show_uri(/* use default screen */ NULL, url, GDK_CURRENT_TIME, &error))
+#else
+            if (!gtk_show_uri_on_window(NULL, url, GDK_CURRENT_TIME, &error))
+#endif
                 error_msg("Can't open url '%s': %s", url, error->message);
 
             break;
@@ -692,8 +701,8 @@ static gboolean visibility_notify_event(GtkWidget *text_view, GdkEventVisibility
     gint wx, wy, bx, by;
 
     GdkWindow *win = gtk_text_view_get_window(GTK_TEXT_VIEW(text_view), GTK_TEXT_WINDOW_TEXT);
-    GdkDeviceManager *device_manager = gdk_display_get_device_manager(gdk_window_get_display (win));
-    GdkDevice *pointer = gdk_device_manager_get_client_pointer(device_manager);
+    GdkSeat *display_seat = gdk_display_get_default_seat(gdk_window_get_display(win));
+    GdkDevice *pointer = gdk_seat_get_pointer(display_seat);
     gdk_window_get_device_position(gtk_widget_get_window(text_view), pointer, &wx, &wy, NULL);
 
     gtk_text_view_window_to_buffer_coords(GTK_TEXT_VIEW(text_view),
@@ -786,14 +795,8 @@ static void tv_details_row_activated(
         gtk_widget_set_size_request(scrolled, 640, 480);
         gtk_widget_show(scrolled);
 
-#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 7) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 7 && GTK_MICRO_VERSION < 8))
-        /* http://developer.gnome.org/gtk3/unstable/GtkScrolledWindow.html#gtk-scrolled-window-add-with-viewport */
-        /* gtk_scrolled_window_add_with_viewport has been deprecated since version 3.8 and should not be used in newly-written code. */
-        gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(scrolled), textview);
-#else
         /* gtk_container_add() will now automatically add a GtkViewport if the child doesn't implement GtkScrollable. */
         gtk_container_add(GTK_CONTAINER(scrolled), textview);
-#endif
 
         gtk_widget_show(textview);
 
@@ -991,6 +994,9 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
                 char *event_name,
                 GCallback func)
 {
+    if (g_provider == NULL)
+        load_css_style();
+
     //log_info("removing all buttons from box %p", box);
     gtk_container_foreach(GTK_CONTAINER(box), &remove_child_widget, NULL);
     g_list_foreach(*p_event_list, (GFunc)free_event_gui_data_t, NULL);
@@ -1082,21 +1088,8 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
             GtkWidget *child = gtk_bin_get_child(GTK_BIN(button));
             if (child)
             {
-                static const GdkRGBA red = {
-                    .red   = 1.0,
-                    .green = 0.0,
-                    .blue  = 0.0,
-                    .alpha = 1.0,
-                };
-                static const GdkRGBA green = {
-                    .red   = 0.0,
-                    .green = 0.5,
-                    .blue  = 0.0,
-                    .alpha = 1.0,
-                };
-                const GdkRGBA *color = (green_choice ? &green : &red);
-                //gtk_widget_modify_text(button, GTK_STATE_NORMAL, color);
-                gtk_widget_override_color(child, GTK_STATE_FLAG_NORMAL, color);
+                const char *child_name = (green_choice ? "green_color" : "red_color");
+                gtk_widget_set_name(child, child_name);
             }
         }
 
@@ -1248,6 +1241,9 @@ static void remove_tabs_from_notebook(GtkNotebook *notebook)
 
 static void append_item_to_ls_details(gpointer name, gpointer value, gpointer data)
 {
+    if (g_provider == NULL)
+        load_css_style();
+
     problem_item *item = (problem_item*)value;
     struct cd_stats *stats = data;
     GtkTreeIter iter;
@@ -1262,11 +1258,11 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
         {
             GtkWidget *tab_lbl = gtk_label_new((char *)name);
             GtkWidget *tev = gtk_text_view_new();
+            gtk_widget_set_name(GTK_WIDGET(tev), "tev");
 
             if (strcmp(name, FILENAME_COMMENT) == 0 || strcmp(name, FILENAME_REASON) == 0)
                 gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(tev), GTK_WRAP_WORD);
 
-            gtk_widget_override_font(GTK_WIDGET(tev), g_monospace_font);
             load_text_to_text_view(GTK_TEXT_VIEW(tev), (char *)name);
             /* init searching */
             GtkTextBuffer *buf = gtk_text_view_get_buffer(GTK_TEXT_VIEW(tev));
@@ -3452,6 +3448,9 @@ static void add_pages(void)
 {
     g_builder = make_builder();
 
+    if (g_provider == NULL)
+        load_css_style();
+
     int i;
     int page_no = 0;
     for (i = 0; page_names[i] != NULL; i++)
@@ -3498,7 +3497,9 @@ static void add_pages(void)
 
     gtk_widget_set_no_show_all(GTK_WIDGET(g_spinner_event_log), true);
 
-    gtk_widget_override_font(GTK_WIDGET(g_tv_event_log), g_monospace_font);
+    gtk_widget_set_name(GTK_WIDGET(g_tv_event_log), "g_tv_event_log");
+    gtk_widget_set_name(GTK_WIDGET(g_eb_comment), "g_eb_comment");
+
     fix_all_wrapped_labels(GTK_WIDGET(g_assistant));
 
     g_signal_connect(g_cb_no_comment, "toggled", G_CALLBACK(on_no_comment_toggled), NULL);
@@ -3506,10 +3507,6 @@ static void add_pages(void)
     g_signal_connect(g_rb_forbidden_words, "toggled", G_CALLBACK(on_forbidden_words_toggled), NULL);
     g_signal_connect(g_rb_custom_search, "toggled", G_CALLBACK(on_custom_search_toggled), NULL);
 
-    /* Set color of the comment evenbox */
-    GdkRGBA color;
-    gdk_rgba_parse(&color, "#CC3333");
-    gtk_widget_override_color(GTK_WIDGET(g_eb_comment), GTK_STATE_FLAG_NORMAL, &color);
 
     g_signal_connect(g_tv_details, "key-press-event", G_CALLBACK(on_key_press_event_in_item_list), NULL);
     g_tv_sensitive_sel_hndlr = g_signal_connect(g_tv_sensitive_sel, "changed", G_CALLBACK(on_sensitive_word_selection_changed), NULL);
@@ -3680,8 +3677,6 @@ void create_assistant(GtkApplication *app, bool expert_mode)
 
     g_expert_mode = expert_mode;
 
-    g_monospace_font = pango_font_description_from_string("monospace");
-
     g_assistant = GTK_NOTEBOOK(gtk_notebook_new());
 
     /* Show tabs only in verbose expert mode
@@ -3838,8 +3833,8 @@ void create_assistant(GtkApplication *app, bool expert_mode)
     g_signal_connect (g_tv_event_log, "visibility-notify-event", G_CALLBACK (visibility_notify_event), NULL);
     g_signal_connect (gtk_text_view_get_buffer(g_tv_event_log), "changed", G_CALLBACK (on_log_changed), NULL);
 
-    hand_cursor = gdk_cursor_new (GDK_HAND2);
-    regular_cursor = gdk_cursor_new (GDK_XTERM);
+    hand_cursor = gdk_cursor_new_for_display(gdk_display_get_default(), GDK_HAND2);
+    regular_cursor = gdk_cursor_new_for_display(gdk_display_get_default(), GDK_XTERM);
 
     /* switch to right starting page */
     on_page_prepare(g_assistant, gtk_notebook_get_nth_page(g_assistant, 0), NULL);

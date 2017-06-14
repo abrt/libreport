@@ -295,13 +295,16 @@ config_dialog_t *create_event_config_dialog_content(event_config_t *event, GtkWi
         GtkWidget *keyring_warn_lbl =
         gtk_label_new(
           _("Secret Service is not available, your settings won't be saved!"));
-        static const GdkRGBA red = {
-            .red   = 1.0,
-            .green = 0.0,
-            .blue  = 0.0,
-            .alpha = 1.0,
-        };
-        gtk_widget_override_color(keyring_warn_lbl, GTK_STATE_FLAG_NORMAL, &red);
+        gtk_widget_set_name(keyring_warn_lbl, "keyring_warn_lbl");
+
+        GtkCssProvider *g_provider = gtk_css_provider_new();
+        gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
+                                                  GTK_STYLE_PROVIDER(g_provider),
+                                                  GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+        const gchar *data = "#keyring_warn_lbl {color: rgba(100%, 0%, 0%, 1);}";
+        gtk_css_provider_load_from_data(g_provider, data, -1, NULL);
+        g_object_unref (g_provider);
+
         gtk_box_pack_start(GTK_BOX(content), keyring_warn_lbl, false, false, 0);
     }
 
