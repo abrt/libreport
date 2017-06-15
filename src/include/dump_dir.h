@@ -486,6 +486,9 @@ typedef int (*save_data_call_back)(struct dump_dir *, void *args);
 struct dump_dir *create_dump_dir(const char *base_dir_name, const char *type,
         uid_t uid, save_data_call_back save_data, void *args);
 
+struct dump_dir *create_dump_dir_ext(const char *base_dir_name, const char *type,
+        pid_t pid, uid_t uid, save_data_call_back save_data, void *args);
+
 /* Creates a new archive from the dump directory contents
  *
  * The dd argument must be opened for reading.

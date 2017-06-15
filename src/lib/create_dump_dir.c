@@ -42,7 +42,7 @@ static struct dump_dir *try_dd_create(const char *base_dir_name, const char *dir
     return dd;
 }
 
-struct dump_dir *create_dump_dir(const char *base_dir_name, const char *type, uid_t uid, save_data_call_back save_data, void *args)
+struct dump_dir *create_dump_dir_ext(const char *base_dir_name, const char *type, pid_t pid, uid_t uid, save_data_call_back save_data, void *args)
 {
     INITIALIZE_LIBREPORT();
 
@@ -59,7 +59,7 @@ struct dump_dir *create_dump_dir(const char *base_dir_name, const char *type, ui
         return NULL;
     }
 
-    char *problem_id = xasprintf("%s-%s.%ld-%lu"NEW_PD_SUFFIX, type, iso_date_string(&(tv.tv_sec)), (long)tv.tv_usec, (long)getpid());
+    char *problem_id = xasprintf("%s-%s.%ld-%lu"NEW_PD_SUFFIX, type, iso_date_string(&(tv.tv_sec)), (long)tv.tv_usec, (long)pid);
 
     log_info("Saving to %s/%s with uid %d", base_dir_name, problem_id, uid);
 
@@ -149,6 +149,11 @@ struct dump_dir *create_dump_dir(const char *base_dir_name, const char *type, ui
  ret:
     free(problem_id);
     return dd;
+}
+
+struct dump_dir *create_dump_dir(const char *base_dir_name, const char *type, uid_t uid, save_data_call_back save_data, void *args)
+{
+    return create_dump_dir_ext(base_dir_name, type, getpid(), uid, save_data, args);
 }
 
 int save_problem_data_in_dump_dir(struct dump_dir *dd, problem_data_t *problem_data)
