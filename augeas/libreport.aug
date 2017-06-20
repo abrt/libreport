@@ -31,6 +31,7 @@ module Libreport =
                . (incl (Sys.getenv("HOME") . "/.cache/abrt/events/*"))
                . (excl "/etc/libreport/plugins/bugzilla_format*")
                . (excl "/etc/libreport/plugins/mantisbt_format*")
+               . (excl "/etc/libreport/plugins/catalog*")
                . Util.stdexcl
 
     let xfm = transform lns filter
