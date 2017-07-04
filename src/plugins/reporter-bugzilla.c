@@ -334,18 +334,21 @@ int main(int argc, char **argv)
     export_abrt_envvars(0);
 
     map_string_t *settings = new_map_string();
-    problem_data_t *problem_data;
+    problem_data_t *problem_data = NULL;
 
-    /* pull in some defaults from os-release */
-    problem_data = create_problem_data_for_reporting(dump_dir_name);
-    if (!problem_data)
-        xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
-    else
+    if (opts & OPT_d)
     {
-        map_string_t *osinfo = new_map_string();
-        problem_data_get_osinfo(problem_data, osinfo);
-        set_default_settings(osinfo, settings);
-        free_map_string(osinfo);
+        /* pull in some defaults from os-release */
+        problem_data = create_problem_data_for_reporting(dump_dir_name);
+        if (!problem_data)
+            xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
+        else
+        {
+            map_string_t *osinfo = new_map_string();
+            problem_data_get_osinfo(problem_data, osinfo);
+            set_default_settings(osinfo, settings);
+            free_map_string(osinfo);
+        }
     }
 
     {
@@ -553,6 +556,12 @@ int main(int argc, char **argv)
         }
         free_report_result(reported_to);
     }
+
+    if (!(opts & OPT_d))
+        problem_data = create_problem_data_for_reporting(dump_dir_name);
+
+    if (!problem_data)
+        xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
     const char *component = problem_data_get_content_or_die(problem_data, FILENAME_COMPONENT);
     const char *duphash   = problem_data_get_content_or_NULL(problem_data, FILENAME_DUPHASH);
