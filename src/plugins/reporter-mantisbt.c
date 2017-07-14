@@ -243,7 +243,7 @@ int main(int argc, char **argv)
         "\nTRACKER_NAME to URL field. This option is applied only when a new issue is to be"
         "\nfiled. The default value is 'ABRT Server'"
         "\n"
-        "\nIf not specified, CONFFILE defaults to "CONF_DIR"/plugins/mantisb.conf"
+        "\nIf not specified, CONFFILE defaults to "CONF_DIR"/plugins/mantisbt.conf"
         "\nIts lines should have 'PARAM = VALUE' format."
         "\nRecognized string parameters: MantisbtURL, Login, Password, Project, ProjectVersion."
         "\nRecognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify, CreatePrivate."
