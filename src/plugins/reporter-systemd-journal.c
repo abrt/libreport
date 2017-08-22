@@ -334,7 +334,7 @@ int main(int argc, char **argv)
     /* Debug */
     if (opts & OPT_D)
     {
-        log("Message: %s\n"
+        log_warning("Message: %s\n"
                 "\n"
                 "%s"
                 "\n"

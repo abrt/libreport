@@ -88,7 +88,7 @@ struct dump_dir *open_directory_for_writing(
     if (dd->locked)
         return dd;
 
-    log("'%s' is not writable", dump_dir_name);
+    log_warning("'%s' is not writable", dump_dir_name);
     dd_close(dd);
 
     char *spooldir = concat_path_file(g_get_user_cache_dir(), "abrt/spool");

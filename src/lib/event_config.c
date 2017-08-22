@@ -212,12 +212,12 @@ static void load_config_files(const char *dir_path)
             if (elem)
             {
                 opt = elem->data;
-                // log("conf: replacing '%s' value:'%s'->'%s'", name, opt->value, value);
+                // log_warning("conf: replacing '%s' value:'%s'->'%s'", name, opt->value, value);
                 free(opt->eo_value);
             }
             else
             {
-                // log("conf: new value %s='%s'", name, value);
+                // log_warning("conf: new value %s='%s'", name, value);
                 opt = new_event_option();
                 opt->eo_name = xstrdup(name);
             }

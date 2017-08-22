@@ -250,9 +250,9 @@ GList *load_rule_list(GList *rule_list,
             }
             else if (g_verbose >= 3)
             {
-                log("Adding '%s'\nwith conditions:", p);
+                log_warning("Adding '%s'\nwith conditions:", p);
                 for (GList *c = cur_rule->conditions; c != NULL; c = g_list_next(c))
-                    log("| %s", (const char *)c->data);
+                    log_warning("| %s", (const char *)c->data);
             }
 
             cur_rule->command = xstrdup(p);
@@ -313,7 +313,7 @@ static int regcmp_lines(char *val, const char *regex)
 {
     regex_t rx;
     int r = regcomp(&rx, regex, REG_NOSUB); //TODO: and REG_EXTENDED?
-    //log("REGEX:'%s':%d", regex, r);
+    //log_warning("REGEX:'%s':%d", regex, r);
     if (r)
     {
         //char errbuf[256];
@@ -329,7 +329,7 @@ static int regcmp_lines(char *val, const char *regex)
         if (eol)
             *eol = '\0';
         r = regexec(&rx, val, 0, NULL, /*eflags:*/ 0);
-        //log("REGCMP:'%s':%d", val, r);
+        //log_warning("REGCMP:'%s':%d", val, r);
         if (eol)
             *eol = '\n';
         if (r == 0 || !eol)

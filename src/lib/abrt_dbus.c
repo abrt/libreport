@@ -134,7 +134,7 @@ int load_charp(DBusMessageIter* iter, const char** val)
         return -1;
     }
     dbus_message_iter_get_basic(iter, val);
-//log("load_charp:'%s'", *val);
+//log_warning("load_charp:'%s'", *val);
     return dbus_message_iter_next(iter);
 }
 
@@ -294,7 +294,7 @@ void attach_dbus_conn_to_glib_main_loop(DBusConnection* conn,
     g_dbus_conn = conn;
 
 //do we need this? why?
-//log("dbus_connection_set_dispatch_status_function");
+//log_warning("dbus_connection_set_dispatch_status_function");
 //    dbus_connection_set_dispatch_status_function(conn,
 //                dispatch, /* void dispatch(DBusConnection *conn, DBusDispatchStatus new_status, void* data) */
 //                NULL, /* data */

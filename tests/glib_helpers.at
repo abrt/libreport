@@ -21,8 +21,8 @@ int test(const char *list, const char *delimiter, const char *strings[])
     int retval = 0;
 
     while(l != NULL) {
-        log("is: '%s'", (char *)l->data);
-        log("should be: '%s'", *tmp);
+        log_warning("is: '%s'", (char *)l->data);
+        log_warning("should be: '%s'", *tmp);
         retval |= strcmp((char *)l->data, *(tmp++)) != 0;
         if (retval)
             break; // no need to continue further
@@ -60,8 +60,8 @@ int test(const char *list, const char *strings[])
     int retval = 0;
 
     while(l != NULL) {
-        log("is: '%s'", (char *)l->data);
-        log("should be: '%s'", *tmp);
+        log_warning("is: '%s'", (char *)l->data);
+        log_warning("should be: '%s'", *tmp);
         retval |= strcmp((char *)l->data, *(tmp++)) != 0;
         if (retval)
             break; // no need to continue further

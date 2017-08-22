@@ -358,7 +358,7 @@ int create_symlink_lockfile_at(int dir_fd, const char* lock_file, const char* pi
 
         if (strcmp(pid_buf, pid) == 0)
         {
-            log("Lock file '%s' is already locked by us", lock_file);
+            log_warning("Lock file '%s' is already locked by us", lock_file);
             errno = EALREADY;
             return 0;
         }
@@ -368,10 +368,10 @@ int create_symlink_lockfile_at(int dir_fd, const char* lock_file, const char* pi
             snprintf(pid_str, sizeof(pid_str), "/proc/%s", pid_buf);
             if (access(pid_str, F_OK) == 0)
             {
-                log("Lock file '%s' is locked by process %s", lock_file, pid_buf);
+                log_warning("Lock file '%s' is locked by process %s", lock_file, pid_buf);
                 return 0;
             }
-            log("Lock file '%s' was locked by process %s, but it crashed?", lock_file, pid_buf);
+            log_warning("Lock file '%s' was locked by process %s, but it crashed?", lock_file, pid_buf);
         }
         /* The file may be deleted by now by other process. Ignore ENOENT */
         if (unlinkat(dir_fd, lock_file, /*only files*/0) != 0 && errno != ENOENT)

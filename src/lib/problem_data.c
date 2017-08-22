@@ -504,14 +504,14 @@ void problem_data_load_from_dump_dir(problem_data_t *problem_data, struct dump_d
     {
         if (excluding && is_in_string_list(short_name, (const char *const *)excluding))
         {
-            //log("Excluded:'%s'", short_name);
+            //log_warning("Excluded:'%s'", short_name);
             goto next;
         }
 
         if (short_name[0] == '#'
          || (short_name[0] && short_name[strlen(short_name) - 1] == '~')
         ) {
-            //log("Excluded (editor backup file):'%s'", short_name);
+            //log_warning("Excluded (editor backup file):'%s'", short_name);
             goto next;
         }
 
@@ -592,7 +592,7 @@ void log_problem_data(problem_data_t *problem_data, const char *pfx)
     g_hash_table_iter_init(&iter, problem_data);
     while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
-        log("%s[%s]:'%s' 0x%x",
+        log_warning("%s[%s]:'%s' 0x%x",
                 pfx, name,
                 value->content,
                 value->flags

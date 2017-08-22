@@ -122,7 +122,7 @@ mantisbt_find_origin_bug_closed_duplicate(mantisbt_settings_t *settings, mantisb
         if (ii == MAX_HOPS)
             error_msg_and_die(_("MantisBT couldn't find parent of issue %d"), info->mii_id);
 
-        log("Issue %d is a duplicate, using parent issue %d", info_tmp->mii_id, info_tmp->mii_dup_id);
+        log_warning("Issue %d is a duplicate, using parent issue %d", info_tmp->mii_id, info_tmp->mii_dup_id);
         int issue_id = info_tmp->mii_dup_id;
 
         mantisbt_issue_info_free(info_tmp);

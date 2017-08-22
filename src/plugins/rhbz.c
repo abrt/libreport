@@ -34,8 +34,8 @@
 
 //#define DEBUG
 #ifdef DEBUG
-#define func_entry() log("-- %s", __func__)
-#define func_entry_str(x) log("-- %s\t%s", __func__, (x))
+#define func_entry() log_warning("-- %s", __func__)
+#define func_entry_str(x) log_warning("-- %s\t%s", __func__, (x))
 #else
 #define func_entry()
 #define func_entry_str(x)
@@ -601,7 +601,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
     int new_bug_id = *r;
     free(r);
 
-    log(_("New bug id: %i"), new_bug_id);
+    log_warning(_("New bug id: %i"), new_bug_id);
     return new_bug_id;
 }
 
@@ -723,7 +723,7 @@ struct bug_info *rhbz_find_origin_bug_closed_duplicate(struct abrt_xmlrpc *ax,
         if (ii == MAX_HOPS)
             error_msg_and_die(_("Bugzilla couldn't find parent of bug %d"), bi->bi_id);
 
-        log("Bug %d is a duplicate, using parent bug %d", bi_tmp->bi_id, bi_tmp->bi_dup_id);
+        log_warning("Bug %d is a duplicate, using parent bug %d", bi_tmp->bi_id, bi_tmp->bi_dup_id);
         int bug_id = bi_tmp->bi_dup_id;
 
         free_bug_info(bi_tmp);

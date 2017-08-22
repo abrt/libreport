@@ -39,7 +39,7 @@ static void start_element(
                 gpointer            user_data,
                 GError              **error)
 {
-    //log("start: %s", element_name);
+    //log_warning("start: %s", element_name);
 
     struct my_parse_data *parse_data = user_data;
 

@@ -106,7 +106,7 @@ verify_credentials(mantisbt_settings_t *settings)
         {
             GList *ids = response_get_main_ids_list(result->mr_body);
             if (ids != NULL)
-                log("%s", (char *)ids->data);
+                log_warning("%s", (char *)ids->data);
             response_values_free(ids);
         }
 
@@ -337,7 +337,7 @@ int main(int argc, char **argv)
 
     if (abrt_hash)
     {
-        log(_("Looking for similar problems in MantisBT"));
+        log_warning(_("Looking for similar problems in MantisBT"));
         GList *ids = mantisbt_search_by_abrt_hash(&mbt_settings, abrt_hash);
         mantisbt_settings_free(&mbt_settings);
 
@@ -380,7 +380,7 @@ int main(int argc, char **argv)
 
             /* won't ever call free on it - it simplifies the code a lot */
             ticket_no = xstrdup(ticket_no + 1);
-            log(_("Using MantisBT ID '%s'"), ticket_no);
+            log_warning(_("Using MantisBT ID '%s'"), ticket_no);
         }
 
         /* Attach files to existing MantisBT issues */
@@ -388,7 +388,7 @@ int main(int argc, char **argv)
         {
             const char *path = *argv++;
             char *filename = basename(path);
-            log(_("Attaching file '%s' to issue %s"), filename, ticket_no);
+            log_warning(_("Attaching file '%s' to issue %s"), filename, ticket_no);
             mantisbt_attach_file(&mbt_settings, ticket_no, filename, path);
         }
 
@@ -483,7 +483,7 @@ int main(int argc, char **argv)
     mantisbt_issue_info_t *ii;
     if (!bug_id)
     {
-        log(_("Checking for duplicates"));
+        log_warning(_("Checking for duplicates"));
 
         int existing_id = -1;
         int crossver_id = -1;
@@ -522,7 +522,7 @@ int main(int argc, char **argv)
         if (existing_id < 0)
         {
             /* Create new issue */
-            log(_("Creating a new issue"));
+            log_warning(_("Creating a new issue"));
             problem_formatter_t *pf = problem_formatter_new();
             problem_formatter_add_section(pf, PR_SEC_ADDITIONAL_INFO, 0);
 
@@ -550,7 +550,7 @@ int main(int argc, char **argv)
 
                 if (reported_to && reported_to->url)
                 {
-                    log(_("Adding External URL to issue"));
+                    log_warning(_("Adding External URL to issue"));
                     tracker_url = xstrdup(reported_to->url);
                     free_report_result(reported_to);
                 }
@@ -563,7 +563,7 @@ int main(int argc, char **argv)
             if (new_id == -1)
                 return EXIT_FAILURE;
 
-            log(_("Adding attachments to issue %i"), new_id);
+            log_warning(_("Adding attachments to issue %i"), new_id);
             char *new_id_str = xasprintf("%u", new_id);
 
             for (GList *a = problem_report_get_attachments(pr); a != NULL; a = g_list_next(a))
@@ -592,7 +592,7 @@ int main(int argc, char **argv)
 
     ii = mantisbt_get_issue_info(&mbt_settings, bug_id);
 
-    log(_("Bug is already reported: %i"), ii->mii_id);
+    log_warning(_("Bug is already reported: %i"), ii->mii_id);
 
     /* Follow duplicates */
     if ((strcmp(ii->mii_status, "closed") == 0)
@@ -629,7 +629,7 @@ int main(int argc, char **argv)
         int dup_comment = is_comment_dup(ii->mii_notes, mbtcomment);
         if (!dup_comment)
         {
-            log(_("Adding new comment to issue %d"), ii->mii_id);
+            log_warning(_("Adding new comment to issue %d"), ii->mii_id);
             mantisbt_add_issue_note(&mbt_settings, ii->mii_id, mbtcomment);
 
             const char *bt = problem_data_get_content_or_NULL(problem_data, FILENAME_BACKTRACE);
@@ -642,7 +642,7 @@ int main(int argc, char **argv)
             {
                 char *bug_id_str = xasprintf("%i", ii->mii_id);
 
-                log(_("Attaching better backtrace"));
+                log_warning(_("Attaching better backtrace"));
 
                 // find unique filename of attachment
                 char *name = NULL;
@@ -665,14 +665,14 @@ int main(int argc, char **argv)
             }
         }
         else
-            log(_("Found the same comment in the issue history, not adding a new one"));
+            log_warning(_("Found the same comment in the issue history, not adding a new one"));
 
         problem_report_free(pr);
         problem_formatter_free(pf);
     }
 
 finish:
-    log(_("Status: %s%s%s %s/view.php?id=%u"),
+    log_warning(_("Status: %s%s%s %s/view.php?id=%u"),
                 ii->mii_status,
                 ii->mii_resolution ? " " : "",
                 ii->mii_resolution ? ii->mii_resolution : "",

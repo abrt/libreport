@@ -213,7 +213,7 @@ char *ask_bz_password(const char *message)
 static
 void login(struct abrt_xmlrpc *client, struct bugzilla_struct *rhbz)
 {
-    log(_("Logging into Bugzilla at %s"), rhbz->b_bugzilla_url);
+    log_warning(_("Logging into Bugzilla at %s"), rhbz->b_bugzilla_url);
     while (!rhbz_login(client, rhbz->b_login, rhbz->b_password))
     {
         free(rhbz->b_login);
@@ -382,7 +382,7 @@ int main(int argc, char **argv)
 
     if (abrt_hash)
     {
-        log(_("Looking for similar problems in bugzilla"));
+        log_warning(_("Looking for similar problems in bugzilla"));
         char *hash;
         if (prefixcmp(abrt_hash, "abrt_hash:"))
             hash = xasprintf("abrt_hash:%s", abrt_hash);
@@ -488,7 +488,7 @@ int main(int argc, char **argv)
 
             /* won't ever call free on it - it simplifies the code a lot */
             ticket_no = xstrdup(ticket_no + 1);
-            log(_("Using Bugzilla ID '%s'"), ticket_no);
+            log_warning(_("Using Bugzilla ID '%s'"), ticket_no);
         }
 
         login(client, &rhbz);
@@ -522,7 +522,7 @@ int main(int argc, char **argv)
             }
         }
 
-        log(_("Logging out"));
+        log_warning(_("Logging out"));
         rhbz_logout(client);
 
 #if 0  /* enable if you search for leaks (valgrind etc) */
@@ -631,7 +631,7 @@ int main(int argc, char **argv)
     struct bug_info *bz = NULL;
     if (!bug_id)
     {
-        log(_("Checking for duplicates"));
+        log_warning(_("Checking for duplicates"));
 
         int existing_id = -1;
         int crossver_id = -1;
@@ -707,7 +707,7 @@ int main(int argc, char **argv)
 
                 if (r == 0)
                 {
-                    log(_("Logging out"));
+                    log_warning(_("Logging out"));
                     rhbz_logout(client);
 
                     problem_formatter_free(pf);
@@ -723,7 +723,7 @@ int main(int argc, char **argv)
             }
 
             /* Create new bug */
-            log(_("Creating a new bug"));
+            log_warning(_("Creating a new bug"));
 
             if (existing_id < 0 && crossver_id >= 0)
                 problem_report_buffer_printf(
@@ -758,7 +758,7 @@ int main(int argc, char **argv)
                 if (extra != NULL) {
                     char *email = strtok(extra, "\n");
                     while (email != NULL) {
-                        log(_("Adding extra cc %s to bug report"), email);
+                        log_warning(_("Adding extra cc %s to bug report"), email);
                         rhbz_mail_to_cc(client, new_id, email, /* require mail notify */ 0);
                         email = strtok(NULL, "\n");
                     }
@@ -767,13 +767,13 @@ int main(int argc, char **argv)
 
                 if (reported_to && reported_to->url)
                 {
-                    log(_("Adding External URL to bug %i"), new_id);
+                    log_warning(_("Adding External URL to bug %i"), new_id);
                     rhbz_set_url(client, new_id, reported_to->url, RHBZ_NOMAIL_NOTIFY);
                     free_report_result(reported_to);
                 }
             }
 
-            log(_("Adding attachments to bug %i"), new_id);
+            log_warning(_("Adding attachments to bug %i"), new_id);
             char new_id_str[sizeof(int)*3 + 2];
             sprintf(new_id_str, "%i", new_id);
 
@@ -795,7 +795,7 @@ int main(int argc, char **argv)
 
             if (existing_id >= 0)
             {
-                log(_("Closing bug %i as duplicate of bug %i"), new_id, existing_id);
+                log_warning(_("Closing bug %i as duplicate of bug %i"), new_id, existing_id);
                 rhbz_close_as_duplicate(client, new_id, existing_id, RHBZ_NOMAIL_NOTIFY);
             }
 
@@ -807,7 +807,7 @@ int main(int argc, char **argv)
 
     bz = rhbz_bug_info(client, bug_id);
 
-    log(_("Bug is already reported: %i"), bz->bi_id);
+    log_warning(_("Bug is already reported: %i"), bz->bi_id);
 
     /* Follow duplicates */
     if ((strcmp(bz->bi_status, "CLOSED") == 0)
@@ -850,7 +850,7 @@ int main(int argc, char **argv)
     if (strcmp(bz->bi_reporter, rhbz.b_login) != 0
      && !g_list_find_custom(bz->bi_cc_list, rhbz.b_login, (GCompareFunc)g_strcmp0)
     ) {
-        log(_("Adding %s to CC list"), rhbz.b_login);
+        log_warning(_("Adding %s to CC list"), rhbz.b_login);
         rhbz_mail_to_cc(client, bz->bi_id, rhbz.b_login, RHBZ_NOMAIL_NOTIFY);
     }
 
@@ -871,7 +871,7 @@ int main(int argc, char **argv)
         int dup_comment = is_comment_dup(bz->bi_comments, bzcomment);
         if (!dup_comment)
         {
-            log(_("Adding new comment to bug %d"), bz->bi_id);
+            log_warning(_("Adding new comment to bug %d"), bz->bi_id);
             rhbz_add_comment(client, bz->bi_id, bzcomment, 0);
 
             const char *bt = problem_data_get_content_or_NULL(problem_data, FILENAME_BACKTRACE);
@@ -884,23 +884,23 @@ int main(int argc, char **argv)
             {
                 char bug_id_str[sizeof(int)*3 + 2];
                 sprintf(bug_id_str, "%i", bz->bi_id);
-                log(_("Attaching better backtrace"));
+                log_warning(_("Attaching better backtrace"));
                 rhbz_attach_blob(client, bug_id_str, FILENAME_BACKTRACE, bt, strlen(bt),
                                  RHBZ_NOMAIL_NOTIFY);
             }
         }
         else
-            log(_("Found the same comment in the bug history, not adding a new one"));
+            log_warning(_("Found the same comment in the bug history, not adding a new one"));
 
         problem_report_free(pr);
         problem_formatter_free(pf);
     }
 
  log_out:
-    log(_("Logging out"));
+    log_warning(_("Logging out"));
     rhbz_logout(client);
 
-    log(_("Status: %s%s%s %s/show_bug.cgi?id=%u"),
+    log_warning(_("Status: %s%s%s %s/show_bug.cgi?id=%u"),
                 bz->bi_status,
                 bz->bi_resolution ? " " : "",
                 bz->bi_resolution ? bz->bi_resolution : "",

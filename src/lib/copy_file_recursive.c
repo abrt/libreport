@@ -143,7 +143,7 @@ int copy_file_recursive(const char *source, const char *dest)
 	/* Neither dir not regular file: skip */
 
  skip:
-	log("Skipping '%s'", source);
+	log_warning("Skipping '%s'", source);
  ret:
 	return retval;
 }

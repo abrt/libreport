@@ -142,7 +142,7 @@ int main(int argc, char **argv)
             }
         }
         const char *format = (open_mode[0] == 'a' ? _("The report was appended to %s") : _("The report was stored to %s"));
-        log(format, output_file);
+        log_warning(format, output_file);
         free(output_file);
     }
 
