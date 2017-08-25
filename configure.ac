@@ -323,14 +323,6 @@ AC_ARG_WITH(augeaslenslibdir,
                            [Directory for librepor lens (default: /usr/share/augeas/lenses)])],
             [], [with_augeaslenslibdir="/usr/share/augeas/lenses"])
 AC_SUBST([AUGEAS_LENS_LIB_DIR], [$with_augeaslenslibdir])
-AC_PATH_PROG(AUGPARSE, augparse, no)
-[if test "$AUGPARSE" = "no"]
-[then]
-    [echo "The augparse program was not found in the search path. Please ensure"]
-    [echo "that it is installed and its directory is included in the search path."]
-    [echo "Then run configure again before attempting to build libreport."]
-    [exit 1]
-[fi]
 
 AC_ARG_WITH([defaultdumpdirmode],
             AS_HELP_STRING([--with-defaultdumpdirmode=OCTAL-MODE],
