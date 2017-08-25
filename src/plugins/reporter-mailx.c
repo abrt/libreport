@@ -67,11 +67,11 @@ static void exec_and_feed_input(const char* text, char **args)
 
 static char** append_str_to_vector(char **vec, unsigned *size_p, const char *str)
 {
-    //log("old vec: %p", vec);
+    //log_warning("old vec: %p", vec);
     unsigned size = *size_p;
     vec = (char**) xrealloc(vec, (size+2) * sizeof(vec[0]));
     vec[size] = xstrdup(str);
-    //log("new vec: %p, added [%d] %p", vec, size, vec[size]);
+    //log_warning("new vec: %p, added [%d] %p", vec, size, vec[size]);
     size++;
     vec[size] = NULL;
     *size_p = size;
@@ -204,9 +204,9 @@ static void create_and_send_email(
     putenv((char*)"DEAD=/dev/null");
 
     if (flag & RM_FLAG_NOTIFY)
-        log(_("Sending a notification email to: %s"), email_to);
+        log_warning(_("Sending a notification email to: %s"), email_to);
     else
-        log(_("Sending an email..."));
+        log_warning(_("Sending an email..."));
 
     exec_and_feed_input(dsc, args);
 
@@ -231,7 +231,7 @@ static void create_and_send_email(
             free(rr.url);
             dd_close(dd);
         }
-        log(_("Email was sent to: %s"), email_to);
+        log_warning(_("Email was sent to: %s"), email_to);
     }
 
     free(email_to);

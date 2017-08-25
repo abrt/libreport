@@ -48,7 +48,7 @@ void glib_init(void)
                                                            GLIB_MINOR_VERSION,
                                                            GLIB_MICRO_VERSION);
         if (version_mismatch != NULL)
-            log("Running GLib incompatible version: %s", version_mismatch);
+            log_warning("Running GLib incompatible version: %s", version_mismatch);
     }
 }
 

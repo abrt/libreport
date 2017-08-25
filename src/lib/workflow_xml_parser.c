@@ -35,7 +35,7 @@ static void start_element(GMarkupParseContext *context,
                   gpointer user_data,
                   GError **error)
 {
-    //log("start: %s", element_name);
+    //log_warning("start: %s", element_name);
 
     struct my_parse_data *parse_data = user_data;
     if (strcmp(element_name, EVENTS_ELEMENT) == 0)

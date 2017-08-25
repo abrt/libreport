@@ -313,9 +313,9 @@ int main(int argc, char **argv)
         /* If a reported problem is not known then emit NEEDMORE */
         if (strcmp("true", response->urr_value) == 0)
         {
-            log(_("This problem has already been reported."));
+            log_warning(_("This problem has already been reported."));
             if (response->urr_message)
-                log("%s", response->urr_message);
+                log_warning("%s", response->urr_message);
 
             ret = EXIT_STOP_EVENT_RUN;
         }

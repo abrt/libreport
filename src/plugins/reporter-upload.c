@@ -100,7 +100,7 @@ static int create_and_upload_archive(
         xfunc_die(); /* error msg is already logged by dd_opendir */
 
     /* Compressing e.g. 0.5gig coredump takes a while. Let client know what we are doing */
-    log(_("Compressing data"));
+    log_warning(_("Compressing data"));
     if (dd_create_archive(dd, tempfile, (const_string_vector_const_ptr_t)exclude_from_report, 0) != 0)
     {
         log_error("Can't create temporary file in %s", LARGE_DATA_TMP_DIR);
@@ -117,7 +117,7 @@ static int create_and_upload_archive(
     else
     {
         result = 0; /* success */
-        log(_("Archive is created: '%s'"), tempfile);
+        log_warning(_("Archive is created: '%s'"), tempfile);
         *remote_name = tempfile;
         tempfile = NULL;
     }

@@ -483,7 +483,7 @@ append_short_backtrace(struct strbuf *result, problem_data_t *problem_data, bool
 
         if (!backtrace)
         {
-            log(_("Can't parse backtrace: %s"), error_msg);
+            log_warning(_("Can't parse backtrace: %s"), error_msg);
             free(error_msg);
             return 0;
         }
@@ -498,7 +498,7 @@ append_short_backtrace(struct strbuf *result, problem_data_t *problem_data, bool
 
         if (!truncated)
         {
-            log(_("Can't generate stacktrace description (no crash thread?)"));
+            log_warning(_("Can't generate stacktrace description (no crash thread?)"));
             return 0;
         }
     }
@@ -555,7 +555,7 @@ append_item(struct strbuf *result, const char *item_name, problem_data_t *pd, GL
     bool text      = (strcmp(item_name+1, "text"     ) == 0);
     if (!oneline && !multiline && !text)
     {
-        log("Unknown or unsupported element specifier '%s'", item_name);
+        log_warning("Unknown or unsupported element specifier '%s'", item_name);
         return 0; /* "I did not print anything" */
     }
 
@@ -665,7 +665,7 @@ get_special_items(const char *item_name, problem_data_t *pd, GList *comment_fmt_
     bool binary    = (strcmp(item_name+1, "binary"   ) == 0);
     if (!oneline && !multiline && !text && !binary)
     {
-        log("Unknown or unsupported element specifier '%s'", item_name);
+        log_warning("Unknown or unsupported element specifier '%s'", item_name);
         return NULL;
     }
 

@@ -194,7 +194,7 @@ problem_details_widget_add_binary(ProblemDetailsWidget *self, const char *label,
 
     if (stat(path, &statbuf) != 0)
     {
-        log("File '%s' does not exist", path);
+        log_warning("File '%s' does not exist", path);
         return;
     }
 
@@ -235,7 +235,7 @@ problem_details_widget_add_problem_item(ProblemDetailsWidget *self, const char *
     else if (item->flags & CD_FLAG_BIN)
         problem_details_widget_add_binary(self, name, item->content);
     else
-        log("Unsupported file type");
+        log_warning("Unsupported file type");
 }
 
 /* Callback for GHashTable */

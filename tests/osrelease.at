@@ -16,12 +16,12 @@ int test(char ***input)
 {
     char * release_string = **input;
     int retcode = 1;
-    log("release: >>%s<<\n", release_string);
+    log_warning("release: >>%s<<\n", release_string);
     char *product = NULL;
     char *version = NULL;
     parse_release_for_bz(release_string, &product, &version);
-    log("version: >>%s<<\n", version);
-    log("product: >>%s<<\n", product);
+    log_warning("version: >>%s<<\n", version);
+    log_warning("product: >>%s<<\n", product);
 
     if(version == NULL || (strlen(version) == 0))
     {
@@ -30,17 +30,17 @@ int test(char ***input)
     }
 
     (*input)++; //expected product is +1 in the array
-    log("'%s' == '%s'", product, **input);
+    log_warning("'%s' == '%s'", product, **input);
     if (strcmp(product, **input) != 0)
         goto ret;
 
     (*input)++; //expected version is +2 in the array
-    log("'%s' == '%s'", version, **input);
+    log_warning("'%s' == '%s'", version, **input);
     if (strcmp(version, **input) == 0)
         retcode = 0;
 
 ret:
-    log("retcode %i\n", retcode);
+    log_warning("retcode %i\n", retcode);
     return retcode;
 }
 
@@ -84,12 +84,12 @@ int test(char ***input)
 {
     char * release_string = **input;
     int retcode = 1;
-    log("release: >>%s<<\n", release_string);
+    log_warning("release: >>%s<<\n", release_string);
     char *product = NULL;
     char *version = NULL;
     parse_release_for_rhts(release_string, &product, &version);
-    log("version: >>%s<<\n", version);
-    log("product: >>%s<<\n", product);
+    log_warning("version: >>%s<<\n", version);
+    log_warning("product: >>%s<<\n", product);
 
     if(version == NULL || (strlen(version) == 0))
     {
@@ -98,17 +98,17 @@ int test(char ***input)
     }
 
     (*input)++; //expected product is +1 in the array
-    log("'%s' == '%s'", product, **input);
+    log_warning("'%s' == '%s'", product, **input);
     if (strcmp(product, **input) != 0)
         goto ret;
 
     (*input)++; //expected version is +2 in the array
-    log("'%s' == '%s'", version, **input);
+    log_warning("'%s' == '%s'", version, **input);
     if (strcmp(version, **input) == 0)
         retcode = 0;
 
 ret:
-    log("retcode %i\n", retcode);
+    log_warning("retcode %i\n", retcode);
     return retcode;
 }
 

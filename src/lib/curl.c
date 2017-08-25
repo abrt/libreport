@@ -224,7 +224,7 @@ static size_t fread_with_reporting(void *ptr, size_t size, size_t nmemb, void *u
         last_t = t;
         report_interval *= 2;
         off_t sz = fstat_st_size_or_die(fileno(fp));
-        log(_("Uploaded: %llu of %llu kbytes"),
+        log_warning(_("Uploaded: %llu of %llu kbytes"),
                 (unsigned long long)cur_pos / 1024,
                 (unsigned long long)sz / 1024);
     }
@@ -267,25 +267,25 @@ static int curl_debug(CURL *handle, curl_infotype it, char *buf, size_t bufsize,
     switch (it) {
     case CURLINFO_TEXT: /* The data is informational text. */
         /* Here eol is always "^J" or "", not printing it */
-        log("curl: %.*s", (int) bufsize, buf);
+        log_warning("curl: %.*s", (int) bufsize, buf);
         break;
     case CURLINFO_HEADER_IN: /* The data is header (or header-like) data received from the peer. */
-        log("curl rcvd header: '%.*s%s'", (int) bufsize, buf, eol);
+        log_warning("curl rcvd header: '%.*s%s'", (int) bufsize, buf, eol);
         break;
     case CURLINFO_HEADER_OUT: /* The data is header (or header-like) data sent to the peer. */
-        log("curl sent header: '%.*s%s'", (int) bufsize, buf, eol);
+        log_warning("curl sent header: '%.*s%s'", (int) bufsize, buf, eol);
         break;
     case CURLINFO_DATA_IN: /* The data is protocol data received from the peer. */
         if (g_verbose >= 3)
-            log("curl rcvd data: '%.*s%s'", (int) bufsize, buf, eol);
+            log_warning("curl rcvd data: '%.*s%s'", (int) bufsize, buf, eol);
         else
-            log("curl rcvd data %u bytes", orig_bufsize);
+            log_warning("curl rcvd data %u bytes", orig_bufsize);
         break;
     case CURLINFO_DATA_OUT: /* The data is protocol data sent to the peer. */
         if (g_verbose >= 3)
-            log("curl sent data: '%.*s%s'", (int) bufsize, buf, eol);
+            log_warning("curl sent data: '%.*s%s'", (int) bufsize, buf, eol);
         else
-            log("curl sent data %u bytes", orig_bufsize);
+            log_warning("curl sent data %u bytes", orig_bufsize);
         break;
     default:
         break;
@@ -663,7 +663,7 @@ char *upload_file_ext(post_state_t *state, const char *url, const char *filename
 
     /* Do not include the path part of the URL as it can contain sensitive data
      * in case of typos */
-    log(_("Sending %s to %s//%s"), filename, scheme, hostname);
+    log_warning(_("Sending %s to %s//%s"), filename, scheme, hostname);
     post(state,
                 whole_url,
                 /*content_type:*/ "application/octet-stream",
@@ -716,7 +716,7 @@ char *upload_file_ext(post_state_t *state, const char *url, const char *filename
     else
     {
         /* This ends up a "reporting status message" in abrtd */
-        log(_("Successfully created %s"), whole_url);
+        log_warning(_("Successfully created %s"), whole_url);
     }
 
     close(stdin_bck);

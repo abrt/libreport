@@ -180,7 +180,7 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
             case OPTION_END:
                 break;
         }
-        //log("curopt[%d].name:'%s' .has_arg:%d .flag:%p .val:%d", (int)(curopt-longopts),
+        //log_warning("curopt[%d].name:'%s' .has_arg:%d .flag:%p .val:%d", (int)(curopt-longopts),
         //      curopt->name, curopt->has_arg, curopt->flag, curopt->val);
         /*
          * getopt_long() thinks that NULL name marks the end of longopts.

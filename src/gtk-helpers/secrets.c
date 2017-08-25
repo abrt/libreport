@@ -305,7 +305,7 @@ static enum secrets_service_state secrets_service_connect(void)
 
     if (!g_connection)
     {
-        log("Failed to open connection to D-Bus session bus: %s", error->message);
+        log_warning("Failed to open connection to D-Bus session bus: %s", error->message);
         g_error_free(error);
         return SBS_UNAVAILABLE;
     }

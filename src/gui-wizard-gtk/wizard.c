@@ -322,7 +322,7 @@ static void label_wrapper(GtkWidget *widget, gpointer data_unused)
         GtkLabel *label = (GtkLabel*)widget;
         gtk_label_set_line_wrap(label, 1);
         //const char *txt = gtk_label_get_label(label);
-        //log("label '%s' set to wrap", txt);
+        //log_warning("label '%s' set to wrap", txt);
     }
 }
 
@@ -347,7 +347,7 @@ static void wrap_fixer(GtkWidget *widget, gpointer data_unused)
           && (gtk_widget_get_margin_top(widget) == 0)
           && (gtk_widget_get_margin_bottom(widget) == 0)
         ) {
-            //log("label '%s' set to autowrap", txt);
+            //log_warning("label '%s' set to autowrap", txt);
             make_label_autowrap_on_resize(label);
             return;
         }
@@ -867,7 +867,7 @@ static void g_tv_details_checkbox_toggled(
                         gchar    *tree_path,
                         gpointer  user_data_UNUSED)
 {
-    //log("%s: path:'%s'", __func__, tree_path);
+    //log_warning("%s: path:'%s'", __func__, tree_path);
     GtkTreeIter iter;
     if (!gtk_tree_model_get_iter_from_string(GTK_TREE_MODEL(g_ls_details), &iter, tree_path))
         return;
@@ -888,7 +888,7 @@ static void g_tv_details_checkbox_toggled(
         cur_value = item->default_by_reporter;
     else
         cur_value = !!(item->selected_by_user + 1); /* map -1,1 to 0,1 */
-    //log("%s: allowed:%d reqd:%d def:%d user:%d cur:%d", __func__,
+    //log_warning("%s: allowed:%d reqd:%d def:%d user:%d cur:%d", __func__,
     //            item->allowed_by_reporter,
     //            item->required_by_reporter,
     //            item->default_by_reporter,
@@ -899,7 +899,7 @@ static void g_tv_details_checkbox_toggled(
     {
         cur_value = !cur_value;
         item->selected_by_user = cur_value * 2 - 1; /* map 0,1 to -1,1 */
-        //log("%s: now ->selected_by_user=%d", __func__, item->selected_by_user);
+        //log_warning("%s: now ->selected_by_user=%d", __func__, item->selected_by_user);
         gtk_list_store_set(g_ls_details, &iter,
                 DETAIL_COLUMN_CHECKBOX, cur_value,
                 -1);
@@ -1321,7 +1321,7 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
 static void update_ls_details_checkboxes(const char *event_name)
 {
     event_config_t *cfg = get_event_config(event_name);
-    //log("%s: event:'%s', cfg:'%p'", __func__, g_event_selected, cfg);
+    //log_warning("%s: event:'%s', cfg:'%p'", __func__, g_event_selected, cfg);
     GHashTableIter iter;
     char *name;
     struct problem_item *item;
@@ -1364,7 +1364,7 @@ static void update_ls_details_checkboxes(const char *event_name)
         else
             cur_value = !!(item->selected_by_user + 1); /* map -1,1 to 0,1 */
 
-        //log("%s: '%s' allowed:%d reqd:%d def:%d user:%d", __func__, name,
+        //log_warning("%s: '%s' allowed:%d reqd:%d def:%d user:%d", __func__, name,
         //    item->allowed_by_reporter,
         //    item->required_by_reporter,
         //    item->default_by_reporter,
@@ -1389,7 +1389,7 @@ static void update_ls_details_checkboxes(const char *event_name)
                 gtk_list_store_set(g_ls_details, &iter,
                         DETAIL_COLUMN_CHECKBOX, cur_value,
                         -1);
-                //log("%s: changed gtk_list_store_set to %d", __func__, (item->allowed_by_reporter && item->selected_by_user >= 0));
+                //log_warning("%s: changed gtk_list_store_set to %d", __func__, (item->allowed_by_reporter && item->selected_by_user >= 0));
                 break;
             } while (gtk_tree_model_iter_next(GTK_TREE_MODEL(g_ls_details), &iter));
         }
@@ -1538,7 +1538,7 @@ static void set_excluded_envvar(void)
         } while (gtk_tree_model_iter_next(GTK_TREE_MODEL(g_ls_details), &iter));
     }
     char *var = strbuf_free_nobuf(item_list);
-    //log("EXCLUDE_FROM_REPORT='%s'", var);
+    //log_warning("EXCLUDE_FROM_REPORT='%s'", var);
     if (var)
     {
         xsetenv("EXCLUDE_FROM_REPORT", var);
@@ -2340,7 +2340,7 @@ static void toggle_eb_comment(void)
         switch(reproducible)
         {
             case -1:
-                VERB1 log("Uninitialized 'How reproducible' combobox");
+                VERB1 log_warning("Uninitialized 'How reproducible' combobox");
                 break;
 
             case PROBLEM_REPRODUCIBLE_UNKNOWN:
@@ -2409,7 +2409,7 @@ static void log_ready_state(void)
         buf[i] = ch;
     }
     buf[NUM_PAGES] = 0;
-    log("Completeness:[%s]", buf);
+    log_warning("Completeness:[%s]", buf);
 }
 #endif
 
@@ -3083,7 +3083,7 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
                 }
                 else
                 {
-                    log("%s", msg);
+                    log_warning("%s", msg);
                     free(msg);
                 }
             }
@@ -3254,7 +3254,7 @@ static void save_edited_one_liner(GtkCellRendererText *renderer,
                 gchar *new_text,
                 gpointer user_data)
 {
-    //log("path:'%s' new_text:'%s'", tree_path, new_text);
+    //log_warning("path:'%s' new_text:'%s'", tree_path, new_text);
 
     GtkTreeIter iter;
     if (!gtk_tree_model_get_iter_from_string(GTK_TREE_MODEL(g_ls_details), &iter, tree_path))

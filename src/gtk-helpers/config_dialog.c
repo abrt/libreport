@@ -88,7 +88,7 @@ int cdialog_run(config_dialog_t *cdialog, const char *name)
 {
     if (cdialog == NULL || cdialog->dialog == NULL)
     {
-        log("There is no configurable option for: '%s'", name);
+        log_warning("There is no configurable option for: '%s'", name);
         return GTK_RESPONSE_REJECT;
     }
 
@@ -146,7 +146,7 @@ static void save_value_from_widget(gpointer data, gpointer user_data)
             val = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ow->widget)) ? "yes" : "no";
             break;
         default:
-            log("unsupported option type");
+            log_warning("unsupported option type");
     }
 
     /* gtk_entry_get_text() returns empty string for empty text value */

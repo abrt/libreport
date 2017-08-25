@@ -175,7 +175,7 @@ static void add_option_to_table(gpointer data, gpointer user_data)
 
         default:
             //option_input = gtk_label_new_justify_left("WTF?");
-            log("unsupported option type");
+            log_warning("unsupported option type");
             free(option_label);
             return;
     }

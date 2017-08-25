@@ -26,7 +26,7 @@ static size_t writefunction(void *ptr, size_t size, size_t nmemb, void *stream)
 /*
     char *c, *c1, *c2;
 
-    log("received: '%*.*s'", (int)size, (int)size, (char*)ptr);
+    log_warning("received: '%*.*s'", (int)size, (int)size, (char*)ptr);
     c = (char*)xzalloc(size + 1);
     memcpy(c, ptr, size);
     c1 = strstr(c, "201 ");
@@ -102,7 +102,7 @@ static void report_to_kerneloops(
     if (!submitURL[0])
         submitURL = "http://oops.kernel.org/submitoops.php";
 
-    log(_("Submitting oops report to %s"), submitURL);
+    log_warning(_("Submitting oops report to %s"), submitURL);
 
     CURLcode ret = http_post_to_kerneloops_site(submitURL, backtrace);
     if (ret != CURLE_OK)
@@ -124,7 +124,7 @@ static void report_to_kerneloops(
         dd_close(dd);
     }
 
-    log("Kernel oops report was uploaded");
+    log_warning("Kernel oops report was uploaded");
 }
 
 int main(int argc, char **argv)

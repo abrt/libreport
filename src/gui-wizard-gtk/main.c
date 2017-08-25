@@ -66,7 +66,7 @@ void problem_data_reload_from_dump_dir(void)
             new_item->default_by_reporter = 0;
             new_item->required_by_reporter = 0;
         }
-        //log("%s: was ->selected_by_user=%d", __func__, new_item->selected_by_user);
+        //log_warning("%s: was ->selected_by_user=%d", __func__, new_item->selected_by_user);
     }
     problem_data_free(g_cd);
     g_cd = new_cd;

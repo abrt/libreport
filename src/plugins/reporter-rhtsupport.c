@@ -291,7 +291,7 @@ char *submit_ureport(const char *dump_dir_name, struct ureport_server_config *co
         ureport_server_response_save_in_dump_dir(resp, dump_dir_name, conf);
 
         if (resp->urr_message)
-            log("%s", resp->urr_message);
+            log_warning("%s", resp->urr_message);
     }
     else if (g_verbose > 2)
         error_msg(_("Server responded with an error: '%s'"), resp->urr_value);
@@ -321,9 +321,9 @@ bool check_for_hints(const char *url, char **login, char **password, bool ssl_ve
     );
 
 #if 0 /* testing */
-    log("ERR:%d", result->error);
-    log("MSG:'%s'", result->msg);
-    log("BODY:'%s'", result->body);
+    log_warning("ERR:%d", result->error);
+    log_warning("MSG:'%s'", result->msg);
+    log_warning("BODY:'%s'", result->body);
     result->error = 0;
     result->body = xstrdup(
             "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
@@ -595,8 +595,8 @@ int main(int argc, char **argv)
                 error_msg_and_die("Can't attach: problem data in '%s' "
                         "was not reported to RHTSupport and therefore has no URL",
                         dump_dir_name);
-            //log("URL:'%s'", reported_to->url);
-            //log("MSG:'%s'", reported_to->msg);
+            //log_warning("URL:'%s'", reported_to->url);
+            //log_warning("MSG:'%s'", reported_to->msg);
             free(url);
             url = reported_to->url;
             reported_to->url = NULL;
@@ -616,7 +616,7 @@ int main(int argc, char **argv)
             /* -t[CASE] FILE: just attach files and exit */
             while (*argv)
             {
-                log(_("Attaching '%s' to case '%s'"), *argv, url);
+                log_warning(_("Attaching '%s' to case '%s'"), *argv, url);
                 rhts_result_t *result = attach_file_to_case(url,
                     login,
                     password,
@@ -625,8 +625,8 @@ int main(int argc, char **argv)
                 );
                 if (result->error)
                     error_msg_and_die("%s", result->msg);
-                log("Attachment URL:%s", result->url);
-                log("File attached successfully");
+                log_warning("Attachment URL:%s", result->url);
+                log_warning("File attached successfully");
                 free_rhts_result(result);
                 argv++;
             }
@@ -653,7 +653,7 @@ int main(int argc, char **argv)
 
         if (submit_ur)
         {
-            log(_("Sending ABRT crash statistics data"));
+            log_warning(_("Sending ABRT crash statistics data"));
 
             bthash = submit_ureport(dump_dir_name, &urconf);
 
@@ -794,7 +794,7 @@ int main(int argc, char **argv)
     }
 
     /* Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing */
-    log(_("Compressing data"));
+    log_warning(_("Compressing data"));
 
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
@@ -813,12 +813,12 @@ int main(int argc, char **argv)
         if (tempfile_size <= QUERY_HINTS_IF_SMALLER_THAN)
         {
             /* Check for hints and show them if we have something */
-            log(_("Checking for hints"));
+            log_warning(_("Checking for hints"));
             if (check_for_hints(base_api_url, &login, &password, ssl_verify, tempfile))
                 goto ret;
         }
 
-        log(_("Creating a new case"));
+        log_warning(_("Creating a new case"));
 
         char *product = NULL;
         char *version = NULL;
@@ -878,14 +878,14 @@ int main(int argc, char **argv)
             add_reported_to_entry(dd, &rr);
             dd_close(dd);
             if (result->msg)
-                log("%s", result->msg);
-            log("URL=%s", result->url);
+                log_warning("%s", result->msg);
+            log_warning("URL=%s", result->url);
         }
         /* else: error msg was already emitted by dd_opendir */
 
         if (bthash)
         {
-            log(_("Linking ABRT crash statistics record with the case"));
+            log_warning(_("Linking ABRT crash statistics record with the case"));
 
             /* Make sure we use the current credentials */
             ureport_server_config_set_basic_auth(&urconf, login, password);
@@ -898,7 +898,7 @@ int main(int argc, char **argv)
             UREPORT_OPTION_VALUE_FROM_CONF(ursettings, "ContactEmail", email, (const char *));
             if (email != NULL)
             {
-                log(_("Linking ABRT crash statistics record with contact email: '%s'"), email);
+                log_warning(_("Linking ABRT crash statistics record with contact email: '%s'"), email);
                 attach_to_ureport(&urconf, bthash, "email", email);
             }
 
@@ -917,12 +917,12 @@ int main(int argc, char **argv)
     if (bigsize != 0 && tempfile_size / (1024*1024) >= bigsize)
     {
         /* Upload tarball of -d DIR to "big file" FTP */
-        /* log(_("Uploading problem data to '%s'"), bigurl); - upload_file does this */
+        /* log_warning(_("Uploading problem data to '%s'"), bigurl); - upload_file does this */
         remote_filename = upload_file(bigurl, tempfile);
     }
     if (remote_filename)
     {
-        log(_("Adding comment to case '%s'"), url);
+        log_warning(_("Adding comment to case '%s'"), url);
         /*
          * Do not translate message below - it goes
          * to a server where *other people* will read it.
@@ -940,7 +940,7 @@ int main(int argc, char **argv)
     else
     {
         /* Attach the tarball of -d DIR */
-        log(_("Attaching problem data to case '%s'"), url);
+        log_warning(_("Attaching problem data to case '%s'"), url);
         INVALID_CREDENTIALS_LOOP(login, password,
                 result_atch, attach_file_to_case(url, login, password, ssl_verify, tempfile)
         );
@@ -952,11 +952,11 @@ int main(int argc, char **argv)
             /* Prepend "Case created" text to whatever error message there is,
              * so that user knows that case _was_ created despite error in attaching.
              */
-            log("Case created but failed to attach problem data: %s", result_atch->msg);
+            log_warning("Case created but failed to attach problem data: %s", result_atch->msg);
         }
         else
         {
-            log("Failed to attach problem data: %s", result_atch->msg);
+            log_warning("Failed to attach problem data: %s", result_atch->msg);
         }
     }
 

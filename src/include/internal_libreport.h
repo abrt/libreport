@@ -539,11 +539,11 @@ void set_xfunc_diemode(enum libreport_diemode mode);
 /* Verbosity level */
 #define g_verbose libreport_g_verbose
 extern int g_verbose;
-/* VERB1 log("what you sometimes want to see, even on a production box") */
+/* VERB1 log_warning("what you sometimes want to see, even on a production box") */
 #define VERB1 if (g_verbose >= 1)
-/* VERB2 log("debug message, not going into insanely small details") */
+/* VERB2 log_warning("debug message, not going into insanely small details") */
 #define VERB2 if (g_verbose >= 2)
-/* VERB3 log("lots and lots of details") */
+/* VERB3 log_warning("lots and lots of details") */
 #define VERB3 if (g_verbose >= 3)
 /* there is no level > 3 */
 
@@ -554,9 +554,9 @@ void xfunc_die(void) NORETURN;
 #define die_out_of_memory libreport_die_out_of_memory
 void die_out_of_memory(void) NORETURN;
 
-/* It's a macro, not function, since it collides with log() from math.h */
+/* It's a macro, not function, since it collides with log_warning() from math.h */
 #undef log
-#define log(...)         log_standard(LOG_WARNING, __FILE__, __LINE__, __func__, __VA_ARGS__)
+#define log_warning(...)         log_standard(LOG_WARNING, __FILE__, __LINE__, __func__, __VA_ARGS__)
 #define log_debug(...)   log_standard(LOG_DEBUG,   __FILE__, __LINE__, __func__, __VA_ARGS__)
 #define log_info(...)    log_standard(LOG_INFO,    __FILE__, __LINE__, __func__, __VA_ARGS__)
 #define log_notice(...)  log_standard(LOG_NOTICE,  __FILE__, __LINE__, __func__, __VA_ARGS__)

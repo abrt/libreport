@@ -69,7 +69,7 @@ def set_verbosity(verbosity):
     os.environ["ABRT_VERBOSE"] = str(verbose)
 
 
-def log(fmt, *args):
+def log_warning(fmt, *args):
     sys.stderr.write("%s\n" % (fmt % args))
 
 

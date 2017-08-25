@@ -154,13 +154,13 @@ static void consume_cur_option(struct my_parse_data *parse_data)
             opt->eo_value = old_opt->eo_value;
             old_opt->eo_value = NULL;
         }
-        //log("xml: replacing '%s' value:'%s'->'%s'", opt->eo_name, old_opt->eo_value, opt->eo_value);
+        //log_warning("xml: replacing '%s' value:'%s'->'%s'", opt->eo_name, old_opt->eo_value, opt->eo_value);
         free_event_option(old_opt);
         elem->data = opt;
     }
     else
     {
-        //log("xml: new value %s='%s'", opt->eo_name, opt->eo_value);
+        //log_warning("xml: new value %s='%s'", opt->eo_name, opt->eo_value);
         event_config->values->options = g_list_append(event_config->values->options, opt);
     }
 }
@@ -173,7 +173,7 @@ static void start_element(GMarkupParseContext *context,
                   gpointer user_data,
                   GError **error)
 {
-    //log("start: %s", element_name);
+    //log_warning("start: %s", element_name);
 
     struct my_parse_data *parse_data = user_data;
     if (strcmp(element_name, ADV_OPTIONS_ELEMENT) == 0)
@@ -494,7 +494,7 @@ static void text(GMarkupParseContext *context,
             ui->ec_minimal_rating = strtol(text_copy, &endptr, 10);
             if (errno != 0 || endptr == text_copy || *endptr != '\0')
             {
-                log("invalid minimal-rating number '%s', set to default 4", text_copy);
+                log_warning("invalid minimal-rating number '%s', set to default 4", text_copy);
                 ui->ec_minimal_rating = 4;
             }
         }
