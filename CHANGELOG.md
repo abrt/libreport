@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.9.2] - 2017-08-25
 ### Added
 - Add count field into default logs, not just FULL dump. It is useful to know
 if some problem occurred first time or is it problem that happens a lot.
@@ -74,6 +76,7 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.9.1...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.9.2...HEAD
+[2.9.2]: https://github.com/abrt/libreport/compare/2.9.1...2.9.2
 [2.9.1]: https://github.com/abrt/libreport/compare/2.9.0...2.9.1
 [2.9.0]: https://github.com/abrt/libreport/compare/2.8.0...2.9.0
