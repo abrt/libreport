@@ -5,16 +5,17 @@
 # Translators:
 # Geert Warrink <geert.warrink@onsnet.nu>, 2011-2014
 # Richard E. van der Luit <nippur@fedoraproject.org>, 2012
+# Geert Warrink <geert.warrink@onsnet.nu>, 2017. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-14 10:26+0200\n"
+"POT-Creation-Date: 2016-12-02 01:37-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-01-08 06:52-0500\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
+"PO-Revision-Date: 2017-04-11 05:43-0400\n"
+"Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/libreport/language/"
 "nl/)\n"
 "Language: nl\n"
@@ -50,7 +51,7 @@ msgstr "Verwijder PROBLEEM_MAP na de rapportage"
 msgid "Expert mode"
 msgstr "Expert modus"
 
-#: ../src/cli/cli.c:90 ../src/report-newt/report-newt.c:393
+#: ../src/cli/cli.c:90 ../src/report-newt/report-newt.c:395
 msgid "Display version and exit"
 msgstr "Toon versie en sluit af"
 
@@ -156,7 +157,7 @@ msgstr "Jouw input is niet geldig, omdat:"
 msgid "Bad value for '%s': %s"
 msgstr "Slechte waarde voor  '%s': %s"
 
-#: ../src/cli/cli-report.c:673
+#: ../src/cli/cli-report.c:674
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data. Do you want "
@@ -165,19 +166,19 @@ msgstr ""
 "Gebeurtenis '%s' vereist toestemming om mogelijk gevoelige data te versturen."
 " Wil je verder gaan?"
 
-#: ../src/cli/cli-report.c:720
+#: ../src/cli/cli-report.c:721
 msgid "You have chosen number out of range"
 msgstr "Je hebt een getal buiten het bereik gekozen"
 
-#: ../src/cli/cli-report.c:725
+#: ../src/cli/cli-report.c:726
 msgid "Invalid input, exiting."
 msgstr "Ongeldige input, ga afsluiten. "
 
-#: ../src/cli/cli-report.c:746
+#: ../src/cli/cli-report.c:747
 msgid "Select an event to run: "
 msgstr "Selecteer een uit te voeren gebeurtenis:"
 
-#: ../src/cli/cli-report.c:858
+#: ../src/cli/cli-report.c:859
 msgid "Select a workflow to run: "
 msgstr "Selecteer een uit te voeren verwerkvolgorde:"
 
@@ -205,6 +206,8 @@ msgstr "Caching bestanden van {0} gemaakt van {1}"
 #, python-brace-format
 msgid "Can't extract files from '{0}'. For more information see '{1}'"
 msgstr ""
+"Kan geen bestanden extraheren van '{0}'. Refereer naar '{1}' voor meer "
+"informatie"
 
 #: ../src/client-python/reportclient/debuginfo.py:163
 #, python-brace-format
@@ -219,7 +222,7 @@ msgstr "Downloaden ({0} van {1}) {2}: {3:3}%"
 
 #: ../src/client-python/reportclient/debuginfo.py:312
 msgid "Initializing package manager"
-msgstr ""
+msgstr "Initialiseer de pakketbeheerder"
 
 #. if verbose == 0:
 #. # this suppress yum messages about setting up repositories
@@ -227,7 +230,7 @@ msgstr ""
 #. This takes some time, let user know what we are doing
 #: ../src/client-python/reportclient/debuginfo.py:319
 msgid "Setting up repositories"
-msgstr ""
+msgstr "Instellen van repositories"
 
 #. if verbose == 0:
 #. # re-enable the output to stdout
@@ -290,6 +293,8 @@ msgid ""
 "'{0}' must be owned by abrt. Please run '# chown -R abrt.abrt {0}' to fix "
 "the issue."
 msgstr ""
+"abrt moet eigenaar zijn van '{0}'. Voer '# chown -R abrt.abrt {0}' uit om "
+"het probleem op te lossen."
 
 #. Was: "All downloaded packages have been extracted, removing..."
 #. but it was appearing even if no packages were in fact extracted
@@ -302,15 +307,15 @@ msgstr "Verwijderen {0}"
 #: ../src/client-python/reportclient/debuginfo.py:413
 #, python-brace-format
 msgid "Can't remove {0}, probably contains an error log"
-msgstr ""
+msgstr "Kan {0} niet verwijderen, bevat waarschijnlijk een foutlog"
 
-#: ../src/client-python/reportclient/dnfdebuginfo.py:80
+#: ../src/client-python/reportclient/dnfdebuginfo.py:89
 msgid "Error reading repository configuration: '{0!s}'"
-msgstr ""
+msgstr "Fout bij het lezen van repository configuratie: '{0!s}'"
 
-#: ../src/client-python/reportclient/dnfdebuginfo.py:97
+#: ../src/client-python/reportclient/dnfdebuginfo.py:106
 msgid "Error setting up repositories: '{0!s}'"
-msgstr ""
+msgstr "Fout bij het instellen van repositories: '{0!s}'"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:66
 msgid ""
@@ -320,37 +325,37 @@ msgstr ""
 "Probleem '{0!s}' trad op tijdens het downloaden van spiegel: '{1!s}'. "
 "Probeer de volgende"
 
-#: ../src/client-python/reportclient/yumdebuginfo.py:98
+#: ../src/client-python/reportclient/yumdebuginfo.py:100
 msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
 msgstr "Fout bij het initialiseren van yum (YumBase.doConfigSetup): '{0!s}'"
 
-#: ../src/client-python/reportclient/yumdebuginfo.py:105
+#: ../src/client-python/reportclient/yumdebuginfo.py:107
 msgid "Error: can't make cachedir, exiting"
 msgstr "Fout: kan cachedir niet aanmaken, afsluiten"
 
-#: ../src/client-python/reportclient/yumdebuginfo.py:114
+#: ../src/client-python/reportclient/yumdebuginfo.py:116
 msgid "Can't disable repository '{0!s}': {1!s}"
 msgstr "Kan repository '{0!s}' niet uitzetten: {1!s}"
 
-#: ../src/client-python/reportclient/yumdebuginfo.py:133
+#: ../src/client-python/reportclient/yumdebuginfo.py:135
 msgid "Can't disable async download, the output might contain artifacts!"
 msgstr ""
 "Kan asynchrone download niet uitzetten, de output kan artefacten bevatten!"
 
-#: ../src/client-python/reportclient/yumdebuginfo.py:135
+#: ../src/client-python/reportclient/yumdebuginfo.py:137
 #, python-brace-format
 msgid "Can't setup {0}: {1}, disabling"
 msgstr "Kan {0}: {1} niet instellen, wordt uitgeschakeld"
 
-#: ../src/client-python/reportclient/yumdebuginfo.py:145
+#: ../src/client-python/reportclient/yumdebuginfo.py:147
 msgid "Error retrieving metadata: '{0!s}'"
 msgstr "Fout bij ophalen metadata: '{0!s}'"
 
-#: ../src/client-python/reportclient/yumdebuginfo.py:158
+#: ../src/client-python/reportclient/yumdebuginfo.py:160
 msgid "Error retrieving filelists: '{0!s}'"
 msgstr "Fout bij ophalen bestandenlijst: '{0!s}'"
 
-#: ../src/client-python/reportclient/yumdebuginfo.py:202
+#: ../src/client-python/reportclient/yumdebuginfo.py:204
 #, python-brace-format
 msgid "Cannot copy file '{0}': {1}"
 msgstr "Kan bestand '{0}' niet kopieren: {1}"
@@ -399,7 +404,7 @@ msgstr "Gebeurtenissen"
 msgid "C_onfigure"
 msgstr "C_onfigureer"
 
-#: ../src/gtk-helpers/config_dialog.c:375 ../src/gui-wizard-gtk/wizard.c:3687
+#: ../src/gtk-helpers/config_dialog.c:375 ../src/gui-wizard-gtk/wizard.c:3702
 msgid "_Close"
 msgstr "_Sluiten"
 
@@ -413,7 +418,7 @@ msgstr "Sla geen wachtwoorden op"
 
 #: ../src/gtk-helpers/event_config_dialog.c:285
 msgid "Basic"
-msgstr ""
+msgstr "Basis"
 
 #: ../src/gtk-helpers/event_config_dialog.c:293
 msgid "Advanced"
@@ -426,7 +431,7 @@ msgstr ""
 
 #: ../src/gtk-helpers/event_config_dialog.c:349
 #: ../src/gtk-helpers/workflow_config_dialog.c:94
-#: ../src/gui-wizard-gtk/wizard.c:784 ../src/gui-wizard-gtk/wizard.c:3287
+#: ../src/gui-wizard-gtk/wizard.c:783 ../src/gui-wizard-gtk/wizard.c:3302
 msgid "_Cancel"
 msgstr "_Annuleren"
 
@@ -481,23 +486,23 @@ msgstr "kan geheime waarde van '%s' niet verkrijgen: %s"
 #: ../src/gtk-helpers/problem_details_widget.c:191
 #, c-format
 msgid "$DATA_DIRECTORY/%s (binary file, %s)"
-msgstr ""
+msgstr "$DATA_DIRECTORY/%s (binary file, %s)"
 
 #: ../src/gtk-helpers/problem_details_dialog.c:30
 msgid "Problem details"
-msgstr ""
+msgstr "Probleemdetails"
 
 #: ../src/gtk-helpers/problem_details_dialog.c:33
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: ../src/gui-wizard-gtk/main.c:107
 msgid "Preferences"
-msgstr ""
+msgstr "Voorkeuren"
 
 #: ../src/gui-wizard-gtk/main.c:110
 msgid "Quit"
-msgstr ""
+msgstr "Afsluiten"
 
 #: ../src/gui-wizard-gtk/main.c:154
 msgid ""
@@ -514,7 +519,7 @@ msgstr ""
 msgid "Alternate GUI file"
 msgstr "Alternatief GUI bestand"
 
-#: ../src/gui-wizard-gtk/wizard.c:380
+#: ../src/gui-wizard-gtk/wizard.c:379
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
@@ -523,15 +528,15 @@ msgstr ""
 "Er is een beschrijfbare map nodig, maar '%s' is niet beschrijfbaar. Naar "
 "'%s' verplaatsen en bewerking op de verplaatste data uitvoeren?"
 
-#: ../src/gui-wizard-gtk/wizard.c:775
+#: ../src/gui-wizard-gtk/wizard.c:774
 msgid "View/edit a text file"
 msgstr "Bekijk/bewerk een tekstbestand"
 
-#: ../src/gui-wizard-gtk/wizard.c:783
+#: ../src/gui-wizard-gtk/wizard.c:782
 msgid "_Save"
 msgstr "_Opslaan"
 
-#: ../src/gui-wizard-gtk/wizard.c:1005
+#: ../src/gui-wizard-gtk/wizard.c:1004
 msgid ""
 "No reporting targets are defined for this problem. Check configuration in /"
 "etc/libreport/*"
@@ -539,56 +544,61 @@ msgstr ""
 "Er zijn geen rapportagedoelen gedefinieerd voor dit probleem. Controleer "
 "configuratie in /etc/libreport/*"
 
-#: ../src/gui-wizard-gtk/wizard.c:1047
+#: ../src/gui-wizard-gtk/wizard.c:1046
 #, c-format
 msgid "(requires: %s)"
 msgstr "(vereist: %s)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1061
+#: ../src/gui-wizard-gtk/wizard.c:1060
 #, c-format
 msgid "(not needed, data already exist: %s)"
 msgstr "(niet nodig, data bestaat al: %s)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1160
+#: ../src/gui-wizard-gtk/wizard.c:1159
 msgid ""
 "Since crashes without a known reproducer can be difficult to diagnose, "
 "please provide a comprehensive description of the problem you have "
 "encountered."
 msgstr ""
+"Omdat crashes zonder een bekende veroorzaker moeilijk te diagnostiseren "
+"zijn,  word je gevraagd om een uitgebreide beschrijving te geven voor het "
+"probleem dat je bent tegengekomen."
 
-#: ../src/gui-wizard-gtk/wizard.c:1167
+#: ../src/gui-wizard-gtk/wizard.c:1166
 msgid ""
 "Please provide a short description of the problem and please include the "
 "steps you have used to reproduce the problem."
 msgstr ""
+"Geeft een korte beschrijving van het probleem en voeg te stappen toe doe "
+"nodig waren om het probleem te reproduceren."
 
-#: ../src/gui-wizard-gtk/wizard.c:1174
+#: ../src/gui-wizard-gtk/wizard.c:1173
 msgid "Please provide the steps you have used to reproduce the problem."
-msgstr ""
+msgstr "Voeg te stappen toe doe nodig waren om het probleem te reproduceren."
 
-#: ../src/gui-wizard-gtk/wizard.c:1296
+#: ../src/gui-wizard-gtk/wizard.c:1295
 msgid "(click here to view/edit)"
 msgstr "(Klik hier voor bekijken/bewerken)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1307
+#: ../src/gui-wizard-gtk/wizard.c:1306
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(binair bestand, %llu bytes)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1418 ../src/report-newt/report-newt.c:334
+#: ../src/gui-wizard-gtk/wizard.c:1417 ../src/report-newt/report-newt.c:334
 msgid "(no description)"
 msgstr "(geen beschrijving)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1426
+#: ../src/gui-wizard-gtk/wizard.c:1425
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu bytes, %u bestanden"
 
-#: ../src/gui-wizard-gtk/wizard.c:1704
+#: ../src/gui-wizard-gtk/wizard.c:1703
 msgid "Processing was canceled"
 msgstr "Verwerking werd geannuleerd"
 
-#: ../src/gui-wizard-gtk/wizard.c:1915
+#: ../src/gui-wizard-gtk/wizard.c:1914
 msgid ""
 "Processing of the problem failed. This can have many reasons but there are "
 "three most common:\n"
@@ -596,16 +606,25 @@ msgid ""
 "\t▫ <b>corrupted problem data</b>\n"
 "\t▫ <b>invalid configuration</b>"
 msgstr ""
+"Het verwerken van het probleem mislukte. Dit kan vele oorzaken hebben maar "
+"er zijn drie veel voorkomende:\n"
+"\t▫ <b>netwerkverbindinsproblemen</b>\n"
+"\t▫ <b>corrupte probleemdata</b>\n"
+"\t▫ <b>ongeldige configuratie</b>"
 
-#: ../src/gui-wizard-gtk/wizard.c:1924
+#: ../src/gui-wizard-gtk/wizard.c:1923
 msgid ""
 "If you want to update the configuration and try to report again, please open "
 "<b>Preferences</b> item\n"
 "in the application menu and after applying the configuration changes click "
 "<b>Repeat</b> button."
 msgstr ""
+"Als je de configuratie wilt updaten en opnieuw wilt rapporteren, open dan de "
+"<b>Voorkeuren</b> item\n"
+"in het toepassingsmenu en na het aanbrengen van de configuratieveranderingen "
+"klik je op de <b>Herhaal</b> knop."
 
-#: ../src/gui-wizard-gtk/wizard.c:1930
+#: ../src/gui-wizard-gtk/wizard.c:1929
 msgid ""
 "If you are sure that this problem is not caused by network problems neither "
 "by invalid configuration\n"
@@ -616,56 +635,66 @@ msgid ""
 "passwords. The uploaded data are stored in a protected storage and only a "
 "limited number of persons can read them.</i>"
 msgstr ""
+"Als je er zeker van bent dat dit probleem niet veroorzaakt wordt door "
+"netwerkproblemen noch ongeldige configuratie\n"
+"en je wilt ons helpen, klik dat op de upload knop en bied alle probleemdata "
+"aan voor een diepgaande analyse.\n"
+"<i>Voordat je dit doet overweeg je de beveiligingsrisico's. Probleemdata kan "
+"gevoelige informatie bevatten zoals\n"
+"wachtwoorden. De geüploade data zal opgeslagen worden in een beschermde "
+"opslag en slechts een beperkt aantal mensen kan dit lezen.</i>"
 
-#: ../src/gui-wizard-gtk/wizard.c:2055
+#: ../src/gui-wizard-gtk/wizard.c:2054
 msgid "Processing was interrupted because the problem is not reportable."
 msgstr ""
 "Het verwerken werd onderbroken omdat het probleem niet gerapporteerd kan "
 "worden."
 
-#: ../src/gui-wizard-gtk/wizard.c:2065 ../src/gui-wizard-gtk/wizard.c:2136
+#: ../src/gui-wizard-gtk/wizard.c:2064 ../src/gui-wizard-gtk/wizard.c:2135
 msgid "Processing failed."
 msgstr "Verwerking is mislukt."
 
 #. No next event, go to progress page and finish
-#: ../src/gui-wizard-gtk/wizard.c:2072 ../src/gui-wizard-gtk/wizard.c:3009
+#: ../src/gui-wizard-gtk/wizard.c:2071 ../src/gui-wizard-gtk/wizard.c:3015
 msgid "Processing finished."
 msgstr "Verwerking beëindigd "
 
-#: ../src/gui-wizard-gtk/wizard.c:2073
+#: ../src/gui-wizard-gtk/wizard.c:2072
 msgid "Processing finished, please proceed to the next step."
 msgstr "Verwerking is beëindigd, ga verder met de volgende stap."
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:2133
+#: ../src/gui-wizard-gtk/wizard.c:2132
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "Er is geen verwerking gedefinieerd voor de gebeurtenis '%s'"
 
-#: ../src/gui-wizard-gtk/wizard.c:2147
+#: ../src/gui-wizard-gtk/wizard.c:2146
 msgid "Processing interrupted: can't continue without writable directory."
 msgstr "Verwerking onderbroken: kan niet verdergaan zonder beschrijfbare map."
 
-#: ../src/gui-wizard-gtk/wizard.c:2184
+#: ../src/gui-wizard-gtk/wizard.c:2183
 msgid "Processing..."
 msgstr "Bezig met verwerken..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2270
+#: ../src/gui-wizard-gtk/wizard.c:2269
 msgid ""
 "Possible sensitive data detected, feel free to edit the report and remove "
 "them."
 msgstr ""
+"Mogelijk gevoelige data gedetecteerd, voel je vrij om het rapport te "
+"berwerken en deze data te verwijderen."
 
-#: ../src/gui-wizard-gtk/wizard.c:2310
+#: ../src/gui-wizard-gtk/wizard.c:2309
 msgid "Cannot check backtrace rating because of invalid event name"
 msgstr "Kan backtrace rang niet controleren wegens ongeldige voorval naam"
 
-#: ../src/gui-wizard-gtk/wizard.c:2847
+#: ../src/gui-wizard-gtk/wizard.c:2852
 #, c-format
 msgid "Failed to save file '%s'"
-msgstr ""
+msgstr "Opslaan van bestand '%s' mislukte"
 
-#: ../src/gui-wizard-gtk/wizard.c:3029
+#: ../src/gui-wizard-gtk/wizard.c:3035
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
@@ -674,128 +703,133 @@ msgstr ""
 "Voorval '%s' vereist toestemming om mogelijk gevoelige data te versturen.\n"
 "Wil je verder gaan?"
 
-#: ../src/gui-wizard-gtk/wizard.c:3077
+#: ../src/gui-wizard-gtk/wizard.c:3082
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
 msgstr ""
 "Dit probleem moet niet gerapporteerd worden (het is waarschijnlijk een "
 "bekend probleem). %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:3288
+#: ../src/gui-wizard-gtk/wizard.c:3303
 msgid "_Open"
 msgstr "_Openen"
 
-#: ../src/gui-wizard-gtk/wizard.c:3310
+#: ../src/gui-wizard-gtk/wizard.c:3325
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' is geen gewoon bestand"
 
-#: ../src/gui-wizard-gtk/wizard.c:3324
+#: ../src/gui-wizard-gtk/wizard.c:3339
 msgid "You are trying to copy a file onto itself"
 msgstr "Je probeert een bestand naar zichzelf te kopieren"
 
-#: ../src/gui-wizard-gtk/wizard.c:3331
+#: ../src/gui-wizard-gtk/wizard.c:3346
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "Kan '%s' niet kopieren: %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:3346
+#: ../src/gui-wizard-gtk/wizard.c:3361
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "Item '%s' bestaat al en kan niet gewijzigd worden"
 
-#: ../src/gui-wizard-gtk/wizard.c:3510
+#: ../src/gui-wizard-gtk/wizard.c:3525
 msgid "I have experienced this problem for the first time"
-msgstr ""
+msgstr "Ik ben dit probleen voor het eerst tegegekomen"
 
-#: ../src/gui-wizard-gtk/wizard.c:3513
+#: ../src/gui-wizard-gtk/wizard.c:3528
 msgid "I can reproduce this problem"
-msgstr ""
+msgstr "Ik dit probleem reproduceren"
 
-#: ../src/gui-wizard-gtk/wizard.c:3516
+#: ../src/gui-wizard-gtk/wizard.c:3531
 msgid "This problem occurs repeatedly"
-msgstr ""
+msgstr "Dit probleem treedt herhaaldelijk op "
 
-#: ../src/gui-wizard-gtk/wizard.c:3529
+#: ../src/gui-wizard-gtk/wizard.c:3544
 msgid "Include"
 msgstr "Bijsluiten"
 
-#: ../src/gui-wizard-gtk/wizard.c:3540
+#: ../src/gui-wizard-gtk/wizard.c:3555
 msgid "Name"
 msgstr "Naam"
 
-#: ../src/gui-wizard-gtk/wizard.c:3550
+#: ../src/gui-wizard-gtk/wizard.c:3565
 msgid "Value"
 msgstr "Waarde"
 
-#: ../src/gui-wizard-gtk/wizard.c:3584
+#: ../src/gui-wizard-gtk/wizard.c:3599
 msgid "Problem description"
 msgstr "Probleem beschrijving"
 
-#: ../src/gui-wizard-gtk/wizard.c:3585
+#: ../src/gui-wizard-gtk/wizard.c:3600
 msgid "Select how to report this problem"
 msgstr "Selecteer de rapporteermethode voor dit probleem"
 
-#: ../src/gui-wizard-gtk/wizard.c:3586
+#: ../src/gui-wizard-gtk/wizard.c:3601
 msgid "Provide additional information"
 msgstr "Bied extra informatie"
 
-#: ../src/gui-wizard-gtk/wizard.c:3587
+#: ../src/gui-wizard-gtk/wizard.c:3602
 msgid "Review the data"
 msgstr "Bekijk de data"
 
-#: ../src/gui-wizard-gtk/wizard.c:3588
+#: ../src/gui-wizard-gtk/wizard.c:3603
 msgid "Confirm data to report"
 msgstr "Bevestig de te rapporteren data"
 
-#: ../src/gui-wizard-gtk/wizard.c:3589
+#: ../src/gui-wizard-gtk/wizard.c:3604
 msgid "Processing"
 msgstr "Bezig met verwerken"
 
-#: ../src/gui-wizard-gtk/wizard.c:3590
+#: ../src/gui-wizard-gtk/wizard.c:3605
 msgid "Processing done"
 msgstr "Verwerken is beëindigd"
 
-#: ../src/gui-wizard-gtk/wizard.c:3689
+#: ../src/gui-wizard-gtk/wizard.c:3704
 msgid "_Stop"
 msgstr "_Stop"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3692
+#: ../src/gui-wizard-gtk/wizard.c:3707
 msgid "Upload for analysis"
 msgstr "Upload voor analyse"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3695
+#: ../src/gui-wizard-gtk/wizard.c:3710
 msgid "Repeat"
-msgstr ""
+msgstr "Herhaal"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3697
+#: ../src/gui-wizard-gtk/wizard.c:3712
 msgid "_Forward"
 msgstr "_Ga verder"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3700 ../src/gui-wizard-gtk/wizard.glade.h:10
+#: ../src/gui-wizard-gtk/wizard.c:3715 ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid "Details"
 msgstr "Details"
 
-#: ../src/gui-wizard-gtk/wizard.c:3765
+#: ../src/gui-wizard-gtk/wizard.c:3780
 msgid "Restrict access to the report"
 msgstr "Beperk toegang tot het rapport"
 
-#: ../src/gui-wizard-gtk/wizard.c:3770
+#: ../src/gui-wizard-gtk/wizard.c:3785
 msgid "Learn more about restricted access in the configuration"
-msgstr ""
+msgstr "Kom meer te weten over beperkte toegang in de configuratie"
 
-#: ../src/gui-wizard-gtk/wizard.c:3833
+#: ../src/gui-wizard-gtk/wizard.c:3848
 msgid ""
 "In order to enable the built-in screencasting functionality the package fros-"
 "recordmydesktop has to be installed. Please run the following command if you "
 "want to install it.\n"
 "\n"
-"<b>su -c \"yum install fros-recordmydesktop\"</b>"
+"<b>su -c \"dnf install fros-recordmydesktop\"</b>"
 msgstr ""
+"Om de ingebouwde screencasting functionaliteit aan te zetten moet het fros-"
+"recordmydesktop pakket geïnstalleerd zijn. Voer het volgende commando uit "
+"als het wilt installeren.\n"
+"\n"
+"<b>su -c \"dnf install fros-recordmydesktop\"</b>"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
 msgid ""
@@ -815,27 +849,29 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid "Sensitive words"
-msgstr ""
+msgstr "Gevoelige woorden"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid "Custom"
-msgstr ""
+msgstr "Aangepast"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid "Clear the search bar to see the list of security sensitive words."
 msgstr ""
+"Maak de zoekbalk schoon om de lijst van beveiligings-gevoelige woorden te "
+"zien."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "file"
-msgstr ""
+msgstr "bestand"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "data"
-msgstr ""
+msgstr "data"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "Search"
-msgstr ""
+msgstr "Zoeken"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid ""
@@ -861,17 +897,19 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid "How reproducible is this problem?"
-msgstr ""
+msgstr "Hoe reproduceerbaar is dit probleem?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid "How it can be reproduced (one step per line)?"
-msgstr ""
+msgstr "Hoe kan het gereproduceerd worden (een stap per regel)?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:14
 msgid ""
 "Please add a comprehensive description of the problem you have. This is a "
 "very long place holder."
 msgstr ""
+"Voeg een uitgebreide beschrijving toe van jouw probleem. Dit is een heel "
+"grote plaatshouder."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid "You need to fill the how to before you can proceed..."
@@ -943,14 +981,15 @@ msgstr ""
 "aanbieden en het rapportage proces opnieuw wilt uitvoeren, duw dan op "
 "'Vooruit'"
 
-#: ../src/include/internal_libreport.h:1182
+#: ../src/include/internal_libreport.h:1228
 msgid "Be verbose"
 msgstr "Beschrijf uitgebreid"
 
-#: ../src/include/internal_libreport.h:1183
+#: ../src/include/internal_libreport.h:1229
 #: ../src/plugins/reporter-bugzilla.c:295
 #: ../src/plugins/reporter-kerneloops.c:166 ../src/plugins/reporter-mailx.c:279
-#: ../src/plugins/reporter-print.c:56 ../src/plugins/reporter-rhtsupport.c:510
+#: ../src/plugins/reporter-print.c:56 ../src/plugins/reporter-rhtsupport.c:515
+#: ../src/plugins/reporter-systemd-journal.c:245
 #: ../src/plugins/reporter-upload.c:186 ../src/plugins/reporter-mantisbt.c:283
 msgid "Problem directory"
 msgstr "Probleem map"
@@ -991,7 +1030,7 @@ msgstr "f"
 
 #: ../src/lib/client.c:147
 msgid "e"
-msgstr ""
+msgstr "e"
 
 #: ../src/lib/create_dump_dir.c:32
 #, c-format
@@ -1001,9 +1040,9 @@ msgstr "uid waarde is ongeldig: '%s'"
 #: ../src/lib/create_dump_dir.c:51
 #, c-format
 msgid "'%s' is not correct file name"
-msgstr ""
+msgstr "'%s' is geen correcte bestandsnaam"
 
-#: ../src/lib/create_dump_dir.c:189
+#: ../src/lib/create_dump_dir.c:190
 #, c-format
 msgid "Missing required item: '%s'"
 msgstr "Vereist item '%s' ontbreekt"
@@ -1015,56 +1054,56 @@ msgstr "Upload: %llu van %llu kbytes"
 
 #: ../src/lib/curl.c:636
 msgid "Ignoring URL without scheme and hostname"
-msgstr ""
+msgstr "URL zonder schema en hostnaam wordt genegeerd"
 
 #. Do not include the path part of the URL as it can contain sensitive data
 #. * in case of typos
 #: ../src/lib/curl.c:666
 #, c-format
 msgid "Sending %s to %s//%s"
-msgstr ""
+msgstr "%s  wordt naar %s//%s gestuurd"
 
 #: ../src/lib/curl.c:690
 #, c-format
 msgid "Please enter user name for '%s//%s':"
-msgstr ""
+msgstr "Vul een gebruikersnaam in voor '%s//%s':"
 
 #: ../src/lib/curl.c:696
 #, c-format
 msgid "Please enter password for '%s//%s@%s':"
-msgstr ""
+msgstr "Vul een wachtwoord in voor '%s//%s@%s':"
 
 #. This ends up a "reporting status message" in abrtd
 #: ../src/lib/curl.c:719
 #, c-format
 msgid "Successfully created %s"
-msgstr ""
+msgstr "%s is met succes aangemaakt"
 
-#: ../src/lib/dump_dir.c:2400
+#: ../src/lib/dump_dir.c:2463
 msgid "Failed to open TAR writer"
-msgstr ""
+msgstr "Het openen van de TAR schrijver mislukte"
 
-#: ../src/lib/dump_dir.c:2426
+#: ../src/lib/dump_dir.c:2489
 msgid "Failed to finalize TAR archive"
-msgstr ""
+msgstr "Het afmaken van het TAR archief mislukte"
 
-#: ../src/lib/dump_dir.c:2436
+#: ../src/lib/dump_dir.c:2499
 msgid "Failed to close TAR writer"
-msgstr ""
+msgstr "Het afsluitrn van de TAR schrijfer mislukte"
 
-#: ../src/lib/dump_dir.c:2446
+#: ../src/lib/dump_dir.c:2509
 #, c-format
 msgid "gzip killed with signal %d"
-msgstr ""
+msgstr "gzip afgeschoten met signaal %d"
 
-#: ../src/lib/dump_dir.c:2452
+#: ../src/lib/dump_dir.c:2515
 #, c-format
 msgid "gzip exited with %d"
-msgstr ""
+msgstr "gzip afgesloten met %d"
 
-#: ../src/lib/dump_dir.c:2455
+#: ../src/lib/dump_dir.c:2518
 msgid "gzip process failed"
-msgstr ""
+msgstr "gzip proces faalde"
 
 #: ../src/lib/event_config.c:382
 msgid "Missing mandatory value"
@@ -1136,19 +1175,19 @@ msgstr "Waarschijnlijk ontbreekt juiste debuginfo of is de coredump corrupt."
 #: ../src/lib/iso_date_string.c:50
 #, c-format
 msgid "String doesn't seem to be a date: '%s'"
-msgstr ""
+msgstr "String lijkt geen datum te zijn: '%s'"
 
 #: ../src/lib/iso_date_string.c:55
 #, c-format
 msgid "The date: '%s' has unrecognized suffix: '%s'"
-msgstr ""
+msgstr "De datum: '%s' heeft een onbekend achtervoegsel: '%s'"
 
 #: ../src/lib/iso_date_string.c:60
 #, c-format
 msgid "The date: '%s' is out of UNIX time stamp range"
-msgstr ""
+msgstr "De datum: '%s' valt buiten de UNIX tijdstempel reeks"
 
-#: ../src/lib/ureport.c:393
+#: ../src/lib/ureport.c:395
 #, c-format
 msgid "Your problem seems to be caused by %s\n"
 "\n"
@@ -1157,36 +1196,36 @@ msgstr "Jouw probleem lijkt veroorzaakt te worden door %s\n"
 "\n"
 "%s\n"
 
-#: ../src/lib/ureport.c:396
+#: ../src/lib/ureport.c:398
 msgid "Your problem seems to be caused by one of the following:\n"
 msgstr "Jouw probleem lijkt door een van het volgende veroorzaakt te worden:\n"
 
-#: ../src/lib/ureport.c:568
+#: ../src/lib/ureport.c:570
 #, c-format
 msgid "Failed to upload uReport to the server '%s' with curl: %s"
 msgstr "uReport met curl uploaden naar de server '%s' mislukte: %s"
 
-#: ../src/lib/ureport.c:572
+#: ../src/lib/ureport.c:574
 #, c-format
 msgid "Failed to upload uReport to the server '%s'"
-msgstr ""
+msgstr "Uploaden van uReport naar de server '%s' mislukte"
 
-#: ../src/lib/ureport.c:575
+#: ../src/lib/ureport.c:577
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Fout: %s"
 
-#: ../src/lib/ureport.c:582
+#: ../src/lib/ureport.c:584
 #, c-format
 msgid "The URL '%s' does not exist (got error 404 from server)"
 msgstr "De URL '%s' bestaat niet (kreeg error 404 van de server)"
 
-#: ../src/lib/ureport.c:588
+#: ../src/lib/ureport.c:590
 #, c-format
 msgid "The server at '%s' encountered an internal error (got error 500)"
 msgstr "De server bij '%s' kwam een interne fout tegen (kreeg error 500)"
 
-#: ../src/lib/ureport.c:594
+#: ../src/lib/ureport.c:596
 #, c-format
 msgid "The server at '%s' currently can't handle the request (got error 503)"
 msgstr ""
@@ -1194,33 +1233,33 @@ msgstr ""
 "503)"
 
 #. can't print better error message
-#: ../src/lib/ureport.c:603
+#: ../src/lib/ureport.c:605
 #, c-format
 msgid "Unexpected HTTP response from '%s': %d"
 msgstr "Onverwacht HTTP antwoord van '%s': %d"
 
-#: ../src/lib/ureport.c:612
+#: ../src/lib/ureport.c:614
 #, c-format
 msgid "Unable to parse response from ureport server at '%s'"
 msgstr "Kan antwoord van ureport server op '%s' niet ontleden"
 
-#: ../src/lib/ureport.c:622
+#: ../src/lib/ureport.c:624
 #, c-format
 msgid "The response from '%s' has invalid format"
 msgstr "Het antwoord van '%s' heeft een ongeldig formaat"
 
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
-#: ../src/lib/ureport.c:628
+#: ../src/lib/ureport.c:630
 #, c-format
 msgid "Type mismatch has been detected in the response from '%s'"
 msgstr "Een type mismatch is ontdekt in het antwoord van '%s'"
 
-#: ../src/lib/ureport.c:818 ../src/plugins/reporter-rhtsupport.c:233
+#: ../src/lib/ureport.c:826 ../src/plugins/reporter-rhtsupport.c:233
 msgid "Failed on submitting the problem"
 msgstr "Het probleem indienen is mislukt"
 
-#: ../src/lib/ureport.c:860
+#: ../src/lib/ureport.c:868
 #, c-format
 msgid "The server at '%s' responded with an error: '%s'"
 msgstr "De server bij '%s' antwoorde met een fout: '%s'"
@@ -1231,7 +1270,7 @@ msgstr "Aangemeld:"
 
 #: ../src/lib/make_descr.c:149
 msgid "cannot be reported"
-msgstr ""
+msgstr "kan niet gerapporteerd worden"
 
 #: ../src/lib/parse_options.c:63
 msgid "Usage: "
@@ -1242,31 +1281,31 @@ msgstr "Gebruik: "
 msgid "Essential element '%s' is missing, can't continue"
 msgstr "Essentieel element '%s' ontbreekt, kan niet verder gaan"
 
-#: ../src/lib/problem_report.c:478
+#: ../src/lib/problem_report.c:486
 #, c-format
 msgid "Can't parse backtrace: %s"
 msgstr "Kan backtrace niet ontleden: %s"
 
-#: ../src/lib/problem_report.c:489
+#: ../src/lib/problem_report.c:501
 msgid "Can't generate stacktrace description (no crash thread?)"
 msgstr "Kan geen stacktrace beschrijving genereren (geen crash thread?)"
 
 #: ../src/lib/reported_to.c:52
 msgid "Report result label mustn't be empty string."
-msgstr ""
+msgstr "Rapportresultaat label mag geen lege string zijn."
 
 #: ../src/lib/reported_to.c:58
 msgid "Report result label mustn't contain ':' character."
-msgstr ""
+msgstr "Rapportresultaat label mag het ':' karakter niet bevatten."
 
 #: ../src/lib/reported_to.c:141
 #, c-format
 msgid "Ignored invalid ISO date of report result '%s'"
-msgstr ""
+msgstr "Ongeldige ISO datum van rapportresultaat '%s' is genegeerd"
 
 #: ../src/lib/reporters.c:55
 msgid "Note does not contain rating"
-msgstr ""
+msgstr "OPmerking bevat geen cijfer"
 
 #: ../src/lib/run_event.c:876
 #, c-format
@@ -1516,13 +1555,13 @@ msgstr ""
 "argument, negeer de omgevingsvariabele en configuratie"
 
 #: ../src/plugins/reporter-bugzilla.c:173
-#: ../src/plugins/reporter-rhtsupport.c:377
+#: ../src/plugins/reporter-rhtsupport.c:380
 #: ../src/plugins/reporter-mantisbt.c:55
 msgid "Can't continue without login"
 msgstr "Kan niet verdergaan zonder in te loggen"
 
 #: ../src/plugins/reporter-bugzilla.c:186
-#: ../src/plugins/reporter-rhtsupport.c:390
+#: ../src/plugins/reporter-rhtsupport.c:393
 #: ../src/plugins/reporter-mantisbt.c:70
 msgid "Can't continue without password"
 msgstr "Kan niet verdergaan zonder wachtwoord"
@@ -1534,10 +1573,10 @@ msgstr "Inloggen op Bugzilla op %s"
 
 #: ../src/plugins/reporter-bugzilla.c:199
 msgid "Invalid password or login. Please enter your Bugzilla login:"
-msgstr ""
+msgstr "Ongeldig wachtwoord of inlognaam. Vul je Bugzilla inlog-gegevens in:"
 
 #: ../src/plugins/reporter-bugzilla.c:202
-#: ../src/plugins/reporter-rhtsupport.c:404
+#: ../src/plugins/reporter-rhtsupport.c:407
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
 msgstr "Ongeldig wachtwoord of inlogwaarden. Vul het wachtwoord in voor '%s':"
@@ -1586,9 +1625,60 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"\n"
+"& [-vbf] [-g GROEP-NAAM]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d "
+"MAP\n"
+"of:\n"
+"& [-v] [-c CONFFILE]... [-d MAP] -t[ID] BESTAND...\n"
+"of:\n"
+"& [-v] [-c CONFFILE]... [-d MAP] -t[ID] -w\n"
+"of:\n"
+"& [-v] [-c CONFFILE]... -h DUPHASH [-p[PRODUCT]]\n"
+"\n"
+"Rapporteert probleem aan Bugzilla.\n"
+"\n"
+"Het gereedschap leest MAP. Logt daarna in op Bugzilla en probeert een bug te "
+"vinden\n"
+"met dezelfde abrt_hash:HEXSTRING in 'Whiteboard'.\n"
+"\n"
+"Als zo'n bug niet gevonden wordt, dan wordt een nieuwe bug aangemaakt. "
+"Elementen van MAP\n"
+"worden opgeslagen in de bug als onderdeel van de bugbeschrijving of als "
+"bijlagen,\n"
+"afhankelijk van hun type en grootte.\n"
+"\n"
+"Als zo'n bug wel gevonden wordt en het is gemarkeerd met CLOSED DUPLICATE, "
+"dan\n"
+"volgt het gereedschap de keten van duplicaten totdat het een niet-DUPLICATE "
+"bug vindt.\n"
+"Het gereedschap voegt een nieuw commantaar toe aan de gevonden bug.\n"
+"\n"
+"De URL van de nieuwe of veranderde bug wordt naar stdout geprint en "
+"opgeslagen in\n"
+"het 'reported_to' element.\n"
+"\n"
+"Optie -t uploadt BESTANDen naar de reeds aangemaakte bug op de Bugzilla site."
+"\n"
+"De bug ID wordt verkregen van de map gespecificeerd met -d MAP.\n"
+"Als de probleem data in MAP nog nooit aan BUzilla gerapporteerd werd, zal de "
+"upload falen.\n"
+"\n"
+"Optie -tID uploadt BESTANDen naar de bug met gespecificeerd ID op de "
+"Bugzilla site.\n"
+"-d MAP wordt genegeerd.\n"
+"\n"
+"Optie -w voegt de bugzilla gebruiker toe aan de CC lijst van de bug.\n"
+"\n"
+"Optie -r stelt de laatste url van reporter_to element in welke TRACKER_NAME "
+"als prefix\n"
+"voor het URL veld. Deze optie wordt alleen toegepast als een nieuwe bug "
+"opgeslagen\n"
+"wordt. De standaard waarde is 'ABRT Server'\n"
+"\n"
+"Indien niet gespecificeerd, wordt de waarde van CONFFILE"
 
 #: ../src/plugins/reporter-bugzilla.c:296
-#: ../src/plugins/reporter-rhtsupport.c:511
+#: ../src/plugins/reporter-rhtsupport.c:516
 #: ../src/plugins/reporter-mantisbt.c:284
 msgid "Configuration file (may be given many times)"
 msgstr "Configuratiebestand (mag meerde keren opgegeven worden)"
@@ -1612,7 +1702,7 @@ msgid "When creating bug, attach binary files too"
 msgstr "Voeg bij het aanmaken van een big ook binaire bestanden toe "
 
 #: ../src/plugins/reporter-bugzilla.c:301
-#: ../src/plugins/reporter-rhtsupport.c:513
+#: ../src/plugins/reporter-rhtsupport.c:518
 #: ../src/plugins/reporter-mantisbt.c:288
 msgid "Force reporting even if this problem is already reported"
 msgstr "Forceer rapporteren zelfs als dit probleem al gerapporteerd is"
@@ -1628,7 +1718,7 @@ msgstr "Print BUG_ID die de gegeven DUPHASH heeft"
 
 #: ../src/plugins/reporter-bugzilla.c:304
 msgid "Specify a Bugzilla product (ignored without -h)"
-msgstr ""
+msgstr "Specificeer een Bugzilla product (wordt genegeerd zonder -h)"
 
 #: ../src/plugins/reporter-bugzilla.c:305
 #: ../src/plugins/reporter-mantisbt.c:290
@@ -1640,7 +1730,8 @@ msgid "Restrict access to this group only"
 msgstr "Beperk toegang alleen tot deze groep"
 
 #: ../src/plugins/reporter-bugzilla.c:307 ../src/plugins/reporter-mailx.c:283
-#: ../src/plugins/reporter-rhtsupport.c:517
+#: ../src/plugins/reporter-rhtsupport.c:522
+#: ../src/plugins/reporter-systemd-journal.c:250
 #: ../src/plugins/reporter-mantisbt.c:292
 msgid "Debug"
 msgstr "Debug"
@@ -1652,23 +1743,28 @@ msgstr "Zoeken naar vergelijkbare problemen in bugzilla"
 #: ../src/plugins/reporter-bugzilla.c:380
 msgid "Failed to get 'REDHAT_BUGZILLA_PRODUCT' from '/etc/os-release'."
 msgstr ""
+"Het verkrijgen van 'REDHAT_BUGZILLA_PRODUCT' van '/etc/os-release' mislukte."
 
 #: ../src/plugins/reporter-bugzilla.c:383
 msgid "Failed to read '/etc/os-release' to get Bugzilla product."
 msgstr ""
+"Het lezen van '/etc/os-release' mislukte voor het verkrijgen van Bugzilla "
+"product."
 
 #: ../src/plugins/reporter-bugzilla.c:394
 #, c-format
 msgid "Using default product '%s'"
-msgstr ""
+msgstr "Standaard product '%s' wordt gebruikt"
 
 #: ../src/plugins/reporter-bugzilla.c:417
 msgid ""
 "Login is not provided by configuration. Please enter your Bugzilla login:"
 msgstr ""
+"Inloggen wordt niet aangeboden door de configuratie. Vul je Bugzilla inlog "
+"in:"
 
 #: ../src/plugins/reporter-bugzilla.c:423
-#: ../src/plugins/reporter-rhtsupport.c:551
+#: ../src/plugins/reporter-rhtsupport.c:556
 #, c-format
 msgid ""
 "Password is not provided by configuration. Please enter the password for "
@@ -1729,6 +1825,13 @@ msgid ""
 "report and close it as DUPLICATE of the original one? Otherwise, the bug "
 "reporting procedure will be terminated."
 msgstr ""
+"Je hebt gevraagd om je data alleen toegankelijk te maken voor een specifieke "
+"groep en deze bug is een duplicaat van bug: %s/%u In het geval van "
+"bugduplicaten wordt een nieuw commentaar toegevoegd aan het originele "
+"bugrapport maar toegang tot de commentaren kan niet beperkt worden tot een "
+"specifieke groep. Wil je een nieuw bugrapport aanmaken en het afsluiten als "
+"DUPLICATE van de originele bug? Anders zal de bugrapportageprocedure "
+"beëindigd worden."
 
 #. Create new bug
 #: ../src/plugins/reporter-bugzilla.c:696
@@ -1742,7 +1845,7 @@ msgstr "Aanmaken van een nieuwe bug mislukte."
 #: ../src/plugins/reporter-bugzilla.c:731
 #, c-format
 msgid "Adding extra cc %s to bug report"
-msgstr ""
+msgstr "Extra cc %s wordt toegevoegd aan het bugrapport"
 
 #: ../src/plugins/reporter-bugzilla.c:740
 #, c-format
@@ -1757,7 +1860,7 @@ msgstr "Toevoegsels toevoegen aan bug %i"
 #: ../src/plugins/reporter-bugzilla.c:768
 #, c-format
 msgid "Closing bug %i as duplicate of bug %i"
-msgstr ""
+msgstr "Bug %i wordt afgesloten als duplicaat van bug %i"
 
 #: ../src/plugins/reporter-bugzilla.c:780
 #: ../src/plugins/reporter-mantisbt.c:597
@@ -1847,7 +1950,7 @@ msgstr "Kan niet verdergaan zonder e-mailadres van %s"
 #: ../src/plugins/reporter-mailx.c:207
 #, c-format
 msgid "Sending a notification email to: %s"
-msgstr ""
+msgstr "Er wordt een e-mail notificatie gestuurd naar: %s"
 
 #: ../src/plugins/reporter-mailx.c:209
 msgid "Sending an email..."
@@ -1866,6 +1969,11 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"& [-v] -d MAP [-c CONFFILE] [-F FMTFILE]\n"
+"\n"
+"Verstuurt de inhoud van een probleemmap via e-mail\n"
+"\n"
+"Indien niet gespecificeerd is de standaard voor CONFFILE "
 
 #: ../src/plugins/reporter-mailx.c:280 ../src/plugins/reporter-upload.c:187
 msgid "Config file"
@@ -1873,7 +1981,7 @@ msgstr "Config bestand"
 
 #: ../src/plugins/reporter-mailx.c:281
 msgid "Formatting file for an email"
-msgstr ""
+msgstr "Bestand wordt geformatteerd voor een e-mail"
 
 #: ../src/plugins/reporter-mailx.c:282
 msgid "Notify only (Do not mark the report as sent)"
@@ -1920,21 +2028,26 @@ msgstr "Het rapport is toegevoegd aan %s"
 msgid "The report was stored to %s"
 msgstr "Het rapport is opgeslagen in %s"
 
-#: ../src/plugins/reporter-rhtsupport.c:294
-#: ../src/plugins/reporter-ureport.c:321
+#: ../src/plugins/reporter-rhtsupport.c:276
+#: ../src/plugins/reporter-ureport.c:295
+msgid "Failed to generate microreport from the problem data"
+msgstr "Het genereren van microrapport van de probleemdata mislukte"
+
+#: ../src/plugins/reporter-rhtsupport.c:297
+#: ../src/plugins/reporter-ureport.c:324
 #, c-format
 msgid "Server responded with an error: '%s'"
 msgstr "Server antwoordde met een fout: '%s'"
 
-#: ../src/plugins/reporter-rhtsupport.c:354
+#: ../src/plugins/reporter-rhtsupport.c:357
 msgid "Do you still want to create a RHTSupport ticket?"
 msgstr "Wil je nog steeds een RHTSupport ticket aanmaken?"
 
-#: ../src/plugins/reporter-rhtsupport.c:402
+#: ../src/plugins/reporter-rhtsupport.c:405
 msgid "Invalid password or login. Please enter your Red Hat login:"
-msgstr ""
+msgstr "Ongeldig wachtwoord of inlognaam. Vul je Red Hat inlog-gegevens in:"
 
-#: ../src/plugins/reporter-rhtsupport.c:471
+#: ../src/plugins/reporter-rhtsupport.c:476
 msgid ""
 "\n"
 "& [-v] [-c CONFFILE] [-F FMTFILE] -d DIR\n"
@@ -1945,76 +2058,92 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"\n"
+"& [-v] [-c CONFFILE] [-F FMTFILE] -d MAP\n"
+"of:\n"
+"& [-v] [-c CONFFILE] [-d MAP] -t[ID] [-u -C UR_CONFFILE] BESTAND...\n"
+"\n"
+"Rapporteert een probleem naar RHTSupport.\n"
+"\n"
+"Indien niet gespecificeerd is de standaard voor CONFFILE "
 
-#: ../src/plugins/reporter-rhtsupport.c:512
+#: ../src/plugins/reporter-rhtsupport.c:517
 msgid "Upload FILEs [to case with this ID]"
 msgstr "Upload BESTANDen [naar kwestie met deze ID]"
 
-#: ../src/plugins/reporter-rhtsupport.c:514
+#: ../src/plugins/reporter-rhtsupport.c:519
 msgid "Submit uReport before creating a new case"
-msgstr ""
+msgstr "Dien uReport in voor het aanmaken van een nieuw geval"
 
-#: ../src/plugins/reporter-rhtsupport.c:515
+#: ../src/plugins/reporter-rhtsupport.c:520
 msgid "Configuration file for uReport"
-msgstr ""
+msgstr "Configuratiebestand voor uReport"
 
-#: ../src/plugins/reporter-rhtsupport.c:516
+#: ../src/plugins/reporter-rhtsupport.c:521
 msgid "Formatting file for a new case"
-msgstr ""
+msgstr "Er wordt een bestand geformatteerd voor een nieuw geval"
 
-#: ../src/plugins/reporter-rhtsupport.c:545
+#: ../src/plugins/reporter-rhtsupport.c:550
 msgid "Login is not provided by configuration. Please enter your RHTS login:"
 msgstr ""
 "Inloggen wordt niet aangeboden door de configuratie. Vul je RHTS inlog in:"
 
-#: ../src/plugins/reporter-rhtsupport.c:614
+#: ../src/plugins/reporter-rhtsupport.c:619
 #, c-format
 msgid "Attaching '%s' to case '%s'"
 msgstr "'%s' toevoegen aan kwestie '%s'"
 
-#: ../src/plugins/reporter-rhtsupport.c:651
+#: ../src/plugins/reporter-rhtsupport.c:656
 msgid "Sending ABRT crash statistics data"
-msgstr ""
+msgstr "ABRT crash statistischa data wordt verstuurd"
 
-#: ../src/plugins/reporter-rhtsupport.c:672
+#: ../src/plugins/reporter-rhtsupport.c:677
 msgid "Can't create a temporary directory in "
 msgstr "Kan geen tijdelijke map aanmaken in"
 
-#: ../src/plugins/reporter-rhtsupport.c:697
+#: ../src/plugins/reporter-rhtsupport.c:702
 msgid ""
 "The problem has only occurred once and the ability to reproduce the problem "
 "is unknown. Please ensure you will be able to provide detailed information "
 "to our Support Team. Would you like to continue and open a new support case?"
 msgstr ""
+"Het probleem is slechts een keer opgetreden en de mogelijkheid voor het "
+"reproduceren van het probleem is onbekend. Wees er zeker van dat je "
+"gedetailleerde informatie kunt aanbieden aan ons Support Team. Wil je "
+"verdergaan een een nieuw support geval openen?"
 
-#: ../src/plugins/reporter-rhtsupport.c:710
+#: ../src/plugins/reporter-rhtsupport.c:715
 #, c-format
 msgid ""
 "The crashed program was released by '%s'. Would you like to report the "
 "problem to Red Hat Support?"
 msgstr ""
+"Het gecrashte programma werd vrijgegeven door '%s'. Wil je het probleem "
+"rapporteren aan Red Hat Support?"
 
-#: ../src/plugins/reporter-rhtsupport.c:728
+#: ../src/plugins/reporter-rhtsupport.c:733
 #, c-format
 msgid ""
 "The program '%s' does not appear to be provided by Red Hat. Would you like "
 "to report the problem to Red Hat Support?"
 msgstr ""
+"Het programma '%s' lijkt niet aangeboden te worden door Red Hat. Wil\n"
+" je het probleem rapporteren aan Red Hat Support?"
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing
 #. error msg is already logged by dd_opendir
 #. Compressing e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../src/plugins/reporter-rhtsupport.c:792
+#: ../src/plugins/reporter-rhtsupport.c:797
 #: ../src/plugins/reporter-upload.c:103
 msgid "Compressing data"
 msgstr "Data comprimeren"
 
-#: ../src/plugins/reporter-rhtsupport.c:800
+#: ../src/plugins/reporter-rhtsupport.c:805
 msgid "Can't create temporary file in "
 msgstr "Kan geen tijdelijk bestand aanmaken in"
 
 #. Check for hints and show them if we have something
-#: ../src/plugins/reporter-rhtsupport.c:811
+#: ../src/plugins/reporter-rhtsupport.c:816
 msgid "Checking for hints"
 msgstr "Controleren op hints"
 
@@ -2029,12 +2158,14 @@ msgstr "Kan RH Support product niet bepalen uit de probleem data."
 
 #: ../src/plugins/reporter-rhtsupport.c:888
 msgid "Linking ABRT crash statistics record with the case"
-msgstr ""
+msgstr "ABRT crash statistisch verslag wordt gekoppeld met het geval"
 
 #: ../src/plugins/reporter-rhtsupport.c:901
 #, c-format
 msgid "Linking ABRT crash statistics record with contact email: '%s'"
 msgstr ""
+"ABRT crash statistisch verlag wordt gekoppeld met cs record with contact e-"
+"mail: '%s'"
 
 #: ../src/plugins/reporter-rhtsupport.c:925
 #, c-format
@@ -2055,6 +2186,42 @@ msgstr "Documentatie die relevant kan zijn: "
 msgid "Updates which possibly help: "
 msgstr "Vernieuwingen die misschien helpen: "
 
+#: ../src/plugins/reporter-systemd-journal.c:220
+msgid ""
+"& [-v] [-d DIR] [-m MESSAGEID] [-F FMTFILE] [-p NONE|ESSENTIAL|FULL] [-s "
+"SYSLOGID]\n"
+"\n"
+"Reports problem information into systemd journal.\n"
+"\n"
+"The tool reads problem directory DIR and sends its details\n"
+"into systemd journal as a message. If MESSAGEID is defined, the tool\n"
+"creates a catalog message as well.\n"
+msgstr ""
+"& [-v] [-d MAP] [-m MESSAGEID] [-F FMTFILE] [-p NONE|ESSENTIAL|FULL] [-s "
+"SYSLOGID]\n"
+"\n"
+"Rapporteert probleeminformatie naar systemd journal.\n"
+"\n"
+"Het gereedschap leest je probleemmap MAP en stuurt de details naar systemd "
+"journal als een boodschap. Als MESSAGEID gedefinieerd is, maakt het "
+"gereedschap ook een catalogusboodschap aan.\n"
+
+#: ../src/plugins/reporter-systemd-journal.c:246
+msgid "Catalog message id"
+msgstr "Catalogusboodschap id"
+
+#: ../src/plugins/reporter-systemd-journal.c:247
+msgid "Formatting file for catalog message"
+msgstr "Bestand wordt geformatteerd voor catalogusboodschap"
+
+#: ../src/plugins/reporter-systemd-journal.c:248
+msgid "Dump problem dir into systemd journal fields"
+msgstr "Stuur probleemmap naar systemd jornaalvelden"
+
+#: ../src/plugins/reporter-systemd-journal.c:249
+msgid "Define SYSLOG_IDENTIFIER systemd journal field"
+msgstr "Definieer SYSLOG_IDENTIFIER systemd journaalveld"
+
 #: ../src/plugins/reporter-upload.c:29
 msgid "Can't continue without URL"
 msgstr "Kan niet verdergaan zonder URL"
@@ -2064,7 +2231,7 @@ msgstr "Kan niet verdergaan zonder URL"
 #. may work somehow???
 #: ../src/plugins/reporter-upload.c:51
 msgid "Please enter password for uploading:"
-msgstr ""
+msgstr "Vul een wachtwoord in voor het uploaden:"
 
 #. success
 #: ../src/plugins/reporter-upload.c:120
@@ -2079,6 +2246,10 @@ msgid ""
 "Uploads compressed tarball of problem directory DIR to URL.\n"
 "If URL is not specified, creates tarball in "
 msgstr ""
+"& [-v] -d MAP [-c CONFFILE] [-u URL] [-b BESTAND] [-r BESTAND]\n"
+"\n"
+"Uploadt gecomprimeerde tarball van probleemmap MAP naar URL.\n"
+"Als URL niet gespecificeerd werd, wordt de tarball aangemaakt in"
 
 #: ../src/plugins/reporter-upload.c:188
 msgid "Base URL to upload to"
@@ -2086,33 +2257,35 @@ msgstr "Basis URL om naar te uploaden"
 
 #: ../src/plugins/reporter-upload.c:189
 msgid "SSH public key file"
-msgstr ""
+msgstr "SSH publieke sleutelbestand"
 
 #: ../src/plugins/reporter-upload.c:190
 msgid "SSH private key file"
-msgstr ""
+msgstr "SSH privé sleutelbestand "
 
 #: ../src/plugins/reporter-upload.c:219
 msgid ""
 "Please enter a URL (scp, ftp, etc.) where the problem data is to be exported:"
 ""
 msgstr ""
+"Vul een URL (scp, ftp, enz.) in waarnaar de probleemdata geëxporteerd moet "
+"worden:"
 
 #: ../src/plugins/reporter-mantisbt.c:82
 msgid "Please enter your MantisBT login:"
-msgstr ""
+msgstr "Vul je MantisBT inloggegevens in:"
 
 #: ../src/plugins/reporter-mantisbt.c:86
 msgid "Please enter the password for"
-msgstr ""
+msgstr "Wul het wachtwoord in voor"
 
 #: ../src/plugins/reporter-mantisbt.c:97
 msgid "Credentials are not provided by configuration."
-msgstr ""
+msgstr "De configuratie biedt geen legitimatiebewijs aan."
 
 #: ../src/plugins/reporter-mantisbt.c:121
 msgid "Invalid password or login."
-msgstr ""
+msgstr "Ongeldig wachtwoord of inloggegevens."
 
 #: ../src/plugins/reporter-mantisbt.c:213
 msgid ""
@@ -2156,25 +2329,74 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"\n"
+"& [-vf] [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d MAP\n"
+"of:\n"
+"& [-v] [-c CONFFILE]... [-d MAP] -t[ID] BESTAND...\n"
+"of:\n"
+"& [-v] [-c CONFFILE]... [-d MAP] -t[ID] -w\n"
+"of:\n"
+"& [-v] [-c CONFFILE]... -h DUPHASH\n"
+"\n"
+"Rapporteert probleem aan MantisBT.\n"
+"\n"
+"Het gereedschap leest MAP. Probeert daarna een bug te vinden\n"
+"met dezelfde abrt_has in aagepast veld 'abrt_hash'.\n"
+"\n"
+"Als bug niet gevonden wordt, dan wordt een nieuwe bug aangemaakt. Elementen "
+"van MAP\n"
+"worden opgeslagen in de bug als onderdeel van de bugbeschrijving of als "
+"bijlagen,\n"
+"afhankelijk van hun type en grootte.\n"
+"\n"
+"Als zo'n bug wel gevonden wordt en het is gemarkeerd met CLOSED DUPLICATE, "
+"dan\n"
+"volgt het gereedschap de keten van duplicaten totdat het een niet-DUPLICATE "
+"bug vindt.\n"
+"Het gereedschap voegt een nieuw commantaar toe aan de gevonden bug.\n"
+"\n"
+"De URL van de nieuwe of veranderde bug wordt naar stdout geprint en "
+"opgeslagen in\n"
+"het 'reported_to' element.\n"
+"\n"
+"Optie -t uploadt BESTANDen naar de reeds aangemaakte bug op de MantisBT site."
+"\n"
+"De bug ID wordt verkregen van de map gespecificeerd met -d MAP.\n"
+"Als de probleem data in MAP nog nooit aan MantisBT gerapporteerd werd, zal "
+"de upload falen.\n"
+"\n"
+"Optie -tID uploadt BESTANDen naar de bug met gespecificeerd ID op de "
+"MantisBT site.\n"
+"-d MAP wordt genegeerd.\n"
+"\n"
+"Optie -r stelt de laatste url van reporter_to element in welke TRACKER_NAME "
+"als prefix\n"
+"voor het URL veld. Deze optie wordt alleen toegepast als een nieuwe bug "
+"opgeslagen\n"
+"wordt. De standaard waarde is 'ABRT Server'\n"
+"\n"
+"Indien niet gespecificeerd, wordt de waarde van CONFFILE"
 
 #: ../src/plugins/reporter-mantisbt.c:287
 msgid "Attach FILEs [to issue with this ID]"
-msgstr ""
+msgstr "Voeg BESTANDen toe [aan bug met deze ID]"
 
 #: ../src/plugins/reporter-mantisbt.c:320
 #, c-format
 msgid "Can't open problem dir '%s'."
-msgstr ""
+msgstr "Kan probleemmap '%s' niet openen."
 
 #: ../src/plugins/reporter-mantisbt.c:342
 msgid "Looking for similar problems in MantisBT"
-msgstr ""
+msgstr "Er wordt gezocht naar vergelijkbare problemen in MantisBT"
 
 #: ../src/plugins/reporter-mantisbt.c:370
 msgid ""
 "Can't get MantisBT ID because this problem has not yet been reported to "
 "MantisBT."
 msgstr ""
+"Kan MantisBT ID niet krijgen omdat dit probleem nog niet aan MantisBT "
+"gerapporteerd werd."
 
 #: ../src/plugins/reporter-mantisbt.c:377
 #, c-format
@@ -2182,21 +2404,23 @@ msgid ""
 "This problem has been reported to MantisBT '%s' which differs from the "
 "configured MantisBT '%s'."
 msgstr ""
+"Dit probleem is gerapporteerd aan MantisBT '%s' welke verschilt van de "
+"geconfigureerde MantisBT '%s'."
 
 #: ../src/plugins/reporter-mantisbt.c:381
 #, c-format
 msgid "Malformed url to MantisBT '%s'."
-msgstr ""
+msgstr "Ongeldige url voor MantisBT '%s'."
 
 #: ../src/plugins/reporter-mantisbt.c:385
 #, c-format
 msgid "Using MantisBT ID '%s'"
-msgstr ""
+msgstr "MantisBT ID '%s' wordt gebruikt"
 
 #: ../src/plugins/reporter-mantisbt.c:393
 #, c-format
 msgid "Attaching file '%s' to issue %s"
-msgstr ""
+msgstr "Bestand '%s' wordt gekoppeld aan bug %s"
 
 #: ../src/plugins/reporter-mantisbt.c:412
 #, c-format
@@ -2204,60 +2428,65 @@ msgid ""
 "This problem was already reported to MantisBT (see '%s'). Do you still want "
 "to create a new issue?"
 msgstr ""
+"Dit probleem werd al gerapporteerd aan MantisBT (zie '%s'). Wil je nog "
+"steeds een nieuwe bug aanmaken?"
 
 #. Create new issue
 #: ../src/plugins/reporter-mantisbt.c:527
 msgid "Creating a new issue"
-msgstr ""
+msgstr "Een nieuwe bug aanmaken"
 
 #: ../src/plugins/reporter-mantisbt.c:532
 #, c-format
 msgid "Invalid format file: %s"
-msgstr ""
+msgstr "Ongeldig formaatbestand: %s"
 
 #: ../src/plugins/reporter-mantisbt.c:536
 msgid "Failed to format problem data"
-msgstr ""
+msgstr "Het formatteren van probleemdata mislukte."
 
 #: ../src/plugins/reporter-mantisbt.c:555
 msgid "Adding External URL to issue"
-msgstr ""
+msgstr "Externe URL wordt toegevoegd aan bug"
 
 #: ../src/plugins/reporter-mantisbt.c:568
 #, c-format
 msgid "Adding attachments to issue %i"
-msgstr ""
+msgstr "Toevoegsels toevoegen aan bug %i"
 
 #: ../src/plugins/reporter-mantisbt.c:623
 #, c-format
 msgid "Invalid duplicate format file: '%s"
-msgstr ""
+msgstr "Ongeldig duplicaat formaatbestand: %s"
 
 #: ../src/plugins/reporter-mantisbt.c:627
 msgid "Failed to format duplicate comment from problem data"
-msgstr ""
+msgstr "Het formatteren duplicaatcommentaar van probleemdata mislukte."
 
 #: ../src/plugins/reporter-mantisbt.c:634
 #, c-format
 msgid "Adding new comment to issue %d"
-msgstr ""
+msgstr "Voeg nieuw commentaar toe aan bug %d"
 
 #: ../src/plugins/reporter-mantisbt.c:670
 msgid "Found the same comment in the issue history, not adding a new one"
 msgstr ""
+"Hetzelfde commentaar werd in de bug geschiedenis gevonden, niet opnieuw "
+"toegevoegd"
 
 #: ../src/plugins/reporter-mantisbt.c:677
 #, c-format
 msgid "Status: %s%s%s %s/view.php?id=%u"
-msgstr ""
+msgstr "Status: %s%s%s %s/view.php?id=%u"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:1
 msgid "CentOS Bug Tracker"
-msgstr ""
+msgstr "CentOS Bug Tracker"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:2
 #: ../src/workflows/workflow_CentOSCCpp.xml.in.h:1
 #: ../src/workflows/workflow_CentOSJava.xml.in.h:1
+#: ../src/workflows/workflow_CentOSJavaScript.xml.in.h:1
 #: ../src/workflows/workflow_CentOSKerneloops.xml.in.h:1
 #: ../src/workflows/workflow_CentOSLibreport.xml.in.h:1
 #: ../src/workflows/workflow_CentOSPython.xml.in.h:1
@@ -2265,54 +2494,62 @@ msgstr ""
 #: ../src/workflows/workflow_CentOSVmcore.xml.in.h:1
 #: ../src/workflows/workflow_CentOSXorg.xml.in.h:1
 msgid "Report to CentOS Bug Tracker"
-msgstr ""
+msgstr "Rapporteer aan CentOS Bug Tracker"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:4
 msgid "CentOS Bug Tracker account user name"
-msgstr ""
+msgstr "CentOS Bug Tracker account gebruikersnaam"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:5
 msgid ""
 "You can create bugs.centos.org account &lt;a href=\"https://bugs.centos.org/"
 "signup_page.php\"&gt;here&lt;/a&gt;"
 msgstr ""
+"Je kunt &lt;a href=\"https://bugs.centos.org/signup_page.php\"&gt;hier&lt;/"
+"a&gt; een bugs.centos.org account aanmaken"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:7
 msgid "CentOS Bug Tracker account password"
-msgstr ""
+msgstr "CentOS Bug Tracker account wachtwoord"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:9
 msgid ""
 "The issue will be accessible only to users with access to 'Private Issues'"
 msgstr ""
+"De buf zal alleen toegankelijk zijn voor gebruikers met toegang tot 'Private "
+"Issues'"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:10
 msgid "CentOS Bug Tracker URL"
-msgstr ""
+msgstr "CentOS Bug Tracker URL"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:11
 msgid "Address of CentOS Bug Tracker server"
-msgstr ""
+msgstr "Adres van CentOS Bug Tracker server"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:14
 msgid "CentOS Bug Tracker project"
-msgstr ""
+msgstr "CentOS Bug Tracker project"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:15
 msgid ""
 "Specify this only if you needed different project than specified in /etc/os-"
 "release"
 msgstr ""
+"Specificeer dit alleen als je een ander project nodig hebt dan "
+"gespecificeerd in /etc/os-release"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:16
 msgid "CentOS Bug Tracker project version"
-msgstr ""
+msgstr "CentOS Bug Tracker projectversie"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:17
 msgid ""
 "Specify this only if you needed different project version than specified in /"
 "etc/os-release"
 msgstr ""
+"Specificeer dit alleen als je een andere projectversie nodig hebt dan "
+"gespecificeerd in /etc/os-release"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
 msgid "Kerneloops.org"
@@ -2416,13 +2653,15 @@ msgstr "Red Hat cunstomer wachtwoord"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:7
 msgid "Submit uReport"
-msgstr ""
+msgstr "Dien UReport in"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:8
 msgid ""
 "Submit &lt;a href=\"https://access.redhat.com/articles/642323\"&gt;micro-"
 "report&lt;/a&gt; when creating a new case."
 msgstr ""
+"Dien &lt;a href=\"https://access.redhat.com/articles/642323\"&gt;micro-"
+"report&lt;/a&gt; in als een nieuwe bug aangemaakt wordt."
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:9
 msgid "RH Portal URL"
@@ -2434,7 +2673,7 @@ msgstr "Adres van het Red Hat support portaal"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report Uploader"
-msgstr ""
+msgstr "Report uploader"
 
 #: ../src/plugins/report_Uploader.xml.in.h:2
 msgid "Upload as tar.gz file (via FTP/SCP/...)"
@@ -2463,11 +2702,11 @@ msgstr ""
 
 #: ../src/plugins/report_Uploader.xml.in.h:7
 msgid "Use this field if you do not want to have user name in URL"
-msgstr ""
+msgstr "Gebruik dit veld als je geen gebruikersnaam in de URL wilt hebben."
 
 #: ../src/plugins/report_Uploader.xml.in.h:9
 msgid "Use this field if you do not want to have password in URL"
-msgstr ""
+msgstr "Gebruik dit veld als je geen wachwoord in de URL wilt hebben."
 
 #: ../src/plugins/report_Uploader.xml.in.h:14
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:8
@@ -2481,19 +2720,19 @@ msgstr "Stelt de proxyserver in om te gebruiken voor FTP"
 
 #: ../src/plugins/report_Uploader.xml.in.h:16
 msgid "SSH Public key file"
-msgstr ""
+msgstr "SSH Publieke-sleutelbestand"
 
 #: ../src/plugins/report_Uploader.xml.in.h:17
 msgid "Use this field to specify SSH public keyfile"
-msgstr ""
+msgstr "Gebruik dit veld om het SSH publieke-sleutelbestand te specificeren"
 
 #: ../src/plugins/report_Uploader.xml.in.h:18
 msgid "SSH Private key file"
-msgstr ""
+msgstr "SSH privé-sleutelbestand "
 
 #: ../src/plugins/report_Uploader.xml.in.h:19
 msgid "Use this field to specify SSH private keyfile"
-msgstr ""
+msgstr "Gebruik dit veld om het SSH privé-sleutelbestand te specificeren"
 
 #: ../src/plugins/report_uReport.xml.in.h:1
 msgid "uReport"
@@ -2522,13 +2761,15 @@ msgstr ""
 
 #: ../src/plugins/report_uReport.xml.in.h:7
 msgid "Contact email address"
-msgstr ""
+msgstr "Contact e-mailadres"
 
 #: ../src/plugins/report_uReport.xml.in.h:8
 msgid ""
 "Email address that can be used by ABRT server to inform you about news and "
 "updates"
 msgstr ""
+"E-mailadres dat door de ABRT server gebruikt kan worden om je informeren "
+"over nieuws en vernieuwingen"
 
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:1
 msgid "Emergency analysis"
@@ -2588,146 +2829,155 @@ msgstr "Bug.search(quicksearch) return waarde bevatte geen lid 'bugs'"
 #: ../src/plugins/mantisbt.c:123
 #, c-format
 msgid "MantisBT couldn't find parent of issue %d"
-msgstr ""
+msgstr "MantisBT kon de ouder van probleem %d niet vinden"
 
 #: ../src/plugins/mantisbt.c:178
 msgid "SOAP: Failed to get child element because of no parent."
-msgstr ""
+msgstr "SOAP: Kon kind-element niet vinden omdat er geen ouder is."
 
 #: ../src/plugins/mantisbt.c:187
 msgid "SOAP: Failed to get next element because of no node."
-msgstr ""
+msgstr "SOAP: Kon volgende element niet vinden omdat er geen node is."
 
 #: ../src/plugins/mantisbt.c:196
 msgid "SOAP: Failed to get child node because of no parent."
-msgstr ""
+msgstr "SOAP: Kon kind-node niet vinden omdat er geen ouder is."
 
 #: ../src/plugins/mantisbt.c:217
 msgid "SOAP: Failed to parse xml during creating request."
-msgstr ""
+msgstr "SOAP: Ontleden van xml tijdens het aanmaken van een verzoek mislukte."
 
 #: ../src/plugins/mantisbt.c:225
 msgid "SOAP: Failed to get xml root element."
-msgstr ""
+msgstr "SOAP: xml root element verkrijgen mislukte."
 
 #: ../src/plugins/mantisbt.c:238
 msgid ""
 "SOAP: Failed to add a new child node because of no node or no child name."
 msgstr ""
+"SOAP: Het toevoegen van een nieuwe kind-node mislukte omdat node of kind "
+"ontbreekt."
 
 #: ../src/plugins/mantisbt.c:243
 msgid "SOAP: Failed to create a new xml child item."
-msgstr ""
+msgstr "SOAP: Aanmaken van een nieuw xml kind-item mislukte."
 
 #: ../src/plugins/mantisbt.c:248
 msgid "SOAP: Failed to create a new property."
-msgstr ""
+msgstr "SOAP: Een nieuwe eigenschap aanmaken mislukte."
 
 #: ../src/plugins/mantisbt.c:258
 msgid "SOAP: Failed to add method parametr."
-msgstr ""
+msgstr "SOAP: Het toevoegen van een methodeparameter mislukte."
 
 #: ../src/plugins/mantisbt.c:287
 msgid "SOAP: Failed to add new issue parametrs."
-msgstr ""
+msgstr "SOAP: Het toevoegen van nieuwe probleemparameters mislukte."
 
 #: ../src/plugins/mantisbt.c:290
 msgid ""
 "SOAP: Failed to add new issue parameters because the required items are "
 "missing."
 msgstr ""
+"SOAP: Het toevoegen van nieuwe probleemparameters mislukte omdat de vereiste "
+"items ontbreken."
 
 #: ../src/plugins/mantisbt.c:334
 msgid "SOAP: Failed to create a new property in custom fields."
 msgstr ""
+"SOAP: Het aanmaken van een nieuwe eigenschap in aangepaste velden mislikte."
 
 #: ../src/plugins/mantisbt.c:352
 msgid ""
 "SOAP: Failed to create SOAP string because of invalid function arguments."
 msgstr ""
+"SOAP: Het aanmaken van een SOAP string mislukte wegens ongeldige "
+"functieargumenten."
 
 #: ../src/plugins/mantisbt.c:359
 msgid "SOAP: Failed to dump xml node."
-msgstr ""
+msgstr "SOAP: Het wegschrijven van de xml node mislukte."
 
 #: ../src/plugins/mantisbt.c:373
 msgid "SOAP: Failed to print SOAP string."
-msgstr ""
+msgstr "SOAP: Het printen van de SOAP string mislukte."
 
 #: ../src/plugins/mantisbt.c:380
 msgid "Failed to dump xml node."
-msgstr ""
+msgstr "Het wegschrijven van de xml node mislukte."
 
 #: ../src/plugins/mantisbt.c:456
 msgid "SOAP: Failed to parse xml (searching value at depth by name)."
 msgstr ""
+"SOAP: Het ontleden van xml mislukte (zoeken van diepgaande waarde volgens "
+"naam)."
 
 #: ../src/plugins/mantisbt.c:460 ../src/plugins/mantisbt.c:503
 #: ../src/plugins/mantisbt.c:532
 msgid "SOAP: Failed to create xml text reader."
-msgstr ""
+msgstr "SOAP: Aanmaken xml tekstlezer mislukte."
 
 #: ../src/plugins/mantisbt.c:499
 msgid "SOAP: Failed to parse xml."
-msgstr ""
+msgstr "SOAP: Ontleden van xml mislukte."
 
 #: ../src/plugins/mantisbt.c:528
 msgid "SOAP: Failed to parse xml (get related to issue)."
-msgstr ""
+msgstr "SOAP: Ontleden van xml mislukte (gerelateerd aan probleem)."
 
 #: ../src/plugins/mantisbt.c:645
 msgid "Url or request isn't specified."
-msgstr ""
+msgstr "Url of verzoek is niet gespecificeerd."
 
 #: ../src/plugins/mantisbt.c:673
 #, c-format
 msgid "Error in HTTP POST, HTTP code: 404 (Not found), URL:'%s'"
-msgstr ""
+msgstr "Fout in HTTP POST, HTTP code: 404 (Not found), URL:'%s'"
 
 #: ../src/plugins/mantisbt.c:697
 #, c-format
 msgid "Error in MantisBT request at '%s': %s"
-msgstr ""
+msgstr "Fout in MantisBT verzoek op '%s': %s"
 
 #: ../src/plugins/mantisbt.c:699
 #, c-format
 msgid "Error in MantisBT request at '%s'"
-msgstr ""
+msgstr "Fout in MantisBT verzoek op '%s'"
 
 #: ../src/plugins/mantisbt.c:741
 #, c-format
 msgid "Failed to attach file: '%s'"
-msgstr ""
+msgstr "Aabhechten van bestand mislukte: '%s'"
 
 #: ../src/plugins/mantisbt.c:760
 #, c-format
 msgid "Can't lseek '%s'"
-msgstr ""
+msgstr "Kan lseek niet toepassen op '%s'"
 
 #: ../src/plugins/mantisbt.c:766
 #, c-format
 msgid "Can't upload '%s', it's too large (%llu bytes)"
-msgstr ""
+msgstr "Kan '%s' niet uploaden, het is te groot (%llu bytes)"
 
 #: ../src/plugins/mantisbt.c:776
 #, c-format
 msgid "Can't read '%s'"
-msgstr ""
+msgstr "Kan '%s' niet lezen"
 
 #: ../src/plugins/mantisbt.c:792
 #, c-format
 msgid "Can't open '%s'"
-msgstr ""
+msgstr "Kan '%s' niet openen"
 
 #: ../src/plugins/mantisbt.c:859
 #, c-format
 msgid "Failed to search MantisBT issue by duphash: '%s'"
-msgstr ""
+msgstr "Zoeken van MantisBT probleem door duphash mislukte: '%s'"
 
 #: ../src/plugins/mantisbt.c:903
 #, c-format
 msgid "Failed to search MantisBT duplicate issue: '%s'"
-msgstr ""
+msgstr "Zoeken van MantisBT duplicaatprobleem mislukte: '%s'"
 
 #: ../src/plugins/mantisbt.c:930
 #, c-format
@@ -2735,44 +2985,47 @@ msgid ""
 "MantisBT doesn't contain custom field '%s', which is required for full "
 "functionality of the reporter. Do you still want to create a new issue?"
 msgstr ""
+"MantisBT bevat het aangepaste veld '%s' niet, welke vereist is voor "
+"volledige functionaliteit van de reporter. Wil je nog steeds een nieuw "
+"probleem aanmaken?"
 
 #: ../src/plugins/mantisbt.c:954
 #, c-format
 msgid "Failed to get custom fields for '%s' project"
-msgstr ""
+msgstr "FHet verkrijgen van aangepaste velden voor het '%s' project mislukte"
 
 #: ../src/plugins/mantisbt.c:998
 #, c-format
 msgid "Failed to create a new issue: '%s'"
-msgstr ""
+msgstr "Het aanmaken van een nieuw probleen mislukte: '%s'"
 
 #: ../src/plugins/mantisbt.c:1024
 #, c-format
 msgid "Failed to get MantisBT issue: '%s'"
-msgstr ""
+msgstr "Het verkrigen van MantisBT probleem mislukte: '%s'"
 
 #: ../src/plugins/mantisbt.c:1038
 #, c-format
 msgid "Issue %i is CLOSED, but it has no RESOLUTION"
-msgstr ""
+msgstr "Probleem %i is CLOSED, maar er is geen RESOLUTION"
 
 #: ../src/plugins/mantisbt.c:1046
 #, c-format
 msgid "Issue %i is CLOSED as DUPLICATE, but it has no DUPLICATE_ID"
-msgstr ""
+msgstr "Probleem %i is CLOSED als DUPLICATE, maar heeft geen DUPLICATE_ID"
 
 #: ../src/plugins/mantisbt.c:1083
 #, c-format
 msgid "Failed to add MantisBT issue note: '%s'"
-msgstr ""
+msgstr "Toevoegen van MantisBT probleemnotitie mislukte: '%s'"
 
 #: ../src/plugins/mantisbt.c:1097
 msgid "The MantisBT project has not been deretmined."
-msgstr ""
+msgstr "Het MantisBT project is niet bepaald."
 
 #: ../src/plugins/mantisbt.c:1106
 msgid "Failed to get project id from name"
-msgstr ""
+msgstr "Het verkrijgen van de project id van de naam mislukte"
 
 #: ../src/plugins/reporter-ureport.c:75
 msgid "Specify server URL"
@@ -2788,11 +3041,11 @@ msgstr "Gebruik cliënt authenticatie"
 
 #: ../src/plugins/reporter-ureport.c:79
 msgid "Use HTTP Authentication"
-msgstr ""
+msgstr "Gebruik HTTP authenticatie"
 
 #: ../src/plugins/reporter-ureport.c:80
 msgid "Additional files included in 'auth' key"
-msgstr ""
+msgstr "Extra bestanden toegevoegd in 'auth' sleutel"
 
 #: ../src/plugins/reporter-ureport.c:83
 msgid "bthash of uReport to attach (conflicts with -A)"
@@ -2827,32 +3080,38 @@ msgstr ""
 
 #: ../src/plugins/reporter-ureport.c:95
 msgid "attach short text (requires -a|-A, conflicts with -D)"
-msgstr ""
+msgstr "voeg korte tekst toe (vereist -a|-A, conflicteert met -D)"
 
 #: ../src/plugins/reporter-ureport.c:97
 msgid "attach short text from comment (requires -a|-A, conflicts with -d)"
-msgstr ""
+msgstr "voeg korte tekst uit commentaar (vereist -a|-A, conflicteert met -d)"
 
 #: ../src/plugins/reporter-ureport.c:101
 msgid "attach value (requires -a|-A and -T, conflicts with -L)"
-msgstr ""
+msgstr "voeg waarde toe (vereist -a|-A en -T, conflicteert met -L)"
 
 #: ../src/plugins/reporter-ureport.c:103
 msgid ""
 "attach data of FIELD [URL] of the last report result (requires -a|-A, -r and "
 "-T, conflicts with -l)"
 msgstr ""
+"voeg data van FIELD [URL] toe uit het laatste rapportresultaat (vereist\n"
+"-a|-A, -r en -T, conflicteert met -l)"
 
 #: ../src/plugins/reporter-ureport.c:106
 msgid ""
 "use REPORT_RESULT_TYPE when looking for FIELD in reported_to (used only with "
 "-L)"
 msgstr ""
+"gebruik REPORT_RESULT_TYPE bij het zoeken naar FIELD in reported_to (alleen "
+"gebruikt met -L)"
 
 #: ../src/plugins/reporter-ureport.c:108
 msgid ""
 "attach DATA as ureport attachment ATTACHMENT_TYPE (used only with -l|-L)"
 msgstr ""
+"voeg DATA toe als ureport aanhangsel ATTACHMENT_TYPE (alleen gebruikt met -"
+"l|-L)"
 
 #: ../src/plugins/reporter-ureport.c:113
 msgid ""
@@ -2868,6 +3127,17 @@ msgid ""
 "\n"
 "Reads the default configuration from "
 msgstr ""
+"& [-v] [-c BESTAND] [-u URL] [-k] [-t BRON] [-h GELOOFSBRIEVEN]\n"
+"  [-A -a bthash -B -b bug-id -E -e email -O -o comment] [-d MAP]\n"
+"  [-A -a bthash -T ATTACHMENT_TYPE -r REPORT_RESULT_TYPE -L RESULT_FIELD] [-"
+"d MAP]\n"
+"  [-A -a bthash -T ATTACHMENT_TYPE -l DATA] [-d MAP]\n"
+"& [-v] [-c BESTAND] [-u URL] [-k] [-t BRON] [-h GELOOFSBRIEVEN] [-i "
+"AUTH_ITEMS] [-d MAP]\n"
+"\n"
+"Upload micro report of voeg een aanhangsel toe aan een micro rapport\n"
+"\n"
+"Leest de standaard configuratie van"
 
 #: ../src/plugins/reporter-ureport.c:188
 msgid "This problem does not have an uReport assigned."
@@ -2889,21 +3159,21 @@ msgstr "Kan bug ID niet ontleden uit bugzilla URL '%s'"
 
 #: ../src/plugins/reporter-ureport.c:219
 msgid "Cannot attach comment from 'comment' file"
-msgstr ""
+msgstr "Kan commentaar niet toevoegen uit 'comment' bestand"
 
 #: ../src/plugins/reporter-ureport.c:221
 msgid "'comment' file is empty"
-msgstr ""
+msgstr "'comment' bestand is leeg"
 
 #: ../src/plugins/reporter-ureport.c:229
 #, c-format
 msgid "This problem has not been reported to '%s'."
-msgstr ""
+msgstr "Dit probleem is nog niet gerapporteert aan '%s'."
 
 #: ../src/plugins/reporter-ureport.c:234
 #, c-format
 msgid "The report result '%s' is missing URL."
-msgstr ""
+msgstr "Het rapportresultaat '%s' mist de URL."
 
 #: ../src/plugins/reporter-ureport.c:251
 msgid ""
@@ -2916,16 +3186,13 @@ msgstr ""
 #: ../src/plugins/reporter-ureport.c:257
 msgid "You need to specify bug ID, contact email, comment or all of them"
 msgstr ""
+"je moet bug ID, contact e-mail, commentaar of deze allemaal specificeren"
 
 #: ../src/plugins/reporter-ureport.c:287
 msgid "You need to specify bthash of the uReport to attach."
 msgstr "Je moet bthash van uReport specificeren om toe te kunnen voegen."
 
-#: ../src/plugins/reporter-ureport.c:292
-msgid "Not uploading an empty uReport"
-msgstr "Kan geen leeg uReport uploaden"
-
-#: ../src/plugins/reporter-ureport.c:313
+#: ../src/plugins/reporter-ureport.c:316
 msgid "This problem has already been reported."
 msgstr "Dit probleem is al gerapporteerd."
 
@@ -2935,7 +3202,7 @@ msgstr "Hoe wil je het probleem rapporteren?"
 
 #: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:146
 #: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:259
-#: ../src/report-newt/report-newt.c:337 ../src/report-newt/report-newt.c:352
+#: ../src/report-newt/report-newt.c:337 ../src/report-newt/report-newt.c:354
 msgid "Ok"
 msgstr "Ok"
 
@@ -2956,11 +3223,11 @@ msgstr "Rapporteren"
 msgid "--- Running %s ---"
 msgstr "--- %s draait ---"
 
-#: ../src/report-newt/report-newt.c:352
+#: ../src/report-newt/report-newt.c:354
 msgid "No reporters available"
 msgstr "Geer rapporteurs beschikbaar"
 
-#: ../src/report-newt/report-newt.c:382
+#: ../src/report-newt/report-newt.c:384
 msgid "& [-d] DIR\n"
 "\n"
 "newt tool to report problem saved in specified DIR"
@@ -2970,7 +3237,7 @@ msgstr ""
 "newt gereedschap voor het rapporteren van een probleem opgeslagen in "
 "gespecificeerde MAP"
 
-#: ../src/report-newt/report-newt.c:392
+#: ../src/report-newt/report-newt.c:394
 msgid "Remove DIR after reporting"
 msgstr "Verwijder MAP na het rapporteren"
 
@@ -2997,43 +3264,51 @@ msgstr "Rapporteer een bug aan Red Hat Bugzilla"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
 msgid "Export the problem data for manual reporting"
-msgstr ""
+msgstr "Exporteer de probleemdata voor handmatig rapporteren"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:2
 msgid "Upload the data via scp or ftp to a remote destination"
-msgstr ""
+msgstr "Upload de data via scp of ftp naar een bestemming op afstand"
 
 #: ../src/workflows/workflow_CentOSCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the CentOS infrastructure"
-msgstr ""
+msgstr "Verwerk de C/C++ crash met gebruik van de CentOS infrastructuur"
 
 #: ../src/workflows/workflow_CentOSJava.xml.in.h:2
 msgid "Process the Java exception using the CentOS infrastructure"
+msgstr "Verwerk de Java uitzondering met gebruik van de CentOS infrastructuur"
+
+#: ../src/workflows/workflow_CentOSJavaScript.xml.in.h:2
+msgid "Process the JavaScript exception using the CentOS infrastructure"
 msgstr ""
+"Verwerk de JavaScript uitzondering met gebruik van de CentOS infrastructuur"
 
 #: ../src/workflows/workflow_CentOSKerneloops.xml.in.h:2
 msgid "Process the kerneloops using the CentOS infrastructure"
-msgstr ""
+msgstr "Verwerk de kerneloops met gebruik van de CentOS infrastructuur"
 
 #: ../src/workflows/workflow_CentOSLibreport.xml.in.h:2
 msgid "Process the problem using the CentOS infrastructure"
-msgstr ""
+msgstr "Verwerk het probleem met gebruik van de CentOS infrastructuur"
 
 #: ../src/workflows/workflow_CentOSPython.xml.in.h:2
 msgid "Process the python exception using the CentOS infrastructure"
 msgstr ""
+"Verwerk de python uitzondering met gebruik van de CentOS infrastructuur"
 
 #: ../src/workflows/workflow_CentOSPython3.xml.in.h:2
 msgid "Process the python 3 exception using the CentOS infrastructure"
 msgstr ""
+"Verwerk de python 3 uitzondering met gebruik van de CentOS infrastructuur"
 
 #: ../src/workflows/workflow_CentOSVmcore.xml.in.h:2
 msgid "Process the kernel crash using the CentOS infrastructure"
-msgstr ""
+msgstr "Verwerk de kernel crash met gebruik van de CentOS infrastructuur"
 
 #: ../src/workflows/workflow_CentOSXorg.xml.in.h:2
 msgid "Process the X Server problem using the CentOS infrastructure"
 msgstr ""
+"Verwerk het X Server probleem met gebruik van de CentOS infrastructuur"
 
 #: ../src/workflows/workflow_FedoraCCpp.xml.in.h:1
 #: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:1
@@ -3043,6 +3318,8 @@ msgstr ""
 #: ../src/workflows/workflow_FedoraXorg.xml.in.h:1
 #: ../src/workflows/workflow_FedoraLibreport.xml.in.h:1
 #: ../src/workflows/workflow_FedoraJava.xml.in.h:1
+#: ../src/workflows/workflow_FedoraJavaScript.xml.in.h:1
+#: ../src/workflows/workflow_RHELJavaScript.xml.in.h:1
 msgid "Report to Fedora"
 msgstr "Rapporteer aan Fedora"
 
@@ -3078,10 +3355,14 @@ msgstr "Verwerk het probleem met de Fedora infrastructuur"
 msgid "Process the Java exception using the Fedora infrastructure"
 msgstr "Verwerk de Java exception met de Fedora infrastructuur"
 
+#: ../src/workflows/workflow_FedoraJavaScript.xml.in.h:2
+msgid "Process the JavaScript exception using the Fedora infrastructure"
+msgstr "Verwerk de JavaScript uitzondering met de Fedora infrastructuur"
+
 #: ../src/workflows/workflow_LoggerCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Logger.xml.in.h:1
 msgid "Export the problem data information to a text file"
-msgstr ""
+msgstr "Exporteer de probleemdata-informatie naar een tekstbestand"
 
 #: ../src/workflows/workflow_LoggerCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Logger.xml.in.h:2
@@ -3089,16 +3370,18 @@ msgid ""
 "Analyze the problem locally and export the problem data information to a "
 "text file"
 msgstr ""
+"Analyseer het probleem lokaal en exporteer de probleemdata-informatie naar "
+"een tekstbestand"
 
 #: ../src/workflows/workflow_MailxCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Mailx.xml.in.h:1
 msgid "Send the problem data via email"
-msgstr ""
+msgstr "Verstuur de probleemdata via e-mail"
 
 #: ../src/workflows/workflow_MailxCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Mailx.xml.in.h:2
 msgid "Analyze the problem locally and send information via email"
-msgstr ""
+msgstr "Analyseer het probleem lokaal en verstuury informatie via e-mail"
 
 #: ../src/workflows/workflow_UploadCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Upload.xml.in.h:1
@@ -3112,13 +3395,15 @@ msgstr "Analyseer het probleem lokaal en upload de data met scp of ftp "
 
 #: ../src/workflows/workflow_uReport.xml.in.h:1
 msgid "Submit anonymous crash report"
-msgstr ""
+msgstr "Dien een anoniem crashrapport in"
 
 #: ../src/workflows/workflow_uReport.xml.in.h:2
 msgid ""
 "Submit anonymous crash report - I do not want to be contacted by Red Hat "
 "Support"
 msgstr ""
+"Dien een anoniem crashrapport in - Ik wil niet benaderd worden door Red Hat "
+"Support"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1
@@ -3128,7 +3413,7 @@ msgstr ""
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:1
 #: ../src/workflows/workflow_RHELJava.xml.in.h:1
 msgid "Ask Red Hat Support for help"
-msgstr ""
+msgstr "Vraag Red Hat Support om hulp"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:2
@@ -3137,10 +3422,13 @@ msgstr ""
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:2
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:2
 #: ../src/workflows/workflow_RHELJava.xml.in.h:2
+#: ../src/workflows/workflow_RHELJavaScript.xml.in.h:2
 msgid ""
 "Create new Red Hat Support case - I would like to be contacted by Red Hat "
 "Support"
 msgstr ""
+"Maak een nieuw Red Hat Support probleem aan - Ik wil graag benaderd worden "
+"door Red Hat Support"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
@@ -3149,6 +3437,7 @@ msgstr ""
 #: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:1
+#: ../src/workflows/workflow_RHELBugzillaJavaScript.xml.in.h:1
 msgid "Report to Red Hat Bugzilla"
 msgstr "Rapporteer aan Red Hat Bugzilla"
 
@@ -3181,3 +3470,8 @@ msgstr "Verwerk het probleem met gebruik van de Red Hat infrastructuur"
 #: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
 msgid "Process the Java exception using the Red Hat infrastructure"
 msgstr "Verwerk de Java exception met behulp van de Red Hat infrastructuur"
+
+#: ../src/workflows/workflow_RHELBugzillaJavaScript.xml.in.h:2
+msgid "Process the JavaScript exception using the Red Hat infrastructure"
+msgstr ""
+"Verwerk de JavaScript uitzondering met gebruik van de Red Hat infrastructuur"

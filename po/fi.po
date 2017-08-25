@@ -6,16 +6,18 @@
 # Juhani Numminen <juhaninumminen0@gmail.com>, 2012
 # Ville-Pekka Vainio <vpvainio@iki.fi>, 2011, 2012
 # Ville Skyttä <ville.skytta@iki.fi>, 2011
+# Jiri Grönroos <jiri.gronroos@iki.fi>, 2017. #zanata
+# Toni Rantala <trantalafilo@gmail.com>, 2017. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-14 10:26+0200\n"
+"POT-Creation-Date: 2016-12-02 01:37-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-01-08 06:52-0500\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
+"PO-Revision-Date: 2017-05-09 11:52-0400\n"
+"Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
 "Language-Team: Finnish (http://www.transifex.com/projects/p/libreport/"
 "language/fi/)\n"
 "Language: fi\n"
@@ -37,17 +39,17 @@ msgstr "Luetteloi mahdolliset tapahtumat [jotka alkavat PREFIXillä]"
 
 #: ../src/cli/cli.c:87 ../src/gui-wizard-gtk/main.c:172
 msgid "Run only these events"
-msgstr ""
+msgstr "Suorita vain nämä tapahtumat"
 
 #: ../src/cli/cli.c:88 ../src/gui-wizard-gtk/main.c:171
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "Poista PROBLEM_DIR ilmoittamisen jälkeen"
 
 #: ../src/cli/cli.c:89 ../src/gui-wizard-gtk/main.c:173
 msgid "Expert mode"
-msgstr ""
+msgstr "Asiantuntijatila"
 
-#: ../src/cli/cli.c:90 ../src/report-newt/report-newt.c:393
+#: ../src/cli/cli.c:90 ../src/report-newt/report-newt.c:395
 msgid "Display version and exit"
 msgstr "Näytä versio ja lopeta"
 
@@ -156,28 +158,30 @@ msgstr "Syöte ei kelpaa, syy:"
 msgid "Bad value for '%s': %s"
 msgstr "Virheellinen arvo kohteelle ”%s”: %s"
 
-#: ../src/cli/cli-report.c:673
+#: ../src/cli/cli-report.c:674
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data. Do you want "
 "to continue?"
 msgstr ""
+"Tapahtuma '%s' vaatii luvan lähettääkseen mahdollisesti sensitiivisiä "
+"tietoja. Haluatko jatkaa?"
 
-#: ../src/cli/cli-report.c:720
+#: ../src/cli/cli-report.c:721
 msgid "You have chosen number out of range"
 msgstr "Valittu numero ei ole sallittu"
 
-#: ../src/cli/cli-report.c:725
+#: ../src/cli/cli-report.c:726
 msgid "Invalid input, exiting."
-msgstr ""
+msgstr "Virheellinen syöte, poistutaan."
 
-#: ../src/cli/cli-report.c:746
+#: ../src/cli/cli-report.c:747
 msgid "Select an event to run: "
-msgstr ""
+msgstr "Valitse suoritettava tapahtuma:"
 
-#: ../src/cli/cli-report.c:858
+#: ../src/cli/cli-report.c:859
 msgid "Select a workflow to run: "
-msgstr ""
+msgstr "Valitse suoritettava työnkulku:"
 
 #: ../src/client-python/reportclient/debuginfo.py:100
 #, python-brace-format
@@ -192,7 +196,7 @@ msgstr "Kohteeseen ”{0}” ei voida kirjoittaa: {1}"
 #: ../src/client-python/reportclient/debuginfo.py:116
 #, python-brace-format
 msgid "Can't extract package '{0}'"
-msgstr "Ei voida purkaa pakettia ”{0}”"
+msgstr "Ei voida purkaa pakettia '{0}'"
 
 #: ../src/client-python/reportclient/debuginfo.py:124
 #, python-brace-format
@@ -218,7 +222,7 @@ msgstr "Ladataan ({0} / {1}) {2}: {3:3} %"
 
 #: ../src/client-python/reportclient/debuginfo.py:312
 msgid "Initializing package manager"
-msgstr ""
+msgstr "Valmistellaan pakettimanageria"
 
 #. if verbose == 0:
 #. # this suppress yum messages about setting up repositories
@@ -261,6 +265,8 @@ msgstr "Käyttäjä perui latauksen"
 msgid ""
 "Warning: Not enough free space in tmp dir '{0}' ({1:.2f}Mb left). Continue?"
 msgstr ""
+"Varoitus: Ei tarpeeksi tilaa väliaikaishakemistossa '{0}' ({1:.2f} Mt "
+"jäljellä). Jatketaanko?"
 
 #: ../src/client-python/reportclient/debuginfo.py:358
 #, python-brace-format
@@ -285,6 +291,8 @@ msgid ""
 "'{0}' must be owned by abrt. Please run '# chown -R abrt.abrt {0}' to fix "
 "the issue."
 msgstr ""
+"'{0}' tulee olla abrtin omistuksessa. Suorita '# chown -R abrt.abrt {0}' "
+"korjataksesi tämän ongelman."
 
 #. Was: "All downloaded packages have been extracted, removing..."
 #. but it was appearing even if no packages were in fact extracted
@@ -297,13 +305,13 @@ msgstr "Poistetaan {0}"
 #: ../src/client-python/reportclient/debuginfo.py:413
 #, python-brace-format
 msgid "Can't remove {0}, probably contains an error log"
-msgstr ""
+msgstr "{0} ei voida poistaa, sisältää todennäöisesti virhelokin"
 
-#: ../src/client-python/reportclient/dnfdebuginfo.py:80
+#: ../src/client-python/reportclient/dnfdebuginfo.py:89
 msgid "Error reading repository configuration: '{0!s}'"
 msgstr ""
 
-#: ../src/client-python/reportclient/dnfdebuginfo.py:97
+#: ../src/client-python/reportclient/dnfdebuginfo.py:106
 msgid "Error setting up repositories: '{0!s}'"
 msgstr ""
 
@@ -313,50 +321,50 @@ msgid ""
 "one"
 msgstr ""
 
-#: ../src/client-python/reportclient/yumdebuginfo.py:98
+#: ../src/client-python/reportclient/yumdebuginfo.py:100
 msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
 msgstr "Virhe käynnistettäessä yumia (YumBase.doConfigSetup): ”{0!s}”"
 
-#: ../src/client-python/reportclient/yumdebuginfo.py:105
+#: ../src/client-python/reportclient/yumdebuginfo.py:107
 msgid "Error: can't make cachedir, exiting"
 msgstr ""
 
-#: ../src/client-python/reportclient/yumdebuginfo.py:114
+#: ../src/client-python/reportclient/yumdebuginfo.py:116
 msgid "Can't disable repository '{0!s}': {1!s}"
 msgstr ""
 
-#: ../src/client-python/reportclient/yumdebuginfo.py:133
+#: ../src/client-python/reportclient/yumdebuginfo.py:135
 msgid "Can't disable async download, the output might contain artifacts!"
 msgstr ""
 
-#: ../src/client-python/reportclient/yumdebuginfo.py:135
+#: ../src/client-python/reportclient/yumdebuginfo.py:137
 #, python-brace-format
 msgid "Can't setup {0}: {1}, disabling"
 msgstr "Pakettilähdettä {0} ei voida ottaa käyttöön: {1}, poistetaan käytöstä"
 
-#: ../src/client-python/reportclient/yumdebuginfo.py:145
+#: ../src/client-python/reportclient/yumdebuginfo.py:147
 msgid "Error retrieving metadata: '{0!s}'"
 msgstr "Virhe ladattaessa metatietoja: ”{0!s}”"
 
-#: ../src/client-python/reportclient/yumdebuginfo.py:158
+#: ../src/client-python/reportclient/yumdebuginfo.py:160
 msgid "Error retrieving filelists: '{0!s}'"
 msgstr "Virhe ladattaessa tiedostoluetteloita: ”{0!s}”"
 
-#: ../src/client-python/reportclient/yumdebuginfo.py:202
+#: ../src/client-python/reportclient/yumdebuginfo.py:204
 #, python-brace-format
 msgid "Cannot copy file '{0}': {1}"
-msgstr ""
+msgstr "Tiedostoa '{0}' ei voi kopioida: {1}"
 
 #. Follow GTK3's yes-no-buttons order:
 #. * [No] [Yes]
 #. 
 #: ../src/gtk-helpers/ask_dialogs.c:87
 msgid "_No"
-msgstr ""
+msgstr "_Ei"
 
 #: ../src/gtk-helpers/ask_dialogs.c:88
 msgid "_Yes"
-msgstr ""
+msgstr "_Kyllä"
 
 #: ../src/gtk-helpers/ask_dialogs.c:94
 msgid "Don't ask me again"
@@ -365,11 +373,11 @@ msgstr "Älä kysy uudestaan"
 #. if event has no xml description
 #: ../src/gtk-helpers/config_dialog.c:182
 msgid "No description available"
-msgstr ""
+msgstr "Ei kuvausta saatavilla"
 
 #: ../src/gtk-helpers/config_dialog.c:345
 msgid "Configuration"
-msgstr ""
+msgstr "Asetukset"
 
 #. we can't use this, because we want the workflows first and hashtable
 #. * doesn't return the items in the order they were added
@@ -379,21 +387,21 @@ msgstr ""
 #: ../src/gtk-helpers/config_dialog.c:365
 #: ../src/gtk-helpers/config_dialog.c:430
 msgid "Workflows"
-msgstr ""
+msgstr "Työnkulut"
 
 #: ../src/gtk-helpers/config_dialog.c:367
 #: ../src/gtk-helpers/config_dialog.c:369
 #: ../src/gtk-helpers/config_dialog.c:433
 msgid "Events"
-msgstr ""
+msgstr "Tapahtumat"
 
 #: ../src/gtk-helpers/config_dialog.c:373
 msgid "C_onfigure"
-msgstr ""
+msgstr "_Määritä"
 
-#: ../src/gtk-helpers/config_dialog.c:375 ../src/gui-wizard-gtk/wizard.c:3687
+#: ../src/gtk-helpers/config_dialog.c:375 ../src/gui-wizard-gtk/wizard.c:3702
 msgid "_Close"
-msgstr ""
+msgstr "_Sulje"
 
 #: ../src/gtk-helpers/event_config_dialog.c:144
 msgid "Show password"
@@ -405,7 +413,7 @@ msgstr "Älä tallenna salasanoja"
 
 #: ../src/gtk-helpers/event_config_dialog.c:285
 msgid "Basic"
-msgstr ""
+msgstr "Perusasetukset"
 
 #: ../src/gtk-helpers/event_config_dialog.c:293
 msgid "Advanced"
@@ -413,18 +421,18 @@ msgstr "Lisäasetukset"
 
 #: ../src/gtk-helpers/event_config_dialog.c:309
 msgid "Secret Service is not available, your settings won't be saved!"
-msgstr ""
+msgstr "Secret Service ei ole saatavilla, asetuksiasi ei tallenneta!"
 
 #: ../src/gtk-helpers/event_config_dialog.c:349
 #: ../src/gtk-helpers/workflow_config_dialog.c:94
-#: ../src/gui-wizard-gtk/wizard.c:784 ../src/gui-wizard-gtk/wizard.c:3287
+#: ../src/gui-wizard-gtk/wizard.c:783 ../src/gui-wizard-gtk/wizard.c:3302
 msgid "_Cancel"
-msgstr ""
+msgstr "_Peru"
 
 #: ../src/gtk-helpers/event_config_dialog.c:351
 #: ../src/gtk-helpers/workflow_config_dialog.c:96
 msgid "_OK"
-msgstr ""
+msgstr "_OK"
 
 #: ../src/gtk-helpers/secrets.c:171
 #, c-format
@@ -471,19 +479,19 @@ msgstr ""
 
 #: ../src/gtk-helpers/problem_details_dialog.c:30
 msgid "Problem details"
-msgstr ""
+msgstr "Ongelman tiedot"
 
 #: ../src/gtk-helpers/problem_details_dialog.c:33
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: ../src/gui-wizard-gtk/main.c:107
 msgid "Preferences"
-msgstr ""
+msgstr "Asetukset"
 
 #: ../src/gui-wizard-gtk/main.c:110
 msgid "Quit"
-msgstr ""
+msgstr "Lopeta"
 
 #: ../src/gui-wizard-gtk/main.c:154
 msgid ""
@@ -496,7 +504,7 @@ msgstr ""
 msgid "Alternate GUI file"
 msgstr "Vaihtoehtoinen GUI-tiedosto"
 
-#: ../src/gui-wizard-gtk/wizard.c:380
+#: ../src/gui-wizard-gtk/wizard.c:379
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
@@ -505,70 +513,72 @@ msgstr ""
 "Tarvitaan hakemisto johon voidaan kirjoittaa, mutta hakemistoon ”%s” ei "
 "voida. Siirretäänkö se hakemistoon ”%s” ja käytetäänkö siirrettyjä tietoja?"
 
-#: ../src/gui-wizard-gtk/wizard.c:775
+#: ../src/gui-wizard-gtk/wizard.c:774
 msgid "View/edit a text file"
 msgstr "Näytä tekstitiedosto tai muokkaa sitä"
 
-#: ../src/gui-wizard-gtk/wizard.c:783
+#: ../src/gui-wizard-gtk/wizard.c:782
 msgid "_Save"
-msgstr ""
+msgstr "_Tallenna"
 
-#: ../src/gui-wizard-gtk/wizard.c:1005
+#: ../src/gui-wizard-gtk/wizard.c:1004
 msgid ""
 "No reporting targets are defined for this problem. Check configuration in /"
 "etc/libreport/*"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1047
+#: ../src/gui-wizard-gtk/wizard.c:1046
 #, c-format
 msgid "(requires: %s)"
 msgstr "(riippuvuus: %s)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1061
+#: ../src/gui-wizard-gtk/wizard.c:1060
 #, c-format
 msgid "(not needed, data already exist: %s)"
 msgstr "(ei tarvita, ”%s” on jo olemassa)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1160
+#: ../src/gui-wizard-gtk/wizard.c:1159
 msgid ""
 "Since crashes without a known reproducer can be difficult to diagnose, "
 "please provide a comprehensive description of the problem you have "
 "encountered."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1167
+#: ../src/gui-wizard-gtk/wizard.c:1166
 msgid ""
 "Please provide a short description of the problem and please include the "
 "steps you have used to reproduce the problem."
 msgstr ""
+"Anna lyhyt kuvaus ongelmasta ja sisällytä vaiheet, kuinka pystyt tuottamaan "
+"ongelman uudelleen."
 
-#: ../src/gui-wizard-gtk/wizard.c:1174
+#: ../src/gui-wizard-gtk/wizard.c:1173
 msgid "Please provide the steps you have used to reproduce the problem."
-msgstr ""
+msgstr "Kuvaile vaiheet, joilla pystyt tuottamaan ongelman uudelleen."
 
-#: ../src/gui-wizard-gtk/wizard.c:1296
+#: ../src/gui-wizard-gtk/wizard.c:1295
 msgid "(click here to view/edit)"
 msgstr "(napsauta tästä katsellaksesi tai muokataksesi)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1307
+#: ../src/gui-wizard-gtk/wizard.c:1306
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(binääritiedosto, %llu tavua)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1418 ../src/report-newt/report-newt.c:334
+#: ../src/gui-wizard-gtk/wizard.c:1417 ../src/report-newt/report-newt.c:334
 msgid "(no description)"
 msgstr "(ei kuvausta)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1426
+#: ../src/gui-wizard-gtk/wizard.c:1425
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu tavua, %u tiedostoa"
 
-#: ../src/gui-wizard-gtk/wizard.c:1704
+#: ../src/gui-wizard-gtk/wizard.c:1703
 msgid "Processing was canceled"
-msgstr ""
+msgstr "Käsittely peruttiin"
 
-#: ../src/gui-wizard-gtk/wizard.c:1915
+#: ../src/gui-wizard-gtk/wizard.c:1914
 msgid ""
 "Processing of the problem failed. This can have many reasons but there are "
 "three most common:\n"
@@ -576,8 +586,13 @@ msgid ""
 "\t▫ <b>corrupted problem data</b>\n"
 "\t▫ <b>invalid configuration</b>"
 msgstr ""
+"Ongelman käsittely epäonnistui. Tähän voi olla monta syytä mutta nämä ovat "
+"kolme yleisintä:\n"
+"\t▫ <b>verkkoyhteys ongelmat</b>\n"
+"\t▫ <b>korruptoitunut data</b>\n"
+"\t▫ <b>epäkelvot asetukset</b>"
 
-#: ../src/gui-wizard-gtk/wizard.c:1924
+#: ../src/gui-wizard-gtk/wizard.c:1923
 msgid ""
 "If you want to update the configuration and try to report again, please open "
 "<b>Preferences</b> item\n"
@@ -585,7 +600,7 @@ msgid ""
 "<b>Repeat</b> button."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1930
+#: ../src/gui-wizard-gtk/wizard.c:1929
 msgid ""
 "If you are sure that this problem is not caused by network problems neither "
 "by invalid configuration\n"
@@ -596,54 +611,63 @@ msgid ""
 "passwords. The uploaded data are stored in a protected storage and only a "
 "limited number of persons can read them.</i>"
 msgstr ""
+"Jos olet varma ettei tämä ongelma johdu verkko-ongelmista tai vääristä "
+"asetuksista ja haluat auttaa, klikkaa lähteä-painiketta ja anna kaikki "
+"ongelmaan liittyvä data syväanalyysiä varten.\n"
+"<i>Ennen kuin teet sen, harkitse hetki tietoturvariskejä. Ongelman data voi "
+"sisältää riskialtista tietoa kuten salasanaoja. Lähetetty data tallentetaan "
+"suojattuun säilöön ja vain harvoilla on pääsy siihen.</i>"
 
-#: ../src/gui-wizard-gtk/wizard.c:2055
+#: ../src/gui-wizard-gtk/wizard.c:2054
 msgid "Processing was interrupted because the problem is not reportable."
-msgstr ""
+msgstr "Käsittely keskeytettiin, koska onglema ei ole ilmoitettavissa."
 
-#: ../src/gui-wizard-gtk/wizard.c:2065 ../src/gui-wizard-gtk/wizard.c:2136
+#: ../src/gui-wizard-gtk/wizard.c:2064 ../src/gui-wizard-gtk/wizard.c:2135
 msgid "Processing failed."
 msgstr "Käsittely epäonnistui."
 
 #. No next event, go to progress page and finish
-#: ../src/gui-wizard-gtk/wizard.c:2072 ../src/gui-wizard-gtk/wizard.c:3009
+#: ../src/gui-wizard-gtk/wizard.c:2071 ../src/gui-wizard-gtk/wizard.c:3015
 msgid "Processing finished."
 msgstr "Prosessi valmis."
 
-#: ../src/gui-wizard-gtk/wizard.c:2073
+#: ../src/gui-wizard-gtk/wizard.c:2072
 msgid "Processing finished, please proceed to the next step."
 msgstr "Käsittely valmis, siirry seuraavaan vaiheeseen."
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:2133
+#: ../src/gui-wizard-gtk/wizard.c:2132
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "Tapahtumalle ”%s” ei ole määritetty toimintoa"
 
-#: ../src/gui-wizard-gtk/wizard.c:2147
+#: ../src/gui-wizard-gtk/wizard.c:2146
 msgid "Processing interrupted: can't continue without writable directory."
 msgstr ""
+"Käsittely keskeytetty: ei voida jatkaa ilman kirjoitettavaa hakemistoa."
 
-#: ../src/gui-wizard-gtk/wizard.c:2184
+#: ../src/gui-wizard-gtk/wizard.c:2183
 msgid "Processing..."
 msgstr "Käsitellään..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2270
+#: ../src/gui-wizard-gtk/wizard.c:2269
 msgid ""
 "Possible sensitive data detected, feel free to edit the report and remove "
 "them."
 msgstr ""
+"Mahdollisesti arkaluonteisia tietoja havaittu, muokkaa halutessasi "
+"ilmoitusta ja poista siitä arkaluontoiset tiedot."
 
-#: ../src/gui-wizard-gtk/wizard.c:2310
+#: ../src/gui-wizard-gtk/wizard.c:2309
 msgid "Cannot check backtrace rating because of invalid event name"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2847
+#: ../src/gui-wizard-gtk/wizard.c:2852
 #, c-format
 msgid "Failed to save file '%s'"
-msgstr ""
+msgstr "Tiedoston '%s' tallentaminen epäonnistui"
 
-#: ../src/gui-wizard-gtk/wizard.c:3029
+#: ../src/gui-wizard-gtk/wizard.c:3035
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
@@ -653,125 +677,127 @@ msgstr ""
 "lähettämiseen.\n"
 "Haluatko jatkaa?"
 
-#: ../src/gui-wizard-gtk/wizard.c:3077
+#: ../src/gui-wizard-gtk/wizard.c:3082
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
 msgstr ""
+"Tätä ongelmaa ei tulisi ilmoittaa (se on mitä luultavimmin tunnettu ongelma)."
+" %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:3288
+#: ../src/gui-wizard-gtk/wizard.c:3303
 msgid "_Open"
-msgstr ""
+msgstr "_Avaa"
 
-#: ../src/gui-wizard-gtk/wizard.c:3310
+#: ../src/gui-wizard-gtk/wizard.c:3325
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "”%s” ei ole tavallinen tiedosto"
 
-#: ../src/gui-wizard-gtk/wizard.c:3324
+#: ../src/gui-wizard-gtk/wizard.c:3339
 msgid "You are trying to copy a file onto itself"
 msgstr "Yrität kopioida tiedostoa itseensä"
 
-#: ../src/gui-wizard-gtk/wizard.c:3331
+#: ../src/gui-wizard-gtk/wizard.c:3346
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "Tiedostoa ”%s” ei voi kopioida: %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:3346
+#: ../src/gui-wizard-gtk/wizard.c:3361
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "Kohde ”%s” on jo olemassa eikä sitä voi muokata"
 
-#: ../src/gui-wizard-gtk/wizard.c:3510
+#: ../src/gui-wizard-gtk/wizard.c:3525
 msgid "I have experienced this problem for the first time"
-msgstr ""
+msgstr "Kohtasin tämän ongelman ensimmäisen kerran"
 
-#: ../src/gui-wizard-gtk/wizard.c:3513
+#: ../src/gui-wizard-gtk/wizard.c:3528
 msgid "I can reproduce this problem"
-msgstr ""
+msgstr "Pystyn toistamaan tämän ongelman"
 
-#: ../src/gui-wizard-gtk/wizard.c:3516
+#: ../src/gui-wizard-gtk/wizard.c:3531
 msgid "This problem occurs repeatedly"
-msgstr ""
+msgstr "Tämä ongelma ilmenee toistuvasti"
 
-#: ../src/gui-wizard-gtk/wizard.c:3529
+#: ../src/gui-wizard-gtk/wizard.c:3544
 msgid "Include"
 msgstr "Sisällytä"
 
-#: ../src/gui-wizard-gtk/wizard.c:3540
+#: ../src/gui-wizard-gtk/wizard.c:3555
 msgid "Name"
 msgstr "Nimi"
 
-#: ../src/gui-wizard-gtk/wizard.c:3550
+#: ../src/gui-wizard-gtk/wizard.c:3565
 msgid "Value"
 msgstr "Arvo"
 
-#: ../src/gui-wizard-gtk/wizard.c:3584
+#: ../src/gui-wizard-gtk/wizard.c:3599
 msgid "Problem description"
 msgstr "Ongelman kuvaus"
 
-#: ../src/gui-wizard-gtk/wizard.c:3585
+#: ../src/gui-wizard-gtk/wizard.c:3600
 msgid "Select how to report this problem"
-msgstr ""
+msgstr "Valitse kuinka ongelmasta ilmoitetaan"
 
-#: ../src/gui-wizard-gtk/wizard.c:3586
+#: ../src/gui-wizard-gtk/wizard.c:3601
 msgid "Provide additional information"
 msgstr "Anna lisätietoja"
 
-#: ../src/gui-wizard-gtk/wizard.c:3587
+#: ../src/gui-wizard-gtk/wizard.c:3602
 msgid "Review the data"
 msgstr "Tarkista tiedot"
 
-#: ../src/gui-wizard-gtk/wizard.c:3588
+#: ../src/gui-wizard-gtk/wizard.c:3603
 msgid "Confirm data to report"
 msgstr "Vahvista raportoitavat tiedot"
 
-#: ../src/gui-wizard-gtk/wizard.c:3589
+#: ../src/gui-wizard-gtk/wizard.c:3604
 msgid "Processing"
 msgstr "Käsitellään"
 
-#: ../src/gui-wizard-gtk/wizard.c:3590
+#: ../src/gui-wizard-gtk/wizard.c:3605
 msgid "Processing done"
 msgstr "Käsittely valmis"
 
-#: ../src/gui-wizard-gtk/wizard.c:3689
+#: ../src/gui-wizard-gtk/wizard.c:3704
 msgid "_Stop"
-msgstr ""
+msgstr "P_ysäytä"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3692
+#: ../src/gui-wizard-gtk/wizard.c:3707
 msgid "Upload for analysis"
-msgstr ""
+msgstr "Lähetä analysoitavaksi"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3695
+#: ../src/gui-wizard-gtk/wizard.c:3710
 msgid "Repeat"
-msgstr ""
+msgstr "Toista"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3697
+#: ../src/gui-wizard-gtk/wizard.c:3712
 msgid "_Forward"
-msgstr ""
+msgstr "_Eteenpäin"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3700 ../src/gui-wizard-gtk/wizard.glade.h:10
+#: ../src/gui-wizard-gtk/wizard.c:3715 ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid "Details"
 msgstr "Lisätietoja"
 
-#: ../src/gui-wizard-gtk/wizard.c:3765
+#: ../src/gui-wizard-gtk/wizard.c:3780
 msgid "Restrict access to the report"
-msgstr ""
+msgstr "Rajoita pääsyä ilmoitukseen"
 
-#: ../src/gui-wizard-gtk/wizard.c:3770
+#: ../src/gui-wizard-gtk/wizard.c:3785
 msgid "Learn more about restricted access in the configuration"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:3833
+#: ../src/gui-wizard-gtk/wizard.c:3848
 msgid ""
 "In order to enable the built-in screencasting functionality the package fros-"
 "recordmydesktop has to be installed. Please run the following command if you "
 "want to install it.\n"
 "\n"
-"<b>su -c \"yum install fros-recordmydesktop\"</b>"
+"<b>su -c \"dnf install fros-recordmydesktop\"</b>"
 msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
@@ -802,15 +828,15 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "file"
-msgstr ""
+msgstr "tiedosto"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "data"
-msgstr ""
+msgstr "data"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "Search"
-msgstr ""
+msgstr "Etsi"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid ""
@@ -835,17 +861,17 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid "How reproducible is this problem?"
-msgstr ""
+msgstr "Kuinka toistettava tämä ongelma on?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid "How it can be reproduced (one step per line)?"
-msgstr ""
+msgstr "Kuinka ongelman voi toistaa (vaihe per rivi)?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:14
 msgid ""
 "Please add a comprehensive description of the problem you have. This is a "
 "very long place holder."
-msgstr ""
+msgstr "Lisää kattava kuvaus kohtaamastasi ongelmasta."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid "You need to fill the how to before you can proceed..."
@@ -865,7 +891,7 @@ msgstr "En tiedä mikä aiheutti tämän ongelman"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid "If you don't know how to describe it, you can"
-msgstr ""
+msgstr "Jos et tiedä miten kuvailla, voit"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:19
 msgid "add a screencast"
@@ -895,7 +921,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:24
 msgid "Processing did not start yet"
-msgstr ""
+msgstr "Käsittely ei alkanut vielä"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:25
 msgid "Show log"
@@ -915,17 +941,18 @@ msgstr ""
 "antaa paremman ongelmakuvauksen ja toistaa raportointiprosessin, napsauta "
 "”Eteenpäin”."
 
-#: ../src/include/internal_libreport.h:1182
+#: ../src/include/internal_libreport.h:1228
 msgid "Be verbose"
 msgstr ""
 
-#: ../src/include/internal_libreport.h:1183
+#: ../src/include/internal_libreport.h:1229
 #: ../src/plugins/reporter-bugzilla.c:295
 #: ../src/plugins/reporter-kerneloops.c:166 ../src/plugins/reporter-mailx.c:279
-#: ../src/plugins/reporter-print.c:56 ../src/plugins/reporter-rhtsupport.c:510
+#: ../src/plugins/reporter-print.c:56 ../src/plugins/reporter-rhtsupport.c:515
+#: ../src/plugins/reporter-systemd-journal.c:245
 #: ../src/plugins/reporter-upload.c:186 ../src/plugins/reporter-mantisbt.c:283
 msgid "Problem directory"
-msgstr ""
+msgstr "Ongelmahakemisto"
 
 #: ../src/lib/abrt_sock.c:160
 #, c-format
@@ -934,20 +961,20 @@ msgstr "Ei voida poistaa: \"%s\""
 
 #: ../src/lib/abrt_sock.c:196
 msgid "locked by another process"
-msgstr ""
+msgstr "lukittu toisen prosessin toimesta"
 
 #: ../src/lib/abrt_sock.c:205
 msgid "permission denied"
-msgstr ""
+msgstr "käyttö estetty"
 
 #: ../src/lib/abrt_sock.c:208
 msgid "not a problem directory"
-msgstr ""
+msgstr "ei ole ongelmahakemisto"
 
 #: ../src/lib/abrt_sock.c:217
 #, c-format
 msgid "Can't delete '%s': %s"
-msgstr ""
+msgstr "Ei voida poistaa '%s': %s"
 
 #: ../src/lib/client.c:55 ../src/lib/client.c:87 ../src/lib/client.c:144
 msgid "y"
@@ -968,14 +995,14 @@ msgstr ""
 #: ../src/lib/create_dump_dir.c:32
 #, c-format
 msgid "uid value is not valid: '%s'"
-msgstr ""
+msgstr "uid-arvo ei ole kelvollinen: '%s'"
 
 #: ../src/lib/create_dump_dir.c:51
 #, c-format
 msgid "'%s' is not correct file name"
-msgstr ""
+msgstr "'%s' ei ole oikea tiedostonimi"
 
-#: ../src/lib/create_dump_dir.c:189
+#: ../src/lib/create_dump_dir.c:190
 #, c-format
 msgid "Missing required item: '%s'"
 msgstr "Puuttuva tarvittu kohde: \"%s\""
@@ -994,49 +1021,49 @@ msgstr ""
 #: ../src/lib/curl.c:666
 #, c-format
 msgid "Sending %s to %s//%s"
-msgstr ""
+msgstr "Lähetetään %s %s//%s:lle"
 
 #: ../src/lib/curl.c:690
 #, c-format
 msgid "Please enter user name for '%s//%s':"
-msgstr ""
+msgstr "Syötä käyttäjänimi '%s//%s':lle:"
 
 #: ../src/lib/curl.c:696
 #, c-format
 msgid "Please enter password for '%s//%s@%s':"
-msgstr ""
+msgstr "Syötä salasana '%s//%s@%s':lle:"
 
 #. This ends up a "reporting status message" in abrtd
 #: ../src/lib/curl.c:719
 #, c-format
 msgid "Successfully created %s"
-msgstr ""
+msgstr "Luotiin onnistuneesti %s"
 
-#: ../src/lib/dump_dir.c:2400
+#: ../src/lib/dump_dir.c:2463
 msgid "Failed to open TAR writer"
-msgstr ""
+msgstr "TAR-kirjoittimen avaaminen ei onnistunut"
 
-#: ../src/lib/dump_dir.c:2426
+#: ../src/lib/dump_dir.c:2489
 msgid "Failed to finalize TAR archive"
-msgstr ""
+msgstr "TAR-arkistoa ei voitu viimeistellä"
 
-#: ../src/lib/dump_dir.c:2436
+#: ../src/lib/dump_dir.c:2499
 msgid "Failed to close TAR writer"
-msgstr ""
+msgstr "TAR-kirjoittimen sulkeminen ei onnistunut"
 
-#: ../src/lib/dump_dir.c:2446
+#: ../src/lib/dump_dir.c:2509
 #, c-format
 msgid "gzip killed with signal %d"
-msgstr ""
+msgstr "gzip tapettiin signaalilla %d"
 
-#: ../src/lib/dump_dir.c:2452
+#: ../src/lib/dump_dir.c:2515
 #, c-format
 msgid "gzip exited with %d"
 msgstr ""
 
-#: ../src/lib/dump_dir.c:2455
+#: ../src/lib/dump_dir.c:2518
 msgid "gzip process failed"
-msgstr ""
+msgstr "gzip-prosessi epäonnistui"
 
 #: ../src/lib/event_config.c:382
 msgid "Missing mandatory value"
@@ -1104,7 +1131,7 @@ msgstr ""
 #: ../src/lib/iso_date_string.c:50
 #, c-format
 msgid "String doesn't seem to be a date: '%s'"
-msgstr ""
+msgstr "Merkkijono ei vaikuta olevan päiväys: '%s'"
 
 #: ../src/lib/iso_date_string.c:55
 #, c-format
@@ -1116,86 +1143,90 @@ msgstr ""
 msgid "The date: '%s' is out of UNIX time stamp range"
 msgstr ""
 
-#: ../src/lib/ureport.c:393
+#: ../src/lib/ureport.c:395
 #, c-format
 msgid "Your problem seems to be caused by %s\n"
 "\n"
 "%s\n"
-msgstr ""
+msgstr "Ongelmasi syy vaikuttaa olevan %s\n"
+"\n"
+"%s\n"
 
-#: ../src/lib/ureport.c:396
+#: ../src/lib/ureport.c:398
 msgid "Your problem seems to be caused by one of the following:\n"
-msgstr ""
+msgstr "Ongelmasi vaikuttaa aiheuttavan yksi seuraavista:\n"
 
-#: ../src/lib/ureport.c:568
+#: ../src/lib/ureport.c:570
 #, c-format
 msgid "Failed to upload uReport to the server '%s' with curl: %s"
 msgstr ""
 
-#: ../src/lib/ureport.c:572
+#: ../src/lib/ureport.c:574
 #, c-format
 msgid "Failed to upload uReport to the server '%s'"
-msgstr ""
+msgstr "uReportin lähettäminen palvelimelle %s' epäonnistui"
 
-#: ../src/lib/ureport.c:575
+#: ../src/lib/ureport.c:577
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Virhe: %s"
 
-#: ../src/lib/ureport.c:582
+#: ../src/lib/ureport.c:584
 #, c-format
 msgid "The URL '%s' does not exist (got error 404 from server)"
 msgstr ""
+"Osoitetta '%s' ei näytä olevan olemassa (vastaanotettiin 404 palvelimelta)"
 
-#: ../src/lib/ureport.c:588
+#: ../src/lib/ureport.c:590
 #, c-format
 msgid "The server at '%s' encountered an internal error (got error 500)"
-msgstr ""
+msgstr "Palvelin '%s' kohtasi sisäisen virheen (vastaanotettiin virhe 500)"
 
-#: ../src/lib/ureport.c:594
+#: ../src/lib/ureport.c:596
 #, c-format
 msgid "The server at '%s' currently can't handle the request (got error 503)"
 msgstr ""
+"Palvelin '%s' ei voi juuri nyt käsitellä pyyntöä (vastaanotettiin virhe 503)"
 
 #. can't print better error message
-#: ../src/lib/ureport.c:603
+#: ../src/lib/ureport.c:605
 #, c-format
 msgid "Unexpected HTTP response from '%s': %d"
-msgstr ""
+msgstr "Odottamaton HTTP vastaus '%s': %d:lta"
 
-#: ../src/lib/ureport.c:612
+#: ../src/lib/ureport.c:614
 #, c-format
 msgid "Unable to parse response from ureport server at '%s'"
 msgstr ""
 
-#: ../src/lib/ureport.c:622
+#: ../src/lib/ureport.c:624
 #, c-format
 msgid "The response from '%s' has invalid format"
 msgstr ""
 
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
-#: ../src/lib/ureport.c:628
+#: ../src/lib/ureport.c:630
 #, c-format
 msgid "Type mismatch has been detected in the response from '%s'"
 msgstr ""
 
-#: ../src/lib/ureport.c:818 ../src/plugins/reporter-rhtsupport.c:233
+#: ../src/lib/ureport.c:826 ../src/plugins/reporter-rhtsupport.c:233
 msgid "Failed on submitting the problem"
 msgstr ""
 
-#: ../src/lib/ureport.c:860
+#: ../src/lib/ureport.c:868
 #, c-format
 msgid "The server at '%s' responded with an error: '%s'"
-msgstr ""
+msgstr "Palvelin '%s' vastasi virheellä: '%s'"
 
 #: ../src/lib/make_descr.c:149 ../src/lib/make_descr.c:160
 msgid "Reported:"
-msgstr ""
+msgstr "Ilmoitettu:"
 
 #: ../src/lib/make_descr.c:149
 msgid "cannot be reported"
-msgstr ""
+msgstr "ei voida ilmoittaa"
 
 #: ../src/lib/parse_options.c:63
 msgid "Usage: "
@@ -1206,12 +1237,12 @@ msgstr "Käyttö:"
 msgid "Essential element '%s' is missing, can't continue"
 msgstr "Tärkeä elementti ”%s” puuttuu, ei voida jatkaa"
 
-#: ../src/lib/problem_report.c:478
+#: ../src/lib/problem_report.c:486
 #, c-format
 msgid "Can't parse backtrace: %s"
 msgstr ""
 
-#: ../src/lib/problem_report.c:489
+#: ../src/lib/problem_report.c:501
 msgid "Can't generate stacktrace description (no crash thread?)"
 msgstr ""
 
@@ -1235,12 +1266,12 @@ msgstr ""
 #: ../src/lib/run_event.c:876
 #, c-format
 msgid "('%s' was killed by signal %u)\n"
-msgstr ""
+msgstr "('%s' tapettiin signaalilla %u)\n"
 
 #: ../src/lib/run_event.c:878
 #, c-format
 msgid "('%s' completed successfully)\n"
-msgstr ""
+msgstr "('%s' suoritettiin onnistuneesti)\n"
 
 #: ../src/lib/run_event.c:880
 #, c-format
@@ -1327,23 +1358,27 @@ msgstr "Bugzilla-tilin salasana"
 #: ../src/plugins/report_Bugzilla.xml.in.h:8
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:8
 msgid "Restrict access"
-msgstr ""
+msgstr "Rajoita pääsyä"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:9
 msgid ""
 "Restrict access to the created bugzilla ticket allowing only users from "
 "specified groups to view it (see advanced settings for more details)"
 msgstr ""
+"Rajoita pääsyä Bugzillaan luotavaan tikettiin sallien katselun vain "
+"määritetyille ryhmille (katso lisäasetukset saadaksesi enemmän tietoja)"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:10
 msgid "Groups"
-msgstr ""
+msgstr "Ryhmät"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:11
 msgid ""
 "Restrict the access to specified groups &lt;a href=\"https://github.com/abrt/"
 "abrt/wiki/FAQ#creating-private-bugzilla-tickets\"&gt;?&lt;/a&gt;"
 msgstr ""
+"Rajoita pääsy määritetyille ryhmille &lt;a href=\"https://github.com/abrt/"
+"abrt/wiki/FAQ#creating-private-bugzilla-tickets\"&gt;?&lt;/a&gt;"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:12
 msgid "Bugzilla URL"
@@ -1369,7 +1404,7 @@ msgstr "Tarkista SSL-avaimen oikeellisuus"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:16
 msgid "Bugzilla product"
-msgstr ""
+msgstr "Bugzilla-tuote"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:17
 msgid ""
@@ -1379,13 +1414,15 @@ msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:18
 msgid "Bugzilla product version"
-msgstr ""
+msgstr "Bugzilla-tuoteversio"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:19
 msgid ""
 "Specify this only if you needed different product version than specified in /"
 "etc/os-release"
 msgstr ""
+"Määritä tämä vain jos tarvitsit eri version kuin mitä on määritelty /etc/os-"
+"releasessa"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:20
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:18
@@ -1395,7 +1432,7 @@ msgstr ""
 #: ../src/plugins/report_uReport.xml.in.h:11
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:4
 msgid "HTTP Proxy"
-msgstr ""
+msgstr "HTTP-välityspalvelin"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:21
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:19
@@ -1405,7 +1442,7 @@ msgstr ""
 #: ../src/plugins/report_uReport.xml.in.h:12
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:5
 msgid "Sets the proxy server to use for HTTP"
-msgstr ""
+msgstr "Asettaa käytettävän välityspalvelimen HTTP:ksi"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:22
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:20
@@ -1415,7 +1452,7 @@ msgstr ""
 #: ../src/plugins/report_uReport.xml.in.h:13
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:6
 msgid "HTTPS Proxy"
-msgstr ""
+msgstr "HTTPS-välityspalvelin"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:23
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:21
@@ -1425,7 +1462,7 @@ msgstr ""
 #: ../src/plugins/report_uReport.xml.in.h:14
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:7
 msgid "Sets the proxy server to use for HTTPS"
-msgstr ""
+msgstr "Asettaa käytettävän välityspalvelimen HTTPS:ksi"
 
 #: ../src/plugins/report.c:37
 msgid ""
@@ -1464,16 +1501,16 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:173
-#: ../src/plugins/reporter-rhtsupport.c:377
+#: ../src/plugins/reporter-rhtsupport.c:380
 #: ../src/plugins/reporter-mantisbt.c:55
 msgid "Can't continue without login"
-msgstr ""
+msgstr "Ilman käyttäjätunnusta ei voi jatkaa"
 
 #: ../src/plugins/reporter-bugzilla.c:186
-#: ../src/plugins/reporter-rhtsupport.c:390
+#: ../src/plugins/reporter-rhtsupport.c:393
 #: ../src/plugins/reporter-mantisbt.c:70
 msgid "Can't continue without password"
-msgstr ""
+msgstr "Ilman salasanaa ei voi jatkaa"
 
 #: ../src/plugins/reporter-bugzilla.c:195
 #, c-format
@@ -1482,13 +1519,13 @@ msgstr "Kirjaudutaan Bugzillaan osoitteessa %s"
 
 #: ../src/plugins/reporter-bugzilla.c:199
 msgid "Invalid password or login. Please enter your Bugzilla login:"
-msgstr ""
+msgstr "Väärä salasana tai käyttäjätunnus. Syötä Bugzilla tunnuksesi:"
 
 #: ../src/plugins/reporter-bugzilla.c:202
-#: ../src/plugins/reporter-rhtsupport.c:404
+#: ../src/plugins/reporter-rhtsupport.c:407
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
-msgstr ""
+msgstr "Väärä salasana tai käyttäjä tunnus. Syötä salasana  '%s'lle:"
 
 #: ../src/plugins/reporter-bugzilla.c:221
 msgid ""
@@ -1536,7 +1573,7 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:296
-#: ../src/plugins/reporter-rhtsupport.c:511
+#: ../src/plugins/reporter-rhtsupport.c:516
 #: ../src/plugins/reporter-mantisbt.c:284
 msgid "Configuration file (may be given many times)"
 msgstr "Asetustiedosto (voidaan syöttää useita)"
@@ -1560,7 +1597,7 @@ msgid "When creating bug, attach binary files too"
 msgstr "Liitä virheilmoitusta luotaessa siihen myös binääritiedostoja"
 
 #: ../src/plugins/reporter-bugzilla.c:301
-#: ../src/plugins/reporter-rhtsupport.c:513
+#: ../src/plugins/reporter-rhtsupport.c:518
 #: ../src/plugins/reporter-mantisbt.c:288
 msgid "Force reporting even if this problem is already reported"
 msgstr "Pakota raportin teko vaikka tämä ongelma on jo raportoitu"
@@ -1585,17 +1622,18 @@ msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:306
 msgid "Restrict access to this group only"
-msgstr ""
+msgstr "Rajoita pääsy vain tälle ryhmälle"
 
 #: ../src/plugins/reporter-bugzilla.c:307 ../src/plugins/reporter-mailx.c:283
-#: ../src/plugins/reporter-rhtsupport.c:517
+#: ../src/plugins/reporter-rhtsupport.c:522
+#: ../src/plugins/reporter-systemd-journal.c:250
 #: ../src/plugins/reporter-mantisbt.c:292
 msgid "Debug"
 msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:351
 msgid "Looking for similar problems in bugzilla"
-msgstr ""
+msgstr "Etsitään vastaavanlaisia ongelmia Bugzillasta"
 
 #: ../src/plugins/reporter-bugzilla.c:380
 msgid "Failed to get 'REDHAT_BUGZILLA_PRODUCT' from '/etc/os-release'."
@@ -1608,20 +1646,21 @@ msgstr ""
 #: ../src/plugins/reporter-bugzilla.c:394
 #, c-format
 msgid "Using default product '%s'"
-msgstr ""
+msgstr "Käytetään oletustuotetta '%s'"
 
 #: ../src/plugins/reporter-bugzilla.c:417
 msgid ""
 "Login is not provided by configuration. Please enter your Bugzilla login:"
 msgstr ""
+"Määritykset eivät tarjoa kirjautumistunnusta. Anna Bugzilla-tunnuksesi:"
 
 #: ../src/plugins/reporter-bugzilla.c:423
-#: ../src/plugins/reporter-rhtsupport.c:551
+#: ../src/plugins/reporter-rhtsupport.c:556
 #, c-format
 msgid ""
 "Password is not provided by configuration. Please enter the password for "
 "'%s':"
-msgstr ""
+msgstr "Määritykset eivät tarjoa salasanaa. Anna salasanasi palveluun '%s':"
 
 #: ../src/plugins/reporter-bugzilla.c:442
 msgid ""
@@ -1639,12 +1678,12 @@ msgstr ""
 #: ../src/plugins/reporter-bugzilla.c:453
 #, c-format
 msgid "Malformed url to Bugzilla '%s'."
-msgstr ""
+msgstr "Väärin muodostettu osoite Bugzillaan '%s'."
 
 #: ../src/plugins/reporter-bugzilla.c:457
 #, c-format
 msgid "Using Bugzilla ID '%s'"
-msgstr ""
+msgstr "Käytetään Bugzilla ID:tä '%s'"
 
 #: ../src/plugins/reporter-bugzilla.c:491
 #: ../src/plugins/reporter-bugzilla.c:680
@@ -1654,7 +1693,7 @@ msgstr "Kirjaudutaan ulos"
 
 #: ../src/plugins/reporter-bugzilla.c:542
 msgid "Can't determine Bugzilla Product from problem data."
-msgstr ""
+msgstr "Bugzilla-tuotetta ei voi määrittää ongelman tiedoista."
 
 #: ../src/plugins/reporter-bugzilla.c:604
 #: ../src/plugins/reporter-mantisbt.c:488
@@ -1679,7 +1718,7 @@ msgstr "Luodaan uusi ohjelmavirheilmoitus"
 
 #: ../src/plugins/reporter-bugzilla.c:715
 msgid "Failed to create a new bug."
-msgstr ""
+msgstr "Uuden ohjelmavirheilmoituksen luominen epäonnistui."
 
 #: ../src/plugins/reporter-bugzilla.c:731
 #, c-format
@@ -1689,7 +1728,7 @@ msgstr ""
 #: ../src/plugins/reporter-bugzilla.c:740
 #, c-format
 msgid "Adding External URL to bug %i"
-msgstr ""
+msgstr "Lisätään ulkoinen osoite ohjelmavirheeseen %i"
 
 #: ../src/plugins/reporter-bugzilla.c:746
 #, c-format
@@ -1699,7 +1738,7 @@ msgstr "Lisätään liitetiedostoja vikailmoitukseen %i"
 #: ../src/plugins/reporter-bugzilla.c:768
 #, c-format
 msgid "Closing bug %i as duplicate of bug %i"
-msgstr ""
+msgstr "Suljetaan ohjelmavirhe %i ohjelmavirheen %i kaksoiskappaleena"
 
 #: ../src/plugins/reporter-bugzilla.c:780
 #: ../src/plugins/reporter-mantisbt.c:597
@@ -1710,7 +1749,7 @@ msgstr "Ohjelmavirheestä on jo tehty ilmoitus: %i"
 #: ../src/plugins/reporter-bugzilla.c:823
 #, c-format
 msgid "Adding %s to CC list"
-msgstr ""
+msgstr "Lisätään %s CC-listaan"
 
 #: ../src/plugins/reporter-bugzilla.c:844
 #, c-format
@@ -1765,12 +1804,12 @@ msgstr ""
 #: ../src/plugins/reporter-mailx.c:90
 #, c-format
 msgid "Please, type email address of %s:"
-msgstr ""
+msgstr "Syötä %s:n sähköpostiosoite:"
 
 #: ../src/plugins/reporter-mailx.c:97
 #, c-format
 msgid "Can't continue without email address of %s"
-msgstr ""
+msgstr "Ei voida jatkaa ilman %s:n sähköpostiosoitetta"
 
 #: ../src/plugins/reporter-mailx.c:207
 #, c-format
@@ -1845,21 +1884,28 @@ msgstr "Raportti lisättiin kohteeseen %s"
 msgid "The report was stored to %s"
 msgstr "Raportti tallennettiin kohteeseen %s"
 
-#: ../src/plugins/reporter-rhtsupport.c:294
-#: ../src/plugins/reporter-ureport.c:321
-#, c-format
-msgid "Server responded with an error: '%s'"
+#: ../src/plugins/reporter-rhtsupport.c:276
+#: ../src/plugins/reporter-ureport.c:295
+msgid "Failed to generate microreport from the problem data"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:354
+#: ../src/plugins/reporter-rhtsupport.c:297
+#: ../src/plugins/reporter-ureport.c:324
+#, c-format
+msgid "Server responded with an error: '%s'"
+msgstr "Palvelin vastasi virheellä: '%s'"
+
+#: ../src/plugins/reporter-rhtsupport.c:357
 msgid "Do you still want to create a RHTSupport ticket?"
 msgstr "Haluatko silti luoda RHTSupport-tiketin?"
 
-#: ../src/plugins/reporter-rhtsupport.c:402
+#: ../src/plugins/reporter-rhtsupport.c:405
 msgid "Invalid password or login. Please enter your Red Hat login:"
 msgstr ""
+"Virheellinen salasana tai kirjautumistunnus. Anna Red Hat -"
+"kirjautumistunnuksesi:"
 
-#: ../src/plugins/reporter-rhtsupport.c:471
+#: ../src/plugins/reporter-rhtsupport.c:476
 msgid ""
 "\n"
 "& [-v] [-c CONFFILE] [-F FMTFILE] -d DIR\n"
@@ -1871,54 +1917,56 @@ msgid ""
 "If not specified, CONFFILE defaults to "
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:512
+#: ../src/plugins/reporter-rhtsupport.c:517
 msgid "Upload FILEs [to case with this ID]"
 msgstr "Lähetä TIEDOSTOJA [tapaukseen ID]"
 
-#: ../src/plugins/reporter-rhtsupport.c:514
+#: ../src/plugins/reporter-rhtsupport.c:519
 msgid "Submit uReport before creating a new case"
-msgstr ""
+msgstr "Lähetä uReport ennen uuden tapauksen luomista"
 
-#: ../src/plugins/reporter-rhtsupport.c:515
+#: ../src/plugins/reporter-rhtsupport.c:520
 msgid "Configuration file for uReport"
-msgstr ""
+msgstr "Asetustiedosto uReportille"
 
-#: ../src/plugins/reporter-rhtsupport.c:516
+#: ../src/plugins/reporter-rhtsupport.c:521
 msgid "Formatting file for a new case"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:545
+#: ../src/plugins/reporter-rhtsupport.c:550
 msgid "Login is not provided by configuration. Please enter your RHTS login:"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:614
+#: ../src/plugins/reporter-rhtsupport.c:619
 #, c-format
 msgid "Attaching '%s' to case '%s'"
 msgstr "Liitetään tiedosto ”%s” tapaukseen ”%s”"
 
-#: ../src/plugins/reporter-rhtsupport.c:651
+#: ../src/plugins/reporter-rhtsupport.c:656
 msgid "Sending ABRT crash statistics data"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:672
+#: ../src/plugins/reporter-rhtsupport.c:677
 msgid "Can't create a temporary directory in "
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:697
+#: ../src/plugins/reporter-rhtsupport.c:702
 msgid ""
 "The problem has only occurred once and the ability to reproduce the problem "
 "is unknown. Please ensure you will be able to provide detailed information "
 "to our Support Team. Would you like to continue and open a new support case?"
 msgstr ""
 
-#: ../src/plugins/reporter-rhtsupport.c:710
+#: ../src/plugins/reporter-rhtsupport.c:715
 #, c-format
 msgid ""
 "The crashed program was released by '%s'. Would you like to report the "
 "problem to Red Hat Support?"
 msgstr ""
+"Kaatuneen ohjelman on julkaissut '%s'. Haluatko ilmoittaa ongelman Red Hatin "
+"tukeen?"
 
-#: ../src/plugins/reporter-rhtsupport.c:728
+#: ../src/plugins/reporter-rhtsupport.c:733
 #, c-format
 msgid ""
 "The program '%s' does not appear to be provided by Red Hat. Would you like "
@@ -1928,23 +1976,23 @@ msgstr ""
 #. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing
 #. error msg is already logged by dd_opendir
 #. Compressing e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../src/plugins/reporter-rhtsupport.c:792
+#: ../src/plugins/reporter-rhtsupport.c:797
 #: ../src/plugins/reporter-upload.c:103
 msgid "Compressing data"
 msgstr "Pakataan tietoja"
 
-#: ../src/plugins/reporter-rhtsupport.c:800
+#: ../src/plugins/reporter-rhtsupport.c:805
 msgid "Can't create temporary file in "
 msgstr ""
 
 #. Check for hints and show them if we have something
-#: ../src/plugins/reporter-rhtsupport.c:811
+#: ../src/plugins/reporter-rhtsupport.c:816
 msgid "Checking for hints"
 msgstr ""
 
 #: ../src/plugins/reporter-rhtsupport.c:821
 msgid "Creating a new case"
-msgstr ""
+msgstr "Luodaan uusi tapaus"
 
 #. How can we help user sorting out this problem?
 #: ../src/plugins/reporter-rhtsupport.c:832
@@ -1963,13 +2011,13 @@ msgstr ""
 #: ../src/plugins/reporter-rhtsupport.c:925
 #, c-format
 msgid "Adding comment to case '%s'"
-msgstr ""
+msgstr "Lisätään kommentti tapaukseen '%s'"
 
 #. Attach the tarball of -d DIR
 #: ../src/plugins/reporter-rhtsupport.c:943
 #, c-format
 msgid "Attaching problem data to case '%s'"
-msgstr ""
+msgstr "Liitetään ongelman tietoja tapaukseen '%s'"
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:202
 msgid "Documentation which might be relevant: "
@@ -1977,18 +2025,46 @@ msgstr "Mahdollisesti tärkeää dokumentaatiota:"
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:210
 msgid "Updates which possibly help: "
-msgstr "Pävityksiä, jotka saattavat auttaa:"
+msgstr "Päivityksiä, jotka saattavat auttaa:"
+
+#: ../src/plugins/reporter-systemd-journal.c:220
+msgid ""
+"& [-v] [-d DIR] [-m MESSAGEID] [-F FMTFILE] [-p NONE|ESSENTIAL|FULL] [-s "
+"SYSLOGID]\n"
+"\n"
+"Reports problem information into systemd journal.\n"
+"\n"
+"The tool reads problem directory DIR and sends its details\n"
+"into systemd journal as a message. If MESSAGEID is defined, the tool\n"
+"creates a catalog message as well.\n"
+msgstr ""
+
+#: ../src/plugins/reporter-systemd-journal.c:246
+msgid "Catalog message id"
+msgstr ""
+
+#: ../src/plugins/reporter-systemd-journal.c:247
+msgid "Formatting file for catalog message"
+msgstr ""
+
+#: ../src/plugins/reporter-systemd-journal.c:248
+msgid "Dump problem dir into systemd journal fields"
+msgstr ""
+
+#: ../src/plugins/reporter-systemd-journal.c:249
+msgid "Define SYSLOG_IDENTIFIER systemd journal field"
+msgstr ""
 
 #: ../src/plugins/reporter-upload.c:29
 msgid "Can't continue without URL"
-msgstr ""
+msgstr "Ilman osoitetta ei voi jatkaa"
 
 #. Be permissive and nice, ask only once and don't check
 #. the result. User can dismiss this prompt but the upload
 #. may work somehow???
 #: ../src/plugins/reporter-upload.c:51
 msgid "Please enter password for uploading:"
-msgstr ""
+msgstr "Anna salasana lähetystä varten:"
 
 #. success
 #: ../src/plugins/reporter-upload.c:120
@@ -2010,11 +2086,11 @@ msgstr "Perusosoite, johon lähetetään"
 
 #: ../src/plugins/reporter-upload.c:189
 msgid "SSH public key file"
-msgstr ""
+msgstr "Julkisen SSH-avaimen tiedosto"
 
 #: ../src/plugins/reporter-upload.c:190
 msgid "SSH private key file"
-msgstr ""
+msgstr "Yksityisen SSH-avaimen tiedosto"
 
 #: ../src/plugins/reporter-upload.c:219
 msgid ""
@@ -2024,11 +2100,11 @@ msgstr ""
 
 #: ../src/plugins/reporter-mantisbt.c:82
 msgid "Please enter your MantisBT login:"
-msgstr ""
+msgstr "Syötä MantisBT tunnuksesi:"
 
 #: ../src/plugins/reporter-mantisbt.c:86
 msgid "Please enter the password for"
-msgstr ""
+msgstr "Syötä salasana"
 
 #: ../src/plugins/reporter-mantisbt.c:97
 msgid "Credentials are not provided by configuration."
@@ -2036,7 +2112,7 @@ msgstr ""
 
 #: ../src/plugins/reporter-mantisbt.c:121
 msgid "Invalid password or login."
-msgstr ""
+msgstr "Virheellinen salasana tai kirjautumistunnus."
 
 #: ../src/plugins/reporter-mantisbt.c:213
 msgid ""
@@ -2088,11 +2164,11 @@ msgstr ""
 #: ../src/plugins/reporter-mantisbt.c:320
 #, c-format
 msgid "Can't open problem dir '%s'."
-msgstr ""
+msgstr "Ongelmahakemistoa '%s' ei voi avata."
 
 #: ../src/plugins/reporter-mantisbt.c:342
 msgid "Looking for similar problems in MantisBT"
-msgstr ""
+msgstr "Etsitään vastaavia ongelmia MantisBT:ssä"
 
 #: ../src/plugins/reporter-mantisbt.c:370
 msgid ""
@@ -2115,12 +2191,12 @@ msgstr ""
 #: ../src/plugins/reporter-mantisbt.c:385
 #, c-format
 msgid "Using MantisBT ID '%s'"
-msgstr ""
+msgstr "Käytettään MantisBT ID:tä '%s'"
 
 #: ../src/plugins/reporter-mantisbt.c:393
 #, c-format
 msgid "Attaching file '%s' to issue %s"
-msgstr ""
+msgstr "Liitetään tiedosto '%s' ongelmaan %s"
 
 #: ../src/plugins/reporter-mantisbt.c:412
 #, c-format
@@ -2132,7 +2208,7 @@ msgstr ""
 #. Create new issue
 #: ../src/plugins/reporter-mantisbt.c:527
 msgid "Creating a new issue"
-msgstr ""
+msgstr "Luodaan uusi ongelma"
 
 #: ../src/plugins/reporter-mantisbt.c:532
 #, c-format
@@ -2150,7 +2226,7 @@ msgstr ""
 #: ../src/plugins/reporter-mantisbt.c:568
 #, c-format
 msgid "Adding attachments to issue %i"
-msgstr ""
+msgstr "Lisätään liitteet ongelmaan %i"
 
 #: ../src/plugins/reporter-mantisbt.c:623
 #, c-format
@@ -2164,24 +2240,25 @@ msgstr ""
 #: ../src/plugins/reporter-mantisbt.c:634
 #, c-format
 msgid "Adding new comment to issue %d"
-msgstr ""
+msgstr "Lisätään uusi kommentti ongelmaan %d"
 
 #: ../src/plugins/reporter-mantisbt.c:670
 msgid "Found the same comment in the issue history, not adding a new one"
-msgstr ""
+msgstr "Löydettiin sama kommentti ongelman historiasta, ei lisätä uutta"
 
 #: ../src/plugins/reporter-mantisbt.c:677
 #, c-format
 msgid "Status: %s%s%s %s/view.php?id=%u"
-msgstr ""
+msgstr "Tila: %s%s%s %s/view.php?id=%u"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:1
 msgid "CentOS Bug Tracker"
-msgstr ""
+msgstr "CentOS-vianseurantajärjestelmä"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:2
 #: ../src/workflows/workflow_CentOSCCpp.xml.in.h:1
 #: ../src/workflows/workflow_CentOSJava.xml.in.h:1
+#: ../src/workflows/workflow_CentOSJavaScript.xml.in.h:1
 #: ../src/workflows/workflow_CentOSKerneloops.xml.in.h:1
 #: ../src/workflows/workflow_CentOSLibreport.xml.in.h:1
 #: ../src/workflows/workflow_CentOSPython.xml.in.h:1
@@ -2189,21 +2266,23 @@ msgstr ""
 #: ../src/workflows/workflow_CentOSVmcore.xml.in.h:1
 #: ../src/workflows/workflow_CentOSXorg.xml.in.h:1
 msgid "Report to CentOS Bug Tracker"
-msgstr ""
+msgstr "Ilmoita CentOS-vianseurantajärjestelmään"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:4
 msgid "CentOS Bug Tracker account user name"
-msgstr ""
+msgstr "CentOS-vianseurantajärjestelmän tilin käyttäjätunnus"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:5
 msgid ""
 "You can create bugs.centos.org account &lt;a href=\"https://bugs.centos.org/"
 "signup_page.php\"&gt;here&lt;/a&gt;"
 msgstr ""
+"Voit luoda bugs.centos.org-tilin &lt;a href=\"https://bugs.centos.org/"
+"signup_page.php\"&gt;tästä&lt;/a&gt;"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:7
 msgid "CentOS Bug Tracker account password"
-msgstr ""
+msgstr "CentOS-vianseurantajärjestelmän tilin salasana"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:9
 msgid ""
@@ -2212,15 +2291,15 @@ msgstr ""
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:10
 msgid "CentOS Bug Tracker URL"
-msgstr ""
+msgstr "CentOS-vianseurantajärjestelmän osoite"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:11
 msgid "Address of CentOS Bug Tracker server"
-msgstr ""
+msgstr "CentOS-vianseurantajärjestelmän palvelimen osoite"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:14
 msgid "CentOS Bug Tracker project"
-msgstr ""
+msgstr "CentOS ohjelmistovirheiden seurantaprojekti"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:15
 msgid ""
@@ -2340,7 +2419,7 @@ msgstr "Red Hat -asiakkaan salasana"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:7
 msgid "Submit uReport"
-msgstr ""
+msgstr "Lähetä uReport"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:8
 msgid ""
@@ -2393,7 +2472,7 @@ msgstr ""
 #: ../src/plugins/report_Uploader.xml.in.h:14
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:8
 msgid "FTP Proxy"
-msgstr ""
+msgstr "FTP-välityspalvelin"
 
 #: ../src/plugins/report_Uploader.xml.in.h:15
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:9
@@ -2402,19 +2481,19 @@ msgstr ""
 
 #: ../src/plugins/report_Uploader.xml.in.h:16
 msgid "SSH Public key file"
-msgstr ""
+msgstr "SSH julkinen avain"
 
 #: ../src/plugins/report_Uploader.xml.in.h:17
 msgid "Use this field to specify SSH public keyfile"
-msgstr ""
+msgstr "Käytä tätä kenttää määrittääksesi SSH:n julkisen avaimen tiedoston"
 
 #: ../src/plugins/report_Uploader.xml.in.h:18
 msgid "SSH Private key file"
-msgstr ""
+msgstr "SSH yksityinen avain"
 
 #: ../src/plugins/report_Uploader.xml.in.h:19
 msgid "Use this field to specify SSH private keyfile"
-msgstr ""
+msgstr "Käytä tätä kenttää määrittääksesi SSH:n yksityisen avaimen tiedoston"
 
 #: ../src/plugins/report_uReport.xml.in.h:1
 msgid "uReport"
@@ -2430,19 +2509,19 @@ msgstr "uReport-palvelimen URL"
 
 #: ../src/plugins/report_uReport.xml.in.h:4
 msgid "Address of uReport webservice"
-msgstr ""
+msgstr "uReport-verkkopalvelun osoite"
 
 #: ../src/plugins/report_uReport.xml.in.h:5
 msgid "Watch already reported bugs"
-msgstr ""
+msgstr "Tarkkaile jo ilmoitettuja ongelmia"
 
 #: ../src/plugins/report_uReport.xml.in.h:6
 msgid "Adds your Bugzilla login to CC List of already reported bugs."
-msgstr ""
+msgstr "Lisää Bugzilla-tilisi jo ilmoitettujen ongelmien CC-listalle."
 
 #: ../src/plugins/report_uReport.xml.in.h:7
 msgid "Contact email address"
-msgstr ""
+msgstr "Yhteystiedon sähköpostiosoite"
 
 #: ../src/plugins/report_uReport.xml.in.h:8
 msgid ""
@@ -2452,11 +2531,11 @@ msgstr ""
 
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:1
 msgid "Emergency analysis"
-msgstr ""
+msgstr "Hätäanalyysi"
 
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:2
 msgid "Upload the problem data for further analysis"
-msgstr ""
+msgstr "Lähetä ongelmatiedot jatkoanalysointia varten"
 
 #: ../src/plugins/watch_Bugzilla.xml.in.h:1
 msgid "Watch Bugzilla Bug"
@@ -2464,7 +2543,7 @@ msgstr ""
 
 #: ../src/plugins/watch_Bugzilla.xml.in.h:2
 msgid "Adds your e-mail to CC List of Bugzilla bug"
-msgstr ""
+msgstr "Lisää sähköpostiosoitteesi Bugzilla-vian CC-listaan"
 
 #: ../src/plugins/rhbz.c:382
 #, c-format
@@ -2539,7 +2618,7 @@ msgstr ""
 
 #: ../src/plugins/mantisbt.c:248
 msgid "SOAP: Failed to create a new property."
-msgstr ""
+msgstr "SOAP: Uuden ominaisuuden luominen epäonnistui."
 
 #: ../src/plugins/mantisbt.c:258
 msgid "SOAP: Failed to add method parametr."
@@ -2595,12 +2674,12 @@ msgstr ""
 
 #: ../src/plugins/mantisbt.c:645
 msgid "Url or request isn't specified."
-msgstr ""
+msgstr "Url:ia tai pyyntöä ei ole määritetty"
 
 #: ../src/plugins/mantisbt.c:673
 #, c-format
 msgid "Error in HTTP POST, HTTP code: 404 (Not found), URL:'%s'"
-msgstr ""
+msgstr "HTTP POST virhe, HTTP koodi: 404 (Ei löytynyt), URL:'%s'"
 
 #: ../src/plugins/mantisbt.c:697
 #, c-format
@@ -2615,7 +2694,7 @@ msgstr ""
 #: ../src/plugins/mantisbt.c:741
 #, c-format
 msgid "Failed to attach file: '%s'"
-msgstr ""
+msgstr "Liitteen lisääminen epäonnistui: '%s'"
 
 #: ../src/plugins/mantisbt.c:760
 #, c-format
@@ -2625,17 +2704,17 @@ msgstr ""
 #: ../src/plugins/mantisbt.c:766
 #, c-format
 msgid "Can't upload '%s', it's too large (%llu bytes)"
-msgstr ""
+msgstr "Ei voida lähettää '%s', se on liian suuri (%llu tavua)"
 
 #: ../src/plugins/mantisbt.c:776
 #, c-format
 msgid "Can't read '%s'"
-msgstr ""
+msgstr "Ei voida lukea '%s'"
 
 #: ../src/plugins/mantisbt.c:792
 #, c-format
 msgid "Can't open '%s'"
-msgstr ""
+msgstr "Ei voida avata '%s'"
 
 #: ../src/plugins/mantisbt.c:859
 #, c-format
@@ -2662,7 +2741,7 @@ msgstr ""
 #: ../src/plugins/mantisbt.c:998
 #, c-format
 msgid "Failed to create a new issue: '%s'"
-msgstr ""
+msgstr "Uuden ongelman luominen epäonnistui: '%s'"
 
 #: ../src/plugins/mantisbt.c:1024
 #, c-format
@@ -2702,11 +2781,11 @@ msgstr ""
 
 #: ../src/plugins/reporter-ureport.c:78
 msgid "Use client authentication"
-msgstr ""
+msgstr "Käytä client-tunnistautumista"
 
 #: ../src/plugins/reporter-ureport.c:79
 msgid "Use HTTP Authentication"
-msgstr ""
+msgstr "Käytä HTTP-tunnistautumista"
 
 #: ../src/plugins/reporter-ureport.c:80
 msgid "Additional files included in 'auth' key"
@@ -2803,11 +2882,11 @@ msgstr ""
 
 #: ../src/plugins/reporter-ureport.c:219
 msgid "Cannot attach comment from 'comment' file"
-msgstr ""
+msgstr "Kommenttia 'kommentti' tiedostosta ei voida liittää"
 
 #: ../src/plugins/reporter-ureport.c:221
 msgid "'comment' file is empty"
-msgstr ""
+msgstr "'kommentti' tiedosto on tyhjä"
 
 #: ../src/plugins/reporter-ureport.c:229
 #, c-format
@@ -2833,11 +2912,7 @@ msgstr ""
 msgid "You need to specify bthash of the uReport to attach."
 msgstr ""
 
-#: ../src/plugins/reporter-ureport.c:292
-msgid "Not uploading an empty uReport"
-msgstr ""
-
-#: ../src/plugins/reporter-ureport.c:313
+#: ../src/plugins/reporter-ureport.c:316
 msgid "This problem has already been reported."
 msgstr "Ongelma on jo raportoitu."
 
@@ -2847,7 +2922,7 @@ msgstr "Miten haluat raportoida ongelman?"
 
 #: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:146
 #: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:259
-#: ../src/report-newt/report-newt.c:337 ../src/report-newt/report-newt.c:352
+#: ../src/report-newt/report-newt.c:337 ../src/report-newt/report-newt.c:354
 msgid "Ok"
 msgstr "Ok"
 
@@ -2868,48 +2943,48 @@ msgstr "Raportoidaan"
 msgid "--- Running %s ---"
 msgstr "--- Suoritetaan %s ---"
 
-#: ../src/report-newt/report-newt.c:352
+#: ../src/report-newt/report-newt.c:354
 msgid "No reporters available"
 msgstr "Yhtään raportoijaa ei ole käytettävissä"
 
-#: ../src/report-newt/report-newt.c:382
+#: ../src/report-newt/report-newt.c:384
 msgid "& [-d] DIR\n"
 "\n"
 "newt tool to report problem saved in specified DIR"
 msgstr ""
 
-#: ../src/report-newt/report-newt.c:392
+#: ../src/report-newt/report-newt.c:394
 msgid "Remove DIR after reporting"
 msgstr "Poista HAKEMISTO raportoinnin jälkeen"
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:1
 msgid "Report a bug to Fedora maintainers"
-msgstr ""
+msgstr "Ilmoista ohjelmistovirheestä Fedoran ylläpitäjille"
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:2
 msgid "Process the report using the Fedora infrastructure"
-msgstr ""
+msgstr "Käsittele raportti käyttäen Fedoran infrastruktuuria"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:1
 msgid "Report a bug to Red Hat Customer Portal"
-msgstr ""
+msgstr "Ilmoita ohjelmistovirheestä Red Hatin asiakasportaaliin"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:2
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:2
 msgid "Process the report using the Red Hat infrastructure"
-msgstr ""
+msgstr "Käsittele raportti käyttäen Red Hatin infrastruktuuria"
 
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:1
 msgid "Report a bug to Red Hat Bugzilla"
-msgstr ""
+msgstr "Ilmoita ohjelmistovirheestä Red Hatin Bugzillaan"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
 msgid "Export the problem data for manual reporting"
-msgstr ""
+msgstr "Vie ongelman tiedot manuaaliraportointia varten"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:2
 msgid "Upload the data via scp or ftp to a remote destination"
-msgstr ""
+msgstr "Lähetä tiedot scp:n tai ftp:n välityksellä etäsijaintiin"
 
 #: ../src/workflows/workflow_CentOSCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the CentOS infrastructure"
@@ -2917,6 +2992,10 @@ msgstr ""
 
 #: ../src/workflows/workflow_CentOSJava.xml.in.h:2
 msgid "Process the Java exception using the CentOS infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_CentOSJavaScript.xml.in.h:2
+msgid "Process the JavaScript exception using the CentOS infrastructure"
 msgstr ""
 
 #: ../src/workflows/workflow_CentOSKerneloops.xml.in.h:2
@@ -2951,8 +3030,10 @@ msgstr ""
 #: ../src/workflows/workflow_FedoraXorg.xml.in.h:1
 #: ../src/workflows/workflow_FedoraLibreport.xml.in.h:1
 #: ../src/workflows/workflow_FedoraJava.xml.in.h:1
+#: ../src/workflows/workflow_FedoraJavaScript.xml.in.h:1
+#: ../src/workflows/workflow_RHELJavaScript.xml.in.h:1
 msgid "Report to Fedora"
-msgstr ""
+msgstr "Ilmoita Fedoralle"
 
 #: ../src/workflows/workflow_FedoraCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the Fedora infrastructure"
@@ -2986,10 +3067,14 @@ msgstr ""
 msgid "Process the Java exception using the Fedora infrastructure"
 msgstr ""
 
+#: ../src/workflows/workflow_FedoraJavaScript.xml.in.h:2
+msgid "Process the JavaScript exception using the Fedora infrastructure"
+msgstr ""
+
 #: ../src/workflows/workflow_LoggerCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Logger.xml.in.h:1
 msgid "Export the problem data information to a text file"
-msgstr ""
+msgstr "Vie ongelman tiedot tekstitiedostoon"
 
 #: ../src/workflows/workflow_LoggerCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Logger.xml.in.h:2
@@ -2997,36 +3082,40 @@ msgid ""
 "Analyze the problem locally and export the problem data information to a "
 "text file"
 msgstr ""
+"Analysoi ongelma paikallisesti ja vie ongelman tiedot tekstitiedostoon"
 
 #: ../src/workflows/workflow_MailxCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Mailx.xml.in.h:1
 msgid "Send the problem data via email"
-msgstr ""
+msgstr "Lähetä ongelman tiedot sähköpostitse"
 
 #: ../src/workflows/workflow_MailxCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Mailx.xml.in.h:2
 msgid "Analyze the problem locally and send information via email"
-msgstr ""
+msgstr "Analysoi ongelma paikallisesti ja lähetä tiedot sähköpostitse"
 
 #: ../src/workflows/workflow_UploadCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Upload.xml.in.h:1
 msgid "Upload the problem data to a server"
-msgstr ""
+msgstr "Lähetä ongelman tiedot palvelimelle"
 
 #: ../src/workflows/workflow_UploadCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Upload.xml.in.h:2
 msgid "Analyze the problem locally and upload the data via scp or ftp"
 msgstr ""
+"Analysoi ongelma paikallisesti ja lähetä tiedot scp:n tai ftp:n välityksellä"
 
 #: ../src/workflows/workflow_uReport.xml.in.h:1
 msgid "Submit anonymous crash report"
-msgstr ""
+msgstr "Lähetä anonyymi kaatumisraportti"
 
 #: ../src/workflows/workflow_uReport.xml.in.h:2
 msgid ""
 "Submit anonymous crash report - I do not want to be contacted by Red Hat "
 "Support"
 msgstr ""
+"Lähetä anonyymi kaatumisraportti - En halua Red Hatin tuen olevan minuun "
+"yhteydessä"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1
@@ -3036,7 +3125,7 @@ msgstr ""
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:1
 #: ../src/workflows/workflow_RHELJava.xml.in.h:1
 msgid "Ask Red Hat Support for help"
-msgstr ""
+msgstr "Pyydä apua Red Hat -tuesta"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:2
@@ -3045,10 +3134,13 @@ msgstr ""
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:2
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:2
 #: ../src/workflows/workflow_RHELJava.xml.in.h:2
+#: ../src/workflows/workflow_RHELJavaScript.xml.in.h:2
 msgid ""
 "Create new Red Hat Support case - I would like to be contacted by Red Hat "
 "Support"
 msgstr ""
+"Luo uusi tukipyyntö Red Hatille - Haluan Red Hatin tuen olevan minuun "
+"yhteydessä"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
@@ -3057,8 +3149,9 @@ msgstr ""
 #: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:1
+#: ../src/workflows/workflow_RHELBugzillaJavaScript.xml.in.h:1
 msgid "Report to Red Hat Bugzilla"
-msgstr ""
+msgstr "Ilmoita Red Hatin Bugzillaan"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the Red Hat infrastructure"
@@ -3086,4 +3179,8 @@ msgstr ""
 
 #: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
 msgid "Process the Java exception using the Red Hat infrastructure"
+msgstr ""
+
+#: ../src/workflows/workflow_RHELBugzillaJavaScript.xml.in.h:2
+msgid "Process the JavaScript exception using the Red Hat infrastructure"
 msgstr ""
