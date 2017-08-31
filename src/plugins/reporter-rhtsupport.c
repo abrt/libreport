@@ -44,6 +44,8 @@
 
 #define ABRT_ELEMENTS_KB_ARTICLE "https://access.redhat.com/articles/2134281"
 
+#define RHTSUPPORT_CASE_URL_PATH "cases"
+
 #define QUERY_HINTS_IF_SMALLER_THAN  (8*1024*1024)
 
 static void ask_rh_credentials(char **login, char **password);
@@ -454,6 +456,32 @@ void prepare_ureport_configuration(const char *urcfile,
     urconf->ur_prefs.urp_flags |= UREPORT_PREF_FLAG_RETURN_ON_FAILURE;
 }
 
+static char *create_case_url(char *url, const char *case_no)
+{
+    char *url1 = concat_path_file(url, RHTSUPPORT_CASE_URL_PATH);
+    free(url);
+    url = concat_path_file(url1, case_no);
+    free(url1);
+
+    return url;
+}
+
+static char *ask_case_no_create_url(char *url)
+{
+    char *msg = xasprintf(_("Please enter customer case number to which you want to attach the data:"));
+    char *case_no = ask(msg);
+    free(msg);
+    if (case_no == NULL || case_no[0] == '\0')
+    {
+        set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
+        error_msg_and_die(_("Can't continue without Red Hat Support case number"));
+    }
+    char *new_url = create_case_url(url, (const char *)case_no);
+    free(case_no);
+
+    return new_url;
+}
+
 int main(int argc, char **argv)
 {
     abrt_init(argv);
@@ -489,7 +517,8 @@ int main(int argc, char **argv)
         "\n"
         "Option -t uploads FILEs to the already created case on RHTSupport site.\n"
         "The case ID is retrieved from directory specified by -d DIR.\n"
-        "If problem data in DIR was never reported to RHTSupport, upload will fail.\n"
+        "If problem data in DIR was never reported to Red Hat Support, you will be asked\n"
+        "to enter case ID to which you want to upload the FILEs.\n"
         "\n"
         "Option -tCASE uploads FILEs to the case CASE on RHTSupport site.\n"
         "-d DIR is ignored."
@@ -591,24 +620,32 @@ int main(int argc, char **argv)
         {
             /* -t: extract URL where we previously reported it */
             report_result_t *reported_to = get_reported_to(dump_dir_name);
-            if (!reported_to || !reported_to->url)
-                error_msg_and_die("Can't attach: problem data in '%s' "
-                        "was not reported to RHTSupport and therefore has no URL",
-                        dump_dir_name);
-            //log_warning("URL:'%s'", reported_to->url);
-            //log_warning("MSG:'%s'", reported_to->msg);
-            free(url);
-            url = reported_to->url;
-            reported_to->url = NULL;
-            free_report_result(reported_to);
+            if (reported_to && reported_to->url)
+            {
+                free(url);
+                url = reported_to->url;
+                reported_to->url = NULL;
+                free_report_result(reported_to);
+                char *msg = xasprintf(
+                    _("We found a similar Red Hat support case %s. "
+                      "Do you want to attach the data to the case? "
+                      "Otherwise, you will have to enter the existing "
+                      "Red Hat support case number."), url);
+                int yes = ask_yes_no(msg);
+                free(msg);
+                if (!yes)
+                    url = ask_case_no_create_url(url);
+            }
+            else
+            {
+                log_warning("Problem was not reported to Red Hat Support.");
+                url = ask_case_no_create_url(url);
+            }
         }
         else
         {
             /* -tCASE */
-            char *url1 = concat_path_file(url, "cases");
-            free(url);
-            url = concat_path_file(url1, case_no);
-            free(url1);
+            url = create_case_url(url, case_no);
         }
 
         if (*argv)

@@ -18,6 +18,14 @@ dist_workflows_DATA = \
     workflow_RHELLibreport.xml \
     workflow_RHELJava.xml \
     workflow_RHELJavaScript.xml \
+    workflow_RHELAddDataCCpp.xml \
+    workflow_RHELAddDataJava.xml \
+    workflow_RHELAddDataKerneloops.xml \
+    workflow_RHELAddDataLibreport.xml \
+    workflow_RHELAddDataPython.xml \
+    workflow_RHELAddDatavmcore.xml \
+    workflow_RHELAddDataxorg.xml \
+    workflow_RHELAddDataJavaScript.xml \
     workflow_uReport.xml \
     workflow_Mailx.xml \
     workflow_MailxCCpp.xml \
@@ -60,6 +68,7 @@ workflowsdefdir = $(WORKFLOWS_DEFINITION_DIR)
 dist_workflowsdef_DATA =\
     report_fedora.conf \
     report_rhel.conf \
+    report_rhel_add_data.conf \
     report_uReport.conf \
     report_mailx.conf \
     report_logger.conf \
@@ -92,6 +101,14 @@ EXTRA_DIST = \
     workflow_RHELLibreport.xml.in \
     workflow_RHELJava.xml.in \
     workflow_RHELJavaScript.xml.in \
+    workflow_RHELAddDataCCpp.xml.in \
+    workflow_RHELAddDataJava.xml.in \
+    workflow_RHELAddDataJavaScript.xml.in \
+    workflow_RHELAddDataKerneloops.xml.in \
+    workflow_RHELAddDataLibreport.xml.in \
+    workflow_RHELAddDataPython.xml.in \
+    workflow_RHELAddDatavmcore.xml.in \
+    workflow_RHELAddDataxorg.xml.in \
     workflow_uReport.xml.in \
     workflow_Mailx.xml.in \
     workflow_MailxCCpp.xml.in \
