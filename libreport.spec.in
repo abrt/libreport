@@ -92,7 +92,7 @@ Requires: libreport-web = %{version}-%{release}
 %description web-devel
 Development headers for libreport-web
 
-%package python
+%package -n python2-libreport
 Summary: Python bindings for report-libs
 # Is group correct here? -
 Requires: libreport = %{version}-%{release}
@@ -108,17 +108,27 @@ Obsoletes: report < 0:0.23-1
 %if 0%{?rhel} == 6
 Requires: libreport-plugin-rhtsupport = %{version}-%{release}
 %endif
+%{?python_provide:%python_provide python2-libreport}
+# Remove before F30
+Provides: %{name}-python = %{version}-%{release}
+Provides: %{name}-python%{?_isa} = %{version}-%{release}
+Obsoletes: %{name}-python < %{version}-%{release}
 
-%description python
+%description -n python2-libreport
 Python bindings for report-libs.
 
-%package python3
+%package -n python3-libreport
 Summary: Python 3 bindings for report-libs
 Requires: libreport = %{version}-%{release}
 # yum does not provide Python3 implementation
 Requires: dnf
+%{?python_provide:%python_provide python3-libreport}
+# Remove before F30
+Provides: %{name}-python3 = %{version}-%{release}
+Provides: %{name}-python3%{?_isa} = %{version}-%{release}
+Obsoletes: %{name}-python3 < %{version}-%{release}
 
-%description python3
+%description -n python3-libreport
 Python 3 bindings for report-libs.
 
 %package cli
@@ -504,11 +514,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_includedir}/libreport/libreport_curl.h
 %{_libdir}/pkgconfig/libreport-web.pc
 
-%files python
+%files -n python2-libreport
 %{python_sitearch}/report/*
 %{python_sitearch}/reportclient/*
 
-%files python3
+%files -n python3-libreport
 %{python3_sitearch}/report/*
 %{python3_sitearch}/reportclient/*
 
