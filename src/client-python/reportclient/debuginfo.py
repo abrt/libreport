@@ -374,7 +374,8 @@ class DebugInfoDownload(object):
                 # I observed a zero-length file left on error,
                 # which prevents cleanup later. Fix it:
                 try:
-                    os.unlink(package_full_path)
+                    if package_full_path is not None:
+                        os.unlink(package_full_path)
                 except OSError:
                     pass
                 print(_("Downloading package {0} failed").format(pkg))
