@@ -62,7 +62,9 @@ int main(int argc, char **argv)
     const char *email_address = NULL;
     int email_address_from_env = 0;
     char *comment = NULL;
+    char *pkg_name = NULL;
     int comment_file = 0;
+    bool process_unpackaged;
     char *attach_value = NULL;
     char *attach_value_from_rt = NULL;
     char *attach_value_from_rt_data = NULL;
@@ -95,6 +97,8 @@ int main(int argc, char **argv)
                           _("attach short text (requires -a|-A, conflicts with -D)")),
         OPT_BOOL('O', "comment-file", &comment_file,
                           _("attach short text from comment (requires -a|-A, conflicts with -d)")),
+        OPT_BOOL('p', "process-unpackaged", &process_unpackaged,
+                          _("Try to report problems coming from unpackaged executables")),
 
         /* va l ue */
         OPT_STRING('l', "value", &attach_value, "DATA",
@@ -111,7 +115,7 @@ int main(int argc, char **argv)
 
     const char *program_usage_string = _(
         "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS]\n"
-        "  [-A -a bthash -B -b bug-id -E -e email -O -o comment] [-d DIR]\n"
+        "  [-A -a bthash -B -b bug-id -E -e email -O -o comment] [-d DIR] [-p]\n"
         "  [-A -a bthash -T ATTACHMENT_TYPE -r REPORT_RESULT_TYPE -L RESULT_FIELD] [-d DIR]\n"
         "  [-A -a bthash -T ATTACHMENT_TYPE -l DATA] [-d DIR]\n"
         "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-i AUTH_ITEMS] [-d DIR]\n"
@@ -121,12 +125,14 @@ int main(int argc, char **argv)
         "Reads the default configuration from "UREPORT_CONF_FILE_PATH
     );
 
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
-
     map_string_t *settings = new_map_string();
     load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 
     ureport_server_config_load(&config, settings);
+
+    UREPORT_OPTION_VALUE_FROM_CONF(settings, "ProcessUnpackaged", process_unpackaged, string_to_bool);
+
+    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
     if (opts & OPT_u)
         ureport_server_config_set_url(&config, xstrdup(arg_server_url));
@@ -174,12 +180,12 @@ int main(int argc, char **argv)
             error_msg_and_die("-L accepts only 'URL'");
     }
 
+    dd = dd_opendir(dump_dir_path, DD_OPEN_READONLY);
+    if (!dd)
+        xfunc_die();
+
     if (ureport_hash_from_rt || rhbz_bug_from_rt || comment_file || attach_value_from_rt)
     {
-        dd = dd_opendir(dump_dir_path, DD_OPEN_READONLY);
-        if (!dd)
-            xfunc_die();
-
         if (ureport_hash_from_rt)
         {
             report_result_t *ureport_result = find_in_reported_to(dd, "uReport");
@@ -239,9 +245,23 @@ int main(int argc, char **argv)
 
             free_report_result(result);
         }
-
-        dd_close(dd);
     }
+
+    if (!process_unpackaged)
+    {
+        pkg_name = dd_load_text_ext(dd,
+                               FILENAME_PKG_NAME,
+                               DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+        if (pkg_name == NULL){
+            log_warning(_("Problem comes from unpackaged executable. Unable to create uReport."));
+            dd_close(dd);
+            ret = EXIT_NOT_FATAL;
+            goto finalize;
+        }
+        free(pkg_name);
+    }
+
+    dd_close(dd);
 
     if (email_address_from_env)
     {
