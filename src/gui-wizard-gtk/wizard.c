@@ -1949,6 +1949,14 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         return TRUE; /* "please don't remove this event (yet)" */
 
     /* EOF/error */
+    if (WEXITSTATUS(run_state->process_status) == EXIT_NOT_FATAL) {
+        cancel_processing(g_lbl_event_log, /* default message */ NULL, TERMINATE_NOFLAGS);
+        gtk_widget_hide(GTK_WIDGET(g_spinner_event_log));
+        gtk_widget_hide(g_btn_stop);
+        gtk_widget_hide(g_btn_next);
+        gtk_widget_set_sensitive(g_btn_close, true);
+        return FALSE;
+    }
 
     if (WIFEXITED(run_state->process_status)
      && WEXITSTATUS(run_state->process_status) == EXIT_STOP_EVENT_RUN
