@@ -945,30 +945,31 @@ AT_TESTFUN([dump_namespace_diff], [[
 
 void check_file_contents(const char *filename)
 {
-    static const char *expected;
+    char *expected;
     struct stat st;
-    if (stat("/proc/self/ns/cgroup", &st) < 0 && errno == ENOENT) {
-        expected = "ipc : default\n"
-                   "mnt : default\n"
-                   "net : default\n"
-                   "pid : default\n"
-                   "uts : default\n"
-                   "user : default\n"
-                   "cgroup : unknown\n";
-    }
-    else {
-        expected = "ipc : default\n"
-                   "mnt : default\n"
-                   "net : default\n"
-                   "pid : default\n"
-                   "uts : default\n"
-                   "user : default\n"
-                   "cgroup : default\n";
-    }
+
+    char const *pid_for_children = "default";
+    char const *cgroup = "default";
+
+    if (stat("/proc/self/ns/cgroup", &st) < 0 && errno == ENOENT)
+        cgroup = "unknown";
+
+    if (stat("/proc/self/ns/pid_for_children", &st) < 0 && errno == ENOENT)
+        pid_for_children = "unknown";
+
+    expected = xasprintf("ipc : default\n"
+                         "mnt : default\n"
+                         "net : default\n"
+                         "pid : default\n"
+                         "uts : default\n"
+                         "user : default\n"
+                         "cgroup : %s\n"
+                         "pid_for_children : %s\n", cgroup, pid_for_children);
 
     char *file = xmalloc_xopen_read_close(filename, NULL);
     TS_ASSERT_STRING_EQ(file, expected, "Namespaces");
     free(file);
+    free(expected);
 }
 
 TS_MAIN
