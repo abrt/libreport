@@ -96,8 +96,6 @@ Development headers for libreport-web
 Summary: Python bindings for report-libs
 Requires: libreport = %{version}-%{release}
 Requires: python2-dnf
-Provides: report = 0:0.23-1
-Obsoletes: report < 0:0.23-1
 # in report the rhtsupport is in the main package, so we need to install it too
 # report is only in RHEL6, we do not need to carry the dependency to newer RHELs
 %if 0%{?rhel} == 6
