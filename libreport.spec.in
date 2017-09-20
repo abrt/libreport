@@ -96,11 +96,7 @@ Development headers for libreport-web
 Summary: Python bindings for report-libs
 # Is group correct here? -
 Requires: libreport = %{version}-%{release}
-%if 0%{?fedora}
-Requires: dnf
-%else
-Requires: yum
-%endif
+Requires: python2-dnf
 Provides: report = 0:0.23-1
 Obsoletes: report < 0:0.23-1
 # in report the rhtsupport is in the main package, so we need to install it too
@@ -120,8 +116,7 @@ Python bindings for report-libs.
 %package -n python3-libreport
 Summary: Python 3 bindings for report-libs
 Requires: libreport = %{version}-%{release}
-# yum does not provide Python3 implementation
-Requires: dnf
+Requires: python3-dnf
 %{?python_provide:%python_provide python3-libreport}
 # Remove before F30
 Provides: %{name}-python3 = %{version}-%{release}
