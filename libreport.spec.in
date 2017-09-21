@@ -94,11 +94,8 @@ Development headers for libreport-web
 
 %package -n python2-libreport
 Summary: Python bindings for report-libs
-# Is group correct here? -
 Requires: libreport = %{version}-%{release}
 Requires: python2-dnf
-Provides: report = 0:0.23-1
-Obsoletes: report < 0:0.23-1
 # in report the rhtsupport is in the main package, so we need to install it too
 # report is only in RHEL6, we do not need to carry the dependency to newer RHELs
 %if 0%{?rhel} == 6
@@ -181,7 +178,6 @@ The simple reporter plugin which writes a report to a specified file.
 
 %package plugin-systemd-journal
 Summary: %{name}'s systemd journal reporter plugin
-Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 
 %description plugin-systemd-journal
