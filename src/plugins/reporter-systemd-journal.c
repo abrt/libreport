@@ -302,9 +302,9 @@ int main(int argc, char **argv)
     const char *exe = problem_data_get_content_or_NULL(problem_data, FILENAME_EXECUTABLE);
     char *binary_name = NULL;
     if (exe)
-        binary_name = strrchr(exe, '/') + 1;
+        binary_name = strrchr(exe, '/');
 
-    if (binary_name)
+    if (binary_name && ++binary_name)
         problem_data_add_text_noteditable(problem_data, BINARY_NAME, binary_name);
 
     /* add problem dir path into problem data */
