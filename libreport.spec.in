@@ -409,7 +409,16 @@ rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELBugzillaXorg.xml
 rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELBugzillaLibreport.xml
 rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELBugzillaJava.xml
 rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELBugzillaJavaScript.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELAddDataCCpp.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELAddDataKerneloops.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELAddDataPython.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELAddDatavmcore.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELAddDataxorg.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELAddDataLibreport.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELAddDataJava.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELAddDataJavaScript.xml
 rm -f %{buildroot}/%{_sysconfdir}/libreport/workflows.d/report_rhel.conf
+rm -f %{buildroot}/%{_sysconfdir}/libreport/workflows.d/report_rhel_add_data.conf
 rm -f %{buildroot}/%{_sysconfdir}/libreport/workflows.d/report_uReport.conf
 rm -f %{buildroot}/%{_sysconfdir}/libreport/workflows.d/report_rhel_bugzilla.conf
 rm -f %{buildroot}%{_mandir}/man5/report_rhel.conf.5
@@ -653,6 +662,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/plugins/rhtsupport.conf
 %{_datadir}/%{name}/conf.d/plugins/rhtsupport.conf
 %{_datadir}/%{name}/events/report_RHTSupport.xml
+%{_datadir}/%{name}/events/report_RHTSupport_AddData.xml
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.rhtsupport.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/rhtsupport_event.conf
 %{_mandir}/man1/reporter-rhtsupport.1.gz
@@ -707,8 +717,17 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/%{name}/workflows/workflow_RHELLibreport.xml
 %{_datadir}/%{name}/workflows/workflow_RHELJava.xml
 %{_datadir}/%{name}/workflows/workflow_RHELJavaScript.xml
+%{_datadir}/%{name}/workflows/workflow_RHELAddDataCCpp.xml
+%{_datadir}/%{name}/workflows/workflow_RHELAddDataJava.xml
+%{_datadir}/%{name}/workflows/workflow_RHELAddDataKerneloops.xml
+%{_datadir}/%{name}/workflows/workflow_RHELAddDataLibreport.xml
+%{_datadir}/%{name}/workflows/workflow_RHELAddDataPython.xml
+%{_datadir}/%{name}/workflows/workflow_RHELAddDatavmcore.xml
+%{_datadir}/%{name}/workflows/workflow_RHELAddDataxorg.xml
+%{_datadir}/%{name}/workflows/workflow_RHELAddDataJavaScript.xml
 %{_datadir}/%{name}/workflows/workflow_uReport.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_rhel.conf
+%config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_rhel_add_data.conf
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_uReport.conf
 %{_mandir}/man5/report_rhel.conf.5.*
 %{_mandir}/man5/report_uReport.conf.5.*
