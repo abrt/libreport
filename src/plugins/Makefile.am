@@ -83,6 +83,7 @@ dist_events_DATA = $(reporters_events) \
     report_Logger.xml \
     report_Mailx.xml \
     report_RHTSupport.xml \
+    report_RHTSupport_AddData.xml \
     report_Kerneloops.xml \
     report_Uploader.xml \
     report_EmergencyAnalysis.xml
@@ -123,6 +124,7 @@ EXTRA_DIST = $(reporters_extra_dist) \
     report_Logger.xml.in \
     report_Mailx.xml.in \
     report_RHTSupport.xml.in \
+    report_RHTSupport_AddData.xml.in \
     report_Kerneloops.xml.in \
     report_Uploader.xml.in \
     report_EmergencyAnalysis.xml.in
