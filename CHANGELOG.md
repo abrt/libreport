@@ -6,6 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+
+## [2.9.3] - 2017-11-02
+### Added
+- Added workflow for adding data to existing case.
+- Enabled reporting of unpackaged executables.
+- Allowed python to be optional at build time.
+
+### Changed
+- Python [23] binary packages were renamed to python[23]-libreport.
+- Requires pythonX-dnf instead of dnf.
+
+### Fixed
+- Fix client-python's attempts to unlink None.
+- Fix error in finding executable basename in rep-sys-journal.
+
+
 ## [2.9.2] - 2017-08-25
 ### Added
 - Add count field into default logs, not just FULL dump. It is useful to know
@@ -76,7 +92,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.9.2...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.9.3...HEAD
+[2.9.3]: https://github.com/abrt/libreport/compare/2.9.2...2.9.3
 [2.9.2]: https://github.com/abrt/libreport/compare/2.9.1...2.9.2
 [2.9.1]: https://github.com/abrt/libreport/compare/2.9.0...2.9.1
 [2.9.0]: https://github.com/abrt/libreport/compare/2.8.0...2.9.0

@@ -38,7 +38,7 @@ BuildRequires: asciidoc
 BuildRequires: xmlto
 BuildRequires: newt-devel
 BuildRequires: libproxy-devel
-BuildRequires: satyr-devel >= 0.18
+BuildRequires: satyr-devel >= 0.24
 BuildRequires: glib2-devel >= %{glib_ver}
 
 %if 0%{?fedora} >= 24
@@ -56,7 +56,7 @@ BuildRequires: augeas
 BuildRequires: xz
 BuildRequires: lz4
 Requires: libreport-filesystem = %{version}-%{release}
-Requires: satyr >= 0.18
+Requires: satyr >= 0.24
 Requires: glib2 >= %{glib_ver}
 Requires: xz
 Requires: lz4
@@ -759,6 +759,25 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Thu Nov 02 2017 Julius Milan <jmilan@redhat.com> 2.9.3-1
+- Translation updates
+- commit to delete
+- workflows: fix description in workflow_RHELJavaScript.xml.in
+- workflows: add workflow for adding data to existing case
+- client-python,report-python: Allow python to be optional at build time
+- ignored words: add SYSTEMD_NSS_BYPASS_BUS
+- reporter-ureport: add 'ProcessUnpackaged' option
+- spec: add workflow for adding data to existing case
+- rep-sys-journal: fix in finding executable basename
+- remove old obsolete
+- Group is not used any more
+- remove old changelogs
+- requires pythonX-dnf instead of dnf
+- doc: fix obsolete doxygen tags & complains
+- lib: Introduce pid_for_children element from ns
+- client-python: Do not try to unlink None
+- spec: rename Python binary packages
+
 * Thu Mar 16 2017 Matej Habrnal <mhabrnal@redhat.com> 2.9.1-1
 - build: create tarball in release-* target
 - problem_data: fix double const
