@@ -89,6 +89,9 @@ int vdprintf(int d, const char *format, va_list ap);
 #define CREATE_PRIVATE_TICKET "ABRT_CREATE_PRIVATE_TICKET"
 #define STOP_ON_NOT_REPORTABLE "ABRT_STOP_ON_NOT_REPORTABLE"
 
+/* path of user's local config, path is relative to user's home */
+#define USER_HOME_CONFIG_PATH "/.config/libreport"
+
 /* Pull in entire public libreport API */
 #include "global_configuration.h"
 #include "dump_dir.h"
