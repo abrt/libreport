@@ -47,7 +47,9 @@ filed. The default value is 'ABRT Server'"
 Configuration file
 ~~~~~~~~~~~~~~~~~~
 If not specified, CONFFILE defaults to /etc/libreport/plugins/mantisbt.conf.
+and to user's local ~/.config/libreport/mantisbt.conf.
 Configuration file lines should have 'PARAM = VALUE' format. The parameters are:
+User's local configuration overrides the system wide configuration.
 
 'Login'::
 	Login to MantisBT account.
@@ -203,6 +205,9 @@ FILES
 
 /etc/libreport/plugins/mantisbt.conf::
     Configuration file.
+
+~/.config/libreport/mantisbt.conf::
+    User's local configuration file.
 
 /etc/libreport/plugins/mantisbt_format.conf::
     Configure formating for reporting.

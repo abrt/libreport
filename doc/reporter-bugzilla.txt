@@ -52,8 +52,10 @@ filed. The default value is 'ABRT Server'"
 
 Configuration file
 ~~~~~~~~~~~~~~~~~~
-If not specified, CONFFILE defaults to /etc/libreport/plugins/bugzilla.conf.
+If not specified, CONFFILE defaults to /etc/libreport/plugins/bugzilla.conf
+and to user's local ~/.config/libreport/bugzilla.conf.
 Configuration file lines should have 'PARAM = VALUE' format. The parameters are:
+User's local configuration overrides the system wide configuration.
 
 'Login'::
 	Login to Bugzilla account.
@@ -213,6 +215,9 @@ FILES
 
 /etc/libreport/plugins/bugzilla.conf::
     Configuration file.
+
+~/.config/libreport/bugzilla.conf::
+    User's local configuration file.
 
 /etc/libreport/plugins/bugzilla_format.conf::
     Configure formating for reporting.
