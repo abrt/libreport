@@ -216,11 +216,15 @@ void login(struct abrt_xmlrpc *client, struct bugzilla_struct *rhbz)
     log_warning(_("Logging into Bugzilla at %s"), rhbz->b_bugzilla_url);
     while (!rhbz_login(client, rhbz->b_login, rhbz->b_password))
     {
+        char *question;
+
         free(rhbz->b_login);
-        rhbz->b_login = ask_bz_login(_("Invalid password or login. Please enter your Bugzilla login:"));
+        question = xasprintf(_("Invalid password or login. Please enter your %s login:"), rhbz->b_bugzilla_url);
+        rhbz->b_login = ask_bz_login(question);
+        free(question);
 
         free(rhbz->b_password);
-        char *question = xasprintf(_("Invalid password or login. Please enter the password for '%s':"), rhbz->b_login);
+        question = xasprintf(_("Invalid password or login. Please enter the password for '%s':"), rhbz->b_login);
         rhbz->b_password = ask_bz_password(question);
         free(question);
     }
@@ -451,7 +455,9 @@ int main(int argc, char **argv)
     if (rhbz.b_login[0] == '\0')
     {
         free(rhbz.b_login);
-        rhbz.b_login = ask_bz_login(_("Login is not provided by configuration. Please enter your Bugzilla login:"));
+        char *question = xasprintf(_("Login is not provided by configuration. Please enter your %s login:"), rhbz.b_bugzilla_url);
+        rhbz.b_login = ask_bz_login(question);
+        free(question);
     }
 
     if (rhbz.b_password[0] == '\0')
@@ -546,8 +552,8 @@ int main(int argc, char **argv)
 
         if (reported_to && reported_to->url)
         {
-            char *msg = xasprintf("This problem was already reported to Bugzilla (see '%s')."
-                            " Do you still want to create a new bug?",
+            char *msg = xasprintf(_("This problem was already reported to Bugzilla (see '%s')."
+                            " Do you still want to create a new bug?"),
                             reported_to->url);
             int yes = ask_yes_no(msg);
             free(msg);
