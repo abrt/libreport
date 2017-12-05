@@ -29,6 +29,7 @@ module Libreport =
                . (incl (Sys.getenv("HOME") . "/.config/abrt/settings/*"))
                . (incl (Sys.getenv("XDG_CACHE_HOME") . "/abrt/events/*"))
                . (incl (Sys.getenv("HOME") . "/.cache/abrt/events/*"))
+               . (incl (Sys.getenv("HOME") . "/.config/libreport/*"))
                . (excl "/etc/libreport/plugins/bugzilla_format*")
                . (excl "/etc/libreport/plugins/mantisbt_format*")
                . (excl "/etc/libreport/plugins/catalog*")
