@@ -245,8 +245,12 @@ ureport_server_config_load_basic_auth(struct ureport_server_config *config,
     {
         settings = new_map_string();
 
-        if (!load_plugin_conf_file("rhtsupport.conf", settings, /*skip key w/o values:*/ false))
+        char *local_conf = xasprintf("%s"USER_HOME_CONFIG_PATH"/rhtsupport.conf", getenv("HOME"));
+
+        if (!load_plugin_conf_file("rhtsupport.conf", settings, /*skip key w/o values:*/ false) &&
+            !load_conf_file(local_conf, settings, /*skip key w/o values:*/ false))
             error_msg_and_die("Could not get RHTSupport credentials");
+        free(local_conf);
 
         username = get_map_string_item_or_NULL(settings, "Login");
         password = get_map_string_item_or_NULL(settings, "Password");
