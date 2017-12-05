@@ -244,9 +244,11 @@ int main(int argc, char **argv)
         "\nfiled. The default value is 'ABRT Server'"
         "\n"
         "\nIf not specified, CONFFILE defaults to "CONF_DIR"/plugins/mantisbt.conf"
+        "\nand user's local ~"USER_HOME_CONFIG_PATH"/mantisbt.conf."
         "\nIts lines should have 'PARAM = VALUE' format."
         "\nRecognized string parameters: MantisbtURL, Login, Password, Project, ProjectVersion."
         "\nRecognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify, CreatePrivate."
+        "\nUser's local configuration overrides the system wide configuration."
         "\nParameters can be overridden via $Mantisbt_PARAM environment variables."
         "\n"
         "\nFMTFILE default to "CONF_DIR"/plugins/mantisbt_format.conf."
@@ -300,7 +302,12 @@ int main(int argc, char **argv)
 
     {
         if (!conf_file)
+        {
             conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/mantisbt.conf");
+            char *local_conf = xasprintf("%s"USER_HOME_CONFIG_PATH"/mantisbt.conf", getenv("HOME"));
+            conf_file = g_list_append(conf_file, local_conf);
+            free(local_conf);
+        }
         while (conf_file)
         {
             char *fn = (char *)conf_file->data;
