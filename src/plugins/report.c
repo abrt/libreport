@@ -43,8 +43,8 @@ int main(int argc, char **argv)
         "first one invokes upload to RHTSupport and second - to Bugzilla.\n"
         "\n"
         "Configuration (such as login data) can be supplied via files\n"
-        CONF_DIR"/plugins/bugzilla.conf and\n"
-        CONF_DIR"/plugins/rhtsupport.conf,\n"
+        CONF_DIR"/plugins/bugzilla.conf and $HOME"USER_HOME_CONFIG_PATH"/bugzilla.conf and\n"
+        CONF_DIR"/plugins/rhtsupport.conf and $HOME"USER_HOME_CONFIG_PATH"/rhtsupport.conf,\n"
         "or via environment variables - read documentation of\n"
         "reporter-bugzilla and reporter-rhtsupport tools."
     );

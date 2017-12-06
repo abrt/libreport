@@ -214,6 +214,7 @@ static
 void login(struct abrt_xmlrpc *client, struct bugzilla_struct *rhbz)
 {
     log_warning(_("Logging into Bugzilla at %s"), rhbz->b_bugzilla_url);
+
     while (!rhbz_login(client, rhbz->b_login, rhbz->b_password))
     {
         char *question;
@@ -281,9 +282,11 @@ int main(int argc, char **argv)
         "\nfiled. The default value is 'ABRT Server'"
         "\n"
         "\nIf not specified, CONFFILE defaults to "CONF_DIR"/plugins/bugzilla.conf"
+        "\nand user's local ~"USER_HOME_CONFIG_PATH"/bugzilla.conf."
         "\nIts lines should have 'PARAM = VALUE' format."
         "\nRecognized string parameters: BugzillaURL, Login, Password, OSRelease."
         "\nRecognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify."
+        "\nUser's local configuration overrides the system wide configuration."
         "\nParameters can be overridden via $Bugzilla_PARAM environment variables."
         "\n"
         "\nFMTFILE and FMTFILE2 default to "CONF_DIR"/plugins/bugzilla_format.conf"
@@ -357,7 +360,12 @@ int main(int argc, char **argv)
 
     {
         if (!conf_file)
+        {
             conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/bugzilla.conf");
+            char *local_conf = xasprintf("%s"USER_HOME_CONFIG_PATH"/bugzilla.conf", getenv("HOME"));
+            conf_file = g_list_append(conf_file, local_conf);
+            free(local_conf);
+        }
         while (conf_file)
         {
             char *fn = (char *)conf_file->data;

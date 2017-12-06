@@ -509,10 +509,12 @@ int main(int argc, char **argv)
         "Reports a problem to RHTSupport.\n"
         "\n"
         "If not specified, CONFFILE defaults to "CONF_DIR"/plugins/rhtsupport.conf\n"
+        "and user's local ~"USER_HOME_CONFIG_PATH"/rhtsupport.conf.\n"
         "Its lines should have 'PARAM = VALUE' format.\n"
         "Recognized string parameters: URL, Login, Password, BigFileURL.\n"
         "Recognized numeric parameter: BigSizeMB.\n"
         "Recognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify.\n"
+        "User's local configuration overrides the system wide configuration.\n"
         "Parameters can be overridden via $RHTSupport_PARAM environment variables.\n"
         "\n"
         "Option -t uploads FILEs to the already created case on RHTSupport site.\n"
@@ -521,7 +523,7 @@ int main(int argc, char **argv)
         "to enter case ID to which you want to upload the FILEs.\n"
         "\n"
         "Option -tCASE uploads FILEs to the case CASE on RHTSupport site.\n"
-        "-d DIR is ignored."
+        "-d DIR is ignored.\n"
         "\n"
         "Option -u sends ABRT crash statistics data (uReport) before creating a new case.\n"
         "uReport configuration is loaded from UR_CONFFILE which defaults to\n"
@@ -559,7 +561,13 @@ int main(int argc, char **argv)
     /* Parse config, extract necessary params */
     map_string_t *settings = new_map_string();
     if (!conf_file)
+    {
         conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/rhtsupport.conf");
+        char *local_conf = xasprintf("%s"USER_HOME_CONFIG_PATH"/rhtsupport.conf", getenv("HOME"));
+        conf_file = g_list_append(conf_file, local_conf);
+        free(local_conf);
+
+    }
     while (conf_file)
     {
         const char *fn = (char *)conf_file->data;

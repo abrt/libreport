@@ -24,7 +24,9 @@ creating a new case.
 The URL to new case is printed to stdout and recorded in 'reported_to'
 element in DIR.
 
-If not specified, CONFFILE defaults to /etc/libreport/plugins/rhtsupport.conf.
+If not specified, CONFFILE defaults to /etc/libreport/plugins/rhtsupport.conf
+and to user's local ~/.config/libreport/rhtsupport.conf.
+User's local configuration overrides the system wide configuration.
 
 Option -t uploads FILEs to the already created case on RHTSupport site.
 The case ID is retrieved from directory specified by -d DIR.
@@ -98,6 +100,9 @@ FILES
 
 /etc/libreport/plugins/rhtsupport.conf::
     Configuration file.
+
+~/.config/libreport/rhtsupport.conf::
+    User's local configuration file.
 
 SEE ALSO
 --------
