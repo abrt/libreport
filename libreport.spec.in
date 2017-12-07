@@ -472,6 +472,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %dir %{_sysconfdir}/%{name}/events.d/
 %dir %{_sysconfdir}/%{name}/events/
 %dir %{_sysconfdir}/%{name}/workflows.d/
+%dir %{_datadir}/%{name}/
+%dir %{_datadir}/%{name}/conf.d/
+%dir %{_datadir}/%{name}/conf.d/plugins/
 %dir %{_datadir}/%{name}/events/
 %dir %{_datadir}/%{name}/workflows/
 %dir %{_sysconfdir}/%{name}/plugins/
@@ -515,12 +518,12 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libdir}/pkgconfig/libreport-web.pc
 
 %files -n python2-libreport
-%{python_sitearch}/report/*
-%{python_sitearch}/reportclient/*
+%{python_sitearch}/report/
+%{python_sitearch}/reportclient/
 
 %files -n python3-libreport
-%{python3_sitearch}/report/*
-%{python3_sitearch}/reportclient/*
+%{python3_sitearch}/report/
+%{python3_sitearch}/reportclient/
 
 %files cli
 %{_bindir}/report-cli
