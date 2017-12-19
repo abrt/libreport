@@ -112,7 +112,7 @@ static void create_and_send_email(
 
     char* env;
     env = getenv("Mailx_EmailFrom");
-    char *email_from = (env ? xstrdup(env) : xstrdup(get_map_string_item_or_NULL(settings, "EmailFrom")) ? : ask_email_address("sender", "user@localhost"));
+    char *email_from = (env ? xstrdup(env) : xstrdup(get_map_string_item_or_NULL(settings, "EmailFrom")) ? : ask_email_address("sender", "ABRT Daemon <DoNotReply>"));
     env = getenv("Mailx_EmailTo");
     char *email_to = (env ? xstrdup(env) : xstrdup(get_map_string_item_or_NULL(settings, "EmailTo")) ? : ask_email_address("receiver", "root@localhost"));
     env = getenv("Mailx_SendBinaryData");
