@@ -301,12 +301,12 @@ int main(int argc, char **argv)
     map_string_t *settings = new_map_string();
 
     {
+        char *local_conf = NULL;
         if (!conf_file)
         {
             conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/mantisbt.conf");
-            char *local_conf = xasprintf("%s"USER_HOME_CONFIG_PATH"/mantisbt.conf", getenv("HOME"));
+            local_conf = xasprintf("%s"USER_HOME_CONFIG_PATH"/mantisbt.conf", getenv("HOME"));
             conf_file = g_list_append(conf_file, local_conf);
-            free(local_conf);
         }
         while (conf_file)
         {
@@ -316,6 +316,7 @@ int main(int argc, char **argv)
             log_debug("Loaded '%s'", fn);
             conf_file = g_list_delete_link(conf_file, conf_file);
         }
+        free(local_conf);
 
         struct dump_dir *dd = NULL;
         if (abrt_hash == NULL)

@@ -560,12 +560,12 @@ int main(int argc, char **argv)
 
     /* Parse config, extract necessary params */
     map_string_t *settings = new_map_string();
+    char *local_conf = NULL;
     if (!conf_file)
     {
         conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/rhtsupport.conf");
-        char *local_conf = xasprintf("%s"USER_HOME_CONFIG_PATH"/rhtsupport.conf", getenv("HOME"));
+        local_conf = xasprintf("%s"USER_HOME_CONFIG_PATH"/rhtsupport.conf", getenv("HOME"));
         conf_file = g_list_append(conf_file, local_conf);
-        free(local_conf);
 
     }
     while (conf_file)
@@ -576,6 +576,8 @@ int main(int argc, char **argv)
         log_debug("Loaded '%s'", fn);
         conf_file = g_list_remove(conf_file, fn);
     }
+    free(local_conf);
+
     char *url      = get_param_string("URL"       , settings, "https://api.access.redhat.com/rs");
     char *login    = get_param_string("Login"     , settings, "");
     char *password = get_param_string("Password"  , settings, "");
