@@ -359,12 +359,12 @@ int main(int argc, char **argv)
     }
 
     {
+        char *local_conf = NULL;
         if (!conf_file)
         {
             conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/bugzilla.conf");
-            char *local_conf = xasprintf("%s"USER_HOME_CONFIG_PATH"/bugzilla.conf", getenv("HOME"));
+            local_conf = xasprintf("%s"USER_HOME_CONFIG_PATH"/bugzilla.conf", getenv("HOME"));
             conf_file = g_list_append(conf_file, local_conf);
-            free(local_conf);
         }
         while (conf_file)
         {
@@ -374,6 +374,8 @@ int main(int argc, char **argv)
             log_debug("Loaded '%s'", fn);
             conf_file = g_list_delete_link(conf_file, conf_file);
         }
+        free(local_conf);
+
         set_settings(&rhbz, settings);
         /* WRONG! set_settings() does not copy the strings, it merely sets up pointers
          * to settings[] dictionary:
