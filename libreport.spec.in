@@ -816,7 +816,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 - build: add gettext-devel to sysdeps
 - dd: add check for validity of new file FD
 - build: configure tree for debugging by default
-- spec: use %buildroot macro
+- spec: use %%buildroot macro
 - spec: remove defattr which match the defaults
 - spec: do not clean buildroot
 - spec: remove Groups
@@ -876,7 +876,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 * Fri Apr 08 2016 Matej Habrnal <mhabrnal@redhat.com> 2.7.0-1
 - ignored words: update ignored words
 - mailx: introduce debug parameter -D
-- mailx: mail formatting: add comment right after %oneline
+- mailx: mail formatting: add comment right after %%oneline
 - mailx: use problem report api to define an emais' content
 - lib: remove unused function make_description_bz
 - augeas: trim spaces before key value
