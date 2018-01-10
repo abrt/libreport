@@ -413,16 +413,16 @@ make check|| {
 }
 
 %post gtk
-/sbin/ldconfig
+/usr/sbin/ldconfig
 # update icon cache
 touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 
-%post -p /sbin/ldconfig
+%post -p /usr/sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%postun -p /usr/sbin/ldconfig
 
 %postun gtk
-/sbin/ldconfig
+/usr/sbin/ldconfig
 if [ $1 -eq 0 ] ; then
     touch --no-create %{_datadir}/icons/hicolor &>/dev/null
     gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
@@ -432,10 +432,10 @@ fi
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
-%post web -p /sbin/ldconfig
+%post web -p /usr/sbin/ldconfig
 
 
-%postun web -p /sbin/ldconfig
+%postun web -p /usr/sbin/ldconfig
 
 %files -f %{name}.lang
 %doc README.md
