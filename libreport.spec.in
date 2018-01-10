@@ -41,7 +41,7 @@ BuildRequires: libproxy-devel
 BuildRequires: satyr-devel >= 0.24
 BuildRequires: glib2-devel >= %{glib_ver}
 
-%if 0%{?fedora} >= 24
+%if 0%{?fedora} >= 24 || 0%{?rhel} > 7
 # A test case uses zh_CN locale to verify XML event translations
 BuildRequires: glibc-all-langpacks
 %endif
@@ -96,11 +96,6 @@ Development headers for libreport-web
 Summary: Python bindings for report-libs
 Requires: libreport = %{version}-%{release}
 Requires: python2-dnf
-# in report the rhtsupport is in the main package, so we need to install it too
-# report is only in RHEL6, we do not need to carry the dependency to newer RHELs
-%if 0%{?rhel} == 6
-Requires: libreport-plugin-rhtsupport = %{version}-%{release}
-%endif
 %{?python_provide:%python_provide python2-libreport}
 # Remove before F30
 Provides: %{name}-python = %{version}-%{release}
@@ -330,12 +325,7 @@ CFLAGS="%{optflags} -Werror" %configure \
 %if %{without bugzilla}
         --without-bugzilla \
 %endif
-%if 0%{?rhel} == 6
-        --with-defaultdumpdirmode=0640 \
-        --disable-userownsdumpdir \
-%else
         --enable-doxygen-docs \
-%endif
         --disable-silent-rules
 
 make %{?_smp_mflags}
