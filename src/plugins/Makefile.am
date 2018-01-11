@@ -28,6 +28,12 @@ pluginsconfdir = $(PLUGINS_CONF_DIR)
 
 reportpluginsconfdir = $(REPORT_PLUGINS_CONF_DIR)
 
+if ENABLE_IMPORT_RHTSUPPORT_CERT
+libreportconfdir = $(CONF_DIR)
+dist_libreportconf_DATA = \
+    cert-api.access.redhat.com.pem
+endif
+
 reporters_plugin_conf =
 reporters_plugin_format_conf =
 if BUILD_BUGZILLA

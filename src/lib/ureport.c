@@ -40,7 +40,7 @@
  * macro for cert name. Cert path can be easily modified for example by reading
  * an environment variable LIBREPORT_DEBUG_AUTHORITY_CERT_DIR_PATH
  */
-#define CERT_AUTHORITY_CERT_PATH "/etc/redhat-access-insights"
+#define CERT_AUTHORITY_CERT_PATH "/etc/libreport"
 #define CERT_AUTHORITY_CERT_NAME "cert-api.access.redhat.com.pem"
 
 static char *
