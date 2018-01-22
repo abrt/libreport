@@ -1,6 +1,3 @@
-# platform-dependent
-%{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
-
 %if 0%{?suse_version}
   %bcond_with bugzilla
 
@@ -26,7 +23,7 @@ BuildRequires: %{dbus_devel}
 BuildRequires: gtk3-devel
 BuildRequires: curl-devel
 BuildRequires: desktop-file-utils
-BuildRequires: python-devel
+BuildRequires: python2-devel
 BuildRequires: python3-devel
 BuildRequires: gettext
 BuildRequires: libxml2-devel
@@ -41,7 +38,7 @@ BuildRequires: libproxy-devel
 BuildRequires: satyr-devel >= 0.24
 BuildRequires: glib2-devel >= %{glib_ver}
 
-%if 0%{?fedora} >= 24
+%if 0%{?fedora} >= 24 || 0%{?rhel} > 7
 # A test case uses zh_CN locale to verify XML event translations
 BuildRequires: glibc-all-langpacks
 %endif
@@ -96,11 +93,6 @@ Development headers for libreport-web
 Summary: Python bindings for report-libs
 Requires: libreport = %{version}-%{release}
 Requires: python2-dnf
-# in report the rhtsupport is in the main package, so we need to install it too
-# report is only in RHEL6, we do not need to carry the dependency to newer RHELs
-%if 0%{?rhel} == 6
-Requires: libreport-plugin-rhtsupport = %{version}-%{release}
-%endif
 %{?python_provide:%python_provide python2-libreport}
 # Remove before F30
 Provides: %{name}-python = %{version}-%{release}
@@ -330,12 +322,7 @@ CFLAGS="%{optflags} -Werror" %configure \
 %if %{without bugzilla}
         --without-bugzilla \
 %endif
-%if 0%{?rhel} == 6
-        --with-defaultdumpdirmode=0640 \
-        --disable-userownsdumpdir \
-%else
         --enable-doxygen-docs \
-%endif
         --disable-silent-rules
 
 make %{?_smp_mflags}
@@ -426,16 +413,16 @@ make check|| {
 }
 
 %post gtk
-/sbin/ldconfig
+/usr/sbin/ldconfig
 # update icon cache
 touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 
-%post -p /sbin/ldconfig
+%post -p /usr/sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%postun -p /usr/sbin/ldconfig
 
 %postun gtk
-/sbin/ldconfig
+/usr/sbin/ldconfig
 if [ $1 -eq 0 ] ; then
     touch --no-create %{_datadir}/icons/hicolor &>/dev/null
     gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
@@ -445,10 +432,10 @@ fi
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
-%post web -p /sbin/ldconfig
+%post web -p /usr/sbin/ldconfig
 
 
-%postun web -p /sbin/ldconfig
+%postun web -p /usr/sbin/ldconfig
 
 %files -f %{name}.lang
 %doc README.md
@@ -565,7 +552,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man*/reporter-print.*
 
 %files plugin-systemd-journal
-%defattr(-,root,root,-)
 %{_bindir}/reporter-systemd-journal
 %{_mandir}/man*/reporter-systemd-journal.*
 
@@ -830,7 +816,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 - build: add gettext-devel to sysdeps
 - dd: add check for validity of new file FD
 - build: configure tree for debugging by default
-- spec: use %buildroot macro
+- spec: use %%buildroot macro
 - spec: remove defattr which match the defaults
 - spec: do not clean buildroot
 - spec: remove Groups
@@ -890,7 +876,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 * Fri Apr 08 2016 Matej Habrnal <mhabrnal@redhat.com> 2.7.0-1
 - ignored words: update ignored words
 - mailx: introduce debug parameter -D
-- mailx: mail formatting: add comment right after %oneline
+- mailx: mail formatting: add comment right after %%oneline
 - mailx: use problem report api to define an emais' content
 - lib: remove unused function make_description_bz
 - augeas: trim spaces before key value
