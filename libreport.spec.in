@@ -412,6 +412,9 @@ make check|| {
     exit 1
 }
 
+%if 0%{?fedora} > 27
+# ldconfig and gtk-update-icon-cache is not needed
+%else
 %post gtk
 /usr/sbin/ldconfig
 # update icon cache
@@ -431,11 +434,10 @@ fi
 %posttrans gtk
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
-
 %post web -p /usr/sbin/ldconfig
 
-
 %postun web -p /usr/sbin/ldconfig
+%endif
 
 %files -f %{name}.lang
 %doc README.md
