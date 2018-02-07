@@ -613,7 +613,7 @@ ureport_server_response_from_reply(post_state_t *post_state,
 
     json_object *const json = json_tokener_parse(post_state->body);
 
-    if (is_error(json))
+    if (json == NULL)
     {
         error_msg(_("Unable to parse response from ureport server at '%s'"), config->ur_url);
         log_notice("%s", post_state->body);
