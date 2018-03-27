@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# scootergrisen <scootergrisen@gmail.com>, 2018. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -11,7 +12,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-01-08 06:51-0500\n"
+"PO-Revision-Date: 2018-01-30 03:31-0500\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Danish (http://www.transifex.com/projects/p/libreport/"
 "language/da/)\n"
@@ -26,44 +27,48 @@ msgid ""
 "   or: & [-vspy] -d PROBLEM_DIR\n"
 "   or: & [-vspy] -x PROBLEM_DIR"
 msgstr ""
+"& [-vsp] -L[PRÆFIKS] [PROBLEMMAPPE]\n"
+"   eller: & [-vspy] -e BEGIVENHED PROBLEMMAPPE\n"
+"   eller: & [-vspy] -d PROBLEMMAPPE\n"
+"   eller: & [-vspy] -x PROBLEMMAPPE"
 
 #. short_name long_name  value    parameter_name  help
 #: ../src/cli/cli.c:86
 msgid "List possible events [which start with PREFIX]"
-msgstr ""
+msgstr "Oplist mulige begivenheder [som starter med PRÆFIKS]"
 
 #: ../src/cli/cli.c:87 ../src/gui-wizard-gtk/main.c:172
 msgid "Run only these events"
-msgstr ""
+msgstr "Kør kun disse begivenheder"
 
 #: ../src/cli/cli.c:88 ../src/gui-wizard-gtk/main.c:171
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "Fjern PROBLEMMAPPE efter rapportering"
 
 #: ../src/cli/cli.c:89 ../src/gui-wizard-gtk/main.c:173
 msgid "Expert mode"
-msgstr ""
+msgstr "Eksperttilstand"
 
 #: ../src/cli/cli.c:90 ../src/report-newt/report-newt.c:395
 msgid "Display version and exit"
-msgstr ""
+msgstr "Vis version og afslut"
 
 #: ../src/cli/cli.c:91
 msgid "Noninteractive: don't ask questions, assume 'yes'"
-msgstr ""
+msgstr "Ikke interaktiv: stil ikke spørgsmål, antag 'ja'"
 
 #: ../src/cli/cli.c:93
 msgid "Log to syslog"
-msgstr "Skriv til syslog"
+msgstr "Log til syslog"
 
 #: ../src/cli/cli.c:94 ../src/gui-wizard-gtk/main.c:170
 msgid "Add program names to log"
-msgstr "Føj programnavne til log"
+msgstr "Tilføj programnavne til log"
 
 #: ../src/cli/cli-report.c:132
 #, c-format
 msgid "# This field is read only\n"
-msgstr "# Dette felt er skrivebeskyttet\n"
+msgstr "# Feltet er skrivebeskyttet\n"
 
 #: ../src/cli/cli-report.c:152
 msgid "# Describe the circumstances of this crash below"
@@ -107,7 +112,7 @@ msgstr "# Pakke"
 
 #: ../src/cli/cli-report.c:163
 msgid "# Reason of crash"
-msgstr "# Grund til nedbrud"
+msgstr "# Årsagen til nedbrudet"
 
 #: ../src/cli/cli-report.c:170
 msgid "# os-release configuration file from root dir"
@@ -123,7 +128,7 @@ msgstr ""
 
 #: ../src/cli/cli-report.c:188
 msgid "# Release string of the operating system"
-msgstr "# Operativsystemets udgivelsesstreng"
+msgstr "# Styresystemets udgivelsesstreng"
 
 #: ../src/cli/cli-report.c:319
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
@@ -345,24 +350,24 @@ msgstr ""
 #. 
 #: ../src/gtk-helpers/ask_dialogs.c:87
 msgid "_No"
-msgstr ""
+msgstr "_Nej"
 
 #: ../src/gtk-helpers/ask_dialogs.c:88
 msgid "_Yes"
-msgstr ""
+msgstr "_Ja"
 
 #: ../src/gtk-helpers/ask_dialogs.c:94
 msgid "Don't ask me again"
-msgstr ""
+msgstr "Spørg mig ikke igen"
 
 #. if event has no xml description
 #: ../src/gtk-helpers/config_dialog.c:182
 msgid "No description available"
-msgstr ""
+msgstr "Ingen beskrivelse tilgængelig"
 
 #: ../src/gtk-helpers/config_dialog.c:345
 msgid "Configuration"
-msgstr ""
+msgstr "Konfiguration"
 
 #. we can't use this, because we want the workflows first and hashtable
 #. * doesn't return the items in the order they were added
@@ -378,15 +383,15 @@ msgstr ""
 #: ../src/gtk-helpers/config_dialog.c:369
 #: ../src/gtk-helpers/config_dialog.c:433
 msgid "Events"
-msgstr ""
+msgstr "Begivenheder"
 
 #: ../src/gtk-helpers/config_dialog.c:373
 msgid "C_onfigure"
-msgstr ""
+msgstr "_Konfigurer"
 
 #: ../src/gtk-helpers/config_dialog.c:375 ../src/gui-wizard-gtk/wizard.c:3702
 msgid "_Close"
-msgstr ""
+msgstr "_Luk"
 
 #: ../src/gtk-helpers/event_config_dialog.c:144
 msgid "Show password"
@@ -394,15 +399,15 @@ msgstr "Vis adgangskode"
 
 #: ../src/gtk-helpers/event_config_dialog.c:275
 msgid "Don't store passwords"
-msgstr ""
+msgstr "Gem ikke adgangskoder"
 
 #: ../src/gtk-helpers/event_config_dialog.c:285
 msgid "Basic"
-msgstr ""
+msgstr "Grundlæggende"
 
 #: ../src/gtk-helpers/event_config_dialog.c:293
 msgid "Advanced"
-msgstr ""
+msgstr "Avanceret"
 
 #: ../src/gtk-helpers/event_config_dialog.c:309
 msgid "Secret Service is not available, your settings won't be saved!"
@@ -412,12 +417,12 @@ msgstr ""
 #: ../src/gtk-helpers/workflow_config_dialog.c:94
 #: ../src/gui-wizard-gtk/wizard.c:783 ../src/gui-wizard-gtk/wizard.c:3302
 msgid "_Cancel"
-msgstr ""
+msgstr "_Annuller"
 
 #: ../src/gtk-helpers/event_config_dialog.c:351
 #: ../src/gtk-helpers/workflow_config_dialog.c:96
 msgid "_OK"
-msgstr ""
+msgstr "_OK"
 
 #: ../src/gtk-helpers/secrets.c:171
 #, c-format
@@ -464,19 +469,19 @@ msgstr ""
 
 #: ../src/gtk-helpers/problem_details_dialog.c:30
 msgid "Problem details"
-msgstr ""
+msgstr "Probelmdetaljer"
 
 #: ../src/gtk-helpers/problem_details_dialog.c:33
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: ../src/gui-wizard-gtk/main.c:107
 msgid "Preferences"
-msgstr ""
+msgstr "Præferencer"
 
 #: ../src/gui-wizard-gtk/main.c:110
 msgid "Quit"
-msgstr ""
+msgstr "Afslut"
 
 #: ../src/gui-wizard-gtk/main.c:154
 msgid ""
@@ -498,11 +503,11 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:774
 msgid "View/edit a text file"
-msgstr ""
+msgstr "Vis/rediger en tekstfil"
 
 #: ../src/gui-wizard-gtk/wizard.c:782
 msgid "_Save"
-msgstr ""
+msgstr "_Gem"
 
 #: ../src/gui-wizard-gtk/wizard.c:1004
 msgid ""
@@ -513,12 +518,12 @@ msgstr ""
 #: ../src/gui-wizard-gtk/wizard.c:1046
 #, c-format
 msgid "(requires: %s)"
-msgstr ""
+msgstr "(kræver: %s)"
 
 #: ../src/gui-wizard-gtk/wizard.c:1060
 #, c-format
 msgid "(not needed, data already exist: %s)"
-msgstr ""
+msgstr "(behøves ikke, data findes allerede: %s)"
 
 #: ../src/gui-wizard-gtk/wizard.c:1159
 msgid ""
@@ -557,7 +562,7 @@ msgstr "%llu byte, %u filer"
 
 #: ../src/gui-wizard-gtk/wizard.c:1703
 msgid "Processing was canceled"
-msgstr ""
+msgstr "Behandling blev annulleret"
 
 #: ../src/gui-wizard-gtk/wizard.c:1914
 msgid ""
@@ -648,12 +653,12 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:3303
 msgid "_Open"
-msgstr ""
+msgstr "_Åbn"
 
 #: ../src/gui-wizard-gtk/wizard.c:3325
 #, c-format
 msgid "'%s' is not an ordinary file"
-msgstr ""
+msgstr "'%s' er ikke en almindelig fil"
 
 #: ../src/gui-wizard-gtk/wizard.c:3339
 msgid "You are trying to copy a file onto itself"
@@ -662,7 +667,7 @@ msgstr ""
 #: ../src/gui-wizard-gtk/wizard.c:3346
 #, c-format
 msgid "Can't copy '%s': %s"
-msgstr ""
+msgstr "Kan ikke kopiere '%s': %s"
 
 #: ../src/gui-wizard-gtk/wizard.c:3361
 #, c-format
@@ -683,7 +688,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:3544
 msgid "Include"
-msgstr ""
+msgstr "Inkluder"
 
 #: ../src/gui-wizard-gtk/wizard.c:3555
 msgid "Name"
@@ -695,7 +700,7 @@ msgstr "Værdi"
 
 #: ../src/gui-wizard-gtk/wizard.c:3599
 msgid "Problem description"
-msgstr ""
+msgstr "Problembeskrivelse"
 
 #: ../src/gui-wizard-gtk/wizard.c:3600
 msgid "Select how to report this problem"
@@ -723,7 +728,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:3704
 msgid "_Stop"
-msgstr ""
+msgstr "_Stop"
 
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3707
@@ -733,7 +738,7 @@ msgstr ""
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3710
 msgid "Repeat"
-msgstr ""
+msgstr "Gentag"
 
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3712
@@ -790,15 +795,15 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "file"
-msgstr ""
+msgstr "fil"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "data"
-msgstr ""
+msgstr "data"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "Search"
-msgstr ""
+msgstr "Søg"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid ""
@@ -878,7 +883,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:25
 msgid "Show log"
-msgstr ""
+msgstr "Vis log"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:26
 msgid "Reporting has finished. You can close this window now."
@@ -893,7 +898,7 @@ msgstr ""
 
 #: ../src/include/internal_libreport.h:1228
 msgid "Be verbose"
-msgstr ""
+msgstr "Vær uddybende"
 
 #: ../src/include/internal_libreport.h:1229
 #: ../src/plugins/reporter-bugzilla.c:295
@@ -902,12 +907,12 @@ msgstr ""
 #: ../src/plugins/reporter-systemd-journal.c:245
 #: ../src/plugins/reporter-upload.c:186 ../src/plugins/reporter-mantisbt.c:283
 msgid "Problem directory"
-msgstr ""
+msgstr "Problemmappe"
 
 #: ../src/lib/abrt_sock.c:160
 #, c-format
 msgid "Can't delete: '%s'"
-msgstr ""
+msgstr "Kan ikke slette: '%s'"
 
 #: ../src/lib/abrt_sock.c:196
 msgid "locked by another process"
@@ -924,7 +929,7 @@ msgstr ""
 #: ../src/lib/abrt_sock.c:217
 #, c-format
 msgid "Can't delete '%s': %s"
-msgstr ""
+msgstr "Kan ikke slette '%s': %s"
 
 #: ../src/lib/client.c:55 ../src/lib/client.c:87 ../src/lib/client.c:144
 msgid "y"
@@ -1166,15 +1171,15 @@ msgstr ""
 
 #: ../src/lib/make_descr.c:149 ../src/lib/make_descr.c:160
 msgid "Reported:"
-msgstr ""
+msgstr "Rapporteret:"
 
 #: ../src/lib/make_descr.c:149
 msgid "cannot be reported"
-msgstr ""
+msgstr "kan ikke rapporteres"
 
 #: ../src/lib/parse_options.c:63
 msgid "Usage: "
-msgstr ""
+msgstr "Anvendelse: "
 
 #: ../src/lib/problem_data.c:252
 #, c-format
@@ -1220,7 +1225,7 @@ msgstr ""
 #: ../src/lib/run_event.c:880
 #, c-format
 msgid "('%s' exited with %u)\n"
-msgstr ""
+msgstr "('%s' afsluttede med %u)\n"
 
 #: ../src/plugins/abrt_rh_support.c:356
 #, c-format
@@ -1264,7 +1269,7 @@ msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:1
 msgid "Bugzilla"
-msgstr ""
+msgstr "Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:2
 msgid "Report to Bugzilla bug tracker"
@@ -1274,7 +1279,7 @@ msgstr ""
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:3
 #: ../src/plugins/report_Uploader.xml.in.h:6
 msgid "User name"
-msgstr ""
+msgstr "Brugernavn"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:4
 msgid "Bugzilla account user name"
@@ -1291,7 +1296,7 @@ msgstr ""
 #: ../src/plugins/report_RHTSupport.xml.in.h:5
 #: ../src/plugins/report_Uploader.xml.in.h:8
 msgid "Password"
-msgstr ""
+msgstr "Adgangskode"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:7
 msgid "Bugzilla account password"
@@ -1310,7 +1315,7 @@ msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:10
 msgid "Groups"
-msgstr ""
+msgstr "Grupper"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:11
 msgid ""
@@ -1320,7 +1325,7 @@ msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:12
 msgid "Bugzilla URL"
-msgstr ""
+msgstr "Bugzilla-URL"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:13
 msgid "Address of Bugzilla server"
@@ -1331,7 +1336,7 @@ msgstr ""
 #: ../src/plugins/report_RHTSupport.xml.in.h:11
 #: ../src/plugins/report_uReport.xml.in.h:9
 msgid "Verify SSL"
-msgstr ""
+msgstr "Bekræft SSL"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:15
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:13
@@ -1342,7 +1347,7 @@ msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:16
 msgid "Bugzilla product"
-msgstr ""
+msgstr "Bugzilla-produkt"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:17
 msgid ""
@@ -1388,7 +1393,7 @@ msgstr ""
 #: ../src/plugins/report_uReport.xml.in.h:13
 #: ../src/plugins/report_EmergencyAnalysis.xml.in.h:6
 msgid "HTTPS Proxy"
-msgstr ""
+msgstr "HTTPS-proxy"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:23
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:21
@@ -2842,24 +2847,24 @@ msgstr ""
 #: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:259
 #: ../src/report-newt/report-newt.c:337 ../src/report-newt/report-newt.c:354
 msgid "Ok"
-msgstr ""
+msgstr "OK"
 
 #: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:146
 msgid "Cancel"
-msgstr ""
+msgstr "Annuller"
 
 #: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:337
 msgid "Error"
-msgstr ""
+msgstr "Fejl"
 
 #: ../src/report-newt/report-newt.c:256
 msgid "Reporting"
-msgstr ""
+msgstr "Rapportering"
 
 #: ../src/report-newt/report-newt.c:276
 #, c-format
 msgid "--- Running %s ---"
-msgstr ""
+msgstr "--- Kører %s ---"
 
 #: ../src/report-newt/report-newt.c:354
 msgid "No reporters available"
