@@ -755,6 +755,29 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Tue Mar 27 2018 Martin Kutlak <mkutlak@redhat.com> 2.9.4-1
+- Translation updates
+- Revert "use /usr/sbin/"
+- ureport: remove json-c is_error() usage
+- ldconfig and gtk-update-icon-cache is not needed in rawhide
+- reporter-rhtsupport: Remove dependency on redhat-access-insights
+- do not expand macro in changelog
+- move defattr which match the defaults
+- use /usr/sbin/
+- macro python_sitearch is always defined on rhel7+
+- remove rhel6 specific items and accomodate to rhel7+
+- This package uses names with ambiguous `python-` prefix in requirements.
+- reporter-{bugzilla,mantisbt,rhtsupport}: fix free
+- reporter-mailx: rely on configured email
+- spec: fix unowned directories
+- augeas: include local config path
+- doc: update to contain newly added user's local config
+- reporter-mantisbt: read configuration from user's home
+- reporter-rhtsupport: read configuration from user's home
+- reporter-bugzilla: read configuration from user's home
+- reporter-bugzilla: ask concrete bz when requiring login
+- makefile: fix make release
+
 * Thu Nov 02 2017 Julius Milan <jmilan@redhat.com> 2.9.3-1
 - Translation updates
 - commit to delete
