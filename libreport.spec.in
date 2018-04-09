@@ -307,6 +307,7 @@ install this package and you're done.
 %package rhel
 Summary: Default configuration for reporting bugs via Red Hat infrastructure
 Requires: %{name} = %{version}-%{release}
+Requires: %{name}-plugin-ureport
 
 %description rhel
 Default configuration for reporting bugs via Red Hat infrastructure
@@ -631,6 +632,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man5/ureport.conf.5.gz
 %{_datadir}/%{name}/events/report_uReport.xml
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.ureport.xml
+%if 0%{?rhel}
+%config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_uReport.conf
+%{_datadir}/%{name}/workflows/workflow_uReport.xml
+%{_mandir}/man5/report_uReport.conf.5.*
+%endif
 
 %if %{with bugzilla}
 %files plugin-bugzilla
@@ -761,12 +767,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/%{name}/workflows/workflow_RHELAddDatavmcore.xml
 %{_datadir}/%{name}/workflows/workflow_RHELAddDataxorg.xml
 %{_datadir}/%{name}/workflows/workflow_RHELAddDataJavaScript.xml
-%{_datadir}/%{name}/workflows/workflow_uReport.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_rhel.conf
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_rhel_add_data.conf
-%config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_uReport.conf
 %{_mandir}/man5/report_rhel.conf.5.*
-%{_mandir}/man5/report_uReport.conf.5.*
 
 %files rhel-bugzilla
 %{_datadir}/%{name}/workflows/workflow_RHELBugzillaCCpp.xml
