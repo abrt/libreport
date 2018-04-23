@@ -65,6 +65,14 @@ _py3report_la_LDFLAGS = \
 _py3report_la_LIBADD = \
     ../lib/libreport.la \
     $(PYTHON3_LIBS)
+
+_py3report.so: $(py3reportexec_LTLIBRARIES)
+	ln -sf $(abs_builddir)/.libs/$@ ./
+
+all-local: _py3report.so
+
+clean-local:
+	rm -f _py3report.so
 endif
 
 # report compat:

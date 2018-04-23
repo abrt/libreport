@@ -12,9 +12,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-try:
+import sys
+
+if sys.version_info[0] == 2:
     from _pyreport import *
-except ImportError:
+else:
     from report._py3report import *
 
 try:
@@ -31,7 +33,6 @@ except ImportError:
 # ABRT Team
 
 import os
-import sys
 
 SYSTEM_RELEASE_PATHS = ["/etc/system-release","/etc/redhat-release"]
 SYSTEM_RELEASE_DEPS = ["system-release", "redhat-release"]
