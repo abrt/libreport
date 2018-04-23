@@ -12,6 +12,20 @@
 
 %define glib_ver 2.43
 
+%if 0%{?fedora} || 0%{?rhel} > 7
+# Enable python3 build by default
+%bcond_without python3
+%else
+%bcond_with python3
+%endif
+
+%if 0%{?rhel} > 7 || 0%{?fedora} > 28
+# Disable python2 build by default
+%bcond_with python2
+%else
+%bcond_without python2
+%endif
+
 Summary: Generic library for reporting various problems
 Name: libreport
 Version: @@LIBREPORT_VERSION@@
@@ -23,8 +37,12 @@ BuildRequires: %{dbus_devel}
 BuildRequires: gtk3-devel
 BuildRequires: curl-devel
 BuildRequires: desktop-file-utils
+%if %{with python2}
 BuildRequires: python2-devel
+%endif # with python2
+%if %{with python3}
 BuildRequires: python3-devel
+%endif # with python3
 BuildRequires: gettext
 BuildRequires: libxml2-devel
 BuildRequires: libtar-devel
@@ -89,6 +107,7 @@ Requires: libreport-web = %{version}-%{release}
 %description web-devel
 Development headers for libreport-web
 
+%if %{with python2}
 %package -n python2-libreport
 Summary: Python bindings for report-libs
 Requires: libreport = %{version}-%{release}
@@ -101,7 +120,9 @@ Obsoletes: %{name}-python < %{version}-%{release}
 
 %description -n python2-libreport
 Python bindings for report-libs.
+%endif # with python2
 
+%if %{with python3}
 %package -n python3-libreport
 Summary: Python 3 bindings for report-libs
 Requires: libreport = %{version}-%{release}
@@ -114,6 +135,7 @@ Obsoletes: %{name}-python3 < %{version}-%{release}
 
 %description -n python3-libreport
 Python 3 bindings for report-libs.
+%endif # with python3
 
 %package cli
 Summary: %{name}'s command line interface
@@ -316,6 +338,12 @@ data over ftp/scp...
 autoconf
 
 CFLAGS="%{optflags} -Werror" %configure \
+%if %{without python2}
+        --without-python2 \
+%endif # with python2
+%if %{without python3}
+        --without-python3 \
+%endif # with python3
 %if %{without bugzilla}
         --without-bugzilla \
 %endif
@@ -508,13 +536,17 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_includedir}/libreport/libreport_curl.h
 %{_libdir}/pkgconfig/libreport-web.pc
 
+%if %{with python2}
 %files -n python2-libreport
 %{python_sitearch}/report/
 %{python_sitearch}/reportclient/
+%endif # with python2
 
+%if %{with python3}
 %files -n python3-libreport
 %{python3_sitearch}/report/
 %{python3_sitearch}/reportclient/
+%endif # with python3
 
 %files cli
 %{_bindir}/report-cli
