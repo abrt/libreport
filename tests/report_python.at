@@ -14,7 +14,7 @@ import os
 sys.path.insert(0, "../../../src/report-python")
 sys.path.insert(0, "../../../src/report-python/.libs")
 
-report = __import__("report-python", globals(), locals(), [], -1)
+report = __import__("report-python", globals(), locals(), [], 0)
 sys.modules["report"] = report
 
 
@@ -34,12 +34,12 @@ def run_test(fields, getter, expected):
     retval = True
 
     osrelf = tempfile.NamedTemporaryFile(delete=False)
-    osrelf.write("ID=\"field-id\"\n")
+    osrelf.write("ID=\"field-id\"\n".encode())
 
     for (field, value) in fields:
-        osrelf.write("%s=%s\n" %(field, value))
+        osrelf.write(("%s=%s\n" %(field, value)).encode())
 
-    osrelf.write("PRETTY_NAME=\"field-pretty-name\"\n")
+    osrelf.write("PRETTY_NAME=\"field-pretty-name\"\n".encode())
     osrelf.close()
 
     result = getter(file_path=osrelf.name)
@@ -54,8 +54,8 @@ def run_test(fields, getter, expected):
 
 def verify_information_type(test_cases, stuffing, getter):
     retval = 0
-    for i in xrange(0, len(test_cases)):
-        for j in xrange(len(test_cases), i, -1):
+    for i in range(0, len(test_cases)):
+        for j in range(len(test_cases), i, -1):
             if not run_test(stuffing + test_cases[i:j], getter, test_cases[i][1]):
                 print("field   : '%s'" % (test_cases[i][0]))
                 retval += 1
@@ -80,29 +80,29 @@ AT_PYTESTFUN([get_from_etc_os_release],
 sys.path.insert(0, "../../../src/report-python")
 sys.path.insert(0, "../../../src/report-python/.libs")
 
-report = __import__("report-python", globals(), locals(), [], -1)
+report = __import__("report-python", globals(), locals(), [], 0)
 sys.modules["report"] = report
 
 import os
 
 if not os.path.exists("/etc/os-release"):
-    print "Cannot run the test: '/etc/os-release' does not exist"
+    print("Cannot run the test: '/etc/os-release' does not exist")
     sys.exit(1)
 
 exit_code = 0
 if report.getProduct_fromOSRELEASE() != report.getProduct():
-    print "getProduct('{0}') did not return PRODUCT='{1}' from /etc/os-release".format(report.getProduct(), report.getProduct_fromOSRELEASE())
+    print("getProduct('{0}') did not return PRODUCT='{1}' from /etc/os-release".format(report.getProduct(), report.getProduct_fromOSRELEASE()))
     exit_code += 1
 
 if report.getVersion_fromOSRELEASE() != report.getVersion():
-    print "getVersion('{0}') did not return PRODUCT_VERSION='{1}' from /etc/os-release".format(report.getVersion(), report.getVersion_fromOSRELEASE())
+    print("getVersion('{0}') did not return PRODUCT_VERSION='{1}' from /etc/os-release".format(report.getVersion(), report.getVersion_fromOSRELEASE()))
     exit_code += 1
 
 if exit_code != 0:
-    print "++++ /etc/os-release ++++"
+    print("++++ /etc/os-release ++++")
     with open("/etc/os-release") as osrel:
         sys.stdout.write(osrel.read())
-    print "^^^^ /etc/os-release ^^^^"
+    print("^^^^ /etc/os-release ^^^^")
 
 sys.exit(exit_code)
 ]])
@@ -117,7 +117,7 @@ AT_PYTESTFUN([create_dump_dir_uid_does_not_exist],
 sys.path.insert(0, "../../../src/report-python")
 sys.path.insert(0, "../../../src/report-python/.libs")
 
-report = __import__("report-python", globals(), locals(), [], -1)
+report = __import__("report-python", globals(), locals(), [], 0)
 sys.modules["report"] = report
 
 import os
@@ -125,14 +125,14 @@ import os
 cd = report.problem_data()
 cd.add_basics()
 dd = cd.create_dump_dir("/tmp/")
-print "dumpdir name:", dd.name
+print("dumpdir name:", dd.name)
 
 stat_info = os.stat(dd.name)
 uid = stat_info.st_uid
 gid = stat_info.st_gid
-print "user uid", os.getuid()
-print "user gid", os.getgid()
-print "dumpdir uid: ", uid," gid: ",  gid
+print("user uid", os.getuid())
+print("user gid", os.getgid())
+print("dumpdir uid: ", uid," gid: ",  gid)
 
 exit_code = 0
 if os.getuid() != uid:

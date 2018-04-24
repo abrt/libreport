@@ -10,13 +10,14 @@ AT_PYTESTFUN([verbosity], [[
 import sys
 import os
 import unittest
+from importlib import reload
 
 sys.path.insert(0, "../../../src/client-python")
 sys.path.insert(0, "../../../src/client-python/reportclient/.libs")
 sys.path.insert(0, "../../../src/report-python")
 sys.path.insert(0, "../../../src/report-python/.libs")
 
-report = __import__("report-python", globals(), locals(), [], -1)
+report = __import__("report-python", globals(), locals(), [], 0)
 sys.modules["report"] = report
 
 
@@ -27,7 +28,7 @@ class TestReportClientVerbose(unittest.TestCase):
         except:
             pass
         os.unsetenv("ABRT_VERBOSE")
-        self.reportclient = __import__("reportclient", globals(), locals(), [], -1)
+        self.reportclient = __import__("reportclient", globals(), locals(), [], 0)
         sys.modules["reportclient"] = self.reportclient
 
     def tearDown(self):

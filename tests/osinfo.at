@@ -471,7 +471,7 @@ AT_PYTESTFUN([parse_osinfo_python],
 sys.path.insert(0, "../../../src/report-python")
 sys.path.insert(0, "../../../src/report-python/.libs")
 
-report = __import__("report-python", globals(), locals(), [], -1)
+report = __import__("report-python", globals(), locals(), [], 0)
 sys.modules["report"] = report
 
 lines = [
@@ -508,8 +508,8 @@ expected = {
 
 osrel = report.parse_os_release_lines(lines)
 
-print sorted(expected.items())
-print sorted(osrel.items())
+print(sorted(expected.items()))
+print(sorted(osrel.items()))
 
 sys.exit(not bool(osrel == expected))
 ]])

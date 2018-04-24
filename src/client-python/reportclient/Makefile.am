@@ -50,10 +50,10 @@ _reportclient3_la_LDFLAGS = $(PYEXTLDFLAGS) \
 _reportclient3_la_LIBADD = ../../lib/libreport.la
 endif
 
-_reportclient.so: $(clientexec_LTLIBRARIES)
+_reportclient3.so: $(clientexec_LTLIBRARIES)
 	ln -sf $(abs_builddir)/.libs/$@ ./
 
-all-local: _reportclient.so
+all-local: _reportclient3.so
 
 clean-local:
-	rm -f _reportclient.so
+	rm -f _reportclient3.so
