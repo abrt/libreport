@@ -76,6 +76,11 @@ Requires: glib2 >= %{glib_ver}
 Requires: xz
 Requires: lz4
 
+# Required for the temporary modularity hack, see below
+%if 0%{?_module_build}
+BuildRequires: sed
+%endif
+
 %description
 Libraries providing API for reporting different problems in applications
 to different bug targets like Bugzilla, ftp, trac, etc...
@@ -125,7 +130,17 @@ Python bindings for report-libs.
 %if %{with python3}
 %package -n python3-libreport
 Summary: Python 3 bindings for report-libs
+%if 0%{?_module_build}
+# This is required for F26 Boltron (the modular release)
+# Different parts of libreport are shipped with different
+# modules with different dist tags; we need to weaken the
+# strict NVR dependency to make it work.  Temporary and
+# limited to F26 Boltron.
+%global distfreerelease %(echo %{release}|sed 's/%{?dist}$//'||echo 0)
+Requires: libreport >= %{version}-%{distfreerelease}
+%else
 Requires: libreport = %{version}-%{release}
+%endif
 Requires: python3-dnf
 %{?python_provide:%python_provide python3-libreport}
 # Remove before F30
@@ -440,7 +455,7 @@ make check|| {
     exit 1
 }
 
-%if 0%{?fedora} > 27
+%if 0%{?fedora} > 27 || 0%{?rhel} > 7
 # ldconfig and gtk-update-icon-cache is not needed
 %else
 %post gtk
