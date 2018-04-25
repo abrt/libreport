@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.9.5] - 2018-04-24
+### Changed
+- Actualize spec file according to downstream
+- Conditionalize the Python2 and Python3
+
+### Fixed
+- Fix tests if configure --without-python2
+
 ## [2.9.4] - 2018-03-27
 ### Added
 - Added support for reporter configurations stored in user's home config
@@ -105,7 +113,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.9.4...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.9.5...HEAD
+[2.9.5]: https://github.com/abrt/libreport/compare/2.9.4...2.9.5
 [2.9.4]: https://github.com/abrt/libreport/compare/2.9.3...2.9.4
 [2.9.3]: https://github.com/abrt/libreport/compare/2.9.2...2.9.3
 [2.9.2]: https://github.com/abrt/libreport/compare/2.9.1...2.9.2

@@ -802,6 +802,14 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Wed Apr 25 2018 Matej Habrnal <mhabrnal@redhat.com> 2.9.5-1
+- build: create report sub-directory
+- testcase: port python's tests to python3
+- spec: actualize according to downstream
+- spec: Conditionalize the Python2 and Python3
+- report-python: fix tests if configure --without-python2
+- autogen: correctly parse buildrequires from spec file
+
 * Tue Mar 27 2018 Martin Kutlak <mkutlak@redhat.com> 2.9.4-1
 - Translation updates
 - Revert "use /usr/sbin/"
