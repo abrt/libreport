@@ -15,9 +15,9 @@ from importlib import reload
 sys.path.insert(0, "../../../src/client-python")
 sys.path.insert(0, "../../../src/client-python/reportclient/.libs")
 sys.path.insert(0, "../../../src/report-python")
-sys.path.insert(0, "../../../src/report-python/.libs")
+sys.path.insert(0, "../../../src/report-python/report/.libs")
 
-report = __import__("report-python", globals(), locals(), [], 0)
+report = __import__("report", globals(), locals(), [], 0)
 sys.modules["report"] = report
 
 

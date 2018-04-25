@@ -12,9 +12,9 @@ import tempfile
 import os
 
 sys.path.insert(0, "../../../src/report-python")
-sys.path.insert(0, "../../../src/report-python/.libs")
+sys.path.insert(0, "../../../src/report-python/report/.libs")
 
-report = __import__("report-python", globals(), locals(), [], 0)
+report = __import__("report", globals(), locals(), [], 0)
 sys.modules["report"] = report
 
 
@@ -78,9 +78,9 @@ AT_PYTESTFUN([get_from_etc_os_release],
 [[import sys
 
 sys.path.insert(0, "../../../src/report-python")
-sys.path.insert(0, "../../../src/report-python/.libs")
+sys.path.insert(0, "../../../src/report-python/report/.libs")
 
-report = __import__("report-python", globals(), locals(), [], 0)
+report = __import__("report", globals(), locals(), [], 0)
 sys.modules["report"] = report
 
 import os
@@ -115,9 +115,9 @@ AT_PYTESTFUN([create_dump_dir_uid_does_not_exist],
 [[import sys
 
 sys.path.insert(0, "../../../src/report-python")
-sys.path.insert(0, "../../../src/report-python/.libs")
+sys.path.insert(0, "../../../src/report-python/report/.libs")
 
-report = __import__("report-python", globals(), locals(), [], 0)
+report = __import__("report", globals(), locals(), [], 0)
 sys.modules["report"] = report
 
 import os

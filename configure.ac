@@ -464,6 +464,7 @@ AC_CONFIG_FILES([
 	src/include/Makefile
 	src/lib/Makefile
 	src/report-python/Makefile
+	src/report-python/report/Makefile
 	src/Makefile
 	src/gtk-helpers/Makefile
 	src/gtk-helpers/libreport-gtk.pc
