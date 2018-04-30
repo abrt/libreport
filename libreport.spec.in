@@ -254,7 +254,12 @@ BuildRequires: %{libjson_devel}
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-web = %{version}-%{release}
 %if 0%{?rhel}
+%if %{with python2}
 Requires: python-rhsm
+%endif # with python2
+%if %{with python3}
+Requires: python3-subscription-manager-rhsm
+%endif # with python3
 %endif
 
 %description plugin-ureport
