@@ -81,8 +81,9 @@ rhsm_config_get_consumer_cert_dir(void)
         return xstrdup(result);
 
     result = run_in_shell_and_save_output(0,
-            "python -c \"from rhsm.config import initConfig; print(initConfig().get('rhsm', 'consumerCertDir'))\"",
+            "python3 -c \"from rhsm.config import initConfig; print(initConfig().get('rhsm', 'consumerCertDir'))\"",
             NULL, NULL);
+
 
     /* run_in_shell_and_save_output always returns non-NULL */
     if (result[0] != '/')
