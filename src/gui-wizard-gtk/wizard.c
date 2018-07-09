@@ -127,7 +127,6 @@ static gboolean g_warning_issued;
 static GtkSpinner *g_spinner_event_log;
 static GtkImage *g_img_process_fail;
 
-static GtkButton *g_btn_startcast;
 static GtkExpander *g_exp_report_log;
 
 static GtkWidget *g_top_most_window;
@@ -3487,7 +3486,6 @@ static void add_pages(void)
     g_exp_search           = GTK_EXPANDER(     gtk_builder_get_object(g_builder, "expander_search"));
     g_spinner_event_log    = GTK_SPINNER(      gtk_builder_get_object(g_builder, "spinner_event_log"));
     g_img_process_fail     = GTK_IMAGE(        gtk_builder_get_object(g_builder, "img_process_fail"));
-    g_btn_startcast        = GTK_BUTTON(       gtk_builder_get_object(g_builder, "btn_startcast"));
     g_exp_report_log       = GTK_EXPANDER(     gtk_builder_get_object(g_builder, "expand_report"));
     g_vb_simple_details    = GTK_BOX(          gtk_builder_get_object(g_builder, "vb_simple_details"));
     g_cmb_reproducible     = GTK_COMBO_BOX_TEXT(gtk_builder_get_object(g_builder, "cmb_reproducible"));
@@ -3616,59 +3614,6 @@ static void assistant_quit_cb(void *obj, void *data)
 
     gtk_widget_destroy(GTK_WIDGET(g_wnd_assistant));
     g_wnd_assistant = (void *)0xdeadbeaf;
-}
-
-static void on_btn_startcast(GtkWidget *btn, gpointer user_data)
-{
-    const char *args[15];
-    args[0] = (char *) "fros";
-    args[1] = NULL;
-
-    pid_t castapp = 0;
-    castapp = fork_execv_on_steroids(
-                EXECFLG_QUIET,
-                (char **)args,
-                NULL,
-                /*env_vec:*/ NULL,
-                g_dump_dir_name,
-                /*uid (ignored):*/ 0
-    );
-    gtk_widget_hide(GTK_WIDGET(g_wnd_assistant));
-    /*flush all gui events before we start waitpid
-     * otherwise the main window wouldn't hide
-     */
-    while (gtk_events_pending())
-        gtk_main_iteration_do(false);
-
-    int status;
-    safe_waitpid(castapp, &status, 0);
-    problem_data_reload_from_dump_dir();
-    update_gui_state_from_problem_data(0 /* don't update the selected event */);
-    gtk_widget_show(GTK_WIDGET(g_wnd_assistant));
-}
-
-static bool is_screencast_available()
-{
-    const char *args[3];
-    args[0] = (char *) "fros";
-    args[1] = "--is-available";
-    args[2] = NULL;
-
-    pid_t castapp = 0;
-    castapp = fork_execv_on_steroids(
-                EXECFLG_QUIET,
-                (char **)args,
-                NULL,
-                /*env_vec:*/ NULL,
-                g_dump_dir_name,
-                /*uid (ignored):*/ 0
-    );
-
-    int status;
-    safe_waitpid(castapp, &status, 0);
-
-    /* 0 means that it's available */
-    return status == 0;
 }
 
 void create_assistant(GtkApplication *app, bool expert_mode)
@@ -3804,26 +3749,6 @@ void create_assistant(GtkApplication *app, bool expert_mode)
 
     g_signal_connect(g_btn_add_file, "clicked", G_CALLBACK(on_btn_add_file), NULL);
     g_signal_connect(g_btn_detail, "clicked", G_CALLBACK(on_btn_detail), NULL);
-
-    if (is_screencast_available()) {
-        /* we need to override the activate-link handler, because we use
-         * the link button instead of normal button and if we wouldn't override it
-         * gtk would try to run it's defualt action and open the associated URI
-         * but since the URI is empty it would complain about it...
-         */
-        g_signal_connect(g_btn_startcast, "activate-link", G_CALLBACK(on_btn_startcast), NULL);
-    }
-    else {
-        gtk_widget_set_sensitive(GTK_WIDGET(g_btn_startcast), false);
-        gtk_widget_set_tooltip_markup(GTK_WIDGET(g_btn_startcast),
-          _("In order to enable the built-in screencasting "
-            "functionality the package fros-recordmydesktop has to be installed. "
-            "Please run the following command if you want to install it."
-            "\n\n"
-            "<b>su -c \"dnf install fros-recordmydesktop\"</b>"
-            ));
-    }
-
 
     g_signal_connect(g_search_entry_bt, "changed", G_CALLBACK(search_timeout), NULL);
 
