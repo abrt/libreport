@@ -760,7 +760,7 @@ static void tv_details_row_activated(
                         GtkTreeViewColumn *column,
                         gpointer           user_data)
 {
-    gchar *item_name;
+    gchar *item_name = NULL;
     struct problem_item *item = get_current_problem_item_or_NULL(tree_view, &item_name);
     if (!item || !(item->flags & CD_FLAG_TXT))
         goto ret;
