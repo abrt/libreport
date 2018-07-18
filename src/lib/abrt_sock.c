@@ -75,9 +75,10 @@ static int connect_to_abrtd_and_call_DeleteDebugDump(const char *dump_dir_name)
                 result = (response[9] - '0') * 100 + (response[10] - '0') * 10 + (response[11] - '0');
             }
         }
+
+        close(socketfd);
     }
 
-    close(socketfd);
 
     return result;
 }
