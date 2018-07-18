@@ -1024,6 +1024,9 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
             break;
 
         char *event_name_end = strchr(event_name, '\n');
+        if (event_name_end == NULL)
+            break;
+
         *event_name_end = '\0';
 
         event_config_t *cfg = get_event_config(event_name);
