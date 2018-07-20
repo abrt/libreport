@@ -849,10 +849,12 @@ static int fdreopen(int dir_fd, DIR **d)
     { \
         if (dot_or_dotdot(dent->d_name)) continue; \
         int fd = secure_openat_read(dirfd(d), dent->d_name); \
-        if (fd >= 0)
+        if (fd >= 0) \
+        {
 
 #define FOREACH_REGULAR_FILE_AS_FD_AT_END \
-        close(fd); \
+            close(fd); \
+        } \
     } \
     closedir(d);
 
