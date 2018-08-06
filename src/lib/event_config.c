@@ -461,6 +461,8 @@ GList *get_options_with_err_msg(const char *event_name)
             inv_opt->invopt_name = xstrdup(opt->eo_name);
             inv_opt->invopt_error = xstrdup(err);
             err_list = g_list_prepend(err_list, inv_opt);
+
+            free(err);
         }
     }
 
