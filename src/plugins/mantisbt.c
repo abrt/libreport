@@ -1042,7 +1042,7 @@ mantisbt_get_issue_info(const mantisbt_settings_t *settings, int issue_id)
     issue_info->mii_dup_id = response_get_id_of_relatedto_issue(result->mr_body);
 
     if (strcmp(issue_info->mii_status, "closed") == 0
-        && strcmp(issue_info->mii_resolution, "duplicate") == 0
+        && (issue_info->mii_resolution != NULL && strcmp(issue_info->mii_resolution, "duplicate") == 0)
         && issue_info->mii_dup_id == -1 )
     {
         error_msg(_("Issue %i is CLOSED as DUPLICATE, but it has no DUPLICATE_ID"),
