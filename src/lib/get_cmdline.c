@@ -790,8 +790,7 @@ static int get_process_ppid_at(int pid_proc_fd, pid_t *ppid)
         r = -2;
     }
 
-    if (stat_file != NULL)
-        fclose(stat_file);
+    fclose(stat_file);
 
     return r;
 }
