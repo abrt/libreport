@@ -96,7 +96,7 @@ int xatoi_positive(const char *numstr)
 
 int try_atoi(const char *numstr, int *value)
 {
-    if (*numstr != '-')
+    if (numstr != NULL && *numstr != '-')
         return try_atoi_positive(numstr, value);
 
     unsigned tmp;
