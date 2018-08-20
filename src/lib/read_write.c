@@ -133,8 +133,8 @@ void* xmalloc_read(int fd, size_t *maxsz_p)
     /* Estimate file size */
     {
         struct stat st;
-        st.st_size = 0; /* in case fstat fails, assume 0 */
-        fstat(fd, &st);
+        if (fstat(fd, &st) != 0)
+            st.st_size = 0; /* in case fstat fails, assume 0 */
         /* /proc/N/stat files report st_size 0 */
         /* In order to make such files readable, we add small const (4k) */
         size = (st.st_size | 0xfff) + 1;
