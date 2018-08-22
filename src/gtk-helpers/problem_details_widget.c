@@ -21,8 +21,6 @@
 #include "internal_libreport_gtk.h"
 #include "internal_libreport.h"
 
-#define PROBLEM_DETAILS_WIDGET_GET_PRIVATE(o) \
-    (G_TYPE_INSTANCE_GET_PRIVATE((o), TYPE_PROBLEM_DETAILS_WIDGET, ProblemDetailsWidgetPrivate))
 
 #define EXPLICIT_ITEMS \
     CD_DUMPDIR, \
@@ -72,7 +70,7 @@ struct ProblemDetailsWidgetPrivate {
     problem_data_t *problem_data;
 };
 
-G_DEFINE_TYPE(ProblemDetailsWidget, problem_details_widget, GTK_TYPE_GRID)
+G_DEFINE_TYPE_WITH_PRIVATE(ProblemDetailsWidget, problem_details_widget, GTK_TYPE_GRID)
 
 static void problem_details_widget_finalize(GObject *object);
 
@@ -93,8 +91,6 @@ problem_details_widget_class_init(ProblemDetailsWidgetClass *klass)
     GObjectClass *object_class = G_OBJECT_CLASS(klass);
 
     object_class->finalize = problem_details_widget_finalize;
-
-    g_type_class_add_private(klass, sizeof(ProblemDetailsWidgetPrivate));
 }
 
 static void
@@ -373,7 +369,7 @@ problem_details_widget_populate(ProblemDetailsWidget *self)
 static void
 problem_details_widget_init(ProblemDetailsWidget *self)
 {
-    self->priv = PROBLEM_DETAILS_WIDGET_GET_PRIVATE(self);
+    self->priv = problem_details_widget_get_instance_private(self);
     self->priv->rows = 0;
     self->priv->problem_data = NULL;
 }
