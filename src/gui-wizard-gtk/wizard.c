@@ -760,7 +760,7 @@ static void tv_details_row_activated(
                         GtkTreeViewColumn *column,
                         gpointer           user_data)
 {
-    gchar *item_name;
+    gchar *item_name = NULL;
     struct problem_item *item = get_current_problem_item_or_NULL(tree_view, &item_name);
     if (!item || !(item->flags & CD_FLAG_TXT))
         goto ret;
@@ -1024,6 +1024,9 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
             break;
 
         char *event_name_end = strchr(event_name, '\n');
+        if (event_name_end == NULL)
+            break;
+
         *event_name_end = '\0';
 
         event_config_t *cfg = get_event_config(event_name);
