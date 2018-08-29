@@ -628,7 +628,7 @@ int main(int argc, char **argv)
     login(client, &rhbz);
 
 
-    int bug_id = 0;
+    unsigned long bug_id = 0;
 
     /* If REMOTE_RESULT contains "DUPLICATE 12345", we consider it a dup of 12345
      * and won't search on bz server.

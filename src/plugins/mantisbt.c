@@ -862,6 +862,7 @@ mantisbt_search_by_abrt_hash(mantisbt_settings_t *settings, const char *abrt_has
     }
 
     GList *ids = response_get_main_ids_list(result->mr_body);
+    mantisbt_result_free(result);
 
     return ids;
 }
@@ -906,6 +907,7 @@ mantisbt_search_duplicate_issues(mantisbt_settings_t *settings, const char *cate
     }
 
     GList *ids = response_get_main_ids_list(result->mr_body);
+    mantisbt_result_free(result);
 
     return ids;
 }
@@ -1040,7 +1042,7 @@ mantisbt_get_issue_info(const mantisbt_settings_t *settings, int issue_id)
     issue_info->mii_dup_id = response_get_id_of_relatedto_issue(result->mr_body);
 
     if (strcmp(issue_info->mii_status, "closed") == 0
-        && strcmp(issue_info->mii_resolution, "duplicate") == 0
+        && (issue_info->mii_resolution != NULL && strcmp(issue_info->mii_resolution, "duplicate") == 0)
         && issue_info->mii_dup_id == -1 )
     {
         error_msg(_("Issue %i is CLOSED as DUPLICATE, but it has no DUPLICATE_ID"),
@@ -1101,11 +1103,16 @@ mantisbt_get_project_id_from_name(mantisbt_settings_t *settings)
     soap_node_add_child_node(req->sr_method, "project_name", SOAP_STRING, settings->m_project);
 
     mantisbt_result_t *result = mantisbt_soap_call(settings, req);
+    soap_request_free(req);
 
     if (result->mr_http_resp_code != 200)
+    {
+        mantisbt_result_free(result);
         error_msg_and_die(_("Failed to get project id from name"));
+    }
 
     settings->m_project_id = response_get_return_value_as_string(result->mr_body);
+    mantisbt_result_free(result);
 
     return;
 }
