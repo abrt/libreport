@@ -564,38 +564,38 @@ int main(int argc, char **argv)
         {
             .format = "Truncated backtrace:: %bare_%short_backtrace",
             .result = "Truncated backtrace:\n"
-                      "#1 crash in /usr/bin/will_segfault\n"
-                      "#2 varargs in /usr/bin/will_segfault\n"
-                      "#3 f in /usr/bin/will_segfault\n"
-                      "#4 callback in /usr/bin/will_segfault\n"
-                      "#5 call_me_back in /usr/lib64/libwillcrash.so.0.0.0\n"
-                      "#6 recursive in /usr/bin/will_segfault\n"
-                      "#7 main in /usr/bin/will_segfault\n",
+                      "#1 [will_segfault] crash\n"
+                      "#2 [will_segfault] varargs\n"
+                      "#3 [will_segfault] f\n"
+                      "#4 [will_segfault] callback\n"
+                      "#5 [libwillcrash.so.0.0.0] call_me_back\n"
+                      "#6 [will_segfault] recursive\n"
+                      "#7 [will_segfault] main\n",
             .max_text_size = -1,
             .max_frames = -1
         },
         {
             .format = "Truncated backtrace:: %bare_%short_backtrace",
             .result = "Truncated backtrace:\n"
-                      "#1 crash in /usr/bin/will_segfault\n"
-                      "#2 varargs in /usr/bin/will_segfault\n"
-                      "#3 f in /usr/bin/will_segfault\n"
-                      "#4 callback in /usr/bin/will_segfault\n"
-                      "#5 call_me_back in /usr/lib64/libwillcrash.so.0.0.0\n",
+                      "#1 [will_segfault] crash\n"
+                      "#2 [will_segfault] varargs\n"
+                      "#3 [will_segfault] f\n"
+                      "#4 [will_segfault] callback\n"
+                      "#5 [libwillcrash.so.0.0.0] call_me_back\n",
             .max_text_size = -1,
             .max_frames = 5
         },
         {
             .format = "Truncated backtrace:: %bare_%short_backtrace",
             .result = "Truncated backtrace:\n"
-                      "#1 crash in /usr/bin/will_segfault\n",
+                      "#1 [will_segfault] crash\n",
             .max_text_size = -1,
             .max_frames = 1
         },
         {
             .format = "Truncated backtrace:: %bare_%short_backtrace",
             .result = "Truncated backtrace:\n"
-                      "#1 crash in /usr/bin/will_segfault\n",
+                      "#1 [will_segfault] crash\n",
             .max_text_size = 0,
             .max_frames = 1
         },
@@ -603,7 +603,7 @@ int main(int argc, char **argv)
         {
             .format = "Truncated backtrace:: %bare_%short_backtrace",
             .result = "Truncated backtrace:\n"
-                      "#1 crash in /usr/bin/will_segfault\n",
+                      "#1 [will_segfault] crash\n",
             .max_text_size = strlen(CORE_BACKTRACE_CONTENT) + 1,
             .max_frames = 1
         },
