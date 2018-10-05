@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.9.6] - 2018-10-05
+### Changed
+- Removed option to screencast problems when reporting to Bugzilla.
+- libreport-filesystem arch changed to noarch.
+- python-rhsm dependency was replaced with subscription-manager-rhsm.
+
+### Fixed
+- Fixed majority of bugs found by Coverity Scan.
+- Fixed issue with quotes in configuration file for reporter-mailx.
+- Fixed bug causing abrt-cli to segfault.
+
 ## [2.9.5] - 2018-04-24
 ### Changed
 - Actualize spec file according to downstream
@@ -113,7 +124,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.9.5...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.9.6...HEAD
+[2.9.6]: https://github.com/abrt/libreport/compare/2.9.5...2.9.6
 [2.9.5]: https://github.com/abrt/libreport/compare/2.9.4...2.9.5
 [2.9.4]: https://github.com/abrt/libreport/compare/2.9.3...2.9.4
 [2.9.3]: https://github.com/abrt/libreport/compare/2.9.2...2.9.3

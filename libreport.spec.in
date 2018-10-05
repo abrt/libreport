@@ -812,6 +812,34 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Fri Oct 05 2018 Martin Kutlak <mkutlak@redhat.com> 2.9.6-1
+- Translation updates
+- tests: Adjust format of truncated backtrace for python and core
+- spec: Make libreport-filesystem subpackage noarch
+- coverity: Remove deadcode #def47
+- coverity: Remove reverse inull #def30
+- coverity: Check return value of fstat call #def31
+- coverity: Remove check for null pointer with no effect #def33
+- coverity: Check null pointer before dereferencing it #def35
+- coverity: Change data type for bug_id variable #def[44,43]
+- coverity: Check if pointer isnt null before strcmp #def40
+- coverity: Free resource leaking vars #def[42,41,38,37]
+- coverity fixes [#def21]
+- coverity fixes [#def16] [#def17]
+- coverity fix [#def9]
+- coverity fix [#def7]
+- coverity fix [#def6]
+- gui: Replace deprecated g_type_class_add_private
+- potfiles: fix issue in POTFILES.in
+- python_sitearch -> python2_sitearch
+- Remove option to screencast problems
+- lib: fix a SEGV in list_possible_events()
+- ureport: use python3 to get consumerCertDir
+- spec: set PYTHON variable because of ./py-compile
+- r-mailx: Add comment explaining expected values in config
+- reporter-mailx: Remove double quotes from config
+- spec: drop dependency on python-rhsm
+
 * Wed Apr 25 2018 Matej Habrnal <mhabrnal@redhat.com> 2.9.5-1
 - build: create report sub-directory
 - testcase: port python's tests to python3
