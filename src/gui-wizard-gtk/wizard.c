@@ -2217,7 +2217,7 @@ static void add_warning(const char *warning)
     gtk_widget_set_valign (warning_lbl, GTK_ALIGN_END);
 
     gtk_label_set_justify(GTK_LABEL(warning_lbl), GTK_JUSTIFY_LEFT);
-    gtk_label_set_line_wrap(GTK_LABEL(warning_lbl), TRUE);
+    gtk_label_set_ellipsize(GTK_LABEL(warning_lbl), PANGO_ELLIPSIZE_END);
 
     add_widget_to_warning_area(warning_lbl);
 }
