@@ -124,8 +124,12 @@ static GtkExpander *g_exp_search;
 static gulong g_tv_sensitive_sel_hndlr;
 static gboolean g_warning_issued;
 
+static GtkWidget *g_report_stack;
+static GtkWidget *g_report_status_box;
+static GtkWidget *g_report_warning_box;
 static GtkSpinner *g_spinner_event_log;
 static GtkImage *g_img_process_fail;
+static GtkWidget *g_report_warning_label_box;
 
 static GtkExpander *g_exp_report_log;
 
@@ -251,8 +255,10 @@ static struct strbuf *cmd_output = NULL;
 
 static void clear_warnings(void);
 static void show_warnings(void);
-static void add_warning(const char *warning);
-static bool check_minimal_bt_rating(const char *event_name);
+static void add_warning(const char   *warning,
+                        GtkContainer *container);
+static bool check_minimal_bt_rating(const char  *event_name,
+                                    char       **warning);
 static char *get_next_processed_event(GList **events_list);
 static void on_next_btn_cb(GtkWidget *btn, gpointer user_data);
 
@@ -941,7 +947,17 @@ static void event_rb_was_toggled(GtkButton *button, gpointer user_data)
             check_event_config(evdata->event_name);
 
             clear_warnings();
-            const bool good_rating = check_minimal_bt_rating(g_event_selected);
+
+            char *warning = NULL;
+            const bool good_rating = check_minimal_bt_rating(g_event_selected,
+                                                             &warning);
+
+            if (warning != NULL)
+            {
+                add_warning(warning, GTK_CONTAINER(g_box_warning_labels));
+                g_clear_pointer(&warning, g_free);
+            }
+
             show_warnings();
 
             gtk_widget_set_sensitive(g_btn_next, good_rating);
@@ -1696,8 +1712,19 @@ static void terminate_event_chain(int flags)
 
 static void cancel_processing(GtkLabel *status_label, const char *message, int terminate_flags)
 {
+    PangoAttribute *attr;
+    PangoAttrList *list;
+
+    attr = pango_attr_weight_new(PANGO_WEIGHT_BOLD);
+    list = pango_attr_list_new();
+
+    pango_attr_list_insert(list, attr);
+
+    gtk_label_set_attributes(status_label, list);
     gtk_label_set_text(status_label, message ? message : _("Processing was canceled"));
     terminate_event_chain(terminate_flags);
+
+    pango_attr_list_unref(list);
 }
 
 static void update_command_run_log(const char* message, struct analyze_event_data *evd)
@@ -1906,28 +1933,27 @@ static void on_failed_event(const char *event_name)
     if (strcmp(event_name, EMERGENCY_ANALYSIS_EVENT_NAME) == 0)
         return;
 
-   add_warning(
-_("Processing of the problem failed. This can have many reasons but there are three most common:\n"\
-"\t▫ <b>network connection problems</b>\n"\
-"\t▫ <b>corrupted problem data</b>\n"\
-"\t▫ <b>invalid configuration</b>"
-));
+   add_warning(_("Processing of the problem failed. This can have many reasons but there are three most common:\n"\
+                 "\t▫ <b>network connection problems</b>\n"\
+                 "\t▫ <b>corrupted problem data</b>\n"\
+                 "\t▫ <b>invalid configuration</b>"),
+               GTK_CONTAINER(g_report_warning_label_box));
 
     if (!g_expert_mode)
     {
-        add_warning(
-_("If you want to update the configuration and try to report again, please open <b>Preferences</b> item\n"
-"in the application menu and after applying the configuration changes click <b>Repeat</b> button."));
+        add_warning(_("If you want to update the configuration and try to report again, please open <b>Preferences</b> item\n"
+                      "in the application menu and after applying the configuration changes click <b>Repeat</b> button."),
+                    GTK_CONTAINER(g_report_warning_label_box));
         gtk_widget_show(g_btn_repeat);
     }
 
-    add_warning(
-_("If you are sure that this problem is not caused by network problems neither by invalid configuration\n"
-"and want to help us, please click on the upload button and provide all problem data for a deep analysis.\n"\
-"<i>Before you do that, please consider the security risks. Problem data may contain sensitive information like\n"\
-"passwords. The uploaded data are stored in a protected storage and only a limited number of persons can read them.</i>"));
+    add_warning(_("If you are sure that this problem is not caused by network problems neither by invalid configuration\n"
+                  "and want to help us, please click on the upload button and provide all problem data for a deep analysis.\n"\
+                  "<i>Before you do that, please consider the security risks. Problem data may contain sensitive information like\n"\
+                  "passwords. The uploaded data are stored in a protected storage and only a limited number of persons can read them.</i>"),
+                GTK_CONTAINER(g_report_warning_label_box));
 
-    show_warnings();
+    gtk_widget_show(g_report_warning_label_box);
 
     gtk_widget_show(g_btn_onfail);
 }
@@ -2196,16 +2222,18 @@ static void start_event_run(const char *event_name)
  * the widget is added as a child of the VBox in the warning area
  *
  */
-static void add_widget_to_warning_area(GtkWidget *widget)
+static void add_widget_to_warning_area(GtkWidget    *widget,
+                                       GtkContainer *container)
 {
     g_warning_issued = true;
-    gtk_box_pack_start(g_box_warning_labels, widget, false, false, 0);
+    gtk_container_add(container, widget);
     gtk_widget_show_all(widget);
 }
 
 /* Backtrace checkbox handling */
 
-static void add_warning(const char *warning)
+static void add_warning(const char   *warning,
+                        GtkContainer *container)
 {
     char *label_str = xasprintf("• %s", warning);
     GtkWidget *warning_lbl = gtk_label_new(NULL);
@@ -2217,9 +2245,9 @@ static void add_warning(const char *warning)
     gtk_widget_set_valign (warning_lbl, GTK_ALIGN_END);
 
     gtk_label_set_justify(GTK_LABEL(warning_lbl), GTK_JUSTIFY_LEFT);
-    gtk_label_set_line_wrap(GTK_LABEL(warning_lbl), TRUE);
+    gtk_label_set_ellipsize(GTK_LABEL(warning_lbl), PANGO_ELLIPSIZE_END);
 
-    add_widget_to_warning_area(warning_lbl);
+    add_widget_to_warning_area(warning_lbl, container);
 }
 
 static void on_sensitive_ticket_clicked_cb(GtkWidget *button, gpointer user_data)
@@ -2259,7 +2287,8 @@ static void private_ticket_creation_warning(int flags)
 
     if (flags & PRIV_WARN_SHOW_MSG)
     {
-       add_warning(_("Possible sensitive data detected, feel free to edit the report and remove them."));
+       add_warning(_("Possible sensitive data detected, feel free to edit the report and remove them."),
+                   GTK_CONTAINER(g_box_warning_labels));
        show_warnings();
     }
 }
@@ -2289,11 +2318,13 @@ static void clear_warnings(void)
 
     gtk_widget_hide(g_widget_warnings_area);
     gtk_container_foreach(GTK_CONTAINER(g_box_warning_labels), &remove_child_widget, NULL);
+    gtk_container_foreach(GTK_CONTAINER(g_report_warning_label_box), &remove_child_widget, NULL);
+    gtk_widget_hide(g_report_warning_label_box);
     g_warning_issued = false;
 }
 
-/* TODO : this function should not set a warning directly, it makes the function unusable for add_event_buttons(); */
-static bool check_minimal_bt_rating(const char *event_name)
+static bool check_minimal_bt_rating(const char  *event_name,
+                                    char       **warning)
 {
     bool acceptable_rating = true;
     event_config_t *event_cfg = NULL;
@@ -2308,13 +2339,7 @@ static bool check_minimal_bt_rating(const char *event_name)
     else
         event_cfg = get_event_config(event_name);
 
-    char *description = NULL;
-    acceptable_rating = check_problem_rating_usability(event_cfg, g_cd, &description, NULL);
-    if (description)
-    {
-        add_warning(description);
-        free(description);
-    }
+    acceptable_rating = check_problem_rating_usability(event_cfg, g_cd, warning, NULL);
 
     return acceptable_rating;
 }
@@ -2757,8 +2782,17 @@ static char *get_next_processed_event(GList **events_list)
     }
 
     clear_warnings();
-    const bool acceptable = check_minimal_bt_rating(event_name);
-    show_warnings();
+
+    char *warning = NULL;
+    const bool acceptable = check_minimal_bt_rating(event_name, &warning);
+
+    if (warning != NULL)
+    {
+        add_warning(warning, GTK_CONTAINER(g_report_warning_label_box));
+        g_clear_pointer(&warning, g_free);
+
+        gtk_widget_show(g_report_warning_label_box);
+    }
 
     if (!acceptable)
     {
@@ -3465,36 +3499,40 @@ static void add_pages(void)
     }
 
     /* Set pointers to objects we might need to work with */
-    g_lbl_cd_reason        = GTK_LABEL(        gtk_builder_get_object(g_builder, "lbl_cd_reason"));
-    g_box_events           = GTK_BOX(          gtk_builder_get_object(g_builder, "vb_events"));
-    g_box_workflows        = GTK_BOX(          gtk_builder_get_object(g_builder, "vb_workflows"));
-    g_lbl_event_log        = GTK_LABEL(        gtk_builder_get_object(g_builder, "lbl_event_log"));
-    g_tv_event_log         = GTK_TEXT_VIEW(    gtk_builder_get_object(g_builder, "tv_event_log"));
-    g_tv_comment           = GTK_TEXT_VIEW(    gtk_builder_get_object(g_builder, "tv_comment"));
-    g_eb_comment           = GTK_EVENT_BOX(    gtk_builder_get_object(g_builder, "eb_comment"));
-    g_cb_no_comment        = GTK_CHECK_BUTTON( gtk_builder_get_object(g_builder, "cb_no_comment"));
-    g_tv_details           = GTK_TREE_VIEW(    gtk_builder_get_object(g_builder, "tv_details"));
-    g_tb_approve_bt        = GTK_TOGGLE_BUTTON(gtk_builder_get_object(g_builder, "cb_approve_bt"));
-    g_search_entry_bt      = GTK_ENTRY(        gtk_builder_get_object(g_builder, "entry_search_bt"));
-    g_container_details1   = GTK_CONTAINER(    gtk_builder_get_object(g_builder, "container_details1"));
-    g_container_details2   = GTK_CONTAINER(    gtk_builder_get_object(g_builder, "container_details2"));
-    g_btn_add_file         = GTK_BUTTON(       gtk_builder_get_object(g_builder, "btn_add_file"));
-    g_lbl_size             = GTK_LABEL(        gtk_builder_get_object(g_builder, "lbl_size"));
-    g_notebook             = GTK_NOTEBOOK(     gtk_builder_get_object(g_builder, "notebook_edit"));
-    g_ls_sensitive_list    = GTK_LIST_STORE(   gtk_builder_get_object(g_builder, "ls_sensitive_words"));
-    g_tv_sensitive_list    = GTK_TREE_VIEW(    gtk_builder_get_object(g_builder, "tv_sensitive_words"));
-    g_tv_sensitive_sel     = GTK_TREE_SELECTION( gtk_builder_get_object(g_builder, "tv_sensitive_words_selection"));
-    g_rb_forbidden_words   = GTK_RADIO_BUTTON( gtk_builder_get_object(g_builder, "rb_forbidden_words"));
-    g_rb_custom_search     = GTK_RADIO_BUTTON( gtk_builder_get_object(g_builder, "rb_custom_search"));
-    g_exp_search           = GTK_EXPANDER(     gtk_builder_get_object(g_builder, "expander_search"));
-    g_spinner_event_log    = GTK_SPINNER(      gtk_builder_get_object(g_builder, "spinner_event_log"));
-    g_img_process_fail     = GTK_IMAGE(        gtk_builder_get_object(g_builder, "img_process_fail"));
-    g_exp_report_log       = GTK_EXPANDER(     gtk_builder_get_object(g_builder, "expand_report"));
-    g_vb_simple_details    = GTK_BOX(          gtk_builder_get_object(g_builder, "vb_simple_details"));
-    g_cmb_reproducible     = GTK_COMBO_BOX_TEXT(gtk_builder_get_object(g_builder, "cmb_reproducible"));
-    g_tv_steps             = GTK_TEXT_VIEW(    gtk_builder_get_object(g_builder, "tv_steps"));
-    g_vb_complex_details   = GTK_BOX(          gtk_builder_get_object(g_builder, "vb_complex_details"));
-    g_lbl_complex_details_hint = GTK_LABEL(    gtk_builder_get_object(g_builder, "lbl_complex_details_hint"));
+    g_lbl_cd_reason            = GTK_LABEL(         gtk_builder_get_object(g_builder, "lbl_cd_reason"));
+    g_box_events               = GTK_BOX(           gtk_builder_get_object(g_builder, "vb_events"));
+    g_box_workflows            = GTK_BOX(           gtk_builder_get_object(g_builder, "vb_workflows"));
+    g_lbl_event_log            = GTK_LABEL(         gtk_builder_get_object(g_builder, "lbl_event_log"));
+    g_tv_event_log             = GTK_TEXT_VIEW(     gtk_builder_get_object(g_builder, "tv_event_log"));
+    g_tv_comment               = GTK_TEXT_VIEW(     gtk_builder_get_object(g_builder, "tv_comment"));
+    g_eb_comment               = GTK_EVENT_BOX(     gtk_builder_get_object(g_builder, "eb_comment"));
+    g_cb_no_comment            = GTK_CHECK_BUTTON(  gtk_builder_get_object(g_builder, "cb_no_comment"));
+    g_tv_details               = GTK_TREE_VIEW(     gtk_builder_get_object(g_builder, "tv_details"));
+    g_tb_approve_bt            = GTK_TOGGLE_BUTTON( gtk_builder_get_object(g_builder, "cb_approve_bt"));
+    g_search_entry_bt          = GTK_ENTRY(         gtk_builder_get_object(g_builder, "entry_search_bt"));
+    g_container_details1       = GTK_CONTAINER(     gtk_builder_get_object(g_builder, "container_details1"));
+    g_container_details2       = GTK_CONTAINER(     gtk_builder_get_object(g_builder, "container_details2"));
+    g_btn_add_file             = GTK_BUTTON(        gtk_builder_get_object(g_builder, "btn_add_file"));
+    g_lbl_size                 = GTK_LABEL(         gtk_builder_get_object(g_builder, "lbl_size"));
+    g_notebook                 = GTK_NOTEBOOK(      gtk_builder_get_object(g_builder, "notebook_edit"));
+    g_ls_sensitive_list        = GTK_LIST_STORE(    gtk_builder_get_object(g_builder, "ls_sensitive_words"));
+    g_tv_sensitive_list        = GTK_TREE_VIEW(     gtk_builder_get_object(g_builder, "tv_sensitive_words"));
+    g_tv_sensitive_sel         = GTK_TREE_SELECTION(gtk_builder_get_object(g_builder, "tv_sensitive_words_selection"));
+    g_rb_forbidden_words       = GTK_RADIO_BUTTON(  gtk_builder_get_object(g_builder, "rb_forbidden_words"));
+    g_rb_custom_search         = GTK_RADIO_BUTTON(  gtk_builder_get_object(g_builder, "rb_custom_search"));
+    g_exp_search               = GTK_EXPANDER(      gtk_builder_get_object(g_builder, "expander_search"));
+    g_report_stack             = GTK_WIDGET(        gtk_builder_get_object(g_builder, "report-stack"));
+    g_report_status_box        = GTK_WIDGET(        gtk_builder_get_object(g_builder, "report-status-box"));
+    g_report_warning_box       = GTK_WIDGET(        gtk_builder_get_object(g_builder, "report-warning-box"));
+    g_spinner_event_log        = GTK_SPINNER(       gtk_builder_get_object(g_builder, "spinner_event_log"));
+    g_img_process_fail         = GTK_IMAGE(         gtk_builder_get_object(g_builder, "img_process_fail"));
+    g_report_warning_label_box = GTK_WIDGET(        gtk_builder_get_object(g_builder, "report-warning-label-box"));
+    g_exp_report_log           = GTK_EXPANDER(      gtk_builder_get_object(g_builder, "expand_report"));
+    g_vb_simple_details        = GTK_BOX(           gtk_builder_get_object(g_builder, "vb_simple_details"));
+    g_cmb_reproducible         = GTK_COMBO_BOX_TEXT(gtk_builder_get_object(g_builder, "cmb_reproducible"));
+    g_tv_steps                 = GTK_TEXT_VIEW(     gtk_builder_get_object(g_builder, "tv_steps"));
+    g_vb_complex_details       = GTK_BOX(           gtk_builder_get_object(g_builder, "vb_complex_details"));
+    g_lbl_complex_details_hint = GTK_LABEL(         gtk_builder_get_object(g_builder, "lbl_complex_details_hint"));
 
     gtk_widget_set_no_show_all(GTK_WIDGET(g_spinner_event_log), true);
 
