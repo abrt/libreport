@@ -2,27 +2,26 @@ module Libreport =
     autoload xfm
 
     (* Define useful primitives *)
-    let val_sep        = del /[ \t]*=[ \t]*/ " = "
-    let val            = store /([^ \t\n].*[^ \t\n]|[^ \t\n])/
-    let eol            = del /\n/ "\n"
-    let whitespace_eol = del /[ \t]*\n/ "\n"
-    let ident          = /[a-zA-Z][a-zA-Z_]+/
+    let word      = /[a-zA-Z][a-zA-Z_]+/
+    let empty_val = value ""
+    let val       = store Rx.space_in
+    let equal     = Sep.space_equal
+    let hard_eol  = Util.del_str "\n"
+    let eol       = Util.eol
 
-    (* Define comment *)
-    let commented_line = [ label "#comment" . del /#[ \t]*/ "# " . val . eol ]
-    let empty_comment  = [ label "#comment" . value "" . del /#[ \t]*/ "# " . eol ]
-    let comment        = commented_line | empty_comment
+    (* Define entry
+       - Key:Value pairs are separated by an equal sign.
+       - Values can be empty.
+       - Quoting values is not supported.
+    *)
+    let entry_gen (body:lens) (end:lens) =
+        [ Util.indent . key word . equal . body . end ]
 
-    (* Define empty *)
-    let empty          = [ del /[ \t]*\n/ "\n" ]
-
-    (* Define option *)
-    let option_val     = [ del /[ \t]*/ "" . key ident . val_sep . val . whitespace_eol ]
-    let option_no_val  = [ value "" . del /[ \t]*/ "" . key ident . val_sep . eol ]
-    let option         = option_val | option_no_val
+    let entry = entry_gen val       eol
+              | entry_gen empty_val hard_eol
 
     (* Define lens *)
-    let lns = ( comment | empty | option )*
+    let lns = ( Util.comment | Util.empty | entry )*
 
     let filter = (incl "/etc/libreport/plugins/*")
                . (incl "/etc/libreport/events/*")
