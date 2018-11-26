@@ -310,6 +310,9 @@ void free_event_config_data(void)
 
 event_config_t *get_event_config(const char *name)
 {
+    if (name == NULL)
+        return NULL;
+
     if (!g_event_config_list)
         return NULL;
     if (g_event_config_symlinks)
