@@ -53,9 +53,9 @@ EOLWhitespace_b = nice
         { "#comment" = "component match when it searches for duplicates of" }
         { "#comment" = "bugs in selinux-policy component." }
         { "#comment" = "(If you need to add more, the syntax is: \"component[,component...]\")" }
-        { "#comment" = "" }
-        { "#comment" = "" }
-        { "#comment" = "" }
+        {}
+        {}
+        {}
         { "DontMatchComponents" = "selinux-policy" }
         {}
         { "#comment" = "for more info about these settings see: https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets" }
