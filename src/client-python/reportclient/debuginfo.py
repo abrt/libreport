@@ -233,6 +233,17 @@ class DebugInfoDownload(object):
         self.keeprpms = keep_rpms
         self.noninteractive = noninteractive
         self.repo_pattern = repo_pattern
+        self.package_files_dict = {}
+        self.not_found = []
+        self.todownload_size = 0
+        self.installed_size = 0
+        self.find_packages_run = False
+
+    def get_download_size(self):
+        return self.todownload_size
+
+    def get_install_size(self):
+        return self.installed_size
 
     def mute_stdout(self):
         """
@@ -286,6 +297,26 @@ class DebugInfoDownload(object):
     def download_package(self, pkg):
         pass
 
+    def find_packages(self, files):
+        self.find_packages_run = True;
+        # nothing to download?
+        if not files:
+            return RETURN_FAILURE
+
+        print(_("Initializing package manager"))
+        self.prepare()
+
+        # This takes some time, let user know what we are doing
+        print(_("Setting up repositories"))
+        self.initialize_repositories()
+
+        print(_("Looking for needed packages in repositories"))
+        (self.package_files_dict,
+         self.not_found,
+         self.todownload_size,
+         self.installed_size) = self.triage(files)
+
+
     # return value will be used as exitcode. So 0 = ok, !0 - error
     def download(self, files, download_exact_files=False):
         """
@@ -309,32 +340,18 @@ class DebugInfoDownload(object):
         if retval != RETURN_OK:
             return retval
 
-        print(_("Initializing package manager"))
-        self.prepare()
-        #if verbose == 0:
-        #    # this suppress yum messages about setting up repositories
-        #    mute_stdout()
+        if not self.find_packages_run:
+            self.find_packages(files)
 
-        # This takes some time, let user know what we are doing
-        print(_("Setting up repositories"))
-        self.initialize_repositories()
+        if verbose != 0 or len(self.not_found) != 0:
+            print(_("Can't find packages for {0} debuginfo files").format(len(self.not_found)))
 
-        #if verbose == 0:
-        #    # re-enable the output to stdout
-        #    unmute_stdout()
-
-        print(_("Looking for needed packages in repositories"))
-        package_files_dict, not_found, todownload_size, installed_size = self.triage(files)
-
-        if verbose != 0 or len(not_found) != 0:
-            print(_("Can't find packages for {0} debuginfo files").format(len(not_found)))
-
-        if verbose != 0 or len(package_files_dict) != 0:
-            print(_("Packages to download: {0}").format(len(package_files_dict)))
+        if verbose != 0 or len(self.package_files_dict) != 0:
+            print(_("Packages to download: {0}").format(len(self.package_files_dict)))
             question = _(
                 "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?") \
-                .format(todownload_size / (1024 * 1024),
-                        installed_size / (1024 * 1024))
+                .format(self.todownload_size / (1024 * 1024),
+                        self.installed_size / (1024 * 1024))
 
             if not self.noninteractive and not ask_yes_no(question):
                 print(_("Download cancelled by user"))
@@ -343,7 +360,7 @@ class DebugInfoDownload(object):
             # check if there is enough free space in both tmp and cache
             res = os.statvfs(self.tmpdir)
             tmp_space = float(res.f_bsize * res.f_bavail) / (1024 * 1024)
-            if (todownload_size / (1024 * 1024)) > tmp_space:
+            if (self.todownload_size / (1024 * 1024)) > tmp_space:
                 question = _("Warning: Not enough free space in tmp dir '{0}'"
                              " ({1:.2f}Mb left). Continue?").format(
                                  self.tmpdir, tmp_space)
@@ -354,7 +371,7 @@ class DebugInfoDownload(object):
 
             res = os.statvfs(self.cachedir)
             cache_space = float(res.f_bsize * res.f_bavail) / (1024 * 1024)
-            if (installed_size / (1024 * 1024)) > cache_space:
+            if (self.installed_size / (1024 * 1024)) > cache_space:
                 question = _("Warning: Not enough free space in cache dir "
                              "'{0}' ({1:.2f}Mb left). Continue?").format(
                                  self.cachedir, cache_space)
@@ -363,10 +380,10 @@ class DebugInfoDownload(object):
                     print(_("Download cancelled by user"))
                     return RETURN_CANCEL_BY_USER
 
-        progress_observer = DownloadProgress(len(package_files_dict))
+        progress_observer = DownloadProgress(len(self.package_files_dict))
         self.initialize_progress(progress_observer)
 
-        for pkg, files in package_files_dict.items():
+        for pkg, files in self.package_files_dict.items():
             # Download
             package_full_path, err = self.download_package(pkg)
 
