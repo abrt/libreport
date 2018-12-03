@@ -533,7 +533,7 @@ bool check_problem_rating_usability(const event_config_t *cfg,
     }
     else if (rating < minimal_rating)
     {
-        tmp_desc = xstrdup(_("Reporting disabled because the backtrace is unusable."));
+        tmp_desc = xstrdup(_("Reporting is disabled because the generated backtrace has low informational value."));
 
         const char *package = problem_data_get_content_or_NULL(pd, FILENAME_PACKAGE);
         if (package && package[0])
