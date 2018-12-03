@@ -106,26 +106,38 @@ class DNFDebugInfoDownload(DebugInfoDownload):
             print(_("Error setting up repositories: '{0!s}'").format(str(ex)))
 
     def triage(self, files):
-        q = self.base.sack.query()
-        i = q.available()
+        dnf_query = self.base.sack.query()
+        dnf_available = dnf_query.available()
         package_files_dict = {}
         not_found = []
         todownload_size = 0
         installed_size = 0
         for debuginfo_path in files:
-            packages = i.filter(file=debuginfo_path)
+            di_package_list = []
+            packages = dnf_available.filter(file=debuginfo_path)
+
             if not packages:
                 log2("not found package for %s", debuginfo_path)
                 not_found.append(debuginfo_path)
             else:
-                if packages[0] in package_files_dict.keys():
-                    package_files_dict[packages[0]].append(debuginfo_path)
-                else:
-                    package_files_dict[packages[0]] = [debuginfo_path]
-                    todownload_size += float(packages[0].downloadsize)
-                    installed_size += float(packages[0].installsize)
+                di_package_list.append(packages[0])
+                if packages[0].requires:
+                    package_reqs = dnf_available.filter(provides=packages[0].requires,
+                                                        arch=packages[0].arch)
+                    for pkg in package_reqs:
+                        if pkg not in di_package_list:
+                            di_package_list.append(pkg)
+                            log2("found required package {0} for {1}".format(pkg, packages[0]))
 
-                log2("found packages for %s: %s", debuginfo_path, packages[0])
+                for pkg in di_package_list:
+                    if pkg in package_files_dict.keys():
+                        package_files_dict[pkg].append(debuginfo_path)
+                    else:
+                        package_files_dict[pkg] = [debuginfo_path]
+                        todownload_size += float(pkg.downloadsize)
+                        installed_size += float(pkg.installsize)
+
+                    log2("found packages for %s: %s", debuginfo_path, pkg)
         return (package_files_dict, not_found, todownload_size, installed_size)
 
     def download_package(self, pkg):
