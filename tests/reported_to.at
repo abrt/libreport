@@ -221,7 +221,7 @@ bool parse_and_check(const char *reported_to, GList *expected)
 
         if(e->timestamp != c->timestamp)
         {
-            printf("Timestamps: '%lld' != '%lld'\n", e->timestamp, c->timestamp);
+            printf("Timestamps: '%ld' != '%ld'\n", e->timestamp, c->timestamp);
             goto finish;
         }
 
