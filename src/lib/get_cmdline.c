@@ -905,6 +905,7 @@ int process_has_own_root_at(int pid_proc_fd)
         close(mnt_fd);
         return r;
     }
+    fseek(fin, 0, SEEK_SET);
 
     r = get_mountinfo_for_mount_point(fin, &pid_root, "/");
     fclose(fin);
@@ -925,6 +926,7 @@ int process_has_own_root_at(int pid_proc_fd)
         return r;
     }
 
+    fseek(fin, 0, SEEK_SET);
     r = get_mountinfo_for_mount_point(fin, &system_root, "/");
     fclose(fin);
     if (r)
