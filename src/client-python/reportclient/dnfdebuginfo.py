@@ -112,6 +112,23 @@ class DNFDebugInfoDownload(DebugInfoDownload):
         not_found = []
         todownload_size = 0
         installed_size = 0
+
+        def required_packages(query, package, origin):
+            """
+            Recursive function to find all required packages of required packages of ...
+              origin - should stop infinite recursion (A => B => ... => X => A)
+            """
+            required_pkg_list = []
+            if package.requires:
+                pkg_reqs = query.filter(provides=package.requires, arch=package.arch)
+                for p in pkg_reqs:
+                    if p.name != origin.name and p not in required_pkg_list:
+                        required_pkg_list.append(p)
+                        required_pkg_list += required_packages(query, p, origin)
+
+            return required_pkg_list
+
+
         for debuginfo_path in files:
             di_package_list = []
             packages = dnf_available.filter(file=debuginfo_path)
@@ -122,12 +139,12 @@ class DNFDebugInfoDownload(DebugInfoDownload):
             else:
                 di_package_list.append(packages[0])
                 if packages[0].requires:
-                    package_reqs = dnf_available.filter(provides=packages[0].requires,
-                                                        arch=packages[0].arch)
+                    package_reqs = required_packages(dnf_available, packages[0], packages[0])
                     for pkg in package_reqs:
                         if pkg not in di_package_list:
                             di_package_list.append(pkg)
                             log2("found required package {0} for {1}".format(pkg, packages[0]))
+
 
                 for pkg in di_package_list:
                     if pkg in package_files_dict.keys():
