@@ -29,7 +29,7 @@ parse_build_requires_from_spec_file()
 
 list_build_dependencies()
 {
-    local BUILD_SYSTEM_DEPS_LIST="gettext-devel"
+    local BUILD_SYSTEM_DEPS_LIST="gettext-devel make"
     echo $BUILD_SYSTEM_DEPS_LIST $(parse_build_requires_from_spec_file libreport)
 }
 
