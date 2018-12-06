@@ -61,6 +61,9 @@ int iso_date_string_parse(const char *date, time_t *pt)
         return -EINVAL;
     }
 
+    // daylight saving time not in use
+    local.tm_isdst = 0;
+
     *pt = mktime(&local);
     return 0;
 }
