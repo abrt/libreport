@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.9.7] - 2018-12-07
+### Changed
+- Visual improvements in gui wizard
+
+### Added
+- Install debuginfo of all required packages as well
+
+
 ## [2.9.6] - 2018-10-05
 ### Changed
 - Removed option to screencast problems when reporting to Bugzilla.
@@ -124,7 +132,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.9.6...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.9.7...HEAD
+[2.9.7]: https://github.com/abrt/libreport/compare/2.9.6...2.9.7
 [2.9.6]: https://github.com/abrt/libreport/compare/2.9.5...2.9.6
 [2.9.5]: https://github.com/abrt/libreport/compare/2.9.4...2.9.5
 [2.9.4]: https://github.com/abrt/libreport/compare/2.9.3...2.9.4

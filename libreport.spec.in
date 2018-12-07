@@ -812,6 +812,25 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Fri Dec 07 2018 Matej Marusak <mmarusak@redhat.com> 2.9.7-1
+- reportclient: Search for required packages recursively
+- event_config: Modify unusable backtrace message
+- reportclient: Find and download required debuginfo packages
+- lib: Explicitly do not use DST
+- autogen: List make in sysdeps command
+- lib: Seek beginning of mountinfo file
+- report-client: Find debuginfos in own method
+- lib: Add a null guard
+- gui-wizard-gtk: Require GTK+ 3.10
+- gui-wizard-gtk: Don’t set GtkButton:xalign
+- gui-wizard-gtk: Replace use of GtkTable
+- gui-wizard-gtk: Show warnings inline on progress page
+- gui-wizard-gtk: Remove unused size group
+- gui-wizard-gtk: Replace Gtk{H,V}Box with GtkBox
+- gui-wizard-gtk: Remove unneeded windows
+- gtk-helpers: config_dialog: Hide tree view header
+- augeas: Use generic augeas modules
+
 * Fri Oct 05 2018 Martin Kutlak <mkutlak@redhat.com> 2.9.6-1
 - Translation updates
 - tests: Adjust format of truncated backtrace for python and core
