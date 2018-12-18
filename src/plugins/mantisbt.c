@@ -127,6 +127,8 @@ mantisbt_find_origin_bug_closed_duplicate(mantisbt_settings_t *settings, mantisb
 
         mantisbt_issue_info_free(info_tmp);
         info_tmp = mantisbt_get_issue_info(settings, issue_id);
+        if (info_tmp == NULL)
+            return NULL;
 
         // found a issue which is not CLOSED as DUPLICATE
         if (info_tmp->mii_dup_id == -1)
