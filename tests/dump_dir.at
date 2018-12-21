@@ -234,7 +234,11 @@ int main(int argc, char **argv)
     struct stat owner_md_st;
     assert(fstatat(dd->dd_md_fd, "owner", &owner_md_st, 0) == 0);
     assert((dd_st.st_mode & 0666) == (owner_md_st.st_mode & 0666));
-    assert(geteuid() == dd_get_owner(dd));
+
+    uid_t owner;
+    int ret = dd_get_owner(dd, &owner);
+    assert(ret == 0);
+    assert(geteuid() == owner);
 
     dd_create_basic_files(dd, (uid_t)-1, NULL);
     dd_save_text(dd, FILENAME_TYPE, "attest");
@@ -369,8 +373,13 @@ int main(int argc, char **argv)
 AT_TESTFUN([dd_owner],
 [[
 #include "internal_libreport.h"
+#include <string.h>
+#include <stdlib.h>
 #include <errno.h>
+#include <unistd.h>
 #include <assert.h>
+
+#include <stdio.h>
 
 int main(int argc, char **argv)
 {
@@ -389,13 +398,15 @@ int main(int argc, char **argv)
     *last_slash = '/';
 
     printf("Dump dir path: %s\n", template);
-
     {
         fprintf(stderr, "TEST === default owner\n");
         struct dump_dir *dd = dd_create(template, (uid_t)-1, 0640);
         assert(dd != NULL);
 
-        assert(geteuid() == dd_get_owner(dd));
+        uid_t owner;
+        int ret = dd_get_owner(dd, &owner);
+        assert(ret == 0);
+        assert(geteuid() == owner);
 
         assert(dd_delete(dd) == 0);
     }
@@ -406,7 +417,11 @@ int main(int argc, char **argv)
         assert(dd != NULL);
 
         dd_create_basic_files(dd, (uid_t)-1, NULL);
-        assert(geteuid() == dd_get_owner(dd));
+
+        uid_t owner;
+        int ret = dd_get_owner(dd, &owner);
+        assert(ret == 0);
+        assert(geteuid() == owner);
 
         assert(dd_delete(dd) == 0);
     }
@@ -417,7 +432,11 @@ int main(int argc, char **argv)
         assert(dd != NULL);
 
         dd_create_basic_files(dd, (geteuid() + 1), NULL);
-        assert((geteuid() + 1) == dd_get_owner(dd));
+
+        uid_t owner;
+        int ret = dd_get_owner(dd, &owner);
+        assert(ret == 0);
+        assert((geteuid() + 1) == owner);
 
         assert(dd_delete(dd) == 0);
     }
@@ -431,7 +450,10 @@ int main(int argc, char **argv)
 
         struct passwd *nobody_pw= getpwnam("nobody");
         assert(nobody_pw != NULL);
-        assert(nobody_pw->pw_uid == dd_get_owner(dd));
+
+        uid_t owner;
+        int ret = dd_get_owner(dd, &owner);
+        assert(nobody_pw->pw_uid == owner);
 
         assert(dd_delete(dd) == 0);
     }
@@ -442,7 +464,11 @@ int main(int argc, char **argv)
         assert(dd != NULL);
 
         dd_set_owner(dd, (geteuid() + 2));
-        assert((geteuid() + 2) == dd_get_owner(dd));
+
+        uid_t owner;
+        int ret = dd_get_owner(dd, &owner);
+        assert(ret == 0);
+        assert((geteuid() + 2) == owner);
 
         assert(dd_delete(dd) == 0);
     }
@@ -453,14 +479,23 @@ int main(int argc, char **argv)
         assert(dd != NULL);
 
         dd_set_no_owner(dd);
-        assert(geteuid() != dd_get_owner(dd));
+
+        uid_t owner;
+        int ret = dd_get_owner(dd, &owner);
+
+        assert(ret == 0);
+        assert(geteuid() != owner);
 
         dd_chown(dd, geteuid());
-        assert(geteuid() == dd_get_owner(dd));
+
+        ret = dd_get_owner(dd, &owner);
+        assert(ret == 0);
+        assert(geteuid() == owner);
 
         assert(dd_delete(dd) == 0);
     }
     *last_slash = '\0';
+
     assert(rmdir(template) == 0);
 
     return EXIT_SUCCESS;
@@ -518,7 +553,11 @@ int main(int argc, char **argv)
     assert(dd != NULL || !"reopen for writing");
 
     assert(dd_set_owner(dd, geteuid() + 1) == 0);
-    assert(dd_get_owner(dd) == geteuid() + 1);
+
+    uid_t owner;
+    int ret = dd_get_owner(dd, &owner);
+    assert(ret == 0);
+    assert(owner == geteuid() + 1);
 
     {
         const int scn_stat = dd_stat_for_uid(dd, geteuid() + 2);
@@ -533,7 +572,10 @@ int main(int argc, char **argv)
     }
 
     assert(dd_set_no_owner(dd) == 0);
-    assert(dd_get_owner(dd) != geteuid() + 3);
+
+    ret = dd_get_owner(dd, &owner);
+    assert(ret == 0);
+    assert(owner != geteuid() + 3);
 
     {
         const int frt_stat = dd_stat_for_uid(dd, geteuid() + 3);
@@ -791,7 +833,11 @@ TS_MAIN
         fprintf(stderr, "=== NO UID - geteuid() ===\n");
         struct dump_dir *no_uid_dd_geteuid = create_dump_dir_from_problem_data_ext(pd, template, geteuid());
         assert(no_uid_dd_geteuid != NULL);
-        assert(dd_get_owner(no_uid_dd_geteuid) == geteuid());
+
+	uid_t owner;
+        int ret = dd_get_owner(no_uid_dd_geteuid, &owner);
+        assert(ret == 0);
+        assert(owner == geteuid());
         assert(dd_delete(no_uid_dd_geteuid) == 0);
         fprintf(stderr, "=== NO UID - geteuid() ===\n");
     }
@@ -800,7 +846,11 @@ TS_MAIN
         fprintf(stderr, "=== NO UID - NO UID ===\n");
         struct dump_dir *no_uid_dd_nouid = create_dump_dir_from_problem_data_ext(pd, template, (uid_t)-1L);
         assert(no_uid_dd_nouid != NULL);
-        assert(dd_get_owner(no_uid_dd_nouid) == geteuid());
+
+        uid_t owner;
+        int ret = dd_get_owner(no_uid_dd_nouid, &owner);
+        assert(ret == 0);
+        assert(owner == geteuid());
         assert(dd_delete(no_uid_dd_nouid) == 0);
         fprintf(stderr, "=== NO UID - NO UID ===\n");
     }
@@ -813,7 +863,11 @@ TS_MAIN
         fprintf(stderr, "=== UID - geteuid() ===\n");
         struct dump_dir *uid_dd_geteuid = create_dump_dir_from_problem_data_ext(pd, template, geteuid());
         assert(uid_dd_geteuid != NULL);
-        assert(dd_get_owner(uid_dd_geteuid) == (geteuid() + 1));
+
+        uid_t owner;
+        int ret = dd_get_owner(uid_dd_geteuid, &owner);
+        assert(ret == 0);
+        assert(owner == (geteuid() + 1));
         assert(dd_delete(uid_dd_geteuid) == 0);
         fprintf(stderr, "=== UID - geteuid() ===\n");
     }
@@ -822,7 +876,11 @@ TS_MAIN
         fprintf(stderr, "=== UID - NO UID ===\n");
         struct dump_dir *uid_dd_nouid = create_dump_dir_from_problem_data_ext(pd, template, (uid_t)-1L);
         assert(uid_dd_nouid != NULL);
-        assert(dd_get_owner(uid_dd_nouid) == (geteuid() + 1));
+
+        uid_t owner;
+        int ret = dd_get_owner(uid_dd_nouid, &owner);
+        assert(ret == 0);
+        assert(owner == (geteuid() + 1));
         assert(dd_delete(uid_dd_nouid) == 0);
         fprintf(stderr, "=== UID - NO UID ===\n");
     }

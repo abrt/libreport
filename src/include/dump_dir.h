@@ -346,7 +346,7 @@ int dd_set_no_owner(struct dump_dir *dd);
  * If meta-data misses owner, returns fs owner.
  * Can be used with DD_OPEN_FD_ONLY.
  */
-uid_t dd_get_owner(struct dump_dir *dd);
+int dd_get_owner(struct dump_dir *dd, uid_t *owner);
 
 /* Returns UNIX time stamp of the first occurrence of the problem.
  *

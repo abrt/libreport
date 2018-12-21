@@ -737,32 +737,37 @@ int dd_set_no_owner(struct dump_dir *dd)
     return dd_set_owner(dd, no_owner_uid);
 }
 
-uid_t dd_get_owner(struct dump_dir *dd)
+
+int dd_get_owner(struct dump_dir *dd, uid_t *owner)
 {
+    int ret = 0;
     static const long long MAX_UID_T = (1ULL << (sizeof(uid_t)*8 - 1)) - 1;
+
+    *owner = dd->dd_uid;
 
     int dd_md_fd = dd_get_meta_data_dir_fd(dd, /*no create*/0);
     if (dd_md_fd < 0)
     {
         log_info("No meta-data, using fs owner.");
-        return dd->dd_uid;
     }
-
-    unsigned long long owner = 0;
-
-    int ret = read_number_from_file_at(dd_md_fd, META_DATA_FILE_OWNER, "UID",
-                                       sizeof(uid_t), 0, MAX_UID_T, &owner);
-
-    if (ret < 0)
+    else
     {
-        if (ret != -ENOENT)
-            return ret;
+        unsigned long long ownerTmp = 0;
 
-        log_info("No meta-data 'owner', using fs owner.");
-        return dd->dd_uid;
+        ret = read_number_from_file_at(dd_md_fd, META_DATA_FILE_OWNER, "UID",
+                                       sizeof(uid_t), 0, MAX_UID_T, &ownerTmp);
+
+        if (ret == -ENOENT)
+        {
+            log_info("No meta-data '%s', using fs owner.", META_DATA_FILE_OWNER);
+        }
+        else
+        {
+            *owner = (uid_t)ownerTmp;
+        }
     }
 
-    return (uid_t)owner;
+    return ret;
 }
 
 time_t dd_get_first_occurrence(struct dump_dir *dd)
@@ -2248,9 +2253,10 @@ int dd_stat_for_uid(struct dump_dir *dd, uid_t uid)
     {
         log_debug("directory owned by super-user: checking meta-data");
 
-        const uid_t owner = dd_get_owner(dd);
+        uid_t owner;
+        int ret = dd_get_owner(dd, &owner);
 
-        if (owner < 0)
+        if (ret < 0)
             goto fsattributes;
 
         if (owner == uid)
@@ -2261,7 +2267,7 @@ int dd_stat_for_uid(struct dump_dir *dd, uid_t uid)
         }
 
         uid_t no_owner_uid = (uid_t)-1;
-        int ret = get_no_owner_uid(&no_owner_uid);
+        ret = get_no_owner_uid(&no_owner_uid);
         if (   ret >= 0
             && owner == no_owner_uid)
         {
