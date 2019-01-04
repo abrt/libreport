@@ -605,7 +605,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
     return new_bug_id;
 }
 
-/* suppress mail notify by {s:i} (nomail:1) (driven by flag) */
+/* suppress mail notify by {s:i} (minor_update:1) (driven by flag) */
 int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *bug_id,
                 const char *filename, const char *data, int data_len, int flags)
 {
@@ -620,7 +620,7 @@ int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *bug_id,
 
     char *fn = xasprintf("File: %s", filename);
     xmlrpc_value* result;
-    int nomail_notify = !!IS_NOMAIL_NOTIFY(flags);
+    int minor_update = !!IS_MINOR_UPDATE(flags);
 
     /* http://www.bugzilla.org/docs/4.2/en/html/api/Bugzilla/WebService/Bug.html#add_attachment
      *
@@ -640,10 +640,11 @@ int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *bug_id,
                  */
                 "data", data, (size_t)data_len,
 
-                /* Undocumented argument but it works with Red Hat Bugzilla version 4.2.4-7
-                 * and version 4.4.rc1.b02
+                /* If set to true, this is considered a minor update and no mail is sent to users who do not want
+                 * minor update emails. If current user is not in the minor_update_group, this parameter is simply
+                 * ignored.
                  */
-                "nomail", nomail_notify
+                "minor_update", minor_update
     );
 
     free(fn);
@@ -737,25 +738,25 @@ struct bug_info *rhbz_find_origin_bug_closed_duplicate(struct abrt_xmlrpc *ax,
     return bi_tmp;
 }
 
-/* suppress mail notify by {s:i} (nomail:1) */
+/* suppress mail notify by {s:i} (minor_update:1) */
 void rhbz_mail_to_cc(struct abrt_xmlrpc *ax, int bug_id, const char *mail, int flags)
 {
     func_entry();
 
     xmlrpc_value *result;
-    int nomail_notify = !!IS_NOMAIL_NOTIFY(flags);
+    int minor_update = !!IS_MINOR_UPDATE(flags);
 #if 0 /* Obsolete API */
     result = abrt_xmlrpc_call(ax, "Bug.update", "({s:i,s:{s:(s),s:i}})",
                               "ids", bug_id,
                               "updates", "add_cc", mail,
-                                         "nomail", nomail_notify
+                                         "minor_update", minor_update
     );
 #endif
     /* Bugzilla 4.0+ uses this API: */
     result = abrt_xmlrpc_call(ax, "Bug.update", "{s:i,s:{s:(s),s:i}}",
                               "ids", bug_id,
                               "cc", "add", mail,
-                                    "nomail", nomail_notify
+                                    "minor_update", minor_update
     );
     if (result)
         xmlrpc_DECREF(result);
@@ -786,12 +787,12 @@ void rhbz_add_comment(struct abrt_xmlrpc *ax, int bug_id, const char *comment,
     func_entry();
 
     int private = !!IS_PRIVATE(flags);
-    int nomail_notify = !!IS_NOMAIL_NOTIFY(flags);
+    int minor_update = !!IS_MINOR_UPDATE(flags);
 
     xmlrpc_value *result;
     result = abrt_xmlrpc_call(ax, "Bug.add_comment", "{s:i,s:s,s:b,s:i}",
                               "id", bug_id, "comment", comment,
-                              "private", private, "nomail", nomail_notify);
+                              "private", private, "minor_update", minor_update);
 
     if (result)
         xmlrpc_DECREF(result);
@@ -801,15 +802,16 @@ void rhbz_set_url(struct abrt_xmlrpc *ax, int bug_id, const char *url, int flags
 {
     func_entry();
 
-    const int nomail_notify = !!IS_NOMAIL_NOTIFY(flags);
+    const int minor_update = !!IS_MINOR_UPDATE(flags);
     xmlrpc_value *result = abrt_xmlrpc_call(ax, "Bug.update", "{s:i,s:s,s:i}",
                               "ids", bug_id,
                               "url", url,
 
-                /* Undocumented argument but it works with Red Hat Bugzilla version 4.2.4-7
-                 * and version 4.4.rc1.b02
+                /* If set to true, this is considered a minor update and no mail is sent to users who do not want
+                 * minor update emails. If current user is not in the minor_update_group, this parameter is simply
+                 * ignored.
                  */
-                              "nomail", nomail_notify
+                              "minor_update", minor_update
     );
 
     if (result)
@@ -822,17 +824,18 @@ void rhbz_close_as_duplicate(struct abrt_xmlrpc *ax, int bug_id,
 {
     func_entry();
 
-    const int nomail_notify = !!IS_NOMAIL_NOTIFY(flags);
+    const int minor_update = !!IS_MINOR_UPDATE(flags);
     xmlrpc_value *result = abrt_xmlrpc_call(ax, "Bug.update", "{s:i,s:s,s:s,s:i,s:i}",
                               "ids", bug_id,
                               "status", "CLOSED",
                               "resolution", "DUPLICATE",
                               "dupe_of", duplicate_bug,
 
-                /* Undocumented argument but it works with Red Hat Bugzilla version 4.2.4-7
-                 * and version 4.4.rc1.b02
+                /* If set to true, this is considered a minor update and no mail is sent to users who do not want
+                 * minor update emails. If current user is not in the minor_update_group, this parameter is simply
+                 * ignored.
                  */
-                              "nomail", nomail_notify
+                              "minor_update", minor_update
     );
 
     if (result)

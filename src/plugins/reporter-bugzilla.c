@@ -35,7 +35,7 @@ int attach_text_item(struct abrt_xmlrpc *ax, const char *bug_id,
     log_debug("attaching '%s' as text", item_name);
     int r = rhbz_attach_blob(ax, bug_id,
                 item_name, item->content, strlen(item->content),
-                RHBZ_NOMAIL_NOTIFY
+                RHBZ_MINOR_UPDATE
     );
     return (r == 0);
 }
@@ -63,7 +63,7 @@ int attach_file_item(struct abrt_xmlrpc *ax, const char *bug_id,
         return 0;
     }
     log_debug("attaching '%s' as file", item_name);
-    int flag = RHBZ_NOMAIL_NOTIFY;
+    int flag = RHBZ_MINOR_UPDATE;
     if (!(item->flags & CD_FLAG_BIGTXT))
         flag |= RHBZ_BINARY_ATTACHMENT;
     int r = rhbz_attach_fd(ax, bug_id, item_name, fd, flag);
@@ -793,7 +793,7 @@ int main(int argc, char **argv)
                 if (reported_to && reported_to->url)
                 {
                     log_warning(_("Adding External URL to bug %i"), new_id);
-                    rhbz_set_url(client, new_id, reported_to->url, RHBZ_NOMAIL_NOTIFY);
+                    rhbz_set_url(client, new_id, reported_to->url, RHBZ_MINOR_UPDATE);
                     free_report_result(reported_to);
                 }
             }
@@ -821,7 +821,7 @@ int main(int argc, char **argv)
             if (existing_id >= 0)
             {
                 log_warning(_("Closing bug %i as duplicate of bug %i"), new_id, existing_id);
-                rhbz_close_as_duplicate(client, new_id, existing_id, RHBZ_NOMAIL_NOTIFY);
+                rhbz_close_as_duplicate(client, new_id, existing_id, RHBZ_MINOR_UPDATE);
             }
 
             goto log_out;
@@ -876,7 +876,7 @@ int main(int argc, char **argv)
      && !g_list_find_custom(bz->bi_cc_list, rhbz.b_login, (GCompareFunc)g_strcmp0)
     ) {
         log_warning(_("Adding %s to CC list"), rhbz.b_login);
-        rhbz_mail_to_cc(client, bz->bi_id, rhbz.b_login, RHBZ_NOMAIL_NOTIFY);
+        rhbz_mail_to_cc(client, bz->bi_id, rhbz.b_login, RHBZ_MINOR_UPDATE);
     }
 
     /* Add comment and bt */
@@ -911,7 +911,7 @@ int main(int argc, char **argv)
                 sprintf(bug_id_str, "%i", bz->bi_id);
                 log_warning(_("Attaching better backtrace"));
                 rhbz_attach_blob(client, bug_id_str, FILENAME_BACKTRACE, bt, strlen(bt),
-                                 RHBZ_NOMAIL_NOTIFY);
+                                 RHBZ_MINOR_UPDATE);
             }
         }
         else

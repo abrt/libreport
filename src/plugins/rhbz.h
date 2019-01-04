@@ -36,7 +36,7 @@ enum {
     RHBZ_MANDATORY_MEMB      = (1 << 0),
     RHBZ_READ_STR            = (1 << 1),
     RHBZ_READ_INT            = (1 << 2),
-    RHBZ_NOMAIL_NOTIFY       = (1 << 3),
+    RHBZ_MINOR_UPDATE        = (1 << 3),
     RHBZ_PRIVATE             = (1 << 4),
     RHBZ_BINARY_ATTACHMENT   = (1 << 5),
 };
@@ -44,7 +44,7 @@ enum {
 #define IS_MANDATORY(flags) ((flags) & RHBZ_MANDATORY_MEMB)
 #define IS_READ_STR(flags) ((flags) & RHBZ_READ_STR)
 #define IS_READ_INT(flags) ((flags) & RHBZ_READ_INT)
-#define IS_NOMAIL_NOTIFY(flags) ((flags) & RHBZ_NOMAIL_NOTIFY)
+#define IS_MINOR_UPDATE(flags) ((flags) & RHBZ_MINOR_UPDATE)
 #define IS_PRIVATE(flags) ((flags) & RHBZ_PRIVATE)
 
 struct bug_info {
