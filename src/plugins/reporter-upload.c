@@ -240,9 +240,16 @@ int main(int argc, char **argv)
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (dd)
     {
-        report_result_t rr = { .label = (char *)"upload" };
-        rr.url = remote_name,
-        add_reported_to_entry(dd, &rr);
+        report_result_t *result;
+
+        result = report_result_new("upload");
+
+        report_result_set_url(result, remote_name);
+
+        add_reported_to_entry(dd, result);
+
+        report_result_free(result);
+
         dd_close(dd);
     }
     free(remote_name);

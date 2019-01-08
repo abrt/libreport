@@ -225,10 +225,19 @@ static void create_and_send_email(
         struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
         if (dd)
         {
-            report_result_t rr = { .label = (char *)"email" };
-            rr.url = xasprintf("mailto:%s", email_to);
-            add_reported_to_entry(dd, &rr);
-            free(rr.url);
+            report_result_t *result;
+            char *url;
+
+            result = report_result_new("email");
+            url = xasprintf("mailto:%s", email_to);
+
+            report_result_set_url(result, url);
+
+            add_reported_to_entry(dd, result);
+
+            free(url);
+            report_result_free(result);
+
             dd_close(dd);
         }
         log_warning(_("Email was sent to: %s"), email_to);

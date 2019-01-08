@@ -182,34 +182,45 @@ int main(int argc, char **argv)
 
         if (ureport_hash_from_rt)
         {
-            report_result_t *ureport_result = find_in_reported_to(dd, "uReport");
+            g_autoptr(report_result_t) result = NULL;
+            char *bthash;
 
-            if (!ureport_result || !ureport_result->bthash)
+            result = find_in_reported_to(dd, "uReport");
+            if (NULL == result)
+            {
                 error_msg_and_die(_("This problem does not have an uReport assigned."));
+            }
+            bthash = report_result_get_bthash(result);
 
-            /* sorry, this will be leaked */
-            ureport_hash = xstrdup(ureport_result->bthash);
-
-            free_report_result(ureport_result);
+            /* This is leaked, because string options parsed by getopt() and friends
+             * return pointers to argv elements as values, so trying to free this
+             * could result in universe collapsing.
+             *
+             * TODO: Fix this, because it’s just sloppy.
+             */
+            ureport_hash = bthash;
         }
 
         if (rhbz_bug_from_rt)
         {
-            report_result_t *bz_result = find_in_reported_to(dd, "Bugzilla");
+            g_autoptr(report_result_t) result = NULL;
+            g_autofree char *url = NULL;
 
-            if (!bz_result || !bz_result->url)
+            result = find_in_reported_to(dd, "Bugzilla");
+            if (NULL == result)
+            {
                 error_msg_and_die(_("This problem has not been reported to Bugzilla."));
+            }
+            url = report_result_get_url(result);
 
-            char *bugid_ptr = strstr(bz_result->url, "show_bug.cgi?id=");
+            char *bugid_ptr = strstr(url, "show_bug.cgi?id=");
             if (!bugid_ptr)
-                error_msg_and_die(_("Unable to find bug ID in bugzilla URL '%s'"), bz_result->url);
+                error_msg_and_die(_("Unable to find bug ID in bugzilla URL '%s'"), url);
             bugid_ptr += strlen("show_bug.cgi?id=");
 
             /* we're just reading int, sscanf works fine */
             if (sscanf(bugid_ptr, "%d", &rhbz_bug) != 1)
-                error_msg_and_die(_("Unable to parse bug ID from bugzilla URL '%s'"), bz_result->url);
-
-            free_report_result(bz_result);
+                error_msg_and_die(_("Unable to parse bug ID from bugzilla URL '%s'"), url);
         }
 
         if (comment_file)
@@ -223,21 +234,26 @@ int main(int argc, char **argv)
 
         if (attach_value_from_rt)
         {
-            report_result_t *result = find_in_reported_to(dd, report_result_type);
+            g_autoptr(report_result_t) result = NULL;
+            char *url;
 
-            if (!result)
+            result = find_in_reported_to(dd, report_result_type);
+            if (NULL == result)
+            {
                 error_msg_and_die(_("This problem has not been reported to '%s'."), report_result_type);
+            }
 
+            url = report_result_get_url(result);
             /* If you introduce a new attach_value_from_rt recognized value,
              * this condition will become invalid. */
-            if (!result->url)
+            if (NULL == url)
+            {
                 error_msg_and_die(_("The report result '%s' is missing URL."), report_result_type);
+            }
 
             /* Avoid the need to duplicate the string. */
-            attach_value = attach_value_from_rt_data = result->url;
-            result->url = NULL;
-
-            free_report_result(result);
+            attach_value = url;
+            attach_value_from_rt_data = url;
         }
 
         dd_close(dd);

@@ -16,7 +16,8 @@ libreport_include_HEADERS = \
     internal_libreport.h \
     internal_abrt_dbus.h \
     xml_parser.h \
-    reporters.h
+    reporters.h \
+    report_result.h
 
 if BUILD_UREPORT
 libreport_include_HEADERS += ureport.h

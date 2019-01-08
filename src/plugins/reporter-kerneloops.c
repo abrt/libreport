@@ -118,9 +118,16 @@ static void report_to_kerneloops(
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (dd)
     {
-        report_result_t rr = { .label = (char *)"kerneloops" };
-        rr.url = (char *)submitURL;
-        add_reported_to_entry(dd, &rr);
+        report_result_t *result;
+
+        result = report_result_new("kerneloops");
+
+        report_result_set_url(result, submitURL);
+
+        add_reported_to_entry(dd, result);
+
+        report_result_free(result);
+
         dd_close(dd);
     }
 

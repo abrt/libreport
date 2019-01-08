@@ -367,17 +367,20 @@ int main(int argc, char **argv)
         if (!ticket_no)
         {
             struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+            g_autoptr(report_result_t) reported_to = NULL;
+            char *url;
+
             if (!dd)
                 xfunc_die();
-            report_result_t *reported_to = find_in_reported_to(dd, "MantisBT");
+
+            reported_to = find_in_reported_to(dd, "MantisBT");
+
             dd_close(dd);
 
-            if (!reported_to || !reported_to->url)
+            if (NULL == reported_to)
                 error_msg_and_die(_("Can't get MantisBT ID because this problem has not yet been reported to MantisBT."));
 
-            char *url = reported_to->url;
-            reported_to->url = NULL;
-            free_report_result(reported_to);
+            url = report_result_get_url(reported_to);
 
             if (prefixcmp(url, mbt_settings.m_mantisbt_url) != 0)
                 error_msg_and_die(_("This problem has been reported to MantisBT '%s' which differs from the configured MantisBT '%s'."), url, mbt_settings.m_mantisbt_url);
@@ -408,22 +411,31 @@ int main(int argc, char **argv)
     if (!(opts & OPT_f))
     {
         struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+        g_autoptr(report_result_t) reported_to = NULL;
+        g_autofree char *url = NULL;
+
         if (!dd)
             xfunc_die();
-        report_result_t *reported_to = find_in_reported_to(dd, "MantisBT");
+
+        reported_to = find_in_reported_to(dd, "MantisBT");
+
         dd_close(dd);
 
-        if (reported_to && reported_to->url)
+        if (NULL != reported_to)
         {
-            char *msg = xasprintf(_("This problem was already reported to MantisBT (see '%s')."
+            url = report_result_get_url(reported_to);
+        }
+        if (NULL != url)
+        {
+            g_autofree char *msg = NULL;
+
+            msg = xasprintf(_("This problem was already reported to MantisBT (see '%s')."
                             " Do you still want to create a new issue?"),
-                            reported_to->url);
-            int yes = ask_yes_no(msg);
-            free(msg);
-            if (!yes)
+                            url);
+
+            if (!ask_yes_no(msg))
                 return 0;
         }
-        free_report_result(reported_to);
     }
 
     problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
@@ -553,14 +565,21 @@ int main(int argc, char **argv)
             char *tracker_url = NULL;
             if (dd)
             {
-                report_result_t *reported_to = find_in_reported_to(dd, tracker_str);
+                g_autoptr(report_result_t) reported_to = NULL;
+                g_autofree char *url = NULL;
+
+                reported_to = find_in_reported_to(dd, tracker_str);
+
                 dd_close(dd);
 
-                if (reported_to && reported_to->url)
+                if (NULL != reported_to)
+                {
+                    url = report_result_get_url(reported_to);
+                }
+                if (NULL != url)
                 {
                     log_warning(_("Adding External URL to issue"));
-                    tracker_url = xstrdup(reported_to->url);
-                    free_report_result(reported_to);
+                    tracker_url = g_steal_pointer(&url);
                 }
             }
 
@@ -690,10 +709,18 @@ finish:
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (dd)
     {
-        report_result_t rr = { .label = (char *)"MantisBT" };
-        rr.url = xasprintf("%s/view.php?id=%u", mbt_settings.m_mantisbt_url, ii->mii_id);
-        add_reported_to_entry(dd, &rr);
-        free(rr.url);
+        report_result_t *result;
+        char *url;
+
+        result = report_result_new("MantisBT");
+        url = xasprintf("%s/view.php?id=%u", mbt_settings.m_mantisbt_url, ii->mii_id);
+
+        report_result_set_url(result, url);
+
+        add_reported_to_entry(dd, result);
+
+        free(url);
+        report_result_free(result);
         dd_close(dd);
     }
 
