@@ -120,7 +120,7 @@ static void report_to_kerneloops(
     {
         report_result_t *result;
 
-        result = report_result_new("kerneloops");
+        result = report_result_new_with_label_from_env("kerneloops");
 
         report_result_set_url(result, submitURL);
 

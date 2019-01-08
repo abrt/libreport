@@ -137,7 +137,7 @@ int main(int argc, char **argv)
                 report_result_t *result;
                 char *url;
 
-                result = report_result_new("file");
+                result = report_result_new_with_label_from_env("file");
                 url = xasprintf("file://%s", output_file);
 
                 report_result_set_url(result, url);

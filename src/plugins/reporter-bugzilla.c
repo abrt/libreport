@@ -956,7 +956,7 @@ int main(int argc, char **argv)
         report_result_t *result;
         char *url;
 
-        result = report_result_new("Bugzilla");
+        result = report_result_new_with_label_from_env("Bugzilla");
         url = xasprintf("%s/show_bug.cgi?id=%u", rhbz.b_bugzilla_url, bz->bi_id);
 
         report_result_set_url(result, url);

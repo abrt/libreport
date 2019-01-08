@@ -92,7 +92,7 @@ static void foreach_reported_to_line(const char *reported_to, foreach_reported_t
 static void read_entire_reported_to_cb(const char *record_line, size_t label_len, void *user_data)
 {
     GList **result = (GList **)user_data;
-    report_result_t *report = report_result_new_parse(record_line, label_len);
+    report_result_t *report = report_result_parse(record_line, label_len);
     *result = g_list_prepend(*result, report);
 }
 
@@ -133,7 +133,7 @@ report_result_t *find_in_reported_to_data(const char *reported_to, const char *r
 
     report_result_t *result = NULL;
     if (searched.found)
-        result = report_result_new_parse(searched.found, searched.found_label_len);
+        result = report_result_parse(searched.found, searched.found_label_len);
 
     return result;
 }

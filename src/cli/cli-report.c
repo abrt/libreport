@@ -766,29 +766,21 @@ int select_and_run_one_event(const char *dump_dir_name, const char *pfx, int int
     return r;
 }
 
-/*
- * Run event from chain. Perform the following steps for each event from chain.
- * 1. Terminates a chain run if a backtrace is not usable.
- * 2. Asks for missing settings.
- * 3. Performs review of problem data if event requires review.
- * 4. Runs events commands.
- * 5. Terminates a chain run if any event from the chain requires termination
- *    (i.e. if it existed with EXIT_STOP_EVENT_RUN).
- * 6. Terminates a chain run if any error occurs.
- * 7. Continues with processing of next event.
- */
-int run_event_chain(const char *dump_dir_name, GList *chain, int interactive)
+static int run_event_chain_real(struct run_event_state *run_state,
+                                const char             *dump_dir_name,
+                                GList                  *chain,
+                                int                     interactive)
 {
     struct logging_state l_state;
+    int retval = 0;
 
-    struct run_event_state *run_state = new_run_event_state();
+    /* Blergh. */
     run_state->logging_callback = do_log2;
     run_state->logging_param = &l_state;
 
-    int retval = 0;
     for (GList *eitem = chain; eitem; eitem = g_list_next(eitem))
     {
-        l_state.output_was_produced = 0;
+        l_state.output_was_produced = false;
         const char *event_name = eitem->data;
         retval = interactive
                 ? run_event_on_dir_name_interactively(run_state, dump_dir_name, event_name)
@@ -814,6 +806,27 @@ int run_event_chain(const char *dump_dir_name, GList *chain, int interactive)
         if (retval != 0)
             break;
     }
+
+    return retval;
+}
+
+/*
+ * Run event from chain. Perform the following steps for each event from chain.
+ * 1. Terminates a chain run if a backtrace is not usable.
+ * 2. Asks for missing settings.
+ * 3. Performs review of problem data if event requires review.
+ * 4. Runs events commands.
+ * 5. Terminates a chain run if any event from the chain requires termination
+ *    (i.e. if it existed with EXIT_STOP_EVENT_RUN).
+ * 6. Terminates a chain run if any error occurs.
+ * 7. Continues with processing of next event.
+ */
+int run_event_chain(const char *dump_dir_name, GList *chain, int interactive)
+{
+    struct run_event_state *run_state = new_run_event_state();
+    int retval;
+
+    retval = run_event_chain_real(run_state, dump_dir_name, chain, interactive);
 
     free_run_event_state(run_state);
 
@@ -859,7 +872,28 @@ static workflow_t *select_workflow(GHashTable *workflows)
 
 int select_and_run_workflow(const char *dump_dir_name, GHashTable *workflows, int interactive)
 {
-    workflow_t *value = select_workflow(workflows);
+    workflow_t *workflow;
+    GList *events;
+    const char *workflow_name;
+    char *environment_variable;
+    struct run_event_state *run_state;
+    int retval;
 
-    return ((value == NULL) ? -1 : run_event_chain(dump_dir_name, wf_get_event_names(value), interactive));
+    workflow = select_workflow(workflows);
+    if (NULL == workflow)
+    {
+        return -1;
+    }
+    events = wf_get_event_names(workflow);
+    workflow_name = wf_get_name(workflow);
+    environment_variable = g_strdup_printf("LIBREPORT_WORKFLOW=%s", workflow_name);
+    run_state = new_run_event_state();
+
+    g_ptr_array_add(run_state->extra_environment, environment_variable);
+
+    retval = run_event_chain_real(run_state, dump_dir_name, events, interactive);
+
+    return retval;
+
+    free_run_event_state(run_state);
 }

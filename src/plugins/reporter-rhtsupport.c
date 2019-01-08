@@ -937,7 +937,7 @@ int main(int argc, char **argv)
         {
             report_result_t *report_result;
 
-            report_result = report_result_new("RHTSupport");
+            report_result = report_result_new_with_label_from_env("RHTSupport");
 
             report_result_set_message(report_result, result->msg);
             report_result_set_timestamp(report_result, time(NULL));

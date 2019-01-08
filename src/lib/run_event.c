@@ -38,6 +38,8 @@ struct run_event_state *new_run_event_state()
     state->ask_yes_no_save_result_callback= run_event_stdio_ask_yes_no_save_result;
     state->ask_password_callback = run_event_stdio_ask_password;
 
+    state->extra_environment = g_ptr_array_new_with_free_func(g_free);
+
     state->command_output = strbuf_new();
 
     return state;
@@ -47,6 +49,7 @@ void free_run_event_state(struct run_event_state *state)
 {
     if (state)
     {
+        g_ptr_array_free(state->extra_environment, TRUE);
         strbuf_free(state->command_output);
         free_commands(state);
         free(state);
@@ -505,18 +508,30 @@ int spawn_next_command(struct run_event_state *state,
 
     log_info("Next command: '%s'", cmd);
 
-    /* Export some useful environment variables for children */
-    char *env_vec[4];
     /* Just exporting dump_dir_name isn't always ok: it can be "."
      * and some children want to cd to other directory but still
      * be able to find problem directory by using $DUMP_DIR...
      */
     char *full_name = realpath(dump_dir_name, NULL);
-    env_vec[0] = xasprintf("DUMP_DIR=%s", (full_name ? full_name : dump_dir_name));
+    /* Export some useful environment variables for children */
+    GPtrArray *env_array;
+
+    env_array = g_ptr_array_new();
+
+    g_ptr_array_add(env_array, xasprintf("DUMP_DIR=%s", (full_name ? full_name : dump_dir_name)));
+    g_ptr_array_add(env_array, xasprintf("EVENT=%s", event));
+    g_ptr_array_add(env_array, xasprintf("REPORT_CLIENT_SLAVE=1"));
+    for (unsigned int i = 0; i < state->extra_environment->len; i++)
+    {
+        char *variable;
+
+        variable = g_ptr_array_index(state->extra_environment, i);
+
+        g_ptr_array_add(env_array, g_strdup(variable));
+    }
+    g_ptr_array_add(env_array, NULL);
+
     free(full_name);
-    env_vec[1] = xasprintf("EVENT=%s", event);
-    env_vec[2] = xasprintf("REPORT_CLIENT_SLAVE=1");
-    env_vec[3] = NULL;
 
     char *argv[4];
     argv[0] = (char*)"/bin/sh"; // TODO: honor $SHELL?
@@ -529,16 +544,14 @@ int spawn_next_command(struct run_event_state *state,
                 EXECFLG_INPUT | EXECFLG_OUTPUT | EXECFLG_ERR2OUT | execflags,
                 argv,
                 pipefds,
-                /* env_vec: */ env_vec,
+                /* env_vec: */ (char **)env_array->pdata,
                 /* dir: */ dump_dir_name,
                 /* uid(unused): */ 0
     );
     state->command_out_fd = pipefds[0];
     state->command_in_fd = pipefds[1];
 
-    free(env_vec[0]);
-    free(env_vec[1]);
-    free(env_vec[2]);
+    g_ptr_array_free(env_array, TRUE);
     free(cmd);
 
     return 0;

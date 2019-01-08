@@ -109,9 +109,9 @@ int main(void)
     setenv("TZ", "", 1);
     setenv("LC_ALL", "C", 1);
 
-    first_result = report_result_new("Bugzilla");
-    second_result = report_result_new("ABRT Server");
-    third_result = report_result_new("RHTSupport");
+    first_result = report_result_new_with_label("Bugzilla");
+    second_result = report_result_new_with_label("ABRT Server");
+    third_result = report_result_new_with_label("RHTSupport");
 
     report_result_set_url(first_result, "https://goodluck.org");
 
@@ -184,12 +184,12 @@ int main(void)
 
     g_verbose=3;
 
-    first_result = report_result_new("Bugzilla");
-    second_result = report_result_new("ABRT Server");
-    third_result = report_result_new("RHTSupport");
-    fourth_result = report_result_new("Bugzilla");
-    fifth_result = report_result_new("ABRT Server");
-    sixth_result = report_result_new("RHTSupport");
+    first_result = report_result_new_with_label("Bugzilla");
+    second_result = report_result_new_with_label("ABRT Server");
+    third_result = report_result_new_with_label("RHTSupport");
+    fourth_result = report_result_new_with_label("Bugzilla");
+    fifth_result = report_result_new_with_label("ABRT Server");
+    sixth_result = report_result_new_with_label("RHTSupport");
 
     report_result_set_url(first_result, "https://goodluck.org");
 

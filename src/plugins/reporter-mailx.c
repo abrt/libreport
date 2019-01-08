@@ -228,7 +228,7 @@ static void create_and_send_email(
             report_result_t *result;
             char *url;
 
-            result = report_result_new("email");
+            result = report_result_new_with_label_from_env("email");
             url = xasprintf("mailto:%s", email_to);
 
             report_result_set_url(result, url);

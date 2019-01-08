@@ -712,7 +712,7 @@ finish:
         report_result_t *result;
         char *url;
 
-        result = report_result_new("MantisBT");
+        result = report_result_new_with_label_from_env("MantisBT");
         url = xasprintf("%s/view.php?id=%u", mbt_settings.m_mantisbt_url, ii->mii_id);
 
         report_result_set_url(result, url);
