@@ -650,16 +650,30 @@ ureport_server_response_save_in_dump_dir(struct ureport_server_response *resp,
     if (resp->urr_bthash)
     {
         {
-            report_result_t rr = { .label = (char *)"uReport" };
-            rr.bthash = resp->urr_bthash;
-            add_reported_to_entry(dd, &rr);
+            report_result_t *result;
+
+            result = report_result_new("uReport");
+
+            report_result_set_bthash(result, resp->urr_bthash);
+
+            add_reported_to_entry(dd, result);
+
+            report_result_free(result);
         }
 
         {
-            report_result_t rr = { .label = (char *)"ABRT Server" };
-            rr.url = ureport_server_response_get_report_url(resp, config);
-            add_reported_to_entry(dd, &rr);
-            free(rr.url);
+            report_result_t *result;
+            char *url;
+
+            result = report_result_new("ABRT Server");
+            url = ureport_server_response_get_report_url(resp, config);
+
+            report_result_set_url(result, url);
+
+            add_reported_to_entry(dd, result);
+
+            free(url);
+            report_result_free(result);
         }
     }
 

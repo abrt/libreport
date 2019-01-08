@@ -486,17 +486,20 @@ int main(int argc, char **argv)
         if (!ticket_no)
         {
             struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+            g_autoptr(report_result_t) reported_to = NULL;
+            g_autofree char *url = NULL;
+
             if (!dd)
                 xfunc_die();
-            report_result_t *reported_to = find_in_reported_to(dd, "Bugzilla");
+
+            reported_to = find_in_reported_to(dd, "Bugzilla");
+
             dd_close(dd);
 
-            if (!reported_to || !reported_to->url)
+            if (NULL == reported_to)
                 error_msg_and_die(_("Can't get Bugzilla ID because this problem has not yet been reported to Bugzilla."));
 
-            char *url = reported_to->url;
-            reported_to->url = NULL;
-            free_report_result(reported_to);
+            url = report_result_get_url(reported_to);
 
             if (prefixcmp(url, rhbz.b_bugzilla_url) != 0)
                 error_msg_and_die(_("This problem has been reported to Bugzilla '%s' which differs from the configured Bugzilla '%s'."), url, rhbz.b_bugzilla_url);
@@ -555,22 +558,31 @@ int main(int argc, char **argv)
     if (!(opts & OPT_f))
     {
         struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+        g_autoptr(report_result_t) reported_to = NULL;
+        g_autofree char *url = NULL;
+
         if (!dd)
             xfunc_die();
-        report_result_t *reported_to = find_in_reported_to(dd, "Bugzilla");
+
+        reported_to = find_in_reported_to(dd, "Bugzilla");
+
         dd_close(dd);
 
-        if (reported_to && reported_to->url)
+        if (NULL != reported_to)
         {
-            char *msg = xasprintf(_("This problem was already reported to Bugzilla (see '%s')."
+            url = report_result_get_url(reported_to);
+        }
+        if (NULL != url)
+        {
+            g_autofree char *msg = NULL;
+
+            msg = xasprintf(_("This problem was already reported to Bugzilla (see '%s')."
                             " Do you still want to create a new bug?"),
-                            reported_to->url);
-            int yes = ask_yes_no(msg);
-            free(msg);
-            if (!yes)
+                            url);
+
+            if (!ask_yes_no(msg))
                 return 0;
         }
-        free_report_result(reported_to);
     }
 
     if (!(opts & OPT_d))
@@ -773,29 +785,35 @@ int main(int argc, char **argv)
             struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
             if (dd)
             {
-                report_result_t *reported_to = find_in_reported_to(dd, tracker_str);
-                char *extra = dd_load_text_ext(dd, "extra-cc",
-				DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE |
-				DD_FAIL_QUIETLY_ENOENT);
+                g_autoptr(report_result_t) reported_to = NULL;
+                g_autofree char *extra = NULL;
+                g_autofree char *url = NULL;
 
-                dd_close(dd);
-
-                if (extra != NULL) {
+                extra = dd_load_text_ext(dd, "extra-cc",
+                                         DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE |
+                                         DD_FAIL_QUIETLY_ENOENT);
+                if (extra != NULL)
+                {
                     char *email = strtok(extra, "\n");
-                    while (email != NULL) {
+                    while (email != NULL)
+                    {
                         log_warning(_("Adding extra cc %s to bug report"), email);
                         rhbz_mail_to_cc(client, new_id, email, /* require mail notify */ 0);
                         email = strtok(NULL, "\n");
                     }
-                    free(extra);
                 }
-
-                if (reported_to && reported_to->url)
+                reported_to = find_in_reported_to(dd, tracker_str);
+                if (NULL != reported_to)
+                {
+                    url = report_result_get_url(reported_to);
+                }
+                if (NULL != url)
                 {
                     log_warning(_("Adding External URL to bug %i"), new_id);
-                    rhbz_set_url(client, new_id, reported_to->url, RHBZ_MINOR_UPDATE);
-                    free_report_result(reported_to);
+                    rhbz_set_url(client, new_id, url, RHBZ_MINOR_UPDATE);
                 }
+
+                dd_close(dd);
             }
 
             log_warning(_("Adding attachments to bug %i"), new_id);
@@ -935,10 +953,19 @@ int main(int argc, char **argv)
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (dd)
     {
-        report_result_t rr = { .label = (char *)"Bugzilla" };
-        rr.url = xasprintf("%s/show_bug.cgi?id=%u", rhbz.b_bugzilla_url, bz->bi_id);
-        add_reported_to_entry(dd, &rr);
-        free(rr.url);
+        report_result_t *result;
+        char *url;
+
+        result = report_result_new("Bugzilla");
+        url = xasprintf("%s/show_bug.cgi?id=%u", rhbz.b_bugzilla_url, bz->bi_id);
+
+        report_result_set_url(result, url);
+
+        add_reported_to_entry(dd, result);
+
+        free(url);
+        report_result_free(result);
+
         dd_close(dd);
     }
 

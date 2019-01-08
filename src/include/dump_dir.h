@@ -23,6 +23,7 @@
 
 /* For const_string_vector_const_ptr_t */
 #include "libreport_types.h"
+#include "report_result.h"
 
 #include <stdint.h>
 #include <stdio.h>
@@ -367,17 +368,6 @@ time_t dd_get_first_occurrence(struct dump_dir *dd);
  */
 time_t dd_get_last_occurrence(struct dump_dir *dd);
 
-/* reported_to handling */
-struct report_result {
-    char *label;
-    char *url;
-    char *msg;
-    char *bthash;
-    time_t timestamp;
-    /* ^^^ if you add more fields, don't forget to update free_report_result() */
-};
-typedef struct report_result report_result_t;
-
 /* Appends a new unique line to the list of report results
  *
  * If the reported_to data already contains the given line, the line will not
@@ -419,8 +409,6 @@ void add_reported_to(struct dump_dir *dd, const char *line);
 #define add_reported_to_entry libreport_add_reported_to_entry
 void add_reported_to_entry(struct dump_dir *dd, struct report_result *result);
 
-#define free_report_result libreport_free_report_result
-void free_report_result(struct report_result *result);
 #define find_in_reported_to_data libreport_find_in_reported_to_data
 report_result_t *find_in_reported_to_data(const char *reported_to, const char *report_label);
 #define find_in_reported_to libreport_find_in_reported_to

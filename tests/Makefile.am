@@ -41,6 +41,7 @@ TESTSUITE_AT = \
   glib_helpers.at \
   sitem.at \
   configuration_files.at \
+  report_result.at \
   reported_to.at \
   problem_data.at \
   make_description.at \

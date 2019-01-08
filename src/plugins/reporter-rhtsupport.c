@@ -258,18 +258,20 @@ static
 char *submit_ureport(const char *dump_dir_name, struct ureport_server_config *conf)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
+    g_autoptr(report_result_t) rr_bthash = NULL;
+
     if (dd == NULL)
         return NULL;
 
-    report_result_t *rr_bthash = find_in_reported_to(dd, "uReport");
+    rr_bthash = find_in_reported_to(dd, "uReport");
+
     dd_close(dd);
 
     if (rr_bthash != NULL)
     {
         log_notice("uReport has already been submitted.");
-        char *ret = xstrdup(rr_bthash->bthash);
-        free_report_result(rr_bthash);
-        return ret;
+
+        return report_result_get_bthash(rr_bthash);
     }
 
     char *json = ureport_from_dump_dir(dump_dir_name);
@@ -629,13 +631,18 @@ int main(int argc, char **argv)
         if (!case_no)
         {
             /* -t: extract URL where we previously reported it */
-            report_result_t *reported_to = get_reported_to(dump_dir_name);
-            if (reported_to && reported_to->url)
+            g_autoptr(report_result_t) reported_to = NULL;
+            char *report_url = NULL;
+
+            reported_to = get_reported_to(dump_dir_name);
+            if (NULL != reported_to)
+            {
+                report_url = report_result_get_url(reported_to);
+            }
+            if (NULL != report_url)
             {
                 free(url);
-                url = reported_to->url;
-                reported_to->url = NULL;
-                free_report_result(reported_to);
+                url = report_url;
                 char *msg = xasprintf(
                     _("We found a similar Red Hat support case %s. "
                       "Do you want to attach the data to the case? "
@@ -644,11 +651,14 @@ int main(int argc, char **argv)
                 int yes = ask_yes_no(msg);
                 free(msg);
                 if (!yes)
+                {
                     url = ask_case_no_create_url(url);
+                }
             }
             else
             {
                 log_warning("Problem was not reported to Red Hat Support.");
+
                 url = ask_case_no_create_url(url);
             }
         }
@@ -682,21 +692,28 @@ int main(int argc, char **argv)
     }
     else /* no -t: creating a new case */
     {
+        g_autoptr(report_result_t) reported_to = NULL;
+        char *report_url = NULL;
+
         if (*argv)
             show_usage_and_die(program_usage_string, program_options);
 
-        report_result_t *reported_to = get_reported_to(dump_dir_name);
-        if (reported_to && reported_to->url && !(opts & OPT_f))
+        reported_to = get_reported_to(dump_dir_name);
+        if (NULL != reported_to)
+        {
+            report_url = report_result_get_url(reported_to);
+        }
+        if (NULL != report_url && !(opts & OPT_f))
         {
             char *msg = xasprintf("This problem was already reported to RHTS (see '%s')."
                             " Do you still want to create a RHTSupport ticket?",
-                            reported_to->url);
+                            report_url);
             int yes = ask_yes_no(msg);
             free(msg);
+            g_free(report_url);
             if (!yes)
                 return 0;
         }
-        free_report_result(reported_to);
 
         if (submit_ur)
         {
@@ -918,15 +935,21 @@ int main(int argc, char **argv)
         dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
         if (dd)
         {
-            struct report_result rr = { .label = (char *)"RHTSupport" };
-            rr.url = result->url;
-            rr.msg = result->msg;
-            time(&rr.timestamp);
-            add_reported_to_entry(dd, &rr);
+            report_result_t *report_result;
+
+            report_result = report_result_new("RHTSupport");
+
+            report_result_set_message(report_result, result->msg);
+            report_result_set_timestamp(report_result, time(NULL));
+            report_result_set_url(report_result, result->url);
+
+            add_reported_to_entry(dd, report_result);
             dd_close(dd);
             if (result->msg)
                 log_warning("%s", result->msg);
             log_warning("URL=%s", result->url);
+
+            report_result_free(report_result);
         }
         /* else: error msg was already emitted by dd_opendir */
 

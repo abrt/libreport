@@ -67,7 +67,8 @@ libreport_la_SOURCES = \
     libreport_init.c \
     reporters.c \
     global_configuration.c \
-    uriparser.c
+    uriparser.c \
+    report_result.c
 
 libreport_la_CPPFLAGS = \
     -I$(srcdir)/../include \

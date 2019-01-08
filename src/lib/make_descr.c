@@ -161,12 +161,16 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
                 const char *prefix     = first_prefix;
                 for (GList *iter = reports; iter != NULL; iter = g_list_next(iter))
                 {
-                    const report_result_t *const report = (report_result_t *)iter->data;
+                    report_result_t *report = iter->data;
+                    char *url;
 
-                    if (report->url == NULL)
+                    url = report_result_get_url(report);
+                    if (url == NULL)
                         continue;
 
-                    strbuf_append_strf(buf_dsc, "%s%s\n", prefix, report->url);
+                    strbuf_append_strf(buf_dsc, "%s%s\n", prefix, url);
+
+                    g_free(url);
 
                     if (prefix == first_prefix)
                     {   /* Only the first URL is prefixed by 'Reported:' */
@@ -175,7 +179,7 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
                     }
                 }
                 free(first_prefix);
-                g_list_free_full(reports, (GDestroyNotify)free_report_result);
+                g_list_free_full(reports, (GDestroyNotify)report_result_free);
             }
         }
     }

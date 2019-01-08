@@ -134,10 +134,19 @@ int main(int argc, char **argv)
             struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
             if (dd)
             {
-                report_result_t rr = { .label = (char *)"file" };
-                rr.url = xasprintf("file://%s", output_file);
-                add_reported_to_entry(dd, &rr);
-                free(rr.url);
+                report_result_t *result;
+                char *url;
+
+                result = report_result_new("file");
+                url = xasprintf("file://%s", output_file);
+
+                report_result_set_url(result, url);
+
+                add_reported_to_entry(dd, result);
+
+                free(url);
+                report_result_free(result);
+
                 dd_close(dd);
             }
         }

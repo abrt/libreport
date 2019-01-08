@@ -1,0 +1,91 @@
+AT_BANNER([report_result])
+
+AT_TESTFUN([report_result_to_string], [[
+#include <lib/report_result.c>
+
+bool string_cmp(const char *orig, const char *other)
+{
+    if (strcmp(orig, other) == 0)
+        return true;
+
+    printf("Exp: '%s'\nGot: '%s'\n", orig, other);
+    return false;
+}
+
+int main(void)
+{
+    report_result_t *result;
+    struct strbuf *strbuf;
+
+    g_verbose=3;
+
+    setenv("TZ", "", 1);
+    setenv("LC_ALL", "C", 1);
+
+    result = report_result_new(NULL);
+    assert(NULL == result || !"Null label");
+
+    result = report_result_new("");
+    assert(NULL == result || !"Blank label");
+
+    result = report_result_new("Foo:");
+    assert(NULL == result || !"Label with colon");
+
+    result = report_result_new("Foo = Bar");
+    assert(NULL != result || !"Label with equals sign and whitespace");
+    strbuf = report_result_to_string(result);
+    assert(NULL != strbuf);
+    assert(string_cmp("Foo = Bar:", strbuf->buf));
+
+    strbuf_free(strbuf);
+    report_result_free(result);
+
+    result = report_result_new("OnlyURL");
+    report_result_set_url(result, "http://test1.com");
+    strbuf = report_result_to_string(result);
+    assert(NULL != strbuf || !"Only URL");
+    assert(string_cmp("OnlyURL: URL=http://test1.com", strbuf->buf));
+
+    strbuf_free(strbuf);
+    report_result_free(result);
+
+    result = report_result_new("OnlyBTHASH");
+    report_result_set_bthash(result, "0123456789ABCDEF");
+    strbuf = report_result_to_string(result);
+    assert(NULL != strbuf || !"Only BTHASH");
+    assert(string_cmp("OnlyBTHASH: BTHASH=0123456789ABCDEF", strbuf->buf));
+
+    strbuf_free(strbuf);
+    report_result_free(result);
+
+    result = report_result_new("OnlyMSG");
+    report_result_set_message(result, "Message = foo: bar!");
+    strbuf = report_result_to_string(result);
+    assert(NULL != strbuf || !"Only MSG");
+    assert(string_cmp("OnlyMSG: MSG=Message = foo: bar!", strbuf->buf));
+
+    strbuf_free(strbuf);
+    report_result_free(result);
+
+    result = report_result_new("OnlyTIME");
+    report_result_set_timestamp(result, 946684800);
+    strbuf = report_result_to_string(result);
+    assert(NULL != strbuf || !"Only TIME");
+    assert(string_cmp("OnlyTIME: TIME=2000-01-01-00:00:00", strbuf->buf));
+
+    strbuf_free(strbuf);
+    report_result_free(result);
+
+    result = report_result_new("Everything");
+    report_result_set_bthash(result, "0123456789ABCDEF");
+    report_result_set_message(result, "Exhaustive libreport test!");
+    report_result_set_timestamp(result, 946684800);
+    report_result_set_url(result, "http://epic.win");
+    strbuf = report_result_to_string(result);
+    assert(NULL != strbuf || !"Everything");
+    assert(string_cmp("Everything: TIME=2000-01-01-00:00:00 URL=http://epic.win BTHASH=0123456789ABCDEF MSG=Exhaustive libreport test!", strbuf->buf));
+
+    strbuf_free(strbuf);
+    report_result_free(result);
+}
+]])

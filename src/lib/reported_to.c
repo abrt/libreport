@@ -45,109 +45,21 @@ int add_reported_to_data(char **reported_to, const char *line)
     return 1;
 }
 
-int add_reported_to_entry_data(char **reported_to, struct report_result *result)
+int add_reported_to_entry_data(char **reported_to, report_result_t *result)
 {
-    if (NULL == result->label || result->label[0] == '\0')
+    struct strbuf *buf;
+
+    buf = report_result_to_string(result);
+    if (NULL == buf)
     {
-        log_warning(_("Report result label mustn't be empty string."));
         return -EINVAL;
     }
-
-    if (strchr(result->label, ':') != NULL)
-    {
-        log_warning(_("Report result label mustn't contain ':' character."));
-        return -EINVAL;
-    }
-
-    struct strbuf *buf = strbuf_new();
-    strbuf_append_strf(buf, "%s:", result->label);
-
-    if (result->timestamp != 0)
-    {
-        const char *const time = iso_date_string(&(result->timestamp));
-        strbuf_append_strf(buf, " TIME=%s", time);
-    }
-
-    if (result->url != NULL)
-        strbuf_append_strf(buf, " URL=%s", result->url);
-
-    if (result->bthash != NULL)
-        strbuf_append_strf(buf, " BTHASH=%s", result->bthash);
-
-    /* MSG must be last because the value is delimited by new line character */
-    if (result->msg != NULL)
-        strbuf_append_strf(buf, " MSG=%s", result->msg);
 
     const int r = add_reported_to_data(reported_to, buf->buf);
+
     strbuf_free(buf);
 
     return r;
-}
-
-void free_report_result(struct report_result *result)
-{
-    if (!result)
-        return;
-    free(result->label);
-    free(result->url);
-    free(result->msg);
-    free(result->bthash);
-    free(result);
-}
-
-static report_result_t *parse_reported_line(const char *line, size_t label_len)
-{
-    report_result_t *result = xzalloc(sizeof(*result));
-    result->label = xstrndup(line, label_len);
-
-    /* +1 -> : */
-    line += (label_len + 1);
-
-    //result->whole_line = xstrdup(line);
-    for (;;)
-    {
-        for(;;)
-        {
-            if (!*line || *line == '\n')
-                goto line_done;
-            if (!isspace(*line))
-                break;
-            ++line;
-        }
-
-        const char *end = skip_non_whitespace(line);
-        if (prefixcmp(line, "MSG=") == 0)
-        {
-            /* MSG=... eats entire line: exiting the loop */
-            end = strchrnul(end, '\n');
-            result->msg = xstrndup(line + 4, end - (line + 4));
-            break;
-        }
-        if (prefixcmp(line, "URL=") == 0)
-        {
-            free(result->url);
-            result->url = xstrndup(line + 4, end - (line + 4));
-        }
-        if (prefixcmp(line, "BTHASH=") == 0)
-        {
-            free(result->bthash);
-            result->bthash = xstrndup(line + 7, end - (line + 7));
-        }
-        if (strncmp(line, "TIME=", 5) == 0)
-        {
-            char *datetime = xstrndup(line + 5, end - (line + 5));
-            const int r = iso_date_string_parse(datetime, &result->timestamp);
-            if (r != 0)
-                log_warning(_("Ignored invalid ISO date of report result '%s'"), result->label);
-
-            free(datetime);
-        }
-        line = end;
-        continue;
-    }
-line_done:
-
-    return result;
 }
 
 typedef void (* foreach_reported_to_line_cb_type)(const char *record_line, size_t label_len, void *user_data);
@@ -180,7 +92,7 @@ static void foreach_reported_to_line(const char *reported_to, foreach_reported_t
 static void read_entire_reported_to_cb(const char *record_line, size_t label_len, void *user_data)
 {
     GList **result = (GList **)user_data;
-    report_result_t *report = parse_reported_line(record_line, label_len);
+    report_result_t *report = report_result_new_parse(record_line, label_len);
     *result = g_list_prepend(*result, report);
 }
 
@@ -221,7 +133,7 @@ report_result_t *find_in_reported_to_data(const char *reported_to, const char *r
 
     report_result_t *result = NULL;
     if (searched.found)
-        result = parse_reported_line(searched.found, searched.found_label_len);
+        result = report_result_new_parse(searched.found, searched.found_label_len);
 
     return result;
 }
