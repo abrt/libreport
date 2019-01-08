@@ -136,6 +136,8 @@ struct run_event_state {
      */
     char *(*ask_password_callback)(const char *msg, void *interaction_param);
 
+    GPtrArray *extra_environment;
+
     /* Internal data for async command execution */
     GList *rule_list;
     pid_t command_pid;

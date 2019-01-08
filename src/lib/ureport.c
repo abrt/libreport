@@ -652,7 +652,7 @@ ureport_server_response_save_in_dump_dir(struct ureport_server_response *resp,
         {
             report_result_t *result;
 
-            result = report_result_new("uReport");
+            result = report_result_new_with_label_from_env("uReport");
 
             report_result_set_bthash(result, resp->urr_bthash);
 
@@ -665,7 +665,7 @@ ureport_server_response_save_in_dump_dir(struct ureport_server_response *resp,
             report_result_t *result;
             char *url;
 
-            result = report_result_new("ABRT Server");
+            result = report_result_new_with_label_from_env("ABRT Server");
             url = ureport_server_response_get_report_url(resp, config);
 
             report_result_set_url(result, url);

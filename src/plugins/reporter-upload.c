@@ -242,7 +242,7 @@ int main(int argc, char **argv)
     {
         report_result_t *result;
 
-        result = report_result_new("upload");
+        result = report_result_new_with_label_from_env("upload");
 
         report_result_set_url(result, remote_name);
 
