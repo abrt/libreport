@@ -1550,7 +1550,7 @@ static void set_excluded_envvar(void)
             if (!checked)
             {
                 strbuf_append_strf(item_list, fmt, item_name);
-                fmt = ",%s";
+                fmt = ", %s";
             }
             g_free(item_name);
         } while (gtk_tree_model_iter_next(GTK_TREE_MODEL(g_ls_details), &iter));
