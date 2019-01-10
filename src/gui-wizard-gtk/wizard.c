@@ -139,6 +139,7 @@ static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback f
 static void set_auto_event_chain(GtkButton *button, gpointer user_data);
 static void start_event_run(const char *event_name);
 
+static int tv_details_shown = 0;
 
 static GtkWidget *g_sens_ticket;
 static GtkToggleButton *g_sens_ticket_cb;
@@ -828,6 +829,13 @@ static void tv_details_row_activated(
                         GtkTreeView *tree_view,
                         gboolean arg1,
                         gpointer user_data) {...} */
+
+static void tv_details_show(
+                        GtkWidget *widget_UNUSED,
+                        gpointer  user_data_UNUSED)
+{
+    tv_details_shown = 1;
+}
 
 static void tv_details_cursor_changed(
                         GtkTreeView *tree_view,
@@ -1550,7 +1558,7 @@ static void set_excluded_envvar(void)
             if (!checked)
             {
                 strbuf_append_strf(item_list, fmt, item_name);
-                fmt = ",%s";
+                fmt = ", %s";
             }
             g_free(item_name);
         } while (gtk_tree_model_iter_next(GTK_TREE_MODEL(g_ls_details), &iter));
@@ -2169,8 +2177,8 @@ static void start_event_run(const char *event_name)
         }
         return; /* user refused to steal, or write error, etc... */
     }
-
-    set_excluded_envvar();
+    if (tv_details_shown)
+        set_excluded_envvar();
     GList *env_list = export_event_config(event_name);
 
     if (spawn_next_command(state, g_dump_dir_name, event_name, EXECFLG_SETPGID) < 0)
@@ -3612,6 +3620,7 @@ static void create_details_treeview(void)
 
     g_signal_connect(g_tv_details, "row-activated", G_CALLBACK(tv_details_row_activated), NULL);
     g_signal_connect(g_tv_details, "cursor-changed", G_CALLBACK(tv_details_cursor_changed), NULL);
+    g_signal_connect(g_tv_details, "map", G_CALLBACK(tv_details_show), NULL);
     /* [Enter] on a row:
      * g_signal_connect(g_tv_details, "select-cursor-row", G_CALLBACK(tv_details_select_cursor_row), NULL);
      */
