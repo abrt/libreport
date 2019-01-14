@@ -863,7 +863,7 @@ xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax,
 
     char *s = strbuf_free_nobuf(query);
     log_debug("search for '%s'", s);
-    xmlrpc_value *search = abrt_xmlrpc_call(ax, "Bug.search", "{s:s}", "quicksearch", s);
+    xmlrpc_value *search = abrt_xmlrpc_call(ax, "Bug.search", "{s:s,s:(s)}", "quicksearch", s, "include_fields", "id");
 
     free(s);
     xmlrpc_value *bugs = rhbz_get_member("bugs", search);
