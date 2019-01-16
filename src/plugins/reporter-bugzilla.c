@@ -584,7 +584,7 @@ int main(int argc, char **argv)
 //COMPAT, remove after 2.1 release
     if (!duphash) duphash = problem_data_get_content_or_die(problem_data, "global_uuid");
 
-    if (!rhbz.b_product || !*rhbz.b_product) /* if not overridden or empty... */
+    if (!rhbz.b_product || !*rhbz.b_product || !rhbz.b_product_version || !*rhbz.b_product_version) /* if not overridden or empty... */
     {
         free(rhbz.b_product);
         free(rhbz.b_product_version);
@@ -593,7 +593,7 @@ int main(int argc, char **argv)
         parse_osinfo_for_bz(osinfo, &rhbz.b_product, &rhbz.b_product_version);
         free_map_string(osinfo);
 
-        if (!rhbz.b_product)
+        if (!rhbz.b_product || !rhbz.b_product_version)
             error_msg_and_die(_("Can't determine Bugzilla Product from problem data."));
     }
 
