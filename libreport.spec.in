@@ -465,20 +465,16 @@ make check|| {
     exit 1
 }
 
-%if 0%{?fedora} > 27 || 0%{?rhel} > 7
-# ldconfig and gtk-update-icon-cache is not needed
-%else
+%ldconfig_scriptlets
+%ldconfig_scriptlets web
+%if 0%{?rhel} && 0%{?rhel} <= 7
 %post gtk
-/sbin/ldconfig
+%{?ldconfig}
 # update icon cache
 touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 
-%post -p /sbin/ldconfig
-
-%postun -p /sbin/ldconfig
-
 %postun gtk
-/sbin/ldconfig
+%{?ldconfig}
 if [ $1 -eq 0 ] ; then
     touch --no-create %{_datadir}/icons/hicolor &>/dev/null
     gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
@@ -487,11 +483,6 @@ fi
 %posttrans gtk
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
-
-%post web -p /sbin/ldconfig
-
-
-%postun web -p /sbin/ldconfig
 %endif
 
 %files -f %{name}.lang
