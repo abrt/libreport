@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.10.0] - 2019-02-02
+### Added
+- Export used workflow to reported_to
+
+### Changed
+- Improve network bandwidth usage when looking for duplicate Bugzilla reports
+- Improve emergency analysis output
+
+### Fixed
+- Fix Bugzilla reporter spamming instances running version 5 and up
+- Fix excluding data in reporting wizard
+
 ## [2.9.7] - 2018-12-07
 ### Changed
 - Visual improvements in gui wizard
@@ -132,7 +144,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.9.7...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.10.0...HEAD
+[2.10.0]: https://github.com/abrt/libreport/compare/2.9.7...2.10.0
 [2.9.7]: https://github.com/abrt/libreport/compare/2.9.6...2.9.7
 [2.9.6]: https://github.com/abrt/libreport/compare/2.9.5...2.9.6
 [2.9.5]: https://github.com/abrt/libreport/compare/2.9.4...2.9.5
