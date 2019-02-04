@@ -34,7 +34,7 @@ TS_MAIN
     {
         dynamic_words = load_words_from_file("test_ignored.conf");
     }
-    TS_ASSERT_STDERR_EQ_END("Can't open /etc/libreport/test_ignored.conf: No such file or directory\n", "User notified about errors!");
+    TS_ASSERT_STDERR_EQ_END("Can't open " CONF_DIR "/test_ignored.conf: No such file or directory\n", "User notified about errors!");
 
     TS_ASSERT_PTR_IS_NOT_NULL(dynamic_words);
 

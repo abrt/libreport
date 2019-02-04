@@ -29,6 +29,9 @@ libreport_include_helpers_HEADERS = \
 	helpers/testsuite.h \
 	helpers/testsuite_tools.h
 
+TESTSUITEFLAGS = \
+    CPPFLAGS='-DCONF_DIR="$(CONF_DIR)" $(CPPFLAGS)'
+
 TESTSUITE_AT = \
   local.at \
   testsuite.at \
