@@ -79,19 +79,23 @@ case "$1" in
             echo "Running automake..."
             automake --add-missing --force --copy || exit 1
 
-            echo "Running configure ..."
-            if [ 0 -eq $# ]; then
-                ./configure \
-                    --prefix=/usr \
-                    --sysconfdir=/etc \
-                    --localstatedir=/var \
-                    --sharedstatedir=/var/lib \
-                    --mandir=/usr/share/man \
-                    --infodir=/usr/share/info \
-                    --enable-debug
-                echo "Configured for local debugging ..."
+            if [ "$NOCONFIGURE" = "" ]; then
+                echo "Running configure ..."
+                if [ 0 -eq $# ]; then
+                    ./configure \
+                        --prefix=/usr \
+                        --sysconfdir=/etc \
+                        --localstatedir=/var \
+                        --sharedstatedir=/var/lib \
+                        --mandir=/usr/share/man \
+                        --infodir=/usr/share/info \
+                        --enable-debug
+                    echo "Configured for local debugging ..."
+                else
+                    ./configure "$@"
+                fi
             else
-                ./configure "$@"
+                echo "Skipping configure"
             fi
         ;;
 esac
