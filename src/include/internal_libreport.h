@@ -59,14 +59,14 @@
 #endif
 
 /* Must be after #include "config.h" */
-#if ENABLE_NLS
+#ifdef ENABLE_NLS
 # include <libintl.h>
 # define _(S) dgettext(PACKAGE, S)
 #else
 # define _(S) (S)
 #endif
 
-#if HAVE_LOCALE_H
+#ifdef HAVE_LOCALE_H
 # include <locale.h>
 #endif /* HAVE_LOCALE_H */
 

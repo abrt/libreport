@@ -18,13 +18,13 @@
 */
 #include "internal_libreport.h"
 
-#if HAVE_LZMA
+#ifdef HAVE_LZMA
 # include <lzma.h>
 #else
 # define LR_DECOMPRESS_FORK_EXECVP
 #endif
 
-#if HAVE_LZ4
+#ifdef HAVE_LZ4
 # include <lz4frame.h>
 #else
 # define LR_DECOMPRESS_FORK_EXECVP
@@ -106,7 +106,7 @@ decompress_using_fork_execvp(const char** cmd, int fdi, int fdo)
 static int
 decompress_fd_xz(int fdi, int fdo)
 {
-#if HAVE_LZMA
+#ifdef HAVE_LZMA
     uint8_t buf_in[BUFSIZ];
     uint8_t buf_out[BUFSIZ];
 
@@ -180,7 +180,7 @@ decompress_fd_xz(int fdi, int fdo)
 static int
 decompress_fd_lz4(int fdi, int fdo)
 {
-#if HAVE_LZ4
+#ifdef HAVE_LZ4
     enum { LZ4_DEC_BUF_SIZE = 64*1024u };
 
     LZ4F_decompressionContext_t ctx = NULL;
