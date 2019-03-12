@@ -1555,19 +1555,33 @@ static int dd_delete_meta_data(struct dump_dir *dd)
 
 int dd_delete(struct dump_dir *dd)
 {
+    int retval;
+
+    retval = 0;
+
     if (!dd->locked)
     {
         error_msg("unlocked problem directory %s cannot be deleted", dd->dd_dirname);
-        return -1;
+
+        retval = -1;
+
+        goto close;
     }
 
     if (dd_delete_meta_data(dd) != 0)
-        return -2;
+    {
+        retval = -2;
+
+        goto close;
+    }
 
     if (delete_file_dir(dd->dd_fd, /*skip_lock_file:*/ true) != 0)
     {
         perror_msg("Can't remove contents of directory '%s'", dd->dd_dirname);
-        return -2;
+
+        retval = -2;
+
+        goto close;
     }
 
     unsigned cnt = RMDIR_FAIL_COUNT;
@@ -1586,12 +1600,14 @@ int dd_delete(struct dump_dir *dd)
     if (cnt == 0)
     {
         perror_msg("Can't remove directory '%s'", dd->dd_dirname);
-        return -3;
+
+        retval = -3;
     }
 
     dd->locked = 0; /* delete_file_dir already removed .lock */
+close:
     dd_close(dd);
-    return 0;
+    return retval;
 }
 
 int dd_chown(struct dump_dir *dd, uid_t new_uid)
