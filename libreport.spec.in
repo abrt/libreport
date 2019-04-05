@@ -430,6 +430,7 @@ rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELxorg.xml
 rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELLibreport.xml
 rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELJava.xml
 rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELJavaScript.xml
+rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_uReport.xml
 rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_AnacondaRHEL.xml
 rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_AnacondaRHELBugzilla.xml
 rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELBugzillaCCpp.xml
@@ -450,8 +451,10 @@ rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELAddDataJava.xml
 rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELAddDataJavaScript.xml
 rm -f %{buildroot}/%{_sysconfdir}/libreport/workflows.d/report_rhel.conf
 rm -f %{buildroot}/%{_sysconfdir}/libreport/workflows.d/report_rhel_add_data.conf
+rm -f %{buildroot}/%{_sysconfdir}/libreport/workflows.d/report_uReport.conf
 rm -f %{buildroot}/%{_sysconfdir}/libreport/workflows.d/report_rhel_bugzilla.conf
 rm -f %{buildroot}%{_mandir}/man5/report_rhel.conf.5
+rm -f %{buildroot}%{_mandir}/man5/report_uReport.conf.5
 rm -f %{buildroot}%{_mandir}/man5/report_rhel_bugzilla.conf.5
 %endif
 
@@ -623,15 +626,17 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files plugin-ureport
 %config(noreplace) %{_sysconfdir}/libreport/plugins/ureport.conf
-%config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_uReport.conf
 %{_datadir}/%{name}/conf.d/plugins/ureport.conf
 %{_datadir}/%{name}/events/report_uReport.xml
-%{_datadir}/%{name}/workflows/workflow_uReport.xml
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.ureport.xml
 %{_bindir}/reporter-ureport
 %{_mandir}/man1/reporter-ureport.1.gz
 %{_mandir}/man5/ureport.conf.5.gz
+%if 0%{?rhel}
+%config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_uReport.conf
+%{_datadir}/%{name}/workflows/workflow_uReport.xml
 %{_mandir}/man5/report_uReport.conf.5.*
+%endif
 
 %if %{with bugzilla}
 %files plugin-bugzilla
