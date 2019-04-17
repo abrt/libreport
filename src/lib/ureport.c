@@ -680,7 +680,23 @@ ureport_server_response_save_in_dump_dir(struct ureport_server_response *resp,
     if (resp->urr_reported_to_list)
     {
         for (GList *e = resp->urr_reported_to_list; e; e = g_list_next(e))
-            add_reported_to(dd, e->data);
+        {
+            char *workflow;
+
+            workflow = getenv("LIBREPORT_WORKFLOW");
+            if (NULL == workflow)
+            {
+                add_reported_to(dd, e->data);
+            }
+            else
+            {
+                g_autofree char *line = NULL;
+
+                line = g_strdup_printf("%s WORKFLOW=%s", (const char *)e->data, workflow);
+
+                add_reported_to(dd, line);
+            }
+        }
     }
 
     if (resp->urr_solution)
