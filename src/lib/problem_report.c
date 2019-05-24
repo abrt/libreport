@@ -305,12 +305,15 @@ load_stream(FILE *fp)
 
 #define MAX_OPT_DEPTH 10
 static int
-format_percented_string(const char *str, problem_data_t *pd, FILE *result)
+format_percented_string(const char *str, problem_data_t *pd, FILE *result, char *fmt_file)
 {
     long old_pos[MAX_OPT_DEPTH] = { 0 };
     int okay[MAX_OPT_DEPTH] = { 1 };
     long len = 0;
     int opt_depth = 1;
+
+    char *missing_item = xstrdup(str);
+    memset(missing_item, 0, strlen(str));
 
     while (*str) {
         switch (*str) {
@@ -365,6 +368,18 @@ format_percented_string(const char *str, problem_data_t *pd, FILE *result)
 
             *nextpercent = '\0';
             const problem_item *item = problem_data_get_item_or_NULL(pd, str);
+            if (!item) 
+            {
+                if (opt_depth > 1)
+                {
+                    log_debug("Missing content element: '%s'", str);
+                }
+                if (opt_depth == 1)
+                {
+                    log_debug("Missing top-level element: '%s'", str);
+                    strcpy(missing_item, str);
+                }
+            }
             *nextpercent = '%';
 
             if (item && (item->flags & CD_FLAG_TXT))
@@ -386,8 +401,10 @@ format_percented_string(const char *str, problem_data_t *pd, FILE *result)
 
     if (!okay[0])
     {
-        error_msg("Undefined variable outside of [[ ]] bracket");
+        error_msg("In format file '%s':", fmt_file);
+        error_msg("    Undefined variable '%s' outside [[ ]] brackets", missing_item);
     }
+    free(missing_item);
 
     return 0;
 }
@@ -1036,6 +1053,7 @@ struct problem_formatter
     GList *pf_extra_sections;   ///< user configured sections (struct extra_section)
     char  *pf_default_summary;  ///< default summary format
     problem_report_settings_t pf_settings; ///< settings for report generating
+    char *fmt_file;
 };
 
 static problem_report_settings_t
@@ -1084,6 +1102,9 @@ problem_formatter_free(problem_formatter_t *self)
 
     free(self->pf_default_summary);
     self->pf_default_summary = DESTROYED_POINTER;
+
+    free(self->fmt_file);
+    self->fmt_file = DESTROYED_POINTER;
 
     free(self);
 }
@@ -1187,6 +1208,7 @@ problem_formatter_load_file(problem_formatter_t *self, const char *path)
     }
 
     self->pf_sections = load_stream(fp);
+    self->fmt_file = xstrdup(path);
 
     if (fp != stdin)
         fclose(fp);
@@ -1215,7 +1237,7 @@ problem_formatter_generate_report(const problem_formatter_t *self, problem_data_
         {
             has_summary = true;
             format_percented_string((const char *)section->items->data, data,
-                                    problem_report_get_buffer(pr, PR_SEC_SUMMARY));
+                                    problem_report_get_buffer(pr, PR_SEC_SUMMARY), self->fmt_file);
         }
         /* %attach as well */
         else if (strcmp(section->name, "%attach") == 0)
@@ -1241,7 +1263,7 @@ problem_formatter_generate_report(const problem_formatter_t *self, problem_data_
                     self->pf_default_summary);
 
         format_percented_string(self->pf_default_summary,
-                   data, problem_report_get_buffer(pr, PR_SEC_SUMMARY));
+                   data, problem_report_get_buffer(pr, PR_SEC_SUMMARY), self->fmt_file);
     }
 
     *report = pr;
