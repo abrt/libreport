@@ -312,8 +312,7 @@ format_percented_string(const char *str, problem_data_t *pd, FILE *result, char 
     long len = 0;
     int opt_depth = 1;
 
-    char *missing_item = xstrdup(str);
-    memset(missing_item, 0, strlen(str));
+    char *missing_item = 0;
 
     while (*str) {
         switch (*str) {
@@ -368,27 +367,31 @@ format_percented_string(const char *str, problem_data_t *pd, FILE *result, char 
 
             *nextpercent = '\0';
             const problem_item *item = problem_data_get_item_or_NULL(pd, str);
-            if (!item) 
+
+            if (item)
             {
-                if (opt_depth > 1)
+                if (item->flags & CD_FLAG_TXT)
                 {
-                    log_debug("Missing content element: '%s'", str);
+                    fputs(item->content, result);
+                    len += strlen(item->content);
                 }
+                else
+                    error_msg_and_die("In format file '%s':\n"
+                                      "\t'%s' is not a text file",
+                                      fmt_file, str);
+            }
+            else
+            {
+                okay[opt_depth - 1] = 0;
+                if (opt_depth > 1)
+                    log_debug("Missing content element: '%s'", str);
                 if (opt_depth == 1)
                 {
                     log_debug("Missing top-level element: '%s'", str);
-                    strcpy(missing_item, str);
+                    missing_item = xstrdup(str);
                 }
             }
             *nextpercent = '%';
-
-            if (item && (item->flags & CD_FLAG_TXT))
-            {
-                fputs(item->content, result);
-                len += strlen(item->content);
-            }
-            else
-                okay[opt_depth - 1] = 0;
             str = nextpercent + 1;
             break;
         }
@@ -401,10 +404,12 @@ format_percented_string(const char *str, problem_data_t *pd, FILE *result, char 
 
     if (!okay[0])
     {
-        error_msg("In format file '%s':", fmt_file);
-        error_msg("    Undefined variable '%s' outside [[ ]] brackets", missing_item);
+        error_msg("In format file '%s':\n"
+                  "\tUndefined variable '%s' outside [[ ]] brackets",
+                  fmt_file, missing_item);
+        free(missing_item);
+        missing_item = 0;
     }
-    free(missing_item);
 
     return 0;
 }
