@@ -39,6 +39,9 @@ static char *steal_directory_if_needed(char *dump_dir_name)
 
 int main(int argc, char** argv)
 {
+    bool runaway_arguments;
+    bool missing_positional_argument;
+
     abrt_init(argv);
 
     setlocale(LC_ALL, "");
@@ -105,21 +108,17 @@ int main(int argc, char** argv)
         /* "You must specify exactly one operation" */
         show_usage_and_die(program_usage_string, program_options);
 
-    argv += optind;
-    argc -= optind;
+    runaway_arguments = (argc - optind) > 1;
+    missing_positional_argument = (opts & OPTMASK_need_arg) && (argc == optind);
 
     /* Check for bad usage */
-    if (argc > 1 /* more than one arg? */
-        ||
-        /* dont_need_arg == have_arg? bad in both cases:
-         * TRUE == TRUE (dont need arg but have) or
-         * FALSE == FALSE (need arg but havent).
-         * OPT_list_events is an exception, it can be used in both cases.
-         */
-        (((!(opts & OPTMASK_need_arg)) == argc) && (op != OPT_list_events))
-    ) {
+    if (runaway_arguments || (missing_positional_argument && op != OPT_list_events))
+    {
         show_usage_and_die(program_usage_string, program_options);
     }
+
+    argv += optind;
+    argc -= optind;
 
     if (op == OPT_version)
     {
