@@ -29,6 +29,8 @@ int try_atou(const char *numstr, unsigned *value)
     int old_errno;
     char *e;
 
+    g_return_val_if_fail (NULL != numstr, -EINVAL);
+
     old_errno = errno;
     if (*numstr < '0' || *numstr > '9')
     {
@@ -73,6 +75,9 @@ unsigned xatou(const char *numstr)
 int try_atoi_positive(const char *numstr, int *value)
 {
     unsigned tmp;
+
+    g_return_val_if_fail (NULL != numstr, -EINVAL);
+
     int r = try_atou(numstr, &tmp);
     if (r != 0)
         return r;
@@ -96,7 +101,9 @@ int xatoi_positive(const char *numstr)
 
 int try_atoi(const char *numstr, int *value)
 {
-    if (numstr != NULL && *numstr != '-')
+    g_return_val_if_fail (NULL != numstr, -EINVAL);
+
+    if (*numstr != '-')
         return try_atoi_positive(numstr, value);
 
     unsigned tmp;
