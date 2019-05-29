@@ -611,7 +611,7 @@ int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *bug_id,
 {
     func_entry();
 
-    if (strlen(data) == 0)
+    if (0 == data_len)
     {
         log_notice("not attaching an empty file: '%s'", filename);
         /* Return SUCCESS */
@@ -682,7 +682,7 @@ int rhbz_attach_fd(struct abrt_xmlrpc *ax, const char *bug_id,
 
 //TODO: need to have a method of attaching huge files (IOW: 1Gb read isn't good).
 
-    char *data = xmalloc(size + 1);
+    char *data = xmalloc(size);
     ssize_t r = full_read(fd, data, size);
     if (r < 0)
     {
