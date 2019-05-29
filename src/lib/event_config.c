@@ -506,9 +506,6 @@ bool check_problem_rating_usability(const event_config_t *cfg,
     if (!rating_str)
         goto finish;
 
-    /* just to be sure */
-    result = false;
-
     const long minimal_rating = cfg->ec_minimal_rating;
     char *endptr;
     errno = 0;
