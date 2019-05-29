@@ -2754,7 +2754,8 @@ static char *get_next_processed_event(GList **events_list)
 
         GList *expanded_list = NULL;
         /* add expanded events from event having trailing '*' */
-        char *next = event_name = expanded_events;
+        char *next;
+        char *event_name = expanded_events;
         while ((next = strchr(event_name, '\n')))
         {
             /* 'event1\0event2\nevent3\n' */
