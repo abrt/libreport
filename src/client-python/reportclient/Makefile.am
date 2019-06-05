@@ -24,19 +24,6 @@ PYEXTLDFLAGS = \
     -avoid-version \
     -Wl,-z,relro -Wl,-z,now
 
-if BUILD_PYTHON2
-py2clientdir = $(pyexecdir)/reportclient
-
-py2client_PYTHON = $(PYFILES)
-py2client_LTLIBRARIES = _reportclient.la
-
-_reportclient_la_SOURCES = $(PYEXTFILES)
-_reportclient_la_CPPFLAGS = $(PYEXTCPPFLAGS) $(PYTHON_CFLAGS)
-_reportclient_la_LDFLAGS = $(PYEXTLDFLAGS) \
-    -export-symbols-regex init_reportclient
-_reportclient_la_LIBADD = ../../lib/libreport.la
-endif
-
 if BUILD_PYTHON3
 py3clientdir = $(py3execdir)/reportclient
 

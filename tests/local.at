@@ -35,7 +35,8 @@ AT_CLEANUP])
 m4_define([AT_PYTESTFUN],
 [AT_SETUP([$1])
 AT_DATA([$1], [$2])
-AT_CHECK([PYTHONPATH=../../../src python3 ./$1], 0, [ignore], [ignore])
+AT_SKIP_IF([test -z $BUILD_PYTHON3])
+AT_CHECK([PYTHONPATH=../../../src python3 ./$1], 0, [ignore], [ignore]),
 AT_CLEANUP])
 
 AT_INIT
