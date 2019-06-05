@@ -25,27 +25,6 @@ PYEXTLDFLAGS = \
     -avoid-version \
     -Wl,-z,relro -Wl,-z,now
 
-if BUILD_PYTHON2
-pyreportexecdir = $(pyexecdir)/report
-
-pyreportexec_PYTHON = $(PYFILES)
-pyreportexec_LTLIBRARIES = _pyreport.la
-
-_pyreport_la_SOURCES = $(PYEXTFILES)
-
-_pyreport_la_CPPFLAGS = \
-    $(PYEXTCPPFLAGS) \
-    $(PYTHON_CFLAGS)
-
-_pyreport_la_LDFLAGS = \
-   $(PYEXTLDFLAGS) \
-   -export-symbols-regex init_pyreport
-
-_pyreport_la_LIBADD = \
-    ../../lib/libreport.la \
-    $(PYTHON2_LIBS)
-endif
-
 if BUILD_PYTHON3
 py3reportexecdir = $(py3execdir)/report
 
@@ -81,11 +60,6 @@ PYIOFILES = \
     io/GTKIO.py \
     io/NewtIO.py \
     io/TextIO.py
-
-if BUILD_PYTHON2
-pyreportioexecdir = $(pyexecdir)/report/io
-pyreportioexec_PYTHON = $(PYIOFILES)
-endif
 
 if BUILD_PYTHON3
 py3reportioexecdir = $(py3execdir)/report/io
