@@ -375,10 +375,14 @@ format_percented_string(const char *str, problem_data_t *pd, FILE *result, char 
                     fputs(item->content, result);
                     len += strlen(item->content);
                 }
-                else
+                else if (fmt_file)
+                {
                     error_msg_and_die("In format file '%s':\n"
                                       "\t'%s' is not a text file",
                                       fmt_file, str);
+                }
+                else
+                    error_msg_and_die("'%s' is not a text file", str);
             }
             else
             {
@@ -404,9 +408,14 @@ format_percented_string(const char *str, problem_data_t *pd, FILE *result, char 
 
     if (!okay[0])
     {
-        error_msg("In format file '%s':\n"
-                  "\tUndefined variable '%s' outside [[ ]] brackets",
-                  fmt_file, missing_item);
+        if (fmt_file)
+        {
+            error_msg("In format file '%s':\n"
+                      "\tUndefined variable '%s' outside [[ ]] brackets",
+                      fmt_file, missing_item);
+        }
+        else
+            error_msg("Undefined variable '%s' outside [[ ]] brackets", missing_item);
         free(missing_item);
         missing_item = 0;
     }
