@@ -53,10 +53,10 @@ static void start_command(struct command *cmd)
 
   fflush(NULL);
 
-  cmd->pid = vfork();
+  cmd->pid = fork();
   if (cmd->pid < 0)
   {
-    perror_msg_and_die("vfork");
+    perror_msg_and_die("fork");
   }
   if (cmd->pid == 0)
   {
@@ -85,7 +85,7 @@ static void start_command(struct command *cmd)
     signal(SIGTTOU, SIG_DFL);
 
     execvp(cmd->argv[0], cmd->argv);
-    /* Better to use _exit (not exit) after vfork:
+    /* Better to use _exit (not exit) after fork:
      * we don't want to mess up parent's memory state
      * by running libc cleanup routines.
      */
