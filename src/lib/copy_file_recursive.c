@@ -19,131 +19,98 @@
 
 #include "internal_libreport.h"
 
+#include <gio/gio.h>
+
+static int report_copy_gfile_recursive(GFile *source, GFile *destination)
+{
+    const char *blacklist[] =
+    {
+        ".libreport",
+        ".lock",
+    };
+    g_autofree char *name = NULL;
+    g_autoptr(GError) error = NULL;
+    bool file_copied;
+    bool recurse;
+
+    name = g_file_get_basename(source);
+    for (size_t i = 0; i < G_N_ELEMENTS(blacklist); i++)
+    {
+        if (g_strcmp0(name, blacklist[i]) == 0)
+        {
+            log_debug("Skipping “%s”", name);
+
+            return 0;
+        }
+    }
+    file_copied = g_file_copy(source, destination,
+                              (G_FILE_COPY_OVERWRITE |
+                               G_FILE_COPY_NOFOLLOW_SYMLINKS |
+                               G_FILE_COPY_ALL_METADATA),
+                              NULL, NULL, NULL, &error);
+    recurse = !file_copied && g_error_matches(error, G_IO_ERROR, G_IO_ERROR_WOULD_MERGE);
+    if (recurse)
+    {
+        g_autoptr(GFileEnumerator) enumerator = NULL;
+        GFileInfo *child_info;
+        GFile *child;
+
+        g_clear_error(&error);
+
+        enumerator = g_file_enumerate_children(source,
+                                               G_FILE_ATTRIBUTE_STANDARD_NAME,
+                                               G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
+                                               NULL, &error);
+        if (NULL != error)
+        {
+            log_error("Error occurred while enumerating files: %s", error->message);
+
+            return -1;
+        }
+
+        while (g_file_enumerator_iterate(enumerator, &child_info, &child, NULL, &error))
+        {
+            const char *child_name;
+            g_autoptr(GFile) child_destination = NULL;
+
+            if (NULL == child)
+            {
+                break;
+            }
+
+            child_name = g_file_info_get_name(child_info);
+            child_destination = g_file_get_child(destination, child_name);
+
+            report_copy_gfile_recursive(child, child_destination);
+        }
+
+        if (NULL != error)
+        {
+            log_error("Error occurred while iterating files: %s", error->message);
+
+            return -1;
+        }
+    }
+    else if (NULL != error)
+    {
+        log_error("Error occurred while copying file: %s", error->message);
+
+        return -1;
+    }
+
+    return 0;
+}
+
 int copy_file_recursive(const char *source, const char *dest)
 {
-	/* This is a recursive function, try to minimize stack usage */
-	/* NB: each struct stat is ~100 bytes */
-	struct stat source_stat;
-	struct stat dest_stat;
-	int retval = 0;
-	int dest_exists = 0;
+    g_autoptr(GFile) source_file = NULL;
+    g_autoptr(GFile) destination_file = NULL;
 
-	if (strcmp(source, ".lock") == 0)
-		goto skip;
+    g_return_val_if_fail(NULL != source, -1);
+    g_return_val_if_fail(NULL != dest, -1);
 
-	if (stat(source, &source_stat) < 0) {
-		perror_msg("Can't stat '%s'", source);
-		return -1;
-	}
+    source_file = g_file_new_for_path(source);
+    destination_file = g_file_new_for_path(dest);
 
-	if (lstat(dest, &dest_stat) < 0) {
-		if (errno != ENOENT) {
-			perror_msg("Can't stat '%s'", dest);
-			return -1;
-		}
-	} else {
-		if (source_stat.st_dev == dest_stat.st_dev
-		 && source_stat.st_ino == dest_stat.st_ino
-		) {
-			error_msg("'%s' and '%s' are the same file", source, dest);
-			return -1;
-		}
-		dest_exists = 1;
-	}
-
-	if (S_ISDIR(source_stat.st_mode)) {
-		DIR *dp;
-		struct dirent *d;
-
-		if (dest_exists) {
-			if (!S_ISDIR(dest_stat.st_mode)) {
-				error_msg("Target '%s' is not a directory", dest);
-				return -1;
-			}
-			/* race here: user can substitute a symlink between
-			 * this check and actual creation of files inside dest */
-		} else {
-			/* Create DEST */
-			mode_t mode = source_stat.st_mode;
-			/* Allow owner to access new dir (at least for now) */
-			mode |= S_IRWXU;
-			if (mkdir(dest, mode) < 0) {
-				perror_msg("Can't create directory '%s'", dest);
-				return -1;
-			}
-		}
-		/* Recursively copy files in SOURCE */
-		dp = opendir(source);
-		if (dp == NULL) {
-			retval = -1;
-			goto ret;
-		}
-
-		while (retval == 0 && (d = readdir(dp)) != NULL) {
-			char *new_source, *new_dest;
-
-			if (dot_or_dotdot(d->d_name))
-				continue;
-			new_source = concat_path_file(source, d->d_name);
-			new_dest = concat_path_file(dest, d->d_name);
-			if (copy_file_recursive(new_source, new_dest) < 0)
-				retval = -1;
-			free(new_source);
-			free(new_dest);
-		}
-		closedir(dp);
-
-		goto ret;
-	}
-
-	if (S_ISREG(source_stat.st_mode)) {
-		int src_fd;
-		int dst_fd;
-		mode_t new_mode;
-
-		src_fd = open(source, O_RDONLY);
-		if (src_fd < 0) {
-			perror_msg("Can't open '%s'", source);
-			return -1;
-		}
-
-		/* Do not try to open with weird mode fields */
-		new_mode = source_stat.st_mode;
-
-		// security problem versus (sym)link attacks
-		// dst_fd = open(dest, O_WRONLY|O_CREAT|O_TRUNC, new_mode);
-		/* safe way: */
-		dst_fd = open(dest, O_WRONLY|O_CREAT|O_EXCL, new_mode);
-		if (dst_fd < 0) {
-			close(src_fd);
-			return -1;
-		}
-
-		if (copyfd_eof(src_fd, dst_fd, COPYFD_SPARSE) == -1)
-			retval = -1;
-		close(src_fd);
-		/* Careful: do check that buffered writes succeeded... */
-		if (close(dst_fd) < 0) {
-			perror_msg("Error writing to '%s'", dest);
-			retval = -1;
-		} else {
-			/* (Try to) copy atime and mtime */
-			struct timeval atime_mtime[2];
-			atime_mtime[0].tv_sec = source_stat.st_atime;
-			// note: if "st_atim.tv_nsec" doesn't compile, try "st_atimensec":
-			atime_mtime[0].tv_usec = source_stat.st_atim.tv_nsec / 1000;
-			atime_mtime[1].tv_sec = source_stat.st_mtime;
-			atime_mtime[1].tv_usec = source_stat.st_mtim.tv_nsec / 1000;
-			// note: can use utimensat when it is more widely supported:
-			utimes(dest, atime_mtime);
-		}
-		goto ret;
-	}
-
-	/* Neither dir not regular file: skip */
-
- skip:
-	log_warning("Skipping '%s'", source);
- ret:
-	return retval;
+    return report_copy_gfile_recursive(source_file, destination_file);
 }

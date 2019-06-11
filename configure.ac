@@ -269,7 +269,13 @@ else
 AM_CONDITIONAL(BUILD_PYTHON3, false)
 fi dnl end NO_PYTHON3
 
-PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.43.4])
+m4_define([glib_version], [2.43.4])
+
+PKG_CHECK_MODULES([GLIB], [glib-2.0 >= glib_version])
+PKG_CHECK_MODULES([GIO], [
+    gio-2.0 >= glib_version
+    gio-unix-2.0 >= glib_version
+])
 PKG_CHECK_MODULES([GOBJECT], [gobject-2.0])
 PKG_CHECK_MODULES([DBUS], [dbus-1])
 PKG_CHECK_MODULES([LIBXML], [libxml-2.0])
@@ -304,7 +310,6 @@ LIBREPORT_PARSE_WITH([gtk]))
 if test -z "$NO_GTK"; then
 AM_CONDITIONAL(BUILD_GTK, true)
 PKG_CHECK_MODULES([GTK], [gtk+-3.0])
-PKG_CHECK_MODULES([GIO], [gio-2.0 gio-unix-2.0])
 else
 AM_CONDITIONAL(BUILD_GTK, false)
 fi dnl end NO_GTK
