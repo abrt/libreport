@@ -87,7 +87,7 @@ SUFFIXES = .1 .5
 
 .txt.xml: ../asciidoc.conf
 	$(ASCIIDOC_SILENT) asciidoc --backend=docbook --doctype=manpage \
-                                    --conf-file ../asciidoc.conf \
+                                    --conf-file $(top_srcdir)/asciidoc.conf \
                                     -alibreport_version=$(PACKAGE_VERSION) -o $@ $<
 
 EXTRA_DIST = $(MAN1_TXT) $(MAN5_TXT) $(MAN5_PREFORMATTED)
