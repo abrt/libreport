@@ -85,6 +85,7 @@ libreport_la_CPPFLAGS = \
     -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
     -DDUMP_DIR_OWNED_BY_USER=$(DUMP_DIR_OWNED_BY_USER) \
     -DLARGE_DATA_TMP_DIR=\"$(LARGE_DATA_TMP_DIR)\" \
+    $(GIO_CFLAGS) \
     $(GLIB_CFLAGS) \
     $(LZMA_CFLAGS) \
     $(LZ4_CFLAGS) \
@@ -96,6 +97,7 @@ libreport_la_LDFLAGS = \
     -ltar \
     -version-info 0:1:0
 libreport_la_LIBADD = \
+    $(GIO_LIBS) \
     $(GLIB_LIBS) \
     $(LZMA_LIBS) \
     $(LZ4_LIBS) \
