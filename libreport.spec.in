@@ -807,6 +807,28 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Wed Jul 03 2019 Martin Kutlak <mkutlak@redhat.com> 2.10.1-1
+- doc: Makefile.am: Use correct path for --conf-file
+- lib: copy_file_recursive: Use GLib abstractions
+- gui-wizard-gtk: Fix fix
+- cli: run-command: Replace use of vfork() with fork()
+- plugins: rhbz: Don’t call strlen() on attachment data
+- Check for empty fmt_file name when printing error msgs
+- cli: Unpack command-line argument parsing logic
+- lib: event_config: Remove pointless assignment
+- gui-wizard-gtk: Fix never-read assignment
+- lib: xatonum: Check string parameters
+- Rework and refine composition of error messages
+- Add clearer warnings about missing report elements specified in format files
+- Move uReport workflow to plugin-ureport subpackage
+- lib: ureport: Export workflow when saving server response
+- lib: dump_dir: Clean up on failure in dd_delete()
+- Use #ifdef to check whether macros are defined
+- autogen.sh: Use autoreconf
+- autogen.sh: Allow skipping running configure
+- tests: forbidden_words: Don’t hardcode sysconfdir
+- Makefile.am: Use correct locale when getting date
+
 * Sat Feb 02 2019 Ernestas Kulik <ekulik@redhat.com> 2.10.0-1
 - Update to 2.10.0
 

@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.10.1] - 2019-07-03
+### Changed
+- Clearer warnings about missing report elements.
+- Export workflow when saving server response.
+- uReport workflow moved to plugin-ureport subpackage.
+- Refined composition of error messages during problem reporting.
+
+### Fixed
+- Fixed dump dir lock up in case of delete failure.
+
 ## [2.10.0] - 2019-02-02
 ### Added
 - Export used workflow to reported_to
@@ -144,7 +154,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.10.0...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.10.1...HEAD
+[2.10.1]: https://github.com/abrt/libreport/compare/2.10.0...2.10.1
 [2.10.0]: https://github.com/abrt/libreport/compare/2.9.7...2.10.0
 [2.9.7]: https://github.com/abrt/libreport/compare/2.9.6...2.9.7
 [2.9.6]: https://github.com/abrt/libreport/compare/2.9.5...2.9.6
