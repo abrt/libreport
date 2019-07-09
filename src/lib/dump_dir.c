@@ -744,6 +744,7 @@ uid_t dd_get_owner(struct dump_dir *dd)
     int dd_md_fd = dd_get_meta_data_dir_fd(dd, /*no create*/0);
     if (dd_md_fd < 0)
     {
+        errno = 0;
         log_info("No meta-data, using fs owner.");
         return dd->dd_uid;
     }
@@ -756,12 +757,16 @@ uid_t dd_get_owner(struct dump_dir *dd)
     if (ret < 0)
     {
         if (ret != -ENOENT)
-            return ret;
+        {
+            errno = -ret;
+            return (uid_t)-1;
+        }
 
         log_info("No meta-data 'owner', using fs owner.");
-        return dd->dd_uid;
+        owner = dd->dd_uid;
     }
 
+    errno = 0;
     return (uid_t)owner;
 }
 
@@ -2266,7 +2271,7 @@ int dd_stat_for_uid(struct dump_dir *dd, uid_t uid)
 
         const uid_t owner = dd_get_owner(dd);
 
-        if (owner < 0)
+        if (errno != 0)
             goto fsattributes;
 
         if (owner == uid)
