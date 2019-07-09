@@ -737,9 +737,12 @@ int dd_set_no_owner(struct dump_dir *dd)
     return dd_set_owner(dd, no_owner_uid);
 }
 
-uid_t dd_get_owner(struct dump_dir *dd)
+uid_t dd_get_owner(struct dump_dir *dd, int *errorno)
 {
     static const long long MAX_UID_T = (1ULL << (sizeof(uid_t)*8 - 1)) - 1;
+
+    if (errorno)
+        *errorno = 0;
 
     int dd_md_fd = dd_get_meta_data_dir_fd(dd, /*no create*/0);
     if (dd_md_fd < 0)
@@ -755,10 +758,11 @@ uid_t dd_get_owner(struct dump_dir *dd)
 
     if (ret < 0)
     {
-        if (ret != -ENOENT)
-            return ret;
+        if (errorno && ret != -ENOENT)
+            *errorno = ret;
+        else
+            log_info("No meta-data 'owner', using fs owner.");
 
-        log_info("No meta-data 'owner', using fs owner.");
         return dd->dd_uid;
     }
 
@@ -2264,9 +2268,10 @@ int dd_stat_for_uid(struct dump_dir *dd, uid_t uid)
     {
         log_debug("directory owned by super-user: checking meta-data");
 
-        const uid_t owner = dd_get_owner(dd);
+        int ret = 0;
+        const uid_t owner = dd_get_owner(dd, &ret);
 
-        if (owner < 0)
+        if (ret < 0)
             goto fsattributes;
 
         if (owner == uid)
@@ -2277,7 +2282,7 @@ int dd_stat_for_uid(struct dump_dir *dd, uid_t uid)
         }
 
         uid_t no_owner_uid = (uid_t)-1;
-        int ret = get_no_owner_uid(&no_owner_uid);
+        ret = get_no_owner_uid(&no_owner_uid);
         if (   ret >= 0
             && owner == no_owner_uid)
         {
