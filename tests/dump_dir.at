@@ -235,6 +235,7 @@ int main(int argc, char **argv)
     assert(fstatat(dd->dd_md_fd, "owner", &owner_md_st, 0) == 0);
     assert((dd_st.st_mode & 0666) == (owner_md_st.st_mode & 0666));
     assert(geteuid() == dd_get_owner(dd));
+    assert(errno == 0);
 
     dd_create_basic_files(dd, (uid_t)-1, NULL);
     dd_save_text(dd, FILENAME_TYPE, "attest");
@@ -396,6 +397,7 @@ int main(int argc, char **argv)
         assert(dd != NULL);
 
         assert(geteuid() == dd_get_owner(dd));
+        assert(errno == 0);
 
         assert(dd_delete(dd) == 0);
     }
@@ -407,6 +409,7 @@ int main(int argc, char **argv)
 
         dd_create_basic_files(dd, (uid_t)-1, NULL);
         assert(geteuid() == dd_get_owner(dd));
+        assert(errno == 0);
 
         assert(dd_delete(dd) == 0);
     }
@@ -418,6 +421,7 @@ int main(int argc, char **argv)
 
         dd_create_basic_files(dd, (geteuid() + 1), NULL);
         assert((geteuid() + 1) == dd_get_owner(dd));
+        assert(errno == 0);
 
         assert(dd_delete(dd) == 0);
     }
@@ -432,6 +436,7 @@ int main(int argc, char **argv)
         struct passwd *nobody_pw= getpwnam("nobody");
         assert(nobody_pw != NULL);
         assert(nobody_pw->pw_uid == dd_get_owner(dd));
+        assert(errno == 0);
 
         assert(dd_delete(dd) == 0);
     }
@@ -443,6 +448,7 @@ int main(int argc, char **argv)
 
         dd_set_owner(dd, (geteuid() + 2));
         assert((geteuid() + 2) == dd_get_owner(dd));
+        assert(errno == 0);
 
         assert(dd_delete(dd) == 0);
     }
@@ -454,9 +460,11 @@ int main(int argc, char **argv)
 
         dd_set_no_owner(dd);
         assert(geteuid() != dd_get_owner(dd));
+        assert(errno == 0);
 
         dd_chown(dd, geteuid());
         assert(geteuid() == dd_get_owner(dd));
+        assert(errno == 0);
 
         assert(dd_delete(dd) == 0);
     }
@@ -519,6 +527,7 @@ int main(int argc, char **argv)
 
     assert(dd_set_owner(dd, geteuid() + 1) == 0);
     assert(dd_get_owner(dd) == geteuid() + 1);
+    assert(errno == 0);
 
     {
         const int scn_stat = dd_stat_for_uid(dd, geteuid() + 2);
@@ -534,6 +543,7 @@ int main(int argc, char **argv)
 
     assert(dd_set_no_owner(dd) == 0);
     assert(dd_get_owner(dd) != geteuid() + 3);
+    assert(errno == 0);
 
     {
         const int frt_stat = dd_stat_for_uid(dd, geteuid() + 3);
@@ -792,6 +802,7 @@ TS_MAIN
         struct dump_dir *no_uid_dd_geteuid = create_dump_dir_from_problem_data_ext(pd, template, geteuid());
         assert(no_uid_dd_geteuid != NULL);
         assert(dd_get_owner(no_uid_dd_geteuid) == geteuid());
+        assert(errno == 0);
         assert(dd_delete(no_uid_dd_geteuid) == 0);
         fprintf(stderr, "=== NO UID - geteuid() ===\n");
     }
@@ -801,6 +812,7 @@ TS_MAIN
         struct dump_dir *no_uid_dd_nouid = create_dump_dir_from_problem_data_ext(pd, template, (uid_t)-1L);
         assert(no_uid_dd_nouid != NULL);
         assert(dd_get_owner(no_uid_dd_nouid) == geteuid());
+        assert(errno == 0);
         assert(dd_delete(no_uid_dd_nouid) == 0);
         fprintf(stderr, "=== NO UID - NO UID ===\n");
     }
@@ -814,6 +826,7 @@ TS_MAIN
         struct dump_dir *uid_dd_geteuid = create_dump_dir_from_problem_data_ext(pd, template, geteuid());
         assert(uid_dd_geteuid != NULL);
         assert(dd_get_owner(uid_dd_geteuid) == (geteuid() + 1));
+        assert(errno == 0);
         assert(dd_delete(uid_dd_geteuid) == 0);
         fprintf(stderr, "=== UID - geteuid() ===\n");
     }
@@ -823,6 +836,7 @@ TS_MAIN
         struct dump_dir *uid_dd_nouid = create_dump_dir_from_problem_data_ext(pd, template, (uid_t)-1L);
         assert(uid_dd_nouid != NULL);
         assert(dd_get_owner(uid_dd_nouid) == (geteuid() + 1));
+        assert(errno == 0);
         assert(dd_delete(uid_dd_nouid) == 0);
         fprintf(stderr, "=== UID - NO UID ===\n");
     }

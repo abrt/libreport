@@ -342,10 +342,14 @@ int dd_set_owner(struct dump_dir *dd, uid_t owner);
  */
 int dd_set_no_owner(struct dump_dir *dd);
 
-/* Gets the owner
+/**
+ * Gets the owner of the dump directory.
  *
- * If meta-data misses owner, returns fs owner.
+ * If meta-data 'owner' is not present or readable, returns filesystem owner.
  * Can be used with DD_OPEN_FD_ONLY.
+ *
+ * @param dd The dump directory in question.
+ * @return The dump directory owner's UID or (uid_t)-1 on error (consult errno).
  */
 uid_t dd_get_owner(struct dump_dir *dd);
 
