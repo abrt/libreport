@@ -80,6 +80,10 @@ EXTRA_DIST += atlocal.in conf rules ureport valgrind.supp ureport-rhts-credentia
 atconfig: $(top_builddir)/config.status
 	(cd ${top_builddir} && ./config.status ${subdir}/atconfig)
 
+if BUILD_PYTHON3
+BUILD_PYTHON3=1
+endif
+
 check-local: $(check_DATA)
 	export AUGEAS_LENS_LIB="$(AUGEAS_LENS_LIB_DIR):$(abs_top_builddir)/augeas"; \
 	$(SHELL) '$(TESTSUITE)' $(TESTSUITEFLAGS) BUILD_PYTHON3=$(BUILD_PYTHON3)
