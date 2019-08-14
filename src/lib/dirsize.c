@@ -91,6 +91,11 @@ double get_dirsize_find_largest_dir(
         if (dot_or_dotdot(ep->d_name))
             continue;
         char *dname = concat_path_file(pPath, ep->d_name);
+        if (lstat(concat_path_file(dname, "sosreport.log"), &statbuf) == 0)
+        {
+            log_debug("Skipping %s': sosreport is being generated.", dname);
+            goto next;
+        }
         if (lstat(dname, &statbuf) != 0)
         {
             goto next;
