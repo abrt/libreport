@@ -796,8 +796,12 @@ static int run_event_chain_real(struct run_event_state *run_state,
             break;
         if (retval == 0 && run_state->children_count == 0)
         {
-            printf("Error: no processing is specified for event '%s'\n", event_name);
-            retval = 1;
+            /* Continue running the chain even if no actions were executed for
+             * this event.
+             */
+            log_warning("no actions matching this problem found for event '%s'",
+                    event_name);
+            continue;
         }
         else if (retval != 0 || !l_state.output_was_produced)
         {
