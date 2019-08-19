@@ -2153,14 +2153,18 @@ static void start_event_run(const char *event_name)
     state->ask_yes_no_save_result_callback = run_event_gtk_ask_yes_no_save_result;
     state->ask_password_callback = run_event_gtk_ask_password;
 
-    if (prepare_commands(state, g_dump_dir_name, event_name) == 0)
+    if (prepare_commands(state) == 0)
     {
- no_cmds:
-        /* No commands needed?! (This is untypical) */
+        /* Strangely, no commands at all were fond for processing the crashdump.
+         * Let the user know and terminate processing.
+         */
         free_run_event_state(state);
-        char *msg = xasprintf(_("No processing for event '%s' is defined"), event_name);
+
+        log_warning("No processing commands specified. Processing halted.");
+        g_autofree char *msg = xasprintf(
+                _("No commands could be found for processsing the crashdump.\n"));
         append_to_textview(g_tv_event_log, msg);
-        free(msg);
+
         cancel_processing(g_lbl_event_log, _("Processing failed."), TERMINATE_NOFLAGS);
         return;
     }
@@ -2180,11 +2184,31 @@ static void start_event_run(const char *event_name)
         set_excluded_envvar();
     GList *env_list = export_event_config(event_name);
 
-    if (spawn_next_command(state, g_dump_dir_name, event_name, EXECFLG_SETPGID) < 0)
+    int retval = spawn_next_command(state, g_dump_dir_name, event_name, EXECFLG_SETPGID);
+    if (retval < 0)
     {
+        /* No commands were run for this event because none matching were found.
+         * Acknowledge this fact and continue with processing.
+         */
+        assert(state->children_count == 0);
         unexport_event_config(env_list);
-        goto no_cmds;
+        free_run_event_state(state);
+
+        log_notice("No matching actions for event '%s'; skipping.", event_name);
+
+        g_autofree char *msg = xasprintf(
+                _("--- Skipping %s ---\n"
+                  "No matching actions found for this event.\n\n"),
+                event_name);
+        append_to_textview(g_tv_event_log, msg);
+
+        /* Go on with the next event if we're in cruise control mode. */
+        if (!g_verbose && !g_expert_mode)
+            on_next_btn_cb(GTK_WIDGET(g_btn_next), NULL);
+
+        return;
     }
+
     g_event_child_pid = state->command_pid;
 
     /* At least one command is needed, and we started first one.
@@ -2340,7 +2364,7 @@ static bool check_minimal_bt_rating(const char  *event_name,
         error_msg_and_die(_("Cannot check backtrace rating because of invalid event name"));
     else if (prefixcmp(event_name, "report") != 0)
     {
-        log_info("No checks for bactrace rating because event '%s' doesn't report.", event_name);
+        log_info("No checks for backtrace rating because event '%s' doesn't report.", event_name);
         return acceptable_rating;
     }
     else
@@ -2729,65 +2753,6 @@ static char *get_next_processed_event(GList **events_list)
         return NULL;
 
     char *event_name = (char *)(*events_list)->data;
-    const size_t event_len = strlen(event_name);
-
-    /* pop the current event */
-    *events_list = g_list_delete_link(*events_list, *events_list);
-
-    if (event_name[event_len - 1] == '*')
-    {
-        log_info("Expanding event '%s'", event_name);
-
-        struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY);
-        if (!dd)
-            error_msg_and_die("Can't open directory '%s'", g_dump_dir_name);
-
-        /* Erase '*' */
-        event_name[event_len - 1] = '\0';
-
-        /* get 'event1\nevent2\nevent3\n' or '' if no event is possible */
-        char *expanded_events = list_possible_events(dd, g_dump_dir_name, event_name);
-
-        dd_close(dd);
-        free(event_name);
-
-        GList *expanded_list = NULL;
-        /* add expanded events from event having trailing '*' */
-        char *next;
-        event_name = expanded_events;
-        while ((next = strchr(event_name, '\n')))
-        {
-            /* 'event1\0event2\nevent3\n' */
-            next[0] = '\0';
-
-            /* 'event1' */
-            event_name = xstrdup(event_name);
-            log_debug("Adding a new expanded event '%s' to the processed list", event_name);
-
-            /* the last event is not added to the expanded list */
-            ++next;
-            if (next[0] == '\0')
-                break;
-
-            expanded_list = g_list_prepend(expanded_list, event_name);
-
-            /* 'event2\nevent3\n' */
-            event_name = next;
-        }
-
-        free(expanded_events);
-
-        /* It's OK, we can safely compare addresses even if they were previously freed */
-        if (event_name != expanded_events)
-            /* the last expanded event name is stored in event_name */
-            *events_list = g_list_concat(expanded_list, *events_list);
-        else
-        {
-            log_info("No event was expanded, will continue with the next one.");
-            /* No expanded event, try the next one */
-            return get_next_processed_event(events_list);
-        }
-    }
 
     clear_warnings();
 
@@ -2812,6 +2777,7 @@ static char *get_next_processed_event(GList **events_list)
         return NULL;
     }
 
+    *events_list = g_list_next(*events_list);
     return event_name;
 }
 
@@ -2949,9 +2915,8 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
     if (pages[PAGENO_EVENT_PROGRESS].page_widget == page)
     {
         log_info("g_event_selected:'%s'", g_event_selected);
-        if (g_event_selected
-         && g_event_selected[0]
-        ) {
+        if (g_event_selected && g_event_selected[0])
+        {
             clear_warnings();
             start_event_run(g_event_selected);
         }
