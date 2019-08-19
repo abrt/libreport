@@ -162,6 +162,15 @@ bool check_problem_rating_usability(const event_config_t *cfg,
                                     char                 **description,
                                     char                 **detail);
 
+/**
+ * Expand suffixed star wildcard in an event name.
+ *
+ * Returns the expanded list of event names matching the pattern. If no
+ * wildcard is present, returns the singleton list with the original event
+ * only. Returns NULL if no matching events could be found.
+ */
+GList *expand_event_wildcard(const gchar *event_name, gsize event_len);
+
 #ifdef __cplusplus
 }
 #endif
