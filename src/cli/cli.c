@@ -179,14 +179,13 @@ int main(int argc, char** argv)
         }
         case OPT_workflow:
         {
-            load_workflow_config_data(WORKFLOWS_DIR);
-
-            /* list of workflows applicable to the currently processed problem */
+            /* list the workflows which can be applied to the current problem */
+            GList *possible_names = list_possible_events_glist(dump_dir_name, "workflow");
             GHashTable *possible_workflows = load_workflow_config_data_from_list(
-                                    list_possible_events_glist(dump_dir_name, "workflow"),
-                                                    WORKFLOWS_DIR);
+                            possible_names, WORKFLOWS_DIR);
+            g_list_free_full(possible_names, free);
 
-            /* this may still directory even if no workflow will be run */
+            /* this may steal the directory even if no workflow is run */
             dump_dir_name = steal_directory_if_needed(dump_dir_name);
             exitcode = select_and_run_workflow(dump_dir_name, possible_workflows, !(opts & OPT_y));
             break;

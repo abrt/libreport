@@ -124,15 +124,12 @@ GHashTable *load_workflow_config_data(const char *path)
     if (g_workflow_list)
         return g_workflow_list;
 
-    if (g_workflow_list == NULL)
-    {
-        g_workflow_list = g_hash_table_new_full(
-                                        g_str_hash,
-                                        g_str_equal,
-                                        g_free,
-                                        (GDestroyNotify) free_workflow
-        );
-    }
+    g_workflow_list = g_hash_table_new_full(
+                                    g_str_hash,
+                                    g_str_equal,
+                                    g_free,
+                                    (GDestroyNotify) free_workflow
+    );
 
     if (path == NULL)
         path = WORKFLOWS_DIR;

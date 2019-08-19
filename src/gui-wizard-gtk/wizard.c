@@ -2158,7 +2158,6 @@ static void start_event_run(const char *event_name)
  no_cmds:
         /* No commands needed?! (This is untypical) */
         free_run_event_state(state);
-//TODO: better msg?
         char *msg = xasprintf(_("No processing for event '%s' is defined"), event_name);
         append_to_textview(g_tv_event_log, msg);
         free(msg);
@@ -2778,14 +2777,14 @@ static char *get_next_processed_event(GList **events_list)
 
         free(expanded_events);
 
-        /* It's OK we can safely compare address even if them were previously freed */
+        /* It's OK, we can safely compare addresses even if they were previously freed */
         if (event_name != expanded_events)
             /* the last expanded event name is stored in event_name */
             *events_list = g_list_concat(expanded_list, *events_list);
         else
         {
             log_info("No event was expanded, will continue with the next one.");
-            /* no expanded event try the next event */
+            /* No expanded event, try the next one */
             return get_next_processed_event(events_list);
         }
     }
