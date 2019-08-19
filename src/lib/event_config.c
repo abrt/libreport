@@ -556,3 +556,43 @@ finish:
 
     return result;
 }
+
+GList *expand_event_wildcard(const gchar *event_name, gsize event_len)
+{
+    if (event_name[event_len - 1] != '*')
+        return g_list_prepend(NULL, xstrdup(event_name));
+
+    log_info("expanding wildcard in event name '%s'", event_name);
+
+    /* List all available events, i.e. files matching the pattern
+     * /usr/share/libreport/events/ *.xml
+     */
+    GList *event_files = get_file_list(EVENTS_DIR, "xml");
+    if (!event_files)
+    {
+        log_warning("could not list available events or none found");
+        return NULL;
+    }
+
+    GList *list = NULL;
+    /* For each listed event, compare its prefix with the wildcard
+     * prefix and add it to the resulting list if it matches.
+     */
+    while (event_files)
+    {
+        file_obj_t *file = event_files->data;
+        const gchar *file_name = fo_get_filename(file);
+
+        /* Check if the event's name matches the required prefix. */
+        if (strncmp(file_name, event_name, event_len - 1) == 0)
+        {
+            log_debug("found matching event '%s'", file_name);
+            list = g_list_prepend(list, xstrdup(file_name));
+        }
+
+        free_file_obj(file);
+        event_files = g_list_delete_link(event_files, event_files);
+    }
+
+    return list;
+}
