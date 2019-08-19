@@ -546,11 +546,15 @@ static void error(GMarkupParseContext *context,
  * event_config_t contains list of options, which is malloced by hits function
  * and must be freed by the caller
  */
-
 void load_event_description_from_file(event_config_t *event_config, const char* filename)
 {
     log_info("loading event: '%s'", filename);
-    struct my_parse_data parse_data = { {event_config, false, false, false}, {NULL, false, false}, NULL, NULL };
+    struct my_parse_data parse_data = {
+        { event_config, false, false, false },
+        { NULL, false, false },
+        NULL,
+        NULL
+    };
     parse_data.cur_locale = xstrdup(setlocale(LC_ALL, NULL));
     strchrnul(parse_data.cur_locale, '.')[0] = '\0';
 
@@ -577,6 +581,8 @@ void load_event_description_from_file(event_config_t *event_config, const char* 
         }
         fclose(fin);
     }
+    else
+        perror_msg("cannot load event description from file: '%s'", filename);
 
     g_markup_parse_context_free(context);
 
