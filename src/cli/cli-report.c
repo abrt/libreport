@@ -782,23 +782,26 @@ static int run_event_chain_real(struct run_event_state *run_state,
     {
         l_state.output_was_produced = false;
         const char *event_name = eitem->data;
-        retval = interactive
-                ? run_event_on_dir_name_interactively(run_state, dump_dir_name, event_name)
-                : run_event_on_dir_name_batch(run_state, dump_dir_name, event_name)
-                ;
+        log_info("running commands for event '%s'", event_name);
+
+        if (interactive)
+            retval = run_event_on_dir_name_interactively(run_state, dump_dir_name,
+			    event_name);
+        else
+            retval = run_event_on_dir_name_batch(run_state, dump_dir_name,
+			    event_name);
 
         if (retval < 0)
-            /* Nothing was run (bad backtrace, user declined, etc... */
+            /* Nothing was run (bad backtrace, user declined, etc.) */
             break;
         if (retval == 0 && run_state->children_count == 0)
         {
             printf("Error: no processing is specified for event '%s'\n", event_name);
             retval = 1;
         }
-        else
-        /* If program failed, or if it finished successfully without saying anything... */
-        if (retval != 0 || !l_state.output_was_produced)
+        else if (retval != 0 || !l_state.output_was_produced)
         {
+            /* Program failed, or finished successfully with no output. */
             char *msg = exit_status_as_string(event_name, run_state->process_status);
             fputs(msg, stdout);
             free(msg);
@@ -811,15 +814,15 @@ static int run_event_chain_real(struct run_event_state *run_state,
 }
 
 /*
- * Run event from chain. Perform the following steps for each event from chain.
- * 1. Terminates a chain run if a backtrace is not usable.
- * 2. Asks for missing settings.
- * 3. Performs review of problem data if event requires review.
- * 4. Runs events commands.
- * 5. Terminates a chain run if any event from the chain requires termination
- *    (i.e. if it existed with EXIT_STOP_EVENT_RUN).
- * 6. Terminates a chain run if any error occurs.
- * 7. Continues with processing of next event.
+ * Run events from a chain. Perform the following steps for each event:
+ * 1. Terminate the chain run if the backtrace is not usable.
+ * 2. Ask for missing settings.
+ * 3. Perform review of problem data if the event requires review.
+ * 4. Run event's commands.
+ * 5. Terminate the run if any event from the chain requires termination
+ *    (i.e. if it exited with EXIT_STOP_EVENT_RUN).
+ * 6. Terminate the run if any error occurred.
+ * 7. Continue processing next event.
  */
 int run_event_chain(const char *dump_dir_name, GList *chain, int interactive)
 {
@@ -884,16 +887,17 @@ int select_and_run_workflow(const char *dump_dir_name, GHashTable *workflows, in
     {
         return -1;
     }
+
     events = wf_get_event_names(workflow);
+
     workflow_name = wf_get_name(workflow);
     environment_variable = g_strdup_printf("LIBREPORT_WORKFLOW=%s", workflow_name);
-    run_state = new_run_event_state();
 
+    run_state = new_run_event_state();
     g_ptr_array_add(run_state->extra_environment, environment_variable);
 
     retval = run_event_chain_real(run_state, dump_dir_name, events, interactive);
+    free_run_event_state(run_state);
 
     return retval;
-
-    free_run_event_state(run_state);
 }
