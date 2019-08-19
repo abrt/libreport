@@ -83,16 +83,27 @@ static void text(GMarkupParseContext *context,
 
     if(parse_data->in_event_list && strcmp(inner_element, EVENT_ELEMENT) == 0)
     {
-        event_config_t *ec = new_event_config(text);
-        char *subevent_filename = xasprintf(EVENTS_DIR"/%s.xml", text);
+        log_debug("going to expand event name wildcard");
+        GList *expanded_events = expand_event_wildcard(text, text_len);
 
-        load_event_description_from_file(ec, subevent_filename);
-        if (ec_get_screen_name(ec))
-            wf_add_event(workflow, ec);
-        else
-            free_event_config(ec);
+        while (expanded_events)
+        {
+            const gchar *event_name = expanded_events->data;
 
-        free(subevent_filename);
+            event_config_t *ec = new_event_config(event_name);
+            g_autofree gchar *event_file = xasprintf(EVENTS_DIR"/%s.xml", event_name);
+
+            load_event_description_from_file(ec, event_file);
+            if (ec_get_screen_name(ec))
+            {
+                log_debug("adding event '%s' to workflow", event_name);
+                wf_add_event(workflow, ec);
+            }
+            else
+                free_event_config(ec);
+
+            expanded_events = g_list_delete_link(expanded_events, expanded_events);
+        }
     }
 
     if(strcmp(inner_element, NAME_ELEMENT) == 0)
