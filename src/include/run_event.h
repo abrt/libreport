@@ -163,8 +163,9 @@ struct rule {
     char *command; /* never NULL */
 };
 
-/* Returns 0 if no commands found for this dump_dir_name+event, else >0 */
-int prepare_commands(struct run_event_state *state, const char *dump_dir_name, const char *event);
+/* Returns 0 if no commands at all are defined for event processing, otherwise
+ * returns 1. */
+int prepare_commands(struct run_event_state *state);
 /*
  * Returns -1 if no more commands needs to be executed,
  * else sets state->command_pid and state->command_out_fd and returns >=0.
