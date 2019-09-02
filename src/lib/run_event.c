@@ -114,7 +114,7 @@ void make_run_event_state_forwarding(struct run_event_state *state)
  *
  * List of commands machinery is encapsulated in struct run_event_state,
  * and public async API:
- *      prepare_commands(state, dir, event);
+ *      prepare_commands(state);
  *      spawn_next_command(state, dir, event, 0);
  *      free_commands(state);
  * does not expose the way we select rules to execute.
@@ -471,10 +471,8 @@ void free_commands(struct run_event_state *state)
     state->command_pid = 0;
 }
 
-int prepare_commands(struct run_event_state *state,
-                const char *dump_dir_name,
-                const char *event
-) {
+int prepare_commands(struct run_event_state *state)
+{
     free_commands(state);
 
     state->children_count = 0;
@@ -720,7 +718,7 @@ int run_event_on_dir_name(struct run_event_state *state,
                 const char *dump_dir_name,
                 const char *event
 ) {
-    prepare_commands(state, dump_dir_name, event);
+    prepare_commands(state);
 
     /* Execute every command in shell */
 
