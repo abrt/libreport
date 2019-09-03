@@ -171,6 +171,13 @@ bool check_problem_rating_usability(const event_config_t *cfg,
  */
 GList *expand_event_wildcard(const gchar *event_name, gsize event_len);
 
+/**
+ * Expand '*' wildcards in an event chain.
+ *
+ * Returns the expanded list of event names.
+ */
+GList *expand_event_chain_wildcards(GList *chain);
+
 #ifdef __cplusplus
 }
 #endif
