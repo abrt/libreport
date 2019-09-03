@@ -817,25 +817,6 @@ static int run_event_chain_real(struct run_event_state *run_state,
     return retval;
 }
 
-/**
- * Expand '*' wildcards in an event chain.
- *
- * Returns the expanded list of event names.
- */
-static GList *expand_event_chain_wildcards(GList *chain)
-{
-    GList *list = NULL;
-
-    for (GList *item = chain; item; item = g_list_next(item))
-    {
-        const char *event_name = (const char *)item->data;
-        GList *expanded = expand_event_wildcard(event_name, strlen(event_name));
-        list = g_list_concat(list, expanded);
-    }
-
-    return list;
-}
-
 /*
  * Run events from a chain. Perform the following steps for each event:
  * 1. Terminate the chain run if the backtrace is not usable.

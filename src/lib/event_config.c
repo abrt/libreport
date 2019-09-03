@@ -596,3 +596,17 @@ GList *expand_event_wildcard(const gchar *event_name, gsize event_len)
 
     return list;
 }
+
+GList *expand_event_chain_wildcards(GList *chain)
+{
+    GList *list = NULL;
+
+    for (GList *item = chain; item; item = g_list_next(item))
+    {
+        const char *event_name = (const char *)item->data;
+        GList *expanded = expand_event_wildcard(event_name, strlen(event_name));
+        list = g_list_concat(list, expanded);
+    }
+
+    return list;
+}

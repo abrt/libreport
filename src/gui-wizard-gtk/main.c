@@ -124,7 +124,8 @@ activate_wizard(GApplication *app,
 int main(int argc, char **argv)
 {
     int expert_mode = 0;
-
+    /* List of events specified on the command line. */
+    GList *user_event_list = NULL;
     const char *prgname = "abrt";
     abrt_init(argv);
 
@@ -169,7 +170,7 @@ int main(int argc, char **argv)
         OPT_STRING('g', NULL, &g_glade_file, "FILE",          _("Alternate GUI file")),
         OPT_BOOL(  'p', NULL, NULL,                           _("Add program names to log")),
         OPT_BOOL(  'd', "delete", NULL,                       _("Remove PROBLEM_DIR after reporting")),
-        OPT_LIST(  'e', "event", &g_auto_event_list, "EVENT", _("Run only these events")),
+        OPT_LIST(  'e', "event", &user_event_list, "EVENT",   _("Run only these events")),
         OPT_BOOL(  'x', "expert", &expert_mode,               _("Expert mode")),
         OPT_END()
     };
@@ -178,9 +179,8 @@ int main(int argc, char **argv)
     if (!argv[0] || argv[1]) /* zero or >1 arguments */
         show_usage_and_die(program_usage_string, program_options);
 
-    /* Allow algorithms to add mallocated strings */
-    for (GList *elem = g_auto_event_list; elem; elem = g_list_next(elem))
-        elem->data = xstrdup((const char *)elem->data);
+    /* Copy the list of event names and expand wildcards, if any. */
+    g_auto_event_list = expand_event_chain_wildcards(user_event_list);
 
     export_abrt_envvars(opts & OPT_p);
 
@@ -220,9 +220,11 @@ int main(int argc, char **argv)
     GtkApplication *app = gtk_application_new("org.freedesktop.libreport.report", G_APPLICATION_NON_UNIQUE);
     g_signal_connect(app, "activate", G_CALLBACK(activate_wizard), (gpointer)&expert_mode);
     g_signal_connect(app, "startup",  G_CALLBACK(startup_wizard),  NULL);
+
     /* Enter main loop */
     g_application_run(G_APPLICATION(app), argc, argv);
     g_object_unref(app);
+    g_list_free_full(g_auto_event_list, free);
 
     if (opts & OPT_d)
         delete_dump_dir_possibly_using_abrtd(g_dump_dir_name);
