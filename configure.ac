@@ -344,12 +344,6 @@ AC_ARG_ENABLE([userownsdumpdir],
               [DUMP_DIR_OWNED_BY_USER=0])
 
 
-AC_ARG_WITH([dbusinterfacedir],
-                AS_HELP_STRING([--with-dbusinterfacedir=DIR], [Directory for dbus interface files]),
-                        [], [with_dbusinterfacedir=${datadir}/dbus-1/interfaces])
-AC_SUBST([dbusinterfacedir], [$with_dbusinterfacedir])
-
-
 AC_ARG_ENABLE(doxygen-docs,
     AS_HELP_STRING([--enable-doxygen-docs],
 	[build DOXYGEN documentation (requires Doxygen)]),
@@ -431,7 +425,6 @@ AC_CONFIG_FILES([
 	src/client-python/reportclient/Makefile
 	po/Makefile.in
 	doc/Makefile
-	doc/plugins-dbus/Makefile
 	src/workflows/Makefile
 	tests/bugzilla_plugin.at
 ])

@@ -554,7 +554,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/plugins/mailx.conf
 %{_datadir}/%{name}/conf.d/plugins/mailx.conf
 %{_datadir}/%{name}/events/report_Mailx.xml
-%{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.mailx.xml
 %{_datadir}/%{name}/workflows/workflow_Mailx.xml
 %{_datadir}/%{name}/workflows/workflow_MailxCCpp.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/mailx_event.conf
@@ -572,7 +571,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man1/reporter-ureport.1.gz
 %{_mandir}/man5/ureport.conf.5.gz
 %{_datadir}/%{name}/events/report_uReport.xml
-%{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.ureport.xml
 %if 0%{?rhel}
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_uReport.conf
 %{_datadir}/%{name}/workflows/workflow_uReport.xml
@@ -591,7 +589,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/%{name}/events/watch_Bugzilla.xml
 %config(noreplace) %{_sysconfdir}/libreport/events/report_Bugzilla.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/bugzilla_event.conf
-%{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.bugzilla.xml
 # FIXME: remove with the old gui
 %{_mandir}/man1/reporter-bugzilla.1.gz
 %{_mandir}/man5/report_Bugzilla.conf.5.*
@@ -643,7 +640,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/%{name}/conf.d/plugins/rhtsupport.conf
 %{_datadir}/%{name}/events/report_RHTSupport.xml
 %{_datadir}/%{name}/events/report_RHTSupport_AddData.xml
-%{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.rhtsupport.xml
 %if 0%{?rhel}
 %attr(600,root,root)%{_sysconfdir}/%{name}/cert-api.access.redhat.com.pem
 %endif
