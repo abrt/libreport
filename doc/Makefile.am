@@ -39,6 +39,7 @@ MAN5_TXT += bugzilla_formatdup_anaconda.conf.txt
 MAN5_TXT += bugzilla_formatdup.conf.txt
 MAN5_TXT += bugzilla_format_kernel.conf.txt
 MAN5_TXT += bugzilla_format_analyzer_libreport.conf.txt
+MAN5_TXT += bugzilla_formatdup_analyzer_libreport.conf.txt
 MAN5_TXT += mantisbt.conf.txt
 MAN5_TXT += mantisbt_format.conf.txt
 MAN5_TXT += mantisbt_formatdup.conf.txt

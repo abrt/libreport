@@ -586,6 +586,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla_format.conf
 %config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla_formatdup.conf
 %config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla_format_analyzer_libreport.conf
+%config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla_formatdup_analyzer_libreport.conf
 %config(noreplace) %{_sysconfdir}/libreport/plugins/bugzilla_format_kernel.conf
 %{_datadir}/%{name}/events/report_Bugzilla.xml
 %{_datadir}/%{name}/events/watch_Bugzilla.xml
@@ -600,6 +601,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man5/bugzilla_format.conf.5.*
 %{_mandir}/man5/bugzilla_formatdup.conf.5.*
 %{_mandir}/man5/bugzilla_format_analyzer_libreport.conf.5.*
+%{_mandir}/man5/bugzilla_formatdup_analyzer_libreport.conf.5.*
 %{_mandir}/man5/bugzilla_format_kernel.conf.5.*
 %{_bindir}/reporter-bugzilla
 %endif

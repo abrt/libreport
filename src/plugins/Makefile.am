@@ -41,6 +41,7 @@ reporters_plugin_conf += bugzilla.conf
 reporters_plugin_format_conf += bugzilla_format.conf \
     bugzilla_formatdup.conf \
     bugzilla_format_analyzer_libreport.conf \
+    bugzilla_formatdup_analyzer_libreport.conf \
     bugzilla_format_kernel.conf \
     bugzilla_format_anaconda.conf \
     bugzilla_formatdup_anaconda.conf
