@@ -1067,7 +1067,7 @@ void write_cmd_output_to_fd(int fd, const char *cmd)
     }
 
     if (retcode != 0) {
-        errx(EXIT_FAILURE, "non-0 status %d of '%s'", cmd);
+        errx(EXIT_FAILURE, "non-0 status %d of '%s'", retcode, cmd);
     }
 
     if (output == NULL) {
