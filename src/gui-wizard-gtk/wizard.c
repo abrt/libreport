@@ -28,7 +28,6 @@
 #define DEFAULT_WIDTH   800
 #define DEFAULT_HEIGHT  500
 
-#define EMERGENCY_ANALYSIS_EVENT_NAME "report_EmergencyAnalysis"
 #define FORBIDDEN_WORDS_BLACKLLIST "forbidden_words.conf"
 #define FORBIDDEN_WORDS_WHITELIST "ignored_words.conf"
 
@@ -72,7 +71,6 @@ static GtkBox *g_box_assistant;
 static GtkWidget *g_btn_stop;
 static GtkWidget *g_btn_close;
 static GtkWidget *g_btn_next;
-static GtkWidget *g_btn_onfail;
 static GtkWidget *g_btn_repeat;
 static GtkWidget *g_btn_detail;
 
@@ -1891,29 +1889,6 @@ static bool event_need_review(const char *event_name)
     return !event_cfg || !event_cfg->ec_skip_review;
 }
 
-static void on_btn_failed_cb(GtkButton *button)
-{
-    /* Since the Repeat button has been introduced, the event chain isn't
-     * terminated upon a failure in order to be able to continue in processing
-     * in the retry action.
-     *
-     * Now, user decided to run the emergency analysis instead of trying to
-     * reconfigure libreport, so we have to terminate the event chain.
-     */
-    gtk_widget_hide(g_btn_repeat);
-    terminate_event_chain(TERMINATE_NOFLAGS);
-
-    /* Show detailed log */
-    gtk_expander_set_expanded(g_exp_report_log, TRUE);
-
-    clear_warnings();
-    update_ls_details_checkboxes(EMERGENCY_ANALYSIS_EVENT_NAME);
-    start_event_run(EMERGENCY_ANALYSIS_EVENT_NAME);
-
-    /* single shot button -> hide after click */
-    gtk_widget_hide(GTK_WIDGET(button));
-}
-
 static gint select_next_page_no(gint current_page_no, gpointer data);
 static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer user_data);
 
@@ -1935,12 +1910,6 @@ static void on_btn_repeat_cb(GtkButton *button)
 
 static void on_failed_event(const char *event_name)
 {
-    /* Don't show the 'on failure' button if the processed event
-     * was started by that button. (avoid infinite loop)
-     */
-    if (strcmp(event_name, EMERGENCY_ANALYSIS_EVENT_NAME) == 0)
-        return;
-
    add_warning(_("Processing of the problem failed. This can have many reasons but there are three most common:\n"\
                  "\t▫ <b>network connection problems</b>\n"\
                  "\t▫ <b>corrupted problem data</b>\n"\
@@ -1955,15 +1924,7 @@ static void on_failed_event(const char *event_name)
         gtk_widget_show(g_btn_repeat);
     }
 
-    add_warning(_("If you are sure that this problem is not caused by network problems neither by invalid configuration\n"
-                  "and want to help us, please click on the upload button and provide all problem data for a deep analysis.\n"\
-                  "<i>Before you do that, please consider the security risks. Problem data may contain sensitive information like\n"\
-                  "passwords. The uploaded data are stored in a protected storage and only a limited number of persons can read them.</i>"),
-                GTK_CONTAINER(g_report_warning_label_box));
-
     gtk_widget_show(g_report_warning_label_box);
-
-    gtk_widget_show(g_btn_onfail);
 }
 
 static bool event_requires_details(const char *event_name)
@@ -2823,7 +2784,6 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
     }
 
     gtk_widget_hide(g_btn_detail);
-    gtk_widget_hide(g_btn_onfail);
     if (!g_expert_mode)
         gtk_widget_hide(g_btn_repeat);
     /* Save text fields if changed */
@@ -3652,9 +3612,6 @@ void create_assistant(GtkApplication *app, bool expert_mode)
     g_btn_stop = gtk_button_new_with_mnemonic(_("_Stop"));
     gtk_button_set_image(GTK_BUTTON(g_btn_stop), gtk_image_new_from_icon_name("process-stop-symbolic", GTK_ICON_SIZE_BUTTON));
     gtk_widget_set_no_show_all(g_btn_stop, true); /* else gtk_widget_hide won't work */
-    g_btn_onfail = gtk_button_new_with_label(_("Upload for analysis"));
-    gtk_button_set_image(GTK_BUTTON(g_btn_onfail), gtk_image_new_from_icon_name("go-up-symbolic", GTK_ICON_SIZE_BUTTON));
-    gtk_widget_set_no_show_all(g_btn_onfail, true); /* else gtk_widget_hide won't work */
     g_btn_repeat = gtk_button_new_with_label(_("Repeat"));
     gtk_widget_set_no_show_all(g_btn_repeat, true); /* else gtk_widget_hide won't work */
     g_btn_next = gtk_button_new_with_mnemonic(_("_Forward"));
@@ -3666,7 +3623,6 @@ void create_assistant(GtkApplication *app, bool expert_mode)
     g_box_buttons = GTK_BOX(gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0));
     gtk_box_pack_start(g_box_buttons, g_btn_close, false, false, 5);
     gtk_box_pack_start(g_box_buttons, g_btn_stop, false, false, 5);
-    gtk_box_pack_start(g_box_buttons, g_btn_onfail, false, false, 5);
     gtk_box_pack_start(g_box_buttons, g_btn_repeat, false, false, 5);
     /* Btns above are to the left, the rest are to the right: */
 
@@ -3727,7 +3683,6 @@ void create_assistant(GtkApplication *app, bool expert_mode)
 
     gtk_widget_show_all(GTK_WIDGET(g_box_buttons));
     gtk_widget_hide(g_btn_stop);
-    gtk_widget_hide(g_btn_onfail);
     gtk_widget_hide(g_btn_repeat);
     gtk_widget_show(g_btn_next);
 
@@ -3751,7 +3706,6 @@ void create_assistant(GtkApplication *app, bool expert_mode)
 
     g_signal_connect(g_btn_close, "clicked", G_CALLBACK(assistant_quit_cb), NULL);
     g_signal_connect(g_btn_stop, "clicked", G_CALLBACK(on_btn_cancel_event), NULL);
-    g_signal_connect(g_btn_onfail, "clicked", G_CALLBACK(on_btn_failed_cb), NULL);
     g_signal_connect(g_btn_repeat, "clicked", G_CALLBACK(on_btn_repeat_cb), NULL);
     g_signal_connect(g_btn_next, "clicked", G_CALLBACK(on_next_btn_cb), NULL);
 
