@@ -92,8 +92,7 @@ dist_events_DATA = $(reporters_events) \
     report_RHTSupport.xml \
     report_RHTSupport_AddData.xml \
     report_Kerneloops.xml \
-    report_Uploader.xml \
-    report_EmergencyAnalysis.xml
+    report_Uploader.xml
 
 dist_eventsconf_DATA = $(reporters_events_conf) \
     report_Logger.conf \
@@ -108,7 +107,6 @@ dist_eventsdef_DATA = \
     print_event.conf \
     rhtsupport_event.conf \
     uploader_event.conf \
-    emergencyanalysis_event.conf \
     centos_report_event.conf
 
 reporters_extra_dist =
@@ -133,8 +131,7 @@ EXTRA_DIST = $(reporters_extra_dist) \
     report_RHTSupport.xml.in \
     report_RHTSupport_AddData.xml.in \
     report_Kerneloops.xml.in \
-    report_Uploader.xml.in \
-    report_EmergencyAnalysis.xml.in
+    report_Uploader.xml.in
 
 $(DESTDIR)/$(DEBUG_INFO_DIR):
 	$(mkdir_p) '$@'

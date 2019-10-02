@@ -43,7 +43,6 @@ MAN5_TXT += mantisbt_format.conf.txt
 MAN5_TXT += mantisbt_formatdup.conf.txt
 MAN5_TXT += mantisbt_format_analyzer_libreport.conf.txt
 MAN5_TXT += mantisbt_formatdup_analyzer_libreport.conf.txt
-MAN5_TXT += emergencyanalysis_event.conf.txt
 MAN5_TXT += ignored_words.conf.txt
 MAN5_TXT += forbidden_words.conf.txt
 MAN5_TXT += libreport.conf.txt
