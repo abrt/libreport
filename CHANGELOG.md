@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.11.0] - 2019-10-11
+### Changed
+- Dropped Python 2 support
+- Removed option for emergency analysis/reporting
+- Removed D-Bus interface introspection files
+- Reporting gracefully skips matched events which have no associated actions
+
+### Fixed
+- Correct expansion of wildcards in event chains
+- Skip directories in which sosreport is being generated
+
 ## [2.10.1] - 2019-07-03
 ### Changed
 - Clearer warnings about missing report elements.
@@ -154,7 +165,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.10.1...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.11.0...HEAD
+[2.11.0]: https://github.com/abrt/libreport/compare/2.10.1...2.11.0
 [2.10.1]: https://github.com/abrt/libreport/compare/2.10.0...2.10.1
 [2.10.0]: https://github.com/abrt/libreport/compare/2.9.7...2.10.0
 [2.9.7]: https://github.com/abrt/libreport/compare/2.9.6...2.9.7

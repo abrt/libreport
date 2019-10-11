@@ -743,6 +743,26 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Fri Oct 11 2019 Matěj Grabovský <mgrabovs@redhat.com> 2.11.0-1
+- Remove option for emergency analysis/reporting
+- tests: proc_helpers: Fix call to errx()
+- plugins: bugzilla: Add format file for libreport duplicates
+- dbus: Remove interface introspection files
+- lib: Don't warn if a configuration key is missing
+- gtk: Handle event wildcards in command line options
+- gtk: Better handling of workflows with wildcarded events
+- lib: Remove unused arguments of prepare_commands
+- lib: Reintroduce error logging in event XML parser
+- cli: Continue running even if some events have no commands
+- cli: Expand event name wildcards
+- lib: Expand wildcards in workflow XML parser
+- lib: Add a function to expand wildcards in event names
+- style: Simplify code; fix typos in comments
+- gitignore: Update with missing and renamed generated files
+- dirsize: Skip dirs in which sosreport is being generated
+- tests: Fix Python tests being skipped unconditionally
+- Remove Python 2 support
+
 * Wed Jul 03 2019 Martin Kutlak <mkutlak@redhat.com> 2.10.1-1
 - doc: Makefile.am: Use correct path for --conf-file
 - lib: copy_file_recursive: Use GLib abstractions
