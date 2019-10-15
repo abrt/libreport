@@ -224,7 +224,6 @@ int main(int argc, char **argv)
     /* Enter main loop */
     g_application_run(G_APPLICATION(app), argc, argv);
     g_object_unref(app);
-    g_list_free_full(g_auto_event_list, free);
 
     if (opts & OPT_d)
         delete_dump_dir_possibly_using_abrtd(g_dump_dir_name);
