@@ -21,7 +21,7 @@
 
 #include "internal_libreport_gtk.h"
 
-void create_assistant(GtkApplication *app, bool expert_mode);
+void create_assistant(GtkApplication *app);
 
 enum
 {
