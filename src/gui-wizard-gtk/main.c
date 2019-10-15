@@ -23,7 +23,6 @@
 # include <locale.h>
 #endif
 
-char *g_glade_file = NULL;
 char *g_dump_dir_name = NULL;
 char *g_events = NULL;
 GList *g_auto_event_list = NULL;
@@ -167,7 +166,6 @@ int main(int argc, char **argv)
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_STRING('g', NULL, &g_glade_file, "FILE",          _("Alternate GUI file")),
         OPT_BOOL(  'p', NULL, NULL,                           _("Add program names to log")),
         OPT_BOOL(  'd', "delete", NULL,                       _("Remove PROBLEM_DIR after reporting")),
         OPT_LIST(  'e', "event", &user_event_list, "EVENT",   _("Run only these events")),
