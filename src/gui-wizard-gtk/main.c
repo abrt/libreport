@@ -116,13 +116,12 @@ static void
 activate_wizard(GApplication *app,
                 gpointer user_data)
 {
-    create_assistant(GTK_APPLICATION(app), *(int *)user_data);
+    create_assistant(GTK_APPLICATION(app));
     update_gui_state_from_problem_data(UPDATE_SELECTED_EVENT);
 }
 
 int main(int argc, char **argv)
 {
-    int expert_mode = 0;
     /* List of events specified on the command line. */
     GList *user_event_list = NULL;
     const char *prgname = "abrt";
@@ -169,7 +168,6 @@ int main(int argc, char **argv)
         OPT_BOOL(  'p', NULL, NULL,                           _("Add program names to log")),
         OPT_BOOL(  'd', "delete", NULL,                       _("Remove PROBLEM_DIR after reporting")),
         OPT_LIST(  'e', "event", &user_event_list, "EVENT",   _("Run only these events")),
-        OPT_BOOL(  'x', "expert", &expert_mode,               _("Expert mode")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
@@ -198,7 +196,7 @@ int main(int argc, char **argv)
     g_list_free_full(possible_names, free);
 
     /* if we have only 1 workflow, we can use the events from it as default */
-    if (!expert_mode && g_auto_event_list == NULL && g_hash_table_size(possible_workflows) == 1)
+    if (g_auto_event_list == NULL && g_hash_table_size(possible_workflows) == 1)
     {
         GHashTableIter iter;
         gpointer key, value;
@@ -216,7 +214,7 @@ int main(int argc, char **argv)
 
     g_custom_logger = &show_error_as_msgbox;
     GtkApplication *app = gtk_application_new("org.freedesktop.libreport.report", G_APPLICATION_NON_UNIQUE);
-    g_signal_connect(app, "activate", G_CALLBACK(activate_wizard), (gpointer)&expert_mode);
+    g_signal_connect(app, "activate", G_CALLBACK(activate_wizard), NULL);
     g_signal_connect(app, "startup",  G_CALLBACK(startup_wizard),  NULL);
 
     /* Enter main loop */

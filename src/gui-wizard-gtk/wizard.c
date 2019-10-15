@@ -55,12 +55,9 @@ typedef struct event_gui_data_t
 /*   if(g_hash_table_lookup(g_loaded_texts, FILENAME_COMMENT)) ...   */
 static GHashTable *g_loaded_texts;
 static char *g_event_selected;
-static unsigned g_black_event_count = 0;
 
 static pid_t g_event_child_pid = 0;
 static guint g_event_source_id = 0;
-
-static bool g_expert_mode;
 
 static GtkCssProvider *g_provider = NULL;
 
@@ -76,8 +73,6 @@ static GtkWidget *g_btn_detail;
 
 static GtkBox *g_box_events;
 static GtkBox *g_box_workflows;
-/* List of event_gui_data's */
-static GList *g_list_events;
 static GtkLabel *g_lbl_event_log;
 static GtkTextView *g_tv_event_log;
 
@@ -304,27 +299,6 @@ static void load_css_style()
                          #g_eb_comment {color: #CC3333;}";
     gtk_css_provider_load_from_data(g_provider, data, -1, NULL);
     g_object_unref (g_provider);
-}
-
-static void label_wrapper(GtkWidget *widget, gpointer data_unused)
-{
-    if (GTK_IS_CONTAINER(widget))
-    {
-        gtk_container_foreach((GtkContainer*)widget, label_wrapper, NULL);
-        return;
-    }
-    if (GTK_IS_LABEL(widget))
-    {
-        GtkLabel *label = (GtkLabel*)widget;
-        gtk_label_set_line_wrap(label, 1);
-        //const char *txt = gtk_label_get_label(label);
-        //log_warning("label '%s' set to wrap", txt);
-    }
-}
-
-static void wrap_all_labels(GtkWidget *widget)
-{
-    label_wrapper(widget, NULL);
 }
 
 static void wrap_fixer(GtkWidget *widget, gpointer data_unused)
@@ -708,23 +682,6 @@ static gboolean visibility_notify_event(GtkWidget *text_view, GdkEventVisibility
     return FALSE;
 }
 
-/* event_gui_data_t */
-
-static event_gui_data_t *new_event_gui_data_t(void)
-{
-    return xzalloc(sizeof(event_gui_data_t));
-}
-
-static void free_event_gui_data_t(event_gui_data_t *evdata, void *unused)
-{
-    if (evdata)
-    {
-        free(evdata->event_name);
-        free(evdata);
-    }
-}
-
-
 /* tv_details handling */
 
 static struct problem_item *get_current_problem_item_or_NULL(GtkTreeView *tree_view, gchar **pp_item_name)
@@ -903,15 +860,6 @@ static void g_tv_details_checkbox_toggled(
     }
 }
 
-
-/* update_gui_state_from_problem_data */
-
-static gint find_by_button(gconstpointer a, gconstpointer button)
-{
-    const event_gui_data_t *evdata = a;
-    return (evdata->toggle_button != button);
-}
-
 static void check_event_config(const char *event_name)
 {
     GList *errors = get_options_with_err_msg(event_name);
@@ -921,214 +869,6 @@ static void check_event_config(const char *event_name)
         show_event_config_dialog(event_name, GTK_WINDOW(g_top_most_window));
         update_private_ticket_creation_warning_for_selected_event();
     }
-}
-
-static void event_rb_was_toggled(GtkButton *button, gpointer user_data)
-{
-    /* Note: called both when item is selected and _unselected_,
-     * use gtk_toggle_button_get_active() to determine state.
-     */
-    GList *found = g_list_find_custom(g_list_events, button, find_by_button);
-    if (found)
-    {
-        event_gui_data_t *evdata = found->data;
-        if (gtk_toggle_button_get_active(evdata->toggle_button))
-        {
-            free(g_event_selected);
-            g_event_selected = xstrdup(evdata->event_name);
-            check_event_config(evdata->event_name);
-
-            clear_warnings();
-
-            char *warning = NULL;
-            const bool good_rating = check_minimal_bt_rating(g_event_selected,
-                                                             &warning);
-
-            if (warning != NULL)
-            {
-                add_warning(warning, GTK_CONTAINER(g_box_warning_labels));
-                g_clear_pointer(&warning, g_free);
-            }
-
-            show_warnings();
-
-            gtk_widget_set_sensitive(g_btn_next, good_rating);
-        }
-    }
-}
-
-/* event_name contains "EVENT1\nEVENT2\nEVENT3\n".
- * Add new radio buttons to GtkBox for each EVENTn.
- * Remember them in GList **p_event_list (list of event_gui_data_t's).
- * Set "toggled" callback on each button to given GCallback if it's not NULL.
- * Return active button (or NULL if none created).
- */
-/* helper */
-static char *missing_items_in_comma_list(const char *input_item_list)
-{
-    if (!input_item_list)
-        return NULL;
-
-    char *item_list = xstrdup(input_item_list);
-    char *result = item_list;
-    char *dst = item_list;
-
-    while (item_list[0])
-    {
-        char *end = strchr(item_list, ',');
-        if (end) *end = '\0';
-        if (!problem_data_get_item_or_NULL(g_cd, item_list))
-        {
-            if (dst != result)
-                *dst++ = ',';
-            dst = stpcpy(dst, item_list);
-        }
-        if (!end)
-            break;
-        *end = ',';
-        item_list = end + 1;
-    }
-    if (result == dst)
-    {
-        free(result);
-        result = NULL;
-    }
-    return result;
-}
-
-static event_gui_data_t *add_event_buttons(GtkBox *box,
-                GList **p_event_list,
-                char *event_name,
-                GCallback func)
-{
-    if (g_provider == NULL)
-        load_css_style();
-
-    //log_info("removing all buttons from box %p", box);
-    gtk_container_foreach(GTK_CONTAINER(box), &remove_child_widget, NULL);
-    g_list_foreach(*p_event_list, (GFunc)free_event_gui_data_t, NULL);
-    g_list_free(*p_event_list);
-    *p_event_list = NULL;
-
-    g_black_event_count = 0;
-
-    if (!event_name || !event_name[0])
-    {
-        GtkWidget *lbl = gtk_label_new(_("No reporting targets are defined for this problem. Check configuration in /etc/libreport/*"));
-
-        gtk_widget_set_halign (lbl, GTK_ALIGN_START);
-        gtk_widget_set_valign (lbl, GTK_ALIGN_END);
-
-        make_label_autowrap_on_resize(GTK_LABEL(lbl));
-        gtk_box_pack_start(box, lbl, /*expand*/ true, /*fill*/ false, /*padding*/ 0);
-        return NULL;
-    }
-
-    event_gui_data_t *first_button = NULL;
-    event_gui_data_t *active_button = NULL;
-    while (1)
-    {
-        if (!event_name || !event_name[0])
-            break;
-
-        char *event_name_end = strchr(event_name, '\n');
-        if (event_name_end == NULL)
-            break;
-
-        *event_name_end = '\0';
-
-        event_config_t *cfg = get_event_config(event_name);
-
-        /* Form a pretty text representation of event */
-        /* By default, use event name: */
-        const char *event_screen_name = event_name;
-        const char *event_description = NULL;
-        g_autofree char *tmp_description = NULL;
-        bool red_choice = false;
-        bool green_choice = false;
-        if (cfg)
-        {
-            /* .xml has (presumably) prettier description, use it: */
-            if (ec_get_screen_name(cfg))
-                event_screen_name = ec_get_screen_name(cfg);
-            event_description = ec_get_description(cfg);
-
-            g_autofree char *missing = missing_items_in_comma_list(cfg->ec_requires_items);
-            if (missing)
-            {
-                red_choice = true;
-                event_description = tmp_description = xasprintf(_("(requires: %s)"), missing);
-            }
-            else if (cfg->ec_creates_items)
-            {
-                if (problem_data_get_item_or_NULL(g_cd, cfg->ec_creates_items))
-                {
-                    missing = missing_items_in_comma_list(cfg->ec_creates_items);
-                    if (!missing)
-                    {
-                        green_choice = true;
-                        event_description = tmp_description = xasprintf(_("(not needed, data already exist: %s)"), cfg->ec_creates_items);
-                    }
-                }
-            }
-        }
-        if (!green_choice && !red_choice)
-            g_black_event_count++;
-
-        //log_info("adding button '%s' to box %p", event_name, box);
-        g_autofree char *event_label = xasprintf("%s%s%s",
-                        event_screen_name,
-                        (event_description ? " - " : ""),
-                        event_description ? event_description : ""
-        );
-
-        GtkWidget *button = gtk_radio_button_new_with_label_from_widget(
-                        (first_button ? GTK_RADIO_BUTTON(first_button->toggle_button) : NULL),
-                        event_label
-                );
-
-        if (green_choice || red_choice)
-        {
-            GtkWidget *child = gtk_bin_get_child(GTK_BIN(button));
-            if (child)
-            {
-                const char *child_name = (green_choice ? "green_color" : "red_color");
-                gtk_widget_set_name(child, child_name);
-            }
-        }
-
-        if (func)
-            g_signal_connect(G_OBJECT(button), "toggled", func, xstrdup(event_name));
-
-        if (cfg && ec_get_long_desc(cfg))
-            gtk_widget_set_tooltip_text(button, ec_get_long_desc(cfg));
-
-        event_gui_data_t *event_gui_data = new_event_gui_data_t();
-        event_gui_data->event_name = xstrdup(event_name);
-        event_gui_data->toggle_button = GTK_TOGGLE_BUTTON(button);
-        *p_event_list = g_list_append(*p_event_list, event_gui_data);
-
-        if (!first_button)
-            first_button = event_gui_data;
-
-        if (!green_choice && !red_choice && !active_button)
-        {
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), true);
-            active_button = event_gui_data;
-        }
-
-        *event_name_end = '\n';
-        event_name = event_name_end + 1;
-
-        gtk_box_pack_start(box, button, /*expand*/ false, /*fill*/ false, /*padding*/ 0);
-        gtk_widget_show_all(GTK_WIDGET(button));
-        wrap_all_labels(button);
-        /* Disabled - seems that above is enough... */
-        /*fix_all_wrapped_labels(button);*/
-    }
-    gtk_widget_show_all(GTK_WIDGET(box));
-
-    return active_button;
 }
 
 static bool isdigit_str(const char *str)
@@ -1425,33 +1165,6 @@ void update_gui_state_from_problem_data(int flags)
     add_workflow_buttons(g_box_workflows, g_workflow_list,
                         G_CALLBACK(set_auto_event_chain));
 
-    /* Update event radio buttons
-     * show them only in expert mode
-    */
-    event_gui_data_t *active_button = NULL;
-    if (g_expert_mode == true)
-    {
-        //this widget doesn't react to show_all, so we need to "force" it
-        gtk_widget_show(GTK_WIDGET(g_box_events));
-        active_button = add_event_buttons(
-                    g_box_events,
-                    &g_list_events,
-                    g_events,
-                    G_CALLBACK(event_rb_was_toggled)
-        );
-    }
-
-    if (flags & UPDATE_SELECTED_EVENT && g_expert_mode)
-    {
-        /* Update the value of currently selected event */
-        free(g_event_selected);
-        g_event_selected = NULL;
-        if (active_button)
-        {
-            g_event_selected = xstrdup(active_button->event_name);
-        }
-        log_info("g_event_selected='%s'", g_event_selected);
-    }
     /* We can't just do gtk_widget_show_all once in main:
      * We created new widgets (buttons). Need to make them visible.
      */
@@ -1647,7 +1360,7 @@ static void on_btn_cancel_event(GtkButton *button)
 
 static bool is_processing_finished()
 {
-    return !g_expert_mode && g_auto_event_list == NULL;
+    return NULL == g_auto_event_list;
 }
 
 static void hide_next_step_button()
@@ -1673,9 +1386,6 @@ enum {
 
 static void terminate_event_chain(int flags)
 {
-    if (g_expert_mode)
-        return;
-
     hide_next_step_button();
     if ((flags & TERMINATE_WITH_RERUN))
         return;
@@ -1884,13 +1594,10 @@ static void on_failed_event(const char *event_name)
                  "\t▫ <b>invalid configuration</b>"),
                GTK_CONTAINER(g_report_warning_label_box));
 
-    if (!g_expert_mode)
-    {
-        add_warning(_("If you want to update the configuration and try to report again, please open <b>Preferences</b> item\n"
-                      "in the application menu and after applying the configuration changes click <b>Repeat</b> button."),
-                    GTK_CONTAINER(g_report_warning_label_box));
-        gtk_widget_show(g_btn_repeat);
-    }
+    add_warning(_("If you want to update the configuration and try to report again, please open <b>Preferences</b> item\n"
+                  "in the application menu and after applying the configuration changes click <b>Repeat</b> button."),
+                GTK_CONTAINER(g_report_warning_label_box));
+    gtk_widget_show(g_btn_repeat);
 
     gtk_widget_show(g_report_warning_label_box);
 }
@@ -1963,7 +1670,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
             dd_sanitize_mode_and_owner(dd);
     }
 
-    if (retval == 0 && !g_expert_mode && get_global_stop_on_not_reportable())
+    if (retval == 0 && get_global_stop_on_not_reportable())
     {
         /* Check whether NOT_REPORTABLE element appeared. If it did, we'll stop
          * even if exit code is "success".
@@ -2044,7 +1751,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 
         if (is_processing_finished())
             hide_next_step_button();
-        else if (retval == 0 && !g_verbose && !g_expert_mode)
+        else if (retval == 0 && !g_verbose)
             on_next_btn_cb(GTK_WIDGET(g_btn_next), NULL);
 
         return FALSE; /* "please remove this event" */
@@ -2102,10 +1809,9 @@ static void start_event_run(const char *event_name)
     if (!dd)
     {
         free_run_event_state(state);
-        if (!g_expert_mode)
-        {
-            cancel_processing(g_lbl_event_log, _("Processing interrupted: can't continue without writable directory."), TERMINATE_NOFLAGS);
-        }
+
+        cancel_processing(g_lbl_event_log, _("Processing interrupted: can't continue without writable directory."), TERMINATE_NOFLAGS);
+
         return; /* user refused to steal, or write error, etc... */
     }
     if (tv_details_shown)
@@ -2131,7 +1837,7 @@ static void start_event_run(const char *event_name)
         append_to_textview(g_tv_event_log, msg);
 
         /* Go on with the next event if we're in cruise control mode. */
-        if (!g_verbose && !g_expert_mode)
+        if (!g_verbose)
             on_next_btn_cb(GTK_WIDGET(g_btn_next), NULL);
 
         return;
@@ -2742,8 +2448,7 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
     }
 
     gtk_widget_hide(g_btn_detail);
-    if (!g_expert_mode)
-        gtk_widget_hide(g_btn_repeat);
+    gtk_widget_hide(g_btn_repeat);
     /* Save text fields if changed */
     /* Must be called before any GUI operation because the following two
      * functions causes recreating of the text items tabs, thus all updates to
@@ -2784,14 +2489,12 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
                                             | PRIV_WARN_BTN_CHECKED
                                             | PRIV_WARN_HIDE_MSG);
 
-        if (!g_expert_mode)
-        {
-            /* Skip intro screen */
-            int n = select_next_page_no(pages[PAGENO_SUMMARY].page_no, NULL);
-            log_info("switching to page_no:%d", n);
-            gtk_notebook_set_current_page(assistant, n);
-            return;
-        }
+        /* Skip intro screen */
+        int n = select_next_page_no(pages[PAGENO_SUMMARY].page_no, NULL);
+        log_info("switching to page_no:%d", n);
+        gtk_notebook_set_current_page(assistant, n);
+
+        return;
     }
 
     if (pages[PAGENO_EDIT_ELEMENTS].page_widget == page)
@@ -2847,12 +2550,8 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
     }
 }
 
-//static void event_rb_was_toggled(GtkButton *button, gpointer user_data)
 static void set_auto_event_chain(GtkButton *button, gpointer user_data)
 {
-    //event is selected, so make sure the expert mode is disabled
-    g_expert_mode = false;
-
     workflow_t *w = (workflow_t *)user_data;
     config_item_info_t *info = workflow_get_config_info(w);
     log_notice("selected workflow '%s'", ci_get_screen_name(info));
@@ -2978,58 +2677,55 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
             return current_page_no; //stay here and let user select the workflow
         }
 
-        if (!g_expert_mode)
+        /* (note: this frees and sets to NULL g_event_selected) */
+        char *event = setup_next_processed_event(&g_auto_event_list);
+        if (!event)
         {
-            /* (note: this frees and sets to NULL g_event_selected) */
-            char *event = setup_next_processed_event(&g_auto_event_list);
-            if (!event)
-            {
-                current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
-                goto again;
-            }
+            current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
+            goto again;
+        }
 
-            if (!get_sensitive_data_permission(event))
+        if (!get_sensitive_data_permission(event))
+        {
+            free(event);
+
+            cancel_processing(g_lbl_event_log, /* default message */ NULL, TERMINATE_NOFLAGS);
+            current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
+            goto again;
+        }
+
+        if (problem_data_get_content_or_NULL(g_cd, FILENAME_NOT_REPORTABLE))
+        {
+
+            char *msg = xasprintf(_("This problem should not be reported "
+                            "(it is likely a known problem). %s"),
+                            problem_data_get_content_or_NULL(g_cd, FILENAME_NOT_REPORTABLE)
+            );
+
+            if (get_global_stop_on_not_reportable())
             {
                 free(event);
-
-                cancel_processing(g_lbl_event_log, /* default message */ NULL, TERMINATE_NOFLAGS);
+                cancel_processing(g_lbl_event_log, msg, TERMINATE_NOFLAGS);
+                free(msg);
                 current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
                 goto again;
             }
-
-            if (problem_data_get_content_or_NULL(g_cd, FILENAME_NOT_REPORTABLE))
+            else
             {
-
-                char *msg = xasprintf(_("This problem should not be reported "
-                                "(it is likely a known problem). %s"),
-                                problem_data_get_content_or_NULL(g_cd, FILENAME_NOT_REPORTABLE)
-                );
-
-                if (get_global_stop_on_not_reportable())
-                {
-                    free(event);
-                    cancel_processing(g_lbl_event_log, msg, TERMINATE_NOFLAGS);
-                    free(msg);
-                    current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
-                    goto again;
-                }
-                else
-                {
-                    log_warning("%s", msg);
-                    free(msg);
-                }
+                log_warning("%s", msg);
+                free(msg);
             }
-
-            g_event_selected = event;
-
-            /* Notify the user that some configuration options miss values, but don't
-             * force him to provide them.
-             */
-            check_event_config(g_event_selected);
-
-            current_page_no = pages[PAGENO_EVENT_SELECTOR].page_no + 1;
-            goto event_was_selected;
         }
+
+        g_event_selected = event;
+
+        /* Notify the user that some configuration options miss values, but don't
+         * force him to provide them.
+         */
+        check_event_config(g_event_selected);
+
+        current_page_no = pages[PAGENO_EVENT_SELECTOR].page_no + 1;
+        goto event_was_selected;
     }
 
     if (pages[PAGENO_EVENT_SELECTOR + 1].page_widget == page)
@@ -3069,14 +2765,7 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
 
     if (pages[PAGENO_NOT_SHOWN].page_widget == page)
     {
-        if (!g_expert_mode)
-            exit(0);
-        /* No! this would SEGV (infinitely recurse into select_next_page_no) */
-        /*gtk_assistant_commit(g_assistant);*/
-        gtk_widget_set_sensitive(pages[PAGENO_EVENT_SELECTOR].page_widget,
-                    /*Radio buttons used == always selected*/FALSE);
-        current_page_no = pages[PAGENO_EVENT_SELECTOR].page_no-1;
-        goto again;
+        exit(0);
     }
 
     log_notice("%s: selected page #%d", __func__, current_page_no);
@@ -3549,21 +3238,11 @@ static void assistant_quit_cb(void *obj, void *data)
     g_wnd_assistant = (void *)0xdeadbeaf;
 }
 
-void create_assistant(GtkApplication *app, bool expert_mode)
+void create_assistant(GtkApplication *app)
 {
     g_loaded_texts = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 
-    g_expert_mode = expert_mode;
-
     g_assistant = GTK_NOTEBOOK(gtk_notebook_new());
-
-    /* Show tabs only in verbose expert mode
-     *
-     * It is safe to let users randomly switch tabs only in expert mode because
-     * in all other modes a data for the selected page may not be ready and it
-     * will probably cause unexpected behaviour like crash.
-     */
-    gtk_notebook_set_show_tabs(g_assistant, (g_verbose != 0 && g_expert_mode));
 
     g_btn_close = gtk_button_new_with_mnemonic(_("_Close"));
     gtk_button_set_image(GTK_BUTTON(g_btn_close), gtk_image_new_from_icon_name("window-close-symbolic", GTK_ICON_SIZE_BUTTON));
