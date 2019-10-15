@@ -40,7 +40,6 @@ void update_gui_state_from_problem_data(int flags);
 void show_error_as_msgbox(const char *msg);
 
 
-extern char *g_glade_file;
 extern char *g_dump_dir_name;
 extern char *g_events;
 extern GList *g_auto_event_list;
