@@ -2966,7 +2966,7 @@ static char *setup_next_processed_event(GList **events_list)
     free(g_event_selected);
     g_event_selected = NULL;
 
-    char *event = get_next_processed_event(&g_auto_event_list);
+    char *event = get_next_processed_event(events_list);
     if (!event)
     {
         /* No next event, go to progress page and finish */
