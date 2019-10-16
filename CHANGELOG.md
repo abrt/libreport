@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.11.1] - 2019-10-16
+### Fixed
+- Fixed a double-free condition in libreport-gtk
+
 ## [2.11.0] - 2019-10-11
 ### Changed
 - Dropped Python 2 support
@@ -165,7 +169,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.11.0...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.11.1...HEAD
+[2.11.1]: https://github.com/abrt/libreport/compare/2.11.0...2.11.1
 [2.11.0]: https://github.com/abrt/libreport/compare/2.10.1...2.11.0
 [2.10.1]: https://github.com/abrt/libreport/compare/2.10.0...2.10.1
 [2.10.0]: https://github.com/abrt/libreport/compare/2.9.7...2.10.0

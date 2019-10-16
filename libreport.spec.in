@@ -743,6 +743,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Wed Oct 16 2019 Matěj Grabovský <mgrabovs@redhat.com> 2.11.1-1
+- gtk: Fix a double-free condition
+
 * Fri Oct 11 2019 Matěj Grabovský <mgrabovs@redhat.com> 2.11.0-1
 - Remove option for emergency analysis/reporting
 - tests: proc_helpers: Fix call to errx()
