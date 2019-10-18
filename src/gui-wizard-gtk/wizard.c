@@ -1676,7 +1676,7 @@ static void on_btn_cancel_event(GtkButton *button)
 
 static bool is_processing_finished()
 {
-    return !g_expert_mode && !g_auto_event_list;
+    return !g_expert_mode && g_auto_event_list == NULL;
 }
 
 static void hide_next_step_button()
@@ -2116,7 +2116,7 @@ static void start_event_run(const char *event_name)
 
     if (prepare_commands(state) == 0)
     {
-        /* Strangely, no commands at all were fond for processing the crashdump.
+        /* Strangely, no commands at all were found for processing the crashdump.
          * Let the user know and terminate processing.
          */
         free_run_event_state(state);
@@ -2882,9 +2882,9 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
         }
     }
 
-    if(pages[PAGENO_EVENT_SELECTOR].page_widget == page)
+    if (pages[PAGENO_EVENT_SELECTOR].page_widget == page)
     {
-        if (!g_expert_mode && !g_auto_event_list)
+        if (is_processing_finished())
             hide_next_step_button();
     }
 }
@@ -2969,11 +2969,11 @@ static char *setup_next_processed_event(GList **events_list)
     char *event = get_next_processed_event(events_list);
     if (!event)
     {
-        /* No next event, go to progress page and finish */
+        /* No next event, go to progress page and finish. */
         gtk_label_set_text(g_lbl_event_log, _("Processing finished."));
-        /* we don't know the result of the previous event here
-         * so at least hide the spinner, because we're obviously finished
-        */
+        /* We don't know the result of the previous event here
+         * so at least hide the spinner, because we're obviously finished.
+         */
         gtk_widget_hide(GTK_WIDGET(g_spinner_event_log));
         hide_next_step_button();
         return NULL;
@@ -3010,7 +3010,7 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
 
     if (pages[PAGENO_EVENT_SELECTOR].page_widget == page)
     {
-        if (!g_expert_mode && (g_auto_event_list == NULL))
+        if (is_processing_finished())
         {
             return current_page_no; //stay here and let user select the workflow
         }
@@ -3059,13 +3059,11 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
 
             g_event_selected = event;
 
-            /* Notify a user that some configuration options miss values, but */
-            /* don't force him to provide them. */
+            /* Notify the user that some configuration options miss values, but don't
+             * force him to provide them.
+             */
             check_event_config(g_event_selected);
 
-            /* >>> and this but this is clearer
-             * because it does exactly the same thing
-             * but I'm pretty scared to touch it */
             current_page_no = pages[PAGENO_EVENT_SELECTOR].page_no + 1;
             goto event_was_selected;
         }
