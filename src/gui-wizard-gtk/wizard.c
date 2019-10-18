@@ -377,19 +377,19 @@ static void update_window_title(void)
     /* prgname can be null according to gtk documentation */
     const char *prgname = g_get_prgname();
     const char *reason = problem_data_get_content_or_NULL(g_cd, FILENAME_REASON);
-    char *title = xasprintf("%s - %s", (reason ? reason : g_dump_dir_name),
+    g_autofree char *title = xasprintf("%s - %s", (reason ? reason : g_dump_dir_name),
             (prgname ? prgname : "report"));
     gtk_window_set_title(g_wnd_assistant, title);
-    free(title);
 }
 
 static bool ask_continue_before_steal(const char *base_dir, const char *dump_dir)
 {
-    char *msg = xasprintf(_("Need writable directory, but '%s' is not writable."
-                            " Move it to '%s' and operate on the moved data?"),
-                            dump_dir, base_dir);
+    g_autofree char *msg = xasprintf(
+            _("Need writable directory, but '%s' is not writable."
+              " Move it to '%s' and operate on the moved data?"),
+            dump_dir, base_dir);
     const bool response = run_ask_yes_no_yesforever_dialog("ask_steal_dir", msg, GTK_WINDOW(g_wnd_assistant));
-    free(msg);
+
     return response;
 }
 
@@ -400,10 +400,9 @@ struct dump_dir *wizard_open_directory_for_writing(const char *dump_dir_name)
 
     if (dd && strcmp(g_dump_dir_name, dd->dd_dirname) != 0)
     {
-        char *old_name = g_dump_dir_name;
+        free(g_dump_dir_name);
         g_dump_dir_name = xstrdup(dd->dd_dirname);
         update_window_title();
-        free(old_name);
     }
 
     return dd;
@@ -472,9 +471,8 @@ static void save_text_if_changed(const char *name, const char *new_value)
 
 static void save_text_from_text_view(GtkTextView *tv, const char *name)
 {
-    gchar *new_str = get_malloced_string_from_text_view(tv);
+    g_autofree char *new_str = get_malloced_string_from_text_view(tv);
     save_text_if_changed(name, new_str);
-    free(new_str);
 }
 
 static void append_to_textview(GtkTextView *tv, const char *str)
@@ -765,12 +763,12 @@ static void tv_details_row_activated(
                         GtkTreeViewColumn *column,
                         gpointer           user_data)
 {
-    gchar *item_name = NULL;
+    g_autofree gchar *item_name = NULL;
     struct problem_item *item = get_current_problem_item_or_NULL(tree_view, &item_name);
     if (!item || !(item->flags & CD_FLAG_TXT))
-        goto ret;
+        return;
     if (!strchr(item->content, '\n')) /* one line? */
-        goto ret; /* yes */
+        return;
 
     gint exitcode;
     gchar *arg[3];
@@ -819,8 +817,6 @@ static void tv_details_row_activated(
     }
 
     free(arg[1]);
- ret:
-    g_free(item_name);
 }
 
 /* static gboolean tv_details_select_cursor_row(
@@ -848,9 +844,8 @@ static void tv_details_cursor_changed(
     if (!GTK_IS_TREE_VIEW(tree_view))
         return;
 
-    gchar *item_name = NULL;
+    g_autofree gchar *item_name = NULL;
     struct problem_item *item = get_current_problem_item_or_NULL(tree_view, &item_name);
-    g_free(item_name);
 
     /* happens when closing the wizard by clicking 'X' */
     if (!item)
@@ -883,14 +878,13 @@ static void g_tv_details_checkbox_toggled(
     if (!gtk_tree_model_get_iter_from_string(GTK_TREE_MODEL(g_ls_details), &iter, tree_path))
         return;
 
-    gchar *item_name = NULL;
+    g_autofree gchar *item_name = NULL;
     gtk_tree_model_get(GTK_TREE_MODEL(g_ls_details), &iter,
                 DETAIL_COLUMN_NAME, &item_name,
                 -1);
     if (!item_name) /* paranoia, should never happen */
         return;
     struct problem_item *item = problem_data_get_item_or_NULL(g_cd, item_name);
-    g_free(item_name);
     if (!item) /* paranoia */
         return;
 
@@ -1057,7 +1051,7 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
         /* By default, use event name: */
         const char *event_screen_name = event_name;
         const char *event_description = NULL;
-        char *tmp_description = NULL;
+        g_autofree char *tmp_description = NULL;
         bool red_choice = false;
         bool green_choice = false;
         if (cfg)
@@ -1067,22 +1061,18 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
                 event_screen_name = ec_get_screen_name(cfg);
             event_description = ec_get_description(cfg);
 
-            char *missing = missing_items_in_comma_list(cfg->ec_requires_items);
+            g_autofree char *missing = missing_items_in_comma_list(cfg->ec_requires_items);
             if (missing)
             {
                 red_choice = true;
                 event_description = tmp_description = xasprintf(_("(requires: %s)"), missing);
-                free(missing);
             }
-            else
-            if (cfg->ec_creates_items)
+            else if (cfg->ec_creates_items)
             {
                 if (problem_data_get_item_or_NULL(g_cd, cfg->ec_creates_items))
                 {
-                    char *missing = missing_items_in_comma_list(cfg->ec_creates_items);
-                    if (missing)
-                        free(missing);
-                    else
+                    missing = missing_items_in_comma_list(cfg->ec_creates_items);
+                    if (!missing)
                     {
                         green_choice = true;
                         event_description = tmp_description = xasprintf(_("(not needed, data already exist: %s)"), cfg->ec_creates_items);
@@ -1094,18 +1084,16 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
             g_black_event_count++;
 
         //log_info("adding button '%s' to box %p", event_name, box);
-        char *event_label = xasprintf("%s%s%s",
+        g_autofree char *event_label = xasprintf("%s%s%s",
                         event_screen_name,
                         (event_description ? " - " : ""),
                         event_description ? event_description : ""
         );
-        free(tmp_description);
 
         GtkWidget *button = gtk_radio_button_new_with_label_from_widget(
                         (first_button ? GTK_RADIO_BUTTON(first_button->toggle_button) : NULL),
                         event_label
                 );
-        free(event_label);
 
         if (green_choice || red_choice)
         {
@@ -1246,16 +1234,13 @@ static void remove_tabs_from_notebook(GtkNotebook *notebook)
     gboolean valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(g_ls_sensitive_list), &iter);
     while (valid)
     {
-        char *text = NULL;
-        search_item_t *word = NULL;
+        g_autofree char *text = NULL;
+        g_autofree search_item_t *word = NULL;
 
         gtk_tree_model_get(GTK_TREE_MODEL(g_ls_sensitive_list), &iter,
                 SEARCH_COLUMN_TEXT, &text,
                 SEARCH_COLUMN_ITEM, &word,
                 -1);
-
-        free(text);
-        free(word);
 
         valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(g_ls_sensitive_list), &iter);
     }
@@ -1321,12 +1306,12 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
         if (stat(item->content, &statbuf) == 0)
         {
             stats->filesize += statbuf.st_size;
-            char *msg = xasprintf(_("(binary file, %llu bytes)"), (long long)statbuf.st_size);
+            g_autofree char *msg = xasprintf(
+                    _("(binary file, %llu bytes)"), (long long)statbuf.st_size);
             gtk_list_store_set(g_ls_details, &iter,
                                   DETAIL_COLUMN_NAME, (char *)name,
                                   DETAIL_COLUMN_VALUE, msg,
                                   -1);
-            free(msg);
         }
     }
 
@@ -1400,14 +1385,13 @@ static void update_ls_details_checkboxes(const char *event_name)
         if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(g_ls_details), &iter))
         {
             do {
-                gchar *item_name = NULL;
+                g_autofree gchar *item_name = NULL;
                 gtk_tree_model_get(GTK_TREE_MODEL(g_ls_details), &iter,
                             DETAIL_COLUMN_NAME, &item_name,
                             -1);
                 if (!item_name) /* paranoia, should never happen */
                     continue;
                 int differ = strcmp(name, item_name);
-                g_free(item_name);
                 if (differ)
                     continue;
                 gtk_list_store_set(g_ls_details, &iter,
@@ -1429,20 +1413,19 @@ void update_gui_state_from_problem_data(int flags)
     const char *not_reportable = problem_data_get_content_or_NULL(g_cd,
                                                                   FILENAME_NOT_REPORTABLE);
 
-    char *t = xasprintf("%s%s%s",
+    g_autofree char *t = xasprintf("%s%s%s",
                         not_reportable ? : "",
                         not_reportable ? " " : "",
                         reason ? : _("(no description)"));
 
     gtk_label_set_text(g_lbl_cd_reason, t);
-    free(t);
 
     gtk_list_store_clear(g_ls_details);
     struct cd_stats stats = { 0 };
     g_hash_table_foreach(g_cd, append_item_to_ls_details, &stats);
-    char *msg = xasprintf(_("%llu bytes, %u files"), (long long)stats.filesize, stats.filecount);
+    g_autofree char *msg = xasprintf(
+            _("%llu bytes, %u files"), (long long)stats.filesize, stats.filecount);
     gtk_label_set_text(g_lbl_size, msg);
-    free(msg);
 
     load_text_to_text_view(g_tv_comment, FILENAME_COMMENT);
     load_text_to_text_view(g_tv_steps, FILENAME_REPRODUCER);
@@ -1545,7 +1528,7 @@ static void set_excluded_envvar(void)
     if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(g_ls_details), &iter))
     {
         do {
-            gchar *item_name = NULL;
+            g_autofree gchar *item_name = NULL;
             gboolean checked = 0;
             gtk_tree_model_get(GTK_TREE_MODEL(g_ls_details), &iter,
                     DETAIL_COLUMN_NAME, &item_name,
@@ -1558,16 +1541,12 @@ static void set_excluded_envvar(void)
                 strbuf_append_strf(item_list, fmt, item_name);
                 fmt = ", %s";
             }
-            g_free(item_name);
         } while (gtk_tree_model_iter_next(GTK_TREE_MODEL(g_ls_details), &iter));
     }
-    char *var = strbuf_free_nobuf(item_list);
-    //log_warning("EXCLUDE_FROM_REPORT='%s'", var);
+
+    g_autofree char *var = strbuf_free_nobuf(item_list);
     if (var)
-    {
         xsetenv("EXCLUDE_FROM_REPORT", var);
-        free(var);
-    }
     else
         unsetenv("EXCLUDE_FROM_REPORT");
 }
@@ -1635,7 +1614,8 @@ static void update_event_log_on_disk(const char *str)
     struct dump_dir *dd = dd_opendir(g_dump_dir_name, 0);
     if (!dd)
         return;
-    char *event_log = dd_load_text_ext(dd, FILENAME_EVENT_LOG, DD_FAIL_QUIETLY_ENOENT);
+    g_autofree char *event_log = dd_load_text_ext(dd, FILENAME_EVENT_LOG,
+            DD_FAIL_QUIETLY_ENOENT);
 
     /* Append new log part to existing log */
     unsigned len = strlen(event_log);
@@ -1656,7 +1636,6 @@ static void update_event_log_on_disk(const char *str)
 
     /* Save */
     dd_save_text(dd, FILENAME_EVENT_LOG, new_log);
-    free(event_log);
     dd_close(dd);
 }
 
@@ -1764,9 +1743,9 @@ static char *run_event_gtk_logging(char *log_line, void *param)
 
 static void log_request_response_communication(const char *request, const char *response, struct analyze_event_data *evd)
 {
-    char *message = xasprintf(response ? "%s '%s'" : "%s", request, response);
+    g_autofree char *message = xasprintf(response ? "%s '%s'" : "%s", request,
+            response);
     update_command_run_log(message, evd);
-    free(message);
 }
 
 static void run_event_gtk_alert(const char *msg, void *args)
@@ -1776,9 +1755,8 @@ static void run_event_gtk_alert(const char *msg, void *args)
             GTK_MESSAGE_WARNING,
             GTK_BUTTONS_CLOSE,
             "%s", msg);
-    char *tagged_msg = tag_url(msg, "\n");
+    g_autofree char *tagged_msg = tag_url(msg, "\n");
     gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), tagged_msg);
-    free(tagged_msg);
 
     gtk_dialog_run(GTK_DIALOG(dialog));
     gtk_widget_destroy(dialog);
@@ -1800,10 +1778,9 @@ static char *ask_helper(const char *msg, void *args, bool password)
             GTK_MESSAGE_QUESTION,
             GTK_BUTTONS_OK_CANCEL,
             "%s", msg);
-    char *tagged_msg = tag_url(msg, "\n");
+    g_autofree char *tagged_msg = tag_url(msg, "\n");
     gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_OK);
     gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), tagged_msg);
-    free(tagged_msg);
 
     GtkWidget *vbox = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
     GtkWidget *textbox = gtk_entry_new();
@@ -1850,9 +1827,8 @@ static int run_event_gtk_ask_yes_no(const char *msg, void *args)
             GTK_MESSAGE_QUESTION,
             GTK_BUTTONS_YES_NO,
             "%s", msg);
-    char *tagged_msg = tag_url(msg, "\n");
+    g_autofree char *tagged_msg = tag_url(msg, "\n");
     gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dialog), tagged_msg);
-    free(tagged_msg);
 
     /* Esc -> No, Enter -> Yes */
     gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_YES);
@@ -1970,7 +1946,8 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     /* If program failed, or if it finished successfully without saying anything... */
     if (retval != 0 || evd->event_log_state == LOGSTATE_FIRSTLINE)
     {
-        char *msg = exit_status_as_string(evd->event_name, run_state->process_status);
+        g_autofree char *msg = exit_status_as_string(evd->event_name,
+                run_state->process_status);
         if (retval != 0)
         {
             /* If program failed, emit *error* line */
@@ -1978,7 +1955,6 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         }
         append_to_textview(g_tv_event_log, msg);
         save_to_event_log(evd, msg);
-        free(msg);
     }
 
     /* Append log to FILENAME_EVENT_LOG */
@@ -2004,13 +1980,12 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
             dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
         if (!dd)
             xfunc_die();
-        char *not_reportable = dd_load_text_ext(dd, FILENAME_NOT_REPORTABLE, 0
-                                            | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
-                                            | DD_FAIL_QUIETLY_ENOENT
-                                            | DD_FAIL_QUIETLY_EACCES);
+        g_autofree char *not_reportable = dd_load_text_ext(dd, FILENAME_NOT_REPORTABLE,
+                  DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
+                | DD_FAIL_QUIETLY_ENOENT
+                | DD_FAIL_QUIETLY_EACCES);
         if (not_reportable)
             retval = 256;
-        free(not_reportable);
     }
     if (dd)
         dd_close(dd);
@@ -2196,9 +2171,8 @@ static void start_event_run(const char *event_name)
 
     gtk_label_set_text(g_lbl_event_log, _("Processing..."));
     log_notice("running event '%s' on '%s'", event_name, g_dump_dir_name);
-    char *msg = xasprintf("--- Running %s ---\n", event_name);
+    g_autofree char *msg = xasprintf("--- Running %s ---\n", event_name);
     append_to_textview(g_tv_event_log, msg);
-    free(msg);
 
     /* don't bother testing if they are visible, this is faster */
     gtk_widget_hide(GTK_WIDGET(g_img_process_fail));
@@ -2227,11 +2201,9 @@ static void add_widget_to_warning_area(GtkWidget    *widget,
 static void add_warning(const char   *warning,
                         GtkContainer *container)
 {
-    char *label_str = xasprintf("• %s", warning);
+    g_autofree char *label_str = xasprintf("• %s", warning);
     GtkWidget *warning_lbl = gtk_label_new(NULL);
     gtk_label_set_markup(GTK_LABEL(warning_lbl), label_str);
-    /* should be safe to free it, gtk calls strdup() to copy it */
-    free(label_str);
 
     gtk_widget_set_halign (warning_lbl, GTK_ALIGN_START);
     gtk_widget_set_valign (warning_lbl, GTK_ALIGN_END);
@@ -2501,24 +2473,20 @@ static void search_item_to_list_store_item(GtkListStore *store, GtkTreeIter *new
 
     gchar *tmp = gtk_text_buffer_get_text(word->buffer, beg, &(word->start),
             /*don't include hidden chars*/FALSE);
-    gchar *prefix = g_markup_escape_text(tmp, /*NULL terminated string*/-1);
+    g_autofree gchar *prefix = g_markup_escape_text(tmp, /*NULL terminated string*/-1);
     g_free(tmp);
 
     tmp = gtk_text_buffer_get_text(word->buffer, &(word->start), &(word->end),
             /*don't include hidden chars*/FALSE);
-    gchar *text = g_markup_escape_text(tmp, /*NULL terminated string*/-1);
+    g_autofree gchar *text = g_markup_escape_text(tmp, /*NULL terminated string*/-1);
     g_free(tmp);
 
     tmp = gtk_text_buffer_get_text(word->buffer, &(word->end), end,
             /*don't include hidden chars*/FALSE);
-    gchar *suffix = g_markup_escape_text(tmp, /*NULL terminated string*/-1);
+    g_autofree gchar *suffix = g_markup_escape_text(tmp, /*NULL terminated string*/-1);
     g_free(tmp);
 
     char *content = xasprintf("%s<span foreground=\"red\">%s</span>%s", prefix, text, suffix);
-
-    g_free(suffix);
-    g_free(text);
-    g_free(prefix);
 
     gtk_text_iter_free(end);
     gtk_text_iter_free(beg);
@@ -2549,15 +2517,13 @@ static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words,
 
     while (valid)
     {
-        char *text = NULL;
-        search_item_t *word = NULL;
+        g_autofree char *text = NULL;
+        g_autofree search_item_t *word = NULL;
 
         gtk_tree_model_get(GTK_TREE_MODEL(g_ls_sensitive_list), &iter,
                 SEARCH_COLUMN_TEXT, &text,
                 SEARCH_COLUMN_ITEM, &word,
                 -1);
-
-        free(text);
 
         if (word->buffer == buffer)
         {
@@ -2567,8 +2533,6 @@ static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words,
 
             if (word == g_current_highlighted_word)
                 g_current_highlighted_word = NULL;
-
-            free(word);
         }
         else
         {
@@ -2941,7 +2905,8 @@ static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback f
     for (GList *wf_iter = wf_list; wf_iter; wf_iter = g_list_next(wf_iter))
     {
         workflow_t *w = (workflow_t *)wf_iter->data;
-        char *btn_label = xasprintf("<b>%s</b>\n%s", wf_get_screen_name(w), wf_get_description(w));
+        g_autofree char *btn_label = xasprintf("<b>%s</b>\n%s", wf_get_screen_name(w),
+                wf_get_description(w));
         GtkWidget *button = gtk_button_new_with_label(btn_label);
         GList *children = gtk_container_get_children(GTK_CONTAINER(button));
         GtkWidget *label = (GtkWidget *)children->data;
@@ -2953,7 +2918,6 @@ static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback f
 		
         gtk_widget_set_margin_bottom(label, 10);
         g_list_free(children);
-        free(btn_label);
         g_signal_connect(button, "clicked", func, w);
         gtk_box_pack_start(box, button, true, false, 2);
     }
@@ -2990,11 +2954,16 @@ static bool get_sensitive_data_permission(const char *event_name)
     if (!event_cfg || !event_cfg->ec_sending_sensitive_data)
         return true;
 
-    char *msg = xasprintf(_("Event '%s' requires permission to send possibly sensitive data."
-                            "\nDo you want to continue?"),
-                            ec_get_screen_name(event_cfg) ? ec_get_screen_name(event_cfg) : event_name);
-    const bool response = run_ask_yes_no_yesforever_dialog("ask_send_sensitive_data", msg, GTK_WINDOW(g_wnd_assistant));
-    free(msg);
+    const char *screen_name = ec_get_screen_name(event_cfg);
+    if (screen_name)
+        event_name = screen_name;
+
+    g_autofree char *msg = xasprintf(
+            _("Event '%s' requires permission to send possibly sensitive data.\n"
+              "Do you want to continue?"),
+            event_name);
+    const bool response = run_ask_yes_no_yesforever_dialog("ask_send_sensitive_data",
+            msg, GTK_WINDOW(g_wnd_assistant));
 
     return response;
 }
@@ -3289,11 +3258,9 @@ static void on_btn_add_file(GtkButton *button)
             if (dd)
             {
                 dd_close(dd);
-                char *new_name = concat_path_file(g_dump_dir_name, basename);
+                g_autofree char *new_name = concat_path_file(g_dump_dir_name, basename);
                 if (strcmp(filename, new_name) == 0)
-                {
                     message = xstrdup(_("You are trying to copy a file onto itself"));
-                }
                 else
                 {
                     off_t r = copy_file(filename, new_name, 0666);
@@ -3310,7 +3277,6 @@ static void on_btn_add_file(GtkButton *button)
                         update_ls_details_checkboxes(g_event_selected);
                     }
                 }
-                free(new_name);
             }
         }
         else
