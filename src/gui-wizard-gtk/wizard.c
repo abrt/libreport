@@ -2714,6 +2714,7 @@ static char *get_next_processed_event(GList **events_list)
         return NULL;
 
     char *event_name = (char *)(*events_list)->data;
+    *events_list = g_list_delete_link(*events_list, *events_list);
 
     clear_warnings();
 
@@ -2738,7 +2739,6 @@ static char *get_next_processed_event(GList **events_list)
         return NULL;
     }
 
-    *events_list = g_list_next(*events_list);
     return event_name;
 }
 
