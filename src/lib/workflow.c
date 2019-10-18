@@ -170,13 +170,17 @@ GList *wf_get_event_names(workflow_t *w)
 {
     GList *wf_event_list = wf_get_event_list(w);
     GList *event_names = NULL;
-    while(wf_event_list)
+
+    while (wf_event_list)
     {
-        event_names = g_list_append(event_names, xstrdup(ec_get_name(wf_event_list->data)));
+        /* Since appending is inefficient for GLib doubly-linked lists, we prepend
+         * here and reverse the list just before returning.
+         */
+        event_names = g_list_prepend(event_names, xstrdup(ec_get_name(wf_event_list->data)));
         wf_event_list = g_list_next(wf_event_list);
     }
 
-    return event_names;
+    return g_list_reverse(event_names);
 }
 
 const char *wf_get_name(workflow_t *w)
