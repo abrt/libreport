@@ -743,6 +743,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Wed Oct 23 2019 Matěj Grabovský <mgrabovs@redhat.com> 2.11.2-1
+- gtk: Improve memory management
+- gtk: Prevent memory leak
+- lib: Eliminate GLib inefficiency
+- gtk,style: Minor style consistency fixes
+- workflows: Correct name of post_report event
+
 * Wed Oct 16 2019 Matěj Grabovský <mgrabovs@redhat.com> 2.11.1-1
 - gtk: Fix a double-free condition
 
