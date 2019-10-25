@@ -2518,7 +2518,7 @@ static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words,
     while (valid)
     {
         g_autofree char *text = NULL;
-        g_autofree search_item_t *word = NULL;
+        search_item_t *word = NULL;
 
         gtk_tree_model_get(GTK_TREE_MODEL(g_ls_sensitive_list), &iter,
                 SEARCH_COLUMN_TEXT, &text,
@@ -2533,6 +2533,8 @@ static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words,
 
             if (word == g_current_highlighted_word)
                 g_current_highlighted_word = NULL;
+
+            free(word);
         }
         else
         {
