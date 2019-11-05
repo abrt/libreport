@@ -109,7 +109,7 @@ startup_wizard(GApplication *app,
     g_menu_append(service_app_menu_sec, _("Quit"), "app.quit");
     g_menu_append_section(app_menu, /*no title*/NULL, G_MENU_MODEL(service_app_menu_sec));
 
-    gtk_application_set_app_menu (GTK_APPLICATION (app), G_MENU_MODEL(app_menu));
+    gtk_application_set_app_menu(GTK_APPLICATION(app), G_MENU_MODEL(app_menu));
 }
 
 static void

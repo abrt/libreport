@@ -31,17 +31,6 @@
 #define FORBIDDEN_WORDS_BLACKLLIST "forbidden_words.conf"
 #define FORBIDDEN_WORDS_WHITELIST "ignored_words.conf"
 
-#if GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 22
-# define gtk_assistant_commit(...) ((void)0)
-# define GDK_KEY_Delete GDK_Delete
-# define GDK_KEY_KP_Delete GDK_KP_Delete
-#endif
-
-/* For Fedora 16 and gtk3 < 3.4.4*/
-#ifndef GDK_BUTTON_PRIMARY
-# define GDK_BUTTON_PRIMARY 1
-#endif
-
 typedef struct event_gui_data_t
 {
     char *event_name;
@@ -311,13 +300,11 @@ static void wrap_fixer(GtkWidget *widget, gpointer data_unused)
     if (GTK_IS_LABEL(widget))
     {
         GtkLabel *label = (GtkLabel*)widget;
-        //const char *txt = gtk_label_get_label(label);
         if (gtk_label_get_line_wrap(label)
           && (gtk_widget_get_halign(widget) == GTK_ALIGN_START)
           && (gtk_widget_get_margin_top(widget) == 0)
           && (gtk_widget_get_margin_bottom(widget) == 0)
         ) {
-            //log_warning("label '%s' set to autowrap", txt);
             make_label_autowrap_on_resize(label);
             return;
         }
@@ -418,7 +405,9 @@ static void save_text_if_changed(const char *name, const char *new_value)
     if (!g_hash_table_lookup(g_loaded_texts, name))
         return;
 
-    const char *old_value = g_cd ? problem_data_get_content_or_NULL(g_cd, name) : "";
+    const char *old_value = NULL;
+    if (g_cd)
+        old_value = problem_data_get_content_or_NULL(g_cd, name);
     if (!old_value)
         old_value = "";
     if (strcmp(new_value, old_value) != 0)
@@ -472,10 +461,10 @@ static void append_to_textview(GtkTextView *tv, const char *str)
             gtk_text_buffer_insert(tb, &text_iter, last, t->start - last);
 
         GtkTextTag *tag;
-        tag = gtk_text_buffer_create_tag (tb, NULL, "foreground", "blue",
-                                          "underline", PANGO_UNDERLINE_SINGLE, NULL);
+        tag = gtk_text_buffer_create_tag(tb, NULL, "foreground", "blue",
+                                         "underline", PANGO_UNDERLINE_SINGLE, NULL);
         char *url = xstrndup(t->start, t->len);
-        g_object_set_data (G_OBJECT (tag), "url", url);
+        g_object_set_data(G_OBJECT(tag), "url", url);
 
         gtk_text_buffer_insert_with_tags(tb, &text_iter, url, -1, tag, NULL);
 
@@ -489,7 +478,8 @@ static void append_to_textview(GtkTextView *tv, const char *str)
 
     /* Scroll so that the end of the log is visible */
     gtk_text_view_scroll_to_iter(tv, &text_iter,
-                /*within_margin:*/ 0.0, /*use_align:*/ FALSE, /*xalign:*/ 0, /*yalign:*/ 0);
+                /*within_margin:*/ 0.0, /*use_align:*/ FALSE,
+                /*xalign:*/ 0, /*yalign:*/ 0);
 }
 
 /* Looks at all tags covering the position of iter in the text view,
@@ -553,7 +543,7 @@ static gboolean key_press_event(GtkWidget *text_view, GdkEventKey *event)
     {
         case GDK_KEY_Return:
         case GDK_KEY_KP_Enter:
-            buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW (text_view));
+            buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_view));
             gtk_text_buffer_get_iter_at_mark(buffer, &iter,
                     gtk_text_buffer_get_insert(buffer));
             open_browse_if_link(text_view, &iter);
@@ -822,7 +812,6 @@ static void g_tv_details_checkbox_toggled(
                         gchar    *tree_path,
                         gpointer  user_data_UNUSED)
 {
-    //log_warning("%s: path:'%s'", __func__, tree_path);
     GtkTreeIter iter;
     if (!gtk_tree_model_get_iter_from_string(GTK_TREE_MODEL(g_ls_details), &iter, tree_path))
         return;
@@ -842,18 +831,10 @@ static void g_tv_details_checkbox_toggled(
         cur_value = item->default_by_reporter;
     else
         cur_value = !!(item->selected_by_user + 1); /* map -1,1 to 0,1 */
-    //log_warning("%s: allowed:%d reqd:%d def:%d user:%d cur:%d", __func__,
-    //            item->allowed_by_reporter,
-    //            item->required_by_reporter,
-    //            item->default_by_reporter,
-    //            item->selected_by_user,
-    //            cur_value
-    //);
     if (item->allowed_by_reporter && !item->required_by_reporter)
     {
         cur_value = !cur_value;
         item->selected_by_user = cur_value * 2 - 1; /* map 0,1 to -1,1 */
-        //log_warning("%s: now ->selected_by_user=%d", __func__, item->selected_by_user);
         gtk_list_store_set(g_ls_details, &iter,
                 DETAIL_COLUMN_CHECKBOX, cur_value,
                 -1);
@@ -933,7 +914,6 @@ static void save_items_from_notepad(void)
 
     for (i = 0; i < n_pages; i++)
     {
-        //notebook_page->scrolled_window->text_view
         notebook_child = gtk_notebook_get_nth_page(g_notebook, i);
         tev = GTK_TEXT_VIEW(gtk_bin_get_child(GTK_BIN(notebook_child)));
         tab_lbl = gtk_notebook_get_tab_label(g_notebook, notebook_child);
@@ -1062,7 +1042,6 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
 static void update_ls_details_checkboxes(const char *event_name)
 {
     event_config_t *cfg = get_event_config(event_name);
-    //log_warning("%s: event:'%s', cfg:'%p'", __func__, g_event_selected, cfg);
     GHashTableIter iter;
     char *name;
     struct problem_item *item;
@@ -1105,13 +1084,6 @@ static void update_ls_details_checkboxes(const char *event_name)
         else
             cur_value = !!(item->selected_by_user + 1); /* map -1,1 to 0,1 */
 
-        //log_warning("%s: '%s' allowed:%d reqd:%d def:%d user:%d", __func__, name,
-        //    item->allowed_by_reporter,
-        //    item->required_by_reporter,
-        //    item->default_by_reporter,
-        //    item->selected_by_user
-        //);
-
         /* Find corresponding line and update checkbox */
         GtkTreeIter iter;
         if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(g_ls_details), &iter))
@@ -1129,7 +1101,6 @@ static void update_ls_details_checkboxes(const char *event_name)
                 gtk_list_store_set(g_ls_details, &iter,
                         DETAIL_COLUMN_CHECKBOX, cur_value,
                         -1);
-                //log_warning("%s: changed gtk_list_store_set to %d", __func__, (item->allowed_by_reporter && item->selected_by_user >= 0));
                 break;
             } while (gtk_tree_model_iter_next(GTK_TREE_MODEL(g_ls_details), &iter));
         }
@@ -1567,7 +1538,7 @@ static bool event_need_review(const char *event_name)
     return !event_cfg || !event_cfg->ec_skip_review;
 }
 
-static gint select_next_page_no(gint current_page_no, gpointer data);
+static gint select_next_page_no(gint current_page_no);
 static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer user_data);
 
 static void on_btn_repeat_cb(GtkButton *button)
@@ -1579,7 +1550,7 @@ static void on_btn_repeat_cb(GtkButton *button)
     clear_warnings();
 
     const gint current_page_no = gtk_notebook_get_current_page(g_assistant);
-    const int next_page_no = select_next_page_no(pages[PAGENO_SUMMARY].page_no, NULL);
+    const int next_page_no = select_next_page_no(pages[PAGENO_SUMMARY].page_no);
     if (current_page_no == next_page_no)
         on_page_prepare(g_assistant, gtk_notebook_get_nth_page(g_assistant, next_page_no), NULL);
     else
@@ -1752,7 +1723,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         if (is_processing_finished())
             hide_next_step_button();
         else if (retval == 0 && !g_verbose)
-            on_next_btn_cb(GTK_WIDGET(g_btn_next), NULL);
+            on_next_btn_cb(g_btn_next, NULL);
 
         return FALSE; /* "please remove this event" */
     }
@@ -1801,6 +1772,7 @@ static void start_event_run(const char *event_name)
         append_to_textview(g_tv_event_log, msg);
 
         cancel_processing(g_lbl_event_log, _("Processing failed."), TERMINATE_NOFLAGS);
+
         return;
     }
 
@@ -1810,7 +1782,9 @@ static void start_event_run(const char *event_name)
     {
         free_run_event_state(state);
 
-        cancel_processing(g_lbl_event_log, _("Processing interrupted: can't continue without writable directory."), TERMINATE_NOFLAGS);
+        cancel_processing(g_lbl_event_log,
+                _("Processing interrupted: can't continue without writable directory."),
+                TERMINATE_NOFLAGS);
 
         return; /* user refused to steal, or write error, etc... */
     }
@@ -2085,22 +2059,6 @@ static void on_log_changed(GtkTextBuffer *buffer, gpointer user_data)
 {
     gtk_widget_show(GTK_WIDGET(g_exp_report_log));
 }
-
-#if 0
-static void log_ready_state(void)
-{
-    char buf[NUM_PAGES+1];
-    for (int i = 0; i < NUM_PAGES; i++)
-    {
-        char ch = '_';
-        if (pages[i].page_widget)
-            ch = gtk_assistant_get_page_complete(g_assistant, pages[i].page_widget) ? '+' : '-';
-        buf[i] = ch;
-    }
-    buf[NUM_PAGES] = 0;
-    log_warning("Completeness:[%s]", buf);
-}
-#endif
 
 static GList *find_words_in_text_buffer(int page,
                                         GtkTextView *tev,
@@ -2421,28 +2379,13 @@ static void update_private_ticket_creation_warning_for_selected_event(void)
 
 static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer user_data)
 {
-    //int page_no = gtk_assistant_get_current_page(g_assistant);
-    //log_ready_state();
-
-    /* This suppresses [Last] button: assistant thinks that
-     * we never have this page ready unless we are on it
-     * -> therefore there is at least one non-ready page
-     * -> therefore it won't show [Last]
-     */
-    // Doesn't work: if Completeness:[++++++-+++],
-    // then [Last] btn will still be shown.
-    //gtk_assistant_set_page_complete(g_assistant,
-    //            pages[PAGENO_REVIEW_DATA].page_widget,
-    //            pages[PAGENO_REVIEW_DATA].page_widget == page
-    //);
-
     /* If processing is finished and if it was terminated because of an error
      * the event progress page is selected. So, it does not make sense to show
      * the next step button and we MUST NOT clear warnings.
      */
     if (!is_processing_finished())
     {
-        /* some pages hide it, so restore it to it's default */
+        /* Some pages hide it, so restore it to its default. */
         show_next_step_button();
         clear_warnings();
     }
@@ -2490,8 +2433,8 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
                                             | PRIV_WARN_HIDE_MSG);
 
         /* Skip intro screen */
-        int n = select_next_page_no(pages[PAGENO_SUMMARY].page_no, NULL);
-        log_info("switching to page_no:%d", n);
+        int n = select_next_page_no(pages[PAGENO_SUMMARY].page_no);
+        log_info("Switching from intro to page no. %d", n);
         gtk_notebook_set_current_page(assistant, n);
 
         return;
@@ -2531,7 +2474,6 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
         gtk_widget_set_sensitive(g_btn_next, false);
         on_comment_changed(gtk_text_view_get_buffer(g_tv_comment), NULL);
     }
-    //log_ready_state();
 
     if (pages[PAGENO_EVENT_PROGRESS].page_widget == page)
     {
@@ -2566,9 +2508,9 @@ static void set_auto_event_chain(GtkButton *button, gpointer user_data)
     }
 
     gint current_page_no = gtk_notebook_get_current_page(g_assistant);
-    gint next_page_no = select_next_page_no(current_page_no, NULL);
+    gint next_page_no = select_next_page_no(current_page_no);
 
-    /* if pageno is not change 'switch-page' signal is not emitted */
+    /* If page is not changed, 'switch-page' signal is not emitted. */
     if (current_page_no == next_page_no)
         on_page_prepare(g_assistant, gtk_notebook_get_nth_page(g_assistant, next_page_no), NULL);
     else
@@ -2661,7 +2603,7 @@ static bool get_sensitive_data_permission(const char *event_name)
     return response;
 }
 
-static gint select_next_page_no(gint current_page_no, gpointer data)
+static gint select_next_page_no(gint current_page_no)
 {
     GtkWidget *page;
 
@@ -2744,14 +2686,6 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
             goto again;
         }
     }
-
-#if 0
-    if (pages[PAGENO_EDIT_COMMENT].page_widget == page)
-    {
-        if (problem_data_get_content_or_NULL(g_cd, FILENAME_COMMENT))
-            goto again; /* no comment, skip this page */
-    }
-#endif
 
     if (pages[PAGENO_EVENT_DONE].page_widget == page)
     {
@@ -2873,8 +2807,6 @@ static void save_edited_one_liner(GtkCellRendererText *renderer,
                 gchar *new_text,
                 gpointer user_data)
 {
-    //log_warning("path:'%s' new_text:'%s'", tree_path, new_text);
-
     GtkTreeIter iter;
     if (!gtk_tree_model_get_iter_from_string(GTK_TREE_MODEL(g_ls_details), &iter, tree_path))
         return;
@@ -3051,9 +2983,9 @@ static void on_reproducible_changed(GtkComboBox *widget, gpointer user_data)
 static void on_next_btn_cb(GtkWidget *btn, gpointer user_data)
 {
     gint current_page_no = gtk_notebook_get_current_page(g_assistant);
-    gint next_page_no = select_next_page_no(current_page_no, NULL);
+    gint next_page_no = select_next_page_no(current_page_no);
 
-    /* if pageno is not change 'switch-page' signal is not emitted */
+    /* If page is not changed, 'switch-page' signal is not emitted. */
     if (current_page_no == next_page_no)
         on_page_prepare(g_assistant, gtk_notebook_get_nth_page(g_assistant, next_page_no), NULL);
     else
@@ -3364,15 +3296,15 @@ void create_assistant(GtkApplication *app)
 
     g_signal_connect(g_search_entry_bt, "changed", G_CALLBACK(search_timeout), NULL);
 
-    g_signal_connect (g_tv_event_log, "key-press-event", G_CALLBACK (key_press_event), NULL);
-    g_signal_connect (g_tv_event_log, "event-after", G_CALLBACK (event_after), NULL);
-    g_signal_connect (g_tv_event_log, "motion-notify-event", G_CALLBACK (motion_notify_event), NULL);
-    g_signal_connect (g_tv_event_log, "visibility-notify-event", G_CALLBACK (visibility_notify_event), NULL);
-    g_signal_connect (gtk_text_view_get_buffer(g_tv_event_log), "changed", G_CALLBACK (on_log_changed), NULL);
+    g_signal_connect(g_tv_event_log, "key-press-event", G_CALLBACK(key_press_event), NULL);
+    g_signal_connect(g_tv_event_log, "event-after", G_CALLBACK(event_after), NULL);
+    g_signal_connect(g_tv_event_log, "motion-notify-event", G_CALLBACK(motion_notify_event), NULL);
+    g_signal_connect(g_tv_event_log, "visibility-notify-event", G_CALLBACK(visibility_notify_event), NULL);
+    g_signal_connect(gtk_text_view_get_buffer(g_tv_event_log), "changed", G_CALLBACK(on_log_changed), NULL);
 
     hand_cursor = gdk_cursor_new_for_display(gdk_display_get_default(), GDK_HAND2);
     regular_cursor = gdk_cursor_new_for_display(gdk_display_get_default(), GDK_XTERM);
 
-    /* switch to right starting page */
+    /* Switch right to starting page. */
     on_page_prepare(g_assistant, gtk_notebook_get_nth_page(g_assistant, 0), NULL);
 }
