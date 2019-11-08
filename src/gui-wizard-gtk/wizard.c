@@ -917,7 +917,7 @@ static void save_items_from_notepad(void)
         tev = GTK_TEXT_VIEW(gtk_bin_get_child(GTK_BIN(notebook_child)));
         tab_lbl = gtk_notebook_get_tab_label(g_notebook, notebook_child);
         item_name = gtk_label_get_text(GTK_LABEL(tab_lbl));
-        log_notice("saving: '%s'", item_name);
+        log_info("Saving item '%s'", item_name);
 
         save_text_from_text_view(tev, item_name);
     }
@@ -1792,6 +1792,7 @@ static void start_event_run(const char *event_name)
     GList *env_list = export_event_config(event_name);
 
     int retval = spawn_next_command(state, g_dump_dir_name, event_name, EXECFLG_SETPGID);
+    log_notice("Return value of %s was %d", event_name, retval);
     if (retval < 0)
     {
         /* No commands were run for this event because none matching were found.
@@ -2476,9 +2477,10 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
 
     if (pages[PAGENO_EVENT_PROGRESS].page_widget == page)
     {
-        log_info("g_event_selected:'%s'", g_event_selected);
         if (g_event_selected && g_event_selected[0])
         {
+            log_notice("Selected event '%s'; going to run its actions now...",
+                       g_event_selected);
             clear_warnings();
             start_event_run(g_event_selected);
         }
@@ -2618,6 +2620,7 @@ static gint select_next_page_no(gint current_page_no)
             return current_page_no; //stay here and let user select the workflow
         }
 
+        log_info("%s: Looking for next event to process", __func__);
         /* (note: this frees and sets to NULL g_event_selected) */
         char *event = setup_next_processed_event(&g_auto_event_list);
         if (!event)
