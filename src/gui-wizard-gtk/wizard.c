@@ -1810,9 +1810,8 @@ static void start_event_run(const char *event_name)
                 event_name);
         append_to_textview(g_tv_event_log, msg);
 
-        /* Go on with the next event if we're in cruise control mode. */
-        if (!g_verbose)
-            on_next_btn_cb(GTK_WIDGET(g_btn_next), NULL);
+        if (is_processing_finished())
+            hide_next_step_button();
 
         return;
     }
@@ -2477,12 +2476,34 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
 
     if (pages[PAGENO_EVENT_PROGRESS].page_widget == page)
     {
-        if (g_event_selected && g_event_selected[0])
+        while (g_event_selected && g_event_selected[0])
         {
             log_notice("Selected event '%s'; going to run its actions now...",
                        g_event_selected);
             clear_warnings();
             start_event_run(g_event_selected);
+
+            /* Automatically proceed with the next event or page if
+             * - no command was spawned by start_event_run,
+             * - there are events still left to be run, and
+             * - we're in cruise control mode (i.e. not verbose).
+             */
+            if (g_event_child_pid < 0 && !is_processing_finished() && !g_verbose)
+            {
+                gint next_page_no = select_next_page_no(PAGENO_EVENT_PROGRESS);
+
+                /* If the page doesn't change, the switch-page signal is not
+                 * emitted and on_page_prepare() is not called. Hence we jump back
+                 * and continue as if this function were called in the updated
+                 * environment.
+                 */
+                if (next_page_no == PAGENO_EVENT_PROGRESS)
+                    continue;
+
+                gtk_notebook_set_current_page(g_assistant, next_page_no);
+            }
+
+            break;
         }
     }
 
