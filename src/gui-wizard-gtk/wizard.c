@@ -227,7 +227,6 @@ typedef struct
     const gchar *name;
     const gchar *title;
     GtkWidget *page_widget;
-    int page_no;
 } page_obj_t;
 
 static page_obj_t pages[NUM_PAGES];
@@ -1550,7 +1549,7 @@ static void on_btn_repeat_cb(GtkButton *button)
     clear_warnings();
 
     const gint current_page_no = gtk_notebook_get_current_page(g_assistant);
-    const int next_page_no = select_next_page_no(pages[PAGENO_SUMMARY].page_no);
+    const int next_page_no = select_next_page_no(PAGENO_SUMMARY);
     if (current_page_no == next_page_no)
         on_page_prepare(g_assistant, gtk_notebook_get_nth_page(g_assistant, next_page_no), NULL);
     else
@@ -2433,7 +2432,7 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
                                             | PRIV_WARN_HIDE_MSG);
 
         /* Skip intro screen */
-        int n = select_next_page_no(pages[PAGENO_SUMMARY].page_no);
+        int n = select_next_page_no(PAGENO_SUMMARY);
         log_info("Switching from intro to page no. %d", n);
         gtk_notebook_set_current_page(assistant, n);
 
@@ -2623,7 +2622,7 @@ static gint select_next_page_no(gint current_page_no)
         char *event = setup_next_processed_event(&g_auto_event_list);
         if (!event)
         {
-            current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
+            current_page_no = PAGENO_EVENT_PROGRESS - 1;
             goto again;
         }
 
@@ -2632,7 +2631,7 @@ static gint select_next_page_no(gint current_page_no)
             free(event);
 
             cancel_processing(g_lbl_event_log, /* default message */ NULL, TERMINATE_NOFLAGS);
-            current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
+            current_page_no = PAGENO_EVENT_PROGRESS - 1;
             goto again;
         }
 
@@ -2649,7 +2648,7 @@ static gint select_next_page_no(gint current_page_no)
                 free(event);
                 cancel_processing(g_lbl_event_log, msg, TERMINATE_NOFLAGS);
                 free(msg);
-                current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
+                current_page_no = PAGENO_EVENT_PROGRESS - 1;
                 goto again;
             }
             else
@@ -2666,7 +2665,7 @@ static gint select_next_page_no(gint current_page_no)
          */
         check_event_config(g_event_selected);
 
-        current_page_no = pages[PAGENO_EVENT_SELECTOR].page_no + 1;
+        current_page_no = PAGENO_EVENT_SELECTOR + 1;
         goto event_was_selected;
     }
 
@@ -2676,13 +2675,13 @@ static gint select_next_page_no(gint current_page_no)
         if (!g_event_selected)
         {
             /* Go back to selectors */
-            current_page_no = pages[PAGENO_EVENT_SELECTOR].page_no - 1;
+            current_page_no = PAGENO_EVENT_SELECTOR - 1;
             goto again;
         }
 
         if (!event_need_review(g_event_selected))
         {
-            current_page_no = pages[PAGENO_EVENT_PROGRESS].page_no - 1;
+            current_page_no = PAGENO_EVENT_PROGRESS - 1;
             goto again;
         }
     }
@@ -2692,7 +2691,7 @@ static gint select_next_page_no(gint current_page_no)
         if (g_auto_event_list)
         {
             /* Go back to selectors */
-            current_page_no = pages[PAGENO_SUMMARY].page_no;
+            current_page_no = PAGENO_SUMMARY;
         }
         goto again;
     }
@@ -3000,12 +2999,10 @@ static void add_pages(void)
         load_css_style();
 
     int i;
-    int page_no = 0;
     for (i = 0; page_names[i] != NULL; i++)
     {
         GtkWidget *page = GTK_WIDGET(gtk_builder_get_object(g_builder, page_names[i]));
         pages[i].page_widget = page;
-        pages[i].page_no = page_no++;
         gtk_notebook_append_page(g_assistant, page, gtk_label_new(pages[i].title));
         log_notice("added page: %s", page_names[i]);
     }
