@@ -3244,6 +3244,12 @@ void create_assistant(GtkApplication *app)
 
     g_assistant = GTK_NOTEBOOK(gtk_notebook_new());
 
+    /* Since someone thought it would be a bright idea to use a GtkNotebook
+     * as GtkAssistant, we need to help the user not shoot themselves in the
+     * face^Wfoot. Navigating freely will likely reset some state or flat out crash.
+     */
+    gtk_notebook_set_show_tabs(g_assistant, FALSE);
+
     g_btn_close = gtk_button_new_with_mnemonic(_("_Close"));
     gtk_button_set_image(GTK_BUTTON(g_btn_close), gtk_image_new_from_icon_name("window-close-symbolic", GTK_ICON_SIZE_BUTTON));
     g_btn_stop = gtk_button_new_with_mnemonic(_("_Stop"));
