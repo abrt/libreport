@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.11.3] - 2019-11-14
+### Changed
+- Updated maintenance script for pulling localization.
+
+### Fixed
+- Infinite loop leading to a crash in report-gtk.
+- Double-free condition causing a crash in report-gtk.
+
+### Removed
+- Expert mode in report-gtk.
+- Option to override UI definition in report-gtk.
+- Unused build scripts.
+
 ## [2.11.2] - 2019-10-23
 ### Fixed
 - Corrected name of post_report event in Java and JavaScript reporting workflows for Fedora and RHEL
@@ -174,7 +187,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.11.2...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.11.3...HEAD
+[2.11.3]: https://github.com/abrt/libreport/compare/2.11.2...2.11.3
 [2.11.2]: https://github.com/abrt/libreport/compare/2.11.1...2.11.2
 [2.11.1]: https://github.com/abrt/libreport/compare/2.11.0...2.11.1
 [2.11.0]: https://github.com/abrt/libreport/compare/2.10.1...2.11.0
