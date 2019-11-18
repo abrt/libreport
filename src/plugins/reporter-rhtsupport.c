@@ -58,12 +58,6 @@ static void ask_rh_credentials(char **login, char **password);
         free_rhts_result(r);\
     } while (1)
 
-#define STRCPY_IF_NOT_EQUAL(dest, src) \
-    do { if (strcmp(dest, src) != 0 ) { \
-        free(dest); \
-        dest = xstrdup(src); \
-    } } while (0)
-
 static report_result_t *get_reported_to(const char *dump_dir_name)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
@@ -223,9 +217,9 @@ ret_clean:
 }
 
 static
-struct ureport_server_response *ureport_do_post_credentials(const char *json, struct ureport_server_config *config, const char *action)
+UReportServerResponse *ureport_do_post_credentials(const char *json, UReportServerConfig *config, const char *action)
 {
-    struct post_state *post_state = NULL;
+    g_autofree struct post_state *post_state = NULL;
     while (1)
     {
         post_state = ureport_do_post(json, config, action);
@@ -249,16 +243,17 @@ struct ureport_server_response *ureport_do_post_credentials(const char *json, st
         free(login);
     }
 
-    struct ureport_server_response *resp = ureport_server_response_from_reply(post_state, config);
-    free(post_state);
-    return resp;
+    return ureport_server_response_new_from_reply(post_state, config);
 }
 
 static
-char *submit_ureport(const char *dump_dir_name, struct ureport_server_config *conf)
+char *submit_ureport(const char *dump_dir_name, UReportServerConfig *conf)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
     g_autoptr(report_result_t) rr_bthash = NULL;
+    g_autofree char *json = NULL;
+    g_autoptr(UReportServerResponse) resp = NULL;
+    g_autofree char *value = NULL;
 
     if (dd == NULL)
         return NULL;
@@ -274,44 +269,46 @@ char *submit_ureport(const char *dump_dir_name, struct ureport_server_config *co
         return report_result_get_bthash(rr_bthash);
     }
 
-    char *json = ureport_from_dump_dir(dump_dir_name);
+    json = ureport_from_dump_dir(dump_dir_name, NULL, 0);
     if (json == NULL)
     {
         log_notice(_("Failed to generate microreport from the problem data"));
         return NULL;
     }
 
-    struct ureport_server_response *resp = ureport_do_post_credentials(json, conf, UREPORT_SUBMIT_ACTION);
-    free(json);
+    resp = ureport_do_post_credentials(json, conf, UREPORT_SUBMIT_ACTION);
     if (resp == NULL)
         return NULL;
+    value = ureport_server_response_get_value(resp);
 
-    char *bthash = NULL;
-    if (!resp->urr_is_error)
+    if (!ureport_server_response_get_is_error(resp))
     {
-        if (resp->urr_bthash != NULL)
-            bthash = xstrdup(resp->urr_bthash);
+        g_autofree char *message = NULL;
+
+        message = ureport_server_response_get_message(resp);
 
         ureport_server_response_save_in_dump_dir(resp, dump_dir_name, conf);
 
-        if (resp->urr_message)
-            log_warning("%s", resp->urr_message);
+        if (NULL != message)
+            log_warning("%s", message);
+
+        return ureport_server_response_get_bthash(resp);
     }
     else if (g_verbose > 2)
-        error_msg(_("Server responded with an error: '%s'"), resp->urr_value);
+        error_msg(_("Server responded with an error: '%s'"), value);
 
-    ureport_server_response_free(resp);
-    return bthash;
+    return NULL;
 }
 
 static
-void attach_to_ureport(struct ureport_server_config *conf,
+void attach_to_ureport(UReportServerConfig *conf,
         const char *bthash, const char *attach_id, const char *data)
 {
-    char *json = ureport_json_attachment_new(bthash, attach_id, data);
-    struct ureport_server_response *resp = ureport_do_post_credentials(json, conf, UREPORT_ATTACH_ACTION);
-    ureport_server_response_free(resp);
-    free(json);
+    g_autofree char *json = NULL;
+    g_autoptr(UReportServerResponse) response = NULL;
+
+    json = ureport_json_attachment_new(bthash, attach_id, data);
+    response = ureport_do_post_credentials(json, conf, UREPORT_ATTACH_ACTION);
 }
 
 static
@@ -424,11 +421,12 @@ char *get_param_string(const char *name, map_string_t *settings, const char *dfl
 
 static
 void prepare_ureport_configuration(const char *urcfile,
-        map_string_t *settings, struct ureport_server_config *urconf,
+        map_string_t *settings, UReportServerConfig *urconf,
         const char *portal_url, const char *login, const char *password, bool ssl_verify)
 {
+    UReportPreferencesFlags flags;
+
     load_conf_file(urcfile, settings, false);
-    ureport_server_config_init(urconf);
 
     /* The following lines cause that we always use URL from ureport's
      * configuration becuase the GUI reporter always exports uReport_URL env
@@ -441,8 +439,7 @@ void prepare_ureport_configuration(const char *urcfile,
      */
 
     ureport_server_config_set_url(urconf, concat_path_file(portal_url, "/telemetry/abrt"));
-    urconf->ur_ssl_verify = ssl_verify;
-
+    ureport_server_config_set_ssl_verify(urconf, ssl_verify);
     ureport_server_config_set_basic_auth(urconf, login, password);
 
     bool include_auth = true;
@@ -450,12 +447,19 @@ void prepare_ureport_configuration(const char *urcfile,
 
     if (include_auth)
     {
-        const char *auth_items = NULL;
-        UREPORT_OPTION_VALUE_FROM_CONF(settings, "AuthDataItems", auth_items, (const char *));
-        urconf->ur_prefs.urp_auth_items = parse_delimited_list(auth_items, ",");
+        const char *auth_items_string = NULL;
+        GList *auth_items;
+
+        UREPORT_OPTION_VALUE_FROM_CONF(settings, "AuthDataItems", auth_items_string, (const char *));
+
+        auth_items = parse_delimited_list(auth_items_string, ",");
+
+        ureport_server_config_set_auth_items(urconf, auth_items);
     }
 
-    urconf->ur_prefs.urp_flags |= UREPORT_PREF_FLAG_RETURN_ON_FAILURE;
+    flags = ureport_server_config_get_flags(urconf);
+
+    ureport_server_config_set_flags(urconf, flags | UREPORT_PREF_FLAG_RETURN_ON_FAILURE);
 }
 
 static char *create_case_url(char *url, const char *case_no)
@@ -621,9 +625,11 @@ int main(int argc, char **argv)
     char *bthash = NULL;
 
     map_string_t *ursettings = new_map_string();
-    struct ureport_server_config urconf;
+    g_autoptr (UReportServerConfig) config = NULL;
 
-    prepare_ureport_configuration(urconf_file, ursettings, &urconf,
+    config = ureport_server_config_new();
+
+    prepare_ureport_configuration(urconf_file, ursettings, config,
             url, login, password, ssl_verify);
 
     if (opts & OPT_t)
@@ -719,11 +725,14 @@ int main(int argc, char **argv)
         {
             log_warning(_("Sending ABRT crash statistics data"));
 
-            bthash = submit_ureport(dump_dir_name, &urconf);
+            bthash = submit_ureport(dump_dir_name, config);
 
             /* Ensure that we will use the updated credentials */
-            STRCPY_IF_NOT_EQUAL(login, urconf.ur_username);
-            STRCPY_IF_NOT_EQUAL(password, urconf.ur_password);
+            g_clear_pointer(&login, g_free);
+            login = ureport_server_config_get_username(config);
+
+            g_clear_pointer(&password, g_free);
+            password = ureport_server_config_get_password(config);
         }
     }
 
@@ -958,10 +967,10 @@ int main(int argc, char **argv)
             log_warning(_("Linking ABRT crash statistics record with the case"));
 
             /* Make sure we use the current credentials */
-            ureport_server_config_set_basic_auth(&urconf, login, password);
+            ureport_server_config_set_basic_auth(config, login, password);
 
             /* Attach Customer Case ID*/
-            attach_to_ureport(&urconf, bthash, "RHCID", result->url);
+            attach_to_ureport(config, bthash, "RHCID", result->url);
 
             /* Attach Contact e-mail if configured */
             const char *email = NULL;
@@ -969,12 +978,12 @@ int main(int argc, char **argv)
             if (email != NULL)
             {
                 log_warning(_("Linking ABRT crash statistics record with contact email: '%s'"), email);
-                attach_to_ureport(&urconf, bthash, "email", email);
+                attach_to_ureport(config, bthash, "email", email);
             }
 
             /* Update the credentials */
-            STRCPY_IF_NOT_EQUAL(login, urconf.ur_username);
-            STRCPY_IF_NOT_EQUAL(password, urconf.ur_password);
+            login = ureport_server_config_get_username(config);
+            password = ureport_server_config_get_password(config);
         }
 
         url = result->url;
@@ -1044,7 +1053,6 @@ int main(int argc, char **argv)
     free_rhts_result(result_atch);
     free_rhts_result(result);
 
-    ureport_server_config_destroy(&urconf);
     free_map_string(ursettings);
     free(bthash);
 

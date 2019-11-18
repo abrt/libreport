@@ -1,4 +1,7 @@
 ACLOCAL_AMFLAGS = -I m4
+
+AM_DISTCHECK_CONFIGURE_FLAGS = --enable-introspection
+
 SUBDIRS = data po src tests doc apidoc
 
 EXTRA_DIST = \

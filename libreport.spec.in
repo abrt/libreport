@@ -37,6 +37,7 @@ BuildRequires: libproxy-devel
 BuildRequires: satyr-devel >= 0.24
 BuildRequires: glib2-devel >= %{glib_ver}
 BuildRequires: nettle-devel
+BuildRequires: gobject-introspection-devel
 
 %if 0%{?fedora} >= 24 || 0%{?rhel} > 7
 # A test case uses zh_CN locale to verify XML event translations
@@ -484,6 +485,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_includedir}/libreport/problem_details_widget.h
 %{_includedir}/libreport/problem_details_dialog.h
 %{_includedir}/libreport/problem_utils.h
+%{_includedir}/libreport/types.h
 %{_includedir}/libreport/ureport.h
 %{_includedir}/libreport/reporters.h
 %{_includedir}/libreport/global_configuration.h
@@ -496,6 +498,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libdir}/libabrt_dbus.so
 %{_libdir}/pkgconfig/libreport.pc
 %dir %{_includedir}/libreport
+%{_datadir}/gir-1.0/UReport-2.0.gir
+%{_libdir}/girepository-1.0/UReport-2.0.typelib
 
 %files web
 %{_libdir}/libreport-web.so.*

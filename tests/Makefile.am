@@ -54,7 +54,6 @@ TESTSUITE_AT = \
   client_python.at \
   xfuncs.at \
   string_list.at \
-  ureport.at \
   problem_report.at \
   dump_dir.at \
   global_config.at \
@@ -74,7 +73,7 @@ TESTSUITE = $(srcdir)/testsuite
 MAINTAINERCLEANFILES = Makefile.in $(TESTSUITE)
 check_DATA = atconfig atlocal $(TESTSUITE)
 DISTCLEANFILES = atconfig
-EXTRA_DIST += atlocal.in conf rules ureport valgrind.supp ureport-rhts-credentials \
+EXTRA_DIST += atlocal.in conf rules data valgrind.supp ureport-rhts-credentials \
 			  bugzilla_plugin.at.in
 
 atconfig: $(top_builddir)/config.status
@@ -107,3 +106,19 @@ maintainer-check-valgrind: $(check_DATA)
 
 .PHONY: maintainer-check
 maintainer-check: maintainer-check-valgrind
+
+AM_CPPFLAGS = \
+	$(GLIB_CFLAGS) \
+	-DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
+	-I$(abs_top_srcdir)/src/include
+AM_LDFLAGS = $(GLIB_LIBS)
+LDADD = \
+	$(abs_top_builddir)/src/lib/libreport.la \
+	$(abs_top_builddir)/src/lib/libreport-web.la
+
+check_PROGRAMS = \
+	ureport
+
+ureport_SOURCES = ureport.c
+
+TESTS = $(check_PROGRAMS)

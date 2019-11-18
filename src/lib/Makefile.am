@@ -67,7 +67,8 @@ libreport_la_SOURCES = \
     reporters.c \
     global_configuration.c \
     uriparser.c \
-    report_result.c
+    report_result.c \
+    utils.h
 
 libreport_la_CPPFLAGS = \
     -I$(srcdir)/../include \
@@ -136,7 +137,10 @@ libreport_web_o += abrt_xmlrpc.h abrt_xmlrpc.c
 endif
 
 if BUILD_UREPORT
-libreport_web_o += ureport.c
+libreport_web_o += \
+    ureport.c \
+    ureport/config.c \
+    ureport/response.c
 endif
 
 libreport_web_la_SOURCES = $(libreport_web_o) \
@@ -145,6 +149,7 @@ libreport_web_la_SOURCES = $(libreport_web_o) \
 
 libreport_web_la_CPPFLAGS = \
     -I$(srcdir)/../include \
+    -DG_LOG_DOMAIN=\"libreport-web\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
@@ -177,3 +182,32 @@ $(DESTDIR)/$(DEBUG_DUMPS_DIR):
 # no need to chmod it here
 #chmod 1777 '$@'
 install-data-local: $(DESTDIR)/$(DEBUG_DUMPS_DIR)
+
+CLEANFILES =
+
+-include $(INTROSPECTION_MAKEFILE)
+
+if HAVE_INTROSPECTION
+UReport-2.0.gir: libreport-web.la
+UReport_2_0_gir_FILES = \
+	$(abs_top_srcdir)/src/include/types.h \
+	$(abs_top_srcdir)/src/include/ureport.h \
+	ureport/config.c \
+	ureport/response.c \
+	ureport.c
+UReport_2_0_gir_INCLUDES = GObject-2.0
+UReport_2_0_gir_LIBS = libreport-web.la
+UReport_2_0_gir_SCANNERFLAGS = \
+	--symbol-prefix=ureport \
+	--warn-all
+
+INTROSPECTION_GIRS = UReport-2.0.gir
+
+girdir = $(datadir)/gir-1.0
+gir_DATA = $(INTROSPECTION_GIRS)
+
+typelibsdir = $(libdir)/girepository-1.0
+typelibs_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
+
+CLEANFILES += $(gir_DATA) $(typelibs_DATA)
+endif

@@ -26,6 +26,8 @@
 
 int main(int argc, char **argv)
 {
+    g_autofree char *value = NULL;
+
     setlocale(LC_ALL, "");
 #if ENABLE_NLS
     bindtextdomain(PACKAGE, LOCALEDIR);
@@ -34,8 +36,9 @@ int main(int argc, char **argv)
 
     abrt_init(argv);
 
-    struct ureport_server_config config;
-    ureport_server_config_init(&config);
+    g_autoptr(UReportServerConfig) config = NULL;
+
+    config = ureport_server_config_new();
 
     enum {
         OPT_v = 1 << 0,
@@ -48,7 +51,7 @@ int main(int argc, char **argv)
     };
 
     int ret = 1; /* "failure" (for now) */
-    int insecure = !config.ur_ssl_verify;
+    int insecure = !ureport_server_config_get_ssl_verify(config);
     const char *conf_file = UREPORT_CONF_FILE_PATH;
     const char *arg_server_url = NULL;
     const char *client_auth = NULL;
@@ -123,27 +126,27 @@ int main(int argc, char **argv)
 
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
-    map_string_t *settings = new_map_string();
+    g_autoptr(GHashTable) settings = NULL;
+
+    settings = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
     load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 
-    ureport_server_config_load(&config, settings);
+    config = ureport_server_config_new_for_settings(settings);
 
     if (opts & OPT_u)
-        ureport_server_config_set_url(&config, xstrdup(arg_server_url));
+        ureport_server_config_set_url(config, arg_server_url);
+    else
+        ureport_server_config_set_url(config, DEFAULT_WEB_SERVICE_URL);
     if (opts & OPT_k)
-        config.ur_ssl_verify = !insecure;
+        ureport_server_config_set_ssl_verify(config, !insecure);
     if (opts & OPT_t)
-        ureport_server_config_set_client_auth(&config, client_auth);
+        ureport_server_config_set_client_auth(config, client_auth);
     if (opts & OPT_h)
-        ureport_server_config_load_basic_auth(&config, http_auth);
+        ureport_server_config_load_basic_auth(config, http_auth);
     if (opts & OPT_i)
     {
-        g_list_free_full(config.ur_prefs.urp_auth_items, free);
-        config.ur_prefs.urp_auth_items = auth_items;
+        ureport_server_config_set_auth_items(config, auth_items);
     }
-
-    if (!config.ur_url)
-        ureport_server_config_set_url(&config, xstrdup(DEFAULT_WEB_SERVICE_URL));
 
     if (ureport_hash && ureport_hash_from_rt)
         error_msg_and_die("You need to pass either -a bthash or -A");
@@ -274,25 +277,25 @@ int main(int argc, char **argv)
 
         if (rhbz_bug >= 0)
         {
-            if (ureport_attach(&config, ureport_hash, "RHBZ", "%d", rhbz_bug))
+            if (!ureport_attach(config, ureport_hash, "RHBZ", "%d", rhbz_bug))
                 goto finalize;
         }
 
         if (email_address)
         {
-            if (ureport_attach(&config, ureport_hash, "email", "%s", email_address))
+            if (!ureport_attach(config, ureport_hash, "email", "%s", email_address))
                 goto finalize;
         }
 
         if (comment)
         {
-            if (ureport_attach(&config, ureport_hash, "comment", "%s", comment))
+            if (!ureport_attach(config, ureport_hash, "comment", "%s", comment))
                 goto finalize;
         }
 
         if (attach_value)
         {
-            if (ureport_attach(&config, ureport_hash, attach_type, "%s", attach_value))
+            if (!ureport_attach(config, ureport_hash, attach_type, "%s", attach_value))
                 goto finalize;
         }
 
@@ -302,53 +305,50 @@ int main(int argc, char **argv)
     if (!ureport_hash && (rhbz_bug >= 0 || email_address))
         error_msg_and_die(_("You need to specify bthash of the uReport to attach."));
 
-    struct ureport_preferences *prefs = &(config.ur_prefs);
-    prefs->urp_flags |= UREPORT_PREF_FLAG_RETURN_ON_FAILURE;
-
-    char *json_ureport = ureport_from_dump_dir_ext(dump_dir_path, prefs);
+    char *json_ureport = ureport_from_dump_dir(dump_dir_path, NULL,
+                                               UREPORT_PREF_FLAG_RETURN_ON_FAILURE);
     if (!json_ureport)
     {
         error_msg(_("Failed to generate microreport from the problem data"));
         goto finalize;
     }
 
-    struct ureport_server_response *response = ureport_submit(json_ureport, &config);
+    g_autoptr(UReportServerResponse) response = ureport_submit(json_ureport, config);
+
     free(json_ureport);
+
+    value = ureport_server_response_get_value(response);
 
     if (!response)
         goto finalize;
 
-    if (!response->urr_is_error)
+    if (!ureport_server_response_get_is_error(response))
     {
-        log_notice("is known: %s", response->urr_value);
+        g_autofree char *message = NULL;
+
+        message = ureport_server_response_get_message(response);
+
+        log_notice("is known: %s", value);
         ret = 0; /* "success" */
 
-        if (!ureport_server_response_save_in_dump_dir(response, dump_dir_path, &config))
+        if (!ureport_server_response_save_in_dump_dir(response, dump_dir_path, config))
             xfunc_die();
 
         /* If a reported problem is not known then emit NEEDMORE */
-        if (strcmp("true", response->urr_value) == 0)
+        if (strcmp("true", value) == 0)
         {
             log_warning(_("This problem has already been reported."));
-            if (response->urr_message)
-                log_warning("%s", response->urr_message);
+            if (NULL != message)
+                log_warning("%s", message);
 
             ret = EXIT_STOP_EVENT_RUN;
         }
     }
     else
-        error_msg(_("Server responded with an error: '%s'"), response->urr_value);
-
-    ureport_server_response_free(response);
+        error_msg(_("Server responded with an error: '%s'"), value);
 
 finalize:
     free(attach_value_from_rt_data);
-
-    if (config.ur_prefs.urp_auth_items == auth_items)
-        config.ur_prefs.urp_auth_items = NULL;
-
-    free_map_string(settings);
-    ureport_server_config_destroy(&config);
 
     return ret;
 }

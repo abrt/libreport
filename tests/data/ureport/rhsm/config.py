@@ -5,4 +5,4 @@ def initConfig():
 
 class myConfig():
     def get(self, key, value):
-        return os.path.abspath("../../ureport/certs/correct")
+        return os.path.abspath("data/ureport/certs/correct")

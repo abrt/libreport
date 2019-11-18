@@ -16,19 +16,25 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#ifndef UREPORT_H_
-#define UREPORT_H_
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #include "internal_libreport.h"
+#include "types.h"
+
+#include <glib-object.h>
+
+#pragma once
+
+G_BEGIN_DECLS
 
 #define UREPORT_CONF_FILE_PATH PLUGINS_CONF_DIR"/ureport.conf"
 
-#define UREPORT_OPTION_VALUE_FROM_CONF(settings, opt, var, tr) do { const char *value = getenv("uReport_"opt); \
-        if (!value) { value = get_map_string_item_or_NULL(settings, opt); } if (value) { var = tr(value); } \
+#define UREPORT_OPTION_VALUE_FROM_CONF(settings, opt, var, tr) \
+    do { \
+        const char *value = getenv("uReport_"opt); \
+        if (!value) \
+        { \
+            value = get_map_string_item_or_NULL(settings, opt); \
+        } if (value) { var = tr(value); } \
     } while(0)
 
 #define UREPORT_SUBMIT_ACTION "reports/new/"
@@ -37,67 +43,83 @@ extern "C" {
 /*
  * Flags for tweaking the way how uReports are generated.
  */
-enum ureport_preferences_flags
+typedef enum
 {
     UREPORT_PREF_FLAG_RETURN_ON_FAILURE = 0x1, ///< Do not exit on failures
-};
+} UReportPreferencesFlags;
+
+GType ureport_server_config_get_type(void) G_GNUC_CONST;
+GType ureport_server_response_get_type(void) G_GNUC_CONST;
 
 /*
- * uReport generation configuration
+ * Allocate new instance
  */
-struct ureport_preferences
-{
-    GList *urp_auth_items;    ///< list of file names included in 'auth' key
-    int urp_flags;            ///< See enum ureport_preferences_flags
-};
+UReportServerConfig *
+ureport_server_config_new(void);
 
 /*
- * uReport server configuration
+ * Replaces defaults with values found in the provided configuration.
  */
-struct ureport_server_config
-{
-    char *ur_url;         ///< Web service URL
-    bool ur_ssl_verify;   ///< Verify HOST and PEER certificates
-    char *ur_client_cert; ///< Path to certificate used for client
-                          ///< authentication (or NULL)
-    char *ur_client_key;  ///< Private key for the certificate
-    char *ur_cert_authority_cert; ///< Certificate authority certificate
-    char *ur_username;    ///< username for basic HTTP auth
-    char *ur_password;    ///< password for basic HTTP auth
+UReportServerConfig *
+ureport_server_config_new_for_settings(GHashTable *settings);
 
-    struct ureport_preferences ur_prefs; ///< configuration for uReport generation
-};
-
-/*
- * Initialize structure members
- *
- * @param config Initialized structure
- */
-#define ureport_server_config_init libreport_ureport_server_config_init
-void
-ureport_server_config_init(struct ureport_server_config *config);
+UReportServerConfig *
+ureport_server_config_dup(UReportServerConfig *config);
 
 /*
  * Release all allocated resources
  *
  * @param config Released structure
  */
-#define ureport_server_config_destroy libreport_ureport_server_config_destroy
 void
-ureport_server_config_destroy(struct ureport_server_config *config);
+ureport_server_config_destroy(UReportServerConfig *config);
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(UReportServerConfig, ureport_server_config_destroy)
+
+GList *
+ureport_server_config_get_auth_items(UReportServerConfig *config);
 /*
- * Loads uReport configuration from various sources.
+ * Set files to be included in the “auth” key.
  *
- * Replaces a value of an already configured option only if the
- * option was found in a configuration source.
- *
- * @param config a server configuration to be populated
+ * @param config A #UReportServerConfig instance
+ * @param auth_items A list of file names
  */
-#define ureport_server_config_load libreport_ureport_server_config_load
 void
-ureport_server_config_load(struct ureport_server_config *config,
-                           map_string_t *settings);
+ureport_server_config_set_auth_items(UReportServerConfig *config,
+                                     GList *auth_items);
+
+char *
+ureport_server_config_get_cert_authority_cert(UReportServerConfig *config);
+
+char *
+ureport_server_config_get_client_cert(UReportServerConfig *config);
+
+char *
+ureport_server_config_get_client_key(UReportServerConfig *config);
+
+UReportPreferencesFlags
+ureport_server_config_get_flags(UReportServerConfig *config);
+
+void
+ureport_server_config_set_flags(UReportServerConfig *config,
+                                UReportPreferencesFlags flags);
+
+char *
+ureport_server_config_get_password(UReportServerConfig *config);
+
+void
+ureport_server_config_set_password(UReportServerConfig *config,
+                                   const char          *password);
+
+bool
+ureport_server_config_get_ssl_verify(UReportServerConfig *config);
+
+void
+ureport_server_config_set_ssl_verify(UReportServerConfig *config,
+                                     bool ssl_verify);
+
+char *
+ureport_server_config_get_url(UReportServerConfig *config);
 
 /*
  * Configure HTTP(S) URL to server's index page
@@ -105,10 +127,16 @@ ureport_server_config_load(struct ureport_server_config *config,
  * @param config Where the url is stored
  * @param server_url Index URL
  */
-#define ureport_server_config_set_url libreport_ureport_server_config_set_url
 void
-ureport_server_config_set_url(struct ureport_server_config *config,
-                              char *server_url);
+ureport_server_config_set_url(UReportServerConfig *config,
+                              const char *server_url);
+
+char *
+ureport_server_config_get_username(UReportServerConfig *config);
+
+void
+ureport_server_config_set_username(UReportServerConfig *config,
+                                   const char          *username);
 
 /*
  * Configure client certificate paths
@@ -117,9 +145,8 @@ ureport_server_config_set_url(struct ureport_server_config *config,
  * @param client_path Path in form of cert_full_path:key_full_path or one of
  *        the following string: 'rhsm', 'puppet'.
  */
-#define ureport_server_config_set_client_auth libreport_ureport_server_config_set_client_auth
 void
-ureport_server_config_set_client_auth(struct ureport_server_config *config,
+ureport_server_config_set_client_auth(UReportServerConfig *config,
                                       const char *client_auth);
 
 /*
@@ -129,9 +156,8 @@ ureport_server_config_set_client_auth(struct ureport_server_config *config,
  * @param username User name
  * @param password Password
  */
-#define ureport_server_config_set_basic_auth libreport_ureport_server_config_set_basic_auth
 void
-ureport_server_config_set_basic_auth(struct ureport_server_config *config,
+ureport_server_config_set_basic_auth(UReportServerConfig *config,
                                      const char *username, const char *password);
 
 /*
@@ -148,22 +174,8 @@ ureport_server_config_set_basic_auth(struct ureport_server_config *config,
  * @param http_auth_pref User HTTP Authentication preferences
  */
 void
-ureport_server_config_load_basic_auth(struct ureport_server_config *config,
+ureport_server_config_load_basic_auth(UReportServerConfig *config,
                                       const char *http_auth_pref);
-
-/*
- * uReport server response
- */
-struct ureport_server_response
-{
-    bool urr_is_error;  ///< True if server replied with error response
-    char *urr_value;    ///< Value of the response
-    char *urr_message;  ///< Additional message
-    char *urr_bthash;   ///< uReport's server side identifier
-    GList *urr_reported_to_list; ///< Known external reports for uReport
-                                 ///< in *reported_to* format
-    char *urr_solution; ///< URL pointing to solution for uReport
-};
 
 /* Can't include "abrt_curl.h", it's not a public API.
  * Resorting to just forward-declaring the struct we need.
@@ -177,10 +189,9 @@ struct post_state;
  * @param config Configuration used in communication
  * @return Pointer to malloced memory or NULL in case of error in communication
  */
-#define ureport_server_response_from_reply libreport_ureport_server_response_from_reply
-struct ureport_server_response *
-ureport_server_response_from_reply(struct post_state *post_state,
-                                   struct ureport_server_config *config);
+UReportServerResponse *
+ureport_server_response_new_from_reply(struct post_state *post_state,
+                                       UReportServerConfig *config);
 
 /*
  * Save response in dump dir files
@@ -190,11 +201,19 @@ ureport_server_response_from_reply(struct post_state *post_state,
  * @param config Configuration used in communication
  * @return False in case of any error; otherwise True.
  */
-#define ureport_server_response_save_in_dump_dir libreport_ureport_server_response_save_in_dump_dir
 bool
-ureport_server_response_save_in_dump_dir(struct ureport_server_response *resp,
+ureport_server_response_save_in_dump_dir(UReportServerResponse *response,
                                          const char *dump_dir_path,
-                                         struct ureport_server_config *config);
+                                         UReportServerConfig *config);
+
+char *
+ureport_server_response_get_bthash(UReportServerResponse *response);
+
+bool
+ureport_server_response_get_is_error(UReportServerResponse *response);
+
+char *
+ureport_server_response_get_message(UReportServerResponse *response);
 
 /*
  * Build URL to submitted uReport
@@ -203,19 +222,31 @@ ureport_server_response_save_in_dump_dir(struct ureport_server_response *resp,
  * @param config Configuration used in communication
  * @return Malloced zero-terminated string
  */
-#define ureport_server_response_get_report_url libreport_ureport_server_response_get_report_url
 char *
-ureport_server_response_get_report_url(struct ureport_server_response *resp,
-                                       struct ureport_server_config *config);
+ureport_server_response_get_report_url(UReportServerResponse *response,
+                                       UReportServerConfig *config);
+
+char *
+ureport_server_response_get_value(UReportServerResponse *response);
+
+GList *
+ureport_server_response_get_reported_to_list(UReportServerResponse *response);
+
+UReportServerResponse *
+ureport_server_response_new(void);
+
+UReportServerResponse *
+ureport_server_response_dup(UReportServerResponse *response);
 
 /*
  * Release allocated resources
  *
  * @param resp Released structured
  */
-#define ureport_server_response_free libreport_ureport_server_response_free
 void
-ureport_server_response_free(struct ureport_server_response *resp);
+ureport_server_response_destroy(UReportServerResponse *response);
+
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(UReportServerResponse, ureport_server_response_destroy)
 
 /*
  * Send JSON to server and obtain reply
@@ -225,9 +256,8 @@ ureport_server_response_free(struct ureport_server_response *resp);
  * @param url_sfx Local part of the upload URL
  * @return Malloced server reply or NULL in case of communication errors
  */
-#define ureport_do_post libreport_ureport_do_post
 struct post_state *
-ureport_do_post(const char *json, struct ureport_server_config *config,
+ureport_do_post(const char *json, UReportServerConfig *config,
                 const char *url_sfx);
 
 /*
@@ -237,9 +267,8 @@ ureport_do_post(const char *json, struct ureport_server_config *config,
  * @param config Configuration used in communication
  * @return Malloced, parsed server response
  */
-#define ureport_submit libreport_ureport_submit
-struct ureport_server_response *
-ureport_submit(const char *json_ureport, struct ureport_server_config *config);
+UReportServerResponse *
+ureport_submit(const char *json_ureport, UReportServerConfig *config);
 
 /*
  * Build a new uReport attachement from give arguments
@@ -262,10 +291,10 @@ ureport_json_attachment_new(const char *bthash, const char *type, const char *da
  * @return True in case of any error; otherwise False
  */
 bool
-ureport_attach_string(struct ureport_server_config *config,
-                      const char                   *bthash,
-                      const char                   *type,
-                      const char                   *data);
+ureport_attach_string(UReportServerConfig *config,
+                      const char          *bthash,
+                      const char          *type,
+                      const char          *data);
 
 /*
  * Attach formatted data to uReport
@@ -278,28 +307,21 @@ ureport_attach_string(struct ureport_server_config *config,
  * @return True in case of any error; otherwise False
  */
 bool
-ureport_attach(struct ureport_server_config *config,
-               const char                   *bthash,
-               const char                   *type,
-               const char                   *format,
+ureport_attach(UReportServerConfig *config,
+               const char          *bthash,
+               const char          *type,
+               const char          *format,
                ...) G_GNUC_PRINTF(4, 5);
 
 /*
  * Build uReport from dump dir
  *
  * @param dump_dir_path FS path to dump dir
+ * @param auth_items additional problem directory items to include in the report
+ * @param flags flags for generating reports
+ *
  * @return Malloced JSON string
  */
-#define ureport_from_dump_dir libreport_ureport_from_dump_dir
-char *
-ureport_from_dump_dir(const char *dump_dir_path);
+char *ureport_from_dump_dir(const char *dump_dir_path, GList *auth_items, UReportPreferencesFlags flags);
 
-#define ureport_from_dump_dir_ext libreport_ureport_from_dump_dir_ext
-char *ureport_from_dump_dir_ext(const char *dump_dir_path,
-                                const struct ureport_preferences *preferences);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif
+G_END_DECLS
