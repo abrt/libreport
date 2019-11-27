@@ -1,23 +1,16 @@
 ACLOCAL_AMFLAGS = -I m4
-SUBDIRS = po src tests doc apidoc
+SUBDIRS = data po src tests doc apidoc
 
 EXTRA_DIST = \
     libreport.pc.in \
     libreport-version \
-    asciidoc.conf \
-    augeas/test_libreport.aug
+    asciidoc.conf
 
 dist_doc_DATA = README.md
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libreport.pc
 pkgconfig_DATA += libreport-web.pc
-
-augeasdir = $(AUGEAS_LENS_LIB_DIR)
-dist_augeas_DATA = augeas/libreport.aug
-
-check-local:
-	$(AUGPARSE) -I $(top_builddir)/augeas $(top_builddir)/augeas/test_libreport.aug
 
 RPM_DIRS = --define "_sourcedir `pwd`" \
 	   --define "_rpmdir `pwd`/build" \

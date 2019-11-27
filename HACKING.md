@@ -51,7 +51,7 @@ For running only tests execute:
 If you need to only rerun one specific test:
 
     cd tests
-    AUGEAS_LENS_LIB="/usr/share/augeas/lenses:<clone_path>/augeas" ./testsuite <n>
+    AUGEAS_LENS_LIB="/usr/share/augeas/lenses:<clone_path>/data/augeas" ./testsuite <n>
 
 where \<clone\_path\> is the path to your top level of the Libreport git repository checkout and \<n\> is
 the number of the test.
