@@ -122,8 +122,8 @@ void problem_data_add_basics(problem_data_t *pd)
         else
         {
             /* start hash */
-            sha1_ctx_t sha1ctx;
-            sha1_begin(&sha1ctx);
+            struct sha1_ctx hash;
+            sha1_init(&hash);
 
             /*
              * To avoid spurious hash differences, sort keys so that elements are
@@ -143,15 +143,15 @@ void problem_data_add_basics(problem_data_t *pd)
                  */
                 if (item->flags & CD_FLAG_BIN)
                     continue;
-                sha1_hash(&sha1ctx, item->content, strlen(item->content));
+                sha1_update(&hash, strlen(item->content), (unsigned char *)item->content);
             }
             g_list_free(list);
 
             /* end hash */
-            char hash_bytes[SHA1_RESULT_LEN];
-            sha1_end(&sha1ctx, hash_bytes);
-            char hash_str[SHA1_RESULT_LEN*2 + 1];
-            bin2hex(hash_str, hash_bytes, SHA1_RESULT_LEN)[0] = '\0';
+            unsigned char hash_bytes[SHA1_DIGEST_SIZE];
+            sha1_digest(&hash, sizeof(hash_bytes), hash_bytes);
+            char hash_str[sizeof(hash_bytes)*2 + 1];
+            bin2hex(hash_str, (char *)hash_bytes, sizeof(hash_bytes))[0] = '\0';
 
             problem_data_add_text_noteditable(pd, FILENAME_UUID, hash_str);
         }

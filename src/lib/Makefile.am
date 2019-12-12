@@ -22,7 +22,6 @@ libreport_la_SOURCES = \
     encbase64.c \
     binhex.c \
     stdio_helpers.c \
-    hash_sha1.c \
     read_write.c \
     logging.c \
     copyfd.c \
@@ -91,6 +90,7 @@ libreport_la_CPPFLAGS = \
     $(LZ4_CFLAGS) \
     $(GOBJECT_CFLAGS) \
     $(AUGEAS_CFLAGS) \
+    $(NETTLE_CFLAGS) \
     $(SATYR_CFLAGS) \
     -D_GNU_SOURCE
 libreport_la_LDFLAGS = \
@@ -104,6 +104,7 @@ libreport_la_LIBADD = \
     $(JOURNAL_LIBS) \
     $(GOBJECT_LIBS) \
     $(AUGEAS_LIBS) \
+    $(NETTLE_LIBS) \
     $(SATYR_LIBS)
 
 libreportconfdir = $(CONF_DIR)

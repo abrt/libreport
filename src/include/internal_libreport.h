@@ -70,6 +70,8 @@
 # include <locale.h>
 #endif /* HAVE_LOCALE_H */
 
+#include <nettle/sha1.h>
+
 /* Some libc's forget to declare these, do it ourself */
 extern char **environ;
 #if defined(__GLIBC__) && __GLIBC__ < 2
@@ -254,27 +256,6 @@ enum {
     SANITIZE_LF  = (1 << 10),
     SANITIZE_CR  = (1 << 13),
 };
-
-#define SHA1_RESULT_LEN (5 * 4)
-typedef struct sha1_ctx_t {
-        uint8_t wbuffer[64]; /* always correctly aligned for uint64_t */
-        /* for sha256: void (*process_block)(struct md5_ctx_t*); */
-        uint64_t total64;    /* must be directly before hash[] */
-        uint32_t hash[8];    /* 4 elements for md5, 5 for sha1, 8 for sha256 */
-} sha1_ctx_t;
-#define sha1_begin libreport_sha1_begin
-void sha1_begin(sha1_ctx_t *ctx);
-#define sha1_hash libreport_sha1_hash
-void sha1_hash(sha1_ctx_t *ctx, const void *buffer, size_t len);
-#define sha1_end libreport_sha1_end
-void sha1_end(sha1_ctx_t *ctx, void *resbuf);
-
-/* Helpers to hash a string: */
-#define str_to_sha1 libreport_str_to_sha1
-const uint8_t *str_to_sha1(uint8_t result[SHA1_RESULT_LEN], const char *str);
-#define str_to_sha1str libreport_str_to_sha1str
-const char    *str_to_sha1str(char result[SHA1_RESULT_LEN*2 + 1], const char *str);
-
 
 #define try_atou libreport_try_atou
 int try_atou(const char *numstr, unsigned *value);
