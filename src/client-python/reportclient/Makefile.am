@@ -1,8 +1,7 @@
 PYFILES = \
     __init__.py \
     debuginfo.py \
-    dnfdebuginfo.py \
-    yumdebuginfo.py
+    dnfdebuginfo.py
 
 PYEXTFILES = \
     clientmodule.c \
