@@ -23,11 +23,6 @@
 
 void glib_init(void)
 {
-#if (GLIB_MAJOR_VERSION == 2 && GLIB_MINOR_VERSION < 35)
-    /* Became deprecated in glib-2.35.1 (branch 2.36 commit df02fa1e4cc61a2c7f3aafdf1a6534a831f1c0d6) */
-    g_type_init();
-#endif
-
     /* This is not necessary but is IMO is good to know that:
      *
      * If want to be defensive and ensure we're linked to GObject
