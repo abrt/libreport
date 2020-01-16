@@ -452,7 +452,7 @@ void prepare_ureport_configuration(const char *urcfile,
     {
         const char *auth_items = NULL;
         UREPORT_OPTION_VALUE_FROM_CONF(settings, "AuthDataItems", auth_items, (const char *));
-        urconf->ur_prefs.urp_auth_items = parse_list(auth_items);
+        urconf->ur_prefs.urp_auth_items = parse_delimited_list(auth_items, ",");
     }
 
     urconf->ur_prefs.urp_flags |= UREPORT_PREF_FLAG_RETURN_ON_FAILURE;

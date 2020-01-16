@@ -19,8 +19,6 @@
 #include "internal_libreport.h"
 #include <glib-object.h>
 
-#define LIST_DELIMITER ","
-
 void glib_init(void)
 {
     /* This is not necessary but is IMO is good to know that:
@@ -56,44 +54,29 @@ void glib_init(void)
  * @param delim a set of bytes that delimit the tokens in the parsed string
  * @returns GList or null if the list is empty
  */
-GList *parse_delimited_list(char* list, const char *delim)
+GList *parse_delimited_list(const char *string, const char *delimiter)
 {
-    if (list == NULL)
-        return NULL;
+    char **substrings;
+    GList *list = NULL;
 
-    GList *l = NULL;
+    g_return_val_if_fail(NULL != string, NULL);
+    g_return_val_if_fail(NULL != delimiter, NULL);
 
-    char *saved_ptr = NULL;
-    char *item = strtok_r(list, delim, &saved_ptr);
-    while (item)
+    substrings = g_strsplit(string, delimiter, -1);
+    while (NULL != *substrings)
     {
-        l = g_list_append(l, strtrim(xstrdup(item)));
-        item = strtok_r(NULL, delim, &saved_ptr);
+        char *substring;
+
+        substring = *substrings;
+        substring = g_strstrip(substring);
+
+        list = g_list_prepend(list, substring);
+
+        substrings++;
     }
 
-    return l;
+    return g_list_reverse(list);
 }
-
-/*
- * Parser comma separated list of strings to Glist
- *
- * @param list comma separated list of strings
- * @returns GList or null if the list is empty
- */
-GList *parse_list(const char* list)
-{
-    if (list == NULL)
-        return NULL;
-
-    char *tmp_list = xstrdup(list);
-
-    GList *l = parse_delimited_list(tmp_list, LIST_DELIMITER);
-
-    free(tmp_list);
-
-    return l;
-}
-
 
 void list_free_with_free(GList *list)
 {

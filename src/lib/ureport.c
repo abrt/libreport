@@ -312,7 +312,7 @@ ureport_server_config_load(struct ureport_server_config *config,
     {
         const char *auth_items = NULL;
         UREPORT_OPTION_VALUE_FROM_CONF(settings, "AuthDataItems", auth_items, (const char *));
-        config->ur_prefs.urp_auth_items = parse_list(auth_items);
+        config->ur_prefs.urp_auth_items = parse_delimited_list(auth_items, ",");
 
         if (config->ur_prefs.urp_auth_items == NULL)
             log_warning("IncludeAuthData set to 'yes' but AuthDataItems is empty.");

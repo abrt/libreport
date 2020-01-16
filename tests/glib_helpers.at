@@ -13,9 +13,7 @@ AT_TESTFUN([parse_delimited_list],
 
 int test(const char *list, const char *delimiter, const char *strings[])
 {
-    char *tmp_list = xstrdup(list);
-    GList *l = parse_delimited_list(tmp_list, delimiter);
-    free(tmp_list);
+    GList *l = parse_delimited_list(list, delimiter);
 
     char **tmp = (char **)strings;
     int retval = 0;
@@ -40,42 +38,5 @@ int main(void)
 
     assert(test(new_line_list, "\n", strings) == 0);
     assert(test(colon_list, ":", strings) == 0);
-}
-]])
-
-## -------------------------- ##
-## parse comma separated list ##
-## -------------------------- ##
-
-AT_TESTFUN([parse_list],
-[[
-#include "internal_libreport.h"
-#include <assert.h>
-
-/* Test parsing different release strings */
-int test(const char *list, const char *strings[])
-{
-    GList *l = parse_list(list);
-    char **tmp = (char **)strings;
-    int retval = 0;
-
-    while(l != NULL) {
-        log_warning("is: '%s'", (char *)l->data);
-        log_warning("should be: '%s'", *tmp);
-        retval |= strcmp((char *)l->data, *(tmp++)) != 0;
-        if (retval)
-            break; // no need to continue further
-        l = g_list_next(l);
-    }
-
-    return retval;
-}
-
-int main(void)
-{
-    const char *string_list = "hello,world,fedora,redhat";
-    const char *strings[] = {"hello", "world", "fedora", "redhat"};
-
-    assert(test(string_list, strings) == 0);
 }
 ]])

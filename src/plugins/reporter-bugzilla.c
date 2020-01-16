@@ -171,7 +171,8 @@ static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
     log_notice("create private bz ticket: '%s'", b->b_create_private ? "YES": "NO");
 
     environ = getenv("Bugzilla_PrivateGroups");
-    GList *groups = parse_list(environ ? environ : get_map_string_item_or_empty(settings, "Bugzilla_PrivateGroups"));
+    GList *groups = parse_delimited_list(environ ? environ : get_map_string_item_or_empty(settings, "Bugzilla_PrivateGroups"),
+                                         ",");
     if (b->b_private_groups == NULL)
     {
         b->b_private_groups = groups;
