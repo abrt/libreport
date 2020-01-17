@@ -1,7 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
 # Translators:
 # dominique bribanick <chepioq@gmail.com>, 2013
 # Gé Baylard <geodebay@gmail.com>, 2013
@@ -18,21 +17,22 @@
 # Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>, 2016. #zanata
 # Julie Carbone <jcarbone@redhat.com>, 2016. #zanata
 # Julius Milan <jmilan@redhat.com>, 2017. #zanata
+# Julien Humbert <julroy67@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2017-11-02 05:08+0000\n"
-"Last-Translator: Julie Carbone <jcarbone@redhat.com>\n"
-"Language-Team: French (http://www.transifex.com/projects/p/libreport/"
-"language/fr/)\n"
+"PO-Revision-Date: 2020-01-17 03:15+0000\n"
+"Last-Translator: Julien Humbert <julroy67@gmail.com>\n"
+"Language-Team: French <https://translate.stg.fedoraproject.org/projects/abrt/"
+"libreport/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 3.10.1\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -195,11 +195,11 @@ msgstr "Entrée invalide, arrêt du programme..."
 
 #: ../src/cli/cli-report.c:744
 msgid "Select an event to run: "
-msgstr "Veuillez sélectionner un événement à lancer :"
+msgstr "Veuillez sélectionner un événement à lancer : "
 
 #: ../src/cli/cli-report.c:878
 msgid "Select a workflow to run: "
-msgstr "Sélectionnez un workflow à exécuter :"
+msgstr "Sélectionnez un workflow à exécuter : "
 
 #: ../src/client-python/reportclient/debuginfo.py:100
 #, python-brace-format
@@ -226,7 +226,7 @@ msgstr "Mise en cache des fichiers de {0} effectuée à partir de {1}"
 msgid "Can't extract files from '{0}'. For more information see '{1}'"
 msgstr ""
 "Extraction des fichiers de '{0}' impossible. Pour plus d'informations, "
-"consulter  '{1}'"
+"consulter '{1}'"
 
 #: ../src/client-python/reportclient/debuginfo.py:163
 #, python-brace-format
@@ -306,7 +306,7 @@ msgid ""
 "the issue."
 msgstr ""
 "'{0}' doit appartenir à abrt. Exécuter '# chown -R abrt.abrt {0}' pour "
-"corriger ce problème"
+"corriger ce problème."
 
 #. Was: "All downloaded packages have been extracted, removing..."
 #. but it was appearing even if no packages were in fact extracted
@@ -606,7 +606,7 @@ msgid ""
 "\t▫ <b>corrupted problem data</b>\n"
 "\t▫ <b>invalid configuration</b>"
 msgstr ""
-"Le traitement du problème a échoué. Voici les trois raisons le splus "
+"Le traitement du problème a échoué. Voici les trois raisons les plus "
 "courantes :\n"
 "\t▫ <b>problèmes de connexion de réseau</b>\n"
 "\t▫ <b>données d'incidents corrompues<b>\n"
@@ -622,7 +622,7 @@ msgstr ""
 "Si vous souhaitez mettre à jour la configuration et que vous tentez à "
 "nouveau d'effectuer un rapport, \n"
 "veuillez ouvrir l'élément <b>Préférences</b> dans le menu de l'application, "
-"puis cliquez sur le bouton  <b>Répéter</b> après avoir appliqué les "
+"puis cliquez sur le bouton <b>Répéter</b> après avoir appliqué les "
 "changements de configuration."
 
 #: ../src/gui-wizard-gtk/wizard.c:1689
@@ -715,7 +715,7 @@ msgstr "Vous essayez de copier un fichier sur lui-même"
 #: ../src/gui-wizard-gtk/wizard.c:2907
 #, c-format
 msgid "Can't copy '%s': %s"
-msgstr "Copie de  « %s » impossible : %s"
+msgstr "Copie de « %s » impossible : %s"
 
 #: ../src/gui-wizard-gtk/wizard.c:2921
 #, c-format
@@ -950,7 +950,7 @@ msgstr "Verbeux"
 #: ../src/plugins/reporter-systemd-journal.c:250
 #: ../src/plugins/reporter-upload.c:186 ../src/plugins/reporter-mantisbt.c:283
 msgid "Problem directory"
-msgstr "Répertoire de l'incident"
+msgstr "Répertoire des incidents"
 
 #: ../src/lib/abrt_sock.c:161
 #, c-format
@@ -1029,7 +1029,7 @@ msgstr "Veuillez saisir le nom d'utilisateur de %s//%s :"
 #: ../src/lib/curl.c:696
 #, c-format
 msgid "Please enter password for '%s//%s@%s':"
-msgstr "Veuillez saisir le mot de passe pour  '%s//%s@%s' :"
+msgstr "Veuillez saisir le mot de passe pour '%s//%s@%s' :"
 
 #. This ends up a "reporting status message" in abrtd
 #: ../src/lib/curl.c:719
@@ -1241,7 +1241,7 @@ msgstr "ne peut pas être rapporté"
 
 #: ../src/lib/parse_options.c:63
 msgid "Usage: "
-msgstr "Utilisation :"
+msgstr "Utilisation : "
 
 #: ../src/lib/problem_data.c:252
 #, c-format
@@ -1251,7 +1251,7 @@ msgstr "L'élément essentiel « %s » est manquant, impossible de continuer"
 #: ../src/lib/problem_report.c:517
 #, c-format
 msgid "Can't parse backtrace: %s"
-msgstr "Impossible d'analyser la trace inverse : %s "
+msgstr "Impossible d’analyser la trace inverse : %s"
 
 #: ../src/lib/problem_report.c:532
 msgid "Can't generate stacktrace description (no crash thread?)"
@@ -1262,7 +1262,7 @@ msgstr ""
 #: ../src/lib/report_result.c:265
 #, c-format
 msgid "Ignored invalid ISO date of report result '%s'"
-msgstr "La date ISO non valide du résultat du rapport '%s' a été ignorée "
+msgstr "La date ISO non valide du résultat du rapport '%s' a été ignorée"
 
 #: ../src/lib/reporters.c:55
 msgid "Note does not contain rating"
@@ -1490,12 +1490,12 @@ msgid ""
 msgstr ""
 "& [-v] --target TARGET --ticket ID FILE...\n"
 "\n"
-"Télécharge les FICHIERS (FILEs) sur le ticket spécifié sur la CIBLE "
-"(TARGET).\n"
+"Télécharge les FICHIERS (FILEs) sur le ticket spécifié sur la CIBLE (TARGET)."
+"\n"
 "\n"
 "Cet outil est fourni pour faciliter la transition des utilisateurs du "
 "paquetage\n"
-"des rapports à libreport. Les CIBLES (TARGETs) reconnues sont  «strata » et\n"
+"des rapports à libreport. Les CIBLES (TARGETs) reconnues sont « strata » et\n"
 "« bugzilla », la première invoque le téléchargement aux RHTSupport et la\n"
 "deuxième - sur Bugzilla.\n"
 "\n"
@@ -1712,7 +1712,7 @@ msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:434
 msgid "Failed to read '/etc/os-release' to get Bugzilla product."
-msgstr "Impossible de lire '/etc/os-release' pour obtenir le produit Bugzilla"
+msgstr "Impossible de lire '/etc/os-release' pour obtenir le produit Bugzilla."
 
 #: ../src/plugins/reporter-bugzilla.c:445
 #, c-format
@@ -1900,7 +1900,7 @@ msgstr ""
 "inclus \n"
 "dans l'archive.\n"
 "\n"
-"Les lignes CONFFILE doivent être sous le format  « PARAM = VALUE ».\n"
+"Les lignes CONFFILE doivent être sous le format « PARAM = VALUE ».\n"
 "Paramètre de chaîne reconnu : SubmitURL.\n"
 "Le paramètre peut être remplacé via $KerneloopsReporter_SubmitURL."
 
@@ -2062,7 +2062,7 @@ msgstr ""
 "\n"
 "Rapporte un problème aux services d'assistance Red Hat.\n"
 "\n"
-"Si non spécifiée, la valeur par défaut  de CONFFILE est "
+"Si non spécifiée, la valeur par défaut de CONFFILE est "
 
 #: ../src/plugins/reporter-rhtsupport.c:550
 msgid "Upload FILEs [to case with this ID]"
@@ -2105,7 +2105,7 @@ msgstr "Envoi de données des statistiques d'incident ABRT"
 
 #: ../src/plugins/reporter-rhtsupport.c:741
 msgid "Can't create a temporary directory in "
-msgstr "Impossible de créer un répertoire temporaire dans"
+msgstr "Impossible de créer un répertoire temporaire dans "
 
 #: ../src/plugins/reporter-rhtsupport.c:766
 msgid ""
@@ -2146,7 +2146,7 @@ msgstr "Compression des données"
 
 #: ../src/plugins/reporter-rhtsupport.c:869
 msgid "Can't create temporary file in "
-msgstr "Impossible de créer un fichier temporaire dans"
+msgstr "Impossible de créer un fichier temporaire dans "
 
 #. Check for hints and show them if we have something
 #: ../src/plugins/reporter-rhtsupport.c:880
@@ -2188,11 +2188,11 @@ msgstr "Ajout des données de l'incident au dossier « %s »"
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:202
 msgid "Documentation which might be relevant: "
-msgstr "Documents pouvant être pertinents :"
+msgstr "Documents pouvant être pertinents : "
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:210
 msgid "Updates which possibly help: "
-msgstr "Mises à jour pouvant être utiles :"
+msgstr "Mises à jour pouvant être utiles : "
 
 #: ../src/plugins/reporter-systemd-journal.c:225
 msgid ""
@@ -2256,10 +2256,10 @@ msgid ""
 msgstr ""
 "& [-v] -d DIR [-c CONFFILE] [-u URL] [-b FILE] [-r FILE]\n"
 "\n"
-"Téléverse une archive tar compressée d'un répertoire d'incidents DIR à "
-"l'URL.\n"
+"Téléverse une archive tar compressée d'un répertoire d'incidents DIR à l'URL."
 "\n"
-"Si l'URL n'est pas indiquée, crée l'archive tar dans"
+"\n"
+"Si l'URL n'est pas indiquée, crée l'archive tar dans "
 
 #: ../src/plugins/reporter-upload.c:188
 msgid "Base URL to upload to"
@@ -2291,7 +2291,7 @@ msgstr "Veuillez saisir le mot de passe pour"
 #: ../src/plugins/reporter-mantisbt.c:95
 msgid "Credentials are not provided by configuration."
 msgstr ""
-"Les informations d'identification ne sont pas fournies par configuration"
+"Les informations d'identification ne sont pas fournies par configuration."
 
 #: ../src/plugins/reporter-mantisbt.c:119
 msgid "Invalid password or login."
@@ -2765,7 +2765,7 @@ msgstr "Consulter les bogues déjà signalés"
 #: ../src/plugins/report_uReport.xml.in.h:6
 msgid "Adds your Bugzilla login to CC List of already reported bugs."
 msgstr ""
-"Ajoute vos identifiants Bugzilla à la liste de CC des bogues déjà signalés"
+"Ajoute vos identifiants Bugzilla à la liste de CC des bogues déjà signalés."
 
 #: ../src/plugins/report_uReport.xml.in.h:7
 msgid "Report unpackaged problems"
@@ -2844,46 +2844,46 @@ msgstr "MantisBT n'a pas pu trouver le parent du dossier %d"
 
 #: ../src/plugins/mantisbt.c:180
 msgid "SOAP: Failed to get child element because of no parent."
-msgstr "SOAP : Impossible d'obtenir l'élément enfant car aucun parent"
+msgstr "SOAP : Impossible d'obtenir l'élément enfant car aucun parent."
 
 #: ../src/plugins/mantisbt.c:189
 msgid "SOAP: Failed to get next element because of no node."
-msgstr "SOAP : Impossible d'obtenir le prochain élément car aucun nœud"
+msgstr "SOAP : Impossible d'obtenir le prochain élément car aucun nœud."
 
 #: ../src/plugins/mantisbt.c:198
 msgid "SOAP: Failed to get child node because of no parent."
-msgstr "SOAP : Impossible d'obtenir le nœud enfant car aucun parent"
+msgstr "SOAP : Impossible d'obtenir le nœud enfant car aucun parent."
 
 #: ../src/plugins/mantisbt.c:219
 msgid "SOAP: Failed to parse xml during creating request."
-msgstr "SOAP : Impossible d'analyser xml lors de la création de requête"
+msgstr "SOAP : Impossible d'analyser xml lors de la création de requête."
 
 #: ../src/plugins/mantisbt.c:227
 msgid "SOAP: Failed to get xml root element."
-msgstr "SOAP : impossible d'obtenir l'élément root xml"
+msgstr "SOAP : impossible d'obtenir l'élément root xml."
 
 #: ../src/plugins/mantisbt.c:240
 msgid ""
 "SOAP: Failed to add a new child node because of no node or no child name."
 msgstr ""
 "SOAP : Impossible d'obtenir un nouveau nœud enfant car aucun nom de nœud ou "
-"d'enfant"
+"d'enfant."
 
 #: ../src/plugins/mantisbt.c:245
 msgid "SOAP: Failed to create a new xml child item."
-msgstr "SOAP : Impossible de créer un nouvel élément enfant xml"
+msgstr "SOAP : Impossible de créer un nouvel élément enfant xml."
 
 #: ../src/plugins/mantisbt.c:250
 msgid "SOAP: Failed to create a new property."
-msgstr "SOAP : impossible de créer une nouvelle propriété"
+msgstr "SOAP : impossible de créer une nouvelle propriété."
 
 #: ../src/plugins/mantisbt.c:260
 msgid "SOAP: Failed to add method parametr."
-msgstr "SOAP : impossible d'ajouter un paramètre de méthode"
+msgstr "SOAP : impossible d'ajouter un paramètre de méthode."
 
 #: ../src/plugins/mantisbt.c:289
 msgid "SOAP: Failed to add new issue parametrs."
-msgstr "SOAP : impossible d'ajouter de nouveaux paramètres de dossier"
+msgstr "SOAP : impossible d'ajouter de nouveaux paramètres de dossier."
 
 #: ../src/plugins/mantisbt.c:292
 msgid ""
@@ -2891,58 +2891,58 @@ msgid ""
 "missing."
 msgstr ""
 "SOAP : Impossible d'ajouter de nouveaux paramètres de dossier car les "
-"éléments requis sont manquants"
+"éléments requis sont manquants."
 
 #: ../src/plugins/mantisbt.c:336
 msgid "SOAP: Failed to create a new property in custom fields."
 msgstr ""
 "SOAP : Impossible de créer une nouvelle propriété dans les champs "
-"personnalisés"
+"personnalisés."
 
 #: ../src/plugins/mantisbt.c:354
 msgid ""
 "SOAP: Failed to create SOAP string because of invalid function arguments."
 msgstr ""
 "SOAP : Impossible de créer une chaîne SOAP à cause d'arguments de fonction "
-"non valides"
+"non valides."
 
 #: ../src/plugins/mantisbt.c:361
 msgid "SOAP: Failed to dump xml node."
-msgstr "SOAP : Impossible de vider le nœud xml"
+msgstr "SOAP : Impossible de vider le nœud xml."
 
 #: ../src/plugins/mantisbt.c:375
 msgid "SOAP: Failed to print SOAP string."
-msgstr "SOAP : impossible d'imprimer la chaîne SOAP"
+msgstr "SOAP : impossible d'imprimer la chaîne SOAP."
 
 #: ../src/plugins/mantisbt.c:382
 msgid "Failed to dump xml node."
-msgstr "Impossible de vider le nœud xml"
+msgstr "Impossible de vider le nœud xml."
 
 #: ../src/plugins/mantisbt.c:458
 msgid "SOAP: Failed to parse xml (searching value at depth by name)."
-msgstr "SOAP : Impossible d'analyser le fichier xml"
+msgstr "SOAP : Impossible d'analyser le fichier xml."
 
 #: ../src/plugins/mantisbt.c:462 ../src/plugins/mantisbt.c:505
 #: ../src/plugins/mantisbt.c:534
 msgid "SOAP: Failed to create xml text reader."
-msgstr "SOAP : Impossible de créer un lecteur de texte xml"
+msgstr "SOAP : Impossible de créer un lecteur de texte xml."
 
 #: ../src/plugins/mantisbt.c:501
 msgid "SOAP: Failed to parse xml."
-msgstr "SOAP : Impossible d'analyser le fichier xml"
+msgstr "SOAP : Impossible d'analyser le fichier xml."
 
 #: ../src/plugins/mantisbt.c:530
 msgid "SOAP: Failed to parse xml (get related to issue)."
-msgstr "SOAP : Impossible d'analyser le fichier (à être relié au dossier)"
+msgstr "SOAP : Impossible d'analyser le fichier (à être relié au dossier)."
 
 #: ../src/plugins/mantisbt.c:647
 msgid "Url or request isn't specified."
-msgstr "L'URL ou la requête n'est pas spécifié"
+msgstr "L'URL ou la requête n'est pas spécifié."
 
 #: ../src/plugins/mantisbt.c:675
 #, c-format
 msgid "Error in HTTP POST, HTTP code: 404 (Not found), URL:'%s'"
-msgstr "Erreur dans HTTP POST, HTTP code: 404 (Not found), URL:'%s'"
+msgstr "Erreur dans HTTP POST, HTTP code : 404 (Not found), URL :'%s'"
 
 #: ../src/plugins/mantisbt.c:699
 #, c-format
@@ -2982,7 +2982,7 @@ msgstr "Impossible d'ouvrir '%s'"
 #: ../src/plugins/mantisbt.c:861
 #, c-format
 msgid "Failed to search MantisBT issue by duphash: '%s'"
-msgstr "Impossible de rechercher le dossier MantisBT par duphash: '%s'"
+msgstr "Impossible de rechercher le dossier MantisBT par duphash : '%s'"
 
 #: ../src/plugins/mantisbt.c:906
 #, c-format
@@ -3007,7 +3007,7 @@ msgstr "Impossible d'obtenir des champs personnalisés pour le projet '%s'"
 #: ../src/plugins/mantisbt.c:1002
 #, c-format
 msgid "Failed to create a new issue: '%s'"
-msgstr "La création d'un nouveau dossier a échoué: '%s'"
+msgstr "La création d'un nouveau dossier a échoué : '%s'"
 
 #: ../src/plugins/mantisbt.c:1028
 #, c-format
@@ -3033,7 +3033,7 @@ msgstr "Impossible d'ajouter la remarque sur le dossier MantisBT : '%s'"
 
 #: ../src/plugins/mantisbt.c:1101
 msgid "The MantisBT project has not been deretmined."
-msgstr "Le projet MantisBT n'a pas été déterminé"
+msgstr "Le projet MantisBT n'a pas été déterminé."
 
 #: ../src/plugins/mantisbt.c:1113
 msgid "Failed to get project id from name"
@@ -3199,7 +3199,7 @@ msgstr ""
 #: ../src/plugins/reporter-ureport.c:273
 msgid "You need to specify bug ID, contact email, comment or all of them"
 msgstr ""
-"Vous devez spécifier l'ID du bogue, l'adresse électronique, le commentaire "
+"Vous devez spécifier l’ID du bogue, l'adresse électronique, le commentaire "
 "ou les trois."
 
 #: ../src/plugins/reporter-ureport.c:303
