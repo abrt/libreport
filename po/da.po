@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-02 01:37-0500\n"
+"POT-Creation-Date: 2020-01-09 10:42+0100\n"
 "PO-Revision-Date: 2018-10-28 01:22+0000\n"
 "Last-Translator: scootergrisen <scootergrisen@gmail.com>\n"
-"Language-Team: Danish (http://www.transifex.com/projects/p/libreport/language/da/)\n"
+"Language-Team: Danish (http://www.transifex.com/projects/p/libreport/"
+"language/da/)\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../src/cli/cli.c:63
+#: ../src/cli/cli.c:66
 msgid ""
 "& [-vsp] -L[PREFIX] [PROBLEM_DIR]\n"
 "   or: & [-vspy] -e EVENT PROBLEM_DIR\n"
@@ -32,35 +33,35 @@ msgstr ""
 "   eller: & [-vspy] -x PROBLEMMAPPE"
 
 #. short_name long_name  value    parameter_name  help
-#: ../src/cli/cli.c:86
+#: ../src/cli/cli.c:89
 msgid "List possible events [which start with PREFIX]"
 msgstr "Oplist mulige begivenheder [som starter med PRÆFIKS]"
 
-#: ../src/cli/cli.c:87 ../src/gui-wizard-gtk/main.c:172
+#: ../src/cli/cli.c:90 ../src/gui-wizard-gtk/main.c:170
 msgid "Run only these events"
 msgstr "Kør kun disse begivenheder"
 
-#: ../src/cli/cli.c:88 ../src/gui-wizard-gtk/main.c:171
+#: ../src/cli/cli.c:91 ../src/gui-wizard-gtk/main.c:169
 msgid "Remove PROBLEM_DIR after reporting"
 msgstr "Fjern PROBLEMMAPPE efter rapportering"
 
-#: ../src/cli/cli.c:89 ../src/gui-wizard-gtk/main.c:173
+#: ../src/cli/cli.c:92
 msgid "Expert mode"
 msgstr "Eksperttilstand"
 
-#: ../src/cli/cli.c:90 ../src/report-newt/report-newt.c:395
+#: ../src/cli/cli.c:93 ../src/report-newt/report-newt.c:397
 msgid "Display version and exit"
 msgstr "Vis version og afslut"
 
-#: ../src/cli/cli.c:91
+#: ../src/cli/cli.c:94
 msgid "Noninteractive: don't ask questions, assume 'yes'"
 msgstr "Ikke-interaktiv: stil ikke spørgsmål, antag 'ja'"
 
-#: ../src/cli/cli.c:93
+#: ../src/cli/cli.c:96
 msgid "Log to syslog"
 msgstr "Log til syslog"
 
-#: ../src/cli/cli.c:94 ../src/gui-wizard-gtk/main.c:170
+#: ../src/cli/cli.c:97 ../src/gui-wizard-gtk/main.c:168
 msgid "Add program names to log"
 msgstr "Tilføj programnavne til log"
 
@@ -149,16 +150,16 @@ msgstr ""
 "\n"
 "Ingen ændringer er fundet i rapporten"
 
-#: ../src/cli/cli-report.c:471
+#: ../src/cli/cli-report.c:466
 msgid "Your input is not valid, because of:"
 msgstr "Dit input er ikke gyldigt, fordi:"
 
-#: ../src/cli/cli-report.c:475
+#: ../src/cli/cli-report.c:470
 #, c-format
 msgid "Bad value for '%s': %s"
 msgstr "Dårlig værdi for \"%s\": %s"
 
-#: ../src/cli/cli-report.c:674
+#: ../src/cli/cli-report.c:671
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data. Do you want "
@@ -167,19 +168,19 @@ msgstr ""
 "Hændelsen '%s' kræver tilladelse til at sende potentielt følsomme data. Vil "
 "du fortsætte?"
 
-#: ../src/cli/cli-report.c:721
+#: ../src/cli/cli-report.c:718
 msgid "You have chosen number out of range"
 msgstr "Du har valgt et nummer som er uden for det tilladte"
 
-#: ../src/cli/cli-report.c:726
+#: ../src/cli/cli-report.c:723
 msgid "Invalid input, exiting."
 msgstr "Ugyldig input, afslutter."
 
-#: ../src/cli/cli-report.c:747
+#: ../src/cli/cli-report.c:744
 msgid "Select an event to run: "
 msgstr "Vælg en begivenhed der skal køres: "
 
-#: ../src/cli/cli-report.c:859
+#: ../src/cli/cli-report.c:878
 msgid "Select a workflow to run: "
 msgstr "Vælg et workflow for at køre: "
 
@@ -219,47 +220,41 @@ msgstr "Kan ikke fjerne '{0}': {1}"
 msgid "Downloading ({0} of {1}) {2}: {3:3}%"
 msgstr "Downloader ({0} af {1}) {2}: {3:3}%"
 
-#: ../src/client-python/reportclient/debuginfo.py:312
+#: ../src/client-python/reportclient/debuginfo.py:306
 msgid "Initializing package manager"
 msgstr "Initierer pakkehåndtering"
 
-#. if verbose == 0:
-#. # this suppress yum messages about setting up repositories
-#. mute_stdout()
 #. This takes some time, let user know what we are doing
-#: ../src/client-python/reportclient/debuginfo.py:319
+#: ../src/client-python/reportclient/debuginfo.py:310
 msgid "Setting up repositories"
 msgstr "Opsætter softwarekilder"
 
-#. if verbose == 0:
-#. # re-enable the output to stdout
-#. unmute_stdout()
-#: ../src/client-python/reportclient/debuginfo.py:326
+#: ../src/client-python/reportclient/debuginfo.py:313
 msgid "Looking for needed packages in repositories"
 msgstr "Leder efter nødvendige pakker i softwarekilder"
 
-#: ../src/client-python/reportclient/debuginfo.py:330
+#: ../src/client-python/reportclient/debuginfo.py:347
 #, python-brace-format
 msgid "Can't find packages for {0} debuginfo files"
 msgstr "Kan ikke finde pakker til {0} debuginfo-filer"
 
-#: ../src/client-python/reportclient/debuginfo.py:333
+#: ../src/client-python/reportclient/debuginfo.py:350
 #, python-brace-format
 msgid "Packages to download: {0}"
 msgstr "Pakker som skal downloades: {0}"
 
-#: ../src/client-python/reportclient/debuginfo.py:335
+#: ../src/client-python/reportclient/debuginfo.py:352
 #, python-brace-format
 msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
 msgstr "Downloader {0:.2f} Mb, installeret størrelse: {1:.2f} Mb. Fortsæt?"
 
-#: ../src/client-python/reportclient/debuginfo.py:340
-#: ../src/client-python/reportclient/debuginfo.py:352
-#: ../src/client-python/reportclient/debuginfo.py:363
+#: ../src/client-python/reportclient/debuginfo.py:357
+#: ../src/client-python/reportclient/debuginfo.py:369
+#: ../src/client-python/reportclient/debuginfo.py:380
 msgid "Download cancelled by user"
 msgstr "Download annulleret af bruger"
 
-#: ../src/client-python/reportclient/debuginfo.py:347
+#: ../src/client-python/reportclient/debuginfo.py:364
 #, python-brace-format
 msgid ""
 "Warning: Not enough free space in tmp dir '{0}' ({1:.2f}Mb left). Continue?"
@@ -267,43 +262,42 @@ msgstr ""
 "Advarsel: Ikke nok ledig plads i tmp-mappen '{0}' ({1:.2f}Mb tilbage). "
 "Fortsæt?"
 
-#: ../src/client-python/reportclient/debuginfo.py:358
+#: ../src/client-python/reportclient/debuginfo.py:375
 #, python-brace-format
 msgid ""
-"Warning: Not enough free space in cache dir '{0}' ({1:.2f}Mb left). "
-"Continue?"
+"Warning: Not enough free space in cache dir '{0}' ({1:.2f}Mb left). Continue?"
 msgstr ""
 "Advarsel: Ikke nok ledig plads i cache-mappen '{0}' ({1:.2f}Mb tilbage). "
 "Fortsæt?"
 
-#: ../src/client-python/reportclient/debuginfo.py:380
+#: ../src/client-python/reportclient/debuginfo.py:398
 #, python-brace-format
 msgid "Downloading package {0} failed"
 msgstr "Kunne ikke download pakken {0}"
 
 #. recursively delete the temp dir on failure
-#: ../src/client-python/reportclient/debuginfo.py:387
+#: ../src/client-python/reportclient/debuginfo.py:405
 msgid "Unpacking failed, aborting download..."
 msgstr "Udpakning mislykkedes, afbryder download..."
 
-#: ../src/client-python/reportclient/debuginfo.py:392
+#: ../src/client-python/reportclient/debuginfo.py:410
 #, python-brace-format
 msgid ""
 "'{0}' must be owned by abrt. Please run '# chown -R abrt.abrt {0}' to fix "
 "the issue."
 msgstr ""
-"'{0}' skal være ejet af abrt. Kør venligst '# chown -R abrt.abrt {0}' for at"
-" rette det."
+"'{0}' skal være ejet af abrt. Kør venligst '# chown -R abrt.abrt {0}' for at "
+"rette det."
 
 #. Was: "All downloaded packages have been extracted, removing..."
 #. but it was appearing even if no packages were in fact extracted
 #. (say, when there was one package, and it has download error).
-#: ../src/client-python/reportclient/debuginfo.py:409
+#: ../src/client-python/reportclient/debuginfo.py:427
 #, python-brace-format
 msgid "Removing {0}"
 msgstr "Fjerner {0}"
 
-#: ../src/client-python/reportclient/debuginfo.py:413
+#: ../src/client-python/reportclient/debuginfo.py:431
 #, python-brace-format
 msgid "Can't remove {0}, probably contains an error log"
 msgstr "Kan ikke fjerne {0}, indeholder formodentligt en fejllog"
@@ -360,7 +354,7 @@ msgstr "Kan ikke kopiere filen '{0}': {1}"
 
 #. Follow GTK3's yes-no-buttons order:
 #. * [No] [Yes]
-#. 
+#.
 #: ../src/gtk-helpers/ask_dialogs.c:87
 msgid "_No"
 msgstr "_Nej"
@@ -378,63 +372,62 @@ msgstr "Spørg mig ikke igen"
 msgid "No description available"
 msgstr "Ingen beskrivelse tilgængelig"
 
-#: ../src/gtk-helpers/config_dialog.c:345
+#: ../src/gtk-helpers/config_dialog.c:338
 msgid "Configuration"
 msgstr "Konfiguration"
 
 #. we can't use this, because we want the workflows first and hashtable
 #. * doesn't return the items in the order they were added
-#. 
+#.
 #. g_hash_table_foreach(configs, (GHFunc)add_config_tabs, config_nb);
-#: ../src/gtk-helpers/config_dialog.c:363
-#: ../src/gtk-helpers/config_dialog.c:365
-#: ../src/gtk-helpers/config_dialog.c:430
+#: ../src/gtk-helpers/config_dialog.c:356
+#: ../src/gtk-helpers/config_dialog.c:358
+#: ../src/gtk-helpers/config_dialog.c:417
 msgid "Workflows"
 msgstr "Workflow"
 
-#: ../src/gtk-helpers/config_dialog.c:367
-#: ../src/gtk-helpers/config_dialog.c:369
-#: ../src/gtk-helpers/config_dialog.c:433
+#: ../src/gtk-helpers/config_dialog.c:360
+#: ../src/gtk-helpers/config_dialog.c:362
+#: ../src/gtk-helpers/config_dialog.c:420
 msgid "Events"
 msgstr "Begivenheder"
 
-#: ../src/gtk-helpers/config_dialog.c:373
+#: ../src/gtk-helpers/config_dialog.c:366
 msgid "C_onfigure"
 msgstr "_Konfigurer"
 
-#: ../src/gtk-helpers/config_dialog.c:375 ../src/gui-wizard-gtk/wizard.c:3702
+#: ../src/gtk-helpers/config_dialog.c:368 ../src/gui-wizard-gtk/wizard.c:3206
 msgid "_Close"
 msgstr "_Luk"
 
-#: ../src/gtk-helpers/event_config_dialog.c:144
+#: ../src/gtk-helpers/event_config_dialog.c:140
 msgid "Show password"
 msgstr "Vis adgangskode"
 
-#: ../src/gtk-helpers/event_config_dialog.c:275
+#: ../src/gtk-helpers/event_config_dialog.c:263
 msgid "Don't store passwords"
 msgstr "Gem ikke adgangskoder"
 
-#: ../src/gtk-helpers/event_config_dialog.c:285
+#: ../src/gtk-helpers/event_config_dialog.c:273
 msgid "Basic"
 msgstr "Grundlæggende"
 
-#: ../src/gtk-helpers/event_config_dialog.c:293
+#: ../src/gtk-helpers/event_config_dialog.c:281
 msgid "Advanced"
 msgstr "Avanceret"
 
-#: ../src/gtk-helpers/event_config_dialog.c:309
+#: ../src/gtk-helpers/event_config_dialog.c:297
 msgid "Secret Service is not available, your settings won't be saved!"
-msgstr ""
-"Hemmelig tjeneste er ikke tilgængelig, dine indstillinger gemmes ikke!"
+msgstr "Hemmelig tjeneste er ikke tilgængelig, dine indstillinger gemmes ikke!"
 
-#: ../src/gtk-helpers/event_config_dialog.c:349
-#: ../src/gtk-helpers/workflow_config_dialog.c:94
-#: ../src/gui-wizard-gtk/wizard.c:783 ../src/gui-wizard-gtk/wizard.c:3302
+#: ../src/gtk-helpers/event_config_dialog.c:340
+#: ../src/gtk-helpers/workflow_config_dialog.c:90
+#: ../src/gui-wizard-gtk/wizard.c:732 ../src/gui-wizard-gtk/wizard.c:2865
 msgid "_Cancel"
 msgstr "_Annuller"
 
-#: ../src/gtk-helpers/event_config_dialog.c:351
-#: ../src/gtk-helpers/workflow_config_dialog.c:96
+#: ../src/gtk-helpers/event_config_dialog.c:342
+#: ../src/gtk-helpers/workflow_config_dialog.c:92
 msgid "_OK"
 msgstr "_OK"
 
@@ -453,8 +446,8 @@ msgstr ""
 
 #: ../src/gtk-helpers/secrets.c:549
 msgid ""
-"A timeout was reached while waiting for a prompt result from the DBus Secret"
-" Service."
+"A timeout was reached while waiting for a prompt result from the DBus Secret "
+"Service."
 msgstr ""
 "En timeout blev nået da der blev ventet på et promptresultat fra DBus'ens "
 "hemmelige tjeneste."
@@ -483,7 +476,7 @@ msgstr "Kan ikke oprette et hemmeligt punkt til hændelsen '%s': %s"
 msgid "can't get secret value of '%s': %s"
 msgstr "kan ikke hente hemmelig værdi af '%s': %s"
 
-#: ../src/gtk-helpers/problem_details_widget.c:191
+#: ../src/gtk-helpers/problem_details_widget.c:198
 #, c-format
 msgid "$DATA_DIRECTORY/%s (binary file, %s)"
 msgstr "$DATA_DIRECTORY/%s (binær fil, %s)"
@@ -496,15 +489,15 @@ msgstr "Problemdetaljer"
 msgid "OK"
 msgstr "OK"
 
-#: ../src/gui-wizard-gtk/main.c:107
+#: ../src/gui-wizard-gtk/main.c:106
 msgid "Preferences"
 msgstr "Præferencer"
 
-#: ../src/gui-wizard-gtk/main.c:110
+#: ../src/gui-wizard-gtk/main.c:109
 msgid "Quit"
 msgstr "Afslut"
 
-#: ../src/gui-wizard-gtk/main.c:154
+#: ../src/gui-wizard-gtk/main.c:153
 msgid ""
 "& [-vpdx] [-e EVENT]... [-g GUI_FILE] PROBLEM_DIR\n"
 "\n"
@@ -512,13 +505,10 @@ msgid ""
 msgstr ""
 "& [-vpdx] [-e BEGIVENHED]... [-g GUI-FIL] PROBLEMMAPPE\n"
 "\n"
-"GUI-værktøj til at analysere og rapportere problem som er gemt i angivet PROBLEMMAPPE"
+"GUI-værktøj til at analysere og rapportere problem som er gemt i angivet "
+"PROBLEMMAPPE"
 
-#: ../src/gui-wizard-gtk/main.c:169
-msgid "Alternate GUI file"
-msgstr "Alternativ GUI-fil"
-
-#: ../src/gui-wizard-gtk/wizard.c:379
+#: ../src/gui-wizard-gtk/wizard.c:340
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
@@ -527,297 +517,257 @@ msgstr ""
 "Behøver mappe som der kan skrives til, men der kan ikke skrives til '%s'. "
 "Vil du flytte den til '%s' og operere på den flyttede data?"
 
-#: ../src/gui-wizard-gtk/wizard.c:774
+#: ../src/gui-wizard-gtk/wizard.c:723
 msgid "View/edit a text file"
 msgstr "Vis/rediger en tekstfil"
 
-#: ../src/gui-wizard-gtk/wizard.c:782
+#: ../src/gui-wizard-gtk/wizard.c:731
 msgid "_Save"
 msgstr "_Gem"
 
-#: ../src/gui-wizard-gtk/wizard.c:1004
-msgid ""
-"No reporting targets are defined for this problem. Check configuration in "
-"/etc/libreport/*"
-msgstr ""
-"Der er ikke angivet nogen rapporteringsmål til problemet. Tjek "
-"konfigurationen i /etc/libreport/*"
-
-#: ../src/gui-wizard-gtk/wizard.c:1046
-#, c-format
-msgid "(requires: %s)"
-msgstr "(kræver: %s)"
-
-#: ../src/gui-wizard-gtk/wizard.c:1060
-#, c-format
-msgid "(not needed, data already exist: %s)"
-msgstr "(behøves ikke, data findes allerede: %s)"
-
-#: ../src/gui-wizard-gtk/wizard.c:1159
+#: ../src/gui-wizard-gtk/wizard.c:874
 msgid ""
 "Since crashes without a known reproducer can be difficult to diagnose, "
 "please provide a comprehensive description of the problem you have "
 "encountered."
 msgstr ""
-"Eftersom nedbrud uden en kendt genskaber kan være svære at diagnosticere, så"
-" giv venligst en omfattende beskrivelse af problemet du er stødt på."
+"Eftersom nedbrud uden en kendt genskaber kan være svære at diagnosticere, så "
+"giv venligst en omfattende beskrivelse af problemet du er stødt på."
 
-#: ../src/gui-wizard-gtk/wizard.c:1166
+#: ../src/gui-wizard-gtk/wizard.c:881
 msgid ""
 "Please provide a short description of the problem and please include the "
 "steps you have used to reproduce the problem."
 msgstr ""
-"Angiv venligst en kort beskrivelse af problemet og inkluder venligst de trin"
-" som du har brugt til at genskabe problemet."
+"Angiv venligst en kort beskrivelse af problemet og inkluder venligst de trin "
+"som du har brugt til at genskabe problemet."
 
-#: ../src/gui-wizard-gtk/wizard.c:1173
+#: ../src/gui-wizard-gtk/wizard.c:888
 msgid "Please provide the steps you have used to reproduce the problem."
 msgstr "Angiv venligst de trin som du har brugt til at genskabe problemet."
 
-#: ../src/gui-wizard-gtk/wizard.c:1295
+#: ../src/gui-wizard-gtk/wizard.c:1009
 msgid "(click here to view/edit)"
 msgstr "(klik her for at se/redigere)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1306
+#: ../src/gui-wizard-gtk/wizard.c:1021
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(binær fil, %llu byte)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1417 ../src/report-newt/report-newt.c:334
+#: ../src/gui-wizard-gtk/wizard.c:1121 ../src/report-newt/report-newt.c:332
 msgid "(no description)"
 msgstr "(ingen beskrivelse)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1425
+#: ../src/gui-wizard-gtk/wizard.c:1129
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu byte, %u filer"
 
-#: ../src/gui-wizard-gtk/wizard.c:1703
+#: ../src/gui-wizard-gtk/wizard.c:1381
 msgid "Processing was canceled"
 msgstr "Behandling blev annulleret"
 
-#: ../src/gui-wizard-gtk/wizard.c:1914
+#: ../src/gui-wizard-gtk/wizard.c:1561
 msgid ""
-"Processing of the problem failed. This can have many reasons but there are three most common:\n"
+"Processing of the problem failed. This can have many reasons but there are "
+"three most common:\n"
 "\t▫ <b>network connection problems</b>\n"
 "\t▫ <b>corrupted problem data</b>\n"
 "\t▫ <b>invalid configuration</b>"
 msgstr ""
-"Behandling af problemet mislykkedes. Det kan have mange årsager men her er de mest almindelige:\n"
+"Behandling af problemet mislykkedes. Det kan have mange årsager men her er "
+"de mest almindelige:\n"
 "\t▫ <b>problemer med netværksforbindelse</b>\n"
 "\t▫ <b>ødelagt problemdata</b>\n"
 "\t▫ <b>ugyldig konfiguration</b>"
 
-#: ../src/gui-wizard-gtk/wizard.c:1923
+#: ../src/gui-wizard-gtk/wizard.c:1567
 msgid ""
-"If you want to update the configuration and try to report again, please open <b>Preferences</b> item\n"
-"in the application menu and after applying the configuration changes click <b>Repeat</b> button."
+"If you want to update the configuration and try to report again, please open "
+"<b>Preferences</b> item\n"
+"in the application menu and after applying the configuration changes click "
+"<b>Repeat</b> button."
 msgstr ""
-"Hvis du vil opdatere konfigurationen og prøve at rapportere igen, så åbn venligst <b>Præferencer</b>-punktet\n"
-"i programmenuen og klik på <b>Gentag</b>-knappen når konfigurationsændringerne er blevet anvendt."
+"Hvis du vil opdatere konfigurationen og prøve at rapportere igen, så åbn "
+"venligst <b>Præferencer</b>-punktet\n"
+"i programmenuen og klik på <b>Gentag</b>-knappen når "
+"konfigurationsændringerne er blevet anvendt."
 
-#: ../src/gui-wizard-gtk/wizard.c:1929
-msgid ""
-"If you are sure that this problem is not caused by network problems neither by invalid configuration\n"
-"and want to help us, please click on the upload button and provide all problem data for a deep analysis.\n"
-"<i>Before you do that, please consider the security risks. Problem data may contain sensitive information like\n"
-"passwords. The uploaded data are stored in a protected storage and only a limited number of persons can read them.</i>"
-msgstr ""
-"Hvis du er sikker på, at problemet hverken er pga. netværksproblemer eller ugyldig konfiguration\n"
-"og vil hjælpe os, så klik venligst på upload-knappen og giv alle problemdata for en dyb analyse.\n"
-"<i>Inden du gør det, så overvej venligst sikkerhedsrisiciene. Problemdata kan indeholde følsom information, såsom\n"
-"adgangskoder. Den uploadede data gemmer på et beskyttet laget og kan kun læses af et begrænset antal personer.</i>"
-
-#: ../src/gui-wizard-gtk/wizard.c:2054
+#: ../src/gui-wizard-gtk/wizard.c:1689
 msgid "Processing was interrupted because the problem is not reportable."
 msgstr "Behandlingen blev afbrudt eftersom problemet ikke kan rapporteres."
 
-#: ../src/gui-wizard-gtk/wizard.c:2064 ../src/gui-wizard-gtk/wizard.c:2135
+#: ../src/gui-wizard-gtk/wizard.c:1699 ../src/gui-wizard-gtk/wizard.c:1773
 msgid "Processing failed."
 msgstr "Behandling mislykkedes."
 
-#. No next event, go to progress page and finish
-#: ../src/gui-wizard-gtk/wizard.c:2071 ../src/gui-wizard-gtk/wizard.c:3015
+#. No next event, go to progress page and finish.
+#: ../src/gui-wizard-gtk/wizard.c:1706 ../src/gui-wizard-gtk/wizard.c:2594
 msgid "Processing finished."
 msgstr "Behandling færdig."
 
-#: ../src/gui-wizard-gtk/wizard.c:2072
+#: ../src/gui-wizard-gtk/wizard.c:1707
 msgid "Processing finished, please proceed to the next step."
 msgstr "Behandling færdig, fortsæt venligst til det næste trin."
 
-#. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:2132
-#, c-format
-msgid "No processing for event '%s' is defined"
-msgstr "Ingen behandling for begivenheden \"%s\" er defineret"
+#: ../src/gui-wizard-gtk/wizard.c:1770
+msgid "No commands could be found for processsing the crashdump.\n"
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2146
+#: ../src/gui-wizard-gtk/wizard.c:1785
 msgid "Processing interrupted: can't continue without writable directory."
 msgstr ""
 "Behandling afbrudt: kan ikke fortsætte uden en mappe der kan skrives til."
 
-#: ../src/gui-wizard-gtk/wizard.c:2183
+#: ../src/gui-wizard-gtk/wizard.c:1808
+#, c-format
+msgid ""
+"--- Skipping %s ---\n"
+"No matching actions found for this event.\n"
+"\n"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1843
 msgid "Processing..."
 msgstr "Behandler..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2269
+#: ../src/gui-wizard-gtk/wizard.c:1925
 msgid ""
 "Possible sensitive data detected, feel free to edit the report and remove "
 "them."
 msgstr ""
-"Registrerede potentiel følsom data. Hvis du vil kan du redigere rapporten og"
-" fjerne det."
+"Registrerede potentiel følsom data. Hvis du vil kan du redigere rapporten og "
+"fjerne det."
 
-#: ../src/gui-wizard-gtk/wizard.c:2309
+#: ../src/gui-wizard-gtk/wizard.c:1968
 msgid "Cannot check backtrace rating because of invalid event name"
 msgstr "Kan ikke tjekke backtrace-bedømmelse pga. ugyldigt begivenhedsnavn"
 
-#: ../src/gui-wizard-gtk/wizard.c:2852
+#: ../src/gui-wizard-gtk/wizard.c:2418
 #, c-format
 msgid "Failed to save file '%s'"
 msgstr "Kunne ikke gemme filen '%s'"
 
-#: ../src/gui-wizard-gtk/wizard.c:3035
+#: ../src/gui-wizard-gtk/wizard.c:2619
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
 "Do you want to continue?"
 msgstr ""
-"Begivenheden '%s' kræver tilladelse til at sende data som muligvis er følsom.\n"
+"Begivenheden '%s' kræver tilladelse til at sende data som muligvis er "
+"følsom.\n"
 "Vil du fortsætte?"
 
-#: ../src/gui-wizard-gtk/wizard.c:3082
+#: ../src/gui-wizard-gtk/wizard.c:2665
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
 msgstr ""
 "Problem bør ikke rapporteres (det er sandsynligvis et kendt problem). %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:3303
+#: ../src/gui-wizard-gtk/wizard.c:2866
 msgid "_Open"
 msgstr "_Åbn"
 
-#: ../src/gui-wizard-gtk/wizard.c:3325
+#: ../src/gui-wizard-gtk/wizard.c:2888
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "'%s' er ikke en almindelig fil"
 
-#: ../src/gui-wizard-gtk/wizard.c:3339
+#: ../src/gui-wizard-gtk/wizard.c:2901
 msgid "You are trying to copy a file onto itself"
 msgstr "Du forsøger at kopiere en fil til sig selv"
 
-#: ../src/gui-wizard-gtk/wizard.c:3346
+#: ../src/gui-wizard-gtk/wizard.c:2907
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "Kan ikke kopiere '%s': %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:3361
+#: ../src/gui-wizard-gtk/wizard.c:2921
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "Punktet '%s' findes allerede og kan ikke ændres"
 
-#: ../src/gui-wizard-gtk/wizard.c:3525
+#: ../src/gui-wizard-gtk/wizard.c:3087
 msgid "I have experienced this problem for the first time"
 msgstr "Det er første gang jeg oplever problemet"
 
-#: ../src/gui-wizard-gtk/wizard.c:3528
+#: ../src/gui-wizard-gtk/wizard.c:3090
 msgid "I can reproduce this problem"
 msgstr "Jeg kan genskabe problemet"
 
-#: ../src/gui-wizard-gtk/wizard.c:3531
+#: ../src/gui-wizard-gtk/wizard.c:3093
 msgid "This problem occurs repeatedly"
 msgstr "Problemet opstår gentagne gange"
 
-#: ../src/gui-wizard-gtk/wizard.c:3544
+#: ../src/gui-wizard-gtk/wizard.c:3106
 msgid "Include"
 msgstr "Inkluder"
 
-#: ../src/gui-wizard-gtk/wizard.c:3555
+#: ../src/gui-wizard-gtk/wizard.c:3117
 msgid "Name"
 msgstr "Navn"
 
-#: ../src/gui-wizard-gtk/wizard.c:3565
+#: ../src/gui-wizard-gtk/wizard.c:3127
 msgid "Value"
 msgstr "Værdi"
 
-#: ../src/gui-wizard-gtk/wizard.c:3599
+#: ../src/gui-wizard-gtk/wizard.c:3162
 msgid "Problem description"
 msgstr "Problembeskrivelse"
 
-#: ../src/gui-wizard-gtk/wizard.c:3600
+#: ../src/gui-wizard-gtk/wizard.c:3163
 msgid "Select how to report this problem"
 msgstr "Vælg hvordan problemet skal rapporteres"
 
-#: ../src/gui-wizard-gtk/wizard.c:3601
+#: ../src/gui-wizard-gtk/wizard.c:3164
 msgid "Provide additional information"
 msgstr "Giv yderligere information"
 
-#: ../src/gui-wizard-gtk/wizard.c:3602
+#: ../src/gui-wizard-gtk/wizard.c:3165
 msgid "Review the data"
 msgstr "Gennemgå dataene"
 
-#: ../src/gui-wizard-gtk/wizard.c:3603
+#: ../src/gui-wizard-gtk/wizard.c:3166
 msgid "Confirm data to report"
 msgstr "Bekræft data som skal rapporteres"
 
-#: ../src/gui-wizard-gtk/wizard.c:3604
+#: ../src/gui-wizard-gtk/wizard.c:3167
 msgid "Processing"
 msgstr "Behandler"
 
-#: ../src/gui-wizard-gtk/wizard.c:3605
+#: ../src/gui-wizard-gtk/wizard.c:3168
 msgid "Processing done"
 msgstr "Behandling færdig"
 
-#: ../src/gui-wizard-gtk/wizard.c:3704
+#: ../src/gui-wizard-gtk/wizard.c:3208
 msgid "_Stop"
 msgstr "_Stop"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3707
-msgid "Upload for analysis"
-msgstr "Upload til analyse"
-
-#. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3710
+#: ../src/gui-wizard-gtk/wizard.c:3211
 msgid "Repeat"
 msgstr "Gentag"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3712
+#: ../src/gui-wizard-gtk/wizard.c:3213
 msgid "_Forward"
 msgstr "_Fremad"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3715 ../src/gui-wizard-gtk/wizard.glade.h:10
+#: ../src/gui-wizard-gtk/wizard.c:3216 ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "Details"
 msgstr "Detaljer"
 
-#: ../src/gui-wizard-gtk/wizard.c:3780
+#: ../src/gui-wizard-gtk/wizard.c:3263
 msgid "Restrict access to the report"
 msgstr "Begræns adgang til rapporten"
 
-#: ../src/gui-wizard-gtk/wizard.c:3785
+#: ../src/gui-wizard-gtk/wizard.c:3268
 msgid "Learn more about restricted access in the configuration"
 msgstr "Lær mere om begrænset adgang i konfigurationen"
 
-#: ../src/gui-wizard-gtk/wizard.c:3848
-msgid ""
-"In order to enable the built-in screencasting functionality the package fros-recordmydesktop has to be installed. Please run the following command if you want to install it.\n"
-"\n"
-"<b>su -c \"dnf install fros-recordmydesktop\"</b>"
-msgstr ""
-"For at aktivere den indbyggede skærmoptagelsesfunktionalitet skal fros-recordmydesktop-pakken installeres. Kør venligst følgende kommando, hvis du vil installerer den.\n"
-"\n"
-"<b>su -c \"dnf install fros-recordmydesktop\"</b>"
-
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
-msgid ""
-"Use this button to generate more informative backtrace after you installed "
-"additional debug packages"
-msgstr ""
-"Brug denne knap til at generere en mere informativ backtrace efter du har "
-"installeret yderligere fejlsøgningspakker"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid ""
 "Please review the data before it gets reported. Depending on reporter "
 "chosen, it may end up publicly visible."
@@ -825,31 +775,31 @@ msgstr ""
 "Gennemgå venligst dataene inden de rapporteres. Afhængig af valg "
 "rapportørens valg kan det ende med at være offentligt synligt."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:3
+#: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Sensitive words"
 msgstr "Følsomme ord"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:4
+#: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid "Custom"
 msgstr "Tilpas"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:5
+#: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid "Clear the search bar to see the list of security sensitive words."
 msgstr "Ryd søgelinjen for at se listen over ord som er sikkerhedsfølsomme."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:6
+#: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid "file"
 msgstr "fil"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:7
+#: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "data"
 msgstr "data"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:8
+#: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "Search"
 msgstr "Søg"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:9
+#: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid ""
 "On the following screens, you will be asked to describe how the problem "
 "occurred, to choose how to analyze the problem (if needed), to review "
@@ -861,25 +811,25 @@ msgstr ""
 "gennemgå indsamlet data og vælge hvor problemet skal rapporteres. Klik på "
 "'Fremad' for at fortsætte."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:11
+#: ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid ""
 "How did this problem happen (step-by-step)? How can it be reproduced? Any "
-"additional comments useful for diagnosing the problem? Please use English if"
-" possible."
+"additional comments useful for diagnosing the problem? Please use English if "
+"possible."
 msgstr ""
 "Hvordan opstod problemet (trin-for-trin)? Hvordan kan det genskabes? Er der "
 "yderligere kommentarer som kan være nyttige til at diagnosticere problemet? "
 "Brug venligst engelsk hvis det er muligt."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:12
+#: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid "How reproducible is this problem?"
 msgstr "Hvor genskabeligt er problemet?"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:13
+#: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid "How it can be reproduced (one step per line)?"
 msgstr "Hvordan kan det genskabes (ét trin pr. linje)?"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:14
+#: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid ""
 "Please add a comprehensive description of the problem you have. This is a "
 "very long place holder."
@@ -887,11 +837,11 @@ msgstr ""
 "Tilføj venligst en omfattende beskrivelse af problemet du er stødt på. Det "
 "er en meget lang pladsholder."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:15
+#: ../src/gui-wizard-gtk/wizard.glade.h:14
 msgid "You need to fill the how to before you can proceed..."
 msgstr "Du skal udfylde hvordan, inden du fortsætter..."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:16
+#: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
@@ -899,53 +849,45 @@ msgstr ""
 "<b>Dine kommentarer er ikke private.</b> De kan inkluderes i offentligt "
 "synlige fejlrapporter."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:17
+#: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "I don't know what caused this problem"
 msgstr "Jeg ved ikke hvad der er årsag til problemet"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:18
-msgid "If you don't know how to describe it, you can"
-msgstr "Hvis du ikke ved hvordan du skal beskrive det, så kan du"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:19
-msgid "add a screencast"
-msgstr "tilføj en skærmoptagelse"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:20
+#: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "Size:"
 msgstr "Størrelse:"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:21
+#: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid "Attach a file"
 msgstr "Vedhæft en fil"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:22
+#: ../src/gui-wizard-gtk/wizard.glade.h:19
 msgid "I reviewed the data and _agree with submitting it"
 msgstr "Jeg har gennemgået dataene og _accepterer at de indsendes"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:23
+#: ../src/gui-wizard-gtk/wizard.glade.h:20
 msgid ""
 "If you are reporting to a remote server, make sure you removed all private "
-"data (such as usernames and passwords). Backtrace, command line, environment"
-" variables are the typical items in need of examining."
+"data (such as usernames and passwords). Backtrace, command line, environment "
+"variables are the typical items in need of examining."
 msgstr ""
 "Hvis du rapporterer til en fjernserver, så sørg for at fjerne alle private "
 "data (såsom brugernavne og adgangskoder). Typisk er det backtrace, "
 "kommandolinje og miljøvariabler der har brug for at blive undersøgt."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:24
+#: ../src/gui-wizard-gtk/wizard.glade.h:21
 msgid "Processing did not start yet"
 msgstr "Behandlingen er ikke startet endnu"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:25
+#: ../src/gui-wizard-gtk/wizard.glade.h:22
 msgid "Show log"
 msgstr "Vis log"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:26
+#: ../src/gui-wizard-gtk/wizard.glade.h:23
 msgid "Reporting has finished. You can close this window now."
 msgstr "Rapportering er færdig. Du kan nu lukke vinduet."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:27
+#: ../src/gui-wizard-gtk/wizard.glade.h:24
 msgid ""
 "If you want to report the problem to a different destination, collect "
 "additional information, or provide a better problem description and repeat "
@@ -955,55 +897,54 @@ msgstr ""
 "yderligere information, eller give en bedre problembeskrivelse og gentage "
 "rapporteringsprocessen, så tryk på 'Fremad'."
 
-#: ../src/include/internal_libreport.h:1228
+#: ../src/include/internal_libreport.h:1246
 msgid "Be verbose"
 msgstr "Vær uddybende"
 
-#: ../src/include/internal_libreport.h:1229
-#: ../src/plugins/reporter-bugzilla.c:295
-#: ../src/plugins/reporter-kerneloops.c:166
-#: ../src/plugins/reporter-mailx.c:279 ../src/plugins/reporter-print.c:56
-#: ../src/plugins/reporter-rhtsupport.c:515
-#: ../src/plugins/reporter-systemd-journal.c:245
+#: ../src/include/internal_libreport.h:1247
+#: ../src/plugins/reporter-bugzilla.c:323
+#: ../src/plugins/reporter-kerneloops.c:173 ../src/plugins/reporter-mailx.c:288
+#: ../src/plugins/reporter-print.c:56 ../src/plugins/reporter-rhtsupport.c:548
+#: ../src/plugins/reporter-systemd-journal.c:250
 #: ../src/plugins/reporter-upload.c:186 ../src/plugins/reporter-mantisbt.c:283
 msgid "Problem directory"
 msgstr "Problemmappe"
 
-#: ../src/lib/abrt_sock.c:160
+#: ../src/lib/abrt_sock.c:161
 #, c-format
 msgid "Can't delete: '%s'"
 msgstr "Kan ikke slette: '%s'"
 
-#: ../src/lib/abrt_sock.c:196
+#: ../src/lib/abrt_sock.c:197
 msgid "locked by another process"
 msgstr "låst af en anden proces"
 
-#: ../src/lib/abrt_sock.c:205
+#: ../src/lib/abrt_sock.c:206
 msgid "permission denied"
 msgstr "tilladelse nægtet"
 
-#: ../src/lib/abrt_sock.c:208
+#: ../src/lib/abrt_sock.c:209
 msgid "not a problem directory"
 msgstr "ikke en problemmappe"
 
-#: ../src/lib/abrt_sock.c:217
+#: ../src/lib/abrt_sock.c:218
 #, c-format
 msgid "Can't delete '%s': %s"
 msgstr "Kan ikke slette '%s': %s"
 
-#: ../src/lib/client.c:55 ../src/lib/client.c:87 ../src/lib/client.c:144
+#: ../src/lib/client.c:67 ../src/lib/client.c:99 ../src/lib/client.c:156
 msgid "y"
 msgstr "j"
 
-#: ../src/lib/client.c:56 ../src/lib/client.c:88 ../src/lib/client.c:145
+#: ../src/lib/client.c:68 ../src/lib/client.c:100 ../src/lib/client.c:157
 msgid "N"
 msgstr "N"
 
-#: ../src/lib/client.c:89 ../src/lib/client.c:146
+#: ../src/lib/client.c:101 ../src/lib/client.c:158
 msgid "f"
 msgstr "f"
 
-#: ../src/lib/client.c:147
+#: ../src/lib/client.c:159
 msgid "e"
 msgstr "e"
 
@@ -1017,7 +958,7 @@ msgstr "uid-værdi er ikke gyldig: '%s'"
 msgid "'%s' is not correct file name"
 msgstr "'%s' er ikke korrekt filnavn"
 
-#: ../src/lib/create_dump_dir.c:190
+#: ../src/lib/create_dump_dir.c:195
 #, c-format
 msgid "Missing required item: '%s'"
 msgstr "Manglende krævet punkt: '%s'"
@@ -1054,56 +995,56 @@ msgstr "Indtast venligst adgangskode til '%s//%s@%s':"
 msgid "Successfully created %s"
 msgstr "Oprettede %s"
 
-#: ../src/lib/dump_dir.c:2463
+#: ../src/lib/dump_dir.c:2481
 msgid "Failed to open TAR writer"
 msgstr "Kunne ikke åbne TAR-skriver"
 
-#: ../src/lib/dump_dir.c:2489
+#: ../src/lib/dump_dir.c:2507
 msgid "Failed to finalize TAR archive"
 msgstr "Kunne ikke færdiggøre TAR-arkiv"
 
-#: ../src/lib/dump_dir.c:2499
+#: ../src/lib/dump_dir.c:2517
 msgid "Failed to close TAR writer"
 msgstr "Kunne ikke lukke TAR-skriver"
 
-#: ../src/lib/dump_dir.c:2509
+#: ../src/lib/dump_dir.c:2527
 #, c-format
 msgid "gzip killed with signal %d"
 msgstr "gzip dræbt med signalet %d"
 
-#: ../src/lib/dump_dir.c:2515
+#: ../src/lib/dump_dir.c:2533
 #, c-format
 msgid "gzip exited with %d"
 msgstr "gzip afsluttede med %d"
 
-#: ../src/lib/dump_dir.c:2518
+#: ../src/lib/dump_dir.c:2536
 msgid "gzip process failed"
 msgstr "gzip-behandling mislykkedes"
 
-#: ../src/lib/event_config.c:382
+#: ../src/lib/event_config.c:399
 msgid "Missing mandatory value"
 msgstr "Mangler påkrævet værdi"
 
-#: ../src/lib/event_config.c:390
+#: ../src/lib/event_config.c:407
 #, c-format
 msgid "Invalid utf8 character '%c'"
 msgstr "Ugyldigt utf8-tegn \"%c\""
 
-#: ../src/lib/event_config.c:403
+#: ../src/lib/event_config.c:420
 #, c-format
 msgid "Invalid number '%s'"
 msgstr "Ugyldigt nummer \"%s\""
 
-#: ../src/lib/event_config.c:418
+#: ../src/lib/event_config.c:435
 #, c-format
 msgid "Invalid boolean value '%s'"
 msgstr "Ugyldig boolesk værdi \"%s\""
 
-#: ../src/lib/event_config.c:424
+#: ../src/lib/event_config.c:441
 msgid "Unsupported option type"
 msgstr "Ikke understøttet tilvalgstype"
 
-#: ../src/lib/event_config.c:498
+#: ../src/lib/event_config.c:516
 #, c-format
 msgid ""
 "The problem cannot be reported due to an invalid data. '%s' file does not "
@@ -1112,11 +1053,11 @@ msgstr ""
 "Problemet kan ikke rapporteres pga. en ugyldig data. '%s'-filen indeholder "
 "ikke et nummer."
 
-#: ../src/lib/event_config.c:502
+#: ../src/lib/event_config.c:520
 msgid "Please report this problem to ABRT project developers."
 msgstr "Rapportér venligst problemet til ABRT-projektets udviklere."
 
-#: ../src/lib/event_config.c:508
+#: ../src/lib/event_config.c:526
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -1124,17 +1065,21 @@ msgstr ""
 "Backtracen er ikke komplet, vær sikker på at du angiver trinene til at "
 "genskabe fejlen."
 
-#: ../src/lib/event_config.c:509
+#: ../src/lib/event_config.c:527
 msgid "The backtrace probably can't help developer to diagnose the bug."
 msgstr ""
 "Backtracen kan formodentligt ikke hjælpe udviklerne med at diagnostisere "
 "fejlen."
 
-#: ../src/lib/event_config.c:515
-msgid "Reporting disabled because the backtrace is unusable."
+#: ../src/lib/event_config.c:533
+#, fuzzy
+#| msgid "Reporting disabled because the backtrace is unusable."
+msgid ""
+"Reporting is disabled because the generated backtrace has low informational "
+"value."
 msgstr "Rapportering er deaktiveret fordi backtracen er ubrugelig."
 
-#: ../src/lib/event_config.c:519
+#: ../src/lib/event_config.c:537
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -1143,7 +1088,7 @@ msgstr ""
 "Prøv venligst at installere debuginfo manuelt fra kommandoen: \"debuginfo-"
 "install %s\" og prøv igen."
 
-#: ../src/lib/event_config.c:521
+#: ../src/lib/event_config.c:539
 msgid "A proper debuginfo is probably missing or the coredump is corrupted."
 msgstr ""
 "Der mangler formodentligt en ordentligt debuginfo eller coredump'en er "
@@ -1164,7 +1109,7 @@ msgstr "Datoen: '%s' har suffiks som ikke genkendes: '%s'"
 msgid "The date: '%s' is out of UNIX time stamp range"
 msgstr "Datoen: '%s' er udenfor UNIX-timestamp-området"
 
-#: ../src/lib/ureport.c:395
+#: ../src/lib/ureport.c:400
 #, c-format
 msgid ""
 "Your problem seems to be caused by %s\n"
@@ -1175,70 +1120,70 @@ msgstr ""
 "\n"
 "%s\n"
 
-#: ../src/lib/ureport.c:398
+#: ../src/lib/ureport.c:403
 msgid "Your problem seems to be caused by one of the following:\n"
 msgstr "Dit problem ser ud til at være forårsaget af en af følgende:\n"
 
-#: ../src/lib/ureport.c:570
+#: ../src/lib/ureport.c:575
 #, c-format
 msgid "Failed to upload uReport to the server '%s' with curl: %s"
 msgstr "Kunne ikke uploade uReport til serveren '%s' med curl: %s"
 
-#: ../src/lib/ureport.c:574
+#: ../src/lib/ureport.c:579
 #, c-format
 msgid "Failed to upload uReport to the server '%s'"
 msgstr "Kunne ikke uploade uReport til serveren '%s'"
 
-#: ../src/lib/ureport.c:577
+#: ../src/lib/ureport.c:582
 #, c-format
 msgid "Error: %s"
 msgstr "Fejl: %s"
 
-#: ../src/lib/ureport.c:584
+#: ../src/lib/ureport.c:589
 #, c-format
 msgid "The URL '%s' does not exist (got error 404 from server)"
 msgstr "URL'en '%s' findes ikke (fik fejl 404 fra serveren)"
 
-#: ../src/lib/ureport.c:590
+#: ../src/lib/ureport.c:595
 #, c-format
 msgid "The server at '%s' encountered an internal error (got error 500)"
 msgstr "Serveren '%s' stødte på en intern fejl (fik fejl 500)"
 
-#: ../src/lib/ureport.c:596
+#: ../src/lib/ureport.c:601
 #, c-format
 msgid "The server at '%s' currently can't handle the request (got error 503)"
 msgstr ""
-"Serveren '%s' kan ikke håndtere anmodningen på nuværende tidspunkt (fik fejl"
-" 503)"
+"Serveren '%s' kan ikke håndtere anmodningen på nuværende tidspunkt (fik fejl "
+"503)"
 
 #. can't print better error message
-#: ../src/lib/ureport.c:605
+#: ../src/lib/ureport.c:610
 #, c-format
 msgid "Unexpected HTTP response from '%s': %d"
 msgstr "Uventet HTTP-svar fra '%s': %d"
 
-#: ../src/lib/ureport.c:614
+#: ../src/lib/ureport.c:619
 #, c-format
 msgid "Unable to parse response from ureport server at '%s'"
 msgstr "Kan ikke fortolke svar fra ureport-serveren på '%s'"
 
-#: ../src/lib/ureport.c:624
+#: ../src/lib/ureport.c:629
 #, c-format
 msgid "The response from '%s' has invalid format"
 msgstr "Svaret fra '%s' har ugyldigt format"
 
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
-#: ../src/lib/ureport.c:630
+#: ../src/lib/ureport.c:635
 #, c-format
 msgid "Type mismatch has been detected in the response from '%s'"
 msgstr "Uoverensstemmende type blev registreret i svaret fra '%s'"
 
-#: ../src/lib/ureport.c:826 ../src/plugins/reporter-rhtsupport.c:233
+#: ../src/lib/ureport.c:861 ../src/plugins/reporter-rhtsupport.c:235
 msgid "Failed on submitting the problem"
 msgstr "Indsendelse af problemet mislykkedes"
 
-#: ../src/lib/ureport.c:868
+#: ../src/lib/ureport.c:903
 #, c-format
 msgid "The server at '%s' responded with an error: '%s'"
 msgstr "Serveren på '%s' svarede med en fejl: '%s'"
@@ -1260,24 +1205,16 @@ msgstr "Anvendelse: "
 msgid "Essential element '%s' is missing, can't continue"
 msgstr "Essentielt element '%s' mangler, kan ikke fortsætte"
 
-#: ../src/lib/problem_report.c:486
+#: ../src/lib/problem_report.c:517
 #, c-format
 msgid "Can't parse backtrace: %s"
 msgstr "Kan ikke fortolke backtrace: %s"
 
-#: ../src/lib/problem_report.c:501
+#: ../src/lib/problem_report.c:532
 msgid "Can't generate stacktrace description (no crash thread?)"
 msgstr "Kan ikke generere stacktrace-beskrivelse (ingen nedbrudstråd?)"
 
-#: ../src/lib/reported_to.c:52
-msgid "Report result label mustn't be empty string."
-msgstr "Etiket for rapportresult må ikke være en tom streng."
-
-#: ../src/lib/reported_to.c:58
-msgid "Report result label mustn't contain ':' character."
-msgstr "Etiket for rapportresult må ikke indeholde ':'-tegn."
-
-#: ../src/lib/reported_to.c:141
+#: ../src/lib/report_result.c:265
 #, c-format
 msgid "Ignored invalid ISO date of report result '%s'"
 msgstr "Ignorerede ugyldigt ISO-dato af rapportresultatet '%s'"
@@ -1286,17 +1223,17 @@ msgstr "Ignorerede ugyldigt ISO-dato af rapportresultatet '%s'"
 msgid "Note does not contain rating"
 msgstr "Note indeholder ikke bedømmelse"
 
-#: ../src/lib/run_event.c:876
+#: ../src/lib/run_event.c:891
 #, c-format
 msgid "('%s' was killed by signal %u)\n"
 msgstr "('%s' blev dræbt af signalet %u)\n"
 
-#: ../src/lib/run_event.c:878
+#: ../src/lib/run_event.c:893
 #, c-format
 msgid "('%s' completed successfully)\n"
 msgstr "('%s' fuldført)\n"
 
-#: ../src/lib/run_event.c:880
+#: ../src/lib/run_event.c:895
 #, c-format
 msgid "('%s' exited with %u)\n"
 msgstr "('%s' afsluttede med %u)\n"
@@ -1309,8 +1246,7 @@ msgstr "Fejl ved oprettelse as sag ved '%s': %s"
 #: ../src/plugins/abrt_rh_support.c:365
 #, c-format
 msgid "Error in case creation at '%s', HTTP code: %d, server says: '%s'"
-msgstr ""
-"Fejl ved oprettelse as sag ved '%s', HTTP-kode: %d, server siger: '%s'"
+msgstr "Fejl ved oprettelse as sag ved '%s', HTTP-kode: %d, server siger: '%s'"
 
 #: ../src/plugins/abrt_rh_support.c:369
 #, c-format
@@ -1343,156 +1279,149 @@ msgstr "Fejl ved oprettelse as kommentar ved '%s', HTTP-kode: %d"
 #, c-format
 msgid "Error in comment creation at '%s': no Location URL, HTTP code: %d"
 msgstr ""
-"Fejl ved oprettelse as kommentar ved '%s': Ingen placering-URL, HTTP-kode: "
-"%d"
+"Fejl ved oprettelse as kommentar ved '%s': Ingen placering-URL, HTTP-kode: %d"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:1
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:1
 msgid "Bugzilla"
 msgstr "Bugzilla"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:2
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:2
 msgid "Report to Bugzilla bug tracker"
 msgstr "Rapportér til Bugzilla bugtracker"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:3
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:3
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:3
 #: ../src/plugins/report_Uploader.xml.in.h:6
 msgid "User name"
 msgstr "Brugernavn"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:4
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:4
 msgid "Bugzilla account user name"
 msgstr "Brugernavn til Bugzilla-konto"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:5
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:5
 msgid ""
-"You can create bugzilla.redhat.com account &lt;a "
-"href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
+"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 msgstr ""
-"Du kan oprette en bugzilla.redhat.com-konto &lt;a "
-"href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;her&lt;/a&gt;"
+"Du kan oprette en bugzilla.redhat.com-konto &lt;a href=\"https://bugzilla."
+"redhat.com/createaccount.cgi\"&gt;her&lt;/a&gt;"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:6
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:6
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:6
 #: ../src/plugins/report_RHTSupport.xml.in.h:5
 #: ../src/plugins/report_Uploader.xml.in.h:8
 msgid "Password"
 msgstr "Adgangskode"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:7
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:7
 msgid "Bugzilla account password"
 msgstr "Adgangskode til Bugzilla-konto"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:8
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:8
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:8
 msgid "Restrict access"
 msgstr "Begræns adgang"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:9
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:9
 msgid ""
 "Restrict access to the created bugzilla ticket allowing only users from "
 "specified groups to view it (see advanced settings for more details)"
 msgstr ""
-"Begræns adgang til den oprettede bugzilla-ticket, så kun brugere fra angivne"
-" grupper kan vise den (se flere detaljer i avancerede indstillinger)"
+"Begræns adgang til den oprettede bugzilla-ticket, så kun brugere fra angivne "
+"grupper kan vise den (se flere detaljer i avancerede indstillinger)"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:10
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:10
 msgid "Groups"
 msgstr "Grupper"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:11
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:11
 msgid ""
-"Restrict the access to specified groups &lt;a "
-"href=\"https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
-"tickets\"&gt;?&lt;/a&gt;"
+"Restrict the access to specified groups &lt;a href=\"https://github.com/abrt/"
+"abrt/wiki/FAQ#creating-private-bugzilla-tickets\"&gt;?&lt;/a&gt;"
 msgstr ""
-"Begræns adgangen til bestemte grupper &lt;a "
-"href=\"https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
-"tickets\"&gt;?&lt;/a&gt;"
+"Begræns adgangen til bestemte grupper &lt;a href=\"https://github.com/abrt/"
+"abrt/wiki/FAQ#creating-private-bugzilla-tickets\"&gt;?&lt;/a&gt;"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:12
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:12
 msgid "Bugzilla URL"
 msgstr "Bugzilla-URL"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:13
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:13
 msgid "Address of Bugzilla server"
 msgstr "Adresse til Bugzilla-server"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:14
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:14
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:12
 #: ../src/plugins/report_RHTSupport.xml.in.h:11
-#: ../src/plugins/report_uReport.xml.in.h:9
+#: ../src/plugins/report_uReport.xml.in.h:11
 msgid "Verify SSL"
 msgstr "Bekræft SSL"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:15
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:15
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:13
 #: ../src/plugins/report_RHTSupport.xml.in.h:12
-#: ../src/plugins/report_uReport.xml.in.h:10
+#: ../src/plugins/report_uReport.xml.in.h:12
 msgid "Check SSL key validity"
 msgstr "Tjek gyldigheden af SSL-nøgle"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:16
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:16
 msgid "Bugzilla product"
 msgstr "Bugzilla-produkt"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:17
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:17
 msgid ""
 "Specify this only if you needed different product than specified in /etc/os-"
 "release"
 msgstr ""
-"Angiv det kun hvis du havde brug for et andet produkt end det der er angivet"
-" i /etc/os-release"
+"Angiv det kun hvis du havde brug for et andet produkt end det der er angivet "
+"i /etc/os-release"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:18
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:18
 msgid "Bugzilla product version"
 msgstr "Bugzilla-produktversion"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:19
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:19
 msgid ""
-"Specify this only if you needed different product version than specified in "
-"/etc/os-release"
+"Specify this only if you needed different product version than specified in /"
+"etc/os-release"
 msgstr ""
 "Angiv det kun hvis du havde brug for en anden produktversion end den der er "
 "angivet i /etc/os-release"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:20
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:20
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:18
 #: ../src/plugins/report_Kerneloops.xml.in.h:5
 #: ../src/plugins/report_RHTSupport.xml.in.h:13
 #: ../src/plugins/report_Uploader.xml.in.h:10
-#: ../src/plugins/report_uReport.xml.in.h:11
-#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:4
+#: ../src/plugins/report_uReport.xml.in.h:13
 msgid "HTTP Proxy"
 msgstr "HTTP-proxy"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:21
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:21
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:19
 #: ../src/plugins/report_Kerneloops.xml.in.h:6
 #: ../src/plugins/report_RHTSupport.xml.in.h:14
 #: ../src/plugins/report_Uploader.xml.in.h:11
-#: ../src/plugins/report_uReport.xml.in.h:12
-#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:5
+#: ../src/plugins/report_uReport.xml.in.h:14
 msgid "Sets the proxy server to use for HTTP"
 msgstr "Sætter proxyserveren til at bruge HTTP"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:22
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:22
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:20
 #: ../src/plugins/report_Kerneloops.xml.in.h:7
 #: ../src/plugins/report_RHTSupport.xml.in.h:15
 #: ../src/plugins/report_Uploader.xml.in.h:12
-#: ../src/plugins/report_uReport.xml.in.h:13
-#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:6
+#: ../src/plugins/report_uReport.xml.in.h:15
 msgid "HTTPS Proxy"
 msgstr "HTTPS-proxy"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:23
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:23
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:21
 #: ../src/plugins/report_Kerneloops.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:16
 #: ../src/plugins/report_Uploader.xml.in.h:13
-#: ../src/plugins/report_uReport.xml.in.h:14
-#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:7
+#: ../src/plugins/report_uReport.xml.in.h:16
 msgid "Sets the proxy server to use for HTTPS"
 msgstr "Sætter proxyserveren til at bruge HTTPS"
 
@@ -1526,7 +1455,7 @@ msgstr "'strata' eller 'bugzilla'"
 msgid "Ticket/case ID"
 msgstr "Ticket-/sags-ID"
 
-#: ../src/plugins/reporter-bugzilla.c:162
+#: ../src/plugins/reporter-bugzilla.c:183
 msgid ""
 "Warning, private ticket groups already specified as cmdline argument, "
 "ignoring the env variable and configuration"
@@ -1534,38 +1463,41 @@ msgstr ""
 "Advarsel, privat ticket-grupper er allerede angivet som "
 "kommandolinjeargument, ignorerer env-variablen og konfiguration"
 
-#: ../src/plugins/reporter-bugzilla.c:173
-#: ../src/plugins/reporter-rhtsupport.c:380
+#: ../src/plugins/reporter-bugzilla.c:194
+#: ../src/plugins/reporter-rhtsupport.c:384
 #: ../src/plugins/reporter-mantisbt.c:55
 msgid "Can't continue without login"
 msgstr "Kan ikke fortsætte uden login"
 
-#: ../src/plugins/reporter-bugzilla.c:186
-#: ../src/plugins/reporter-rhtsupport.c:393
-#: ../src/plugins/reporter-mantisbt.c:70
+#: ../src/plugins/reporter-bugzilla.c:207
+#: ../src/plugins/reporter-rhtsupport.c:397
+#: ../src/plugins/reporter-mantisbt.c:68
 msgid "Can't continue without password"
 msgstr "Kan ikke fortsætte uden adgangskode"
 
-#: ../src/plugins/reporter-bugzilla.c:195
+#: ../src/plugins/reporter-bugzilla.c:216
 #, c-format
 msgid "Logging into Bugzilla at %s"
 msgstr "Logger ind på Bugzilla på %s"
 
-#: ../src/plugins/reporter-bugzilla.c:199
-msgid "Invalid password or login. Please enter your Bugzilla login:"
-msgstr "Ugyldig adgangskode eller login. Indtast venligst dit Bugzilla-login:"
+#: ../src/plugins/reporter-bugzilla.c:223
+#, fuzzy, c-format
+#| msgid "Invalid password or login. Please enter your Red Hat login:"
+msgid "Invalid password or login. Please enter your %s login:"
+msgstr "Ugyldig adgangskode eller login. Indtast venligst dit Red Hat-login:"
 
-#: ../src/plugins/reporter-bugzilla.c:202
-#: ../src/plugins/reporter-rhtsupport.c:407
+#: ../src/plugins/reporter-bugzilla.c:228
+#: ../src/plugins/reporter-rhtsupport.c:411
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
 msgstr ""
 "Ugyldig adgangskode eller login. Indtast venligst adgangskoden til '%s':"
 
-#: ../src/plugins/reporter-bugzilla.c:221
+#: ../src/plugins/reporter-bugzilla.c:247
 msgid ""
 "\n"
-"& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\n"
+"& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d "
+"DIR\n"
 "or:\n"
 "& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\n"
 "or:\n"
@@ -1583,7 +1515,8 @@ msgid ""
 "depending on their type and size.\n"
 "\n"
 "Otherwise, if such bug is found and it is marked as CLOSED DUPLICATE,\n"
-"the tool follows the chain of duplicates until it finds a non-DUPLICATE bug.\n"
+"the tool follows the chain of duplicates until it finds a non-DUPLICATE "
+"bug.\n"
 "The tool adds a new comment to found bug.\n"
 "\n"
 "The URL to new or modified bug is printed to stdout and recorded in\n"
@@ -1599,13 +1532,15 @@ msgid ""
 "Option -w adds bugzilla user to bug's CC list.\n"
 "\n"
 "Option -r sets the last url from reporter_to element which is prefixed with\n"
-"TRACKER_NAME to URL field. This option is applied only when a new bug is to be\n"
+"TRACKER_NAME to URL field. This option is applied only when a new bug is to "
+"be\n"
 "filed. The default value is 'ABRT Server'\n"
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
 "\n"
-"& [-vbf] [-g GRUPPENAVN]... [-c KONFFIL]... [-F FMTFIL] [-A FMTFIL2] -d MAPPE\n"
+"& [-vbf] [-g GRUPPENAVN]... [-c KONFFIL]... [-F FMTFIL] [-A FMTFIL2] -d "
+"MAPPE\n"
 "eller:\n"
 "& [-v] [-c KONFFIL]... [-d MAPPE] -t[ID] FIL...\n"
 "eller:\n"
@@ -1615,7 +1550,8 @@ msgstr ""
 "\n"
 "Rapporterer problem til Bugzilla.\n"
 "\n"
-"Værktøjet læser MAPPE. Herefter logger det ind på Bugzilla og prøver at finde en fejl\n"
+"Værktøjet læser MAPPE. Herefter logger det ind på Bugzilla og prøver at "
+"finde en fejl\n"
 "med den samme abrt_hash:HEXSTRENG i 'Whiteboard'.\n"
 "\n"
 "Hvis fejlen ikke findes, så oprettes en ny fejl. Elementer i MAPPE\n"
@@ -1623,111 +1559,118 @@ msgstr ""
 "afhængig af deres type og størrelse.\n"
 "\n"
 "Hvis fejlen findes, så mærkes den med CLOSED DUPLICATE,\n"
-"værktøjet følger kæden af duplikater indtil den finder en fejl med non-DUPLICATE.\n"
+"værktøjet følger kæden af duplikater indtil den finder en fejl med non-"
+"DUPLICATE.\n"
 "Værktøjet tilføjer så en ny kommentar til den fundne fejl.\n"
 "\n"
 "URL'en til den nye eller ændrede fejl udskrives til stdout og registreres i\n"
 "'reported_to'-elementet.\n"
 "\n"
-"Tilvalget -t uploader FILer til fejlen som allerede er oprettet på Bugzilla-stedet.\n"
+"Tilvalget -t uploader FILer til fejlen som allerede er oprettet på Bugzilla-"
+"stedet.\n"
 "Fejl-id'et hentes fra mappen angivet med -d MAPPE.\n"
-"Hvis problemdata i MAPPE aldrig er blevet rapporteret til Bugzilla, så vil upload mislykkedes.\n"
+"Hvis problemdata i MAPPE aldrig er blevet rapporteret til Bugzilla, så vil "
+"upload mislykkedes.\n"
 "\n"
-"Tilvalget -tID uploader FILer til fejlen med det angivne ID på Bugzilla-stedet.\n"
+"Tilvalget -tID uploader FILer til fejlen med det angivne ID på Bugzilla-"
+"stedet.\n"
 "-d MAPPE ignoreres.\n"
 "\n"
 "Tilvalget -w tilføjer bugzilla-brugeren til fejlens CC-liste.\n"
 "\n"
-"Tilvalget -r indstiller den sidste url fra reporter_to-elementet som præfikses med\n"
+"Tilvalget -r indstiller den sidste url fra reporter_to-elementet som "
+"præfikses med\n"
 "TRACKER_NAME til URL-feltet. Tilvalget anvendes kun når en ny fejl skal\n"
 "udfyldes. Standardværdien er 'ABRT Server'\n"
 "\n"
 "Hvis det ikke er angivet, så er standarden for KONFFIL "
 
-#: ../src/plugins/reporter-bugzilla.c:296
-#: ../src/plugins/reporter-rhtsupport.c:516
+#: ../src/plugins/reporter-bugzilla.c:324
+#: ../src/plugins/reporter-rhtsupport.c:549
 #: ../src/plugins/reporter-mantisbt.c:284
 msgid "Configuration file (may be given many times)"
 msgstr "Konfigurationsfil (kan angives mange gange)"
 
-#: ../src/plugins/reporter-bugzilla.c:297
+#: ../src/plugins/reporter-bugzilla.c:325
 #: ../src/plugins/reporter-mantisbt.c:285
 msgid "Formatting file for initial comment"
 msgstr "Formateringsfil til indledende kommentar"
 
-#: ../src/plugins/reporter-bugzilla.c:298
+#: ../src/plugins/reporter-bugzilla.c:326
 #: ../src/plugins/reporter-mantisbt.c:286
 msgid "Formatting file for duplicates"
 msgstr "Formateringsfil til duplikater"
 
-#: ../src/plugins/reporter-bugzilla.c:299
+#: ../src/plugins/reporter-bugzilla.c:327
 msgid "Attach FILEs [to bug with this ID]"
 msgstr "Vedhæft FILer [til fejl med dette id]"
 
-#: ../src/plugins/reporter-bugzilla.c:300
+#: ../src/plugins/reporter-bugzilla.c:328
 msgid "When creating bug, attach binary files too"
 msgstr "Vedhæft også binære filer ved oprettelse af fejl"
 
-#: ../src/plugins/reporter-bugzilla.c:301
-#: ../src/plugins/reporter-rhtsupport.c:518
+#: ../src/plugins/reporter-bugzilla.c:329
+#: ../src/plugins/reporter-rhtsupport.c:551
 #: ../src/plugins/reporter-mantisbt.c:288
 msgid "Force reporting even if this problem is already reported"
 msgstr "Tving rapportering, selv hvis problemet allerede er rapporteret"
 
-#: ../src/plugins/reporter-bugzilla.c:302
+#: ../src/plugins/reporter-bugzilla.c:330
 msgid "Add bugzilla user to CC list [of bug with this ID]"
 msgstr "Tilføj bugzilla-bruger til CC-liste [af fejl med dette id]"
 
-#: ../src/plugins/reporter-bugzilla.c:303
+#: ../src/plugins/reporter-bugzilla.c:331
 #: ../src/plugins/reporter-mantisbt.c:289
 msgid "Print BUG_ID which has given DUPHASH"
 msgstr "Udskriv BUG_ID med den givne DUPHASH"
 
-#: ../src/plugins/reporter-bugzilla.c:304
+#: ../src/plugins/reporter-bugzilla.c:332
 msgid "Specify a Bugzilla product (ignored without -h)"
 msgstr "Angiv et Bugzilla-produkt (ignoreres uden -h)"
 
-#: ../src/plugins/reporter-bugzilla.c:305
+#: ../src/plugins/reporter-bugzilla.c:333
 #: ../src/plugins/reporter-mantisbt.c:290
 msgid "A name of bug tracker for an additional URL from 'reported_to'"
 msgstr "Et navn på bugtracker til en yderligere URL fra 'reported_to'"
 
-#: ../src/plugins/reporter-bugzilla.c:306
+#: ../src/plugins/reporter-bugzilla.c:334
 msgid "Restrict access to this group only"
 msgstr "Begræns kun adgang til denne gruppe"
 
-#: ../src/plugins/reporter-bugzilla.c:307 ../src/plugins/reporter-mailx.c:283
-#: ../src/plugins/reporter-rhtsupport.c:522
-#: ../src/plugins/reporter-systemd-journal.c:250
+#: ../src/plugins/reporter-bugzilla.c:335 ../src/plugins/reporter-mailx.c:292
+#: ../src/plugins/reporter-rhtsupport.c:555
+#: ../src/plugins/reporter-systemd-journal.c:255
 #: ../src/plugins/reporter-mantisbt.c:292
 msgid "Debug"
 msgstr "Fejlretning"
 
-#: ../src/plugins/reporter-bugzilla.c:351
+#: ../src/plugins/reporter-bugzilla.c:402
 msgid "Looking for similar problems in bugzilla"
 msgstr "Leder efter lignende problemer i bugzilla"
 
-#: ../src/plugins/reporter-bugzilla.c:380
+#: ../src/plugins/reporter-bugzilla.c:431
 msgid "Failed to get 'REDHAT_BUGZILLA_PRODUCT' from '/etc/os-release'."
 msgstr "Kunne ikke hente 'REDHAT_BUGZILLA_PRODUCT' fra '/etc/os-release'."
 
-#: ../src/plugins/reporter-bugzilla.c:383
+#: ../src/plugins/reporter-bugzilla.c:434
 msgid "Failed to read '/etc/os-release' to get Bugzilla product."
 msgstr "Kunne ikke læse '/etc/os-release' for at hent Bugzilla-produkt."
 
-#: ../src/plugins/reporter-bugzilla.c:394
+#: ../src/plugins/reporter-bugzilla.c:445
 #, c-format
 msgid "Using default product '%s'"
 msgstr "Bruger standardproduktet '%s'"
 
-#: ../src/plugins/reporter-bugzilla.c:417
-msgid ""
-"Login is not provided by configuration. Please enter your Bugzilla login:"
+#: ../src/plugins/reporter-bugzilla.c:468
+#, fuzzy, c-format
+#| msgid ""
+#| "Login is not provided by configuration. Please enter your RHTS login:"
+msgid "Login is not provided by configuration. Please enter your %s login:"
 msgstr ""
-"Login leveres ikke af konfiguration. Indtast venligst dit Bugzilla-login:"
+"Login er ikke angivet af konfiguration. Indtast venligst dit RHTS-login:"
 
-#: ../src/plugins/reporter-bugzilla.c:423
-#: ../src/plugins/reporter-rhtsupport.c:556
+#: ../src/plugins/reporter-bugzilla.c:476
+#: ../src/plugins/reporter-rhtsupport.c:597
 #, c-format
 msgid ""
 "Password is not provided by configuration. Please enter the password for "
@@ -1736,15 +1679,15 @@ msgstr ""
 "Adgangskode leveres ikke af konfiguration. Indtast venligst din adgangskode "
 "til '%s':"
 
-#: ../src/plugins/reporter-bugzilla.c:442
+#: ../src/plugins/reporter-bugzilla.c:500
 msgid ""
 "Can't get Bugzilla ID because this problem has not yet been reported to "
 "Bugzilla."
 msgstr ""
-"Kan ikke hente Bugzilla-id da problemet endnu ikke er blevet rapporteret til"
-" Bugzilla."
+"Kan ikke hente Bugzilla-id da problemet endnu ikke er blevet rapporteret til "
+"Bugzilla."
 
-#: ../src/plugins/reporter-bugzilla.c:449
+#: ../src/plugins/reporter-bugzilla.c:505
 #, c-format
 msgid ""
 "This problem has been reported to Bugzilla '%s' which differs from the "
@@ -1753,36 +1696,48 @@ msgstr ""
 "Problemet er blevet rapporteret til Bugzilla '%s' som ikke er magen til den "
 "konfigureret Bugzilla '%s'."
 
-#: ../src/plugins/reporter-bugzilla.c:453
+#: ../src/plugins/reporter-bugzilla.c:509
 #, c-format
 msgid "Malformed url to Bugzilla '%s'."
 msgstr "Forkert udformet url til Bugzilla '%s'."
 
-#: ../src/plugins/reporter-bugzilla.c:457
+#: ../src/plugins/reporter-bugzilla.c:513
 #, c-format
 msgid "Using Bugzilla ID '%s'"
 msgstr "Bruger Bugzilla-id'et '%s'"
 
-#: ../src/plugins/reporter-bugzilla.c:491
-#: ../src/plugins/reporter-bugzilla.c:680
-#: ../src/plugins/reporter-bugzilla.c:870
+#: ../src/plugins/reporter-bugzilla.c:547
+#: ../src/plugins/reporter-bugzilla.c:747
+#: ../src/plugins/reporter-bugzilla.c:943
 msgid "Logging out"
 msgstr "Logger ud"
 
-#: ../src/plugins/reporter-bugzilla.c:542
+#: ../src/plugins/reporter-bugzilla.c:579
+#, fuzzy, c-format
+#| msgid ""
+#| "This problem was already reported to MantisBT (see '%s'). Do you still "
+#| "want to create a new issue?"
+msgid ""
+"This problem was already reported to Bugzilla (see '%s'). Do you still want "
+"to create a new bug?"
+msgstr ""
+"Problemet er allerede blevet rapporteret til MantisBT (se '%s'). Vil du "
+"stadig oprette et nyt issue?"
+
+#: ../src/plugins/reporter-bugzilla.c:609
 msgid "Can't determine Bugzilla Product from problem data."
 msgstr "Kan ikke bestemme Bugzilla-produkt ud fra problemdata."
 
-#: ../src/plugins/reporter-bugzilla.c:604
-#: ../src/plugins/reporter-mantisbt.c:488
+#: ../src/plugins/reporter-bugzilla.c:671
+#: ../src/plugins/reporter-mantisbt.c:506
 msgid "Checking for duplicates"
 msgstr "Søger efter duplikater"
 
-#: ../src/plugins/reporter-bugzilla.c:661
+#: ../src/plugins/reporter-bugzilla.c:728
 #, c-format
 msgid ""
-"You have requested to make your data accessible only to a specific group and"
-" this bug is a duplicate of bug: %s/%u In case of bug duplicates a new "
+"You have requested to make your data accessible only to a specific group and "
+"this bug is a duplicate of bug: %s/%u In case of bug duplicates a new "
 "comment is added to the original bug report but access to the comments "
 "cannot be restricted to a specific group. Would you like to open a new bug "
 "report and close it as DUPLICATE of the original one? Otherwise, the bug "
@@ -1796,60 +1751,60 @@ msgstr ""
 "fejlrapporteringsprocessen."
 
 #. Create new bug
-#: ../src/plugins/reporter-bugzilla.c:696
+#: ../src/plugins/reporter-bugzilla.c:763
 msgid "Creating a new bug"
 msgstr "Opret en ny fejl"
 
-#: ../src/plugins/reporter-bugzilla.c:715
+#: ../src/plugins/reporter-bugzilla.c:782
 msgid "Failed to create a new bug."
 msgstr "Oprettelse af ny fejl mislykkedes."
 
-#: ../src/plugins/reporter-bugzilla.c:731
+#: ../src/plugins/reporter-bugzilla.c:800
 #, c-format
 msgid "Adding extra cc %s to bug report"
 msgstr "Tilføjer ekstra cc %s til fejlrapport"
 
-#: ../src/plugins/reporter-bugzilla.c:740
+#: ../src/plugins/reporter-bugzilla.c:812
 #, c-format
 msgid "Adding External URL to bug %i"
 msgstr "Tilføjer ekstern URL til fejl %i"
 
-#: ../src/plugins/reporter-bugzilla.c:746
+#: ../src/plugins/reporter-bugzilla.c:819
 #, c-format
 msgid "Adding attachments to bug %i"
 msgstr "Tilføjer vedhæftelser til fejl %i"
 
-#: ../src/plugins/reporter-bugzilla.c:768
+#: ../src/plugins/reporter-bugzilla.c:841
 #, c-format
 msgid "Closing bug %i as duplicate of bug %i"
 msgstr "Lukker fejl %i som duplikat af %i"
 
-#: ../src/plugins/reporter-bugzilla.c:780
-#: ../src/plugins/reporter-mantisbt.c:597
+#: ../src/plugins/reporter-bugzilla.c:853
+#: ../src/plugins/reporter-mantisbt.c:622
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Fejlen er allerede rapporteret: %i"
 
-#: ../src/plugins/reporter-bugzilla.c:823
+#: ../src/plugins/reporter-bugzilla.c:896
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "Tilføjer %s til CC-liste"
 
-#: ../src/plugins/reporter-bugzilla.c:844
+#: ../src/plugins/reporter-bugzilla.c:917
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Tilføjer ny komponent til fejl %d"
 
-#: ../src/plugins/reporter-bugzilla.c:857
-#: ../src/plugins/reporter-mantisbt.c:647
+#: ../src/plugins/reporter-bugzilla.c:930
+#: ../src/plugins/reporter-mantisbt.c:672
 msgid "Attaching better backtrace"
 msgstr "Vedhæfter bedre backtrace"
 
-#: ../src/plugins/reporter-bugzilla.c:863
+#: ../src/plugins/reporter-bugzilla.c:936
 msgid "Found the same comment in the bug history, not adding a new one"
 msgstr "Fandt den samme kommentar i fejlhistorikken - tilføjer ikke en ny"
 
-#: ../src/plugins/reporter-bugzilla.c:873
+#: ../src/plugins/reporter-bugzilla.c:946
 #, c-format
 msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
 msgstr "Status: %s%s%s %s/show_bug.cgi?id=%u"
@@ -1859,7 +1814,7 @@ msgstr "Status: %s%s%s %s/show_bug.cgi?id=%u"
 msgid "Submitting oops report to %s"
 msgstr "Indsender oops-rapport til %s"
 
-#: ../src/plugins/reporter-kerneloops.c:147
+#: ../src/plugins/reporter-kerneloops.c:154
 msgid ""
 "& [-v] [-c CONFFILE]... -d DIR\n"
 "\n"
@@ -1883,7 +1838,7 @@ msgstr ""
 "Genkendte strengparameter: SubmitURL.\n"
 "Parameter kan tilsidesættes via $KerneloopsReporter_SubmitURL."
 
-#: ../src/plugins/reporter-kerneloops.c:167
+#: ../src/plugins/reporter-kerneloops.c:174
 #: ../src/plugins/reporter-ureport.c:81
 msgid "Configuration file"
 msgstr "Konfigurationsfil"
@@ -1916,12 +1871,12 @@ msgstr "Sender en notifikations-e-mail til: %s"
 msgid "Sending an email..."
 msgstr "Sender en e-mail..."
 
-#: ../src/plugins/reporter-mailx.c:234
+#: ../src/plugins/reporter-mailx.c:243
 #, c-format
 msgid "Email was sent to: %s"
 msgstr "E-mailen blev sendt: %s"
 
-#: ../src/plugins/reporter-mailx.c:257
+#: ../src/plugins/reporter-mailx.c:266
 msgid ""
 "& [-v] -d DIR [-c CONFFILE] [-F FMTFILE]\n"
 "\n"
@@ -1935,15 +1890,15 @@ msgstr ""
 "\n"
 "Hvis den ikke er angivet, så bliver standard for KONFFIL "
 
-#: ../src/plugins/reporter-mailx.c:280 ../src/plugins/reporter-upload.c:187
+#: ../src/plugins/reporter-mailx.c:289 ../src/plugins/reporter-upload.c:187
 msgid "Config file"
 msgstr "Konfigurationsfil"
 
-#: ../src/plugins/reporter-mailx.c:281
+#: ../src/plugins/reporter-mailx.c:290
 msgid "Formatting file for an email"
 msgstr "Formateringsfil til en e-mail"
 
-#: ../src/plugins/reporter-mailx.c:282
+#: ../src/plugins/reporter-mailx.c:291
 msgid "Notify only (Do not mark the report as sent)"
 msgstr "Giv kun besked (mærk ikke rapporten som afsendt)"
 
@@ -1978,36 +1933,46 @@ msgstr "Annulleret af brugeren."
 msgid "Can't open '%s' for writing. Please select another file:"
 msgstr "Kan ikke åbne '%s' til skrivning. Vælg venligst en anden fil:"
 
-#: ../src/plugins/reporter-print.c:144
+#: ../src/plugins/reporter-print.c:153
 #, c-format
 msgid "The report was appended to %s"
 msgstr "Rapporter blev tilføjet til slutningen af %s"
 
-#: ../src/plugins/reporter-print.c:144
+#: ../src/plugins/reporter-print.c:153
 #, c-format
 msgid "The report was stored to %s"
 msgstr "Rapporten blev gemt til %s"
 
-#: ../src/plugins/reporter-rhtsupport.c:276
-#: ../src/plugins/reporter-ureport.c:295
+#: ../src/plugins/reporter-rhtsupport.c:280
+#: ../src/plugins/reporter-ureport.c:311
 msgid "Failed to generate microreport from the problem data"
 msgstr "Kunne ikke generere mikrorapport fra problemdataene"
 
-#: ../src/plugins/reporter-rhtsupport.c:297
-#: ../src/plugins/reporter-ureport.c:324
+#: ../src/plugins/reporter-rhtsupport.c:301
+#: ../src/plugins/reporter-ureport.c:340
 #, c-format
 msgid "Server responded with an error: '%s'"
 msgstr "Serveren svarede med en fejl: '%s'"
 
-#: ../src/plugins/reporter-rhtsupport.c:357
+#: ../src/plugins/reporter-rhtsupport.c:361
 msgid "Do you still want to create a RHTSupport ticket?"
 msgstr "Vil du stadig oprette en RHTSupport-ticket?"
 
-#: ../src/plugins/reporter-rhtsupport.c:405
+#: ../src/plugins/reporter-rhtsupport.c:409
 msgid "Invalid password or login. Please enter your Red Hat login:"
 msgstr "Ugyldig adgangskode eller login. Indtast venligst dit Red Hat-login:"
 
-#: ../src/plugins/reporter-rhtsupport.c:476
+#: ../src/plugins/reporter-rhtsupport.c:473
+msgid "Please enter customer case number to which you want to attach the data:"
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:479
+#, fuzzy
+#| msgid "Can't continue without password"
+msgid "Can't continue without Red Hat Support case number"
+msgstr "Kan ikke fortsætte uden adgangskode"
+
+#: ../src/plugins/reporter-rhtsupport.c:506
 msgid ""
 "\n"
 "& [-v] [-c CONFFILE] [-F FMTFILE] -d DIR\n"
@@ -2027,41 +1992,49 @@ msgstr ""
 "\n"
 "Hvis det ikke er angivet, så er standarden for KONFFIL "
 
-#: ../src/plugins/reporter-rhtsupport.c:517
+#: ../src/plugins/reporter-rhtsupport.c:550
 msgid "Upload FILEs [to case with this ID]"
 msgstr "Upload FILer [til sag med dette id]"
 
-#: ../src/plugins/reporter-rhtsupport.c:519
+#: ../src/plugins/reporter-rhtsupport.c:552
 msgid "Submit uReport before creating a new case"
 msgstr "Indsend uReport inden oprettelse af ny sag"
 
-#: ../src/plugins/reporter-rhtsupport.c:520
+#: ../src/plugins/reporter-rhtsupport.c:553
 msgid "Configuration file for uReport"
 msgstr "Konfigurationsfil til uReport"
 
-#: ../src/plugins/reporter-rhtsupport.c:521
+#: ../src/plugins/reporter-rhtsupport.c:554
 msgid "Formatting file for a new case"
 msgstr "Formateringsfil til en ny sag"
 
-#: ../src/plugins/reporter-rhtsupport.c:550
+#: ../src/plugins/reporter-rhtsupport.c:591
 msgid "Login is not provided by configuration. Please enter your RHTS login:"
 msgstr ""
 "Login er ikke angivet af konfiguration. Indtast venligst dit RHTS-login:"
 
-#: ../src/plugins/reporter-rhtsupport.c:619
+#: ../src/plugins/reporter-rhtsupport.c:647
+#, c-format
+msgid ""
+"We found a similar Red Hat support case %s. Do you want to attach the data "
+"to the case? Otherwise, you will have to enter the existing Red Hat support "
+"case number."
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:676
 #, c-format
 msgid "Attaching '%s' to case '%s'"
 msgstr "Vedhæfter '%s' til sag '%s'"
 
-#: ../src/plugins/reporter-rhtsupport.c:656
+#: ../src/plugins/reporter-rhtsupport.c:720
 msgid "Sending ABRT crash statistics data"
 msgstr "Sender statistikdata for ABRT-nedbrud"
 
-#: ../src/plugins/reporter-rhtsupport.c:677
+#: ../src/plugins/reporter-rhtsupport.c:741
 msgid "Can't create a temporary directory in "
 msgstr "Kan ikke oprette midlertidig mappe i "
 
-#: ../src/plugins/reporter-rhtsupport.c:702
+#: ../src/plugins/reporter-rhtsupport.c:766
 msgid ""
 "The problem has only occurred once and the ability to reproduce the problem "
 "is unknown. Please ensure you will be able to provide detailed information "
@@ -2071,7 +2044,7 @@ msgstr ""
 "ukendt. Sørg venligst for at du kan give detaljeret information til vores "
 "supportteam. Vil du fortsætte med at åbne en ny suppportsag?"
 
-#: ../src/plugins/reporter-rhtsupport.c:715
+#: ../src/plugins/reporter-rhtsupport.c:779
 #, c-format
 msgid ""
 "The crashed program was released by '%s'. Would you like to report the "
@@ -2080,7 +2053,7 @@ msgstr ""
 "Programmet som holdt op med at virker blev udgivet af '%s'. Vil du "
 "rapportere problemet til Red Hat support?"
 
-#: ../src/plugins/reporter-rhtsupport.c:733
+#: ../src/plugins/reporter-rhtsupport.c:797
 #, c-format
 msgid ""
 "The program '%s' does not appear to be provided by Red Hat. Would you like "
@@ -2089,51 +2062,48 @@ msgstr ""
 "Programmet '%s' ser ikke ud til at være leveret af Red Hat. Vil du "
 "rapportere problemet til Red Hat support?"
 
-#. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are
-#. doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing
 #. error msg is already logged by dd_opendir
-#. Compressing e.g. 0.5gig coredump takes a while. Let client know what we are
-#. doing
-#: ../src/plugins/reporter-rhtsupport.c:797
+#. Compressing e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#: ../src/plugins/reporter-rhtsupport.c:861
 #: ../src/plugins/reporter-upload.c:103
 msgid "Compressing data"
 msgstr "Komprimerer data"
 
-#: ../src/plugins/reporter-rhtsupport.c:805
+#: ../src/plugins/reporter-rhtsupport.c:869
 msgid "Can't create temporary file in "
 msgstr "Kan ikke oprette midlertidig fil i "
 
 #. Check for hints and show them if we have something
-#: ../src/plugins/reporter-rhtsupport.c:816
+#: ../src/plugins/reporter-rhtsupport.c:880
 msgid "Checking for hints"
 msgstr "Søger efter fif"
 
-#: ../src/plugins/reporter-rhtsupport.c:821
+#: ../src/plugins/reporter-rhtsupport.c:885
 msgid "Creating a new case"
 msgstr "Opretter en ny sag"
 
 #. How can we help user sorting out this problem?
-#: ../src/plugins/reporter-rhtsupport.c:832
+#: ../src/plugins/reporter-rhtsupport.c:896
 msgid "Can't determine RH Support Product from problem data."
 msgstr "Kan ikke bestemme RH-supportprodukt ud fra problemdata."
 
-#: ../src/plugins/reporter-rhtsupport.c:888
+#: ../src/plugins/reporter-rhtsupport.c:958
 msgid "Linking ABRT crash statistics record with the case"
 msgstr "Linker registrering af ABRT-nedbrudsstatistik med sagen"
 
-#: ../src/plugins/reporter-rhtsupport.c:901
+#: ../src/plugins/reporter-rhtsupport.c:971
 #, c-format
 msgid "Linking ABRT crash statistics record with contact email: '%s'"
-msgstr ""
-"Linker registrering af ABRT-nedbrudsstatistik med kontakt-e-mail: '%s'"
+msgstr "Linker registrering af ABRT-nedbrudsstatistik med kontakt-e-mail: '%s'"
 
-#: ../src/plugins/reporter-rhtsupport.c:925
+#: ../src/plugins/reporter-rhtsupport.c:995
 #, c-format
 msgid "Adding comment to case '%s'"
 msgstr "Tilføjer kommentar til sag '%s'"
 
 #. Attach the tarball of -d DIR
-#: ../src/plugins/reporter-rhtsupport.c:943
+#: ../src/plugins/reporter-rhtsupport.c:1013
 #, c-format
 msgid "Attaching problem data to case '%s'"
 msgstr "Vedhæfter problemdata til sag '%s'"
@@ -2146,9 +2116,10 @@ msgstr "Dokumentation som kan være relevant: "
 msgid "Updates which possibly help: "
 msgstr "Opdaterings som muligvis hjælper: "
 
-#: ../src/plugins/reporter-systemd-journal.c:220
+#: ../src/plugins/reporter-systemd-journal.c:225
 msgid ""
-"& [-v] [-d DIR] [-m MESSAGEID] [-F FMTFILE] [-p NONE|ESSENTIAL|FULL] [-s SYSLOGID]\n"
+"& [-v] [-d DIR] [-m MESSAGEID] [-F FMTFILE] [-p NONE|ESSENTIAL|FULL] [-s "
+"SYSLOGID]\n"
 "\n"
 "Reports problem information into systemd journal.\n"
 "\n"
@@ -2156,7 +2127,8 @@ msgid ""
 "into systemd journal as a message. If MESSAGEID is defined, the tool\n"
 "creates a catalog message as well.\n"
 msgstr ""
-"& [-v] [-d MAPPE] [-m MEDDELELSESID] [-F FMTFIL] [-p NONE|ESSENTIAL|FULL] [-s SYSLOGID]\n"
+"& [-v] [-d MAPPE] [-m MEDDELELSESID] [-F FMTFIL] [-p NONE|ESSENTIAL|FULL] [-"
+"s SYSLOGID]\n"
 "\n"
 "Rapporterer probleminformation i systemd-journal.\n"
 "\n"
@@ -2164,19 +2136,19 @@ msgstr ""
 "i systemd-journalen som en meddelelse. Hvis MEDDELELSESID er angivet, så\n"
 "opretter værktøjet også en katalogmeddelelse.\n"
 
-#: ../src/plugins/reporter-systemd-journal.c:246
+#: ../src/plugins/reporter-systemd-journal.c:251
 msgid "Catalog message id"
 msgstr "Katalogmeddelelsens id"
 
-#: ../src/plugins/reporter-systemd-journal.c:247
+#: ../src/plugins/reporter-systemd-journal.c:252
 msgid "Formatting file for catalog message"
 msgstr "Formateringsfil til katalogmeddelelse"
 
-#: ../src/plugins/reporter-systemd-journal.c:248
+#: ../src/plugins/reporter-systemd-journal.c:253
 msgid "Dump problem dir into systemd journal fields"
 msgstr "Dump problemmappe i systemd journal-felter"
 
-#: ../src/plugins/reporter-systemd-journal.c:249
+#: ../src/plugins/reporter-systemd-journal.c:254
 msgid "Define SYSLOG_IDENTIFIER systemd journal field"
 msgstr "Angiver SYSLOG_IDENTIFIER systemd-journal-felt"
 
@@ -2223,29 +2195,27 @@ msgstr "Privat SSH-nøglefil"
 
 #: ../src/plugins/reporter-upload.c:219
 msgid ""
-"Please enter a URL (scp, ftp, etc.) where the problem data is to be "
-"exported:"
+"Please enter a URL (scp, ftp, etc.) where the problem data is to be exported:"
 msgstr ""
-"Indtast venligst en URL (scp, ftp osv.) hvor problemdataene skal "
-"eksporteres:"
+"Indtast venligst en URL (scp, ftp osv.) hvor problemdataene skal eksporteres:"
 
-#: ../src/plugins/reporter-mantisbt.c:82
+#: ../src/plugins/reporter-mantisbt.c:80
 msgid "Please enter your MantisBT login:"
 msgstr "Indtast venligst dit MantisBT-login:"
 
-#: ../src/plugins/reporter-mantisbt.c:86
+#: ../src/plugins/reporter-mantisbt.c:84
 msgid "Please enter the password for"
 msgstr "Indtast venligst din adgangskode til"
 
-#: ../src/plugins/reporter-mantisbt.c:97
+#: ../src/plugins/reporter-mantisbt.c:95
 msgid "Credentials are not provided by configuration."
 msgstr "Loginoplysninger leveres ikke af konfiguration."
 
-#: ../src/plugins/reporter-mantisbt.c:121
+#: ../src/plugins/reporter-mantisbt.c:119
 msgid "Invalid password or login."
 msgstr "Ugyldig adgangskode eller login."
 
-#: ../src/plugins/reporter-mantisbt.c:213
+#: ../src/plugins/reporter-mantisbt.c:211
 msgid ""
 "\n"
 "& [-vf] [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\n"
@@ -2266,7 +2236,8 @@ msgid ""
 "depending on their type and size.\n"
 "\n"
 "Otherwise, if such issue is found and it is marked as CLOSED DUPLICATE,\n"
-"the tool follows the chain of duplicates until it finds a non-DUPLICATE issue.\n"
+"the tool follows the chain of duplicates until it finds a non-DUPLICATE "
+"issue.\n"
 "The tool adds a new comment to found issue.\n"
 "\n"
 "The URL to new or modified issue is printed to stdout and recorded in\n"
@@ -2280,7 +2251,8 @@ msgid ""
 "-d DIR is ignored.\n"
 "\n"
 "Option -r sets the last url from reporter_to element which is prefixed with\n"
-"TRACKER_NAME to URL field. This option is applied only when a new issue is to be\n"
+"TRACKER_NAME to URL field. This option is applied only when a new issue is "
+"to be\n"
 "filed. The default value is 'ABRT Server'\n"
 "\n"
 "If not specified, CONFFILE defaults to "
@@ -2304,20 +2276,26 @@ msgstr ""
 "afhængig af deres type og størrelse.\n"
 "\n"
 "Hvis issuen findes, så mærkes den med CLOSED DUPLICATE,\n"
-"værktøjet følger kæden af duplikater indtil den finder en issue med non-DUPLICATE.\n"
+"værktøjet følger kæden af duplikater indtil den finder en issue med non-"
+"DUPLICATE.\n"
 "Værktøjet tilføjer så en ny kommentar til den fundne issue.\n"
 "\n"
-"URL'en til den nye eller ændrede issue udskrives til stdout og registreres i\n"
+"URL'en til den nye eller ændrede issue udskrives til stdout og registreres "
+"i\n"
 "'reported_to'-elementet.\n"
 "\n"
-"Tilvalget -t uploader FILer til issuen som allerede er oprettet på MantisBT-stedet.\n"
+"Tilvalget -t uploader FILer til issuen som allerede er oprettet på MantisBT-"
+"stedet.\n"
 "Issue-id'et hentes fra mappen angivet med -d MAPPE.\n"
-"Hvis problemdata i MAPPE aldrig er blevet rapporteret til MantisBT, så vil upload mislykkedes.\n"
+"Hvis problemdata i MAPPE aldrig er blevet rapporteret til MantisBT, så vil "
+"upload mislykkedes.\n"
 "\n"
-"Tilvalget -tID uploader FILer til issuen med det angivne ID på MantisBT-stedet.\n"
+"Tilvalget -tID uploader FILer til issuen med det angivne ID på MantisBT-"
+"stedet.\n"
 "-d MAPPE ignoreres.\n"
 "\n"
-"Tilvalget -r indstiller den sidste url fra reporter_to-elementet som præfikses med\n"
+"Tilvalget -r indstiller den sidste url fra reporter_to-elementet som "
+"præfikses med\n"
 "TRACKER_NAME til URL-feltet. Tilvalget anvendes kun når en ny issue skal\n"
 "udfyldes. Standardværdien er 'ABRT Server'\n"
 "\n"
@@ -2327,24 +2305,24 @@ msgstr ""
 msgid "Attach FILEs [to issue with this ID]"
 msgstr "Vedhæft FILer [til issue med dette id]"
 
-#: ../src/plugins/reporter-mantisbt.c:320
+#: ../src/plugins/reporter-mantisbt.c:326
 #, c-format
 msgid "Can't open problem dir '%s'."
 msgstr "Kan ikke åbne problemmappen '%s'."
 
-#: ../src/plugins/reporter-mantisbt.c:342
+#: ../src/plugins/reporter-mantisbt.c:348
 msgid "Looking for similar problems in MantisBT"
 msgstr "Leder efter lignende problemer i MantisBT"
 
-#: ../src/plugins/reporter-mantisbt.c:370
+#: ../src/plugins/reporter-mantisbt.c:381
 msgid ""
 "Can't get MantisBT ID because this problem has not yet been reported to "
 "MantisBT."
 msgstr ""
-"Kan ikke hente MantisBT-id da problemet endnu ikke er blevet rapporteret til"
-" MantisBT."
+"Kan ikke hente MantisBT-id da problemet endnu ikke er blevet rapporteret til "
+"MantisBT."
 
-#: ../src/plugins/reporter-mantisbt.c:377
+#: ../src/plugins/reporter-mantisbt.c:386
 #, c-format
 msgid ""
 "This problem has been reported to MantisBT '%s' which differs from the "
@@ -2353,22 +2331,22 @@ msgstr ""
 "Problemet er blevet rapporteret til MantisBT '%s' som ikke er magen til den "
 "konfigureret MantisBT '%s'."
 
-#: ../src/plugins/reporter-mantisbt.c:381
+#: ../src/plugins/reporter-mantisbt.c:390
 #, c-format
 msgid "Malformed url to MantisBT '%s'."
 msgstr "Forkert udformet url til MantisBT '%s'."
 
-#: ../src/plugins/reporter-mantisbt.c:385
+#: ../src/plugins/reporter-mantisbt.c:394
 #, c-format
 msgid "Using MantisBT ID '%s'"
 msgstr "Bruger MantisBT-id'et '%s'"
 
-#: ../src/plugins/reporter-mantisbt.c:393
+#: ../src/plugins/reporter-mantisbt.c:402
 #, c-format
 msgid "Attaching file '%s' to issue %s"
 msgstr "Vedhæfter filen '%s' til issue '%s'"
 
-#: ../src/plugins/reporter-mantisbt.c:412
+#: ../src/plugins/reporter-mantisbt.c:432
 #, c-format
 msgid ""
 "This problem was already reported to MantisBT (see '%s'). Do you still want "
@@ -2378,47 +2356,47 @@ msgstr ""
 "stadig oprette et nyt issue?"
 
 #. Create new issue
-#: ../src/plugins/reporter-mantisbt.c:527
+#: ../src/plugins/reporter-mantisbt.c:545
 msgid "Creating a new issue"
 msgstr "Opretter et nyt issue"
 
-#: ../src/plugins/reporter-mantisbt.c:532
+#: ../src/plugins/reporter-mantisbt.c:550
 #, c-format
 msgid "Invalid format file: %s"
 msgstr "Ugyldig formateringsfil: %s"
 
-#: ../src/plugins/reporter-mantisbt.c:536
+#: ../src/plugins/reporter-mantisbt.c:554
 msgid "Failed to format problem data"
 msgstr "Formatering af problemdata mislykkedes"
 
-#: ../src/plugins/reporter-mantisbt.c:555
+#: ../src/plugins/reporter-mantisbt.c:581
 msgid "Adding External URL to issue"
 msgstr "Tilføj ekstern URL til issue"
 
-#: ../src/plugins/reporter-mantisbt.c:568
+#: ../src/plugins/reporter-mantisbt.c:593
 #, c-format
 msgid "Adding attachments to issue %i"
 msgstr "Tilføjer vedhæftelser til issue %i"
 
-#: ../src/plugins/reporter-mantisbt.c:623
+#: ../src/plugins/reporter-mantisbt.c:648
 #, c-format
 msgid "Invalid duplicate format file: '%s"
 msgstr "Ugyldig duplikat formateringsfil : '%s"
 
-#: ../src/plugins/reporter-mantisbt.c:627
+#: ../src/plugins/reporter-mantisbt.c:652
 msgid "Failed to format duplicate comment from problem data"
 msgstr "Kunne ikke formatere duplikat-kommentar fra problemdata"
 
-#: ../src/plugins/reporter-mantisbt.c:634
+#: ../src/plugins/reporter-mantisbt.c:659
 #, c-format
 msgid "Adding new comment to issue %d"
 msgstr "Tilføjer en ny kommentar til issue %d"
 
-#: ../src/plugins/reporter-mantisbt.c:670
+#: ../src/plugins/reporter-mantisbt.c:695
 msgid "Found the same comment in the issue history, not adding a new one"
 msgstr "Fandt den samme kommentar i issuehistorikken - tilføjer ikke en ny"
 
-#: ../src/plugins/reporter-mantisbt.c:677
+#: ../src/plugins/reporter-mantisbt.c:702
 #, c-format
 msgid "Status: %s%s%s %s/view.php?id=%u"
 msgstr "Status: %s%s%s %s/view.php?id=%u"
@@ -2446,11 +2424,11 @@ msgstr "Brugernavn til CentOS bugtracker-konto"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:5
 msgid ""
-"You can create bugs.centos.org account &lt;a "
-"href=\"https://bugs.centos.org/signup_page.php\"&gt;here&lt;/a&gt;"
+"You can create bugs.centos.org account &lt;a href=\"https://bugs.centos.org/"
+"signup_page.php\"&gt;here&lt;/a&gt;"
 msgstr ""
-"Du kan oprette en bugs.centos.org-konto &lt;a "
-"href=\"https://bugs.centos.org/signup_page.php\"&gt;her&lt;/a&gt;"
+"Du kan oprette en bugs.centos.org-konto &lt;a href=\"https://bugs.centos.org/"
+"signup_page.php\"&gt;her&lt;/a&gt;"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:7
 msgid "CentOS Bug Tracker account password"
@@ -2479,8 +2457,8 @@ msgid ""
 "Specify this only if you needed different project than specified in /etc/os-"
 "release"
 msgstr ""
-"Angiv det kun hvis du havde brug for et andet projekt end det der er angivet"
-" i /etc/os-release"
+"Angiv det kun hvis du havde brug for et andet projekt end det der er angivet "
+"i /etc/os-release"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:16
 msgid "CentOS Bug Tracker project version"
@@ -2488,8 +2466,8 @@ msgstr "Version af CentOS bugtracker-projekt"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:17
 msgid ""
-"Specify this only if you needed different project version than specified in "
-"/etc/os-release"
+"Specify this only if you needed different project version than specified in /"
+"etc/os-release"
 msgstr ""
 "Angiv det kun hvis du havde brug for en anden projektversion end den der er "
 "angivet i /etc/os-release"
@@ -2575,6 +2553,7 @@ msgid "Send binary files like coredump"
 msgstr "Send binære filer, såsom coredump"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:1
+#: ../src/plugins/report_RHTSupport_AddData.xml.in.h:1
 msgid "Red Hat Customer Support"
 msgstr "Red Hat kundesupport"
 
@@ -2603,9 +2582,8 @@ msgid ""
 "Submit &lt;a href=\"https://access.redhat.com/articles/642323\"&gt;micro-"
 "report&lt;/a&gt; when creating a new case."
 msgstr ""
-"Indsend &lt;a "
-"href=\"https://access.redhat.com/articles/642323\"&gt;mikrorapport&lt;/a&gt;"
-" når der oprettes en ny sag."
+"Indsend &lt;a href=\"https://access.redhat.com/articles/642323\"&gt;"
+"mikrorapport&lt;/a&gt; når der oprettes en ny sag."
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:9
 msgid "RH Portal URL"
@@ -2614,6 +2592,10 @@ msgstr "RH-portal-URL"
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Address of the Red Hat support portal"
 msgstr "Adresse til Red Hat supportportalen"
+
+#: ../src/plugins/report_RHTSupport_AddData.xml.in.h:2
+msgid "Attach the data to existing Red Hat support case"
+msgstr ""
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report Uploader"
@@ -2624,23 +2606,23 @@ msgid "Upload as tar.gz file (via FTP/SCP/...)"
 msgstr "Upload som tar.gz-fil (via FTP/SCP/...)"
 
 #: ../src/plugins/report_Uploader.xml.in.h:3
-#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:3
 msgid "URL"
 msgstr "URL"
 
 #: ../src/plugins/report_Uploader.xml.in.h:4
 msgid ""
-"Where do you want to upload the tarball with report in form "
-"login:password@url"
+"Where do you want to upload the tarball with report in form login:"
+"password@url"
 msgstr ""
-"Hvor vil du uploade tarball'en med rapporten i formatet "
-"login:adgangskode@url"
+"Hvor vil du uploade tarball'en med rapporten i formatet login:adgangskode@url"
 
 #: ../src/plugins/report_Uploader.xml.in.h:5
 msgid ""
-"Examples:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]"
+"Examples:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:"
+"pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]"
 msgstr ""
-"Eksempel:&#xA;ftp://[bruger[:adgangskode]@]vært/mappe/[fil.tar.gz]&#xA;scp://[bruger[:adgangskode]@]vært/mappe/[fil.tar.gz]&#xA;fil:///mappe/[fil.tar.gz]"
+"Eksempel:&#xA;ftp://[bruger[:adgangskode]@]vært/mappe/[fil.tar.gz]&#xA;scp://"
+"[bruger[:adgangskode]@]vært/mappe/[fil.tar.gz]&#xA;fil:///mappe/[fil.tar.gz]"
 
 #: ../src/plugins/report_Uploader.xml.in.h:7
 msgid "Use this field if you do not want to have user name in URL"
@@ -2651,12 +2633,10 @@ msgid "Use this field if you do not want to have password in URL"
 msgstr "Brug dette felt hvis du ikke vil have adgangskoden i URL'en"
 
 #: ../src/plugins/report_Uploader.xml.in.h:14
-#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:8
 msgid "FTP Proxy"
 msgstr "FTP-proxy"
 
 #: ../src/plugins/report_Uploader.xml.in.h:15
-#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:9
 msgid "Sets the proxy server to use for FTP"
 msgstr "Indstiller proxyserveren som skal bruges til FTP"
 
@@ -2703,24 +2683,24 @@ msgstr ""
 "rapporteret."
 
 #: ../src/plugins/report_uReport.xml.in.h:7
+msgid "Report unpackaged problems"
+msgstr ""
+
+#: ../src/plugins/report_uReport.xml.in.h:8
+msgid "Report problems coming from unpackaged executables."
+msgstr ""
+
+#: ../src/plugins/report_uReport.xml.in.h:9
 msgid "Contact email address"
 msgstr "Kontakt-e-mailadresse"
 
-#: ../src/plugins/report_uReport.xml.in.h:8
+#: ../src/plugins/report_uReport.xml.in.h:10
 msgid ""
 "Email address that can be used by ABRT server to inform you about news and "
 "updates"
 msgstr ""
 "E-mailadresse som kan bruges af ABRT-serveren til at informere dig om "
 "nyheder og opdateringer"
-
-#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:1
-msgid "Emergency analysis"
-msgstr "Nødanalyse"
-
-#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:2
-msgid "Upload the problem data for further analysis"
-msgstr "Upload problemdataene for yderligere analyse"
 
 #: ../src/plugins/watch_Bugzilla.xml.in.h:1
 msgid "Watch Bugzilla Bug"
@@ -2752,21 +2732,20 @@ msgid ""
 "tickets for more info"
 msgstr ""
 "Der er blevet anmodet om oprettelse af en privat ticket, men der blev ikke "
-"angivet nogen grupper, se venligst "
-"https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets for "
-"mere info"
+"angivet nogen grupper, se venligst https://github.com/abrt/abrt/wiki/"
+"FAQ#creating-private-bugzilla-tickets for mere info"
 
 #: ../src/plugins/rhbz.c:604
 #, c-format
 msgid "New bug id: %i"
 msgstr "Ny bug-id: %i"
 
-#: ../src/plugins/rhbz.c:724
+#: ../src/plugins/rhbz.c:725
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla kunne ikke finde forældrene til fejlen %d"
 
-#: ../src/plugins/rhbz.c:870
+#: ../src/plugins/rhbz.c:873
 msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
 msgstr "Bug.search(quicksearch) returværdien indeholder ikke medlemmet 'bugs'"
 
@@ -2775,151 +2754,151 @@ msgstr "Bug.search(quicksearch) returværdien indeholder ikke medlemmet 'bugs'"
 msgid "MantisBT couldn't find parent of issue %d"
 msgstr "MantisBT kunne ikke finde forældrene til issuet %d"
 
-#: ../src/plugins/mantisbt.c:178
+#: ../src/plugins/mantisbt.c:180
 msgid "SOAP: Failed to get child element because of no parent."
 msgstr "SOAP: Kunne ikke hente barneelement da der ikke er nogen forælder."
 
-#: ../src/plugins/mantisbt.c:187
+#: ../src/plugins/mantisbt.c:189
 msgid "SOAP: Failed to get next element because of no node."
 msgstr "SOAP: Kunne ikke hente næste element da der ikke er noget knudepunkt."
 
-#: ../src/plugins/mantisbt.c:196
+#: ../src/plugins/mantisbt.c:198
 msgid "SOAP: Failed to get child node because of no parent."
 msgstr "SOAP: Kunne ikke hente barneknudepunkt da der ikke er nogen forælder."
 
-#: ../src/plugins/mantisbt.c:217
+#: ../src/plugins/mantisbt.c:219
 msgid "SOAP: Failed to parse xml during creating request."
 msgstr "SOAP: Kunne ikke fortolke xml under oprettelse af forespørgsel."
 
-#: ../src/plugins/mantisbt.c:225
+#: ../src/plugins/mantisbt.c:227
 msgid "SOAP: Failed to get xml root element."
 msgstr "SOAP: Kunne ikke hente xml-rodelement."
 
-#: ../src/plugins/mantisbt.c:238
+#: ../src/plugins/mantisbt.c:240
 msgid ""
 "SOAP: Failed to add a new child node because of no node or no child name."
 msgstr ""
 "SOAP: Kunne ikke tilføje et nyt barneknudepunkt da der ikke er noget "
 "knudepunkt eller intet barnenavn."
 
-#: ../src/plugins/mantisbt.c:243
+#: ../src/plugins/mantisbt.c:245
 msgid "SOAP: Failed to create a new xml child item."
 msgstr "SOAP: Kunne ikke oprette et xml-barnepunkt."
 
-#: ../src/plugins/mantisbt.c:248
+#: ../src/plugins/mantisbt.c:250
 msgid "SOAP: Failed to create a new property."
 msgstr "SOAP: Kunne ikke oprette en ny egenskab."
 
-#: ../src/plugins/mantisbt.c:258
+#: ../src/plugins/mantisbt.c:260
 msgid "SOAP: Failed to add method parametr."
 msgstr "SOAP: Kunne ikke tilføje metodeparameter."
 
-#: ../src/plugins/mantisbt.c:287
+#: ../src/plugins/mantisbt.c:289
 msgid "SOAP: Failed to add new issue parametrs."
 msgstr "SOAP: Kunne ikke tilføje nye issue-parametre."
 
-#: ../src/plugins/mantisbt.c:290
+#: ../src/plugins/mantisbt.c:292
 msgid ""
 "SOAP: Failed to add new issue parameters because the required items are "
 "missing."
 msgstr ""
 "SOAP: Kunne ikke tilføje nye issue-parametre da de krævede punkter mangler."
 
-#: ../src/plugins/mantisbt.c:334
+#: ../src/plugins/mantisbt.c:336
 msgid "SOAP: Failed to create a new property in custom fields."
 msgstr "SOAP: Kunne ikke oprette en ny egenskab i tilpassede feltet."
 
-#: ../src/plugins/mantisbt.c:352
+#: ../src/plugins/mantisbt.c:354
 msgid ""
 "SOAP: Failed to create SOAP string because of invalid function arguments."
 msgstr ""
 "SOAP: Kunne ikke oprette SOAP-streng da der er ugyldige funktionsargumenter."
 
-#: ../src/plugins/mantisbt.c:359
+#: ../src/plugins/mantisbt.c:361
 msgid "SOAP: Failed to dump xml node."
 msgstr "SOAP: Kunne ikke dumpe xml-knudepunkt."
 
-#: ../src/plugins/mantisbt.c:373
+#: ../src/plugins/mantisbt.c:375
 msgid "SOAP: Failed to print SOAP string."
 msgstr "SOAP: Kunne ikke udskrive SOAP-streng."
 
-#: ../src/plugins/mantisbt.c:380
+#: ../src/plugins/mantisbt.c:382
 msgid "Failed to dump xml node."
 msgstr "Kunne ikke dumpe xml-knudepunkt."
 
-#: ../src/plugins/mantisbt.c:456
+#: ../src/plugins/mantisbt.c:458
 msgid "SOAP: Failed to parse xml (searching value at depth by name)."
 msgstr ""
 "SOAP: Kunne ikke fortolke xml (søger efter værdi ved samme dybde som navn)."
 
-#: ../src/plugins/mantisbt.c:460 ../src/plugins/mantisbt.c:503
-#: ../src/plugins/mantisbt.c:532
+#: ../src/plugins/mantisbt.c:462 ../src/plugins/mantisbt.c:505
+#: ../src/plugins/mantisbt.c:534
 msgid "SOAP: Failed to create xml text reader."
 msgstr "SOAP: Kunne ikke oprette xml-tekstlæser."
 
-#: ../src/plugins/mantisbt.c:499
+#: ../src/plugins/mantisbt.c:501
 msgid "SOAP: Failed to parse xml."
 msgstr "SOAP: Kunne ikke fortolke xml."
 
-#: ../src/plugins/mantisbt.c:528
+#: ../src/plugins/mantisbt.c:530
 msgid "SOAP: Failed to parse xml (get related to issue)."
 msgstr "SOAP: Kunne ikke fortolke xml (hent relaterede til issue)."
 
-#: ../src/plugins/mantisbt.c:645
+#: ../src/plugins/mantisbt.c:647
 msgid "Url or request isn't specified."
 msgstr "Url eller anmodning er ikke angivet."
 
-#: ../src/plugins/mantisbt.c:673
+#: ../src/plugins/mantisbt.c:675
 #, c-format
 msgid "Error in HTTP POST, HTTP code: 404 (Not found), URL:'%s'"
 msgstr "Fejl i HTTP POST, HTTP-kode: 404 (Not found), URL:'%s'"
 
-#: ../src/plugins/mantisbt.c:697
+#: ../src/plugins/mantisbt.c:699
 #, c-format
 msgid "Error in MantisBT request at '%s': %s"
 msgstr "Fejl i MantisBT-anmodning ved '%s': %s"
 
-#: ../src/plugins/mantisbt.c:699
+#: ../src/plugins/mantisbt.c:701
 #, c-format
 msgid "Error in MantisBT request at '%s'"
 msgstr "Fejl i MantisBT-anmodning ved '%s'"
 
-#: ../src/plugins/mantisbt.c:741
+#: ../src/plugins/mantisbt.c:743
 #, c-format
 msgid "Failed to attach file: '%s'"
 msgstr "Kunne ikke vedhæfte fil: '%s'"
 
-#: ../src/plugins/mantisbt.c:760
+#: ../src/plugins/mantisbt.c:762
 #, c-format
 msgid "Can't lseek '%s'"
 msgstr "Kan ikke lseek '%s'"
 
-#: ../src/plugins/mantisbt.c:766
+#: ../src/plugins/mantisbt.c:768
 #, c-format
 msgid "Can't upload '%s', it's too large (%llu bytes)"
 msgstr "Kan ikke uploade '%s', den er for stor (%llu bytes)"
 
-#: ../src/plugins/mantisbt.c:776
+#: ../src/plugins/mantisbt.c:778
 #, c-format
 msgid "Can't read '%s'"
 msgstr "Kan ikke læse '%s'"
 
-#: ../src/plugins/mantisbt.c:792
+#: ../src/plugins/mantisbt.c:794
 #, c-format
 msgid "Can't open '%s'"
 msgstr "Kan ikke åbne '%s'"
 
-#: ../src/plugins/mantisbt.c:859
+#: ../src/plugins/mantisbt.c:861
 #, c-format
 msgid "Failed to search MantisBT issue by duphash: '%s'"
 msgstr "Kunne ikke søge efter MantisBT-issue med duphash: '%s'"
 
-#: ../src/plugins/mantisbt.c:903
+#: ../src/plugins/mantisbt.c:906
 #, c-format
 msgid "Failed to search MantisBT duplicate issue: '%s'"
 msgstr "Kunne ikke søge efter MantisBT-duplikat-issue: '%s'"
 
-#: ../src/plugins/mantisbt.c:930
+#: ../src/plugins/mantisbt.c:934
 #, c-format
 msgid ""
 "MantisBT doesn't contain custom field '%s', which is required for full "
@@ -2928,42 +2907,41 @@ msgstr ""
 "MantisBT indeholder ikke det tilpassede felt '%s', som kræves for fuld "
 "funktionalitet af rapportøren. Vil du stadig oprette et nyt issue?"
 
-#: ../src/plugins/mantisbt.c:954
+#: ../src/plugins/mantisbt.c:958
 #, c-format
 msgid "Failed to get custom fields for '%s' project"
 msgstr "Kunne ikke hente tilpassede felter af '%s'-projektet"
 
-#: ../src/plugins/mantisbt.c:998
+#: ../src/plugins/mantisbt.c:1002
 #, c-format
 msgid "Failed to create a new issue: '%s'"
 msgstr "Kunne ikke oprette et nyt issue: '%s'"
 
-#: ../src/plugins/mantisbt.c:1024
+#: ../src/plugins/mantisbt.c:1028
 #, c-format
 msgid "Failed to get MantisBT issue: '%s'"
 msgstr "Kunne ikke hente MantisBT-issue: '%s'"
 
-#: ../src/plugins/mantisbt.c:1038
+#: ../src/plugins/mantisbt.c:1042
 #, c-format
 msgid "Issue %i is CLOSED, but it has no RESOLUTION"
 msgstr "Issuet %i er CLOSED, med det har ikke nogen RESOLUTION"
 
-#: ../src/plugins/mantisbt.c:1046
+#: ../src/plugins/mantisbt.c:1050
 #, c-format
 msgid "Issue %i is CLOSED as DUPLICATE, but it has no DUPLICATE_ID"
-msgstr ""
-"Issuet %i er CLOSED som DUPLICATE, men det har ikke nogen DUPLICATE_ID"
+msgstr "Issuet %i er CLOSED som DUPLICATE, men det har ikke nogen DUPLICATE_ID"
 
-#: ../src/plugins/mantisbt.c:1083
+#: ../src/plugins/mantisbt.c:1087
 #, c-format
 msgid "Failed to add MantisBT issue note: '%s'"
 msgstr "Kunne ikke tilføje MantisBT-issue-note: '%s'"
 
-#: ../src/plugins/mantisbt.c:1097
+#: ../src/plugins/mantisbt.c:1101
 msgid "The MantisBT project has not been deretmined."
 msgstr "MantisBT-projektet er blevet besluttet."
 
-#: ../src/plugins/mantisbt.c:1106
+#: ../src/plugins/mantisbt.c:1113
 msgid "Failed to get project id from name"
 msgstr "Kunne ikke hente projekt-id fra navn"
 
@@ -3001,8 +2979,8 @@ msgstr "kontakt e-mailadresse (kræver -a|-A, er i konflikt med -E)"
 
 #: ../src/plugins/reporter-ureport.c:89
 msgid ""
-"contact e-mail address from environment or configuration file (requires "
-"-a|-A, conflicts with -e)"
+"contact e-mail address from environment or configuration file (requires -a|-"
+"A, conflicts with -e)"
 msgstr ""
 "kontakt e-mailadresse fra miljø eller konfigurationsfil (kræver -a|-A, er i "
 "konflikt med -e)"
@@ -3015,8 +2993,7 @@ msgstr "vedhæft RHBZ-fejl (kræver -a|-A, er i konflikt med -B)"
 msgid ""
 "attach last RHBZ bug from reported_to (requires -a|-A, conflicts with -b)"
 msgstr ""
-"vedhæft sidste RHBZ-fejl fra reported_to (kræver -a|-A, er i konflikt med "
-"-b)"
+"vedhæft sidste RHBZ-fejl fra reported_to (kræver -a|-A, er i konflikt med -b)"
 
 #: ../src/plugins/reporter-ureport.c:95
 msgid "attach short text (requires -a|-A, conflicts with -D)"
@@ -3032,16 +3009,16 @@ msgstr "vedhæft værdi (kræver -a|-A og -T, er i konflikt med -L)"
 
 #: ../src/plugins/reporter-ureport.c:103
 msgid ""
-"attach data of FIELD [URL] of the last report result (requires -a|-A, -r and"
-" -T, conflicts with -l)"
+"attach data of FIELD [URL] of the last report result (requires -a|-A, -r and "
+"-T, conflicts with -l)"
 msgstr ""
 "vedhæft data af FIELD [URL] af det sidste rapportresultat (kræver -a|-A, -r "
 "og -T, er i konflikt med -l)"
 
 #: ../src/plugins/reporter-ureport.c:106
 msgid ""
-"use REPORT_RESULT_TYPE when looking for FIELD in reported_to (used only with"
-" -L)"
+"use REPORT_RESULT_TYPE when looking for FIELD in reported_to (used only with "
+"-L)"
 msgstr ""
 "brug REPORT_RESULT_TYPE når der ledes efter FIELD i reported_to (bruges kun "
 "med -L)"
@@ -3056,9 +3033,11 @@ msgstr ""
 msgid ""
 "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS]\n"
 "  [-A -a bthash -B -b bug-id -E -e email -O -o comment] [-d DIR]\n"
-"  [-A -a bthash -T ATTACHMENT_TYPE -r REPORT_RESULT_TYPE -L RESULT_FIELD] [-d DIR]\n"
+"  [-A -a bthash -T ATTACHMENT_TYPE -r REPORT_RESULT_TYPE -L RESULT_FIELD] [-"
+"d DIR]\n"
 "  [-A -a bthash -T ATTACHMENT_TYPE -l DATA] [-d DIR]\n"
-"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-i AUTH_ITEMS] [-d DIR]\n"
+"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-i AUTH_ITEMS] "
+"[-d DIR]\n"
 "\n"
 "Upload micro report or add an attachment to a micro report\n"
 "\n"
@@ -3066,67 +3045,69 @@ msgid ""
 msgstr ""
 "& [-v] [-c FIL] [-u URL] [-k] [-t KILDE] [-h LOGINOPLYSNINGER]\n"
 "  [-A -a bthash -B -b bug-id -E -e e-mail -O -o kommentar] [-d MAPPE]\n"
-"  [-A -a bthash -T VEDHÆFTNINGSTYPE -r RAPPORTRESULTATSTYPE -L RESULTAT_FELT] [-d MAPPE]\n"
+"  [-A -a bthash -T VEDHÆFTNINGSTYPE -r RAPPORTRESULTATSTYPE -L "
+"RESULTAT_FELT] [-d MAPPE]\n"
 "  [-A -a bthash -T VEDHÆFTNINGSTYPE -l DATA] [-d MAPPE]\n"
-"& [-v] [-c FIL] [-u URL] [-k] [-t KILDE] [-h LOGINOPLYSNINGER] [-i AUTH_PUNKT] [-d MAPPE]\n"
+"& [-v] [-c FIL] [-u URL] [-k] [-t KILDE] [-h LOGINOPLYSNINGER] [-i "
+"AUTH_PUNKT] [-d MAPPE]\n"
 "\n"
 "Upload mikrorapport eller tilføj en vedhæftning til en mikrorapport\n"
 "\n"
 "Læser standardkonfiguration fra "
 
-#: ../src/plugins/reporter-ureport.c:188
+#: ../src/plugins/reporter-ureport.c:191
 msgid "This problem does not have an uReport assigned."
 msgstr "Problemet har ikke en uReport tilknyttet."
 
-#: ../src/plugins/reporter-ureport.c:201
+#: ../src/plugins/reporter-ureport.c:212
 msgid "This problem has not been reported to Bugzilla."
 msgstr "Problemet er ikke blevet rapporteret til Bugzilla."
 
-#: ../src/plugins/reporter-ureport.c:205
+#: ../src/plugins/reporter-ureport.c:218
 #, c-format
 msgid "Unable to find bug ID in bugzilla URL '%s'"
 msgstr "Kan ikke finde bug-id i bugzilla-URL'en '%s'"
 
-#: ../src/plugins/reporter-ureport.c:210
+#: ../src/plugins/reporter-ureport.c:223
 #, c-format
 msgid "Unable to parse bug ID from bugzilla URL '%s'"
 msgstr "Kan ikke fortolke bug-id fra bugzilla-URL'en '%s'"
 
-#: ../src/plugins/reporter-ureport.c:219
+#: ../src/plugins/reporter-ureport.c:230
 msgid "Cannot attach comment from 'comment' file"
 msgstr "Kan ikke vedhæfte kommentar fra 'comment'-fil"
 
-#: ../src/plugins/reporter-ureport.c:221
+#: ../src/plugins/reporter-ureport.c:232
 msgid "'comment' file is empty"
 msgstr "'kommentar'-fil er tom"
 
-#: ../src/plugins/reporter-ureport.c:229
+#: ../src/plugins/reporter-ureport.c:243
 #, c-format
 msgid "This problem has not been reported to '%s'."
 msgstr "Problemet er ikke blevet rapporteret til '%s'."
 
-#: ../src/plugins/reporter-ureport.c:234
+#: ../src/plugins/reporter-ureport.c:251
 #, c-format
 msgid "The report result '%s' is missing URL."
 msgstr "Rapportresultatet '%s' mangler URL."
 
-#: ../src/plugins/reporter-ureport.c:251
+#: ../src/plugins/reporter-ureport.c:267
 msgid ""
-"Neither environment variable 'uReport_ContactEmail' nor configuration option"
-" 'ContactEmail' is set"
+"Neither environment variable 'uReport_ContactEmail' nor configuration option "
+"'ContactEmail' is set"
 msgstr ""
 "Hverken miljøvariablen 'uReport_ContactEmail' eller "
 "konfigurationsvalgmuligheden 'ContactEmail' er sat"
 
-#: ../src/plugins/reporter-ureport.c:257
+#: ../src/plugins/reporter-ureport.c:273
 msgid "You need to specify bug ID, contact email, comment or all of them"
 msgstr "Du skal angive bug-id, kontakt-e-mail, kommentar eller dem allesammen"
 
-#: ../src/plugins/reporter-ureport.c:287
+#: ../src/plugins/reporter-ureport.c:303
 msgid "You need to specify bthash of the uReport to attach."
 msgstr "Du skal angive bthash af uReport for at vedhæfte."
 
-#: ../src/plugins/reporter-ureport.c:316
+#: ../src/plugins/reporter-ureport.c:332
 msgid "This problem has already been reported."
 msgstr "Problemet har allerede blevet rapporteret."
 
@@ -3134,34 +3115,34 @@ msgstr "Problemet har allerede blevet rapporteret."
 msgid "How would you like to report the problem?"
 msgstr "Hvordan vil du rapportere problemet?"
 
-#: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:146
-#: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:259
-#: ../src/report-newt/report-newt.c:337 ../src/report-newt/report-newt.c:354
+#: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:145
+#: ../src/report-newt/report-newt.c:168 ../src/report-newt/report-newt.c:258
+#: ../src/report-newt/report-newt.c:334 ../src/report-newt/report-newt.c:356
 msgid "Ok"
 msgstr "Ok"
 
-#: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:146
+#: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:145
 msgid "Cancel"
 msgstr "Annuller"
 
-#: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:337
+#: ../src/report-newt/report-newt.c:168 ../src/report-newt/report-newt.c:334
 msgid "Error"
 msgstr "Fejl"
 
-#: ../src/report-newt/report-newt.c:256
+#: ../src/report-newt/report-newt.c:255
 msgid "Reporting"
 msgstr "Rapportering"
 
-#: ../src/report-newt/report-newt.c:276
+#: ../src/report-newt/report-newt.c:275
 #, c-format
 msgid "--- Running %s ---"
 msgstr "--- Kører %s ---"
 
-#: ../src/report-newt/report-newt.c:354
+#: ../src/report-newt/report-newt.c:356
 msgid "No reporters available"
 msgstr "Ingen tilgængelige rapportører"
 
-#: ../src/report-newt/report-newt.c:384
+#: ../src/report-newt/report-newt.c:386
 msgid ""
 "& [-d] DIR\n"
 "\n"
@@ -3171,7 +3152,7 @@ msgstr ""
 "\n"
 "newt-værktøj til at rapportere problem som er gemt i angivne MAPPE"
 
-#: ../src/report-newt/report-newt.c:394
+#: ../src/report-newt/report-newt.c:396
 msgid "Remove DIR after reporting"
 msgstr "Fjern MAPPE efter rapportering"
 
@@ -3249,7 +3230,6 @@ msgstr "Behandl X-server problemet med CentOS-infrastrukturen"
 #: ../src/workflows/workflow_FedoraLibreport.xml.in.h:1
 #: ../src/workflows/workflow_FedoraJava.xml.in.h:1
 #: ../src/workflows/workflow_FedoraJavaScript.xml.in.h:1
-#: ../src/workflows/workflow_RHELJavaScript.xml.in.h:1
 msgid "Report to Fedora"
 msgstr "Rapportér til Fedora"
 
@@ -3341,6 +3321,7 @@ msgstr ""
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:1
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:1
 #: ../src/workflows/workflow_RHELJava.xml.in.h:1
+#: ../src/workflows/workflow_RHELJavaScript.xml.in.h:1
 msgid "Ask Red Hat Support for help"
 msgstr "Spørg Red Hat support om hjælp"
 
@@ -3357,6 +3338,30 @@ msgid ""
 "Support"
 msgstr ""
 "Opret ny Red Hat-supportsag - Jeg vil gerne kontaktes af Red Hat support"
+
+#: ../src/workflows/workflow_RHELAddDataCCpp.xml.in.h:1
+#: ../src/workflows/workflow_RHELAddDataJava.xml.in.h:1
+#: ../src/workflows/workflow_RHELAddDataKerneloops.xml.in.h:1
+#: ../src/workflows/workflow_RHELAddDataLibreport.xml.in.h:1
+#: ../src/workflows/workflow_RHELAddDataPython.xml.in.h:1
+#: ../src/workflows/workflow_RHELAddDatavmcore.xml.in.h:1
+#: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:1
+#: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:1
+msgid "Attach crash data to an existing Red Hat support case"
+msgstr ""
+
+#: ../src/workflows/workflow_RHELAddDataCCpp.xml.in.h:2
+#: ../src/workflows/workflow_RHELAddDataJava.xml.in.h:2
+#: ../src/workflows/workflow_RHELAddDataKerneloops.xml.in.h:2
+#: ../src/workflows/workflow_RHELAddDataLibreport.xml.in.h:2
+#: ../src/workflows/workflow_RHELAddDataPython.xml.in.h:2
+#: ../src/workflows/workflow_RHELAddDatavmcore.xml.in.h:2
+#: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:2
+#: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:2
+#, fuzzy
+#| msgid "Ask Red Hat Support for help"
+msgid "Provide Red Hat Support with crash details"
+msgstr "Spørg Red Hat support om hjælp"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
@@ -3400,3 +3405,91 @@ msgstr "Behandl Java-undtagelsen med Red Hat-infrastrukturen"
 #: ../src/workflows/workflow_RHELBugzillaJavaScript.xml.in.h:2
 msgid "Process the JavaScript exception using the Red Hat infrastructure"
 msgstr "Behandl JavaScript-undtagelsen med Red Hat-infrastrukturen"
+
+#~ msgid "Alternate GUI file"
+#~ msgstr "Alternativ GUI-fil"
+
+#~ msgid ""
+#~ "No reporting targets are defined for this problem. Check configuration "
+#~ "in /etc/libreport/*"
+#~ msgstr ""
+#~ "Der er ikke angivet nogen rapporteringsmål til problemet. Tjek "
+#~ "konfigurationen i /etc/libreport/*"
+
+#~ msgid "(requires: %s)"
+#~ msgstr "(kræver: %s)"
+
+#~ msgid "(not needed, data already exist: %s)"
+#~ msgstr "(behøves ikke, data findes allerede: %s)"
+
+#~ msgid ""
+#~ "If you are sure that this problem is not caused by network problems "
+#~ "neither by invalid configuration\n"
+#~ "and want to help us, please click on the upload button and provide all "
+#~ "problem data for a deep analysis.\n"
+#~ "<i>Before you do that, please consider the security risks. Problem data "
+#~ "may contain sensitive information like\n"
+#~ "passwords. The uploaded data are stored in a protected storage and only a "
+#~ "limited number of persons can read them.</i>"
+#~ msgstr ""
+#~ "Hvis du er sikker på, at problemet hverken er pga. netværksproblemer "
+#~ "eller ugyldig konfiguration\n"
+#~ "og vil hjælpe os, så klik venligst på upload-knappen og giv alle "
+#~ "problemdata for en dyb analyse.\n"
+#~ "<i>Inden du gør det, så overvej venligst sikkerhedsrisiciene. Problemdata "
+#~ "kan indeholde følsom information, såsom\n"
+#~ "adgangskoder. Den uploadede data gemmer på et beskyttet laget og kan kun "
+#~ "læses af et begrænset antal personer.</i>"
+
+#~ msgid "No processing for event '%s' is defined"
+#~ msgstr "Ingen behandling for begivenheden \"%s\" er defineret"
+
+#~ msgid "Upload for analysis"
+#~ msgstr "Upload til analyse"
+
+#~ msgid ""
+#~ "In order to enable the built-in screencasting functionality the package "
+#~ "fros-recordmydesktop has to be installed. Please run the following "
+#~ "command if you want to install it.\n"
+#~ "\n"
+#~ "<b>su -c \"dnf install fros-recordmydesktop\"</b>"
+#~ msgstr ""
+#~ "For at aktivere den indbyggede skærmoptagelsesfunktionalitet skal fros-"
+#~ "recordmydesktop-pakken installeres. Kør venligst følgende kommando, hvis "
+#~ "du vil installerer den.\n"
+#~ "\n"
+#~ "<b>su -c \"dnf install fros-recordmydesktop\"</b>"
+
+#~ msgid ""
+#~ "Use this button to generate more informative backtrace after you "
+#~ "installed additional debug packages"
+#~ msgstr ""
+#~ "Brug denne knap til at generere en mere informativ backtrace efter du har "
+#~ "installeret yderligere fejlsøgningspakker"
+
+#~ msgid "If you don't know how to describe it, you can"
+#~ msgstr "Hvis du ikke ved hvordan du skal beskrive det, så kan du"
+
+#~ msgid "add a screencast"
+#~ msgstr "tilføj en skærmoptagelse"
+
+#~ msgid "Report result label mustn't be empty string."
+#~ msgstr "Etiket for rapportresult må ikke være en tom streng."
+
+#~ msgid "Report result label mustn't contain ':' character."
+#~ msgstr "Etiket for rapportresult må ikke indeholde ':'-tegn."
+
+#~ msgid "Invalid password or login. Please enter your Bugzilla login:"
+#~ msgstr ""
+#~ "Ugyldig adgangskode eller login. Indtast venligst dit Bugzilla-login:"
+
+#~ msgid ""
+#~ "Login is not provided by configuration. Please enter your Bugzilla login:"
+#~ msgstr ""
+#~ "Login leveres ikke af konfiguration. Indtast venligst dit Bugzilla-login:"
+
+#~ msgid "Emergency analysis"
+#~ msgstr "Nødanalyse"
+
+#~ msgid "Upload the problem data for further analysis"
+#~ msgstr "Upload problemdataene for yderligere analyse"

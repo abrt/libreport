@@ -26,18 +26,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-02 01:37-0500\n"
+"POT-Creation-Date: 2020-01-09 10:42+0100\n"
 "PO-Revision-Date: 2017-04-18 04:33+0000\n"
 "Last-Translator: Igor Gorbounov <igor.gorbounov@gmail.com>\n"
-"Language-Team: Russian (http://www.transifex.com/projects/p/libreport/language/ru/)\n"
+"Language-Team: Russian (http://www.transifex.com/projects/p/libreport/"
+"language/ru/)\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../src/cli/cli.c:63
+#: ../src/cli/cli.c:66
 msgid ""
 "& [-vsp] -L[PREFIX] [PROBLEM_DIR]\n"
 "   or: & [-vspy] -e EVENT PROBLEM_DIR\n"
@@ -50,35 +52,35 @@ msgstr ""
 "или: & [-vspy] -x PROBLEM_DIR"
 
 #. short_name long_name  value    parameter_name  help
-#: ../src/cli/cli.c:86
+#: ../src/cli/cli.c:89
 msgid "List possible events [which start with PREFIX]"
 msgstr "Показать возможные события [начинающиеся с PREFIX]"
 
-#: ../src/cli/cli.c:87 ../src/gui-wizard-gtk/main.c:172
+#: ../src/cli/cli.c:90 ../src/gui-wizard-gtk/main.c:170
 msgid "Run only these events"
 msgstr "Запустить только эти события"
 
-#: ../src/cli/cli.c:88 ../src/gui-wizard-gtk/main.c:171
+#: ../src/cli/cli.c:91 ../src/gui-wizard-gtk/main.c:169
 msgid "Remove PROBLEM_DIR after reporting"
 msgstr "Удалить PROBLEM_DIR после отправки отчета"
 
-#: ../src/cli/cli.c:89 ../src/gui-wizard-gtk/main.c:173
+#: ../src/cli/cli.c:92
 msgid "Expert mode"
 msgstr "Экспертный режим"
 
-#: ../src/cli/cli.c:90 ../src/report-newt/report-newt.c:395
+#: ../src/cli/cli.c:93 ../src/report-newt/report-newt.c:397
 msgid "Display version and exit"
 msgstr "Показать версию и выйти"
 
-#: ../src/cli/cli.c:91
+#: ../src/cli/cli.c:94
 msgid "Noninteractive: don't ask questions, assume 'yes'"
 msgstr "Автоматически отвечать «Да» на все вопросы"
 
-#: ../src/cli/cli.c:93
+#: ../src/cli/cli.c:96
 msgid "Log to syslog"
 msgstr "Запись в системный журнал"
 
-#: ../src/cli/cli.c:94 ../src/gui-wizard-gtk/main.c:170
+#: ../src/cli/cli.c:97 ../src/gui-wizard-gtk/main.c:168
 msgid "Add program names to log"
 msgstr "Добавить имена программ в журнал"
 
@@ -167,16 +169,16 @@ msgstr ""
 "\n"
 "Отчёт не изменялся"
 
-#: ../src/cli/cli-report.c:471
+#: ../src/cli/cli-report.c:466
 msgid "Your input is not valid, because of:"
 msgstr "Неправильный ввод. Причина:"
 
-#: ../src/cli/cli-report.c:475
+#: ../src/cli/cli-report.c:470
 #, c-format
 msgid "Bad value for '%s': %s"
 msgstr "Недопустимое значение «%s»: %s"
 
-#: ../src/cli/cli-report.c:674
+#: ../src/cli/cli-report.c:671
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data. Do you want "
@@ -185,19 +187,19 @@ msgstr ""
 "Событию «%s» требуется разрешение на отправку вероятно конфиденциальных "
 "данных. Вы хотите продолжить?"
 
-#: ../src/cli/cli-report.c:721
+#: ../src/cli/cli-report.c:718
 msgid "You have chosen number out of range"
 msgstr "Число выходит за пределы допустимого диапазона"
 
-#: ../src/cli/cli-report.c:726
+#: ../src/cli/cli-report.c:723
 msgid "Invalid input, exiting."
 msgstr "Ошибочный ввод, выход."
 
-#: ../src/cli/cli-report.c:747
+#: ../src/cli/cli-report.c:744
 msgid "Select an event to run: "
 msgstr "Выберите действие для запуска:"
 
-#: ../src/cli/cli-report.c:859
+#: ../src/cli/cli-report.c:878
 msgid "Select a workflow to run: "
 msgstr "Выберите рабочий поток:"
 
@@ -239,48 +241,42 @@ msgstr "Не удалось удалить '{0}': {1}"
 msgid "Downloading ({0} of {1}) {2}: {3:3}%"
 msgstr "Загружается ({0} из {1}) {2}: {3:3}%"
 
-#: ../src/client-python/reportclient/debuginfo.py:312
+#: ../src/client-python/reportclient/debuginfo.py:306
 msgid "Initializing package manager"
 msgstr "Инициализация менеджера пакетов"
 
-#. if verbose == 0:
-#. # this suppress yum messages about setting up repositories
-#. mute_stdout()
 #. This takes some time, let user know what we are doing
-#: ../src/client-python/reportclient/debuginfo.py:319
+#: ../src/client-python/reportclient/debuginfo.py:310
 msgid "Setting up repositories"
 msgstr "Настройка репозиториев"
 
-#. if verbose == 0:
-#. # re-enable the output to stdout
-#. unmute_stdout()
-#: ../src/client-python/reportclient/debuginfo.py:326
+#: ../src/client-python/reportclient/debuginfo.py:313
 msgid "Looking for needed packages in repositories"
 msgstr "Поиск обязательных пакетов в репозитории..."
 
-#: ../src/client-python/reportclient/debuginfo.py:330
+#: ../src/client-python/reportclient/debuginfo.py:347
 #, python-brace-format
 msgid "Can't find packages for {0} debuginfo files"
 msgstr "Не найдены пакеты для {0} файлов debuginfo"
 
-#: ../src/client-python/reportclient/debuginfo.py:333
+#: ../src/client-python/reportclient/debuginfo.py:350
 #, python-brace-format
 msgid "Packages to download: {0}"
 msgstr "Пакеты для загрузки: {0}"
 
-#: ../src/client-python/reportclient/debuginfo.py:335
+#: ../src/client-python/reportclient/debuginfo.py:352
 #, python-brace-format
 msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
 msgstr ""
 "Будет загружено {0:.2f} МБ, установленный размер: {1:.2f} МБ. Продолжить?"
 
-#: ../src/client-python/reportclient/debuginfo.py:340
-#: ../src/client-python/reportclient/debuginfo.py:352
-#: ../src/client-python/reportclient/debuginfo.py:363
+#: ../src/client-python/reportclient/debuginfo.py:357
+#: ../src/client-python/reportclient/debuginfo.py:369
+#: ../src/client-python/reportclient/debuginfo.py:380
 msgid "Download cancelled by user"
 msgstr "Загрузка отменена пользователем"
 
-#: ../src/client-python/reportclient/debuginfo.py:347
+#: ../src/client-python/reportclient/debuginfo.py:364
 #, python-brace-format
 msgid ""
 "Warning: Not enough free space in tmp dir '{0}' ({1:.2f}Mb left). Continue?"
@@ -288,43 +284,41 @@ msgstr ""
 "Предупреждение. Недостаточно места во временном каталоге '{0}' (осталось "
 "{1:.2f} МБ). Продолжить?"
 
-#: ../src/client-python/reportclient/debuginfo.py:358
+#: ../src/client-python/reportclient/debuginfo.py:375
 #, python-brace-format
 msgid ""
-"Warning: Not enough free space in cache dir '{0}' ({1:.2f}Mb left). "
-"Continue?"
+"Warning: Not enough free space in cache dir '{0}' ({1:.2f}Mb left). Continue?"
 msgstr ""
-"Предупреждение. Недостаточно места в '{0}' (осталось {1:.2f} МБ). "
-"Продолжить?"
+"Предупреждение. Недостаточно места в '{0}' (осталось {1:.2f} МБ). Продолжить?"
 
-#: ../src/client-python/reportclient/debuginfo.py:380
+#: ../src/client-python/reportclient/debuginfo.py:398
 #, python-brace-format
 msgid "Downloading package {0} failed"
 msgstr "Не удалось загрузить пакет {0}"
 
 #. recursively delete the temp dir on failure
-#: ../src/client-python/reportclient/debuginfo.py:387
+#: ../src/client-python/reportclient/debuginfo.py:405
 msgid "Unpacking failed, aborting download..."
 msgstr "Не удалось распаковать. Загрузка отменяется..."
 
-#: ../src/client-python/reportclient/debuginfo.py:392
+#: ../src/client-python/reportclient/debuginfo.py:410
 #, python-brace-format
 msgid ""
 "'{0}' must be owned by abrt. Please run '# chown -R abrt.abrt {0}' to fix "
 "the issue."
 msgstr ""
-" «{0}» должен принадлежать abrt. Чтобы изменить владельца, выполните «chown "
-"-R abrt.abrt {0}»."
+" «{0}» должен принадлежать abrt. Чтобы изменить владельца, выполните «chown -"
+"R abrt.abrt {0}»."
 
 #. Was: "All downloaded packages have been extracted, removing..."
 #. but it was appearing even if no packages were in fact extracted
 #. (say, when there was one package, and it has download error).
-#: ../src/client-python/reportclient/debuginfo.py:409
+#: ../src/client-python/reportclient/debuginfo.py:427
 #, python-brace-format
 msgid "Removing {0}"
 msgstr "Удаление {0}"
 
-#: ../src/client-python/reportclient/debuginfo.py:413
+#: ../src/client-python/reportclient/debuginfo.py:431
 #, python-brace-format
 msgid "Can't remove {0}, probably contains an error log"
 msgstr "Ошибка удаления {0} (возможно, содержит журнал ошибок)"
@@ -382,7 +376,7 @@ msgstr "Не удалось скопировать файл '{0}': {1}"
 
 #. Follow GTK3's yes-no-buttons order:
 #. * [No] [Yes]
-#. 
+#.
 #: ../src/gtk-helpers/ask_dialogs.c:87
 msgid "_No"
 msgstr "_Нет"
@@ -400,62 +394,62 @@ msgstr "Больше не спрашивать"
 msgid "No description available"
 msgstr "Описание отсутствует"
 
-#: ../src/gtk-helpers/config_dialog.c:345
+#: ../src/gtk-helpers/config_dialog.c:338
 msgid "Configuration"
 msgstr "Конфигурация"
 
 #. we can't use this, because we want the workflows first and hashtable
 #. * doesn't return the items in the order they were added
-#. 
+#.
 #. g_hash_table_foreach(configs, (GHFunc)add_config_tabs, config_nb);
-#: ../src/gtk-helpers/config_dialog.c:363
-#: ../src/gtk-helpers/config_dialog.c:365
-#: ../src/gtk-helpers/config_dialog.c:430
+#: ../src/gtk-helpers/config_dialog.c:356
+#: ../src/gtk-helpers/config_dialog.c:358
+#: ../src/gtk-helpers/config_dialog.c:417
 msgid "Workflows"
 msgstr "Рабочие потоки"
 
-#: ../src/gtk-helpers/config_dialog.c:367
-#: ../src/gtk-helpers/config_dialog.c:369
-#: ../src/gtk-helpers/config_dialog.c:433
+#: ../src/gtk-helpers/config_dialog.c:360
+#: ../src/gtk-helpers/config_dialog.c:362
+#: ../src/gtk-helpers/config_dialog.c:420
 msgid "Events"
 msgstr "События"
 
-#: ../src/gtk-helpers/config_dialog.c:373
+#: ../src/gtk-helpers/config_dialog.c:366
 msgid "C_onfigure"
 msgstr "Н_астроить"
 
-#: ../src/gtk-helpers/config_dialog.c:375 ../src/gui-wizard-gtk/wizard.c:3702
+#: ../src/gtk-helpers/config_dialog.c:368 ../src/gui-wizard-gtk/wizard.c:3206
 msgid "_Close"
 msgstr "_Закрыть"
 
-#: ../src/gtk-helpers/event_config_dialog.c:144
+#: ../src/gtk-helpers/event_config_dialog.c:140
 msgid "Show password"
 msgstr "Показать пароль"
 
-#: ../src/gtk-helpers/event_config_dialog.c:275
+#: ../src/gtk-helpers/event_config_dialog.c:263
 msgid "Don't store passwords"
 msgstr "Не хранить пароли"
 
-#: ../src/gtk-helpers/event_config_dialog.c:285
+#: ../src/gtk-helpers/event_config_dialog.c:273
 msgid "Basic"
 msgstr "Основные"
 
-#: ../src/gtk-helpers/event_config_dialog.c:293
+#: ../src/gtk-helpers/event_config_dialog.c:281
 msgid "Advanced"
 msgstr "Дополнительно"
 
-#: ../src/gtk-helpers/event_config_dialog.c:309
+#: ../src/gtk-helpers/event_config_dialog.c:297
 msgid "Secret Service is not available, your settings won't be saved!"
 msgstr "Secret Service недоступен. Ваши настройки не будут сохранены."
 
-#: ../src/gtk-helpers/event_config_dialog.c:349
-#: ../src/gtk-helpers/workflow_config_dialog.c:94
-#: ../src/gui-wizard-gtk/wizard.c:783 ../src/gui-wizard-gtk/wizard.c:3302
+#: ../src/gtk-helpers/event_config_dialog.c:340
+#: ../src/gtk-helpers/workflow_config_dialog.c:90
+#: ../src/gui-wizard-gtk/wizard.c:732 ../src/gui-wizard-gtk/wizard.c:2865
 msgid "_Cancel"
 msgstr "_Отмена"
 
-#: ../src/gtk-helpers/event_config_dialog.c:351
-#: ../src/gtk-helpers/workflow_config_dialog.c:96
+#: ../src/gtk-helpers/event_config_dialog.c:342
+#: ../src/gtk-helpers/workflow_config_dialog.c:92
 msgid "_OK"
 msgstr "_ОК"
 
@@ -473,8 +467,8 @@ msgstr ""
 
 #: ../src/gtk-helpers/secrets.c:549
 msgid ""
-"A timeout was reached while waiting for a prompt result from the DBus Secret"
-" Service."
+"A timeout was reached while waiting for a prompt result from the DBus Secret "
+"Service."
 msgstr "Превышено время ожидания ответа от DBus Secret Service."
 
 #: ../src/gtk-helpers/secrets.c:552
@@ -501,7 +495,7 @@ msgstr "Не удалось создать секретный элемент д�
 msgid "can't get secret value of '%s': %s"
 msgstr "Не удалось получить секретное значение «%s»: %s"
 
-#: ../src/gtk-helpers/problem_details_widget.c:191
+#: ../src/gtk-helpers/problem_details_widget.c:198
 #, c-format
 msgid "$DATA_DIRECTORY/%s (binary file, %s)"
 msgstr "$DATA_DIRECTORY/%s (бинарный файл, %s)"
@@ -514,15 +508,15 @@ msgstr "Сведения о проблеме"
 msgid "OK"
 msgstr "ОК"
 
-#: ../src/gui-wizard-gtk/main.c:107
+#: ../src/gui-wizard-gtk/main.c:106
 msgid "Preferences"
 msgstr "Настройки"
 
-#: ../src/gui-wizard-gtk/main.c:110
+#: ../src/gui-wizard-gtk/main.c:109
 msgid "Quit"
 msgstr "Выход"
 
-#: ../src/gui-wizard-gtk/main.c:154
+#: ../src/gui-wizard-gtk/main.c:153
 msgid ""
 "& [-vpdx] [-e EVENT]... [-g GUI_FILE] PROBLEM_DIR\n"
 "\n"
@@ -530,13 +524,10 @@ msgid ""
 msgstr ""
 "& [-vpdx] [-e EVENT]... [-g GUI_FILE] PROBLEM_DIR\n"
 "\n"
-"Графический инструмент для анализа и создания отчета на основе статистики в каталоге PROBLEM_DIR"
+"Графический инструмент для анализа и создания отчета на основе статистики в "
+"каталоге PROBLEM_DIR"
 
-#: ../src/gui-wizard-gtk/main.c:169
-msgid "Alternate GUI file"
-msgstr "Файл GUI"
-
-#: ../src/gui-wizard-gtk/wizard.c:379
+#: ../src/gui-wizard-gtk/wizard.c:340
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
@@ -545,33 +536,15 @@ msgstr ""
 "Запись в «%s» не разрешена. Переместить его в «%s» и работать с данными в "
 "новом месте?"
 
-#: ../src/gui-wizard-gtk/wizard.c:774
+#: ../src/gui-wizard-gtk/wizard.c:723
 msgid "View/edit a text file"
 msgstr "Просмотр/правка файла"
 
-#: ../src/gui-wizard-gtk/wizard.c:782
+#: ../src/gui-wizard-gtk/wizard.c:731
 msgid "_Save"
 msgstr "_Сохранить"
 
-#: ../src/gui-wizard-gtk/wizard.c:1004
-msgid ""
-"No reporting targets are defined for this problem. Check configuration in "
-"/etc/libreport/*"
-msgstr ""
-"Для этой проблемы необходимо настроить систему отслеживания. Проверьте "
-"конфигурацию в /etc/libreport/*"
-
-#: ../src/gui-wizard-gtk/wizard.c:1046
-#, c-format
-msgid "(requires: %s)"
-msgstr "(требуется: %s)"
-
-#: ../src/gui-wizard-gtk/wizard.c:1060
-#, c-format
-msgid "(not needed, data already exist: %s)"
-msgstr "(нет необходимости, данные уже существуют: %s)"
-
-#: ../src/gui-wizard-gtk/wizard.c:1159
+#: ../src/gui-wizard-gtk/wizard.c:874
 msgid ""
 "Since crashes without a known reproducer can be difficult to diagnose, "
 "please provide a comprehensive description of the problem you have "
@@ -580,7 +553,7 @@ msgstr ""
 "Поскольку сбои, шаги для воспроизведения которых неизвестны, бывает сложно "
 "диагностировать, предоставьте подробное описание возникшей проблемы."
 
-#: ../src/gui-wizard-gtk/wizard.c:1166
+#: ../src/gui-wizard-gtk/wizard.c:881
 msgid ""
 "Please provide a short description of the problem and please include the "
 "steps you have used to reproduce the problem."
@@ -588,116 +561,113 @@ msgstr ""
 "Введите краткое описание проблемы и укажите шаги, которые вы использовали "
 "для воспроизведения проблемы."
 
-#: ../src/gui-wizard-gtk/wizard.c:1173
+#: ../src/gui-wizard-gtk/wizard.c:888
 msgid "Please provide the steps you have used to reproduce the problem."
 msgstr "Укажите шаги, которые вы использовали для воспроизведения проблемы."
 
-#: ../src/gui-wizard-gtk/wizard.c:1295
+#: ../src/gui-wizard-gtk/wizard.c:1009
 msgid "(click here to view/edit)"
 msgstr "(нажмите для просмотра и изменения)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1306
+#: ../src/gui-wizard-gtk/wizard.c:1021
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(двоичный файл, %llu байт)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1417 ../src/report-newt/report-newt.c:334
+#: ../src/gui-wizard-gtk/wizard.c:1121 ../src/report-newt/report-newt.c:332
 msgid "(no description)"
 msgstr "(нет описания)"
 
-#: ../src/gui-wizard-gtk/wizard.c:1425
+#: ../src/gui-wizard-gtk/wizard.c:1129
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu байтов, файлов: %u"
 
-#: ../src/gui-wizard-gtk/wizard.c:1703
+#: ../src/gui-wizard-gtk/wizard.c:1381
 msgid "Processing was canceled"
 msgstr "Обработка была отменена"
 
-#: ../src/gui-wizard-gtk/wizard.c:1914
+#: ../src/gui-wizard-gtk/wizard.c:1561
 msgid ""
-"Processing of the problem failed. This can have many reasons but there are three most common:\n"
+"Processing of the problem failed. This can have many reasons but there are "
+"three most common:\n"
 "\t▫ <b>network connection problems</b>\n"
 "\t▫ <b>corrupted problem data</b>\n"
 "\t▫ <b>invalid configuration</b>"
 msgstr ""
-"Попытка обработки ошибки потерпела неудачу. Причин может быть несколько , но наиболее распространены три:\n"
+"Попытка обработки ошибки потерпела неудачу. Причин может быть несколько , но "
+"наиболее распространены три:\n"
 "    ▫ <b>>проблемы с подключением к сети</b>\n"
 "    ▫ <b>данные об ошибке повреждены</b>\n"
 "    ▫ <b>неверные настройки</b>"
 
-#: ../src/gui-wizard-gtk/wizard.c:1923
+#: ../src/gui-wizard-gtk/wizard.c:1567
 msgid ""
-"If you want to update the configuration and try to report again, please open <b>Preferences</b> item\n"
-"in the application menu and after applying the configuration changes click <b>Repeat</b> button."
+"If you want to update the configuration and try to report again, please open "
+"<b>Preferences</b> item\n"
+"in the application menu and after applying the configuration changes click "
+"<b>Repeat</b> button."
 msgstr ""
 "Если вы хотите изменить настройки и попытаться повторно отправить отчет, \n"
-"перейдите в меню <b>Настройки</b>. После применения изменений нажмите кнопку <b>Повторить</b> ."
+"перейдите в меню <b>Настройки</b>. После применения изменений нажмите кнопку "
+"<b>Повторить</b> ."
 
-#: ../src/gui-wizard-gtk/wizard.c:1929
-msgid ""
-"If you are sure that this problem is not caused by network problems neither by invalid configuration\n"
-"and want to help us, please click on the upload button and provide all problem data for a deep analysis.\n"
-"<i>Before you do that, please consider the security risks. Problem data may contain sensitive information like\n"
-"passwords. The uploaded data are stored in a protected storage and only a limited number of persons can read them.</i>"
-msgstr ""
-"Если вы уверены, что этот конфликт не связан с сетевым соединением или ошибками конфигурации,\n"
-"и хотите помочь нам его решить, нажмите кнопку отправки отчета и приложите все данные ошибки\n"
-"<i>Прежде чем это сделать, оцените потенциальный риск безопасности: \n"
-"в передаваемых данных могут содержаться конфиденциальные данные (пароли и т.п.). Ваши данные\n"
-"будут загружены в защищенное хранилище, доступ к которому имеет лишь ограниченный круг лиц.</i>"
-
-#: ../src/gui-wizard-gtk/wizard.c:2054
+#: ../src/gui-wizard-gtk/wizard.c:1689
 msgid "Processing was interrupted because the problem is not reportable."
 msgstr ""
 "Обработка была прервана, так как этот конфликт не учитывается в отчетности."
 
-#: ../src/gui-wizard-gtk/wizard.c:2064 ../src/gui-wizard-gtk/wizard.c:2135
+#: ../src/gui-wizard-gtk/wizard.c:1699 ../src/gui-wizard-gtk/wizard.c:1773
 msgid "Processing failed."
 msgstr "Ошибка обработки."
 
-#. No next event, go to progress page and finish
-#: ../src/gui-wizard-gtk/wizard.c:2071 ../src/gui-wizard-gtk/wizard.c:3015
+#. No next event, go to progress page and finish.
+#: ../src/gui-wizard-gtk/wizard.c:1706 ../src/gui-wizard-gtk/wizard.c:2594
 msgid "Processing finished."
 msgstr "Обработка завершена."
 
-#: ../src/gui-wizard-gtk/wizard.c:2072
+#: ../src/gui-wizard-gtk/wizard.c:1707
 msgid "Processing finished, please proceed to the next step."
 msgstr "Обработка завершена. Перейдите к следующему шагу."
 
-#. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:2132
-#, c-format
-msgid "No processing for event '%s' is defined"
-msgstr "Не задан метод обработки события «%s»"
+#: ../src/gui-wizard-gtk/wizard.c:1770
+msgid "No commands could be found for processsing the crashdump.\n"
+msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:2146
+#: ../src/gui-wizard-gtk/wizard.c:1785
 msgid "Processing interrupted: can't continue without writable directory."
 msgstr "Обработка прервана: необходимо разрешить запись в каталог."
 
-#: ../src/gui-wizard-gtk/wizard.c:2183
+#: ../src/gui-wizard-gtk/wizard.c:1808
+#, c-format
+msgid ""
+"--- Skipping %s ---\n"
+"No matching actions found for this event.\n"
+"\n"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:1843
 msgid "Processing..."
 msgstr "Обработка..."
 
-#: ../src/gui-wizard-gtk/wizard.c:2269
+#: ../src/gui-wizard-gtk/wizard.c:1925
 msgid ""
 "Possible sensitive data detected, feel free to edit the report and remove "
 "them."
 msgstr ""
 "Обнаружены возможные конфиденциальные данные. Вы можете изъять их из отчета."
 
-#: ../src/gui-wizard-gtk/wizard.c:2309
+#: ../src/gui-wizard-gtk/wizard.c:1968
 msgid "Cannot check backtrace rating because of invalid event name"
 msgstr ""
-"Невозможно проверить рейтинг трассировки, так как неверно указано имя "
-"события"
+"Невозможно проверить рейтинг трассировки, так как неверно указано имя события"
 
-#: ../src/gui-wizard-gtk/wizard.c:2852
+#: ../src/gui-wizard-gtk/wizard.c:2418
 #, c-format
 msgid "Failed to save file '%s'"
 msgstr "Не удалось сохранить файл «%s»"
 
-#: ../src/gui-wizard-gtk/wizard.c:3035
+#: ../src/gui-wizard-gtk/wizard.c:2619
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
@@ -706,172 +676,149 @@ msgstr ""
 "Событию «%s» требуется разрешение на отправку вероятно конфиденциальных "
 "данных. Вы хотите продолжить?"
 
-#: ../src/gui-wizard-gtk/wizard.c:3082
+#: ../src/gui-wizard-gtk/wizard.c:2665
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
 msgstr "Похоже, что это - известная проблема, сообщение необязательно. %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:3303
+#: ../src/gui-wizard-gtk/wizard.c:2866
 msgid "_Open"
 msgstr "_Открыть"
 
-#: ../src/gui-wizard-gtk/wizard.c:3325
+#: ../src/gui-wizard-gtk/wizard.c:2888
 #, c-format
 msgid "'%s' is not an ordinary file"
 msgstr "«%s» не является текстовым файлом"
 
-#: ../src/gui-wizard-gtk/wizard.c:3339
+#: ../src/gui-wizard-gtk/wizard.c:2901
 msgid "You are trying to copy a file onto itself"
 msgstr "Вы пытаетесь скопировать файл в тот же файл"
 
-#: ../src/gui-wizard-gtk/wizard.c:3346
+#: ../src/gui-wizard-gtk/wizard.c:2907
 #, c-format
 msgid "Can't copy '%s': %s"
 msgstr "Копирование «%s» невозможно: %s"
 
-#: ../src/gui-wizard-gtk/wizard.c:3361
+#: ../src/gui-wizard-gtk/wizard.c:2921
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
 msgstr "«%s» уже существует и не может быть изменён"
 
-#: ../src/gui-wizard-gtk/wizard.c:3525
+#: ../src/gui-wizard-gtk/wizard.c:3087
 msgid "I have experienced this problem for the first time"
 msgstr "Эта проблема возникла у меня впервые"
 
-#: ../src/gui-wizard-gtk/wizard.c:3528
+#: ../src/gui-wizard-gtk/wizard.c:3090
 msgid "I can reproduce this problem"
 msgstr "Я могу воспроизвести эту проблему"
 
-#: ../src/gui-wizard-gtk/wizard.c:3531
+#: ../src/gui-wizard-gtk/wizard.c:3093
 msgid "This problem occurs repeatedly"
 msgstr "Эта проблема возникает постоянно"
 
-#: ../src/gui-wizard-gtk/wizard.c:3544
+#: ../src/gui-wizard-gtk/wizard.c:3106
 msgid "Include"
 msgstr "Включить"
 
-#: ../src/gui-wizard-gtk/wizard.c:3555
+#: ../src/gui-wizard-gtk/wizard.c:3117
 msgid "Name"
 msgstr "Имя"
 
-#: ../src/gui-wizard-gtk/wizard.c:3565
+#: ../src/gui-wizard-gtk/wizard.c:3127
 msgid "Value"
 msgstr "Значение"
 
-#: ../src/gui-wizard-gtk/wizard.c:3599
+#: ../src/gui-wizard-gtk/wizard.c:3162
 msgid "Problem description"
 msgstr "Описание проблемы"
 
-#: ../src/gui-wizard-gtk/wizard.c:3600
+#: ../src/gui-wizard-gtk/wizard.c:3163
 msgid "Select how to report this problem"
 msgstr "Выберите способ отправки отчета"
 
-#: ../src/gui-wizard-gtk/wizard.c:3601
+#: ../src/gui-wizard-gtk/wizard.c:3164
 msgid "Provide additional information"
 msgstr "Дополнительные сведения"
 
-#: ../src/gui-wizard-gtk/wizard.c:3602
+#: ../src/gui-wizard-gtk/wizard.c:3165
 msgid "Review the data"
 msgstr "Просмотр информации"
 
-#: ../src/gui-wizard-gtk/wizard.c:3603
+#: ../src/gui-wizard-gtk/wizard.c:3166
 msgid "Confirm data to report"
 msgstr "Подтвердите отправку данных"
 
-#: ../src/gui-wizard-gtk/wizard.c:3604
+#: ../src/gui-wizard-gtk/wizard.c:3167
 msgid "Processing"
 msgstr "Обработка"
 
-#: ../src/gui-wizard-gtk/wizard.c:3605
+#: ../src/gui-wizard-gtk/wizard.c:3168
 msgid "Processing done"
 msgstr "Обработка завершена"
 
-#: ../src/gui-wizard-gtk/wizard.c:3704
+#: ../src/gui-wizard-gtk/wizard.c:3208
 msgid "_Stop"
 msgstr "О_становить"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3707
-msgid "Upload for analysis"
-msgstr "Загрузка для дальнейшего изучения"
-
-#. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3710
+#: ../src/gui-wizard-gtk/wizard.c:3211
 msgid "Repeat"
 msgstr "Повтроить"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3712
+#: ../src/gui-wizard-gtk/wizard.c:3213
 msgid "_Forward"
 msgstr "_Вперед"
 
 #. else gtk_widget_hide won't work
-#: ../src/gui-wizard-gtk/wizard.c:3715 ../src/gui-wizard-gtk/wizard.glade.h:10
+#: ../src/gui-wizard-gtk/wizard.c:3216 ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "Details"
 msgstr "Подробности"
 
-#: ../src/gui-wizard-gtk/wizard.c:3780
+#: ../src/gui-wizard-gtk/wizard.c:3263
 msgid "Restrict access to the report"
 msgstr "Ограничить доступ к отчету"
 
-#: ../src/gui-wizard-gtk/wizard.c:3785
+#: ../src/gui-wizard-gtk/wizard.c:3268
 msgid "Learn more about restricted access in the configuration"
 msgstr "Узнать больше об ограниченном доступе в конфигурации"
 
-#: ../src/gui-wizard-gtk/wizard.c:3848
-msgid ""
-"In order to enable the built-in screencasting functionality the package fros-recordmydesktop has to be installed. Please run the following command if you want to install it.\n"
-"\n"
-"<b>su -c \"dnf install fros-recordmydesktop\"</b>"
-msgstr ""
-"Чтобы включить возможности видеозахвата экрана, надо установить пакет fros-recordmydesktop. Выполните следующую команду, если вы хотите установить его:\n"
-"\n"
-"<b>su -c \"dnf install fros-recordmydesktop\"</b>"
-
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
-msgid ""
-"Use this button to generate more informative backtrace after you installed "
-"additional debug packages"
-msgstr ""
-"Нажмите эту кнопку для создания подробного протокола сбоя после установки "
-"дополнительных пакетов отладки."
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid ""
 "Please review the data before it gets reported. Depending on reporter "
 "chosen, it may end up publicly visible."
 msgstr ""
 "Прежде чем данные будут отправлены, рекомендуется их проверить, так как в "
-"зависимости от выбранного метода формирования отчетности они могут оказаться"
-" в открытом доступе."
+"зависимости от выбранного метода формирования отчетности они могут оказаться "
+"в открытом доступе."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:3
+#: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Sensitive words"
 msgstr "Нежелательные слова"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:4
+#: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid "Custom"
 msgstr "Дополнительно"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:5
+#: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid "Clear the search bar to see the list of security sensitive words."
 msgstr ""
-"Очистите строку поиска для просмотра списка слов, которые могут быть связаны"
-" с конфиденциальными данными."
+"Очистите строку поиска для просмотра списка слов, которые могут быть связаны "
+"с конфиденциальными данными."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:6
+#: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid "file"
 msgstr "файл"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:7
+#: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "data"
 msgstr "данные"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:8
+#: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "Search"
 msgstr "Поиск"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:9
+#: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid ""
 "On the following screens, you will be asked to describe how the problem "
 "occurred, to choose how to analyze the problem (if needed), to review "
@@ -882,26 +829,25 @@ msgstr ""
 "анализа, оценки собранных данных и выбора получателя отчёта. Нажмите "
 "«Вперёд» для продолжения."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:11
+#: ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid ""
 "How did this problem happen (step-by-step)? How can it be reproduced? Any "
-"additional comments useful for diagnosing the problem? Please use English if"
-" possible."
+"additional comments useful for diagnosing the problem? Please use English if "
+"possible."
 msgstr ""
 "Опишите действия, вызвавшие ошибки, и инструкции, которые помогут их "
 "повторить. Включите комментарии, которые смогут помочь при диагностике "
 "(желательно на английском)."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:12
+#: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid "How reproducible is this problem?"
 msgstr "Можно ли воспроизвести эту проблему?"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:13
+#: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid "How it can be reproduced (one step per line)?"
-msgstr ""
-"Как ее можно воспроизвести (указывайте каждый шаг в отдельной строке)?"
+msgstr "Как ее можно воспроизвести (указывайте каждый шаг в отдельной строке)?"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:14
+#: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid ""
 "Please add a comprehensive description of the problem you have. This is a "
 "very long place holder."
@@ -909,11 +855,11 @@ msgstr ""
 "Добавьте подробное описание возникшей проблемы. Это очень длинный "
 "заполнитель."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:15
+#: ../src/gui-wizard-gtk/wizard.glade.h:14
 msgid "You need to fill the how to before you can proceed..."
 msgstr "Для продолжения необходимо заполнить поле."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:16
+#: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
@@ -921,53 +867,45 @@ msgstr ""
 "<b>Комментарии открыты для чтения.</b> Они могут быть включены в "
 "общедоступные отчёты."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:17
+#: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "I don't know what caused this problem"
 msgstr "Я не знаю, что вызвало эту проблему"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:18
-msgid "If you don't know how to describe it, you can"
-msgstr "Если вы затрудняетесь с описанием, можно:"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:19
-msgid "add a screencast"
-msgstr "Добавить вещание с экрана"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:20
+#: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "Size:"
 msgstr "Размер:"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:21
+#: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid "Attach a file"
 msgstr "Вложить файл"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:22
+#: ../src/gui-wizard-gtk/wizard.glade.h:19
 msgid "I reviewed the data and _agree with submitting it"
 msgstr "Я ознакомился с информацией и разрешаю её передачу"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:23
+#: ../src/gui-wizard-gtk/wizard.glade.h:20
 msgid ""
 "If you are reporting to a remote server, make sure you removed all private "
-"data (such as usernames and passwords). Backtrace, command line, environment"
-" variables are the typical items in need of examining."
+"data (such as usernames and passwords). Backtrace, command line, environment "
+"variables are the typical items in need of examining."
 msgstr ""
 "Если отчёт будет отправлен на удаленный сервер, удалите конфиденциальную "
 "информацию (имена пользователей и пароли). Протоколы сбоев, команды и "
 "переменные окружения могут содержать такие данные."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:24
+#: ../src/gui-wizard-gtk/wizard.glade.h:21
 msgid "Processing did not start yet"
 msgstr "Обработка еще не началась"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:25
+#: ../src/gui-wizard-gtk/wizard.glade.h:22
 msgid "Show log"
 msgstr "Показать журнал"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:26
+#: ../src/gui-wizard-gtk/wizard.glade.h:23
 msgid "Reporting has finished. You can close this window now."
 msgstr "Отчёт отправлен. Можно закрыть окно."
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:27
+#: ../src/gui-wizard-gtk/wizard.glade.h:24
 msgid ""
 "If you want to report the problem to a different destination, collect "
 "additional information, or provide a better problem description and repeat "
@@ -976,55 +914,54 @@ msgstr ""
 "Чтобы сохранить отчет в другом месте, соберите дополнительную информацию и "
 "создайте его заново, нажав «Вперед»."
 
-#: ../src/include/internal_libreport.h:1228
+#: ../src/include/internal_libreport.h:1246
 msgid "Be verbose"
 msgstr "Опишите подробно"
 
-#: ../src/include/internal_libreport.h:1229
-#: ../src/plugins/reporter-bugzilla.c:295
-#: ../src/plugins/reporter-kerneloops.c:166
-#: ../src/plugins/reporter-mailx.c:279 ../src/plugins/reporter-print.c:56
-#: ../src/plugins/reporter-rhtsupport.c:515
-#: ../src/plugins/reporter-systemd-journal.c:245
+#: ../src/include/internal_libreport.h:1247
+#: ../src/plugins/reporter-bugzilla.c:323
+#: ../src/plugins/reporter-kerneloops.c:173 ../src/plugins/reporter-mailx.c:288
+#: ../src/plugins/reporter-print.c:56 ../src/plugins/reporter-rhtsupport.c:548
+#: ../src/plugins/reporter-systemd-journal.c:250
 #: ../src/plugins/reporter-upload.c:186 ../src/plugins/reporter-mantisbt.c:283
 msgid "Problem directory"
 msgstr "Проблемный каталог"
 
-#: ../src/lib/abrt_sock.c:160
+#: ../src/lib/abrt_sock.c:161
 #, c-format
 msgid "Can't delete: '%s'"
 msgstr "Невозможно удалить: «%s»"
 
-#: ../src/lib/abrt_sock.c:196
+#: ../src/lib/abrt_sock.c:197
 msgid "locked by another process"
 msgstr "заблокировано другим процессом"
 
-#: ../src/lib/abrt_sock.c:205
+#: ../src/lib/abrt_sock.c:206
 msgid "permission denied"
 msgstr "отказ в доступе"
 
-#: ../src/lib/abrt_sock.c:208
+#: ../src/lib/abrt_sock.c:209
 msgid "not a problem directory"
 msgstr "не каталог с данными ошибки"
 
-#: ../src/lib/abrt_sock.c:217
+#: ../src/lib/abrt_sock.c:218
 #, c-format
 msgid "Can't delete '%s': %s"
 msgstr "Не удается удалить «%s»: %s"
 
-#: ../src/lib/client.c:55 ../src/lib/client.c:87 ../src/lib/client.c:144
+#: ../src/lib/client.c:67 ../src/lib/client.c:99 ../src/lib/client.c:156
 msgid "y"
 msgstr "y"
 
-#: ../src/lib/client.c:56 ../src/lib/client.c:88 ../src/lib/client.c:145
+#: ../src/lib/client.c:68 ../src/lib/client.c:100 ../src/lib/client.c:157
 msgid "N"
 msgstr "N"
 
-#: ../src/lib/client.c:89 ../src/lib/client.c:146
+#: ../src/lib/client.c:101 ../src/lib/client.c:158
 msgid "f"
 msgstr "f"
 
-#: ../src/lib/client.c:147
+#: ../src/lib/client.c:159
 msgid "e"
 msgstr "e"
 
@@ -1038,7 +975,7 @@ msgstr "Неверный UID: «%s»"
 msgid "'%s' is not correct file name"
 msgstr "неверное имя файла: «%s»"
 
-#: ../src/lib/create_dump_dir.c:190
+#: ../src/lib/create_dump_dir.c:195
 #, c-format
 msgid "Missing required item: '%s'"
 msgstr "Пропущен обязательный элемент: «%s»"
@@ -1075,83 +1012,86 @@ msgstr "Введите пароль для «%s//%s@%s»:"
 msgid "Successfully created %s"
 msgstr "Успешно создано %s"
 
-#: ../src/lib/dump_dir.c:2463
+#: ../src/lib/dump_dir.c:2481
 msgid "Failed to open TAR writer"
 msgstr "Не удалось открыть средство записи TAR"
 
-#: ../src/lib/dump_dir.c:2489
+#: ../src/lib/dump_dir.c:2507
 msgid "Failed to finalize TAR archive"
 msgstr "Не удалось закончить архив TAR"
 
-#: ../src/lib/dump_dir.c:2499
+#: ../src/lib/dump_dir.c:2517
 msgid "Failed to close TAR writer"
 msgstr "Не удалось закрыть средство записи TAR"
 
-#: ../src/lib/dump_dir.c:2509
+#: ../src/lib/dump_dir.c:2527
 #, c-format
 msgid "gzip killed with signal %d"
 msgstr "gzip прерван с сигналом %d"
 
-#: ../src/lib/dump_dir.c:2515
+#: ../src/lib/dump_dir.c:2533
 #, c-format
 msgid "gzip exited with %d"
 msgstr "gzip завершился с кодом выхода %d"
 
-#: ../src/lib/dump_dir.c:2518
+#: ../src/lib/dump_dir.c:2536
 msgid "gzip process failed"
 msgstr "ошибка процесса gzip"
 
-#: ../src/lib/event_config.c:382
+#: ../src/lib/event_config.c:399
 msgid "Missing mandatory value"
 msgstr "Заполните обязательные поля"
 
-#: ../src/lib/event_config.c:390
+#: ../src/lib/event_config.c:407
 #, c-format
 msgid "Invalid utf8 character '%c'"
 msgstr "Недопустимый символ UTF8 \"%c\""
 
-#: ../src/lib/event_config.c:403
+#: ../src/lib/event_config.c:420
 #, c-format
 msgid "Invalid number '%s'"
 msgstr "Недопустимый номер «%s»"
 
-#: ../src/lib/event_config.c:418
+#: ../src/lib/event_config.c:435
 #, c-format
 msgid "Invalid boolean value '%s'"
 msgstr "Неверное логическое значение: «%s»"
 
-#: ../src/lib/event_config.c:424
+#: ../src/lib/event_config.c:441
 msgid "Unsupported option type"
 msgstr "Неподдерживаемый тип параметра"
 
-#: ../src/lib/event_config.c:498
+#: ../src/lib/event_config.c:516
 #, c-format
 msgid ""
 "The problem cannot be reported due to an invalid data. '%s' file does not "
 "contain a number."
 msgstr "Не удалось сообщить об ошибке: файл «%s» не содержит номер."
 
-#: ../src/lib/event_config.c:502
+#: ../src/lib/event_config.c:520
 msgid "Please report this problem to ABRT project developers."
 msgstr "Пожалуйста сообщите о проблеме в проект разработчиков ABRT."
 
-#: ../src/lib/event_config.c:508
+#: ../src/lib/event_config.c:526
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "Неполный протокол сбоя. Опишите действия, которые привели к ошибке."
 
-#: ../src/lib/event_config.c:509
+#: ../src/lib/event_config.c:527
 msgid "The backtrace probably can't help developer to diagnose the bug."
 msgstr ""
-"Вероятно, данные трассировки не помогут разработчику идентифицировать "
-"ошибку."
+"Вероятно, данные трассировки не помогут разработчику идентифицировать ошибку."
 
-#: ../src/lib/event_config.c:515
-msgid "Reporting disabled because the backtrace is unusable."
+#: ../src/lib/event_config.c:533
+#, fuzzy
+#| msgid "Reporting disabled because the backtrace is unusable."
+msgid ""
+"Reporting is disabled because the generated backtrace has low informational "
+"value."
 msgstr "Формирование отчета отменено в силу непригодности протокола сбоя."
 
-#: ../src/lib/event_config.c:519
+#: ../src/lib/event_config.c:537
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -1160,7 +1100,7 @@ msgstr ""
 "Установите debuginfo вручную и повторите попытку. Команда установки: "
 "«debuginfo-install %s»"
 
-#: ../src/lib/event_config.c:521
+#: ../src/lib/event_config.c:539
 msgid "A proper debuginfo is probably missing or the coredump is corrupted."
 msgstr "Вероятно, отсутствует debuginfo или дамп памяти поврежден."
 
@@ -1179,7 +1119,7 @@ msgstr "Дата «%s» имеет нераспознанный суффикс: 
 msgid "The date: '%s' is out of UNIX time stamp range"
 msgstr "Дата «%s» вне диапазона меток времени UNIX"
 
-#: ../src/lib/ureport.c:395
+#: ../src/lib/ureport.c:400
 #, c-format
 msgid ""
 "Your problem seems to be caused by %s\n"
@@ -1190,68 +1130,68 @@ msgstr ""
 "\n"
 "%s\n"
 
-#: ../src/lib/ureport.c:398
+#: ../src/lib/ureport.c:403
 msgid "Your problem seems to be caused by one of the following:\n"
 msgstr "Ваша ошибка, по-видимому, вызвана чем-то из перечисленного:\n"
 
-#: ../src/lib/ureport.c:570
+#: ../src/lib/ureport.c:575
 #, c-format
 msgid "Failed to upload uReport to the server '%s' with curl: %s"
 msgstr "Ошибка отправки отчёта на сервер «%s» посредством cURL: %s"
 
-#: ../src/lib/ureport.c:574
+#: ../src/lib/ureport.c:579
 #, c-format
 msgid "Failed to upload uReport to the server '%s'"
 msgstr "Не удалось передать uReport на сервер «%s»"
 
-#: ../src/lib/ureport.c:577
+#: ../src/lib/ureport.c:582
 #, c-format
 msgid "Error: %s"
 msgstr "Ошибка: %s"
 
-#: ../src/lib/ureport.c:584
+#: ../src/lib/ureport.c:589
 #, c-format
 msgid "The URL '%s' does not exist (got error 404 from server)"
 msgstr "«%s» не существует (ошибка 404)"
 
-#: ../src/lib/ureport.c:590
+#: ../src/lib/ureport.c:595
 #, c-format
 msgid "The server at '%s' encountered an internal error (got error 500)"
 msgstr "Внутренняя ошибка сервера «%s» (ошибка 500)"
 
-#: ../src/lib/ureport.c:596
+#: ../src/lib/ureport.c:601
 #, c-format
 msgid "The server at '%s' currently can't handle the request (got error 503)"
 msgstr "Сервер «%s» не может обработать запрос (ошибка 503)"
 
 #. can't print better error message
-#: ../src/lib/ureport.c:605
+#: ../src/lib/ureport.c:610
 #, c-format
 msgid "Unexpected HTTP response from '%s': %d"
 msgstr "Неожиданный ответ «%s»: %d"
 
-#: ../src/lib/ureport.c:614
+#: ../src/lib/ureport.c:619
 #, c-format
 msgid "Unable to parse response from ureport server at '%s'"
 msgstr "Не удалось обработать ответ сервера ureport «%s»"
 
-#: ../src/lib/ureport.c:624
+#: ../src/lib/ureport.c:629
 #, c-format
 msgid "The response from '%s' has invalid format"
 msgstr "Неверный формат ответа «%s»"
 
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
-#: ../src/lib/ureport.c:630
+#: ../src/lib/ureport.c:635
 #, c-format
 msgid "Type mismatch has been detected in the response from '%s'"
 msgstr "Обнаружено несоответствие типов в ответе «%s»"
 
-#: ../src/lib/ureport.c:826 ../src/plugins/reporter-rhtsupport.c:233
+#: ../src/lib/ureport.c:861 ../src/plugins/reporter-rhtsupport.c:235
 msgid "Failed on submitting the problem"
 msgstr "Не удалось отправить сообщение об ошибке"
 
-#: ../src/lib/ureport.c:868
+#: ../src/lib/ureport.c:903
 #, c-format
 msgid "The server at '%s' responded with an error: '%s'"
 msgstr "Сервер «%s» вернул ошибку: «%s»"
@@ -1273,24 +1213,16 @@ msgstr "Формат: "
 msgid "Essential element '%s' is missing, can't continue"
 msgstr "Отсутствует обязательный элемент «%s». Продолжение невозможно..."
 
-#: ../src/lib/problem_report.c:486
+#: ../src/lib/problem_report.c:517
 #, c-format
 msgid "Can't parse backtrace: %s"
 msgstr "Не удалось обработать данные трассировки: %s"
 
-#: ../src/lib/problem_report.c:501
+#: ../src/lib/problem_report.c:532
 msgid "Can't generate stacktrace description (no crash thread?)"
 msgstr "Не удается создать описание трассировки стека (нет сбойной цепочки?)"
 
-#: ../src/lib/reported_to.c:52
-msgid "Report result label mustn't be empty string."
-msgstr "Метка результата отчета не должна быть пустой строкой."
-
-#: ../src/lib/reported_to.c:58
-msgid "Report result label mustn't contain ':' character."
-msgstr "Метка результата отчета не должна содержать двоеточие (:)."
-
-#: ../src/lib/reported_to.c:141
+#: ../src/lib/report_result.c:265
 #, c-format
 msgid "Ignored invalid ISO date of report result '%s'"
 msgstr "Недопустимая дата ISO в результате отчета «%s» проигнорирована"
@@ -1299,17 +1231,17 @@ msgstr "Недопустимая дата ISO в результате отчет
 msgid "Note does not contain rating"
 msgstr "Примечание не содержит оценки"
 
-#: ../src/lib/run_event.c:876
+#: ../src/lib/run_event.c:891
 #, c-format
 msgid "('%s' was killed by signal %u)\n"
 msgstr "(«%s» был прерван по сигналу %u)\n"
 
-#: ../src/lib/run_event.c:878
+#: ../src/lib/run_event.c:893
 #, c-format
 msgid "('%s' completed successfully)\n"
 msgstr "(«%s» завершился без ошибок)\n"
 
-#: ../src/lib/run_event.c:880
+#: ../src/lib/run_event.c:895
 #, c-format
 msgid "('%s' exited with %u)\n"
 msgstr "(«%s» завершился с кодом выхода %u)\n"
@@ -1361,50 +1293,49 @@ msgstr ""
 "Ошибка при создании комментария «%s»: отсутствует ссылка-указатель, код "
 "ответа HTTP: %d"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:1
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:1
 msgid "Bugzilla"
 msgstr "Bugzilla"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:2
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:2
 msgid "Report to Bugzilla bug tracker"
 msgstr "Отправить в Bugzilla"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:3
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:3
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:3
 #: ../src/plugins/report_Uploader.xml.in.h:6
 msgid "User name"
 msgstr "Имя пользователя"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:4
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:4
 msgid "Bugzilla account user name"
 msgstr "Пользователь Bugzilla"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:5
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:5
 msgid ""
-"You can create bugzilla.redhat.com account &lt;a "
-"href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
+"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 msgstr ""
-"&lt;a "
-"href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;Зарегистрироваться&lt;/a&gt;"
-" в Bugzilla"
+"&lt;a href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;"
+"Зарегистрироваться&lt;/a&gt; в Bugzilla"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:6
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:6
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:6
 #: ../src/plugins/report_RHTSupport.xml.in.h:5
 #: ../src/plugins/report_Uploader.xml.in.h:8
 msgid "Password"
 msgstr "Пароль"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:7
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:7
 msgid "Bugzilla account password"
 msgstr "Пароль в Bugzilla"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:8
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:8
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:8
 msgid "Restrict access"
 msgstr "Ограничить доступ"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:9
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:9
 msgid ""
 "Restrict access to the created bugzilla ticket allowing only users from "
 "specified groups to view it (see advanced settings for more details)"
@@ -1412,100 +1343,94 @@ msgstr ""
 "Ограничить доступ к запросу в Bugzilla, допуская для просмотра лишь "
 "пользователей из указанных групп (см. дополнительные настройки)"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:10
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:10
 msgid "Groups"
 msgstr "Группы"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:11
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:11
 msgid ""
-"Restrict the access to specified groups &lt;a "
-"href=\"https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
-"tickets\"&gt;?&lt;/a&gt;"
+"Restrict the access to specified groups &lt;a href=\"https://github.com/abrt/"
+"abrt/wiki/FAQ#creating-private-bugzilla-tickets\"&gt;?&lt;/a&gt;"
 msgstr ""
-"Предоставить доступ лишь указанным группам &lt;a "
-"href=\"https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
-"tickets\"&gt;?&lt;/a&gt;"
+"Предоставить доступ лишь указанным группам &lt;a href=\"https://github.com/"
+"abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets\"&gt;?&lt;/a&gt;"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:12
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:12
 msgid "Bugzilla URL"
 msgstr "Адрес Bugzilla"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:13
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:13
 msgid "Address of Bugzilla server"
 msgstr "Адрес сервера Bugzilla"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:14
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:14
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:12
 #: ../src/plugins/report_RHTSupport.xml.in.h:11
-#: ../src/plugins/report_uReport.xml.in.h:9
+#: ../src/plugins/report_uReport.xml.in.h:11
 msgid "Verify SSL"
 msgstr "Проверить SSL"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:15
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:15
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:13
 #: ../src/plugins/report_RHTSupport.xml.in.h:12
-#: ../src/plugins/report_uReport.xml.in.h:10
+#: ../src/plugins/report_uReport.xml.in.h:12
 msgid "Check SSL key validity"
 msgstr "Проверить ключ SSL"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:16
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:16
 msgid "Bugzilla product"
 msgstr "Продукт в Bugzilla"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:17
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:17
 msgid ""
 "Specify this only if you needed different product than specified in /etc/os-"
 "release"
 msgstr ""
 "Укажите, только если продукт отличается от указанного в /etc/os-release"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:18
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:18
 msgid "Bugzilla product version"
 msgstr "Версия продукта в Bugzilla"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:19
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:19
 msgid ""
-"Specify this only if you needed different product version than specified in "
-"/etc/os-release"
+"Specify this only if you needed different product version than specified in /"
+"etc/os-release"
 msgstr "Укажите, если версия отличается от указанной в /etc/os-release"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:20
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:20
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:18
 #: ../src/plugins/report_Kerneloops.xml.in.h:5
 #: ../src/plugins/report_RHTSupport.xml.in.h:13
 #: ../src/plugins/report_Uploader.xml.in.h:10
-#: ../src/plugins/report_uReport.xml.in.h:11
-#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:4
+#: ../src/plugins/report_uReport.xml.in.h:13
 msgid "HTTP Proxy"
 msgstr "HTTP-прокси"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:21
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:21
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:19
 #: ../src/plugins/report_Kerneloops.xml.in.h:6
 #: ../src/plugins/report_RHTSupport.xml.in.h:14
 #: ../src/plugins/report_Uploader.xml.in.h:11
-#: ../src/plugins/report_uReport.xml.in.h:12
-#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:5
+#: ../src/plugins/report_uReport.xml.in.h:14
 msgid "Sets the proxy server to use for HTTP"
 msgstr "Выбирает прокси-сервер для использования с HTTP"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:22
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:22
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:20
 #: ../src/plugins/report_Kerneloops.xml.in.h:7
 #: ../src/plugins/report_RHTSupport.xml.in.h:15
 #: ../src/plugins/report_Uploader.xml.in.h:12
-#: ../src/plugins/report_uReport.xml.in.h:13
-#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:6
+#: ../src/plugins/report_uReport.xml.in.h:15
 msgid "HTTPS Proxy"
 msgstr "HTTPS-прокси"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:23
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:23
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:21
 #: ../src/plugins/report_Kerneloops.xml.in.h:8
 #: ../src/plugins/report_RHTSupport.xml.in.h:16
 #: ../src/plugins/report_Uploader.xml.in.h:13
-#: ../src/plugins/report_uReport.xml.in.h:14
-#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:7
+#: ../src/plugins/report_uReport.xml.in.h:16
 msgid "Sets the proxy server to use for HTTPS"
 msgstr "Выбирает прокси-сервер для использования с HTTPS"
 
@@ -1539,7 +1464,7 @@ msgstr "«strata» или «bugzilla»"
 msgid "Ticket/case ID"
 msgstr "ID запроса"
 
-#: ../src/plugins/reporter-bugzilla.c:162
+#: ../src/plugins/reporter-bugzilla.c:183
 msgid ""
 "Warning, private ticket groups already specified as cmdline argument, "
 "ignoring the env variable and configuration"
@@ -1548,37 +1473,40 @@ msgstr ""
 "командной строки, поэтому переменная окружения и другие параметры будут "
 "проигнорированы."
 
-#: ../src/plugins/reporter-bugzilla.c:173
-#: ../src/plugins/reporter-rhtsupport.c:380
+#: ../src/plugins/reporter-bugzilla.c:194
+#: ../src/plugins/reporter-rhtsupport.c:384
 #: ../src/plugins/reporter-mantisbt.c:55
 msgid "Can't continue without login"
 msgstr "Необходимо указать имя"
 
-#: ../src/plugins/reporter-bugzilla.c:186
-#: ../src/plugins/reporter-rhtsupport.c:393
-#: ../src/plugins/reporter-mantisbt.c:70
+#: ../src/plugins/reporter-bugzilla.c:207
+#: ../src/plugins/reporter-rhtsupport.c:397
+#: ../src/plugins/reporter-mantisbt.c:68
 msgid "Can't continue without password"
 msgstr "Необходимо указать пароль"
 
-#: ../src/plugins/reporter-bugzilla.c:195
+#: ../src/plugins/reporter-bugzilla.c:216
 #, c-format
 msgid "Logging into Bugzilla at %s"
 msgstr "Вход в Bugzilla: %s"
 
-#: ../src/plugins/reporter-bugzilla.c:199
-msgid "Invalid password or login. Please enter your Bugzilla login:"
-msgstr "Неверное имя или пароль. Пожалуйста, введите ваше имя в Bugzilla:"
+#: ../src/plugins/reporter-bugzilla.c:223
+#, fuzzy, c-format
+#| msgid "Invalid password or login. Please enter your Red Hat login:"
+msgid "Invalid password or login. Please enter your %s login:"
+msgstr "Неверное имя или пароль. Введите ваше имя Red Hat:"
 
-#: ../src/plugins/reporter-bugzilla.c:202
-#: ../src/plugins/reporter-rhtsupport.c:407
+#: ../src/plugins/reporter-bugzilla.c:228
+#: ../src/plugins/reporter-rhtsupport.c:411
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
 msgstr "Неверное имя или пароль. Пожалуйста, введите ваш пароль для «%s»:"
 
-#: ../src/plugins/reporter-bugzilla.c:221
+#: ../src/plugins/reporter-bugzilla.c:247
 msgid ""
 "\n"
-"& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\n"
+"& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d "
+"DIR\n"
 "or:\n"
 "& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\n"
 "or:\n"
@@ -1596,7 +1524,8 @@ msgid ""
 "depending on their type and size.\n"
 "\n"
 "Otherwise, if such bug is found and it is marked as CLOSED DUPLICATE,\n"
-"the tool follows the chain of duplicates until it finds a non-DUPLICATE bug.\n"
+"the tool follows the chain of duplicates until it finds a non-DUPLICATE "
+"bug.\n"
 "The tool adds a new comment to found bug.\n"
 "\n"
 "The URL to new or modified bug is printed to stdout and recorded in\n"
@@ -1612,13 +1541,15 @@ msgid ""
 "Option -w adds bugzilla user to bug's CC list.\n"
 "\n"
 "Option -r sets the last url from reporter_to element which is prefixed with\n"
-"TRACKER_NAME to URL field. This option is applied only when a new bug is to be\n"
+"TRACKER_NAME to URL field. This option is applied only when a new bug is to "
+"be\n"
 "filed. The default value is 'ABRT Server'\n"
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
 "\n"
-"& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\n"
+"& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d "
+"DIR\n"
 "или:\n"
 "& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\n"
 "или:\n"
@@ -1628,7 +1559,8 @@ msgstr ""
 "\n"
 "Сообщает о проблеме в Bugzilla.\n"
 "\n"
-"Утилита читает содержимое DIR. Затем подключается к Bugzilla и ищет отчет об ошибке с \n"
+"Утилита читает содержимое DIR. Затем подключается к Bugzilla и ищет отчет об "
+"ошибке с \n"
 "с таким же значением abrt_hash:HEXSTRING в поле 'Whiteboard'.\n"
 "\n"
 "Если отчет об ошибке не найден, создается новый отчет. Части DIR\n"
@@ -1636,116 +1568,125 @@ msgstr ""
 "в зависимости от типа и размера.\n"
 "\n"
 "Если же такой отчет найден и помечен как CLOSED DUPLICATE,\n"
-"эта утилита проследует по цепочке дубликатов, пока не найдет  отчет non-DUPLICATE.\n"
+"эта утилита проследует по цепочке дубликатов, пока не найдет  отчет non-"
+"DUPLICATE.\n"
 "К найденному отчету утилита добавит новый комментарий.\n"
 "\n"
-"URL нового или измененного отчета выводится в stdout и записывается в элемент «reported_to».\n"
+"URL нового или измененного отчета выводится в stdout и записывается в "
+"элемент «reported_to».\n"
 "\n"
 "Параметр -t передает файлы FILE в уже созданный отчет на сайте Bugzilla.\n"
 "Идентификатор отчета будет получен из каталога, указанного -d DIR.\n"
-"Если сведения об ошибке из DIR до этого не отправлялись в Bugzilla, передача завершится неудачей.\n"
+"Если сведения об ошибке из DIR до этого не отправлялись в Bugzilla, передача "
+"завершится неудачей.\n"
 "\n"
-"Параметр -tID передает файлы FILE в отчет с заданным идентификатором на сайте Bugzilla.\n"
+"Параметр -tID передает файлы FILE в отчет с заданным идентификатором на "
+"сайте Bugzilla.\n"
 "-d DIR игнорируется.\n"
 "\n"
-"Параметр -w добавляет пользователя bugzilla в список получателей уведомлений.\n"
+"Параметр -w добавляет пользователя bugzilla в список получателей "
+"уведомлений.\n"
 "\n"
-"Параметр -r копирует в поле URL последний адрес из элемента reporter_to с добавлением префикса\n"
-"TRACKER_NAME. Этот параметр применяется только при заполнении нового отчета. Стандартное значение - «ABRT Server»\n"
+"Параметр -r копирует в поле URL последний адрес из элемента reporter_to с "
+"добавлением префикса\n"
+"TRACKER_NAME. Этот параметр применяется только при заполнении нового отчета. "
+"Стандартное значение - «ABRT Server»\n"
 "\n"
 "Если CONFFILE не задан, то по умолчанию используется "
 
-#: ../src/plugins/reporter-bugzilla.c:296
-#: ../src/plugins/reporter-rhtsupport.c:516
+#: ../src/plugins/reporter-bugzilla.c:324
+#: ../src/plugins/reporter-rhtsupport.c:549
 #: ../src/plugins/reporter-mantisbt.c:284
 msgid "Configuration file (may be given many times)"
 msgstr "Файл конфигурации (может быть несколько)"
 
-#: ../src/plugins/reporter-bugzilla.c:297
+#: ../src/plugins/reporter-bugzilla.c:325
 #: ../src/plugins/reporter-mantisbt.c:285
 msgid "Formatting file for initial comment"
 msgstr "Подготовка файла для первого комментария"
 
-#: ../src/plugins/reporter-bugzilla.c:298
+#: ../src/plugins/reporter-bugzilla.c:326
 #: ../src/plugins/reporter-mantisbt.c:286
 msgid "Formatting file for duplicates"
 msgstr "Подготавливается файл для повторных сообщений"
 
-#: ../src/plugins/reporter-bugzilla.c:299
+#: ../src/plugins/reporter-bugzilla.c:327
 msgid "Attach FILEs [to bug with this ID]"
 msgstr "Вложить файлы [в запрос с этим ID]"
 
-#: ../src/plugins/reporter-bugzilla.c:300
+#: ../src/plugins/reporter-bugzilla.c:328
 msgid "When creating bug, attach binary files too"
 msgstr "Включать двоичные файлы"
 
-#: ../src/plugins/reporter-bugzilla.c:301
-#: ../src/plugins/reporter-rhtsupport.c:518
+#: ../src/plugins/reporter-bugzilla.c:329
+#: ../src/plugins/reporter-rhtsupport.c:551
 #: ../src/plugins/reporter-mantisbt.c:288
 msgid "Force reporting even if this problem is already reported"
 msgstr "Создать отчёт, даже если об этой проблеме уже сообщалось"
 
-#: ../src/plugins/reporter-bugzilla.c:302
+#: ../src/plugins/reporter-bugzilla.c:330
 msgid "Add bugzilla user to CC list [of bug with this ID]"
 msgstr "Добавить пользователя в список получателей [в запросе с данным ID]"
 
-#: ../src/plugins/reporter-bugzilla.c:303
+#: ../src/plugins/reporter-bugzilla.c:331
 #: ../src/plugins/reporter-mantisbt.c:289
 msgid "Print BUG_ID which has given DUPHASH"
 msgstr "Вывести BUG_ID, вернувший DUPHASH"
 
-#: ../src/plugins/reporter-bugzilla.c:304
+#: ../src/plugins/reporter-bugzilla.c:332
 msgid "Specify a Bugzilla product (ignored without -h)"
 msgstr "Укажите продукт Bugzilla (игнорируется без -h)"
 
-#: ../src/plugins/reporter-bugzilla.c:305
+#: ../src/plugins/reporter-bugzilla.c:333
 #: ../src/plugins/reporter-mantisbt.c:290
 msgid "A name of bug tracker for an additional URL from 'reported_to'"
 msgstr "Система отслеживания ошибок для адреса из поля «reported_to»"
 
-#: ../src/plugins/reporter-bugzilla.c:306
+#: ../src/plugins/reporter-bugzilla.c:334
 msgid "Restrict access to this group only"
 msgstr "Ограничить доступ только этой группой"
 
-#: ../src/plugins/reporter-bugzilla.c:307 ../src/plugins/reporter-mailx.c:283
-#: ../src/plugins/reporter-rhtsupport.c:522
-#: ../src/plugins/reporter-systemd-journal.c:250
+#: ../src/plugins/reporter-bugzilla.c:335 ../src/plugins/reporter-mailx.c:292
+#: ../src/plugins/reporter-rhtsupport.c:555
+#: ../src/plugins/reporter-systemd-journal.c:255
 #: ../src/plugins/reporter-mantisbt.c:292
 msgid "Debug"
 msgstr "Отладка"
 
-#: ../src/plugins/reporter-bugzilla.c:351
+#: ../src/plugins/reporter-bugzilla.c:402
 msgid "Looking for similar problems in bugzilla"
 msgstr "Поиск похожих ошибок в Bugzilla"
 
-#: ../src/plugins/reporter-bugzilla.c:380
+#: ../src/plugins/reporter-bugzilla.c:431
 msgid "Failed to get 'REDHAT_BUGZILLA_PRODUCT' from '/etc/os-release'."
 msgstr "Не удалось получить «REDHAT_BUGZILLA_PRODUCT» из «/etc/os-release»."
 
-#: ../src/plugins/reporter-bugzilla.c:383
+#: ../src/plugins/reporter-bugzilla.c:434
 msgid "Failed to read '/etc/os-release' to get Bugzilla product."
 msgstr ""
 "Не удалось прочитать «/etc/os-release» для получения продукта Bugzilla."
 
-#: ../src/plugins/reporter-bugzilla.c:394
+#: ../src/plugins/reporter-bugzilla.c:445
 #, c-format
 msgid "Using default product '%s'"
 msgstr "Используется продукт по умолчанию «%s»"
 
-#: ../src/plugins/reporter-bugzilla.c:417
-msgid ""
-"Login is not provided by configuration. Please enter your Bugzilla login:"
-msgstr "В конфигурации не задано имя пользователя Bugzilla. Введите имя:"
+#: ../src/plugins/reporter-bugzilla.c:468
+#, fuzzy, c-format
+#| msgid ""
+#| "Login is not provided by configuration. Please enter your RHTS login:"
+msgid "Login is not provided by configuration. Please enter your %s login:"
+msgstr "В конфигурации не задано имя пользователя RHTS. Введите имя:"
 
-#: ../src/plugins/reporter-bugzilla.c:423
-#: ../src/plugins/reporter-rhtsupport.c:556
+#: ../src/plugins/reporter-bugzilla.c:476
+#: ../src/plugins/reporter-rhtsupport.c:597
 #, c-format
 msgid ""
 "Password is not provided by configuration. Please enter the password for "
 "'%s':"
 msgstr "В конфигурации не задан пароль «%s». Введите пароль:"
 
-#: ../src/plugins/reporter-bugzilla.c:442
+#: ../src/plugins/reporter-bugzilla.c:500
 msgid ""
 "Can't get Bugzilla ID because this problem has not yet been reported to "
 "Bugzilla."
@@ -1753,7 +1694,7 @@ msgstr ""
 "Не удалось определить ID в Bugzilla, так как об этой ошибке еще не "
 "сообщалось."
 
-#: ../src/plugins/reporter-bugzilla.c:449
+#: ../src/plugins/reporter-bugzilla.c:505
 #, c-format
 msgid ""
 "This problem has been reported to Bugzilla '%s' which differs from the "
@@ -1762,37 +1703,49 @@ msgstr ""
 "Для этой ошибки уже есть отчет Bugzilla «%s», и он отличается от "
 "настроенного Bugzilla «%s»."
 
-#: ../src/plugins/reporter-bugzilla.c:453
+#: ../src/plugins/reporter-bugzilla.c:509
 #, c-format
 msgid "Malformed url to Bugzilla '%s'."
 msgstr "Неверно сформированный адрес в Bugzilla «%s»."
 
-#: ../src/plugins/reporter-bugzilla.c:457
+#: ../src/plugins/reporter-bugzilla.c:513
 #, c-format
 msgid "Using Bugzilla ID '%s'"
 msgstr "Используется ID Bugzilla «%s»"
 
-#: ../src/plugins/reporter-bugzilla.c:491
-#: ../src/plugins/reporter-bugzilla.c:680
-#: ../src/plugins/reporter-bugzilla.c:870
+#: ../src/plugins/reporter-bugzilla.c:547
+#: ../src/plugins/reporter-bugzilla.c:747
+#: ../src/plugins/reporter-bugzilla.c:943
 msgid "Logging out"
 msgstr "Выход"
 
-#: ../src/plugins/reporter-bugzilla.c:542
+#: ../src/plugins/reporter-bugzilla.c:579
+#, fuzzy, c-format
+#| msgid ""
+#| "This problem was already reported to MantisBT (see '%s'). Do you still "
+#| "want to create a new issue?"
+msgid ""
+"This problem was already reported to Bugzilla (see '%s'). Do you still want "
+"to create a new bug?"
+msgstr ""
+"Об этой проблеме уже сообщалось в MantisBT (см. «%s»). Вы все равно хотите "
+"создать новый отчет?"
+
+#: ../src/plugins/reporter-bugzilla.c:609
 msgid "Can't determine Bugzilla Product from problem data."
 msgstr ""
 "Не удалось определить продукт исходя из предоставленных данных об ошибке."
 
-#: ../src/plugins/reporter-bugzilla.c:604
-#: ../src/plugins/reporter-mantisbt.c:488
+#: ../src/plugins/reporter-bugzilla.c:671
+#: ../src/plugins/reporter-mantisbt.c:506
 msgid "Checking for duplicates"
 msgstr "Поиск дубликатов"
 
-#: ../src/plugins/reporter-bugzilla.c:661
+#: ../src/plugins/reporter-bugzilla.c:728
 #, c-format
 msgid ""
-"You have requested to make your data accessible only to a specific group and"
-" this bug is a duplicate of bug: %s/%u In case of bug duplicates a new "
+"You have requested to make your data accessible only to a specific group and "
+"this bug is a duplicate of bug: %s/%u In case of bug duplicates a new "
 "comment is added to the original bug report but access to the comments "
 "cannot be restricted to a specific group. Would you like to open a new bug "
 "report and close it as DUPLICATE of the original one? Otherwise, the bug "
@@ -1807,60 +1760,60 @@ msgstr ""
 "будет прервана."
 
 #. Create new bug
-#: ../src/plugins/reporter-bugzilla.c:696
+#: ../src/plugins/reporter-bugzilla.c:763
 msgid "Creating a new bug"
 msgstr "Создаётся новый запрос"
 
-#: ../src/plugins/reporter-bugzilla.c:715
+#: ../src/plugins/reporter-bugzilla.c:782
 msgid "Failed to create a new bug."
 msgstr "Не удалось создать новый запрос"
 
-#: ../src/plugins/reporter-bugzilla.c:731
+#: ../src/plugins/reporter-bugzilla.c:800
 #, c-format
 msgid "Adding extra cc %s to bug report"
 msgstr "Добавление дополнительных получателей копии %s в отчет от ошибке"
 
-#: ../src/plugins/reporter-bugzilla.c:740
+#: ../src/plugins/reporter-bugzilla.c:812
 #, c-format
 msgid "Adding External URL to bug %i"
 msgstr "Добавление внешних ссылок в отчет %i"
 
-#: ../src/plugins/reporter-bugzilla.c:746
+#: ../src/plugins/reporter-bugzilla.c:819
 #, c-format
 msgid "Adding attachments to bug %i"
 msgstr "Присоединяются файлы к %i"
 
-#: ../src/plugins/reporter-bugzilla.c:768
+#: ../src/plugins/reporter-bugzilla.c:841
 #, c-format
 msgid "Closing bug %i as duplicate of bug %i"
 msgstr "Закрытие ошибки %i как дубликата ошибки %i"
 
-#: ../src/plugins/reporter-bugzilla.c:780
-#: ../src/plugins/reporter-mantisbt.c:597
+#: ../src/plugins/reporter-bugzilla.c:853
+#: ../src/plugins/reporter-mantisbt.c:622
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Запрос уже существует: %i"
 
-#: ../src/plugins/reporter-bugzilla.c:823
+#: ../src/plugins/reporter-bugzilla.c:896
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "%s добавляется в список получателей копии"
 
-#: ../src/plugins/reporter-bugzilla.c:844
+#: ../src/plugins/reporter-bugzilla.c:917
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Добавление комментария в %d"
 
-#: ../src/plugins/reporter-bugzilla.c:857
-#: ../src/plugins/reporter-mantisbt.c:647
+#: ../src/plugins/reporter-bugzilla.c:930
+#: ../src/plugins/reporter-mantisbt.c:672
 msgid "Attaching better backtrace"
 msgstr "Добавление более подходящего протокола..."
 
-#: ../src/plugins/reporter-bugzilla.c:863
+#: ../src/plugins/reporter-bugzilla.c:936
 msgid "Found the same comment in the bug history, not adding a new one"
 msgstr "Этот комментарий уже есть в отчете. Добавление отменено."
 
-#: ../src/plugins/reporter-bugzilla.c:873
+#: ../src/plugins/reporter-bugzilla.c:946
 #, c-format
 msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
 msgstr "Статус: %s%s%s %s/show_bug.cgi?id=%u"
@@ -1870,7 +1823,7 @@ msgstr "Статус: %s%s%s %s/show_bug.cgi?id=%u"
 msgid "Submitting oops report to %s"
 msgstr "Статистика oops передаётся %s"
 
-#: ../src/plugins/reporter-kerneloops.c:147
+#: ../src/plugins/reporter-kerneloops.c:154
 msgid ""
 "& [-v] [-c CONFFILE]... -d DIR\n"
 "\n"
@@ -1885,7 +1838,8 @@ msgid ""
 msgstr ""
 "& [-v] [-c CONFFILE]... -d DIR\n"
 "\n"
-"Отправляет информацию о событиях oops на kerneloops.org или аналогичный сервер.\n"
+"Отправляет информацию о событиях oops на kerneloops.org или аналогичный "
+"сервер.\n"
 "\n"
 "Файлы, перечисленные в $EXCLUDE_FROM_REPORT, не будут включены в архив.\n"
 "\n"
@@ -1893,7 +1847,7 @@ msgstr ""
 "Допустимый ПАРАМЕТР: SubmitURL.\n"
 "Его можно переопределить с помощью $KerneloopsReporter_SubmitURL."
 
-#: ../src/plugins/reporter-kerneloops.c:167
+#: ../src/plugins/reporter-kerneloops.c:174
 #: ../src/plugins/reporter-ureport.c:81
 msgid "Configuration file"
 msgstr "Файл конфигурации"
@@ -1926,12 +1880,12 @@ msgstr "Отправляется электронное письмо с увед
 msgid "Sending an email..."
 msgstr "Отправляется сообщение..."
 
-#: ../src/plugins/reporter-mailx.c:234
+#: ../src/plugins/reporter-mailx.c:243
 #, c-format
 msgid "Email was sent to: %s"
 msgstr "Сообщение отправлено на адрес %s"
 
-#: ../src/plugins/reporter-mailx.c:257
+#: ../src/plugins/reporter-mailx.c:266
 msgid ""
 "& [-v] -d DIR [-c CONFFILE] [-F FMTFILE]\n"
 "\n"
@@ -1945,15 +1899,15 @@ msgstr ""
 "\n"
 "Если значение CONFFILE не указано, по умолчанию используется "
 
-#: ../src/plugins/reporter-mailx.c:280 ../src/plugins/reporter-upload.c:187
+#: ../src/plugins/reporter-mailx.c:289 ../src/plugins/reporter-upload.c:187
 msgid "Config file"
 msgstr "Файл конфигурации"
 
-#: ../src/plugins/reporter-mailx.c:281
+#: ../src/plugins/reporter-mailx.c:290
 msgid "Formatting file for an email"
 msgstr "Форматирование файла для электронного письма"
 
-#: ../src/plugins/reporter-mailx.c:282
+#: ../src/plugins/reporter-mailx.c:291
 msgid "Notify only (Do not mark the report as sent)"
 msgstr "Только оповестить(не отмечать отчёт как отправленный)"
 
@@ -1988,36 +1942,46 @@ msgstr "Отменено пользователем."
 msgid "Can't open '%s' for writing. Please select another file:"
 msgstr "Не удалось открыть «%s» для записи. Выберите другой файл:"
 
-#: ../src/plugins/reporter-print.c:144
+#: ../src/plugins/reporter-print.c:153
 #, c-format
 msgid "The report was appended to %s"
 msgstr "Отчёт добавлен в %s"
 
-#: ../src/plugins/reporter-print.c:144
+#: ../src/plugins/reporter-print.c:153
 #, c-format
 msgid "The report was stored to %s"
 msgstr "Отчёт сохранён в %s"
 
-#: ../src/plugins/reporter-rhtsupport.c:276
-#: ../src/plugins/reporter-ureport.c:295
+#: ../src/plugins/reporter-rhtsupport.c:280
+#: ../src/plugins/reporter-ureport.c:311
 msgid "Failed to generate microreport from the problem data"
 msgstr "Не удалось создать микроотчет из данных проблемы"
 
-#: ../src/plugins/reporter-rhtsupport.c:297
-#: ../src/plugins/reporter-ureport.c:324
+#: ../src/plugins/reporter-rhtsupport.c:301
+#: ../src/plugins/reporter-ureport.c:340
 #, c-format
 msgid "Server responded with an error: '%s'"
 msgstr "Сервер вернул ошибку: «%s»"
 
-#: ../src/plugins/reporter-rhtsupport.c:357
+#: ../src/plugins/reporter-rhtsupport.c:361
 msgid "Do you still want to create a RHTSupport ticket?"
 msgstr "Вы все еще хотите создать запрос RHTSupport?"
 
-#: ../src/plugins/reporter-rhtsupport.c:405
+#: ../src/plugins/reporter-rhtsupport.c:409
 msgid "Invalid password or login. Please enter your Red Hat login:"
 msgstr "Неверное имя или пароль. Введите ваше имя Red Hat:"
 
-#: ../src/plugins/reporter-rhtsupport.c:476
+#: ../src/plugins/reporter-rhtsupport.c:473
+msgid "Please enter customer case number to which you want to attach the data:"
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:479
+#, fuzzy
+#| msgid "Can't continue without password"
+msgid "Can't continue without Red Hat Support case number"
+msgstr "Необходимо указать пароль"
+
+#: ../src/plugins/reporter-rhtsupport.c:506
 msgid ""
 "\n"
 "& [-v] [-c CONFFILE] [-F FMTFILE] -d DIR\n"
@@ -2037,40 +2001,48 @@ msgstr ""
 "\n"
 "Если значение CONFFILE не указано, по умолчанию используется "
 
-#: ../src/plugins/reporter-rhtsupport.c:517
+#: ../src/plugins/reporter-rhtsupport.c:550
 msgid "Upload FILEs [to case with this ID]"
 msgstr "Добавить файлы в запрос с этим идентификатором"
 
-#: ../src/plugins/reporter-rhtsupport.c:519
+#: ../src/plugins/reporter-rhtsupport.c:552
 msgid "Submit uReport before creating a new case"
 msgstr "Отправить uReport, прежде чем создать отчет"
 
-#: ../src/plugins/reporter-rhtsupport.c:520
+#: ../src/plugins/reporter-rhtsupport.c:553
 msgid "Configuration file for uReport"
 msgstr "Файл конфигурации uReport"
 
-#: ../src/plugins/reporter-rhtsupport.c:521
+#: ../src/plugins/reporter-rhtsupport.c:554
 msgid "Formatting file for a new case"
 msgstr "Форматирование файла для новой заявки"
 
-#: ../src/plugins/reporter-rhtsupport.c:550
+#: ../src/plugins/reporter-rhtsupport.c:591
 msgid "Login is not provided by configuration. Please enter your RHTS login:"
 msgstr "В конфигурации не задано имя пользователя RHTS. Введите имя:"
 
-#: ../src/plugins/reporter-rhtsupport.c:619
+#: ../src/plugins/reporter-rhtsupport.c:647
+#, c-format
+msgid ""
+"We found a similar Red Hat support case %s. Do you want to attach the data "
+"to the case? Otherwise, you will have to enter the existing Red Hat support "
+"case number."
+msgstr ""
+
+#: ../src/plugins/reporter-rhtsupport.c:676
 #, c-format
 msgid "Attaching '%s' to case '%s'"
 msgstr "Добавление «%s» в запрос «%s»"
 
-#: ../src/plugins/reporter-rhtsupport.c:656
+#: ../src/plugins/reporter-rhtsupport.c:720
 msgid "Sending ABRT crash statistics data"
 msgstr "Отправка статистических данных ABRT о сбое"
 
-#: ../src/plugins/reporter-rhtsupport.c:677
+#: ../src/plugins/reporter-rhtsupport.c:741
 msgid "Can't create a temporary directory in "
 msgstr "Не удалось создать временный каталог в "
 
-#: ../src/plugins/reporter-rhtsupport.c:702
+#: ../src/plugins/reporter-rhtsupport.c:766
 msgid ""
 "The problem has only occurred once and the ability to reproduce the problem "
 "is unknown. Please ensure you will be able to provide detailed information "
@@ -2080,7 +2052,7 @@ msgstr ""
 "Убедитесь, что сможете предоставить подробную информацию нашей команде "
 "поддержки. Хотите продолжить и открыть новую заявку для службы поддержки?"
 
-#: ../src/plugins/reporter-rhtsupport.c:715
+#: ../src/plugins/reporter-rhtsupport.c:779
 #, c-format
 msgid ""
 "The crashed program was released by '%s'. Would you like to report the "
@@ -2089,7 +2061,7 @@ msgstr ""
 "Программа, в которой произошел сбой, была выпущена «%s». Хотите сообщить о "
 "проблеме в службу поддержки Red Hat?"
 
-#: ../src/plugins/reporter-rhtsupport.c:733
+#: ../src/plugins/reporter-rhtsupport.c:797
 #, c-format
 msgid ""
 "The program '%s' does not appear to be provided by Red Hat. Would you like "
@@ -2098,52 +2070,50 @@ msgstr ""
 "Программа %s, по -видимому, не предоставляется Red Hat. Хотите сообщить о "
 "проблеме в службу поддержки Red Hat?"
 
-#. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are
-#. doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing
 #. error msg is already logged by dd_opendir
-#. Compressing e.g. 0.5gig coredump takes a while. Let client know what we are
-#. doing
-#: ../src/plugins/reporter-rhtsupport.c:797
+#. Compressing e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#: ../src/plugins/reporter-rhtsupport.c:861
 #: ../src/plugins/reporter-upload.c:103
 msgid "Compressing data"
 msgstr "Сжатие данных..."
 
-#: ../src/plugins/reporter-rhtsupport.c:805
+#: ../src/plugins/reporter-rhtsupport.c:869
 msgid "Can't create temporary file in "
 msgstr "Не удалось создать временный файл в "
 
 #. Check for hints and show them if we have something
-#: ../src/plugins/reporter-rhtsupport.c:816
+#: ../src/plugins/reporter-rhtsupport.c:880
 msgid "Checking for hints"
 msgstr "Поиск существующих решений"
 
-#: ../src/plugins/reporter-rhtsupport.c:821
+#: ../src/plugins/reporter-rhtsupport.c:885
 msgid "Creating a new case"
 msgstr "Создание нового запроса"
 
 #. How can we help user sorting out this problem?
-#: ../src/plugins/reporter-rhtsupport.c:832
+#: ../src/plugins/reporter-rhtsupport.c:896
 msgid "Can't determine RH Support Product from problem data."
 msgstr ""
 "Не удалось определить продукт в списке технической поддержки Red Hat исходя "
 "из данных об ошибке."
 
-#: ../src/plugins/reporter-rhtsupport.c:888
+#: ../src/plugins/reporter-rhtsupport.c:958
 msgid "Linking ABRT crash statistics record with the case"
 msgstr "Связывание статистических данных ABRT с отчетом"
 
-#: ../src/plugins/reporter-rhtsupport.c:901
+#: ../src/plugins/reporter-rhtsupport.c:971
 #, c-format
 msgid "Linking ABRT crash statistics record with contact email: '%s'"
 msgstr "Связывание статистики ABRT с адресом %s"
 
-#: ../src/plugins/reporter-rhtsupport.c:925
+#: ../src/plugins/reporter-rhtsupport.c:995
 #, c-format
 msgid "Adding comment to case '%s'"
 msgstr "Добавление комментария к отчету «%s»"
 
 #. Attach the tarball of -d DIR
-#: ../src/plugins/reporter-rhtsupport.c:943
+#: ../src/plugins/reporter-rhtsupport.c:1013
 #, c-format
 msgid "Attaching problem data to case '%s'"
 msgstr "Присоединение данных об ошибке к «%s»"
@@ -2156,9 +2126,10 @@ msgstr "Дополнительная документация:"
 msgid "Updates which possibly help: "
 msgstr "Подходящие обновления:"
 
-#: ../src/plugins/reporter-systemd-journal.c:220
+#: ../src/plugins/reporter-systemd-journal.c:225
 msgid ""
-"& [-v] [-d DIR] [-m MESSAGEID] [-F FMTFILE] [-p NONE|ESSENTIAL|FULL] [-s SYSLOGID]\n"
+"& [-v] [-d DIR] [-m MESSAGEID] [-F FMTFILE] [-p NONE|ESSENTIAL|FULL] [-s "
+"SYSLOGID]\n"
 "\n"
 "Reports problem information into systemd journal.\n"
 "\n"
@@ -2166,26 +2137,28 @@ msgid ""
 "into systemd journal as a message. If MESSAGEID is defined, the tool\n"
 "creates a catalog message as well.\n"
 msgstr ""
-"& [-v] [-d DIR] [-m MESSAGEID] [-F FMTFILE] [-p NONE|ESSENTIAL|FULL] [-s SYSLOGID]\n"
+"& [-v] [-d DIR] [-m MESSAGEID] [-F FMTFILE] [-p NONE|ESSENTIAL|FULL] [-s "
+"SYSLOGID]\n"
 "\n"
 "Сообщает информацию о проблеме в журнал systemd.\n"
 "\n"
 "Эта утилита читает каталог DIR и отправляет сведения из него в \n"
-"журнал systemd в виде сообщения. Если определен MESSAGEID, утилита создает и сообщение каталога.\n"
+"журнал systemd в виде сообщения. Если определен MESSAGEID, утилита создает и "
+"сообщение каталога.\n"
 
-#: ../src/plugins/reporter-systemd-journal.c:246
+#: ../src/plugins/reporter-systemd-journal.c:251
 msgid "Catalog message id"
 msgstr "Идентификатор сообщения каталога"
 
-#: ../src/plugins/reporter-systemd-journal.c:247
+#: ../src/plugins/reporter-systemd-journal.c:252
 msgid "Formatting file for catalog message"
 msgstr "Подготовка файла для сообщения каталога"
 
-#: ../src/plugins/reporter-systemd-journal.c:248
+#: ../src/plugins/reporter-systemd-journal.c:253
 msgid "Dump problem dir into systemd journal fields"
 msgstr "Выгрузить каталог с данными по проблеме в поля журнала systemd"
 
-#: ../src/plugins/reporter-systemd-journal.c:249
+#: ../src/plugins/reporter-systemd-journal.c:254
 msgid "Define SYSLOG_IDENTIFIER systemd journal field"
 msgstr "Определить поле журнала systemd SYSLOG_IDENTIFIER"
 
@@ -2232,29 +2205,28 @@ msgstr "Файл закрытого ключа SSH"
 
 #: ../src/plugins/reporter-upload.c:219
 msgid ""
-"Please enter a URL (scp, ftp, etc.) where the problem data is to be "
-"exported:"
+"Please enter a URL (scp, ftp, etc.) where the problem data is to be exported:"
 msgstr ""
 "Введите URL ресурса (scp, ftp и т.п), куда будут сохранены сведения об "
 "ошибке:"
 
-#: ../src/plugins/reporter-mantisbt.c:82
+#: ../src/plugins/reporter-mantisbt.c:80
 msgid "Please enter your MantisBT login:"
 msgstr "Введите имя пользователя MantisBT:"
 
-#: ../src/plugins/reporter-mantisbt.c:86
+#: ../src/plugins/reporter-mantisbt.c:84
 msgid "Please enter the password for"
 msgstr "Введите пароль "
 
-#: ../src/plugins/reporter-mantisbt.c:97
+#: ../src/plugins/reporter-mantisbt.c:95
 msgid "Credentials are not provided by configuration."
 msgstr "Конфигурация не содержит учетных данных."
 
-#: ../src/plugins/reporter-mantisbt.c:121
+#: ../src/plugins/reporter-mantisbt.c:119
 msgid "Invalid password or login."
 msgstr "Неверное имя или пароль."
 
-#: ../src/plugins/reporter-mantisbt.c:213
+#: ../src/plugins/reporter-mantisbt.c:211
 msgid ""
 "\n"
 "& [-vf] [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\n"
@@ -2275,7 +2247,8 @@ msgid ""
 "depending on their type and size.\n"
 "\n"
 "Otherwise, if such issue is found and it is marked as CLOSED DUPLICATE,\n"
-"the tool follows the chain of duplicates until it finds a non-DUPLICATE issue.\n"
+"the tool follows the chain of duplicates until it finds a non-DUPLICATE "
+"issue.\n"
 "The tool adds a new comment to found issue.\n"
 "\n"
 "The URL to new or modified issue is printed to stdout and recorded in\n"
@@ -2289,7 +2262,8 @@ msgid ""
 "-d DIR is ignored.\n"
 "\n"
 "Option -r sets the last url from reporter_to element which is prefixed with\n"
-"TRACKER_NAME to URL field. This option is applied only when a new issue is to be\n"
+"TRACKER_NAME to URL field. This option is applied only when a new issue is "
+"to be\n"
 "filed. The default value is 'ABRT Server'\n"
 "\n"
 "If not specified, CONFFILE defaults to "
@@ -2305,11 +2279,13 @@ msgstr ""
 "\n"
 "Создает отчет об ошибке на сайте MantisBT.\n"
 "\n"
-"Программа проверяет каталог DIR и ищет отчет с тем же abrt_hash в поле «abrt_hash».\n"
+"Программа проверяет каталог DIR и ищет отчет с тем же abrt_hash в поле "
+"«abrt_hash».\n"
 "\n"
 "Если проблема не найдена, для нее будет создан новый отчет.\n"
 "Поля отчета будут заполнены на основании информации из DIR\n"
-"(в зависимости от размера объектов в DIR они могут быть добавлены как вложения).\n"
+"(в зависимости от размера объектов в DIR они могут быть добавлены как "
+"вложения).\n"
 "\n"
 "Если отчет уже существует и имеет статус CLOSED DUPLICATE,\n"
 "программа последовательно пройдет до цепочке дубликатов, \n"
@@ -2338,16 +2314,16 @@ msgstr ""
 msgid "Attach FILEs [to issue with this ID]"
 msgstr "Вложить файлы [в отчет с этим ID]"
 
-#: ../src/plugins/reporter-mantisbt.c:320
+#: ../src/plugins/reporter-mantisbt.c:326
 #, c-format
 msgid "Can't open problem dir '%s'."
 msgstr "Не удалось открыть каталог «%s»."
 
-#: ../src/plugins/reporter-mantisbt.c:342
+#: ../src/plugins/reporter-mantisbt.c:348
 msgid "Looking for similar problems in MantisBT"
 msgstr "Поиск похожих ошибок в MantisBT"
 
-#: ../src/plugins/reporter-mantisbt.c:370
+#: ../src/plugins/reporter-mantisbt.c:381
 msgid ""
 "Can't get MantisBT ID because this problem has not yet been reported to "
 "MantisBT."
@@ -2355,7 +2331,7 @@ msgstr ""
 "Не удалось получить идентификатор MantisBT, так как об этой проблеме еще не "
 "сообщалось."
 
-#: ../src/plugins/reporter-mantisbt.c:377
+#: ../src/plugins/reporter-mantisbt.c:386
 #, c-format
 msgid ""
 "This problem has been reported to MantisBT '%s' which differs from the "
@@ -2364,22 +2340,22 @@ msgstr ""
 "Для этой ошибки уже есть отчет в MantisBT — «%s», однако он отличается о "
 "настроенного «%s»."
 
-#: ../src/plugins/reporter-mantisbt.c:381
+#: ../src/plugins/reporter-mantisbt.c:390
 #, c-format
 msgid "Malformed url to MantisBT '%s'."
 msgstr "Неверно сформированный адрес MantisBT «%s»."
 
-#: ../src/plugins/reporter-mantisbt.c:385
+#: ../src/plugins/reporter-mantisbt.c:394
 #, c-format
 msgid "Using MantisBT ID '%s'"
 msgstr "Используется ID MantisBT «%s»"
 
-#: ../src/plugins/reporter-mantisbt.c:393
+#: ../src/plugins/reporter-mantisbt.c:402
 #, c-format
 msgid "Attaching file '%s' to issue %s"
 msgstr "Прикрепление файла «%s» в отчет «%s»"
 
-#: ../src/plugins/reporter-mantisbt.c:412
+#: ../src/plugins/reporter-mantisbt.c:432
 #, c-format
 msgid ""
 "This problem was already reported to MantisBT (see '%s'). Do you still want "
@@ -2389,48 +2365,48 @@ msgstr ""
 "создать новый отчет?"
 
 #. Create new issue
-#: ../src/plugins/reporter-mantisbt.c:527
+#: ../src/plugins/reporter-mantisbt.c:545
 msgid "Creating a new issue"
 msgstr "Создание нового отчета"
 
-#: ../src/plugins/reporter-mantisbt.c:532
+#: ../src/plugins/reporter-mantisbt.c:550
 #, c-format
 msgid "Invalid format file: %s"
 msgstr "Недопустимый формат файла: %s"
 
-#: ../src/plugins/reporter-mantisbt.c:536
+#: ../src/plugins/reporter-mantisbt.c:554
 msgid "Failed to format problem data"
 msgstr "Ошибка форматирования данных проблемы"
 
-#: ../src/plugins/reporter-mantisbt.c:555
+#: ../src/plugins/reporter-mantisbt.c:581
 msgid "Adding External URL to issue"
 msgstr "Добавление внешней ссылки в отчет"
 
-#: ../src/plugins/reporter-mantisbt.c:568
+#: ../src/plugins/reporter-mantisbt.c:593
 #, c-format
 msgid "Adding attachments to issue %i"
 msgstr "Добавление вложений к отчету %i"
 
-#: ../src/plugins/reporter-mantisbt.c:623
+#: ../src/plugins/reporter-mantisbt.c:648
 #, c-format
 msgid "Invalid duplicate format file: '%s"
 msgstr "Недопустимый дубликат файла: «%s»"
 
-#: ../src/plugins/reporter-mantisbt.c:627
+#: ../src/plugins/reporter-mantisbt.c:652
 msgid "Failed to format duplicate comment from problem data"
 msgstr ""
 "Ошибка форматирования дубликата комментария из полученных данных о проблеме"
 
-#: ../src/plugins/reporter-mantisbt.c:634
+#: ../src/plugins/reporter-mantisbt.c:659
 #, c-format
 msgid "Adding new comment to issue %d"
 msgstr "Добавление комментария в %d"
 
-#: ../src/plugins/reporter-mantisbt.c:670
+#: ../src/plugins/reporter-mantisbt.c:695
 msgid "Found the same comment in the issue history, not adding a new one"
 msgstr "Этот комментарий уже есть в отчете. Добавление отменено."
 
-#: ../src/plugins/reporter-mantisbt.c:677
+#: ../src/plugins/reporter-mantisbt.c:702
 #, c-format
 msgid "Status: %s%s%s %s/view.php?id=%u"
 msgstr "Статус: %s%s%s %s/view.php?id=%u"
@@ -2458,12 +2434,11 @@ msgstr "Имя пользователя Centos Bug Tracker"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:5
 msgid ""
-"You can create bugs.centos.org account &lt;a "
-"href=\"https://bugs.centos.org/signup_page.php\"&gt;here&lt;/a&gt;"
+"You can create bugs.centos.org account &lt;a href=\"https://bugs.centos.org/"
+"signup_page.php\"&gt;here&lt;/a&gt;"
 msgstr ""
-"Регистрация новых пользователей на &lt;a "
-"href=\"https://bugs.centos.org/signup_page.php\"&gt; "
-"bugs.centos.org&lt;/a&gt;"
+"Регистрация новых пользователей на &lt;a href=\"https://bugs.centos.org/"
+"signup_page.php\"&gt; bugs.centos.org&lt;/a&gt;"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:7
 msgid "CentOS Bug Tracker account password"
@@ -2493,8 +2468,8 @@ msgid ""
 "Specify this only if you needed different project than specified in /etc/os-"
 "release"
 msgstr ""
-"Укажите, только если вы хотите выбрать проект, отличный от указанного в "
-"/etc/os-release"
+"Укажите, только если вы хотите выбрать проект, отличный от указанного в /etc/"
+"os-release"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:16
 msgid "CentOS Bug Tracker project version"
@@ -2502,8 +2477,8 @@ msgstr "Версия проекта"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:17
 msgid ""
-"Specify this only if you needed different project version than specified in "
-"/etc/os-release"
+"Specify this only if you needed different project version than specified in /"
+"etc/os-release"
 msgstr ""
 "Укажите, только если вы хотите выбрать версию проекта, отличную от "
 "указанного в /etc/os-release"
@@ -2589,6 +2564,7 @@ msgid "Send binary files like coredump"
 msgstr "Отправлять двоичные файлы как coredump"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:1
+#: ../src/plugins/report_RHTSupport_AddData.xml.in.h:1
 msgid "Red Hat Customer Support"
 msgstr "Служба поддержки Red Hat"
 
@@ -2617,9 +2593,8 @@ msgid ""
 "Submit &lt;a href=\"https://access.redhat.com/articles/642323\"&gt;micro-"
 "report&lt;/a&gt; when creating a new case."
 msgstr ""
-"Отправлять &lt;a "
-"href=\"https://access.redhat.com/articles/642323\"&gt;микроотчет&lt;/a&gt; "
-"при создании нового запроса."
+"Отправлять &lt;a href=\"https://access.redhat.com/articles/642323\"&gt;"
+"микроотчет&lt;/a&gt; при создании нового запроса."
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:9
 msgid "RH Portal URL"
@@ -2628,6 +2603,10 @@ msgstr "Адрес портала Red Hat"
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Address of the Red Hat support portal"
 msgstr "Адрес портала поддержки Red Hat"
+
+#: ../src/plugins/report_RHTSupport_AddData.xml.in.h:2
+msgid "Attach the data to existing Red Hat support case"
+msgstr ""
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report Uploader"
@@ -2638,22 +2617,22 @@ msgid "Upload as tar.gz file (via FTP/SCP/...)"
 msgstr "Отправить в виде tar.gz (через FTP/SCP/...)"
 
 #: ../src/plugins/report_Uploader.xml.in.h:3
-#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:3
 msgid "URL"
 msgstr "URL"
 
 #: ../src/plugins/report_Uploader.xml.in.h:4
 msgid ""
-"Where do you want to upload the tarball with report in form "
-"login:password@url"
+"Where do you want to upload the tarball with report in form login:"
+"password@url"
 msgstr "Отправить *.tar на адрес в формате «имя:пароль@URL»"
 
 #: ../src/plugins/report_Uploader.xml.in.h:5
 msgid ""
-"Examples:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]"
+"Examples:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:"
+"pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]"
 msgstr ""
-"Примеры: ftp://[user[:pass]@]host/dir/[file.tar.gz], "
-"scp://[user[:pass]@]host/dir/[file.tar.gz], file:///dir/[file.tar.gz]"
+"Примеры: ftp://[user[:pass]@]host/dir/[file.tar.gz], scp://[user[:"
+"pass]@]host/dir/[file.tar.gz], file:///dir/[file.tar.gz]"
 
 #: ../src/plugins/report_Uploader.xml.in.h:7
 msgid "Use this field if you do not want to have user name in URL"
@@ -2665,12 +2644,10 @@ msgid "Use this field if you do not want to have password in URL"
 msgstr "Используйте это поле, если вы хотите исключить пароль из адреса"
 
 #: ../src/plugins/report_Uploader.xml.in.h:14
-#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:8
 msgid "FTP Proxy"
 msgstr "FTP-прокси"
 
 #: ../src/plugins/report_Uploader.xml.in.h:15
-#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:9
 msgid "Sets the proxy server to use for FTP"
 msgstr "Выбирает прокси-сервер для использования с FTP"
 
@@ -2715,24 +2692,24 @@ msgid "Adds your Bugzilla login to CC List of already reported bugs."
 msgstr "Добавляет ваше имя в список наблюдателей отчетов Bugzilla."
 
 #: ../src/plugins/report_uReport.xml.in.h:7
+msgid "Report unpackaged problems"
+msgstr ""
+
+#: ../src/plugins/report_uReport.xml.in.h:8
+msgid "Report problems coming from unpackaged executables."
+msgstr ""
+
+#: ../src/plugins/report_uReport.xml.in.h:9
 msgid "Contact email address"
 msgstr "Контактный электронный адрес"
 
-#: ../src/plugins/report_uReport.xml.in.h:8
+#: ../src/plugins/report_uReport.xml.in.h:10
 msgid ""
 "Email address that can be used by ABRT server to inform you about news and "
 "updates"
 msgstr ""
 "Адрес электронной почты для получения последних новостей и обновлений с "
 "сервера ABRT."
-
-#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:1
-msgid "Emergency analysis"
-msgstr "Анализ аварийной ситуации"
-
-#: ../src/plugins/report_EmergencyAnalysis.xml.in.h:2
-msgid "Upload the problem data for further analysis"
-msgstr "Отправлять сведения об ошибке для дальнейшего изучения"
 
 #: ../src/plugins/watch_Bugzilla.xml.in.h:1
 msgid "Watch Bugzilla Bug"
@@ -2765,20 +2742,20 @@ msgid ""
 "please see https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
 "tickets for more info"
 msgstr ""
-"Затребовано создание частного запроса, но группы не указаны (см. "
-"https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets)"
+"Затребовано создание частного запроса, но группы не указаны (см. https://"
+"github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets)"
 
 #: ../src/plugins/rhbz.c:604
 #, c-format
 msgid "New bug id: %i"
 msgstr "ID нового запроса: %i"
 
-#: ../src/plugins/rhbz.c:724
+#: ../src/plugins/rhbz.c:725
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Родительский запрос для %d не найден."
 
-#: ../src/plugins/rhbz.c:870
+#: ../src/plugins/rhbz.c:873
 msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
 msgstr "Поиск Bug.search(quicksearch) не вернул результатов типа 'bugs'"
 
@@ -2787,51 +2764,50 @@ msgstr "Поиск Bug.search(quicksearch) не вернул результат�
 msgid "MantisBT couldn't find parent of issue %d"
 msgstr "Не удалось обнаружить родительский отчет %d в MantisBT"
 
-#: ../src/plugins/mantisbt.c:178
+#: ../src/plugins/mantisbt.c:180
 msgid "SOAP: Failed to get child element because of no parent."
 msgstr "SOAP: невозможно получить дочерний элемент, так как нет родителя."
 
-#: ../src/plugins/mantisbt.c:187
+#: ../src/plugins/mantisbt.c:189
 msgid "SOAP: Failed to get next element because of no node."
-msgstr ""
-"SOAP: невозможно получить следующий элемент, так как узел отсутствует."
+msgstr "SOAP: невозможно получить следующий элемент, так как узел отсутствует."
 
-#: ../src/plugins/mantisbt.c:196
+#: ../src/plugins/mantisbt.c:198
 msgid "SOAP: Failed to get child node because of no parent."
 msgstr "SOAP: невозможно получить дочерний узел, так как нет родителя."
 
-#: ../src/plugins/mantisbt.c:217
+#: ../src/plugins/mantisbt.c:219
 msgid "SOAP: Failed to parse xml during creating request."
 msgstr "SOAP: не удалось обработать XML во время создания запроса."
 
-#: ../src/plugins/mantisbt.c:225
+#: ../src/plugins/mantisbt.c:227
 msgid "SOAP: Failed to get xml root element."
 msgstr "SOAP: не удалось получить корневой элемент XML."
 
-#: ../src/plugins/mantisbt.c:238
+#: ../src/plugins/mantisbt.c:240
 msgid ""
 "SOAP: Failed to add a new child node because of no node or no child name."
 msgstr ""
 "SOAP: не удалось добавить дочерний узел, так как нет узла или его имя не "
 "определено."
 
-#: ../src/plugins/mantisbt.c:243
+#: ../src/plugins/mantisbt.c:245
 msgid "SOAP: Failed to create a new xml child item."
 msgstr "SOAP: не удалось создать новый дочерний элемент XML."
 
-#: ../src/plugins/mantisbt.c:248
+#: ../src/plugins/mantisbt.c:250
 msgid "SOAP: Failed to create a new property."
 msgstr "SOAP: не удалось создать свойство."
 
-#: ../src/plugins/mantisbt.c:258
+#: ../src/plugins/mantisbt.c:260
 msgid "SOAP: Failed to add method parametr."
 msgstr "SOAP: не удалось добавить параметр метода."
 
-#: ../src/plugins/mantisbt.c:287
+#: ../src/plugins/mantisbt.c:289
 msgid "SOAP: Failed to add new issue parametrs."
 msgstr "SOAP: не удалось добавить параметры для нового отчета."
 
-#: ../src/plugins/mantisbt.c:290
+#: ../src/plugins/mantisbt.c:292
 msgid ""
 "SOAP: Failed to add new issue parameters because the required items are "
 "missing."
@@ -2839,101 +2815,101 @@ msgstr ""
 "SOAP: не удалось добавить параметры для нового отчета вследствие отсутствия "
 "обязательных элементов."
 
-#: ../src/plugins/mantisbt.c:334
+#: ../src/plugins/mantisbt.c:336
 msgid "SOAP: Failed to create a new property in custom fields."
 msgstr "SOAP: не удалось создать новое свойство в дополнительных полях."
 
-#: ../src/plugins/mantisbt.c:352
+#: ../src/plugins/mantisbt.c:354
 msgid ""
 "SOAP: Failed to create SOAP string because of invalid function arguments."
 msgstr ""
 "SOAP: не удалось создать строку SOAP, так как аргументы функции заданы "
 "неверно."
 
-#: ../src/plugins/mantisbt.c:359
+#: ../src/plugins/mantisbt.c:361
 msgid "SOAP: Failed to dump xml node."
 msgstr "SOAP: не удалось сохранить описание узла XML."
 
-#: ../src/plugins/mantisbt.c:373
+#: ../src/plugins/mantisbt.c:375
 msgid "SOAP: Failed to print SOAP string."
 msgstr "SOAP: не удалось вывести строку SOAP."
 
-#: ../src/plugins/mantisbt.c:380
+#: ../src/plugins/mantisbt.c:382
 msgid "Failed to dump xml node."
 msgstr "Не удалось сохранить описание узла XML."
 
-#: ../src/plugins/mantisbt.c:456
+#: ../src/plugins/mantisbt.c:458
 msgid "SOAP: Failed to parse xml (searching value at depth by name)."
 msgstr "SOAP: не удалось обработать XML (глубокий поиск по имени)."
 
-#: ../src/plugins/mantisbt.c:460 ../src/plugins/mantisbt.c:503
-#: ../src/plugins/mantisbt.c:532
+#: ../src/plugins/mantisbt.c:462 ../src/plugins/mantisbt.c:505
+#: ../src/plugins/mantisbt.c:534
 msgid "SOAP: Failed to create xml text reader."
 msgstr "SOAP: не удалось создать метод чтения XML."
 
-#: ../src/plugins/mantisbt.c:499
+#: ../src/plugins/mantisbt.c:501
 msgid "SOAP: Failed to parse xml."
 msgstr "SOAP: не удалось обработать XML."
 
-#: ../src/plugins/mantisbt.c:528
+#: ../src/plugins/mantisbt.c:530
 msgid "SOAP: Failed to parse xml (get related to issue)."
 msgstr "SOAP: не удалось обработать XML (при сопоставлении с отчетом)."
 
-#: ../src/plugins/mantisbt.c:645
+#: ../src/plugins/mantisbt.c:647
 msgid "Url or request isn't specified."
 msgstr "Не задан ни URL, ни запрос."
 
-#: ../src/plugins/mantisbt.c:673
+#: ../src/plugins/mantisbt.c:675
 #, c-format
 msgid "Error in HTTP POST, HTTP code: 404 (Not found), URL:'%s'"
 msgstr "Ошибка HTTP POST. Код HTTP: 404 (не найдено), URL:«%s»"
 
-#: ../src/plugins/mantisbt.c:697
+#: ../src/plugins/mantisbt.c:699
 #, c-format
 msgid "Error in MantisBT request at '%s': %s"
 msgstr "Ошибка в запросе MantisBT, «%s»: %s"
 
-#: ../src/plugins/mantisbt.c:699
+#: ../src/plugins/mantisbt.c:701
 #, c-format
 msgid "Error in MantisBT request at '%s'"
 msgstr "Ошибка в запросе MantisBT, «%s»"
 
-#: ../src/plugins/mantisbt.c:741
+#: ../src/plugins/mantisbt.c:743
 #, c-format
 msgid "Failed to attach file: '%s'"
 msgstr "Не удалось добавить файл: «%s»"
 
-#: ../src/plugins/mantisbt.c:760
+#: ../src/plugins/mantisbt.c:762
 #, c-format
 msgid "Can't lseek '%s'"
 msgstr "Не удалось выполнить lseek: «%s»"
 
-#: ../src/plugins/mantisbt.c:766
+#: ../src/plugins/mantisbt.c:768
 #, c-format
 msgid "Can't upload '%s', it's too large (%llu bytes)"
 msgstr "«%s» имеет слишком большой размер (%llu Б) и не может быть отправлен"
 
-#: ../src/plugins/mantisbt.c:776
+#: ../src/plugins/mantisbt.c:778
 #, c-format
 msgid "Can't read '%s'"
 msgstr "Ошибка чтения «%s»"
 
-#: ../src/plugins/mantisbt.c:792
+#: ../src/plugins/mantisbt.c:794
 #, c-format
 msgid "Can't open '%s'"
 msgstr "Не удалось открыть «%s»"
 
-#: ../src/plugins/mantisbt.c:859
+#: ../src/plugins/mantisbt.c:861
 #, c-format
 msgid "Failed to search MantisBT issue by duphash: '%s'"
 msgstr "Не удалось выполнить поиск отчета MantisBT по duphash: «%s»"
 
-#: ../src/plugins/mantisbt.c:903
+#: ../src/plugins/mantisbt.c:906
 #, c-format
 msgid "Failed to search MantisBT duplicate issue: '%s'"
 msgstr "Не удалось выполнить поиск дубликата отчета MantisBT: «%s»"
 
-#: ../src/plugins/mantisbt.c:930
+#: ../src/plugins/mantisbt.c:934
 #, c-format
 msgid ""
 "MantisBT doesn't contain custom field '%s', which is required for full "
@@ -2942,41 +2918,41 @@ msgstr ""
 "В MantisBT нет дополнительного поля «%s», необходимого для полноценного "
 "функционирования модуля отчетности. Вы все равно хотите создать отчет?"
 
-#: ../src/plugins/mantisbt.c:954
+#: ../src/plugins/mantisbt.c:958
 #, c-format
 msgid "Failed to get custom fields for '%s' project"
 msgstr "Не удалось получить дополнительные поля для проекта «%s»"
 
-#: ../src/plugins/mantisbt.c:998
+#: ../src/plugins/mantisbt.c:1002
 #, c-format
 msgid "Failed to create a new issue: '%s'"
 msgstr "Не удалось создать отчет: «%s»"
 
-#: ../src/plugins/mantisbt.c:1024
+#: ../src/plugins/mantisbt.c:1028
 #, c-format
 msgid "Failed to get MantisBT issue: '%s'"
 msgstr "Не удалось извлечь отчет MantisBT: «%s»"
 
-#: ../src/plugins/mantisbt.c:1038
+#: ../src/plugins/mantisbt.c:1042
 #, c-format
 msgid "Issue %i is CLOSED, but it has no RESOLUTION"
 msgstr "Отчет %i закрыт и имеет статус CLOSED, но без RESOLUTION"
 
-#: ../src/plugins/mantisbt.c:1046
+#: ../src/plugins/mantisbt.c:1050
 #, c-format
 msgid "Issue %i is CLOSED as DUPLICATE, but it has no DUPLICATE_ID"
 msgstr "Отчет %i закрыт как DUPLICATE, но DUPLICATE_ID отсутствует"
 
-#: ../src/plugins/mantisbt.c:1083
+#: ../src/plugins/mantisbt.c:1087
 #, c-format
 msgid "Failed to add MantisBT issue note: '%s'"
 msgstr "Не удалось добавить примечание к отчету MantisBT: «%s»"
 
-#: ../src/plugins/mantisbt.c:1097
+#: ../src/plugins/mantisbt.c:1101
 msgid "The MantisBT project has not been deretmined."
 msgstr "Проект MantisBT не определен."
 
-#: ../src/plugins/mantisbt.c:1106
+#: ../src/plugins/mantisbt.c:1113
 msgid "Failed to get project id from name"
 msgstr "Не удалось определить идентификатор проекта исходя из названия."
 
@@ -3015,11 +2991,11 @@ msgstr ""
 
 #: ../src/plugins/reporter-ureport.c:89
 msgid ""
-"contact e-mail address from environment or configuration file (requires "
-"-a|-A, conflicts with -e)"
+"contact e-mail address from environment or configuration file (requires -a|-"
+"A, conflicts with -e)"
 msgstr ""
-"контактный электронный адрес из окружения или файла конфигурации (требует "
-"-a|-A, не используется вместе с -e)"
+"контактный электронный адрес из окружения или файла конфигурации (требует -"
+"a|-A, не используется вместе с -e)"
 
 #: ../src/plugins/reporter-ureport.c:91
 msgid "attach RHBZ bug (requires -a|-A, conflicts with -B)"
@@ -3039,8 +3015,8 @@ msgstr "добавить краткий текст (требует -a|-A, не �
 #: ../src/plugins/reporter-ureport.c:97
 msgid "attach short text from comment (requires -a|-A, conflicts with -d)"
 msgstr ""
-"добавить краткий текст из «comment» (требует -a|-A, не используется вместе с"
-" -d)"
+"добавить краткий текст из «comment» (требует -a|-A, не используется вместе с "
+"-d)"
 
 #: ../src/plugins/reporter-ureport.c:101
 msgid "attach value (requires -a|-A and -T, conflicts with -L)"
@@ -3048,16 +3024,16 @@ msgstr "присоединить значение (требует -a|-A и -T, �
 
 #: ../src/plugins/reporter-ureport.c:103
 msgid ""
-"attach data of FIELD [URL] of the last report result (requires -a|-A, -r and"
-" -T, conflicts with -l)"
+"attach data of FIELD [URL] of the last report result (requires -a|-A, -r and "
+"-T, conflicts with -l)"
 msgstr ""
 "присоединить данные поля FIELD [URL] из результата последнего отчета "
 "(требует -a|-A, -r и -T, конфликтует с -l)"
 
 #: ../src/plugins/reporter-ureport.c:106
 msgid ""
-"use REPORT_RESULT_TYPE when looking for FIELD in reported_to (used only with"
-" -L)"
+"use REPORT_RESULT_TYPE when looking for FIELD in reported_to (used only with "
+"-L)"
 msgstr ""
 "использовать REPORT_RESULT_TYPE при поиске FIELD в поле reported_to "
 "(используется только с -L)"
@@ -3073,9 +3049,11 @@ msgstr ""
 msgid ""
 "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS]\n"
 "  [-A -a bthash -B -b bug-id -E -e email -O -o comment] [-d DIR]\n"
-"  [-A -a bthash -T ATTACHMENT_TYPE -r REPORT_RESULT_TYPE -L RESULT_FIELD] [-d DIR]\n"
+"  [-A -a bthash -T ATTACHMENT_TYPE -r REPORT_RESULT_TYPE -L RESULT_FIELD] [-"
+"d DIR]\n"
 "  [-A -a bthash -T ATTACHMENT_TYPE -l DATA] [-d DIR]\n"
-"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-i AUTH_ITEMS] [-d DIR]\n"
+"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-i AUTH_ITEMS] "
+"[-d DIR]\n"
 "\n"
 "Upload micro report or add an attachment to a micro report\n"
 "\n"
@@ -3083,68 +3061,70 @@ msgid ""
 msgstr ""
 "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS]\n"
 "  [-A -a bthash -B -b bug-id -E -e email -O -o comment] [-d DIR]\n"
-"  [-A -a bthash -T ATTACHMENT_TYPE -r REPORT_RESULT_TYPE -L RESULT_FIELD] [-d DIR]\n"
+"  [-A -a bthash -T ATTACHMENT_TYPE -r REPORT_RESULT_TYPE -L RESULT_FIELD] [-"
+"d DIR]\n"
 "  [-A -a bthash -T ATTACHMENT_TYPE -l DATA] [-d DIR]\n"
-"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-i AUTH_ITEMS] [-d DIR]\n"
+"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-i AUTH_ITEMS] "
+"[-d DIR]\n"
 "\n"
 "Отправить микроотчет или добавить вложение к микроотчету\n"
 "\n"
 "Считывает стандартную коонфигурацию из "
 
-#: ../src/plugins/reporter-ureport.c:188
+#: ../src/plugins/reporter-ureport.c:191
 msgid "This problem does not have an uReport assigned."
 msgstr "Эта ошибка не генерирует uReport."
 
-#: ../src/plugins/reporter-ureport.c:201
+#: ../src/plugins/reporter-ureport.c:212
 msgid "This problem has not been reported to Bugzilla."
 msgstr "Об этой ошибке не сообщалось в Bugzilla."
 
-#: ../src/plugins/reporter-ureport.c:205
+#: ../src/plugins/reporter-ureport.c:218
 #, c-format
 msgid "Unable to find bug ID in bugzilla URL '%s'"
 msgstr "Не удалось найти идентификатор отчета в ссылке Bugzilla «%s»"
 
-#: ../src/plugins/reporter-ureport.c:210
+#: ../src/plugins/reporter-ureport.c:223
 #, c-format
 msgid "Unable to parse bug ID from bugzilla URL '%s'"
 msgstr ""
 "Не удалось извлечь идентификатор отчета из адресной строки Bugzilla «%s»"
 
-#: ../src/plugins/reporter-ureport.c:219
+#: ../src/plugins/reporter-ureport.c:230
 msgid "Cannot attach comment from 'comment' file"
 msgstr "Не удалось добавить комментарий из файла «comment»"
 
-#: ../src/plugins/reporter-ureport.c:221
+#: ../src/plugins/reporter-ureport.c:232
 msgid "'comment' file is empty"
 msgstr "Пустой файл «comment»."
 
-#: ../src/plugins/reporter-ureport.c:229
+#: ../src/plugins/reporter-ureport.c:243
 #, c-format
 msgid "This problem has not been reported to '%s'."
 msgstr "Отчет об этой проблеме не отправлялся в «%s»."
 
-#: ../src/plugins/reporter-ureport.c:234
+#: ../src/plugins/reporter-ureport.c:251
 #, c-format
 msgid "The report result '%s' is missing URL."
 msgstr "В результате отчета «%s» отсутствует URL."
 
-#: ../src/plugins/reporter-ureport.c:251
+#: ../src/plugins/reporter-ureport.c:267
 msgid ""
-"Neither environment variable 'uReport_ContactEmail' nor configuration option"
-" 'ContactEmail' is set"
+"Neither environment variable 'uReport_ContactEmail' nor configuration option "
+"'ContactEmail' is set"
 msgstr ""
 "Не заданы значения переменной окружения uReport_ContactEmail и параметра "
 "ContactEmail"
 
-#: ../src/plugins/reporter-ureport.c:257
+#: ../src/plugins/reporter-ureport.c:273
 msgid "You need to specify bug ID, contact email, comment or all of them"
 msgstr "Необходимо указать ID отчета, электронный адрес или и то, и другое."
 
-#: ../src/plugins/reporter-ureport.c:287
+#: ../src/plugins/reporter-ureport.c:303
 msgid "You need to specify bthash of the uReport to attach."
 msgstr "Необходимо указать uReport bthash."
 
-#: ../src/plugins/reporter-ureport.c:316
+#: ../src/plugins/reporter-ureport.c:332
 msgid "This problem has already been reported."
 msgstr "Об этой ошибке уже сообщено."
 
@@ -3152,34 +3132,34 @@ msgstr "Об этой ошибке уже сообщено."
 msgid "How would you like to report the problem?"
 msgstr "Выберите метод сообщения об ошибке"
 
-#: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:146
-#: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:259
-#: ../src/report-newt/report-newt.c:337 ../src/report-newt/report-newt.c:354
+#: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:145
+#: ../src/report-newt/report-newt.c:168 ../src/report-newt/report-newt.c:258
+#: ../src/report-newt/report-newt.c:334 ../src/report-newt/report-newt.c:356
 msgid "Ok"
 msgstr "OK"
 
-#: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:146
+#: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:145
 msgid "Cancel"
 msgstr "Отмена"
 
-#: ../src/report-newt/report-newt.c:169 ../src/report-newt/report-newt.c:337
+#: ../src/report-newt/report-newt.c:168 ../src/report-newt/report-newt.c:334
 msgid "Error"
 msgstr "Ошибка"
 
-#: ../src/report-newt/report-newt.c:256
+#: ../src/report-newt/report-newt.c:255
 msgid "Reporting"
 msgstr "Отправляется отчёт…"
 
-#: ../src/report-newt/report-newt.c:276
+#: ../src/report-newt/report-newt.c:275
 #, c-format
 msgid "--- Running %s ---"
 msgstr "--- Выполняется %s ---"
 
-#: ../src/report-newt/report-newt.c:354
+#: ../src/report-newt/report-newt.c:356
 msgid "No reporters available"
 msgstr "Средств генерации отчетов не обнаружено."
 
-#: ../src/report-newt/report-newt.c:384
+#: ../src/report-newt/report-newt.c:386
 msgid ""
 "& [-d] DIR\n"
 "\n"
@@ -3189,7 +3169,7 @@ msgstr ""
 "\n"
 "Программа newt для создания отчёта на основе статистики в каталоге DIR."
 
-#: ../src/report-newt/report-newt.c:394
+#: ../src/report-newt/report-newt.c:396
 msgid "Remove DIR after reporting"
 msgstr "Удалить DIR после формирования отчета"
 
@@ -3267,7 +3247,6 @@ msgstr "Обработать ошибку X Server средствами CentOS"
 #: ../src/workflows/workflow_FedoraLibreport.xml.in.h:1
 #: ../src/workflows/workflow_FedoraJava.xml.in.h:1
 #: ../src/workflows/workflow_FedoraJavaScript.xml.in.h:1
-#: ../src/workflows/workflow_RHELJavaScript.xml.in.h:1
 msgid "Report to Fedora"
 msgstr "Сообщить в Fedora"
 
@@ -3352,8 +3331,8 @@ msgid ""
 "Submit anonymous crash report - I do not want to be contacted by Red Hat "
 "Support"
 msgstr ""
-"Отправить анонимный отчет о сбое — я не хочу, чтобы служба поддержки Red Hat"
-" со мной связывалась"
+"Отправить анонимный отчет о сбое — я не хочу, чтобы служба поддержки Red Hat "
+"со мной связывалась"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1
@@ -3362,6 +3341,7 @@ msgstr ""
 #: ../src/workflows/workflow_RHELxorg.xml.in.h:1
 #: ../src/workflows/workflow_RHELLibreport.xml.in.h:1
 #: ../src/workflows/workflow_RHELJava.xml.in.h:1
+#: ../src/workflows/workflow_RHELJavaScript.xml.in.h:1
 msgid "Ask Red Hat Support for help"
 msgstr "Попросить помощь в службе поддержки Red Hat"
 
@@ -3379,6 +3359,30 @@ msgid ""
 msgstr ""
 "Создать новую заявку для службы поддержки Red Hat Support — я хочу, чтобы "
 "служба поддержки Red Hat со мной связалась"
+
+#: ../src/workflows/workflow_RHELAddDataCCpp.xml.in.h:1
+#: ../src/workflows/workflow_RHELAddDataJava.xml.in.h:1
+#: ../src/workflows/workflow_RHELAddDataKerneloops.xml.in.h:1
+#: ../src/workflows/workflow_RHELAddDataLibreport.xml.in.h:1
+#: ../src/workflows/workflow_RHELAddDataPython.xml.in.h:1
+#: ../src/workflows/workflow_RHELAddDatavmcore.xml.in.h:1
+#: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:1
+#: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:1
+msgid "Attach crash data to an existing Red Hat support case"
+msgstr ""
+
+#: ../src/workflows/workflow_RHELAddDataCCpp.xml.in.h:2
+#: ../src/workflows/workflow_RHELAddDataJava.xml.in.h:2
+#: ../src/workflows/workflow_RHELAddDataKerneloops.xml.in.h:2
+#: ../src/workflows/workflow_RHELAddDataLibreport.xml.in.h:2
+#: ../src/workflows/workflow_RHELAddDataPython.xml.in.h:2
+#: ../src/workflows/workflow_RHELAddDatavmcore.xml.in.h:2
+#: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:2
+#: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:2
+#, fuzzy
+#| msgid "Ask Red Hat Support for help"
+msgid "Provide Red Hat Support with crash details"
+msgstr "Попросить помощь в службе поддержки Red Hat"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
@@ -3423,3 +3427,90 @@ msgstr "Обработать исключение Java средствами Red 
 msgid "Process the JavaScript exception using the Red Hat infrastructure"
 msgstr ""
 "Проанализировать исключение JavaScript с использованием средств Red Hat"
+
+#~ msgid "Alternate GUI file"
+#~ msgstr "Файл GUI"
+
+#~ msgid ""
+#~ "No reporting targets are defined for this problem. Check configuration "
+#~ "in /etc/libreport/*"
+#~ msgstr ""
+#~ "Для этой проблемы необходимо настроить систему отслеживания. Проверьте "
+#~ "конфигурацию в /etc/libreport/*"
+
+#~ msgid "(requires: %s)"
+#~ msgstr "(требуется: %s)"
+
+#~ msgid "(not needed, data already exist: %s)"
+#~ msgstr "(нет необходимости, данные уже существуют: %s)"
+
+#~ msgid ""
+#~ "If you are sure that this problem is not caused by network problems "
+#~ "neither by invalid configuration\n"
+#~ "and want to help us, please click on the upload button and provide all "
+#~ "problem data for a deep analysis.\n"
+#~ "<i>Before you do that, please consider the security risks. Problem data "
+#~ "may contain sensitive information like\n"
+#~ "passwords. The uploaded data are stored in a protected storage and only a "
+#~ "limited number of persons can read them.</i>"
+#~ msgstr ""
+#~ "Если вы уверены, что этот конфликт не связан с сетевым соединением или "
+#~ "ошибками конфигурации,\n"
+#~ "и хотите помочь нам его решить, нажмите кнопку отправки отчета и "
+#~ "приложите все данные ошибки\n"
+#~ "<i>Прежде чем это сделать, оцените потенциальный риск безопасности: \n"
+#~ "в передаваемых данных могут содержаться конфиденциальные данные (пароли и "
+#~ "т.п.). Ваши данные\n"
+#~ "будут загружены в защищенное хранилище, доступ к которому имеет лишь "
+#~ "ограниченный круг лиц.</i>"
+
+#~ msgid "No processing for event '%s' is defined"
+#~ msgstr "Не задан метод обработки события «%s»"
+
+#~ msgid "Upload for analysis"
+#~ msgstr "Загрузка для дальнейшего изучения"
+
+#~ msgid ""
+#~ "In order to enable the built-in screencasting functionality the package "
+#~ "fros-recordmydesktop has to be installed. Please run the following "
+#~ "command if you want to install it.\n"
+#~ "\n"
+#~ "<b>su -c \"dnf install fros-recordmydesktop\"</b>"
+#~ msgstr ""
+#~ "Чтобы включить возможности видеозахвата экрана, надо установить пакет "
+#~ "fros-recordmydesktop. Выполните следующую команду, если вы хотите "
+#~ "установить его:\n"
+#~ "\n"
+#~ "<b>su -c \"dnf install fros-recordmydesktop\"</b>"
+
+#~ msgid ""
+#~ "Use this button to generate more informative backtrace after you "
+#~ "installed additional debug packages"
+#~ msgstr ""
+#~ "Нажмите эту кнопку для создания подробного протокола сбоя после установки "
+#~ "дополнительных пакетов отладки."
+
+#~ msgid "If you don't know how to describe it, you can"
+#~ msgstr "Если вы затрудняетесь с описанием, можно:"
+
+#~ msgid "add a screencast"
+#~ msgstr "Добавить вещание с экрана"
+
+#~ msgid "Report result label mustn't be empty string."
+#~ msgstr "Метка результата отчета не должна быть пустой строкой."
+
+#~ msgid "Report result label mustn't contain ':' character."
+#~ msgstr "Метка результата отчета не должна содержать двоеточие (:)."
+
+#~ msgid "Invalid password or login. Please enter your Bugzilla login:"
+#~ msgstr "Неверное имя или пароль. Пожалуйста, введите ваше имя в Bugzilla:"
+
+#~ msgid ""
+#~ "Login is not provided by configuration. Please enter your Bugzilla login:"
+#~ msgstr "В конфигурации не задано имя пользователя Bugzilla. Введите имя:"
+
+#~ msgid "Emergency analysis"
+#~ msgstr "Анализ аварийной ситуации"
+
+#~ msgid "Upload the problem data for further analysis"
+#~ msgstr "Отправлять сведения об ошибке для дальнейшего изучения"
