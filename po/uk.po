@@ -1,29 +1,29 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
-# Yuri Chornoivan <yurchor@ukr.net>, 2011-2014
-# Yuri Chornoivan <yurchor@ukr.net>, 2013
-# Yuri Chornoivan <yurchor@ukr.net>, 2015. #zanata
-# Yuri Chornoivan <yurchor@ukr.net>, 2016. #zanata
-# Yuri Chornoivan <yurchor@ukr.net>, 2019. #zanata
+# Yuri Chornoivan <yurchor@ukr.net>, 2011-2014, 2020.
+# Yuri Chornoivan <yurchor@ukr.net>, 2013, 2020.
+# Yuri Chornoivan <yurchor@ukr.net>, 2015. #zanata, 2020.
+# Yuri Chornoivan <yurchor@ukr.net>, 2016. #zanata, 2020.
+# Yuri Chornoivan <yurchor@ukr.net>, 2019. #zanata, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2019-06-03 03:26+0000\n"
+"PO-Revision-Date: 2020-01-18 21:15+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
-"Language-Team: Ukrainian (http://www.transifex.com/projects/p/libreport/"
-"language/uk/)\n"
+"Language-Team: Ukrainian <https://translate.stg.fedoraproject.org/projects/"
+"abrt/libreport/uk/>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
+"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 3.10.3\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -413,7 +413,7 @@ msgstr "На_лаштувати"
 
 #: ../src/gtk-helpers/config_dialog.c:368 ../src/gui-wizard-gtk/wizard.c:3206
 msgid "_Close"
-msgstr "_Закрити"
+msgstr "З_акрити"
 
 #: ../src/gtk-helpers/event_config_dialog.c:140
 msgid "Show password"
@@ -634,7 +634,7 @@ msgstr "Обробку завершено, будь ласка, перейдіт
 
 #: ../src/gui-wizard-gtk/wizard.c:1770
 msgid "No commands could be found for processsing the crashdump.\n"
-msgstr ""
+msgstr "Не вдалося знайти програми для обробки дампу аварії.\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1785
 msgid "Processing interrupted: can't continue without writable directory."
@@ -648,6 +648,9 @@ msgid ""
 "No matching actions found for this event.\n"
 "\n"
 msgstr ""
+"--- Пропускаємо %s ---\n"
+"Для цієї події не вдалося знайти відповідних дій.\n"
+"\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1843
 msgid "Processing..."
@@ -926,7 +929,7 @@ msgstr ""
 
 #: ../src/include/internal_libreport.h:1246
 msgid "Be verbose"
-msgstr "Докладні повідомлення"
+msgstr "Докладно"
 
 #: ../src/include/internal_libreport.h:1247
 #: ../src/plugins/reporter-bugzilla.c:323
@@ -1099,12 +1102,12 @@ msgstr ""
 "вади."
 
 #: ../src/lib/event_config.c:533
-#, fuzzy
-#| msgid "Reporting disabled because the backtrace is unusable."
 msgid ""
 "Reporting is disabled because the generated backtrace has low informational "
 "value."
-msgstr "Звітування вимкнено, оскільки зворотне трасування є непридатним."
+msgstr ""
+"Звітування вимкнено, оскільки у даних зворотного трасування надто мало "
+"відомостей."
 
 #: ../src/lib/event_config.c:537
 #, c-format
@@ -1235,7 +1238,7 @@ msgstr "Використання: "
 #: ../src/lib/problem_data.c:252
 #, c-format
 msgid "Essential element '%s' is missing, can't continue"
-msgstr "Не вистачає важливого елемента «%s», продовження обробки неможливе…"
+msgstr "Не вистачає важливого елемента «%s», продовження обробки неможливе"
 
 #: ../src/lib/problem_report.c:517
 #, c-format
@@ -1523,12 +1526,11 @@ msgid "Logging into Bugzilla at %s"
 msgstr "Вхід до Bugzilla від імені %s"
 
 #: ../src/plugins/reporter-bugzilla.c:223
-#, fuzzy, c-format
-#| msgid "Invalid password or login. Please enter your Red Hat login:"
+#, c-format
 msgid "Invalid password or login. Please enter your %s login:"
 msgstr ""
 "Некоректний пароль або ім’я користувача. Будь ласка, вкажіть ім’я "
-"користувача у системі Red Hat:"
+"користувача у системі %s:"
 
 #: ../src/plugins/reporter-bugzilla.c:228
 #: ../src/plugins/reporter-rhtsupport.c:411
@@ -1716,13 +1718,11 @@ msgid "Using default product '%s'"
 msgstr "З використанням типового запису продукту «%s»"
 
 #: ../src/plugins/reporter-bugzilla.c:468
-#, fuzzy, c-format
-#| msgid ""
-#| "Login is not provided by configuration. Please enter your RHTS login:"
+#, c-format
 msgid "Login is not provided by configuration. Please enter your %s login:"
 msgstr ""
 "У налаштуваннях не вказано облікового запису користувача. Будь ласка, "
-"вкажіть ім’я вашого користувача у RHTS:"
+"вкажіть ім’я вашого користувача у %s:"
 
 #: ../src/plugins/reporter-bugzilla.c:476
 #: ../src/plugins/reporter-rhtsupport.c:597
@@ -1767,15 +1767,12 @@ msgid "Logging out"
 msgstr "Завершення сеансу"
 
 #: ../src/plugins/reporter-bugzilla.c:579
-#, fuzzy, c-format
-#| msgid ""
-#| "This problem was already reported to MantisBT (see '%s'). Do you still "
-#| "want to create a new issue?"
+#, c-format
 msgid ""
 "This problem was already reported to Bugzilla (see '%s'). Do you still want "
 "to create a new bug?"
 msgstr ""
-"Про цю проблему вже було повідомлено за допомогою MantisBT (див. «%s»). Ви "
+"Про цю проблему вже було повідомлено за допомогою Bugzilla (див. «%s»). Ви "
 "все ще хочете створити нове повідомлення про ваду?"
 
 #: ../src/plugins/reporter-bugzilla.c:609
@@ -2024,12 +2021,12 @@ msgstr ""
 #: ../src/plugins/reporter-rhtsupport.c:473
 msgid "Please enter customer case number to which you want to attach the data:"
 msgstr ""
+"Будь ласка, вкажіть номер справи користувача, до якої ви хочете долучити ці "
+"дані:"
 
 #: ../src/plugins/reporter-rhtsupport.c:479
-#, fuzzy
-#| msgid "Can't continue without password"
 msgid "Can't continue without Red Hat Support case number"
-msgstr "Продовження неможливе без зазначення пароля"
+msgstr "Продовження неможливе без номера справи Red Hat Support"
 
 #: ../src/plugins/reporter-rhtsupport.c:506
 msgid ""
@@ -2081,6 +2078,8 @@ msgid ""
 "to the case? Otherwise, you will have to enter the existing Red Hat support "
 "case number."
 msgstr ""
+"Нами знайдено подібну справу Red Hat support — %s. Хочете долучити дані до "
+"цієї справи? Якщо ні, вам слід вказати наявний номер справи Red Hat support."
 
 #: ../src/plugins/reporter-rhtsupport.c:676
 #, c-format
@@ -2093,7 +2092,7 @@ msgstr "Надсилання статистичних даних ABRT щодо �
 
 #: ../src/plugins/reporter-rhtsupport.c:741
 msgid "Can't create a temporary directory in "
-msgstr "Не вдалося створити тимчасовий каталог у"
+msgstr "Не вдалося створити тимчасовий каталог у "
 
 #: ../src/plugins/reporter-rhtsupport.c:766
 msgid ""
@@ -2134,7 +2133,7 @@ msgstr "Стискання даних"
 
 #: ../src/plugins/reporter-rhtsupport.c:869
 msgid "Can't create temporary file in "
-msgstr "Не вдалося створити тимчасовий файл у"
+msgstr "Не вдалося створити тимчасовий файл у "
 
 #. Check for hints and show them if we have something
 #: ../src/plugins/reporter-rhtsupport.c:880
@@ -2179,7 +2178,7 @@ msgstr "Документація, яка може допомогти: "
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:210
 msgid "Updates which possibly help: "
-msgstr "Оновлення, які можуть допомогти:"
+msgstr "Оновлення, які можуть допомогти: "
 
 #: ../src/plugins/reporter-systemd-journal.c:225
 msgid ""
@@ -2669,7 +2668,7 @@ msgstr "Адреса порталу підтримки користувачів 
 
 #: ../src/plugins/report_RHTSupport_AddData.xml.in.h:2
 msgid "Attach the data to existing Red Hat support case"
-msgstr ""
+msgstr "Долучити дані до наявної справи Red Hat support"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report Uploader"
@@ -2761,11 +2760,12 @@ msgstr ""
 
 #: ../src/plugins/report_uReport.xml.in.h:7
 msgid "Report unpackaged problems"
-msgstr ""
+msgstr "Звітування щодо проблем поза пакунками"
 
 #: ../src/plugins/report_uReport.xml.in.h:8
 msgid "Report problems coming from unpackaged executables."
 msgstr ""
+"Звітувати про проблеми, причиною яких є виконувані файли поза пакунками."
 
 #: ../src/plugins/report_uReport.xml.in.h:9
 msgid "Contact email address"
@@ -3463,7 +3463,7 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:1
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:1
 msgid "Attach crash data to an existing Red Hat support case"
-msgstr ""
+msgstr "Долучити дані аварії до наявної справи Red Hat support"
 
 #: ../src/workflows/workflow_RHELAddDataCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJava.xml.in.h:2
@@ -3473,10 +3473,8 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDatavmcore.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:2
-#, fuzzy
-#| msgid "Ask Red Hat Support for help"
 msgid "Provide Red Hat Support with crash details"
-msgstr "Попросити службу підтримки Red Hat про допомогу"
+msgstr "Надати Red Hat Support подробиці щодо аварії"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
