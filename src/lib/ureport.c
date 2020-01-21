@@ -329,7 +329,6 @@ ureport_server_config_init(struct ureport_server_config *config)
     config->ur_cert_authority_cert = NULL;
     config->ur_username = NULL;
     config->ur_password = NULL;
-    config->ur_http_headers = new_map_string();
 
     config->ur_prefs.urp_auth_items = NULL;
     config->ur_prefs.urp_flags = 0;
@@ -358,9 +357,6 @@ ureport_server_config_destroy(struct ureport_server_config *config)
 
     g_list_free_full(config->ur_prefs.urp_auth_items, free);
     config->ur_prefs.urp_auth_items = DESTROYED_POINTER;
-
-    free_map_string(config->ur_http_headers);
-    config->ur_http_headers = DESTROYED_POINTER;
 }
 
 void
@@ -803,27 +799,16 @@ ureport_do_post(const char *json, struct ureport_server_config *config,
         post_state->password = config->ur_password;
     }
 
-    char **headers = xmalloc(sizeof(char *) * (3 + size_map_string(config->ur_http_headers)));
-    headers[0] = (char *)"Accept: application/json";
-    headers[1] = (char *)"Connection: close";
-    headers[2] = NULL;
-
-    if (config->ur_http_headers != NULL)
+    const char *headers[] =
     {
-        unsigned i = 2;
-        const char *header;
-        const char *value;
-        map_string_iter_t iter;
-        init_map_string_iter(&iter, config->ur_http_headers);
-        while (next_map_string_iter(&iter, &header, &value))
-            headers[i++] = xasprintf("%s: %s", header, value);
-        headers[i] = NULL;
-    }
-
+        "Accept: application/json",
+        "Connection: close",
+        NULL,
+    };
     char *dest_url = concat_path_file(config->ur_url, url_sfx);
 
     post_string_as_form_data(post_state, dest_url, "application/json",
-                     (const char **)headers, json);
+                             headers, json);
 
     /* Client authentication failed. Try again without client auth.
      * CURLE_SSL_CONNECT_ERROR - cert not found/server doesnt trust the CA
@@ -838,15 +823,11 @@ ureport_do_post(const char *json, struct ureport_server_config *config,
         post_state = new_post_state(flags);
 
         post_string_as_form_data(post_state, dest_url, "application/json",
-                         (const char **)headers, json);
+                                 headers, json);
 
     }
 
     free(dest_url);
-
-    for (unsigned i = size_map_string(config->ur_http_headers); i != 0; --i)
-        free(headers[i + 1]);
-    free(headers);
 
     return post_state;
 }

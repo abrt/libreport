@@ -27,7 +27,6 @@ int main(void)
     assert(config.ur_client_key == NULL);
     assert(config.ur_username == NULL);
     assert(config.ur_password == NULL);
-    assert(config.ur_http_headers != NULL);
     assert(config.ur_prefs.urp_auth_items == NULL);
 
     config.ur_url = (char *)"url";
@@ -36,7 +35,6 @@ int main(void)
     config.ur_client_key = (char *)"key";
     config.ur_username = (char *)"username";
     config.ur_password = (char *)"password";
-    free_map_string(config.ur_http_headers);
     config.ur_prefs.urp_auth_items = DESTROYED_POINTER;
 
     ureport_server_config_init(&config);
@@ -47,7 +45,6 @@ int main(void)
     assert(config.ur_client_key == NULL);
     assert(config.ur_username == NULL);
     assert(config.ur_password == NULL);
-    assert(config.ur_http_headers != NULL);
     assert(config.ur_prefs.urp_auth_items == NULL);
 
     return 0;
@@ -93,7 +90,6 @@ int main(void)
     assert(config.ur_username == DESTROYED_POINTER);
     assert(config.ur_password == DESTROYED_POINTER);
     assert(config.ur_prefs.urp_auth_items == DESTROYED_POINTER);
-    assert(config.ur_http_headers == DESTROYED_POINTER);
 
     return 0;
 }
@@ -270,7 +266,6 @@ int main(void)
 
     assert(config.ur_client_cert == NULL);
     assert(config.ur_client_key == NULL);
-    assert(size_map_string(config.ur_http_headers) == 0);
 
     l = config.ur_prefs.urp_auth_items;
     assert(strcmp(l->data, "hostname") == 0);
@@ -305,7 +300,6 @@ int main(void)
 
     assert(config.ur_client_cert == NULL);
     assert(config.ur_client_key == NULL);
-    assert(size_map_string(config.ur_http_headers) == 0);
 
     l = config.ur_prefs.urp_auth_items;
     assert(strcmp(l->data, "hostname") == 0);

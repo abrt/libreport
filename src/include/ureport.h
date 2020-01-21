@@ -64,7 +64,6 @@ struct ureport_server_config
     char *ur_cert_authority_cert; ///< Certificate authority certificate
     char *ur_username;    ///< username for basic HTTP auth
     char *ur_password;    ///< password for basic HTTP auth
-    map_string_t *ur_http_headers; ///< Additional HTTP headers
 
     struct ureport_preferences ur_prefs; ///< configuration for uReport generation
 };
