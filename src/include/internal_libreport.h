@@ -70,8 +70,6 @@
 # include <locale.h>
 #endif /* HAVE_LOCALE_H */
 
-#include <nettle/sha1.h>
-
 /* Some libc's forget to declare these, do it ourself */
 extern char **environ;
 #if defined(__GLIBC__) && __GLIBC__ < 2

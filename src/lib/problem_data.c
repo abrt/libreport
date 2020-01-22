@@ -18,6 +18,8 @@
 */
 #include "internal_libreport.h"
 
+#include <nettle/sha1.h>
+
 static void free_problem_item(void *ptr)
 {
     if (ptr)
