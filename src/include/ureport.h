@@ -255,30 +255,34 @@ ureport_json_attachment_new(const char *bthash, const char *type, const char *da
 /*
  * Attach given string to uReport
  *
+ * @param config Configuration used in communication
  * @param bthash uReport identifier
  * @param type Type of attachment
  * @param data Attached data
- * @param config Configuration used in communication
  * @return True in case of any error; otherwise False
  */
-#define ureport_attach_string libreport_ureport_attach_string
 bool
-ureport_attach_string(const char *bthash, const char *type, const char *data,
-               struct ureport_server_config *config);
+ureport_attach_string(struct ureport_server_config *config,
+                      const char                   *bthash,
+                      const char                   *type,
+                      const char                   *data);
 
 /*
- * Attach given integer to uReport
+ * Attach formatted data to uReport
  *
+ * @param config Configuration used in communication
  * @param bthash uReport identifier
  * @param type Type of attachment
- * @param data Attached data
- * @param config Configuration used in communication
+ * @param format Data format string
+ * @param ... Values to replace format specifiers
  * @return True in case of any error; otherwise False
  */
-#define ureport_attach_int libreport_ureport_attach_int
 bool
-ureport_attach_int(const char *bthash, const char *type, int data,
-                   struct ureport_server_config *config);
+ureport_attach(struct ureport_server_config *config,
+               const char                   *bthash,
+               const char                   *type,
+               const char                   *format,
+               ...) G_GNUC_PRINTF(4, 5);
 
 /*
  * Build uReport from dump dir

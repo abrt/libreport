@@ -867,12 +867,16 @@ ureport_json_attachment_new(const char *bthash, const char *type, const char *da
 }
 
 bool
-ureport_attach_string(const char *bthash, const char *type, const char *data,
-               struct ureport_server_config *config)
+ureport_attach_string(struct ureport_server_config *config,
+                      const char *bthash,
+                      const char *type,
+                      const char *data)
 {
-    char *json = ureport_json_attachment_new(bthash, type, data);
+    g_autofree char *json = NULL;
+
+    json = ureport_json_attachment_new(bthash, type, data);
+
     post_state_t *post_state = ureport_do_post(json, config, UREPORT_ATTACH_ACTION);
-    free(json);
 
     struct ureport_server_response *resp =
         ureport_server_response_from_reply(post_state, config);
@@ -890,12 +894,18 @@ ureport_attach_string(const char *bthash, const char *type, const char *data,
 }
 
 bool
-ureport_attach_int(const char *bthash, const char *type, int data,
-                    struct ureport_server_config *config)
+ureport_attach(struct ureport_server_config *config,
+               const char *bthash,
+               const char *type,
+               const char *format,
+               ...)
 {
-    char *data_str = xasprintf("%d", data);
-    const bool result = ureport_attach_string(bthash, type, data_str, config);
-    free(data_str);
+    va_list args;
+    g_autofree char *string = NULL;
 
-    return result;
+    va_start(args, format);
+
+    string = g_strdup_vprintf(format, args);
+
+    return ureport_attach_string(config, bthash, type, string);
 }

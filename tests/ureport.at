@@ -1065,41 +1065,14 @@ int main(void)
 {
     g_verbose=3;
 
-    /* wrong url */
     struct ureport_server_config config;
     ureport_server_config_init(&config);
 
-    bool res = ureport_attach_string("691cf824e3e07457156125636e86c50279e29496", "email", "abrt@email.com", &config);
+    bool res = ureport_attach(&config, "691cf824e3e07457156125636e86c50279e29496", "email", "abrt@email.com");
     assert(res == true);
 
-    ureport_server_config_destroy(&config);
-
-    return 0;
-}
-]])
-
-## ------------------ ##
-## ureport_attach_int ##
-## ------------------ ##
-
-AT_TESTFUN([ureport_attach_int],
-[[
-#include "internal_libreport.h"
-#include "ureport.h"
-#include <assert.h>
-#include "libreport_curl.h"
-#include "problem_data.h"
-
-int main(void)
-{
-    g_verbose=3;
-
-    /* wrong url */
-    struct ureport_server_config config;
-    ureport_server_config_init(&config);
-
-    bool res = ureport_attach_int("691cf824e3e07457156125636e86c50279e29496", "count", 5, &config);
-    assert(res == true);
+    res = ureport_attach(&config, "691cf824e3e07457156125636e86c50279e29496", "count", "%d", 5);
+    assert(res);
 
     ureport_server_config_destroy(&config);
 
