@@ -274,25 +274,25 @@ int main(int argc, char **argv)
 
         if (rhbz_bug >= 0)
         {
-            if (ureport_attach_int(ureport_hash, "RHBZ", rhbz_bug, &config))
+            if (ureport_attach(&config, ureport_hash, "RHBZ", "%d", rhbz_bug))
                 goto finalize;
         }
 
         if (email_address)
         {
-            if (ureport_attach_string(ureport_hash, "email", email_address, &config))
+            if (ureport_attach(&config, ureport_hash, "email", "%s", email_address))
                 goto finalize;
         }
 
         if (comment)
         {
-            if (ureport_attach_string(ureport_hash, "comment", comment, &config))
+            if (ureport_attach(&config, ureport_hash, "comment", "%s", comment))
                 goto finalize;
         }
 
         if (attach_value)
         {
-            if (ureport_attach_string(ureport_hash, attach_type, attach_value, &config))
+            if (ureport_attach(&config, ureport_hash, attach_type, "%s", attach_value))
                 goto finalize;
         }
 
