@@ -414,7 +414,8 @@ rm -f %{buildroot}%{_mandir}/man5/report_rhel_bugzilla.conf.5
 make check|| {
     # find and print the logs of failed test
     # do not cat tests/testsuite.log because it contains a lot of bloat
-    find tests/testsuite.dir -name "testsuite.log" -print -exec cat '{}' \;
+    find tests -name "*.log" -not -name "test*suite.log" -print -exec cat '{}' \;
+    { test -d tests/testsuite.dir && find tests/testsuite.dir -name "testsuite.log" -print -exec cat '{}' \; }
     exit 1
 }
 
