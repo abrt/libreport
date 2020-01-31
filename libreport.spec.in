@@ -316,7 +316,7 @@ data over ftp/scp...
 %build
 autoconf
 
-CFLAGS="%{optflags} -Werror" %configure \
+CFLAGS="%{optflags} -Werror -Wno-error=maybe-uninitialized" %configure \
 %if %{without bugzilla}
         --without-bugzilla \
 %endif
