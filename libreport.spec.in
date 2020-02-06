@@ -745,6 +745,31 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Thu Feb 06 2020 Michal Fabik <mfabik@redhat.com> 2.12.0-1
+- ureport: Allow printf-like data attaching
+- plugins: reporter-rhtsupport: Avoid runtime warning
+- Update translations
+- lib: Don't include Nettle in a public interface
+- ureport: Drop HTTP header table
+- Update (uk) translation
+- Update (de) translation
+- Prefer sr_Latn over sr@latin
+- Update (tr) translation
+- Update (sk) translation
+- Update (pt_BR) translation
+- Update (hu) translation
+- Update (fr) translation
+- Update (bg) translation
+- Translated using Weblate (Polish)
+- Add (zh_HK) translation
+- glib_support: Use g_strsplit
+- glib_support: Drop type initialization
+- Remove translation skeletons
+- client-python: Drop yumdebuginfo
+- Add pot file
+- lib: Use Nettle for computing SHA-1 digests
+- Move augeas lenses to new subdirectory
+
 * Thu Nov 14 2019 Matěj Grabovský <mgrabovs@redhat.com> 2.11.3-1
 - Remove unused scripts
 - gtk: Fix infinite loop crashing the reporting

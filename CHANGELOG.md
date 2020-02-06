@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.12.0] - 2020-02-06
+
 ## [2.11.3] - 2019-11-14
 ### Changed
 - Updated maintenance script for pulling localization.
@@ -187,7 +189,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.11.3...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.12.0...HEAD
+[2.12.0]: https://github.com/abrt/libreport/compare/2.11.3...2.12.0
 [2.11.3]: https://github.com/abrt/libreport/compare/2.11.2...2.11.3
 [2.11.2]: https://github.com/abrt/libreport/compare/2.11.1...2.11.2
 [2.11.1]: https://github.com/abrt/libreport/compare/2.11.0...2.11.1
