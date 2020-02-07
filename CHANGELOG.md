@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ## [2.12.0] - 2020-02-06
+### Changed
+- Use Nettle for computing SHA-1 digests
+- Move augeas lenses to new subdirectory
+
+### Fixed
+- Fix runtime warning
 
 ## [2.11.3] - 2019-11-14
 ### Changed
