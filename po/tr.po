@@ -12,16 +12,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2020-01-17 03:16+0000\n"
+"PO-Revision-Date: 2020-01-28 12:16+0000\n"
 "Last-Translator: Oğuz Ersen <oguzersen@protonmail.com>\n"
-"Language-Team: Turkish <https://translate.stg.fedoraproject.org/projects/"
-"abrt/libreport/tr/>\n"
+"Language-Team: Turkish <https://translate.fedoraproject.org/projects/abrt/"
+"libreport/tr/>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
-"X-Generator: Weblate 3.10.1\n"
+"X-Generator: Weblate 3.10.3\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -78,6 +78,8 @@ msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
 msgstr ""
+"# Yığın geri izlemesi\n"
+"# Herhangi bir hassas veri (parolalar vb.) içermediğinden emin olun"
 
 #: ../src/cli/cli-report.c:156
 msgid "# Architecture"
@@ -467,7 +469,7 @@ msgstr ""
 
 #: ../src/gtk-helpers/problem_details_dialog.c:33
 msgid "OK"
-msgstr ""
+msgstr "Tamam"
 
 #: ../src/gui-wizard-gtk/main.c:106
 msgid "Preferences"
@@ -601,6 +603,7 @@ msgstr ""
 #: ../src/gui-wizard-gtk/wizard.c:1968
 msgid "Cannot check backtrace rating because of invalid event name"
 msgstr ""
+"Geçersiz olay adı nedeniyle yığın geri izlemesi derecesi kontrol edilemiyor"
 
 #: ../src/gui-wizard-gtk/wizard.c:2418
 #, c-format
@@ -821,9 +824,10 @@ msgid ""
 "data (such as usernames and passwords). Backtrace, command line, environment "
 "variables are the typical items in need of examining."
 msgstr ""
-"Eğer uzak bir sunucuya raporlama yapıyorsanız , tüm gizli "
-"verilerin(kullanıcı adı , şifre vs) silindiğinden emin olun. Geri izleme, "
-"komut satırı, ortam değişkenleri sınanması gerekenler."
+"Eğer uzak bir sunucuya raporlama yapıyorsanız , tüm gizli verileri ("
+"kullanıcı adları , parolalar gibi) kaldırdığınızdan emin olun. Yığın geri "
+"izlemesi, komut satırı, ortam değişkenleri incelenmesi gereken tipik "
+"ögelerdir."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:21
 msgid "Processing did not start yet"
@@ -1010,20 +1014,22 @@ msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr ""
-"Geri izleme tamamlanamamış , lütfen tekrar üretmek için gerekli adımları "
+"Yığın geri izlemesi tamamlanmamış, lütfen yeniden oluşturma adımlarını "
 "sağladığınızdan emin olun."
 
 #: ../src/lib/event_config.c:527
 msgid "The backtrace probably can't help developer to diagnose the bug."
 msgstr ""
+"Yığın geri izlemesi muhtemelen geliştiricinin hatayı teşhis etmesine "
+"yardımcı olamaz."
 
 #: ../src/lib/event_config.c:533
-#, fuzzy
-#| msgid "Reporting disabled because the backtrace is unusable."
 msgid ""
 "Reporting is disabled because the generated backtrace has low informational "
 "value."
-msgstr "Raporlama devre dışı çünkü geri izleme kullanılamaz."
+msgstr ""
+"Oluşturulan yığın geri izlemesinin bilgi değeri düşük olduğu için raporlama "
+"devre dışı bırakıldı."
 
 #: ../src/lib/event_config.c:537
 #, c-format
@@ -1145,7 +1151,7 @@ msgstr ""
 #: ../src/lib/problem_report.c:517
 #, c-format
 msgid "Can't parse backtrace: %s"
-msgstr ""
+msgstr "Yığın geri izlemesi ayrıştırılamıyor: %s"
 
 #: ../src/lib/problem_report.c:532
 msgid "Can't generate stacktrace description (no crash thread?)"
@@ -1645,7 +1651,7 @@ msgstr "%d hatasına yeni yorum ekleniyor"
 #: ../src/plugins/reporter-bugzilla.c:930
 #: ../src/plugins/reporter-mantisbt.c:672
 msgid "Attaching better backtrace"
-msgstr ""
+msgstr "Daha iyi yığın geri izlemesi ekleniyor"
 
 #: ../src/plugins/reporter-bugzilla.c:936
 msgid "Found the same comment in the bug history, not adding a new one"
@@ -1890,7 +1896,7 @@ msgstr ""
 
 #: ../src/plugins/reporter-rhtsupport.c:885
 msgid "Creating a new case"
-msgstr ""
+msgstr "Yeni bir vaka oluşturuluyor"
 
 #. How can we help user sorting out this problem?
 #: ../src/plugins/reporter-rhtsupport.c:896

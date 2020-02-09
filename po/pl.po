@@ -13,9 +13,9 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2020-01-11 15:03+0000\n"
+"PO-Revision-Date: 2020-01-25 10:50+0000\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
-"Language-Team: Polish <https://translate.stg.fedoraproject.org/projects/abrt/"
+"Language-Team: Polish <https://translate.fedoraproject.org/projects/abrt/"
 "libreport/pl/>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 3.10.1\n"
+"X-Generator: Weblate 3.10.3\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -628,7 +628,7 @@ msgstr "Ukończono przetwarzanie. Proszę przejść do następnego kroku."
 
 #: ../src/gui-wizard-gtk/wizard.c:1770
 msgid "No commands could be found for processsing the crashdump.\n"
-msgstr ""
+msgstr "Nie można odnaleźć żadnych poleceń do przetworzenia zrzutu awarii.\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1785
 msgid "Processing interrupted: can't continue without writable directory."
@@ -642,6 +642,9 @@ msgid ""
 "No matching actions found for this event.\n"
 "\n"
 msgstr ""
+"--- Pomijanie %s ---\n"
+"Nie odnaleziono żadnych pasujących działań dla tego zdarzenia.\n"
+"\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1843
 msgid "Processing..."
@@ -1086,12 +1089,12 @@ msgstr ""
 "Wyjątek prawdopodobnie nie może pomóc programistom w diagnozowaniu błędu."
 
 #: ../src/lib/event_config.c:533
-#, fuzzy
-#| msgid "Reporting disabled because the backtrace is unusable."
 msgid ""
 "Reporting is disabled because the generated backtrace has low informational "
 "value."
-msgstr "Zgłaszanie jest wyłączone, ponieważ nie można użyć wyjątku."
+msgstr ""
+"Zgłaszanie jest wyłączone, ponieważ utworzony wyjątek ma niską wartość "
+"informacyjną."
 
 #: ../src/lib/event_config.c:537
 #, c-format
@@ -1254,25 +1257,25 @@ msgstr "(„%s” zastało zakończone z %u)\n"
 #: ../src/plugins/abrt_rh_support.c:356
 #, c-format
 msgid "Error in case creation at '%s': %s"
-msgstr "Błąd podczas tworzenia przypadku w „%s”: %s"
+msgstr "Błąd podczas tworzenia zgłoszenia w „%s”: %s"
 
 #: ../src/plugins/abrt_rh_support.c:365
 #, c-format
 msgid "Error in case creation at '%s', HTTP code: %d, server says: '%s'"
 msgstr ""
-"Błąd podczas tworzenia przypadku w „%s”, kod HTTP: %d, komunikat serwera: "
+"Błąd podczas tworzenia zgłoszenia w „%s”, kod HTTP: %d, komunikat serwera: "
 "„%s”"
 
 #: ../src/plugins/abrt_rh_support.c:369
 #, c-format
 msgid "Error in case creation at '%s', HTTP code: %d"
-msgstr "Błąd podczas tworzenia przypadku w „%s”, kod HTTP: %d"
+msgstr "Błąd podczas tworzenia zgłoszenia w „%s”, kod HTTP: %d"
 
 #: ../src/plugins/abrt_rh_support.c:420
 #, c-format
 msgid "Error in case creation at '%s': no Location URL, HTTP code: %d"
 msgstr ""
-"Błąd podczas tworzenia przypadku w „%s”: brak adresu URL położenia, kod "
+"Błąd podczas tworzenia zgłoszenia w „%s”: brak adresu URL położenia, kod "
 "HTTP: %d"
 
 #: ../src/plugins/abrt_rh_support.c:524
@@ -1500,10 +1503,9 @@ msgid "Logging into Bugzilla at %s"
 msgstr "Logowanie do Bugzilli pod adresem %s"
 
 #: ../src/plugins/reporter-bugzilla.c:223
-#, fuzzy, c-format
-#| msgid "Invalid password or login. Please enter your Red Hat login:"
+#, c-format
 msgid "Invalid password or login. Please enter your %s login:"
-msgstr "Nieprawidłowe hasło lub login. Proszę podać login Red Hat:"
+msgstr "Nieprawidłowe hasło lub login. Proszę podać login %s:"
 
 #: ../src/plugins/reporter-bugzilla.c:228
 #: ../src/plugins/reporter-rhtsupport.c:411
@@ -1684,11 +1686,9 @@ msgid "Using default product '%s'"
 msgstr "Używanie domyślnego produktu „%s”"
 
 #: ../src/plugins/reporter-bugzilla.c:468
-#, fuzzy, c-format
-#| msgid ""
-#| "Login is not provided by configuration. Please enter your RHTS login:"
+#, c-format
 msgid "Login is not provided by configuration. Please enter your %s login:"
-msgstr "Konfiguracja nie podaje loginu. Proszę podać login RHTS:"
+msgstr "Konfiguracja nie podaje loginu. Proszę podać login %s:"
 
 #: ../src/plugins/reporter-bugzilla.c:476
 #: ../src/plugins/reporter-rhtsupport.c:597
@@ -1733,15 +1733,12 @@ msgid "Logging out"
 msgstr "Wylogowywanie"
 
 #: ../src/plugins/reporter-bugzilla.c:579
-#, fuzzy, c-format
-#| msgid ""
-#| "This problem was already reported to MantisBT (see '%s'). Do you still "
-#| "want to create a new issue?"
+#, c-format
 msgid ""
 "This problem was already reported to Bugzilla (see '%s'). Do you still want "
 "to create a new bug?"
 msgstr ""
-"Ten problem został zgłoszony w serwisie MantisBT (proszę zobaczyć „%s”). "
+"Ten problem został już zgłoszony w serwisie Bugzilla (proszę zobaczyć „%s”). "
 "Nadal utworzyć nowy błąd?"
 
 #: ../src/plugins/reporter-bugzilla.c:609
@@ -1985,13 +1982,11 @@ msgstr "Nieprawidłowe hasło lub login. Proszę podać login Red Hat:"
 
 #: ../src/plugins/reporter-rhtsupport.c:473
 msgid "Please enter customer case number to which you want to attach the data:"
-msgstr ""
+msgstr "Proszę podać numer zgłoszenia klienta, do którego dołączyć dane:"
 
 #: ../src/plugins/reporter-rhtsupport.c:479
-#, fuzzy
-#| msgid "Can't continue without password"
 msgid "Can't continue without Red Hat Support case number"
-msgstr "Nie można kontynuować bez hasła"
+msgstr "Nie można kontynuować bez numeru zgłoszenia wsparcia firmy Red Hat"
 
 #: ../src/plugins/reporter-rhtsupport.c:506
 msgid ""
@@ -2016,7 +2011,7 @@ msgstr ""
 
 #: ../src/plugins/reporter-rhtsupport.c:550
 msgid "Upload FILEs [to case with this ID]"
-msgstr "Wysyła PLIKI [do zdarzenia o tym identyfikatorze]"
+msgstr "Wysyła PLIKI [do zgłoszenia o tym identyfikatorze]"
 
 #: ../src/plugins/reporter-rhtsupport.c:552
 msgid "Submit uReport before creating a new case"
@@ -2028,7 +2023,7 @@ msgstr "Plik konfiguracji dla uReport"
 
 #: ../src/plugins/reporter-rhtsupport.c:554
 msgid "Formatting file for a new case"
-msgstr "Formatowanie pliku dla nowego przypadku"
+msgstr "Formatowanie pliku dla nowego zgłoszenia"
 
 #: ../src/plugins/reporter-rhtsupport.c:591
 msgid "Login is not provided by configuration. Please enter your RHTS login:"
@@ -2041,11 +2036,14 @@ msgid ""
 "to the case? Otherwise, you will have to enter the existing Red Hat support "
 "case number."
 msgstr ""
+"Znaleziono podobne zgłoszenie wsparcia firmy Red Hat %s. Dołączyć do niego "
+"dane? W przeciwnym przypadku będzie trzeba podać istniejący numer zgłoszenia "
+"wsparcia firmy Red Hat."
 
 #: ../src/plugins/reporter-rhtsupport.c:676
 #, c-format
 msgid "Attaching '%s' to case '%s'"
-msgstr "Dołączanie „%s” do zdarzenia „%s”"
+msgstr "Dołączanie „%s” do zgłoszenia „%s”"
 
 #: ../src/plugins/reporter-rhtsupport.c:720
 msgid "Sending ABRT crash statistics data"
@@ -2063,7 +2061,7 @@ msgid ""
 msgstr ""
 "Problem wystąpił tylko raz i nie wiadomo, jak go powtórzyć. Proszę upewnić "
 "się, że będzie można podać szczegółowe informacje zespołowi wsparcia. "
-"Kontynuować i otworzyć nowy przypadek wsparcia?"
+"Kontynuować i otworzyć nowe zgłoszenie wsparcia?"
 
 #: ../src/plugins/reporter-rhtsupport.c:779
 #, c-format
@@ -2102,7 +2100,7 @@ msgstr "Sprawdzanie podpowiedzi"
 
 #: ../src/plugins/reporter-rhtsupport.c:885
 msgid "Creating a new case"
-msgstr "Tworzenie nowego przypadku"
+msgstr "Tworzenie nowego zgłoszenia"
 
 #. How can we help user sorting out this problem?
 #: ../src/plugins/reporter-rhtsupport.c:896
@@ -2122,13 +2120,13 @@ msgstr ""
 #: ../src/plugins/reporter-rhtsupport.c:995
 #, c-format
 msgid "Adding comment to case '%s'"
-msgstr "Dodawanie komentarza do przypadku „%s”"
+msgstr "Dodawanie komentarza do zgłoszenia „%s”"
 
 #. Attach the tarball of -d DIR
 #: ../src/plugins/reporter-rhtsupport.c:1013
 #, c-format
 msgid "Attaching problem data to case '%s'"
-msgstr "Dołączanie danych problemu do przypadku „%s”"
+msgstr "Dołączanie danych problemu do zgłoszenia „%s”"
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:202
 msgid "Documentation which might be relevant: "
@@ -2605,8 +2603,8 @@ msgid ""
 "Submit &lt;a href=\"https://access.redhat.com/articles/642323\"&gt;micro-"
 "report&lt;/a&gt; when creating a new case."
 msgstr ""
-"Wyślij &lt;a href=\"https://access.redhat.com/articles/642323\"&gt;"
-"mikroraport&lt;/a&gt; podczas tworzenia nowego przypadku."
+"Wyślij &lt;a href=\"https://access.redhat.com/articles/642323\""
+"&gt;mikroraport&lt;/a&gt; podczas tworzenia nowego zgłoszenia."
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:9
 msgid "RH Portal URL"
@@ -2618,7 +2616,7 @@ msgstr "Adres portalu wsparcia firmy Red Hat"
 
 #: ../src/plugins/report_RHTSupport_AddData.xml.in.h:2
 msgid "Attach the data to existing Red Hat support case"
-msgstr ""
+msgstr "Dołącza dane do istniejącego zgłoszenia wsparcia firmy Red Hat"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report Uploader"
@@ -2706,11 +2704,11 @@ msgstr "Dodaje login Bugzilli do listy CC już zgłoszonych błędów."
 
 #: ../src/plugins/report_uReport.xml.in.h:7
 msgid "Report unpackaged problems"
-msgstr ""
+msgstr "Zgłasza problemy bez pakietów"
 
 #: ../src/plugins/report_uReport.xml.in.h:8
 msgid "Report problems coming from unpackaged executables."
-msgstr ""
+msgstr "Zgłasza problemy pochodzące z plików binarnych bez pakietów."
 
 #: ../src/plugins/report_uReport.xml.in.h:9
 msgid "Contact email address"
@@ -3384,8 +3382,8 @@ msgid ""
 "Create new Red Hat Support case - I would like to be contacted by Red Hat "
 "Support"
 msgstr ""
-"Utwórz nowy przypadek wsparcia firmy Red Hat — wsparcie firmy Red Hat będzie "
-"się kontaktowało w tej sprawie"
+"Utwórz nowe zgłoszenie wsparcia firmy Red Hat — wsparcie firmy Red Hat "
+"będzie się kontaktowało w tej sprawie"
 
 #: ../src/workflows/workflow_RHELAddDataCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELAddDataJava.xml.in.h:1
@@ -3396,7 +3394,7 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:1
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:1
 msgid "Attach crash data to an existing Red Hat support case"
-msgstr ""
+msgstr "Dołącz dane awarii do istniejącego zgłoszenia wsparcia firmy Red Hat"
 
 #: ../src/workflows/workflow_RHELAddDataCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJava.xml.in.h:2
@@ -3406,10 +3404,8 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDatavmcore.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:2
-#, fuzzy
-#| msgid "Ask Red Hat Support for help"
 msgid "Provide Red Hat Support with crash details"
-msgstr "Poproś wsparcie firmy Red Hat o pomoc"
+msgstr "Dostarcz informacje o awarii wsparciu firmy Red Hat"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1

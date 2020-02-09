@@ -20,14 +20,15 @@
 # Miroslav Suchý <msuchy@redhat.com>, 2017. #zanata
 # Tobias Weise <tobias.weise@web.de>, 2017. #zanata
 # Mike FABIAN <mfabian@redhat.com>, 2020.
+# Thomas Eichhorn <tomislav@posteo.de>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2020-01-18 21:15+0000\n"
-"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
-"Language-Team: German <https://translate.stg.fedoraproject.org/projects/abrt/"
+"PO-Revision-Date: 2020-01-31 21:13+0000\n"
+"Last-Translator: Thomas Eichhorn <tomislav@posteo.de>\n"
+"Language-Team: German <https://translate.fedoraproject.org/projects/abrt/"
 "libreport/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -1111,12 +1112,12 @@ msgstr ""
 "nicht weiterhelfen."
 
 #: ../src/lib/event_config.c:533
-#, fuzzy
-#| msgid "Reporting disabled because the backtrace is unusable."
 msgid ""
 "Reporting is disabled because the generated backtrace has low informational "
 "value."
-msgstr "Berichterstellung deaktiviert, da der Backtrace unbrauchbar ist."
+msgstr ""
+"Berichterstellung deaktiviert, da der Backtrace zu wenig brauchbare "
+"Informationen enthält."
 
 #: ../src/lib/event_config.c:537
 #, c-format
@@ -1528,11 +1529,10 @@ msgid "Logging into Bugzilla at %s"
 msgstr "Anmelden bei Bugzilla unter %s"
 
 #: ../src/plugins/reporter-bugzilla.c:223
-#, fuzzy, c-format
-#| msgid "Invalid password or login. Please enter your Red Hat login:"
+#, c-format
 msgid "Invalid password or login. Please enter your %s login:"
 msgstr ""
-"Ungültiges Passwort oder Login. Bitte geben Sie Ihren Red Hat-Login ein:"
+"Ungültiges Passwort oder Login. Bitte geben Sie Ihre %s Zugangsdaten ein:"
 
 #: ../src/plugins/reporter-bugzilla.c:228
 #: ../src/plugins/reporter-rhtsupport.c:411
@@ -1714,13 +1714,11 @@ msgid "Using default product '%s'"
 msgstr "Standardprodukt '%s' wird verwendet"
 
 #: ../src/plugins/reporter-bugzilla.c:468
-#, fuzzy, c-format
-#| msgid ""
-#| "Login is not provided by configuration. Please enter your RHTS login:"
+#, c-format
 msgid "Login is not provided by configuration. Please enter your %s login:"
 msgstr ""
-"Login ist in der Konfiguration nicht angegeben. Bitte geben Sie Ihren RHTS-"
-"Login ein:"
+"Login ist in der Konfiguration nicht angegeben. Bitte geben Sie Ihre %s "
+"Zugangsdaten ein:"
 
 #: ../src/plugins/reporter-bugzilla.c:476
 #: ../src/plugins/reporter-rhtsupport.c:597
@@ -1766,15 +1764,12 @@ msgid "Logging out"
 msgstr "Abmelden"
 
 #: ../src/plugins/reporter-bugzilla.c:579
-#, fuzzy, c-format
-#| msgid ""
-#| "This problem was already reported to MantisBT (see '%s'). Do you still "
-#| "want to create a new issue?"
+#, c-format
 msgid ""
 "This problem was already reported to Bugzilla (see '%s'). Do you still want "
 "to create a new bug?"
 msgstr ""
-"Dieses Problem wurde MantisBT bereits gemeldet (siehe '%s'). Wollen Sie "
+"Dieses Problem wurde Bugzilla bereits gemeldet (siehe '%s'). Wollen Sie "
 "dennoch einen neuen Problembericht erstellen?"
 
 #: ../src/plugins/reporter-bugzilla.c:609
@@ -2028,10 +2023,8 @@ msgid "Please enter customer case number to which you want to attach the data:"
 msgstr ""
 
 #: ../src/plugins/reporter-rhtsupport.c:479
-#, fuzzy
-#| msgid "Can't continue without password"
 msgid "Can't continue without Red Hat Support case number"
-msgstr "Fortfahren ohne Passwort nicht möglich"
+msgstr "Fortfahren ohne Red Hat Support-Fallnummer nicht möglich"
 
 #: ../src/plugins/reporter-rhtsupport.c:506
 msgid ""

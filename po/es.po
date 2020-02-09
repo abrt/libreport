@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Benjamín Valero Espinosa <benjavalero@gmail.com>, 2011
 # christopher <chrisrico@linux.com>, 2013
@@ -19,21 +19,23 @@
 # Máximo Castañeda Riloba <mcrcctm@gmail.com>, 2016. #zanata
 # Julius Milan <jmilan@redhat.com>, 2017. #zanata
 # Máximo Castañeda Riloba <mcrcctm@gmail.com>, 2017. #zanata
+# Juan Antonio Burgos López <suriem@surkum.com>, 2020.
+# Adolfo Jayme Barrientos <fitoschido@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2017-11-02 05:04+0000\n"
-"Last-Translator: Julius Milan <jmilan@redhat.com>\n"
-"Language-Team: Spanish (http://www.transifex.com/projects/p/libreport/"
-"language/es/)\n"
+"PO-Revision-Date: 2020-01-28 12:16+0000\n"
+"Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
+"Language-Team: Spanish <https://translate.fedoraproject.org/projects/abrt/"
+"libreport/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.10.3\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -636,6 +638,8 @@ msgstr "Procesamiento finalizado, por favor continúe con el siguiente paso."
 #: ../src/gui-wizard-gtk/wizard.c:1770
 msgid "No commands could be found for processsing the crashdump.\n"
 msgstr ""
+"No se encontró ninguna orden para procesar el volcado del cierre inesperado."
+"\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1785
 msgid "Processing interrupted: can't continue without writable directory."
@@ -650,6 +654,9 @@ msgid ""
 "No matching actions found for this event.\n"
 "\n"
 msgstr ""
+"--- Se ha omitido %s ---\n"
+"No se ha encontrado ninguna acción pertinente a este suceso.\n"
+"\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1843
 msgid "Processing..."
@@ -660,19 +667,19 @@ msgid ""
 "Possible sensitive data detected, feel free to edit the report and remove "
 "them."
 msgstr ""
-"Se ha detectado lo que podría ser información sensible, si lo desea puede "
+"Se ha detectado información potencialmente confidencial. Si lo desea, puede "
 "editar el informe y eliminarla."
 
 #: ../src/gui-wizard-gtk/wizard.c:1968
 msgid "Cannot check backtrace rating because of invalid event name"
 msgstr ""
-"No se pudo comprobar la calidad de la traza debido a un nombre de evento "
-"inválido"
+"No se pudo comprobar la calidad del seguimiento regresivo debido a un nombre "
+"de suceso no válido"
 
 #: ../src/gui-wizard-gtk/wizard.c:2418
 #, c-format
 msgid "Failed to save file '%s'"
-msgstr "No se pudo guardar el archivo '%s'"
+msgstr "No se pudo guardar el archivo «%s»"
 
 #: ../src/gui-wizard-gtk/wizard.c:2619
 #, c-format
@@ -680,15 +687,15 @@ msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
 "Do you want to continue?"
 msgstr ""
-"El evento '%s' requiere de permisos para enviar posibles datos sensibles.\n"
-"¿Desea continuar?"
+"El suceso «%s» requiere de permisos para enviar posibles datos "
+"confidenciales.\n"
+"¿Quiere continuar?"
 
 #: ../src/gui-wizard-gtk/wizard.c:2665
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
 msgstr ""
-"Este problema no se debe reportar (probablemente sea un problema conocido). "
-"%s"
+"Este problema no debe informarse (probablemente sea un problema conocido). %s"
 
 #: ../src/gui-wizard-gtk/wizard.c:2866
 msgid "_Open"
@@ -926,7 +933,7 @@ msgstr ""
 
 #: ../src/include/internal_libreport.h:1246
 msgid "Be verbose"
-msgstr "Sea profuso"
+msgstr "Sea minucioso"
 
 #: ../src/include/internal_libreport.h:1247
 #: ../src/plugins/reporter-bugzilla.c:323
@@ -935,12 +942,12 @@ msgstr "Sea profuso"
 #: ../src/plugins/reporter-systemd-journal.c:250
 #: ../src/plugins/reporter-upload.c:186 ../src/plugins/reporter-mantisbt.c:283
 msgid "Problem directory"
-msgstr "Directorio del problema"
+msgstr "Carpeta de problemas"
 
 #: ../src/lib/abrt_sock.c:161
 #, c-format
 msgid "Can't delete: '%s'"
-msgstr "No se pudo eliminar: '%s'"
+msgstr "No puede eliminarse: «%s»"
 
 #: ../src/lib/abrt_sock.c:197
 msgid "locked by another process"
@@ -957,7 +964,7 @@ msgstr "no es un directorio de problema"
 #: ../src/lib/abrt_sock.c:218
 #, c-format
 msgid "Can't delete '%s': %s"
-msgstr "No se puede borrar '%s': %s"
+msgstr "No puede eliminarse «%s»: %s"
 
 #: ../src/lib/client.c:67 ../src/lib/client.c:99 ../src/lib/client.c:156
 msgid "y"
@@ -1077,35 +1084,34 @@ msgid ""
 "The problem cannot be reported due to an invalid data. '%s' file does not "
 "contain a number."
 msgstr ""
-"El problema no se puede enviar porque hay datos inválidos. El archivo '%s' "
+"El problema no puede enviarse porque hay datos no válidos. El archivo «%s» "
 "no contiene un número."
 
 #: ../src/lib/event_config.c:520
 msgid "Please report this problem to ABRT project developers."
-msgstr ""
-"Por favor, informe de este problema a los desarrolladores del proyecto ABRT."
+msgstr "Informe de este problema a los desarrolladores del proyecto ABRT."
 
 #: ../src/lib/event_config.c:526
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr ""
-"La traza no está completa. Por favor, asegúrese de indicar los pasos para "
-"reproducir el error."
+"El seguimiento regresivo no está completo. Asegúrese de indicar los pasos "
+"para reproducir el error."
 
 #: ../src/lib/event_config.c:527
 msgid "The backtrace probably can't help developer to diagnose the bug."
 msgstr ""
-"Probablemente la traza no ayude a los desarrolladores a diagnosticar el "
-"error."
+"El seguimiento regresivo probablemente no ayude a los desarrolladores a "
+"diagnosticar el error."
 
 #: ../src/lib/event_config.c:533
-#, fuzzy
-#| msgid "Reporting disabled because the backtrace is unusable."
 msgid ""
 "Reporting is disabled because the generated backtrace has low informational "
 "value."
-msgstr "Creación de informes inhabilitada debido a que el trazado es inútil."
+msgstr ""
+"Se ha desactivado la creación de informes porque el seguimiento regresivo "
+"generado brinda poca información útil."
 
 #: ../src/lib/event_config.c:537
 #, c-format
@@ -1113,28 +1119,27 @@ msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again."
 msgstr ""
-"Por favor intente instalar la información de depuración manualmente con el "
-"siguiente comando: \"debuginfo-install %s\" y vuelva a probar."
+"Intente instalar debuginfo manualmente con la orden siguiente: «debuginfo-"
+"install %s» y vuelva a probar."
 
 #: ../src/lib/event_config.c:539
 msgid "A proper debuginfo is probably missing or the coredump is corrupted."
-msgstr ""
-"Probablemente falte un archivo de depuración o el volcado esté corrupto."
+msgstr "Probablemente falte un archivo de depuración o el volcado esté dañado."
 
 #: ../src/lib/iso_date_string.c:50
 #, c-format
 msgid "String doesn't seem to be a date: '%s'"
-msgstr "No parece que '%s' sea un fecha"
+msgstr "No parece que «%s» sea un fecha"
 
 #: ../src/lib/iso_date_string.c:55
 #, c-format
 msgid "The date: '%s' has unrecognized suffix: '%s'"
-msgstr "El final de la fecha '%s' no se reconoce: '%s'"
+msgstr "El final de la fecha «%s» no se reconoce: «%s»"
 
 #: ../src/lib/iso_date_string.c:60
 #, c-format
 msgid "The date: '%s' is out of UNIX time stamp range"
-msgstr "La fecha '%s' está fuera del rango de las marcas de ficheros de UNIX"
+msgstr "La fecha «%s» está fuera de los límites de los cronomarcadores de UNIX"
 
 #: ../src/lib/ureport.c:400
 #, c-format
@@ -1154,12 +1159,12 @@ msgstr "Su problema parece haber sido causado por algo de lo siguiente:\n"
 #: ../src/lib/ureport.c:575
 #, c-format
 msgid "Failed to upload uReport to the server '%s' with curl: %s"
-msgstr "Fallo al enviar el uReport al servidor '%s' con curl: %s"
+msgstr "No se pudo enviar el uReport al servidor «%s» con curl: %s"
 
 #: ../src/lib/ureport.c:579
 #, c-format
 msgid "Failed to upload uReport to the server '%s'"
-msgstr "Fallo al enviar el uReport al servidor '%s'"
+msgstr "No se pudo enviar el uReport al servidor «%s»"
 
 #: ../src/lib/ureport.c:582
 #, c-format
@@ -1169,7 +1174,7 @@ msgstr "Error: %s"
 #: ../src/lib/ureport.c:589
 #, c-format
 msgid "The URL '%s' does not exist (got error 404 from server)"
-msgstr "La URL '%s' no existe (error 404)"
+msgstr "El URL «%s» no existe (se ha recibido del servidor un error 404)"
 
 #: ../src/lib/ureport.c:595
 #, c-format
@@ -1516,7 +1521,7 @@ msgstr "No puede continuar sin contraseña"
 #: ../src/plugins/reporter-bugzilla.c:216
 #, c-format
 msgid "Logging into Bugzilla at %s"
-msgstr "Ingresando a Bugzilla en '%s'"
+msgstr "Accediendo a Bugzilla en %s"
 
 #: ../src/plugins/reporter-bugzilla.c:223
 #, fuzzy, c-format
@@ -1694,30 +1699,27 @@ msgstr "Depurar"
 
 #: ../src/plugins/reporter-bugzilla.c:402
 msgid "Looking for similar problems in bugzilla"
-msgstr "Buscando problemas similares en bugzilla"
+msgstr "Buscando problemas similares en Bugzilla"
 
 #: ../src/plugins/reporter-bugzilla.c:431
 msgid "Failed to get 'REDHAT_BUGZILLA_PRODUCT' from '/etc/os-release'."
-msgstr "No se pudo obtener 'REDHAT_BUGZILLA_PRODUCT' de '/etc/os-release'."
+msgstr "No se pudo obtener «REDHAT_BUGZILLA_PRODUCT» de «/etc/os-release»."
 
 #: ../src/plugins/reporter-bugzilla.c:434
 msgid "Failed to read '/etc/os-release' to get Bugzilla product."
-msgstr ""
-"No se pudo leer '/etc/os-release' al intentar obtener el producto Bugzilla."
+msgstr "No se pudo leer «/etc/os-release» para obtener el producto de Bugzilla."
 
 #: ../src/plugins/reporter-bugzilla.c:445
 #, c-format
 msgid "Using default product '%s'"
-msgstr "Usando el producto por defecto: '%s'"
+msgstr "Se utiliza el producto predeterminado: «%s»"
 
 #: ../src/plugins/reporter-bugzilla.c:468
-#, fuzzy, c-format
-#| msgid ""
-#| "Login is not provided by configuration. Please enter your RHTS login:"
+#, c-format
 msgid "Login is not provided by configuration. Please enter your %s login:"
 msgstr ""
-"La configuración no proporciona un nombre de usuario, ingrese su nombre de "
-"usuario RHTS:"
+"La configuración no brinda un nombre de usuario. Proporcione su credencial "
+"de %s:"
 
 #: ../src/plugins/reporter-bugzilla.c:476
 #: ../src/plugins/reporter-rhtsupport.c:597
