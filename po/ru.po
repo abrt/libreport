@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Aleksandr Brezhnev <abrezhnev@gmail.com>, 2012
 # Alexander Ivanov <hrafn@hrafn.me>, 2012
@@ -21,23 +21,23 @@
 # Леонид Кузин <dg.inc.lcf@gmail.com>, 2012
 # yuliya <ypoyarko@redhat.com>, 2015. #zanata
 # yuliya <ypoyarko@redhat.com>, 2016. #zanata
-# Igor Gorbounov <igor.gorbounov@gmail.com>, 2017. #zanata
+# Igor Gorbounov <igor.gorbounov@gmail.com>, 2017. #zanata, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2017-04-18 04:33+0000\n"
+"PO-Revision-Date: 2020-02-04 21:16+0000\n"
 "Last-Translator: Igor Gorbounov <igor.gorbounov@gmail.com>\n"
-"Language-Team: Russian (http://www.transifex.com/projects/p/libreport/"
-"language/ru/)\n"
+"Language-Team: Russian <https://translate.fedoraproject.org/projects/abrt/"
+"libreport/ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
+"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 3.10.3\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -632,7 +632,7 @@ msgstr "Обработка завершена. Перейдите к следу�
 
 #: ../src/gui-wizard-gtk/wizard.c:1770
 msgid "No commands could be found for processsing the crashdump.\n"
-msgstr ""
+msgstr "Нет команд для обработки аварийного дампа памяти.\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1785
 msgid "Processing interrupted: can't continue without writable directory."
@@ -645,6 +645,9 @@ msgid ""
 "No matching actions found for this event.\n"
 "\n"
 msgstr ""
+"--- Пропуск %s ---\n"
+"Не найдено подходящих действий для этого события.\n"
+"\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1843
 msgid "Processing..."
@@ -916,7 +919,7 @@ msgstr ""
 
 #: ../src/include/internal_libreport.h:1246
 msgid "Be verbose"
-msgstr "Опишите подробно"
+msgstr "Подробный вывод"
 
 #: ../src/include/internal_libreport.h:1247
 #: ../src/plugins/reporter-bugzilla.c:323
@@ -1084,12 +1087,12 @@ msgstr ""
 "Вероятно, данные трассировки не помогут разработчику идентифицировать ошибку."
 
 #: ../src/lib/event_config.c:533
-#, fuzzy
-#| msgid "Reporting disabled because the backtrace is unusable."
 msgid ""
 "Reporting is disabled because the generated backtrace has low informational "
 "value."
-msgstr "Формирование отчета отменено в силу непригодности протокола сбоя."
+msgstr ""
+"Формирование отчета отключено из-за низкой информационной ценности протокола "
+"сбоя."
 
 #: ../src/lib/event_config.c:537
 #, c-format
@@ -1491,10 +1494,9 @@ msgid "Logging into Bugzilla at %s"
 msgstr "Вход в Bugzilla: %s"
 
 #: ../src/plugins/reporter-bugzilla.c:223
-#, fuzzy, c-format
-#| msgid "Invalid password or login. Please enter your Red Hat login:"
+#, c-format
 msgid "Invalid password or login. Please enter your %s login:"
-msgstr "Неверное имя или пароль. Введите ваше имя Red Hat:"
+msgstr "Неверное имя или пароль. Введите имя учетной записи %s:"
 
 #: ../src/plugins/reporter-bugzilla.c:228
 #: ../src/plugins/reporter-rhtsupport.c:411
@@ -1672,11 +1674,9 @@ msgid "Using default product '%s'"
 msgstr "Используется продукт по умолчанию «%s»"
 
 #: ../src/plugins/reporter-bugzilla.c:468
-#, fuzzy, c-format
-#| msgid ""
-#| "Login is not provided by configuration. Please enter your RHTS login:"
+#, c-format
 msgid "Login is not provided by configuration. Please enter your %s login:"
-msgstr "В конфигурации не задано имя пользователя RHTS. Введите имя:"
+msgstr "В конфигурации не задано имя пользователя. Введите имя %s:"
 
 #: ../src/plugins/reporter-bugzilla.c:476
 #: ../src/plugins/reporter-rhtsupport.c:597
@@ -1720,16 +1720,13 @@ msgid "Logging out"
 msgstr "Выход"
 
 #: ../src/plugins/reporter-bugzilla.c:579
-#, fuzzy, c-format
-#| msgid ""
-#| "This problem was already reported to MantisBT (see '%s'). Do you still "
-#| "want to create a new issue?"
+#, c-format
 msgid ""
 "This problem was already reported to Bugzilla (see '%s'). Do you still want "
 "to create a new bug?"
 msgstr ""
-"Об этой проблеме уже сообщалось в MantisBT (см. «%s»). Вы все равно хотите "
-"создать новый отчет?"
+"Об этой проблеме уже сообщалось в Bugzilla (см. «%s»). Вы все равно хотите "
+"создать запись о новой ошибке?"
 
 #: ../src/plugins/reporter-bugzilla.c:609
 msgid "Can't determine Bugzilla Product from problem data."
