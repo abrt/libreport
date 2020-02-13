@@ -566,7 +566,7 @@ int main(int argc, char **argv)
     }
     free(local_conf);
 
-    char *url      = get_param_string("URL"       , settings, "https://api.access.redhat.com/rs");
+    char *url      = get_param_string("URL"       , settings, "https://api.access.redhat.com/hydra/rest");
     char *login    = get_param_string("Login"     , settings, "");
     char *password = get_param_string("Password"  , settings, "");
     char *bigurl   = get_param_string("BigFileURL", settings, "ftp://dropbox.redhat.com/incoming/");
