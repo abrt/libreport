@@ -712,36 +712,3 @@ attach_file_to_case(const char* base_url,
     free(url);
     return result;
 }
-
-//
-// Get hint
-//
-rhts_result_t*
-get_rhts_hints(const char* base_url,
-                const char* username,
-                const char* password,
-                bool ssl_verify,
-                const char* file_name)
-{
-    char *url = concat_path_file(base_url, "problems");
-//    rhts_result_t *result = post_case_to_url(url,
-//                username,
-//                password,
-//                ssl_verify,
-//                NULL,
-//                release,
-//                summary,
-//                description,
-//                component
-//    );
-    rhts_result_t *result = post_file_to_url(url,
-                username,
-                password,
-                ssl_verify,
-                /*post_as_form:*/ false,
-                /*headers:*/ NULL,
-                file_name
-    );
-    free(url);
-    return result;
-}

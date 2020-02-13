@@ -46,8 +46,6 @@
 
 #define RHTSUPPORT_CASE_URL_PATH "cases"
 
-#define QUERY_HINTS_IF_SMALLER_THAN  (8*1024*1024)
-
 static void ask_rh_credentials(char **login, char **password);
 
 #define INVALID_CREDENTIALS_LOOP(l, p, r, fncall) \
@@ -312,49 +310,6 @@ void attach_to_ureport(struct ureport_server_config *conf,
     struct ureport_server_response *resp = ureport_do_post_credentials(json, conf, UREPORT_ATTACH_ACTION);
     ureport_server_response_free(resp);
     free(json);
-}
-
-static
-bool check_for_hints(const char *url, char **login, char **password, bool ssl_verify, const char *tempfile)
-{
-    bool retval = false;
-    rhts_result_t *result = NULL;
-
-    INVALID_CREDENTIALS_LOOP((*login), (*password),
-            result, get_rhts_hints(url, *login, *password, ssl_verify, tempfile)
-    );
-
-    if (result->error)
-    {
-        /* We don't use result->msg here because it looks like this:
-         *  Error in file upload at 'URL', HTTP code: 404,
-         *  server says: '<?xml...?><error...><code>404</code><message>...</message></error>'
-         * TODO: make server send bare textual msgs, not XML.
-         */
-        error_msg("Error in file upload at '%s', HTTP code: %d", url, result->http_resp_code);
-    }
-    else if (result->body)
-    {
-        /* The message might contain URLs to known solutions and such */
-        char *hint = parse_response_from_RHTS_hint_xml2txt(result->body);
-        if (hint)
-        {
-            hint = append_to_malloced_string(hint, " ");
-            hint = append_to_malloced_string(hint,
-                    _("Do you still want to create a RHTSupport ticket?")
-                    );
-
-            /*
-             * 'Yes' to the create ticket question means no hints were found.
-             */
-            retval = !ask_yes_no(hint);
-
-            free(hint);
-        }
-    }
-
-    free_rhts_result(result);
-    return retval;
 }
 
 static
@@ -860,14 +815,6 @@ int main(int argc, char **argv)
 
     if (!(opts & OPT_t))
     {
-        if (tempfile_size <= QUERY_HINTS_IF_SMALLER_THAN)
-        {
-            /* Check for hints and show them if we have something */
-            log_warning(_("Checking for hints"));
-            if (check_for_hints(base_api_url, &login, &password, ssl_verify, tempfile))
-                goto ret;
-        }
-
         log_warning(_("Creating a new case"));
 
         char *product = NULL;
