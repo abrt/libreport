@@ -324,23 +324,6 @@ bool check_for_hints(const char *url, char **login, char **password, bool ssl_ve
             result, get_rhts_hints(url, *login, *password, ssl_verify, tempfile)
     );
 
-#if 0 /* testing */
-    log_warning("ERR:%d", result->error);
-    log_warning("MSG:'%s'", result->msg);
-    log_warning("BODY:'%s'", result->body);
-    result->error = 0;
-    result->body = xstrdup(
-            "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
-            "<problems xmlns=\"http://www.redhat.com/gss/strata\">"
-            "<link uri=\"http://access.redhat.com/\" rel=\"help\">The main Red Hat Support web site</link>"
-            "<property name=\"content\">an ABRT report</property>"
-            "<problem>"
-            "<property name=\"source\">a backtrace in the ABRT report</property>"
-            "<link uri=\"https://avalon-ci.gss.redhat.com/kb/docs/DOC-22029\" rel=\"suggestion\">[RHEL 5.3] EVO autocompletion lookup hang</link>"
-            "</problem>"
-            "</problems>"
-            );
-#endif
     if (result->error)
     {
         /* We don't use result->msg here because it looks like this:
