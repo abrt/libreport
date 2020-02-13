@@ -69,7 +69,7 @@ int main(int argc, char **argv)
         show_usage_and_die(program_usage_string, program_options);
 
     const char *tool_name;
-    if (strcmp(target, "rhts") == 0)
+    if (strcmp(target, "rhts") == 0 || strcmp(target, "strata") == 0)
         tool_name = "reporter-rhtsupport";
     else
     if (strcmp(target, "bugzilla") == 0)
