@@ -1,32 +1,33 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
-# Göran Uddeborg <goeran@uddeborg.se>, 2011,2013
+# Göran Uddeborg <goeran@uddeborg.se>, 2011,2013, 2020.
 # Mick Ohrberg <mick.ohrberg@gmail.com>, 2013
 # Mick Ohrberg <mick.ohrberg@gmail.com>, 2013
 # Swedish translation of libreport.
 # Copyright © 2015, Red Hat Inc.
 # This file is distributed under the same license as the libreport package.
-# Göran Uddeborg <goeran@uddeborg.se>, 2011, 2013, 2015.
-# Göran Uddeborg <goeran@uddeborg.se>, 2015. #zanata
-# Göran Uddeborg <goeran@uddeborg.se>, 2016. #zanata
-# Göran Uddeborg <goeran@uddeborg.se>, 2017. #zanata
+# Göran Uddeborg <goeran@uddeborg.se>, 2011, 2013, 2015, 2020.
+# Göran Uddeborg <goeran@uddeborg.se>, 2015. #zanata, 2020.
+# Göran Uddeborg <goeran@uddeborg.se>, 2016. #zanata, 2020.
+# Göran Uddeborg <goeran@uddeborg.se>, 2017. #zanata, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2017-04-30 05:16+0000\n"
+"PO-Revision-Date: 2020-02-16 15:38+0000\n"
 "Last-Translator: Göran Uddeborg <goeran@uddeborg.se>\n"
-"Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
+"Language-Team: Swedish <https://translate.fedoraproject.org/projects/abrt/"
+"libreport/sv/>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.10.3\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -628,7 +629,7 @@ msgstr "Bearbetning avslutad, fortsätt till nästa steg."
 
 #: ../src/gui-wizard-gtk/wizard.c:1770
 msgid "No commands could be found for processsing the crashdump.\n"
-msgstr ""
+msgstr "Inga kommandon kunde hittas för bearbetning av kraschdumpen.\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1785
 msgid "Processing interrupted: can't continue without writable directory."
@@ -641,6 +642,9 @@ msgid ""
 "No matching actions found for this event.\n"
 "\n"
 msgstr ""
+"--- Hoppar över %s ---\n"
+"Inga matchande åtgrärder hittades för denna händelse.\n"
+"\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1843
 msgid "Processing..."
@@ -1086,12 +1090,12 @@ msgstr ""
 "felet."
 
 #: ../src/lib/event_config.c:533
-#, fuzzy
-#| msgid "Reporting disabled because the backtrace is unusable."
 msgid ""
 "Reporting is disabled because the generated backtrace has low informational "
 "value."
-msgstr "Rapportering avaktiverad för att stackspåret är oanvändbart."
+msgstr ""
+"Rapportering är avaktiverad för att det genererade stackspåret har lågt "
+"informationsvärde."
 
 #: ../src/lib/event_config.c:537
 #, c-format
@@ -1492,10 +1496,9 @@ msgid "Logging into Bugzilla at %s"
 msgstr "Loggar in på Bugzilla på %s"
 
 #: ../src/plugins/reporter-bugzilla.c:223
-#, fuzzy, c-format
-#| msgid "Invalid password or login. Please enter your Red Hat login:"
+#, c-format
 msgid "Invalid password or login. Please enter your %s login:"
-msgstr "Felaktigt lösenord eller inloggning.  Ange din Red Hat-inloggning:"
+msgstr "Felaktigt lösenord eller inloggning. Ange din %s-inloggning:"
 
 #: ../src/plugins/reporter-bugzilla.c:228
 #: ../src/plugins/reporter-rhtsupport.c:411
@@ -1666,12 +1669,10 @@ msgid "Using default product '%s'"
 msgstr "Använder standardprodukten ”%s”"
 
 #: ../src/plugins/reporter-bugzilla.c:468
-#, fuzzy, c-format
-#| msgid ""
-#| "Login is not provided by configuration. Please enter your RHTS login:"
+#, c-format
 msgid "Login is not provided by configuration. Please enter your %s login:"
 msgstr ""
-"Inloggning tillhandahålls inte av konfigurationen.  Ange din RHTS-inloggning:"
+"Inloggning tillhandahålls inte av konfigurationen. Ange din %s-inloggning:"
 
 #: ../src/plugins/reporter-bugzilla.c:476
 #: ../src/plugins/reporter-rhtsupport.c:597
@@ -1716,16 +1717,13 @@ msgid "Logging out"
 msgstr "Loggar ut"
 
 #: ../src/plugins/reporter-bugzilla.c:579
-#, fuzzy, c-format
-#| msgid ""
-#| "This problem was already reported to MantisBT (see '%s'). Do you still "
-#| "want to create a new issue?"
+#, c-format
 msgid ""
 "This problem was already reported to Bugzilla (see '%s'). Do you still want "
 "to create a new bug?"
 msgstr ""
-"Detta problem var redan rapporterat till MantisBT (se ”%s”).  Vill du ändå "
-"skapa ett nytt ärende?"
+"Detta problem var redan rapporterat till Bugzilla (se ”%s”). Vill du ändå "
+"skapa ett nytt fel?"
 
 #: ../src/plugins/reporter-bugzilla.c:609
 msgid "Can't determine Bugzilla Product from problem data."
@@ -1948,7 +1946,7 @@ msgstr "Rapporten lagrades i %s"
 #: ../src/plugins/reporter-rhtsupport.c:280
 #: ../src/plugins/reporter-ureport.c:311
 msgid "Failed to generate microreport from the problem data"
-msgstr "Misslyckades att generera en mikrorapport från problemdatan."
+msgstr "Misslyckades att generera en mikrorapport från problemdatan"
 
 #: ../src/plugins/reporter-rhtsupport.c:301
 #: ../src/plugins/reporter-ureport.c:340
@@ -1966,13 +1964,11 @@ msgstr "Felaktigt lösenord eller inloggning.  Ange din Red Hat-inloggning:"
 
 #: ../src/plugins/reporter-rhtsupport.c:473
 msgid "Please enter customer case number to which you want to attach the data:"
-msgstr ""
+msgstr "Ange numret på ett kundärende till vilket du vill bifoga datan:"
 
 #: ../src/plugins/reporter-rhtsupport.c:479
-#, fuzzy
-#| msgid "Can't continue without password"
 msgid "Can't continue without Red Hat Support case number"
-msgstr "Kan inte fortsätta utan lösenord"
+msgstr "Kan inte fortsätta utan ett ärendenummer hos Red Hat Support"
 
 #: ../src/plugins/reporter-rhtsupport.c:506
 msgid ""
@@ -2022,6 +2018,9 @@ msgid ""
 "to the case? Otherwise, you will have to enter the existing Red Hat support "
 "case number."
 msgstr ""
+"Vi hittade ett liknande ärende hos Red Hat %s. Vill du bifoga datan till det "
+"ärendet? Annars kommer du behöva ange det befintliga ärendenumret hos Red "
+"Hat."
 
 #: ../src/plugins/reporter-rhtsupport.c:676
 #, c-format
@@ -2595,7 +2594,7 @@ msgstr "Adress till Red Hats support-portal"
 
 #: ../src/plugins/report_RHTSupport_AddData.xml.in.h:2
 msgid "Attach the data to existing Red Hat support case"
-msgstr ""
+msgstr "Bifoga datan till ett befintligt ärende hos Red Hat"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report Uploader"
@@ -2684,11 +2683,12 @@ msgstr ""
 
 #: ../src/plugins/report_uReport.xml.in.h:7
 msgid "Report unpackaged problems"
-msgstr ""
+msgstr "Rapportera opaketerade problem"
 
 #: ../src/plugins/report_uReport.xml.in.h:8
 msgid "Report problems coming from unpackaged executables."
 msgstr ""
+"Rapportera problem som kommer från körbara program som inte är paketerade."
 
 #: ../src/plugins/report_uReport.xml.in.h:9
 msgid "Contact email address"
@@ -2747,7 +2747,7 @@ msgstr "Bugzilla kunde inte hitta föräldern till felet %d"
 
 #: ../src/plugins/rhbz.c:873
 msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
-msgstr "Bug.search(quicksearch) returvärde innehöll inte medlemmen ”bugs” "
+msgstr "Bug.search(quicksearch) returvärde innehöll inte medlemmen ”bugs”"
 
 #: ../src/plugins/mantisbt.c:123
 #, c-format
@@ -3355,7 +3355,7 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:1
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:1
 msgid "Attach crash data to an existing Red Hat support case"
-msgstr ""
+msgstr "Bifoga kraschdata till ett befintligt ärende hos Red Hat"
 
 #: ../src/workflows/workflow_RHELAddDataCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJava.xml.in.h:2
@@ -3365,10 +3365,8 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDatavmcore.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:2
-#, fuzzy
-#| msgid "Ask Red Hat Support for help"
 msgid "Provide Red Hat Support with crash details"
-msgstr "Be Red Hat Support om hjälp"
+msgstr "Förse Red Hat Support med kraschdetaljer"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
