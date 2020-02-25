@@ -21,6 +21,7 @@
     debuginfos.
 """
 
+import stat
 import sys
 import os
 import pwd
@@ -35,7 +36,7 @@ from reportclient import (_, log1, log2, RETURN_OK, RETURN_FAILURE,
                           error_msg)
 
 
-def ensure_abrt_uid(fn):
+def ensure_abrt_gid(fn):
     """
     Ensures that the function is called using abrt's uid and gid
 
@@ -44,12 +45,11 @@ def ensure_abrt_uid(fn):
         the function.
     """
 
-    current_uid = os.getuid()
     current_gid = os.getgid()
     abrt = pwd.getpwnam("abrt")
 
     # if we're are already running as abrt, don't do anything
-    if abrt.pw_uid == current_uid and abrt.pw_gid == current_gid:
+    if abrt.pw_gid == current_gid:
         return fn
 
     def wrapped(*args, **kwargs):
@@ -65,11 +65,9 @@ def ensure_abrt_uid(fn):
 
         # switch to abrt
         os.setegid(abrt.pw_gid)
-        os.seteuid(abrt.pw_uid)
         # extract the files as abrt:abrt
         retval = fn(*args, **kwargs)
         # switch back to whatever we were
-        os.seteuid(current_uid)
         os.setegid(current_gid)
         return retval
 
@@ -79,7 +77,7 @@ def ensure_abrt_uid(fn):
 # TODO: unpack just required debuginfo and not entire rpm?
 # ..that can lead to: foo.c No such file and directory
 # files is not used...
-@ensure_abrt_uid
+@ensure_abrt_gid
 def unpack_rpm(package_full_path, files, tmp_dir, destdir, exact_files=False):
     """
     Unpacks a single rpm located in tmp_dir into destdir.
@@ -132,10 +130,29 @@ def unpack_rpm(package_full_path, files, tmp_dir, destdir, exact_files=False):
 
     with tempfile.NamedTemporaryFile(prefix='abrt-unpacking-', dir='/tmp',
                                      delete=False) as log_file:
-        log_file_name = log_file.name
-        cpio = Popen(cpio_args, cwd=destdir, bufsize=-1,
-                     stdin=unpacked_cpio, stdout=log_file, stderr=log_file)
-        retcode = cpio.wait()
+        with tempfile.TemporaryDirectory() as tmp_outdir:
+            log_file_name = log_file.name
+            cpio = Popen(cpio_args, cwd=tmp_outdir, bufsize=-1,
+                         stdin=unpacked_cpio, stdout=log_file, stderr=log_file)
+            retcode = cpio.wait()
+            if retcode == 0:
+                for root_directory, directories, files in os.walk(tmp_outdir):
+                    for directory in directories:
+                        path = os.path.join(root_directory, directory)
+                        os.chmod(path, 0o775)
+                    for file_ in files:
+                        path = os.path.join(root_directory, file_)
+                        if os.path.islink(path):
+                            # fchmodat in glibc does not support AT_SYMLINK_NOFOLLOW
+                            # and it would otherwise fail because some links
+                            # under .build-id can be broken.
+                            continue
+                        stat_ = os.stat(path)
+                        os.chmod(path, stat_.st_mode | stat.S_IWGRP)
+                with os.scandir(tmp_outdir) as iterator:
+                    for entry in iterator:
+                        shutil.move(entry.path, destdir)
+
 
     unpacked_cpio.close()
 
@@ -265,7 +282,6 @@ class DebugInfoDownload(object):
             else:
                 print("ERR: unmute called without mute?")
 
-    @ensure_abrt_uid
     def setup_tmp_dirs(self):
         if not os.path.exists(self.tmpdir):
             try:
