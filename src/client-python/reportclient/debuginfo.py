@@ -433,16 +433,18 @@ class DebugInfoDownload(object):
         return RETURN_OK
 
 
-def build_ids_to_path(pfx, build_ids):
+def build_ids_to_paths(prefix, build_ids):
     """
-    Transforms build ids into a path.
-
-    build_id1=${build_id:0:2}
-    build_id2=${build_id:2}
-    file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
+    Returns the list of posible locations of debug files
+    for the supplied build-ids.
     """
 
-    return ["%s/usr/lib/debug/.build-id/%s/%s.debug" % (pfx, b_id[:2], b_id[2:]) for b_id in build_ids]
+    paths = ["{0}/usr/lib/debug/.build-id/{1}/{2}.debug".format(prefix, b_id[:2], b_id[2:])
+             for b_id in build_ids]
+    paths += ["{0}/usr/lib/.build-id/{1}/{2}.debug".format(prefix, b_id[:2], b_id[2:])
+              for b_id in build_ids]
+
+    return paths
 
 # beware this finds only missing libraries, but not the executable itself ..
 
