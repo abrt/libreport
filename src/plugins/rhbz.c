@@ -543,17 +543,17 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
     xmlrpc_env env;
     xmlrpc_env_init(&env);
 
-    xmlrpc_value *params = abrt_xmlrpc_params_new(&env);
+    xmlrpc_value *params = abrt_xmlrpc_struct_new(&env);
 
-    abrt_xmlrpc_params_add_string(&env, params, "product", product);
-    abrt_xmlrpc_params_add_string(&env, params, "component", component);
-    abrt_xmlrpc_params_add_string(&env, params, "version", version);
-    abrt_xmlrpc_params_add_string(&env, params, "summary", summary);
-    abrt_xmlrpc_params_add_string(&env, params, "description", bzcomment);
-    abrt_xmlrpc_params_add_string(&env, params, "status_whiteboard", status_whiteboard->str);
+    abrt_xmlrpc_params_set_value_str(&env, params, "product", product);
+    abrt_xmlrpc_params_set_value_str(&env, params, "component", component);
+    abrt_xmlrpc_params_set_value_str(&env, params, "version", version);
+    abrt_xmlrpc_params_set_value_str(&env, params, "summary", summary);
+    abrt_xmlrpc_params_set_value_str(&env, params, "description", bzcomment);
+    abrt_xmlrpc_params_set_value_str(&env, params, "status_whiteboard", status_whiteboard->str);
 
     if(arch)
-        abrt_xmlrpc_params_add_string(&env, params, "platform", arch);
+        abrt_xmlrpc_params_set_value_str(&env, params, "platform", arch);
 
     if (private)
     {
@@ -564,7 +564,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
             for (GList *l = group; l; l = l->next)
                 abrt_xmlrpc_array_append_string(&env, xmlrpc_groups, l->data);
 
-            abrt_xmlrpc_params_add_array(&env, params, "groups", xmlrpc_groups);
+            abrt_xmlrpc_params_set_value(&env, params, "groups", xmlrpc_groups);
 
             xmlrpc_DECREF(xmlrpc_groups);
         }
