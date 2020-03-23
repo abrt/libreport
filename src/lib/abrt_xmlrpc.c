@@ -149,7 +149,7 @@ static xmlrpc_value *abrt_xmlrpc_call_params_internal(xmlrpc_env *env, struct ab
     if (xmlrpc_value_type(params) == XMLRPC_TYPE_NIL)
     {
         destroy_params = true;
-        params = abrt_xmlrpc_params_new(env);
+        params = abrt_xmlrpc_struct_new(env);
     }
 
     if (xmlrpc_value_type(params) == XMLRPC_TYPE_STRUCT)
@@ -236,16 +236,16 @@ void abrt_xmlrpc_array_append_string(xmlrpc_env *env, xmlrpc_value *array, const
     xmlrpc_DECREF(val);
 }
 
-xmlrpc_value *abrt_xmlrpc_params_new(xmlrpc_env *env)
+xmlrpc_value *abrt_xmlrpc_struct_new(xmlrpc_env *env)
 {
-    xmlrpc_value *params = xmlrpc_struct_new(env);
+    xmlrpc_value *xmlrpc_struct = xmlrpc_struct_new(env);
     if (env->fault_occurred)
         abrt_xmlrpc_die(env);
 
-    return params;
+    return xmlrpc_struct;
 }
 
-void abrt_xmlrpc_params_add_string(xmlrpc_env *env, xmlrpc_value *params, const char *name, const char *value)
+void abrt_xmlrpc_params_set_value_str(xmlrpc_env *env, xmlrpc_value *params, const char *name, const char *value)
 {
     xmlrpc_value *val = xmlrpc_string_new(env, value);
     if (env->fault_occurred)
@@ -258,7 +258,7 @@ void abrt_xmlrpc_params_add_string(xmlrpc_env *env, xmlrpc_value *params, const 
     xmlrpc_DECREF(val);
 }
 
-void abrt_xmlrpc_params_add_array(xmlrpc_env *env, xmlrpc_value *params, const char *name, xmlrpc_value *value)
+void abrt_xmlrpc_params_set_value(xmlrpc_env *env, xmlrpc_value *params, const char *name, xmlrpc_value *value)
 {
     xmlrpc_struct_set_value(env, params, name, value);
     if (env->fault_occurred)

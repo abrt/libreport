@@ -42,9 +42,9 @@ struct abrt_xmlrpc {
 xmlrpc_value *abrt_xmlrpc_array_new(xmlrpc_env *env);
 void abrt_xmlrpc_array_append_string(xmlrpc_env *env, xmlrpc_value *array, const char *value);
 
-xmlrpc_value *abrt_xmlrpc_params_new(xmlrpc_env *env);
-void abrt_xmlrpc_params_add_string(xmlrpc_env *env, xmlrpc_value *params, const char *name, const char *value);
-void abrt_xmlrpc_params_add_array(xmlrpc_env *env, xmlrpc_value *params, const char *name, xmlrpc_value *value);
+xmlrpc_value *abrt_xmlrpc_struct_new(xmlrpc_env *env);
+void abrt_xmlrpc_params_set_value_str(xmlrpc_env *env, xmlrpc_value *params, const char *name, const char *value);
+void abrt_xmlrpc_params_set_value(xmlrpc_env *env, xmlrpc_value *params, const char *name, xmlrpc_value *value);
 
 
 struct abrt_xmlrpc *abrt_xmlrpc_new_client(const char *url, int ssl_verify);
