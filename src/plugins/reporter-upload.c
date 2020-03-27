@@ -63,7 +63,7 @@ static int interactive_upload_file(const char *url, const char *file_name,
     if (state->client_ssh_private_keyfile != NULL)
         log_debug("Using SSH private key '%s'", state->client_ssh_private_keyfile);
 
-    char *tmp = upload_file_ext(state, url, file_name, UPLOAD_FILE_HANDLE_ACCESS_DENIALS);
+    char *tmp = libreport_upload_file_ext(state, url, file_name, UPLOAD_FILE_HANDLE_ACCESS_DENIALS);
 
     if (remote_name)
         *remote_name = tmp;

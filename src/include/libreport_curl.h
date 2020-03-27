@@ -138,8 +138,7 @@ enum {
     UPLOAD_FILE_HANDLE_ACCESS_DENIALS = 1 << 0,
 };
 
-#define upload_file libreport_upload_file
-char *upload_file(const char *url, const char *filename);
+char *libreport_upload_file(const char *url, const char *filename);
 
 /* Uploads filename to url.
  *
@@ -150,8 +149,7 @@ char *upload_file(const char *url, const char *filename);
  * @return Resulting URL on success (the URL does not contain userinfo);
  * otherwise NULL.
  */
-#define upload_file_ext libreport_upload_file_ext
-char *upload_file_ext(post_state_t *post_state,
+char *libreport_upload_file_ext(post_state_t *post_state,
                 const char *url,
                 const char *filename,
                 int flags);

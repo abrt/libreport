@@ -593,16 +593,16 @@ post(post_state_t *state,
 /* Unlike post_file(),
  * this function will use PUT, not POST if url is "http(s)://..."
  */
-char *upload_file(const char *url, const char *filename)
+char *libreport_upload_file(const char *url, const char *filename)
 {
     post_state_t *state = new_post_state(POST_WANT_ERROR_MSG);
-    char *retval = upload_file_ext(state, url, filename, UPLOAD_FILE_NOFLAGS);
+    char *retval = libreport_upload_file_ext(state, url, filename, UPLOAD_FILE_NOFLAGS);
     free_post_state(state);
 
     return retval;
 }
 
-char *upload_file_ext(post_state_t *state, const char *url, const char *filename, int flags)
+char *libreport_upload_file_ext(post_state_t *state, const char *url, const char *filename, int flags)
 {
     /* we don't want to print the whole url as it may contain password
      * rhbz#856960
