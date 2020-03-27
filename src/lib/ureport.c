@@ -652,7 +652,7 @@ ureport_server_response_save_in_dump_dir(struct ureport_server_response *resp,
 
             report_result_set_bthash(result, resp->urr_bthash);
 
-            add_reported_to_entry(dd, result);
+            libreport_add_reported_to_entry(dd, result);
 
             report_result_free(result);
         }
@@ -666,7 +666,7 @@ ureport_server_response_save_in_dump_dir(struct ureport_server_response *resp,
 
             report_result_set_url(result, url);
 
-            add_reported_to_entry(dd, result);
+            libreport_add_reported_to_entry(dd, result);
 
             free(url);
             report_result_free(result);
@@ -682,7 +682,7 @@ ureport_server_response_save_in_dump_dir(struct ureport_server_response *resp,
             workflow = getenv("LIBREPORT_WORKFLOW");
             if (NULL == workflow)
             {
-                add_reported_to(dd, e->data);
+                libreport_add_reported_to(dd, e->data);
             }
             else
             {
@@ -690,7 +690,7 @@ ureport_server_response_save_in_dump_dir(struct ureport_server_response *resp,
 
                 line = g_strdup_printf("%s WORKFLOW=%s", (const char *)e->data, workflow);
 
-                add_reported_to(dd, line);
+                libreport_add_reported_to(dd, line);
             }
         }
     }

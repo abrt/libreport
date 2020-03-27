@@ -1122,7 +1122,7 @@ struct dump_dir *open_directory_for_writing(
 /* Multi-line list of places problem was reported.
  * Recommended line format:
  * "Reporter: VAR=VAL VAR=VAL"
- * Use add_reported_to(dd, "line_without_newline"): it adds line
+ * Use libreport_add_reported_to(dd, "line_without_newline"): it adds line
  * only if it is not already there.
  */
 #define FILENAME_REPORTED_TO  "reported_to"

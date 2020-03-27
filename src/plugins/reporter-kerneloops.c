@@ -124,7 +124,7 @@ static void report_to_kerneloops(
 
         report_result_set_url(result, submitURL);
 
-        add_reported_to_entry(dd, result);
+        libreport_add_reported_to_entry(dd, result);
 
         report_result_free(result);
 

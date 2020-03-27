@@ -2139,51 +2139,51 @@ int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name)
 
 /* reported_to handling */
 
-void add_reported_to(struct dump_dir *dd, const char *line)
+void libreport_add_reported_to(struct dump_dir *dd, const char *line)
 {
     if (!dd->locked)
         error_msg_and_die("dump_dir is not opened"); /* bug */
 
     char *reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-    if (add_reported_to_data(&reported_to, line))
+    if (libreport_add_reported_to_data(&reported_to, line))
         dd_save_text(dd, FILENAME_REPORTED_TO, reported_to);
 
     free(reported_to);
 }
 
-void add_reported_to_entry(struct dump_dir *dd, struct report_result *result)
+void libreport_add_reported_to_entry(struct dump_dir *dd, struct report_result *result)
 {
     if (!dd->locked)
         error_msg_and_die("dump_dir is not opened"); /* bug */
 
     char *reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-    if (add_reported_to_entry_data(&reported_to, result))
+    if (libreport_add_reported_to_entry_data(&reported_to, result))
         dd_save_text(dd, FILENAME_REPORTED_TO, reported_to);
 
     free(reported_to);
 }
 
-report_result_t *find_in_reported_to(struct dump_dir *dd, const char *report_label)
+report_result_t *libreport_find_in_reported_to(struct dump_dir *dd, const char *report_label)
 {
     char *reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO,
                 DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     if (!reported_to)
         return NULL;
 
-    report_result_t *result = find_in_reported_to_data(reported_to, report_label);
+    report_result_t *result = libreport_find_in_reported_to_data(reported_to, report_label);
 
     free(reported_to);
     return result;
 }
 
-GList *read_entire_reported_to(struct dump_dir *dd)
+GList *libreport_read_entire_reported_to(struct dump_dir *dd)
 {
     char *reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO,
                 DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     if (!reported_to)
         return NULL;
 
-    GList *result = read_entire_reported_to_data(reported_to);
+    GList *result = libreport_read_entire_reported_to_data(reported_to);
 
     free(reported_to);
     return result;

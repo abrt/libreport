@@ -142,7 +142,7 @@ int main(int argc, char **argv)
 
                 report_result_set_url(result, url);
 
-                add_reported_to_entry(dd, result);
+                libreport_add_reported_to_entry(dd, result);
 
                 free(url);
                 report_result_free(result);
