@@ -578,7 +578,7 @@ problem_data_t *create_problem_data_for_reporting(const char *dump_dir_name)
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return NULL; /* dd_opendir already emitted error msg */
-    string_vector_ptr_t exclude_items = get_global_always_excluded_elements();
+    string_vector_ptr_t exclude_items = libreport_get_global_always_excluded_elements();
     problem_data_t *problem_data = problem_data_new();
     problem_data_load_from_dump_dir(problem_data, dd, exclude_items);
     dd_close(dd);

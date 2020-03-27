@@ -480,7 +480,7 @@ struct dump_dir *create_dump_dir_ext(const char *base_dir_name, const char *type
  *   - '.tag.gz' (note: the implementation uses child gzip process)
  *
  * The archive will include only the files that are not in the exclude_elements
- * list. See get_global_always_excluded_elements().
+ * list. See libreport_get_global_always_excluded_elements().
  *
  * The argument "flags" is currently unused.
  *

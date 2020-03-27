@@ -26,20 +26,15 @@
 extern "C" {
 #endif
 
-#define load_global_configuration libreport_load_global_configuration
-bool load_global_configuration(void);
+bool libreport_load_global_configuration(void);
 
-#define load_global_configuration_from_dirs libreport_load_global_configuration_from_dirs
-bool load_global_configuration_from_dirs(const char *dirs[], int dir_flags[]);
+bool libreport_load_global_configuration_from_dirs(const char *dirs[], int dir_flags[]);
 
-#define free_global_configuration libreport_free_global_configuration
-void free_global_configuration(void);
+void libreport_free_global_configuration(void);
 
-#define get_global_always_excluded_elements libreport_get_global_always_excluded_elements
-string_vector_ptr_t get_global_always_excluded_elements(void);
+string_vector_ptr_t libreport_get_global_always_excluded_elements(void);
 
-#define get_global_create_private_ticket libreport_get_global_create_private_ticket
-bool get_global_create_private_ticket(void);
+bool libreport_get_global_create_private_ticket(void);
 
 /**
  * Configures the create private ticket global option
@@ -50,8 +45,7 @@ bool get_global_create_private_ticket(void);
  * @param enabled The option's value
  * @param flags For future needs (enable persistent configuration)
  */
-#define set_global_create_private_ticket libreport_set_global_create_private_ticket
-void set_global_create_private_ticket(bool enabled, int flags);
+void libreport_set_global_create_private_ticket(bool enabled, int flags);
 
 /**
  * Returns logical true if the reporting process shall not start or contine if
@@ -63,8 +57,7 @@ void set_global_create_private_ticket(bool enabled, int flags);
  * @return true if the process shall stop; otherwise the function returns
  * false.
  */
-#define get_global_stop_on_not_reportable libreport_get_global_stop_on_not_reportable
-bool get_global_stop_on_not_reportable(void);
+bool libreport_get_global_stop_on_not_reportable(void);
 
 /**
  * Configures the stop on not reportable global option
@@ -78,8 +71,7 @@ bool get_global_stop_on_not_reportable(void);
  * @param enabled The option's value
  * @param flags For future needs (enable persistent configuration)
  */
-#define set_global_stop_on_not_reportable libreport_set_global_stop_on_not_reportable
-void set_global_stop_on_not_reportable(bool enabled, int flags);
+void libreport_set_global_stop_on_not_reportable(bool enabled, int flags);
 
 #ifdef __cplusplus
 }

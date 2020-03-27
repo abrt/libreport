@@ -336,7 +336,7 @@ static int report(const char *dump_dir_name)
         free(not_reportable);
         free(reason);
 
-        if (get_global_stop_on_not_reportable())
+        if (libreport_get_global_stop_on_not_reportable())
         {
             dd_close(dd);
             return -1;

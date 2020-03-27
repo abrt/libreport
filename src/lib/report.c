@@ -28,8 +28,8 @@ int report_problem_in_dir(const char *dirname, int flags)
 
     if (flags & LIBREPORT_IGNORE_NOT_REPORTABLE)
     {
-        load_global_configuration();
-        set_global_stop_on_not_reportable(false, 0);
+        libreport_load_global_configuration();
+        libreport_set_global_stop_on_not_reportable(false, 0);
     }
 
     fflush(NULL);

@@ -31,7 +31,7 @@ static const char *const s_recognized_options[] = {
 
 static map_string_t *s_global_settings;
 
-bool load_global_configuration(void)
+bool libreport_load_global_configuration(void)
 {
     static const char *dirs[] = {
         CONF_DIR,
@@ -48,10 +48,10 @@ bool load_global_configuration(void)
     if (dirs[1] == NULL)
         dirs[1] = get_user_conf_base_dir();
 
-    return load_global_configuration_from_dirs(dirs, dir_flags);
+    return libreport_load_global_configuration_from_dirs(dirs, dir_flags);
 }
 
-bool load_global_configuration_from_dirs(const char *dirs[], int dir_flags[])
+bool libreport_load_global_configuration_from_dirs(const char *dirs[], int dir_flags[])
 {
     if (s_global_settings == NULL)
     {
@@ -62,7 +62,7 @@ bool load_global_configuration_from_dirs(const char *dirs[], int dir_flags[])
         if (!ret)
         {
             error_msg("Failed to load libreport global configuration");
-            free_global_configuration();
+            libreport_free_global_configuration();
             return false;
         }
 
@@ -75,7 +75,7 @@ bool load_global_configuration_from_dirs(const char *dirs[], int dir_flags[])
             if (!is_in_string_list(key, s_recognized_options))
             {
                 error_msg("libreport global configuration contains unrecognized option : '%s'", key);
-                free_global_configuration();
+                libreport_free_global_configuration();
                 return false;
             }
         }
@@ -86,7 +86,7 @@ bool load_global_configuration_from_dirs(const char *dirs[], int dir_flags[])
     return true;
 }
 
-void free_global_configuration(void)
+void libreport_free_global_configuration(void)
 {
     if (s_global_settings != NULL)
     {
@@ -114,7 +114,7 @@ static void assert_global_configuration_initialized(void)
     opt;\
     })
 
-string_vector_ptr_t get_global_always_excluded_elements(void)
+string_vector_ptr_t libreport_get_global_always_excluded_elements(void)
 {
     assert_global_configuration_initialized();
 
@@ -137,7 +137,7 @@ string_vector_ptr_t get_global_always_excluded_elements(void)
     return ret;
 }
 
-bool get_global_create_private_ticket(void)
+bool libreport_get_global_create_private_ticket(void)
 {
     assert_global_configuration_initialized();
 
@@ -149,7 +149,7 @@ bool get_global_create_private_ticket(void)
     return string_to_bool(env_create_private);
 }
 
-void set_global_create_private_ticket(bool enabled, int flags/*unused - persistent*/)
+void libreport_set_global_create_private_ticket(bool enabled, int flags/*unused - persistent*/)
 {
     assert_global_configuration_initialized();
 
@@ -159,7 +159,7 @@ void set_global_create_private_ticket(bool enabled, int flags/*unused - persiste
         safe_unsetenv(CREATE_PRIVATE_TICKET);
 }
 
-bool get_global_stop_on_not_reportable(void)
+bool libreport_get_global_stop_on_not_reportable(void)
 {
     assert_global_configuration_initialized();
 
@@ -171,7 +171,7 @@ bool get_global_stop_on_not_reportable(void)
     return string_to_bool(env_create_private);
 }
 
-void set_global_stop_on_not_reportable(bool enabled, int flags/*unused - persistent*/)
+void libreport_set_global_stop_on_not_reportable(bool enabled, int flags/*unused - persistent*/)
 {
     assert_global_configuration_initialized();
 

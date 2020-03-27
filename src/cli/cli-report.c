@@ -522,7 +522,7 @@ static int is_not_reportable(problem_data_t *problem_data)
     if (not_reportable)
     {
         printf("%s\n", not_reportable);
-        if (get_global_stop_on_not_reportable())
+        if (libreport_get_global_stop_on_not_reportable())
             return 1;
     }
     return 0;

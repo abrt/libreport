@@ -186,7 +186,7 @@ set_settings(mantisbt_settings_t *m, map_string_t *settings, struct dump_dir *dd
     environ = getenv("Mantisbt_DontMatchComponents");
     m->m_DontMatchComponents = environ ? environ : get_map_string_item_or_empty(settings, "DontMatchComponents");
 
-    m->m_create_private = get_global_create_private_ticket();
+    m->m_create_private = libreport_get_global_create_private_ticket();
 
     if (!m->m_create_private)
     {
