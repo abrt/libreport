@@ -93,7 +93,7 @@ static int create_and_upload_archive(
     tempfile = concat_path_basename(LARGE_DATA_TMP_DIR, dump_dir_name);
     tempfile = append_to_malloced_string(tempfile, ".tar.gz");
 
-    string_vector_ptr_t exclude_from_report = get_global_always_excluded_elements();
+    string_vector_ptr_t exclude_from_report = libreport_get_global_always_excluded_elements();
 
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)

@@ -1045,7 +1045,7 @@ static void update_ls_details_checkboxes(const char *event_name)
     char *name;
     struct problem_item *item;
     g_hash_table_iter_init(&iter, g_cd);
-    string_vector_ptr_t global_exclude = get_global_always_excluded_elements();
+    string_vector_ptr_t global_exclude = libreport_get_global_always_excluded_elements();
     while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&item))
     {
         /* Decide whether item is allowed, required, and what's the default */
@@ -1640,7 +1640,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
             dd_sanitize_mode_and_owner(dd);
     }
 
-    if (retval == 0 && get_global_stop_on_not_reportable())
+    if (retval == 0 && libreport_get_global_stop_on_not_reportable())
     {
         /* Check whether NOT_REPORTABLE element appeared. If it did, we'll stop
          * even if exit code is "success".
@@ -1887,7 +1887,7 @@ static void add_warning(const char   *warning,
 
 static void on_sensitive_ticket_clicked_cb(GtkWidget *button, gpointer user_data)
 {
-    set_global_create_private_ticket(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)), /*transient*/0);
+    libreport_set_global_create_private_ticket(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)), /*transient*/0);
 }
 
 static void on_privacy_info_btn(GtkWidget *button, gpointer user_data)
@@ -2426,7 +2426,7 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
 
     if (pages[PAGENO_SUMMARY].page_widget == page)
     {
-        if (get_global_create_private_ticket())
+        if (libreport_get_global_create_private_ticket())
             private_ticket_creation_warning(  PRIV_WARN_SHOW_BTN
                                             | PRIV_WARN_BTN_CHECKED
                                             | PRIV_WARN_HIDE_MSG);
@@ -2667,7 +2667,7 @@ static gint select_next_page_no(gint current_page_no)
                             problem_data_get_content_or_NULL(g_cd, FILENAME_NOT_REPORTABLE)
             );
 
-            if (get_global_stop_on_not_reportable())
+            if (libreport_get_global_stop_on_not_reportable())
             {
                 free(event);
                 cancel_processing(g_lbl_event_log, msg, TERMINATE_NOFLAGS);
