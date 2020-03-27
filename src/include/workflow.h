@@ -86,8 +86,7 @@ GHashTable *load_workflow_config_data_from_list(GList *wf_names, const char *pat
  * configuration files. If NULL, the default 'WORKFLOWS_DIR' is used instead.
  * @returns A map where the key is workflow's name and the value is workflow_t *.
  */
-#define load_workflow_config_data libreport_load_workflow_config_data
-GHashTable *load_workflow_config_data(const char* directory);
+GHashTable *libreport_load_workflow_config_data(const char* directory);
 
 #ifdef __cplusplus
 }

@@ -119,7 +119,7 @@ GHashTable *load_workflow_config_data_from_list(GList *wf_names,
     return wf_list;
 }
 
-GHashTable *load_workflow_config_data(const char *path)
+GHashTable *libreport_load_workflow_config_data(const char *path)
 {
     if (g_workflow_list)
         return g_workflow_list;
