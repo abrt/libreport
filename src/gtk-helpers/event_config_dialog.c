@@ -77,7 +77,7 @@ void save_data_from_event_config_dialog(GList *widgets, event_config_t *ec)
 {
     dehydrate_config_dialog(widgets);
     const char *const store_passwords_s = get_user_setting("store_passwords");
-    save_event_config_data_to_user_storage(ec_get_name(ec),
+    libreport_save_event_config_data_to_user_storage(ec_get_name(ec),
                                            ec,
                                            !(store_passwords_s && !strcmp(store_passwords_s, "no")));
 }
@@ -153,7 +153,7 @@ static void add_option_to_table(gpointer data, gpointer user_data)
             gtk_widget_set_halign(label, GTK_ALIGN_START);
             gtk_widget_set_valign(label, GTK_ALIGN_START);
 
-            make_label_autowrap_on_resize(GTK_LABEL(label));
+            libreport_make_label_autowrap_on_resize(GTK_LABEL(label));
 
             last_row = add_one_row_to_grid(option_table);
             gtk_grid_attach(option_table, label,
@@ -188,7 +188,7 @@ static void add_option_to_table(gpointer data, gpointer user_data)
         gtk_widget_set_halign(label, GTK_ALIGN_START);
         gtk_widget_set_valign(label, GTK_ALIGN_START);
 
-        make_label_autowrap_on_resize(GTK_LABEL(label));
+        libreport_make_label_autowrap_on_resize(GTK_LABEL(label));
 
         last_row = add_one_row_to_grid(option_table);
         gtk_grid_attach(option_table, label,
@@ -222,7 +222,7 @@ static GtkWidget *create_event_config_grid()
     return option_table;
 }
 
-config_dialog_t *create_event_config_dialog_content(event_config_t *event, GtkWidget *content)
+config_dialog_t *libreport_create_event_config_dialog_content(event_config_t *event, GtkWidget *content)
 {
     INITIALIZE_LIBREPORT();
 
@@ -256,7 +256,7 @@ config_dialog_t *create_event_config_dialog_content(event_config_t *event, GtkWi
     /* if there is at least one password option, add checkbox to disable storing passwords */
     /* if the user storage is not available nothing is to be stored, so it is not necessary
      * to bother with an extra checkbox about storing passwords */
-    if (is_event_config_user_storage_available()
+    if (libreport_is_event_config_user_storage_available()
             && has_password_option)
     {
         unsigned last_row = add_one_row_to_grid(GTK_GRID(option_table));
@@ -290,7 +290,7 @@ config_dialog_t *create_event_config_dialog_content(event_config_t *event, GtkWi
     /* add warning if secrets service is not available showing the nagging dialog
      * is considered "too heavy UI" be designers
      */
-    if (!is_event_config_user_storage_available())
+    if (!libreport_is_event_config_user_storage_available())
     {
         GtkWidget *keyring_warn_lbl =
         gtk_label_new(
@@ -361,7 +361,7 @@ config_dialog_t *create_event_config_dialog(const char *event_name, GtkWindow *p
     }
 
     GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-    config_dialog_t *cdialog = create_event_config_dialog_content(event, content);
+    config_dialog_t *cdialog = libreport_create_event_config_dialog_content(event, content);
     cdialog_set_widget(cdialog, dialog);
 
     return cdialog;
@@ -372,7 +372,7 @@ static void add_event_to_liststore(gpointer key, gpointer value, gpointer list_s
     config_item_info_t *info = ec_get_config_info((event_config_t *)value);
     config_dialog_t *cdialog = create_event_config_dialog(key, NULL);
 
-    add_item_to_config_liststore(cdialog, info, list_store);
+    libreport_add_item_to_config_liststore(cdialog, info, list_store);
 }
 
 GtkListStore *add_events_to_liststore(GHashTable *events)
@@ -383,7 +383,7 @@ GtkListStore *add_events_to_liststore(GHashTable *events)
     return list_store;
 }
 
-int show_event_config_dialog(const char *event_name, GtkWindow *parent)
+int libreport_show_event_config_dialog(const char *event_name, GtkWindow *parent)
 {
     INITIALIZE_LIBREPORT();
 

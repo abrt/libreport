@@ -58,7 +58,7 @@ static void rewrap_label_to_parent_size(GtkWidget *widget,
         gtk_widget_set_size_request(widget, -1, lh);
 }
 
-void make_label_autowrap_on_resize(GtkLabel *label)
+void libreport_make_label_autowrap_on_resize(GtkLabel *label)
 {
     // So far, only tested to work on labels which were set up as:
     // gtk_label_set_justify(label, GTK_JUSTIFY_LEFT);

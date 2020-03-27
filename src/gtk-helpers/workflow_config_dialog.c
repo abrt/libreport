@@ -43,7 +43,7 @@ static void create_event_config_dialog_content_cb(event_config_t *ec, gpointer n
     gtk_widget_set_margin_top(content, 5);
     gtk_widget_set_margin_bottom(content, 10);
 
-    config_dialog_t *cdialog = create_event_config_dialog_content(ec, (GtkWidget *)content);
+    config_dialog_t *cdialog = libreport_create_event_config_dialog_content(ec, (GtkWidget *)content);
 
     gtk_notebook_append_page(GTK_NOTEBOOK(notebook), content, ev_lbl);
 
@@ -137,7 +137,7 @@ static void add_workflow_to_liststore(gpointer key, gpointer value, gpointer use
 {
     config_item_info_t *info = workflow_get_config_info((workflow_t *)value);
     config_dialog_t *cdialog = create_workflow_config_dialog(key, g_parent_window);
-    add_item_to_config_liststore(cdialog, info, user_data);
+    libreport_add_item_to_config_liststore(cdialog, info, user_data);
 }
 
 GtkListStore *add_workflows_to_liststore(GHashTable *workflows)
@@ -150,7 +150,7 @@ GtkListStore *add_workflows_to_liststore(GHashTable *workflows)
 
 static void load_single_event_config_foreach(event_config_t *ec, gpointer user_data)
 {
-    load_single_event_config_data_from_user_storage(ec);
+    libreport_load_single_event_config_data_from_user_storage(ec);
 }
 
 static void load_events_foreach_workflow(const char *name, workflow_t *workflow, gpointer user_data)

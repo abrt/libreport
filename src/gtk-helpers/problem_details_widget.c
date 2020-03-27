@@ -155,7 +155,7 @@ problem_details_widget_add_multi_line(ProblemDetailsWidget *self, const char *na
             || strcmp(name, FILENAME_REASON) == 0)
         gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(value), GTK_WRAP_WORD);
 
-    reload_text_to_text_view(GTK_TEXT_VIEW(value), content);
+    libreport_reload_text_to_text_view(GTK_TEXT_VIEW(value), content);
 #else
     GtkWidget *value = gtk_label_new(content);
     gtk_widget_set_halign(value, GTK_ALIGN_START);

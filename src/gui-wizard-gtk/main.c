@@ -185,7 +185,7 @@ int main(int argc, char **argv)
     /* load /etc/abrt/events/foo.{conf,xml} stuff
        and $XDG_CACHE_HOME/abrt/events/foo.conf */
     g_event_config_list = load_event_config_data();
-    load_event_config_data_from_user_storage(g_event_config_list);
+    libreport_load_event_config_data_from_user_storage(g_event_config_list);
     load_user_settings("report-gtk");
 
     load_workflow_config_data(WORKFLOWS_DIR);

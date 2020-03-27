@@ -29,7 +29,7 @@ static char *find_end(const char* url_start)
  *   http://google.com/
  *   https://gmail.com/
  */
-GList *find_url_tokens(const char *line)
+GList *libreport_find_url_tokens(const char *line)
 {
     static const char *const known_url_prefixes[] = {"http://", "https://", "ftp://", "file://", NULL};
     const char *const *pfx = known_url_prefixes;
@@ -46,7 +46,7 @@ GList *find_url_tokens(const char *line)
             GList *anc = tokens;
             for (; anc; anc = g_list_next(anc))
             {
-                const struct url_token *const t = (struct url_token *)anc->data;
+                const struct libreport_url_token *const t = (struct libreport_url_token *)anc->data;
                 if (t->start >= url_start)
                     break;
             }
@@ -54,12 +54,12 @@ GList *find_url_tokens(const char *line)
             /* need it for overlap correction */
             GList *prev = NULL;
             /* initialize it after overlap correction */
-            struct url_token *tok = xmalloc(sizeof(*tok));
+            struct libreport_url_token *tok = xmalloc(sizeof(*tok));
             if (anc)
             {   /* insert a new token before token following in the str*/
                 prev = g_list_previous(anc);
 
-                struct url_token *following = anc->data;
+                struct libreport_url_token *following = anc->data;
                 if (url_end > following->start)
                     /* correct ovrelaps with following token */
                     len -= url_end - following->start;
@@ -77,7 +77,7 @@ GList *find_url_tokens(const char *line)
 
             if (prev)
             {   /* correct overlaps with previous token */
-                struct url_token *previous = prev->data;
+                struct libreport_url_token *previous = prev->data;
                 const char *prev_end = previous->start + previous->len;
 
                 if (prev_end > url_start)
@@ -100,10 +100,10 @@ char *tag_url(const char *line, const char *prefix)
 {
     struct strbuf *result = strbuf_new();
     const char *last = line;
-    GList *urls = find_url_tokens(line);
+    GList *urls = libreport_find_url_tokens(line);
     for (GList *u = urls; u; u = g_list_next(u))
     {
-        const struct url_token *const t = (struct url_token *)u->data;
+        const struct libreport_url_token *const t = (struct libreport_url_token *)u->data;
 
         /* add text between hyperlinks */
         if (last < t->start)

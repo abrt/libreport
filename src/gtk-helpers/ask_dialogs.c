@@ -129,13 +129,13 @@ static int run_ask_yes_no_save_generic_result_dialog(ask_yes_no_dialog_flags fla
 
 /*
  * This function is little bit confusing. Please, consider usage of
- * run_ask_yes_no_save_result_dialog()
+ * libreport_run_ask_yes_no_save_result_dialog()
  *
  * Function shows a dialog with 'Yes/No' buttons and a check box allowing to
  * remember the answer. The "Don't ask me again" response is stored in
  * configuration file under 'key'.
  */
-int run_ask_yes_no_yesforever_dialog(const char *key, const char *message, GtkWindow *parent)
+int libreport_run_ask_yes_no_yesforever_dialog(const char *key, const char *message, GtkWindow *parent)
 {
     return run_ask_yes_no_save_generic_result_dialog(ASK_YES_NO__YESFOREVER, key, message, parent);
 }
@@ -145,7 +145,7 @@ int run_ask_yes_no_yesforever_dialog(const char *key, const char *message, GtkWi
  * remember the answer. The answer is stored in configuration file under
  * 'key'.
  */
-int run_ask_yes_no_save_result_dialog(const char *key, const char *message, GtkWindow *parent)
+int libreport_run_ask_yes_no_save_result_dialog(const char *key, const char *message, GtkWindow *parent)
 {
     return run_ask_yes_no_save_generic_result_dialog(ASK_YES_NO__SAVE_RESULT, key, message, parent);
 }

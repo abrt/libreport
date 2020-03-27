@@ -166,7 +166,7 @@ void dehydrate_config_dialog(GList *option_widgets)
         g_list_foreach(option_widgets, &save_value_from_widget, NULL);
 }
 
-void add_item_to_config_liststore(gpointer cdialog, gpointer inf, gpointer user_data)
+void libreport_add_item_to_config_liststore(gpointer cdialog, gpointer inf, gpointer user_data)
 {
     INITIALIZE_LIBREPORT();
 
@@ -409,7 +409,7 @@ void show_config_list_dialog(GtkWindow *parent)
 
     //TODO: free the hashtables somewhere!!
     GHashTable *events = load_event_config_data();
-    load_event_config_data_from_user_storage(events);
+    libreport_load_event_config_data_from_user_storage(events);
 
     GHashTable *workflows = load_workflow_config_data(WORKFLOWS_DIR);
     load_workflow_config_data_from_user_storage(workflows);
