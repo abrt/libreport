@@ -38,39 +38,29 @@ typedef struct
     GtkWidget *widget;
 } option_widget_t;
 
-#define make_label_autowrap_on_resize libreport_make_label_autowrap_on_resize
-void make_label_autowrap_on_resize(GtkLabel *label);
+void libreport_make_label_autowrap_on_resize(GtkLabel *label);
 
-#define show_events_list_dialog libreport_show_events_list_dialog
-void show_events_list_dialog(GtkWindow *parent);
+void libreport_show_events_list_dialog(GtkWindow *parent);
 
-#define is_event_config_user_storage_available libreport_is_event_config_user_storage_available
-bool is_event_config_user_storage_available();
+bool libreport_is_event_config_user_storage_available();
 
-#define load_single_event_config_data_from_user_storage libreport_load_single_event_config_data_from_user_storage
-void load_single_event_config_data_from_user_storage(event_config_t *config);
+void libreport_load_single_event_config_data_from_user_storage(event_config_t *config);
 
-#define load_event_config_data_from_user_storage libreport_load_event_config_data_from_user_storage
-void load_event_config_data_from_user_storage(GHashTable *event_config_list);
+void libreport_load_event_config_data_from_user_storage(GHashTable *event_config_list);
 
-#define save_event_config_data_to_user_storage libreport_save_event_config_data_to_user_storage
-void  save_event_config_data_to_user_storage(const char *event_name,
+void  libreport_save_event_config_data_to_user_storage(const char *event_name,
                                              const event_config_t *event_config,
                                              bool store_password);
 
-#define show_event_config_dialog libreport_show_event_config_dialog
-int show_event_config_dialog(const char *event_name, GtkWindow *parent);
+int libreport_show_event_config_dialog(const char *event_name, GtkWindow *parent);
 
-#define create_event_config_dialog_content libreport_create_event_config_dialog_content
-config_dialog_t *create_event_config_dialog_content(event_config_t *event, GtkWidget *content);
+config_dialog_t *libreport_create_event_config_dialog_content(event_config_t *event, GtkWidget *content);
 
-//#define show_workflow_list_dialog libreport_show_workflow_list_dialog
-//void show_workflow_list_dialog(GtkWindow *parent);
+//void libabrt_show_workflow_list_dialog(GtkWindow *parent);
 
 void save_data_from_event_config_dialog(GList *widgets, event_config_t *ec);
 
-#define add_item_to_config_liststore libreport_add_item_to_config_liststore
-void add_item_to_config_liststore(gpointer cdialog, gpointer inf, gpointer user_data);
+void libreport_add_item_to_config_liststore(gpointer cdialog, gpointer inf, gpointer user_data);
 
 GtkListStore *new_conf_liststore(void);
 void show_config_list_dialog(GtkWindow *parent);
@@ -88,25 +78,22 @@ void dehydrate_config_dialog(GList *option_widgets);
 
 char * tag_url(const char* line, const char* prefix);
 
-#define url_token libreport_url_token
-struct url_token
+struct libreport_url_token
 {
     const char *start;
     int len;
 };
 
-#define find_url_tokens libreport_find_url_tokens
-GList *find_url_tokens(const char *line);
+GList *libreport_find_url_tokens(const char *line);
 
 
-#define reload_text_to_text_view libreport_reload_text_to_text_view
-void reload_text_to_text_view(GtkTextView *tv, const char *text);
+void libreport_reload_text_to_text_view(GtkTextView *tv, const char *text);
 
 /* Ask dialogs */
 
 /*
  * This function is little bit confusing. Please, consider usage of
- * run_ask_yes_no_save_result_dialog()
+ * libreport_run_ask_yes_no_save_result_dialog()
  *
  * Runs a dialog with 'Yes'/'No' buttons and 'Don't ask me again' check box and
  * waits until the dialog is closed. This variant of dialog allows user to
@@ -122,8 +109,7 @@ void reload_text_to_text_view(GtkTextView *tv, const char *text);
  * @param parent Transient parent or NULL
  * @returns Non 0 if the answer is "Yes"; otherwise 0
  */
-#define run_ask_yes_no_yesforever_dialog libreport_run_ask_yes_no_yesforever_dialog
-int run_ask_yes_no_yesforever_dialog(const char *key, const char *message, GtkWindow *parent);
+int libreport_run_ask_yes_no_yesforever_dialog(const char *key, const char *message, GtkWindow *parent);
 
 /*
  * Runs a dialog with 'Yes'/'No' buttons and 'Don't ask me again' check box and
@@ -140,8 +126,7 @@ int run_ask_yes_no_yesforever_dialog(const char *key, const char *message, GtkWi
  * @param parent Transient parent or NULL
  * @returns Non 0 if the answer is "Yes"; otherwise 0
  */
-#define run_ask_yes_no_save_result_dialog libreport_run_ask_yes_no_save_result_dialog
-int run_ask_yes_no_save_result_dialog(const char *key, const char *message, GtkWindow *parent);
+int libreport_run_ask_yes_no_save_result_dialog(const char *key, const char *message, GtkWindow *parent);
 
 #ifdef __cplusplus
 }

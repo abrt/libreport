@@ -1,6 +1,6 @@
 #include "internal_libreport_gtk.h"
 
-void reload_text_to_text_view(GtkTextView *tv, const char *text)
+void libreport_reload_text_to_text_view(GtkTextView *tv, const char *text)
 {
     GtkTextBuffer *tb = gtk_text_view_get_buffer(tv);
     GtkTextIter beg_iter, end_iter;

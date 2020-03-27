@@ -304,7 +304,7 @@ static void wrap_fixer(GtkWidget *widget, gpointer data_unused)
           && (gtk_widget_get_margin_top(widget) == 0)
           && (gtk_widget_get_margin_bottom(widget) == 0)
         ) {
-            make_label_autowrap_on_resize(label);
+            libreport_make_label_autowrap_on_resize(label);
             return;
         }
     }
@@ -340,7 +340,7 @@ static bool ask_continue_before_steal(const char *base_dir, const char *dump_dir
             _("Need writable directory, but '%s' is not writable."
               " Move it to '%s' and operate on the moved data?"),
             dump_dir, base_dir);
-    const bool response = run_ask_yes_no_yesforever_dialog("ask_steal_dir", msg, GTK_WINDOW(g_wnd_assistant));
+    const bool response = libreport_run_ask_yes_no_yesforever_dialog("ask_steal_dir", msg, GTK_WINDOW(g_wnd_assistant));
 
     return response;
 }
@@ -384,7 +384,7 @@ static void load_text_to_text_view(GtkTextView *tv, const char *name)
     /* gtk_text_buffer_set_text(tb, (str ? str : ""), -1);*/
     /* Start torturing ourself instead: */
 
-    reload_text_to_text_view(tv, str);
+    libreport_reload_text_to_text_view(tv, str);
 }
 
 static gchar *get_malloced_string_from_text_view(GtkTextView *tv)
@@ -452,10 +452,10 @@ static void append_to_textview(GtkTextView *tv, const char *str)
     gtk_text_buffer_get_end_iter(tb, &text_iter);
 
     const char *last = str;
-    GList *urls = find_url_tokens(str);
+    GList *urls = libreport_find_url_tokens(str);
     for (GList *u = urls; u; u = g_list_next(u))
     {
-        const struct url_token *const t = (struct url_token *)u->data;
+        const struct libreport_url_token *const t = (struct libreport_url_token *)u->data;
         if (last < t->start)
             gtk_text_buffer_insert(tb, &text_iter, last, t->start - last);
 
@@ -846,7 +846,7 @@ static void check_event_config(const char *event_name)
     if (errors != NULL)
     {
         g_list_free_full(errors, (GDestroyNotify)free_invalid_options);
-        show_event_config_dialog(event_name, GTK_WINDOW(g_top_most_window));
+        libreport_show_event_config_dialog(event_name, GTK_WINDOW(g_top_most_window));
         update_private_ticket_creation_warning_for_selected_event();
     }
 }
@@ -1514,14 +1514,14 @@ static int run_event_gtk_ask_yes_no(const char *msg, void *args)
 
 static int run_event_gtk_ask_yes_no_yesforever(const char *key, const char *msg, void *args)
 {
-    const int ret = run_ask_yes_no_yesforever_dialog(key, msg, GTK_WINDOW(g_wnd_assistant));
+    const int ret = libreport_run_ask_yes_no_yesforever_dialog(key, msg, GTK_WINDOW(g_wnd_assistant));
     log_request_response_communication(msg, ret ? "YES" : "NO", (struct analyze_event_data *)args);
     return ret;
 }
 
 static int run_event_gtk_ask_yes_no_save_result(const char *key, const char *msg, void *args)
 {
-    const int ret = run_ask_yes_no_save_result_dialog(key, msg, GTK_WINDOW(g_wnd_assistant));
+    const int ret = libreport_run_ask_yes_no_save_result_dialog(key, msg, GTK_WINDOW(g_wnd_assistant));
     log_request_response_communication(msg, ret ? "YES" : "NO", (struct analyze_event_data *)args);
     return ret;
 }
@@ -1895,7 +1895,7 @@ static void on_privacy_info_btn(GtkWidget *button, gpointer user_data)
     if (g_event_selected == NULL)
         return;
 
-    show_event_config_dialog(g_event_selected, GTK_WINDOW(g_top_most_window));
+    libreport_show_event_config_dialog(g_event_selected, GTK_WINDOW(g_top_most_window));
 }
 
 static void private_ticket_creation_warning(int flags)
@@ -2524,7 +2524,7 @@ static void set_auto_event_chain(GtkButton *button, gpointer user_data)
     while(wf_event_list)
     {
         g_auto_event_list = g_list_append(g_auto_event_list, xstrdup(ec_get_name(wf_event_list->data)));
-        load_single_event_config_data_from_user_storage((event_config_t *)wf_event_list->data);
+        libreport_load_single_event_config_data_from_user_storage((event_config_t *)wf_event_list->data);
 
         wf_event_list = g_list_next(wf_event_list);
     }
@@ -2619,7 +2619,7 @@ static bool get_sensitive_data_permission(const char *event_name)
             _("Event '%s' requires permission to send possibly sensitive data.\n"
               "Do you want to continue?"),
             event_name);
-    const bool response = run_ask_yes_no_yesforever_dialog("ask_send_sensitive_data",
+    const bool response = libreport_run_ask_yes_no_yesforever_dialog("ask_send_sensitive_data",
             msg, GTK_WINDOW(g_wnd_assistant));
 
     return response;

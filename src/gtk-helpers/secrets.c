@@ -1399,7 +1399,7 @@ static void load_event_config(gpointer key, gpointer value, gpointer user_data)
     event_config_t *const ec = (event_config_t *)value;
     struct secrets_object *const collection = (struct secrets_object *)user_data;
 
-    if (is_event_config_user_storage_available())
+    if (libreport_is_event_config_user_storage_available())
         load_settings(g_session_proxy, collection, event_name, ec);
 }
 
@@ -1491,7 +1491,7 @@ static void save_event_config(const char *event_name,
 /* Public interface                                                           */
 /******************************************************************************/
 
-bool is_event_config_user_storage_available()
+bool libreport_is_event_config_user_storage_available()
 {
     INITIALIZE_LIBREPORT();
 
@@ -1507,7 +1507,7 @@ bool is_event_config_user_storage_available()
  * @param name Event name
  * @param config Event config
  */
-void load_single_event_config_data_from_user_storage(event_config_t *config)
+void libreport_load_single_event_config_data_from_user_storage(event_config_t *config)
 {
     INITIALIZE_LIBREPORT();
 
@@ -1519,7 +1519,7 @@ void load_single_event_config_data_from_user_storage(event_config_t *config)
 
     g_hash_table_insert(tmp, xstrdup(ec_get_name(config)), config);
 
-    load_event_config_data_from_user_storage(tmp);
+    libreport_load_event_config_data_from_user_storage(tmp);
 
     g_hash_table_destroy(tmp);
 
@@ -1531,11 +1531,11 @@ void load_single_event_config_data_from_user_storage(event_config_t *config)
  *
  * @param event_config_list Events configs
  */
-void load_event_config_data_from_user_storage(GHashTable *event_config_list)
+void libreport_load_event_config_data_from_user_storage(GHashTable *event_config_list)
 {
     INITIALIZE_LIBREPORT();
 
-    if (is_event_config_user_storage_available())
+    if (libreport_is_event_config_user_storage_available())
     {
         bool dismissed = false;
         struct secrets_object *collection = NULL;
@@ -1591,13 +1591,13 @@ void load_event_config_data_from_user_storage(GHashTable *event_config_list)
  * @param event_config Event data
  * @param store_passwords If TRUE stores options with passwords, otherwise skips them
  */
-void save_event_config_data_to_user_storage(const char *event_name,
+void libreport_save_event_config_data_to_user_storage(const char *event_name,
                                             const event_config_t *event_config,
                                             bool store_passwords)
 {
     INITIALIZE_LIBREPORT();
 
-    if (is_event_config_user_storage_available())
+    if (libreport_is_event_config_user_storage_available())
         save_event_config(event_name, event_config->options, store_passwords);
     else
     {
