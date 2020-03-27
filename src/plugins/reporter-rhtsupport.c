@@ -228,7 +228,7 @@ struct ureport_server_response *ureport_do_post_credentials(const char *json, st
     struct post_state *post_state = NULL;
     while (1)
     {
-        post_state = ureport_do_post(json, config, action);
+        post_state = libreport_ureport_do_post(json, config, action);
 
         if (post_state == NULL)
         {
@@ -244,12 +244,12 @@ struct ureport_server_response *ureport_do_post_credentials(const char *json, st
         char *login = NULL;
         char *password = NULL;
         ask_rh_credentials(&login, &password);
-        ureport_server_config_set_basic_auth(config, login, password);
+        libreport_ureport_server_config_set_basic_auth(config, login, password);
         free(password);
         free(login);
     }
 
-    struct ureport_server_response *resp = ureport_server_response_from_reply(post_state, config);
+    struct ureport_server_response *resp = libreport_ureport_server_response_from_reply(post_state, config);
     free(post_state);
     return resp;
 }
@@ -274,7 +274,7 @@ char *submit_ureport(const char *dump_dir_name, struct ureport_server_config *co
         return report_result_get_bthash(rr_bthash);
     }
 
-    char *json = ureport_from_dump_dir(dump_dir_name);
+    char *json = libreport_ureport_from_dump_dir(dump_dir_name);
     if (json == NULL)
     {
         log_notice(_("Failed to generate microreport from the problem data"));
@@ -292,7 +292,7 @@ char *submit_ureport(const char *dump_dir_name, struct ureport_server_config *co
         if (resp->urr_bthash != NULL)
             bthash = libreport_xstrdup(resp->urr_bthash);
 
-        ureport_server_response_save_in_dump_dir(resp, dump_dir_name, conf);
+        libreport_ureport_server_response_save_in_dump_dir(resp, dump_dir_name, conf);
 
         if (resp->urr_message)
             log_warning("%s", resp->urr_message);
@@ -300,7 +300,7 @@ char *submit_ureport(const char *dump_dir_name, struct ureport_server_config *co
     else if (libreport_g_verbose > 2)
         error_msg(_("Server responded with an error: '%s'"), resp->urr_value);
 
-    ureport_server_response_free(resp);
+    libreport_ureport_server_response_free(resp);
     return bthash;
 }
 
@@ -310,7 +310,7 @@ void attach_to_ureport(struct ureport_server_config *conf,
 {
     char *json = ureport_json_attachment_new(bthash, attach_id, data);
     struct ureport_server_response *resp = ureport_do_post_credentials(json, conf, UREPORT_ATTACH_ACTION);
-    ureport_server_response_free(resp);
+    libreport_ureport_server_response_free(resp);
     free(json);
 }
 
@@ -411,7 +411,7 @@ void prepare_ureport_configuration(const char *urcfile,
         const char *portal_url, const char *login, const char *password, bool ssl_verify)
 {
     libreport_load_conf_file(urcfile, settings, false);
-    ureport_server_config_init(urconf);
+    libreport_ureport_server_config_init(urconf);
 
     /* The following lines cause that we always use URL from ureport's
      * configuration becuase the GUI reporter always exports uReport_URL env
@@ -420,13 +420,13 @@ void prepare_ureport_configuration(const char *urcfile,
      *   char *url = NULL;
      *   UREPORT_OPTION_VALUE_FROM_CONF(settings, "URL", url, libreport_xstrdup);
      *   if (url != NULL)
-     *       ureport_server_config_set_url(urconf, url);
+     *       libreport_ureport_server_config_set_url(urconf, url);
      */
 
-    ureport_server_config_set_url(urconf, libreport_concat_path_file(portal_url, "/telemetry/abrt"));
+    libreport_ureport_server_config_set_url(urconf, libreport_concat_path_file(portal_url, "/telemetry/abrt"));
     urconf->ur_ssl_verify = ssl_verify;
 
-    ureport_server_config_set_basic_auth(urconf, login, password);
+    libreport_ureport_server_config_set_basic_auth(urconf, login, password);
 
     bool include_auth = true;
     UREPORT_OPTION_VALUE_FROM_CONF(settings, "IncludeAuthData", include_auth, libreport_string_to_bool);
@@ -944,7 +944,7 @@ int main(int argc, char **argv)
             log_warning(_("Linking ABRT crash statistics record with the case"));
 
             /* Make sure we use the current credentials */
-            ureport_server_config_set_basic_auth(&urconf, login, password);
+            libreport_ureport_server_config_set_basic_auth(&urconf, login, password);
 
             /* Attach Customer Case ID*/
             attach_to_ureport(&urconf, bthash, "RHCID", result->url);
@@ -1030,7 +1030,7 @@ int main(int argc, char **argv)
     free_rhts_result(result_atch);
     free_rhts_result(result);
 
-    ureport_server_config_destroy(&urconf);
+    libreport_ureport_server_config_destroy(&urconf);
     libreport_free_map_string(ursettings);
     free(bthash);
 

@@ -73,18 +73,16 @@ struct ureport_server_config
  *
  * @param config Initialized structure
  */
-#define ureport_server_config_init libreport_ureport_server_config_init
 void
-ureport_server_config_init(struct ureport_server_config *config);
+libreport_ureport_server_config_init(struct ureport_server_config *config);
 
 /*
  * Release all allocated resources
  *
  * @param config Released structure
  */
-#define ureport_server_config_destroy libreport_ureport_server_config_destroy
 void
-ureport_server_config_destroy(struct ureport_server_config *config);
+libreport_ureport_server_config_destroy(struct ureport_server_config *config);
 
 /*
  * Loads uReport configuration from various sources.
@@ -94,9 +92,8 @@ ureport_server_config_destroy(struct ureport_server_config *config);
  *
  * @param config a server configuration to be populated
  */
-#define ureport_server_config_load libreport_ureport_server_config_load
 void
-ureport_server_config_load(struct ureport_server_config *config,
+libreport_ureport_server_config_load(struct ureport_server_config *config,
                            map_string_t *settings);
 
 /*
@@ -105,9 +102,8 @@ ureport_server_config_load(struct ureport_server_config *config,
  * @param config Where the url is stored
  * @param server_url Index URL
  */
-#define ureport_server_config_set_url libreport_ureport_server_config_set_url
 void
-ureport_server_config_set_url(struct ureport_server_config *config,
+libreport_ureport_server_config_set_url(struct ureport_server_config *config,
                               char *server_url);
 
 /*
@@ -117,9 +113,8 @@ ureport_server_config_set_url(struct ureport_server_config *config,
  * @param client_path Path in form of cert_full_path:key_full_path or one of
  *        the following string: 'rhsm', 'puppet'.
  */
-#define ureport_server_config_set_client_auth libreport_ureport_server_config_set_client_auth
 void
-ureport_server_config_set_client_auth(struct ureport_server_config *config,
+libreport_ureport_server_config_set_client_auth(struct ureport_server_config *config,
                                       const char *client_auth);
 
 /*
@@ -129,9 +124,8 @@ ureport_server_config_set_client_auth(struct ureport_server_config *config,
  * @param username User name
  * @param password Password
  */
-#define ureport_server_config_set_basic_auth libreport_ureport_server_config_set_basic_auth
 void
-ureport_server_config_set_basic_auth(struct ureport_server_config *config,
+libreport_ureport_server_config_set_basic_auth(struct ureport_server_config *config,
                                      const char *username, const char *password);
 
 /*
@@ -177,9 +171,8 @@ struct post_state;
  * @param config Configuration used in communication
  * @return Pointer to malloced memory or NULL in case of error in communication
  */
-#define ureport_server_response_from_reply libreport_ureport_server_response_from_reply
 struct ureport_server_response *
-ureport_server_response_from_reply(struct post_state *post_state,
+libreport_ureport_server_response_from_reply(struct post_state *post_state,
                                    struct ureport_server_config *config);
 
 /*
@@ -190,9 +183,8 @@ ureport_server_response_from_reply(struct post_state *post_state,
  * @param config Configuration used in communication
  * @return False in case of any error; otherwise True.
  */
-#define ureport_server_response_save_in_dump_dir libreport_ureport_server_response_save_in_dump_dir
 bool
-ureport_server_response_save_in_dump_dir(struct ureport_server_response *resp,
+libreport_ureport_server_response_save_in_dump_dir(struct ureport_server_response *resp,
                                          const char *dump_dir_path,
                                          struct ureport_server_config *config);
 
@@ -203,9 +195,8 @@ ureport_server_response_save_in_dump_dir(struct ureport_server_response *resp,
  * @param config Configuration used in communication
  * @return Malloced zero-terminated string
  */
-#define ureport_server_response_get_report_url libreport_ureport_server_response_get_report_url
 char *
-ureport_server_response_get_report_url(struct ureport_server_response *resp,
+libreport_ureport_server_response_get_report_url(struct ureport_server_response *resp,
                                        struct ureport_server_config *config);
 
 /*
@@ -213,9 +204,8 @@ ureport_server_response_get_report_url(struct ureport_server_response *resp,
  *
  * @param resp Released structured
  */
-#define ureport_server_response_free libreport_ureport_server_response_free
 void
-ureport_server_response_free(struct ureport_server_response *resp);
+libreport_ureport_server_response_free(struct ureport_server_response *resp);
 
 /*
  * Send JSON to server and obtain reply
@@ -225,9 +215,8 @@ ureport_server_response_free(struct ureport_server_response *resp);
  * @param url_sfx Local part of the upload URL
  * @return Malloced server reply or NULL in case of communication errors
  */
-#define ureport_do_post libreport_ureport_do_post
 struct post_state *
-ureport_do_post(const char *json, struct ureport_server_config *config,
+libreport_ureport_do_post(const char *json, struct ureport_server_config *config,
                 const char *url_sfx);
 
 /*
@@ -237,9 +226,8 @@ ureport_do_post(const char *json, struct ureport_server_config *config,
  * @param config Configuration used in communication
  * @return Malloced, parsed server response
  */
-#define ureport_submit libreport_ureport_submit
 struct ureport_server_response *
-ureport_submit(const char *json_ureport, struct ureport_server_config *config);
+libreport_ureport_submit(const char *json_ureport, struct ureport_server_config *config);
 
 /*
  * Build a new uReport attachement from give arguments
@@ -290,12 +278,10 @@ ureport_attach(struct ureport_server_config *config,
  * @param dump_dir_path FS path to dump dir
  * @return Malloced JSON string
  */
-#define ureport_from_dump_dir libreport_ureport_from_dump_dir
 char *
-ureport_from_dump_dir(const char *dump_dir_path);
+libreport_ureport_from_dump_dir(const char *dump_dir_path);
 
-#define ureport_from_dump_dir_ext libreport_ureport_from_dump_dir_ext
-char *ureport_from_dump_dir_ext(const char *dump_dir_path,
+char *libreport_ureport_from_dump_dir_ext(const char *dump_dir_path,
                                 const struct ureport_preferences *preferences);
 
 #ifdef __cplusplus
