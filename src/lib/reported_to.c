@@ -19,7 +19,7 @@
 #include "dump_dir.h"
 #include "internal_libreport.h"
 
-int add_reported_to_data(char **reported_to, const char *line)
+int libreport_add_reported_to_data(char **reported_to, const char *line)
 {
     if (*reported_to)
     {
@@ -45,7 +45,7 @@ int add_reported_to_data(char **reported_to, const char *line)
     return 1;
 }
 
-int add_reported_to_entry_data(char **reported_to, report_result_t *result)
+int libreport_add_reported_to_entry_data(char **reported_to, report_result_t *result)
 {
     struct strbuf *buf;
 
@@ -55,7 +55,7 @@ int add_reported_to_entry_data(char **reported_to, report_result_t *result)
         return -EINVAL;
     }
 
-    const int r = add_reported_to_data(reported_to, buf->buf);
+    const int r = libreport_add_reported_to_data(reported_to, buf->buf);
 
     strbuf_free(buf);
 
@@ -96,7 +96,7 @@ static void read_entire_reported_to_cb(const char *record_line, size_t label_len
     *result = g_list_prepend(*result, report);
 }
 
-GList *read_entire_reported_to_data(const char *reported_to)
+GList *libreport_read_entire_reported_to_data(const char *reported_to)
 {
     GList *result = NULL;
     foreach_reported_to_line(reported_to, read_entire_reported_to_cb, &result);
@@ -121,7 +121,7 @@ static void find_in_reported_to_cb(const char *record_line, size_t label_len, vo
     }
 }
 
-report_result_t *find_in_reported_to_data(const char *reported_to, const char *report_label)
+report_result_t *libreport_find_in_reported_to_data(const char *reported_to, const char *report_label)
 {
     struct find_in_cb_data searched;
     searched.label = report_label;

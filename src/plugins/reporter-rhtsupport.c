@@ -69,7 +69,7 @@ static report_result_t *get_reported_to(const char *dump_dir_name)
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         xfunc_die();
-    report_result_t *reported_to = find_in_reported_to(dd, "RHTSupport");
+    report_result_t *reported_to = libreport_find_in_reported_to(dd, "RHTSupport");
     dd_close(dd);
     return reported_to;
 }
@@ -263,7 +263,7 @@ char *submit_ureport(const char *dump_dir_name, struct ureport_server_config *co
     if (dd == NULL)
         return NULL;
 
-    rr_bthash = find_in_reported_to(dd, "uReport");
+    rr_bthash = libreport_find_in_reported_to(dd, "uReport");
 
     dd_close(dd);
 
@@ -929,7 +929,7 @@ int main(int argc, char **argv)
             report_result_set_timestamp(report_result, time(NULL));
             report_result_set_url(report_result, result->url);
 
-            add_reported_to_entry(dd, report_result);
+            libreport_add_reported_to_entry(dd, report_result);
             dd_close(dd);
             if (result->msg)
                 log_warning("%s", result->msg);

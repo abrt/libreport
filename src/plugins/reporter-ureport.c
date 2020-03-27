@@ -185,7 +185,7 @@ int main(int argc, char **argv)
             g_autoptr(report_result_t) result = NULL;
             char *bthash;
 
-            result = find_in_reported_to(dd, "uReport");
+            result = libreport_find_in_reported_to(dd, "uReport");
             if (NULL == result)
             {
                 error_msg_and_die(_("This problem does not have an uReport assigned."));
@@ -206,7 +206,7 @@ int main(int argc, char **argv)
             g_autoptr(report_result_t) result = NULL;
             g_autofree char *url = NULL;
 
-            result = find_in_reported_to(dd, "Bugzilla");
+            result = libreport_find_in_reported_to(dd, "Bugzilla");
             if (NULL == result)
             {
                 error_msg_and_die(_("This problem has not been reported to Bugzilla."));
@@ -237,7 +237,7 @@ int main(int argc, char **argv)
             g_autoptr(report_result_t) result = NULL;
             char *url;
 
-            result = find_in_reported_to(dd, report_result_type);
+            result = libreport_find_in_reported_to(dd, report_result_type);
             if (NULL == result)
             {
                 error_msg_and_die(_("This problem has not been reported to '%s'."), report_result_type);

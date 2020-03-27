@@ -373,7 +373,7 @@ int main(int argc, char **argv)
             if (!dd)
                 xfunc_die();
 
-            reported_to = find_in_reported_to(dd, "MantisBT");
+            reported_to = libreport_find_in_reported_to(dd, "MantisBT");
 
             dd_close(dd);
 
@@ -417,7 +417,7 @@ int main(int argc, char **argv)
         if (!dd)
             xfunc_die();
 
-        reported_to = find_in_reported_to(dd, "MantisBT");
+        reported_to = libreport_find_in_reported_to(dd, "MantisBT");
 
         dd_close(dd);
 
@@ -568,7 +568,7 @@ int main(int argc, char **argv)
                 g_autoptr(report_result_t) reported_to = NULL;
                 g_autofree char *url = NULL;
 
-                reported_to = find_in_reported_to(dd, tracker_str);
+                reported_to = libreport_find_in_reported_to(dd, tracker_str);
 
                 dd_close(dd);
 
@@ -717,7 +717,7 @@ finish:
 
         report_result_set_url(result, url);
 
-        add_reported_to_entry(dd, result);
+        libreport_add_reported_to_entry(dd, result);
 
         free(url);
         report_result_free(result);

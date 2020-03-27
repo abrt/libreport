@@ -377,38 +377,38 @@ time_t dd_get_last_occurrence(struct dump_dir *dd);
  * @param line The appended line
  * @return 1 if the line was added at the end of the reported_to; otherwise 0.
  */
-int add_reported_to_data(char **reported_to, const char *line);
+int libreport_add_reported_to_data(char **reported_to, const char *line);
 
 /* Appends a new unique entry to the list of report results
  *
  * result->label must be non-empty string which does not contain ':' character.
  *
  * The function converts the result to a valid reported_to line and calls
- * add_reported_to_data().
+ * libreport_add_reported_to_data().
  *
  * @param reported_to The data
  * @param result The appended entry
  * @return -EINVAL if result->label is invalid; otherwise return value of
- * add_reported_to_data
+ * libreport_add_reported_to_data
  */
-int add_reported_to_entry_data(char **reported_to, struct report_result *result);
+int libreport_add_reported_to_entry_data(char **reported_to, struct report_result *result);
 
-/* This is a wrapper of add_reported_to_data which accepts 'struct dump_dir *'
+/* This is a wrapper of libreport_add_reported_to_data which accepts 'struct dump_dir *'
  * in the first argument instead of 'char **'. The added line is stored in
  * 'reported_to' dump directory file.
  */
-void add_reported_to(struct dump_dir *dd, const char *line);
+void libreport_add_reported_to(struct dump_dir *dd, const char *line);
 
-/* This is a wrapper of add_reported_to_entry_data which accepts 'struct
+/* This is a wrapper of libreport_add_reported_to_entry_data which accepts 'struct
  * dump_dir *' in the first argument instead of 'char **'. The added entry is
  * stored in 'reported_to' dump directory file.
  */
-void add_reported_to_entry(struct dump_dir *dd, struct report_result *result);
+void libreport_add_reported_to_entry(struct dump_dir *dd, struct report_result *result);
 
-report_result_t *find_in_reported_to_data(const char *reported_to, const char *report_label);
-report_result_t *find_in_reported_to(struct dump_dir *dd, const char *report_label);
-GList *read_entire_reported_to_data(const char* reported_to);
-GList *read_entire_reported_to(struct dump_dir *dd);
+report_result_t *libreport_find_in_reported_to_data(const char *reported_to, const char *report_label);
+report_result_t *libreport_find_in_reported_to(struct dump_dir *dd, const char *report_label);
+GList *libreport_read_entire_reported_to_data(const char* reported_to);
+GList *libreport_read_entire_reported_to(struct dump_dir *dd);
 
 
 void delete_dump_dir(const char *dirname);

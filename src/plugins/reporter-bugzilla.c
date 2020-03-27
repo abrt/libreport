@@ -493,7 +493,7 @@ int main(int argc, char **argv)
             if (!dd)
                 xfunc_die();
 
-            reported_to = find_in_reported_to(dd, "Bugzilla");
+            reported_to = libreport_find_in_reported_to(dd, "Bugzilla");
 
             dd_close(dd);
 
@@ -565,7 +565,7 @@ int main(int argc, char **argv)
         if (!dd)
             xfunc_die();
 
-        reported_to = find_in_reported_to(dd, "Bugzilla");
+        reported_to = libreport_find_in_reported_to(dd, "Bugzilla");
 
         dd_close(dd);
 
@@ -803,7 +803,7 @@ int main(int argc, char **argv)
                         email = strtok(NULL, "\n");
                     }
                 }
-                reported_to = find_in_reported_to(dd, tracker_str);
+                reported_to = libreport_find_in_reported_to(dd, tracker_str);
                 if (NULL != reported_to)
                 {
                     url = report_result_get_url(reported_to);
@@ -962,7 +962,7 @@ int main(int argc, char **argv)
 
         report_result_set_url(result, url);
 
-        add_reported_to_entry(dd, result);
+        libreport_add_reported_to_entry(dd, result);
 
         free(url);
         report_result_free(result);

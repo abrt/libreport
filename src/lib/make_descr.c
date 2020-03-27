@@ -152,7 +152,7 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
             const char *reported_to = problem_data_get_content_or_NULL(problem_data, FILENAME_REPORTED_TO);
             if (reported_to != NULL)
             {
-                GList *reports = entire_reported_to_data(reported_to);
+                GList *reports = libreport_read_entire_reported_to_data(reported_to);
 
                 /* The value part begins on 17th column */
                 /*                        0123456789ABCDEF*/

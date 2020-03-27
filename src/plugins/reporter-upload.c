@@ -246,7 +246,7 @@ int main(int argc, char **argv)
 
         report_result_set_url(result, remote_name);
 
-        add_reported_to_entry(dd, result);
+        libreport_add_reported_to_entry(dd, result);
 
         report_result_free(result);
 

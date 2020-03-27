@@ -2,11 +2,11 @@
 
 AT_BANNER([reported_to])
 
-## -------------------- ##
-## add_reported_to_data ##
-## -------------------- ##
+## ------------------------------ ##
+## libreport_add_reported_to_data ##
+## ------------------------------ ##
 
-AT_TESTFUN([add_reported_to_data],
+AT_TESTFUN([libreport_add_reported_to_data],
 [[
 #include "internal_libreport.h"
 #include <assert.h>
@@ -29,22 +29,22 @@ int main(void)
 #define THIRD_LINE "RHTSupport: TIME=12345678 URL=https://access.redhat.com/home MSG=The world's best IT support"
 
     char *reported_to = NULL;
-    assert(add_reported_to_data(&reported_to, FIRST_LINE) || !"Refused to add the first line");
+    assert(libreport_add_reported_to_data(&reported_to, FIRST_LINE) || !"Refused to add the first line");
     assert(string_cmp(FIRST_LINE"\n", reported_to) || !"Failed to create reported_to from the line");
 
-    assert(add_reported_to_data(&reported_to, SECOND_LINE) || !"Refused to add the second line" );
+    assert(libreport_add_reported_to_data(&reported_to, SECOND_LINE) || !"Refused to add the second line" );
     assert(string_cmp(FIRST_LINE"\n"SECOND_LINE"\n", reported_to) || !"Failed to add the second line");
 
-    assert(add_reported_to_data(&reported_to, THIRD_LINE) || !"Refused to add the third line");
+    assert(libreport_add_reported_to_data(&reported_to, THIRD_LINE) || !"Refused to add the third line");
     assert(string_cmp(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n", reported_to) || !"Failed to add the third line");
 
-    assert(!add_reported_to_data(&reported_to, FIRST_LINE) || !"Added the first line again");
+    assert(!libreport_add_reported_to_data(&reported_to, FIRST_LINE) || !"Added the first line again");
     assert(string_cmp(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n", reported_to) || !"Modified the reported_to text not adding the first again");
 
-    assert(!add_reported_to_data(&reported_to, SECOND_LINE) || !"Added the second line again");
+    assert(!libreport_add_reported_to_data(&reported_to, SECOND_LINE) || !"Added the second line again");
     assert(string_cmp(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n", reported_to) || !"Modified the reported_to text not adding the second again");
 
-    assert(!add_reported_to_data(&reported_to, THIRD_LINE) || !"Added the third line again");
+    assert(!libreport_add_reported_to_data(&reported_to, THIRD_LINE) || !"Added the third line again");
     assert(string_cmp(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n", reported_to) || !"Modified the reported_to text not adding the second again");
 
     free(reported_to);
@@ -68,7 +68,7 @@ AT_TESTFUN([parse_reported_to_data],
 
 bool parse_and_check(const char *reported_to, GList *expected)
 {
-    GList *reports = read_entire_reported_to_data(reported_to);
+    GList *reports = libreport_read_entire_reported_to_data(reported_to);
 
     const unsigned expected_len = g_list_length(expected);
     const unsigned current_len = g_list_length(expected);
@@ -160,11 +160,11 @@ int main(void)
 }
 ]])
 
-## ------------------- ##
-## find_in_reported_to ##
-## ------------------- ##
+## ----------------------------- ##
+## libreport_find_in_reported_to ##
+## ----------------------------- ##
 
-AT_TESTFUN([find_in_reported_to],
+AT_TESTFUN([libreport_find_in_reported_to],
 [[
 #include "internal_libreport.h"
 
@@ -213,63 +213,63 @@ int main(void)
 #define SIXTH_LINE "RHTSupport: TIME=87654321 URL=https://bugzilla.redhat.com/ MSG=The world's biggest Bugzilla instance"
 
     {
-        report_result_t *found = find_in_reported_to_data(FIRST_LINE, "Bugzilla");
+        report_result_t *found = libreport_find_in_reported_to_data(FIRST_LINE, "Bugzilla");
         assert(found != NULL || !"Failed to find Bugzilla");
         assert(report_result_equals(found, first_result) || !"Failed to parse Bugzilla");
         report_result_free(found);
     }
 
     {
-        report_result_t *found = find_in_reported_to_data(SECOND_LINE, "ABRT Server");
+        report_result_t *found = libreport_find_in_reported_to_data(SECOND_LINE, "ABRT Server");
         assert(found != NULL || !"Failed to find ABRT Server");
         assert(report_result_equals(found, second_result) || !"Failed to parse ABRT Server");
         report_result_free(found);
     }
 
     {
-        report_result_t *found = find_in_reported_to_data(THIRD_LINE, "RHTSupport");
+        report_result_t *found = libreport_find_in_reported_to_data(THIRD_LINE, "RHTSupport");
         assert(found != NULL || !"Failed to find RHTSupport");
         assert(report_result_equals(found, third_result) || !"Failed to parse RHTSupport");
         report_result_free(found);
     }
 
     {
-        report_result_t *found = find_in_reported_to_data(FIRST_LINE"\n"FOURTH_LINE, "Bugzilla");
+        report_result_t *found = libreport_find_in_reported_to_data(FIRST_LINE"\n"FOURTH_LINE, "Bugzilla");
         assert(found != NULL || !"Failed to find the latest Bugzilla");
         assert(report_result_equals(found, fourth_result) || !"Failed to parse the latest Bugzilla");
         report_result_free(found);
     }
 
     {
-        report_result_t *found = find_in_reported_to_data(SECOND_LINE"\n"FIFTH_LINE, "ABRT Server");
+        report_result_t *found = libreport_find_in_reported_to_data(SECOND_LINE"\n"FIFTH_LINE, "ABRT Server");
         assert(found != NULL || !"Failed to find the latest ABRT Server");
         assert(report_result_equals(found, fifth_result) || !"Failed to parse the latest ABRT Server");
         report_result_free(found);
     }
 
     {
-        report_result_t *found = find_in_reported_to_data(THIRD_LINE"\n"SIXTH_LINE, "RHTSupport");
+        report_result_t *found = libreport_find_in_reported_to_data(THIRD_LINE"\n"SIXTH_LINE, "RHTSupport");
         assert(found != NULL || !"Failed to find the RHTSupport");
         assert(report_result_equals(found, sixth_result) || !"Failed to parse the latest RHTSupport");
         report_result_free(found);
     }
 
     {
-        report_result_t *found = find_in_reported_to_data(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n"FOURTH_LINE"\n"FIFTH_LINE"\n"SIXTH_LINE, "Bugzilla");
+        report_result_t *found = libreport_find_in_reported_to_data(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n"FOURTH_LINE"\n"FIFTH_LINE"\n"SIXTH_LINE, "Bugzilla");
         assert(found != NULL || !"Failed to find the latest Bugzilla from huge file");
         assert(report_result_equals(found, fourth_result) || !"Failed to parse the latest Bugzilla from huge file");
         report_result_free(found);
     }
 
     {
-        report_result_t *found = find_in_reported_to_data(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n"FOURTH_LINE"\n"FIFTH_LINE"\n"SIXTH_LINE, "ABRT Server");
+        report_result_t *found = libreport_find_in_reported_to_data(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n"FOURTH_LINE"\n"FIFTH_LINE"\n"SIXTH_LINE, "ABRT Server");
         assert(found != NULL || !"Failed to find the latest ABRT Server from huge file");
         assert(report_result_equals(found, fifth_result) || !"Failed to parse the latest ABRT Server from huge file");
         report_result_free(found);
     }
 
     {
-        report_result_t *found = find_in_reported_to_data(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n"FOURTH_LINE"\n"FIFTH_LINE"\n"SIXTH_LINE, "RHTSupport");
+        report_result_t *found = libreport_find_in_reported_to_data(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n"FOURTH_LINE"\n"FIFTH_LINE"\n"SIXTH_LINE, "RHTSupport");
         assert(found != NULL || !"Failed to find the RHTSupport from huge file");
         assert(report_result_equals(found, sixth_result) || !"Failed to parse the latest RHTSupport from huge file");
         report_result_free(found);
