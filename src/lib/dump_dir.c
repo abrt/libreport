@@ -144,7 +144,7 @@ static bool exist_file_dir_at(int dir_fd, const char *name)
  * internal file or directory.
  */
 #define dd_validate_element_name(name) \
-    (str_is_correct_filename(name) && (strcmp(META_DATA_DIR_NAME, name) != 0))
+    (libreport_str_is_correct_filename(name) && (strcmp(META_DATA_DIR_NAME, name) != 0))
 
 /* nobody user should not own any file */
 static int get_no_owner_uid(uid_t *uid)
@@ -224,14 +224,14 @@ static int read_number_from_file_at(int dir_fd, const char *filename, const char
     }
 
     int ret = 0;
-    /* - xmalloc_read() does not count '\0' Byte
+    /* - libreport_xmalloc_read() does not count '\0' Byte
      * - count on sign
      * - count on '\n'
      */
     const size_t max_size = typesz * 3 + 2;
     /* allow to read one extra Byte to be able to identify longer text */
     size_t total_read = max_size + 1;
-    char *const value_buf = xmalloc_read(fd, &total_read);
+    char *const value_buf = libreport_xmalloc_read(fd, &total_read);
     /* Just reading, so no need to check the returned value. */
 
     if (value_buf == NULL)
@@ -407,7 +407,7 @@ static const char *dd_check(struct dump_dir *dd)
      * file message is printed by log_info() (in a verbose mode).
      */
     int load_flags = DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE;
-    if (g_verbose < 2) load_flags |= DD_FAIL_QUIETLY_ENOENT;
+    if (libreport_g_verbose < 2) load_flags |= DD_FAIL_QUIETLY_ENOENT;
 
     dd->dd_type = load_text_file_at(dd->dd_fd, FILENAME_TYPE, load_flags);
     if (!dd->dd_type || (strlen(dd->dd_type) == 0))
@@ -464,7 +464,7 @@ static int dd_lock(struct dump_dir *dd, unsigned sleep_usec, int flags)
         if (missing_file)
         {
             if (dd->owns_lock)
-                xunlinkat(dd->dd_fd, ".lock", /*only files*/0);
+                libreport_xunlinkat(dd->dd_fd, ".lock", /*only files*/0);
 
             log_notice("Unlocked '%s' (no or corrupted '%s' file)", dd->dd_dirname, missing_file);
             if (--count == 0 || flags & DD_DONT_WAIT_FOR_LOCK)
@@ -486,7 +486,7 @@ static void dd_unlock(struct dump_dir *dd)
     if (dd->locked)
     {
         if (dd->owns_lock)
-            xunlinkat(dd->dd_fd, ".lock", /*only files*/0);
+            libreport_xunlinkat(dd->dd_fd, ".lock", /*only files*/0);
 
         dd->owns_lock = 0;
         dd->locked = 0;
@@ -497,7 +497,7 @@ static void dd_unlock(struct dump_dir *dd)
 
 static inline struct dump_dir *dd_init(void)
 {
-    struct dump_dir* dd = (struct dump_dir*)xzalloc(sizeof(struct dump_dir));
+    struct dump_dir* dd = (struct dump_dir*)libreport_xzalloc(sizeof(struct dump_dir));
     dd->dd_time = (time_t)-1;
     dd->dd_fd = -1;
     dd->dd_md_fd = -1;
@@ -675,7 +675,7 @@ static int dd_meta_data_save_text(struct dump_dir *dd, const char *name, const c
     if (!dd->locked)
         error_msg_and_die("dump_dir is not opened"); /* bug */
 
-    if (!str_is_correct_filename(name))
+    if (!libreport_str_is_correct_filename(name))
         error_msg_and_die("Cannot save meta-data. '%s' is not a valid file name", name);
 
     int dd_md_fd = dd_get_meta_data_dir_fd(dd, DD_MD_GET_CREATE);
@@ -685,7 +685,7 @@ static int dd_meta_data_save_text(struct dump_dir *dd, const char *name, const c
         return dd_md_fd;
     }
 
-    char *tmp_name = xasprintf("~%s.tmp", name);
+    char *tmp_name = libreport_xasprintf("~%s.tmp", name);
 
     int ret = -1;
     if (!save_binary_file_at(dd_md_fd, tmp_name, data, strlen(data), dd->dd_uid, dd->dd_gid, dd->mode))
@@ -847,7 +847,7 @@ static int fdreopen(int dir_fd, DIR **d)
     if (fdreopen(dir_fd, &d) < 0) return -1; \
     while ((dent = readdir(d)) != NULL) \
     { \
-        if (dot_or_dotdot(dent->d_name)) continue; \
+        if (libreport_dot_or_dotdot(dent->d_name)) continue; \
         int fd = secure_openat_read(dirfd(d), dent->d_name); \
         if (fd >= 0) \
         {
@@ -935,7 +935,7 @@ static char* rm_trailing_slashes(const char *dir)
     unsigned len = strlen(dir);
     while (len != 0 && dir[len-1] == '/')
         len--;
-    return xstrndup(dir, len);
+    return libreport_xstrndup(dir, len);
 }
 
 static struct dump_dir *dd_do_open(struct dump_dir *dd, const char *dir, int flags)
@@ -1155,7 +1155,7 @@ struct dump_dir *dd_create_skeleton(const char *dir, uid_t uid, mode_t mode, int
         last_component++;
     else
         last_component = dir;
-    if (dot_or_dotdot(last_component))
+    if (libreport_dot_or_dotdot(last_component))
     {
         /* dd_create("."), dd_create(".."), dd_create("dir/."),
          * dd_create("dir/..") and similar are madness, refuse them.
@@ -1474,7 +1474,7 @@ static int delete_file_dir(int dir_fd, bool skip_lock_file)
     struct dirent *dent;
     while ((dent = readdir(d)) != NULL)
     {
-        if (dot_or_dotdot(dent->d_name))
+        if (libreport_dot_or_dotdot(dent->d_name))
             continue;
         if (skip_lock_file && strcmp(dent->d_name, ".lock") == 0)
         {
@@ -1517,7 +1517,7 @@ static int delete_file_dir(int dir_fd, bool skip_lock_file)
      */
 
     if (unlink_lock_file)
-        xunlinkat(dir_fd, ".lock", /*only files*/0);
+        libreport_xunlinkat(dir_fd, ".lock", /*only files*/0);
 
     closedir(d);
 
@@ -1687,7 +1687,7 @@ static char *load_text_from_file_descriptor(int fd, const char *path, int flags)
     {
         if (!(flags & DD_FAIL_QUIETLY_ENOENT))
             perror_msg("Can't open file '%s' for reading", path);
-        return (flags & DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE ? NULL : xstrdup(""));
+        return (flags & DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE ? NULL : libreport_xstrdup(""));
     }
 
     /* Why? Because half a million read syscalls of one byte each isn't fun.
@@ -1695,9 +1695,9 @@ static char *load_text_from_file_descriptor(int fd, const char *path, int flags)
      */
     FILE *fp = fdopen(fd, "r");
     if (!fp)
-        die_out_of_memory();
+        libreport_die_out_of_memory();
 
-    struct strbuf *buf_content = strbuf_new();
+    struct strbuf *buf_content = libreport_strbuf_new();
     int oneline = 0;
     int ch;
     while ((ch = fgetc(fp)) != EOF)
@@ -1709,7 +1709,7 @@ static char *load_text_from_file_descriptor(int fd, const char *path, int flags)
         if (ch == '\0')
             ch = ' ';
         if (isspace(ch) || ch >= ' ') /* used !iscntrl, but it failed on unicode */
-            strbuf_append_char(buf_content, ch);
+            libreport_strbuf_append_char(buf_content, ch);
     }
     fclose(fp); /* this also closes fd */
 
@@ -1731,10 +1731,10 @@ static char *load_text_from_file_descriptor(int fd, const char *path, int flags)
         /* oneline=1: "qwe\nrty" - two lines in fact */
         /* oneline>1: "qwe\nrty\uio" */
         if (oneline >= 1)
-            strbuf_append_char(buf_content, '\n');
+            libreport_strbuf_append_char(buf_content, '\n');
     }
 
-    return strbuf_free_nobuf(buf_content);
+    return libreport_strbuf_free_nobuf(buf_content);
 }
 
 static char *load_text_file_at(int dir_fd, const char *name, unsigned flags)
@@ -1753,7 +1753,7 @@ char *load_text_file(const char *path, unsigned flags)
 
 static void copy_file_from_chroot(struct dump_dir* dd, const char *name, const char *chroot_dir, const char *file_path)
 {
-    char *chrooted_name = concat_path_file(chroot_dir, file_path);
+    char *chrooted_name = libreport_concat_path_file(chroot_dir, file_path);
     char *data = load_text_file(chrooted_name,
                     DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE | DD_OPEN_FOLLOW);
     free(chrooted_name);
@@ -1807,7 +1807,7 @@ static bool save_binary_file_at(int dir_fd, const char *name, const char* data, 
     if (fd < 0)
         goto fail;
 
-    const unsigned r = full_write(fd, data, size);
+    const unsigned r = libreport_full_write(fd, data, size);
     close(fd);
     if (r != size)
         goto fail;
@@ -1831,7 +1831,7 @@ char* dd_load_text_ext(const struct dump_dir *dd, const char *name, unsigned fla
         if ((flags & DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE))
             return NULL;
 
-        xfunc_die();
+        libreport_xfunc_die();
     }
 
     /* Compat with old abrt dumps. Remove in abrt-2.1 */
@@ -1900,7 +1900,7 @@ int dd_get_env_variable(struct dump_dir *dd, const char *name, char **value)
     if (fd < 0)
         return -errno;
 
-    const int r  = get_env_variable_ext(fd, '\n', name, value);
+    const int r  = libreport_get_env_variable_ext(fd, '\n', name, value);
     close(fd);
     return r;
 }
@@ -2030,7 +2030,7 @@ static int _dd_get_next_file_dent(struct dump_dir *dd, struct dirent **dent)
 
     while ((*dent = readdir(dd->next_dir)) != NULL)
     {
-        if (is_regular_file_at(*dent, dd->dd_fd))
+        if (libreport_is_regular_file_at(*dent, dd->dd_fd))
             return 1;
     }
 
@@ -2131,9 +2131,9 @@ int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name)
         return 0;
 
     if (short_name)
-        *short_name = xstrdup(dent->d_name);
+        *short_name = libreport_xstrdup(dent->d_name);
     if (full_name)
-        *full_name = concat_path_file(dd->dd_dirname, dent->d_name);
+        *full_name = libreport_concat_path_file(dd->dd_dirname, dent->d_name);
     return 1;
 }
 
@@ -2220,7 +2220,7 @@ void delete_dump_dir(const char *dirname)
     }
 }
 
-bool uid_in_group(uid_t uid, gid_t gid)
+bool libreport_uid_in_group(uid_t uid, gid_t gid)
 {
     char **tmp;
     struct passwd *pwd = getpwuid(uid);
@@ -2299,7 +2299,7 @@ fsattributes:
 #if DUMP_DIR_OWNED_BY_USER > 0
     uid_test = uid == dd->dd_uid;
 #else
-    uid_test = uid_in_group(uid, dd->dd_gid);
+    uid_test = libreport_uid_in_group(uid, dd->dd_gid);
 #endif
     if (uid_test)
     {
@@ -2370,7 +2370,7 @@ int dd_copy_file(struct dump_dir *dd, const char *name, const char *source_path)
     log_debug("copying '%s' to '%s' at '%s'", source_path, name, dd->dd_dirname);
 
     unlinkat(dd->dd_fd, name, /*remove only files*/0);
-    off_t copied = copy_file_ext_at(source_path, dd->dd_fd, name, DEFAULT_DUMP_DIR_MODE,
+    off_t copied = libreport_copy_file_ext_at(source_path, dd->dd_fd, name, DEFAULT_DUMP_DIR_MODE,
             dd->dd_uid, dd->dd_gid, O_RDONLY, O_WRONLY | O_TRUNC | O_EXCL | O_CREAT);
 
     if (copied < 0)
@@ -2389,7 +2389,7 @@ int dd_copy_file_at(struct dump_dir *dd, const char *name, int src_dir_fd, const
     log_debug("copying file '%s' to element '%s' at '%s'", src_name, name, dd->dd_dirname);
 
     unlinkat(dd->dd_fd, name, /*remove only files*/0);
-    off_t copied = copy_file_ext_2at(src_dir_fd, src_name, dd->dd_fd, name,
+    off_t copied = libreport_copy_file_ext_2at(src_dir_fd, src_name, dd->dd_fd, name,
             DEFAULT_DUMP_DIR_MODE,
             dd->dd_uid, dd->dd_gid,
             O_RDONLY,
@@ -2411,7 +2411,7 @@ int dd_copy_file_unpack(struct dump_dir *dd, const char *name, const char *sourc
     log_debug("unpacking '%s' to '%s' at '%s'", source_path, name, dd->dd_dirname);
 
     unlinkat(dd->dd_fd, name, /*remove only files*/0);
-    off_t copied = decompress_file_ext_at(source_path, dd->dd_fd, name, DEFAULT_DUMP_DIR_MODE,
+    off_t copied = libreport_decompress_file_ext_at(source_path, dd->dd_fd, name, DEFAULT_DUMP_DIR_MODE,
             dd->dd_uid, dd->dd_gid, O_RDONLY, O_WRONLY | O_TRUNC | O_EXCL | O_CREAT);
 
     if (copied != 0)
@@ -2427,14 +2427,14 @@ int dd_copy_file_unpack(struct dump_dir *dd, const char *name, const char *sourc
 int dd_create_archive(struct dump_dir *dd, const char *archive_name,
         const_string_vector_const_ptr_t exclude_elements, int flags)
 {
-    if (suffixcmp(archive_name, ".tar.gz") != 0)
+    if (libreport_suffixcmp(archive_name, ".tar.gz") != 0)
         return -ENOSYS;
 
     int result = 0;
     pid_t child;
     TAR* tar = NULL;
     int pipe_from_parent_to_child[2];
-    xpipe(pipe_from_parent_to_child);
+    libreport_xpipe(pipe_from_parent_to_child);
     child = fork();
     if (child < 0)
     {
@@ -2447,7 +2447,7 @@ int dd_create_archive(struct dump_dir *dd, const char *archive_name,
     {
         /* child */
         close(pipe_from_parent_to_child[1]);
-        xmove_fd(pipe_from_parent_to_child[0], 0);
+        libreport_xmove_fd(pipe_from_parent_to_child[0], 0);
 
         int fd = open(archive_name, O_WRONLY | O_CREAT | O_EXCL, 0600);
         if (fd < 0)
@@ -2462,13 +2462,13 @@ int dd_create_archive(struct dump_dir *dd, const char *archive_name,
             exit(result);
         }
 
-        xmove_fd(fd, 1);
+        libreport_xmove_fd(fd, 1);
         execlp("gzip", "gzip", NULL);
         perror_msg_and_die("Can't execute '%s'", "gzip");
     }
     close(pipe_from_parent_to_child[0]);
 
-    /* If child died (say, in xopen), then parent might get SIGPIPE.
+    /* If child died (say, in libreport_xopen), then parent might get SIGPIPE.
      * We want to properly unlock dd, therefore we must not die on SIGPIPE:
      */
     sighandler_t old_handler = signal(SIGPIPE, SIG_IGN);
@@ -2487,7 +2487,7 @@ int dd_create_archive(struct dump_dir *dd, const char *archive_name,
     char *short_name, *full_name;
     while (dd_get_next_file(dd, &short_name, &full_name))
     {
-        if (!(exclude_elements && is_in_string_list(short_name, exclude_elements)))
+        if (!(exclude_elements && libreport_is_in_string_list(short_name, exclude_elements)))
         {
            if (tar_append_file(tar, full_name, short_name))
                result = -errno;
@@ -2519,7 +2519,7 @@ finito:
 
     /* ...and check that gzip child finished successfully */
     int status;
-    safe_waitpid(child, &status, 0);
+    libreport_safe_waitpid(child, &status, 0);
     if (status != 0)
     {
         result = -ECHILD;
@@ -2547,7 +2547,7 @@ off_t dd_copy_fd(struct dump_dir *dd, const char *name, int fd, int copy_flags, 
     log_debug("Saving data from file descriptor %d to '%s' at '%s'", fd, name, dd->dd_dirname);
 
     unlinkat(dd->dd_fd, name, /*remove only files*/0);
-    off_t read = copyfd_ext_at(fd, dd->dd_fd, name, DEFAULT_DUMP_DIR_MODE,
+    off_t read = libreport_copyfd_ext_at(fd, dd->dd_fd, name, DEFAULT_DUMP_DIR_MODE,
             dd->dd_uid, dd->dd_gid, O_WRONLY | O_CREAT | O_EXCL, copy_flags, maxsize);
 
     if (read < 0)

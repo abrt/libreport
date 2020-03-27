@@ -27,9 +27,9 @@ static char *get_user_config_file_path(const char *name, const char *suffix)
     char *conf;
 
     if (suffix != NULL)
-        s = xasprintf("%s.%s", name, suffix);
+        s = libreport_xasprintf("%s.%s", name, suffix);
 
-    conf = concat_path_file(get_user_conf_base_dir(), s != NULL ? s : name);
+    conf = libreport_concat_path_file(libreport_get_user_conf_base_dir(), s != NULL ? s : name);
     free(s);
 
     return conf;
@@ -40,46 +40,46 @@ static char *get_conf_path(const char *name)
     return get_user_config_file_path(name, "conf");
 }
 
-bool save_app_conf_file(const char* application_name, map_string_t *settings)
+bool libreport_save_app_conf_file(const char* application_name, map_string_t *settings)
 {
     char *app_conf_path = get_conf_path(application_name);
-    bool result = save_conf_file(app_conf_path, settings);
+    bool result = libreport_save_conf_file(app_conf_path, settings);
     free(app_conf_path);
 
     return result;
 }
 
-bool load_app_conf_file(const char *application_name, map_string_t *settings)
+bool libreport_load_app_conf_file(const char *application_name, map_string_t *settings)
 {
     char *app_conf_path = get_conf_path(application_name);
-    bool result = load_conf_file(app_conf_path, settings, false);
+    bool result = libreport_load_conf_file(app_conf_path, settings, false);
     free(app_conf_path);
 
     return result;
 }
 
-void set_app_user_setting(map_string_t *settings, const char *name, const char *value)
+void libreport_set_app_user_setting(map_string_t *settings, const char *name, const char *value)
 {
     if (value)
-        replace_map_string_item(settings, xstrdup(name), xstrdup(value));
+        replace_map_string_item(settings, libreport_xstrdup(name), libreport_xstrdup(value));
     else
         remove_map_string_item(settings, name);
 }
 
-const char *get_app_user_setting(map_string_t *settings, const char *name)
+const char *libreport_get_app_user_setting(map_string_t *settings, const char *name)
 {
     return get_map_string_item_or_NULL(settings, name);
 }
 
-bool save_user_settings()
+bool libreport_save_user_settings()
 {
     if (!conf_path || !user_settings)
         return true;
 
-    return save_conf_file(conf_path, user_settings);
+    return libreport_save_conf_file(conf_path, user_settings);
 }
 
-bool load_user_settings(const char *application_name)
+bool libreport_load_user_settings(const char *application_name)
 {
     if (conf_path)
         free(conf_path);
@@ -89,29 +89,29 @@ bool load_user_settings(const char *application_name)
         free_map_string(user_settings);
     user_settings = new_map_string();
 
-    return load_conf_file(conf_path, user_settings, false);
+    return libreport_load_conf_file(conf_path, user_settings, false);
 }
 
-void set_user_setting(const char *name, const char *value)
+void libreport_set_user_setting(const char *name, const char *value)
 {
     if (!user_settings)
         return;
-    set_app_user_setting(user_settings, name, value);
+    libreport_set_app_user_setting(user_settings, name, value);
 }
 
-const char *get_user_setting(const char *name)
+const char *libreport_get_user_setting(const char *name)
 {
     if (!user_settings)
         return NULL;
 
-    return get_app_user_setting(user_settings, name);
+    return libreport_get_app_user_setting(user_settings, name);
 }
 
-GList *load_words_from_file(const char* filename)
+GList *libreport_load_words_from_file(const char* filename)
 {
     GList *words_list = NULL;
     GList *file_list = NULL;
-    file_list = g_list_prepend(file_list, concat_path_file(CONF_DIR, filename));
+    file_list = g_list_prepend(file_list, libreport_concat_path_file(CONF_DIR, filename));
     file_list = g_list_prepend(file_list, get_user_config_file_path(filename, /*don't append suffix*/NULL));
     GList *file_list_cur = file_list;
 
@@ -124,7 +124,7 @@ GList *load_words_from_file(const char* filename)
             /* every line is one word
              */
             char *line;
-            while ((line = xmalloc_fgetline(fp)) != NULL)
+            while ((line = libreport_xmalloc_fgetline(fp)) != NULL)
             {
                 //FIXME: works only if the '#' is first char won't work for " #abcd#
                 if (line[0] != '#') // if it's not comment
@@ -135,7 +135,7 @@ GList *load_words_from_file(const char* filename)
             fclose(fp);
         }
         /* Don't disturb users with useless warnings about missing files. */
-        else if (errno != ENOENT || g_verbose >= 3)
+        else if (errno != ENOENT || libreport_g_verbose >= 3)
         {
             perror_msg("Can't open %s", cur_file);
         }
@@ -143,7 +143,7 @@ GList *load_words_from_file(const char* filename)
         file_list_cur = g_list_next(file_list_cur);
     }
 
-    list_free_with_free(file_list);
+    libreport_list_free_with_free(file_list);
 
     return words_list;
 }

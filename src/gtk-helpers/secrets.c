@@ -220,7 +220,7 @@ static bool is_dbus_remote_error(GError *error, const char *type)
 
 static struct secrets_object *secrets_object_new_from_proxy(GDBusProxy *proxy)
 {
-    struct secrets_object *obj = xzalloc(sizeof(*obj));
+    struct secrets_object *obj = libreport_xzalloc(sizeof(*obj));
     obj->proxy = proxy;
     obj->interface_name = g_dbus_proxy_get_interface_name(proxy);
 
@@ -1259,7 +1259,7 @@ static void load_event_options_from_item(GDBusProxy *session,
             if (option)
             {
                 free(option->eo_value);
-                option->eo_value = xstrdup(value);
+                option->eo_value = libreport_xstrdup(value);
                 log_info("loaded event option : '%s' => '%s'", name, option->eo_value);
             }
         }
@@ -1333,7 +1333,7 @@ static void load_event_options_from_item(GDBusProxy *session,
             }
             nelems -= sz;
 
-            char *name = xstrdup(data);
+            char *name = libreport_xstrdup(data);
             char *value = strchr(name, SECRETS_OPTION_VALUE_DELIMITER);
             if (!value)
             {
@@ -1347,7 +1347,7 @@ static void load_event_options_from_item(GDBusProxy *session,
             if (option)
             {
                 free(option->eo_value);
-                option->eo_value = xstrdup(value);
+                option->eo_value = libreport_xstrdup(value);
                 log_info("loaded event option : '%s' => '%s'", name, option->eo_value);
             }
 
@@ -1517,7 +1517,7 @@ void libreport_load_single_event_config_data_from_user_storage(event_config_t *c
                 /*key_destroy_func:*/ g_free,
                 /*value_destroy_func:*/ NULL);
 
-    g_hash_table_insert(tmp, xstrdup(ec_get_name(config)), config);
+    g_hash_table_insert(tmp, libreport_xstrdup(ec_get_name(config)), config);
 
     libreport_load_event_config_data_from_user_storage(tmp);
 

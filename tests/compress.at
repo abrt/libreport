@@ -49,7 +49,7 @@ TS_MAIN
 
     for (size_t i = 0; i < PLAIN_CHUNKS; ++i)
     {
-        const int wrote = safe_write(pipes[1], BASE64, sizeof(BASE64) - 1);
+        const int wrote = libreport_safe_write(pipes[1], BASE64, sizeof(BASE64) - 1);
         if (wrote != sizeof(BASE64) - 1)
             err(EXIT_FAILURE, "Failed to write to temp file");
     }
@@ -79,7 +79,7 @@ TS_MAIN
     if (fdi < 0)
         err(EXIT_FAILURE, "Failed to open compressed file %s", compressedfilename);
 
-    TS_ASSERT_FUNCTION(decompress_fd(fdi, fdo));
+    TS_ASSERT_FUNCTION(libreport_decompress_fd(fdi, fdo));
     close(fdi);
 
     if (0 > lseek(fdo, 0L, SEEK_SET))
@@ -88,7 +88,7 @@ TS_MAIN
     int c = 0;
     size_t sz = 0;
     char buf[sizeof(BASE64)];
-    while ((r = safe_read(fdo, buf, sizeof(BASE64) - 1)) != EOF && r != 0)
+    while ((r = libreport_safe_read(fdo, buf, sizeof(BASE64) - 1)) != EOF && r != 0)
     {
         c++;
         sz += r;

@@ -260,7 +260,7 @@ static PyMethodDef p_dump_dir_methods[] = {
     { "load_text"  , p_dd_load_text, METH_VARARGS, NULL },
     { "save_text"  , p_dd_save_text, METH_VARARGS, NULL },
     { "save_binary", p_dd_save_binary, METH_VARARGS, NULL },
-    { "copy_file"  , p_dd_copy_file, METH_VARARGS, NULL },
+    { "libreport_copy_file", p_dd_copy_file, METH_VARARGS, NULL },
     { "delete_item", p_dd_delete_item, METH_VARARGS, NULL },
     { NULL }
 };

@@ -35,12 +35,12 @@ int libreport_add_reported_to_data(char **reported_to, const char *line)
             p++;
         }
         if (p != *reported_to && p[-1] != '\n')
-            *reported_to = append_to_malloced_string(*reported_to, "\n");
-        *reported_to = append_to_malloced_string(*reported_to, line);
-        *reported_to = append_to_malloced_string(*reported_to, "\n");
+            *reported_to = libreport_append_to_malloced_string(*reported_to, "\n");
+        *reported_to = libreport_append_to_malloced_string(*reported_to, line);
+        *reported_to = libreport_append_to_malloced_string(*reported_to, "\n");
     }
     else
-        *reported_to = xasprintf("%s\n", line);
+        *reported_to = libreport_xasprintf("%s\n", line);
 
     return 1;
 }
@@ -57,7 +57,7 @@ int libreport_add_reported_to_entry_data(char **reported_to, report_result_t *re
 
     const int r = libreport_add_reported_to_data(reported_to, buf->buf);
 
-    strbuf_free(buf);
+    libreport_strbuf_free(buf);
 
     return r;
 }

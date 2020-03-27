@@ -1,6 +1,6 @@
 # -*- Autotest -*-
 
-AT_BANNER([make_description])
+AT_BANNER([libreport_make_description])
 
 ## -------------- ##
 ## flag_show_urls ##
@@ -13,11 +13,11 @@ AT_TESTFUN([flag_show_urls],
 
 int main(int argc, char **argv)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     problem_data_t *pd = problem_data_new();
 
-    char *description = make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE, MAKEDESC_SHOW_URLS);
+    char *description = libreport_make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE, MAKEDESC_SHOW_URLS);
 
     assert(description != NULL || !"Returns NULL for empty problem data");
     assert(description[0] == '\0' || !"Returns non-empty description for empty problem data");
@@ -26,8 +26,8 @@ int main(int argc, char **argv)
 
     problem_data_add_text_noteditable(pd, FILENAME_REPORTED_TO, "Bugzilla: URL=https://bugzilla.redhat.com/1000000\n");
 
-    description = make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE, MAKEDESC_SHOW_URLS);
-    char *expected = xasprintf("%s: %*s%s\n",
+    description = libreport_make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE, MAKEDESC_SHOW_URLS);
+    char *expected = libreport_xasprintf("%s: %*s%s\n",
             "Reported", 14 - strlen("Reported"), "", "https://bugzilla.redhat.com/1000000");
 
     if (strcmp(expected, description) != 0)
@@ -49,8 +49,8 @@ int main(int argc, char **argv)
             "RHTSupport: TIME=12345678 URL=https://access.redhat.com/home MSG=The world's best IT support\n"
             "ABRT Server: URL=https://bug-report.itos.redhat.com\n");
 
-    description = make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE, MAKEDESC_SHOW_URLS);
-    expected = xasprintf(
+    description = libreport_make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE, MAKEDESC_SHOW_URLS);
+    expected = libreport_xasprintf(
            /*0123456789ABCDEF*/
             "Reported:       https://bugzilla.redhat.com/1000000\n"
             "                https://access.redhat.com/home\n"
@@ -70,7 +70,7 @@ int main(int argc, char **argv)
 
     problem_data_add_text_noteditable(pd, FILENAME_REPORTED_TO, "ABRT Server: BTHASH=81680083BIGBOOBS\n");
 
-    description = make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE, MAKEDESC_SHOW_URLS);
+    description = libreport_make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE, MAKEDESC_SHOW_URLS);
 
     assert(description != NULL || !"Returns NULL for non empty problem data");
     assert(description[0] == '\0' || !"Returns non-empty description for problem data without any URL");
@@ -93,9 +93,9 @@ int main(int argc, char **argv)
             "RHTSupport: TIME=12345678 URL=https://access.redhat.com/home MSG=The world's best IT support\n"
             "ABRT Server: URL=https://bug-report.itos.redhat.com\n");
 
-    description = make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE, MAKEDESC_SHOW_ONLY_LIST | MAKEDESC_SHOW_URLS);
+    description = libreport_make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE, MAKEDESC_SHOW_ONLY_LIST | MAKEDESC_SHOW_URLS);
 
-    expected = xasprintf(
+    expected = libreport_xasprintf(
             "%s: %*s%s\n"
             "%s: %*s%s\n"
             "%s: %*s%s\n"
@@ -119,9 +119,9 @@ int main(int argc, char **argv)
     const char *const backtrace = "Extremely long backtrace which does not make sense";
     problem_data_add(pd, FILENAME_BACKTRACE, backtrace,  CD_FLAG_TXT | CD_FLAG_ISNOTEDITABLE);
 
-    description = make_description(pd, /*skipped names*/NULL, strlen(backtrace) - 1, MAKEDESC_SHOW_FILES | MAKEDESC_SHOW_URLS);
+    description = libreport_make_description(pd, /*skipped names*/NULL, strlen(backtrace) - 1, MAKEDESC_SHOW_FILES | MAKEDESC_SHOW_URLS);
 
-    expected = xasprintf(
+    expected = libreport_xasprintf(
             "%s: %*s%s\n"
             "%s: %*s%s\n"
             "%s: %*s%s\n"
@@ -159,9 +159,9 @@ int main(int argc, char **argv)
     problem_data_add(pd, FILENAME_COUNT, "0", list_flags);
     problem_data_add(pd, FILENAME_BACKTRACE, backtrace,  CD_FLAG_TXT | CD_FLAG_ISNOTEDITABLE);
 
-    description = make_description(pd, /*skipped names*/NULL, strlen(backtrace) - 1, MAKEDESC_SHOW_FILES);
+    description = libreport_make_description(pd, /*skipped names*/NULL, strlen(backtrace) - 1, MAKEDESC_SHOW_FILES);
 
-    expected = xasprintf(
+    expected = libreport_xasprintf(
             "%s: %*s%s\n"
             "%s: %*s%s\n"
             "%s: %*s%s\n"
@@ -200,16 +200,16 @@ AT_TESTFUN([not_reportable],
 #include <assert.h>
 int main(int argc, char **argv)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     problem_data_t *pd = problem_data_new();
 
     problem_data_add_text_noteditable(pd, FILENAME_NOT_REPORTABLE, "not-reportable");
 
-    char *description = make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE,
+    char *description = libreport_make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE,
                                          MAKEDESC_SHOW_URLS);
 
-    char *expected = xasprintf("%s: %*s%s\n",
+    char *expected = libreport_xasprintf("%s: %*s%s\n",
             "Reported", 14 - strlen("Reported"), "", "cannot be reported");
 
     if (strstr(description, expected) == NULL)

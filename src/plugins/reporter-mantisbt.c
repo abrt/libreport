@@ -35,8 +35,8 @@ parse_osinfo_for_mantisbt(map_string_t *osinfo, char** project, char** version)
 
     if (name && version_id)
     {
-        *project = xstrdup(name);
-        *version = xstrdup(version_id);
+        *project = libreport_xstrdup(name);
+        *version = libreport_xstrdup(version_id);
         return;
     }
 
@@ -51,7 +51,7 @@ ask_mantisbt_login(const char *message)
     char *login = libreport_ask(message);
     if (login == NULL || login[0] == '\0')
     {
-        set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
+        libreport_set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
         error_msg_and_die(_("Can't continue without login"));
     }
 
@@ -64,7 +64,7 @@ ask_mantisbt_password(const char *message)
     char *password = libreport_ask_password(message);
     if (password == NULL || password[0] == '\0')
     {
-        set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
+        libreport_set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
         error_msg_and_die(_("Can't continue without password"));
     }
 
@@ -77,11 +77,11 @@ ask_mantisbt_credentials(mantisbt_settings_t *settings, const char *pre_message)
     free(settings->m_login);
     free(settings->m_password);
 
-    char *question = xasprintf("%s %s", pre_message, _("Please enter your MantisBT login:"));
+    char *question = libreport_xasprintf("%s %s", pre_message, _("Please enter your MantisBT login:"));
     settings->m_login = ask_mantisbt_login(question);
     free(question);
 
-    question = xasprintf("%s %s '%s':", pre_message, _("Please enter the password for"), settings->m_login);
+    question = libreport_xasprintf("%s %s '%s':", pre_message, _("Please enter the password for"), settings->m_login);
     settings->m_password = ask_mantisbt_password(question);
     free(question);
 
@@ -102,7 +102,7 @@ verify_credentials(mantisbt_settings_t *settings)
         mantisbt_result_t *result = mantisbt_soap_call(settings, req);
         soap_request_free(req);
 
-        if (g_verbose > 2)
+        if (libreport_g_verbose > 2)
         {
             GList *ids = response_get_main_ids_list(result->mr_body);
             if (ids != NULL)
@@ -126,10 +126,10 @@ set_settings(mantisbt_settings_t *m, map_string_t *settings, struct dump_dir *dd
     const char *environ;
 
     environ = getenv("Mantisbt_Login");
-    m->m_login = xstrdup(environ ? environ : get_map_string_item_or_empty(settings, "Login"));
+    m->m_login = libreport_xstrdup(environ ? environ : get_map_string_item_or_empty(settings, "Login"));
 
     environ = getenv("Mantisbt_Password");
-    m->m_password = xstrdup(environ ? environ : get_map_string_item_or_empty(settings, "Password"));
+    m->m_password = libreport_xstrdup(environ ? environ : get_map_string_item_or_empty(settings, "Password"));
 
     environ = getenv("Mantisbt_MantisbtURL");
     m->m_mantisbt_url = environ ? environ : get_map_string_item_or_empty(settings, "MantisbtURL");
@@ -142,24 +142,24 @@ set_settings(mantisbt_settings_t *m, map_string_t *settings, struct dump_dir *dd
         if (last_slash && last_slash[1] == '\0')
             *last_slash = '\0';
     }
-    m->m_mantisbt_soap_url = concat_path_file(m->m_mantisbt_url, "api/soap/mantisconnect.php");
+    m->m_mantisbt_soap_url = libreport_concat_path_file(m->m_mantisbt_url, "api/soap/mantisconnect.php");
 
     environ = getenv("Mantisbt_Project");
     if (environ)
     {
-        m->m_project = xstrdup(environ);
+        m->m_project = libreport_xstrdup(environ);
         environ = getenv("Mantisbt_ProjectVersion");
         if (environ)
-            m->m_project_version = xstrdup(environ);
+            m->m_project_version = libreport_xstrdup(environ);
     }
     else
     {
         const char *option = get_map_string_item_or_NULL(settings, "Project");
         if (option)
-            m->m_project = xstrdup(option);
+            m->m_project = libreport_xstrdup(option);
         option = get_map_string_item_or_NULL(settings, "ProjectVersion");
         if (option)
-            m->m_project_version = xstrdup(option);
+            m->m_project_version = libreport_xstrdup(option);
     }
 
     if (!m->m_project || !*m->m_project) /* if not overridden or empty... */
@@ -172,7 +172,7 @@ set_settings(mantisbt_settings_t *m, map_string_t *settings, struct dump_dir *dd
             map_string_t *osinfo = new_map_string();
 
             char *os_info_data = dd_load_text(dd, FILENAME_OS_INFO);
-            parse_osinfo(os_info_data, osinfo);
+            libreport_parse_osinfo(os_info_data, osinfo);
             free(os_info_data);
 
             parse_osinfo_for_mantisbt(osinfo, &m->m_project, &m->m_project_version);
@@ -181,7 +181,7 @@ set_settings(mantisbt_settings_t *m, map_string_t *settings, struct dump_dir *dd
     }
 
     environ = getenv("Mantisbt_SSLVerify");
-    m->m_ssl_verify = string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "SSLVerify"));
+    m->m_ssl_verify = libreport_string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "SSLVerify"));
 
     environ = getenv("Mantisbt_DontMatchComponents");
     m->m_DontMatchComponents = environ ? environ : get_map_string_item_or_empty(settings, "DontMatchComponents");
@@ -191,7 +191,7 @@ set_settings(mantisbt_settings_t *m, map_string_t *settings, struct dump_dir *dd
     if (!m->m_create_private)
     {
         environ = getenv("Mantisbt_CreatePrivate");
-        m->m_create_private = string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "CreatePrivate"));
+        m->m_create_private = libreport_string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "CreatePrivate"));
     }
     log_notice("create private MantisBT ticket: '%s'", m->m_create_private ? "YES": "NO");
 }
@@ -279,7 +279,7 @@ int main(int argc, char **argv)
     mantisbt_settings_t mbt_settings = { 0 };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_STRING(   'd', NULL, &dump_dir_name , "DIR"    , _("Problem directory")),
         OPT_LIST(     'c', NULL, &conf_file     , "FILE"   , _("Configuration file (may be given many times)")),
         OPT_STRING(   'F', NULL, &fmt_file      , "FILE"   , _("Formatting file for initial comment")),
@@ -293,10 +293,10 @@ int main(int argc, char **argv)
         OPT_END()
     };
 
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned opts = libreport_parse_opts(argc, argv, program_options, program_usage_string);
     argv += optind;
 
-    export_abrt_envvars(0);
+    libreport_export_abrt_envvars(0);
 
     map_string_t *settings = new_map_string();
 
@@ -305,14 +305,14 @@ int main(int argc, char **argv)
         if (!conf_file)
         {
             conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/mantisbt.conf");
-            local_conf = xasprintf("%s"USER_HOME_CONFIG_PATH"/mantisbt.conf", getenv("HOME"));
+            local_conf = libreport_xasprintf("%s"USER_HOME_CONFIG_PATH"/mantisbt.conf", getenv("HOME"));
             conf_file = g_list_append(conf_file, local_conf);
         }
         while (conf_file)
         {
             char *fn = (char *)conf_file->data;
             log_notice("Loading settings from '%s'", fn);
-            load_conf_file(fn, settings, /*skip key w/o values:*/ false);
+            libreport_load_conf_file(fn, settings, /*skip key w/o values:*/ false);
             log_debug("Loaded '%s'", fn);
             conf_file = g_list_delete_link(conf_file, conf_file);
         }
@@ -362,7 +362,7 @@ int main(int argc, char **argv)
     if (opts & OPT_t)
     {
         if (!argv[0])
-            show_usage_and_die(program_usage_string, program_options);
+            libreport_show_usage_and_die(program_usage_string, program_options);
 
         if (!ticket_no)
         {
@@ -371,7 +371,7 @@ int main(int argc, char **argv)
             char *url;
 
             if (!dd)
-                xfunc_die();
+                libreport_xfunc_die();
 
             reported_to = libreport_find_in_reported_to(dd, "MantisBT");
 
@@ -382,7 +382,7 @@ int main(int argc, char **argv)
 
             url = report_result_get_url(reported_to);
 
-            if (prefixcmp(url, mbt_settings.m_mantisbt_url) != 0)
+            if (libreport_prefixcmp(url, mbt_settings.m_mantisbt_url) != 0)
                 error_msg_and_die(_("This problem has been reported to MantisBT '%s' which differs from the configured MantisBT '%s'."), url, mbt_settings.m_mantisbt_url);
 
             ticket_no = strrchr(url, '=');
@@ -390,7 +390,7 @@ int main(int argc, char **argv)
                 error_msg_and_die(_("Malformed url to MantisBT '%s'."), url);
 
             /* won't ever call free on it - it simplifies the code a lot */
-            ticket_no = xstrdup(ticket_no + 1);
+            ticket_no = libreport_xstrdup(ticket_no + 1);
             log_warning(_("Using MantisBT ID '%s'"), ticket_no);
         }
 
@@ -415,7 +415,7 @@ int main(int argc, char **argv)
         g_autofree char *url = NULL;
 
         if (!dd)
-            xfunc_die();
+            libreport_xfunc_die();
 
         reported_to = libreport_find_in_reported_to(dd, "MantisBT");
 
@@ -429,7 +429,7 @@ int main(int argc, char **argv)
         {
             g_autofree char *msg = NULL;
 
-            msg = xasprintf(_("This problem was already reported to MantisBT (see '%s')."
+            msg = libreport_xasprintf(_("This problem was already reported to MantisBT (see '%s')."
                             " Do you still want to create a new issue?"),
                             url);
 
@@ -440,7 +440,7 @@ int main(int argc, char **argv)
 
     problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
     if (!problem_data)
-        xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
+        libreport_xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
     const char *category = problem_data_get_content_or_die(problem_data, FILENAME_COMPONENT);
     const char *duphash   = problem_data_get_content_or_die(problem_data, FILENAME_DUPHASH);
@@ -487,7 +487,7 @@ int main(int argc, char **argv)
         char *cmd = strtok(remote_result, " \n");
         char *id = strtok(NULL, " \n");
 
-        if (!prefixcmp(cmd, "DUPLICATE"))
+        if (!libreport_prefixcmp(cmd, "DUPLICATE"))
         {
             errno = 0;
             char *e;
@@ -511,7 +511,7 @@ int main(int argc, char **argv)
             /* Figure out whether we want to match category
              * when doing dup search.
              */
-            const char *category_substitute = is_in_comma_separated_list(category, mbt_settings.m_DontMatchComponents) ? NULL : category;
+            const char *category_substitute = libreport_is_in_comma_separated_list(category, mbt_settings.m_DontMatchComponents) ? NULL : category;
 
             /* We don't do dup detection across versions (see below why),
              * but we do add a note if cross-version potential dup exists.
@@ -591,7 +591,7 @@ int main(int argc, char **argv)
                 return EXIT_FAILURE;
 
             log_warning(_("Adding attachments to issue %i"), new_id);
-            char *new_id_str = xasprintf("%u", new_id);
+            char *new_id_str = libreport_xasprintf("%u", new_id);
 
             for (GList *a = problem_report_get_attachments(pr); a != NULL; a = g_list_next(a))
             {
@@ -609,7 +609,7 @@ int main(int argc, char **argv)
             problem_report_free(pr);
             ii = mantisbt_issue_info_new();
             ii->mii_id = new_id;
-            ii->mii_status = xstrdup("new");
+            ii->mii_status = libreport_xstrdup("new");
 
             goto finish;
         }
@@ -664,10 +664,10 @@ int main(int argc, char **argv)
             const char *rating_str = problem_data_get_content_or_NULL(problem_data, FILENAME_RATING);
             /* python doesn't have rating file */
             if (rating_str)
-                rating = xatou(rating_str);
+                rating = libreport_xatou(rating_str);
             if (bt && rating > ii->mii_best_bt_rating)
             {
-                char *bug_id_str = xasprintf("%i", ii->mii_id);
+                char *bug_id_str = libreport_xasprintf("%i", ii->mii_id);
 
                 log_warning(_("Attaching better backtrace"));
 
@@ -676,9 +676,9 @@ int main(int argc, char **argv)
                 for (int i = 0;; ++i)
                 {
                     if (i == 0)
-                        name = xasprintf("%s", FILENAME_BACKTRACE);
+                        name = libreport_xasprintf("%s", FILENAME_BACKTRACE);
                     else
-                        name = xasprintf("%s%d", FILENAME_BACKTRACE, i);
+                        name = libreport_xasprintf("%s%d", FILENAME_BACKTRACE, i);
 
                     if (g_list_find_custom(ii->mii_attachments, name, (GCompareFunc) strcmp) == NULL)
                         break;
@@ -713,7 +713,7 @@ finish:
         char *url;
 
         result = report_result_new_with_label_from_env("MantisBT");
-        url = xasprintf("%s/view.php?id=%u", mbt_settings.m_mantisbt_url, ii->mii_id);
+        url = libreport_xasprintf("%s/view.php?id=%u", mbt_settings.m_mantisbt_url, ii->mii_id);
 
         report_result_set_url(result, url);
 

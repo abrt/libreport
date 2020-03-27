@@ -45,7 +45,7 @@ struct bug_info *new_bug_info()
 {
     func_entry();
 
-    struct bug_info *bi = xzalloc(sizeof(struct bug_info));
+    struct bug_info *bi = libreport_xzalloc(sizeof(struct bug_info));
     bi->bi_dup_id = -1;
 
     return bi;
@@ -63,7 +63,7 @@ void free_bug_info(struct bug_info *bi)
     free(bi->bi_reporter);
     free(bi->bi_product);
 
-    list_free_with_free(bi->bi_cc_list);
+    libreport_list_free_with_free(bi->bi_cc_list);
 
     free(bi);
 }
@@ -95,7 +95,7 @@ static GList *rhbz_comments(struct abrt_xmlrpc *ax, int bug_id)
     xmlrpc_value *bugs_memb = rhbz_get_member("bugs", xml_response);
 
     /* Get hash value assigned to bug_id key */
-    char *item = xasprintf("%d", bug_id);
+    char *item = libreport_xasprintf("%d", bug_id);
     xmlrpc_value *item_memb = rhbz_get_member(item, bugs_memb);
     free(item);
 
@@ -367,7 +367,7 @@ void *rhbz_bug_read_item(const char *memb, xmlrpc_value *xml, int flags)
 
     if (IS_READ_INT(flags))
     {
-        int *integer = xmalloc(sizeof(int));
+        int *integer = libreport_xmalloc(sizeof(int));
         xmlrpc_read_int(&env, member, integer);
         xmlrpc_DECREF(member);
         if (env.fault_occurred)
@@ -518,10 +518,10 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
     if (!duphash) duphash    = problem_data_get_content_or_NULL(problem_data,
                                                                 "global_uuid");
 
-    char *summary = shorten_string_to_length(bzsummary, MAX_SUMMARY_LENGTH);
+    char *summary = libreport_shorten_string_to_length(bzsummary, MAX_SUMMARY_LENGTH);
 
-    struct strbuf *status_whiteboard = strbuf_new();
-    strbuf_append_strf(status_whiteboard, "abrt_hash:%s;", duphash);
+    struct strbuf *status_whiteboard = libreport_strbuf_new();
+    libreport_strbuf_append_strf(status_whiteboard, "abrt_hash:%s;", duphash);
 
     {   /* Add fields from /etc/os-release to Whiteboard for simple metrics. */
         map_string_t *osinfo = new_map_string();
@@ -543,7 +543,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
                 /* semi-colon (;) is the delimiter because /etc/os-release *_ID
                  * options does not permit the ';' character in values
                  */
-                strbuf_append_strf(status_whiteboard, "%s=%s;", *iter, v);
+                libreport_strbuf_append_strf(status_whiteboard, "%s=%s;", *iter, v);
             }
         }
 
@@ -590,7 +590,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
     xmlrpc_DECREF(params);
     xmlrpc_env_clean(&env);
 
-    strbuf_free(status_whiteboard);
+    libreport_strbuf_free(status_whiteboard);
     free(summary);
 
     if (!result)
@@ -618,7 +618,7 @@ int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *bug_id,
         return 0;
     }
 
-    char *fn = xasprintf("File: %s", filename);
+    char *fn = libreport_xasprintf("File: %s", filename);
     xmlrpc_value* result;
     int minor_update = !!IS_MINOR_UPDATE(flags);
 
@@ -682,8 +682,8 @@ int rhbz_attach_fd(struct abrt_xmlrpc *ax, const char *bug_id,
 
 //TODO: need to have a method of attaching huge files (IOW: 1Gb read isn't good).
 
-    char *data = xmalloc(size);
-    ssize_t r = full_read(fd, data, size);
+    char *data = libreport_xmalloc(size);
+    ssize_t r = libreport_full_read(fd, data, size);
     if (r < 0)
     {
         free(data);
@@ -848,20 +848,20 @@ xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax,
                         const char *component,
                         const char *duphash)
 {
-    struct strbuf *query = strbuf_new();
+    struct strbuf *query = libreport_strbuf_new();
 
-    strbuf_append_strf(query, "ALL whiteboard:\"%s\"", duphash);
+    libreport_strbuf_append_strf(query, "ALL whiteboard:\"%s\"", duphash);
 
     if (product)
-        strbuf_append_strf(query, " product:\"%s\"", product);
+        libreport_strbuf_append_strf(query, " product:\"%s\"", product);
 
     if (version)
-        strbuf_append_strf(query, " version:\"%s\"", version);
+        libreport_strbuf_append_strf(query, " version:\"%s\"", version);
 
     if (component)
-        strbuf_append_strf(query, " component:\"%s\"", component);
+        libreport_strbuf_append_strf(query, " component:\"%s\"", component);
 
-    char *s = strbuf_free_nobuf(query);
+    char *s = libreport_strbuf_free_nobuf(query);
     log_debug("search for '%s'", s);
     xmlrpc_value *search = abrt_xmlrpc_call(ax, "Bug.search", "{s:s,s:(s)}", "quicksearch", s, "include_fields", "id");
 

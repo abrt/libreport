@@ -133,7 +133,7 @@ int main (void)
     }
 
     int status;
-    if (safe_waitpid(pid, &status, 0) < 0) {
+    if (libreport_safe_waitpid(pid, &status, 0) < 0) {
         perror_msg_and_die("waitpid failed.");
     }
 

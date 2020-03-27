@@ -21,7 +21,7 @@
 
 #define LIBREPORT_ISO_DATE_STRING_FORMAT "%Y-%m-%d-%H:%M:%S"
 
-char *iso_date_string(const time_t *pt)
+char *libreport_iso_date_string(const time_t *pt)
 {
     static char buf[sizeof(LIBREPORT_ISO_DATE_STRING_SAMPLE) + 4];
 
@@ -40,7 +40,7 @@ char *iso_date_string(const time_t *pt)
     return buf;
 }
 
-int iso_date_string_parse(const char *date, time_t *pt)
+int libreport_iso_date_string_parse(const char *date, time_t *pt)
 {
     struct tm local;
     const char *r = strptime(date, LIBREPORT_ISO_DATE_STRING_FORMAT, &local);

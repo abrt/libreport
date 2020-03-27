@@ -24,12 +24,12 @@ TS_MAIN
     TS_ASSERT_PTR_IS_NULL(ect->ec_restricted_access_option);
     TS_ASSERT_FALSE(ec_restricted_access_enabled(ect));
 
-    ect->ec_restricted_access_option = xstrdup("PrivateTicket");
+    ect->ec_restricted_access_option = libreport_xstrdup("PrivateTicket");
 
     TS_ASSERT_FALSE(ec_restricted_access_enabled(ect));
 
     event_option_t *eot = new_event_option();
-    eot->eo_name = xstrdup("PrivateTicket");
+    eot->eo_name = libreport_xstrdup("PrivateTicket");
     eot->eo_value = NULL;
 
     ect->options = g_list_prepend(ect->options, eot);
@@ -37,12 +37,12 @@ TS_MAIN
     TS_ASSERT_FALSE(ec_restricted_access_enabled(ect));
 
     eot->eo_type = OPTION_TYPE_BOOL;
-    eot->eo_value = xstrdup("no");
+    eot->eo_value = libreport_xstrdup("no");
 
     TS_ASSERT_FALSE(ec_restricted_access_enabled(ect));
 
     free(eot->eo_value);
-    eot->eo_value = xstrdup("yes");
+    eot->eo_value = libreport_xstrdup("yes");
 
     TS_ASSERT_TRUE(ec_restricted_access_enabled(ect));
 
@@ -70,10 +70,10 @@ AT_TESTFUN([get_options_with_err_msg], [[
 event_option_t* create_new_option(const char *n, const char *v, option_type_t t, int ae)
 {
     event_option_t *op = new_event_option();
-    op->eo_name = xstrdup(n);
+    op->eo_name = libreport_xstrdup(n);
     op->eo_value = NULL;
     if(v != NULL)
-        op->eo_value = xstrdup(v);
+        op->eo_value = libreport_xstrdup(v);
 
     op->eo_type = t;
     op->eo_allow_empty = ae;
@@ -100,7 +100,7 @@ TS_MAIN
         evnt->options = g_list_append(evnt->options, opt_login);
         evnt->options = g_list_append(evnt->options, opt_passwd);
         evnt->options = g_list_append(evnt->options, opt_url);
-        g_hash_table_insert(g_event_config_list, xstrdup("Bugster0"), evnt);
+        g_hash_table_insert(g_event_config_list, libreport_xstrdup("Bugster0"), evnt);
 
         errors = get_options_with_err_msg("Bugster0");
         e_op = (invalid_option_t *)errors->data;
@@ -125,7 +125,7 @@ TS_MAIN
         evnt->options = g_list_append(evnt->options, opt_passwd);
         evnt->options = g_list_append(evnt->options, opt_login);
         evnt->options = g_list_append(evnt->options, opt_url);
-        g_hash_table_insert(g_event_config_list, xstrdup("Bugster1"), evnt);
+        g_hash_table_insert(g_event_config_list, libreport_xstrdup("Bugster1"), evnt);
 
         errors = get_options_with_err_msg("Bugster1");
         e_op = (invalid_option_t *)errors->data;
@@ -150,7 +150,7 @@ TS_MAIN
         evnt->options = g_list_append(evnt->options, opt_login);
         evnt->options = g_list_append(evnt->options, opt_passwd);
         evnt->options = g_list_append(evnt->options, opt_url);
-        g_hash_table_insert(g_event_config_list, xstrdup("Bugster2"), evnt);
+        g_hash_table_insert(g_event_config_list, libreport_xstrdup("Bugster2"), evnt);
 
         errors = get_options_with_err_msg("Bugster2");
 

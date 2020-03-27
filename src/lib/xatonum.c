@@ -22,7 +22,7 @@
  */
 #include "internal_libreport.h"
 
-int try_atou(const char *numstr, unsigned *value)
+int libreport_try_atou(const char *numstr, unsigned *value)
 {
     int ret = 0;
     unsigned long r;
@@ -62,23 +62,23 @@ finito:
     return ret;
 }
 
-unsigned xatou(const char *numstr)
+unsigned libreport_xatou(const char *numstr)
 {
     unsigned value = (unsigned)-1;
 
-    if (try_atou(numstr, &value) != 0)
+    if (libreport_try_atou(numstr, &value) != 0)
         error_msg_and_die("expected number in range <0, %d>: '%s'", UINT_MAX, numstr);
 
     return value;
 }
 
-int try_atoi_positive(const char *numstr, int *value)
+int libreport_try_atoi_positive(const char *numstr, int *value)
 {
     unsigned tmp;
 
     g_return_val_if_fail (NULL != numstr, -EINVAL);
 
-    int r = try_atou(numstr, &tmp);
+    int r = libreport_try_atou(numstr, &tmp);
     if (r != 0)
         return r;
 
@@ -89,25 +89,25 @@ int try_atoi_positive(const char *numstr, int *value)
     return 0;
 }
 
-int xatoi_positive(const char *numstr)
+int libreport_xatoi_positive(const char *numstr)
 {
     int value = INT_MIN;
 
-    if (try_atoi_positive(numstr, &value) != 0)
+    if (libreport_try_atoi_positive(numstr, &value) != 0)
         error_msg_and_die("expected number in range <0, %d>: '%s'", INT_MAX, numstr);
 
     return  value;
 }
 
-int try_atoi(const char *numstr, int *value)
+int libreport_try_atoi(const char *numstr, int *value)
 {
     g_return_val_if_fail (NULL != numstr, -EINVAL);
 
     if (*numstr != '-')
-        return try_atoi_positive(numstr, value);
+        return libreport_try_atoi_positive(numstr, value);
 
     unsigned tmp;
-    int r = try_atou(numstr + 1, &tmp);
+    int r = libreport_try_atou(numstr + 1, &tmp);
     if (r < 0)
         return r;
 
@@ -118,11 +118,11 @@ int try_atoi(const char *numstr, int *value)
     return 0;
 }
 
-int xatoi(const char *numstr)
+int libreport_xatoi(const char *numstr)
 {
     int value = INT_MIN;
 
-    if (try_atoi(numstr, &value))
+    if (libreport_try_atoi(numstr, &value))
         error_msg_and_die("expected number in range <%d, %d>: '%s'", INT_MIN, INT_MAX, numstr);
 
     return (int)value;

@@ -28,7 +28,7 @@ static uid_t parse_uid(const char *uid_str)
 
     uid_t uid = (uid_t)-1;
 
-    if (try_atou(uid_str, &uid) != 0)
+    if (libreport_try_atou(uid_str, &uid) != 0)
         error_msg(_("uid value is not valid: '%s'"), uid_str);
 
     return uid;
@@ -36,7 +36,7 @@ static uid_t parse_uid(const char *uid_str)
 
 static struct dump_dir *try_dd_create(const char *base_dir_name, const char *dir_name, uid_t uid)
 {
-    char *path = concat_path_file(base_dir_name, dir_name);
+    char *path = libreport_concat_path_file(base_dir_name, dir_name);
     struct dump_dir *dd = dd_create(path, uid, DEFAULT_DUMP_DIR_MODE);
     free(path);
     return dd;
@@ -46,7 +46,7 @@ struct dump_dir *create_dump_dir_ext(const char *base_dir_name, const char *type
 {
     INITIALIZE_LIBREPORT();
 
-    if (!str_is_correct_filename(type))
+    if (!libreport_str_is_correct_filename(type))
     {
         error_msg(_("'%s' is not correct file name"), FILENAME_TYPE);
         return NULL;
@@ -59,7 +59,7 @@ struct dump_dir *create_dump_dir_ext(const char *base_dir_name, const char *type
         return NULL;
     }
 
-    char *problem_id = xasprintf("%s-%s.%ld-%lu"NEW_PD_SUFFIX, type, iso_date_string(&(tv.tv_sec)), (long)tv.tv_usec, (long)pid);
+    char *problem_id = libreport_xasprintf("%s-%s.%ld-%lu"NEW_PD_SUFFIX, type, libreport_iso_date_string(&(tv.tv_sec)), (long)tv.tv_usec, (long)pid);
 
     log_info("Saving to %s/%s with uid %d", base_dir_name, problem_id, uid);
 
@@ -76,7 +76,7 @@ struct dump_dir *create_dump_dir_ext(const char *base_dir_name, const char *type
             char *home = getenv("HOME");
             if (home && home[0])
             {
-                home = concat_path_file(home, "tmp");
+                home = libreport_concat_path_file(home, "tmp");
                 /*mkdir(home, 0777); - do we want this? */
                 dd = try_dd_create(home, problem_id, uid);
                 free(home);
@@ -141,7 +141,7 @@ struct dump_dir *create_dump_dir_ext(const char *base_dir_name, const char *type
     free(type_str);
 
     problem_id[strlen(problem_id) - strlen(NEW_PD_SUFFIX)] = '\0';
-    char* new_path = concat_path_file(base_dir_name, problem_id);
+    char* new_path = libreport_concat_path_file(base_dir_name, problem_id);
     log_info("Renaming from '%s' to '%s'", dd->dd_dirname, new_path);
     dd_rename(dd, new_path);
     free(new_path);
@@ -166,7 +166,7 @@ int save_problem_data_in_dump_dir(struct dump_dir *dd, problem_data_t *problem_d
     g_hash_table_iter_init(&iter, problem_data);
     while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
-        if (!str_is_correct_filename(name))
+        if (!libreport_str_is_correct_filename(name))
         {
             error_msg("Problem data field name contains disallowed chars: '%s'", name);
             continue;

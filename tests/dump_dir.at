@@ -198,7 +198,7 @@ AT_TESTFUN([dd_create_open_delete],
 
 int main(int argc, char **argv)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     char template[] = "/tmp/XXXXXX/dump_dir";
 
@@ -270,7 +270,7 @@ AT_TESTFUN([dd_sanitize_mode_and_owner],
 
 int main(int argc, char **argv)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     char template[] = "/tmp/XXXXXX/dump_dir";
 
@@ -374,7 +374,7 @@ AT_TESTFUN([dd_owner],
 
 int main(int argc, char **argv)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     char template[] = "/tmp/XXXXXX/dump_dir";
 
@@ -479,7 +479,7 @@ AT_TESTFUN([dd_stat],
 
 int main(int argc, char **argv)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     char template[] = "/tmp/XXXXXX/dump_dir";
 
@@ -570,12 +570,12 @@ AT_TESTFUN([recursive_lock],
 
 int main(int argc, char **argv)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     char *path = tmpnam(NULL);
     struct dump_dir *dd = dd_create(path, -1L, DEFAULT_DUMP_DIR_MODE);
 
-    char *lock_path = concat_path_file(path, ".lock");
+    char *lock_path = libreport_concat_path_file(path, ".lock");
     struct stat buf;
 
     assert(dd);
@@ -606,53 +606,53 @@ int main(int argc, char **argv)
 }
 ]])
 
-## ----------------------- ##
-## str_is_correct_filename ##
-## ----------------------- ##
+## --------------------------------- ##
+## libreport_str_is_correct_filename ##
+## --------------------------------- ##
 
-AT_TESTFUN([str_is_correct_filename],
+AT_TESTFUN([libreport_str_is_correct_filename],
 [[
 #include "internal_libreport.h"
 #include <assert.h>
 #
 int main(void)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
-    assert(str_is_correct_filename("") == false);
-    assert(str_is_correct_filename("/") == false);
-    assert(str_is_correct_filename("//") == false);
-    assert(str_is_correct_filename("/a") == false);
-    assert(str_is_correct_filename("a/") == false);
-    assert(str_is_correct_filename(".") == false);
-    assert(str_is_correct_filename("..") == false);
-    assert(str_is_correct_filename("/.") == false);
-    assert(str_is_correct_filename("//.") == false);
-    assert(str_is_correct_filename("./") == false);
-    assert(str_is_correct_filename(".//") == false);
-    assert(str_is_correct_filename("/./") == false);
-    assert(str_is_correct_filename("/..") == false);
-    assert(str_is_correct_filename("//..") == false);
-    assert(str_is_correct_filename("../") == false);
-    assert(str_is_correct_filename("..//") == false);
-    assert(str_is_correct_filename("/../") == false);
-    assert(str_is_correct_filename("/.././") == false);
+    assert(libreport_str_is_correct_filename("") == false);
+    assert(libreport_str_is_correct_filename("/") == false);
+    assert(libreport_str_is_correct_filename("//") == false);
+    assert(libreport_str_is_correct_filename("/a") == false);
+    assert(libreport_str_is_correct_filename("a/") == false);
+    assert(libreport_str_is_correct_filename(".") == false);
+    assert(libreport_str_is_correct_filename("..") == false);
+    assert(libreport_str_is_correct_filename("/.") == false);
+    assert(libreport_str_is_correct_filename("//.") == false);
+    assert(libreport_str_is_correct_filename("./") == false);
+    assert(libreport_str_is_correct_filename(".//") == false);
+    assert(libreport_str_is_correct_filename("/./") == false);
+    assert(libreport_str_is_correct_filename("/..") == false);
+    assert(libreport_str_is_correct_filename("//..") == false);
+    assert(libreport_str_is_correct_filename("../") == false);
+    assert(libreport_str_is_correct_filename("..//") == false);
+    assert(libreport_str_is_correct_filename("/../") == false);
+    assert(libreport_str_is_correct_filename("/.././") == false);
 
-    assert(str_is_correct_filename("looks-good-but-evil/") == false);
-    assert(str_is_correct_filename("looks-good-but-evil/../../") == false);
+    assert(libreport_str_is_correct_filename("looks-good-but-evil/") == false);
+    assert(libreport_str_is_correct_filename("looks-good-but-evil/../../") == false);
 
-    assert(str_is_correct_filename(".meta-data") == true);
-    assert(str_is_correct_filename("..meta-meta-data") == true);
-    assert(str_is_correct_filename("meta-..-data") == true);
+    assert(libreport_str_is_correct_filename(".meta-data") == true);
+    assert(libreport_str_is_correct_filename("..meta-meta-data") == true);
+    assert(libreport_str_is_correct_filename("meta-..-data") == true);
 
-    assert(str_is_correct_filename("a") == true);
-    assert(str_is_correct_filename(".a") == true);
-    assert(str_is_correct_filename("a.") == true);
-    assert(str_is_correct_filename("ab") == true);
-    assert(str_is_correct_filename("abc") == true);
-    assert(str_is_correct_filename("abcd") == true);
-    assert(str_is_correct_filename("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890+-") == true);
-    assert(str_is_correct_filename("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890+-=") == false);
+    assert(libreport_str_is_correct_filename("a") == true);
+    assert(libreport_str_is_correct_filename(".a") == true);
+    assert(libreport_str_is_correct_filename("a.") == true);
+    assert(libreport_str_is_correct_filename("ab") == true);
+    assert(libreport_str_is_correct_filename("abc") == true);
+    assert(libreport_str_is_correct_filename("abcd") == true);
+    assert(libreport_str_is_correct_filename("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890+-") == true);
+    assert(libreport_str_is_correct_filename("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890+-=") == false);
 
     return 0;
 }
@@ -859,7 +859,7 @@ void test(const char buffer[], const size_t buffer_size)
 
     char tmpfile[] = "/tmp/libreport-attestsuite-dd_copy_fd.XXXXXX";
     int tmpfd = mkstemp(tmpfile);
-    full_write(tmpfd, buffer, buffer_size);
+    libreport_full_write(tmpfd, buffer, buffer_size);
 
     {
         assert((-1) != lseek(tmpfd, 0, SEEK_SET));
@@ -991,7 +991,7 @@ AT_TESTFUN([dd_load_int32],
 #
 int main(void)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     char template[] = "/tmp/XXXXXX";
 
@@ -1069,7 +1069,7 @@ AT_TESTFUN([dd_load_uint32],
 #
 int main(void)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     char template[] = "/tmp/XXXXXX";
 
@@ -1136,7 +1136,7 @@ AT_TESTFUN([dd_load_int64],
 
 int main(void)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     char template[] = "/tmp/XXXXXX";
 
@@ -1202,7 +1202,7 @@ AT_TESTFUN([dd_load_uint64],
 
 int main(void)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     char template[] = "/tmp/XXXXXX";
 
@@ -1271,10 +1271,10 @@ void verify_archive(struct dump_dir *dd, const char *file_name,
     unsigned c = 0;
     for (const_string_vector_const_ptr_t i = included_files; i && *i; ++i)
         ++c;
-    int *check_array = xzalloc(c * sizeof(int));
+    int *check_array = libreport_xzalloc(c * sizeof(int));
 
     int pipe_from_parent_to_child[2];
-    xpipe(pipe_from_parent_to_child);
+    libreport_xpipe(pipe_from_parent_to_child);
     pid_t child = fork();
     if (child < 0)
         perror_msg_and_die("vfork");
@@ -1283,14 +1283,14 @@ void verify_archive(struct dump_dir *dd, const char *file_name,
     {
         /* child */
         close(pipe_from_parent_to_child[0]);
-        xmove_fd(xopen(file_name, O_RDONLY), 0);
-        xmove_fd(pipe_from_parent_to_child[1], 1);
+        libreport_xmove_fd(libreport_xopen(file_name, O_RDONLY), 0);
+        libreport_xmove_fd(pipe_from_parent_to_child[1], 1);
         execlp("gzip", "gzip", "-d", NULL);
         perror_msg_and_die("Can't execute '%s'", "gzip");
     }
     close(pipe_from_parent_to_child[1]);
 
-    /* If child died (say, in xopen), then parent might get SIGPIPE.
+    /* If child died (say, in libreport_xopen), then parent might get SIGPIPE.
      * We want to properly unlock dd, therefore we must not die on SIGPIPE:
      */
     signal(SIGPIPE, SIG_IGN);
@@ -1329,7 +1329,7 @@ void verify_archive(struct dump_dir *dd, const char *file_name,
             check_array[c] += 1;
 
             unlink(real_file);
-            if(tar_extract_regfile(tar, xstrdup(real_file)) != 0)
+            if(tar_extract_regfile(tar, libreport_xstrdup(real_file)) != 0)
             {
                 fprintf(stderr, "TAR failed to extract '%s' to '%s': %s\n", path, real_file, strerror(errno));
                 abort();
@@ -1339,7 +1339,7 @@ void verify_archive(struct dump_dir *dd, const char *file_name,
             assert(original != NULL);
             assert(original[0] != '\0');
 
-            char *extracted = xmalloc_xopen_read_close("/tmp/libreport-attest-extracted", NULL);
+            char *extracted = libreport_xmalloc_xopen_read_close("/tmp/libreport-attest-extracted", NULL);
             assert(extracted != NULL);
 
             if (strcmp(extracted, original) != 0)
@@ -1379,7 +1379,7 @@ void verify_archive(struct dump_dir *dd, const char *file_name,
     tar_close(tar);
 
     int status;
-    safe_waitpid(child, &status, 0);
+    libreport_safe_waitpid(child, &status, 0);
     if (status != 0)
     {
         fprintf(stderr, "gzip status code '%d'\n", status);
@@ -1414,7 +1414,7 @@ void verify_archive(struct dump_dir *dd, const char *file_name,
 
 int main(void)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     char template[] = "/tmp/XXXXXX";
 
@@ -1471,7 +1471,7 @@ int main(void)
 
         assert(dd_create_archive(dd, file_name, NULL, 0) == -EEXIST || !"Exists");
 
-        char *canary = xmalloc_xopen_read_close(file_name, NULL);
+        char *canary = libreport_xmalloc_xopen_read_close(file_name, NULL);
         assert(canary != NULL);
         assert(strcmp(canary, file_contents) == 0);
     }
@@ -1587,10 +1587,10 @@ TS_MAIN
     struct dump_dir *dd = testsuite_dump_dir_create(-1, -1, 0);
     dd_create_basic_files(dd, geteuid(), NULL);
 
-    char *base_dir = xstrndup(dd->dd_dirname, strrchr(dd->dd_dirname, '/') - dd->dd_dirname);
+    char *base_dir = libreport_xstrndup(dd->dd_dirname, strrchr(dd->dd_dirname, '/') - dd->dd_dirname);
     assert(base_dir != NULL);
 
-    char *test_file_full_path = concat_path_file(base_dir, "libreport-test");
+    char *test_file_full_path = libreport_concat_path_file(base_dir, "libreport-test");
     FILE *test_file = fopen(test_file_full_path, "w");
     assert(test_file != NULL);
     fprintf(test_file, "dd_items_handling");
@@ -1826,7 +1826,7 @@ TS_MAIN
     const int fd_wronly_noent = dd_open_item(dd, "nofile", O_RDWR);
     TS_ASSERT_SIGNED_GE(fd_wronly_noent, 0);
     if (g_testsuite_last_ok) {
-        full_write_str(fd_wronly_noent, "fd_wronly_noent");
+        libreport_full_write_str(fd_wronly_noent, "fd_wronly_noent");
         close(fd_wronly_noent);
 
         char *const noent_contents = dd_load_text(dd, "nofile");
@@ -1843,7 +1843,7 @@ TS_MAIN
         TS_ASSERT_PTR_IS_NOT_NULL(time);
 
         char rdonly_time_contents[16];
-        int bytes_rdonly_time = full_read(fd_rdonly_time, rdonly_time_contents, sizeof(rdonly_time_contents));
+        int bytes_rdonly_time = libreport_full_read(fd_rdonly_time, rdonly_time_contents, sizeof(rdonly_time_contents));
         TS_ASSERT_SIGNED_GT(bytes_rdonly_time, 0);
         if (bytes_rdonly_time > 0) {
             rdonly_time_contents[bytes_rdonly_time] = '\0';
@@ -1861,12 +1861,12 @@ TS_MAIN
     const int fd_rdwr_time = dd_open_item(dd, "time", O_RDWR);
     TS_ASSERT_SIGNED_GE(fd_rdwr_time, 0);
     if (g_testsuite_last_ok) {
-        full_write_str(fd_rdwr_time, "7654321");
+        libreport_full_write_str(fd_rdwr_time, "7654321");
 
         TS_ASSERT_FUNCTION(lseek(fd_rdwr_time, 0, SEEK_SET));
 
         char rdwr_time_contents[16];
-        int bytes_rdwr_time = full_read(fd_rdwr_time, rdwr_time_contents, sizeof(rdwr_time_contents));
+        int bytes_rdwr_time = libreport_full_read(fd_rdwr_time, rdwr_time_contents, sizeof(rdwr_time_contents));
         close(fd_rdwr_time);
 
         TS_ASSERT_SIGNED_GT(bytes_rdwr_time, 0);

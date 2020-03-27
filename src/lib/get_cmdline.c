@@ -105,7 +105,7 @@ static char* get_escaped_at(int dir_fd, const char *name, char separator)
              * including terminating NUL.
              * We add +1 for possible \n added at the very end.
              */
-            escaped = xrealloc(escaped, total_esc_len + len*4 + 4);
+            escaped = libreport_xrealloc(escaped, total_esc_len + len*4 + 4);
             char *src = buffer;
             dst = escaped + total_esc_len;
             while (1)
@@ -138,7 +138,7 @@ static char* get_escaped_at(int dir_fd, const char *name, char separator)
 #define DEFINE_GET_PROC_FILE_WRAPPER_AT(FUNCTION_NAME) \
 char *FUNCTION_NAME(pid_t pid) \
 { \
-    const int pid_proc_fd = open_proc_pid_dir(pid); \
+    const int pid_proc_fd = libreport_open_proc_pid_dir(pid); \
     if (pid_proc_fd < 0) \
         return NULL; \
     char *const r = FUNCTION_NAME##_at(pid_proc_fd); \
@@ -146,25 +146,25 @@ char *FUNCTION_NAME(pid_t pid) \
     return r; \
 }
 
-DEFINE_GET_PROC_FILE_WRAPPER_AT(get_cmdline)
+DEFINE_GET_PROC_FILE_WRAPPER_AT(libreport_get_cmdline)
 
-char* get_cmdline_at(int pid_proc_fd)
+char *libreport_get_cmdline_at(int pid_proc_fd)
 {
     return get_escaped_at(pid_proc_fd, "cmdline", ' ');
 }
 
-DEFINE_GET_PROC_FILE_WRAPPER_AT(get_environ)
+DEFINE_GET_PROC_FILE_WRAPPER_AT(libreport_get_environ)
 
-char* get_environ_at(int pid_proc_fd)
+char *libreport_get_environ_at(int pid_proc_fd)
 {
     return get_escaped_at(pid_proc_fd, "environ", '\n');
 }
 
-DEFINE_GET_PROC_FILE_WRAPPER_AT(get_executable)
+DEFINE_GET_PROC_FILE_WRAPPER_AT(libreport_get_executable)
 
-char* get_executable_at(int pid_proc_fd)
+char *libreport_get_executable_at(int pid_proc_fd)
 {
-    char *executable = malloc_readlinkat(pid_proc_fd, "exe");
+    char *executable = libreport_malloc_readlinkat(pid_proc_fd, "exe");
     if (!executable)
         return NULL;
     /* find and cut off " (deleted)" from the path */
@@ -184,18 +184,18 @@ char* get_executable_at(int pid_proc_fd)
     return executable;
 }
 
-DEFINE_GET_PROC_FILE_WRAPPER_AT(get_cwd)
+DEFINE_GET_PROC_FILE_WRAPPER_AT(libreport_get_cwd)
 
-char* get_cwd_at(int proc_pid_fd)
+char* libreport_get_cwd_at(int proc_pid_fd)
 {
-    return malloc_readlinkat(proc_pid_fd, "cwd");
+    return libreport_malloc_readlinkat(proc_pid_fd, "cwd");
 }
 
-DEFINE_GET_PROC_FILE_WRAPPER_AT(get_rootdir)
+DEFINE_GET_PROC_FILE_WRAPPER_AT(libreport_get_rootdir)
 
-char* get_rootdir_at(int pid_proc_dir_fd)
+char *libreport_get_rootdir_at(int pid_proc_dir_fd)
 {
-    return malloc_readlinkat(pid_proc_dir_fd, "root");
+    return libreport_malloc_readlinkat(pid_proc_dir_fd, "root");
 }
 
 static int get_proc_fs_id(const char *proc_pid_status, char type)
@@ -229,17 +229,17 @@ static int get_proc_fs_id(const char *proc_pid_status, char type)
     return -2;
 }
 
-int get_fsuid(const char *proc_pid_status)
+int libreport_get_fsuid(const char *proc_pid_status)
 {
     return get_proc_fs_id(proc_pid_status, /*UID*/'U');
 }
 
-int get_fsgid(const char *proc_pid_status)
+int libreport_get_fsgid(const char *proc_pid_status)
 {
     return get_proc_fs_id(proc_pid_status, /*GID*/'G');
 }
 
-int dump_fd_info_at(int pid_proc_fd, FILE *dest)
+int libreport_dump_fd_info_at(int pid_proc_fd, FILE *dest)
 {
     DIR *proc_fd_dir = NULL;
     int proc_fdinfo_fd = -1;
@@ -281,7 +281,7 @@ int dump_fd_info_at(int pid_proc_fd, FILE *dest)
             }
             break;
         }
-        else if (dot_or_dotdot(dent->d_name))
+        else if (libreport_dot_or_dotdot(dent->d_name))
             continue;
 
         FILE *fdinfo = NULL;
@@ -289,7 +289,7 @@ int dump_fd_info_at(int pid_proc_fd, FILE *dest)
         char line[LINE_MAX];
         int fd;
 
-        fdname = malloc_readlinkat(dirfd(proc_fd_dir), dent->d_name);
+        fdname = libreport_malloc_readlinkat(dirfd(proc_fd_dir), dent->d_name);
 
         fprintf(dest, "%s%s:%s\n", fddelim, dent->d_name, fdname);
         fddelim = "\n";
@@ -324,7 +324,7 @@ dumpfd_cleanup:
     return r;
 }
 
-int dump_fd_info_ext(const char *dest_filename, const char *proc_pid_fd_path, uid_t uid, gid_t gid)
+int libreport_dump_fd_info_ext(const char *dest_filename, const char *proc_pid_fd_path, uid_t uid, gid_t gid)
 {
     int proc_fd_dir_fd = -1;
     int pid_proc_fd = -1;
@@ -353,8 +353,8 @@ int dump_fd_info_ext(const char *dest_filename, const char *proc_pid_fd_path, ui
         goto dumpfd_cleanup;
     }
 
-    dest = xfdopen(dest_fd, "w");
-    r = dump_fd_info_at(pid_proc_fd, dest);
+    dest = libreport_xfdopen(dest_fd, "w");
+    r = libreport_dump_fd_info_at(pid_proc_fd, dest);
 
 dumpfd_cleanup:
     errno = 0;
@@ -389,12 +389,12 @@ dumpfd_cleanup:
     return r;
 }
 
-int dump_fd_info(const char *dest_filename, const char *proc_pid_fd_path)
+int libreport_dump_fd_info(const char *dest_filename, const char *proc_pid_fd_path)
 {
-    return dump_fd_info_ext(dest_filename, proc_pid_fd_path, /*UID*/-1, /*GID*/-1);
+    return libreport_dump_fd_info_ext(dest_filename, proc_pid_fd_path, /*UID*/-1, /*GID*/-1);
 }
 
-int get_env_variable_ext(int fd, char delim, const char *name, char **value)
+int libreport_get_env_variable_ext(int fd, char delim, const char *name, char **value)
 {
     int workfd = dup(fd);
     if (workfd < 0)
@@ -435,7 +435,7 @@ int get_env_variable_ext(int fd, char delim, const char *name, char **value)
             continue;
 
         const int eof = c != EOF;
-        *value = xmalloc(i+1);
+        *value = libreport_xmalloc(i+1);
 
         /* i+1 because we didn't count '\0'  */
         if (fseek(fenv, -(i+eof), SEEK_CUR) < 0)
@@ -453,7 +453,7 @@ int get_env_variable_ext(int fd, char delim, const char *name, char **value)
     return 0;
 }
 
-int get_env_variable(pid_t pid, const char *name, char **value)
+int libreport_get_env_variable(pid_t pid, const char *name, char **value)
 {
     char path[sizeof("/proc/%lu/environ") + sizeof(long)*3];
     snprintf(path, sizeof(path), "/proc/%lu/environ", (long)pid);
@@ -465,21 +465,21 @@ int get_env_variable(pid_t pid, const char *name, char **value)
         return -errno;
     }
 
-    const int r = get_env_variable_ext(envfd, '\0', name, value);
+    const int r = libreport_get_env_variable_ext(envfd, '\0', name, value);
     close(envfd);
 
     return r;
 }
 
-int get_ns_ids(pid_t pid, struct ns_ids *ids)
+int libreport_get_ns_ids(pid_t pid, struct ns_ids *ids)
 {
-    const int proc_pid_fd = open_proc_pid_dir(pid);
-    const int r = get_ns_ids_at(proc_pid_fd, ids);
+    const int proc_pid_fd = libreport_open_proc_pid_dir(pid);
+    const int r = libreport_get_ns_ids_at(proc_pid_fd, ids);
     close(proc_pid_fd);
     return r;
 }
 
-int get_ns_ids_at(int pid_proc_fd, struct ns_ids *ids)
+int libreport_get_ns_ids_at(int pid_proc_fd, struct ns_ids *ids)
 {
     const int nsfd = openat(pid_proc_fd, "ns", O_DIRECTORY | O_PATH);
     if (nsfd < 0)
@@ -513,7 +513,7 @@ int get_ns_ids_at(int pid_proc_fd, struct ns_ids *ids)
     return r;
 }
 
-int dump_namespace_diff_ext(const char *dest_filename, pid_t base_pid, pid_t tested_pid, uid_t uid, gid_t gid)
+int libreport_dump_namespace_diff_ext(const char *dest_filename, pid_t base_pid, pid_t tested_pid, uid_t uid, gid_t gid)
 {
     const int dest_fd = open(dest_filename, O_CREAT | O_WRONLY | O_EXCL | O_CLOEXEC | O_NOFOLLOW, 0600);
     if (dest_fd < 0)
@@ -522,12 +522,12 @@ int dump_namespace_diff_ext(const char *dest_filename, pid_t base_pid, pid_t tes
         return -3;
     }
 
-    FILE *const dest = xfdopen(dest_fd, "a");
+    FILE *const dest = libreport_xfdopen(dest_fd, "a");
 
-    const int base_pid_proc_fd = open_proc_pid_dir(base_pid);
-    const int tested_pid_proc_fd = open_proc_pid_dir(tested_pid);
+    const int base_pid_proc_fd = libreport_open_proc_pid_dir(base_pid);
+    const int tested_pid_proc_fd = libreport_open_proc_pid_dir(tested_pid);
 
-    int r = dump_namespace_diff_at(base_pid_proc_fd, tested_pid_proc_fd, dest);
+    int r = libreport_dump_namespace_diff_at(base_pid_proc_fd, tested_pid_proc_fd, dest);
 
     close(tested_pid_proc_fd);
     close(base_pid_proc_fd);
@@ -548,18 +548,18 @@ int dump_namespace_diff_ext(const char *dest_filename, pid_t base_pid, pid_t tes
     return r;
 }
 
-int dump_namespace_diff_at(int base_pid_proc_fd, int tested_pid_proc_fd, FILE *dest)
+int libreport_dump_namespace_diff_at(int base_pid_proc_fd, int tested_pid_proc_fd, FILE *dest)
 {
     struct ns_ids base_ids;
     struct ns_ids tested_ids;
 
-    if (get_ns_ids_at(base_pid_proc_fd, &base_ids) != 0)
+    if (libreport_get_ns_ids_at(base_pid_proc_fd, &base_ids) != 0)
     {
         log_notice("Failed to get base namesapce IDs");
         return -1;
     }
 
-    if (get_ns_ids_at(tested_pid_proc_fd, &tested_ids) != 0)
+    if (libreport_get_ns_ids_at(tested_pid_proc_fd, &tested_ids) != 0)
     {
         log_notice("Failed to get tested namesapce IDs");
         return -2;
@@ -578,12 +578,12 @@ int dump_namespace_diff_at(int base_pid_proc_fd, int tested_pid_proc_fd, FILE *d
     return 0;
 }
 
-int dump_namespace_diff(const char *dest_filename, pid_t base_pid, pid_t tested_pid)
+int libreport_dump_namespace_diff(const char *dest_filename, pid_t base_pid, pid_t tested_pid)
 {
-    return dump_namespace_diff_ext(dest_filename, base_pid, tested_pid, /*UID*/-1, /*GID*/-1);
+    return libreport_dump_namespace_diff_ext(dest_filename, base_pid, tested_pid, /*UID*/-1, /*GID*/-1);
 }
 
-void mountinfo_destroy(struct mountinfo *mntnf)
+void libreport_mountinfo_destroy(struct mountinfo *mntnf)
 {
     for (size_t i = 0; i < ARRAY_SIZE(mntnf->mntnf_items); ++i)
         free(mntnf->mntnf_items[i]);
@@ -622,7 +622,7 @@ static int _read_mountinfo_word_was(FILE *fin, const char *ptr)
     return _read_mountinfo_word(fin);
 }
 
-int get_mountinfo_for_mount_point(FILE *fin, struct mountinfo *mntnf, const char *mnt_point)
+int libreport_get_mountinfo_for_mount_point(FILE *fin, struct mountinfo *mntnf, const char *mnt_point)
 {
     int r = 0;
 
@@ -719,7 +719,7 @@ int get_mountinfo_for_mount_point(FILE *fin, struct mountinfo *mntnf, const char
         }
 
         size_t len = (pos_cur - pos_bck);
-        mntnf->mntnf_items[fn] = xmalloc(sizeof(char) * (len));
+        mntnf->mntnf_items[fn] = libreport_xmalloc(sizeof(char) * (len));
 
         len -= c != EOF; /* we are standing on ' ' (except EOF) */
 
@@ -756,7 +756,7 @@ int get_mountinfo_for_mount_point(FILE *fin, struct mountinfo *mntnf, const char
 
 get_mount_info_cleanup:
     if (r)
-        mountinfo_destroy(mntnf);
+        libreport_mountinfo_destroy(mntnf);
 
     return r;
 }
@@ -782,7 +782,7 @@ static int get_process_ppid_at(int pid_proc_fd, pid_t *ppid)
         return -1;
     }
 
-    FILE *const stat_file = xfdopen(stat_fd, "r");
+    FILE *const stat_file = libreport_xfdopen(stat_fd, "r");
     const int p = fscanf(stat_file, "%*d %*s %*c %d", ppid);
     if (p != 1)
     {
@@ -795,17 +795,17 @@ static int get_process_ppid_at(int pid_proc_fd, pid_t *ppid)
     return r;
 }
 
-int get_pid_of_container(pid_t pid, pid_t *init_pid)
+int libreport_get_pid_of_container(pid_t pid, pid_t *init_pid)
 {
-    const int pid_proc_fd = open_proc_pid_dir(pid);
+    const int pid_proc_fd = libreport_open_proc_pid_dir(pid);
     if (pid_proc_fd < 0)
         return pid_proc_fd;
-    const int r = get_pid_of_container_at(pid_proc_fd, init_pid);
+    const int r = libreport_get_pid_of_container_at(pid_proc_fd, init_pid);
     close (pid_proc_fd);
     return r;
 }
 
-int get_pid_of_container_at(int pid_proc_fd, pid_t *init_pid)
+int libreport_get_pid_of_container_at(int pid_proc_fd, pid_t *init_pid)
 {
     int r = 0;
     pid_t ppid = 0;
@@ -817,7 +817,7 @@ int get_pid_of_container_at(int pid_proc_fd, pid_t *init_pid)
     }
 
     struct ns_ids pid_ids;
-    if (get_ns_ids_at(cpid_proc_fd, &pid_ids) != 0)
+    if (libreport_get_ns_ids_at(cpid_proc_fd, &pid_ids) != 0)
     {
         log_notice("Failed to get process's IDs");
         close(cpid_proc_fd);
@@ -835,7 +835,7 @@ int get_pid_of_container_at(int pid_proc_fd, pid_t *init_pid)
         if (ppid == 1)
             break;
 
-        const int ppid_proc_fd = open_proc_pid_dir(ppid);
+        const int ppid_proc_fd = libreport_open_proc_pid_dir(ppid);
         if (ppid_proc_fd < 0)
         {
             log_notice("Failed to open parent's /proc/[pid] directory");
@@ -844,7 +844,7 @@ int get_pid_of_container_at(int pid_proc_fd, pid_t *init_pid)
         }
 
         struct ns_ids ppid_ids;
-        if (get_ns_ids_at(ppid_proc_fd, &ppid_ids) != 0)
+        if (libreport_get_ns_ids_at(ppid_proc_fd, &ppid_ids) != 0)
         {
             log_notice("Failed to get parent's (%d) IDs", ppid);
             close(ppid_proc_fd);
@@ -871,7 +871,7 @@ int get_pid_of_container_at(int pid_proc_fd, pid_t *init_pid)
     return r;
 }
 
-int open_proc_pid_dir(pid_t pid)
+int libreport_open_proc_pid_dir(pid_t pid)
 {
     static char proc_dir_path[sizeof("/proc/%lu") + sizeof(long)*3];
     sprintf(proc_dir_path, "/proc/%lu", (long)pid);
@@ -882,7 +882,7 @@ int open_proc_pid_dir(pid_t pid)
  * Bare in mind that /proc/[pid]/root might be affected by chroot and we want
  * to be able to answer 'yes' also for chrooted processes within a container.
  */
-int process_has_own_root_at(int pid_proc_fd)
+int libreport_process_has_own_root_at(int pid_proc_fd)
 {
     int r = -1;
     struct mountinfo pid_root;
@@ -907,7 +907,7 @@ int process_has_own_root_at(int pid_proc_fd)
     }
     fseek(fin, 0, SEEK_SET);
 
-    r = get_mountinfo_for_mount_point(fin, &pid_root, "/");
+    r = libreport_get_mountinfo_for_mount_point(fin, &pid_root, "/");
     fclose(fin);
     if (r)
     {
@@ -922,16 +922,16 @@ int process_has_own_root_at(int pid_proc_fd)
         r = -errno;
         pnotice_msg("fopen(/proc/1/mountinfo)");
 
-        mountinfo_destroy(&pid_root);
+        libreport_mountinfo_destroy(&pid_root);
         return r;
     }
 
     fseek(fin, 0, SEEK_SET);
-    r = get_mountinfo_for_mount_point(fin, &system_root, "/");
+    r = libreport_get_mountinfo_for_mount_point(fin, &system_root, "/");
     fclose(fin);
     if (r)
     {
-        mountinfo_destroy(&pid_root);
+        libreport_mountinfo_destroy(&pid_root);
 
         log_notice("cannot get line for / from /proc/1/mountinfo");
         return -ENOKEY;
@@ -942,22 +942,22 @@ int process_has_own_root_at(int pid_proc_fd)
     r = (   strcmp(MOUNTINFO_MOUNT_SOURCE(system_root), MOUNTINFO_MOUNT_SOURCE(pid_root)) != 0
          || strcmp(MOUNTINFO_ROOT        (system_root), MOUNTINFO_ROOT        (pid_root)) != 0);
 
-    mountinfo_destroy(&system_root);
-    mountinfo_destroy(&pid_root);
+    libreport_mountinfo_destroy(&system_root);
+    libreport_mountinfo_destroy(&pid_root);
 
     return r;
 }
 
-int process_has_own_root(pid_t pid)
+int libreport_process_has_own_root(pid_t pid)
 {
-    const int pid_proc_fd = open_proc_pid_dir(pid);
+    const int pid_proc_fd = libreport_open_proc_pid_dir(pid);
     if (pid_proc_fd < 0)
     {
         perror_msg("Cannot open directory of process %d", pid);
         return -3;
     }
 
-    const int ret = process_has_own_root_at(pid_proc_fd);
+    const int ret = libreport_process_has_own_root_at(pid_proc_fd);
     close(pid_proc_fd);
 
     return ret;

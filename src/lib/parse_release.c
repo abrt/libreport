@@ -50,8 +50,8 @@ static void parse_release(const char *release, char** product, char** version, i
     /* Fedora has a single non-numeric release - Rawhide */
     if (strstr(release, "Rawhide"))
     {
-        *product = xstrdup("Fedora");
-        *version = xstrdup("rawhide");
+        *product = libreport_xstrdup("Fedora");
+        *version = libreport_xstrdup("rawhide");
         log_debug("%s: version:'%s' product:'%s'", __func__, *version, *product);
         return;
     }
@@ -64,16 +64,16 @@ static void parse_release(const char *release, char** product, char** version, i
     /*
     if (strstr(release, "Factory"))
     {
-        *product = xstrdup("openSUSE");
-        *version = xstrdup("Factory");
+        *product = libreport_xstrdup("openSUSE");
+        *version = libreport_xstrdup("Factory");
         log_debug("%s: version:'%s' product:'%s'", __func__, *version, *product);
         return;
     }
 
     if (strstr(release, "Tumbleweed"))
     {
-        *product = xstrdup("openSUSE");
-        *version = xstrdup("Tumbleweed");
+        *product = libreport_xstrdup("openSUSE");
+        *version = libreport_xstrdup("Tumbleweed");
         log_debug("%s: version:'%s' product:'%s'", __func__, *version, *product);
         return;
     }
@@ -81,31 +81,31 @@ static void parse_release(const char *release, char** product, char** version, i
 
     bool it_is_rhel = false;
 
-    struct strbuf *buf_product = strbuf_new();
+    struct strbuf *buf_product = libreport_strbuf_new();
     if (strstr(release, "Fedora"))
     {
-        strbuf_append_str(buf_product, "Fedora");
+        libreport_strbuf_append_str(buf_product, "Fedora");
     }
     else if (strstr(release, "Red Hat Enterprise Linux"))
     {
-        strbuf_append_str(buf_product, "Red Hat Enterprise Linux");
+        libreport_strbuf_append_str(buf_product, "Red Hat Enterprise Linux");
         it_is_rhel = true;
     }
     else if (strstr(release, "openSUSE"))
     {
-        strbuf_append_str(buf_product, "openSUSE");
+        libreport_strbuf_append_str(buf_product, "openSUSE");
     }
     else
     {
         /* TODO: add logic for parsing other distros' names here */
-        strbuf_append_str(buf_product, release);
+        libreport_strbuf_append_str(buf_product, release);
     }
 
     /* Examples of release strings:
      * installed system: "Red Hat Enterprise Linux Server release 6.2 Beta (Santiago)"
      * anaconda: "Red Hat Enterprise Linux 6.2"
      */
-    struct strbuf *buf_version = strbuf_new();
+    struct strbuf *buf_version = libreport_strbuf_new();
     const char *r = strstr(release, "release");
     const char *space = r ? strchr(r, ' ') : NULL;
     if (!space)
@@ -126,7 +126,7 @@ static void parse_release(const char *release, char** product, char** version, i
         while ((*space >= '0' && *space <= '9') || *space == '.')
         {
             /* Eat string like "5.2" */
-            strbuf_append_char(buf_version, *space);
+            libreport_strbuf_append_char(buf_version, *space);
             space++;
         }
 
@@ -142,7 +142,7 @@ static void parse_release(const char *release, char** product, char** version, i
                 space++;
             while (space > to_append && space[-1] == ' ') /* back to 1st non-space */
                 space--;
-            strbuf_append_strf(buf_version, "%.*s", (int)(space - to_append), to_append);
+            libreport_strbuf_append_strf(buf_version, "%.*s", (int)(space - to_append), to_append);
         }
     }
 
@@ -157,13 +157,13 @@ static void parse_release(const char *release, char** product, char** version, i
          */
         unsigned idx_dot = strchrnul(v, '.') - v;
         unsigned idx_space = strchrnul(v, ' ') - v;
-        strbuf_append_strf(buf_product, " %.*s",
+        libreport_strbuf_append_strf(buf_product, " %.*s",
                         (idx_dot < idx_space ? idx_dot : idx_space), v
         );
     }
 
-    *version = strbuf_free_nobuf(buf_version);
-    *product = strbuf_free_nobuf(buf_product);
+    *version = libreport_strbuf_free_nobuf(buf_version);
+    *product = libreport_strbuf_free_nobuf(buf_product);
 
     log_debug("%s: version:'%s' product:'%s'", __func__, *version, *product);
 }
@@ -191,7 +191,7 @@ static void unescape_osnifo_value(const char *source, char* dest)
     dest[0] = '\0';
 }
 
-void parse_osinfo(const char *osinfo_bytes, map_string_t *osinfo)
+void libreport_parse_osinfo(const char *osinfo_bytes, map_string_t *osinfo)
 {
     const char *cursor = osinfo_bytes;
     unsigned line = 0;
@@ -221,13 +221,13 @@ void parse_osinfo(const char *osinfo_bytes, map_string_t *osinfo)
             goto skip_line;
         }
 
-        char *key = xstrndup(cursor, key_end - cursor);
+        char *key = libreport_xstrndup(cursor, key_end - cursor);
         if (get_map_string_item_or_NULL(osinfo, key) != NULL)
         {
             log_notice("os-release:%u: redefines key '%s'", line, key);
         }
 
-        char *value = xstrndup(key_end + 1, value_end - key_end - 1);
+        char *value = libreport_xstrndup(key_end + 1, value_end - key_end - 1);
         unescape_osnifo_value(value, value);
 
         log_debug("os-release:%u: parsed line: '%s'='%s'", line, key, value);
@@ -252,7 +252,7 @@ void parse_osinfo(const char *osinfo_bytes, map_string_t *osinfo)
     }
 }
 
-void parse_release_for_bz(const char *release, char** product, char** version)
+void libreport_parse_release_for_bz(const char *release, char** product, char** version)
 {
     /* Fedora/RH bugzilla uses "Red Hat Enterprise Linux N" product for RHEL */
     parse_release(release, product, version, 0
@@ -260,7 +260,7 @@ void parse_release_for_bz(const char *release, char** product, char** version)
     );
 }
 
-void parse_osinfo_for_bz(map_string_t *osinfo, char** product, char** version)
+void libreport_parse_osinfo_for_bz(map_string_t *osinfo, char** product, char** version)
 {
     const char *name = get_map_string_item_or_NULL(osinfo, "REDHAT_BUGZILLA_PRODUCT");
     if (!name)
@@ -272,15 +272,15 @@ void parse_osinfo_for_bz(map_string_t *osinfo, char** product, char** version)
 
     if (name && version_id)
     {
-        *product = xstrdup(name);
-        *version = xstrdup(version_id);
+        *product = libreport_xstrdup(name);
+        *version = libreport_xstrdup(version_id);
         return;
     }
 
     const char *pretty = get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME);
     if (pretty)
     {
-        parse_release_for_bz(pretty, product, version);
+        libreport_parse_release_for_bz(pretty, product, version);
         return;
     }
 
@@ -289,12 +289,12 @@ void parse_osinfo_for_bz(map_string_t *osinfo, char** product, char** version)
     *version = NULL;
 }
 
-void parse_osinfo_for_bug_url(map_string_t *osinfo, char** url)
+void libreport_parse_osinfo_for_bug_url(map_string_t *osinfo, char** url)
 {
     const char *os_bug_report_url = get_map_string_item_or_NULL(osinfo, "BUG_REPORT_URL");
 
     if (os_bug_report_url)
-        *url = xstrdup(os_bug_report_url);
+        *url = libreport_xstrdup(os_bug_report_url);
     else
         /* unset or something bad happend */
         *url = NULL;
@@ -330,14 +330,14 @@ void parse_osinfo_for_bug_url(map_string_t *osinfo, char** url)
  *   <version>Unknown</version>
  * </versions>
  */
-void parse_release_for_rhts(const char *release, char** product, char** version)
+void libreport_parse_release_for_rhts(const char *release, char** product, char** version)
 {
     parse_release(release, product, version, 0
         | RETAIN_ALPHA_BETA_TAIL_IN_VER
     );
 }
 
-void parse_osinfo_for_rhts(map_string_t *osinfo, char** product, char** version)
+void libreport_parse_osinfo_for_rhts(map_string_t *osinfo, char** product, char** version)
 {
     const char *name = get_map_string_item_or_NULL(osinfo, "REDHAT_SUPPORT_PRODUCT");
     if (!name)
@@ -349,15 +349,15 @@ void parse_osinfo_for_rhts(map_string_t *osinfo, char** product, char** version)
 
     if (name && version_id)
     {
-        *product = xstrdup(name);
-        *version = xstrdup(version_id);
+        *product = libreport_xstrdup(name);
+        *version = libreport_xstrdup(version_id);
         return;
     }
 
     const char *pretty = get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME);
     if (pretty)
     {
-        parse_release_for_rhts(pretty, product, version);
+        libreport_parse_release_for_rhts(pretty, product, version);
         return;
     }
 

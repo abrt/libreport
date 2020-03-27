@@ -44,7 +44,7 @@ int test()
 
 int main(void)
 {
-    glib_init();
+    libreport_glib_init();
 
     assert(test() == 0);
 
@@ -99,9 +99,9 @@ int test()
     const char *blacklist = "few,tex";
     const char *whitelist = "few,text";
     const char *whitelist_2 = "words";
-    GList *blacklist_in = parse_delimited_list(blacklist, ",");
-    GList *whitelist_in = parse_delimited_list(whitelist, ",");
-    GList *whitelist_not_in = parse_delimited_list(whitelist_2, ",");
+    GList *blacklist_in = libreport_parse_delimited_list(blacklist, ",");
+    GList *whitelist_in = libreport_parse_delimited_list(whitelist, ",");
+    GList *whitelist_not_in = libreport_parse_delimited_list(whitelist_2, ",");
 
     GList *blacklist_sitems = find_words_in_text_buffer(buffer, blacklist_in);
     GList *whitelist_sitems = find_words_in_text_buffer(buffer, whitelist_in);
@@ -142,7 +142,7 @@ int test()
 
 int main(void)
 {
-    glib_init();
+    libreport_glib_init();
 
     assert(test() == 0);
 

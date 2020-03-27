@@ -2,11 +2,11 @@
 
 AT_BANNER([Configuration files])
 
-## ---------------##
-## load_conf_file ##
-## ---------------##
+## -------------------------##
+## libreport_load_conf_file ##
+## -------------------------##
 
-AT_TESTFUN([load_conf_file],
+AT_TESTFUN([libreport_load_conf_file],
 [[
 #include "internal_libreport.h"
 #include "stdlib.h"
@@ -60,7 +60,7 @@ equal_result_t map_string_equals(map_string_t *f, map_string_t *s)
 
 int main(int argc, char **argv)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     {
         /* Self check */
@@ -70,30 +70,30 @@ int main(int argc, char **argv)
         assert(EQUAL == map_string_equals(first, first));
         assert(EQUAL == map_string_equals(first, second));
 
-        insert_map_string(first, xstrdup("first"), xstrdup("1"));
-        insert_map_string(first, xstrdup("second"), xstrdup("2"));
-        insert_map_string(first, xstrdup("third"), xstrdup("3"));
+        insert_map_string(first, libreport_xstrdup("first"), libreport_xstrdup("1"));
+        insert_map_string(first, libreport_xstrdup("second"), libreport_xstrdup("2"));
+        insert_map_string(first, libreport_xstrdup("third"), libreport_xstrdup("3"));
 
         assert(EQUAL == map_string_equals(first, first));
 
         assert(DIFF_SIZE == map_string_equals(first, second));
         assert(DIFF_SIZE == map_string_equals(second, first));
 
-        insert_map_string(second, xstrdup("first"), xstrdup("1"));
-        insert_map_string(second, xstrdup("second"), xstrdup("2"));
-        insert_map_string(second, xstrdup("third"), xstrdup("3"));
+        insert_map_string(second, libreport_xstrdup("first"), libreport_xstrdup("1"));
+        insert_map_string(second, libreport_xstrdup("second"), libreport_xstrdup("2"));
+        insert_map_string(second, libreport_xstrdup("third"), libreport_xstrdup("3"));
 
         assert(EQUAL == map_string_equals(first, second));
         assert(EQUAL == map_string_equals(second, first));
 
-        insert_map_string(first, xstrdup("fifth"), xstrdup("5"));
-        insert_map_string(second, xstrdup("fourth"), xstrdup("4"));
+        insert_map_string(first, libreport_xstrdup("fifth"), libreport_xstrdup("5"));
+        insert_map_string(second, libreport_xstrdup("fourth"), libreport_xstrdup("4"));
 
         assert(MISS_KEY == map_string_equals(first, second));
         assert(MISS_KEY == map_string_equals(second, first));
 
-        insert_map_string(first, xstrdup("fourth"), xstrdup("4"));
-        insert_map_string(second, xstrdup("fifth"), xstrdup("6"));
+        insert_map_string(first, libreport_xstrdup("fourth"), libreport_xstrdup("4"));
+        insert_map_string(second, libreport_xstrdup("fifth"), libreport_xstrdup("6"));
 
         assert(DIFF_VALUE == map_string_equals(first, second));
         assert(DIFF_VALUE == map_string_equals(second, first));
@@ -104,14 +104,14 @@ int main(int argc, char **argv)
 
     {
         map_string_t *first = new_map_string();
-        insert_map_string(first, xstrdup("success"), xstrdup("\"total\""));
-        insert_map_string(first, xstrdup("failure"), xstrdup("\"none\""));
-        insert_map_string(first, xstrdup("effort"), xstrdup("\"minimal\""));
-        insert_map_string(first, xstrdup("state"), xstrdup("\"done\""));
+        insert_map_string(first, libreport_xstrdup("success"), libreport_xstrdup("\"total\""));
+        insert_map_string(first, libreport_xstrdup("failure"), libreport_xstrdup("\"none\""));
+        insert_map_string(first, libreport_xstrdup("effort"), libreport_xstrdup("\"minimal\""));
+        insert_map_string(first, libreport_xstrdup("state"), libreport_xstrdup("\"done\""));
 
         map_string_t *second = new_map_string();
 
-        assert(load_conf_file(CONF_PATH, second, 0));
+        assert(libreport_load_conf_file(CONF_PATH, second, 0));
 
         assert(EQUAL == map_string_equals(first, second) || !"The loaded configuration equals to the expected");
 
@@ -125,11 +125,11 @@ int main(int argc, char **argv)
 
 
 
-## ------------------------ ##
-## load_conf_file_from_dirs ##
-## ------------------------ ##
+## ---------------------------------- ##
+## libreport_load_conf_file_from_dirs ##
+## ---------------------------------- ##
 
-AT_TESTFUN([load_conf_file_from_dirs],
+AT_TESTFUN([libreport_load_conf_file_from_dirs],
 [[
 #include "internal_libreport.h"
 
@@ -184,7 +184,7 @@ equal_result_t map_string_equals(map_string_t *f, map_string_t *s)
 
 int main(int argc, char **argv)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     {
         /* Self check */
@@ -194,30 +194,30 @@ int main(int argc, char **argv)
         assert(EQUAL == map_string_equals(first, first));
         assert(EQUAL == map_string_equals(first, second));
 
-        insert_map_string(first, xstrdup("first"), xstrdup("1"));
-        insert_map_string(first, xstrdup("second"), xstrdup("2"));
-        insert_map_string(first, xstrdup("third"), xstrdup("3"));
+        insert_map_string(first, libreport_xstrdup("first"), libreport_xstrdup("1"));
+        insert_map_string(first, libreport_xstrdup("second"), libreport_xstrdup("2"));
+        insert_map_string(first, libreport_xstrdup("third"), libreport_xstrdup("3"));
 
         assert(EQUAL == map_string_equals(first, first));
 
         assert(DIFF_SIZE == map_string_equals(first, second));
         assert(DIFF_SIZE == map_string_equals(second, first));
 
-        insert_map_string(second, xstrdup("first"), xstrdup("1"));
-        insert_map_string(second, xstrdup("second"), xstrdup("2"));
-        insert_map_string(second, xstrdup("third"), xstrdup("3"));
+        insert_map_string(second, libreport_xstrdup("first"), libreport_xstrdup("1"));
+        insert_map_string(second, libreport_xstrdup("second"), libreport_xstrdup("2"));
+        insert_map_string(second, libreport_xstrdup("third"), libreport_xstrdup("3"));
 
         assert(EQUAL == map_string_equals(first, second));
         assert(EQUAL == map_string_equals(second, first));
 
-        insert_map_string(first, xstrdup("fifth"), xstrdup("5"));
-        insert_map_string(second, xstrdup("fourth"), xstrdup("4"));
+        insert_map_string(first, libreport_xstrdup("fifth"), libreport_xstrdup("5"));
+        insert_map_string(second, libreport_xstrdup("fourth"), libreport_xstrdup("4"));
 
         assert(MISS_KEY == map_string_equals(first, second));
         assert(MISS_KEY == map_string_equals(second, first));
 
-        insert_map_string(first, xstrdup("fourth"), xstrdup("4"));
-        insert_map_string(second, xstrdup("fifth"), xstrdup("6"));
+        insert_map_string(first, libreport_xstrdup("fourth"), libreport_xstrdup("4"));
+        insert_map_string(second, libreport_xstrdup("fifth"), libreport_xstrdup("6"));
 
         assert(DIFF_VALUE == map_string_equals(first, second));
         assert(DIFF_VALUE == map_string_equals(second, first));
@@ -230,7 +230,7 @@ int main(int argc, char **argv)
         map_string_t *first = new_map_string();
         map_string_t *second = new_map_string();
 
-        assert(!load_conf_file_from_dirs(CONF_NAME, NULL, second, 0));
+        assert(!libreport_load_conf_file_from_dirs(CONF_NAME, NULL, second, 0));
 
         assert(EQUAL == map_string_equals(first, second) || !"Not empty");
 
@@ -246,7 +246,7 @@ int main(int argc, char **argv)
         map_string_t *first = new_map_string();
         map_string_t *second = new_map_string();
 
-        assert(!load_conf_file_from_dirs(CONF_NAME, dir_vec, second, 0));
+        assert(!libreport_load_conf_file_from_dirs(CONF_NAME, dir_vec, second, 0));
 
         assert(EQUAL == map_string_equals(first, second) || !"Not empty");
 
@@ -261,10 +261,10 @@ int main(int argc, char **argv)
         };
 
         map_string_t *first = new_map_string();
-        load_conf_file(DEFAULT_DIR"/"CONF_NAME, first, 0);
+        libreport_load_conf_file(DEFAULT_DIR"/"CONF_NAME, first, 0);
 
         map_string_t *second = new_map_string();
-        assert(load_conf_file_from_dirs(CONF_NAME, dir_vec, second, 0));
+        assert(libreport_load_conf_file_from_dirs(CONF_NAME, dir_vec, second, 0));
 
         assert(EQUAL == map_string_equals(first, second));
 
@@ -281,12 +281,12 @@ int main(int argc, char **argv)
         };
 
         map_string_t *first = new_map_string();
-        load_conf_file(DEFAULT_DIR"/"CONF_NAME, first, 0);
-        load_conf_file(FIRST_DIR"/"CONF_NAME, first, 0);
-        load_conf_file(SECOND_DIR"/"CONF_NAME, first, 0);
+        libreport_load_conf_file(DEFAULT_DIR"/"CONF_NAME, first, 0);
+        libreport_load_conf_file(FIRST_DIR"/"CONF_NAME, first, 0);
+        libreport_load_conf_file(SECOND_DIR"/"CONF_NAME, first, 0);
 
         map_string_t *second = new_map_string();
-        assert(load_conf_file_from_dirs(CONF_NAME, dir_vec, second, 0));
+        assert(libreport_load_conf_file_from_dirs(CONF_NAME, dir_vec, second, 0));
 
         assert(EQUAL == map_string_equals(first, second));
 
@@ -304,12 +304,12 @@ int main(int argc, char **argv)
         };
 
         map_string_t *first = new_map_string();
-        load_conf_file(DEFAULT_DIR"/"CONF_NAME, first, 0);
-        load_conf_file(FIRST_DIR"/"CONF_NAME, first, 0);
-        load_conf_file(SECOND_DIR"/"CONF_NAME, first, 0);
+        libreport_load_conf_file(DEFAULT_DIR"/"CONF_NAME, first, 0);
+        libreport_load_conf_file(FIRST_DIR"/"CONF_NAME, first, 0);
+        libreport_load_conf_file(SECOND_DIR"/"CONF_NAME, first, 0);
 
         map_string_t *second = new_map_string();
-        assert(!load_conf_file_from_dirs(CONF_NAME, dir_vec, second, 0));
+        assert(!libreport_load_conf_file_from_dirs(CONF_NAME, dir_vec, second, 0));
 
         assert(EQUAL == map_string_equals(first, second));
 
@@ -321,11 +321,11 @@ int main(int argc, char **argv)
 }
 ]])
 
-## ---------------------------- ##
-## load_conf_file_from_dirs_ext ##
-## ---------------------------- ##
+## -------------------------------------- ##
+## libreport_load_conf_file_from_dirs_ext ##
+## -------------------------------------- ##
 
-AT_TESTFUN([load_conf_file_from_dirs_ext],
+AT_TESTFUN([libreport_load_conf_file_from_dirs_ext],
 [[
 #include "internal_libreport.h"
 
@@ -333,7 +333,7 @@ AT_TESTFUN([load_conf_file_from_dirs_ext],
 
 int main(void)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     {
         const char *const dir_vec[] = {
@@ -350,7 +350,7 @@ int main(void)
 
         map_string_t *settings = new_map_string();
 
-        assert(load_conf_file_from_dirs_ext(CONF_NAME, dir_vec, dir_flags_vec, settings, 0));
+        assert(libreport_load_conf_file_from_dirs_ext(CONF_NAME, dir_vec, dir_flags_vec, settings, 0));
 
         free_map_string(settings);
     }
@@ -359,11 +359,11 @@ int main(void)
 
 
 
-## ---------------##
-## save_conf_file ##
-## ---------------##
+## -------------------------##
+## libreport_save_conf_file ##
+## -------------------------##
 
-AT_TESTFUN([save_conf_file],
+AT_TESTFUN([libreport_save_conf_file],
 [[
 #include "internal_libreport.h"
 
@@ -416,7 +416,7 @@ equal_result_t map_string_equals(map_string_t *f, map_string_t *s)
 
 int main(int argc, char **argv)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     {
         /* Self check */
@@ -426,30 +426,30 @@ int main(int argc, char **argv)
         assert(EQUAL == map_string_equals(first, first));
         assert(EQUAL == map_string_equals(first, second));
 
-        insert_map_string(first, xstrdup("first"), xstrdup("1"));
-        insert_map_string(first, xstrdup("second"), xstrdup("2"));
-        insert_map_string(first, xstrdup("third"), xstrdup("3"));
+        insert_map_string(first, libreport_xstrdup("first"), libreport_xstrdup("1"));
+        insert_map_string(first, libreport_xstrdup("second"), libreport_xstrdup("2"));
+        insert_map_string(first, libreport_xstrdup("third"), libreport_xstrdup("3"));
 
         assert(EQUAL == map_string_equals(first, first));
 
         assert(DIFF_SIZE == map_string_equals(first, second));
         assert(DIFF_SIZE == map_string_equals(second, first));
 
-        insert_map_string(second, xstrdup("first"), xstrdup("1"));
-        insert_map_string(second, xstrdup("second"), xstrdup("2"));
-        insert_map_string(second, xstrdup("third"), xstrdup("3"));
+        insert_map_string(second, libreport_xstrdup("first"), libreport_xstrdup("1"));
+        insert_map_string(second, libreport_xstrdup("second"), libreport_xstrdup("2"));
+        insert_map_string(second, libreport_xstrdup("third"), libreport_xstrdup("3"));
 
         assert(EQUAL == map_string_equals(first, second));
         assert(EQUAL == map_string_equals(second, first));
 
-        insert_map_string(first, xstrdup("fifth"), xstrdup("5"));
-        insert_map_string(second, xstrdup("fourth"), xstrdup("4"));
+        insert_map_string(first, libreport_xstrdup("fifth"), libreport_xstrdup("5"));
+        insert_map_string(second, libreport_xstrdup("fourth"), libreport_xstrdup("4"));
 
         assert(MISS_KEY == map_string_equals(first, second));
         assert(MISS_KEY == map_string_equals(second, first));
 
-        insert_map_string(first, xstrdup("fourth"), xstrdup("4"));
-        insert_map_string(second, xstrdup("fifth"), xstrdup("6"));
+        insert_map_string(first, libreport_xstrdup("fourth"), libreport_xstrdup("4"));
+        insert_map_string(second, libreport_xstrdup("fifth"), libreport_xstrdup("6"));
 
         assert(DIFF_VALUE == map_string_equals(first, second));
         assert(DIFF_VALUE == map_string_equals(second, first));
@@ -460,29 +460,29 @@ int main(int argc, char **argv)
 
     {
         map_string_t *first = new_map_string();
-        insert_map_string(first, xstrdup("success"), xstrdup("total"));
-        insert_map_string(first, xstrdup("failure"), xstrdup("none"));
-        insert_map_string(first, xstrdup("effort"), xstrdup("minimal"));
-        insert_map_string(first, xstrdup("state"), xstrdup("done"));
+        insert_map_string(first, libreport_xstrdup("success"), libreport_xstrdup("total"));
+        insert_map_string(first, libreport_xstrdup("failure"), libreport_xstrdup("none"));
+        insert_map_string(first, libreport_xstrdup("effort"), libreport_xstrdup("minimal"));
+        insert_map_string(first, libreport_xstrdup("state"), libreport_xstrdup("done"));
 
         /* These commands must fail */
-        assert(!save_conf_file("/proc/cpuinfo/foo/blah/file.conf", first));
-        assert(!save_conf_file("../../../../../../../../../../../../../../../proc/cpuinfo/foo/blah/file.conf", first));
-        assert(!save_conf_file("/proc/cpuinfo/root/file.conf", first));
+        assert(!libreport_save_conf_file("/proc/cpuinfo/foo/blah/file.conf", first));
+        assert(!libreport_save_conf_file("../../../../../../../../../../../../../../../proc/cpuinfo/foo/blah/file.conf", first));
+        assert(!libreport_save_conf_file("/proc/cpuinfo/root/file.conf", first));
 
         char tmpdir[] = "/tmp/libreport_save_conf_file.XXXXXX";
 
         /* OK, I know that I should not use tmpnam() but I want to check */
-        /* that save_conf_file() creates the directory */
+        /* that libreport_save_conf_file() creates the directory */
         assert(tmpnam(tmpdir) != NULL);
 
-        char *conf_path = concat_path_file(tmpdir, CONF_NAME);
+        char *conf_path = libreport_concat_path_file(tmpdir, CONF_NAME);
 
-        assert(save_conf_file(conf_path, first) || !"Save in not existing directory");
+        assert(libreport_save_conf_file(conf_path, first) || !"Save in not existing directory");
 
         {
             map_string_t *second = new_map_string();
-            assert(load_conf_file(conf_path, second, 0) || !"Loaded from not existing directory");
+            assert(libreport_load_conf_file(conf_path, second, 0) || !"Loaded from not existing directory");
 
             assert(EQUAL == map_string_equals(first, second) || !"The loaded configuration equals to the saved configuration");
 
@@ -493,8 +493,8 @@ int main(int argc, char **argv)
             map_string_t *second = new_map_string();
 
             unlink(CUSTOM_CONF);
-            assert(save_conf_file(CUSTOM_CONF, first) || !"Saved at relative path");
-            assert(load_conf_file(CUSTOM_CONF, second, 0) || !"Load the saved at relative path");
+            assert(libreport_save_conf_file(CUSTOM_CONF, first) || !"Saved at relative path");
+            assert(libreport_load_conf_file(CUSTOM_CONF, second, 0) || !"Load the saved at relative path");
 
             unlink(CUSTOM_CONF);
 
@@ -508,20 +508,20 @@ int main(int argc, char **argv)
 
     {   /* Test that keys removed from the conf map are also removed from the corresponding file */
         map_string_t *first = new_map_string();
-        insert_map_string(first, xstrdup("success"), xstrdup("total"));
-        insert_map_string(first, xstrdup("failure"), xstrdup("none"));
-        insert_map_string(first, xstrdup("effort"), xstrdup("minimal"));
-        insert_map_string(first, xstrdup("state"), xstrdup("done"));
+        insert_map_string(first, libreport_xstrdup("success"), libreport_xstrdup("total"));
+        insert_map_string(first, libreport_xstrdup("failure"), libreport_xstrdup("none"));
+        insert_map_string(first, libreport_xstrdup("effort"), libreport_xstrdup("minimal"));
+        insert_map_string(first, libreport_xstrdup("state"), libreport_xstrdup("done"));
 
         unlink(CUSTOM_CONF);
-        assert(save_conf_file(CUSTOM_CONF, first) || !"Saved at relative path");
+        assert(libreport_save_conf_file(CUSTOM_CONF, first) || !"Saved at relative path");
 
         remove_map_string_item(first, "failure");
         remove_map_string_item(first, "state");
-        assert(save_conf_file(CUSTOM_CONF, first) || !"Saved updated configuration");
+        assert(libreport_save_conf_file(CUSTOM_CONF, first) || !"Saved updated configuration");
 
         map_string_t *second = new_map_string();
-        assert(load_conf_file(CUSTOM_CONF, second, 0) || !"Load the updated conf from relative path");
+        assert(libreport_load_conf_file(CUSTOM_CONF, second, 0) || !"Load the updated conf from relative path");
 
         assert(EQUAL == map_string_equals(first, second) || !"The loaded configuration equals to the saved configuration");
 
@@ -529,10 +529,10 @@ int main(int argc, char **argv)
 
         remove_map_string_item(first, "success");
         remove_map_string_item(first, "effort");
-        assert(save_conf_file(CUSTOM_CONF, first) || !"Saved empty configuration");
+        assert(libreport_save_conf_file(CUSTOM_CONF, first) || !"Saved empty configuration");
 
         second = new_map_string();
-        assert(load_conf_file(CUSTOM_CONF, second, 0) || !"Load the empty conf from relative path");
+        assert(libreport_load_conf_file(CUSTOM_CONF, second, 0) || !"Load the empty conf from relative path");
 
         assert(EQUAL == map_string_equals(first, second) || !"The loaded configuration equals to the empty configuration");
 

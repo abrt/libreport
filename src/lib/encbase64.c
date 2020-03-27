@@ -18,7 +18,7 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-#include "internal_libreport.h" /* xmalloc */
+#include "internal_libreport.h" /* libreport_xmalloc */
 
 /* Conversion table for base 64 */
 static const char tbl_base64[65 /*+ 2*/] = {
@@ -85,9 +85,9 @@ static void encode_64bit(char *p, const void *src, int length, const char *tbl)
 	}
 }
 
-char *encode_base64(const void *src, int length)
+char *libreport_encode_base64(const void *src, int length)
 {
-	char *dst = (char *)xmalloc(4 * ((length + 2) / 3) + 1);
+	char *dst = (char *)libreport_xmalloc(4 * ((length + 2) / 3) + 1);
 	encode_64bit(dst, src, length, tbl_base64);
 	return dst;
 }

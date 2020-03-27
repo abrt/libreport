@@ -2,11 +2,11 @@
 
 AT_BANNER([Forbidden words])
 
-## -------------------- ##
-## load_words_from_file ##
-## -------------------- ##
+## ------------------------------ ##
+## libreport_load_words_from_file ##
+## ------------------------------ ##
 
-AT_TESTFUN([load_words_from_file],
+AT_TESTFUN([libreport_load_words_from_file],
 [[
 #include "testsuite.h"
 
@@ -18,9 +18,9 @@ TS_MAIN
 
     TS_ASSERT_STDERR_EQ_BEGIN
     {
-        g_verbose = 0;
-        dynamic_words = load_words_from_file("certainly_missing_file.conf");
-        g_verbose = 3;
+        libreport_g_verbose = 0;
+        dynamic_words = libreport_load_words_from_file("certainly_missing_file.conf");
+        libreport_g_verbose = 3;
     }
     TS_ASSERT_STDERR_EQ_END("", "No error messages produced!");
 
@@ -28,11 +28,11 @@ TS_MAIN
     g_list_free_full(dynamic_words, (GDestroyNotify)free);
 
     const char *static_words[] = { "one", "two", "three", "four", NULL };
-    xsetenv("LIBREPORT_DEBUG_USER_CONF_BASE_DIR", CONF_DIR_PATH);
+    libreport_xsetenv("LIBREPORT_DEBUG_USER_CONF_BASE_DIR", CONF_DIR_PATH);
 
     TS_ASSERT_STDERR_EQ_BEGIN
     {
-        dynamic_words = load_words_from_file("test_ignored.conf");
+        dynamic_words = libreport_load_words_from_file("test_ignored.conf");
     }
     TS_ASSERT_STDERR_EQ_END("Can't open " CONF_DIR "/test_ignored.conf: No such file or directory\n", "User notified about errors!");
 

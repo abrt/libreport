@@ -109,8 +109,8 @@ typedef struct section_t section_t;
 static section_t *
 section_new(const char *name)
 {
-    section_t *self = xmalloc(sizeof(*self));
-    self->name = xstrdup(name);
+    section_t *self = libreport_xmalloc(sizeof(*self));
+    self->name = libreport_xstrdup(name);
     self->items = NULL;
     self->children = NULL;
 
@@ -145,7 +145,7 @@ split_string_on_char(const char *str, char ch)
     for (;;)
     {
         const char *delim = strchrnul(str, ch);
-        list = g_list_prepend(list, xstrndup(str, delim - str));
+        list = g_list_prepend(list, libreport_xstrndup(str, delim - str));
         if (*delim == '\0')
             break;
         str = delim + 1;
@@ -204,10 +204,10 @@ load_stream(FILE *fp)
     sections = g_list_append(sections, master);
 
     char *line;
-    while ((line = xmalloc_fgetline(fp)) != NULL)
+    while ((line = libreport_xmalloc_fgetline(fp)) != NULL)
     {
         /* Skip comments */
-        char first = *skip_whitespace(line);
+        char first = *libreport_skip_whitespace(line);
         if (first == '#')
             goto free_line;
 
@@ -217,10 +217,10 @@ load_stream(FILE *fp)
         if (len && line[len-1] == '\\')
         {
             line[len-1] = '\0';
-            char *next_line = xmalloc_fgetline(fp);
+            char *next_line = libreport_xmalloc_fgetline(fp);
             if (next_line)
             {
-                line = append_to_malloced_string(line, next_line);
+                line = libreport_append_to_malloced_string(line, next_line);
                 free(next_line);
                 goto check_continuation;
             }
@@ -260,7 +260,7 @@ load_stream(FILE *fp)
         if (summary_line)
         {
             /* %summary is special */
-            item_list = g_list_append(NULL, xstrdup(skip_whitespace(value)));
+            item_list = g_list_append(NULL, libreport_xstrdup(libreport_skip_whitespace(value)));
         }
         else
         {
@@ -392,7 +392,7 @@ format_percented_string(const char *str, problem_data_t *pd, FILE *result, char 
                 if (opt_depth == 1)
                 {
                     log_debug("Missing top-level element: '%s'", str);
-                    missing_item = xstrdup(str);
+                    missing_item = libreport_xstrdup(str);
                 }
             }
             *nextpercent = '%';
@@ -436,12 +436,12 @@ append_text(struct strbuf *result, const char *item_name, const char *content, b
         if (pad < 0)
             pad = 0;
         if (print_item_name)
-            strbuf_append_strf(result,
+            libreport_strbuf_append_strf(result,
                     eol[0] == '\0' ? "%s: %*s%s\n" : "%s: %*s%s",
                     item_name, pad, "", content
             );
         else
-            strbuf_append_strf(result,
+            libreport_strbuf_append_strf(result,
                     eol[0] == '\0' ? "%s\n" : "%s",
                     content
             );
@@ -450,11 +450,11 @@ append_text(struct strbuf *result, const char *item_name, const char *content, b
     {
         /* multi-line item */
         if (print_item_name)
-            strbuf_append_strf(result, "%s:\n", item_name);
+            libreport_strbuf_append_strf(result, "%s:\n", item_name);
         for (;;)
         {
             eol = strchrnul(content, '\n');
-            strbuf_append_strf(result,
+            libreport_strbuf_append_strf(result,
                     /* For %bare_multiline_item, we don't want to print colons */
                     (print_item_name ? ":%.*s\n" : "%.*s\n"),
                     (int)(eol - content), content
@@ -655,7 +655,7 @@ format_section(section_t *section, problem_data_t *pd, GList *comment_fmt_spec, 
         if (child->items)
         {
             /* "Text: item[,item]..." */
-            struct strbuf *output = strbuf_new();
+            struct strbuf *output = libreport_strbuf_new();
             GList *item = child->items;
             while (item)
             {
@@ -670,7 +670,7 @@ format_section(section_t *section, problem_data_t *pd, GList *comment_fmt_spec, 
                 add_to_section_output((child->name[0] ? "%s:\n%s" : "%s%s"),
                                       child->name, output->buf);
 
-            strbuf_free(output);
+            libreport_strbuf_free(output);
         }
         else
         {
@@ -725,10 +725,10 @@ get_special_items(const char *item_name, problem_data_t *pd, GList *comment_fmt_
             char *eol = strchrnul(content, '\n');
             bool is_oneline = (eol[0] == '\0' || eol[1] == '\0');
             if (text || oneline == is_oneline)
-                result = g_list_append(result, xstrdup(name));
+                result = g_list_append(result, libreport_xstrdup(name));
         }
         else if ((item->flags & CD_FLAG_BIN) && binary)
-            result = g_list_append(result, xstrdup(name));
+            result = g_list_append(result, libreport_xstrdup(name));
     }
 
     g_list_free(sorted_names); /* names themselves are not freed */
@@ -753,7 +753,7 @@ get_attached_files(problem_data_t *pd, GList *items, GList *comment_fmt_spec)
 
         if (item_name[0] != '%')
         {
-            result = g_list_append(result, xstrdup(item_name));
+            result = g_list_append(result, libreport_xstrdup(item_name));
             continue;
         }
 
@@ -792,7 +792,7 @@ struct memstream_buffer
 static struct memstream_buffer *
 memstream_buffer_new()
 {
-    struct memstream_buffer *self = xmalloc(sizeof(*self));
+    struct memstream_buffer *self = libreport_xmalloc(sizeof(*self));
 
     self->msb_buffer = NULL;
     self->msb_stream = open_memstream(&(self->msb_buffer), &(self->msb_size));
@@ -869,7 +869,7 @@ struct problem_report
 static problem_report_t *
 problem_report_new()
 {
-    problem_report_t *self = xmalloc(sizeof(*self));
+    problem_report_t *self = libreport_xmalloc(sizeof(*self));
 
     self->pr_sec_summ = memstream_buffer_new();
     self->pr_sec_desc = memstream_buffer_new();
@@ -915,7 +915,7 @@ problem_report_add_custom_section(problem_report_t *self, const char *name)
     }
 
     log_debug("Problem report enriched with section : '%s'", name);
-    g_hash_table_insert(self->pr_sec_custom, xstrdup(name), memstream_buffer_new());
+    g_hash_table_insert(self->pr_sec_custom, libreport_xstrdup(name), memstream_buffer_new());
     return 0;
 }
 
@@ -1030,9 +1030,9 @@ struct extra_section
 static struct extra_section *
 extra_section_new(const char *name, int flags)
 {
-    struct extra_section *self = xmalloc(sizeof(*self));
+    struct extra_section *self = libreport_xmalloc(sizeof(*self));
 
-    self->pfes_name = xstrdup(name);
+    self->pfes_name = libreport_xstrdup(name);
     self->pfes_flags = flags;
 
     return self;
@@ -1094,9 +1094,9 @@ void problem_formatter_set_settings(problem_formatter_t *self, problem_report_se
 problem_formatter_t *
 problem_formatter_new(void)
 {
-    problem_formatter_t *self = xzalloc(sizeof(*self));
+    problem_formatter_t *self = libreport_xzalloc(sizeof(*self));
 
-    self->pf_default_summary = xstrdup("%reason%");
+    self->pf_default_summary = libreport_xstrdup("%reason%");
     self->pf_settings = problem_report_settings_init();
 
     return self;
@@ -1222,7 +1222,7 @@ problem_formatter_load_file(problem_formatter_t *self, const char *path)
     }
 
     self->pf_sections = load_stream(fp);
-    self->fmt_file = xstrdup(path);
+    self->fmt_file = libreport_xstrdup(path);
 
     if (fp != stdin)
         fclose(fp);

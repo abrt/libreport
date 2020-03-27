@@ -18,7 +18,7 @@
 */
 #include "internal_libreport.h"
 
-double get_dirsize(const char *pPath)
+double libreport_get_dirsize(const char *pPath)
 {
     DIR *dp = opendir(pPath);
     if (dp == NULL)
@@ -29,16 +29,16 @@ double get_dirsize(const char *pPath)
     double size = 0;
     while ((ep = readdir(dp)) != NULL)
     {
-        if (dot_or_dotdot(ep->d_name))
+        if (libreport_dot_or_dotdot(ep->d_name))
             continue;
-        char *dname = concat_path_file(pPath, ep->d_name);
+        char *dname = libreport_concat_path_file(pPath, ep->d_name);
         if (lstat(dname, &statbuf) != 0)
         {
             goto next;
         }
         if (S_ISDIR(statbuf.st_mode))
         {
-            size += get_dirsize(dname);
+            size += libreport_get_dirsize(dname);
         }
         else if (S_ISREG(statbuf.st_mode))
         {
@@ -53,23 +53,23 @@ double get_dirsize(const char *pPath)
 
 static bool this_is_a_dd(const char *dirname)
 {
-    /* Prevent get_dirsize_find_largest_dir() from flooding log
+    /* Prevent libreport_get_dirsize_find_largest_dir() from flooding log
      * with "is not a problem directory" messages
      * if there are stray dirs in /var/spool/abrt:
      */
-    int sv_logmode = logmode;
-    logmode = 0;
+    int sv_logmode = libreport_logmode;
+    libreport_logmode = 0;
 
     struct dump_dir *dd = dd_opendir(dirname,
                 /*flags:*/ DD_OPEN_READONLY | DD_FAIL_QUIETLY_ENOENT | DD_FAIL_QUIETLY_EACCES
     );
     dd_close(dd);
 
-    logmode = sv_logmode;
+    libreport_logmode = sv_logmode;
     return dd != NULL;
 }
 
-double get_dirsize_find_largest_dir(
+double libreport_get_dirsize_find_largest_dir(
         const char *pPath,
         char **worst_dir,
         const char *excluded)
@@ -88,10 +88,10 @@ double get_dirsize_find_largest_dir(
     double maxsz = 0;
     while ((ep = readdir(dp)) != NULL)
     {
-        if (dot_or_dotdot(ep->d_name))
+        if (libreport_dot_or_dotdot(ep->d_name))
             continue;
-        char *dname = concat_path_file(pPath, ep->d_name);
-        if (lstat(concat_path_file(dname, "sosreport.log"), &statbuf) == 0)
+        char *dname = libreport_concat_path_file(pPath, ep->d_name);
+        if (lstat(libreport_concat_path_file(dname, "sosreport.log"), &statbuf) == 0)
         {
             log_debug("Skipping %s': sosreport is being generated.", dname);
             goto next;
@@ -102,7 +102,7 @@ double get_dirsize_find_largest_dir(
         }
         if (S_ISDIR(statbuf.st_mode))
         {
-            double sz = get_dirsize(dname);
+            double sz = libreport_get_dirsize(dname);
             size += sz;
 
             if (worst_dir && (!excluded || strcmp(excluded, ep->d_name) != 0))
@@ -125,7 +125,7 @@ double get_dirsize_find_largest_dir(
                     {
                         maxsz = sz;
                         free(*worst_dir);
-                        *worst_dir = xstrdup(ep->d_name);
+                        *worst_dir = libreport_xstrdup(ep->d_name);
                     }
                 }
             }

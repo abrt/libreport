@@ -42,7 +42,7 @@ struct abrt_xmlrpc *abrt_xmlrpc_new_client(const char *url, int ssl_verify)
     xmlrpc_env env;
     xmlrpc_env_init(&env);
 
-    struct abrt_xmlrpc *ax = xzalloc(sizeof(struct abrt_xmlrpc));
+    struct abrt_xmlrpc *ax = libreport_xzalloc(sizeof(struct abrt_xmlrpc));
 
     /* This should be done at program startup, once. We do it in main */
     /* xmlrpc_client_setup_global_const(&env); */
@@ -86,7 +86,7 @@ struct abrt_xmlrpc *abrt_xmlrpc_new_client(const char *url, int ssl_verify)
                          &client_parms, XMLRPC_CPSIZE(transportparm_size),
                          &ax->ax_client);
 
-    list_free_with_free(proxies);
+    libreport_list_free_with_free(proxies);
 
     if (env.fault_occurred)
         abrt_xmlrpc_die(&env);
@@ -128,8 +128,8 @@ void abrt_xmlrpc_free_client(struct abrt_xmlrpc *ax)
 void abrt_xmlrpc_client_add_session_param_string(xmlrpc_env *env, struct abrt_xmlrpc *ax,
         const char *name, const char *value)
 {
-    struct abrt_xmlrpc_param_pair *new_ses_param = xmalloc(sizeof(*new_ses_param));
-    new_ses_param->name = xstrdup(name);
+    struct abrt_xmlrpc_param_pair *new_ses_param = libreport_xmalloc(sizeof(*new_ses_param));
+    new_ses_param->name = libreport_xstrdup(name);
 
     new_ses_param->value = xmlrpc_string_new(env, value);
     if (env->fault_occurred)

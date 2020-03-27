@@ -16,7 +16,7 @@ AT_TESTFUN([ureport_server_config_init],
 
 int main(void)
 {
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     struct ureport_server_config config;
     ureport_server_config_init(&config);
@@ -65,7 +65,7 @@ AT_TESTFUN([ureport_server_config_destroy],
 
 int main(void)
 {
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     struct ureport_server_config config;
     ureport_server_config_init(&config);
@@ -109,7 +109,7 @@ AT_TESTFUN([ureport_server_config_load],
 
 int main(void)
 {
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     /* value from env */
     /* IncludeAuthData set to 'no' */
@@ -184,11 +184,11 @@ int main(void)
     unsetenv("uReport_IncludeAuthData");
     unsetenv("uReport_AuthDataItems");
 
-    insert_map_string(settings, xstrdup("URL"), xstrdup("settings_url"));
-    insert_map_string(settings, xstrdup("SSLVerify"), xstrdup("yes"));
-    insert_map_string(settings, xstrdup("SSLClientAuth"), xstrdup(""));
-    insert_map_string(settings, xstrdup("IncludeAuthData"), xstrdup("no"));
-    insert_map_string(settings, xstrdup("AuthDataItems"), xstrdup("hostname"));
+    insert_map_string(settings, libreport_xstrdup("URL"), libreport_xstrdup("settings_url"));
+    insert_map_string(settings, libreport_xstrdup("SSLVerify"), libreport_xstrdup("yes"));
+    insert_map_string(settings, libreport_xstrdup("SSLClientAuth"), libreport_xstrdup(""));
+    insert_map_string(settings, libreport_xstrdup("IncludeAuthData"), libreport_xstrdup("no"));
+    insert_map_string(settings, libreport_xstrdup("AuthDataItems"), libreport_xstrdup("hostname"));
 
     ureport_server_config_load(&config, settings);
 
@@ -206,11 +206,11 @@ int main(void)
     ureport_server_config_init(&config);
 
     settings = new_map_string();
-    insert_map_string(settings, xstrdup("URL"), xstrdup("settings_url"));
-    insert_map_string(settings, xstrdup("SSLVerify"), xstrdup("yes"));
-    insert_map_string(settings, xstrdup("SSLClientAuth"), xstrdup(""));
-    insert_map_string(settings, xstrdup("IncludeAuthData"), xstrdup("yes"));
-    insert_map_string(settings, xstrdup("AuthDataItems"), xstrdup(""));
+    insert_map_string(settings, libreport_xstrdup("URL"), libreport_xstrdup("settings_url"));
+    insert_map_string(settings, libreport_xstrdup("SSLVerify"), libreport_xstrdup("yes"));
+    insert_map_string(settings, libreport_xstrdup("SSLClientAuth"), libreport_xstrdup(""));
+    insert_map_string(settings, libreport_xstrdup("IncludeAuthData"), libreport_xstrdup("yes"));
+    insert_map_string(settings, libreport_xstrdup("AuthDataItems"), libreport_xstrdup(""));
 
     ureport_server_config_load(&config, settings);
 
@@ -228,11 +228,11 @@ int main(void)
     ureport_server_config_init(&config);
 
     settings = new_map_string();
-    insert_map_string(settings, xstrdup("URL"), xstrdup("settings_url"));
-    insert_map_string(settings, xstrdup("SSLVerify"), xstrdup("no"));
-    insert_map_string(settings, xstrdup("SSLClientAuth"), xstrdup(""));
-    insert_map_string(settings, xstrdup("IncludeAuthData"), xstrdup("yes"));
-    insert_map_string(settings, xstrdup("AuthDataItems"), xstrdup("hostname, type"));
+    insert_map_string(settings, libreport_xstrdup("URL"), libreport_xstrdup("settings_url"));
+    insert_map_string(settings, libreport_xstrdup("SSLVerify"), libreport_xstrdup("no"));
+    insert_map_string(settings, libreport_xstrdup("SSLClientAuth"), libreport_xstrdup(""));
+    insert_map_string(settings, libreport_xstrdup("IncludeAuthData"), libreport_xstrdup("yes"));
+    insert_map_string(settings, libreport_xstrdup("AuthDataItems"), libreport_xstrdup("hostname, type"));
 
     ureport_server_config_load(&config, settings);
 
@@ -287,9 +287,9 @@ int main(void)
     ureport_server_config_init(&config);
 
     settings = new_map_string();
-    insert_map_string(settings, xstrdup("SSLClientAuth"), xstrdup("rhsm"));
-    insert_map_string(settings, xstrdup("HTTPAuth"), xstrdup("rhn-username:rhn-password"));
-    insert_map_string(settings, xstrdup("AuthDataItems"), xstrdup("hostname, type"));
+    insert_map_string(settings, libreport_xstrdup("SSLClientAuth"), libreport_xstrdup("rhsm"));
+    insert_map_string(settings, libreport_xstrdup("HTTPAuth"), libreport_xstrdup("rhn-username:rhn-password"));
+    insert_map_string(settings, libreport_xstrdup("AuthDataItems"), libreport_xstrdup("hostname, type"));
 
     setenv("LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH", TESTING_CERTS_CORRECT_DIR_PATH, 1);
 
@@ -330,7 +330,7 @@ AT_TESTFUN([ureport_server_config_set_url],
 
 int main(void)
 {
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     struct ureport_server_config config;
     ureport_server_config_init(&config);
@@ -475,7 +475,7 @@ int test_ureport_server_config_set_client_auth_exit_code(struct ureport_server_c
 
 int main(void)
 {
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     struct ureport_server_config config;
     ureport_server_config_init(&config);
@@ -660,7 +660,7 @@ void assert_ureport_server_config(struct ureport_server_config *config,
 
 int main(void)
 {
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     struct ureport_server_config config;
     ureport_server_config_init(&config);
@@ -776,7 +776,7 @@ AT_TESTFUN([ureport_server_response_save_in_dump_dir],
 
 int main(void)
 {
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     /* reported to*/
     struct post_state ps;
@@ -888,7 +888,7 @@ AT_TESTFUN([ureport_server_response_get_report_url],
 
 int main(void)
 {
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     /* reported to*/
     struct post_state ps;
@@ -909,8 +909,8 @@ int main(void)
 
     char *report_url = ureport_server_response_get_report_url(response, &config);
 
-    char *expect_bthash_url = concat_path_file(config.ur_url, BTHASH_URL_SFX);
-    char *expect_report_url = concat_path_file(expect_bthash_url, response->urr_bthash);
+    char *expect_bthash_url = libreport_concat_path_file(config.ur_url, BTHASH_URL_SFX);
+    char *expect_report_url = libreport_concat_path_file(expect_bthash_url, response->urr_bthash);
     free(expect_bthash_url);
 
     assert(strcmp(report_url, expect_report_url) == 0);
@@ -938,7 +938,7 @@ AT_TESTFUN([ureport_do_post],
 
 int main(void)
 {
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     struct dump_dir *dd = dd_create("./test", (uid_t)-1L, DEFAULT_DUMP_DIR_MODE);
     assert(dd != NULL);
@@ -986,7 +986,7 @@ AT_TESTFUN([ureport_submit],
 
 int main(void)
 {
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     struct dump_dir *dd = dd_create("./test", (uid_t)-1L, DEFAULT_DUMP_DIR_MODE);
     assert(dd != NULL);
@@ -1035,7 +1035,7 @@ AT_TESTFUN([ureport_json_attachment_new],
 
 int main(void)
 {
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     char *json = ureport_json_attachment_new("data_bthash", "data_type", "data_data");
     assert(strcmp(json, "{ \"bthash\": \"data_bthash\", \"type\": \"data_type\", \"data\": \"data_data\" }") == 0);
@@ -1063,7 +1063,7 @@ AT_TESTFUN([ureport_attach_string],
 
 int main(void)
 {
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     struct ureport_server_config config;
     ureport_server_config_init(&config);
@@ -1094,7 +1094,7 @@ AT_TESTFUN([ureport_from_dump_dir_ext],
 
 int main(void)
 {
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     struct dump_dir *dd = dd_create("./test", (uid_t)-1L, DEFAULT_DUMP_DIR_MODE);
     assert(dd != NULL);
@@ -1179,7 +1179,7 @@ AT_TESTFUN([ureport_server_config_load_basic_auth],
 
 int main(void)
 {
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     {
         struct ureport_server_config config;

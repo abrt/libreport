@@ -18,14 +18,14 @@
  */
 #include "internal_libreport.h"
 
-char* skip_blank(const char *s)
+char *libreport_skip_blank(const char *s)
 {
 	while (isblank(*s)) ++s;
 
 	return (char *) s;
 }
 
-char* skip_whitespace(const char *s)
+char *libreport_skip_whitespace(const char *s)
 {
 	/* NB: isspace('\0') returns 0 */
 	while (isspace(*s)) ++s;
@@ -33,7 +33,7 @@ char* skip_whitespace(const char *s)
 	return (char *) s;
 }
 
-char* skip_non_whitespace(const char *s)
+char *libreport_skip_non_whitespace(const char *s)
 {
 	while (*s && !isspace(*s)) ++s;
 

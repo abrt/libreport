@@ -2,11 +2,11 @@
 
 AT_BANNER([xfuncs])
 
-## --------------- ##
-## xstrdup_between ##
-## --------------- ##
+## ------------------------- ##
+## libreport_xstrdup_between ##
+## ------------------------- ##
 
-AT_TESTFUN([xstrdup_between],
+AT_TESTFUN([libreport_xstrdup_between],
 [[#include "internal_libreport.h"
 #include <assert.h>
 #include <string.h>
@@ -17,7 +17,7 @@ AT_TESTFUN([xstrdup_between],
 
 void test(const char *src, const char *open, const char *close, const char *exp)
 {
-    char *res = xstrdup_between(src, open, close);
+    char *res = libreport_xstrdup_between(src, open, close);
 
     if (exp == NULL && res != NULL)
     {
@@ -43,7 +43,7 @@ void test(const char *src, const char *open, const char *close, const char *exp)
 
 int main(void)
 {
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     test("<a>foo blah</a>", "<?>", "</a>", NULL);
     test("<a>foo blah</a>", "<a>", "</?>", NULL);
@@ -67,7 +67,7 @@ AT_TESTFUN([parse_numbers],
 
 int main(void)
 {
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     /* 1. not a number - ERROR
      * 2. a number with an alpha suffix - ERROR
@@ -80,85 +80,85 @@ int main(void)
 
     {
         unsigned uint_value = 12345;
-        assert(try_atou("foo", &uint_value) != 0);
+        assert(libreport_try_atou("foo", &uint_value) != 0);
         assert(uint_value == 12345);
 
-        assert(try_atou("foo54321", &uint_value) != 0);
+        assert(libreport_try_atou("foo54321", &uint_value) != 0);
         assert(uint_value == 12345);
 
         char buf[sizeof(unsigned long long) * 3 + 1];
 
         snprintf(buf, sizeof(buf), "%llu", 1LLU + UINT_MAX);
-        assert(try_atou(buf, &uint_value) != 0 || !"Above UINT_MAX");
+        assert(libreport_try_atou(buf, &uint_value) != 0 || !"Above UINT_MAX");
         assert(uint_value == 12345);
 
-        assert(try_atou("-1", &uint_value) != 0);
+        assert(libreport_try_atou("-1", &uint_value) != 0);
         assert(uint_value == 12345);
 
         snprintf(buf, sizeof(buf), "%llu", (unsigned long long)UINT_MAX);
-        assert(try_atou(buf, &uint_value) == 0);
+        assert(libreport_try_atou(buf, &uint_value) == 0);
         assert(uint_value == UINT_MAX);
-        assert(xatou(buf) == UINT_MAX);
+        assert(libreport_xatou(buf) == UINT_MAX);
 
-        assert(try_atou("0", &uint_value) == 0);
+        assert(libreport_try_atou("0", &uint_value) == 0);
         assert(uint_value == 0);
-        assert(xatou("0") == 0);
+        assert(libreport_xatou("0") == 0);
     }
 
     {
         int int_value = 12345;
-        assert(try_atoi("foo", &int_value) != 0);
+        assert(libreport_try_atoi("foo", &int_value) != 0);
         assert(int_value == 12345);
 
-        assert(try_atoi("foo54321", &int_value) != 0);
+        assert(libreport_try_atoi("foo54321", &int_value) != 0);
         assert(int_value == 12345);
 
         char buf[sizeof(long long) * 3 + 1];
 
         snprintf(buf, sizeof(buf), "%lld", 1LL + INT_MAX);
-        assert(try_atoi(buf, &int_value) != 0 || !"Parse INT_MAX+1");
+        assert(libreport_try_atoi(buf, &int_value) != 0 || !"Parse INT_MAX+1");
         assert(int_value == 12345 || !"Above INT_MAX");
 
         snprintf(buf, sizeof(buf), "%lld", -1LL + INT_MIN);
-        assert(try_atoi(buf, &int_value) != 0 || !"Parse INT_MIN-1");
+        assert(libreport_try_atoi(buf, &int_value) != 0 || !"Parse INT_MIN-1");
         assert(int_value == 12345 || !"Belove INT_MIN");
 
         snprintf(buf, sizeof(buf), "%lld", (unsigned long long)INT_MAX);
-        assert(try_atoi(buf, &int_value) == 0 || !"Parse INT_MAX");
+        assert(libreport_try_atoi(buf, &int_value) == 0 || !"Parse INT_MAX");
         assert(int_value == INT_MAX);
-        assert(xatoi(buf) == INT_MAX);
+        assert(libreport_xatoi(buf) == INT_MAX);
 
         snprintf(buf, sizeof(buf), "%lld", (unsigned long long)INT_MIN);
-        assert(try_atoi(buf, &int_value) == 0 || !"Parse INT_MIN");
+        assert(libreport_try_atoi(buf, &int_value) == 0 || !"Parse INT_MIN");
         assert(int_value == INT_MIN);
-        assert(xatoi(buf) == INT_MIN);
+        assert(libreport_xatoi(buf) == INT_MIN);
     }
 
     {
         int positive_value = 12345;
-        assert(try_atoi_positive("foo", &positive_value) != 0);
+        assert(libreport_try_atoi_positive("foo", &positive_value) != 0);
         assert(positive_value == 12345);
 
-        assert(try_atoi_positive("foo54321", &positive_value) != 0);
+        assert(libreport_try_atoi_positive("foo54321", &positive_value) != 0);
         assert(positive_value == 12345);
 
         char buf[sizeof(long long) * 3 + 1];
 
         snprintf(buf, sizeof(buf), "%lld", 1LL + INT_MAX);
-        assert(try_atoi_positive(buf, &positive_value) != 0);
+        assert(libreport_try_atoi_positive(buf, &positive_value) != 0);
         assert(positive_value == 12345 || !"Above INT_MAX");
 
-        assert(try_atoi_positive("-1", &positive_value) != 0);
+        assert(libreport_try_atoi_positive("-1", &positive_value) != 0);
         assert(positive_value == 12345 || !"After -1");
 
         snprintf(buf, sizeof(buf), "%lld", (unsigned long long)INT_MAX);
-        assert(try_atoi_positive(buf, &positive_value) == 0 || !"Parse INT_MAX");
+        assert(libreport_try_atoi_positive(buf, &positive_value) == 0 || !"Parse INT_MAX");
         assert(positive_value == INT_MAX);
-        assert(xatoi_positive(buf) == INT_MAX);
+        assert(libreport_xatoi_positive(buf) == INT_MAX);
 
-        assert(try_atoi_positive("0", &positive_value) == 0);
+        assert(libreport_try_atoi_positive("0", &positive_value) == 0);
         assert(positive_value == 0);
-        assert(xatoi_positive("0") == 0);
+        assert(libreport_xatoi_positive("0") == 0);
     }
 
     return 0;

@@ -38,7 +38,7 @@ static char*
 check_curl_error(CURLcode err, const char* msg)
 {
     if (err)
-        return xasprintf("%s: %s", msg, curl_easy_strerror(err));
+        return libreport_xasprintf("%s: %s", msg, curl_easy_strerror(err));
     return NULL;
 }
 
@@ -101,7 +101,7 @@ CURLcode curl_easy_perform_with_proxy(CURL *handle, const char *url)
         curl_err = curl_easy_perform(handle);
     }
 
-    list_free_with_free(proxy_list);
+    libreport_list_free_with_free(proxy_list);
 
     return curl_err;
 }
@@ -112,7 +112,7 @@ CURLcode curl_easy_perform_with_proxy(CURL *handle, const char *url)
 
 post_state_t *new_post_state(int flags)
 {
-    post_state_t *state = (post_state_t *)xzalloc(sizeof(*state));
+    post_state_t *state = (post_state_t *)libreport_xzalloc(sizeof(*state));
     state->flags = flags;
     return state;
 }
@@ -143,7 +143,7 @@ char *find_header_in_post_state(post_state_t *state, const char *str)
         while (*headers)
         {
             if (strncmp(*headers, str, len) == 0)
-                return skip_whitespace(*headers + len);
+                return libreport_skip_whitespace(*headers + len);
             headers++;
         }
     }
@@ -161,7 +161,7 @@ save_headers(void *buffer_pv, size_t count, size_t nmemb, void *ptr)
     post_state_t* state = (post_state_t*)ptr;
     size_t size = count * nmemb;
 
-    char *h = xstrndup((char*)buffer_pv, size);
+    char *h = libreport_xstrndup((char*)buffer_pv, size);
     strchrnul(h, '\r')[0] = '\0';
     strchrnul(h, '\n')[0] = '\0';
 
@@ -188,7 +188,7 @@ save_headers(void *buffer_pv, size_t count, size_t nmemb, void *ptr)
     }
 
     log_debug("save_headers: header %d: '%s'", cnt, h);
-    state->headers = (char**)xrealloc(state->headers, (cnt+2) * sizeof(state->headers[0]));
+    state->headers = (char**)libreport_xrealloc(state->headers, (cnt+2) * sizeof(state->headers[0]));
     state->headers[cnt] = h;
     state->header_cnt = ++cnt;
     state->headers[cnt] = NULL;
@@ -223,7 +223,7 @@ static size_t fread_with_reporting(void *ptr, size_t size, size_t nmemb, void *u
     {
         last_t = t;
         report_interval *= 2;
-        off_t sz = fstat_st_size_or_die(fileno(fp));
+        off_t sz = libreport_fstat_st_size_or_die(fileno(fp));
         log_warning(_("Uploaded: %llu of %llu kbytes"),
                 (unsigned long long)cur_pos / 1024,
                 (unsigned long long)sz / 1024);
@@ -235,7 +235,7 @@ static size_t fread_with_reporting(void *ptr, size_t size, size_t nmemb, void *u
 
 static int curl_debug(CURL *handle, curl_infotype it, char *buf, size_t bufsize, void *unused)
 {
-    if (logmode == 0)
+    if (libreport_logmode == 0)
         return 0;
 
     unsigned orig_bufsize = bufsize;
@@ -276,13 +276,13 @@ static int curl_debug(CURL *handle, curl_infotype it, char *buf, size_t bufsize,
         log_warning("curl sent header: '%.*s%s'", (int) bufsize, buf, eol);
         break;
     case CURLINFO_DATA_IN: /* The data is protocol data received from the peer. */
-        if (g_verbose >= 3)
+        if (libreport_g_verbose >= 3)
             log_warning("curl rcvd data: '%.*s%s'", (int) bufsize, buf, eol);
         else
             log_warning("curl rcvd data %u bytes", orig_bufsize);
         break;
     case CURLINFO_DATA_OUT: /* The data is protocol data sent to the peer. */
-        if (g_verbose >= 3)
+        if (libreport_g_verbose >= 3)
             log_warning("curl sent data: '%.*s%s'", (int) bufsize, buf, eol);
         else
             log_warning("curl sent data %u bytes", orig_bufsize);
@@ -328,7 +328,7 @@ post(post_state_t *state,
     // Shut off the built-in progress meter completely
     xcurl_easy_setopt_long(handle, CURLOPT_NOPROGRESS, 1);
 
-    if (g_verbose >= 2)
+    if (libreport_g_verbose >= 2)
     {
         // "Display a lot of verbose information about its operations.
         // Very useful for libcurl and/or protocol debugging and understanding.
@@ -480,7 +480,7 @@ post(post_state_t *state,
     if (data_size != POST_DATA_FROMFILE_AS_FORM_DATA
         && data_size != POST_DATA_STRING_AS_FORM_DATA)
     {
-        char *content_type_header = xasprintf("Content-Type: %s", content_type);
+        char *content_type_header = libreport_xasprintf("Content-Type: %s", content_type);
         // Note: curl_slist_append() copies content_type_header
         httpheader_list = curl_slist_append(httpheader_list, content_type_header);
         if (!httpheader_list)
@@ -628,7 +628,7 @@ char *upload_file_ext(post_state_t *state, const char *url, const char *filename
     char *password = NULL;
     char *clean_url = NULL;
 
-    if (uri_userinfo_remove(url, &clean_url, &scheme, &hostname, &username, &password, NULL) != 0)
+    if (libreport_uri_userinfo_remove(url, &clean_url, &scheme, &hostname, &username, &password, NULL) != 0)
         goto finito;
 
     if (scheme == NULL || hostname == NULL)
@@ -645,9 +645,9 @@ char *upload_file_ext(post_state_t *state, const char *url, const char *filename
 
     unsigned len = strlen(clean_url);
     if (len > 0 && clean_url[len-1] == '/')
-        whole_url = concat_path_file(clean_url, strrchr(filename, '/') ? : filename);
+        whole_url = libreport_concat_path_file(clean_url, strrchr(filename, '/') ? : filename);
     else
-        whole_url = xstrdup(clean_url);
+        whole_url = libreport_xstrdup(clean_url);
 
     /* work around bug in libssh2(curl with scp://)
      * libssh2_aget_disconnect() calls close(0)
@@ -687,13 +687,13 @@ char *upload_file_ext(post_state_t *state, const char *url, const char *filename
                 (state->curl_result == CURLE_LOGIN_DENIED
                  || state->curl_result == CURLE_REMOTE_ACCESS_DENIED))
         {
-            char *msg = xasprintf(_("Please enter user name for '%s//%s':"), scheme, hostname);
+            char *msg = libreport_xasprintf(_("Please enter user name for '%s//%s':"), scheme, hostname);
             free(username);
             username = libreport_ask(msg);
             free(msg);
             if (username != NULL && username[0] != '\0')
             {
-                msg = xasprintf(_("Please enter password for '%s//%s@%s':"), scheme, username, hostname);
+                msg = libreport_xasprintf(_("Please enter password for '%s//%s@%s':"), scheme, username, hostname);
                 free(password);
                 password = libreport_ask_password(msg);
                 free(msg);

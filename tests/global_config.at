@@ -14,7 +14,7 @@ AT_TESTFUN([always_excluded_elements],
 
 int main(int argc, char **argv)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
     char cwd_buf[PATH_MAX + 1];
 
     static const char *dirs[] = {
@@ -154,7 +154,7 @@ TS_MAIN
     TS_ASSERT_FALSE_MESSAGE(libreport_get_global_create_private_ticket(), "Reverted back to False");
     TS_ASSERT_STRING_NULL_OR_EMPTY(getenv(CREATE_PRIVATE_TICKET), "Correct ENVIRONMENT value");
 
-    xsetenv(CREATE_PRIVATE_TICKET, "1");
+    libreport_xsetenv(CREATE_PRIVATE_TICKET, "1");
 
     TS_ASSERT_TRUE_MESSAGE(libreport_get_global_create_private_ticket(), "Loaded from environment");
 
@@ -162,7 +162,7 @@ TS_MAIN
 
     TS_ASSERT_FALSE_MESSAGE(libreport_get_global_create_private_ticket(), "Reflects environment");
 
-    xsetenv(CREATE_PRIVATE_TICKET, "0");
+    libreport_xsetenv(CREATE_PRIVATE_TICKET, "0");
 
     TS_ASSERT_FALSE_MESSAGE(libreport_get_global_create_private_ticket(), "Zero is false");
 
@@ -221,7 +221,7 @@ TS_MAIN
     TS_ASSERT_FALSE_MESSAGE(libreport_get_global_stop_on_not_reportable(), "Reverted back to False");
     TS_ASSERT_STRING_EQ(getenv(STOP_ON_NOT_REPORTABLE), "0", "Correct ENVIRONMENT value");
 
-    xsetenv(STOP_ON_NOT_REPORTABLE, "1");
+    libreport_xsetenv(STOP_ON_NOT_REPORTABLE, "1");
 
     TS_ASSERT_TRUE_MESSAGE(libreport_get_global_stop_on_not_reportable(), "Loaded from environment");
 
@@ -229,7 +229,7 @@ TS_MAIN
 
     TS_ASSERT_TRUE_MESSAGE(libreport_get_global_stop_on_not_reportable(), "Reflects environment");
 
-    xsetenv(STOP_ON_NOT_REPORTABLE, "0");
+    libreport_xsetenv(STOP_ON_NOT_REPORTABLE, "0");
 
     TS_ASSERT_FALSE_MESSAGE(libreport_get_global_stop_on_not_reportable(), "Zero is false");
 

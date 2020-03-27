@@ -21,17 +21,17 @@
 #include "internal_libreport.h"
 
 /* Die with an error message if we can't read the entire buffer. */
-void xread(int fd, void *buf, size_t count)
+void libreport_xread(int fd, void *buf, size_t count)
 {
     if (count)
     {
-        ssize_t size = full_read(fd, buf, count);
+        ssize_t size = libreport_full_read(fd, buf, count);
         if ((size_t)size != count)
             error_msg_and_die("short read");
     }
 }
 
-ssize_t safe_read(int fd, void *buf, size_t count)
+ssize_t libreport_safe_read(int fd, void *buf, size_t count)
 {
     ssize_t n;
 
@@ -42,7 +42,7 @@ ssize_t safe_read(int fd, void *buf, size_t count)
     return n;
 }
 
-ssize_t safe_write(int fd, const void *buf, size_t count)
+ssize_t libreport_safe_write(int fd, const void *buf, size_t count)
 {
     ssize_t n;
 
@@ -53,7 +53,7 @@ ssize_t safe_write(int fd, const void *buf, size_t count)
     return n;
 }
 
-ssize_t full_read(int fd, void *buf, size_t len)
+ssize_t libreport_full_read(int fd, void *buf, size_t len)
 {
     ssize_t cc;
     ssize_t total;
@@ -62,7 +62,7 @@ ssize_t full_read(int fd, void *buf, size_t len)
 
     while (len)
     {
-        cc = safe_read(fd, buf, len);
+        cc = libreport_safe_read(fd, buf, len);
 
         if (cc < 0)
         {
@@ -84,7 +84,7 @@ ssize_t full_read(int fd, void *buf, size_t len)
     return total;
 }
 
-ssize_t full_write(int fd, const void *buf, size_t len)
+ssize_t libreport_full_write(int fd, const void *buf, size_t len)
 {
     ssize_t cc;
     ssize_t total;
@@ -93,7 +93,7 @@ ssize_t full_write(int fd, const void *buf, size_t len)
 
     while (len)
     {
-        cc = safe_write(fd, buf, len);
+        cc = libreport_safe_write(fd, buf, len);
 
         if (cc < 0)
         {
@@ -114,15 +114,15 @@ ssize_t full_write(int fd, const void *buf, size_t len)
     return total;
 }
 
-ssize_t full_write_str(int fd, const char *buf)
+ssize_t libreport_full_write_str(int fd, const char *buf)
 {
-    return full_write(fd, buf, strlen(buf));
+    return libreport_full_write(fd, buf, strlen(buf));
 }
 
 /* Read (potentially big) files in one go. File size is estimated
  * by stat. Extra '\0' byte is appended.
  */
-void* xmalloc_read(int fd, size_t *maxsz_p)
+void* libreport_xmalloc_read(int fd, size_t *maxsz_p)
 {
     char *buf;
     size_t size, rd_size, total;
@@ -145,8 +145,8 @@ void* xmalloc_read(int fd, size_t *maxsz_p)
     while (1) {
         if (to_read < size)
             size = to_read;
-        buf = xrealloc(buf, total + size + 1);
-        rd_size = full_read(fd, buf + total, size);
+        buf = libreport_xrealloc(buf, total + size + 1);
+        rd_size = libreport_full_read(fd, buf + total, size);
         if ((ssize_t)rd_size == (ssize_t)(-1)) { /* error */
             free(buf);
             return NULL;
@@ -162,7 +162,7 @@ void* xmalloc_read(int fd, size_t *maxsz_p)
         if (size > 64*1024)
             size = 64*1024;
     }
-    buf = xrealloc(buf, total + 1);
+    buf = libreport_xrealloc(buf, total + 1);
     buf[total] = '\0';
 
     if (maxsz_p)
@@ -170,7 +170,7 @@ void* xmalloc_read(int fd, size_t *maxsz_p)
     return buf;
 }
 
-void* xmalloc_open_read_close(const char *filename, size_t *maxsz_p)
+void *libreport_xmalloc_open_read_close(const char *filename, size_t *maxsz_p)
 {
     char *buf;
     int fd;
@@ -179,25 +179,25 @@ void* xmalloc_open_read_close(const char *filename, size_t *maxsz_p)
     if (fd < 0)
         return NULL;
 
-    buf = xmalloc_read(fd, maxsz_p);
+    buf = libreport_xmalloc_read(fd, maxsz_p);
     close(fd);
     return buf;
 }
 
-void* xmalloc_xopen_read_close(const char *filename, size_t *maxsz_p)
+void *libreport_xmalloc_xopen_read_close(const char *filename, size_t *maxsz_p)
 {
-    void *buf = xmalloc_open_read_close(filename, maxsz_p);
+    void *buf = libreport_xmalloc_open_read_close(filename, maxsz_p);
     if (!buf)
         perror_msg_and_die("Can't read '%s'", filename);
     return buf;
 }
 
-char* malloc_readlink(const char *linkname)
+char *libreport_malloc_readlink(const char *linkname)
 {
-    return malloc_readlinkat(AT_FDCWD, linkname);
+    return libreport_malloc_readlinkat(AT_FDCWD, linkname);
 }
 
-char* malloc_readlinkat(int dir_fd, const char *linkname)
+char *libreport_malloc_readlinkat(int dir_fd, const char *linkname)
 {
     char buf[PATH_MAX + 1];
     int len;
@@ -206,7 +206,7 @@ char* malloc_readlinkat(int dir_fd, const char *linkname)
     if (len >= 0)
     {
         buf[len] = '\0';
-        return xstrdup(buf);
+        return libreport_xstrdup(buf);
     }
     return NULL;
 }

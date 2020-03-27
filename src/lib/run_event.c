@@ -26,7 +26,7 @@ static void run_event_stdio_error_and_die(const char *error_line, void *param);
 
 struct run_event_state *new_run_event_state()
 {
-    struct run_event_state *state = xzalloc(sizeof(struct run_event_state));
+    struct run_event_state *state = libreport_xzalloc(sizeof(struct run_event_state));
 
     state->logging_callback = run_event_stdio_log;
     state->error_callback = run_event_stdio_error_and_die;
@@ -40,7 +40,7 @@ struct run_event_state *new_run_event_state()
 
     state->extra_environment = g_ptr_array_new_with_free_func(g_free);
 
-    state->command_output = strbuf_new();
+    state->command_output = libreport_strbuf_new();
 
     return state;
 }
@@ -50,7 +50,7 @@ void free_run_event_state(struct run_event_state *state)
     if (state)
     {
         g_ptr_array_free(state->extra_environment, TRUE);
-        strbuf_free(state->command_output);
+        libreport_strbuf_free(state->command_output);
         free_commands(state);
         free(state);
     }
@@ -70,7 +70,7 @@ void make_run_event_state_forwarding(struct run_event_state *state)
      * Not sure if we should reset even logging_callback and error_callback?
      */
 
-    xsetenv("REPORT_CLIENT_SLAVE", "1");
+    libreport_xsetenv("REPORT_CLIENT_SLAVE", "1");
 }
 
 /* Asynchronous command execution */
@@ -125,7 +125,7 @@ void free_rule_list(GList *rule_list)
     while (rule_list)
     {
         struct rule *cur_rule = rule_list->data;
-        list_free_with_free(cur_rule->conditions);
+        libreport_list_free_with_free(cur_rule->conditions);
         free(cur_rule->command);
         free(cur_rule);
 
@@ -155,7 +155,7 @@ GList *load_rule_list(GList *rule_list,
     char *next_line;
     while (1)
     {
-        next_line = xmalloc_fgetline(conffile);
+        next_line = libreport_xmalloc_fgetline(conffile);
         if(!next_line)
         {
             log_parser("EOF");
@@ -184,7 +184,7 @@ GList *load_rule_list(GList *rule_list,
                 if (prev < 0)
                     perror_msg_and_die("ftell");
 
-                next_line = xmalloc_fgetline(conffile);
+                next_line = libreport_xmalloc_fgetline(conffile);
 
                 log_parser("next_line is: '%s'", next_line ? next_line : "EOF");
                 /* stop merging new lines into this event
@@ -212,21 +212,21 @@ GList *load_rule_list(GList *rule_list,
                 }
 
                 ++line_counter;
-                char *tmp = xasprintf("%s\n%s", line, next_line);
+                char *tmp = libreport_xasprintf("%s\n%s", line, next_line);
                 free(line);
                 free(next_line);
                 line = tmp;
             }
 
-            char *p = skip_whitespace(line);
+            char *p = libreport_skip_whitespace(line);
 
             /* Rule has form: [VAR=VAL]... PROG [ARGS] */
-            struct rule *cur_rule = xzalloc(sizeof(*cur_rule));
+            struct rule *cur_rule = libreport_xzalloc(sizeof(*cur_rule));
 
             while (1) /* word loop */
             {
                 log_parser("word loop, p is: '%s'", p);
-                char *end_word = skip_non_whitespace(p);
+                char *end_word = libreport_skip_non_whitespace(p);
                 log_parser("end word: '%s'", end_word);
 
                 /* If there is no '=' in this word... */
@@ -235,30 +235,30 @@ GList *load_rule_list(GList *rule_list,
                 if (!line_val || line_val >= end_word)
                 {
                     log_parser("found start of a command");
-                    p = skip_whitespace(p);
+                    p = libreport_skip_whitespace(p);
                     break; /* ...we found the start of a command */
                 }
 
-                char *const current_word = xstrndup(p, end_word - p);
+                char *const current_word = libreport_xstrndup(p, end_word - p);
                 cur_rule->conditions = g_list_append(cur_rule->conditions, current_word);
                 log_parser("adding condition '%s'", current_word);
 
                 /* Go to next word, but don't cross lines */
-                p = skip_blank(end_word);
+                p = libreport_skip_blank(end_word);
             } /* end of word loop */
 
             if (g_list_length(cur_rule->conditions) == 0)
             {
                 log_debug("Adding '%s' without conditions", p);
             }
-            else if (g_verbose >= 3)
+            else if (libreport_g_verbose >= 3)
             {
                 log_warning("Adding '%s'\nwith conditions:", p);
                 for (GList *c = cur_rule->conditions; c != NULL; c = g_list_next(c))
                     log_warning("| %s", (const char *)c->data);
             }
 
-            cur_rule->command = xstrdup(p);
+            cur_rule->command = libreport_xstrdup(p);
 
             rule_list = g_list_append(rule_list, cur_rule);
         }
@@ -269,7 +269,7 @@ GList *load_rule_list(GList *rule_list,
             log_parser("found include");
 
             /* "include GLOB_PATTERN" */
-            const char *p = skip_whitespace(line + strlen("include"));
+            const char *p = libreport_skip_whitespace(line + strlen("include"));
 
             const char *last_slash;
             char *name_to_glob;
@@ -279,12 +279,12 @@ GList *load_rule_list(GList *rule_list,
                 /* GLOB_PATTERN is relative, and this include is in path/to/file.conf
                  * Construct path/to/GLOB_PATTERN:
                  */
-                name_to_glob = xasprintf("%.*s%s", (int)(last_slash - conf_file_name + 1), conf_file_name, p);
+                name_to_glob = libreport_xasprintf("%.*s%s", (int)(last_slash - conf_file_name + 1), conf_file_name, p);
             else
                 /* Either GLOB_PATTERN is absolute, or this include is in file.conf
                  * (no slashes in its name). Use unchanged GLOB_PATTERN:
                  */
-                name_to_glob = xstrdup(p);
+                name_to_glob = libreport_xstrdup(p);
 
             glob_t globbuf;
             memset(&globbuf, 0, sizeof(globbuf));
@@ -391,7 +391,7 @@ static char* pop_next_command(GList **pp_rule_list,
                 if (pp_event_name)
                 {
                     free(*pp_event_name);
-                    *pp_event_name = xstrdup(eq_sign + 1);
+                    *pp_event_name = libreport_xstrdup(eq_sign + 1);
                 }
             }
             else
@@ -414,7 +414,7 @@ static char* pop_next_command(GList **pp_rule_list,
                 int regex = (eq_sign > cond_str && eq_sign[-1] == '~');
                 /* Is it "VAR!=VAL"? */
                 int inverted = (eq_sign > cond_str && eq_sign[-1] == '!');
-                char *var_name = xstrndup(cond_str, eq_sign - cond_str - (regex|inverted));
+                char *var_name = libreport_xstrndup(cond_str, eq_sign - cond_str - (regex|inverted));
                 char *real_val = NULL;
                 char *free_me = NULL;
                 if (pd == NULL)
@@ -423,7 +423,7 @@ static char* pop_next_command(GList **pp_rule_list,
                 {
                     real_val = problem_data_get_content_or_NULL(pd, var_name);
                     if (real_val == NULL)
-                        free_me = real_val = xstrdup("");
+                        free_me = real_val = libreport_xstrdup("");
                 }
                 free(var_name);
                 int vals_differ = regex ? regcmp_lines(real_val, eq_sign + 1) : strcmp(real_val, eq_sign + 1);
@@ -445,7 +445,7 @@ static char* pop_next_command(GList **pp_rule_list,
         /* We are here if all conditions are satisfied */
         /* IOW, we found rule to run, delete it and return its command */
         *pp_rule_list = g_list_remove(*pp_rule_list, cur_rule);
-        list_free_with_free(cur_rule->conditions);
+        libreport_list_free_with_free(cur_rule->conditions);
         command = cur_rule->command;
         /*free(cur_rule->command); - WRONG! we are returning it! */
         free(cur_rule);
@@ -476,7 +476,7 @@ int prepare_commands(struct run_event_state *state)
     free_commands(state);
 
     state->children_count = 0;
-    strbuf_clear(state->command_output);
+    libreport_strbuf_clear(state->command_output);
 
     GList *rule_list = load_rule_list(NULL, CONF_DIR"/report_event.conf", /*recursion_depth:*/ 0);
     state->rule_list = rule_list;
@@ -516,9 +516,9 @@ int spawn_next_command(struct run_event_state *state,
 
     env_array = g_ptr_array_new();
 
-    g_ptr_array_add(env_array, xasprintf("DUMP_DIR=%s", (full_name ? full_name : dump_dir_name)));
-    g_ptr_array_add(env_array, xasprintf("EVENT=%s", event));
-    g_ptr_array_add(env_array, xasprintf("REPORT_CLIENT_SLAVE=1"));
+    g_ptr_array_add(env_array, libreport_xasprintf("DUMP_DIR=%s", (full_name ? full_name : dump_dir_name)));
+    g_ptr_array_add(env_array, libreport_xasprintf("EVENT=%s", event));
+    g_ptr_array_add(env_array, libreport_xasprintf("REPORT_CLIENT_SLAVE=1"));
     for (unsigned int i = 0; i < state->extra_environment->len; i++)
     {
         char *variable;
@@ -538,7 +538,7 @@ int spawn_next_command(struct run_event_state *state,
     argv[3] = NULL;
 
     int pipefds[2];
-    state->command_pid = fork_execv_on_steroids(
+    state->command_pid = libreport_fork_execv_on_steroids(
                 EXECFLG_INPUT | EXECFLG_OUTPUT | EXECFLG_ERR2OUT | execflags,
                 argv,
                 pipefds,
@@ -561,7 +561,7 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
     char buf[256];
     errno = 0;
     struct strbuf *cmd_output = state->command_output;
-    while ((r = safe_read(state->command_out_fd, buf, sizeof(buf) - 1)) > 0)
+    while ((r = libreport_safe_read(state->command_out_fd, buf, sizeof(buf) - 1)) > 0)
     {
         char *newline;
         char *raw;
@@ -571,18 +571,18 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
         while ((newline = strchr(raw, '\n')) != NULL)
         {
             *newline = '\0';
-            strbuf_append_str(cmd_output, raw);
+            libreport_strbuf_append_str(cmd_output, raw);
             char *msg = cmd_output->buf;
 
             char *response = NULL;
 
             /* just cut off prefix, no waiting */
-            if (prefixcmp(msg, REPORT_PREFIX_ALERT) == 0)
+            if (libreport_prefixcmp(msg, REPORT_PREFIX_ALERT) == 0)
             {
                 state->alert_callback(msg + sizeof(REPORT_PREFIX_ALERT) - 1 , state->interaction_param);
             }
             /* wait for y/N/f response on the same line */
-            else if (prefixcmp(msg, REPORT_PREFIX_ASK_YES_NO_YESFOREVER) == 0)
+            else if (libreport_prefixcmp(msg, REPORT_PREFIX_ASK_YES_NO_YESFOREVER) == 0)
             {
                 /* example:
                  *   ASK_YES_NO_YESFOREVER ask_before_delete Do you want to delete selected files?
@@ -610,10 +610,10 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
                     key_end[0] = ' '; /* restore original message, not sure if it is necessary */
                 }
 
-                response = xstrdup(ans ? "y" : "N");
+                response = libreport_xstrdup(ans ? "y" : "N");
             }
             /* wait for y/N/f/e response on the same line */
-            else if (prefixcmp(msg, REPORT_PREFIX_ASK_YES_NO_SAVE_RESULT) == 0)
+            else if (libreport_prefixcmp(msg, REPORT_PREFIX_ASK_YES_NO_SAVE_RESULT) == 0)
             {
                 /* example:
                  *   ASK_YES_NO_SAVE_RESULT ask_before_delete Do you want to delete selected files?
@@ -641,21 +641,21 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
                     key_end[0] = ' '; /* restore original message, not sure if it is necessary */
                 }
 
-                response = xstrdup(ans ? "y" : "N");
+                response = libreport_xstrdup(ans ? "y" : "N");
             }
             /* wait for y/N response on the same line */
-            else if (prefixcmp(msg, REPORT_PREFIX_ASK_YES_NO) == 0)
+            else if (libreport_prefixcmp(msg, REPORT_PREFIX_ASK_YES_NO) == 0)
             {
                 const bool ans = state->ask_yes_no_callback(msg + sizeof(REPORT_PREFIX_ASK_YES_NO) - 1, state->interaction_param);
-                response = xstrdup(ans ? "y" : "N");
+                response = libreport_xstrdup(ans ? "y" : "N");
             }
             /* wait for the string on the same line */
-            else if (prefixcmp(msg, REPORT_PREFIX_ASK) == 0)
+            else if (libreport_prefixcmp(msg, REPORT_PREFIX_ASK) == 0)
             {
                 response = state->ask_callback(msg + sizeof(REPORT_PREFIX_ASK) - 1, state->interaction_param);
             }
             /* set echo off and wait for password on the same line */
-            else if (prefixcmp(msg, REPORT_PREFIX_ASK_PASSWORD) == 0)
+            else if (libreport_prefixcmp(msg, REPORT_PREFIX_ASK_PASSWORD) == 0)
             {
                 response = state->ask_password_callback(msg + sizeof(REPORT_PREFIX_ASK_PASSWORD) - 1, state->interaction_param);
             }
@@ -663,7 +663,7 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
              * note that callback may take ownership of buf by returning NULL */
             else if (state->logging_callback)
             {
-                char *logged = state->logging_callback(xstrdup(msg), state->logging_param);
+                char *logged = state->logging_callback(libreport_xstrdup(msg), state->logging_param);
                 free(logged);
             }
 
@@ -672,7 +672,7 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
                 size_t len = strlen(response);
                 response[len++] = '\n';
 
-                if (full_write(state->command_in_fd, response, len) != len)
+                if (libreport_full_write(state->command_in_fd, response, len) != len)
                 {
                     if (state->error_callback)
                         state->error_callback("<WRITE ERROR>", state->error_param);
@@ -683,24 +683,24 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
                 free(response);
             }
 
-            strbuf_clear(cmd_output);
+            libreport_strbuf_clear(cmd_output);
 
             /* jump to next line */
             raw = newline + 1;
         }
 
         /* beginning of next line. the line continues by next read() */
-        strbuf_append_str(cmd_output, raw);
+        libreport_strbuf_append_str(cmd_output, raw);
     }
 
     /* Hope that child's stdout fd was set to O_NONBLOCK */
     if (r == -1 && errno == EAGAIN)
         return -1;
 
-    strbuf_clear(cmd_output);
+    libreport_strbuf_clear(cmd_output);
 
     /* Wait for child to actually exit, collect status */
-    safe_waitpid(state->command_pid, &(state->process_status), 0);
+    libreport_safe_waitpid(state->command_pid, &(state->process_status), 0);
 
     int retval = WEXITSTATUS(state->process_status);
     if (WIFSIGNALED(state->process_status))
@@ -742,7 +742,7 @@ int run_event_on_problem_data(struct run_event_state *state, problem_data_t *dat
     struct dump_dir *dd = create_dump_dir_from_problem_data(data, NULL);
     if (!dd)
         return -1;
-    char *dir_name = xstrdup(dd->dd_dirname);
+    char *dir_name = libreport_xstrdup(dd->dd_dirname);
     dd_close(dd);
 
     int r = run_event_on_dir_name(state, dir_name, event);
@@ -762,7 +762,7 @@ int run_event_on_problem_data(struct run_event_state *state, problem_data_t *dat
 
 static char *_list_possible_events(struct dump_dir **dd, problem_data_t *pd, const char *dump_dir_name, const char *pfx)
 {
-    struct strbuf *result = strbuf_new();
+    struct strbuf *result = libreport_strbuf_new();
 
     GList *rule_list = load_rule_list(NULL, CONF_DIR"/report_event.conf", /*recursion_depth:*/ 0);
 
@@ -799,13 +799,13 @@ static char *_list_possible_events(struct dump_dir **dd, problem_data_t *pd, con
                 if (p)
                     p++;
             }
-            strbuf_append_strf(result, "%s\n", event_name);
+            libreport_strbuf_append_strf(result, "%s\n", event_name);
  skip:
             free(event_name);
         }
     }
 
-    return strbuf_free_nobuf(result);
+    return libreport_strbuf_free_nobuf(result);
 }
 
 char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const char *pfx)
@@ -823,7 +823,7 @@ GList *list_possible_events_glist(const char *problem_dir_name,
 {
     struct dump_dir *dd = dd_opendir(problem_dir_name, DD_OPEN_READONLY);
     char *events = list_possible_events(dd, problem_dir_name, pfx);
-    GList *l = parse_delimited_list(events, "\n");
+    GList *l = libreport_parse_delimited_list(events, "\n");
     dd_close(dd);
     free(events);
 
@@ -835,7 +835,7 @@ GList *list_possible_events_problem_data_glist(problem_data_t *pd,
                                   const char *pfx)
 {
     char *events = list_possible_events_problem_data(pd, problem_dir_name, pfx);
-    GList *l = parse_delimited_list(events, "\n");
+    GList *l = libreport_parse_delimited_list(events, "\n");
     free(events);
 
     return l;
@@ -888,10 +888,10 @@ char *exit_status_as_string(const char *progname, int status)
 
     char *msg;
     if (WIFSIGNALED(status))
-        msg = xasprintf(_("('%s' was killed by signal %u)\n"), progname, WTERMSIG(status));
+        msg = libreport_xasprintf(_("('%s' was killed by signal %u)\n"), progname, WTERMSIG(status));
     else if (status == 0)
-        msg = xasprintf(_("('%s' completed successfully)\n"), progname);
+        msg = libreport_xasprintf(_("('%s' completed successfully)\n"), progname);
     else
-        msg = xasprintf(_("('%s' exited with %u)\n"), progname, WEXITSTATUS(status));
+        msg = libreport_xasprintf(_("('%s' exited with %u)\n"), progname, WEXITSTATUS(status));
     return msg;
 }

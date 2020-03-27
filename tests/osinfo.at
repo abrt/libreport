@@ -2,29 +2,29 @@
 
 AT_BANNER([osinfo])
 
-## ------------ ##
-## parse_osinfo ##
-## ------------ ##
+## ---------------------- ##
+## libreport_parse_osinfo ##
+## ---------------------- ##
 
-AT_TESTFUN([parse_osinfo],
+AT_TESTFUN([libreport_parse_osinfo],
 [[
 #include "internal_libreport.h"
 #include <assert.h>
 
 int main(void)
 {
-    g_verbose=3;
+    libreport_g_verbose=3;
     map_string_t *osinfo = new_map_string();
     {
         /* Test for empty input */
-        parse_osinfo("", osinfo);
+        libreport_parse_osinfo("", osinfo);
         free_map_string(osinfo);
         osinfo = NULL;
     }
     osinfo = new_map_string();
     {
         /* Test for standard valid os-release*/
-        parse_osinfo(
+        libreport_parse_osinfo(
 "# Very useful comment\n"
 "NAME=Fedora\n"
 "VERSION=\"19 (Schrödinger\\'s Cat)\"\n"
@@ -46,7 +46,7 @@ int main(void)
     osinfo = new_map_string();
     {
         /* Test for standard valid os-release*/
-        parse_osinfo(
+        libreport_parse_osinfo(
 "NAME=Fedora\n"
 "VERSION=\"20 (Rawhide)\"\n"
 "ID=fedora\n"
@@ -75,7 +75,7 @@ int main(void)
     osinfo = new_map_string();
     {
         /* Test for standard os-release with few errors */
-        parse_osinfo(
+        libreport_parse_osinfo(
 "# Very useful comment\n"
 "# FOO=blah\n"
 "NAME=Fedora\n"
@@ -103,11 +103,11 @@ int main(void)
 ]])
 
 
-## ------------------- ##
-## parse_osinfo_for_bz ##
-## ------------------- ##
+## ----------------------------- ##
+## libreport_parse_osinfo_for_bz ##
+## ----------------------------- ##
 
-AT_TESTFUN([parse_osinfo_for_bz],
+AT_TESTFUN([libreport_parse_osinfo_for_bz],
 [[
 #include "internal_libreport.h"
 #include <assert.h>
@@ -115,11 +115,11 @@ AT_TESTFUN([parse_osinfo_for_bz],
 void test(const char *osinfo_bytes, const char *product, const char *version)
 {
     map_string_t *osinfo = new_map_string();
-    parse_osinfo(osinfo_bytes, osinfo);
+    libreport_parse_osinfo(osinfo_bytes, osinfo);
 
     char *built_product = (char *)0xDEADBEAF;
     char *built_version = (char *)0xDEADBEAF;
-    parse_osinfo_for_bz(osinfo, &built_product, &built_version);
+    libreport_parse_osinfo_for_bz(osinfo, &built_product, &built_version);
 
     if (product != NULL && built_product != NULL)
     {
@@ -149,7 +149,7 @@ void test(const char *osinfo_bytes, const char *product, const char *version)
 
 int main(void)
 {
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     test("NAME=Fedora\n"
          "VERSION=\"19 (Schrödinger\\'s Cat)\"\n"
@@ -225,10 +225,10 @@ AT_TESTFUN([parse_osinfo_for_bugurl], [[
 void test(const char *osinfo_bytes, const char *url)
 {
     map_string_t *osinfo = new_map_string();
-    parse_osinfo(osinfo_bytes, osinfo);
+    libreport_parse_osinfo(osinfo_bytes, osinfo);
 
     char *default_BugzillaURL = (char *)0xDEADBEEF;
-    parse_osinfo_for_bug_url(osinfo, &default_BugzillaURL);
+    libreport_parse_osinfo_for_bug_url(osinfo, &default_BugzillaURL);
 
     TS_ASSERT_STRING_EQ(default_BugzillaURL, url, "Tested URL");
 
@@ -238,7 +238,7 @@ void test(const char *osinfo_bytes, const char *url)
 
 int main(void)
 {
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     test("NAME=Fedora\n"
          "VERSION=\"19 (Schrödinger\\'s Cat)\"\n"
@@ -280,11 +280,11 @@ int main(void)
 ]])
 
 
-## --------------------- ##
-## parse_osinfo_for_rhts ##
-## --------------------- ##
+## ------------------------------- ##
+## libreport_parse_osinfo_for_rhts ##
+## ------------------------------- ##
 
-AT_TESTFUN([parse_osinfo_for_rhts],
+AT_TESTFUN([libreport_parse_osinfo_for_rhts],
 [[
 #include "internal_libreport.h"
 #include <assert.h>
@@ -292,11 +292,11 @@ AT_TESTFUN([parse_osinfo_for_rhts],
 void test(const char *osinfo_bytes, const char *product, const char *version)
 {
     map_string_t *osinfo = new_map_string();
-    parse_osinfo(osinfo_bytes, osinfo);
+    libreport_parse_osinfo(osinfo_bytes, osinfo);
 
     char *built_product = (char *)0xDEADBEAF;
     char *built_version = (char *)0xDEADBEAF;
-    parse_osinfo_for_rhts(osinfo, &built_product, &built_version);
+    libreport_parse_osinfo_for_rhts(osinfo, &built_product, &built_version);
 
     if (product != NULL && built_product != NULL)
     {
@@ -326,7 +326,7 @@ void test(const char *osinfo_bytes, const char *product, const char *version)
 
 int main(void)
 {
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     test("NAME=Fedora\n"
          "VERSION=\"19 (Schrödinger\\'s Cat)\"\n"
@@ -401,7 +401,7 @@ AT_TESTFUN([problem_data_get_osinfo],
 
 int main(void)
 {
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     problem_data_t *pd = problem_data_new();
     map_string_t *osinfo = new_map_string();

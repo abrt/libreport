@@ -23,13 +23,13 @@
 int
 is_comment_dup(GList *comments, const char *comment)
 {
-    char * const trim_comment = trim_all_whitespace(comment);
+    char * const trim_comment = libreport_trim_all_whitespace(comment);
     bool same_comments = false;
 
     for (GList *l = comments; l && !same_comments; l = l->next)
     {
         const char * const comment_body = (const char *) l->data;
-        char * const trim_comment_body = trim_all_whitespace(comment_body);
+        char * const trim_comment_body = libreport_trim_all_whitespace(comment_body);
         same_comments = (strcmp(trim_comment_body, trim_comment) == 0);
         free(trim_comment_body);
     }

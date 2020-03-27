@@ -2,11 +2,11 @@
 
 AT_BANNER([osrelease - 730887])
 
-## ---------------------- ##
-## parse_release_for_bz ##
-## ---------------------- ##
+## ------------------------------ ##
+## libreport_parse_release_for_bz ##
+## ------------------------------ ##
 
-AT_TESTFUN([parse_release_for_bz],
+AT_TESTFUN([libreport_parse_release_for_bz],
 [[
 #include "internal_libreport.h"
 #include <assert.h>
@@ -19,7 +19,7 @@ int test(char ***input)
     log_warning("release: >>%s<<\n", release_string);
     char *product = NULL;
     char *version = NULL;
-    parse_release_for_bz(release_string, &product, &version);
+    libreport_parse_release_for_bz(release_string, &product, &version);
     log_warning("version: >>%s<<\n", version);
     log_warning("product: >>%s<<\n", product);
 
@@ -69,11 +69,11 @@ int main(void)
 }
 ]])
 
-## --------------------- ##
-## parse_release_for_rhts##
-## --------------------- ##
+## ------------------------------- ##
+## libreport_parse_release_for_rhts##
+## ------------------------------- ##
 
-AT_TESTFUN([parse_release_for_rhts],
+AT_TESTFUN([libreport_parse_release_for_rhts],
 [[
 #include "internal_libreport.h"
 #include <assert.h>
@@ -87,7 +87,7 @@ int test(char ***input)
     log_warning("release: >>%s<<\n", release_string);
     char *product = NULL;
     char *version = NULL;
-    parse_release_for_rhts(release_string, &product, &version);
+    libreport_parse_release_for_rhts(release_string, &product, &version);
     log_warning("version: >>%s<<\n", version);
     log_warning("product: >>%s<<\n", product);
 

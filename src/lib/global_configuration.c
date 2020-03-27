@@ -46,7 +46,7 @@ bool libreport_load_global_configuration(void)
     };
 
     if (dirs[1] == NULL)
-        dirs[1] = get_user_conf_base_dir();
+        dirs[1] = libreport_get_user_conf_base_dir();
 
     return libreport_load_global_configuration_from_dirs(dirs, dir_flags);
 }
@@ -57,7 +57,7 @@ bool libreport_load_global_configuration_from_dirs(const char *dirs[], int dir_f
     {
         s_global_settings = new_map_string();
 
-        bool ret = load_conf_file_from_dirs_ext("libreport.conf", dirs, dir_flags, s_global_settings,
+        bool ret = libreport_load_conf_file_from_dirs_ext("libreport.conf", dirs, dir_flags, s_global_settings,
                                                /*don't skip without value*/ false);
         if (!ret)
         {
@@ -72,7 +72,7 @@ bool libreport_load_global_configuration_from_dirs(const char *dirs[], int dir_f
         while(next_map_string_iter(&iter, &key, &value))
         {
             /* Die to avoid security leaks in case where someone made a typo in a option name */
-            if (!is_in_string_list(key, s_recognized_options))
+            if (!libreport_is_in_string_list(key, s_recognized_options))
             {
                 error_msg("libreport global configuration contains unrecognized option : '%s'", key);
                 libreport_free_global_configuration();
@@ -130,7 +130,7 @@ string_vector_ptr_t libreport_get_global_always_excluded_elements(void)
     if (env_exclude == NULL && gc_exclude == NULL)
         return string_vector_new_from_string(NULL);
 
-    char *joined_exclude = xasprintf("%s, %s", env_exclude, gc_exclude);
+    char *joined_exclude = libreport_xasprintf("%s, %s", env_exclude, gc_exclude);
     string_vector_ptr_t ret = string_vector_new_from_string(joined_exclude);
     free(joined_exclude);
 
@@ -146,7 +146,7 @@ bool libreport_get_global_create_private_ticket(void)
     if (env_create_private == NULL)
         return false;
 
-    return string_to_bool(env_create_private);
+    return libreport_string_to_bool(env_create_private);
 }
 
 void libreport_set_global_create_private_ticket(bool enabled, int flags/*unused - persistent*/)
@@ -154,9 +154,9 @@ void libreport_set_global_create_private_ticket(bool enabled, int flags/*unused 
     assert_global_configuration_initialized();
 
     if (enabled)
-        xsetenv(CREATE_PRIVATE_TICKET, "1");
+        libreport_xsetenv(CREATE_PRIVATE_TICKET, "1");
     else
-        safe_unsetenv(CREATE_PRIVATE_TICKET);
+        libreport_safe_unsetenv(CREATE_PRIVATE_TICKET);
 }
 
 bool libreport_get_global_stop_on_not_reportable(void)
@@ -168,7 +168,7 @@ bool libreport_get_global_stop_on_not_reportable(void)
     if (env_create_private == NULL)
         return true;
 
-    return string_to_bool(env_create_private);
+    return libreport_string_to_bool(env_create_private);
 }
 
 void libreport_set_global_stop_on_not_reportable(bool enabled, int flags/*unused - persistent*/)
@@ -176,7 +176,7 @@ void libreport_set_global_stop_on_not_reportable(bool enabled, int flags/*unused
     assert_global_configuration_initialized();
 
     if (enabled)
-        xsetenv(STOP_ON_NOT_REPORTABLE, "1");
+        libreport_xsetenv(STOP_ON_NOT_REPORTABLE, "1");
     else
-        xsetenv(STOP_ON_NOT_REPORTABLE, "0");
+        libreport_xsetenv(STOP_ON_NOT_REPORTABLE, "0");
 }

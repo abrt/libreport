@@ -51,7 +51,7 @@ int main(int argc, char **argv)
         },
     };
 
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     problem_data_t *data = problem_data_new();
     problem_data_add_text_noteditable(data, "package", "libreport");
@@ -182,7 +182,7 @@ int main(int argc, char **argv)
         },
     };
 
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     problem_data_t *data = problem_data_new();
     problem_data_add_text_noteditable(data, "package", "libreport");
@@ -546,7 +546,7 @@ void check(problem_data_t *data, backtrace_result_t br)
 
 int main(int argc, char **argv)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     problem_data_t *data = problem_data_new();
     problem_data_add_text_noteditable(data, "package", "libreport");
@@ -689,7 +689,7 @@ AT_TESTFUN([attach],
 
 int main(int argc, char **argv)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     const char *fst[] = { "backtrace", "screenshot", "description", NULL };
 
@@ -757,7 +757,7 @@ int main(int argc, char **argv)
             assert(problem_report_get_attachments(pr));
         }
 
-        GList *clone = g_list_copy_deep(problem_report_get_attachments(pr), (GCopyFunc)xstrdup, NULL);
+        GList *clone = g_list_copy_deep(problem_report_get_attachments(pr), (GCopyFunc)libreport_xstrdup, NULL);
 
         while (*iter) {
             GList *item = g_list_find_custom(clone, *iter, (GCompareFunc)strcmp);
@@ -805,7 +805,7 @@ AT_TESTFUN([custom_section],
 
 int main(int argc, char **argv)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     struct test_case;
     struct test_case {
@@ -966,7 +966,7 @@ void assert_equal_strings(const char *res, const char *exp)
 
 int main(int argc, char **argv)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     problem_formatter_t *pf = problem_formatter_new();
 

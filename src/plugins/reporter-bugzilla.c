@@ -89,7 +89,7 @@ struct bugzilla_struct {
 static void set_default_settings(map_string_t *osinfo, map_string_t *settings)
 {
     char *default_BugzillaURL;
-    parse_osinfo_for_bug_url(osinfo, &default_BugzillaURL);
+    libreport_parse_osinfo_for_bug_url(osinfo, &default_BugzillaURL);
     /* if BugzillaURL is defined in conf_file or env , it will replace this value */
     set_map_string_item_from_string(settings, "BugzillaURL", default_BugzillaURL);
     log_debug("Loaded BUG_REPORT_URL '%s' from os-release", default_BugzillaURL);
@@ -97,7 +97,7 @@ static void set_default_settings(map_string_t *osinfo, map_string_t *settings)
 
     char *default_Product;
     char *default_ProductVersion;
-    parse_osinfo_for_bz(osinfo, &default_Product, &default_ProductVersion);
+    libreport_parse_osinfo_for_bz(osinfo, &default_Product, &default_ProductVersion);
     /* if Product or ProductVersion is defined in conf_file or env , it will replace this value */
     set_map_string_item_from_string(settings, "Product", default_Product);
     set_map_string_item_from_string(settings, "ProductVersion", default_ProductVersion);
@@ -112,13 +112,13 @@ static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
     const char *environ;
 
     environ = getenv("Bugzilla_Login");
-    b->b_login = xstrdup(environ ? environ : get_map_string_item_or_empty(settings, "Login"));
+    b->b_login = libreport_xstrdup(environ ? environ : get_map_string_item_or_empty(settings, "Login"));
 
     environ = getenv("Bugzilla_Password");
-    b->b_password = xstrdup(environ ? environ : get_map_string_item_or_empty(settings, "Password"));
+    b->b_password = libreport_xstrdup(environ ? environ : get_map_string_item_or_empty(settings, "Password"));
 
     environ = getenv("Bugzilla_BugzillaURL");
-    b->b_bugzilla_url = xstrdup(environ ? environ : get_map_string_item_or_empty(settings, "BugzillaURL"));
+    b->b_bugzilla_url = libreport_xstrdup(environ ? environ : get_map_string_item_or_empty(settings, "BugzillaURL"));
     if (!b->b_bugzilla_url[0])
         b->b_bugzilla_url = "https://bugzilla.redhat.com";
     else
@@ -128,35 +128,35 @@ static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
         if (last_slash && last_slash[1] == '\0')
             *last_slash = '\0';
     }
-    b->b_bugzilla_xmlrpc = concat_path_file(b->b_bugzilla_url, "xmlrpc.cgi");
+    b->b_bugzilla_xmlrpc = libreport_concat_path_file(b->b_bugzilla_url, "xmlrpc.cgi");
 
     environ = getenv("Bugzilla_Product");
     if (environ)
     {
-        b->b_product = xstrdup(environ);
+        b->b_product = libreport_xstrdup(environ);
         environ = getenv("Bugzilla_ProductVersion");
         if (environ)
-            b->b_product_version = xstrdup(environ);
+            b->b_product_version = libreport_xstrdup(environ);
     }
     else
     {
         const char *option = get_map_string_item_or_NULL(settings, "Product");
         if (option)
-            b->b_product = xstrdup(option);
+            b->b_product = libreport_xstrdup(option);
         option = get_map_string_item_or_NULL(settings, "ProductVersion");
         if (option)
-            b->b_product_version = xstrdup(option);
+            b->b_product_version = libreport_xstrdup(option);
     }
 
     if (!b->b_product)
     {   /* Compat, remove it later (2014?). */
         environ = getenv("Bugzilla_OSRelease");
         if (environ)
-            parse_release_for_bz(environ, &b->b_product, &b->b_product_version);
+            libreport_parse_release_for_bz(environ, &b->b_product, &b->b_product_version);
     }
 
     environ = getenv("Bugzilla_SSLVerify");
-    b->b_ssl_verify = string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "SSLVerify"));
+    b->b_ssl_verify = libreport_string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "SSLVerify"));
 
     environ = getenv("Bugzilla_DontMatchComponents");
     b->b_DontMatchComponents = environ ? environ : get_map_string_item_or_empty(settings, "DontMatchComponents");
@@ -166,12 +166,12 @@ static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
     if (!b->b_create_private)
     {
         environ = getenv("Bugzilla_CreatePrivate");
-        b->b_create_private = string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "Bugzilla_CreatePrivate"));
+        b->b_create_private = libreport_string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "Bugzilla_CreatePrivate"));
     }
     log_notice("create private bz ticket: '%s'", b->b_create_private ? "YES": "NO");
 
     environ = getenv("Bugzilla_PrivateGroups");
-    GList *groups = parse_delimited_list(environ ? environ : get_map_string_item_or_empty(settings, "Bugzilla_PrivateGroups"),
+    GList *groups = libreport_parse_delimited_list(environ ? environ : get_map_string_item_or_empty(settings, "Bugzilla_PrivateGroups"),
                                          ",");
     if (b->b_private_groups == NULL)
     {
@@ -191,7 +191,7 @@ char *ask_bz_login(const char *message)
     char *login = libreport_ask(message);
     if (login == NULL || login[0] == '\0')
     {
-        set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
+        libreport_set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
         error_msg_and_die(_("Can't continue without login"));
     }
 
@@ -204,7 +204,7 @@ char *ask_bz_password(const char *message)
     char *password = libreport_ask_password(message);
     if (password == NULL || password[0] == '\0')
     {
-        set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
+        libreport_set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
         error_msg_and_die(_("Can't continue without password"));
     }
 
@@ -221,12 +221,12 @@ void login(struct abrt_xmlrpc *client, struct bugzilla_struct *rhbz)
         char *question;
 
         free(rhbz->b_login);
-        question = xasprintf(_("Invalid password or login. Please enter your %s login:"), rhbz->b_bugzilla_url);
+        question = libreport_xasprintf(_("Invalid password or login. Please enter your %s login:"), rhbz->b_bugzilla_url);
         rhbz->b_login = ask_bz_login(question);
         free(question);
 
         free(rhbz->b_password);
-        question = xasprintf(_("Invalid password or login. Please enter the password for '%s':"), rhbz->b_login);
+        question = libreport_xasprintf(_("Invalid password or login. Please enter the password for '%s':"), rhbz->b_login);
         rhbz->b_password = ask_bz_password(question);
         free(question);
     }
@@ -320,7 +320,7 @@ int main(int argc, char **argv)
     struct bugzilla_struct rhbz = { 0 };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_STRING(   'd', NULL, &dump_dir_name , "DIR"    , _("Problem directory")),
         OPT_LIST(     'c', NULL, &conf_file     , "FILE"   , _("Configuration file (may be given many times)")),
         OPT_STRING(   'F', NULL, &fmt_file      , "FILE"   , _("Formatting file for initial comment")),
@@ -336,10 +336,10 @@ int main(int argc, char **argv)
         OPT_OPTSTRING('D', "debug", &debug_str  , "STR"    , _("Debug")),
         OPT_END()
     };
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned opts = libreport_parse_opts(argc, argv, program_options, program_usage_string);
     argv += optind;
 
-    export_abrt_envvars(0);
+    libreport_export_abrt_envvars(0);
 
     map_string_t *settings = new_map_string();
     problem_data_t *problem_data = NULL;
@@ -349,7 +349,7 @@ int main(int argc, char **argv)
         /* pull in some defaults from os-release */
         problem_data = create_problem_data_for_reporting(dump_dir_name);
         if (!problem_data)
-            xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
+            libreport_xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
         else
         {
             map_string_t *osinfo = new_map_string();
@@ -364,14 +364,14 @@ int main(int argc, char **argv)
         if (!conf_file)
         {
             conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/bugzilla.conf");
-            local_conf = xasprintf("%s"USER_HOME_CONFIG_PATH"/bugzilla.conf", getenv("HOME"));
+            local_conf = libreport_xasprintf("%s"USER_HOME_CONFIG_PATH"/bugzilla.conf", getenv("HOME"));
             conf_file = g_list_append(conf_file, local_conf);
         }
         while (conf_file)
         {
             char *fn = (char *)conf_file->data;
             log_notice("Loading settings from '%s'", fn);
-            load_conf_file(fn, settings, /*skip key w/o values:*/ false);
+            libreport_load_conf_file(fn, settings, /*skip key w/o values:*/ false);
             log_debug("Loaded '%s'", fn);
             conf_file = g_list_delete_link(conf_file, conf_file);
         }
@@ -402,10 +402,10 @@ int main(int argc, char **argv)
     {
         log_warning(_("Looking for similar problems in bugzilla"));
         char *hash;
-        if (prefixcmp(abrt_hash, "abrt_hash:"))
-            hash = xasprintf("abrt_hash:%s", abrt_hash);
+        if (libreport_prefixcmp(abrt_hash, "abrt_hash:"))
+            hash = libreport_xasprintf("abrt_hash:%s", abrt_hash);
         else
-            hash = xstrdup(abrt_hash);
+            hash = libreport_xstrdup(abrt_hash);
 
         if (opts & OPT_p)
         {
@@ -421,9 +421,9 @@ int main(int argc, char **argv)
                 if (os_release != NULL)
                 {
                     map_string_t *os_release_map = new_map_string();
-                    parse_osinfo(os_release, os_release_map);
+                    libreport_parse_osinfo(os_release, os_release_map);
 
-                    product = xstrdup(get_map_string_item_or_NULL(os_release_map, "REDHAT_BUGZILLA_PRODUCT"));
+                    product = libreport_xstrdup(get_map_string_item_or_NULL(os_release_map, "REDHAT_BUGZILLA_PRODUCT"));
 
                     free_map_string(os_release_map);
                     free(os_release);
@@ -439,7 +439,7 @@ int main(int argc, char **argv)
         if (product == NULL)
         {
             /* Use DEFAULT_BUGZILLA_PRODUCT as default product due to backward compatibility */
-            product = xstrdup(DEFAULT_BUGZILLA_PRODUCT);
+            product = libreport_xstrdup(DEFAULT_BUGZILLA_PRODUCT);
 
             /* If parameter -p was used and product == NULL, some error occured */
             if (opts & OPT_p)
@@ -466,7 +466,7 @@ int main(int argc, char **argv)
     if (rhbz.b_login[0] == '\0')
     {
         free(rhbz.b_login);
-        char *question = xasprintf(_("Login is not provided by configuration. Please enter your %s login:"), rhbz.b_bugzilla_url);
+        char *question = libreport_xasprintf(_("Login is not provided by configuration. Please enter your %s login:"), rhbz.b_bugzilla_url);
         rhbz.b_login = ask_bz_login(question);
         free(question);
     }
@@ -474,7 +474,7 @@ int main(int argc, char **argv)
     if (rhbz.b_password[0] == '\0')
     {
         free(rhbz.b_password);
-        char *question = xasprintf(_("Password is not provided by configuration. Please enter the password for '%s':"), rhbz.b_login);
+        char *question = libreport_xasprintf(_("Password is not provided by configuration. Please enter the password for '%s':"), rhbz.b_login);
         rhbz.b_password = ask_bz_password(question);
         free(question);
     }
@@ -482,7 +482,7 @@ int main(int argc, char **argv)
     if (opts & OPT_t)
     {
         if ((!argv[0] && !(opts & OPT_w)) || (argv[0] && (opts & OPT_w)))
-            show_usage_and_die(program_usage_string, program_options);
+            libreport_show_usage_and_die(program_usage_string, program_options);
 
         if (!ticket_no)
         {
@@ -491,7 +491,7 @@ int main(int argc, char **argv)
             g_autofree char *url = NULL;
 
             if (!dd)
-                xfunc_die();
+                libreport_xfunc_die();
 
             reported_to = libreport_find_in_reported_to(dd, "Bugzilla");
 
@@ -502,7 +502,7 @@ int main(int argc, char **argv)
 
             url = report_result_get_url(reported_to);
 
-            if (prefixcmp(url, rhbz.b_bugzilla_url) != 0)
+            if (libreport_prefixcmp(url, rhbz.b_bugzilla_url) != 0)
                 error_msg_and_die(_("This problem has been reported to Bugzilla '%s' which differs from the configured Bugzilla '%s'."), url, rhbz.b_bugzilla_url);
 
             ticket_no = strrchr(url, '=');
@@ -510,14 +510,14 @@ int main(int argc, char **argv)
                 error_msg_and_die(_("Malformed url to Bugzilla '%s'."), url);
 
             /* won't ever call free on it - it simplifies the code a lot */
-            ticket_no = xstrdup(ticket_no + 1);
+            ticket_no = libreport_xstrdup(ticket_no + 1);
             log_warning(_("Using Bugzilla ID '%s'"), ticket_no);
         }
 
         login(client, &rhbz);
 
         if (opts & OPT_w)
-            rhbz_mail_to_cc(client, xatoi_positive(ticket_no), rhbz.b_login, /* require mail notify */ 0);
+            rhbz_mail_to_cc(client, libreport_xatoi_positive(ticket_no), rhbz.b_login, /* require mail notify */ 0);
         else
         {   /* Attach files to existing BZ */
             while (*argv)
@@ -563,7 +563,7 @@ int main(int argc, char **argv)
         g_autofree char *url = NULL;
 
         if (!dd)
-            xfunc_die();
+            libreport_xfunc_die();
 
         reported_to = libreport_find_in_reported_to(dd, "Bugzilla");
 
@@ -577,7 +577,7 @@ int main(int argc, char **argv)
         {
             g_autofree char *msg = NULL;
 
-            msg = xasprintf(_("This problem was already reported to Bugzilla (see '%s')."
+            msg = libreport_xasprintf(_("This problem was already reported to Bugzilla (see '%s')."
                             " Do you still want to create a new bug?"),
                             url);
 
@@ -590,7 +590,7 @@ int main(int argc, char **argv)
         problem_data = create_problem_data_for_reporting(dump_dir_name);
 
     if (!problem_data)
-        xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
+        libreport_xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
     const char *component = problem_data_get_content_or_die(problem_data, FILENAME_COMPONENT);
     const char *duphash   = problem_data_get_content_or_NULL(problem_data, FILENAME_DUPHASH);
@@ -603,7 +603,7 @@ int main(int argc, char **argv)
         free(rhbz.b_product_version);
         map_string_t *osinfo = new_map_string();
         problem_data_get_osinfo(problem_data, osinfo);
-        parse_osinfo_for_bz(osinfo, &rhbz.b_product, &rhbz.b_product_version);
+        libreport_parse_osinfo_for_bz(osinfo, &rhbz.b_product, &rhbz.b_product_version);
         free_map_string(osinfo);
 
         if (!rhbz.b_product || !rhbz.b_product_version)
@@ -653,7 +653,7 @@ int main(int argc, char **argv)
         char *cmd = strtok(remote_result, " \n");
         char *id = strtok(NULL, " \n");
 
-        if (!prefixcmp(cmd, "DUPLICATE"))
+        if (!libreport_prefixcmp(cmd, "DUPLICATE"))
         {
             errno = 0;
             char *e;
@@ -677,7 +677,7 @@ int main(int argc, char **argv)
             /* Figure out whether we want to match component
              * when doing dup search.
              */
-            const char *component_substitute = is_in_comma_separated_list(component, rhbz.b_DontMatchComponents) ? NULL : component;
+            const char *component_substitute = libreport_is_in_comma_separated_list(component, rhbz.b_DontMatchComponents) ? NULL : component;
 
             /* We don't do dup detection across versions (see below why),
              * but we do add a note if cross-version potential dup exists.
@@ -725,7 +725,7 @@ int main(int argc, char **argv)
 
             if (existing_id >= 0)
             {
-                char *msg = xasprintf(_(
+                char *msg = libreport_xasprintf(_(
                 "You have requested to make your data accessible only to a "
                 "specific group and this bug is a duplicate of bug: "
                 "%s/%u"
@@ -834,7 +834,7 @@ int main(int argc, char **argv)
             }
 
             bz = new_bug_info();
-            bz->bi_status = xstrdup("NEW");
+            bz->bi_status = libreport_xstrdup("NEW");
             bz->bi_id = new_id;
 
             if (existing_id >= 0)
@@ -923,7 +923,7 @@ int main(int argc, char **argv)
             const char *rating_str = problem_data_get_content_or_NULL(problem_data, FILENAME_RATING);
             /* python doesn't have rating file */
             if (rating_str)
-                rating = xatou(rating_str);
+                rating = libreport_xatou(rating_str);
             if (bt && rating > bz->bi_best_bt_rating)
             {
                 char bug_id_str[sizeof(int)*3 + 2];
@@ -958,7 +958,7 @@ int main(int argc, char **argv)
         char *url;
 
         result = report_result_new_with_label_from_env("Bugzilla");
-        url = xasprintf("%s/show_bug.cgi?id=%u", rhbz.b_bugzilla_url, bz->bi_id);
+        url = libreport_xasprintf("%s/show_bug.cgi?id=%u", rhbz.b_bugzilla_url, bz->bi_id);
 
         report_result_set_url(result, url);
 

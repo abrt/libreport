@@ -268,7 +268,7 @@ int run_event_stdio_ask_yes_no(const char *msg, void *param);
  * Prints the msg param on stdout and reads a response from stdin. To store the
  * yes forever answer uses libreport's user settings API. Therefore if you want
  * to get the yes forever stuff working you have to call load_user_setting()
- * function before this function call and call save_user_settings() function
+ * function before this function call and call libreport_save_user_settings() function
  * after this function call.
  *
  * @param msg a printed message
@@ -283,7 +283,7 @@ int run_event_stdio_ask_yes_no_yesforever(const char *msg, const char *key, void
  * forever or never answer uses libreport's user settings API.
  * Therefore if you want to get the forever or never stuff working you
  * have to call load_user_setting() function before this function call and call
- * save_user_settings() function after this function call.
+ * libreport_save_user_settings() function after this function call.
  *
  * @param msg a printed message
  * @param key a key under which the forever (yes) or never (no) answer is stored

@@ -61,14 +61,14 @@ static void ask_rh_credentials(char **login, char **password);
 #define STRCPY_IF_NOT_EQUAL(dest, src) \
     do { if (strcmp(dest, src) != 0 ) { \
         free(dest); \
-        dest = xstrdup(src); \
+        dest = libreport_xstrdup(src); \
     } } while (0)
 
 static report_result_t *get_reported_to(const char *dump_dir_name)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
-        xfunc_die();
+        libreport_xfunc_die();
     report_result_t *reported_to = libreport_find_in_reported_to(dd, "RHTSupport");
     dd_close(dd);
     return reported_to;
@@ -82,14 +82,14 @@ int create_tarball(const char *tempfile, struct dump_dir *dd,
     int retval = 0; /* everything is ok so far .. */
 
     int pipe_from_parent_to_child[2];
-    xpipe(pipe_from_parent_to_child);
+    libreport_xpipe(pipe_from_parent_to_child);
     pid_t child = fork();
     if (child == 0)
     {
         /* child */
         close(pipe_from_parent_to_child[1]);
-        xmove_fd(xopen3(tempfile, O_WRONLY | O_CREAT | O_EXCL, 0600), 1);
-        xmove_fd(pipe_from_parent_to_child[0], 0);
+        libreport_xmove_fd(libreport_xopen3(tempfile, O_WRONLY | O_CREAT | O_EXCL, 0600), 1);
+        libreport_xmove_fd(pipe_from_parent_to_child[0], 0);
         execlp("gzip", "gzip", NULL);
         perror_msg_and_die("Can't execute '%s'", "gzip");
     }
@@ -122,7 +122,7 @@ int create_tarball(const char *tempfile, struct dump_dir *dd,
                     basename++;
                 else
                     basename = content;
-                char *xml_name = concat_path_file("content", basename);
+                char *xml_name = libreport_concat_path_file("content", basename);
                 reportfile_add_binding_from_namedfile(file,
                         /*on_disk_filename */ content,
                         /*binding_name     */ name,
@@ -139,7 +139,7 @@ int create_tarball(const char *tempfile, struct dump_dir *dd,
     char *short_name, *full_name;
     while (dd_get_next_file(dd, &short_name, &full_name))
     {
-        char *uploaded_name = concat_path_file("content", short_name);
+        char *uploaded_name = libreport_concat_path_file("content", short_name);
         free(short_name);
 
         if (tar_append_file(tar, full_name, uploaded_name) != 0)
@@ -161,7 +161,7 @@ int create_tarball(const char *tempfile, struct dump_dir *dd,
     {
         unsigned len = strlen(signature);
         unsigned len512 = (len + 511) & ~511;
-        char *block = (char*)memcpy(xzalloc(len512), signature, len);
+        char *block = (char*)memcpy(libreport_xzalloc(len512), signature, len);
 
         th_set_type(tar, S_IFREG | 0644);
         th_set_mode(tar, S_IFREG | 0644);
@@ -176,7 +176,7 @@ int create_tarball(const char *tempfile, struct dump_dir *dd,
 
         if (th_write(tar) != 0 /* writes header block */
             /* writes content.xml, padded to 512 bytes */
-         || full_write(tar_fd(tar), block, len512) != len512
+         || libreport_full_write(tar_fd(tar), block, len512) != len512
          || tar_append_eof(tar) != 0 /* writes EOF blocks */
          || tar_close(tar) != 0
         ) {
@@ -189,7 +189,7 @@ int create_tarball(const char *tempfile, struct dump_dir *dd,
 
     /* We must be sure gzip finished, and finished successfully */
     int status;
-    safe_waitpid(child, &status, 0);
+    libreport_safe_waitpid(child, &status, 0);
     child = -1;
     if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
     {
@@ -212,7 +212,7 @@ ret_fail:
     {
         // Damn, selinux does not allow SIGKILLing our own child! wtf??
         //kill(child, SIGKILL); /* just in case */
-        safe_waitpid(child, NULL, 0);
+        libreport_safe_waitpid(child, NULL, 0);
     }
 
 ret_clean:
@@ -290,14 +290,14 @@ char *submit_ureport(const char *dump_dir_name, struct ureport_server_config *co
     if (!resp->urr_is_error)
     {
         if (resp->urr_bthash != NULL)
-            bthash = xstrdup(resp->urr_bthash);
+            bthash = libreport_xstrdup(resp->urr_bthash);
 
         ureport_server_response_save_in_dump_dir(resp, dump_dir_name, conf);
 
         if (resp->urr_message)
             log_warning("%s", resp->urr_message);
     }
-    else if (g_verbose > 2)
+    else if (libreport_g_verbose > 2)
         error_msg(_("Server responded with an error: '%s'"), resp->urr_value);
 
     ureport_server_response_free(resp);
@@ -339,8 +339,8 @@ bool check_for_hints(const char *url, char **login, char **password, bool ssl_ve
         char *hint = parse_response_from_RHTS_hint_xml2txt(result->body);
         if (hint)
         {
-            hint = append_to_malloced_string(hint, " ");
-            hint = append_to_malloced_string(hint,
+            hint = libreport_append_to_malloced_string(hint, " ");
+            hint = libreport_append_to_malloced_string(hint,
                     _("Do you still want to create a RHTSupport ticket?")
                     );
 
@@ -363,7 +363,7 @@ char *ask_rh_login(const char *message)
     char *login = libreport_ask(message);
     if (login == NULL || login[0] == '\0')
     {
-        set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
+        libreport_set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
         error_msg_and_die(_("Can't continue without login"));
     }
 
@@ -376,7 +376,7 @@ char *ask_rh_password(const char *message)
     char *password = libreport_ask_password(message);
     if (password == NULL || password[0] == '\0')
     {
-        set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
+        libreport_set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
         error_msg_and_die(_("Can't continue without password"));
     }
 
@@ -391,7 +391,7 @@ void ask_rh_credentials(char **login, char **password)
 
     *login = ask_rh_login(_("Invalid password or login. Please enter your Red Hat login:"));
 
-    char *question = xasprintf(_("Invalid password or login. Please enter the password for '%s':"), *login);
+    char *question = libreport_xasprintf(_("Invalid password or login. Please enter the password for '%s':"), *login);
     *password = ask_rh_password(question);
     free(question);
 }
@@ -399,10 +399,10 @@ void ask_rh_credentials(char **login, char **password)
 static
 char *get_param_string(const char *name, map_string_t *settings, const char *dflt)
 {
-    char *envname = xasprintf("RHTSupport_%s", name);
+    char *envname = libreport_xasprintf("RHTSupport_%s", name);
     const char *envvar = getenv(envname);
     free(envname);
-    return xstrdup(envvar ? envvar : (get_map_string_item_or_NULL(settings, name) ? : dflt));
+    return libreport_xstrdup(envvar ? envvar : (get_map_string_item_or_NULL(settings, name) ? : dflt));
 }
 
 static
@@ -410,7 +410,7 @@ void prepare_ureport_configuration(const char *urcfile,
         map_string_t *settings, struct ureport_server_config *urconf,
         const char *portal_url, const char *login, const char *password, bool ssl_verify)
 {
-    load_conf_file(urcfile, settings, false);
+    libreport_load_conf_file(urcfile, settings, false);
     ureport_server_config_init(urconf);
 
     /* The following lines cause that we always use URL from ureport's
@@ -418,18 +418,18 @@ void prepare_ureport_configuration(const char *urcfile,
      * var.
      *
      *   char *url = NULL;
-     *   UREPORT_OPTION_VALUE_FROM_CONF(settings, "URL", url, xstrdup);
+     *   UREPORT_OPTION_VALUE_FROM_CONF(settings, "URL", url, libreport_xstrdup);
      *   if (url != NULL)
      *       ureport_server_config_set_url(urconf, url);
      */
 
-    ureport_server_config_set_url(urconf, concat_path_file(portal_url, "/telemetry/abrt"));
+    ureport_server_config_set_url(urconf, libreport_concat_path_file(portal_url, "/telemetry/abrt"));
     urconf->ur_ssl_verify = ssl_verify;
 
     ureport_server_config_set_basic_auth(urconf, login, password);
 
     bool include_auth = true;
-    UREPORT_OPTION_VALUE_FROM_CONF(settings, "IncludeAuthData", include_auth, string_to_bool);
+    UREPORT_OPTION_VALUE_FROM_CONF(settings, "IncludeAuthData", include_auth, libreport_string_to_bool);
 
     if (include_auth)
     {
@@ -437,7 +437,7 @@ void prepare_ureport_configuration(const char *urcfile,
         UREPORT_OPTION_VALUE_FROM_CONF(settings, "AuthDataItems", auth_items, (const char *));
         if (NULL != auth_items)
         {
-            urconf->ur_prefs.urp_auth_items = parse_delimited_list(auth_items, ",");
+            urconf->ur_prefs.urp_auth_items = libreport_parse_delimited_list(auth_items, ",");
         }
     }
 
@@ -446,9 +446,9 @@ void prepare_ureport_configuration(const char *urcfile,
 
 static char *create_case_url(char *url, const char *case_no)
 {
-    char *url1 = concat_path_file(url, RHTSUPPORT_CASE_URL_PATH);
+    char *url1 = libreport_concat_path_file(url, RHTSUPPORT_CASE_URL_PATH);
     free(url);
-    url = concat_path_file(url1, case_no);
+    url = libreport_concat_path_file(url1, case_no);
     free(url1);
 
     return url;
@@ -456,12 +456,12 @@ static char *create_case_url(char *url, const char *case_no)
 
 static char *ask_case_no_create_url(char *url)
 {
-    char *msg = xasprintf(_("Please enter customer case number to which you want to attach the data:"));
+    char *msg = libreport_xasprintf(_("Please enter customer case number to which you want to attach the data:"));
     char *case_no = libreport_ask(msg);
     free(msg);
     if (case_no == NULL || case_no[0] == '\0')
     {
-        set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
+        libreport_set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
         error_msg_and_die(_("Can't continue without Red Hat Support case number"));
     }
     char *new_url = create_case_url(url, (const char *)case_no);
@@ -530,7 +530,7 @@ int main(int argc, char **argv)
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_STRING(   'd', NULL, &dump_dir_name, "DIR" , _("Problem directory")),
         OPT_LIST(     'c', NULL, &conf_file    , "FILE", _("Configuration file (may be given many times)")),
         OPT_OPTSTRING('t', NULL, &case_no      , "ID"  , _("Upload FILEs [to case with this ID]")),
@@ -541,10 +541,10 @@ int main(int argc, char **argv)
         OPT_BOOL(     'D', NULL, NULL          ,         _("Debug")),
         OPT_END()
     };
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned opts = libreport_parse_opts(argc, argv, program_options, program_usage_string);
     argv += optind;
 
-    export_abrt_envvars(0);
+    libreport_export_abrt_envvars(0);
 
     /* Parse config, extract necessary params */
     map_string_t *settings = new_map_string();
@@ -552,7 +552,7 @@ int main(int argc, char **argv)
     if (!conf_file)
     {
         conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/rhtsupport.conf");
-        local_conf = xasprintf("%s"USER_HOME_CONFIG_PATH"/rhtsupport.conf", getenv("HOME"));
+        local_conf = libreport_xasprintf("%s"USER_HOME_CONFIG_PATH"/rhtsupport.conf", getenv("HOME"));
         conf_file = g_list_append(conf_file, local_conf);
 
     }
@@ -560,7 +560,7 @@ int main(int argc, char **argv)
     {
         const char *fn = (char *)conf_file->data;
         log_notice("Loading settings from '%s'", fn);
-        load_conf_file(fn, settings, /*skip key w/o values:*/ false);
+        libreport_load_conf_file(fn, settings, /*skip key w/o values:*/ false);
         log_debug("Loaded '%s'", fn);
         conf_file = g_list_remove(conf_file, fn);
     }
@@ -580,30 +580,30 @@ int main(int argc, char **argv)
     if (password[0] == '\0')
     {
         free(password);
-        char *question = xasprintf(_("Password is not provided by configuration. Please enter the password for '%s':"), login);
+        char *question = libreport_xasprintf(_("Password is not provided by configuration. Please enter the password for '%s':"), login);
         password = ask_rh_password(question);
         free(question);
     }
 
     char* envvar;
     envvar = getenv("RHTSupport_SSLVerify");
-    bool ssl_verify = string_to_bool(
+    bool ssl_verify = libreport_string_to_bool(
                 envvar ? envvar : (get_map_string_item_or_NULL(settings, "SSLVerify") ? : "1")
     );
     envvar = getenv("RHTSupport_BigSizeMB");
-    unsigned bigsize = xatoi_positive(
+    unsigned bigsize = libreport_xatoi_positive(
                 /* RH has a 250m limit for web attachments (as of 2013) */
                 envvar ? envvar : (get_map_string_item_or_NULL(settings, "BigSizeMB") ? : "200")
     );
     envvar = getenv("RHTSupport_SubmitUReport");
-    bool submit_ur = string_to_bool(
+    bool submit_ur = libreport_string_to_bool(
                 envvar ? envvar :
                     (get_map_string_item_or_NULL(settings, "SubmitUReport") ? :
                         ((opts & OPT_u) ? "1" : "0"))
     );
     free_map_string(settings);
 
-    char *base_api_url = xstrdup(url);
+    char *base_api_url = libreport_xstrdup(url);
     char *bthash = NULL;
 
     map_string_t *ursettings = new_map_string();
@@ -629,7 +629,7 @@ int main(int argc, char **argv)
             {
                 free(url);
                 url = report_url;
-                char *msg = xasprintf(
+                char *msg = libreport_xasprintf(
                     _("We found a similar Red Hat support case %s. "
                       "Do you want to attach the data to the case? "
                       "Otherwise, you will have to enter the existing "
@@ -682,7 +682,7 @@ int main(int argc, char **argv)
         char *report_url = NULL;
 
         if (*argv)
-            show_usage_and_die(program_usage_string, program_options);
+            libreport_show_usage_and_die(program_usage_string, program_options);
 
         reported_to = get_reported_to(dump_dir_name);
         if (NULL != reported_to)
@@ -691,7 +691,7 @@ int main(int argc, char **argv)
         }
         if (NULL != report_url && !(opts & OPT_f))
         {
-            char *msg = xasprintf("This problem was already reported to RHTS (see '%s')."
+            char *msg = libreport_xasprintf("This problem was already reported to RHTS (see '%s')."
                             " Do you still want to create a RHTSupport ticket?",
                             report_url);
             int yes = libreport_ask_yes_no(msg);
@@ -715,12 +715,12 @@ int main(int argc, char **argv)
 
     problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
     if (!problem_data)
-        xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
+        libreport_xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
     const char *errmsg = NULL;
 
     char tmpdir_name[sizeof(LARGE_DATA_TMP_DIR"/rhtsupport-"LIBREPORT_ISO_DATE_STRING_SAMPLE"-XXXXXX")];
-    snprintf(tmpdir_name, sizeof(tmpdir_name), LARGE_DATA_TMP_DIR"/rhtsupport-%s-XXXXXX", iso_date_string(NULL));
+    snprintf(tmpdir_name, sizeof(tmpdir_name), LARGE_DATA_TMP_DIR"/rhtsupport-%s-XXXXXX", libreport_iso_date_string(NULL));
     /* mkdtemp does mkdir(xxx, 0700), should be safe (is it?) */
     if (mkdtemp(tmpdir_name) == NULL)
     {
@@ -730,8 +730,8 @@ int main(int argc, char **argv)
      * (delete temp dir)
      */
     char *tempfile = NULL;
-    tempfile = concat_path_basename(tmpdir_name, dump_dir_name);
-    tempfile = append_to_malloced_string(tempfile, ".tar.gz");
+    tempfile = libreport_concat_path_basename(tmpdir_name, dump_dir_name);
+    tempfile = libreport_append_to_malloced_string(tempfile, ".tar.gz");
 
     rhts_result_t *result = NULL;
     rhts_result_t *result_atch = NULL;
@@ -761,7 +761,7 @@ int main(int argc, char **argv)
     vendor = problem_data_get_content_or_NULL(problem_data, FILENAME_PKG_VENDOR);
     if (package && vendor && strcmp(vendor, "Red Hat, Inc.") != 0)
     {
-        char *message = xasprintf(
+        char *message = libreport_xasprintf(
             _("The crashed program was released by '%s'. "
               "Would you like to report the problem to Red Hat Support?"),
               vendor);
@@ -779,7 +779,7 @@ int main(int argc, char **argv)
     executable  = problem_data_get_content_or_NULL(problem_data, FILENAME_EXECUTABLE);
     if (!package)
     {
-        char *message = xasprintf(
+        char *message = libreport_xasprintf(
             _("The program '%s' does not appear to be provided by Red Hat. "
               "Would you like to report the problem to Red Hat Support?"),
               executable);
@@ -848,7 +848,7 @@ int main(int argc, char **argv)
 
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
-        xfunc_die(); /* error msg is already logged by dd_opendir */
+        libreport_xfunc_die(); /* error msg is already logged by dd_opendir */
 
     if (create_tarball(tempfile, dd, problem_data) != 0)
     {
@@ -856,7 +856,7 @@ int main(int argc, char **argv)
         goto ret;
     }
 
-    off_t tempfile_size = stat_st_size_or_die(tempfile);
+    off_t tempfile_size = libreport_stat_st_size_or_die(tempfile);
 
     if (!(opts & OPT_t))
     {
@@ -874,7 +874,7 @@ int main(int argc, char **argv)
         char *version = NULL;
         map_string_t *osinfo = new_map_string();
         problem_data_get_osinfo(problem_data, osinfo);
-        parse_osinfo_for_rhts(osinfo, &product, &version);
+        libreport_parse_osinfo_for_rhts(osinfo, &product, &version);
         free_map_string(osinfo);
 
         if (!product)
@@ -983,7 +983,7 @@ int main(int argc, char **argv)
          * Do not translate message below - it goes
          * to a server where *other people* will read it.
          */
-        char *comment_text = xasprintf(
+        char *comment_text = libreport_xasprintf(
             "Problem data was uploaded to %s",
             remote_filename
         );

@@ -101,7 +101,7 @@ static int report_copy_gfile_recursive(GFile *source, GFile *destination)
     return 0;
 }
 
-int copy_file_recursive(const char *source, const char *dest)
+int libreport_copy_file_recursive(const char *source, const char *dest)
 {
     g_autoptr(GFile) source_file = NULL;
     g_autoptr(GFile) destination_file = NULL;

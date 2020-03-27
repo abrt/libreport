@@ -70,7 +70,7 @@ int main(int argc, char **argv)
     char *attach_type = NULL;
     struct dump_dir *dd = NULL;
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT__DUMP_DIR(&dump_dir_path),
         OPT_STRING('u', "url", &arg_server_url, "URL", _("Specify server URL")),
         OPT_BOOL('k', "insecure", &insecure,
@@ -121,15 +121,15 @@ int main(int argc, char **argv)
         "Reads the default configuration from "UREPORT_CONF_FILE_PATH
     );
 
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned opts = libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
     map_string_t *settings = new_map_string();
-    load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
+    libreport_load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 
     ureport_server_config_load(&config, settings);
 
     if (opts & OPT_u)
-        ureport_server_config_set_url(&config, xstrdup(arg_server_url));
+        ureport_server_config_set_url(&config, libreport_xstrdup(arg_server_url));
     if (opts & OPT_k)
         config.ur_ssl_verify = !insecure;
     if (opts & OPT_t)
@@ -143,7 +143,7 @@ int main(int argc, char **argv)
     }
 
     if (!config.ur_url)
-        ureport_server_config_set_url(&config, xstrdup(DEFAULT_WEB_SERVICE_URL));
+        ureport_server_config_set_url(&config, libreport_xstrdup(DEFAULT_WEB_SERVICE_URL));
 
     if (ureport_hash && ureport_hash_from_rt)
         error_msg_and_die("You need to pass either -a bthash or -A");
@@ -178,7 +178,7 @@ int main(int argc, char **argv)
     {
         dd = dd_opendir(dump_dir_path, DD_OPEN_READONLY);
         if (!dd)
-            xfunc_die();
+            libreport_xfunc_die();
 
         if (ureport_hash_from_rt)
         {
@@ -324,7 +324,7 @@ int main(int argc, char **argv)
         ret = 0; /* "success" */
 
         if (!ureport_server_response_save_in_dump_dir(response, dump_dir_path, &config))
-            xfunc_die();
+            libreport_xfunc_die();
 
         /* If a reported problem is not known then emit NEEDMORE */
         if (strcmp("true", response->urr_value) == 0)

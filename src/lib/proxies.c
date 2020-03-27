@@ -50,7 +50,7 @@ GList *get_proxy_list(const char *url)
     /* Don't set proxy if the list contains just "direct://" */
     if (l && !g_list_next(l) && !strcmp(l->data, "direct://"))
     {
-        list_free_with_free(l);
+        libreport_list_free_with_free(l);
         l = NULL;
     }
 

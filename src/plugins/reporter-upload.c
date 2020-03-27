@@ -25,7 +25,7 @@ static char *ask_url(const char *message)
     char *url = libreport_ask(message);
     if (url == NULL || url[0] == '\0')
     {
-        set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
+        libreport_set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
         error_msg_and_die(_("Can't continue without URL"));
     }
 
@@ -48,7 +48,7 @@ static int interactive_upload_file(const char *url, const char *file_name,
             /* Be permissive and nice, ask only once and don't check */
             /* the result. User can dismiss this prompt but the upload */
             /* may work somehow??? */
-            char *msg = xasprintf(_("Please enter password for uploading:"), state->username);
+            char *msg = libreport_xasprintf(_("Please enter password for uploading:"), state->username);
             state->password = password_inp = libreport_ask_password(msg);
             free(msg);
         }
@@ -90,14 +90,14 @@ static int create_and_upload_archive(
     /* SELinux guys are not happy with /tmp, using /var/run/abrt */
     /* Reverted back to /tmp for ABRT2 */
     /* Changed again to /var/tmp because of Fedora feature tmp-on-tmpfs */
-    tempfile = concat_path_basename(LARGE_DATA_TMP_DIR, dump_dir_name);
-    tempfile = append_to_malloced_string(tempfile, ".tar.gz");
+    tempfile = libreport_concat_path_basename(LARGE_DATA_TMP_DIR, dump_dir_name);
+    tempfile = libreport_append_to_malloced_string(tempfile, ".tar.gz");
 
     string_vector_ptr_t exclude_from_report = libreport_get_global_always_excluded_elements();
 
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
-        xfunc_die(); /* error msg is already logged by dd_opendir */
+        libreport_xfunc_die(); /* error msg is already logged by dd_opendir */
 
     /* Compressing e.g. 0.5gig coredump takes a while. Let client know what we are doing */
     log_warning(_("Compressing data"));
@@ -182,7 +182,7 @@ int main(int argc, char **argv)
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_STRING('d', NULL, &dump_dir_name, "DIR"     , _("Problem directory")),
         OPT_STRING('c', NULL, &conf_file    , "CONFFILE", _("Config file")),
         OPT_STRING('u', NULL, &url          , "URL"     , _("Base URL to upload to")),
@@ -190,9 +190,9 @@ int main(int argc, char **argv)
         OPT_STRING('r', "key",     &ssh_private_key, "FILE" , _("SSH private key file")),
         OPT_END()
     };
-    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
+    /*unsigned opts =*/ libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
-    export_abrt_envvars(0);
+    libreport_export_abrt_envvars(0);
 
     // 2015-10-16 (jfilak):
     //   It looks like there is no demand for encryption and other archive
@@ -207,7 +207,7 @@ int main(int argc, char **argv)
 
     map_string_t *settings = new_map_string();
     if (conf_file)
-        load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
+        libreport_load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 
     char *input_url = NULL;
     const char *conf_url = getenv("Upload_URL");

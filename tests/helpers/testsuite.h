@@ -84,7 +84,7 @@
 #ifndef LIBREPORT_TESTSUITE_H
 #define LIBREPORT_TESTSUITE_H
 
-/* For g_verbose */
+/* For libreport_g_verbose */
 #include "internal_libreport.h"
 
 /* For convenience */
@@ -113,7 +113,7 @@ FILE *g_testsuite_output_stream = 0;
  */
 
 #define TS_MAIN \
-    int main(int argc, char *argv[]) { g_verbose = 3; do
+    int main(int argc, char *argv[]) { libreport_g_verbose = 3; do
 
 #define TS_RETURN_MAIN \
     while (0) ;\
@@ -366,15 +366,15 @@ FILE *g_testsuite_output_stream = 0;
 #define TS_ASSERT_STREAM_FD_CONTENTS_EQ_BEGIN(cfd) \
     do { \
         const int ts_bck_fd = cfd; \
-        const int ts_old_fd = xdup(ts_bck_fd); \
+        const int ts_old_fd = libreport_xdup(ts_bck_fd); \
         int ts_pipefd[2]; \
         pipe(ts_pipefd); \
         fcntl(ts_pipefd[0], F_SETFL, O_NONBLOCK); \
-        xmove_fd(ts_pipefd[1], ts_bck_fd); \
+        libreport_xmove_fd(ts_pipefd[1], ts_bck_fd); \
 
 #define TS_ASSERT_STREAM_FD_CONTENTS_EQ_END(expected, message) \
-        xmove_fd(ts_old_fd, ts_bck_fd); \
-        char *ts_fd_contents = xmalloc_read(ts_pipefd[0], NULL); \
+        libreport_xmove_fd(ts_old_fd, ts_bck_fd); \
+        char *ts_fd_contents = libreport_xmalloc_read(ts_pipefd[0], NULL); \
         close(ts_pipefd[0]); \
         TS_ASSERT_STRING_EQ(ts_fd_contents, expected, message); \
         free(ts_fd_contents); \

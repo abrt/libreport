@@ -18,7 +18,7 @@
 */
 #include "internal_libreport.h"
 
-struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name)
+struct dump_dir *libreport_steal_directory(const char *base_dir, const char *dump_dir_name)
 {
     const char *base_name = strrchr(dump_dir_name, '/');
     if (base_name)
@@ -47,7 +47,7 @@ struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name
 
     struct dump_dir *dd_dst;
     unsigned count = 100;
-    char *dst_dir_name = concat_path_file(base_dir, base_name);
+    char *dst_dir_name = libreport_concat_path_file(base_dir, base_name);
     while (1)
     {
         dd_dst = dd_create(dst_dir_name, (uid_t)-1, DEFAULT_DUMP_DIR_MODE);
@@ -61,13 +61,13 @@ struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name
         }
         struct timeval tv;
         gettimeofday(&tv, NULL);
-        dst_dir_name = xasprintf("%s/%s.%u", base_dir, base_name, (int)tv.tv_usec);
+        dst_dir_name = libreport_xasprintf("%s/%s.%u", base_dir, base_name, (int)tv.tv_usec);
     }
 
     log_notice("Creating copy in '%s'", dd_dst->dd_dirname);
-    if (copy_file_recursive(dump_dir_name, dd_dst->dd_dirname) < 0)
+    if (libreport_copy_file_recursive(dump_dir_name, dd_dst->dd_dirname) < 0)
     {
-        /* error. copy_file_recursive already emitted error message */
+        /* error. libreport_copy_file_recursive already emitted error message */
         /* Don't leave half-copied dir lying around */
         dd_delete(dd_dst);
         return NULL;
@@ -76,14 +76,14 @@ struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name
     return dd_dst;
 }
 
-struct dump_dir *open_directory_for_writing(
+struct dump_dir *libreport_open_directory_for_writing(
                             const char *dump_dir_name,
                             bool (*ask)(const char *, const char *))
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
 
     if (!dd)
-        xfunc_die(); /* error msg was already logged */
+        libreport_xfunc_die(); /* error msg was already logged */
 
     if (dd->locked)
         return dd;
@@ -91,12 +91,12 @@ struct dump_dir *open_directory_for_writing(
     log_warning("'%s' is not writable", dump_dir_name);
     dd_close(dd);
 
-    char *spooldir = concat_path_file(g_get_user_cache_dir(), "abrt/spool");
+    char *spooldir = libreport_concat_path_file(g_get_user_cache_dir(), "abrt/spool");
 
     if (ask && !ask(spooldir, dump_dir_name))
         return NULL;
 
-    dd = steal_directory(spooldir, dump_dir_name);
+    dd = libreport_steal_directory(spooldir, dump_dir_name);
     free(spooldir);
 
     if (!dd)
@@ -117,13 +117,13 @@ struct dump_dir *open_directory_for_writing(
      * therefore it's a bit more complicated.
      */
     delete_dump_dir_possibly_using_abrtd(dump_dir_name);
-    char *new_name = xstrdup(dd->dd_dirname);
+    char *new_name = libreport_xstrdup(dd->dd_dirname);
     dd_close(dd);
     dd = dd_opendir(new_name, 0);
     free(new_name);
 
     if (!dd)
-        xfunc_die(); /* error msg was already logged */
+        libreport_xfunc_die(); /* error msg was already logged */
 
     /* Update CWD to the new dump dir path if CWD is the stolen dump dir */
     /* Nonexisting CWD breaks lot of things (i.e. gnome-open can't open URL)*/

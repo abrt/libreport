@@ -19,7 +19,7 @@
 #include "internal_libreport.h"
 #include <glib-object.h>
 
-void glib_init(void)
+void libreport_glib_init(void)
 {
     /* This is not necessary but is IMO is good to know that:
      *
@@ -35,7 +35,7 @@ void glib_init(void)
      */
 
     /* Help with mysterious bug */
-    if (g_verbose > 0)
+    if (libreport_g_verbose > 0)
     {
         const gchar *version_mismatch = glib_check_version(GLIB_MAJOR_VERSION,
                                                            GLIB_MINOR_VERSION,
@@ -54,7 +54,7 @@ void glib_init(void)
  * @param delim a set of bytes that delimit the tokens in the parsed string
  * @returns GList or null if the list is empty
  */
-GList *parse_delimited_list(const char *string, const char *delimiter)
+GList *libreport_parse_delimited_list(const char *string, const char *delimiter)
 {
     char **substrings;
     GList *list = NULL;
@@ -78,7 +78,7 @@ GList *parse_delimited_list(const char *string, const char *delimiter)
     return g_list_reverse(list);
 }
 
-void list_free_with_free(GList *list)
+void libreport_list_free_with_free(GList *list)
 {
     GList *li;
     for (li = list; li; li = g_list_next(li))

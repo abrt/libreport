@@ -52,16 +52,16 @@ int main(int argc, char **argv)
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_STRING('d', NULL, &dump_dir_name, "DIR"   , _("Problem directory")),
         OPT_STRING('o', NULL, &output_file  , "FILE"  , _("Output file")),
         OPT_STRING('a', NULL, &append       , "yes/no", _("Append to, or overwrite FILE")),
         OPT_BOOL(  'r', NULL, NULL          ,           _("Create reported_to in DIR")),
         OPT_END()
     };
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned opts = libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
-    export_abrt_envvars(0);
+    libreport_export_abrt_envvars(0);
 
     if (output_file)
     {
@@ -69,12 +69,12 @@ int main(int argc, char **argv)
         if (output_file[0] == '~' && output_file[1] == '/'
          && (HOME = getenv("HOME")) != NULL
         ) {
-            output_file = concat_path_file(HOME, output_file + 2);
+            output_file = libreport_concat_path_file(HOME, output_file + 2);
         }
         else
-            output_file = xstrdup(output_file);
+            output_file = libreport_xstrdup(output_file);
 
-        if (string_to_bool(append))
+        if (libreport_string_to_bool(append))
             open_mode = "a";
 
         /* We used freopen to change stdout,
@@ -94,18 +94,18 @@ int main(int argc, char **argv)
 
                 if (response[0] == '\0' || response[0] == '\n')
                 {
-                    set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
+                    libreport_set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
                     error_msg_and_die(_("Cancelled by user."));
                 }
 
-                output_file = strtrim(response);
+                output_file = libreport_strtrim(response);
             }
 
             FILE *outstream = fopen(output_file, open_mode);
             if (!outstream)
             {
                 VERB1 pwarn_msg("fopen");
-                msg = xasprintf(_("Can't open '%s' for writing. "
+                msg = libreport_xasprintf(_("Can't open '%s' for writing. "
                                   "Please select another file:"), output_file);
                 continue;
             }
@@ -118,9 +118,9 @@ int main(int argc, char **argv)
 
     problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
     if (!problem_data)
-        xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
+        libreport_xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
-    char *dsc = make_description_logger(problem_data, CD_TEXT_ATT_SIZE_LOGGER);
+    char *dsc = libreport_make_description_logger(problem_data, CD_TEXT_ATT_SIZE_LOGGER);
     fputs(dsc, stdout);
     if (open_mode[0] == 'a')
         fputs("\nEND:\n\n", stdout);
@@ -138,7 +138,7 @@ int main(int argc, char **argv)
                 char *url;
 
                 result = report_result_new_with_label_from_env("file");
-                url = xasprintf("file://%s", output_file);
+                url = libreport_xasprintf("file://%s", output_file);
 
                 report_result_set_url(result, url);
 

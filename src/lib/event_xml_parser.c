@@ -96,7 +96,7 @@ static char *get_element_lang(struct my_parse_data *parse_data, const gchar **at
             if (strcmp(att_values[i], parse_data->cur_locale) == 0)
             {
                 log_debug("found translation for: %s", parse_data->cur_locale);
-                return xstrdup(att_values[i]);
+                return libreport_xstrdup(att_values[i]);
             }
 
             /* try to match shorter locale
@@ -106,13 +106,13 @@ static char *get_element_lang(struct my_parse_data *parse_data, const gchar **at
              && strncmp(att_values[i], parse_data->cur_locale, short_locale_end - parse_data->cur_locale) == 0
             ) {
                 log_debug("found translation for shortlocale: %s", parse_data->cur_locale);
-                return xstrndup(att_values[i], short_locale_end - parse_data->cur_locale);
+                return libreport_xstrndup(att_values[i], short_locale_end - parse_data->cur_locale);
             }
         }
     }
     /* if the element has no attribute then it's a default non-localized value */
     if (i == 0)
-        return xstrdup("");
+        return libreport_xstrdup("");
     /* if the element is in different language than the current locale */
     return NULL;
 }
@@ -138,7 +138,7 @@ static void consume_cur_option(struct my_parse_data *parse_data)
      * (strcmp would segfault, etc), so provide invented name:
      */
     if (!opt->eo_name)
-        opt->eo_name = xasprintf("%u", (unsigned)g_list_length(event_config->values->options));
+        opt->eo_name = libreport_xasprintf("%u", (unsigned)g_list_length(event_config->values->options));
 
     GList *elem = g_list_find_custom(event_config->values->options, opt->eo_name, cmp_event_option_name_with_string);
     if (elem)
@@ -200,7 +200,7 @@ static void start_element(GMarkupParseContext *context,
             if (strcmp(attribute_names[i], "name") == 0)
             {
                 free(opt->eo_name);
-                opt->eo_name = xstrdup(attribute_values[i]);
+                opt->eo_name = libreport_xstrdup(attribute_values[i]);
             }
             else if (strcmp(attribute_names[i], "type") == 0)
             {
@@ -225,7 +225,7 @@ static void start_element(GMarkupParseContext *context,
         }
 
         GList *head = parse_data->event_config.values->ec_imported_event_names;
-        parse_data->event_config.values->ec_imported_event_names = g_list_append(head, xstrdup(attribute_values[0]));
+        parse_data->event_config.values->ec_imported_event_names = g_list_append(head, libreport_xstrdup(attribute_values[0]));
     }
     else
     if (strcmp(element_name, LABEL_ELEMENT) == 0
@@ -249,7 +249,7 @@ static void start_element(GMarkupParseContext *context,
             return;
         }
 
-        parse_data->event_config.values->ec_restricted_access_option = xstrdup(attribute_values[0]);
+        parse_data->event_config.values->ec_restricted_access_option = libreport_xstrdup(attribute_values[0]);
     }
 }
 
@@ -290,7 +290,7 @@ static void text(GMarkupParseContext *context,
     event_config_t *ui = parse_data->event_config.values;
 
     const gchar *inner_element = g_markup_parse_context_get_element(context);
-    char *text_copy = xstrndup(text, text_len);
+    char *text_copy = libreport_xstrndup(text, text_len);
     event_option_t *opt = parse_data->cur_option.values;
     if (opt)
     {
@@ -356,7 +356,7 @@ static void text(GMarkupParseContext *context,
         else if (strcmp(inner_element, ALLOW_EMPTY_ELEMENT) == 0)
         {
             log_info("allow-empty:'%s'", text_copy);
-            opt->eo_allow_empty = string_to_bool(text_copy);
+            opt->eo_allow_empty = libreport_string_to_bool(text_copy);
         }
         /*
         if (strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)
@@ -485,7 +485,7 @@ static void text(GMarkupParseContext *context,
         }
         else if (strcmp(inner_element, EXCL_BINARY_ELEMENT) == 0)
         {
-            ui->ec_exclude_binary_items = string_to_bool(text_copy);
+            ui->ec_exclude_binary_items = libreport_string_to_bool(text_copy);
         }
         else if (strcmp(inner_element, MINIMAL_RATING_ELEMENT) == 0)
         {
@@ -500,19 +500,19 @@ static void text(GMarkupParseContext *context,
         }
         else if (strcmp(inner_element, GUI_REVIEW_ELEMENTS) == 0)
         {
-            ui->ec_skip_review = !string_to_bool(text_copy);
+            ui->ec_skip_review = !libreport_string_to_bool(text_copy);
         }
         else if (strcmp(inner_element, SENDING_SENSITIVE_DATA_ELEMENT) == 0)
         {
-            ui->ec_sending_sensitive_data = string_to_bool(text_copy);
+            ui->ec_sending_sensitive_data = libreport_string_to_bool(text_copy);
         }
         else if (strcmp(inner_element, SUPPORTS_RESTRICTED_ACCESS_ELEMENT) == 0)
         {
-            ui->ec_supports_restricted_access = string_to_bool(text_copy);
+            ui->ec_supports_restricted_access = libreport_string_to_bool(text_copy);
         }
         else if (strcmp(inner_element, REQUIRES_DETAILS) == 0)
         {
-            ui->ec_requires_details = string_to_bool(text_copy);
+            ui->ec_requires_details = libreport_string_to_bool(text_copy);
         }
     }
     free(text_copy);
@@ -555,7 +555,7 @@ void load_event_description_from_file(event_config_t *event_config, const char* 
         NULL,
         NULL
     };
-    parse_data.cur_locale = xstrdup(setlocale(LC_ALL, NULL));
+    parse_data.cur_locale = libreport_xstrdup(setlocale(LC_ALL, NULL));
     strchrnul(parse_data.cur_locale, '.')[0] = '\0';
 
     GMarkupParser parser;

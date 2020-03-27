@@ -100,8 +100,8 @@ void libreport_reload_text_to_text_view(GtkTextView *tv, const char *text);
  * click only 'Yes' button if the check box is checked and stores "no" string
  * in user settings if the check box is checked.
  *
- * Uses libreport's user settings. Don't forget to call load_user_settings()
- * before the first call of this funcion and call save_user_settings() after
+ * Uses libreport's user settings. Don't forget to call libreport_load_user_settings()
+ * before the first call of this funcion and call libreport_save_user_settings() after
  * the last call of this function.
  *
  * @param key Key under which the response is stored. Not NULL
@@ -117,8 +117,8 @@ int libreport_run_ask_yes_no_yesforever_dialog(const char *key, const char *mess
  * click both of buttons if the check box is checked and stores the answer in
  * user settings if the check box is checked.
  *
- * Uses libreport's user settings. Don't forget to call load_user_settings()
- * before the first call of this funcion and call save_user_settings() after
+ * Uses libreport's user settings. Don't forget to call libreport_load_user_settings()
+ * before the first call of this funcion and call libreport_save_user_settings() after
  * the last call of this function.
  *
  * @param key Key under which the response is stored. Not NULL

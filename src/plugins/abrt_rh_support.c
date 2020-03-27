@@ -130,7 +130,7 @@ reportfile_t*
 new_reportfile(void)
 {
     // create a new reportfile_t
-    reportfile_t* file = (reportfile_t*)xmalloc(sizeof(*file));
+    reportfile_t* file = (reportfile_t*)libreport_xmalloc(sizeof(*file));
 
     // set up a libxml 'buffer' and 'writer' to that buffer
     file->buf = xxmlBufferCreate();
@@ -180,7 +180,7 @@ reportfile_add_binding_from_namedfile(reportfile_t* file,
     // <binding name=NAME fileName=FILENAME type=text/binary...
     internal_reportfile_start_binding(file, binding_name, isbinary, recorded_filename);
     // ... href=content/NAME>
-    char *href_name = concat_path_file("content", binding_name);
+    char *href_name = libreport_concat_path_file("content", binding_name);
     xxmlTextWriterWriteAttribute(file->writer, "href", href_name);
     free(href_name);
 }
@@ -267,7 +267,7 @@ make_case_data(const char* summary, const char* description,
     }
 
     xxmlTextWriterEndDocument(writer);
-    retval = xstrdup((const char*)buf->content);
+    retval = libreport_xstrdup((const char*)buf->content);
     xmlFreeTextWriter(writer);
     xmlBufferFree(buf);
     return retval;
@@ -285,7 +285,7 @@ post_case_to_url(const char* url,
                 const char* description,
                 const char* component)
 {
-    rhts_result_t *result = xzalloc(sizeof(*result));
+    rhts_result_t *result = libreport_xzalloc(sizeof(*result));
     char *url_copy = NULL;
 
     char *case_data = make_case_data(summary, description,
@@ -318,7 +318,7 @@ post_case_to_url(const char* url,
          * instead of returning html-encoded body, we show short concise message,
          * and show offending URL (typos in which is a typical cause) */
         result->error = -1;
-        result->msg = xasprintf("Error in HTTP POST, "
+        result->msg = libreport_xasprintf("Error in HTTP POST, "
                         "HTTP code: 404 (Not found), URL:'%s'", url);
         break;
 
@@ -328,7 +328,7 @@ post_case_to_url(const char* url,
         if (++redirect_count < 10 && location)
         {
             free(url_copy);
-            url = url_copy = xstrdup(location);
+            url = url_copy = libreport_xstrdup(location);
             free_post_state(post_state);
             goto redirect;
         }
@@ -353,7 +353,7 @@ post_case_to_url(const char* url,
         errmsg = post_state->curl_error_msg;
         if (errmsg && errmsg[0])
         {
-            result->msg = xasprintf(_("Error in case creation at '%s': %s"),
+            result->msg = libreport_xasprintf(_("Error in case creation at '%s': %s"),
                     url, errmsg);
         }
         else
@@ -362,11 +362,11 @@ post_case_to_url(const char* url,
             if (!errmsg)
                 errmsg = post_state->body;
             if (errmsg && errmsg[0])
-                result->msg = xasprintf(_("Error in case creation at '%s',"
+                result->msg = libreport_xasprintf(_("Error in case creation at '%s',"
                         " HTTP code: %d, server says: '%s'"),
                         url, post_state->http_resp_code, errmsg);
             else
-                result->msg = xasprintf(_("Error in case creation at '%s',"
+                result->msg = libreport_xasprintf(_("Error in case creation at '%s',"
                         " HTTP code: %d"),
                         url, post_state->http_resp_code);
         }
@@ -375,7 +375,7 @@ post_case_to_url(const char* url,
     case 200:
     case 201:
         /* Created successfully */
-        result->url = xstrdup(location); /* note: xstrdup(NULL) returns NULL */
+        result->url = libreport_xstrdup(location); /* note: libreport_xstrdup(NULL) returns NULL */
     } /* switch (HTTP code) */
 
     result->http_resp_code = post_state->http_resp_code;
@@ -399,7 +399,7 @@ create_new_case(const char* base_url,
                 const char* description,
                 const char* component)
 {
-    char *url = concat_path_file(base_url, "cases");
+    char *url = libreport_concat_path_file(base_url, "cases");
     rhts_result_t *result = post_case_to_url(url,
                 username,
                 password,
@@ -417,7 +417,7 @@ create_new_case(const char* base_url,
         /* Case Creation returned valid code, but no location */
         result->error = -1;
         free(result->msg);
-        result->msg = xasprintf(_("Error in case creation at '%s':"
+        result->msg = libreport_xasprintf(_("Error in case creation at '%s':"
                 " no Location URL, HTTP code: %d"),
                 url, result->http_resp_code
         );
@@ -455,7 +455,7 @@ make_comment_data(const char *comment_text)
     xxmlTextWriterWriteElement(writer, "text", comment_text);
 
     xxmlTextWriterEndDocument(writer);
-    retval = xstrdup((const char*)buf->content);
+    retval = libreport_xstrdup((const char*)buf->content);
     xmlFreeTextWriter(writer);
     xmlBufferFree(buf);
     return retval;
@@ -469,7 +469,7 @@ post_comment_to_url(const char *url,
                 const char **additional_headers,
                 const char *comment_text)
 {
-    rhts_result_t *result = xzalloc(sizeof(*result));
+    rhts_result_t *result = libreport_xzalloc(sizeof(*result));
     char *url_copy = NULL;
 
     char *xml = make_comment_data(comment_text);
@@ -500,7 +500,7 @@ post_comment_to_url(const char *url,
          * instead of returning html-encoded body, we show short concise message,
          * and show offending URL (typos in which is a typical cause) */
         result->error = -1;
-        result->msg = xasprintf("Error in HTTP POST, "
+        result->msg = libreport_xasprintf("Error in HTTP POST, "
                         "HTTP code: 404 (Not found), URL:'%s'", url);
         break;
 
@@ -510,7 +510,7 @@ post_comment_to_url(const char *url,
         if (++redirect_count < 10 && location)
         {
             free(url_copy);
-            url = url_copy = xstrdup(location);
+            url = url_copy = libreport_xstrdup(location);
             free_post_state(post_state);
             goto redirect;
         }
@@ -521,7 +521,7 @@ post_comment_to_url(const char *url,
         errmsg = post_state->curl_error_msg;
         if (errmsg && errmsg[0])
         {
-            result->msg = xasprintf(_("Error in comment creation at '%s': %s"),
+            result->msg = libreport_xasprintf(_("Error in comment creation at '%s': %s"),
                         url, errmsg);
         }
         else
@@ -530,11 +530,11 @@ post_comment_to_url(const char *url,
             if (!errmsg)
                 errmsg = post_state->body;
             if (errmsg && errmsg[0])
-                result->msg = xasprintf(_("Error in comment creation at '%s',"
+                result->msg = libreport_xasprintf(_("Error in comment creation at '%s',"
                         " HTTP code: %d, server says: '%s'"),
                         url, post_state->http_resp_code, errmsg);
             else
-                result->msg = xasprintf(_("Error in comment creation at '%s',"
+                result->msg = libreport_xasprintf(_("Error in comment creation at '%s',"
                         " HTTP code: %d"),
                         url, post_state->http_resp_code);
         }
@@ -543,7 +543,7 @@ post_comment_to_url(const char *url,
     case 200:
     case 201:
         /* Created successfully */
-        result->url = xstrdup(location); /* note: xstrdup(NULL) returns NULL */
+        result->url = libreport_xstrdup(location); /* note: libreport_xstrdup(NULL) returns NULL */
     } /* switch (HTTP code) */
 
     result->http_resp_code = post_state->http_resp_code;
@@ -563,7 +563,7 @@ add_comment_to_case(const char* base_url,
                 bool ssl_verify,
                 const char* comment_text)
 {
-    char *url = concat_path_file(base_url, "comments");
+    char *url = libreport_concat_path_file(base_url, "comments");
     rhts_result_t *result = post_comment_to_url(url,
                 username,
                 password,
@@ -580,7 +580,7 @@ add_comment_to_case(const char* base_url,
         /* Creation returned valid code, but no location */
         result->error = -1;
         free(result->msg);
-        result->msg = xasprintf(_("Error in comment creation at '%s':"
+        result->msg = libreport_xasprintf(_("Error in comment creation at '%s':"
                 " no Location URL, HTTP code: %d"),
                 url, result->http_resp_code
         );
@@ -602,7 +602,7 @@ post_file_to_url(const char* url,
                 const char **additional_headers,
                 const char *file_name)
 {
-    rhts_result_t *result = xzalloc(sizeof(*result));
+    rhts_result_t *result = libreport_xzalloc(sizeof(*result));
     char *url_copy = NULL;
 
     int redirect_count = 0;
@@ -649,7 +649,7 @@ post_file_to_url(const char* url,
         if (++redirect_count < 10 && atch_location)
         {
             free(url_copy);
-            url = url_copy = xstrdup(atch_location);
+            url = url_copy = libreport_xstrdup(atch_location);
             free_post_state(atch_state);
             goto redirect_attach;
         }
@@ -661,18 +661,18 @@ post_file_to_url(const char* url,
         errmsg = atch_state->curl_error_msg;
         if (errmsg && errmsg[0])
         {
-            result->msg = xasprintf("Error in file upload at '%s': %s",
+            result->msg = libreport_xasprintf("Error in file upload at '%s': %s",
                     url, errmsg);
         }
         else
         {
             errmsg = atch_state->body;
             if (errmsg && errmsg[0])
-                result->msg = xasprintf("Error in file upload at '%s',"
+                result->msg = libreport_xasprintf("Error in file upload at '%s',"
                         " HTTP code: %d, server says: '%s'",
                         url, atch_state->http_resp_code, errmsg);
             else
-                result->msg = xasprintf("Error in file upload at '%s',"
+                result->msg = libreport_xasprintf("Error in file upload at '%s',"
                         " HTTP code: %d",
                         url, atch_state->http_resp_code);
         }
@@ -680,8 +680,8 @@ post_file_to_url(const char* url,
 
     case 200:
     case 201:
-        result->url = xstrdup(atch_location); /* note: xstrdup(NULL) returns NULL */
-        //result->msg = xstrdup("File uploaded successfully");
+        result->url = libreport_xstrdup(atch_location); /* note: libreport_xstrdup(NULL) returns NULL */
+        //result->msg = libreport_xstrdup("File uploaded successfully");
     } /* switch (HTTP code) */
 
     result->http_resp_code = atch_state->http_resp_code;
@@ -700,7 +700,7 @@ attach_file_to_case(const char* base_url,
                 bool ssl_verify,
                 const char *file_name)
 {
-    char *url = concat_path_file(base_url, "attachments");
+    char *url = libreport_concat_path_file(base_url, "attachments");
     rhts_result_t *result = post_file_to_url(url,
                 username,
                 password,
@@ -723,7 +723,7 @@ get_rhts_hints(const char* base_url,
                 bool ssl_verify,
                 const char* file_name)
 {
-    char *url = concat_path_file(base_url, "problems");
+    char *url = libreport_concat_path_file(base_url, "problems");
 //    rhts_result_t *result = post_case_to_url(url,
 //                username,
 //                password,

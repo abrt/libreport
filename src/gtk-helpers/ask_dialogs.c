@@ -56,11 +56,11 @@ static int run_ask_yes_no_save_generic_result_dialog(ask_yes_no_dialog_flags fla
 {
     INITIALIZE_LIBREPORT();
 
-    const char *ask_result = get_user_setting(key);
+    const char *ask_result = libreport_get_user_setting(key);
 
     if (ask_result)
     {
-        const bool ret = string_to_bool(ask_result);
+        const bool ret = libreport_string_to_bool(ask_result);
         if (!(flags & ASK_YES_NO__YESFOREVER))
             return ret;
 
@@ -111,12 +111,12 @@ static int run_ask_yes_no_save_generic_result_dialog(ask_yes_no_dialog_flags fla
 
     if (flags & ASK_YES_NO__YESFOREVER)
         /* the box is checked -> Don't ask me again and my response is always 'Yes' */
-        set_user_setting(key, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ask_yes_no_cb)) ? "no" : "yes");
+        libreport_set_user_setting(key, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ask_yes_no_cb)) ? "no" : "yes");
     else if (flags & ASK_YES_NO__SAVE_RESULT)
     {
         if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ask_yes_no_cb)))
             /* the box is checked -> remember my current answer */
-            set_user_setting(key, response == GTK_RESPONSE_YES ? "yes" : "no");
+            libreport_set_user_setting(key, response == GTK_RESPONSE_YES ? "yes" : "no");
     }
     else /* should not happen */
         error_msg("BUG:%s:%d %s() unknown type (0x%x) of libreport_ask_yes_no dialog",

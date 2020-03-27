@@ -19,15 +19,15 @@
 
 #include "internal_libreport.h"
 
-file_obj_t *new_file_obj(const char* fullpath, const char* filename)
+file_obj_t *libreport_new_file_obj(const char* fullpath, const char* filename)
 {
-    file_obj_t *file = xmalloc(sizeof(file_obj_t));
-    file->fullpath = xstrdup(fullpath);
-    file->filename = xstrdup(filename);
+    file_obj_t *file = libreport_xmalloc(sizeof(file_obj_t));
+    file->fullpath = libreport_xstrdup(fullpath);
+    file->filename = libreport_xstrdup(filename);
     return file;
 }
 
-void free_file_obj(file_obj_t *f)
+void libreport_free_file_obj(file_obj_t *f)
 {
     if (f == NULL)
         return;

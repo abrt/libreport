@@ -28,7 +28,7 @@ search_item_t *sitem_new(int page,
                          GtkTextIter end
                          )
 {
-    search_item_t *word = (search_item_t *)xmalloc(sizeof(search_item_t));
+    search_item_t *word = (search_item_t *)libreport_xmalloc(sizeof(search_item_t));
     word->start = start;
     word->end = end;
     word->buffer = buffer;

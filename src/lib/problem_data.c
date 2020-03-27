@@ -33,7 +33,7 @@ static void free_problem_item(void *ptr)
 char *problem_item_format(struct problem_item *item)
 {
     if (!item)
-        return xstrdup("(nullitem)");
+        return libreport_xstrdup("(nullitem)");
 
     if (item->flags & CD_FLAG_UNIXTIME)
     {
@@ -48,7 +48,7 @@ char *problem_item_format(struct problem_item *item)
             char timeloc[256];
             int success = strftime(timeloc, sizeof(timeloc), "%c", localtime(&time));
             if (success)
-                return xstrdup(timeloc);
+                return libreport_xstrdup(timeloc);
         }
     }
     return NULL;
@@ -153,7 +153,7 @@ void problem_data_add_basics(problem_data_t *pd)
             unsigned char hash_bytes[SHA1_DIGEST_SIZE];
             sha1_digest(&hash, sizeof(hash_bytes), hash_bytes);
             char hash_str[sizeof(hash_bytes)*2 + 1];
-            bin2hex(hash_str, (char *)hash_bytes, sizeof(hash_bytes))[0] = '\0';
+            libreport_bin2hex(hash_str, (char *)hash_bytes, sizeof(hash_bytes))[0] = '\0';
 
             problem_data_add_text_noteditable(pd, FILENAME_UUID, hash_str);
         }
@@ -201,11 +201,11 @@ struct problem_item *problem_data_add_ext(problem_data_t *problem_data,
     if (!(flags & CD_FLAG_ISEDITABLE))
         flags |= CD_FLAG_ISNOTEDITABLE;
 
-    struct problem_item *item = (struct problem_item *)xzalloc(sizeof(*item));
-    item->content = xstrdup(content);
+    struct problem_item *item = (struct problem_item *)libreport_xzalloc(sizeof(*item));
+    item->content = libreport_xstrdup(content);
     item->flags = flags;
     item->size = size;
-    g_hash_table_replace(problem_data, xstrdup(name), item);
+    g_hash_table_replace(problem_data, libreport_xstrdup(name), item);
 
     return item;
 }
@@ -310,7 +310,7 @@ static const char *const editable_files[] = {
 };
 static bool is_editable_file(const char *file_name)
 {
-    return is_in_string_list(file_name, editable_files);
+    return libreport_is_in_string_list(file_name, editable_files);
 }
 
 static const char *const always_text_files[] = {
@@ -338,8 +338,8 @@ static int is_text_file_at(int dir_fd, const char *name, char **content, ssize_t
     }
     lseek(fd, 0, SEEK_SET);
 
-    unsigned char *buf = xmalloc(*sz);
-    ssize_t r = full_read(fd, buf, *sz);
+    unsigned char *buf = libreport_xmalloc(*sz);
+    ssize_t r = libreport_full_read(fd, buf, *sz);
 
     if (r < 0)
     {
@@ -362,7 +362,7 @@ static int is_text_file_at(int dir_fd, const char *name, char **content, ssize_t
     if (base)
     {
         base++;
-        if (is_in_string_list(base, always_text_files))
+        if (libreport_is_in_string_list(base, always_text_files))
             goto text;
     }
 
@@ -457,7 +457,7 @@ static int _problem_data_load_dump_dir_element(struct dump_dir *dd, const char *
         /* no, it didn't, we need to read it all */
         free(text);
         lseek(*file_fd_ptr, 0, SEEK_SET);
-        text = xmalloc_read(*file_fd_ptr, NULL);
+        text = libreport_xmalloc_read(*file_fd_ptr, NULL);
     }
 
 #undef IS_TEXT_FILE_AT_PROBE_SIZE
@@ -470,7 +470,7 @@ static int _problem_data_load_dump_dir_element(struct dump_dir *dd, const char *
     /* Sanitize possibly corrupted utf8.
      * Of control chars, allow only tab and newline.
      */
-    char *sanitized = sanitize_utf8(text,
+    char *sanitized = libreport_sanitize_utf8(text,
             (SANITIZE_ALL & ~SANITIZE_LF & ~SANITIZE_TAB)
     );
 
@@ -490,7 +490,7 @@ finito:
 
 int problem_data_load_dump_dir_element(struct dump_dir *dd, const char *name, char **content, int *type_flags, int *fd)
 {
-    if (!str_is_correct_filename(name))
+    if (!libreport_str_is_correct_filename(name))
         return -EINVAL;
 
     return _problem_data_load_dump_dir_element(dd, name, content, type_flags, fd);
@@ -504,7 +504,7 @@ void problem_data_load_from_dump_dir(problem_data_t *problem_data, struct dump_d
     dd_init_next_file(dd);
     while (dd_get_next_file(dd, &short_name, &full_name))
     {
-        if (excluding && is_in_string_list(short_name, (const char *const *)excluding))
+        if (excluding && libreport_is_in_string_list(short_name, (const char *const *)excluding))
         {
             //log_warning("Excluded:'%s'", short_name);
             goto next;
@@ -542,7 +542,7 @@ void problem_data_load_from_dump_dir(problem_data_t *problem_data, struct dump_d
                 FILENAME_REASON    ,
                 NULL
             };
-            if (is_in_string_list(short_name, list_files))
+            if (libreport_is_in_string_list(short_name, list_files))
                 flags |= CD_FLAG_LIST;
 
             if (strcmp(short_name, FILENAME_TIME) == 0)
@@ -586,7 +586,7 @@ problem_data_t *create_problem_data_for_reporting(const char *dump_dir_name)
     return problem_data;
 }
 
-void log_problem_data(problem_data_t *problem_data, const char *pfx)
+void libreport_log_problem_data(problem_data_t *problem_data, const char *pfx)
 {
     GHashTableIter iter;
     char *name;
@@ -602,7 +602,7 @@ void log_problem_data(problem_data_t *problem_data, const char *pfx)
     }
 }
 
-gint cmp_problem_data(gconstpointer a, gconstpointer b, gpointer filename)
+gint libreport_cmp_problem_data(gconstpointer a, gconstpointer b, gpointer filename)
 {
     problem_data_t *a_data = *(problem_data_t **) a;
     const char *a_time_str = problem_data_get_content_or_NULL(a_data, filename);
@@ -628,7 +628,7 @@ static bool problem_data_get_osinfo_from_items(problem_data_t *problem_data,
     char *data = problem_data_get_content_or_NULL(problem_data, osinfo_name);
     if (data)
     {
-        parse_osinfo(data, osinfo);
+        libreport_parse_osinfo(data, osinfo);
         return true;
     }
 
@@ -636,7 +636,7 @@ static bool problem_data_get_osinfo_from_items(problem_data_t *problem_data,
     if (!data)
         return false;
 
-    insert_map_string(osinfo, xstrdup(OSINFO_PRETTY_NAME), xstrdup(data));
+    insert_map_string(osinfo, libreport_xstrdup(OSINFO_PRETTY_NAME), libreport_xstrdup(data));
     return true;
 }
 

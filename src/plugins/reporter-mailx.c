@@ -47,7 +47,7 @@ static void exec_and_feed_input(const char* text, char **args)
 {
     int pipein[2];
 
-    pid_t child = fork_execv_on_steroids(
+    pid_t child = libreport_fork_execv_on_steroids(
                 EXECFLG_INPUT | EXECFLG_QUIET,
                 args,
                 pipein,
@@ -56,11 +56,11 @@ static void exec_and_feed_input(const char* text, char **args)
                 /*uid (ignored):*/ 0
     );
 
-    full_write_str(pipein[1], text);
+    libreport_full_write_str(pipein[1], text);
     close(pipein[1]);
 
     int status;
-    safe_waitpid(child, &status, 0); /* wait for command completion */
+    libreport_safe_waitpid(child, &status, 0); /* wait for command completion */
     if (status != 0)
         error_msg_and_die("Error running '%s'", args[0]);
 }
@@ -69,8 +69,8 @@ static char** append_str_to_vector(char **vec, unsigned *size_p, const char *str
 {
     //log_warning("old vec: %p", vec);
     unsigned size = *size_p;
-    vec = (char**) xrealloc(vec, (size+2) * sizeof(vec[0]));
-    vec[size] = xstrdup(str);
+    vec = (char**) libreport_xrealloc(vec, (size+2) * sizeof(vec[0]));
+    vec[size] = libreport_xstrdup(str);
     //log_warning("new vec: %p, added [%d] %p", vec, size, vec[size]);
     size++;
     vec[size] = NULL;
@@ -80,20 +80,20 @@ static char** append_str_to_vector(char **vec, unsigned *size_p, const char *str
 
 static char *ask_email_address(const char *type, const char *def_address)
 {
-    char *ask_text = xasprintf(_("Email address of %s was not specified. Would you like to do so now? If not, '%s' is to be used"), type, def_address);
+    char *ask_text = libreport_xasprintf(_("Email address of %s was not specified. Would you like to do so now? If not, '%s' is to be used"), type, def_address);
     const int ret = libreport_ask_yes_no(ask_text);
     free(ask_text);
 
     if (!ret)
-        return xstrdup(def_address);
+        return libreport_xstrdup(def_address);
 
-    ask_text = xasprintf(_("Please, type email address of %s:"), type);
+    ask_text = libreport_xasprintf(_("Please, type email address of %s:"), type);
     char *address = libreport_ask(ask_text);
     free(ask_text);
 
     if (address == NULL || address[0] == '\0')
     {
-        set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
+        libreport_set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
         error_msg_and_die(_("Can't continue without email address of %s"), type);
     }
 
@@ -108,15 +108,15 @@ static void create_and_send_email(
 {
     problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
     if (!problem_data)
-        xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
+        libreport_xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
     char* env;
     env = getenv("Mailx_EmailFrom");
-    char *email_from = (env ? xstrdup(env) : xstrdup(get_map_string_item_or_NULL(settings, "EmailFrom")) ? : ask_email_address("sender", "ABRT Daemon <DoNotReply>"));
+    char *email_from = (env ? libreport_xstrdup(env) : libreport_xstrdup(get_map_string_item_or_NULL(settings, "EmailFrom")) ? : ask_email_address("sender", "ABRT Daemon <DoNotReply>"));
     env = getenv("Mailx_EmailTo");
-    char *email_to = (env ? xstrdup(env) : xstrdup(get_map_string_item_or_NULL(settings, "EmailTo")) ? : ask_email_address("receiver", "root@localhost"));
+    char *email_to = (env ? libreport_xstrdup(env) : libreport_xstrdup(get_map_string_item_or_NULL(settings, "EmailTo")) ? : ask_email_address("receiver", "root@localhost"));
     env = getenv("Mailx_SendBinaryData");
-    bool send_binary_data = string_to_bool(env ? env : get_map_string_item_or_empty(settings, "SendBinaryData"));
+    bool send_binary_data = libreport_string_to_bool(env ? env : get_map_string_item_or_empty(settings, "SendBinaryData"));
 
     problem_formatter_t *pf = problem_formatter_new();
     /* formatting file is not set */
@@ -125,11 +125,11 @@ static void create_and_send_email(
         env = getenv("Mailx_Subject");
         const char *subject = (env ? env : get_map_string_item_or_NULL(settings, "Subject") ? : PR_DEFAULT_SUBJECT);
 
-        char *format_string = xasprintf(PR_MAILX_TEMPLATE, subject);
+        char *format_string = libreport_xasprintf(PR_MAILX_TEMPLATE, subject);
 
         /* attaching binary file to the email */
         if (send_binary_data)
-            format_string = append_to_malloced_string(format_string, PR_ATTACH_BINARY);
+            format_string = libreport_append_to_malloced_string(format_string, PR_ATTACH_BINARY);
 
         if (problem_formatter_load_string(pf, format_string))
             error_msg_and_die("BUG: Invalid default problem report format string");
@@ -177,7 +177,7 @@ static void create_and_send_email(
     for (GList *a = problem_report_get_attachments(pr); a != NULL; a = g_list_next(a))
     {
         args = append_str_to_vector(args, &arg_size, "-a");
-        char *full_name = concat_path_file(realpath(dump_dir_name, NULL), a->data);
+        char *full_name = libreport_concat_path_file(realpath(dump_dir_name, NULL), a->data);
         args = append_str_to_vector(args, &arg_size, full_name);
         free(full_name);
     }
@@ -229,7 +229,7 @@ static void create_and_send_email(
             char *url;
 
             result = report_result_new_with_label_from_env("email");
-            url = xasprintf("mailto:%s", email_to);
+            url = libreport_xasprintf("mailto:%s", email_to);
 
             report_result_set_url(result, url);
 
@@ -284,7 +284,7 @@ int main(int argc, char **argv)
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_STRING('d', NULL, &dump_dir_name, "DIR"     , _("Problem directory")),
         OPT_STRING('c', NULL, &conf_file    , "CONFFILE", _("Config file")),
         OPT_STRING('F', NULL, &fmt_file     , "FILE"    , _("Formatting file for an email")),
@@ -292,12 +292,12 @@ int main(int argc, char **argv)
         OPT_BOOL(  'D', NULL, NULL          ,         _("Debug")),
         OPT_END()
     };
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned opts = libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
-    export_abrt_envvars(0);
+    libreport_export_abrt_envvars(0);
 
     map_string_t *settings = new_map_string();
-    load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
+    libreport_load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 
     int flag = 0;
     if (opts & OPT_n)

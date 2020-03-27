@@ -107,34 +107,34 @@ struct strbuf *report_result_to_string(report_result_t *result)
     g_return_val_if_fail(NULL != result, NULL);
     g_return_val_if_fail(NULL != result->label, NULL);
 
-    buf = strbuf_new();
+    buf = libreport_strbuf_new();
 
-    strbuf_append_strf(buf, "%s:", result->label);
+    libreport_strbuf_append_strf(buf, "%s:", result->label);
 
     if ((time_t)-1 != result->timestamp)
     {
-        strbuf_append_strf(buf, " TIME=%s", iso_date_string(&result->timestamp));
+        libreport_strbuf_append_strf(buf, " TIME=%s", libreport_iso_date_string(&result->timestamp));
     }
 
     if (NULL != result->url)
     {
-        strbuf_append_strf(buf, " URL=%s", result->url);
+        libreport_strbuf_append_strf(buf, " URL=%s", result->url);
     }
 
     if (NULL != result->bthash)
     {
-        strbuf_append_strf(buf, " BTHASH=%s", result->bthash);
+        libreport_strbuf_append_strf(buf, " BTHASH=%s", result->bthash);
     }
 
     if (NULL != result->workflow)
     {
-        strbuf_append_strf(buf, " WORKFLOW=%s", result->workflow);
+        libreport_strbuf_append_strf(buf, " WORKFLOW=%s", result->workflow);
     }
 
     /* MSG must be last because the value is delimited by new line character */
     if (NULL != result->message)
     {
-        strbuf_append_strf(buf, " MSG=%s", result->message);
+        libreport_strbuf_append_strf(buf, " MSG=%s", result->message);
     }
 
     return buf;
@@ -189,7 +189,7 @@ report_result_t *report_result_parse(const char *line,
 
     result = report_result_new();
 
-    result->label = xstrndup(line, label_length);
+    result->label = libreport_xstrndup(line, label_length);
 
     /* +1 -> : */
     line += (label_length + 1);
@@ -214,7 +214,7 @@ report_result_t *report_result_parse(const char *line,
             ++line;
         }
 
-        const char *end = skip_non_whitespace(line);
+        const char *end = libreport_skip_non_whitespace(line);
 
         prefix = "MSG=";
         prefix_length = strlen(prefix);
@@ -223,7 +223,7 @@ report_result_t *report_result_parse(const char *line,
         {
             /* MSG=... eats entire line: exiting the loop */
             end = strchrnul(end, '\n');
-            result->message = xstrndup(line + prefix_length, end - (line + prefix_length));
+            result->message = libreport_xstrndup(line + prefix_length, end - (line + prefix_length));
             break;
         }
 
@@ -232,7 +232,7 @@ report_result_t *report_result_parse(const char *line,
 
         if (strncmp(line, prefix, prefix_length) == 0)
         {
-            result->url = xstrndup(line + prefix_length, end - (line + prefix_length));
+            result->url = libreport_xstrndup(line + prefix_length, end - (line + prefix_length));
         }
 
         prefix = "BTHASH=";
@@ -240,7 +240,7 @@ report_result_t *report_result_parse(const char *line,
 
         if (strncmp(line, prefix, prefix_length) == 0)
         {
-            result->bthash = xstrndup(line + prefix_length, end - (line + prefix_length));
+            result->bthash = libreport_xstrndup(line + prefix_length, end - (line + prefix_length));
         }
 
         prefix = "WORKFLOW=";
@@ -248,7 +248,7 @@ report_result_t *report_result_parse(const char *line,
 
         if (strncmp(line, prefix, prefix_length) == 0)
         {
-            result->workflow = xstrndup(line + prefix_length, end - (line + prefix_length));
+            result->workflow = libreport_xstrndup(line + prefix_length, end - (line + prefix_length));
         }
 
         prefix = "TIME=";
@@ -258,9 +258,9 @@ report_result_t *report_result_parse(const char *line,
         {
             char *datetime;
 
-            datetime = xstrndup(line + prefix_length, end - (line + prefix_length));
+            datetime = libreport_xstrndup(line + prefix_length, end - (line + prefix_length));
 
-            if (iso_date_string_parse(datetime, &result->timestamp) != 0)
+            if (libreport_iso_date_string_parse(datetime, &result->timestamp) != 0)
             {
                 log_warning(_("Ignored invalid ISO date of report result '%s'"), result->label);
             }
