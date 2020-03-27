@@ -1615,7 +1615,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     /* If program failed, or if it finished successfully without saying anything... */
     if (retval != 0 || evd->event_log_state == LOGSTATE_FIRSTLINE)
     {
-        g_autofree char *msg = exit_status_as_string(evd->event_name,
+        g_autofree char *msg = libreport_exit_status_as_string(evd->event_name,
                 run_state->process_status);
         if (retval != 0)
         {
