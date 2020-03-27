@@ -300,7 +300,7 @@ bool libreport_load_conf_file(const char *path, map_string_t *settings, bool ski
         log_info("Loaded option '%s' = '%s'", option, value);
 
         if (!skipKeysWithoutValue || value[0] != '\0')
-            replace_map_string_item(settings, libreport_xstrdup(option), libreport_xstrdup(value));
+            libreport_replace_map_string_item(settings, libreport_xstrdup(option), libreport_xstrdup(value));
 
         free(matches[i]);
     }
@@ -417,8 +417,8 @@ bool libreport_save_conf_file(const char *path, map_string_t *settings)
     const char *name = NULL;
     const char *value = NULL;
     map_string_iter_t iter;
-    init_map_string_iter(&iter, settings);
-    while (next_map_string_iter(&iter, &name, &value))
+    libreport_init_map_string_iter(&iter, settings);
+    while (libreport_next_map_string_iter(&iter, &name, &value))
     {
         char *aug_path = libreport_xasprintf("/files%s/%s", real_path, name);
         const int ret = aug_set(aug, aug_path, value);

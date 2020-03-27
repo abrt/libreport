@@ -36,13 +36,13 @@ static int interactive_upload_file(const char *url, const char *file_name,
                                    map_string_t *settings, char **remote_name)
 {
     post_state_t *state = new_post_state(POST_WANT_ERROR_MSG);
-    state->username = get_map_string_item_or_NULL(settings, "UploadUsername");
+    state->username = libreport_get_map_string_item_or_NULL(settings, "UploadUsername");
     char *password_inp = NULL;
     if (state->username != NULL && state->username[0] != '\0')
     {
         /* Load Password only if Username is configured, it doesn't make */
         /* much sense to load Password without Username. */
-        state->password = get_map_string_item_or_NULL(settings, "UploadPassword");
+        state->password = libreport_get_map_string_item_or_NULL(settings, "UploadPassword");
         if (state->password == NULL)
         {
             /* Be permissive and nice, ask only once and don't check */
@@ -55,8 +55,8 @@ static int interactive_upload_file(const char *url, const char *file_name,
     }
 
     /* set SSH keys */
-    state->client_ssh_public_keyfile = get_map_string_item_or_NULL(settings, "SSHPublicKey");
-    state->client_ssh_private_keyfile = get_map_string_item_or_NULL(settings, "SSHPrivateKey");
+    state->client_ssh_public_keyfile = libreport_get_map_string_item_or_NULL(settings, "SSHPublicKey");
+    state->client_ssh_private_keyfile = libreport_get_map_string_item_or_NULL(settings, "SSHPrivateKey");
 
     if (state->client_ssh_public_keyfile != NULL)
         log_debug("Using SSH public key '%s'", state->client_ssh_public_keyfile);
@@ -205,7 +205,7 @@ int main(int argc, char **argv)
     //TODO:
     //ExcludeFiles = foo,bar*,b*z
 
-    map_string_t *settings = new_map_string();
+    map_string_t *settings = libreport_new_map_string();
     if (conf_file)
         libreport_load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 
@@ -214,23 +214,23 @@ int main(int argc, char **argv)
     if (!conf_url || conf_url[0] == '\0')
         conf_url = url;
     if (!conf_url || conf_url[0] == '\0')
-        conf_url = get_map_string_item_or_empty(settings, "URL");
+        conf_url = libreport_get_map_string_item_or_empty(settings, "URL");
     if (!conf_url || conf_url[0] == '\0')
         conf_url = input_url = ask_url(_("Please enter a URL (scp, ftp, etc.) where the problem data is to be exported:"));
 
-    set_map_string_item_from_string(settings, "UploadUsername", getenv("Upload_Username"));
-    set_map_string_item_from_string(settings, "UploadPassword", getenv("Upload_Password"));
+    libreport_set_map_string_item_from_string(settings, "UploadUsername", getenv("Upload_Username"));
+    libreport_set_map_string_item_from_string(settings, "UploadPassword", getenv("Upload_Password"));
 
     /* set SSH keys */
     if (ssh_public_key)
-        set_map_string_item_from_string(settings, "SSHPublicKey", ssh_public_key);
+        libreport_set_map_string_item_from_string(settings, "SSHPublicKey", ssh_public_key);
     else if (getenv("Upload_SSHPublicKey") != NULL)
-        set_map_string_item_from_string(settings, "SSHPublicKey", getenv("Upload_SSHPublicKey"));
+        libreport_set_map_string_item_from_string(settings, "SSHPublicKey", getenv("Upload_SSHPublicKey"));
 
     if (ssh_private_key)
-        set_map_string_item_from_string(settings, "SSHPrivateKey", ssh_private_key);
+        libreport_set_map_string_item_from_string(settings, "SSHPrivateKey", ssh_private_key);
     else if (getenv("Upload_SSHPrivateKey") != NULL)
-        set_map_string_item_from_string(settings, "SSHPrivateKey", getenv("Upload_SSHPrivateKey"));
+        libreport_set_map_string_item_from_string(settings, "SSHPrivateKey", getenv("Upload_SSHPrivateKey"));
 
     char *remote_name = NULL;
     const int result = create_and_upload_archive(dump_dir_name, conf_url, settings, &remote_name);
@@ -256,6 +256,6 @@ int main(int argc, char **argv)
 
 finito:
     free(input_url);
-    free_map_string(settings);
+    libreport_free_map_string(settings);
     return result;
 }

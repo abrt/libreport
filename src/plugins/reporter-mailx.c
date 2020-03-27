@@ -112,18 +112,18 @@ static void create_and_send_email(
 
     char* env;
     env = getenv("Mailx_EmailFrom");
-    char *email_from = (env ? libreport_xstrdup(env) : libreport_xstrdup(get_map_string_item_or_NULL(settings, "EmailFrom")) ? : ask_email_address("sender", "ABRT Daemon <DoNotReply>"));
+    char *email_from = (env ? libreport_xstrdup(env) : libreport_xstrdup(libreport_get_map_string_item_or_NULL(settings, "EmailFrom")) ? : ask_email_address("sender", "ABRT Daemon <DoNotReply>"));
     env = getenv("Mailx_EmailTo");
-    char *email_to = (env ? libreport_xstrdup(env) : libreport_xstrdup(get_map_string_item_or_NULL(settings, "EmailTo")) ? : ask_email_address("receiver", "root@localhost"));
+    char *email_to = (env ? libreport_xstrdup(env) : libreport_xstrdup(libreport_get_map_string_item_or_NULL(settings, "EmailTo")) ? : ask_email_address("receiver", "root@localhost"));
     env = getenv("Mailx_SendBinaryData");
-    bool send_binary_data = libreport_string_to_bool(env ? env : get_map_string_item_or_empty(settings, "SendBinaryData"));
+    bool send_binary_data = libreport_string_to_bool(env ? env : libreport_get_map_string_item_or_empty(settings, "SendBinaryData"));
 
     problem_formatter_t *pf = problem_formatter_new();
     /* formatting file is not set */
     if (fmt_file == NULL)
     {
         env = getenv("Mailx_Subject");
-        const char *subject = (env ? env : get_map_string_item_or_NULL(settings, "Subject") ? : PR_DEFAULT_SUBJECT);
+        const char *subject = (env ? env : libreport_get_map_string_item_or_NULL(settings, "Subject") ? : PR_DEFAULT_SUBJECT);
 
         char *format_string = libreport_xasprintf(PR_MAILX_TEMPLATE, subject);
 
@@ -296,7 +296,7 @@ int main(int argc, char **argv)
 
     libreport_export_abrt_envvars(0);
 
-    map_string_t *settings = new_map_string();
+    map_string_t *settings = libreport_new_map_string();
     libreport_load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 
     int flag = 0;
@@ -308,6 +308,6 @@ int main(int argc, char **argv)
 
     create_and_send_email(dump_dir_name, settings, fmt_file, flag);
 
-    free_map_string(settings);
+    libreport_free_map_string(settings);
     return 0;
 }

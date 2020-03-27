@@ -61,14 +61,14 @@ bool libreport_load_app_conf_file(const char *application_name, map_string_t *se
 void libreport_set_app_user_setting(map_string_t *settings, const char *name, const char *value)
 {
     if (value)
-        replace_map_string_item(settings, libreport_xstrdup(name), libreport_xstrdup(value));
+        libreport_replace_map_string_item(settings, libreport_xstrdup(name), libreport_xstrdup(value));
     else
-        remove_map_string_item(settings, name);
+        libreport_remove_map_string_item(settings, name);
 }
 
 const char *libreport_get_app_user_setting(map_string_t *settings, const char *name)
 {
-    return get_map_string_item_or_NULL(settings, name);
+    return libreport_get_map_string_item_or_NULL(settings, name);
 }
 
 bool libreport_save_user_settings()
@@ -86,8 +86,8 @@ bool libreport_load_user_settings(const char *application_name)
     conf_path = get_conf_path(application_name);
 
     if (user_settings)
-        free_map_string(user_settings);
-    user_settings = new_map_string();
+        libreport_free_map_string(user_settings);
+    user_settings = libreport_new_map_string();
 
     return libreport_load_conf_file(conf_path, user_settings, false);
 }

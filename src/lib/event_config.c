@@ -195,7 +195,7 @@ static void load_config_files(const char *dir_path)
         if (new_config)
             event_config = new_event_config(filename);
 
-        map_string_t *keys_and_values = new_map_string();
+        map_string_t *keys_and_values = libreport_new_map_string();
 
         libreport_load_conf_file(fullpath, keys_and_values, /*skipKeysWithoutValue:*/ false);
 
@@ -203,8 +203,8 @@ static void load_config_files(const char *dir_path)
         map_string_iter_t iter;
         const char *name;
         const char *value;
-        init_map_string_iter(&iter, keys_and_values);
-        while (next_map_string_iter(&iter, &name, &value))
+        libreport_init_map_string_iter(&iter, keys_and_values);
+        while (libreport_next_map_string_iter(&iter, &name, &value))
         {
             event_option_t *opt;
             GList *elem = g_list_find_custom(event_config->options, name,
@@ -226,7 +226,7 @@ static void load_config_files(const char *dir_path)
                 event_config->options = g_list_append(event_config->options, opt);
         }
 
-        free_map_string(keys_and_values);
+        libreport_free_map_string(keys_and_values);
 
         if (new_config)
             g_hash_table_replace(g_event_config_list, libreport_xstrdup(ec_get_name(event_config)), event_config);

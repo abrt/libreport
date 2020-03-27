@@ -524,7 +524,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
     libreport_strbuf_append_strf(status_whiteboard, "abrt_hash:%s;", duphash);
 
     {   /* Add fields from /etc/os-release to Whiteboard for simple metrics. */
-        map_string_t *osinfo = new_map_string();
+        map_string_t *osinfo = libreport_new_map_string();
         problem_data_get_osinfo(problem_data, osinfo);
 
         /* This is the highest abstraction level I am willing to introduce now.
@@ -537,7 +537,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
         const char *const opts[] = { "VARIANT_ID", NULL };
         for (const char *const *iter = opts; *iter != NULL; ++iter)
         {
-            const char *v = get_map_string_item_or_NULL(osinfo, *iter);
+            const char *v = libreport_get_map_string_item_or_NULL(osinfo, *iter);
             if (v != NULL)
             {
                 /* semi-colon (;) is the delimiter because /etc/os-release *_ID
@@ -547,7 +547,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
             }
         }
 
-        free_map_string(osinfo);
+        libreport_free_map_string(osinfo);
     }
 
     xmlrpc_env env;

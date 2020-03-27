@@ -25,13 +25,13 @@
 static void
 parse_osinfo_for_mantisbt(map_string_t *osinfo, char** project, char** version)
 {
-    const char *name = get_map_string_item_or_NULL(osinfo, "CENTOS_MANTISBT_PROJECT");
+    const char *name = libreport_get_map_string_item_or_NULL(osinfo, "CENTOS_MANTISBT_PROJECT");
     if (!name)
-        name = get_map_string_item_or_NULL(osinfo, OSINFO_NAME);
+        name = libreport_get_map_string_item_or_NULL(osinfo, OSINFO_NAME);
 
-    const char *version_id = get_map_string_item_or_NULL(osinfo, "CENTOS_MANTISBT_PROJECT_VERSION");
+    const char *version_id = libreport_get_map_string_item_or_NULL(osinfo, "CENTOS_MANTISBT_PROJECT_VERSION");
     if (!version_id)
-        version_id = get_map_string_item_or_NULL(osinfo, OSINFO_VERSION_ID);
+        version_id = libreport_get_map_string_item_or_NULL(osinfo, OSINFO_VERSION_ID);
 
     if (name && version_id)
     {
@@ -126,13 +126,13 @@ set_settings(mantisbt_settings_t *m, map_string_t *settings, struct dump_dir *dd
     const char *environ;
 
     environ = getenv("Mantisbt_Login");
-    m->m_login = libreport_xstrdup(environ ? environ : get_map_string_item_or_empty(settings, "Login"));
+    m->m_login = libreport_xstrdup(environ ? environ : libreport_get_map_string_item_or_empty(settings, "Login"));
 
     environ = getenv("Mantisbt_Password");
-    m->m_password = libreport_xstrdup(environ ? environ : get_map_string_item_or_empty(settings, "Password"));
+    m->m_password = libreport_xstrdup(environ ? environ : libreport_get_map_string_item_or_empty(settings, "Password"));
 
     environ = getenv("Mantisbt_MantisbtURL");
-    m->m_mantisbt_url = environ ? environ : get_map_string_item_or_empty(settings, "MantisbtURL");
+    m->m_mantisbt_url = environ ? environ : libreport_get_map_string_item_or_empty(settings, "MantisbtURL");
     if (!m->m_mantisbt_url[0])
         m->m_mantisbt_url = "http://localhost/mantisbt";
     else
@@ -154,10 +154,10 @@ set_settings(mantisbt_settings_t *m, map_string_t *settings, struct dump_dir *dd
     }
     else
     {
-        const char *option = get_map_string_item_or_NULL(settings, "Project");
+        const char *option = libreport_get_map_string_item_or_NULL(settings, "Project");
         if (option)
             m->m_project = libreport_xstrdup(option);
-        option = get_map_string_item_or_NULL(settings, "ProjectVersion");
+        option = libreport_get_map_string_item_or_NULL(settings, "ProjectVersion");
         if (option)
             m->m_project_version = libreport_xstrdup(option);
     }
@@ -169,29 +169,29 @@ set_settings(mantisbt_settings_t *m, map_string_t *settings, struct dump_dir *dd
 
         if (dd != NULL)
         {
-            map_string_t *osinfo = new_map_string();
+            map_string_t *osinfo = libreport_new_map_string();
 
             char *os_info_data = dd_load_text(dd, FILENAME_OS_INFO);
             libreport_parse_osinfo(os_info_data, osinfo);
             free(os_info_data);
 
             parse_osinfo_for_mantisbt(osinfo, &m->m_project, &m->m_project_version);
-            free_map_string(osinfo);
+            libreport_free_map_string(osinfo);
         }
     }
 
     environ = getenv("Mantisbt_SSLVerify");
-    m->m_ssl_verify = libreport_string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "SSLVerify"));
+    m->m_ssl_verify = libreport_string_to_bool(environ ? environ : libreport_get_map_string_item_or_empty(settings, "SSLVerify"));
 
     environ = getenv("Mantisbt_DontMatchComponents");
-    m->m_DontMatchComponents = environ ? environ : get_map_string_item_or_empty(settings, "DontMatchComponents");
+    m->m_DontMatchComponents = environ ? environ : libreport_get_map_string_item_or_empty(settings, "DontMatchComponents");
 
     m->m_create_private = libreport_get_global_create_private_ticket();
 
     if (!m->m_create_private)
     {
         environ = getenv("Mantisbt_CreatePrivate");
-        m->m_create_private = libreport_string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "CreatePrivate"));
+        m->m_create_private = libreport_string_to_bool(environ ? environ : libreport_get_map_string_item_or_empty(settings, "CreatePrivate"));
     }
     log_notice("create private MantisBT ticket: '%s'", m->m_create_private ? "YES": "NO");
 }
@@ -298,7 +298,7 @@ int main(int argc, char **argv)
 
     libreport_export_abrt_envvars(0);
 
-    map_string_t *settings = new_map_string();
+    map_string_t *settings = libreport_new_map_string();
 
     {
         char *local_conf = NULL;
@@ -331,7 +331,7 @@ int main(int argc, char **argv)
         /* WRONG! set_settings() does not copy the strings, it merely sets up pointers
          * to settings[] dictionary:
          */
-        /*free_map_string(settings);*/
+        /*libreport_free_map_string(settings);*/
     }
 
     /* No connection is opened between client and server. Users authentication

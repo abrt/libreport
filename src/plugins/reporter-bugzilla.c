@@ -91,7 +91,7 @@ static void set_default_settings(map_string_t *osinfo, map_string_t *settings)
     char *default_BugzillaURL;
     libreport_parse_osinfo_for_bug_url(osinfo, &default_BugzillaURL);
     /* if BugzillaURL is defined in conf_file or env , it will replace this value */
-    set_map_string_item_from_string(settings, "BugzillaURL", default_BugzillaURL);
+    libreport_set_map_string_item_from_string(settings, "BugzillaURL", default_BugzillaURL);
     log_debug("Loaded BUG_REPORT_URL '%s' from os-release", default_BugzillaURL);
     free(default_BugzillaURL);
 
@@ -99,8 +99,8 @@ static void set_default_settings(map_string_t *osinfo, map_string_t *settings)
     char *default_ProductVersion;
     libreport_parse_osinfo_for_bz(osinfo, &default_Product, &default_ProductVersion);
     /* if Product or ProductVersion is defined in conf_file or env , it will replace this value */
-    set_map_string_item_from_string(settings, "Product", default_Product);
-    set_map_string_item_from_string(settings, "ProductVersion", default_ProductVersion);
+    libreport_set_map_string_item_from_string(settings, "Product", default_Product);
+    libreport_set_map_string_item_from_string(settings, "ProductVersion", default_ProductVersion);
     log_debug("Loaded Product '%s' from os-release", default_Product);
     log_debug("Loaded ProductVersion '%s' from os-release", default_ProductVersion);
     free(default_Product);
@@ -112,13 +112,13 @@ static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
     const char *environ;
 
     environ = getenv("Bugzilla_Login");
-    b->b_login = libreport_xstrdup(environ ? environ : get_map_string_item_or_empty(settings, "Login"));
+    b->b_login = libreport_xstrdup(environ ? environ : libreport_get_map_string_item_or_empty(settings, "Login"));
 
     environ = getenv("Bugzilla_Password");
-    b->b_password = libreport_xstrdup(environ ? environ : get_map_string_item_or_empty(settings, "Password"));
+    b->b_password = libreport_xstrdup(environ ? environ : libreport_get_map_string_item_or_empty(settings, "Password"));
 
     environ = getenv("Bugzilla_BugzillaURL");
-    b->b_bugzilla_url = libreport_xstrdup(environ ? environ : get_map_string_item_or_empty(settings, "BugzillaURL"));
+    b->b_bugzilla_url = libreport_xstrdup(environ ? environ : libreport_get_map_string_item_or_empty(settings, "BugzillaURL"));
     if (!b->b_bugzilla_url[0])
         b->b_bugzilla_url = "https://bugzilla.redhat.com";
     else
@@ -140,10 +140,10 @@ static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
     }
     else
     {
-        const char *option = get_map_string_item_or_NULL(settings, "Product");
+        const char *option = libreport_get_map_string_item_or_NULL(settings, "Product");
         if (option)
             b->b_product = libreport_xstrdup(option);
-        option = get_map_string_item_or_NULL(settings, "ProductVersion");
+        option = libreport_get_map_string_item_or_NULL(settings, "ProductVersion");
         if (option)
             b->b_product_version = libreport_xstrdup(option);
     }
@@ -156,22 +156,22 @@ static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
     }
 
     environ = getenv("Bugzilla_SSLVerify");
-    b->b_ssl_verify = libreport_string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "SSLVerify"));
+    b->b_ssl_verify = libreport_string_to_bool(environ ? environ : libreport_get_map_string_item_or_empty(settings, "SSLVerify"));
 
     environ = getenv("Bugzilla_DontMatchComponents");
-    b->b_DontMatchComponents = environ ? environ : get_map_string_item_or_empty(settings, "DontMatchComponents");
+    b->b_DontMatchComponents = environ ? environ : libreport_get_map_string_item_or_empty(settings, "DontMatchComponents");
 
     b->b_create_private = libreport_get_global_create_private_ticket();
 
     if (!b->b_create_private)
     {
         environ = getenv("Bugzilla_CreatePrivate");
-        b->b_create_private = libreport_string_to_bool(environ ? environ : get_map_string_item_or_empty(settings, "Bugzilla_CreatePrivate"));
+        b->b_create_private = libreport_string_to_bool(environ ? environ : libreport_get_map_string_item_or_empty(settings, "Bugzilla_CreatePrivate"));
     }
     log_notice("create private bz ticket: '%s'", b->b_create_private ? "YES": "NO");
 
     environ = getenv("Bugzilla_PrivateGroups");
-    GList *groups = libreport_parse_delimited_list(environ ? environ : get_map_string_item_or_empty(settings, "Bugzilla_PrivateGroups"),
+    GList *groups = libreport_parse_delimited_list(environ ? environ : libreport_get_map_string_item_or_empty(settings, "Bugzilla_PrivateGroups"),
                                          ",");
     if (b->b_private_groups == NULL)
     {
@@ -341,7 +341,7 @@ int main(int argc, char **argv)
 
     libreport_export_abrt_envvars(0);
 
-    map_string_t *settings = new_map_string();
+    map_string_t *settings = libreport_new_map_string();
     problem_data_t *problem_data = NULL;
 
     if (opts & OPT_d)
@@ -352,10 +352,10 @@ int main(int argc, char **argv)
             libreport_xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
         else
         {
-            map_string_t *osinfo = new_map_string();
+            map_string_t *osinfo = libreport_new_map_string();
             problem_data_get_osinfo(problem_data, osinfo);
             set_default_settings(osinfo, settings);
-            free_map_string(osinfo);
+            libreport_free_map_string(osinfo);
         }
     }
 
@@ -381,7 +381,7 @@ int main(int argc, char **argv)
         /* WRONG! set_settings() does not copy the strings, it merely sets up pointers
          * to settings[] dictionary:
          */
-        /*free_map_string(settings);*/
+        /*libreport_free_map_string(settings);*/
     }
     /* either we got Bugzilla_CreatePrivate from settings or -g was specified on cmdline */
     rhbz.b_create_private |= (opts & OPT_g);
@@ -420,12 +420,12 @@ int main(int argc, char **argv)
 
                 if (os_release != NULL)
                 {
-                    map_string_t *os_release_map = new_map_string();
+                    map_string_t *os_release_map = libreport_new_map_string();
                     libreport_parse_osinfo(os_release, os_release_map);
 
-                    product = libreport_xstrdup(get_map_string_item_or_NULL(os_release_map, "REDHAT_BUGZILLA_PRODUCT"));
+                    product = libreport_xstrdup(libreport_get_map_string_item_or_NULL(os_release_map, "REDHAT_BUGZILLA_PRODUCT"));
 
-                    free_map_string(os_release_map);
+                    libreport_free_map_string(os_release_map);
                     free(os_release);
 
                     if (product == NULL)
@@ -601,10 +601,10 @@ int main(int argc, char **argv)
     {
         free(rhbz.b_product);
         free(rhbz.b_product_version);
-        map_string_t *osinfo = new_map_string();
+        map_string_t *osinfo = libreport_new_map_string();
         problem_data_get_osinfo(problem_data, osinfo);
         libreport_parse_osinfo_for_bz(osinfo, &rhbz.b_product, &rhbz.b_product_version);
-        free_map_string(osinfo);
+        libreport_free_map_string(osinfo);
 
         if (!rhbz.b_product || !rhbz.b_product_version)
             error_msg_and_die(_("Can't determine Bugzilla Product from problem data."));

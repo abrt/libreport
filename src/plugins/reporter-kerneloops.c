@@ -98,7 +98,7 @@ static void report_to_kerneloops(
         error_msg_and_die("Error sending kernel oops due to missing backtrace");
 
     const char *env = getenv("KerneloopsReporter_SubmitURL");
-    const char *submitURL = (env ? env : get_map_string_item_or_empty(settings, "SubmitURL"));
+    const char *submitURL = (env ? env : libreport_get_map_string_item_or_empty(settings, "SubmitURL"));
     if (!submitURL[0])
         submitURL = "http://oops.kernel.org/submitoops.php";
 
@@ -145,7 +145,7 @@ int main(int argc, char **argv)
     textdomain(PACKAGE);
 #endif
 
-    map_string_t *settings = new_map_string();
+    map_string_t *settings = libreport_new_map_string();
     const char *dump_dir_name = ".";
     GList *conf_file = NULL;
 
@@ -189,6 +189,6 @@ int main(int argc, char **argv)
 
     report_to_kerneloops(dump_dir_name, settings);
 
-    free_map_string(settings);
+    libreport_free_map_string(settings);
     return 0;
 }

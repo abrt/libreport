@@ -244,7 +244,7 @@ ureport_server_config_load_basic_auth(struct ureport_server_config *config,
 
     if (strcmp(http_auth_pref, "rhts-credentials") == 0)
     {
-        settings = new_map_string();
+        settings = libreport_new_map_string();
 
         char *local_conf = libreport_xasprintf("%s"USER_HOME_CONFIG_PATH"/rhtsupport.conf", getenv("HOME"));
 
@@ -253,8 +253,8 @@ ureport_server_config_load_basic_auth(struct ureport_server_config *config,
             error_msg_and_die("Could not get RHTSupport credentials");
         free(local_conf);
 
-        username = get_map_string_item_or_NULL(settings, "Login");
-        password = get_map_string_item_or_NULL(settings, "Password");
+        username = libreport_get_map_string_item_or_NULL(settings, "Login");
+        password = libreport_get_map_string_item_or_NULL(settings, "Password");
 
         if (config->ur_url == NULL)
             ureport_server_config_set_url(config, libreport_xstrdup(RHSM_WEB_SERVICE_URL));
@@ -283,7 +283,7 @@ ureport_server_config_load_basic_auth(struct ureport_server_config *config,
 
     free(tmp_password);
     free(tmp_username);
-    free_map_string(settings);
+    libreport_free_map_string(settings);
 }
 
 void
