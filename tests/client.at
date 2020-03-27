@@ -2,11 +2,11 @@
 
 AT_BANNER([Client])
 
-## ---------------- ##
-##     set_echo     ##
-## ---------------- ##
+## -------------------------- ##
+##     libreport_set_echo     ##
+## -------------------------- ##
 
-AT_TESTFUN([set_echo],
+AT_TESTFUN([libreport_set_echo],
 [[
 #include <assert.h>
 #include "client.h"
@@ -40,7 +40,7 @@ int main (void)
         assert(check == 0);
 
         changed = 0;
-        result = set_echo(changed);
+        result = libreport_set_echo(changed);
         check = tcgetattr(STDIN_FILENO, &new_mode);
         assert(check == 0);
         assert(result != changed);
@@ -48,7 +48,7 @@ int main (void)
         assert(ECHONL_TEST == 0);
 
         changed = 1;
-        result = set_echo(changed);
+        result = libreport_set_echo(changed);
         check = tcgetattr(STDIN_FILENO, &new_mode);
         assert(check == 0);
         assert(result == changed);
@@ -61,7 +61,7 @@ int main (void)
         assert(check == 0);
 
         changed = 0;
-        result = set_echo(changed);
+        result = libreport_set_echo(changed);
         check = tcgetattr(STDIN_FILENO, &new_mode);
         assert(result == changed);
         assert(ECHO_TEST == 1);
@@ -73,7 +73,7 @@ int main (void)
         assert(check == 0);
 
         changed = 1;
-        result = set_echo(changed);
+        result = libreport_set_echo(changed);
         check = tcgetattr(STDIN_FILENO, &new_mode);
         assert(result != changed);
         assert(ECHO_TEST == 0);
@@ -84,7 +84,7 @@ int main (void)
         assert(check == 0);
 
         changed = 0;
-        result = set_echo(changed);
+        result = libreport_set_echo(changed);
         check = tcgetattr(STDIN_FILENO, &new_mode);
         assert(result != changed);
         assert(ECHO_TEST == 1);
@@ -95,7 +95,7 @@ int main (void)
         assert(check == 0);
 
         changed = 1;
-        result = set_echo(changed);
+        result = libreport_set_echo(changed);
         check = tcgetattr(STDIN_FILENO, &new_mode);
         assert(check == 0);
         assert(result == changed);
@@ -107,7 +107,7 @@ int main (void)
         assert(check == 0);
 
         changed = 0;
-        result = set_echo(changed);
+        result = libreport_set_echo(changed);
         check = tcgetattr(STDIN_FILENO, &new_mode);
         assert(check == 0);
         assert(result != changed);
@@ -119,7 +119,7 @@ int main (void)
         assert(check == 0);
 
         changed = 1;
-        result = set_echo(changed);
+        result = libreport_set_echo(changed);
         check = tcgetattr(STDIN_FILENO, &new_mode);
         assert(check == 0);
         assert(result == changed);

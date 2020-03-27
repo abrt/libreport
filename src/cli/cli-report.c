@@ -435,15 +435,15 @@ static void ask_for_missing_settings(const char *event_name)
             switch (opt->eo_type) {
             case OPTION_TYPE_TEXT:
             case OPTION_TYPE_NUMBER:
-                opt->eo_value = ask(question);
+                opt->eo_value = libreport_ask(question);
                 break;
             case OPTION_TYPE_PASSWORD:
             {
-                opt->eo_value = ask_password(question);
+                opt->eo_value = libreport_ask_password(question);
                 break;
             }
             case OPTION_TYPE_BOOL:
-                if (ask_yes_no(question))
+                if (libreport_ask_yes_no(question))
                     opt->eo_value = xstrdup("yes");
                 else
                     opt->eo_value = xstrdup("no");
@@ -463,14 +463,14 @@ static void ask_for_missing_settings(const char *event_name)
         if (!err_list)
             return;
 
-        alert(_("Your input is not valid, because of:"));
+        libreport_alert(_("Your input is not valid, because of:"));
         for (iter = err_list; iter; iter = iter -> next)
         {
             invalid_option_t *err_data = (invalid_option_t *)iter->data;
             char *msg = xasprintf(_("Bad value for '%s': %s"),
                                     err_data->invopt_name,
                                     err_data->invopt_error);
-            alert(msg);
+            libreport_alert(msg);
             free(msg);
         }
 
@@ -490,7 +490,7 @@ struct logging_state {
 
 static char *do_log(char *log_line, void *param)
 {
-    client_log(log_line);
+    libreport_client_log(log_line);
     return log_line;
 }
 
@@ -671,7 +671,7 @@ static int run_event_on_dir_name_interactively(
             char *msg = xasprintf(_("Event '%s' requires permission to send possibly sensitive data."
                                     " Do you want to continue?"),
                         ec_get_screen_name(config) ? ec_get_screen_name(config) : event_name);
-            bool ok = ask_yes_no(msg);
+            bool ok = libreport_ask_yes_no(msg);
             free(msg);
             if (!ok)
                 goto ret;
@@ -709,14 +709,14 @@ static int choose_number_from_range(unsigned min, unsigned max, const char *mess
     unsigned ii;
     for (ii = 0; ii < 3; ++ii)
     {
-        char *answer = ask(message);
+        char *answer = libreport_ask(message);
 
         picked = xatou(answer);
         if (min <= picked && picked <= max)
             return picked;
 
         char *msg = xasprintf("%s (%u - %u)\n", _("You have chosen number out of range"), min, max);
-        alert(msg);
+        libreport_alert(msg);
         free(msg);
     }
 

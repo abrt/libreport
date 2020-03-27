@@ -932,7 +932,7 @@ static void
 custom_field_ask(const char *name)
 {
     char *msg = xasprintf(_("MantisBT doesn't contain custom field '%s', which is required for full functionality of the reporter. Do you still want to create a new issue?"), name);
-    int yes = ask_yes_no(msg);
+    int yes = libreport_ask_yes_no(msg);
     free(msg);
 
     if (!yes)

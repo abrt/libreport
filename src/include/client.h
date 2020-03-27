@@ -86,11 +86,9 @@
 extern "C" {
 #endif
 
-#define set_echo libreport_set_echo
-int set_echo(int enable);
+int libreport_set_echo(int enable);
 
-#define ask_yes_no libreport_ask_yes_no
-int ask_yes_no(const char *question);
+int libreport_ask_yes_no(const char *question);
 
 /**
  * Prints out the question and if the reply is 'yesforever' temporarily stores
@@ -102,40 +100,34 @@ int ask_yes_no(const char *question);
  * by applications, but are not required to do so.
  *
  * The function uses the global libreport application configuration. If the
- * ask_yes_no_yesforever() function is called from a library function, the
+ * libreport_ask_yes_no_yesforever() function is called from a library function, the
  * configuration key will be stored in the configuration of the application
  * which called that library function.
  *
  * In the case you are developing a front-end application, you have to call the
- * load_user_setting() function before calling the ask_yes_no_yesforever()
+ * load_user_setting() function before calling the libreport_ask_yes_no_yesforever()
  * function and call the save_user_settings() function after calling the
- * ask_yes_no_yesforever() function to make the 'yesforever' reply persistent.
+ * libreport_ask_yes_no_yesforever() function to make the 'yesforever' reply persistent.
  *
  * @param key The key under which the yes forever answer is stored
  * @param question The asked question
  * @return 0 if user's answer is 'no', otherwise non 0 value
  */
-#define ask_yes_no_yesforever libreport_ask_yes_no_yesforever
-int ask_yes_no_yesforever(const char *key, const char *question);
+int libreport_ask_yes_no_yesforever(const char *key, const char *question);
 
 /**
- * The function behaves exactly like the ask_yes_no_yesforever() function, but
+ * The function behaves exactly like the libreport_ask_yes_no_yesforever() function, but
  * allows to remember both "Yes" and "No" replies.
  */
-#define ask_yes_no_save_resutl libreport_ask_yes_no_save_result
-int ask_yes_no_save_result(const char *key, const char *question);
+int libreport_ask_yes_no_save_result(const char *key, const char *question);
 
-#define ask libreport_ask
-char *ask(const char *question);
+char *libreport_ask(const char *question);
 
-#define ask_password libreport_ask_password
-char *ask_password(const char *question);
+char *libreport_ask_password(const char *question);
 
-#define alert libreport_alert
-void alert(const char *message);
+void libreport_alert(const char *message);
 
-#define client_log libreport_client_log
-void client_log(const char *message);
+void libreport_client_log(const char *message);
 
 #ifdef __cplusplus
 }

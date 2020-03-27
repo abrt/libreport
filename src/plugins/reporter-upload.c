@@ -22,7 +22,7 @@
 
 static char *ask_url(const char *message)
 {
-    char *url = ask(message);
+    char *url = libreport_ask(message);
     if (url == NULL || url[0] == '\0')
     {
         set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
@@ -49,7 +49,7 @@ static int interactive_upload_file(const char *url, const char *file_name,
             /* the result. User can dismiss this prompt but the upload */
             /* may work somehow??? */
             char *msg = xasprintf(_("Please enter password for uploading:"), state->username);
-            state->password = password_inp = ask_password(msg);
+            state->password = password_inp = libreport_ask_password(msg);
             free(msg);
         }
     }

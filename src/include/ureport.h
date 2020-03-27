@@ -142,7 +142,7 @@ ureport_server_config_set_basic_auth(struct ureport_server_config *config,
  *  "<user_name>:<password>" - Manually supply user name and password.
  *  "<user_name>" - Manually supply user name and be asked for password.
  *
- * The function uses ask_password() function from client.h
+ * The function uses libreport_ask_password() function from client.h
  *
  * @param config Configured structure
  * @param http_auth_pref User HTTP Authentication preferences

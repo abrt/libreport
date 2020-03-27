@@ -119,7 +119,7 @@ static int run_ask_yes_no_save_generic_result_dialog(ask_yes_no_dialog_flags fla
             set_user_setting(key, response == GTK_RESPONSE_YES ? "yes" : "no");
     }
     else /* should not happen */
-        error_msg("BUG:%s:%d %s() unknown type (0x%x) of ask_yes_no dialog",
+        error_msg("BUG:%s:%d %s() unknown type (0x%x) of libreport_ask_yes_no dialog",
                     __FILE__, __LINE__, __func__, flags);
 
     gtk_widget_destroy(dialog);
