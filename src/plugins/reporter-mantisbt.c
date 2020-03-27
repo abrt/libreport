@@ -653,7 +653,7 @@ int main(int argc, char **argv)
 
         const char *mbtcomment = problem_report_get_description(pr);
 
-        int dup_comment = is_comment_dup(ii->mii_notes, mbtcomment);
+        int dup_comment = libreport_is_comment_dup(ii->mii_notes, mbtcomment);
         if (!dup_comment)
         {
             log_warning(_("Adding new comment to issue %d"), ii->mii_id);

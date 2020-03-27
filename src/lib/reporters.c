@@ -21,7 +21,7 @@
 #include "internal_libreport.h"
 
 int
-is_comment_dup(GList *comments, const char *comment)
+libreport_is_comment_dup(GList *comments, const char *comment)
 {
     char * const trim_comment = libreport_trim_all_whitespace(comment);
     bool same_comments = false;
@@ -39,7 +39,7 @@ is_comment_dup(GList *comments, const char *comment)
 }
 
 unsigned
-comments_find_best_bt_rating(GList *comments)
+libreport_comments_find_best_bt_rating(GList *comments)
 {
     if (comments == NULL)
         return 0;

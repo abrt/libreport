@@ -1059,7 +1059,7 @@ mantisbt_get_issue_info(const mantisbt_settings_t *settings, int issue_id)
     if (add_info != NULL)
         issue_info->mii_notes = g_list_append (issue_info->mii_notes, add_info);
     issue_info->mii_attachments = response_values_at_depth_by_name(result->mr_body, "filename", -1);
-    issue_info->mii_best_bt_rating = comments_find_best_bt_rating(issue_info->mii_notes);
+    issue_info->mii_best_bt_rating = libreport_comments_find_best_bt_rating(issue_info->mii_notes);
 
     mantisbt_result_free(result);
     return issue_info;
