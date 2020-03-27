@@ -81,14 +81,14 @@ static char** append_str_to_vector(char **vec, unsigned *size_p, const char *str
 static char *ask_email_address(const char *type, const char *def_address)
 {
     char *ask_text = xasprintf(_("Email address of %s was not specified. Would you like to do so now? If not, '%s' is to be used"), type, def_address);
-    const int ret = ask_yes_no(ask_text);
+    const int ret = libreport_ask_yes_no(ask_text);
     free(ask_text);
 
     if (!ret)
         return xstrdup(def_address);
 
     ask_text = xasprintf(_("Please, type email address of %s:"), type);
-    char *address = ask(ask_text);
+    char *address = libreport_ask(ask_text);
     free(ask_text);
 
     if (address == NULL || address[0] == '\0')

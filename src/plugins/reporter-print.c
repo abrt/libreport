@@ -78,7 +78,7 @@ int main(int argc, char **argv)
             open_mode = "a";
 
         /* We used freopen to change stdout,
-         * but ask() writes to stdout. Can't use that trick anymore.
+         * but libreport_ask() writes to stdout. Can't use that trick anymore.
          */
         char *msg = NULL;
         while (1)
@@ -87,9 +87,9 @@ int main(int argc, char **argv)
             if (msg)
             {
                 free(output_file);
-                char *response = ask(msg);
+                char *response = libreport_ask(msg);
                 if (!response)
-                    perror_msg_and_die("ask");
+                    perror_msg_and_die("libreport_ask");
                 free(msg);
 
                 if (response[0] == '\0' || response[0] == '\n')

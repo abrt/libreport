@@ -48,7 +48,7 @@ parse_osinfo_for_mantisbt(map_string_t *osinfo, char** project, char** version)
 static char *
 ask_mantisbt_login(const char *message)
 {
-    char *login = ask(message);
+    char *login = libreport_ask(message);
     if (login == NULL || login[0] == '\0')
     {
         set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
@@ -61,7 +61,7 @@ ask_mantisbt_login(const char *message)
 static char *
 ask_mantisbt_password(const char *message)
 {
-    char *password = ask_password(message);
+    char *password = libreport_ask_password(message);
     if (password == NULL || password[0] == '\0')
     {
         set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
@@ -433,7 +433,7 @@ int main(int argc, char **argv)
                             " Do you still want to create a new issue?"),
                             url);
 
-            if (!ask_yes_no(msg))
+            if (!libreport_ask_yes_no(msg))
                 return 0;
         }
     }

@@ -843,37 +843,37 @@ GList *list_possible_events_problem_data_glist(problem_data_t *pd,
 
 void run_event_stdio_alert(const char *msg, void *param)
 {
-    alert(msg);
+    libreport_alert(msg);
 }
 
 char *run_event_stdio_ask(const char *msg, void *param)
 {
-    return ask(msg);
+    return libreport_ask(msg);
 }
 
 int run_event_stdio_ask_yes_no(const char *msg, void *param)
 {
-    return ask_yes_no(msg);
+    return libreport_ask_yes_no(msg);
 }
 
 int run_event_stdio_ask_yes_no_yesforever(const char *key, const char *msg, void *param)
 {
-    return ask_yes_no_yesforever(key, msg);
+    return libreport_ask_yes_no_yesforever(key, msg);
 }
 
 int run_event_stdio_ask_yes_no_save_result(const char *key, const char *msg, void *param)
 {
-    return ask_yes_no_save_result(key, msg);
+    return libreport_ask_yes_no_save_result(key, msg);
 }
 
 char *run_event_stdio_ask_password(const char *msg, void *param)
 {
-    return ask_password(msg);
+    return libreport_ask_password(msg);
 }
 
 static char *run_event_stdio_log(char *log_line, void *param)
 {
-    client_log(log_line);
+    libreport_client_log(log_line);
     return log_line;
 }
 

@@ -31,7 +31,7 @@ static int is_noninteractive_mode()
 }
 
 /* Returns 1 if echo has been changed from another state. */
-int set_echo(int enable)
+int libreport_set_echo(int enable)
 {
     struct termios t;
     int chvalue = 0;
@@ -60,7 +60,7 @@ int set_echo(int enable)
     return 1;
 }
 
-int ask_yes_no(const char *question)
+int libreport_ask_yes_no(const char *question)
 {
     INITIALIZE_LIBREPORT();
 
@@ -92,7 +92,7 @@ int ask_yes_no(const char *question)
     return ((is_slave_mode() && response[0] == 'y') || strncasecmp(yes, response, strlen(yes)) == 0);
 }
 
-int ask_yes_no_yesforever(const char *key, const char *question)
+int libreport_ask_yes_no_yesforever(const char *key, const char *question)
 {
     INITIALIZE_LIBREPORT();
 
@@ -149,7 +149,7 @@ int ask_yes_no_yesforever(const char *key, const char *question)
     return ((is_slave_mode() && response[0] == 'y') || strncasecmp(yes, response, strlen(yes)) == 0);
 }
 
-int ask_yes_no_save_result(const char *key, const char *question)
+int libreport_ask_yes_no_save_result(const char *key, const char *question)
 {
     INITIALIZE_LIBREPORT();
 
@@ -211,7 +211,7 @@ int ask_yes_no_save_result(const char *key, const char *question)
     return ((is_slave_mode() && response[0] == 'y') || strncasecmp(yes, response, strlen(yes)) == 0);
 }
 
-char *ask(const char *question)
+char *libreport_ask(const char *question)
 {
     if (is_slave_mode())
         printf(REPORT_PREFIX_ASK "%s\n", question);
@@ -233,7 +233,7 @@ char *ask(const char *question)
     return result;
 }
 
-char *ask_password(const char *question)
+char *libreport_ask_password(const char *question)
 {
     if (is_slave_mode())
         printf(REPORT_PREFIX_ASK_PASSWORD "%s\n", question);
@@ -249,18 +249,18 @@ char *ask_password(const char *question)
         return xstrdup("");
     }
 
-    bool changed = set_echo(false);
+    bool changed = libreport_set_echo(false);
 
     char *result = xmalloc_fgets(stdin);
     strtrimch(result, '\n');
 
     if (changed)
-        set_echo(true);
+        libreport_set_echo(true);
 
     return result;
 }
 
-void alert(const char *message)
+void libreport_alert(const char *message)
 {
     if (is_slave_mode())
         printf(REPORT_PREFIX_ALERT);
@@ -269,7 +269,7 @@ void alert(const char *message)
     fflush(stdout);
 }
 
-void client_log(const char *message)
+void libreport_client_log(const char *message)
 {
     if (message != NULL
         && (message[0] == '.' && message[1] == '\0')

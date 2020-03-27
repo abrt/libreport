@@ -272,7 +272,7 @@ ureport_server_config_load_basic_auth(struct ureport_server_config *config,
     if (password == NULL)
     {
         char *message = xasprintf("Please provide uReport server password for user '%s':", username);
-        password = tmp_password = ask_password(message);
+        password = tmp_password = libreport_ask_password(message);
         free(message);
 
         if (strcmp(password, "") == 0)

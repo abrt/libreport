@@ -28,7 +28,7 @@ PyObject *p_alert(PyObject *pself, PyObject *args)
     {
         return NULL;
     }
-    alert(message);
+    libreport_alert(message);
     Py_RETURN_NONE;
 }
 
@@ -41,7 +41,7 @@ PyObject *p_ask(PyObject *pself, PyObject *args)
         return NULL;
     }
 
-    char *response = ask(question);
+    char *response = libreport_ask(question);
     if (!response)
     {
         Py_RETURN_NONE;
@@ -61,7 +61,7 @@ PyObject *p_ask_password(PyObject *pself, PyObject *args)
         return NULL;
     }
 
-    char *response = ask_password(question);
+    char *response = libreport_ask_password(question);
     if (!response)
     {
         Py_RETURN_NONE;
@@ -72,7 +72,7 @@ PyObject *p_ask_password(PyObject *pself, PyObject *args)
     return r;
 }
 
-/* C: int ask_yes_no(const char *question); */
+/* C: int libreport_ask_yes_no(const char *question); */
 PyObject *p_ask_yes_no(PyObject *pself, PyObject *args)
 {
     const char *question;
@@ -81,7 +81,7 @@ PyObject *p_ask_yes_no(PyObject *pself, PyObject *args)
         return NULL;
     }
 
-    int response = ask_yes_no(question);
+    int response = libreport_ask_yes_no(question);
 
     return Py_BuildValue("i", response);
 }
@@ -96,7 +96,7 @@ PyObject *p_ask_yes_no_yesforever(PyObject *pself, PyObject *args)
         return NULL;
     }
 
-    int response = ask_yes_no_yesforever(key, question);
+    int response = libreport_ask_yes_no_yesforever(key, question);
 
     return Py_BuildValue("i", response);
 }
@@ -111,7 +111,7 @@ PyObject *p_ask_yes_no_save_result(PyObject *pself, PyObject *args)
         return NULL;
     }
 
-    int response = ask_yes_no_save_result(key, question);
+    int response = libreport_ask_yes_no_save_result(key, question);
 
     return Py_BuildValue("i", response);
 }

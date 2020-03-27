@@ -689,13 +689,13 @@ char *upload_file_ext(post_state_t *state, const char *url, const char *filename
         {
             char *msg = xasprintf(_("Please enter user name for '%s//%s':"), scheme, hostname);
             free(username);
-            username = ask(msg);
+            username = libreport_ask(msg);
             free(msg);
             if (username != NULL && username[0] != '\0')
             {
                 msg = xasprintf(_("Please enter password for '%s//%s@%s':"), scheme, username, hostname);
                 free(password);
-                password = ask_password(msg);
+                password = libreport_ask_password(msg);
                 free(msg);
                 /* What about empty password? */
                 if (password != NULL && password[0] != '\0')

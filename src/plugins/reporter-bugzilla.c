@@ -188,7 +188,7 @@ static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
 static
 char *ask_bz_login(const char *message)
 {
-    char *login = ask(message);
+    char *login = libreport_ask(message);
     if (login == NULL || login[0] == '\0')
     {
         set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
@@ -201,7 +201,7 @@ char *ask_bz_login(const char *message)
 static
 char *ask_bz_password(const char *message)
 {
-    char *password = ask_password(message);
+    char *password = libreport_ask_password(message);
     if (password == NULL || password[0] == '\0')
     {
         set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
@@ -581,7 +581,7 @@ int main(int argc, char **argv)
                             " Do you still want to create a new bug?"),
                             url);
 
-            if (!ask_yes_no(msg))
+            if (!libreport_ask_yes_no(msg))
                 return 0;
         }
     }
@@ -740,7 +740,7 @@ int main(int argc, char **argv)
                 "Otherwise, the bug reporting procedure will be terminated."),
                 rhbz.b_bugzilla_url, existing_id);
 
-                int r = ask_yes_no(msg);
+                int r = libreport_ask_yes_no(msg);
                 free(msg);
 
                 if (r == 0)

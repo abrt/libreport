@@ -347,7 +347,7 @@ bool check_for_hints(const char *url, char **login, char **password, bool ssl_ve
             /*
              * 'Yes' to the create ticket question means no hints were found.
              */
-            retval = !ask_yes_no(hint);
+            retval = !libreport_ask_yes_no(hint);
 
             free(hint);
         }
@@ -360,7 +360,7 @@ bool check_for_hints(const char *url, char **login, char **password, bool ssl_ve
 static
 char *ask_rh_login(const char *message)
 {
-    char *login = ask(message);
+    char *login = libreport_ask(message);
     if (login == NULL || login[0] == '\0')
     {
         set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
@@ -373,7 +373,7 @@ char *ask_rh_login(const char *message)
 static
 char *ask_rh_password(const char *message)
 {
-    char *password = ask_password(message);
+    char *password = libreport_ask_password(message);
     if (password == NULL || password[0] == '\0')
     {
         set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
@@ -457,7 +457,7 @@ static char *create_case_url(char *url, const char *case_no)
 static char *ask_case_no_create_url(char *url)
 {
     char *msg = xasprintf(_("Please enter customer case number to which you want to attach the data:"));
-    char *case_no = ask(msg);
+    char *case_no = libreport_ask(msg);
     free(msg);
     if (case_no == NULL || case_no[0] == '\0')
     {
@@ -634,7 +634,7 @@ int main(int argc, char **argv)
                       "Do you want to attach the data to the case? "
                       "Otherwise, you will have to enter the existing "
                       "Red Hat support case number."), url);
-                int yes = ask_yes_no(msg);
+                int yes = libreport_ask_yes_no(msg);
                 free(msg);
                 if (!yes)
                 {
@@ -694,7 +694,7 @@ int main(int argc, char **argv)
             char *msg = xasprintf("This problem was already reported to RHTS (see '%s')."
                             " Do you still want to create a RHTSupport ticket?",
                             report_url);
-            int yes = ask_yes_no(msg);
+            int yes = libreport_ask_yes_no(msg);
             free(msg);
             g_free(report_url);
             if (!yes)
@@ -748,7 +748,7 @@ int main(int argc, char **argv)
         /* the 'count' file can lie */
         && get_problem_data_reproducible(problem_data) <= PROBLEM_REPRODUCIBLE_UNKNOWN)
     {
-        int r = ask_yes_no(
+        int r = libreport_ask_yes_no(
             _("The problem has only occurred once and the ability to reproduce "
               "the problem is unknown. Please ensure you will be able to "
               "provide detailed information to our Support Team. "
@@ -765,7 +765,7 @@ int main(int argc, char **argv)
             _("The crashed program was released by '%s'. "
               "Would you like to report the problem to Red Hat Support?"),
               vendor);
-        int r = ask_yes_no(message);
+        int r = libreport_ask_yes_no(message);
         free(message);
         if (!r)
             exit(EXIT_CANCEL_BY_USER);
@@ -783,7 +783,7 @@ int main(int argc, char **argv)
             _("The program '%s' does not appear to be provided by Red Hat. "
               "Would you like to report the problem to Red Hat Support?"),
               executable);
-        int r = ask_yes_no(message);
+        int r = libreport_ask_yes_no(message);
         free(message);
         if (!r)
             exit(EXIT_CANCEL_BY_USER);
