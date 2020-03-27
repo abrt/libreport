@@ -411,7 +411,7 @@ void show_config_list_dialog(GtkWindow *parent)
     GHashTable *events = load_event_config_data();
     libreport_load_event_config_data_from_user_storage(events);
 
-    GHashTable *workflows = load_workflow_config_data(WORKFLOWS_DIR);
+    GHashTable *workflows = libreport_load_workflow_config_data(WORKFLOWS_DIR);
     load_workflow_config_data_from_user_storage(workflows);
     GtkListStore *workflows_store = add_workflows_to_liststore(workflows);
     g_hash_table_insert(confs, _("Workflows"), workflows_store);

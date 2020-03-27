@@ -188,7 +188,7 @@ int main(int argc, char **argv)
     libreport_load_event_config_data_from_user_storage(g_event_config_list);
     libreport_load_user_settings("report-gtk");
 
-    load_workflow_config_data(WORKFLOWS_DIR);
+    libreport_load_workflow_config_data(WORKFLOWS_DIR);
 
     /* list of workflows applicable to the currently processed problem */
     GList *possible_names = list_possible_events_glist(g_dump_dir_name, "workflow");
