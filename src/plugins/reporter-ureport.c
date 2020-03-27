@@ -35,7 +35,7 @@ int main(int argc, char **argv)
     abrt_init(argv);
 
     struct ureport_server_config config;
-    ureport_server_config_init(&config);
+    libreport_ureport_server_config_init(&config);
 
     enum {
         OPT_v = 1 << 0,
@@ -126,14 +126,14 @@ int main(int argc, char **argv)
     map_string_t *settings = libreport_new_map_string();
     libreport_load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 
-    ureport_server_config_load(&config, settings);
+    libreport_ureport_server_config_load(&config, settings);
 
     if (opts & OPT_u)
-        ureport_server_config_set_url(&config, libreport_xstrdup(arg_server_url));
+        libreport_ureport_server_config_set_url(&config, libreport_xstrdup(arg_server_url));
     if (opts & OPT_k)
         config.ur_ssl_verify = !insecure;
     if (opts & OPT_t)
-        ureport_server_config_set_client_auth(&config, client_auth);
+        libreport_ureport_server_config_set_client_auth(&config, client_auth);
     if (opts & OPT_h)
         ureport_server_config_load_basic_auth(&config, http_auth);
     if (opts & OPT_i)
@@ -143,7 +143,7 @@ int main(int argc, char **argv)
     }
 
     if (!config.ur_url)
-        ureport_server_config_set_url(&config, libreport_xstrdup(DEFAULT_WEB_SERVICE_URL));
+        libreport_ureport_server_config_set_url(&config, libreport_xstrdup(DEFAULT_WEB_SERVICE_URL));
 
     if (ureport_hash && ureport_hash_from_rt)
         error_msg_and_die("You need to pass either -a bthash or -A");
@@ -305,14 +305,14 @@ int main(int argc, char **argv)
     struct ureport_preferences *prefs = &(config.ur_prefs);
     prefs->urp_flags |= UREPORT_PREF_FLAG_RETURN_ON_FAILURE;
 
-    char *json_ureport = ureport_from_dump_dir_ext(dump_dir_path, prefs);
+    char *json_ureport = libreport_ureport_from_dump_dir_ext(dump_dir_path, prefs);
     if (!json_ureport)
     {
         error_msg(_("Failed to generate microreport from the problem data"));
         goto finalize;
     }
 
-    struct ureport_server_response *response = ureport_submit(json_ureport, &config);
+    struct ureport_server_response *response = libreport_ureport_submit(json_ureport, &config);
     free(json_ureport);
 
     if (!response)
@@ -323,7 +323,7 @@ int main(int argc, char **argv)
         log_notice("is known: %s", response->urr_value);
         ret = 0; /* "success" */
 
-        if (!ureport_server_response_save_in_dump_dir(response, dump_dir_path, &config))
+        if (!libreport_ureport_server_response_save_in_dump_dir(response, dump_dir_path, &config))
             libreport_xfunc_die();
 
         /* If a reported problem is not known then emit NEEDMORE */
@@ -339,7 +339,7 @@ int main(int argc, char **argv)
     else
         error_msg(_("Server responded with an error: '%s'"), response->urr_value);
 
-    ureport_server_response_free(response);
+    libreport_ureport_server_response_free(response);
 
 finalize:
     free(attach_value_from_rt_data);
@@ -348,7 +348,7 @@ finalize:
         config.ur_prefs.urp_auth_items = NULL;
 
     libreport_free_map_string(settings);
-    ureport_server_config_destroy(&config);
+    libreport_ureport_server_config_destroy(&config);
 
     return ret;
 }

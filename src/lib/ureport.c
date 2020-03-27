@@ -66,7 +66,7 @@ error:
 }
 
 void
-ureport_server_config_set_url(struct ureport_server_config *config,
+libreport_ureport_server_config_set_url(struct ureport_server_config *config,
                               char *server_url)
 {
     free(config->ur_url);
@@ -124,7 +124,7 @@ cert_authority_cert_exist(char *cert_name)
 }
 
 void
-ureport_server_config_set_client_auth(struct ureport_server_config *config,
+libreport_ureport_server_config_set_client_auth(struct ureport_server_config *config,
                                       const char *client_auth)
 {
     if (client_auth == NULL)
@@ -143,7 +143,7 @@ ureport_server_config_set_client_auth(struct ureport_server_config *config,
     else if (strcmp(client_auth, "rhsm") == 0)
     {
         if (config->ur_url == NULL)
-            ureport_server_config_set_url(config, libreport_xstrdup(RHSM_WEB_SERVICE_URL));
+            libreport_ureport_server_config_set_url(config, libreport_xstrdup(RHSM_WEB_SERVICE_URL));
 
         /* always returns non-NULL */
         char *rhsm_dir = rhsm_config_get_consumer_cert_dir();
@@ -216,10 +216,10 @@ ureport_server_config_set_client_auth(struct ureport_server_config *config,
 }
 
 void
-ureport_server_config_set_basic_auth(struct ureport_server_config *config,
+libreport_ureport_server_config_set_basic_auth(struct ureport_server_config *config,
                                      const char *login, const char *password)
 {
-    ureport_server_config_set_client_auth(config, "");
+    libreport_ureport_server_config_set_client_auth(config, "");
 
     free(config->ur_username);
     config->ur_username = libreport_xstrdup(login);
@@ -257,7 +257,7 @@ ureport_server_config_load_basic_auth(struct ureport_server_config *config,
         password = libreport_get_map_string_item_or_NULL(settings, "Password");
 
         if (config->ur_url == NULL)
-            ureport_server_config_set_url(config, libreport_xstrdup(RHSM_WEB_SERVICE_URL));
+            libreport_ureport_server_config_set_url(config, libreport_xstrdup(RHSM_WEB_SERVICE_URL));
     }
     else
     {
@@ -279,7 +279,7 @@ ureport_server_config_load_basic_auth(struct ureport_server_config *config,
             error_msg_and_die("Cannot continue without uReport server password!");
     }
 
-    ureport_server_config_set_basic_auth(config, username, password);
+    libreport_ureport_server_config_set_basic_auth(config, username, password);
 
     free(tmp_password);
     free(tmp_username);
@@ -287,7 +287,7 @@ ureport_server_config_load_basic_auth(struct ureport_server_config *config,
 }
 
 void
-ureport_server_config_load(struct ureport_server_config *config,
+libreport_ureport_server_config_load(struct ureport_server_config *config,
                            map_string_t *settings)
 {
     UREPORT_OPTION_VALUE_FROM_CONF(settings, "URL", config->ur_url, libreport_xstrdup);
@@ -301,7 +301,7 @@ ureport_server_config_load(struct ureport_server_config *config,
     if (http_auth_pref == NULL)
     {
         UREPORT_OPTION_VALUE_FROM_CONF(settings, "SSLClientAuth", client_auth, (const char *));
-        ureport_server_config_set_client_auth(config, client_auth);
+        libreport_ureport_server_config_set_client_auth(config, client_auth);
     }
 
     /* If SSLClientAuth is configured, include the auth items by default. */
@@ -320,7 +320,7 @@ ureport_server_config_load(struct ureport_server_config *config,
 }
 
 void
-ureport_server_config_init(struct ureport_server_config *config)
+libreport_ureport_server_config_init(struct ureport_server_config *config)
 {
     config->ur_url = NULL;
     config->ur_ssl_verify = true;
@@ -335,7 +335,7 @@ ureport_server_config_init(struct ureport_server_config *config)
 }
 
 void
-ureport_server_config_destroy(struct ureport_server_config *config)
+libreport_ureport_server_config_destroy(struct ureport_server_config *config)
 {
     free(config->ur_url);
     config->ur_url = DESTROYED_POINTER;
@@ -360,7 +360,7 @@ ureport_server_config_destroy(struct ureport_server_config *config)
 }
 
 void
-ureport_server_response_free(struct ureport_server_response *resp)
+libreport_ureport_server_response_free(struct ureport_server_response *resp)
 {
     if (!resp)
         return;
@@ -557,7 +557,7 @@ ureport_server_parse_json(json_object *json)
 }
 
 struct ureport_server_response *
-ureport_server_response_from_reply(post_state_t *post_state,
+libreport_ureport_server_response_from_reply(post_state_t *post_state,
                                    struct ureport_server_config *config)
 {
     /* Previously, the condition here was (post_state->errmsg[0] != '\0')
@@ -635,7 +635,7 @@ ureport_server_response_from_reply(post_state_t *post_state,
 }
 
 bool
-ureport_server_response_save_in_dump_dir(struct ureport_server_response *resp,
+libreport_ureport_server_response_save_in_dump_dir(struct ureport_server_response *resp,
                                          const char *dump_dir_path,
                                          struct ureport_server_config *config)
 {
@@ -662,7 +662,7 @@ ureport_server_response_save_in_dump_dir(struct ureport_server_response *resp,
             char *url;
 
             result = report_result_new_with_label_from_env("ABRT Server");
-            url = ureport_server_response_get_report_url(resp, config);
+            url = libreport_ureport_server_response_get_report_url(resp, config);
 
             report_result_set_url(result, url);
 
@@ -703,7 +703,7 @@ ureport_server_response_save_in_dump_dir(struct ureport_server_response *resp,
 }
 
 char *
-ureport_server_response_get_report_url(struct ureport_server_response *resp,
+libreport_ureport_server_response_get_report_url(struct ureport_server_response *resp,
                                        struct ureport_server_config *config)
 {
     char *bthash_url = libreport_concat_path_file(config->ur_url, BTHASH_URL_SFX);
@@ -723,7 +723,7 @@ ureport_add_str(struct json_object *ur, const char *key, const char *s)
 }
 
 char *
-ureport_from_dump_dir_ext(const char *dump_dir_path, const struct ureport_preferences *preferences)
+libreport_ureport_from_dump_dir_ext(const char *dump_dir_path, const struct ureport_preferences *preferences)
 {
     char *error_message;
     struct sr_report *report = sr_abrt_report_from_dir(dump_dir_path,
@@ -771,13 +771,13 @@ ureport_from_dump_dir_ext(const char *dump_dir_path, const struct ureport_prefer
 }
 
 char *
-ureport_from_dump_dir(const char *dump_dir_path)
+libreport_ureport_from_dump_dir(const char *dump_dir_path)
 {
-    return ureport_from_dump_dir_ext(dump_dir_path, /*no preferences*/NULL);
+    return libreport_ureport_from_dump_dir_ext(dump_dir_path, /*no preferences*/NULL);
 }
 
 struct post_state *
-ureport_do_post(const char *json, struct ureport_server_config *config,
+libreport_ureport_do_post(const char *json, struct ureport_server_config *config,
                 const char *url_sfx)
 {
     int flags = POST_WANT_BODY | POST_WANT_ERROR_MSG;
@@ -833,9 +833,9 @@ ureport_do_post(const char *json, struct ureport_server_config *config,
 }
 
 struct ureport_server_response *
-ureport_submit(const char *json, struct ureport_server_config *config)
+libreport_ureport_submit(const char *json, struct ureport_server_config *config)
 {
-    struct post_state *post_state = ureport_do_post(json, config, UREPORT_SUBMIT_ACTION);
+    struct post_state *post_state = libreport_ureport_do_post(json, config, UREPORT_SUBMIT_ACTION);
 
     if (post_state == NULL)
     {
@@ -843,7 +843,7 @@ ureport_submit(const char *json, struct ureport_server_config *config)
         return NULL;
     }
 
-    struct ureport_server_response *resp = ureport_server_response_from_reply(post_state, config);
+    struct ureport_server_response *resp = libreport_ureport_server_response_from_reply(post_state, config);
     free(post_state);
 
     return resp;
@@ -876,10 +876,10 @@ ureport_attach_string(struct ureport_server_config *config,
 
     json = ureport_json_attachment_new(bthash, type, data);
 
-    post_state_t *post_state = ureport_do_post(json, config, UREPORT_ATTACH_ACTION);
+    post_state_t *post_state = libreport_ureport_do_post(json, config, UREPORT_ATTACH_ACTION);
 
     struct ureport_server_response *resp =
-        ureport_server_response_from_reply(post_state, config);
+        libreport_ureport_server_response_from_reply(post_state, config);
     free_post_state(post_state);
     /* don't use str_bo_bool() because we require "true" string */
     const int result = !resp || resp->urr_is_error || strcmp(resp->urr_value, "true") != 0;
@@ -888,7 +888,7 @@ ureport_attach_string(struct ureport_server_config *config,
         error_msg(_("The server at '%s' responded with an error: '%s'"),
                 config->ur_url, resp->urr_value);
 
-    ureport_server_response_free(resp);
+    libreport_ureport_server_response_free(resp);
 
     return result;
 }
