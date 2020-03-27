@@ -973,8 +973,8 @@ int main(int argc, char **argv)
     if (bigsize != 0 && tempfile_size / (1024*1024) >= bigsize)
     {
         /* Upload tarball of -d DIR to "big file" FTP */
-        /* log_warning(_("Uploading problem data to '%s'"), bigurl); - upload_file does this */
-        remote_filename = upload_file(bigurl, tempfile);
+        /* log_warning(_("Uploading problem data to '%s'"), bigurl); - libreport_upload_file does this */
+        remote_filename = libreport_upload_file(bigurl, tempfile);
     }
     if (remote_filename)
     {
