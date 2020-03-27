@@ -14,14 +14,14 @@ AT_TESTFUN([libreport_parse_osinfo],
 int main(void)
 {
     libreport_g_verbose=3;
-    map_string_t *osinfo = new_map_string();
+    map_string_t *osinfo = libreport_new_map_string();
     {
         /* Test for empty input */
         libreport_parse_osinfo("", osinfo);
-        free_map_string(osinfo);
+        libreport_free_map_string(osinfo);
         osinfo = NULL;
     }
-    osinfo = new_map_string();
+    osinfo = libreport_new_map_string();
     {
         /* Test for standard valid os-release*/
         libreport_parse_osinfo(
@@ -33,17 +33,17 @@ int main(void)
 "PRETTY_NAME=\"Fedora 19 (Schrödinger\\'s Cat)\"\n"
 "ANSI_COLOR=\"0;34\"\n"
 "CPE_NAME=\"cpe:/o:fedoraproject:fedora:18\"\n", osinfo);
-        assert(0 == strcmp("Fedora", get_map_string_item_or_NULL(osinfo, OSINFO_NAME)));
-        assert(0 == strcmp("19 (Schrödinger's Cat)", get_map_string_item_or_NULL(osinfo, "VERSION")));
-        assert(0 == strcmp("fedora", get_map_string_item_or_NULL(osinfo, OSINFO_ID)));
-        assert(0 == strcmp("19", get_map_string_item_or_NULL(osinfo, OSINFO_VERSION_ID)));
-        assert(0 == strcmp("Fedora 19 (Schrödinger\'s Cat)", get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME)));
-        assert(0 == strcmp("0;34", get_map_string_item_or_NULL(osinfo, "ANSI_COLOR")));
-        assert(0 == strcmp("cpe:/o:fedoraproject:fedora:18", get_map_string_item_or_NULL(osinfo, "CPE_NAME")));
-        free_map_string(osinfo);
+        assert(0 == strcmp("Fedora", libreport_get_map_string_item_or_NULL(osinfo, OSINFO_NAME)));
+        assert(0 == strcmp("19 (Schrödinger's Cat)", libreport_get_map_string_item_or_NULL(osinfo, "VERSION")));
+        assert(0 == strcmp("fedora", libreport_get_map_string_item_or_NULL(osinfo, OSINFO_ID)));
+        assert(0 == strcmp("19", libreport_get_map_string_item_or_NULL(osinfo, OSINFO_VERSION_ID)));
+        assert(0 == strcmp("Fedora 19 (Schrödinger\'s Cat)", libreport_get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME)));
+        assert(0 == strcmp("0;34", libreport_get_map_string_item_or_NULL(osinfo, "ANSI_COLOR")));
+        assert(0 == strcmp("cpe:/o:fedoraproject:fedora:18", libreport_get_map_string_item_or_NULL(osinfo, "CPE_NAME")));
+        libreport_free_map_string(osinfo);
         osinfo = NULL;
     }
-    osinfo = new_map_string();
+    osinfo = libreport_new_map_string();
     {
         /* Test for standard valid os-release*/
         libreport_parse_osinfo(
@@ -58,21 +58,21 @@ int main(void)
 "REDHAT_BUGZILLA_PRODUCT_VERSION=Rawhide\n"
 "REDHAT_SUPPORT_PRODUCT=\"Fedora\"\n"
 "REDHAT_SUPPORT_PRODUCT_VERSION=Rawhide\n", osinfo);
-        assert(0 == strcmp("Fedora", get_map_string_item_or_NULL(osinfo, OSINFO_NAME)));
-        assert(0 == strcmp("20 (Rawhide)", get_map_string_item_or_NULL(osinfo, "VERSION")));
-        assert(0 == strcmp("fedora", get_map_string_item_or_NULL(osinfo, OSINFO_ID)));
-        assert(0 == strcmp("20", get_map_string_item_or_NULL(osinfo, OSINFO_VERSION_ID)));
-        assert(0 == strcmp("Fedora 20 (Rawhide)", get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME)));
-        assert(0 == strcmp("0;34", get_map_string_item_or_NULL(osinfo, "ANSI_COLOR")));
-        assert(0 == strcmp("cpe:/o:fedoraproject:fedora:20", get_map_string_item_or_NULL(osinfo, "CPE_NAME")));
-        assert(0 == strcmp("Fedora", get_map_string_item_or_NULL(osinfo, "REDHAT_BUGZILLA_PRODUCT")));
-        assert(0 == strcmp("Rawhide", get_map_string_item_or_NULL(osinfo, "REDHAT_BUGZILLA_PRODUCT_VERSION")));
-        assert(0 == strcmp("Fedora", get_map_string_item_or_NULL(osinfo, "REDHAT_SUPPORT_PRODUCT")));
-        assert(0 == strcmp("Rawhide", get_map_string_item_or_NULL(osinfo, "REDHAT_SUPPORT_PRODUCT_VERSION")));
-        free_map_string(osinfo);
+        assert(0 == strcmp("Fedora", libreport_get_map_string_item_or_NULL(osinfo, OSINFO_NAME)));
+        assert(0 == strcmp("20 (Rawhide)", libreport_get_map_string_item_or_NULL(osinfo, "VERSION")));
+        assert(0 == strcmp("fedora", libreport_get_map_string_item_or_NULL(osinfo, OSINFO_ID)));
+        assert(0 == strcmp("20", libreport_get_map_string_item_or_NULL(osinfo, OSINFO_VERSION_ID)));
+        assert(0 == strcmp("Fedora 20 (Rawhide)", libreport_get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME)));
+        assert(0 == strcmp("0;34", libreport_get_map_string_item_or_NULL(osinfo, "ANSI_COLOR")));
+        assert(0 == strcmp("cpe:/o:fedoraproject:fedora:20", libreport_get_map_string_item_or_NULL(osinfo, "CPE_NAME")));
+        assert(0 == strcmp("Fedora", libreport_get_map_string_item_or_NULL(osinfo, "REDHAT_BUGZILLA_PRODUCT")));
+        assert(0 == strcmp("Rawhide", libreport_get_map_string_item_or_NULL(osinfo, "REDHAT_BUGZILLA_PRODUCT_VERSION")));
+        assert(0 == strcmp("Fedora", libreport_get_map_string_item_or_NULL(osinfo, "REDHAT_SUPPORT_PRODUCT")));
+        assert(0 == strcmp("Rawhide", libreport_get_map_string_item_or_NULL(osinfo, "REDHAT_SUPPORT_PRODUCT_VERSION")));
+        libreport_free_map_string(osinfo);
         osinfo = NULL;
     }
-    osinfo = new_map_string();
+    osinfo = libreport_new_map_string();
     {
         /* Test for standard os-release with few errors */
         libreport_parse_osinfo(
@@ -87,15 +87,15 @@ int main(void)
 "ANSI_COLOR=\"0;34\"\n"
 "# The next line misses new line character\n"
 "CPE_NAME=\"cpe:/o:fedoraproject:fedora:18\"", osinfo);
-        assert(NULL == get_map_string_item_or_NULL(osinfo, "FOO"));
-        assert(0 == strcmp("Fedora", get_map_string_item_or_NULL(osinfo, OSINFO_NAME)));
-        assert(NULL == get_map_string_item_or_NULL(osinfo, "VERSION"));
-        assert(0 == strcmp("fedora", get_map_string_item_or_NULL(osinfo, OSINFO_ID)));
-        assert(0 == strcmp("19", get_map_string_item_or_NULL(osinfo, OSINFO_VERSION_ID)));
-        assert(NULL == get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME));
-        assert(0 == strcmp("0;34", get_map_string_item_or_NULL(osinfo, "ANSI_COLOR")));
-        assert(0 == strcmp("cpe:/o:fedoraproject:fedora:18", get_map_string_item_or_NULL(osinfo, "CPE_NAME")));
-        free_map_string(osinfo);
+        assert(NULL == libreport_get_map_string_item_or_NULL(osinfo, "FOO"));
+        assert(0 == strcmp("Fedora", libreport_get_map_string_item_or_NULL(osinfo, OSINFO_NAME)));
+        assert(NULL == libreport_get_map_string_item_or_NULL(osinfo, "VERSION"));
+        assert(0 == strcmp("fedora", libreport_get_map_string_item_or_NULL(osinfo, OSINFO_ID)));
+        assert(0 == strcmp("19", libreport_get_map_string_item_or_NULL(osinfo, OSINFO_VERSION_ID)));
+        assert(NULL == libreport_get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME));
+        assert(0 == strcmp("0;34", libreport_get_map_string_item_or_NULL(osinfo, "ANSI_COLOR")));
+        assert(0 == strcmp("cpe:/o:fedoraproject:fedora:18", libreport_get_map_string_item_or_NULL(osinfo, "CPE_NAME")));
+        libreport_free_map_string(osinfo);
         osinfo = NULL;
     }
     return 0;
@@ -114,7 +114,7 @@ AT_TESTFUN([libreport_parse_osinfo_for_bz],
 
 void test(const char *osinfo_bytes, const char *product, const char *version)
 {
-    map_string_t *osinfo = new_map_string();
+    map_string_t *osinfo = libreport_new_map_string();
     libreport_parse_osinfo(osinfo_bytes, osinfo);
 
     char *built_product = (char *)0xDEADBEAF;
@@ -224,7 +224,7 @@ AT_TESTFUN([parse_osinfo_for_bugurl], [[
 
 void test(const char *osinfo_bytes, const char *url)
 {
-    map_string_t *osinfo = new_map_string();
+    map_string_t *osinfo = libreport_new_map_string();
     libreport_parse_osinfo(osinfo_bytes, osinfo);
 
     char *default_BugzillaURL = (char *)0xDEADBEEF;
@@ -233,7 +233,7 @@ void test(const char *osinfo_bytes, const char *url)
     TS_ASSERT_STRING_EQ(default_BugzillaURL, url, "Tested URL");
 
     free(default_BugzillaURL);
-    free_map_string(osinfo);
+    libreport_free_map_string(osinfo);
 }
 
 int main(void)
@@ -291,7 +291,7 @@ AT_TESTFUN([libreport_parse_osinfo_for_rhts],
 
 void test(const char *osinfo_bytes, const char *product, const char *version)
 {
-    map_string_t *osinfo = new_map_string();
+    map_string_t *osinfo = libreport_new_map_string();
     libreport_parse_osinfo(osinfo_bytes, osinfo);
 
     char *built_product = (char *)0xDEADBEAF;
@@ -404,7 +404,7 @@ int main(void)
     libreport_g_verbose=3;
 
     problem_data_t *pd = problem_data_new();
-    map_string_t *osinfo = new_map_string();
+    map_string_t *osinfo = libreport_new_map_string();
     {
         problem_data_add_text_noteditable(pd, FILENAME_OS_INFO,
              "NAME=Fedora\n"
@@ -412,22 +412,22 @@ int main(void)
              "PRETTY_NAME=\"Fedora 19 (Schrödinger\\'s Cat)\"\n");
 
         problem_data_get_osinfo(pd, osinfo);
-        assert(0 == strcmp("Fedora", get_map_string_item_or_NULL(osinfo, OSINFO_NAME)));
-        free_map_string(osinfo);
+        assert(0 == strcmp("Fedora", libreport_get_map_string_item_or_NULL(osinfo, OSINFO_NAME)));
+        libreport_free_map_string(osinfo);
         problem_data_free(pd);
     }
     pd = problem_data_new();
-    osinfo = new_map_string();
+    osinfo = libreport_new_map_string();
     {
         problem_data_add_text_noteditable(pd, FILENAME_OS_RELEASE, "Fedora release 19 (Schrödinger's Cat)");
 
         problem_data_get_osinfo(pd, osinfo);
-        assert(0 == strcmp("Fedora release 19 (Schrödinger's Cat)", get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME)));
-        free_map_string(osinfo);
+        assert(0 == strcmp("Fedora release 19 (Schrödinger's Cat)", libreport_get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME)));
+        libreport_free_map_string(osinfo);
         problem_data_free(pd);
     }
     pd = problem_data_new();
-    osinfo = new_map_string();
+    osinfo = libreport_new_map_string();
     {
         problem_data_add_text_noteditable(pd, FILENAME_ROOTDIR, "/var/lib/mock");
         problem_data_add_text_noteditable(pd, FILENAME_OS_INFO_IN_ROOTDIR,
@@ -440,20 +440,20 @@ int main(void)
              "PRETTY_NAME=\"Fedora 19 (Schrödinger\\'s Cat)\"\n");
 
         problem_data_get_osinfo(pd, osinfo);
-        assert(0 == strcmp("Red Hat Enterprise Linux Client", get_map_string_item_or_NULL(osinfo, OSINFO_NAME)));
-        free_map_string(osinfo);
+        assert(0 == strcmp("Red Hat Enterprise Linux Client", libreport_get_map_string_item_or_NULL(osinfo, OSINFO_NAME)));
+        libreport_free_map_string(osinfo);
         problem_data_free(pd);
     }
     pd = problem_data_new();
-    osinfo = new_map_string();
+    osinfo = libreport_new_map_string();
     {
         problem_data_add_text_noteditable(pd, FILENAME_ROOTDIR, "/var/lib/mock");
         problem_data_add_text_noteditable(pd, FILENAME_OS_RELEASE_IN_ROOTDIR, "Red Hat Enterprise Linux Client 7.0 Beta (Maipo)");
         problem_data_add_text_noteditable(pd, FILENAME_OS_RELEASE, "Fedora release 19 (Schrödinger's Cat)");
 
         problem_data_get_osinfo(pd, osinfo);
-        assert(0 == strcmp("Red Hat Enterprise Linux Client 7.0 Beta (Maipo)", get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME)));
-        free_map_string(osinfo);
+        assert(0 == strcmp("Red Hat Enterprise Linux Client 7.0 Beta (Maipo)", libreport_get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME)));
+        libreport_free_map_string(osinfo);
         problem_data_free(pd);
     }
 

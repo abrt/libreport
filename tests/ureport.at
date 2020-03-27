@@ -122,7 +122,7 @@ int main(void)
     setenv("uReport_IncludeAuthData", "no", 1);
     setenv("uReport_AuthDataItems", "hostname", 1);
 
-    map_string_t *settings = new_map_string();
+    map_string_t *settings = libreport_new_map_string();
 
     ureport_server_config_load(&config, settings);
 
@@ -199,13 +199,13 @@ int main(void)
     assert(l == NULL);
 
     ureport_server_config_destroy(&config);
-    free_map_string(settings);
+    libreport_free_map_string(settings);
 
     /* value from settings */
     /* IncludeAuthData set to 'yes' but AuthDataItems is empty. */
     ureport_server_config_init(&config);
 
-    settings = new_map_string();
+    settings = libreport_new_map_string();
     insert_map_string(settings, libreport_xstrdup("URL"), libreport_xstrdup("settings_url"));
     insert_map_string(settings, libreport_xstrdup("SSLVerify"), libreport_xstrdup("yes"));
     insert_map_string(settings, libreport_xstrdup("SSLClientAuth"), libreport_xstrdup(""));
@@ -221,13 +221,13 @@ int main(void)
     assert(l == NULL);
 
     ureport_server_config_destroy(&config);
-    free_map_string(settings);
+    libreport_free_map_string(settings);
 
     /* value from settings */
     /* IncludeAuthData set to 'yes' */
     ureport_server_config_init(&config);
 
-    settings = new_map_string();
+    settings = libreport_new_map_string();
     insert_map_string(settings, libreport_xstrdup("URL"), libreport_xstrdup("settings_url"));
     insert_map_string(settings, libreport_xstrdup("SSLVerify"), libreport_xstrdup("no"));
     insert_map_string(settings, libreport_xstrdup("SSLClientAuth"), libreport_xstrdup(""));
@@ -244,14 +244,14 @@ int main(void)
     assert(strcmp(l->next->data, "type") == 0);
 
     ureport_server_config_destroy(&config);
-    free_map_string(settings);
+    libreport_free_map_string(settings);
 
     /* value from env */
     /* HTTPAuth set to 'username:password' */
     /* SSLClientAuth set to 'rhsm' */
     ureport_server_config_init(&config);
 
-    settings = new_map_string();
+    settings = libreport_new_map_string();
 
     setenv("uReport_SSLClientAuth", "rhsm", 1);
     setenv("uReport_HTTPAuth", "username:password", 1);
@@ -277,7 +277,7 @@ int main(void)
     unsetenv("uReport_HTTPAuth");
     unsetenv("uReport_AuthDataItems");
 
-    free_map_string(settings);
+    libreport_free_map_string(settings);
 
     ureport_server_config_destroy(&config);
 
@@ -286,7 +286,7 @@ int main(void)
     /* SSLClientAuth set to 'rhsm' */
     ureport_server_config_init(&config);
 
-    settings = new_map_string();
+    settings = libreport_new_map_string();
     insert_map_string(settings, libreport_xstrdup("SSLClientAuth"), libreport_xstrdup("rhsm"));
     insert_map_string(settings, libreport_xstrdup("HTTPAuth"), libreport_xstrdup("rhn-username:rhn-password"));
     insert_map_string(settings, libreport_xstrdup("AuthDataItems"), libreport_xstrdup("hostname, type"));
@@ -307,7 +307,7 @@ int main(void)
 
     unsetenv("LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH");
 
-    free_map_string(settings);
+    libreport_free_map_string(settings);
 
     ureport_server_config_destroy(&config);
 
@@ -1124,7 +1124,7 @@ int main(void)
     struct ureport_server_config config;
     ureport_server_config_init(&config);
 
-    map_string_t *settings = new_map_string();
+    map_string_t *settings = libreport_new_map_string();
 
     setenv("uReport_IncludeAuthData", "yes", 1);
     setenv("uReport_AuthDataItems", "hostname", 1);
@@ -1137,12 +1137,12 @@ int main(void)
     free(ureport);
 
     ureport_server_config_destroy(&config);
-    free_map_string(settings);
+    libreport_free_map_string(settings);
 
     /* auth with unknown uReport_AuthDataItems */
     ureport_server_config_init(&config);
 
-    settings = new_map_string();
+    settings = libreport_new_map_string();
 
     setenv("uReport_AuthDataItems", "hostname, unknown", 1);
 
@@ -1155,7 +1155,7 @@ int main(void)
     free(ureport);
 
     ureport_server_config_destroy(&config);
-    free_map_string(settings);
+    libreport_free_map_string(settings);
     delete_dump_dir("./test");
 
     return 0;

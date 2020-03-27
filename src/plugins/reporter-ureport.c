@@ -123,7 +123,7 @@ int main(int argc, char **argv)
 
     unsigned opts = libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
-    map_string_t *settings = new_map_string();
+    map_string_t *settings = libreport_new_map_string();
     libreport_load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 
     ureport_server_config_load(&config, settings);
@@ -347,7 +347,7 @@ finalize:
     if (config.ur_prefs.urp_auth_items == auth_items)
         config.ur_prefs.urp_auth_items = NULL;
 
-    free_map_string(settings);
+    libreport_free_map_string(settings);
     ureport_server_config_destroy(&config);
 
     return ret;

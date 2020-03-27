@@ -222,7 +222,7 @@ void libreport_parse_osinfo(const char *osinfo_bytes, map_string_t *osinfo)
         }
 
         char *key = libreport_xstrndup(cursor, key_end - cursor);
-        if (get_map_string_item_or_NULL(osinfo, key) != NULL)
+        if (libreport_get_map_string_item_or_NULL(osinfo, key) != NULL)
         {
             log_notice("os-release:%u: redefines key '%s'", line, key);
         }
@@ -235,7 +235,7 @@ void libreport_parse_osinfo(const char *osinfo_bytes, map_string_t *osinfo)
         /* The difference between replace and insert is that if the key already
          * exists in the GHashTable, it gets replaced by the new key. The old
          * key and the old value are freed. */
-        replace_map_string_item(osinfo, key, value);
+        libreport_replace_map_string_item(osinfo, key, value);
 
         cursor = value_end;
         if (value_end[0] == '\0')
@@ -262,13 +262,13 @@ void libreport_parse_release_for_bz(const char *release, char** product, char** 
 
 void libreport_parse_osinfo_for_bz(map_string_t *osinfo, char** product, char** version)
 {
-    const char *name = get_map_string_item_or_NULL(osinfo, "REDHAT_BUGZILLA_PRODUCT");
+    const char *name = libreport_get_map_string_item_or_NULL(osinfo, "REDHAT_BUGZILLA_PRODUCT");
     if (!name)
-        name = get_map_string_item_or_NULL(osinfo, OSINFO_NAME);
+        name = libreport_get_map_string_item_or_NULL(osinfo, OSINFO_NAME);
 
-    const char *version_id = get_map_string_item_or_NULL(osinfo, "REDHAT_BUGZILLA_PRODUCT_VERSION");
+    const char *version_id = libreport_get_map_string_item_or_NULL(osinfo, "REDHAT_BUGZILLA_PRODUCT_VERSION");
     if (!version_id)
-        version_id = get_map_string_item_or_NULL(osinfo, OSINFO_VERSION_ID);
+        version_id = libreport_get_map_string_item_or_NULL(osinfo, OSINFO_VERSION_ID);
 
     if (name && version_id)
     {
@@ -277,7 +277,7 @@ void libreport_parse_osinfo_for_bz(map_string_t *osinfo, char** product, char** 
         return;
     }
 
-    const char *pretty = get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME);
+    const char *pretty = libreport_get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME);
     if (pretty)
     {
         libreport_parse_release_for_bz(pretty, product, version);
@@ -291,7 +291,7 @@ void libreport_parse_osinfo_for_bz(map_string_t *osinfo, char** product, char** 
 
 void libreport_parse_osinfo_for_bug_url(map_string_t *osinfo, char** url)
 {
-    const char *os_bug_report_url = get_map_string_item_or_NULL(osinfo, "BUG_REPORT_URL");
+    const char *os_bug_report_url = libreport_get_map_string_item_or_NULL(osinfo, "BUG_REPORT_URL");
 
     if (os_bug_report_url)
         *url = libreport_xstrdup(os_bug_report_url);
@@ -339,13 +339,13 @@ void libreport_parse_release_for_rhts(const char *release, char** product, char*
 
 void libreport_parse_osinfo_for_rhts(map_string_t *osinfo, char** product, char** version)
 {
-    const char *name = get_map_string_item_or_NULL(osinfo, "REDHAT_SUPPORT_PRODUCT");
+    const char *name = libreport_get_map_string_item_or_NULL(osinfo, "REDHAT_SUPPORT_PRODUCT");
     if (!name)
-        name = get_map_string_item_or_NULL(osinfo, OSINFO_NAME);
+        name = libreport_get_map_string_item_or_NULL(osinfo, OSINFO_NAME);
 
-    const char *version_id = get_map_string_item_or_NULL(osinfo, "REDHAT_SUPPORT_PRODUCT_VERSION");
+    const char *version_id = libreport_get_map_string_item_or_NULL(osinfo, "REDHAT_SUPPORT_PRODUCT_VERSION");
     if (!version_id)
-        version_id = get_map_string_item_or_NULL(osinfo, OSINFO_VERSION_ID);
+        version_id = libreport_get_map_string_item_or_NULL(osinfo, OSINFO_VERSION_ID);
 
     if (name && version_id)
     {
@@ -354,7 +354,7 @@ void libreport_parse_osinfo_for_rhts(map_string_t *osinfo, char** product, char*
         return;
     }
 
-    const char *pretty = get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME);
+    const char *pretty = libreport_get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME);
     if (pretty)
     {
         libreport_parse_release_for_rhts(pretty, product, version);

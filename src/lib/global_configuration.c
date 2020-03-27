@@ -55,7 +55,7 @@ bool libreport_load_global_configuration_from_dirs(const char *dirs[], int dir_f
 {
     if (s_global_settings == NULL)
     {
-        s_global_settings = new_map_string();
+        s_global_settings = libreport_new_map_string();
 
         bool ret = libreport_load_conf_file_from_dirs_ext("libreport.conf", dirs, dir_flags, s_global_settings,
                                                /*don't skip without value*/ false);
@@ -67,9 +67,9 @@ bool libreport_load_global_configuration_from_dirs(const char *dirs[], int dir_f
         }
 
         map_string_iter_t iter;
-        init_map_string_iter(&iter, s_global_settings);
+        libreport_init_map_string_iter(&iter, s_global_settings);
         const char *key, *value;
-        while(next_map_string_iter(&iter, &key, &value))
+        while(libreport_next_map_string_iter(&iter, &key, &value))
         {
             /* Die to avoid security leaks in case where someone made a typo in a option name */
             if (!libreport_is_in_string_list(key, s_recognized_options))
@@ -90,7 +90,7 @@ void libreport_free_global_configuration(void)
 {
     if (s_global_settings != NULL)
     {
-        free_map_string(s_global_settings);
+        libreport_free_map_string(s_global_settings);
         s_global_settings = NULL;
     }
 }
@@ -119,19 +119,19 @@ string_vector_ptr_t libreport_get_global_always_excluded_elements(void)
     assert_global_configuration_initialized();
 
     char *env_exclude = getenv("EXCLUDE_FROM_REPORT");
-    const char *gc_exclude = get_map_string_item_or_NULL(s_global_settings, OPT_NAME_EXCLUDED_ELEMENTS);
+    const char *gc_exclude = libreport_get_map_string_item_or_NULL(s_global_settings, OPT_NAME_EXCLUDED_ELEMENTS);
 
     if (env_exclude != NULL && gc_exclude == NULL)
-        return string_vector_new_from_string(env_exclude);
+        return libreport_string_vector_new_from_string(env_exclude);
 
     if (env_exclude == NULL && gc_exclude != NULL)
-        return string_vector_new_from_string(gc_exclude);
+        return libreport_string_vector_new_from_string(gc_exclude);
 
     if (env_exclude == NULL && gc_exclude == NULL)
-        return string_vector_new_from_string(NULL);
+        return libreport_string_vector_new_from_string(NULL);
 
     char *joined_exclude = libreport_xasprintf("%s, %s", env_exclude, gc_exclude);
-    string_vector_ptr_t ret = string_vector_new_from_string(joined_exclude);
+    string_vector_ptr_t ret = libreport_string_vector_new_from_string(joined_exclude);
     free(joined_exclude);
 
     return ret;

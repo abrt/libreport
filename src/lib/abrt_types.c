@@ -18,66 +18,66 @@
 */
 #include "internal_libreport.h"
 
-map_string_t *new_map_string(void)
+map_string_t *libreport_new_map_string(void)
 {
     return g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 }
 
-void free_map_string(map_string_t *ms)
+void libreport_free_map_string(map_string_t *ms)
 {
     if (ms)
         g_hash_table_destroy(ms);
 }
 
-map_string_t *clone_map_string(map_string_t *ms)
+map_string_t *libreport_clone_map_string(map_string_t *ms)
 {
     if (ms == NULL)
         return NULL;
 
-    map_string_t *clone = new_map_string();
+    map_string_t *clone = libreport_new_map_string();
 
     const char *key;
     const char *value;
     map_string_iter_t iter;
-    init_map_string_iter(&iter, ms);
-    while(next_map_string_iter(&iter, &key, &value))
+    libreport_init_map_string_iter(&iter, ms);
+    while(libreport_next_map_string_iter(&iter, &key, &value))
         insert_map_string(clone, libreport_xstrdup(key), libreport_xstrdup(value));
 
     return clone;
 }
 
-const char *get_map_string_item_or_empty(map_string_t *ms, const char *key)
+const char *libreport_get_map_string_item_or_empty(map_string_t *ms, const char *key)
 {
     const char *v = (const char*)g_hash_table_lookup(ms, key);
     if (!v) v = "";
     return v;
 }
 
-string_vector_ptr_t string_vector_new_from_string(const char *value)
+string_vector_ptr_t libreport_string_vector_new_from_string(const char *value)
 {
     return g_strsplit(value == NULL ? "" : value, ", ", /*all tokens*/0);
 }
 
-void string_vector_free(string_vector_ptr_t vector)
+void libreport_string_vector_free(string_vector_ptr_t vector)
 {
     g_strfreev(vector);
 }
 
-void set_map_string_item_from_bool(map_string_t *ms, const char *key, int value)
+void libreport_set_map_string_item_from_bool(map_string_t *ms, const char *key, int value)
 {
     const char *const raw_value = value ? "yes" : "no";
-    set_map_string_item_from_string(ms, key, raw_value);
+    libreport_set_map_string_item_from_string(ms, key, raw_value);
 }
 
 #define GET_ITEM_OR_RETURN(val_name, conf, item_name)\
-    const char *const val_name = get_map_string_item_or_NULL(conf, item_name); \
+    const char *const val_name = libreport_get_map_string_item_or_NULL(conf, item_name); \
     if (val_name == NULL) \
     { \
         log_debug("Configuration option '%s' not found in loaded settings", item_name); \
         return 0; \
     }
 
-int try_get_map_string_item_as_bool(map_string_t *ms, const char *key, int *value)
+int libreport_try_get_map_string_item_as_bool(map_string_t *ms, const char *key, int *value)
 {
     GET_ITEM_OR_RETURN(option, ms, key);
 
@@ -85,14 +85,14 @@ int try_get_map_string_item_as_bool(map_string_t *ms, const char *key, int *valu
     return true;
 }
 
-void set_map_string_item_from_int(map_string_t *ms, const char *key, int value)
+void libreport_set_map_string_item_from_int(map_string_t *ms, const char *key, int value)
 {
     char raw_value[sizeof(int)*3 + 1];
     snprintf(raw_value, sizeof(raw_value), "%d", value);
-    set_map_string_item_from_string(ms, key, raw_value);
+    libreport_set_map_string_item_from_string(ms, key, raw_value);
 }
 
-int try_get_map_string_item_as_int(map_string_t *ms, const char *key, int *value)
+int libreport_try_get_map_string_item_as_int(map_string_t *ms, const char *key, int *value)
 {
     GET_ITEM_OR_RETURN(option, ms, key);
 
@@ -119,14 +119,14 @@ int try_get_map_string_item_as_int(map_string_t *ms, const char *key, int *value
     return 1;
 }
 
-void set_map_string_item_from_uint(map_string_t *ms, const char *key, unsigned int value)
+void libreport_set_map_string_item_from_uint(map_string_t *ms, const char *key, unsigned int value)
 {
     char raw_value[sizeof(int)*3 + 1];
     snprintf(raw_value, sizeof(raw_value), "%u", value);
-    set_map_string_item_from_string(ms, key, raw_value);
+    libreport_set_map_string_item_from_string(ms, key, raw_value);
 }
 
-int try_get_map_string_item_as_uint(map_string_t *ms, const char *key, unsigned int *value)
+int libreport_try_get_map_string_item_as_uint(map_string_t *ms, const char *key, unsigned int *value)
 {
     GET_ITEM_OR_RETURN(option, ms, key);
 
@@ -172,12 +172,12 @@ int try_get_map_string_item_as_uint(map_string_t *ms, const char *key, unsigned 
     return 1;
 }
 
-void set_map_string_item_from_string(map_string_t *ms, const char *key, const char *value)
+void libreport_set_map_string_item_from_string(map_string_t *ms, const char *key, const char *value)
 {
-    replace_map_string_item(ms, libreport_xstrdup(key), libreport_xstrdup(value));
+    libreport_replace_map_string_item(ms, libreport_xstrdup(key), libreport_xstrdup(value));
 }
 
-int try_get_map_string_item_as_string(map_string_t *ms, const char *key, char **value)
+int libreport_try_get_map_string_item_as_string(map_string_t *ms, const char *key, char **value)
 {
     GET_ITEM_OR_RETURN(option, ms, key);
 
@@ -192,23 +192,23 @@ int try_get_map_string_item_as_string(map_string_t *ms, const char *key, char **
     return 1;
 }
 
-void set_map_string_item_from_string_vector(map_string_t *ms, const char *key, string_vector_ptr_t value)
+void libreport_set_map_string_item_from_string_vector(map_string_t *ms, const char *key, string_vector_ptr_t value)
 {
     if (value == NULL)
     {
-        set_map_string_item_from_string(ms, key, "");
+        libreport_set_map_string_item_from_string(ms, key, "");
         return;
     }
 
     gchar *opt_val = g_strjoinv(", ", (gchar **)value);
-    set_map_string_item_from_string(ms, key, opt_val);
+    libreport_set_map_string_item_from_string(ms, key, opt_val);
     g_free(opt_val);
 }
 
-int try_get_map_string_item_as_string_vector(map_string_t *ms, const char *key, string_vector_ptr_t *value)
+int libreport_try_get_map_string_item_as_string_vector(map_string_t *ms, const char *key, string_vector_ptr_t *value)
 {
     GET_ITEM_OR_RETURN(option, ms, key);
 
-    *value = string_vector_new_from_string(option);
+    *value = libreport_string_vector_new_from_string(option);
     return 1;
 }

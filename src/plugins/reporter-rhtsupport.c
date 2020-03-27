@@ -402,7 +402,7 @@ char *get_param_string(const char *name, map_string_t *settings, const char *dfl
     char *envname = libreport_xasprintf("RHTSupport_%s", name);
     const char *envvar = getenv(envname);
     free(envname);
-    return libreport_xstrdup(envvar ? envvar : (get_map_string_item_or_NULL(settings, name) ? : dflt));
+    return libreport_xstrdup(envvar ? envvar : (libreport_get_map_string_item_or_NULL(settings, name) ? : dflt));
 }
 
 static
@@ -547,7 +547,7 @@ int main(int argc, char **argv)
     libreport_export_abrt_envvars(0);
 
     /* Parse config, extract necessary params */
-    map_string_t *settings = new_map_string();
+    map_string_t *settings = libreport_new_map_string();
     char *local_conf = NULL;
     if (!conf_file)
     {
@@ -588,25 +588,25 @@ int main(int argc, char **argv)
     char* envvar;
     envvar = getenv("RHTSupport_SSLVerify");
     bool ssl_verify = libreport_string_to_bool(
-                envvar ? envvar : (get_map_string_item_or_NULL(settings, "SSLVerify") ? : "1")
+                envvar ? envvar : (libreport_get_map_string_item_or_NULL(settings, "SSLVerify") ? : "1")
     );
     envvar = getenv("RHTSupport_BigSizeMB");
     unsigned bigsize = libreport_xatoi_positive(
                 /* RH has a 250m limit for web attachments (as of 2013) */
-                envvar ? envvar : (get_map_string_item_or_NULL(settings, "BigSizeMB") ? : "200")
+                envvar ? envvar : (libreport_get_map_string_item_or_NULL(settings, "BigSizeMB") ? : "200")
     );
     envvar = getenv("RHTSupport_SubmitUReport");
     bool submit_ur = libreport_string_to_bool(
                 envvar ? envvar :
-                    (get_map_string_item_or_NULL(settings, "SubmitUReport") ? :
+                    (libreport_get_map_string_item_or_NULL(settings, "SubmitUReport") ? :
                         ((opts & OPT_u) ? "1" : "0"))
     );
-    free_map_string(settings);
+    libreport_free_map_string(settings);
 
     char *base_api_url = libreport_xstrdup(url);
     char *bthash = NULL;
 
-    map_string_t *ursettings = new_map_string();
+    map_string_t *ursettings = libreport_new_map_string();
     struct ureport_server_config urconf;
 
     prepare_ureport_configuration(urconf_file, ursettings, &urconf,
@@ -872,10 +872,10 @@ int main(int argc, char **argv)
 
         char *product = NULL;
         char *version = NULL;
-        map_string_t *osinfo = new_map_string();
+        map_string_t *osinfo = libreport_new_map_string();
         problem_data_get_osinfo(problem_data, osinfo);
         libreport_parse_osinfo_for_rhts(osinfo, &product, &version);
-        free_map_string(osinfo);
+        libreport_free_map_string(osinfo);
 
         if (!product)
         {   /* How can we help user sorting out this problem? */
@@ -1031,7 +1031,7 @@ int main(int argc, char **argv)
     free_rhts_result(result);
 
     ureport_server_config_destroy(&urconf);
-    free_map_string(ursettings);
+    libreport_free_map_string(ursettings);
     free(bthash);
 
     free(base_api_url);
