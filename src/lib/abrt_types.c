@@ -41,7 +41,7 @@ map_string_t *clone_map_string(map_string_t *ms)
     map_string_iter_t iter;
     init_map_string_iter(&iter, ms);
     while(next_map_string_iter(&iter, &key, &value))
-        insert_map_string(clone, xstrdup(key), xstrdup(value));
+        insert_map_string(clone, libreport_xstrdup(key), libreport_xstrdup(value));
 
     return clone;
 }
@@ -81,7 +81,7 @@ int try_get_map_string_item_as_bool(map_string_t *ms, const char *key, int *valu
 {
     GET_ITEM_OR_RETURN(option, ms, key);
 
-    *value = string_to_bool(option);
+    *value = libreport_string_to_bool(option);
     return true;
 }
 
@@ -174,7 +174,7 @@ int try_get_map_string_item_as_uint(map_string_t *ms, const char *key, unsigned 
 
 void set_map_string_item_from_string(map_string_t *ms, const char *key, const char *value)
 {
-    replace_map_string_item(ms, xstrdup(key), xstrdup(value));
+    replace_map_string_item(ms, libreport_xstrdup(key), libreport_xstrdup(value));
 }
 
 int try_get_map_string_item_as_string(map_string_t *ms, const char *key, char **value)

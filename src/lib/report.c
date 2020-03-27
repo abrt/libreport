@@ -24,7 +24,7 @@ int report_problem_in_dir(const char *dirname, int flags)
     /* Prepare it before fork, to avoid thread-unsafe setenv there */
     char *prgname = (char*) g_get_prgname();
     if (prgname)
-        prgname = xasprintf("LIBREPORT_PRGNAME=%s", prgname);
+        prgname = libreport_xasprintf("LIBREPORT_PRGNAME=%s", prgname);
 
     if (flags & LIBREPORT_IGNORE_NOT_REPORTABLE)
     {
@@ -171,7 +171,7 @@ int report_problem_in_dir(const char *dirname, int flags)
      * In both cases, we need to wait for child:
      */
     int status;
-    pid = safe_waitpid(pid, &status, 0);
+    pid = libreport_safe_waitpid(pid, &status, 0);
     if (pid <= 0)
     {
         perror_msg("waitpid");
@@ -194,7 +194,7 @@ int report_problem_in_memory(problem_data_t *pd, int flags)
     struct dump_dir *dd = create_dump_dir_from_problem_data(pd, LARGE_DATA_TMP_DIR);
     if (!dd)
         return -1;
-    char *dir_name = xstrdup(dd->dd_dirname);
+    char *dir_name = libreport_xstrdup(dd->dd_dirname);
     dd_close(dd);
     log_info("Temp problem dir: '%s'", dir_name);
 

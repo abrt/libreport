@@ -18,7 +18,7 @@
 */
 #include "internal_libreport.h"
 
-char *sanitize_utf8(const char *src, uint32_t control_chars_to_sanitize)
+char *libreport_sanitize_utf8(const char *src, uint32_t control_chars_to_sanitize)
 {
     const char *initial_src = src;
     char *sanitized = NULL;
@@ -83,7 +83,7 @@ char *sanitize_utf8(const char *src, uint32_t control_chars_to_sanitize)
             c = (unsigned char) *src++;
             if (sanitized)
             {
-                sanitized = (char*) xrealloc(sanitized, sanitized_pos + 2);
+                sanitized = (char*) libreport_xrealloc(sanitized, sanitized_pos + 2);
                 sanitized[sanitized_pos++] = c;
                 sanitized[sanitized_pos] = '\0';
             }
@@ -94,9 +94,9 @@ char *sanitize_utf8(const char *src, uint32_t control_chars_to_sanitize)
         if (!sanitized)
         {
             sanitized_pos = src - initial_src;
-            sanitized = xstrndup(initial_src, sanitized_pos);
+            sanitized = libreport_xstrndup(initial_src, sanitized_pos);
         }
-        sanitized = (char*) xrealloc(sanitized, sanitized_pos + 5);
+        sanitized = (char*) libreport_xrealloc(sanitized, sanitized_pos + 5);
         sanitized[sanitized_pos++] = '[';
         c = (unsigned char) *src++;
         sanitized[sanitized_pos++] = "0123456789ABCDEF"[c >> 4];

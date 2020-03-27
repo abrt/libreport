@@ -22,20 +22,20 @@
 #include <systemd/sd-journal.h>
 #include "internal_libreport.h"
 
-void (*g_custom_logger)(const char*);
-const char *msg_prefix = "";
-const char *msg_eol = "\n";
-int logmode = LOGMODE_STDIO;
-int xfunc_error_retval = EXIT_FAILURE;
+void (*libreport_g_custom_logger)(const char*);
+const char *libreport_msg_prefix = "";
+const char *libreport_msg_eol = "\n";
+int libreport_logmode = LOGMODE_STDIO;
+int libreport_xfunc_error_retval = EXIT_FAILURE;
 static enum libreport_diemode xfunc_diemode = DIEMODE_EXIT;
-int g_verbose;
+int libreport_g_verbose;
 
-void set_xfunc_error_retval(int retval)
+void libreport_set_xfunc_error_retval(int retval)
 {
-    xfunc_error_retval = retval;
+    libreport_xfunc_error_retval = retval;
 }
 
-void set_xfunc_diemode(enum libreport_diemode mode)
+void libreport_set_xfunc_diemode(enum libreport_diemode mode)
 {
     xfunc_diemode = mode;
 }
@@ -44,25 +44,25 @@ void set_xfunc_diemode(enum libreport_diemode mode)
  * Therefore we avoid stdio, fflush(), and use _exit() instead of exit().
  *
  */
-void xfunc_die(void)
+void libreport_xfunc_die(void)
 {
     char *const envmode = getenv("LIBREPORT_DIEMODE");
     if (   xfunc_diemode == DIEMODE_ABORT
         || (envmode != NULL && strcmp("abort", envmode) == 0))
         abort();
 
-    _exit(xfunc_error_retval);
+    _exit(libreport_xfunc_error_retval);
 }
 
 static bool should_log(int level)
 {
     // LOG_DEBUG = 7, LOG_INFO = 6, LOG_NOTICE = 5, LOG_WARNING = 4, LOG_ERR = 3
-    // output only messages with LOG_ERR by default, overridden by g_verbose
+    // output only messages with LOG_ERR by default, overridden by libreport_g_verbose
     if(
-          (g_verbose == 0 && level <= LOG_WARNING) ||
-          (g_verbose == 1 && level <= LOG_NOTICE) ||
-          (g_verbose == 2 && level <= LOG_INFO) ||
-          (g_verbose == 3)
+          (libreport_g_verbose == 0 && level <= LOG_WARNING) ||
+          (libreport_g_verbose == 1 && level <= LOG_NOTICE) ||
+          (libreport_g_verbose == 2 && level <= LOG_INFO) ||
+          (libreport_g_verbose == 3)
       )
       return true;
 
@@ -79,7 +79,7 @@ static void log_handler(int level,
                         int line,
                         const char *func)
 {
-    if (!logmode || !should_log(level))
+    if (!libreport_logmode || !should_log(level))
         return;
 
     /* This is ugly and costs +60 bytes compared to multiple
@@ -87,9 +87,9 @@ static void log_handler(int level,
      * This is needed for e.g. when multiple children
      * can produce log messages simultaneously. */
 
-    int prefix_len = msg_prefix[0] ? strlen(msg_prefix) + 2 : 0;
+    int prefix_len = libreport_msg_prefix[0] ? strlen(libreport_msg_prefix) + 2 : 0;
     int strerr_len = strerr ? strlen(strerr) : 0;
-    int msgeol_len = strlen(msg_eol);
+    int msgeol_len = strlen(libreport_msg_eol);
     int used;
 
     /* Try to format the message in a fixed buffer.
@@ -120,7 +120,7 @@ static void log_handler(int level,
     if (prefix_len) {
         char *p;
         used += prefix_len;
-        p = stpcpy(msg, msg_prefix);
+        p = stpcpy(msg, libreport_msg_prefix);
         p[0] = ':';
         p[1] = ' ';
     }
@@ -132,18 +132,18 @@ static void log_handler(int level,
         strcpy(&msg[used], strerr);
         used += strerr_len;
     }
-    strcpy(&msg[used], msg_eol);
+    strcpy(&msg[used], libreport_msg_eol);
 
     if (flags & LOGMODE_STDIO) {
-        full_write(STDERR_FILENO, msg, used + msgeol_len);
+        libreport_full_write(STDERR_FILENO, msg, used + msgeol_len);
     }
-    msg[used] = '\0'; /* remove msg_eol (usually "\n") */
+    msg[used] = '\0'; /* remove libreport_msg_eol (usually "\n") */
     if (flags & LOGMODE_SYSLOG) {
         syslog(level, "%s", msg + prefix_len);
     }
 
-    if ((flags & LOGMODE_CUSTOM) && g_custom_logger) {
-        g_custom_logger(msg + prefix_len);
+    if ((flags & LOGMODE_CUSTOM) && libreport_g_custom_logger) {
+        libreport_g_custom_logger(msg + prefix_len);
     }
 
     if (flags & LOGMODE_JOURNAL) {
@@ -173,7 +173,7 @@ void log_wrapper(int level,
                 format,
                 p,
                 (process_perror && errno) ? strerror(errno) : NULL, /* Guard against "<error message>: Success" */
-                logmode | (use_custom_logger ? LOGMODE_CUSTOM : 0),
+                libreport_logmode | (use_custom_logger ? LOGMODE_CUSTOM : 0),
                 file,
                 line,
                 func);
@@ -196,16 +196,16 @@ void log_and_die_wrapper(int level,
                 format,
                 p,
                 (process_perror && errno) ? strerror(errno) : NULL, /* Guard against "<error message>: Success" */
-                logmode | (use_custom_logger ? LOGMODE_CUSTOM : 0),
+                libreport_logmode | (use_custom_logger ? LOGMODE_CUSTOM : 0),
                 file,
                 line,
                 func);
     va_end(p);
-    xfunc_die();
+    libreport_xfunc_die();
 }
 
 
-void die_out_of_memory(void)
+void libreport_die_out_of_memory(void)
 {
     error_msg_and_die("Out of memory, exiting");
 }

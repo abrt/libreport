@@ -19,7 +19,7 @@
 #include <fnmatch.h>
 #include "internal_libreport.h"
 
-bool is_in_comma_separated_list(const char *value, const char *list)
+bool libreport_is_in_comma_separated_list(const char *value, const char *list)
 {
     if (!list)
         return false;
@@ -36,14 +36,14 @@ bool is_in_comma_separated_list(const char *value, const char *list)
     return false;
 }
 
-bool is_in_comma_separated_list_of_glob_patterns(const char *value, const char *list)
+bool libreport_is_in_comma_separated_list_of_glob_patterns(const char *value, const char *list)
 {
     if (!list)
         return false;
     while (*list)
     {
         const char *comma = strchrnul(list, ',');
-        char *pattern = xstrndup(list, comma - list);
+        char *pattern = libreport_xstrndup(list, comma - list);
         int match = !fnmatch(pattern, value, /*flags:*/ 0);
         free(pattern);
         if (match)

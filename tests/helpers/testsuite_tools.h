@@ -76,7 +76,7 @@ static struct dump_dir *testsuite_dump_dir_create(uid_t uid, mode_t mode, int ts
  */
 static void testsuite_dump_dir_delete(struct dump_dir *dd)
 {
-    char *tmp_dir = xstrndup(dd->dd_dirname, strrchr(dd->dd_dirname, '/') - dd->dd_dirname);
+    char *tmp_dir = libreport_xstrndup(dd->dd_dirname, strrchr(dd->dd_dirname, '/') - dd->dd_dirname);
     assert(dd_delete(dd) == 0);
 
     if(rmdir(tmp_dir) != 0)

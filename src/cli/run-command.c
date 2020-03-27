@@ -61,9 +61,9 @@ static void start_command(struct command *cmd)
   if (cmd->pid == 0)
   {
     /* Child */
-    xmove_fd(cmd->tty_fd, 0);
-    xdup2(0, 1);
-    xdup2(0, 2);
+    libreport_xmove_fd(cmd->tty_fd, 0);
+    libreport_xdup2(0, 1);
+    libreport_xdup2(0, 2);
 
     /* tcsetpgrp() below will send us SIGTTOU if we aren't
      * foreground process group. Need to ignore it */
@@ -98,7 +98,7 @@ static int finish_command(struct command *cmd)
   int status;
   for (;;)
   {
-    pid_t waiting = safe_waitpid(cmd->pid, &status, WUNTRACED);
+    pid_t waiting = libreport_safe_waitpid(cmd->pid, &status, WUNTRACED);
     if (waiting < 0)
       perror_msg_and_die("waitpid");
     if (!WIFSTOPPED(status))

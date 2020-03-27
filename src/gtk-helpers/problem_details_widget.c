@@ -195,7 +195,7 @@ problem_details_widget_add_binary(ProblemDetailsWidget *self, const char *label,
     }
 
     gchar *size = g_format_size_full((long long)statbuf.st_size, G_FORMAT_SIZE_IEC_UNITS);
-    char *msg = xasprintf(_("$DATA_DIRECTORY/%s (binary file, %s)"), label, size);
+    char *msg = libreport_xasprintf(_("$DATA_DIRECTORY/%s (binary file, %s)"), label, size);
     problem_details_widget_add_single_line(self, label, msg);
     free(msg);
     g_free(size);
@@ -239,7 +239,7 @@ static void
 problem_data_entry_to_grid_row_one_line(const char *item_name, problem_item *item, ProblemDetailsWidget *self)
 {
     if (((item->flags & CD_FLAG_TXT) && (strchr(item->content, '\n') == NULL))
-             && !is_in_string_list(item_name, items_auto_blacklist))
+             && !libreport_is_in_string_list(item_name, items_auto_blacklist))
         problem_details_widget_add_single_line(self, item_name, item->content);
 }
 
@@ -247,7 +247,7 @@ static void
 problem_data_entry_to_grid_row_multi_line(const char *item_name, problem_item *item, ProblemDetailsWidget *self)
 {
     if (((item->flags & CD_FLAG_TXT) && (strchr(item->content, '\n') != NULL))
-            && !is_in_string_list(item_name, items_auto_blacklist))
+            && !libreport_is_in_string_list(item_name, items_auto_blacklist))
         problem_details_widget_add_multi_line(self, item_name, item->content);
 }
 
@@ -255,7 +255,7 @@ static void
 problem_data_entry_to_grid_row_binary(const char *item_name, problem_item *item, ProblemDetailsWidget *self)
 {
     if ((item->flags & CD_FLAG_BIN)
-            && !is_in_string_list(item_name, items_auto_blacklist))
+            && !libreport_is_in_string_list(item_name, items_auto_blacklist))
         problem_details_widget_add_binary(self, item_name, item->content);
 }
 
@@ -305,11 +305,11 @@ problem_details_widget_populate(ProblemDetailsWidget *self)
 
         char *line = NULL;
         if (uid && username)
-            line = xasprintf("%s (%s)", username, uid);
+            line = libreport_xasprintf("%s (%s)", username, uid);
         else if (!uid && !username)
-            line = xstrdup("unknown user");
+            line = libreport_xstrdup("unknown user");
         else
-            line = xasprintf("%s", uid ? uid : username);
+            line = libreport_xasprintf("%s", uid ? uid : username);
 
         problem_details_widget_add_single_line(self, "user", line);
         free(line);
@@ -327,19 +327,19 @@ problem_details_widget_populate(ProblemDetailsWidget *self)
         {
             if (strcmp(type, analyzer) != 0)
             {
-                label = xstrdup("type/analyzer");
-                line = xasprintf("%s/%s", type, analyzer);
+                label = libreport_xstrdup("type/analyzer");
+                line = libreport_xasprintf("%s/%s", type, analyzer);
             }
             else
             {
-                label = xstrdup("type");
-                line = xstrdup(type);
+                label = libreport_xstrdup("type");
+                line = libreport_xstrdup(type);
             }
         }
         else
         {
-            label = xstrdup(type ? "type" : "anlyzer");
-            line = xstrdup(type ? type : analyzer);
+            label = libreport_xstrdup(type ? "type" : "anlyzer");
+            line = libreport_xstrdup(type ? type : analyzer);
         }
 
         problem_details_widget_add_single_line(self, label, line);

@@ -35,7 +35,7 @@ void problem_data_reload_from_dump_dir(void)
 
     struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY);
     if (!dd)
-        xfunc_die(); /* dd_opendir already logged error msg */
+        libreport_xfunc_die(); /* dd_opendir already logged error msg */
 
     problem_data_t *new_cd = create_problem_data_from_dump_dir(dd);
     problem_data_add_text_noteditable(new_cd, CD_DUMPDIR, g_dump_dir_name);
@@ -164,29 +164,29 @@ int main(int argc, char **argv)
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_BOOL(  'p', NULL, NULL,                           _("Add program names to log")),
         OPT_BOOL(  'd', "delete", NULL,                       _("Remove PROBLEM_DIR after reporting")),
         OPT_LIST(  'e', "event", &user_event_list, "EVENT",   _("Run only these events")),
         OPT_END()
     };
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned opts = libreport_parse_opts(argc, argv, program_options, program_usage_string);
     argv += optind;
     if (!argv[0] || argv[1]) /* zero or >1 arguments */
-        show_usage_and_die(program_usage_string, program_options);
+        libreport_show_usage_and_die(program_usage_string, program_options);
 
     /* Copy the list of event names and expand wildcards, if any. */
     g_auto_event_list = expand_event_chain_wildcards(user_event_list);
 
-    export_abrt_envvars(opts & OPT_p);
+    libreport_export_abrt_envvars(opts & OPT_p);
 
-    g_dump_dir_name = xstrdup(argv[0]);
+    g_dump_dir_name = libreport_xstrdup(argv[0]);
 
     /* load /etc/abrt/events/foo.{conf,xml} stuff
        and $XDG_CACHE_HOME/abrt/events/foo.conf */
     g_event_config_list = load_event_config_data();
     libreport_load_event_config_data_from_user_storage(g_event_config_list);
-    load_user_settings("report-gtk");
+    libreport_load_user_settings("report-gtk");
 
     load_workflow_config_data(WORKFLOWS_DIR);
 
@@ -212,7 +212,7 @@ int main(int argc, char **argv)
 
     problem_data_reload_from_dump_dir();
 
-    g_custom_logger = &show_error_as_msgbox;
+    libreport_g_custom_logger = &show_error_as_msgbox;
     GtkApplication *app = gtk_application_new("org.freedesktop.libreport.report", G_APPLICATION_NON_UNIQUE);
     g_signal_connect(app, "activate", G_CALLBACK(activate_wizard), NULL);
     g_signal_connect(app, "startup",  G_CALLBACK(startup_wizard),  NULL);
@@ -224,7 +224,7 @@ int main(int argc, char **argv)
     if (opts & OPT_d)
         delete_dump_dir_possibly_using_abrtd(g_dump_dir_name);
 
-    save_user_settings();
+    libreport_save_user_settings();
 
     return 0;
 }

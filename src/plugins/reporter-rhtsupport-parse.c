@@ -65,7 +65,7 @@ static void start_element(
         if (uri && type)
         {
             free(parse_data->uri); /* paranoia */
-            parse_data->uri = xstrdup(uri);
+            parse_data->uri = libreport_xstrdup(uri);
             parse_data->type = type;
         }
     }
@@ -86,7 +86,7 @@ static void text(
     if (parse_data->uri && text_len > 0)
     {
         free(parse_data->txt);
-        parse_data->txt = xstrndup(text, text_len);
+        parse_data->txt = libreport_xstrndup(text, text_len);
     }
 }
 
@@ -152,12 +152,12 @@ static void emit_url_text_pairs_to_strbuf(struct strbuf *result, GList *urllist,
             /* changed "%s%s:" -> "%s%s :" if the url ends with ':' then it
              * becomes part of the link and makes it invalid
              */
-            strbuf_append_strf(result, "%s%s : %s", prefix, urllist->data, txtlist->data);
+            libreport_strbuf_append_strf(result, "%s%s : %s", prefix, urllist->data, txtlist->data);
             free(txtlist->data);
         }
         else
         {
-            strbuf_append_strf(result, "%s%s", prefix, urllist->data);
+            libreport_strbuf_append_strf(result, "%s%s", prefix, urllist->data);
         }
         free(urllist->data);
         prefix = ", ";
@@ -169,7 +169,7 @@ static void emit_url_text_pairs_to_strbuf(struct strbuf *result, GList *urllist,
 char *parse_response_from_RHTS_hint_xml2txt(const char *string)
 {
     if (strncmp(string, "<?xml", 5) != 0)
-        return xstrdup(string);
+        return libreport_xstrdup(string);
 
     struct my_parse_data parse_data;
     memset(&parse_data, 0, sizeof(parse_data));
@@ -195,22 +195,22 @@ char *parse_response_from_RHTS_hint_xml2txt(const char *string)
     if (!parse_data.hints_uri && !parse_data.erratas_uri)
         return NULL;
 
-    struct strbuf *result = strbuf_new();
+    struct strbuf *result = libreport_strbuf_new();
 
     if (parse_data.hints_uri)
     {
-        strbuf_append_str(result, _("Documentation which might be relevant: "));
+        libreport_strbuf_append_str(result, _("Documentation which might be relevant: "));
         emit_url_text_pairs_to_strbuf(result, parse_data.hints_uri, parse_data.hints_txt);
-        strbuf_append_str(result, ". ");
+        libreport_strbuf_append_str(result, ". ");
     }
     if (parse_data.erratas_uri)
     {
         if (parse_data.hints_uri)
-            strbuf_append_str(result, " ");
-        strbuf_append_str(result, _("Updates which possibly help: "));
+            libreport_strbuf_append_str(result, " ");
+        libreport_strbuf_append_str(result, _("Updates which possibly help: "));
         emit_url_text_pairs_to_strbuf(result, parse_data.erratas_uri, parse_data.erratas_txt);
-        strbuf_append_str(result, ".");
+        libreport_strbuf_append_str(result, ".");
     }
 
-    return strbuf_free_nobuf(result);
+    return libreport_strbuf_free_nobuf(result);
 }

@@ -22,7 +22,7 @@ bool string_cmp(const char *orig, const char *other)
 
 int main(void)
 {
-    g_verbose=3;
+    libreport_g_verbose=3;
 
 #define FIRST_LINE "Bugzilla: URL=https://goodluck.org"
 #define SECOND_LINE "ABRT Server: BTHASH=81680083BIGBOOBS"
@@ -104,7 +104,7 @@ int main(void)
     g_autoptr(report_result_t) second_result = NULL;
     g_autoptr(report_result_t) third_result = NULL;
 
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     setenv("TZ", "", 1);
     setenv("LC_ALL", "C", 1);
@@ -182,7 +182,7 @@ int main(void)
     g_autoptr(report_result_t) fifth_result = NULL;
     g_autoptr(report_result_t) sixth_result = NULL;
 
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     first_result = report_result_new_with_label("Bugzilla");
     second_result = report_result_new_with_label("ABRT Server");

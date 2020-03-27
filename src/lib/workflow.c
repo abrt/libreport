@@ -34,7 +34,7 @@ GHashTable *g_workflow_list;
 
 workflow_t *new_workflow(const char *name)
 {
-    workflow_t *w = xzalloc(sizeof(*w));
+    workflow_t *w = libreport_xzalloc(sizeof(*w));
     w->info = new_config_info(name);
     return w;
 }
@@ -90,7 +90,7 @@ static void load_workflow_config(const char *name,
         workflow_t *workflow = new_workflow(file->filename);
         load_workflow_description_from_file(workflow, file->fullpath);
         log_info("Adding '%s' to workflows\n", file->filename);
-        g_hash_table_insert(wf_list, xstrdup(file->filename), workflow);
+        g_hash_table_insert(wf_list, libreport_xstrdup(file->filename), workflow);
     }
 }
 
@@ -108,13 +108,13 @@ GHashTable *load_workflow_config_data_from_list(GList *wf_names,
     if (path == NULL)
         path = WORKFLOWS_DIR;
 
-    GList *workflow_files = get_file_list(path, "xml");
+    GList *workflow_files = libreport_get_file_list(path, "xml");
     while(wfs)
     {
         load_workflow_config((const char *)wfs->data, workflow_files, wf_list);
         wfs = g_list_next(wfs);
     }
-    free_file_list(workflow_files);
+    libreport_free_file_list(workflow_files);
 
     return wf_list;
 }
@@ -134,7 +134,7 @@ GHashTable *load_workflow_config_data(const char *path)
     if (path == NULL)
         path = WORKFLOWS_DIR;
 
-    GList *workflow_files = get_file_list(path, "xml");
+    GList *workflow_files = libreport_get_file_list(path, "xml");
     while (workflow_files)
     {
         file_obj_t *file = (file_obj_t *)workflow_files->data;
@@ -147,9 +147,9 @@ GHashTable *load_workflow_config_data(const char *path)
         load_workflow_description_from_file(workflow, file->fullpath);
 
         if (nw_workflow)
-            g_hash_table_replace(g_workflow_list, xstrdup(wf_get_name(workflow)), workflow);
+            g_hash_table_replace(g_workflow_list, libreport_xstrdup(wf_get_name(workflow)), workflow);
 
-        free_file_obj(file);
+        libreport_free_file_obj(file);
         workflow_files = g_list_delete_link(workflow_files, workflow_files);
     }
 
@@ -176,7 +176,7 @@ GList *wf_get_event_names(workflow_t *w)
         /* Since appending is inefficient for GLib doubly-linked lists, we prepend
          * here and reverse the list just before returning.
          */
-        event_names = g_list_prepend(event_names, xstrdup(ec_get_name(wf_event_list->data)));
+        event_names = g_list_prepend(event_names, libreport_xstrdup(ec_get_name(wf_event_list->data)));
         wf_event_list = g_list_next(wf_event_list);
     }
 

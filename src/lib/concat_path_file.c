@@ -24,17 +24,17 @@
  * If path is NULL, it is assumed to be "/".
  * filename should not be NULL.
  */
-char *concat_path_file(const char *path, const char *filename)
+char *libreport_concat_path_file(const char *path, const char *filename)
 {
 	if (!path)
 		path = "";
 	const char *end = path + strlen(path);
 	while (*filename == '/')
 		filename++;
-	return xasprintf("%s%s%s", path, (end != path && end[-1] != '/' ? "/" : ""), filename);
+	return libreport_xasprintf("%s%s%s", path, (end != path && end[-1] != '/' ? "/" : ""), filename);
 }
 
-char *concat_path_basename(const char *path, const char *filename)
+char *libreport_concat_path_basename(const char *path, const char *filename)
 {
     char *abspath = realpath(filename, NULL);
     char *base = strrchr((abspath ? abspath : filename), '/');
@@ -50,15 +50,15 @@ char *concat_path_basename(const char *path, const char *filename)
     }
     else
     {
-        sprintf(buf, "tmp-%s-%lu", iso_date_string(NULL), (long)getpid());
+        sprintf(buf, "tmp-%s-%lu", libreport_iso_date_string(NULL), (long)getpid());
         base = buf;
     }
-    char *name = concat_path_file(path, base);
+    char *name = libreport_concat_path_file(path, base);
     free(abspath);
     return name;
 }
 
-bool str_is_correct_filename(const char *str)
+bool libreport_str_is_correct_filename(const char *str)
 {
 #define NOT_PRINTABLE(c) (c < ' ' || c == 0x7f)
 

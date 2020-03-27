@@ -21,7 +21,7 @@
 static const char hexdigits_locase[] = "0123456789abcdef";
 
 /* Emit a string of hex representation of bytes */
-char *bin2hex(char *dst, const char *str, int count)
+char *libreport_bin2hex(char *dst, const char *str, int count)
 {
 	while (count) {
 		unsigned char c = *str++;
@@ -34,7 +34,7 @@ char *bin2hex(char *dst, const char *str, int count)
 }
 
 /* Convert "xxxxxxxx" hex string to binary, no more than COUNT bytes */
-char *hex2bin(char *dst, const char *str, int count)
+char *libreport_hex2bin(char *dst, const char *str, int count)
 {
 	/* Parts commented out with // allow parsing
 	 * of strings like "xx:x:x:xx:xx:xx:xxxxxx"

@@ -52,7 +52,7 @@ static char *escape(const char *str)
 
     // Copy the input string to the resultant string, and escape all
     // occurences of \# and #.
-    char *result = (char*)xmalloc(strlen(str) + 1 + count);
+    char *result = (char*)libreport_xmalloc(strlen(str) + 1 + count);
 
     const char *src = str;
     char *dest = result;
@@ -230,18 +230,18 @@ static int read_crash_report_field(const char *text, problem_data_t *report,
     char newvalue[length + 1];
     strncpy(newvalue, textfield, length);
     newvalue[length] = '\0';
-    strtrim(newvalue);
+    libreport_strtrim(newvalue);
 
     char oldvalue[strlen(value->content) + 1];
     strcpy(oldvalue, value->content);
-    strtrim(oldvalue);
+    libreport_strtrim(oldvalue);
 
     // Return if no change in the contents detected.
     if (strcmp(newvalue, oldvalue) == 0)
         return 0;
 
     free(value->content);
-    value->content = xstrdup(newvalue);
+    value->content = libreport_xstrdup(newvalue);
     return 1;
 }
 
@@ -352,7 +352,7 @@ static int run_report_editor(problem_data_t *problem_data)
     FILE *fp = fdopen(fd, "w");
     if (!fp) /* errno is set */
     {
-        die_out_of_memory();
+        libreport_die_out_of_memory();
     }
 
     write_crash_report(problem_data, fp);
@@ -375,10 +375,10 @@ static int run_report_editor(problem_data_t *problem_data)
         return 2;
     }
 
-    off_t size = fstat_st_size_or_die(fileno(fp));
+    off_t size = libreport_fstat_st_size_or_die(fileno(fp));
     if (size > INT_MAX/4)
 	    size = INT_MAX/4; /* paranoia */
-    char *text = xmalloc(size + 1);
+    char *text = libreport_xmalloc(size + 1);
     if (fread(text, 1, size, fp) != size)
     {
         error_msg("Can't read '%s'", filename);
@@ -429,7 +429,7 @@ static void ask_for_missing_settings(const char *event_name)
             free(opt->eo_value);
             opt->eo_value = NULL;
 
-            char *question = xasprintf("%s %s:",
+            char *question = libreport_xasprintf("%s %s:",
                                              ec_get_screen_name(event_config) ? ec_get_screen_name(event_config) : event_name,
                                              (opt->eo_label) ? opt->eo_label : opt->eo_name);
             switch (opt->eo_type) {
@@ -444,9 +444,9 @@ static void ask_for_missing_settings(const char *event_name)
             }
             case OPTION_TYPE_BOOL:
                 if (libreport_ask_yes_no(question))
-                    opt->eo_value = xstrdup("yes");
+                    opt->eo_value = libreport_xstrdup("yes");
                 else
-                    opt->eo_value = xstrdup("no");
+                    opt->eo_value = libreport_xstrdup("no");
 
                 break;
             case OPTION_TYPE_HINT_HTML: /* TODO? */
@@ -467,7 +467,7 @@ static void ask_for_missing_settings(const char *event_name)
         for (iter = err_list; iter; iter = iter -> next)
         {
             invalid_option_t *err_data = (invalid_option_t *)iter->data;
-            char *msg = xasprintf(_("Bad value for '%s': %s"),
+            char *msg = libreport_xasprintf(_("Bad value for '%s': %s"),
                                     err_data->invopt_name,
                                     err_data->invopt_error);
             libreport_alert(msg);
@@ -668,7 +668,7 @@ static int run_event_on_dir_name_interactively(
 
         if (config->ec_sending_sensitive_data)
         {
-            char *msg = xasprintf(_("Event '%s' requires permission to send possibly sensitive data."
+            char *msg = libreport_xasprintf(_("Event '%s' requires permission to send possibly sensitive data."
                                     " Do you want to continue?"),
                         ec_get_screen_name(config) ? ec_get_screen_name(config) : event_name);
             bool ok = libreport_ask_yes_no(msg);
@@ -711,11 +711,11 @@ static int choose_number_from_range(unsigned min, unsigned max, const char *mess
     {
         char *answer = libreport_ask(message);
 
-        picked = xatou(answer);
+        picked = libreport_xatou(answer);
         if (min <= picked && picked <= max)
             return picked;
 
-        char *msg = xasprintf("%s (%u - %u)\n", _("You have chosen number out of range"), min, max);
+        char *msg = libreport_xasprintf("%s (%u - %u)\n", _("You have chosen number out of range"), min, max);
         libreport_alert(msg);
         free(msg);
     }
@@ -730,7 +730,7 @@ static char *select_event_name(GList *list_options)
 
     /* Just one? */
     if (!list_options->next)
-        return xstrdup((char*)list_options->data);
+        return libreport_xstrdup((char*)list_options->data);
 
     int count = 0;
     for (GList *li = list_options; li; li = li->next)
@@ -743,14 +743,14 @@ static char *select_event_name(GList *list_options)
 
     const unsigned picked = choose_number_from_range(1, count, _("Select an event to run: "));
     GList *chosen = g_list_nth(list_options, picked - 1);
-    return xstrdup((char*)chosen->data);
+    return libreport_xstrdup((char*)chosen->data);
 }
 
 int select_and_run_one_event(const char *dump_dir_name, const char *pfx, int interactive)
 {
     GList *list_events = list_possible_events_glist(dump_dir_name, pfx);
     char *event_name = select_event_name(list_events);
-    list_free_with_free(list_events);
+    libreport_list_free_with_free(list_events);
 
     struct run_event_state *run_state = new_run_event_state();
     run_state->logging_callback = do_log;

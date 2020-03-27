@@ -54,7 +54,7 @@ GList *libreport_find_url_tokens(const char *line)
             /* need it for overlap correction */
             GList *prev = NULL;
             /* initialize it after overlap correction */
-            struct libreport_url_token *tok = xmalloc(sizeof(*tok));
+            struct libreport_url_token *tok = libreport_xmalloc(sizeof(*tok));
             if (anc)
             {   /* insert a new token before token following in the str*/
                 prev = g_list_previous(anc);
@@ -98,7 +98,7 @@ GList *libreport_find_url_tokens(const char *line)
 
 char *tag_url(const char *line, const char *prefix)
 {
-    struct strbuf *result = strbuf_new();
+    struct strbuf *result = libreport_strbuf_new();
     const char *last = line;
     GList *urls = libreport_find_url_tokens(line);
     for (GList *u = urls; u; u = g_list_next(u))
@@ -108,9 +108,9 @@ char *tag_url(const char *line, const char *prefix)
         /* add text between hyperlinks */
         if (last < t->start)
             /* TODO : add strbuf_append_strn() */
-            strbuf_append_strf(result, "%.*s", t->start - last, last);
+            libreport_strbuf_append_strf(result, "%.*s", t->start - last, last);
 
-        strbuf_append_strf(result, "%s<a href=\"%.*s\">%.*s</a>",
+        libreport_strbuf_append_strf(result, "%s<a href=\"%.*s\">%.*s</a>",
                                    prefix,
                                    t->len, t->start,
                                    t->len, t->start);
@@ -122,7 +122,7 @@ char *tag_url(const char *line, const char *prefix)
 
     /* add a text following the last link */
     if (last[0] != '\0')
-        strbuf_append_str(result, last);
+        libreport_strbuf_append_str(result, last);
 
-    return strbuf_free_nobuf(result);
+    return libreport_strbuf_free_nobuf(result);
 }

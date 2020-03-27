@@ -106,7 +106,7 @@ int libreport_ask_yes_no(const char *question);
  *
  * In the case you are developing a front-end application, you have to call the
  * load_user_setting() function before calling the libreport_ask_yes_no_yesforever()
- * function and call the save_user_settings() function after calling the
+ * function and call the libreport_save_user_settings() function after calling the
  * libreport_ask_yes_no_yesforever() function to make the 'yesforever' reply persistent.
  *
  * @param key The key under which the yes forever answer is stored

@@ -329,14 +329,14 @@ static void update_window_title(void)
     /* prgname can be null according to gtk documentation */
     const char *prgname = g_get_prgname();
     const char *reason = problem_data_get_content_or_NULL(g_cd, FILENAME_REASON);
-    g_autofree char *title = xasprintf("%s - %s", (reason ? reason : g_dump_dir_name),
+    g_autofree char *title = libreport_xasprintf("%s - %s", (reason ? reason : g_dump_dir_name),
             (prgname ? prgname : "report"));
     gtk_window_set_title(g_wnd_assistant, title);
 }
 
 static bool ask_continue_before_steal(const char *base_dir, const char *dump_dir)
 {
-    g_autofree char *msg = xasprintf(
+    g_autofree char *msg = libreport_xasprintf(
             _("Need writable directory, but '%s' is not writable."
               " Move it to '%s' and operate on the moved data?"),
             dump_dir, base_dir);
@@ -347,13 +347,13 @@ static bool ask_continue_before_steal(const char *base_dir, const char *dump_dir
 
 struct dump_dir *wizard_open_directory_for_writing(const char *dump_dir_name)
 {
-    struct dump_dir *dd = open_directory_for_writing(dump_dir_name,
+    struct dump_dir *dd = libreport_open_directory_for_writing(dump_dir_name,
                                                      ask_continue_before_steal);
 
     if (dd && strcmp(g_dump_dir_name, dd->dd_dirname) != 0)
     {
         free(g_dump_dir_name);
-        g_dump_dir_name = xstrdup(dd->dd_dirname);
+        g_dump_dir_name = libreport_xstrdup(dd->dd_dirname);
         update_window_title();
     }
 
@@ -376,8 +376,8 @@ static void load_text_to_text_view(GtkTextView *tv, const char *name)
 {
     /* Add to set of loaded files */
     /* a key_destroy_func() is provided therefore if the key for name already exists */
-    /* a result of xstrdup() is freed */
-    g_hash_table_insert(g_loaded_texts, (gpointer)xstrdup(name), (gpointer)1);
+    /* a result of libreport_xstrdup() is freed */
+    g_hash_table_insert(g_loaded_texts, (gpointer)libreport_xstrdup(name), (gpointer)1);
 
     const char *str = g_cd ? problem_data_get_content_or_NULL(g_cd, name) : NULL;
     /* Bad: will choke at any text with non-Unicode parts: */
@@ -412,11 +412,11 @@ static void save_text_if_changed(const char *name, const char *new_value)
     if (strcmp(new_value, old_value) != 0)
     {
         /* If the dump directory cannot be opened for writing, an error dialogue
-         * will pop up because g_custom_logger is set to &show_error_as_msgbox.*/
+         * will pop up because libreport_g_custom_logger is set to &show_error_as_msgbox.*/
         struct dump_dir *dd = wizard_open_directory_for_writing(g_dump_dir_name);
         if (dd)
             /* If this operation fails, an error dialogue will pop up because
-             * g_custom_logger is set to &show_error_as_msgbox.*/
+             * libreport_g_custom_logger is set to &show_error_as_msgbox.*/
             dd_save_text(dd, name, new_value);
 
         dd_close(dd);
@@ -462,7 +462,7 @@ static void append_to_textview(GtkTextView *tv, const char *str)
         GtkTextTag *tag;
         tag = gtk_text_buffer_create_tag(tb, NULL, "foreground", "blue",
                                          "underline", PANGO_UNDERLINE_SINGLE, NULL);
-        char *url = xstrndup(t->start, t->len);
+        char *url = libreport_xstrndup(t->start, t->len);
         g_object_set_data(G_OBJECT(tag), "url", url);
 
         gtk_text_buffer_insert_with_tags(tb, &text_iter, url, -1, tag, NULL);
@@ -711,7 +711,7 @@ static void tv_details_row_activated(
     gint exitcode;
     gchar *arg[3];
     arg[0] = (char *) "xdg-open";
-    arg[1] = concat_path_file(g_dump_dir_name, item_name);
+    arg[1] = libreport_concat_path_file(g_dump_dir_name, item_name);
     arg[2] = NULL;
 
     const gboolean spawn_ret = g_spawn_sync(NULL, arg, NULL,
@@ -1017,7 +1017,7 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
         if (stat(item->content, &statbuf) == 0)
         {
             stats->filesize += statbuf.st_size;
-            g_autofree char *msg = xasprintf(
+            g_autofree char *msg = libreport_xasprintf(
                     _("(binary file, %llu bytes)"), (long long)statbuf.st_size);
             gtk_list_store_set(g_ls_details, &iter,
                                   DETAIL_COLUMN_NAME, (char *)name,
@@ -1051,11 +1051,11 @@ static void update_ls_details_checkboxes(const char *event_name)
         /* Decide whether item is allowed, required, and what's the default */
         item->allowed_by_reporter = 1;
         if (global_exclude)
-            item->allowed_by_reporter = !is_in_string_list(name, (const_string_vector_const_ptr_t)global_exclude);
+            item->allowed_by_reporter = !libreport_is_in_string_list(name, (const_string_vector_const_ptr_t)global_exclude);
 
         if (cfg)
         {
-            if (is_in_comma_separated_list_of_glob_patterns(name, cfg->ec_exclude_items_always))
+            if (libreport_is_in_comma_separated_list_of_glob_patterns(name, cfg->ec_exclude_items_always))
                 item->allowed_by_reporter = 0;
             if ((item->flags & CD_FLAG_BIN) && cfg->ec_exclude_binary_items)
                 item->allowed_by_reporter = 0;
@@ -1064,16 +1064,16 @@ static void update_ls_details_checkboxes(const char *event_name)
         item->default_by_reporter = item->allowed_by_reporter;
         if (cfg)
         {
-            if (is_in_comma_separated_list_of_glob_patterns(name, cfg->ec_exclude_items_by_default))
+            if (libreport_is_in_comma_separated_list_of_glob_patterns(name, cfg->ec_exclude_items_by_default))
                 item->default_by_reporter = 0;
-            if (is_in_comma_separated_list_of_glob_patterns(name, cfg->ec_include_items_by_default))
+            if (libreport_is_in_comma_separated_list_of_glob_patterns(name, cfg->ec_include_items_by_default))
                 item->allowed_by_reporter = item->default_by_reporter = 1;
         }
 
         item->required_by_reporter = 0;
         if (cfg)
         {
-            if (is_in_comma_separated_list_of_glob_patterns(name, cfg->ec_requires_items))
+            if (libreport_is_in_comma_separated_list_of_glob_patterns(name, cfg->ec_requires_items))
                 item->default_by_reporter = item->allowed_by_reporter = item->required_by_reporter = 1;
         }
 
@@ -1115,7 +1115,7 @@ void update_gui_state_from_problem_data(int flags)
     const char *not_reportable = problem_data_get_content_or_NULL(g_cd,
                                                                   FILENAME_NOT_REPORTABLE);
 
-    g_autofree char *t = xasprintf("%s%s%s",
+    g_autofree char *t = libreport_xasprintf("%s%s%s",
                         not_reportable ? : "",
                         not_reportable ? " " : "",
                         reason ? : _("(no description)"));
@@ -1125,7 +1125,7 @@ void update_gui_state_from_problem_data(int flags)
     gtk_list_store_clear(g_ls_details);
     struct cd_stats stats = { 0 };
     g_hash_table_foreach(g_cd, append_item_to_ls_details, &stats);
-    g_autofree char *msg = xasprintf(
+    g_autofree char *msg = libreport_xasprintf(
             _("%llu bytes, %u files"), (long long)stats.filesize, stats.filecount);
     gtk_label_set_text(g_lbl_size, msg);
 
@@ -1162,7 +1162,7 @@ void update_gui_state_from_problem_data(int flags)
     }
     else
     {
-        int count = xatoi(count_str);
+        int count = libreport_xatoi(count_str);
         if (count < 5)
             gtk_combo_box_set_active(GTK_COMBO_BOX(g_cmb_reproducible), PROBLEM_REPRODUCIBLE_YES);
         else
@@ -1196,7 +1196,7 @@ enum {
 
 static void set_excluded_envvar(void)
 {
-    struct strbuf *item_list = strbuf_new();
+    struct strbuf *item_list = libreport_strbuf_new();
     const char *fmt = "%s";
 
     GtkTreeIter iter;
@@ -1213,15 +1213,15 @@ static void set_excluded_envvar(void)
                 continue;
             if (!checked)
             {
-                strbuf_append_strf(item_list, fmt, item_name);
+                libreport_strbuf_append_strf(item_list, fmt, item_name);
                 fmt = ", %s";
             }
         } while (gtk_tree_model_iter_next(GTK_TREE_MODEL(g_ls_details), &iter));
     }
 
-    g_autofree char *var = strbuf_free_nobuf(item_list);
+    g_autofree char *var = libreport_strbuf_free_nobuf(item_list);
     if (var)
-        xsetenv("EXCLUDE_FROM_REPORT", var);
+        libreport_xsetenv("EXCLUDE_FROM_REPORT", var);
     else
         unsetenv("EXCLUDE_FROM_REPORT");
 }
@@ -1264,14 +1264,14 @@ static void save_to_event_log(struct analyze_event_data *evd, const char *str)
                 /* skip empty lines */
                 if (str[0] == '\n')
                     goto next;
-                strbuf_append_strf(evd->event_log, "%s%c %.*s",
-                        iso_date_string(NULL),
+                libreport_strbuf_append_strf(evd->event_log, "%s%c %.*s",
+                        libreport_iso_date_string(NULL),
                         delim[evd->event_log_state],
                         (int)(end - str), str
                 );
                 break;
             case LOGSTATE_MIDLINE:
-                strbuf_append_strf(evd->event_log, "%.*s", (int)(end - str), str);
+                libreport_strbuf_append_strf(evd->event_log, "%.*s", (int)(end - str), str);
                 break;
         }
         evd->event_log_state = LOGSTATE_MIDLINE;
@@ -1295,8 +1295,8 @@ static void update_event_log_on_disk(const char *str)
     /* Append new log part to existing log */
     unsigned len = strlen(event_log);
     if (len != 0 && event_log[len - 1] != '\n')
-        event_log = append_to_malloced_string(event_log, "\n");
-    event_log = append_to_malloced_string(event_log, str);
+        event_log = libreport_append_to_malloced_string(event_log, "\n");
+    event_log = libreport_append_to_malloced_string(event_log, str);
 
     /* Trim log according to size watermarks */
     len = strlen(event_log);
@@ -1392,7 +1392,7 @@ static void update_command_run_log(const char* message, struct analyze_event_dat
         gtk_label_set_text(g_lbl_event_log, message);
 
     /* Don't append new line behind single dot */
-    const char *log_msg = it_is_a_dot ? message : xasprintf("%s\n", message);
+    const char *log_msg = it_is_a_dot ? message : libreport_xasprintf("%s\n", message);
     append_to_textview(g_tv_event_log, log_msg);
     save_to_event_log(evd, log_msg);
 
@@ -1415,7 +1415,7 @@ static char *run_event_gtk_logging(char *log_line, void *param)
 
 static void log_request_response_communication(const char *request, const char *response, struct analyze_event_data *evd)
 {
-    g_autofree char *message = xasprintf(response ? "%s '%s'" : "%s", request,
+    g_autofree char *message = libreport_xasprintf(response ? "%s '%s'" : "%s", request,
             response);
     update_command_run_log(message, evd);
 }
@@ -1473,7 +1473,7 @@ static char *ask_helper(const char *msg, void *args, bool password)
     if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_OK)
     {
         const char *text = gtk_entry_get_text(GTK_ENTRY(textbox));
-        response = xstrdup(text);
+        response = libreport_xstrdup(text);
     }
 
     gtk_widget_destroy(textbox);
@@ -1484,7 +1484,7 @@ static char *ask_helper(const char *msg, void *args, bool password)
         log_response = password ? "********" : response;
 
     log_request_response_communication(msg, log_response, (struct analyze_event_data *)args);
-    return response ? response : xstrdup("");
+    return response ? response : libreport_xstrdup("");
 }
 
 static char *run_event_gtk_ask(const char *msg, void *args)
@@ -1628,7 +1628,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 
     /* Append log to FILENAME_EVENT_LOG */
     update_event_log_on_disk(evd->event_log->buf);
-    strbuf_clear(evd->event_log);
+    libreport_strbuf_clear(evd->event_log);
     evd->event_log_state = LOGSTATE_FIRSTLINE;
 
     struct dump_dir *dd = NULL;
@@ -1648,7 +1648,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         if (!dd) /* why? because dd may be already open by the code above */
             dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
         if (!dd)
-            xfunc_die();
+            libreport_xfunc_die();
         g_autofree char *not_reportable = dd_load_text_ext(dd, FILENAME_NOT_REPORTABLE,
                   DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
                 | DD_FAIL_QUIETLY_ENOENT
@@ -1668,7 +1668,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         append_to_textview(g_tv_event_log, "\n");
 
         /* Free child output buffer */
-        strbuf_free(cmd_output);
+        libreport_strbuf_free(cmd_output);
         cmd_output = NULL;
 
         /* Hide spinner and stop btn */
@@ -1712,7 +1712,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         close(evd->fd);
         g_io_channel_unref(evd->channel);
         free_run_event_state(evd->run_state);
-        strbuf_free(evd->event_log);
+        libreport_strbuf_free(evd->event_log);
         free(evd->event_name);
         free(evd);
 
@@ -1721,7 +1721,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 
         if (is_processing_finished())
             hide_next_step_button();
-        else if (retval == 0 && !g_verbose)
+        else if (retval == 0 && !libreport_g_verbose)
             on_next_btn_cb(g_btn_next, NULL);
 
         return FALSE; /* "please remove this event" */
@@ -1732,9 +1732,9 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     /* Transplant cmd's output fd onto old one, so that main loop
      * is none the wiser that fd it waits on has changed
      */
-    xmove_fd(evd->run_state->command_out_fd, evd->fd);
+    libreport_xmove_fd(evd->run_state->command_out_fd, evd->fd);
     evd->run_state->command_out_fd = evd->fd; /* just to keep it consistent */
-    ndelay_on(evd->fd);
+    libreport_ndelay_on(evd->fd);
 
     /* Revive "Cancel" button */
     g_event_child_pid = evd->run_state->command_pid;
@@ -1766,7 +1766,7 @@ static void start_event_run(const char *event_name)
         free_run_event_state(state);
 
         log_warning("No processing commands specified. Processing halted.");
-        g_autofree char *msg = xasprintf(
+        g_autofree char *msg = libreport_xasprintf(
                 _("No commands could be found for processsing the crashdump.\n"));
         append_to_textview(g_tv_event_log, msg);
 
@@ -1804,7 +1804,7 @@ static void start_event_run(const char *event_name)
 
         log_notice("No matching actions for event '%s'; skipping.", event_name);
 
-        g_autofree char *msg = xasprintf(
+        g_autofree char *msg = libreport_xasprintf(
                 _("--- Skipping %s ---\n"
                   "No matching actions found for this event.\n\n"),
                 event_name);
@@ -1821,18 +1821,18 @@ static void start_event_run(const char *event_name)
     /* At least one command is needed, and we started first one.
      * Hook its output fd to the main loop.
      */
-    struct analyze_event_data *evd = xzalloc(sizeof(*evd));
+    struct analyze_event_data *evd = libreport_xzalloc(sizeof(*evd));
     evd->run_state = state;
-    evd->event_name = xstrdup(event_name);
+    evd->event_name = libreport_xstrdup(event_name);
     evd->env_list = env_list;
-    evd->event_log = strbuf_new();
+    evd->event_log = libreport_strbuf_new();
     evd->fd = state->command_out_fd;
 
     state->logging_param = evd;
     state->error_param = evd;
     state->interaction_param = evd;
 
-    ndelay_on(evd->fd);
+    libreport_ndelay_on(evd->fd);
     evd->channel = g_io_channel_unix_new(evd->fd);
     g_event_source_id = g_io_add_watch(evd->channel,
             G_IO_IN | G_IO_ERR | G_IO_HUP, /* need HUP to detect EOF w/o any data */
@@ -1842,7 +1842,7 @@ static void start_event_run(const char *event_name)
 
     gtk_label_set_text(g_lbl_event_log, _("Processing..."));
     log_notice("running event '%s' on '%s'", event_name, g_dump_dir_name);
-    g_autofree char *msg = xasprintf("--- Running %s ---\n", event_name);
+    g_autofree char *msg = libreport_xasprintf("--- Running %s ---\n", event_name);
     append_to_textview(g_tv_event_log, msg);
 
     /* don't bother testing if they are visible, this is faster */
@@ -1872,7 +1872,7 @@ static void add_widget_to_warning_area(GtkWidget    *widget,
 static void add_warning(const char   *warning,
                         GtkContainer *container)
 {
-    g_autofree char *label_str = xasprintf("• %s", warning);
+    g_autofree char *label_str = libreport_xasprintf("• %s", warning);
     GtkWidget *warning_lbl = gtk_label_new(NULL);
     gtk_label_set_markup(GTK_LABEL(warning_lbl), label_str);
 
@@ -1966,7 +1966,7 @@ static bool check_minimal_bt_rating(const char  *event_name,
 
     if (!event_name)
         error_msg_and_die(_("Cannot check backtrace rating because of invalid event name"));
-    else if (prefixcmp(event_name, "report") != 0)
+    else if (libreport_prefixcmp(event_name, "report") != 0)
     {
         log_info("No checks for backtrace rating because event '%s' doesn't report.", event_name);
         return acceptable_rating;
@@ -2141,7 +2141,7 @@ static void search_item_to_list_store_item(GtkListStore *store, GtkTreeIter *new
     g_autofree gchar *suffix = g_markup_escape_text(tmp, /*NULL terminated string*/-1);
     g_free(tmp);
 
-    char *content = xasprintf("%s<span foreground=\"red\">%s</span>%s", prefix, text, suffix);
+    char *content = libreport_xasprintf("%s<span foreground=\"red\">%s</span>%s", prefix, text, suffix);
 
     gtk_text_iter_free(end);
     gtk_text_iter_free(beg);
@@ -2318,13 +2318,13 @@ static gboolean highligh_words_in_tabs(GList *forbidden_words,  GList *allowed_w
 
 static gboolean highlight_forbidden(void)
 {
-    GList *forbidden_words = load_words_from_file(FORBIDDEN_WORDS_BLACKLLIST);
-    GList *allowed_words = load_words_from_file(FORBIDDEN_WORDS_WHITELIST);
+    GList *forbidden_words = libreport_load_words_from_file(FORBIDDEN_WORDS_BLACKLLIST);
+    GList *allowed_words = libreport_load_words_from_file(FORBIDDEN_WORDS_WHITELIST);
 
     const gboolean result = highligh_words_in_tabs(forbidden_words, allowed_words, /*case sensitive*/false);
 
-    list_free_with_free(forbidden_words);
-    list_free_with_free(allowed_words);
+    libreport_list_free_with_free(forbidden_words);
+    libreport_list_free_with_free(allowed_words);
 
     return result;
 }
@@ -2488,7 +2488,7 @@ static void on_page_prepare(GtkNotebook *assistant, GtkWidget *page, gpointer us
              * - there are events still left to be run, and
              * - we're in cruise control mode (i.e. not verbose).
              */
-            if (g_event_child_pid < 0 && !is_processing_finished() && !g_verbose)
+            if (g_event_child_pid < 0 && !is_processing_finished() && !libreport_g_verbose)
             {
                 gint next_page_no = select_next_page_no(PAGENO_EVENT_PROGRESS);
 
@@ -2523,7 +2523,7 @@ static void set_auto_event_chain(GtkButton *button, gpointer user_data)
     GList *wf_event_list = wf_get_event_list(w);
     while(wf_event_list)
     {
-        g_auto_event_list = g_list_append(g_auto_event_list, xstrdup(ec_get_name(wf_event_list->data)));
+        g_auto_event_list = g_list_append(g_auto_event_list, libreport_xstrdup(ec_get_name(wf_event_list->data)));
         libreport_load_single_event_config_data_from_user_storage((event_config_t *)wf_event_list->data);
 
         wf_event_list = g_list_next(wf_event_list);
@@ -2562,7 +2562,7 @@ static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback f
     for (GList *wf_iter = wf_list; wf_iter; wf_iter = g_list_next(wf_iter))
     {
         workflow_t *w = (workflow_t *)wf_iter->data;
-        g_autofree char *btn_label = xasprintf("<b>%s</b>\n%s", wf_get_screen_name(w),
+        g_autofree char *btn_label = libreport_xasprintf("<b>%s</b>\n%s", wf_get_screen_name(w),
                 wf_get_description(w));
         GtkWidget *button = gtk_button_new_with_label(btn_label);
         GList *children = gtk_container_get_children(GTK_CONTAINER(button));
@@ -2615,7 +2615,7 @@ static bool get_sensitive_data_permission(const char *event_name)
     if (screen_name)
         event_name = screen_name;
 
-    g_autofree char *msg = xasprintf(
+    g_autofree char *msg = libreport_xasprintf(
             _("Event '%s' requires permission to send possibly sensitive data.\n"
               "Do you want to continue?"),
             event_name);
@@ -2662,7 +2662,7 @@ static gint select_next_page_no(gint current_page_no)
         if (problem_data_get_content_or_NULL(g_cd, FILENAME_NOT_REPORTABLE))
         {
 
-            char *msg = xasprintf(_("This problem should not be reported "
+            char *msg = libreport_xasprintf(_("This problem should not be reported "
                             "(it is likely a known problem). %s"),
                             problem_data_get_content_or_NULL(g_cd, FILENAME_NOT_REPORTABLE)
             );
@@ -2731,11 +2731,11 @@ static gint select_next_page_no(gint current_page_no)
 
 static void rehighlight_forbidden_words(int page, GtkTextView *tev)
 {
-    GList *forbidden_words = load_words_from_file(FORBIDDEN_WORDS_BLACKLLIST);
-    GList *allowed_words = load_words_from_file(FORBIDDEN_WORDS_WHITELIST);
+    GList *forbidden_words = libreport_load_words_from_file(FORBIDDEN_WORDS_BLACKLLIST);
+    GList *allowed_words = libreport_load_words_from_file(FORBIDDEN_WORDS_WHITELIST);
     highligh_words_in_textview(page, tev, forbidden_words, allowed_words, /*case sensitive*/false);
-    list_free_with_free(forbidden_words);
-    list_free_with_free(allowed_words);
+    libreport_list_free_with_free(forbidden_words);
+    libreport_list_free_with_free(allowed_words);
 }
 
 static void on_sensitive_word_selection_changed(GtkTreeSelection *sel, gpointer user_data)
@@ -2847,7 +2847,7 @@ static void save_edited_one_liner(GtkCellRendererText *renderer,
         {
             dd_save_text(dd, item_name, new_text);
             free(item->content);
-            item->content = xstrdup(new_text);
+            item->content = libreport_xstrdup(new_text);
             gtk_list_store_set(g_ls_details, &iter,
                     DETAIL_COLUMN_VALUE, new_text,
                     -1);
@@ -2885,7 +2885,7 @@ static void on_btn_add_file(GtkButton *button)
         struct stat statbuf;
         if (stat(filename, &statbuf) != 0 || !S_ISREG(statbuf.st_mode))
         {
-            message = xasprintf(_("'%s' is not an ordinary file"), filename);
+            message = libreport_xasprintf(_("'%s' is not an ordinary file"), filename);
             goto show_msgbox;
         }
 
@@ -2896,15 +2896,15 @@ static void on_btn_add_file(GtkButton *button)
             if (dd)
             {
                 dd_close(dd);
-                g_autofree char *new_name = concat_path_file(g_dump_dir_name, basename);
+                g_autofree char *new_name = libreport_concat_path_file(g_dump_dir_name, basename);
                 if (strcmp(filename, new_name) == 0)
-                    message = xstrdup(_("You are trying to copy a file onto itself"));
+                    message = libreport_xstrdup(_("You are trying to copy a file onto itself"));
                 else
                 {
-                    off_t r = copy_file(filename, new_name, 0666);
+                    off_t r = libreport_copy_file(filename, new_name, 0666);
                     if (r < 0)
                     {
-                        message = xasprintf(_("Can't copy '%s': %s"), filename, strerror(errno));
+                        message = libreport_xasprintf(_("Can't copy '%s': %s"), filename, strerror(errno));
                         unlink(new_name);
                     }
                     if (!message)
@@ -2918,7 +2918,7 @@ static void on_btn_add_file(GtkButton *button)
             }
         }
         else
-            message = xasprintf(_("Item '%s' already exists and is not modifiable"), basename);
+            message = libreport_xasprintf(_("Item '%s' already exists and is not modifiable"), basename);
 
         if (message)
         {
@@ -2967,7 +2967,7 @@ static void delete_item(GtkTreeView *treeview)
                     struct dump_dir *dd = wizard_open_directory_for_writing(g_dump_dir_name);
                     if (dd)
                     {
-                        char *filename = concat_path_file(g_dump_dir_name, item_name);
+                        char *filename = libreport_concat_path_file(g_dump_dir_name, item_name);
                         unlink(filename);
                         free(filename);
                         dd_close(dd);

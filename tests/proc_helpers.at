@@ -2,11 +2,11 @@
 
 AT_BANNER([/proc helpers])
 
-## -------------------- ##
-## get_env_variable_ext ##
-## -------------------- ##
+## ------------------------------ ##
+## libreport_get_env_variable_ext ##
+## ------------------------------ ##
 
-AT_TESTFUN([get_env_variable_ext],
+AT_TESTFUN([libreport_get_env_variable_ext],
 [[
 
 #include "testsuite.h"
@@ -55,7 +55,7 @@ void test_delim(char delim)
         lseek(fd, 0, SEEK_SET);
         char *value = NULL;
         printf("Looking for '%s'\n", test_data[i-1][0]);
-        TS_ASSERT_FUNCTION(get_env_variable_ext(fd, delim, test_data[i-1][0], &value));
+        TS_ASSERT_FUNCTION(libreport_get_env_variable_ext(fd, delim, test_data[i-1][0], &value));
         TS_ASSERT_STRING_EQ(value, test_data[i-1][1], "Environment value at 'i'");
         free(value);
     }
@@ -72,11 +72,11 @@ TS_RETURN_MAIN
 ]])
 
 
-## ---------------- ##
-## get_env_variable ##
-## ---------------- ##
+## -------------------------- ##
+## libreport_get_env_variable ##
+## -------------------------- ##
 
-AT_TESTFUN([get_env_variable],
+AT_TESTFUN([libreport_get_env_variable],
 [[
 
 #include "testsuite.h"
@@ -87,25 +87,25 @@ TS_MAIN
     getcwd(cwd, sizeof(cwd));
 
     char *value = NULL;
-    TS_ASSERT_FUNCTION(get_env_variable(getpid(), "PWD", &value));
+    TS_ASSERT_FUNCTION(libreport_get_env_variable(getpid(), "PWD", &value));
     TS_ASSERT_STRING_EQ(value, cwd, "Test environment variable - PWD");
     free(value);
 }
 TS_RETURN_MAIN
 ]])
 
-## ----------- ##
-## get_cmdline ##
-## ----------- ##
+## --------------------- ##
+## libreport_get_cmdline ##
+## --------------------- ##
 
-AT_TESTFUN([get_cmdline], [[
+AT_TESTFUN([libreport_get_cmdline], [[
 #include "testsuite.h"
 #include <err.h>
 
 void test(const char *program, const char *args[], const char *expected)
 {
     int inout[2];
-    xpipe(inout);
+    libreport_xpipe(inout);
 
     pid_t pid = fork();
     if (pid < 0) {
@@ -114,7 +114,7 @@ void test(const char *program, const char *args[], const char *expected)
 
     if (pid == 0) {
         close(STDOUT_FILENO);
-        xdup2(inout[1], STDOUT_FILENO);
+        libreport_xdup2(inout[1], STDOUT_FILENO);
         close(inout[0]);
 
         execv(program, (char **)args);
@@ -123,7 +123,7 @@ void test(const char *program, const char *args[], const char *expected)
 
     close(inout[1]);
     int status = 0;
-    if (safe_waitpid(pid, &status, 0) < 0) {
+    if (libreport_safe_waitpid(pid, &status, 0) < 0) {
         err(EXIT_FAILURE, "waitpid");
     }
 
@@ -133,11 +133,11 @@ void test(const char *program, const char *args[], const char *expected)
 
     const size_t buffer_size = strlen(expected) * 2;
     char cmdline[buffer_size];
-    const ssize_t total = full_read(inout[0], cmdline, buffer_size);
+    const ssize_t total = libreport_full_read(inout[0], cmdline, buffer_size);
     close(inout[0]);
 
     if (total < 0) {
-        err(EXIT_FAILURE, "full_read");
+        err(EXIT_FAILURE, "libreport_full_read");
     }
 
     cmdline[total] = '\0';
@@ -148,15 +148,15 @@ TS_MAIN
 {
     if (argc > 1) {
         char *cmdline = NULL;
-        if (strcmp(argv[0], "get_cmdline") == 0) {
-            cmdline = get_cmdline(getpid());
+        if (strcmp(argv[0], "libreport_get_cmdline") == 0) {
+            cmdline = libreport_get_cmdline(getpid());
         }
-        else if (strcmp(argv[0], "get_cmdline_at") == 0) {
+        else if (strcmp(argv[0], "libreport_get_cmdline_at") == 0) {
             int pid_proc_fd = open("/proc/self", O_DIRECTORY);
             if (pid_proc_fd < 0) {
                 err(EXIT_FAILURE, "open(/proc/self, O_DIRECTORY)");
             }
-            cmdline = get_cmdline_at(pid_proc_fd);
+            cmdline = libreport_get_cmdline_at(pid_proc_fd);
             close(pid_proc_fd);
         }
         else {
@@ -168,37 +168,37 @@ TS_MAIN
         exit(EXIT_SUCCESS);
     }
 
-    char *binary = malloc_readlink("/proc/self/exe");
+    char *binary = libreport_malloc_readlink("/proc/self/exe");
     const char *args[] = { NULL, "!fo\" \"o", "@blah", "b\na'r", "g\rea\t", "regular", NULL };
 
 #define EXPECTED " '!fo\\\" \\\"o' @blah 'b\\na\\'r' 'g\\rea\\t' regular"
 
-    args[0] = "get_cmdline";
-    test(binary, args, "get_cmdline" EXPECTED);
+    args[0] = "libreport_get_cmdline";
+    test(binary, args, "libreport_get_cmdline" EXPECTED);
 
-    args[0] = "get_cmdline_at";
-    test(binary, args, "get_cmdline_at" EXPECTED);
+    args[0] = "libreport_get_cmdline_at";
+    test(binary, args, "libreport_get_cmdline_at" EXPECTED);
 
     free(binary);
 }
 TS_RETURN_MAIN
 ]])
 
-## -------------- ##
-## get_executable ##
-## -------------- ##
+## ------------------------ ##
+## libreport_get_executable ##
+## ------------------------ ##
 
-AT_TESTFUN([get_executable], [[
+AT_TESTFUN([libreport_get_executable], [[
 #include "testsuite.h"
 #include <sys/sendfile.h>
 #include <err.h>
 
-#define PRELINK_BASENAME "/tmp/libreport.testsuite.get_executable"
+#define PRELINK_BASENAME "/tmp/libreport.testsuite.libreport_get_executable"
 #
 void test(const char *program, const char *expected, const char *function, const char *argv1)
 {
     int inout[2];
-    xpipe(inout);
+    libreport_xpipe(inout);
 
     pid_t pid = fork();
     if (pid < 0) {
@@ -207,7 +207,7 @@ void test(const char *program, const char *expected, const char *function, const
 
     if (pid == 0) {
         close(STDOUT_FILENO);
-        xdup2(inout[1], STDOUT_FILENO);
+        libreport_xdup2(inout[1], STDOUT_FILENO);
         close(inout[0]);
 
         const char *args[3] = { function, argv1, NULL };
@@ -217,7 +217,7 @@ void test(const char *program, const char *expected, const char *function, const
 
     close(inout[1]);
     int status = 0;
-    if (safe_waitpid(pid, &status, 0) < 0) {
+    if (libreport_safe_waitpid(pid, &status, 0) < 0) {
         err(EXIT_FAILURE, "waitpid");
     }
 
@@ -227,11 +227,11 @@ void test(const char *program, const char *expected, const char *function, const
 
     const size_t buffer_size = strlen(expected) * 2;
     char executable[buffer_size];
-    const ssize_t total = full_read(inout[0], executable, buffer_size);
+    const ssize_t total = libreport_full_read(inout[0], executable, buffer_size);
     close(inout[0]);
 
     if (total < 0) {
-        err(EXIT_FAILURE, "full_read");
+        err(EXIT_FAILURE, "libreport_full_read");
     }
 
     executable[total] = '\0';
@@ -269,7 +269,7 @@ TS_MAIN
 {
     if (argc > 1) {
         if (strcmp(argv[1], "delete") == 0) {
-            char *binary = malloc_readlink("/proc/self/exe");
+            char *binary = libreport_malloc_readlink("/proc/self/exe");
             unlink(binary);
             if (access(binary, R_OK) != -1 && errno != !ENOENT) {
                 err(EXIT_FAILURE, "failed to remove %s", binary);
@@ -278,15 +278,15 @@ TS_MAIN
         }
 
         char *executable = NULL;
-        if (strcmp(argv[0], "get_executable") == 0) {
-            executable = get_executable(getpid());
+        if (strcmp(argv[0], "libreport_get_executable") == 0) {
+            executable = libreport_get_executable(getpid());
         }
-        else if (strcmp(argv[0], "get_executable_at") == 0) {
+        else if (strcmp(argv[0], "libreport_get_executable_at") == 0) {
             int pid_proc_fd = open("/proc/self", O_DIRECTORY);
             if (pid_proc_fd < 0) {
                 err(EXIT_FAILURE, "open(/proc/self, O_DIRECTORY)");
             }
-            executable = get_executable_at(pid_proc_fd);
+            executable = libreport_get_executable_at(pid_proc_fd);
             close(pid_proc_fd);
         }
         else {
@@ -299,10 +299,10 @@ TS_MAIN
     }
 
     {
-        char *binary = malloc_readlink("/proc/self/exe");
+        char *binary = libreport_malloc_readlink("/proc/self/exe");
 
-        test(binary, binary, "get_executable", "keep");
-        test(binary, binary, "get_executable_at", "keep");
+        test(binary, binary, "libreport_get_executable", "keep");
+        test(binary, binary, "libreport_get_executable_at", "keep");
 
         free(binary);
     }
@@ -312,7 +312,7 @@ TS_MAIN
         int binary_fd = copy_to_temporary("/proc/self/exe", binary);
         close(binary_fd);
 
-        test(binary, PRELINK_BASENAME, "get_executable", "keep");
+        test(binary, PRELINK_BASENAME, "libreport_get_executable", "keep");
 
         unlink(binary);
     }
@@ -322,7 +322,7 @@ TS_MAIN
         int binary_fd = copy_to_temporary("/proc/self/exe", binary);
         close(binary_fd);
 
-        test(binary, PRELINK_BASENAME, "get_executable_at", "keep");
+        test(binary, PRELINK_BASENAME, "libreport_get_executable_at", "keep");
 
         unlink(binary);
     }
@@ -332,7 +332,7 @@ TS_MAIN
         int binary_fd = copy_to_temporary("/proc/self/exe", binary);
         close(binary_fd);
 
-        test(binary, PRELINK_BASENAME, "get_executable", "delete");
+        test(binary, PRELINK_BASENAME, "libreport_get_executable", "delete");
 
         if (unlink(binary) == 0) {
             errx(EXIT_FAILURE, "should be already removed %s", binary);
@@ -344,7 +344,7 @@ TS_MAIN
         int binary_fd = copy_to_temporary("/proc/self/exe", binary);
         close(binary_fd);
 
-        test(binary, PRELINK_BASENAME, "get_executable_at", "delete");
+        test(binary, PRELINK_BASENAME, "libreport_get_executable_at", "delete");
 
         if (unlink(binary) == 0) {
             errx(EXIT_FAILURE, "should be already removed %s", binary);
@@ -352,11 +352,11 @@ TS_MAIN
     }
 
     {
-        char binary[] = "/tmp/libreport.testsuite.get_executable.XXXXXX";
+        char binary[] = "/tmp/libreport.testsuite.libreport_get_executable.XXXXXX";
         int binary_fd = copy_to_temporary("/proc/self/exe", binary);
         close(binary_fd);
 
-        test(binary, binary, "get_executable", "delete");
+        test(binary, binary, "libreport_get_executable", "delete");
 
         if (unlink(binary) == 0) {
             errx(EXIT_FAILURE, "should be already removed %s", binary);
@@ -364,11 +364,11 @@ TS_MAIN
     }
 
     {
-        char binary[] = "/tmp/libreport.testsuite.get_executable.XXXXXX";
+        char binary[] = "/tmp/libreport.testsuite.libreport_get_executable.XXXXXX";
         int binary_fd = copy_to_temporary("/proc/self/exe", binary);
         close(binary_fd);
 
-        test(binary, binary, "get_executable_at", "delete");
+        test(binary, binary, "libreport_get_executable_at", "delete");
 
         if (unlink(binary) == 0) {
             errx(EXIT_FAILURE, "should be already removed %s", binary);
@@ -378,11 +378,11 @@ TS_MAIN
 TS_RETURN_MAIN
 ]])
 
-## ------- ##
-## get_cwd ##
-## ------- ##
+## ----------------- ##
+## libreport_get_cwd ##
+## ----------------- ##
 
-AT_TESTFUN([get_cwd], [[
+AT_TESTFUN([libreport_get_cwd], [[
 #include "testsuite.h"
 #include <sys/sendfile.h>
 #include <err.h>
@@ -392,8 +392,8 @@ TS_MAIN
     char wd[PATH_MAX];
     getcwd(wd, sizeof(wd));
 
-    char *cwd = get_cwd(getpid());
-    TS_ASSERT_STRING_EQ(cwd, wd, "get_cwd(getpid())");
+    char *cwd = libreport_get_cwd(getpid());
+    TS_ASSERT_STRING_EQ(cwd, wd, "libreport_get_cwd(getpid())");
     free(cwd);
 
 
@@ -402,29 +402,29 @@ TS_MAIN
         err(EXIT_FAILURE, "open(/proc/self, O_DIRECTORY | O_PATH)");
     }
 
-    char *cwd_at = get_cwd_at(pid_proc_fd);
-    TS_ASSERT_STRING_EQ(cwd_at, wd, "get_cwd_at(open(/proc/self))");
+    char *cwd_at = libreport_get_cwd_at(pid_proc_fd);
+    TS_ASSERT_STRING_EQ(cwd_at, wd, "libreport_get_cwd_at(open(/proc/self))");
     close(pid_proc_fd);
     free(cwd_at);
 }
 TS_RETURN_MAIN
 ]])
 
-## ----------- ##
-## get_rootdir ##
-## ----------- ##
+## --------------------- ##
+## libreport_get_rootdir ##
+## --------------------- ##
 
-AT_TESTFUN([get_rootdir], [[
+AT_TESTFUN([libreport_get_rootdir], [[
 #include "testsuite.h"
 #include <sys/sendfile.h>
 #include <err.h>
 
 TS_MAIN
 {
-    char *proc_self_root = malloc_readlink("/proc/self/root");
+    char *proc_self_root = libreport_malloc_readlink("/proc/self/root");
 
-    char *root_dir = get_rootdir(getpid());
-    TS_ASSERT_STRING_EQ(root_dir, proc_self_root, "get_rootdir(getpid())");
+    char *root_dir = libreport_get_rootdir(getpid());
+    TS_ASSERT_STRING_EQ(root_dir, proc_self_root, "libreport_get_rootdir(getpid())");
     free(root_dir);
 
 
@@ -433,19 +433,19 @@ TS_MAIN
         err(EXIT_FAILURE, "open(/proc/self, O_DIRECTORY | O_PATH)");
     }
 
-    char *root_dir_at = get_rootdir_at(pid_proc_fd);
-    TS_ASSERT_STRING_EQ(root_dir_at, proc_self_root, "get_rootdir_at(open(/proc/self))");
+    char *root_dir_at = libreport_get_rootdir_at(pid_proc_fd);
+    TS_ASSERT_STRING_EQ(root_dir_at, proc_self_root, "libreport_get_rootdir_at(open(/proc/self))");
     close(pid_proc_fd);
     free(root_dir_at);
 }
 TS_RETURN_MAIN
 ]])
 
-## ------------ ##
-## dump_fd_info ##
-## ------------ ##
+## ---------------------- ##
+## libreport_dump_fd_info ##
+## ---------------------- ##
 
-AT_TESTFUN([dump_fd_info], [[
+AT_TESTFUN([libreport_dump_fd_info], [[
 #include "testsuite.h"
 #include <sys/sendfile.h>
 #include <err.h>
@@ -455,9 +455,9 @@ AT_TESTFUN([dump_fd_info], [[
 pid_t prepare_process(void)
 {
     int toparent[2];
-    xpipe(toparent);
+    libreport_xpipe(toparent);
 
-    char *binary = malloc_readlink("/proc/self/exe");
+    char *binary = libreport_malloc_readlink("/proc/self/exe");
     pid_t pid = fork();
     if (pid < 0) {
         err(EXIT_FAILURE, "fork");
@@ -465,7 +465,7 @@ pid_t prepare_process(void)
 
     if (pid == 0) {
         close(STDOUT_FILENO);
-        xdup2(toparent[1], STDOUT_FILENO);
+        libreport_xdup2(toparent[1], STDOUT_FILENO);
 
         DIR *fddir = opendir("/proc/self/fd");
         struct dirent *dent;
@@ -486,7 +486,7 @@ pid_t prepare_process(void)
 
     /* Wait for child */
     char buf[8];
-    if (full_read(toparent[0], buf, 8) < 0) {
+    if (libreport_full_read(toparent[0], buf, 8) < 0) {
         fprintf(stderr, "Failed to read from child: %s\n", strerror(errno));
         fflush(stderr);
     }
@@ -501,7 +501,7 @@ void kill_process(pid_t pid)
     /* Notify child */
     kill(pid, SIGTERM);
     int status = 0;
-    if (safe_waitpid(pid, &status, 0) < 0) {
+    if (libreport_safe_waitpid(pid, &status, 0) < 0) {
         fprintf(stderr, "Couldn't wait for child\n");
     }
     else if (!WIFSIGNALED(status) || WTERMSIG(status) != SIGTERM) {
@@ -520,7 +520,7 @@ void check_file_contents(const char *fdinfo_filename)
         { .fd = 3, .file = "/etc/group", },
     };
 
-    char *file = xmalloc_xopen_read_close(fdinfo_filename, NULL);
+    char *file = libreport_xmalloc_xopen_read_close(fdinfo_filename, NULL);
     int fdno = 0;
     char *cursor = file;
     char *line = file;
@@ -614,13 +614,13 @@ TS_MAIN
     }
 
     {
-        TS_PRINTF("%s\n", "dump_fd_info");
-        char fdinfo_filename[strlen(FILENAME_FORMAT) + sizeof(pid_t) * 3 + strlen("dump_fd_info")];
-        if (sizeof(fdinfo_filename) <= snprintf(fdinfo_filename, sizeof(fdinfo_filename), FILENAME_FORMAT, pid, "dump_fd_info")) {
+        TS_PRINTF("%s\n", "libreport_dump_fd_info");
+        char fdinfo_filename[strlen(FILENAME_FORMAT) + sizeof(pid_t) * 3 + strlen("libreport_dump_fd_info")];
+        if (sizeof(fdinfo_filename) <= snprintf(fdinfo_filename, sizeof(fdinfo_filename), FILENAME_FORMAT, pid, "libreport_dump_fd_info")) {
             errx(EXIT_FAILURE, "too small buffer for file name");
         }
 
-        TS_ASSERT_FUNCTION(dump_fd_info(fdinfo_filename, proc_dir_path));
+        TS_ASSERT_FUNCTION(libreport_dump_fd_info(fdinfo_filename, proc_dir_path));
 
         struct stat st;
         TS_ASSERT_FUNCTION(stat(fdinfo_filename, &st));
@@ -634,15 +634,15 @@ TS_MAIN
     }
 
     {
-        TS_PRINTF("%s\n", "dump_fd_info_ext");
-        char fdinfo_filename[strlen(FILENAME_FORMAT) + sizeof(pid_t) * 3 + strlen("dump_fd_info_ext")];
-        if (sizeof(fdinfo_filename) <= snprintf(fdinfo_filename, sizeof(fdinfo_filename), FILENAME_FORMAT, pid, "dump_fd_info_ext")) {
+        TS_PRINTF("%s\n", "libreport_dump_fd_info_ext");
+        char fdinfo_filename[strlen(FILENAME_FORMAT) + sizeof(pid_t) * 3 + strlen("libreport_dump_fd_info_ext")];
+        if (sizeof(fdinfo_filename) <= snprintf(fdinfo_filename, sizeof(fdinfo_filename), FILENAME_FORMAT, pid, "libreport_dump_fd_info_ext")) {
             errx(EXIT_FAILURE, "too small buffer for file name");
         }
 
         const uid_t uid = getuid();
         const gid_t gid = getgid();
-        TS_ASSERT_FUNCTION(dump_fd_info_ext(fdinfo_filename, proc_dir_path, uid, gid));
+        TS_ASSERT_FUNCTION(libreport_dump_fd_info_ext(fdinfo_filename, proc_dir_path, uid, gid));
 
         struct stat st;
         TS_ASSERT_FUNCTION(stat(fdinfo_filename, &st));
@@ -656,16 +656,16 @@ TS_MAIN
     }
 
     {
-        TS_PRINTF("%s\n", "dump_fd_info_at");
-        char fdinfo_filename[strlen(FILENAME_FORMAT) + sizeof(pid_t) * 3 + strlen("dump_fd_info_at")];
-        if (sizeof(fdinfo_filename) <= snprintf(fdinfo_filename, sizeof(fdinfo_filename), FILENAME_FORMAT, pid, "dump_fd_info_at")) {
+        TS_PRINTF("%s\n", "libreport_dump_fd_info_at");
+        char fdinfo_filename[strlen(FILENAME_FORMAT) + sizeof(pid_t) * 3 + strlen("libreport_dump_fd_info_at")];
+        if (sizeof(fdinfo_filename) <= snprintf(fdinfo_filename, sizeof(fdinfo_filename), FILENAME_FORMAT, pid, "libreport_dump_fd_info_at")) {
             errx(EXIT_FAILURE, "too small buffer for file name");
         }
 
         FILE *dest = fopen(fdinfo_filename, "w");
-        const int pid_proc_fd = open_proc_pid_dir(pid);
+        const int pid_proc_fd = libreport_open_proc_pid_dir(pid);
 
-        TS_ASSERT_FUNCTION(dump_fd_info_at(pid_proc_fd, dest));
+        TS_ASSERT_FUNCTION(libreport_dump_fd_info_at(pid_proc_fd, dest));
 
         close(pid_proc_fd);
         fclose(dest);
@@ -692,20 +692,20 @@ AT_TESTFUN([get_fs-u_g-id], [[
 
 TS_MAIN
 {
-    char *proc_pid_status = xmalloc_xopen_read_close("/proc/self/status", NULL);
-    TS_ASSERT_SIGNED_EQ(get_fsuid(proc_pid_status), getuid());
-    TS_ASSERT_SIGNED_EQ(get_fsgid(proc_pid_status), getgid());
+    char *proc_pid_status = libreport_xmalloc_xopen_read_close("/proc/self/status", NULL);
+    TS_ASSERT_SIGNED_EQ(libreport_get_fsuid(proc_pid_status), getuid());
+    TS_ASSERT_SIGNED_EQ(libreport_get_fsgid(proc_pid_status), getgid());
     free(proc_pid_status);
 }
 TS_RETURN_MAIN
 ]])
 
 
-## ---------- ##
-## get_ns_ids ##
-## ---------- ##
+## -------------------- ##
+## libreport_get_ns_ids ##
+## -------------------- ##
 
-AT_TESTFUN([get_ns_ids], [[
+AT_TESTFUN([libreport_get_ns_ids], [[
 #include "testsuite.h"
 #include <sys/sendfile.h>
 #include <err.h>
@@ -730,7 +730,7 @@ void check(struct ns_ids *ids)
 
     struct dirent *dent = NULL;
     while ((dent = readdir(nsdir))) {
-        if (dot_or_dotdot(dent->d_name))
+        if (libreport_dot_or_dotdot(dent->d_name))
             continue;
 
         size_t i = 0;
@@ -753,15 +753,15 @@ void check(struct ns_ids *ids)
 
 TS_MAIN
 {
-    TS_PRINTF("%s\n", "get_ns_ids");
+    TS_PRINTF("%s\n", "libreport_get_ns_ids");
     struct ns_ids pid_ids;
-    TS_ASSERT_FUNCTION(get_ns_ids(getpid(), &pid_ids));
+    TS_ASSERT_FUNCTION(libreport_get_ns_ids(getpid(), &pid_ids));
     check(&pid_ids);
 
-    TS_PRINTF("%s\n", "get_ns_ids_at");
-    const int pid_proc_dir = open_proc_pid_dir(getpid());
+    TS_PRINTF("%s\n", "libreport_get_ns_ids_at");
+    const int pid_proc_dir = libreport_open_proc_pid_dir(getpid());
     struct ns_ids proc_ids;
-    TS_ASSERT_FUNCTION(get_ns_ids_at(pid_proc_dir, &proc_ids));
+    TS_ASSERT_FUNCTION(libreport_get_ns_ids_at(pid_proc_dir, &proc_ids));
     check(&proc_ids);
     close(pid_proc_dir);
 }
@@ -769,12 +769,12 @@ TS_RETURN_MAIN
 ]])
 
 
-## ------------------------------ ##
-##  get_mountinfo_for_mount_point ##
-## ------------------------------ ##
+## ---------------------------------------- ##
+##  libreport_get_mountinfo_for_mount_point ##
+## ---------------------------------------- ##
 
 
-AT_TESTFUN([get_mountinfo_for_mount_point], [[
+AT_TESTFUN([libreport_get_mountinfo_for_mount_point], [[
 #include "testsuite.h"
 #include <err.h>
 
@@ -798,7 +798,7 @@ void test_get_mountinfo_for_mount_point(
     struct mountinfo mntnf;
     int r;
     TS_ASSERT_STREAM_FD_CONTENTS_EQ_BEGIN(STDERR_FILENO);
-    r = get_mountinfo_for_mount_point(mntnf_file, &mntnf, mount_point);
+    r = libreport_get_mountinfo_for_mount_point(mntnf_file, &mntnf, mount_point);
     TS_ASSERT_STREAM_FD_CONTENTS_EQ_END(error, description);
     TS_ASSERT_SIGNED_OP_MESSAGE(r, ==, exp_r, description);
 
@@ -933,11 +933,11 @@ TS_RETURN_MAIN
 ]])
 
 
-## ------------------- ##
-## dump_namespace_diff ##
-## ------------------- ##
+## ----------------------------- ##
+## libreport_dump_namespace_diff ##
+## ----------------------------- ##
 
-AT_TESTFUN([dump_namespace_diff], [[
+AT_TESTFUN([libreport_dump_namespace_diff], [[
 #include "testsuite.h"
 #include <err.h>
 
@@ -965,7 +965,7 @@ void check_file_contents(const char *filename)
     if (stat("/proc/self/ns/time_for_children", &st) < 0 && ENOENT == errno)
         time_for_children = "unknown";
 
-    expected = xasprintf("cgroup : %s\n"
+    expected = libreport_xasprintf("cgroup : %s\n"
                          "ipc : default\n"
                          "mnt : default\n"
                          "net : default\n"
@@ -977,7 +977,7 @@ void check_file_contents(const char *filename)
                          "uts : default\n",
                          cgroup, pid_for_children, time, time_for_children);
 
-    char *file = xmalloc_xopen_read_close(filename, NULL);
+    char *file = libreport_xmalloc_xopen_read_close(filename, NULL);
     TS_ASSERT_STRING_EQ(file, expected, "Namespaces");
     free(file);
     free(expected);
@@ -986,13 +986,13 @@ void check_file_contents(const char *filename)
 TS_MAIN
 {
     {
-        TS_PRINTF("%s\n", "dump_namespace_diff");
-        char filename[strlen(FILENAME_FORMAT) + sizeof(pid_t) * 3 + strlen("dump_namespace_diff")];
-        if (sizeof(filename) <= snprintf(filename, sizeof(filename), FILENAME_FORMAT, getpid(), "dump_namespace_diff")) {
+        TS_PRINTF("%s\n", "libreport_dump_namespace_diff");
+        char filename[strlen(FILENAME_FORMAT) + sizeof(pid_t) * 3 + strlen("libreport_dump_namespace_diff")];
+        if (sizeof(filename) <= snprintf(filename, sizeof(filename), FILENAME_FORMAT, getpid(), "libreport_dump_namespace_diff")) {
             errx(EXIT_FAILURE, "too small buffer for file name");
         }
 
-        TS_ASSERT_FUNCTION(dump_namespace_diff(filename, getpid(), getppid()));
+        TS_ASSERT_FUNCTION(libreport_dump_namespace_diff(filename, getpid(), getppid()));
 
         struct stat st;
         TS_ASSERT_FUNCTION(stat(filename, &st));
@@ -1006,15 +1006,15 @@ TS_MAIN
     }
 
     {
-        TS_PRINTF("%s\n", "dump_namespace_diff_ext");
-        char filename[strlen(FILENAME_FORMAT) + sizeof(pid_t) * 3 + strlen("dump_namespace_diff_ext")];
-        if (sizeof(filename) <= snprintf(filename, sizeof(filename), FILENAME_FORMAT, getpid(), "dump_namespace_diff_ext")) {
+        TS_PRINTF("%s\n", "libreport_dump_namespace_diff_ext");
+        char filename[strlen(FILENAME_FORMAT) + sizeof(pid_t) * 3 + strlen("libreport_dump_namespace_diff_ext")];
+        if (sizeof(filename) <= snprintf(filename, sizeof(filename), FILENAME_FORMAT, getpid(), "libreport_dump_namespace_diff_ext")) {
             errx(EXIT_FAILURE, "too small buffer for file name");
         }
 
         const uid_t uid = getuid();
         const gid_t gid = getgid();
-        TS_ASSERT_FUNCTION(dump_namespace_diff_ext(filename, getpid(), getppid(), uid, gid));
+        TS_ASSERT_FUNCTION(libreport_dump_namespace_diff_ext(filename, getpid(), getppid(), uid, gid));
 
         struct stat st;
         TS_ASSERT_FUNCTION(stat(filename, &st));
@@ -1028,18 +1028,18 @@ TS_MAIN
     }
 
     {
-        TS_PRINTF("%s\n", "dump_namespace_diff_at");
-        char filename[strlen(FILENAME_FORMAT) + sizeof(pid_t) * 3 + strlen("dump_namespace_diff_at")];
-        if (sizeof(filename) <= snprintf(filename, sizeof(filename), FILENAME_FORMAT, getppid(), "dump_namespace_diff_at")) {
+        TS_PRINTF("%s\n", "libreport_dump_namespace_diff_at");
+        char filename[strlen(FILENAME_FORMAT) + sizeof(pid_t) * 3 + strlen("libreport_dump_namespace_diff_at")];
+        if (sizeof(filename) <= snprintf(filename, sizeof(filename), FILENAME_FORMAT, getppid(), "libreport_dump_namespace_diff_at")) {
             errx(EXIT_FAILURE, "too small buffer for file name");
         }
 
         FILE *dest = fopen(filename, "w");
         assert(dest != NULL);
 
-        const int pid_proc_fd = open_proc_pid_dir(getppid());
+        const int pid_proc_fd = libreport_open_proc_pid_dir(getppid());
 
-        TS_ASSERT_FUNCTION(dump_namespace_diff_at(pid_proc_fd, pid_proc_fd, dest));
+        TS_ASSERT_FUNCTION(libreport_dump_namespace_diff_at(pid_proc_fd, pid_proc_fd, dest));
 
         close(pid_proc_fd);
         fclose(dest);
@@ -1053,11 +1053,11 @@ TS_RETURN_MAIN
 ]])
 
 
-## -------------------- ##
-## process_has_own_root ##
-## -------------------- ##
+## ------------------------------ ##
+## libreport_process_has_own_root ##
+## ------------------------------ ##
 
-AT_TESTFUN([process_has_own_root], [[
+AT_TESTFUN([libreport_process_has_own_root], [[
 #include "testsuite.h"
 #include <sys/sendfile.h>
 #include <err.h>
@@ -1069,7 +1069,7 @@ void write_cmd_output_to_fd(int fd, const char *cmd)
         err(EXIT_FAILURE, "popen(%s)", cmd);
     }
 
-    char *output = xmalloc_fgetline(proc);
+    char *output = libreport_xmalloc_fgetline(proc);
     TS_PRINTF("%s : %s\n", cmd, output);
 
     const int retcode = pclose(proc);
@@ -1085,7 +1085,7 @@ void write_cmd_output_to_fd(int fd, const char *cmd)
         errx(EXIT_FAILURE, "no output of '%s'", cmd);
     }
 
-    full_write_str(fd, output);
+    libreport_full_write_str(fd, output);
     free(output);
 }
 
@@ -1104,7 +1104,7 @@ TS_MAIN
 
     {
         /* TODO: add test for open file descriptors */
-        const int r = process_has_own_root_at(mock_pid_proc_fd);
+        const int r = libreport_process_has_own_root_at(mock_pid_proc_fd);
         TS_ASSERT_SIGNED_EQ(r, -ENOENT);
     }
 
@@ -1114,7 +1114,7 @@ TS_MAIN
 
     {
         /* TODO: add test for open file descriptors */
-        const int r = process_has_own_root_at(mock_pid_proc_fd);
+        const int r = libreport_process_has_own_root_at(mock_pid_proc_fd);
         TS_ASSERT_SIGNED_EQ(r, -EACCES);
     }
 
@@ -1123,12 +1123,12 @@ TS_MAIN
 
     {
         /* TODO: add test for open file descriptors */
-        const int r = process_has_own_root_at(mock_pid_proc_fd);
+        const int r = libreport_process_has_own_root_at(mock_pid_proc_fd);
         TS_ASSERT_SIGNED_EQ(r, -ENOKEY);
     }
 
-    full_write_str(mntnf_fd, "36 35 98:0 /madeuproot /foo rw,noatime master:1 - ext3 /dev/myroot rw,errors=continue\n");
-    full_write_str(mntnf_fd, "37 38 99:0 /mnt3 /mnt4 rw,noatime master:2 - ext3 /dev/boot rw,errors=continue\n");
+    libreport_full_write_str(mntnf_fd, "36 35 98:0 /madeuproot /foo rw,noatime master:1 - ext3 /dev/myroot rw,errors=continue\n");
+    libreport_full_write_str(mntnf_fd, "37 38 99:0 /mnt3 /mnt4 rw,noatime master:2 - ext3 /dev/boot rw,errors=continue\n");
 
     fsync(mntnf_fd);
     lseek(mntnf_fd, 0, SEEK_SET);
@@ -1137,7 +1137,7 @@ TS_MAIN
 
     {
         /* TODO: add test for open file descriptors */
-        const int r = process_has_own_root_at(mock_pid_proc_fd);
+        const int r = libreport_process_has_own_root_at(mock_pid_proc_fd);
         TS_ASSERT_SIGNED_EQ(r, -ENOKEY);
     }
 
@@ -1170,7 +1170,7 @@ TS_MAIN
 
     {
         /* TODO: add test for open file descriptors */
-        const int r = process_has_own_root_at(mock_pid_proc_fd);
+        const int r = libreport_process_has_own_root_at(mock_pid_proc_fd);
         TS_ASSERT_SIGNED_EQ(r, 0);
     }
 
@@ -1178,9 +1178,9 @@ TS_MAIN
     fsync(mntnf_fd);
     lseek(mntnf_fd, 0, SEEK_SET);
 
-    full_write_str(mntnf_fd, "12 34 567:89 /madeuproot / ");
+    libreport_full_write_str(mntnf_fd, "12 34 567:89 /madeuproot / ");
     write_cmd_output_to_fd(mntnf_fd, "findmnt -F /proc/1/mountinfo -r -n -o VFS-OPTIONS,OPT-FIELDS -T /");
-    full_write_str(mntnf_fd, " - ");
+    libreport_full_write_str(mntnf_fd, " - ");
     write_cmd_output_to_fd(mntnf_fd, "findmnt -F /proc/1/mountinfo -r -n -o FSTYPE,SOURCE,FS-OPTIONS -T /");
 
     fsync(mntnf_fd);
@@ -1188,7 +1188,7 @@ TS_MAIN
 
     {
         /* TODO: add test for open file descriptors */
-        const int r = process_has_own_root_at(mock_pid_proc_fd);
+        const int r = libreport_process_has_own_root_at(mock_pid_proc_fd);
         TS_ASSERT_SIGNED_EQ(r, 1);
     }
 

@@ -91,7 +91,7 @@ static void text(GMarkupParseContext *context,
             const gchar *event_name = expanded_events->data;
 
             event_config_t *ec = new_event_config(event_name);
-            g_autofree gchar *event_file = xasprintf(EVENTS_DIR"/%s.xml", event_name);
+            g_autofree gchar *event_file = libreport_xasprintf(EVENTS_DIR"/%s.xml", event_name);
 
             load_event_description_from_file(ec, event_file);
             if (ec_get_screen_name(ec))
@@ -194,7 +194,7 @@ void load_workflow_description_from_file(workflow_t *workflow, const char* filen
 {
     log_info("loading workflow: '%s'", filename);
     struct my_parse_data parse_data = { workflow, NULL, NULL, 0, 0, 0};
-    parse_data.cur_locale = xstrdup(setlocale(LC_ALL, NULL));
+    parse_data.cur_locale = libreport_xstrdup(setlocale(LC_ALL, NULL));
     strchrnul(parse_data.cur_locale, '.')[0] = '\0';
 
     GMarkupParser parser;

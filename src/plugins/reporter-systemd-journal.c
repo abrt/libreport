@@ -32,7 +32,7 @@ typedef struct msg_content
 
 static msg_content_t *msg_content_new()
 {
-    msg_content_t *msg_c = xmalloc(sizeof(*msg_c));
+    msg_content_t *msg_c = libreport_xmalloc(sizeof(*msg_c));
 
     msg_c->allocated = 0;
     msg_c->used = 0;
@@ -66,10 +66,10 @@ static void msg_content_add_ext(msg_content_t *msg_c, const char *key, const cha
     if (msg_c->used >= msg_c->allocated)
     {
         msg_c->allocated += 5;
-        msg_c->data = xrealloc(msg_c->data, msg_c->allocated * sizeof(*(msg_c->data)));
+        msg_c->data = libreport_xrealloc(msg_c->data, msg_c->allocated * sizeof(*(msg_c->data)));
     }
 
-    char *s = xasprintf("%s%s=%s", prefix, key, value);
+    char *s = libreport_xasprintf("%s%s=%s", prefix, key, value);
     for (char *c = s; *c != '='; ++c) *c = toupper(*c);
     msg_c->data[msg_c->used].iov_base = s;
     msg_c->data[msg_c->used].iov_len = strlen(s);
@@ -173,7 +173,7 @@ create_journal_message(problem_data_t *problem_data, problem_report_t *pr, unsig
     /* add problem report description into PROBLEM_REPORT field */
     char *description = NULL;
     if (strcmp(problem_report_get_description(pr), "") != 0)
-        description = xasprintf("\n%s", problem_report_get_description(pr));
+        description = libreport_xasprintf("\n%s", problem_report_get_description(pr));
 
     msg_content_add(msg_c, "PROBLEM_REPORT", description ? description : "");
     free(description);
@@ -198,7 +198,7 @@ create_journal_message(problem_data_t *problem_data, problem_report_t *pr, unsig
             if (item && (item->flags & CD_FLAG_TXT))
             {
                 /* elements listed in fields_default_no_prefix are added withou prefix */
-                if (is_in_string_list(elem->data, fields_default_no_prefix))
+                if (libreport_is_in_string_list(elem->data, fields_default_no_prefix))
                     msg_content_add(msg_c, elem->data, item->content);
                 else
                     msg_content_add_ext(msg_c, elem->data, item->content, FIELD_PREFIX);
@@ -246,7 +246,7 @@ int main(int argc, char **argv)
     const char *syslog_id = NULL;
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_STRING('d', NULL          , &dump_dir_name, "DIR"   , _("Problem directory")),
         OPT_STRING('m', "message-id"  , &message_id,    "STR"   , _("Catalog message id")),
         OPT_STRING('F', NULL          , &fmt_file     , "FILE"  , _("Formatting file for catalog message")),
@@ -255,7 +255,7 @@ int main(int argc, char **argv)
         OPT_BOOL(  'D', NULL          , NULL                    , _("Debug")),
         OPT_END()
     };
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned opts = libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
     unsigned dump_opt = DUMP_NONE;
     if (opts & OPT_p)
@@ -269,15 +269,15 @@ int main(int argc, char **argv)
         else
         {
             error_msg("Parameter --dump takes NONE|ESSENTIAL|FULL values");
-            show_usage_and_die(program_usage_string, program_options);
+            libreport_show_usage_and_die(program_usage_string, program_options);
         }
     }
 
-    export_abrt_envvars(0);
+    libreport_export_abrt_envvars(0);
 
     problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
     if (!problem_data)
-        xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
+        libreport_xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
     problem_formatter_t *pf = problem_formatter_new();
 

@@ -108,56 +108,38 @@ int vdprintf(int d, const char *format, va_list ap);
 extern "C" {
 #endif
 
-#define prefixcmp libreport_prefixcmp
-int prefixcmp(const char *str, const char *prefix);
-#define suffixcmp libreport_suffixcmp
-int suffixcmp(const char *str, const char *suffix);
-#define trim_all_whitespace libreport_trim_all_whitespace
-char *trim_all_whitespace(const char *str);
-#define shorten_string_to_length libreport_shorten_string_to_length
-char *shorten_string_to_length(const char *str, unsigned length);
-#define strtrim libreport_strtrim
-char *strtrim(char *str);
-#define strtrimch libreport_strtrimch
-char *strtrimch(char *str, int ch);
-#define strremovech libreport_strremovech
-char *strremovech(char *str, int ch);
-#define append_to_malloced_string libreport_append_to_malloced_string
-char *append_to_malloced_string(char *mstr, const char *append);
-#define skip_blank libreport_skip_blank
-char* skip_blank(const char *s);
-#define skip_whitespace libreport_skip_whitespace
-char* skip_whitespace(const char *s);
-#define skip_non_whitespace libreport_skip_non_whitespace
-char* skip_non_whitespace(const char *s);
+int libreport_prefixcmp(const char *str, const char *prefix);
+int libreport_suffixcmp(const char *str, const char *suffix);
+char *libreport_trim_all_whitespace(const char *str);
+char *libreport_shorten_string_to_length(const char *str, unsigned length);
+char *libreport_strtrim(char *str);
+char *libreport_strtrimch(char *str, int ch);
+char *libreport_strremovech(char *str, int ch);
+char *libreport_append_to_malloced_string(char *mstr, const char *append);
+char *libreport_skip_blank(const char *s);
+char *libreport_skip_whitespace(const char *s);
+char *libreport_skip_non_whitespace(const char *s);
 /* Like strcpy but can copy overlapping strings. */
-#define overlapping_strcpy libreport_overlapping_strcpy
-void overlapping_strcpy(char *dst, const char *src);
+void libreport_overlapping_strcpy(char *dst, const char *src);
 
-#define concat_path_file libreport_concat_path_file
-char *concat_path_file(const char *path, const char *filename);
+char *libreport_concat_path_file(const char *path, const char *filename);
 /*
  * Used to construct a name in a different directory with the basename
  * similar to the old name, if possible.
  */
-#define concat_path_basename libreport_concat_path_basename
-char *concat_path_basename(const char *path, const char *filename);
+char *libreport_concat_path_basename(const char *path, const char *filename);
 
 /* Allows all printable characters except '/',
  * the string must not exceed 64 characters of length
  * and must not equal neither "." nor ".." (these strings may appear in the string) */
-#define str_is_correct_filename libreport_str_is_correct_filename
-bool str_is_correct_filename(const char *str);
+bool libreport_str_is_correct_filename(const char *str);
 
 /* A-la fgets, but malloced and of unlimited size */
-#define xmalloc_fgets libreport_xmalloc_fgets
-char *xmalloc_fgets(FILE *file);
+char *libreport_xmalloc_fgets(FILE *file);
 /* Similar, but removes trailing \n */
-#define xmalloc_fgetline libreport_xmalloc_fgetline
-char *xmalloc_fgetline(FILE *file);
+char *libreport_xmalloc_fgetline(FILE *file);
 /* Useful for easy reading of various /proc files */
-#define xmalloc_fopen_fgetline_fclose libreport_xmalloc_fopen_fgetline_fclose
-char *xmalloc_fopen_fgetline_fclose(const char *filename);
+char *libreport_xmalloc_fopen_fgetline_fclose(const char *filename);
 
 
 typedef enum {
@@ -180,74 +162,49 @@ typedef enum {
  * @return Number of read Bytes on success. On errors, return -1 and prints out
  * reasonable good error messages.
  */
-#define copyfd_ext_at libreport_copyfd_ext_at
-off_t copyfd_ext_at(int src, int dir_fd, const char *name, int mode,
+off_t libreport_copyfd_ext_at(int src, int dir_fd, const char *name, int mode,
         uid_t uid, gid_t gid, int open_flags, int copy_flags, off_t size);
 
 /* On error, copyfd_XX prints error messages and returns -1 */
-#define copyfd_eof libreport_copyfd_eof
-off_t copyfd_eof(int src_fd, int dst_fd, int flags);
-#define copyfd_size libreport_copyfd_size
-off_t copyfd_size(int src_fd, int dst_fd, off_t size, int flags);
-#define copyfd_exact_size libreport_copyfd_exact_size
-void copyfd_exact_size(int src_fd, int dst_fd, off_t size);
-#define copy_file_ext_2at libreport_copy_file_ext_2at
-off_t copy_file_ext_2at(int src_dir_fd, const char *src_name, int dir_fd, const char *name, int mode, uid_t uid, gid_t gid, int src_flags, int dst_flags);
-#define copy_file_ext_at libreport_copy_file_ext_at
-off_t copy_file_ext_at(const char *src_name, int dir_fd, const char *name, int mode, uid_t uid, gid_t gid, int src_flags, int dst_flags);
-#define copy_file_ext(src_name, dst_name, mode, uid, gid, src_flags, dst_flags) \
-    copy_file_ext_at(src_name, AT_FDCWD, dst_name, mode, uid, gid, src_flags, dst_flags)
-#define copy_file libreport_copy_file
-off_t copy_file(const char *src_name, const char *dst_name, int mode);
-#define copy_file_at libreport_copy_file_at
-off_t copy_file_at(const char *src_name, int dir_fd, const char *name, int mode);
-#define copy_file_recursive libreport_copy_file_recursive
-int copy_file_recursive(const char *source, const char *dest);
+off_t libreport_copyfd_eof(int src_fd, int dst_fd, int flags);
+off_t libreport_copyfd_size(int src_fd, int dst_fd, off_t size, int flags);
+void libreport_copyfd_exact_size(int src_fd, int dst_fd, off_t size);
+off_t libreport_copy_file_ext_2at(int src_dir_fd, const char *src_name, int dir_fd, const char *name, int mode, uid_t uid, gid_t gid, int src_flags, int dst_flags);
+off_t libreport_copy_file_ext_at(const char *src_name, int dir_fd, const char *name, int mode, uid_t uid, gid_t gid, int src_flags, int dst_flags);
+#define libreport_copy_file_ext(src_name, dst_name, mode, uid, gid, src_flags, dst_flags) \
+    libreport_copy_file_ext_at(src_name, AT_FDCWD, dst_name, mode, uid, gid, src_flags, dst_flags)
+off_t libreport_copy_file(const char *src_name, const char *dst_name, int mode);
+off_t libreport_copy_file_at(const char *src_name, int dir_fd, const char *name, int mode);
+int libreport_copy_file_recursive(const char *source, const char *dest);
 
-#define decompress_fd libreport_decompress_fd
-int decompress_fd(int fdi, int fdo);
-#define decompress_file libreport_decompress_file
-int decompress_file(const char *path_in, const char *path_out, mode_t mode_out);
-#define decompress_file_ext_at libreport_decompress_file_ext_at
-int decompress_file_ext_at(const char *path_in, int dir_fd, const char *path_out,
+int libreport_decompress_fd(int fdi, int fdo);
+int libreport_decompress_file(const char *path_in, const char *path_out, mode_t mode_out);
+int libreport_decompress_file_ext_at(const char *path_in, int dir_fd, const char *path_out,
         mode_t mode_out, uid_t uid, gid_t gid, int src_flags, int dst_flags);
 
 // NB: will return short read on error, not -1,
 // if some data was read before error occurred
-#define xread libreport_xread
-void xread(int fd, void *buf, size_t count);
-#define safe_read libreport_safe_read
-ssize_t safe_read(int fd, void *buf, size_t count);
-#define safe_write libreport_safe_write
-ssize_t safe_write(int fd, const void *buf, size_t count);
-#define full_read libreport_full_read
-ssize_t full_read(int fd, void *buf, size_t count);
-#define full_write libreport_full_write
-ssize_t full_write(int fd, const void *buf, size_t count);
-#define full_write_str libreport_full_write_str
-ssize_t full_write_str(int fd, const char *buf);
-#define xmalloc_read libreport_xmalloc_read
-void* xmalloc_read(int fd, size_t *maxsz_p);
-#define xmalloc_open_read_close libreport_xmalloc_open_read_close
-void* xmalloc_open_read_close(const char *filename, size_t *maxsz_p);
-#define xmalloc_xopen_read_close libreport_xmalloc_xopen_read_close
-void* xmalloc_xopen_read_close(const char *filename, size_t *maxsz_p);
-#define malloc_readlink libreport_malloc_readlink
-char* malloc_readlink(const char *linkname);
-#define malloc_readlinkat libreport_malloc_readlinkat
-char* malloc_readlinkat(int dir_fd, const char *linkname);
+void libreport_xread(int fd, void *buf, size_t count);
+ssize_t libreport_safe_read(int fd, void *buf, size_t count);
+ssize_t libreport_safe_write(int fd, const void *buf, size_t count);
+ssize_t libreport_full_read(int fd, void *buf, size_t count);
+ssize_t libreport_full_write(int fd, const void *buf, size_t count);
+ssize_t libreport_full_write_str(int fd, const char *buf);
+void *libreport_xmalloc_read(int fd, size_t *maxsz_p);
+void *libreport_xmalloc_open_read_close(const char *filename, size_t *maxsz_p);
+void *libreport_xmalloc_xopen_read_close(const char *filename, size_t *maxsz_p);
+char *libreport_malloc_readlink(const char *linkname);
+char *libreport_malloc_readlinkat(int dir_fd, const char *linkname);
 
 
 /* Returns malloc'ed block */
-#define encode_base64 libreport_encode_base64
-char *encode_base64(const void *src, int length);
+char *libreport_encode_base64(const void *src, int length);
 
 /* Returns NULL if the string needs no sanitizing.
  * control_chars_to_sanitize is a bit mask.
  * If Nth bit is set, Nth control char will be sanitized (replaced by [XX]).
  */
-#define sanitize_utf8 libreport_sanitize_utf8
-char *sanitize_utf8(const char *src, uint32_t control_chars_to_sanitize);
+char *libreport_sanitize_utf8(const char *src, uint32_t control_chars_to_sanitize);
 enum {
     SANITIZE_ALL = 0xffffffff,
     SANITIZE_TAB = (1 << 9),
@@ -255,33 +212,26 @@ enum {
     SANITIZE_CR  = (1 << 13),
 };
 
-#define try_atou libreport_try_atou
-int try_atou(const char *numstr, unsigned *value);
-#define xatou libreport_xatou
-unsigned xatou(const char *numstr);
-#define try_atoi libreport_try_atoi
-int try_atoi(const char *numstr, int *value);
-#define xatoi libreport_xatoi
-int xatoi(const char *numstr);
-/* Using xatoi() instead of naive atoi() is not always convenient -
+int libreport_try_atou(const char *numstr, unsigned *value);
+unsigned libreport_xatou(const char *numstr);
+int libreport_try_atoi(const char *numstr, int *value);
+int libreport_xatoi(const char *numstr);
+/* Using libreport_xatoi() instead of naive atoi() is not always convenient -
  * in many places people want *non-negative* values, but store them
  * in signed int. Therefore we need this one:
  * dies if input is not in [0, INT_MAX] range. Also will reject '-0' etc.
  * It should really be named xatoi_nonnegative (since it allows 0),
  * but that would be too long.
  */
-#define try_atoi_positive libreport_try_atoi_positive
-int try_atoi_positive(const char *numstr, int *value);
-#define xatoi_positive libreport_xatoi_positive
-int xatoi_positive(const char *numstr);
+int libreport_try_atoi_positive(const char *numstr, int *value);
+int libreport_xatoi_positive(const char *numstr);
 
 //unused for now
 //unsigned long long monotonic_ns(void);
 //unsigned long long monotonic_us(void);
 //unsigned monotonic_sec(void);
 
-#define safe_waitpid libreport_safe_waitpid
-pid_t safe_waitpid(pid_t pid, int *wstat, int options);
+pid_t libreport_safe_waitpid(pid_t pid, int *wstat, int options);
 
 enum {
         /* on return, pipefds[1] is fd to which parent may write
@@ -310,8 +260,7 @@ enum {
  *
  * Returns pid.
  */
-#define fork_execv_on_steroids libreport_fork_execv_on_steroids
-pid_t fork_execv_on_steroids(int flags,
+pid_t libreport_fork_execv_on_steroids(int flags,
                 char **argv,
                 int *pipefds,
                 char **env_vec,
@@ -319,92 +268,63 @@ pid_t fork_execv_on_steroids(int flags,
                 uid_t uid);
 /* Returns malloc'ed string. NULs are retained, and extra one is appended
  * after the last byte (this NUL is not accounted for in *size_p) */
-#define run_in_shell_and_save_output libreport_run_in_shell_and_save_output
-char *run_in_shell_and_save_output(int flags,
+char *libreport_run_in_shell_and_save_output(int flags,
                 const char *cmd,
                 const char *dir,
                 size_t *size_p);
 
 /* Random utility functions */
 
-#define is_in_string_list libreport_is_in_string_list
-bool is_in_string_list(const char *name, const char *const *v);
+bool libreport_is_in_string_list(const char *name, const char *const *v);
 
-#define index_of_string_in_list libreport_index_of_string_in_list
-int index_of_string_in_list(const char *name, const char *const *v);
+int libreport_index_of_string_in_list(const char *name, const char *const *v);
 
-#define is_in_comma_separated_list libreport_is_in_comma_separated_list
-bool is_in_comma_separated_list(const char *value, const char *list);
-#define is_in_comma_separated_list_of_glob_patterns libreport_is_in_comma_separated_list_of_glob_patterns
-bool is_in_comma_separated_list_of_glob_patterns(const char *value, const char *list);
+bool libreport_is_in_comma_separated_list(const char *value, const char *list);
+bool libreport_is_in_comma_separated_list_of_glob_patterns(const char *value, const char *list);
 
 /* Calls GLib version appropriate initialization function.
  */
-#define glib_init libreport_glib_init
-void glib_init(void);
+void libreport_glib_init(void);
 
 /* Frees every element'd data using free(),
  * then frees list itself using g_list_free(list):
  */
-#define list_free_with_free libreport_list_free_with_free
-void list_free_with_free(GList *list);
+void libreport_list_free_with_free(GList *list);
 
-#define get_dirsize libreport_get_dirsize
-double get_dirsize(const char *pPath);
-#define get_dirsize_find_largest_dir libreport_get_dirsize_find_largest_dir
-double get_dirsize_find_largest_dir(
+double libreport_get_dirsize(const char *pPath);
+double libreport_get_dirsize_find_largest_dir(
                 const char *pPath,
                 char **worst_dir, /* can be NULL */
                 const char *excluded /* can be NULL */
 );
 
-#define ndelay_on libreport_ndelay_on
-int ndelay_on(int fd);
-#define ndelay_off libreport_ndelay_off
-int ndelay_off(int fd);
-#define close_on_exec_on libreport_close_on_exec_on
-int close_on_exec_on(int fd);
+int libreport_ndelay_on(int fd);
+int libreport_ndelay_off(int fd);
+int libreport_close_on_exec_on(int fd);
 
-#define xmalloc libreport_xmalloc
-void* xmalloc(size_t size);
-#define xrealloc libreport_xrealloc
-void* xrealloc(void *ptr, size_t size);
-#define xzalloc libreport_xzalloc
-void* xzalloc(size_t size);
-#define xstrdup libreport_xstrdup
-char* xstrdup(const char *s);
-#define xstrndup libreport_xstrndup
-char* xstrndup(const char *s, int n);
-#define xstrdup_between libreport_xstrdup_between
-char* xstrdup_between(const char *s, const char *open, const char *close);
+void *libreport_xmalloc(size_t size);
+void *libreport_xrealloc(void *ptr, size_t size);
+void *libreport_xzalloc(size_t size);
+char *libreport_xstrdup(const char *s);
+char *libreport_xstrndup(const char *s, int n);
+char *libreport_xstrdup_between(const char *s, const char *open, const char *close);
 
-#define xpipe libreport_xpipe
-void xpipe(int filedes[2]);
-#define xdup libreport_xdup
-int xdup(int from);
-#define xdup2 libreport_xdup2
-void xdup2(int from, int to);
-#define xmove_fd libreport_xmove_fd
-void xmove_fd(int from, int to);
+void libreport_xpipe(int filedes[2]);
+int libreport_xdup(int from);
+void libreport_xdup2(int from, int to);
+void libreport_xmove_fd(int from, int to);
 
-#define xwrite libreport_xwrite
-void xwrite(int fd, const void *buf, size_t count);
-#define xwrite_str libreport_xwrite_str
-void xwrite_str(int fd, const char *str);
+void libreport_xwrite(int fd, const void *buf, size_t count);
+void libreport_xwrite_str(int fd, const char *str);
 
-#define xlseek libreport_xlseek
-off_t xlseek(int fd, off_t offset, int whence);
+off_t libreport_xlseek(int fd, off_t offset, int whence);
 
-#define xchdir libreport_xchdir
-void xchdir(const char *path);
+void libreport_xchdir(const char *path);
 
-#define xvasprintf libreport_xvasprintf
-char* xvasprintf(const char *format, va_list p);
-#define xasprintf libreport_xasprintf
-char* xasprintf(const char *format, ...);
+char *libreport_xvasprintf(const char *format, va_list p);
+char *libreport_xasprintf(const char *format, ...);
 
-#define xsetenv libreport_xsetenv
-void xsetenv(const char *key, const char *value);
+void libreport_xsetenv(const char *key, const char *value);
 /*
  * Utility function to unsetenv a string which was possibly putenv'ed.
  * The problem here is that "natural" optimization:
@@ -415,34 +335,22 @@ void xsetenv(const char *key, const char *value);
  * Of course, saving/restoring the char wouldn't work either.
  * This helper creates a copy up to '=', unsetenv's it, and frees:
  */
-#define safe_unsetenv libreport_safe_unsetenv
-void safe_unsetenv(const char *var_val);
+void libreport_safe_unsetenv(const char *var_val);
 
-#define xsocket libreport_xsocket
-int xsocket(int domain, int type, int protocol);
-#define xbind libreport_xbind
-void xbind(int sockfd, struct sockaddr *my_addr, socklen_t addrlen);
-#define xlisten libreport_xlisten
-void xlisten(int s, int backlog);
-#define xsendto libreport_xsendto
-ssize_t xsendto(int s, const void *buf, size_t len,
+int libreport_xsocket(int domain, int type, int protocol);
+void libreport_xbind(int sockfd, struct sockaddr *my_addr, socklen_t addrlen);
+void libreport_xlisten(int s, int backlog);
+ssize_t libreport_xsendto(int s, const void *buf, size_t len,
                 const struct sockaddr *to, socklen_t tolen);
 
-#define xstat libreport_xstat
-void xstat(const char *name, struct stat *stat_buf);
-#define fstat_st_size_or_die libreport_fstat_st_size_or_die
-off_t fstat_st_size_or_die(int fd);
-#define stat_st_size_or_die libreport_stat_st_size_or_die
-off_t stat_st_size_or_die(const char *filename);
+void libreport_xstat(const char *name, struct stat *stat_buf);
+off_t libreport_fstat_st_size_or_die(int fd);
+off_t libreport_stat_st_size_or_die(const char *filename);
 
-#define xopen3 libreport_xopen3
-int xopen3(const char *pathname, int flags, int mode);
-#define xopen libreport_xopen
-int xopen(const char *pathname, int flags);
-#define xunlink libreport_xunlink
-void xunlink(const char *pathname);
-#define xunlinkat libreport_xunlinkat
-void xunlinkat(int dir_fd, const char *pathname, int flags);
+int libreport_xopen3(const char *pathname, int flags, int mode);
+int libreport_xopen(const char *pathname, int flags);
+void libreport_xunlink(const char *pathname);
+void libreport_xunlinkat(int dir_fd, const char *pathname, int flags);
 
 /* Just testing dent->d_type == DT_REG is wrong: some filesystems
  * do not report the type, they report DT_UNKNOWN for every dirent
@@ -450,37 +358,25 @@ void xunlinkat(int dir_fd, const char *pathname, int flags);
  * This function handles this case. Note: it returns 0 on symlinks
  * even if they point to regular files.
  */
-#define is_regular_file libreport_is_regular_file
-int is_regular_file(struct dirent *dent, const char *dirname);
-#define is_regular_file_at libreport_is_regular_file_at
-int is_regular_file_at(struct dirent *dent, int dir_fd);
+int libreport_is_regular_file(struct dirent *dent, const char *dirname);
+int libreport_is_regular_file_at(struct dirent *dent, int dir_fd);
 
-#define dot_or_dotdot libreport_dot_or_dotdot
-bool dot_or_dotdot(const char *filename);
-#define last_char_is libreport_last_char_is
-char *last_char_is(const char *s, int c);
+bool libreport_dot_or_dotdot(const char *filename);
+char *libreport_last_char_is(const char *s, int c);
 
-#define string_to_bool libreport_string_to_bool
-bool string_to_bool(const char *s);
+bool libreport_string_to_bool(const char *s);
 
-#define xseteuid libreport_xseteuid
-void xseteuid(uid_t euid);
-#define xsetegid libreport_xsetegid
-void xsetegid(gid_t egid);
-#define xsetreuid libreport_xsetreuid
-void xsetreuid(uid_t ruid, uid_t euid);
-#define xsetregid libreport_xsetregid
-void xsetregid(gid_t rgid, gid_t egid);
+void libreport_xseteuid(uid_t euid);
+void libreport_xsetegid(gid_t egid);
+void libreport_xsetreuid(uid_t ruid, uid_t euid);
+void libreport_xsetregid(gid_t rgid, gid_t egid);
 
-#define xfdopen libreport_xfdopen
-FILE *xfdopen(int fd, const char *mode);
+FILE *libreport_xfdopen(int fd, const char *mode);
 
 /* Emit a string of hex representation of bytes */
-#define bin2hex libreport_bin2hex
-char* bin2hex(char *dst, const char *str, int count);
+char *libreport_bin2hex(char *dst, const char *str, int count);
 /* Convert "xxxxxxxx" hex string to binary, no more than COUNT bytes */
-#define hex2bin libreport_hex2bin
-char* hex2bin(char *dst, const char *str, int count);
+char* libreport_hex2bin(char *dst, const char *str, int count);
 
 
 enum {
@@ -497,44 +393,34 @@ enum libreport_diemode {
     DIEMODE_ABORT = 1,
 };
 
-#define g_custom_logger libreport_g_custom_logger
-extern void (*g_custom_logger)(const char*);
-#define msg_prefix libreport_msg_prefix
-extern const char *msg_prefix;
-#define msg_eol libreport_msg_eol
-extern const char *msg_eol;
-#define logmode libreport_logmode
-extern int logmode;
-#define xfunc_error_retval libreport_xfunc_error_retval
-extern int xfunc_error_retval;
+extern void (*libreport_g_custom_logger)(const char*);
+extern const char *libreport_msg_prefix;
+extern const char *libreport_msg_eol;
+extern int libreport_logmode;
+extern int libreport_xfunc_error_retval;
 
 /* A few magic exit codes */
 #define EXIT_CANCEL_BY_USER 69
 #define EXIT_STOP_EVENT_RUN 70
 
-#define set_xfunc_error_retval libreport_set_xfunc_error_retval
-void set_xfunc_error_retval(int retval);
+void libreport_set_xfunc_error_retval(int retval);
 
-#define set_xfunc_diemode libreport_set_xfunc_diemode
-void set_xfunc_diemode(enum libreport_diemode mode);
+void libreport_set_xfunc_diemode(enum libreport_diemode mode);
 
 /* Verbosity level */
-#define g_verbose libreport_g_verbose
-extern int g_verbose;
+extern int libreport_g_verbose;
 /* VERB1 log_warning("what you sometimes want to see, even on a production box") */
-#define VERB1 if (g_verbose >= 1)
+#define VERB1 if (libreport_g_verbose >= 1)
 /* VERB2 log_warning("debug message, not going into insanely small details") */
-#define VERB2 if (g_verbose >= 2)
+#define VERB2 if (libreport_g_verbose >= 2)
 /* VERB3 log_warning("lots and lots of details") */
-#define VERB3 if (g_verbose >= 3)
+#define VERB3 if (libreport_g_verbose >= 3)
 /* there is no level > 3 */
 
 #define  libreport_
-#define xfunc_die libreport_xfunc_die
-void xfunc_die(void) NORETURN;
+void libreport_xfunc_die(void) NORETURN;
 
-#define die_out_of_memory libreport_die_out_of_memory
-void die_out_of_memory(void) NORETURN;
+void libreport_die_out_of_memory(void) NORETURN;
 
 /* It's a macro, not function, since it collides with log_warning() from math.h */
 #undef log
@@ -594,71 +480,62 @@ struct strbuf
  * Creates and initializes a new string buffer.
  * @returns
  * It never returns NULL. The returned pointer must be released by
- * calling the function strbuf_free().
+ * calling the function libreport_strbuf_free().
  */
-#define strbuf_new libreport_strbuf_new
-struct strbuf *strbuf_new(void);
+struct strbuf *libreport_strbuf_new(void);
 
 /**
  * Releases the memory held by the string buffer.
  * @param strbuf
  * If the strbuf is NULL, no operation is performed.
  */
-#define strbuf_free libreport_strbuf_free
-void strbuf_free(struct strbuf *strbuf);
+void libreport_strbuf_free(struct strbuf *strbuf);
 
 /**
  * Releases the strbuf, but not the internal buffer.  The internal
  * string buffer is returned.  Caller is responsible to release the
  * returned memory using free().
  */
-#define strbuf_free_nobuf libreport_strbuf_free_nobuf
-char* strbuf_free_nobuf(struct strbuf *strbuf);
+char *libreport_strbuf_free_nobuf(struct strbuf *strbuf);
 
 /**
  * The string content is set to an empty string, erasing any previous
  * content and leaving its length at 0 characters.
  */
-#define strbuf_clear libreport_strbuf_clear
-void strbuf_clear(struct strbuf *strbuf);
+void libreport_strbuf_clear(struct strbuf *strbuf);
 
 /**
  * The current content of the string buffer is extended by adding a
  * character c at its end.
  */
-#define strbuf_append_char libreport_strbuf_append_char
-struct strbuf *strbuf_append_char(struct strbuf *strbuf, char c);
+struct strbuf *libreport_strbuf_append_char(struct strbuf *strbuf, char c);
 
 /**
  * The current content of the string buffer is extended by adding a
  * string str at its end.
  */
-#define strbuf_append_str libreport_strbuf_append_str
-struct strbuf *strbuf_append_str(struct strbuf *strbuf,
+struct strbuf *libreport_strbuf_append_str(struct strbuf *strbuf,
                                  const char *str);
 
 /**
  * The current content of the string buffer is extended by inserting a
  * string str at its beginning.
  */
-#define strbuf_prepend_str libreport_strbuf_prepend_str
-struct strbuf *strbuf_prepend_str(struct strbuf *strbuf,
+struct strbuf *libreport_strbuf_prepend_str(struct strbuf *strbuf,
                                   const char *str);
 
 /**
  * The current content of the string buffer is extended by adding a
  * sequence of data formatted as the format argument specifies.
  */
-#define strbuf_append_strf libreport_strbuf_append_strf
-struct strbuf *strbuf_append_strf(struct strbuf *strbuf,
+struct strbuf *libreport_strbuf_append_strf(struct strbuf *strbuf,
                                   const char *format, ...);
 
 /**
- * Same as strbuf_append_strf except that va_list is passed instead of
+ * Same as libreport_strbuf_append_strf except that va_list is passed instead of
  * variable number of arguments.
  */
-#define strbuf_append_strfv libreport_strbuf_append_strfv
-struct strbuf *strbuf_append_strfv(struct strbuf *strbuf,
+struct strbuf *libreport_strbuf_append_strfv(struct strbuf *strbuf,
                                    const char *format, va_list p);
 
 /**
@@ -666,16 +543,14 @@ struct strbuf *strbuf_append_strfv(struct strbuf *strbuf,
  * sequence of data formatted as the format argument specifies at the
  * buffer beginning.
  */
-#define strbuf_prepend_strf libreport_strbuf_prepend_strf
-struct strbuf *strbuf_prepend_strf(struct strbuf *strbuf,
+struct strbuf *libreport_strbuf_prepend_strf(struct strbuf *strbuf,
                                    const char *format, ...);
 
 /**
- * Same as strbuf_prepend_strf except that va_list is passed instead of
+ * Same as libreport_strbuf_prepend_strf except that va_list is passed instead of
  * variable number of arguments.
  */
-#define strbuf_prepend_strfv libreport_strbuf_prepend_strfv
-struct strbuf *strbuf_prepend_strfv(struct strbuf *strbuf,
+struct strbuf *libreport_strbuf_prepend_strfv(struct strbuf *strbuf,
                                     const char *format, va_list p);
 
 /* Returns command line of running program.
@@ -683,43 +558,25 @@ struct strbuf *strbuf_prepend_strfv(struct strbuf *strbuf,
  * If the pid is not valid or command line can not be obtained,
  * empty string is returned.
  */
-#define open_proc_pid_dir libreport_open_proc_pid_dir
-int open_proc_pid_dir(pid_t pid);
-#define get_cmdline_at libreport_get_cmdline_at
-char* get_cmdline_at(pid_t pid);
-#define get_cmdline libreport_get_cmdline
-char* get_cmdline(pid_t pid);
-#define get_environ_at libreport_get_environ_at
-char* get_environ_at(pid_t pid);
-#define get_environ libreport_get_environ
-char* get_environ(pid_t pid);
-#define get_executable_at libreport_get_executable_at
-char *get_executable_at(pid_t pid);
-#define get_executable libreport_get_executable
-char *get_executable(pid_t pid);
-#define get_cwd_at libreport_get_cwd_at
-char* get_cwd_at(pid_t pid);
-#define get_cwd libreport_get_cwd
-char* get_cwd(pid_t pid);
-#define get_rootdir_at libreport_get_rootdir_at
-char* get_rootdir_at(pid_t pid);
-#define get_rootdir libreport_get_rootdir
-char* get_rootdir(pid_t pid);
+int libreport_open_proc_pid_dir(pid_t pid);
+char *libreport_get_cmdline_at(pid_t pid);
+char *libreport_get_cmdline(pid_t pid);
+char *libreport_get_environ_at(pid_t pid);
+char *libreport_get_environ(pid_t pid);
+char *libreport_get_executable_at(pid_t pid);
+char *libreport_get_executable(pid_t pid);
+char *libreport_get_cwd_at(pid_t pid);
+char *libreport_get_cwd(pid_t pid);
+char *libreport_get_rootdir_at(pid_t pid);
+char *libreport_get_rootdir(pid_t pid);
 
-#define get_fsuid libreport_get_fsuid
-int get_fsuid(const char *proc_pid_status);
-#define get_fsgid libreport_get_fsgid
-int get_fsgid(const char *proc_pid_status);
-#define dump_fd_info_at libreport_dump_fd_info_at
-int dump_fd_info_at(int pid_proc_fd, FILE *dest);
-#define dump_fd_info_ext libreport_dump_fd_info_ext
-int dump_fd_info_ext(const char *dest_filename, const char *proc_pid_fd_path, uid_t uid, gid_t gid);
-#define dump_fd_info libreport_dump_fd_info
-int dump_fd_info(const char *dest_filename, const char *proc_pid_fd_path);
-#define get_env_variable_ext libreport_get_env_variable_ext
-int get_env_variable_ext(int fd, char delim, const char *name, char **value);
-#define get_env_variable libreport_get_env_variable
-int get_env_variable(pid_t pid, const char *name, char **value);
+int libreport_get_fsuid(const char *proc_pid_status);
+int libreport_get_fsgid(const char *proc_pid_status);
+int libreport_dump_fd_info_at(int pid_proc_fd, FILE *dest);
+int libreport_dump_fd_info_ext(const char *dest_filename, const char *proc_pid_fd_path, uid_t uid, gid_t gid);
+int libreport_dump_fd_info(const char *dest_filename, const char *proc_pid_fd_path);
+int libreport_get_env_variable_ext(int fd, char delim, const char *name, char **value);
+int libreport_get_env_variable(pid_t pid, const char *name, char **value);
 
 #define PROC_NS_UNSUPPORTED ((ino_t)-1)
 #define PROC_NS_ID_CGROUP 0
@@ -747,29 +604,20 @@ struct ns_ids {
     ino_t nsi_ids[ARRAY_SIZE(libreport_proc_namespaces)];
 };
 
-#define get_ns_ids_at libreport_get_ns_ids_at
-int get_ns_ids_at(int pid_proc_fd, struct ns_ids *ids);
-#define get_ns_ids libreport_get_ns_ids
-int get_ns_ids(pid_t pid, struct ns_ids *ids);
+int libreport_get_ns_ids_at(int pid_proc_fd, struct ns_ids *ids);
+int libreport_get_ns_ids(pid_t pid, struct ns_ids *ids);
 
 /* These functions require a privileged user and does not work correctly in
  * processes running in own PID namespace
  */
-#define process_has_own_root_at libreport_process_has_own_root_at
-int process_has_own_root_at(int proc_pid_fd);
-#define process_has_own_root libreport_process_has_own_root
-int process_has_own_root(pid_t pid);
+int libreport_process_has_own_root_at(int proc_pid_fd);
+int libreport_process_has_own_root(pid_t pid);
 
-#define get_pid_of_container_at libreport_get_pid_of_container_at
-int get_pid_of_container_at(int pid_proc_fd, pid_t *init_pid);
-#define get_pid_of_container libreport_get_pid_of_container
-int get_pid_of_container(pid_t pid, pid_t *init_pid);
-#define dump_namespace_diff_at libreport_dump_namespace_diff_at
-int dump_namespace_diff_at(int base_pid_proc_fd, int tested_pid_proc_fd, FILE *dest);
-#define dump_namespace_diff_ext libreport_dump_namespace_diff_ext
-int dump_namespace_diff_ext(const char *dest_filename, pid_t base_pid, pid_t tested_pid, uid_t uid, gid_t gid);
-#define dump_namespace_diff libreport_dump_namespace_diff
-int dump_namespace_diff(const char *dest_filename, pid_t base_pid, pid_t tested_pid);
+int libreport_get_pid_of_container_at(int pid_proc_fd, pid_t *init_pid);
+int libreport_get_pid_of_container(pid_t pid, pid_t *init_pid);
+int libreport_dump_namespace_diff_at(int base_pid_proc_fd, int tested_pid_proc_fd, FILE *dest);
+int libreport_dump_namespace_diff_ext(const char *dest_filename, pid_t base_pid, pid_t tested_pid, uid_t uid, gid_t gid);
+int libreport_dump_namespace_diff(const char *dest_filename, pid_t base_pid, pid_t tested_pid);
 
 enum
 {
@@ -799,16 +647,13 @@ struct mountinfo
     /*      so the effective value is 9 */
     char *mntnf_items[_MOUNTINFO_INDEX_MAX];
 };
-#define mountinfo_destroy libreport_mountinfo_destroy
-void mountinfo_destroy(struct mountinfo *mntnf);
-#define get_mountinfo_for_mount_point libreport_get_mountinfo_for_mount_point
-int get_mountinfo_for_mount_point(FILE *fin, struct mountinfo *mntnf, const char *mnt_point);
+void libreport_mountinfo_destroy(struct mountinfo *mntnf);
+int libreport_get_mountinfo_for_mount_point(FILE *fin, struct mountinfo *mntnf, const char *mnt_point);
 
 /* Takes ptr to time_t, or NULL if you want to use current time.
  * Returns "YYYY-MM-DD-hh:mm:ss" string.
  */
-#define iso_date_string libreport_iso_date_string
-char *iso_date_string(const time_t *pt);
+char *libreport_iso_date_string(const time_t *pt);
 #define LIBREPORT_ISO_DATE_STRING_SAMPLE "YYYY-MM-DD-hh:mm:ss"
 #define LIBREPORT_ISO_DATE_STRING_FORMAT "%Y-%m-%d-%H:%M:%S"
 
@@ -819,8 +664,7 @@ char *iso_date_string(const time_t *pt);
  * @return 0 on success; otherwise non-0 number. -EINVAL if the parameter date
  * does not match LIBREPORT_ISO_DATE_STRING_FORMAT
  */
-#define iso_date_string_parse libreport_iso_date_string_parse
-int iso_date_string_parse(const char *date, time_t *pt);
+int libreport_iso_date_string_parse(const char *date, time_t *pt);
 
 enum {
     MAKEDESC_SHOW_FILES     = (1 << 0),
@@ -830,10 +674,8 @@ enum {
     /* Include all URLs from FILENAME_REPORTED_TO element in the description text */
     MAKEDESC_SHOW_URLS      = (1 << 4),
 };
-#define make_description libreport_make_description
-char *make_description(problem_data_t *problem_data, char **names_to_skip, unsigned max_text_size, unsigned desc_flags);
-#define make_description_logger libreport_make_description_logger
-char* make_description_logger(problem_data_t *problem_data, unsigned max_text_size);
+char *libreport_make_description(problem_data_t *problem_data, char **names_to_skip, unsigned max_text_size, unsigned desc_flags);
+char *libreport_make_description_logger(problem_data_t *problem_data, unsigned max_text_size);
 
 /* See man os-release(5) for details */
 #define OSINFO_ID "ID"
@@ -850,8 +692,7 @@ char* make_description_logger(problem_data_t *problem_data, unsigned max_text_si
  * @param osinfo_bytes Non-NULL pointer to osinfo bytes.
  * @param osinfo The map where result is stored
  */
-#define parse_osinfo libreport_parse_osinfo
-void parse_osinfo(const char *osinfo_bytes, map_string_t *osinfo);
+void libreport_parse_osinfo(const char *osinfo_bytes, map_string_t *osinfo);
 
 /* @brief Builds product string and product's version string for Bugzilla
  *
@@ -867,8 +708,7 @@ void parse_osinfo(const char *osinfo_bytes, map_string_t *osinfo);
  * @param produc Non-NULL pointer where pointer to malloced string will be stored. Memory must be released by free()
  * @param version Non-NULL pointer where pointer to malloced string will be stored. Memory must be released by free()
  */
-#define parse_osinfo_for_bz libreport_parse_osinfo_for_bz
-void parse_osinfo_for_bz(map_string_t *osinfo, char **product, char **version);
+void libreport_parse_osinfo_for_bz(map_string_t *osinfo, char **product, char **version);
 
 /* @brief Extract BUG_REPORT_URL from os-release
  *
@@ -881,8 +721,7 @@ void parse_osinfo_for_bz(map_string_t *osinfo, char **product, char **version);
  * @param osinfo Input data from which the values are built
  * @param url Non-NULL pointer where pointer to malloced string will be stored. Memory must be released by free()
  */
-#define parse_osinfo_for_bug_url libreport_parse_osinfo_for_bug_url
-void parse_osinfo_for_bug_url(map_string_t *osinfo, char** url);
+void libreport_parse_osinfo_for_bug_url(map_string_t *osinfo, char** url);
 
 /* @brief Builds product string and product's version string for Red Hat Support
  *
@@ -898,13 +737,10 @@ void parse_osinfo_for_bug_url(map_string_t *osinfo, char** url);
  * @param produc Non-NULL pointer where pointer to malloced string will be stored. Memory must be released by free()
  * @param version Non-NULL pointer where pointer to malloced string will be stored. Memory must be released by free()
  */
-#define parse_osinfo_for_rhts libreport_parse_osinfo_for_rhts
-void parse_osinfo_for_rhts(map_string_t *osinfo, char **product, char **version);
+void libreport_parse_osinfo_for_rhts(map_string_t *osinfo, char **product, char **version);
 
-#define parse_release_for_bz libreport_parse_release_for_bz
-void parse_release_for_bz(const char *pRelease, char **product, char **version);
-#define parse_release_for_rhts libreport_parse_release_for_rhts
-void parse_release_for_rhts(const char *pRelease, char **product, char **version);
+void libreport_parse_release_for_bz(const char *pRelease, char **product, char **version);
+void libreport_parse_release_for_rhts(const char *pRelease, char **product, char **version);
 
 /**
  * Loads settings and stores it in second parameter. On success it
@@ -920,73 +756,51 @@ void parse_release_for_rhts(const char *pRelease, char **product, char **version
  *  in mid-2013 if no user for it is identified.
  * @return if it success it returns true, otherwise it returns false.
  */
-#define load_conf_file libreport_load_conf_file
-bool load_conf_file(const char *pPath, map_string_t *settings, bool skipKeysWithoutValue);
-#define load_plugin_conf_file libreport_load_plugin_conf_file
-bool load_plugin_conf_file(const char *name, map_string_t *settings, bool skipKeysWithoutValue);
+bool libreport_load_conf_file(const char *pPath, map_string_t *settings, bool skipKeysWithoutValue);
+bool libreport_load_plugin_conf_file(const char *name, map_string_t *settings, bool skipKeysWithoutValue);
 
-#define get_user_conf_base_dir libreport_get_user_conf_base_dir
-const char *get_user_conf_base_dir(void);
+const char *libreport_get_user_conf_base_dir(void);
 
-#define load_conf_file_from_dirs libreport_load_conf_file_from_dirs
-bool load_conf_file_from_dirs(const char *base_name, const char *const *directories, map_string_t *settings, bool skipKeysWithoutValue);
+bool libreport_load_conf_file_from_dirs(const char *base_name, const char *const *directories, map_string_t *settings, bool skipKeysWithoutValue);
 
 enum {
     CONF_DIR_FLAG_NONE = 0,
     CONF_DIR_FLAG_OPTIONAL = 1,
 };
 
-#define load_conf_file_from_dirs_ext libreport_load_conf_file_from_dirs_ext
-bool load_conf_file_from_dirs_ext(const char *base_name, const char *const *directories,
+bool libreport_load_conf_file_from_dirs_ext(const char *base_name, const char *const *directories,
                                   const int * dir_flags, map_string_t *settings,
                                   bool skipKeysWithoutValue);
 
-#define save_conf_file libreport_save_conf_file
-bool save_conf_file(const char *path, map_string_t *settings);
-#define save_plugin_conf_file libreport_save_plugin_conf_file
-bool save_plugin_conf_file(const char *name, map_string_t *settings);
+bool libreport_save_conf_file(const char *path, map_string_t *settings);
+bool libreport_save_plugin_conf_file(const char *name, map_string_t *settings);
 
-#define save_app_conf_file libreport_save_app_conf_file
-bool save_app_conf_file(const char* application_name, map_string_t *settings);
-#define load_app_conf_file libreport_load_app_conf_file
-bool load_app_conf_file(const char *application_name, map_string_t *settings);
-#define set_app_user_setting libreport_set_app_user_setting
-void set_app_user_setting(map_string_t *settings, const char *name, const char *value);
-#define get_app_user_setting libreport_get_app_user_setting
-const char *get_app_user_setting(map_string_t *settings, const char *name);
+bool libreport_save_app_conf_file(const char* application_name, map_string_t *settings);
+bool libreport_load_app_conf_file(const char *application_name, map_string_t *settings);
+void libreport_set_app_user_setting(map_string_t *settings, const char *name, const char *value);
+const char *libreport_get_app_user_setting(map_string_t *settings, const char *name);
 
-#define save_user_settings libreport_save_user_settings
-bool save_user_settings(void);
-#define load_user_settings libreport_load_user_settings
-bool load_user_settings(const char *application_name);
-#define set_user_setting libreport_set_user_setting
-void set_user_setting(const char *name, const char *value);
-#define get_user_setting libreport_get_user_setting
-const char *get_user_setting(const char *name);
+bool libreport_save_user_settings(void);
+bool libreport_load_user_settings(const char *application_name);
+void libreport_set_user_setting(const char *name, const char *value);
+const char *libreport_get_user_setting(const char *name);
 
 /* filename is expected to exist in CONF_DIR
  * usually /etc/libreport
  */
-#define load_forbidden_words libreport_load_forbidden_words
-GList *load_words_from_file(const char *filename);
-#define get_file_list libreport_get_file_list
-GList *get_file_list(const char *path, const char *ext);
-#define free_file_list libreport_free_file_list
-void free_file_list(GList *filelist);
-#define new_file_obj libreport_new_file_obj
-file_obj_t *new_file_obj(const char* fullpath, const char* filename);
-#define free_file_obj libreport_free_file_obj
-void free_file_obj(file_obj_t *f);
-#define parse_delimited_list libreport_parse_delimited_list
-GList *parse_delimited_list(const char *string, const char *delimiter);
+GList *libreport_load_words_from_file(const char *filename);
+GList *libreport_get_file_list(const char *path, const char *ext);
+void libreport_free_file_list(GList *filelist);
+file_obj_t *libreport_new_file_obj(const char* fullpath, const char* filename);
+void libreport_free_file_obj(file_obj_t *f);
+GList *libreport_parse_delimited_list(const char *string, const char *delimiter);
 
 /* Connect to abrtd over unix domain socket, issue DELETE command */
 int delete_dump_dir_possibly_using_abrtd(const char *dump_dir_name);
 
 /* Tries to create a copy of dump_dir_name in base_dir, with same or similar basename.
  * Returns NULL if copying failed. In this case, logs a message before returning. */
-#define steal_directory libreport_steal_directory
-struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name);
+struct dump_dir *libreport_steal_directory(const char *base_dir, const char *dump_dir_name);
 
 /* Resolves if the given user is in given group
  *
@@ -994,8 +808,7 @@ struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name
  * @param gid group ID
  * @returns TRUE in case the user is in the group otherwise returns FALSE
  */
-#define uid_in_group libreport_uid_in_group
-bool uid_in_group(uid_t uid, gid_t gid);
+bool libreport_uid_in_group(uid_t uid, gid_t gid);
 
 /* Tries to open dump_dir_name with writing access. If function needs to steal
  * directory calls ask_continue(new base dir, dump dir) callback to ask user
@@ -1003,8 +816,7 @@ bool uid_in_group(uid_t uid, gid_t gid);
  * answer is positive and steals directory.
  * Returns NULL if opening failed or if stealing was dismissed. In this case,
  * logs a message before returning. */
-#define open_directory_for_writing libreport_open_directory_for_writing
-struct dump_dir *open_directory_for_writing(
+struct dump_dir *libreport_open_directory_for_writing(
                          const char *dump_dir_name,
                          bool (*ask_continue)(const char *, const char *));
 
@@ -1178,8 +990,7 @@ struct dump_dir *open_directory_for_writing(
 // Not stored as files, added "on the fly":
 #define CD_DUMPDIR            "Directory"
 
-#define cmp_problem_data libreport_cmp_problem_data
-gint cmp_problem_data(gconstpointer a, gconstpointer b, gpointer filename);
+gint libreport_cmp_problem_data(gconstpointer a, gconstpointer b, gpointer filename);
 
 //UNUSED:
 //// "Which events are possible (make sense) on this dump dir?"
@@ -1194,8 +1005,7 @@ enum {
     EVENT_LOG_LOW_WATERMARK  = 20 * 1024,
 };
 
-#define log_problem_data libreport_log_problem_data
-void log_problem_data(problem_data_t *problem_data, const char *pfx);
+void libreport_log_problem_data(problem_data_t *problem_data, const char *pfx);
 
 extern int g_libreport_inited;
 void libreport_init(void);
@@ -1212,10 +1022,8 @@ void libreport_init(void);
     while (0)
 
 const char *abrt_init(char **argv);
-#define export_abrt_envvars libreport_export_abrt_envvars
-void export_abrt_envvars(int pfx);
-#define g_progname libreport_g_progname
-extern const char *g_progname;
+void libreport_export_abrt_envvars(int pfx);
+extern const char *libreport_g_progname;
 
 enum parse_opt_type {
     OPTION_BOOL,
@@ -1254,12 +1062,10 @@ struct options {
 #define OPT__VERBOSE(v)     OPT_BOOL('v', "verbose", (v), _("Be verbose"))
 #define OPT__DUMP_DIR(v)    OPT_STRING('d', "problem-dir", (v), "DIR", _("Problem directory"))
 
-#define parse_opts libreport_parse_opts
-unsigned parse_opts(int argc, char **argv, const struct options *opt,
+unsigned libreport_parse_opts(int argc, char **argv, const struct options *opt,
                 const char *usage);
 
-#define show_usage_and_die libreport_show_usage_and_die
-void show_usage_and_die(const char *usage, const struct options *opt) NORETURN;
+void libreport_show_usage_and_die(const char *usage, const struct options *opt) NORETURN;
 
 /* Can't include "abrt_curl.h", it's not a public API.
  * Resorting to just forward-declaring the struct we need.
@@ -1285,8 +1091,7 @@ struct abrt_post_state;
  * @param location Location of the uri. Can be NULL. Result is never NULL. Result
  * must be de-allocated by free.
  */
-#define uri_userinfo_remove libreport_uri_userinfo_remove
-int uri_userinfo_remove(const char *uri, char **result, char **scheme, char **hostname, char **username, char **password, char **location);
+int libreport_uri_userinfo_remove(const char *uri, char **result, char **scheme, char **hostname, char **username, char **password, char **location);
 
 #ifdef __cplusplus
 }

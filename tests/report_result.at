@@ -39,7 +39,7 @@ int main(void)
     report_result_t *result;
     struct strbuf *strbuf;
 
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     setenv("TZ", "", 1);
     setenv("LC_ALL", "C", 1);
@@ -59,7 +59,7 @@ int main(void)
     assert(NULL != strbuf);
     assert(string_cmp("Foo = Bar:", strbuf->buf));
 
-    strbuf_free(strbuf);
+    libreport_strbuf_free(strbuf);
     report_result_free(result);
 
     result = report_result_new_with_label("OnlyURL");
@@ -68,7 +68,7 @@ int main(void)
     assert(NULL != strbuf || !"Only URL");
     assert(string_cmp("OnlyURL: URL=http://test1.com", strbuf->buf));
 
-    strbuf_free(strbuf);
+    libreport_strbuf_free(strbuf);
     report_result_free(result);
 
     result = report_result_new_with_label("OnlyBTHASH");
@@ -77,7 +77,7 @@ int main(void)
     assert(NULL != strbuf || !"Only BTHASH");
     assert(string_cmp("OnlyBTHASH: BTHASH=0123456789ABCDEF", strbuf->buf));
 
-    strbuf_free(strbuf);
+    libreport_strbuf_free(strbuf);
     report_result_free(result);
 
     result = report_result_new_with_label("OnlyMSG");
@@ -86,7 +86,7 @@ int main(void)
     assert(NULL != strbuf || !"Only MSG");
     assert(string_cmp("OnlyMSG: MSG=Message = foo: bar!", strbuf->buf));
 
-    strbuf_free(strbuf);
+    libreport_strbuf_free(strbuf);
     report_result_free(result);
 
     result = report_result_new_with_label("OnlyTIME");
@@ -95,7 +95,7 @@ int main(void)
     assert(NULL != strbuf || !"Only TIME");
     assert(string_cmp("OnlyTIME: TIME=2000-01-01-00:00:00", strbuf->buf));
 
-    strbuf_free(strbuf);
+    libreport_strbuf_free(strbuf);
     report_result_free(result);
 
     result = report_result_new_with_label("OnlyWORKFLOW");
@@ -104,7 +104,7 @@ int main(void)
     assert(NULL != strbuf || !"Only WORKFLOW");
     assert(string_cmp("OnlyWORKFLOW: WORKFLOW=workflow_FedoraCCpp", strbuf->buf));
 
-    strbuf_free(strbuf);
+    libreport_strbuf_free(strbuf);
     report_result_free(result);
 
     result = report_result_new_with_label("Everything");
@@ -117,7 +117,7 @@ int main(void)
     assert(NULL != strbuf || !"Everything");
     assert(string_cmp("Everything: TIME=2000-01-01-00:00:00 URL=http://epic.win BTHASH=0123456789ABCDEF WORKFLOW=workflow_FedoraCCpp MSG=Exhaustive libreport test!", strbuf->buf));
 
-    strbuf_free(strbuf);
+    libreport_strbuf_free(strbuf);
     report_result_free(result);
 
     return EXIT_SUCCESS;

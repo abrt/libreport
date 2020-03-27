@@ -104,10 +104,10 @@ static int configure_reporter(struct reporter *r, bool skip_if_valid)
             (!skip_if_valid && first && r->config))
     {
         text = newtTextboxReflowed(0, 0, ec_get_screen_name(r->config) ?
-                xstrdup(ec_get_screen_name(r->config)) : r->name, 35, 5, 5, 0);
+                libreport_xstrdup(ec_get_screen_name(r->config)) : r->name, 35, 5, 5, 0);
 
         num_opts = g_list_length(r->config->options);
-        options = xmalloc(sizeof (newtComponent) * num_opts);
+        options = libreport_xmalloc(sizeof (newtComponent) * num_opts);
         ogrid = newtCreateGrid(2, num_opts);
 
         for (option = r->config->options, i = 0; option && i < num_opts;
@@ -230,7 +230,7 @@ static char *save_log_line(char *log_line, void *param)
     {
         /* Append the log line */
         len = strlen(log->text) + 1 + strlen(log_line) + 1;
-        new = xmalloc(len);
+        new = libreport_xmalloc(len);
         snprintf(new, len, "%s\n%s", log->text, log_line);
         free(log->text);
         free(log_line);
@@ -272,11 +272,11 @@ static void run_reporter(const char *dump_dir_name, struct reporter *r)
     /* Export overridden settings as environment variables */
     env_list = export_event_config(r->name);
 
-    save_log_line(xasprintf(_("--- Running %s ---"), r->name), &log);
+    save_log_line(libreport_xasprintf(_("--- Running %s ---"), r->name), &log);
 
     x = run_event_on_dir_name(run_state, dump_dir_name, r->name);
     if (x)
-        save_log_line(xasprintf("(exited with %d)", x), &log);
+        save_log_line(libreport_xasprintf("(exited with %d)", x), &log);
 
     newtFormSetCurrent(form, button);
     newtRunForm(form);
@@ -327,7 +327,7 @@ static int report(const char *dump_dir_name)
     {
         char *reason = dd_load_text_ext(dd, FILENAME_REASON, 0
                                         | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-        char *t = xasprintf("%s %s",
+        char *t = libreport_xasprintf("%s %s",
                             not_reportable,
                             reason ? : _("(no description)"));
 
@@ -397,15 +397,15 @@ int main(int argc, char **argv)
         OPT_BOOL('V', "version", NULL,     _("Display version and exit")),
         OPT_END()
     };
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned opts = libreport_parse_opts(argc, argv, program_options, program_usage_string);
     argv += optind;
     /* >0 arguments with -V */
     if (((opts & OPT_V) && argv[0]) || !argv[0])
-        show_usage_and_die(program_usage_string, program_options);
+        libreport_show_usage_and_die(program_usage_string, program_options);
 
     if (opts & OPT_V)
     {
-        printf("%s "VERSION"\n", g_progname);
+        printf("%s "VERSION"\n", libreport_g_progname);
         return 0;
     }
 

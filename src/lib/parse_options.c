@@ -22,7 +22,7 @@
 #define USAGE_OPTS_WIDTH 30
 #define USAGE_GAP         2
 
-const char *g_progname;
+const char *libreport_g_progname;
 
 const char *abrt_init(char **argv)
 {
@@ -31,32 +31,32 @@ const char *abrt_init(char **argv)
 
     char *env_verbose = getenv("ABRT_VERBOSE");
     if (env_verbose)
-        g_verbose = atoi(env_verbose);
+        libreport_g_verbose = atoi(env_verbose);
 
-    g_progname = strrchr(argv[0], '/');
-    if (g_progname)
-        g_progname++;
+    libreport_g_progname = strrchr(argv[0], '/');
+    if (libreport_g_progname)
+        libreport_g_progname++;
     else
-        g_progname = argv[0];
+        libreport_g_progname = argv[0];
 
     char *pfx = getenv("ABRT_PROG_PREFIX");
-    if (pfx && string_to_bool(pfx))
-        msg_prefix = g_progname;
+    if (pfx && libreport_string_to_bool(pfx))
+        libreport_msg_prefix = libreport_g_progname;
 
-    return g_progname;
+    return libreport_g_progname;
 }
 
-void export_abrt_envvars(int pfx)
+void libreport_export_abrt_envvars(int pfx)
 {
-    putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
+    putenv(libreport_xasprintf("ABRT_VERBOSE=%u", libreport_g_verbose));
     if (pfx)
     {
         putenv((char*)"ABRT_PROG_PREFIX=1");
-        msg_prefix = g_progname;
+        libreport_msg_prefix = libreport_g_progname;
     }
 }
 
-void show_usage_and_die(const char *usage, const struct options *opt)
+void libreport_show_usage_and_die(const char *usage, const struct options *opt)
 {
     INITIALIZE_LIBREPORT();
 
@@ -75,7 +75,7 @@ void show_usage_and_die(const char *usage, const struct options *opt)
              * with program name - all other &'s are printed literally.
              */
             if (usage[1] == '\0' || isspace(usage[1]))
-                fputs(g_progname, stderr);
+                fputs(libreport_g_progname, stderr);
             else
                 fputc('&', stderr);
             usage++;
@@ -124,7 +124,7 @@ void show_usage_and_die(const char *usage, const struct options *opt)
         fprintf(stderr, "%*s%s\n", pad + USAGE_GAP, "", opt->help);
     }
     fputc('\n', stderr);
-    xfunc_die();
+    libreport_xfunc_die();
 }
 
 static int parse_opt_size(const struct options *opt)
@@ -136,22 +136,22 @@ static int parse_opt_size(const struct options *opt)
     return size;
 }
 
-unsigned parse_opts(int argc, char **argv, const struct options *opt,
+unsigned libreport_parse_opts(int argc, char **argv, const struct options *opt,
                 const char *usage)
 {
     int help = 0;
     int size = parse_opt_size(opt);
     const int LONGOPT_OFFSET = 256;
 
-    struct strbuf *shortopts = strbuf_new();
+    struct strbuf *shortopts = libreport_strbuf_new();
 
-    struct option *longopts = xzalloc(sizeof(longopts[0]) * (size+2));
+    struct option *longopts = libreport_xzalloc(sizeof(longopts[0]) * (size+2));
     struct option *curopt = longopts;
     int ii;
     for (ii = 0; ii < size; ++ii)
     {
         curopt->name = opt[ii].long_name;
-        /*curopt->flag = 0; - xzalloc did it */
+        /*curopt->flag = 0; - libreport_xzalloc did it */
         if (opt[ii].short_name)
             curopt->val = opt[ii].short_name;
         else
@@ -162,19 +162,19 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
             case OPTION_BOOL:
                 curopt->has_arg = no_argument;
                 if (opt[ii].short_name)
-                    strbuf_append_char(shortopts, opt[ii].short_name);
+                    libreport_strbuf_append_char(shortopts, opt[ii].short_name);
                 break;
             case OPTION_INTEGER:
             case OPTION_STRING:
             case OPTION_LIST:
                 curopt->has_arg = required_argument;
                 if (opt[ii].short_name)
-                    strbuf_append_strf(shortopts, "%c:", opt[ii].short_name);
+                    libreport_strbuf_append_strf(shortopts, "%c:", opt[ii].short_name);
                 break;
             case OPTION_OPTSTRING:
                 curopt->has_arg = optional_argument;
                 if (opt[ii].short_name)
-                    strbuf_append_strf(shortopts, "%c::", opt[ii].short_name);
+                    libreport_strbuf_append_strf(shortopts, "%c::", opt[ii].short_name);
                 break;
             case OPTION_GROUP:
             case OPTION_END:
@@ -199,7 +199,7 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
     curopt->has_arg = no_argument;
     curopt->flag = &help;
     curopt->val = 1;
-    /* xzalloc did it already:
+    /* libreport_xzalloc did it already:
     curopt++;
     curopt->name = NULL;
     curopt->has_arg = 0;
@@ -218,9 +218,9 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
         if (c == '?' || help)
         {
             free(longopts);
-            strbuf_free(shortopts);
-            xfunc_error_retval = 0; /* this isn't error, exit code = 0 */
-            show_usage_and_die(usage, opt);
+            libreport_strbuf_free(shortopts);
+            libreport_xfunc_error_retval = 0; /* this isn't error, exit code = 0 */
+            libreport_show_usage_and_die(usage, opt);
         }
 
         for (ii = 0; ii < size; ++ii)
@@ -236,7 +236,7 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
                         *(int*)(opt[ii].value) += 1;
                         break;
                     case OPTION_INTEGER:
-                        *(int*)(opt[ii].value) = xatoi(optarg);
+                        *(int*)(opt[ii].value) = libreport_xatoi(optarg);
                         break;
                     case OPTION_STRING:
                     case OPTION_OPTSTRING:
@@ -255,7 +255,7 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
     }
 
     free(longopts);
-    strbuf_free(shortopts);
+    libreport_strbuf_free(shortopts);
 
     return retval;
 }

@@ -27,7 +27,7 @@ static size_t writefunction(void *ptr, size_t size, size_t nmemb, void *stream)
     char *c, *c1, *c2;
 
     log_warning("received: '%*.*s'", (int)size, (int)size, (char*)ptr);
-    c = (char*)xzalloc(size + 1);
+    c = (char*)libreport_xzalloc(size + 1);
     memcpy(c, ptr, size);
     c1 = strstr(c, "201 ");
     if (c1)
@@ -91,7 +91,7 @@ static void report_to_kerneloops(
 {
     problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
     if (!problem_data)
-        xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
+        libreport_xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
     const char *backtrace = problem_data_get_content_or_NULL(problem_data, FILENAME_BACKTRACE);
     if (!backtrace)
@@ -169,20 +169,20 @@ int main(int argc, char **argv)
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_STRING('d', NULL, &dump_dir_name, "DIR" , _("Problem directory")),
         OPT_LIST(  'c', NULL, &conf_file    , "FILE", _("Configuration file")),
         OPT_END()
     };
-    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
+    /*unsigned opts =*/ libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
-    export_abrt_envvars(0);
+    libreport_export_abrt_envvars(0);
 
     while (conf_file)
     {
         char *fn = (char *)conf_file->data;
         log_notice("Loading settings from '%s'", fn);
-        load_conf_file(fn, settings, /*skip key w/o values:*/ false);
+        libreport_load_conf_file(fn, settings, /*skip key w/o values:*/ false);
         log_debug("Loaded '%s'", fn);
         conf_file = g_list_remove(conf_file, fn);
     }

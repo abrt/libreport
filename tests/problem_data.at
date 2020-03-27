@@ -18,7 +18,7 @@ AT_TESTFUN([problem_data_add],
 
 int main(int argc, char **argv)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     problem_data_t *data = problem_data_new();
     problem_data_add(data, TEST_NAME, TEST_CONTENTS, TEST_FLAGS);
@@ -51,7 +51,7 @@ AT_TESTFUN([problem_data_add_ext],
 
 int main(int argc, char **argv)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     problem_data_t *data = problem_data_new();
     struct problem_item *itm = problem_data_add_ext(data, TEST_NAME, TEST_CONTENTS, TEST_FLAGS, strlen(TEST_CONTENTS));
@@ -81,7 +81,7 @@ AT_TESTFUN([problem_item_get_size],
 
 int main(int argc, char **argv)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     problem_data_t *data = problem_data_new();
 
@@ -154,7 +154,7 @@ AT_TESTFUN([problem_data_load_from_dump_dir],
 
 int main(int argc, char **argv)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     char template[] = "/tmp/XXXXXX";
 
@@ -245,8 +245,8 @@ int main(int argc, char **argv)
     {
         int fd4k = openat(dd->dd_fd, "attestsuite-over4k", O_WRONLY | O_CREAT | O_TRUNC, 0550);
         assert(fd4k >= 0);
-        full_write(fd4k, buffer, sizeof(buffer));
-        full_write(fd4k, buffer, sizeof(buffer));
+        libreport_full_write(fd4k, buffer, sizeof(buffer));
+        libreport_full_write(fd4k, buffer, sizeof(buffer));
         close(fd4k);
     }
 
@@ -254,7 +254,7 @@ int main(int argc, char **argv)
         int bigfd = openat(dd->dd_fd, "attestsuite-bigtext", O_WRONLY | O_CREAT | O_TRUNC, 0550);
         assert(bigfd >= 0);
         for (int i = 3000; i > 0; --i)
-            full_write(bigfd, buffer, sizeof(buffer));
+            libreport_full_write(bigfd, buffer, sizeof(buffer));
         close(bigfd);
     }
 
@@ -405,7 +405,7 @@ void test(struct dump_dir *dd, const char *path, const char *exp_content, int ex
 
 int main(int argc, char **argv)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     char template[] = "/tmp/XXXXXX";
 

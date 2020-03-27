@@ -25,12 +25,12 @@
 
 static char *steal_directory_if_needed(char *dump_dir_name)
 {
-    struct dump_dir *dd = open_directory_for_writing(dump_dir_name,
+    struct dump_dir *dd = libreport_open_directory_for_writing(dump_dir_name,
                                                      /* ask callback */ NULL);
 
     if (dd)
     {
-        dump_dir_name = xstrdup(dd->dd_dirname);
+        dump_dir_name = libreport_xstrdup(dd->dd_dirname);
         dd_close(dd);
     }
 
@@ -92,12 +92,12 @@ int main(int argc, char** argv)
         OPT_BOOL(     'x', "expert" , NULL,                    _("Expert mode")),
         OPT_BOOL(     'V', "version", NULL,                    _("Display version and exit")),
         OPT_BOOL(     'y', "always" , NULL,                    _("Noninteractive: don't ask questions, assume 'yes'")),
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_BOOL(     's', NULL     , NULL,                    _("Log to syslog")),
         OPT_BOOL(     'p', NULL     , NULL,                    _("Add program names to log")),
         OPT_END()
     };
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned opts = libreport_parse_opts(argc, argv, program_options, program_usage_string);
     unsigned op = (opts & OPTMASK_op);
     if (!op)
     {
@@ -106,7 +106,7 @@ int main(int argc, char** argv)
     }
     else if ((op-1) & op)
         /* "You must specify exactly one operation" */
-        show_usage_and_die(program_usage_string, program_options);
+        libreport_show_usage_and_die(program_usage_string, program_options);
 
     runaway_arguments = (argc - optind) > 1;
     missing_positional_argument = (opts & OPTMASK_need_arg) && (argc == optind);
@@ -114,7 +114,7 @@ int main(int argc, char** argv)
     /* Check for bad usage */
     if (runaway_arguments || (missing_positional_argument && op != OPT_list_events))
     {
-        show_usage_and_die(program_usage_string, program_options);
+        libreport_show_usage_and_die(program_usage_string, program_options);
     }
 
     argv += optind;
@@ -122,15 +122,15 @@ int main(int argc, char** argv)
 
     if (op == OPT_version)
     {
-        printf("%s "VERSION"\n", g_progname);
+        printf("%s "VERSION"\n", libreport_g_progname);
         return 0;
     }
 
-    export_abrt_envvars(opts & OPT_p);
+    libreport_export_abrt_envvars(opts & OPT_p);
     if (opts & OPT_s)
     {
-        openlog(msg_prefix, 0, LOG_DAEMON);
-        logmode = LOGMODE_SYSLOG;
+        openlog(libreport_msg_prefix, 0, LOG_DAEMON);
+        libreport_logmode = LOGMODE_SYSLOG;
     }
 
     char *dump_dir_name = argv[0];
@@ -141,7 +141,7 @@ int main(int argc, char** argv)
     /* At least, needed by ASK_YES_NO_YESFOREVER event command requests.
      * Removing of the following statement will get the yes forever stuff not
      * working. */
-    load_user_settings("report-cli");
+    libreport_load_user_settings("report-cli");
 
     /* Do the selected operation. */
     int exitcode = 0;
@@ -193,6 +193,6 @@ int main(int argc, char** argv)
     }
 
     /* At least, needed by ASK_YES_NO_YESFOREVER event command requests. */
-    save_user_settings();
+    libreport_save_user_settings();
     return exitcode;
 }

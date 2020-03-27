@@ -46,7 +46,7 @@ static GtkWidget *gtk_label_new_justify_left(const gchar *label_str)
 
 GList *add_option_widget(GList *options, GtkWidget *widget, event_option_t *option)
 {
-    option_widget_t *ow = (option_widget_t *)xmalloc(sizeof(*ow));
+    option_widget_t *ow = (option_widget_t *)libreport_xmalloc(sizeof(*ow));
     ow->widget = widget;
     ow->option = option;
     options = g_list_prepend(options, ow);
@@ -62,7 +62,7 @@ static void on_show_pass_cb(GtkToggleButton *tb, gpointer user_data)
 
 static void on_show_pass_store_cb(GtkToggleButton *tb, gpointer user_data)
 {
-    set_user_setting("store_passwords", gtk_toggle_button_get_active(tb) ? "no" : "yes");
+    libreport_set_user_setting("store_passwords", gtk_toggle_button_get_active(tb) ? "no" : "yes");
 }
 
 static unsigned add_one_row_to_grid(GtkGrid *table)
@@ -76,7 +76,7 @@ static unsigned add_one_row_to_grid(GtkGrid *table)
 void save_data_from_event_config_dialog(GList *widgets, event_config_t *ec)
 {
     dehydrate_config_dialog(widgets);
-    const char *const store_passwords_s = get_user_setting("store_passwords");
+    const char *const store_passwords_s = libreport_get_user_setting("store_passwords");
     libreport_save_event_config_data_to_user_storage(ec_get_name(ec),
                                            ec,
                                            !(store_passwords_s && !strcmp(store_passwords_s, "no")));
@@ -103,10 +103,10 @@ static void add_option_to_table(gpointer data, gpointer user_data)
 
     char *option_label;
     if (option->eo_label != NULL)
-        option_label = xstrdup(option->eo_label);
+        option_label = libreport_xstrdup(option->eo_label);
     else
     {
-        option_label = xstrdup(option->eo_name ? option->eo_name : "");
+        option_label = libreport_xstrdup(option->eo_name ? option->eo_name : "");
         /* Replace '_' with ' ' */
         char *p = option_label - 1;
         while (*++p)
@@ -169,7 +169,7 @@ static void add_option_to_table(gpointer data, gpointer user_data)
                              /*width,height:*/ 2, 1);
             if (option->eo_value != NULL)
                 gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(option_input),
-                                    string_to_bool(option->eo_value));
+                                    libreport_string_to_bool(option->eo_value));
             g_option_list = add_option_widget(g_option_list, option_input, option);
             break;
 
@@ -264,7 +264,7 @@ config_dialog_t *libreport_create_event_config_dialog_content(event_config_t *ev
         gtk_grid_attach(GTK_GRID(option_table), pass_store_cb,
                 /*left,top:*/ 0, last_row,
                 /*width,height:*/ 1, 1);
-        const char *store_passwords = get_user_setting("store_passwords");
+        const char *store_passwords = libreport_get_user_setting("store_passwords");
         if (store_passwords && !strcmp(store_passwords, "no"))
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(pass_store_cb), 1);
         g_signal_connect(pass_store_cb, "toggled", G_CALLBACK(on_show_pass_store_cb), NULL);
@@ -330,7 +330,7 @@ config_dialog_t *create_event_config_dialog(const char *event_name, GtkWindow *p
 
     GtkWindow *parent_window = parent ? parent : g_event_list_window;
 
-    char *window_title = xasprintf("%s - Reporting Configuration",
+    char *window_title = libreport_xasprintf("%s - Reporting Configuration",
             ec_get_screen_name(event) ? ec_get_screen_name(event) : event_name);
 
     GtkWidget *dialog = gtk_dialog_new_with_buttons(

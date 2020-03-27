@@ -20,7 +20,7 @@
 
 static bool rejected_name(const char *name, char **v, int flags)
 {
-    bool r = is_in_string_list(name, (const char *const *)v);
+    bool r = libreport_is_in_string_list(name, (const char *const *)v);
     if (flags & MAKEDESC_WHITELIST)
          r = !r;
     return r;
@@ -33,19 +33,19 @@ char *make_description_item_multiline(const char *name, const char *content)
     if (!eol)
         return NULL;
 
-    struct strbuf *buf = strbuf_new();
-    strbuf_append_str(buf, name);
-    strbuf_append_str(buf, ":\n");
+    struct strbuf *buf = libreport_strbuf_new();
+    libreport_strbuf_append_str(buf, name);
+    libreport_strbuf_append_str(buf, ":\n");
     for (;;)
     {
         eol = strchrnul(content, '\n');
-        strbuf_append_strf(buf, ":%.*s\n", (int)(eol - content), content);
+        libreport_strbuf_append_strf(buf, ":%.*s\n", (int)(eol - content), content);
         if (*eol == '\0' || eol[1] == '\0')
             break;
         content = eol + 1;
     }
 
-    return strbuf_free_nobuf(buf);
+    return libreport_strbuf_free_nobuf(buf);
 }
 
 static int list_cmp(const char *s1, const char *s2)
@@ -59,8 +59,8 @@ static int list_cmp(const char *s1, const char *s2)
             FILENAME_COUNT     ,
             NULL
     };
-    int s1_index = index_of_string_in_list(s1, list_order);
-    int s2_index = index_of_string_in_list(s2, list_order);
+    int s1_index = libreport_index_of_string_in_list(s1, list_order);
+    int s2_index = libreport_index_of_string_in_list(s2, list_order);
 
     if(s1_index < 0 && s2_index < 0)
         return strcmp(s1, s2);
@@ -74,12 +74,12 @@ static int list_cmp(const char *s1, const char *s2)
     return s1_index - s2_index;
 }
 
-char *make_description(problem_data_t *problem_data, char **names_to_skip,
+char *libreport_make_description(problem_data_t *problem_data, char **names_to_skip,
                        unsigned max_text_size, unsigned desc_flags)
 {
     INITIALIZE_LIBREPORT();
 
-    struct strbuf *buf_dsc = strbuf_new();
+    struct strbuf *buf_dsc = libreport_strbuf_new();
 
     const char *type = problem_data_get_content_or_NULL(problem_data,
                                                             FILENAME_TYPE);
@@ -125,18 +125,18 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
                 const char *crash_func = problem_data_get_content_or_NULL(problem_data,
                                                                           FILENAME_CRASH_FUNCTION);
                 if((done = (bool)crash_func))
-                    strbuf_append_strf(buf_dsc, "%s: %*s%s(): %s\n", key, pad, "", crash_func, output);
+                    libreport_strbuf_append_strf(buf_dsc, "%s: %*s%s(): %s\n", key, pad, "", crash_func, output);
             }
             else if (strcmp(FILENAME_UID, key) == 0)
             {
                 const char *username = problem_data_get_content_or_NULL(problem_data,
                                                                           FILENAME_USERNAME);
                 if((done = (bool)username))
-                    strbuf_append_strf(buf_dsc, "%s: %*s%s (%s)\n", key, pad, "", output, username);
+                    libreport_strbuf_append_strf(buf_dsc, "%s: %*s%s (%s)\n", key, pad, "", output, username);
             }
 
             if (!done)
-                strbuf_append_strf(buf_dsc, "%s: %*s%s\n", key, pad, "", output);
+                libreport_strbuf_append_strf(buf_dsc, "%s: %*s%s\n", key, pad, "", output);
 
             empty = false;
             free(formatted);
@@ -146,7 +146,7 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
     if (desc_flags & MAKEDESC_SHOW_URLS)
     {
         if (problem_data_get_content_or_NULL(problem_data, FILENAME_NOT_REPORTABLE) != NULL)
-            strbuf_append_strf(buf_dsc, "%s%*s%s\n", _("Reported:"), 16 - strlen(_("Reported:")), "" , _("cannot be reported"));
+            libreport_strbuf_append_strf(buf_dsc, "%s%*s%s\n", _("Reported:"), 16 - strlen(_("Reported:")), "" , _("cannot be reported"));
         else
         {
             const char *reported_to = problem_data_get_content_or_NULL(problem_data, FILENAME_REPORTED_TO);
@@ -157,7 +157,7 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
                 /* The value part begins on 17th column */
                 /*                        0123456789ABCDEF*/
                 const char *pad_prefix = "                ";
-                char *first_prefix = xasprintf("%s%*s", _("Reported:"), 16 - strlen(_("Reported:")), "");
+                char *first_prefix = libreport_xasprintf("%s%*s", _("Reported:"), 16 - strlen(_("Reported:")), "");
                 const char *prefix     = first_prefix;
                 for (GList *iter = reports; iter != NULL; iter = g_list_next(iter))
                 {
@@ -168,7 +168,7 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
                     if (url == NULL)
                         continue;
 
-                    strbuf_append_strf(buf_dsc, "%s%s\n", prefix, url);
+                    libreport_strbuf_append_strf(buf_dsc, "%s%s\n", prefix, url);
 
                     g_free(url);
 
@@ -217,7 +217,7 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
              || ((item->flags & CD_FLAG_TXT) && strlen(item->content) > max_text_size)
             ) {
                 if (append_empty_line)
-                    strbuf_append_char(buf_dsc, '\n');
+                    libreport_strbuf_append_char(buf_dsc, '\n');
                 append_empty_line = false;
 
                 unsigned long size = 0;
@@ -228,7 +228,7 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
                  */
                 int pad = 16 - (strlen(key) + 2);
                 if (pad < 0) pad = 0;
-                strbuf_append_strf(buf_dsc,
+                libreport_strbuf_append_strf(buf_dsc,
                         (!stat_err ? "%s: %*s%s file, %lu bytes\n" : "%s: %*s%s file\n"),
                         key,
                         pad, "",
@@ -277,9 +277,9 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
                 if (output)
                 {
                     if (!empty)
-                        strbuf_append_str(buf_dsc, "\n");
+                        libreport_strbuf_append_str(buf_dsc, "\n");
 
-                    strbuf_append_str(buf_dsc, output);
+                    libreport_strbuf_append_str(buf_dsc, output);
                     empty = false;
                     free(output);
                 }
@@ -291,7 +291,7 @@ char *make_description(problem_data_t *problem_data, char **names_to_skip,
 
     g_list_free(list);
 
-    return strbuf_free_nobuf(buf_dsc);
+    return libreport_strbuf_free_nobuf(buf_dsc);
 }
 
 /* Items we don't want to include to bz / logger */
@@ -314,9 +314,9 @@ static const char *const blacklisted_items[] = {
     NULL
 };
 
-char* make_description_logger(problem_data_t *problem_data, unsigned max_text_size)
+char *libreport_make_description_logger(problem_data_t *problem_data, unsigned max_text_size)
 {
-    return make_description(
+    return libreport_make_description(
                 problem_data,
                 (char**)blacklisted_items,
                 max_text_size,

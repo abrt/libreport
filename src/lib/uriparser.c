@@ -21,7 +21,7 @@
 
 #include <regex.h>
 
-int uri_userinfo_remove(const char *uri, char **result, char **scheme, char **hostname, char **username, char **password, char **location)
+int libreport_uri_userinfo_remove(const char *uri, char **result, char **scheme, char **hostname, char **username, char **password, char **location)
 {
     /* https://www.ietf.org/rfc/rfc3986.txt
      * Appendix B.  Parsing a URI Reference with a Regular Expression
@@ -46,7 +46,7 @@ int uri_userinfo_remove(const char *uri, char **result, char **scheme, char **ho
         return -EINVAL;
     }
 
-    char *ptr = xzalloc((strlen(uri) + 1) * sizeof(char));
+    char *ptr = libreport_xzalloc((strlen(uri) + 1) * sizeof(char));
     *result = ptr;
     if (scheme != NULL)
         *scheme = NULL;
@@ -94,7 +94,7 @@ int uri_userinfo_remove(const char *uri, char **result, char **scheme, char **ho
     { \
         size_t len = 0; \
         len = matchptr[(i)].rm_eo - matchptr[(i)].rm_so; \
-        if (output) *output = xstrndup(uri + matchptr[(i)].rm_so, len); \
+        if (output) *output = libreport_xstrndup(uri + matchptr[(i)].rm_so, len); \
         strncpy(ptr, uri + matchptr[(i)].rm_so, len); \
         ptr += len; \
     }
@@ -138,13 +138,13 @@ int uri_userinfo_remove(const char *uri, char **result, char **scheme, char **ho
                 }
 
                 if (password != NULL)
-                    *password = xstrndup(authority + colon + 1, at - colon - 1);
+                    *password = libreport_xstrndup(authority + colon + 1, at - colon - 1);
 
                 break;
             }
 
             if (username != NULL)
-                *username = xstrndup(authority, colon);
+                *username = libreport_xstrndup(authority, colon);
 
             ++at;
             break;
@@ -153,7 +153,7 @@ int uri_userinfo_remove(const char *uri, char **result, char **scheme, char **ho
         len -= at;
 
         if (hostname != NULL)
-            *hostname = xstrndup(authority + at, len);
+            *hostname = libreport_xstrndup(authority + at, len);
 
         strncpy(ptr, authority + at, len);
         ptr += len;

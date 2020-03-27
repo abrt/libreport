@@ -23,14 +23,14 @@
 static char *concat_str_vector(char **strings)
 {
 	if (!strings[0])
-		return xzalloc(1); // returns ""
+		return libreport_xzalloc(1); // returns ""
 
 	unsigned len = 0;
 	char **spp = strings;
 	while (*spp)
 		len += strlen(*spp++) + 1;
 
-	char *result = xmalloc(len);
+	char *result = libreport_xmalloc(len);
 
 	char *r = result;
 	spp = strings;
@@ -44,7 +44,7 @@ static char *concat_str_vector(char **strings)
 }
 
 /* Returns pid */
-pid_t fork_execv_on_steroids(int flags,
+pid_t libreport_fork_execv_on_steroids(int flags,
 		char **argv,
 		int *pipefds,
 		char **env_vec,
@@ -61,9 +61,9 @@ pid_t fork_execv_on_steroids(int flags,
 		flags &= ~(EXECFLG_INPUT | EXECFLG_OUTPUT);
 
 	if (flags & EXECFLG_INPUT)
-		xpipe(pipe_to_child);
+		libreport_xpipe(pipe_to_child);
 	if (flags & EXECFLG_OUTPUT)
-		xpipe(pipe_fm_child);
+		libreport_xpipe(pipe_fm_child);
 
 	/* Prepare it before fork, to avoid thread-unsafe malloc there */
 	char *prog_as_string = NULL;
@@ -83,12 +83,12 @@ pid_t fork_execv_on_steroids(int flags,
 		/* Child */
 
 		if (dir)
-			xchdir(dir);
+			libreport_xchdir(dir);
 
 		if (flags & EXECFLG_SETGUID) {
 			setgroups(1, &gid);
-			xsetregid(gid, gid);
-			xsetreuid(uid, uid);
+			libreport_xsetregid(gid, gid);
+			libreport_xsetreuid(uid, uid);
 		}
 
 		if (env_vec) {
@@ -104,15 +104,15 @@ pid_t fork_execv_on_steroids(int flags,
 			 * pipe_to_child[1] may be equal to STDIN_FILENO
 			 */
 			close(pipe_to_child[1]);
-			xmove_fd(pipe_to_child[0], STDIN_FILENO);
+			libreport_xmove_fd(pipe_to_child[0], STDIN_FILENO);
 		} else if (flags & EXECFLG_INPUT_NUL) {
-			xmove_fd(xopen("/dev/null", O_RDWR), STDIN_FILENO);
+			libreport_xmove_fd(libreport_xopen("/dev/null", O_RDWR), STDIN_FILENO);
 		}
 		if (flags & EXECFLG_OUTPUT) {
 			close(pipe_fm_child[0]);
-			xmove_fd(pipe_fm_child[1], STDOUT_FILENO);
+			libreport_xmove_fd(pipe_fm_child[1], STDOUT_FILENO);
 		} else if (flags & EXECFLG_OUTPUT_NUL) {
-			xmove_fd(xopen("/dev/null", O_RDWR), STDOUT_FILENO);
+			libreport_xmove_fd(libreport_xopen("/dev/null", O_RDWR), STDOUT_FILENO);
 		}
 
 		/* This should be done BEFORE stderr redirect */
@@ -120,9 +120,9 @@ pid_t fork_execv_on_steroids(int flags,
 
 		if (flags & EXECFLG_ERR2OUT) {
 			/* Want parent to see errors in the same stream */
-			xdup2(STDOUT_FILENO, STDERR_FILENO);
+			libreport_xdup2(STDOUT_FILENO, STDERR_FILENO);
 		} else if (flags & EXECFLG_ERR_NUL) {
-			xmove_fd(xopen("/dev/null", O_RDWR), STDERR_FILENO);
+			libreport_xmove_fd(libreport_xopen("/dev/null", O_RDWR), STDERR_FILENO);
 		}
 
 		if (flags & EXECFLG_SETSID)
@@ -151,7 +151,7 @@ pid_t fork_execv_on_steroids(int flags,
 	return child;
 }
 
-char *run_in_shell_and_save_output(int flags,
+char *libreport_run_in_shell_and_save_output(int flags,
 		const char *cmd,
 		const char *dir,
 		size_t *size_p)
@@ -161,14 +161,14 @@ char *run_in_shell_and_save_output(int flags,
 
 	const char *argv[] = { "/bin/sh", "-c", cmd, NULL };
 	int pipeout[2];
-	pid_t child = fork_execv_on_steroids(flags, (char **)argv, pipeout,
+	pid_t child = libreport_fork_execv_on_steroids(flags, (char **)argv, pipeout,
 		/*env_vec:*/ NULL, dir, /*uid (unused):*/ 0);
 
 	size_t pos = 0;
 	char *result = NULL;
 	while (1) {
-		result = (char*) xrealloc(result, pos + 4*1024 + 1);
-		size_t sz = safe_read(pipeout[0], result + pos, 4*1024);
+		result = (char*) libreport_xrealloc(result, pos + 4*1024 + 1);
+		size_t sz = libreport_safe_read(pipeout[0], result + pos, 4*1024);
 		if (sz <= 0) {
 			break;
 		}
@@ -178,12 +178,12 @@ char *run_in_shell_and_save_output(int flags,
 	if (size_p)
 		*size_p = pos;
 	close(pipeout[0]);
-	safe_waitpid(child, NULL, 0);
+	libreport_safe_waitpid(child, NULL, 0);
 
 	return result;
 }
 
-pid_t safe_waitpid(pid_t pid, int *wstat, int options)
+pid_t libreport_safe_waitpid(pid_t pid, int *wstat, int options)
 {
 	pid_t r;
 

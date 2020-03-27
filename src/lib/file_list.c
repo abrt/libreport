@@ -19,7 +19,7 @@
 
 #include "internal_libreport.h"
 
-GList *get_file_list(const char *path, const char *ext_filter)
+GList *libreport_get_file_list(const char *path, const char *ext_filter)
 {
     /* Load .$ext files */
     DIR *dir;
@@ -34,7 +34,7 @@ GList *get_file_list(const char *path, const char *ext_filter)
         /* skip . and .. */
         if (strcmp(dent->d_name, ".") == 0 || strcmp(dent->d_name, "..") == 0)
             continue;
-        char *fullname = concat_path_file(path, dent->d_name);
+        char *fullname = libreport_concat_path_file(path, dent->d_name);
         char *ext = NULL;
 
         if (ext_filter)
@@ -77,15 +77,15 @@ GList *get_file_list(const char *path, const char *ext_filter)
                 *ext = '\0';
             }
             free(fullname);
-            fullname = concat_path_file(path, target);
-            files = g_list_prepend(files, new_file_obj(fullname, target));
+            fullname = libreport_concat_path_file(path, target);
+            files = g_list_prepend(files, libreport_new_file_obj(fullname, target));
             g_free(link);
             g_free(target);
 
             goto next;
         }
 
-        file_obj_t *file = new_file_obj(fullname, dent->d_name);
+        file_obj_t *file = libreport_new_file_obj(fullname, dent->d_name);
         files = g_list_prepend(files, file);
  next:
         free(fullname);
@@ -95,7 +95,7 @@ GList *get_file_list(const char *path, const char *ext_filter)
     return files;
 }
 
-void free_file_list(GList *filelist)
+void libreport_free_file_list(GList *filelist)
 {
-    g_list_free_full(filelist, (GDestroyNotify)free_file_obj);
+    g_list_free_full(filelist, (GDestroyNotify)libreport_free_file_obj);
 }

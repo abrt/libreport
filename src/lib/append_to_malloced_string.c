@@ -18,10 +18,10 @@
 */
 #include "internal_libreport.h"
 
-char *append_to_malloced_string(char *mstr, const char *append)
+char *libreport_append_to_malloced_string(char *mstr, const char *append)
 {
 	unsigned mlen = strlen(mstr);
-	mstr = (char*) xrealloc(mstr, mlen + strlen(append) + 1);
+	mstr = (char*) libreport_xrealloc(mstr, mlen + strlen(append) + 1);
 	strcpy(mstr + mlen, append);
 	return mstr;
 }

@@ -30,27 +30,27 @@ DBusConnection* g_dbus_conn;
 //{
 //    dbus_bool_t db = val;
 //    if (!dbus_message_iter_append_basic(iter, DBUS_TYPE_BOOLEAN, &db))
-//        die_out_of_memory();
+//        libreport_die_out_of_memory();
 //}
 void store_int32(DBusMessageIter* iter, int32_t val)
 {
     if (!dbus_message_iter_append_basic(iter, DBUS_TYPE_INT32, &val))
-        die_out_of_memory();
+        libreport_die_out_of_memory();
 }
 void store_uint32(DBusMessageIter* iter, uint32_t val)
 {
     if (!dbus_message_iter_append_basic(iter, DBUS_TYPE_UINT32, &val))
-        die_out_of_memory();
+        libreport_die_out_of_memory();
 }
 void store_int64(DBusMessageIter* iter, int64_t val)
 {
     if (!dbus_message_iter_append_basic(iter, DBUS_TYPE_INT64, &val))
-        die_out_of_memory();
+        libreport_die_out_of_memory();
 }
 void store_uint64(DBusMessageIter* iter, uint64_t val)
 {
     if (!dbus_message_iter_append_basic(iter, DBUS_TYPE_UINT64, &val))
-        die_out_of_memory();
+        libreport_die_out_of_memory();
 }
 
 void store_string(DBusMessageIter* iter, const char* val)
@@ -58,9 +58,9 @@ void store_string(DBusMessageIter* iter, const char* val)
     /* dbus daemon will simply close our connection if we send broken utf8.
      * Therefore we must never do that.
      */
-    const char *sanitized = sanitize_utf8(val, /*ctrl:*/ 0);
+    const char *sanitized = libreport_sanitize_utf8(val, /*ctrl:*/ 0);
     if (!dbus_message_iter_append_basic(iter, DBUS_TYPE_STRING, sanitized ? &sanitized : &val))
-        die_out_of_memory();
+        libreport_die_out_of_memory();
     free((char*)sanitized);
 }
 
@@ -218,7 +218,7 @@ static dbus_bool_t add_watch(DBusWatch *watch, void* data)
 {
     log_debug("%s(watch:%p, data)", __func__, watch);
 
-    watch_app_info_t* app_info = (watch_app_info_t*)xzalloc(sizeof(*app_info));
+    watch_app_info_t* app_info = (watch_app_info_t*)libreport_xzalloc(sizeof(*app_info));
     dbus_watch_set_data(watch, app_info, free);
 
     int fd = dbus_watch_get_unix_fd(watch);
@@ -309,7 +309,7 @@ void attach_dbus_conn_to_glib_main_loop(DBusConnection* conn,
                 NULL /* free_data_function */
                 )
     ) {
-        die_out_of_memory();
+        libreport_die_out_of_memory();
     }
     log_debug("dbus_connection_set_timeout_functions");
     if (!dbus_connection_set_timeout_functions(conn,
@@ -320,7 +320,7 @@ void attach_dbus_conn_to_glib_main_loop(DBusConnection* conn,
                 NULL /* free_data_function */
                 )
     ) {
-        die_out_of_memory();
+        libreport_die_out_of_memory();
     }
 
     if (object_path && message_received_func)
@@ -337,7 +337,7 @@ void attach_dbus_conn_to_glib_main_loop(DBusConnection* conn,
                     NULL /* data */
                     )
         ) {
-            die_out_of_memory();
+            libreport_die_out_of_memory();
         }
     }
 }

@@ -114,8 +114,8 @@ int libreport_ask_yes_no_yesforever(const char *key, const char *question)
     {   /* Load an value for the key from user setting.
          * NO means 'Don't ask me again, I said yes forever'.
          */
-        const char *option = get_user_setting(key);
-        if (option && string_to_bool(option) == false)
+        const char *option = libreport_get_user_setting(key);
+        if (option && libreport_string_to_bool(option) == false)
             return 1;
     }
 
@@ -140,11 +140,11 @@ int libreport_ask_yes_no_yesforever(const char *key, const char *question)
     if ((is_slave_mode() && response[0] == 'f') || strncasecmp(forever, response, strlen(forever)) == 0)
     {
         /* NO means 'Don't ask me again, I said yes forever'. */
-        set_user_setting(key, "no");
+        libreport_set_user_setting(key, "no");
         return 1;
     }
     else
-        set_user_setting(key, "yes");
+        libreport_set_user_setting(key, "yes");
 
     return ((is_slave_mode() && response[0] == 'y') || strncasecmp(yes, response, strlen(yes)) == 0);
 }
@@ -174,9 +174,9 @@ int libreport_ask_yes_no_save_result(const char *key, const char *question)
          * NO means never
          * 'no_value' means ask me
          */
-        const char *option = get_user_setting(key);
+        const char *option = libreport_get_user_setting(key);
         if (option)
-            return string_to_bool(option);
+            return libreport_string_to_bool(option);
     }
 
     if (is_slave_mode())
@@ -199,12 +199,12 @@ int libreport_ask_yes_no_save_result(const char *key, const char *question)
 
     if ((is_slave_mode() && response[0] == 'f') || strncasecmp(forever, response, strlen(forever)) == 0)
     {
-        set_user_setting(key, "yes");
+        libreport_set_user_setting(key, "yes");
         return 1;
     }
     else if ((is_slave_mode() && response[0] == 'e') || strncasecmp(never, response, strlen(never)) == 0)
     {
-        set_user_setting(key, "no");
+        libreport_set_user_setting(key, "no");
         return 0;
     }
 
@@ -224,11 +224,11 @@ char *libreport_ask(const char *question)
     {
         putchar('\n');
         fflush(stdout);
-        return xstrdup("");
+        return libreport_xstrdup("");
     }
 
-    char *result = xmalloc_fgets(stdin);
-    strtrimch(result, '\n');
+    char *result = libreport_xmalloc_fgets(stdin);
+    libreport_strtrimch(result, '\n');
 
     return result;
 }
@@ -246,13 +246,13 @@ char *libreport_ask_password(const char *question)
     {
         putchar('\n');
         fflush(stdout);
-        return xstrdup("");
+        return libreport_xstrdup("");
     }
 
     bool changed = libreport_set_echo(false);
 
-    char *result = xmalloc_fgets(stdin);
-    strtrimch(result, '\n');
+    char *result = libreport_xmalloc_fgets(stdin);
+    libreport_strtrimch(result, '\n');
 
     if (changed)
         libreport_set_echo(true);

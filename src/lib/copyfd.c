@@ -64,12 +64,12 @@ static off_t full_fd_action(int src_fd, int dst_fd, off_t size, int flags)
 	while (1) {
 		ssize_t rd, towrite;
 
-		rd = safe_read(src_fd, buffer, buffer_size);
+		rd = libreport_safe_read(src_fd, buffer, buffer_size);
 
 		if (!rd) { /* eof - all done */
 			if (last_was_seek) {
 				if (lseek(dst_fd, -1, SEEK_CUR) < 0
-				 || safe_write(dst_fd, "", 1) != 1
+				 || libreport_safe_write(dst_fd, "", 1) != 1
 				) {
 					perror_msg("%s", msg_write_error);
 					break;
@@ -106,7 +106,7 @@ static off_t full_fd_action(int src_fd, int dst_fd, off_t size, int flags)
 			} else {
  need2write:
 				{
-				    ssize_t wr = full_write(dst_fd, buffer, towrite);
+				    ssize_t wr = libreport_full_write(dst_fd, buffer, towrite);
 				    if (wr < towrite) {
 				        perror_msg("%s", msg_write_error);
 				        break;
@@ -128,7 +128,7 @@ static off_t full_fd_action(int src_fd, int dst_fd, off_t size, int flags)
 	return status ? -1 : total;
 }
 
-off_t copyfd_ext_at(int src, int dir_fd, const char *name, int mode, uid_t uid, gid_t gid, int open_flags, int copy_flags, off_t size)
+off_t libreport_copyfd_ext_at(int src, int dir_fd, const char *name, int mode, uid_t uid, gid_t gid, int open_flags, int copy_flags, off_t size)
 {
     int dst = openat(dir_fd, name, open_flags, mode);
     if (dst < 0)
@@ -149,7 +149,7 @@ off_t copyfd_ext_at(int src, int dir_fd, const char *name, int mode, uid_t uid, 
     return r;
 }
 
-off_t copyfd_size(int fd1, int fd2, off_t size, int flags)
+off_t libreport_copyfd_size(int fd1, int fd2, off_t size, int flags)
 {
 	if (size) {
 		off_t read = full_fd_action(fd1, fd2, size, flags);
@@ -161,23 +161,23 @@ off_t copyfd_size(int fd1, int fd2, off_t size, int flags)
 	return 0;
 }
 
-void copyfd_exact_size(int fd1, int fd2, off_t size)
+void libreport_copyfd_exact_size(int fd1, int fd2, off_t size)
 {
-	off_t sz = copyfd_size(fd1, fd2, size, /*flags:*/ 0);
+	off_t sz = libreport_copyfd_size(fd1, fd2, size, /*flags:*/ 0);
 	if (sz == size)
 		return;
 	if (sz != -1)
 		error_msg_and_die("short read");
 	/* if sz == -1, copyfd_XX already complained */
-	xfunc_die();
+	libreport_xfunc_die();
 }
 
-off_t copyfd_eof(int fd1, int fd2, int flags)
+off_t libreport_copyfd_eof(int fd1, int fd2, int flags)
 {
 	return full_fd_action(fd1, fd2, 0, flags);
 }
 
-off_t copy_file_ext_2at(int src_dir_fd, const char *src_name, int dir_fd, const char *name, int mode, uid_t uid, gid_t gid, int src_flags, int dst_flags)
+off_t libreport_copy_file_ext_2at(int src_dir_fd, const char *src_name, int dir_fd, const char *name, int mode, uid_t uid, gid_t gid, int src_flags, int dst_flags)
 {
     off_t r;
     int src = openat(src_dir_fd, src_name, src_flags);
@@ -187,7 +187,7 @@ off_t copy_file_ext_2at(int src_dir_fd, const char *src_name, int dir_fd, const 
         return -1;
     }
 
-    r = copyfd_ext_at(src, dir_fd, name, mode, uid, gid, dst_flags,
+    r = libreport_copyfd_ext_at(src, dir_fd, name, mode, uid, gid, dst_flags,
             /*copy flags*/0,
             /*read all data*/0);
 
@@ -195,7 +195,7 @@ off_t copy_file_ext_2at(int src_dir_fd, const char *src_name, int dir_fd, const 
     return r;
 }
 
-off_t copy_file_ext_at(const char *src_name, int dir_fd, const char *name, int mode, uid_t uid, gid_t gid, int src_flags, int dst_flags)
+off_t libreport_copy_file_ext_at(const char *src_name, int dir_fd, const char *name, int mode, uid_t uid, gid_t gid, int src_flags, int dst_flags)
 {
     off_t r;
     int src = open(src_name, src_flags);
@@ -205,7 +205,7 @@ off_t copy_file_ext_at(const char *src_name, int dir_fd, const char *name, int m
         return -1;
     }
 
-    r = copyfd_ext_at(src, dir_fd, name, mode, uid, gid, dst_flags,
+    r = libreport_copyfd_ext_at(src, dir_fd, name, mode, uid, gid, dst_flags,
             /*copy flags*/0,
             /*read all data*/0);
 
@@ -213,14 +213,14 @@ off_t copy_file_ext_at(const char *src_name, int dir_fd, const char *name, int m
     return r;
 }
 
-off_t copy_file_at(const char *src_name, int dir_fd, const char *name, int mode)
+off_t libreport_copy_file_at(const char *src_name, int dir_fd, const char *name, int mode)
 {
-    return copy_file_ext_at(src_name, dir_fd, name, mode, -1, -1,
+    return libreport_copy_file_ext_at(src_name, dir_fd, name, mode, -1, -1,
             O_RDONLY, O_WRONLY | O_TRUNC | O_CREAT);
 }
 
-off_t copy_file(const char *src_name, const char *dst_name, int mode)
+off_t libreport_copy_file(const char *src_name, const char *dst_name, int mode)
 {
-    return copy_file_ext(src_name, dst_name, mode, -1, -1,
+    return libreport_copy_file_ext(src_name, dst_name, mode, -1, -1,
             O_RDONLY, O_WRONLY | O_TRUNC | O_CREAT);
 }

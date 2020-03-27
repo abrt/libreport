@@ -16,7 +16,7 @@ AT_TESTFUN([region_specific_language],
 
 int main(void)
 {
-    g_verbose = 3;
+    libreport_g_verbose = 3;
 
     assert(setlocale(LC_ALL, "zh_CN") != NULL || !"setlocale() failed");
 

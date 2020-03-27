@@ -19,7 +19,7 @@
 */
 #include "internal_libreport.h"
 
-int prefixcmp(const char *str, const char *prefix)
+int libreport_prefixcmp(const char *str, const char *prefix)
 {
     for (; ; str++, prefix++)
         if (!*prefix)
@@ -28,7 +28,7 @@ int prefixcmp(const char *str, const char *prefix)
             return (unsigned char)*prefix - (unsigned char)*str;
 }
 
-int suffixcmp(const char *str, const char *suffix)
+int libreport_suffixcmp(const char *str, const char *suffix)
 {
     int len_minus_suflen = strlen(str) - strlen(suffix);
     if (len_minus_suflen < 0)
@@ -37,9 +37,9 @@ int suffixcmp(const char *str, const char *suffix)
         return strcmp(str + len_minus_suflen, suffix);
 }
 
-char *trim_all_whitespace(const char *str)
+char *libreport_trim_all_whitespace(const char *str)
 {
-    char *trim = xzalloc(sizeof(char) * strlen(str) + 1);
+    char *trim = libreport_xzalloc(sizeof(char) * strlen(str) + 1);
     int i = 0;
     while (*str)
     {
@@ -65,10 +65,9 @@ char *trim_all_whitespace(const char *str)
  *   0123456789 BCDEF -> 0123456789 ...
  *   012345 789ABCDEF -> 012345 789AB...
  */
-char *
-shorten_string_to_length(const char *str, unsigned length)
+char *libreport_shorten_string_to_length(const char *str, unsigned length)
 {
-    char *dup_str = xstrdup(str);
+    char *dup_str = libreport_xstrdup(str);
     if (strlen(str) > length)
     {
         char *max_end = dup_str + (length - strlen("..."));
@@ -101,13 +100,13 @@ shorten_string_to_length(const char *str, unsigned length)
  * Trims whitespace characters both from left and right side of a string.
  * Modifies the string in-place. Returns the trimmed string.
  */
-char *strtrim(char *str)
+char *libreport_strtrim(char *str)
 {
     if (!str)
         return NULL;
 
     /* Remove leading spaces */
-    overlapping_strcpy(str, skip_whitespace(str));
+    libreport_overlapping_strcpy(str, libreport_skip_whitespace(str));
 
     /* Remove trailing spaces */
     int i = strlen(str);
@@ -124,7 +123,7 @@ char *strtrim(char *str)
  * Trims characters both from left and right side of a string.
  * Modifies the string in-place. Returns the trimmed string.
  */
-char *strtrimch(char *str, int ch)
+char *libreport_strtrimch(char *str, int ch)
 {
     if (!str)
         return NULL;
@@ -133,7 +132,7 @@ char *strtrimch(char *str, int ch)
     char *tmp = str;
     while (*tmp == ch)
         ++tmp;
-    overlapping_strcpy(str, tmp);
+    libreport_overlapping_strcpy(str, tmp);
 
     /* Remove trailing characters */
     int i = strlen(str);
@@ -150,7 +149,7 @@ char *strtrimch(char *str, int ch)
  * Removes character from a string.
  * Modifies the string in-place. Returns the updated string.
  */
-char *strremovech(char *str, int ch)
+char *libreport_strremovech(char *str, int ch)
 {
     char *ret = str;
     char *res = str;
@@ -163,16 +162,16 @@ char *strremovech(char *str, int ch)
 }
 
 
-struct strbuf *strbuf_new(void)
+struct strbuf *libreport_strbuf_new(void)
 {
-    struct strbuf *buf = xzalloc(sizeof(*buf));
-    /*buf->len = 0; - done by xzalloc */
+    struct strbuf *buf = libreport_xzalloc(sizeof(*buf));
+    /*buf->len = 0; - done by libreport_xzalloc */
     buf->alloc = 8;
-    buf->buf = xzalloc(8);
+    buf->buf = libreport_xzalloc(8);
     return buf;
 }
 
-void strbuf_free(struct strbuf *strbuf)
+void libreport_strbuf_free(struct strbuf *strbuf)
 {
     if (!strbuf)
         return;
@@ -180,7 +179,7 @@ void strbuf_free(struct strbuf *strbuf)
     free(strbuf);
 }
 
-char *strbuf_free_nobuf(struct strbuf *strbuf)
+char *libreport_strbuf_free_nobuf(struct strbuf *strbuf)
 {
     char *ret = strbuf->buf;
     free(strbuf);
@@ -188,7 +187,7 @@ char *strbuf_free_nobuf(struct strbuf *strbuf)
 }
 
 
-void strbuf_clear(struct strbuf *strbuf)
+void libreport_strbuf_clear(struct strbuf *strbuf)
 {
     assert(strbuf->alloc > 0);
     strbuf->len = 0;
@@ -210,13 +209,13 @@ static char *strbuf_grow(struct strbuf *strbuf, unsigned increment)
         while (cur_size <= need)
             cur_size += 64 + cur_size / 8;
         strbuf->alloc = cur_size;
-        strbuf->buf = xrealloc(strbuf->buf, cur_size);
+        strbuf->buf = libreport_xrealloc(strbuf->buf, cur_size);
     }
     char *p = strbuf->buf + len;
     return p;
 }
 
-struct strbuf *strbuf_append_char(struct strbuf *strbuf, char c)
+struct strbuf *libreport_strbuf_append_char(struct strbuf *strbuf, char c)
 {
     char *p = strbuf_grow(strbuf, 1);
     *p++ = c;
@@ -224,7 +223,7 @@ struct strbuf *strbuf_append_char(struct strbuf *strbuf, char c)
     return strbuf;
 }
 
-struct strbuf *strbuf_append_str(struct strbuf *strbuf, const char *str)
+struct strbuf *libreport_strbuf_append_str(struct strbuf *strbuf, const char *str)
 {
     unsigned len = strlen(str);
     char *p = strbuf_grow(strbuf, len);
@@ -233,7 +232,7 @@ struct strbuf *strbuf_append_str(struct strbuf *strbuf, const char *str)
     return strbuf;
 }
 
-struct strbuf *strbuf_prepend_str(struct strbuf *strbuf, const char *str)
+struct strbuf *libreport_strbuf_prepend_str(struct strbuf *strbuf, const char *str)
 {
     unsigned cur_len = strbuf->len;
     unsigned inc_len = strlen(str);
@@ -244,39 +243,39 @@ struct strbuf *strbuf_prepend_str(struct strbuf *strbuf, const char *str)
     return strbuf;
 }
 
-struct strbuf *strbuf_append_strfv(struct strbuf *strbuf, const char *format, va_list p)
+struct strbuf *libreport_strbuf_append_strfv(struct strbuf *strbuf, const char *format, va_list p)
 {
-    char *string_ptr = xvasprintf(format, p);
-    strbuf_append_str(strbuf, string_ptr);
+    char *string_ptr = libreport_xvasprintf(format, p);
+    libreport_strbuf_append_str(strbuf, string_ptr);
     free(string_ptr);
     return strbuf;
 }
 
-struct strbuf *strbuf_append_strf(struct strbuf *strbuf, const char *format, ...)
+struct strbuf *libreport_strbuf_append_strf(struct strbuf *strbuf, const char *format, ...)
 {
     va_list p;
 
     va_start(p, format);
-    strbuf_append_strfv(strbuf, format, p);
+    libreport_strbuf_append_strfv(strbuf, format, p);
     va_end(p);
 
     return strbuf;
 }
 
-struct strbuf *strbuf_prepend_strfv(struct strbuf *strbuf, const char *format, va_list p)
+struct strbuf *libreport_strbuf_prepend_strfv(struct strbuf *strbuf, const char *format, va_list p)
 {
-    char *string_ptr = xvasprintf(format, p);
-    strbuf_prepend_str(strbuf, string_ptr);
+    char *string_ptr = libreport_xvasprintf(format, p);
+    libreport_strbuf_prepend_str(strbuf, string_ptr);
     free(string_ptr);
     return strbuf;
 }
 
-struct strbuf *strbuf_prepend_strf(struct strbuf *strbuf, const char *format, ...)
+struct strbuf *libreport_strbuf_prepend_strf(struct strbuf *strbuf, const char *format, ...)
 {
     va_list p;
 
     va_start(p, format);
-    strbuf_prepend_strfv(strbuf, format, p);
+    libreport_strbuf_prepend_strfv(strbuf, format, p);
     va_end(p);
 
     return strbuf;

@@ -27,10 +27,10 @@
  */
 static int connect_to_abrtd_socket()
 {
-    int socketfd = xsocket(AF_UNIX, SOCK_STREAM, 0);
+    int socketfd = libreport_xsocket(AF_UNIX, SOCK_STREAM, 0);
     if (socketfd == -1)
         return -1;
-    /*close_on_exec_on(socketfd); - not needed, we are closing it soon */
+    /*libreport_close_on_exec_on(socketfd); - not needed, we are closing it soon */
     struct sockaddr_un local;
     memset(&local, 0, sizeof(local));
     local.sun_family = AF_UNIX;
@@ -52,13 +52,13 @@ static int connect_to_abrtd_and_call_DeleteDebugDump(const char *dump_dir_name)
     int socketfd = connect_to_abrtd_socket();
     if (socketfd != -1)
     {
-        full_write(socketfd, "DELETE ", strlen("DELETE "));
-        full_write(socketfd, dump_dir_name, strlen(dump_dir_name));
-        full_write(socketfd, " HTTP/1.1\r\n\r\n", strlen(" HTTP/1.1\r\n\r\n"));
+        libreport_full_write(socketfd, "DELETE ", strlen("DELETE "));
+        libreport_full_write(socketfd, dump_dir_name, strlen(dump_dir_name));
+        libreport_full_write(socketfd, " HTTP/1.1\r\n\r\n", strlen(" HTTP/1.1\r\n\r\n"));
         shutdown(socketfd, SHUT_WR);
 
         char response[64];
-        int r = full_read(socketfd, response, sizeof(response) - 1);
+        int r = libreport_full_read(socketfd, response, sizeof(response) - 1);
         if (r >= 0)
         {
             log_notice("Response via socket:'%.*s'", r, response);
@@ -94,7 +94,7 @@ int problem_data_send_to_abrt(problem_data_t* problem_data)
         struct problem_item *value;
         g_hash_table_iter_init(&iter, problem_data);
 
-        full_write(socketfd, "PUT / HTTP/1.1\r\n\r\n", strlen("PUT / HTTP/1.1\r\n\r\n"));
+        libreport_full_write(socketfd, "PUT / HTTP/1.1\r\n\r\n", strlen("PUT / HTTP/1.1\r\n\r\n"));
         while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
         {
             if (value->flags & CD_FLAG_BIN)
@@ -111,14 +111,14 @@ int problem_data_send_to_abrt(problem_data_t* problem_data)
                 continue;
             }
 
-            char* msg = xasprintf("%s=%s", name, value->content);
-            full_write(socketfd, msg, strlen(msg)+1 /* yes, +1 coz we want to send the trailing 0 */);
+            char *msg = libreport_xasprintf("%s=%s", name, value->content);
+            libreport_full_write(socketfd, msg, strlen(msg)+1 /* yes, +1 coz we want to send the trailing 0 */);
             free(msg);
         }
         shutdown(socketfd, SHUT_WR);
 
         char response[64];
-        int r = full_read(socketfd, response, sizeof(response) - 1);
+        int r = libreport_full_read(socketfd, response, sizeof(response) - 1);
         if (r >= 0)
         {
             log_notice("Response via socket:'%.*s'", r, response);

@@ -41,8 +41,8 @@ static bool canonicalize_path(const char *path, char *canon_path)
 
     bool retval = false;
 
-    char *dirc = xstrdup(path);
-    char *basec = xstrdup(path);
+    char *dirc = libreport_xstrdup(path);
+    char *basec = libreport_xstrdup(path);
     /* Be ware that dirname("..") == ".." */
     char *dname = dirname(dirc);
     /* Be ware that basename("/"|".."|".") == "/"|".."|"." */
@@ -219,7 +219,7 @@ static bool internal_aug_get_all_option_names(augeas *aug, const char *real_path
         char ***matches, int *match_num, int flags)
 {
     /* We expect that the file tree contains only option and #comment nodes */
-    char *aug_expr = xasprintf("/files%s/*[label() != \"#comment\"]", real_path);
+    char *aug_expr = libreport_xasprintf("/files%s/*[label() != \"#comment\"]", real_path);
     *match_num = aug_match(aug, aug_expr, matches);
     free(aug_expr);
 
@@ -239,7 +239,7 @@ static bool internal_aug_get_all_option_names(augeas *aug, const char *real_path
         /* We expect that the path doesn't exist, therefore print ENOENT */
         /* message in verbose mode and all other error messages in */
         /* non-verbose mode. */
-        if (errno != ENOENT || g_verbose > 1)
+        if (errno != ENOENT || libreport_g_verbose > 1)
             perror_msg("Cannot read conf file '%s'", real_path);
 
         /* Return FALSE on ENOENT only if flags contains GAON_FAIL_ON_NOENT. */
@@ -260,7 +260,7 @@ static bool internal_aug_get_all_option_names(augeas *aug, const char *real_path
 
 /* Returns false if any error occurs, else returns true.
  */
-bool load_conf_file(const char *path, map_string_t *settings, bool skipKeysWithoutValue)
+bool libreport_load_conf_file(const char *path, map_string_t *settings, bool skipKeysWithoutValue)
 {
     bool retval = false;
     char real_path[PATH_MAX + 1];
@@ -300,7 +300,7 @@ bool load_conf_file(const char *path, map_string_t *settings, bool skipKeysWitho
         log_info("Loaded option '%s' = '%s'", option, value);
 
         if (!skipKeysWithoutValue || value[0] != '\0')
-            replace_map_string_item(settings, xstrdup(option), xstrdup(value));
+            replace_map_string_item(settings, libreport_xstrdup(option), libreport_xstrdup(value));
 
         free(matches[i]);
     }
@@ -318,7 +318,7 @@ finalize:
     return retval;
 }
 
-const char *get_user_conf_base_dir(void)
+const char *libreport_get_user_conf_base_dir(void)
 {
     static char *base_dir = NULL;
 
@@ -327,17 +327,17 @@ const char *get_user_conf_base_dir(void)
         return debug_base_dir;
 
     if (base_dir == NULL)
-        base_dir = concat_path_file(g_get_user_config_dir(), "abrt/settings/");
+        base_dir = libreport_concat_path_file(g_get_user_config_dir(), "abrt/settings/");
 
     return base_dir;
 }
 
-bool load_conf_file_from_dirs(const char *base_name, const char *const *directories, map_string_t *settings, bool skipKeysWithoutValue)
+bool libreport_load_conf_file_from_dirs(const char *base_name, const char *const *directories, map_string_t *settings, bool skipKeysWithoutValue)
 {
-    return load_conf_file_from_dirs_ext(base_name, directories, NULL, settings, skipKeysWithoutValue);
+    return libreport_load_conf_file_from_dirs_ext(base_name, directories, NULL, settings, skipKeysWithoutValue);
 }
 
-bool load_conf_file_from_dirs_ext(const char *base_name, const char *const *directories, const int *dir_flags, map_string_t *settings, bool skipKeysWithoutValue)
+bool libreport_load_conf_file_from_dirs_ext(const char *base_name, const char *const *directories, const int *dir_flags, map_string_t *settings, bool skipKeysWithoutValue)
 {
     if (NULL == directories || NULL == *directories)
     {
@@ -348,8 +348,8 @@ bool load_conf_file_from_dirs_ext(const char *base_name, const char *const *dire
     bool result = true;
     for (size_t i = 0; directories[i] != NULL; ++i)
     {
-        char *conf_file = concat_path_file(directories[i], base_name);
-        if (!load_conf_file(conf_file, settings, skipKeysWithoutValue))
+        char *conf_file = libreport_concat_path_file(directories[i], base_name);
+        if (!libreport_load_conf_file(conf_file, settings, skipKeysWithoutValue))
         {
             if (dir_flags && (dir_flags[i] & CONF_DIR_FLAG_OPTIONAL))
                 log_notice("Can't open '%s'", conf_file);
@@ -365,7 +365,7 @@ bool load_conf_file_from_dirs_ext(const char *base_name, const char *const *dire
     return result;
 }
 
-bool load_plugin_conf_file(const char *name, map_string_t *settings, bool skipKeysWithoutValue)
+bool libreport_load_plugin_conf_file(const char *name, map_string_t *settings, bool skipKeysWithoutValue)
 {
     const char *dirs[] = {
         PLUGINS_CONF_DIR,
@@ -376,7 +376,7 @@ bool load_plugin_conf_file(const char *name, map_string_t *settings, bool skipKe
     if (plugins_conf_dir != NULL)
         dirs[0] = plugins_conf_dir;
 
-    return load_conf_file_from_dirs(name, dirs, settings, skipKeysWithoutValue);
+    return libreport_load_conf_file_from_dirs(name, dirs, settings, skipKeysWithoutValue);
 }
 
 static int
@@ -389,7 +389,7 @@ cmpstringp(const void *p1, const void *p2)
 }
 
 /* Returns false if saving failed */
-bool save_conf_file(const char *path, map_string_t *settings)
+bool libreport_save_conf_file(const char *path, map_string_t *settings)
 {
     bool retval = false;
     char real_path[PATH_MAX + 1];
@@ -420,7 +420,7 @@ bool save_conf_file(const char *path, map_string_t *settings)
     init_map_string_iter(&iter, settings);
     while (next_map_string_iter(&iter, &name, &value))
     {
-        char *aug_path = xasprintf("/files%s/%s", real_path, name);
+        char *aug_path = libreport_xasprintf("/files%s/%s", real_path, name);
         const int ret = aug_set(aug, aug_path, value);
 
         /* Check whether the name already exists and if it exists remark it by
@@ -497,14 +497,14 @@ finalize:
     return retval;
 }
 
-bool save_plugin_conf_file(const char *name, map_string_t *settings)
+bool libreport_save_plugin_conf_file(const char *name, map_string_t *settings)
 {
     const char *plugins_conf_dir = getenv("LIBREPORT_DEBUG_PLUGINS_CONF_DIR");
     if (plugins_conf_dir == NULL)
         plugins_conf_dir = PLUGINS_CONF_DIR;
 
-    char *conf_path = concat_path_file(plugins_conf_dir, name);
-    bool ret = save_conf_file(conf_path, settings);
+    char *conf_path = libreport_concat_path_file(plugins_conf_dir, name);
+    bool ret = libreport_save_conf_file(conf_path, settings);
     free(conf_path);
 
     return ret;

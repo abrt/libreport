@@ -61,7 +61,7 @@ config_dialog_t *new_config_dialog(GtkWidget *dialog,
                                    gpointer config_data,
                                    config_save_fun_t save_fun)
 {
-    config_dialog_t *cdialog = (config_dialog_t *)xmalloc(sizeof(*cdialog));
+    config_dialog_t *cdialog = (config_dialog_t *)libreport_xmalloc(sizeof(*cdialog));
     cdialog->dialog = dialog;
     cdialog->data = config_data;
     cdialog->save_data = save_fun;
@@ -155,7 +155,7 @@ static void save_value_from_widget(gpointer data, gpointer user_data)
     if (val && (val[0] != '\0' || ow->option->eo_value != NULL))
     {
         free(ow->option->eo_value);
-        ow->option->eo_value = xstrdup(val);
+        ow->option->eo_value = libreport_xstrdup(val);
         log_notice("saved: %s:%s", ow->option->eo_name, ow->option->eo_value);
     }
 }
@@ -176,10 +176,10 @@ void libreport_add_item_to_config_liststore(gpointer cdialog, gpointer inf, gpoi
     log_notice("adding '%s' to workflow list\n", ci_get_screen_name(info));
     char *label;
     if (ci_get_screen_name(info) != NULL && ci_get_description(info) != NULL)
-        label = xasprintf("<b>%s</b>\n%s",ci_get_screen_name(info), ci_get_description(info));
+        label = libreport_xasprintf("<b>%s</b>\n%s",ci_get_screen_name(info), ci_get_description(info));
     else
         //if event has no xml description
-        label = xasprintf("<b>%s</b>\n%s", _("No description available"), ci_get_name(info));
+        label = libreport_xasprintf("<b>%s</b>\n%s", _("No description available"), ci_get_name(info));
 
     GtkTreeIter iter;
     gtk_list_store_append(list_store, &iter);

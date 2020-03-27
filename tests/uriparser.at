@@ -2,11 +2,11 @@
 
 AT_BANNER([uriparser])
 
-## ------------------- ##
-## uri_userinfo_remove ##
-## ------------------- ##
+## ----------------------------- ##
+## libreport_uri_userinfo_remove ##
+## ----------------------------- ##
 
-AT_TESTFUN([uri_userinfo_remove],
+AT_TESTFUN([libreport_uri_userinfo_remove],
 [[#include "internal_libreport.h"
 #include <assert.h>
 #include <string.h>
@@ -56,7 +56,7 @@ int test(int retval, const char *uri, const char *result, const char *scheme, co
     fprintf(stderr, "==== Testing: '%s'\n", uri);
     fprintf(stdout, "==== Testing: '%s'\n", uri);
 
-    int r = uri_userinfo_remove(uri, &outputs[0], &outputs[1], &outputs[2], &outputs[3], &outputs[4], &outputs[5]);
+    int r = libreport_uri_userinfo_remove(uri, &outputs[0], &outputs[1], &outputs[2], &outputs[3], &outputs[4], &outputs[5]);
     if (r != retval)
     {
         printf("Invalid retval %d != %d\n", retval, r);
@@ -96,7 +96,7 @@ int test(int retval, const char *uri, const char *result, const char *scheme, co
     fprintf(stdout, "== Test without arguments\n");
 
 
-    r = uri_userinfo_remove(uri, &outputs[0], NULL, NULL, NULL, NULL, NULL);
+    r = libreport_uri_userinfo_remove(uri, &outputs[0], NULL, NULL, NULL, NULL, NULL);
     if (r != retval)
     {
         printf("Invalid retval without arguments: %d != %d\n", retval, r);
@@ -111,7 +111,7 @@ int test(int retval, const char *uri, const char *result, const char *scheme, co
 
 int main(void)
 {
-    g_verbose=3;
+    libreport_g_verbose=3;
 
     int e = 0;
     e += test(      0, "ftp://root:password@", "ftp://", "ftp:", "", "root", "password", "");

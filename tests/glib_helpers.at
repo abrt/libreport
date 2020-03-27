@@ -6,14 +6,14 @@ AT_BANNER([glib helpers])
 ## parse a list ##
 ## ------------ ##
 
-AT_TESTFUN([parse_delimited_list],
+AT_TESTFUN([libreport_parse_delimited_list],
 [[
 #include "internal_libreport.h"
 #include <assert.h>
 
 int test(const char *list, const char *delimiter, const char *strings[])
 {
-    GList *l = parse_delimited_list(list, delimiter);
+    GList *l = libreport_parse_delimited_list(list, delimiter);
 
     char **tmp = (char **)strings;
     int retval = 0;

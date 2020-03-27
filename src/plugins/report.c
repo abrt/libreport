@@ -55,18 +55,18 @@ int main(int argc, char **argv)
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
-        OPT__VERBOSE(&g_verbose),
+        OPT__VERBOSE(&libreport_g_verbose),
         OPT_STRING('T', "target", &target, "TARGET", _("'rhts' or 'bugzilla'")),
         OPT_STRING('t', "ticket", &ticket, "ID"    , _("Ticket/case ID")),
         OPT_END()
     };
-    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
+    /*unsigned opts =*/ libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
-    export_abrt_envvars(0);
+    libreport_export_abrt_envvars(0);
 
     argv += optind;
     if (!*argv || !target || !ticket)
-        show_usage_and_die(program_usage_string, program_options);
+        libreport_show_usage_and_die(program_usage_string, program_options);
 
     const char *tool_name;
     if (strcmp(target, "rhts") == 0 || strcmp(target, "strata") == 0)
@@ -75,11 +75,11 @@ int main(int argc, char **argv)
     if (strcmp(target, "bugzilla") == 0)
         tool_name = "reporter-bugzilla";
     else
-        show_usage_and_die(program_usage_string, program_options);
+        libreport_show_usage_and_die(program_usage_string, program_options);
 
     argv -= 2;
     argv[0] = (char*) tool_name;
-    argv[1] = xasprintf("-t%s", ticket);
+    argv[1] = libreport_xasprintf("-t%s", ticket);
 
     execvp(argv[0], argv);
     perror_msg_and_die("Can't execute '%s'", argv[0]);
