@@ -24,10 +24,8 @@
 extern "C" {
 #endif
 
-#define is_comment_dup libreport_is_comment_dup
-int is_comment_dup(GList *comments, const char *comment);
-#define comments_find_best_bt_rating libreport_comments_find_best_bt_rating
-unsigned comments_find_best_bt_rating(GList *comments);
+int libreport_is_comment_dup(GList *comments, const char *comment);
+unsigned libreport_comments_find_best_bt_rating(GList *comments);
 
 #ifdef __cplusplus
 }

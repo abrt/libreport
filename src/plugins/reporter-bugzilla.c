@@ -912,7 +912,7 @@ int main(int argc, char **argv)
 
         const char *bzcomment = problem_report_get_description(pr);
 
-        int dup_comment = is_comment_dup(bz->bi_comments, bzcomment);
+        int dup_comment = libreport_is_comment_dup(bz->bi_comments, bzcomment);
         if (!dup_comment)
         {
             log_warning(_("Adding new comment to bug %d"), bz->bi_id);
