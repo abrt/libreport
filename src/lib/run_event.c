@@ -882,7 +882,7 @@ static void run_event_stdio_error_and_die(const char *error_line, void *param)
     error_msg_and_die("Can't write bytes to child's stdin");
 }
 
-char *exit_status_as_string(const char *progname, int status)
+char *libreport_exit_status_as_string(const char *progname, int status)
 {
     INITIALIZE_LIBREPORT();
 

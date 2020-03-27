@@ -806,7 +806,7 @@ static int run_event_chain_real(struct run_event_state *run_state,
         else if (retval != 0 || !l_state.output_was_produced)
         {
             /* Program failed, or finished successfully with no output. */
-            char *msg = exit_status_as_string(event_name, run_state->process_status);
+            char *msg = libreport_exit_status_as_string(event_name, run_state->process_status);
             fputs(msg, stdout);
             free(msg);
         }
