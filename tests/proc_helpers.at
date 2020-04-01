@@ -950,12 +950,20 @@ void check_file_contents(const char *filename)
 
     char const *pid_for_children = "default";
     char const *cgroup = "default";
+    const char *time = "default";
+    const char *time_for_children = "default";
 
     if (stat("/proc/self/ns/cgroup", &st) < 0 && errno == ENOENT)
         cgroup = "unknown";
 
     if (stat("/proc/self/ns/pid_for_children", &st) < 0 && errno == ENOENT)
         pid_for_children = "unknown";
+
+    if (stat("/proc/self/ns/time", &st) < 0 && ENOENT == errno)
+        time = "unknown";
+
+    if (stat("/proc/self/ns/time_for_children", &st) < 0 && ENOENT == errno)
+        time_for_children = "unknown";
 
     expected = xasprintf("ipc : default\n"
                          "mnt : default\n"
@@ -964,7 +972,10 @@ void check_file_contents(const char *filename)
                          "uts : default\n"
                          "user : default\n"
                          "cgroup : %s\n"
-                         "pid_for_children : %s\n", cgroup, pid_for_children);
+                         "pid_for_children : %s\n"
+                         "time : %s\n"
+                         "time_for_children : %s\n",
+                         cgroup, pid_for_children, time, time_for_children);
 
     char *file = xmalloc_xopen_read_close(filename, NULL);
     TS_ASSERT_STRING_EQ(file, expected, "Namespaces");
