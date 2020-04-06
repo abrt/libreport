@@ -118,6 +118,8 @@ xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax,
                         const char *product, const char *version, const char *component,
                         const char *duphash);
 
+xmlrpc_value *rhbz_get_sub_components(struct abrt_xmlrpc *ax, const char *product, const char *component);
+
 #ifdef __cplusplus
 }
 #endif
