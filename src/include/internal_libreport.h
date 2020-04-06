@@ -722,25 +722,25 @@ int get_env_variable_ext(int fd, char delim, const char *name, char **value);
 int get_env_variable(pid_t pid, const char *name, char **value);
 
 #define PROC_NS_UNSUPPORTED ((ino_t)-1)
-#define PROC_NS_ID_IPC 0
-#define PROC_NS_ID_MNT 1
-#define PROC_NS_ID_NET 2
-#define PROC_NS_ID_PID 3
-#define PROC_NS_ID_USER 4
-#define PROC_NS_ID_UTS 5
-#define PROC_NS_ID_CGROUP 6
-#define PROC_NS_ID_TIME 8
+#define PROC_NS_ID_CGROUP 0
+#define PROC_NS_ID_IPC 1
+#define PROC_NS_ID_MNT 2
+#define PROC_NS_ID_NET 3
+#define PROC_NS_ID_PID 4
+#define PROC_NS_ID_TIME 6
+#define PROC_NS_ID_USER 8
+#define PROC_NS_ID_UTS 9
 static const char * libreport_proc_namespaces[] = {
+    "cgroup",
     "ipc",
     "mnt",
     "net",
     "pid",
-    "uts",
-    "user",
-    "cgroup",
     "pid_for_children",
     "time",
     "time_for_children",
+    "user",
+    "uts",
 };
 
 struct ns_ids {
