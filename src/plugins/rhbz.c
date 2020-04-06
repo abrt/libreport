@@ -852,3 +852,85 @@ xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax,
 
     return bugs;
 }
+
+xmlrpc_value *rhbz_get_sub_components(struct abrt_xmlrpc *ax, const char *product, const char *component)
+{
+    xmlrpc_env env;
+    xmlrpc_env_init(&env);
+
+    /* The "components" struct itself doesn't have to be specified
+     * in the include_fields array because we specify the struct's members.
+     * By specifying "components.name", we get the "components" struct ok because
+     * it is implied.
+     * For some reason, the same doesn't work for "components.sub_components".
+     * If we only specify "components.sub_components.name" in include_fields,
+     * we don't get the "sub_components" struct at all. That's why include_fields
+     * has to contain both "components.sub_components" _and_
+     * "components.sub_components.name" even though the latter is a member of the
+     * former.
+     */
+    xmlrpc_value *products_array = abrt_xmlrpc_call(ax, "Product.get", "{s:(s),s:(sss)}",
+                                                    "names", product,
+                                                    "include_fields",
+                                                    "components.name",
+                                                    "components.sub_components",
+                                                    "components.sub_components.name");
+    if (env.fault_occurred)
+        abrt_xmlrpc_die(&env);
+
+    /* Extract the one product struct from the array.
+     * 'Actually, in the present implementation, you must specify this asterisk.
+     * That's because xmlrpc_decompose_value() is not capable of determining
+     * whether your format string extracts all the members of a structure,
+     * which is what no asterisk would imply. Some day, this will get fixed.'
+     *
+     * http://xmlrpc-c.sourceforge.net/doc/libxmlrpc.html#decomposevalue
+     */
+    xmlrpc_value *product_struct = NULL;
+    xmlrpc_decompose_value(&env, products_array, "{s:(S),*}", "products", &product_struct);
+    if (env.fault_occurred)
+        abrt_xmlrpc_die(&env);
+    xmlrpc_DECREF(products_array);
+
+    xmlrpc_value *components = rhbz_get_member("components", product_struct);
+    if (env.fault_occurred)
+        abrt_xmlrpc_die(&env);
+
+    unsigned array_size = rhbz_array_size(components);
+
+    const char *current_component;
+    xmlrpc_value *component_info = NULL;
+
+    xmlrpc_value *component_nameV = NULL;
+    for (unsigned i = 0; i < array_size; i++)
+    {
+        xmlrpc_array_read_item(&env, components, i, &component_info);
+        if (env.fault_occurred)
+            abrt_xmlrpc_die(&env);
+
+        if (!component_info)
+            continue;
+
+        xmlrpc_struct_find_value(&env, component_info, "name", &component_nameV);
+        if (env.fault_occurred)
+            abrt_xmlrpc_die(&env);
+        xmlrpc_read_string(&env, component_nameV, &current_component);
+
+        if (strcmp(current_component, component) == 0)
+        {
+            xmlrpc_DECREF(components);
+            xmlrpc_DECREF(component_nameV);
+            free((void *)current_component);
+            break;
+        }
+    }
+
+    xmlrpc_value *sub_components = NULL;
+    xmlrpc_struct_find_value(&env, component_info, "sub_components", &sub_components);
+    if (env.fault_occurred)
+        abrt_xmlrpc_die(&env);
+
+    xmlrpc_DECREF(component_info);
+
+    return sub_components;
+}
