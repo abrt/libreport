@@ -7,12 +7,13 @@
 # drstrangelove <sosyalhizmetler@gmail.com>, 2013
 # Serdar Sağlam <teknomobil@msn.com>, 2019. #zanata
 # Oğuz Ersen <oguzersen@protonmail.com>, 2020.
+# Anonymous <noreply@weblate.org>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2020-01-28 12:16+0000\n"
+"PO-Revision-Date: 2020-04-01 19:38+0000\n"
 "Last-Translator: Oğuz Ersen <oguzersen@protonmail.com>\n"
 "Language-Team: Turkish <https://translate.fedoraproject.org/projects/abrt/"
 "libreport/tr/>\n"
@@ -21,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
-"X-Generator: Weblate 3.10.3\n"
+"X-Generator: Weblate 3.11.3\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -30,6 +31,10 @@ msgid ""
 "   or: & [-vspy] -d PROBLEM_DIR\n"
 "   or: & [-vspy] -x PROBLEM_DIR"
 msgstr ""
+"& [-vsp] -L[ÖN_EK] [SORUN_DİZİNİ]\n"
+"   veya: & [-vspy] -e OLAY SORUN_DİZİNİ\n"
+"   veya: & [-vspy] -d SORUN_DİZİNİ\n"
+"   veya: & [-vspy] -x SORUN_DİZİNİ"
 
 #. short_name long_name  value    parameter_name  help
 #: ../src/cli/cli.c:89
@@ -42,7 +47,7 @@ msgstr "Yalnızca bu olayları çalıştır"
 
 #: ../src/cli/cli.c:91 ../src/gui-wizard-gtk/main.c:169
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "Bildirdikten sonra SORUN_DİZİNİ'ni kaldır"
 
 #: ../src/cli/cli.c:92
 msgid "Expert mode"
@@ -54,7 +59,7 @@ msgstr "Sürümü göster ve çık"
 
 #: ../src/cli/cli.c:94
 msgid "Noninteractive: don't ask questions, assume 'yes'"
-msgstr ""
+msgstr "Etkileşimsiz: soru sorma, 'evet' olarak cevaplandığını varsay"
 
 #: ../src/cli/cli.c:96
 msgid "Log to syslog"
@@ -115,19 +120,19 @@ msgstr "#Çökmenin nedeni"
 
 #: ../src/cli/cli-report.c:170
 msgid "# os-release configuration file from root dir"
-msgstr ""
+msgstr "# Kök dizinden os-release yapılandırma dosyası"
 
 #: ../src/cli/cli-report.c:175
 msgid "# Release string of the operating system from root dir"
-msgstr ""
+msgstr "# Kök dizinden işletim sisteminin sürüm dizesi"
 
 #: ../src/cli/cli-report.c:183
 msgid "# os-release configuration file"
-msgstr ""
+msgstr "# os-release yapılandırma dosyası"
 
 #: ../src/cli/cli-report.c:188
 msgid "# Release string of the operating system"
-msgstr ""
+msgstr "# İşletim sisteminin sürüm dizesi"
 
 #: ../src/cli/cli-report.c:319
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
@@ -164,6 +169,8 @@ msgid ""
 "Event '%s' requires permission to send possibly sensitive data. Do you want "
 "to continue?"
 msgstr ""
+"'%s' olayı, hassas olma ihtimali bulunan veriler gönderme izni "
+"gerektirmektedir. Devam etmek istiyor musunuz?"
 
 #: ../src/cli/cli-report.c:718
 msgid "You have chosen number out of range"
@@ -171,7 +178,7 @@ msgstr "Aralık dışında bir değer seçtin"
 
 #: ../src/cli/cli-report.c:723
 msgid "Invalid input, exiting."
-msgstr ""
+msgstr "Geçersiz girdi, program sonlandırılıyor."
 
 #: ../src/cli/cli-report.c:744
 msgid "Select an event to run: "
@@ -184,94 +191,100 @@ msgstr "Çalıştırılacak bir iş akışı seçin: "
 #: ../src/client-python/reportclient/debuginfo.py:100
 #, python-brace-format
 msgid "Extracting cpio from {0}"
-msgstr ""
+msgstr "{0} paketinden cpio çıkarılıyor"
 
 #: ../src/client-python/reportclient/debuginfo.py:105
 #, python-brace-format
 msgid "Can't write to '{0}': {1}"
-msgstr ""
+msgstr "'{0}' dosyasına yazılamıyor: {1}"
 
 #: ../src/client-python/reportclient/debuginfo.py:116
 #, python-brace-format
 msgid "Can't extract package '{0}'"
-msgstr ""
+msgstr "'{0}'paketi çıkarılamıyor"
 
 #: ../src/client-python/reportclient/debuginfo.py:124
 #, python-brace-format
 msgid "Caching files from {0} made from {1}"
-msgstr ""
+msgstr "{1} paketinden çıkarılan {0} arşivindeki dosyalar önbelleğe alınıyor"
 
 #: ../src/client-python/reportclient/debuginfo.py:148
 #, python-brace-format
 msgid "Can't extract files from '{0}'. For more information see '{1}'"
 msgstr ""
+"'{0}' arşivinden dosyalar çıkarılamıyor. Daha fazla bilgi için '{1}' "
+"dosyasına bakın"
 
 #: ../src/client-python/reportclient/debuginfo.py:163
 #, python-brace-format
 msgid "Can't remove '{0}': {1}"
-msgstr ""
+msgstr "'{0}' kaldırılamıyor: {1}"
 
 #: ../src/client-python/reportclient/debuginfo.py:205
 #: ../src/client-python/reportclient/debuginfo.py:214
 #, python-brace-format
 msgid "Downloading ({0} of {1}) {2}: {3:3}%"
-msgstr ""
+msgstr "({0} / {1}) {2} indiriliyor: %{3:3}"
 
 #: ../src/client-python/reportclient/debuginfo.py:306
 msgid "Initializing package manager"
-msgstr ""
+msgstr "Paket yöneticisi başlatılıyor"
 
 #. This takes some time, let user know what we are doing
 #: ../src/client-python/reportclient/debuginfo.py:310
 msgid "Setting up repositories"
-msgstr ""
+msgstr "Depolar ayarlanıyor"
 
 #: ../src/client-python/reportclient/debuginfo.py:313
 msgid "Looking for needed packages in repositories"
-msgstr ""
+msgstr "Gerekli paketler depolarda aranıyor"
 
 #: ../src/client-python/reportclient/debuginfo.py:347
 #, python-brace-format
 msgid "Can't find packages for {0} debuginfo files"
-msgstr ""
+msgstr "{0} debuginfo dosyası için paket bulunamıyor"
 
 #: ../src/client-python/reportclient/debuginfo.py:350
 #, python-brace-format
 msgid "Packages to download: {0}"
-msgstr ""
+msgstr "İndirilecek paketler: {0}"
 
 #: ../src/client-python/reportclient/debuginfo.py:352
 #, python-brace-format
 msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
-msgstr ""
+msgstr "{0:.2f}Mb indirilecek, kurulu boyut: {1:.2f}Mb. Devam edilsin mi?"
 
 #: ../src/client-python/reportclient/debuginfo.py:357
 #: ../src/client-python/reportclient/debuginfo.py:369
 #: ../src/client-python/reportclient/debuginfo.py:380
 msgid "Download cancelled by user"
-msgstr ""
+msgstr "İndirme işlemi kullanıcı tarafından iptal edildi"
 
 #: ../src/client-python/reportclient/debuginfo.py:364
 #, python-brace-format
 msgid ""
 "Warning: Not enough free space in tmp dir '{0}' ({1:.2f}Mb left). Continue?"
 msgstr ""
+"Uyarı: '{0}' geçici dizininde yeterli boş alan yok ({1:.2f}Mb kaldı). Devam "
+"edilsin mi?"
 
 #: ../src/client-python/reportclient/debuginfo.py:375
 #, python-brace-format
 msgid ""
 "Warning: Not enough free space in cache dir '{0}' ({1:.2f}Mb left). Continue?"
 msgstr ""
+"Uyarı: '{0}' önbellek dizininde yeterli boş alan yok ({1:.2f}Mb kaldı). "
+"Devam edilsin mi?"
 
 #: ../src/client-python/reportclient/debuginfo.py:398
 #, python-brace-format
 msgid "Downloading package {0} failed"
-msgstr ""
+msgstr "{0} paketi indirilemedi"
 
 #. recursively delete the temp dir on failure
 #: ../src/client-python/reportclient/debuginfo.py:405
 msgid "Unpacking failed, aborting download..."
-msgstr ""
+msgstr "Paketi açma başarısız, indirme işlemi iptal ediliyor..."
 
 #: ../src/client-python/reportclient/debuginfo.py:410
 #, python-brace-format
@@ -279,6 +292,8 @@ msgid ""
 "'{0}' must be owned by abrt. Please run '# chown -R abrt.abrt {0}' to fix "
 "the issue."
 msgstr ""
+"'{0}' dizininin sahibi abrt olmalıdır. Sorunu düzeltmek için lütfen '# chown "
+"-R abrt.abrt {0}' komutunu çalıştırın."
 
 #. Was: "All downloaded packages have been extracted, removing..."
 #. but it was appearing even if no packages were in fact extracted
@@ -286,71 +301,74 @@ msgstr ""
 #: ../src/client-python/reportclient/debuginfo.py:427
 #, python-brace-format
 msgid "Removing {0}"
-msgstr ""
+msgstr "{0} kaldırılıyor"
 
 #: ../src/client-python/reportclient/debuginfo.py:431
 #, python-brace-format
 msgid "Can't remove {0}, probably contains an error log"
-msgstr ""
+msgstr "{0} kaldırılamıyor, muhtemelen bir hata kaydı içeriyor"
 
 #: ../src/client-python/reportclient/dnfdebuginfo.py:89
 msgid "Error reading repository configuration: '{0!s}'"
-msgstr ""
+msgstr "Depo yapılandırması okunurken hata oluştu: '{0!s}'"
 
 #: ../src/client-python/reportclient/dnfdebuginfo.py:106
 msgid "Error setting up repositories: '{0!s}'"
-msgstr ""
+msgstr "Depolar kurulurken hata oluştu: '{0!s}'"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:66
 msgid ""
 "Problem '{0!s}' occured while downloading from mirror: '{1!s}'. Trying next "
 "one"
 msgstr ""
+"'{1!s}' yansısından indirilirken '{0!s}' sorunu oluştu. Bir sonraki deneniyor"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:100
 msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
-msgstr ""
+msgstr "Yum başlatılırken hata oluştu (YumBase.doConfigSetup): '{0!s}'"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:107
 msgid "Error: can't make cachedir, exiting"
-msgstr ""
+msgstr "Hata: önbellek dizini oluşturulamadı, program sonlandırılıyor"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:116
 msgid "Can't disable repository '{0!s}': {1!s}"
-msgstr ""
+msgstr "'{0!s}' deposu devre dışı bırakılamıyor: {1!s}"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:135
 msgid "Can't disable async download, the output might contain artifacts!"
 msgstr ""
+"Eşzamansız (async) indirme devre dışı bırakılamıyor, çıktıda bozulmalar "
+"olabilir!"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:137
 #, python-brace-format
 msgid "Can't setup {0}: {1}, disabling"
-msgstr ""
+msgstr "{0} kurulamadı: {1}, devre dışı bırakılıyor"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:147
 msgid "Error retrieving metadata: '{0!s}'"
-msgstr ""
+msgstr "Meta veriler alınırken hata oluştu: '{0!s}'"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:160
 msgid "Error retrieving filelists: '{0!s}'"
-msgstr ""
+msgstr "Dosya listeleri alınırken hata oluştu: '{0!s}'"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:204
 #, python-brace-format
 msgid "Cannot copy file '{0}': {1}"
-msgstr ""
+msgstr "'{0}' dosyası kopyalanamıyor: {1}"
 
 #. Follow GTK3's yes-no-buttons order:
 #. * [No] [Yes]
 #.
 #: ../src/gtk-helpers/ask_dialogs.c:87
 msgid "_No"
-msgstr ""
+msgstr "_Hayır"
 
 #: ../src/gtk-helpers/ask_dialogs.c:88
 msgid "_Yes"
-msgstr ""
+msgstr "_Evet"
 
 #: ../src/gtk-helpers/ask_dialogs.c:94
 msgid "Don't ask me again"
@@ -359,11 +377,11 @@ msgstr "Bir daha sorma"
 #. if event has no xml description
 #: ../src/gtk-helpers/config_dialog.c:182
 msgid "No description available"
-msgstr ""
+msgstr "Açıklama yok"
 
 #: ../src/gtk-helpers/config_dialog.c:338
 msgid "Configuration"
-msgstr ""
+msgstr "Yapılandırma"
 
 #. we can't use this, because we want the workflows first and hashtable
 #. * doesn't return the items in the order they were added
@@ -373,7 +391,7 @@ msgstr ""
 #: ../src/gtk-helpers/config_dialog.c:358
 #: ../src/gtk-helpers/config_dialog.c:417
 msgid "Workflows"
-msgstr ""
+msgstr "İş akışları"
 
 #: ../src/gtk-helpers/config_dialog.c:360
 #: ../src/gtk-helpers/config_dialog.c:362
@@ -383,7 +401,7 @@ msgstr "Olaylar"
 
 #: ../src/gtk-helpers/config_dialog.c:366
 msgid "C_onfigure"
-msgstr ""
+msgstr "_Yapılandır"
 
 #: ../src/gtk-helpers/config_dialog.c:368 ../src/gui-wizard-gtk/wizard.c:3206
 msgid "_Close"
@@ -399,7 +417,7 @@ msgstr "Şifreleri depolama"
 
 #: ../src/gtk-helpers/event_config_dialog.c:273
 msgid "Basic"
-msgstr ""
+msgstr "Temel"
 
 #: ../src/gtk-helpers/event_config_dialog.c:281
 msgid "Advanced"
@@ -407,7 +425,7 @@ msgstr "Gelişmiş"
 
 #: ../src/gtk-helpers/event_config_dialog.c:297
 msgid "Secret Service is not available, your settings won't be saved!"
-msgstr ""
+msgstr "Secret Service mevcut değil, ayarlarınız kaydedilmeyecek!"
 
 #: ../src/gtk-helpers/event_config_dialog.c:340
 #: ../src/gtk-helpers/workflow_config_dialog.c:90
@@ -424,48 +442,52 @@ msgstr "_Tamam"
 #, c-format
 msgid "Can't connect over DBus to name '%s' path '%s' interface '%s': %s"
 msgstr ""
+"isim '%s' yol '%s' arayüz '%s' ögesine DBus üzerinden bağlanılamıyor: %s"
 
 #: ../src/gtk-helpers/secrets.c:191
 #, c-format
 msgid "Can't call method '%s' over DBus on path '%s' interface '%s': %s"
 msgstr ""
+"'%s' yöntemi, '%s' yolu '%s' arayüzü için DBus üzerinden çağrılamıyor: %s"
 
 #: ../src/gtk-helpers/secrets.c:549
 msgid ""
 "A timeout was reached while waiting for a prompt result from the DBus Secret "
 "Service."
-msgstr ""
+msgstr "DBus Secret Service'ten bir cevap beklenirken zaman aşımına ulaşıldı."
 
 #: ../src/gtk-helpers/secrets.c:552
 msgid ""
 "Do you want to stop waiting and continue in reporting without properly "
 "loaded configuration?"
 msgstr ""
+"Beklemeyi sonlandırmak ve düzgün yüklenmiş yapılandırma olmadan raporlamaya "
+"devam etmek istiyor musunuz?"
 
 #: ../src/gtk-helpers/secrets.c:862
 #, c-format
 msgid "D-Bus Secrets Service ReadAlias('%s') method failed: %s"
-msgstr ""
+msgstr "D-Bus Secrets Service ReadAlias('%s') yöntemi başarısız oldu: %s"
 
 #. if the error wasn't about invalid properties we have an another problem
 #: ../src/gtk-helpers/secrets.c:1104
 #, c-format
 msgid "Can't create a secret item for event '%s': %s"
-msgstr ""
+msgstr "'%s' olayı için bir gizli öge oluşturulamıyor: %s"
 
 #: ../src/gtk-helpers/secrets.c:1286
 #, c-format
 msgid "can't get secret value of '%s': %s"
-msgstr ""
+msgstr "'%s' ögesinin gizli değeri alınamıyor: %s"
 
 #: ../src/gtk-helpers/problem_details_widget.c:198
 #, c-format
 msgid "$DATA_DIRECTORY/%s (binary file, %s)"
-msgstr ""
+msgstr "$DATA_DIRECTORY/%s (ikili dosya, %s)"
 
 #: ../src/gtk-helpers/problem_details_dialog.c:30
 msgid "Problem details"
-msgstr ""
+msgstr "Sorun ayrıntıları"
 
 #: ../src/gtk-helpers/problem_details_dialog.c:33
 msgid "OK"
@@ -485,6 +507,10 @@ msgid ""
 "\n"
 "GUI tool to analyze and report problem saved in specified PROBLEM_DIR"
 msgstr ""
+"& [-vpdx] [-e OLAY]... [-g GUI_DOSYASI] SORUN_DİZİNİ\n"
+"\n"
+"Belirtilen SORUN_DİZİNİ içine kaydedilen sorunu analiz etmek ve bildirmek "
+"için GUI aracı"
 
 #: ../src/gui-wizard-gtk/wizard.c:340
 #, c-format
@@ -492,6 +518,8 @@ msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved data?"
 msgstr ""
+"Yazılabilir bir dizine ihtiyaç var, ancak '%s' yazılabilir değil. '%s' "
+"dizinine taşınsın ve taşınan veriler üzerinde çalışılsın mı?"
 
 #: ../src/gui-wizard-gtk/wizard.c:723
 msgid "View/edit a text file"
@@ -499,7 +527,7 @@ msgstr "Bir metin dosyasını görüntüle/düzenle"
 
 #: ../src/gui-wizard-gtk/wizard.c:731
 msgid "_Save"
-msgstr ""
+msgstr "_Kaydet"
 
 #: ../src/gui-wizard-gtk/wizard.c:874
 msgid ""
@@ -507,16 +535,21 @@ msgid ""
 "please provide a comprehensive description of the problem you have "
 "encountered."
 msgstr ""
+"Bilinen bir tekrar oluşturma yöntemi olmayan çökmelerin teşhis edilmesi zor "
+"olabileceğinden, lütfen karşılaştığınız sorunun kapsamlı bir açıklamasını "
+"sağlayın."
 
 #: ../src/gui-wizard-gtk/wizard.c:881
 msgid ""
 "Please provide a short description of the problem and please include the "
 "steps you have used to reproduce the problem."
 msgstr ""
+"Lütfen sorunun kısa bir açıklamasını sağlayın ve lütfen sorunu yeniden "
+"oluşturmak için kullandığınız adımları dahil edin."
 
 #: ../src/gui-wizard-gtk/wizard.c:888
 msgid "Please provide the steps you have used to reproduce the problem."
-msgstr ""
+msgstr "Lütfen sorunu yeniden oluşturmak için kullandığınız adımları belirtin."
 
 #: ../src/gui-wizard-gtk/wizard.c:1009
 msgid "(click here to view/edit)"
@@ -538,7 +571,7 @@ msgstr "%llu byte, %u dosya"
 
 #: ../src/gui-wizard-gtk/wizard.c:1381
 msgid "Processing was canceled"
-msgstr ""
+msgstr "İşleme iptal edildi"
 
 #: ../src/gui-wizard-gtk/wizard.c:1561
 msgid ""
@@ -548,6 +581,11 @@ msgid ""
 "\t▫ <b>corrupted problem data</b>\n"
 "\t▫ <b>invalid configuration</b>"
 msgstr ""
+"Sorunun işlenmesi başarısız oldu. Bunun birçok nedeni olabilir, ancak en "
+"yaygın üç tanesi şunlardır:\n"
+"\t▫ <b>ağ bağlantısı sorunları</b>\n"
+"\t▫ <b>bozuk sorun verileri</b>\n"
+"\t▫ <b>geçersiz yapılandırma</b>"
 
 #: ../src/gui-wizard-gtk/wizard.c:1567
 msgid ""
@@ -556,31 +594,35 @@ msgid ""
 "in the application menu and after applying the configuration changes click "
 "<b>Repeat</b> button."
 msgstr ""
+"Yapılandırmayı güncellemek ve tekrar bildirmeye çalışmak istiyorsanız, "
+"lütfen uygulama menüsünde <b>Tercihler</b>\n"
+"ögesini açın ve yapılandırma değişikliklerini uyguladıktan sonra "
+"<b>Tekrarla</b> düğmesine tıklayın."
 
 #: ../src/gui-wizard-gtk/wizard.c:1689
 msgid "Processing was interrupted because the problem is not reportable."
-msgstr ""
+msgstr "Sorun bildirilemediği için işleme yarıda kesildi."
 
 #: ../src/gui-wizard-gtk/wizard.c:1699 ../src/gui-wizard-gtk/wizard.c:1773
 msgid "Processing failed."
-msgstr ""
+msgstr "İşleme başarısız oldu."
 
 #. No next event, go to progress page and finish.
 #: ../src/gui-wizard-gtk/wizard.c:1706 ../src/gui-wizard-gtk/wizard.c:2594
 msgid "Processing finished."
-msgstr ""
+msgstr "İşleme tamamlandı."
 
 #: ../src/gui-wizard-gtk/wizard.c:1707
 msgid "Processing finished, please proceed to the next step."
-msgstr ""
+msgstr "İşleme tamamlandı, lütfen bir sonraki adıma geçin."
 
 #: ../src/gui-wizard-gtk/wizard.c:1770
 msgid "No commands could be found for processsing the crashdump.\n"
-msgstr ""
+msgstr "Çökme dökümünü işlemek için komut bulunamadı.\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1785
 msgid "Processing interrupted: can't continue without writable directory."
-msgstr ""
+msgstr "İşleme yarıda kesildi: yazılabilir dizin olmadan devam edilemiyor."
 
 #: ../src/gui-wizard-gtk/wizard.c:1808
 #, c-format
@@ -589,10 +631,13 @@ msgid ""
 "No matching actions found for this event.\n"
 "\n"
 msgstr ""
+"--- %s atlanıyor ---\n"
+"Bu olay için eşleşen eylem bulunamadı.\n"
+"\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1843
 msgid "Processing..."
-msgstr ""
+msgstr "İşleniyor..."
 
 #: ../src/gui-wizard-gtk/wizard.c:1925
 msgid ""
@@ -1271,7 +1316,7 @@ msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:10
 msgid "Groups"
-msgstr ""
+msgstr "Gruplar"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:11
 msgid ""
@@ -1887,7 +1932,7 @@ msgstr "Sıkıştırılmış veri"
 
 #: ../src/plugins/reporter-rhtsupport.c:869
 msgid "Can't create temporary file in "
-msgstr ""
+msgstr "Şurada geçici dosya oluşturulamıyor: "
 
 #. Check for hints and show them if we have something
 #: ../src/plugins/reporter-rhtsupport.c:880
