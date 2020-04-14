@@ -934,3 +934,69 @@ xmlrpc_value *rhbz_get_sub_components(struct abrt_xmlrpc *ax, const char *produc
 
     return sub_components;
 }
+
+char *rhbz_get_default_sub_component(const char *component, xmlrpc_value *sub_components)
+{
+    /* Here are some reasonably-looking default subcomponents for components
+     * that have those as of this writing. See if we have a hardcoded deafult,
+     * and check if it actually exists in the sub_components array. Otherwise
+     * just pick whatever comes last.
+     */
+
+    const char *defaults[][2] =
+    {
+            {"binutils",      "system-version"},
+            {"Documentation", "default"},
+            {"dwz",           "system-version"},
+            {"dynist",        "system-version"},
+            {"elfutils",      "system-version"},
+            {"gcc",           "system-version"},
+            {"gdb",           "system-version"},
+            {"kernel",        "Other"},
+            {"kernel-rt",     "Other"},
+            {"kpatch",        "kpatch-utility"},
+            {"ltrace",        "system-version"},
+            {"lvm2",          "Default / Unclassified"},
+            {"make",          "system-version"},
+            {"systemtap",     "system-version"},
+            {"test",          "sub1"},
+            {"valgrind",      "system-version"},
+            {"virtio-win",    "distribution"}
+    };
+    char *candidate = NULL;
+
+    for (int i = 0; i < G_N_ELEMENTS(defaults); i++)
+        if (strcmp(component, defaults[i][0]) == 0)
+        {
+            candidate = (char*)defaults[i][1];
+            break;
+        }
+
+    const char *sc_str_name;
+    xmlrpc_value *sc_struct = NULL;
+    xmlrpc_value *sc_name = NULL;
+
+    xmlrpc_env env;
+    xmlrpc_env_init(&env);
+
+    unsigned sc_array_size = rhbz_array_size(sub_components);
+    if (candidate)
+    {
+        for (unsigned i = 0; i < sc_array_size; i++)
+        {
+            xmlrpc_array_read_item(&env, sub_components, i, &sc_struct);
+            xmlrpc_struct_find_value(&env, sc_struct, "name", &sc_name);
+            xmlrpc_read_string(&env, sc_name, &sc_str_name);
+            if (strcmp(candidate, sc_str_name) == 0)
+                break;
+        }
+    }
+    else
+    {
+        xmlrpc_array_read_item(&env, sub_components, sc_array_size - 1, &sc_struct);
+        xmlrpc_struct_find_value(&env, sc_struct, "name", &sc_name);
+        xmlrpc_read_string(&env, sc_name, &sc_str_name);
+    }
+
+    return (char *)sc_str_name;
+}
