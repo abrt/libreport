@@ -1,24 +1,24 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
-# scootergrisen <scootergrisen@gmail.com>, 2018. #zanata
+# scootergrisen <scootergrisen@gmail.com>, 2018. #zanata, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2018-10-28 01:22+0000\n"
+"PO-Revision-Date: 2020-04-10 18:40+0000\n"
 "Last-Translator: scootergrisen <scootergrisen@gmail.com>\n"
-"Language-Team: Danish (http://www.transifex.com/projects/p/libreport/"
-"language/da/)\n"
+"Language-Team: Danish <https://translate.fedoraproject.org/projects/abrt/"
+"libreport/da/>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.11.3\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -614,6 +614,7 @@ msgstr "Behandling færdig, fortsæt venligst til det næste trin."
 #: ../src/gui-wizard-gtk/wizard.c:1770
 msgid "No commands could be found for processsing the crashdump.\n"
 msgstr ""
+"Der blev ikke fundet nogen kommandoer til behandling af nedbrudsdumpet.\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1785
 msgid "Processing interrupted: can't continue without writable directory."
@@ -627,6 +628,9 @@ msgid ""
 "No matching actions found for this event.\n"
 "\n"
 msgstr ""
+"--- Springer over %s ---\n"
+"Fandt ingen matchende handlinger til hændelsen.\n"
+"\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1843
 msgid "Processing..."
@@ -1072,12 +1076,12 @@ msgstr ""
 "fejlen."
 
 #: ../src/lib/event_config.c:533
-#, fuzzy
-#| msgid "Reporting disabled because the backtrace is unusable."
 msgid ""
 "Reporting is disabled because the generated backtrace has low informational "
 "value."
-msgstr "Rapportering er deaktiveret fordi backtracen er ubrugelig."
+msgstr ""
+"Rapportering er deaktiveret fordi den genererede backtracen har lav "
+"informativ værdi."
 
 #: ../src/lib/event_config.c:537
 #, c-format
@@ -1481,10 +1485,9 @@ msgid "Logging into Bugzilla at %s"
 msgstr "Logger ind på Bugzilla på %s"
 
 #: ../src/plugins/reporter-bugzilla.c:223
-#, fuzzy, c-format
-#| msgid "Invalid password or login. Please enter your Red Hat login:"
+#, c-format
 msgid "Invalid password or login. Please enter your %s login:"
-msgstr "Ugyldig adgangskode eller login. Indtast venligst dit Red Hat-login:"
+msgstr "Ugyldig adgangskode eller login. Indtast venligst dit %s-login:"
 
 #: ../src/plugins/reporter-bugzilla.c:228
 #: ../src/plugins/reporter-rhtsupport.c:411
@@ -1662,12 +1665,9 @@ msgid "Using default product '%s'"
 msgstr "Bruger standardproduktet '%s'"
 
 #: ../src/plugins/reporter-bugzilla.c:468
-#, fuzzy, c-format
-#| msgid ""
-#| "Login is not provided by configuration. Please enter your RHTS login:"
+#, c-format
 msgid "Login is not provided by configuration. Please enter your %s login:"
-msgstr ""
-"Login er ikke angivet af konfiguration. Indtast venligst dit RHTS-login:"
+msgstr "Login er ikke angivet af konfiguration. Indtast venligst dit %s-login:"
 
 #: ../src/plugins/reporter-bugzilla.c:476
 #: ../src/plugins/reporter-rhtsupport.c:597
@@ -1713,16 +1713,13 @@ msgid "Logging out"
 msgstr "Logger ud"
 
 #: ../src/plugins/reporter-bugzilla.c:579
-#, fuzzy, c-format
-#| msgid ""
-#| "This problem was already reported to MantisBT (see '%s'). Do you still "
-#| "want to create a new issue?"
+#, c-format
 msgid ""
 "This problem was already reported to Bugzilla (see '%s'). Do you still want "
 "to create a new bug?"
 msgstr ""
-"Problemet er allerede blevet rapporteret til MantisBT (se '%s'). Vil du "
-"stadig oprette et nyt issue?"
+"Problemet er allerede blevet rapporteret til Bugzilla (se '%s'). Vil du "
+"stadig oprette en ny fejl?"
 
 #: ../src/plugins/reporter-bugzilla.c:609
 msgid "Can't determine Bugzilla Product from problem data."
@@ -1965,12 +1962,11 @@ msgstr "Ugyldig adgangskode eller login. Indtast venligst dit Red Hat-login:"
 #: ../src/plugins/reporter-rhtsupport.c:473
 msgid "Please enter customer case number to which you want to attach the data:"
 msgstr ""
+"Indtast venligst nummeret til den kundesag som dataene skal vedhæftes til:"
 
 #: ../src/plugins/reporter-rhtsupport.c:479
-#, fuzzy
-#| msgid "Can't continue without password"
 msgid "Can't continue without Red Hat Support case number"
-msgstr "Kan ikke fortsætte uden adgangskode"
+msgstr "Kan ikke fortsætte uden nummeret til Red Hat-supportsag"
 
 #: ../src/plugins/reporter-rhtsupport.c:506
 msgid ""
@@ -2020,6 +2016,9 @@ msgid ""
 "to the case? Otherwise, you will have to enter the existing Red Hat support "
 "case number."
 msgstr ""
+"Vi fandt en lignende Red Hat supportsag %s. Vil du vedhæfte dataene til "
+"sagen? Ellers skal du indtaste nummeret til den eksisterende Red Hat-"
+"supportsag."
 
 #: ../src/plugins/reporter-rhtsupport.c:676
 #, c-format
@@ -2595,7 +2594,7 @@ msgstr "Adresse til Red Hat supportportalen"
 
 #: ../src/plugins/report_RHTSupport_AddData.xml.in.h:2
 msgid "Attach the data to existing Red Hat support case"
-msgstr ""
+msgstr "Vedhæft dataene til eksisterende Red Hat-supportsag"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report Uploader"
@@ -2684,11 +2683,11 @@ msgstr ""
 
 #: ../src/plugins/report_uReport.xml.in.h:7
 msgid "Report unpackaged problems"
-msgstr ""
+msgstr "Rapportér ikke-pakket problemer"
 
 #: ../src/plugins/report_uReport.xml.in.h:8
 msgid "Report problems coming from unpackaged executables."
-msgstr ""
+msgstr "Rapportér problemer som kommer fra ikke-pakket eksekverbarer."
 
 #: ../src/plugins/report_uReport.xml.in.h:9
 msgid "Contact email address"
@@ -3337,7 +3336,7 @@ msgid ""
 "Create new Red Hat Support case - I would like to be contacted by Red Hat "
 "Support"
 msgstr ""
-"Opret ny Red Hat-supportsag - Jeg vil gerne kontaktes af Red Hat support"
+"Opret ny Red Hat-supportsag - Jeg vil gerne kontaktes af Red Hat-support"
 
 #: ../src/workflows/workflow_RHELAddDataCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELAddDataJava.xml.in.h:1
@@ -3348,7 +3347,7 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:1
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:1
 msgid "Attach crash data to an existing Red Hat support case"
-msgstr ""
+msgstr "Vedhæft nedbrudsdata til en eksisterende Red Hat-supportsag"
 
 #: ../src/workflows/workflow_RHELAddDataCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJava.xml.in.h:2
@@ -3358,10 +3357,8 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDatavmcore.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:2
-#, fuzzy
-#| msgid "Ask Red Hat Support for help"
 msgid "Provide Red Hat Support with crash details"
-msgstr "Spørg Red Hat support om hjælp"
+msgstr "Giv nedbrudsdetaljer til Red Hat support"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
