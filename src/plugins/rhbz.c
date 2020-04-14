@@ -547,6 +547,25 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
 
     abrt_xmlrpc_params_set_value_str(&env, params, "product", product);
     abrt_xmlrpc_params_set_value_str(&env, params, "component", component);
+
+    if (strncmp(product, "Red Hat Enterprise Linux", strlen("Red Hat Enterprise Linux")) == 0)
+    {
+        xmlrpc_value *sc_array = rhbz_get_sub_components(ax, product, component);
+        const char *sub_component = NULL;
+        if (sc_array)
+            sub_component = rhbz_get_default_sub_component(component, sc_array);
+        if (sub_component)
+        {
+            xmlrpc_value *sub_components_struct = abrt_xmlrpc_struct_new(&env);
+            xmlrpc_value *sub_components_array = abrt_xmlrpc_array_new(&env);
+            abrt_xmlrpc_array_append_string(&env, sub_components_array, sub_component);
+            abrt_xmlrpc_params_set_value(&env, sub_components_struct, component, sub_components_array);
+            abrt_xmlrpc_params_set_value(&env, params, "sub_components", sub_components_struct);
+            xmlrpc_DECREF(sub_components_struct);
+            xmlrpc_DECREF(sub_components_array);
+        }
+    }
+
     abrt_xmlrpc_params_set_value_str(&env, params, "version", version);
     abrt_xmlrpc_params_set_value_str(&env, params, "summary", summary);
     abrt_xmlrpc_params_set_value_str(&env, params, "description", bzcomment);
