@@ -461,7 +461,7 @@ def filter_installed_debuginfos(build_ids, cache_dirs):
         List of missing debuginfo files.
     """
 
-    files = build_ids_to_path("", build_ids)
+    files = build_ids_to_paths("", build_ids)
     missing = []
 
     # 1st pass -> search in /usr/lib
