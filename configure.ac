@@ -226,7 +226,6 @@ PKG_CHECK_MODULES([GIO], [
     gio-unix-2.0 >= glib_version
 ])
 PKG_CHECK_MODULES([GOBJECT], [gobject-2.0])
-PKG_CHECK_MODULES([DBUS], [dbus-1])
 PKG_CHECK_MODULES([LIBXML], [libxml-2.0])
 PKG_CHECK_MODULES([CURL], [libcurl])
 PKG_CHECK_MODULES([PROXY], [libproxy-1.0], [
