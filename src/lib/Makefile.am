@@ -8,8 +8,7 @@ dist_defaultconf_DATA = $(dist_conf_DATA)
 
 lib_LTLIBRARIES = \
     libreport.la \
-    libreport-web.la \
-    libabrt_dbus.la
+    libreport-web.la
 
 # Not used just yet:
 # time.cpp
@@ -110,25 +109,6 @@ libreport_la_LIBADD = \
 libreportconfdir = $(CONF_DIR)
 dist_libreportconf_DATA = \
     report_event.conf
-
-libabrt_dbus_la_SOURCES = \
-    abrt_dbus.c
-libabrt_dbus_la_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
-    -DLOCALSTATEDIR='"$(localstatedir)"' \
-    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
-    -DEVENTS_DIR=\"$(EVENTS_DIR)\" \
-    $(GLIB_CFLAGS) \
-    $(DBUS_CFLAGS) \
-    -D_GNU_SOURCE
-libabrt_dbus_la_LDFLAGS = \
-    -version-info 0:1:0
-libabrt_dbus_la_LIBADD = \
-    libreport.la \
-    $(GLIB_LIBS) \
-    $(DBUS_LIBS)
 
 libreport_web_o =
 if BUILD_BUGZILLA
