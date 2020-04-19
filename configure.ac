@@ -116,8 +116,8 @@ AC_SUBST(XMLRPC_CLIENT_LIBS)
 # enable bugzilla & deps translations
 for FILE in `grep -e "#.*ugzilla.*" -e "#.*naconda.*" po/POTFILES.in`
 do
-  sed -ie "s,$FILE,${FILE:1}," po/POTFILES.in
-  sed -ie "\,^${FILE:1}$,d" po/POTFILES.skip
+  sed -ie "s,$FILE,${FILE#\#}," po/POTFILES.in
+  sed -ie "\,^${FILE#\#}$,d" po/POTFILES.skip
 done
 else
 AM_CONDITIONAL(BUILD_BUGZILLA, false)
@@ -125,7 +125,7 @@ AM_CONDITIONAL(BUILD_BUGZILLA, false)
 # disablie bugzilla & deps translations
 for FILE in `grep -e "ugzilla" -e "naconda" po/POTFILES.in`
 do
-  if test "${FILE:0:1}" = "#"
+  if expr "${FILE}" : "#" > /dev/null
   then
     continue
   fi
@@ -149,8 +149,8 @@ AM_CONDITIONAL(BUILD_MANTISBT, true)
 # enable mantisbt & deps translations
 for FILE in `grep -e "#.*antisbt.*" -e "#.*naconda.*" po/POTFILES.in`
 do
-  sed -ie "s,$FILE,${FILE:1}," po/POTFILES.in
-  sed -ie "\,^${FILE:1}$,d" po/POTFILES.skip
+  sed -ie "s,$FILE,${FILE#\#}," po/POTFILES.in
+  sed -ie "\,^${FILE#\#}$,d" po/POTFILES.skip
 done
 else
 AM_CONDITIONAL(BUILD_MANTISBT, false)
@@ -158,7 +158,7 @@ AM_CONDITIONAL(BUILD_MANTISBT, false)
 # disablie mantisbt & deps translations
 for FILE in `grep -e "antisbt" -e "naconda" po/POTFILES.in`
 do
-  if test "${FILE:0:1}" = "#"
+  if expr "${FILE}" : "#" > /dev/null
   then
     continue
   fi
