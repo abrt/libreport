@@ -18,8 +18,6 @@ TS_MAIN
     TS_ASSERT_STRING_EQ(ec_get_screen_name(conf), "Bugzilla", "Screen name");
     TS_ASSERT_STRING_EQ(ec_get_description(conf), "Report to Bugzilla bug tracker", "Description");
 
-    TS_ASSERT_STRING_EQ(conf->ec_creates_items, NULL, "Not-defined create items");
-
     TS_ASSERT_STRING_EQ(conf->ec_requires_items, "component,duphash,os_release", "Correct required items");
 
     TS_ASSERT_STRING_EQ(conf->ec_exclude_items_by_default, "coredump,count,event_log,reported_to,vmcore", "Correct excluded items by default");
