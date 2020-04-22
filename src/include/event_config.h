@@ -82,7 +82,6 @@ typedef struct
 {
     config_item_info_t *info;
 
-    char *ec_creates_items;
     char *ec_requires_items;
     char *ec_exclude_items_by_default;
     char *ec_include_items_by_default;

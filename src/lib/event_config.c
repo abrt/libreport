@@ -154,7 +154,6 @@ void free_event_config(event_config_t *p)
         return;
 
     free_config_info(p->info);
-    free(p->ec_creates_items);
     free(p->ec_requires_items);
     free(p->ec_exclude_items_by_default);
     free(p->ec_include_items_by_default);
