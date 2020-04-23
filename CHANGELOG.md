@@ -6,6 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.13.0] - 2020-04-23
+### Added
+Support new "time" and "time_for_children" kernel namespaces
+
+### Changed
+Remove preprocessor namespacing in favor of function names prefixes
+
+### Fixed
+gui-wizard-gtk: Wrap event log messages
+client-python: Accomodate for multiple debug directories
+
+### Removed
+lib: Drop D-Bus code
+plugins: reporter-rhtsupport: Drop unused debugging code
+
 ## [2.12.0] - 2020-02-06
 ### Changed
 - Use Nettle for computing SHA-1 digests
@@ -195,7 +210,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.12.0...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.13.0...HEAD
+[2.13.0]: https://github.com/abrt/libreport/compare/2.12.0...2.13.0
 [2.12.0]: https://github.com/abrt/libreport/compare/2.11.3...2.12.0
 [2.11.3]: https://github.com/abrt/libreport/compare/2.11.2...2.11.3
 [2.11.2]: https://github.com/abrt/libreport/compare/2.11.1...2.11.2

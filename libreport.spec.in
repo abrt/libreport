@@ -742,6 +742,34 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Thu Apr 23 2020 Michal Fabik <mfabik@redhat.com> 2.13.0-1
+- Remove unused zanata.xml
+- Remove obsolete pull-translations
+- Allow editing CHANGELOG.md before release commit
+- configure.ac: use POSIX expr in place of bashisms
+- lib: Drop D-Bus code
+- Fix build_ids_to_paths function name
+- Update translations
+- workflow: Fix namespacing with #defines
+- ureport: Fix namespacing with #defines
+- run_event: Fix namespacing with #defines
+- reporters: Fix namespacing with #defines
+- libreport_types: Fix namespacing with #defines
+- libreport_curl: Fix namespacing with #defines
+- internal_libreport: Fix namespacing with #defines
+- global_configuration: Fix namespacing with #defines
+- dump_dir: Fix namespacing with #defines
+- client: Fix namespacing with #defines
+- internal_libreport_gtk: Fix namespacing with #defines
+- internal_libreport: Sort kernel namespaces
+- Support new kernel namespace
+- gui-wizard-gtk: Wrap event log messages
+- client-python: Accomodate for multiple debug directories
+- plugins: report: Add “strata” target back
+- plugins: rhtsupport.conf: Replace “strata” with “rhts”
+- plugins: reporter-rhtsupport: Drop unused debugging code
+- plugins: report: Use “rhts” instead of “strata”
+
 * Thu Feb 06 2020 Michal Fabik <mfabik@redhat.com> 2.12.0-1
 - ureport: Allow printf-like data attaching
 - plugins: reporter-rhtsupport: Avoid runtime warning
