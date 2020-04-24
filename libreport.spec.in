@@ -315,7 +315,7 @@ data over ftp/scp...
 %build
 autoconf
 
-CFLAGS="%{optflags} -Werror" %configure \
+%configure \
 %if %{without bugzilla}
         --without-bugzilla \
 %endif
