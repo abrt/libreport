@@ -325,10 +325,10 @@ CFLAGS="%{optflags} -Werror" %configure \
         --enable-doxygen-docs \
         --disable-silent-rules
 
-make %{?_smp_mflags}
+%make_build
 
 %install
-make install DESTDIR=%{buildroot} \
+%make_install \
 %if %{with python3}
              PYTHON=%{__python3} \
 %endif # with python3
