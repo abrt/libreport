@@ -96,6 +96,12 @@ double libreport_get_dirsize_find_largest_dir(
             log_debug("Skipping %s': sosreport is being generated.", dname);
             goto next;
         }
+        if (lstat(libreport_concat_path_file(dname, ".lock"), &statbuf) == 0)
+        {
+            log_warning("Skipping %s: directory locked. Is a backtrace being generated?", dname);
+            size += libreport_get_dirsize(dname);
+            goto next;
+        }
         if (lstat(dname, &statbuf) != 0)
         {
             goto next;
