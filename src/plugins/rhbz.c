@@ -19,7 +19,6 @@
 
 /* Bugzilla API doc:
  * http://www.bugzilla.org/docs/4.2/en/html/api/Bugzilla/WebService.html
- * http://www.bugzilla.org/docs/tip/en/html/api/Bugzilla/WebService.html
  *
  * To make libxmlrpc print debug info to stdout (stderr?),
  * export XMLRPC_TRACE_XML=1
