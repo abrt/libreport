@@ -130,13 +130,13 @@ static PyObject *p_problem_data_send_to_abrt(PyObject *pself, PyObject *always_n
 
 static PyMethodDef p_problem_data_methods[] = {
     /* method_name, func, flags, doc_string */
-    { "add"                 , p_problem_data_add                 , METH_VARARGS },
-    { "get"                 , p_problem_data_get_item            , METH_VARARGS },
-    { "create_dump_dir"     , p_create_dump_dir_from_problem_data, METH_VARARGS },
-    { "add_basics"          , p_problem_data_add_basics          , METH_NOARGS },
-    { "add_current_proccess", p_problem_data_add_current_process , METH_NOARGS },
-    { "send_to_abrt"        , p_problem_data_send_to_abrt        , METH_NOARGS },
-    { NULL }
+    { "add"                 , p_problem_data_add                 , METH_VARARGS, NULL },
+    { "get"                 , p_problem_data_get_item            , METH_VARARGS, NULL },
+    { "create_dump_dir"     , p_create_dump_dir_from_problem_data, METH_VARARGS, NULL },
+    { "add_basics"          , p_problem_data_add_basics          , METH_NOARGS, NULL },
+    { "add_current_proccess", p_problem_data_add_current_process , METH_NOARGS, NULL },
+    { "send_to_abrt"        , p_problem_data_send_to_abrt        , METH_NOARGS, NULL },
+    { NULL, NULL, 0, NULL }
 };
 
 PyTypeObject p_problem_data_type = {
