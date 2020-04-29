@@ -27,7 +27,8 @@
   #define MOD_INIT PyMODINIT_FUNC PyInit__py3report(void)
   #define MOD_DEF(ob, name, doc, methods) \
             static struct PyModuleDef moduledef = { \
-                          PyModuleDef_HEAD_INIT, name, doc, -1, methods, }; \
+                          PyModuleDef_HEAD_INIT, name, doc, -1, methods, \
+                          NULL, NULL, NULL, NULL }; \
           ob = PyModule_Create(&moduledef);
 #else
   #define MOD_ERROR_VAL
@@ -44,14 +45,14 @@ PyObject *ReportError;
 static PyMethodDef module_methods[] = {
     /* method_name, func, flags, doc_string */
     /* for include/report/dump_dir.h */
-    { "dd_opendir"                , p_dd_opendir              , METH_VARARGS },
-    { "dd_create"                 , p_dd_create               , METH_VARARGS },
-    { "delete_dump_dir"           , p_delete_dump_dir         , METH_VARARGS },
+    { "dd_opendir"                , p_dd_opendir              , METH_VARARGS, NULL },
+    { "dd_create"                 , p_dd_create               , METH_VARARGS, NULL },
+    { "delete_dump_dir"           , p_delete_dump_dir         , METH_VARARGS, NULL },
     /* for include/report/report.h */
-    { "report_problem_in_dir"     , p_report_problem_in_dir   , METH_VARARGS },
-    { "report_problem_in_memory"  , p_report_problem_in_memory, METH_VARARGS },
-    { "report_problem"            , p_report_problem          , METH_VARARGS },
-    { NULL }
+    { "report_problem_in_dir"     , p_report_problem_in_dir   , METH_VARARGS, NULL },
+    { "report_problem_in_memory"  , p_report_problem_in_memory, METH_VARARGS, NULL },
+    { "report_problem"            , p_report_problem          , METH_VARARGS, NULL },
+    { NULL, NULL, 0, NULL }
 };
 
 MOD_INIT

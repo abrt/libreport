@@ -553,7 +553,8 @@ void load_event_description_from_file(event_config_t *event_config, const char* 
         { event_config, false, false, false },
         { NULL, false, false },
         NULL,
-        NULL
+        NULL,
+        false
     };
     parse_data.cur_locale = libreport_xstrdup(setlocale(LC_ALL, NULL));
     strchrnul(parse_data.cur_locale, '.')[0] = '\0';

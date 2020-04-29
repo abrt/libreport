@@ -146,7 +146,7 @@ static int finish_command(struct command *cmd)
 
 int run_command(char **argv)
 {
-  struct command cmd = { argv, 0 };
+  struct command cmd = { .argv = argv, .pid = 0 };
   start_command(&cmd);
   return finish_command(&cmd);
 }

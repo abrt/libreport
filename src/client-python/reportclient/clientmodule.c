@@ -23,13 +23,13 @@
 static PyMethodDef module_methods[] = {
     /* method_name, func, flags, doc_string */
     /* for include/client.h */
-    { "alert"                     , p_alert                   , METH_VARARGS },
-    { "ask"                       , p_ask                     , METH_VARARGS },
-    { "ask_password"              , p_ask_password            , METH_VARARGS },
-    { "ask_yes_no"                , p_ask_yes_no              , METH_VARARGS },
-    { "ask_yes_no_yesforever"     , p_ask_yes_no_yesforever   , METH_VARARGS },
-    { "ask_yes_no_save_result"    , p_ask_yes_no_save_result  , METH_VARARGS },
-    { NULL }
+    { "alert"                     , p_alert                   , METH_VARARGS, NULL },
+    { "ask"                       , p_ask                     , METH_VARARGS, NULL },
+    { "ask_password"              , p_ask_password            , METH_VARARGS, NULL },
+    { "ask_yes_no"                , p_ask_yes_no              , METH_VARARGS, NULL },
+    { "ask_yes_no_yesforever"     , p_ask_yes_no_yesforever   , METH_VARARGS, NULL },
+    { "ask_yes_no_save_result"    , p_ask_yes_no_save_result  , METH_VARARGS, NULL },
+    { NULL, NULL, 0, NULL }
 };
 
 #if PY_MAJOR_VERSION >= 3
@@ -38,7 +38,8 @@ static PyMethodDef module_methods[] = {
   #define MOD_INIT PyMODINIT_FUNC PyInit__reportclient3(void)
   #define MOD_DEF(ob, name, doc, methods) \
             static struct PyModuleDef moduledef = { \
-              PyModuleDef_HEAD_INIT, name, doc, -1, methods, }; \
+              PyModuleDef_HEAD_INIT, name, doc, -1, methods, \
+              NULL, NULL, NULL, NULL}; \
             ob = PyModule_Create(&moduledef);
 #else
   #define MOD_ERROR_VAL

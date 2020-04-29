@@ -262,13 +262,13 @@ static PyMethodDef p_dump_dir_methods[] = {
     { "save_binary", p_dd_save_binary, METH_VARARGS, NULL },
     { "copy_file"  , p_dd_copy_file, METH_VARARGS, NULL },
     { "delete_item", p_dd_delete_item, METH_VARARGS, NULL },
-    { NULL }
+    { NULL, NULL, 0, NULL }
 };
 
 static PyGetSetDef p_dump_dir_getset[] = {
     /* attr_name, getter_func, setter_func, doc_string, void_param */
-    { (char*) "name", get_name, NULL /*set_name*/ },
-    { NULL }
+    { (char*) "name", get_name, NULL /*set_name*/, NULL, NULL },
+    { NULL, NULL, NULL, NULL, NULL }
 };
 
 /* Support for "dd = dd_opendir(...); if [not] dd: ..." */

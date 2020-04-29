@@ -215,18 +215,18 @@ static int set_logging_callback(PyObject *pself, PyObject *callback, void *unuse
 
 static PyMethodDef p_run_event_state_methods[] = {
     /* method_name, func, flags, doc_string */
-    { "make_run_event_state_forwarding", p_make_run_event_state_forwarding, METH_NOARGS },
-    { "run_event_on_dir_name"  , p_run_event_on_dir_name  , METH_VARARGS },
-    { "run_event_on_problem_data", p_run_event_on_problem_data, METH_VARARGS },
-    { NULL }
+    { "make_run_event_state_forwarding", p_make_run_event_state_forwarding, METH_NOARGS , NULL },
+    { "run_event_on_dir_name"          , p_run_event_on_dir_name          , METH_VARARGS, NULL },
+    { "run_event_on_problem_data"      , p_run_event_on_problem_data      , METH_VARARGS, NULL },
+    { NULL, NULL, 0, NULL }
 };
 
 static PyGetSetDef p_run_event_state_getset[] = {
     /* attr_name, getter_func, setter_func, doc_string, void_param */
-    { (char*) "post_run_callback", get_post_run_callback, set_post_run_callback },
-    { (char*) "logging_callback" , get_logging_callback , set_logging_callback  },
-    { (char*) "children_count"   , get_children_count   , NULL                  },
-    { NULL }
+    { (char*) "post_run_callback", get_post_run_callback, set_post_run_callback, NULL, NULL },
+    { (char*) "logging_callback" , get_logging_callback , set_logging_callback, NULL, NULL },
+    { (char*) "children_count"   , get_children_count   , NULL, NULL, NULL },
+    { NULL, NULL, NULL, NULL, NULL }
 };
 
 PyTypeObject p_run_event_state_type = {
