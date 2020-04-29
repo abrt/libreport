@@ -18,9 +18,9 @@ for automatic execution of shell scripts working with dump directories.
 - **regular files**  : reporter-print
 - **e-mail**         : reporter-mailx
 - **ftp/scp**        : reporter-upload
-- [**Bugzilla**](https://bugzilla.redhat.com) : reporter-bugzilla 
-- [**MantisBT**](https://bugs.centos.org)     : reporter-mantisbt
-- [**FAF**](https://abrt.fedoraproject.org)   : reporter-ureport 
+- [**Bugzilla**](https://bugzilla.redhat.com)                 : reporter-bugzilla
+- [**MantisBT**](https://bugs.centos.org)                     : reporter-mantisbt
+- [**FAF**](https://retrace.fedoraproject.org/faf/summary/)   : reporter-ureport
 
 - [**Linux Kernel Oops**](http://www.kerneloops.org/)       : reporter-kerneloops
 - [**Red Hat Customer Portal**](https://access.redhat.com/) : reporter-rhtsupport
