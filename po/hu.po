@@ -6,21 +6,22 @@
 # Meskó Balázs <meskobalazs@gmail.com>, 2017. #zanata
 # Meskó Balázs <meskobalazs@gmail.com>, 2018. #zanata
 # Balázs Meskó <meskobalazs@gmail.com>, 2020.
+# Balázs Meskó <meskobalazs@mailbox.org>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2020-01-17 03:16+0000\n"
-"Last-Translator: Balázs Meskó <meskobalazs@gmail.com>\n"
-"Language-Team: Hungarian <https://translate.stg.fedoraproject.org/projects/"
-"abrt/libreport/hu/>\n"
+"PO-Revision-Date: 2020-04-21 18:40+0000\n"
+"Last-Translator: Balázs Meskó <meskobalazs@mailbox.org>\n"
+"Language-Team: Hungarian <https://translate.fedoraproject.org/projects/abrt/"
+"libreport/hu/>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.10.1\n"
+"X-Generator: Weblate 4.0.1\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -619,6 +620,7 @@ msgstr "A feldolgozás befejeződött, folytassa a következő lépéssel."
 #: ../src/gui-wizard-gtk/wizard.c:1770
 msgid "No commands could be found for processsing the crashdump.\n"
 msgstr ""
+"Nem találhatók az összeomlási adatok feldolgozásához szükséges parancsok.\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1785
 msgid "Processing interrupted: can't continue without writable directory."
@@ -631,6 +633,9 @@ msgid ""
 "No matching actions found for this event.\n"
 "\n"
 msgstr ""
+"--- %s kihagyása ---\n"
+"Nem találhatók egyező műveletek ehhez az eseményhez.\n"
+"\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1843
 msgid "Processing..."
@@ -1076,12 +1081,11 @@ msgstr ""
 "hibakeresésben."
 
 #: ../src/lib/event_config.c:533
-#, fuzzy
-#| msgid "Reporting disabled because the backtrace is unusable."
 msgid ""
 "Reporting is disabled because the generated backtrace has low informational "
 "value."
-msgstr "A jelentés letiltásra került, mert a nyomkövetés használhatatlan."
+msgstr ""
+"A jelentés letiltásra került, mert a nyomkövetés információértéke alacsony."
 
 #: ../src/lib/event_config.c:537
 #, c-format
@@ -1487,11 +1491,10 @@ msgid "Logging into Bugzilla at %s"
 msgstr "Bejelentkezés a Bugzillába itt: %s"
 
 #: ../src/plugins/reporter-bugzilla.c:223
-#, fuzzy, c-format
-#| msgid "Invalid password or login. Please enter your Red Hat login:"
+#, c-format
 msgid "Invalid password or login. Please enter your %s login:"
 msgstr ""
-"Érvénytelen jelszó vagy felhasználónév. Adja meg a Red Hat bejelentkezését:"
+"Érvénytelen jelszó vagy felhasználónév. Adja meg a(z) %s bejelentkezését:"
 
 #: ../src/plugins/reporter-bugzilla.c:228
 #: ../src/plugins/reporter-rhtsupport.c:411
@@ -1674,12 +1677,10 @@ msgid "Using default product '%s'"
 msgstr "A(z) alapértelmezett „%s” termék használata"
 
 #: ../src/plugins/reporter-bugzilla.c:468
-#, fuzzy, c-format
-#| msgid ""
-#| "Login is not provided by configuration. Please enter your RHTS login:"
+#, c-format
 msgid "Login is not provided by configuration. Please enter your %s login:"
 msgstr ""
-"A bejelentkezést nem biztosítja a konfiguráció. Adja meg az RHTS "
+"A bejelentkezést nem biztosítja a konfiguráció. Adja meg a(z) %s "
 "bejelentkezését:"
 
 #: ../src/plugins/reporter-bugzilla.c:476
@@ -1725,16 +1726,13 @@ msgid "Logging out"
 msgstr "Kijelentkezés"
 
 #: ../src/plugins/reporter-bugzilla.c:579
-#, fuzzy, c-format
-#| msgid ""
-#| "This problem was already reported to MantisBT (see '%s'). Do you still "
-#| "want to create a new issue?"
+#, c-format
 msgid ""
 "This problem was already reported to Bugzilla (see '%s'). Do you still want "
 "to create a new bug?"
 msgstr ""
-"Ez a probléma már be lett jelentve a MantisBT-be (lásd „%s”). Továbbra is "
-"akar új esetet létrehozni?"
+"Ez a probléma már be lett jelentve a Bugzillába (lásd „%s”). Továbbra is új "
+"esetet akar létrehozni?"
 
 #: ../src/plugins/reporter-bugzilla.c:609
 msgid "Can't determine Bugzilla Product from problem data."
@@ -1977,13 +1975,11 @@ msgstr ""
 
 #: ../src/plugins/reporter-rhtsupport.c:473
 msgid "Please enter customer case number to which you want to attach the data:"
-msgstr ""
+msgstr "Adja meg az ügyfélesetszámát, amelyhez adatokat akar csatolni:"
 
 #: ../src/plugins/reporter-rhtsupport.c:479
-#, fuzzy
-#| msgid "Can't continue without password"
 msgid "Can't continue without Red Hat Support case number"
-msgstr "Nem folytathatja jelszó nélkül"
+msgstr "Nem folytathatja Red Hat támogatási esetszám nélkül"
 
 #: ../src/plugins/reporter-rhtsupport.c:506
 msgid ""
@@ -2035,6 +2031,9 @@ msgid ""
 "to the case? Otherwise, you will have to enter the existing Red Hat support "
 "case number."
 msgstr ""
+"Egy hasonló Red Hat támogatási eset található: %s. Biztos, hogy adatokat "
+"akar csatolni az esethez? Egyébként meg kell adnia a meglévő Red Hat "
+"támogatási esetszámát."
 
 #: ../src/plugins/reporter-rhtsupport.c:676
 #, c-format
@@ -2612,7 +2611,7 @@ msgstr "A Red Hat ügyfélszolgálat címe"
 
 #: ../src/plugins/report_RHTSupport_AddData.xml.in.h:2
 msgid "Attach the data to existing Red Hat support case"
-msgstr ""
+msgstr "Adatok csatolása a meglévő Red Hat támogatási esethez"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report Uploader"
@@ -2703,11 +2702,11 @@ msgstr ""
 
 #: ../src/plugins/report_uReport.xml.in.h:7
 msgid "Report unpackaged problems"
-msgstr ""
+msgstr "Nem csomagolt problémák jelentése"
 
 #: ../src/plugins/report_uReport.xml.in.h:8
 msgid "Report problems coming from unpackaged executables."
-msgstr ""
+msgstr "Nem csomagolt végrehajtható fájlokból érkező problémák jelentése."
 
 #: ../src/plugins/report_uReport.xml.in.h:9
 msgid "Contact email address"
@@ -3394,7 +3393,7 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:1
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:1
 msgid "Attach crash data to an existing Red Hat support case"
-msgstr ""
+msgstr "Összeomlási adatok csatolása egy meglévő Red Hat támogatási esethez"
 
 #: ../src/workflows/workflow_RHELAddDataCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJava.xml.in.h:2
@@ -3404,10 +3403,8 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDatavmcore.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:2
-#, fuzzy
-#| msgid "Ask Red Hat Support for help"
 msgid "Provide Red Hat Support with crash details"
-msgstr "Segítségkérés a Red Hat támogatástól"
+msgstr "Összeomlási részletek biztosítása a Red Hat támogatás számára"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
