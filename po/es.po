@@ -21,13 +21,14 @@
 # Máximo Castañeda Riloba <mcrcctm@gmail.com>, 2017. #zanata
 # Juan Antonio Burgos López <suriem@surkum.com>, 2020.
 # Adolfo Jayme Barrientos <fitoschido@gmail.com>, 2020.
+# Emilio Herrera <ehespinosa57@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2020-01-28 12:16+0000\n"
-"Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
+"PO-Revision-Date: 2020-04-16 18:40+0000\n"
+"Last-Translator: Emilio Herrera <ehespinosa57@gmail.com>\n"
 "Language-Team: Spanish <https://translate.fedoraproject.org/projects/abrt/"
 "libreport/es/>\n"
 "Language: es\n"
@@ -35,7 +36,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.10.3\n"
+"X-Generator: Weblate 4.0.1\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -1524,12 +1525,11 @@ msgid "Logging into Bugzilla at %s"
 msgstr "Accediendo a Bugzilla en %s"
 
 #: ../src/plugins/reporter-bugzilla.c:223
-#, fuzzy, c-format
-#| msgid "Invalid password or login. Please enter your Red Hat login:"
+#, c-format
 msgid "Invalid password or login. Please enter your %s login:"
 msgstr ""
 "Nombre de usuario o contraseña inválidos. Por favor, introduzca sus "
-"credenciales de acceso de Red Hat:"
+"credenciales de acceso de %s:"
 
 #: ../src/plugins/reporter-bugzilla.c:228
 #: ../src/plugins/reporter-rhtsupport.c:411
@@ -1765,15 +1765,12 @@ msgid "Logging out"
 msgstr "Desconectando"
 
 #: ../src/plugins/reporter-bugzilla.c:579
-#, fuzzy, c-format
-#| msgid ""
-#| "This problem was already reported to MantisBT (see '%s'). Do you still "
-#| "want to create a new issue?"
+#, c-format
 msgid ""
 "This problem was already reported to Bugzilla (see '%s'). Do you still want "
 "to create a new bug?"
 msgstr ""
-"Este problema ya se ha enviado a MantisBT (vea '%s'). ¿Aún desea crear un "
+"Este problema ya se ha enviado a Bugzilla (vea '%s'). ¿Aún desea crear un "
 "problema nuevo?"
 
 #: ../src/plugins/reporter-bugzilla.c:609
@@ -2022,13 +2019,11 @@ msgstr ""
 
 #: ../src/plugins/reporter-rhtsupport.c:473
 msgid "Please enter customer case number to which you want to attach the data:"
-msgstr ""
+msgstr "Por favor introduzca el número de caso al que desea agregar los datos:"
 
 #: ../src/plugins/reporter-rhtsupport.c:479
-#, fuzzy
-#| msgid "Can't continue without password"
 msgid "Can't continue without Red Hat Support case number"
-msgstr "No puede continuar sin contraseña"
+msgstr "No puede continuar sin el número de caso de Red Hat Support"
 
 #: ../src/plugins/reporter-rhtsupport.c:506
 msgid ""
@@ -2079,6 +2074,9 @@ msgid ""
 "to the case? Otherwise, you will have to enter the existing Red Hat support "
 "case number."
 msgstr ""
+"Encontramos un caso similar en Red Hat support case %s. ¿Desea agregar los "
+"datos al caso? De otro modo, tendrá que introducir el número de caso de Red "
+"Hat support existente."
 
 #: ../src/plugins/reporter-rhtsupport.c:676
 #, c-format
@@ -2669,7 +2667,7 @@ msgstr "Dirección del portal de soporte de Red Hat"
 
 #: ../src/plugins/report_RHTSupport_AddData.xml.in.h:2
 msgid "Attach the data to existing Red Hat support case"
-msgstr ""
+msgstr "Agregar datos al caso de Red Hat Support existente"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report Uploader"
@@ -2760,11 +2758,11 @@ msgstr ""
 
 #: ../src/plugins/report_uReport.xml.in.h:7
 msgid "Report unpackaged problems"
-msgstr ""
+msgstr "Informar problemas no empaquetados"
 
 #: ../src/plugins/report_uReport.xml.in.h:8
 msgid "Report problems coming from unpackaged executables."
-msgstr ""
+msgstr "Informar de problemas que vienen de ejecutables no empaquetados."
 
 #: ../src/plugins/report_uReport.xml.in.h:9
 msgid "Contact email address"
@@ -3447,7 +3445,7 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:1
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:1
 msgid "Attach crash data to an existing Red Hat support case"
-msgstr ""
+msgstr "Agregar datos de catástrofe a un caso Red Hat Support existente"
 
 #: ../src/workflows/workflow_RHELAddDataCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJava.xml.in.h:2
@@ -3457,10 +3455,8 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDatavmcore.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:2
-#, fuzzy
-#| msgid "Ask Red Hat Support for help"
 msgid "Provide Red Hat Support with crash details"
-msgstr "Solicitar ayuda al soporte de Red Hat"
+msgstr "Proporcionar Red Hat Support con detalles de la catástrofe"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
