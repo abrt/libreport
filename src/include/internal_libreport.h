@@ -295,7 +295,8 @@ double libreport_get_dirsize(const char *pPath);
 double libreport_get_dirsize_find_largest_dir(
                 const char *pPath,
                 char **worst_dir, /* can be NULL */
-                const char *excluded /* can be NULL */
+                const char *excluded, /* can be NULL */
+                const char *proc_dir /* can be NULL */
 );
 
 int libreport_ndelay_on(int fd);

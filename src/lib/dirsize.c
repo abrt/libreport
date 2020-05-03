@@ -72,7 +72,8 @@ static bool this_is_a_dd(const char *dirname)
 double libreport_get_dirsize_find_largest_dir(
         const char *pPath,
         char **worst_dir,
-        const char *excluded)
+        const char *excluded,
+        const char *proc_dir)
 {
     if (worst_dir)
         *worst_dir = NULL;
@@ -130,9 +131,12 @@ double libreport_get_dirsize_find_largest_dir(
                     }
                     else
                     {
-                        maxsz = sz;
-                        free(*worst_dir);
-                        *worst_dir = libreport_xstrdup(ep->d_name);
+                        if (!proc_dir || strcmp(proc_dir, ep->d_name) != 0)
+                        {
+                            maxsz = sz;
+                            free(*worst_dir);
+                            *worst_dir = libreport_xstrdup(ep->d_name);
+                        }
                     }
                 }
             }
