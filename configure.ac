@@ -145,6 +145,66 @@ do
 done
 fi dnl end NO_BUGZILLA
 
+AC_ARG_WITH(gitlab,
+AS_HELP_STRING([--with-gitlab],[use GitLab plugin (default is YES)]),
+LIBREPORT_PARSE_WITH([gitlab]))
+
+if test -z "$NO_GITLAB"; then
+AM_CONDITIONAL(BUILD_GITLAB, true)
+PKG_CHECK_MODULES([JSON_C], [json], [
+    JSON_C_PACKAGE=json
+], [
+    PKG_CHECK_MODULES([JSON_C], [json-c], [
+        JSON_C_PACKAGE=json-c
+    ])
+])
+
+AC_ARG_WITH([gitlabdefaultproject],
+            AS_HELP_STRING([--with-gitlabdefaultproject=STRING],
+                           [Default project name on the GitLab instance]),
+            [], [with_gitlabdefaultproject="GNOME"])
+AC_SUBST([GITLAB_DEFAULT_PROJECT], [$with_gitlabdefaultproject])
+AC_ARG_WITH([gitlabdefaulturl],
+            AS_HELP_STRING([--with-gitlabdefaulturl=URL],
+                           [Default URL of the GitLab instance]),
+            [], [with_gitlabdefaulturl="https://gitlab.gnome.org/"])
+AC_SUBST([GITLAB_DEFAULT_URL], [$with_gitlabdefaulturl])
+# List of components whose problems we will allow to be reported to the GitLab instance.
+# FIXME: Note that not all mappings are 1-1, e.g. gnome-desktop3 corresponds to
+# gitlab.gnome.org/GNOME/gnome-desktop (very few apparently, though)
+AC_ARG_WITH([gitlabdefaultallowlist],
+            AS_HELP_STRING([--with-gitlabdefaultallowlist=CSV],
+                           [Comma-separated default list components whose problems are to be reported to GitLab]),
+            [], [with_gitlabdefaultallowlist="evince, gimp, gnome-calculator, gnome-calendar, gnome-characters, gnome-clocks, gnome-disk-utility, gnome-font-viewer, gnome-shell, gvfs, mutter, nautilus"])
+AC_SUBST([GITLAB_DEFAULT_ALLOWLIST], [$with_gitlabdefaultallowlist])
+
+## enable translations
+for FILE in `grep -ie "#.*gitlab.*" po/POTFILES.in`
+do
+  sed -ie "s,$FILE,${FILE#\#}," po/POTFILES.in
+  sed -ie "\,^${FILE#\#}$,d" po/POTFILES.skip
+done
+else dnl NO_GITLAB
+AM_CONDITIONAL(BUILD_GITLAB, false)
+JSON_C_PACKAGE=
+
+## disable gitlab & deps translations
+for FILE in `grep -ie "gitlab" po/POTFILES.in`
+do
+  if expr "${FILE}" : "#" > /dev/null
+  then
+    continue
+  fi
+
+  sed -ie "s,$FILE,#$FILE," po/POTFILES.in
+  grep "$FILE" po/POTFILES.skip > /dev/null 2>&1
+  if test $?
+  then
+    echo "$FILE" >> po/POTFILES.skip
+  fi
+done
+fi dnl end NO_GITLAB
+
 AC_ARG_WITH(mantisbt,
 AS_HELP_STRING([--with-mantisbt],[use MantisBT plugin (default is YES)]),
 LIBREPORT_PARSE_WITH([mantisbt]))
@@ -413,7 +473,9 @@ AC_CONFIG_FILES([
 	src/cli/Makefile
 	src/report-newt/Makefile
 	src/plugins/Makefile
+	src/plugins/gitlab.conf
 	src/plugins/report_Bugzilla.xml.in
+	src/plugins/report_Gitlab.xml.in
 	src/client-python/Makefile
 	src/client-python/reportclient/Makefile
 	po/Makefile.in

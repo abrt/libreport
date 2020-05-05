@@ -6,6 +6,11 @@ reporters_bin += \
     reporter-bugzilla
 endif
 
+if BUILD_GITLAB
+reporters_bin += \
+    reporter-gitlab
+endif
+
 if BUILD_MANTISBT
 reporters_bin += \
     reporter-mantisbt
@@ -39,6 +44,11 @@ reporters_plugin_format_conf += bugzilla_format.conf \
     bugzilla_formatdup_anaconda.conf
 endif
 
+if BUILD_GITLAB
+reporters_plugin_conf += gitlab.conf
+reporters_plugin_format_conf += gitlab_format.conf
+endif
+
 if BUILD_MANTISBT
 reporters_plugin_conf += mantisbt.conf
 reporters_plugin_format_conf += mantisbt_format.conf \
@@ -65,6 +75,11 @@ if BUILD_BUGZILLA
 reporters_events += report_Bugzilla.xml \
                     watch_Bugzilla.xml
 reporters_events_conf += report_Bugzilla.conf
+endif
+
+if BUILD_GITLAB
+reporters_events += report_Gitlab.xml
+reporters_events_conf += report_Gitlab.conf
 endif
 
 if BUILD_MANTISBT
@@ -102,6 +117,13 @@ if BUILD_BUGZILLA
 dist_eventsdef_DATA += bugzilla_event.conf bugzilla_anaconda_event.conf
 reporters_extra_dist += report_Bugzilla.xml.in.in report_Bugzilla.conf \
                         watch_Bugzilla.xml.in
+endif
+
+if BUILD_GITLAB
+dist_eventsdef_DATA += gitlab_event.conf
+reporters_extra_dist += gitlab.conf.in \
+						report_Gitlab.conf \
+                        report_Gitlab.xml.in.in
 endif
 
 if BUILD_UREPORT
@@ -144,6 +166,30 @@ reporter_bugzilla_LDADD = \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS) \
     ../lib/libreport-web.la \
     ../lib/libreport.la
+endif
+
+if BUILD_GITLAB
+reporter_gitlab_SOURCES = \
+    reporter-gitlab.c
+reporter_gitlab_CPPFLAGS = \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    -DBIN_DIR=\"$(bindir)\" \
+    -DCONF_DIR=\"$(CONF_DIR)\" \
+    -DLOCALSTATEDIR='"$(localstatedir)"' \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
+    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
+    -DPLUGINS_CONF_DIR=\"$(REPORT_PLUGINS_CONF_DIR)\" \
+    $(GLIB_CFLAGS) \
+    $(JSON_C_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    -D_GNU_SOURCE
+reporter_gitlab_LDADD = \
+    $(GLIB_LIBS) \
+    $(JSON_C_LIBS) \
+    ../lib/libreport.la \
+    ../lib/libreport-web.la
 endif
 
 if BUILD_MANTISBT

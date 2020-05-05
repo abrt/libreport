@@ -64,6 +64,13 @@ MAN5_TXT = \
 	ureport.conf.txt \
 	upload.conf.txt
 
+if BUILD_GITLAB
+MAN1_TXT += reporter-gitlab.txt
+MAN5_TXT += \
+	gitlab.conf.txt \
+	gitlab_format.conf.txt
+endif
+
 if BUILD_BUGZILLA
 MAN1_TXT += $(MAN1_BUGZILLA)
 MAN5_TXT += $(MAN5_BUGZILLA)

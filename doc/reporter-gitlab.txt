@@ -1,0 +1,181 @@
+reporter-gitlab(1)
+==================
+
+NAME
+----
+reporter-gitlab - Reports problem to GitLab.
+
+SYNOPSIS
+--------
+'reporter-gitlab' [-v] [-c CONFFILE] [-F FMTFILE] -d DIR
+
+DESCRIPTION
+-----------
+The tool reads the problem directory DIR. Then it communicates with
+the API of the GitLab instance specified in its configuration and tries
+to find a bug with the same duphash.
+
+Reports problem from dump directory DIR to a GitLab instance.
+
+If no open issue with the same duphash is found, a new one is created.
+Elements of DIR are uploaded and referenced in the issue description.
+
+If an open issue with the same duphash is found, the tool adds a new comment
+to the issue.
+
+The URL to new or modified bug is printed to stdout and recorded in
+'reported_to' element.
+
+Configuration file
+~~~~~~~~~~~~~~~~~~
+If not specified, CONFFILE defaults to /etc/libreport/plugins/gitlab.conf
+and user's local ~/.config/libreport/gitlab.conf.
+Its lines should conform to the 'PARAM = VALUE' format.
+
+The recognized paramters are as follows:
+
+*Allowlist = 'list'*::
+    Comma-separated list of packages whose problems will be reported
+    to the specified GitLab instance.
+    +
+    Default is `evince, gimp, gnome-calculator, gnome-calendar,
+    gnome-characters, gnome-clocks, gnome-disk-utility, gnome-font-viewer,
+    gnome-shell, gvfs, mutter, nautilus`.
+*GitlabProject = 'string'*::
+    Name of the project under which the repositories of individual packages
+    reside on the GitLab instance.
+    +
+    Default is 'GNOME'.
+*GitlabURL = 'string'*::
+    URL of the GitLab instance.
+    +
+    Default is 'https://gitlab.gnome.org/'.
+*PrivateToken = 'string'*::
+    Personal access token for communication with the GitLab API.
+    +
+    To generate the token, navigate to the GitLab instance, go to 'Settings',
+    then 'Access Tokens'. On the "Add a personal access token" screen, select
+    "api" in Scopes, fill in the name and set the expiration date if desired.
+    Confirm by clicking 'Create personal token'. Copy the generated token
+    and paste it into the configuration file.
+    +
+    Default is empty.
+*SSLVerify = 'yes/no'*::
+    Verify server's SSL certificate.
+    +
+    Default is 'yes'.
+
+User's local configuration overrides the system-wide configuration.
+Parameters can also be overridden via $Gitlab_PARAM environment variables.
+
+FMTFILE defaults to /etc/libreport/plugins/gitlab_format.conf
+
+Formatting configuration files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Lines starting with # are ignored.
+
+Lines can be continued on the next line using trailing backslash.
+
+Format:
+
+   "%summary:: summary format"
+   "section:: element1[,element2]..."
+   The literal text line to be added to issue description. Can be empty.
+   (Empty lines are NOT ignored!)
+
+   Summary format is a line of text, where %element% is replaced by
+   text element's content, and [[...%element%...]] block is used only if
+   %element% exists. [[...]] blocks can nest.
+
+   Sections can be:
+   - %summary: bug summary format string.
+   - %attach: a list of elements to attach.
+   - text, double colon (::) and the list of comma-separated elements.
+
+   Elements can be:
+   - problem directory element names, which get formatted as
+     <element_name>: <contents>
+     or
+     <element_name>:
+     :<contents>
+     :<contents>
+     :<contents>
+   - problem directory element names prefixed by "%bare_",
+     which is formatted as-is, without "<element_name>:" and colons
+   - %oneline, %multiline, %text wildcards, which select all corresponding
+     elements for output or attachment
+   - %binary wildcard, valid only for %attach section, instructs to attach
+     binary elements
+   - problem directory element names prefixed by "-",
+     which excludes given element from all wildcards
+
+     Nonexistent elements are silently ignored.
+     If none of elements exists, the section will not be created.
+
+Integration with ABRT events
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'reporter-gitlab' can be used as an ABRT reporter. Example
+fragment for /etc/libreport/report_event.conf:
+
+------------
+# Report Python crashes
+EVENT=report_Gitlab analyzer=Python
+      reporter-gitlab -d . -c /etc/libreport/plugins/gitlab.conf
+------------
+
+OPTIONS
+-------
+-d DIR::
+   Path to problem directory.
+
+-c CONFFILE::
+   Path to configuration file.
+   +
+   Default is '/etc/libreport/plugins/gitlab.conf'.
+
+-F FMTFILE::
+   Formatting file for initial comment.
+   +
+   Default is '/etc/libreport/plugins/gitlab_format.conf'.
+
+ENVIRONMENT VARIABLES
+---------------------
+Environment variables take precedence over values provided in
+the configuration file.
+
+*Gitlab_Allowlist*::
+    Comma-separated list of packages.
+*Gitlab_GitlabProject*::
+    Name of GitLab project.
+*Gitlab_GitlabURL*::
+    URL of the GitLab instance.
+*Gitlab_PrivateToken*::
+    Personal access token with "api" scope.
+*Gitlab_SSLVerify*::
+    Verify server's SSL certificate.
+*http_proxy*::
+	The proxy server to use for HTTP.
+*HTTPS_PROXY*::
+	The proxy server to use for HTTPS.
+
+FILES
+-----
+/usr/share/libreport/conf.d/plugins/gitlab.conf::
+    Readonly default configuration files.
+
+/etc/libreport/plugins/gitlab.conf::
+    Configuration file.
+
+~/.config/libreport/gitlab.conf::
+    User's local configuration file.
+
+/etc/libreport/plugins/gitlab_format.conf::
+    Configure formating for reporting.
+
+SEE ALSO
+--------
+report_event.conf(5), gitlab_format.conf(5)
+
+AUTHORS
+-------
+* ABRT team

@@ -1,10 +1,12 @@
 %if 0%{?suse_version}
   %bcond_with bugzilla
+  %bcond_with gitlab
 
   %define dbus_devel dbus-1-devel
   %define libjson_devel libjson-devel
 %else
   %bcond_without bugzilla
+  %bcond_without gitlab
 
   %define dbus_devel dbus-devel
   %define libjson_devel json-c-devel
@@ -45,6 +47,9 @@ BuildRequires: glibc-all-langpacks
 
 %if %{with bugzilla}
 BuildRequires: xmlrpc-c-devel
+%endif
+%if %{with gitlab}
+BuildRequires: %{libjson_devel}
 %endif
 BuildRequires: doxygen
 BuildRequires: systemd-devel
@@ -195,6 +200,16 @@ Requires: libreport-web = %{version}-%{release}
 Plugin to report bugs into the bugzilla.
 %endif
 
+%if %{with gitlab}
+%package plugin-gitlab
+Summary: %{name}'s GitLab plugin
+Requires: %{name} = %{version}-%{release}
+Requires: libreport-web = %{version}-%{release}
+
+%description plugin-gitlab
+Plugin to report bugs into GitLab instances.
+%endif
+
 %package plugin-mantisbt
 Summary: %{name}'s mantisbt plugin
 Requires: %{name} = %{version}-%{release}
@@ -289,6 +304,9 @@ autoconf
 %configure \
 %if %{without bugzilla}
         --without-bugzilla \
+%endif
+%if %{without gitlab}
+        --without-gitlab \
 %endif
         --enable-doxygen-docs \
         --disable-silent-rules
@@ -553,6 +571,20 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man5/bugzilla_formatdup_analyzer_libreport.conf.5.*
 %{_mandir}/man5/bugzilla_format_kernel.conf.5.*
 %{_bindir}/reporter-bugzilla
+%endif
+
+%if %{with gitlab}
+%files plugin-gitlab
+%config(noreplace) %{_sysconfdir}/libreport/plugins/gitlab.conf
+%{_datadir}/%{name}/conf.d/plugins/gitlab.conf
+%config(noreplace) %{_sysconfdir}/libreport/plugins/gitlab_format.conf
+%{_datadir}/%{name}/events/report_Gitlab.xml
+%config(noreplace) %{_sysconfdir}/libreport/events/report_Gitlab.conf
+%config(noreplace) %{_sysconfdir}/libreport/events.d/gitlab_event.conf
+%{_mandir}/man1/reporter-gitlab.1.gz
+%{_mandir}/man5/gitlab.conf.5.*
+%{_mandir}/man5/gitlab_format.conf.5.*
+%{_bindir}/reporter-gitlab
 %endif
 
 %files plugin-mantisbt
