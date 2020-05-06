@@ -43,10 +43,20 @@ extern "C" {
 #endif
 
 /* Utility function */
+
+/**
+ * TODO: Add description
+ */
 int create_symlink_lockfile(const char *filename, const char *pid_str);
+
+/**
+ * TODO: Add description
+ */
 int create_symlink_lockfile_at(int dir_fd, const char *filename, const char *pid_str);
 
-/* Opens filename for reading relatively to a directory represented by dir_fd.
+/**
+ * @brief Opens filename for reading relatively to a directory represented by dir_fd.
+ *
  * The function fails if the file is symbolic link, directory or hard link.
  */
 int secure_openat_read(int dir_fd, const char *filename);
@@ -55,7 +65,8 @@ int secure_openat_read(int dir_fd, const char *filename);
 /* Global variables                                                           */
 /******************************************************************************/
 
-/* UID of super-user (default 0)
+/**
+ * @brief UID of super-user (default 0)
  *
  * This variable is used by the dd* functions when they access security
  * sensitive elements. The functions will ONLY TRUST the contents of those
@@ -63,7 +74,8 @@ int secure_openat_read(int dir_fd, const char *filename);
  */
 extern uid_t dd_g_super_user_uid;
 
-/* GID of a dump diretory created via dd_create() with uid != -1
+/** 
+ * @brief GID of a dump diretory created via dd_create() with uid != -1
  *
  * The default value is -1 which means that the dd* functions must ignore this
  * variable.
@@ -77,49 +89,115 @@ extern gid_t dd_g_fs_group_gid;
 /* Dump Directory                                                             */
 /******************************************************************************/
 
+/**
+ * @brief Dump Directory flags
+ */
 enum dump_dir_flags {
+    /**
+     * TODO: Description of DD_FAIL_QUIETLY_ENOENT
+     */
     DD_FAIL_QUIETLY_ENOENT = (1 << 0),
+    /**
+     * TODO: Description of DD_FAIL_QUIETLY_EACCES
+     */
     DD_FAIL_QUIETLY_EACCES = (1 << 1),
-    /* Open symlinks. dd_* funcs don't open symlinks by default */
+    /**
+     * Open symlinks. dd_* funcs don't open symlinks by default 
+     */
     DD_OPEN_FOLLOW = (1 << 2),
+    /**
+     * TODO: Detailed description
+     */
     DD_OPEN_READONLY = (1 << 3),
+    /**
+     * TODO: Detailed description
+     */
     DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE = (1 << 4),
+    /**
+     * TODO: Detailed description
+     */
     DD_DONT_WAIT_FOR_LOCK = (1 << 5),
-    /* Create the new dump directory with parent directories (mkdir -p)*/
+    /**
+     * Create the new dump directory with parent directories (mkdir -p) 
+     */
     DD_CREATE_PARENTS = (1 << 6),
-    /* Initializes internal data, opens file descriptors and returns the
+    /**
+     * Initializes internal data, opens file descriptors and returns the
      * structure. This flag is useful for testing whether a directory
      * exists and to perform stat operations.
      */
     DD_OPEN_FD_ONLY = (1 << 7),
 };
 
+/**
+ * @brief Structure representing dump directory
+ */
 struct dump_dir {
+    /**
+     * TODO: Add description
+     */
     char *dd_dirname;
+
+    /**
+     * TODO: Add description
+     */
     DIR *next_dir;
+    /**
+     * TODO: Add description
+     */
+
     int locked;
+    /**
+     * TODO: Add description
+     */
+
     uid_t dd_uid;
+    /**
+     * TODO: Add description
+     */
+
     gid_t dd_gid;
-    /* mode of saved files */
+    /**
+     * Mode of saved files
+     */
     mode_t mode;
+
+    /**
+     * TODO: Add description
+     */
     time_t dd_time;
+
+    /**
+     * TODO: Add description
+     */
     char *dd_type;
 
-    /* In case of recursive locking the first caller owns the lock and is
+    /**
+     * In case of recursive locking the first caller owns the lock and is
      * responsible for unlocking. The consecutive dd_lock() callers acquire the
      * lock but are not able to unlock the dump directory.
      */
     int owns_lock;
+
+    /**
+     * TODO: Add description
+     */
     int dd_fd;
-    /* Never use this member directly, it is intialized on demand in
+
+    /**
+     * Never use this member directly, it is intialized on demand in
      * dd_get_meta_data_dir_fd()
      */
     int dd_md_fd;
 };
 
+/**
+ * @brief Close dump file
+ */
 void dd_close(struct dump_dir *dd);
 
-/* Opens the given path
+/**
+ * @brief Opens the given path
  */
 struct dump_dir *dd_opendir(const char *dir, int flags);
 
@@ -134,7 +212,8 @@ struct dump_dir *dd_opendir(const char *dir, int flags);
  */
 struct dump_dir *dd_fdopendir(struct dump_dir *dd, int flags);
 
-/* Creates a new directory with internal files
+/**
+ * Creates a new directory with internal files
  *
  * The functions creates a new directory which remains owned by the user of the
  * process until dd_reset_ownership() is called.
@@ -150,14 +229,19 @@ struct dump_dir *dd_fdopendir(struct dump_dir *dd, int flags);
  */
 struct dump_dir *dd_create_skeleton(const char *dir, uid_t uid, mode_t mode, int flags);
 
+/**
+ * TODO: Add description
+ */
 int dd_reset_ownership(struct dump_dir *dd);
 
-/* Pass uid = (uid_t)-1L to disable chown'ing of newly created files
+/**
+ * Pass uid = (uid_t)-1L to disable chown'ing of newly created files
  * (IOW: if you aren't running under root):
  */
 struct dump_dir *dd_create(const char *dir, uid_t uid, mode_t mode);
 
-/* Creates the basic files except 'type' and sets the dump dir owner to passed
+/**
+ * Creates the basic files except 'type' and sets the dump dir owner to passed
  * 'uid'.
  *
  * The file 'type' is required and must be added with dd_save_text().
@@ -179,10 +263,19 @@ struct dump_dir *dd_create(const char *dir, uid_t uid, mode_t mode);
  * os_relase), creates an element with the prefix "root_"
  */
 void dd_create_basic_files(struct dump_dir *dd, uid_t uid, const char *chroot_dir);
+
+/**
+ * TODO: Add description
+ */
 int dd_exist(const struct dump_dir *dd, const char *path);
+
+/**
+ * TODO: Add description
+ */
 void dd_sanitize_mode_and_owner(struct dump_dir *dd);
 
-/* Initializes an iterator going through all dump directory items.
+/**
+ * Initializes an iterator going through all dump directory items.
  *
  * @returns NULL if the iterator cannot be initialized; otherwise returns
  * the result of opendir(). Do not use the return value after the iteration is
@@ -190,7 +283,8 @@ void dd_sanitize_mode_and_owner(struct dump_dir *dd);
  */
 DIR *dd_init_next_file(struct dump_dir *dd);
 
-/* Iterates over all dump directory item names
+/**
+ * Iterates over all dump directory item names
  *
  * Initialize the iterator by calling dd_init_next_file(). When iteration is
  * finished, calls dd_clear_next_file().
@@ -199,23 +293,51 @@ DIR *dd_init_next_file(struct dump_dir *dd);
  */
 int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name);
 
-/* Destroys the next file iterator and cleans dump directory internal structures
+/**
+ * Destroys the next file iterator and cleans dump directory internal structures
  *
  * Calling dd_get_next_file() after this function returns will return 0. This
  * function also invalidates the return value of dd_init_next_file().
  */
 void dd_clear_next_file(struct dump_dir *dd);
 
+/**
+ * TODO: Add description
+ */
 char *load_text_file(const char *path, unsigned flags);
 
+/**
+ * TODO: Add description
+ */
 char* dd_load_text_ext(const struct dump_dir *dd, const char *name, unsigned flags);
+
+/**
+ * TODO: Add description
+ */
 char* dd_load_text(const struct dump_dir *dd, const char *name);
+
+/**
+ * TODO: Add description
+ */
 int dd_load_int32(const struct dump_dir *dd, const char *name, int32_t *value);
+
+/**
+ * TODO: Add description
+ */
 int dd_load_uint32(const struct dump_dir *dd, const char *name, uint32_t *value);
+
+/**
+ * TODO: Add description
+ */
 int dd_load_int64(const struct dump_dir *dd, const char *name, int64_t *value);
+
+/**
+ * TODO: Add description
+ */
 int dd_load_uint64(const struct dump_dir *dd, const char *name, uint64_t *value);
 
-/* Returns value of environment variable with given name.
+/**
+ * Returns value of environment variable with given name.
  *
  * @param dd Dump directory
  * @param name Variables's name
@@ -230,7 +352,8 @@ void dd_save_binary(struct dump_dir *dd, const char *name, const char *data, uns
 int dd_copy_file(struct dump_dir *dd, const char *name, const char *source_path);
 int dd_copy_file_unpack(struct dump_dir *dd, const char *name, const char *source_path);
 
-/* Create an item of the given name with contents of the given file (see man openat)
+/**
+ * Create an item of the given name with contents of the given file (see man openat)
  *
  * @param dd Dump directory
  * @param name Item's name
@@ -240,7 +363,8 @@ int dd_copy_file_unpack(struct dump_dir *dd, const char *name, const char *sourc
  */
 int dd_copy_file_at(struct dump_dir *dd, const char *name, int src_dir_fd, const char *src_name);
 
-/* Creates/overwrites an element with data read from a file descriptor
+/**
+ * Creates/overwrites an element with data read from a file descriptor
  *
  * @param dd Dump directory
  * @param name The name of the element
@@ -253,7 +377,8 @@ int dd_copy_file_at(struct dump_dir *dd, const char *name, int src_dir_fd, const
  */
 off_t dd_copy_fd(struct dump_dir *dd, const char *name, int fd, int copy_flags, off_t maxsize);
 
-/* Stats dump dir elements
+/**
+ * Stats dump dir elements
  *
  * @param dd Dump Directory
  * @param name The name of the element
@@ -263,26 +388,30 @@ off_t dd_copy_fd(struct dump_dir *dd, const char *name, int fd, int copy_flags, 
  */
 int dd_item_stat(struct dump_dir *dd, const char *name, struct stat *statbuf);
 
-/* Returns value less than 0 if any error occured; otherwise returns size of an
+/**
+ * Returns value less than 0 if any error occured; otherwise returns size of an
  * item in Bytes. If an item does not exist returns 0 instead of an error
  * value.
  */
 long dd_get_item_size(struct dump_dir *dd, const char *name);
 
-/* Returns the number of items in the dump directory (does not count meta-data).
+/**
+ * Returns the number of items in the dump directory (does not count meta-data).
  *
  * @return Negative number on errors (-errno). Otherwise number of dump
  * directory items.
  */
 int dd_get_items_count(struct dump_dir *dd);
 
-/* Deletes an item from dump directory
+/**
+ * Deletes an item from dump directory
  * On success, zero is returned. On error, -1 is returned, and errno is set appropriately.
  * For more about errno see unlink documentation
  */
 int dd_delete_item(struct dump_dir *dd, const char *name);
 
-/* Returns a file descriptor for the given name. The function is limited to open
+/**
+ * Returns a file descriptor for the given name. The function is limited to open
  * an element read only, write only or create new.
  *
  * O_RDONLY - opens an existing item for reading
@@ -295,7 +424,8 @@ int dd_delete_item(struct dump_dir *dd, const char *name);
  */
 int dd_open_item(struct dump_dir *dd, const char *name, int flags);
 
-/* Returns a FILE for the given name. The function is limited to open
+/**
+ * Returns a FILE for the given name. The function is limited to open
  * an element read only, write only or create new.
  *
  * O_RDONLY - opens an existing file for reading
@@ -308,10 +438,15 @@ int dd_open_item(struct dump_dir *dd, const char *name, int flags);
  */
 FILE *dd_open_item_file(struct dump_dir *dd, const char *name, int flags);
 
-/* Returns 0 if directory is deleted or not found */
+/**
+ * Returns 0 if directory is deleted or not found
+ */
 int dd_delete(struct dump_dir *dd);
+
 int dd_rename(struct dump_dir *dd, const char *new_path);
-/* Changes owner of dump dir
+
+/**
+ * Changes owner of dump dir
  * Uses two different strategies selected at build time by
  * DUMP_DIR_OWNED_BY_USER configuration:
  *  <= 0 : owner = abrt user's uid,  group = new_uid's gid
@@ -321,35 +456,40 @@ int dd_rename(struct dump_dir *dd, const char *new_path);
  */
 int dd_chown(struct dump_dir *dd, uid_t new_uid);
 
-/* Returns the number of Bytes consumed by the dump directory.
+/**
+ * Returns the number of Bytes consumed by the dump directory.
  *
  * @param flags For the future needs (count also meta-data, ...).
  * @return Negative number on errors (-errno). Otherwise size in Bytes.
  */
 off_t dd_compute_size(struct dump_dir *dd, int flags);
 
-/* Sets a new owner (does NOT chown the directory)
+/**
+ * Sets a new owner (does NOT chown the directory)
  *
  * Does not validate the passed uid.
  * The given dump_dir must be opened for writing.
  */
 int dd_set_owner(struct dump_dir *dd, uid_t owner);
 
-/* Makes the dump directory owned by nobody.
+/**
+ * Makes the dump directory owned by nobody.
  *
  * The directory will be accessible for all users.
  * The given dump_dir must be opened for writing.
  */
 int dd_set_no_owner(struct dump_dir *dd);
 
-/* Gets the owner
+/**
+ * Gets the owner
  *
  * If meta-data misses owner, returns fs owner.
  * Can be used with DD_OPEN_FD_ONLY.
  */
 uid_t dd_get_owner(struct dump_dir *dd);
 
-/* Returns UNIX time stamp of the first occurrence of the problem.
+/**
+ * Returns UNIX time stamp of the first occurrence of the problem.
  *
  * @param dd Examined dump directory
  * @returns On success, the value of time of the first occurrence in seconds
@@ -358,7 +498,8 @@ uid_t dd_get_owner(struct dump_dir *dd);
  */
 time_t dd_get_first_occurrence(struct dump_dir *dd);
 
-/* Returns UNIX time stamp of the last occurrence of the problem.
+/**
+ * Returns UNIX time stamp of the last occurrence of the problem.
  *
  * @param dd Examined dump directory
  * @returns The returned value is never lower than the value returned by
@@ -368,7 +509,8 @@ time_t dd_get_first_occurrence(struct dump_dir *dd);
  */
 time_t dd_get_last_occurrence(struct dump_dir *dd);
 
-/* Appends a new unique line to the list of report results
+/**
+ * Appends a new unique line to the list of report results
  *
  * If the reported_to data already contains the given line, the line will not
  * be added again.
@@ -379,7 +521,8 @@ time_t dd_get_last_occurrence(struct dump_dir *dd);
  */
 int libreport_add_reported_to_data(char **reported_to, const char *line);
 
-/* Appends a new unique entry to the list of report results
+/**
+ * Appends a new unique entry to the list of report results
  *
  * result->label must be non-empty string which does not contain ':' character.
  *
@@ -393,70 +536,113 @@ int libreport_add_reported_to_data(char **reported_to, const char *line);
  */
 int libreport_add_reported_to_entry_data(char **reported_to, struct report_result *result);
 
-/* This is a wrapper of libreport_add_reported_to_data which accepts 'struct dump_dir *'
+/**
+ * This is a wrapper of libreport_add_reported_to_data which accepts 'struct dump_dir *'
  * in the first argument instead of 'char **'. The added line is stored in
  * 'reported_to' dump directory file.
  */
 void libreport_add_reported_to(struct dump_dir *dd, const char *line);
 
-/* This is a wrapper of libreport_add_reported_to_entry_data which accepts 'struct
+/**
+ * This is a wrapper of libreport_add_reported_to_entry_data which accepts 'struct
  * dump_dir *' in the first argument instead of 'char **'. The added entry is
  * stored in 'reported_to' dump directory file.
  */
 void libreport_add_reported_to_entry(struct dump_dir *dd, struct report_result *result);
 
+/**
+ * TODO: Add description
+ */
 report_result_t *libreport_find_in_reported_to_data(const char *reported_to, const char *report_label);
+
+/**
+ * TODO: Add description
+ */
 report_result_t *libreport_find_in_reported_to(struct dump_dir *dd, const char *report_label);
+
+/**
+ * TODO: Add description
+ */
 GList *libreport_read_entire_reported_to_data(const char* reported_to);
+
+/**
+ * TODO: Add description
+ */
 GList *libreport_read_entire_reported_to(struct dump_dir *dd);
 
-
+/**
+ * TODO: Add description
+ */
 void delete_dump_dir(const char *dirname);
-/* Checks dump dir accessibility for particular uid.
+
+/**
+ * Checks dump dir accessibility for particular uid.
  *
  * If the directory doesn't exist the directory is not accessible and errno is
  * set to ENOTDIR.
  *
- * Returns non zero if dump dir is accessible otherwise return 0 value.
+ * @return Returns non zero if dump dir is accessible otherwise return 0 value.
  */
 int dump_dir_accessible_by_uid(const char *dirname, uid_t uid);
-/* Returns the same information as dump_dir_accessible_by_uid
+
+/**
+ * Returns the same information as dump_dir_accessible_by_uid
  *
  * The passed dump_dir can be opened with DD_OPEN_FD_ONLY
  */
 int dd_accessible_by_uid(struct dump_dir *dd, uid_t uid);
 
 enum {
+    /**
+     * TODO: Add description
+     */
     DD_STAT_ACCESSIBLE_BY_UID = 1,
+
+    /**
+     * TODO: Add description
+     */
     DD_STAT_OWNED_BY_UID = DD_STAT_ACCESSIBLE_BY_UID << 1,
+
+    /**
+     * TODO: Add description
+     */
     DD_STAT_NO_OWNER = DD_STAT_OWNED_BY_UID << 1,
 };
 
-/* Gets information about a dump directory for particular uid.
+/**
+ * Gets information about a dump directory for particular uid.
  *
  * If the directory doesn't exist the directory is not accessible and errno is
  * set to ENOTDIR.
  *
- * Returns negative number if error occurred otherwise returns 0 or positive number.
+ * @return Returns negative number if error occurred otherwise returns 0 or positive number.
  */
 int dump_dir_stat_for_uid(const char *dirname, uid_t uid);
-/* Returns the same information as dump_dir_stat_for_uid
+
+/**
+ * Returns the same information as dump_dir_stat_for_uid
  *
  * The passed dump_dir can be opened with DD_OPEN_FD_ONLY
  */
 int dd_stat_for_uid(struct dump_dir *dd, uid_t uid);
 
-/* creates not_reportable file in the problem directory and saves the
-   reason to it, which prevents libreport from reporting the problem
-   On success, zero is returned.
-   On error, -1 is returned and an error message is logged.
-     - this could probably happen only if the dump dir is not locked
-*/
+/**
+ * creates not_reportable file in the problem directory and saves the
+ * reason to it, which prevents libreport from reporting the problem
+ * 
+ * @return On success, zero is returned.
+ *         On error, -1 is returned and an error message is logged.
+ *         - this could probably happen only if the dump dir is not locked
+ */
 int dd_mark_as_notreportable(struct dump_dir *dd, const char *reason);
 
+/**
+ * TODO: Add description
+ */
 typedef int (*save_data_call_back)(struct dump_dir *, void *args);
 
-/* Saves data in a new dump directory
+/**
+ * Saves data in a new dump directory
  *
  * Creates a new dump directory in "problem dump location", adds the basic
  * information to the new directory, calls given callback to allow callees to
@@ -466,10 +652,14 @@ typedef int (*save_data_call_back)(struct dump_dir *, void *args);
 struct dump_dir *create_dump_dir(const char *base_dir_name, const char *type,
         uid_t uid, save_data_call_back save_data, void *args);
 
+/**
+ * TODO: Add description
+ */
 struct dump_dir *create_dump_dir_ext(const char *base_dir_name, const char *type,
         pid_t pid, uid_t uid, save_data_call_back save_data, void *args);
 
-/* Creates a new archive from the dump directory contents
+/**
+ * Creates a new archive from the dump directory contents
  *
  * The dd argument must be opened for reading.
  *
