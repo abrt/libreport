@@ -35,41 +35,38 @@ from reportclient import (_, log1, log2, RETURN_OK, RETURN_FAILURE,
                           error_msg)
 
 
-def ensure_abrt_uid(fn):
+def ensure_abrt_gid(fn):
     """
-    Ensures that the function is called using abrt's uid and gid
+    Ensures that the function is called using abrt's gid
 
     Returns:
         Either an unchanged function object or a wrapper function object for
         the function.
     """
 
-    current_uid = os.getuid()
     current_gid = os.getgid()
     abrt = pwd.getpwnam("abrt")
 
     # if we're are already running as abrt, don't do anything
-    if abrt.pw_uid == current_uid and abrt.pw_gid == current_gid:
+    if abrt.pw_gid == current_gid:
         return fn
 
     def wrapped(*args, **kwargs):
         """
         Wrapper function around the called function.
 
-        Sets up uid and gid to match abrt's and after the function finishes
-        rolls its uid and gid back.
+        Sets up gid to match abrt's and after the function finishes
+        rolls its gid back.
 
         Returns:
             Return value of the wrapped function.
         """
 
-        # switch to abrt
+        # switch to abrt group
         os.setegid(abrt.pw_gid)
-        os.seteuid(abrt.pw_uid)
         # extract the files as abrt:abrt
         retval = fn(*args, **kwargs)
         # switch back to whatever we were
-        os.seteuid(current_uid)
         os.setegid(current_gid)
         return retval
 
@@ -79,7 +76,7 @@ def ensure_abrt_uid(fn):
 # TODO: unpack just required debuginfo and not entire rpm?
 # ..that can lead to: foo.c No such file and directory
 # files is not used...
-@ensure_abrt_uid
+@ensure_abrt_gid
 def unpack_rpm(package_full_path, files, tmp_dir, destdir, exact_files=False):
     """
     Unpacks a single rpm located in tmp_dir into destdir.
@@ -265,7 +262,7 @@ class DebugInfoDownload(object):
             else:
                 print("ERR: unmute called without mute?")
 
-    @ensure_abrt_uid
+    @ensure_abrt_gid
     def setup_tmp_dirs(self):
         if not os.path.exists(self.tmpdir):
             try:
@@ -406,9 +403,9 @@ class DebugInfoDownload(object):
 
                     s = os.stat(self.cachedir)
                     abrt = pwd.getpwnam("abrt")
-                    if (s.st_uid != abrt.pw_uid) or (s.st_gid != abrt.pw_gid):
-                        print(_("'{0}' must be owned by abrt. "
-                                "Please run '# chown -R abrt.abrt {0}' "
+                    if s.st_gid != abrt.pw_gid:
+                        print(_("'{0}' must be owned by group abrt. "
+                                "Please run '# chown -R :abrt {0}' "
                                 "to fix the issue.").format(self.cachedir))
 
                     clean_up(self.tmpdir)
