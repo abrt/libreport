@@ -91,22 +91,24 @@ double libreport_get_dirsize_find_largest_dir(
     {
         if (libreport_dot_or_dotdot(ep->d_name))
             continue;
-        char *dname = libreport_concat_path_file(pPath, ep->d_name);
-        if (lstat(libreport_concat_path_file(dname, "sosreport.log"), &statbuf) == 0)
+        g_autofree char *dname = libreport_concat_path_file(pPath, ep->d_name);
+        g_autofree char *sosreport_path = libreport_concat_path_file(dname, "sosreport.log");
+        g_autofree char *lock_path = libreport_concat_path_file(dname, ".lock");
+        if (lstat(sosreport_path, &statbuf) == 0)
         {
             log_debug("Skipping %s': sosreport is being generated.", dname);
             size += libreport_get_dirsize(dname);
-            goto next;
+            continue;
         }
-        if (lstat(libreport_concat_path_file(dname, ".lock"), &statbuf) == 0)
+        if (lstat(lock_path, &statbuf) == 0)
         {
             log_warning("Skipping %s: directory locked. Is a backtrace being generated?", dname);
             size += libreport_get_dirsize(dname);
-            goto next;
+            continue;
         }
         if (lstat(dname, &statbuf) != 0)
         {
-            goto next;
+            continue;
         }
         if (S_ISDIR(statbuf.st_mode))
         {
@@ -145,8 +147,6 @@ double libreport_get_dirsize_find_largest_dir(
         {
             size += statbuf.st_size;
         }
- next:
-        free(dname);
     }
     closedir(dp);
     return size;
