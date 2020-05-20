@@ -23,7 +23,8 @@ libreport_gtk_la_SOURCES = \
     search_item.c search_item.h \
     problem_details_widget.c problem_details_widget.h \
     problem_details_dialog.c problem_details_dialog.h \
-    desktop-utils.c problem_utils.h
+    desktop-utils.c problem_utils.h \
+    libreport-gtk.sym
 
 libreport_gtk_la_CPPFLAGS = \
     -I$(srcdir)/../include \
@@ -37,6 +38,11 @@ libreport_gtk_la_CPPFLAGS = \
     -D_GNU_SOURCE
 libreport_gtk_la_LDFLAGS = \
     -version-info 0:1:0
+
+if HAVE_LD_VERSION_SCRIPT
+libreport_gtk_la_LDFLAGS += -Wl,--version-script=$(srcdir)/libreport-gtk.sym
+endif
+
 libreport_gtk_la_LIBADD = \
     $(GTK_LIBS) \
     $(GLIB_LIBS) \

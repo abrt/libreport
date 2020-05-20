@@ -1,0 +1,53 @@
+LIBREPORT_GTK_2.13.1 {
+global:
+    /* from internal_libreport_gtk.h */
+    libreport_make_label_autowrap_on_resize;
+    libreport_show_events_list_dialog;
+    libreport_is_event_config_user_storage_available;
+    libreport_load_single_event_config_data_from_user_storage;
+    libreport_load_event_config_data_from_user_storage;
+    libreport_save_event_config_data_to_user_storage;
+    libreport_show_event_config_dialog;
+    libreport_create_event_config_dialog_content;
+    save_data_from_event_config_dialog;
+    libreport_add_item_to_config_liststore;
+    new_conf_liststore;
+    show_config_list_dialog;
+    add_events_to_liststore;
+    add_workflows_to_liststore;
+    new_config_dialog;
+    load_workflow_config_data_from_user_storage;
+    cdialog_set_widget;
+    cdialog_get_widget;
+    cdialog_get_data;
+    cdialog_run;
+    dehydrate_config_dialog;
+    tag_url;
+    libreport_find_url_tokens;
+    libreport_reload_text_to_text_view;
+    libreport_run_ask_yes_no_yesforever_dialog;
+    libreport_run_ask_yes_no_save_result_dialog;
+
+    /* from problem_details_widget.h */
+    problem_details_dialog_new;
+    problem_details_dialog_new_for_dir;
+
+    /* from problem_details_dialog.h */
+    problem_details_widget_get_type;
+    problem_details_widget_new;
+
+    /* from problem_utils.h */
+    problem_create_app_from_cmdline;
+    problem_create_app_from_env;
+    problem_get_argv0;
+
+    /* from search_item.h */
+    sitem_new;
+    sitem_free;
+    sitem_compare;
+    sitem_get_start_iter;
+    sitem_get_end_iter;
+    sitem_is_in_sitemlist;
+local:
+    *;
+};
