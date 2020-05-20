@@ -66,7 +66,8 @@ libreport_la_SOURCES = \
     reporters.c \
     global_configuration.c \
     uriparser.c \
-    report_result.c
+    report_result.c \
+    libreport.sym
 
 libreport_la_CPPFLAGS = \
     -I$(srcdir)/../include \
@@ -95,6 +96,11 @@ libreport_la_CPPFLAGS = \
 libreport_la_LDFLAGS = \
     -ltar \
     -version-info 0:1:0
+
+if HAVE_LD_VERSION_SCRIPT
+libreport_la_LDFLAGS += -Wl,--version-script=$(srcdir)/libreport.sym
+endif
+
 libreport_la_LIBADD = \
     $(GIO_LIBS) \
     $(GLIB_LIBS) \
@@ -121,7 +127,8 @@ endif
 
 libreport_web_la_SOURCES = $(libreport_web_o) \
     curl.c \
-    proxies.h proxies.c
+    proxies.h proxies.c \
+    libreport-web.sym
 
 libreport_web_la_CPPFLAGS = \
     -I$(srcdir)/../include \
@@ -140,6 +147,11 @@ libreport_web_la_CPPFLAGS = \
     -D_GNU_SOURCE
 libreport_web_la_LDFLAGS = \
     -version-info 0:1:0
+
+if HAVE_LD_VERSION_SCRIPT
+libreport_web_la_LDFLAGS += -Wl,--version-script=$(srcdir)/libreport-web.sym
+endif
+
 libreport_web_la_LIBADD = \
     $(GLIB_LIBS) \
     $(CURL_LIBS) \
