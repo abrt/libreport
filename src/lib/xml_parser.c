@@ -24,7 +24,7 @@ char *get_element_lang(struct my_parse_data *parse_data, const gchar **att_names
 {
     /* if the element has no attribute then it's a default non-localized value */
     if (att_values[0] == NULL)
-        return libreport_xstrdup("");
+        return g_strdup("");
 
     char *short_locale_end = strchr(parse_data->cur_locale, '_');
     for (int i = 0; att_names[i] != NULL; ++i)
@@ -34,7 +34,7 @@ char *get_element_lang(struct my_parse_data *parse_data, const gchar **att_names
             if (strcmp(att_values[i], parse_data->cur_locale) == 0)
             {
                 log_debug("found translation for: %s", parse_data->cur_locale);
-                return libreport_xstrdup(att_values[i]);
+                return g_strdup(att_values[i]);
             }
 
             /* try to match shorter locale

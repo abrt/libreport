@@ -70,7 +70,7 @@ static char** append_str_to_vector(char **vec, unsigned *size_p, const char *str
     //log_warning("old vec: %p", vec);
     unsigned size = *size_p;
     vec = (char**) libreport_xrealloc(vec, (size+2) * sizeof(vec[0]));
-    vec[size] = libreport_xstrdup(str);
+    vec[size] = g_strdup(str);
     //log_warning("new vec: %p, added [%d] %p", vec, size, vec[size]);
     size++;
     vec[size] = NULL;
@@ -84,7 +84,7 @@ static char *ask_email_address(const char *type, const char *def_address)
     const int ret = libreport_ask_yes_no(ask_text);
 
     if (!ret)
-        return libreport_xstrdup(def_address);
+        return g_strdup(def_address);
 
     ask_text = g_strdup_printf(_("Please, type email address of %s:"), type);
     char *address = libreport_ask(ask_text);
@@ -110,9 +110,9 @@ static void create_and_send_email(
 
     char* env;
     env = getenv("Mailx_EmailFrom");
-    char *email_from = (env ? libreport_xstrdup(env) : libreport_xstrdup(libreport_get_map_string_item_or_NULL(settings, "EmailFrom")) ? : ask_email_address("sender", "ABRT Daemon <DoNotReply>"));
+    char *email_from = (env ? g_strdup(env) : g_strdup(libreport_get_map_string_item_or_NULL(settings, "EmailFrom")) ? : ask_email_address("sender", "ABRT Daemon <DoNotReply>"));
     env = getenv("Mailx_EmailTo");
-    char *email_to = (env ? libreport_xstrdup(env) : libreport_xstrdup(libreport_get_map_string_item_or_NULL(settings, "EmailTo")) ? : ask_email_address("receiver", "root@localhost"));
+    char *email_to = (env ? g_strdup(env) : g_strdup(libreport_get_map_string_item_or_NULL(settings, "EmailTo")) ? : ask_email_address("receiver", "root@localhost"));
     env = getenv("Mailx_SendBinaryData");
     bool send_binary_data = libreport_string_to_bool(env ? env : libreport_get_map_string_item_or_empty(settings, "SendBinaryData"));
 

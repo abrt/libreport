@@ -306,7 +306,7 @@ problem_details_widget_populate(ProblemDetailsWidget *self)
         if (uid && username)
             line = g_strdup_printf("%s (%s)", username, uid);
         else if (!uid && !username)
-            line = libreport_xstrdup("unknown user");
+            line = g_strdup("unknown user");
         else
             line = g_strdup_printf("%s", uid ? uid : username);
 
@@ -319,30 +319,28 @@ problem_details_widget_populate(ProblemDetailsWidget *self)
         const char *analyzer = problem_data_get_content_or_NULL(
                 self->priv->problem_data, FILENAME_ANALYZER);
 
-        char *label = NULL;
+        g_autofree char *label = NULL;
         g_autofree char *line = NULL;
         if (type != NULL && analyzer != NULL)
         {
             if (strcmp(type, analyzer) != 0)
             {
-                label = libreport_xstrdup("type/analyzer");
+                label = g_strdup("type/analyzer");
                 line = g_strdup_printf("%s/%s", type, analyzer);
             }
             else
             {
-                label = libreport_xstrdup("type");
-                line = libreport_xstrdup(type);
+                label = g_strdup("type");
+                line = g_strdup(type);
             }
         }
         else
         {
-            label = libreport_xstrdup(type ? "type" : "anlyzer");
-            line = libreport_xstrdup(type ? type : analyzer);
+            label = g_strdup(type ? "type" : "anlyzer");
+            line = g_strdup(type ? type : analyzer);
         }
 
         problem_details_widget_add_single_line(self, label, line);
-
-        free(label);
     }
 
     g_hash_table_foreach(self->priv->problem_data,

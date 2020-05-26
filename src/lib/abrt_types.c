@@ -41,7 +41,7 @@ map_string_t *libreport_clone_map_string(map_string_t *ms)
     map_string_iter_t iter;
     libreport_init_map_string_iter(&iter, ms);
     while(libreport_next_map_string_iter(&iter, &key, &value))
-        insert_map_string(clone, libreport_xstrdup(key), libreport_xstrdup(value));
+        insert_map_string(clone, g_strdup(key), g_strdup(value));
 
     return clone;
 }
@@ -174,7 +174,7 @@ int libreport_try_get_map_string_item_as_uint(map_string_t *ms, const char *key,
 
 void libreport_set_map_string_item_from_string(map_string_t *ms, const char *key, const char *value)
 {
-    libreport_replace_map_string_item(ms, libreport_xstrdup(key), libreport_xstrdup(value));
+    libreport_replace_map_string_item(ms, g_strdup(key), g_strdup(value));
 }
 
 int libreport_try_get_map_string_item_as_string(map_string_t *ms, const char *key, char **value)

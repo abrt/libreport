@@ -112,13 +112,13 @@ static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
     const char *environ;
 
     environ = getenv("Bugzilla_Login");
-    b->b_login = libreport_xstrdup(environ ? environ : libreport_get_map_string_item_or_empty(settings, "Login"));
+    b->b_login = g_strdup(environ ? environ : libreport_get_map_string_item_or_empty(settings, "Login"));
 
     environ = getenv("Bugzilla_Password");
-    b->b_password = libreport_xstrdup(environ ? environ : libreport_get_map_string_item_or_empty(settings, "Password"));
+    b->b_password = g_strdup(environ ? environ : libreport_get_map_string_item_or_empty(settings, "Password"));
 
     environ = getenv("Bugzilla_BugzillaURL");
-    b->b_bugzilla_url = libreport_xstrdup(environ ? environ : libreport_get_map_string_item_or_empty(settings, "BugzillaURL"));
+    b->b_bugzilla_url = g_strdup(environ ? environ : libreport_get_map_string_item_or_empty(settings, "BugzillaURL"));
     if (!b->b_bugzilla_url[0])
         b->b_bugzilla_url = "https://bugzilla.redhat.com";
     else
@@ -133,19 +133,19 @@ static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
     environ = getenv("Bugzilla_Product");
     if (environ)
     {
-        b->b_product = libreport_xstrdup(environ);
+        b->b_product = g_strdup(environ);
         environ = getenv("Bugzilla_ProductVersion");
         if (environ)
-            b->b_product_version = libreport_xstrdup(environ);
+            b->b_product_version = g_strdup(environ);
     }
     else
     {
         const char *option = libreport_get_map_string_item_or_NULL(settings, "Product");
         if (option)
-            b->b_product = libreport_xstrdup(option);
+            b->b_product = g_strdup(option);
         option = libreport_get_map_string_item_or_NULL(settings, "ProductVersion");
         if (option)
-            b->b_product_version = libreport_xstrdup(option);
+            b->b_product_version = g_strdup(option);
     }
 
     if (!b->b_product)
@@ -400,7 +400,7 @@ int main(int argc, char **argv)
         if (libreport_prefixcmp(abrt_hash, "abrt_hash:"))
             hash = g_strdup_printf("abrt_hash:%s", abrt_hash);
         else
-            hash = libreport_xstrdup(abrt_hash);
+            hash = g_strdup(abrt_hash);
 
         if (opts & OPT_p)
         {
@@ -418,7 +418,7 @@ int main(int argc, char **argv)
                     map_string_t *os_release_map = libreport_new_map_string();
                     libreport_parse_osinfo(os_release, os_release_map);
 
-                    product = libreport_xstrdup(libreport_get_map_string_item_or_NULL(os_release_map, "REDHAT_BUGZILLA_PRODUCT"));
+                    product = g_strdup(libreport_get_map_string_item_or_NULL(os_release_map, "REDHAT_BUGZILLA_PRODUCT"));
 
                     libreport_free_map_string(os_release_map);
                     free(os_release);
@@ -434,7 +434,7 @@ int main(int argc, char **argv)
         if (product == NULL)
         {
             /* Use DEFAULT_BUGZILLA_PRODUCT as default product due to backward compatibility */
-            product = libreport_xstrdup(DEFAULT_BUGZILLA_PRODUCT);
+            product = g_strdup(DEFAULT_BUGZILLA_PRODUCT);
 
             /* If parameter -p was used and product == NULL, some error occured */
             if (opts & OPT_p)
@@ -502,7 +502,7 @@ int main(int argc, char **argv)
                 error_msg_and_die(_("Malformed url to Bugzilla '%s'."), url);
 
             /* won't ever call free on it - it simplifies the code a lot */
-            ticket_no = libreport_xstrdup(ticket_no + 1);
+            ticket_no = g_strdup(ticket_no + 1);
             log_warning(_("Using Bugzilla ID '%s'"), ticket_no);
         }
 
@@ -825,7 +825,7 @@ int main(int argc, char **argv)
             }
 
             bz = new_bug_info();
-            bz->bi_status = libreport_xstrdup("NEW");
+            bz->bi_status = g_strdup("NEW");
             bz->bi_id = new_id;
 
             if (existing_id >= 0)

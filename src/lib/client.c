@@ -224,7 +224,7 @@ char *libreport_ask(const char *question)
     {
         putchar('\n');
         fflush(stdout);
-        return libreport_xstrdup("");
+        return g_strdup("");
     }
 
     char *result = libreport_xmalloc_fgets(stdin);
@@ -246,7 +246,7 @@ char *libreport_ask_password(const char *question)
     {
         putchar('\n');
         fflush(stdout);
-        return libreport_xstrdup("");
+        return g_strdup("");
     }
 
     bool changed = libreport_set_echo(false);

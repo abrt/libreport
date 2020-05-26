@@ -1690,7 +1690,7 @@ static char *load_text_from_file_descriptor(int fd, const char *path, int flags)
     {
         if (!(flags & DD_FAIL_QUIETLY_ENOENT))
             perror_msg("Can't open file '%s' for reading", path);
-        return (flags & DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE ? NULL : libreport_xstrdup(""));
+        return (flags & DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE ? NULL : g_strdup(""));
     }
 
     /* Why? Because half a million read syscalls of one byte each isn't fun.
@@ -2134,7 +2134,7 @@ int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name)
         return 0;
 
     if (short_name)
-        *short_name = libreport_xstrdup(dent->d_name);
+        *short_name = g_strdup(dent->d_name);
     if (full_name)
         *full_name = libreport_concat_path_file(dd->dd_dirname, dent->d_name);
     return 1;

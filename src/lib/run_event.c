@@ -258,7 +258,7 @@ GList *load_rule_list(GList *rule_list,
                     log_warning("| %s", (const char *)c->data);
             }
 
-            cur_rule->command = libreport_xstrdup(p);
+            cur_rule->command = g_strdup(p);
 
             rule_list = g_list_append(rule_list, cur_rule);
         }
@@ -272,7 +272,7 @@ GList *load_rule_list(GList *rule_list,
             const char *p = libreport_skip_whitespace(line + strlen("include"));
 
             const char *last_slash;
-            char *name_to_glob;
+            g_autofree char *name_to_glob = NULL;
             if (*p != '/'
              && (last_slash = strrchr(conf_file_name, '/')) != NULL
             )
@@ -284,13 +284,12 @@ GList *load_rule_list(GList *rule_list,
                 /* Either GLOB_PATTERN is absolute, or this include is in file.conf
                  * (no slashes in its name). Use unchanged GLOB_PATTERN:
                  */
-                name_to_glob = libreport_xstrdup(p);
+                name_to_glob = g_strdup(p);
 
             glob_t globbuf;
             memset(&globbuf, 0, sizeof(globbuf));
             log_parser("globbing '%s'", name_to_glob);
             glob(name_to_glob, 0, NULL, &globbuf);
-            free(name_to_glob);
             char **name = globbuf.gl_pathv;
             if (name) while (*name)
             {
@@ -391,7 +390,7 @@ static char* pop_next_command(GList **pp_rule_list,
                 if (pp_event_name)
                 {
                     free(*pp_event_name);
-                    *pp_event_name = libreport_xstrdup(eq_sign + 1);
+                    *pp_event_name = g_strdup(eq_sign + 1);
                 }
             }
             else
@@ -423,7 +422,7 @@ static char* pop_next_command(GList **pp_rule_list,
                 {
                     real_val = problem_data_get_content_or_NULL(pd, var_name);
                     if (real_val == NULL)
-                        free_me = real_val = libreport_xstrdup("");
+                        free_me = real_val = g_strdup("");
                 }
                 free(var_name);
                 int vals_differ = regex ? regcmp_lines(real_val, eq_sign + 1) : strcmp(real_val, eq_sign + 1);
@@ -574,7 +573,7 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
             libreport_strbuf_append_str(cmd_output, raw);
             char *msg = cmd_output->buf;
 
-            char *response = NULL;
+            g_autofree char *response = NULL;
 
             /* just cut off prefix, no waiting */
             if (libreport_prefixcmp(msg, REPORT_PREFIX_ALERT) == 0)
@@ -610,7 +609,7 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
                     key_end[0] = ' '; /* restore original message, not sure if it is necessary */
                 }
 
-                response = libreport_xstrdup(ans ? "y" : "N");
+                response = g_strdup(ans ? "y" : "N");
             }
             /* wait for y/N/f/e response on the same line */
             else if (libreport_prefixcmp(msg, REPORT_PREFIX_ASK_YES_NO_SAVE_RESULT) == 0)
@@ -641,13 +640,13 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
                     key_end[0] = ' '; /* restore original message, not sure if it is necessary */
                 }
 
-                response = libreport_xstrdup(ans ? "y" : "N");
+                response = g_strdup(ans ? "y" : "N");
             }
             /* wait for y/N response on the same line */
             else if (libreport_prefixcmp(msg, REPORT_PREFIX_ASK_YES_NO) == 0)
             {
                 const bool ans = state->ask_yes_no_callback(msg + sizeof(REPORT_PREFIX_ASK_YES_NO) - 1, state->interaction_param);
-                response = libreport_xstrdup(ans ? "y" : "N");
+                response = g_strdup(ans ? "y" : "N");
             }
             /* wait for the string on the same line */
             else if (libreport_prefixcmp(msg, REPORT_PREFIX_ASK) == 0)
@@ -663,7 +662,7 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
              * note that callback may take ownership of buf by returning NULL */
             else if (state->logging_callback)
             {
-                char *logged = state->logging_callback(libreport_xstrdup(msg), state->logging_param);
+                char *logged = state->logging_callback(g_strdup(msg), state->logging_param);
                 free(logged);
             }
 
@@ -679,8 +678,6 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
                     else
                         perror_msg_and_die("Can't write %zu bytes to child's stdin", len);
                 }
-
-                free(response);
             }
 
             libreport_strbuf_clear(cmd_output);
@@ -742,14 +739,13 @@ int run_event_on_problem_data(struct run_event_state *state, problem_data_t *dat
     struct dump_dir *dd = create_dump_dir_from_problem_data(data, NULL);
     if (!dd)
         return -1;
-    char *dir_name = libreport_xstrdup(dd->dd_dirname);
+    g_autofree char *dir_name = g_strdup(dd->dd_dirname);
     dd_close(dd);
 
     int r = run_event_on_dir_name(state, dir_name, event);
 
     g_hash_table_remove_all(data);
     dd = dd_opendir(dir_name, /*flags:*/ 0);
-    free(dir_name);
     if (dd)
     {
         problem_data_load_from_dump_dir(data, dd, NULL);

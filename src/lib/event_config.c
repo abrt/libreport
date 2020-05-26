@@ -218,9 +218,9 @@ static void load_config_files(const char *dir_path)
             {
                 // log_warning("conf: new value %s='%s'", name, value);
                 opt = new_event_option();
-                opt->eo_name = libreport_xstrdup(name);
+                opt->eo_name = g_strdup(name);
             }
-            opt->eo_value = libreport_xstrdup(value);
+            opt->eo_value = g_strdup(value);
             if (!elem)
                 event_config->options = g_list_append(event_config->options, opt);
         }
@@ -228,7 +228,7 @@ static void load_config_files(const char *dir_path)
         libreport_free_map_string(keys_and_values);
 
         if (new_config)
-            g_hash_table_replace(g_event_config_list, libreport_xstrdup(ec_get_name(event_config)), event_config);
+            g_hash_table_replace(g_event_config_list, g_strdup(ec_get_name(event_config)), event_config);
 
         libreport_free_file_obj(file);
         conf_files = g_list_delete_link(conf_files, conf_files);
@@ -268,7 +268,7 @@ GHashTable *load_event_config_data(void)
         load_event_description_from_file(event_config, file->fullpath);
 
         if (new_config)
-            g_hash_table_replace(g_event_config_list, libreport_xstrdup(ec_get_name(event_config)), event_config);
+            g_hash_table_replace(g_event_config_list, g_strdup(ec_get_name(event_config)), event_config);
 
         libreport_free_file_obj(file);
         event_files = g_list_delete_link(event_files, event_files);
@@ -395,7 +395,7 @@ void unexport_event_config(GList *env_list)
 static char *validate_event_option(event_option_t *opt)
 {
     if (!opt->eo_allow_empty && (!opt->eo_value || !opt->eo_value[0]))
-        return libreport_xstrdup(_("Missing mandatory value"));
+        return g_strdup(_("Missing mandatory value"));
 
     /* if value is NULL and allow-empty yes than it doesn't make sence to check it */
     if (!opt->eo_value)
@@ -437,7 +437,7 @@ static char *validate_event_option(event_option_t *opt)
     case OPTION_TYPE_HINT_HTML:
         return NULL;
     default:
-        return libreport_xstrdup(_("Unsupported option type"));
+        return g_strdup(_("Unsupported option type"));
     };
 
     return NULL;
@@ -460,8 +460,8 @@ GList *get_options_with_err_msg(const char *event_name)
         if (err)
         {
             invalid_option_t *inv_opt = new_invalid_option();
-            inv_opt->invopt_name = libreport_xstrdup(opt->eo_name);
-            inv_opt->invopt_error = libreport_xstrdup(err);
+            inv_opt->invopt_name = g_strdup(opt->eo_name);
+            inv_opt->invopt_error = g_strdup(err);
             err_list = g_list_prepend(err_list, inv_opt);
 
             free(err);
@@ -516,26 +516,26 @@ bool check_problem_rating_usability(const event_config_t *cfg,
                   "'%s' file does not contain a number."),
                 FILENAME_RATING);
 
-        tmp_detail = libreport_xstrdup(_("Please report this problem to ABRT project developers."));
+        tmp_detail = g_strdup(_("Please report this problem to ABRT project developers."));
 
         result = false;
     }
     else if (rating == minimal_rating) /* bt is usable, but not complete, so show a warning */
     {
-        tmp_desc = libreport_xstrdup(_("The backtrace is incomplete, please make sure you provide the steps to reproduce."));
-        tmp_detail = libreport_xstrdup(_("The backtrace probably can't help developer to diagnose the bug."));
+        tmp_desc = g_strdup(_("The backtrace is incomplete, please make sure you provide the steps to reproduce."));
+        tmp_detail = g_strdup(_("The backtrace probably can't help developer to diagnose the bug."));
 
         result = true;
     }
     else if (rating < minimal_rating)
     {
-        tmp_desc = libreport_xstrdup(_("Reporting is disabled because the generated backtrace has low informational value."));
+        tmp_desc = g_strdup(_("Reporting is disabled because the generated backtrace has low informational value."));
 
         const char *package = problem_data_get_content_or_NULL(pd, FILENAME_PACKAGE);
         if (package && package[0])
             tmp_detail = g_strdup_printf(_("Please try to install debuginfo manually using the command: \"debuginfo-install %s\" and try again."), package);
         else
-            tmp_detail = libreport_xstrdup(_("A proper debuginfo is probably missing or the coredump is corrupted."));
+            tmp_detail = g_strdup(_("A proper debuginfo is probably missing or the coredump is corrupted."));
 
         result = false;
     }
@@ -555,7 +555,7 @@ finish:
 GList *expand_event_wildcard(const gchar *event_name, gsize event_len)
 {
     if (event_name[event_len - 1] != '*')
-        return g_list_prepend(NULL, libreport_xstrdup(event_name));
+        return g_list_prepend(NULL, g_strdup(event_name));
 
     log_info("expanding wildcard in event name '%s'", event_name);
 
@@ -582,7 +582,7 @@ GList *expand_event_wildcard(const gchar *event_name, gsize event_len)
         if (strncmp(file_name, event_name, event_len - 1) == 0)
         {
             log_debug("found matching event '%s'", file_name);
-            list = g_list_prepend(list, libreport_xstrdup(file_name));
+            list = g_list_prepend(list, g_strdup(file_name));
         }
 
         libreport_free_file_obj(file);

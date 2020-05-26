@@ -129,7 +129,7 @@ void abrt_xmlrpc_client_add_session_param_string(xmlrpc_env *env, struct abrt_xm
         const char *name, const char *value)
 {
     struct abrt_xmlrpc_param_pair *new_ses_param = libreport_xmalloc(sizeof(*new_ses_param));
-    new_ses_param->name = libreport_xstrdup(name);
+    new_ses_param->name = g_strdup(name);
 
     new_ses_param->value = xmlrpc_string_new(env, value);
     if (env->fault_occurred)

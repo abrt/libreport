@@ -137,7 +137,7 @@ double libreport_get_dirsize_find_largest_dir(
                         {
                             maxsz = sz;
                             free(*worst_dir);
-                            *worst_dir = libreport_xstrdup(ep->d_name);
+                            *worst_dir = g_strdup(ep->d_name);
                         }
                     }
                 }

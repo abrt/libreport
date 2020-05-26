@@ -206,7 +206,7 @@ char *libreport_malloc_readlinkat(int dir_fd, const char *linkname)
     if (len >= 0)
     {
         buf[len] = '\0';
-        return libreport_xstrdup(buf);
+        return g_strdup(buf);
     }
     return NULL;
 }

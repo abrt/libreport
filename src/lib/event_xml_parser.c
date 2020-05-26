@@ -95,7 +95,7 @@ static char *get_element_lang(struct my_parse_data *parse_data, const gchar **at
             if (strcmp(att_values[i], parse_data->cur_locale) == 0)
             {
                 log_debug("found translation for: %s", parse_data->cur_locale);
-                return libreport_xstrdup(att_values[i]);
+                return g_strdup(att_values[i]);
             }
 
             /* try to match shorter locale
@@ -111,7 +111,7 @@ static char *get_element_lang(struct my_parse_data *parse_data, const gchar **at
     }
     /* if the element has no attribute then it's a default non-localized value */
     if (i == 0)
-        return libreport_xstrdup("");
+        return g_strdup("");
     /* if the element is in different language than the current locale */
     return NULL;
 }
@@ -199,7 +199,7 @@ static void start_element(GMarkupParseContext *context,
             if (strcmp(attribute_names[i], "name") == 0)
             {
                 free(opt->eo_name);
-                opt->eo_name = libreport_xstrdup(attribute_values[i]);
+                opt->eo_name = g_strdup(attribute_values[i]);
             }
             else if (strcmp(attribute_names[i], "type") == 0)
             {
@@ -224,7 +224,7 @@ static void start_element(GMarkupParseContext *context,
         }
 
         GList *head = parse_data->event_config.values->ec_imported_event_names;
-        parse_data->event_config.values->ec_imported_event_names = g_list_append(head, libreport_xstrdup(attribute_values[0]));
+        parse_data->event_config.values->ec_imported_event_names = g_list_append(head, g_strdup(attribute_values[0]));
     }
     else
     if (strcmp(element_name, LABEL_ELEMENT) == 0
@@ -248,7 +248,7 @@ static void start_element(GMarkupParseContext *context,
             return;
         }
 
-        parse_data->event_config.values->ec_restricted_access_option = libreport_xstrdup(attribute_values[0]);
+        parse_data->event_config.values->ec_restricted_access_option = g_strdup(attribute_values[0]);
     }
 }
 
@@ -538,7 +538,7 @@ void load_event_description_from_file(event_config_t *event_config, const char* 
         NULL,
         false
     };
-    parse_data.cur_locale = libreport_xstrdup(setlocale(LC_ALL, NULL));
+    parse_data.cur_locale = g_strdup(setlocale(LC_ALL, NULL));
     strchrnul(parse_data.cur_locale, '.')[0] = '\0';
 
     GMarkupParser parser;

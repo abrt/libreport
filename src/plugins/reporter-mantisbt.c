@@ -35,8 +35,8 @@ parse_osinfo_for_mantisbt(map_string_t *osinfo, char** project, char** version)
 
     if (name && version_id)
     {
-        *project = libreport_xstrdup(name);
-        *version = libreport_xstrdup(version_id);
+        *project = g_strdup(name);
+        *version = g_strdup(version_id);
         return;
     }
 
@@ -124,10 +124,10 @@ set_settings(mantisbt_settings_t *m, map_string_t *settings, struct dump_dir *dd
     const char *environ;
 
     environ = getenv("Mantisbt_Login");
-    m->m_login = libreport_xstrdup(environ ? environ : libreport_get_map_string_item_or_empty(settings, "Login"));
+    m->m_login = g_strdup(environ ? environ : libreport_get_map_string_item_or_empty(settings, "Login"));
 
     environ = getenv("Mantisbt_Password");
-    m->m_password = libreport_xstrdup(environ ? environ : libreport_get_map_string_item_or_empty(settings, "Password"));
+    m->m_password = g_strdup(environ ? environ : libreport_get_map_string_item_or_empty(settings, "Password"));
 
     environ = getenv("Mantisbt_MantisbtURL");
     m->m_mantisbt_url = environ ? environ : libreport_get_map_string_item_or_empty(settings, "MantisbtURL");
@@ -145,19 +145,19 @@ set_settings(mantisbt_settings_t *m, map_string_t *settings, struct dump_dir *dd
     environ = getenv("Mantisbt_Project");
     if (environ)
     {
-        m->m_project = libreport_xstrdup(environ);
+        m->m_project = g_strdup(environ);
         environ = getenv("Mantisbt_ProjectVersion");
         if (environ)
-            m->m_project_version = libreport_xstrdup(environ);
+            m->m_project_version = g_strdup(environ);
     }
     else
     {
         const char *option = libreport_get_map_string_item_or_NULL(settings, "Project");
         if (option)
-            m->m_project = libreport_xstrdup(option);
+            m->m_project = g_strdup(option);
         option = libreport_get_map_string_item_or_NULL(settings, "ProjectVersion");
         if (option)
-            m->m_project_version = libreport_xstrdup(option);
+            m->m_project_version = g_strdup(option);
     }
 
     if (!m->m_project || !*m->m_project) /* if not overridden or empty... */
@@ -387,7 +387,7 @@ int main(int argc, char **argv)
                 error_msg_and_die(_("Malformed url to MantisBT '%s'."), url);
 
             /* won't ever call free on it - it simplifies the code a lot */
-            ticket_no = libreport_xstrdup(ticket_no + 1);
+            ticket_no = g_strdup(ticket_no + 1);
             log_warning(_("Using MantisBT ID '%s'"), ticket_no);
         }
 
@@ -605,7 +605,7 @@ int main(int argc, char **argv)
             problem_report_free(pr);
             ii = mantisbt_issue_info_new();
             ii->mii_id = new_id;
-            ii->mii_status = libreport_xstrdup("new");
+            ii->mii_status = g_strdup("new");
 
             goto finish;
         }

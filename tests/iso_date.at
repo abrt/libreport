@@ -31,7 +31,7 @@ int main(void)
     time_t local[3];
 
     time(&local[0]);
-    char *date = libreport_xstrdup(libreport_iso_date_string(NULL));
+    char *date = g_strdup(libreport_iso_date_string(NULL));
 
     local[1] = local[0] + 1;
     local[2] = local[0] + 2;

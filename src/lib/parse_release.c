@@ -50,8 +50,8 @@ static void parse_release(const char *release, char** product, char** version, i
     /* Fedora has a single non-numeric release - Rawhide */
     if (strstr(release, "Rawhide"))
     {
-        *product = libreport_xstrdup("Fedora");
-        *version = libreport_xstrdup("rawhide");
+        *product = g_strdup("Fedora");
+        *version = g_strdup("rawhide");
         log_debug("%s: version:'%s' product:'%s'", __func__, *version, *product);
         return;
     }
@@ -64,16 +64,16 @@ static void parse_release(const char *release, char** product, char** version, i
     /*
     if (strstr(release, "Factory"))
     {
-        *product = libreport_xstrdup("openSUSE");
-        *version = libreport_xstrdup("Factory");
+        *product = g_strdup("openSUSE");
+        *version = g_strdup("Factory");
         log_debug("%s: version:'%s' product:'%s'", __func__, *version, *product);
         return;
     }
 
     if (strstr(release, "Tumbleweed"))
     {
-        *product = libreport_xstrdup("openSUSE");
-        *version = libreport_xstrdup("Tumbleweed");
+        *product = g_strdup("openSUSE");
+        *version = g_strdup("Tumbleweed");
         log_debug("%s: version:'%s' product:'%s'", __func__, *version, *product);
         return;
     }
@@ -272,8 +272,8 @@ void libreport_parse_osinfo_for_bz(map_string_t *osinfo, char** product, char** 
 
     if (name && version_id)
     {
-        *product = libreport_xstrdup(name);
-        *version = libreport_xstrdup(version_id);
+        *product = g_strdup(name);
+        *version = g_strdup(version_id);
         return;
     }
 
@@ -294,7 +294,7 @@ void libreport_parse_osinfo_for_bug_url(map_string_t *osinfo, char** url)
     const char *os_bug_report_url = libreport_get_map_string_item_or_NULL(osinfo, "BUG_REPORT_URL");
 
     if (os_bug_report_url)
-        *url = libreport_xstrdup(os_bug_report_url);
+        *url = g_strdup(os_bug_report_url);
     else
         /* unset or something bad happend */
         *url = NULL;
@@ -349,8 +349,8 @@ void libreport_parse_osinfo_for_rhts(map_string_t *osinfo, char** product, char*
 
     if (name && version_id)
     {
-        *product = libreport_xstrdup(name);
-        *version = libreport_xstrdup(version_id);
+        *product = g_strdup(name);
+        *version = g_strdup(version_id);
         return;
     }
 

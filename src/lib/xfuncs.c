@@ -68,21 +68,6 @@ void* libreport_xzalloc(size_t size)
     return ptr;
 }
 
-// Die if we can't copy a string to freshly allocated memory.
-char* libreport_xstrdup(const char *s)
-{
-    char *t;
-    if (s == NULL)
-        return NULL;
-
-    t = strdup(s);
-
-    if (t == NULL)
-        libreport_die_out_of_memory();
-
-    return t;
-}
-
 // Die if we can't allocate n+1 bytes (space for the null terminator) and copy
 // the (possibly truncated to length n) string into it.
 char *libreport_xstrndup(const char *s, int n)

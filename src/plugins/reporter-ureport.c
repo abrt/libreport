@@ -129,7 +129,7 @@ int main(int argc, char **argv)
     libreport_ureport_server_config_load(&config, settings);
 
     if (opts & OPT_u)
-        libreport_ureport_server_config_set_url(&config, libreport_xstrdup(arg_server_url));
+        libreport_ureport_server_config_set_url(&config, g_strdup(arg_server_url));
     if (opts & OPT_k)
         config.ur_ssl_verify = !insecure;
     if (opts & OPT_t)
@@ -143,7 +143,7 @@ int main(int argc, char **argv)
     }
 
     if (!config.ur_url)
-        libreport_ureport_server_config_set_url(&config, libreport_xstrdup(DEFAULT_WEB_SERVICE_URL));
+        libreport_ureport_server_config_set_url(&config, g_strdup(DEFAULT_WEB_SERVICE_URL));
 
     if (ureport_hash && ureport_hash_from_rt)
         error_msg_and_die("You need to pass either -a bthash or -A");

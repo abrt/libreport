@@ -72,7 +72,7 @@ int main(int argc, char **argv)
             output_file = libreport_concat_path_file(HOME, output_file + 2);
         }
         else
-            output_file = libreport_xstrdup(output_file);
+            output_file = g_strdup(output_file);
 
         if (libreport_string_to_bool(append))
             open_mode = "a";

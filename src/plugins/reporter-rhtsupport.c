@@ -61,7 +61,7 @@ static void ask_rh_credentials(char **login, char **password);
 #define STRCPY_IF_NOT_EQUAL(dest, src) \
     do { if (strcmp(dest, src) != 0 ) { \
         free(dest); \
-        dest = libreport_xstrdup(src); \
+        dest = g_strdup(src); \
     } } while (0)
 
 static report_result_t *get_reported_to(const char *dump_dir_name)
@@ -290,7 +290,7 @@ char *submit_ureport(const char *dump_dir_name, struct ureport_server_config *co
     if (!resp->urr_is_error)
     {
         if (resp->urr_bthash != NULL)
-            bthash = libreport_xstrdup(resp->urr_bthash);
+            bthash = g_strdup(resp->urr_bthash);
 
         libreport_ureport_server_response_save_in_dump_dir(resp, dump_dir_name, conf);
 
@@ -400,7 +400,7 @@ char *get_param_string(const char *name, map_string_t *settings, const char *dfl
 {
     g_autofree char *envname = g_strdup_printf("RHTSupport_%s", name);
     const char *envvar = getenv(envname);
-    return libreport_xstrdup(envvar ? envvar : (libreport_get_map_string_item_or_NULL(settings, name) ? : dflt));
+    return g_strdup(envvar ? envvar : (libreport_get_map_string_item_or_NULL(settings, name) ? : dflt));
 }
 
 static
@@ -416,7 +416,7 @@ void prepare_ureport_configuration(const char *urcfile,
      * var.
      *
      *   char *url = NULL;
-     *   UREPORT_OPTION_VALUE_FROM_CONF(settings, "URL", url, libreport_xstrdup);
+     *   UREPORT_OPTION_VALUE_FROM_CONF(settings, "URL", url, g_strdup);
      *   if (url != NULL)
      *       libreport_ureport_server_config_set_url(urconf, url);
      */
@@ -598,7 +598,7 @@ int main(int argc, char **argv)
     );
     libreport_free_map_string(settings);
 
-    char *base_api_url = libreport_xstrdup(url);
+    g_autofree char *base_api_url = g_strdup(url);
     char *bthash = NULL;
 
     map_string_t *ursettings = libreport_new_map_string();
@@ -1024,7 +1024,6 @@ int main(int argc, char **argv)
     libreport_free_map_string(ursettings);
     free(bthash);
 
-    free(base_api_url);
     free(url);
     free(login);
     free(password);
