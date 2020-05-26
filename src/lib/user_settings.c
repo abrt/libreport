@@ -60,7 +60,7 @@ bool libreport_load_app_conf_file(const char *application_name, map_string_t *se
 void libreport_set_app_user_setting(map_string_t *settings, const char *name, const char *value)
 {
     if (value)
-        libreport_replace_map_string_item(settings, libreport_xstrdup(name), libreport_xstrdup(value));
+        libreport_replace_map_string_item(settings, g_strdup(name), g_strdup(value));
     else
         libreport_remove_map_string_item(settings, name);
 }

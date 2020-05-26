@@ -110,7 +110,7 @@ static section_t *
 section_new(const char *name)
 {
     section_t *self = libreport_xmalloc(sizeof(*self));
-    self->name = libreport_xstrdup(name);
+    self->name = g_strdup(name);
     self->items = NULL;
     self->children = NULL;
 
@@ -260,7 +260,7 @@ load_stream(FILE *fp)
         if (summary_line)
         {
             /* %summary is special */
-            item_list = g_list_append(NULL, libreport_xstrdup(libreport_skip_whitespace(value)));
+            item_list = g_list_append(NULL, g_strdup(libreport_skip_whitespace(value)));
         }
         else
         {
@@ -312,7 +312,7 @@ format_percented_string(const char *str, problem_data_t *pd, FILE *result, char 
     long len = 0;
     int opt_depth = 1;
 
-    char *missing_item = 0;
+    g_autofree char *missing_item = 0;
 
     while (*str) {
         switch (*str) {
@@ -392,7 +392,7 @@ format_percented_string(const char *str, problem_data_t *pd, FILE *result, char 
                 if (opt_depth == 1)
                 {
                     log_debug("Missing top-level element: '%s'", str);
-                    missing_item = libreport_xstrdup(str);
+                    missing_item = g_strdup(str);
                 }
             }
             *nextpercent = '%';
@@ -416,8 +416,6 @@ format_percented_string(const char *str, problem_data_t *pd, FILE *result, char 
         }
         else
             error_msg("Undefined variable '%s' outside [[ ]] brackets", missing_item);
-        free(missing_item);
-        missing_item = 0;
     }
 
     return 0;
@@ -725,10 +723,10 @@ get_special_items(const char *item_name, problem_data_t *pd, GList *comment_fmt_
             char *eol = strchrnul(content, '\n');
             bool is_oneline = (eol[0] == '\0' || eol[1] == '\0');
             if (text || oneline == is_oneline)
-                result = g_list_append(result, libreport_xstrdup(name));
+                result = g_list_append(result, g_strdup(name));
         }
         else if ((item->flags & CD_FLAG_BIN) && binary)
-            result = g_list_append(result, libreport_xstrdup(name));
+            result = g_list_append(result, g_strdup(name));
     }
 
     g_list_free(sorted_names); /* names themselves are not freed */
@@ -753,7 +751,7 @@ get_attached_files(problem_data_t *pd, GList *items, GList *comment_fmt_spec)
 
         if (item_name[0] != '%')
         {
-            result = g_list_append(result, libreport_xstrdup(item_name));
+            result = g_list_append(result, g_strdup(item_name));
             continue;
         }
 
@@ -915,7 +913,7 @@ problem_report_add_custom_section(problem_report_t *self, const char *name)
     }
 
     log_debug("Problem report enriched with section : '%s'", name);
-    g_hash_table_insert(self->pr_sec_custom, libreport_xstrdup(name), memstream_buffer_new());
+    g_hash_table_insert(self->pr_sec_custom, g_strdup(name), memstream_buffer_new());
     return 0;
 }
 
@@ -1032,7 +1030,7 @@ extra_section_new(const char *name, int flags)
 {
     struct extra_section *self = libreport_xmalloc(sizeof(*self));
 
-    self->pfes_name = libreport_xstrdup(name);
+    self->pfes_name = g_strdup(name);
     self->pfes_flags = flags;
 
     return self;
@@ -1096,7 +1094,7 @@ problem_formatter_new(void)
 {
     problem_formatter_t *self = libreport_xzalloc(sizeof(*self));
 
-    self->pf_default_summary = libreport_xstrdup("%reason%");
+    self->pf_default_summary = g_strdup("%reason%");
     self->pf_settings = problem_report_settings_init();
 
     return self;
@@ -1222,7 +1220,7 @@ problem_formatter_load_file(problem_formatter_t *self, const char *path)
     }
 
     self->pf_sections = load_stream(fp);
-    self->fmt_file = libreport_xstrdup(path);
+    self->fmt_file = g_strdup(path);
 
     if (fp != stdin)
         fclose(fp);

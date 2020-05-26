@@ -620,7 +620,7 @@ char *libreport_upload_file_ext(post_state_t *state, const char *url, const char
     const char *username_bck = state->username;
     const char *password_bck = state->password;
 
-    char *whole_url = NULL;
+    g_autofree char *whole_url = NULL;
     char *scheme = NULL;
     char *hostname = NULL;
     char *username = NULL;
@@ -646,7 +646,7 @@ char *libreport_upload_file_ext(post_state_t *state, const char *url, const char
     if (len > 0 && clean_url[len-1] == '/')
         whole_url = libreport_concat_path_file(clean_url, strrchr(filename, '/') ? : filename);
     else
-        whole_url = libreport_xstrdup(clean_url);
+        whole_url = g_strdup(clean_url);
 
     /* work around bug in libssh2(curl with scp://)
      * libssh2_aget_disconnect() calls close(0)
@@ -706,8 +706,6 @@ char *libreport_upload_file_ext(post_state_t *state, const char *url, const char
                 }
             }
         }
-
-        free(whole_url);
         whole_url = NULL;
     }
     else

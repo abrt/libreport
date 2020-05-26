@@ -757,7 +757,7 @@ int main(int argc, char **argv)
             assert(problem_report_get_attachments(pr));
         }
 
-        GList *clone = g_list_copy_deep(problem_report_get_attachments(pr), (GCopyFunc)libreport_xstrdup, NULL);
+        GList *clone = g_list_copy_deep(problem_report_get_attachments(pr), (GCopyFunc)g_strdup, NULL);
 
         while (*iter) {
             GList *item = g_list_find_custom(clone, *iter, (GCompareFunc)strcmp);

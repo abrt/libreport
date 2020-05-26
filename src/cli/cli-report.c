@@ -241,7 +241,7 @@ static int read_crash_report_field(const char *text, problem_data_t *report,
         return 0;
 
     free(value->content);
-    value->content = libreport_xstrdup(newvalue);
+    value->content = g_strdup(newvalue);
     return 1;
 }
 
@@ -444,9 +444,9 @@ static void ask_for_missing_settings(const char *event_name)
             }
             case OPTION_TYPE_BOOL:
                 if (libreport_ask_yes_no(question))
-                    opt->eo_value = libreport_xstrdup("yes");
+                    opt->eo_value = g_strdup("yes");
                 else
-                    opt->eo_value = libreport_xstrdup("no");
+                    opt->eo_value = g_strdup("no");
 
                 break;
             case OPTION_TYPE_HINT_HTML: /* TODO? */
@@ -725,7 +725,7 @@ static char *select_event_name(GList *list_options)
 
     /* Just one? */
     if (!list_options->next)
-        return libreport_xstrdup((char*)list_options->data);
+        return g_strdup((char*)list_options->data);
 
     int count = 0;
     for (GList *li = list_options; li; li = li->next)
@@ -738,7 +738,7 @@ static char *select_event_name(GList *list_options)
 
     const unsigned picked = choose_number_from_range(1, count, _("Select an event to run: "));
     GList *chosen = g_list_nth(list_options, picked - 1);
-    return libreport_xstrdup((char*)chosen->data);
+    return g_strdup((char*)chosen->data);
 }
 
 int select_and_run_one_event(const char *dump_dir_name, const char *pfx, int interactive)

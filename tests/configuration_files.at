@@ -70,30 +70,30 @@ int main(int argc, char **argv)
         assert(EQUAL == map_string_equals(first, first));
         assert(EQUAL == map_string_equals(first, second));
 
-        insert_map_string(first, libreport_xstrdup("first"), libreport_xstrdup("1"));
-        insert_map_string(first, libreport_xstrdup("second"), libreport_xstrdup("2"));
-        insert_map_string(first, libreport_xstrdup("third"), libreport_xstrdup("3"));
+        insert_map_string(first, g_strdup("first"), g_strdup("1"));
+        insert_map_string(first, g_strdup("second"), g_strdup("2"));
+        insert_map_string(first, g_strdup("third"), g_strdup("3"));
 
         assert(EQUAL == map_string_equals(first, first));
 
         assert(DIFF_SIZE == map_string_equals(first, second));
         assert(DIFF_SIZE == map_string_equals(second, first));
 
-        insert_map_string(second, libreport_xstrdup("first"), libreport_xstrdup("1"));
-        insert_map_string(second, libreport_xstrdup("second"), libreport_xstrdup("2"));
-        insert_map_string(second, libreport_xstrdup("third"), libreport_xstrdup("3"));
+        insert_map_string(second, g_strdup("first"), g_strdup("1"));
+        insert_map_string(second, g_strdup("second"), g_strdup("2"));
+        insert_map_string(second, g_strdup("third"), g_strdup("3"));
 
         assert(EQUAL == map_string_equals(first, second));
         assert(EQUAL == map_string_equals(second, first));
 
-        insert_map_string(first, libreport_xstrdup("fifth"), libreport_xstrdup("5"));
-        insert_map_string(second, libreport_xstrdup("fourth"), libreport_xstrdup("4"));
+        insert_map_string(first, g_strdup("fifth"), g_strdup("5"));
+        insert_map_string(second, g_strdup("fourth"), g_strdup("4"));
 
         assert(MISS_KEY == map_string_equals(first, second));
         assert(MISS_KEY == map_string_equals(second, first));
 
-        insert_map_string(first, libreport_xstrdup("fourth"), libreport_xstrdup("4"));
-        insert_map_string(second, libreport_xstrdup("fifth"), libreport_xstrdup("6"));
+        insert_map_string(first, g_strdup("fourth"), g_strdup("4"));
+        insert_map_string(second, g_strdup("fifth"), g_strdup("6"));
 
         assert(DIFF_VALUE == map_string_equals(first, second));
         assert(DIFF_VALUE == map_string_equals(second, first));
@@ -104,10 +104,10 @@ int main(int argc, char **argv)
 
     {
         map_string_t *first = libreport_new_map_string();
-        insert_map_string(first, libreport_xstrdup("success"), libreport_xstrdup("\"total\""));
-        insert_map_string(first, libreport_xstrdup("failure"), libreport_xstrdup("\"none\""));
-        insert_map_string(first, libreport_xstrdup("effort"), libreport_xstrdup("\"minimal\""));
-        insert_map_string(first, libreport_xstrdup("state"), libreport_xstrdup("\"done\""));
+        insert_map_string(first, g_strdup("success"), g_strdup("\"total\""));
+        insert_map_string(first, g_strdup("failure"), g_strdup("\"none\""));
+        insert_map_string(first, g_strdup("effort"), g_strdup("\"minimal\""));
+        insert_map_string(first, g_strdup("state"), g_strdup("\"done\""));
 
         map_string_t *second = libreport_new_map_string();
 
@@ -194,30 +194,30 @@ int main(int argc, char **argv)
         assert(EQUAL == map_string_equals(first, first));
         assert(EQUAL == map_string_equals(first, second));
 
-        insert_map_string(first, libreport_xstrdup("first"), libreport_xstrdup("1"));
-        insert_map_string(first, libreport_xstrdup("second"), libreport_xstrdup("2"));
-        insert_map_string(first, libreport_xstrdup("third"), libreport_xstrdup("3"));
+        insert_map_string(first, g_strdup("first"), g_strdup("1"));
+        insert_map_string(first, g_strdup("second"), g_strdup("2"));
+        insert_map_string(first, g_strdup("third"), g_strdup("3"));
 
         assert(EQUAL == map_string_equals(first, first));
 
         assert(DIFF_SIZE == map_string_equals(first, second));
         assert(DIFF_SIZE == map_string_equals(second, first));
 
-        insert_map_string(second, libreport_xstrdup("first"), libreport_xstrdup("1"));
-        insert_map_string(second, libreport_xstrdup("second"), libreport_xstrdup("2"));
-        insert_map_string(second, libreport_xstrdup("third"), libreport_xstrdup("3"));
+        insert_map_string(second, g_strdup("first"), g_strdup("1"));
+        insert_map_string(second, g_strdup("second"), g_strdup("2"));
+        insert_map_string(second, g_strdup("third"), g_strdup("3"));
 
         assert(EQUAL == map_string_equals(first, second));
         assert(EQUAL == map_string_equals(second, first));
 
-        insert_map_string(first, libreport_xstrdup("fifth"), libreport_xstrdup("5"));
-        insert_map_string(second, libreport_xstrdup("fourth"), libreport_xstrdup("4"));
+        insert_map_string(first, g_strdup("fifth"), g_strdup("5"));
+        insert_map_string(second, g_strdup("fourth"), g_strdup("4"));
 
         assert(MISS_KEY == map_string_equals(first, second));
         assert(MISS_KEY == map_string_equals(second, first));
 
-        insert_map_string(first, libreport_xstrdup("fourth"), libreport_xstrdup("4"));
-        insert_map_string(second, libreport_xstrdup("fifth"), libreport_xstrdup("6"));
+        insert_map_string(first, g_strdup("fourth"), g_strdup("4"));
+        insert_map_string(second, g_strdup("fifth"), g_strdup("6"));
 
         assert(DIFF_VALUE == map_string_equals(first, second));
         assert(DIFF_VALUE == map_string_equals(second, first));
@@ -426,30 +426,30 @@ int main(int argc, char **argv)
         assert(EQUAL == map_string_equals(first, first));
         assert(EQUAL == map_string_equals(first, second));
 
-        insert_map_string(first, libreport_xstrdup("first"), libreport_xstrdup("1"));
-        insert_map_string(first, libreport_xstrdup("second"), libreport_xstrdup("2"));
-        insert_map_string(first, libreport_xstrdup("third"), libreport_xstrdup("3"));
+        insert_map_string(first, g_strdup("first"), g_strdup("1"));
+        insert_map_string(first, g_strdup("second"), g_strdup("2"));
+        insert_map_string(first, g_strdup("third"), g_strdup("3"));
 
         assert(EQUAL == map_string_equals(first, first));
 
         assert(DIFF_SIZE == map_string_equals(first, second));
         assert(DIFF_SIZE == map_string_equals(second, first));
 
-        insert_map_string(second, libreport_xstrdup("first"), libreport_xstrdup("1"));
-        insert_map_string(second, libreport_xstrdup("second"), libreport_xstrdup("2"));
-        insert_map_string(second, libreport_xstrdup("third"), libreport_xstrdup("3"));
+        insert_map_string(second, g_strdup("first"), g_strdup("1"));
+        insert_map_string(second, g_strdup("second"), g_strdup("2"));
+        insert_map_string(second, g_strdup("third"), g_strdup("3"));
 
         assert(EQUAL == map_string_equals(first, second));
         assert(EQUAL == map_string_equals(second, first));
 
-        insert_map_string(first, libreport_xstrdup("fifth"), libreport_xstrdup("5"));
-        insert_map_string(second, libreport_xstrdup("fourth"), libreport_xstrdup("4"));
+        insert_map_string(first, g_strdup("fifth"), g_strdup("5"));
+        insert_map_string(second, g_strdup("fourth"), g_strdup("4"));
 
         assert(MISS_KEY == map_string_equals(first, second));
         assert(MISS_KEY == map_string_equals(second, first));
 
-        insert_map_string(first, libreport_xstrdup("fourth"), libreport_xstrdup("4"));
-        insert_map_string(second, libreport_xstrdup("fifth"), libreport_xstrdup("6"));
+        insert_map_string(first, g_strdup("fourth"), g_strdup("4"));
+        insert_map_string(second, g_strdup("fifth"), g_strdup("6"));
 
         assert(DIFF_VALUE == map_string_equals(first, second));
         assert(DIFF_VALUE == map_string_equals(second, first));
@@ -460,10 +460,10 @@ int main(int argc, char **argv)
 
     {
         map_string_t *first = libreport_new_map_string();
-        insert_map_string(first, libreport_xstrdup("success"), libreport_xstrdup("total"));
-        insert_map_string(first, libreport_xstrdup("failure"), libreport_xstrdup("none"));
-        insert_map_string(first, libreport_xstrdup("effort"), libreport_xstrdup("minimal"));
-        insert_map_string(first, libreport_xstrdup("state"), libreport_xstrdup("done"));
+        insert_map_string(first, g_strdup("success"), g_strdup("total"));
+        insert_map_string(first, g_strdup("failure"), g_strdup("none"));
+        insert_map_string(first, g_strdup("effort"), g_strdup("minimal"));
+        insert_map_string(first, g_strdup("state"), g_strdup("done"));
 
         /* These commands must fail */
         assert(!libreport_save_conf_file("/proc/cpuinfo/foo/blah/file.conf", first));
@@ -508,10 +508,10 @@ int main(int argc, char **argv)
 
     {   /* Test that keys removed from the conf map are also removed from the corresponding file */
         map_string_t *first = libreport_new_map_string();
-        insert_map_string(first, libreport_xstrdup("success"), libreport_xstrdup("total"));
-        insert_map_string(first, libreport_xstrdup("failure"), libreport_xstrdup("none"));
-        insert_map_string(first, libreport_xstrdup("effort"), libreport_xstrdup("minimal"));
-        insert_map_string(first, libreport_xstrdup("state"), libreport_xstrdup("done"));
+        insert_map_string(first, g_strdup("success"), g_strdup("total"));
+        insert_map_string(first, g_strdup("failure"), g_strdup("none"));
+        insert_map_string(first, g_strdup("effort"), g_strdup("minimal"));
+        insert_map_string(first, g_strdup("state"), g_strdup("done"));
 
         unlink(CUSTOM_CONF);
         assert(libreport_save_conf_file(CUSTOM_CONF, first) || !"Saved at relative path");

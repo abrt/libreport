@@ -41,8 +41,8 @@ static bool canonicalize_path(const char *path, char *canon_path)
 
     bool retval = false;
 
-    char *dirc = libreport_xstrdup(path);
-    char *basec = libreport_xstrdup(path);
+    g_autofree char *dirc = g_strdup(path);
+    g_autofree char *basec = g_strdup(path);
     /* Be ware that dirname("..") == ".." */
     char *dname = dirname(dirc);
     /* Be ware that basename("/"|".."|".") == "/"|".."|"." */
@@ -59,11 +59,11 @@ static bool canonicalize_path(const char *path, char *canon_path)
         || strcmp(dname, ".") == 0)
     {
         errno = ENOTDIR;
-        goto canon_cleanup;
+        return retval;
     }
 
     if (!canonicalize_path(dname, canon_path))
-        goto canon_cleanup;
+        return retval;
 
     size_t canon_path_len = strlen(canon_path);
     const size_t bname_len = strlen(bname);
@@ -71,7 +71,7 @@ static bool canonicalize_path(const char *path, char *canon_path)
     if (canon_path_len + bname_len + 1 >= PATH_MAX)
     {
         errno = ENAMETOOLONG;
-        goto canon_cleanup;
+        return retval;
     }
 
     if (canon_path[canon_path_len - 1] != '/')
@@ -83,10 +83,6 @@ static bool canonicalize_path(const char *path, char *canon_path)
 
     strcpy(canon_path + canon_path_len, bname);
     retval = true;
-
-canon_cleanup:
-    free(dirc);
-    free(basec);
 
     return retval;
 }
@@ -299,7 +295,7 @@ bool libreport_load_conf_file(const char *path, map_string_t *settings, bool ski
         log_info("Loaded option '%s' = '%s'", option, value);
 
         if (!skipKeysWithoutValue || value[0] != '\0')
-            libreport_replace_map_string_item(settings, libreport_xstrdup(option), libreport_xstrdup(value));
+            libreport_replace_map_string_item(settings, g_strdup(option), g_strdup(value));
 
         free(matches[i]);
     }

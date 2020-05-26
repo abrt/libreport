@@ -33,7 +33,7 @@ static void free_problem_item(void *ptr)
 char *problem_item_format(struct problem_item *item)
 {
     if (!item)
-        return libreport_xstrdup("(nullitem)");
+        return g_strdup("(nullitem)");
 
     if (item->flags & CD_FLAG_UNIXTIME)
     {
@@ -48,7 +48,7 @@ char *problem_item_format(struct problem_item *item)
             char timeloc[256];
             int success = strftime(timeloc, sizeof(timeloc), "%c", localtime(&time));
             if (success)
-                return libreport_xstrdup(timeloc);
+                return g_strdup(timeloc);
         }
     }
     return NULL;
@@ -202,10 +202,10 @@ struct problem_item *problem_data_add_ext(problem_data_t *problem_data,
         flags |= CD_FLAG_ISNOTEDITABLE;
 
     struct problem_item *item = (struct problem_item *)libreport_xzalloc(sizeof(*item));
-    item->content = libreport_xstrdup(content);
+    item->content = g_strdup(content);
     item->flags = flags;
     item->size = size;
-    g_hash_table_replace(problem_data, libreport_xstrdup(name), item);
+    g_hash_table_replace(problem_data, g_strdup(name), item);
 
     return item;
 }
@@ -636,7 +636,7 @@ static bool problem_data_get_osinfo_from_items(problem_data_t *problem_data,
     if (!data)
         return false;
 
-    insert_map_string(osinfo, libreport_xstrdup(OSINFO_PRETTY_NAME), libreport_xstrdup(data));
+    insert_map_string(osinfo, g_strdup(OSINFO_PRETTY_NAME), g_strdup(data));
     return true;
 }
 

@@ -104,7 +104,7 @@ static int configure_reporter(struct reporter *r, bool skip_if_valid)
             (!skip_if_valid && first && r->config))
     {
         text = newtTextboxReflowed(0, 0, ec_get_screen_name(r->config) ?
-                libreport_xstrdup(ec_get_screen_name(r->config)) : r->name, 35, 5, 5, 0);
+                g_strdup(ec_get_screen_name(r->config)) : r->name, 35, 5, 5, 0);
 
         num_opts = g_list_length(r->config->options);
         options = libreport_xmalloc(sizeof (newtComponent) * num_opts);

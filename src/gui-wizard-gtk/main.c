@@ -180,7 +180,7 @@ int main(int argc, char **argv)
 
     libreport_export_abrt_envvars(opts & OPT_p);
 
-    g_dump_dir_name = libreport_xstrdup(argv[0]);
+    g_dump_dir_name = g_strdup(argv[0]);
 
     /* load /etc/abrt/events/foo.{conf,xml} stuff
        and $XDG_CACHE_HOME/abrt/events/foo.conf */

@@ -1259,7 +1259,7 @@ static void load_event_options_from_item(GDBusProxy *session,
             if (option)
             {
                 free(option->eo_value);
-                option->eo_value = libreport_xstrdup(value);
+                option->eo_value = g_strdup(value);
                 log_info("loaded event option : '%s' => '%s'", name, option->eo_value);
             }
         }
@@ -1333,7 +1333,7 @@ static void load_event_options_from_item(GDBusProxy *session,
             }
             nelems -= sz;
 
-            char *name = libreport_xstrdup(data);
+            g_autofree char *name = g_strdup(data);
             char *value = strchr(name, SECRETS_OPTION_VALUE_DELIMITER);
             if (!value)
             {
@@ -1347,12 +1347,11 @@ static void load_event_options_from_item(GDBusProxy *session,
             if (option)
             {
                 free(option->eo_value);
-                option->eo_value = libreport_xstrdup(value);
+                option->eo_value = g_strdup(value);
                 log_info("loaded event option : '%s' => '%s'", name, option->eo_value);
             }
 
 next_option:
-            free(name);
             data += sz;
         }
 
@@ -1517,7 +1516,7 @@ void libreport_load_single_event_config_data_from_user_storage(event_config_t *c
                 /*key_destroy_func:*/ g_free,
                 /*value_destroy_func:*/ NULL);
 
-    g_hash_table_insert(tmp, libreport_xstrdup(ec_get_name(config)), config);
+    g_hash_table_insert(tmp, g_strdup(ec_get_name(config)), config);
 
     libreport_load_event_config_data_from_user_storage(tmp);
 

@@ -1343,7 +1343,7 @@ void verify_archive(struct dump_dir *dd, const char *file_name,
             check_array[c] += 1;
 
             unlink(real_file);
-            if(tar_extract_regfile(tar, libreport_xstrdup(real_file)) != 0)
+            if(tar_extract_regfile(tar, g_strdup(real_file)) != 0)
             {
                 fprintf(stderr, "TAR failed to extract '%s' to '%s': %s\n", path, real_file, strerror(errno));
                 abort();

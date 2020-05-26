@@ -191,7 +191,7 @@ int report_problem_in_memory(problem_data_t *pd, int flags)
     struct dump_dir *dd = create_dump_dir_from_problem_data(pd, LARGE_DATA_TMP_DIR);
     if (!dd)
         return -1;
-    char *dir_name = libreport_xstrdup(dd->dd_dirname);
+    g_autofree char *dir_name = g_strdup(dd->dd_dirname);
     dd_close(dd);
     log_info("Temp problem dir: '%s'", dir_name);
 
@@ -216,7 +216,6 @@ int report_problem_in_memory(problem_data_t *pd, int flags)
         }
     }
 
-    free(dir_name);
     return result;
 }
 

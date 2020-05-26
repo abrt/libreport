@@ -77,7 +77,7 @@ rhsm_config_get_consumer_cert_dir(void)
 {
     char *result = getenv("LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH");
     if (result != NULL)
-        return libreport_xstrdup(result);
+        return g_strdup(result);
 
     result = libreport_run_in_shell_and_save_output(0,
             "python3 -c \"from rhsm.config import initConfig; print(initConfig().get('rhsm', 'consumerCertDir'))\"",
@@ -97,7 +97,7 @@ rhsm_config_get_consumer_cert_dir(void)
 error:
     free(result);
     error_msg("Failed to get 'rhsm':'consumerCertDir' from rhsm.config python module. Using "RHSMCON_PEM_DIR_PATH);
-    return libreport_xstrdup(RHSMCON_PEM_DIR_PATH);
+    return g_strdup(RHSMCON_PEM_DIR_PATH);
 }
 
 static bool
@@ -142,7 +142,7 @@ libreport_ureport_server_config_set_client_auth(struct ureport_server_config *co
     else if (strcmp(client_auth, "rhsm") == 0)
     {
         if (config->ur_url == NULL)
-            libreport_ureport_server_config_set_url(config, libreport_xstrdup(RHSM_WEB_SERVICE_URL));
+            libreport_ureport_server_config_set_url(config, g_strdup(RHSM_WEB_SERVICE_URL));
 
         /* always returns non-NULL */
         char *rhsm_dir = rhsm_config_get_consumer_cert_dir();
@@ -192,10 +192,9 @@ libreport_ureport_server_config_set_client_auth(struct ureport_server_config *co
     }
     else
     {
-        char *scratch = libreport_xstrdup(client_auth);
-        config->ur_client_cert = libreport_xstrdup(strtok(scratch, ":"));
-        config->ur_client_key = libreport_xstrdup(strtok(NULL, ":"));
-        free(scratch);
+        g_autofree char *scratch = g_strdup(client_auth);
+        config->ur_client_cert = g_strdup(strtok(scratch, ":"));
+        config->ur_client_key = g_strdup(strtok(NULL, ":"));
 
         if (config->ur_client_cert == NULL || config->ur_client_key == NULL)
             error_msg_and_die("Invalid client authentication specification");
@@ -221,10 +220,10 @@ libreport_ureport_server_config_set_basic_auth(struct ureport_server_config *con
     libreport_ureport_server_config_set_client_auth(config, "");
 
     free(config->ur_username);
-    config->ur_username = libreport_xstrdup(login);
+    config->ur_username = g_strdup(login);
 
     free(config->ur_password);
-    config->ur_password = libreport_xstrdup(password);
+    config->ur_password = g_strdup(password);
 }
 
 void
@@ -237,7 +236,7 @@ ureport_server_config_load_basic_auth(struct ureport_server_config *config,
     map_string_t *settings = NULL;
 
     char *tmp_password = NULL;
-    char *tmp_username = NULL;
+    g_autofree char *tmp_username = NULL;
     const char *username = NULL;
     const char *password = NULL;
 
@@ -255,11 +254,11 @@ ureport_server_config_load_basic_auth(struct ureport_server_config *config,
         password = libreport_get_map_string_item_or_NULL(settings, "Password");
 
         if (config->ur_url == NULL)
-            libreport_ureport_server_config_set_url(config, libreport_xstrdup(RHSM_WEB_SERVICE_URL));
+            libreport_ureport_server_config_set_url(config, g_strdup(RHSM_WEB_SERVICE_URL));
     }
     else
     {
-        username = tmp_username = libreport_xstrdup(http_auth_pref);
+        username = tmp_username = g_strdup(http_auth_pref);
         password = strchr(tmp_username, ':');
 
         if (password != NULL)
@@ -279,7 +278,6 @@ ureport_server_config_load_basic_auth(struct ureport_server_config *config,
     libreport_ureport_server_config_set_basic_auth(config, username, password);
 
     free(tmp_password);
-    free(tmp_username);
     libreport_free_map_string(settings);
 }
 
@@ -287,7 +285,7 @@ void
 libreport_ureport_server_config_load(struct ureport_server_config *config,
                            map_string_t *settings)
 {
-    UREPORT_OPTION_VALUE_FROM_CONF(settings, "URL", config->ur_url, libreport_xstrdup);
+    UREPORT_OPTION_VALUE_FROM_CONF(settings, "URL", config->ur_url, g_strdup);
     UREPORT_OPTION_VALUE_FROM_CONF(settings, "SSLVerify", config->ur_ssl_verify, libreport_string_to_bool);
 
     const char *http_auth_pref = NULL;
@@ -454,7 +452,8 @@ parse_reported_to_from_json_list(struct json_object *list)
     int i;
     json_object *list_elem, *struct_elem;
     const char *reporter, *value, *type;
-    char *reported_to_line, *prefix;
+    char *reported_to_line = NULL;
+    g_autofree char *prefix = NULL;
     GList *result = NULL;
 
     for (i = 0; i < json_object_array_length(list); ++i)
@@ -485,16 +484,15 @@ parse_reported_to_from_json_list(struct json_object *list)
         if (type)
         {
             if (strcasecmp("url", type) == 0)
-                prefix = libreport_xstrdup("URL=");
+                prefix = g_strdup("URL=");
             else if (strcasecmp("bthash", type) == 0)
-                prefix = libreport_xstrdup("BTHASH=");
+                prefix = g_strdup("BTHASH=");
         }
 
         if (!prefix)
-            prefix = libreport_xstrdup("");
+            prefix = g_strdup("");
 
         reported_to_line = g_strdup_printf("%s: %s%s", reporter, prefix, value);
-        free(prefix);
 
         result = g_list_append(result, reported_to_line);
     }
@@ -520,22 +518,22 @@ ureport_server_parse_json(json_object *json)
          * Used to use json_object_to_json_string(obj), but it returns
          * the string in quote marks (") - IOW, json-formatted string.
          */
-        out_response->urr_value = libreport_xstrdup(json_object_get_string(obj));
+        out_response->urr_value = g_strdup(json_object_get_string(obj));
         return out_response;
     }
 
     if (json_object_object_get_ex(json, "result", &obj))
     {
         struct ureport_server_response *out_response = libreport_xzalloc(sizeof(*out_response));
-        out_response->urr_value = libreport_xstrdup(json_object_get_string(obj));
+        out_response->urr_value = g_strdup(json_object_get_string(obj));
 
         json_object *message = NULL;
         if (json_object_object_get_ex(json, "message", &message))
-            out_response->urr_message = libreport_xstrdup(json_object_get_string(message));
+            out_response->urr_message = g_strdup(json_object_get_string(message));
 
         json_object *bthash = NULL;
         if (json_object_object_get_ex(json, "bthash", &bthash))
-            out_response->urr_bthash = libreport_xstrdup(json_object_get_string(bthash));
+            out_response->urr_bthash = g_strdup(json_object_get_string(bthash));
 
         json_object *reported_to_list = NULL;
         if (json_object_object_get_ex(json, "reported_to", &reported_to_list))
@@ -857,7 +855,7 @@ ureport_json_attachment_new(const char *bthash, const char *type, const char *da
     ureport_add_str(attachment, "type", type);
     ureport_add_str(attachment, "data", data);
 
-    char *result = libreport_xstrdup(json_object_to_json_string(attachment));
+    char *result = g_strdup(json_object_to_json_string(attachment));
     json_object_put(attachment);
 
     return result;

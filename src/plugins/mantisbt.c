@@ -471,7 +471,7 @@ response_values_at_depth_by_name(const char *xml, const char *name, int depth)
             continue;
 
         if ((value = xmlTextReaderConstValue(reader)) != NULL)
-            result = g_list_append(result, libreport_xstrdup((const char *) value));
+            result = g_list_append(result, g_strdup((const char *) value));
     }
     xmlFreeTextReader(reader);
 
@@ -597,14 +597,14 @@ static char *
 response_get_error_msg(const char *xml)
 {
     GList *l = response_values_at_depth_by_name(xml, "faultstring", 3);
-    return (l != NULL) ? libreport_xstrdup(l->data) : NULL;
+    return (l != NULL) ? g_strdup(l->data) : NULL;
 }
 
 static char *
 response_get_additioanl_information(const char *xml)
 {
     GList *l = response_values_at_depth_by_name(xml, "additional_information", -1);
-    return (l != NULL) ? libreport_xstrdup(l->data) : NULL;
+    return (l != NULL) ? g_strdup(l->data) : NULL;
 }
 
 void
@@ -647,7 +647,7 @@ mantisbt_soap_call(const mantisbt_settings_t *settings, const soap_request_t *re
         return result;
     }
 
-    char *url_copy = NULL;
+    g_autofree char *url_copy = NULL;
 
     int redirect_count = 0;
     char *errmsg;
@@ -682,8 +682,7 @@ redirect:
     case 305: /* "305 Use Proxy" */
         if (++redirect_count < 10 && location)
         {
-            free(url_copy);
-            url = url_copy = libreport_xstrdup(location);
+            url = url_copy = g_strdup(location);
             free_post_state(post_state);
             goto redirect;
         }
@@ -701,7 +700,7 @@ redirect:
     case 200:
     case 201:
         /* sent successfully */
-        result->mr_url = libreport_xstrdup(location); /* note: libreport_xstrdup(NULL) returns NULL */
+        result->mr_url = g_strdup(location); /* note: g_strdup(NULL) returns NULL */
     } /* switch (HTTP code) */
 
     result->mr_http_resp_code = post_state->http_resp_code;

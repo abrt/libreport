@@ -77,7 +77,7 @@ int main(int argc, char **argv)
         assert(libreport_try_get_map_string_item_as_bool(map, key, &retval) || !"Failed to return bool(0)");
         assert(!retval || !"Failed to convert 'no' to bool(0)");
 
-        libreport_replace_map_string_item(map, libreport_xstrdup(key), libreport_xstrdup("foo"));
+        libreport_replace_map_string_item(map, g_strdup(key), g_strdup("foo"));
         retval = 1;
         assert(libreport_try_get_map_string_item_as_bool(map, key, &retval) || !"Can not convert a random string to bool(0)");
         assert(!retval || !"Failed to convert a random string to bool(0)");
@@ -120,20 +120,20 @@ int main(int argc, char **argv)
         assert(retval == INT_MIN || !"Garbled INT_MIN");
 
         retval = 69;
-        libreport_replace_map_string_item(map, libreport_xstrdup(key), libreport_xstrdup(""));
+        libreport_replace_map_string_item(map, g_strdup(key), g_strdup(""));
         assert(!libreport_try_get_map_string_item_as_int(map, key, &retval) || !"Converts '' to number");
         assert(retval == 69 || !"Modifies int(69) on ''");
 
-        libreport_replace_map_string_item(map, libreport_xstrdup(key), libreport_xstrdup("foo"));
+        libreport_replace_map_string_item(map, g_strdup(key), g_strdup("foo"));
         assert(!libreport_try_get_map_string_item_as_int(map, key, &retval) || !"Converts 'foo' to number");
         assert(retval == 69 || !"Modifies int(69) on 'foo'");
 
-        libreport_replace_map_string_item(map, libreport_xstrdup(key), libreport_xstrdup("777foo"));
+        libreport_replace_map_string_item(map, g_strdup(key), g_strdup("777foo"));
         assert(!libreport_try_get_map_string_item_as_int(map, key, &retval) || !"Converts '777foo' to number");
         assert(retval == 69 || !"Modifies int(69) on '777foo'");
 
                                                  /*0123456789ABCDEF*/
-        libreport_replace_map_string_item(map, libreport_xstrdup(key), libreport_xstrdup("77777777777777777777777777777777"));
+        libreport_replace_map_string_item(map, g_strdup(key), g_strdup("77777777777777777777777777777777"));
         assert(!libreport_try_get_map_string_item_as_int(map, key, &retval) || !"Converts '77777777777777777777777777777777' to number");
         assert(retval == 69 || !"Modifies int(69) on '77777777777777777777777777777777'");
 
@@ -174,23 +174,23 @@ int main(int argc, char **argv)
         assert(retval == 0 || !"Garbled 0");
 
         retval = 69;
-        libreport_replace_map_string_item(map, libreport_xstrdup(key), libreport_xstrdup(""));
+        libreport_replace_map_string_item(map, g_strdup(key), g_strdup(""));
         assert(!libreport_try_get_map_string_item_as_uint(map, key, &retval) || !"Converts '' to number");
         assert(retval == 69 || !"Modifies int(69) on ''");
 
-        libreport_replace_map_string_item(map, libreport_xstrdup(key), libreport_xstrdup("foo"));
+        libreport_replace_map_string_item(map, g_strdup(key), g_strdup("foo"));
         assert(!libreport_try_get_map_string_item_as_uint(map, key, &retval) || !"Converts 'foo' to number");
         assert(retval == 69 || !"Modifies int(69) on 'foo'");
 
-        libreport_replace_map_string_item(map, libreport_xstrdup(key), libreport_xstrdup("777foo"));
+        libreport_replace_map_string_item(map, g_strdup(key), g_strdup("777foo"));
         assert(!libreport_try_get_map_string_item_as_uint(map, key, &retval) || !"Converts '777foo' to number");
         assert(retval == 69 || !"Modifies int(69) on '777foo'");
 
-        libreport_replace_map_string_item(map, libreport_xstrdup(key), libreport_xstrdup("77777777777777777777777777777777"));
+        libreport_replace_map_string_item(map, g_strdup(key), g_strdup("77777777777777777777777777777777"));
         assert(!libreport_try_get_map_string_item_as_uint(map, key, &retval) || !"Converts '77777777777777777777777777777777' to number");
         assert(retval == 69 || !"Modifies int(69) on '77777777777777777777777777777777'");
 
-        libreport_replace_map_string_item(map, libreport_xstrdup(key), libreport_xstrdup("-1"));
+        libreport_replace_map_string_item(map, g_strdup(key), g_strdup("-1"));
         assert(!libreport_try_get_map_string_item_as_uint(map, key, &retval) || !"Converts '-1' to unsigned number");
         assert(retval == 69 || !"Modifies int(69) on '-1'");
 
@@ -206,13 +206,13 @@ int main(int argc, char **argv)
         assert(!libreport_try_get_map_string_item_as_string(map, key, &retval) || !"Returns string(NULL) even if option does not exist");
         assert(retval == NULL || !"Modifies string(NULL) return value on failure");
 
-        char *bck = libreport_xstrdup("test");
+        char *bck = g_strdup("test");
         retval = bck;
 
         assert(!libreport_try_get_map_string_item_as_string(map, key, &retval) || !"Returns string('test') even if option does not exist");
         assert(retval == bck || !"Modifies string('test') return value on failure");
 
-        retval = libreport_xstrdup(bck);
+        retval = g_strdup(bck);
         libreport_set_map_string_item_from_string(map, key, bck);
 
         free(bck);
@@ -226,7 +226,7 @@ int main(int argc, char **argv)
         free(bck);
         free(retval);
 
-        bck = libreport_xstrdup(key);
+        bck = g_strdup(key);
 
         libreport_set_map_string_item_from_string(map, bck, "test");
         free(bck);

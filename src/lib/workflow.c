@@ -90,7 +90,7 @@ static void load_workflow_config(const char *name,
         workflow_t *workflow = new_workflow(file->filename);
         load_workflow_description_from_file(workflow, file->fullpath);
         log_info("Adding '%s' to workflows\n", file->filename);
-        g_hash_table_insert(wf_list, libreport_xstrdup(file->filename), workflow);
+        g_hash_table_insert(wf_list, g_strdup(file->filename), workflow);
     }
 }
 
@@ -147,7 +147,7 @@ GHashTable *libreport_load_workflow_config_data(const char *path)
         load_workflow_description_from_file(workflow, file->fullpath);
 
         if (nw_workflow)
-            g_hash_table_replace(g_workflow_list, libreport_xstrdup(wf_get_name(workflow)), workflow);
+            g_hash_table_replace(g_workflow_list, g_strdup(wf_get_name(workflow)), workflow);
 
         libreport_free_file_obj(file);
         workflow_files = g_list_delete_link(workflow_files, workflow_files);
@@ -176,7 +176,7 @@ GList *wf_get_event_names(workflow_t *w)
         /* Since appending is inefficient for GLib doubly-linked lists, we prepend
          * here and reverse the list just before returning.
          */
-        event_names = g_list_prepend(event_names, libreport_xstrdup(ec_get_name(wf_event_list->data)));
+        event_names = g_list_prepend(event_names, g_strdup(ec_get_name(wf_event_list->data)));
         wf_event_list = g_list_next(wf_event_list);
     }
 

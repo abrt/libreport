@@ -101,12 +101,12 @@ static void add_option_to_table(gpointer data, gpointer user_data)
     GtkWidget *option_input;
     unsigned last_row;
 
-    char *option_label;
+    g_autofree char *option_label = NULL;
     if (option->eo_label != NULL)
-        option_label = libreport_xstrdup(option->eo_label);
+        option_label = g_strdup(option->eo_label);
     else
     {
-        option_label = libreport_xstrdup(option->eo_name ? option->eo_name : "");
+        option_label = g_strdup(option->eo_name ? option->eo_name : "");
         /* Replace '_' with ' ' */
         char *p = option_label - 1;
         while (*++p)
@@ -176,7 +176,6 @@ static void add_option_to_table(gpointer data, gpointer user_data)
         default:
             //option_input = gtk_label_new_justify_left("WTF?");
             log_warning("unsupported option type");
-            free(option_label);
             return;
     }
 
@@ -196,7 +195,6 @@ static void add_option_to_table(gpointer data, gpointer user_data)
                              /*top,heigh:*/ 1, 1);
     }
 
-    free(option_label);
 }
 
 static GtkWidget *create_event_config_grid()

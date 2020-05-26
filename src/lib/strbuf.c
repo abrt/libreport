@@ -67,7 +67,7 @@ char *libreport_trim_all_whitespace(const char *str)
  */
 char *libreport_shorten_string_to_length(const char *str, unsigned length)
 {
-    char *dup_str = libreport_xstrdup(str);
+    char *dup_str = g_strdup(str);
     if (strlen(str) > length)
     {
         char *max_end = dup_str + (length - strlen("..."));

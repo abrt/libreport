@@ -194,7 +194,7 @@ void load_workflow_description_from_file(workflow_t *workflow, const char* filen
 {
     log_info("loading workflow: '%s'", filename);
     struct my_parse_data parse_data = { workflow, NULL, NULL, 0, 0, 0};
-    parse_data.cur_locale = libreport_xstrdup(setlocale(LC_ALL, NULL));
+    parse_data.cur_locale = g_strdup(setlocale(LC_ALL, NULL));
     strchrnul(parse_data.cur_locale, '.')[0] = '\0';
 
     GMarkupParser parser;

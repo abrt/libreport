@@ -32,7 +32,7 @@ struct config_item_info
 config_item_info_t *new_config_info(const char *name)
 {
     config_item_info_t *info = (config_item_info_t *)libreport_xzalloc(sizeof(*info));
-    info->name = libreport_xstrdup(name);
+    info->name = g_strdup(name);
     return info;
 }
 
@@ -52,19 +52,19 @@ void free_config_info(config_item_info_t *info)
 void ci_set_screen_name(config_item_info_t *ci, const char *screen_name)
 {
     free(ci->screen_name);
-    ci->screen_name = libreport_xstrdup(screen_name);
+    ci->screen_name = g_strdup(screen_name);
 }
 
 void ci_set_description(config_item_info_t *ci, const char *description)
 {
     free(ci->description);
-    ci->description = libreport_xstrdup(description);
+    ci->description = g_strdup(description);
 }
 
 void ci_set_long_desc(config_item_info_t *ci, const char *long_description)
 {
     free(ci->long_desc);
-    ci->long_desc = libreport_xstrdup(long_description);
+    ci->long_desc = g_strdup(long_description);
 }
 
 const char *ci_get_screen_name(config_item_info_t *ci)

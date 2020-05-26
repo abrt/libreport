@@ -267,7 +267,7 @@ make_case_data(const char* summary, const char* description,
     }
 
     xxmlTextWriterEndDocument(writer);
-    retval = libreport_xstrdup((const char*)buf->content);
+    retval = g_strdup((const char*)buf->content);
     xmlFreeTextWriter(writer);
     xmlBufferFree(buf);
     return retval;
@@ -286,7 +286,7 @@ post_case_to_url(const char* url,
                 const char* component)
 {
     rhts_result_t *result = libreport_xzalloc(sizeof(*result));
-    char *url_copy = NULL;
+    g_autofree char *url_copy = NULL;
 
     char *case_data = make_case_data(summary, description,
                                          product, version,
@@ -327,8 +327,7 @@ post_case_to_url(const char* url,
     case 305: /* "305 Use Proxy" */
         if (++redirect_count < 10 && location)
         {
-            free(url_copy);
-            url = url_copy = libreport_xstrdup(location);
+            url = url_copy = g_strdup(location);
             free_post_state(post_state);
             goto redirect;
         }
@@ -375,7 +374,7 @@ post_case_to_url(const char* url,
     case 200:
     case 201:
         /* Created successfully */
-        result->url = libreport_xstrdup(location); /* note: libreport_xstrdup(NULL) returns NULL */
+        result->url = g_strdup(location); /* note: g_strdup(NULL) returns NULL */
     } /* switch (HTTP code) */
 
     result->http_resp_code = post_state->http_resp_code;
@@ -455,7 +454,7 @@ make_comment_data(const char *comment_text)
     xxmlTextWriterWriteElement(writer, "text", comment_text);
 
     xxmlTextWriterEndDocument(writer);
-    retval = libreport_xstrdup((const char*)buf->content);
+    retval = g_strdup((const char*)buf->content);
     xmlFreeTextWriter(writer);
     xmlBufferFree(buf);
     return retval;
@@ -470,7 +469,7 @@ post_comment_to_url(const char *url,
                 const char *comment_text)
 {
     rhts_result_t *result = libreport_xzalloc(sizeof(*result));
-    char *url_copy = NULL;
+    g_autofree char *url_copy = NULL;
 
     char *xml = make_comment_data(comment_text);
 
@@ -509,8 +508,7 @@ post_comment_to_url(const char *url,
     case 305: /* "305 Use Proxy" */
         if (++redirect_count < 10 && location)
         {
-            free(url_copy);
-            url = url_copy = libreport_xstrdup(location);
+            url = url_copy = g_strdup(location);
             free_post_state(post_state);
             goto redirect;
         }
@@ -543,7 +541,7 @@ post_comment_to_url(const char *url,
     case 200:
     case 201:
         /* Created successfully */
-        result->url = libreport_xstrdup(location); /* note: libreport_xstrdup(NULL) returns NULL */
+        result->url = g_strdup(location); /* note: g_strdup(NULL) returns NULL */
     } /* switch (HTTP code) */
 
     result->http_resp_code = post_state->http_resp_code;
@@ -603,7 +601,7 @@ post_file_to_url(const char* url,
                 const char *file_name)
 {
     rhts_result_t *result = libreport_xzalloc(sizeof(*result));
-    char *url_copy = NULL;
+    g_autofree char *url_copy = NULL;
 
     int redirect_count = 0;
     char *errmsg;
@@ -648,8 +646,7 @@ post_file_to_url(const char* url,
     case 305: /* "305 Use Proxy" */
         if (++redirect_count < 10 && atch_location)
         {
-            free(url_copy);
-            url = url_copy = libreport_xstrdup(atch_location);
+            url = url_copy = g_strdup(atch_location);
             free_post_state(atch_state);
             goto redirect_attach;
         }
@@ -680,8 +677,8 @@ post_file_to_url(const char* url,
 
     case 200:
     case 201:
-        result->url = libreport_xstrdup(atch_location); /* note: libreport_xstrdup(NULL) returns NULL */
-        //result->msg = libreport_xstrdup("File uploaded successfully");
+        result->url = g_strdup(atch_location); /* note: g_strdup(NULL) returns NULL */
+        //result->msg = g_strdup("File uploaded successfully");
     } /* switch (HTTP code) */
 
     result->http_resp_code = atch_state->http_resp_code;

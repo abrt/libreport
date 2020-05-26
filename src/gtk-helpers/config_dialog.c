@@ -155,7 +155,7 @@ static void save_value_from_widget(gpointer data, gpointer user_data)
     if (val && (val[0] != '\0' || ow->option->eo_value != NULL))
     {
         free(ow->option->eo_value);
-        ow->option->eo_value = libreport_xstrdup(val);
+        ow->option->eo_value = g_strdup(val);
         log_notice("saved: %s:%s", ow->option->eo_name, ow->option->eo_value);
     }
 }

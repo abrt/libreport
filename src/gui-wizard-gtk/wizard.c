@@ -353,7 +353,7 @@ struct dump_dir *wizard_open_directory_for_writing(const char *dump_dir_name)
     if (dd && strcmp(g_dump_dir_name, dd->dd_dirname) != 0)
     {
         free(g_dump_dir_name);
-        g_dump_dir_name = libreport_xstrdup(dd->dd_dirname);
+        g_dump_dir_name = g_strdup(dd->dd_dirname);
         update_window_title();
     }
 
@@ -376,8 +376,8 @@ static void load_text_to_text_view(GtkTextView *tv, const char *name)
 {
     /* Add to set of loaded files */
     /* a key_destroy_func() is provided therefore if the key for name already exists */
-    /* a result of libreport_xstrdup() is freed */
-    g_hash_table_insert(g_loaded_texts, (gpointer)libreport_xstrdup(name), (gpointer)1);
+    /* a result of g_strdup() is freed */
+    g_hash_table_insert(g_loaded_texts, (gpointer)g_strdup(name), (gpointer)1);
 
     const char *str = g_cd ? problem_data_get_content_or_NULL(g_cd, name) : NULL;
     /* Bad: will choke at any text with non-Unicode parts: */
@@ -1473,7 +1473,7 @@ static char *ask_helper(const char *msg, void *args, bool password)
     if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_OK)
     {
         const char *text = gtk_entry_get_text(GTK_ENTRY(textbox));
-        response = libreport_xstrdup(text);
+        response = g_strdup(text);
     }
 
     gtk_widget_destroy(textbox);
@@ -1484,7 +1484,7 @@ static char *ask_helper(const char *msg, void *args, bool password)
         log_response = password ? "********" : response;
 
     log_request_response_communication(msg, log_response, (struct analyze_event_data *)args);
-    return response ? response : libreport_xstrdup("");
+    return response ? response : g_strdup("");
 }
 
 static char *run_event_gtk_ask(const char *msg, void *args)
@@ -1823,7 +1823,7 @@ static void start_event_run(const char *event_name)
      */
     struct analyze_event_data *evd = libreport_xzalloc(sizeof(*evd));
     evd->run_state = state;
-    evd->event_name = libreport_xstrdup(event_name);
+    evd->event_name = g_strdup(event_name);
     evd->env_list = env_list;
     evd->event_log = libreport_strbuf_new();
     evd->fd = state->command_out_fd;
@@ -2523,7 +2523,7 @@ static void set_auto_event_chain(GtkButton *button, gpointer user_data)
     GList *wf_event_list = wf_get_event_list(w);
     while(wf_event_list)
     {
-        g_auto_event_list = g_list_append(g_auto_event_list, libreport_xstrdup(ec_get_name(wf_event_list->data)));
+        g_auto_event_list = g_list_append(g_auto_event_list, g_strdup(ec_get_name(wf_event_list->data)));
         libreport_load_single_event_config_data_from_user_storage((event_config_t *)wf_event_list->data);
 
         wf_event_list = g_list_next(wf_event_list);
@@ -2847,7 +2847,7 @@ static void save_edited_one_liner(GtkCellRendererText *renderer,
         {
             dd_save_text(dd, item_name, new_text);
             free(item->content);
-            item->content = libreport_xstrdup(new_text);
+            item->content = g_strdup(new_text);
             gtk_list_store_set(g_ls_details, &iter,
                     DETAIL_COLUMN_VALUE, new_text,
                     -1);
@@ -2871,6 +2871,8 @@ static void on_btn_add_file(GtkButton *button)
         filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
     gtk_widget_destroy(dialog);
 
+    g_autofree char *message = NULL;
+
     if (filename)
     {
         char *basename = strrchr(filename, '/');
@@ -2879,8 +2881,6 @@ static void on_btn_add_file(GtkButton *button)
         basename++;
 
         /* TODO: ask for the name to save it as? For now, just use basename */
-
-        char *message = NULL;
 
         struct stat statbuf;
         if (stat(filename, &statbuf) != 0 || !S_ISREG(statbuf.st_mode))
@@ -2898,7 +2898,7 @@ static void on_btn_add_file(GtkButton *button)
                 dd_close(dd);
                 g_autofree char *new_name = libreport_concat_path_file(g_dump_dir_name, basename);
                 if (strcmp(filename, new_name) == 0)
-                    message = libreport_xstrdup(_("You are trying to copy a file onto itself"));
+                    message = g_strdup(_("You are trying to copy a file onto itself"));
                 else
                 {
                     off_t r = libreport_copy_file(filename, new_name, 0666);
@@ -2928,7 +2928,6 @@ static void on_btn_add_file(GtkButton *button)
                 GTK_MESSAGE_WARNING,
                 GTK_BUTTONS_CLOSE,
                 "%s", message);
-            free(message);
             gtk_window_set_transient_for(GTK_WINDOW(dlg), GTK_WINDOW(g_wnd_assistant));
             gtk_dialog_run(GTK_DIALOG(dlg));
             gtk_widget_destroy(dlg);

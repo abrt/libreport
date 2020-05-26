@@ -116,10 +116,9 @@ struct dump_dir *libreport_open_directory_for_writing(
      * therefore it's a bit more complicated.
      */
     delete_dump_dir_possibly_using_abrtd(dump_dir_name);
-    char *new_name = libreport_xstrdup(dd->dd_dirname);
+    g_autofree char *new_name = g_strdup(dd->dd_dirname);
     dd_close(dd);
     dd = dd_opendir(new_name, 0);
-    free(new_name);
 
     if (!dd)
         libreport_xfunc_die(); /* error msg was already logged */

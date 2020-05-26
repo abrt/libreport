@@ -30,7 +30,7 @@ static char *steal_directory_if_needed(char *dump_dir_name)
 
     if (dd)
     {
-        dump_dir_name = libreport_xstrdup(dd->dd_dirname);
+        dump_dir_name = g_strdup(dd->dd_dirname);
         dd_close(dd);
     }
 

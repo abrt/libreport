@@ -65,7 +65,7 @@ static void start_element(
         if (uri && type)
         {
             free(parse_data->uri); /* paranoia */
-            parse_data->uri = libreport_xstrdup(uri);
+            parse_data->uri = g_strdup(uri);
             parse_data->type = type;
         }
     }
@@ -169,7 +169,7 @@ static void emit_url_text_pairs_to_strbuf(struct strbuf *result, GList *urllist,
 char *parse_response_from_RHTS_hint_xml2txt(const char *string)
 {
     if (strncmp(string, "<?xml", 5) != 0)
-        return libreport_xstrdup(string);
+        return g_strdup(string);
 
     struct my_parse_data parse_data;
     memset(&parse_data, 0, sizeof(parse_data));
