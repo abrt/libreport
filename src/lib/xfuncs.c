@@ -213,20 +213,6 @@ char* libreport_xvasprintf(const char *format, va_list p)
     return string_ptr;
 }
 
-// Die with an error message if we can't malloc() enough space and do an
-// sprintf() into that space., sizeof() into that space.)
-char *libreport_xasprintf(const char *format, ...)
-{
-    va_list p;
-    char *string_ptr;
-
-    va_start(p, format);
-    string_ptr = libreport_xvasprintf(format, p);
-    va_end(p);
-
-    return string_ptr;
-}
-
 void libreport_xsetenv(const char *key, const char *value)
 {
     if (setenv(key, value, 1))

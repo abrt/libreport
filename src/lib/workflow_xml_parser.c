@@ -91,7 +91,7 @@ static void text(GMarkupParseContext *context,
             const gchar *event_name = expanded_events->data;
 
             event_config_t *ec = new_event_config(event_name);
-            g_autofree gchar *event_file = libreport_xasprintf(EVENTS_DIR"/%s.xml", event_name);
+            g_autofree gchar *event_file = g_strdup_printf(EVENTS_DIR"/%s.xml", event_name);
 
             load_event_description_from_file(ec, event_file);
             if (ec_get_screen_name(ec))

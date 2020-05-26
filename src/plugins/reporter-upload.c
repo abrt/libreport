@@ -48,9 +48,8 @@ static int interactive_upload_file(const char *url, const char *file_name,
             /* Be permissive and nice, ask only once and don't check */
             /* the result. User can dismiss this prompt but the upload */
             /* may work somehow??? */
-            char *msg = libreport_xasprintf(_("Please enter password for uploading:"), state->username);
+            g_autofree char *msg = g_strdup_printf(_("Please enter password for uploading:"));
             state->password = password_inp = libreport_ask_password(msg);
-            free(msg);
         }
     }
 

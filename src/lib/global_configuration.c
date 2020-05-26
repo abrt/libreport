@@ -130,9 +130,8 @@ string_vector_ptr_t libreport_get_global_always_excluded_elements(void)
     if (env_exclude == NULL && gc_exclude == NULL)
         return libreport_string_vector_new_from_string(NULL);
 
-    char *joined_exclude = libreport_xasprintf("%s, %s", env_exclude, gc_exclude);
+    g_autofree char *joined_exclude = g_strdup_printf("%s, %s", env_exclude, gc_exclude);
     string_vector_ptr_t ret = libreport_string_vector_new_from_string(joined_exclude);
-    free(joined_exclude);
 
     return ret;
 }

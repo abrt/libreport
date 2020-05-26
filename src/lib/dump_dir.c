@@ -685,11 +685,11 @@ static int dd_meta_data_save_text(struct dump_dir *dd, const char *name, const c
         return dd_md_fd;
     }
 
-    char *tmp_name = libreport_xasprintf("~%s.tmp", name);
+    g_autofree char *tmp_name = g_strdup_printf("~%s.tmp", name);
 
     int ret = -1;
     if (!save_binary_file_at(dd_md_fd, tmp_name, data, strlen(data), dd->dd_uid, dd->dd_gid, dd->mode))
-        goto finito;
+        return ret;
 
     /* man 2 rename
      *
@@ -701,13 +701,11 @@ static int dd_meta_data_save_text(struct dump_dir *dd, const char *name, const c
     {
         ret = -errno;
         perror_msg("Failed to move temporary file '%s' to '%s'", tmp_name, name);
-        goto finito;
+        return ret;
     }
 
     ret = 0;
 
-finito:
-    free(tmp_name);
     return ret;
 }
 

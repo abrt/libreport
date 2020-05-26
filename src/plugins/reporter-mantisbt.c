@@ -77,13 +77,11 @@ ask_mantisbt_credentials(mantisbt_settings_t *settings, const char *pre_message)
     free(settings->m_login);
     free(settings->m_password);
 
-    char *question = libreport_xasprintf("%s %s", pre_message, _("Please enter your MantisBT login:"));
+    g_autofree char *question = g_strdup_printf("%s %s", pre_message, _("Please enter your MantisBT login:"));
     settings->m_login = ask_mantisbt_login(question);
-    free(question);
 
-    question = libreport_xasprintf("%s %s '%s':", pre_message, _("Please enter the password for"), settings->m_login);
+    question = g_strdup_printf("%s %s '%s':", pre_message, _("Please enter the password for"), settings->m_login);
     settings->m_password = ask_mantisbt_password(question);
-    free(question);
 
     return;
 }
@@ -301,11 +299,11 @@ int main(int argc, char **argv)
     map_string_t *settings = libreport_new_map_string();
 
     {
-        char *local_conf = NULL;
+        g_autofree char *local_conf = NULL;
         if (!conf_file)
         {
             conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/mantisbt.conf");
-            local_conf = libreport_xasprintf("%s"USER_HOME_CONFIG_PATH"/mantisbt.conf", getenv("HOME"));
+            local_conf = g_strdup_printf("%s"USER_HOME_CONFIG_PATH"/mantisbt.conf", getenv("HOME"));
             conf_file = g_list_append(conf_file, local_conf);
         }
         while (conf_file)
@@ -316,7 +314,6 @@ int main(int argc, char **argv)
             log_debug("Loaded '%s'", fn);
             conf_file = g_list_delete_link(conf_file, conf_file);
         }
-        free(local_conf);
 
         struct dump_dir *dd = NULL;
         if (abrt_hash == NULL)
@@ -429,7 +426,7 @@ int main(int argc, char **argv)
         {
             g_autofree char *msg = NULL;
 
-            msg = libreport_xasprintf(_("This problem was already reported to MantisBT (see '%s')."
+            msg = g_strdup_printf(_("This problem was already reported to MantisBT (see '%s')."
                             " Do you still want to create a new issue?"),
                             url);
 
@@ -591,7 +588,7 @@ int main(int argc, char **argv)
                 return EXIT_FAILURE;
 
             log_warning(_("Adding attachments to issue %i"), new_id);
-            char *new_id_str = libreport_xasprintf("%u", new_id);
+            g_autofree char *new_id_str = g_strdup_printf("%u", new_id);
 
             for (GList *a = problem_report_get_attachments(pr); a != NULL; a = g_list_next(a))
             {
@@ -605,7 +602,6 @@ int main(int argc, char **argv)
                     mantisbt_attach_file(&mbt_settings, new_id_str, item_name, item->content);
             }
 
-            free(new_id_str);
             problem_report_free(pr);
             ii = mantisbt_issue_info_new();
             ii->mii_id = new_id;
@@ -667,28 +663,24 @@ int main(int argc, char **argv)
                 rating = libreport_xatou(rating_str);
             if (bt && rating > ii->mii_best_bt_rating)
             {
-                char *bug_id_str = libreport_xasprintf("%i", ii->mii_id);
+                g_autofree char *bug_id_str = g_strdup_printf("%i", ii->mii_id);
 
                 log_warning(_("Attaching better backtrace"));
 
                 // find unique filename of attachment
-                char *name = NULL;
+                g_autofree char *name = NULL;
                 for (int i = 0;; ++i)
                 {
                     if (i == 0)
-                        name = libreport_xasprintf("%s", FILENAME_BACKTRACE);
+                        name = g_strdup_printf("%s", FILENAME_BACKTRACE);
                     else
-                        name = libreport_xasprintf("%s%d", FILENAME_BACKTRACE, i);
+                        name = g_strdup_printf("%s%d", FILENAME_BACKTRACE, i);
 
                     if (g_list_find_custom(ii->mii_attachments, name, (GCompareFunc) strcmp) == NULL)
                         break;
 
-                    free(name);
                 }
                 mantisbt_attach_data(&mbt_settings, bug_id_str, name, bt, strlen(bt));
-
-                free(name);
-                free(bug_id_str);
             }
         }
         else
@@ -710,16 +702,14 @@ finish:
     if (dd)
     {
         report_result_t *result;
-        char *url;
 
         result = report_result_new_with_label_from_env("MantisBT");
-        url = libreport_xasprintf("%s/view.php?id=%u", mbt_settings.m_mantisbt_url, ii->mii_id);
+        g_autofree char *url = g_strdup_printf("%s/view.php?id=%u", mbt_settings.m_mantisbt_url, ii->mii_id);
 
         report_result_set_url(result, url);
 
         libreport_add_reported_to_entry(dd, result);
 
-        free(url);
         report_result_free(result);
         dd_close(dd);
     }

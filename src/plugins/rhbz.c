@@ -94,9 +94,8 @@ static GList *rhbz_comments(struct abrt_xmlrpc *ax, int bug_id)
     xmlrpc_value *bugs_memb = rhbz_get_member("bugs", xml_response);
 
     /* Get hash value assigned to bug_id key */
-    char *item = libreport_xasprintf("%d", bug_id);
+    g_autofree char *item = g_strdup_printf("%d", bug_id);
     xmlrpc_value *item_memb = rhbz_get_member(item, bugs_memb);
-    free(item);
 
     /* Get array of comments */
     xmlrpc_value *comments_memb = rhbz_get_member("comments", item_memb);
@@ -617,7 +616,7 @@ int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *bug_id,
         return 0;
     }
 
-    char *fn = libreport_xasprintf("File: %s", filename);
+    g_autofree char *fn = g_strdup_printf("File: %s", filename);
     xmlrpc_value* result;
     int minor_update = !!IS_MINOR_UPDATE(flags);
 
@@ -646,7 +645,6 @@ int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *bug_id,
                 "minor_update", minor_update
     );
 
-    free(fn);
     if (!result)
         return -1;
 

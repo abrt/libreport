@@ -137,7 +137,7 @@ static void consume_cur_option(struct my_parse_data *parse_data)
      * (strcmp would segfault, etc), so provide invented name:
      */
     if (!opt->eo_name)
-        opt->eo_name = libreport_xasprintf("%u", (unsigned)g_list_length(event_config->values->options));
+        opt->eo_name = g_strdup_printf("%u", (unsigned)g_list_length(event_config->values->options));
 
     GList *elem = g_list_find_custom(event_config->values->options, opt->eo_name, cmp_event_option_name_with_string);
     if (elem)

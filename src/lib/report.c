@@ -22,9 +22,9 @@
 int report_problem_in_dir(const char *dirname, int flags)
 {
     /* Prepare it before fork, to avoid thread-unsafe setenv there */
-    char *prgname = (char*) g_get_prgname();
+    g_autofree char *prgname = (char*) g_get_prgname();
     if (prgname)
-        prgname = libreport_xasprintf("LIBREPORT_PRGNAME=%s", prgname);
+        prgname = g_strdup_printf("LIBREPORT_PRGNAME=%s", prgname);
 
     if (flags & LIBREPORT_IGNORE_NOT_REPORTABLE)
     {
@@ -159,9 +159,6 @@ int report_problem_in_dir(const char *dirname, int flags)
         execvp(path, args);
         perror_msg_and_die("Can't execute %s", path);
     }
-
-    /* parent */
-    free(prgname);
 
     if (!(flags & LIBREPORT_WAIT) && (flags & LIBREPORT_GETPID))
         return pid;

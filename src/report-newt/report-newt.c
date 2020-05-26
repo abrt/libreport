@@ -272,11 +272,11 @@ static void run_reporter(const char *dump_dir_name, struct reporter *r)
     /* Export overridden settings as environment variables */
     env_list = export_event_config(r->name);
 
-    save_log_line(libreport_xasprintf(_("--- Running %s ---"), r->name), &log);
+    save_log_line(g_strdup_printf(_("--- Running %s ---"), r->name), &log);
 
     x = run_event_on_dir_name(run_state, dump_dir_name, r->name);
     if (x)
-        save_log_line(libreport_xasprintf("(exited with %d)", x), &log);
+        save_log_line(g_strdup_printf("(exited with %d)", x), &log);
 
     newtFormSetCurrent(form, button);
     newtRunForm(form);
@@ -327,12 +327,11 @@ static int report(const char *dump_dir_name)
     {
         char *reason = dd_load_text_ext(dd, FILENAME_REASON, 0
                                         | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-        char *t = libreport_xasprintf("%s %s",
+        g_autofree char *t = g_strdup_printf("%s %s",
                             not_reportable,
                             reason ? : _("(no description)"));
 
         newtWinMessage(_("Error"), _("Ok"), (char *)"%s", t);
-        free(t);
         free(not_reportable);
         free(reason);
 

@@ -403,7 +403,7 @@ static char *validate_event_option(event_option_t *opt)
 
     const gchar *s = NULL;
     if (!g_utf8_validate(opt->eo_value, -1, &s))
-            return libreport_xasprintf(_("Invalid utf8 character '%c'"), *s);
+            return g_strdup_printf(_("Invalid utf8 character '%c'"), *s);
 
     switch (opt->eo_type) {
     case OPTION_TYPE_TEXT:
@@ -416,7 +416,7 @@ static char *validate_event_option(event_option_t *opt)
         long r = strtol(opt->eo_value, &endptr, 10);
         (void) r;
         if (errno != 0 || endptr == opt->eo_value || *endptr != '\0')
-            return libreport_xasprintf(_("Invalid number '%s'"), opt->eo_value);
+            return g_strdup_printf(_("Invalid number '%s'"), opt->eo_value);
 
         break;
     }
@@ -431,7 +431,7 @@ static char *validate_event_option(event_option_t *opt)
          && strcmp(opt->eo_value, "1") != 0
          && strcmp(opt->eo_value, "0") != 0
         ) {
-            return libreport_xasprintf(_("Invalid boolean value '%s'"), opt->eo_value);
+            return g_strdup_printf(_("Invalid boolean value '%s'"), opt->eo_value);
         }
         break;
     case OPTION_TYPE_HINT_HTML:
@@ -493,8 +493,8 @@ bool check_problem_rating_usability(const event_config_t *cfg,
 {
     INITIALIZE_LIBREPORT();
 
-    char *tmp_desc = NULL;
-    char *tmp_detail = NULL;
+    g_autofree char *tmp_desc = NULL;
+    g_autofree char *tmp_detail = NULL;
     bool result = true;
 
     if (!cfg)
@@ -511,7 +511,7 @@ bool check_problem_rating_usability(const event_config_t *cfg,
     const long rating = strtol(rating_str, &endptr, 10);
     if (errno != 0 || endptr == rating_str || *endptr != '\0')
     {
-        tmp_desc = libreport_xasprintf(
+        tmp_desc = g_strdup_printf(
                 _("The problem cannot be reported due to an invalid data. " \
                   "'%s' file does not contain a number."),
                 FILENAME_RATING);
@@ -533,7 +533,7 @@ bool check_problem_rating_usability(const event_config_t *cfg,
 
         const char *package = problem_data_get_content_or_NULL(pd, FILENAME_PACKAGE);
         if (package && package[0])
-            tmp_detail = libreport_xasprintf(_("Please try to install debuginfo manually using the command: \"debuginfo-install %s\" and try again."), package);
+            tmp_detail = g_strdup_printf(_("Please try to install debuginfo manually using the command: \"debuginfo-install %s\" and try again."), package);
         else
             tmp_detail = libreport_xstrdup(_("A proper debuginfo is probably missing or the coredump is corrupted."));
 
@@ -545,13 +545,9 @@ bool check_problem_rating_usability(const event_config_t *cfg,
 finish:
     if (description)
         *description = tmp_desc;
-    else
-        free(tmp_desc);
 
     if (detail)
         *detail = tmp_detail;
-    else
-        free(tmp_detail);
 
     return result;
 }

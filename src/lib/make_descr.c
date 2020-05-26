@@ -157,7 +157,7 @@ char *libreport_make_description(problem_data_t *problem_data, char **names_to_s
                 /* The value part begins on 17th column */
                 /*                        0123456789ABCDEF*/
                 const char *pad_prefix = "                ";
-                char *first_prefix = libreport_xasprintf("%s%*s", _("Reported:"), 16 - strlen(_("Reported:")), "");
+                g_autofree char *first_prefix = g_strdup_printf("%s%*s", _("Reported:"), 16 - (int)strlen(_("Reported:")), "");
                 const char *prefix     = first_prefix;
                 for (GList *iter = reports; iter != NULL; iter = g_list_next(iter))
                 {
@@ -178,7 +178,6 @@ char *libreport_make_description(problem_data_t *problem_data, char **names_to_s
                         prefix = pad_prefix;
                     }
                 }
-                free(first_prefix);
                 g_list_free_full(reports, (GDestroyNotify)report_result_free);
             }
         }

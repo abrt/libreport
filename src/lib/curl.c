@@ -38,7 +38,7 @@ static char*
 check_curl_error(CURLcode err, const char* msg)
 {
     if (err)
-        return libreport_xasprintf("%s: %s", msg, curl_easy_strerror(err));
+        return g_strdup_printf("%s: %s", msg, curl_easy_strerror(err));
     return NULL;
 }
 
@@ -480,12 +480,11 @@ post(post_state_t *state,
     if (data_size != POST_DATA_FROMFILE_AS_FORM_DATA
         && data_size != POST_DATA_STRING_AS_FORM_DATA)
     {
-        char *content_type_header = libreport_xasprintf("Content-Type: %s", content_type);
+        g_autofree char *content_type_header = g_strdup_printf("Content-Type: %s", content_type);
         // Note: curl_slist_append() copies content_type_header
         httpheader_list = curl_slist_append(httpheader_list, content_type_header);
         if (!httpheader_list)
             error_msg_and_die("out of memory");
-        free(content_type_header);
     }
 
     for (; additional_headers && *additional_headers; additional_headers++)
@@ -687,16 +686,14 @@ char *libreport_upload_file_ext(post_state_t *state, const char *url, const char
                 (state->curl_result == CURLE_LOGIN_DENIED
                  || state->curl_result == CURLE_REMOTE_ACCESS_DENIED))
         {
-            char *msg = libreport_xasprintf(_("Please enter user name for '%s//%s':"), scheme, hostname);
+            g_autofree char *msg = g_strdup_printf(_("Please enter user name for '%s//%s':"), scheme, hostname);
             free(username);
             username = libreport_ask(msg);
-            free(msg);
             if (username != NULL && username[0] != '\0')
             {
-                msg = libreport_xasprintf(_("Please enter password for '%s//%s@%s':"), scheme, username, hostname);
+                msg = g_strdup_printf(_("Please enter password for '%s//%s@%s':"), scheme, username, hostname);
                 free(password);
                 password = libreport_ask_password(msg);
-                free(msg);
                 /* What about empty password? */
                 if (password != NULL && password[0] != '\0')
                 {

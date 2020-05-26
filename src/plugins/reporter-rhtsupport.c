@@ -391,17 +391,15 @@ void ask_rh_credentials(char **login, char **password)
 
     *login = ask_rh_login(_("Invalid password or login. Please enter your Red Hat login:"));
 
-    char *question = libreport_xasprintf(_("Invalid password or login. Please enter the password for '%s':"), *login);
+    g_autofree char *question = g_strdup_printf(_("Invalid password or login. Please enter the password for '%s':"), *login);
     *password = ask_rh_password(question);
-    free(question);
 }
 
 static
 char *get_param_string(const char *name, map_string_t *settings, const char *dflt)
 {
-    char *envname = libreport_xasprintf("RHTSupport_%s", name);
+    g_autofree char *envname = g_strdup_printf("RHTSupport_%s", name);
     const char *envvar = getenv(envname);
-    free(envname);
     return libreport_xstrdup(envvar ? envvar : (libreport_get_map_string_item_or_NULL(settings, name) ? : dflt));
 }
 
@@ -456,9 +454,8 @@ static char *create_case_url(char *url, const char *case_no)
 
 static char *ask_case_no_create_url(char *url)
 {
-    char *msg = libreport_xasprintf(_("Please enter customer case number to which you want to attach the data:"));
+    g_autofree char *msg = g_strdup_printf(_("Please enter customer case number to which you want to attach the data:"));
     char *case_no = libreport_ask(msg);
-    free(msg);
     if (case_no == NULL || case_no[0] == '\0')
     {
         libreport_set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
@@ -548,11 +545,11 @@ int main(int argc, char **argv)
 
     /* Parse config, extract necessary params */
     map_string_t *settings = libreport_new_map_string();
-    char *local_conf = NULL;
+    g_autofree char *local_conf = NULL;
     if (!conf_file)
     {
         conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/rhtsupport.conf");
-        local_conf = libreport_xasprintf("%s"USER_HOME_CONFIG_PATH"/rhtsupport.conf", getenv("HOME"));
+        local_conf = g_strdup_printf("%s"USER_HOME_CONFIG_PATH"/rhtsupport.conf", getenv("HOME"));
         conf_file = g_list_append(conf_file, local_conf);
 
     }
@@ -564,7 +561,6 @@ int main(int argc, char **argv)
         log_debug("Loaded '%s'", fn);
         conf_file = g_list_remove(conf_file, fn);
     }
-    free(local_conf);
 
     char *url      = get_param_string("URL"       , settings, "https://api.access.redhat.com/rs");
     char *login    = get_param_string("Login"     , settings, "");
@@ -580,9 +576,8 @@ int main(int argc, char **argv)
     if (password[0] == '\0')
     {
         free(password);
-        char *question = libreport_xasprintf(_("Password is not provided by configuration. Please enter the password for '%s':"), login);
+        g_autofree char *question = g_strdup_printf(_("Password is not provided by configuration. Please enter the password for '%s':"), login);
         password = ask_rh_password(question);
-        free(question);
     }
 
     char* envvar;
@@ -629,13 +624,12 @@ int main(int argc, char **argv)
             {
                 free(url);
                 url = report_url;
-                char *msg = libreport_xasprintf(
+                g_autofree char *msg = g_strdup_printf(
                     _("We found a similar Red Hat support case %s. "
                       "Do you want to attach the data to the case? "
                       "Otherwise, you will have to enter the existing "
                       "Red Hat support case number."), url);
                 int yes = libreport_ask_yes_no(msg);
-                free(msg);
                 if (!yes)
                 {
                     url = ask_case_no_create_url(url);
@@ -691,11 +685,10 @@ int main(int argc, char **argv)
         }
         if (NULL != report_url && !(opts & OPT_f))
         {
-            char *msg = libreport_xasprintf("This problem was already reported to RHTS (see '%s')."
+            g_autofree char *msg = g_strdup_printf("This problem was already reported to RHTS (see '%s')."
                             " Do you still want to create a RHTSupport ticket?",
                             report_url);
             int yes = libreport_ask_yes_no(msg);
-            free(msg);
             g_free(report_url);
             if (!yes)
                 return 0;
@@ -761,12 +754,11 @@ int main(int argc, char **argv)
     vendor = problem_data_get_content_or_NULL(problem_data, FILENAME_PKG_VENDOR);
     if (package && vendor && strcmp(vendor, "Red Hat, Inc.") != 0)
     {
-        char *message = libreport_xasprintf(
+        g_autofree char *message = g_strdup_printf(
             _("The crashed program was released by '%s'. "
               "Would you like to report the problem to Red Hat Support?"),
               vendor);
         int r = libreport_ask_yes_no(message);
-        free(message);
         if (!r)
             exit(EXIT_CANCEL_BY_USER);
     }
@@ -779,12 +771,11 @@ int main(int argc, char **argv)
     executable  = problem_data_get_content_or_NULL(problem_data, FILENAME_EXECUTABLE);
     if (!package)
     {
-        char *message = libreport_xasprintf(
+        g_autofree char *message = g_strdup_printf(
             _("The program '%s' does not appear to be provided by Red Hat. "
               "Would you like to report the problem to Red Hat Support?"),
               executable);
         int r = libreport_ask_yes_no(message);
-        free(message);
         if (!r)
             exit(EXIT_CANCEL_BY_USER);
 
@@ -983,7 +974,7 @@ int main(int argc, char **argv)
          * Do not translate message below - it goes
          * to a server where *other people* will read it.
          */
-        char *comment_text = libreport_xasprintf(
+        g_autofree char *comment_text = g_strdup_printf(
             "Problem data was uploaded to %s",
             remote_filename
         );
@@ -991,7 +982,6 @@ int main(int argc, char **argv)
         INVALID_CREDENTIALS_LOOP(login, password,
                 result_atch, add_comment_to_case(url, login, password, ssl_verify, comment_text)
         );
-        free(comment_text);
     }
     else
     {

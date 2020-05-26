@@ -80,7 +80,7 @@ config_dialog_t *create_workflow_config_dialog(const char *workflow_name, GtkWin
 
     GtkWindow *parent_window = parent ? parent : g_parent_window;
 
-    char *window_title = libreport_xasprintf("%s - Reporting Configuration",
+    g_autofree char *window_title = g_strdup_printf("%s - Reporting Configuration",
             wf_get_screen_name(workflow) ? wf_get_screen_name(workflow) : workflow_name);
 
     GtkWidget *dialog = gtk_dialog_new_with_buttons(
@@ -92,8 +92,6 @@ config_dialog_t *create_workflow_config_dialog(const char *workflow_name, GtkWin
                         _("_OK"),
                         GTK_RESPONSE_APPLY,
                         NULL);
-
-    free(window_title);
 
     gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_APPLY);
 
