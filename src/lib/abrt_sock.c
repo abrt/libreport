@@ -111,9 +111,8 @@ int problem_data_send_to_abrt(problem_data_t* problem_data)
                 continue;
             }
 
-            char *msg = libreport_xasprintf("%s=%s", name, value->content);
+            g_autofree char *msg = g_strdup_printf("%s=%s", name, value->content);
             libreport_full_write(socketfd, msg, strlen(msg)+1 /* yes, +1 coz we want to send the trailing 0 */);
-            free(msg);
         }
         shutdown(socketfd, SHUT_WR);
 

@@ -429,7 +429,7 @@ static void ask_for_missing_settings(const char *event_name)
             free(opt->eo_value);
             opt->eo_value = NULL;
 
-            char *question = libreport_xasprintf("%s %s:",
+            g_autofree char *question = g_strdup_printf("%s %s:",
                                              ec_get_screen_name(event_config) ? ec_get_screen_name(event_config) : event_name,
                                              (opt->eo_label) ? opt->eo_label : opt->eo_name);
             switch (opt->eo_type) {
@@ -453,8 +453,6 @@ static void ask_for_missing_settings(const char *event_name)
             case OPTION_TYPE_INVALID:
                 break;
             };
-
-            free(question);
         }
 
         g_list_free_full(err_list, (GDestroyNotify)free_invalid_options);
@@ -467,11 +465,10 @@ static void ask_for_missing_settings(const char *event_name)
         for (iter = err_list; iter; iter = iter -> next)
         {
             invalid_option_t *err_data = (invalid_option_t *)iter->data;
-            char *msg = libreport_xasprintf(_("Bad value for '%s': %s"),
+            g_autofree char *msg = g_strdup_printf(_("Bad value for '%s': %s"),
                                     err_data->invopt_name,
                                     err_data->invopt_error);
             libreport_alert(msg);
-            free(msg);
         }
 
         g_list_free_full(err_list, (GDestroyNotify)free_invalid_options);
@@ -668,11 +665,10 @@ static int run_event_on_dir_name_interactively(
 
         if (config->ec_sending_sensitive_data)
         {
-            char *msg = libreport_xasprintf(_("Event '%s' requires permission to send possibly sensitive data."
+            g_autofree char *msg = g_strdup_printf(_("Event '%s' requires permission to send possibly sensitive data."
                                     " Do you want to continue?"),
                         ec_get_screen_name(config) ? ec_get_screen_name(config) : event_name);
             bool ok = libreport_ask_yes_no(msg);
-            free(msg);
             if (!ok)
                 goto ret;
         }
@@ -715,9 +711,8 @@ static int choose_number_from_range(unsigned min, unsigned max, const char *mess
         if (min <= picked && picked <= max)
             return picked;
 
-        char *msg = libreport_xasprintf("%s (%u - %u)\n", _("You have chosen number out of range"), min, max);
+        g_autofree char *msg = g_strdup_printf("%s (%u - %u)\n", _("You have chosen number out of range"), min, max);
         libreport_alert(msg);
-        free(msg);
     }
 
     error_msg_and_die(_("Invalid input, exiting."));
@@ -884,7 +879,7 @@ int select_and_run_workflow(const char *dump_dir_name, GHashTable *workflows, in
     workflow_t *workflow;
     GList *events;
     const char *workflow_name;
-    char *environment_variable;
+    g_autofree char *environment_variable = NULL;
     struct run_event_state *run_state;
     int retval;
 

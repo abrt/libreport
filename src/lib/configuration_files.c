@@ -219,9 +219,8 @@ static bool internal_aug_get_all_option_names(augeas *aug, const char *real_path
         char ***matches, int *match_num, int flags)
 {
     /* We expect that the file tree contains only option and #comment nodes */
-    char *aug_expr = libreport_xasprintf("/files%s/*[label() != \"#comment\"]", real_path);
+    g_autofree char *aug_expr = g_strdup_printf("/files%s/*[label() != \"#comment\"]", real_path);
     *match_num = aug_match(aug, aug_expr, matches);
-    free(aug_expr);
 
     if (*match_num < 0)
     {
@@ -420,7 +419,7 @@ bool libreport_save_conf_file(const char *path, map_string_t *settings)
     libreport_init_map_string_iter(&iter, settings);
     while (libreport_next_map_string_iter(&iter, &name, &value))
     {
-        char *aug_path = libreport_xasprintf("/files%s/%s", real_path, name);
+        g_autofree char *aug_path = g_strdup_printf("/files%s/%s", real_path, name);
         const int ret = aug_set(aug, aug_path, value);
 
         /* Check whether the name already exists and if it exists remark it by
@@ -444,7 +443,6 @@ bool libreport_save_conf_file(const char *path, map_string_t *settings)
          * this form because it is one from the simplest, however, potentially
          * less efficient in case where aug_set() failed (we could skip the
          * search in that case). */
-        free(aug_path);
         if (ret < 0)
         {
             internal_aug_error_msg(aug, "Cannot set a value of a tree path");

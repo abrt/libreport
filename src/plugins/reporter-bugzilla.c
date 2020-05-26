@@ -218,17 +218,13 @@ void login(struct abrt_xmlrpc *client, struct bugzilla_struct *rhbz)
 
     while (!rhbz_login(client, rhbz->b_login, rhbz->b_password))
     {
-        char *question;
-
         free(rhbz->b_login);
-        question = libreport_xasprintf(_("Invalid password or login. Please enter your %s login:"), rhbz->b_bugzilla_url);
+        g_autofree char *question = g_strdup_printf(_("Invalid password or login. Please enter your %s login:"), rhbz->b_bugzilla_url);
         rhbz->b_login = ask_bz_login(question);
-        free(question);
 
         free(rhbz->b_password);
-        question = libreport_xasprintf(_("Invalid password or login. Please enter the password for '%s':"), rhbz->b_login);
+        question = g_strdup_printf(_("Invalid password or login. Please enter the password for '%s':"), rhbz->b_login);
         rhbz->b_password = ask_bz_password(question);
-        free(question);
     }
 }
 
@@ -360,11 +356,11 @@ int main(int argc, char **argv)
     }
 
     {
-        char *local_conf = NULL;
+        g_autofree char *local_conf = NULL;
         if (!conf_file)
         {
             conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/bugzilla.conf");
-            local_conf = libreport_xasprintf("%s"USER_HOME_CONFIG_PATH"/bugzilla.conf", getenv("HOME"));
+            local_conf = g_strdup_printf("%s"USER_HOME_CONFIG_PATH"/bugzilla.conf", getenv("HOME"));
             conf_file = g_list_append(conf_file, local_conf);
         }
         while (conf_file)
@@ -375,7 +371,6 @@ int main(int argc, char **argv)
             log_debug("Loaded '%s'", fn);
             conf_file = g_list_delete_link(conf_file, conf_file);
         }
-        free(local_conf);
 
         set_settings(&rhbz, settings);
         /* WRONG! set_settings() does not copy the strings, it merely sets up pointers
@@ -401,9 +396,9 @@ int main(int argc, char **argv)
     if (abrt_hash)
     {
         log_warning(_("Looking for similar problems in bugzilla"));
-        char *hash;
+        g_autofree char *hash = NULL;
         if (libreport_prefixcmp(abrt_hash, "abrt_hash:"))
-            hash = libreport_xasprintf("abrt_hash:%s", abrt_hash);
+            hash = g_strdup_printf("abrt_hash:%s", abrt_hash);
         else
             hash = libreport_xstrdup(abrt_hash);
 
@@ -452,7 +447,6 @@ int main(int argc, char **argv)
                                 /*version:*/ NULL,
                                 /*component:*/ NULL,
                                 hash);
-        free(hash);
         unsigned all_bugs_size = rhbz_array_size(all_bugs);
         if (all_bugs_size > 0)
         {
@@ -466,17 +460,15 @@ int main(int argc, char **argv)
     if (rhbz.b_login[0] == '\0')
     {
         free(rhbz.b_login);
-        char *question = libreport_xasprintf(_("Login is not provided by configuration. Please enter your %s login:"), rhbz.b_bugzilla_url);
+        g_autofree char *question = g_strdup_printf(_("Login is not provided by configuration. Please enter your %s login:"), rhbz.b_bugzilla_url);
         rhbz.b_login = ask_bz_login(question);
-        free(question);
     }
 
     if (rhbz.b_password[0] == '\0')
     {
         free(rhbz.b_password);
-        char *question = libreport_xasprintf(_("Password is not provided by configuration. Please enter the password for '%s':"), rhbz.b_login);
+        g_autofree char *question = g_strdup_printf(_("Password is not provided by configuration. Please enter the password for '%s':"), rhbz.b_login);
         rhbz.b_password = ask_bz_password(question);
-        free(question);
     }
 
     if (opts & OPT_t)
@@ -577,7 +569,7 @@ int main(int argc, char **argv)
         {
             g_autofree char *msg = NULL;
 
-            msg = libreport_xasprintf(_("This problem was already reported to Bugzilla (see '%s')."
+            msg = g_strdup_printf(_("This problem was already reported to Bugzilla (see '%s')."
                             " Do you still want to create a new bug?"),
                             url);
 
@@ -725,7 +717,7 @@ int main(int argc, char **argv)
 
             if (existing_id >= 0)
             {
-                char *msg = libreport_xasprintf(_(
+                g_autofree char *msg = g_strdup_printf(_(
                 "You have requested to make your data accessible only to a "
                 "specific group and this bug is a duplicate of bug: "
                 "%s/%u"
@@ -741,7 +733,6 @@ int main(int argc, char **argv)
                 rhbz.b_bugzilla_url, existing_id);
 
                 int r = libreport_ask_yes_no(msg);
-                free(msg);
 
                 if (r == 0)
                 {
@@ -955,16 +946,14 @@ int main(int argc, char **argv)
     if (dd)
     {
         report_result_t *result;
-        char *url;
 
         result = report_result_new_with_label_from_env("Bugzilla");
-        url = libreport_xasprintf("%s/show_bug.cgi?id=%u", rhbz.b_bugzilla_url, bz->bi_id);
+        g_autofree char *url = g_strdup_printf("%s/show_bug.cgi?id=%u", rhbz.b_bugzilla_url, bz->bi_id);
 
         report_result_set_url(result, url);
 
         libreport_add_reported_to_entry(dd, result);
 
-        free(url);
         report_result_free(result);
 
         dd_close(dd);

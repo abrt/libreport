@@ -79,7 +79,7 @@ int main(int argc, char **argv)
 
     argv -= 2;
     argv[0] = (char*) tool_name;
-    argv[1] = libreport_xasprintf("-t%s", ticket);
+    argv[1] = g_strdup_printf("-t%s", ticket);
 
     execvp(argv[0], argv);
     perror_msg_and_die("Can't execute '%s'", argv[0]);

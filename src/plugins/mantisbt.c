@@ -210,10 +210,9 @@ soap_node_get_child_node(xmlNodePtr parent, const char *name)
 soap_request_t *
 soap_request_new_for_method(const char *method)
 {
-    char *xml_str = libreport_xasprintf(SOAP_TEMPLATE, method, method);
+    g_autofree char *xml_str = g_strdup_printf(SOAP_TEMPLATE, method, method);
 
     xmlDocPtr doc = xmlParseDoc(BAD_CAST xml_str);
-    free(xml_str);
 
     if (doc == NULL)
         error_msg_and_die(_("SOAP: Failed to parse xml during creating request."));
@@ -330,12 +329,10 @@ soap_add_new_issue_parameters(soap_request_t *req,
 
     if (custom_fields_count > 0)
     {
-        char *type = libreport_xasprintf("%s[%i]", SOAP_CUSTOMFIELD, custom_fields_count);
+        g_autofree char *type = g_strdup_printf("%s[%i]", SOAP_CUSTOMFIELD, custom_fields_count);
 
         if (xmlNewProp(duphash_node, BAD_CAST "ns3:arrayType", BAD_CAST type) == NULL)
             error_msg_and_die(_("SOAP: Failed to create a new property in custom fields."));
-
-        free(type);
     }
 
     soap_node_add_child_node(issue_node, "os_build", SOAP_STRING, version);
@@ -361,7 +358,7 @@ soap_request_to_str(const soap_request_t *req)
         error_msg_and_die(_("SOAP: Failed to dump xml node."));
     }
 
-    char *ret = libreport_xasprintf("%s%s", XML_VERSION, (const char *) xmlBufferContent(buffer));
+    char *ret = g_strdup_printf("%s%s", XML_VERSION, (const char *) xmlBufferContent(buffer));
     xmlBufferFree(buffer);
 
     return ret;
@@ -644,7 +641,7 @@ mantisbt_soap_call(const mantisbt_settings_t *settings, const soap_request_t *re
     if (url == NULL || request == NULL)
     {
         result->mr_error = -2;
-        result->mr_msg = libreport_xasprintf(_("Url or request isn't specified."));
+        result->mr_msg = g_strdup_printf(_("Url or request isn't specified."));
         free(request);
 
         return result;
@@ -672,7 +669,7 @@ redirect:
     {
     case 404:
         result->mr_error = -1;
-        result->mr_msg = libreport_xasprintf(_("Error in HTTP POST, "
+        result->mr_msg = g_strdup_printf(_("Error in HTTP POST, "
                         "HTTP code: 404 (Not found), URL:'%s'"), url);
         break;
     case 500:
@@ -696,9 +693,9 @@ redirect:
         result->mr_error = -1;
         errmsg = post_state->curl_error_msg;
         if (errmsg && errmsg[0])
-            result->mr_msg = libreport_xasprintf(_("Error in MantisBT request at '%s': %s"), url, errmsg);
+            result->mr_msg = g_strdup_printf(_("Error in MantisBT request at '%s': %s"), url, errmsg);
         else
-            result->mr_msg = libreport_xasprintf(_("Error in MantisBT request at '%s'"), url);
+            result->mr_msg = g_strdup_printf(_("Error in MantisBT request at '%s'"), url);
         break;
 
     case 200:
@@ -931,9 +928,8 @@ custom_field_get_id_from_name(GList *ids, GList *names, const char *name)
 static void
 custom_field_ask(const char *name)
 {
-    char *msg = libreport_xasprintf(_("MantisBT doesn't contain custom field '%s', which is required for full functionality of the reporter. Do you still want to create a new issue?"), name);
+    g_autofree char *msg = g_strdup_printf(_("MantisBT doesn't contain custom field '%s', which is required for full functionality of the reporter. Do you still want to create a new issue?"), name);
     int yes = libreport_ask_yes_no(msg);
-    free(msg);
 
     if (!yes)
     {
@@ -1016,9 +1012,8 @@ mantisbt_get_issue_info(const mantisbt_settings_t *settings, int issue_id)
     soap_request_t *req = soap_request_new_for_method("mc_issue_get");
     soap_request_add_credentials_parameter(req, settings);
 
-    char *issue_id_str = libreport_xasprintf("%d", issue_id);
+    g_autofree char *issue_id_str = g_strdup_printf("%d", issue_id);
     soap_request_add_method_parameter(req, "issue_id", SOAP_INTEGER, issue_id_str);
-    free(issue_id_str);
 
     mantisbt_result_t *result = mantisbt_soap_call(settings, req);
     soap_request_free(req);
@@ -1071,7 +1066,7 @@ mantisbt_add_issue_note(const mantisbt_settings_t *settings, int issue_id, const
     soap_request_t *req = soap_request_new_for_method("mc_issue_note_add");
     soap_request_add_credentials_parameter(req, settings);
 
-    char *issue_id_str = libreport_xasprintf("%i", issue_id);
+    g_autofree char *issue_id_str = g_strdup_printf("%i", issue_id);
     soap_node_add_child_node(req->sr_method, "issue_id", SOAP_INTEGER, issue_id_str);
 
     xmlNodePtr note_node = soap_node_add_child_node(req->sr_method, "note", SOAP_ISSUENOTE, /* content */ NULL);
@@ -1079,7 +1074,6 @@ mantisbt_add_issue_note(const mantisbt_settings_t *settings, int issue_id, const
 
     mantisbt_result_t *result = mantisbt_soap_call(settings, req);
 
-    free(issue_id_str);
     soap_request_free(req);
 
     if (result->mr_error == -1)

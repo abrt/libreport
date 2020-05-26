@@ -69,7 +69,7 @@ static void msg_content_add_ext(msg_content_t *msg_c, const char *key, const cha
         msg_c->data = libreport_xrealloc(msg_c->data, msg_c->allocated * sizeof(*(msg_c->data)));
     }
 
-    char *s = libreport_xasprintf("%s%s=%s", prefix, key, value);
+    g_autofree char *s = g_strdup_printf("%s%s=%s", prefix, key, value);
     for (char *c = s; *c != '='; ++c) *c = toupper(*c);
     msg_c->data[msg_c->used].iov_base = s;
     msg_c->data[msg_c->used].iov_len = strlen(s);
@@ -171,12 +171,11 @@ create_journal_message(problem_data_t *problem_data, problem_report_t *pr, unsig
     msg_content_add(msg_c, "PRIORITY", MESSAGE_PRIORITY);
 
     /* add problem report description into PROBLEM_REPORT field */
-    char *description = NULL;
+    g_autofree char *description = NULL;
     if (strcmp(problem_report_get_description(pr), "") != 0)
-        description = libreport_xasprintf("\n%s", problem_report_get_description(pr));
+        description = g_strdup_printf("\n%s", problem_report_get_description(pr));
 
     msg_content_add(msg_c, "PROBLEM_REPORT", description ? description : "");
-    free(description);
 
     if (!(dump_opts & DUMP_FULL))
     {

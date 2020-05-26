@@ -46,9 +46,8 @@
 static char *
 puppet_config_print(const char *key)
 {
-    char *command = libreport_xasprintf("puppet config print %s", key);
+    g_autofree char *command = g_strdup_printf("puppet config print %s", key);
     char *result = libreport_run_in_shell_and_save_output(0, command, NULL, NULL);
-    free(command);
 
     /* libreport_run_in_shell_and_save_output always returns non-NULL */
     if (result[0] != '/')
@@ -246,12 +245,11 @@ ureport_server_config_load_basic_auth(struct ureport_server_config *config,
     {
         settings = libreport_new_map_string();
 
-        char *local_conf = libreport_xasprintf("%s"USER_HOME_CONFIG_PATH"/rhtsupport.conf", getenv("HOME"));
+        g_autofree char *local_conf = g_strdup_printf("%s"USER_HOME_CONFIG_PATH"/rhtsupport.conf", getenv("HOME"));
 
         if (!libreport_load_plugin_conf_file("rhtsupport.conf", settings, /*skip key w/o values:*/ false) &&
             !libreport_load_conf_file(local_conf, settings, /*skip key w/o values:*/ false))
             error_msg_and_die("Could not get RHTSupport credentials");
-        free(local_conf);
 
         username = libreport_get_map_string_item_or_NULL(settings, "Login");
         password = libreport_get_map_string_item_or_NULL(settings, "Password");
@@ -271,9 +269,8 @@ ureport_server_config_load_basic_auth(struct ureport_server_config *config,
 
     if (password == NULL)
     {
-        char *message = libreport_xasprintf("Please provide uReport server password for user '%s':", username);
+        g_autofree char *message = g_strdup_printf("Please provide uReport server password for user '%s':", username);
         password = tmp_password = libreport_ask_password(message);
-        free(message);
 
         if (strcmp(password, "") == 0)
             error_msg_and_die("Cannot continue without uReport server password!");
@@ -430,7 +427,7 @@ parse_solution_from_json_list(struct json_object *list,
         url = json_object_get_string(struct_elem);
         if (url)
         {
-            char *reported_to_line = libreport_xasprintf("%s: URL=%s", cause, url);
+            char *reported_to_line = g_strdup_printf("%s: URL=%s", cause, url);
             *reported_to = g_list_append(*reported_to, reported_to_line);
         }
     }
@@ -496,7 +493,7 @@ parse_reported_to_from_json_list(struct json_object *list)
         if (!prefix)
             prefix = libreport_xstrdup("");
 
-        reported_to_line = libreport_xasprintf("%s: %s%s", reporter, prefix, value);
+        reported_to_line = g_strdup_printf("%s: %s%s", reporter, prefix, value);
         free(prefix);
 
         result = g_list_append(result, reported_to_line);

@@ -330,7 +330,7 @@ config_dialog_t *create_event_config_dialog(const char *event_name, GtkWindow *p
 
     GtkWindow *parent_window = parent ? parent : g_event_list_window;
 
-    char *window_title = libreport_xasprintf("%s - Reporting Configuration",
+    g_autofree char *window_title = g_strdup_printf("%s - Reporting Configuration",
             ec_get_screen_name(event) ? ec_get_screen_name(event) : event_name);
 
     GtkWidget *dialog = gtk_dialog_new_with_buttons(
@@ -342,8 +342,6 @@ config_dialog_t *create_event_config_dialog(const char *event_name, GtkWindow *p
                         _("_OK"),
                         GTK_RESPONSE_APPLY,
                         NULL);
-
-    free(window_title);
 
     gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_APPLY);
 

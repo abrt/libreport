@@ -965,7 +965,7 @@ void check_file_contents(const char *filename)
     if (stat("/proc/self/ns/time_for_children", &st) < 0 && ENOENT == errno)
         time_for_children = "unknown";
 
-    expected = libreport_xasprintf("cgroup : %s\n"
+    expected = g_strdup_printf("cgroup : %s\n"
                          "ipc : default\n"
                          "mnt : default\n"
                          "net : default\n"

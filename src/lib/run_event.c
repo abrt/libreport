@@ -212,7 +212,7 @@ GList *load_rule_list(GList *rule_list,
                 }
 
                 ++line_counter;
-                char *tmp = libreport_xasprintf("%s\n%s", line, next_line);
+                char *tmp = g_strdup_printf("%s\n%s", line, next_line);
                 free(line);
                 free(next_line);
                 line = tmp;
@@ -279,7 +279,7 @@ GList *load_rule_list(GList *rule_list,
                 /* GLOB_PATTERN is relative, and this include is in path/to/file.conf
                  * Construct path/to/GLOB_PATTERN:
                  */
-                name_to_glob = libreport_xasprintf("%.*s%s", (int)(last_slash - conf_file_name + 1), conf_file_name, p);
+                name_to_glob = g_strdup_printf("%.*s%s", (int)(last_slash - conf_file_name + 1), conf_file_name, p);
             else
                 /* Either GLOB_PATTERN is absolute, or this include is in file.conf
                  * (no slashes in its name). Use unchanged GLOB_PATTERN:
@@ -516,9 +516,9 @@ int spawn_next_command(struct run_event_state *state,
 
     env_array = g_ptr_array_new();
 
-    g_ptr_array_add(env_array, libreport_xasprintf("DUMP_DIR=%s", (full_name ? full_name : dump_dir_name)));
-    g_ptr_array_add(env_array, libreport_xasprintf("EVENT=%s", event));
-    g_ptr_array_add(env_array, libreport_xasprintf("REPORT_CLIENT_SLAVE=1"));
+    g_ptr_array_add(env_array, g_strdup_printf("DUMP_DIR=%s", (full_name ? full_name : dump_dir_name)));
+    g_ptr_array_add(env_array, g_strdup_printf("EVENT=%s", event));
+    g_ptr_array_add(env_array, g_strdup_printf("REPORT_CLIENT_SLAVE=1"));
     for (unsigned int i = 0; i < state->extra_environment->len; i++)
     {
         char *variable;
@@ -888,10 +888,10 @@ char *libreport_exit_status_as_string(const char *progname, int status)
 
     char *msg;
     if (WIFSIGNALED(status))
-        msg = libreport_xasprintf(_("('%s' was killed by signal %u)\n"), progname, WTERMSIG(status));
+        msg = g_strdup_printf(_("('%s' was killed by signal %u)\n"), progname, WTERMSIG(status));
     else if (status == 0)
-        msg = libreport_xasprintf(_("('%s' completed successfully)\n"), progname);
+        msg = g_strdup_printf(_("('%s' completed successfully)\n"), progname);
     else
-        msg = libreport_xasprintf(_("('%s' exited with %u)\n"), progname, WEXITSTATUS(status));
+        msg = g_strdup_printf(_("('%s' exited with %u)\n"), progname, WEXITSTATUS(status));
     return msg;
 }

@@ -40,7 +40,7 @@ int libreport_add_reported_to_data(char **reported_to, const char *line)
         *reported_to = libreport_append_to_malloced_string(*reported_to, "\n");
     }
     else
-        *reported_to = libreport_xasprintf("%s\n", line);
+        *reported_to = g_strdup_printf("%s\n", line);
 
     return 1;
 }

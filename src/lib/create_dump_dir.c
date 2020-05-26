@@ -59,7 +59,7 @@ struct dump_dir *create_dump_dir_ext(const char *base_dir_name, const char *type
         return NULL;
     }
 
-    char *problem_id = libreport_xasprintf("%s-%s.%ld-%lu"NEW_PD_SUFFIX, type, libreport_iso_date_string(&(tv.tv_sec)), (long)tv.tv_usec, (long)pid);
+    g_autofree char *problem_id = g_strdup_printf("%s-%s.%ld-%lu"NEW_PD_SUFFIX, type, libreport_iso_date_string(&(tv.tv_sec)), (long)tv.tv_usec, (long)pid);
 
     log_info("Saving to %s/%s with uid %d", base_dir_name, problem_id, uid);
 
@@ -89,13 +89,13 @@ struct dump_dir *create_dump_dir_ext(const char *base_dir_name, const char *type
     }
 
     if (!dd) /* try_dd_create() already emitted the error message */
-        goto ret;
+        return dd;
 
     if (save_data(dd, args))
     {
         dd_delete(dd);
         dd = NULL;
-        goto ret;
+        return dd;
     }
 
     /* need to create basic files AFTER we save the pd to dump_dir
@@ -146,8 +146,6 @@ struct dump_dir *create_dump_dir_ext(const char *base_dir_name, const char *type
     dd_rename(dd, new_path);
     free(new_path);
 
- ret:
-    free(problem_id);
     return dd;
 }
 

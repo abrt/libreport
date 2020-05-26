@@ -48,7 +48,7 @@ const char *abrt_init(char **argv)
 
 void libreport_export_abrt_envvars(int pfx)
 {
-    putenv(libreport_xasprintf("ABRT_VERBOSE=%u", libreport_g_verbose));
+    putenv(g_strdup_printf("ABRT_VERBOSE=%u", libreport_g_verbose));
     if (pfx)
     {
         putenv((char*)"ABRT_PROG_PREFIX=1");

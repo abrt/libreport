@@ -174,12 +174,12 @@ void libreport_add_item_to_config_liststore(gpointer cdialog, gpointer inf, gpoi
     config_item_info_t *info = (config_item_info_t *)inf;
 
     log_notice("adding '%s' to workflow list\n", ci_get_screen_name(info));
-    char *label;
+    g_autofree char *label = NULL;
     if (ci_get_screen_name(info) != NULL && ci_get_description(info) != NULL)
-        label = libreport_xasprintf("<b>%s</b>\n%s",ci_get_screen_name(info), ci_get_description(info));
+        label = g_strdup_printf("<b>%s</b>\n%s",ci_get_screen_name(info), ci_get_description(info));
     else
         //if event has no xml description
-        label = libreport_xasprintf("<b>%s</b>\n%s", _("No description available"), ci_get_name(info));
+        label = g_strdup_printf("<b>%s</b>\n%s", _("No description available"), ci_get_name(info));
 
     GtkTreeIter iter;
     gtk_list_store_append(list_store, &iter);
@@ -188,7 +188,6 @@ void libreport_add_item_to_config_liststore(gpointer cdialog, gpointer inf, gpoi
                       COLUMN_NAME, ci_get_name(info),
                       CONFIG_DIALOG, cdialog,
                       -1);
-    free(label);
 }
 
 //filters configuration - show only those with configurable options trac#881

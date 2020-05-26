@@ -105,7 +105,7 @@ int main(int argc, char **argv)
             if (!outstream)
             {
                 VERB1 pwarn_msg("fopen");
-                msg = libreport_xasprintf(_("Can't open '%s' for writing. "
+                msg = g_strdup_printf(_("Can't open '%s' for writing. "
                                   "Please select another file:"), output_file);
                 continue;
             }
@@ -135,16 +135,14 @@ int main(int argc, char **argv)
             if (dd)
             {
                 report_result_t *result;
-                char *url;
 
                 result = report_result_new_with_label_from_env("file");
-                url = libreport_xasprintf("file://%s", output_file);
+                g_autofree char *url = g_strdup_printf("file://%s", output_file);
 
                 report_result_set_url(result, url);
 
                 libreport_add_reported_to_entry(dd, result);
 
-                free(url);
                 report_result_free(result);
 
                 dd_close(dd);

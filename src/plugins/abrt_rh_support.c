@@ -318,7 +318,7 @@ post_case_to_url(const char* url,
          * instead of returning html-encoded body, we show short concise message,
          * and show offending URL (typos in which is a typical cause) */
         result->error = -1;
-        result->msg = libreport_xasprintf("Error in HTTP POST, "
+        result->msg = g_strdup_printf("Error in HTTP POST, "
                         "HTTP code: 404 (Not found), URL:'%s'", url);
         break;
 
@@ -353,7 +353,7 @@ post_case_to_url(const char* url,
         errmsg = post_state->curl_error_msg;
         if (errmsg && errmsg[0])
         {
-            result->msg = libreport_xasprintf(_("Error in case creation at '%s': %s"),
+            result->msg = g_strdup_printf(_("Error in case creation at '%s': %s"),
                     url, errmsg);
         }
         else
@@ -362,11 +362,11 @@ post_case_to_url(const char* url,
             if (!errmsg)
                 errmsg = post_state->body;
             if (errmsg && errmsg[0])
-                result->msg = libreport_xasprintf(_("Error in case creation at '%s',"
+                result->msg = g_strdup_printf(_("Error in case creation at '%s',"
                         " HTTP code: %d, server says: '%s'"),
                         url, post_state->http_resp_code, errmsg);
             else
-                result->msg = libreport_xasprintf(_("Error in case creation at '%s',"
+                result->msg = g_strdup_printf(_("Error in case creation at '%s',"
                         " HTTP code: %d"),
                         url, post_state->http_resp_code);
         }
@@ -417,7 +417,7 @@ create_new_case(const char* base_url,
         /* Case Creation returned valid code, but no location */
         result->error = -1;
         free(result->msg);
-        result->msg = libreport_xasprintf(_("Error in case creation at '%s':"
+        result->msg = g_strdup_printf(_("Error in case creation at '%s':"
                 " no Location URL, HTTP code: %d"),
                 url, result->http_resp_code
         );
@@ -500,7 +500,7 @@ post_comment_to_url(const char *url,
          * instead of returning html-encoded body, we show short concise message,
          * and show offending URL (typos in which is a typical cause) */
         result->error = -1;
-        result->msg = libreport_xasprintf("Error in HTTP POST, "
+        result->msg = g_strdup_printf("Error in HTTP POST, "
                         "HTTP code: 404 (Not found), URL:'%s'", url);
         break;
 
@@ -521,7 +521,7 @@ post_comment_to_url(const char *url,
         errmsg = post_state->curl_error_msg;
         if (errmsg && errmsg[0])
         {
-            result->msg = libreport_xasprintf(_("Error in comment creation at '%s': %s"),
+            result->msg = g_strdup_printf(_("Error in comment creation at '%s': %s"),
                         url, errmsg);
         }
         else
@@ -530,11 +530,11 @@ post_comment_to_url(const char *url,
             if (!errmsg)
                 errmsg = post_state->body;
             if (errmsg && errmsg[0])
-                result->msg = libreport_xasprintf(_("Error in comment creation at '%s',"
+                result->msg = g_strdup_printf(_("Error in comment creation at '%s',"
                         " HTTP code: %d, server says: '%s'"),
                         url, post_state->http_resp_code, errmsg);
             else
-                result->msg = libreport_xasprintf(_("Error in comment creation at '%s',"
+                result->msg = g_strdup_printf(_("Error in comment creation at '%s',"
                         " HTTP code: %d"),
                         url, post_state->http_resp_code);
         }
@@ -580,7 +580,7 @@ add_comment_to_case(const char* base_url,
         /* Creation returned valid code, but no location */
         result->error = -1;
         free(result->msg);
-        result->msg = libreport_xasprintf(_("Error in comment creation at '%s':"
+        result->msg = g_strdup_printf(_("Error in comment creation at '%s':"
                 " no Location URL, HTTP code: %d"),
                 url, result->http_resp_code
         );
@@ -661,18 +661,18 @@ post_file_to_url(const char* url,
         errmsg = atch_state->curl_error_msg;
         if (errmsg && errmsg[0])
         {
-            result->msg = libreport_xasprintf("Error in file upload at '%s': %s",
+            result->msg = g_strdup_printf("Error in file upload at '%s': %s",
                     url, errmsg);
         }
         else
         {
             errmsg = atch_state->body;
             if (errmsg && errmsg[0])
-                result->msg = libreport_xasprintf("Error in file upload at '%s',"
+                result->msg = g_strdup_printf("Error in file upload at '%s',"
                         " HTTP code: %d, server says: '%s'",
                         url, atch_state->http_resp_code, errmsg);
             else
-                result->msg = libreport_xasprintf("Error in file upload at '%s',"
+                result->msg = g_strdup_printf("Error in file upload at '%s',"
                         " HTTP code: %d",
                         url, atch_state->http_resp_code);
         }

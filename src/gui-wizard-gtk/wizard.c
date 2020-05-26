@@ -329,14 +329,14 @@ static void update_window_title(void)
     /* prgname can be null according to gtk documentation */
     const char *prgname = g_get_prgname();
     const char *reason = problem_data_get_content_or_NULL(g_cd, FILENAME_REASON);
-    g_autofree char *title = libreport_xasprintf("%s - %s", (reason ? reason : g_dump_dir_name),
+    g_autofree char *title = g_strdup_printf("%s - %s", (reason ? reason : g_dump_dir_name),
             (prgname ? prgname : "report"));
     gtk_window_set_title(g_wnd_assistant, title);
 }
 
 static bool ask_continue_before_steal(const char *base_dir, const char *dump_dir)
 {
-    g_autofree char *msg = libreport_xasprintf(
+    g_autofree char *msg = g_strdup_printf(
             _("Need writable directory, but '%s' is not writable."
               " Move it to '%s' and operate on the moved data?"),
             dump_dir, base_dir);
@@ -1017,7 +1017,7 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
         if (stat(item->content, &statbuf) == 0)
         {
             stats->filesize += statbuf.st_size;
-            g_autofree char *msg = libreport_xasprintf(
+            g_autofree char *msg = g_strdup_printf(
                     _("(binary file, %llu bytes)"), (long long)statbuf.st_size);
             gtk_list_store_set(g_ls_details, &iter,
                                   DETAIL_COLUMN_NAME, (char *)name,
@@ -1115,7 +1115,7 @@ void update_gui_state_from_problem_data(int flags)
     const char *not_reportable = problem_data_get_content_or_NULL(g_cd,
                                                                   FILENAME_NOT_REPORTABLE);
 
-    g_autofree char *t = libreport_xasprintf("%s%s%s",
+    g_autofree char *t = g_strdup_printf("%s%s%s",
                         not_reportable ? : "",
                         not_reportable ? " " : "",
                         reason ? : _("(no description)"));
@@ -1125,7 +1125,7 @@ void update_gui_state_from_problem_data(int flags)
     gtk_list_store_clear(g_ls_details);
     struct cd_stats stats = { 0 };
     g_hash_table_foreach(g_cd, append_item_to_ls_details, &stats);
-    g_autofree char *msg = libreport_xasprintf(
+    g_autofree char *msg = g_strdup_printf(
             _("%llu bytes, %u files"), (long long)stats.filesize, stats.filecount);
     gtk_label_set_text(g_lbl_size, msg);
 
@@ -1392,7 +1392,7 @@ static void update_command_run_log(const char* message, struct analyze_event_dat
         gtk_label_set_text(g_lbl_event_log, message);
 
     /* Don't append new line behind single dot */
-    const char *log_msg = it_is_a_dot ? message : libreport_xasprintf("%s\n", message);
+    const char *log_msg = it_is_a_dot ? message : g_strdup_printf("%s\n", message);
     append_to_textview(g_tv_event_log, log_msg);
     save_to_event_log(evd, log_msg);
 
@@ -1415,7 +1415,7 @@ static char *run_event_gtk_logging(char *log_line, void *param)
 
 static void log_request_response_communication(const char *request, const char *response, struct analyze_event_data *evd)
 {
-    g_autofree char *message = libreport_xasprintf(response ? "%s '%s'" : "%s", request,
+    g_autofree char *message = g_strdup_printf(response ? "%s '%s'" : "%s", request,
             response);
     update_command_run_log(message, evd);
 }
@@ -1766,7 +1766,7 @@ static void start_event_run(const char *event_name)
         free_run_event_state(state);
 
         log_warning("No processing commands specified. Processing halted.");
-        g_autofree char *msg = libreport_xasprintf(
+        g_autofree char *msg = g_strdup_printf(
                 _("No commands could be found for processsing the crashdump.\n"));
         append_to_textview(g_tv_event_log, msg);
 
@@ -1804,7 +1804,7 @@ static void start_event_run(const char *event_name)
 
         log_notice("No matching actions for event '%s'; skipping.", event_name);
 
-        g_autofree char *msg = libreport_xasprintf(
+        g_autofree char *msg = g_strdup_printf(
                 _("--- Skipping %s ---\n"
                   "No matching actions found for this event.\n\n"),
                 event_name);
@@ -1842,7 +1842,7 @@ static void start_event_run(const char *event_name)
 
     gtk_label_set_text(g_lbl_event_log, _("Processing..."));
     log_notice("running event '%s' on '%s'", event_name, g_dump_dir_name);
-    g_autofree char *msg = libreport_xasprintf("--- Running %s ---\n", event_name);
+    g_autofree char *msg = g_strdup_printf("--- Running %s ---\n", event_name);
     append_to_textview(g_tv_event_log, msg);
 
     /* don't bother testing if they are visible, this is faster */
@@ -1872,7 +1872,7 @@ static void add_widget_to_warning_area(GtkWidget    *widget,
 static void add_warning(const char   *warning,
                         GtkContainer *container)
 {
-    g_autofree char *label_str = libreport_xasprintf("• %s", warning);
+    g_autofree char *label_str = g_strdup_printf("• %s", warning);
     GtkWidget *warning_lbl = gtk_label_new(NULL);
     gtk_label_set_markup(GTK_LABEL(warning_lbl), label_str);
 
@@ -2141,7 +2141,7 @@ static void search_item_to_list_store_item(GtkListStore *store, GtkTreeIter *new
     g_autofree gchar *suffix = g_markup_escape_text(tmp, /*NULL terminated string*/-1);
     g_free(tmp);
 
-    char *content = libreport_xasprintf("%s<span foreground=\"red\">%s</span>%s", prefix, text, suffix);
+    char *content = g_strdup_printf("%s<span foreground=\"red\">%s</span>%s", prefix, text, suffix);
 
     gtk_text_iter_free(end);
     gtk_text_iter_free(beg);
@@ -2562,7 +2562,7 @@ static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback f
     for (GList *wf_iter = wf_list; wf_iter; wf_iter = g_list_next(wf_iter))
     {
         workflow_t *w = (workflow_t *)wf_iter->data;
-        g_autofree char *btn_label = libreport_xasprintf("<b>%s</b>\n%s", wf_get_screen_name(w),
+        g_autofree char *btn_label = g_strdup_printf("<b>%s</b>\n%s", wf_get_screen_name(w),
                 wf_get_description(w));
         GtkWidget *button = gtk_button_new_with_label(btn_label);
         GList *children = gtk_container_get_children(GTK_CONTAINER(button));
@@ -2615,7 +2615,7 @@ static bool get_sensitive_data_permission(const char *event_name)
     if (screen_name)
         event_name = screen_name;
 
-    g_autofree char *msg = libreport_xasprintf(
+    g_autofree char *msg = g_strdup_printf(
             _("Event '%s' requires permission to send possibly sensitive data.\n"
               "Do you want to continue?"),
             event_name);
@@ -2662,7 +2662,7 @@ static gint select_next_page_no(gint current_page_no)
         if (problem_data_get_content_or_NULL(g_cd, FILENAME_NOT_REPORTABLE))
         {
 
-            char *msg = libreport_xasprintf(_("This problem should not be reported "
+            char *msg = g_strdup_printf(_("This problem should not be reported "
                             "(it is likely a known problem). %s"),
                             problem_data_get_content_or_NULL(g_cd, FILENAME_NOT_REPORTABLE)
             );
@@ -2885,7 +2885,7 @@ static void on_btn_add_file(GtkButton *button)
         struct stat statbuf;
         if (stat(filename, &statbuf) != 0 || !S_ISREG(statbuf.st_mode))
         {
-            message = libreport_xasprintf(_("'%s' is not an ordinary file"), filename);
+            message = g_strdup_printf(_("'%s' is not an ordinary file"), filename);
             goto show_msgbox;
         }
 
@@ -2904,7 +2904,7 @@ static void on_btn_add_file(GtkButton *button)
                     off_t r = libreport_copy_file(filename, new_name, 0666);
                     if (r < 0)
                     {
-                        message = libreport_xasprintf(_("Can't copy '%s': %s"), filename, strerror(errno));
+                        message = g_strdup_printf(_("Can't copy '%s': %s"), filename, strerror(errno));
                         unlink(new_name);
                     }
                     if (!message)
@@ -2918,7 +2918,7 @@ static void on_btn_add_file(GtkButton *button)
             }
         }
         else
-            message = libreport_xasprintf(_("Item '%s' already exists and is not modifiable"), basename);
+            message = g_strdup_printf(_("Item '%s' already exists and is not modifiable"), basename);
 
         if (message)
         {

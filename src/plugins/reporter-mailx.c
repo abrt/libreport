@@ -80,16 +80,14 @@ static char** append_str_to_vector(char **vec, unsigned *size_p, const char *str
 
 static char *ask_email_address(const char *type, const char *def_address)
 {
-    char *ask_text = libreport_xasprintf(_("Email address of %s was not specified. Would you like to do so now? If not, '%s' is to be used"), type, def_address);
+    g_autofree char *ask_text = g_strdup_printf(_("Email address of %s was not specified. Would you like to do so now? If not, '%s' is to be used"), type, def_address);
     const int ret = libreport_ask_yes_no(ask_text);
-    free(ask_text);
 
     if (!ret)
         return libreport_xstrdup(def_address);
 
-    ask_text = libreport_xasprintf(_("Please, type email address of %s:"), type);
+    ask_text = g_strdup_printf(_("Please, type email address of %s:"), type);
     char *address = libreport_ask(ask_text);
-    free(ask_text);
 
     if (address == NULL || address[0] == '\0')
     {
@@ -125,7 +123,7 @@ static void create_and_send_email(
         env = getenv("Mailx_Subject");
         const char *subject = (env ? env : libreport_get_map_string_item_or_NULL(settings, "Subject") ? : PR_DEFAULT_SUBJECT);
 
-        char *format_string = libreport_xasprintf(PR_MAILX_TEMPLATE, subject);
+        g_autofree char *format_string = g_strdup_printf(PR_MAILX_TEMPLATE, subject);
 
         /* attaching binary file to the email */
         if (send_binary_data)
@@ -133,8 +131,6 @@ static void create_and_send_email(
 
         if (problem_formatter_load_string(pf, format_string))
             error_msg_and_die("BUG: Invalid default problem report format string");
-
-        free(format_string);
     }
     else
     {
@@ -226,16 +222,14 @@ static void create_and_send_email(
         if (dd)
         {
             report_result_t *result;
-            char *url;
 
             result = report_result_new_with_label_from_env("email");
-            url = libreport_xasprintf("mailto:%s", email_to);
+            g_autofree char *url = g_strdup_printf("mailto:%s", email_to);
 
             report_result_set_url(result, url);
 
             libreport_add_reported_to_entry(dd, result);
 
-            free(url);
             report_result_free(result);
 
             dd_close(dd);

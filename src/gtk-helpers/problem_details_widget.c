@@ -195,9 +195,8 @@ problem_details_widget_add_binary(ProblemDetailsWidget *self, const char *label,
     }
 
     gchar *size = g_format_size_full((long long)statbuf.st_size, G_FORMAT_SIZE_IEC_UNITS);
-    char *msg = libreport_xasprintf(_("$DATA_DIRECTORY/%s (binary file, %s)"), label, size);
+    g_autofree char *msg = g_strdup_printf(_("$DATA_DIRECTORY/%s (binary file, %s)"), label, size);
     problem_details_widget_add_single_line(self, label, msg);
-    free(msg);
     g_free(size);
 }
 
@@ -303,16 +302,15 @@ problem_details_widget_populate(ProblemDetailsWidget *self)
         const char *username = problem_data_get_content_or_NULL(
                 self->priv->problem_data, "username");
 
-        char *line = NULL;
+        g_autofree char *line = NULL;
         if (uid && username)
-            line = libreport_xasprintf("%s (%s)", username, uid);
+            line = g_strdup_printf("%s (%s)", username, uid);
         else if (!uid && !username)
             line = libreport_xstrdup("unknown user");
         else
-            line = libreport_xasprintf("%s", uid ? uid : username);
+            line = g_strdup_printf("%s", uid ? uid : username);
 
         problem_details_widget_add_single_line(self, "user", line);
-        free(line);
     }
 
     { /* Type/Analyzer: CCpp */
@@ -322,13 +320,13 @@ problem_details_widget_populate(ProblemDetailsWidget *self)
                 self->priv->problem_data, FILENAME_ANALYZER);
 
         char *label = NULL;
-        char *line = NULL;
+        g_autofree char *line = NULL;
         if (type != NULL && analyzer != NULL)
         {
             if (strcmp(type, analyzer) != 0)
             {
                 label = libreport_xstrdup("type/analyzer");
-                line = libreport_xasprintf("%s/%s", type, analyzer);
+                line = g_strdup_printf("%s/%s", type, analyzer);
             }
             else
             {
@@ -344,7 +342,6 @@ problem_details_widget_populate(ProblemDetailsWidget *self)
 
         problem_details_widget_add_single_line(self, label, line);
 
-        free(line);
         free(label);
     }
 

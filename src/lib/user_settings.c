@@ -23,14 +23,13 @@ static char *conf_path;
 
 static char *get_user_config_file_path(const char *name, const char *suffix)
 {
-    char *s = NULL;
+    g_autofree char *s = NULL;
     char *conf;
 
     if (suffix != NULL)
-        s = libreport_xasprintf("%s.%s", name, suffix);
+        s = g_strdup_printf("%s.%s", name, suffix);
 
     conf = libreport_concat_path_file(libreport_get_user_conf_base_dir(), s != NULL ? s : name);
-    free(s);
 
     return conf;
 }

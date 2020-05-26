@@ -31,7 +31,7 @@ char *libreport_concat_path_file(const char *path, const char *filename)
 	const char *end = path + strlen(path);
 	while (*filename == '/')
 		filename++;
-	return libreport_xasprintf("%s%s%s", path, (end != path && end[-1] != '/' ? "/" : ""), filename);
+	return g_strdup_printf("%s%s%s", path, (end != path && end[-1] != '/' ? "/" : ""), filename);
 }
 
 char *libreport_concat_path_basename(const char *path, const char *filename)
