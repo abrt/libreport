@@ -660,7 +660,14 @@ int main(int argc, char **argv)
             const char *rating_str = problem_data_get_content_or_NULL(problem_data, FILENAME_RATING);
             /* python doesn't have rating file */
             if (rating_str)
-                rating = libreport_xatou(rating_str);
+            {
+                char *endptr;
+                long rtg = g_ascii_strtoull(rating_str, &endptr, 10);
+                if (rtg >= 0 && rtg <= UINT_MAX && rating_str != endptr)
+                    rating = (unsigned)rtg;
+                else
+                    error_msg_and_die("expected number in range <0, %d>: '%s'", UINT_MAX, rating_str);
+            }
             if (bt && rating > ii->mii_best_bt_rating)
             {
                 g_autofree char *bug_id_str = g_strdup_printf("%i", ii->mii_id);

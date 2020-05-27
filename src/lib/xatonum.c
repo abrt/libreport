@@ -62,16 +62,6 @@ finito:
     return ret;
 }
 
-unsigned libreport_xatou(const char *numstr)
-{
-    unsigned value = (unsigned)-1;
-
-    if (libreport_try_atou(numstr, &value) != 0)
-        error_msg_and_die("expected number in range <0, %d>: '%s'", UINT_MAX, numstr);
-
-    return value;
-}
-
 int libreport_try_atoi_positive(const char *numstr, int *value)
 {
     unsigned tmp;

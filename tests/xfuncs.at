@@ -98,11 +98,11 @@ int main(void)
         snprintf(buf, sizeof(buf), "%llu", (unsigned long long)UINT_MAX);
         assert(libreport_try_atou(buf, &uint_value) == 0);
         assert(uint_value == UINT_MAX);
-        assert(libreport_xatou(buf) == UINT_MAX);
+        assert(g_ascii_strtoull(buf, NULL, 10) == UINT_MAX);
 
         assert(libreport_try_atou("0", &uint_value) == 0);
         assert(uint_value == 0);
-        assert(libreport_xatou("0") == 0);
+        assert(g_ascii_strtoull("0", NULL, 10) == 0);
     }
 
     {
