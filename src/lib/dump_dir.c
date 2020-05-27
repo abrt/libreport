@@ -497,7 +497,7 @@ static void dd_unlock(struct dump_dir *dd)
 
 static inline struct dump_dir *dd_init(void)
 {
-    struct dump_dir* dd = (struct dump_dir*)g_malloc0(sizeof(struct dump_dir));
+    struct dump_dir* dd = g_new0(struct dump_dir, 1);
     dd->dd_time = (time_t)-1;
     dd->dd_fd = -1;
     dd->dd_md_fd = -1;

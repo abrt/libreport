@@ -31,7 +31,7 @@ struct config_item_info
 
 config_item_info_t *new_config_info(const char *name)
 {
-    config_item_info_t *info = (config_item_info_t *)g_malloc0(sizeof(*info));
+    config_item_info_t *info = g_new0(config_item_info_t, 1);
     info->name = g_strdup(name);
     return info;
 }

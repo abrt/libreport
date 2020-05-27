@@ -46,7 +46,7 @@ static GtkWidget *gtk_label_new_justify_left(const gchar *label_str)
 
 GList *add_option_widget(GList *options, GtkWidget *widget, event_option_t *option)
 {
-    option_widget_t *ow = (option_widget_t *)g_malloc(sizeof(*ow));
+    option_widget_t *ow = g_new(option_widget_t, 1);
     ow->widget = widget;
     ow->option = option;
     options = g_list_prepend(options, ow);

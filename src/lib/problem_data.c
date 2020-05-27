@@ -201,7 +201,7 @@ struct problem_item *problem_data_add_ext(problem_data_t *problem_data,
     if (!(flags & CD_FLAG_ISEDITABLE))
         flags |= CD_FLAG_ISNOTEDITABLE;
 
-    struct problem_item *item = (struct problem_item *)g_malloc0(sizeof(*item));
+    struct problem_item *item = g_new0(struct problem_item, 1);
     item->content = g_strdup(content);
     item->flags = flags;
     item->size = size;

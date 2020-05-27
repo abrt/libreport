@@ -42,7 +42,7 @@ struct abrt_xmlrpc *abrt_xmlrpc_new_client(const char *url, int ssl_verify)
     xmlrpc_env env;
     xmlrpc_env_init(&env);
 
-    struct abrt_xmlrpc *ax = g_malloc0(sizeof(struct abrt_xmlrpc));
+    struct abrt_xmlrpc *ax = g_new0(struct abrt_xmlrpc, 1);
 
     /* This should be done at program startup, once. We do it in main */
     /* xmlrpc_client_setup_global_const(&env); */
@@ -128,7 +128,7 @@ void abrt_xmlrpc_free_client(struct abrt_xmlrpc *ax)
 void abrt_xmlrpc_client_add_session_param_string(xmlrpc_env *env, struct abrt_xmlrpc *ax,
         const char *name, const char *value)
 {
-    struct abrt_xmlrpc_param_pair *new_ses_param = g_malloc(sizeof(*new_ses_param));
+    struct abrt_xmlrpc_param_pair *new_ses_param = g_new(struct abrt_xmlrpc_param_pair, 1);
     new_ses_param->name = g_strdup(name);
 
     new_ses_param->value = xmlrpc_string_new(env, value);

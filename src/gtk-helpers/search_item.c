@@ -28,7 +28,7 @@ search_item_t *sitem_new(int page,
                          GtkTextIter end
                          )
 {
-    search_item_t *word = (search_item_t *)g_malloc(sizeof(search_item_t));
+    search_item_t *word = g_new(search_item_t, 1);
     word->start = start;
     word->end = end;
     word->buffer = buffer;

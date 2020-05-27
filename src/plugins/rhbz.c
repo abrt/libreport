@@ -44,7 +44,7 @@ struct bug_info *new_bug_info()
 {
     func_entry();
 
-    struct bug_info *bi = g_malloc0(sizeof(struct bug_info));
+    struct bug_info *bi = g_new0(struct bug_info, 1);
     bi->bi_dup_id = -1;
 
     return bi;
