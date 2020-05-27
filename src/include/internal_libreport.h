@@ -222,7 +222,6 @@ int libreport_try_atoi(const char *numstr, int *value);
  * but that would be too long.
  */
 int libreport_try_atoi_positive(const char *numstr, int *value);
-int libreport_xatoi_positive(const char *numstr);
 
 //unused for now
 //unsigned long long monotonic_ns(void);

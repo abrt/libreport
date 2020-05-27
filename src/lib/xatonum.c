@@ -89,16 +89,6 @@ int libreport_try_atoi_positive(const char *numstr, int *value)
     return 0;
 }
 
-int libreport_xatoi_positive(const char *numstr)
-{
-    int value = INT_MIN;
-
-    if (libreport_try_atoi_positive(numstr, &value) != 0)
-        error_msg_and_die("expected number in range <0, %d>: '%s'", INT_MAX, numstr);
-
-    return  value;
-}
-
 int libreport_try_atoi(const char *numstr, int *value)
 {
     g_return_val_if_fail (NULL != numstr, -EINVAL);
