@@ -220,7 +220,7 @@ static bool is_dbus_remote_error(GError *error, const char *type)
 
 static struct secrets_object *secrets_object_new_from_proxy(GDBusProxy *proxy)
 {
-    struct secrets_object *obj = libreport_xzalloc(sizeof(*obj));
+    struct secrets_object *obj = g_malloc0(sizeof(*obj));
     obj->proxy = proxy;
     obj->interface_name = g_dbus_proxy_get_interface_name(proxy);
 

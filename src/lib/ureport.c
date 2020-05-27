@@ -512,7 +512,7 @@ ureport_server_parse_json(json_object *json)
     json_object *obj = NULL;
     if (json_object_object_get_ex(json, "error", &obj))
     {
-        struct ureport_server_response *out_response = libreport_xzalloc(sizeof(*out_response));
+        struct ureport_server_response *out_response = g_malloc0(sizeof(*out_response));
         out_response->urr_is_error = true;
         /*
          * Used to use json_object_to_json_string(obj), but it returns
@@ -524,7 +524,7 @@ ureport_server_parse_json(json_object *json)
 
     if (json_object_object_get_ex(json, "result", &obj))
     {
-        struct ureport_server_response *out_response = libreport_xzalloc(sizeof(*out_response));
+        struct ureport_server_response *out_response = g_malloc0(sizeof(*out_response));
         out_response->urr_value = g_strdup(json_object_get_string(obj));
 
         json_object *message = NULL;

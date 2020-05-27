@@ -23,7 +23,7 @@
 static char *concat_str_vector(char **strings)
 {
 	if (!strings[0])
-		return libreport_xzalloc(1); // returns ""
+		return g_malloc0(1); // returns ""
 
 	unsigned len = 0;
 	char **spp = strings;

@@ -39,7 +39,7 @@ int libreport_suffixcmp(const char *str, const char *suffix)
 
 char *libreport_trim_all_whitespace(const char *str)
 {
-    char *trim = libreport_xzalloc(sizeof(char) * strlen(str) + 1);
+    char *trim = g_malloc0(sizeof(char) * strlen(str) + 1);
     int i = 0;
     while (*str)
     {
@@ -141,10 +141,10 @@ char *libreport_strremovech(char *str, int ch)
 
 struct strbuf *libreport_strbuf_new(void)
 {
-    struct strbuf *buf = libreport_xzalloc(sizeof(*buf));
-    /*buf->len = 0; - done by libreport_xzalloc */
+    struct strbuf *buf = g_malloc0(sizeof(*buf));
+    /*buf->len = 0; - done by g_malloc0 */
     buf->alloc = 8;
-    buf->buf = libreport_xzalloc(8);
+    buf->buf = g_malloc0(8);
     return buf;
 }
 

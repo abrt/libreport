@@ -161,7 +161,7 @@ int create_tarball(const char *tempfile, struct dump_dir *dd,
     {
         unsigned len = strlen(signature);
         unsigned len512 = (len + 511) & ~511;
-        char *block = (char*)memcpy(libreport_xzalloc(len512), signature, len);
+        char *block = (char*)memcpy(g_malloc0(len512), signature, len);
 
         th_set_type(tar, S_IFREG | 0644);
         th_set_mode(tar, S_IFREG | 0644);

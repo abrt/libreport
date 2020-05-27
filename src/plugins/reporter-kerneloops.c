@@ -27,7 +27,7 @@ static size_t writefunction(void *ptr, size_t size, size_t nmemb, void *stream)
     char *c, *c1, *c2;
 
     log_warning("received: '%*.*s'", (int)size, (int)size, (char*)ptr);
-    c = (char*)libreport_xzalloc(size + 1);
+    c = (char*)g_malloc0(size + 1);
     memcpy(c, ptr, size);
     c1 = strstr(c, "201 ");
     if (c1)

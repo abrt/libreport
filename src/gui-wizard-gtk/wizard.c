@@ -1827,7 +1827,7 @@ static void start_event_run(const char *event_name)
     /* At least one command is needed, and we started first one.
      * Hook its output fd to the main loop.
      */
-    struct analyze_event_data *evd = libreport_xzalloc(sizeof(*evd));
+    struct analyze_event_data *evd = g_malloc0(sizeof(*evd));
     evd->run_state = state;
     evd->event_name = g_strdup(event_name);
     evd->env_list = env_list;

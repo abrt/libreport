@@ -34,7 +34,7 @@ GHashTable *g_workflow_list;
 
 workflow_t *new_workflow(const char *name)
 {
-    workflow_t *w = libreport_xzalloc(sizeof(*w));
+    workflow_t *w = g_malloc0(sizeof(*w));
     w->info = new_config_info(name);
     return w;
 }

@@ -145,13 +145,13 @@ unsigned libreport_parse_opts(int argc, char **argv, const struct options *opt,
 
     struct strbuf *shortopts = libreport_strbuf_new();
 
-    struct option *longopts = libreport_xzalloc(sizeof(longopts[0]) * (size+2));
+    struct option *longopts = g_malloc0(sizeof(longopts[0]) * (size+2));
     struct option *curopt = longopts;
     int ii;
     for (ii = 0; ii < size; ++ii)
     {
         curopt->name = opt[ii].long_name;
-        /*curopt->flag = 0; - libreport_xzalloc did it */
+        /*curopt->flag = 0; - g_malloc0 did it */
         if (opt[ii].short_name)
             curopt->val = opt[ii].short_name;
         else
@@ -199,7 +199,7 @@ unsigned libreport_parse_opts(int argc, char **argv, const struct options *opt,
     curopt->has_arg = no_argument;
     curopt->flag = &help;
     curopt->val = 1;
-    /* libreport_xzalloc did it already:
+    /* g_malloc0 did it already:
     curopt++;
     curopt->name = NULL;
     curopt->has_arg = 0;

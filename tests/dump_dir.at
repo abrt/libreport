@@ -1285,7 +1285,7 @@ void verify_archive(struct dump_dir *dd, const char *file_name,
     unsigned c = 0;
     for (const_string_vector_const_ptr_t i = included_files; i && *i; ++i)
         ++c;
-    int *check_array = libreport_xzalloc(c * sizeof(int));
+    int *check_array = g_malloc0(c * sizeof(int));
 
     int pipe_from_parent_to_child[2];
     libreport_xpipe(pipe_from_parent_to_child);
