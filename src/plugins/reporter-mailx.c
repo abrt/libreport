@@ -69,7 +69,7 @@ static char** append_str_to_vector(char **vec, unsigned *size_p, const char *str
 {
     //log_warning("old vec: %p", vec);
     unsigned size = *size_p;
-    vec = (char**) libreport_xrealloc(vec, (size+2) * sizeof(vec[0]));
+    vec = (char**) g_realloc(vec, (size+2) * sizeof(vec[0]));
     vec[size] = g_strdup(str);
     //log_warning("new vec: %p, added [%d] %p", vec, size, vec[size]);
     size++;

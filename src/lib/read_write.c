@@ -145,7 +145,7 @@ void* libreport_xmalloc_read(int fd, size_t *maxsz_p)
     while (1) {
         if (to_read < size)
             size = to_read;
-        buf = libreport_xrealloc(buf, total + size + 1);
+        buf = g_realloc(buf, total + size + 1);
         rd_size = libreport_full_read(fd, buf + total, size);
         if ((ssize_t)rd_size == (ssize_t)(-1)) { /* error */
             free(buf);
@@ -162,7 +162,7 @@ void* libreport_xmalloc_read(int fd, size_t *maxsz_p)
         if (size > 64*1024)
             size = 64*1024;
     }
-    buf = libreport_xrealloc(buf, total + 1);
+    buf = g_realloc(buf, total + 1);
     buf[total] = '\0';
 
     if (maxsz_p)

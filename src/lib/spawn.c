@@ -167,7 +167,7 @@ char *libreport_run_in_shell_and_save_output(int flags,
 	size_t pos = 0;
 	char *result = NULL;
 	while (1) {
-		result = (char*) libreport_xrealloc(result, pos + 4*1024 + 1);
+		result = (char*) g_realloc(result, pos + 4*1024 + 1);
 		size_t sz = libreport_safe_read(pipeout[0], result + pos, 4*1024);
 		if (sz <= 0) {
 			break;
