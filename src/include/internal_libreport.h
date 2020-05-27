@@ -108,7 +108,6 @@ int vdprintf(int d, const char *format, va_list ap);
 extern "C" {
 #endif
 
-int libreport_suffixcmp(const char *str, const char *suffix);
 char *libreport_trim_all_whitespace(const char *str);
 char *libreport_shorten_string_to_length(const char *str, unsigned length);
 char *libreport_strtrimch(char *str, int ch);

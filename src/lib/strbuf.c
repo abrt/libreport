@@ -19,15 +19,6 @@
 */
 #include "internal_libreport.h"
 
-int libreport_suffixcmp(const char *str, const char *suffix)
-{
-    int len_minus_suflen = strlen(str) - strlen(suffix);
-    if (len_minus_suflen < 0)
-        return len_minus_suflen;
-    else
-        return strcmp(str + len_minus_suflen, suffix);
-}
-
 char *libreport_trim_all_whitespace(const char *str)
 {
     char *trim = g_malloc0(sizeof(char) * strlen(str) + 1);
