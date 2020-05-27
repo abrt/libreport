@@ -42,7 +42,7 @@ struct abrt_xmlrpc *abrt_xmlrpc_new_client(const char *url, int ssl_verify)
     xmlrpc_env env;
     xmlrpc_env_init(&env);
 
-    struct abrt_xmlrpc *ax = libreport_xzalloc(sizeof(struct abrt_xmlrpc));
+    struct abrt_xmlrpc *ax = g_malloc0(sizeof(struct abrt_xmlrpc));
 
     /* This should be done at program startup, once. We do it in main */
     /* xmlrpc_client_setup_global_const(&env); */

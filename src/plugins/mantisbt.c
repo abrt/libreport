@@ -86,7 +86,7 @@ mantisbt_settings_free(mantisbt_settings_t *s)
 mantisbt_issue_info_t *
 mantisbt_issue_info_new()
 {
-    mantisbt_issue_info_t *info = libreport_xzalloc(sizeof(mantisbt_issue_info_t));
+    mantisbt_issue_info_t *info = g_malloc0(sizeof(mantisbt_issue_info_t));
     info->mii_id = -1;
     info->mii_dup_id = -1;
 
@@ -144,7 +144,7 @@ mantisbt_find_origin_bug_closed_duplicate(mantisbt_settings_t *settings, mantisb
 static soap_request_t *
 soap_request_new()
 {
-    soap_request_t *req = libreport_xzalloc(sizeof(*req));
+    soap_request_t *req = g_malloc0(sizeof(*req));
 
     return req;
 }
@@ -636,7 +636,7 @@ mantisbt_soap_call(const mantisbt_settings_t *settings, const soap_request_t *re
 
     const char *url = settings->m_mantisbt_soap_url;
 
-    mantisbt_result_t *result = libreport_xzalloc(sizeof(*result));
+    mantisbt_result_t *result = g_malloc0(sizeof(*result));
 
     if (url == NULL || request == NULL)
     {

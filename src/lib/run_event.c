@@ -26,7 +26,7 @@ static void run_event_stdio_error_and_die(const char *error_line, void *param);
 
 struct run_event_state *new_run_event_state()
 {
-    struct run_event_state *state = libreport_xzalloc(sizeof(struct run_event_state));
+    struct run_event_state *state = g_malloc0(sizeof(struct run_event_state));
 
     state->logging_callback = run_event_stdio_log;
     state->error_callback = run_event_stdio_error_and_die;
@@ -221,7 +221,7 @@ GList *load_rule_list(GList *rule_list,
             char *p = libreport_skip_whitespace(line);
 
             /* Rule has form: [VAR=VAL]... PROG [ARGS] */
-            struct rule *cur_rule = libreport_xzalloc(sizeof(*cur_rule));
+            struct rule *cur_rule = g_malloc0(sizeof(*cur_rule));
 
             while (1) /* word loop */
             {

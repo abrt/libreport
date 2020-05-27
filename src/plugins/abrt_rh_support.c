@@ -285,7 +285,7 @@ post_case_to_url(const char* url,
                 const char* description,
                 const char* component)
 {
-    rhts_result_t *result = libreport_xzalloc(sizeof(*result));
+    rhts_result_t *result = g_malloc0(sizeof(*result));
     g_autofree char *url_copy = NULL;
 
     char *case_data = make_case_data(summary, description,
@@ -468,7 +468,7 @@ post_comment_to_url(const char *url,
                 const char **additional_headers,
                 const char *comment_text)
 {
-    rhts_result_t *result = libreport_xzalloc(sizeof(*result));
+    rhts_result_t *result = g_malloc0(sizeof(*result));
     g_autofree char *url_copy = NULL;
 
     char *xml = make_comment_data(comment_text);
@@ -600,7 +600,7 @@ post_file_to_url(const char* url,
                 const char **additional_headers,
                 const char *file_name)
 {
-    rhts_result_t *result = libreport_xzalloc(sizeof(*result));
+    rhts_result_t *result = g_malloc0(sizeof(*result));
     g_autofree char *url_copy = NULL;
 
     int redirect_count = 0;

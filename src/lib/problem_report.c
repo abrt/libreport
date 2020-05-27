@@ -1092,7 +1092,7 @@ void problem_formatter_set_settings(problem_formatter_t *self, problem_report_se
 problem_formatter_t *
 problem_formatter_new(void)
 {
-    problem_formatter_t *self = libreport_xzalloc(sizeof(*self));
+    problem_formatter_t *self = g_malloc0(sizeof(*self));
 
     self->pf_default_summary = g_strdup("%reason%");
     self->pf_settings = problem_report_settings_init();

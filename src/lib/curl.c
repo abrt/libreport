@@ -112,7 +112,7 @@ CURLcode curl_easy_perform_with_proxy(CURL *handle, const char *url)
 
 post_state_t *new_post_state(int flags)
 {
-    post_state_t *state = (post_state_t *)libreport_xzalloc(sizeof(*state));
+    post_state_t *state = (post_state_t *)g_malloc0(sizeof(*state));
     state->flags = flags;
     return state;
 }

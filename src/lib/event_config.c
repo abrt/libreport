@@ -24,17 +24,17 @@ static GHashTable *g_event_config_symlinks;
 
 invalid_option_t *new_invalid_option(void)
 {
-    return libreport_xzalloc(sizeof(invalid_option_t));
+    return g_malloc0(sizeof(invalid_option_t));
 }
 
 event_option_t *new_event_option(void)
 {
-    return libreport_xzalloc(sizeof(event_option_t));
+    return g_malloc0(sizeof(event_option_t));
 }
 
 event_config_t *new_event_config(const char *name)
 {
-    event_config_t *e = libreport_xzalloc(sizeof(event_config_t));
+    event_config_t *e = g_malloc0(sizeof(event_config_t));
     e->info = new_config_info(name);
     return e;
 }

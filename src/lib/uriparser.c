@@ -46,7 +46,7 @@ int libreport_uri_userinfo_remove(const char *uri, char **result, char **scheme,
         return -EINVAL;
     }
 
-    char *ptr = libreport_xzalloc((strlen(uri) + 1) * sizeof(char));
+    char *ptr = g_malloc0((strlen(uri) + 1) * sizeof(char));
     *result = ptr;
     if (scheme != NULL)
         *scheme = NULL;

@@ -40,14 +40,6 @@ int libreport_close_on_exec_on(int fd)
     return fcntl(fd, F_SETFD, FD_CLOEXEC);
 }
 
-// Die if we can't allocate and zero size bytes of memory.
-void* libreport_xzalloc(size_t size)
-{
-    void *ptr = g_malloc(size);
-    memset(ptr, 0, size);
-    return ptr;
-}
-
 char *libreport_xstrdup_between(const char *src, const char *open, const char *close)
 {
     const char *start = strstr(src, open);
