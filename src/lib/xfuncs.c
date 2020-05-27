@@ -250,12 +250,6 @@ void libreport_xunlinkat(int dir_fd, const char *pathname, int flags)
         perror_msg_and_die("Can't remove file '%s'", pathname);
 }
 
-void libreport_xunlink(const char *pathname)
-{
-    if (unlink(pathname))
-        perror_msg_and_die("Can't remove file '%s'", pathname);
-}
-
 #if 0 //UNUSED
 // Warn if we can't open a file and return a fd.
 int open3_or_warn(const char *pathname, int flags, int mode)
