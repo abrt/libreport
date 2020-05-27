@@ -2430,7 +2430,7 @@ int dd_copy_file_unpack(struct dump_dir *dd, const char *name, const char *sourc
 int dd_create_archive(struct dump_dir *dd, const char *archive_name,
         const_string_vector_const_ptr_t exclude_elements, int flags)
 {
-    if (libreport_suffixcmp(archive_name, ".tar.gz") != 0)
+    if (!g_str_has_suffix(archive_name, ".tar.gz"))
         return -ENOSYS;
 
     int result = 0;
