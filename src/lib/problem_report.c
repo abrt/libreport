@@ -790,7 +790,7 @@ struct memstream_buffer
 static struct memstream_buffer *
 memstream_buffer_new()
 {
-    struct memstream_buffer *self = g_malloc(sizeof(*self));
+    struct memstream_buffer *self = g_new(struct memstream_buffer, 1);
 
     self->msb_buffer = NULL;
     self->msb_stream = open_memstream(&(self->msb_buffer), &(self->msb_size));
@@ -1028,7 +1028,7 @@ struct extra_section
 static struct extra_section *
 extra_section_new(const char *name, int flags)
 {
-    struct extra_section *self = g_malloc(sizeof(*self));
+    struct extra_section *self = g_new(struct extra_section, 1);
 
     self->pfes_name = g_strdup(name);
     self->pfes_flags = flags;

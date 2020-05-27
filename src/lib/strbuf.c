@@ -141,8 +141,8 @@ char *libreport_strremovech(char *str, int ch)
 
 struct strbuf *libreport_strbuf_new(void)
 {
-    struct strbuf *buf = g_malloc0(sizeof(*buf));
-    /*buf->len = 0; - done by g_malloc0 */
+    struct strbuf *buf = g_new0(struct strbuf, 1);
+    /*buf->len = 0; - done by g_new0 */
     buf->alloc = 8;
     buf->buf = g_malloc0(8);
     return buf;
