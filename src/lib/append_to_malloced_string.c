@@ -21,7 +21,7 @@
 char *libreport_append_to_malloced_string(char *mstr, const char *append)
 {
 	unsigned mlen = strlen(mstr);
-	mstr = (char*) libreport_xrealloc(mstr, mlen + strlen(append) + 1);
+	mstr = (char*) g_realloc(mstr, mlen + strlen(append) + 1);
 	strcpy(mstr + mlen, append);
 	return mstr;
 }

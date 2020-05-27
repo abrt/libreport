@@ -186,7 +186,7 @@ static char *strbuf_grow(struct strbuf *strbuf, unsigned increment)
         while (cur_size <= need)
             cur_size += 64 + cur_size / 8;
         strbuf->alloc = cur_size;
-        strbuf->buf = libreport_xrealloc(strbuf->buf, cur_size);
+        strbuf->buf = g_realloc(strbuf->buf, cur_size);
     }
     char *p = strbuf->buf + len;
     return p;

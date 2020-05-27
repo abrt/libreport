@@ -105,7 +105,7 @@ static char* get_escaped_at(int dir_fd, const char *name, char separator)
              * including terminating NUL.
              * We add +1 for possible \n added at the very end.
              */
-            escaped = libreport_xrealloc(escaped, total_esc_len + len*4 + 4);
+            escaped = g_realloc(escaped, total_esc_len + len*4 + 4);
             char *src = buffer;
             dst = escaped + total_esc_len;
             while (1)

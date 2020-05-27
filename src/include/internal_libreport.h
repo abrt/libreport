@@ -299,7 +299,6 @@ int libreport_ndelay_on(int fd);
 int libreport_ndelay_off(int fd);
 int libreport_close_on_exec_on(int fd);
 
-void *libreport_xrealloc(void *ptr, size_t size);
 void *libreport_xzalloc(size_t size);
 char *libreport_xstrdup_between(const char *s, const char *open, const char *close);
 

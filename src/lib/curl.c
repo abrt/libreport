@@ -188,7 +188,7 @@ save_headers(void *buffer_pv, size_t count, size_t nmemb, void *ptr)
     }
 
     log_debug("save_headers: header %d: '%s'", cnt, h);
-    state->headers = (char**)libreport_xrealloc(state->headers, (cnt+2) * sizeof(state->headers[0]));
+    state->headers = (char**)g_realloc(state->headers, (cnt+2) * sizeof(state->headers[0]));
     state->headers[cnt] = h;
     state->header_cnt = ++cnt;
     state->headers[cnt] = NULL;

@@ -37,7 +37,7 @@ static char *xmalloc_fgets_internal(FILE *file, int *sizep)
 	while (1) {
 		char *r;
 
-		linebuf = libreport_xrealloc(linebuf, idx + 0x100);
+		linebuf = g_realloc(linebuf, idx + 0x100);
 		r = fgets(&linebuf[idx], 0x100, file);
 		if (!r) {
 			/* need to terminate the line */
@@ -69,7 +69,7 @@ char *libreport_xmalloc_fgets(FILE *file)
 	char *r = xmalloc_fgets_internal(file, &sz);
 	if (!r)
 		return r;
-	return libreport_xrealloc(r, sz + 1);
+	return g_realloc(r, sz + 1);
 }
 
 char *libreport_xmalloc_fgetline(FILE *file)
@@ -80,7 +80,7 @@ char *libreport_xmalloc_fgetline(FILE *file)
 		return r;
 	if (r[sz - 1] == '\n')
 		r[--sz] = '\0';
-	return libreport_xrealloc(r, sz + 1);
+	return g_realloc(r, sz + 1);
 }
 
 char *libreport_xmalloc_fopen_fgetline_fclose(const char *filename)

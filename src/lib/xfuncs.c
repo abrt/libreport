@@ -40,17 +40,6 @@ int libreport_close_on_exec_on(int fd)
     return fcntl(fd, F_SETFD, FD_CLOEXEC);
 }
 
-// Die if we can't resize previously allocated memory.  (This returns a pointer
-// to the new memory, which may or may not be the same as the old memory.
-// It'll copy the contents to a new chunk and free the old one if necessary.)
-void* libreport_xrealloc(void *ptr, size_t size)
-{
-    ptr = realloc(ptr, size);
-    if (ptr == NULL && size != 0)
-        libreport_die_out_of_memory();
-    return ptr;
-}
-
 // Die if we can't allocate and zero size bytes of memory.
 void* libreport_xzalloc(size_t size)
 {

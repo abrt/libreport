@@ -66,7 +66,7 @@ static void msg_content_add_ext(msg_content_t *msg_c, const char *key, const cha
     if (msg_c->used >= msg_c->allocated)
     {
         msg_c->allocated += 5;
-        msg_c->data = libreport_xrealloc(msg_c->data, msg_c->allocated * sizeof(*(msg_c->data)));
+        msg_c->data = g_realloc(msg_c->data, msg_c->allocated * sizeof(*(msg_c->data)));
     }
 
     g_autofree char *s = g_strdup_printf("%s%s=%s", prefix, key, value);
