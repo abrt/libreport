@@ -221,13 +221,13 @@ void libreport_parse_osinfo(const char *osinfo_bytes, map_string_t *osinfo)
             goto skip_line;
         }
 
-        char *key = libreport_xstrndup(cursor, key_end - cursor);
+        char *key = g_strndup(cursor, key_end - cursor);
         if (libreport_get_map_string_item_or_NULL(osinfo, key) != NULL)
         {
             log_notice("os-release:%u: redefines key '%s'", line, key);
         }
 
-        char *value = libreport_xstrndup(key_end + 1, value_end - key_end - 1);
+        char *value = g_strndup(key_end + 1, value_end - key_end - 1);
         unescape_osnifo_value(value, value);
 
         log_debug("os-release:%u: parsed line: '%s'='%s'", line, key, value);

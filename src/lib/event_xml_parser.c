@@ -105,7 +105,7 @@ static char *get_element_lang(struct my_parse_data *parse_data, const gchar **at
              && strncmp(att_values[i], parse_data->cur_locale, short_locale_end - parse_data->cur_locale) == 0
             ) {
                 log_debug("found translation for shortlocale: %s", parse_data->cur_locale);
-                return libreport_xstrndup(att_values[i], short_locale_end - parse_data->cur_locale);
+                return g_strndup(att_values[i], short_locale_end - parse_data->cur_locale);
             }
         }
     }
@@ -289,7 +289,7 @@ static void text(GMarkupParseContext *context,
     event_config_t *ui = parse_data->event_config.values;
 
     const gchar *inner_element = g_markup_parse_context_get_element(context);
-    char *text_copy = libreport_xstrndup(text, text_len);
+    g_autofree char *text_copy = g_strndup(text, text_len);
     event_option_t *opt = parse_data->cur_option.values;
     if (opt)
     {
@@ -386,7 +386,6 @@ static void text(GMarkupParseContext *context,
 
                         log_info("event name:'%s'", text_copy);
                         ec_set_screen_name(ui, text_copy);
-                        free(text_copy);
                         text_copy = NULL;
                     }
                 }
@@ -410,7 +409,6 @@ static void text(GMarkupParseContext *context,
                             (strcmp(parse_data->attribute_lang, parse_data->cur_locale) == 0);
 
                         ec_set_description(ui, text_copy);
-                        free(text_copy);
                         text_copy = NULL;
                     }
                 }
@@ -435,7 +433,6 @@ static void text(GMarkupParseContext *context,
                             (strcmp(parse_data->attribute_lang, parse_data->cur_locale) == 0);
 
                         ec_set_long_desc(ui, text_copy);
-                        free(text_copy);
                         text_copy = NULL;
                     }
                 }
@@ -497,7 +494,6 @@ static void text(GMarkupParseContext *context,
             ui->ec_requires_details = libreport_string_to_bool(text_copy);
         }
     }
-    free(text_copy);
 }
 
   // Called for strings that should be re-saved verbatim in this same

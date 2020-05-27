@@ -161,7 +161,7 @@ save_headers(void *buffer_pv, size_t count, size_t nmemb, void *ptr)
     post_state_t* state = (post_state_t*)ptr;
     size_t size = count * nmemb;
 
-    char *h = libreport_xstrndup((char*)buffer_pv, size);
+    g_autofree char *h = g_strndup((char*)buffer_pv, size);
     strchrnul(h, '\r')[0] = '\0';
     strchrnul(h, '\n')[0] = '\0';
 

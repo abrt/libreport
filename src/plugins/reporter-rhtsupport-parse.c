@@ -86,7 +86,7 @@ static void text(
     if (parse_data->uri && text_len > 0)
     {
         free(parse_data->txt);
-        parse_data->txt = libreport_xstrndup(text, text_len);
+        parse_data->txt = g_strndup(text, text_len);
     }
 }
 

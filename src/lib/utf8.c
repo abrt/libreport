@@ -94,7 +94,7 @@ char *libreport_sanitize_utf8(const char *src, uint32_t control_chars_to_sanitiz
         if (!sanitized)
         {
             sanitized_pos = src - initial_src;
-            sanitized = libreport_xstrndup(initial_src, sanitized_pos);
+            sanitized = g_strndup(initial_src, sanitized_pos);
         }
         sanitized = (char*) libreport_xrealloc(sanitized, sanitized_pos + 5);
         sanitized[sanitized_pos++] = '[';

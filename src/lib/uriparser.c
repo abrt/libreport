@@ -94,7 +94,7 @@ int libreport_uri_userinfo_remove(const char *uri, char **result, char **scheme,
     { \
         size_t len = 0; \
         len = matchptr[(i)].rm_eo - matchptr[(i)].rm_so; \
-        if (output) *output = libreport_xstrndup(uri + matchptr[(i)].rm_so, len); \
+        if (output) *output = g_strndup(uri + matchptr[(i)].rm_so, len); \
         strncpy(ptr, uri + matchptr[(i)].rm_so, len); \
         ptr += len; \
     }
@@ -138,13 +138,13 @@ int libreport_uri_userinfo_remove(const char *uri, char **result, char **scheme,
                 }
 
                 if (password != NULL)
-                    *password = libreport_xstrndup(authority + colon + 1, at - colon - 1);
+                    *password = g_strndup(authority + colon + 1, at - colon - 1);
 
                 break;
             }
 
             if (username != NULL)
-                *username = libreport_xstrndup(authority, colon);
+                *username = g_strndup(authority, colon);
 
             ++at;
             break;
@@ -153,7 +153,7 @@ int libreport_uri_userinfo_remove(const char *uri, char **result, char **scheme,
         len -= at;
 
         if (hostname != NULL)
-            *hostname = libreport_xstrndup(authority + at, len);
+            *hostname = g_strndup(authority + at, len);
 
         strncpy(ptr, authority + at, len);
         ptr += len;
