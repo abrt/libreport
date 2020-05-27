@@ -338,7 +338,7 @@ static int is_text_file_at(int dir_fd, const char *name, char **content, ssize_t
     }
     lseek(fd, 0, SEEK_SET);
 
-    unsigned char *buf = libreport_xmalloc(*sz);
+    unsigned char *buf = g_malloc(*sz);
     ssize_t r = libreport_full_read(fd, buf, *sz);
 
     if (r < 0)

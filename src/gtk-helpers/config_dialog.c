@@ -61,7 +61,7 @@ config_dialog_t *new_config_dialog(GtkWidget *dialog,
                                    gpointer config_data,
                                    config_save_fun_t save_fun)
 {
-    config_dialog_t *cdialog = (config_dialog_t *)libreport_xmalloc(sizeof(*cdialog));
+    config_dialog_t *cdialog = (config_dialog_t *)g_malloc(sizeof(*cdialog));
     cdialog->dialog = dialog;
     cdialog->data = config_data;
     cdialog->save_data = save_fun;

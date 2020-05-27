@@ -32,7 +32,7 @@ typedef struct msg_content
 
 static msg_content_t *msg_content_new()
 {
-    msg_content_t *msg_c = libreport_xmalloc(sizeof(*msg_c));
+    msg_content_t *msg_c = g_malloc(sizeof(*msg_c));
 
     msg_c->allocated = 0;
     msg_c->used = 0;

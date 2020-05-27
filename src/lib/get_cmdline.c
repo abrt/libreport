@@ -435,7 +435,7 @@ int libreport_get_env_variable_ext(int fd, char delim, const char *name, char **
             continue;
 
         const int eof = c != EOF;
-        *value = libreport_xmalloc(i+1);
+        *value = g_malloc(i+1);
 
         /* i+1 because we didn't count '\0'  */
         if (fseek(fenv, -(i+eof), SEEK_CUR) < 0)
@@ -719,7 +719,7 @@ int libreport_get_mountinfo_for_mount_point(FILE *fin, struct mountinfo *mntnf, 
         }
 
         size_t len = (pos_cur - pos_bck);
-        mntnf->mntnf_items[fn] = libreport_xmalloc(sizeof(char) * (len));
+        mntnf->mntnf_items[fn] = g_malloc(sizeof(char) * (len));
 
         len -= c != EOF; /* we are standing on ' ' (except EOF) */
 

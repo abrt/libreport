@@ -87,7 +87,7 @@ static void encode_64bit(char *p, const void *src, int length, const char *tbl)
 
 char *libreport_encode_base64(const void *src, int length)
 {
-	char *dst = (char *)libreport_xmalloc(4 * ((length + 2) / 3) + 1);
+	char *dst = (char *)g_malloc(4 * ((length + 2) / 3) + 1);
 	encode_64bit(dst, src, length, tbl_base64);
 	return dst;
 }

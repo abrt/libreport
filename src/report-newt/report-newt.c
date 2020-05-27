@@ -107,7 +107,7 @@ static int configure_reporter(struct reporter *r, bool skip_if_valid)
                 g_strdup(ec_get_screen_name(r->config)) : r->name, 35, 5, 5, 0);
 
         num_opts = g_list_length(r->config->options);
-        options = libreport_xmalloc(sizeof (newtComponent) * num_opts);
+        options = g_malloc(sizeof (newtComponent) * num_opts);
         ogrid = newtCreateGrid(2, num_opts);
 
         for (option = r->config->options, i = 0; option && i < num_opts;
@@ -230,7 +230,7 @@ static char *save_log_line(char *log_line, void *param)
     {
         /* Append the log line */
         len = strlen(log->text) + 1 + strlen(log_line) + 1;
-        new = libreport_xmalloc(len);
+        new = g_malloc(len);
         snprintf(new, len, "%s\n%s", log->text, log_line);
         free(log->text);
         free(log_line);

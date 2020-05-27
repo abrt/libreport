@@ -130,7 +130,7 @@ reportfile_t*
 new_reportfile(void)
 {
     // create a new reportfile_t
-    reportfile_t* file = (reportfile_t*)libreport_xmalloc(sizeof(*file));
+    reportfile_t* file = (reportfile_t*)g_malloc(sizeof(*file));
 
     // set up a libxml 'buffer' and 'writer' to that buffer
     file->buf = xxmlBufferCreate();

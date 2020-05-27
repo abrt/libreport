@@ -109,7 +109,7 @@ typedef struct section_t section_t;
 static section_t *
 section_new(const char *name)
 {
-    section_t *self = libreport_xmalloc(sizeof(*self));
+    section_t *self = g_malloc(sizeof(*self));
     self->name = g_strdup(name);
     self->items = NULL;
     self->children = NULL;
@@ -790,7 +790,7 @@ struct memstream_buffer
 static struct memstream_buffer *
 memstream_buffer_new()
 {
-    struct memstream_buffer *self = libreport_xmalloc(sizeof(*self));
+    struct memstream_buffer *self = g_malloc(sizeof(*self));
 
     self->msb_buffer = NULL;
     self->msb_stream = open_memstream(&(self->msb_buffer), &(self->msb_size));
@@ -867,7 +867,7 @@ struct problem_report
 static problem_report_t *
 problem_report_new()
 {
-    problem_report_t *self = libreport_xmalloc(sizeof(*self));
+    problem_report_t *self = g_malloc(sizeof(*self));
 
     self->pr_sec_summ = memstream_buffer_new();
     self->pr_sec_desc = memstream_buffer_new();
@@ -1028,7 +1028,7 @@ struct extra_section
 static struct extra_section *
 extra_section_new(const char *name, int flags)
 {
-    struct extra_section *self = libreport_xmalloc(sizeof(*self));
+    struct extra_section *self = g_malloc(sizeof(*self));
 
     self->pfes_name = g_strdup(name);
     self->pfes_flags = flags;
