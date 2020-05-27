@@ -462,7 +462,7 @@ static void append_to_textview(GtkTextView *tv, const char *str)
         GtkTextTag *tag;
         tag = gtk_text_buffer_create_tag(tb, NULL, "foreground", "blue",
                                          "underline", PANGO_UNDERLINE_SINGLE, NULL);
-        char *url = libreport_xstrndup(t->start, t->len);
+        g_autofree char *url = g_strndup(t->start, t->len);
         g_object_set_data(G_OBJECT(tag), "url", url);
 
         gtk_text_buffer_insert_with_tags(tb, &text_iter, url, -1, tag, NULL);

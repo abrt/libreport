@@ -68,30 +68,6 @@ void* libreport_xzalloc(size_t size)
     return ptr;
 }
 
-// Die if we can't allocate n+1 bytes (space for the null terminator) and copy
-// the (possibly truncated to length n) string into it.
-char *libreport_xstrndup(const char *s, int n)
-{
-    int m;
-    char *t;
-
-    /* We can just libreport_xmalloc(n+1) and strncpy into it, */
-    /* but think about libreport_xstrndup("abc", 10000) wastage! */
-    m = n;
-    t = (char*) s;
-    while (m)
-    {
-        if (!*t) break;
-        m--;
-        t++;
-    }
-    n -= m;
-    t = (char*) libreport_xmalloc(n + 1);
-    t[n] = '\0';
-
-    return (char*) memcpy(t, s, n);
-}
-
 char *libreport_xstrdup_between(const char *src, const char *open, const char *close)
 {
     const char *start = strstr(src, open);
@@ -110,7 +86,7 @@ char *libreport_xstrdup_between(const char *src, const char *open, const char *c
         return NULL;
     }
 
-    return libreport_xstrndup(start, stop - start);
+    return g_strndup(start, stop - start);
 }
 
 void libreport_xpipe(int filedes[2])
@@ -206,7 +182,7 @@ void libreport_xsetenv(const char *key, const char *value)
 
 void libreport_safe_unsetenv(const char *var_val)
 {
-    //char *name = libreport_xstrndup(var_val, strchrnul(var_val, '=') - var_val);
+    //char *name = g_strndup(var_val, strchrnul(var_val, '=') - var_val);
     //unsetenv(name);
     //free(name);
 

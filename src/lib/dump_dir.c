@@ -938,7 +938,7 @@ static char* rm_trailing_slashes(const char *dir)
     unsigned len = strlen(dir);
     while (len != 0 && dir[len-1] == '/')
         len--;
-    return libreport_xstrndup(dir, len);
+    return g_strndup(dir, len);
 }
 
 static struct dump_dir *dd_do_open(struct dump_dir *dd, const char *dir, int flags)

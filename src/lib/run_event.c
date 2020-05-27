@@ -239,7 +239,7 @@ GList *load_rule_list(GList *rule_list,
                     break; /* ...we found the start of a command */
                 }
 
-                char *const current_word = libreport_xstrndup(p, end_word - p);
+                char *const current_word = g_strndup(p, end_word - p);
                 cur_rule->conditions = g_list_append(cur_rule->conditions, current_word);
                 log_parser("adding condition '%s'", current_word);
 
@@ -413,7 +413,7 @@ static char* pop_next_command(GList **pp_rule_list,
                 int regex = (eq_sign > cond_str && eq_sign[-1] == '~');
                 /* Is it "VAR!=VAL"? */
                 int inverted = (eq_sign > cond_str && eq_sign[-1] == '!');
-                char *var_name = libreport_xstrndup(cond_str, eq_sign - cond_str - (regex|inverted));
+                g_autofree char *var_name = g_strndup(cond_str, eq_sign - cond_str - (regex|inverted));
                 char *real_val = NULL;
                 char *free_me = NULL;
                 if (pd == NULL)
@@ -424,7 +424,6 @@ static char* pop_next_command(GList **pp_rule_list,
                     if (real_val == NULL)
                         free_me = real_val = g_strdup("");
                 }
-                free(var_name);
                 int vals_differ = regex ? regcmp_lines(real_val, eq_sign + 1) : strcmp(real_val, eq_sign + 1);
                 free(free_me);
                 if (inverted)

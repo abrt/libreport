@@ -1601,7 +1601,7 @@ TS_MAIN
     struct dump_dir *dd = testsuite_dump_dir_create(-1, -1, 0);
     dd_create_basic_files(dd, geteuid(), NULL);
 
-    char *base_dir = libreport_xstrndup(dd->dd_dirname, strrchr(dd->dd_dirname, '/') - dd->dd_dirname);
+    char *base_dir = g_strndup(dd->dd_dirname, strrchr(dd->dd_dirname, '/') - dd->dd_dirname);
     assert(base_dir != NULL);
 
     char *test_file_full_path = libreport_concat_path_file(base_dir, "libreport-test");

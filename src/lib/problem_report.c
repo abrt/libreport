@@ -145,7 +145,7 @@ split_string_on_char(const char *str, char ch)
     for (;;)
     {
         const char *delim = strchrnul(str, ch);
-        list = g_list_prepend(list, libreport_xstrndup(str, delim - str));
+        list = g_list_prepend(list, g_strndup(str, delim - str));
         if (*delim == '\0')
             break;
         str = delim + 1;

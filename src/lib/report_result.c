@@ -189,7 +189,7 @@ report_result_t *report_result_parse(const char *line,
 
     result = report_result_new();
 
-    result->label = libreport_xstrndup(line, label_length);
+    result->label = g_strndup(line, label_length);
 
     /* +1 -> : */
     line += (label_length + 1);
@@ -223,7 +223,7 @@ report_result_t *report_result_parse(const char *line,
         {
             /* MSG=... eats entire line: exiting the loop */
             end = strchrnul(end, '\n');
-            result->message = libreport_xstrndup(line + prefix_length, end - (line + prefix_length));
+            result->message = g_strndup(line + prefix_length, end - (line + prefix_length));
             break;
         }
 
@@ -232,7 +232,7 @@ report_result_t *report_result_parse(const char *line,
 
         if (strncmp(line, prefix, prefix_length) == 0)
         {
-            result->url = libreport_xstrndup(line + prefix_length, end - (line + prefix_length));
+            result->url = g_strndup(line + prefix_length, end - (line + prefix_length));
         }
 
         prefix = "BTHASH=";
@@ -240,7 +240,7 @@ report_result_t *report_result_parse(const char *line,
 
         if (strncmp(line, prefix, prefix_length) == 0)
         {
-            result->bthash = libreport_xstrndup(line + prefix_length, end - (line + prefix_length));
+            result->bthash = g_strndup(line + prefix_length, end - (line + prefix_length));
         }
 
         prefix = "WORKFLOW=";
@@ -248,7 +248,7 @@ report_result_t *report_result_parse(const char *line,
 
         if (strncmp(line, prefix, prefix_length) == 0)
         {
-            result->workflow = libreport_xstrndup(line + prefix_length, end - (line + prefix_length));
+            result->workflow = g_strndup(line + prefix_length, end - (line + prefix_length));
         }
 
         prefix = "TIME=";
@@ -256,16 +256,12 @@ report_result_t *report_result_parse(const char *line,
 
         if (strncmp(line, prefix, prefix_length) == 0)
         {
-            char *datetime;
-
-            datetime = libreport_xstrndup(line + prefix_length, end - (line + prefix_length));
+            g_autofree char *datetime = g_strndup(line + prefix_length, end - (line + prefix_length));
 
             if (libreport_iso_date_string_parse(datetime, &result->timestamp) != 0)
             {
                 log_warning(_("Ignored invalid ISO date of report result '%s'"), result->label);
             }
-
-            free(datetime);
         }
 
         line = end;

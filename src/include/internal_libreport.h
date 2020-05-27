@@ -306,7 +306,6 @@ int libreport_close_on_exec_on(int fd);
 void *libreport_xmalloc(size_t size);
 void *libreport_xrealloc(void *ptr, size_t size);
 void *libreport_xzalloc(size_t size);
-char *libreport_xstrndup(const char *s, int n);
 char *libreport_xstrdup_between(const char *s, const char *open, const char *close);
 
 void libreport_xpipe(int filedes[2]);

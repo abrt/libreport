@@ -43,9 +43,8 @@ bool libreport_is_in_comma_separated_list_of_glob_patterns(const char *value, co
     while (*list)
     {
         const char *comma = strchrnul(list, ',');
-        char *pattern = libreport_xstrndup(list, comma - list);
+        g_autofree char *pattern = g_strndup(list, comma - list);
         int match = !fnmatch(pattern, value, /*flags:*/ 0);
-        free(pattern);
         if (match)
             return true;
         if (!*comma)

@@ -44,7 +44,7 @@ char *get_element_lang(struct my_parse_data *parse_data, const gchar **att_names
              && strncmp(att_values[i], parse_data->cur_locale, short_locale_end - parse_data->cur_locale) == 0
             ) {
                 log_debug("found translation for shortlocale: %s", parse_data->cur_locale);
-                return libreport_xstrndup(att_values[i], short_locale_end - parse_data->cur_locale);
+                return g_strndup(att_values[i], short_locale_end - parse_data->cur_locale);
             }
         }
     }
