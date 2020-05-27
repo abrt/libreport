@@ -1162,7 +1162,13 @@ void update_gui_state_from_problem_data(int flags)
     }
     else
     {
-        int count = libreport_xatoi(count_str);
+        char *endptr;
+        int count = INT_MIN;
+        long cnt = g_ascii_strtoll(count_str, &endptr, 10);
+        if (cnt >= INT_MIN && cnt <= INT_MAX && count_str != endptr)
+            count = (int)cnt;
+        else
+            error_msg_and_die("expected number in range <%d, %d>: '%s'", INT_MIN, INT_MAX, count_str);
         if (count < 5)
             gtk_combo_box_set_active(GTK_COMBO_BOX(g_cmb_reproducible), PROBLEM_REPRODUCIBLE_YES);
         else

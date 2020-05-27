@@ -117,13 +117,3 @@ int libreport_try_atoi(const char *numstr, int *value)
     *value = - (int)tmp;
     return 0;
 }
-
-int libreport_xatoi(const char *numstr)
-{
-    int value = INT_MIN;
-
-    if (libreport_try_atoi(numstr, &value))
-        error_msg_and_die("expected number in range <%d, %d>: '%s'", INT_MIN, INT_MAX, numstr);
-
-    return (int)value;
-}

@@ -214,7 +214,6 @@ enum {
 int libreport_try_atou(const char *numstr, unsigned *value);
 unsigned libreport_xatou(const char *numstr);
 int libreport_try_atoi(const char *numstr, int *value);
-int libreport_xatoi(const char *numstr);
 /* Using libreport_xatoi() instead of naive atoi() is not always convenient -
  * in many places people want *non-negative* values, but store them
  * in signed int. Therefore we need this one:

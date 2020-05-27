@@ -230,13 +230,19 @@ unsigned libreport_parse_opts(int argc, char **argv, const struct options *opt,
                 if (ii < sizeof(retval)*8)
                     retval |= (1 << ii);
 
+                char *endptr;
+                long cnt;
                 if (opt[ii].value != NULL) switch (opt[ii].type)
                 {
                     case OPTION_BOOL:
                         *(int*)(opt[ii].value) += 1;
                         break;
                     case OPTION_INTEGER:
-                        *(int*)(opt[ii].value) = libreport_xatoi(optarg);
+                        cnt = g_ascii_strtoll(optarg, &endptr, 10);
+                        if (cnt >= INT_MIN && cnt <= INT_MAX && optarg != endptr)
+                            *(int*)(opt[ii].value) = (int)cnt;
+                        else
+                            error_msg_and_die("expected number in range <%d, %d>: '%s'", INT_MIN, INT_MAX, optarg);
                         break;
                     case OPTION_STRING:
                     case OPTION_OPTSTRING:

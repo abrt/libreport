@@ -126,12 +126,12 @@ int main(void)
         snprintf(buf, sizeof(buf), "%lld", (unsigned long long)INT_MAX);
         assert(libreport_try_atoi(buf, &int_value) == 0 || !"Parse INT_MAX");
         assert(int_value == INT_MAX);
-        assert(libreport_xatoi(buf) == INT_MAX);
+        assert(g_ascii_strtoll(buf, NULL, 10) == INT_MAX);
 
         snprintf(buf, sizeof(buf), "%lld", (unsigned long long)INT_MIN);
         assert(libreport_try_atoi(buf, &int_value) == 0 || !"Parse INT_MIN");
         assert(int_value == INT_MIN);
-        assert(libreport_xatoi(buf) == INT_MIN);
+        assert(g_ascii_strtoll(buf, NULL, 10) == INT_MIN);
     }
 
     {
