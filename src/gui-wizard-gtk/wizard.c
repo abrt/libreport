@@ -1972,7 +1972,7 @@ static bool check_minimal_bt_rating(const char  *event_name,
 
     if (!event_name)
         error_msg_and_die(_("Cannot check backtrace rating because of invalid event name"));
-    else if (libreport_prefixcmp(event_name, "report") != 0)
+    else if (!g_str_has_prefix(event_name, "report"))
     {
         log_info("No checks for backtrace rating because event '%s' doesn't report.", event_name);
         return acceptable_rating;

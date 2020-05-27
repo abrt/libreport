@@ -19,15 +19,6 @@
 */
 #include "internal_libreport.h"
 
-int libreport_prefixcmp(const char *str, const char *prefix)
-{
-    for (; ; str++, prefix++)
-        if (!*prefix)
-            return 0;
-        else if (*str != *prefix)
-            return (unsigned char)*prefix - (unsigned char)*str;
-}
-
 int libreport_suffixcmp(const char *str, const char *suffix)
 {
     int len_minus_suflen = strlen(str) - strlen(suffix);

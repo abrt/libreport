@@ -397,7 +397,7 @@ int main(int argc, char **argv)
     {
         log_warning(_("Looking for similar problems in bugzilla"));
         g_autofree char *hash = NULL;
-        if (libreport_prefixcmp(abrt_hash, "abrt_hash:"))
+        if (!g_str_has_prefix(abrt_hash, "abrt_hash:"))
             hash = g_strdup_printf("abrt_hash:%s", abrt_hash);
         else
             hash = g_strdup(abrt_hash);
@@ -494,7 +494,7 @@ int main(int argc, char **argv)
 
             url = report_result_get_url(reported_to);
 
-            if (libreport_prefixcmp(url, rhbz.b_bugzilla_url) != 0)
+            if (!g_str_has_prefix(url, rhbz.b_bugzilla_url))
                 error_msg_and_die(_("This problem has been reported to Bugzilla '%s' which differs from the configured Bugzilla '%s'."), url, rhbz.b_bugzilla_url);
 
             ticket_no = strrchr(url, '=');
@@ -654,7 +654,7 @@ int main(int argc, char **argv)
         char *cmd = strtok(remote_result, " \n");
         char *id = strtok(NULL, " \n");
 
-        if (!libreport_prefixcmp(cmd, "DUPLICATE"))
+        if (g_str_has_prefix(cmd, "DUPLICATE"))
         {
             errno = 0;
             char *e;
