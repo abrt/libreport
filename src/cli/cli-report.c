@@ -52,7 +52,7 @@ static char *escape(const char *str)
 
     // Copy the input string to the resultant string, and escape all
     // occurences of \# and #.
-    char *result = (char*)libreport_xmalloc(strlen(str) + 1 + count);
+    char *result = (char*)g_malloc(strlen(str) + 1 + count);
 
     const char *src = str;
     char *dest = result;
@@ -378,7 +378,7 @@ static int run_report_editor(problem_data_t *problem_data)
     off_t size = libreport_fstat_st_size_or_die(fileno(fp));
     if (size > INT_MAX/4)
 	    size = INT_MAX/4; /* paranoia */
-    char *text = libreport_xmalloc(size + 1);
+    char *text = g_malloc(size + 1);
     if (fread(text, 1, size, fp) != size)
     {
         error_msg("Can't read '%s'", filename);

@@ -30,7 +30,7 @@ static char *concat_str_vector(char **strings)
 	while (*spp)
 		len += strlen(*spp++) + 1;
 
-	char *result = libreport_xmalloc(len);
+	char *result = g_malloc(len);
 
 	char *r = result;
 	spp = strings;

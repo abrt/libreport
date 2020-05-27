@@ -40,15 +40,6 @@ int libreport_close_on_exec_on(int fd)
     return fcntl(fd, F_SETFD, FD_CLOEXEC);
 }
 
-// Die if we can't allocate size bytes of memory.
-void* libreport_xmalloc(size_t size)
-{
-    void *ptr = malloc(size);
-    if (ptr == NULL && size != 0)
-        libreport_die_out_of_memory();
-    return ptr;
-}
-
 // Die if we can't resize previously allocated memory.  (This returns a pointer
 // to the new memory, which may or may not be the same as the old memory.
 // It'll copy the contents to a new chunk and free the old one if necessary.)
@@ -63,7 +54,7 @@ void* libreport_xrealloc(void *ptr, size_t size)
 // Die if we can't allocate and zero size bytes of memory.
 void* libreport_xzalloc(size_t size)
 {
-    void *ptr = libreport_xmalloc(size);
+    void *ptr = g_malloc(size);
     memset(ptr, 0, size);
     return ptr;
 }
@@ -164,7 +155,7 @@ char* libreport_xvasprintf(const char *format, va_list p)
     va_list p2;
     va_copy(p2, p);
     r = vsnprintf(NULL, 0, format, p);
-    string_ptr = libreport_xmalloc(r+1);
+    string_ptr = g_malloc(r+1);
     r = vsnprintf(string_ptr, r+1, format, p2);
     va_end(p2);
 #endif

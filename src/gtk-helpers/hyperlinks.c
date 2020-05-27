@@ -54,7 +54,7 @@ GList *libreport_find_url_tokens(const char *line)
             /* need it for overlap correction */
             GList *prev = NULL;
             /* initialize it after overlap correction */
-            struct libreport_url_token *tok = libreport_xmalloc(sizeof(*tok));
+            struct libreport_url_token *tok = g_malloc(sizeof(*tok));
             if (anc)
             {   /* insert a new token before token following in the str*/
                 prev = g_list_previous(anc);

@@ -766,7 +766,7 @@ mantisbt_attach_fd(const mantisbt_settings_t *settings, const char *bug_id,
     }
     lseek(fd, 0, SEEK_SET);
 
-    char *data = libreport_xmalloc(size + 1);
+    char *data = g_malloc(size + 1);
     ssize_t r = libreport_full_read(fd, data, size);
     if (r < 0)
     {

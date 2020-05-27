@@ -365,7 +365,7 @@ void *rhbz_bug_read_item(const char *memb, xmlrpc_value *xml, int flags)
 
     if (IS_READ_INT(flags))
     {
-        int *integer = libreport_xmalloc(sizeof(int));
+        int *integer = g_malloc(sizeof(int));
         xmlrpc_read_int(&env, member, integer);
         xmlrpc_DECREF(member);
         if (env.fault_occurred)
@@ -679,7 +679,7 @@ int rhbz_attach_fd(struct abrt_xmlrpc *ax, const char *bug_id,
 
 //TODO: need to have a method of attaching huge files (IOW: 1Gb read isn't good).
 
-    char *data = libreport_xmalloc(size);
+    char *data = g_malloc(size);
     ssize_t r = libreport_full_read(fd, data, size);
     if (r < 0)
     {
