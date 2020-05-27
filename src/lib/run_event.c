@@ -575,12 +575,12 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
             g_autofree char *response = NULL;
 
             /* just cut off prefix, no waiting */
-            if (libreport_prefixcmp(msg, REPORT_PREFIX_ALERT) == 0)
+            if (g_str_has_prefix(msg, REPORT_PREFIX_ALERT))
             {
                 state->alert_callback(msg + sizeof(REPORT_PREFIX_ALERT) - 1 , state->interaction_param);
             }
             /* wait for y/N/f response on the same line */
-            else if (libreport_prefixcmp(msg, REPORT_PREFIX_ASK_YES_NO_YESFOREVER) == 0)
+            else if (g_str_has_prefix(msg, REPORT_PREFIX_ASK_YES_NO_YESFOREVER))
             {
                 /* example:
                  *   ASK_YES_NO_YESFOREVER ask_before_delete Do you want to delete selected files?
@@ -611,7 +611,7 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
                 response = g_strdup(ans ? "y" : "N");
             }
             /* wait for y/N/f/e response on the same line */
-            else if (libreport_prefixcmp(msg, REPORT_PREFIX_ASK_YES_NO_SAVE_RESULT) == 0)
+            else if (g_str_has_prefix(msg, REPORT_PREFIX_ASK_YES_NO_SAVE_RESULT))
             {
                 /* example:
                  *   ASK_YES_NO_SAVE_RESULT ask_before_delete Do you want to delete selected files?
@@ -642,18 +642,18 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
                 response = g_strdup(ans ? "y" : "N");
             }
             /* wait for y/N response on the same line */
-            else if (libreport_prefixcmp(msg, REPORT_PREFIX_ASK_YES_NO) == 0)
+            else if (g_str_has_prefix(msg, REPORT_PREFIX_ASK_YES_NO))
             {
                 const bool ans = state->ask_yes_no_callback(msg + sizeof(REPORT_PREFIX_ASK_YES_NO) - 1, state->interaction_param);
                 response = g_strdup(ans ? "y" : "N");
             }
             /* wait for the string on the same line */
-            else if (libreport_prefixcmp(msg, REPORT_PREFIX_ASK) == 0)
+            else if (g_str_has_prefix(msg, REPORT_PREFIX_ASK))
             {
                 response = state->ask_callback(msg + sizeof(REPORT_PREFIX_ASK) - 1, state->interaction_param);
             }
             /* set echo off and wait for password on the same line */
-            else if (libreport_prefixcmp(msg, REPORT_PREFIX_ASK_PASSWORD) == 0)
+            else if (g_str_has_prefix(msg, REPORT_PREFIX_ASK_PASSWORD))
             {
                 response = state->ask_password_callback(msg + sizeof(REPORT_PREFIX_ASK_PASSWORD) - 1, state->interaction_param);
             }

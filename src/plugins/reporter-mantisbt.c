@@ -379,7 +379,7 @@ int main(int argc, char **argv)
 
             url = report_result_get_url(reported_to);
 
-            if (libreport_prefixcmp(url, mbt_settings.m_mantisbt_url) != 0)
+            if (!g_str_has_prefix(url, mbt_settings.m_mantisbt_url))
                 error_msg_and_die(_("This problem has been reported to MantisBT '%s' which differs from the configured MantisBT '%s'."), url, mbt_settings.m_mantisbt_url);
 
             ticket_no = strrchr(url, '=');
@@ -484,7 +484,7 @@ int main(int argc, char **argv)
         char *cmd = strtok(remote_result, " \n");
         char *id = strtok(NULL, " \n");
 
-        if (!libreport_prefixcmp(cmd, "DUPLICATE"))
+        if (g_str_has_prefix(cmd, "DUPLICATE"))
         {
             errno = 0;
             char *e;
