@@ -706,8 +706,13 @@ static int choose_number_from_range(unsigned min, unsigned max, const char *mess
     for (ii = 0; ii < 3; ++ii)
     {
         char *answer = libreport_ask(message);
+        char *endptr;
 
-        picked = libreport_xatou(answer);
+        long picked_intermediate = g_ascii_strtoull(answer, &endptr, 10);
+        if (picked_intermediate >= 0 && picked_intermediate <= UINT_MAX && answer != endptr)
+            picked = (unsigned)picked_intermediate;
+        else
+            error_msg_and_die("expected number in range <0, %d>: '%s'", UINT_MAX, answer);
         if (min <= picked && picked <= max)
             return picked;
 
