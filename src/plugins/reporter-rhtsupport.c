@@ -586,10 +586,20 @@ int main(int argc, char **argv)
                 envvar ? envvar : (libreport_get_map_string_item_or_NULL(settings, "SSLVerify") ? : "1")
     );
     envvar = getenv("RHTSupport_BigSizeMB");
-    unsigned bigsize = libreport_xatoi_positive(
+    if (!envvar)
+        envvar = g_hash_table_lookup(settings, "BigSizeMB");
+    unsigned bigsize = 0;
+    char *endptr;
+    unsigned long bigsz = g_ascii_strtoull(
                 /* RH has a 250m limit for web attachments (as of 2013) */
-                envvar ? envvar : (libreport_get_map_string_item_or_NULL(settings, "BigSizeMB") ? : "200")
+                envvar ? envvar : "200",
+                &endptr,
+                10
     );
+    if (bigsz >= 0 && bigsz <= UINT_MAX && endptr != envvar)
+        bigsize = (unsigned)bigsz;
+    else
+        error_msg_and_die("expected number in range <0, %d>: '%s'", UINT_MAX, envvar);
     envvar = getenv("RHTSupport_SubmitUReport");
     bool submit_ur = libreport_string_to_bool(
                 envvar ? envvar :

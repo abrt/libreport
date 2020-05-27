@@ -154,11 +154,11 @@ int main(void)
         snprintf(buf, sizeof(buf), "%lld", (unsigned long long)INT_MAX);
         assert(libreport_try_atoi_positive(buf, &positive_value) == 0 || !"Parse INT_MAX");
         assert(positive_value == INT_MAX);
-        assert(libreport_xatoi_positive(buf) == INT_MAX);
+        assert(g_ascii_strtoull(buf, NULL, 10) == INT_MAX);
 
         assert(libreport_try_atoi_positive("0", &positive_value) == 0);
         assert(positive_value == 0);
-        assert(libreport_xatoi_positive("0") == 0);
+        assert(g_ascii_strtoull("0", NULL, 10) == 0);
     }
 
     return 0;

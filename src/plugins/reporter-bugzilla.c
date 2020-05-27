@@ -509,7 +509,16 @@ int main(int argc, char **argv)
         login(client, &rhbz);
 
         if (opts & OPT_w)
-            rhbz_mail_to_cc(client, libreport_xatoi_positive(ticket_no), rhbz.b_login, /* require mail notify */ 0);
+        {
+            char *endptr;
+            unsigned ticket = 0;
+            long ticket_intermediate = g_ascii_strtoull(ticket_no, &endptr, 10);
+            if (ticket_intermediate >= 0 && ticket_intermediate <= UINT_MAX && ticket_no != endptr)
+                ticket = (unsigned)ticket_intermediate;
+            else
+                error_msg_and_die("expected number in range <0, %d>: '%s'", UINT_MAX, ticket_no);
+            rhbz_mail_to_cc(client, ticket, rhbz.b_login, /* require mail notify */ 0);
+        }
         else
         {   /* Attach files to existing BZ */
             while (*argv)
@@ -911,10 +920,18 @@ int main(int argc, char **argv)
 
             const char *bt = problem_data_get_content_or_NULL(problem_data, FILENAME_BACKTRACE);
             unsigned rating = 0;
+            unsigned long rtg = 0;
+            char *endptr;
             const char *rating_str = problem_data_get_content_or_NULL(problem_data, FILENAME_RATING);
             /* python doesn't have rating file */
             if (rating_str)
-                rating = libreport_xatou(rating_str);
+            {
+                rtg = g_ascii_strtoull(rating_str, &endptr, 10);
+                if (rtg >= 0 && rtg <= UINT_MAX && rating_str != endptr)
+                    rating = (unsigned)rtg;
+                else
+                    error_msg_and_die("expected number in range <0, %d>: '%s'", UINT_MAX, rating_str);
+            }
             if (bt && rating > bz->bi_best_bt_rating)
             {
                 char bug_id_str[sizeof(int)*3 + 2];
