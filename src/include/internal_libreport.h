@@ -339,7 +339,6 @@ off_t libreport_fstat_st_size_or_die(int fd);
 off_t libreport_stat_st_size_or_die(const char *filename);
 
 int libreport_xopen3(const char *pathname, int flags, int mode);
-int libreport_xopen(const char *pathname, int flags);
 void libreport_xunlink(const char *pathname);
 void libreport_xunlinkat(int dir_fd, const char *pathname, int flags);
 

@@ -2471,7 +2471,7 @@ int dd_create_archive(struct dump_dir *dd, const char *archive_name,
     }
     close(pipe_from_parent_to_child[0]);
 
-    /* If child died (say, in libreport_xopen), then parent might get SIGPIPE.
+    /* If child died (say, in g_open), then parent might get SIGPIPE.
      * We want to properly unlock dd, therefore we must not die on SIGPIPE:
      */
     sighandler_t old_handler = signal(SIGPIPE, SIG_IGN);

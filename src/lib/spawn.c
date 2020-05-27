@@ -18,6 +18,7 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
+#include <glib/gstdio.h>
 #include "internal_libreport.h"
 
 static char *concat_str_vector(char **strings)
@@ -106,13 +107,13 @@ pid_t libreport_fork_execv_on_steroids(int flags,
 			close(pipe_to_child[1]);
 			libreport_xmove_fd(pipe_to_child[0], STDIN_FILENO);
 		} else if (flags & EXECFLG_INPUT_NUL) {
-			libreport_xmove_fd(libreport_xopen("/dev/null", O_RDWR), STDIN_FILENO);
+			libreport_xmove_fd(g_open("/dev/null", O_RDWR), STDIN_FILENO);
 		}
 		if (flags & EXECFLG_OUTPUT) {
 			close(pipe_fm_child[0]);
 			libreport_xmove_fd(pipe_fm_child[1], STDOUT_FILENO);
 		} else if (flags & EXECFLG_OUTPUT_NUL) {
-			libreport_xmove_fd(libreport_xopen("/dev/null", O_RDWR), STDOUT_FILENO);
+			libreport_xmove_fd(g_open("/dev/null", O_RDWR), STDOUT_FILENO);
 		}
 
 		/* This should be done BEFORE stderr redirect */
@@ -122,7 +123,7 @@ pid_t libreport_fork_execv_on_steroids(int flags,
 			/* Want parent to see errors in the same stream */
 			libreport_xdup2(STDOUT_FILENO, STDERR_FILENO);
 		} else if (flags & EXECFLG_ERR_NUL) {
-			libreport_xmove_fd(libreport_xopen("/dev/null", O_RDWR), STDERR_FILENO);
+			libreport_xmove_fd(g_open("/dev/null", O_RDWR), STDERR_FILENO);
 		}
 
 		if (flags & EXECFLG_SETSID)

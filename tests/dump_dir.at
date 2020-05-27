@@ -1297,14 +1297,14 @@ void verify_archive(struct dump_dir *dd, const char *file_name,
     {
         /* child */
         close(pipe_from_parent_to_child[0]);
-        libreport_xmove_fd(libreport_xopen(file_name, O_RDONLY), 0);
+        libreport_xmove_fd(g_open(file_name, O_RDONLY), 0);
         libreport_xmove_fd(pipe_from_parent_to_child[1], 1);
         execlp("gzip", "gzip", "-d", NULL);
         perror_msg_and_die("Can't execute '%s'", "gzip");
     }
     close(pipe_from_parent_to_child[1]);
 
-    /* If child died (say, in libreport_xopen), then parent might get SIGPIPE.
+    /* If child died (say, in g_open), then parent might get SIGPIPE.
      * We want to properly unlock dd, therefore we must not die on SIGPIPE:
      */
     signal(SIGPIPE, SIG_IGN);

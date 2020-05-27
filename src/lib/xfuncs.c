@@ -244,12 +244,6 @@ int libreport_xopen3(const char *pathname, int flags, int mode)
     return ret;
 }
 
-// Die if we can't open an existing file and return a fd
-int libreport_xopen(const char *pathname, int flags)
-{
-    return libreport_xopen3(pathname, flags, 0666);
-}
-
 void libreport_xunlinkat(int dir_fd, const char *pathname, int flags)
 {
     if (unlinkat(dir_fd, pathname, flags))
