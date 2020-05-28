@@ -97,29 +97,6 @@ char *libreport_shorten_string_to_length(const char *str, unsigned length)
 }
 
 /*
- * Trims whitespace characters both from left and right side of a string.
- * Modifies the string in-place. Returns the trimmed string.
- */
-char *libreport_strtrim(char *str)
-{
-    if (!str)
-        return NULL;
-
-    /* Remove leading spaces */
-    libreport_overlapping_strcpy(str, libreport_skip_whitespace(str));
-
-    /* Remove trailing spaces */
-    int i = strlen(str);
-    while (--i >= 0)
-    {
-        if (!isspace(str[i]))
-            break;
-    }
-    str[++i] = '\0';
-    return str;
-}
-
-/*
  * Trims characters both from left and right side of a string.
  * Modifies the string in-place. Returns the trimmed string.
  */

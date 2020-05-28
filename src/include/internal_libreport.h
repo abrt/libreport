@@ -112,7 +112,6 @@ int libreport_prefixcmp(const char *str, const char *prefix);
 int libreport_suffixcmp(const char *str, const char *suffix);
 char *libreport_trim_all_whitespace(const char *str);
 char *libreport_shorten_string_to_length(const char *str, unsigned length);
-char *libreport_strtrim(char *str);
 char *libreport_strtrimch(char *str, int ch);
 char *libreport_strremovech(char *str, int ch);
 char *libreport_append_to_malloced_string(char *mstr, const char *append);

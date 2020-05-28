@@ -98,7 +98,7 @@ int main(int argc, char **argv)
                     error_msg_and_die(_("Cancelled by user."));
                 }
 
-                output_file = libreport_strtrim(response);
+                output_file = g_strstrip(response);
             }
 
             FILE *outstream = fopen(output_file, open_mode);
