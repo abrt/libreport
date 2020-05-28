@@ -230,11 +230,11 @@ static int read_crash_report_field(const char *text, problem_data_t *report,
     char newvalue[length + 1];
     strncpy(newvalue, textfield, length);
     newvalue[length] = '\0';
-    libreport_strtrim(newvalue);
+    g_strstrip(newvalue);
 
     char oldvalue[strlen(value->content) + 1];
     strcpy(oldvalue, value->content);
-    libreport_strtrim(oldvalue);
+    g_strstrip(oldvalue);
 
     // Return if no change in the contents detected.
     if (strcmp(newvalue, oldvalue) == 0)
