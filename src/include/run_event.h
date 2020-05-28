@@ -144,7 +144,7 @@ struct run_event_state {
     int command_out_fd;
     int command_in_fd;
     int process_status;
-    struct strbuf *command_output;
+    GString *command_output;
 };
 struct run_event_state *new_run_event_state(void);
 void free_run_event_state(struct run_event_state *state);

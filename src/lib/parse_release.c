@@ -81,31 +81,31 @@ static void parse_release(const char *release, char** product, char** version, i
 
     bool it_is_rhel = false;
 
-    struct strbuf *buf_product = libreport_strbuf_new();
+    GString *buf_product = g_string_new(NULL);
     if (strstr(release, "Fedora"))
     {
-        libreport_strbuf_append_str(buf_product, "Fedora");
+        g_string_append(buf_product, "Fedora");
     }
     else if (strstr(release, "Red Hat Enterprise Linux"))
     {
-        libreport_strbuf_append_str(buf_product, "Red Hat Enterprise Linux");
+        g_string_append(buf_product, "Red Hat Enterprise Linux");
         it_is_rhel = true;
     }
     else if (strstr(release, "openSUSE"))
     {
-        libreport_strbuf_append_str(buf_product, "openSUSE");
+        g_string_append(buf_product, "openSUSE");
     }
     else
     {
         /* TODO: add logic for parsing other distros' names here */
-        libreport_strbuf_append_str(buf_product, release);
+        g_string_append(buf_product, release);
     }
 
     /* Examples of release strings:
      * installed system: "Red Hat Enterprise Linux Server release 6.2 Beta (Santiago)"
      * anaconda: "Red Hat Enterprise Linux 6.2"
      */
-    struct strbuf *buf_version = libreport_strbuf_new();
+    GString *buf_version = g_string_new(NULL);
     const char *r = strstr(release, "release");
     const char *space = r ? strchr(r, ' ') : NULL;
     if (!space)
@@ -126,7 +126,7 @@ static void parse_release(const char *release, char** product, char** version, i
         while ((*space >= '0' && *space <= '9') || *space == '.')
         {
             /* Eat string like "5.2" */
-            libreport_strbuf_append_char(buf_version, *space);
+            g_string_append_c(buf_version, *space);
             space++;
         }
 
@@ -142,13 +142,13 @@ static void parse_release(const char *release, char** product, char** version, i
                 space++;
             while (space > to_append && space[-1] == ' ') /* back to 1st non-space */
                 space--;
-            libreport_strbuf_append_strf(buf_version, "%.*s", (int)(space - to_append), to_append);
+            g_string_append_printf(buf_version, "%.*s", (int)(space - to_append), to_append);
         }
     }
 
     if ((flags & APPEND_MAJOR_VER_TO_RHEL_PRODUCT) && it_is_rhel)
     {
-        char *v = buf_version->buf;
+        char *v = buf_version->str;
         /* Append "integer part" of version to product:
          * "10.2<anything>" -> append " 10"
          * "10 <anything>"  -> append " 10"
@@ -157,13 +157,13 @@ static void parse_release(const char *release, char** product, char** version, i
          */
         unsigned idx_dot = strchrnul(v, '.') - v;
         unsigned idx_space = strchrnul(v, ' ') - v;
-        libreport_strbuf_append_strf(buf_product, " %.*s",
+        g_string_append_printf(buf_product, " %.*s",
                         (idx_dot < idx_space ? idx_dot : idx_space), v
         );
     }
 
-    *version = libreport_strbuf_free_nobuf(buf_version);
-    *product = libreport_strbuf_free_nobuf(buf_product);
+    *version = g_string_free(buf_version, FALSE);
+    *product = g_string_free(buf_product, FALSE);
 
     log_debug("%s: version:'%s' product:'%s'", __func__, *version, *product);
 }

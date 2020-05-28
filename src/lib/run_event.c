@@ -40,7 +40,7 @@ struct run_event_state *new_run_event_state()
 
     state->extra_environment = g_ptr_array_new_with_free_func(g_free);
 
-    state->command_output = libreport_strbuf_new();
+    state->command_output = g_string_new(NULL);
 
     return state;
 }
@@ -50,7 +50,7 @@ void free_run_event_state(struct run_event_state *state)
     if (state)
     {
         g_ptr_array_free(state->extra_environment, TRUE);
-        libreport_strbuf_free(state->command_output);
+        g_string_free(state->command_output, TRUE);
         free_commands(state);
         free(state);
     }
@@ -474,7 +474,7 @@ int prepare_commands(struct run_event_state *state)
     free_commands(state);
 
     state->children_count = 0;
-    libreport_strbuf_clear(state->command_output);
+    g_string_erase(state->command_output, 0, -1);
 
     GList *rule_list = load_rule_list(NULL, CONF_DIR"/report_event.conf", /*recursion_depth:*/ 0);
     state->rule_list = rule_list;
@@ -558,7 +558,7 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
     int r = 0;
     char buf[256];
     errno = 0;
-    struct strbuf *cmd_output = state->command_output;
+    GString *cmd_output = state->command_output;
     while ((r = libreport_safe_read(state->command_out_fd, buf, sizeof(buf) - 1)) > 0)
     {
         char *newline;
@@ -569,8 +569,8 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
         while ((newline = strchr(raw, '\n')) != NULL)
         {
             *newline = '\0';
-            libreport_strbuf_append_str(cmd_output, raw);
-            char *msg = cmd_output->buf;
+            g_string_append(cmd_output, raw);
+            char *msg = cmd_output->str;
 
             g_autofree char *response = NULL;
 
@@ -679,21 +679,21 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
                 }
             }
 
-            libreport_strbuf_clear(cmd_output);
+            g_string_erase(cmd_output, 0, -1);
 
             /* jump to next line */
             raw = newline + 1;
         }
 
         /* beginning of next line. the line continues by next read() */
-        libreport_strbuf_append_str(cmd_output, raw);
+        g_string_append(cmd_output, raw);
     }
 
     /* Hope that child's stdout fd was set to O_NONBLOCK */
     if (r == -1 && errno == EAGAIN)
         return -1;
 
-    libreport_strbuf_clear(cmd_output);
+    g_string_erase(cmd_output, 0, -1);
 
     /* Wait for child to actually exit, collect status */
     libreport_safe_waitpid(state->command_pid, &(state->process_status), 0);
@@ -757,7 +757,7 @@ int run_event_on_problem_data(struct run_event_state *state, problem_data_t *dat
 
 static char *_list_possible_events(struct dump_dir **dd, problem_data_t *pd, const char *dump_dir_name, const char *pfx)
 {
-    struct strbuf *result = libreport_strbuf_new();
+    GString *result = g_string_new(NULL);
 
     GList *rule_list = load_rule_list(NULL, CONF_DIR"/report_event.conf", /*recursion_depth:*/ 0);
 
@@ -785,7 +785,7 @@ static char *_list_possible_events(struct dump_dir **dd, problem_data_t *pd, con
         {
             /* Append "EVENT\n" - only if it is not there yet */
             unsigned e_len = strlen(event_name);
-            char *p = result->buf;
+            char *p = result->str;
             while (p && *p)
             {
                 if (strncmp(p, event_name, e_len) == 0 && p[e_len] == '\n')
@@ -794,13 +794,13 @@ static char *_list_possible_events(struct dump_dir **dd, problem_data_t *pd, con
                 if (p)
                     p++;
             }
-            libreport_strbuf_append_strf(result, "%s\n", event_name);
+            g_string_append_printf(result, "%s\n", event_name);
  skip:
             free(event_name);
         }
     }
 
-    return libreport_strbuf_free_nobuf(result);
+    return g_string_free(result, FALSE);
 }
 
 char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const char *pfx)

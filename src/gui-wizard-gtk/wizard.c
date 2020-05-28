@@ -231,7 +231,7 @@ typedef struct
 
 static page_obj_t pages[NUM_PAGES];
 
-static struct strbuf *cmd_output = NULL;
+static GString *cmd_output = NULL;
 
 /* Utility functions */
 
@@ -1188,7 +1188,7 @@ struct analyze_event_data
     char *event_name;
     GList *env_list;
     GIOChannel *channel;
-    struct strbuf *event_log;
+    GString *event_log;
     int event_log_state;
     int fd;
     /*guint event_source_id;*/
@@ -1202,7 +1202,7 @@ enum {
 
 static void set_excluded_envvar(void)
 {
-    struct strbuf *item_list = libreport_strbuf_new();
+    GString *item_list = g_string_new(NULL);
     const char *fmt = "%s";
 
     GtkTreeIter iter;
@@ -1219,13 +1219,13 @@ static void set_excluded_envvar(void)
                 continue;
             if (!checked)
             {
-                libreport_strbuf_append_strf(item_list, fmt, item_name);
+                g_string_append_printf(item_list, fmt, item_name);
                 fmt = ", %s";
             }
         } while (gtk_tree_model_iter_next(GTK_TREE_MODEL(g_ls_details), &iter));
     }
 
-    g_autofree char *var = libreport_strbuf_free_nobuf(item_list);
+    g_autofree char *var = g_string_free(item_list, FALSE);
     if (var)
         libreport_xsetenv("EXCLUDE_FROM_REPORT", var);
     else
@@ -1270,14 +1270,14 @@ static void save_to_event_log(struct analyze_event_data *evd, const char *str)
                 /* skip empty lines */
                 if (str[0] == '\n')
                     goto next;
-                libreport_strbuf_append_strf(evd->event_log, "%s%c %.*s",
+                g_string_append_printf(evd->event_log, "%s%c %.*s",
                         libreport_iso_date_string(NULL),
                         delim[evd->event_log_state],
                         (int)(end - str), str
                 );
                 break;
             case LOGSTATE_MIDLINE:
-                libreport_strbuf_append_strf(evd->event_log, "%.*s", (int)(end - str), str);
+                g_string_append_printf(evd->event_log, "%.*s", (int)(end - str), str);
                 break;
         }
         evd->event_log_state = LOGSTATE_MIDLINE;
@@ -1615,7 +1615,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     evd->run_state->command_pid = -1; /* just for consistency */
 
     /* Write a final message to the log */
-    if (evd->event_log->len != 0 && evd->event_log->buf[evd->event_log->len - 1] != '\n')
+    if (evd->event_log->len != 0 && evd->event_log->str[evd->event_log->len - 1] != '\n')
         save_to_event_log(evd, "\n");
 
     /* If program failed, or if it finished successfully without saying anything... */
@@ -1633,8 +1633,8 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     }
 
     /* Append log to FILENAME_EVENT_LOG */
-    update_event_log_on_disk(evd->event_log->buf);
-    libreport_strbuf_clear(evd->event_log);
+    update_event_log_on_disk(evd->event_log->str);
+    g_string_erase(evd->event_log, 0, -1);
     evd->event_log_state = LOGSTATE_FIRSTLINE;
 
     struct dump_dir *dd = NULL;
@@ -1674,7 +1674,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         append_to_textview(g_tv_event_log, "\n");
 
         /* Free child output buffer */
-        libreport_strbuf_free(cmd_output);
+        g_string_free(cmd_output, TRUE);
         cmd_output = NULL;
 
         /* Hide spinner and stop btn */
@@ -1718,7 +1718,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         close(evd->fd);
         g_io_channel_unref(evd->channel);
         free_run_event_state(evd->run_state);
-        libreport_strbuf_free(evd->event_log);
+        g_string_free(evd->event_log, TRUE);
         free(evd->event_name);
         free(evd);
 
@@ -1831,7 +1831,7 @@ static void start_event_run(const char *event_name)
     evd->run_state = state;
     evd->event_name = g_strdup(event_name);
     evd->env_list = env_list;
-    evd->event_log = libreport_strbuf_new();
+    evd->event_log = g_string_new(NULL);
     evd->fd = state->command_out_fd;
 
     state->logging_param = evd;

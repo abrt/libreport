@@ -518,8 +518,8 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
 
     char *summary = libreport_shorten_string_to_length(bzsummary, MAX_SUMMARY_LENGTH);
 
-    struct strbuf *status_whiteboard = libreport_strbuf_new();
-    libreport_strbuf_append_strf(status_whiteboard, "abrt_hash:%s;", duphash);
+    GString *status_whiteboard = g_string_new(NULL);
+    g_string_append_printf(status_whiteboard, "abrt_hash:%s;", duphash);
 
     {   /* Add fields from /etc/os-release to Whiteboard for simple metrics. */
         map_string_t *osinfo = libreport_new_map_string();
@@ -541,7 +541,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
                 /* semi-colon (;) is the delimiter because /etc/os-release *_ID
                  * options does not permit the ';' character in values
                  */
-                libreport_strbuf_append_strf(status_whiteboard, "%s=%s;", *iter, v);
+                g_string_append_printf(status_whiteboard, "%s=%s;", *iter, v);
             }
         }
 
@@ -558,7 +558,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
     abrt_xmlrpc_params_add_string(&env, params, "version", version);
     abrt_xmlrpc_params_add_string(&env, params, "summary", summary);
     abrt_xmlrpc_params_add_string(&env, params, "description", bzcomment);
-    abrt_xmlrpc_params_add_string(&env, params, "status_whiteboard", status_whiteboard->buf);
+    abrt_xmlrpc_params_add_string(&env, params, "status_whiteboard", status_whiteboard->str);
 
     if(arch)
         abrt_xmlrpc_params_add_string(&env, params, "platform", arch);
@@ -588,7 +588,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
     xmlrpc_DECREF(params);
     xmlrpc_env_clean(&env);
 
-    libreport_strbuf_free(status_whiteboard);
+    g_string_free(status_whiteboard, TRUE);
     free(summary);
 
     if (!result)
@@ -845,20 +845,20 @@ xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax,
                         const char *component,
                         const char *duphash)
 {
-    struct strbuf *query = libreport_strbuf_new();
+    GString *query = g_string_new(NULL);
 
-    libreport_strbuf_append_strf(query, "ALL whiteboard:\"%s\"", duphash);
+    g_string_append_printf(query, "ALL whiteboard:\"%s\"", duphash);
 
     if (product)
-        libreport_strbuf_append_strf(query, " product:\"%s\"", product);
+        g_string_append_printf(query, " product:\"%s\"", product);
 
     if (version)
-        libreport_strbuf_append_strf(query, " version:\"%s\"", version);
+        g_string_append_printf(query, " version:\"%s\"", version);
 
     if (component)
-        libreport_strbuf_append_strf(query, " component:\"%s\"", component);
+        g_string_append_printf(query, " component:\"%s\"", component);
 
-    char *s = libreport_strbuf_free_nobuf(query);
+    char *s = g_string_free(query, FALSE);
     log_debug("search for '%s'", s);
     xmlrpc_value *search = abrt_xmlrpc_call(ax, "Bug.search", "{s:s,s:(s)}", "quicksearch", s, "include_fields", "id");
 

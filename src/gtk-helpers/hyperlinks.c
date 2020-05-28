@@ -98,7 +98,7 @@ GList *libreport_find_url_tokens(const char *line)
 
 char *tag_url(const char *line, const char *prefix)
 {
-    struct strbuf *result = libreport_strbuf_new();
+    GString *result = g_string_new(NULL);
     const char *last = line;
     GList *urls = libreport_find_url_tokens(line);
     for (GList *u = urls; u; u = g_list_next(u))
@@ -108,9 +108,9 @@ char *tag_url(const char *line, const char *prefix)
         /* add text between hyperlinks */
         if (last < t->start)
             /* TODO : add strbuf_append_strn() */
-            libreport_strbuf_append_strf(result, "%.*s", t->start - last, last);
+            g_string_append_printf(result, "%.*s", (int)(t->start - last), last);
 
-        libreport_strbuf_append_strf(result, "%s<a href=\"%.*s\">%.*s</a>",
+        g_string_append_printf(result, "%s<a href=\"%.*s\">%.*s</a>",
                                    prefix,
                                    t->len, t->start,
                                    t->len, t->start);
@@ -122,7 +122,7 @@ char *tag_url(const char *line, const char *prefix)
 
     /* add a text following the last link */
     if (last[0] != '\0')
-        libreport_strbuf_append_str(result, last);
+        g_string_append(result, last);
 
-    return libreport_strbuf_free_nobuf(result);
+    return g_string_free(result, FALSE);
 }

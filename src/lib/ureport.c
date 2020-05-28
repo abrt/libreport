@@ -384,14 +384,14 @@ parse_solution_from_json_list(struct json_object *list,
 {
     json_object *list_elem, *struct_elem;
     const char *cause, *note, *url;
-    struct strbuf *solution_buf = libreport_strbuf_new();
+    GString *solution_buf = g_string_new(NULL);
 
     const unsigned length = json_object_array_length(list);
 
     const char *one_format = _("Your problem seems to be caused by %s\n\n%s\n");
     if (length > 1)
     {
-        libreport_strbuf_append_str(solution_buf, _("Your problem seems to be caused by one of the following:\n"));
+        g_string_append(solution_buf, _("Your problem seems to be caused by one of the following:\n"));
         one_format = "\n* %s\n\n%s\n";
     }
 
@@ -417,7 +417,7 @@ parse_solution_from_json_list(struct json_object *list,
             continue;
 
         empty = false;
-        libreport_strbuf_append_strf(solution_buf, one_format, cause, note);
+        g_string_append_printf(solution_buf, one_format, cause, note);
 
         if (!json_object_object_get_ex(list_elem, "url", &struct_elem))
             continue;
@@ -432,11 +432,11 @@ parse_solution_from_json_list(struct json_object *list,
 
     if (empty)
     {
-        libreport_strbuf_free(solution_buf);
+        g_string_free(solution_buf, TRUE);
         return NULL;
     }
 
-    return libreport_strbuf_free_nobuf(solution_buf);
+    return g_string_free(solution_buf, FALSE);
 }
 
 /* reported_to json element should be a list of structures

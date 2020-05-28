@@ -121,115 +121,44 @@ char *libreport_strremovech(char *str, int ch)
 }
 
 
-struct strbuf *libreport_strbuf_new(void)
-{
-    struct strbuf *buf = g_new0(struct strbuf, 1);
-    /*buf->len = 0; - done by g_new0 */
-    buf->alloc = 8;
-    buf->buf = g_malloc0(8);
-    return buf;
-}
-
-void libreport_strbuf_free(struct strbuf *strbuf)
-{
-    if (!strbuf)
-        return;
-    free(strbuf->buf);
-    free(strbuf);
-}
-
-char *libreport_strbuf_free_nobuf(struct strbuf *strbuf)
-{
-    char *ret = strbuf->buf;
-    free(strbuf);
-    return ret;
-}
-
-
-void libreport_strbuf_clear(struct strbuf *strbuf)
-{
-    assert(strbuf->alloc > 0);
-    strbuf->len = 0;
-    strbuf->buf[0] = '\0';
-}
-
 /* Ensures that the buffer can be extended by N+1 characters
  * without touching malloc/realloc.
  * Returns pointer where appended chars can be stored by the caller;
  * increments ->len by N (therefore callers don't need to do it).
  */
-static char *strbuf_grow(struct strbuf *strbuf, unsigned increment)
+static char *strbuf_grow(GString *strbuf, unsigned increment)
 {
     unsigned len = strbuf->len;
     unsigned need = strbuf->len = len + increment;
-    unsigned cur_size = strbuf->alloc;
+    unsigned cur_size = strbuf->allocated_len;
     if (cur_size <= need)
     {
         while (cur_size <= need)
             cur_size += 64 + cur_size / 8;
-        strbuf->alloc = cur_size;
-        strbuf->buf = g_realloc(strbuf->buf, cur_size);
+        strbuf->allocated_len = cur_size;
+        strbuf->str = g_realloc(strbuf->str, cur_size);
     }
-    char *p = strbuf->buf + len;
+    char *p = strbuf->str + len;
     return p;
 }
 
-struct strbuf *libreport_strbuf_append_char(struct strbuf *strbuf, char c)
-{
-    char *p = strbuf_grow(strbuf, 1);
-    *p++ = c;
-    *p = '\0';
-    return strbuf;
-}
-
-struct strbuf *libreport_strbuf_append_str(struct strbuf *strbuf, const char *str)
-{
-    unsigned len = strlen(str);
-    char *p = strbuf_grow(strbuf, len);
-    assert(strbuf->len < strbuf->alloc);
-    strcpy(p, str);
-    return strbuf;
-}
-
-struct strbuf *libreport_strbuf_prepend_str(struct strbuf *strbuf, const char *str)
-{
-    unsigned cur_len = strbuf->len;
-    unsigned inc_len = strlen(str);
-    strbuf_grow(strbuf, inc_len);
-    assert(strbuf->len < strbuf->alloc);
-    memmove(strbuf->buf + inc_len, strbuf->buf, cur_len + 1);
-    memcpy(strbuf->buf, str, inc_len);
-    return strbuf;
-}
-
-struct strbuf *libreport_strbuf_append_strfv(struct strbuf *strbuf, const char *format, va_list p)
+GString *libreport_strbuf_append_strfv(GString *strbuf, const char *format, va_list p)
 {
     char *string_ptr = libreport_xvasprintf(format, p);
-    libreport_strbuf_append_str(strbuf, string_ptr);
+    g_string_append(strbuf, string_ptr);
     free(string_ptr);
     return strbuf;
 }
 
-struct strbuf *libreport_strbuf_append_strf(struct strbuf *strbuf, const char *format, ...)
-{
-    va_list p;
-
-    va_start(p, format);
-    libreport_strbuf_append_strfv(strbuf, format, p);
-    va_end(p);
-
-    return strbuf;
-}
-
-struct strbuf *libreport_strbuf_prepend_strfv(struct strbuf *strbuf, const char *format, va_list p)
+GString *libreport_strbuf_prepend_strfv(GString *strbuf, const char *format, va_list p)
 {
     char *string_ptr = libreport_xvasprintf(format, p);
-    libreport_strbuf_prepend_str(strbuf, string_ptr);
+    g_string_prepend(strbuf, string_ptr);
     free(string_ptr);
     return strbuf;
 }
 
-struct strbuf *libreport_strbuf_prepend_strf(struct strbuf *strbuf, const char *format, ...)
+GString *libreport_strbuf_prepend_strf(GString *strbuf, const char *format, ...)
 {
     va_list p;
 

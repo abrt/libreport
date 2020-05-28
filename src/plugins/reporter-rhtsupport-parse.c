@@ -142,7 +142,7 @@ static void error(
     error_msg("error in XML parsing");
 }
 
-static void emit_url_text_pairs_to_strbuf(struct strbuf *result, GList *urllist, GList *txtlist)
+static void emit_url_text_pairs_to_strbuf(GString *result, GList *urllist, GList *txtlist)
 {
     const char *prefix = "";
     while (urllist)
@@ -152,12 +152,12 @@ static void emit_url_text_pairs_to_strbuf(struct strbuf *result, GList *urllist,
             /* changed "%s%s:" -> "%s%s :" if the url ends with ':' then it
              * becomes part of the link and makes it invalid
              */
-            libreport_strbuf_append_strf(result, "%s%s : %s", prefix, urllist->data, txtlist->data);
+            g_string_append_printf(result, "%s%s : %s", prefix, (char *)urllist->data, (char *)txtlist->data);
             free(txtlist->data);
         }
         else
         {
-            libreport_strbuf_append_strf(result, "%s%s", prefix, urllist->data);
+            g_string_append_printf(result, "%s%s", prefix, (char *)urllist->data);
         }
         free(urllist->data);
         prefix = ", ";
@@ -195,22 +195,22 @@ char *parse_response_from_RHTS_hint_xml2txt(const char *string)
     if (!parse_data.hints_uri && !parse_data.erratas_uri)
         return NULL;
 
-    struct strbuf *result = libreport_strbuf_new();
+    GString *result = g_string_new(NULL);
 
     if (parse_data.hints_uri)
     {
-        libreport_strbuf_append_str(result, _("Documentation which might be relevant: "));
+        g_string_append(result, _("Documentation which might be relevant: "));
         emit_url_text_pairs_to_strbuf(result, parse_data.hints_uri, parse_data.hints_txt);
-        libreport_strbuf_append_str(result, ". ");
+        g_string_append(result, ". ");
     }
     if (parse_data.erratas_uri)
     {
         if (parse_data.hints_uri)
-            libreport_strbuf_append_str(result, " ");
-        libreport_strbuf_append_str(result, _("Updates which possibly help: "));
+            g_string_append(result, " ");
+        g_string_append(result, _("Updates which possibly help: "));
         emit_url_text_pairs_to_strbuf(result, parse_data.erratas_uri, parse_data.erratas_txt);
-        libreport_strbuf_append_str(result, ".");
+        g_string_append(result, ".");
     }
 
-    return libreport_strbuf_free_nobuf(result);
+    return g_string_free(result, FALSE);
 }
