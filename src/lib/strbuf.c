@@ -121,27 +121,6 @@ char *libreport_strremovech(char *str, int ch)
 }
 
 
-/* Ensures that the buffer can be extended by N+1 characters
- * without touching malloc/realloc.
- * Returns pointer where appended chars can be stored by the caller;
- * increments ->len by N (therefore callers don't need to do it).
- */
-static char *strbuf_grow(GString *strbuf, unsigned increment)
-{
-    unsigned len = strbuf->len;
-    unsigned need = strbuf->len = len + increment;
-    unsigned cur_size = strbuf->allocated_len;
-    if (cur_size <= need)
-    {
-        while (cur_size <= need)
-            cur_size += 64 + cur_size / 8;
-        strbuf->allocated_len = cur_size;
-        strbuf->str = g_realloc(strbuf->str, cur_size);
-    }
-    char *p = strbuf->str + len;
-    return p;
-}
-
 GString *libreport_strbuf_append_strfv(GString *strbuf, const char *format, va_list p)
 {
     char *string_ptr = libreport_xvasprintf(format, p);
