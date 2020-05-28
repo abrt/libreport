@@ -24,7 +24,7 @@ void report_result_set_workflow (report_result_t *result,
 void report_result_set_timestamp(report_result_t *result,
                                  time_t           timestamp);
 
-struct strbuf *report_result_to_string(report_result_t *result);
+GString *report_result_to_string(report_result_t *result);
 
 report_result_t *report_result_new_with_label         (const char *label);
 report_result_t *report_result_new_with_label_from_env(const char *label);

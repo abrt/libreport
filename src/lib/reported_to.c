@@ -47,7 +47,7 @@ int libreport_add_reported_to_data(char **reported_to, const char *line)
 
 int libreport_add_reported_to_entry_data(char **reported_to, report_result_t *result)
 {
-    struct strbuf *buf;
+    GString *buf;
 
     buf = report_result_to_string(result);
     if (NULL == buf)
@@ -55,9 +55,9 @@ int libreport_add_reported_to_entry_data(char **reported_to, report_result_t *re
         return -EINVAL;
     }
 
-    const int r = libreport_add_reported_to_data(reported_to, buf->buf);
+    const int r = libreport_add_reported_to_data(reported_to, buf->str);
 
-    libreport_strbuf_free(buf);
+    g_string_free(buf, TRUE);
 
     return r;
 }

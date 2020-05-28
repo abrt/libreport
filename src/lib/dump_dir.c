@@ -1700,7 +1700,7 @@ static char *load_text_from_file_descriptor(int fd, const char *path, int flags)
     if (!fp)
         libreport_die_out_of_memory();
 
-    struct strbuf *buf_content = libreport_strbuf_new();
+    GString *buf_content = g_string_new(NULL);
     int oneline = 0;
     int ch;
     while ((ch = fgetc(fp)) != EOF)
@@ -1712,11 +1712,11 @@ static char *load_text_from_file_descriptor(int fd, const char *path, int flags)
         if (ch == '\0')
             ch = ' ';
         if (isspace(ch) || ch >= ' ') /* used !iscntrl, but it failed on unicode */
-            libreport_strbuf_append_char(buf_content, ch);
+            g_string_append_c(buf_content, ch);
     }
     fclose(fp); /* this also closes fd */
 
-    char last = oneline != 0 ? buf_content->buf[buf_content->len - 1] : 0;
+    char last = oneline != 0 ? buf_content->str[buf_content->len - 1] : 0;
     if (last == '\n')
     {
         /* If file contains exactly one '\n' and it is at the end, remove it.
@@ -1724,7 +1724,7 @@ static char *load_text_from_file_descriptor(int fd, const char *path, int flags)
          * short string items in dump dirs.
          */
         if (oneline == 1)
-            buf_content->buf[--buf_content->len] = '\0';
+            buf_content->str[--buf_content->len] = '\0';
     }
     else /* last != '\n' */
     {
@@ -1734,10 +1734,10 @@ static char *load_text_from_file_descriptor(int fd, const char *path, int flags)
         /* oneline=1: "qwe\nrty" - two lines in fact */
         /* oneline>1: "qwe\nrty\uio" */
         if (oneline >= 1)
-            libreport_strbuf_append_char(buf_content, '\n');
+            g_string_append_c(buf_content, '\n');
     }
 
-    return libreport_strbuf_free_nobuf(buf_content);
+    return g_string_free(buf_content, FALSE);
 }
 
 static char *load_text_file_at(int dir_fd, const char *name, unsigned flags)

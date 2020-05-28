@@ -453,75 +453,12 @@ void log_and_die_wrapper(int level,
                  bool use_custom_logger,
                  const char *format, ...) __attribute__ ((noreturn, format (printf, 7,8)));
 
-struct strbuf
-{
-    /* Size of the allocated buffer. Always > 0. */
-    int alloc;
-    /* Length of the string, without the ending \0. */
-    int len;
-    char *buf;
-};
-
-/**
- * Creates and initializes a new string buffer.
- * @returns
- * It never returns NULL. The returned pointer must be released by
- * calling the function libreport_strbuf_free().
- */
-struct strbuf *libreport_strbuf_new(void);
-
-/**
- * Releases the memory held by the string buffer.
- * @param strbuf
- * If the strbuf is NULL, no operation is performed.
- */
-void libreport_strbuf_free(struct strbuf *strbuf);
-
-/**
- * Releases the strbuf, but not the internal buffer.  The internal
- * string buffer is returned.  Caller is responsible to release the
- * returned memory using free().
- */
-char *libreport_strbuf_free_nobuf(struct strbuf *strbuf);
-
-/**
- * The string content is set to an empty string, erasing any previous
- * content and leaving its length at 0 characters.
- */
-void libreport_strbuf_clear(struct strbuf *strbuf);
-
-/**
- * The current content of the string buffer is extended by adding a
- * character c at its end.
- */
-struct strbuf *libreport_strbuf_append_char(struct strbuf *strbuf, char c);
-
-/**
- * The current content of the string buffer is extended by adding a
- * string str at its end.
- */
-struct strbuf *libreport_strbuf_append_str(struct strbuf *strbuf,
-                                 const char *str);
-
-/**
- * The current content of the string buffer is extended by inserting a
- * string str at its beginning.
- */
-struct strbuf *libreport_strbuf_prepend_str(struct strbuf *strbuf,
-                                  const char *str);
-
-/**
- * The current content of the string buffer is extended by adding a
- * sequence of data formatted as the format argument specifies.
- */
-struct strbuf *libreport_strbuf_append_strf(struct strbuf *strbuf,
-                                  const char *format, ...);
 
 /**
  * Same as libreport_strbuf_append_strf except that va_list is passed instead of
  * variable number of arguments.
  */
-struct strbuf *libreport_strbuf_append_strfv(struct strbuf *strbuf,
+GString *libreport_strbuf_append_strfv(GString *strbuf,
                                    const char *format, va_list p);
 
 /**
@@ -529,14 +466,14 @@ struct strbuf *libreport_strbuf_append_strfv(struct strbuf *strbuf,
  * sequence of data formatted as the format argument specifies at the
  * buffer beginning.
  */
-struct strbuf *libreport_strbuf_prepend_strf(struct strbuf *strbuf,
+GString *libreport_strbuf_prepend_strf(GString *strbuf,
                                    const char *format, ...);
 
 /**
  * Same as libreport_strbuf_prepend_strf except that va_list is passed instead of
  * variable number of arguments.
  */
-struct strbuf *libreport_strbuf_prepend_strfv(struct strbuf *strbuf,
+GString *libreport_strbuf_prepend_strfv(GString *strbuf,
                                     const char *format, va_list p);
 
 /* Returns command line of running program.

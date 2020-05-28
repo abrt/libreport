@@ -143,7 +143,7 @@ unsigned libreport_parse_opts(int argc, char **argv, const struct options *opt,
     int size = parse_opt_size(opt);
     const int LONGOPT_OFFSET = 256;
 
-    struct strbuf *shortopts = libreport_strbuf_new();
+    GString *shortopts = g_string_new(NULL);
 
     struct option *longopts = g_malloc0(sizeof(longopts[0]) * (size+2));
     struct option *curopt = longopts;
@@ -162,19 +162,19 @@ unsigned libreport_parse_opts(int argc, char **argv, const struct options *opt,
             case OPTION_BOOL:
                 curopt->has_arg = no_argument;
                 if (opt[ii].short_name)
-                    libreport_strbuf_append_char(shortopts, opt[ii].short_name);
+                    g_string_append_c(shortopts, opt[ii].short_name);
                 break;
             case OPTION_INTEGER:
             case OPTION_STRING:
             case OPTION_LIST:
                 curopt->has_arg = required_argument;
                 if (opt[ii].short_name)
-                    libreport_strbuf_append_strf(shortopts, "%c:", opt[ii].short_name);
+                    g_string_append_printf(shortopts, "%c:", opt[ii].short_name);
                 break;
             case OPTION_OPTSTRING:
                 curopt->has_arg = optional_argument;
                 if (opt[ii].short_name)
-                    libreport_strbuf_append_strf(shortopts, "%c::", opt[ii].short_name);
+                    g_string_append_printf(shortopts, "%c::", opt[ii].short_name);
                 break;
             case OPTION_GROUP:
             case OPTION_END:
@@ -210,7 +210,7 @@ unsigned libreport_parse_opts(int argc, char **argv, const struct options *opt,
     unsigned retval = 0;
     while (1)
     {
-        int c = getopt_long(argc, argv, shortopts->buf, longopts, NULL);
+        int c = getopt_long(argc, argv, shortopts->str, longopts, NULL);
 
         if (c == -1)
             break;
@@ -218,7 +218,7 @@ unsigned libreport_parse_opts(int argc, char **argv, const struct options *opt,
         if (c == '?' || help)
         {
             free(longopts);
-            libreport_strbuf_free(shortopts);
+            g_string_free(shortopts, TRUE);
             libreport_xfunc_error_retval = 0; /* this isn't error, exit code = 0 */
             libreport_show_usage_and_die(usage, opt);
         }
@@ -261,7 +261,7 @@ unsigned libreport_parse_opts(int argc, char **argv, const struct options *opt,
     }
 
     free(longopts);
-    libreport_strbuf_free(shortopts);
+    g_string_free(shortopts, TRUE);
 
     return retval;
 }

@@ -37,7 +37,7 @@ bool string_cmp(const char *orig, const char *other)
 int main(void)
 {
     report_result_t *result;
-    struct strbuf *strbuf;
+    GString *strbuf;
 
     libreport_g_verbose=3;
 
@@ -57,54 +57,54 @@ int main(void)
     assert(NULL != result || !"Label with equals sign and whitespace");
     strbuf = report_result_to_string(result);
     assert(NULL != strbuf);
-    assert(string_cmp("Foo = Bar:", strbuf->buf));
+    assert(string_cmp("Foo = Bar:", strbuf->str));
 
-    libreport_strbuf_free(strbuf);
+    g_string_free(strbuf, TRUE);
     report_result_free(result);
 
     result = report_result_new_with_label("OnlyURL");
     report_result_set_url(result, "http://test1.com");
     strbuf = report_result_to_string(result);
     assert(NULL != strbuf || !"Only URL");
-    assert(string_cmp("OnlyURL: URL=http://test1.com", strbuf->buf));
+    assert(string_cmp("OnlyURL: URL=http://test1.com", strbuf->str));
 
-    libreport_strbuf_free(strbuf);
+    g_string_free(strbuf, TRUE);
     report_result_free(result);
 
     result = report_result_new_with_label("OnlyBTHASH");
     report_result_set_bthash(result, "0123456789ABCDEF");
     strbuf = report_result_to_string(result);
     assert(NULL != strbuf || !"Only BTHASH");
-    assert(string_cmp("OnlyBTHASH: BTHASH=0123456789ABCDEF", strbuf->buf));
+    assert(string_cmp("OnlyBTHASH: BTHASH=0123456789ABCDEF", strbuf->str));
 
-    libreport_strbuf_free(strbuf);
+    g_string_free(strbuf, TRUE);
     report_result_free(result);
 
     result = report_result_new_with_label("OnlyMSG");
     report_result_set_message(result, "Message = foo: bar!");
     strbuf = report_result_to_string(result);
     assert(NULL != strbuf || !"Only MSG");
-    assert(string_cmp("OnlyMSG: MSG=Message = foo: bar!", strbuf->buf));
+    assert(string_cmp("OnlyMSG: MSG=Message = foo: bar!", strbuf->str));
 
-    libreport_strbuf_free(strbuf);
+    g_string_free(strbuf, TRUE);
     report_result_free(result);
 
     result = report_result_new_with_label("OnlyTIME");
     report_result_set_timestamp(result, 946684800);
     strbuf = report_result_to_string(result);
     assert(NULL != strbuf || !"Only TIME");
-    assert(string_cmp("OnlyTIME: TIME=2000-01-01-00:00:00", strbuf->buf));
+    assert(string_cmp("OnlyTIME: TIME=2000-01-01-00:00:00", strbuf->str));
 
-    libreport_strbuf_free(strbuf);
+    g_string_free(strbuf, TRUE);
     report_result_free(result);
 
     result = report_result_new_with_label("OnlyWORKFLOW");
     report_result_set_workflow(result, "workflow_FedoraCCpp");
     strbuf = report_result_to_string(result);
     assert(NULL != strbuf || !"Only WORKFLOW");
-    assert(string_cmp("OnlyWORKFLOW: WORKFLOW=workflow_FedoraCCpp", strbuf->buf));
+    assert(string_cmp("OnlyWORKFLOW: WORKFLOW=workflow_FedoraCCpp", strbuf->str));
 
-    libreport_strbuf_free(strbuf);
+    g_string_free(strbuf, TRUE);
     report_result_free(result);
 
     result = report_result_new_with_label("Everything");
@@ -115,9 +115,9 @@ int main(void)
     report_result_set_workflow(result, "workflow_FedoraCCpp");
     strbuf = report_result_to_string(result);
     assert(NULL != strbuf || !"Everything");
-    assert(string_cmp("Everything: TIME=2000-01-01-00:00:00 URL=http://epic.win BTHASH=0123456789ABCDEF WORKFLOW=workflow_FedoraCCpp MSG=Exhaustive libreport test!", strbuf->buf));
+    assert(string_cmp("Everything: TIME=2000-01-01-00:00:00 URL=http://epic.win BTHASH=0123456789ABCDEF WORKFLOW=workflow_FedoraCCpp MSG=Exhaustive libreport test!", strbuf->str));
 
-    libreport_strbuf_free(strbuf);
+    g_string_free(strbuf, TRUE);
     report_result_free(result);
 
     return EXIT_SUCCESS;

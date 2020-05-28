@@ -100,41 +100,41 @@ void report_result_set_timestamp(report_result_t *result,
     result->timestamp = timestamp;
 }
 
-struct strbuf *report_result_to_string(report_result_t *result)
+GString *report_result_to_string(report_result_t *result)
 {
-    struct strbuf *buf;
+    GString *buf;
 
     g_return_val_if_fail(NULL != result, NULL);
     g_return_val_if_fail(NULL != result->label, NULL);
 
-    buf = libreport_strbuf_new();
+    buf = g_string_new(NULL);
 
-    libreport_strbuf_append_strf(buf, "%s:", result->label);
+    g_string_append_printf(buf, "%s:", result->label);
 
     if ((time_t)-1 != result->timestamp)
     {
-        libreport_strbuf_append_strf(buf, " TIME=%s", libreport_iso_date_string(&result->timestamp));
+        g_string_append_printf(buf, " TIME=%s", libreport_iso_date_string(&result->timestamp));
     }
 
     if (NULL != result->url)
     {
-        libreport_strbuf_append_strf(buf, " URL=%s", result->url);
+        g_string_append_printf(buf, " URL=%s", result->url);
     }
 
     if (NULL != result->bthash)
     {
-        libreport_strbuf_append_strf(buf, " BTHASH=%s", result->bthash);
+        g_string_append_printf(buf, " BTHASH=%s", result->bthash);
     }
 
     if (NULL != result->workflow)
     {
-        libreport_strbuf_append_strf(buf, " WORKFLOW=%s", result->workflow);
+        g_string_append_printf(buf, " WORKFLOW=%s", result->workflow);
     }
 
     /* MSG must be last because the value is delimited by new line character */
     if (NULL != result->message)
     {
-        libreport_strbuf_append_strf(buf, " MSG=%s", result->message);
+        g_string_append_printf(buf, " MSG=%s", result->message);
     }
 
     return buf;

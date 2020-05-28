@@ -424,7 +424,7 @@ format_percented_string(const char *str, problem_data_t *pd, FILE *result, char 
 /* BZ comment generation */
 
 static int
-append_text(struct strbuf *result, const char *item_name, const char *content, bool print_item_name)
+append_text(GString *result, const char *item_name, const char *content, bool print_item_name)
 {
     char *eol = strchrnul(content, '\n');
     if (eol[0] == '\0' || eol[1] == '\0')
@@ -434,12 +434,12 @@ append_text(struct strbuf *result, const char *item_name, const char *content, b
         if (pad < 0)
             pad = 0;
         if (print_item_name)
-            libreport_strbuf_append_strf(result,
+            g_string_append_printf(result,
                     eol[0] == '\0' ? "%s: %*s%s\n" : "%s: %*s%s",
                     item_name, pad, "", content
             );
         else
-            libreport_strbuf_append_strf(result,
+            g_string_append_printf(result,
                     eol[0] == '\0' ? "%s\n" : "%s",
                     content
             );
@@ -448,11 +448,11 @@ append_text(struct strbuf *result, const char *item_name, const char *content, b
     {
         /* multi-line item */
         if (print_item_name)
-            libreport_strbuf_append_strf(result, "%s:\n", item_name);
+            g_string_append_printf(result, "%s:\n", item_name);
         for (;;)
         {
             eol = strchrnul(content, '\n');
-            libreport_strbuf_append_strf(result,
+            g_string_append_printf(result,
                     /* For %bare_multiline_item, we don't want to print colons */
                     (print_item_name ? ":%.*s\n" : "%.*s\n"),
                     (int)(eol - content), content
@@ -466,7 +466,7 @@ append_text(struct strbuf *result, const char *item_name, const char *content, b
 }
 
 static int
-append_short_backtrace(struct strbuf *result, problem_data_t *problem_data, bool print_item_name, problem_report_settings_t *settings)
+append_short_backtrace(GString *result, problem_data_t *problem_data, bool print_item_name, problem_report_settings_t *settings)
 {
     const problem_item *backtrace_item = problem_data_get_item_or_NULL(problem_data,
                                                                        FILENAME_BACKTRACE);
@@ -547,7 +547,7 @@ append_short_backtrace(struct strbuf *result, problem_data_t *problem_data, bool
 }
 
 static int
-append_item(struct strbuf *result, const char *item_name, problem_data_t *pd, GList *comment_fmt_spec, problem_report_settings_t *settings)
+append_item(GString *result, const char *item_name, problem_data_t *pd, GList *comment_fmt_spec, problem_report_settings_t *settings)
 {
     bool print_item_name = (strncmp(item_name, "%bare_", strlen("%bare_")) != 0);
     if (!print_item_name)
@@ -653,7 +653,7 @@ format_section(section_t *section, problem_data_t *pd, GList *comment_fmt_spec, 
         if (child->items)
         {
             /* "Text: item[,item]..." */
-            struct strbuf *output = libreport_strbuf_new();
+            GString *output = g_string_new(NULL);
             GList *item = child->items;
             while (item)
             {
@@ -666,9 +666,9 @@ format_section(section_t *section, problem_data_t *pd, GList *comment_fmt_spec, 
 
             if (output->len != 0)
                 add_to_section_output((child->name[0] ? "%s:\n%s" : "%s%s"),
-                                      child->name, output->buf);
+                                      child->name, output->str);
 
-            libreport_strbuf_free(output);
+            g_string_free(output, TRUE);
         }
         else
         {

@@ -174,7 +174,7 @@ struct problem_report_settings
 typedef struct problem_report_settings problem_report_settings_t;
 
 /*
- * Helpers for easily switching between FILE and struct strbuf
+ * Helpers for easily switching between FILE and GString
  */
 
 /*
