@@ -538,8 +538,8 @@ int main(int argc, char **argv)
         unlink(CUSTOM_CONF);
         assert(libreport_save_conf_file(CUSTOM_CONF, first) || !"Saved at relative path");
 
-        libreport_remove_map_string_item(first, "failure");
-        libreport_remove_map_string_item(first, "state");
+        g_hash_table_remove(first, "failure");
+        g_hash_table_remove(first, "state");
         assert(libreport_save_conf_file(CUSTOM_CONF, first) || !"Saved updated configuration");
 
         map_string_t *second = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
@@ -550,8 +550,8 @@ int main(int argc, char **argv)
         if (second)
             g_hash_table_destroy(second);
 
-        libreport_remove_map_string_item(first, "success");
-        libreport_remove_map_string_item(first, "effort");
+        g_hash_table_remove(first, "success");
+        g_hash_table_remove(first, "effort");
         assert(libreport_save_conf_file(CUSTOM_CONF, first) || !"Saved empty configuration");
 
         second = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);

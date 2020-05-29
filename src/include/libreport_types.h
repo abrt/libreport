@@ -48,11 +48,6 @@ void libreport_replace_map_string_item(map_string_t *ms, char *key, char *value)
 {
     g_hash_table_replace(ms, key, value);
 }
-static inline
-void libreport_remove_map_string_item(map_string_t *ms, const char *key)
-{
-    g_hash_table_remove(ms, key);
-}
 
 void libreport_set_map_string_item_from_bool(map_string_t *ms, const char *key, int value);
 int libreport_try_get_map_string_item_as_bool(map_string_t *ms, const char *key, int *value);

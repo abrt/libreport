@@ -62,7 +62,7 @@ void libreport_set_app_user_setting(map_string_t *settings, const char *name, co
     if (value)
         libreport_replace_map_string_item(settings, g_strdup(name), g_strdup(value));
     else
-        libreport_remove_map_string_item(settings, name);
+        g_hash_table_remove(settings, name);
 }
 
 const char *libreport_get_app_user_setting(map_string_t *settings, const char *name)
