@@ -30,7 +30,7 @@ map_string_t *libreport_clone_map_string(map_string_t *ms)
     map_string_iter_t iter;
     g_hash_table_iter_init(&iter, ms);
     while(g_hash_table_iter_next(&iter, &key, &value))
-        insert_map_string(clone, g_strdup((char *)key), g_strdup((char *)value));
+        g_hash_table_insert(clone, g_strdup((char *)key), g_strdup((char *)value));
 
     return clone;
 }

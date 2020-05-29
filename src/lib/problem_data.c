@@ -636,7 +636,7 @@ static bool problem_data_get_osinfo_from_items(problem_data_t *problem_data,
     if (!data)
         return false;
 
-    insert_map_string(osinfo, g_strdup(OSINFO_PRETTY_NAME), g_strdup(data));
+    g_hash_table_insert(osinfo, g_strdup(OSINFO_PRETTY_NAME), g_strdup(data));
     return true;
 }
 

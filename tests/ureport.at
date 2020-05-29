@@ -184,11 +184,11 @@ int main(void)
     unsetenv("uReport_IncludeAuthData");
     unsetenv("uReport_AuthDataItems");
 
-    insert_map_string(settings, g_strdup("URL"), g_strdup("settings_url"));
-    insert_map_string(settings, g_strdup("SSLVerify"), g_strdup("yes"));
-    insert_map_string(settings, g_strdup("SSLClientAuth"), g_strdup(""));
-    insert_map_string(settings, g_strdup("IncludeAuthData"), g_strdup("no"));
-    insert_map_string(settings, g_strdup("AuthDataItems"), g_strdup("hostname"));
+    g_hash_table_insert(settings, g_strdup("URL"), g_strdup("settings_url"));
+    g_hash_table_insert(settings, g_strdup("SSLVerify"), g_strdup("yes"));
+    g_hash_table_insert(settings, g_strdup("SSLClientAuth"), g_strdup(""));
+    g_hash_table_insert(settings, g_strdup("IncludeAuthData"), g_strdup("no"));
+    g_hash_table_insert(settings, g_strdup("AuthDataItems"), g_strdup("hostname"));
 
     libreport_ureport_server_config_load(&config, settings);
 
@@ -207,11 +207,11 @@ int main(void)
     libreport_ureport_server_config_init(&config);
 
     settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
-    insert_map_string(settings, g_strdup("URL"), g_strdup("settings_url"));
-    insert_map_string(settings, g_strdup("SSLVerify"), g_strdup("yes"));
-    insert_map_string(settings, g_strdup("SSLClientAuth"), g_strdup(""));
-    insert_map_string(settings, g_strdup("IncludeAuthData"), g_strdup("yes"));
-    insert_map_string(settings, g_strdup("AuthDataItems"), g_strdup(""));
+    g_hash_table_insert(settings, g_strdup("URL"), g_strdup("settings_url"));
+    g_hash_table_insert(settings, g_strdup("SSLVerify"), g_strdup("yes"));
+    g_hash_table_insert(settings, g_strdup("SSLClientAuth"), g_strdup(""));
+    g_hash_table_insert(settings, g_strdup("IncludeAuthData"), g_strdup("yes"));
+    g_hash_table_insert(settings, g_strdup("AuthDataItems"), g_strdup(""));
 
     libreport_ureport_server_config_load(&config, settings);
 
@@ -230,11 +230,11 @@ int main(void)
     libreport_ureport_server_config_init(&config);
 
     settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
-    insert_map_string(settings, g_strdup("URL"), g_strdup("settings_url"));
-    insert_map_string(settings, g_strdup("SSLVerify"), g_strdup("no"));
-    insert_map_string(settings, g_strdup("SSLClientAuth"), g_strdup(""));
-    insert_map_string(settings, g_strdup("IncludeAuthData"), g_strdup("yes"));
-    insert_map_string(settings, g_strdup("AuthDataItems"), g_strdup("hostname, type"));
+    g_hash_table_insert(settings, g_strdup("URL"), g_strdup("settings_url"));
+    g_hash_table_insert(settings, g_strdup("SSLVerify"), g_strdup("no"));
+    g_hash_table_insert(settings, g_strdup("SSLClientAuth"), g_strdup(""));
+    g_hash_table_insert(settings, g_strdup("IncludeAuthData"), g_strdup("yes"));
+    g_hash_table_insert(settings, g_strdup("AuthDataItems"), g_strdup("hostname, type"));
 
     libreport_ureport_server_config_load(&config, settings);
 
@@ -291,9 +291,9 @@ int main(void)
     libreport_ureport_server_config_init(&config);
 
     settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
-    insert_map_string(settings, g_strdup("SSLClientAuth"), g_strdup("rhsm"));
-    insert_map_string(settings, g_strdup("HTTPAuth"), g_strdup("rhn-username:rhn-password"));
-    insert_map_string(settings, g_strdup("AuthDataItems"), g_strdup("hostname, type"));
+    g_hash_table_insert(settings, g_strdup("SSLClientAuth"), g_strdup("rhsm"));
+    g_hash_table_insert(settings, g_strdup("HTTPAuth"), g_strdup("rhn-username:rhn-password"));
+    g_hash_table_insert(settings, g_strdup("AuthDataItems"), g_strdup("hostname, type"));
 
     setenv("LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH", TESTING_CERTS_CORRECT_DIR_PATH, 1);
 
