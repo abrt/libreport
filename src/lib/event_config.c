@@ -225,7 +225,8 @@ static void load_config_files(const char *dir_path)
                 event_config->options = g_list_append(event_config->options, opt);
         }
 
-        libreport_free_map_string(keys_and_values);
+        if (keys_and_values)
+            g_hash_table_destroy(keys_and_values);
 
         if (new_config)
             g_hash_table_replace(g_event_config_list, g_strdup(ec_get_name(event_config)), event_config);

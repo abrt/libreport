@@ -545,7 +545,8 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
             }
         }
 
-        libreport_free_map_string(osinfo);
+        if (osinfo)
+            g_hash_table_destroy(osinfo);
     }
 
     xmlrpc_env env;

@@ -82,7 +82,8 @@ int main(int argc, char **argv)
         assert(libreport_try_get_map_string_item_as_bool(map, key, &retval) || !"Can not convert a random string to bool(0)");
         assert(!retval || !"Failed to convert a random string to bool(0)");
 
-        libreport_free_map_string(map);
+        if (map)
+            g_hash_table_destroy(map);
     }
 
     {
@@ -137,7 +138,8 @@ int main(int argc, char **argv)
         assert(!libreport_try_get_map_string_item_as_int(map, key, &retval) || !"Converts '77777777777777777777777777777777' to number");
         assert(retval == 69 || !"Modifies int(69) on '77777777777777777777777777777777'");
 
-        libreport_free_map_string(map);
+        if (map)
+            g_hash_table_destroy(map);
     }
 
     {
@@ -194,7 +196,8 @@ int main(int argc, char **argv)
         assert(!libreport_try_get_map_string_item_as_uint(map, key, &retval) || !"Converts '-1' to unsigned number");
         assert(retval == 69 || !"Modifies int(69) on '-1'");
 
-        libreport_free_map_string(map);
+        if (map)
+            g_hash_table_destroy(map);
     }
 
     {
@@ -237,7 +240,8 @@ int main(int argc, char **argv)
 
         /* TODO: try to store really big string */
 
-        libreport_free_map_string(map);
+        if (map)
+            g_hash_table_destroy(map);
     }
 
     {
@@ -261,7 +265,8 @@ int main(int argc, char **argv)
 
         libreport_string_vector_free(vector);
 
-        libreport_free_map_string(map);
+        if (map)
+            g_hash_table_destroy(map);
     }
 }
 ]])

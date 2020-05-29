@@ -347,7 +347,8 @@ finalize:
     if (config.ur_prefs.urp_auth_items == auth_items)
         config.ur_prefs.urp_auth_items = NULL;
 
-    libreport_free_map_string(settings);
+    if (settings)
+        g_hash_table_destroy(settings);
     libreport_ureport_server_config_destroy(&config);
 
     return ret;

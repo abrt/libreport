@@ -189,6 +189,7 @@ int main(int argc, char **argv)
 
     report_to_kerneloops(dump_dir_name, settings);
 
-    libreport_free_map_string(settings);
+    if (settings)
+        g_hash_table_destroy(settings);
     return 0;
 }

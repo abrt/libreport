@@ -174,7 +174,8 @@ set_settings(mantisbt_settings_t *m, map_string_t *settings, struct dump_dir *dd
             free(os_info_data);
 
             parse_osinfo_for_mantisbt(osinfo, &m->m_project, &m->m_project_version);
-            libreport_free_map_string(osinfo);
+            if (osinfo)
+                g_hash_table_destroy(osinfo);
         }
     }
 
@@ -328,7 +329,8 @@ int main(int argc, char **argv)
         /* WRONG! set_settings() does not copy the strings, it merely sets up pointers
          * to settings[] dictionary:
          */
-        /*libreport_free_map_string(settings);*/
+        /*if (settings)
+         * g_hash_table_destroy(settings);*/
     }
 
     /* No connection is opened between client and server. Users authentication

@@ -607,7 +607,8 @@ int main(int argc, char **argv)
                     (libreport_get_map_string_item_or_NULL(settings, "SubmitUReport") ? :
                         ((opts & OPT_u) ? "1" : "0"))
     );
-    libreport_free_map_string(settings);
+    if (settings)
+        g_hash_table_destroy(settings);
 
     g_autofree char *base_api_url = g_strdup(url);
     char *bthash = NULL;
@@ -877,7 +878,8 @@ int main(int argc, char **argv)
         map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
         problem_data_get_osinfo(problem_data, osinfo);
         libreport_parse_osinfo_for_rhts(osinfo, &product, &version);
-        libreport_free_map_string(osinfo);
+        if (osinfo)
+            g_hash_table_destroy(osinfo);
 
         if (!product)
         {   /* How can we help user sorting out this problem? */
@@ -1032,7 +1034,8 @@ int main(int argc, char **argv)
     free_rhts_result(result);
 
     libreport_ureport_server_config_destroy(&urconf);
-    libreport_free_map_string(ursettings);
+    if (ursettings)
+        g_hash_table_destroy(ursettings);
     free(bthash);
 
     free(url);

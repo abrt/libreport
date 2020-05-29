@@ -98,8 +98,10 @@ int main(int argc, char **argv)
         assert(DIFF_VALUE == map_string_equals(first, second));
         assert(DIFF_VALUE == map_string_equals(second, first));
 
-        libreport_free_map_string(first);
-        libreport_free_map_string(second);
+        if (first)
+            g_hash_table_destroy(first);
+        if (second)
+            g_hash_table_destroy(second);
     }
 
     {
@@ -115,8 +117,10 @@ int main(int argc, char **argv)
 
         assert(EQUAL == map_string_equals(first, second) || !"The loaded configuration equals to the expected");
 
-        libreport_free_map_string(first);
-        libreport_free_map_string(second);
+        if (first)
+            g_hash_table_destroy(first);
+        if (second)
+            g_hash_table_destroy(second);
     }
 
     return 0;
@@ -222,8 +226,10 @@ int main(int argc, char **argv)
         assert(DIFF_VALUE == map_string_equals(first, second));
         assert(DIFF_VALUE == map_string_equals(second, first));
 
-        libreport_free_map_string(first);
-        libreport_free_map_string(second);
+        if (first)
+            g_hash_table_destroy(first);
+        if (second)
+            g_hash_table_destroy(second);
     }
 
     {
@@ -234,8 +240,10 @@ int main(int argc, char **argv)
 
         assert(EQUAL == map_string_equals(first, second) || !"Not empty");
 
-        libreport_free_map_string(first);
-        libreport_free_map_string(second);
+        if (first)
+            g_hash_table_destroy(first);
+        if (second)
+            g_hash_table_destroy(second);
     }
 
     {
@@ -250,8 +258,10 @@ int main(int argc, char **argv)
 
         assert(EQUAL == map_string_equals(first, second) || !"Not empty");
 
-        libreport_free_map_string(first);
-        libreport_free_map_string(second);
+        if (first)
+            g_hash_table_destroy(first);
+        if (second)
+            g_hash_table_destroy(second);
     }
 
     {
@@ -268,8 +278,10 @@ int main(int argc, char **argv)
 
         assert(EQUAL == map_string_equals(first, second));
 
-        libreport_free_map_string(first);
-        libreport_free_map_string(second);
+        if (first)
+            g_hash_table_destroy(first);
+        if (second)
+            g_hash_table_destroy(second);
     }
 
     {
@@ -290,8 +302,10 @@ int main(int argc, char **argv)
 
         assert(EQUAL == map_string_equals(first, second));
 
-        libreport_free_map_string(first);
-        libreport_free_map_string(second);
+        if (first)
+            g_hash_table_destroy(first);
+        if (second)
+            g_hash_table_destroy(second);
     }
 
     {
@@ -313,8 +327,10 @@ int main(int argc, char **argv)
 
         assert(EQUAL == map_string_equals(first, second));
 
-        libreport_free_map_string(first);
-        libreport_free_map_string(second);
+        if (first)
+            g_hash_table_destroy(first);
+        if (second)
+            g_hash_table_destroy(second);
     }
 
     return 0;
@@ -352,7 +368,8 @@ int main(void)
 
         assert(libreport_load_conf_file_from_dirs_ext(CONF_NAME, dir_vec, dir_flags_vec, settings, 0));
 
-        libreport_free_map_string(settings);
+        if (settings)
+            g_hash_table_destroy(settings);
     }
 }
 ]])
@@ -454,8 +471,10 @@ int main(int argc, char **argv)
         assert(DIFF_VALUE == map_string_equals(first, second));
         assert(DIFF_VALUE == map_string_equals(second, first));
 
-        libreport_free_map_string(first);
-        libreport_free_map_string(second);
+        if (first)
+            g_hash_table_destroy(first);
+        if (second)
+            g_hash_table_destroy(second);
     }
 
     {
@@ -486,7 +505,8 @@ int main(int argc, char **argv)
 
             assert(EQUAL == map_string_equals(first, second) || !"The loaded configuration equals to the saved configuration");
 
-            libreport_free_map_string(second);
+            if (second)
+            g_hash_table_destroy(second);
         }
 
         {
@@ -500,10 +520,12 @@ int main(int argc, char **argv)
 
             assert(EQUAL == map_string_equals(first, second) || !"The loaded configuration equals to the saved configuration");
 
-            libreport_free_map_string(second);
+            if (second)
+            g_hash_table_destroy(second);
         }
 
-        libreport_free_map_string(first);
+        if (first)
+            g_hash_table_destroy(first);
     }
 
     {   /* Test that keys removed from the conf map are also removed from the corresponding file */
@@ -525,7 +547,8 @@ int main(int argc, char **argv)
 
         assert(EQUAL == map_string_equals(first, second) || !"The loaded configuration equals to the saved configuration");
 
-        libreport_free_map_string(second);
+        if (second)
+            g_hash_table_destroy(second);
 
         libreport_remove_map_string_item(first, "success");
         libreport_remove_map_string_item(first, "effort");
@@ -538,8 +561,10 @@ int main(int argc, char **argv)
 
         unlink(CUSTOM_CONF);
 
-        libreport_free_map_string(second);
-        libreport_free_map_string(first);
+        if (second)
+            g_hash_table_destroy(second);
+        if (first)
+            g_hash_table_destroy(first);
     }
 
     return 0;
