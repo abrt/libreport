@@ -25,13 +25,13 @@
 static void
 parse_osinfo_for_mantisbt(map_string_t *osinfo, char** project, char** version)
 {
-    const char *name = libreport_get_map_string_item_or_NULL(osinfo, "CENTOS_MANTISBT_PROJECT");
+    const char *name = g_hash_table_lookup(osinfo, "CENTOS_MANTISBT_PROJECT");
     if (!name)
-        name = libreport_get_map_string_item_or_NULL(osinfo, OSINFO_NAME);
+        name = g_hash_table_lookup(osinfo, OSINFO_NAME);
 
-    const char *version_id = libreport_get_map_string_item_or_NULL(osinfo, "CENTOS_MANTISBT_PROJECT_VERSION");
+    const char *version_id = g_hash_table_lookup(osinfo, "CENTOS_MANTISBT_PROJECT_VERSION");
     if (!version_id)
-        version_id = libreport_get_map_string_item_or_NULL(osinfo, OSINFO_VERSION_ID);
+        version_id = g_hash_table_lookup(osinfo, OSINFO_VERSION_ID);
 
     if (name && version_id)
     {
@@ -158,10 +158,10 @@ set_settings(mantisbt_settings_t *m, map_string_t *settings, struct dump_dir *dd
     }
     else
     {
-        const char *option = libreport_get_map_string_item_or_NULL(settings, "Project");
+        const char *option = g_hash_table_lookup(settings, "Project");
         if (option)
             m->m_project = g_strdup(option);
-        option = libreport_get_map_string_item_or_NULL(settings, "ProjectVersion");
+        option = g_hash_table_lookup(settings, "ProjectVersion");
         if (option)
             m->m_project_version = g_strdup(option);
     }

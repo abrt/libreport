@@ -401,7 +401,7 @@ char *get_param_string(const char *name, map_string_t *settings, const char *dfl
 {
     g_autofree char *envname = g_strdup_printf("RHTSupport_%s", name);
     const char *envvar = getenv(envname);
-    return g_strdup(envvar ? envvar : (libreport_get_map_string_item_or_NULL(settings, name) ? : dflt));
+    return g_strdup(envvar ? envvar : (g_hash_table_lookup(settings, name) ? : dflt));
 }
 
 static
@@ -584,7 +584,7 @@ int main(int argc, char **argv)
     char* envvar;
     envvar = getenv("RHTSupport_SSLVerify");
     bool ssl_verify = libreport_string_to_bool(
-                envvar ? envvar : (libreport_get_map_string_item_or_NULL(settings, "SSLVerify") ? : "1")
+                envvar ? envvar : (g_hash_table_lookup(settings, "SSLVerify") ? : "1")
     );
     envvar = getenv("RHTSupport_BigSizeMB");
     if (!envvar)
@@ -604,7 +604,7 @@ int main(int argc, char **argv)
     envvar = getenv("RHTSupport_SubmitUReport");
     bool submit_ur = libreport_string_to_bool(
                 envvar ? envvar :
-                    (libreport_get_map_string_item_or_NULL(settings, "SubmitUReport") ? :
+                    (g_hash_table_lookup(settings, "SubmitUReport") ? :
                         ((opts & OPT_u) ? "1" : "0"))
     );
     if (settings)

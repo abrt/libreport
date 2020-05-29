@@ -250,8 +250,8 @@ ureport_server_config_load_basic_auth(struct ureport_server_config *config,
             !libreport_load_conf_file(local_conf, settings, /*skip key w/o values:*/ false))
             error_msg_and_die("Could not get RHTSupport credentials");
 
-        username = libreport_get_map_string_item_or_NULL(settings, "Login");
-        password = libreport_get_map_string_item_or_NULL(settings, "Password");
+        username = g_hash_table_lookup(settings, "Login");
+        password = g_hash_table_lookup(settings, "Password");
 
         if (config->ur_url == NULL)
             libreport_ureport_server_config_set_url(config, g_strdup(RHSM_WEB_SERVICE_URL));

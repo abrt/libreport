@@ -65,14 +65,14 @@ int main(int argc, char **argv)
         assert(retval == 1 || !"Modifies bool(1) return value on failure");
 
         libreport_set_map_string_item_from_bool(map, key, 1);
-        assert(libreport_get_map_string_item_or_NULL(map, key) || !"Set bool(1)");
-        assert(strcmp("yes", libreport_get_map_string_item_or_NULL(map, key)) == 0 || !"Invalid string repr for bool(1)");
+        assert(g_hash_table_lookup(map, key) || !"Set bool(1)");
+        assert(strcmp("yes", g_hash_table_lookup(map, key)) == 0 || !"Invalid string repr for bool(1)");
         assert(libreport_try_get_map_string_item_as_bool(map, key, &retval) || !"Failed to return bool(1)");
         assert(retval || !"Failed to convert 'yes' to bool(1)");
 
         libreport_set_map_string_item_from_bool(map, key, 0);
-        assert(libreport_get_map_string_item_or_NULL(map, key) || !"Set bool(0)");
-        assert(strcmp("no", libreport_get_map_string_item_or_NULL(map, key)) == 0 || !"Invalid string repr for bool(0)");
+        assert(g_hash_table_lookup(map, key) || !"Set bool(0)");
+        assert(strcmp("no", g_hash_table_lookup(map, key)) == 0 || !"Invalid string repr for bool(0)");
         retval = 1;
         assert(libreport_try_get_map_string_item_as_bool(map, key, &retval) || !"Failed to return bool(0)");
         assert(!retval || !"Failed to convert 'no' to bool(0)");
@@ -101,14 +101,14 @@ int main(int argc, char **argv)
         assert(retval == INT_MAX || !"Modifies INT_MAX value on failure");
 
         libreport_set_map_string_item_from_int(map, key, 12345);
-        assert(libreport_get_map_string_item_or_NULL(map, key) || !"Set int(12345)");
-        assert(strcmp("12345", libreport_get_map_string_item_or_NULL(map, key)) == 0 || !"Invalid string repr for int(12345)");
+        assert(g_hash_table_lookup(map, key) || !"Set int(12345)");
+        assert(strcmp("12345", g_hash_table_lookup(map, key)) == 0 || !"Invalid string repr for int(12345)");
         assert(libreport_try_get_map_string_item_as_int(map, key, &retval) || !"Failed to return int(12345)");
         assert(12345 == retval || !"Failed to convert '12345' to int(12345)");
 
         libreport_set_map_string_item_from_int(map, key, -12345);
-        assert(libreport_get_map_string_item_or_NULL(map, key) || !"Set int(-12345)");
-        assert(strcmp("-12345", libreport_get_map_string_item_or_NULL(map, key)) == 0 || !"Invalid string repr for int(-12345)");
+        assert(g_hash_table_lookup(map, key) || !"Set int(-12345)");
+        assert(strcmp("-12345", g_hash_table_lookup(map, key)) == 0 || !"Invalid string repr for int(-12345)");
         assert(libreport_try_get_map_string_item_as_int(map, key, &retval) || !"Failed to return int(-12345)");
         assert(-12345 == retval || !"Failed to convert '-12345' to int(-12345)");
 
@@ -157,13 +157,13 @@ int main(int argc, char **argv)
         assert(retval == UINT_MAX || !"Modifies UINT_MAX value on failure");
 
         libreport_set_map_string_item_from_uint(map, key, 12345);
-        assert(libreport_get_map_string_item_or_NULL(map, key) || !"Set uint(12345)");
-        assert(strcmp("12345", libreport_get_map_string_item_or_NULL(map, key)) == 0 || !"Invalid string repr for uint(12345)");
+        assert(g_hash_table_lookup(map, key) || !"Set uint(12345)");
+        assert(strcmp("12345", g_hash_table_lookup(map, key)) == 0 || !"Invalid string repr for uint(12345)");
         assert(libreport_try_get_map_string_item_as_uint(map, key, &retval) || !"Failed to return uint(12345)");
         assert(12345 == retval || !"Failed to convert '12345' to uint(12345)");
 
         libreport_set_map_string_item_from_uint(map, key, INT_MAX + 1);
-        assert(libreport_get_map_string_item_or_NULL(map, key) || !"Set INT_MAX + 1");
+        assert(g_hash_table_lookup(map, key) || !"Set INT_MAX + 1");
         assert(libreport_try_get_map_string_item_as_uint(map, key, &retval) || !"Failed to return int(INT_MAX + 1)");
         assert(INT_MAX + 1 == retval || !"Failed to convert 'INT_MAX + 1' to int(INT_MAX + 1)");
 
@@ -258,8 +258,8 @@ int main(int argc, char **argv)
 
         libreport_set_map_string_item_from_string_vector(map, key, vector);
 
-        assert(libreport_get_map_string_item_or_NULL(map, key) || !"Set string_vector('foo, blah, bang')");
-        assert(strcmp(raw_value, libreport_get_map_string_item_or_NULL(map, key)) == 0 || !"Invalid string repr for string_vector('foo, blah, bang')");
+        assert(g_hash_table_lookup(map, key) || !"Set string_vector('foo, blah, bang')");
+        assert(strcmp(raw_value, g_hash_table_lookup(map, key)) == 0 || !"Invalid string repr for string_vector('foo, blah, bang')");
         assert(libreport_try_get_map_string_item_as_string_vector(map, key, &retval) || !"Failed to return string_vector('foo, blah, bang')");
         assert(retval || !"Failed to convert 'foo, blah, bang' to string_vector('foo, blah, bang')");
 

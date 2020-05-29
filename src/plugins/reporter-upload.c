@@ -36,13 +36,13 @@ static int interactive_upload_file(const char *url, const char *file_name,
                                    map_string_t *settings, char **remote_name)
 {
     post_state_t *state = new_post_state(POST_WANT_ERROR_MSG);
-    state->username = libreport_get_map_string_item_or_NULL(settings, "UploadUsername");
+    state->username = g_hash_table_lookup(settings, "UploadUsername");
     char *password_inp = NULL;
     if (state->username != NULL && state->username[0] != '\0')
     {
         /* Load Password only if Username is configured, it doesn't make */
         /* much sense to load Password without Username. */
-        state->password = libreport_get_map_string_item_or_NULL(settings, "UploadPassword");
+        state->password = g_hash_table_lookup(settings, "UploadPassword");
         if (state->password == NULL)
         {
             /* Be permissive and nice, ask only once and don't check */
@@ -54,8 +54,8 @@ static int interactive_upload_file(const char *url, const char *file_name,
     }
 
     /* set SSH keys */
-    state->client_ssh_public_keyfile = libreport_get_map_string_item_or_NULL(settings, "SSHPublicKey");
-    state->client_ssh_private_keyfile = libreport_get_map_string_item_or_NULL(settings, "SSHPrivateKey");
+    state->client_ssh_public_keyfile = g_hash_table_lookup(settings, "SSHPublicKey");
+    state->client_ssh_private_keyfile = g_hash_table_lookup(settings, "SSHPrivateKey");
 
     if (state->client_ssh_public_keyfile != NULL)
         log_debug("Using SSH public key '%s'", state->client_ssh_public_keyfile);
