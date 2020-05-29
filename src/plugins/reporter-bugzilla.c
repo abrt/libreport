@@ -112,13 +112,19 @@ static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
     const char *environ;
 
     environ = getenv("Bugzilla_Login");
-    b->b_login = g_strdup(environ ? environ : libreport_get_map_string_item_or_empty(settings, "Login"));
+    if (!environ)
+        environ = g_hash_table_lookup(settings, "Login");
+    b->b_login = g_strdup(environ ? environ : "");
 
     environ = getenv("Bugzilla_Password");
-    b->b_password = g_strdup(environ ? environ : libreport_get_map_string_item_or_empty(settings, "Password"));
+    if (!environ)
+        environ = g_hash_table_lookup(settings, "Password");
+    b->b_password = g_strdup(environ ? environ : "");
 
     environ = getenv("Bugzilla_BugzillaURL");
-    b->b_bugzilla_url = g_strdup(environ ? environ : libreport_get_map_string_item_or_empty(settings, "BugzillaURL"));
+    if (!environ)
+        environ = g_hash_table_lookup(settings, "BugzillaURL");
+    b->b_bugzilla_url = g_strdup(environ ? environ : "");
     if (!b->b_bugzilla_url[0])
         b->b_bugzilla_url = "https://bugzilla.redhat.com";
     else
@@ -156,22 +162,30 @@ static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
     }
 
     environ = getenv("Bugzilla_SSLVerify");
-    b->b_ssl_verify = libreport_string_to_bool(environ ? environ : libreport_get_map_string_item_or_empty(settings, "SSLVerify"));
+    if (!environ)
+        environ = g_hash_table_lookup(settings, "SSLVerify");
+    b->b_ssl_verify = libreport_string_to_bool(environ ? environ : "");
 
     environ = getenv("Bugzilla_DontMatchComponents");
-    b->b_DontMatchComponents = environ ? environ : libreport_get_map_string_item_or_empty(settings, "DontMatchComponents");
+    if (!environ)
+        environ = g_hash_table_lookup(settings, "DontMatchComponents");
+    b->b_DontMatchComponents = environ ? environ : "";
 
     b->b_create_private = libreport_get_global_create_private_ticket();
 
     if (!b->b_create_private)
     {
         environ = getenv("Bugzilla_CreatePrivate");
-        b->b_create_private = libreport_string_to_bool(environ ? environ : libreport_get_map_string_item_or_empty(settings, "Bugzilla_CreatePrivate"));
+        if (!environ)
+            environ = g_hash_table_lookup(settings, "Bugzilla_CreatePrivate");
+        b->b_create_private = libreport_string_to_bool(environ ? environ : "");
     }
     log_notice("create private bz ticket: '%s'", b->b_create_private ? "YES": "NO");
 
     environ = getenv("Bugzilla_PrivateGroups");
-    GList *groups = libreport_parse_delimited_list(environ ? environ : libreport_get_map_string_item_or_empty(settings, "Bugzilla_PrivateGroups"),
+    if (!environ)
+        environ = g_hash_table_lookup(settings, "Bugzilla_PrivateGroups");
+    GList *groups = libreport_parse_delimited_list(environ ? environ : "",
                                          ",");
     if (b->b_private_groups == NULL)
     {

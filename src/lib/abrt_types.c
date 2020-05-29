@@ -35,13 +35,6 @@ map_string_t *libreport_clone_map_string(map_string_t *ms)
     return clone;
 }
 
-const char *libreport_get_map_string_item_or_empty(map_string_t *ms, const char *key)
-{
-    const char *v = (const char*)g_hash_table_lookup(ms, key);
-    if (!v) v = "";
-    return v;
-}
-
 string_vector_ptr_t libreport_string_vector_new_from_string(const char *value)
 {
     return g_strsplit(value == NULL ? "" : value, ", ", /*all tokens*/0);
