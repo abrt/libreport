@@ -38,11 +38,6 @@ unsigned libreport_size_map_string(map_string_t *ms)
 
     return g_hash_table_size(ms);
 }
-static inline
-void insert_map_string(map_string_t *ms, char *key, char *value)
-{
-    g_hash_table_insert(ms, key, value);
-}
 void libreport_set_map_string_item_from_bool(map_string_t *ms, const char *key, int value);
 int libreport_try_get_map_string_item_as_bool(map_string_t *ms, const char *key, int *value);
 
