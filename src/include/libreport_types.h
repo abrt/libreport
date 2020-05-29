@@ -30,14 +30,6 @@ void libreport_string_vector_free(string_vector_ptr_t vector);
 
 typedef GHashTable map_string_t;
 map_string_t *libreport_clone_map_string(map_string_t *ms);
-static inline
-unsigned libreport_size_map_string(map_string_t *ms)
-{
-    if (ms == NULL)
-        return 0;
-
-    return g_hash_table_size(ms);
-}
 void libreport_set_map_string_item_from_bool(map_string_t *ms, const char *key, int value);
 int libreport_try_get_map_string_item_as_bool(map_string_t *ms, const char *key, int *value);
 
