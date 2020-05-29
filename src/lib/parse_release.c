@@ -235,7 +235,7 @@ void libreport_parse_osinfo(const char *osinfo_bytes, map_string_t *osinfo)
         /* The difference between replace and insert is that if the key already
          * exists in the GHashTable, it gets replaced by the new key. The old
          * key and the old value are freed. */
-        libreport_replace_map_string_item(osinfo, key, value);
+        g_hash_table_replace(osinfo, key, value);
 
         cursor = value_end;
         if (value_end[0] == '\0')
