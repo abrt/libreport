@@ -124,13 +124,19 @@ set_settings(mantisbt_settings_t *m, map_string_t *settings, struct dump_dir *dd
     const char *environ;
 
     environ = getenv("Mantisbt_Login");
-    m->m_login = g_strdup(environ ? environ : libreport_get_map_string_item_or_empty(settings, "Login"));
+    if (!environ)
+        environ = g_hash_table_lookup(settings, "Login");
+    m->m_login = g_strdup(environ ? environ : "");
 
     environ = getenv("Mantisbt_Password");
-    m->m_password = g_strdup(environ ? environ : libreport_get_map_string_item_or_empty(settings, "Password"));
+    if (!environ)
+        environ = g_hash_table_lookup(settings, "Password");
+    m->m_password = g_strdup(environ ? environ : "");
 
     environ = getenv("Mantisbt_MantisbtURL");
-    m->m_mantisbt_url = environ ? environ : libreport_get_map_string_item_or_empty(settings, "MantisbtURL");
+    if (!environ)
+        environ = g_hash_table_lookup(settings, "MantisbtURL");
+    m->m_mantisbt_url = environ ? environ : "";
     if (!m->m_mantisbt_url[0])
         m->m_mantisbt_url = "http://localhost/mantisbt";
     else
@@ -180,17 +186,23 @@ set_settings(mantisbt_settings_t *m, map_string_t *settings, struct dump_dir *dd
     }
 
     environ = getenv("Mantisbt_SSLVerify");
-    m->m_ssl_verify = libreport_string_to_bool(environ ? environ : libreport_get_map_string_item_or_empty(settings, "SSLVerify"));
+    if (!environ)
+        environ = g_hash_table_lookup(settings, "SSLVerify");
+    m->m_ssl_verify = libreport_string_to_bool(environ ? environ : "");
 
     environ = getenv("Mantisbt_DontMatchComponents");
-    m->m_DontMatchComponents = environ ? environ : libreport_get_map_string_item_or_empty(settings, "DontMatchComponents");
+    if (!environ)
+        environ = g_hash_table_lookup(settings, "DontMatchComponents");
+    m->m_DontMatchComponents = environ ? environ : "";
 
     m->m_create_private = libreport_get_global_create_private_ticket();
 
     if (!m->m_create_private)
     {
         environ = getenv("Mantisbt_CreatePrivate");
-        m->m_create_private = libreport_string_to_bool(environ ? environ : libreport_get_map_string_item_or_empty(settings, "CreatePrivate"));
+        if (!environ)
+            environ = g_hash_table_lookup(settings, "CreatePrivate");
+        m->m_create_private = libreport_string_to_bool(environ ? environ : "");
     }
     log_notice("create private MantisBT ticket: '%s'", m->m_create_private ? "YES": "NO");
 }

@@ -112,9 +112,11 @@ static void create_and_send_email(
     env = getenv("Mailx_EmailFrom");
     char *email_from = (env ? g_strdup(env) : g_strdup(libreport_get_map_string_item_or_NULL(settings, "EmailFrom")) ? : ask_email_address("sender", "ABRT Daemon <DoNotReply>"));
     env = getenv("Mailx_EmailTo");
-    char *email_to = (env ? g_strdup(env) : g_strdup(libreport_get_map_string_item_or_NULL(settings, "EmailTo")) ? : ask_email_address("receiver", "root@localhost"));
+    char *email_to = (env ? g_strdup(env) : g_strdup(g_hash_table_lookup(settings, "EmailTo")) ? : ask_email_address("receiver", "root@localhost"));
     env = getenv("Mailx_SendBinaryData");
-    bool send_binary_data = libreport_string_to_bool(env ? env : libreport_get_map_string_item_or_empty(settings, "SendBinaryData"));
+    if (!env)
+        env = g_hash_table_lookup(settings, "SendBinaryData");
+    bool send_binary_data = libreport_string_to_bool(env ? env : "");
 
     problem_formatter_t *pf = problem_formatter_new();
     /* formatting file is not set */

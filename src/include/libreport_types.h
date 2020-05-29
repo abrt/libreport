@@ -53,7 +53,6 @@ void libreport_remove_map_string_item(map_string_t *ms, const char *key)
 {
     g_hash_table_remove(ms, key);
 }
-const char *libreport_get_map_string_item_or_empty(map_string_t *ms, const char *key);
 static inline
 const char *libreport_get_map_string_item_or_NULL(map_string_t *ms, const char *key)
 {

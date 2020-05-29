@@ -98,7 +98,9 @@ static void report_to_kerneloops(
         error_msg_and_die("Error sending kernel oops due to missing backtrace");
 
     const char *env = getenv("KerneloopsReporter_SubmitURL");
-    const char *submitURL = (env ? env : libreport_get_map_string_item_or_empty(settings, "SubmitURL"));
+    if (!env)
+        env = g_hash_table_lookup(settings, "SubmitURL");
+    const char *submitURL = (env ? env : (const char *)"");
     if (!submitURL[0])
         submitURL = "http://oops.kernel.org/submitoops.php";
 

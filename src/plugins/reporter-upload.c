@@ -213,7 +213,7 @@ int main(int argc, char **argv)
     if (!conf_url || conf_url[0] == '\0')
         conf_url = url;
     if (!conf_url || conf_url[0] == '\0')
-        conf_url = libreport_get_map_string_item_or_empty(settings, "URL");
+        conf_url = g_hash_table_lookup(settings, "URL");
     if (!conf_url || conf_url[0] == '\0')
         conf_url = input_url = ask_url(_("Please enter a URL (scp, ftp, etc.) where the problem data is to be exported:"));
 
