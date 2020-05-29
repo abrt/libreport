@@ -37,7 +37,7 @@ equal_result_t map_string_equals(map_string_t *f, map_string_t *s)
     gpointer fvalue = NULL;
 
     g_hash_table_iter_init(&iter, f);
-    while(libreport_next_map_string_iter(&iter, (const char **)&fkey, (const char **)&fvalue))
+    while(g_hash_table_iter_next(&iter, &fkey, &fvalue))
     {
         gpointer skey = NULL;
         gpointer svalue = NULL;
@@ -165,7 +165,7 @@ equal_result_t map_string_equals(map_string_t *f, map_string_t *s)
     gpointer fvalue = NULL;
 
     g_hash_table_iter_init(&iter, f);
-    while(libreport_next_map_string_iter(&iter, (const char **)&fkey, (const char **)&fvalue))
+    while(g_hash_table_iter_next(&iter, &fkey, &fvalue))
     {
         gpointer skey = NULL;
         gpointer svalue = NULL;
@@ -410,7 +410,7 @@ equal_result_t map_string_equals(map_string_t *f, map_string_t *s)
     gpointer fvalue = NULL;
 
     g_hash_table_iter_init(&iter, f);
-    while(libreport_next_map_string_iter(&iter, (const char **)&fkey, (const char **)&fvalue))
+    while(g_hash_table_iter_next(&iter, &fkey, &fvalue))
     {
         gpointer skey = NULL;
         gpointer svalue = NULL;

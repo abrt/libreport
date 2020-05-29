@@ -68,13 +68,13 @@ bool libreport_load_global_configuration_from_dirs(const char *dirs[], int dir_f
 
         map_string_iter_t iter;
         g_hash_table_iter_init(&iter, s_global_settings);
-        const char *key, *value;
-        while(libreport_next_map_string_iter(&iter, &key, &value))
+        gpointer key = NULL;
+        while(g_hash_table_iter_next(&iter, &key, NULL))
         {
             /* Die to avoid security leaks in case where someone made a typo in a option name */
-            if (!libreport_is_in_string_list(key, s_recognized_options))
+            if (!libreport_is_in_string_list((char *)key, s_recognized_options))
             {
-                error_msg("libreport global configuration contains unrecognized option : '%s'", key);
+                error_msg("libreport global configuration contains unrecognized option : '%s'", (char *)key);
                 libreport_free_global_configuration();
                 return false;
             }

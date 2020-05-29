@@ -412,14 +412,14 @@ bool libreport_save_conf_file(const char *path, map_string_t *settings)
     /* Sort the list of option names for bseach() */
     qsort(option_names, option_count, sizeof(char *), cmpstringp);
 
-    const char *name = NULL;
-    const char *value = NULL;
+    gpointer name = NULL;
+    gpointer value = NULL;
     map_string_iter_t iter;
     g_hash_table_iter_init(&iter, settings);
-    while (libreport_next_map_string_iter(&iter, &name, &value))
+    while (g_hash_table_iter_next(&iter, &name, &value))
     {
-        g_autofree char *aug_path = g_strdup_printf("/files%s/%s", real_path, name);
-        const int ret = aug_set(aug, aug_path, value);
+        g_autofree char *aug_path = g_strdup_printf("/files%s/%s", real_path, (char *)name);
+        const int ret = aug_set(aug, aug_path, (char *)value);
 
         /* Check whether the name already exists and if it exists remark it by
          * erasing its value from the list of option names.

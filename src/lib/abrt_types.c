@@ -25,12 +25,12 @@ map_string_t *libreport_clone_map_string(map_string_t *ms)
 
     map_string_t *clone = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
-    const char *key;
-    const char *value;
+    gpointer key;
+    gpointer value;
     map_string_iter_t iter;
     g_hash_table_iter_init(&iter, ms);
-    while(libreport_next_map_string_iter(&iter, &key, &value))
-        insert_map_string(clone, g_strdup(key), g_strdup(value));
+    while(g_hash_table_iter_next(&iter, &key, &value))
+        insert_map_string(clone, g_strdup((char *)key), g_strdup((char *)value));
 
     return clone;
 }
