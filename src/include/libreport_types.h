@@ -77,11 +77,6 @@ int libreport_try_get_map_string_item_as_string_vector(map_string_t *ms, const c
 
 typedef GHashTableIter map_string_iter_t;
 static inline
-void libreport_init_map_string_iter(map_string_iter_t *iter, map_string_t *ms)
-{
-    g_hash_table_iter_init(iter, ms);
-}
-static inline
 int libreport_next_map_string_iter(map_string_iter_t *iter, const char **key, const char **value)
 {
     return g_hash_table_iter_next(iter, (gpointer *)key, (gpointer *)value);

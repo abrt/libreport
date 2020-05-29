@@ -202,7 +202,7 @@ static void load_config_files(const char *dir_path)
         map_string_iter_t iter;
         const char *name;
         const char *value;
-        libreport_init_map_string_iter(&iter, keys_and_values);
+        g_hash_table_iter_init(&iter, keys_and_values);
         while (libreport_next_map_string_iter(&iter, &name, &value))
         {
             event_option_t *opt;

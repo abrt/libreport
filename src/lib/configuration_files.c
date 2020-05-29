@@ -415,7 +415,7 @@ bool libreport_save_conf_file(const char *path, map_string_t *settings)
     const char *name = NULL;
     const char *value = NULL;
     map_string_iter_t iter;
-    libreport_init_map_string_iter(&iter, settings);
+    g_hash_table_iter_init(&iter, settings);
     while (libreport_next_map_string_iter(&iter, &name, &value))
     {
         g_autofree char *aug_path = g_strdup_printf("/files%s/%s", real_path, name);

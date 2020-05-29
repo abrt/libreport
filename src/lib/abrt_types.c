@@ -28,7 +28,7 @@ map_string_t *libreport_clone_map_string(map_string_t *ms)
     const char *key;
     const char *value;
     map_string_iter_t iter;
-    libreport_init_map_string_iter(&iter, ms);
+    g_hash_table_iter_init(&iter, ms);
     while(libreport_next_map_string_iter(&iter, &key, &value))
         insert_map_string(clone, g_strdup(key), g_strdup(value));
 

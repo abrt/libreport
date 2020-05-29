@@ -36,7 +36,7 @@ equal_result_t map_string_equals(map_string_t *f, map_string_t *s)
     gpointer fkey = NULL;
     gpointer fvalue = NULL;
 
-    libreport_init_map_string_iter(&iter, f);
+    g_hash_table_iter_init(&iter, f);
     while(libreport_next_map_string_iter(&iter, (const char **)&fkey, (const char **)&fvalue))
     {
         gpointer skey = NULL;
@@ -164,7 +164,7 @@ equal_result_t map_string_equals(map_string_t *f, map_string_t *s)
     gpointer fkey = NULL;
     gpointer fvalue = NULL;
 
-    libreport_init_map_string_iter(&iter, f);
+    g_hash_table_iter_init(&iter, f);
     while(libreport_next_map_string_iter(&iter, (const char **)&fkey, (const char **)&fvalue))
     {
         gpointer skey = NULL;
@@ -409,7 +409,7 @@ equal_result_t map_string_equals(map_string_t *f, map_string_t *s)
     gpointer fkey = NULL;
     gpointer fvalue = NULL;
 
-    libreport_init_map_string_iter(&iter, f);
+    g_hash_table_iter_init(&iter, f);
     while(libreport_next_map_string_iter(&iter, (const char **)&fkey, (const char **)&fvalue))
     {
         gpointer skey = NULL;
