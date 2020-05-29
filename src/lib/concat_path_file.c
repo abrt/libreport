@@ -19,21 +19,6 @@
  */
 #include "internal_libreport.h"
 
-/* Concatenate path and filename to new allocated buffer.
- * Add '/' only as needed (no duplicate // are produced).
- * If path is NULL, it is assumed to be "/".
- * filename should not be NULL.
- */
-char *libreport_concat_path_file(const char *path, const char *filename)
-{
-	if (!path)
-		path = "";
-	const char *end = path + strlen(path);
-	while (*filename == '/')
-		filename++;
-	return g_strdup_printf("%s%s%s", path, (end != path && end[-1] != '/' ? "/" : ""), filename);
-}
-
 char *libreport_concat_path_basename(const char *path, const char *filename)
 {
     char *abspath = realpath(filename, NULL);
@@ -53,7 +38,7 @@ char *libreport_concat_path_basename(const char *path, const char *filename)
         sprintf(buf, "tmp-%s-%lu", libreport_iso_date_string(NULL), (long)getpid());
         base = buf;
     }
-    char *name = libreport_concat_path_file(path, base);
+    char *name = g_build_filename(path ? path : "", base, NULL);
     free(abspath);
     return name;
 }

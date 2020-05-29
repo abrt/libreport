@@ -29,7 +29,7 @@ static char *get_user_config_file_path(const char *name, const char *suffix)
     if (suffix != NULL)
         s = g_strdup_printf("%s.%s", name, suffix);
 
-    conf = libreport_concat_path_file(libreport_get_user_conf_base_dir(), s != NULL ? s : name);
+    conf = g_build_filename(libreport_get_user_conf_base_dir(), s != NULL ? s : name, NULL);
 
     return conf;
 }
@@ -110,7 +110,7 @@ GList *libreport_load_words_from_file(const char* filename)
 {
     GList *words_list = NULL;
     GList *file_list = NULL;
-    file_list = g_list_prepend(file_list, libreport_concat_path_file(CONF_DIR, filename));
+    file_list = g_list_prepend(file_list, g_build_filename(CONF_DIR ? CONF_DIR : "", filename, NULL));
     file_list = g_list_prepend(file_list, get_user_config_file_path(filename, /*don't append suffix*/NULL));
     GList *file_list_cur = file_list;
 

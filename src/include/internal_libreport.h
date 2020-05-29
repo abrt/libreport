@@ -119,7 +119,6 @@ char *libreport_skip_non_whitespace(const char *s);
 /* Like strcpy but can copy overlapping strings. */
 void libreport_overlapping_strcpy(char *dst, const char *src);
 
-char *libreport_concat_path_file(const char *path, const char *filename);
 /*
  * Used to construct a name in a different directory with the basename
  * similar to the old name, if possible.

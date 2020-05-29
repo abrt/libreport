@@ -34,7 +34,7 @@ GList *libreport_get_file_list(const char *path, const char *ext_filter)
         /* skip . and .. */
         if (strcmp(dent->d_name, ".") == 0 || strcmp(dent->d_name, "..") == 0)
             continue;
-        char *fullname = libreport_concat_path_file(path, dent->d_name);
+        char *fullname = g_build_filename(path, dent->d_name, NULL);
         char *ext = NULL;
 
         if (ext_filter)
@@ -77,7 +77,7 @@ GList *libreport_get_file_list(const char *path, const char *ext_filter)
                 *ext = '\0';
             }
             free(fullname);
-            fullname = libreport_concat_path_file(path, target);
+            fullname = g_build_filename(path, target, NULL);
             files = g_list_prepend(files, libreport_new_file_obj(fullname, target));
             g_free(link);
             g_free(target);

@@ -147,8 +147,8 @@ libreport_ureport_server_config_set_client_auth(struct ureport_server_config *co
         /* always returns non-NULL */
         char *rhsm_dir = rhsm_config_get_consumer_cert_dir();
 
-        char *cert_full_name = libreport_concat_path_file(rhsm_dir, RHSMCON_CERT_NAME);
-        char *key_full_name = libreport_concat_path_file(rhsm_dir, RHSMCON_KEY_NAME);
+        char *cert_full_name = g_build_filename(rhsm_dir, RHSMCON_CERT_NAME, NULL);
+        char *key_full_name = g_build_filename(rhsm_dir, RHSMCON_KEY_NAME, NULL);
 
         /* get authority certificate dir path from environment variable, if it
          * is not set, use CERT_AUTHORITY_CERT_PATH
@@ -157,8 +157,8 @@ libreport_ureport_server_config_set_client_auth(struct ureport_server_config *co
         if (authority_cert_dir_path == NULL)
            authority_cert_dir_path = CERT_AUTHORITY_CERT_PATH;
 
-        char *cert_authority_cert_full_name = libreport_concat_path_file(authority_cert_dir_path,
-                                                                 CERT_AUTHORITY_CERT_NAME);
+        char *cert_authority_cert_full_name = g_build_filename(authority_cert_dir_path,
+                                                                 CERT_AUTHORITY_CERT_NAME, NULL);
 
         if (certificate_exist(cert_full_name) && certificate_exist(key_full_name))
         {
@@ -701,8 +701,8 @@ char *
 libreport_ureport_server_response_get_report_url(struct ureport_server_response *resp,
                                        struct ureport_server_config *config)
 {
-    char *bthash_url = libreport_concat_path_file(config->ur_url, BTHASH_URL_SFX);
-    char *report_url = libreport_concat_path_file(bthash_url, resp->urr_bthash);
+    char *bthash_url = g_build_filename(config->ur_url ? config->ur_url : "", BTHASH_URL_SFX, NULL);
+    char *report_url = g_build_filename(bthash_url, resp->urr_bthash, NULL);
     free(bthash_url);
     return report_url;
 }
@@ -800,7 +800,7 @@ libreport_ureport_do_post(const char *json, struct ureport_server_config *config
         "Connection: close",
         NULL,
     };
-    char *dest_url = libreport_concat_path_file(config->ur_url, url_sfx);
+    char *dest_url = g_build_filename(config->ur_url ? config->ur_url : "", url_sfx, NULL);
 
     post_string_as_form_data(post_state, dest_url, "application/json",
                              headers, json);

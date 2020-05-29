@@ -40,7 +40,7 @@ static uid_t parse_uid(const char *uid_str)
 
 static struct dump_dir *try_dd_create(const char *base_dir_name, const char *dir_name, uid_t uid)
 {
-    char *path = libreport_concat_path_file(base_dir_name, dir_name);
+    char *path = g_build_filename(base_dir_name ? base_dir_name : "", dir_name, NULL);
     struct dump_dir *dd = dd_create(path, uid, DEFAULT_DUMP_DIR_MODE);
     free(path);
     return dd;
@@ -80,7 +80,7 @@ struct dump_dir *create_dump_dir_ext(const char *base_dir_name, const char *type
             char *home = getenv("HOME");
             if (home && home[0])
             {
-                home = libreport_concat_path_file(home, "tmp");
+                home = g_build_filename(home, "tmp", NULL);
                 /*mkdir(home, 0777); - do we want this? */
                 dd = try_dd_create(home, problem_id, uid);
                 free(home);
@@ -145,7 +145,7 @@ struct dump_dir *create_dump_dir_ext(const char *base_dir_name, const char *type
     free(type_str);
 
     problem_id[strlen(problem_id) - strlen(NEW_PD_SUFFIX)] = '\0';
-    char* new_path = libreport_concat_path_file(base_dir_name, problem_id);
+    char* new_path = g_build_filename(base_dir_name ? base_dir_name : "", problem_id, NULL);
     log_info("Renaming from '%s' to '%s'", dd->dd_dirname, new_path);
     dd_rename(dd, new_path);
     free(new_path);

@@ -140,7 +140,7 @@ set_settings(mantisbt_settings_t *m, map_string_t *settings, struct dump_dir *dd
         if (last_slash && last_slash[1] == '\0')
             *last_slash = '\0';
     }
-    m->m_mantisbt_soap_url = libreport_concat_path_file(m->m_mantisbt_url, "api/soap/mantisconnect.php");
+    m->m_mantisbt_soap_url = g_build_filename(m->m_mantisbt_url, "api/soap/mantisconnect.php", NULL);
 
     environ = getenv("Mantisbt_Project");
     if (environ)

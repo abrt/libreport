@@ -69,7 +69,7 @@ int main(int argc, char **argv)
         if (output_file[0] == '~' && output_file[1] == '/'
          && (HOME = getenv("HOME")) != NULL
         ) {
-            output_file = libreport_concat_path_file(HOME, output_file + 2);
+            output_file = g_build_filename(HOME, output_file + 2, NULL);
         }
         else
             output_file = g_strdup(output_file);

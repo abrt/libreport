@@ -47,7 +47,7 @@ struct dump_dir *libreport_steal_directory(const char *base_dir, const char *dum
 
     struct dump_dir *dd_dst;
     unsigned count = 100;
-    g_autofree char *dst_dir_name = libreport_concat_path_file(base_dir, base_name);
+    g_autofree char *dst_dir_name = g_build_filename(base_dir ? base_dir : "", base_name, NULL);
     while (1)
     {
         dd_dst = dd_create(dst_dir_name, (uid_t)-1, DEFAULT_DUMP_DIR_MODE);
@@ -90,7 +90,8 @@ struct dump_dir *libreport_open_directory_for_writing(
     log_warning("'%s' is not writable", dump_dir_name);
     dd_close(dd);
 
-    char *spooldir = libreport_concat_path_file(g_get_user_cache_dir(), "abrt/spool");
+    g_autofree char *user_cache_dir = (char*)g_get_user_cache_dir();
+    char *spooldir = g_build_filename(user_cache_dir ? user_cache_dir : "", "abrt/spool", NULL);
 
     if (ask && !ask(spooldir, dump_dir_name))
         return NULL;

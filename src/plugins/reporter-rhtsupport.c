@@ -122,7 +122,7 @@ int create_tarball(const char *tempfile, struct dump_dir *dd,
                     basename++;
                 else
                     basename = content;
-                char *xml_name = libreport_concat_path_file("content", basename);
+                char *xml_name = g_build_filename("content", basename, NULL);
                 reportfile_add_binding_from_namedfile(file,
                         /*on_disk_filename */ content,
                         /*binding_name     */ name,
@@ -139,7 +139,7 @@ int create_tarball(const char *tempfile, struct dump_dir *dd,
     char *short_name, *full_name;
     while (dd_get_next_file(dd, &short_name, &full_name))
     {
-        char *uploaded_name = libreport_concat_path_file("content", short_name);
+        char *uploaded_name = g_build_filename("content", short_name, NULL);
         free(short_name);
 
         if (tar_append_file(tar, full_name, uploaded_name) != 0)
@@ -421,7 +421,7 @@ void prepare_ureport_configuration(const char *urcfile,
      *       libreport_ureport_server_config_set_url(urconf, url);
      */
 
-    libreport_ureport_server_config_set_url(urconf, libreport_concat_path_file(portal_url, "/telemetry/abrt"));
+    libreport_ureport_server_config_set_url(urconf, g_build_filename(portal_url ? portal_url : "", "/telemetry/abrt", NULL));
     urconf->ur_ssl_verify = ssl_verify;
 
     libreport_ureport_server_config_set_basic_auth(urconf, login, password);
@@ -444,9 +444,9 @@ void prepare_ureport_configuration(const char *urcfile,
 
 static char *create_case_url(char *url, const char *case_no)
 {
-    char *url1 = libreport_concat_path_file(url, RHTSUPPORT_CASE_URL_PATH);
+    char *url1 = g_build_filename(url ? url : "", RHTSUPPORT_CASE_URL_PATH, NULL);
     free(url);
-    url = libreport_concat_path_file(url1, case_no);
+    url = g_build_filename(url1 ? url1 : "", case_no, NULL);
     free(url1);
 
     return url;

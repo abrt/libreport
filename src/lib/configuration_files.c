@@ -322,7 +322,10 @@ const char *libreport_get_user_conf_base_dir(void)
         return debug_base_dir;
 
     if (base_dir == NULL)
-        base_dir = libreport_concat_path_file(g_get_user_config_dir(), "abrt/settings/");
+    {
+        char* user_config_dir = (char*)g_get_user_config_dir();
+        base_dir = g_build_filename(user_config_dir ? user_config_dir : "", "abrt/settings/", NULL);
+    }
 
     return base_dir;
 }
@@ -343,7 +346,7 @@ bool libreport_load_conf_file_from_dirs_ext(const char *base_name, const char *c
     bool result = true;
     for (size_t i = 0; directories[i] != NULL; ++i)
     {
-        char *conf_file = libreport_concat_path_file(directories[i], base_name);
+        char *conf_file = g_build_filename(directories[i], base_name, NULL);
         if (!libreport_load_conf_file(conf_file, settings, skipKeysWithoutValue))
         {
             if (dir_flags && (dir_flags[i] & CONF_DIR_FLAG_OPTIONAL))
@@ -497,7 +500,7 @@ bool libreport_save_plugin_conf_file(const char *name, map_string_t *settings)
     if (plugins_conf_dir == NULL)
         plugins_conf_dir = PLUGINS_CONF_DIR;
 
-    char *conf_path = libreport_concat_path_file(plugins_conf_dir, name);
+    char *conf_path = g_build_filename(plugins_conf_dir, name, NULL);
     bool ret = libreport_save_conf_file(conf_path, settings);
     free(conf_path);
 

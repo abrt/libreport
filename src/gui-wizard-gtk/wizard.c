@@ -711,7 +711,7 @@ static void tv_details_row_activated(
     gint exitcode;
     gchar *arg[3];
     arg[0] = (char *) "xdg-open";
-    arg[1] = libreport_concat_path_file(g_dump_dir_name, item_name);
+    arg[1] = g_build_filename(g_dump_dir_name ? g_dump_dir_name : "", item_name, NULL);
     arg[2] = NULL;
 
     const gboolean spawn_ret = g_spawn_sync(NULL, arg, NULL,
@@ -2902,7 +2902,7 @@ static void on_btn_add_file(GtkButton *button)
             if (dd)
             {
                 dd_close(dd);
-                g_autofree char *new_name = libreport_concat_path_file(g_dump_dir_name, basename);
+                g_autofree char *new_name = g_build_filename(g_dump_dir_name, basename, NULL);
                 if (strcmp(filename, new_name) == 0)
                     message = g_strdup(_("You are trying to copy a file onto itself"));
                 else
@@ -2972,7 +2972,7 @@ static void delete_item(GtkTreeView *treeview)
                     struct dump_dir *dd = wizard_open_directory_for_writing(g_dump_dir_name);
                     if (dd)
                     {
-                        char *filename = libreport_concat_path_file(g_dump_dir_name, item_name);
+                        char *filename = g_build_filename(g_dump_dir_name, item_name, NULL);
                         unlink(filename);
                         free(filename);
                         dd_close(dd);
