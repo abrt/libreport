@@ -156,7 +156,7 @@ int libreport_try_get_map_string_item_as_uint(map_string_t *ms, const char *key,
 
 void libreport_set_map_string_item_from_string(map_string_t *ms, const char *key, const char *value)
 {
-    libreport_replace_map_string_item(ms, g_strdup(key), g_strdup(value));
+    g_hash_table_replace(ms, g_strdup(key), g_strdup(value));
 }
 
 int libreport_try_get_map_string_item_as_string(map_string_t *ms, const char *key, char **value)

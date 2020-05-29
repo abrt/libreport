@@ -295,7 +295,7 @@ bool libreport_load_conf_file(const char *path, map_string_t *settings, bool ski
         log_info("Loaded option '%s' = '%s'", option, value);
 
         if (!skipKeysWithoutValue || value[0] != '\0')
-            libreport_replace_map_string_item(settings, g_strdup(option), g_strdup(value));
+            g_hash_table_replace(settings, g_strdup(option), g_strdup(value));
 
         free(matches[i]);
     }
