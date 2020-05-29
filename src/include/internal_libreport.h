@@ -308,8 +308,6 @@ void libreport_xwrite_str(int fd, const char *str);
 
 off_t libreport_xlseek(int fd, off_t offset, int whence);
 
-void libreport_xchdir(const char *path);
-
 char *libreport_xvasprintf(const char *format, va_list p);
 
 void libreport_xsetenv(const char *key, const char *value);
