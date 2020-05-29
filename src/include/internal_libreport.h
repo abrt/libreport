@@ -328,7 +328,6 @@ void libreport_xlisten(int s, int backlog);
 ssize_t libreport_xsendto(int s, const void *buf, size_t len,
                 const struct sockaddr *to, socklen_t tolen);
 
-void libreport_xstat(const char *name, struct stat *stat_buf);
 off_t libreport_fstat_st_size_or_die(int fd);
 off_t libreport_stat_st_size_or_die(const char *filename);
 

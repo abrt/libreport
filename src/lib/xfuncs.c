@@ -199,13 +199,6 @@ ssize_t libreport_xsendto(int s, const void *buf, size_t len,
     return ret;
 }
 
-// libreport_xstat() - a stat() which dies on failure with meaningful error message
-void libreport_xstat(const char *name, struct stat *stat_buf)
-{
-    if (stat(name, stat_buf))
-        perror_msg_and_die("Can't stat '%s'", name);
-}
-
 off_t libreport_fstat_st_size_or_die(int fd)
 {
     struct stat statbuf;
