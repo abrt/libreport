@@ -476,7 +476,7 @@ int main(int argc, char **argv)
         /* that libreport_save_conf_file() creates the directory */
         assert(tmpnam(tmpdir) != NULL);
 
-        char *conf_path = libreport_concat_path_file(tmpdir, CONF_NAME);
+        char *conf_path = g_build_filename(tmpdir, CONF_NAME, NULL);
 
         assert(libreport_save_conf_file(conf_path, first) || !"Save in not existing directory");
 

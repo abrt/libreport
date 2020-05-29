@@ -180,7 +180,7 @@ reportfile_add_binding_from_namedfile(reportfile_t* file,
     // <binding name=NAME fileName=FILENAME type=text/binary...
     internal_reportfile_start_binding(file, binding_name, isbinary, recorded_filename);
     // ... href=content/NAME>
-    char *href_name = libreport_concat_path_file("content", binding_name);
+    char *href_name = g_build_filename("content", binding_name, NULL);
     xxmlTextWriterWriteAttribute(file->writer, "href", href_name);
     free(href_name);
 }
@@ -398,7 +398,7 @@ create_new_case(const char* base_url,
                 const char* description,
                 const char* component)
 {
-    char *url = libreport_concat_path_file(base_url, "cases");
+    char *url = g_build_filename(base_url ? base_url : "", "cases", NULL);
     rhts_result_t *result = post_case_to_url(url,
                 username,
                 password,
@@ -561,7 +561,7 @@ add_comment_to_case(const char* base_url,
                 bool ssl_verify,
                 const char* comment_text)
 {
-    char *url = libreport_concat_path_file(base_url, "comments");
+    char *url = g_build_filename(base_url ? base_url : "", "comments", NULL);
     rhts_result_t *result = post_comment_to_url(url,
                 username,
                 password,
@@ -697,7 +697,7 @@ attach_file_to_case(const char* base_url,
                 bool ssl_verify,
                 const char *file_name)
 {
-    char *url = libreport_concat_path_file(base_url, "attachments");
+    char *url = g_build_filename(base_url ? base_url : "", "attachments", NULL);
     rhts_result_t *result = post_file_to_url(url,
                 username,
                 password,
@@ -720,7 +720,7 @@ get_rhts_hints(const char* base_url,
                 bool ssl_verify,
                 const char* file_name)
 {
-    char *url = libreport_concat_path_file(base_url, "problems");
+    char *url = g_build_filename(base_url ? base_url : "", "problems", NULL);
 //    rhts_result_t *result = post_case_to_url(url,
 //                username,
 //                password,

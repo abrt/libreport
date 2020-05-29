@@ -285,7 +285,8 @@ GHashTable *load_event_config_data(void)
     load_config_files(EVENTS_CONF_DIR);
 
     char *cachedir;
-    cachedir = libreport_concat_path_file(g_get_user_cache_dir(), "abrt/events");
+    g_autofree char *user_cache_dir = (char*)g_get_user_cache_dir();
+    cachedir = g_build_filename(user_cache_dir ? user_cache_dir : "", "abrt/events", NULL);
     load_config_files(cachedir);
     free(cachedir);
 

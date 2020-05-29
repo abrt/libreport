@@ -31,7 +31,7 @@ double libreport_get_dirsize(const char *pPath)
     {
         if (libreport_dot_or_dotdot(ep->d_name))
             continue;
-        char *dname = libreport_concat_path_file(pPath, ep->d_name);
+        char *dname = g_build_filename(pPath ? pPath : "", ep->d_name, NULL);
         if (lstat(dname, &statbuf) != 0)
         {
             goto next;
@@ -91,9 +91,9 @@ double libreport_get_dirsize_find_largest_dir(
     {
         if (libreport_dot_or_dotdot(ep->d_name))
             continue;
-        g_autofree char *dname = libreport_concat_path_file(pPath, ep->d_name);
-        g_autofree char *sosreport_path = libreport_concat_path_file(dname, "sosreport.log");
-        g_autofree char *lock_path = libreport_concat_path_file(dname, ".lock");
+        g_autofree char *dname = g_build_filename(pPath ? pPath : "", ep->d_name, NULL);
+        g_autofree char *sosreport_path = g_build_filename(dname ? dname : "", "sosreport.log", NULL);
+        g_autofree char *lock_path = g_build_filename(dname ? dname : "", ".lock", NULL);
         if (lstat(sosreport_path, &statbuf) == 0)
         {
             log_debug("Skipping %s': sosreport is being generated.", dname);

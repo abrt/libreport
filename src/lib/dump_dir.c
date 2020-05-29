@@ -1756,7 +1756,7 @@ char *load_text_file(const char *path, unsigned flags)
 
 static void copy_file_from_chroot(struct dump_dir* dd, const char *name, const char *chroot_dir, const char *file_path)
 {
-    char *chrooted_name = libreport_concat_path_file(chroot_dir, file_path);
+    char *chrooted_name = g_build_filename(chroot_dir ? chroot_dir : "", file_path, NULL);
     char *data = load_text_file(chrooted_name,
                     DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE | DD_OPEN_FOLLOW);
     free(chrooted_name);
@@ -2136,7 +2136,7 @@ int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name)
     if (short_name)
         *short_name = g_strdup(dent->d_name);
     if (full_name)
-        *full_name = libreport_concat_path_file(dd->dd_dirname, dent->d_name);
+        *full_name = g_build_filename(dd->dd_dirname ? dd->dd_dirname : "", dent->d_name, NULL);
     return 1;
 }
 

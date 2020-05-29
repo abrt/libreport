@@ -585,7 +585,7 @@ int main(int argc, char **argv)
     char *path = tmpnam(NULL);
     struct dump_dir *dd = dd_create(path, -1L, DEFAULT_DUMP_DIR_MODE);
 
-    char *lock_path = libreport_concat_path_file(path, ".lock");
+    char *lock_path = g_build_filename(path ? path : "", ".lock", NULL);
     struct stat buf;
 
     assert(dd);
@@ -1604,7 +1604,7 @@ TS_MAIN
     char *base_dir = g_strndup(dd->dd_dirname, strrchr(dd->dd_dirname, '/') - dd->dd_dirname);
     assert(base_dir != NULL);
 
-    char *test_file_full_path = libreport_concat_path_file(base_dir, "libreport-test");
+    char *test_file_full_path = g_build_filename(base_dir, "libreport-test", NULL);
     FILE *test_file = fopen(test_file_full_path, "w");
     assert(test_file != NULL);
     fprintf(test_file, "dd_items_handling");

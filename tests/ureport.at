@@ -909,8 +909,8 @@ int main(void)
 
     char *report_url = libreport_ureport_server_response_get_report_url(response, &config);
 
-    char *expect_bthash_url = libreport_concat_path_file(config.ur_url, BTHASH_URL_SFX);
-    char *expect_report_url = libreport_concat_path_file(expect_bthash_url, response->urr_bthash);
+    char *expect_bthash_url = g_build_filename(config.ur_url ? config.ur_url : "", BTHASH_URL_SFX, NULL);
+    char *expect_report_url = g_build_filename(expect_bthash_url ? expect_bthash_url : "", response->urr_bthash, NULL);
     free(expect_bthash_url);
 
     assert(strcmp(report_url, expect_report_url) == 0);

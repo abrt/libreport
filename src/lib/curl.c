@@ -644,7 +644,7 @@ char *libreport_upload_file_ext(post_state_t *state, const char *url, const char
 
     unsigned len = strlen(clean_url);
     if (len > 0 && clean_url[len-1] == '/')
-        whole_url = libreport_concat_path_file(clean_url, strrchr(filename, '/') ? : filename);
+        whole_url = g_build_filename(clean_url, strrchr(filename, '/') ? : filename, NULL);
     else
         whole_url = g_strdup(clean_url);
 

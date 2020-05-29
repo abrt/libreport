@@ -173,7 +173,8 @@ static void create_and_send_email(
     for (GList *a = problem_report_get_attachments(pr); a != NULL; a = g_list_next(a))
     {
         args = append_str_to_vector(args, &arg_size, "-a");
-        char *full_name = libreport_concat_path_file(realpath(dump_dir_name, NULL), a->data);
+        g_autofree char *resolved_path = realpath(dump_dir_name, NULL);
+        char *full_name = g_build_filename(resolved_path ? resolved_path : "", a->data, NULL);
         args = append_str_to_vector(args, &arg_size, full_name);
         free(full_name);
     }

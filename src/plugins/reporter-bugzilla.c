@@ -128,7 +128,7 @@ static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
         if (last_slash && last_slash[1] == '\0')
             *last_slash = '\0';
     }
-    b->b_bugzilla_xmlrpc = libreport_concat_path_file(b->b_bugzilla_url, "xmlrpc.cgi");
+    b->b_bugzilla_xmlrpc = g_build_filename(b->b_bugzilla_url, "xmlrpc.cgi", NULL);
 
     environ = getenv("Bugzilla_Product");
     if (environ)
