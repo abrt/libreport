@@ -278,7 +278,8 @@ ureport_server_config_load_basic_auth(struct ureport_server_config *config,
     libreport_ureport_server_config_set_basic_auth(config, username, password);
 
     free(tmp_password);
-    libreport_free_map_string(settings);
+    if (settings)
+        g_hash_table_destroy(settings);
 }
 
 void

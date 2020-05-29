@@ -199,7 +199,8 @@ int main(void)
     assert(l == NULL);
 
     libreport_ureport_server_config_destroy(&config);
-    libreport_free_map_string(settings);
+    if (settings)
+        g_hash_table_destroy(settings);
 
     /* value from settings */
     /* IncludeAuthData set to 'yes' but AuthDataItems is empty. */
@@ -221,7 +222,8 @@ int main(void)
     assert(l == NULL);
 
     libreport_ureport_server_config_destroy(&config);
-    libreport_free_map_string(settings);
+    if (settings)
+        g_hash_table_destroy(settings);
 
     /* value from settings */
     /* IncludeAuthData set to 'yes' */
@@ -244,7 +246,8 @@ int main(void)
     assert(strcmp(l->next->data, "type") == 0);
 
     libreport_ureport_server_config_destroy(&config);
-    libreport_free_map_string(settings);
+    if (settings)
+        g_hash_table_destroy(settings);
 
     /* value from env */
     /* HTTPAuth set to 'username:password' */
@@ -277,7 +280,8 @@ int main(void)
     unsetenv("uReport_HTTPAuth");
     unsetenv("uReport_AuthDataItems");
 
-    libreport_free_map_string(settings);
+    if (settings)
+        g_hash_table_destroy(settings);
 
     libreport_ureport_server_config_destroy(&config);
 
@@ -307,7 +311,8 @@ int main(void)
 
     unsetenv("LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH");
 
-    libreport_free_map_string(settings);
+    if (settings)
+        g_hash_table_destroy(settings);
 
     libreport_ureport_server_config_destroy(&config);
 
@@ -1137,7 +1142,8 @@ int main(void)
     free(ureport);
 
     libreport_ureport_server_config_destroy(&config);
-    libreport_free_map_string(settings);
+    if (settings)
+        g_hash_table_destroy(settings);
 
     /* auth with unknown uReport_AuthDataItems */
     libreport_ureport_server_config_init(&config);
@@ -1155,7 +1161,8 @@ int main(void)
     free(ureport);
 
     libreport_ureport_server_config_destroy(&config);
-    libreport_free_map_string(settings);
+    if (settings)
+        g_hash_table_destroy(settings);
     delete_dump_dir("./test");
 
     return 0;

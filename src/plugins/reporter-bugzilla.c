@@ -351,7 +351,8 @@ int main(int argc, char **argv)
             map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
             problem_data_get_osinfo(problem_data, osinfo);
             set_default_settings(osinfo, settings);
-            libreport_free_map_string(osinfo);
+            if (osinfo)
+                g_hash_table_destroy(osinfo);
         }
     }
 
@@ -376,7 +377,8 @@ int main(int argc, char **argv)
         /* WRONG! set_settings() does not copy the strings, it merely sets up pointers
          * to settings[] dictionary:
          */
-        /*libreport_free_map_string(settings);*/
+        /*if (settings)
+         * g_hash_table_destroy(settings);*/
     }
     /* either we got Bugzilla_CreatePrivate from settings or -g was specified on cmdline */
     rhbz.b_create_private |= (opts & OPT_g);
@@ -420,7 +422,8 @@ int main(int argc, char **argv)
 
                     product = g_strdup(libreport_get_map_string_item_or_NULL(os_release_map, "REDHAT_BUGZILLA_PRODUCT"));
 
-                    libreport_free_map_string(os_release_map);
+                    if (os_release_map)
+                        g_hash_table_destroy(os_release_map);
                     free(os_release);
 
                     if (product == NULL)
@@ -605,7 +608,8 @@ int main(int argc, char **argv)
         map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
         problem_data_get_osinfo(problem_data, osinfo);
         libreport_parse_osinfo_for_bz(osinfo, &rhbz.b_product, &rhbz.b_product_version);
-        libreport_free_map_string(osinfo);
+        if (osinfo)
+            g_hash_table_destroy(osinfo);
 
         if (!rhbz.b_product || !rhbz.b_product_version)
             error_msg_and_die(_("Can't determine Bugzilla Product from problem data."));

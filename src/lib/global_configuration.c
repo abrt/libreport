@@ -90,7 +90,8 @@ void libreport_free_global_configuration(void)
 {
     if (s_global_settings != NULL)
     {
-        libreport_free_map_string(s_global_settings);
+        if (s_global_settings)
+            g_hash_table_destroy(s_global_settings);
         s_global_settings = NULL;
     }
 }

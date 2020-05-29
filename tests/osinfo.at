@@ -18,7 +18,8 @@ int main(void)
     {
         /* Test for empty input */
         libreport_parse_osinfo("", osinfo);
-        libreport_free_map_string(osinfo);
+        if (osinfo)
+            g_hash_table_destroy(osinfo);
         osinfo = NULL;
     }
     osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
@@ -40,7 +41,8 @@ int main(void)
         assert(0 == strcmp("Fedora 19 (Schrödinger\'s Cat)", libreport_get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME)));
         assert(0 == strcmp("0;34", libreport_get_map_string_item_or_NULL(osinfo, "ANSI_COLOR")));
         assert(0 == strcmp("cpe:/o:fedoraproject:fedora:18", libreport_get_map_string_item_or_NULL(osinfo, "CPE_NAME")));
-        libreport_free_map_string(osinfo);
+        if (osinfo)
+            g_hash_table_destroy(osinfo);
         osinfo = NULL;
     }
     osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
@@ -69,7 +71,8 @@ int main(void)
         assert(0 == strcmp("Rawhide", libreport_get_map_string_item_or_NULL(osinfo, "REDHAT_BUGZILLA_PRODUCT_VERSION")));
         assert(0 == strcmp("Fedora", libreport_get_map_string_item_or_NULL(osinfo, "REDHAT_SUPPORT_PRODUCT")));
         assert(0 == strcmp("Rawhide", libreport_get_map_string_item_or_NULL(osinfo, "REDHAT_SUPPORT_PRODUCT_VERSION")));
-        libreport_free_map_string(osinfo);
+        if (osinfo)
+            g_hash_table_destroy(osinfo);
         osinfo = NULL;
     }
     osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
@@ -95,7 +98,8 @@ int main(void)
         assert(NULL == libreport_get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME));
         assert(0 == strcmp("0;34", libreport_get_map_string_item_or_NULL(osinfo, "ANSI_COLOR")));
         assert(0 == strcmp("cpe:/o:fedoraproject:fedora:18", libreport_get_map_string_item_or_NULL(osinfo, "CPE_NAME")));
-        libreport_free_map_string(osinfo);
+        if (osinfo)
+            g_hash_table_destroy(osinfo);
         osinfo = NULL;
     }
     return 0;
@@ -233,7 +237,8 @@ void test(const char *osinfo_bytes, const char *url)
     TS_ASSERT_STRING_EQ(default_BugzillaURL, url, "Tested URL");
 
     free(default_BugzillaURL);
-    libreport_free_map_string(osinfo);
+    if (osinfo)
+        g_hash_table_destroy(osinfo);
 }
 
 int main(void)
@@ -413,7 +418,8 @@ int main(void)
 
         problem_data_get_osinfo(pd, osinfo);
         assert(0 == strcmp("Fedora", libreport_get_map_string_item_or_NULL(osinfo, OSINFO_NAME)));
-        libreport_free_map_string(osinfo);
+        if (osinfo)
+            g_hash_table_destroy(osinfo);
         problem_data_free(pd);
     }
     pd = problem_data_new();
@@ -423,7 +429,8 @@ int main(void)
 
         problem_data_get_osinfo(pd, osinfo);
         assert(0 == strcmp("Fedora release 19 (Schrödinger's Cat)", libreport_get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME)));
-        libreport_free_map_string(osinfo);
+        if (osinfo)
+            g_hash_table_destroy(osinfo);
         problem_data_free(pd);
     }
     pd = problem_data_new();
@@ -441,7 +448,8 @@ int main(void)
 
         problem_data_get_osinfo(pd, osinfo);
         assert(0 == strcmp("Red Hat Enterprise Linux Client", libreport_get_map_string_item_or_NULL(osinfo, OSINFO_NAME)));
-        libreport_free_map_string(osinfo);
+        if (osinfo)
+            g_hash_table_destroy(osinfo);
         problem_data_free(pd);
     }
     pd = problem_data_new();
@@ -453,7 +461,8 @@ int main(void)
 
         problem_data_get_osinfo(pd, osinfo);
         assert(0 == strcmp("Red Hat Enterprise Linux Client 7.0 Beta (Maipo)", libreport_get_map_string_item_or_NULL(osinfo, OSINFO_PRETTY_NAME)));
-        libreport_free_map_string(osinfo);
+        if (osinfo)
+            g_hash_table_destroy(osinfo);
         problem_data_free(pd);
     }
 

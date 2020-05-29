@@ -18,12 +18,6 @@
 */
 #include "internal_libreport.h"
 
-void libreport_free_map_string(map_string_t *ms)
-{
-    if (ms)
-        g_hash_table_destroy(ms);
-}
-
 map_string_t *libreport_clone_map_string(map_string_t *ms)
 {
     if (ms == NULL)
