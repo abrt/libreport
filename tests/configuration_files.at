@@ -64,8 +64,8 @@ int main(int argc, char **argv)
 
     {
         /* Self check */
-        map_string_t *first = libreport_new_map_string();
-        map_string_t *second = libreport_new_map_string();
+        map_string_t *first = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+        map_string_t *second = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
         assert(EQUAL == map_string_equals(first, first));
         assert(EQUAL == map_string_equals(first, second));
@@ -103,13 +103,13 @@ int main(int argc, char **argv)
     }
 
     {
-        map_string_t *first = libreport_new_map_string();
+        map_string_t *first = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
         insert_map_string(first, g_strdup("success"), g_strdup("\"total\""));
         insert_map_string(first, g_strdup("failure"), g_strdup("\"none\""));
         insert_map_string(first, g_strdup("effort"), g_strdup("\"minimal\""));
         insert_map_string(first, g_strdup("state"), g_strdup("\"done\""));
 
-        map_string_t *second = libreport_new_map_string();
+        map_string_t *second = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
         assert(libreport_load_conf_file(CONF_PATH, second, 0));
 
@@ -188,8 +188,8 @@ int main(int argc, char **argv)
 
     {
         /* Self check */
-        map_string_t *first = libreport_new_map_string();
-        map_string_t *second = libreport_new_map_string();
+        map_string_t *first = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+        map_string_t *second = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
         assert(EQUAL == map_string_equals(first, first));
         assert(EQUAL == map_string_equals(first, second));
@@ -227,8 +227,8 @@ int main(int argc, char **argv)
     }
 
     {
-        map_string_t *first = libreport_new_map_string();
-        map_string_t *second = libreport_new_map_string();
+        map_string_t *first = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+        map_string_t *second = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
         assert(!libreport_load_conf_file_from_dirs(CONF_NAME, NULL, second, 0));
 
@@ -243,8 +243,8 @@ int main(int argc, char **argv)
             NULL,
         };
 
-        map_string_t *first = libreport_new_map_string();
-        map_string_t *second = libreport_new_map_string();
+        map_string_t *first = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+        map_string_t *second = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
         assert(!libreport_load_conf_file_from_dirs(CONF_NAME, dir_vec, second, 0));
 
@@ -260,10 +260,10 @@ int main(int argc, char **argv)
             NULL,
         };
 
-        map_string_t *first = libreport_new_map_string();
+        map_string_t *first = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
         libreport_load_conf_file(DEFAULT_DIR"/"CONF_NAME, first, 0);
 
-        map_string_t *second = libreport_new_map_string();
+        map_string_t *second = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
         assert(libreport_load_conf_file_from_dirs(CONF_NAME, dir_vec, second, 0));
 
         assert(EQUAL == map_string_equals(first, second));
@@ -280,12 +280,12 @@ int main(int argc, char **argv)
             NULL,
         };
 
-        map_string_t *first = libreport_new_map_string();
+        map_string_t *first = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
         libreport_load_conf_file(DEFAULT_DIR"/"CONF_NAME, first, 0);
         libreport_load_conf_file(FIRST_DIR"/"CONF_NAME, first, 0);
         libreport_load_conf_file(SECOND_DIR"/"CONF_NAME, first, 0);
 
-        map_string_t *second = libreport_new_map_string();
+        map_string_t *second = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
         assert(libreport_load_conf_file_from_dirs(CONF_NAME, dir_vec, second, 0));
 
         assert(EQUAL == map_string_equals(first, second));
@@ -303,12 +303,12 @@ int main(int argc, char **argv)
             NULL,
         };
 
-        map_string_t *first = libreport_new_map_string();
+        map_string_t *first = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
         libreport_load_conf_file(DEFAULT_DIR"/"CONF_NAME, first, 0);
         libreport_load_conf_file(FIRST_DIR"/"CONF_NAME, first, 0);
         libreport_load_conf_file(SECOND_DIR"/"CONF_NAME, first, 0);
 
-        map_string_t *second = libreport_new_map_string();
+        map_string_t *second = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
         assert(!libreport_load_conf_file_from_dirs(CONF_NAME, dir_vec, second, 0));
 
         assert(EQUAL == map_string_equals(first, second));
@@ -348,7 +348,7 @@ int main(void)
             -1,
         };
 
-        map_string_t *settings = libreport_new_map_string();
+        map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
         assert(libreport_load_conf_file_from_dirs_ext(CONF_NAME, dir_vec, dir_flags_vec, settings, 0));
 
@@ -420,8 +420,8 @@ int main(int argc, char **argv)
 
     {
         /* Self check */
-        map_string_t *first = libreport_new_map_string();
-        map_string_t *second = libreport_new_map_string();
+        map_string_t *first = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+        map_string_t *second = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
         assert(EQUAL == map_string_equals(first, first));
         assert(EQUAL == map_string_equals(first, second));
@@ -459,7 +459,7 @@ int main(int argc, char **argv)
     }
 
     {
-        map_string_t *first = libreport_new_map_string();
+        map_string_t *first = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
         insert_map_string(first, g_strdup("success"), g_strdup("total"));
         insert_map_string(first, g_strdup("failure"), g_strdup("none"));
         insert_map_string(first, g_strdup("effort"), g_strdup("minimal"));
@@ -481,7 +481,7 @@ int main(int argc, char **argv)
         assert(libreport_save_conf_file(conf_path, first) || !"Save in not existing directory");
 
         {
-            map_string_t *second = libreport_new_map_string();
+            map_string_t *second = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
             assert(libreport_load_conf_file(conf_path, second, 0) || !"Loaded from not existing directory");
 
             assert(EQUAL == map_string_equals(first, second) || !"The loaded configuration equals to the saved configuration");
@@ -490,7 +490,7 @@ int main(int argc, char **argv)
         }
 
         {
-            map_string_t *second = libreport_new_map_string();
+            map_string_t *second = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
             unlink(CUSTOM_CONF);
             assert(libreport_save_conf_file(CUSTOM_CONF, first) || !"Saved at relative path");
@@ -507,7 +507,7 @@ int main(int argc, char **argv)
     }
 
     {   /* Test that keys removed from the conf map are also removed from the corresponding file */
-        map_string_t *first = libreport_new_map_string();
+        map_string_t *first = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
         insert_map_string(first, g_strdup("success"), g_strdup("total"));
         insert_map_string(first, g_strdup("failure"), g_strdup("none"));
         insert_map_string(first, g_strdup("effort"), g_strdup("minimal"));
@@ -520,7 +520,7 @@ int main(int argc, char **argv)
         libreport_remove_map_string_item(first, "state");
         assert(libreport_save_conf_file(CUSTOM_CONF, first) || !"Saved updated configuration");
 
-        map_string_t *second = libreport_new_map_string();
+        map_string_t *second = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
         assert(libreport_load_conf_file(CUSTOM_CONF, second, 0) || !"Load the updated conf from relative path");
 
         assert(EQUAL == map_string_equals(first, second) || !"The loaded configuration equals to the saved configuration");
@@ -531,7 +531,7 @@ int main(int argc, char **argv)
         libreport_remove_map_string_item(first, "effort");
         assert(libreport_save_conf_file(CUSTOM_CONF, first) || !"Saved empty configuration");
 
-        second = libreport_new_map_string();
+        second = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
         assert(libreport_load_conf_file(CUSTOM_CONF, second, 0) || !"Load the empty conf from relative path");
 
         assert(EQUAL == map_string_equals(first, second) || !"The loaded configuration equals to the empty configuration");

@@ -204,7 +204,7 @@ int main(int argc, char **argv)
     //TODO:
     //ExcludeFiles = foo,bar*,b*z
 
-    map_string_t *settings = libreport_new_map_string();
+    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     if (conf_file)
         libreport_load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 

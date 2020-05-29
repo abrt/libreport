@@ -522,7 +522,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
     g_string_append_printf(status_whiteboard, "abrt_hash:%s;", duphash);
 
     {   /* Add fields from /etc/os-release to Whiteboard for simple metrics. */
-        map_string_t *osinfo = libreport_new_map_string();
+        map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
         problem_data_get_osinfo(problem_data, osinfo);
 
         /* This is the highest abstraction level I am willing to introduce now.

@@ -86,7 +86,7 @@ bool libreport_load_user_settings(const char *application_name)
 
     if (user_settings)
         libreport_free_map_string(user_settings);
-    user_settings = libreport_new_map_string();
+    user_settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
     return libreport_load_conf_file(conf_path, user_settings, false);
 }

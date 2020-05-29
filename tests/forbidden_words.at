@@ -28,7 +28,7 @@ TS_MAIN
     g_list_free_full(dynamic_words, (GDestroyNotify)free);
 
     const char *static_words[] = { "one", "two", "three", "four", NULL };
-    libreport_xsetenv("LIBREPORT_DEBUG_USER_CONF_BASE_DIR", CONF_DIR_PATH);
+    g_setenv("LIBREPORT_DEBUG_USER_CONF_BASE_DIR", CONF_DIR_PATH, TRUE);
 
     TS_ASSERT_STDERR_EQ_BEGIN
     {

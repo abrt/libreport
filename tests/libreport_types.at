@@ -52,7 +52,7 @@ int main(int argc, char **argv)
 
     {
         const char *const key = "my_bool";
-        map_string_t *map = libreport_new_map_string();
+        map_string_t *map = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
         int retval = 0;
 
@@ -87,7 +87,7 @@ int main(int argc, char **argv)
 
     {
         const char *const key = "my_int";
-        map_string_t *map = libreport_new_map_string();
+        map_string_t *map = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
         int retval = INT_MIN;
 
@@ -142,7 +142,7 @@ int main(int argc, char **argv)
 
     {
         const char *const key = "my_uint";
-        map_string_t *map = libreport_new_map_string();
+        map_string_t *map = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
         unsigned int retval = 0;
 
@@ -199,7 +199,7 @@ int main(int argc, char **argv)
 
     {
         const char *const key = "my_string";
-        map_string_t *map = libreport_new_map_string();
+        map_string_t *map = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
         char *retval = NULL;
 
@@ -242,7 +242,7 @@ int main(int argc, char **argv)
 
     {
         const char *const key = "my_string_vector";
-        map_string_t *map = libreport_new_map_string();
+        map_string_t *map = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
         string_vector_ptr_t retval = NULL;
 

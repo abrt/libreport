@@ -122,7 +122,7 @@ int main(void)
     setenv("uReport_IncludeAuthData", "no", 1);
     setenv("uReport_AuthDataItems", "hostname", 1);
 
-    map_string_t *settings = libreport_new_map_string();
+    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
     libreport_ureport_server_config_load(&config, settings);
 
@@ -205,7 +205,7 @@ int main(void)
     /* IncludeAuthData set to 'yes' but AuthDataItems is empty. */
     libreport_ureport_server_config_init(&config);
 
-    settings = libreport_new_map_string();
+    settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     insert_map_string(settings, g_strdup("URL"), g_strdup("settings_url"));
     insert_map_string(settings, g_strdup("SSLVerify"), g_strdup("yes"));
     insert_map_string(settings, g_strdup("SSLClientAuth"), g_strdup(""));
@@ -227,7 +227,7 @@ int main(void)
     /* IncludeAuthData set to 'yes' */
     libreport_ureport_server_config_init(&config);
 
-    settings = libreport_new_map_string();
+    settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     insert_map_string(settings, g_strdup("URL"), g_strdup("settings_url"));
     insert_map_string(settings, g_strdup("SSLVerify"), g_strdup("no"));
     insert_map_string(settings, g_strdup("SSLClientAuth"), g_strdup(""));
@@ -251,7 +251,7 @@ int main(void)
     /* SSLClientAuth set to 'rhsm' */
     libreport_ureport_server_config_init(&config);
 
-    settings = libreport_new_map_string();
+    settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
     setenv("uReport_SSLClientAuth", "rhsm", 1);
     setenv("uReport_HTTPAuth", "username:password", 1);
@@ -286,7 +286,7 @@ int main(void)
     /* SSLClientAuth set to 'rhsm' */
     libreport_ureport_server_config_init(&config);
 
-    settings = libreport_new_map_string();
+    settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     insert_map_string(settings, g_strdup("SSLClientAuth"), g_strdup("rhsm"));
     insert_map_string(settings, g_strdup("HTTPAuth"), g_strdup("rhn-username:rhn-password"));
     insert_map_string(settings, g_strdup("AuthDataItems"), g_strdup("hostname, type"));
@@ -1124,7 +1124,7 @@ int main(void)
     struct ureport_server_config config;
     libreport_ureport_server_config_init(&config);
 
-    map_string_t *settings = libreport_new_map_string();
+    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
     setenv("uReport_IncludeAuthData", "yes", 1);
     setenv("uReport_AuthDataItems", "hostname", 1);
@@ -1142,7 +1142,7 @@ int main(void)
     /* auth with unknown uReport_AuthDataItems */
     libreport_ureport_server_config_init(&config);
 
-    settings = libreport_new_map_string();
+    settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
     setenv("uReport_AuthDataItems", "hostname, unknown", 1);
 

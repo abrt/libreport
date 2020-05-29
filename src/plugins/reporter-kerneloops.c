@@ -145,7 +145,7 @@ int main(int argc, char **argv)
     textdomain(PACKAGE);
 #endif
 
-    map_string_t *settings = libreport_new_map_string();
+    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     const char *dump_dir_name = ".";
     GList *conf_file = NULL;
 

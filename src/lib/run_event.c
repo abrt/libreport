@@ -70,7 +70,7 @@ void make_run_event_state_forwarding(struct run_event_state *state)
      * Not sure if we should reset even logging_callback and error_callback?
      */
 
-    libreport_xsetenv("REPORT_CLIENT_SLAVE", "1");
+    g_setenv("REPORT_CLIENT_SLAVE", "1", TRUE);
 }
 
 /* Asynchronous command execution */

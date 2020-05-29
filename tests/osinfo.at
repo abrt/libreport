@@ -14,14 +14,14 @@ AT_TESTFUN([libreport_parse_osinfo],
 int main(void)
 {
     libreport_g_verbose=3;
-    map_string_t *osinfo = libreport_new_map_string();
+    map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     {
         /* Test for empty input */
         libreport_parse_osinfo("", osinfo);
         libreport_free_map_string(osinfo);
         osinfo = NULL;
     }
-    osinfo = libreport_new_map_string();
+    osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     {
         /* Test for standard valid os-release*/
         libreport_parse_osinfo(
@@ -43,7 +43,7 @@ int main(void)
         libreport_free_map_string(osinfo);
         osinfo = NULL;
     }
-    osinfo = libreport_new_map_string();
+    osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     {
         /* Test for standard valid os-release*/
         libreport_parse_osinfo(
@@ -72,7 +72,7 @@ int main(void)
         libreport_free_map_string(osinfo);
         osinfo = NULL;
     }
-    osinfo = libreport_new_map_string();
+    osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     {
         /* Test for standard os-release with few errors */
         libreport_parse_osinfo(
@@ -114,7 +114,7 @@ AT_TESTFUN([libreport_parse_osinfo_for_bz],
 
 void test(const char *osinfo_bytes, const char *product, const char *version)
 {
-    map_string_t *osinfo = libreport_new_map_string();
+    map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     libreport_parse_osinfo(osinfo_bytes, osinfo);
 
     char *built_product = (char *)0xDEADBEAF;
@@ -224,7 +224,7 @@ AT_TESTFUN([parse_osinfo_for_bugurl], [[
 
 void test(const char *osinfo_bytes, const char *url)
 {
-    map_string_t *osinfo = libreport_new_map_string();
+    map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     libreport_parse_osinfo(osinfo_bytes, osinfo);
 
     char *default_BugzillaURL = (char *)0xDEADBEEF;
@@ -291,7 +291,7 @@ AT_TESTFUN([libreport_parse_osinfo_for_rhts],
 
 void test(const char *osinfo_bytes, const char *product, const char *version)
 {
-    map_string_t *osinfo = libreport_new_map_string();
+    map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     libreport_parse_osinfo(osinfo_bytes, osinfo);
 
     char *built_product = (char *)0xDEADBEAF;
@@ -404,7 +404,7 @@ int main(void)
     libreport_g_verbose=3;
 
     problem_data_t *pd = problem_data_new();
-    map_string_t *osinfo = libreport_new_map_string();
+    map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     {
         problem_data_add_text_noteditable(pd, FILENAME_OS_INFO,
              "NAME=Fedora\n"
@@ -417,7 +417,7 @@ int main(void)
         problem_data_free(pd);
     }
     pd = problem_data_new();
-    osinfo = libreport_new_map_string();
+    osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     {
         problem_data_add_text_noteditable(pd, FILENAME_OS_RELEASE, "Fedora release 19 (Schrödinger's Cat)");
 
@@ -427,7 +427,7 @@ int main(void)
         problem_data_free(pd);
     }
     pd = problem_data_new();
-    osinfo = libreport_new_map_string();
+    osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     {
         problem_data_add_text_noteditable(pd, FILENAME_ROOTDIR, "/var/lib/mock");
         problem_data_add_text_noteditable(pd, FILENAME_OS_INFO_IN_ROOTDIR,
@@ -445,7 +445,7 @@ int main(void)
         problem_data_free(pd);
     }
     pd = problem_data_new();
-    osinfo = libreport_new_map_string();
+    osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     {
         problem_data_add_text_noteditable(pd, FILENAME_ROOTDIR, "/var/lib/mock");
         problem_data_add_text_noteditable(pd, FILENAME_OS_RELEASE_IN_ROOTDIR, "Red Hat Enterprise Linux Client 7.0 Beta (Maipo)");
