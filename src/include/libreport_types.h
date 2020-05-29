@@ -52,7 +52,6 @@ int libreport_try_get_map_string_item_as_int(map_string_t *ms, const char *key, 
 void libreport_set_map_string_item_from_uint(map_string_t *ms, const char *key, unsigned int value);
 int libreport_try_get_map_string_item_as_uint(map_string_t *ms, const char *key, unsigned int *value);
 
-void libreport_set_map_string_item_from_string(map_string_t *ms, const char *key, const char *value);
 int libreport_try_get_map_string_item_as_string(map_string_t *ms, const char *key, char **value);
 
 void libreport_set_map_string_item_from_string_vector(map_string_t *ms, const char *key, string_vector_ptr_t value);

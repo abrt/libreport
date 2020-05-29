@@ -216,7 +216,7 @@ int main(int argc, char **argv)
         assert(retval == bck || !"Modifies string('test') return value on failure");
 
         retval = g_strdup(bck);
-        libreport_set_map_string_item_from_string(map, key, bck);
+        g_hash_table_replace(map, g_strdup(key), g_strdup(bck));
 
         free(bck);
         bck = retval;
@@ -231,7 +231,7 @@ int main(int argc, char **argv)
 
         bck = g_strdup(key);
 
-        libreport_set_map_string_item_from_string(map, bck, "test");
+        g_hash_table_replace(map, g_strdup(bck), g_strdup("test"));
         free(bck);
 
         assert(libreport_try_get_map_string_item_as_string(map, key, &retval) || !"Cannot find key string('my_string') after freeing original key");

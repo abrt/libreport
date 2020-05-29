@@ -217,19 +217,19 @@ int main(int argc, char **argv)
     if (!conf_url || conf_url[0] == '\0')
         conf_url = input_url = ask_url(_("Please enter a URL (scp, ftp, etc.) where the problem data is to be exported:"));
 
-    libreport_set_map_string_item_from_string(settings, "UploadUsername", getenv("Upload_Username"));
-    libreport_set_map_string_item_from_string(settings, "UploadPassword", getenv("Upload_Password"));
+    g_hash_table_replace(settings, g_strdup("UploadUsername"), g_strdup(getenv("Upload_Username")));
+    g_hash_table_replace(settings, g_strdup("UploadPassword"), g_strdup(getenv("Upload_Password")));
 
     /* set SSH keys */
     if (ssh_public_key)
-        libreport_set_map_string_item_from_string(settings, "SSHPublicKey", ssh_public_key);
+        g_hash_table_replace(settings, g_strdup("SSHPublicKey"), g_strdup(ssh_public_key));
     else if (getenv("Upload_SSHPublicKey") != NULL)
-        libreport_set_map_string_item_from_string(settings, "SSHPublicKey", getenv("Upload_SSHPublicKey"));
+        g_hash_table_replace(settings, g_strdup("SSHPublicKey"), g_strdup(getenv("Upload_SSHPublicKey")));
 
     if (ssh_private_key)
-        libreport_set_map_string_item_from_string(settings, "SSHPrivateKey", ssh_private_key);
+        g_hash_table_replace(settings, g_strdup("SSHPrivateKey"), g_strdup(ssh_private_key));
     else if (getenv("Upload_SSHPrivateKey") != NULL)
-        libreport_set_map_string_item_from_string(settings, "SSHPrivateKey", getenv("Upload_SSHPrivateKey"));
+        g_hash_table_replace(settings, g_strdup("SSHPrivateKey"), g_strdup(getenv("Upload_SSHPrivateKey")));
 
     char *remote_name = NULL;
     const int result = create_and_upload_archive(dump_dir_name, conf_url, settings, &remote_name);
