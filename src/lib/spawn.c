@@ -19,6 +19,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 #include <glib/gstdio.h>
+#include <glib-unix.h>
 #include "internal_libreport.h"
 
 static char *concat_str_vector(char **strings)
@@ -62,9 +63,9 @@ pid_t libreport_fork_execv_on_steroids(int flags,
 		flags &= ~(EXECFLG_INPUT | EXECFLG_OUTPUT);
 
 	if (flags & EXECFLG_INPUT)
-		libreport_xpipe(pipe_to_child);
+		g_unix_open_pipe(pipe_to_child, 0, NULL);
 	if (flags & EXECFLG_OUTPUT)
-		libreport_xpipe(pipe_fm_child);
+		g_unix_open_pipe(pipe_fm_child, 0, NULL);
 
 	/* Prepare it before fork, to avoid thread-unsafe malloc there */
 	char *prog_as_string = NULL;

@@ -105,7 +105,7 @@ AT_TESTFUN([libreport_get_cmdline], [[
 void test(const char *program, const char *args[], const char *expected)
 {
     int inout[2];
-    libreport_xpipe(inout);
+    g_unix_open_pipe(inout, 0, NULL);
 
     pid_t pid = fork();
     if (pid < 0) {
@@ -198,7 +198,7 @@ AT_TESTFUN([libreport_get_executable], [[
 void test(const char *program, const char *expected, const char *function, const char *argv1)
 {
     int inout[2];
-    libreport_xpipe(inout);
+    g_unix_open_pipe(inout, 0, NULL);
 
     pid_t pid = fork();
     if (pid < 0) {
@@ -455,7 +455,7 @@ AT_TESTFUN([libreport_dump_fd_info], [[
 pid_t prepare_process(void)
 {
     int toparent[2];
-    libreport_xpipe(toparent);
+    g_unix_open_pipe(toparent, 0, NULL);
 
     char *binary = libreport_malloc_readlink("/proc/self/exe");
     pid_t pid = fork();

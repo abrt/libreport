@@ -298,7 +298,6 @@ int libreport_close_on_exec_on(int fd);
 
 char *libreport_xstrdup_between(const char *s, const char *open, const char *close);
 
-void libreport_xpipe(int filedes[2]);
 int libreport_xdup(int from);
 void libreport_xdup2(int from, int to);
 void libreport_xmove_fd(int from, int to);
