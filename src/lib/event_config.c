@@ -200,27 +200,25 @@ static void load_config_files(const char *dir_path)
 
         /* Insert or replace every key/value from keys_and_values to event_config->option */
         map_string_iter_t iter;
-        const char *name;
-        const char *value;
+        gpointer name;
+        gpointer value;
         g_hash_table_iter_init(&iter, keys_and_values);
-        while (libreport_next_map_string_iter(&iter, &name, &value))
+        while (g_hash_table_iter_next(&iter, &name, &value))
         {
             event_option_t *opt;
-            GList *elem = g_list_find_custom(event_config->options, name,
+            GList *elem = g_list_find_custom(event_config->options, (char *)name,
                                             cmp_event_option_name_with_string);
             if (elem)
             {
                 opt = elem->data;
-                // log_warning("conf: replacing '%s' value:'%s'->'%s'", name, opt->value, value);
                 free(opt->eo_value);
             }
             else
             {
-                // log_warning("conf: new value %s='%s'", name, value);
                 opt = new_event_option();
-                opt->eo_name = g_strdup(name);
+                opt->eo_name = g_strdup((char *)name);
             }
-            opt->eo_value = g_strdup(value);
+            opt->eo_value = g_strdup((char *)value);
             if (!elem)
                 event_config->options = g_list_append(event_config->options, opt);
         }
