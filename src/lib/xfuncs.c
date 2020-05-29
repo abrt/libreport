@@ -61,12 +61,6 @@ char *libreport_xstrdup_between(const char *src, const char *open, const char *c
     return g_strndup(start, stop - start);
 }
 
-void libreport_xpipe(int filedes[2])
-{
-    if (pipe(filedes))
-        perror_msg_and_die("Can't create pipe");
-}
-
 int libreport_xdup(int from)
 {
     int fd = dup(from);

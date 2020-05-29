@@ -18,6 +18,7 @@
 */
 #include <sys/utsname.h>
 #include <libtar.h>
+#include <glib-unix.h>
 #include "internal_libreport.h"
 
 // Locking logic:
@@ -2437,7 +2438,7 @@ int dd_create_archive(struct dump_dir *dd, const char *archive_name,
     pid_t child;
     TAR* tar = NULL;
     int pipe_from_parent_to_child[2];
-    libreport_xpipe(pipe_from_parent_to_child);
+    g_unix_open_pipe(pipe_from_parent_to_child, 0, NULL);
     child = fork();
     if (child < 0)
     {

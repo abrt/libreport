@@ -1288,7 +1288,7 @@ void verify_archive(struct dump_dir *dd, const char *file_name,
     int *check_array = g_malloc0(c * sizeof(int));
 
     int pipe_from_parent_to_child[2];
-    libreport_xpipe(pipe_from_parent_to_child);
+    g_unix_open_pipe(pipe_from_parent_to_child, 0, NULL);
     pid_t child = fork();
     if (child < 0)
         perror_msg_and_die("vfork");

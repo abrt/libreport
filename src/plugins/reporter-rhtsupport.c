@@ -17,6 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <libtar.h>
+#include <glib-unix.h>
 #include "ureport.h"
 #include "internal_libreport.h"
 #include "client.h"
@@ -82,7 +83,7 @@ int create_tarball(const char *tempfile, struct dump_dir *dd,
     int retval = 0; /* everything is ok so far .. */
 
     int pipe_from_parent_to_child[2];
-    libreport_xpipe(pipe_from_parent_to_child);
+    g_unix_open_pipe(pipe_from_parent_to_child, 0, NULL);
     pid_t child = fork();
     if (child == 0)
     {
