@@ -337,7 +337,7 @@ int main(int argc, char **argv)
 
     libreport_export_abrt_envvars(0);
 
-    map_string_t *settings = libreport_new_map_string();
+    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     problem_data_t *problem_data = NULL;
 
     if (opts & OPT_d)
@@ -348,7 +348,7 @@ int main(int argc, char **argv)
             libreport_xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
         else
         {
-            map_string_t *osinfo = libreport_new_map_string();
+            map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
             problem_data_get_osinfo(problem_data, osinfo);
             set_default_settings(osinfo, settings);
             libreport_free_map_string(osinfo);
@@ -415,7 +415,7 @@ int main(int argc, char **argv)
 
                 if (os_release != NULL)
                 {
-                    map_string_t *os_release_map = libreport_new_map_string();
+                    map_string_t *os_release_map = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
                     libreport_parse_osinfo(os_release, os_release_map);
 
                     product = g_strdup(libreport_get_map_string_item_or_NULL(os_release_map, "REDHAT_BUGZILLA_PRODUCT"));
@@ -602,7 +602,7 @@ int main(int argc, char **argv)
     {
         free(rhbz.b_product);
         free(rhbz.b_product_version);
-        map_string_t *osinfo = libreport_new_map_string();
+        map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
         problem_data_get_osinfo(problem_data, osinfo);
         libreport_parse_osinfo_for_bz(osinfo, &rhbz.b_product, &rhbz.b_product_version);
         libreport_free_map_string(osinfo);

@@ -309,7 +309,6 @@ off_t libreport_xlseek(int fd, off_t offset, int whence);
 
 char *libreport_xvasprintf(const char *format, va_list p);
 
-void libreport_xsetenv(const char *key, const char *value);
 /*
  * Utility function to unsetenv a string which was possibly putenv'ed.
  * The problem here is that "natural" optimization:

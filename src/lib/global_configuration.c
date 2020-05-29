@@ -55,7 +55,7 @@ bool libreport_load_global_configuration_from_dirs(const char *dirs[], int dir_f
 {
     if (s_global_settings == NULL)
     {
-        s_global_settings = libreport_new_map_string();
+        s_global_settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
         bool ret = libreport_load_conf_file_from_dirs_ext("libreport.conf", dirs, dir_flags, s_global_settings,
                                                /*don't skip without value*/ false);
@@ -153,7 +153,7 @@ void libreport_set_global_create_private_ticket(bool enabled, int flags/*unused 
     assert_global_configuration_initialized();
 
     if (enabled)
-        libreport_xsetenv(CREATE_PRIVATE_TICKET, "1");
+        g_setenv(CREATE_PRIVATE_TICKET, "1", TRUE);
     else
         libreport_safe_unsetenv(CREATE_PRIVATE_TICKET);
 }
@@ -175,7 +175,7 @@ void libreport_set_global_stop_on_not_reportable(bool enabled, int flags/*unused
     assert_global_configuration_initialized();
 
     if (enabled)
-        libreport_xsetenv(STOP_ON_NOT_REPORTABLE, "1");
+        g_setenv(STOP_ON_NOT_REPORTABLE, "1", TRUE);
     else
-        libreport_xsetenv(STOP_ON_NOT_REPORTABLE, "0");
+        g_setenv(STOP_ON_NOT_REPORTABLE, "0", TRUE);
 }

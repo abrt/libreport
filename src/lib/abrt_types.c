@@ -18,11 +18,6 @@
 */
 #include "internal_libreport.h"
 
-map_string_t *libreport_new_map_string(void)
-{
-    return g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
-}
-
 void libreport_free_map_string(map_string_t *ms)
 {
     if (ms)
@@ -34,7 +29,7 @@ map_string_t *libreport_clone_map_string(map_string_t *ms)
     if (ms == NULL)
         return NULL;
 
-    map_string_t *clone = libreport_new_map_string();
+    map_string_t *clone = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
     const char *key;
     const char *value;

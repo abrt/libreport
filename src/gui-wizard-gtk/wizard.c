@@ -1227,7 +1227,7 @@ static void set_excluded_envvar(void)
 
     g_autofree char *var = g_string_free(item_list, FALSE);
     if (var)
-        libreport_xsetenv("EXCLUDE_FROM_REPORT", var);
+        g_setenv("EXCLUDE_FROM_REPORT", var, TRUE);
     else
         unsetenv("EXCLUDE_FROM_REPORT");
 }

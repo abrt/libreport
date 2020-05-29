@@ -134,12 +134,6 @@ char* libreport_xvasprintf(const char *format, va_list p)
     return string_ptr;
 }
 
-void libreport_xsetenv(const char *key, const char *value)
-{
-    if (setenv(key, value, 1))
-        libreport_die_out_of_memory();
-}
-
 void libreport_safe_unsetenv(const char *var_val)
 {
     //char *name = g_strndup(var_val, strchrnul(var_val, '=') - var_val);

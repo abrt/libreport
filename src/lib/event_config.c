@@ -194,7 +194,7 @@ static void load_config_files(const char *dir_path)
         if (new_config)
             event_config = new_event_config(filename);
 
-        map_string_t *keys_and_values = libreport_new_map_string();
+        map_string_t *keys_and_values = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
         libreport_load_conf_file(fullpath, keys_and_values, /*skipKeysWithoutValue:*/ false);
 
@@ -365,7 +365,7 @@ GList *export_event_config(const char *event_name)
                 env_list = g_list_prepend(env_list, opt->eo_name);
 
             /* setenv() makes copies of strings */
-            libreport_xsetenv(opt->eo_name, opt->eo_value);
+            g_setenv(opt->eo_name, opt->eo_value, TRUE);
         }
     }
 
