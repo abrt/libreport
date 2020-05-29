@@ -67,7 +67,7 @@ bool libreport_load_global_configuration_from_dirs(const char *dirs[], int dir_f
         }
 
         map_string_iter_t iter;
-        libreport_init_map_string_iter(&iter, s_global_settings);
+        g_hash_table_iter_init(&iter, s_global_settings);
         const char *key, *value;
         while(libreport_next_map_string_iter(&iter, &key, &value))
         {
