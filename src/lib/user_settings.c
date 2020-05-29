@@ -67,7 +67,7 @@ void libreport_set_app_user_setting(map_string_t *settings, const char *name, co
 
 const char *libreport_get_app_user_setting(map_string_t *settings, const char *name)
 {
-    return libreport_get_map_string_item_or_NULL(settings, name);
+    return g_hash_table_lookup(settings, name);
 }
 
 bool libreport_save_user_settings()

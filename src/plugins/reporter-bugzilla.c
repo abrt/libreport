@@ -146,10 +146,10 @@ static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
     }
     else
     {
-        const char *option = libreport_get_map_string_item_or_NULL(settings, "Product");
+        const char *option = g_hash_table_lookup(settings, "Product");
         if (option)
             b->b_product = g_strdup(option);
-        option = libreport_get_map_string_item_or_NULL(settings, "ProductVersion");
+        option = g_hash_table_lookup(settings, "ProductVersion");
         if (option)
             b->b_product_version = g_strdup(option);
     }
@@ -434,7 +434,7 @@ int main(int argc, char **argv)
                     map_string_t *os_release_map = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
                     libreport_parse_osinfo(os_release, os_release_map);
 
-                    product = g_strdup(libreport_get_map_string_item_or_NULL(os_release_map, "REDHAT_BUGZILLA_PRODUCT"));
+                    product = g_strdup(g_hash_table_lookup(os_release_map, "REDHAT_BUGZILLA_PRODUCT"));
 
                     if (os_release_map)
                         g_hash_table_destroy(os_release_map);

@@ -28,7 +28,7 @@ extern "C" {
 #define UREPORT_CONF_FILE_PATH PLUGINS_CONF_DIR"/ureport.conf"
 
 #define UREPORT_OPTION_VALUE_FROM_CONF(settings, opt, var, tr) do { const char *value = getenv("uReport_"opt); \
-        if (!value) { value = libreport_get_map_string_item_or_NULL(settings, opt); } if (value) { var = tr(value); } \
+        if (!value) { value = g_hash_table_lookup(settings, opt); } if (value) { var = tr(value); } \
     } while(0)
 
 #define UREPORT_SUBMIT_ACTION "reports/new/"

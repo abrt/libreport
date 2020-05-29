@@ -52,7 +52,7 @@ void libreport_set_map_string_item_from_bool(map_string_t *ms, const char *key, 
 }
 
 #define GET_ITEM_OR_RETURN(val_name, conf, item_name)\
-    const char *const val_name = libreport_get_map_string_item_or_NULL(conf, item_name); \
+    const char *const val_name = g_hash_table_lookup(conf, item_name); \
     if (val_name == NULL) \
     { \
         log_debug("Configuration option '%s' not found in loaded settings", item_name); \

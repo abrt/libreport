@@ -120,7 +120,7 @@ string_vector_ptr_t libreport_get_global_always_excluded_elements(void)
     assert_global_configuration_initialized();
 
     char *env_exclude = getenv("EXCLUDE_FROM_REPORT");
-    const char *gc_exclude = libreport_get_map_string_item_or_NULL(s_global_settings, OPT_NAME_EXCLUDED_ELEMENTS);
+    const char *gc_exclude = g_hash_table_lookup(s_global_settings, OPT_NAME_EXCLUDED_ELEMENTS);
 
     if (env_exclude != NULL && gc_exclude == NULL)
         return libreport_string_vector_new_from_string(env_exclude);

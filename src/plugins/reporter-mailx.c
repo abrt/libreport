@@ -110,7 +110,7 @@ static void create_and_send_email(
 
     char* env;
     env = getenv("Mailx_EmailFrom");
-    char *email_from = (env ? g_strdup(env) : g_strdup(libreport_get_map_string_item_or_NULL(settings, "EmailFrom")) ? : ask_email_address("sender", "ABRT Daemon <DoNotReply>"));
+    char *email_from = (env ? g_strdup(env) : g_strdup(g_hash_table_lookup(settings, "EmailFrom")) ? : ask_email_address("sender", "ABRT Daemon <DoNotReply>"));
     env = getenv("Mailx_EmailTo");
     char *email_to = (env ? g_strdup(env) : g_strdup(g_hash_table_lookup(settings, "EmailTo")) ? : ask_email_address("receiver", "root@localhost"));
     env = getenv("Mailx_SendBinaryData");
@@ -123,7 +123,7 @@ static void create_and_send_email(
     if (fmt_file == NULL)
     {
         env = getenv("Mailx_Subject");
-        const char *subject = (env ? env : libreport_get_map_string_item_or_NULL(settings, "Subject") ? : PR_DEFAULT_SUBJECT);
+        const char *subject = (env ? env : g_hash_table_lookup(settings, "Subject") ? : PR_DEFAULT_SUBJECT);
 
         g_autofree char *format_string = g_strdup_printf(PR_MAILX_TEMPLATE, subject);
 

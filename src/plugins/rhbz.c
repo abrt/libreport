@@ -535,7 +535,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
         const char *const opts[] = { "VARIANT_ID", NULL };
         for (const char *const *iter = opts; *iter != NULL; ++iter)
         {
-            const char *v = libreport_get_map_string_item_or_NULL(osinfo, *iter);
+            const char *v = g_hash_table_lookup(osinfo, *iter);
             if (v != NULL)
             {
                 /* semi-colon (;) is the delimiter because /etc/os-release *_ID
