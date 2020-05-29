@@ -117,12 +117,6 @@ off_t libreport_xlseek(int fd, off_t offset, int whence)
     return off;
 }
 
-void libreport_xchdir(const char *path)
-{
-    if (chdir(path))
-        perror_msg_and_die("chdir(%s)", path);
-}
-
 char* libreport_xvasprintf(const char *format, va_list p)
 {
     int r;

@@ -84,7 +84,7 @@ pid_t libreport_fork_execv_on_steroids(int flags,
 		/* Child */
 
 		if (dir)
-			libreport_xchdir(dir);
+			g_chdir(dir);
 
 		if (flags & EXECFLG_SETGUID) {
 			setgroups(1, &gid);
