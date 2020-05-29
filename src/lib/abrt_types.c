@@ -48,7 +48,7 @@ void libreport_string_vector_free(string_vector_ptr_t vector)
 void libreport_set_map_string_item_from_bool(map_string_t *ms, const char *key, int value)
 {
     const char *const raw_value = value ? "yes" : "no";
-    libreport_set_map_string_item_from_string(ms, key, raw_value);
+    g_hash_table_replace(ms, g_strdup(key), g_strdup(raw_value));
 }
 
 #define GET_ITEM_OR_RETURN(val_name, conf, item_name)\
@@ -71,7 +71,7 @@ void libreport_set_map_string_item_from_int(map_string_t *ms, const char *key, i
 {
     char raw_value[sizeof(int)*3 + 1];
     snprintf(raw_value, sizeof(raw_value), "%d", value);
-    libreport_set_map_string_item_from_string(ms, key, raw_value);
+    g_hash_table_replace(ms, g_strdup(key), g_strdup(raw_value));
 }
 
 int libreport_try_get_map_string_item_as_int(map_string_t *ms, const char *key, int *value)
@@ -105,7 +105,7 @@ void libreport_set_map_string_item_from_uint(map_string_t *ms, const char *key, 
 {
     char raw_value[sizeof(int)*3 + 1];
     snprintf(raw_value, sizeof(raw_value), "%u", value);
-    libreport_set_map_string_item_from_string(ms, key, raw_value);
+    g_hash_table_replace(ms, g_strdup(key), g_strdup(raw_value));
 }
 
 int libreport_try_get_map_string_item_as_uint(map_string_t *ms, const char *key, unsigned int *value)
@@ -154,11 +154,6 @@ int libreport_try_get_map_string_item_as_uint(map_string_t *ms, const char *key,
     return 1;
 }
 
-void libreport_set_map_string_item_from_string(map_string_t *ms, const char *key, const char *value)
-{
-    g_hash_table_replace(ms, g_strdup(key), g_strdup(value));
-}
-
 int libreport_try_get_map_string_item_as_string(map_string_t *ms, const char *key, char **value)
 {
     GET_ITEM_OR_RETURN(option, ms, key);
@@ -178,12 +173,12 @@ void libreport_set_map_string_item_from_string_vector(map_string_t *ms, const ch
 {
     if (value == NULL)
     {
-        libreport_set_map_string_item_from_string(ms, key, "");
+        g_hash_table_replace(ms, g_strdup(key), g_strdup(""));
         return;
     }
 
     gchar *opt_val = g_strjoinv(", ", (gchar **)value);
-    libreport_set_map_string_item_from_string(ms, key, opt_val);
+    g_hash_table_replace(ms, g_strdup(key), g_strdup(opt_val));
     g_free(opt_val);
 }
 
