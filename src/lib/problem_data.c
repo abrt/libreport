@@ -582,7 +582,7 @@ problem_data_t *create_problem_data_for_reporting(const char *dump_dir_name)
     problem_data_t *problem_data = problem_data_new();
     problem_data_load_from_dump_dir(problem_data, dd, exclude_items);
     dd_close(dd);
-    libreport_string_vector_free(exclude_items);
+    g_strfreev(exclude_items);
     return problem_data;
 }
 

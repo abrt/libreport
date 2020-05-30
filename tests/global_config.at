@@ -42,7 +42,7 @@ int main(int argc, char **argv)
         assert(excluded != NULL);
         assert(excluded[0] == NULL);
 
-        libreport_string_vector_free(excluded);
+        g_strfreev(excluded);
     }
 
     {
@@ -55,7 +55,7 @@ int main(int argc, char **argv)
         assert(strcmp(excluded[2], "uid") == 0);
         assert(excluded[3] == NULL);
 
-        libreport_string_vector_free(excluded);
+        g_strfreev(excluded);
     }
 
     libreport_free_global_configuration();
@@ -78,7 +78,7 @@ int main(int argc, char **argv)
         assert(strcmp(excluded[2], "proc_pid_status") == 0);
         assert(excluded[3] == NULL);
 
-        libreport_string_vector_free(excluded);
+        g_strfreev(excluded);
     }
 
     {
@@ -94,7 +94,7 @@ int main(int argc, char **argv)
         assert(strcmp(excluded[5], "proc_pid_status") == 0);
         assert(excluded[6] == NULL);
 
-        libreport_string_vector_free(excluded);
+        g_strfreev(excluded);
     }
 
     unlink("libreport.conf");

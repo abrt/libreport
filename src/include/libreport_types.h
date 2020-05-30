@@ -26,7 +26,6 @@ typedef gchar **string_vector_ptr_t;
 typedef const gchar *const *const_string_vector_const_ptr_t;
 
 string_vector_ptr_t libreport_string_vector_new_from_string(const char *vector);
-void libreport_string_vector_free(string_vector_ptr_t vector);
 
 typedef GHashTable map_string_t;
 map_string_t *libreport_clone_map_string(map_string_t *ms);
