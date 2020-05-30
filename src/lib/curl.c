@@ -79,7 +79,8 @@ xcurl_easy_setopt_off_t(CURL *handle, CURLoption option, curl_off_t parameter)
 
 CURLcode curl_easy_perform_with_proxy(CURL *handle, const char *url)
 {
-    GList *proxy_list, *li;
+    g_autolist (GList) proxy_list = NULL;
+    GList *li;
     CURLcode curl_err;
 
     proxy_list = get_proxy_list(url);
@@ -100,8 +101,6 @@ CURLcode curl_easy_perform_with_proxy(CURL *handle, const char *url)
         log_notice("Connecting to %s", url);
         curl_err = curl_easy_perform(handle);
     }
-
-    libreport_list_free_with_free(proxy_list);
 
     return curl_err;
 }
@@ -621,11 +620,11 @@ char *libreport_upload_file_ext(post_state_t *state, const char *url, const char
     const char *password_bck = state->password;
 
     g_autofree char *whole_url = NULL;
-    char *scheme = NULL;
-    char *hostname = NULL;
-    char *username = NULL;
-    char *password = NULL;
-    char *clean_url = NULL;
+    g_autofree char *scheme = NULL;
+    g_autofree char *hostname = NULL;
+    g_autofree char *username = NULL;
+    g_autofree char *password = NULL;
+    g_autofree char *clean_url = NULL;
 
     if (libreport_uri_userinfo_remove(url, &clean_url, &scheme, &hostname, &username, &password, NULL) != 0)
         goto finito;
@@ -687,12 +686,10 @@ char *libreport_upload_file_ext(post_state_t *state, const char *url, const char
                  || state->curl_result == CURLE_REMOTE_ACCESS_DENIED))
         {
             g_autofree char *msg = g_strdup_printf(_("Please enter user name for '%s//%s':"), scheme, hostname);
-            free(username);
             username = libreport_ask(msg);
             if (username != NULL && username[0] != '\0')
             {
                 msg = g_strdup_printf(_("Please enter password for '%s//%s@%s':"), scheme, username, hostname);
-                free(password);
                 password = libreport_ask_password(msg);
                 /* What about empty password? */
                 if (password != NULL && password[0] != '\0')
@@ -717,12 +714,6 @@ char *libreport_upload_file_ext(post_state_t *state, const char *url, const char
     close(stdin_bck);
 
 finito:
-    free(password);
-    free(username);
-    free(hostname);
-    free(scheme);
-    free(clean_url);
-
     state->username = username_bck;
     state->password = password_bck;
 

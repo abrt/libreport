@@ -21,7 +21,7 @@
 
 char *libreport_concat_path_basename(const char *path, const char *filename)
 {
-    char *abspath = realpath(filename, NULL);
+    g_autofree char *abspath = realpath(filename, NULL);
     char *base = strrchr((abspath ? abspath : filename), '/');
 
     /* If realpath failed and filename is malicious (say, "/foo/.."),
@@ -39,7 +39,6 @@ char *libreport_concat_path_basename(const char *path, const char *filename)
         base = buf;
     }
     char *name = g_build_filename(path ? path : "", base, NULL);
-    free(abspath);
     return name;
 }
 

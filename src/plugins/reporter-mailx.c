@@ -110,9 +110,9 @@ static void create_and_send_email(
 
     char* env;
     env = getenv("Mailx_EmailFrom");
-    char *email_from = (env ? g_strdup(env) : g_strdup(g_hash_table_lookup(settings, "EmailFrom")) ? : ask_email_address("sender", "ABRT Daemon <DoNotReply>"));
+    g_autofree char *email_from = (env ? g_strdup(env) : g_strdup(g_hash_table_lookup(settings, "EmailFrom")) ? : ask_email_address("sender", "ABRT Daemon <DoNotReply>"));
     env = getenv("Mailx_EmailTo");
-    char *email_to = (env ? g_strdup(env) : g_strdup(g_hash_table_lookup(settings, "EmailTo")) ? : ask_email_address("receiver", "root@localhost"));
+    g_autofree char *email_to = (env ? g_strdup(env) : g_strdup(g_hash_table_lookup(settings, "EmailTo")) ? : ask_email_address("receiver", "root@localhost"));
     env = getenv("Mailx_SendBinaryData");
     if (!env)
         env = g_hash_table_lookup(settings, "SendBinaryData");
@@ -162,12 +162,10 @@ static void create_and_send_email(
 
         problem_report_free(pr);
         problem_formatter_free(pf);
-        free(email_from);
-        free(email_to);
         exit(0);
     }
 
-    char **args = NULL;
+    g_autofree char **args = NULL;
     unsigned arg_size = 0;
     args = append_str_to_vector(args, &arg_size, "/bin/mailx");
 
@@ -176,9 +174,8 @@ static void create_and_send_email(
     {
         args = append_str_to_vector(args, &arg_size, "-a");
         g_autofree char *resolved_path = realpath(dump_dir_name, NULL);
-        char *full_name = g_build_filename(resolved_path ? resolved_path : "", a->data, NULL);
+        g_autofree char *full_name = g_build_filename(resolved_path ? resolved_path : "", a->data, NULL);
         args = append_str_to_vector(args, &arg_size, full_name);
-        free(full_name);
     }
 
     args = append_str_to_vector(args, &arg_size, "-s");
@@ -186,8 +183,6 @@ static void create_and_send_email(
     args = append_str_to_vector(args, &arg_size, "-r");
     args = append_str_to_vector(args, &arg_size, email_from);
     args = append_str_to_vector(args, &arg_size, email_to);
-
-    free(email_from);
 
     /* This makes (some versions of) mailx to wait for child process to finish,
      * and to report its exit code, not useless "always 0" exit code.
@@ -212,11 +207,6 @@ static void create_and_send_email(
     problem_report_free(pr);
     problem_formatter_free(pf);
 
-    while (*args)
-        free(*args++);
-    args -= arg_size;
-    free(args);
-
     problem_data_free(problem_data);
 
     if (!(flag & RM_FLAG_NOTIFY))
@@ -239,8 +229,6 @@ static void create_and_send_email(
         }
         log_warning(_("Email was sent to: %s"), email_to);
     }
-
-    free(email_to);
 }
 
 int main(int argc, char **argv)

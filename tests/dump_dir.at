@@ -585,7 +585,7 @@ int main(int argc, char **argv)
     char *path = tmpnam(NULL);
     struct dump_dir *dd = dd_create(path, -1L, DEFAULT_DUMP_DIR_MODE);
 
-    char *lock_path = g_build_filename(path ? path : "", ".lock", NULL);
+    g_autofree char *lock_path = g_build_filename(path ? path : "", ".lock", NULL);
     struct stat buf;
 
     assert(dd);
@@ -610,7 +610,6 @@ int main(int argc, char **argv)
     dd_close(dd);
 
     assert(stat(lock_path, &buf) != 0 && errno == ENOENT);
-    free(lock_path);
 
     return 0;
 }
@@ -1027,18 +1026,16 @@ int main(void)
     dd_save_text(dd, "empty", "");
     assert(dd_load_int32(dd, "empty", &value) == -EINVAL);
 
-    char *buf = NULL;
+    g_autofree char *buf = NULL;
     asprintf(&buf, "%lld", -1LL + INT32_MIN);
     assert(buf != NULL);
 
     dd_save_text(dd, "below_min", buf);
-    free(buf);
 
     assert(dd_load_int32(dd, "below_min", &value) == -ERANGE);
 
     asprintf(&buf, "%"PRId32, INT32_MIN);
     dd_save_text(dd, "min", buf);
-    free(buf);
 
     assert(dd_load_int32(dd, "min", &value) == 0);
     assert(value == INT32_MIN || !"min");
@@ -1047,7 +1044,6 @@ int main(void)
     assert(buf != NULL);
 
     dd_save_text(dd, "max", buf);
-    free(buf);
 
     assert(dd_load_int32(dd, "max", &value) == 0);
     assert(value == INT32_MAX);
@@ -1056,7 +1052,6 @@ int main(void)
     assert(buf != NULL);
 
     dd_save_text(dd, "above_max", buf);
-    free(buf);
 
     assert(dd_load_int32(dd, "above_max", &value) == -ERANGE);
 
@@ -1112,7 +1107,7 @@ int main(void)
     assert(dd_load_uint32(dd, "min", &value) == 0);
     assert(value == 0 || !"min");
 
-    char *buf = NULL;
+    g_autofree char *buf = NULL;
     asprintf(&buf, "%"PRIu32, UINT32_MAX);
     assert(buf != NULL);
 
@@ -1120,7 +1115,6 @@ int main(void)
     assert(dd_load_uint32(dd, "max", &value) == 0);
     assert(value == UINT32_MAX);
 
-    free(buf);
     asprintf(&buf, "%lld", 1LL + UINT32_MAX);
     assert(buf != NULL);
 
@@ -1175,20 +1169,18 @@ int main(void)
     dd_save_text(dd, "below_min", "-9223372036854775809");
     assert(dd_load_int64(dd, "below_min", &value) == -ERANGE);
 
-    char *buf = NULL;
+    g_autofree char *buf = NULL;
     asprintf(&buf, "%"PRId64, INT64_MIN);
     assert(buf != NULL);
     dd_save_text(dd, "min", buf);
     assert(dd_load_int64(dd, "min", &value) == 0);
     assert(value == INT64_MIN || !"min");
-    free(buf);
 
     asprintf(&buf, "%"PRId64, INT64_MAX);
     assert(buf != NULL);
     dd_save_text(dd, "max", buf);
     assert(dd_load_int64(dd, "max", &value) == 0);
     assert(value == INT64_MAX);
-    free(buf);
 
     dd_save_text(dd, "above_max", "9223372036854775808");
     assert(dd_load_int64(dd, "above_max", &value) == -ERANGE);
@@ -1245,13 +1237,12 @@ int main(void)
     assert(dd_load_uint64(dd, "min", &value) == 0);
     assert(value == 0 || !"min");
 
-    char *buf = NULL;
+    g_autofree char *buf = NULL;
     asprintf(&buf, "%"PRIu64, UINT64_MAX);
     assert(buf != NULL);
     dd_save_text(dd, "max", buf);
     assert(dd_load_uint64(dd, "max", &value) == 0);
     assert(value == UINT64_MAX);
-    free(buf);
 
     dd_save_text(dd, "above_max", "18446744073709551616");
     assert(dd_load_uint64(dd, "above_max", &value) == -ERANGE);
@@ -1349,11 +1340,11 @@ void verify_archive(struct dump_dir *dd, const char *file_name,
                 abort();
             }
 
-            char *original = dd_load_text(dd, path);
+            g_autofree char *original = dd_load_text(dd, path);
             assert(original != NULL);
             assert(original[0] != '\0');
 
-            char *extracted = libreport_xmalloc_xopen_read_close("/tmp/libreport-attest-extracted", NULL);
+            g_autofree char *extracted = libreport_xmalloc_xopen_read_close("/tmp/libreport-attest-extracted", NULL);
             assert(extracted != NULL);
 
             if (strcmp(extracted, original) != 0)
@@ -1361,9 +1352,6 @@ void verify_archive(struct dump_dir *dd, const char *file_name,
                 fprintf(stderr, "Invalid file contents: '%s'\nExp: '%s'\nGot: '%s'\n", path, original, extracted);
                 abort();
             }
-
-            free(original);
-            free(extracted);
 
             continue;
         }
@@ -1843,9 +1831,8 @@ TS_MAIN
         libreport_full_write_str(fd_wronly_noent, "fd_wronly_noent");
         close(fd_wronly_noent);
 
-        char *const noent_contents = dd_load_text(dd, "nofile");
+        g_autofree char *const noent_contents = dd_load_text(dd, "nofile");
         TS_ASSERT_STRING_EQ(noent_contents, "fd_wronly_noent", "Successfully wrote data");
-        free(noent_contents);
     }
 
     TS_ASSERT_SIGNED_EQ(dd_open_item(dd, "time", O_RDONLY | O_EXCL), -ENOTSUP);
@@ -1853,7 +1840,7 @@ TS_MAIN
     const int fd_rdonly_time = dd_open_item(dd, "time", O_RDONLY);
     TS_ASSERT_SIGNED_GE(fd_rdonly_time, 0);
     if (g_testsuite_last_ok) {
-        char *time = dd_load_text(dd, "time");
+        g_autofree char *time = dd_load_text(dd, "time");
         TS_ASSERT_PTR_IS_NOT_NULL(time);
 
         char rdonly_time_contents[16];
@@ -1866,7 +1853,6 @@ TS_MAIN
         else {
             TS_PRINTF("FD %d read error: %s\n", fd_rdonly_time, strerror(errno));
         }
-        free(time);
         close(fd_rdonly_time);
     }
 
@@ -1887,11 +1873,10 @@ TS_MAIN
         if (g_testsuite_last_ok) {
             rdwr_time_contents[bytes_rdwr_time] = '\0';
 
-            char *const time_contents = dd_load_text(dd, "time");
+            g_autofree char *const time_contents = dd_load_text(dd, "time");
             TS_ASSERT_STRING_EQ(rdwr_time_contents, "7654321", "Successfully wrote time data");
             TS_ASSERT_STRING_EQ(time_contents, "7654321", "Successfully wrote time data");
             TS_ASSERT_STRING_EQ(rdwr_time_contents, time_contents, "Read only time");
-            free(time_contents);
 
         }
         else {
@@ -1955,9 +1940,8 @@ TS_MAIN
             TS_ASSERT_STRING_EQ(rdwr_contents, "f_rdwr_noent", "Successfully read data");
             fclose(f_rdwr_noent);
 
-            char *const noent_contents = dd_load_text(dd, "nofile");
+            g_autofree char *const noent_contents = dd_load_text(dd, "nofile");
             TS_ASSERT_STRING_EQ(noent_contents, "f_rdwr_noent", "Successfully wrote data");
-            free(noent_contents);
         }
     }
 
@@ -1997,9 +1981,8 @@ TS_MAIN
             TS_ASSERT_STRING_EQ(rdwr_contents, "7654321", "Successfully read time data");
             fclose(f_rdwr_time);
 
-            char *const time_contents = dd_load_text(dd, "time");
+            g_autofree char *const time_contents = dd_load_text(dd, "time");
             TS_ASSERT_STRING_EQ(time_contents, "7654321", "Successfully wrote time data");
-            free(time_contents);
         }
     }
 

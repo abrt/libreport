@@ -217,11 +217,10 @@ load_stream(FILE *fp)
         if (len && line[len-1] == '\\')
         {
             line[len-1] = '\0';
-            char *next_line = libreport_xmalloc_fgetline(fp);
+            g_autofree char *next_line = libreport_xmalloc_fgetline(fp);
             if (next_line)
             {
                 line = libreport_append_to_malloced_string(line, next_line);
-                free(next_line);
                 goto check_continuation;
             }
         }
@@ -482,13 +481,13 @@ append_short_backtrace(GString *result, problem_data_t *problem_data, bool print
             return 0;
     }
 
-    char *truncated = NULL;
+    g_autofree char *truncated = NULL;
 
     if (core_stacktrace_item || strlen(backtrace_item->content) >= settings->prs_shortbt_max_text_size)
     {
         log_debug("'backtrace' exceeds the text file size, going to append its short version");
 
-        char *error_msg = NULL;
+        g_autofree char *error_msg = NULL;
         const char *type = problem_data_get_content_or_NULL(problem_data, FILENAME_TYPE);
         if (!type)
         {
@@ -513,7 +512,6 @@ append_short_backtrace(GString *result, problem_data_t *problem_data, bool print
         if (!backtrace)
         {
             log_warning(_("Can't parse backtrace: %s"), error_msg);
-            free(error_msg);
             return 0;
         }
 
@@ -542,7 +540,6 @@ append_short_backtrace(GString *result, problem_data_t *problem_data, bool print
                 /*content:*/   truncated ? truncated             : backtrace_item->content,
                 print_item_name
     );
-    free(truncated);
     return 1;
 }
 
@@ -561,10 +558,9 @@ append_item(GString *result, const char *item_name, problem_data_t *pd, GList *c
         if (!(item->flags & CD_FLAG_TXT))
             return 0; /* "I did not print anything" */
 
-        char *formatted = problem_item_format(item);
+        g_autofree char *formatted = problem_item_format(item);
         char *content = formatted ? formatted : item->content;
         append_text(result, item_name, content, print_item_name);
-        free(formatted);
         return 1; /* "I printed something" */
     }
 
@@ -614,13 +610,12 @@ append_item(GString *result, const char *item_name, problem_data_t *pd, GList *c
         if (is_explicit_or_forbidden(name, comment_fmt_spec))
             continue;
 
-        char *formatted = problem_item_format(item);
+        g_autofree char *formatted = problem_item_format(item);
         char *content = formatted ? formatted : item->content;
         char *eol = strchrnul(content, '\n');
         bool is_oneline = (eol[0] == '\0' || eol[1] == '\0');
         if (oneline == is_oneline)
             printed |= append_text(result, name, content, print_item_name);
-        free(formatted);
     }
     if (text && oneline)
     {

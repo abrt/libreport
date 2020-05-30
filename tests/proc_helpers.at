@@ -53,11 +53,10 @@ void test_delim(char delim)
     for (size_t i = ARRAY_SIZE(test_data); i != 0; --i)
     {
         lseek(fd, 0, SEEK_SET);
-        char *value = NULL;
+        g_autofree char *value = NULL;
         printf("Looking for '%s'\n", test_data[i-1][0]);
         TS_ASSERT_FUNCTION(libreport_get_env_variable_ext(fd, delim, test_data[i-1][0], &value));
         TS_ASSERT_STRING_EQ(value, test_data[i-1][1], "Environment value at 'i'");
-        free(value);
     }
 
     close(fd);
@@ -86,10 +85,9 @@ TS_MAIN
     char cwd[257];
     getcwd(cwd, sizeof(cwd));
 
-    char *value = NULL;
+    g_autofree char *value = NULL;
     TS_ASSERT_FUNCTION(libreport_get_env_variable(getpid(), "PWD", &value));
     TS_ASSERT_STRING_EQ(value, cwd, "Test environment variable - PWD");
-    free(value);
 }
 TS_RETURN_MAIN
 ]])
@@ -168,7 +166,7 @@ TS_MAIN
         exit(EXIT_SUCCESS);
     }
 
-    char *binary = libreport_malloc_readlink("/proc/self/exe");
+    g_autofree char *binary = libreport_malloc_readlink("/proc/self/exe");
     const char *args[] = { NULL, "!fo\" \"o", "@blah", "b\na'r", "g\rea\t", "regular", NULL };
 
 #define EXPECTED " '!fo\\\" \\\"o' @blah 'b\\na\\'r' 'g\\rea\\t' regular"
@@ -178,8 +176,6 @@ TS_MAIN
 
     args[0] = "libreport_get_cmdline_at";
     test(binary, args, "libreport_get_cmdline_at" EXPECTED);
-
-    free(binary);
 }
 TS_RETURN_MAIN
 ]])
@@ -269,12 +265,11 @@ TS_MAIN
 {
     if (argc > 1) {
         if (strcmp(argv[1], "delete") == 0) {
-            char *binary = libreport_malloc_readlink("/proc/self/exe");
+            g_autofree char *binary = libreport_malloc_readlink("/proc/self/exe");
             unlink(binary);
             if (access(binary, R_OK) != -1 && errno != !ENOENT) {
                 err(EXIT_FAILURE, "failed to remove %s", binary);
             }
-            free(binary);
         }
 
         char *executable = NULL;
@@ -299,12 +294,10 @@ TS_MAIN
     }
 
     {
-        char *binary = libreport_malloc_readlink("/proc/self/exe");
+        g_autofree char *binary = libreport_malloc_readlink("/proc/self/exe");
 
         test(binary, binary, "libreport_get_executable", "keep");
         test(binary, binary, "libreport_get_executable_at", "keep");
-
-        free(binary);
     }
 
     {
@@ -392,9 +385,8 @@ TS_MAIN
     char wd[PATH_MAX];
     getcwd(wd, sizeof(wd));
 
-    char *cwd = libreport_get_cwd(getpid());
+    g_autofree char *cwd = libreport_get_cwd(getpid());
     TS_ASSERT_STRING_EQ(cwd, wd, "libreport_get_cwd(getpid())");
-    free(cwd);
 
 
     int pid_proc_fd = open("/proc/self", O_DIRECTORY | O_PATH);
@@ -402,10 +394,9 @@ TS_MAIN
         err(EXIT_FAILURE, "open(/proc/self, O_DIRECTORY | O_PATH)");
     }
 
-    char *cwd_at = libreport_get_cwd_at(pid_proc_fd);
+    g_autofree char *cwd_at = libreport_get_cwd_at(pid_proc_fd);
     TS_ASSERT_STRING_EQ(cwd_at, wd, "libreport_get_cwd_at(open(/proc/self))");
     close(pid_proc_fd);
-    free(cwd_at);
 }
 TS_RETURN_MAIN
 ]])
@@ -423,9 +414,8 @@ TS_MAIN
 {
     char *proc_self_root = libreport_malloc_readlink("/proc/self/root");
 
-    char *root_dir = libreport_get_rootdir(getpid());
+    g_autofree char *root_dir = libreport_get_rootdir(getpid());
     TS_ASSERT_STRING_EQ(root_dir, proc_self_root, "libreport_get_rootdir(getpid())");
-    free(root_dir);
 
 
     int pid_proc_fd = open("/proc/self", O_DIRECTORY | O_PATH);
@@ -433,10 +423,9 @@ TS_MAIN
         err(EXIT_FAILURE, "open(/proc/self, O_DIRECTORY | O_PATH)");
     }
 
-    char *root_dir_at = libreport_get_rootdir_at(pid_proc_fd);
+    g_autofree char *root_dir_at = libreport_get_rootdir_at(pid_proc_fd);
     TS_ASSERT_STRING_EQ(root_dir_at, proc_self_root, "libreport_get_rootdir_at(open(/proc/self))");
     close(pid_proc_fd);
-    free(root_dir_at);
 }
 TS_RETURN_MAIN
 ]])
@@ -457,7 +446,7 @@ pid_t prepare_process(void)
     int toparent[2];
     g_unix_open_pipe(toparent, 0, NULL);
 
-    char *binary = libreport_malloc_readlink("/proc/self/exe");
+    g_autofree char *binary = libreport_malloc_readlink("/proc/self/exe");
     pid_t pid = fork();
     if (pid < 0) {
         err(EXIT_FAILURE, "fork");
@@ -481,8 +470,6 @@ pid_t prepare_process(void)
     }
 
     close(toparent[1]);
-
-    free(binary);
 
     /* Wait for child */
     char buf[8];
@@ -520,7 +507,7 @@ void check_file_contents(const char *fdinfo_filename)
         { .fd = 3, .file = "/etc/group", },
     };
 
-    char *file = libreport_xmalloc_xopen_read_close(fdinfo_filename, NULL);
+    g_autofree char *file = libreport_xmalloc_xopen_read_close(fdinfo_filename, NULL);
     int fdno = 0;
     char *cursor = file;
     char *line = file;
@@ -539,7 +526,6 @@ void check_file_contents(const char *fdinfo_filename)
             TS_ASSERT_SIGNED_EQ(res, 2);
             TS_ASSERT_SIGNED_EQ(fd, fds[fdno].fd);
             TS_ASSERT_STRING_EQ(file, fds[fdno].file, "FD file name");
-            free(file);
         }
 
         line = cursor;
@@ -582,7 +568,6 @@ void check_file_contents(const char *fdinfo_filename)
     }
 
     TS_ASSERT_SIGNED_EQ(fdno, sizeof(fds)/sizeof(fds[0]));
-    free(file);
 }
 
 TS_MAIN
@@ -692,10 +677,9 @@ AT_TESTFUN([get_fs-u_g-id], [[
 
 TS_MAIN
 {
-    char *proc_pid_status = libreport_xmalloc_xopen_read_close("/proc/self/status", NULL);
+    g_autofree char *proc_pid_status = libreport_xmalloc_xopen_read_close("/proc/self/status", NULL);
     TS_ASSERT_SIGNED_EQ(libreport_get_fsuid(proc_pid_status), getuid());
     TS_ASSERT_SIGNED_EQ(libreport_get_fsgid(proc_pid_status), getgid());
-    free(proc_pid_status);
 }
 TS_RETURN_MAIN
 ]])
@@ -788,7 +772,7 @@ void test_get_mountinfo_for_mount_point(
 {
     TS_PRINTF("++++ %s\n", description);
 
-    char *buf = NULL;
+    g_autofree char *buf = NULL;
 
     FILE *mntnf_file = fmemopen((void *)input, strlen(input), "r");
     if (mntnf_file == NULL) {
@@ -816,7 +800,6 @@ void test_get_mountinfo_for_mount_point(
     }
 
     fclose(mntnf_file);
-    free(buf);
 
     TS_PRINTF("---- %s\n", description);
 }
@@ -945,7 +928,7 @@ AT_TESTFUN([libreport_dump_namespace_diff], [[
 
 void check_file_contents(const char *filename)
 {
-    char *expected;
+    g_autofree char *expected;
     struct stat st;
 
     char const *pid_for_children = "default";
@@ -977,10 +960,8 @@ void check_file_contents(const char *filename)
                          "uts : default\n",
                          cgroup, pid_for_children, time, time_for_children);
 
-    char *file = libreport_xmalloc_xopen_read_close(filename, NULL);
+    g_autofree char *file = libreport_xmalloc_xopen_read_close(filename, NULL);
     TS_ASSERT_STRING_EQ(file, expected, "Namespaces");
-    free(file);
-    free(expected);
 }
 
 TS_MAIN
@@ -1069,7 +1050,7 @@ void write_cmd_output_to_fd(int fd, const char *cmd)
         err(EXIT_FAILURE, "popen(%s)", cmd);
     }
 
-    char *output = libreport_xmalloc_fgetline(proc);
+    g_autofree char *output = libreport_xmalloc_fgetline(proc);
     TS_PRINTF("%s : %s\n", cmd, output);
 
     const int retcode = pclose(proc);
@@ -1086,7 +1067,6 @@ void write_cmd_output_to_fd(int fd, const char *cmd)
     }
 
     libreport_full_write_str(fd, output);
-    free(output);
 }
 
 TS_MAIN

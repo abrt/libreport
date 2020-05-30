@@ -40,9 +40,8 @@ static uid_t parse_uid(const char *uid_str)
 
 static struct dump_dir *try_dd_create(const char *base_dir_name, const char *dir_name, uid_t uid)
 {
-    char *path = g_build_filename(base_dir_name ? base_dir_name : "", dir_name, NULL);
+    g_autofree char *path = g_build_filename(base_dir_name ? base_dir_name : "", dir_name, NULL);
     struct dump_dir *dd = dd_create(path, uid, DEFAULT_DUMP_DIR_MODE);
-    free(path);
     return dd;
 }
 
@@ -77,13 +76,12 @@ struct dump_dir *create_dump_dir_ext(const char *base_dir_name, const char *type
         /* Try $HOME/tmp */
         if (!dd)
         {
-            char *home = getenv("HOME");
+            g_autofree char *home = getenv("HOME");
             if (home && home[0])
             {
                 home = g_build_filename(home, "tmp", NULL);
                 /*mkdir(home, 0777); - do we want this? */
                 dd = try_dd_create(home, problem_id, uid);
-                free(home);
             }
         }
 //TODO: try user's home dir obtained by getpwuid(getuid())?
@@ -107,7 +105,7 @@ struct dump_dir *create_dump_dir_ext(const char *base_dir_name, const char *type
      * reporting from anaconda where we can't read /etc/{system,redhat}-release
      * and os_release is taken from anaconda
      */
-    char *uid_str = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    g_autofree char *uid_str = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     const uid_t crashed_uid = uid_str != NULL ? /*uid already saved*/-1 : uid;
     dd_create_basic_files(dd, crashed_uid, NULL);
 
@@ -137,18 +135,14 @@ struct dump_dir *create_dump_dir_ext(const char *base_dir_name, const char *type
     else
         log_notice("No UID provided, keeping the default owner.");
 
-    free(uid_str);
-
-    char *type_str = dd_load_text_ext(dd, FILENAME_TYPE, DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    g_autofree char *type_str = dd_load_text_ext(dd, FILENAME_TYPE, DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     if (type_str == NULL)
         dd_save_text(dd, FILENAME_TYPE, type);
-    free(type_str);
 
     problem_id[strlen(problem_id) - strlen(NEW_PD_SUFFIX)] = '\0';
-    char* new_path = g_build_filename(base_dir_name ? base_dir_name : "", problem_id, NULL);
+    g_autofree char* new_path = g_build_filename(base_dir_name ? base_dir_name : "", problem_id, NULL);
     log_info("Renaming from '%s' to '%s'", dd->dd_dirname, new_path);
     dd_rename(dd, new_path);
-    free(new_path);
 
     return dd;
 }

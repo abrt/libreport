@@ -97,7 +97,8 @@ static int configure_reporter(struct reporter *r, bool skip_if_valid)
     event_option_t *opt;
     bool first = true, cancel = false;
     int num_opts, i;
-    newtComponent text, *options, button_ok, button_cancel, form;
+    newtComponent text, button_ok, button_cancel, form;
+    g_autofree newtComponent *options = NULL;
     newtGrid grid, ogrid, bgrid;
 
     while ((error_list = get_options_with_err_msg(r->name)) ||
@@ -197,8 +198,6 @@ static int configure_reporter(struct reporter *r, bool skip_if_valid)
         newtFormDestroy(form);
         newtGridFree(grid, 1);
         newtPopWindow();
-
-        free(options);
 
         if (error_list)
             g_list_free_full(error_list,(GDestroyNotify)free_invalid_options);
@@ -318,22 +317,20 @@ static int report(const char *dump_dir_name)
         return -1;
     events_as_lines = list_possible_events(dd, NULL, "report");
 
-    char *not_reportable = dd_load_text_ext(dd, FILENAME_NOT_REPORTABLE, 0
+    g_autofree char *not_reportable = dd_load_text_ext(dd, FILENAME_NOT_REPORTABLE, 0
                                             | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
                                             | DD_FAIL_QUIETLY_ENOENT
                                             | DD_FAIL_QUIETLY_EACCES);
 
     if (not_reportable)
     {
-        char *reason = dd_load_text_ext(dd, FILENAME_REASON, 0
+        g_autofree char *reason = dd_load_text_ext(dd, FILENAME_REASON, 0
                                         | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
         g_autofree char *t = g_strdup_printf("%s %s",
                             not_reportable,
                             reason ? : _("(no description)"));
 
         newtWinMessage(_("Error"), _("Ok"), (char *)"%s", t);
-        free(not_reportable);
-        free(reason);
 
         if (libreport_get_global_stop_on_not_reportable())
         {

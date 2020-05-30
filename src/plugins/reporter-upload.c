@@ -37,7 +37,7 @@ static int interactive_upload_file(const char *url, const char *file_name,
 {
     post_state_t *state = new_post_state(POST_WANT_ERROR_MSG);
     state->username = g_hash_table_lookup(settings, "UploadUsername");
-    char *password_inp = NULL;
+    g_autofree char *password_inp = NULL;
     if (state->username != NULL && state->username[0] != '\0')
     {
         /* Load Password only if Username is configured, it doesn't make */
@@ -69,7 +69,6 @@ static int interactive_upload_file(const char *url, const char *file_name,
     else
         free(tmp);
 
-    free(password_inp);
     free_post_state(state);
 
     /* return 0 on success */
@@ -83,7 +82,7 @@ static int create_and_upload_archive(
                 char **remote_name)
 {
     int result = 1; /* error */
-    char* tempfile = NULL;
+    g_autofree char* tempfile = NULL;
 
     /* Create a child gzip which will compress the data */
     /* SELinux guys are not happy with /tmp, using /var/run/abrt */
@@ -127,7 +126,6 @@ static int create_and_upload_archive(
     if (tempfile)
     {
         unlink(tempfile);
-        free(tempfile);
     }
 
     return result;
@@ -208,7 +206,7 @@ int main(int argc, char **argv)
     if (conf_file)
         libreport_load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 
-    char *input_url = NULL;
+    g_autofree char *input_url = NULL;
     const char *conf_url = getenv("Upload_URL");
     if (!conf_url || conf_url[0] == '\0')
         conf_url = url;
@@ -231,7 +229,7 @@ int main(int argc, char **argv)
     else if (getenv("Upload_SSHPrivateKey") != NULL)
         g_hash_table_replace(settings, g_strdup("SSHPrivateKey"), g_strdup(getenv("Upload_SSHPrivateKey")));
 
-    char *remote_name = NULL;
+    g_autofree char *remote_name = NULL;
     const int result = create_and_upload_archive(dump_dir_name, conf_url, settings, &remote_name);
     if (result != 0)
         goto finito;
@@ -251,10 +249,8 @@ int main(int argc, char **argv)
 
         dd_close(dd);
     }
-    free(remote_name);
 
 finito:
-    free(input_url);
     if (settings)
         g_hash_table_destroy(settings);
     return result;

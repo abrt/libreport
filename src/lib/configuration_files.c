@@ -94,11 +94,10 @@ static bool canonicalize_path(const char *path, char *canon_path)
 static bool create_parentdir(char *path)
 {
     bool ret;
-    char *c;
+    g_autofree char *c = NULL;
 
     c = g_path_get_dirname(path);
     ret = g_mkdir_with_parents(c, 0700);
-    g_free(c);
 
     return ret;
 }
@@ -270,7 +269,7 @@ bool libreport_load_conf_file(const char *path, map_string_t *settings, bool ski
     if (!internal_aug_init(&aug, real_path))
         goto finalize;
 
-    char **matches = NULL;
+    g_autofree char **matches = NULL;
     int match_num = 0;
     if (!internal_aug_get_all_option_names(aug, real_path, &matches, &match_num, GAON_FAIL_ON_NOENT))
         goto finalize;
@@ -284,27 +283,20 @@ bool libreport_load_conf_file(const char *path, map_string_t *settings, bool ski
         if (ret == 0)
         {
             log_warning("Option '%s' disappeared from '%s' while parsing", option, real_path);
-            goto cleanup;
+            goto finalize;
         }
         if (ret == -1)
         {
             internal_aug_error_msg(aug, "An error occurred while retrieving an option's value");
-            goto cleanup;
+            goto finalize;
         }
 
         log_info("Loaded option '%s' = '%s'", option, value);
 
         if (!skipKeysWithoutValue || value[0] != '\0')
             g_hash_table_replace(settings, g_strdup(option), g_strdup(value));
-
-        free(matches[i]);
     }
     retval = true;
-
-cleanup:
-    for (; i < match_num; ++i)
-        free(matches[i]);
-    free(matches);
 
 finalize:
     if (aug != NULL)
@@ -346,7 +338,7 @@ bool libreport_load_conf_file_from_dirs_ext(const char *base_name, const char *c
     bool result = true;
     for (size_t i = 0; directories[i] != NULL; ++i)
     {
-        char *conf_file = g_build_filename(directories[i], base_name, NULL);
+        g_autofree char *conf_file = g_build_filename(directories[i], base_name, NULL);
         if (!libreport_load_conf_file(conf_file, settings, skipKeysWithoutValue))
         {
             if (dir_flags && (dir_flags[i] & CONF_DIR_FLAG_OPTIONAL))
@@ -357,7 +349,6 @@ bool libreport_load_conf_file_from_dirs_ext(const char *base_name, const char *c
                 result = false;
             }
         }
-        free(conf_file);
     }
 
     return result;
@@ -392,7 +383,7 @@ bool libreport_save_conf_file(const char *path, map_string_t *settings)
     bool retval = false;
     char real_path[PATH_MAX + 1];
     augeas *aug = NULL;
-    char **option_names = NULL;
+    g_autofree char **option_names = NULL;
     int option_count = 0;
 
     if (!canonicalize_path(path, real_path))
@@ -463,7 +454,6 @@ bool libreport_save_conf_file(const char *path, map_string_t *settings)
             goto finalize;
         }
 
-        free(option_names[i]);
         option_names[i] = NULL;
     }
 
@@ -480,14 +470,6 @@ bool libreport_save_conf_file(const char *path, map_string_t *settings)
     retval = true;
 
 finalize:
-    for (int i = 0; i < option_count; ++i)
-    {
-        if (option_names[i] != NULL)
-            free(option_names[i]);
-    }
-
-    free(option_names);
-
     if (aug != NULL)
         aug_close(aug);
 
@@ -500,9 +482,8 @@ bool libreport_save_plugin_conf_file(const char *name, map_string_t *settings)
     if (plugins_conf_dir == NULL)
         plugins_conf_dir = PLUGINS_CONF_DIR;
 
-    char *conf_path = g_build_filename(plugins_conf_dir, name, NULL);
+    g_autofree char *conf_path = g_build_filename(plugins_conf_dir, name, NULL);
     bool ret = libreport_save_conf_file(conf_path, settings);
-    free(conf_path);
 
     return ret;
 }

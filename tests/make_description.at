@@ -17,17 +17,15 @@ int main(int argc, char **argv)
 
     problem_data_t *pd = problem_data_new();
 
-    char *description = libreport_make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE, MAKEDESC_SHOW_URLS);
+    g_autofree char *description = libreport_make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE, MAKEDESC_SHOW_URLS);
 
     assert(description != NULL || !"Returns NULL for empty problem data");
     assert(description[0] == '\0' || !"Returns non-empty description for empty problem data");
 
-    free(description);
-
     problem_data_add_text_noteditable(pd, FILENAME_REPORTED_TO, "Bugzilla: URL=https://bugzilla.redhat.com/1000000\n");
 
     description = libreport_make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE, MAKEDESC_SHOW_URLS);
-    char *expected = g_strdup_printf("%s: %*s%s\n",
+    g_autofree char *expected = g_strdup_printf("%s: %*s%s\n",
             "Reported", 14 - strlen("Reported"), "", "https://bugzilla.redhat.com/1000000");
 
     if (strcmp(expected, description) != 0)
@@ -36,8 +34,6 @@ int main(int argc, char **argv)
         assert(!"The description for a single Bugzilla URL do not matches the expected description");
     }
 
-    free(description);
-    free(expected);
     problem_data_free(pd);
 
     pd = problem_data_new();
@@ -62,8 +58,6 @@ int main(int argc, char **argv)
         assert(!"The description do not matches the expected description");
     }
 
-    free(description);
-    free(expected);
     problem_data_free(pd);
 
     pd = problem_data_new();
@@ -75,7 +69,6 @@ int main(int argc, char **argv)
     assert(description != NULL || !"Returns NULL for non empty problem data");
     assert(description[0] == '\0' || !"Returns non-empty description for problem data without any URL");
 
-    free(description);
     problem_data_free(pd);
 
     pd = problem_data_new();
@@ -113,9 +106,6 @@ int main(int argc, char **argv)
         assert(!"The description do not matches the expected description");
     }
 
-    free(expected);
-    free(description);
-
     const char *const backtrace = "Extremely long backtrace which does not make sense";
     problem_data_add(pd, FILENAME_BACKTRACE, backtrace,  CD_FLAG_TXT | CD_FLAG_ISNOTEDITABLE);
 
@@ -147,8 +137,6 @@ int main(int argc, char **argv)
         assert(!"The description do not matches the expected description");
     }
 
-    free(expected);
-    free(description);
     problem_data_free(pd);
 
     /* SHOW_URLS DID NOT BREAK THE OLD BEHAVIOUR */
@@ -181,8 +169,6 @@ int main(int argc, char **argv)
         assert(!"The description do not matches the expected description");
     }
 
-    free(expected);
-    free(description);
     problem_data_free(pd);
 
     return 0;
@@ -206,10 +192,10 @@ int main(int argc, char **argv)
 
     problem_data_add_text_noteditable(pd, FILENAME_NOT_REPORTABLE, "not-reportable");
 
-    char *description = libreport_make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE,
+    g_autofree char *description = libreport_make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE,
                                          MAKEDESC_SHOW_URLS);
 
-    char *expected = g_strdup_printf("%s: %*s%s\n",
+    g_autofree char *expected = g_strdup_printf("%s: %*s%s\n",
             "Reported", 14 - strlen("Reported"), "", "cannot be reported");
 
     if (strstr(description, expected) == NULL)
@@ -218,8 +204,6 @@ int main(int argc, char **argv)
         assert(!"The description for not-reportable do not matches the expected description");
     }
 
-    free(description);
-    free(expected);
     problem_data_free(pd);
 
     return 0;

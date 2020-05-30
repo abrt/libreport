@@ -15,7 +15,7 @@ TS_MAIN
     int pipes[2];
     pipe(pipes);
 
-    char *compressedfilename = NULL;
+    g_autofree char *compressedfilename = NULL;
     int r = asprintf(&compressedfilename, "/tmp/libreport-attest-compress.%d.$1", getpid());
     if (r < 0)
         err(EXIT_FAILURE, "compressed file name");
@@ -115,8 +115,6 @@ TS_MAIN
         fprintf(stderr, "Compressed   : %s\n", compressedfilename);
         fprintf(stderr, "Decompressed : %s\n", plainfilename);
     }
-
-    free(compressedfilename);
 }
 TS_RETURN_MAIN
 ]])

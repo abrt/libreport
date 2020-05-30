@@ -709,7 +709,7 @@ static void tv_details_row_activated(
         return;
 
     gint exitcode;
-    gchar *arg[3];
+    g_autofree gchar *arg[3];
     arg[0] = (char *) "xdg-open";
     arg[1] = g_build_filename(g_dump_dir_name ? g_dump_dir_name : "", item_name, NULL);
     arg[2] = NULL;
@@ -753,8 +753,6 @@ static void tv_details_row_activated(
         gtk_widget_destroy(scrolled);
         gtk_widget_destroy(dialog);
     }
-
-    free(arg[1]);
 }
 
 /* static gboolean tv_details_select_cursor_row(
@@ -1398,13 +1396,9 @@ static void update_command_run_log(const char* message, struct analyze_event_dat
         gtk_label_set_text(g_lbl_event_log, message);
 
     /* Don't append new line behind single dot */
-    const char *log_msg = it_is_a_dot ? message : g_strdup_printf("%s\n", message);
+    g_autofree const char *log_msg = it_is_a_dot ? message : g_strdup_printf("%s\n", message);
     append_to_textview(g_tv_event_log, log_msg);
     save_to_event_log(evd, log_msg);
-
-    /* Because of single dot, see lines above */
-    if (log_msg != message)
-        free((void *)log_msg);
 }
 
 static void run_event_gtk_error(const char *error_line, void *param)
@@ -2132,20 +2126,17 @@ static void search_item_to_list_store_item(GtkListStore *store, GtkTreeIter *new
         gtk_text_iter_backward_char(end);
     }
 
-    gchar *tmp = gtk_text_buffer_get_text(word->buffer, beg, &(word->start),
+    g_autofree gchar *tmp = gtk_text_buffer_get_text(word->buffer, beg, &(word->start),
             /*don't include hidden chars*/FALSE);
     g_autofree gchar *prefix = g_markup_escape_text(tmp, /*NULL terminated string*/-1);
-    g_free(tmp);
 
     tmp = gtk_text_buffer_get_text(word->buffer, &(word->start), &(word->end),
             /*don't include hidden chars*/FALSE);
     g_autofree gchar *text = g_markup_escape_text(tmp, /*NULL terminated string*/-1);
-    g_free(tmp);
 
     tmp = gtk_text_buffer_get_text(word->buffer, &(word->end), end,
             /*don't include hidden chars*/FALSE);
     g_autofree gchar *suffix = g_markup_escape_text(tmp, /*NULL terminated string*/-1);
-    g_free(tmp);
 
     char *content = g_strdup_printf("%s<span foreground=\"red\">%s</span>%s", prefix, text, suffix);
 
@@ -2324,13 +2315,10 @@ static gboolean highligh_words_in_tabs(GList *forbidden_words,  GList *allowed_w
 
 static gboolean highlight_forbidden(void)
 {
-    GList *forbidden_words = libreport_load_words_from_file(FORBIDDEN_WORDS_BLACKLLIST);
-    GList *allowed_words = libreport_load_words_from_file(FORBIDDEN_WORDS_WHITELIST);
+    g_autolist (GList) forbidden_words = libreport_load_words_from_file(FORBIDDEN_WORDS_BLACKLLIST);
+    g_autolist (GList) allowed_words = libreport_load_words_from_file(FORBIDDEN_WORDS_WHITELIST);
 
     const gboolean result = highligh_words_in_tabs(forbidden_words, allowed_words, /*case sensitive*/false);
-
-    libreport_list_free_with_free(forbidden_words);
-    libreport_list_free_with_free(allowed_words);
 
     return result;
 }
@@ -2649,7 +2637,7 @@ static gint select_next_page_no(gint current_page_no)
 
         log_info("%s: Looking for next event to process", __func__);
         /* (note: this frees and sets to NULL g_event_selected) */
-        char *event = setup_next_processed_event(&g_auto_event_list);
+        g_autofree char *event = setup_next_processed_event(&g_auto_event_list);
         if (!event)
         {
             current_page_no = PAGENO_EVENT_PROGRESS - 1;
@@ -2658,8 +2646,6 @@ static gint select_next_page_no(gint current_page_no)
 
         if (!get_sensitive_data_permission(event))
         {
-            free(event);
-
             cancel_processing(g_lbl_event_log, /* default message */ NULL, TERMINATE_NOFLAGS);
             current_page_no = PAGENO_EVENT_PROGRESS - 1;
             goto again;
@@ -2668,23 +2654,20 @@ static gint select_next_page_no(gint current_page_no)
         if (problem_data_get_content_or_NULL(g_cd, FILENAME_NOT_REPORTABLE))
         {
 
-            char *msg = g_strdup_printf(_("This problem should not be reported "
+            g_autofree char *msg = g_strdup_printf(_("This problem should not be reported "
                             "(it is likely a known problem). %s"),
                             problem_data_get_content_or_NULL(g_cd, FILENAME_NOT_REPORTABLE)
             );
 
             if (libreport_get_global_stop_on_not_reportable())
             {
-                free(event);
                 cancel_processing(g_lbl_event_log, msg, TERMINATE_NOFLAGS);
-                free(msg);
                 current_page_no = PAGENO_EVENT_PROGRESS - 1;
                 goto again;
             }
             else
             {
                 log_warning("%s", msg);
-                free(msg);
             }
         }
 
@@ -2737,11 +2720,9 @@ static gint select_next_page_no(gint current_page_no)
 
 static void rehighlight_forbidden_words(int page, GtkTextView *tev)
 {
-    GList *forbidden_words = libreport_load_words_from_file(FORBIDDEN_WORDS_BLACKLLIST);
-    GList *allowed_words = libreport_load_words_from_file(FORBIDDEN_WORDS_WHITELIST);
+    g_autolist (GList) forbidden_words = libreport_load_words_from_file(FORBIDDEN_WORDS_BLACKLLIST);
+    g_autolist (GList) allowed_words = libreport_load_words_from_file(FORBIDDEN_WORDS_WHITELIST);
     highligh_words_in_textview(page, tev, forbidden_words, allowed_words, /*case sensitive*/false);
-    libreport_list_free_with_free(forbidden_words);
-    libreport_list_free_with_free(allowed_words);
 }
 
 static void on_sensitive_word_selection_changed(GtkTreeSelection *sel, gpointer user_data)
@@ -2872,7 +2853,7 @@ static void on_btn_add_file(GtkButton *button)
             _("_Open"), GTK_RESPONSE_ACCEPT,
             NULL
     );
-    char *filename = NULL;
+    g_autofree char *filename = NULL;
     if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
         filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
     gtk_widget_destroy(dialog);
@@ -2883,7 +2864,7 @@ static void on_btn_add_file(GtkButton *button)
     {
         char *basename = strrchr(filename, '/');
         if (!basename)  /* wtf? (never happens) */
-            goto free_and_ret;
+            return;
         basename++;
 
         /* TODO: ask for the name to save it as? For now, just use basename */
@@ -2938,8 +2919,6 @@ static void on_btn_add_file(GtkButton *button)
             gtk_dialog_run(GTK_DIALOG(dlg));
             gtk_widget_destroy(dlg);
         }
- free_and_ret:
-        g_free(filename);
     }
 }
 
@@ -2972,9 +2951,8 @@ static void delete_item(GtkTreeView *treeview)
                     struct dump_dir *dd = wizard_open_directory_for_writing(g_dump_dir_name);
                     if (dd)
                     {
-                        char *filename = g_build_filename(g_dump_dir_name, item_name, NULL);
+                        g_autofree char *filename = g_build_filename(g_dump_dir_name, item_name, NULL);
                         unlink(filename);
-                        free(filename);
                         dd_close(dd);
                         g_hash_table_remove(g_cd, item_name);
                         gtk_list_store_remove(g_ls_details, &iter);

@@ -151,9 +151,8 @@ static PyObject *p_dd_load_text(PyObject *pself, PyObject *args)
     {
         return NULL;
     }
-    char *val = dd_load_text_ext(self->dd, name, flags);
+    g_autofree char *val = dd_load_text_ext(self->dd, name, flags);
     PyObject *obj = Py_BuildValue("s", val); /* NB: if val is NULL, obj is None */
-    free(val);
     return obj;
 }
 

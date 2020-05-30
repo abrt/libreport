@@ -28,7 +28,7 @@ int main(void)
 #define SECOND_LINE "ABRT Server: BTHASH=81680083BIGBOOBS"
 #define THIRD_LINE "RHTSupport: TIME=12345678 URL=https://access.redhat.com/home MSG=The world's best IT support"
 
-    char *reported_to = NULL;
+    g_autofree char *reported_to = NULL;
     assert(libreport_add_reported_to_data(&reported_to, FIRST_LINE) || !"Refused to add the first line");
     assert(string_cmp(FIRST_LINE"\n", reported_to) || !"Failed to create reported_to from the line");
 
@@ -46,8 +46,6 @@ int main(void)
 
     assert(!libreport_add_reported_to_data(&reported_to, THIRD_LINE) || !"Added the third line again");
     assert(string_cmp(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n", reported_to) || !"Modified the reported_to text not adding the second again");
-
-    free(reported_to);
 
     return 0;
 }

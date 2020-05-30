@@ -41,18 +41,16 @@ static char *get_conf_path(const char *name)
 
 bool libreport_save_app_conf_file(const char* application_name, map_string_t *settings)
 {
-    char *app_conf_path = get_conf_path(application_name);
+    g_autofree char *app_conf_path = get_conf_path(application_name);
     bool result = libreport_save_conf_file(app_conf_path, settings);
-    free(app_conf_path);
 
     return result;
 }
 
 bool libreport_load_app_conf_file(const char *application_name, map_string_t *settings)
 {
-    char *app_conf_path = get_conf_path(application_name);
+    g_autofree char *app_conf_path = get_conf_path(application_name);
     bool result = libreport_load_conf_file(app_conf_path, settings, false);
-    free(app_conf_path);
 
     return result;
 }

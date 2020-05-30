@@ -194,10 +194,9 @@ problem_details_widget_add_binary(ProblemDetailsWidget *self, const char *label,
         return;
     }
 
-    gchar *size = g_format_size_full((long long)statbuf.st_size, G_FORMAT_SIZE_IEC_UNITS);
+    g_autofree gchar *size = g_format_size_full((long long)statbuf.st_size, G_FORMAT_SIZE_IEC_UNITS);
     g_autofree char *msg = g_strdup_printf(_("$DATA_DIRECTORY/%s (binary file, %s)"), label, size);
     problem_details_widget_add_single_line(self, label, msg);
-    g_free(size);
 }
 
 static void

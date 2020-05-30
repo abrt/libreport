@@ -175,9 +175,8 @@ set_settings(mantisbt_settings_t *m, map_string_t *settings, struct dump_dir *dd
         {
             map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
-            char *os_info_data = dd_load_text(dd, FILENAME_OS_INFO);
+            g_autofree char *os_info_data = dd_load_text(dd, FILENAME_OS_INFO);
             libreport_parse_osinfo(os_info_data, osinfo);
-            free(os_info_data);
 
             parse_osinfo_for_mantisbt(osinfo, &m->m_project, &m->m_project_version);
             if (osinfo)
@@ -573,7 +572,7 @@ int main(int argc, char **argv)
 
             /* get tracker URL if exists */
             struct dump_dir *dd = dd_opendir(dump_dir_name, 0);
-            char *tracker_url = NULL;
+            g_autofree char *tracker_url = NULL;
             if (dd)
             {
                 g_autoptr(report_result_t) reported_to = NULL;
@@ -595,8 +594,6 @@ int main(int argc, char **argv)
             }
 
             int new_id = mantisbt_create_new_issue(&mbt_settings, problem_data, pr, tracker_url);
-
-            free(tracker_url);
 
             if (new_id == -1)
                 return EXIT_FAILURE;

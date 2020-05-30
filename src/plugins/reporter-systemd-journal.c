@@ -307,10 +307,9 @@ int main(int argc, char **argv)
         problem_data_add_text_noteditable(problem_data, BINARY_NAME, binary_name);
 
     /* add problem dir path into problem data */
-    char *abspath = realpath(dump_dir_name, NULL);
+    g_autofree char *abspath = realpath(dump_dir_name, NULL);
     if (abspath)
         problem_data_add_text_noteditable(problem_data, DUMPDIR_PATH, abspath);
-    free(abspath);
 
     /* crash_function element is neeeded by systemd journal messages, save ??, if it doesn't exist */
     const char *crash_function = problem_data_get_content_or_NULL(problem_data, FILENAME_CRASH_FUNCTION);

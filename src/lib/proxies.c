@@ -28,7 +28,7 @@ GList *get_proxy_list(const char *url)
 {
     int i;
     GList *l;
-    char **proxies = NULL;
+    g_autofree char **proxies = NULL;
 
     if (!px_factory)
     {
@@ -45,12 +45,11 @@ GList *get_proxy_list(const char *url)
     for (i = 0, l = NULL; proxies[i]; i++)
         l = g_list_append(l, proxies[i]);
 
-    free(proxies);
-
     /* Don't set proxy if the list contains just "direct://" */
     if (l && !g_list_next(l) && !strcmp(l->data, "direct://"))
     {
-        libreport_list_free_with_free(l);
+        free(l->data);
+        g_list_free(l);
         l = NULL;
     }
 

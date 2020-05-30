@@ -121,8 +121,8 @@ void test(const char *osinfo_bytes, const char *product, const char *version)
     map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     libreport_parse_osinfo(osinfo_bytes, osinfo);
 
-    char *built_product = (char *)0xDEADBEAF;
-    char *built_version = (char *)0xDEADBEAF;
+    g_autofree char *built_product = (char *)0xDEADBEAF;
+    g_autofree char *built_version = (char *)0xDEADBEAF;
     libreport_parse_osinfo_for_bz(osinfo, &built_product, &built_version);
 
     if (product != NULL && built_product != NULL)
@@ -146,9 +146,6 @@ void test(const char *osinfo_bytes, const char *product, const char *version)
     }
     else if (version != built_version)
         assert(!"Invalid result. Both should be NULL");
-
-    free(built_version);
-    free(built_product);
 }
 
 int main(void)
@@ -231,12 +228,11 @@ void test(const char *osinfo_bytes, const char *url)
     map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     libreport_parse_osinfo(osinfo_bytes, osinfo);
 
-    char *default_BugzillaURL = (char *)0xDEADBEEF;
+    g_autofree char *default_BugzillaURL = (char *)0xDEADBEEF;
     libreport_parse_osinfo_for_bug_url(osinfo, &default_BugzillaURL);
 
     TS_ASSERT_STRING_EQ(default_BugzillaURL, url, "Tested URL");
 
-    free(default_BugzillaURL);
     if (osinfo)
         g_hash_table_destroy(osinfo);
 }
@@ -299,8 +295,8 @@ void test(const char *osinfo_bytes, const char *product, const char *version)
     map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     libreport_parse_osinfo(osinfo_bytes, osinfo);
 
-    char *built_product = (char *)0xDEADBEAF;
-    char *built_version = (char *)0xDEADBEAF;
+    g_autofree char *built_product = (char *)0xDEADBEAF;
+    g_autofree char *built_version = (char *)0xDEADBEAF;
     libreport_parse_osinfo_for_rhts(osinfo, &built_product, &built_version);
 
     if (product != NULL && built_product != NULL)
@@ -324,9 +320,6 @@ void test(const char *osinfo_bytes, const char *product, const char *version)
     }
     else if (version != built_version)
         assert(!"Invalid result. Both should be NULL");
-
-    free(built_version);
-    free(built_product);
 }
 
 int main(void)

@@ -65,7 +65,7 @@ int main(int argc, char **argv)
     int comment_file = 0;
     char *attach_value = NULL;
     char *attach_value_from_rt = NULL;
-    char *attach_value_from_rt_data = NULL;
+    g_autofree char *attach_value_from_rt_data = NULL;
     char *report_result_type = NULL;
     char *attach_type = NULL;
     struct dump_dir *dd = NULL;
@@ -342,8 +342,6 @@ int main(int argc, char **argv)
     libreport_ureport_server_response_free(response);
 
 finalize:
-    free(attach_value_from_rt_data);
-
     if (config.ur_prefs.urp_auth_items == auth_items)
         config.ur_prefs.urp_auth_items = NULL;
 

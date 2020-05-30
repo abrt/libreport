@@ -145,7 +145,7 @@ libreport_ureport_server_config_set_client_auth(struct ureport_server_config *co
             libreport_ureport_server_config_set_url(config, g_strdup(RHSM_WEB_SERVICE_URL));
 
         /* always returns non-NULL */
-        char *rhsm_dir = rhsm_config_get_consumer_cert_dir();
+        g_autofree char *rhsm_dir = rhsm_config_get_consumer_cert_dir();
 
         char *cert_full_name = g_build_filename(rhsm_dir, RHSMCON_CERT_NAME, NULL);
         char *key_full_name = g_build_filename(rhsm_dir, RHSMCON_KEY_NAME, NULL);
@@ -182,8 +182,6 @@ libreport_ureport_server_config_set_client_auth(struct ureport_server_config *co
         {
             free(cert_authority_cert_full_name);
         }
-
-        free(rhsm_dir);
     }
     else if (strcmp(client_auth, "puppet") == 0)
     {
@@ -235,7 +233,7 @@ ureport_server_config_load_basic_auth(struct ureport_server_config *config,
 
     map_string_t *settings = NULL;
 
-    char *tmp_password = NULL;
+    g_autofree char *tmp_password = NULL;
     g_autofree char *tmp_username = NULL;
     const char *username = NULL;
     const char *password = NULL;
@@ -277,7 +275,6 @@ ureport_server_config_load_basic_auth(struct ureport_server_config *config,
 
     libreport_ureport_server_config_set_basic_auth(config, username, password);
 
-    free(tmp_password);
     if (settings)
         g_hash_table_destroy(settings);
 }
@@ -655,7 +652,7 @@ libreport_ureport_server_response_save_in_dump_dir(struct ureport_server_respons
 
         {
             report_result_t *result;
-            char *url;
+            g_autofree char *url = NULL;
 
             result = report_result_new_with_label_from_env("ABRT Server");
             url = libreport_ureport_server_response_get_report_url(resp, config);
@@ -664,7 +661,6 @@ libreport_ureport_server_response_save_in_dump_dir(struct ureport_server_respons
 
             libreport_add_reported_to_entry(dd, result);
 
-            free(url);
             report_result_free(result);
         }
     }
@@ -702,9 +698,8 @@ char *
 libreport_ureport_server_response_get_report_url(struct ureport_server_response *resp,
                                        struct ureport_server_config *config)
 {
-    char *bthash_url = g_build_filename(config->ur_url ? config->ur_url : "", BTHASH_URL_SFX, NULL);
+    g_autofree char *bthash_url = g_build_filename(config->ur_url ? config->ur_url : "", BTHASH_URL_SFX, NULL);
     char *report_url = g_build_filename(bthash_url, resp->urr_bthash, NULL);
-    free(bthash_url);
     return report_url;
 }
 
@@ -744,7 +739,7 @@ libreport_ureport_from_dump_dir_ext(const char *dump_dir_path, const struct urep
         for ( ; iter != NULL; iter = g_list_next(iter))
         {
             const char *key = (const char *)iter->data;
-            char *value = dd_load_text_ext(dd, key,
+            g_autofree char *value = dd_load_text_ext(dd, key,
                     DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE | DD_FAIL_QUIETLY_ENOENT);
 
             if (value == NULL)
@@ -754,7 +749,6 @@ libreport_ureport_from_dump_dir_ext(const char *dump_dir_path, const struct urep
             }
 
             sr_report_add_auth(report, key, value);
-            free(value);
         }
 
         dd_close(dd);
@@ -801,7 +795,7 @@ libreport_ureport_do_post(const char *json, struct ureport_server_config *config
         "Connection: close",
         NULL,
     };
-    char *dest_url = g_build_filename(config->ur_url ? config->ur_url : "", url_sfx, NULL);
+    g_autofree char *dest_url = g_build_filename(config->ur_url ? config->ur_url : "", url_sfx, NULL);
 
     post_string_as_form_data(post_state, dest_url, "application/json",
                              headers, json);
@@ -822,8 +816,6 @@ libreport_ureport_do_post(const char *json, struct ureport_server_config *config
                                  headers, json);
 
     }
-
-    free(dest_url);
 
     return post_state;
 }

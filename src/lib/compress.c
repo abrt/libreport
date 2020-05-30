@@ -185,7 +185,7 @@ decompress_fd_lz4(int fdi, int fdo)
 
     LZ4F_decompressionContext_t ctx = NULL;
     LZ4F_errorCode_t c;
-    char *buf = NULL;
+    g_autofree char *buf = NULL;
     char *src = NULL;
     int r = 0;
     struct stat fdist;
@@ -248,9 +248,6 @@ decompress_fd_lz4(int fdi, int fdo)
 cleanup:
     if (ctx != NULL)
         LZ4F_freeDecompressionContext(ctx);
-
-    if (buf != NULL)
-        free(buf);
 
     if (src != NULL)
         munmap(src, fdist.st_size);

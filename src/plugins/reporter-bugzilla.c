@@ -88,23 +88,20 @@ struct bugzilla_struct {
 
 static void set_default_settings(map_string_t *osinfo, map_string_t *settings)
 {
-    char *default_BugzillaURL;
+    g_autofree char *default_BugzillaURL;
     libreport_parse_osinfo_for_bug_url(osinfo, &default_BugzillaURL);
     /* if BugzillaURL is defined in conf_file or env , it will replace this value */
     g_hash_table_replace(settings, g_strdup("BugzillaURL"), g_strdup(default_BugzillaURL));
     log_debug("Loaded BUG_REPORT_URL '%s' from os-release", default_BugzillaURL);
-    free(default_BugzillaURL);
 
-    char *default_Product;
-    char *default_ProductVersion;
+    g_autofree char *default_Product;
+    g_autofree char *default_ProductVersion;
     libreport_parse_osinfo_for_bz(osinfo, &default_Product, &default_ProductVersion);
     /* if Product or ProductVersion is defined in conf_file or env , it will replace this value */
     g_hash_table_replace(settings, g_strdup("Product"), g_strdup(default_Product));
     g_hash_table_replace(settings, g_strdup("ProductVersion"), g_strdup(default_ProductVersion));
     log_debug("Loaded Product '%s' from os-release", default_Product);
     log_debug("Loaded ProductVersion '%s' from os-release", default_ProductVersion);
-    free(default_Product);
-    free(default_ProductVersion);
 }
 
 static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
@@ -426,7 +423,7 @@ int main(int argc, char **argv)
              */
             if (product == NULL && (product = getenv("Bugzilla_Product")) == NULL)
             {
-                char *os_release = load_text_file("/etc/os-release",
+                g_autofree char *os_release = load_text_file("/etc/os-release",
                                 DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE | DD_OPEN_FOLLOW);
 
                 if (os_release != NULL)
@@ -438,7 +435,6 @@ int main(int argc, char **argv)
 
                     if (os_release_map)
                         g_hash_table_destroy(os_release_map);
-                    free(os_release);
 
                     if (product == NULL)
                         error_msg(_("Failed to get 'REDHAT_BUGZILLA_PRODUCT' from '/etc/os-release'."));
