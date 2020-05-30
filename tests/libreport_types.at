@@ -23,17 +23,17 @@ int main(int argc, char **argv)
     assert(strcmp("bang", vector[2]) == 0 || !"The third item");
     assert(NULL == vector[3] || !"NULL-terminated");
 
-    libreport_string_vector_free(vector);
+    g_strfreev(vector);
 
     vector = libreport_string_vector_new_from_string(NULL);
     assert(NULL == vector[0] || !"NULL-terminated");
 
-    libreport_string_vector_free(vector);
+    g_strfreev(vector);
 
     vector = libreport_string_vector_new_from_string("");
     assert(NULL == vector[0] || !"NULL-terminated");
 
-    libreport_string_vector_free(vector);
+    g_strfreev(vector);
 }
 ]])
 
@@ -263,7 +263,7 @@ int main(int argc, char **argv)
         assert(libreport_try_get_map_string_item_as_string_vector(map, key, &retval) || !"Failed to return string_vector('foo, blah, bang')");
         assert(retval || !"Failed to convert 'foo, blah, bang' to string_vector('foo, blah, bang')");
 
-        libreport_string_vector_free(vector);
+        g_strfreev(vector);
 
         if (map)
             g_hash_table_destroy(map);

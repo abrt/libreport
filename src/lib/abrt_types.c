@@ -40,11 +40,6 @@ string_vector_ptr_t libreport_string_vector_new_from_string(const char *value)
     return g_strsplit(value == NULL ? "" : value, ", ", /*all tokens*/0);
 }
 
-void libreport_string_vector_free(string_vector_ptr_t vector)
-{
-    g_strfreev(vector);
-}
-
 void libreport_set_map_string_item_from_bool(map_string_t *ms, const char *key, int value)
 {
     const char *const raw_value = value ? "yes" : "no";
