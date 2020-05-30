@@ -39,10 +39,9 @@ search_item_t *sitem_new(int page,
                          GtkTextIter start,
                          GtkTextIter end
                          );
-void sitem_free(search_item_t *item);
 int sitem_compare(const search_item_t *item1, const search_item_t *item2);
 GtkTextIter *sitem_get_start_iter(search_item_t *item);
 GtkTextIter *sitem_get_end_iter(search_item_t *item);
-bool sitem_is_in_sitemlist(const search_item_t *item, GList *item_list);
+gint sitem_contains(const search_item_t *parent, const search_item_t *subitem);
 
 #endif //SEARCH_ITEM_H_
