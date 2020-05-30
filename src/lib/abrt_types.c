@@ -152,16 +152,3 @@ int libreport_try_get_map_string_item_as_string(map_string_t *ms, const char *ke
     *value = dup;
     return 1;
 }
-
-void libreport_set_map_string_item_from_string_vector(map_string_t *ms, const char *key, string_vector_ptr_t value)
-{
-    if (value == NULL)
-    {
-        g_hash_table_replace(ms, g_strdup(key), g_strdup(""));
-        return;
-    }
-
-    gchar *opt_val = g_strjoinv(", ", (gchar **)value);
-    g_hash_table_replace(ms, g_strdup(key), g_strdup(opt_val));
-    g_free(opt_val);
-}
