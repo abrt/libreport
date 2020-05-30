@@ -16,7 +16,7 @@ int main(int argc, char **argv)
     libreport_g_verbose = 3;
 
     const char *const raw_value = "foo, blah, bang";
-    string_vector_ptr_t vector = libreport_string_vector_new_from_string(raw_value);
+    string_vector_ptr_t vector = g_strsplit(raw_value, ", ", 0);
 
     assert(strcmp("foo", vector[0]) == 0 || !"The first item");
     assert(strcmp("blah", vector[1]) == 0 || !"The second item");
@@ -25,12 +25,12 @@ int main(int argc, char **argv)
 
     g_strfreev(vector);
 
-    vector = libreport_string_vector_new_from_string(NULL);
+    vector = g_strsplit("", ", ", 0);
     assert(NULL == vector[0] || !"NULL-terminated");
 
     g_strfreev(vector);
 
-    vector = libreport_string_vector_new_from_string("");
+    vector = g_strsplit("", ", ", 0);
     assert(NULL == vector[0] || !"NULL-terminated");
 
     g_strfreev(vector);
@@ -254,7 +254,7 @@ int main(int argc, char **argv)
         assert(retval == NULL || !"Modifies string_vector(NULL) return value on failure");
 
         const char *const raw_value = "foo, blah, bang";
-        string_vector_ptr_t vector = libreport_string_vector_new_from_string(raw_value);
+        string_vector_ptr_t vector = g_strsplit(raw_value, ", ", 0);
 
         libreport_set_map_string_item_from_string_vector(map, key, vector);
 

@@ -35,11 +35,6 @@ map_string_t *libreport_clone_map_string(map_string_t *ms)
     return clone;
 }
 
-string_vector_ptr_t libreport_string_vector_new_from_string(const char *value)
-{
-    return g_strsplit(value == NULL ? "" : value, ", ", /*all tokens*/0);
-}
-
 void libreport_set_map_string_item_from_bool(map_string_t *ms, const char *key, int value)
 {
     const char *const raw_value = value ? "yes" : "no";
@@ -181,6 +176,6 @@ int libreport_try_get_map_string_item_as_string_vector(map_string_t *ms, const c
 {
     GET_ITEM_OR_RETURN(option, ms, key);
 
-    *value = libreport_string_vector_new_from_string(option);
+    *value = g_strsplit(option, ", ", 0);
     return 1;
 }
