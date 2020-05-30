@@ -237,8 +237,6 @@ int main(int argc, char **argv)
 
         string_vector_ptr_t retval = NULL;
 
-        assert(!libreport_try_get_map_string_item_as_string_vector(map, key, &retval) || !"Returns string_vector(NULL) even if option does not exist");
-        assert(retval == NULL || !"Modifies string_vector(NULL) return value on failure");
 
         const char *const raw_value = "foo, blah, bang";
         string_vector_ptr_t vector = g_strsplit(raw_value, ", ", 0);
@@ -247,8 +245,6 @@ int main(int argc, char **argv)
 
         assert(g_hash_table_lookup(map, key) || !"Set string_vector('foo, blah, bang')");
         assert(strcmp(raw_value, g_hash_table_lookup(map, key)) == 0 || !"Invalid string repr for string_vector('foo, blah, bang')");
-        assert(libreport_try_get_map_string_item_as_string_vector(map, key, &retval) || !"Failed to return string_vector('foo, blah, bang')");
-        assert(retval || !"Failed to convert 'foo, blah, bang' to string_vector('foo, blah, bang')");
 
         g_strfreev(vector);
 

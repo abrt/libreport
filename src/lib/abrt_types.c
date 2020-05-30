@@ -165,11 +165,3 @@ void libreport_set_map_string_item_from_string_vector(map_string_t *ms, const ch
     g_hash_table_replace(ms, g_strdup(key), g_strdup(opt_val));
     g_free(opt_val);
 }
-
-int libreport_try_get_map_string_item_as_string_vector(map_string_t *ms, const char *key, string_vector_ptr_t *value)
-{
-    GET_ITEM_OR_RETURN(option, ms, key);
-
-    *value = g_strsplit(option, ", ", 0);
-    return 1;
-}
