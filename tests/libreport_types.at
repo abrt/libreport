@@ -64,19 +64,6 @@ int main(int argc, char **argv)
         assert(!libreport_try_get_map_string_item_as_bool(map, key, &retval) || !"Returns bool(1) even if option does not exist");
         assert(retval == 1 || !"Modifies bool(1) return value on failure");
 
-        libreport_set_map_string_item_from_bool(map, key, 1);
-        assert(g_hash_table_lookup(map, key) || !"Set bool(1)");
-        assert(strcmp("yes", g_hash_table_lookup(map, key)) == 0 || !"Invalid string repr for bool(1)");
-        assert(libreport_try_get_map_string_item_as_bool(map, key, &retval) || !"Failed to return bool(1)");
-        assert(retval || !"Failed to convert 'yes' to bool(1)");
-
-        libreport_set_map_string_item_from_bool(map, key, 0);
-        assert(g_hash_table_lookup(map, key) || !"Set bool(0)");
-        assert(strcmp("no", g_hash_table_lookup(map, key)) == 0 || !"Invalid string repr for bool(0)");
-        retval = 1;
-        assert(libreport_try_get_map_string_item_as_bool(map, key, &retval) || !"Failed to return bool(0)");
-        assert(!retval || !"Failed to convert 'no' to bool(0)");
-
         g_hash_table_replace(map, g_strdup(key), g_strdup("foo"));
         retval = 1;
         assert(libreport_try_get_map_string_item_as_bool(map, key, &retval) || !"Can not convert a random string to bool(0)");

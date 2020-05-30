@@ -35,12 +35,6 @@ map_string_t *libreport_clone_map_string(map_string_t *ms)
     return clone;
 }
 
-void libreport_set_map_string_item_from_bool(map_string_t *ms, const char *key, int value)
-{
-    const char *const raw_value = value ? "yes" : "no";
-    g_hash_table_replace(ms, g_strdup(key), g_strdup(raw_value));
-}
-
 #define GET_ITEM_OR_RETURN(val_name, conf, item_name)\
     const char *const val_name = g_hash_table_lookup(conf, item_name); \
     if (val_name == NULL) \
