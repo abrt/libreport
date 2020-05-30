@@ -50,30 +50,3 @@ int libreport_try_get_map_string_item_as_bool(map_string_t *ms, const char *key,
     *value = libreport_string_to_bool(option);
     return true;
 }
-
-int libreport_try_get_map_string_item_as_int(map_string_t *ms, const char *key, int *value)
-{
-    GET_ITEM_OR_RETURN(option, ms, key);
-
-    char *endptr = NULL;
-    errno = 0;
-    long raw_value = strtol(option, &endptr, 10);
-
-    /* Check for various possible errors */
-    if (raw_value > INT_MAX || raw_value < INT_MIN || errno == ERANGE)
-    {
-        log_warning("Value of option '%s' is out of integer range", key);
-        return 0;
-    }
-
-    if ((errno != 0 && raw_value == 0)
-        || (endptr == option) /* empty */
-        || (endptr[0] != '\0') /* trailing non-digits */)
-    {
-        log_warning("Value of option '%s' is not an integer", key);
-        return 0;
-    }
-
-    *value = (int)raw_value;
-    return 1;
-}
