@@ -270,7 +270,7 @@ char *submit_ureport(const char *dump_dir_name, struct ureport_server_config *co
         return report_result_get_bthash(rr_bthash);
     }
 
-    g_autofree char *json = libreport_ureport_from_dump_dir(dump_dir_name);
+    g_autofree char *json = libreport_ureport_from_dump_dir_ext(dump_dir_name, NULL);
     if (json == NULL)
     {
         log_notice(_("Failed to generate microreport from the problem data"));
