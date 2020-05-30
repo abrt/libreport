@@ -137,18 +137,3 @@ int libreport_try_get_map_string_item_as_uint(map_string_t *ms, const char *key,
     *value = (unsigned int)raw_value;
     return 1;
 }
-
-int libreport_try_get_map_string_item_as_string(map_string_t *ms, const char *key, char **value)
-{
-    GET_ITEM_OR_RETURN(option, ms, key);
-
-    char *dup = strdup(option);
-    if (dup == NULL)
-    {
-        log_warning("Insufficient memory for value of option '%s'", key);
-        return 0;
-    }
-
-    *value = dup;
-    return 1;
-}

@@ -186,49 +186,5 @@ int main(int argc, char **argv)
         if (map)
             g_hash_table_destroy(map);
     }
-
-    {
-        const char *const key = "my_string";
-        map_string_t *map = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
-
-        char *retval = NULL;
-
-        assert(!libreport_try_get_map_string_item_as_string(map, key, &retval) || !"Returns string(NULL) even if option does not exist");
-        assert(retval == NULL || !"Modifies string(NULL) return value on failure");
-
-        char *bck = g_strdup("test");
-        retval = bck;
-
-        assert(!libreport_try_get_map_string_item_as_string(map, key, &retval) || !"Returns string('test') even if option does not exist");
-        assert(retval == bck || !"Modifies string('test') return value on failure");
-
-        retval = g_strdup(bck);
-        g_hash_table_replace(map, g_strdup(key), g_strdup(bck));
-
-        free(bck);
-        bck = retval;
-        retval = NULL;
-
-        assert(libreport_try_get_map_string_item_as_string(map, key, &retval) || !"Cannot return string('test')");
-        assert(NULL != retval || !"The return value is not assigned to the return variable");
-        assert(strcmp(bck, retval) == 0 || !"Garbled string('test') after freeing the original pointer");
-
-        free(bck);
-        free(retval);
-
-        bck = g_strdup(key);
-
-        g_hash_table_replace(map, g_strdup(bck), g_strdup("test"));
-        free(bck);
-
-        assert(libreport_try_get_map_string_item_as_string(map, key, &retval) || !"Cannot find key string('my_string') after freeing original key");
-        assert(NULL != retval || !"The return value is not assigned to the return variable");
-        assert(strcmp(bck, retval) == 0 || !"Garbled string('test') after freeing the original key value");
-
-        /* TODO: try to store really big string */
-
-        if (map)
-            g_hash_table_destroy(map);
-    }
 }
 ]])
