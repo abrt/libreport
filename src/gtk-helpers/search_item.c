@@ -84,16 +84,3 @@ gint sitem_contains(const search_item_t *parent, const search_item_t *subitem)
     return !(sitem_get_start_offset(subitem) >= sitem_get_start_offset(parent)
              && sitem_get_end_offset(subitem) <= sitem_get_end_offset(parent));
 }
-
-bool sitem_is_in_sitemlist(const search_item_t *item, GList *item_list)
-{
-    return (g_list_find_custom(item_list, item, (GCompareFunc)sitem_contains) != NULL);
-}
-
-void sitem_free(search_item_t *item)
-{
-    if (!item)
-        return;
-
-    free(item);
-}

@@ -2095,9 +2095,10 @@ static GList *find_words_in_text_buffer(int page,
             int offset = gtk_text_iter_get_offset(&end_match);
             gtk_text_buffer_get_iter_at_offset(buffer, &start_find, offset);
 
-            if (sitem_is_in_sitemlist(found_word, ignore_sitem_list))
+            if (g_list_find_custom(ignore_sitem_list, found_word, (GCompareFunc)sitem_contains))
             {
-                sitem_free(found_word);
+                if (found_word)
+                    free(found_word);
                 // don't count the word if it's part of some of the ignored words
                 continue;
             }
