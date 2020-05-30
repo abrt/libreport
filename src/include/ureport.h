@@ -278,9 +278,6 @@ ureport_attach(struct ureport_server_config *config,
  * @param dump_dir_path FS path to dump dir
  * @return Malloced JSON string
  */
-char *
-libreport_ureport_from_dump_dir(const char *dump_dir_path);
-
 char *libreport_ureport_from_dump_dir_ext(const char *dump_dir_path,
                                 const struct ureport_preferences *preferences);
 

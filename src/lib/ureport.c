@@ -760,12 +760,6 @@ libreport_ureport_from_dump_dir_ext(const char *dump_dir_path, const struct urep
     return json_ureport;
 }
 
-char *
-libreport_ureport_from_dump_dir(const char *dump_dir_path)
-{
-    return libreport_ureport_from_dump_dir_ext(dump_dir_path, /*no preferences*/NULL);
-}
-
 struct post_state *
 libreport_ureport_do_post(const char *json, struct ureport_server_config *config,
                 const char *url_sfx)
