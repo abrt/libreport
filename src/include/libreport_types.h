@@ -29,7 +29,6 @@ typedef GHashTable map_string_t;
 map_string_t *libreport_clone_map_string(map_string_t *ms);
 int libreport_try_get_map_string_item_as_bool(map_string_t *ms, const char *key, int *value);
 
-void libreport_set_map_string_item_from_int(map_string_t *ms, const char *key, int value);
 int libreport_try_get_map_string_item_as_int(map_string_t *ms, const char *key, int *value);
 
 

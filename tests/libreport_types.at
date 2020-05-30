@@ -87,26 +87,6 @@ int main(int argc, char **argv)
         assert(!libreport_try_get_map_string_item_as_int(map, key, &retval) || !"Returns INT_MAX even if option does not exist");
         assert(retval == INT_MAX || !"Modifies INT_MAX value on failure");
 
-        libreport_set_map_string_item_from_int(map, key, 12345);
-        assert(g_hash_table_lookup(map, key) || !"Set int(12345)");
-        assert(strcmp("12345", g_hash_table_lookup(map, key)) == 0 || !"Invalid string repr for int(12345)");
-        assert(libreport_try_get_map_string_item_as_int(map, key, &retval) || !"Failed to return int(12345)");
-        assert(12345 == retval || !"Failed to convert '12345' to int(12345)");
-
-        libreport_set_map_string_item_from_int(map, key, -12345);
-        assert(g_hash_table_lookup(map, key) || !"Set int(-12345)");
-        assert(strcmp("-12345", g_hash_table_lookup(map, key)) == 0 || !"Invalid string repr for int(-12345)");
-        assert(libreport_try_get_map_string_item_as_int(map, key, &retval) || !"Failed to return int(-12345)");
-        assert(-12345 == retval || !"Failed to convert '-12345' to int(-12345)");
-
-        libreport_set_map_string_item_from_int(map, key, INT_MAX);
-        assert(libreport_try_get_map_string_item_as_int(map, key, &retval) || !"Cannot return INT_MAX");
-        assert(retval == INT_MAX || !"Garbled INT_MAX");
-
-        libreport_set_map_string_item_from_int(map, key, INT_MIN);
-        assert(libreport_try_get_map_string_item_as_int(map, key, &retval) || !"Cannot return INT_MIN");
-        assert(retval == INT_MIN || !"Garbled INT_MIN");
-
         retval = 69;
         g_hash_table_replace(map, g_strdup(key), g_strdup(""));
         assert(!libreport_try_get_map_string_item_as_int(map, key, &retval) || !"Converts '' to number");
