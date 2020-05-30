@@ -123,17 +123,15 @@ char *libreport_strremovech(char *str, int ch)
 
 GString *libreport_strbuf_append_strfv(GString *strbuf, const char *format, va_list p)
 {
-    char *string_ptr = libreport_xvasprintf(format, p);
+    g_autofree char *string_ptr = libreport_xvasprintf(format, p);
     g_string_append(strbuf, string_ptr);
-    free(string_ptr);
     return strbuf;
 }
 
 GString *libreport_strbuf_prepend_strfv(GString *strbuf, const char *format, va_list p)
 {
-    char *string_ptr = libreport_xvasprintf(format, p);
+    g_autofree char *string_ptr = libreport_xvasprintf(format, p);
     g_string_prepend(strbuf, string_ptr);
-    free(string_ptr);
     return strbuf;
 }
 

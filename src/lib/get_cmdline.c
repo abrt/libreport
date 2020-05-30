@@ -285,7 +285,7 @@ int libreport_dump_fd_info_at(int pid_proc_fd, FILE *dest)
             continue;
 
         FILE *fdinfo = NULL;
-        char *fdname = NULL;
+        g_autofree char *fdname = NULL;
         char line[LINE_MAX];
         int fd;
 
@@ -297,11 +297,11 @@ int libreport_dump_fd_info_at(int pid_proc_fd, FILE *dest)
         /* Use the directory entry from /proc/[pid]/fd with /proc/[pid]/fdinfo */
         fd = openat(proc_fdinfo_fd, dent->d_name, O_NOFOLLOW|O_CLOEXEC|O_RDONLY);
         if (fd < 0)
-            goto dumpfd_next_fd;
+            continue;
 
         fdinfo = fdopen(fd, "re");
         if (fdinfo == NULL)
-            goto dumpfd_next_fd;
+            continue;
 
         while (fgets(line, sizeof(line)-1, fdinfo))
         {
@@ -312,9 +312,6 @@ int libreport_dump_fd_info_at(int pid_proc_fd, FILE *dest)
             fputs(line, dest);
         }
         fclose(fdinfo);
-
-dumpfd_next_fd:
-        free(fdname);
     }
 
 dumpfd_cleanup:

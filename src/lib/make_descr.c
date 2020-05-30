@@ -115,7 +115,7 @@ char *libreport_make_description(problem_data_t *problem_data, char **names_to_s
         if ((item->flags & CD_FLAG_TXT)
          && !strchr(item->content, '\n')
         ) {
-            char *formatted = problem_item_format(item);
+            g_autofree char *formatted = problem_item_format(item);
             char *output = formatted ? formatted : item->content;
             int pad = 16 - (strlen(key) + 2);
             if (pad < 0) pad = 0;
@@ -139,7 +139,6 @@ char *libreport_make_description(problem_data_t *problem_data, char **names_to_s
                 g_string_append_printf(buf_dsc, "%s: %*s%s\n", key, pad, "", output);
 
             empty = false;
-            free(formatted);
         }
     }
 
@@ -162,15 +161,11 @@ char *libreport_make_description(problem_data_t *problem_data, char **names_to_s
                 for (GList *iter = reports; iter != NULL; iter = g_list_next(iter))
                 {
                     report_result_t *report = iter->data;
-                    char *url;
-
-                    url = report_result_get_url(report);
+                    g_autofree char *url = report_result_get_url(report);
                     if (url == NULL)
                         continue;
 
                     g_string_append_printf(buf_dsc, "%s%s\n", prefix, url);
-
-                    g_free(url);
 
                     if (prefix == first_prefix)
                     {   /* Only the first URL is prefixed by 'Reported:' */
@@ -270,8 +265,8 @@ char *libreport_make_description(problem_data_t *problem_data, char **names_to_s
                 && (strlen(item->content) <= max_text_size
                     || (!strcmp(type, "Kerneloops") && !strcmp(key, FILENAME_BACKTRACE))))
             {
-                char *formatted = problem_item_format(item);
-                char *output = make_description_item_multiline(key, formatted ? formatted : item->content);
+                g_autofree char *formatted = problem_item_format(item);
+                g_autofree char *output = make_description_item_multiline(key, formatted ? formatted : item->content);
 
                 if (output)
                 {
@@ -280,10 +275,7 @@ char *libreport_make_description(problem_data_t *problem_data, char **names_to_s
 
                     g_string_append(buf_dsc, output);
                     empty = false;
-                    free(output);
                 }
-
-                free(formatted);
             }
         }
     }

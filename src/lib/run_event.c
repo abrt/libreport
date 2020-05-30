@@ -415,7 +415,7 @@ static char* pop_next_command(GList **pp_rule_list,
                 int inverted = (eq_sign > cond_str && eq_sign[-1] == '!');
                 g_autofree char *var_name = g_strndup(cond_str, eq_sign - cond_str - (regex|inverted));
                 char *real_val = NULL;
-                char *free_me = NULL;
+                g_autofree char *free_me = NULL;
                 if (pd == NULL)
                     free_me = real_val = dd_load_text_ext(dd, var_name, DD_FAIL_QUIETLY_ENOENT);
                 else
@@ -425,7 +425,6 @@ static char* pop_next_command(GList **pp_rule_list,
                         free_me = real_val = g_strdup("");
                 }
                 int vals_differ = regex ? regcmp_lines(real_val, eq_sign + 1) : strcmp(real_val, eq_sign + 1);
-                free(free_me);
                 if (inverted)
                     vals_differ = !vals_differ;
 
@@ -486,7 +485,7 @@ int spawn_next_command(struct run_event_state *state,
                 const char *event,
                 unsigned execflags
 ) {
-    char *cmd = pop_next_command(&state->rule_list,
+    g_autofree char *cmd = pop_next_command(&state->rule_list,
                 NULL,          /* don't return event_name */
                 NULL,          /* NULL dd: we match by... */
                 NULL,          /* no problem data */
@@ -508,7 +507,7 @@ int spawn_next_command(struct run_event_state *state,
      * and some children want to cd to other directory but still
      * be able to find problem directory by using $DUMP_DIR...
      */
-    char *full_name = realpath(dump_dir_name, NULL);
+    g_autofree char *full_name = realpath(dump_dir_name, NULL);
     /* Export some useful environment variables for children */
     GPtrArray *env_array;
 
@@ -526,8 +525,6 @@ int spawn_next_command(struct run_event_state *state,
         g_ptr_array_add(env_array, g_strdup(variable));
     }
     g_ptr_array_add(env_array, NULL);
-
-    free(full_name);
 
     char *argv[4];
     argv[0] = (char*)"/bin/sh"; // TODO: honor $SHELL?
@@ -548,7 +545,6 @@ int spawn_next_command(struct run_event_state *state,
     state->command_in_fd = pipefds[1];
 
     g_ptr_array_free(env_array, TRUE);
-    free(cmd);
 
     return 0;
 }
@@ -661,8 +657,7 @@ int consume_event_command_output(struct run_event_state *state, const char *dump
              * note that callback may take ownership of buf by returning NULL */
             else if (state->logging_callback)
             {
-                char *logged = state->logging_callback(g_strdup(msg), state->logging_param);
-                free(logged);
+                g_autofree char *logged = state->logging_callback(g_strdup(msg), state->logging_param);
             }
 
             if (response)
@@ -765,8 +760,8 @@ static char *_list_possible_events(struct dump_dir **dd, problem_data_t *pd, con
     for (;;)
     {
         /* Retrieve each cmd, and fetch its EVENT=foo value */
-        char *event_name = NULL;
-        char *cmd = pop_next_command(&rule_list,
+        g_autofree char *event_name = NULL;
+        g_autofree char *cmd = pop_next_command(&rule_list,
                 &event_name,       /* return event_name */
                 dd,                /* match this dd... */
                 pd,                /* no problem data */
@@ -776,10 +771,8 @@ static char *_list_possible_events(struct dump_dir **dd, problem_data_t *pd, con
         if (!cmd)
         {
             free_rule_list(rule_list);
-            free(event_name);
             break;
         }
-        free(cmd);
 
         if (event_name)
         {
@@ -796,7 +789,7 @@ static char *_list_possible_events(struct dump_dir **dd, problem_data_t *pd, con
             }
             g_string_append_printf(result, "%s\n", event_name);
  skip:
-            free(event_name);
+            continue;
         }
     }
 
@@ -817,10 +810,9 @@ GList *list_possible_events_glist(const char *problem_dir_name,
                                   const char *pfx)
 {
     struct dump_dir *dd = dd_opendir(problem_dir_name, DD_OPEN_READONLY);
-    char *events = list_possible_events(dd, problem_dir_name, pfx);
+    g_autofree char *events = list_possible_events(dd, problem_dir_name, pfx);
     GList *l = libreport_parse_delimited_list(events, "\n");
     dd_close(dd);
-    free(events);
 
     return l;
 }
@@ -829,9 +821,8 @@ GList *list_possible_events_problem_data_glist(problem_data_t *pd,
                                   const char *problem_dir_name,
                                   const char *pfx)
 {
-    char *events = list_possible_events_problem_data(pd, problem_dir_name, pfx);
+    g_autofree char *events = list_possible_events_problem_data(pd, problem_dir_name, pfx);
     GList *l = libreport_parse_delimited_list(events, "\n");
-    free(events);
 
     return l;
 }

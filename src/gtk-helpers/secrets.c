@@ -208,9 +208,8 @@ static GVariant *dbus_call_sync(GDBusProxy *proxy, const gchar *method, GVariant
 static bool is_dbus_remote_error(GError *error, const char *type)
 {
     /* returns a malloced string and return value can be NULL */
-    char *remote_type = g_dbus_error_get_remote_error(error);
+    g_autofree char *remote_type = g_dbus_error_get_remote_error(error);
     const bool result = (remote_type && strcmp(type, remote_type) == 0);
-    g_free(remote_type);
     return result;
 }
 

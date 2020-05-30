@@ -91,13 +91,12 @@ struct dump_dir *libreport_open_directory_for_writing(
     dd_close(dd);
 
     g_autofree char *user_cache_dir = (char*)g_get_user_cache_dir();
-    char *spooldir = g_build_filename(user_cache_dir ? user_cache_dir : "", "abrt/spool", NULL);
+    g_autofree char *spooldir = g_build_filename(user_cache_dir ? user_cache_dir : "", "abrt/spool", NULL);
 
     if (ask && !ask(spooldir, dump_dir_name))
         return NULL;
 
     dd = libreport_steal_directory(spooldir, dump_dir_name);
-    free(spooldir);
 
     if (!dd)
         return NULL;

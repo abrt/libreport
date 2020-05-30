@@ -191,12 +191,11 @@ bool rhbz_login(struct abrt_xmlrpc *ax, const char *login, const char *password)
         return false;
     }
 
-    char *token = rhbz_bug_read_item("token", result, RHBZ_READ_STR);
+    g_autofree char *token = rhbz_bug_read_item("token", result, RHBZ_READ_STR);
     if (token != NULL)
     {
         log_debug("Adding session param Bugzilla_token");
         abrt_xmlrpc_client_add_session_param_string(&env, ax, "Bugzilla_token", token);
-        free(token);
     }
 
 //TODO: with URL like http://bugzilla.redhat.com (that is, with http: instead of https:)
@@ -269,7 +268,7 @@ unsigned rhbz_version(struct abrt_xmlrpc *ax)
 
     xmlrpc_value *result;
     result = abrt_xmlrpc_call(ax, "Bugzilla.version", "{}");
-    char *version = NULL;
+    g_autofree char *version = NULL;
     if (result)
         version = rhbz_bug_read_item("version", result, RHBZ_READ_STR);
     if (!result || !version)
@@ -290,8 +289,6 @@ unsigned rhbz_version(struct abrt_xmlrpc *ax)
 
         v[i] = strtoul(tok, NULL, 10);
     }
-
-    free(version);
 
     return BUGZILLA_VERSION(v[0], v[1], v[2]);
 }
@@ -409,7 +406,7 @@ GList *rhbz_bug_cc(xmlrpc_value* result_xml)
         if (!item)
             continue;
 
-        const char* cc = NULL;
+        g_autofree const char* cc = NULL;
         xmlrpc_read_string(&env, item, &cc);
         xmlrpc_DECREF(item);
         if (env.fault_occurred)
@@ -421,7 +418,6 @@ GList *rhbz_bug_cc(xmlrpc_value* result_xml)
             log_debug("member on cc is %s", cc);
             continue;
         }
-        free((char*)cc);
     }
     xmlrpc_DECREF(cc_member);
     return cc_list;
@@ -449,10 +445,9 @@ struct bug_info *rhbz_bug_info(struct abrt_xmlrpc *ax, int bug_id)
     xmlrpc_value *bugs_memb = rhbz_get_member("bugs", xml_bug_response);
     xmlrpc_value *bug_item = rhbz_array_item_at(bugs_memb, 0);
 
-    int *ret = (int*)rhbz_bug_read_item("id", bug_item,
+    g_autofree int *ret = (int*)rhbz_bug_read_item("id", bug_item,
                                         RHBZ_MANDATORY_MEMB | RHBZ_READ_INT);
     bz->bi_id = *ret;
-    free(ret);
     bz->bi_product = rhbz_bug_read_item("product", bug_item,
                                         RHBZ_MANDATORY_MEMB | RHBZ_READ_STR);
     bz->bi_reporter = rhbz_bug_read_item("creator", bug_item,
@@ -478,7 +473,6 @@ struct bug_info *rhbz_bug_info(struct abrt_xmlrpc *ax, int bug_id)
     }
 
     bz->bi_dup_id = (ret) ? *ret: -1;
-    free(ret);
 
     bz->bi_cc_list = rhbz_bug_cc(bug_item);
 
@@ -516,7 +510,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
     if (!duphash) duphash    = problem_data_get_content_or_NULL(problem_data,
                                                                 "global_uuid");
 
-    char *summary = libreport_shorten_string_to_length(bzsummary, MAX_SUMMARY_LENGTH);
+    g_autofree char *summary = libreport_shorten_string_to_length(bzsummary, MAX_SUMMARY_LENGTH);
 
     GString *status_whiteboard = g_string_new(NULL);
     g_string_append_printf(status_whiteboard, "abrt_hash:%s;", duphash);
@@ -590,15 +584,13 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
     xmlrpc_env_clean(&env);
 
     g_string_free(status_whiteboard, TRUE);
-    free(summary);
 
     if (!result)
         return -1;
 
-    int *r = rhbz_bug_read_item("id", result, RHBZ_MANDATORY_MEMB | RHBZ_READ_INT);
+    g_autofree int *r = rhbz_bug_read_item("id", result, RHBZ_MANDATORY_MEMB | RHBZ_READ_INT);
     xmlrpc_DECREF(result);
     int new_bug_id = *r;
-    free(r);
 
     log_warning(_("New bug id: %i"), new_bug_id);
     return new_bug_id;
@@ -680,17 +672,15 @@ int rhbz_attach_fd(struct abrt_xmlrpc *ax, const char *bug_id,
 
 //TODO: need to have a method of attaching huge files (IOW: 1Gb read isn't good).
 
-    char *data = g_malloc(size);
+    g_autofree char *data = g_malloc(size);
     ssize_t r = libreport_full_read(fd, data, size);
     if (r < 0)
     {
-        free(data);
         perror_msg("Can't read '%s'", att_name);
         return -1;
     }
 
     int res = rhbz_attach_blob(ax, bug_id, att_name, data, size, flags);
-    free(data);
     return res;
 }
 
@@ -859,11 +849,10 @@ xmlrpc_value *rhbz_search_duphash(struct abrt_xmlrpc *ax,
     if (component)
         g_string_append_printf(query, " component:\"%s\"", component);
 
-    char *s = g_string_free(query, FALSE);
+    g_autofree char *s = g_string_free(query, FALSE);
     log_debug("search for '%s'", s);
     xmlrpc_value *search = abrt_xmlrpc_call(ax, "Bug.search", "{s:s,s:(s)}", "quicksearch", s, "include_fields", "id");
 
-    free(s);
     xmlrpc_value *bugs = rhbz_get_member("bugs", search);
     xmlrpc_DECREF(search);
 

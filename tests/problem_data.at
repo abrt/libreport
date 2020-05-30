@@ -383,7 +383,7 @@ AT_TESTFUN([problem_data_load_dump_dir_element],
 
 void test(struct dump_dir *dd, const char *path, const char *exp_content, int exp_flags, int exp_retval)
 {
-    char *content = NULL;
+    g_autofree char *content = NULL;
     int flags = -1;
     int fd = -1;
 
@@ -397,8 +397,6 @@ void test(struct dump_dir *dd, const char *path, const char *exp_content, int ex
     assert(exp_flags == flags);
     assert((exp_content == NULL && content == NULL) || strcmp(exp_content, content) == 0);
 
-    if (content)
-        free(content);
     if (fd >= 0)
         close(fd);
 }
@@ -433,9 +431,8 @@ int main(int argc, char **argv)
     test(dd, "/tmp/libreport-test", NULL, -1, -EINVAL);
     test(dd, "../libreport-test", NULL, -1, -EINVAL);
 
-    char *os_rel = dd_load_text(dd, FILENAME_OS_RELEASE);
+    g_autofree char *os_rel = dd_load_text(dd, FILENAME_OS_RELEASE);
     test(dd, FILENAME_OS_RELEASE, os_rel, CD_FLAG_TXT, 0);
-    free(os_rel);
 
     dd_delete(dd);
 }

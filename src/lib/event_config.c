@@ -283,11 +283,10 @@ GHashTable *load_event_config_data(void)
      */
     load_config_files(EVENTS_CONF_DIR);
 
-    char *cachedir;
+    g_autofree char *cachedir = NULL;
     g_autofree char *user_cache_dir = (char*)g_get_user_cache_dir();
     cachedir = g_build_filename(user_cache_dir ? user_cache_dir : "", "abrt/events", NULL);
     load_config_files(cachedir);
-    free(cachedir);
 
     return g_event_config_list;
 }
@@ -456,15 +455,13 @@ GList *get_options_with_err_msg(const char *event_name)
     for (iter = config->options; iter; iter = iter->next)
     {
         event_option_t *opt = (event_option_t *)iter->data;
-        char *err = validate_event_option(opt);
+        g_autofree char *err = validate_event_option(opt);
         if (err)
         {
             invalid_option_t *inv_opt = new_invalid_option();
             inv_opt->invopt_name = g_strdup(opt->eo_name);
             inv_opt->invopt_error = g_strdup(err);
             err_list = g_list_prepend(err_list, inv_opt);
-
-            free(err);
         }
     }
 

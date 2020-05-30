@@ -120,11 +120,10 @@ int main(int argc, char **argv)
     if (!problem_data)
         libreport_xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
-    char *dsc = libreport_make_description_logger(problem_data, CD_TEXT_ATT_SIZE_LOGGER);
+    g_autofree char *dsc = libreport_make_description_logger(problem_data, CD_TEXT_ATT_SIZE_LOGGER);
     fputs(dsc, stdout);
     if (open_mode[0] == 'a')
         fputs("\nEND:\n\n", stdout);
-    free(dsc);
     problem_data_free(problem_data);
 
     if (output_file)

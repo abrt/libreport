@@ -632,7 +632,7 @@ mantisbt_result_free(mantisbt_result_t *result)
 mantisbt_result_t *
 mantisbt_soap_call(const mantisbt_settings_t *settings, const soap_request_t *req)
 {
-    char *request = soap_request_to_str(req);
+    g_autofree char *request = soap_request_to_str(req);
 
     const char *url = settings->m_mantisbt_soap_url;
 
@@ -642,7 +642,6 @@ mantisbt_soap_call(const mantisbt_settings_t *settings, const soap_request_t *re
     {
         result->mr_error = -2;
         result->mr_msg = g_strdup_printf(_("Url or request isn't specified."));
-        free(request);
 
         return result;
     }
@@ -708,8 +707,6 @@ redirect:
     post_state->body = NULL;
 
     free_post_state(post_state);
-    free(url_copy);
-    free(request);
 
     return result;
 }
@@ -766,17 +763,15 @@ mantisbt_attach_fd(const mantisbt_settings_t *settings, const char *bug_id,
     }
     lseek(fd, 0, SEEK_SET);
 
-    char *data = g_malloc(size + 1);
+    g_autofree char *data = g_malloc(size + 1);
     ssize_t r = libreport_full_read(fd, data, size);
     if (r < 0)
     {
-        free(data);
         perror_msg(_("Can't read '%s'"), att_name);
         return -1;
     }
 
     int res = mantisbt_attach_data(settings, bug_id, att_name, data, size);
-    free(data);
     return res;
 }
 
@@ -976,7 +971,7 @@ mantisbt_create_new_issue(const mantisbt_settings_t *settings,
     const char *category = problem_data_get_content_or_NULL(problem_data, FILENAME_COMPONENT);
     const char *duphash = problem_data_get_content_or_NULL(problem_data, FILENAME_DUPHASH);
 
-    char *summary = libreport_shorten_string_to_length(problem_report_get_summary(pr), MAX_SUMMARY_LENGTH);
+    g_autofree char *summary = libreport_shorten_string_to_length(problem_report_get_summary(pr), MAX_SUMMARY_LENGTH);
 
     const char *description = problem_report_get_description(pr);
     const char *additional_information = problem_report_get_section(pr, PR_SEC_ADDITIONAL_INFO);
@@ -990,7 +985,6 @@ mantisbt_create_new_issue(const mantisbt_settings_t *settings,
 
     mantisbt_result_t *result = mantisbt_soap_call(settings, req);
     soap_request_free(req);
-    free(summary);
 
     if (result->mr_error == -1)
     {

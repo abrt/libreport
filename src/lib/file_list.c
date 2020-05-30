@@ -34,7 +34,7 @@ GList *libreport_get_file_list(const char *path, const char *ext_filter)
         /* skip . and .. */
         if (strcmp(dent->d_name, ".") == 0 || strcmp(dent->d_name, "..") == 0)
             continue;
-        char *fullname = g_build_filename(path, dent->d_name, NULL);
+        g_autofree char *fullname = g_build_filename(path, dent->d_name, NULL);
         char *ext = NULL;
 
         if (ext_filter)
@@ -50,19 +50,19 @@ GList *libreport_get_file_list(const char *path, const char *ext_filter)
 //TODO: get rid of special handling of symlinks?
         struct stat buf;
         if (0 != lstat(fullname, &buf))
-            goto next;
+            continue;
 
         if (S_ISLNK(buf.st_mode))
         {
             GError *error = NULL;
-            gchar *link = g_file_read_link(fullname, &error);
+            g_autofree gchar *link = g_file_read_link(fullname, &error);
             if (error != NULL)
             {
                 error_msg("Error reading symlink '%s': %s", fullname, error->message);
-                goto next;
+                continue;
             }
 
-            gchar *target = g_path_get_basename(link);
+            g_autofree gchar *target = g_path_get_basename(link);
             log_debug("Symlink '%s' is pointing to '%s'", link, target);
             if (ext_filter)
             {
@@ -72,23 +72,18 @@ GList *libreport_get_file_list(const char *path, const char *ext_filter)
                 {
                     error_msg("Invalid event symlink '%s': expected it to"
                               " point to another '%s' file", fullname, ext_filter);
-                    goto next;
+                    continue;
                 }
                 *ext = '\0';
             }
-            free(fullname);
             fullname = g_build_filename(path, target, NULL);
             files = g_list_prepend(files, libreport_new_file_obj(fullname, target));
-            g_free(link);
-            g_free(target);
 
-            goto next;
+            continue;
         }
 
         file_obj_t *file = libreport_new_file_obj(fullname, dent->d_name);
         files = g_list_prepend(files, file);
- next:
-        free(fullname);
     }
 
     closedir(dir);

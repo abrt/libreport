@@ -16,6 +16,7 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#include <glib.h>
 #include <Python.h>
 
 #include "common.h"
@@ -41,14 +42,13 @@ PyObject *p_ask(PyObject *pself, PyObject *args)
         return NULL;
     }
 
-    char *response = libreport_ask(question);
+    g_autofree char *response = libreport_ask(question);
     if (!response)
     {
         Py_RETURN_NONE;
     }
 
     PyObject *r = Py_BuildValue("s", response);
-    free(response);
     return r;
 }
 
@@ -61,14 +61,13 @@ PyObject *p_ask_password(PyObject *pself, PyObject *args)
         return NULL;
     }
 
-    char *response = libreport_ask_password(question);
+    g_autofree char *response = libreport_ask_password(question);
     if (!response)
     {
         Py_RETURN_NONE;
     }
 
     PyObject *r = Py_BuildValue("s", response);
-    free(response);
     return r;
 }
 

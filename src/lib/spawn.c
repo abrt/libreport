@@ -68,7 +68,7 @@ pid_t libreport_fork_execv_on_steroids(int flags,
 		g_unix_open_pipe(pipe_fm_child, 0, NULL);
 
 	/* Prepare it before fork, to avoid thread-unsafe malloc there */
-	char *prog_as_string = NULL;
+	g_autofree char *prog_as_string = NULL;
 	prog_as_string = concat_str_vector(argv);
 	gid_t gid;
 	if (flags & EXECFLG_SETGUID) {
@@ -139,7 +139,6 @@ pid_t libreport_fork_execv_on_steroids(int flags,
 	}
 
 	/* Parent */
-	free(prog_as_string);
 
 	if (flags & EXECFLG_INPUT) {
 		close(pipe_to_child[0]);

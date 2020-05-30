@@ -123,14 +123,13 @@ int create_tarball(const char *tempfile, struct dump_dir *dd,
                     basename++;
                 else
                     basename = content;
-                char *xml_name = g_build_filename("content", basename, NULL);
+                g_autofree char *xml_name = g_build_filename("content", basename, NULL);
                 reportfile_add_binding_from_namedfile(file,
                         /*on_disk_filename */ content,
                         /*binding_name     */ name,
                         /*recorded_filename*/ xml_name,
                         /*binary           */ !(value->flags & CD_FLAG_BIGTXT)
                 );
-                free(xml_name);
             }
         }
     }
@@ -162,7 +161,7 @@ int create_tarball(const char *tempfile, struct dump_dir *dd,
     {
         unsigned len = strlen(signature);
         unsigned len512 = (len + 511) & ~511;
-        char *block = (char*)memcpy(g_malloc0(len512), signature, len);
+        g_autofree char *block = (char*)memcpy(g_malloc0(len512), signature, len);
 
         th_set_type(tar, S_IFREG | 0644);
         th_set_mode(tar, S_IFREG | 0644);
@@ -181,11 +180,9 @@ int create_tarball(const char *tempfile, struct dump_dir *dd,
          || tar_append_eof(tar) != 0 /* writes EOF blocks */
          || tar_close(tar) != 0
         ) {
-            free(block);
             goto ret_fail;
         }
         tar = NULL;
-        free(block);
     }
 
     /* We must be sure gzip finished, and finished successfully */
@@ -242,12 +239,10 @@ struct ureport_server_response *ureport_do_post_credentials(const char *json, st
 
         free_post_state(post_state);
 
-        char *login = NULL;
-        char *password = NULL;
+        g_autofree char *login = NULL;
+        g_autofree char *password = NULL;
         ask_rh_credentials(&login, &password);
         libreport_ureport_server_config_set_basic_auth(config, login, password);
-        free(password);
-        free(login);
     }
 
     struct ureport_server_response *resp = libreport_ureport_server_response_from_reply(post_state, config);
@@ -275,7 +270,7 @@ char *submit_ureport(const char *dump_dir_name, struct ureport_server_config *co
         return report_result_get_bthash(rr_bthash);
     }
 
-    char *json = libreport_ureport_from_dump_dir(dump_dir_name);
+    g_autofree char *json = libreport_ureport_from_dump_dir(dump_dir_name);
     if (json == NULL)
     {
         log_notice(_("Failed to generate microreport from the problem data"));
@@ -283,7 +278,6 @@ char *submit_ureport(const char *dump_dir_name, struct ureport_server_config *co
     }
 
     struct ureport_server_response *resp = ureport_do_post_credentials(json, conf, UREPORT_SUBMIT_ACTION);
-    free(json);
     if (resp == NULL)
         return NULL;
 
@@ -309,10 +303,9 @@ static
 void attach_to_ureport(struct ureport_server_config *conf,
         const char *bthash, const char *attach_id, const char *data)
 {
-    char *json = ureport_json_attachment_new(bthash, attach_id, data);
+    g_autofree char *json = ureport_json_attachment_new(bthash, attach_id, data);
     struct ureport_server_response *resp = ureport_do_post_credentials(json, conf, UREPORT_ATTACH_ACTION);
     libreport_ureport_server_response_free(resp);
-    free(json);
 }
 
 static
@@ -337,7 +330,7 @@ bool check_for_hints(const char *url, char **login, char **password, bool ssl_ve
     else if (result->body)
     {
         /* The message might contain URLs to known solutions and such */
-        char *hint = parse_response_from_RHTS_hint_xml2txt(result->body);
+        g_autofree char *hint = parse_response_from_RHTS_hint_xml2txt(result->body);
         if (hint)
         {
             hint = libreport_append_to_malloced_string(hint, " ");
@@ -349,8 +342,6 @@ bool check_for_hints(const char *url, char **login, char **password, bool ssl_ve
              * 'Yes' to the create ticket question means no hints were found.
              */
             retval = !libreport_ask_yes_no(hint);
-
-            free(hint);
         }
     }
 
@@ -445,10 +436,9 @@ void prepare_ureport_configuration(const char *urcfile,
 
 static char *create_case_url(char *url, const char *case_no)
 {
-    char *url1 = g_build_filename(url ? url : "", RHTSUPPORT_CASE_URL_PATH, NULL);
+    g_autofree char *url1 = g_build_filename(url ? url : "", RHTSUPPORT_CASE_URL_PATH, NULL);
     free(url);
     url = g_build_filename(url1 ? url1 : "", case_no, NULL);
-    free(url1);
 
     return url;
 }
@@ -456,14 +446,13 @@ static char *create_case_url(char *url, const char *case_no)
 static char *ask_case_no_create_url(char *url)
 {
     g_autofree char *msg = g_strdup_printf(_("Please enter customer case number to which you want to attach the data:"));
-    char *case_no = libreport_ask(msg);
+    g_autofree char *case_no = libreport_ask(msg);
     if (case_no == NULL || case_no[0] == '\0')
     {
         libreport_set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
         error_msg_and_die(_("Can't continue without Red Hat Support case number"));
     }
     char *new_url = create_case_url(url, (const char *)case_no);
-    free(case_no);
 
     return new_url;
 }
@@ -563,20 +552,18 @@ int main(int argc, char **argv)
         conf_file = g_list_remove(conf_file, fn);
     }
 
-    char *url      = get_param_string("URL"       , settings, "https://api.access.redhat.com/rs");
-    char *login    = get_param_string("Login"     , settings, "");
-    char *password = get_param_string("Password"  , settings, "");
+    g_autofree char *url      = get_param_string("URL"       , settings, "https://api.access.redhat.com/rs");
+    g_autofree char *login    = get_param_string("Login"     , settings, "");
+    g_autofree char *password = get_param_string("Password"  , settings, "");
     char *bigurl   = get_param_string("BigFileURL", settings, "ftp://dropbox.redhat.com/incoming/");
 
     if (login[0] == '\0')
     {
-        free(login);
         login = ask_rh_login(_("Login is not provided by configuration. Please enter your RHTS login:"));
     }
 
     if (password[0] == '\0')
     {
-        free(password);
         g_autofree char *question = g_strdup_printf(_("Password is not provided by configuration. Please enter the password for '%s':"), login);
         password = ask_rh_password(question);
     }
@@ -611,7 +598,7 @@ int main(int argc, char **argv)
         g_hash_table_destroy(settings);
 
     g_autofree char *base_api_url = g_strdup(url);
-    char *bthash = NULL;
+    g_autofree char *bthash = NULL;
 
     map_string_t *ursettings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     struct ureport_server_config urconf;
@@ -634,7 +621,6 @@ int main(int argc, char **argv)
             }
             if (NULL != report_url)
             {
-                free(url);
                 url = report_url;
                 g_autofree char *msg = g_strdup_printf(
                     _("We found a similar Red Hat support case %s. "
@@ -685,7 +671,7 @@ int main(int argc, char **argv)
     else /* no -t: creating a new case */
     {
         g_autoptr(report_result_t) reported_to = NULL;
-        char *report_url = NULL;
+        g_autofree char *report_url = NULL;
 
         if (*argv)
             libreport_show_usage_and_die(program_usage_string, program_options);
@@ -701,7 +687,6 @@ int main(int argc, char **argv)
                             " Do you still want to create a RHTSupport ticket?",
                             report_url);
             int yes = libreport_ask_yes_no(msg);
-            g_free(report_url);
             if (!yes)
                 return 0;
         }
@@ -734,7 +719,7 @@ int main(int argc, char **argv)
     /* Starting from here, we must perform cleanup on errors
      * (delete temp dir)
      */
-    char *tempfile = NULL;
+    g_autofree char *tempfile = NULL;
     tempfile = libreport_concat_path_basename(tmpdir_name, dump_dir_name);
     tempfile = libreport_append_to_malloced_string(tempfile, ".tar.gz");
 
@@ -873,8 +858,8 @@ int main(int argc, char **argv)
 
         log_warning(_("Creating a new case"));
 
-        char *product = NULL;
-        char *version = NULL;
+        g_autofree char *product = NULL;
+        g_autofree char *version = NULL;
         map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
         problem_data_get_osinfo(problem_data, osinfo);
         libreport_parse_osinfo_for_rhts(osinfo, &product, &version);
@@ -891,8 +876,6 @@ int main(int argc, char **argv)
                                         product, version, summary, dsc, package)
         );
 
-        free(version);
-        free(product);
         problem_report_free(pr);
         problem_formatter_free(pf);
 
@@ -926,7 +909,6 @@ int main(int argc, char **argv)
         if (dd)
         {
             report_result_t *report_result;
-
             report_result = report_result_new_with_label_from_env("RHTSupport");
 
             report_result_set_message(report_result, result->msg);
@@ -1021,7 +1003,6 @@ int main(int argc, char **argv)
 
  ret:
     unlink(tempfile);
-    free(tempfile);
     rmdir(tmpdir_name);
 
     /* Note: errmsg may be = result->msg, don't move this code block
@@ -1036,11 +1017,7 @@ int main(int argc, char **argv)
     libreport_ureport_server_config_destroy(&urconf);
     if (ursettings)
         g_hash_table_destroy(ursettings);
-    free(bthash);
 
-    free(url);
-    free(login);
-    free(password);
     problem_data_free(problem_data);
 
     return 0;

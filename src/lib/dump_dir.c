@@ -1367,12 +1367,11 @@ void dd_create_basic_files(struct dump_dir *dd, uid_t uid, const char *chroot_di
     if (!dd_exist(dd, FILENAME_HOSTNAME))
         dd_save_text(dd, FILENAME_HOSTNAME, buf.nodename);
 
-    char *release = load_text_file("/etc/os-release",
+    g_autofree char *release = load_text_file("/etc/os-release",
                         DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE | DD_OPEN_FOLLOW);
     if (release)
     {
         dd_save_text(dd, FILENAME_OS_INFO, release);
-        free(release);
     }
 
     if (chroot_dir)
@@ -1404,7 +1403,6 @@ void dd_create_basic_files(struct dump_dir *dd, uid_t uid, const char *chroot_di
         if (chroot_dir)
             copy_file_from_chroot(dd, FILENAME_OS_RELEASE_IN_ROOTDIR, chroot_dir, "/etc/system-release");
     }
-    free(release);
 }
 
 void dd_sanitize_mode_and_owner(struct dump_dir *dd)
@@ -1647,7 +1645,7 @@ int dd_chown(struct dump_dir *dd, uid_t new_uid)
     else
     {
         dd_init_next_file(dd);
-        char *short_name;
+        char *short_name = NULL;
         while (chown_res == 0 && dd_get_next_file(dd, &short_name, /*full_name*/ NULL))
         {
             /* The current process has to have read access at least */
@@ -1757,15 +1755,11 @@ char *load_text_file(const char *path, unsigned flags)
 
 static void copy_file_from_chroot(struct dump_dir* dd, const char *name, const char *chroot_dir, const char *file_path)
 {
-    char *chrooted_name = g_build_filename(chroot_dir ? chroot_dir : "", file_path, NULL);
-    char *data = load_text_file(chrooted_name,
+    g_autofree char *chrooted_name = g_build_filename(chroot_dir ? chroot_dir : "", file_path, NULL);
+    g_autofree char *data = load_text_file(chrooted_name,
                     DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE | DD_OPEN_FOLLOW);
-    free(chrooted_name);
     if (data)
-    {
         dd_save_text(dd, name, data);
-        free(data);
-    }
 }
 
 static int create_new_file_at(int dir_fd, int omode, const char *name, uid_t uid, gid_t gid, mode_t mode)
@@ -2148,11 +2142,9 @@ void libreport_add_reported_to(struct dump_dir *dd, const char *line)
     if (!dd->locked)
         error_msg_and_die("dump_dir is not opened"); /* bug */
 
-    char *reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    g_autofree char *reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     if (libreport_add_reported_to_data(&reported_to, line))
         dd_save_text(dd, FILENAME_REPORTED_TO, reported_to);
-
-    free(reported_to);
 }
 
 void libreport_add_reported_to_entry(struct dump_dir *dd, struct report_result *result)
@@ -2160,36 +2152,32 @@ void libreport_add_reported_to_entry(struct dump_dir *dd, struct report_result *
     if (!dd->locked)
         error_msg_and_die("dump_dir is not opened"); /* bug */
 
-    char *reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    g_autofree char *reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     if (libreport_add_reported_to_entry_data(&reported_to, result))
         dd_save_text(dd, FILENAME_REPORTED_TO, reported_to);
-
-    free(reported_to);
 }
 
 report_result_t *libreport_find_in_reported_to(struct dump_dir *dd, const char *report_label)
 {
-    char *reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO,
+    g_autofree char *reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO,
                 DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     if (!reported_to)
         return NULL;
 
     report_result_t *result = libreport_find_in_reported_to_data(reported_to, report_label);
 
-    free(reported_to);
     return result;
 }
 
 GList *libreport_read_entire_reported_to(struct dump_dir *dd)
 {
-    char *reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO,
+    g_autofree char *reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO,
                 DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     if (!reported_to)
         return NULL;
 
     GList *result = libreport_read_entire_reported_to_data(reported_to);
 
-    free(reported_to);
     return result;
 }
 

@@ -17,7 +17,7 @@ AT_TESTFUN([libreport_xstrdup_between],
 
 void test(const char *src, const char *open, const char *close, const char *exp)
 {
-    char *res = libreport_xstrdup_between(src, open, close);
+    g_autofree char *res = libreport_xstrdup_between(src, open, close);
 
     if (exp == NULL && res != NULL)
     {
@@ -36,8 +36,6 @@ void test(const char *src, const char *open, const char *close, const char *exp)
         DEBUG_PRINT(exp, res, open, close, src);
         assert(!"Invalid selection.");
     }
-
-    free(res);
 }
 
 

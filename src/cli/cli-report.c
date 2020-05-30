@@ -131,9 +131,8 @@ static void write_crash_report_field(FILE *fp, problem_data_t *problem_data,
     if (!(value->flags & CD_FLAG_ISEDITABLE))
         fprintf(fp, _("# This field is read only\n"));
 
-    char *escaped_content = escape(value->content);
+    g_autofree char *escaped_content = escape(value->content);
     fprintf(fp, "%s\n", escaped_content);
-    free(escaped_content);
 }
 
 /*
@@ -378,11 +377,10 @@ static int run_report_editor(problem_data_t *problem_data)
     off_t size = libreport_fstat_st_size_or_die(fileno(fp));
     if (size > INT_MAX/4)
 	    size = INT_MAX/4; /* paranoia */
-    char *text = g_malloc(size + 1);
+    g_autofree char *text = g_malloc(size + 1);
     if (fread(text, 1, size, fp) != size)
     {
         error_msg("Can't read '%s'", filename);
-        free(text);
         fclose(fp);
         return 2;
     }
@@ -398,7 +396,6 @@ static int run_report_editor(problem_data_t *problem_data)
     remove_comments_and_unescape(text);
     // Updates the crash report from the file text.
     int report_changed = read_crash_report(problem_data, text);
-    free(text);
     if (report_changed)
         puts(_("\nThe report has been updated"));
     else
@@ -527,8 +524,8 @@ static int is_not_reportable(problem_data_t *problem_data)
 
 static int is_backtrace_rating_usable(event_config_t *config, problem_data_t *problem_data)
 {
-    char *usability_description = NULL;
-    char *usability_detail = NULL;
+    g_autofree char *usability_description = NULL;
+    g_autofree char *usability_detail = NULL;
     const bool usable_rating = check_problem_rating_usability(config, problem_data,
                                                               &usability_description,
                                                               &usability_detail);
@@ -538,9 +535,6 @@ static int is_backtrace_rating_usable(event_config_t *config, problem_data_t *pr
         printf("%s\n", usability_description);
         printf("%s\n", usability_detail);
     }
-
-    free(usability_description);
-    free(usability_detail);
 
     return usable_rating;
 }
@@ -748,9 +742,8 @@ static char *select_event_name(GList *list_options)
 
 int select_and_run_one_event(const char *dump_dir_name, const char *pfx, int interactive)
 {
-    GList *list_events = list_possible_events_glist(dump_dir_name, pfx);
-    char *event_name = select_event_name(list_events);
-    libreport_list_free_with_free(list_events);
+    g_autolist (GList) list_events = list_possible_events_glist(dump_dir_name, pfx);
+    g_autofree char *event_name = select_event_name(list_events);
 
     struct run_event_state *run_state = new_run_event_state();
     run_state->logging_callback = do_log;
@@ -760,8 +753,6 @@ int select_and_run_one_event(const char *dump_dir_name, const char *pfx, int int
                 ;
 
     free_run_event_state(run_state);
-
-    free(event_name);
 
     return r;
 }
@@ -806,9 +797,8 @@ static int run_event_chain_real(struct run_event_state *run_state,
         else if (retval != 0 || !l_state.output_was_produced)
         {
             /* Program failed, or finished successfully with no output. */
-            char *msg = libreport_exit_status_as_string(event_name, run_state->process_status);
+            g_autofree char *msg = libreport_exit_status_as_string(event_name, run_state->process_status);
             fputs(msg, stdout);
-            free(msg);
         }
         if (retval != 0)
             break;
