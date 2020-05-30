@@ -85,13 +85,6 @@ int libreport_try_get_map_string_item_as_int(map_string_t *ms, const char *key, 
     return 1;
 }
 
-void libreport_set_map_string_item_from_uint(map_string_t *ms, const char *key, unsigned int value)
-{
-    char raw_value[sizeof(int)*3 + 1];
-    snprintf(raw_value, sizeof(raw_value), "%u", value);
-    g_hash_table_replace(ms, g_strdup(key), g_strdup(raw_value));
-}
-
 int libreport_try_get_map_string_item_as_uint(map_string_t *ms, const char *key, unsigned int *value)
 {
     GET_ITEM_OR_RETURN(option, ms, key);
