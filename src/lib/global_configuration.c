@@ -123,16 +123,16 @@ string_vector_ptr_t libreport_get_global_always_excluded_elements(void)
     const char *gc_exclude = g_hash_table_lookup(s_global_settings, OPT_NAME_EXCLUDED_ELEMENTS);
 
     if (env_exclude != NULL && gc_exclude == NULL)
-        return libreport_string_vector_new_from_string(env_exclude);
+        return g_strsplit(env_exclude, ", ", 0);
 
     if (env_exclude == NULL && gc_exclude != NULL)
-        return libreport_string_vector_new_from_string(gc_exclude);
+        return g_strsplit(gc_exclude, ", ", 0);
 
     if (env_exclude == NULL && gc_exclude == NULL)
-        return libreport_string_vector_new_from_string(NULL);
+        return g_strsplit("", ", ", 0);
 
     g_autofree char *joined_exclude = g_strdup_printf("%s, %s", env_exclude, gc_exclude);
-    string_vector_ptr_t ret = libreport_string_vector_new_from_string(joined_exclude);
+    string_vector_ptr_t ret = g_strsplit(joined_exclude, ", ", 0);
 
     return ret;
 }
