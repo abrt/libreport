@@ -32,8 +32,6 @@ int libreport_try_get_map_string_item_as_bool(map_string_t *ms, const char *key,
 void libreport_set_map_string_item_from_int(map_string_t *ms, const char *key, int value);
 int libreport_try_get_map_string_item_as_int(map_string_t *ms, const char *key, int *value);
 
-int libreport_try_get_map_string_item_as_uint(map_string_t *ms, const char *key, unsigned int *value);
-
 
 typedef GHashTableIter map_string_iter_t;
 
