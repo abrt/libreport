@@ -19,14 +19,12 @@
 
 /** @file problem_data.h */
 
-#ifndef LIBREPORT_PROBLEM_DATA_H_
-#define LIBREPORT_PROBLEM_DATA_H_
+#pragma once
 
+#include <glib.h>
 #include "libreport_types.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+G_BEGIN_DECLS
 
 struct dump_dir;
 
@@ -76,6 +74,8 @@ static inline void problem_data_free(problem_data_t *problem_data)
     if (problem_data)
         g_hash_table_destroy(problem_data);
 }
+
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(problem_data_t, problem_data_free);
 
 void problem_data_add_basics(problem_data_t *pd);
 
@@ -181,8 +181,4 @@ enum {
 int get_problem_data_reproducible(problem_data_t *problem_data);
 const char *get_problem_data_reproducible_name(int reproducible);
 
-#ifdef __cplusplus
-}
-#endif
-
-#endif
+G_END_DECLS

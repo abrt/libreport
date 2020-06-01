@@ -116,7 +116,7 @@ int main(int argc, char **argv)
         }
     }
 
-    problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
+    g_autoptr(problem_data_t) problem_data = create_problem_data_for_reporting(dump_dir_name);
     if (!problem_data)
         libreport_xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
@@ -124,7 +124,6 @@ int main(int argc, char **argv)
     fputs(dsc, stdout);
     if (open_mode[0] == 'a')
         fputs("\nEND:\n\n", stdout);
-    problem_data_free(problem_data);
 
     if (output_file)
     {

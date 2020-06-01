@@ -583,8 +583,7 @@ static int run_event_on_dir_name_batch(
                 const char *dump_dir_name,
                 const char *event_name)
 {
-    int retval = -1;
-    problem_data_t *problem_data = NULL;
+    g_autoptr(problem_data_t) problem_data = NULL;
 
     event_config_t *config = get_event_config(event_name);
     if (config)
@@ -592,10 +591,8 @@ static int run_event_on_dir_name_batch(
         if (config->ec_minimal_rating != 0)
         {
             problem_data = load_problem_data_if_not_yet(problem_data, dump_dir_name);
-            if (!problem_data)
-                goto ret;
-            if (!is_backtrace_rating_usable(config, problem_data))
-                goto ret;
+            if (!problem_data || !is_backtrace_rating_usable(config, problem_data))
+                return -1;
         }
 
         if (!config->ec_skip_review)
@@ -606,21 +603,12 @@ static int run_event_on_dir_name_batch(
 
             /* Is problem non-reportable? */
             problem_data = load_problem_data_if_not_yet(problem_data, dump_dir_name);
-            if (!problem_data)
-                goto ret;
-            if (is_not_reportable(problem_data))
-                goto ret;
+            if (!problem_data || is_not_reportable(problem_data))
+                return -1;
         }
     }
 
-    problem_data_free(problem_data);
-    problem_data = NULL;
-
-    retval = export_config_and_run_event(state, dump_dir_name, event_name);
-
- ret:
-    problem_data_free(problem_data);
-    return retval;
+    return export_config_and_run_event(state, dump_dir_name, event_name);
 }
 
 static int run_event_on_dir_name_interactively(
@@ -628,8 +616,7 @@ static int run_event_on_dir_name_interactively(
                 const char *dump_dir_name,
                 const char *event_name)
 {
-    int retval = -1;
-    problem_data_t *problem_data = NULL;
+    g_autoptr(problem_data_t) problem_data = NULL;
 
     event_config_t *config = get_event_config(event_name);
     if (config)
@@ -637,10 +624,8 @@ static int run_event_on_dir_name_interactively(
         if (config->ec_minimal_rating != 0)
         {
             problem_data = load_problem_data_if_not_yet(problem_data, dump_dir_name);
-            if (!problem_data)
-                goto ret;
-            if (!is_backtrace_rating_usable(config, problem_data))
-                goto ret;
+            if (!problem_data || !is_backtrace_rating_usable(config, problem_data))
+                return -1;
         }
 
         if (!config->ec_skip_review)
@@ -651,10 +636,8 @@ static int run_event_on_dir_name_interactively(
 
             /* Is problem non-reportable? */
             problem_data = load_problem_data_if_not_yet(problem_data, dump_dir_name);
-            if (!problem_data)
-                goto ret;
-            if (is_not_reportable(problem_data))
-                goto ret;
+            if (!problem_data || is_not_reportable(problem_data))
+                return -1;
         }
 
         if (config->ec_sending_sensitive_data)
@@ -664,7 +647,7 @@ static int run_event_on_dir_name_interactively(
                         ec_get_screen_name(config) ? ec_get_screen_name(config) : event_name);
             bool ok = libreport_ask_yes_no(msg);
             if (!ok)
-                goto ret;
+                return -1;
         }
 
         /* can't fail */
@@ -675,22 +658,14 @@ static int run_event_on_dir_name_interactively(
         {
             problem_data = load_problem_data_if_not_yet(problem_data, dump_dir_name);
             if (!problem_data)
-                goto ret;
-            retval = review_problem_data(dump_dir_name, problem_data);
+                return -1;
+            int retval = review_problem_data(dump_dir_name, problem_data);
             if (retval != 0)
-                /* review failed, an error message was already logged */
-                goto ret;
+                return retval;
         }
     }
 
-    problem_data_free(problem_data);
-    problem_data = NULL;
-
-    retval = export_config_and_run_event(state, dump_dir_name, event_name);
-
- ret:
-    problem_data_free(problem_data);
-    return retval;
+    return export_config_and_run_event(state, dump_dir_name, event_name);
 }
 
 static int choose_number_from_range(unsigned min, unsigned max, const char *message)

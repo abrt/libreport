@@ -274,11 +274,11 @@ int main(int argc, char **argv)
 
     libreport_export_abrt_envvars(0);
 
-    problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
+    g_autoptr(problem_data_t) problem_data = create_problem_data_for_reporting(dump_dir_name);
     if (!problem_data)
         libreport_xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
-    problem_formatter_t *pf = problem_formatter_new();
+    g_autoptr(problem_formatter_t) pf = problem_formatter_new();
 
     if (fmt_file)
     {
@@ -325,7 +325,7 @@ int main(int argc, char **argv)
         problem_data_add_text_noteditable(problem_data, MESSAGE_ID, message_id);
 
     /* Generating of problem report */
-    problem_report_t *pr = NULL;
+    g_autoptr(problem_report_t) pr = NULL;
     if (problem_formatter_generate_report(pf, problem_data, &pr))
         error_msg_and_die("Failed to format bug report from problem data");
 
@@ -339,10 +339,6 @@ int main(int argc, char **argv)
                 , problem_report_get_summary(pr)
                 , problem_report_get_description(pr)
         );
-
-        problem_data_free(problem_data);
-        problem_report_free(pr);
-        problem_formatter_free(pf);
         return 0;
     }
 
@@ -352,10 +348,6 @@ int main(int argc, char **argv)
     sd_journal_sendv(msg_content_get_data(msg_c), msg_content_get_size(msg_c));
 
     msg_content_free(msg_c);
-
-    problem_data_free(problem_data);
-    problem_formatter_free(pf);
-    problem_report_free(pr);
 
     return 0;
 }
