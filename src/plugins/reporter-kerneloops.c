@@ -89,7 +89,7 @@ static void report_to_kerneloops(
                 const char *dump_dir_name,
                 GHashTable *settings)
 {
-    problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
+    g_autoptr(problem_data_t) problem_data = create_problem_data_for_reporting(dump_dir_name);
     if (!problem_data)
         libreport_xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
@@ -110,8 +110,6 @@ static void report_to_kerneloops(
     if (ret != CURLE_OK)
         error_msg_and_die("Kernel oops has not been sent due to %s", curl_easy_strerror(ret));
 
-    problem_data_free(problem_data);
-
     /* Server replies with:
      * 200 thank you for submitting the kernel oops information
      * RemoteIP: 34192fd15e34bf60fac6a5f01bba04ddbd3f0558
@@ -120,15 +118,11 @@ static void report_to_kerneloops(
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (dd)
     {
-        report_result_t *result;
-
-        result = report_result_new_with_label_from_env("kerneloops");
+        g_autoptr(report_result_t) result = report_result_new_with_label_from_env("kerneloops");
 
         report_result_set_url(result, submitURL);
 
         libreport_add_reported_to_entry(dd, result);
-
-        report_result_free(result);
 
         dd_close(dd);
     }

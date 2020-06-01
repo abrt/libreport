@@ -104,7 +104,7 @@ static void create_and_send_email(
                 const char *fmt_file,
                 int flag)
 {
-    problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
+    g_autoptr(problem_data_t) problem_data = create_problem_data_for_reporting(dump_dir_name);
     if (!problem_data)
         libreport_xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
@@ -118,7 +118,7 @@ static void create_and_send_email(
         env = g_hash_table_lookup(settings, "SendBinaryData");
     bool send_binary_data = libreport_string_to_bool(env ? env : "");
 
-    problem_formatter_t *pf = problem_formatter_new();
+    g_autoptr(problem_formatter_t) pf = problem_formatter_new();
     /* formatting file is not set */
     if (fmt_file == NULL)
     {
@@ -140,7 +140,7 @@ static void create_and_send_email(
             error_msg_and_die("Invalid format file: %s", fmt_file);
     }
 
-    problem_report_t *pr = NULL;
+    g_autoptr(problem_report_t) pr = NULL;
     if (problem_formatter_generate_report(pf, problem_data, &pr))
         error_msg_and_die("Failed to format bug report from problem data");
 
@@ -160,8 +160,6 @@ static void create_and_send_email(
         for (GList *a = problem_report_get_attachments(pr); a != NULL; a = g_list_next(a))
             printf(" %s\n", (const char *)a->data);
 
-        problem_report_free(pr);
-        problem_formatter_free(pf);
         exit(0);
     }
 
@@ -203,11 +201,6 @@ static void create_and_send_email(
         log_warning(_("Sending an email..."));
 
     exec_and_feed_input(dsc, args);
-
-    problem_report_free(pr);
-    problem_formatter_free(pf);
-
-    problem_data_free(problem_data);
 
     if (!(flag & RM_FLAG_NOTIFY))
     {

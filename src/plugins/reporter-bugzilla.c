@@ -383,11 +383,8 @@ int main(int argc, char **argv)
         }
 
         set_settings(&rhbz, settings);
-        /* WRONG! set_settings() does not copy the strings, it merely sets up pointers
-         * to settings[] dictionary:
-         */
-        /*if (settings)
-         * g_hash_table_destroy(settings);*/
+        if (settings)
+            g_hash_table_destroy(settings);
     }
     /* either we got Bugzilla_CreatePrivate from settings or -g was specified on cmdline */
     rhbz.b_create_private |= (opts & OPT_g);
@@ -617,12 +614,12 @@ int main(int argc, char **argv)
 
     if (opts & OPT_D)
     {
-        problem_formatter_t *pf = problem_formatter_new();
+        g_autoptr(problem_formatter_t) pf = problem_formatter_new();
 
         if (problem_formatter_load_file(pf, fmt_file))
             error_msg_and_die("Invalid format file: %s", fmt_file);
 
-        problem_report_t *pr = NULL;
+        g_autoptr(problem_report_t) pr = NULL;
         if (problem_formatter_generate_report(pf, problem_data, &pr))
             error_msg_and_die("Failed to format bug report from problem data");
 
@@ -637,9 +634,6 @@ int main(int argc, char **argv)
         puts("attachments:");
         for (GList *a = problem_report_get_attachments(pr); a != NULL; a = g_list_next(a))
             printf(" %s\n", (const char *)a->data);
-
-        problem_report_free(pr);
-        problem_formatter_free(pf);
         exit(0);
     }
 
@@ -719,12 +713,12 @@ int main(int argc, char **argv)
 
         if (existing_id < 0 || rhbz.b_create_private)
         {
-            problem_formatter_t *pf = problem_formatter_new();
+            g_autoptr(problem_formatter_t) pf = problem_formatter_new();
 
             if (problem_formatter_load_file(pf, fmt_file))
                 error_msg_and_die("Invalid format file: %s", fmt_file);
 
-            problem_report_t *pr = NULL;
+            g_autoptr(problem_report_t) pr = NULL;
             if (problem_formatter_generate_report(pf, problem_data, &pr))
                 error_msg_and_die("Failed to format problem data");
 
@@ -752,7 +746,6 @@ int main(int argc, char **argv)
                     log_warning(_("Logging out"));
                     rhbz_logout(client);
 
-                    problem_formatter_free(pf);
                     exit(EXIT_CANCEL_BY_USER);
                 }
 
@@ -771,8 +764,6 @@ int main(int argc, char **argv)
                 problem_report_buffer_printf(
                         problem_report_get_buffer(pr, PR_SEC_DESCRIPTION),
                         "\nPotential duplicate: bug %u\n", crossver_id);
-
-            problem_formatter_free(pf);
 
             int new_id = rhbz_new_bug(client,
                     problem_data, rhbz.b_product, rhbz.b_product_version,
@@ -906,11 +897,11 @@ int main(int argc, char **argv)
     const char *comment = problem_data_get_content_or_NULL(problem_data, FILENAME_COMMENT);
     if (comment && comment[0])
     {
-        problem_formatter_t *pf = problem_formatter_new();
+        g_autoptr(problem_formatter_t) pf = problem_formatter_new();
         if (problem_formatter_load_file(pf, fmt_file2))
             error_msg_and_die("Invalid duplicate format file: '%s", fmt_file2);
 
-        problem_report_t *pr;
+        g_autoptr(problem_report_t) pr = NULL;
         if (problem_formatter_generate_report(pf, problem_data, &pr))
             error_msg_and_die("Failed to format duplicate comment from problem data");
 
@@ -947,9 +938,6 @@ int main(int argc, char **argv)
         }
         else
             log_warning(_("Found the same comment in the bug history, not adding a new one"));
-
-        problem_report_free(pr);
-        problem_formatter_free(pf);
     }
 
  log_out:
@@ -979,6 +967,11 @@ int main(int argc, char **argv)
 
         dd_close(dd);
     }
+
+    free(rhbz.b_product);
+    free(rhbz.b_product_version);
+    free_bug_info(bz);
+    abrt_xmlrpc_free_client(client);
 
     return 0;
 }

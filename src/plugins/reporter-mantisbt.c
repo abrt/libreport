@@ -446,7 +446,7 @@ int main(int argc, char **argv)
         }
     }
 
-    problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
+    g_autoptr(problem_data_t) problem_data = create_problem_data_for_reporting(dump_dir_name);
     if (!problem_data)
         libreport_xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
@@ -455,13 +455,13 @@ int main(int argc, char **argv)
 
     if (opts & OPT_D)
     {
-        problem_formatter_t *pf = problem_formatter_new();
+        g_autoptr(problem_formatter_t) pf = problem_formatter_new();
         problem_formatter_add_section(pf, PR_SEC_ADDITIONAL_INFO, /* optional section */ 0);
 
         if (problem_formatter_load_file(pf, fmt_file))
             error_msg_and_die("Invalid format file: %s", fmt_file);
 
-        problem_report_t *pr = NULL;
+        g_autoptr(problem_report_t) pr = NULL;
         if (problem_formatter_generate_report(pf, problem_data, &pr))
             error_msg_and_die("Failed to format issue report from problem data");
 
@@ -478,8 +478,6 @@ int main(int argc, char **argv)
         for (GList *a = problem_report_get_attachments(pr); a != NULL; a = g_list_next(a))
             printf(" %s\n", (const char *)a->data);
 
-        problem_report_free(pr);
-        problem_formatter_free(pf);
         exit(0);
     }
 
@@ -551,13 +549,13 @@ int main(int argc, char **argv)
         {
             /* Create new issue */
             log_warning(_("Creating a new issue"));
-            problem_formatter_t *pf = problem_formatter_new();
+            g_autoptr(problem_formatter_t) pf = problem_formatter_new();
             problem_formatter_add_section(pf, PR_SEC_ADDITIONAL_INFO, 0);
 
             if (problem_formatter_load_file(pf, fmt_file))
                 error_msg_and_die(_("Invalid format file: %s"), fmt_file);
 
-            problem_report_t *pr = NULL;
+            g_autoptr(problem_report_t) pr = NULL;
             if (problem_formatter_generate_report(pf, problem_data, &pr))
                 error_msg_and_die(_("Failed to format problem data"));
 
@@ -565,8 +563,6 @@ int main(int argc, char **argv)
                 problem_report_buffer_printf(
                         problem_report_get_buffer(pr, PR_SEC_DESCRIPTION),
                         "\nPotential duplicate: issue %u\n", crossver_id);
-
-            problem_formatter_free(pf);
 
             /* get tracker URL if exists */
             struct dump_dir *dd = dd_opendir(dump_dir_name, 0);
@@ -611,7 +607,6 @@ int main(int argc, char **argv)
                     mantisbt_attach_file(&mbt_settings, new_id_str, item_name, item->content);
             }
 
-            problem_report_free(pr);
             ii = mantisbt_issue_info_new();
             ii->mii_id = new_id;
             ii->mii_status = g_strdup("new");
@@ -647,12 +642,12 @@ int main(int argc, char **argv)
     const char *comment = problem_data_get_content_or_NULL(problem_data, FILENAME_COMMENT);
     if (comment && comment[0])
     {
-        problem_formatter_t *pf = problem_formatter_new();
+        g_autoptr(problem_formatter_t) pf = problem_formatter_new();
 
         if (problem_formatter_load_file(pf, fmt_file2))
             error_msg_and_die(_("Invalid duplicate format file: '%s"), fmt_file2);
 
-        problem_report_t *pr;
+        g_autoptr(problem_report_t) pr = NULL;
         if (problem_formatter_generate_report(pf, problem_data, &pr))
             error_msg_and_die(_("Failed to format duplicate comment from problem data"));
 
@@ -702,9 +697,6 @@ int main(int argc, char **argv)
         }
         else
             log_warning(_("Found the same comment in the issue history, not adding a new one"));
-
-        problem_report_free(pr);
-        problem_formatter_free(pf);
     }
 
 finish:

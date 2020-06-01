@@ -132,16 +132,13 @@
         printf("%s\n",                  problem_data_get_content_or_NULL(data, "comment"));
         printf("Additional info: %s\n", problem_data_get_content_or_NULL(data, "maps"));
 */
-#ifndef LIBREPORT_PROBLEM_REPORT_H
-#define LIBREPORT_PROBLEM_REPORT_H
+#pragma once
 
 #include <glib.h>
 #include <stdio.h>
 #include "problem_data.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+G_BEGIN_DECLS
 
 #define PR_SEC_SUMMARY "summary"
 #define PR_SEC_DESCRIPTION "description"
@@ -251,6 +248,8 @@ GList *problem_report_get_attachments(const problem_report_t *self);
  */
 void problem_report_free(problem_report_t *self);
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(problem_report_t, problem_report_free)
+
 
 /*
  * An enum of Extra section flags
@@ -282,6 +281,8 @@ problem_formatter_t *problem_formatter_new(void);
  * @param self Problem formatter
  */
 void problem_formatter_free(problem_formatter_t *self);
+
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(problem_formatter_t, problem_formatter_free)
 
 /*
  * Adds a new recognized section
@@ -361,8 +362,4 @@ problem_report_settings_t problem_formatter_get_settings(const problem_formatter
  */
 void problem_formatter_set_settings(problem_formatter_t *self, problem_report_settings_t settings);
 
-#ifdef __cplusplus
-}
-#endif
-
-#endif // LIBREPORT_PROBLEM_REPORT_H
+G_END_DECLS
