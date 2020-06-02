@@ -110,8 +110,7 @@ libreport_ureport_server_config_set_url(struct ureport_server_config *config,
  * Configure client certificate paths
  *
  * @param config Where the paths are stored
- * @param client_path Path in form of cert_full_path:key_full_path or one of
- *        the following string: 'rhsm', 'puppet'.
+ * @param client_path Path in form of cert_full_path:key_full_path or 'puppet'.
  */
 void
 libreport_ureport_server_config_set_client_auth(struct ureport_server_config *config,
@@ -132,7 +131,6 @@ libreport_ureport_server_config_set_basic_auth(struct ureport_server_config *con
  * Configure user name and password for HTTP Basic authentication according to
  * user preferences.
  *
- *  "rhts-credentials" - Uses Login= and Password= from rhtsupport.conf
  *  "<user_name>:<password>" - Manually supply user name and password.
  *  "<user_name>" - Manually supply user name and be asked for password.
  *

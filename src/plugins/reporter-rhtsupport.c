@@ -18,7 +18,6 @@
 */
 #include <libtar.h>
 #include <glib-unix.h>
-#include "ureport.h"
 #include "internal_libreport.h"
 #include "client.h"
 #include "libreport_curl.h"
@@ -221,94 +220,6 @@ ret_clean:
 }
 
 static
-struct ureport_server_response *ureport_do_post_credentials(const char *json, struct ureport_server_config *config, const char *action)
-{
-    struct post_state *post_state = NULL;
-    while (1)
-    {
-        post_state = libreport_ureport_do_post(json, config, action);
-
-        if (post_state == NULL)
-        {
-            error_msg(_("Failed on submitting the problem"));
-            return NULL;
-        }
-
-        if (post_state->http_resp_code != 401)
-            break;
-
-        free_post_state(post_state);
-
-        g_autofree char *login = NULL;
-        g_autofree char *password = NULL;
-        ask_rh_credentials(&login, &password);
-        libreport_ureport_server_config_set_basic_auth(config, login, password);
-    }
-
-    struct ureport_server_response *resp = libreport_ureport_server_response_from_reply(post_state, config);
-    free(post_state);
-    return resp;
-}
-
-static
-char *submit_ureport(const char *dump_dir_name, struct ureport_server_config *conf)
-{
-    struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
-    g_autoptr(report_result_t) rr_bthash = NULL;
-
-    if (dd == NULL)
-        return NULL;
-
-    rr_bthash = libreport_find_in_reported_to(dd, "uReport");
-
-    dd_close(dd);
-
-    if (rr_bthash != NULL)
-    {
-        log_notice("uReport has already been submitted.");
-
-        return report_result_get_bthash(rr_bthash);
-    }
-
-    g_autofree char *json = libreport_ureport_from_dump_dir_ext(dump_dir_name, NULL);
-    if (json == NULL)
-    {
-        log_notice(_("Failed to generate microreport from the problem data"));
-        return NULL;
-    }
-
-    struct ureport_server_response *resp = ureport_do_post_credentials(json, conf, UREPORT_SUBMIT_ACTION);
-    if (resp == NULL)
-        return NULL;
-
-    char *bthash = NULL;
-    if (!resp->urr_is_error)
-    {
-        if (resp->urr_bthash != NULL)
-            bthash = g_strdup(resp->urr_bthash);
-
-        libreport_ureport_server_response_save_in_dump_dir(resp, dump_dir_name, conf);
-
-        if (resp->urr_message)
-            log_warning("%s", resp->urr_message);
-    }
-    else if (libreport_g_verbose > 2)
-        error_msg(_("Server responded with an error: '%s'"), resp->urr_value);
-
-    libreport_ureport_server_response_free(resp);
-    return bthash;
-}
-
-static
-void attach_to_ureport(struct ureport_server_config *conf,
-        const char *bthash, const char *attach_id, const char *data)
-{
-    g_autofree char *json = ureport_json_attachment_new(bthash, attach_id, data);
-    struct ureport_server_response *resp = ureport_do_post_credentials(json, conf, UREPORT_ATTACH_ACTION);
-    libreport_ureport_server_response_free(resp);
-}
-
-static
 bool check_for_hints(const char *url, char **login, char **password, bool ssl_verify, const char *tempfile)
 {
     bool retval = false;
@@ -395,45 +306,6 @@ char *get_param_string(const char *name, GHashTable *settings, const char *dflt)
     return g_strdup(envvar ? envvar : (g_hash_table_lookup(settings, name) ? : dflt));
 }
 
-static
-void prepare_ureport_configuration(const char *urcfile,
-        GHashTable *settings, struct ureport_server_config *urconf,
-        const char *portal_url, const char *login, const char *password, bool ssl_verify)
-{
-    libreport_load_conf_file(urcfile, settings, false);
-    libreport_ureport_server_config_init(urconf);
-
-    /* The following lines cause that we always use URL from ureport's
-     * configuration becuase the GUI reporter always exports uReport_URL env
-     * var.
-     *
-     *   char *url = NULL;
-     *   UREPORT_OPTION_VALUE_FROM_CONF(settings, "URL", url, g_strdup);
-     *   if (url != NULL)
-     *       libreport_ureport_server_config_set_url(urconf, url);
-     */
-
-    libreport_ureport_server_config_set_url(urconf, g_build_filename(portal_url ? portal_url : "", "/telemetry/abrt", NULL));
-    urconf->ur_ssl_verify = ssl_verify;
-
-    libreport_ureport_server_config_set_basic_auth(urconf, login, password);
-
-    bool include_auth = true;
-    UREPORT_OPTION_VALUE_FROM_CONF(settings, "IncludeAuthData", include_auth, libreport_string_to_bool);
-
-    if (include_auth)
-    {
-        const char *auth_items = NULL;
-        UREPORT_OPTION_VALUE_FROM_CONF(settings, "AuthDataItems", auth_items, (const char *));
-        if (NULL != auth_items)
-        {
-            urconf->ur_prefs.urp_auth_items = libreport_parse_delimited_list(auth_items, ",");
-        }
-    }
-
-    urconf->ur_prefs.urp_flags |= UREPORT_PREF_FLAG_RETURN_ON_FAILURE;
-}
-
 static char *create_case_url(char *url, const char *case_no)
 {
     g_autofree char *url1 = g_build_filename(url ? url : "", RHTSUPPORT_CASE_URL_PATH, NULL);
@@ -471,7 +343,6 @@ int main(int argc, char **argv)
     const char *dump_dir_name = ".";
     const char *case_no = NULL;
     GList *conf_file = NULL;
-    const char *urconf_file = UREPORT_CONF_FILE_PATH;
     const char *fmt_file = NULL;
 
     /* Can't keep these strings/structs static: _() doesn't support that */
@@ -499,10 +370,6 @@ int main(int argc, char **argv)
         "\n"
         "Option -tCASE uploads FILEs to the case CASE on RHTSupport site.\n"
         "-d DIR is ignored.\n"
-        "\n"
-        "Option -u sends ABRT crash statistics data (uReport) before creating a new case.\n"
-        "uReport configuration is loaded from UR_CONFFILE which defaults to\n"
-        UREPORT_CONF_FILE_PATH".\n"
     );
     enum {
         OPT_v = 1 << 0,
@@ -522,8 +389,6 @@ int main(int argc, char **argv)
         OPT_LIST(     'c', NULL, &conf_file    , "FILE", _("Configuration file (may be given many times)")),
         OPT_OPTSTRING('t', NULL, &case_no      , "ID"  , _("Upload FILEs [to case with this ID]")),
         OPT_BOOL(     'f', NULL, NULL          ,         _("Force reporting even if this problem is already reported")),
-        OPT_BOOL(     'u', NULL, NULL          ,         _("Submit uReport before creating a new case")),
-        OPT_STRING(   'C', NULL, &urconf_file  , "FILE", _("Configuration file for uReport")),
         OPT_STRING(   'F', NULL, &fmt_file     , "FILE", _("Formatting file for a new case")),
         OPT_BOOL(     'D', NULL, NULL          ,         _("Debug")),
         OPT_END()
@@ -588,21 +453,12 @@ int main(int argc, char **argv)
         bigsize = (unsigned)bigsz;
     else
         error_msg_and_die("expected number in range <0, %d>: '%s'", UINT_MAX, envvar);
-    envvar = getenv("RHTSupport_SubmitUReport");
-    bool submit_ur = libreport_string_to_bool(
-                envvar ? envvar :
-                    (g_hash_table_lookup(settings, "SubmitUReport") ? :
-                        ((opts & OPT_u) ? "1" : "0"))
-    );
+
+    if (settings)
+        g_hash_table_destroy(settings);
 
     g_autofree char *base_api_url = g_strdup(url);
     g_autofree char *bthash = NULL;
-
-    g_autoptr(GHashTable) ursettings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
-    struct ureport_server_config urconf;
-
-    prepare_ureport_configuration(urconf_file, ursettings, &urconf,
-            url, login, password, ssl_verify);
 
     if (opts & OPT_t)
     {
@@ -687,17 +543,6 @@ int main(int argc, char **argv)
             int yes = libreport_ask_yes_no(msg);
             if (!yes)
                 return 0;
-        }
-
-        if (submit_ur)
-        {
-            log_warning(_("Sending ABRT crash statistics data"));
-
-            bthash = submit_ureport(dump_dir_name, &urconf);
-
-            /* Ensure that we will use the updated credentials */
-            STRCPY_IF_NOT_EQUAL(login, urconf.ur_username);
-            STRCPY_IF_NOT_EQUAL(password, urconf.ur_password);
         }
     }
 
@@ -918,30 +763,6 @@ int main(int argc, char **argv)
         }
         /* else: error msg was already emitted by dd_opendir */
 
-        if (bthash)
-        {
-            log_warning(_("Linking ABRT crash statistics record with the case"));
-
-            /* Make sure we use the current credentials */
-            libreport_ureport_server_config_set_basic_auth(&urconf, login, password);
-
-            /* Attach Customer Case ID*/
-            attach_to_ureport(&urconf, bthash, "RHCID", result->url);
-
-            /* Attach Contact e-mail if configured */
-            const char *email = NULL;
-            UREPORT_OPTION_VALUE_FROM_CONF(ursettings, "ContactEmail", email, (const char *));
-            if (email != NULL)
-            {
-                log_warning(_("Linking ABRT crash statistics record with contact email: '%s'"), email);
-                attach_to_ureport(&urconf, bthash, "email", email);
-            }
-
-            /* Update the credentials */
-            STRCPY_IF_NOT_EQUAL(login, urconf.ur_username);
-            STRCPY_IF_NOT_EQUAL(password, urconf.ur_password);
-        }
-
         url = result->url;
         result->url = NULL;
         free_rhts_result(result);
@@ -1006,8 +827,6 @@ int main(int argc, char **argv)
 
     free_rhts_result(result_atch);
     free_rhts_result(result);
-
-    libreport_ureport_server_config_destroy(&urconf);
 
     problem_data_free(problem_data);
 
