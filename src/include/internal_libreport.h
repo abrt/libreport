@@ -418,7 +418,6 @@ extern int libreport_g_verbose;
 #define VERB3 if (libreport_g_verbose >= 3)
 /* there is no level > 3 */
 
-#define  libreport_
 void libreport_xfunc_die(void) NORETURN;
 
 void libreport_die_out_of_memory(void) NORETURN;
