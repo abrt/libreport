@@ -173,16 +173,6 @@ do
 done
 fi dnl end NO_MANTISBT
 
-dnl enable import of certificate for rhtsupport plugin
-AC_ARG_ENABLE([import-rhtsupport-cert],
-AS_HELP_STRING([--enable-import-rhtsupport-cert],
-    [import certificate needed for rhtsupport plugin (default is NO)]),
-[], [enable_import_rhtsupport_cert="no"])
-
-AS_IF([test "x$enable_import_rhtsupport_cert" != "xno"],
-AM_CONDITIONAL(ENABLE_IMPORT_RHTSUPPORT_CERT, true),
-AM_CONDITIONAL(ENABLE_IMPORT_RHTSUPPORT_CERT, false))
-
 
 AC_ARG_WITH([python3],
             [AS_HELP_STRING([--with-python3],

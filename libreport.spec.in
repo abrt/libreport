@@ -319,9 +319,6 @@ autoconf
 %if %{without bugzilla}
         --without-bugzilla \
 %endif
-%if 0%{?rhel}
-        --enable-import-rhtsupport-cert \
-%endif
         --enable-doxygen-docs \
         --disable-silent-rules
 
@@ -638,9 +635,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/%{name}/conf.d/plugins/rhtsupport.conf
 %{_datadir}/%{name}/events/report_RHTSupport.xml
 %{_datadir}/%{name}/events/report_RHTSupport_AddData.xml
-%if 0%{?rhel}
-%attr(600,root,root)%{_sysconfdir}/%{name}/cert-api.access.redhat.com.pem
-%endif
 %config(noreplace) %{_sysconfdir}/libreport/events.d/rhtsupport_event.conf
 %{_mandir}/man1/reporter-rhtsupport.1.gz
 %{_mandir}/man5/rhtsupport.conf.5.*

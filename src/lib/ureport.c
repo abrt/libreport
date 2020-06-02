@@ -30,19 +30,6 @@
 
 #define BTHASH_URL_SFX "reports/bthash/"
 
-#define RHSM_WEB_SERVICE_URL "https://cert-api.access.redhat.com/rs/telemetry/abrt"
-
-#define RHSMCON_PEM_DIR_PATH "/etc/pki/consumer"
-#define RHSMCON_CERT_NAME "cert.pem"
-#define RHSMCON_KEY_NAME "key.pem"
-
-/* Using the same template as for RHSM certificate, macro for cert dir path and
- * macro for cert name. Cert path can be easily modified for example by reading
- * an environment variable LIBREPORT_DEBUG_AUTHORITY_CERT_DIR_PATH
- */
-#define CERT_AUTHORITY_CERT_PATH "/etc/libreport"
-#define CERT_AUTHORITY_CERT_NAME "cert-api.access.redhat.com.pem"
-
 static char *
 puppet_config_print(const char *key)
 {
@@ -72,56 +59,6 @@ libreport_ureport_server_config_set_url(struct ureport_server_config *config,
     config->ur_url = server_url;
 }
 
-static char *
-rhsm_config_get_consumer_cert_dir(void)
-{
-    char *result = getenv("LIBREPORT_DEBUG_RHSMCON_PEM_DIR_PATH");
-    if (result != NULL)
-        return g_strdup(result);
-
-    result = libreport_run_in_shell_and_save_output(0,
-            "python3 -c \"from rhsm.config import initConfig; print(initConfig().get('rhsm', 'consumerCertDir'))\"",
-            NULL, NULL);
-
-
-    /* libreport_run_in_shell_and_save_output always returns non-NULL */
-    if (result[0] != '/')
-        goto error;
-
-    char *newline = strchrnul(result, '\n');
-    if (!newline)
-        goto error;
-
-    *newline = '\0';
-    return result;
-error:
-    free(result);
-    error_msg("Failed to get 'rhsm':'consumerCertDir' from rhsm.config python module. Using "RHSMCON_PEM_DIR_PATH);
-    return g_strdup(RHSMCON_PEM_DIR_PATH);
-}
-
-static bool
-certificate_exist(char *cert_name)
-{
-    if (access(cert_name, F_OK) != 0)
-    {
-        log_notice("RHSM consumer certificate '%s' does not exist.", cert_name);
-        return false;
-    }
-    return true;
-}
-
-static bool
-cert_authority_cert_exist(char *cert_name)
-{
-    if (access(cert_name, F_OK) != 0)
-    {
-        log_notice("Certs validating the server '%s' does not exist.", cert_name);
-        return false;
-    }
-    return true;
-}
-
 void
 libreport_ureport_server_config_set_client_auth(struct ureport_server_config *config,
                                       const char *client_auth)
@@ -138,50 +75,6 @@ libreport_ureport_server_config_set_client_auth(struct ureport_server_config *co
         config->ur_client_key = NULL;
 
         log_notice("Not using client authentication");
-    }
-    else if (strcmp(client_auth, "rhsm") == 0)
-    {
-        if (config->ur_url == NULL)
-            libreport_ureport_server_config_set_url(config, g_strdup(RHSM_WEB_SERVICE_URL));
-
-        /* always returns non-NULL */
-        g_autofree char *rhsm_dir = rhsm_config_get_consumer_cert_dir();
-
-        char *cert_full_name = g_build_filename(rhsm_dir, RHSMCON_CERT_NAME, NULL);
-        char *key_full_name = g_build_filename(rhsm_dir, RHSMCON_KEY_NAME, NULL);
-
-        /* get authority certificate dir path from environment variable, if it
-         * is not set, use CERT_AUTHORITY_CERT_PATH
-         */
-        const char *authority_cert_dir_path = getenv("LIBREPORT_DEBUG_AUTHORITY_CERT_DIR_PATH");
-        if (authority_cert_dir_path == NULL)
-           authority_cert_dir_path = CERT_AUTHORITY_CERT_PATH;
-
-        char *cert_authority_cert_full_name = g_build_filename(authority_cert_dir_path,
-                                                                 CERT_AUTHORITY_CERT_NAME, NULL);
-
-        if (certificate_exist(cert_full_name) && certificate_exist(key_full_name))
-        {
-            config->ur_client_cert = cert_full_name;
-            config->ur_client_key = key_full_name;
-            log_debug("Using cert files: '%s' : '%s'", config->ur_client_cert, config->ur_client_key);
-        }
-        else
-        {
-            free(cert_full_name);
-            free(key_full_name);
-            log_notice("Using the default configuration for uReports.");
-        }
-
-        if (cert_authority_cert_exist(cert_authority_cert_full_name))
-        {
-            config->ur_cert_authority_cert = cert_authority_cert_full_name;
-            log_debug("Using validating server cert: '%s'", config->ur_cert_authority_cert);
-        }
-        else
-        {
-            free(cert_authority_cert_full_name);
-        }
     }
     else if (strcmp(client_auth, "puppet") == 0)
     {
@@ -238,31 +131,12 @@ ureport_server_config_load_basic_auth(struct ureport_server_config *config,
     const char *username = NULL;
     const char *password = NULL;
 
-    if (strcmp(http_auth_pref, "rhts-credentials") == 0)
-    {
-        settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    username = tmp_username = g_strdup(http_auth_pref);
+    password = strchr(tmp_username, ':');
 
-        g_autofree char *local_conf = g_strdup_printf("%s"USER_HOME_CONFIG_PATH"/rhtsupport.conf", getenv("HOME"));
-
-        if (!libreport_load_plugin_conf_file("rhtsupport.conf", settings, /*skip key w/o values:*/ false) &&
-            !libreport_load_conf_file(local_conf, settings, /*skip key w/o values:*/ false))
-            error_msg_and_die("Could not get RHTSupport credentials");
-
-        username = g_hash_table_lookup(settings, "Login");
-        password = g_hash_table_lookup(settings, "Password");
-
-        if (config->ur_url == NULL)
-            libreport_ureport_server_config_set_url(config, g_strdup(RHSM_WEB_SERVICE_URL));
-    }
-    else
-    {
-        username = tmp_username = g_strdup(http_auth_pref);
-        password = strchr(tmp_username, ':');
-
-        if (password != NULL)
-            /* It is "char *", see strchr() few lines above. */
-            *((char *)(password++)) = '\0';
-    }
+    if (password != NULL)
+        /* It is "char *", see strchr() few lines above. */
+        *((char *)(password++)) = '\0';
 
     if (password == NULL)
     {
