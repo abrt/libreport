@@ -194,12 +194,12 @@ static void load_config_files(const char *dir_path)
         if (new_config)
             event_config = new_event_config(filename);
 
-        map_string_t *keys_and_values = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+        GHashTable *keys_and_values = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
         libreport_load_conf_file(fullpath, keys_and_values, /*skipKeysWithoutValue:*/ false);
 
         /* Insert or replace every key/value from keys_and_values to event_config->option */
-        map_string_iter_t iter;
+        GHashTableIter iter;
         gpointer name;
         gpointer value;
         g_hash_table_iter_init(&iter, keys_and_values);

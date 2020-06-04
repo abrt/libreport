@@ -29,7 +29,7 @@ static const char *const s_recognized_options[] = {
     NULL,
 };
 
-static map_string_t *s_global_settings;
+static GHashTable *s_global_settings;
 
 bool libreport_load_global_configuration(void)
 {
@@ -66,7 +66,7 @@ bool libreport_load_global_configuration_from_dirs(const char *dirs[], int dir_f
             return false;
         }
 
-        map_string_iter_t iter;
+        GHashTableIter iter;
         g_hash_table_iter_init(&iter, s_global_settings);
         gpointer key = NULL;
         while(g_hash_table_iter_next(&iter, &key, NULL))

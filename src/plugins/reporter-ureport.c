@@ -123,7 +123,7 @@ int main(int argc, char **argv)
 
     unsigned opts = libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
-    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     libreport_load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 
     libreport_ureport_server_config_load(&config, settings);

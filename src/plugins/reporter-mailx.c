@@ -100,7 +100,7 @@ static char *ask_email_address(const char *type, const char *def_address)
 
 static void create_and_send_email(
                 const char *dump_dir_name,
-                map_string_t *settings,
+                GHashTable *settings,
                 const char *fmt_file,
                 int flag)
 {
@@ -281,7 +281,7 @@ int main(int argc, char **argv)
 
     libreport_export_abrt_envvars(0);
 
-    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     libreport_load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 
     int flag = 0;

@@ -18,7 +18,7 @@
 #include "internal_libreport.h"
 #include <augeas.h>
 
-static map_string_t *user_settings;
+static GHashTable *user_settings;
 static char *conf_path;
 
 static char *get_user_config_file_path(const char *name, const char *suffix)
@@ -39,7 +39,7 @@ static char *get_conf_path(const char *name)
     return get_user_config_file_path(name, "conf");
 }
 
-bool libreport_save_app_conf_file(const char* application_name, map_string_t *settings)
+bool libreport_save_app_conf_file(const char* application_name, GHashTable *settings)
 {
     g_autofree char *app_conf_path = get_conf_path(application_name);
     bool result = libreport_save_conf_file(app_conf_path, settings);
@@ -47,7 +47,7 @@ bool libreport_save_app_conf_file(const char* application_name, map_string_t *se
     return result;
 }
 
-bool libreport_load_app_conf_file(const char *application_name, map_string_t *settings)
+bool libreport_load_app_conf_file(const char *application_name, GHashTable *settings)
 {
     g_autofree char *app_conf_path = get_conf_path(application_name);
     bool result = libreport_load_conf_file(app_conf_path, settings, false);
@@ -55,7 +55,7 @@ bool libreport_load_app_conf_file(const char *application_name, map_string_t *se
     return result;
 }
 
-void libreport_set_app_user_setting(map_string_t *settings, const char *name, const char *value)
+void libreport_set_app_user_setting(GHashTable *settings, const char *name, const char *value)
 {
     if (value)
         g_hash_table_replace(settings, g_strdup(name), g_strdup(value));
@@ -63,7 +63,7 @@ void libreport_set_app_user_setting(map_string_t *settings, const char *name, co
         g_hash_table_remove(settings, name);
 }
 
-const char *libreport_get_app_user_setting(map_string_t *settings, const char *name)
+const char *libreport_get_app_user_setting(GHashTable *settings, const char *name)
 {
     return g_hash_table_lookup(settings, name);
 }

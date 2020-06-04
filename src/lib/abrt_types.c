@@ -18,16 +18,16 @@
 */
 #include "internal_libreport.h"
 
-map_string_t *libreport_clone_map_string(map_string_t *ms)
+GHashTable *libreport_clone_map_string(GHashTable *ms)
 {
     if (ms == NULL)
         return NULL;
 
-    map_string_t *clone = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    GHashTable *clone = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
     gpointer key;
     gpointer value;
-    map_string_iter_t iter;
+    GHashTableIter iter;
     g_hash_table_iter_init(&iter, ms);
     while(g_hash_table_iter_next(&iter, &key, &value))
         g_hash_table_insert(clone, g_strdup((char *)key), g_strdup((char *)value));
@@ -43,7 +43,7 @@ map_string_t *libreport_clone_map_string(map_string_t *ms)
         return 0; \
     }
 
-int libreport_try_get_map_string_item_as_bool(map_string_t *ms, const char *key, int *value)
+int libreport_try_get_map_string_item_as_bool(GHashTable *ms, const char *key, int *value)
 {
     GET_ITEM_OR_RETURN(option, ms, key);
 

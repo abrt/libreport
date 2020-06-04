@@ -122,7 +122,7 @@ int main(void)
     setenv("uReport_IncludeAuthData", "no", 1);
     setenv("uReport_AuthDataItems", "hostname", 1);
 
-    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
     libreport_ureport_server_config_load(&config, settings);
 
@@ -1115,7 +1115,7 @@ int main(void)
     struct ureport_server_config config;
     libreport_ureport_server_config_init(&config);
 
-    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
     setenv("uReport_IncludeAuthData", "yes", 1);
     setenv("uReport_AuthDataItems", "hostname", 1);

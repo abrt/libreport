@@ -623,7 +623,7 @@ gint libreport_cmp_problem_data(gconstpointer a, gconstpointer b, gpointer filen
 }
 
 static bool problem_data_get_osinfo_from_items(problem_data_t *problem_data,
-        map_string_t *osinfo, const char *osinfo_name, const char *release_name)
+        GHashTable *osinfo, const char *osinfo_name, const char *release_name)
 {
     char *data = problem_data_get_content_or_NULL(problem_data, osinfo_name);
     if (data)
@@ -640,7 +640,7 @@ static bool problem_data_get_osinfo_from_items(problem_data_t *problem_data,
     return true;
 }
 
-void problem_data_get_osinfo(problem_data_t *problem_data, map_string_t *osinfo)
+void problem_data_get_osinfo(problem_data_t *problem_data, GHashTable *osinfo)
 {
     char *rootdir = problem_data_get_content_or_NULL(problem_data, FILENAME_ROOTDIR);
     if (rootdir &&
