@@ -231,7 +231,7 @@ ureport_server_config_load_basic_auth(struct ureport_server_config *config,
     if (http_auth_pref == NULL)
         return;
 
-    map_string_t *settings = NULL;
+    GHashTable *settings = NULL;
 
     g_autofree char *tmp_password = NULL;
     g_autofree char *tmp_username = NULL;
@@ -281,7 +281,7 @@ ureport_server_config_load_basic_auth(struct ureport_server_config *config,
 
 void
 libreport_ureport_server_config_load(struct ureport_server_config *config,
-                           map_string_t *settings)
+                           GHashTable *settings)
 {
     UREPORT_OPTION_VALUE_FROM_CONF(settings, "URL", config->ur_url, g_strdup);
     UREPORT_OPTION_VALUE_FROM_CONF(settings, "SSLVerify", config->ur_ssl_verify, libreport_string_to_bool);

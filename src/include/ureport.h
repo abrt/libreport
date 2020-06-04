@@ -94,7 +94,7 @@ libreport_ureport_server_config_destroy(struct ureport_server_config *config);
  */
 void
 libreport_ureport_server_config_load(struct ureport_server_config *config,
-                           map_string_t *settings);
+                           GHashTable *settings);
 
 /*
  * Configure HTTP(S) URL to server's index page

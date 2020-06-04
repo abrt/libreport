@@ -191,7 +191,7 @@ static void unescape_osnifo_value(const char *source, char* dest)
     dest[0] = '\0';
 }
 
-void libreport_parse_osinfo(const char *osinfo_bytes, map_string_t *osinfo)
+void libreport_parse_osinfo(const char *osinfo_bytes, GHashTable *osinfo)
 {
     const char *cursor = osinfo_bytes;
     unsigned line = 0;
@@ -260,7 +260,7 @@ void libreport_parse_release_for_bz(const char *release, char** product, char** 
     );
 }
 
-void libreport_parse_osinfo_for_bz(map_string_t *osinfo, char** product, char** version)
+void libreport_parse_osinfo_for_bz(GHashTable *osinfo, char** product, char** version)
 {
     const char *name = g_hash_table_lookup(osinfo, "REDHAT_BUGZILLA_PRODUCT");
     if (!name)
@@ -289,7 +289,7 @@ void libreport_parse_osinfo_for_bz(map_string_t *osinfo, char** product, char** 
     *version = NULL;
 }
 
-void libreport_parse_osinfo_for_bug_url(map_string_t *osinfo, char** url)
+void libreport_parse_osinfo_for_bug_url(GHashTable *osinfo, char** url)
 {
     const char *os_bug_report_url = g_hash_table_lookup(osinfo, "BUG_REPORT_URL");
 
@@ -337,7 +337,7 @@ void libreport_parse_release_for_rhts(const char *release, char** product, char*
     );
 }
 
-void libreport_parse_osinfo_for_rhts(map_string_t *osinfo, char** product, char** version)
+void libreport_parse_osinfo_for_rhts(GHashTable *osinfo, char** product, char** version)
 {
     const char *name = g_hash_table_lookup(osinfo, "REDHAT_SUPPORT_PRODUCT");
     if (!name)

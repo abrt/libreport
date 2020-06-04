@@ -23,7 +23,7 @@
 #include "problem_report.h"
 
 static void
-parse_osinfo_for_mantisbt(map_string_t *osinfo, char** project, char** version)
+parse_osinfo_for_mantisbt(GHashTable *osinfo, char** project, char** version)
 {
     const char *name = g_hash_table_lookup(osinfo, "CENTOS_MANTISBT_PROJECT");
     if (!name)
@@ -119,7 +119,7 @@ verify_credentials(mantisbt_settings_t *settings)
 }
 
 static void
-set_settings(mantisbt_settings_t *m, map_string_t *settings, struct dump_dir *dd)
+set_settings(mantisbt_settings_t *m, GHashTable *settings, struct dump_dir *dd)
 {
     const char *environ;
 
@@ -173,7 +173,7 @@ set_settings(mantisbt_settings_t *m, map_string_t *settings, struct dump_dir *dd
 
         if (dd != NULL)
         {
-            map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+            GHashTable *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
             g_autofree char *os_info_data = dd_load_text(dd, FILENAME_OS_INFO);
             libreport_parse_osinfo(os_info_data, osinfo);
@@ -308,7 +308,7 @@ int main(int argc, char **argv)
 
     libreport_export_abrt_envvars(0);
 
-    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
     {
         g_autofree char *local_conf = NULL;

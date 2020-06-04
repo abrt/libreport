@@ -254,7 +254,7 @@ static bool internal_aug_get_all_option_names(augeas *aug, const char *real_path
 
 /* Returns false if any error occurs, else returns true.
  */
-bool libreport_load_conf_file(const char *path, map_string_t *settings, bool skipKeysWithoutValue)
+bool libreport_load_conf_file(const char *path, GHashTable *settings, bool skipKeysWithoutValue)
 {
     bool retval = false;
     char real_path[PATH_MAX + 1];
@@ -322,12 +322,12 @@ const char *libreport_get_user_conf_base_dir(void)
     return base_dir;
 }
 
-bool libreport_load_conf_file_from_dirs(const char *base_name, const char *const *directories, map_string_t *settings, bool skipKeysWithoutValue)
+bool libreport_load_conf_file_from_dirs(const char *base_name, const char *const *directories, GHashTable *settings, bool skipKeysWithoutValue)
 {
     return libreport_load_conf_file_from_dirs_ext(base_name, directories, NULL, settings, skipKeysWithoutValue);
 }
 
-bool libreport_load_conf_file_from_dirs_ext(const char *base_name, const char *const *directories, const int *dir_flags, map_string_t *settings, bool skipKeysWithoutValue)
+bool libreport_load_conf_file_from_dirs_ext(const char *base_name, const char *const *directories, const int *dir_flags, GHashTable *settings, bool skipKeysWithoutValue)
 {
     if (NULL == directories || NULL == *directories)
     {
@@ -354,7 +354,7 @@ bool libreport_load_conf_file_from_dirs_ext(const char *base_name, const char *c
     return result;
 }
 
-bool libreport_load_plugin_conf_file(const char *name, map_string_t *settings, bool skipKeysWithoutValue)
+bool libreport_load_plugin_conf_file(const char *name, GHashTable *settings, bool skipKeysWithoutValue)
 {
     const char *dirs[] = {
         PLUGINS_CONF_DIR,
@@ -378,7 +378,7 @@ cmpstringp(const void *p1, const void *p2)
 }
 
 /* Returns false if saving failed */
-bool libreport_save_conf_file(const char *path, map_string_t *settings)
+bool libreport_save_conf_file(const char *path, GHashTable *settings)
 {
     bool retval = false;
     char real_path[PATH_MAX + 1];
@@ -405,7 +405,7 @@ bool libreport_save_conf_file(const char *path, map_string_t *settings)
 
     gpointer name = NULL;
     gpointer value = NULL;
-    map_string_iter_t iter;
+    GHashTableIter iter;
     g_hash_table_iter_init(&iter, settings);
     while (g_hash_table_iter_next(&iter, &name, &value))
     {
@@ -476,7 +476,7 @@ finalize:
     return retval;
 }
 
-bool libreport_save_plugin_conf_file(const char *name, map_string_t *settings)
+bool libreport_save_plugin_conf_file(const char *name, GHashTable *settings)
 {
     const char *plugins_conf_dir = getenv("LIBREPORT_DEBUG_PLUGINS_CONF_DIR");
     if (plugins_conf_dir == NULL)

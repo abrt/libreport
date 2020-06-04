@@ -609,7 +609,7 @@ char *libreport_make_description_logger(problem_data_t *problem_data, unsigned m
  * @param osinfo_bytes Non-NULL pointer to osinfo bytes.
  * @param osinfo The map where result is stored
  */
-void libreport_parse_osinfo(const char *osinfo_bytes, map_string_t *osinfo);
+void libreport_parse_osinfo(const char *osinfo_bytes, GHashTable *osinfo);
 
 /* @brief Builds product string and product's version string for Bugzilla
  *
@@ -625,7 +625,7 @@ void libreport_parse_osinfo(const char *osinfo_bytes, map_string_t *osinfo);
  * @param produc Non-NULL pointer where pointer to malloced string will be stored. Memory must be released by free()
  * @param version Non-NULL pointer where pointer to malloced string will be stored. Memory must be released by free()
  */
-void libreport_parse_osinfo_for_bz(map_string_t *osinfo, char **product, char **version);
+void libreport_parse_osinfo_for_bz(GHashTable *osinfo, char **product, char **version);
 
 /* @brief Extract BUG_REPORT_URL from os-release
  *
@@ -638,7 +638,7 @@ void libreport_parse_osinfo_for_bz(map_string_t *osinfo, char **product, char **
  * @param osinfo Input data from which the values are built
  * @param url Non-NULL pointer where pointer to malloced string will be stored. Memory must be released by free()
  */
-void libreport_parse_osinfo_for_bug_url(map_string_t *osinfo, char** url);
+void libreport_parse_osinfo_for_bug_url(GHashTable *osinfo, char** url);
 
 /* @brief Builds product string and product's version string for Red Hat Support
  *
@@ -654,7 +654,7 @@ void libreport_parse_osinfo_for_bug_url(map_string_t *osinfo, char** url);
  * @param produc Non-NULL pointer where pointer to malloced string will be stored. Memory must be released by free()
  * @param version Non-NULL pointer where pointer to malloced string will be stored. Memory must be released by free()
  */
-void libreport_parse_osinfo_for_rhts(map_string_t *osinfo, char **product, char **version);
+void libreport_parse_osinfo_for_rhts(GHashTable *osinfo, char **product, char **version);
 
 void libreport_parse_release_for_bz(const char *pRelease, char **product, char **version);
 void libreport_parse_release_for_rhts(const char *pRelease, char **product, char **version);
@@ -673,12 +673,12 @@ void libreport_parse_release_for_rhts(const char *pRelease, char **product, char
  *  in mid-2013 if no user for it is identified.
  * @return if it success it returns true, otherwise it returns false.
  */
-bool libreport_load_conf_file(const char *pPath, map_string_t *settings, bool skipKeysWithoutValue);
-bool libreport_load_plugin_conf_file(const char *name, map_string_t *settings, bool skipKeysWithoutValue);
+bool libreport_load_conf_file(const char *pPath, GHashTable *settings, bool skipKeysWithoutValue);
+bool libreport_load_plugin_conf_file(const char *name, GHashTable *settings, bool skipKeysWithoutValue);
 
 const char *libreport_get_user_conf_base_dir(void);
 
-bool libreport_load_conf_file_from_dirs(const char *base_name, const char *const *directories, map_string_t *settings, bool skipKeysWithoutValue);
+bool libreport_load_conf_file_from_dirs(const char *base_name, const char *const *directories, GHashTable *settings, bool skipKeysWithoutValue);
 
 enum {
     CONF_DIR_FLAG_NONE = 0,
@@ -686,16 +686,16 @@ enum {
 };
 
 bool libreport_load_conf_file_from_dirs_ext(const char *base_name, const char *const *directories,
-                                  const int * dir_flags, map_string_t *settings,
+                                  const int * dir_flags, GHashTable *settings,
                                   bool skipKeysWithoutValue);
 
-bool libreport_save_conf_file(const char *path, map_string_t *settings);
-bool libreport_save_plugin_conf_file(const char *name, map_string_t *settings);
+bool libreport_save_conf_file(const char *path, GHashTable *settings);
+bool libreport_save_plugin_conf_file(const char *name, GHashTable *settings);
 
-bool libreport_save_app_conf_file(const char* application_name, map_string_t *settings);
-bool libreport_load_app_conf_file(const char *application_name, map_string_t *settings);
-void libreport_set_app_user_setting(map_string_t *settings, const char *name, const char *value);
-const char *libreport_get_app_user_setting(map_string_t *settings, const char *name);
+bool libreport_save_app_conf_file(const char* application_name, GHashTable *settings);
+bool libreport_load_app_conf_file(const char *application_name, GHashTable *settings);
+void libreport_set_app_user_setting(GHashTable *settings, const char *name, const char *value);
+const char *libreport_get_app_user_setting(GHashTable *settings, const char *name);
 
 bool libreport_save_user_settings(void);
 bool libreport_load_user_settings(const char *application_name);

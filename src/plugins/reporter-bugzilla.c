@@ -86,7 +86,7 @@ struct bugzilla_struct {
     GList       *b_private_groups;
 };
 
-static void set_default_settings(map_string_t *osinfo, map_string_t *settings)
+static void set_default_settings(GHashTable *osinfo, GHashTable *settings)
 {
     g_autofree char *default_BugzillaURL;
     libreport_parse_osinfo_for_bug_url(osinfo, &default_BugzillaURL);
@@ -104,7 +104,7 @@ static void set_default_settings(map_string_t *osinfo, map_string_t *settings)
     log_debug("Loaded ProductVersion '%s' from os-release", default_ProductVersion);
 }
 
-static void set_settings(struct bugzilla_struct *b, map_string_t *settings)
+static void set_settings(struct bugzilla_struct *b, GHashTable *settings)
 {
     const char *environ;
 
@@ -348,7 +348,7 @@ int main(int argc, char **argv)
 
     libreport_export_abrt_envvars(0);
 
-    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     problem_data_t *problem_data = NULL;
 
     if (opts & OPT_d)
@@ -359,7 +359,7 @@ int main(int argc, char **argv)
             libreport_xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
         else
         {
-            map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+            GHashTable *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
             problem_data_get_osinfo(problem_data, osinfo);
             set_default_settings(osinfo, settings);
             if (osinfo)
@@ -428,7 +428,7 @@ int main(int argc, char **argv)
 
                 if (os_release != NULL)
                 {
-                    map_string_t *os_release_map = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+                    GHashTable *os_release_map = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
                     libreport_parse_osinfo(os_release, os_release_map);
 
                     product = g_strdup(g_hash_table_lookup(os_release_map, "REDHAT_BUGZILLA_PRODUCT"));
@@ -615,7 +615,7 @@ int main(int argc, char **argv)
     {
         free(rhbz.b_product);
         free(rhbz.b_product_version);
-        map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+        GHashTable *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
         problem_data_get_osinfo(problem_data, osinfo);
         libreport_parse_osinfo_for_bz(osinfo, &rhbz.b_product, &rhbz.b_product_version);
         if (osinfo)

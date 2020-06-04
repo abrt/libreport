@@ -14,7 +14,7 @@ AT_TESTFUN([libreport_parse_osinfo],
 int main(void)
 {
     libreport_g_verbose=3;
-    map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    GHashTable *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     {
         /* Test for empty input */
         libreport_parse_osinfo("", osinfo);
@@ -118,7 +118,7 @@ AT_TESTFUN([libreport_parse_osinfo_for_bz],
 
 void test(const char *osinfo_bytes, const char *product, const char *version)
 {
-    map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    GHashTable *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     libreport_parse_osinfo(osinfo_bytes, osinfo);
 
     g_autofree char *built_product = (char *)0xDEADBEAF;
@@ -225,7 +225,7 @@ AT_TESTFUN([parse_osinfo_for_bugurl], [[
 
 void test(const char *osinfo_bytes, const char *url)
 {
-    map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    GHashTable *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     libreport_parse_osinfo(osinfo_bytes, osinfo);
 
     g_autofree char *default_BugzillaURL = (char *)0xDEADBEEF;
@@ -292,7 +292,7 @@ AT_TESTFUN([libreport_parse_osinfo_for_rhts],
 
 void test(const char *osinfo_bytes, const char *product, const char *version)
 {
-    map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    GHashTable *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     libreport_parse_osinfo(osinfo_bytes, osinfo);
 
     g_autofree char *built_product = (char *)0xDEADBEAF;
@@ -402,7 +402,7 @@ int main(void)
     libreport_g_verbose=3;
 
     problem_data_t *pd = problem_data_new();
-    map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    GHashTable *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     {
         problem_data_add_text_noteditable(pd, FILENAME_OS_INFO,
              "NAME=Fedora\n"

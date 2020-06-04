@@ -388,7 +388,7 @@ void ask_rh_credentials(char **login, char **password)
 }
 
 static
-char *get_param_string(const char *name, map_string_t *settings, const char *dflt)
+char *get_param_string(const char *name, GHashTable *settings, const char *dflt)
 {
     g_autofree char *envname = g_strdup_printf("RHTSupport_%s", name);
     const char *envvar = getenv(envname);
@@ -397,7 +397,7 @@ char *get_param_string(const char *name, map_string_t *settings, const char *dfl
 
 static
 void prepare_ureport_configuration(const char *urcfile,
-        map_string_t *settings, struct ureport_server_config *urconf,
+        GHashTable *settings, struct ureport_server_config *urconf,
         const char *portal_url, const char *login, const char *password, bool ssl_verify)
 {
     libreport_load_conf_file(urcfile, settings, false);
@@ -534,7 +534,7 @@ int main(int argc, char **argv)
     libreport_export_abrt_envvars(0);
 
     /* Parse config, extract necessary params */
-    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     g_autofree char *local_conf = NULL;
     if (!conf_file)
     {
@@ -600,7 +600,7 @@ int main(int argc, char **argv)
     g_autofree char *base_api_url = g_strdup(url);
     g_autofree char *bthash = NULL;
 
-    map_string_t *ursettings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    GHashTable *ursettings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     struct ureport_server_config urconf;
 
     prepare_ureport_configuration(urconf_file, ursettings, &urconf,
@@ -860,7 +860,7 @@ int main(int argc, char **argv)
 
         g_autofree char *product = NULL;
         g_autofree char *version = NULL;
-        map_string_t *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+        GHashTable *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
         problem_data_get_osinfo(problem_data, osinfo);
         libreport_parse_osinfo_for_rhts(osinfo, &product, &version);
         if (osinfo)

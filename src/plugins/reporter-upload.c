@@ -33,7 +33,7 @@ static char *ask_url(const char *message)
 }
 
 static int interactive_upload_file(const char *url, const char *file_name,
-                                   map_string_t *settings, char **remote_name)
+                                   GHashTable *settings, char **remote_name)
 {
     post_state_t *state = new_post_state(POST_WANT_ERROR_MSG);
     state->username = g_hash_table_lookup(settings, "UploadUsername");
@@ -78,7 +78,7 @@ static int interactive_upload_file(const char *url, const char *file_name,
 static int create_and_upload_archive(
                 const char *dump_dir_name,
                 const char *url,
-                map_string_t *settings,
+                GHashTable *settings,
                 char **remote_name)
 {
     int result = 1; /* error */
@@ -202,7 +202,7 @@ int main(int argc, char **argv)
     //TODO:
     //ExcludeFiles = foo,bar*,b*z
 
-    map_string_t *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     if (conf_file)
         libreport_load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 

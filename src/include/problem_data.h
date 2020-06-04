@@ -127,7 +127,7 @@ static inline GList *problem_data_get_all_elements(problem_data_t *problem_data)
   @param problem_data Problem data object to read the os_info items
   @param osinfo String string map where loaded key value pairs are saved
  */
-void problem_data_get_osinfo(problem_data_t *problem_data, map_string_t *osinfo);
+void problem_data_get_osinfo(problem_data_t *problem_data, GHashTable *osinfo);
 
 int problem_data_send_to_abrt(problem_data_t* problem_data);
 
