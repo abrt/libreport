@@ -21,18 +21,31 @@
 
 bool libreport_is_in_comma_separated_list(const char *value, const char *list)
 {
-    if (!list)
+    if (list == NULL)
         return false;
+
     unsigned len = strlen(value);
+
     while (*list)
     {
+        while (*list && g_ascii_isspace(*list))
+            ++list;
+        if (*list == '\0')
+            break;
+
         const char *comma = strchrnul(list, ',');
-        if ((comma - list == len) && strncmp(value, list, len) == 0)
+        const char *last_nonws = comma - 1;
+        while (g_ascii_isspace(*last_nonws))
+            --last_nonws;
+
+        if ((last_nonws - list + 1 == len) && strncmp(value, list, len) == 0)
             return true;
+
         if (!*comma)
             break;
         list = comma + 1;
     }
+
     return false;
 }
 
