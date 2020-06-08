@@ -208,17 +208,6 @@ enum {
     SANITIZE_CR  = (1 << 13),
 };
 
-int libreport_try_atou(const char *numstr, unsigned *value);
-int libreport_try_atoi(const char *numstr, int *value);
-/* Using libreport_xatoi() instead of naive atoi() is not always convenient -
- * in many places people want *non-negative* values, but store them
- * in signed int. Therefore we need this one:
- * dies if input is not in [0, INT_MAX] range. Also will reject '-0' etc.
- * It should really be named xatoi_nonnegative (since it allows 0),
- * but that would be too long.
- */
-int libreport_try_atoi_positive(const char *numstr, int *value);
-
 //unused for now
 //unsigned long long monotonic_ns(void);
 //unsigned long long monotonic_us(void);

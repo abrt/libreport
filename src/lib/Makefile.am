@@ -33,7 +33,6 @@ libreport_la_SOURCES = \
     glib_support.c \
     iso_date_string.c \
     strbuf.c \
-    xatonum.c \
     spawn.c \
     dirsize.c \
     dump_dir.c \
