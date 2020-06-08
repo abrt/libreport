@@ -123,7 +123,7 @@ int main(int argc, char **argv)
 
     unsigned opts = libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
-    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    g_autoptr(GHashTable) settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     libreport_load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 
     libreport_ureport_server_config_load(&config, settings);
@@ -345,8 +345,6 @@ finalize:
     if (config.ur_prefs.urp_auth_items == auth_items)
         config.ur_prefs.urp_auth_items = NULL;
 
-    if (settings)
-        g_hash_table_destroy(settings);
     libreport_ureport_server_config_destroy(&config);
 
     return ret;

@@ -1509,7 +1509,7 @@ void libreport_load_single_event_config_data_from_user_storage(event_config_t *c
 {
     INITIALIZE_LIBREPORT();
 
-    GHashTable *tmp = g_hash_table_new_full(
+    g_autoptr(GHashTable) tmp = g_hash_table_new_full(
                 /*hash_func*/ g_str_hash,
                 /*key_equal_func:*/ g_str_equal,
                 /*key_destroy_func:*/ g_free,
@@ -1518,8 +1518,6 @@ void libreport_load_single_event_config_data_from_user_storage(event_config_t *c
     g_hash_table_insert(tmp, g_strdup(ec_get_name(config)), config);
 
     libreport_load_event_config_data_from_user_storage(tmp);
-
-    g_hash_table_destroy(tmp);
 
     return;
 }

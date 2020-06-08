@@ -202,7 +202,7 @@ int main(int argc, char **argv)
     //TODO:
     //ExcludeFiles = foo,bar*,b*z
 
-    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    g_autoptr(GHashTable) settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     if (conf_file)
         libreport_load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 
@@ -232,7 +232,7 @@ int main(int argc, char **argv)
     g_autofree char *remote_name = NULL;
     const int result = create_and_upload_archive(dump_dir_name, conf_url, settings, &remote_name);
     if (result != 0)
-        goto finito;
+        return result;
 
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (dd)
@@ -250,8 +250,5 @@ int main(int argc, char **argv)
         dd_close(dd);
     }
 
-finito:
-    if (settings)
-        g_hash_table_destroy(settings);
     return result;
 }

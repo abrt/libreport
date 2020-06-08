@@ -359,11 +359,9 @@ int main(int argc, char **argv)
             libreport_xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
         else
         {
-            GHashTable *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+            g_autoptr(GHashTable) osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
             problem_data_get_osinfo(problem_data, osinfo);
             set_default_settings(osinfo, settings);
-            if (osinfo)
-                g_hash_table_destroy(osinfo);
         }
     }
 
@@ -428,13 +426,10 @@ int main(int argc, char **argv)
 
                 if (os_release != NULL)
                 {
-                    GHashTable *os_release_map = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+                    g_autoptr(GHashTable) os_release_map = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
                     libreport_parse_osinfo(os_release, os_release_map);
 
                     product = g_strdup(g_hash_table_lookup(os_release_map, "REDHAT_BUGZILLA_PRODUCT"));
-
-                    if (os_release_map)
-                        g_hash_table_destroy(os_release_map);
 
                     if (product == NULL)
                         error_msg(_("Failed to get 'REDHAT_BUGZILLA_PRODUCT' from '/etc/os-release'."));
@@ -615,11 +610,9 @@ int main(int argc, char **argv)
     {
         free(rhbz.b_product);
         free(rhbz.b_product_version);
-        GHashTable *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+        g_autoptr(GHashTable) osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
         problem_data_get_osinfo(problem_data, osinfo);
         libreport_parse_osinfo_for_bz(osinfo, &rhbz.b_product, &rhbz.b_product_version);
-        if (osinfo)
-            g_hash_table_destroy(osinfo);
 
         if (!rhbz.b_product || !rhbz.b_product_version)
             error_msg_and_die(_("Can't determine Bugzilla Product from problem data."));

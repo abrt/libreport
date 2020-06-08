@@ -281,7 +281,7 @@ int main(int argc, char **argv)
 
     libreport_export_abrt_envvars(0);
 
-    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    g_autoptr(GHashTable) settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     libreport_load_conf_file(conf_file, settings, /*skip key w/o values:*/ false);
 
     int flag = 0;
@@ -293,7 +293,5 @@ int main(int argc, char **argv)
 
     create_and_send_email(dump_dir_name, settings, fmt_file, flag);
 
-    if (settings)
-        g_hash_table_destroy(settings);
     return 0;
 }

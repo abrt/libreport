@@ -147,7 +147,7 @@ int main(int argc, char **argv)
     textdomain(PACKAGE);
 #endif
 
-    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    g_autoptr(GHashTable) settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     const char *dump_dir_name = ".";
     GList *conf_file = NULL;
 
@@ -191,7 +191,5 @@ int main(int argc, char **argv)
 
     report_to_kerneloops(dump_dir_name, settings);
 
-    if (settings)
-        g_hash_table_destroy(settings);
     return 0;
 }

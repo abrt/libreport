@@ -231,7 +231,7 @@ ureport_server_config_load_basic_auth(struct ureport_server_config *config,
     if (http_auth_pref == NULL)
         return;
 
-    GHashTable *settings = NULL;
+    g_autoptr(GHashTable) settings = NULL;
 
     g_autofree char *tmp_password = NULL;
     g_autofree char *tmp_username = NULL;
@@ -274,9 +274,6 @@ ureport_server_config_load_basic_auth(struct ureport_server_config *config,
     }
 
     libreport_ureport_server_config_set_basic_auth(config, username, password);
-
-    if (settings)
-        g_hash_table_destroy(settings);
 }
 
 void

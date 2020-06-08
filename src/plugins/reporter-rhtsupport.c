@@ -534,7 +534,7 @@ int main(int argc, char **argv)
     libreport_export_abrt_envvars(0);
 
     /* Parse config, extract necessary params */
-    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    g_autoptr(GHashTable) settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     g_autofree char *local_conf = NULL;
     if (!conf_file)
     {
@@ -594,13 +594,11 @@ int main(int argc, char **argv)
                     (g_hash_table_lookup(settings, "SubmitUReport") ? :
                         ((opts & OPT_u) ? "1" : "0"))
     );
-    if (settings)
-        g_hash_table_destroy(settings);
 
     g_autofree char *base_api_url = g_strdup(url);
     g_autofree char *bthash = NULL;
 
-    GHashTable *ursettings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    g_autoptr(GHashTable) ursettings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     struct ureport_server_config urconf;
 
     prepare_ureport_configuration(urconf_file, ursettings, &urconf,
@@ -860,11 +858,9 @@ int main(int argc, char **argv)
 
         g_autofree char *product = NULL;
         g_autofree char *version = NULL;
-        GHashTable *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+        g_autoptr(GHashTable) osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
         problem_data_get_osinfo(problem_data, osinfo);
         libreport_parse_osinfo_for_rhts(osinfo, &product, &version);
-        if (osinfo)
-            g_hash_table_destroy(osinfo);
 
         if (!product)
         {   /* How can we help user sorting out this problem? */
@@ -908,8 +904,7 @@ int main(int argc, char **argv)
         dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
         if (dd)
         {
-            report_result_t *report_result;
-            report_result = report_result_new_with_label_from_env("RHTSupport");
+            g_autoptr (report_result_t) report_result = report_result_new_with_label_from_env("RHTSupport");
 
             report_result_set_message(report_result, result->msg);
             report_result_set_timestamp(report_result, time(NULL));
@@ -920,8 +915,6 @@ int main(int argc, char **argv)
             if (result->msg)
                 log_warning("%s", result->msg);
             log_warning("URL=%s", result->url);
-
-            report_result_free(report_result);
         }
         /* else: error msg was already emitted by dd_opendir */
 
@@ -1015,8 +1008,6 @@ int main(int argc, char **argv)
     free_rhts_result(result);
 
     libreport_ureport_server_config_destroy(&urconf);
-    if (ursettings)
-        g_hash_table_destroy(ursettings);
 
     problem_data_free(problem_data);
 
