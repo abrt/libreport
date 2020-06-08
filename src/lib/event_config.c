@@ -194,7 +194,7 @@ static void load_config_files(const char *dir_path)
         if (new_config)
             event_config = new_event_config(filename);
 
-        GHashTable *keys_and_values = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+        g_autoptr(GHashTable) keys_and_values = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
         libreport_load_conf_file(fullpath, keys_and_values, /*skipKeysWithoutValue:*/ false);
 
@@ -222,9 +222,6 @@ static void load_config_files(const char *dir_path)
             if (!elem)
                 event_config->options = g_list_append(event_config->options, opt);
         }
-
-        if (keys_and_values)
-            g_hash_table_destroy(keys_and_values);
 
         if (new_config)
             g_hash_table_replace(g_event_config_list, g_strdup(ec_get_name(event_config)), event_config);

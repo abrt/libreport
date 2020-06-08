@@ -173,14 +173,12 @@ set_settings(mantisbt_settings_t *m, GHashTable *settings, struct dump_dir *dd)
 
         if (dd != NULL)
         {
-            GHashTable *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+            g_autoptr(GHashTable) osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
             g_autofree char *os_info_data = dd_load_text(dd, FILENAME_OS_INFO);
             libreport_parse_osinfo(os_info_data, osinfo);
 
             parse_osinfo_for_mantisbt(osinfo, &m->m_project, &m->m_project_version);
-            if (osinfo)
-                g_hash_table_destroy(osinfo);
         }
     }
 

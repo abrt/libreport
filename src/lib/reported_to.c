@@ -47,17 +47,13 @@ int libreport_add_reported_to_data(char **reported_to, const char *line)
 
 int libreport_add_reported_to_entry_data(char **reported_to, report_result_t *result)
 {
-    GString *buf;
-
-    buf = report_result_to_string(result);
+    g_autoptr(GString) buf = report_result_to_string(result);
     if (NULL == buf)
     {
         return -EINVAL;
     }
 
     const int r = libreport_add_reported_to_data(reported_to, buf->str);
-
-    g_string_free(buf, TRUE);
 
     return r;
 }

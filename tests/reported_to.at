@@ -211,66 +211,57 @@ int main(void)
 #define SIXTH_LINE "RHTSupport: TIME=87654321 URL=https://bugzilla.redhat.com/ MSG=The world's biggest Bugzilla instance"
 
     {
-        report_result_t *found = libreport_find_in_reported_to_data(FIRST_LINE, "Bugzilla");
+        g_autoptr (report_result_t) found = libreport_find_in_reported_to_data(FIRST_LINE, "Bugzilla");
         assert(found != NULL || !"Failed to find Bugzilla");
         assert(report_result_equals(found, first_result) || !"Failed to parse Bugzilla");
-        report_result_free(found);
     }
 
     {
-        report_result_t *found = libreport_find_in_reported_to_data(SECOND_LINE, "ABRT Server");
+        g_autoptr (report_result_t) found = libreport_find_in_reported_to_data(SECOND_LINE, "ABRT Server");
         assert(found != NULL || !"Failed to find ABRT Server");
         assert(report_result_equals(found, second_result) || !"Failed to parse ABRT Server");
-        report_result_free(found);
     }
 
     {
-        report_result_t *found = libreport_find_in_reported_to_data(THIRD_LINE, "RHTSupport");
+        g_autoptr (report_result_t) found = libreport_find_in_reported_to_data(THIRD_LINE, "RHTSupport");
         assert(found != NULL || !"Failed to find RHTSupport");
         assert(report_result_equals(found, third_result) || !"Failed to parse RHTSupport");
-        report_result_free(found);
     }
 
     {
-        report_result_t *found = libreport_find_in_reported_to_data(FIRST_LINE"\n"FOURTH_LINE, "Bugzilla");
+        g_autoptr (report_result_t) found = libreport_find_in_reported_to_data(FIRST_LINE"\n"FOURTH_LINE, "Bugzilla");
         assert(found != NULL || !"Failed to find the latest Bugzilla");
         assert(report_result_equals(found, fourth_result) || !"Failed to parse the latest Bugzilla");
-        report_result_free(found);
     }
 
     {
-        report_result_t *found = libreport_find_in_reported_to_data(SECOND_LINE"\n"FIFTH_LINE, "ABRT Server");
+        g_autoptr (report_result_t) found = libreport_find_in_reported_to_data(SECOND_LINE"\n"FIFTH_LINE, "ABRT Server");
         assert(found != NULL || !"Failed to find the latest ABRT Server");
         assert(report_result_equals(found, fifth_result) || !"Failed to parse the latest ABRT Server");
-        report_result_free(found);
     }
 
     {
-        report_result_t *found = libreport_find_in_reported_to_data(THIRD_LINE"\n"SIXTH_LINE, "RHTSupport");
+        g_autoptr (report_result_t) found = libreport_find_in_reported_to_data(THIRD_LINE"\n"SIXTH_LINE, "RHTSupport");
         assert(found != NULL || !"Failed to find the RHTSupport");
         assert(report_result_equals(found, sixth_result) || !"Failed to parse the latest RHTSupport");
-        report_result_free(found);
     }
 
     {
-        report_result_t *found = libreport_find_in_reported_to_data(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n"FOURTH_LINE"\n"FIFTH_LINE"\n"SIXTH_LINE, "Bugzilla");
+        g_autoptr (report_result_t) found = libreport_find_in_reported_to_data(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n"FOURTH_LINE"\n"FIFTH_LINE"\n"SIXTH_LINE, "Bugzilla");
         assert(found != NULL || !"Failed to find the latest Bugzilla from huge file");
         assert(report_result_equals(found, fourth_result) || !"Failed to parse the latest Bugzilla from huge file");
-        report_result_free(found);
     }
 
     {
-        report_result_t *found = libreport_find_in_reported_to_data(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n"FOURTH_LINE"\n"FIFTH_LINE"\n"SIXTH_LINE, "ABRT Server");
+        g_autoptr (report_result_t) found = libreport_find_in_reported_to_data(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n"FOURTH_LINE"\n"FIFTH_LINE"\n"SIXTH_LINE, "ABRT Server");
         assert(found != NULL || !"Failed to find the latest ABRT Server from huge file");
         assert(report_result_equals(found, fifth_result) || !"Failed to parse the latest ABRT Server from huge file");
-        report_result_free(found);
     }
 
     {
-        report_result_t *found = libreport_find_in_reported_to_data(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n"FOURTH_LINE"\n"FIFTH_LINE"\n"SIXTH_LINE, "RHTSupport");
+        g_autoptr (report_result_t) found = libreport_find_in_reported_to_data(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n"FOURTH_LINE"\n"FIFTH_LINE"\n"SIXTH_LINE, "RHTSupport");
         assert(found != NULL || !"Failed to find the RHTSupport from huge file");
         assert(report_result_equals(found, sixth_result) || !"Failed to parse the latest RHTSupport from huge file");
-        report_result_free(found);
     }
 
     return 0;

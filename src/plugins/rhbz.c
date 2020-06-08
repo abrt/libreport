@@ -512,11 +512,11 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
 
     g_autofree char *summary = libreport_shorten_string_to_length(bzsummary, MAX_SUMMARY_LENGTH);
 
-    GString *status_whiteboard = g_string_new(NULL);
+    g_autoptr(GString) status_whiteboard = g_string_new(NULL);
     g_string_append_printf(status_whiteboard, "abrt_hash:%s;", duphash);
 
     {   /* Add fields from /etc/os-release to Whiteboard for simple metrics. */
-        GHashTable *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+        g_autoptr(GHashTable) osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
         problem_data_get_osinfo(problem_data, osinfo);
 
         /* This is the highest abstraction level I am willing to introduce now.
@@ -538,9 +538,6 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
                 g_string_append_printf(status_whiteboard, "%s=%s;", *iter, v);
             }
         }
-
-        if (osinfo)
-            g_hash_table_destroy(osinfo);
     }
 
     xmlrpc_env env;
@@ -582,8 +579,6 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
 
     xmlrpc_DECREF(params);
     xmlrpc_env_clean(&env);
-
-    g_string_free(status_whiteboard, TRUE);
 
     if (!result)
         return -1;

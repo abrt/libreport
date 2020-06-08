@@ -648,7 +648,7 @@ format_section(section_t *section, problem_data_t *pd, GList *comment_fmt_spec, 
         if (child->items)
         {
             /* "Text: item[,item]..." */
-            GString *output = g_string_new(NULL);
+            g_autoptr(GString) output = g_string_new(NULL);
             GList *item = child->items;
             while (item)
             {
@@ -662,8 +662,6 @@ format_section(section_t *section, problem_data_t *pd, GList *comment_fmt_spec, 
             if (output->len != 0)
                 add_to_section_output((child->name[0] ? "%s:\n%s" : "%s%s"),
                                       child->name, output->str);
-
-            g_string_free(output, TRUE);
         }
         else
         {

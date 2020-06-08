@@ -192,7 +192,7 @@ int main(int argc, char **argv)
 
     /* list of workflows applicable to the currently processed problem */
     GList *possible_names = list_possible_events_glist(g_dump_dir_name, "workflow");
-    GHashTable *possible_workflows = load_workflow_config_data_from_list(possible_names, WORKFLOWS_DIR);
+    g_autoptr(GHashTable) possible_workflows = load_workflow_config_data_from_list(possible_names, WORKFLOWS_DIR);
     g_list_free_full(possible_names, free);
 
     /* if we have only 1 workflow, we can use the events from it as default */
@@ -208,7 +208,6 @@ int main(int argc, char **argv)
             g_auto_event_list = wf_get_event_names((workflow_t *)value);
         }
     }
-    g_hash_table_destroy(possible_workflows);
 
     problem_data_reload_from_dump_dir();
 
