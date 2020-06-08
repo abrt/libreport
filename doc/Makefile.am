@@ -1,3 +1,21 @@
+EXTRA_DIST =
+
+MAN1_BUGZILLA = \
+	reporter-bugzilla.txt \
+	report.txt
+MAN5_BUGZILLA = \
+	bugzilla_anaconda_event.conf.txt \
+	bugzilla.conf.txt \
+	bugzilla_event.conf.txt \
+	bugzilla_format_anaconda.conf.txt \
+	bugzilla_format.conf.txt \
+	bugzilla_formatdup_anaconda.conf.txt \
+	bugzilla_formatdup.conf.txt \
+	bugzilla_format_kernel.conf.txt \
+	bugzilla_format_analyzer_libreport.conf.txt \
+	bugzilla_formatdup_analyzer_libreport.conf.txt \
+	report_Bugzilla.conf.txt
+
 # silent rules for ASCIIDOC and XMLTO
 ASCIIDOC_SILENT = $(ASCIIDOC_SILENT_$(V))
 ASCIIDOC_SILENT_ = $(ASCIIDOC_SILENT_$(AM_DEFAULT_VERBOSITY))
@@ -7,66 +25,56 @@ XMLTO_SILENT = $(XMLTO_SILENT_$(V))
 XMLTO_SILENT_ = $(XMLTO_SILENT_$(AM_DEFAULT_VERBOSITY))
 XMLTO_SILENT_0 = @echo "  XMLTO " $@;
 
-MAN1_TXT =
-MAN1_TXT += report-cli.txt
-MAN1_TXT += report-newt.txt
-MAN1_TXT += report-gtk.txt
+MAN1_TXT = \
+	report-cli.txt \
+	report-newt.txt \
+	report-gtk.txt \
+	reporter-kerneloops.txt \
+	reporter-mailx.txt \
+	reporter-print.txt \
+	reporter-rhtsupport.txt \
+	reporter-upload.txt \
+	reporter-ureport.txt \
+	reporter-mantisbt.txt \
+	reporter-systemd-journal.txt
+
+MAN5_TXT = \
+	anaconda_event.conf.txt \
+	mantisbt.conf.txt \
+	mantisbt_format.conf.txt \
+	mantisbt_formatdup.conf.txt \
+	mantisbt_format_analyzer_libreport.conf.txt \
+	mantisbt_formatdup_analyzer_libreport.conf.txt \
+	ignored_words.conf.txt \
+	forbidden_words.conf.txt \
+	libreport.conf.txt \
+	mailx.conf.txt \
+	mailx_event.conf.txt \
+	print_event.conf.txt \
+	report_event.conf.txt \
+	report_fedora.conf.txt \
+	report_centos.conf.txt \
+	report_Logger.conf.txt \
+	report_rhel.conf.txt \
+	report_rhel_bugzilla.conf.txt \
+	report_uReport.conf.txt \
+	report_logger.conf.txt \
+	report_mailx.conf.txt \
+	report_uploader.conf.txt \
+	report_Uploader.conf.txt \
+	report_CentOSBugTracker.conf.txt \
+	rhtsupport.conf.txt \
+	rhtsupport_event.conf.txt \
+	uploader_event.conf.txt \
+	ureport.conf.txt \
+	upload.conf.txt
 
 if BUILD_BUGZILLA
-MAN1_TXT += reporter-bugzilla.txt
-MAN1_TXT += report.txt
+MAN1_TXT += $(MAN1_BUGZILLA)
+MAN5_TXT += $(MAN5_BUGZILLA)
+else
+EXTRA_DIST += $(MAN1_BUGZILLA) $(MAN5_BUGZILLA)
 endif
-
-MAN1_TXT += reporter-kerneloops.txt
-MAN1_TXT += reporter-mailx.txt
-MAN1_TXT += reporter-print.txt
-MAN1_TXT += reporter-rhtsupport.txt
-MAN1_TXT += reporter-upload.txt
-MAN1_TXT += reporter-ureport.txt
-MAN1_TXT += reporter-mantisbt.txt
-MAN1_TXT += reporter-systemd-journal.txt
-
-MAN5_TXT =
-MAN5_TXT += anaconda_event.conf.txt
-MAN5_TXT += bugzilla_anaconda_event.conf.txt
-MAN5_TXT += bugzilla.conf.txt
-MAN5_TXT += bugzilla_event.conf.txt
-MAN5_TXT += bugzilla_format_anaconda.conf.txt
-MAN5_TXT += bugzilla_format.conf.txt
-MAN5_TXT += bugzilla_formatdup_anaconda.conf.txt
-MAN5_TXT += bugzilla_formatdup.conf.txt
-MAN5_TXT += bugzilla_format_kernel.conf.txt
-MAN5_TXT += bugzilla_format_analyzer_libreport.conf.txt
-MAN5_TXT += bugzilla_formatdup_analyzer_libreport.conf.txt
-MAN5_TXT += mantisbt.conf.txt
-MAN5_TXT += mantisbt_format.conf.txt
-MAN5_TXT += mantisbt_formatdup.conf.txt
-MAN5_TXT += mantisbt_format_analyzer_libreport.conf.txt
-MAN5_TXT += mantisbt_formatdup_analyzer_libreport.conf.txt
-MAN5_TXT += ignored_words.conf.txt
-MAN5_TXT += forbidden_words.conf.txt
-MAN5_TXT += libreport.conf.txt
-MAN5_TXT += mailx.conf.txt
-MAN5_TXT += mailx_event.conf.txt
-MAN5_TXT += print_event.conf.txt
-MAN5_TXT += report_Bugzilla.conf.txt
-MAN5_TXT += report_event.conf.txt
-MAN5_TXT += report_fedora.conf.txt
-MAN5_TXT += report_centos.conf.txt
-MAN5_TXT += report_Logger.conf.txt
-MAN5_TXT += report_rhel.conf.txt
-MAN5_TXT += report_rhel_bugzilla.conf.txt
-MAN5_TXT += report_uReport.conf.txt
-MAN5_TXT += report_logger.conf.txt
-MAN5_TXT += report_mailx.conf.txt
-MAN5_TXT += report_uploader.conf.txt
-MAN5_TXT += report_Uploader.conf.txt
-MAN5_TXT += report_CentOSBugTracker.conf.txt
-MAN5_TXT += rhtsupport.conf.txt
-MAN5_TXT += rhtsupport_event.conf.txt
-MAN5_TXT += uploader_event.conf.txt
-MAN5_TXT += ureport.conf.txt
-MAN5_TXT += upload.conf.txt
 
 MAN5_PREFORMATTED =
 MAN5_PREFORMATTED += centos_report_event.conf.5
@@ -88,5 +96,5 @@ SUFFIXES = .1 .5
                                     --conf-file $(top_srcdir)/asciidoc.conf \
                                     -alibreport_version=$(PACKAGE_VERSION) -o $@ $<
 
-EXTRA_DIST = $(MAN1_TXT) $(MAN5_TXT) $(MAN5_PREFORMATTED)
+EXTRA_DIST += $(MAN1_TXT) $(MAN5_TXT) $(MAN5_PREFORMATTED)
 CLEANFILES = $(man1_MANS)
