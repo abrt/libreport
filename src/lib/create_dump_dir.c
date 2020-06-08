@@ -27,9 +27,13 @@ static uid_t parse_uid(const char *uid_str)
     assert(sizeof(uid_t) == sizeof(unsigned));
 
     uid_t uid = (uid_t)-1;
+    char *endptr;
 
-    if (libreport_try_atou(uid_str, &uid) != 0)
-        error_msg(_("uid value is not valid: '%s'"), uid_str);
+    long uid_intermediate = g_ascii_strtoull(uid_str, &endptr, 10);
+    if (uid_intermediate >= 0 && uid_intermediate <= UINT_MAX && uid_str != endptr)
+        uid = (uid_t)uid_intermediate;
+    else
+        error_msg_and_die("expected number in range <0, %d>: '%s'", UINT_MAX, uid_str);
 
     return uid;
 }
