@@ -50,8 +50,8 @@ BuildRequires: doxygen
 BuildRequires: systemd-devel
 BuildRequires: augeas-devel
 BuildRequires: augeas
-BuildRequires: xz
-BuildRequires: lz4
+BuildRequires: pkgconfig(xz)
+BuildRequires: pkgconfig(lz4)
 Requires: libreport-filesystem = %{version}-%{release}
 Requires: satyr >= 0.24
 Requires: glib2 >= %{glib_ver}
