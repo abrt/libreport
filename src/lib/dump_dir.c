@@ -2046,14 +2046,14 @@ int dd_get_items_count(struct dump_dir *dd)
 
     while (dd_get_next_file(dd, NULL, NULL))
     {
-        ++retval;
-
-        /* Check overflow */
-        if (retval < 0)
+        /* Check for integer overflow. */
+        if (retval == INT_MAX)
         {
             dd_clear_next_file(dd);
             return -E2BIG;
         }
+
+        ++retval;
     }
 
     return retval;
