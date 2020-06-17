@@ -277,9 +277,11 @@ GtkWidget *create_config_tab_content(const char *column_label,
 
     {   /* Selected the first row, so we do not need to call gtk_tree_view_scroll_to_cell() */
         GtkTreeIter iter;
-        gtk_tree_model_get_iter_first(model, &iter);
-        GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(tv));
-        gtk_tree_selection_select_iter(selection, &iter);
+        if (gtk_tree_model_get_iter_first(model, &iter))
+        {
+            GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(tv));
+            gtk_tree_selection_select_iter(selection, &iter);
+        }
     }
 
     gtk_container_add(GTK_CONTAINER(scroll), tv);
