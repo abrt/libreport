@@ -81,9 +81,6 @@ char *libreport_make_description(problem_data_t *problem_data, char **names_to_s
 
     GString *buf_dsc = g_string_new(NULL);
 
-    const char *type = problem_data_get_content_or_NULL(problem_data,
-                                                            FILENAME_TYPE);
-
     GList *list = g_hash_table_get_keys(problem_data);
     list = g_list_sort(list, (GCompareFunc)list_cmp);
     GList *l;
@@ -236,6 +233,10 @@ char *libreport_make_description(problem_data_t *problem_data, char **names_to_s
 
     if (desc_flags & MAKEDESC_SHOW_MULTILINE)
     {
+        const char *type = problem_data_get_content_or_NULL(problem_data,
+                                                            FILENAME_TYPE);
+        bool is_kernel_oops = g_strcmp0(type, "Kerneloops") == 0;
+
         /* Print multi-liners. Format:
          * <empty line if needed>
          * NAME:
@@ -263,7 +264,7 @@ char *libreport_make_description(problem_data_t *problem_data, char **names_to_s
 
             if ((item->flags & CD_FLAG_TXT)
                 && (strlen(item->content) <= max_text_size
-                    || (!strcmp(type, "Kerneloops") && !strcmp(key, FILENAME_BACKTRACE))))
+                    || (is_kernel_oops && strcmp(key, FILENAME_BACKTRACE) == 0)))
             {
                 g_autofree char *formatted = problem_item_format(item);
                 g_autofree char *output = make_description_item_multiline(key, formatted ? formatted : item->content);
