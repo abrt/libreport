@@ -311,7 +311,7 @@ format_percented_string(const char *str, problem_data_t *pd, FILE *result, char 
     long len = 0;
     int opt_depth = 1;
 
-    g_autofree char *missing_item = 0;
+    GList *missing_items = NULL;
 
     while (*str) {
         switch (*str) {
@@ -391,7 +391,7 @@ format_percented_string(const char *str, problem_data_t *pd, FILE *result, char 
                 if (opt_depth == 1)
                 {
                     log_debug("Missing top-level element: '%s'", str);
-                    missing_item = g_strdup(str);
+                    missing_items = g_list_prepend(missing_items, g_strdup(str));
                 }
             }
             *nextpercent = '%';
@@ -407,14 +407,23 @@ format_percented_string(const char *str, problem_data_t *pd, FILE *result, char 
 
     if (!okay[0])
     {
-        if (fmt_file)
+        /* Items are stored in reverse order and then reversed due to how GLib stores
+         * the list internally.
+         */
+        missing_items = g_list_reverse(missing_items);
+
+        for (GList *item = missing_items; item != NULL; item = item->next)
         {
-            error_msg("In format file '%s':\n"
-                      "\tUndefined variable '%s' outside [[ ]] brackets",
-                      fmt_file, missing_item);
+            if (fmt_file)
+                error_msg("In format file '%s':\n"
+                          "\tUndefined variable '%s' outside [[ ]] brackets",
+                          fmt_file, (char *)item->data);
+            else
+                error_msg("Undefined variable '%s' outside [[ ]] brackets",
+                          (char *)item->data);
         }
-        else
-            error_msg("Undefined variable '%s' outside [[ ]] brackets", missing_item);
+
+        g_list_free_full(missing_items, g_free);
     }
 
     return 0;
