@@ -570,7 +570,10 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
         }
         else
         {
-            error_msg(_("A private ticket creation has been requested, but no groups were specified, please see https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets for more info"));
+            error_msg(_("A private ticket creation has been requested, but no groups were"
+                        " specified, please see"
+                        " https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets"
+                        " for more info"));
             return -1;
         }
     }
