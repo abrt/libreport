@@ -315,8 +315,10 @@ int libreport_dump_fd_info_at(int pid_proc_fd, FILE *dest)
     }
 
 dumpfd_cleanup:
-    closedir(proc_fd_dir);
-    close(proc_fdinfo_fd);
+    if (proc_fd_dir >= 0)
+        closedir(proc_fd_dir);
+    if (proc_fdinfo_fd >= 0)
+        close(proc_fdinfo_fd);
 
     return r;
 }
@@ -380,8 +382,10 @@ dumpfd_cleanup:
     if (r == 0 && errno != 0)
         r = -errno;
 
-    close(proc_fd_dir_fd);
-    close(pid_proc_fd);
+    if (proc_fd_dir_fd >= 0)
+        close(proc_fd_dir_fd);
+    if (pid_proc_fd >= 0)
+        close(pid_proc_fd);
 
     return r;
 }
@@ -470,9 +474,16 @@ int libreport_get_env_variable(pid_t pid, const char *name, char **value)
 
 int libreport_get_ns_ids(pid_t pid, struct ns_ids *ids)
 {
-    const int proc_pid_fd = libreport_open_proc_pid_dir(pid);
-    const int r = libreport_get_ns_ids_at(proc_pid_fd, ids);
+    int proc_pid_fd = libreport_open_proc_pid_dir(pid);
+    if (proc_pid_fd < 0)
+    {
+        pwarn_msg("Failed to open /proc/%d directory", pid);
+        return -errno;
+    }
+
+    int r = libreport_get_ns_ids_at(proc_pid_fd, ids);
     close(proc_pid_fd);
+
     return r;
 }
 
@@ -512,7 +523,7 @@ int libreport_get_ns_ids_at(int pid_proc_fd, struct ns_ids *ids)
 
 int libreport_dump_namespace_diff_ext(const char *dest_filename, pid_t base_pid, pid_t tested_pid, uid_t uid, gid_t gid)
 {
-    const int dest_fd = open(dest_filename, O_CREAT | O_WRONLY | O_EXCL | O_CLOEXEC | O_NOFOLLOW, 0600);
+    int dest_fd = open(dest_filename, O_CREAT | O_WRONLY | O_EXCL | O_CLOEXEC | O_NOFOLLOW, 0600);
     if (dest_fd < 0)
     {
         pwarn_msg("Failed to create %s", dest_filename);
@@ -521,8 +532,22 @@ int libreport_dump_namespace_diff_ext(const char *dest_filename, pid_t base_pid,
 
     FILE *const dest = libreport_xfdopen(dest_fd, "a");
 
-    const int base_pid_proc_fd = libreport_open_proc_pid_dir(base_pid);
-    const int tested_pid_proc_fd = libreport_open_proc_pid_dir(tested_pid);
+    int base_pid_proc_fd = libreport_open_proc_pid_dir(base_pid);
+    if (base_pid_proc_fd < 0)
+    {
+        pwarn_msg("Failed to open /proc/%d directory", base_pid);
+        fclose(dest);
+        return -errno;
+    }
+
+    int tested_pid_proc_fd = libreport_open_proc_pid_dir(tested_pid);
+    if (tested_pid_proc_fd < 0)
+    {
+        pwarn_msg("Failed to open /proc/%d directory", tested_pid);
+        close(base_pid_proc_fd);
+        fclose(dest);
+        return -errno;
+    }
 
     int r = libreport_dump_namespace_diff_at(base_pid_proc_fd, tested_pid_proc_fd, dest);
 
