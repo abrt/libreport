@@ -1656,13 +1656,14 @@ int dd_chown(struct dump_dir *dd, uid_t new_uid)
             log_debug("chowning %s", short_name);
 
             chown_res = fchown(fd, owners_uid, groups_gid);
+            close(fd);
+
             if (chown_res)
             {
                 perror_msg("fchownat('%s')", short_name);
                 break;
             }
 
-            close(fd);
 next:
             free(short_name);
         }
