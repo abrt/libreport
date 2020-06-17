@@ -1,29 +1,8 @@
 LIBREPORT_2.13.1 {
 global:
     /* libreport_types.h */
-    libreport_string_vector_new_from_string;
-    libreport_string_vector_free;
-    libreport_new_map_string;
-    libreport_free_map_string;
     libreport_clone_map_string;
-    libreport_size_map_string;
-    insert_map_string;
-    libreport_replace_map_string_item;
-    libreport_remove_map_string_item;
-    libreport_get_map_string_item_or_empty;
-    libreport_get_map_string_item_or_NULL;
-    libreport_set_map_string_item_from_bool;
     libreport_try_get_map_string_item_as_bool;
-    libreport_set_map_string_item_from_int;
-    libreport_try_get_map_string_item_as_int;
-    libreport_set_map_string_item_from_uint;
-    libreport_try_get_map_string_item_as_uint;
-    libreport_set_map_string_item_from_string;
-    libreport_try_get_map_string_item_as_string;
-    libreport_set_map_string_item_from_string_vector;
-    libreport_try_get_map_string_item_as_string_vector;
-    libreport_init_map_string_iter;
-    libreport_next_map_string_iter;
 
     /* client.h */
     libreport_set_echo;
@@ -296,11 +275,8 @@ global:
     libreport_load_workflow_config_data;
 
     /* internal_libreport.h - these symbols are only to be used by libreport developers */
-    libreport_prefixcmp;
-    libreport_suffixcmp;
     libreport_trim_all_whitespace;
     libreport_shorten_string_to_length;
-    libreport_strtrim;
     libreport_strtrimch;
     libreport_strremovech;
     libreport_append_to_malloced_string;
@@ -308,7 +284,6 @@ global:
     libreport_skip_whitespace;
     libreport_skip_non_whitespace;
     libreport_overlapping_strcpy;
-    libreport_concat_path_file;
     libreport_concat_path_basename;
     libreport_str_is_correct_filename;
     libreport_xmalloc_fgets;
@@ -339,12 +314,6 @@ global:
     libreport_malloc_readlinkat;
     libreport_encode_base64;
     libreport_sanitize_utf8;
-    libreport_try_atou;
-    libreport_xatou;
-    libreport_try_atoi;
-    libreport_xatoi;
-    libreport_try_atoi_positive;
-    libreport_xatoi_positive;
     libreport_safe_waitpid;
     libreport_fork_execv_on_steroids;
     libreport_run_in_shell_and_save_output;
@@ -359,34 +328,22 @@ global:
     libreport_ndelay_on;
     libreport_ndelay_off;
     libreport_close_on_exec_on;
-    libreport_xmalloc;
-    libreport_xrealloc;
-    libreport_xzalloc;
-    libreport_xstrdup;
-    libreport_xstrndup;
     libreport_xstrdup_between;
-    libreport_xpipe;
     libreport_xdup;
     libreport_xdup2;
     libreport_xmove_fd;
     libreport_xwrite;
     libreport_xwrite_str;
     libreport_xlseek;
-    libreport_xchdir;
     libreport_xvasprintf;
-    libreport_xasprintf;
-    libreport_xsetenv;
     libreport_safe_unsetenv;
     libreport_xsocket;
     libreport_xbind;
     libreport_xlisten;
     libreport_xsendto;
-    libreport_xstat;
     libreport_fstat_st_size_or_die;
     libreport_stat_st_size_or_die;
     libreport_xopen3;
-    libreport_xopen;
-    libreport_xunlink;
     libreport_xunlinkat;
     libreport_is_regular_file;
     libreport_is_regular_file_at;
@@ -407,14 +364,6 @@ global:
     libreport_die_out_of_memory;
     log_wrapper;
     log_and_die_wrapper;
-    libreport_strbuf_new;
-    libreport_strbuf_free;
-    libreport_strbuf_free_nobuf;
-    libreport_strbuf_clear;
-    libreport_strbuf_append_char;
-    libreport_strbuf_append_str;
-    libreport_strbuf_prepend_str;
-    libreport_strbuf_append_strf;
     libreport_strbuf_append_strfv;
     libreport_strbuf_prepend_strf;
     libreport_strbuf_prepend_strfv;
