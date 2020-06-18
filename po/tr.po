@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2020-04-21 18:40+0000\n"
+"PO-Revision-Date: 2020-05-27 23:40+0000\n"
 "Last-Translator: Oğuz Ersen <oguzersen@protonmail.com>\n"
 "Language-Team: Turkish <https://translate.fedoraproject.org/projects/abrt/"
 "libreport/tr/>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
-"X-Generator: Weblate 4.0.1\n"
+"X-Generator: Weblate 4.0.4\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -144,7 +144,7 @@ msgid ""
 "The report has been updated"
 msgstr ""
 "\n"
-"Rapor güncellendi"
+"Bildirme güncellendi"
 
 #: ../src/cli/cli-report.c:405
 msgid ""
@@ -152,7 +152,7 @@ msgid ""
 "No changes were detected in the report"
 msgstr ""
 "\n"
-"Raporda herhangi bir değişiklik tespit edilmedi"
+"Bildirmede herhangi bir değişiklik tespit edilmedi"
 
 #: ../src/cli/cli-report.c:466
 msgid "Your input is not valid, because of:"
@@ -409,11 +409,11 @@ msgstr "_Kapat"
 
 #: ../src/gtk-helpers/event_config_dialog.c:140
 msgid "Show password"
-msgstr "Şifreyi göster"
+msgstr "Parolayı göster"
 
 #: ../src/gtk-helpers/event_config_dialog.c:263
 msgid "Don't store passwords"
-msgstr "Şifreleri depolama"
+msgstr "Parolaları kaydetme"
 
 #: ../src/gtk-helpers/event_config_dialog.c:273
 msgid "Basic"
@@ -461,7 +461,7 @@ msgid ""
 "Do you want to stop waiting and continue in reporting without properly "
 "loaded configuration?"
 msgstr ""
-"Beklemeyi sonlandırmak ve düzgün yüklenmiş yapılandırma olmadan raporlamaya "
+"Beklemeyi sonlandırmak ve düzgün yüklenmiş yapılandırma olmadan bildirmeye "
 "devam etmek istiyor musunuz?"
 
 #: ../src/gtk-helpers/secrets.c:862
@@ -509,8 +509,8 @@ msgid ""
 msgstr ""
 "& [-vpdx] [-e OLAY]... [-g GUI_DOSYASI] SORUN_DİZİNİ\n"
 "\n"
-"Belirtilen SORUN_DİZİNİ içine kaydedilen sorunu analiz etmek ve bildirmek "
-"için GUI aracı"
+"Belirtilen SORUN_DİZİNİ içine kaydedilen sorunu incelemek ve bildirmek için "
+"GUI aracı"
 
 #: ../src/gui-wizard-gtk/wizard.c:340
 #, c-format
@@ -535,7 +535,7 @@ msgid ""
 "please provide a comprehensive description of the problem you have "
 "encountered."
 msgstr ""
-"Bilinen bir tekrar oluşturma yöntemi olmayan çökmelerin teşhis edilmesi zor "
+"Bilinen bir yeniden oluşturma yöntemi olmayan çökmelerin teşhis edilmesi zor "
 "olabileceğinden, lütfen karşılaştığınız sorunun kapsamlı bir açıklamasını "
 "sağlayın."
 
@@ -596,8 +596,8 @@ msgid ""
 msgstr ""
 "Yapılandırmayı güncellemek ve tekrar bildirmeye çalışmak istiyorsanız, "
 "lütfen uygulama menüsünde <b>Tercihler</b>\n"
-"ögesini açın ve yapılandırma değişikliklerini uyguladıktan sonra "
-"<b>Tekrarla</b> düğmesine tıklayın."
+"ögesini açın ve yapılandırma değişikliklerini uyguladıktan sonra <b>Tekrar "
+"et</b> düğmesine tıklayın."
 
 #: ../src/gui-wizard-gtk/wizard.c:1689
 msgid "Processing was interrupted because the problem is not reportable."
@@ -644,6 +644,8 @@ msgid ""
 "Possible sensitive data detected, feel free to edit the report and remove "
 "them."
 msgstr ""
+"Olası hassas veriler algılandı, bildirmeyi düzenleyebilir ve bunları "
+"kaldırabilirsiniz."
 
 #: ../src/gui-wizard-gtk/wizard.c:1968
 msgid "Cannot check backtrace rating because of invalid event name"
@@ -652,7 +654,7 @@ msgstr "Geçersiz olay adı nedeniyle yığın geri izlemesi derecesi denetlenem
 #: ../src/gui-wizard-gtk/wizard.c:2418
 #, c-format
 msgid "Failed to save file '%s'"
-msgstr ""
+msgstr "'%s' dosyası kaydedilemedi"
 
 #: ../src/gui-wizard-gtk/wizard.c:2619
 #, c-format
@@ -660,11 +662,14 @@ msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
 "Do you want to continue?"
 msgstr ""
+"'%s' olayı, hassas olma ihtimali bulunan veriler gönderme izni "
+"gerektirmektedir.\n"
+"Devam etmek istiyor musunuz?"
 
 #: ../src/gui-wizard-gtk/wizard.c:2665
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
-msgstr ""
+msgstr "Bu sorun bildirilmemelidir (bu, muhtemelen bilinen bir sorun). %s"
 
 #: ../src/gui-wizard-gtk/wizard.c:2866
 msgid "_Open"
@@ -691,15 +696,15 @@ msgstr "'%s' öğesi mevcut ve değiştirilebilir değil"
 
 #: ../src/gui-wizard-gtk/wizard.c:3087
 msgid "I have experienced this problem for the first time"
-msgstr ""
+msgstr "İlk defa bu sorunla karşılaştım"
 
 #: ../src/gui-wizard-gtk/wizard.c:3090
 msgid "I can reproduce this problem"
-msgstr ""
+msgstr "Bu sorunu yeniden oluşturabilirim"
 
 #: ../src/gui-wizard-gtk/wizard.c:3093
 msgid "This problem occurs repeatedly"
-msgstr ""
+msgstr "Bu sorun tekrar tekrar ortaya çıkıyor"
 
 #: ../src/gui-wizard-gtk/wizard.c:3106
 msgid "Include"
@@ -715,11 +720,11 @@ msgstr "Değer"
 
 #: ../src/gui-wizard-gtk/wizard.c:3162
 msgid "Problem description"
-msgstr "Problem tanımı"
+msgstr "Sorun açıklaması"
 
 #: ../src/gui-wizard-gtk/wizard.c:3163
 msgid "Select how to report this problem"
-msgstr ""
+msgstr "Bu sorunun nasıl bildirileceğini seçin"
 
 #: ../src/gui-wizard-gtk/wizard.c:3164
 msgid "Provide additional information"
@@ -731,29 +736,29 @@ msgstr "Verileri gözden geçir"
 
 #: ../src/gui-wizard-gtk/wizard.c:3166
 msgid "Confirm data to report"
-msgstr "Raporlama için veriyi doğrulayın"
+msgstr "Bildirilecek verileri doğrulayın"
 
 #: ../src/gui-wizard-gtk/wizard.c:3167
 msgid "Processing"
-msgstr ""
+msgstr "İşleniyor"
 
 #: ../src/gui-wizard-gtk/wizard.c:3168
 msgid "Processing done"
-msgstr ""
+msgstr "İşlem tamamlandı"
 
 #: ../src/gui-wizard-gtk/wizard.c:3208
 msgid "_Stop"
-msgstr ""
+msgstr "_Durdur"
 
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3211
 msgid "Repeat"
-msgstr ""
+msgstr "Tekrar et"
 
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3213
 msgid "_Forward"
-msgstr ""
+msgstr "_İleri"
 
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3216 ../src/gui-wizard-gtk/wizard.glade.h:9
@@ -762,21 +767,23 @@ msgstr "Detaylar"
 
 #: ../src/gui-wizard-gtk/wizard.c:3263
 msgid "Restrict access to the report"
-msgstr ""
+msgstr "Bildirime erişimi kısıtlayın"
 
 #: ../src/gui-wizard-gtk/wizard.c:3268
 msgid "Learn more about restricted access in the configuration"
-msgstr ""
+msgstr "Kısıtlı erişim hakkında yapılandırmada daha fazla bilgi edinin"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
 msgid ""
 "Please review the data before it gets reported. Depending on reporter "
 "chosen, it may end up publicly visible."
 msgstr ""
+"Lütfen bildirilmeden önce verileri inceleyin. Seçilen bildiriciye bağlı "
+"olarak, herkes tarafından görülebilir olabilirler."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Sensitive words"
-msgstr ""
+msgstr "Hassas kelimeler"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid "Custom"
@@ -785,6 +792,8 @@ msgstr "Özel"
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid "Clear the search bar to see the list of security sensitive words."
 msgstr ""
+"Güvenlik açısından hassas kelimelerin listesini görmek için arama çubuğunu "
+"temizleyin."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid "file"
@@ -792,11 +801,11 @@ msgstr "dosya"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "data"
-msgstr ""
+msgstr "veri"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "Search"
-msgstr ""
+msgstr "Ara"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid ""
@@ -807,8 +816,8 @@ msgid ""
 msgstr ""
 "Sıradaki ekranlarda, sorunun nasıl ortaya çıktığını anlatmanız, nasıl "
 "incelenmesi gerektiğini seçmeniz (gerekliyse), toplanan bilgiyi gözden "
-"geçirmeniz ve sorunun nereye raporlanması gerektiğini seçmeniz istenecektir. "
-"Devam etmek için 'İleri'yi tıklayınız."
+"geçirmeniz ve sorunun nereye bildirilmesi gerektiğini seçmeniz istenecektir. "
+"Devam etmek için 'İleri' düğmesine tıklayın."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid ""
@@ -822,17 +831,19 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid "How reproducible is this problem?"
-msgstr ""
+msgstr "Bu sorun ne ölçüde yeniden oluşturulabilir?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid "How it can be reproduced (one step per line)?"
-msgstr ""
+msgstr "Nasıl yeniden oluşturulabilir (her satırda bir adım olacak şekilde)?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid ""
 "Please add a comprehensive description of the problem you have. This is a "
 "very long place holder."
 msgstr ""
+"Lütfen karşılaştığınız sorunun kapsamlı bir açıklamasını ekleyin. Bu çok "
+"uzun bir yer tutucusudur."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:14
 msgid "You need to fill the how to before you can proceed..."
@@ -843,8 +854,8 @@ msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
 msgstr ""
-"<b>Yorumlarınız gizli değil.</b> Kamuya açık problem raporlarına "
-"eklenebilirler."
+"<b>Yorumlarınız gizli değildir.</b> Herkesin görebileceği sorun "
+"bildirimlerine eklenebilirler."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "I don't know what caused this problem"
@@ -868,22 +879,21 @@ msgid ""
 "data (such as usernames and passwords). Backtrace, command line, environment "
 "variables are the typical items in need of examining."
 msgstr ""
-"Eğer uzak bir sunucuya raporlama yapıyorsanız , tüm gizli verileri ("
-"kullanıcı adları , parolalar gibi) kaldırdığınızdan emin olun. Yığın geri "
-"izlemesi, komut satırı, ortam değişkenleri incelenmesi gereken tipik "
-"ögelerdir."
+"Eğer uzak bir sunucuya bildirme yapıyorsanız , tüm gizli verileri (kullanıcı "
+"adları , parolalar gibi) kaldırdığınızdan emin olun. Yığın geri izlemesi, "
+"komut satırı, ortam değişkenleri incelenmesi gereken tipik ögelerdir."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:21
 msgid "Processing did not start yet"
-msgstr ""
+msgstr "İşleme henüz başlamadı"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:22
 msgid "Show log"
-msgstr "Hata raporunu göster"
+msgstr "Günlük kaydını göster"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:23
 msgid "Reporting has finished. You can close this window now."
-msgstr "Raporlama bitti. Şimdi ekranı kapatabilirsiniz."
+msgstr "Bildirme işlemi bitti. Artık bu pencereyi kapatabilirsiniz."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:24
 msgid ""
@@ -891,9 +901,9 @@ msgid ""
 "additional information, or provide a better problem description and repeat "
 "reporting process, press 'Forward'."
 msgstr ""
-"Başka bir hedefe raporlamak isterseniz, daha fazla bilgi toplayın ya da "
-"sorun açıklamasını zenginleştirerek raporlama sürecini tekrar edin, "
-"'İleri'ye tıklayın."
+"Sorunu başka bir hedefe bildirmek isterseniz, daha fazla bilgi toplayın ya "
+"da sorun açıklamasını zenginleştirerek bildirme sürecini tekrarlayın, "
+"'İleri' düğmesine tıklayın."
 
 #: ../src/include/internal_libreport.h:1246
 msgid "Be verbose"
@@ -911,24 +921,24 @@ msgstr "Sorun dizini"
 #: ../src/lib/abrt_sock.c:161
 #, c-format
 msgid "Can't delete: '%s'"
-msgstr ""
+msgstr "Silinemiyor: '%s'"
 
 #: ../src/lib/abrt_sock.c:197
 msgid "locked by another process"
-msgstr ""
+msgstr "başka bir işlem tarafından kilitlendi"
 
 #: ../src/lib/abrt_sock.c:206
 msgid "permission denied"
-msgstr ""
+msgstr "izin reddedildi"
 
 #: ../src/lib/abrt_sock.c:209
 msgid "not a problem directory"
-msgstr ""
+msgstr "bir sorun dizini değil"
 
 #: ../src/lib/abrt_sock.c:218
 #, c-format
 msgid "Can't delete '%s': %s"
-msgstr ""
+msgstr "'%s' silinemiyor: %s"
 
 #: ../src/lib/client.c:67 ../src/lib/client.c:99 ../src/lib/client.c:156
 msgid "y"
@@ -940,26 +950,26 @@ msgstr "N"
 
 #: ../src/lib/client.c:101 ../src/lib/client.c:158
 msgid "f"
-msgstr ""
+msgstr "f"
 
 #: ../src/lib/client.c:159
 msgid "e"
-msgstr ""
+msgstr "e"
 
 #: ../src/lib/create_dump_dir.c:32
 #, c-format
 msgid "uid value is not valid: '%s'"
-msgstr ""
+msgstr "uid değeri geçerli değil: '%s'"
 
 #: ../src/lib/create_dump_dir.c:51
 #, c-format
 msgid "'%s' is not correct file name"
-msgstr ""
+msgstr "'%s' doğru dosya adı değil"
 
 #: ../src/lib/create_dump_dir.c:195
 #, c-format
 msgid "Missing required item: '%s'"
-msgstr ""
+msgstr "Gerekli öge eksik: '%s'"
 
 #: ../src/lib/curl.c:227
 #, c-format
@@ -968,56 +978,56 @@ msgstr "Yüklenen: %llu / %llu kilobayt"
 
 #: ../src/lib/curl.c:636
 msgid "Ignoring URL without scheme and hostname"
-msgstr ""
+msgstr "Şema ve ana makine adı olmadan URL yok sayılıyor"
 
 #. Do not include the path part of the URL as it can contain sensitive data
 #. * in case of typos
 #: ../src/lib/curl.c:666
 #, c-format
 msgid "Sending %s to %s//%s"
-msgstr ""
+msgstr "%s, %s//%s adresine gönderiliyor"
 
 #: ../src/lib/curl.c:690
 #, c-format
 msgid "Please enter user name for '%s//%s':"
-msgstr ""
+msgstr "Lütfen '%s//%s' için kullanıcı adını girin:"
 
 #: ../src/lib/curl.c:696
 #, c-format
 msgid "Please enter password for '%s//%s@%s':"
-msgstr ""
+msgstr "Lütfen '%s//%s@%s' için parolayı girin:"
 
 #. This ends up a "reporting status message" in abrtd
 #: ../src/lib/curl.c:719
 #, c-format
 msgid "Successfully created %s"
-msgstr ""
+msgstr "%s başarıyla oluşturuldu"
 
 #: ../src/lib/dump_dir.c:2481
 msgid "Failed to open TAR writer"
-msgstr ""
+msgstr "TAR yazıcı açılamadı"
 
 #: ../src/lib/dump_dir.c:2507
 msgid "Failed to finalize TAR archive"
-msgstr ""
+msgstr "TAR arşivi sonlandırılamadı"
 
 #: ../src/lib/dump_dir.c:2517
 msgid "Failed to close TAR writer"
-msgstr ""
+msgstr "TAR yazıcı kapatılamadı"
 
 #: ../src/lib/dump_dir.c:2527
 #, c-format
 msgid "gzip killed with signal %d"
-msgstr ""
+msgstr "gzip %d sinyaliyle sonlandırıldı"
 
 #: ../src/lib/dump_dir.c:2533
 #, c-format
 msgid "gzip exited with %d"
-msgstr ""
+msgstr "gzip %d koduyla çıkış yaptı"
 
 #: ../src/lib/dump_dir.c:2536
 msgid "gzip process failed"
-msgstr ""
+msgstr "gzip işlemi başarısız oldu"
 
 #: ../src/lib/event_config.c:399
 msgid "Missing mandatory value"
@@ -1048,10 +1058,12 @@ msgid ""
 "The problem cannot be reported due to an invalid data. '%s' file does not "
 "contain a number."
 msgstr ""
+"Geçersiz bir veri nedeniyle sorun bildirilemiyor. '%s' dosyası sayı "
+"içermiyor."
 
 #: ../src/lib/event_config.c:520
 msgid "Please report this problem to ABRT project developers."
-msgstr ""
+msgstr "Lütfen bu sorunu ABRT projesi geliştiricilerine bildirin."
 
 #: ../src/lib/event_config.c:526
 msgid ""
@@ -1072,7 +1084,7 @@ msgid ""
 "Reporting is disabled because the generated backtrace has low informational "
 "value."
 msgstr ""
-"Oluşturulan yığın geri izlemesinin bilgi değeri düşük olduğu için raporlama "
+"Oluşturulan yığın geri izlemesinin bilgi değeri düşük olduğu için bildirme "
 "devre dışı bırakıldı."
 
 #: ../src/lib/event_config.c:537
@@ -1081,25 +1093,27 @@ msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again."
 msgstr ""
+"Lütfen \"debuginfo-install %s\" komutunu kullanarak debuginfo'yu elle "
+"kurmaya çalışın ve tekrar deneyin."
 
 #: ../src/lib/event_config.c:539
 msgid "A proper debuginfo is probably missing or the coredump is corrupted."
-msgstr ""
+msgstr "Uygun bir debuginfo aracı muhtemelen eksik veya bellek dökümü bozuk."
 
 #: ../src/lib/iso_date_string.c:50
 #, c-format
 msgid "String doesn't seem to be a date: '%s'"
-msgstr ""
+msgstr "Dizge bir tarih gibi görünmüyor: '%s'"
 
 #: ../src/lib/iso_date_string.c:55
 #, c-format
 msgid "The date: '%s' has unrecognized suffix: '%s'"
-msgstr ""
+msgstr "Tarih: '%s' tanınmayan son ek: '%s' içeriyor"
 
 #: ../src/lib/iso_date_string.c:60
 #, c-format
 msgid "The date: '%s' is out of UNIX time stamp range"
-msgstr ""
+msgstr "Tarih: '%s' UNIX zaman damgası aralığının dışında"
 
 #: ../src/lib/ureport.c:400
 #, c-format
@@ -1108,20 +1122,23 @@ msgid ""
 "\n"
 "%s\n"
 msgstr ""
+"Görünüşe göre sorununuzun sebebi %s\n"
+"\n"
+"%s\n"
 
 #: ../src/lib/ureport.c:403
 msgid "Your problem seems to be caused by one of the following:\n"
-msgstr ""
+msgstr "Görünüşe göre sorununuzun sebebi aşağıdakilerden biri:\n"
 
 #: ../src/lib/ureport.c:575
 #, c-format
 msgid "Failed to upload uReport to the server '%s' with curl: %s"
-msgstr ""
+msgstr "uReport, curl kullanılarak '%s' sunucusuna yüklenemedi: %s"
 
 #: ../src/lib/ureport.c:579
 #, c-format
 msgid "Failed to upload uReport to the server '%s'"
-msgstr ""
+msgstr "uReport '%s' sunucusuna yüklenemedi"
 
 #: ../src/lib/ureport.c:582
 #, c-format
@@ -1131,49 +1148,52 @@ msgstr "Hata: %s"
 #: ../src/lib/ureport.c:589
 #, c-format
 msgid "The URL '%s' does not exist (got error 404 from server)"
-msgstr ""
+msgstr "'%s' URL'si mevcut değil (sunucudan 404 hatası alındı)"
 
 #: ../src/lib/ureport.c:595
 #, c-format
 msgid "The server at '%s' encountered an internal error (got error 500)"
 msgstr ""
+"'%s' adresindeki sunucu dahili bir hatayla karşılaştı (500 hatası alındı)"
 
 #: ../src/lib/ureport.c:601
 #, c-format
 msgid "The server at '%s' currently can't handle the request (got error 503)"
 msgstr ""
+"'%s' adresindeki sunucu şu anda isteğinizi değerlendiremiyor (503 hatası "
+"alındı)"
 
 #. can't print better error message
 #: ../src/lib/ureport.c:610
 #, c-format
 msgid "Unexpected HTTP response from '%s': %d"
-msgstr ""
+msgstr "'%s' sunucusundan beklenmeyen HTTP yanıtı: %d"
 
 #: ../src/lib/ureport.c:619
 #, c-format
 msgid "Unable to parse response from ureport server at '%s'"
-msgstr ""
+msgstr "'%s' adresindeki ureport sunucusunun yanıtı ayrıştırılamadı"
 
 #: ../src/lib/ureport.c:629
 #, c-format
 msgid "The response from '%s' has invalid format"
-msgstr ""
+msgstr "'%s' sunucusundan gelen yanıt geçersiz biçime sahip"
 
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
 #: ../src/lib/ureport.c:635
 #, c-format
 msgid "Type mismatch has been detected in the response from '%s'"
-msgstr ""
+msgstr "'%s' sunucusundan gelen yanıtta tür uyuşmazlığı tespit edildi"
 
 #: ../src/lib/ureport.c:861 ../src/plugins/reporter-rhtsupport.c:235
 msgid "Failed on submitting the problem"
-msgstr ""
+msgstr "Sorun gönderilemedi"
 
 #: ../src/lib/ureport.c:903
 #, c-format
 msgid "The server at '%s' responded with an error: '%s'"
-msgstr ""
+msgstr "'%s' adresindeki sunucu bir hatayla yanıt verdi: '%s'"
 
 #: ../src/lib/make_descr.c:149 ../src/lib/make_descr.c:160
 msgid "Reported:"
@@ -1190,7 +1210,7 @@ msgstr "Kullanım: "
 #: ../src/lib/problem_data.c:252
 #, c-format
 msgid "Essential element '%s' is missing, can't continue"
-msgstr ""
+msgstr "'%s' temel elemanı eksik, devam edilemiyor"
 
 #: ../src/lib/problem_report.c:517
 #, c-format
@@ -1199,71 +1219,77 @@ msgstr "Yığın geri izlemesi ayrıştırılamıyor: %s"
 
 #: ../src/lib/problem_report.c:532
 msgid "Can't generate stacktrace description (no crash thread?)"
-msgstr ""
+msgstr "Yığın izleme açıklaması oluşturulamıyor (çökme iş parcacığı yok?)"
 
 #: ../src/lib/report_result.c:265
 #, c-format
 msgid "Ignored invalid ISO date of report result '%s'"
-msgstr ""
+msgstr "'%s' bildirim sonucunun geçersiz ISO tarihi yok sayıldı"
 
 #: ../src/lib/reporters.c:55
 msgid "Note does not contain rating"
-msgstr ""
+msgstr "Not, derecelendirme içermiyor"
 
 #: ../src/lib/run_event.c:891
 #, c-format
 msgid "('%s' was killed by signal %u)\n"
-msgstr ""
+msgstr "('%s' %u sinyali tarafından sonlandırıldı)\n"
 
 #: ../src/lib/run_event.c:893
 #, c-format
 msgid "('%s' completed successfully)\n"
-msgstr ""
+msgstr "('%s' başarıyla tamamlandı)\n"
 
 #: ../src/lib/run_event.c:895
 #, c-format
 msgid "('%s' exited with %u)\n"
-msgstr ""
+msgstr "('%s' %u koduyla çıkış yaptı)\n"
 
 #: ../src/plugins/abrt_rh_support.c:356
 #, c-format
 msgid "Error in case creation at '%s': %s"
-msgstr ""
+msgstr "'%s' adresinde talep oluşturulurken hata: %s"
 
 #: ../src/plugins/abrt_rh_support.c:365
 #, c-format
 msgid "Error in case creation at '%s', HTTP code: %d, server says: '%s'"
 msgstr ""
+"'%s' adresinde talep oluşturulurken hata, HTTP kodu: %d, sunucunun yanıtı: "
+"'%s'"
 
 #: ../src/plugins/abrt_rh_support.c:369
 #, c-format
 msgid "Error in case creation at '%s', HTTP code: %d"
-msgstr ""
+msgstr "'%s' adresinde talep oluşturulurken hata, HTTP kodu: %d"
 
 #: ../src/plugins/abrt_rh_support.c:420
 #, c-format
 msgid "Error in case creation at '%s': no Location URL, HTTP code: %d"
 msgstr ""
+"'%s' adresinde talep oluşturulurken hata: Konum URL'si yok, HTTP kodu: %d"
 
 #: ../src/plugins/abrt_rh_support.c:524
 #, c-format
 msgid "Error in comment creation at '%s': %s"
-msgstr ""
+msgstr "'%s' adresinde yorum oluşturulurken hata: %s"
 
 #: ../src/plugins/abrt_rh_support.c:533
 #, c-format
 msgid "Error in comment creation at '%s', HTTP code: %d, server says: '%s'"
 msgstr ""
+"'%s' adresinde yorum oluşturulurken hata, HTTP kodu: %d, sunucunun yanıtı: "
+"'%s'"
 
 #: ../src/plugins/abrt_rh_support.c:537
 #, c-format
 msgid "Error in comment creation at '%s', HTTP code: %d"
-msgstr ""
+msgstr "'%s' adresinde yorum oluşturulurken hata, HTTP kodu: %d"
 
 #: ../src/plugins/abrt_rh_support.c:583
 #, c-format
 msgid "Error in comment creation at '%s': no Location URL, HTTP code: %d"
 msgstr ""
+"'%s' adresinde yorum oluşturulurken hata: Konum URL'si yok, HTTP kodu: %d"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:1
 msgid "Bugzilla"
@@ -1271,7 +1297,7 @@ msgstr "Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:2
 msgid "Report to Bugzilla bug tracker"
-msgstr "Bugzilla hata izleyicisine raporla"
+msgstr "Bugzilla hata takipçisine bildir"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:3
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:3
@@ -1296,22 +1322,25 @@ msgstr ""
 #: ../src/plugins/report_RHTSupport.xml.in.h:5
 #: ../src/plugins/report_Uploader.xml.in.h:8
 msgid "Password"
-msgstr "Şifre"
+msgstr "Parola"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:7
 msgid "Bugzilla account password"
-msgstr "Bugzilla hesap şifresi"
+msgstr "Bugzilla hesap parolası"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:8
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:8
 msgid "Restrict access"
-msgstr ""
+msgstr "Erişimi kısıtla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:9
 msgid ""
 "Restrict access to the created bugzilla ticket allowing only users from "
 "specified groups to view it (see advanced settings for more details)"
 msgstr ""
+"Oluşturulan bugzilla biletine erişimi kısıtlayarak sadece belirtilen "
+"gruplardaki kullanıcıların görüntülemesine izin verin (daha fazla ayrıntı "
+"için gelişmiş ayarlara bakın)"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:10
 msgid "Groups"
@@ -1322,6 +1351,8 @@ msgid ""
 "Restrict the access to specified groups &lt;a href=\"https://github.com/abrt/"
 "abrt/wiki/FAQ#creating-private-bugzilla-tickets\"&gt;?&lt;/a&gt;"
 msgstr ""
+"Erişimi belirtilen gruplarla sınırlandırın &lt;a href=\"https://github.com/"
+"abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets\"&gt;?&lt;/a&gt;"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:12
 msgid "Bugzilla URL"
@@ -1347,23 +1378,27 @@ msgstr "SSL anahtarının geçerliliğini denetle"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:16
 msgid "Bugzilla product"
-msgstr ""
+msgstr "Bugzilla ürünü"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:17
 msgid ""
 "Specify this only if you needed different product than specified in /etc/os-"
 "release"
 msgstr ""
+"Bunu sadece /etc/os-release dosyasında belirtilenden farklı bir ürüne "
+"ihtiyacınız varsa belirtin"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:18
 msgid "Bugzilla product version"
-msgstr ""
+msgstr "Bugzilla ürün sürümü"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:19
 msgid ""
 "Specify this only if you needed different product version than specified in /"
 "etc/os-release"
 msgstr ""
+"Bunu sadece /etc/os-release dosyasında belirtilenden farklı bir ürün "
+"sürümüne ihtiyacınız varsa belirtin"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:20
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:18
@@ -1372,7 +1407,7 @@ msgstr ""
 #: ../src/plugins/report_Uploader.xml.in.h:10
 #: ../src/plugins/report_uReport.xml.in.h:13
 msgid "HTTP Proxy"
-msgstr ""
+msgstr "HTTP Vekili"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:21
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:19
@@ -1381,7 +1416,7 @@ msgstr ""
 #: ../src/plugins/report_Uploader.xml.in.h:11
 #: ../src/plugins/report_uReport.xml.in.h:14
 msgid "Sets the proxy server to use for HTTP"
-msgstr ""
+msgstr "HTTP için kullanılacak vekil sunucusunu ayarlar"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:22
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:20
@@ -1390,7 +1425,7 @@ msgstr ""
 #: ../src/plugins/report_Uploader.xml.in.h:12
 #: ../src/plugins/report_uReport.xml.in.h:15
 msgid "HTTPS Proxy"
-msgstr ""
+msgstr "HTTPS Vekili"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:23
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:21
@@ -1399,7 +1434,7 @@ msgstr ""
 #: ../src/plugins/report_Uploader.xml.in.h:13
 #: ../src/plugins/report_uReport.xml.in.h:16
 msgid "Sets the proxy server to use for HTTPS"
-msgstr ""
+msgstr "HTTPS için kullanılacak vekil sunucusunu ayarlar"
 
 #: ../src/plugins/report.c:37
 msgid ""
@@ -1413,6 +1448,16 @@ msgid ""
 "\n"
 "Configuration (such as login data) can be supplied via files\n"
 msgstr ""
+"& [-v] --target HEDEF --ticket KİMLİK DOSYA...\n"
+"\n"
+"DOSYAları HEDEF üzerindeki belirtilen bilete yükler.\n"
+"\n"
+"Bu araç, report paketi kullanıcılarının libreport'a geçişini kolaylaştırmak\n"
+"için sağlanmıştır. 'strata' ve 'bugzilla' HEDEFleri tanınmaktadır, "
+"birincisi\n"
+"RHTSupport'a, ikincisi Bugzilla'ya yüklemeyi başlatır.\n"
+"\n"
+"Yapılandırma (oturum açma verileri gibi) dosyalar aracılığıyla sağlanabilir\n"
 
 #: ../src/plugins/report.c:59
 msgid "'strata' or 'bugzilla'"
@@ -1420,19 +1465,21 @@ msgstr "'strata' veya 'bugzilla'"
 
 #: ../src/plugins/report.c:60
 msgid "Ticket/case ID"
-msgstr "Bilet/durum ID"
+msgstr "Bilet/talep kimliği"
 
 #: ../src/plugins/reporter-bugzilla.c:183
 msgid ""
 "Warning, private ticket groups already specified as cmdline argument, "
 "ignoring the env variable and configuration"
 msgstr ""
+"Uyarı, özel bilet grupları komut satırı argümanı olarak zaten belirtildi, "
+"ortam değişkeni ve yapılandırma yok sayılıyor"
 
 #: ../src/plugins/reporter-bugzilla.c:194
 #: ../src/plugins/reporter-rhtsupport.c:384
 #: ../src/plugins/reporter-mantisbt.c:55
 msgid "Can't continue without login"
-msgstr ""
+msgstr "Oturum açmadan devam edilemez"
 
 #: ../src/plugins/reporter-bugzilla.c:207
 #: ../src/plugins/reporter-rhtsupport.c:397
@@ -1449,12 +1496,15 @@ msgstr "Bugzilla oturumu açılıyor %s"
 #, c-format
 msgid "Invalid password or login. Please enter your %s login:"
 msgstr ""
+"Geçersiz parola veya oturum açma bilgisi. Lütfen %s oturum açma "
+"bilgilerinizi girin:"
 
 #: ../src/plugins/reporter-bugzilla.c:228
 #: ../src/plugins/reporter-rhtsupport.c:411
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
 msgstr ""
+"Geçersiz parola veya oturum açma bilgisi. Lütfen '%s' için parolayı girin:"
 
 #: ../src/plugins/reporter-bugzilla.c:247
 msgid ""
@@ -1501,6 +1551,48 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"\n"
+"& [-vbf] [-g GRUP-ADI]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d "
+"DİZİN\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... [-d DİZİN] -t[KİMLİK] DOSYA...\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... [-d DİZİN] -t[KİMLİK] -w\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... -h DUPHASH [-p[ÜRÜN]]\n"
+"\n"
+"Sorunu Bugzilla'ya bildirir.\n"
+"\n"
+"Araç, DİZİNi okur. Daha sonra Bugzilla'da oturum açar ve 'Whiteboard'da\n"
+"aynı abrt_hash:HEXSTRING değerine sahip bir hata bulmaya çalışır.\n"
+"\n"
+"Böyle bir hata bulunamazsa, yeni bir hata oluşturulur. DİZİN\n"
+"elemanları, türüne ve boyutuna bağlı olarak hata açıklamasının bir\n"
+"parçası veya sorunun ekleri olarak hatayla birlikte kaydedilir.\n"
+"\n"
+"Bu tür bir hata bulunursa ve CLOSED DUPLICATE olarak işaretlenmişse,\n"
+"araç DUPLICATE olmayan bir hata bulana kadar yinelenenler zincirini\n"
+"takip eder ve nihayetinde bulunan hataya yeni bir yorum ekler.\n"
+"\n"
+"Yeni veya değiştirilen hatanın URL'si standart çıkışa yazdırılır ve\n"
+"'reported_to' elemanına kaydedilir.\n"
+"\n"
+"-t seçeneği, DOSYAları Bugzilla'daki önceden oluşturulmuş hataya yükler.\n"
+"Hata kimliği, -d DİZİN ile belirtilen dizinden alınır. DİZİNdeki sorun "
+"verileri\n"
+"Bugzilla'ya hiç bildirilmemişse, yükleme başarısız olacaktır.\n"
+"\n"
+"-tKİMLİK seçeneği, DOSYAları Bugzilla'daki belirtilen kimliğe sahip hataya\n"
+"yükler. -d DİZİN dikkate alınmaz.\n"
+"\n"
+"-w seçeneği, bugzilla kullanıcısını hatanın CC listesine ekler.\n"
+"\n"
+"-r seçeneği, URL alanını reporter_to elemanının TRACKER_NAME ön ekine sahip\n"
+"son URL'sine ayarlar. Bu seçenek sadece yeni bir hata oluşturulacaksa "
+"uygulanır.\n"
+"Öntanımlı değer: 'ABRT Server'\n"
+"\n"
+"Belirtilmezse, CONFFILE öntanımlı değeri "
 
 #: ../src/plugins/reporter-bugzilla.c:324
 #: ../src/plugins/reporter-rhtsupport.c:549
@@ -1511,12 +1603,12 @@ msgstr "Yapılandırma dosyası(birçok kez verilebilir)"
 #: ../src/plugins/reporter-bugzilla.c:325
 #: ../src/plugins/reporter-mantisbt.c:285
 msgid "Formatting file for initial comment"
-msgstr ""
+msgstr "İlk yorum için biçimlendirme dosyası"
 
 #: ../src/plugins/reporter-bugzilla.c:326
 #: ../src/plugins/reporter-mantisbt.c:286
 msgid "Formatting file for duplicates"
-msgstr ""
+msgstr "Yinelenenler için biçimlendirme dosyası"
 
 #: ../src/plugins/reporter-bugzilla.c:327
 msgid "Attach FILEs [to bug with this ID]"
@@ -1524,64 +1616,66 @@ msgstr "[bu kimliğe sahip hataya] DOSYA ekle"
 
 #: ../src/plugins/reporter-bugzilla.c:328
 msgid "When creating bug, attach binary files too"
-msgstr ""
+msgstr "Hata raporu oluştururken, ikili dosyaları da ekle"
 
 #: ../src/plugins/reporter-bugzilla.c:329
 #: ../src/plugins/reporter-rhtsupport.c:551
 #: ../src/plugins/reporter-mantisbt.c:288
 msgid "Force reporting even if this problem is already reported"
-msgstr "Daha önce bildirilmiş olsa bile raporlamaya zorla"
+msgstr "Daha önce bildirilmiş olsa bile bildirmeye zorla"
 
 #: ../src/plugins/reporter-bugzilla.c:330
 msgid "Add bugzilla user to CC list [of bug with this ID]"
-msgstr ""
+msgstr "Bugzilla kullanıcısını [bu KİMLİKteki hatanın] CC listesine ekle"
 
 #: ../src/plugins/reporter-bugzilla.c:331
 #: ../src/plugins/reporter-mantisbt.c:289
 msgid "Print BUG_ID which has given DUPHASH"
-msgstr ""
+msgstr "Verilen DUPHASH değerine sahip BUG_ID değerini yazdır"
 
 #: ../src/plugins/reporter-bugzilla.c:332
 msgid "Specify a Bugzilla product (ignored without -h)"
-msgstr ""
+msgstr "Bir Bugzilla ürünü belirt (-h olmadan dikkate alınmaz)"
 
 #: ../src/plugins/reporter-bugzilla.c:333
 #: ../src/plugins/reporter-mantisbt.c:290
 msgid "A name of bug tracker for an additional URL from 'reported_to'"
-msgstr ""
+msgstr "Bir 'reported_to' ek URL'si için bir hata takipçisinin adı"
 
 #: ../src/plugins/reporter-bugzilla.c:334
 msgid "Restrict access to this group only"
-msgstr ""
+msgstr "Erişimi sadece bu grupla sınırlandır"
 
 #: ../src/plugins/reporter-bugzilla.c:335 ../src/plugins/reporter-mailx.c:292
 #: ../src/plugins/reporter-rhtsupport.c:555
 #: ../src/plugins/reporter-systemd-journal.c:255
 #: ../src/plugins/reporter-mantisbt.c:292
 msgid "Debug"
-msgstr ""
+msgstr "Hata ayıklama"
 
 #: ../src/plugins/reporter-bugzilla.c:402
 msgid "Looking for similar problems in bugzilla"
-msgstr ""
+msgstr "Bugzilla'da benzer sorunlar aranıyor"
 
 #: ../src/plugins/reporter-bugzilla.c:431
 msgid "Failed to get 'REDHAT_BUGZILLA_PRODUCT' from '/etc/os-release'."
-msgstr ""
+msgstr "'/etc/os-release' dosyasından 'REDHAT_BUGZILLA_PRODUCT' alınamadı."
 
 #: ../src/plugins/reporter-bugzilla.c:434
 msgid "Failed to read '/etc/os-release' to get Bugzilla product."
-msgstr ""
+msgstr "Bugzilla ürününü almak için '/etc/os-release' okunamadı."
 
 #: ../src/plugins/reporter-bugzilla.c:445
 #, c-format
 msgid "Using default product '%s'"
-msgstr ""
+msgstr "Öntanımlı ürün '%s' kullanılıyor"
 
 #: ../src/plugins/reporter-bugzilla.c:468
 #, c-format
 msgid "Login is not provided by configuration. Please enter your %s login:"
 msgstr ""
+"Yapılandırma tarafından oturum açma bilgisi sağlanmadı. Lütfen %s oturum "
+"açma bilgilerinizi girin:"
 
 #: ../src/plugins/reporter-bugzilla.c:476
 #: ../src/plugins/reporter-rhtsupport.c:597
@@ -1590,12 +1684,14 @@ msgid ""
 "Password is not provided by configuration. Please enter the password for "
 "'%s':"
 msgstr ""
+"Yapılandırma tarafından parola sağlanmadı. Lütfen '%s' için parolanızı girin:"
 
 #: ../src/plugins/reporter-bugzilla.c:500
 msgid ""
 "Can't get Bugzilla ID because this problem has not yet been reported to "
 "Bugzilla."
 msgstr ""
+"Bu sorun henüz Bugzilla'ya bildirilmediğinden Bugzilla kimliği alınamıyor."
 
 #: ../src/plugins/reporter-bugzilla.c:505
 #, c-format
@@ -1603,16 +1699,18 @@ msgid ""
 "This problem has been reported to Bugzilla '%s' which differs from the "
 "configured Bugzilla '%s'."
 msgstr ""
+"Bu sorun Bugzilla '%s' adresine bildirildi, bu da yapılandırılmış Bugzilla '%"
+"s' adresinden farklı."
 
 #: ../src/plugins/reporter-bugzilla.c:509
 #, c-format
 msgid "Malformed url to Bugzilla '%s'."
-msgstr ""
+msgstr "Bugzilla '%s' için hatalı biçimlendirilmiş url."
 
 #: ../src/plugins/reporter-bugzilla.c:513
 #, c-format
 msgid "Using Bugzilla ID '%s'"
-msgstr ""
+msgstr "Bugzilla kimliği '%s' kullanılıyor"
 
 #: ../src/plugins/reporter-bugzilla.c:547
 #: ../src/plugins/reporter-bugzilla.c:747
@@ -1626,15 +1724,17 @@ msgid ""
 "This problem was already reported to Bugzilla (see '%s'). Do you still want "
 "to create a new bug?"
 msgstr ""
+"Bu sorun daha önce Bugzilla'ya bildirildi ('%s'). Yine de yeni bir hata "
+"bildirimi oluşturmak istiyor musunuz?"
 
 #: ../src/plugins/reporter-bugzilla.c:609
 msgid "Can't determine Bugzilla Product from problem data."
-msgstr ""
+msgstr "Sorun verilerinden Bugzilla Ürünü belirlenemiyor."
 
 #: ../src/plugins/reporter-bugzilla.c:671
 #: ../src/plugins/reporter-mantisbt.c:506
 msgid "Checking for duplicates"
-msgstr "Benzerleri için denetleniyor"
+msgstr "Yinelenenler denetleniyor"
 
 #: ../src/plugins/reporter-bugzilla.c:728
 #, c-format
@@ -1646,6 +1746,12 @@ msgid ""
 "report and close it as DUPLICATE of the original one? Otherwise, the bug "
 "reporting procedure will be terminated."
 msgstr ""
+"Verilerinizi sadece belirli bir grup için erişilebilir hale getirmek "
+"istediniz ve bu hata %s/%u hatasının yineleneni. Yinelenen hata durumunda, "
+"orijinal hata raporuna yeni bir yorum eklenir, ancak yorumlara erişim "
+"belirli bir grupla sınırlandırılamaz. Yeni bir hata bildirimi açmak ve "
+"orijinal olanın yineleneni (DUPLICATE) olarak kapatmak ister misiniz? Aksi "
+"takdirde, hata bildirme süreci sonlandırılacaktır."
 
 #. Create new bug
 #: ../src/plugins/reporter-bugzilla.c:763
@@ -1654,38 +1760,38 @@ msgstr "Yeni hata oluşturuluyor"
 
 #: ../src/plugins/reporter-bugzilla.c:782
 msgid "Failed to create a new bug."
-msgstr ""
+msgstr "Yeni bir hata oluşturulamadı."
 
 #: ../src/plugins/reporter-bugzilla.c:800
 #, c-format
 msgid "Adding extra cc %s to bug report"
-msgstr ""
+msgstr "Hata bildirimine ilave cc %s ekleniyor"
 
 #: ../src/plugins/reporter-bugzilla.c:812
 #, c-format
 msgid "Adding External URL to bug %i"
-msgstr ""
+msgstr "%i hatasına Harici URL ekleniyor"
 
 #: ../src/plugins/reporter-bugzilla.c:819
 #, c-format
 msgid "Adding attachments to bug %i"
-msgstr ""
+msgstr "%i hatasına ekler ekleniyor"
 
 #: ../src/plugins/reporter-bugzilla.c:841
 #, c-format
 msgid "Closing bug %i as duplicate of bug %i"
-msgstr ""
+msgstr "%i hatası, %i hatasının yineleneni olarak kapatılıyor"
 
 #: ../src/plugins/reporter-bugzilla.c:853
 #: ../src/plugins/reporter-mantisbt.c:622
 #, c-format
 msgid "Bug is already reported: %i"
-msgstr "Hata zaten bildirildi: %i"
+msgstr "Hata daha önce bildirildi: %i"
 
 #: ../src/plugins/reporter-bugzilla.c:896
 #, c-format
 msgid "Adding %s to CC list"
-msgstr ""
+msgstr "%s CC listesine ekleniyor"
 
 #: ../src/plugins/reporter-bugzilla.c:917
 #, c-format
@@ -1699,17 +1805,17 @@ msgstr "Daha iyi yığın geri izlemesi ekleniyor"
 
 #: ../src/plugins/reporter-bugzilla.c:936
 msgid "Found the same comment in the bug history, not adding a new one"
-msgstr ""
+msgstr "Hata geçmişinde aynı yorum bulundu, yeni bir tane eklenmiyor"
 
 #: ../src/plugins/reporter-bugzilla.c:946
 #, c-format
 msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
-msgstr ""
+msgstr "Durum: %s%s%s %s/show_bug.cgi?id=%u"
 
 #: ../src/plugins/reporter-kerneloops.c:105
 #, c-format
 msgid "Submitting oops report to %s"
-msgstr "oops raporu %s e gönder"
+msgstr "Oops bildirimi %s adresine gönderiliyor"
 
 #: ../src/plugins/reporter-kerneloops.c:154
 msgid ""
@@ -1724,6 +1830,16 @@ msgid ""
 "Recognized string parameter: SubmitURL.\n"
 "Parameter can be overridden via $KerneloopsReporter_SubmitURL."
 msgstr ""
+"& [-v] [-c CONFFILE]... -d DİZİN\n"
+"\n"
+"Çekirdek oops'larını kerneloops.org (veya benzeri) adresine bildirir.\n"
+"\n"
+"$EXCLUDE_FROM_REPORT içinde listelenen adlara sahip dosyalar tar\n"
+"arşivine dahil edilmez.\n"
+"\n"
+"CONFFILE satırları 'PARAM = VALUE' biçiminde olmalıdır.\n"
+"Tanınan dizge parametresi: SubmitURL.\n"
+"$KerneloopsReporter_SubmitURL aracılığıyla parametrenin üzerine yazılabilir."
 
 #: ../src/plugins/reporter-kerneloops.c:174
 #: ../src/plugins/reporter-ureport.c:81
@@ -1736,21 +1852,23 @@ msgid ""
 "Email address of %s was not specified. Would you like to do so now? If not, "
 "'%s' is to be used"
 msgstr ""
+"%s için e-posta adresi belirtilmedi. Bunu şimdi yapmak ister misiniz? "
+"İstemiyorsanız, '%s' kullanılacak"
 
 #: ../src/plugins/reporter-mailx.c:90
 #, c-format
 msgid "Please, type email address of %s:"
-msgstr ""
+msgstr "Lütfen %s için e-posta adresini girin:"
 
 #: ../src/plugins/reporter-mailx.c:97
 #, c-format
 msgid "Can't continue without email address of %s"
-msgstr ""
+msgstr "%s için e-posta adresi olmadan devam edilemiyor"
 
 #: ../src/plugins/reporter-mailx.c:207
 #, c-format
 msgid "Sending a notification email to: %s"
-msgstr ""
+msgstr "Bildirim e-postası gönderiliyor: %s"
 
 #: ../src/plugins/reporter-mailx.c:209
 msgid "Sending an email..."
@@ -1759,7 +1877,7 @@ msgstr "Mail gönderiliyor..."
 #: ../src/plugins/reporter-mailx.c:243
 #, c-format
 msgid "Email was sent to: %s"
-msgstr ""
+msgstr "E-posta gönderildi: %s"
 
 #: ../src/plugins/reporter-mailx.c:266
 msgid ""
@@ -1769,6 +1887,11 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"& [-v] -d DİZİN [-c CONFFILE] [-F FMTFILE]\n"
+"\n"
+"DİZİN sorun dizini içeriğini e-posta ile gönderir\n"
+"\n"
+"Belirtilmezse, CONFFILE öntanımlı değeri "
 
 #: ../src/plugins/reporter-mailx.c:289 ../src/plugins/reporter-upload.c:187
 msgid "Config file"
@@ -1776,11 +1899,11 @@ msgstr "Yapılandırma dosyası"
 
 #: ../src/plugins/reporter-mailx.c:290
 msgid "Formatting file for an email"
-msgstr ""
+msgstr "E-posta için biçimlendirme dosyası"
 
 #: ../src/plugins/reporter-mailx.c:291
 msgid "Notify only (Do not mark the report as sent)"
-msgstr ""
+msgstr "Sadece bildir (Bildirimi gönderildi olarak işaretleme)"
 
 #: ../src/plugins/reporter-print.c:42
 msgid ""
@@ -1788,6 +1911,9 @@ msgid ""
 "\n"
 "Prints problem information to standard output or FILE"
 msgstr ""
+"& [-v] -d DİZİN [-o DOSYA] [-a yes/no] [-r]\n"
+"\n"
+"Sorun bilgilerini standart çıktıya veya DOSYAya yazdırır"
 
 #: ../src/plugins/reporter-print.c:57
 msgid "Output file"
@@ -1799,7 +1925,7 @@ msgstr "Ekle yada üzerine yaz FILE"
 
 #: ../src/plugins/reporter-print.c:59
 msgid "Create reported_to in DIR"
-msgstr "DIR de rapor oluştur"
+msgstr "DIR dizininde reported_to oluştur"
 
 #: ../src/plugins/reporter-print.c:98
 msgid "Cancelled by user."
@@ -1808,44 +1934,46 @@ msgstr "Kullanıcı tarafından iptal edildi."
 #: ../src/plugins/reporter-print.c:108
 #, c-format
 msgid "Can't open '%s' for writing. Please select another file:"
-msgstr ""
+msgstr "'%s' yazmak için açılamıyor. Lütfen başka bir dosya seçin:"
 
 #: ../src/plugins/reporter-print.c:153
 #, c-format
 msgid "The report was appended to %s"
-msgstr "Rapor %s e eklendi"
+msgstr "Bildirme %s dosyasına eklendi"
 
 #: ../src/plugins/reporter-print.c:153
 #, c-format
 msgid "The report was stored to %s"
-msgstr "Rapor %s te saklandı"
+msgstr "Bildirme %s dosyasına kaydedildi"
 
 #: ../src/plugins/reporter-rhtsupport.c:280
 #: ../src/plugins/reporter-ureport.c:311
 msgid "Failed to generate microreport from the problem data"
-msgstr ""
+msgstr "Sorun verilerinden mikro bildirim oluşturulamadı"
 
 #: ../src/plugins/reporter-rhtsupport.c:301
 #: ../src/plugins/reporter-ureport.c:340
 #, c-format
 msgid "Server responded with an error: '%s'"
-msgstr ""
+msgstr "Sunucu bir hatayla yanıt verdi: '%s'"
 
 #: ../src/plugins/reporter-rhtsupport.c:361
 msgid "Do you still want to create a RHTSupport ticket?"
-msgstr ""
+msgstr "Yine de bir RHTSupport bileti oluşturmak istiyor musunuz?"
 
 #: ../src/plugins/reporter-rhtsupport.c:409
 msgid "Invalid password or login. Please enter your Red Hat login:"
 msgstr ""
+"Geçersiz parola veya oturum açma bilgisi. Lütfen Red Hat oturum açma "
+"bilgilerinizi girin:"
 
 #: ../src/plugins/reporter-rhtsupport.c:473
 msgid "Please enter customer case number to which you want to attach the data:"
-msgstr ""
+msgstr "Lütfen verileri eklemek istediğiniz müşteri talep numarasını girin:"
 
 #: ../src/plugins/reporter-rhtsupport.c:479
 msgid "Can't continue without Red Hat Support case number"
-msgstr ""
+msgstr "Red Hat Support talep numarası olmadan devam edilemiyor"
 
 #: ../src/plugins/reporter-rhtsupport.c:506
 msgid ""
@@ -1858,26 +1986,36 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"\n"
+"& [-v] [-c CONFFILE] [-F FMTFILE] -d DİZİN\n"
+"veya:\n"
+"& [-v] [-c CONFFILE] [-d DİZİN] -t[KİMLİK] [-u -C UR_CONFFILE] DOSYA...\n"
+"\n"
+"Sorunu RHTSupport'a bildirir.\n"
+"\n"
+"Belirtilmezse, CONFFILE öntanımlı değeri "
 
 #: ../src/plugins/reporter-rhtsupport.c:550
 msgid "Upload FILEs [to case with this ID]"
-msgstr "FILES yükle[IDsiyle birlikte]"
+msgstr "DOSYAları [bu KİMLİKteki talebe] yükle"
 
 #: ../src/plugins/reporter-rhtsupport.c:552
 msgid "Submit uReport before creating a new case"
-msgstr ""
+msgstr "Yeni bir talep oluşturmadan önce uReport gönder"
 
 #: ../src/plugins/reporter-rhtsupport.c:553
 msgid "Configuration file for uReport"
-msgstr ""
+msgstr "uReport için yapılandırma dosyası"
 
 #: ../src/plugins/reporter-rhtsupport.c:554
 msgid "Formatting file for a new case"
-msgstr ""
+msgstr "Yeni bir talep için biçimlendirme dosyası"
 
 #: ../src/plugins/reporter-rhtsupport.c:591
 msgid "Login is not provided by configuration. Please enter your RHTS login:"
 msgstr ""
+"Yapılandırma tarafından oturum açma bilgisi sağlanmadı. Lütfen RHTS oturum "
+"açma bilgilerinizi girin:"
 
 #: ../src/plugins/reporter-rhtsupport.c:647
 #, c-format
@@ -1886,19 +2024,22 @@ msgid ""
 "to the case? Otherwise, you will have to enter the existing Red Hat support "
 "case number."
 msgstr ""
+"Benzer bir Red Hat destek talebi (%s) bulduk. Verileri talebe eklemek "
+"istiyor musunuz? Aksi takdirde, var olan bir Red Hat destek talebi "
+"numarasını girmeniz gerekecektir."
 
 #: ../src/plugins/reporter-rhtsupport.c:676
 #, c-format
 msgid "Attaching '%s' to case '%s'"
-msgstr "'%s' '%s' durumuna bağlanıyor"
+msgstr "'%s' dosyası '%s' talebine ekleniyor"
 
 #: ../src/plugins/reporter-rhtsupport.c:720
 msgid "Sending ABRT crash statistics data"
-msgstr ""
+msgstr "ABRT çökme istatistikleri verileri gönderiliyor"
 
 #: ../src/plugins/reporter-rhtsupport.c:741
 msgid "Can't create a temporary directory in "
-msgstr ""
+msgstr "Şurada geçici bir dizin oluşturulamıyor: "
 
 #: ../src/plugins/reporter-rhtsupport.c:766
 msgid ""
@@ -1906,6 +2047,9 @@ msgid ""
 "is unknown. Please ensure you will be able to provide detailed information "
 "to our Support Team. Would you like to continue and open a new support case?"
 msgstr ""
+"Sorun sadece bir kez oluştu ve sorunun nasıl yeniden oluşturulabileceği "
+"bilinmiyor. Lütfen Destek Ekibimize ayrıntılı bilgi verebileceğinizden emin "
+"olun. Devam etmek ve yeni bir destek talebi açmak ister misiniz?"
 
 #: ../src/plugins/reporter-rhtsupport.c:779
 #, c-format
@@ -1913,6 +2057,8 @@ msgid ""
 "The crashed program was released by '%s'. Would you like to report the "
 "problem to Red Hat Support?"
 msgstr ""
+"Çöken program '%s' tarafından yayınlandı. Sorunu Red Hat Support hattına "
+"bildirmek ister misiniz?"
 
 #: ../src/plugins/reporter-rhtsupport.c:797
 #, c-format
@@ -1920,6 +2066,8 @@ msgid ""
 "The program '%s' does not appear to be provided by Red Hat. Would you like "
 "to report the problem to Red Hat Support?"
 msgstr ""
+"'%s' programı Red Hat tarafından sağlanmış gibi görünmüyor. Sorunu Red Hat "
+"Support hattına bildirmek ister misiniz?"
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing
 #. error msg is already logged by dd_opendir
@@ -1936,40 +2084,42 @@ msgstr "Şurada geçici dosya oluşturulamıyor: "
 #. Check for hints and show them if we have something
 #: ../src/plugins/reporter-rhtsupport.c:880
 msgid "Checking for hints"
-msgstr ""
+msgstr "İpuçları denetleniyor"
 
 #: ../src/plugins/reporter-rhtsupport.c:885
 msgid "Creating a new case"
-msgstr "Yeni bir vaka oluşturuluyor"
+msgstr "Yeni bir talep oluşturuluyor"
 
 #. How can we help user sorting out this problem?
 #: ../src/plugins/reporter-rhtsupport.c:896
 msgid "Can't determine RH Support Product from problem data."
-msgstr ""
+msgstr "Sorun verilerinden RH Destek Ürünü belirlenemiyor."
 
 #: ../src/plugins/reporter-rhtsupport.c:958
 msgid "Linking ABRT crash statistics record with the case"
-msgstr ""
+msgstr "ABRT çökme istatistikleri kaydı talep ile ilişkilendiriliyor"
 
 #: ../src/plugins/reporter-rhtsupport.c:971
 #, c-format
 msgid "Linking ABRT crash statistics record with contact email: '%s'"
 msgstr ""
+"ABRT çökme istatistikleri kaydı iletişim e-posta adresi ile "
+"ilişkilendiriliyor: '%s'"
 
 #: ../src/plugins/reporter-rhtsupport.c:995
 #, c-format
 msgid "Adding comment to case '%s'"
-msgstr ""
+msgstr "'%s' talebine yorum ekleniyor"
 
 #. Attach the tarball of -d DIR
 #: ../src/plugins/reporter-rhtsupport.c:1013
 #, c-format
 msgid "Attaching problem data to case '%s'"
-msgstr ""
+msgstr "'%s' talebine sorun verileri ekleniyor"
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:202
 msgid "Documentation which might be relevant: "
-msgstr ""
+msgstr "İlgili olabilecek belgeler: "
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:210
 msgid "Updates which possibly help: "
@@ -1986,33 +2136,41 @@ msgid ""
 "into systemd journal as a message. If MESSAGEID is defined, the tool\n"
 "creates a catalog message as well.\n"
 msgstr ""
+"& [-v] [-d DİZİN] [-m MESSAGEID] [-F FMTFILE] [-p NONE|ESSENTIAL|FULL] [-s "
+"SYSLOGID]\n"
+"\n"
+"Sorun bilgilerini systemd günlüğüne bildirir.\n"
+"\n"
+"Araç, DİZİN sorun dizinini okur ve ayrıntılarını bir mesaj olarak\n"
+"systemd günlüğüne gönderir. MESSAGEID tanımlıysa, araç ayrıca bir\n"
+"katalog mesajı da oluşturur.\n"
 
 #: ../src/plugins/reporter-systemd-journal.c:251
 msgid "Catalog message id"
-msgstr ""
+msgstr "Katalog mesajı kimliği"
 
 #: ../src/plugins/reporter-systemd-journal.c:252
 msgid "Formatting file for catalog message"
-msgstr ""
+msgstr "Katalog mesajı için biçimlendirme dosyası"
 
 #: ../src/plugins/reporter-systemd-journal.c:253
 msgid "Dump problem dir into systemd journal fields"
-msgstr ""
+msgstr "Sorun dizinini systemd günlük alanlarına dök"
 
 #: ../src/plugins/reporter-systemd-journal.c:254
 msgid "Define SYSLOG_IDENTIFIER systemd journal field"
-msgstr ""
+msgstr "SYSLOG_IDENTIFIER systemd günlük alanını tanımla"
 
 #: ../src/plugins/reporter-upload.c:29
 msgid "Can't continue without URL"
-msgstr ""
+msgstr "URL olmadan devam edilemiyor"
 
 #. Be permissive and nice, ask only once and don't check
 #. the result. User can dismiss this prompt but the upload
 #. may work somehow???
 #: ../src/plugins/reporter-upload.c:51
 msgid "Please enter password for uploading:"
-msgstr ""
+msgstr "Lütfen karşıya yüklemek için parolayı girin:"
 
 #. success
 #: ../src/plugins/reporter-upload.c:120
@@ -2027,39 +2185,44 @@ msgid ""
 "Uploads compressed tarball of problem directory DIR to URL.\n"
 "If URL is not specified, creates tarball in "
 msgstr ""
+"& [-v] -d DİZİN [-c CONFFILE] [-u URL] [-b DOSYA] [-r DOSYA]\n"
+"\n"
+"DİZİN sorun dizininin sıkıştırılmış tar arşivini URL'ye yükler.\n"
+"URL belirtilmezse, tar arşivi şurada oluşturulur: "
 
 #: ../src/plugins/reporter-upload.c:188
 msgid "Base URL to upload to"
-msgstr ""
+msgstr "Yüklenecek temel URL"
 
 #: ../src/plugins/reporter-upload.c:189
 msgid "SSH public key file"
-msgstr ""
+msgstr "SSH genel anahtar dosyası"
 
 #: ../src/plugins/reporter-upload.c:190
 msgid "SSH private key file"
-msgstr ""
+msgstr "SSH özel anahtar dosyası"
 
 #: ../src/plugins/reporter-upload.c:219
 msgid ""
 "Please enter a URL (scp, ftp, etc.) where the problem data is to be exported:"
 msgstr ""
+"Lütfen sorun verilerinin dışa aktarılacağı bir URL (scp, ftp vb.) girin:"
 
 #: ../src/plugins/reporter-mantisbt.c:80
 msgid "Please enter your MantisBT login:"
-msgstr ""
+msgstr "Lütfen MantisBT oturum açma bilgilerinizi girin:"
 
 #: ../src/plugins/reporter-mantisbt.c:84
 msgid "Please enter the password for"
-msgstr ""
+msgstr "Lütfen şunun için parolayı girin"
 
 #: ../src/plugins/reporter-mantisbt.c:95
 msgid "Credentials are not provided by configuration."
-msgstr ""
+msgstr "Kimlik bilgileri yapılandırma tarafından sağlanmadı."
 
 #: ../src/plugins/reporter-mantisbt.c:119
 msgid "Invalid password or login."
-msgstr ""
+msgstr "Geçersiz parola veya oturum açma bilgisi."
 
 #: ../src/plugins/reporter-mantisbt.c:211
 msgid ""
@@ -2103,6 +2266,45 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"\n"
+"& [-vf] [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DİZİN\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... [-d DİZİN] -t[KİMLİK] DOSYA...\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... [-d DİZİN] -t[KİMLİK] -w\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... -h DUPHASH\n"
+"\n"
+"Sorunu MantisBT'ye bildirir.\n"
+"\n"
+"Araç DİZİNi okur. Daha sonra, 'abrt_hash' özel alanında\n"
+"aynı abrt_hash değerine sahip bir sorun bulmaya çalışır.\n"
+"\n"
+"Böyle bir sorun bulunamazsa, yeni bir sorun oluşturulur. DİZİN\n"
+"elemanları, türüne ve boyutuna bağlı olarak sorun açıklamasının bir\n"
+"parçası veya sorunun ekleri olarak hatayla birlikte kaydedilir.\n"
+"\n"
+"Bu tür bir sorun bulunursa ve CLOSED DUPLICATE olarak işaretlenmişse,\n"
+"araç DUPLICATE olmayan bir sorun bulana kadar yinelenenler zincirini\n"
+"takip eder ve nihayetinde bulunan soruna yeni bir yorum ekler.\n"
+"\n"
+"Yeni veya değiştirilen sorunun URL'si standart çıkışa yazdırılır ve\n"
+"'reported_to' elemanına kaydedilir.\n"
+"\n"
+"-t seçeneği, DOSYAları MantisBT sitesindeki önceden oluşturulmuş soruna\n"
+"yükler. Sorun kimliği, -d DİZİN ile belirtilen dizinden alınır. DİZİNdeki "
+"sorun\n"
+"verileri MantisBT'ye hiç bildirilmemişse, yükleme başarısız olacaktır.\n"
+"\n"
+"-tKİMLİK seçeneği, DOSYAları MantisBT sitesindeki belirtilen kimliğe sahip\n"
+"soruna yükler. -d DİZİN dikkate alınmaz.\n"
+"\n"
+"-r seçeneği, URL alanını reporter_to elemanının TRACKER_NAME ön ekine sahip\n"
+"son URL'sine ayarlar. Bu seçenek sadece yeni bir sorun bildirilecekse "
+"uygulanır.\n"
+"Öntanımlı değer: 'ABRT Server'\n"
+"\n"
+"Belirtilmezse, CONFFILE öntanımlı değeri "
 
 #: ../src/plugins/reporter-mantisbt.c:287
 msgid "Attach FILEs [to issue with this ID]"
@@ -2111,17 +2313,18 @@ msgstr "[bu kimliğe sahip soruna] DOSYA ekle"
 #: ../src/plugins/reporter-mantisbt.c:326
 #, c-format
 msgid "Can't open problem dir '%s'."
-msgstr ""
+msgstr "'%s' sorun dizini açılamıyor."
 
 #: ../src/plugins/reporter-mantisbt.c:348
 msgid "Looking for similar problems in MantisBT"
-msgstr ""
+msgstr "MantisBT'de benzer sorunlar aranıyor"
 
 #: ../src/plugins/reporter-mantisbt.c:381
 msgid ""
 "Can't get MantisBT ID because this problem has not yet been reported to "
 "MantisBT."
 msgstr ""
+"Bu sorun henüz MantisBT'ye bildirilmediğinden MantisBT kimliği alınamıyor."
 
 #: ../src/plugins/reporter-mantisbt.c:386
 #, c-format
@@ -2129,21 +2332,23 @@ msgid ""
 "This problem has been reported to MantisBT '%s' which differs from the "
 "configured MantisBT '%s'."
 msgstr ""
+"Bu sorun MantisBT '%s' adresine bildirildi, bu da yapılandırılmış MantisBT '%"
+"s' adresinden farklı."
 
 #: ../src/plugins/reporter-mantisbt.c:390
 #, c-format
 msgid "Malformed url to MantisBT '%s'."
-msgstr ""
+msgstr "MantisBT '%s' için hatalı biçimlendirilmiş url."
 
 #: ../src/plugins/reporter-mantisbt.c:394
 #, c-format
 msgid "Using MantisBT ID '%s'"
-msgstr ""
+msgstr "MantisBT kimliği '%s' kullanılıyor"
 
 #: ../src/plugins/reporter-mantisbt.c:402
 #, c-format
 msgid "Attaching file '%s' to issue %s"
-msgstr ""
+msgstr "'%s' dosyası %s sorununa ekleniyor"
 
 #: ../src/plugins/reporter-mantisbt.c:432
 #, c-format
@@ -2151,6 +2356,8 @@ msgid ""
 "This problem was already reported to MantisBT (see '%s'). Do you still want "
 "to create a new issue?"
 msgstr ""
+"Bu sorun daha önce MantisBT'ye bildirildi ('%s'). Yine de yeni bir sorun "
+"bildirimi oluşturmak istiyor musunuz?"
 
 #. Create new issue
 #: ../src/plugins/reporter-mantisbt.c:545
@@ -2160,29 +2367,29 @@ msgstr "Yeni sorun oluşturuluyor"
 #: ../src/plugins/reporter-mantisbt.c:550
 #, c-format
 msgid "Invalid format file: %s"
-msgstr ""
+msgstr "Geçersiz biçim dosyası: %s"
 
 #: ../src/plugins/reporter-mantisbt.c:554
 msgid "Failed to format problem data"
-msgstr ""
+msgstr "Sorun verileri biçimlendirilemedi"
 
 #: ../src/plugins/reporter-mantisbt.c:581
 msgid "Adding External URL to issue"
-msgstr ""
+msgstr "Soruna Harici URL ekleniyor"
 
 #: ../src/plugins/reporter-mantisbt.c:593
 #, c-format
 msgid "Adding attachments to issue %i"
-msgstr ""
+msgstr "%i sorununa ekler ekleniyor"
 
 #: ../src/plugins/reporter-mantisbt.c:648
 #, c-format
 msgid "Invalid duplicate format file: '%s"
-msgstr ""
+msgstr "Geçersiz yinelenen biçim dosyası: %s"
 
 #: ../src/plugins/reporter-mantisbt.c:652
 msgid "Failed to format duplicate comment from problem data"
-msgstr ""
+msgstr "Sorun verilerinden yinelenen yorum biçimlendirilemedi"
 
 #: ../src/plugins/reporter-mantisbt.c:659
 #, c-format
@@ -2191,16 +2398,16 @@ msgstr "%d sorununa yeni yorum ekleniyor"
 
 #: ../src/plugins/reporter-mantisbt.c:695
 msgid "Found the same comment in the issue history, not adding a new one"
-msgstr ""
+msgstr "Sorun geçmişinde aynı yorum bulundu, yeni bir tane eklenmiyor"
 
 #: ../src/plugins/reporter-mantisbt.c:702
 #, c-format
 msgid "Status: %s%s%s %s/view.php?id=%u"
-msgstr ""
+msgstr "Durum: %s%s%s %s/view.php?id=%u"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:1
 msgid "CentOS Bug Tracker"
-msgstr ""
+msgstr "CentOS Bug Tracker"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:2
 #: ../src/workflows/workflow_CentOSCCpp.xml.in.h:1
@@ -2213,54 +2420,61 @@ msgstr ""
 #: ../src/workflows/workflow_CentOSVmcore.xml.in.h:1
 #: ../src/workflows/workflow_CentOSXorg.xml.in.h:1
 msgid "Report to CentOS Bug Tracker"
-msgstr ""
+msgstr "CentOS Bug Tracker'a bildir"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:4
 msgid "CentOS Bug Tracker account user name"
-msgstr ""
+msgstr "CentOS Bug Tracker hesabı kullanıcı adı"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:5
 msgid ""
 "You can create bugs.centos.org account &lt;a href=\"https://bugs.centos.org/"
 "signup_page.php\"&gt;here&lt;/a&gt;"
 msgstr ""
+"&lt;a href=\"https://bugs.centos.org/signup_page.php\"&gt;Buradan&lt;/a&gt; "
+"bugs.centos.org hesabı oluşturabilirsiniz"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:7
 msgid "CentOS Bug Tracker account password"
-msgstr ""
+msgstr "CentOS Bug Tracker hesabı parolası"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:9
 msgid ""
 "The issue will be accessible only to users with access to 'Private Issues'"
 msgstr ""
+"Sorun, sadece 'Özel Sorunlar' erişimine sahip kullanıcılara açık olacaktır"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:10
 msgid "CentOS Bug Tracker URL"
-msgstr ""
+msgstr "CentOS Bug Tracker URL'si"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:11
 msgid "Address of CentOS Bug Tracker server"
-msgstr ""
+msgstr "CentOS Bug Tracker sunucusunun adresi"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:14
 msgid "CentOS Bug Tracker project"
-msgstr ""
+msgstr "CentOS Bug Tracker projesi"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:15
 msgid ""
 "Specify this only if you needed different project than specified in /etc/os-"
 "release"
 msgstr ""
+"Bunu sadece /etc/os-release dosyasında belirtilenden farklı bir projeye "
+"ihtiyacınız varsa belirtin"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:16
 msgid "CentOS Bug Tracker project version"
-msgstr ""
+msgstr "CentOS Bug Tracker proje sürümü"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:17
 msgid ""
 "Specify this only if you needed different project version than specified in /"
 "etc/os-release"
 msgstr ""
+"Bunu sadece /etc/os-release dosyasında belirtilenden farklı bir proje "
+"sürümüne ihtiyacınız varsa belirtin"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
 msgid "Kerneloops.org"
@@ -2268,7 +2482,7 @@ msgstr "Kerneloops.org"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:2
 msgid "Send to kernel oops tracker"
-msgstr ""
+msgstr "Çekirdek oops takipçisine gönder"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:3
 msgid "Kerneloops URL"
@@ -2300,7 +2514,7 @@ msgstr "Ekle"
 
 #: ../src/plugins/report_Logger.xml.in.h:6
 msgid "Append new reports or overwrite the old one."
-msgstr "Yeni raporları ekle yada eskisinin üzerine yaz."
+msgstr "Yeni bildirimleri sona ekle ya da eskisinin üzerine yaz."
 
 #: ../src/plugins/report_Mailx.xml.in.h:1
 msgid "Mailx"
@@ -2349,7 +2563,7 @@ msgstr "Red Hat müşteri desteği"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:2
 msgid "Report to Red Hat support"
-msgstr "Red Hat desteğini raporla"
+msgstr "Red Hat destek hattına bildir"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:3
 msgid "Username"
@@ -2361,17 +2575,19 @@ msgstr "Red Hat müşteri kullanıcı adı"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:6
 msgid "Red Hat customer password"
-msgstr "Red Hat müşteri şifresi"
+msgstr "Red Hat müşteri parolası"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:7
 msgid "Submit uReport"
-msgstr ""
+msgstr "uReport gönder"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:8
 msgid ""
 "Submit &lt;a href=\"https://access.redhat.com/articles/642323\"&gt;micro-"
 "report&lt;/a&gt; when creating a new case."
 msgstr ""
+"Yeni bir talep oluştururken &lt;a href=\"https://access.redhat.com/articles/"
+"642323\"&gt;micro-bildirim&lt;/a&gt; gönder."
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:9
 msgid "RH Portal URL"
@@ -2383,11 +2599,11 @@ msgstr "Red Hat destek portalının adresi"
 
 #: ../src/plugins/report_RHTSupport_AddData.xml.in.h:2
 msgid "Attach the data to existing Red Hat support case"
-msgstr ""
+msgstr "Verileri var olan bir Red Hat destek talebine ekle"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report Uploader"
-msgstr ""
+msgstr "Bildirim Karşıya Yükleyici"
 
 #: ../src/plugins/report_Uploader.xml.in.h:2
 msgid "Upload as tar.gz file (via FTP/SCP/...)"
@@ -2402,109 +2618,120 @@ msgid ""
 "Where do you want to upload the tarball with report in form login:"
 "password@url"
 msgstr ""
+"Bildirimin tar arşivini nereye yüklemek istiyorsunuz, "
+"oturum_açma_bilgisi:parola@url biçiminde"
 
 #: ../src/plugins/report_Uploader.xml.in.h:5
 msgid ""
 "Examples:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:"
 "pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]"
 msgstr ""
+"Örnekler:&#xA;ftp://[kullanici[:parola]@]sunucu/dizin/"
+"[dosya.tar.gz]&#xA;scp://[kullanici[:parola]@]sunucu/dizin/"
+"[dosya.tar.gz]&#xA;file:///dizin/[dosya.tar.gz]"
 
 #: ../src/plugins/report_Uploader.xml.in.h:7
 msgid "Use this field if you do not want to have user name in URL"
-msgstr ""
+msgstr "URL'de kullanıcı adı olmasını istemiyorsanız bu alanı kullanın"
 
 #: ../src/plugins/report_Uploader.xml.in.h:9
 msgid "Use this field if you do not want to have password in URL"
-msgstr ""
+msgstr "URL'de parola olmasını istemiyorsanız bu alanı kullanın"
 
 #: ../src/plugins/report_Uploader.xml.in.h:14
 msgid "FTP Proxy"
-msgstr ""
+msgstr "FTP Vekili"
 
 #: ../src/plugins/report_Uploader.xml.in.h:15
 msgid "Sets the proxy server to use for FTP"
-msgstr ""
+msgstr "FTP için kullanılacak vekil sunucusunu belirler"
 
 #: ../src/plugins/report_Uploader.xml.in.h:16
 msgid "SSH Public key file"
-msgstr ""
+msgstr "SSH genel anahtar dosyası"
 
 #: ../src/plugins/report_Uploader.xml.in.h:17
 msgid "Use this field to specify SSH public keyfile"
-msgstr ""
+msgstr "SSH genel anahtar dosyasını belirtmek için bu alanı kullanın"
 
 #: ../src/plugins/report_Uploader.xml.in.h:18
 msgid "SSH Private key file"
-msgstr ""
+msgstr "SSH özel anahtar dosyası"
 
 #: ../src/plugins/report_Uploader.xml.in.h:19
 msgid "Use this field to specify SSH private keyfile"
-msgstr ""
+msgstr "SSH özel anahtar dosyasını belirtmek için bu alanı kullanın"
 
 #: ../src/plugins/report_uReport.xml.in.h:1
 msgid "uReport"
-msgstr ""
+msgstr "uReport"
 
 #: ../src/plugins/report_uReport.xml.in.h:2
 msgid "Sends ureports to FAF server"
-msgstr ""
+msgstr "FAF sunucusuna ureport'ları gönderir"
 
 #: ../src/plugins/report_uReport.xml.in.h:3
 msgid "uReport Server URL"
-msgstr ""
+msgstr "uReport Sunucu URL'si"
 
 #: ../src/plugins/report_uReport.xml.in.h:4
 msgid "Address of uReport webservice"
-msgstr ""
+msgstr "uReport web hizmetinin adresi"
 
 #: ../src/plugins/report_uReport.xml.in.h:5
 msgid "Watch already reported bugs"
-msgstr ""
+msgstr "Daha önce bildirilen hataları izle"
 
 #: ../src/plugins/report_uReport.xml.in.h:6
 msgid "Adds your Bugzilla login to CC List of already reported bugs."
 msgstr ""
+"Bugzilla oturum açma bilgilerinizi daha önce bildirilen hataların CC "
+"listesine ekler."
 
 #: ../src/plugins/report_uReport.xml.in.h:7
 msgid "Report unpackaged problems"
-msgstr ""
+msgstr "Paketler dışındaki sorunları bildir"
 
 #: ../src/plugins/report_uReport.xml.in.h:8
 msgid "Report problems coming from unpackaged executables."
-msgstr ""
+msgstr "Paketlenmemiş yürütülebilir dosyalardan kaynaklanan sorunları bildir."
 
 #: ../src/plugins/report_uReport.xml.in.h:9
 msgid "Contact email address"
-msgstr ""
+msgstr "İletişim için e-posta adresi"
 
 #: ../src/plugins/report_uReport.xml.in.h:10
 msgid ""
 "Email address that can be used by ABRT server to inform you about news and "
 "updates"
 msgstr ""
+"ABRT sunucusu tarafından sizi haberler ve güncellemeler hakkında "
+"bilgilendirmek için kullanılabilecek e-posta adresi"
 
 #: ../src/plugins/watch_Bugzilla.xml.in.h:1
 msgid "Watch Bugzilla Bug"
-msgstr ""
+msgstr "Bugzilla Hatasını İzle"
 
 #: ../src/plugins/watch_Bugzilla.xml.in.h:2
 msgid "Adds your e-mail to CC List of Bugzilla bug"
-msgstr ""
+msgstr "E-posta adresinizi Bugzilla hatasının CC Listesine ekler"
 
 #: ../src/plugins/rhbz.c:382
 #, c-format
 msgid "Looks like corrupted xml response, because '%s' member is missing."
-msgstr "xml yanıtının çökmesine benziyor, çünkü '%s' eksik."
+msgstr "Bozuk XML yanıtına benziyor, çünkü '%s' üyesi eksik."
 
 #: ../src/plugins/rhbz.c:470
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
-msgstr ""
+msgstr "%i hatası kapatıldı (CLOSED), ama çözümü (RESOLUTION) yok"
 
 #: ../src/plugins/rhbz.c:478
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
-msgstr "%i hatası DUPLICATE olarak kapatıldı (CLOSED), fakat DUP_ID'si yok"
+msgstr ""
+"%i hatası yinelenen (DUPLICATE) olarak kapatıldı (CLOSED), ama yinelenen "
+"kimliği (DUP_ID) yok"
 
 #: ../src/plugins/rhbz.c:583
 msgid ""
@@ -2512,6 +2739,9 @@ msgid ""
 "please see https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
 "tickets for more info"
 msgstr ""
+"Özel bir bilet oluşturulması istendi, ancak grup belirtilmedi, daha fazla "
+"bilgi için lütfen https://github.com/abrt/abrt/wiki/FAQ#creating-private-"
+"bugzilla-tickets adresine bakın"
 
 #: ../src/plugins/rhbz.c:604
 #, c-format
@@ -2525,151 +2755,154 @@ msgstr "Bugzilla %d hatasının üst hatasını bulamadı"
 
 #: ../src/plugins/rhbz.c:873
 msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
-msgstr ""
+msgstr "Bug.search(quicksearch) dönüş değeri, 'bugs' üyesini içermiyor"
 
 #: ../src/plugins/mantisbt.c:123
 #, c-format
 msgid "MantisBT couldn't find parent of issue %d"
-msgstr ""
+msgstr "MantisBT %d sorununun üst sorununu bulamadı"
 
 #: ../src/plugins/mantisbt.c:180
 msgid "SOAP: Failed to get child element because of no parent."
-msgstr ""
+msgstr "SOAP: Üst eleman olmadığı için alt eleman alınamadı."
 
 #: ../src/plugins/mantisbt.c:189
 msgid "SOAP: Failed to get next element because of no node."
-msgstr ""
+msgstr "SOAP: Düğüm olmadığı için sonraki eleman alınamadı."
 
 #: ../src/plugins/mantisbt.c:198
 msgid "SOAP: Failed to get child node because of no parent."
-msgstr ""
+msgstr "SOAP: Üst düğüm olmadığı için alt düğüm alınamadı."
 
 #: ../src/plugins/mantisbt.c:219
 msgid "SOAP: Failed to parse xml during creating request."
-msgstr ""
+msgstr "SOAP: İstek oluşturulurken XML ayrıştırılamadı."
 
 #: ../src/plugins/mantisbt.c:227
 msgid "SOAP: Failed to get xml root element."
-msgstr ""
+msgstr "SOAP: XML kök elemanı alınamadı."
 
 #: ../src/plugins/mantisbt.c:240
 msgid ""
 "SOAP: Failed to add a new child node because of no node or no child name."
 msgstr ""
+"SOAP: Düğüm veya alt düğüm adı olmadığından yeni bir alt düğüm eklenemedi."
 
 #: ../src/plugins/mantisbt.c:245
 msgid "SOAP: Failed to create a new xml child item."
-msgstr ""
+msgstr "SOAP: Yeni bir XML alt ögesi oluşturulamadı."
 
 #: ../src/plugins/mantisbt.c:250
 msgid "SOAP: Failed to create a new property."
-msgstr ""
+msgstr "SOAP: Yeni bir özellik oluşturulamadı."
 
 #: ../src/plugins/mantisbt.c:260
 msgid "SOAP: Failed to add method parametr."
-msgstr ""
+msgstr "SOAP: Yöntem parametresi eklenemedi."
 
 #: ../src/plugins/mantisbt.c:289
 msgid "SOAP: Failed to add new issue parametrs."
-msgstr ""
+msgstr "SOAP: Yeni sorun parametreleri eklenemedi."
 
 #: ../src/plugins/mantisbt.c:292
 msgid ""
 "SOAP: Failed to add new issue parameters because the required items are "
 "missing."
 msgstr ""
+"SOAP: Gerekli ögeler eksik olduğu için yeni sorun parametreleri eklenemedi."
 
 #: ../src/plugins/mantisbt.c:336
 msgid "SOAP: Failed to create a new property in custom fields."
-msgstr ""
+msgstr "SOAP: Özel alanlarda yeni bir özellik oluşturulamadı."
 
 #: ../src/plugins/mantisbt.c:354
 msgid ""
 "SOAP: Failed to create SOAP string because of invalid function arguments."
 msgstr ""
+"SOAP: Geçersiz işlev parametreleri nedeniyle SOAP dizgesi oluşturulamadı."
 
 #: ../src/plugins/mantisbt.c:361
 msgid "SOAP: Failed to dump xml node."
-msgstr ""
+msgstr "SOAP: XML düğümü dökülemedi."
 
 #: ../src/plugins/mantisbt.c:375
 msgid "SOAP: Failed to print SOAP string."
-msgstr ""
+msgstr "SOAP: SOAP dizgesi yazdırılamadı."
 
 #: ../src/plugins/mantisbt.c:382
 msgid "Failed to dump xml node."
-msgstr ""
+msgstr "XML düğümü dökülemedi."
 
 #: ../src/plugins/mantisbt.c:458
 msgid "SOAP: Failed to parse xml (searching value at depth by name)."
-msgstr ""
+msgstr "SOAP: XML ayrıştırılamadı (ada göre derinlemesine arama)."
 
 #: ../src/plugins/mantisbt.c:462 ../src/plugins/mantisbt.c:505
 #: ../src/plugins/mantisbt.c:534
 msgid "SOAP: Failed to create xml text reader."
-msgstr ""
+msgstr "SOAP: XML metin okuyucu oluşturulamadı."
 
 #: ../src/plugins/mantisbt.c:501
 msgid "SOAP: Failed to parse xml."
-msgstr ""
+msgstr "SOAP: XML ayrıştırılamadı."
 
 #: ../src/plugins/mantisbt.c:530
 msgid "SOAP: Failed to parse xml (get related to issue)."
-msgstr ""
+msgstr "SOAP: XML ayrıştırılamadı (ilgili sorunun alınması)."
 
 #: ../src/plugins/mantisbt.c:647
 msgid "Url or request isn't specified."
-msgstr ""
+msgstr "Url veya istek belirtilmedi."
 
 #: ../src/plugins/mantisbt.c:675
 #, c-format
 msgid "Error in HTTP POST, HTTP code: 404 (Not found), URL:'%s'"
-msgstr ""
+msgstr "HTTP POST hatası, HTTP kodu: 404 (Bulunamadı), URL:'%s'"
 
 #: ../src/plugins/mantisbt.c:699
 #, c-format
 msgid "Error in MantisBT request at '%s': %s"
-msgstr ""
+msgstr "'%s' adresinde MantisBT isteği hatası: %s"
 
 #: ../src/plugins/mantisbt.c:701
 #, c-format
 msgid "Error in MantisBT request at '%s'"
-msgstr ""
+msgstr "'%s' adresinde MantisBT isteği hatası"
 
 #: ../src/plugins/mantisbt.c:743
 #, c-format
 msgid "Failed to attach file: '%s'"
-msgstr ""
+msgstr "Dosya eklenemedi: '%s'"
 
 #: ../src/plugins/mantisbt.c:762
 #, c-format
 msgid "Can't lseek '%s'"
-msgstr ""
+msgstr "'%s' için lseek yapılamıyor"
 
 #: ../src/plugins/mantisbt.c:768
 #, c-format
 msgid "Can't upload '%s', it's too large (%llu bytes)"
-msgstr ""
+msgstr "'%s' karşıya yüklenemiyor, çok büyük (%llu bayt)"
 
 #: ../src/plugins/mantisbt.c:778
 #, c-format
 msgid "Can't read '%s'"
-msgstr ""
+msgstr "'%s' okunamıyor"
 
 #: ../src/plugins/mantisbt.c:794
 #, c-format
 msgid "Can't open '%s'"
-msgstr ""
+msgstr "'%s' açılamıyor"
 
 #: ../src/plugins/mantisbt.c:861
 #, c-format
 msgid "Failed to search MantisBT issue by duphash: '%s'"
-msgstr ""
+msgstr "MantisBT sorunu duphash değerine göre aranamadı: '%s'"
 
 #: ../src/plugins/mantisbt.c:906
 #, c-format
 msgid "Failed to search MantisBT duplicate issue: '%s'"
-msgstr ""
+msgstr "Yinelenen MantisBT sorunu aranamadı: '%s'"
 
 #: ../src/plugins/mantisbt.c:934
 #, c-format
@@ -2677,26 +2910,28 @@ msgid ""
 "MantisBT doesn't contain custom field '%s', which is required for full "
 "functionality of the reporter. Do you still want to create a new issue?"
 msgstr ""
+"MantisBT, bildiricinin tam işlevselliği için gerekli olan '%s' özel alanını "
+"içermiyor. Yine de yeni bir sorun oluşturmak istiyor musunuz?"
 
 #: ../src/plugins/mantisbt.c:958
 #, c-format
 msgid "Failed to get custom fields for '%s' project"
-msgstr ""
+msgstr "'%s' projesi için özel alanlar alınamadı"
 
 #: ../src/plugins/mantisbt.c:1002
 #, c-format
 msgid "Failed to create a new issue: '%s'"
-msgstr ""
+msgstr "Yeni bir sorun oluşturulamadı: '%s'"
 
 #: ../src/plugins/mantisbt.c:1028
 #, c-format
 msgid "Failed to get MantisBT issue: '%s'"
-msgstr ""
+msgstr "MantisBT sorunu alınamadı: '%s'"
 
 #: ../src/plugins/mantisbt.c:1042
 #, c-format
 msgid "Issue %i is CLOSED, but it has no RESOLUTION"
-msgstr ""
+msgstr "%i sorunu kapatıldı (CLOSED), ama çözümü (RESOLUTION) yok"
 
 #: ../src/plugins/mantisbt.c:1050
 #, c-format
@@ -2707,19 +2942,19 @@ msgstr ""
 #: ../src/plugins/mantisbt.c:1087
 #, c-format
 msgid "Failed to add MantisBT issue note: '%s'"
-msgstr ""
+msgstr "MantisBT sorun notu eklenemedi: '%s'"
 
 #: ../src/plugins/mantisbt.c:1101
 msgid "The MantisBT project has not been deretmined."
-msgstr ""
+msgstr "MantisBT projesi belirlenmedi."
 
 #: ../src/plugins/mantisbt.c:1113
 msgid "Failed to get project id from name"
-msgstr ""
+msgstr "İsimden proje kimliği alınamadı"
 
 #: ../src/plugins/reporter-ureport.c:75
 msgid "Specify server URL"
-msgstr ""
+msgstr "Sunucu URL'sini belirt"
 
 #: ../src/plugins/reporter-ureport.c:77
 msgid "Allow insecure connection to ureport server"
@@ -2727,71 +2962,78 @@ msgstr "Ureport sunucusuna güvenli olmayan bağlantıya izin ver"
 
 #: ../src/plugins/reporter-ureport.c:78
 msgid "Use client authentication"
-msgstr ""
+msgstr "İstemci kimlik doğrulamasını kullan"
 
 #: ../src/plugins/reporter-ureport.c:79
 msgid "Use HTTP Authentication"
-msgstr ""
+msgstr "HTTP kimlik doğrulamasını kullan"
 
 #: ../src/plugins/reporter-ureport.c:80
 msgid "Additional files included in 'auth' key"
-msgstr ""
+msgstr "'auth' anahtarında bulunan ek dosyalar"
 
 #: ../src/plugins/reporter-ureport.c:83
 msgid "bthash of uReport to attach (conflicts with -A)"
-msgstr ""
+msgstr "eklenecek uReport'un bthash değeri (-A ile çakışır)"
 
 #: ../src/plugins/reporter-ureport.c:85
 msgid "attach to a bthash from reported_to (conflicts with -a)"
-msgstr ""
+msgstr "reported_to'dan bir bthash değerine ekle (-a ile çakışır)"
 
 #: ../src/plugins/reporter-ureport.c:87
 msgid "contact e-mail address (requires -a|-A, conflicts with -E)"
-msgstr ""
+msgstr "iletişim için e-posta adresi (-a|-A gerektirir, -E ile çakışır)"
 
 #: ../src/plugins/reporter-ureport.c:89
 msgid ""
 "contact e-mail address from environment or configuration file (requires -a|-"
 "A, conflicts with -e)"
 msgstr ""
+"ortam veya yapılandırma dosyasından iletişim için e-posta adresi (-a|-A "
+"gerektirir, -e ile çakışır)"
 
 #: ../src/plugins/reporter-ureport.c:91
 msgid "attach RHBZ bug (requires -a|-A, conflicts with -B)"
-msgstr ""
+msgstr "RHBZ hatası ekle (-a|-A gerektirir, -B ile çakışır)"
 
 #: ../src/plugins/reporter-ureport.c:93
 msgid ""
 "attach last RHBZ bug from reported_to (requires -a|-A, conflicts with -b)"
 msgstr ""
+"reported_to'dan son RHBZ hatasını ekle (-a|-A gerektirir, -b ile çakışır)"
 
 #: ../src/plugins/reporter-ureport.c:95
 msgid "attach short text (requires -a|-A, conflicts with -D)"
-msgstr ""
+msgstr "kısa metin ekle (-a|-A gerektirir, -D ile çakışır)"
 
 #: ../src/plugins/reporter-ureport.c:97
 msgid "attach short text from comment (requires -a|-A, conflicts with -d)"
-msgstr ""
+msgstr "yorumdan kısa metin ekle (-a|-A gerektirir, -d ile çakışır)"
 
 #: ../src/plugins/reporter-ureport.c:101
 msgid "attach value (requires -a|-A and -T, conflicts with -L)"
-msgstr ""
+msgstr "değer ekle (-a|-A ve -T gerektirir, -L ile çakışır)"
 
 #: ../src/plugins/reporter-ureport.c:103
 msgid ""
 "attach data of FIELD [URL] of the last report result (requires -a|-A, -r and "
 "-T, conflicts with -l)"
 msgstr ""
+"son bildirim sonucunun ALAN [URL] verilerini ekle (-a|-A, -r ve -T "
+"gerektirir, -l ile çakışır)"
 
 #: ../src/plugins/reporter-ureport.c:106
 msgid ""
 "use REPORT_RESULT_TYPE when looking for FIELD in reported_to (used only with "
 "-L)"
 msgstr ""
+"report_to içinde ALAN ararken BİLDİRİM_SONUÇ_TÜRÜ kullan (sadece -L ile "
+"kullanılır)"
 
 #: ../src/plugins/reporter-ureport.c:108
 msgid ""
 "attach DATA as ureport attachment ATTACHMENT_TYPE (used only with -l|-L)"
-msgstr ""
+msgstr "EK_TÜRÜ ureport eki olarak VERİLERi ekle (sadece -l|-L ile kullanılır)"
 
 #: ../src/plugins/reporter-ureport.c:113
 msgid ""
@@ -2807,64 +3049,79 @@ msgid ""
 "\n"
 "Reads the default configuration from "
 msgstr ""
+"& [-v] [-c DOSYA] [-u URL] [-k] [-t KAYNAK] [-h KİMLİK_BİLGİLERİ]\n"
+"  [-A -a bthash -B -b hata-kimliği -E -e e-posta -O -o yorum] [-d DİZİN]\n"
+"  [-A -a bthash -T EK_TÜRÜ -r BİLDİRİM_SONUÇ_TÜRÜ -L SONUÇ_ALANI] [-d DİZİN]"
+"\n"
+"  [-A -a bthash -T EK_TÜRÜ -l VERİLER] [-d DİZİN]\n"
+"& [-v] [-c DOSYA] [-u URL] [-k] [-t KAYNAK] [-h KİMLİK_BİLGİLERİ] [-i "
+"AUTH_ÖGELERİ] [-d DİZİN]\n"
+"\n"
+"Mikro bildirimi karşıya yükle veya mikro bildirime bir ek ekle\n"
+"\n"
+"Öntanımlı yapılandırma şuradan okunur: "
 
 #: ../src/plugins/reporter-ureport.c:191
 msgid "This problem does not have an uReport assigned."
-msgstr ""
+msgstr "Bu soruna atanmış bir uReport yok."
 
 #: ../src/plugins/reporter-ureport.c:212
 msgid "This problem has not been reported to Bugzilla."
-msgstr ""
+msgstr "Bu sorun Bugzilla'ya bildirilmedi."
 
 #: ../src/plugins/reporter-ureport.c:218
 #, c-format
 msgid "Unable to find bug ID in bugzilla URL '%s'"
-msgstr ""
+msgstr "'%s' Bugzilla URL'sinde hata kimliği bulunamadı"
 
 #: ../src/plugins/reporter-ureport.c:223
 #, c-format
 msgid "Unable to parse bug ID from bugzilla URL '%s'"
-msgstr ""
+msgstr "'%s' Bugzilla URL'sinden hata kimliği ayrıştırılamadı"
 
 #: ../src/plugins/reporter-ureport.c:230
 msgid "Cannot attach comment from 'comment' file"
-msgstr ""
+msgstr "'comment' dosyasından yorum eklenemiyor"
 
 #: ../src/plugins/reporter-ureport.c:232
 msgid "'comment' file is empty"
-msgstr ""
+msgstr "'comment' dosyası boş"
 
 #: ../src/plugins/reporter-ureport.c:243
 #, c-format
 msgid "This problem has not been reported to '%s'."
-msgstr ""
+msgstr "Bu sorun '%s' olarak bildirilmedi."
 
 #: ../src/plugins/reporter-ureport.c:251
 #, c-format
 msgid "The report result '%s' is missing URL."
-msgstr ""
+msgstr "'%s' bildirim sonucunun URL'si eksik."
 
 #: ../src/plugins/reporter-ureport.c:267
 msgid ""
 "Neither environment variable 'uReport_ContactEmail' nor configuration option "
 "'ContactEmail' is set"
 msgstr ""
+"'uReport_ContactEmail' ortam değişkeni ve 'ContactEmail' yapılandırma "
+"seçeneğinin her ikisi de ayarlanmadı"
 
 #: ../src/plugins/reporter-ureport.c:273
 msgid "You need to specify bug ID, contact email, comment or all of them"
 msgstr ""
+"Hata kimliği, iletişim için e-posta adresi, yorum veya hepsini belirtmeniz "
+"gerekmektedir"
 
 #: ../src/plugins/reporter-ureport.c:303
 msgid "You need to specify bthash of the uReport to attach."
-msgstr ""
+msgstr "Eklenecek uReport'un bthash değerini belirtmeniz gerekmektedir."
 
 #: ../src/plugins/reporter-ureport.c:332
 msgid "This problem has already been reported."
-msgstr ""
+msgstr "Bu sorun daha önce bildirildi."
 
 #: ../src/report-newt/report-newt.c:55
 msgid "How would you like to report the problem?"
-msgstr "Problemi nasıl raporlamak istersiniz?"
+msgstr "Sorunu nasıl bildirmek istersiniz?"
 
 #: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:145
 #: ../src/report-newt/report-newt.c:168 ../src/report-newt/report-newt.c:258
@@ -2882,7 +3139,7 @@ msgstr "Hata"
 
 #: ../src/report-newt/report-newt.c:255
 msgid "Reporting"
-msgstr "Raporlama"
+msgstr "Bildirme"
 
 #: ../src/report-newt/report-newt.c:275
 #, c-format
@@ -2891,7 +3148,7 @@ msgstr "--- Çalışma %s ---"
 
 #: ../src/report-newt/report-newt.c:356
 msgid "No reporters available"
-msgstr "Uygun raporlayıcı yok"
+msgstr "Kullanılabilir bildirici yok"
 
 #: ../src/report-newt/report-newt.c:386
 msgid ""
@@ -2899,75 +3156,78 @@ msgid ""
 "\n"
 "newt tool to report problem saved in specified DIR"
 msgstr ""
+"& [-d] DİZİN\n"
+"\n"
+"Belirtilen DİZİNde kaydedilen sorunu bildirmek için newt aracı"
 
 #: ../src/report-newt/report-newt.c:396
 msgid "Remove DIR after reporting"
-msgstr "Raporlamadan sonra DIR ı kaldır"
+msgstr "Bildirdikten sonra DIR dizinini kaldır"
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:1
 msgid "Report a bug to Fedora maintainers"
-msgstr ""
+msgstr "Fedora geliştiricilerine bir hata bildir"
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:2
 msgid "Process the report using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora altyapısını kullanarak bildirimi işle"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:1
 msgid "Report a bug to Red Hat Customer Portal"
-msgstr ""
+msgstr "Red Hat Müşteri Portalına bir hata bildir"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:2
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:2
 msgid "Process the report using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat altyapısını kullanarak bildirimi işle"
 
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:1
 msgid "Report a bug to Red Hat Bugzilla"
-msgstr ""
+msgstr "Red Hat Bugzilla'ya bir hata bildir"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
 msgid "Export the problem data for manual reporting"
-msgstr ""
+msgstr "Elle bildirme için sorun verilerini dışa aktar"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:2
 msgid "Upload the data via scp or ftp to a remote destination"
-msgstr ""
+msgstr "Verileri scp veya ftp ile uzak bir hedefe yükle"
 
 #: ../src/workflows/workflow_CentOSCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the CentOS infrastructure"
-msgstr ""
+msgstr "CentOS altyapısını kullanarak C/C++ çökmesini işle"
 
 #: ../src/workflows/workflow_CentOSJava.xml.in.h:2
 msgid "Process the Java exception using the CentOS infrastructure"
-msgstr ""
+msgstr "CentOS altyapısını kullanarak Java istisnasını işle"
 
 #: ../src/workflows/workflow_CentOSJavaScript.xml.in.h:2
 msgid "Process the JavaScript exception using the CentOS infrastructure"
-msgstr ""
+msgstr "CentOS altyapısını kullanarak JavaScript istisnasını işle"
 
 #: ../src/workflows/workflow_CentOSKerneloops.xml.in.h:2
 msgid "Process the kerneloops using the CentOS infrastructure"
-msgstr ""
+msgstr "CentOS altyapısını kullanarak çekirdek oops'larını işle"
 
 #: ../src/workflows/workflow_CentOSLibreport.xml.in.h:2
 msgid "Process the problem using the CentOS infrastructure"
-msgstr ""
+msgstr "CentOS altyapısını kullanarak sorunu işle"
 
 #: ../src/workflows/workflow_CentOSPython.xml.in.h:2
 msgid "Process the python exception using the CentOS infrastructure"
-msgstr ""
+msgstr "CentOS altyapısını kullanarak python istisnasını işle"
 
 #: ../src/workflows/workflow_CentOSPython3.xml.in.h:2
 msgid "Process the python 3 exception using the CentOS infrastructure"
-msgstr ""
+msgstr "CentOS altyapısını kullanarak python 3 istisnasını işle"
 
 #: ../src/workflows/workflow_CentOSVmcore.xml.in.h:2
 msgid "Process the kernel crash using the CentOS infrastructure"
-msgstr ""
+msgstr "CentOS altyapısını kullanarak çekirdek çökmesini işle"
 
 #: ../src/workflows/workflow_CentOSXorg.xml.in.h:2
 msgid "Process the X Server problem using the CentOS infrastructure"
-msgstr ""
+msgstr "CentOS altyapısını kullanarak X Sunucusu sorununu işle"
 
 #: ../src/workflows/workflow_FedoraCCpp.xml.in.h:1
 #: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:1
@@ -2979,48 +3239,48 @@ msgstr ""
 #: ../src/workflows/workflow_FedoraJava.xml.in.h:1
 #: ../src/workflows/workflow_FedoraJavaScript.xml.in.h:1
 msgid "Report to Fedora"
-msgstr ""
+msgstr "Fedora'ya bildir"
 
 #: ../src/workflows/workflow_FedoraCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora altyapısını kullanarak C/C++ çökmesini işle"
 
 #: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:2
 msgid "Process the kerneloops using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora altyapısını kullanarak çekirdek oops'larını işle"
 
 #: ../src/workflows/workflow_FedoraPython.xml.in.h:2
 msgid "Process the python exception using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora altyapısını kullanarak python istisnasını işle"
 
 #: ../src/workflows/workflow_FedoraPython3.xml.in.h:2
 msgid "Process the python 3 exception using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora altyapısını kullanarak python 3 istisnasını işle"
 
 #: ../src/workflows/workflow_FedoraVmcore.xml.in.h:2
 msgid "Process the kernel crash using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora altyapısını kullanarak çekirdek çökmesini işle"
 
 #: ../src/workflows/workflow_FedoraXorg.xml.in.h:2
 msgid "Process the X Server problem using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora altyapısını kullanarak X Sunucusu sorununu işle"
 
 #: ../src/workflows/workflow_FedoraLibreport.xml.in.h:2
 msgid "Process the problem using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora altyapısını kullanarak sorunu işle"
 
 #: ../src/workflows/workflow_FedoraJava.xml.in.h:2
 msgid "Process the Java exception using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora altyapısını kullanarak Java istisnasını işle"
 
 #: ../src/workflows/workflow_FedoraJavaScript.xml.in.h:2
 msgid "Process the JavaScript exception using the Fedora infrastructure"
-msgstr ""
+msgstr "Fedora altyapısını kullanarak JavaScript istisnasını işle"
 
 #: ../src/workflows/workflow_LoggerCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Logger.xml.in.h:1
 msgid "Export the problem data information to a text file"
-msgstr ""
+msgstr "Sorun verileri bilgilerini bir metin dosyasına aktar"
 
 #: ../src/workflows/workflow_LoggerCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Logger.xml.in.h:2
@@ -3028,36 +3288,40 @@ msgid ""
 "Analyze the problem locally and export the problem data information to a "
 "text file"
 msgstr ""
+"Sorunu yerel olarak incele ve sorun verileri bilgilerini bir metin dosyasına "
+"aktar"
 
 #: ../src/workflows/workflow_MailxCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Mailx.xml.in.h:1
 msgid "Send the problem data via email"
-msgstr ""
+msgstr "Sorun verilerini e-posta ile gönder"
 
 #: ../src/workflows/workflow_MailxCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Mailx.xml.in.h:2
 msgid "Analyze the problem locally and send information via email"
-msgstr ""
+msgstr "Sorunu yerel olarak incele ve bilgileri e-posta ile gönder"
 
 #: ../src/workflows/workflow_UploadCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Upload.xml.in.h:1
 msgid "Upload the problem data to a server"
-msgstr ""
+msgstr "Sorun verilerini bir sunucuya yükle"
 
 #: ../src/workflows/workflow_UploadCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Upload.xml.in.h:2
 msgid "Analyze the problem locally and upload the data via scp or ftp"
-msgstr ""
+msgstr "Sorunu yerel olarak incele ve verileri scp veya ftp ile karşıya yükle"
 
 #: ../src/workflows/workflow_uReport.xml.in.h:1
 msgid "Submit anonymous crash report"
-msgstr ""
+msgstr "Anonim çökme bildirimi gönder"
 
 #: ../src/workflows/workflow_uReport.xml.in.h:2
 msgid ""
 "Submit anonymous crash report - I do not want to be contacted by Red Hat "
 "Support"
 msgstr ""
+"Anonim çökme bildirimi gönder - Red Hat Support ile iletişime geçmek "
+"istemiyorum"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1
@@ -3068,7 +3332,7 @@ msgstr ""
 #: ../src/workflows/workflow_RHELJava.xml.in.h:1
 #: ../src/workflows/workflow_RHELJavaScript.xml.in.h:1
 msgid "Ask Red Hat Support for help"
-msgstr ""
+msgstr "Red Hat Support'tan yardım iste"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:2
@@ -3082,6 +3346,8 @@ msgid ""
 "Create new Red Hat Support case - I would like to be contacted by Red Hat "
 "Support"
 msgstr ""
+"Yeni Red Hat Support talebi oluştur - Red Hat Support ile iletişime geçmek "
+"istiyorum"
 
 #: ../src/workflows/workflow_RHELAddDataCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELAddDataJava.xml.in.h:1
@@ -3092,7 +3358,7 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:1
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:1
 msgid "Attach crash data to an existing Red Hat support case"
-msgstr ""
+msgstr "Çökme verilerini var olan bir Red Hat destek talebine ekle"
 
 #: ../src/workflows/workflow_RHELAddDataCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJava.xml.in.h:2
@@ -3103,7 +3369,7 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:2
 msgid "Provide Red Hat Support with crash details"
-msgstr ""
+msgstr "Red Hat Support'a çökme ayrıntılarını sağla"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
@@ -3114,39 +3380,39 @@ msgstr ""
 #: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaJavaScript.xml.in.h:1
 msgid "Report to Red Hat Bugzilla"
-msgstr ""
+msgstr "Red Hat Bugzilla'ya bildir"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat altyapısını kullanarak C/C++ çökmesini işle"
 
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:2
 msgid "Process the kerneloops using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat altyapısını kullanarak çekirdek oops'larını işle"
 
 #: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:2
 msgid "Process the python exception using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat altyapısını kullanarak python istisnasını işle"
 
 #: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:2
 msgid "Process the kernel crash using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat altyapısını kullanarak çekirdek çökmesini işle"
 
 #: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:2
 msgid "Process the X Server problem using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat altyapısını kullanarak X Sunucusu sorununu işle"
 
 #: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:2
 msgid "Process the problem using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat altyapısını kullanarak sorunu işle"
 
 #: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
 msgid "Process the Java exception using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat altyapısını kullanarak Java istisnasını işle"
 
 #: ../src/workflows/workflow_RHELBugzillaJavaScript.xml.in.h:2
 msgid "Process the JavaScript exception using the Red Hat infrastructure"
-msgstr ""
+msgstr "Red Hat altyapısını kullanarak JavaScript istisnasını işle"
 
 #~ msgid "Alternate GUI file"
 #~ msgstr "Öteki GUI dosyası"
