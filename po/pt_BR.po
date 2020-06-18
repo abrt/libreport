@@ -16,21 +16,22 @@
 # Daniel Lara <danniel@fedoraproject.org>, 2017. #zanata
 # Julius Milan <jmilan@redhat.com>, 2017. #zanata
 # Rafael Fontenelle <rafaelff@gnome.org>, 2020.
+# Fábio Rodrigues Ribeiro <farribeiro@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2020-01-17 03:16+0000\n"
-"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
-"Language-Team: Portuguese (Brazil) <https://translate.stg.fedoraproject.org/"
+"PO-Revision-Date: 2020-06-17 19:40+0000\n"
+"Last-Translator: Fábio Rodrigues Ribeiro <farribeiro@gmail.com>\n"
+"Language-Team: Portuguese (Brazil) <https://translate.fedoraproject.org/"
 "projects/abrt/libreport/pt_BR/>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.10.1\n"
+"X-Generator: Weblate 4.0.4\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -633,8 +634,9 @@ msgid "Processing finished, please proceed to the next step."
 msgstr "Processamento finalizado, por favor proceda à próxima etapa."
 
 #: ../src/gui-wizard-gtk/wizard.c:1770
+#, fuzzy
 msgid "No commands could be found for processsing the crashdump.\n"
-msgstr ""
+msgstr "Nenhum comando foi encontrado para processar o despejo de memória.\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1785
 msgid "Processing interrupted: can't continue without writable directory."
@@ -1510,10 +1512,9 @@ msgid "Logging into Bugzilla at %s"
 msgstr "Autenticando-se no Bugzilla no %s"
 
 #: ../src/plugins/reporter-bugzilla.c:223
-#, fuzzy, c-format
-#| msgid "Invalid password or login. Please enter your Red Hat login:"
+#, c-format
 msgid "Invalid password or login. Please enter your %s login:"
-msgstr "Usuário ou senha inválidos. Por favor digite seu login Red Hat:"
+msgstr "Usuário ou senha inválidos. Por favor digite seu login %s:"
 
 #: ../src/plugins/reporter-bugzilla.c:228
 #: ../src/plugins/reporter-rhtsupport.c:411
@@ -1686,13 +1687,10 @@ msgid "Using default product '%s'"
 msgstr "Utilizando produto padrão '%s'"
 
 #: ../src/plugins/reporter-bugzilla.c:468
-#, fuzzy, c-format
-#| msgid ""
-#| "Login is not provided by configuration. Please enter your RHTS login:"
+#, c-format
 msgid "Login is not provided by configuration. Please enter your %s login:"
 msgstr ""
-"O login não é fornecido pela configuração. Por favor digite seu login do "
-"BHTS:"
+"O login não é fornecido pela configuração. Por favor digite seu login do %s:"
 
 #: ../src/plugins/reporter-bugzilla.c:476
 #: ../src/plugins/reporter-rhtsupport.c:597
@@ -1746,7 +1744,7 @@ msgid ""
 "This problem was already reported to Bugzilla (see '%s'). Do you still want "
 "to create a new bug?"
 msgstr ""
-"Este problema já foi relatado ao MantisBT (consulte '%s'). Você ainda quer "
+"Este problema já foi relatado ao Bugzilla (consulte '%s'). Você ainda quer "
 "criar um novo problema?"
 
 #: ../src/plugins/reporter-bugzilla.c:609
@@ -2042,12 +2040,15 @@ msgstr ""
 "BHTS:"
 
 #: ../src/plugins/reporter-rhtsupport.c:647
-#, c-format
+#, c-format, fuzzy
 msgid ""
 "We found a similar Red Hat support case %s. Do you want to attach the data "
 "to the case? Otherwise, you will have to enter the existing Red Hat support "
 "case number."
 msgstr ""
+"Encontramos um caso de suporte %s semelhante da Red Hat. Deseja anexar os "
+"dados ao caso? Caso contrário, você terá que inserir o número do caso de "
+"suporte existente da Red Hat."
 
 #: ../src/plugins/reporter-rhtsupport.c:676
 #, c-format
@@ -2630,7 +2631,7 @@ msgstr "Endereço"
 
 #: ../src/plugins/report_RHTSupport_AddData.xml.in.h:2
 msgid "Attach the data to existing Red Hat support case"
-msgstr ""
+msgstr "Anexe os dados ao caso de suporte existente da Red Hat"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report Uploader"
@@ -2718,11 +2719,11 @@ msgstr "Adiciona seu login Bugzilla para CC Lista de bugs já relatados."
 
 #: ../src/plugins/report_uReport.xml.in.h:7
 msgid "Report unpackaged problems"
-msgstr ""
+msgstr "Relatar problemas não empacotados"
 
 #: ../src/plugins/report_uReport.xml.in.h:8
 msgid "Report problems coming from unpackaged executables."
-msgstr ""
+msgstr "Relatar problemas provenientes de executáveis descompactados."
 
 #: ../src/plugins/report_uReport.xml.in.h:9
 msgid "Contact email address"
@@ -3390,7 +3391,7 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:1
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:1
 msgid "Attach crash data to an existing Red Hat support case"
-msgstr ""
+msgstr "Anexe dados de falha a um caso de suporte existente da Red Hat"
 
 #: ../src/workflows/workflow_RHELAddDataCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJava.xml.in.h:2
