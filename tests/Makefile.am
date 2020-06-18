@@ -66,8 +66,11 @@ TESTSUITE_AT = \
   forbidden_words.at \
   client.at
 
-TESTSUITE_AT_IN = \
-  bugzilla_plugin.at
+TESTSUITE_AT_IN =
+
+if BUILD_BUGZILLA
+TESTSUITE_AT_IN += bugzilla_plugin.at
+endif
 
 EXTRA_DIST += $(TESTSUITE_AT)
 TESTSUITE = $(srcdir)/testsuite

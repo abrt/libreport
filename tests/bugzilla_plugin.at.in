@@ -6,7 +6,7 @@ AT_BANNER([Bugzilla])
 ## report_Bugzilla_xml ##
 ## ------------------- ##
 
-AT_TESTFUN([report_Bugzilla_xml],
+AT_TESTFUN_COND([report_Bugzilla_xml],
 [[
 #include "testsuite.h"
 
@@ -109,4 +109,5 @@ TS_MAIN
     free_event_config(conf);
 }
 TS_RETURN_MAIN
-]])
+]],
+[test "x$BUILD_BUGZILLA" != 'xyes'])
