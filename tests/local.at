@@ -25,6 +25,15 @@ AT_COMPILE([$1])
 AT_CHECK([$PRE_AT_CHECK ./$1], 0, [ignore], [ignore])
 AT_CLEANUP])
 
+m4_define([AT_TESTFUN_COND],
+[AT_SETUP([$1])
+AT_SKIP_IF([$3])
+AT_DATA([$1.c], [[#line] __line__ "__file__"
+$2])
+AT_COMPILE([$1])
+AT_CHECK([$PRE_AT_CHECK ./$1], 0, [ignore], [ignore])
+AT_CLEANUP])
+
 # ------------------------
 # AT_PYTESTFUN(NAME, SOURCE)
 # ------------------------

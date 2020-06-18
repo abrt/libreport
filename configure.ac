@@ -7,10 +7,13 @@ AC_DEFUN([LIBREPORT_PARSE_WITH],
     [m4_pushdef([LIBREPORT_UC_PACKAGE], m4_toupper([$1]))dnl
     if test "$withval" = "no"; then
         NO_[]LIBREPORT_UC_PACKAGE=YesPlease
+        BUILD_[]LIBREPORT_UC_PACKAGE=
     elif test "$withval" = "yes"; then
         NO_[]LIBREPORT_UC_PACKAGE=
+        BUILD_[]LIBREPORT_UC_PACKAGE=yes
     else
         NO_[]LIBREPORT_UC_PACKAGE=
+        BUILD_[]LIBREPORT_UC_PACKAGE=yes
     fi
     m4_popdef([LIBREPORT_UC_PACKAGE])])
 
@@ -77,7 +80,9 @@ AC_PATH_PROG([XMLTO], [xmlto], [no])
 
 AC_ARG_WITH(bugzilla,
 AS_HELP_STRING([--with-bugzilla],[use Bugzilla plugin (default is YES)]),
+LIBREPORT_PARSE_WITH([bugzilla]),
 LIBREPORT_PARSE_WITH([bugzilla]))
+AC_SUBST([BUILD_BUGZILLA])
 
 if test -z "$NO_BUGZILLA"; then
 AM_CONDITIONAL(BUILD_BUGZILLA, true)
