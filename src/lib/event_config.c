@@ -234,6 +234,9 @@ static void load_config_files(const char *dir_path)
 /* (Re)loads data from /etc/abrt/events/foo.{xml,conf} and $XDG_CACHE_HOME/abrt/events/foo.conf */
 GHashTable *load_event_config_data(void)
 {
+    const char *user_cache_directory;
+    g_autofree char *cache_directory = NULL;
+
     free_event_config_data();
 
     if (!g_event_config_list)
@@ -280,10 +283,10 @@ GHashTable *load_event_config_data(void)
      */
     load_config_files(EVENTS_CONF_DIR);
 
-    g_autofree char *cachedir = NULL;
-    g_autofree char *user_cache_dir = (char*)g_get_user_cache_dir();
-    cachedir = g_build_filename(user_cache_dir ? user_cache_dir : "", "abrt/events", NULL);
-    load_config_files(cachedir);
+    user_cache_directory = g_get_user_cache_dir();
+    cache_directory = g_build_filename(user_cache_directory, "abrt", "events", NULL);
+
+    load_config_files(cache_directory);
 
     return g_event_config_list;
 }
