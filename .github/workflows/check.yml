@@ -1,0 +1,46 @@
+name: Build
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+jobs:
+  build:
+    name: Build
+    container: fedora:latest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out sources
+        uses: actions/checkout@v2
+
+      - name: Install build environment
+        run: |
+          dnf --assumeyes install dnf-plugins-core
+          dnf --assumeyes copr enable @abrt/devel
+          dnf --assumeyes install \
+            @c-development @development-tools @rpm-development-tools \
+            intltool
+
+      - name: Install build dependencies
+        run: ./autogen.sh sysdeps --install
+
+      - name: Set up build user
+        run: useradd builder
+
+      - name: Configure build
+        run: |
+          chown -R builder. .
+          sudo -u builder -- ./autogen.sh
+
+      - name: Build
+        run: sudo -u builder -- make --load-average=2
+
+      - name: Run tests
+        run: sudo -u builder -- make check
+
+      - name: Upload test log
+        uses: actions/upload-artifact@v2
+        with:
+          name: testsuite.log
+          path: tests/testsuite.log
+        if: ${{ failure() }}
