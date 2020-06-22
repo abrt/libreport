@@ -1,0 +1,354 @@
+# -*- Autotest -*-
+
+AT_BANNER([rhbz functions])
+
+## -------------- ##
+## rhbz_functions ##
+## -------------- ##
+
+AT_TESTFUN([rhbz_functions],
+[[
+
+#define PACKAGE_NAME "libreport"
+#define VERSION "1.0"
+
+#include "testsuite.h"
+#include "internal_libreport.h"
+#include "client.h"
+#include "abrt_xmlrpc.h"
+#include "rhbz.h"
+#include "proxies.c"
+#include "rhbz.c"
+#include "abrt_xmlrpc.c"
+#include <errno.h>
+#include <string.h>
+
+TS_MAIN
+{
+    pid_t pid = fork();
+
+    if (pid == 0)
+    {
+        int ret = 0;
+        const char *argv[] =
+        {
+            "../../mock_bugzilla_server/mock_bugzilla_server.py",
+            NULL
+        };
+        ret = execv((char *)argv[0], (char * const *)argv);
+        if (ret == -1)
+        {
+            printf("execv failed: %s\n", strerror(errno));
+        }
+    }
+    else if (pid > 0)
+    {
+        libreport_g_verbose = 3;
+        char cwd_buf[PATH_MAX + 1];
+
+        static const char *dirs[] = {
+            NULL,
+            NULL,
+        };
+        dirs[0] = getcwd(cwd_buf, sizeof(cwd_buf));
+
+        static int dir_flags[] = {
+            CONF_DIR_FLAG_NONE,
+            -1,
+        };
+
+        unlink("libreport.conf");
+        FILE *lrf = fopen("libreport.conf", "wx");
+        assert(lrf != NULL);
+        fprintf(lrf, "AlwaysExcludedElements = maps, var_log_messages, proc_pid_status");
+        fclose(lrf);
+
+        assert(libreport_load_global_configuration_from_dirs(dirs, dir_flags));
+
+        struct bugzilla_struct {
+            char *b_login;
+            char *b_password;
+            const char *b_bugzilla_url;
+            const char *b_bugzilla_xmlrpc;
+            char *b_product;
+            char *b_product_version;
+            const char *b_DontMatchComponents;
+            int         b_ssl_verify;
+            int         b_create_private;
+            GList       *b_private_groups;
+        };
+
+        int bug_id = 0;
+
+        sleep(3);
+
+        struct bugzilla_struct rhbz = { 0 };
+        rhbz.b_bugzilla_url = "http://localhost:8080/";
+        rhbz.b_bugzilla_xmlrpc = g_build_filename(rhbz.b_bugzilla_url, "xmlrpc.cgi", NULL);
+        rhbz.b_ssl_verify = FALSE;
+
+        xmlrpc_env env;
+        xmlrpc_env_init(&env);
+        if (env.fault_occurred)
+            printf("Error in env_init: %s\n", env.fault_string);
+        xmlrpc_client_setup_global_const(&env);
+        if (env.fault_occurred)
+            printf("Error in setup_global_const: %s\n", env.fault_string);
+
+        struct abrt_xmlrpc *client = abrt_xmlrpc_new_client(rhbz.b_bugzilla_xmlrpc, rhbz.b_ssl_verify);
+
+        {
+            TS_ASSERT_TRUE(rhbz_login(client, "captainnemo", "giantsquidsalad"));
+        }
+
+        {
+            g_autofree const char *product_description = NULL;
+            xmlrpc_value *result = abrt_xmlrpc_call_full(&env, client, "Product.get", "{s:(s)}",
+                                                         "names", "Fedora");
+            if (env.fault_occurred)
+                printf("Error calling Product.get: %s\n", env.fault_string);
+            xmlrpc_value *product_struct = NULL;
+            xmlrpc_decompose_value(&env, result, "{s:(S),*}", "products", &product_struct);
+            if (env.fault_occurred)
+                printf("Error calling xmlrpc_decompose: %s\n", env.fault_string);
+            product_description = rhbz_bug_read_item("description", product_struct, RHBZ_READ_STR);
+            TS_ASSERT_STRING_EQ(product_description, "bog standard OS", "Checking product description");
+            xmlrpc_DECREF(result);
+            xmlrpc_DECREF(product_struct);
+        }
+
+        {
+            problem_data_t *problem_data = create_problem_data_for_reporting("../../sample_problems/1");
+            bug_id = rhbz_new_bug(client,
+                problem_data, "Red Hat Enterprise Linux 8", "8.0",
+                "gdb doesn't work",
+                "It's been broken for ages",
+                rhbz.b_create_private,
+                rhbz.b_private_groups
+                );
+
+            TS_ASSERT_SIGNED_EQ(bug_id, 0);
+
+            const char *bt = problem_data_get_content_or_NULL(problem_data, "backtrace");
+            int ret = rhbz_attach_blob(client, "0", "backtrace", bt, strlen(bt), RHBZ_MINOR_UPDATE);
+            TS_ASSERT_SIGNED_EQ(ret, 0);
+            g_free((char *)bt);
+        }
+
+        {
+            problem_data_t *problem_data = create_problem_data_for_reporting("../../sample_problems/2");
+            bug_id = rhbz_new_bug(client,
+                problem_data, "Red Hat Enterprise Linux 8", "8.0",
+                "gdb doesn't work",
+                "It's been broken for ages",
+                rhbz.b_create_private,
+                rhbz.b_private_groups
+                );
+            TS_ASSERT_SIGNED_EQ(bug_id, 1);
+        }
+
+        {
+
+            problem_data_t *problem_data = create_problem_data_for_reporting("../../sample_problems/3");
+            bug_id = rhbz_new_bug(client,
+                problem_data, "Fedora", "33",
+                "afmw doesn't work",
+                "It's been broken for ages",
+                rhbz.b_create_private,
+                rhbz.b_private_groups
+                );
+            TS_ASSERT_SIGNED_EQ(bug_id, 2);
+        }
+
+        {
+            xmlrpc_value *sub_components = rhbz_get_sub_components(client, "Red Hat Enterprise Linux 8", "unknown");
+            char *sub_component = rhbz_get_default_sub_component("unknown", sub_components);
+            TS_ASSERT_STRING_EQ(sub_component, "torpedoes", "Picking a sub_component when no default is hardcoded");
+            g_free(sub_component);
+            if (sub_components)
+                xmlrpc_DECREF(sub_components);
+        }
+
+        {
+            rhbz_mail_to_cc(client, 0, "dev1@example.com", RHBZ_MINOR_UPDATE);
+            rhbz_mail_to_cc(client, 0, "dev2@example.com", RHBZ_MINOR_UPDATE);
+            xmlrpc_value *search = abrt_xmlrpc_call(client,
+                                                    "Bug.search",
+                                                    "{s:s,s:(ss)}",
+                                                    "quicksearch",
+                                                    "ALL product:\"Red Hat Enterprise Linux 8\"",
+                                                    "include_fields",
+                                                    "id", "cc");
+            xmlrpc_value *bugs = rhbz_get_member("bugs", search);
+            xmlrpc_DECREF(search);
+            xmlrpc_value *bug = rhbz_array_item_at(bugs, 0);
+            xmlrpc_DECREF(bugs);
+
+            xmlrpc_value *cc_list = rhbz_get_member("cc", bug);
+            xmlrpc_DECREF(bug);
+
+            xmlrpc_value *cc1 = NULL;
+            xmlrpc_value *cc2 = NULL;
+            xmlrpc_array_read_item(&env, cc_list, 0, &cc1);
+            if (env.fault_occurred)
+                printf("Error retrieving item 0 from cc_list: %s\n", env.fault_string);
+            xmlrpc_array_read_item(&env, cc_list, 1, &cc2);
+            if (env.fault_occurred)
+                printf("Error retrieving item 1 from cc_list: %s\n", env.fault_string);
+            xmlrpc_DECREF(cc_list);
+            
+            const char *cc_string1 = NULL;
+            const char *cc_string2 = NULL;
+            xmlrpc_read_string(&env, cc1, &cc_string1);
+            if (env.fault_occurred)
+                printf("Error reading cc1: %s\n", env.fault_string);
+            xmlrpc_read_string(&env, cc2, &cc_string2);
+            if (env.fault_occurred)
+                printf("Error reading cc2: %s\n", env.fault_string);
+            xmlrpc_DECREF(cc1);
+            xmlrpc_DECREF(cc2);
+
+            TS_ASSERT_STRING_EQ(cc_string1, "dev1@example.com", "Checking updated bug cc list");
+            TS_ASSERT_STRING_EQ(cc_string2, "dev2@example.com", "Checking updated bug cc list");
+
+            g_free((char *)cc_string1);
+            g_free((char *)cc_string2);
+        }
+
+        {
+            rhbz_set_url(client, 1, "http://example.com/bug123", RHBZ_MINOR_UPDATE);
+            xmlrpc_value *search = abrt_xmlrpc_call(client,
+                                                    "Bug.search",
+                                                    "{s:s,s:(ss)}",
+                                                    "quicksearch",
+                                                    "ALL product:\"Red Hat Enterprise Linux 8\" url:\"http://example.com/bug123\"",
+                                                    "include_fields",
+                                                    "id", "url");
+            xmlrpc_value *bugs = rhbz_get_member("bugs", search);
+            xmlrpc_DECREF(search);
+            xmlrpc_value *bug = rhbz_array_item_at(bugs, 0);
+            xmlrpc_DECREF(bugs);
+            
+            TS_ASSERT_STRING_EQ(rhbz_bug_read_item("url", bug, RHBZ_READ_STR),
+                                "http://example.com/bug123",
+                                "Checking updated bug url");
+            xmlrpc_DECREF(bug);
+            
+        }
+
+        {
+            xmlrpc_value *all_bugs = rhbz_search_duphash(client,
+                                                         "Red Hat Enterprise Linux 8",
+                                                         NULL,
+                                                         NULL,
+                                                         "abrt_hash:(null);");
+            TS_ASSERT_SIGNED_EQ(rhbz_array_size(all_bugs), 2);
+            xmlrpc_DECREF(all_bugs);
+        }
+
+        {
+            rhbz_close_as_duplicate(client, 1, 0, RHBZ_MINOR_UPDATE);
+            xmlrpc_value *search = abrt_xmlrpc_call(client, "Bug.search",
+                                                    "{s:s,s:(ssss)}",
+                                                    "quicksearch",
+                                                    "ALL resolution:\"DUPLICATE\"",
+                                                    "include_fields", "id", "status", "resolution", "dupe_of");
+
+            xmlrpc_value *bugs = rhbz_get_member("bugs", search);
+            xmlrpc_DECREF(search);
+            xmlrpc_value *bug = rhbz_array_item_at(bugs, 0);
+            xmlrpc_DECREF(bugs);
+
+            xmlrpc_value *stt = rhbz_get_member("status", bug);
+            xmlrpc_value *rsl = rhbz_get_member("resolution", bug);
+            xmlrpc_value *dup = rhbz_get_member("dupe_of", bug);
+            xmlrpc_DECREF(bug);
+
+            const char *status = NULL;
+            const char *resolution = NULL;
+            int dupe_of = -1;
+            xmlrpc_read_string(&env, stt, &status);
+            if (env.fault_occurred)
+                printf("Error reading status: %s\n", env.fault_string);
+            xmlrpc_read_string(&env, rsl, &resolution);
+            if (env.fault_occurred)
+                printf("Error reading resolution: %s\n", env.fault_string);
+            xmlrpc_read_int(&env, dup, (int * const)&dupe_of);
+            if (env.fault_occurred)
+                printf("Error reading dupe_of: %s\n", env.fault_string);
+            xmlrpc_DECREF(stt);
+            xmlrpc_DECREF(rsl);
+            xmlrpc_DECREF(dup);
+
+            TS_ASSERT_STRING_EQ(status, "CLOSED", "Checking closed bug status");
+            TS_ASSERT_STRING_EQ(resolution, "DUPLICATE", "Checking closed bug resolution");
+            TS_ASSERT_SIGNED_EQ(dupe_of, 0);
+
+            g_free((char *)status);
+            g_free((char *)resolution);
+        }
+
+        {
+            struct bug_info *my_bug = new_bug_info();
+            my_bug = rhbz_bug_info(client, 0);
+
+            TS_ASSERT_STRING_EQ(my_bug->bi_product, "Red Hat Enterprise Linux 8", "bug_info.bi_product");
+            TS_ASSERT_STRING_EQ(my_bug->bi_reporter, "captainnemo", "bug_info.bi_reporter");
+            TS_ASSERT_STRING_EQ(my_bug->bi_status, "NEW", "bug_info.bi_status");
+            TS_ASSERT_STRING_EQ(my_bug->bi_platform, "x86_64", "bug_info.bi_platform");
+        }
+
+        {
+            struct bug_info *my_bug = rhbz_bug_info(client, 1);
+            struct bug_info *origin = rhbz_find_origin_bug_closed_duplicate(client, my_bug);
+            TS_ASSERT_SIGNED_EQ(origin->bi_id, 0);
+        }
+
+        {
+            rhbz_add_comment(client, 0, "some comment", 0);
+            xmlrpc_value *search = abrt_xmlrpc_call(client, "Bug.get", "{s:(i)}", "ids", 0);
+            xmlrpc_value *bugs = rhbz_get_member("bugs", search);
+            xmlrpc_DECREF(search);
+            xmlrpc_value *bug = rhbz_array_item_at(bugs, 0);
+            xmlrpc_DECREF(bugs);
+
+            xmlrpc_value *comment_list = rhbz_get_member("comments", bug);
+            xmlrpc_DECREF(bug);
+
+            xmlrpc_value *comment_struct = NULL;
+            xmlrpc_array_read_item(&env, comment_list, 0, &comment_struct);
+            if (env.fault_occurred)
+                printf("Error retrieving item 0 from comment_list: %s\n", env.fault_string);
+            xmlrpc_DECREF(comment_list);
+            
+            xmlrpc_value *comment_xml_str = rhbz_get_member("comment", comment_struct);
+            const char *comment_str = NULL;
+            xmlrpc_read_string(&env, comment_xml_str, &comment_str);
+            if (env.fault_occurred)
+                printf("Error reading comment: %s\n", env.fault_string);
+            xmlrpc_DECREF(comment_struct);
+            xmlrpc_DECREF(comment_xml_str);
+
+            TS_ASSERT_STRING_EQ(comment_str, "some comment", "Checking add_comment");
+            g_free((char *)comment_str);
+        }
+
+        {
+            rhbz_logout(client);
+        }
+
+        {
+            xmlrpc_value *result = abrt_xmlrpc_call_full(&env, client, "Bugzilla.stop_server", "{}");
+            if (env.fault_occurred)
+                printf("Error calling Bugzilla.stop_server: %s\n", env.fault_string);
+        }
+
+    }
+    else // pid == -1
+    {
+        printf("fork failed: %s\n", strerror(errno));
+        return 1;
+    }
+}
+TS_RETURN_MAIN
+]])
