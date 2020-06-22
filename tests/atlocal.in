@@ -6,7 +6,7 @@ CC='@CC@'
 LIBTOOL="$abs_top_builddir/libtool"
 
 # We want no optimization.
-CFLAGS="@O0CFLAGS@ -I$abs_top_builddir/tests/helpers -I$abs_top_builddir/src/include -I$abs_top_builddir/src/lib -I$abs_top_builddir/src/gtk-helpers -I${abs_top_srcdir}/src -D_GNU_SOURCE @GLIB_CFLAGS@ @GTK_CFLAGS@ -DDEFAULT_DUMP_DIR_MODE=@DEFAULT_DUMP_DIR_MODE@"
+CFLAGS="@O0CFLAGS@ -I$abs_top_builddir/tests/helpers -I$abs_top_builddir/src/include -I$abs_top_builddir/src/lib -I$abs_top_builddir/src/plugins -I$abs_top_builddir/src/gtk-helpers -I${abs_top_srcdir}/src -D_GNU_SOURCE @GLIB_CFLAGS@ @GTK_CFLAGS@ -DDEFAULT_DUMP_DIR_MODE=@DEFAULT_DUMP_DIR_MODE@"
 
 # Are special link options needed?
 LDFLAGS="@LDFLAGS@"
