@@ -214,7 +214,7 @@ static int get_proc_fs_id(const char *proc_pid_status, char type)
             int n = sscanf(line, "%*cid:\t%d\t%d\t%d\t%d\n", &real, &e_id, &saved, &fs_id);
             if (n != 4)
             {
-                error_msg("Failed to parser /proc/[pid]/status: invalid format of '%cui:' line", type);
+                error_msg("Failed to parser /proc/[pid]/status: invalid format of '%cid:' line", type);
                 return -1;
             }
             return fs_id;
@@ -225,7 +225,7 @@ static int get_proc_fs_id(const char *proc_pid_status, char type)
         line++;
     }
 
-    error_msg("Failed to parser /proc/[pid]/status: not found '%cui:' line", type);
+    error_msg("Failed to parser /proc/[pid]/status: not found '%cid:' line", type);
     return -2;
 }
 
