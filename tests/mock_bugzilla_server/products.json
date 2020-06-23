@@ -1,0 +1,553 @@
+[
+    {
+        "id": 0,
+        "name": "Red Hat Enterprise Linux 8",
+        "description": "enterprise OS",
+        "is_active": true,
+        "default_milestone": "3rd milestone",
+        "has_unconfirmed": false,
+        "classification": "Classified",
+        "components": [
+            {
+                "id": 0,
+                "name": "afmw",
+                "description": "automatisches Fehlermeldung Werkzeug",
+                "default_assigned_to": "helmut@fixmychimney.com",
+                "default_qa_contact": "isitworkingnow@noitisnt.com",
+                "sort_key": 0,
+                "is_active": true,
+                "flag_types": {
+                    "bug": [
+                        {
+                            "is_multiplicable": false,
+                            "is_requesteeble": false,
+                            "values": [
+                              "X",
+                              "?",
+                              "+",
+                              "-"
+                            ],
+                            "id": 11,
+                            "type": "bug",
+                            "is_active": true,
+                            "description": "Blocks the next release",
+                            "name": "blocker"
+                          },
+                          {
+                            "is_requesteeble": false,
+                            "is_multiplicable": false,
+                            "is_active": true,
+                            "description": "Regression found?",
+                            "name": "regression",
+                            "id": 10,
+                            "type": "bug",
+                            "values": [
+                              "X",
+                              "?",
+                              "+",
+                              "-"
+                            ]
+                          }
+                    ],
+                    "attachment": [
+                        {
+                            "is_requesteeble": true,
+                            "is_multiplicable": true,
+                            "name": "review",
+                            "is_active": true,
+                            "description": "Review the patch for correctness and applicability to the problem.",
+                            "type": "attachment",
+                            "id": 1,
+                            "values": [
+                              "X",
+                              "?",
+                              "+",
+                              "-"
+                            ]
+                          },
+                          {
+                            "name": "approval",
+                            "description": "Approve the patch for check-in to the tree.",
+                            "is_active": true,
+                            "values": [
+                              "X",
+                              "?",
+                              "+",
+                              "-"
+                            ],
+                            "type": "attachment",
+                            "id": 3,
+                            "is_multiplicable": false,
+                            "is_requesteeble": false
+                          }
+                    ]
+                }
+            },
+            {
+                "id": 1,
+                "name": "gdb",
+                "description": "GNU Debugger",
+                "default_assigned_to": "gnu@african.zoo",
+                "default_qa_contact": "isitworkingnow@noitisnt.com",
+                "sort_key": 1,
+                "is_active": true,
+                "flag_types": {
+                    "bug": [
+                        {
+                            "is_multiplicable": false,
+                            "is_requesteeble": false,
+                            "values": [
+                              "X",
+                              "?",
+                              "+",
+                              "-"
+                            ],
+                            "id": 11,
+                            "type": "bug",
+                            "is_active": true,
+                            "description": "Blocks the next release",
+                            "name": "blocker"
+                          },
+                          {
+                            "is_requesteeble": false,
+                            "is_multiplicable": false,
+                            "is_active": true,
+                            "description": "Regression found?",
+                            "name": "regression",
+                            "id": 10,
+                            "type": "bug",
+                            "values": [
+                              "X",
+                              "?",
+                              "+",
+                              "-"
+                            ]
+                          }
+                    ],
+                    "attachment": [
+                        {
+                            "is_requesteeble": true,
+                            "is_multiplicable": true,
+                            "name": "review",
+                            "is_active": true,
+                            "description": "Review the patch for correctness and applicability to the problem.",
+                            "type": "attachment",
+                            "id": 1,
+                            "values": [
+                              "X",
+                              "?",
+                              "+",
+                              "-"
+                            ]
+                          },
+                          {
+                            "name": "approval",
+                            "description": "Approve the patch for check-in to the tree.",
+                            "is_active": true,
+                            "values": [
+                              "X",
+                              "?",
+                              "+",
+                              "-"
+                            ],
+                            "type": "attachment",
+                            "id": 3,
+                            "is_multiplicable": false,
+                            "is_requesteeble": false
+                          }
+                    ]
+                },
+                "sub_components": [
+                    {
+                        "id": 0,
+                        "name": "system-version",
+                        "sc_desc": "first sub_component"
+                    },
+                    {
+                        "id": 1,
+                        "name": "gcc-toolset-9",
+                        "sc_desc": "second sub_component"
+                    },
+                    {
+                        "id": 2,
+                        "name": "gcc-toolset-10",
+                        "sc_desc": "third sub_component"
+                    },
+                    {
+                        "id": 3,
+                        "name": "gcc-toolset-11",
+                        "sc_desc": "fourth sub_component"
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "name": "unknown",
+                "description": "Mystery component",
+                "default_assigned_to": "captainnemo@20000leagues.deep",
+                "default_qa_contact": "isitworkingnow@noitisnt.com",
+                "sort_key": 2,
+                "is_active": true,
+                "flag_types": {
+                    "bug": [
+                        {
+                            "is_multiplicable": false,
+                            "is_requesteeble": false,
+                            "values": [
+                              "X",
+                              "?",
+                              "+",
+                              "-"
+                            ],
+                            "id": 11,
+                            "type": "bug",
+                            "is_active": true,
+                            "description": "Blocks the next release",
+                            "name": "blocker"
+                          },
+                          {
+                            "is_requesteeble": false,
+                            "is_multiplicable": false,
+                            "is_active": true,
+                            "description": "Regression found?",
+                            "name": "regression",
+                            "id": 10,
+                            "type": "bug",
+                            "values": [
+                              "X",
+                              "?",
+                              "+",
+                              "-"
+                            ]
+                          }
+                    ],
+                    "attachment": [
+                        {
+                            "is_requesteeble": true,
+                            "is_multiplicable": true,
+                            "name": "review",
+                            "is_active": true,
+                            "description": "Review the patch for correctness and applicability to the problem.",
+                            "type": "attachment",
+                            "id": 1,
+                            "values": [
+                              "X",
+                              "?",
+                              "+",
+                              "-"
+                            ]
+                          },
+                          {
+                            "name": "approval",
+                            "description": "Approve the patch for check-in to the tree.",
+                            "is_active": true,
+                            "values": [
+                              "X",
+                              "?",
+                              "+",
+                              "-"
+                            ],
+                            "type": "attachment",
+                            "id": 3,
+                            "is_multiplicable": false,
+                            "is_requesteeble": false
+                          }
+                    ]
+                },
+                "sub_components": [
+                    {
+                        "id": 0,
+                        "name": "reactors",
+                        "sc_desc": "first sub_component"
+                    },
+                    {
+                        "id": 1,
+                        "name": "electrical",
+                        "sc_desc": "second sub_component"
+                    },
+                    {
+                        "id": 2,
+                        "name": "hydraulics",
+                        "sc_desc": "second sub_component"
+                    },
+                    {
+                        "id": 3,
+                        "name": "torpedoes",
+                        "sc_desc": "second sub_component"
+                    }
+                ]
+            }
+        ],
+        "versions": [
+            {
+                "name": "8.0",
+                "sort_key": 0,
+                "is_active": false
+            },
+            {
+                "name": "8.1",
+                "sort_key": 1,
+                "is_active": true
+            },
+            {
+                "name": "8.2",
+                "sort_key": 2,
+                "is_active": true
+            },
+            {
+                "name": "8.3",
+                "sort_key": 3,
+                "is_active": true
+            }
+        ],
+        "milestones": [
+            {
+                "name": "1st milestone",
+                "sort_key": 0,
+                "is_active": false
+            },
+            {
+                "name": "2nd milestone",
+                "sort_key": 1,
+                "is_active": true
+            },
+            {
+                "name": "3rd milestone",
+                "sort_key": 2,
+                "is_active": true
+            },
+            {
+                "name": "4th milestone",
+                "sort_key": 3,
+                "is_active": true
+            }
+        ]
+    },
+    {
+        "id": 1,
+        "name": "Fedora",
+        "description": "bog standard OS",
+        "is_active": true,
+        "default_milestone": "3rd milestone",
+        "has_unconfirmed": false,
+        "classification": "Unclassified",
+        "components": [
+            {
+                "id": 0,
+                "name": "afmw",
+                "description": "automatisches Fehlermeldung Werkzeug",
+                "default_assigned_to": "helmut@fixmychimney.com",
+                "default_qa_contact": "isitworkingnow@noitisnt.com",
+                "sort_key": 0,
+                "is_active": true,
+                "flag_types": {
+                    "bug": [
+                        {
+                            "is_multiplicable": false,
+                            "is_requesteeble": false,
+                            "values": [
+                              "X",
+                              "?",
+                              "+",
+                              "-"
+                            ],
+                            "id": 11,
+                            "type": "bug",
+                            "is_active": true,
+                            "description": "Blocks the next release",
+                            "name": "blocker"
+                          },
+                          {
+                            "is_requesteeble": false,
+                            "is_multiplicable": false,
+                            "is_active": true,
+                            "description": "Regression found?",
+                            "name": "regression",
+                            "id": 10,
+                            "type": "bug",
+                            "values": [
+                              "X",
+                              "?",
+                              "+",
+                              "-"
+                            ]
+                          }
+                    ],
+                    "attachment": [
+                        {
+                            "is_requesteeble": true,
+                            "is_multiplicable": true,
+                            "name": "review",
+                            "is_active": true,
+                            "description": "Review the patch for correctness and applicability to the problem.",
+                            "type": "attachment",
+                            "id": 1,
+                            "values": [
+                              "X",
+                              "?",
+                              "+",
+                              "-"
+                            ]
+                          },
+                          {
+                            "name": "approval",
+                            "description": "Approve the patch for check-in to the tree.",
+                            "is_active": true,
+                            "values": [
+                              "X",
+                              "?",
+                              "+",
+                              "-"
+                            ],
+                            "type": "attachment",
+                            "id": 3,
+                            "is_multiplicable": false,
+                            "is_requesteeble": false
+                          }
+                    ]
+                }
+            },
+            {
+                "id": 1,
+                "name": "gdb",
+                "description": "GNU Debugger",
+                "default_assigned_to": "gnu@african.zoo",
+                "default_qa_contact": "isitworkingnow@noitisnt.com",
+                "sort_key": 1,
+                "is_active": true,
+                "flag_types": {
+                    "bug": [
+                        {
+                            "is_multiplicable": false,
+                            "is_requesteeble": false,
+                            "values": [
+                              "X",
+                              "?",
+                              "+",
+                              "-"
+                            ],
+                            "id": 11,
+                            "type": "bug",
+                            "is_active": true,
+                            "description": "Blocks the next release",
+                            "name": "blocker"
+                          },
+                          {
+                            "is_requesteeble": false,
+                            "is_multiplicable": false,
+                            "is_active": true,
+                            "description": "Regression found?",
+                            "name": "regression",
+                            "id": 10,
+                            "type": "bug",
+                            "values": [
+                              "X",
+                              "?",
+                              "+",
+                              "-"
+                            ]
+                          }
+                    ],
+                    "attachment": [
+                        {
+                            "is_requesteeble": true,
+                            "is_multiplicable": true,
+                            "name": "review",
+                            "is_active": true,
+                            "description": "Review the patch for correctness and applicability to the problem.",
+                            "type": "attachment",
+                            "id": 1,
+                            "values": [
+                              "X",
+                              "?",
+                              "+",
+                              "-"
+                            ]
+                          },
+                          {
+                            "name": "approval",
+                            "description": "Approve the patch for check-in to the tree.",
+                            "is_active": true,
+                            "values": [
+                              "X",
+                              "?",
+                              "+",
+                              "-"
+                            ],
+                            "type": "attachment",
+                            "id": 3,
+                            "is_multiplicable": false,
+                            "is_requesteeble": false
+                          }
+                    ]
+                },
+                "sub_components": [
+                    {
+                        "id": 0,
+                        "name": "system-version",
+                        "sc_desc": "first sub_component"
+                    },
+                    {
+                        "id": 1,
+                        "name": "gcc-toolset-9",
+                        "sc_desc": "second sub_component"
+                    },
+                    {
+                        "id": 2,
+                        "name": "gcc-toolset-10",
+                        "sc_desc": "third sub_component"
+                    },
+                    {
+                        "id": 3,
+                        "name": "gcc-toolset-11",
+                        "sc_desc": "fourth sub_component"
+                    }
+                ]
+            }
+        ],
+        "versions": [
+            {
+                "name": "30",
+                "sort_key": 0,
+                "is_active": false
+            },
+            {
+                "name": "31",
+                "sort_key": 1,
+                "is_active": true
+            },
+            {
+                "name": "32",
+                "sort_key": 2,
+                "is_active": true
+            },
+            {
+                "name": "33",
+                "sort_key": 3,
+                "is_active": true
+            }
+        ],
+        "milestones": [
+            {
+                "name": "1st milestone",
+                "sort_key": 0,
+                "is_active": false
+            },
+            {
+                "name": "2nd milestone",
+                "sort_key": 1,
+                "is_active": true
+            },
+            {
+                "name": "3rd milestone",
+                "sort_key": 2,
+                "is_active": true
+            },
+            {
+                "name": "4th milestone",
+                "sort_key": 3,
+                "is_active": true
+            }
+        ]
+    }
+]
