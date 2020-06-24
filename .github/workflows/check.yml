@@ -19,10 +19,12 @@ jobs:
           dnf --assumeyes copr enable @abrt/devel
           dnf --assumeyes install \
             @c-development @development-tools @rpm-development-tools \
-            intltool
+            gettext-devel intltool
 
       - name: Install build dependencies
-        run: ./autogen.sh sysdeps --install
+        run: |
+          ./gen-version
+          dnf --assumeyes builddep --spec libreport.spec
 
       - name: Set up build user
         run: useradd builder
