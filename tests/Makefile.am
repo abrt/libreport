@@ -2,6 +2,20 @@
 ## package.m4.  ##
 ## ------------ ##
 
+AM_CPPFLAGS = \
+	$(GLIB_CFLAGS) \
+	-I$(abs_top_srcdir)/src/include
+AM_LDFLAGS = \
+	$(GLIB_LIBS)
+LDADD = \
+	$(abs_top_builddir)/src/lib/libreport.la
+
+compress_SOURCES = compress.c
+check_PROGRAMS = \
+	compress
+
+TESTS = $(check_PROGRAMS)
+
 package.m4: Makefile.in
 	{ \
              echo '# Signature of the current package.' && \
@@ -62,7 +76,6 @@ TESTSUITE_AT = \
   uriparser.at \
   event_config.at \
   proc_helpers.at \
-  compress.at \
   forbidden_words.at \
   client.at
 
