@@ -25,7 +25,7 @@ int main(void)
     libreport_g_verbose=3;
 
 #define FIRST_LINE "Bugzilla: URL=https://goodluck.org"
-#define SECOND_LINE "ABRT Server: BTHASH=81680083BIGBOOBS"
+#define SECOND_LINE "ABRT Server: BTHASH=a6d26ff12ee35511ec16eff969991ed6704815b3"
 
     g_autofree char *reported_to = NULL;
     assert(libreport_add_reported_to_data(&reported_to, FIRST_LINE) || !"Refused to add the first line");
