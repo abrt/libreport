@@ -16,6 +16,11 @@ check_PROGRAMS = \
 
 TESTS = $(check_PROGRAMS)
 
+EXTRA_DIST = \
+	data/compressed-file \
+	data/compressed-file.lz4 \
+	data/compressed-file.xz
+
 package.m4: Makefile.in
 	{ \
              echo '# Signature of the current package.' && \
@@ -32,7 +37,7 @@ package.m4: Makefile.in
              echo 'm4_define([AT_PACKAGE_URL],' && \
              echo '  [@PACKAGE_URL@])'; \
 	} >'package.m4'
-EXTRA_DIST = package.m4
+EXTRA_DIST += package.m4
 
 ## ------------ ##
 ## Test suite.  ##
