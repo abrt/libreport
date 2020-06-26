@@ -23,7 +23,6 @@ for automatic execution of shell scripts working with dump directories.
 - [**FAF**](https://retrace.fedoraproject.org/faf/summary/)   : reporter-ureport
 
 - [**Linux Kernel Oops**](http://www.kerneloops.org/)       : reporter-kerneloops
-- [**Red Hat Customer Portal**](https://access.redhat.com/) : reporter-rhtsupport
 
 
 ### Installing

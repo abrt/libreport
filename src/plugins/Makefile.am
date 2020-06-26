@@ -3,8 +3,7 @@ pluginslibdir = $(PLUGINS_LIB_DIR)
 reporters_bin =
 if BUILD_BUGZILLA
 reporters_bin += \
-    reporter-bugzilla \
-    report
+    reporter-bugzilla
 endif
 
 if BUILD_MANTISBT
@@ -17,7 +16,6 @@ reporters_bin +=  reporter-ureport
 endif
 
 bin_PROGRAMS = $(reporters_bin) \
-    reporter-rhtsupport \
     reporter-kerneloops \
     reporter-upload \
     reporter-mailx \
@@ -51,7 +49,6 @@ endif
 
 defaultreportpluginsconfdir = $(DEFAULT_REPORT_PLUGINS_CONF_DIR)
 dist_defaultreportpluginsconf_DATA = $(reporters_plugin_conf) \
-    rhtsupport.conf \
     mailx.conf \
     upload.conf \
     ureport.conf
@@ -83,8 +80,6 @@ endif
 dist_events_DATA = $(reporters_events) \
     report_Logger.xml \
     report_Mailx.xml \
-    report_RHTSupport.xml \
-    report_RHTSupport_AddData.xml \
     report_Kerneloops.xml \
     report_Uploader.xml
 
@@ -99,7 +94,6 @@ eventsdefdir = $(EVENTS_DEFINITION_DIR)
 dist_eventsdef_DATA = \
     mailx_event.conf \
     print_event.conf \
-    rhtsupport_event.conf \
     uploader_event.conf \
     centos_report_event.conf
 
@@ -122,8 +116,6 @@ EXTRA_DIST = $(reporters_extra_dist) \
     report_Logger.conf \
     report_Logger.xml.in \
     report_Mailx.xml.in \
-    report_RHTSupport.xml.in \
-    report_RHTSupport_AddData.xml.in \
     report_Kerneloops.xml.in \
     report_Uploader.xml.in
 
@@ -176,32 +168,6 @@ reporter_mantisbt_LDADD = \
     ../lib/libreport-web.la \
     ../lib/libreport.la
 endif
-
-reporter_rhtsupport_SOURCES = \
-    abrt_rh_support.h abrt_rh_support.c \
-    reporter-rhtsupport.h \
-    reporter-rhtsupport-parse.c \
-    reporter-rhtsupport.c
-reporter_rhtsupport_CPPFLAGS = \
-    -I$(srcdir)/../include \
-    -I$(srcdir)/../lib \
-    -DBIN_DIR=\"$(bindir)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
-    -DLOCALSTATEDIR='"$(localstatedir)"' \
-    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
-    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(REPORT_PLUGINS_CONF_DIR)\" \
-    -DLARGE_DATA_TMP_DIR=\"$(LARGE_DATA_TMP_DIR)\" \
-    $(GLIB_CFLAGS) \
-    $(LIBREPORT_CFLAGS) \
-    $(LIBXML_CFLAGS) \
-    -D_GNU_SOURCE
-reporter_rhtsupport_LDADD = \
-    $(GLIB_LIBS) \
-    $(LIBXML_LIBS) \
-    ../lib/libreport-web.la \
-    ../lib/libreport.la
 
 reporter_upload_SOURCES = \
     reporter-upload.c
@@ -296,26 +262,6 @@ reporter_systemd_journal_CPPFLAGS = \
 reporter_systemd_journal_LDADD = \
     ../lib/libreport.la \
     $(JOURNAL_LIBS)
-
-if BUILD_BUGZILLA
-report_SOURCES = \
-    report.c
-report_CPPFLAGS = \
-    -I$(srcdir)/../include \
-    -I$(srcdir)/../lib \
-    -DBIN_DIR=\"$(bindir)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
-    -DLOCALSTATEDIR='"$(localstatedir)"' \
-    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
-    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(REPORT_PLUGINS_CONF_DIR)\" \
-    $(GLIB_CFLAGS) \
-    $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE
-report_LDADD = \
-    ../lib/libreport.la
-endif
 
 if BUILD_UREPORT
 reporter_ureport_SOURCES = \

@@ -1,8 +1,7 @@
 EXTRA_DIST =
 
 MAN1_BUGZILLA = \
-	reporter-bugzilla.txt \
-	report.txt
+	reporter-bugzilla.txt
 MAN5_BUGZILLA = \
 	bugzilla_anaconda_event.conf.txt \
 	bugzilla.conf.txt \
@@ -32,7 +31,6 @@ MAN1_TXT = \
 	reporter-kerneloops.txt \
 	reporter-mailx.txt \
 	reporter-print.txt \
-	reporter-rhtsupport.txt \
 	reporter-upload.txt \
 	reporter-ureport.txt \
 	reporter-mantisbt.txt \
@@ -55,7 +53,6 @@ MAN5_TXT = \
 	report_fedora.conf.txt \
 	report_centos.conf.txt \
 	report_Logger.conf.txt \
-	report_rhel.conf.txt \
 	report_rhel_bugzilla.conf.txt \
 	report_uReport.conf.txt \
 	report_logger.conf.txt \
@@ -63,8 +60,6 @@ MAN5_TXT = \
 	report_uploader.conf.txt \
 	report_Uploader.conf.txt \
 	report_CentOSBugTracker.conf.txt \
-	rhtsupport.conf.txt \
-	rhtsupport_event.conf.txt \
 	uploader_event.conf.txt \
 	ureport.conf.txt \
 	upload.conf.txt

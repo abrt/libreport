@@ -10,22 +10,6 @@ dist_workflows_DATA = \
     workflow_FedoraLibreport.xml \
     workflow_FedoraJava.xml \
     workflow_FedoraJavaScript.xml \
-    workflow_RHELCCpp.xml \
-    workflow_RHELKerneloops.xml \
-    workflow_RHELPython.xml \
-    workflow_RHELvmcore.xml \
-    workflow_RHELxorg.xml \
-    workflow_RHELLibreport.xml \
-    workflow_RHELJava.xml \
-    workflow_RHELJavaScript.xml \
-    workflow_RHELAddDataCCpp.xml \
-    workflow_RHELAddDataJava.xml \
-    workflow_RHELAddDataKerneloops.xml \
-    workflow_RHELAddDataLibreport.xml \
-    workflow_RHELAddDataPython.xml \
-    workflow_RHELAddDatavmcore.xml \
-    workflow_RHELAddDataxorg.xml \
-    workflow_RHELAddDataJavaScript.xml \
     workflow_uReport.xml \
     workflow_Mailx.xml \
     workflow_MailxCCpp.xml \
@@ -50,7 +34,6 @@ endif
 if BUILD_BUGZILLA
 dist_workflows_DATA += \
     workflow_AnacondaFedora.xml \
-    workflow_AnacondaRHEL.xml \
     workflow_AnacondaRHELBugzilla.xml \
     workflow_AnacondaUpload.xml \
     workflow_RHELBugzillaCCpp.xml \
@@ -67,8 +50,6 @@ workflowsdefdir = $(WORKFLOWS_DEFINITION_DIR)
 
 dist_workflowsdef_DATA =\
     report_fedora.conf \
-    report_rhel.conf \
-    report_rhel_add_data.conf \
     report_uReport.conf \
     report_mailx.conf \
     report_logger.conf \
@@ -93,22 +74,6 @@ EXTRA_DIST = \
     workflow_FedoraLibreport.xml.in \
     workflow_FedoraJava.xml.in \
     workflow_FedoraJavaScript.xml.in \
-    workflow_RHELCCpp.xml.in \
-    workflow_RHELKerneloops.xml.in \
-    workflow_RHELPython.xml.in \
-    workflow_RHELvmcore.xml.in \
-    workflow_RHELxorg.xml.in \
-    workflow_RHELLibreport.xml.in \
-    workflow_RHELJava.xml.in \
-    workflow_RHELJavaScript.xml.in \
-    workflow_RHELAddDataCCpp.xml.in \
-    workflow_RHELAddDataJava.xml.in \
-    workflow_RHELAddDataJavaScript.xml.in \
-    workflow_RHELAddDataKerneloops.xml.in \
-    workflow_RHELAddDataLibreport.xml.in \
-    workflow_RHELAddDataPython.xml.in \
-    workflow_RHELAddDatavmcore.xml.in \
-    workflow_RHELAddDataxorg.xml.in \
     workflow_uReport.xml.in \
     workflow_Mailx.xml.in \
     workflow_MailxCCpp.xml.in \
@@ -121,7 +86,6 @@ EXTRA_DIST = \
 if BUILD_BUGZILLA
 EXTRA_DIST += \
     workflow_AnacondaFedora.xml.in \
-    workflow_AnacondaRHEL.xml.in \
     workflow_AnacondaRHELBugzilla.xml.in \
     workflow_AnacondaUpload.xml.in \
     workflow_RHELBugzillaCCpp.xml.in \

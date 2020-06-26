@@ -64,6 +64,10 @@ Requires: nettle%{?_isa}
 BuildRequires: sed
 %endif
 
+Obsoletes: %{name}-compat < 2.13.2
+Obsoletes: %{name}-plugin-rhtsupport < 2.13.2
+Obsoletes: %{name}-rhel < 2.13.2
+
 %description
 Libraries providing API for reporting different problems in applications
 to different bug targets like Bugzilla, ftp, trac, etc...
@@ -222,25 +226,6 @@ Requires: python3-subscription-manager-rhsm
 %description plugin-ureport
 Uploads micro-report to abrt server
 
-%package plugin-rhtsupport
-Summary: %{name}'s RHTSupport plugin
-Requires: %{name} = %{version}-%{release}
-Requires: libreport-web = %{version}-%{release}
-
-%description plugin-rhtsupport
-Plugin to report bugs into RH support system.
-
-%if %{with bugzilla}
-%package compat
-Summary: %{name}'s compat layer for obsoleted 'report' package
-Requires: libreport = %{version}-%{release}
-Requires: %{name}-plugin-bugzilla = %{version}-%{release}
-Requires: %{name}-plugin-rhtsupport = %{version}-%{release}
-
-%description compat
-Provides 'report' command-line tool.
-%endif
-
 %package plugin-reportuploader
 Summary: %{name}'s reportuploader plugin
 Requires: %{name} = %{version}-%{release}
@@ -261,16 +246,6 @@ install this package and you're done.
 %endif
 
 %if 0%{?rhel}
-%package rhel
-Summary: Default configuration for reporting bugs via Red Hat infrastructure
-Requires: %{name} = %{version}-%{release}
-Requires: %{name}-plugin-ureport
-
-%description rhel
-Default configuration for reporting bugs via Red Hat infrastructure
-used to easily configure the reporting process for Red Hat systems. Just
-install this package and you're done.
-
 %package rhel-bugzilla
 Summary: Default configuration for reporting bugs to Red Hat Bugzilla
 Requires: %{name} = %{version}-%{release}
@@ -298,9 +273,7 @@ package and you're done.
 Summary: Default configuration for reporting anaconda bugs
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-plugin-reportuploader = %{version}-%{release}
-%if 0%{?rhel}
-Requires: libreport-plugin-rhtsupport = %{version}-%{release}
-%else
+%if ! 0%{?rhel}
 Requires: libreport-plugin-bugzilla = %{version}-%{release}
 %endif
 
@@ -370,16 +343,7 @@ rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_AnacondaFedora.xml
 
 # Remove unwanted RHEL specific workflow configuration files
 %if 0%{!?rhel:1}
-rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELCCpp.xml
-rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELKerneloops.xml
-rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELPython.xml
-rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELvmcore.xml
-rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELxorg.xml
-rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELLibreport.xml
-rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELJava.xml
-rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELJavaScript.xml
 rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_uReport.xml
-rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_AnacondaRHEL.xml
 rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_AnacondaRHELBugzilla.xml
 rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELBugzillaCCpp.xml
 rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELBugzillaKerneloops.xml
@@ -397,11 +361,8 @@ rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELAddDataxorg.xml
 rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELAddDataLibreport.xml
 rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELAddDataJava.xml
 rm -f %{buildroot}/%{_datadir}/libreport/workflows/workflow_RHELAddDataJavaScript.xml
-rm -f %{buildroot}/%{_sysconfdir}/libreport/workflows.d/report_rhel.conf
-rm -f %{buildroot}/%{_sysconfdir}/libreport/workflows.d/report_rhel_add_data.conf
 rm -f %{buildroot}/%{_sysconfdir}/libreport/workflows.d/report_uReport.conf
 rm -f %{buildroot}/%{_sysconfdir}/libreport/workflows.d/report_rhel_bugzilla.conf
-rm -f %{buildroot}%{_mandir}/man5/report_rhel.conf.5
 rm -f %{buildroot}%{_mandir}/man5/report_uReport.conf.5
 rm -f %{buildroot}%{_mandir}/man5/report_rhel_bugzilla.conf.5
 %endif
@@ -630,23 +591,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/events.d/centos_report_event.conf
 %{_mandir}/man5/centos_report_event.conf.5.gz
 
-%files plugin-rhtsupport
-%config(noreplace) %{_sysconfdir}/libreport/plugins/rhtsupport.conf
-%{_datadir}/%{name}/conf.d/plugins/rhtsupport.conf
-%{_datadir}/%{name}/events/report_RHTSupport.xml
-%{_datadir}/%{name}/events/report_RHTSupport_AddData.xml
-%config(noreplace) %{_sysconfdir}/libreport/events.d/rhtsupport_event.conf
-%{_mandir}/man1/reporter-rhtsupport.1.gz
-%{_mandir}/man5/rhtsupport.conf.5.*
-%{_mandir}/man5/rhtsupport_event.conf.5.*
-%{_bindir}/reporter-rhtsupport
-
-%if %{with bugzilla}
-%files compat
-%{_bindir}/report
-%{_mandir}/man1/report.1.gz
-%endif
-
 %files plugin-reportuploader
 %{_mandir}/man*/reporter-upload.*
 %{_mandir}/man5/uploader_event.conf.5.*
@@ -679,27 +623,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %if 0%{?rhel}
-%files rhel
-%{_datadir}/%{name}/workflows/workflow_RHELCCpp.xml
-%{_datadir}/%{name}/workflows/workflow_RHELKerneloops.xml
-%{_datadir}/%{name}/workflows/workflow_RHELPython.xml
-%{_datadir}/%{name}/workflows/workflow_RHELvmcore.xml
-%{_datadir}/%{name}/workflows/workflow_RHELxorg.xml
-%{_datadir}/%{name}/workflows/workflow_RHELLibreport.xml
-%{_datadir}/%{name}/workflows/workflow_RHELJava.xml
-%{_datadir}/%{name}/workflows/workflow_RHELJavaScript.xml
-%{_datadir}/%{name}/workflows/workflow_RHELAddDataCCpp.xml
-%{_datadir}/%{name}/workflows/workflow_RHELAddDataJava.xml
-%{_datadir}/%{name}/workflows/workflow_RHELAddDataKerneloops.xml
-%{_datadir}/%{name}/workflows/workflow_RHELAddDataLibreport.xml
-%{_datadir}/%{name}/workflows/workflow_RHELAddDataPython.xml
-%{_datadir}/%{name}/workflows/workflow_RHELAddDatavmcore.xml
-%{_datadir}/%{name}/workflows/workflow_RHELAddDataxorg.xml
-%{_datadir}/%{name}/workflows/workflow_RHELAddDataJavaScript.xml
-%config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_rhel.conf
-%config(noreplace) %{_sysconfdir}/libreport/workflows.d/report_rhel_add_data.conf
-%{_mandir}/man5/report_rhel.conf.5.*
-
 %files rhel-bugzilla
 %{_datadir}/%{name}/workflows/workflow_RHELBugzillaCCpp.xml
 %{_datadir}/%{name}/workflows/workflow_RHELBugzillaKerneloops.xml
