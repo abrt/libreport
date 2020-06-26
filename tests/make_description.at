@@ -41,7 +41,7 @@ int main(int argc, char **argv)
     problem_data_add_text_noteditable(pd,
         FILENAME_REPORTED_TO,
             "Bugzilla: URL=https://bugzilla.redhat.com/1000000\n"
-            "ABRT Server: BTHASH=81680083BIGBOOBS\n"
+            "ABRT Server: BTHASH=a6d26ff12ee35511ec16eff969991ed6704815b3\n"
             "ABRT Server: URL=https://bug-report.itos.redhat.com\n");
 
     description = libreport_make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE, MAKEDESC_SHOW_URLS);
@@ -60,7 +60,7 @@ int main(int argc, char **argv)
 
     pd = problem_data_new();
 
-    problem_data_add_text_noteditable(pd, FILENAME_REPORTED_TO, "ABRT Server: BTHASH=81680083BIGBOOBS\n");
+    problem_data_add_text_noteditable(pd, FILENAME_REPORTED_TO, "ABRT Server: BTHASH=a6d26ff12ee35511ec16eff969991ed6704815b3\n");
 
     description = libreport_make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE, MAKEDESC_SHOW_URLS);
 
@@ -80,7 +80,7 @@ int main(int argc, char **argv)
     problem_data_add_text_noteditable(pd,
         FILENAME_REPORTED_TO,
             "Bugzilla: URL=https://bugzilla.redhat.com/1000000\n"
-            "ABRT Server: BTHASH=81680083BIGBOOBS\n"
+            "ABRT Server: BTHASH=a6d26ff12ee35511ec16eff969991ed6704815b3\n"
             "ABRT Server: URL=https://bug-report.itos.redhat.com\n");
 
     description = libreport_make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE, MAKEDESC_SHOW_ONLY_LIST | MAKEDESC_SHOW_URLS);
