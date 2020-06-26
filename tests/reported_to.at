@@ -26,7 +26,6 @@ int main(void)
 
 #define FIRST_LINE "Bugzilla: URL=https://goodluck.org"
 #define SECOND_LINE "ABRT Server: BTHASH=81680083BIGBOOBS"
-#define THIRD_LINE "RHTSupport: TIME=12345678 URL=https://access.redhat.com/home MSG=The world's best IT support"
 
     g_autofree char *reported_to = NULL;
     assert(libreport_add_reported_to_data(&reported_to, FIRST_LINE) || !"Refused to add the first line");
@@ -35,17 +34,11 @@ int main(void)
     assert(libreport_add_reported_to_data(&reported_to, SECOND_LINE) || !"Refused to add the second line" );
     assert(string_cmp(FIRST_LINE"\n"SECOND_LINE"\n", reported_to) || !"Failed to add the second line");
 
-    assert(libreport_add_reported_to_data(&reported_to, THIRD_LINE) || !"Refused to add the third line");
-    assert(string_cmp(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n", reported_to) || !"Failed to add the third line");
-
     assert(!libreport_add_reported_to_data(&reported_to, FIRST_LINE) || !"Added the first line again");
-    assert(string_cmp(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n", reported_to) || !"Modified the reported_to text not adding the first again");
+    assert(string_cmp(FIRST_LINE"\n"SECOND_LINE"\n", reported_to) || !"Modified the reported_to text not adding the first again");
 
     assert(!libreport_add_reported_to_data(&reported_to, SECOND_LINE) || !"Added the second line again");
-    assert(string_cmp(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n", reported_to) || !"Modified the reported_to text not adding the second again");
-
-    assert(!libreport_add_reported_to_data(&reported_to, THIRD_LINE) || !"Added the third line again");
-    assert(string_cmp(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n", reported_to) || !"Modified the reported_to text not adding the second again");
+    assert(string_cmp(FIRST_LINE"\n"SECOND_LINE"\n", reported_to) || !"Modified the reported_to text not adding the second again");
 
     return 0;
 }
@@ -100,7 +93,6 @@ int main(void)
 {
     g_autoptr(report_result_t) first_result = NULL;
     g_autoptr(report_result_t) second_result = NULL;
-    g_autoptr(report_result_t) third_result = NULL;
 
     libreport_g_verbose=3;
 
@@ -109,42 +101,28 @@ int main(void)
 
     first_result = report_result_new_with_label("Bugzilla");
     second_result = report_result_new_with_label("ABRT Server");
-    third_result = report_result_new_with_label("RHTSupport");
 
     report_result_set_url(first_result, "https://goodluck.org");
 
     report_result_set_bthash(second_result, "3141592653589793");
 
-    report_result_set_message(third_result, "The world's best IT support");
-    report_result_set_timestamp(third_result, 946684800);
-    report_result_set_url(third_result, "https://access.redhat.com/home");
-
 #define FIRST_LINE "Bugzilla: URL=https://goodluck.org"
 #define SECOND_LINE "ABRT Server: BTHASH=3141592653589793"
-#define THIRD_LINE "RHTSupport: TIME=2000-01-01-00:00:00 URL=https://access.redhat.com/home MSG=The world's best IT support"
-#define FOURTH_LINE "Bugzilla: TIME=invalid URL=https://goodluck.org"
-#define FIFTH_LINE "ABRT Server: TIME=invalid BTHASH=3141592653589793"
+#define THIRD_LINE "Bugzilla: TIME=invalid URL=https://goodluck.org"
+#define FOURTH_LINE "ABRT Server: TIME=invalid BTHASH=3141592653589793"
 
     GList *expected = g_list_append(NULL, first_result);
     assert(parse_and_check(FIRST_LINE, expected));
-    assert(parse_and_check(FOURTH_LINE, expected));
+    assert(parse_and_check(THIRD_LINE, expected));
 
     expected = g_list_append(expected, second_result);
     assert(parse_and_check(FIRST_LINE"\n"SECOND_LINE, expected));
-    assert(parse_and_check(FIRST_LINE"\n"FIFTH_LINE, expected));
-
-    expected = g_list_append(expected, third_result);
-    assert(parse_and_check(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE, expected));
+    assert(parse_and_check(FIRST_LINE"\n"FOURTH_LINE, expected));
 
     g_list_free(expected);
     expected = NULL;
     expected = g_list_append(expected, second_result);
     assert(parse_and_check(SECOND_LINE, expected));
-
-    g_list_free(expected);
-    expected = NULL;
-    expected = g_list_append(expected, third_result);
-    assert(parse_and_check(THIRD_LINE, expected));
 
     g_list_free(expected);
     expected = g_list_append(NULL, first_result);
@@ -177,38 +155,26 @@ int main(void)
     g_autoptr(report_result_t) second_result = NULL;
     g_autoptr(report_result_t) third_result = NULL;
     g_autoptr(report_result_t) fourth_result = NULL;
-    g_autoptr(report_result_t) fifth_result = NULL;
-    g_autoptr(report_result_t) sixth_result = NULL;
 
     libreport_g_verbose=3;
 
     first_result = report_result_new_with_label("Bugzilla");
     second_result = report_result_new_with_label("ABRT Server");
-    third_result = report_result_new_with_label("RHTSupport");
-    fourth_result = report_result_new_with_label("Bugzilla");
-    fifth_result = report_result_new_with_label("ABRT Server");
-    sixth_result = report_result_new_with_label("RHTSupport");
+    third_result = report_result_new_with_label("Bugzilla");
+    fourth_result = report_result_new_with_label("ABRT Server");
 
     report_result_set_url(first_result, "https://goodluck.org");
 
     report_result_set_bthash(second_result, "3141592653589793");
 
-    report_result_set_message(third_result, "The world's best IT support");
-    report_result_set_url(third_result, "https://access.redhat.com/home");
+    report_result_set_url(third_result, "https://always.win");
 
-    report_result_set_url(fourth_result, "https://always.win");
-
-    report_result_set_bthash(fifth_result, "7FEDD00D");
-
-    report_result_set_message(sixth_result, "The world's biggest Bugzilla instance");
-    report_result_set_url(sixth_result, "https://bugzilla.redhat.com/");
+    report_result_set_bthash(fourth_result, "7FEDD00D");
 
 #define FIRST_LINE "Bugzilla: URL=https://goodluck.org"
 #define SECOND_LINE "ABRT Server: BTHASH=3141592653589793"
-#define THIRD_LINE "RHTSupport: TIME=12345678 URL=https://access.redhat.com/home MSG=The world's best IT support"
-#define FOURTH_LINE "Bugzilla: URL=https://always.win"
-#define FIFTH_LINE "ABRT Server: BTHASH=7FEDD00D"
-#define SIXTH_LINE "RHTSupport: TIME=87654321 URL=https://bugzilla.redhat.com/ MSG=The world's biggest Bugzilla instance"
+#define THIRD_LINE "Bugzilla: URL=https://always.win"
+#define FOURTH_LINE "ABRT Server: BTHASH=7FEDD00D"
 
     {
         g_autoptr (report_result_t) found = libreport_find_in_reported_to_data(FIRST_LINE, "Bugzilla");
@@ -223,45 +189,27 @@ int main(void)
     }
 
     {
-        g_autoptr (report_result_t) found = libreport_find_in_reported_to_data(THIRD_LINE, "RHTSupport");
-        assert(found != NULL || !"Failed to find RHTSupport");
-        assert(report_result_equals(found, third_result) || !"Failed to parse RHTSupport");
-    }
-
-    {
-        g_autoptr (report_result_t) found = libreport_find_in_reported_to_data(FIRST_LINE"\n"FOURTH_LINE, "Bugzilla");
+        g_autoptr (report_result_t) found = libreport_find_in_reported_to_data(FIRST_LINE"\n"THIRD_LINE, "Bugzilla");
         assert(found != NULL || !"Failed to find the latest Bugzilla");
-        assert(report_result_equals(found, fourth_result) || !"Failed to parse the latest Bugzilla");
+        assert(report_result_equals(found, third_result) || !"Failed to parse the latest Bugzilla");
     }
 
     {
-        g_autoptr (report_result_t) found = libreport_find_in_reported_to_data(SECOND_LINE"\n"FIFTH_LINE, "ABRT Server");
+        g_autoptr (report_result_t) found = libreport_find_in_reported_to_data(SECOND_LINE"\n"FOURTH_LINE, "ABRT Server");
         assert(found != NULL || !"Failed to find the latest ABRT Server");
-        assert(report_result_equals(found, fifth_result) || !"Failed to parse the latest ABRT Server");
+        assert(report_result_equals(found, fourth_result) || !"Failed to parse the latest ABRT Server");
     }
 
     {
-        g_autoptr (report_result_t) found = libreport_find_in_reported_to_data(THIRD_LINE"\n"SIXTH_LINE, "RHTSupport");
-        assert(found != NULL || !"Failed to find the RHTSupport");
-        assert(report_result_equals(found, sixth_result) || !"Failed to parse the latest RHTSupport");
-    }
-
-    {
-        g_autoptr (report_result_t) found = libreport_find_in_reported_to_data(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n"FOURTH_LINE"\n"FIFTH_LINE"\n"SIXTH_LINE, "Bugzilla");
+        g_autoptr (report_result_t) found = libreport_find_in_reported_to_data(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n"FOURTH_LINE, "Bugzilla");
         assert(found != NULL || !"Failed to find the latest Bugzilla from huge file");
-        assert(report_result_equals(found, fourth_result) || !"Failed to parse the latest Bugzilla from huge file");
+        assert(report_result_equals(found, third_result) || !"Failed to parse the latest Bugzilla from huge file");
     }
 
     {
-        g_autoptr (report_result_t) found = libreport_find_in_reported_to_data(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n"FOURTH_LINE"\n"FIFTH_LINE"\n"SIXTH_LINE, "ABRT Server");
+        g_autoptr (report_result_t) found = libreport_find_in_reported_to_data(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n"FOURTH_LINE, "ABRT Server");
         assert(found != NULL || !"Failed to find the latest ABRT Server from huge file");
-        assert(report_result_equals(found, fifth_result) || !"Failed to parse the latest ABRT Server from huge file");
-    }
-
-    {
-        g_autoptr (report_result_t) found = libreport_find_in_reported_to_data(FIRST_LINE"\n"SECOND_LINE"\n"THIRD_LINE"\n"FOURTH_LINE"\n"FIFTH_LINE"\n"SIXTH_LINE, "RHTSupport");
-        assert(found != NULL || !"Failed to find the RHTSupport from huge file");
-        assert(report_result_equals(found, sixth_result) || !"Failed to parse the latest RHTSupport from huge file");
+        assert(report_result_equals(found, fourth_result) || !"Failed to parse the latest ABRT Server from huge file");
     }
 
     return 0;

@@ -42,14 +42,12 @@ int main(int argc, char **argv)
         FILENAME_REPORTED_TO,
             "Bugzilla: URL=https://bugzilla.redhat.com/1000000\n"
             "ABRT Server: BTHASH=81680083BIGBOOBS\n"
-            "RHTSupport: TIME=12345678 URL=https://access.redhat.com/home MSG=The world's best IT support\n"
             "ABRT Server: URL=https://bug-report.itos.redhat.com\n");
 
     description = libreport_make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE, MAKEDESC_SHOW_URLS);
     expected = g_strdup_printf(
            /*0123456789ABCDEF*/
             "Reported:       https://bugzilla.redhat.com/1000000\n"
-            "                https://access.redhat.com/home\n"
             "                https://bug-report.itos.redhat.com\n");
 
     if (strcmp(expected, description) != 0)
@@ -83,7 +81,6 @@ int main(int argc, char **argv)
         FILENAME_REPORTED_TO,
             "Bugzilla: URL=https://bugzilla.redhat.com/1000000\n"
             "ABRT Server: BTHASH=81680083BIGBOOBS\n"
-            "RHTSupport: TIME=12345678 URL=https://access.redhat.com/home MSG=The world's best IT support\n"
             "ABRT Server: URL=https://bug-report.itos.redhat.com\n");
 
     description = libreport_make_description(pd, /*skipped names*/NULL, CD_MAX_TEXT_SIZE, MAKEDESC_SHOW_ONLY_LIST | MAKEDESC_SHOW_URLS);
@@ -94,7 +91,6 @@ int main(int argc, char **argv)
             "%s: %*s%s\n"
            /*0123456789ABCDEF*/
             "Reported:       https://bugzilla.redhat.com/1000000\n"
-            "                https://access.redhat.com/home\n"
             "                https://bug-report.itos.redhat.com\n",
             FILENAME_REASON,     14 - strlen(FILENAME_REASON),     "", "will_segfault killed by SIGSEGV",
             FILENAME_PACKAGE,    14 - strlen(FILENAME_PACKAGE),    "", "libreport",
@@ -118,7 +114,6 @@ int main(int argc, char **argv)
             "%s: %*s%s\n"
            /*0123456789ABCDEF*/
             "Reported:       https://bugzilla.redhat.com/1000000\n"
-            "                https://access.redhat.com/home\n"
             "                https://bug-report.itos.redhat.com\n"
             "\n"
             "%s: %*sText file, %llu bytes\n"
