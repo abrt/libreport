@@ -47,10 +47,11 @@ struct dump_dir *libreport_steal_directory(const char *base_dir, const char *dum
 
     struct dump_dir *dd_dst;
     unsigned count = 100;
-    g_autofree char *dst_dir_name = g_build_filename(base_dir ? base_dir : "", base_name, NULL);
+    char *dst_dir_name = g_build_filename(base_dir ? base_dir : "", base_name, NULL);
     while (1)
     {
         dd_dst = dd_create(dst_dir_name, (uid_t)-1, DEFAULT_DUMP_DIR_MODE);
+        free(dst_dir_name);
         if (dd_dst)
             break;
         if (--count == 0)
