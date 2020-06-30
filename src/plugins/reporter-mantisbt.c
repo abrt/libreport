@@ -695,6 +695,7 @@ int main(int argc, char **argv)
                     if (g_list_find_custom(ii->mii_attachments, name, (GCompareFunc) strcmp) == NULL)
                         break;
 
+                    free(name);
                 }
                 mantisbt_attach_data(&mbt_settings, bug_id_str, name, bt, strlen(bt));
             }

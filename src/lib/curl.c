@@ -685,12 +685,14 @@ char *libreport_upload_file_ext(post_state_t *state, const char *url, const char
                 (state->curl_result == CURLE_LOGIN_DENIED
                  || state->curl_result == CURLE_REMOTE_ACCESS_DENIED))
         {
-            g_autofree char *msg = g_strdup_printf(_("Please enter user name for '%s//%s':"), scheme, hostname);
+            char *msg = g_strdup_printf(_("Please enter user name for '%s//%s':"), scheme, hostname);
             username = libreport_ask(msg);
+            free(msg);
             if (username != NULL && username[0] != '\0')
             {
                 msg = g_strdup_printf(_("Please enter password for '%s//%s@%s':"), scheme, username, hostname);
                 password = libreport_ask_password(msg);
+                free(msg);
                 /* What about empty password? */
                 if (password != NULL && password[0] != '\0')
                 {
