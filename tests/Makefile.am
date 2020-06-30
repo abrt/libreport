@@ -97,7 +97,7 @@ MAINTAINERCLEANFILES = Makefile.in $(TESTSUITE)
 check_DATA = atconfig atlocal $(TESTSUITE)
 DISTCLEANFILES = atconfig
 EXTRA_DIST += atlocal.in conf rules ureport valgrind.supp \
-			  bugzilla_plugin.at.in mock_bugzilla_server
+			  bugzilla_plugin.at.in mock_bugzilla_server sample_problems
 
 atconfig: $(top_builddir)/config.status
 	(cd ${top_builddir} && ./config.status ${subdir}/atconfig)
