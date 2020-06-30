@@ -874,7 +874,7 @@ int select_and_run_workflow(const char *dump_dir_name, GHashTable *workflows, in
     workflow_t *workflow;
     GList *events;
     const char *workflow_name;
-    g_autofree char *environment_variable = NULL;
+    char *environment_variable = NULL;
     struct run_event_state *run_state;
     int retval;
 
