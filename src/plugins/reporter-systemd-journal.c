@@ -69,7 +69,7 @@ static void msg_content_add_ext(msg_content_t *msg_c, const char *key, const cha
         msg_c->data = g_realloc(msg_c->data, msg_c->allocated * sizeof(*(msg_c->data)));
     }
 
-    g_autofree char *s = g_strdup_printf("%s%s=%s", prefix, key, value);
+    char *s = g_strdup_printf("%s%s=%s", prefix, key, value);
     for (char *c = s; *c != '='; ++c) *c = toupper(*c);
     msg_c->data[msg_c->used].iov_base = s;
     msg_c->data[msg_c->used].iov_len = strlen(s);
