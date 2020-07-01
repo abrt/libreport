@@ -629,24 +629,7 @@ void libreport_parse_osinfo_for_bz(GHashTable *osinfo, char **product, char **ve
  */
 void libreport_parse_osinfo_for_bug_url(GHashTable *osinfo, char** url);
 
-/* @brief Builds product string and product's version string for Red Hat Support
- *
- * At first tries to get strings from the os specific variables
- * (REDHAT_SUPPORT_PRODUCT, REDHAT_SUPPORT_PRODUCT_VERSION) if no such
- * variables are found, uses NAME key for the product and VERSION_ID key for
- * the product's version. If no NAME nor VERSION_ID are provided fallbacks to
- * parsing of os_release which should be stored under PRETTY_NAME key.
- *
- * https://bugzilla.redhat.com/show_bug.cgi?id=950373
- *
- * @param osinfo Input data from which the values are built
- * @param produc Non-NULL pointer where pointer to malloced string will be stored. Memory must be released by free()
- * @param version Non-NULL pointer where pointer to malloced string will be stored. Memory must be released by free()
- */
-void libreport_parse_osinfo_for_rhts(GHashTable *osinfo, char **product, char **version);
-
 void libreport_parse_release_for_bz(const char *pRelease, char **product, char **version);
-void libreport_parse_release_for_rhts(const char *pRelease, char **product, char **version);
 
 /**
  * Loads settings and stores it in second parameter. On success it
