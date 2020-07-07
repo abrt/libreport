@@ -16,12 +16,14 @@ AT_TESTFUN([sitem_compare],
 int test()
 {
     char text[] = "Some text";
-    GtkTextBuffer *buffer = gtk_text_buffer_new(gtk_text_tag_table_new());
+    GtkTextTagTable *table = gtk_text_tag_table_new();
+    GtkTextBuffer *buffer = gtk_text_buffer_new(table);
     gtk_text_buffer_insert_at_cursor(buffer, text, strlen(text));
     GtkTextIter start;
     gtk_text_buffer_get_start_iter(buffer, &start);
     GtkTextIter end;
     gtk_text_buffer_get_end_iter(buffer, &end);
+    int ret = -2;
 
     search_item_t *sitem1 = sitem_new(
             0,
@@ -39,7 +41,15 @@ int test()
             end
         );
 
-    return sitem_compare(sitem1, sitem2);
+    ret = sitem_compare(sitem1, sitem2);
+
+    g_clear_object(&buffer);
+    g_clear_object(&table);
+
+    g_free(sitem1);
+    g_free(sitem2);
+
+    return ret;
 }
 
 int main(void)

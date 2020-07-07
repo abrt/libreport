@@ -12,7 +12,8 @@ AT_TESTFUN([is_text_file],
 #include <assert.h>
 int main(void)
 {
-    char *dir = mkdtemp(strdup("/tmp/ddXXXXXX"));
+    g_autofree char *template = strdup("/tmp/ddXXXXXX");
+    char *dir = mkdtemp(template);
     assert(dir);
     assert(chdir(dir) == 0);
     struct dump_dir *dd = dd_create("test", -1, -1);
@@ -23,7 +24,7 @@ int main(void)
     dd_save_text(dd, "os_release", "Fedora release 19 (Schrödinger's Cat)");
     //dd_save_text(dd, "cat", "Schrödinger's Cat");
 
-    problem_data_t *problem_data = problem_data_new();
+    g_autoptr(GHashTable) problem_data = problem_data_new();
     problem_data_load_from_dump_dir(problem_data, dd, NULL);
     dd_close(dd);
 
@@ -39,6 +40,7 @@ int main(void)
         printf("%s:'%s'\n", key, item->content);
         assert(!(item->flags & CD_FLAG_BIN));
     }
+    g_list_free(list);
 
     dd = dd_opendir("test", 0);
     assert(dd);

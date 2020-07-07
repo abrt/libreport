@@ -274,7 +274,7 @@ int main(int argc, char **argv)
     static const char *const binary_files[] = { FILENAME_BINARY, FILENAME_COREDUMP,
         FILENAME_VMCORE, };
 
-    problem_data_t *pd = problem_data_new();
+    g_autoptr(GHashTable) pd = problem_data_new();
     problem_data_load_from_dump_dir(pd, dd, /*excluding*/NULL);
 
     GHashTableIter pd_iter;
@@ -366,6 +366,7 @@ int main(int argc, char **argv)
         assert(strcmp(cnt, "cr[0D]cr") == 0);
     }
 
+    dd_delete(dd);
     return 0;
 }
 ]])

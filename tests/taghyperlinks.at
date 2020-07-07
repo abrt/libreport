@@ -8,6 +8,7 @@ AT_BANNER([tag hyperlinks])
 
 AT_TESTFUN([gtk_labels],
 [[
+#include "testsuite.h"
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
@@ -18,7 +19,7 @@ char *tag_url(const char* line, const char* prefix);
 /* Test parsing different release strings */
 int test(char ***input)
 {
-    char *hyperlink = tag_url(**input, "");
+    g_autofree char *hyperlink = tag_url(**input, "");
     (*input)++;
 
     printf("'%s' == '%s'\n", hyperlink, **input);

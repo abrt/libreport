@@ -14,6 +14,7 @@ AT_TESTFUN([libreport_parse_delimited_list],
 int test(const char *list, const char *delimiter, const char *strings[])
 {
     GList *l = libreport_parse_delimited_list(list, delimiter);
+    GList *start = l;
 
     char **tmp = (char **)strings;
     int retval = 0;
@@ -26,6 +27,8 @@ int test(const char *list, const char *delimiter, const char *strings[])
             break; // no need to continue further
         l = g_list_next(l);
     }
+
+    g_list_free_full(start, g_free);
 
     return retval;
 }
