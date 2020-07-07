@@ -1831,8 +1831,9 @@ TS_MAIN
         libreport_full_write_str(fd_wronly_noent, "fd_wronly_noent");
         close(fd_wronly_noent);
 
-        g_autofree char *const noent_contents = dd_load_text(dd, "nofile");
+        char *const noent_contents = dd_load_text(dd, "nofile");
         TS_ASSERT_STRING_EQ(noent_contents, "fd_wronly_noent", "Successfully wrote data");
+        g_free(noent_contents);
     }
 
     TS_ASSERT_SIGNED_EQ(dd_open_item(dd, "time", O_RDONLY | O_EXCL), -ENOTSUP);
@@ -1873,10 +1874,11 @@ TS_MAIN
         if (g_testsuite_last_ok) {
             rdwr_time_contents[bytes_rdwr_time] = '\0';
 
-            g_autofree char *const time_contents = dd_load_text(dd, "time");
+            char *const time_contents = dd_load_text(dd, "time");
             TS_ASSERT_STRING_EQ(rdwr_time_contents, "7654321", "Successfully wrote time data");
             TS_ASSERT_STRING_EQ(time_contents, "7654321", "Successfully wrote time data");
             TS_ASSERT_STRING_EQ(rdwr_time_contents, time_contents, "Read only time");
+            g_free(time_contents);
 
         }
         else {
@@ -1940,8 +1942,9 @@ TS_MAIN
             TS_ASSERT_STRING_EQ(rdwr_contents, "f_rdwr_noent", "Successfully read data");
             fclose(f_rdwr_noent);
 
-            g_autofree char *const noent_contents = dd_load_text(dd, "nofile");
+            char *const noent_contents = dd_load_text(dd, "nofile");
             TS_ASSERT_STRING_EQ(noent_contents, "f_rdwr_noent", "Successfully wrote data");
+            g_free(noent_contents);
         }
     }
 
@@ -1981,8 +1984,9 @@ TS_MAIN
             TS_ASSERT_STRING_EQ(rdwr_contents, "7654321", "Successfully read time data");
             fclose(f_rdwr_time);
 
-            g_autofree char *const time_contents = dd_load_text(dd, "time");
+            char *const time_contents = dd_load_text(dd, "time");
             TS_ASSERT_STRING_EQ(time_contents, "7654321", "Successfully wrote time data");
+            g_free(time_contents);
         }
     }
 
