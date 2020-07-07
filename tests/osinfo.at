@@ -118,7 +118,7 @@ AT_TESTFUN([libreport_parse_osinfo_for_bz],
 
 void test(const char *osinfo_bytes, const char *product, const char *version)
 {
-    GHashTable *osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    g_autoptr(GHashTable) osinfo = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     libreport_parse_osinfo(osinfo_bytes, osinfo);
 
     g_autofree char *built_product = (char *)0xDEADBEAF;

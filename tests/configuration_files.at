@@ -447,7 +447,7 @@ int main(int argc, char **argv)
         /* that libreport_save_conf_file() creates the directory */
         assert(tmpnam(tmpdir) != NULL);
 
-        char *conf_path = g_build_filename(tmpdir, CONF_NAME, NULL);
+        g_autofree char *conf_path = g_build_filename(tmpdir, CONF_NAME, NULL);
 
         assert(libreport_save_conf_file(conf_path, first) || !"Save in not existing directory");
 
@@ -485,10 +485,11 @@ int main(int argc, char **argv)
         g_hash_table_remove(first, "state");
         assert(libreport_save_conf_file(CUSTOM_CONF, first) || !"Saved updated configuration");
 
-        g_autoptr(GHashTable) second = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+        GHashTable *second = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
         assert(libreport_load_conf_file(CUSTOM_CONF, second, 0) || !"Load the updated conf from relative path");
 
         assert(EQUAL == map_string_equals(first, second) || !"The loaded configuration equals to the saved configuration");
+        g_hash_table_destroy(second);
 
         g_hash_table_remove(first, "success");
         g_hash_table_remove(first, "effort");
@@ -498,6 +499,7 @@ int main(int argc, char **argv)
         assert(libreport_load_conf_file(CUSTOM_CONF, second, 0) || !"Load the empty conf from relative path");
 
         assert(EQUAL == map_string_equals(first, second) || !"The loaded configuration equals to the empty configuration");
+        g_hash_table_destroy(second);
 
         unlink(CUSTOM_CONF);
     }

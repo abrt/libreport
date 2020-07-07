@@ -17,8 +17,8 @@ int test(char ***input)
     char * release_string = **input;
     int retcode = 1;
     log_warning("release: >>%s<<\n", release_string);
-    char *product = NULL;
-    char *version = NULL;
+    g_autofree char *product = NULL;
+    g_autofree char *version = NULL;
     libreport_parse_release_for_bz(release_string, &product, &version);
     log_warning("version: >>%s<<\n", version);
     log_warning("product: >>%s<<\n", product);

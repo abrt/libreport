@@ -78,8 +78,6 @@ TS_MAIN
             GList       *b_private_groups;
         };
 
-        int bug_id = 0;
-
         sleep(3);
 
         struct bugzilla_struct rhbz = { 0 };
@@ -118,6 +116,8 @@ TS_MAIN
         }
 
         {
+            int bug_id = -1;
+
             problem_data_t *problem_data = create_problem_data_for_reporting("../../sample_problems/1");
             bug_id = rhbz_new_bug(client,
                 problem_data, "Red Hat Enterprise Linux 8", "8.0",
@@ -136,6 +136,8 @@ TS_MAIN
         }
 
         {
+            int bug_id = -1;
+
             problem_data_t *problem_data = create_problem_data_for_reporting("../../sample_problems/2");
             bug_id = rhbz_new_bug(client,
                 problem_data, "Red Hat Enterprise Linux 8", "8.0",
@@ -148,6 +150,7 @@ TS_MAIN
         }
 
         {
+            int bug_id = -1;
 
             problem_data_t *problem_data = create_problem_data_for_reporting("../../sample_problems/3");
             bug_id = rhbz_new_bug(client,

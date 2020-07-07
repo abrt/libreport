@@ -414,7 +414,7 @@ AT_TESTFUN([libreport_get_rootdir], [[
 
 TS_MAIN
 {
-    char *proc_self_root = libreport_malloc_readlink("/proc/self/root");
+    g_autofree char *proc_self_root = libreport_malloc_readlink("/proc/self/root");
 
     g_autofree char *root_dir = libreport_get_rootdir(getpid());
     TS_ASSERT_STRING_EQ(root_dir, proc_self_root, "libreport_get_rootdir(getpid())");
@@ -524,7 +524,7 @@ void check_file_contents(const char *fdinfo_filename)
 
         if (fdno < (sizeof(fds)/sizeof(fds[0]))) {
             int fd = 0;
-            char *file = NULL;
+            g_autofree char *file = NULL;
             const int res = sscanf(line, "%d:%ms", &fd, &file);
             TS_ASSERT_SIGNED_EQ(res, 2);
             TS_ASSERT_SIGNED_EQ(fd, fds[fdno].fd);
@@ -800,6 +800,7 @@ void test_get_mountinfo_for_mount_point(
         TS_ASSERT_STRING_EQ(mntnf.mntnf_items[7], exp_mntnf->mntnf_items[7], "Item 7");
         TS_ASSERT_STRING_EQ(mntnf.mntnf_items[8], exp_mntnf->mntnf_items[8], "Item 8");
         TS_ASSERT_STRING_EQ(mntnf.mntnf_items[9], exp_mntnf->mntnf_items[9], "Item 9");
+        libreport_mountinfo_destroy(&mntnf);
     }
 
     fclose(mntnf_file);

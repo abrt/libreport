@@ -526,6 +526,8 @@ int main(void)
     libreport_ureport_server_config_set_basic_auth(&config, "usr", "passwd");
     assert_ureport_server_config(&config, NULL, true, NULL, NULL, "usr", "passwd");
 
+    libreport_ureport_server_config_destroy(&config);
+
     return 0;
 }
 ]])
@@ -556,7 +558,8 @@ int main(void)
     struct ureport_server_config config;
     libreport_ureport_server_config_init(&config);
 
-    libreport_ureport_server_config_set_url(&config, strdup("url"));
+    g_autofree char *url = strdup("url");
+    libreport_ureport_server_config_set_url(&config, url);
 
     assert(libreport_ureport_server_response_from_reply(&ps, &config) == NULL);
 
@@ -656,11 +659,12 @@ int main(void)
     assert(false == libreport_ureport_server_response_save_in_dump_dir(response, "not_existing_dir", &config));
 
     dd = dd_opendir("./test", 0);
-    g_autofree char *reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO, DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    char *reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO, DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
 
     assert(strstr(reported_to, "uReport: BTHASH=691cf824e3e07457156125636e86c50279e29496") != NULL);
     assert(strstr(reported_to, "url/reports/bthash/691cf824e3e07457156125636e86c50279e29496") != NULL);
     assert(strstr(reported_to, "ABRT Server: URL=value") != NULL);
+    g_free(reported_to);
     /* not-reportable must not exist */
     assert(!dd_exist(dd, FILENAME_NOT_REPORTABLE));
 
@@ -701,6 +705,7 @@ int main(void)
     assert(strstr(reported_to, "uReport: BTHASH=691cf824e3e07457156125636e86c50279e29496") != NULL);
     assert(strstr(reported_to, "url/reports/bthash/691cf824e3e07457156125636e86c50279e29496") != NULL);
     assert(strstr(reported_to, "ABRT Server: URL=value") != NULL);
+    g_free(reported_to);
     /* not-reportable must exist */
     g_autofree char *not_reportable = dd_load_text_ext(dd, FILENAME_NOT_REPORTABLE, DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
 
@@ -806,7 +811,7 @@ int main(void)
     struct post_state *post_state = libreport_ureport_do_post(json, &config, "not_exist");
     assert(post_state->curl_result == CURLE_COULDNT_RESOLVE_HOST);
 
-    free(post_state);
+    free_post_state(post_state);
     libreport_ureport_server_config_destroy(&config);
     delete_dump_dir("./test");
 
@@ -878,12 +883,14 @@ int main(void)
 {
     libreport_g_verbose=3;
 
-    g_autofree char *json = ureport_json_attachment_new("data_bthash", "data_type", "data_data");
+    char *json = ureport_json_attachment_new("data_bthash", "data_type", "data_data");
     assert(strcmp(json, "{ \"bthash\": \"data_bthash\", \"type\": \"data_type\", \"data\": \"data_data\" }") == 0);
 
+    free(json);
     json = ureport_json_attachment_new("", "", "");
     assert(strcmp(json, "{ \"bthash\": \"\", \"type\": \"\", \"data\": \"\" }") == 0);
 
+    free(json);
     return 0;
 }
 ]])
@@ -951,8 +958,9 @@ int main(void)
     dd_close(dd);
 
     /* no auth */
-    g_autofree char *ureport = libreport_ureport_from_dump_dir_ext("./test", NULL);
+    char *ureport = libreport_ureport_from_dump_dir_ext("./test", NULL);
     assert(strstr(ureport, "auth") == NULL);
+    free(ureport);
 
     /* auth */
     dd = dd_opendir("./test", 0);
@@ -972,6 +980,7 @@ int main(void)
     ureport = libreport_ureport_from_dump_dir_ext("./test", &config.ur_prefs);
     assert(strstr(ureport, "auth") != NULL);
     assert(strstr(ureport, "\"hostname\": \"env_hostname\"") != NULL);
+    free(ureport);
 
     libreport_ureport_server_config_destroy(&config);
     if (settings)
@@ -990,6 +999,7 @@ int main(void)
     assert(strstr(ureport, "auth") != NULL);
     assert(strstr(ureport, "\"hostname\": \"env_hostname\"") != NULL);
     assert(strstr(ureport, "unknown") == NULL);
+    free(ureport);
 
     libreport_ureport_server_config_destroy(&config);
     if (settings)

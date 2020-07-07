@@ -6,17 +6,21 @@ AT_TESTFUN([report_result_parse], [[
 int main(void)
 {
     g_autoptr(report_result_t) result = NULL;
-    g_autofree char *field = NULL;
+    char *field = NULL;
 
     result = report_result_parse("Test: URL=https://retrace.fedoraproject.org WORKFLOW=workflow_FedoraCCpp MSG=Just a message!", 4);
     field = report_result_get_label(result);
     g_assert_cmpstr(field, ==, "Test");
+    free(field);
     field = report_result_get_url(result);
     g_assert_cmpstr(field, ==, "https://retrace.fedoraproject.org");
+    free(field);
     field = report_result_get_workflow(result);
     g_assert_cmpstr(field, ==, "workflow_FedoraCCpp");
+    free(field);
     field = report_result_get_message(result);
     g_assert_cmpstr(field, ==, "Just a message!");
+    free(field);
 
     return EXIT_SUCCESS;
 }

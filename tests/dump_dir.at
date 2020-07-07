@@ -86,6 +86,8 @@ void validate_dump_dir_contents(struct dump_dir *dd)
         TS_ASSERT_STRING_EQ(short_name, (strrchr(full_name, '/') + 1), NULL);
         TS_ASSERT_STRING_BEGINS_WITH(full_name, dd->dd_dirname, NULL);
         TS_ASSERT_CHAR_EQ_MESSAGE(full_name[strlen(dd->dd_dirname)], '/', full_name);
+        free(short_name);
+        free(full_name);
     }
 
     TS_ASSERT_SIGNED_EQ(items, items_counter);
@@ -97,7 +99,11 @@ void validate_dump_dir_contents(struct dump_dir *dd)
     TS_ASSERT_PTR_IS_NOT_NULL(iterator_second_run);
 
     while (dd_get_next_file(dd, &short_name, &full_name))
+    {
         --items_counter;
+        free(short_name);
+        free(full_name);
+    }
 
     TS_ASSERT_SIGNED_OP_MESSAGE(items_counter, ==, 0, "Second run iterator goes through all items");
 
@@ -740,8 +746,14 @@ TS_MAIN
         struct dump_dir *dd = create_dump_dir(template, "birds", (uid_t)-1, lay_an_egg, (void *)"canary");
         TS_ASSERT_PTR_IS_NOT_NULL_MESSAGE(dd, "Created dump directory with valid TYPE");
         TS_ASSERT_STRING_BEGINS_WITH(strrchr(dd->dd_dirname, '/') + 1, "birds", "Type was honored");
-        TS_ASSERT_STRING_EQ(dd_load_text(dd, FILENAME_TYPE), "birds", "'type' is created from the passed string");
-        TS_ASSERT_STRING_EQ(dd_load_text(dd, "egg"), "canary", "Call back saves durable data");
+
+        char *loaded_text = dd_load_text(dd, FILENAME_TYPE);
+        TS_ASSERT_STRING_EQ(loaded_text, "birds", "'type' is created from the passed string");
+        free(loaded_text);
+
+        loaded_text = dd_load_text(dd, "egg");
+        TS_ASSERT_STRING_EQ(loaded_text, "canary", "Call back saves durable data");
+        free(loaded_text);
         TS_ASSERT_SIGNED_EQ(dd_delete(dd), 0);
     }
 
@@ -749,7 +761,8 @@ TS_MAIN
         struct dump_dir *dd = create_dump_dir(template, "birds", (uid_t)-1, create_type, (void *)"canary");
         TS_ASSERT_PTR_IS_NOT_NULL_MESSAGE(dd, "Created dump directory with valid TYPE");
         TS_ASSERT_STRING_BEGINS_WITH(strrchr(dd->dd_dirname, '/') + 1, "birds", "Type was honored");
-        TS_ASSERT_STRING_EQ(dd_load_text(dd, FILENAME_TYPE), "canary", "'type' was not overwritten");
+        g_autofree char *loaded_text = dd_load_text(dd, FILENAME_TYPE);
+        TS_ASSERT_STRING_EQ(loaded_text, "canary", "'type' was not overwritten");
         TS_ASSERT_SIGNED_EQ(dd_delete(dd), 0);
     }
 }
@@ -779,7 +792,7 @@ TS_MAIN
 
     dd_g_fs_group_gid = getegid();
 
-    problem_data_t *pd = problem_data_new();
+    g_autoptr(GHashTable) pd = problem_data_new();
 
     {
         fprintf(stderr, "=== No FILENAME_TYPE in Problem Data ===\n");
@@ -1026,16 +1039,18 @@ int main(void)
     dd_save_text(dd, "empty", "");
     assert(dd_load_int32(dd, "empty", &value) == -EINVAL);
 
-    g_autofree char *buf = NULL;
+    char *buf = NULL;
     asprintf(&buf, "%lld", -1LL + INT32_MIN);
     assert(buf != NULL);
 
     dd_save_text(dd, "below_min", buf);
+    free(buf);
 
     assert(dd_load_int32(dd, "below_min", &value) == -ERANGE);
 
     asprintf(&buf, "%"PRId32, INT32_MIN);
     dd_save_text(dd, "min", buf);
+    free(buf);
 
     assert(dd_load_int32(dd, "min", &value) == 0);
     assert(value == INT32_MIN || !"min");
@@ -1044,6 +1059,7 @@ int main(void)
     assert(buf != NULL);
 
     dd_save_text(dd, "max", buf);
+    free(buf);
 
     assert(dd_load_int32(dd, "max", &value) == 0);
     assert(value == INT32_MAX);
@@ -1052,6 +1068,7 @@ int main(void)
     assert(buf != NULL);
 
     dd_save_text(dd, "above_max", buf);
+    free(buf);
 
     assert(dd_load_int32(dd, "above_max", &value) == -ERANGE);
 
@@ -1107,11 +1124,12 @@ int main(void)
     assert(dd_load_uint32(dd, "min", &value) == 0);
     assert(value == 0 || !"min");
 
-    g_autofree char *buf = NULL;
+    char *buf = NULL;
     asprintf(&buf, "%"PRIu32, UINT32_MAX);
     assert(buf != NULL);
 
     dd_save_text(dd, "max", buf);
+    free(buf);
     assert(dd_load_uint32(dd, "max", &value) == 0);
     assert(value == UINT32_MAX);
 
@@ -1119,6 +1137,7 @@ int main(void)
     assert(buf != NULL);
 
     dd_save_text(dd, "above_max", buf);
+    free(buf);
     assert(dd_load_uint32(dd, "above_max", &value) == -ERANGE);
 
     dd_save_text(dd, "string_suffix", "123abc");
@@ -1169,16 +1188,18 @@ int main(void)
     dd_save_text(dd, "below_min", "-9223372036854775809");
     assert(dd_load_int64(dd, "below_min", &value) == -ERANGE);
 
-    g_autofree char *buf = NULL;
+    char *buf = NULL;
     asprintf(&buf, "%"PRId64, INT64_MIN);
     assert(buf != NULL);
     dd_save_text(dd, "min", buf);
+    free(buf);
     assert(dd_load_int64(dd, "min", &value) == 0);
     assert(value == INT64_MIN || !"min");
 
     asprintf(&buf, "%"PRId64, INT64_MAX);
     assert(buf != NULL);
     dd_save_text(dd, "max", buf);
+    free(buf);
     assert(dd_load_int64(dd, "max", &value) == 0);
     assert(value == INT64_MAX);
 
@@ -1276,7 +1297,7 @@ void verify_archive(struct dump_dir *dd, const char *file_name,
     unsigned c = 0;
     for (const_string_vector_const_ptr_t i = included_files; i && *i; ++i)
         ++c;
-    int *check_array = g_malloc0(c * sizeof(int));
+    g_autofree int *check_array = g_malloc0(c * sizeof(int));
 
     int pipe_from_parent_to_child[2];
     g_unix_open_pipe(pipe_from_parent_to_child, 0, NULL);
@@ -1334,7 +1355,8 @@ void verify_archive(struct dump_dir *dd, const char *file_name,
             check_array[c] += 1;
 
             unlink(real_file);
-            if(tar_extract_regfile(tar, g_strdup(real_file)) != 0)
+            g_autofree char *real_file_dup = g_strdup(real_file);
+            if (tar_extract_regfile(tar, real_file_dup) != 0)
             {
                 fprintf(stderr, "TAR failed to extract '%s' to '%s': %s\n", path, real_file, strerror(errno));
                 abort();
@@ -1473,7 +1495,7 @@ int main(void)
 
         assert(dd_create_archive(dd, file_name, NULL, 0) == -EEXIST || !"Exists");
 
-        char *canary = libreport_xmalloc_xopen_read_close(file_name, NULL);
+        g_autofree char *canary = libreport_xmalloc_xopen_read_close(file_name, NULL);
         assert(canary != NULL);
         assert(strcmp(canary, file_contents) == 0);
     }
@@ -1569,6 +1591,7 @@ TS_MAIN
     }
 
     TS_ASSERT_SIGNED_EQ(dd_compute_size(dd, 0), expected);
+    dd_delete(dd);
 }
 TS_RETURN_MAIN
 
@@ -1589,10 +1612,10 @@ TS_MAIN
     struct dump_dir *dd = testsuite_dump_dir_create(-1, -1, 0);
     dd_create_basic_files(dd, geteuid(), NULL);
 
-    char *base_dir = g_strndup(dd->dd_dirname, strrchr(dd->dd_dirname, '/') - dd->dd_dirname);
+    g_autofree char *base_dir = g_strndup(dd->dd_dirname, strrchr(dd->dd_dirname, '/') - dd->dd_dirname);
     assert(base_dir != NULL);
 
-    char *test_file_full_path = g_build_filename(base_dir, "libreport-test", NULL);
+    g_autofree char *test_file_full_path = g_build_filename(base_dir, "libreport-test", NULL);
     FILE *test_file = fopen(test_file_full_path, "w");
     assert(test_file != NULL);
     fprintf(test_file, "dd_items_handling");
@@ -1660,7 +1683,7 @@ TS_MAIN
 
     dd_create_basic_files(dd, geteuid(), NULL);
 
-    char *value = NULL;
+    g_autofree char *value = NULL;
     TS_ASSERT_SIGNED_EQ(dd_get_env_variable(dd, "FROG", &value), -ENOENT);
     TS_ASSERT_PTR_IS_NULL_MESSAGE(value, "Untouched return value on -ENOENT");
 
@@ -1954,7 +1977,7 @@ TS_MAIN
         FILE *const f_rdonly_time = dd_open_item_file(dd, "time", O_RDONLY);
         TS_ASSERT_PTR_IS_NOT_NULL(f_rdonly_time);
         if (g_testsuite_last_ok) {
-            char *time = dd_load_text(dd, "time");
+            g_autofree char *time = dd_load_text(dd, "time");
             TS_ASSERT_PTR_IS_NOT_NULL(time);
 
             char rdonly_time_contents[16];
