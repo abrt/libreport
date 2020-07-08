@@ -33,7 +33,7 @@ int main(int argc, char **argv)
     if (strcmp(expected, description) != 0)
     {
         printf("E:\n'%s'\n\nC:\n'%s'\n", expected, description);
-        assert(!"The description for a single Bugzilla URL do not matches the expected description");
+        assert(!"The description for a single Bugzilla URL does not match the expected description");
     }
 
     free(description);
@@ -57,7 +57,7 @@ int main(int argc, char **argv)
     if (strcmp(expected, description) != 0)
     {
         printf("E:\n'%s'\n\nC:\n'%s'\n", expected, description);
-        assert(!"The description do not matches the expected description");
+        assert(!"The description does not match the expected description");
     }
 
     free(description);
@@ -106,7 +106,7 @@ int main(int argc, char **argv)
     if (strcmp(expected, description) != 0)
     {
         printf("E:\n'%s'\n\nC:\n'%s'\n", expected, description);
-        assert(!"The description do not matches the expected description");
+        assert(!"The description does not match the expected description");
     }
 
     free(expected);
@@ -139,7 +139,7 @@ int main(int argc, char **argv)
     if (strcmp(expected, description) != 0)
     {
         printf("E:\n'%s'\n\nC:\n'%s'\n", expected, description);
-        assert(!"The description do not matches the expected description");
+        assert(!"The description does not match the expected description");
     }
 
     free(expected);
@@ -173,7 +173,7 @@ int main(int argc, char **argv)
     if (strcmp(expected, description) != 0)
     {
         printf("E:\n'%s'\n\nC:\n'%s'\n", expected, description);
-        assert(!"The description do not matches the expected description");
+        assert(!"The description does not match the expected description");
     }
 
     free(expected);
@@ -210,7 +210,7 @@ int main(int argc, char **argv)
     if (strstr(description, expected) == NULL)
     {
         printf("E:\n'%s'\n\nC:\n'%s'\n", expected, description);
-        assert(!"The description for not-reportable do not matches the expected description");
+        assert(!"The description for not-reportable does not match the expected description");
     }
 
     problem_data_free(pd);
