@@ -126,7 +126,7 @@ $(TESTSUITE): $(TESTSUITE_AT) $(TESTSUITE_AT_IN) $(srcdir)/package.m4
 maintainer-check-valgrind: $(check_DATA)
 	$(MAKE) check-local \
 		PRE_AT_CHECK='$(abs_top_builddir)/libtool --mode=execute $(VALGRIND)' \
-		VALGRIND_OPTS='--tool=memcheck --leak-check=full --show-reachable=yes --error-exitcode=1 --suppressions=$(abs_top_builddir)/tests/valgrind.supp -q'
+		VALGRIND_OPTS='--tool=memcheck --leak-check=full --show-reachable=yes --errors-for-leak-kinds=definite,indirect --error-exitcode=1 --suppressions=$(abs_top_builddir)/tests/valgrind.supp -q'
 
 .PHONY: maintainer-check
 maintainer-check: maintainer-check-valgrind
