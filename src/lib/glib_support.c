@@ -63,17 +63,14 @@ GList *libreport_parse_delimited_list(const char *string, const char *delimiter)
     g_return_val_if_fail(NULL != delimiter, NULL);
 
     substrings = g_strsplit(string, delimiter, -1);
+    char **start = substrings;
     while (NULL != *substrings)
     {
-        char *substring;
-
-        substring = *substrings;
-        substring = g_strstrip(substring);
-
-        list = g_list_prepend(list, substring);
+        list = g_list_prepend(list, g_strdup(g_strstrip(*substrings)));
 
         substrings++;
     }
+    g_strfreev(start);
 
     return g_list_reverse(list);
 }
