@@ -219,7 +219,7 @@ libreport_ureport_server_config_destroy(struct ureport_server_config *config)
     free(config->ur_password);
     config->ur_password = DESTROYED_POINTER;
 
-    g_list_free_full(config->ur_prefs.urp_auth_items, free);
+    g_list_free_full(config->ur_prefs.urp_auth_items, g_free);
     config->ur_prefs.urp_auth_items = DESTROYED_POINTER;
 }
 
