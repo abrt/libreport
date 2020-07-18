@@ -17,13 +17,16 @@
 # Julius Milan <jmilan@redhat.com>, 2017. #zanata
 # Rafael Fontenelle <rafaelff@gnome.org>, 2020.
 # Fábio Rodrigues Ribeiro <farribeiro@gmail.com>, 2020.
+# José Lemos Neto <lemosjosex@protonmail.com>, 2020.
+# Flávio Moisés Dalla Porta Schefer <flavio.schefer@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2020-06-17 19:40+0000\n"
-"Last-Translator: Fábio Rodrigues Ribeiro <farribeiro@gmail.com>\n"
+"PO-Revision-Date: 2020-07-16 20:28+0000\n"
+"Last-Translator: Flávio Moisés Dalla Porta Schefer <flavio.schefer@gmail.com>"
+"\n"
 "Language-Team: Portuguese (Brazil) <https://translate.fedoraproject.org/"
 "projects/abrt/libreport/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -31,7 +34,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.0.4\n"
+"X-Generator: Weblate 4.1.1\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -634,7 +637,6 @@ msgid "Processing finished, please proceed to the next step."
 msgstr "Processamento finalizado, por favor proceda à próxima etapa."
 
 #: ../src/gui-wizard-gtk/wizard.c:1770
-#, fuzzy
 msgid "No commands could be found for processsing the crashdump.\n"
 msgstr "Nenhum comando foi encontrado para processar o despejo de memória.\n"
 
@@ -651,6 +653,9 @@ msgid ""
 "No matching actions found for this event.\n"
 "\n"
 msgstr ""
+"---Ignorando %s ---\n"
+"Não foram encontradas ações correspondentes a esse evento.\n"
+"\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1843
 msgid "Processing..."
@@ -1101,12 +1106,12 @@ msgstr ""
 "bug."
 
 #: ../src/lib/event_config.c:533
-#, fuzzy
-#| msgid "Reporting disabled because the backtrace is unusable."
 msgid ""
 "Reporting is disabled because the generated backtrace has low informational "
 "value."
-msgstr "Relatório desabilitado, porque o backtrace está inutilizado."
+msgstr ""
+"O Relatório está desabilitado, porque o backtrace gerado possui informações "
+"de baixo valor."
 
 #: ../src/lib/event_config.c:537
 #, c-format
@@ -1989,13 +1994,11 @@ msgstr "Usuário ou senha inválidos. Por favor digite seu login Red Hat:"
 
 #: ../src/plugins/reporter-rhtsupport.c:473
 msgid "Please enter customer case number to which you want to attach the data:"
-msgstr ""
+msgstr "Digite o número do caso do cliente ao qual você deseja anexar os dados:"
 
 #: ../src/plugins/reporter-rhtsupport.c:479
-#, fuzzy
-#| msgid "Can't continue without password"
 msgid "Can't continue without Red Hat Support case number"
-msgstr "Não é possível continuar sem senha"
+msgstr "Não é possível continuar sem o número do caso do Red Hat Support"
 
 #: ../src/plugins/reporter-rhtsupport.c:506
 msgid ""
@@ -2040,7 +2043,7 @@ msgstr ""
 "BHTS:"
 
 #: ../src/plugins/reporter-rhtsupport.c:647
-#, c-format, fuzzy
+#, c-format
 msgid ""
 "We found a similar Red Hat support case %s. Do you want to attach the data "
 "to the case? Otherwise, you will have to enter the existing Red Hat support "
@@ -2048,7 +2051,7 @@ msgid ""
 msgstr ""
 "Encontramos um caso de suporte %s semelhante da Red Hat. Deseja anexar os "
 "dados ao caso? Caso contrário, você terá que inserir o número do caso de "
-"suporte existente da Red Hat."
+"suporte da Red Hat já existente."
 
 #: ../src/plugins/reporter-rhtsupport.c:676
 #, c-format
@@ -3401,10 +3404,8 @@ msgstr "Anexe dados de falha a um caso de suporte existente da Red Hat"
 #: ../src/workflows/workflow_RHELAddDatavmcore.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:2
-#, fuzzy
-#| msgid "Ask Red Hat Support for help"
 msgid "Provide Red Hat Support with crash details"
-msgstr "Peça ajuda ao Suporte Red Hat"
+msgstr "Solicite suporte à Red Hat com detalhes da falha"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
