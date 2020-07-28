@@ -29,12 +29,15 @@ static char *find_duplicate(problem_data_t *problem_data, GHashTable *settings);
 static char *get_first_issue_url(const char *response);
 static char *get_issue_url(json_object *issue_object);
 static char *get_new_issue_url(const char *response);
+static char *get_upload_url(const char *response);
 static bool is_reportable(problem_data_t *problem_data, GHashTable *settings);
 static GHashTable *load_settings(const char *conf_file);
-static char *make_request_body(problem_report_t *report);
-static char *make_url(const char *component, GHashTable *settings);
+static char *make_project_url(const char *component, GHashTable *settings);
+static char *make_request_body(problem_report_t *report, const char *appendix);
 static void submit_issue(const char *dump_dir_name, problem_data_t *problem_data,
         GHashTable *settings, const char *format_file);
+static char *upload_attachment(const char *item_name, struct problem_item *item,
+        const char *url, int post_flags, const char **headers);
 
 int main(int argc, char **argv)
 {
@@ -231,8 +234,8 @@ static char *find_duplicate(problem_data_t *problem_data, GHashTable *settings)
     };
 
     /* Prepare the request and GET it. */
-    g_autofree char *base_url = make_url(component, settings);
-    g_autofree char *full_url = g_strdup_printf("%s?search=abrt_hash%%3A%s&in=description",
+    g_autofree char *base_url = make_project_url(component, settings);
+    g_autofree char *full_url = g_strdup_printf("%s/issues?search=abrt_hash%%3A%%20%s&in=description",
                                                 base_url, duphash);
 
     int post_flags = POST_WANT_BODY | POST_WANT_HEADERS | POST_WANT_ERROR_MSG;
@@ -242,7 +245,7 @@ static char *find_duplicate(problem_data_t *problem_data, GHashTable *settings)
         post_flags |= POST_WANT_SSL_VERIFY;
     }
     post_state_t *post_state = new_post_state(post_flags);
-    int response = post(post_state, full_url, NULL, headers, NULL, POST_DATA_GET);
+    int response = get(post_state, full_url, "", headers);
 
     if (response < 0)
     {
@@ -327,6 +330,31 @@ static char *get_new_issue_url(const char *response)
     return url;
 }
 
+static char *get_upload_url(const char *response)
+{
+    enum json_tokener_error error;
+    json_object *json_root = json_tokener_parse_verbose(response, &error);
+    if (!json_root)
+        error_msg_and_die(_("Could not parse JSON response from API. Reason: %s"),
+                          json_tokener_error_desc(error));
+
+    if (!json_object_is_type(json_root, json_type_object))
+        error_msg_and_die(_("Error parsing JSON response: Root element is not an object"));
+
+    json_object *url_obj = NULL;
+    if (!json_object_object_get_ex(json_root, "url", &url_obj))
+        error_msg_and_die(_("Error parsing JSON response: Entry 'web_url' not found"));
+
+    if (!json_object_is_type(url_obj, json_type_string))
+        error_msg_and_die(_("Error parsing JSON response: Entry 'web_url' is not a string"));
+
+    char *url = g_strdup(json_object_get_string(url_obj));
+
+    json_object_put(json_root);
+    return url;
+}
+
+
 static bool is_reportable(problem_data_t *problem_data, GHashTable *settings)
 {
     const char *component = problem_data_get_content_or_NULL(problem_data,
@@ -398,31 +426,34 @@ static GHashTable *load_settings(const char *conf_file)
     return g_steal_pointer(&settings);
 }
 
-static char *make_request_body(problem_report_t *report)
+static char *make_project_url(const char *component, GHashTable *settings)
+{
+    const char *root = g_hash_table_lookup(settings, "GitlabURL");
+    const char *project = g_hash_table_lookup(settings, "GitlabProject");
+
+    g_autofree const char *path = g_strdup_printf("/api/v4/projects/%s%%2F%s",
+            project, component);
+
+    return g_build_path("/", root, path, NULL);
+}
+
+static char *make_request_body(problem_report_t *report, const char *appendix)
 {
     const char *subject = problem_report_get_summary(report);
     if (!subject)
         error_msg_and_die(_("Could not obtain problem report subject"));
 
-    const char *description = problem_report_get_description(report);
-    if (!description)
+    const char *report_description = problem_report_get_description(report);
+    if (!report_description)
         error_msg_and_die(_("Could not obtain problem report description"));
+
+    g_autofree const char *description = g_strdup_printf("%s\n%s", report_description,
+                                                         appendix ? appendix : "");
 
     g_autofree const char *issue_title = g_uri_escape_string(subject, NULL, false);
     g_autofree const char *issue_description = g_uri_escape_string(description, NULL, false);
 
     return g_strdup_printf("title=%s&description=%s", issue_title, issue_description);
-}
-
-static char *make_url(const char *component, GHashTable *settings)
-{
-    const char *root = g_hash_table_lookup(settings, "GitlabURL");
-    const char *project = g_hash_table_lookup(settings, "GitlabProject");
-
-    g_autofree const char *path = g_strdup_printf("/api/v4/projects/%s%%2F%s/issues",
-            project, component);
-
-    return g_build_path("/", root, path, NULL);
 }
 
 static void submit_issue(const char *dump_dir_name, problem_data_t *problem_data,
@@ -457,26 +488,52 @@ static void submit_issue(const char *dump_dir_name, problem_data_t *problem_data
         NULL
     };
 
-    /* Prepare the request and POST it. */
-    g_autofree char *url = make_url(component, settings);
-    g_autofree char *body = make_request_body(report);
-
-    log_notice("Creating a new GitLab issue");
+    /* Compute the flags bitfield for the requests. */
     int post_flags = POST_WANT_BODY | POST_WANT_HEADERS | POST_WANT_ERROR_MSG;
     if (!g_hash_table_contains(settings, "SSLVerify") ||
         libreport_string_to_bool(g_hash_table_lookup(settings, "SSLVerify")))
     {
         post_flags |= POST_WANT_SSL_VERIFY;
     }
+
+    g_autofree char *project_url = make_project_url(component, settings);
+    g_autofree char *uploads_url = g_strdup_printf("%s/uploads", project_url);
+
+    /* Upload attachments. */
+    log_warning(_("Uploading attachments"));
+    GString *attachments_markdown = g_string_new("Attachments:");
+    GList *attachment = problem_report_get_attachments(report);
+    for (; attachment != NULL; attachment = attachment->next)
+    {
+        const char *item_name = (const char *)attachment->data;
+        struct problem_item *item = problem_data_get_item_or_NULL(problem_data, item_name);
+        assert(item != NULL);
+
+        g_autofree char *upload_url = upload_attachment(item_name, item, uploads_url,
+                                                        post_flags, headers);
+        if (!upload_url)
+            continue;
+
+        g_string_append_printf(attachments_markdown, "\n[%s](%s)", item_name, upload_url);
+    }
+
+    g_autofree char *uploads_markdown = g_string_free(attachments_markdown, FALSE);
+    attachments_markdown = NULL;
+
+    /* Prepare the request for issue submission and POST it. */
+    g_autofree char *issues_url = g_strdup_printf("%s/issues", project_url);
+    g_autofree char *body = make_request_body(report, uploads_markdown);
+
+    log_notice("Creating a new GitLab issue");
     post_state_t *post_state = new_post_state(post_flags);
-    int response = post_string(post_state, url, "application/x-www-form-urlencoded",
+    int response = post_string(post_state, issues_url, "application/x-www-form-urlencoded",
                                headers, body);
 
     if (response < 0)
     {
         const char *error_msg = post_state->curl_error_msg;
         error_msg_and_die(_("Issue could not be submitted to GitLab. %s"),
-                        error_msg ? error_msg : "Reason unknown");
+                          error_msg ? error_msg : "Reason unknown");
     }
 
     int response_code = post_state->http_resp_code;
@@ -491,9 +548,55 @@ static void submit_issue(const char *dump_dir_name, problem_data_t *problem_data
 
     log_notice("Server response OK");
 
-    g_autofree const char *issue_url = get_new_issue_url(response_body);
-    log_warning(_("New issue created at %s"), issue_url);
+    g_autofree const char *new_issue_url = get_new_issue_url(response_body);
+    log_warning(_("New issue created at %s"), new_issue_url);
 
     /* Store a link to the created issue in the reported_to entry. */
-    add_reported_to_entry(dump_dir_name, issue_url);
+    add_reported_to_entry(dump_dir_name, new_issue_url);
+}
+
+static char *upload_attachment(const char *item_name, struct problem_item *item,
+        const char *url, int post_flags, const char **headers)
+{
+    if (!(item->flags & (CD_FLAG_BIN | CD_FLAG_TXT)))
+    {
+        log_notice("Item '%s' neither binary nor text. Skipping", item_name);
+        return NULL;
+    }
+
+    post_state_t *post_state = new_post_state(post_flags);
+    int response = -1;
+    if (item->flags & CD_FLAG_BIN)
+    {
+        log_notice("Uploading item '%s' as a binary file", item_name);
+        response = post_file_as_form(post_state, url, "multipart/form-data", headers, item->content);
+    }
+    else
+    {
+        log_notice("Uploading item '%s' as text", item_name);
+        response = post_string_as_form_data(post_state, url, "multipart/form-data", headers, item->content);
+    }
+
+    if (response < 0)
+    {
+        const char *error_msg = post_state->curl_error_msg;
+        log_error(_("Could not upload item '%s'. %s"),
+                  item_name, error_msg ? error_msg : "Reason unknown");
+
+        post_state->headers = NULL;
+        free_post_state(post_state);
+        return NULL;
+    }
+
+    int response_code = post_state->http_resp_code;
+    char *response_body = g_steal_pointer(&post_state->body);
+
+    post_state->headers = NULL;
+    free_post_state(post_state);
+
+    check_response(response_code, 201);
+
+    log_notice("Server response OK");
+
+    return get_upload_url(response_body);
 }
