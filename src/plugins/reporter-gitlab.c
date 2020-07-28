@@ -24,6 +24,10 @@
 
 static void add_reported_to_entry(const char *dump_dir_name, const char *issue_url);
 static bool check_if_reported(const char *dump_dir_name);
+static void check_response(int response, int expected);
+static char *find_duplicate(problem_data_t *problem_data, GHashTable *settings);
+static char *get_first_issue_url(const char *response);
+static char *get_issue_url(json_object *issue_object);
 static char *get_new_issue_url(const char *response);
 static bool is_reportable(problem_data_t *problem_data, GHashTable *settings);
 static GHashTable *load_settings(const char *conf_file);
@@ -124,7 +128,14 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    /* TODO: Search for duplicates. */
+    log_warning(_("Searching for duplicates"));
+    g_autofree char *duplicate_url = find_duplicate(problem_data, settings);
+    if (duplicate_url)
+    {
+        log_warning(_("A problem with the same duphash has already been reported at %s"),
+                    duplicate_url);
+        return 0;
+    }
 
     /* Submit the report as a new issue. */
     submit_issue(dump_dir_name, problem_data, settings, format_file);
@@ -167,10 +178,136 @@ static bool check_if_reported(const char *dump_dir_name)
 
     g_autofree char *msg = g_strdup_printf(
             _("This problem has already been reported to GitLab, see %s"
-              " Do you still want to create a new bug?"),
+              " Do you still want to create a new issue?"),
             url);
 
     return !libreport_ask_yes_no(msg);
+}
+
+static void check_response(int response_code, int expected)
+{
+    if (response_code == 404 || response_code == 403)
+        error_msg_and_die(_("The GitLab API could not be reached (response code %d)."
+                            " Please make sure the URL for the GitLab instance is set"
+                            " up correctly (check the 'GitlabURL' and 'GitlabProject'"
+                            " settings)"),
+                          response_code);
+    if (response_code == 401)
+        error_msg_and_die(_("The GitLab API returned a 401 Unauthorized response."
+                            " Please make sure you have entered the correct GitLab"
+                            " project and credentials (check the 'GitlabProject' and"
+                            " 'PrivateToken' settings)"));
+    if (response_code != expected)
+        error_msg_and_die(_("Unexepected server reponse. Got status code %d"),
+                          response_code);
+}
+
+static char *find_duplicate(problem_data_t *problem_data, GHashTable *settings)
+{
+    const char *duphash = problem_data_get_content_or_NULL(problem_data,
+            FILENAME_DUPHASH);
+    if (!duphash)
+    {
+        log_warning(_("Problem has no duphash. Cannot search for duplicates"));
+        return NULL;
+    }
+
+    const char *component = problem_data_get_content_or_NULL(problem_data,
+            FILENAME_COMPONENT);
+    /* Shouldn't be NULL. Already checked in is_reportable(). */
+    assert(component != NULL);
+
+    const char *private_token = g_hash_table_lookup(settings, "PrivateToken");
+    if (private_token == NULL)
+        error_msg_and_die(_("GitLab personal access token not found."
+                            " Please check the 'PrivateToken' setting"));
+
+    g_autofree const char *header_private_token = g_strdup_printf("Private-Token: %s",
+            private_token);
+    const char *headers[] = {
+        "Accept: application/json",
+        header_private_token,
+        NULL
+    };
+
+    /* Prepare the request and GET it. */
+    g_autofree char *base_url = make_url(component, settings);
+    g_autofree char *full_url = g_strdup_printf("%s?search=abrt_hash%%3A%s&in=description",
+                                                base_url, duphash);
+
+    int post_flags = POST_WANT_BODY | POST_WANT_HEADERS | POST_WANT_ERROR_MSG;
+    if (!g_hash_table_contains(settings, "SSLVerify") ||
+        libreport_string_to_bool(g_hash_table_lookup(settings, "SSLVerify")))
+    {
+        post_flags |= POST_WANT_SSL_VERIFY;
+    }
+    post_state_t *post_state = new_post_state(post_flags);
+    int response = post(post_state, full_url, NULL, headers, NULL, POST_DATA_GET);
+
+    if (response < 0)
+    {
+        const char *error_msg = post_state->curl_error_msg;
+        log_warning(_("Could not search GitLab issues. %s"),
+                      error_msg ? error_msg : "Reason unknown");
+        return NULL;
+    }
+
+    int response_code = post_state->http_resp_code;
+    char *response_body = g_steal_pointer(&post_state->body);
+
+    /* Let GLib autocleanup take care of the dynamically allocated headers. */
+    post_state->headers = NULL;
+    free_post_state(post_state);
+
+    /* Check for erroneus responses. 200 OK is the expected response. */
+    check_response(response_code, 200);
+
+    log_notice("Server response OK");
+
+    return get_first_issue_url(response_body);
+}
+
+static char *get_first_issue_url(const char *response)
+{
+    enum json_tokener_error error;
+    json_object *json_root = json_tokener_parse_verbose(response, &error);
+    if (!json_root)
+        error_msg_and_die(_("Could not parse JSON response from API. Reason: %s"),
+                          json_tokener_error_desc(error));
+
+    if (!json_object_is_type(json_root, json_type_array))
+        error_msg_and_die(_("Error parsing JSON response: Root element is not an array"));
+
+    size_t length = json_object_array_length(json_root);
+    if (length == 0)
+    {
+        log_notice("Search results empty");
+        json_object_put(json_root);
+        return NULL;
+    }
+
+    log_notice("Picking the first issue among %zu search results", length);
+
+    json_object *child = json_object_array_get_idx(json_root, 0);
+    /* Should never happen since size is nonzero. */
+    assert(child != NULL);
+
+    char *url = get_issue_url(child);
+
+    json_object_put(json_root);
+    return url;
+}
+
+static char *get_issue_url(json_object *issue_object)
+{
+    json_object *web_url = NULL;
+    if (!json_object_object_get_ex(issue_object, "web_url", &web_url))
+        error_msg_and_die(_("Error parsing JSON response: Entry 'web_url' not found"));
+
+    if (!json_object_is_type(web_url, json_type_string))
+        error_msg_and_die(_("Error parsing JSON response: Entry 'web_url' is not a string"));
+
+    return g_strdup(json_object_get_string(web_url));
 }
 
 static char *get_new_issue_url(const char *response)
@@ -181,14 +318,10 @@ static char *get_new_issue_url(const char *response)
         error_msg_and_die(_("Could not parse JSON response from API. Reason: %s"),
                           json_tokener_error_desc(error));
 
-    json_object *child = NULL;
-    if (!json_object_object_get_ex(json_root, "web_url", &child))
-        error_msg_and_die(_("Error parsing JSON response: Entry 'web_url' not found"));
+    if (!json_object_is_type(json_root, json_type_object))
+        error_msg_and_die(_("Error parsing JSON response: Root element is not an object"));
 
-    if (!json_object_is_type(child, json_type_string))
-        error_msg_and_die(_("Error parsing JSON response: Entry 'web_url' is not a string"));
-
-    char *url = g_strdup(json_object_get_string(child));
+    char *url = get_issue_url(json_root);
 
     json_object_put(json_root);
     return url;
@@ -222,14 +355,12 @@ static bool is_reportable(problem_data_t *problem_data, GHashTable *settings)
 
 static GHashTable *load_settings(const char *conf_file)
 {
-    /* TODO: Store in a struct rather than in a map? */
     g_autoptr(GHashTable) settings = g_hash_table_new_full(g_str_hash, g_str_equal,
             g_free, g_free);
 
     if (!libreport_load_conf_file(conf_file, settings, /*skip keys w/o value:*/ false))
         log_warning(_("Could not load settings from '%s'"), conf_file);
 
-    /* TODO: Too repetitive. Fact our for wider use? */
     const char *value = getenv("Gitlab_GitlabProject");
     if (value != NULL)
         g_hash_table_replace(settings, g_strdup("GitlabProject"), g_strdup(value));
@@ -250,11 +381,14 @@ static GHashTable *load_settings(const char *conf_file)
     if (value != NULL)
         g_hash_table_replace(settings, g_strdup("Allowlist"), g_strdup(value));
 
-    /* TODO: Check for emptiness. */
     if (!g_hash_table_contains(settings, "GitlabProject") ||
         !g_hash_table_contains(settings, "GitlabURL") ||
         !g_hash_table_contains(settings, "PrivateToken") ||
-        !g_hash_table_contains(settings, "Allowlist"))
+        !g_hash_table_contains(settings, "Allowlist") ||
+        !strlen(g_hash_table_lookup(settings, "GitlabProject")) ||
+        !strlen(g_hash_table_lookup(settings, "GitlabURL")) ||
+        !strlen(g_hash_table_lookup(settings, "PrivateToken")) ||
+        !strlen(g_hash_table_lookup(settings, "Allowlist")))
     {
         error_msg_and_die(_("One or more of the required settings are missing:"
                             " 'GitlabProject', 'GitlabURL', 'PrivateToken' and 'Allowlist'"
@@ -328,8 +462,13 @@ static void submit_issue(const char *dump_dir_name, problem_data_t *problem_data
     g_autofree char *body = make_request_body(report);
 
     log_notice("Creating a new GitLab issue");
-    post_state_t *post_state = new_post_state(POST_WANT_BODY | POST_WANT_HEADERS |
-                                              POST_WANT_ERROR_MSG | POST_WANT_SSL_VERIFY);
+    int post_flags = POST_WANT_BODY | POST_WANT_HEADERS | POST_WANT_ERROR_MSG;
+    if (!g_hash_table_contains(settings, "SSLVerify") ||
+        libreport_string_to_bool(g_hash_table_lookup(settings, "SSLVerify")))
+    {
+        post_flags |= POST_WANT_SSL_VERIFY;
+    }
+    post_state_t *post_state = new_post_state(post_flags);
     int response = post_string(post_state, url, "application/x-www-form-urlencoded",
                                headers, body);
 
@@ -348,25 +487,12 @@ static void submit_issue(const char *dump_dir_name, problem_data_t *problem_data
     free_post_state(post_state);
 
     /* Check for erroneus responses. 201 Created is the expected response. */
-    if (response_code == 404 || response_code == 403)
-        error_msg_and_die(_("The GitLab API could not be reached (response code %d)."
-                            " Please make sure the URL for the GitLab instance is set"
-                            " up correctly (check the 'GitlabURL' and 'GitlabProject'"
-                            " settings)"),
-                          response_code);
-    if (response_code == 401)
-        error_msg_and_die(_("The GitLab API returned a 401 Unauthorized response."
-                            " Please make sure you have entered the correct GitLab"
-                            " project and credentials (check the 'GitlabProject' and"
-                            " 'PrivateToken' settings)"));
-    if (response_code != 201)
-        error_msg_and_die(_("Unexepected server reponse. Got status code %d"),
-                          response_code);
+    check_response(response_code, 201);
 
-    log_notice("Server response OK.");
+    log_notice("Server response OK");
 
     g_autofree const char *issue_url = get_new_issue_url(response_body);
-    log_warning("New issue created at %s", issue_url);
+    log_warning(_("New issue created at %s"), issue_url);
 
     /* Store a link to the created issue in the reported_to entry. */
     add_reported_to_entry(dump_dir_name, issue_url);
