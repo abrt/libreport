@@ -62,6 +62,7 @@ main(int    argc,
 
     g_test_add_data_func("/decompression/lz4", "data/compressed-file.lz4", test_decompression);
     g_test_add_data_func("/decompression/lzma", "data/compressed-file.xz", test_decompression);
+    g_test_add_data_func("/decompression/zstd", "data/compressed-file.zst", test_decompression);
 
     return g_test_run();
 }
