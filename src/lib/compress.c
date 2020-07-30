@@ -18,190 +18,87 @@
 */
 #include "internal_libreport.h"
 
-#include <lzma.h>
-#include <lz4frame.h>
-
-static const uint8_t s_xz_magic[6] = { 0xFD, 0x37, 0x7A, 0x58, 0x5A, 0x00 };
-static const uint8_t s_lz4_magic[4] = { 0x04, 0x22, 0x4D, 0x18 };
-
-static bool
-is_format(const char *name, const uint8_t *header, size_t hl, const uint8_t *magic, size_t ml)
-{
-    if (hl < ml)
-    {
-        log_warning("Too short header to detect '%s' file format.", name);
-        return false;
-    }
-
-    return memcmp(header, magic, ml) == 0;
-}
-
-static int
-decompress_fd_xz(int fdi, int fdo)
-{
-    uint8_t buf_in[BUFSIZ];
-    uint8_t buf_out[BUFSIZ];
-
-    lzma_stream strm = LZMA_STREAM_INIT;
-    lzma_ret ret = lzma_stream_decoder(&strm, UINT64_MAX, 0);
-    if (ret != LZMA_OK)
-    {
-        close(fdi);
-        close(fdo);
-        log_error("Failed to initialize XZ decoder: code %d", ret);
-        return -ENOMEM;
-    }
-
-    lzma_action action = LZMA_RUN;
-
-    strm.next_out = buf_out;
-    strm.avail_out = sizeof(buf_out);
-
-    for (;;)
-    {
-        if (strm.avail_in == 0 && action == LZMA_RUN)
-        {
-            strm.next_in = buf_in;
-            strm.avail_in = libreport_safe_read(fdi, buf_in, sizeof(buf_in));
-
-            if (strm.avail_in < 0)
-            {
-                perror_msg("Failed to read source core file");
-                close(fdi);
-                close(fdo);
-                lzma_end(&strm);
-                return -1;
-            }
-
-            if (strm.avail_in == 0)
-                action = LZMA_FINISH;
-        }
-
-        ret = lzma_code(&strm, action);
-
-        if (strm.avail_out == 0 || ret == LZMA_STREAM_END)
-        {
-            const ssize_t n = sizeof(buf_out) - strm.avail_out;
-            if (n != libreport_safe_write(fdo, buf_out, n))
-            {
-                perror_msg("Failed to write decompressed data");
-                close(fdi);
-                close(fdo);
-                lzma_end(&strm);
-                return -1;
-            }
-
-            if (ret == LZMA_STREAM_END)
-            {
-                log_debug("Successfully decompressed coredump.");
-                break;
-            }
-
-            strm.next_out = buf_out;
-            strm.avail_out = sizeof(buf_out);
-        }
-    }
-
-    return 0;
-}
-
-static int
-decompress_fd_lz4(int fdi, int fdo)
-{
-    enum { LZ4_DEC_BUF_SIZE = 64*1024u };
-
-    LZ4F_decompressionContext_t ctx = NULL;
-    LZ4F_errorCode_t c;
-    g_autofree char *buf = NULL;
-    char *src = NULL;
-    int r = 0;
-    struct stat fdist;
-
-    c = LZ4F_createDecompressionContext(&ctx, LZ4F_VERSION);
-    if (LZ4F_isError(c))
-    {
-        log_debug("Failed to initialized LZ4: %s", LZ4F_getErrorName(c));
-        r = -ENOMEM;
-        goto cleanup;
-    }
-
-    buf = malloc(LZ4_DEC_BUF_SIZE);
-    if (!buf)
-    {
-        r = -errno;
-        goto cleanup;
-    }
-
-    if (fstat(fdi, &fdist) < 0)
-    {
-        r = -errno;
-        log_debug("Failed to stat the input fd");
-        goto cleanup;
-    }
-
-    src = mmap(NULL, fdist.st_size, PROT_READ, MAP_PRIVATE, fdi, 0);
-    if (!src)
-    {
-        r = -errno;
-        log_debug("Failed to mmap the input fd");
-        goto cleanup;
-    }
-
-    off_t total_in = 0;
-    while (fdist.st_size != total_in)
-    {
-        size_t used = fdist.st_size - total_in;
-        size_t produced = LZ4_DEC_BUF_SIZE;
-
-        c = LZ4F_decompress(ctx, buf, &produced, src + total_in, &used, NULL);
-        if (LZ4F_isError(c))
-        {
-            log_debug("Failed to decode LZ4 block: %s", LZ4F_getErrorName(c));
-            r = -EBADMSG;
-            goto cleanup;
-        }
-
-        r = libreport_safe_write(fdo, buf, produced);
-        if (r < 0)
-        {
-            log_debug("Failed to write decoded block");
-            goto cleanup;
-        }
-
-        total_in += used;
-    }
-    r = 0;
-
-cleanup:
-    if (ctx != NULL)
-        LZ4F_freeDecompressionContext(ctx);
-
-    if (src != NULL)
-        munmap(src, fdist.st_size);
-
-    return r;
-}
+#include <archive.h>
 
 int libreport_decompress_fd(int fdi, int fdo)
 {
-    uint8_t header[6];
+#define kiB * 1024
+#define BUFFER_SIZE 16 kiB
+    int retval;
+    struct archive *archive;
+    struct archive_entry *entry;
+    int r;
 
-    if (sizeof(header) != libreport_safe_read(fdi, header, sizeof(header)))
+    retval = 0;
+    archive = archive_read_new();
+
+    archive_read_support_filter_all(archive);
+    archive_read_support_format_raw(archive);
+
+    r = archive_read_open_fd(archive, fdi, BUFFER_SIZE);
+    if (r != ARCHIVE_OK)
     {
-        perror_msg("Failed to read header bytes");
-        return -1;
+        const char *error_string;
+
+        error_string = archive_error_string(archive);
+
+        log_error("Reading archive failed: %s", error_string);
+
+        retval = -1;
+
+        goto cleanup;
+    }
+    r = archive_read_next_header(archive, &entry);
+    if (r != ARCHIVE_OK)
+    {
+        const char *error_string;
+
+        error_string = archive_error_string(archive);
+
+        log_error("Reading archive header failed: %s", error_string);
+
+        retval = -1;
+
+        goto cleanup;
     }
 
-    libreport_xlseek(fdi, 0, SEEK_SET);
+    for (; ; )
+    {
+        uint8_t buffer[BUFFER_SIZE] = { 0 };
+        ssize_t size;
 
-    if (is_format("xz", header, sizeof(header), s_xz_magic, sizeof(s_xz_magic)))
-        return decompress_fd_xz(fdi, fdo);
+        size = archive_read_data(archive, buffer, sizeof(buffer));
+        if (size < 0)
+        {
+            const char *error_string;
 
-    if (is_format("lz4", header, sizeof(header), s_lz4_magic, sizeof(s_lz4_magic)))
-        return decompress_fd_lz4(fdi, fdo);
+            error_string = archive_error_string(archive);
 
-    error_msg("Unsupported file format");
-    return -1;
+            log_error("Reading compressed data failed: %s", error_string);
+
+            retval = -1;
+
+            break;
+        }
+        if (size == 0)
+        {
+            break;
+        }
+
+        if (libreport_safe_write(fdo, buffer, size) < 0)
+        {
+            retval = -1;
+
+            log_error("Failed to write out decompressed data");
+
+            break;
+        }
+    }
+
+cleanup:
+    archive_read_free(archive);
+
+    return retval;
 }
 
 int libreport_decompress_file_ext_at(const char *path_in, int dir_fd, const char *path_out, mode_t mode_out,

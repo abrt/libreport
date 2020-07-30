@@ -50,13 +50,11 @@ BuildRequires: doxygen
 BuildRequires: systemd-devel%{?_isa}
 BuildRequires: augeas-devel
 BuildRequires: augeas
-BuildRequires: xz-devel%{?_isa}
-BuildRequires: lz4-devel%{?_isa}
+BuildRequires: libarchive-devel%{?_isa}
 Requires: libreport-filesystem = %{version}-%{release}
 Requires: satyr%{?_isa} >= 0.24
 Requires: glib2%{?_isa} >= %{glib_ver}
-Requires: xz%{?_isa}
-Requires: lz4%{?_isa}
+Requires: libarchive%{?_isa}
 Requires: nettle%{?_isa}
 
 # Required for the temporary modularity hack, see below

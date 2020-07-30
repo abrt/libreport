@@ -19,7 +19,8 @@ TESTS = $(check_PROGRAMS)
 EXTRA_DIST = \
 	data/compressed-file \
 	data/compressed-file.lz4 \
-	data/compressed-file.xz
+	data/compressed-file.xz \
+	data/compressed-file.zst
 
 package.m4: Makefile.in
 	{ \
