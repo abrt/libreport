@@ -158,8 +158,8 @@ FILE *g_testsuite_output_stream = 0;
 
 #define _TS_ASSERT_BOOLEAN(expression, expected, message) \
     do { \
-        const int result = (expression); \
-        if (result == expected) { \
+        const int l_ts_result = (expression); \
+        if (l_ts_result == expected) { \
             TS_SUCCESS("%s ("#expression" == %s)\n", message ? message : "Assert", expected ? "TRUE" : "FALSE"); \
         }\
         else { \
