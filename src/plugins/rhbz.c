@@ -751,7 +751,7 @@ void rhbz_mail_to_cc(struct abrt_xmlrpc *ax, int bug_id, const char *mail, int f
     xmlrpc_value *result;
     int minor_update = !!IS_MINOR_UPDATE(flags);
     /* Bugzilla 4.0+ uses this API: */
-    result = abrt_xmlrpc_call(ax, "Bug.update", "{s:(i),s:{s:(s),s:i}}",
+    result = abrt_xmlrpc_call(ax, "Bug.update", "{s:(i),s:{s:(s)},s:i}",
                               "ids", bug_id,
                               "cc", "add", mail,
                                     "minor_update", minor_update
