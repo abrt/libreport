@@ -364,28 +364,6 @@ soap_request_to_str(const soap_request_t *req)
     return ret;
 }
 
-#if 0
-void
-soap_request_print(soap_request_t *req)
-{
-    if (req == NULL || req->sr_root == NULL || req->sr_root->doc == NULL)
-        error_msg_and_die(_("SOAP: Failed to print SOAP string."));
-
-    xmlBufferPtr buffer = xmlBufferCreate();
-    int err = xmlNodeDump(buffer, req->sr_root->doc, req->sr_root, 1, /* formatting */ 0);
-    if (err == -1)
-    {
-        xmlBufferFree(buffer);
-        error_msg_and_die(_("Failed to dump xml node."));
-    }
-
-    puts((const char *) xmlBufferContent(buffer));
-
-    xmlBufferFree(buffer);
-    return;
-}
-#endif
-
 static bool
 reader_move_reader_if_node_type_is_element_with_name_and_verify_its_value(xmlTextReaderPtr reader, const char *name)
 {

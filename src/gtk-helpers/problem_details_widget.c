@@ -147,16 +147,6 @@ problem_details_widget_add_multi_line(ProblemDetailsWidget *self, const char *na
     if (g_provider == NULL)
         load_css_style();
 
-#if 0
-    GtkWidget *value = gtk_text_view_new();
-    gtk_text_view_set_editable(GTK_TEXT_VIEW(value), FALSE);
-
-    if (strcmp(name, FILENAME_COMMENT) == 0
-            || strcmp(name, FILENAME_REASON) == 0)
-        gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(value), GTK_WRAP_WORD);
-
-    libreport_reload_text_to_text_view(GTK_TEXT_VIEW(value), content);
-#else
     GtkWidget *value = gtk_label_new(content);
     gtk_widget_set_halign(value, GTK_ALIGN_START);
 
@@ -169,7 +159,6 @@ problem_details_widget_add_multi_line(ProblemDetailsWidget *self, const char *na
     }
 
     gtk_label_set_selectable(GTK_LABEL(value), TRUE);
-#endif
 
     gtk_widget_set_name(GTK_WIDGET(value), "value");
 

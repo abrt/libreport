@@ -557,9 +557,6 @@ int main(int argc, char **argv)
         log_warning(_("Logging out"));
         rhbz_logout(client);
 
-#if 0  /* enable if you search for leaks (valgrind etc) */
-        abrt_xmlrpc_free_client(client);
-#endif
         return 0;
     }
 
@@ -983,12 +980,5 @@ int main(int argc, char **argv)
         dd_close(dd);
     }
 
-#if 0  /* enable if you search for leaks (valgrind etc) */
-    free(rhbz.b_product);
-    free(rhbz.b_product_version);
-    problem_data_free(problem_data);
-    free_bug_info(bz);
-    abrt_xmlrpc_free_client(client);
-#endif
     return 0;
 }
