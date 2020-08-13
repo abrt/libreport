@@ -409,15 +409,7 @@ post(post_state_t *state,
         const char *basename = strrchr(data, '/');
         if (basename) basename++;
         else basename = data;
-#if 0
-        // Simple way, without custom reader function
-        CURLFORMcode curlform_err = curl_formadd(&post, &last,
-                        CURLFORM_PTRNAME, "file", // element name
-                        CURLFORM_FILE, data, // filename to read from
-                        CURLFORM_CONTENTTYPE, content_type,
-                        CURLFORM_FILENAME, basename, // filename to put in the form
-                        CURLFORM_END);
-#else
+
         data_file = fopen(data, "r");
         if (!data_file)
         {
@@ -440,7 +432,7 @@ post(post_state_t *state,
                         CURLFORM_CONTENTTYPE, content_type,
                         CURLFORM_FILENAME, basename, // filename to put in the form
                         CURLFORM_END);
-#endif
+
         if (curlform_err != 0)
 //FIXME:
             error_msg_and_die("out of memory or read error (curl_formadd error code: %d)", (int)curlform_err);
@@ -507,21 +499,6 @@ post(post_state_t *state,
 // apparently with POST->GET remapping - which server didn't like at all.
 // Attempted to suppress remapping on 305 using CURLOPT_POSTREDIR of -1,
 // but it still did not work.
-#if 0
-    // Please handle 301/302 redirects for me
-    xcurl_easy_setopt_long(handle, CURLOPT_FOLLOWLOCATION, 1);
-    xcurl_easy_setopt_long(handle, CURLOPT_MAXREDIRS, 10);
-    // Bitmask to control how libcurl acts on redirects after POSTs.
-    // Bit 0 set (value CURL_REDIR_POST_301) makes libcurl
-    // not convert POST requests into GET requests when following
-    // a 301 redirection. Bit 1 (value CURL_REDIR_POST_302) makes libcurl
-    // maintain the request method after a 302 redirect.
-    // CURL_REDIR_POST_ALL is a convenience define that sets both bits.
-    // The non-RFC behaviour is ubiquitous in web browsers, so the library
-    // does the conversion by default to maintain consistency.
-    // However, a server may require a POST to remain a POST.
-    xcurl_easy_setopt_long(handle, CURLOPT_POSTREDIR, -1L /*CURL_REDIR_POST_ALL*/ );
-#endif
 
     // Prepare for saving information
     if (state->flags & POST_WANT_HEADERS)

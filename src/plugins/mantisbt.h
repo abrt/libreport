@@ -103,10 +103,6 @@ void soap_request_add_credentials_parameter(soap_request_t *req, const mantisbt_
 
 char *soap_request_to_str(const soap_request_t *req);
 
-#if 0
-void soap_request_print(soap_request_t *req);
-#endif
-
 GList * response_get_main_ids_list(const char *xml);
 int response_get_main_id(const char *xml);
 void response_values_free(GList *values);

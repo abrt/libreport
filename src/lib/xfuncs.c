@@ -225,24 +225,6 @@ void libreport_xunlinkat(int dir_fd, const char *pathname, int flags)
         perror_msg_and_die("Can't remove file '%s'", pathname);
 }
 
-#if 0 //UNUSED
-// Warn if we can't open a file and return a fd.
-int open3_or_warn(const char *pathname, int flags, int mode)
-{
-    int ret;
-    ret = open(pathname, flags, mode);
-    if (ret < 0)
-        perror_msg("Can't open '%s'", pathname);
-    return ret;
-}
-
-// Warn if we can't open a file and return a fd.
-int open_or_warn(const char *pathname, int flags)
-{
-    return open3_or_warn(pathname, flags, 0666);
-}
-#endif
-
 /* Just testing dent->d_type == DT_REG is wrong: some filesystems
  * do not report the type, they report DT_UNKNOWN for every dirent
  * (and this is not a bug in filesystem, this is allowed by standards).
