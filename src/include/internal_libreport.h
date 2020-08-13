@@ -268,11 +268,6 @@ bool libreport_is_in_comma_separated_list_of_glob_patterns(const char *value, co
  */
 void libreport_glib_init(void);
 
-/* Frees every element'd data using free(),
- * then frees list itself using g_list_free(list):
- */
-void libreport_list_free_with_free(GList *list);
-
 double libreport_get_dirsize(const char *pPath);
 double libreport_get_dirsize_find_largest_dir(
                 const char *pPath,

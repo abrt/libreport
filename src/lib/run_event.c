@@ -125,7 +125,7 @@ void free_rule_list(GList *rule_list)
     while (rule_list)
     {
         struct rule *cur_rule = rule_list->data;
-        libreport_list_free_with_free(cur_rule->conditions);
+        g_list_free_full(cur_rule->conditions, free);
         free(cur_rule->command);
         free(cur_rule);
 
@@ -442,7 +442,7 @@ static char* pop_next_command(GList **pp_rule_list,
         /* We are here if all conditions are satisfied */
         /* IOW, we found rule to run, delete it and return its command */
         *pp_rule_list = g_list_remove(*pp_rule_list, cur_rule);
-        libreport_list_free_with_free(cur_rule->conditions);
+        g_list_free_full(cur_rule->conditions, free);
         command = cur_rule->command;
         /*free(cur_rule->command); - WRONG! we are returning it! */
         free(cur_rule);

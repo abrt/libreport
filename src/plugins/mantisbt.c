@@ -104,8 +104,8 @@ mantisbt_issue_info_free(mantisbt_issue_info_t *info)
     free(info->mii_reporter);
     free(info->mii_project);
 
-    libreport_list_free_with_free(info->mii_notes);
-    libreport_list_free_with_free(info->mii_attachments);
+    g_list_free_full(info->mii_notes, free);
+    g_list_free_full(info->mii_attachments, free);
 
     free(info);
 }
