@@ -2151,7 +2151,7 @@ static void search_item_to_list_store_item(GtkListStore *store, GtkTreeIter *new
             -1);
 }
 
-static bool highligh_words_in_textview(int page, GtkTextView *tev, GList *words, GList *ignored_words, bool case_insensitive)
+static bool highlight_words_in_textview(int page, GtkTextView *tev, GList *words, GList *ignored_words, bool case_insensitive)
 {
     GtkTextBuffer *buffer = gtk_text_view_get_buffer(tev);
     gtk_text_buffer_set_modified(buffer, FALSE);
@@ -2304,7 +2304,7 @@ static gboolean highligh_words_in_tabs(GList *forbidden_words,  GList *allowed_w
             continue;
 
         GtkTextView *tev = GTK_TEXT_VIEW(gtk_bin_get_child(GTK_BIN(notebook_child)));
-        found |= highligh_words_in_textview(page, tev, forbidden_words, allowed_words, case_insensitive);
+        found |= highlight_words_in_textview(page, tev, forbidden_words, allowed_words, case_insensitive);
     }
 
     GtkTreeIter iter;
@@ -2723,7 +2723,7 @@ static void rehighlight_forbidden_words(int page, GtkTextView *tev)
 {
     g_autolist (GList) forbidden_words = libreport_load_words_from_file(FORBIDDEN_WORDS_BLACKLLIST);
     g_autolist (GList) allowed_words = libreport_load_words_from_file(FORBIDDEN_WORDS_WHITELIST);
-    highligh_words_in_textview(page, tev, forbidden_words, allowed_words, /*case sensitive*/false);
+    highlight_words_in_textview(page, tev, forbidden_words, allowed_words, /*case sensitive*/false);
 }
 
 static void on_sensitive_word_selection_changed(GtkTreeSelection *sel, gpointer user_data)
@@ -2752,7 +2752,7 @@ static void on_sensitive_word_selection_changed(GtkTreeSelection *sel, gpointer 
         {
             log_notice("searching again: '%s'", g_search_text);
             GList *searched_words = g_list_append(NULL, (gpointer)g_search_text);
-            highligh_words_in_textview(new_word->page, new_word->tev, searched_words, NULL, /*case insensitive*/true);
+            highlight_words_in_textview(new_word->page, new_word->tev, searched_words, NULL, /*case insensitive*/true);
             g_list_free(searched_words);
         }
 
