@@ -79,8 +79,8 @@ xcurl_easy_setopt_off_t(CURL *handle, CURLoption option, curl_off_t parameter)
 
 CURLcode curl_easy_perform_with_proxy(CURL *handle, const char *url)
 {
-    g_autolist (GList) proxy_list = NULL;
-    GList *li;
+    GList *proxy_list = NULL;
+    GList *li = NULL;
     CURLcode curl_err;
 
     proxy_list = get_proxy_list(url);
@@ -101,6 +101,8 @@ CURLcode curl_easy_perform_with_proxy(CURL *handle, const char *url)
         log_notice("Connecting to %s", url);
         curl_err = curl_easy_perform(handle);
     }
+
+    g_list_free_full(proxy_list, free);
 
     return curl_err;
 }
