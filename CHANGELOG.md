@@ -6,6 +6,33 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.14.0] - 2020-08-13
+### Added
+- forbidden_words: Add potentially sensitive env vars
+- lib: Add version script for libreport
+
+### Changed
+- lib: compress: Use libarchive
+- Replace various utility functions with stock GLib ones
+- gtk,lib: Update symbol list
+
+### Fixed
+- dd: Update dd_get_owner to handle error return values
+- dirsize: Don't pick .lock'd dirs for deletion
+- setgid instead of setuid the abrt-action-install-debuginfo-to-abrt-cache
+- Various coding style improvements
+- Various memory management fixes
+- lib: Check for errors when opening files
+- gtk-helpers: Check return value
+- doc: Exclude more files with --without-bugzilla
+- lib: Don’t use external executables for decompression
+
+### Removed
+- lib: Decommission libreport_list_free_with_free
+- Drop Red Hat Customer Portal reporter
+- ureport: Drop Strata integration
+- lib: Remove creates-items tag parsing in event definitions
+
 ## [2.13.1] - 2020-05-11
 ### Fixed
 Fix broken abrt-vmcore.service due to bad namespacing
@@ -214,7 +241,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.13.1...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.14.0...HEAD
+[2.14.0]: https://github.com/abrt/libreport/compare/2.13.1...2.14.0
 [2.13.1]: https://github.com/abrt/libreport/compare/2.13.0...2.13.1
 [2.13.0]: https://github.com/abrt/libreport/compare/2.12.0...2.13.0
 [2.12.0]: https://github.com/abrt/libreport/compare/2.11.3...2.12.0

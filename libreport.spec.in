@@ -657,6 +657,102 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Thu Aug 13 2020 Michal Fabik <mfabik@redhat.com> 2.14.0-1
+- Update version-info before new release
+- Purge commented-out code
+- lib: Decommission libreport_list_free_with_free
+- cli,lib,gui-wizard-gtk: Fix segfaults
+- gui-wizard-gtk: Fix typo in function name
+- forbidden_words: Add potentially sensitive env vars
+- Update translations
+- lib: compress: Use libarchive
+- Remove remnants of Red Hat Customer Portal support
+- lib,reporter-mantisbt: Fix memory leaks
+- cli-report: Fix a double-free condition
+- reporter-systemd-journal: Fix a double-free
+- tests: Replace salacious strings
+- Drop Red Hat Customer Portal reporter
+- tests: Include test data in the distribution tarball
+- gitignore: Add test-related files
+- tests: Rewrite (de)compression test
+- github: check: Don’t use autogen.sh sysdeps
+- spec: Use architecture-dependent dependencies
+- lib: Fix typo in error message
+- lib: Check for overflow properly
+- lib: Fix potential null pointer dereference
+- lib: Check for errors when opening files
+- gtk-helpers: Check return value
+- lib: Fix resource leaks reported by Coverity
+- rhbz: Wrap long lines
+- tests: Skip Bugzilla tests with --without-bugzilla
+- lib: Don’t use external executables for decompression
+- ureport: Drop Strata integration
+- Add GitHub Actions workflow for building PRs
+- lib: event_config: Don’t free internal GLib string
+- autogen.sh: Pass --assumeyes to dnf
+- gtk,lib: Update symbol list
+- Use g_autoptr where possible
+- Remove unused ato[iu] functions
+- Remove GHashTable aliases
+- Remove redundant search_item functions
+- Replace libreport_ureport_from_dump_dir with libreport_ureport_from_dump_dir_ext
+- Use g_autofree where possible
+- Remove unused libreport_try_get_map_string_item_as_int
+- Remove unused libreport_set_map_string_item_from_int
+- Remove unused libreport_try_get_map_string_item_as_uint
+- Remove unused libreport_set_map_string_item_from_uint
+- Remove unused libreport_try_get_map_string_item_as_string
+- Remove unused libreport_set_map_string_item_from_string_vector
+- Remove unused libreport_try_get_map_string_item_as_string_vector
+- Remove unused libreport_set_map_string_item_from_bool
+- Replace libreport_string_vector_new_from_string with g_strsplit
+- Replace libreport_string_vector_free with g_strfreev
+- Remove unused libreport_size_map_string
+- Replace insert_map_string with g_hash_table_insert
+- Replace libreport_set_map_string_item_from_string with g_hash_table_replace
+- Replace libreport_replace_map_string_item with g_hash_table_replace
+- Replace libreport_next_map_string_iter with g_hash_table_iter_next
+- Replace libreport_remove_map_string_item with g_hash_table_remove
+- Replace libreport_get_map_string_item_or_NULL with g_hash_table_lookup
+- Replace libreport_init_map_string_iter with g_hash_table_iter_init
+- Replace libreport_get_map_string_item_or_empty with g_hash_table_lookup
+- Replace libreport_free_map_string with g_hash_table_destroy
+- Replace libreport_new_map_string with g_hash_table_new_full
+- Remove unused libreport_xstat
+- Replace libreport_xpipe with g_unix_open_pipe
+- Replace libreport_xchdir with g_chdir
+- Replace libreport_concat_path_file with g_build_filename
+- Remove unused strbuf_grow
+- Replace strbuf with GString
+- Replace libreport_suffixcmp with g_str_has_suffix
+- Replace libreport_prefixcmp with g_str_has_prefix
+- Replace g_malloc with g_new for structs
+- Remove unused libreport_xunlink
+- Replace libreport_xopen with g_open
+- Replace libreport_xzalloc with g_malloc0
+- Replace libreport_xrealloc with g_realloc
+- Replace libreport_xmalloc with g_malloc
+- Replace libreport_try_atou with g_ascii_strtoull
+- Replace libreport_xatou with g_ascii_strtoull
+- Replace libreport_xatoi_positive with g_ascii_strtoull
+- Replace libreport_xatoi with g_ascii_strtoll
+- Replace libreport_strtrim with g_strstrip
+- Replace libreport_xstrndup with g_strndup
+- Replace libreport_xstrdup with g_strdup
+- Replace libreport_xasprintf with g_strdup_printf
+- lib: Add version script for libreport
+- git: Add some binaries to gitignore
+- doc: Exclude more files with --without-bugzilla
+- internal: Remove useless #define
+- lib: Remove creates-items tag parsing in event definitions
+- dd: Update dd_get_owner to handle error return values
+- dirsize: Fix leaks
+- dirsize: Don't pick new dir for deletion
+- dirsize: Count size of dir with sosreport.log
+- dirsize: Don't pick .lock'd dirs for deletion
+- Fix -Wmissing-field-initializers across libreport
+- setgid instead of setuid the abrt-action-install-debuginfo-to-abrt-cache [RHBZ 1796245]
+
 * Mon May 11 2020 Michal Fabik <mfabik@redhat.com> 2.13.1-1
 - Update translations
 - Fix a search-and-replace error
