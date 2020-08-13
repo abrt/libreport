@@ -37,7 +37,7 @@ libreport_gtk_la_CPPFLAGS = \
     -DGDK_DISABLE_DEPRECATION_WARNINGS \
     -D_GNU_SOURCE
 libreport_gtk_la_LDFLAGS = \
-    -version-info 0:1:0
+    -version-info 1:0:0
 
 if HAVE_LD_VERSION_SCRIPT
 libreport_gtk_la_LDFLAGS += -Wl,--version-script=$(srcdir)/libreport-gtk.sym
