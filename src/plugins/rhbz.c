@@ -62,7 +62,7 @@ void free_bug_info(struct bug_info *bi)
     free(bi->bi_reporter);
     free(bi->bi_product);
 
-    libreport_list_free_with_free(bi->bi_cc_list);
+    g_list_free_full(bi->bi_cc_list, free);
 
     free(bi);
 }

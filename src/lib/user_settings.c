@@ -140,7 +140,7 @@ GList *libreport_load_words_from_file(const char* filename)
         file_list_cur = g_list_next(file_list_cur);
     }
 
-    libreport_list_free_with_free(file_list);
+    g_list_free_full(file_list, free);
 
     return words_list;
 }

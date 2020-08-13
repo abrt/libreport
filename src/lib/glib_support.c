@@ -77,11 +77,3 @@ GList *libreport_parse_delimited_list(const char *string, const char *delimiter)
 
     return g_list_reverse(list);
 }
-
-void libreport_list_free_with_free(GList *list)
-{
-    GList *li;
-    for (li = list; li; li = g_list_next(li))
-        free(li->data);
-    g_list_free(list);
-}
