@@ -2316,10 +2316,13 @@ static gboolean highligh_words_in_tabs(GList *forbidden_words,  GList *allowed_w
 
 static gboolean highlight_forbidden(void)
 {
-    g_autolist (GList) forbidden_words = libreport_load_words_from_file(FORBIDDEN_WORDS_BLACKLLIST);
-    g_autolist (GList) allowed_words = libreport_load_words_from_file(FORBIDDEN_WORDS_WHITELIST);
+    GList *forbidden_words = libreport_load_words_from_file(FORBIDDEN_WORDS_BLACKLLIST);
+    GList *allowed_words = libreport_load_words_from_file(FORBIDDEN_WORDS_WHITELIST);
 
     const gboolean result = highligh_words_in_tabs(forbidden_words, allowed_words, /*case sensitive*/false);
+
+    g_list_free_full(allowed_words, free);
+    g_list_free_full(forbidden_words, free);
 
     return result;
 }
@@ -2721,9 +2724,13 @@ static gint select_next_page_no(gint current_page_no)
 
 static void rehighlight_forbidden_words(int page, GtkTextView *tev)
 {
-    g_autolist (GList) forbidden_words = libreport_load_words_from_file(FORBIDDEN_WORDS_BLACKLLIST);
-    g_autolist (GList) allowed_words = libreport_load_words_from_file(FORBIDDEN_WORDS_WHITELIST);
+    GList *forbidden_words = libreport_load_words_from_file(FORBIDDEN_WORDS_BLACKLLIST);
+    GList *allowed_words = libreport_load_words_from_file(FORBIDDEN_WORDS_WHITELIST);
+
     highlight_words_in_textview(page, tev, forbidden_words, allowed_words, /*case sensitive*/false);
+
+    g_list_free_full(allowed_words, free);
+    g_list_free_full(forbidden_words, free);
 }
 
 static void on_sensitive_word_selection_changed(GtkTreeSelection *sel, gpointer user_data)

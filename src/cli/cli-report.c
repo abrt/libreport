@@ -742,8 +742,9 @@ static char *select_event_name(GList *list_options)
 
 int select_and_run_one_event(const char *dump_dir_name, const char *pfx, int interactive)
 {
-    g_autolist (GList) list_events = list_possible_events_glist(dump_dir_name, pfx);
+    GList *list_events = list_possible_events_glist(dump_dir_name, pfx);
     g_autofree char *event_name = select_event_name(list_events);
+    g_list_free_full(list_events, free);
 
     struct run_event_state *run_state = new_run_event_state();
     run_state->logging_callback = do_log;

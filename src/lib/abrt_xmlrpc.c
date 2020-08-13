@@ -38,7 +38,7 @@ void abrt_xmlrpc_error(xmlrpc_env *env)
 
 struct abrt_xmlrpc *abrt_xmlrpc_new_client(const char *url, int ssl_verify)
 {
-    g_autolist (GList) proxies = NULL;
+    GList *proxies = NULL;
     xmlrpc_env env;
     xmlrpc_env_init(&env);
 
@@ -85,6 +85,8 @@ struct abrt_xmlrpc *abrt_xmlrpc_new_client(const char *url, int ssl_verify)
                          PACKAGE_NAME, VERSION,
                          &client_parms, XMLRPC_CPSIZE(transportparm_size),
                          &ax->ax_client);
+
+    g_list_free_full(proxies, free);
 
     if (env.fault_occurred)
         abrt_xmlrpc_die(&env);
