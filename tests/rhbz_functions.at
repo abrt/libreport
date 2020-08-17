@@ -341,7 +341,7 @@ TS_MAIN
         }
 
         {
-            xmlrpc_value *result = abrt_xmlrpc_call_full(&env, client, "Bugzilla.stop_server", "{}");
+            abrt_xmlrpc_call_full(&env, client, "Bugzilla.stop_server", "{}");
             if (env.fault_occurred)
                 printf("Error calling Bugzilla.stop_server: %s\n", env.fault_string);
         }

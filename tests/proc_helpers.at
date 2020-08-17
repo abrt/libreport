@@ -775,8 +775,6 @@ void test_get_mountinfo_for_mount_point(
 {
     TS_PRINTF("++++ %s\n", description);
 
-    g_autofree char *buf = NULL;
-
     FILE *mntnf_file = fmemopen((void *)input, strlen(input), "r");
     if (mntnf_file == NULL) {
         err(EXIT_FAILURE, "open_memstream");
