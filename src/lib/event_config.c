@@ -84,6 +84,20 @@ bool ec_is_configurable(event_config_t* ec)
     return g_list_length(ec->options) > 0;
 }
 
+void ec_set_required(event_config_t *ec, bool required)
+{
+    g_return_if_fail(NULL != ec);
+
+    ec->required = required;
+}
+
+bool ec_is_required(event_config_t *ec)
+{
+    g_return_val_if_fail(NULL != ec, false);
+
+    return ec->required;
+}
+
 void ec_print(event_config_t *ec)
 {
     printf("%s\n\t%s\n\t%s\n",

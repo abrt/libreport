@@ -96,6 +96,8 @@ typedef struct
 
     GList *ec_imported_event_names;
     GList *options;
+
+    bool required;
 } event_config_t;
 
 event_config_t *new_event_config(const char *name);
@@ -110,6 +112,9 @@ const char *ec_get_name(event_config_t *ec);
 const char *ec_get_long_desc(event_config_t *ec);
 void ec_set_long_desc(event_config_t *ec, const char *long_desc);
 bool ec_is_configurable(event_config_t* ec);
+
+bool ec_is_required(event_config_t *ec);
+void ec_set_required(event_config_t *ec, bool required);
 
 /* Returns True if the event is configured to create ticket with restricted
  * access.

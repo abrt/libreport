@@ -27,6 +27,7 @@ struct my_parse_data
     bool in_event_list;
     bool exact_name;
     bool exact_description;
+    bool event_required;
 };
 
 /**

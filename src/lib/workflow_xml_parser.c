@@ -28,6 +28,8 @@
 #define NAME_ELEMENT            "name"
 #define PRIORITY_ELEMENT        "priority"
 
+#define REQUIRED_ATTRIBUTE      "required"
+
 static void start_element(GMarkupParseContext *context,
                   const gchar *element_name,
                   const gchar **attribute_names,
@@ -41,6 +43,33 @@ static void start_element(GMarkupParseContext *context,
     if (strcmp(element_name, EVENTS_ELEMENT) == 0)
     {
         parse_data->in_event_list = true;
+    }
+    else if (g_strcmp0(element_name, EVENT_ELEMENT) == 0)
+    {
+        bool required;
+
+        required = true;
+
+        for (size_t i = 0; NULL != attribute_names[i]; i++)
+        {
+            g_autofree char *value = NULL;
+
+            if (g_strcmp0(attribute_names[i], REQUIRED_ATTRIBUTE) != 0)
+            {
+                continue;
+            }
+
+            value = g_utf8_casefold(attribute_values[i], -1);
+
+            if (g_strcmp0(value, "false") == 0)
+            {
+                required = false;
+
+                break;
+            }
+        }
+
+        parse_data->event_required = required;
     }
 
     if (strcmp(element_name, NAME_ELEMENT) == 0
@@ -92,6 +121,8 @@ static void text(GMarkupParseContext *context,
 
             event_config_t *ec = new_event_config(event_name);
             g_autofree gchar *event_file = g_strdup_printf(EVENTS_DIR"/%s.xml", event_name);
+
+            ec_set_required(ec, parse_data->event_required);
 
             load_event_description_from_file(ec, event_file);
             if (ec_get_screen_name(ec))
