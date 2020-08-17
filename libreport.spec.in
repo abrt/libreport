@@ -20,23 +20,23 @@ License: GPLv2+
 URL: https://abrt.readthedocs.org/
 Source: https://github.com/abrt/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
 BuildRequires: %{dbus_devel}
-BuildRequires: gtk3-devel%{?_isa}
-BuildRequires: curl-devel%{?_isa}
+BuildRequires: gtk3-devel
+BuildRequires: curl-devel
 BuildRequires: desktop-file-utils
 BuildRequires: python3-devel
 BuildRequires: gettext
-BuildRequires: libxml2-devel%{?_isa}
-BuildRequires: libtar-devel%{?_isa}
+BuildRequires: libxml2-devel
+BuildRequires: libtar-devel
 BuildRequires: intltool
 BuildRequires: libtool
 BuildRequires: texinfo
 BuildRequires: asciidoc
 BuildRequires: xmlto
-BuildRequires: newt-devel%{?_isa}
-BuildRequires: libproxy-devel%{?_isa}
-BuildRequires: satyr-devel%{?_isa} >= 0.24
-BuildRequires: glib2-devel%{?_isa} >= %{glib_ver}
-BuildRequires: nettle-devel%{?_isa}
+BuildRequires: newt-devel
+BuildRequires: libproxy-devel
+BuildRequires: satyr-devel >= 0.24
+BuildRequires: glib2-devel >= %{glib_ver}
+BuildRequires: nettle-devel
 
 %if 0%{?fedora} >= 24 || 0%{?rhel} > 7
 # A test case uses zh_CN locale to verify XML event translations
@@ -47,10 +47,10 @@ BuildRequires: glibc-all-langpacks
 BuildRequires: xmlrpc-c-devel
 %endif
 BuildRequires: doxygen
-BuildRequires: systemd-devel%{?_isa}
+BuildRequires: systemd-devel
 BuildRequires: augeas-devel
 BuildRequires: augeas
-BuildRequires: libarchive-devel%{?_isa}
+BuildRequires: libarchive-devel
 Requires: libreport-filesystem = %{version}-%{release}
 Requires: satyr%{?_isa} >= 0.24
 Requires: glib2%{?_isa} >= %{glib_ver}
