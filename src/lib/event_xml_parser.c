@@ -525,7 +525,7 @@ static void error(GMarkupParseContext *context,
 /* this function takes 2 parameters
  * ui -> pointer to event_config_t
  * filename -> filename to read
- * event_config_t contains list of options, which is malloced by hits function
+ * event_config_t contains list of options, which is malloced by this function
  * and must be freed by the caller
  */
 void load_event_description_from_file(event_config_t *event_config, const char* filename)
