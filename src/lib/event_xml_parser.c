@@ -239,9 +239,9 @@ static void start_element(GMarkupParseContext *context,
     else
     if (strcmp(element_name, SUPPORTS_RESTRICTED_ACCESS_ELEMENT) == 0)
     {
-        if ((     attribute_names[0] != NULL
-               && strcmp(attribute_names[0], RESTRICTED_ACCESS_OPTION_ATTR) != 0)
-            || attribute_names[1] != NULL)
+        if (attribute_names[0] == NULL
+            || attribute_names[1] != NULL
+            || strcmp(attribute_names[0], RESTRICTED_ACCESS_OPTION_ATTR) != 0)
         {
             error_msg("XML event configuration error: '%s' element misses attribute '%s'",
                     SUPPORTS_RESTRICTED_ACCESS_ELEMENT, RESTRICTED_ACCESS_OPTION_ATTR);
