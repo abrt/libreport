@@ -289,7 +289,7 @@ static void text(GMarkupParseContext *context,
     event_config_t *ui = parse_data->event_config.values;
 
     const gchar *inner_element = g_markup_parse_context_get_element(context);
-    g_autofree char *text_copy = g_strndup(text, text_len);
+    char *text_copy = g_strndup(text, text_len);
     event_option_t *opt = parse_data->cur_option.values;
     if (opt)
     {
@@ -386,6 +386,7 @@ static void text(GMarkupParseContext *context,
 
                         log_info("event name:'%s'", text_copy);
                         ec_set_screen_name(ui, text_copy);
+                        free(text_copy);
                         text_copy = NULL;
                     }
                 }
@@ -409,6 +410,7 @@ static void text(GMarkupParseContext *context,
                             (strcmp(parse_data->attribute_lang, parse_data->cur_locale) == 0);
 
                         ec_set_description(ui, text_copy);
+                        free(text_copy);
                         text_copy = NULL;
                     }
                 }
@@ -433,6 +435,7 @@ static void text(GMarkupParseContext *context,
                             (strcmp(parse_data->attribute_lang, parse_data->cur_locale) == 0);
 
                         ec_set_long_desc(ui, text_copy);
+                        free(text_copy);
                         text_copy = NULL;
                     }
                 }
@@ -494,6 +497,7 @@ static void text(GMarkupParseContext *context,
             ui->ec_requires_details = libreport_string_to_bool(text_copy);
         }
     }
+    free(text_copy);
 }
 
   // Called for strings that should be re-saved verbatim in this same
