@@ -253,7 +253,7 @@ static int read_number_from_file_at(int dir_fd, const char *filename, const char
     /* Our tools don't put trailing newline into one line files,
      * but we allow such format too:
      */
-    if (value_buf[total_read - 1] == '\n')
+    if (total_read != 0 && value_buf[total_read - 1] == '\n')
         --total_read;
     value_buf[total_read] = '\0';
 
