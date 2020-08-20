@@ -40,6 +40,7 @@ int libreport_uri_userinfo_remove(const char *uri, char **result, char **scheme,
 
     regmatch_t matchptr[10];
     r = regexec(&re, uri, ARRAY_SIZE(matchptr), matchptr, 0);
+    regfree(&re);
     if (r != 0)
     {
         log_debug("URI does not match RFC3986 regular expression.");
