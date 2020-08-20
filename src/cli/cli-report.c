@@ -758,6 +758,28 @@ int select_and_run_one_event(const char *dump_dir_name, const char *pfx, int int
     return r;
 }
 
+static int run_event(struct run_event_state *state,
+                     event_config_t         *event_config,
+                     const char             *dump_directory_path,
+                     bool                    interactive)
+{
+    const char *event_name;
+
+    g_return_val_if_fail(NULL != state, -1);
+    g_return_val_if_fail(NULL != event_config, -1);
+
+    event_name = ec_get_name(event_config);
+
+    if (interactive)
+    {
+        return run_event_on_dir_name_interactively(state, dump_directory_path, event_name);
+    }
+    else
+    {
+        return run_event_on_dir_name_batch(state, dump_directory_path, event_name);
+    }
+}
+
 static int run_event_chain_real(struct run_event_state *run_state,
                                 const char             *dump_dir_name,
                                 GList                  *chain,
@@ -870,14 +892,51 @@ static workflow_t *select_workflow(GHashTable *workflows)
     return help_wf_array[picked - 1];
 }
 
+static int run_workflow(workflow_t *workflow,
+                        const char *dump_directory_path,
+                        bool        interactive)
+{
+    GList *events;
+    struct run_event_state *state;
+    int retval;
+
+    events = wf_get_event_list(workflow);
+    state = new_run_event_state();
+
+    /* Set up a magic environment variable, mostly for reportd, to store the
+     * workflow used in reported_to to display reported status.
+     */
+    {
+        const char *workflow_name;
+        char *environment_variable;
+
+        workflow_name = wf_get_name(workflow);
+        environment_variable = g_strdup_printf("LIBREPORT_WORKFLOW=%s", workflow_name);
+
+        g_ptr_array_add(state->extra_environment, environment_variable);
+    }
+
+    for (GList *l = events; NULL != l; l = l->next)
+    {
+        bool required;
+
+        required = ec_is_required(l->data);
+        retval = run_event(state, l->data, dump_directory_path, interactive);
+
+        if (0 != retval && required)
+        {
+            break;
+        }
+    }
+
+    free_run_event_state(state);
+
+    return retval;
+}
+
 int select_and_run_workflow(const char *dump_dir_name, GHashTable *workflows, int interactive)
 {
     workflow_t *workflow;
-    GList *events;
-    const char *workflow_name;
-    char *environment_variable = NULL;
-    struct run_event_state *run_state;
-    int retval;
 
     workflow = select_workflow(workflows);
     if (NULL == workflow)
@@ -885,16 +944,5 @@ int select_and_run_workflow(const char *dump_dir_name, GHashTable *workflows, in
         return -1;
     }
 
-    events = wf_get_event_names(workflow);
-
-    workflow_name = wf_get_name(workflow);
-    environment_variable = g_strdup_printf("LIBREPORT_WORKFLOW=%s", workflow_name);
-
-    run_state = new_run_event_state();
-    g_ptr_array_add(run_state->extra_environment, environment_variable);
-
-    retval = run_event_chain_real(run_state, dump_dir_name, events, interactive);
-    free_run_event_state(run_state);
-
-    return retval;
+    return run_workflow(workflow, dump_dir_name, interactive);
 }
