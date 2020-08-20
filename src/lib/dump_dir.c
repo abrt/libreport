@@ -1367,11 +1367,12 @@ void dd_create_basic_files(struct dump_dir *dd, uid_t uid, const char *chroot_di
     if (!dd_exist(dd, FILENAME_HOSTNAME))
         dd_save_text(dd, FILENAME_HOSTNAME, buf.nodename);
 
-    g_autofree char *release = load_text_file("/etc/os-release",
+    char *release = load_text_file("/etc/os-release",
                         DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE | DD_OPEN_FOLLOW);
     if (release)
     {
         dd_save_text(dd, FILENAME_OS_INFO, release);
+        free(release);
     }
 
     if (chroot_dir)
@@ -1403,6 +1404,7 @@ void dd_create_basic_files(struct dump_dir *dd, uid_t uid, const char *chroot_di
         if (chroot_dir)
             copy_file_from_chroot(dd, FILENAME_OS_RELEASE_IN_ROOTDIR, chroot_dir, "/etc/system-release");
     }
+    free(release);
 }
 
 void dd_sanitize_mode_and_owner(struct dump_dir *dd)
