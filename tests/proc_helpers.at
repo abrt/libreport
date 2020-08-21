@@ -99,6 +99,7 @@ TS_RETURN_MAIN
 AT_TESTFUN([libreport_get_cmdline], [[
 #include "testsuite.h"
 #include <err.h>
+#include <glib-unix.h>
 
 void test(const char *program, const char *args[], const char *expected)
 {
@@ -188,6 +189,7 @@ AT_TESTFUN([libreport_get_executable], [[
 #include "testsuite.h"
 #include <sys/sendfile.h>
 #include <err.h>
+#include <glib-unix.h>
 
 #define PRELINK_BASENAME "/tmp/libreport.testsuite.libreport_get_executable"
 #
@@ -438,6 +440,7 @@ AT_TESTFUN([libreport_dump_fd_info], [[
 #include "testsuite.h"
 #include <sys/sendfile.h>
 #include <err.h>
+#include <glib-unix.h>
 
 #define FILENAME_FORMAT "/tmp/libreport.testsuite.fdinfo.%d.%s"
 
