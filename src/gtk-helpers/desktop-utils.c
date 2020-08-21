@@ -157,22 +157,16 @@ static gboolean
 compare_binaries (char *cmd,
           const char *dcmd)
 {
-    char *basename, *dbasename;
-    gboolean ret = FALSE;
+    g_autofree char *lhs_basename = NULL;
+    g_autofree char *rhs_basename = NULL;
 
     if (g_strcmp0 (cmd, dcmd) == 0)
         return TRUE;
 
-    basename = g_path_get_basename (cmd);
-    dbasename = g_path_get_basename (dcmd);
+    lhs_basename = g_path_get_basename (cmd);
+    rhs_basename = g_path_get_basename (dcmd);
 
-    if (g_strcmp0 (basename, dbasename) == 0)
-        ret = TRUE;
-
-    g_free (basename);
-    g_free (dbasename);
-
-    return ret;
+    return g_strcmp0 (lhs_basename, rhs_basename) == 0;
 }
 
 GAppInfo *
