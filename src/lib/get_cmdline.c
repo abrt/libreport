@@ -741,7 +741,7 @@ int libreport_get_mountinfo_for_mount_point(FILE *fin, struct mountinfo *mntnf, 
         }
 
         size_t len = (pos_cur - pos_bck);
-        mntnf->mntnf_items[fn] = g_malloc(sizeof(char) * (len));
+        mntnf->mntnf_items[fn] = g_malloc(len + 1);
 
         len -= c != EOF; /* we are standing on ' ' (except EOF) */
 
