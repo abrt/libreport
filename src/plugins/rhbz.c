@@ -57,12 +57,13 @@ void free_bug_info(struct bug_info *bi)
     if (!bi)
         return;
 
-    free(bi->bi_status);
-    free(bi->bi_resolution);
-    free(bi->bi_reporter);
-    free(bi->bi_product);
+    g_free(bi->bi_status);
+    g_free(bi->bi_resolution);
+    g_free(bi->bi_reporter);
+    g_free(bi->bi_product);
+    g_free(bi->bi_platform);
 
-    g_list_free_full(bi->bi_cc_list, free);
+    g_list_free_full(bi->bi_cc_list, g_free);
 
     free(bi);
 }
@@ -406,7 +407,7 @@ GList *rhbz_bug_cc(xmlrpc_value* result_xml)
         if (!item)
             continue;
 
-        g_autofree const char* cc = NULL;
+        const char* cc = NULL;
         xmlrpc_read_string(&env, item, &cc);
         xmlrpc_DECREF(item);
         if (env.fault_occurred)
@@ -445,9 +446,10 @@ struct bug_info *rhbz_bug_info(struct abrt_xmlrpc *ax, int bug_id)
     xmlrpc_value *bugs_memb = rhbz_get_member("bugs", xml_bug_response);
     xmlrpc_value *bug_item = rhbz_array_item_at(bugs_memb, 0);
 
-    g_autofree int *ret = (int*)rhbz_bug_read_item("id", bug_item,
+    int *ret = (int*)rhbz_bug_read_item("id", bug_item,
                                         RHBZ_MANDATORY_MEMB | RHBZ_READ_INT);
     bz->bi_id = *ret;
+    g_free(ret);
     bz->bi_product = rhbz_bug_read_item("product", bug_item,
                                         RHBZ_MANDATORY_MEMB | RHBZ_READ_STR);
     bz->bi_reporter = rhbz_bug_read_item("creator", bug_item,
@@ -473,6 +475,7 @@ struct bug_info *rhbz_bug_info(struct abrt_xmlrpc *ax, int bug_id)
     }
 
     bz->bi_dup_id = (ret) ? *ret: -1;
+    g_free(ret);
 
     bz->bi_cc_list = rhbz_bug_cc(bug_item);
 
@@ -563,6 +566,7 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
             abrt_xmlrpc_params_set_value(&env, params, "sub_components", sub_components_struct);
             xmlrpc_DECREF(sub_components_struct);
             xmlrpc_DECREF(sub_components_array);
+            free((void *)sub_component);
         }
     }
 
@@ -917,7 +921,7 @@ xmlrpc_value *rhbz_get_sub_components(struct abrt_xmlrpc *ax, const char *produc
 
     unsigned array_size = rhbz_array_size(components);
 
-    const char *current_component;
+    const char *current_component = NULL;
     xmlrpc_value *component_info = NULL;
 
     xmlrpc_value *component_nameV = NULL;
@@ -930,19 +934,24 @@ xmlrpc_value *rhbz_get_sub_components(struct abrt_xmlrpc *ax, const char *produc
         if (!component_info)
             continue;
 
+        if (component_nameV)
+            xmlrpc_DECREF(component_nameV);
+        if (current_component)
+            free((void *)current_component);
+
         xmlrpc_struct_find_value(&env, component_info, "name", &component_nameV);
         if (env.fault_occurred)
             abrt_xmlrpc_die(&env);
         xmlrpc_read_string(&env, component_nameV, &current_component);
 
         if (strcmp(current_component, component) == 0)
-        {
-            xmlrpc_DECREF(components);
-            xmlrpc_DECREF(component_nameV);
-            free((void *)current_component);
             break;
-        }
     }
+    if (component_nameV)
+        xmlrpc_DECREF(component_nameV);
+    if (current_component)
+        free((void *)current_component);
+    xmlrpc_DECREF(components);
 
     xmlrpc_value *sub_components = NULL;
     xmlrpc_struct_find_value(&env, component_info, "sub_components", &sub_components);
@@ -991,7 +1000,7 @@ char *rhbz_get_default_sub_component(const char *component, xmlrpc_value *sub_co
             break;
         }
 
-    const char *sc_str_name;
+    const char *sc_str_name = NULL;
     xmlrpc_value *sc_struct = NULL;
     xmlrpc_value *sc_name = NULL;
 
@@ -1003,11 +1012,24 @@ char *rhbz_get_default_sub_component(const char *component, xmlrpc_value *sub_co
     {
         for (unsigned i = 0; i < sc_array_size; i++)
         {
+            if (sc_struct)
+                xmlrpc_DECREF(sc_struct);
+            if (sc_name)
+                xmlrpc_DECREF(sc_name);
+            if (sc_str_name)
+                free((void *)sc_str_name);
+
             xmlrpc_array_read_item(&env, sub_components, i, &sc_struct);
             xmlrpc_struct_find_value(&env, sc_struct, "name", &sc_name);
             xmlrpc_read_string(&env, sc_name, &sc_str_name);
             if (strcmp(candidate, sc_str_name) == 0)
+            {
+                if (sc_struct)
+                    xmlrpc_DECREF(sc_struct);
+                if (sc_name)
+                    xmlrpc_DECREF(sc_name);
                 break;
+            }
         }
     }
     else
@@ -1015,6 +1037,10 @@ char *rhbz_get_default_sub_component(const char *component, xmlrpc_value *sub_co
         xmlrpc_array_read_item(&env, sub_components, sc_array_size - 1, &sc_struct);
         xmlrpc_struct_find_value(&env, sc_struct, "name", &sc_name);
         xmlrpc_read_string(&env, sc_name, &sc_str_name);
+        if (sc_struct)
+            xmlrpc_DECREF(sc_struct);
+        if (sc_name)
+            xmlrpc_DECREF(sc_name);
     }
 
     return (char *)sc_str_name;
