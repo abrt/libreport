@@ -109,6 +109,7 @@ with MyXMLRPCServer(('', 8080), requestHandler=RequestHandler) as server:
         def add_comment(args: Dict[str, Union[str, List[Union[int, str]], Dict[str, Any]]]):
             assert 'id' in args.keys(), "Missing required key 'id'"
             assert 'comment' in args.keys(), "Missing required key 'comment'"
+            assert USER[0], 'Not logged in'
 
             private = 0
             if 'is_private' in args.keys() and args['is_private'] == 1:
@@ -119,8 +120,9 @@ with MyXMLRPCServer(('', 8080), requestHandler=RequestHandler) as server:
             for bug in BUGS:
                 if bug['id'] == args['id']:
                     bug['comments'].append({'id': ret['id'],
-                                            'comment': args['comment'],
-                                            'is_private': private})
+                                            'text': args['comment'],
+                                            'is_private': private,
+                                            'creator': USER[0]})
             return ret
 
         @staticmethod
