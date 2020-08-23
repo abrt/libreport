@@ -132,7 +132,7 @@ TS_MAIN
             const char *bt = problem_data_get_content_or_NULL(problem_data, "backtrace");
             int ret = rhbz_attach_blob(client, "0", "backtrace", bt, strlen(bt), RHBZ_MINOR_UPDATE);
             TS_ASSERT_SIGNED_EQ(ret, 0);
-            g_free((char *)bt);
+            g_hash_table_destroy(problem_data);
         }
 
         {
@@ -147,6 +147,7 @@ TS_MAIN
                 rhbz.b_private_groups
                 );
             TS_ASSERT_SIGNED_EQ(bug_id, 1);
+            g_hash_table_destroy(problem_data);
         }
 
         {
@@ -161,7 +162,9 @@ TS_MAIN
                 rhbz.b_private_groups
                 );
             TS_ASSERT_SIGNED_EQ(bug_id, 2);
+            g_hash_table_destroy(problem_data);
         }
+        g_free((void *)rhbz.b_bugzilla_xmlrpc);
 
         {
             xmlrpc_value *sub_components = rhbz_get_sub_components(client, "Red Hat Enterprise Linux 8", "unknown");
@@ -199,7 +202,7 @@ TS_MAIN
             if (env.fault_occurred)
                 printf("Error retrieving item 1 from cc_list: %s\n", env.fault_string);
             xmlrpc_DECREF(cc_list);
-            
+
             const char *cc_string1 = NULL;
             const char *cc_string2 = NULL;
             xmlrpc_read_string(&env, cc1, &cc_string1);
@@ -231,12 +234,11 @@ TS_MAIN
             xmlrpc_DECREF(search);
             xmlrpc_value *bug = rhbz_array_item_at(bugs, 0);
             xmlrpc_DECREF(bugs);
-            
-            TS_ASSERT_STRING_EQ(rhbz_bug_read_item("url", bug, RHBZ_READ_STR),
-                                "http://example.com/bug123",
-                                "Checking updated bug url");
+
+            g_autofree char *updated_url = rhbz_bug_read_item("url", bug, RHBZ_READ_STR);
+            TS_ASSERT_STRING_EQ(updated_url, "http://example.com/bug123", "Checking updated bug url");
             xmlrpc_DECREF(bug);
-            
+
         }
 
         {
@@ -292,19 +294,21 @@ TS_MAIN
         }
 
         {
-            struct bug_info *my_bug = new_bug_info();
-            my_bug = rhbz_bug_info(client, 0);
+            struct bug_info *my_bug = rhbz_bug_info(client, 0);
 
             TS_ASSERT_STRING_EQ(my_bug->bi_product, "Red Hat Enterprise Linux 8", "bug_info.bi_product");
             TS_ASSERT_STRING_EQ(my_bug->bi_reporter, "captainnemo", "bug_info.bi_reporter");
             TS_ASSERT_STRING_EQ(my_bug->bi_status, "NEW", "bug_info.bi_status");
             TS_ASSERT_STRING_EQ(my_bug->bi_platform, "x86_64", "bug_info.bi_platform");
+            free_bug_info(my_bug);
         }
 
         {
             struct bug_info *my_bug = rhbz_bug_info(client, 1);
             struct bug_info *origin = rhbz_find_origin_bug_closed_duplicate(client, my_bug);
             TS_ASSERT_SIGNED_EQ(origin->bi_id, 0);
+            free_bug_info(my_bug);
+            free_bug_info(origin);
         }
 
         {
@@ -323,7 +327,7 @@ TS_MAIN
             if (env.fault_occurred)
                 printf("Error retrieving item 0 from comment_list: %s\n", env.fault_string);
             xmlrpc_DECREF(comment_list);
-            
+
             xmlrpc_value *comment_xml_str = rhbz_get_member("comment", comment_struct);
             const char *comment_str = NULL;
             xmlrpc_read_string(&env, comment_xml_str, &comment_str);
@@ -341,10 +345,12 @@ TS_MAIN
         }
 
         {
-            abrt_xmlrpc_call_full(&env, client, "Bugzilla.stop_server", "{}");
+            xmlrpc_value *stop = abrt_xmlrpc_call_full(&env, client, "Bugzilla.stop_server", "{}");
             if (env.fault_occurred)
                 printf("Error calling Bugzilla.stop_server: %s\n", env.fault_string);
+            xmlrpc_DECREF(stop);
         }
+        abrt_xmlrpc_free_client(client);
 
     }
     else // pid == -1
