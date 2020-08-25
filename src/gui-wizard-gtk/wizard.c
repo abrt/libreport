@@ -231,8 +231,6 @@ typedef struct
 
 static page_obj_t pages[NUM_PAGES];
 
-static GString *cmd_output = NULL;
-
 /* Utility functions */
 
 static void clear_warnings(void);
@@ -1666,10 +1664,6 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     ) {
         log_notice("done running event on '%s': %d", g_dump_dir_name, retval);
         append_to_textview(g_tv_event_log, "\n");
-
-        /* Free child output buffer */
-        g_string_free(cmd_output, TRUE);
-        cmd_output = NULL;
 
         /* Hide spinner and stop btn */
         gtk_widget_hide(GTK_WIDGET(g_spinner_event_log));
