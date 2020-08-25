@@ -19,11 +19,10 @@ jobs:
           dnf --assumeyes copr enable @abrt/devel
           dnf --assumeyes install \
             @c-development @development-tools @rpm-development-tools \
-            gettext-devel intltool
+            gettext-devel intltool tito
 
       - name: Install build dependencies
         run: |
-          ./gen-version
           dnf --assumeyes builddep --spec libreport.spec
 
       - name: Set up build user
@@ -32,13 +31,15 @@ jobs:
       - name: Configure build
         run: |
           chown -R builder. .
-          sudo -u builder -- ./autogen.sh
 
       - name: Build
-        run: sudo -u builder -- make --load-average=2
+        run: sudo -u builder -- tito build --test --rpm
 
       - name: Run tests
-        run: sudo -u builder -- make check
+        run: |
+          sudo -u builder -- ./autogen.sh
+          sudo -u builder -- make
+          sudo -u builder -- make check
 
       - name: Upload test log
         uses: actions/upload-artifact@v2

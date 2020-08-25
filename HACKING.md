@@ -28,12 +28,9 @@ Libreport git repository checkout.
 
     When you have all dependencies installed you can now build an rpm package by using these commands:
 
-        $ ./autogen.sh
-        $ make rpm
+        $ tito build --test --rpm -i
 
-    Now, in the `build` folder, you can find rpm packages both in `noarch` and `x86_64` (or your
-            architecture) directories.
-
+    Note: you have to have your changes commited.
 
 ### Testing
 
