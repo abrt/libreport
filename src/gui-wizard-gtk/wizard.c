@@ -2635,7 +2635,7 @@ static gint select_next_page_no(gint current_page_no)
 
         log_info("%s: Looking for next event to process", __func__);
         /* (note: this frees and sets to NULL g_event_selected) */
-        g_autofree char *event = setup_next_processed_event(&g_auto_event_list);
+        char *event = setup_next_processed_event(&g_auto_event_list);
         if (!event)
         {
             current_page_no = PAGENO_EVENT_PROGRESS - 1;
@@ -2644,6 +2644,8 @@ static gint select_next_page_no(gint current_page_no)
 
         if (!get_sensitive_data_permission(event))
         {
+            free(event);
+
             cancel_processing(g_lbl_event_log, /* default message */ NULL, TERMINATE_NOFLAGS);
             current_page_no = PAGENO_EVENT_PROGRESS - 1;
             goto again;
@@ -2659,6 +2661,8 @@ static gint select_next_page_no(gint current_page_no)
 
             if (libreport_get_global_stop_on_not_reportable())
             {
+                free(event);
+
                 cancel_processing(g_lbl_event_log, msg, TERMINATE_NOFLAGS);
                 current_page_no = PAGENO_EVENT_PROGRESS - 1;
                 goto again;
