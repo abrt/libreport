@@ -65,19 +65,6 @@ static void exec_and_feed_input(const char* text, char **args)
         error_msg_and_die("Error running '%s'", args[0]);
 }
 
-static char** append_str_to_vector(char **vec, unsigned *size_p, const char *str)
-{
-    //log_warning("old vec: %p", vec);
-    unsigned size = *size_p;
-    vec = (char**) g_realloc(vec, (size+2) * sizeof(vec[0]));
-    vec[size] = g_strdup(str);
-    //log_warning("new vec: %p, added [%d] %p", vec, size, vec[size]);
-    size++;
-    vec[size] = NULL;
-    *size_p = size;
-    return vec;
-}
-
 static char *ask_email_address(const char *type, const char *def_address)
 {
     g_autofree char *ask_text = g_strdup_printf(_("Email address of %s was not specified. Would you like to do so now? If not, '%s' is to be used"), type, def_address);
@@ -104,6 +91,7 @@ static void create_and_send_email(
                 const char *fmt_file,
                 int flag)
 {
+    g_autoptr(GPtrArray) args = NULL;
     g_autoptr(problem_data_t) problem_data = create_problem_data_for_reporting(dump_dir_name);
     if (!problem_data)
         libreport_xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
@@ -163,24 +151,24 @@ static void create_and_send_email(
         exit(0);
     }
 
-    g_autofree char **args = NULL;
-    unsigned arg_size = 0;
-    args = append_str_to_vector(args, &arg_size, "/bin/mailx");
+    args = g_ptr_array_new();
+    g_ptr_array_add(args, (gpointer)"/bin/mailx");
 
     /* attaching files to the email */
     for (GList *a = problem_report_get_attachments(pr); a != NULL; a = g_list_next(a))
     {
-        args = append_str_to_vector(args, &arg_size, "-a");
+        g_ptr_array_add(args, (gpointer)"-a");
         g_autofree char *resolved_path = realpath(dump_dir_name, NULL);
         g_autofree char *full_name = g_build_filename(resolved_path ? resolved_path : "", a->data, NULL);
-        args = append_str_to_vector(args, &arg_size, full_name);
+        g_ptr_array_add(args, (gpointer)full_name);
     }
 
-    args = append_str_to_vector(args, &arg_size, "-s");
-    args = append_str_to_vector(args, &arg_size, subject);
-    args = append_str_to_vector(args, &arg_size, "-r");
-    args = append_str_to_vector(args, &arg_size, email_from);
-    args = append_str_to_vector(args, &arg_size, email_to);
+    g_ptr_array_add(args, (gpointer)"-s");
+    g_ptr_array_add(args, (gpointer)subject);
+    g_ptr_array_add(args, (gpointer)"-r");
+    g_ptr_array_add(args, (gpointer)email_from);
+    g_ptr_array_add(args, (gpointer)email_to);
+    g_ptr_array_add(args, NULL);
 
     /* This makes (some versions of) mailx to wait for child process to finish,
      * and to report its exit code, not useless "always 0" exit code.
@@ -200,7 +188,7 @@ static void create_and_send_email(
     else
         log_warning(_("Sending an email..."));
 
-    exec_and_feed_input(dsc, args);
+    exec_and_feed_input(dsc, (char **)args->pdata);
 
     if (!(flag & RM_FLAG_NOTIFY))
     {
