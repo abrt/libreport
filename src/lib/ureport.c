@@ -587,7 +587,7 @@ ureport_add_str(struct json_object *ur, const char *key, const char *s)
 char *
 libreport_ureport_from_dump_dir_ext(const char *dump_dir_path, const struct ureport_preferences *preferences)
 {
-    char *error_message;
+    g_autofree char *error_message;
     struct sr_report *report = sr_abrt_report_from_dir(dump_dir_path,
                                                        &error_message);
 
@@ -697,7 +697,7 @@ libreport_ureport_submit(const char *json, struct ureport_server_config *config)
     }
 
     struct ureport_server_response *resp = libreport_ureport_server_response_from_reply(post_state, config);
-    free(post_state);
+    free_post_state(post_state);
 
     return resp;
 }
