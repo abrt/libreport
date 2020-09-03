@@ -242,6 +242,9 @@ class DebugInfoDownload(object):
     def get_install_size(self):
         return self.installed_size
 
+    def get_package_count(self):
+        return len(self.package_files_dict)
+
     def mute_stdout(self):
         """
         Links sys.stdout with /dev/null and saves the old stdout
