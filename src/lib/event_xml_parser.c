@@ -386,8 +386,7 @@ static void text(GMarkupParseContext *context,
 
                         log_info("event name:'%s'", text_copy);
                         ec_set_screen_name(ui, text_copy);
-                        free(text_copy);
-                        text_copy = NULL;
+                        g_clear_pointer(&text_copy, g_free);
                     }
                 }
             }
@@ -410,8 +409,7 @@ static void text(GMarkupParseContext *context,
                             (strcmp(parse_data->attribute_lang, parse_data->cur_locale) == 0);
 
                         ec_set_description(ui, text_copy);
-                        free(text_copy);
-                        text_copy = NULL;
+                        g_clear_pointer(&text_copy, g_free);
                     }
                 }
             }
@@ -435,8 +433,7 @@ static void text(GMarkupParseContext *context,
                             (strcmp(parse_data->attribute_lang, parse_data->cur_locale) == 0);
 
                         ec_set_long_desc(ui, text_copy);
-                        free(text_copy);
-                        text_copy = NULL;
+                        g_clear_pointer(&text_copy, g_free);
                     }
                 }
             }

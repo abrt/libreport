@@ -57,8 +57,7 @@ static char *xmalloc_fgets_internal(FILE *file, int *sizep)
 
 	if (!idx) {
 		/* The very first fgets returned NULL. It's EOF (or error) */
-		free(linebuf);
-		linebuf = NULL;
+        g_clear_pointer(&linebuf, g_free);
 	}
 	return linebuf;
 }

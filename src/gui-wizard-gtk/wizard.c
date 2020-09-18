@@ -1362,8 +1362,7 @@ static void terminate_event_chain(int flags)
     if ((flags & TERMINATE_WITH_RERUN))
         return;
 
-    free(g_event_selected);
-    g_event_selected = NULL;
+    g_clear_pointer(&g_event_selected, free);
 
     g_list_free_full(g_auto_event_list, free);
     g_auto_event_list = NULL;
@@ -2576,8 +2575,7 @@ static void add_workflow_buttons(GtkBox *box, GHashTable *workflows, GCallback f
 
 static char *setup_next_processed_event(GList **events_list)
 {
-    free(g_event_selected);
-    g_event_selected = NULL;
+    g_clear_pointer(&g_event_selected, free);
 
     char *event = get_next_processed_event(events_list);
     if (!event)
