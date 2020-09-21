@@ -363,7 +363,7 @@ void *rhbz_bug_read_item(const char *memb, xmlrpc_value *xml, int flags)
 
     if (IS_READ_INT(flags))
     {
-        int *integer = g_malloc(sizeof(int));
+        int *integer = g_malloc(sizeof(*integer));
         xmlrpc_read_int(&env, member, integer);
         xmlrpc_DECREF(member);
         if (env.fault_occurred)

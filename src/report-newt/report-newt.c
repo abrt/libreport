@@ -54,7 +54,7 @@ static int select_reporters(GArray *reporters)
 
     text = newtTextboxReflowed(0, 0, _("How would you like to report the problem?"), 35, 5, 5, 0);
 
-    checkboxes = g_alloca(sizeof (newtComponent) * reporters->len);
+    checkboxes = g_alloca(sizeof (*checkboxes) * reporters->len);
     cgrid = newtCreateGrid(1, reporters->len);
     for (i = 0; i < reporters->len; i++)
     {
@@ -108,7 +108,7 @@ static int configure_reporter(struct reporter *r, bool skip_if_valid)
                 g_strdup(ec_get_screen_name(r->config)) : r->name, 35, 5, 5, 0);
 
         num_opts = g_list_length(r->config->options);
-        options = g_malloc(sizeof (newtComponent) * num_opts);
+        options = g_malloc(sizeof (*options) * num_opts);
         ogrid = newtCreateGrid(2, num_opts);
 
         for (option = r->config->options, i = 0; option && i < num_opts;

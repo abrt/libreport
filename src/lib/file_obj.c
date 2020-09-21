@@ -21,7 +21,7 @@
 
 file_obj_t *libreport_new_file_obj(const char* fullpath, const char* filename)
 {
-    file_obj_t *file = g_malloc(sizeof(file_obj_t));
+    file_obj_t *file = g_malloc(sizeof(*file));
     file->fullpath = g_strdup(fullpath);
     file->filename = g_strdup(filename);
     return file;
