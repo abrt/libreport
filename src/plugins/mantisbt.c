@@ -86,7 +86,7 @@ mantisbt_settings_free(mantisbt_settings_t *s)
 mantisbt_issue_info_t *
 mantisbt_issue_info_new()
 {
-    mantisbt_issue_info_t *info = g_malloc0(sizeof(mantisbt_issue_info_t));
+    mantisbt_issue_info_t *info = g_malloc0(sizeof(*info));
     info->mii_id = -1;
     info->mii_dup_id = -1;
 

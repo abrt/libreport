@@ -21,7 +21,7 @@
 
 char *libreport_trim_all_whitespace(const char *str)
 {
-    char *trim = g_malloc0(sizeof(char) * strlen(str) + 1);
+    char *trim = g_malloc0(strlen(str) + 1);
     int i = 0;
     while (*str)
     {
