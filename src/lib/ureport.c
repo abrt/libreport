@@ -587,7 +587,7 @@ ureport_add_str(struct json_object *ur, const char *key, const char *s)
 char *
 libreport_ureport_from_dump_dir_ext(const char *dump_dir_path, const struct ureport_preferences *preferences)
 {
-    g_autofree char *error_message;
+    g_autofree char *error_message = NULL;
     struct sr_report *report = sr_abrt_report_from_dir(dump_dir_path,
                                                        &error_message);
 
