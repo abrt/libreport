@@ -1385,7 +1385,7 @@ static void cancel_processing(GtkLabel *status_label, const char *message, int t
     pango_attr_list_unref(list);
 }
 
-static void update_command_run_log(const char* message, struct analyze_event_data *evd)
+static void update_command_run_log(char *message, struct analyze_event_data *evd)
 {
     const bool it_is_a_dot = (message[0] == '.' && message[1] == '\0');
 
@@ -1393,12 +1393,18 @@ static void update_command_run_log(const char* message, struct analyze_event_dat
         gtk_label_set_text(g_lbl_event_log, message);
 
     /* Don't append new line behind single dot */
-    g_autofree const char *log_msg = it_is_a_dot ? message : g_strdup_printf("%s\n", message);
+    char *log_msg = it_is_a_dot ? message : g_strdup_printf("%s\n", message);
     append_to_textview(g_tv_event_log, log_msg);
     save_to_event_log(evd, log_msg);
+
+    if (log_msg != message)
+    {
+        /* We assume message is managed by the caller. */
+        free(log_msg);
+    }
 }
 
-static void run_event_gtk_error(const char *error_line, void *param)
+static void run_event_gtk_error(char *error_line, void *param)
 {
     update_command_run_log(error_line, (struct analyze_event_data *)param);
 }
