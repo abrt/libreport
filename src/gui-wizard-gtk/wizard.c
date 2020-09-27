@@ -707,7 +707,7 @@ static void tv_details_row_activated(
         return;
 
     gint exitcode;
-    g_autofree gchar *arg[3];
+    gchar *arg[3];
     arg[0] = (char *) "xdg-open";
     arg[1] = g_build_filename(g_dump_dir_name ? g_dump_dir_name : "", item_name, NULL);
     arg[2] = NULL;
@@ -751,6 +751,8 @@ static void tv_details_row_activated(
         gtk_widget_destroy(scrolled);
         gtk_widget_destroy(dialog);
     }
+
+    g_free(arg[1]);
 }
 
 /* static gboolean tv_details_select_cursor_row(
@@ -2126,17 +2128,20 @@ static void search_item_to_list_store_item(GtkListStore *store, GtkTreeIter *new
         gtk_text_iter_backward_char(end);
     }
 
-    g_autofree gchar *tmp = gtk_text_buffer_get_text(word->buffer, beg, &(word->start),
+    gchar *tmp = gtk_text_buffer_get_text(word->buffer, beg, &(word->start),
             /*don't include hidden chars*/FALSE);
     g_autofree gchar *prefix = g_markup_escape_text(tmp, /*NULL terminated string*/-1);
+    g_free(tmp);
 
     tmp = gtk_text_buffer_get_text(word->buffer, &(word->start), &(word->end),
             /*don't include hidden chars*/FALSE);
     g_autofree gchar *text = g_markup_escape_text(tmp, /*NULL terminated string*/-1);
+    g_free(tmp);
 
     tmp = gtk_text_buffer_get_text(word->buffer, &(word->end), end,
             /*don't include hidden chars*/FALSE);
     g_autofree gchar *suffix = g_markup_escape_text(tmp, /*NULL terminated string*/-1);
+    g_clear_pointer(&tmp, g_free);
 
     char *content = g_strdup_printf("%s<span foreground=\"red\">%s</span>%s", prefix, text, suffix);
 
