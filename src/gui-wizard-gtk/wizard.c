@@ -495,7 +495,7 @@ static void open_browse_if_link(GtkWidget *text_view, GtkTextIter *iter)
         GtkTextTag *tag = tagp->data;
         const char *url = g_object_get_data (G_OBJECT (tag), "url");
 
-        if (url != 0)
+        if (url != NULL)
         {
             /* http://techbase.kde.org/KDE_System_Administration/Environment_Variables#KDE_FULL_SESSION */
             if (getenv("KDE_FULL_SESSION") != NULL)
@@ -614,7 +614,7 @@ static void set_cursor_if_appropriate(GtkTextView *text_view,
         GtkTextTag *tag = tagp->data;
         gpointer url = g_object_get_data(G_OBJECT (tag), "url");
 
-        if (url != 0)
+        if (url != NULL)
         {
             hovering = TRUE;
             break;
