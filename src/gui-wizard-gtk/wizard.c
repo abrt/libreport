@@ -360,6 +360,8 @@ struct dump_dir *wizard_open_directory_for_writing(const char *dump_dir_name)
 
 void show_error_as_msgbox(const char *msg)
 {
+    g_return_if_fail(g_wnd_assistant != NULL);
+
     GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_wnd_assistant),
                 GTK_DIALOG_DESTROY_WITH_PARENT,
                 GTK_MESSAGE_WARNING,

@@ -125,6 +125,7 @@ int main(int argc, char **argv)
     /* List of events specified on the command line. */
     GList *user_event_list = NULL;
     const char *prgname = "abrt";
+    int ret = 0;
     abrt_init(argv);
 
     /* I18n */
@@ -217,13 +218,14 @@ int main(int argc, char **argv)
     g_signal_connect(app, "startup",  G_CALLBACK(startup_wizard),  NULL);
 
     /* Enter main loop */
-    g_application_run(G_APPLICATION(app), argc, argv);
+    ret = g_application_run(G_APPLICATION(app), argc, argv);
     g_object_unref(app);
+    libreport_g_custom_logger = NULL;
 
     if (opts & OPT_d)
         delete_dump_dir_possibly_using_abrtd(g_dump_dir_name);
 
     libreport_save_user_settings();
 
-    return 0;
+    return ret;
 }
