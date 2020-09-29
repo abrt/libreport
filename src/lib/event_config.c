@@ -541,10 +541,10 @@ bool check_problem_rating_usability(const event_config_t *cfg,
 
 finish:
     if (description)
-        *description = tmp_desc;
+        *description = g_steal_pointer(&tmp_desc);
 
     if (detail)
-        *detail = tmp_detail;
+        *detail = g_steal_pointer(&tmp_detail);
 
     return result;
 }
