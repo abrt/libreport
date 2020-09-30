@@ -153,13 +153,12 @@ static void consume_cur_option(struct my_parse_data *parse_data)
             opt->eo_value = old_opt->eo_value;
             old_opt->eo_value = NULL;
         }
-        //log_warning("xml: replacing '%s' value:'%s'->'%s'", opt->eo_name, old_opt->eo_value, opt->eo_value);
+
         free_event_option(old_opt);
         elem->data = opt;
     }
     else
     {
-        //log_warning("xml: new value %s='%s'", opt->eo_name, opt->eo_value);
         event_config->values->options = g_list_append(event_config->values->options, opt);
     }
 }
@@ -172,8 +171,6 @@ static void start_element(GMarkupParseContext *context,
                   gpointer user_data,
                   GError **error)
 {
-    //log_warning("start: %s", element_name);
-
     struct my_parse_data *parse_data = user_data;
     if (strcmp(element_name, ADV_OPTIONS_ELEMENT) == 0)
     {
@@ -357,15 +354,6 @@ static void text(GMarkupParseContext *context,
             log_info("allow-empty:'%s'", text_copy);
             opt->eo_allow_empty = libreport_string_to_bool(text_copy);
         }
-        /*
-        if (strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)
-        {
-            log_info("tooltip:'%s'", text_copy);
-            g_free(opt->eo_description);
-            opt->eo_description = text_copy;
-            text_copy = NULL;
-        }
-        */
     }
     else
     {
