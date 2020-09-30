@@ -307,8 +307,7 @@ static void text(GMarkupParseContext *context,
 
                         log_info("new label:'%s'", text_copy);
                         g_free(opt->eo_label);
-                        opt->eo_label = text_copy;
-                        text_copy = NULL;
+                        opt->eo_label = g_steal_pointer(&text_copy);
                     }
                 }
             }
@@ -323,8 +322,7 @@ static void text(GMarkupParseContext *context,
         {
             log_info("default value:'%s'", text_copy);
             g_free(opt->eo_value);
-            opt->eo_value = text_copy;
-            text_copy = NULL;
+            opt->eo_value = g_steal_pointer(&text_copy);
         }
         else if (strcmp(inner_element, NOTE_HTML_ELEMENT) == 0)
         {
@@ -343,8 +341,7 @@ static void text(GMarkupParseContext *context,
 
                         log_info("html note:'%s'", text_copy);
                         g_free(opt->eo_note_html);
-                        opt->eo_note_html = text_copy;
-                        text_copy = NULL;
+                        opt->eo_note_html = g_steal_pointer(&text_copy);
                     }
                 }
             }
@@ -429,26 +426,22 @@ static void text(GMarkupParseContext *context,
         else if (strcmp(inner_element, REQUIRES_ELEMENT) == 0)
         {
             g_free(ui->ec_requires_items);
-            ui->ec_requires_items = text_copy;
-            text_copy = NULL;
+            ui->ec_requires_items = g_steal_pointer(&text_copy);
         }
         else if (strcmp(inner_element, EXCL_BY_DEFAULT_ELEMENT) == 0)
         {
             g_free(ui->ec_exclude_items_by_default);
-            ui->ec_exclude_items_by_default = text_copy;
-            text_copy = NULL;
+            ui->ec_exclude_items_by_default = g_steal_pointer(&text_copy);
         }
         else if (strcmp(inner_element, INCL_BY_DEFAULT_ELEMENT) == 0)
         {
             g_free(ui->ec_include_items_by_default);
-            ui->ec_include_items_by_default = text_copy;
-            text_copy = NULL;
+            ui->ec_include_items_by_default = g_steal_pointer(&text_copy);
         }
         else if (strcmp(inner_element, EXCL_ALWAYS_ELEMENT) == 0)
         {
             g_free(ui->ec_exclude_items_always);
-            ui->ec_exclude_items_always = text_copy;
-            text_copy = NULL;
+            ui->ec_exclude_items_always = g_steal_pointer(&text_copy);
         }
         else if (strcmp(inner_element, EXCL_BINARY_ELEMENT) == 0)
         {
@@ -482,6 +475,7 @@ static void text(GMarkupParseContext *context,
             ui->ec_requires_details = libreport_string_to_bool(text_copy);
         }
     }
+
     g_free(text_copy);
 }
 
