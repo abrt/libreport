@@ -58,6 +58,7 @@ TESTSUITE_AT = \
   strbuf.at \
   osrelease.at \
   osinfo.at \
+  is_in_comma_separated_list.at \
   is_text_file.at \
   load_rule_list.at \
   taghyperlinks.at \

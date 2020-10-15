@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<event>
+    <_name>GitLab</_name>
+    <_description>Report an issue to a GitLab instance</_description>
+
+    <requires-items>component,duphash,os_release</requires-items>
+    <exclude-items-by-default>coredump,count,event_log,reported_to,vmcore</exclude-items-by-default>
+    <exclude-items-always></exclude-items-always>
+    <exclude-binary-items>no</exclude-binary-items>
+    <include-items-by-default></include-items-by-default>
+    <minimal-rating>3</minimal-rating>
+    <gui-review-elements>yes</gui-review-elements>
+
+    <options>
+        <option type="text" name="Gitlab_GitlabURL">
+            <_label>Instance URL</_label>
+            <allow-empty>no</allow-empty>
+            <_description>URL of the GitLab instance where the projects are hosted</_description>
+        </option>
+        <option type="text" name="Gitlab_PrivateToken">
+            <_label>Private token</_label>
+            <allow-empty>no</allow-empty>
+            <_description>Generated personal access token (private token) allowing for automated access to the GitLab API</_description>
+            <_note-html>You can generate this token by navigation to the GitLab instance &gt; Settings &gt; Acess Tokens. On the “Add a personal access token” screen, select “api” in Scopes and click “Create personal token”. Copy the generated token and paste it here.</_note-html>
+        </option>
+        <advanced-options>
+            <option type="text" name="Gitlab_Allowlist">
+                <_label>Component allowlist</_label>
+                <allow-empty>no</allow-empty>
+                <default-value>@GITLAB_DEFAULT_ALLOWLIST@</default-value>
+                <_description>Comma-separated list of components whose problems are to be repoted to the GitLab instance.</_description>
+            </option>
+            <option type="bool" name="Gitlab_SSLVerify">
+                <_label>Verify SSL/TLS certificate</_label>
+                <_note-html>Verify server certificate</_note-html>
+                <default-value>yes</default-value>
+            </option>
+            <option type="text" name="http_proxy">
+                <_label>HTTP Proxy</_label>
+                <allow-empty>yes</allow-empty>
+                <_note-html>Sets the proxy server to use for HTTP</_note-html>
+            </option>
+            <option type="text" name="HTTPS_PROXY">
+                <_label>HTTPS Proxy</_label>
+                <allow-empty>yes</allow-empty>
+                <_note-html>Sets the proxy server to use for HTTPS</_note-html>
+            </option>
+        </advanced-options>
+    </options>
+</event>
