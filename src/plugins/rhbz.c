@@ -407,18 +407,20 @@ GList *rhbz_bug_cc(xmlrpc_value* result_xml)
         if (!item)
             continue;
 
-        const char* cc = NULL;
-        xmlrpc_read_string(&env, item, &cc);
+        char *cc = NULL;
+        xmlrpc_read_string(&env, item, (const char **)&cc);
         xmlrpc_DECREF(item);
         if (env.fault_occurred)
             abrt_xmlrpc_die(&env);
 
         if (*cc != '\0')
         {
-            cc_list = g_list_append(cc_list, (char*)cc);
+            cc_list = g_list_append(cc_list, cc);
             log_debug("member on cc is %s", cc);
             continue;
         }
+
+        free(cc);
     }
     xmlrpc_DECREF(cc_member);
     return cc_list;
