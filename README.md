@@ -13,6 +13,8 @@ directories (problem_data.h), and a set of tools that file reports.
 The library also provides an infrastructure (run_event.h, report_event.conf)
 for automatic execution of shell scripts working with dump directories.
 
+The library is used in [**ABRT (Automatic Bug Reporting Tool)**](https://abrt.readthedocs.io).
+
 
 ### Supported report destinations
 - **regular files**  : reporter-print
@@ -31,6 +33,7 @@ Please see [**INSTALL**](INSTALL) for build and install steps.
 
 ### Technologies
 * [**satyr**](https://github.com/abrt/satyr) - backtrace processing, micro-reports
+* [**ABRT**](https://github.com/abrt/abrt) - main libreport consumer
 * [**Python3**](https://www.python.org/) 
 * [**GLib2**](https://developer.gnome.org/glib/)
 * [**Gtk3**](https://developer.gnome.org/gtk3) 
