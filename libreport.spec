@@ -222,9 +222,6 @@ Summary: %{name}'s micro report plugin
 BuildRequires: %{libjson_devel}
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-web = %{version}-%{release}
-%if 0%{?rhel} && ! 0%{?eln}
-Requires: python3-subscription-manager-rhsm
-%endif
 
 %description plugin-ureport
 Uploads micro-report to abrt server
