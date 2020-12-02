@@ -914,18 +914,22 @@ int main(int argc, char **argv)
             rhbz_add_comment(client, bz->bi_id, bzcomment, 0);
 
             const char *bt = problem_data_get_content_or_NULL(problem_data, FILENAME_BACKTRACE);
-            unsigned rating = 0;
-            unsigned long rtg = 0;
+            guint64 rating = 0;
+            guint64 rtg = 0;
             char *endptr;
             const char *rating_str = problem_data_get_content_or_NULL(problem_data, FILENAME_RATING);
             /* python doesn't have rating file */
             if (rating_str)
             {
+                errno = 0;
                 rtg = g_ascii_strtoull(rating_str, &endptr, 10);
-                if (rtg >= 0 && rtg <= UINT_MAX && rating_str != endptr)
-                    rating = (unsigned)rtg;
-                else
-                    error_msg_and_die("expected number in range <0, %d>: '%s'", UINT_MAX, rating_str);
+                if ((rtg == G_MAXUINT64 && errno == ERANGE)
+                    || (rtg == 0 && errno == EINVAL)
+                    || (rtg == 0 && rating_str == endptr)) {
+                    error_msg_and_die("expected number in range <0, %lu>: '%s'", G_MAXUINT64, rating_str);
+                } else {
+                    rating = rtg;
+                }
             }
             if (bt && rating > bz->bi_best_bt_rating)
             {
