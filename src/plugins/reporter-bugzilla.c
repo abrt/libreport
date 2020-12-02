@@ -251,7 +251,7 @@ int main(int argc, char **argv)
 #endif
 
     /* Can't keep these strings/structs static: _() doesn't support that */
-    const char *program_usage_string = _(
+    g_autofree char *program_usage_string = g_strdup_printf(_(
         "\n& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR"
         "\nor:"
         "\n& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE..."
@@ -289,16 +289,18 @@ int main(int argc, char **argv)
         "\nTRACKER_NAME to URL field. This option is applied only when a new bug is to be"
         "\nfiled. The default value is 'ABRT Server'"
         "\n"
-        "\nIf not specified, CONFFILE defaults to "CONF_DIR"/plugins/bugzilla.conf"
-        "\nand user's local ~"USER_HOME_CONFIG_PATH"/bugzilla.conf."
+        "\nIf not specified, CONFFILE defaults to %1$s/plugins/bugzilla.conf"
+        "\nand user's local ~%2$s/bugzilla.conf."
         "\nIts lines should have 'PARAM = VALUE' format."
         "\nRecognized string parameters: BugzillaURL, Login, Password, OSRelease."
         "\nRecognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify."
         "\nUser's local configuration overrides the system wide configuration."
         "\nParameters can be overridden via $Bugzilla_PARAM environment variables."
         "\n"
-        "\nFMTFILE and FMTFILE2 default to "CONF_DIR"/plugins/bugzilla_format.conf"
-    );
+        "\nFMTFILE and FMTFILE2 default to %1$s/plugins/bugzilla_format.conf"),
+        CONF_DIR,
+        USER_HOME_CONFIG_PATH);
+
     enum {
         OPT_v = 1 << 0,
         OPT_d = 1 << 1,
