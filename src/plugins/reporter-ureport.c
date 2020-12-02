@@ -109,7 +109,7 @@ int main(int argc, char **argv)
         OPT_END(),
     };
 
-    const char *program_usage_string = _(
+    g_autofree char *program_usage_string = g_strdup_printf(_(
         "& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS]\n"
         "  [-A -a bthash -B -b bug-id -E -e email -O -o comment] [-d DIR]\n"
         "  [-A -a bthash -T ATTACHMENT_TYPE -r REPORT_RESULT_TYPE -L RESULT_FIELD] [-d DIR]\n"
@@ -118,8 +118,8 @@ int main(int argc, char **argv)
         "\n"
         "Upload micro report or add an attachment to a micro report\n"
         "\n"
-        "Reads the default configuration from "UREPORT_CONF_FILE_PATH
-    );
+        "Reads the default configuration from %s"),
+        UREPORT_CONF_FILE_PATH);
 
     unsigned opts = libreport_parse_opts(argc, argv, program_options, program_usage_string);
 
