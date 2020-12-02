@@ -149,11 +149,11 @@ int main(int argc, char **argv)
     const char *ssh_private_key = NULL;
 
     /* Can't keep these strings/structs static: _() doesn't support that */
-    const char *program_usage_string = _(
+    g_autofree char *program_usage_string = g_strdup_printf(_(
         "& [-v] -d DIR [-c CONFFILE] [-u URL] [-b FILE] [-r FILE]\n"
         "\n"
         "Uploads compressed tarball of problem directory DIR to URL.\n"
-        "If URL is not specified, creates tarball in "LARGE_DATA_TMP_DIR" and exits.\n"
+        "If URL is not specified, creates tarball in %1$s and exits.\n"
         "\n"
         "URL should have form 'protocol://[user[:pass]@]host/dir/[file.tar.gz]'\n"
         "where protocol can be http(s), ftp, scp, or file.\n"
@@ -164,11 +164,13 @@ int main(int argc, char **argv)
         "Files with names listed in $EXCLUDE_FROM_REPORT are not included\n"
         "into the tarball.\n"
         "\n"
-        "\n""If not specified, CONFFILE defaults to "CONF_DIR"/plugins/upload.conf"
+        "\n""If not specified, CONFFILE defaults to %2$s/plugins/upload.conf"
         "\n""Its lines should have 'PARAM = VALUE' format."
         "Recognized string parameter: URL.\n"
-        "Parameter can be overridden via $Upload_URL."
-    );
+        "Parameter can be overridden via $Upload_URL."),
+        LARGE_DATA_TMP_DIR,
+        CONF_DIR);
+
     enum {
         OPT_v = 1 << 0,
         OPT_d = 1 << 1,
