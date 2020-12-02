@@ -228,17 +228,17 @@ int main(int argc, char **argv)
     const char *fmt_file = NULL;
 
     /* Can't keep these strings/structs static: _() doesn't support that */
-    const char *program_usage_string = _(
+    g_autofree char *program_usage_string = g_strdup_printf(_(
         "& [-v] -d DIR [-c CONFFILE] [-F FMTFILE]"
         "\n"
         "\n""Sends contents of a problem directory DIR via email"
         "\n"
-        "\n""If not specified, CONFFILE defaults to "CONF_DIR"/plugins/mailx.conf"
+        "\n""If not specified, CONFFILE defaults to %s/plugins/mailx.conf"
         "\n""Its lines should have 'PARAM = VALUE' format."
         "\n""Recognized string parameters: Subject, EmailFrom, EmailTo."
         "\n""Recognized boolean parameter (VALUE should be 1/0, yes/no): SendBinaryData."
-        "\n""Parameters can be overridden via $Mailx_PARAM environment variables."
-    );
+        "\n""Parameters can be overridden via $Mailx_PARAM environment variables."),
+        CONF_DIR);
 
     enum {
         OPT_v = 1 << 0,
