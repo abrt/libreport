@@ -315,7 +315,7 @@ int libreport_dump_fd_info_at(int pid_proc_fd, FILE *dest)
     }
 
 dumpfd_cleanup:
-    if (proc_fd_dir >= 0)
+    if (proc_fd_dir != NULL)
         closedir(proc_fd_dir);
     if (proc_fdinfo_fd >= 0)
         close(proc_fdinfo_fd);
