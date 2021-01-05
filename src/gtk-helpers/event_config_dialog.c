@@ -86,6 +86,11 @@ static void save_data_from_event_dialog_name(GList *widgets, const char *name)
 {
     event_config_t *ec = get_event_config(name);
 
+    if (ec == NULL) {
+        log_warning("Cannot save data from event dialog. Event '%s' could not be found", name);
+        return;
+    }
+
     save_data_from_event_config_dialog(widgets, ec);
 }
 
