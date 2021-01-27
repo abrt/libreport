@@ -305,7 +305,7 @@ autoconf
 %make_install \
 %if %{with python3}
              PYTHON=%{__python3} \
-%endif # with python3
+%endif
              mandir=%{_mandir}
 
 %find_lang %{name}
