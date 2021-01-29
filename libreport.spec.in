@@ -640,9 +640,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %if 0%{?fedora} || 0%{?eln}
 %{_datadir}/%{name}/workflows/workflow_AnacondaFedora.xml
 %endif
-%if 0%{?rhel} && ! 0%{?eln}
-%{_datadir}/%{name}/workflows/workflow_AnacondaRHEL.xml
-%endif
 %{_datadir}/%{name}/workflows/workflow_AnacondaUpload.xml
 %config(noreplace) %{_sysconfdir}/libreport/workflows.d/anaconda_event.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/bugzilla_anaconda_event.conf
