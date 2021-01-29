@@ -281,8 +281,8 @@ PKG_CHECK_MODULES([NETTLE], [nettle])
 
 PKG_PROG_PKG_CONFIG
 
-AC_CHECK_HEADER([libtar.h], [],
-   [AC_MSG_ERROR([libtar.h is needed to build libreport])])
+AC_CHECK_HEADER([archive.h], [],
+   [AC_MSG_ERROR([archive.h is needed to build libreport])])
 
 AC_CHECK_HEADERS([locale.h])
 

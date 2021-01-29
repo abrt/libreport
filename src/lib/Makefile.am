@@ -92,7 +92,6 @@ libreport_la_CPPFLAGS = \
     $(SATYR_CFLAGS) \
     -D_GNU_SOURCE
 libreport_la_LDFLAGS = \
-    -ltar \
     -version-info 1:0:0
 
 if HAVE_LD_VERSION_SCRIPT
