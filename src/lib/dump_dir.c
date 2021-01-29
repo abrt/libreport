@@ -17,7 +17,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <sys/utsname.h>
-#include <libtar.h>
+#include <archive.h>
+#include <archive_entry.h>
 #include <glib-unix.h>
 #include "internal_libreport.h"
 
@@ -2425,111 +2426,135 @@ int dd_create_archive(struct dump_dir *dd, const char *archive_name,
     if (!g_str_has_suffix(archive_name, ".tar.gz"))
         return -ENOSYS;
 
+    if (access(archive_name, F_OK) == 0)
+        return -EEXIST;
+
     int result = 0;
-    pid_t child;
-    TAR* tar = NULL;
-    int pipe_from_parent_to_child[2];
-    g_unix_open_pipe(pipe_from_parent_to_child, 0, NULL);
-    child = fork();
-    if (child < 0)
-    {
-        result = -errno;
-        /* Don't die, let the caller to execute his clean-up code. */
-        perror_msg("vfork");
-        return result;
-    }
-    if (child == 0)
-    {
-        /* child */
-        close(pipe_from_parent_to_child[1]);
-        libreport_xmove_fd(pipe_from_parent_to_child[0], 0);
-
-        int fd = open(archive_name, O_WRONLY | O_CREAT | O_EXCL, 0600);
-        if (fd < 0)
-        {
-            /* This r might interfer with exit status of gzip, but it is
-             * very unlikely (man 1 gzip):
-             *   Exit status is normally 0; if an error occurs, exit status is
-             *   1. If a warning occurs, exit status is 2.
-             */
-            result = errno == EEXIST ? 100 : 3;
-            perror_msg("Can't open '%s'", archive_name);
-            exit(result);
-        }
-
-        libreport_xmove_fd(fd, 1);
-        execlp("gzip", "gzip", NULL);
-        perror_msg_and_die("Can't execute '%s'", "gzip");
-    }
-    close(pipe_from_parent_to_child[0]);
-
-    /* If child died (say, in g_open), then parent might get SIGPIPE.
-     * We want to properly unlock dd, therefore we must not die on SIGPIPE:
-     */
-    sighandler_t old_handler = signal(SIGPIPE, SIG_IGN);
 
     /* Create tar writer object */
-    if (tar_fdopen(&tar, pipe_from_parent_to_child[1], archive_name,
-                /*fileops:(standard)*/ NULL, O_WRONLY | O_CREAT, 0644, TAR_GNU) != 0)
+    struct archive *a;
+    struct archive_entry *entry = NULL;
+    struct stat st;
+    int archive_fd = -1;
+    char buff[8192];
+    int len;
+    int fd;
+    int r = 0;
+    unsigned max_tries = 10; //because why not
+    unsigned tries = 0;
+
+    a = archive_write_new();
+    if (a == NULL)
     {
-        result = -errno;
-        log_warning(_("Failed to open TAR writer"));
+        result = -1;
+        log_warning(_("Failed to allocate and initialize archive object"));
         goto finito;
+
+    }
+
+    r = archive_write_add_filter_gzip(a);
+    if (r == ARCHIVE_FATAL)
+    {
+        result = -archive_errno(a);
+        log_warning(_("%s"), archive_error_string(a));
+        return result;
+    }
+
+    r = archive_write_set_format_pax_restricted(a);
+    if (r != ARCHIVE_OK)
+    {
+        result = -archive_errno(a);
+        log_warning(_("%s"), archive_error_string(a));
+        return result;
+    }
+
+    archive_fd = open(archive_name, O_CREAT|O_WRONLY|O_EXCL, S_IRUSR|S_IWUSR);
+    if (archive_fd == -1)
+        return -errno;
+    r = archive_write_open_fd(a, archive_fd);
+    if (r == ARCHIVE_FATAL)
+    {
+        result = -archive_errno(a);
+        log_warning(_("%s"), archive_error_string(a));
+        return result;
     }
 
     /* Write data to the tarball */
     dd_init_next_file(dd);
     char *short_name, *full_name;
+    entry = archive_entry_new();
+    if (entry == NULL)
+    {
+        result = -1;
+        log_warning(_("Failed to allocate and initialize archive entry object"));
+        return result;
+
+    }
+
     while (dd_get_next_file(dd, &short_name, &full_name))
     {
         if (!(exclude_elements && libreport_is_in_string_list(short_name, exclude_elements)))
         {
-           if (tar_append_file(tar, full_name, short_name))
-               result = -errno;
+            stat(full_name, &st);
+            archive_entry_set_pathname(entry, short_name);
+            archive_entry_copy_stat(entry, &st);
+            archive_entry_set_filetype(entry, AE_IFREG);
+            archive_entry_set_perm(entry, 0644);
+
+retry:
+            r = archive_write_header(a, entry);
+            switch (r)
+            {
+                case ARCHIVE_WARN:
+                    log_warning(_("%s"), archive_error_string(a));
+                case ARCHIVE_OK:
+                    break;
+                case ARCHIVE_RETRY:
+                    if (++tries < max_tries)
+                    {
+                        log_warning(_("Failed to write to archive, retrying..."));
+                        goto retry;
+                    }
+                case ARCHIVE_FATAL:
+                    log_warning(_("Failed to write to archive: %s"),
+                            (tries == max_tries ?  "too many attempts" : archive_error_string(a)));
+                    result = (tries == max_tries ? -1 : -archive_errno(a));
+                    goto finito;
+            }
+
+            archive_entry_clear(entry);
+            fd = open(full_name, O_RDONLY);
+            if (fd == -1)
+            {
+                result = -errno;
+                log_warning(_("Failed to add file to archive: %s"), full_name);
+                goto finito;
+            }
+            len = read(fd, buff, sizeof (buff));
+            while (len > 0)
+            {
+                archive_write_data(a, buff, len);
+                len = read(fd, buff, sizeof (buff));
+            }
+            close(fd);
         }
 
         free(short_name);
         free(full_name);
 
-        if (result != 0)
-            goto finito;
-    }
-
-    /* Close tar writer... */
-    if (tar_append_eof(tar) != 0)
-    {
-        result = -errno;
-        log_warning(_("Failed to finalize TAR archive"));
-        goto finito;
     }
 
 finito:
-    signal(SIGPIPE, old_handler);
 
-    if (tar != NULL && tar_close(tar) != 0)
+    archive_entry_free(entry);
+    archive_write_close(a);
+    r = close(archive_fd);
+    if (r == -1)
     {
-        result = -errno;
-        log_warning(_("Failed to close TAR writer"));
+        log_warning(_("Failed to close archive"));
+        return -errno;
     }
-
-    /* ...and check that gzip child finished successfully */
-    int status;
-    libreport_safe_waitpid(child, &status, 0);
-    if (status != 0)
-    {
-        result = -ECHILD;
-        if (WIFSIGNALED(status))
-            log_warning(_("gzip killed with signal %d"), WTERMSIG(status));
-        else if (WIFEXITED(status))
-        {
-            if (WEXITSTATUS(status) == 100)
-                result = -EEXIST;
-            else
-                log_warning(_("gzip exited with %d"), WEXITSTATUS(status));
-        }
-        else
-            log_warning(_("gzip process failed"));
-    }
+    archive_write_free(a);
 
     return result;
 }

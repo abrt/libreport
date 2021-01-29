@@ -1287,8 +1287,32 @@ int main(void)
 AT_TESTFUN([dd_create_archive],
 [[
 #include "internal_libreport.h"
-#include <libtar.h>
+#include <archive.h>
+#include <archive_entry.h>
 #include <assert.h>
+
+static int copy_data(struct archive *in, struct archive *out)
+{
+    int r;
+    const void *buff;
+    size_t size;
+    la_int64_t offset;
+
+    for (;;)
+    {
+        r = archive_read_data_block(in, &buff, &size, &offset);
+        if (r == ARCHIVE_EOF)
+            return (ARCHIVE_OK);
+        if (r < ARCHIVE_OK)
+            return (r);
+        r = archive_write_data_block(out, buff, size, offset);
+        if (r < ARCHIVE_OK)
+        {
+            fprintf(stderr, "Error: archive_write_data_block() failed: %s\n", archive_error_string(out));
+            return (r);
+        }
+    }
+}
 
 void verify_archive(struct dump_dir *dd, const char *file_name,
     const_string_vector_const_ptr_t included_files,
@@ -1299,46 +1323,42 @@ void verify_archive(struct dump_dir *dd, const char *file_name,
         ++c;
     g_autofree int *check_array = g_malloc0(c * sizeof(int));
 
-    int pipe_from_parent_to_child[2];
-    g_unix_open_pipe(pipe_from_parent_to_child, 0, NULL);
-    pid_t child = fork();
-    if (child < 0)
-        perror_msg_and_die("vfork");
+    struct archive *in_archive;
+    struct archive *out_archive;
+    struct archive_entry *entry = NULL;
+    int flags = ARCHIVE_EXTRACT_TIME|ARCHIVE_EXTRACT_PERM|ARCHIVE_EXTRACT_ACL|ARCHIVE_EXTRACT_FFLAGS;
 
-    if (child == 0)
+    in_archive = archive_read_new();
+    archive_read_support_filter_gzip(in_archive);
+    archive_read_support_format_tar(in_archive);
+
+    int r = archive_read_open_filename(in_archive, file_name, 10240);
+    if (r != ARCHIVE_OK)
     {
-        /* child */
-        close(pipe_from_parent_to_child[0]);
-        libreport_xmove_fd(g_open(file_name, O_RDONLY), 0);
-        libreport_xmove_fd(pipe_from_parent_to_child[1], 1);
-        execlp("gzip", "gzip", "-d", NULL);
-        perror_msg_and_die("Can't execute '%s'", "gzip");
-    }
-    close(pipe_from_parent_to_child[1]);
-
-    /* If child died (say, in g_open), then parent might get SIGPIPE.
-     * We want to properly unlock dd, therefore we must not die on SIGPIPE:
-     */
-    signal(SIGPIPE, SIG_IGN);
-
-    TAR* tar = NULL;
-    /* Create tar writer object */
-    if (tar_fdopen(&tar, pipe_from_parent_to_child[0], file_name,
-                /*fileops:(standard)*/ NULL, O_RDONLY, 0644, TAR_GNU) != 0)
-    {
-        fprintf(stderr, "Failed to open the pipe to gzip for archive: '%s'\n", file_name);
+        fprintf(stderr, "Failed to open archive '%s': %s\n", file_name, archive_error_string(in_archive));
         abort();
     }
-
-    int r = 0;
     const char *real_file = "/tmp/libreport-attest-extracted";
-    while ((r = th_read(tar)) == 0)
+    for (;;)
     {
-        char *path = th_get_pathname(tar);
+        if (entry)
+            archive_entry_clear(entry);
+        r = archive_read_next_header(in_archive, &entry);
+        if (r == ARCHIVE_EOF)
+        {
+            archive_entry_free(entry);
+            archive_read_close(in_archive);
+            //uncomment to cause a segfault
+            //archive_read_free(in_archive);
+            break;
+        }
 
-        if (!TH_ISREG(tar))
+        const char *path = g_strdup(archive_entry_pathname(entry));
+
+        if (archive_entry_filetype(entry) != AE_IFREG)
         {
             fprintf(stderr, "Not regular file: '%s', found in archive: '%s'\n", path, file_name);
+            g_free((void *)path);
             continue;
         }
 
@@ -1355,12 +1375,25 @@ void verify_archive(struct dump_dir *dd, const char *file_name,
             check_array[c] += 1;
 
             unlink(real_file);
-            g_autofree char *real_file_dup = g_strdup(real_file);
-            if (tar_extract_regfile(tar, real_file_dup) != 0)
+            out_archive = archive_write_disk_new();
+            archive_write_disk_set_options(out_archive, flags);
+            archive_write_disk_set_standard_lookup(out_archive);
+            archive_entry_set_pathname(entry, "/tmp/libreport-attest-extracted");
+            r = archive_write_header(out_archive, entry);
+            if (r != ARCHIVE_OK)
+                fprintf(stderr, "Error: archive_write_header() failed: %s\n", archive_error_string(out_archive));
+            else if (archive_entry_size(entry) > 0)
             {
-                fprintf(stderr, "TAR failed to extract '%s' to '%s': %s\n", path, real_file, strerror(errno));
-                abort();
+                r = copy_data(in_archive, out_archive);
+                if (r != ARCHIVE_OK)
+                {
+                    fprintf(stderr, "Error: copy_data() failed: %s\n", archive_error_string(out_archive));
+                    abort();
+                }
             }
+
+            archive_write_close(out_archive);
+            archive_write_free(out_archive);
 
             g_autofree char *original = dd_load_text(dd, path);
             assert(original != NULL);
@@ -1374,7 +1407,7 @@ void verify_archive(struct dump_dir *dd, const char *file_name,
                 fprintf(stderr, "Invalid file contents: '%s'\nExp: '%s'\nGot: '%s'\n", path, original, extracted);
                 abort();
             }
-
+            g_free((void *)path);
             continue;
         }
 
@@ -1392,22 +1425,7 @@ void verify_archive(struct dump_dir *dd, const char *file_name,
         }
 
         fprintf(stderr, "Uncategorized file: '%s', found in archive '%s'\n", path, file_name);
-    }
-
-    if (r != 1)
-    {
-        fprintf(stderr, "th_read() failed: %s\n", strerror(errno));
-        abort();
-    }
-
-    tar_close(tar);
-
-    int status;
-    libreport_safe_waitpid(child, &status, 0);
-    if (status != 0)
-    {
-        fprintf(stderr, "gzip status code '%d'\n", status);
-        abort();
+        g_free((void *)path);
     }
 
     int err = 0;
