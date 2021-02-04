@@ -21,21 +21,28 @@
     debuginfos.
 """
 
-import sys
+from abc import ABC, abstractmethod
+import errno
 import os
 import pwd
-import time
-import errno
 import shutil
 from subprocess import Popen
+import sys
 import tempfile
+import time
+from typing import Any, Callable, Dict, List, Optional, TextIO, Tuple, TypeVar, Union
+
+from hawkey import Package
 
 from reportclient import (_, log1, log2, RETURN_OK, RETURN_FAILURE,
                           RETURN_CANCEL_BY_USER, verbose, ask_yes_no,
                           error_msg)
 
 
-def ensure_abrt_gid(fn):
+ReturnType = TypeVar('ReturnType')
+
+
+def ensure_abrt_gid(fn: Callable[..., ReturnType]) -> Callable[..., ReturnType]:
     """
     Ensures that the function is called using abrt's gid
 
@@ -51,7 +58,7 @@ def ensure_abrt_gid(fn):
     if abrt.pw_gid == current_gid:
         return fn
 
-    def wrapped(*args, **kwargs):
+    def wrapped(*args, **kwargs) -> ReturnType:
         """
         Wrapper function around the called function.
 
@@ -77,7 +84,8 @@ def ensure_abrt_gid(fn):
 # ..that can lead to: foo.c No such file and directory
 # files is not used...
 @ensure_abrt_gid
-def unpack_rpm(package_full_path, files, tmp_dir, destdir, exact_files=False):
+def unpack_rpm(package_full_path: str, files: List[str], tmp_dir: str, destdir: str,
+               exact_files: bool = False) -> int:
     """
     Unpacks a single rpm located in tmp_dir into destdir.
 
@@ -146,8 +154,10 @@ def unpack_rpm(package_full_path, files, tmp_dir, destdir, exact_files=False):
               .format(unpacked_cpio_path, log_file_name))
         return RETURN_FAILURE
 
+    return RETURN_OK
 
-def clean_up(tmp_dir, silent=False):
+
+def clean_up(tmp_dir: str, silent: bool = False) -> None:
     """
     Removes the temporary directory.
     """
@@ -160,12 +170,12 @@ def clean_up(tmp_dir, silent=False):
                 error_msg(_("Can't remove '{0}': {1}").format(tmp_dir, str(ex)))
 
 
-class DownloadProgress(object):
+class DownloadProgress:
     """
     This class serves as a download progress handler.
     """
 
-    def __init__(self, total_pkgs):
+    def __init__(self, total_pkgs: int):
         """
         Sets up instance variables
 
@@ -174,11 +184,11 @@ class DownloadProgress(object):
         """
 
         self.total_pkgs = total_pkgs
-        self.downloaded_pkgs = 0
-        self.last_pct = 0
-        self.last_time = 0
+        self.downloaded_pkgs: int = 0
+        self.last_pct: int = 0
+        self.last_time: float = 0
 
-    def update(self, name, pct):
+    def update(self, name: str, pct: int) -> None:
         """
         A method used to update the progress
 
@@ -216,35 +226,38 @@ class DownloadProgress(object):
         sys.stdout.flush()
 
 
-class DebugInfoDownload(object):
+class DebugInfoDownload(ABC):
     """
     This class is used to manage download of debuginfos.
     """
 
-    def __init__(self, cache, tmp, repo_pattern="*debug*", keep_rpms=False,
-                 noninteractive=True):
-        self.old_stdout = -1
+    DownloadResult = Union[Tuple[None, str], Tuple[str, None]]
+    TriageResult = Tuple[Dict[str, List[str]], List[str], float, float]
+
+    def __init__(self, cache: str, tmp: str, repo_pattern: str = "*debug*",
+                 keep_rpms: bool = False, noninteractive: bool = True):
+        self.old_stdout: Optional[TextIO] = None
         self.cachedir = cache
         self.tmpdir = tmp
         self.keeprpms = keep_rpms
         self.noninteractive = noninteractive
         self.repo_pattern = repo_pattern
-        self.package_files_dict = {}
-        self.not_found = []
-        self.todownload_size = 0
-        self.installed_size = 0
+        self.package_files_dict: Dict[str, List[str]] = {}
+        self.not_found: List[str] = []
+        self.todownload_size: float = 0
+        self.installed_size: float = 0
         self.find_packages_run = False
 
-    def get_download_size(self):
+    def get_download_size(self) -> float:
         return self.todownload_size
 
-    def get_install_size(self):
+    def get_install_size(self) -> float:
         return self.installed_size
 
-    def get_package_count(self):
+    def get_package_count(self) -> int:
         return len(self.package_files_dict)
 
-    def mute_stdout(self):
+    def mute_stdout(self) -> None:
         """
         Links sys.stdout with /dev/null and saves the old stdout
         """
@@ -253,19 +266,19 @@ class DebugInfoDownload(object):
             self.old_stdout = sys.stdout
             sys.stdout = open("/dev/null", "w")
 
-    def unmute_stdout(self):
+    def unmute_stdout(self) -> None:
         """
         Replaces sys.stdout by stdout saved using mute
         """
 
         if verbose < 2:
-            if self.old_stdout != -1:
+            if self.old_stdout is not None:
                 sys.stdout = self.old_stdout
             else:
                 print("ERR: unmute called without mute?")
 
     @ensure_abrt_gid
-    def setup_tmp_dirs(self):
+    def setup_tmp_dirs(self) -> int:
         if not os.path.exists(self.tmpdir):
             try:
                 os.makedirs(self.tmpdir)
@@ -281,22 +294,28 @@ class DebugInfoDownload(object):
 
         return RETURN_OK
 
-    def prepare(self):
+    @abstractmethod
+    def prepare(self) -> None:
         pass
 
-    def initialize_progress(self, updater):
+    @abstractmethod
+    def initialize_progress(self, updater: DownloadProgress) -> None:
         pass
 
-    def initialize_repositories(self):
+    @abstractmethod
+    def initialize_repositories(self) -> None:
         pass
 
-    def triage(self, files):
+    @abstractmethod
+    def triage(self, files: List[str]) -> TriageResult:
         pass
 
-    def download_package(self, pkg):
+    # TODO: Refine the type of the right branch of the union.
+    @abstractmethod
+    def download_package(self, pkg: Package) -> DownloadResult:
         pass
 
-    def find_packages(self, files):
+    def find_packages(self, files: List[str]) -> int:
         self.find_packages_run = True
         # nothing to download?
         if not files:
@@ -315,9 +334,10 @@ class DebugInfoDownload(object):
          self.todownload_size,
          self.installed_size) = self.triage(files)
 
+        return RETURN_OK
 
     # return value will be used as exitcode. So 0 = ok, !0 - error
-    def download(self, files, download_exact_files=False):
+    def download(self, files: List[str], download_exact_files: bool = False) -> int:
         """
         Downloads rpms shipping given files into a temporary directory
 
@@ -398,6 +418,9 @@ class DebugInfoDownload(object):
                     pass
                 print(_("Downloading package {0} failed").format(pkg))
             else:
+                assert err is None
+                assert isinstance(package_full_path, str)
+
                 unpack_result = unpack_rpm(package_full_path,
                                            files,
                                            self.tmpdir,
@@ -438,7 +461,7 @@ class DebugInfoDownload(object):
         return RETURN_OK
 
 
-def build_ids_to_paths(prefix, build_ids):
+def build_ids_to_paths(prefix: str, build_ids: List[str]) -> List[str]:
     """
     Returns the list of posible locations of debug files
     for the supplied build-ids.
@@ -456,7 +479,8 @@ def build_ids_to_paths(prefix, build_ids):
 # beware this finds only missing libraries, but not the executable itself ..
 
 
-def filter_installed_debuginfos(build_ids, cache_dirs):
+def filter_installed_debuginfos(build_ids: List[str], cache_dirs: List[str]) \
+        -> List[str]:
     """
     Checks for installed debuginfos.
 
