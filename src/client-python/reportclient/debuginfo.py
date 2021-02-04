@@ -26,7 +26,7 @@ import errno
 import os
 import pwd
 import shutil
-from subprocess import Popen
+from subprocess import run
 import sys
 import tempfile
 import time
@@ -39,7 +39,7 @@ from reportclient import (_, log1, log2, RETURN_OK, RETURN_FAILURE,
                           error_msg)
 
 
-ReturnType = TypeVar('ReturnType')
+ReturnType = TypeVar("ReturnType")
 
 
 def ensure_abrt_gid(fn: Callable[..., ReturnType]) -> Callable[..., ReturnType]:
@@ -104,46 +104,36 @@ def unpack_rpm(package_full_path: str, files: List[str], tmp_dir: str, destdir: 
     log2("%s", files)
     print(_("Extracting cpio from {0}").format(package_full_path))
     unpacked_cpio_path = tmp_dir + "/unpacked.cpio"
+
     try:
-        unpacked_cpio = open(unpacked_cpio_path, 'wb')
+        with open(unpacked_cpio_path, "wb") as unpacked_cpio:
+            rpm2cpio = run(["rpm2cpio", package_full_path], stdout=unpacked_cpio)
+            retcode = rpm2cpio.returncode
+
+            if retcode == 0:
+                log1("cpio written OK")
+            else:
+                print(_("Can't extract package '{0}'").format(package_full_path))
+                return RETURN_FAILURE
     except IOError as ex:
-        print(_("Can't write to '{0}': {1}").format(unpacked_cpio_path, ex))
+        print(_("Can't open '{0}' for writing: {1}").format(unpacked_cpio_path, ex))
         return RETURN_FAILURE
-
-    rpm2cpio = Popen(["rpm2cpio", package_full_path],
-                     stdout=unpacked_cpio, bufsize=-1)
-    retcode = rpm2cpio.wait()
-
-    if retcode == 0:
-        log1("cpio written OK")
-    else:
-        unpacked_cpio.close()
-        print(_("Can't extract package '{0}'").format(package_full_path))
-        return RETURN_FAILURE
-
-    # close the file
-    unpacked_cpio.close()
-    # and open it for reading
-    unpacked_cpio = open(unpacked_cpio_path, 'rb')
 
     print(_("Caching files from {0} made from {1}")
           .format("unpacked.cpio", os.path.basename(package_full_path)))
 
-    file_patterns = ""
     cpio_args = ["cpio", "-idu"]
     if exact_files:
-        for filename in files:
-            file_patterns += "." + filename + " "
-        cpio_args = ["cpio", "-idu", file_patterns.strip()]
+        file_patterns = " ".join("." + filename for filename in files)
+        cpio_args.append(file_patterns)
 
-    with tempfile.NamedTemporaryFile(prefix='abrt-unpacking-', dir='/tmp',
-                                     delete=False) as log_file:
-        log_file_name = log_file.name
-        cpio = Popen(cpio_args, cwd=destdir, bufsize=-1,
-                     stdin=unpacked_cpio, stdout=log_file, stderr=log_file)
-        retcode = cpio.wait()
-
-    unpacked_cpio.close()
+    with open(unpacked_cpio_path, "rb") as unpacked_cpio:
+        with tempfile.NamedTemporaryFile(prefix="abrt-unpacking-", dir="/tmp",
+                                         delete=False) as log_file:
+            log_file_name = log_file.name
+            cpio = run(cpio_args, cwd=destdir, bufsize=-1,
+                       stdin=unpacked_cpio, stdout=log_file, stderr=log_file)
+            retcode = cpio.returncode
 
     if retcode == 0:
         log1("files extracted OK")
