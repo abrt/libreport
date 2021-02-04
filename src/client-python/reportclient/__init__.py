@@ -14,13 +14,14 @@
 
 import os
 import sys
+from typing import Optional
 
 if sys.version_info[0] == 2:
     from reportclient._reportclient import *
 else:
     from reportclient._reportclient3 import *
 
-tmpdir = None
+tmpdir: Optional[str] = None
 
 # everything was ok
 RETURN_OK = 0
@@ -54,7 +55,7 @@ def init_gettext():
 
 init_gettext()
 
-verbose = 0
+verbose: int = 0
 ABRT_VERBOSE = os.getenv("ABRT_VERBOSE")
 if ABRT_VERBOSE:
     try:
@@ -63,7 +64,7 @@ if ABRT_VERBOSE:
         pass
 
 
-def set_verbosity(verbosity):
+def set_verbosity(verbosity: int) -> None:
     global verbose
     verbose = verbosity
     os.environ["ABRT_VERBOSE"] = str(verbose)

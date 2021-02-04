@@ -17,6 +17,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Suite 500, Boston, MA  02110-1335  USA
 import sys
+from typing import Dict, List, Optional
 
 import dnf
 import dnf.rpm
@@ -26,19 +27,23 @@ from dnf.callback import (STATUS_OK,
                           STATUS_ALREADY_EXISTS,
                           STATUS_MIRROR,
                           STATUS_FAILED)
+from hawkey import Package, Query
 
 from reportclient import (_, log1, log2)
-from reportclient.debuginfo import DebugInfoDownload
+from reportclient.debuginfo import DebugInfoDownload, DownloadProgress
+
+
+DnfStatus = Optional[int]
 
 
 class DNFProgress(dnf.callback.DownloadProgress):
-
-    def __init__(self, observer):
+    def __init__(self, observer: DownloadProgress):
         super(DNFProgress, self).__init__()
 
         self.observer = observer
 
-    def end(self, payload, status, msg):
+    def end(self, payload: dnf.callback.Payload, status: DnfStatus,
+            msg: Optional[str]) -> None:
         # One may objects that this call back isn't necessary because the
         # progress() callback is called when downloading finishes, but if the
         # downloaded package is already in a local cache, DNF doesn't call
@@ -54,44 +59,38 @@ class DNFProgress(dnf.callback.DownloadProgress):
         else:
             sys.stderr.write("Unknown DNF download status: %s\n" % (msg))
 
-    def progress(self, payload, done):
+    def progress(self, payload: dnf.callback.Payload, done: float) -> None:
         log2("Updated a package")
         self.observer.update(str(payload), int(100 * (done / payload.download_size)))
 
-    def start(self, total_files, total_size):
+    def start(self, total_files: int, total_size: float,
+              total_drpms: Optional[int] = 0) -> None:
         log2("Started downloading of a package")
 
 
 class DNFDebugInfoDownload(DebugInfoDownload):
+    def __init__(self, cache: str, tmp: str, repo_pattern: str = "*debug*",
+                 keep_rpms: bool = False, noninteractive: bool = True,
+                 releasever: Optional[str] = None):
+        super(DNFDebugInfoDownload, self).__init__(cache, tmp, repo_pattern,
+                                                   keep_rpms, noninteractive)
 
-    def __init__(self, cache, tmp, repo_pattern="*debug*", keep_rpms=False,
-                 noninteractive=True, releasever=None):
-        super(DNFDebugInfoDownload, self).__init__(cache, tmp, repo_pattern, keep_rpms, noninteractive)
-
-        self.progress = None
-
+        self.progress: Optional[DNFProgress] = None
         self.base = dnf.Base()
-        if not releasever is None:
+
+        if releasever is not None:
             self.base.conf.substitutions['releasever'] = releasever
 
-        # bug resurfaces in different forms. if it appears again try uncommenting
-        ######   dnf pre API enforced
-        # self.base.logging.presetup()
-        ######   dnf 1.9 API enforced
-        # self.base._logging.presetup()
-        ######   dnf 2.0
-        # self.base._logging._presetup()
-
-    def prepare(self):
+    def prepare(self) -> None:
         try:
             self.base.read_all_repos()
         except dnf.exceptions.Error as ex:
-            print(_("Error reading repository configuration: '{0!s}'").format(str(ex)))
+            print(_("Error reading repository configuration: '{0}'").format(str(ex)))
 
-    def initialize_progress(self, updater):
+    def initialize_progress(self, updater: DownloadProgress) -> None:
         self.progress = DNFProgress(updater)
 
-    def initialize_repositories(self):
+    def initialize_repositories(self) -> None:
         # enable only debug repositories
         for repo in self.base.repos.all():
             repo.disable()
@@ -105,20 +104,21 @@ class DNFDebugInfoDownload(DebugInfoDownload):
         except RepoError as ex:
             print(_("Error setting up repositories: '{0!s}'").format(str(ex)))
 
-    def triage(self, files):
+    def triage(self, files: List[str]) -> DebugInfoDownload.TriageResult:
         dnf_query = self.base.sack.query()
         dnf_available = dnf_query.available()
-        package_files_dict = {}
-        not_found = []
-        todownload_size = 0
-        installed_size = 0
+        package_files_dict: Dict[str, List[str]] = {}
+        not_found: List[str] = []
+        todownload_size: float = 0
+        installed_size: float = 0
 
-        def required_packages(query, package, origin):
+        def required_packages(query: Query, package: Package,
+                              origin: Package) -> List[Package]:
             """
             Recursive function to find all required packages of required packages of ...
               origin - should stop infinite recursion (A => B => ... => X => A)
             """
-            required_pkg_list = []
+            required_pkg_list: List[Package] = []
             if package.requires:
                 pkg_reqs = query.filter(provides=package.requires, arch=package.arch)
                 for p in pkg_reqs:
@@ -127,7 +127,6 @@ class DNFDebugInfoDownload(DebugInfoDownload):
                         required_pkg_list += required_packages(query, p, origin)
 
             return required_pkg_list
-
 
         for debuginfo_path in files:
             di_package_list = []
@@ -139,15 +138,17 @@ class DNFDebugInfoDownload(DebugInfoDownload):
             else:
                 di_package_list.append(packages[0])
                 if packages[0].requires:
-                    package_reqs = required_packages(dnf_available, packages[0], packages[0])
+                    package_reqs = required_packages(dnf_available, packages[0],
+                                                     packages[0])
                     for pkg in package_reqs:
-                        if pkg not in di_package_list:
-                            di_package_list.append(pkg)
-                            log2("found required package {0} for {1}".format(pkg, packages[0]))
-
+                        if pkg in di_package_list:
+                            continue
+                        di_package_list.append(pkg)
+                        log2("found required package {0} for {1}"
+                             .format(pkg, packages[0]))
 
                 for pkg in di_package_list:
-                    if pkg in package_files_dict.keys():
+                    if pkg in package_files_dict:
                         package_files_dict[pkg].append(debuginfo_path)
                     else:
                         package_files_dict[pkg] = [debuginfo_path]
@@ -157,7 +158,7 @@ class DNFDebugInfoDownload(DebugInfoDownload):
                     log2("found packages for %s: %s", debuginfo_path, pkg)
         return (package_files_dict, not_found, todownload_size, installed_size)
 
-    def download_package(self, pkg):
+    def download_package(self, pkg: Package) -> DebugInfoDownload.DownloadResult:
         try:
             self.base.download_packages([pkg], self.progress)
         except DownloadError as ex:
