@@ -118,7 +118,8 @@ def unpack_rpm(package_full_path, files, tmp_dir, destdir, exact_files=False):
     # and open it for reading
     unpacked_cpio = open(unpacked_cpio_path, 'rb')
 
-    print(_("Caching files from {0} made from {1}").format("unpacked.cpio", os.path.basename(package_full_path)))
+    print(_("Caching files from {0} made from {1}")
+          .format("unpacked.cpio", os.path.basename(package_full_path)))
 
     file_patterns = ""
     cpio_args = ["cpio", "-idu"]
@@ -138,7 +139,6 @@ def unpack_rpm(package_full_path, files, tmp_dir, destdir, exact_files=False):
 
     if retcode == 0:
         log1("files extracted OK")
-        #print _("Removing temporary cpio file")
         os.unlink(log_file_name)
         os.unlink(unpacked_cpio_path)
     else:
@@ -156,7 +156,7 @@ def clean_up(tmp_dir, silent=False):
         try:
             shutil.rmtree(tmp_dir)
         except OSError as ex:
-            if ex.errno != errno.ENOENT and silent == False:
+            if ex.errno != errno.ENOENT and not silent:
                 error_msg(_("Can't remove '{0}': {1}").format(tmp_dir, str(ex)))
 
 
@@ -195,12 +195,11 @@ class DownloadProgress(object):
         # if run from terminal we can have fancy output
         if sys.stdout.isatty():
             sys.stdout.write(
-                "\033[sDownloading ({0} of {1}) {2}: {3:3}%\033[u".format(
-                self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
-            )
+                "\033[sDownloading ({0} of {1}) {2}: {3:3}%\033[u"
+                .format(self.downloaded_pkgs + 1, self.total_pkgs, name, pct))
             if pct == 100:
-                print(_("Downloading ({0} of {1}) {2}: {3:3}%").format(
-                      self.downloaded_pkgs + 1, self.total_pkgs, name, pct))
+                print(_("Downloading ({0} of {1}) {2}: {3:3}%")
+                      .format(self.downloaded_pkgs + 1, self.total_pkgs, name, pct))
         # but we want machine friendly output when spawned from abrt-server
         else:
             t = time.time()
@@ -298,7 +297,7 @@ class DebugInfoDownload(object):
         pass
 
     def find_packages(self, files):
-        self.find_packages_run = True;
+        self.find_packages_run = True
         # nothing to download?
         if not files:
             return RETURN_FAILURE
@@ -344,10 +343,12 @@ class DebugInfoDownload(object):
             self.find_packages(files)
 
         if verbose != 0 or len(self.not_found) != 0:
-            print(_("Can't find packages for {0} debuginfo files").format(len(self.not_found)))
+            print(_("Can't find packages for {0} debuginfo files")
+                  .format(len(self.not_found)))
 
         if verbose != 0 or len(self.package_files_dict) != 0:
-            print(_("Packages to download: {0}").format(len(self.package_files_dict)))
+            print(_("Packages to download: {0}")
+                  .format(len(self.package_files_dict)))
             question = _(
                 "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?") \
                 .format(self.todownload_size / (1024 * 1024),
@@ -397,8 +398,11 @@ class DebugInfoDownload(object):
                     pass
                 print(_("Downloading package {0} failed").format(pkg))
             else:
-                unpack_result = unpack_rpm(package_full_path, files, self.tmpdir,
-                                           self.cachedir, exact_files=download_exact_files)
+                unpack_result = unpack_rpm(package_full_path,
+                                           files,
+                                           self.tmpdir,
+                                           self.cachedir,
+                                           exact_files=download_exact_files)
 
                 if unpack_result == RETURN_FAILURE:
                     # recursively delete the temp dir on failure
@@ -428,7 +432,8 @@ class DebugInfoDownload(object):
             try:
                 os.rmdir(self.tmpdir)
             except OSError:
-                error_msg(_("Can't remove {0}, probably contains an error log").format(self.tmpdir))
+                error_msg(_("Can't remove {0}, probably contains an error log")
+                          .format(self.tmpdir))
 
         return RETURN_OK
 
@@ -439,9 +444,11 @@ def build_ids_to_paths(prefix, build_ids):
     for the supplied build-ids.
     """
 
-    paths = ["{0}/usr/lib/debug/.build-id/{1}/{2}.debug".format(prefix, b_id[:2], b_id[2:])
+    paths = ["{0}/usr/lib/debug/.build-id/{1}/{2}.debug"
+             .format(prefix, b_id[:2], b_id[2:])
              for b_id in build_ids]
-    paths += ["{0}/usr/lib/.build-id/{1}/{2}.debug".format(prefix, b_id[:2], b_id[2:])
+    paths += ["{0}/usr/lib/.build-id/{1}/{2}.debug"
+              .format(prefix, b_id[:2], b_id[2:])
               for b_id in build_ids]
 
     return paths
