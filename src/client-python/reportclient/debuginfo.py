@@ -39,6 +39,7 @@ from reportclient import (_, log1, log2, RETURN_OK, RETURN_FAILURE,
                           error_msg)
 
 
+MiB = 1024 * 1024
 ReturnType = TypeVar("ReturnType")
 
 
@@ -194,26 +195,24 @@ class DownloadProgress:
         self.last_pct = pct
         # if run from terminal we can have fancy output
         if sys.stdout.isatty():
-            sys.stdout.write(
-                "\033[sDownloading ({0} of {1}) {2}: {3:3}%\033[u"
-                .format(self.downloaded_pkgs + 1, self.total_pkgs, name, pct))
+            message = (_("Downloading ({0} of {1}) {2}: {3:3}%")
+                       .format(self.downloaded_pkgs + 1, self.total_pkgs, name, pct))
+            print("\033[s%s\033[u" % message, end='', flush=True)
             if pct == 100:
-                print(_("Downloading ({0} of {1}) {2}: {3:3}%")
-                      .format(self.downloaded_pkgs + 1, self.total_pkgs, name, pct))
+                print()
         # but we want machine friendly output when spawned from abrt-server
         else:
             t = time.time()
-            if self.last_time == 0:
+            if not self.last_time:
                 self.last_time = t
             # update only every 5 seconds
-            if pct == 100 or self.last_time > t or t - self.last_time >= 5:
-                print(_("Downloading ({0} of {1}) {2}: {3:3}%").format(
-                      self.downloaded_pkgs + 1, self.total_pkgs, name, pct))
+            if pct == 100 or t - self.last_time >= 5:
+                print(_("Downloading ({0} of {1}) {2}: {3:3}%")
+                      .format(self.downloaded_pkgs + 1, self.total_pkgs, name, pct),
+                      flush=True)
                 self.last_time = t
                 if pct == 100:
                     self.last_time = 0
-
-        sys.stdout.flush()
 
 
 class DebugInfoDownload(ABC):
@@ -275,6 +274,7 @@ class DebugInfoDownload(ABC):
             except OSError as ex:
                 print("Can't create tmpdir: %s" % ex)
                 return RETURN_FAILURE
+
         if not os.path.exists(self.cachedir):
             try:
                 os.makedirs(self.cachedir)
@@ -300,7 +300,6 @@ class DebugInfoDownload(ABC):
     def triage(self, files: List[str]) -> TriageResult:
         pass
 
-    # TODO: Refine the type of the right branch of the union.
     @abstractmethod
     def download_package(self, pkg: Package) -> DownloadResult:
         pass
@@ -352,17 +351,17 @@ class DebugInfoDownload(ABC):
         if not self.find_packages_run:
             self.find_packages(files)
 
-        if verbose != 0 or len(self.not_found) != 0:
+        if verbose or self.not_found:
             print(_("Can't find packages for {0} debuginfo files")
                   .format(len(self.not_found)))
 
-        if verbose != 0 or len(self.package_files_dict) != 0:
+        if verbose or self.package_files_dict:
             print(_("Packages to download: {0}")
                   .format(len(self.package_files_dict)))
             question = _(
-                "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?") \
-                .format(self.todownload_size / (1024 * 1024),
-                        self.installed_size / (1024 * 1024))
+                "Downloading {0:.2f} MiB, installed size: {1:.2f} MiB. Continue?") \
+                .format(self.todownload_size / MiB,
+                        self.installed_size / MiB)
 
             if not self.noninteractive and not ask_yes_no(question):
                 print(_("Download cancelled by user"))
@@ -370,10 +369,10 @@ class DebugInfoDownload(ABC):
 
             # check if there is enough free space in both tmp and cache
             res = os.statvfs(self.tmpdir)
-            tmp_space = float(res.f_bsize * res.f_bavail) / (1024 * 1024)
-            if (self.todownload_size / (1024 * 1024)) > tmp_space:
+            tmp_space = float(res.f_bsize * res.f_bavail) / MiB
+            if (self.todownload_size / MiB) > tmp_space:
                 question = _("Warning: Not enough free space in tmp dir '{0}'"
-                             " ({1:.2f}Mb left). Continue?").format(
+                             " ({1:.2f} MiB left). Continue?").format(
                                  self.tmpdir, tmp_space)
 
                 if not self.noninteractive and not ask_yes_no(question):
@@ -381,10 +380,10 @@ class DebugInfoDownload(ABC):
                     return RETURN_CANCEL_BY_USER
 
             res = os.statvfs(self.cachedir)
-            cache_space = float(res.f_bsize * res.f_bavail) / (1024 * 1024)
-            if (self.installed_size / (1024 * 1024)) > cache_space:
+            cache_space = float(res.f_bsize * res.f_bavail) / MiB
+            if (self.installed_size / MiB) > cache_space:
                 question = _("Warning: Not enough free space in cache dir "
-                             "'{0}' ({1:.2f}Mb left). Continue?").format(
+                             "'{0}' ({1:.2f} MiB left). Continue?").format(
                                  self.cachedir, cache_space)
 
                 if not self.noninteractive and not ask_yes_no(question):
@@ -472,7 +471,8 @@ def build_ids_to_paths(prefix: str, build_ids: List[str]) -> List[str]:
 def filter_installed_debuginfos(build_ids: List[str], cache_dirs: List[str]) \
         -> List[str]:
     """
-    Checks for installed debuginfos.
+    Find debuginfo files corresponding to the given build IDs that are
+    missing on the system and need to be installed.
 
     Arguments:
         build_ids - string containing build ids
@@ -485,9 +485,8 @@ def filter_installed_debuginfos(build_ids: List[str], cache_dirs: List[str]) \
     files = build_ids_to_paths("", build_ids)
     missing = []
 
-    # 1st pass -> search in /usr/lib
+    # First round: Look for debuginfo files with no prefix, i.e. in /usr/lib.
     for debuginfo_path in files:
-        log2("looking: %s", debuginfo_path)
         if os.path.exists(debuginfo_path):
             log2("found: %s", debuginfo_path)
             continue
@@ -498,24 +497,25 @@ def filter_installed_debuginfos(build_ids: List[str], cache_dirs: List[str]) \
         files = missing
         missing = []
     else:  # nothing is missing, we can stop looking
-        return missing
+        return []
 
+    # Second round: Look for debuginfo files missed in first round in cache
+    # directories.
     for cache_dir in cache_dirs:
         log2("looking in %s" % cache_dir)
         for debuginfo_path in files:
-            cache_debuginfo_path = cache_dir + debuginfo_path
-            log2("looking: %s", cache_debuginfo_path)
+            cache_debuginfo_path = os.path.join(cache_dir, debuginfo_path)
             if os.path.exists(cache_debuginfo_path):
                 log2("found: %s", cache_debuginfo_path)
                 continue
             log2("not found: %s", debuginfo_path)
             missing.append(debuginfo_path)
-        # in next iteration look only for files missing
-        # from previous iterations
+
+        # Only look for files that weren't found yet in subsequent iterations.
         if missing:
             files = missing
             missing = []
         else:  # nothing is missing, we can stop looking
-            return missing
+            return []
 
     return files
