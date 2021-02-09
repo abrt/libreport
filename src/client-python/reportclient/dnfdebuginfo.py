@@ -17,7 +17,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Suite 500, Boston, MA  02110-1335  USA
 import sys
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Set
 
 import dnf
 import dnf.rpm
@@ -113,41 +113,41 @@ class DNFDebugInfoDownload(DebugInfoDownload):
         installed_size: float = 0
 
         def required_packages(query: Query, package: Package,
-                              origin: Package) -> List[Package]:
+                              origin: Package) -> Set[Package]:
             """
             Recursive function to find all required packages of required packages of ...
               origin - should stop infinite recursion (A => B => ... => X => A)
             """
-            required_pkg_list: List[Package] = []
+            package_set: Set[Package] = set()
             if package.requires:
                 pkg_reqs = query.filter(provides=package.requires, arch=package.arch)
                 for p in pkg_reqs:
-                    if p.name != origin.name and p not in required_pkg_list:
-                        required_pkg_list.append(p)
-                        required_pkg_list += required_packages(query, p, origin)
+                    if p.name != origin.name and p not in package_set:
+                        package_set.add(p)
+                        package_set |= required_packages(query, p, origin)
 
-            return required_pkg_list
+            return package_set
 
         for debuginfo_path in files:
-            di_package_list = []
+            debuginfo_pkgs: Set[Package] = set()
             packages = dnf_available.filter(file=debuginfo_path)
 
             if not packages:
                 log2("not found package for %s", debuginfo_path)
                 not_found.append(debuginfo_path)
             else:
-                di_package_list.append(packages[0])
+                debuginfo_pkgs.add(packages[0])
                 if packages[0].requires:
                     package_reqs = required_packages(dnf_available, packages[0],
                                                      packages[0])
                     for pkg in package_reqs:
-                        if pkg in di_package_list:
+                        if pkg in debuginfo_pkgs:
                             continue
-                        di_package_list.append(pkg)
+                        debuginfo_pkgs.add(pkg)
                         log2("found required package {0} for {1}"
                              .format(pkg, packages[0]))
 
-                for pkg in di_package_list:
+                for pkg in debuginfo_pkgs:
                     if pkg in package_files_dict:
                         package_files_dict[pkg].append(debuginfo_path)
                     else:
