@@ -4,9 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [2.15.0] - 2020-03-03
+### Added
+- Add support for sub-components in RH Bugzilla
+
 ### Changed
 - Replace libtar with libarchive
+- Overall code style and maintainability improvement
+
+### Fixed
+- Fix bad error detection in reporter-bugzilla
+- Improve sensitive word list
+- Fix various memory management bugs
 
 ## [2.14.0] - 2020-08-13
 ### Added
