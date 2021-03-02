@@ -92,7 +92,7 @@ libreport_la_CPPFLAGS = \
     $(SATYR_CFLAGS) \
     -D_GNU_SOURCE
 libreport_la_LDFLAGS = \
-    -version-info 1:0:0
+    -version-info 1:1:0
 
 if HAVE_LD_VERSION_SCRIPT
 libreport_la_LDFLAGS += -Wl,--version-script=$(srcdir)/libreport.sym
@@ -142,7 +142,7 @@ libreport_web_la_CPPFLAGS = \
     $(SATYR_CFLAGS) \
     -D_GNU_SOURCE
 libreport_web_la_LDFLAGS = \
-    -version-info 1:0:0
+    -version-info 1:1:0
 
 if HAVE_LD_VERSION_SCRIPT
 libreport_web_la_LDFLAGS += -Wl,--version-script=$(srcdir)/libreport-web.sym
