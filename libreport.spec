@@ -18,12 +18,7 @@ Version: 2.14.0
 Release: 1%{?dist}
 License: GPLv2+
 URL: https://abrt.readthedocs.org/
-# to generate tarball:
-# git clone https://github.com/abrt/libreport.git
-# cd libreport
-# git reset --hard %%{name}-%%{version}
-# tito build --tgz
-Source: %{name}-%{version}.tar.gz
+Source: https://github.com/abrt/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
 BuildRequires: %{dbus_devel}
 BuildRequires: gtk3-devel
 BuildRequires: curl-devel
