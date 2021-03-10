@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DEF_VER=2.14.0
+DEF_VER=$(sed -ne '/^Version:/s/^Version:\s*//p' libreport.spec)
 LF='
 '
 
@@ -17,7 +17,5 @@ then
 else
     VN="$DEF_VER"
 fi
-
-sed -e "s/@@LIBREPORT_VERSION@@/$VN/g" < libreport.spec.in > libreport.spec
 
 echo -n $VN > libreport-version
