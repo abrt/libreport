@@ -14,7 +14,7 @@
 
 Summary: Generic library for reporting various problems
 Name: libreport
-Version: 2.15.0
+Version: 2.14.0
 Release: 1%{?dist}
 License: GPLv2+
 URL: https://abrt.readthedocs.org/
@@ -659,11 +659,3 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
-* Tue Mar 02 2021 Michal Fabik <mfabik@redhat.com> 2.15.0-1
-- Add support for sub-components in RH Bugzilla
-- Replace libtar with libarchive
-- Overall code style and maintainability improvement
-- Fix bad error detection in reporter-bugzilla
-- Improve sensitive word list
-- Fix various memory management bugs
-
