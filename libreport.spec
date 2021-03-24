@@ -37,6 +37,7 @@ BuildRequires: libproxy-devel
 BuildRequires: satyr-devel >= 0.24
 BuildRequires: glib2-devel >= %{glib_ver}
 BuildRequires: nettle-devel
+BuildRequires: git-core
 
 %if 0%{?fedora} >= 24 || 0%{?rhel} > 7
 # A test case uses zh_CN locale to verify XML event translations
@@ -281,10 +282,7 @@ data over ftp/scp...
 %autosetup
 
 %build
-sed 's|DEF_VER=.*$$|DEF_VER='%{version}'|' -i gen-version
-#./gen-version
 ./autogen.sh
-autoconf
 
 %configure \
 %if %{without bugzilla}
