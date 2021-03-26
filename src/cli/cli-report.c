@@ -738,16 +738,16 @@ static int run_event_chain_real(struct run_event_state *run_state,
                                 GList                  *chain,
                                 int                     interactive)
 {
-    struct logging_state l_state;
+    struct logging_state *l_state = g_malloc0(sizeof(struct logging_state));
     int retval = 0;
 
     /* Blergh. */
     run_state->logging_callback = do_log2;
-    run_state->logging_param = &l_state;
+    run_state->logging_param = l_state;
 
     for (GList *eitem = chain; eitem; eitem = g_list_next(eitem))
     {
-        l_state.output_was_produced = false;
+        l_state->output_was_produced = false;
         const char *event_name = eitem->data;
         log_info("running commands for event '%s'", event_name);
 
@@ -770,7 +770,7 @@ static int run_event_chain_real(struct run_event_state *run_state,
                     event_name);
             continue;
         }
-        else if (retval != 0 || !l_state.output_was_produced)
+        else if (retval != 0 || !l_state->output_was_produced)
         {
             /* Program failed, or finished successfully with no output. */
             g_autofree char *msg = libreport_exit_status_as_string(event_name, run_state->process_status);
