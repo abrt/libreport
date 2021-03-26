@@ -22,6 +22,8 @@
 #include <stdlib.h>
 #include "problem_utils.h"
 
+/* This function allocates resources, so the caller must
+ * free the returned value using g_free */
 char *
 problem_get_argv0 (const char *cmdline)
 {
@@ -227,6 +229,7 @@ problem_create_app_from_cmdline (const char *cmdline)
 
     g_list_free (shortlist);
     g_list_free_full (apps, g_object_unref);
+    g_free(binary);
     return app;
 }
 
