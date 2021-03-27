@@ -44,6 +44,7 @@ MAN5_TXT = \
 	mantisbt_format_analyzer_libreport.conf.txt \
 	mantisbt_formatdup_analyzer_libreport.conf.txt \
 	ignored_words.conf.txt \
+	ignored_elements.conf.txt \
 	forbidden_words.conf.txt \
 	libreport.conf.txt \
 	mailx.conf.txt \

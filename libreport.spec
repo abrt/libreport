@@ -400,12 +400,14 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/%{name}/report_event.conf
 %config(noreplace) %{_sysconfdir}/%{name}/forbidden_words.conf
 %config(noreplace) %{_sysconfdir}/%{name}/ignored_words.conf
+%config(noreplace) %{_sysconfdir}/%{name}/ignored_elements.conf
 %{_datadir}/%{name}/conf.d/libreport.conf
 %{_libdir}/libreport.so.*
 %{_mandir}/man5/libreport.conf.5*
 %{_mandir}/man5/report_event.conf.5*
 %{_mandir}/man5/forbidden_words.conf.5*
 %{_mandir}/man5/ignored_words.conf.5*
+%{_mandir}/man5/ignored_elements.conf.5*
 # filesystem package owns /usr/share/augeas/lenses directory
 %{_datadir}/augeas/lenses/libreport.aug
 

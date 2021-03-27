@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - ignored_words: add more "key" variations
+- Add support for excluding whole elements from search for sensitive words
 
 ## [2.15.0] - 2020-03-03
 ### Added

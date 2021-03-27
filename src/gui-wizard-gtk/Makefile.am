@@ -45,7 +45,8 @@ EXTRA_DIST = $(GLADE_FILES)
 libreportconfdir = $(CONF_DIR)
 dist_libreportconf_DATA = \
     forbidden_words.conf \
-    ignored_words.conf
+    ignored_words.conf \
+    ignored_elements.conf
 
 # For internal glade file storage in the binary:
 wizard.c: wizard_glade.c
