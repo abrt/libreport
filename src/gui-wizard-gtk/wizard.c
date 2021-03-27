@@ -30,6 +30,7 @@
 
 #define FORBIDDEN_WORDS_BLACKLLIST "forbidden_words.conf"
 #define FORBIDDEN_WORDS_WHITELIST "ignored_words.conf"
+#define ELEMENT_IGNORE_LIST "ignored_elements.conf"
 
 typedef struct event_gui_data_t
 {
@@ -2293,9 +2294,11 @@ static bool highlight_words_in_textview(int page, GtkTextView *tev, GList *words
     return result != NULL;
 }
 
-static gboolean highligh_words_in_tabs(GList *forbidden_words,  GList *allowed_words, bool case_insensitive)
+static gboolean highligh_words_in_tabs(GList *forbidden_words,  GList *allowed_words, bool case_insensitive, bool is_custom_search)
 {
     gboolean found = false;
+
+    GList *ignored_elements = libreport_load_words_from_file(ELEMENT_IGNORE_LIST);
 
     gint n_pages = gtk_notebook_get_n_pages(g_notebook);
     int page = 0;
@@ -2305,6 +2308,15 @@ static gboolean highligh_words_in_tabs(GList *forbidden_words,  GList *allowed_w
         GtkWidget *notebook_child = gtk_notebook_get_nth_page(g_notebook, page);
         GtkWidget *tab_lbl = gtk_notebook_get_tab_label(g_notebook, notebook_child);
 
+        // ignore some of the elements, but only if this is not a custom search (user typing in the UI)
+        if (!is_custom_search) {
+            const gchar* element_name = gtk_notebook_get_tab_label_text(g_notebook, notebook_child);
+            if (g_list_find_custom(ignored_elements, element_name, (GCompareFunc) strcmp)) {
+                // this element is on the ignore list, so let's not highlight anything here
+                continue;
+            }
+        }
+
         const char *const lbl_txt = gtk_label_get_text(GTK_LABEL(tab_lbl));
         if (strncmp(lbl_txt, "page 1", 5) == 0 || strcmp(FILENAME_COMMENT, lbl_txt) == 0)
             continue;
@@ -2312,6 +2324,8 @@ static gboolean highligh_words_in_tabs(GList *forbidden_words,  GList *allowed_w
         GtkTextView *tev = GTK_TEXT_VIEW(gtk_bin_get_child(GTK_BIN(notebook_child)));
         found |= highlight_words_in_textview(page, tev, forbidden_words, allowed_words, case_insensitive);
     }
+
+    g_list_free_full(ignored_elements, free);
 
     GtkTreeIter iter;
     if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(g_ls_sensitive_list), &iter))
@@ -2325,7 +2339,7 @@ static gboolean highlight_forbidden(void)
     GList *forbidden_words = libreport_load_words_from_file(FORBIDDEN_WORDS_BLACKLLIST);
     GList *allowed_words = libreport_load_words_from_file(FORBIDDEN_WORDS_WHITELIST);
 
-    const gboolean result = highligh_words_in_tabs(forbidden_words, allowed_words, /*case sensitive*/false);
+    const gboolean result = highligh_words_in_tabs(forbidden_words, allowed_words, /*case sensitive*/false, /*is_custom_search*/false);
 
     g_list_free_full(allowed_words, free);
     g_list_free_full(forbidden_words, free);
@@ -2789,7 +2803,7 @@ static void highlight_search(GtkEntry *entry)
 
     log_notice("searching: '%s'", g_search_text);
     GList *words = g_list_append(NULL, (gpointer)g_search_text);
-    highligh_words_in_tabs(words, NULL, /*case insensitive*/true);
+    highligh_words_in_tabs(words, NULL, /*case insensitive*/true, /*is_custom_search*/true);
     g_list_free(words);
 }
 

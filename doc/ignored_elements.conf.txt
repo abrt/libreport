@@ -1,0 +1,47 @@
+ignored_elements.conf(5)
+========================
+
+NAME
+----
+ignored_elements.conf - configuration file for libreport.
+
+DESCRIPTION
+-----------
+This configuration file specifies which elements should *NOT* be checked
+for sensitive data during the process of reporting a problem. This means
+that, for the elements specified in this file, no words will be highlighted
+in the User Interface (UI). See also report-gtk(1).
+
+Only elements that are known not to contain sensitive data should be on this
+list.
+
+Custom search in the UI ignores this list and works with all elements.
+
+The configuration format is one line per ignored element.
+
+Users can provide own file with the list of ignored elements which will be
+appended to the list of ignored elements loaded from
+/etc/libreport/ignored_elements.conf
+
+EXAMPLES
+--------
+System configuration:
+
+/etc/libreport/ignored_elements.conf
+
+    cpuinfo
+    open_fds
+
+User configuration:
+
+$XDG_CONFIG_HOME/abrt/settings/ignored_elements.conf
+
+    hostname
+
+SEE ALSO
+--------
+report-gtk(1), forbidden_words.conf(5), ignored_words.conf(5)
+
+AUTHOR
+------
+* ABRT team
