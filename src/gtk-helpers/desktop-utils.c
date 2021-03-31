@@ -227,6 +227,7 @@ problem_create_app_from_cmdline (const char *cmdline)
             break;
     }
 
+    g_strfreev(cmdargs);
     g_list_free (shortlist);
     g_list_free_full (apps, g_object_unref);
     g_free(binary);
