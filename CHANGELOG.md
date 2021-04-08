@@ -260,7 +260,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.14.0...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.15.0...HEAD
+[2.15.0]: https://github.com/abrt/libreport/compare/2.14.0...2.15.0
 [2.14.0]: https://github.com/abrt/libreport/compare/2.13.1...2.14.0
 [2.13.1]: https://github.com/abrt/libreport/compare/2.13.0...2.13.1
 [2.13.0]: https://github.com/abrt/libreport/compare/2.12.0...2.13.0
