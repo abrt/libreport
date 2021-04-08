@@ -179,7 +179,7 @@ The simple reporter plugin which writes a report to the systemd journal.
 %package plugin-mailx
 Summary: %{name}'s mailx reporter plugin
 Requires: %{name} = %{version}-%{release}
-Requires: mailx
+Requires: /usr/bin/mailx
 
 %description plugin-mailx
 The simple reporter plugin which sends a report via mailx to a specified
