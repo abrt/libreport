@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - ignored_words: add more "key" variations
 - Add support for excluding whole elements from search for sensitive words
 
+### Changed
+- libreport-plugin-mailx now depends on /usr/bin/mailx (also provided by s-nail) instead of the mailx package
+
 ## [2.15.0] - 2020-03-03
 ### Added
 - Add support for sub-components in RH Bugzilla
