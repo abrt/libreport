@@ -20,6 +20,10 @@
 
 double libreport_get_dirsize(const char *pPath)
 {
+    if (!pPath) {
+        return 0;
+    }
+
     DIR *dp = opendir(pPath);
     if (dp == NULL)
         return 0;
@@ -31,7 +35,7 @@ double libreport_get_dirsize(const char *pPath)
     {
         if (libreport_dot_or_dotdot(ep->d_name))
             continue;
-        g_autofree char *dname = g_build_filename(pPath ? pPath : "", ep->d_name, NULL);
+        g_autofree char *dname = g_build_filename(pPath, ep->d_name, NULL);
         if (lstat(dname, &statbuf) != 0)
         {
             continue;
