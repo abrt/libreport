@@ -32,6 +32,15 @@ bool libreport_load_global_configuration_from_dirs(const char *dirs[], int dir_f
 
 void libreport_free_global_configuration(void);
 
+/**
+ * Returns list of excluded elements
+ *
+ * This function returns list of elements in problem directory
+ * that are always excluded from the report.
+ *
+ * @return NULL terminated array of strings with names of excluded elements.
+ * Must be freed using g_strfreev by the caller.
+ */
 string_vector_ptr_t libreport_get_global_always_excluded_elements(void);
 
 bool libreport_get_global_create_private_ticket(void);

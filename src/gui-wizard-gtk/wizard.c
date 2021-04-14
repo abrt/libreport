@@ -1105,6 +1105,9 @@ static void update_ls_details_checkboxes(const char *event_name)
             } while (gtk_tree_model_iter_next(GTK_TREE_MODEL(g_ls_details), &iter));
         }
     }
+
+    /* Free allocated resources before exiting */
+    g_strfreev(global_exclude);
 }
 
 void update_gui_state_from_problem_data(int flags)
