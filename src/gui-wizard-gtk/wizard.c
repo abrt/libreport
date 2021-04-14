@@ -1227,10 +1227,14 @@ static void set_excluded_envvar(void)
     }
 
     g_autofree char *var = g_string_free(item_list, FALSE);
-    if (var)
-        g_setenv("EXCLUDE_FROM_REPORT", var, TRUE);
-    else
+    if (var) {
+        gboolean ret = g_setenv("EXCLUDE_FROM_REPORT", var, TRUE);
+        if (!ret) {
+            error_msg_and_die(_("Unable to set EXCLUDE_FROM_REPORT environment variable."));
+        }
+    } else {
         unsetenv("EXCLUDE_FROM_REPORT");
+    }
 }
 
 static int spawn_next_command_in_evd(struct analyze_event_data *evd)
