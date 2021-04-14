@@ -1373,7 +1373,7 @@ void dd_create_basic_files(struct dump_dir *dd, uid_t uid, const char *chroot_di
     if (release)
     {
         dd_save_text(dd, FILENAME_OS_INFO, release);
-        free(release);
+        g_clear_pointer(&release, g_free);
     }
 
     if (chroot_dir)
@@ -1405,7 +1405,7 @@ void dd_create_basic_files(struct dump_dir *dd, uid_t uid, const char *chroot_di
         if (chroot_dir)
             copy_file_from_chroot(dd, FILENAME_OS_RELEASE_IN_ROOTDIR, chroot_dir, "/etc/system-release");
     }
-    free(release);
+    g_free(release);
 }
 
 void dd_sanitize_mode_and_owner(struct dump_dir *dd)
