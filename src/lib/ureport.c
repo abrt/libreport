@@ -126,28 +126,30 @@ ureport_server_config_load_basic_auth(struct ureport_server_config *config,
 
     g_autoptr(GHashTable) settings = NULL;
 
-    g_autofree char *tmp_password = NULL;
-    g_autofree char *tmp_username = NULL;
-    const char *username = NULL;
-    const char *password = NULL;
+    g_autofree const char *username = NULL;
+    const char *password_from_http_auth_pref = NULL;
 
-    username = tmp_username = g_strdup(http_auth_pref);
-    password = strchr(tmp_username, ':');
+    username = g_strdup(http_auth_pref);
+    password_from_http_auth_pref = strchr(username, ':');
 
-    if (password != NULL)
+    if (password_from_http_auth_pref != NULL) {
         /* It is "char *", see strchr() few lines above. */
-        *((char *)(password++)) = '\0';
-
-    if (password == NULL)
-    {
-        g_autofree char *message = g_strdup_printf("Please provide uReport server password for user '%s':", username);
-        password = tmp_password = libreport_ask_password(message);
-
-        if (strcmp(password, "") == 0)
-            error_msg_and_die("Cannot continue without uReport server password!");
+        *((char *)(password_from_http_auth_pref++)) = '\0';
     }
 
-    libreport_ureport_server_config_set_basic_auth(config, username, password);
+    if (password_from_http_auth_pref == NULL) {
+        g_autofree char *message = g_strdup_printf("Please provide uReport server password for user '%s':", username);
+        g_autofree char *password_from_input = libreport_ask_password(message);
+
+        if (strcmp(password_from_input, "") == 0) {
+            error_msg_and_die("Cannot continue without uReport server password!");
+        }
+
+        libreport_ureport_server_config_set_basic_auth(config, username, password_from_input);
+    } else {
+        libreport_ureport_server_config_set_basic_auth(config, username, password_from_http_auth_pref);
+    }
+
 }
 
 void
