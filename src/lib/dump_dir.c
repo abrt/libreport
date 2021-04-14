@@ -1668,7 +1668,7 @@ int dd_chown(struct dump_dir *dd, uid_t new_uid)
             }
 
 next:
-            free(short_name);
+            g_clear_pointer(&short_name, g_free);
         }
     }
 
@@ -2539,10 +2539,10 @@ retry:
             close(fd);
         }
 
-        free(short_name);
-        free(full_name);
+        g_clear_pointer(&short_name, g_free);
+        g_clear_pointer(&full_name, g_free);
 
-    }
+    } /*while*/
 
 finito:
 
