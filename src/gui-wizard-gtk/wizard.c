@@ -2101,8 +2101,7 @@ static GList *find_words_in_text_buffer(int page,
 
             if (g_list_find_custom(ignore_sitem_list, found_word, (GCompareFunc)sitem_contains))
             {
-                if (found_word)
-                    free(found_word);
+                g_clear_pointer(&found_word, g_free);
                 // don't count the word if it's part of some of the ignored words
                 continue;
             }
