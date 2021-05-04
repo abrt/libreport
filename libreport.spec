@@ -14,7 +14,7 @@
 
 Summary: Generic library for reporting various problems
 Name: libreport
-Version: 2.15.0
+Version: 2.15.1
 Release: 1%{?dist}
 License: GPLv2+
 URL: https://abrt.readthedocs.org/
@@ -654,6 +654,28 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Tue May 04 2021 Michal Fabik <mfabik@redhat.com> 2.15.1-1
+- ureport: Strange usage of tmp variable (mzidek@redhat.com)
+- steal_directory: Silence a warning (mzidek@redhat.com)
+- dump_dir: Use g_free and re-init to NULL (mzidek@redhat.com)
+- dump_dir: Use g_free instead of free (mzidek@redhat.com)
+- dirsize: No need to check for NULL (mzidek@redhat.com)
+- dirsize: Bad checks for NULL (mzidek@redhat.com)
+- gui-wizard-gtk: Possible double free (mzidek@redhat.com)
+- gui-wizard-gtk: Check if EXCLUDE_FROM_REPORT is set (mzidek@redhat.com)
+- gui-wizard-gtk: Improve docs and add missing free (mzidek@redhat.com)
+- cli: Address of local auto-variable assigned to a function parameter
+  (mzidek@redhat.com)
+- gtk-helpers: Add missing g_strfreev() (mzidek@redhat.com)
+- cli: Add missing g_free call (mzidek@redhat.com)
+- gitignore: Drop misleading comment (mfabik@redhat.com)
+- spec: Sync upstream with distgit (mfabik@redhat.com)
+- changelog: Add missing link to changes in 2.15.0 (mgrabovs@redhat.com)
+- spec: Make plugin-mailx depend on /usr/bin/mailx (mgrabovs@redhat.com)
+- Add support for excluding whole elements from search for sensitive words
+  (michal@redhat.com)
+- ignored_words: add more "key" variations (michal@redhat.com)
+
 * Thu Mar 18 2021 Michal Fabik <mfabik@redhat.com> 2.15.0-1
 - tito: Clean up tito setup (mfabik@redhat.com)
 - Revert "Automatic commit of package [libreport] release [2.15.0-1]."
