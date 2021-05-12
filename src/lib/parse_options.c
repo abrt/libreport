@@ -217,7 +217,7 @@ unsigned libreport_parse_opts(int argc, char **argv, const struct options *opt,
 
         if (c == '?' || help)
         {
-            free(longopts);
+            g_free(longopts);
             g_string_free(shortopts, TRUE);
             libreport_xfunc_error_retval = 0; /* this isn't error, exit code = 0 */
             libreport_show_usage_and_die(usage, opt);
@@ -260,7 +260,7 @@ unsigned libreport_parse_opts(int argc, char **argv, const struct options *opt,
         }
     }
 
-    free(longopts);
+    g_free(longopts);
     g_string_free(shortopts, TRUE);
 
     return retval;

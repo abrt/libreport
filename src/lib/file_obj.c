@@ -32,9 +32,9 @@ void libreport_free_file_obj(file_obj_t *f)
     if (f == NULL)
         return;
 
-    free(f->fullpath);
-    free(f->filename);
-    free(f);
+    g_free(f->fullpath);
+    g_free(f->filename);
+    g_free(f);
 }
 
 const char *fo_get_fullpath(file_obj_t *fo)

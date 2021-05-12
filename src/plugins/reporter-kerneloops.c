@@ -23,22 +23,6 @@
 static size_t writefunction(void *ptr, size_t size, size_t nmemb, void *stream)
 {
     size *= nmemb;
-/*
-    char *c, *c1, *c2;
-
-    log_warning("received: '%*.*s'", (int)size, (int)size, (char*)ptr);
-    c = (char*)g_malloc0(size + 1);
-    memcpy(c, ptr, size);
-    c1 = strstr(c, "201 ");
-    if (c1)
-    {
-        c1 += 4;
-        c2 = strchr(c1, '\n');
-        if (c2)
-            *c2 = 0;
-    }
-    free(c);
-*/
 
     return size;
 }

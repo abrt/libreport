@@ -75,7 +75,7 @@ int test(int retval, const char *uri, const char *result, const char *scheme, co
             else
             {
                 e += !string_cmp(names[i], expected[i], outputs[i]);
-                free(outputs[i]);
+                g_free(outputs[i]);
                 outputs[i] = (char *)0xDEADBEEF;
             }
         }
@@ -104,7 +104,7 @@ int test(int retval, const char *uri, const char *result, const char *scheme, co
     }
 
     e += !string_cmp(names[0], result, outputs[0]);
-    free(outputs[0]);
+    g_free(outputs[0]);
 
     return e;
 }

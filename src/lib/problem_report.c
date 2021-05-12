@@ -123,11 +123,11 @@ section_free(section_t *self)
     if (self == NULL)
         return;
 
-    free(self->name);
+    g_free(self->name);
     g_list_free_full(self->items, free);
     g_list_free_full(self->children, (GDestroyNotify)section_free);
 
-    free(self);
+    g_free(self);
 }
 
 static int
@@ -285,7 +285,7 @@ load_stream(FILE *fp)
             master->children = g_list_prepend(master->children, sec);
 
  free_line:
-        free(line);
+        g_free(line);
     }
 
     /* If master equals sec, then master's children list was not yet reversed.
@@ -812,7 +812,7 @@ memstream_buffer_free(struct memstream_buffer *self)
     free(self->msb_buffer);
     self->msb_buffer = DESTROYED_POINTER;
 
-    free(self);
+    g_free(self);
 }
 
 static FILE *
@@ -1015,7 +1015,7 @@ problem_report_free(problem_report_t *self)
         self->pr_sec_custom = DESTROYED_POINTER;
     }
 
-    free(self);
+    g_free(self);
 }
 
 /*
@@ -1044,10 +1044,10 @@ extra_section_free(struct extra_section *self)
     if (self == NULL)
         return;
 
-    free(self->pfes_name);
+    g_free(self->pfes_name);
     self->pfes_name = DESTROYED_POINTER;
 
-    free(self);
+    g_free(self);
 }
 
 static int
@@ -1114,13 +1114,13 @@ problem_formatter_free(problem_formatter_t *self)
     g_list_free_full(self->pf_extra_sections, (GDestroyNotify)extra_section_free);
     self->pf_extra_sections = DESTROYED_POINTER;
 
-    free(self->pf_default_summary);
+    g_free(self->pf_default_summary);
     self->pf_default_summary = DESTROYED_POINTER;
 
-    free(self->fmt_file);
+    g_free(self->fmt_file);
     self->fmt_file = DESTROYED_POINTER;
 
-    free(self);
+    g_free(self);
 }
 
 static int

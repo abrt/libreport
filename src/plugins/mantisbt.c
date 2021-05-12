@@ -73,11 +73,11 @@ mantisbt_settings_free(mantisbt_settings_t *s)
     if (s == NULL)
         return;
 
-    free(s->m_login);
-    free(s->m_password);
-    free(s->m_project);
-    free(s->m_project_id);
-    free(s->m_project_version);
+    g_free(s->m_login);
+    g_free(s->m_password);
+    g_free(s->m_project);
+    g_free(s->m_project_id);
+    g_free(s->m_project_version);
 }
 
 /*

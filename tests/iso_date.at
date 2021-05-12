@@ -42,7 +42,7 @@ int main(void)
             break;
     }
     assert((i != ARRAY_SIZE(local)) || !"None of attempts hit result date");
-    free(date);
+    g_free(date);
 
     time_t y2k = 946684800;
     assert(string_cmp("2000-01-01-00:00:00", libreport_iso_date_string(&y2k)));

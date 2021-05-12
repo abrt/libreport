@@ -138,7 +138,7 @@ double libreport_get_dirsize_find_largest_dir(
                         if (!proc_dir || strcmp(proc_dir, ep->d_name) != 0)
                         {
                             maxsz = sz;
-                            free(*worst_dir);
+                            g_free(*worst_dir);
                             *worst_dir = g_strdup(ep->d_name);
                         }
                     }

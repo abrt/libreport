@@ -47,7 +47,7 @@ puppet_config_print(const char *key)
     *newline = '\0';
     return result;
 error:
-    free(result);
+    g_free(result);
     error_msg_and_die("Unable to determine puppet %s path (puppet not installed?)", key);
 }
 
@@ -55,7 +55,7 @@ void
 libreport_ureport_server_config_set_url(struct ureport_server_config *config,
                               char *server_url)
 {
-    free(config->ur_url);
+    g_free(config->ur_url);
     config->ur_url = server_url;
 }
 
@@ -68,10 +68,10 @@ libreport_ureport_server_config_set_client_auth(struct ureport_server_config *co
 
     if (strcmp(client_auth, "") == 0)
     {
-        free(config->ur_client_cert);
+        g_free(config->ur_client_cert);
         config->ur_client_cert = NULL;
 
-        free(config->ur_client_key);
+        g_free(config->ur_client_key);
         config->ur_client_key = NULL;
 
         log_notice("Not using client authentication");
@@ -96,10 +96,10 @@ libreport_ureport_server_config_set_client_auth(struct ureport_server_config *co
         log_notice("Using client certificate: %s", config->ur_client_cert);
         log_notice("Using client private key: %s", config->ur_client_key);
 
-        free(config->ur_username);
+        g_free(config->ur_username);
         config->ur_username = NULL;
 
-        free(config->ur_password);
+        g_free(config->ur_password);
         config->ur_password = NULL;
     }
 }
@@ -110,10 +110,10 @@ libreport_ureport_server_config_set_basic_auth(struct ureport_server_config *con
 {
     libreport_ureport_server_config_set_client_auth(config, "");
 
-    free(config->ur_username);
+    g_free(config->ur_username);
     config->ur_username = g_strdup(login);
 
-    free(config->ur_password);
+    g_free(config->ur_password);
     config->ur_password = g_strdup(password);
 }
 
@@ -203,22 +203,22 @@ libreport_ureport_server_config_init(struct ureport_server_config *config)
 void
 libreport_ureport_server_config_destroy(struct ureport_server_config *config)
 {
-    free(config->ur_url);
+    g_free(config->ur_url);
     config->ur_url = DESTROYED_POINTER;
 
-    free(config->ur_client_cert);
+    g_free(config->ur_client_cert);
     config->ur_client_cert = DESTROYED_POINTER;
 
-    free(config->ur_client_key);
+    g_free(config->ur_client_key);
     config->ur_client_key = DESTROYED_POINTER;
 
-    free(config->ur_cert_authority_cert);
+    g_free(config->ur_cert_authority_cert);
     config->ur_cert_authority_cert = DESTROYED_POINTER;
 
-    free(config->ur_username);
+    g_free(config->ur_username);
     config->ur_username = DESTROYED_POINTER;
 
-    free(config->ur_password);
+    g_free(config->ur_password);
     config->ur_password = DESTROYED_POINTER;
 
     g_list_free_full(config->ur_prefs.urp_auth_items, g_free);
@@ -231,22 +231,22 @@ libreport_ureport_server_response_free(struct ureport_server_response *resp)
     if (!resp)
         return;
 
-    free(resp->urr_solution);
+    g_free(resp->urr_solution);
     resp->urr_solution = DESTROYED_POINTER;
 
     g_list_free_full(resp->urr_reported_to_list, g_free);
     resp->urr_reported_to_list = DESTROYED_POINTER;
 
-    free(resp->urr_bthash);
+    g_free(resp->urr_bthash);
     resp->urr_bthash = DESTROYED_POINTER;
 
-    free(resp->urr_message);
+    g_free(resp->urr_message);
     resp->urr_message = DESTROYED_POINTER;
 
-    free(resp->urr_value);
+    g_free(resp->urr_value);
     resp->urr_value = DESTROYED_POINTER;
 
-    free(resp);
+    g_free(resp);
 }
 
 static char *

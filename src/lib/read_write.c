@@ -148,7 +148,7 @@ void* libreport_xmalloc_read(int fd, size_t *maxsz_p)
         buf = g_realloc(buf, total + size + 1);
         rd_size = libreport_full_read(fd, buf + total, size);
         if ((ssize_t)rd_size == (ssize_t)(-1)) { /* error */
-            free(buf);
+            g_free(buf);
             return NULL;
         }
         total += rd_size;

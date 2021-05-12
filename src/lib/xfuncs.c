@@ -136,10 +136,6 @@ char* libreport_xvasprintf(const char *format, va_list p)
 
 void libreport_safe_unsetenv(const char *var_val)
 {
-    //char *name = g_strndup(var_val, strchrnul(var_val, '=') - var_val);
-    //unsetenv(name);
-    //free(name);
-
     /* Avoid malloc/free (name is usually very short) */
     unsigned len = strchrnul(var_val, '=') - var_val;
     char name[len + 1];

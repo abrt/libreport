@@ -70,11 +70,11 @@ int main(void)
     struct ureport_server_config config;
     libreport_ureport_server_config_init(&config);
 
-    config.ur_url = strdup("url");
-    config.ur_client_cert = strdup("cert");
-    config.ur_client_key = strdup("key");
-    config.ur_username = strdup("username");
-    config.ur_password = strdup("password");
+    config.ur_url = g_strdup("url");
+    config.ur_client_cert = g_strdup("cert");
+    config.ur_client_key = g_strdup("key");
+    config.ur_username = g_strdup("username");
+    config.ur_password = g_strdup("password");
 
     assert(strcmp(config.ur_url, "url") == 0);
     assert(strcmp(config.ur_client_cert, "cert") == 0);
@@ -273,11 +273,11 @@ int main(void)
     struct ureport_server_config config;
     libreport_ureport_server_config_init(&config);
 
-    libreport_ureport_server_config_set_url(&config, strdup("url"));
+    libreport_ureport_server_config_set_url(&config, g_strdup("url"));
 
     assert(strcmp(config.ur_url, "url") == 0);
 
-    libreport_ureport_server_config_set_url(&config, strdup("next.url"));
+    libreport_ureport_server_config_set_url(&config, g_strdup("next.url"));
 
     assert(strcmp(config.ur_url, "next.url") == 0);
 
@@ -305,14 +305,6 @@ AT_TESTFUN([libreport_ureport_server_config_set_client_auth],
 #define TESTING_PYTHONPATH "../../ureport/"
 #define WRONG_TESTING_PYTHONPATH "../../ureportxxxxxx/"
 
-char *my_strdup(const char *str)
-{
-    if (str == NULL)
-        return NULL;
-    else
-        return strdup(str);
-}
-
 void set_ureport_server_config(struct ureport_server_config *config,
                                 const char *url,
                                 bool ver,
@@ -321,12 +313,12 @@ void set_ureport_server_config(struct ureport_server_config *config,
                                 const char *uname,
                                 const char *passwd)
 {
-    config->ur_url = my_strdup(url);
+    config->ur_url = g_strdup(url);
     config->ur_ssl_verify = ver;
-    config->ur_client_cert = my_strdup(cert);
-    config->ur_client_key = my_strdup(key);
-    config->ur_username = my_strdup(uname);
-    config->ur_password = my_strdup(passwd);
+    config->ur_client_cert = g_strdup(cert);
+    config->ur_client_key = g_strdup(key);
+    config->ur_username = g_strdup(uname);
+    config->ur_password = g_strdup(passwd);
 
     return;
 }
@@ -558,7 +550,7 @@ int main(void)
     struct ureport_server_config config;
     libreport_ureport_server_config_init(&config);
 
-    g_autofree char *url = strdup("url");
+    g_autofree char *url = g_strdup("url");
     libreport_ureport_server_config_set_url(&config, url);
 
     assert(libreport_ureport_server_response_from_reply(&ps, &config) == NULL);
@@ -643,7 +635,7 @@ int main(void)
 
     struct ureport_server_config config;
     libreport_ureport_server_config_init(&config);
-    libreport_ureport_server_config_set_url(&config, strdup("url"));
+    libreport_ureport_server_config_set_url(&config, g_strdup("url"));
 
     struct dump_dir *dd = dd_create("./test", (uid_t)-1L, DEFAULT_DUMP_DIR_MODE);
     assert(dd != NULL);
@@ -668,7 +660,7 @@ int main(void)
     /* not-reportable must not exist */
     assert(!dd_exist(dd, FILENAME_NOT_REPORTABLE));
 
-    free(config.ur_url);
+    g_free(config.ur_url);
     libreport_ureport_server_response_free(response);
     dd_close(dd);
     delete_dump_dir("./test");
@@ -687,7 +679,7 @@ int main(void)
                          'reporter': 'ABRT Server' } ] }";
 
     libreport_ureport_server_config_init(&config);
-    libreport_ureport_server_config_set_url(&config, strdup("url"));
+    libreport_ureport_server_config_set_url(&config, g_strdup("url"));
 
     dd = dd_create("./test", (uid_t)-1L, DEFAULT_DUMP_DIR_MODE);
     assert(dd != NULL);
@@ -712,7 +704,7 @@ int main(void)
     assert(strstr(not_reportable, "Your problem seems to be caused by solution_cause") != NULL);
 
 
-    free(config.ur_url);
+    g_free(config.ur_url);
     libreport_ureport_server_response_free(response);
     dd_close(dd);
     delete_dump_dir("./test");
@@ -754,7 +746,7 @@ int main(void)
 
     struct ureport_server_config config;
     libreport_ureport_server_config_init(&config);
-    libreport_ureport_server_config_set_url(&config, strdup("url"));
+    libreport_ureport_server_config_set_url(&config, g_strdup("url"));
 
     struct ureport_server_response *response = libreport_ureport_server_response_from_reply(&ps, &config);
 
@@ -765,7 +757,7 @@ int main(void)
 
     assert(strcmp(report_url, expect_report_url) == 0);
 
-    free(config.ur_url);
+    g_free(config.ur_url);
     libreport_ureport_server_response_free(response);
 
     return 0;
@@ -886,11 +878,11 @@ int main(void)
     char *json = ureport_json_attachment_new("data_bthash", "data_type", "data_data");
     assert(strcmp(json, "{ \"bthash\": \"data_bthash\", \"type\": \"data_type\", \"data\": \"data_data\" }") == 0);
 
-    free(json);
+    g_free(json);
     json = ureport_json_attachment_new("", "", "");
     assert(strcmp(json, "{ \"bthash\": \"\", \"type\": \"\", \"data\": \"\" }") == 0);
 
-    free(json);
+    g_free(json);
     return 0;
 }
 ]])
@@ -960,7 +952,7 @@ int main(void)
     /* no auth */
     char *ureport = libreport_ureport_from_dump_dir_ext("./test", NULL);
     assert(strstr(ureport, "auth") == NULL);
-    free(ureport);
+    g_free(ureport);
 
     /* auth */
     dd = dd_opendir("./test", 0);
@@ -980,7 +972,7 @@ int main(void)
     ureport = libreport_ureport_from_dump_dir_ext("./test", &config.ur_prefs);
     assert(strstr(ureport, "auth") != NULL);
     assert(strstr(ureport, "\"hostname\": \"env_hostname\"") != NULL);
-    free(ureport);
+    g_free(ureport);
 
     libreport_ureport_server_config_destroy(&config);
     if (settings)
@@ -999,7 +991,7 @@ int main(void)
     assert(strstr(ureport, "auth") != NULL);
     assert(strstr(ureport, "\"hostname\": \"env_hostname\"") != NULL);
     assert(strstr(ureport, "unknown") == NULL);
-    free(ureport);
+    g_free(ureport);
 
     libreport_ureport_server_config_destroy(&config);
     if (settings)

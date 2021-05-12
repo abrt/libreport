@@ -122,7 +122,7 @@ void abrt_xmlrpc_free_client(struct abrt_xmlrpc *ax)
 
     g_list_free(ax->ax_session_params);
 
-    free(ax);
+    g_free(ax);
 }
 
 void abrt_xmlrpc_client_add_session_param_string(xmlrpc_env *env, struct abrt_xmlrpc *ax,

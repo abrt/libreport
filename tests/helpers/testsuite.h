@@ -377,7 +377,7 @@ FILE *g_testsuite_output_stream = 0;
         char *ts_fd_contents = libreport_xmalloc_read(ts_pipefd[0], NULL); \
         close(ts_pipefd[0]); \
         TS_ASSERT_STRING_EQ(ts_fd_contents, expected, message); \
-        free(ts_fd_contents); \
+        g_free(ts_fd_contents); \
     } while (0)
 
 #define TS_ASSERT_STDERR_EQ_BEGIN \

@@ -65,7 +65,7 @@ void free_bug_info(struct bug_info *bi)
 
     g_list_free_full(bi->bi_cc_list, g_free);
 
-    free(bi);
+    g_free(bi);
 }
 
 static GList *rhbz_comments(struct abrt_xmlrpc *ax, int bug_id)

@@ -86,8 +86,8 @@ void validate_dump_dir_contents(struct dump_dir *dd)
         TS_ASSERT_STRING_EQ(short_name, (strrchr(full_name, '/') + 1), NULL);
         TS_ASSERT_STRING_BEGINS_WITH(full_name, dd->dd_dirname, NULL);
         TS_ASSERT_CHAR_EQ_MESSAGE(full_name[strlen(dd->dd_dirname)], '/', full_name);
-        free(short_name);
-        free(full_name);
+        g_free(short_name);
+        g_free(full_name);
     }
 
     TS_ASSERT_SIGNED_EQ(items, items_counter);
@@ -101,8 +101,8 @@ void validate_dump_dir_contents(struct dump_dir *dd)
     while (dd_get_next_file(dd, &short_name, &full_name))
     {
         --items_counter;
-        free(short_name);
-        free(full_name);
+        g_free(short_name);
+        g_free(full_name);
     }
 
     TS_ASSERT_SIGNED_OP_MESSAGE(items_counter, ==, 0, "Second run iterator goes through all items");
@@ -749,11 +749,11 @@ TS_MAIN
 
         char *loaded_text = dd_load_text(dd, FILENAME_TYPE);
         TS_ASSERT_STRING_EQ(loaded_text, "birds", "'type' is created from the passed string");
-        free(loaded_text);
+        g_free(loaded_text);
 
         loaded_text = dd_load_text(dd, "egg");
         TS_ASSERT_STRING_EQ(loaded_text, "canary", "Call back saves durable data");
-        free(loaded_text);
+        g_free(loaded_text);
         TS_ASSERT_SIGNED_EQ(dd_delete(dd), 0);
     }
 
@@ -1039,36 +1039,35 @@ int main(void)
     dd_save_text(dd, "empty", "");
     assert(dd_load_int32(dd, "empty", &value) == -EINVAL);
 
-    char *buf = NULL;
-    asprintf(&buf, "%lld", -1LL + INT32_MIN);
+    char *buf = g_strdup_printf("%lld", -1LL + INT32_MIN);
     assert(buf != NULL);
 
     dd_save_text(dd, "below_min", buf);
-    free(buf);
+    g_free(buf);
 
     assert(dd_load_int32(dd, "below_min", &value) == -ERANGE);
 
-    asprintf(&buf, "%"PRId32, INT32_MIN);
+    buf = g_strdup_printf("%"PRId32, INT32_MIN);
     dd_save_text(dd, "min", buf);
-    free(buf);
+    g_free(buf);
 
     assert(dd_load_int32(dd, "min", &value) == 0);
     assert(value == INT32_MIN || !"min");
 
-    asprintf(&buf, "%"PRId32, INT32_MAX);
+    buf = g_strdup_printf("%"PRId32, INT32_MAX);
     assert(buf != NULL);
 
     dd_save_text(dd, "max", buf);
-    free(buf);
+    g_free(buf);
 
     assert(dd_load_int32(dd, "max", &value) == 0);
     assert(value == INT32_MAX);
 
-    asprintf(&buf, "%lld", 1LL + INT32_MAX);
+    buf = g_strdup_printf("%lld", 1LL + INT32_MAX);
     assert(buf != NULL);
 
     dd_save_text(dd, "above_max", buf);
-    free(buf);
+    g_free(buf);
 
     assert(dd_load_int32(dd, "above_max", &value) == -ERANGE);
 
@@ -1124,20 +1123,19 @@ int main(void)
     assert(dd_load_uint32(dd, "min", &value) == 0);
     assert(value == 0 || !"min");
 
-    char *buf = NULL;
-    asprintf(&buf, "%"PRIu32, UINT32_MAX);
+    char *buf = g_strdup_printf("%"PRIu32, UINT32_MAX);
     assert(buf != NULL);
 
     dd_save_text(dd, "max", buf);
-    free(buf);
+    g_free(buf);
     assert(dd_load_uint32(dd, "max", &value) == 0);
     assert(value == UINT32_MAX);
 
-    asprintf(&buf, "%lld", 1LL + UINT32_MAX);
+    buf = g_strdup_printf("%lld", 1LL + UINT32_MAX);
     assert(buf != NULL);
 
     dd_save_text(dd, "above_max", buf);
-    free(buf);
+    g_free(buf);
     assert(dd_load_uint32(dd, "above_max", &value) == -ERANGE);
 
     dd_save_text(dd, "string_suffix", "123abc");
@@ -1188,18 +1186,17 @@ int main(void)
     dd_save_text(dd, "below_min", "-9223372036854775809");
     assert(dd_load_int64(dd, "below_min", &value) == -ERANGE);
 
-    char *buf = NULL;
-    asprintf(&buf, "%"PRId64, INT64_MIN);
+    char *buf = g_strdup_printf("%"PRId64, INT64_MIN);
     assert(buf != NULL);
     dd_save_text(dd, "min", buf);
-    free(buf);
+    g_free(buf);
     assert(dd_load_int64(dd, "min", &value) == 0);
     assert(value == INT64_MIN || !"min");
 
-    asprintf(&buf, "%"PRId64, INT64_MAX);
+    buf = g_strdup_printf("%"PRId64, INT64_MAX);
     assert(buf != NULL);
     dd_save_text(dd, "max", buf);
-    free(buf);
+    g_free(buf);
     assert(dd_load_int64(dd, "max", &value) == 0);
     assert(value == INT64_MAX);
 

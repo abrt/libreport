@@ -79,7 +79,7 @@ bool libreport_save_user_settings()
 bool libreport_load_user_settings(const char *application_name)
 {
     if (conf_path)
-        free(conf_path);
+        g_free(conf_path);
     conf_path = get_conf_path(application_name);
 
     if (user_settings)
@@ -127,7 +127,7 @@ GList *libreport_load_words_from_file(const char* filename)
                 if (line[0] != '#') // if it's not comment
                     words_list = g_list_append(words_list, line);
                 else
-                    free(line);
+                    g_free(line);
             }
             fclose(fp);
         }

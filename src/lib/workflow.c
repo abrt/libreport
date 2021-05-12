@@ -46,7 +46,7 @@ void free_workflow(workflow_t *w)
 
     free_config_info(w->info);
     g_list_free_full(w->events, (GDestroyNotify)free_event_config);
-    free(w);
+    g_free(w);
 }
 
 void free_workflow_list(GHashTable **wl)

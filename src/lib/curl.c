@@ -127,12 +127,12 @@ void free_post_state(post_state_t *state)
     if (headers)
     {
         while (*headers)
-            free(*headers++);
-        free(state->headers);
+            g_free(*headers++);
+        g_free(state->headers);
     }
-    free(state->curl_error_msg);
+    g_free(state->curl_error_msg);
     free(state->body);
-    free(state);
+    g_free(state);
 }
 
 char *find_header_in_post_state(post_state_t *state, const char *str)
@@ -183,7 +183,7 @@ save_headers(void *buffer_pv, size_t count, size_t nmemb, void *ptr)
         if (headers)
         {
             while (*headers)
-                free(*headers++);
+                g_free(*headers++);
         }
         cnt = 0;
     }
@@ -666,12 +666,12 @@ char *libreport_upload_file_ext(post_state_t *state, const char *url, const char
         {
             char *msg = g_strdup_printf(_("Please enter user name for '%s//%s':"), scheme, hostname);
             username = libreport_ask(msg);
-            free(msg);
+            g_free(msg);
             if (username != NULL && username[0] != '\0')
             {
                 msg = g_strdup_printf(_("Please enter password for '%s//%s@%s':"), scheme, username, hostname);
                 password = libreport_ask_password(msg);
-                free(msg);
+                g_free(msg);
                 /* What about empty password? */
                 if (password != NULL && password[0] != '\0')
                 {

@@ -86,11 +86,11 @@ int main(int argc, char **argv)
             /* prompt for another file name if needed */
             if (msg)
             {
-                free(output_file);
+                g_free(output_file);
                 char *response = libreport_ask(msg);
                 if (!response)
                     perror_msg_and_die("libreport_ask");
-                free(msg);
+                g_free(msg);
 
                 if (response[0] == '\0' || response[0] == '\n')
                 {
@@ -148,7 +148,7 @@ int main(int argc, char **argv)
         }
         const char *format = (open_mode[0] == 'a' ? _("The report was appended to %s") : _("The report was stored to %s"));
         log_warning(format, output_file);
-        free(output_file);
+        g_free(output_file);
     }
 
     return 0;

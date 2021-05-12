@@ -95,7 +95,7 @@ int main(int argc, char **argv)
             assert(current_size == old_size);
         }
         {
-            free(itm->content);
+            g_free(itm->content);
             itm->content = NULL;
             size_t current_size = PROBLEM_ITEM_UNINITIALIZED_SIZE;
             assert(problem_item_get_size(itm, &current_size) == 0);
