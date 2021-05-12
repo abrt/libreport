@@ -88,10 +88,10 @@ static void msg_content_free(msg_content_t *msg_c)
         return;
 
     for (unsigned i = 0; i < msg_c->used; ++i)
-        free(msg_c->data[i].iov_base);
+        g_free(msg_c->data[i].iov_base);
 
-    free(msg_c->data);
-    free(msg_c);
+    g_free(msg_c->data);
+    g_free(msg_c);
 
     return;
 }

@@ -74,8 +74,8 @@ ask_mantisbt_password(const char *message)
 static void
 ask_mantisbt_credentials(mantisbt_settings_t *settings, const char *pre_message)
 {
-    free(settings->m_login);
-    free(settings->m_password);
+    g_free(settings->m_login);
+    g_free(settings->m_password);
 
     g_autofree char *question = g_strdup_printf("%s %s", pre_message, _("Please enter your MantisBT login:"));
     settings->m_login = ask_mantisbt_login(question);
@@ -168,8 +168,8 @@ set_settings(mantisbt_settings_t *m, GHashTable *settings, struct dump_dir *dd)
 
     if (!m->m_project || !*m->m_project) /* if not overridden or empty... */
     {
-        free(m->m_project);
-        free(m->m_project_version);
+        g_free(m->m_project);
+        g_free(m->m_project_version);
 
         if (dd != NULL)
         {
@@ -691,7 +691,7 @@ int main(int argc, char **argv)
                     if (g_list_find_custom(ii->mii_attachments, name, (GCompareFunc) strcmp) == NULL)
                         break;
 
-                    free(name);
+                    g_free(name);
                 }
                 mantisbt_attach_data(&mbt_settings, bug_id_str, name, bt, strlen(bt));
             }

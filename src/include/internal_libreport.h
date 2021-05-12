@@ -450,7 +450,7 @@ GString *libreport_strbuf_prepend_strfv(GString *strbuf,
                                     const char *format, va_list p);
 
 /* Returns command line of running program.
- * Caller is responsible to free() the returned value.
+ * Caller is responsible to g_free() the returned value.
  * If the pid is not valid or command line can not be obtained,
  * empty string is returned.
  */
@@ -601,8 +601,8 @@ void libreport_parse_osinfo(const char *osinfo_bytes, GHashTable *osinfo);
  * https://bugzilla.redhat.com/show_bug.cgi?id=950373
  *
  * @param osinfo Input data from which the values are built
- * @param produc Non-NULL pointer where pointer to malloced string will be stored. Memory must be released by free()
- * @param version Non-NULL pointer where pointer to malloced string will be stored. Memory must be released by free()
+ * @param product Non-NULL pointer where pointer to g_malloced string will be stored. Memory must be released by g_free()
+ * @param version Non-NULL pointer where pointer to g_malloced string will be stored. Memory must be released by g_free()
  */
 void libreport_parse_osinfo_for_bz(GHashTable *osinfo, char **product, char **version);
 
@@ -615,7 +615,7 @@ void libreport_parse_osinfo_for_bz(GHashTable *osinfo, char **product, char **ve
  * https://github.com/abrt/libreport/issues/459
  *
  * @param osinfo Input data from which the values are built
- * @param url Non-NULL pointer where pointer to malloced string will be stored. Memory must be released by free()
+ * @param url Non-NULL pointer where pointer to g_malloced string will be stored. Memory must be released by g_free()
  */
 void libreport_parse_osinfo_for_bug_url(GHashTable *osinfo, char** url);
 

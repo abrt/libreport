@@ -313,7 +313,7 @@ int main(int argc, char **argv)
     }
 
     struct ureport_server_response *response = libreport_ureport_submit(json_ureport, &config);
-    free(json_ureport);
+    g_free(json_ureport);
 
     if (!response)
         goto finalize;

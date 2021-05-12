@@ -46,7 +46,7 @@ static void start_element(GMarkupParseContext *context,
     if (strcmp(element_name, NAME_ELEMENT) == 0
      || strcmp(element_name, DESCRIPTION_ELEMENT) == 0
     ) {
-        free(parse_data->attribute_lang);
+        g_free(parse_data->attribute_lang);
         parse_data->attribute_lang = get_element_lang(parse_data, attribute_names, attribute_values);
     }
 }
@@ -59,7 +59,7 @@ static void end_element(GMarkupParseContext *context,
 {
     struct my_parse_data *parse_data = user_data;
 
-    free(parse_data->attribute_lang);
+    g_free(parse_data->attribute_lang);
     parse_data->attribute_lang = NULL;
 
     if (strcmp(element_name, EVENTS_ELEMENT) == 0)
@@ -223,6 +223,6 @@ void load_workflow_description_from_file(workflow_t *workflow, const char* filen
 
     g_markup_parse_context_free(context);
 
-    free(parse_data.attribute_lang); /* just in case */
-    free(parse_data.cur_locale);
+    g_free(parse_data.attribute_lang); /* just in case */
+    g_free(parse_data.cur_locale);
 }

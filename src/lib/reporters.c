@@ -31,10 +31,10 @@ libreport_is_comment_dup(GList *comments, const char *comment)
         const char * const comment_body = (const char *) l->data;
         char * const trim_comment_body = libreport_trim_all_whitespace(comment_body);
         same_comments = (strcmp(trim_comment_body, trim_comment) == 0);
-        free(trim_comment_body);
+        g_free(trim_comment_body);
     }
 
-    free(trim_comment);
+    g_free(trim_comment);
     return same_comments;
 }
 

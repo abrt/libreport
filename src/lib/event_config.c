@@ -130,22 +130,20 @@ void free_invalid_options(invalid_option_t *p)
 {
     if (!p)
         return;
-    free(p->invopt_name);
-    free(p->invopt_error);
-    free(p);
+    g_free(p->invopt_name);
+    g_free(p->invopt_error);
+    g_free(p);
 }
 
 void free_event_option(event_option_t *p)
 {
     if (!p)
         return;
-    free(p->eo_name);
-    free(p->eo_value);
-    free(p->eo_label);
-    free(p->eo_note_html);
-    //free(p->eo_description);
-    //free(p->eo_allowed_value);
-    free(p);
+    g_free(p->eo_name);
+    g_free(p->eo_value);
+    g_free(p->eo_label);
+    g_free(p->eo_note_html);
+    g_free(p);
 }
 
 void free_event_config(event_config_t *p)
@@ -154,15 +152,15 @@ void free_event_config(event_config_t *p)
         return;
 
     free_config_info(p->info);
-    free(p->ec_requires_items);
-    free(p->ec_exclude_items_by_default);
-    free(p->ec_include_items_by_default);
-    free(p->ec_exclude_items_always);
-    free(p->ec_restricted_access_option);
-    g_list_free_full(p->ec_imported_event_names, free);
+    g_free(p->ec_requires_items);
+    g_free(p->ec_exclude_items_by_default);
+    g_free(p->ec_include_items_by_default);
+    g_free(p->ec_exclude_items_always);
+    g_free(p->ec_restricted_access_option);
+    g_list_free_full(p->ec_imported_event_names, g_free);
     g_list_free_full(p->options, (GDestroyNotify)free_event_option);
 
-    free(p);
+    g_free(p);
 }
 
 
@@ -211,7 +209,7 @@ static void load_config_files(const char *dir_path)
             if (elem)
             {
                 opt = elem->data;
-                free(opt->eo_value);
+                g_free(opt->eo_value);
             }
             else
             {

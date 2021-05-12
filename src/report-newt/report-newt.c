@@ -180,12 +180,12 @@ static int configure_reporter(struct reporter *r, bool skip_if_valid)
                     case OPTION_TYPE_TEXT:
                     case OPTION_TYPE_NUMBER:
                     case OPTION_TYPE_PASSWORD:
-                        free(opt->eo_value);
-                        opt->eo_value = strdup(newtEntryGetValue(options[i]));
+                        g_free(opt->eo_value);
+                        opt->eo_value = g_strdup(newtEntryGetValue(options[i]));
                         break;
                     case OPTION_TYPE_BOOL:
-                        free(opt->eo_value);
-                        opt->eo_value = strdup(newtCheckboxGetValue(options[i]) == '*' ? "yes" : "no");
+                        g_free(opt->eo_value);
+                        opt->eo_value = g_strdup(newtCheckboxGetValue(options[i]) == '*' ? "yes" : "no");
                         break;
                     default:
                         break;
@@ -230,9 +230,9 @@ static char *save_log_line(char *log_line, void *param)
         /* Append the log line */
         len = strlen(log->text) + 1 + strlen(log_line) + 1;
         new = g_malloc(len);
-        snprintf(new, len, "%s\n%s", log->text, log_line);
-        free(log->text);
-        free(log_line);
+        g_snprintf(new, len, "%s\n%s", log->text, log_line);
+        g_free(log->text);
+        g_free(log_line);
         log->text = new;
         newtTextboxSetText(log->co, new);
     }
@@ -352,7 +352,7 @@ static int report(const char *dump_dir_name)
         newtWinMessage(NULL, _("Ok"), _("No reporters available"));
 
     g_array_free(reporters, TRUE);
-    free(events_as_lines);
+    g_free(events_as_lines);
 
     return 0;
 }

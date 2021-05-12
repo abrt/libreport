@@ -41,7 +41,7 @@ TS_MAIN
 
     TS_ASSERT_FALSE(ec_restricted_access_enabled(ect));
 
-    free(eot->eo_value);
+    g_free(eot->eo_value);
     eot->eo_value = g_strdup("yes");
 
     TS_ASSERT_TRUE(ec_restricted_access_enabled(ect));

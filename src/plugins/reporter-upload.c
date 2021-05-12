@@ -67,7 +67,7 @@ static int interactive_upload_file(const char *url, const char *file_name,
     if (remote_name)
         *remote_name = tmp;
     else
-        free(tmp);
+        g_free(tmp);
 
     free_post_state(state);
 

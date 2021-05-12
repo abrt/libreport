@@ -23,8 +23,8 @@ static void free_problem_item(void *ptr)
     if (ptr)
     {
         struct problem_item *item = (struct problem_item *)ptr;
-        free(item->content);
-        free(item);
+        g_free(item->content);
+        g_free(item);
     }
 }
 
@@ -340,7 +340,7 @@ static int is_text_file_at(int dir_fd, const char *name, char **content, ssize_t
     if (r < 0)
     {
         close(fd);
-        free(buf);
+        g_free(buf);
         return -EIO; /* it's not text (because we can't read it) */
     }
 
@@ -386,7 +386,7 @@ static int is_text_file_at(int dir_fd, const char *name, char **content, ssize_t
             /* We don't like NULs and other control chars very much.
              * Not text for sure!
              */
-            free(buf);
+            g_free(buf);
             return CD_FLAG_BIN;
         }
         if (buf[i] == 0x7f)
@@ -408,13 +408,13 @@ static int is_text_file_at(int dir_fd, const char *name, char **content, ssize_t
     if ((total_chars / bad_chars) >= RATIO)
         goto text; /* looks like text to me */
 
-    free(buf);
+    g_free(buf);
     return CD_FLAG_BIN; /* it's binary */
 
  text:
     if (size > CD_MAX_TEXT_SIZE)
     {
-        free(buf);
+        g_free(buf);
         return CD_FLAG_BIN | CD_FLAG_BIGTXT;
     }
 
@@ -451,7 +451,7 @@ static int _problem_data_load_dump_dir_element(struct dump_dir *dd, const char *
     if (sz >= IS_TEXT_FILE_AT_PROBE_SIZE) /* did is_text_file() read entire file? */
     {
         /* no, it didn't, we need to read it all */
-        free(text);
+        g_free(text);
         lseek(*file_fd_ptr, 0, SEEK_SET);
         text = libreport_xmalloc_read(*file_fd_ptr, NULL);
     }
@@ -472,7 +472,7 @@ static int _problem_data_load_dump_dir_element(struct dump_dir *dd, const char *
 
     if (sanitized != NULL)
     {
-        free(text);
+        g_free(text);
         text = sanitized;
     }
 
@@ -555,10 +555,10 @@ void problem_data_load_from_dump_dir(problem_data_t *problem_data, struct dump_d
                 content,
                 flags
         );
-        free(content);
+        g_free(content);
  next:
-        free(short_name);
-        free(full_name);
+        g_free(short_name);
+        g_free(full_name);
     }
 }
 

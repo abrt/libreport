@@ -304,7 +304,7 @@ static int read_number_from_file_at(int dir_fd, const char *filename, const char
 
 finito:
     close(fd);
-    free(value_buf);
+    g_free(value_buf);
     /* If we got here, strtoll() successfully parsed a number */
     return ret;
 }
@@ -538,9 +538,9 @@ void dd_close(struct dump_dir *dd)
 
     dd_clear_next_file(dd);
 
-    free(dd->dd_type);
-    free(dd->dd_dirname);
-    free(dd);
+    g_free(dd->dd_type);
+    g_free(dd->dd_dirname);
+    g_free(dd);
 }
 
 static int dd_create_subdir(int dd_fd, const char *dirname, uid_t dd_uid, gid_t dd_gid, mode_t dd_mode)
@@ -1445,7 +1445,7 @@ void dd_sanitize_mode_and_owner(struct dump_dir *dd)
 
         close(fd);
 next:
-        free(short_name);
+        g_free(short_name);
     }
 
     /* No need to check return value, the functions print good messages.
@@ -2199,7 +2199,7 @@ int dd_rename(struct dump_dir *dd, const char *new_path)
     int res = rename(dd->dd_dirname, new_path);
     if (res == 0)
     {
-        free(dd->dd_dirname);
+        g_free(dd->dd_dirname);
         dd->dd_dirname = rm_trailing_slashes(new_path);
     }
     return res;

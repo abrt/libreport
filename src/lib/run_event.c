@@ -126,8 +126,8 @@ void free_rule_list(GList *rule_list)
     {
         struct rule *cur_rule = rule_list->data;
         g_list_free_full(cur_rule->conditions, free);
-        free(cur_rule->command);
-        free(cur_rule);
+        g_free(cur_rule->command);
+        g_free(cur_rule);
 
         GList *next = rule_list->next;
         g_list_free_1(rule_list);
@@ -165,7 +165,7 @@ GList *load_rule_list(GList *rule_list,
         if (*next_line == '\0' || *next_line == '#')
         {
             log_parser("empty or comment, skipping");
-            free(next_line);
+            g_free(next_line);
             continue;
         }
 
@@ -207,14 +207,14 @@ GList *load_rule_list(GList *rule_list,
                     if (fseek(conffile, prev, SEEK_SET) < 0)
                         perror_msg_and_die("fseek");
 
-                    free(next_line);
+                    g_free(next_line);
                     break;
                 }
 
                 ++line_counter;
                 char *tmp = g_strdup_printf("%s\n%s", line, next_line);
-                free(line);
-                free(next_line);
+                g_free(line);
+                g_free(next_line);
                 line = tmp;
             }
 
@@ -303,7 +303,7 @@ GList *load_rule_list(GList *rule_list,
         else
             log_parser("Unknown line found, ignoring: '%s'", line);
 
-        free(line);
+        g_free(line);
     } /* end of line loop */
 
     fclose(conffile);
@@ -389,7 +389,7 @@ static char* pop_next_command(GList **pp_rule_list,
                     goto next_rule; /* prefix doesn't match */
                 if (pp_event_name)
                 {
-                    free(*pp_event_name);
+                    g_free(*pp_event_name);
                     *pp_event_name = g_strdup(eq_sign + 1);
                 }
             }
@@ -444,8 +444,7 @@ static char* pop_next_command(GList **pp_rule_list,
         *pp_rule_list = g_list_remove(*pp_rule_list, cur_rule);
         g_list_free_full(cur_rule->conditions, free);
         command = cur_rule->command;
-        /*free(cur_rule->command); - WRONG! we are returning it! */
-        free(cur_rule);
+        g_free(cur_rule);
         break;
 
  next_rule:

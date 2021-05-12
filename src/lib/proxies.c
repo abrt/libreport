@@ -48,7 +48,7 @@ GList *get_proxy_list(const char *url)
     /* Don't set proxy if the list contains just "direct://" */
     if (l && !g_list_next(l) && !strcmp(l->data, "direct://"))
     {
-        free(l->data);
+        g_free(l->data);
         g_list_free(l);
         l = NULL;
     }

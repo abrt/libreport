@@ -768,7 +768,7 @@ int main(int argc, char **argv)
                 abort();
             }
             else {
-                free(item->data);
+                g_free(item->data);
                 clone = g_list_delete_link(clone, item);
             }
 

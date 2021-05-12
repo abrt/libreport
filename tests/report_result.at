@@ -11,16 +11,16 @@ int main(void)
     result = report_result_parse("Test: URL=https://retrace.fedoraproject.org WORKFLOW=workflow_FedoraCCpp MSG=Just a message!", 4);
     field = report_result_get_label(result);
     g_assert_cmpstr(field, ==, "Test");
-    free(field);
+    g_free(field);
     field = report_result_get_url(result);
     g_assert_cmpstr(field, ==, "https://retrace.fedoraproject.org");
-    free(field);
+    g_free(field);
     field = report_result_get_workflow(result);
     g_assert_cmpstr(field, ==, "workflow_FedoraCCpp");
-    free(field);
+    g_free(field);
     field = report_result_get_message(result);
     g_assert_cmpstr(field, ==, "Just a message!");
-    free(field);
+    g_free(field);
 
     return EXIT_SUCCESS;
 }

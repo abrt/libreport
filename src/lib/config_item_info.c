@@ -41,29 +41,29 @@ void free_config_info(config_item_info_t *info)
     if (info == NULL)
         return;
 
-    free(info->name);
-    free(info->screen_name);
-    free(info->description);
-    free(info->long_desc);
+    g_free(info->name);
+    g_free(info->screen_name);
+    g_free(info->description);
+    g_free(info->long_desc);
 
-    free(info);
+    g_free(info);
 }
 
 void ci_set_screen_name(config_item_info_t *ci, const char *screen_name)
 {
-    free(ci->screen_name);
+    g_free(ci->screen_name);
     ci->screen_name = g_strdup(screen_name);
 }
 
 void ci_set_description(config_item_info_t *ci, const char *description)
 {
-    free(ci->description);
+    g_free(ci->description);
     ci->description = g_strdup(description);
 }
 
 void ci_set_long_desc(config_item_info_t *ci, const char *long_description)
 {
-    free(ci->long_desc);
+    g_free(ci->long_desc);
     ci->long_desc = g_strdup(long_description);
 }
 

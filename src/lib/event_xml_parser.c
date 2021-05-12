@@ -149,7 +149,7 @@ static void consume_cur_option(struct my_parse_data *parse_data)
             /* ...and it already has a value, which
              * overrides xml-defined default one:
              */
-            free(opt->eo_value);
+            g_free(opt->eo_value);
             opt->eo_value = old_opt->eo_value;
             old_opt->eo_value = NULL;
         }
@@ -198,7 +198,7 @@ static void start_element(GMarkupParseContext *context,
             log_info("attr: %s:%s", attribute_names[i], attribute_values[i]);
             if (strcmp(attribute_names[i], "name") == 0)
             {
-                free(opt->eo_name);
+                g_free(opt->eo_name);
                 opt->eo_name = g_strdup(attribute_values[i]);
             }
             else if (strcmp(attribute_names[i], "type") == 0)
@@ -233,7 +233,7 @@ static void start_element(GMarkupParseContext *context,
      || strcmp(element_name, NAME_ELEMENT) == 0
      || strcmp(element_name, NOTE_HTML_ELEMENT) == 0
     ) {
-        free(parse_data->attribute_lang);
+        g_free(parse_data->attribute_lang);
         parse_data->attribute_lang = get_element_lang(parse_data, attribute_names, attribute_values);
     }
     else
@@ -260,7 +260,7 @@ static void end_element(GMarkupParseContext *context,
 {
     struct my_parse_data *parse_data = user_data;
 
-    free(parse_data->attribute_lang);
+    g_free(parse_data->attribute_lang);
     parse_data->attribute_lang = NULL;
 
     if (strcmp(element_name, ADV_OPTIONS_ELEMENT) == 0)
@@ -309,7 +309,7 @@ static void text(GMarkupParseContext *context,
                             (strcmp(parse_data->attribute_lang, parse_data->cur_locale) == 0);
 
                         log_info("new label:'%s'", text_copy);
-                        free(opt->eo_label);
+                        g_free(opt->eo_label);
                         opt->eo_label = text_copy;
                         text_copy = NULL;
                     }
@@ -325,7 +325,7 @@ static void text(GMarkupParseContext *context,
         else if (strcmp(inner_element, DEFAULT_VALUE_ELEMENT) == 0)
         {
             log_info("default value:'%s'", text_copy);
-            free(opt->eo_value);
+            g_free(opt->eo_value);
             opt->eo_value = text_copy;
             text_copy = NULL;
         }
@@ -345,7 +345,7 @@ static void text(GMarkupParseContext *context,
                             (strcmp(parse_data->attribute_lang, parse_data->cur_locale) == 0);
 
                         log_info("html note:'%s'", text_copy);
-                        free(opt->eo_note_html);
+                        g_free(opt->eo_note_html);
                         opt->eo_note_html = text_copy;
                         text_copy = NULL;
                     }
@@ -361,7 +361,7 @@ static void text(GMarkupParseContext *context,
         if (strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)
         {
             log_info("tooltip:'%s'", text_copy);
-            free(opt->eo_description);
+            g_free(opt->eo_description);
             opt->eo_description = text_copy;
             text_copy = NULL;
         }
@@ -440,25 +440,25 @@ static void text(GMarkupParseContext *context,
         }
         else if (strcmp(inner_element, REQUIRES_ELEMENT) == 0)
         {
-            free(ui->ec_requires_items);
+            g_free(ui->ec_requires_items);
             ui->ec_requires_items = text_copy;
             text_copy = NULL;
         }
         else if (strcmp(inner_element, EXCL_BY_DEFAULT_ELEMENT) == 0)
         {
-            free(ui->ec_exclude_items_by_default);
+            g_free(ui->ec_exclude_items_by_default);
             ui->ec_exclude_items_by_default = text_copy;
             text_copy = NULL;
         }
         else if (strcmp(inner_element, INCL_BY_DEFAULT_ELEMENT) == 0)
         {
-            free(ui->ec_include_items_by_default);
+            g_free(ui->ec_include_items_by_default);
             ui->ec_include_items_by_default = text_copy;
             text_copy = NULL;
         }
         else if (strcmp(inner_element, EXCL_ALWAYS_ELEMENT) == 0)
         {
-            free(ui->ec_exclude_items_always);
+            g_free(ui->ec_exclude_items_always);
             ui->ec_exclude_items_always = text_copy;
             text_copy = NULL;
         }
@@ -494,7 +494,7 @@ static void text(GMarkupParseContext *context,
             ui->ec_requires_details = libreport_string_to_bool(text_copy);
         }
     }
-    free(text_copy);
+    g_free(text_copy);
 }
 
   // Called for strings that should be re-saved verbatim in this same
@@ -567,6 +567,6 @@ void load_event_description_from_file(event_config_t *event_config, const char* 
     g_markup_parse_context_free(context);
 
     consume_cur_option(&parse_data); /* just in case */
-    free(parse_data.attribute_lang); /* just in case */
-    free(parse_data.cur_locale);
+    g_free(parse_data.attribute_lang); /* just in case */
+    g_free(parse_data.cur_locale);
 }

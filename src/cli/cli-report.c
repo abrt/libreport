@@ -25,7 +25,7 @@
 
 /*
  * Escapes the field content string to avoid confusion with file comments.
- * Returned field must be free()d by caller.
+ * Returned field must be g_free()d by caller.
  */
 static char *escape(const char *str)
 {
@@ -239,7 +239,7 @@ static int read_crash_report_field(const char *text, problem_data_t *report,
     if (strcmp(newvalue, oldvalue) == 0)
         return 0;
 
-    free(value->content);
+    g_free(value->content);
     value->content = g_strdup(newvalue);
     return 1;
 }

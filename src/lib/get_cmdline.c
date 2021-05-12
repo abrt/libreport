@@ -608,7 +608,7 @@ int libreport_dump_namespace_diff(const char *dest_filename, pid_t base_pid, pid
 void libreport_mountinfo_destroy(struct mountinfo *mntnf)
 {
     for (size_t i = 0; i < ARRAY_SIZE(mntnf->mntnf_items); ++i)
-        free(mntnf->mntnf_items[i]);
+        g_free(mntnf->mntnf_items[i]);
 }
 
 static int _read_mountinfo_word(FILE *fin)
