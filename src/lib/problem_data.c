@@ -18,8 +18,6 @@
 */
 #include "internal_libreport.h"
 
-#include <nettle/sha1.h>
-
 static void free_problem_item(void *ptr)
 {
     if (ptr)
@@ -123,9 +121,7 @@ void problem_data_add_basics(problem_data_t *pd)
             problem_data_add_text_noteditable(pd, FILENAME_UUID, duphash);
         else
         {
-            /* start hash */
-            struct sha1_ctx hash;
-            sha1_init(&hash);
+            g_autoptr(GChecksum) hash = g_checksum_new(G_CHECKSUM_SHA1);
 
             /*
              * To avoid spurious hash differences, sort keys so that elements are
@@ -145,16 +141,16 @@ void problem_data_add_basics(problem_data_t *pd)
                  */
                 if (item->flags & CD_FLAG_BIN)
                     continue;
-                sha1_update(&hash, strlen(item->content), (unsigned char *)item->content);
+                g_checksum_update(hash, (unsigned char *)item->content,
+                                  strlen(item->content));
             }
             g_list_free(list);
 
-            /* end hash */
-            unsigned char hash_bytes[SHA1_DIGEST_SIZE];
-            sha1_digest(&hash, sizeof(hash_bytes), hash_bytes);
-            char hash_str[sizeof(hash_bytes)*2 + 1];
-            libreport_bin2hex(hash_str, (char *)hash_bytes, sizeof(hash_bytes))[0] = '\0';
+            // This string is owned by the hash object and will be freed
+            // automatically once it goes out of scope.
+            const char *hash_str = g_checksum_get_string(hash);
 
+            // hash_str is copied in this call.
             problem_data_add_text_noteditable(pd, FILENAME_UUID, hash_str);
         }
     }
