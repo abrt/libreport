@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - libreport-plugin-mailx now depends on /usr/bin/mailx (also provided by s-nail) instead of the mailx package
 - Use GLib for computing SHA-1 digests
 
+### Removed
+- Remove `libreport_hex2bin()` and `libreport_bin2hex()` functions.
+
 ## [2.15.0] - 2020-03-03
 ### Added
 - Add support for sub-components in RH Bugzilla

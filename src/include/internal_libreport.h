@@ -338,11 +338,6 @@ void libreport_xsetregid(gid_t rgid, gid_t egid);
 
 FILE *libreport_xfdopen(int fd, const char *mode);
 
-/* Emit a string of hex representation of bytes */
-char *libreport_bin2hex(char *dst, const char *str, int count);
-/* Convert "xxxxxxxx" hex string to binary, no more than COUNT bytes */
-char* libreport_hex2bin(char *dst, const char *str, int count);
-
 
 enum {
     LOGMODE_NONE = 0,
