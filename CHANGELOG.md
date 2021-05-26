@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - libreport-plugin-mailx now depends on /usr/bin/mailx (also provided by s-nail) instead of the mailx package
+- Use GLib for computing SHA-1 digests
 
 ## [2.15.0] - 2020-03-03
 ### Added

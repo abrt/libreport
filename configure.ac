@@ -277,8 +277,6 @@ fi dnl end NO_UREPORT
 
 AC_SUBST([JSON_C_PACKAGE])
 
-PKG_CHECK_MODULES([NETTLE], [nettle])
-
 PKG_PROG_PKG_CONFIG
 
 AC_CHECK_HEADER([archive.h], [],

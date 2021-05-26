@@ -36,7 +36,6 @@ BuildRequires: newt-devel
 BuildRequires: libproxy-devel
 BuildRequires: satyr-devel >= 0.24
 BuildRequires: glib2-devel >= %{glib_ver}
-BuildRequires: nettle-devel
 BuildRequires: git-core
 
 %if 0%{?fedora} >= 24 || 0%{?rhel} > 7
@@ -56,7 +55,6 @@ Requires: libreport-filesystem = %{version}-%{release}
 Requires: satyr%{?_isa} >= 0.24
 Requires: glib2%{?_isa} >= %{glib_ver}
 Requires: libarchive%{?_isa}
-Requires: nettle%{?_isa}
 
 # Required for the temporary modularity hack, see below
 %if 0%{?_module_build}
