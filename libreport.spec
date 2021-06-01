@@ -14,7 +14,7 @@
 
 Summary: Generic library for reporting various problems
 Name: libreport
-Version: 2.15.1
+Version: 2.15.2
 Release: 1%{?dist}
 License: GPLv2+
 URL: https://abrt.readthedocs.org/
@@ -652,6 +652,12 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Tue Jun 01 2021 Michal Fabik <mfabik@redhat.com> 2.15.2-1
+- binhex: Remove unused API (mgrabovs@redhat.com)
+- lib: Use GLib for computing SHA-1 digests (mgrabovs@redhat.com)
+- run_event: Improve memory management (mgrabovs@redhat.com)
+- gtk: Fix segfault (mgrabovs@redhat.com)
+
 * Tue May 04 2021 Michal Fabik <mfabik@redhat.com> 2.15.1-1
 - ureport: Strange usage of tmp variable (mzidek@redhat.com)
 - steal_directory: Silence a warning (mzidek@redhat.com)

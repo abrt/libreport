@@ -5,16 +5,27 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.15.2]
+### Changed
+- Use GLib for computing SHA-1 digests
+
+### Removed
+- Remove `libreport_hex2bin()` and `libreport_bin2hex()` functions.
+
+### Fixed
+- Memory management issues
+
+## [2.15.1]
 ### Added
 - ignored_words: add more "key" variations
 - Add support for excluding whole elements from search for sensitive words
 
 ### Changed
 - libreport-plugin-mailx now depends on /usr/bin/mailx (also provided by s-nail) instead of the mailx package
-- Use GLib for computing SHA-1 digests
 
-### Removed
-- Remove `libreport_hex2bin()` and `libreport_bin2hex()` functions.
+### Fixed
+- Memory management issues
 
 ## [2.15.0] - 2020-03-03
 ### Added
