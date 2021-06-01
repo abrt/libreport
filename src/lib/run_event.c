@@ -47,13 +47,13 @@ struct run_event_state *new_run_event_state()
 
 void free_run_event_state(struct run_event_state *state)
 {
-    if (state)
-    {
-        g_ptr_array_free(state->extra_environment, TRUE);
-        g_string_free(state->command_output, TRUE);
-        free_commands(state);
-        free(state);
-    }
+    g_return_if_fail(state != NULL);
+
+    g_ptr_array_free(state->extra_environment, TRUE);
+    g_string_free(state->command_output, TRUE);
+    state->command_output = NULL;
+    free_commands(state);
+    g_free(state);
 }
 
 void make_run_event_state_forwarding(struct run_event_state *state)
