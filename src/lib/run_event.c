@@ -51,7 +51,6 @@ void free_run_event_state(struct run_event_state *state)
     {
         g_ptr_array_free(state->extra_environment, TRUE);
         g_string_free(state->command_output, TRUE);
-        g_free(state->logging_param);
         free_commands(state);
         free(state);
     }
