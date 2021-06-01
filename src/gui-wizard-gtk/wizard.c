@@ -1722,10 +1722,11 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         g_event_source_id = 0;
         close(evd->fd);
         g_io_channel_unref(evd->channel);
-        free_run_event_state(evd->run_state);
         g_string_free(evd->event_log, TRUE);
-        free(evd->event_name);
-        free(evd);
+        evd->event_log = NULL;
+        free_run_event_state(evd->run_state);
+        g_clear_pointer(&evd->event_name, g_free);
+        g_clear_pointer(&evd, g_free);
 
         /* Inform abrt-gui that it is a good idea to rescan the directory */
         kill(getppid(), SIGCHLD);
