@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [2.15.2]
+## [2.15.2] - 2021-06-02
 ### Changed
 - Use GLib for computing SHA-1 digests
 
@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Memory management issues
 
-## [2.15.1]
+## [2.15.1] - 2021-05-04
 ### Added
 - ignored_words: add more "key" variations
 - Add support for excluding whole elements from search for sensitive words
@@ -275,7 +275,9 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.15.0...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.15.2...HEAD
+[2.15.2]: https://github.com/abrt/libreport/compare/2.15.1...2.15.2
+[2.15.1]: https://github.com/abrt/libreport/compare/2.15.0...2.15.1
 [2.15.0]: https://github.com/abrt/libreport/compare/2.14.0...2.15.0
 [2.14.0]: https://github.com/abrt/libreport/compare/2.13.1...2.14.0
 [2.13.1]: https://github.com/abrt/libreport/compare/2.13.0...2.13.1
