@@ -224,9 +224,6 @@ PKG_CHECK_MODULES([GIO], [
 PKG_CHECK_MODULES([GOBJECT], [gobject-2.0])
 PKG_CHECK_MODULES([LIBXML], [libxml-2.0])
 PKG_CHECK_MODULES([CURL], [libcurl])
-PKG_CHECK_MODULES([PROXY], [libproxy-1.0], [
-    AC_DEFINE([HAVE_PROXY], [1], [Use libproxy])
-], [:])
 PKG_CHECK_MODULES([SATYR], [satyr])
 PKG_CHECK_MODULES([JOURNAL], [libsystemd])
 PKG_CHECK_MODULES([AUGEAS], [augeas])

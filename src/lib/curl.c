@@ -102,7 +102,7 @@ CURLcode curl_easy_perform_with_proxy(CURL *handle, const char *url)
         curl_err = curl_easy_perform(handle);
     }
 
-    g_list_free_full(proxy_list, free);
+    g_list_free_full(proxy_list, g_free);
 
     return curl_err;
 }
