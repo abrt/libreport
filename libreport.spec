@@ -33,7 +33,6 @@ BuildRequires: texinfo
 BuildRequires: asciidoc
 BuildRequires: xmlto
 BuildRequires: newt-devel
-BuildRequires: libproxy-devel
 BuildRequires: satyr-devel >= 0.24
 BuildRequires: glib2-devel >= %{glib_ver}
 BuildRequires: git-core
