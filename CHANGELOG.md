@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Removed
+- Direct libproxy dependency
+
+### Fixed
+- Memory management issues
 
 ## [2.15.2] - 2021-06-02
 ### Changed
