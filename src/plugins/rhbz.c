@@ -1036,13 +1036,17 @@ char *rhbz_get_default_sub_component(const char *component, xmlrpc_value *sub_co
     }
     else
     {
-        xmlrpc_array_read_item(&env, sub_components, sc_array_size - 1, &sc_struct);
-        xmlrpc_struct_find_value(&env, sc_struct, "name", &sc_name);
-        xmlrpc_read_string(&env, sc_name, &sc_str_name);
-        if (sc_struct)
-            xmlrpc_DECREF(sc_struct);
-        if (sc_name)
-            xmlrpc_DECREF(sc_name);
+        if (sc_array_size) {
+            xmlrpc_array_read_item(&env, sub_components, sc_array_size - 1, &sc_struct);
+            if (xmlrpc_struct_has_key(&env, sc_struct, "name")) {
+                xmlrpc_struct_find_value(&env, sc_struct, "name", &sc_name);
+                xmlrpc_read_string(&env, sc_name, &sc_str_name);
+            }
+            if (sc_struct)
+                xmlrpc_DECREF(sc_struct);
+            if (sc_name)
+                xmlrpc_DECREF(sc_name);
+        }
     }
 
     return (char *)sc_str_name;
