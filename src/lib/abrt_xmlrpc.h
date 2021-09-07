@@ -63,6 +63,11 @@ xmlrpc_value *abrt_xmlrpc_call_params(xmlrpc_env *env, struct abrt_xmlrpc *ax,
 xmlrpc_value *abrt_xmlrpc_call_full(xmlrpc_env *enf, struct abrt_xmlrpc *ax,
                                    const char *method, const char *format, ...);
 
+xmlrpc_value *abrt_xmlrpc_call_with_retry(const char *fault_substring,
+                                          struct abrt_xmlrpc *ax,
+                                          const char *method,
+                                          const char *format, ...);
+
 #ifdef __cplusplus
 }
 #endif

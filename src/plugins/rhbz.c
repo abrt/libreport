@@ -643,8 +643,10 @@ int rhbz_attach_blob(struct abrt_xmlrpc *ax, const char *bug_id,
      *   i -> integer, single argument (int value)
      *   6 -> base64,  two arguments (char* plain data which will be encoded by xmlrpc-c to base64,
      *                                size_t number of bytes to encode)
+     *
+     * Retry if another user/bot attempted to change the same data.
      */
-    result = abrt_xmlrpc_call(ax, "Bug.add_attachment", "{s:(s),s:s,s:s,s:s,s:6,s:i}",
+    result = abrt_xmlrpc_call_with_retry("query serialization error", ax, "Bug.add_attachment", "{s:(s),s:s,s:s,s:s,s:6,s:i}",
                 "ids", bug_id,
                 "summary", fn,
                 "file_name", filename,
