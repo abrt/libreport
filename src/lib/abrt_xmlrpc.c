@@ -16,6 +16,7 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#include <unistd.h>
 #include "internal_libreport.h"
 #include "abrt_xmlrpc.h"
 #include "proxies.h"
@@ -300,4 +301,37 @@ xmlrpc_value *abrt_xmlrpc_call(struct abrt_xmlrpc *ax,
         abrt_xmlrpc_die(&env);
 
     return result;
+}
+
+/* die eventually or return expected results; retry up to 5 times if the error is known */
+xmlrpc_value *abrt_xmlrpc_call_with_retry(const char *fault_substring,
+                                          struct abrt_xmlrpc *ax,
+                                          const char *method,
+                                          const char *format, ...)
+{
+    int retry_counter = 0;
+    xmlrpc_env env;
+
+    va_list args;
+
+    do {
+        // sleep, if this is not the first try;
+        // sleep() can be interrupted, but that's not a big deal here
+        if (retry_counter)
+            sleep(retry_counter);
+
+        va_start(args, format);
+        xmlrpc_value *result = abrt_xmlrpc_call_full_va(&env, ax, method, format, args);
+        va_end(args);
+
+        if (!env.fault_occurred)
+            return result;  // success!
+
+        if (env.fault_string && !strstr(env.fault_string, fault_substring)) {
+            // unknown error, don't bother retrying...
+            abrt_xmlrpc_die(&env);
+        }
+    } while (++retry_counter <= 5);
+
+    abrt_xmlrpc_die(&env);
 }
