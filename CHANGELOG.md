@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Memory management issues
+- reporter-bugzilla: fix subcomponent handling for RHEL
 
 ## [2.15.2] - 2021-06-02
 ### Changed
