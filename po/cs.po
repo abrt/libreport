@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Jiří Vírava <appukonrad@gmail.com>, 2012
 # zdenek <chmelarz@gmail.com>, 2013
@@ -16,13 +16,14 @@
 # Zdenek <chmelarz@gmail.com>, 2017. #zanata
 # Zdenek <chmelarz@gmail.com>, 2018. #zanata
 # Michal Konečný <michal.konecny@packetseekers.eu>, 2020.
+# Krystof Cerny <cleverline1mc@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2020-02-16 15:38+0000\n"
-"Last-Translator: Michal Konečný <michal.konecny@packetseekers.eu>\n"
+"PO-Revision-Date: 2021-07-24 09:04+0000\n"
+"Last-Translator: Krystof Cerny <cleverline1mc@gmail.com>\n"
 "Language-Team: Czech <https://translate.fedoraproject.org/projects/abrt/"
 "libreport/cs/>\n"
 "Language: cs\n"
@@ -30,7 +31,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 3.10.3\n"
+"X-Generator: Weblate 4.7.2\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -1080,12 +1081,12 @@ msgid "The backtrace probably can't help developer to diagnose the bug."
 msgstr "Výpis volání pravděpodobně vývojářům diagnostikovat chybu nepomůže."
 
 #: ../src/lib/event_config.c:533
-#, fuzzy
-#| msgid "Reporting disabled because the backtrace is unusable."
 msgid ""
 "Reporting is disabled because the generated backtrace has low informational "
 "value."
-msgstr "Odeslání hlášení není povoleno, protože výpis volání je nepoužitelný."
+msgstr ""
+"Odeslání hlášení není povoleno, protože výpis volání má nízkou informativní "
+"hodnotu."
 
 #: ../src/lib/event_config.c:537
 #, c-format
@@ -1485,12 +1486,11 @@ msgid "Logging into Bugzilla at %s"
 msgstr "Přihlašování do Bugzilly na %s"
 
 #: ../src/plugins/reporter-bugzilla.c:223
-#, fuzzy, c-format
-#| msgid "Invalid password or login. Please enter your Red Hat login:"
+#, c-format
 msgid "Invalid password or login. Please enter your %s login:"
 msgstr ""
-"Neplatné heslo nebo přihlašovací jméno. Prosím, zadejte vaše Red Hat "
-"přihlašovací jméno:"
+"Neplatné heslo nebo přihlašovací jméno. Prosím, zadejte vaše %s přihlašovací "
+"jméno:"
 
 #: ../src/plugins/reporter-bugzilla.c:228
 #: ../src/plugins/reporter-rhtsupport.c:411
@@ -1666,12 +1666,10 @@ msgid "Using default product '%s'"
 msgstr "Použití výchozího produktu '%s'"
 
 #: ../src/plugins/reporter-bugzilla.c:468
-#, fuzzy, c-format
-#| msgid ""
-#| "Login is not provided by configuration. Please enter your RHTS login:"
+#, c-format
 msgid "Login is not provided by configuration. Please enter your %s login:"
 msgstr ""
-"Přihlašovací jméno není konfigurován. Prosím, zadejte vaše RHTS přihlašovací "
+"Přihlašovací jméno není konfigurován. Prosím, zadejte vaše %s přihlašovací "
 "jméno:"
 
 #: ../src/plugins/reporter-bugzilla.c:476
@@ -1716,15 +1714,12 @@ msgid "Logging out"
 msgstr "Odhlašování"
 
 #: ../src/plugins/reporter-bugzilla.c:579
-#, fuzzy, c-format
-#| msgid ""
-#| "This problem was already reported to MantisBT (see '%s'). Do you still "
-#| "want to create a new issue?"
+#, c-format
 msgid ""
 "This problem was already reported to Bugzilla (see '%s'). Do you still want "
 "to create a new bug?"
 msgstr ""
-"Tento problém byl již nahlášen v MantisBT (viz '%s'). Chcete stále vytvořit "
+"Tento problém byl již nahlášen v Bugzilla (viz '%s'). Chcete stále vytvořit "
 "nový problém?"
 
 #: ../src/plugins/reporter-bugzilla.c:609

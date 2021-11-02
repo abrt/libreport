@@ -11,13 +11,17 @@
 # Lucas Perônico Barbotin <lucasperonicobarbotin@gmail.com>, 2020.
 # Fábio Rodrigues Ribeiro <farribeiro@gmail.com>, 2020.
 # Caio Fontes de Castro <caiofcastro@usp.br>, 2020.
+# Gustavo Costa <gusta@null.net>, 2021.
+# EDIVAN CARVALHO <edivancarvalho2008@hotmail.com>, 2021.
+# Marcus Gabaldo <gabaldo@gmail.com>, 2021.
+# Daimar Stein <daimarstein@pm.me>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2020-07-05 17:27+0000\n"
-"Last-Translator: Caio Fontes de Castro <caiofcastro@usp.br>\n"
+"PO-Revision-Date: 2021-10-31 18:05+0000\n"
+"Last-Translator: Daimar Stein <daimarstein@pm.me>\n"
 "Language-Team: Portuguese <https://translate.fedoraproject.org/projects/abrt/"
 "libreport/pt/>\n"
 "Language: pt\n"
@@ -25,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 4.1.1\n"
+"X-Generator: Weblate 4.8\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -123,7 +127,7 @@ msgstr "# Motivo da falha"
 
 #: ../src/cli/cli-report.c:170
 msgid "# os-release configuration file from root dir"
-msgstr ""
+msgstr "# arquivo de configuração os-release do diretório raiz"
 
 #: ../src/cli/cli-report.c:175
 msgid "# Release string of the operating system from root dir"
@@ -227,11 +231,10 @@ msgstr "A transferir ({0} of {1}) {2}: {3:3}%"
 
 #: ../src/client-python/reportclient/debuginfo.py:306
 msgid "Initializing package manager"
-msgstr ""
+msgstr "Inicializando o gerenciador de pacote"
 
 #. This takes some time, let user know what we are doing
 #: ../src/client-python/reportclient/debuginfo.py:310
-#, fuzzy
 msgid "Setting up repositories"
 msgstr "Configurando repositórios"
 
@@ -304,11 +307,11 @@ msgstr ""
 
 #: ../src/client-python/reportclient/dnfdebuginfo.py:89
 msgid "Error reading repository configuration: '{0!s}'"
-msgstr ""
+msgstr "Erro ao ler configuração do repositório: '{0!s}'"
 
 #: ../src/client-python/reportclient/dnfdebuginfo.py:106
 msgid "Error setting up repositories: '{0!s}'"
-msgstr ""
+msgstr "Erro ao configurar repositórios acima: '{0!s}'"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:66
 msgid ""
@@ -382,7 +385,7 @@ msgstr "Configuração"
 #: ../src/gtk-helpers/config_dialog.c:358
 #: ../src/gtk-helpers/config_dialog.c:417
 msgid "Workflows"
-msgstr ""
+msgstr "fluxo de trabalho"
 
 #: ../src/gtk-helpers/config_dialog.c:360
 #: ../src/gtk-helpers/config_dialog.c:362
@@ -392,7 +395,7 @@ msgstr "Eventos"
 
 #: ../src/gtk-helpers/config_dialog.c:366
 msgid "C_onfigure"
-msgstr ""
+msgstr "C_onfigurar"
 
 #: ../src/gtk-helpers/config_dialog.c:368 ../src/gui-wizard-gtk/wizard.c:3206
 msgid "_Close"
@@ -408,7 +411,7 @@ msgstr "Não guardar senhas"
 
 #: ../src/gtk-helpers/event_config_dialog.c:273
 msgid "Basic"
-msgstr ""
+msgstr "básico"
 
 #: ../src/gtk-helpers/event_config_dialog.c:281
 msgid "Advanced"
@@ -422,12 +425,12 @@ msgstr ""
 #: ../src/gtk-helpers/workflow_config_dialog.c:90
 #: ../src/gui-wizard-gtk/wizard.c:732 ../src/gui-wizard-gtk/wizard.c:2865
 msgid "_Cancel"
-msgstr ""
+msgstr "_Cancelar"
 
 #: ../src/gtk-helpers/event_config_dialog.c:342
 #: ../src/gtk-helpers/workflow_config_dialog.c:92
 msgid "_OK"
-msgstr ""
+msgstr "_OK"
 
 #: ../src/gtk-helpers/secrets.c:171
 #, c-format
@@ -474,15 +477,15 @@ msgstr ""
 
 #: ../src/gtk-helpers/problem_details_dialog.c:30
 msgid "Problem details"
-msgstr ""
+msgstr "Detalhe do problema"
 
 #: ../src/gtk-helpers/problem_details_dialog.c:33
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: ../src/gui-wizard-gtk/main.c:106
 msgid "Preferences"
-msgstr ""
+msgstr "Preferências"
 
 #: ../src/gui-wizard-gtk/main.c:109
 msgid "Quit"
@@ -510,7 +513,7 @@ msgstr "Ver/editar um ficheiro de texto"
 
 #: ../src/gui-wizard-gtk/wizard.c:731
 msgid "_Save"
-msgstr ""
+msgstr "_Salvar"
 
 #: ../src/gui-wizard-gtk/wizard.c:874
 msgid ""
@@ -549,7 +552,7 @@ msgstr "%llu bytes, %u ficheiros"
 
 #: ../src/gui-wizard-gtk/wizard.c:1381
 msgid "Processing was canceled"
-msgstr ""
+msgstr "O processamento foi cancelado"
 
 #: ../src/gui-wizard-gtk/wizard.c:1561
 msgid ""
@@ -574,16 +577,16 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:1699 ../src/gui-wizard-gtk/wizard.c:1773
 msgid "Processing failed."
-msgstr ""
+msgstr "falha no processamento"
 
 #. No next event, go to progress page and finish.
 #: ../src/gui-wizard-gtk/wizard.c:1706 ../src/gui-wizard-gtk/wizard.c:2594
 msgid "Processing finished."
-msgstr ""
+msgstr "Processamento concluído"
 
 #: ../src/gui-wizard-gtk/wizard.c:1707
 msgid "Processing finished, please proceed to the next step."
-msgstr ""
+msgstr "Processamento concluído, por favor prossiga para a próximo etapa."
 
 #: ../src/gui-wizard-gtk/wizard.c:1770
 msgid "No commands could be found for processsing the crashdump.\n"
@@ -603,7 +606,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:1843
 msgid "Processing..."
-msgstr ""
+msgstr "Processando..."
 
 #: ../src/gui-wizard-gtk/wizard.c:1925
 msgid ""
@@ -618,7 +621,7 @@ msgstr ""
 #: ../src/gui-wizard-gtk/wizard.c:2418
 #, c-format
 msgid "Failed to save file '%s'"
-msgstr ""
+msgstr "Falha ao salvar arquivo '%s'"
 
 #: ../src/gui-wizard-gtk/wizard.c:2619
 #, c-format
@@ -634,7 +637,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:2866
 msgid "_Open"
-msgstr ""
+msgstr "_Entrar"
 
 #: ../src/gui-wizard-gtk/wizard.c:2888
 #, c-format
@@ -685,7 +688,7 @@ msgstr "Descrição do problema"
 
 #: ../src/gui-wizard-gtk/wizard.c:3163
 msgid "Select how to report this problem"
-msgstr ""
+msgstr "Selecione para relatar este problema"
 
 #: ../src/gui-wizard-gtk/wizard.c:3164
 msgid "Provide additional information"
@@ -701,25 +704,25 @@ msgstr "Confirme os dados a reportar"
 
 #: ../src/gui-wizard-gtk/wizard.c:3167
 msgid "Processing"
-msgstr ""
+msgstr "Processando"
 
 #: ../src/gui-wizard-gtk/wizard.c:3168
 msgid "Processing done"
-msgstr ""
+msgstr "Processamento completo"
 
 #: ../src/gui-wizard-gtk/wizard.c:3208
 msgid "_Stop"
-msgstr ""
+msgstr "_Para"
 
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3211
 msgid "Repeat"
-msgstr ""
+msgstr "Repetir"
 
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3213
 msgid "_Forward"
-msgstr ""
+msgstr "_Adiante"
 
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3216 ../src/gui-wizard-gtk/wizard.glade.h:9
@@ -746,7 +749,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid "Custom"
-msgstr ""
+msgstr "Personalizar"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid "Clear the search bar to see the list of security sensitive words."
@@ -754,15 +757,15 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid "file"
-msgstr ""
+msgstr "arquivo"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "data"
-msgstr ""
+msgstr "dados"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "Search"
-msgstr ""
+msgstr "Pesquisar"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid ""
@@ -2411,7 +2414,7 @@ msgstr ""
 
 #: ../src/plugins/report_Uploader.xml.in.h:14
 msgid "FTP Proxy"
-msgstr "FTP Proxy"
+msgstr "Proxy FTP"
 
 #: ../src/plugins/report_Uploader.xml.in.h:15
 msgid "Sets the proxy server to use for FTP"
