@@ -35,22 +35,22 @@ class TestReportClientVerbose(unittest.TestCase):
         del sys.modules["reportclient"]
 
     def test_default(self):
-        self.assertEquals(self.reportclient.verbose, 0)
+        self.assertEqual(self.reportclient.verbose, 0)
 
     def test_assign(self):
         self.reportclient.set_verbosity(1)
-        self.assertEquals(self.reportclient.verbose, 1)
-        self.assertEquals(os.environ["ABRT_VERBOSE"], "1")
+        self.assertEqual(self.reportclient.verbose, 1)
+        self.assertEqual(os.environ["ABRT_VERBOSE"], "1")
 
     def test_load_from_environ(self):
         os.environ["ABRT_VERBOSE"] = "2"
         reload(self.reportclient)
-        self.assertEquals(self.reportclient.verbose, 2)
+        self.assertEqual(self.reportclient.verbose, 2)
 
     def test_recover_from_invalid_environ(self):
         os.environ["ABRT_VERBOSE"] = "foo"
         reload(self.reportclient)
-        self.assertEquals(self.reportclient.verbose, 0)
+        self.assertEqual(self.reportclient.verbose, 0)
 
 
 if __name__ == "__main__":
