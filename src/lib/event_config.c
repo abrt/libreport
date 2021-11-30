@@ -528,7 +528,7 @@ bool check_problem_rating_usability(const event_config_t *cfg,
 
         const char *package = problem_data_get_content_or_NULL(pd, FILENAME_PACKAGE);
         if (package && package[0])
-            tmp_detail = g_strdup_printf(_("Please try to install debuginfo manually using the command: \"debuginfo-install %s\" and try again."), package);
+            tmp_detail = g_strdup_printf(_("Please try to install debuginfo manually using the command: \"dnf debuginfo-install %s\" and try again."), package);
         else
             tmp_detail = g_strdup(_("A proper debuginfo is probably missing or the coredump is corrupted."));
 
