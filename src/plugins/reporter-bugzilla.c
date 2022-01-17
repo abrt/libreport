@@ -88,14 +88,14 @@ struct bugzilla_struct {
 
 static void set_default_settings(GHashTable *osinfo, GHashTable *settings)
 {
-    g_autofree char *default_BugzillaURL;
+    g_autofree char *default_BugzillaURL = NULL;
     libreport_parse_osinfo_for_bug_url(osinfo, &default_BugzillaURL);
     /* if BugzillaURL is defined in conf_file or env , it will replace this value */
     g_hash_table_replace(settings, g_strdup("BugzillaURL"), g_strdup(default_BugzillaURL));
     log_debug("Loaded BUG_REPORT_URL '%s' from os-release", default_BugzillaURL);
 
-    g_autofree char *default_Product;
-    g_autofree char *default_ProductVersion;
+    g_autofree char *default_Product = NULL;
+    g_autofree char *default_ProductVersion = NULL;
     libreport_parse_osinfo_for_bz(osinfo, &default_Product, &default_ProductVersion);
     /* if Product or ProductVersion is defined in conf_file or env , it will replace this value */
     g_hash_table_replace(settings, g_strdup("Product"), g_strdup(default_Product));
