@@ -33,7 +33,7 @@ BuildRequires: texinfo
 BuildRequires: asciidoc
 BuildRequires: xmlto
 BuildRequires: newt-devel
-BuildRequires: satyr-devel >= 0.24
+BuildRequires: satyr-devel >= 0.38
 BuildRequires: glib2-devel >= %{glib_ver}
 BuildRequires: git-core
 
@@ -51,7 +51,7 @@ BuildRequires: augeas-devel
 BuildRequires: augeas
 BuildRequires: libarchive-devel
 Requires: libreport-filesystem = %{version}-%{release}
-Requires: satyr%{?_isa} >= 0.24
+Requires: satyr%{?_isa} >= 0.38
 Requires: glib2%{?_isa} >= %{glib_ver}
 Requires: libarchive%{?_isa}
 

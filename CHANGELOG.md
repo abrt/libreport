@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 - Direct libproxy dependency
 
+### Changed
+- Bumped satyr dependency to 0.38
+
 ### Fixed
 - Memory management issues
 - reporter-bugzilla: fix subcomponent handling for RHEL
