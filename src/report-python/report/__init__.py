@@ -43,36 +43,6 @@ OS_RELEASE_VERSION_FIELDS = ["REDHAT_BUGZILLA_PRODUCT_VERSION", "REDHAT_SUPPORT_
 _hardcoded_default_product = ""
 _hardcoded_default_version = ""
 
-"""
-def getProduct_fromRPM():
-    try:
-        import rpm
-        ts = rpm.TransactionSet()
-        for each_dep in SYSTEM_RELEASE_DEPS:
-            mi = ts.dbMatch('provides', each_dep)
-            for h in mi:
-                if h['name']:
-                    return h['name'].split("-")[0].capitalize()
-
-        return ""
-    except:
-        return ""
-
-def getVersion_fromRPM():
-    try:
-        import rpm
-        ts = rpm.TransactionSet()
-        for each_dep in SYSTEM_RELEASE_DEPS:
-            mi = ts.dbMatch('provides', each_dep)
-            for h in mi:
-                if h['version']:
-                    return str(h['version'])
-
-        return ""
-    except:
-        return ""
-"""
-
 def parse_os_release_lines(osreleaselines):
     osrel = {}
 
