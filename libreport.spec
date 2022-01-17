@@ -14,7 +14,7 @@
 
 Summary: Generic library for reporting various problems
 Name: libreport
-Version: 2.15.2
+Version: 2.16.0
 Release: 1%{?dist}
 License: GPLv2+
 URL: https://abrt.readthedocs.org/
@@ -651,6 +651,33 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Mon Jan 17 2022 Matěj Grabovský <mgrabovs@redhat.com> 2.16.0-1
+- spec: Bump satyr dependency to 0.38 (mgrabovs@redhat.com)
+- lib: Bump library revision (mgrabovs@redhat.com)
+- event_xml_parser: Use g_steal_pointer() where appropriate
+  (mgrabovs@redhat.com)
+- event_xml_parser: Purge commented-out code (mgrabovs@redhat.com)
+- curl: Do not autofree header string (mgrabovs@redhat.com)
+- reporter-upload: Use g_steal_pointer() (mgrabovs@redhat.com)
+- bugzilla: Initialize autofree variables to NULL (mgrabovs@redhat.com)
+- bugzilla: Drop global_uuid (mgrabovs@redhat.com)
+- report-python: Remove commented-out code (mgrabovs@redhat.com)
+- Update translations (mgrabovsky@users.noreply.github.com)
+- Update translations (mgrabovsky@users.noreply.github.com)
+- Update translations (mgrabovs@redhat.com)
+- debuginfo-install is a dnf command (ckujau@users.noreply.github.com)
+- tests: Don't use deprecated assertEquals (mfabik@redhat.com)
+- ignored_words: Add DEBUGINFOD_URLS env var (mfabik@redhat.com)
+- [rhbz] Retry XML-RPC calls when uploading attachments (michal@redhat.com)
+- Update changelog (michal@redhat.com)
+- [rhbz] Be a little bit more defensive when working with subcomponents
+  (michal@redhat.com)
+- Update changelog (mfabik@redhat.com)
+- spec: Drop libproxy dependency (mgrabovs@redhat.com)
+- Avoid direct use of libproxy (mcatanzaro@redhat.com)
+- changelog: Fix links to commits (mgrabovs@redhat.com)
+- Use g_free for GLib-alloc'd memory (mfabik@redhat.com)
+
 * Tue Jun 01 2021 Michal Fabik <mfabik@redhat.com> 2.15.2-1
 - binhex: Remove unused API (mgrabovs@redhat.com)
 - lib: Use GLib for computing SHA-1 digests (mgrabovs@redhat.com)
