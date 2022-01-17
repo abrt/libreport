@@ -599,8 +599,6 @@ int main(int argc, char **argv)
 
     const char *component = problem_data_get_content_or_die(problem_data, FILENAME_COMPONENT);
     const char *duphash   = problem_data_get_content_or_NULL(problem_data, FILENAME_DUPHASH);
-//COMPAT, remove after 2.1 release
-    if (!duphash) duphash = problem_data_get_content_or_die(problem_data, "global_uuid");
 
     if (!rhbz.b_product || !*rhbz.b_product || !rhbz.b_product_version || !*rhbz.b_product_version) /* if not overridden or empty... */
     {
@@ -625,12 +623,9 @@ int main(int argc, char **argv)
         if (problem_formatter_generate_report(pf, problem_data, &pr))
             error_msg_and_die("Failed to format bug report from problem data");
 
-        printf("summary: %s\n"
-                "\n"
-                "%s"
-                "\n"
-                , problem_report_get_summary(pr)
-                , problem_report_get_description(pr)
+        printf("summary: %s\n\n%s\n",
+               problem_report_get_summary(pr),
+               problem_report_get_description(pr)
         );
 
         puts("attachments:");

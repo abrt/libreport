@@ -307,17 +307,15 @@ int rhbz_get_bug_id_from_array0(xmlrpc_value* xml, unsigned ver)
     if (env.fault_occurred)
         abrt_xmlrpc_die(&env);
 
-    const char *id;
-    if (ver >= BUGZILLA_VERSION(4,2,0))
-        id = "id";
-    else
-        id = "bug_id";
+    const char *item_id = "id";
+    if (ver < BUGZILLA_VERSION(4,2,0))
+        item_id = "bug_id";
 
     xmlrpc_value *bug;
-    bug = rhbz_get_member(id, item);
+    bug = rhbz_get_member(item_id, item);
     xmlrpc_DECREF(item);
     if (!bug)
-        error_msg_and_die("Can't get member '%s' from bug data", id);
+        error_msg_and_die("Can't get member '%s' from bug data", item_id);
 
     int bug_id = -1;
     xmlrpc_read_int(&env, bug, &bug_id);
@@ -511,9 +509,6 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax,
                                                                 FILENAME_ARCHITECTURE);
     const char *duphash      = problem_data_get_content_or_NULL(problem_data,
                                                                 FILENAME_DUPHASH);
-//COMPAT, remove after 2.1 release
-    if (!duphash) duphash    = problem_data_get_content_or_NULL(problem_data,
-                                                                "global_uuid");
 
     g_autofree char *summary = libreport_shorten_string_to_length(bzsummary, MAX_SUMMARY_LENGTH);
 
