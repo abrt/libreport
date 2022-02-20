@@ -208,6 +208,21 @@ bool rhbz_login(struct abrt_xmlrpc *ax, const char *login, const char *password)
     return true;
 }
 
+
+bool rhbz_add_session_api_key(struct abrt_xmlrpc *ax, const char *api_key)
+{
+    func_entry();
+
+    xmlrpc_env env;
+    xmlrpc_env_init(&env);
+
+    log_debug("Adding session param Bugzilla_api_key");
+    abrt_xmlrpc_client_add_session_param_string(&env, ax, "Bugzilla_api_key", api_key);
+
+    return true;
+}
+
+
 xmlrpc_value *rhbz_get_member(const char *member, xmlrpc_value *xml)
 {
     func_entry_str(member);

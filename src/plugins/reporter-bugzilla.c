@@ -75,7 +75,7 @@ int attach_file_item(struct abrt_xmlrpc *ax, const char *bug_id,
 
 struct bugzilla_struct {
     char *b_login;
-    char *b_password;
+    char *b_api_key;
     const char *b_bugzilla_url;
     const char *b_bugzilla_xmlrpc;
     char *b_product;
@@ -108,15 +108,10 @@ static void set_settings(struct bugzilla_struct *b, GHashTable *settings)
 {
     const char *environ;
 
-    environ = getenv("Bugzilla_Login");
+    environ = getenv("Bugzilla_APIKey");
     if (!environ)
-        environ = g_hash_table_lookup(settings, "Login");
-    b->b_login = g_strdup(environ ? environ : "");
-
-    environ = getenv("Bugzilla_Password");
-    if (!environ)
-        environ = g_hash_table_lookup(settings, "Password");
-    b->b_password = g_strdup(environ ? environ : "");
+        environ = g_hash_table_lookup(settings, "APIKey");
+    b->b_api_key = g_strdup(environ ? environ : "");
 
     environ = getenv("Bugzilla_BugzillaURL");
     if (!environ)
@@ -210,33 +205,16 @@ char *ask_bz_login(const char *message)
 }
 
 static
-char *ask_bz_password(const char *message)
+char *ask_bz_api_key(const char *message)
 {
-    char *password = libreport_ask_password(message);
-    if (password == NULL || password[0] == '\0')
+    char *api_key = libreport_ask_password(message);
+    if (api_key == NULL || api_key[0] == '\0')
     {
         libreport_set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
-        error_msg_and_die(_("Can't continue without password"));
+        error_msg_and_die(_("Can't continue without API key"));
     }
 
-    return password;
-}
-
-static
-void login(struct abrt_xmlrpc *client, struct bugzilla_struct *rhbz)
-{
-    log_warning(_("Logging into Bugzilla at %s"), rhbz->b_bugzilla_url);
-
-    while (!rhbz_login(client, rhbz->b_login, rhbz->b_password))
-    {
-        free(rhbz->b_login);
-        g_autofree char *question = g_strdup_printf(_("Invalid password or login. Please enter your %s login:"), rhbz->b_bugzilla_url);
-        rhbz->b_login = ask_bz_login(question);
-
-        free(rhbz->b_password);
-        question = g_strdup_printf(_("Invalid password or login. Please enter the password for '%s':"), rhbz->b_login);
-        rhbz->b_password = ask_bz_password(question);
-    }
+    return api_key;
 }
 
 int main(int argc, char **argv)
@@ -292,7 +270,7 @@ int main(int argc, char **argv)
         "\nIf not specified, CONFFILE defaults to %1$s/plugins/bugzilla.conf"
         "\nand user's local ~%2$s/bugzilla.conf."
         "\nIts lines should have 'PARAM = VALUE' format."
-        "\nRecognized string parameters: BugzillaURL, Login, Password, OSRelease."
+        "\nRecognized string parameters: BugzillaURL, BugzillaAPIKey, OSRelease."
         "\nRecognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify."
         "\nUser's local configuration overrides the system wide configuration."
         "\nParameters can be overridden via $Bugzilla_PARAM environment variables."
@@ -464,18 +442,11 @@ int main(int argc, char **argv)
         return EXIT_SUCCESS;
     }
 
-    if (rhbz.b_login[0] == '\0')
+    if (rhbz.b_api_key[0] == '\0')
     {
-        free(rhbz.b_login);
-        g_autofree char *question = g_strdup_printf(_("Login is not provided by configuration. Please enter your %s login:"), rhbz.b_bugzilla_url);
-        rhbz.b_login = ask_bz_login(question);
-    }
-
-    if (rhbz.b_password[0] == '\0')
-    {
-        free(rhbz.b_password);
-        g_autofree char *question = g_strdup_printf(_("Password is not provided by configuration. Please enter the password for '%s':"), rhbz.b_login);
-        rhbz.b_password = ask_bz_password(question);
+        free(rhbz.b_api_key);
+        g_autofree char *question = g_strdup_printf(_("API key is not provided by configuration. Please enter the API key for '%s':"), rhbz.b_bugzilla_url);
+        rhbz.b_api_key = ask_bz_api_key(question);
     }
 
     if (opts & OPT_t)
@@ -513,7 +484,7 @@ int main(int argc, char **argv)
             log_warning(_("Using Bugzilla ID '%s'"), ticket_no);
         }
 
-        login(client, &rhbz);
+        rhbz_add_session_api_key(client, rhbz.b_api_key);
 
         if (opts & OPT_w)
         {
@@ -524,6 +495,8 @@ int main(int argc, char **argv)
                 ticket = (unsigned)ticket_intermediate;
             else
                 error_msg_and_die("expected number in range <0, %d>: '%s'", UINT_MAX, ticket_no);
+            g_autofree char *question = g_strdup_printf(_("Please enter your %s login:"), rhbz.b_bugzilla_url);
+            rhbz.b_login = ask_bz_login(question);
             rhbz_mail_to_cc(client, ticket, rhbz.b_login, /* require mail notify */ 0);
         }
         else
@@ -552,9 +525,6 @@ int main(int argc, char **argv)
                 close(fd);
             }
         }
-
-        log_warning(_("Logging out"));
-        rhbz_logout(client);
 
         return 0;
     }
@@ -634,8 +604,7 @@ int main(int argc, char **argv)
         exit(0);
     }
 
-    login(client, &rhbz);
-
+    rhbz_add_session_api_key(client, rhbz.b_api_key);
 
     unsigned long bug_id = 0;
 
@@ -740,9 +709,6 @@ int main(int argc, char **argv)
 
                 if (r == 0)
                 {
-                    log_warning(_("Logging out"));
-                    rhbz_logout(client);
-
                     exit(EXIT_CANCEL_BY_USER);
                 }
 
@@ -882,12 +848,14 @@ int main(int argc, char **argv)
      * bug's status.
      */
 
-    /* Add user's login to CC if not there already */
-    if (strcmp(bz->bi_reporter, rhbz.b_login) != 0
-     && !g_list_find_custom(bz->bi_cc_list, rhbz.b_login, (GCompareFunc)g_strcmp0)
-    ) {
-        log_warning(_("Adding %s to CC list"), rhbz.b_login);
-        rhbz_mail_to_cc(client, bz->bi_id, rhbz.b_login, RHBZ_MINOR_UPDATE);
+    /* Add user's login to CC if not there already, but only if the login is known */
+    if (rhbz.b_login != NULL && rhbz.b_login[0] != '\0') {
+        if (strcmp(bz->bi_reporter, rhbz.b_login) != 0
+        && !g_list_find_custom(bz->bi_cc_list, rhbz.b_login, (GCompareFunc)g_strcmp0)
+        ) {
+            log_warning(_("Adding %s to CC list"), rhbz.b_login);
+            rhbz_mail_to_cc(client, bz->bi_id, rhbz.b_login, RHBZ_MINOR_UPDATE);
+        }
     }
 
     /* Add comment and bt */
@@ -942,9 +910,6 @@ int main(int argc, char **argv)
     }
 
  log_out:
-    log_warning(_("Logging out"));
-    rhbz_logout(client);
-
     log_warning(_("Status: %s%s%s %s/show_bug.cgi?id=%u"),
                 bz->bi_status,
                 bz->bi_resolution ? " " : "",

@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.17.0] - 2022-02-17
+### Changed
+- reporter-bugzilla: use API key instead of username+password
+
 ## [2.16.0] - 2022-01-17
 ### Removed
 - Direct libproxy dependency

@@ -37,12 +37,9 @@ TS_MAIN
     TS_ASSERT_TRUE(conf->ec_supports_restricted_access);
 
     event_option_t options[10] = {
-        { .eo_value = NULL, .eo_label = (char *)"User name",
-          .eo_note_html = (char *)"You can create bugzilla.redhat.com account <a href=\"https://bugzilla.redhat.com/createaccount.cgi\">here</a>",
+        { .eo_value = NULL, .eo_label = (char *)"API key",
+          .eo_note_html = (char *)"You can generate the API key for your Bugzilla account <a href=\"https://bugzilla.redhat.com/userprefs.cgi?tab=apikey\">here</a>",
           .eo_type = OPTION_TYPE_TEXT, .eo_allow_empty = 0, .is_advanced = 0,
-        },
-        { .eo_value = NULL, .eo_label = (char *)"Password", .eo_note_html = NULL,
-          .eo_type = OPTION_TYPE_PASSWORD, .eo_allow_empty = 0, .is_advanced = 0,
         },
         { .eo_value = (char *)"@RED_HAT_BUGZILLA_CREATE_PRIVATE@", .eo_label = (char *)"Restrict access",
           .eo_note_html = (char *)"Restrict access to the created bugzilla ticket allowing only users from specified groups to view it (see advanced settings for more details)",
@@ -79,8 +76,7 @@ TS_MAIN
     };
 
     const char *option_names[] = {
-        "Bugzilla_Login",
-        "Bugzilla_Password",
+        "Bugzilla_APIKey",
         "Bugzilla_CreatePrivate",
         "Bugzilla_PrivateGroups",
         "Bugzilla_BugzillaURL",

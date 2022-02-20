@@ -66,7 +66,7 @@
 
    For example, "report_Bugzilla" item will have the lookup attribute
    like ("libreportEventConfig", "report_Bugzilla") and the secret value
-   like ("Bugzilla_URL=https://bugzilla.redhat.com\0Bugzilla_Login=foo\0")
+   like ("Bugzilla_URL=https://bugzilla.redhat.com\0Bugzilla_APIKey=foo\0")
 
 
 

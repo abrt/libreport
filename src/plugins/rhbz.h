@@ -67,6 +67,8 @@ void free_bug_info(struct bug_info *bz);
 
 bool rhbz_login(struct abrt_xmlrpc *ax, const char *login, const char *password);
 
+bool rhbz_add_session_api_key(struct abrt_xmlrpc *ax, const char *api_key);
+
 void rhbz_mail_to_cc(struct abrt_xmlrpc *ax, int bug_id, const char *mail, int flags);
 
 void rhbz_add_comment(struct abrt_xmlrpc *ax, int bug_id, const char *comment,
