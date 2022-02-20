@@ -13,16 +13,11 @@
     <support-restricted-access optionname="Bugzilla_CreatePrivate">yes</support-restricted-access>
 
     <options>
-        <option type="text" name="Bugzilla_Login">
-            <_label>User name</_label>
+        <option type="text" name="Bugzilla_APIKey">
+            <_label>API key</_label>
             <allow-empty>no</allow-empty>
-            <_description>Bugzilla account user name</_description>
-            <_note-html>You can create bugzilla.redhat.com account &lt;a href="https://bugzilla.redhat.com/createaccount.cgi"&gt;here&lt;/a&gt;</_note-html>
-        </option>
-        <option type="password" name="Bugzilla_Password">
-            <_label>Password</_label>
-            <allow-empty>no</allow-empty>
-            <_description>Bugzilla account password</_description>
+            <_description>Bugzilla API key</_description>
+            <_note-html>You can generate the API key for your Bugzilla account &lt;a href="https://bugzilla.redhat.com/userprefs.cgi?tab=apikey"&gt;here&lt;/a&gt;</_note-html>
         </option>
         <option type="bool" name="Bugzilla_CreatePrivate">
                 <_label>Restrict access</_label>
