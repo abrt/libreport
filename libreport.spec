@@ -14,7 +14,7 @@
 
 Summary: Generic library for reporting various problems
 Name: libreport
-Version: 2.16.0
+Version: 2.16.1
 Release: 1%{?dist}
 License: GPLv2+
 URL: https://abrt.readthedocs.org/
@@ -651,6 +651,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Mon Feb 21 2022 Michal Srb <michal@redhat.com> 2.16.1-1
+- [reporter-bugzilla] Use API key for authentication (michal@redhat.com)
 * Mon Jan 17 2022 Matěj Grabovský <mgrabovs@redhat.com> 2.16.0-1
 - spec: Bump satyr dependency to 0.38 (mgrabovs@redhat.com)
 - lib: Bump library revision (mgrabovs@redhat.com)
