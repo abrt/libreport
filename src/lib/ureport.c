@@ -761,6 +761,7 @@ ureport_attach(struct ureport_server_config *config,
     va_start(args, format);
 
     string = g_strdup_vprintf(format, args);
+    va_end(args);
 
     return ureport_attach_string(config, bthash, type, string);
 }
