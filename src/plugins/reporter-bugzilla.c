@@ -270,7 +270,7 @@ int main(int argc, char **argv)
         "\nIf not specified, CONFFILE defaults to %1$s/plugins/bugzilla.conf"
         "\nand user's local ~%2$s/bugzilla.conf."
         "\nIts lines should have 'PARAM = VALUE' format."
-        "\nRecognized string parameters: BugzillaURL, BugzillaAPIKey, OSRelease."
+        "\nRecognized string parameters: BugzillaURL, APIKey, OSRelease."
         "\nRecognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify."
         "\nUser's local configuration overrides the system wide configuration."
         "\nParameters can be overridden via $Bugzilla_PARAM environment variables."
