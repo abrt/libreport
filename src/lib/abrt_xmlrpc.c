@@ -39,6 +39,14 @@ void abrt_xmlrpc_error(xmlrpc_env *env)
 
 struct abrt_xmlrpc *abrt_xmlrpc_new_client(const char *url, int ssl_verify)
 {
+    /* non-RH clients are the same as RH clients,
+     * but they don't send API key in the HTTP header.
+     */
+    return abrt_xmlrpc_new_redhat_client(url, ssl_verify, NULL);
+}
+
+struct abrt_xmlrpc *abrt_xmlrpc_new_redhat_client(const char *url, int ssl_verify, const char *api_key)
+{
     GList *proxies = NULL;
     xmlrpc_env env;
     xmlrpc_env_init(&env);
@@ -70,6 +78,24 @@ struct abrt_xmlrpc *abrt_xmlrpc_new_client(const char *url, int ssl_verify)
 #else
     curl_parms.user_agent        = "abrt";
 #endif
+    if (api_key != NULL) {
+        /* Inject "Authorization" header right after the User-Agent header */
+
+        /* The User-Agent header normally has the following format:
+         * User-Agent: libreport/2.15.2 Xmlrpc-c/1.51.0 Curl/7.79.1
+         *
+         * We modify it here so it becomes 3 headers:
+         * User-Agent: libreport/2.15.2
+         * Authorization: Bearer <api-key>
+         * X-Libreport-Extra-User-Agent: Xmlrpc-c/1.51.0 Curl/7.79.1
+         */
+        curl_parms.user_agent = g_strdup_printf("%s\r\nAuthorization: Bearer %s\r\nX-Libreport-Extra-User-Agent:", curl_parms.user_agent, api_key);
+
+        /* User-Agent string seems to be burried somewhere deep in the xmlrpc_client struct.
+         * Let's just remember the pointer here so we can easily free it when the time comes.
+         */
+        ax->libreport_user_agent = curl_parms.user_agent;
+    }
 
     proxies = get_proxy_list(url);
     /* Use the first proxy from the list */
@@ -110,8 +136,11 @@ void abrt_xmlrpc_free_client(struct abrt_xmlrpc *ax)
     if (ax->ax_server_info)
         xmlrpc_server_info_free(ax->ax_server_info);
 
-    if (ax->ax_client)
+    if (ax->ax_client) {
+        if (ax->libreport_user_agent)
+            g_free(ax->libreport_user_agent);
         xmlrpc_client_destroy(ax->ax_client);
+    }
 
     for (GList *iter = ax->ax_session_params; iter; iter = g_list_next(iter))
     {

@@ -217,6 +217,12 @@ char *ask_bz_api_key(const char *message)
     return api_key;
 }
 
+static
+bool is_redhat_bugzilla(const char *bugzilla_url)
+{
+    return g_str_has_suffix(bugzilla_url, "redhat.com");
+}
+
 int main(int argc, char **argv)
 {
     abrt_init(argv);
@@ -378,7 +384,7 @@ int main(int argc, char **argv)
     xmlrpc_env_clean(&env);
 
     struct abrt_xmlrpc *client;
-    client = abrt_xmlrpc_new_client(rhbz.b_bugzilla_xmlrpc, rhbz.b_ssl_verify);
+    client = abrt_xmlrpc_new_redhat_client(rhbz.b_bugzilla_xmlrpc, rhbz.b_ssl_verify, rhbz.b_api_key);
     unsigned rhbz_ver = rhbz_version(client);
 
     if (abrt_hash)
@@ -484,7 +490,10 @@ int main(int argc, char **argv)
             log_warning(_("Using Bugzilla ID '%s'"), ticket_no);
         }
 
-        rhbz_add_session_api_key(client, rhbz.b_api_key);
+        if (!is_redhat_bugzilla(rhbz.b_bugzilla_url)) {
+            /* Add API key as a XML-RPC param, but only for non-RH bugzilla instances */
+            rhbz_add_session_api_key(client, rhbz.b_api_key);
+        }
 
         if (opts & OPT_w)
         {
@@ -604,7 +613,10 @@ int main(int argc, char **argv)
         exit(0);
     }
 
-    rhbz_add_session_api_key(client, rhbz.b_api_key);
+    if (!is_redhat_bugzilla(rhbz.b_bugzilla_url)) {
+        /* Add API key as a XML-RPC param, but only for non-RH bugzilla instances */
+        rhbz_add_session_api_key(client, rhbz.b_api_key);
+    }
 
     unsigned long bug_id = 0;
 

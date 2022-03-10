@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- reporter-bugzilla: send API key in HTTP header for Red Hat Bugzilla
 
 ## [2.17.0] - 2022-02-17
 ### Changed
