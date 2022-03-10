@@ -37,6 +37,7 @@ struct abrt_xmlrpc {
     xmlrpc_client *ax_client;
     xmlrpc_server_info *ax_server_info;
     GList *ax_session_params;
+    const char *libreport_user_agent;
 };
 
 xmlrpc_value *abrt_xmlrpc_array_new(xmlrpc_env *env);
@@ -48,6 +49,7 @@ void abrt_xmlrpc_params_set_value(xmlrpc_env *env, xmlrpc_value *params, const c
 
 
 struct abrt_xmlrpc *abrt_xmlrpc_new_client(const char *url, int ssl_verify);
+struct abrt_xmlrpc *abrt_xmlrpc_new_redhat_client(const char *url, int ssl_verify, const char *api_key);
 void abrt_xmlrpc_free_client(struct abrt_xmlrpc *ax);
 void abrt_xmlrpc_client_add_session_param_string(xmlrpc_env *env, struct abrt_xmlrpc *ax, const char *name, const char *value);
 void abrt_xmlrpc_die(xmlrpc_env *env) __attribute__((noreturn));
