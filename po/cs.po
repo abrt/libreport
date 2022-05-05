@@ -17,13 +17,14 @@
 # Zdenek <chmelarz@gmail.com>, 2018. #zanata
 # Michal Konečný <michal.konecny@packetseekers.eu>, 2020.
 # Krystof Cerny <cleverline1mc@gmail.com>, 2021.
+# Pavel Borecki <pavel.borecki@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2021-07-24 09:04+0000\n"
-"Last-Translator: Krystof Cerny <cleverline1mc@gmail.com>\n"
+"PO-Revision-Date: 2022-04-15 21:16+0000\n"
+"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Czech <https://translate.fedoraproject.org/projects/abrt/"
 "libreport/cs/>\n"
 "Language: cs\n"
@@ -31,7 +32,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.7.2\n"
+"X-Generator: Weblate 4.11.2\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -192,11 +193,11 @@ msgstr "Neplatný vstup, ukončuji."
 
 #: ../src/cli/cli-report.c:744
 msgid "Select an event to run: "
-msgstr "Vybrat událost pro běh:"
+msgstr "Vybrat událost pro běh: "
 
 #: ../src/cli/cli-report.c:878
 msgid "Select a workflow to run: "
-msgstr "Vybrat pracovní postup pro běh:"
+msgstr "Vybrat pracovní postup pro běh: "
 
 #: ../src/client-python/reportclient/debuginfo.py:100
 #, python-brace-format
@@ -516,7 +517,7 @@ msgid ""
 msgstr ""
 "& [-vpdx] [-e UDÁLOST]... [-g SOUBOR_GUI] ADRESÁŘ_PROBLÉMU\n"
 "\n"
-"Nástroj GUI pro analýzu a hlášení problému uložen v zadaném adresáři "
+"Nástroj GUI pro analýzu a hlášení problému uložen v zadaném adresáři"
 
 #: ../src/gui-wizard-gtk/wizard.c:340
 #, c-format
@@ -589,7 +590,7 @@ msgid ""
 msgstr ""
 "Zpracování problému selhalo. To může mít mnoho důvodů, ale existují tři "
 "nejběžnější:\n"
-"    ▫ <b>problémy ohledně síťového připojení</b>\n"
+" ▫ <b>problémy ohledně síťového připojení</b>\n"
 "    ▫ <b>problém poškozených dat</b>\n"
 "    ▫ <b>neplatná konfigurace</b>"
 
@@ -624,7 +625,7 @@ msgstr "Zpracování dokončeno, přejděte prosím na další krok."
 
 #: ../src/gui-wizard-gtk/wizard.c:1770
 msgid "No commands could be found for processsing the crashdump.\n"
-msgstr ""
+msgstr "Nepodařilo se nalézt žádné příkazy pro zpracování výpisu o pádu.\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1785
 msgid "Processing interrupted: can't continue without writable directory."
@@ -637,6 +638,9 @@ msgid ""
 "No matching actions found for this event.\n"
 "\n"
 msgstr ""
+"--- Přeskakuje se %s ---\n"
+"Pro tuto událost nebyly nalezeny žádné odpovídající akce.\n"
+"\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1843
 msgid "Processing..."
@@ -652,8 +656,7 @@ msgstr ""
 #: ../src/gui-wizard-gtk/wizard.c:1968
 msgid "Cannot check backtrace rating because of invalid event name"
 msgstr ""
-"Nelze zkontrolovat hodnocení výpisu volání z důvodu neplatného názvu "
-"události."
+"Nelze zkontrolovat hodnocení výpisu volání z důvodu neplatného názvu události"
 
 #: ../src/gui-wizard-gtk/wizard.c:2418
 #, c-format
@@ -1443,7 +1446,7 @@ msgid ""
 msgstr ""
 "& [-v] --target CIL --ticket ID SOUBR ...\n"
 "\n"
-"Nahraje  SOUBORy ke specifikovanému ID na CIL.\n"
+"Nahraje SOUBORy ke specifikovanému ID na CIL.\n"
 "\n"
 "Tento nástroje slouží pro usnadnění přechodu uživatelů z balíčku report\n"
 "na libreprot. Povolené hodnoty pro CIL jsou  'strata' a 'bugzilla',\n"
@@ -1694,8 +1697,8 @@ msgid ""
 "This problem has been reported to Bugzilla '%s' which differs from the "
 "configured Bugzilla '%s'."
 msgstr ""
-"Tento problém byl nahlášen do Bugzilly '%s', která se liší od nastavené "
-"Bugzilly  '%s'."
+"Tento problém byl nahlášen do Bugzilly „%s“, která se liší od nastavené "
+"Bugzilly „%s“."
 
 #: ../src/plugins/reporter-bugzilla.c:509
 #, c-format
@@ -1719,7 +1722,7 @@ msgid ""
 "This problem was already reported to Bugzilla (see '%s'). Do you still want "
 "to create a new bug?"
 msgstr ""
-"Tento problém byl již nahlášen v Bugzilla (viz '%s'). Chcete stále vytvořit "
+"Tento problém byl již nahlášen v Bugzilla (viz „%s“). Chcete stále vytvořit "
 "nový problém?"
 
 #: ../src/plugins/reporter-bugzilla.c:609
@@ -1790,7 +1793,7 @@ msgstr "Přidání %s do CC seznamu"
 #: ../src/plugins/reporter-bugzilla.c:917
 #, c-format
 msgid "Adding new comment to bug %d"
-msgstr "Vkládání  nového komentáře k chybě %d"
+msgstr "Vkládání nového komentáře k chybě %d"
 
 #: ../src/plugins/reporter-bugzilla.c:930
 #: ../src/plugins/reporter-mantisbt.c:672
@@ -1871,7 +1874,7 @@ msgstr "Odesílání e-mailu..."
 #: ../src/plugins/reporter-mailx.c:243
 #, c-format
 msgid "Email was sent to: %s"
-msgstr "Email byl zaslán na: %s "
+msgstr "Email byl zaslán na: %s"
 
 #: ../src/plugins/reporter-mailx.c:266
 msgid ""
@@ -1883,9 +1886,9 @@ msgid ""
 msgstr ""
 "& [-v] -d DIR [-c KONFSOUBOR] [-F FMTSOUBOR]\n"
 "\n"
-"Zasíla obsah adresáře problému ADRESÁŘ e-mailem\n"
+"Zasílá obsah adresáře problému ADRESÁŘ e-mailem\n"
 "\n"
-"Není-li uvedeno, KONFSOUBOR je implicitně"
+"Není-li uvedeno, KONFSOUBOR je implicitně "
 
 #: ../src/plugins/reporter-mailx.c:289 ../src/plugins/reporter-upload.c:187
 msgid "Config file"
@@ -1963,13 +1966,11 @@ msgstr ""
 
 #: ../src/plugins/reporter-rhtsupport.c:473
 msgid "Please enter customer case number to which you want to attach the data:"
-msgstr ""
+msgstr "Zadejte číslo zákaznického případu ke kterému chcete data připojit:"
 
 #: ../src/plugins/reporter-rhtsupport.c:479
-#, fuzzy
-#| msgid "Can't continue without password"
 msgid "Can't continue without Red Hat Support case number"
-msgstr "Bez hesla nelze pokračovat"
+msgstr "Není možné pokračovat bez čísla případu podpory Red Hat"
 
 #: ../src/plugins/reporter-rhtsupport.c:506
 msgid ""
@@ -1989,7 +1990,7 @@ msgstr ""
 "\n"
 "Nahlásí problém na podporu RHT.\n"
 "\n"
-"Není-li uvedeno, KONFSOUBOR je implicitně"
+"Není-li uvedeno, KONFSOUBOR je implicitně "
 
 #: ../src/plugins/reporter-rhtsupport.c:550
 msgid "Upload FILEs [to case with this ID]"
@@ -2020,6 +2021,8 @@ msgid ""
 "to the case? Otherwise, you will have to enter the existing Red Hat support "
 "case number."
 msgstr ""
+"Nalezli jsme podobný případ podpory Red Hat %s. Chcete data přidat do tohoto "
+"případu? V opačném případě je třeba zadat číslo případu podpory Red Hat."
 
 #: ../src/plugins/reporter-rhtsupport.c:676
 #, c-format
@@ -2032,7 +2035,7 @@ msgstr "Odesílání statistických dat o pádu vygenerovaných systémem ABRT"
 
 #: ../src/plugins/reporter-rhtsupport.c:741
 msgid "Can't create a temporary directory in "
-msgstr "Nelze vytvořit dočasný adresář v"
+msgstr "Nelze vytvořit dočasný adresář v "
 
 #: ../src/plugins/reporter-rhtsupport.c:766
 msgid ""
@@ -2101,7 +2104,7 @@ msgstr "Propojení záznamu statistik havárie ABRT s kontaktním e-mailem: '%s'
 #: ../src/plugins/reporter-rhtsupport.c:995
 #, c-format
 msgid "Adding comment to case '%s'"
-msgstr "Vkládání  komentáře k případu '%s'"
+msgstr "Vkládání komentáře k případu „%s“"
 
 #. Attach the tarball of -d DIR
 #: ../src/plugins/reporter-rhtsupport.c:1013
@@ -2111,11 +2114,11 @@ msgstr "Přikládání dat o problému k případu '%s'"
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:202
 msgid "Documentation which might be relevant: "
-msgstr "Dokumentace, která může mít význam:"
+msgstr "Dokumentace, která může mít význam: "
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:210
 msgid "Updates which possibly help: "
-msgstr "Aktualizace, které možná pomohou:"
+msgstr "Aktualizace, které možná pomohou: "
 
 #: ../src/plugins/reporter-systemd-journal.c:225
 msgid ""
@@ -2297,7 +2300,7 @@ msgstr ""
 "JMÉNEM_TRACKERU do pole s URL adresou. Tato volba je použita pouze \n"
 "v případě hlášení nového problému. Výchozí hodnota je \"ABRT server\"\n"
 "\n"
-"Není-li uvedeno, KONFSOUBOR je implicitně"
+"Není-li uvedeno, KONFSOUBOR je implicitně "
 
 #: ../src/plugins/reporter-mantisbt.c:287
 msgid "Attach FILEs [to issue with this ID]"
@@ -2327,7 +2330,7 @@ msgid ""
 "configured MantisBT '%s'."
 msgstr ""
 "Tento problém byl nahlášen do MantisBT '%s', která se liší od nastavené "
-"MantisBT  '%s'."
+"MantisBT '%s'."
 
 #: ../src/plugins/reporter-mantisbt.c:390
 #, c-format
@@ -2388,7 +2391,7 @@ msgstr "Nepodařilo se naformátovat duplicitní komentář z problému s daty"
 #: ../src/plugins/reporter-mantisbt.c:659
 #, c-format
 msgid "Adding new comment to issue %d"
-msgstr "Vkládání  nového komentáře k problému %d"
+msgstr "Vkládání nového komentáře k problému %d"
 
 #: ../src/plugins/reporter-mantisbt.c:695
 msgid "Found the same comment in the issue history, not adding a new one"
@@ -2569,7 +2572,7 @@ msgstr "Red Hat uživatelské jméno zákazníka"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:6
 msgid "Red Hat customer password"
-msgstr "Red Hat  heslo zákazníka"
+msgstr "Red Hat heslo zákazníka"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:7
 msgid "Submit uReport"
@@ -2593,7 +2596,7 @@ msgstr "Adresa portálu podpory společnosti Red Hat"
 
 #: ../src/plugins/report_RHTSupport_AddData.xml.in.h:2
 msgid "Attach the data to existing Red Hat support case"
-msgstr ""
+msgstr "Připojit data k existujícímu případu podpory Red Hat"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report Uploader"
@@ -2632,7 +2635,7 @@ msgstr "Toto pole použijte, pokud nechcete mít heslo v URL"
 
 #: ../src/plugins/report_Uploader.xml.in.h:14
 msgid "FTP Proxy"
-msgstr "FTP Proxy"
+msgstr "FTP proxy"
 
 #: ../src/plugins/report_Uploader.xml.in.h:15
 msgid "Sets the proxy server to use for FTP"
@@ -2681,11 +2684,12 @@ msgstr ""
 
 #: ../src/plugins/report_uReport.xml.in.h:7
 msgid "Report unpackaged problems"
-msgstr ""
+msgstr "Nahlásit nezabalíčkované problémy"
 
 #: ../src/plugins/report_uReport.xml.in.h:8
 msgid "Report problems coming from unpackaged executables."
 msgstr ""
+"Nahlásit problémy pocházející z nezabalíčkovaných spustitelných souborů."
 
 #: ../src/plugins/report_uReport.xml.in.h:9
 msgid "Contact email address"
@@ -3051,7 +3055,7 @@ msgstr ""
 "\n"
 "Nahrát mikro hlášení nebo přidat přílohu mikro hlášení\n"
 "\n"
-"Čte výchozí nastavení z"
+"Čte výchozí nastavení z "
 
 #: ../src/plugins/reporter-ureport.c:191
 msgid "This problem does not have an uReport assigned."
@@ -3348,7 +3352,7 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:1
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:1
 msgid "Attach crash data to an existing Red Hat support case"
-msgstr ""
+msgstr "Připojit data o pádu k existujícímu případu podpory Red Hat"
 
 #: ../src/workflows/workflow_RHELAddDataCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJava.xml.in.h:2
@@ -3358,10 +3362,8 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDatavmcore.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:2
-#, fuzzy
-#| msgid "Ask Red Hat Support for help"
 msgid "Provide Red Hat Support with crash details"
-msgstr "Požádat podporu Red Hat o pomoc"
+msgstr "Poskytnout podpoře Red Hat podrobnosti o pádu"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
