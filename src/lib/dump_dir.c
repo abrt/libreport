@@ -819,7 +819,7 @@ static int fdreopen(int dir_fd, DIR **d)
         return -EBADFD;
     }
 
-    lseek(opendir_fd, SEEK_SET, 0);
+    lseek(opendir_fd, 0, SEEK_SET);
     *d = fdopendir(opendir_fd);
     if (!*d)
     {
@@ -2106,7 +2106,7 @@ DIR *dd_init_next_file(struct dump_dir *dd)
 
     dd_clear_next_file(dd);
 
-    lseek(opendir_fd, SEEK_SET, 0);
+    lseek(opendir_fd, 0, SEEK_SET);
     dd->next_dir = fdopendir(opendir_fd);
     if (!dd->next_dir)
     {
