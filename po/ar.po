@@ -1,20 +1,21 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Med Touhami MAHDI <>, 2012
 # yusuf2011 <ys9889@gmail.com>, 2012
 # yusuf2011 <ys9889@gmail.com>, 2012
 # yusuf2011 <ys9889@gmail.com>, 2012
 # Ahmed M. Farrag <a.m.farrag@gmail.com>, 2020.
+# Mostafa Gamal <mostafa.2c6@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2020-04-10 18:40+0000\n"
-"Last-Translator: Ahmed M. Farrag <a.m.farrag@gmail.com>\n"
+"PO-Revision-Date: 2022-05-23 17:18+0000\n"
+"Last-Translator: Mostafa Gamal <mostafa.2c6@gmail.com>\n"
 "Language-Team: Arabic <https://translate.fedoraproject.org/projects/abrt/"
 "libreport/ar/>\n"
 "Language: ar\n"
@@ -23,7 +24,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 3.11.3\n"
+"X-Generator: Weblate 4.12.2\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -36,35 +37,36 @@ msgstr ""
 #. short_name long_name  value    parameter_name  help
 #: ../src/cli/cli.c:89
 msgid "List possible events [which start with PREFIX]"
-msgstr ""
+msgstr "عرض الأحداث المحتمله [والتي تبدأ بسابقة]"
 
 #: ../src/cli/cli.c:90 ../src/gui-wizard-gtk/main.c:170
 msgid "Run only these events"
-msgstr ""
+msgstr "تشغيل هذه الأحداث فقط"
 
 #: ../src/cli/cli.c:91 ../src/gui-wizard-gtk/main.c:169
+#, fuzzy
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "حذف مجلد المشكلة بعد الإبلاغ"
 
 #: ../src/cli/cli.c:92
 msgid "Expert mode"
-msgstr ""
+msgstr "وضع الخبير"
 
 #: ../src/cli/cli.c:93 ../src/report-newt/report-newt.c:397
 msgid "Display version and exit"
-msgstr "اعرض الإصدارة و اخرج"
+msgstr "عرض الإصدار و الخروج"
 
 #: ../src/cli/cli.c:94
 msgid "Noninteractive: don't ask questions, assume 'yes'"
-msgstr "\"غير تبادلي : لا تسأل أسئلة، تفترض \"نعم"
+msgstr "بدون تفاعل: لا تسأل أسئلة، إفتراض 'نعم'"
 
 #: ../src/cli/cli.c:96
 msgid "Log to syslog"
-msgstr ""
+msgstr "الدخول إلى سجل النظام"
 
 #: ../src/cli/cli.c:97 ../src/gui-wizard-gtk/main.c:168
 msgid "Add program names to log"
-msgstr ""
+msgstr "إضافة أسماء البرامج إلى السجل"
 
 #: ../src/cli/cli-report.c:132
 #, c-format
@@ -76,12 +78,14 @@ msgid "# Describe the circumstances of this crash below"
 msgstr "# صف ظروف هذا العطل أدناه"
 
 #: ../src/cli/cli-report.c:154
+#, fuzzy
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
 msgstr ""
 "# بيانات التقفِّي (Backtrace)\n"
-"# تَفحّص بيانات التقفِّي (Backtrace) وأَزِل البيانات الحساسة (كلمات مرور, وغيرها)"
+"# تَفحّص بيانات التقفِّي (Backtrace) وأَزِل البيانات الحساسة (كلمات مرور, "
+"وغيرها)"
 
 #: ../src/cli/cli-report.c:156
 msgid "# Architecture"
@@ -96,12 +100,13 @@ msgid "# Component"
 msgstr "# مكوّن"
 
 #: ../src/cli/cli-report.c:159
+#, fuzzy
 msgid "# Core dump"
-msgstr "# تفريغ الباطن  (Core dump"
+msgstr "# نسخ (تفريغ) الذاكرة"
 
 #: ../src/cli/cli-report.c:160
 msgid "# Executable"
-msgstr "# الملف القابل للتنفيذ"
+msgstr "# ملف قابل للتنفيذ"
 
 #: ../src/cli/cli-report.c:161
 msgid "# Kernel version"
@@ -117,15 +122,16 @@ msgstr "# سبب العطل"
 
 #: ../src/cli/cli-report.c:170
 msgid "# os-release configuration file from root dir"
-msgstr ""
+msgstr "# ملف تهيئات بيانات نظام التشغيل من دليل الجذر"
 
 #: ../src/cli/cli-report.c:175
+#, fuzzy
 msgid "# Release string of the operating system from root dir"
-msgstr ""
+msgstr "إطلاق مسار نظام التشغيل من مجلد الجذر"
 
 #: ../src/cli/cli-report.c:183
 msgid "# os-release configuration file"
-msgstr ""
+msgstr "# ملف تكوين إصدار نظام التشغيل"
 
 #: ../src/cli/cli-report.c:188
 msgid "# Release string of the operating system"
@@ -155,117 +161,121 @@ msgstr ""
 
 #: ../src/cli/cli-report.c:466
 msgid "Your input is not valid, because of:"
-msgstr ""
+msgstr "ما أدخلته غير صالح، وذالك بسبب:"
 
 #: ../src/cli/cli-report.c:470
 #, c-format
 msgid "Bad value for '%s': %s"
-msgstr ""
+msgstr "قيمة غير صحيحة ل'‎%s‎'‏‏:‎%s"
 
 #: ../src/cli/cli-report.c:671
 #, c-format
 msgid ""
 "Event '%s' requires permission to send possibly sensitive data. Do you want "
 "to continue?"
-msgstr ""
+msgstr "حالة '‎%s' تتطلب صلاحية لإرسال بيانات حساسة محتملة. هل تريد الإستمرار؟"
 
 #: ../src/cli/cli-report.c:718
 msgid "You have chosen number out of range"
-msgstr "لقد اخترت عددا خارج النطاق"
+msgstr "لقد إخترت عدداً خارج النطاق"
 
 #: ../src/cli/cli-report.c:723
 msgid "Invalid input, exiting."
-msgstr ""
+msgstr "إدخال غير صالح ، خروج."
 
 #: ../src/cli/cli-report.c:744
 msgid "Select an event to run: "
-msgstr ""
+msgstr "إختر حدث للتشغيل: "
 
 #: ../src/cli/cli-report.c:878
 msgid "Select a workflow to run: "
-msgstr ""
+msgstr "إختر سير العمل للتشغيل: "
 
 #: ../src/client-python/reportclient/debuginfo.py:100
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "Extracting cpio from {0}"
-msgstr ""
+msgstr "إستخراج (cpio) من {0}"
 
 #: ../src/client-python/reportclient/debuginfo.py:105
 #, python-brace-format
 msgid "Can't write to '{0}': {1}"
-msgstr ""
+msgstr "لا يمكن الكتابة إلى '{0}':{1}"
 
 #: ../src/client-python/reportclient/debuginfo.py:116
 #, python-brace-format
 msgid "Can't extract package '{0}'"
-msgstr ""
+msgstr "لا يمكن إستخراج حزمة '{0}'"
 
 #: ../src/client-python/reportclient/debuginfo.py:124
 #, python-brace-format
 msgid "Caching files from {0} made from {1}"
-msgstr ""
+msgstr "ملفات التخزين المؤقت من {0} مصنوعة من {1}"
 
 #: ../src/client-python/reportclient/debuginfo.py:148
 #, python-brace-format
 msgid "Can't extract files from '{0}'. For more information see '{1}'"
-msgstr ""
+msgstr "لا يمكن إستخراج الملفات من'{0}' . للمزيد من المعلومات أنظر '{1}'"
 
 #: ../src/client-python/reportclient/debuginfo.py:163
 #, python-brace-format
 msgid "Can't remove '{0}': {1}"
-msgstr ""
+msgstr "لا يمكن حذف '{0}':{1}"
 
 #: ../src/client-python/reportclient/debuginfo.py:205
 #: ../src/client-python/reportclient/debuginfo.py:214
 #, python-brace-format
 msgid "Downloading ({0} of {1}) {2}: {3:3}%"
-msgstr ""
+msgstr "تحميل ({0} من {1}) {2}:{3:3}%"
 
 #: ../src/client-python/reportclient/debuginfo.py:306
 msgid "Initializing package manager"
-msgstr ""
+msgstr "تهيئة مدير ألحزم"
 
 #. This takes some time, let user know what we are doing
 #: ../src/client-python/reportclient/debuginfo.py:310
 msgid "Setting up repositories"
-msgstr ""
+msgstr "إنشاء المستودعات"
 
 #: ../src/client-python/reportclient/debuginfo.py:313
 msgid "Looking for needed packages in repositories"
-msgstr ""
+msgstr "البحث عن الحزم المطلوبة في المستودعات"
 
 #: ../src/client-python/reportclient/debuginfo.py:347
 #, python-brace-format
 msgid "Can't find packages for {0} debuginfo files"
-msgstr ""
+msgstr "لا يمكن العثور على حزم ل{0} ملفات معلومات التصحيح"
 
 #: ../src/client-python/reportclient/debuginfo.py:350
 #, python-brace-format
 msgid "Packages to download: {0}"
-msgstr ""
+msgstr "حزم للتنزيل:{0}"
 
 #: ../src/client-python/reportclient/debuginfo.py:352
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
-msgstr ""
+msgstr "تحميل {0:.2f}ميغابايت، حجم المثبت:{1:.2f}ميغابايت. الاستمرار؟"
 
 #: ../src/client-python/reportclient/debuginfo.py:357
 #: ../src/client-python/reportclient/debuginfo.py:369
 #: ../src/client-python/reportclient/debuginfo.py:380
 msgid "Download cancelled by user"
-msgstr ""
+msgstr "تم إلغاء التنزيل من قبل المستخدم"
 
 #: ../src/client-python/reportclient/debuginfo.py:364
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid ""
 "Warning: Not enough free space in tmp dir '{0}' ({1:.2f}Mb left). Continue?"
 msgstr ""
+"تحذير:لا توجد مساحة خالية في مجلد(tmp) '{0}' ({1:.2f}<ميغابايت متبقية). "
+"الإستمرار؟"
 
 #: ../src/client-python/reportclient/debuginfo.py:375
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid ""
 "Warning: Not enough free space in cache dir '{0}' ({1:.2f}Mb left). Continue?"
 msgstr ""
+"تحذير:لا يوجد مساحة خالية في مجلد(cache) '{0}' ({1:.2f}<ميغابايت متبقبة). "
+"الإستمرار؟"
 
 #: ../src/client-python/reportclient/debuginfo.py:398
 #, python-brace-format
@@ -350,11 +360,11 @@ msgstr ""
 #.
 #: ../src/gtk-helpers/ask_dialogs.c:87
 msgid "_No"
-msgstr ""
+msgstr "_لا"
 
 #: ../src/gtk-helpers/ask_dialogs.c:88
 msgid "_Yes"
-msgstr ""
+msgstr "_نعم"
 
 #: ../src/gtk-helpers/ask_dialogs.c:94
 msgid "Don't ask me again"
@@ -367,7 +377,7 @@ msgstr ""
 
 #: ../src/gtk-helpers/config_dialog.c:338
 msgid "Configuration"
-msgstr ""
+msgstr "التكوين"
 
 #. we can't use this, because we want the workflows first and hashtable
 #. * doesn't return the items in the order they were added
@@ -383,15 +393,15 @@ msgstr ""
 #: ../src/gtk-helpers/config_dialog.c:362
 #: ../src/gtk-helpers/config_dialog.c:420
 msgid "Events"
-msgstr ""
+msgstr "أحداث"
 
 #: ../src/gtk-helpers/config_dialog.c:366
 msgid "C_onfigure"
-msgstr ""
+msgstr "إ_ضبط"
 
 #: ../src/gtk-helpers/config_dialog.c:368 ../src/gui-wizard-gtk/wizard.c:3206
 msgid "_Close"
-msgstr ""
+msgstr "_أغلق"
 
 #: ../src/gtk-helpers/event_config_dialog.c:140
 msgid "Show password"
@@ -417,12 +427,12 @@ msgstr ""
 #: ../src/gtk-helpers/workflow_config_dialog.c:90
 #: ../src/gui-wizard-gtk/wizard.c:732 ../src/gui-wizard-gtk/wizard.c:2865
 msgid "_Cancel"
-msgstr ""
+msgstr "_إلغاء"
 
 #: ../src/gtk-helpers/event_config_dialog.c:342
 #: ../src/gtk-helpers/workflow_config_dialog.c:92
 msgid "_OK"
-msgstr ""
+msgstr "_نعم"
 
 #: ../src/gtk-helpers/secrets.c:171
 #, c-format
@@ -473,15 +483,15 @@ msgstr ""
 
 #: ../src/gtk-helpers/problem_details_dialog.c:33
 msgid "OK"
-msgstr ""
+msgstr "موافق"
 
 #: ../src/gui-wizard-gtk/main.c:106
 msgid "Preferences"
-msgstr ""
+msgstr "التفضيلات"
 
 #: ../src/gui-wizard-gtk/main.c:109
 msgid "Quit"
-msgstr ""
+msgstr "إنهاء"
 
 #: ../src/gui-wizard-gtk/main.c:153
 msgid ""
@@ -503,7 +513,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:731
 msgid "_Save"
-msgstr ""
+msgstr "_حفظ"
 
 #: ../src/gui-wizard-gtk/wizard.c:874
 msgid ""
@@ -596,7 +606,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:1843
 msgid "Processing..."
-msgstr ""
+msgstr "يجري التقدم..."
 
 #: ../src/gui-wizard-gtk/wizard.c:1925
 msgid ""
@@ -694,7 +704,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:3167
 msgid "Processing"
-msgstr ""
+msgstr "يعالج"
 
 #: ../src/gui-wizard-gtk/wizard.c:3168
 msgid "Processing done"
@@ -739,7 +749,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid "Custom"
-msgstr ""
+msgstr "مخصّص"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid "Clear the search bar to see the list of security sensitive words."
@@ -747,7 +757,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid "file"
-msgstr ""
+msgstr "ملف"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "data"
@@ -1129,7 +1139,7 @@ msgstr "لا يُمكن التبليغ عنه"
 
 #: ../src/lib/parse_options.c:63
 msgid "Usage: "
-msgstr "استعمال"
+msgstr "إستخدام: "
 
 #: ../src/lib/problem_data.c:252
 #, c-format
