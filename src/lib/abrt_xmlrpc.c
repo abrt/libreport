@@ -138,7 +138,7 @@ void abrt_xmlrpc_free_client(struct abrt_xmlrpc *ax)
 
     if (ax->ax_client) {
         if (ax->libreport_user_agent)
-            g_free(ax->libreport_user_agent);
+            g_free((void *)ax->libreport_user_agent);
         xmlrpc_client_destroy(ax->ax_client);
     }
 
