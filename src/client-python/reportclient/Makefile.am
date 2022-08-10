@@ -43,3 +43,5 @@ all-local: _reportclient3.so
 
 clean-local:
 	rm -f _reportclient3.so
+
+SUBDIRS = internal
