@@ -34,7 +34,7 @@
  * |
  * |Package:: package
  * |
- * |%attach: %binary, backtrace
+ * |%attach:: %binary, backtrace
  * |
  * |%additional_info::
  * |%reporter%
@@ -99,8 +99,8 @@
  * }
  */
 struct section_t {
-    char *name;      ///< name or output text (%summar, 'Package version:');
-    GList *items;    ///< list of file names and special items (%reporter, %binar, ...)
+    char *name;      ///< name or output text (%summary, 'Package version:');
+    GList *items;    ///< list of file names and special items (%reporter, %binary, ...)
     GList *children; ///< list of sub sections (struct section_t)
 };
 

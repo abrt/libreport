@@ -8,6 +8,9 @@ Here's where to get the code:
 The remainder of the commands assumes you're in the top level of the
 Libreport git repository checkout.
 
+When testing `reporter_bugzilla.py` (and possibly other Python reporters
+in the future), add `src/client-python/` to your PYTHONPATH.
+
 ## Building
 
 1. Install dependencies
