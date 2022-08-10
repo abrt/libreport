@@ -1,0 +1,62 @@
+interactions:
+- request:
+    body: '{"ids": [2077591], "data": "Zm9vCg==", "file_name": "fixtures/dummy_attachment",
+      "content_type": "text/plain", "summary": "File: fixtures/dummy_attachment",
+      "minor_update": true}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - 'Bearer: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '178'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.27.1
+    method: POST
+    uri: https://bugzilla.redhat.com/rest.cgi/bug/2077591/attachment
+  response:
+    body:
+      string: ''
+    headers:
+      Access-Control-Allow-Headers:
+      - origin, content-type, accept, x-requested-with
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - private, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Content-Security-Policy:
+      - frame-ancestors 'self' bugzilla.redhat.com
+      Content-Type:
+      - text/plain; charset=UTF-8
+      Date:
+      - Thu, 28 Jul 2022 16:44:39 GMT
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - User-Agent
+      X-content-type-options:
+      - nosniff
+      X-frame-options:
+      - ALLOW-FROM=https://bugzilla.redhat.com/
+      X-xss-protection:
+      - 1; mode=block
+      x-rh-edge-cache-status:
+      - Miss from child, Miss from parent
+      x-rh-edge-reference-id:
+      - 0.3e6ed417.1659026679.144ab57c
+      x-rh-edge-request-id:
+      - 144ab57c
+    status:
+      code: 201
+      message: Created
+version: 1

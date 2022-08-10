@@ -1,0 +1,78 @@
+interactions:
+- request:
+    body: '{"product": "Fedora", "version": "36", "component": "libreport", "summary":
+      "[abrt] libreport-plugin-mantisbt: read(): reporter-mantisbt killed by SIGSEGV",
+      "description": "Version-Release number of selected component:\nlibreport-plugin-mantisbt-2.17.1-1.fc36\n\nAdditional
+      info:\nreporter:       libreport-2.17.1\ntype:           CCpp\nreason:         reporter-mantisbt
+      killed by SIGSEGV\njournald_cursor: s=638625c5499c44c3839f696aa01f00f5;i=46909;b=3a8d0cbae94e40679647fa471fa2f129;m=337f9c5e;t=5e1f48c567405;x=ea1816f4dc90a6b6\nexecutable:     /usr/bin/reporter-mantisbt\ncmdline:        reporter-mantisbt
+      -vvv -d /var/spool/abrt/ccpp-2022-06-21-14:24:55.227430-1306000/\ncgroup:         0::/user.slice/user-1000.slice/user@1000.service/app.slice/app-org.gnome.Terminal.slice/vte-spawn-e83630df-e9e1-454e-8862-769b77092eda.scope\nrootdir:        /\nuid:            1000\nkernel:         5.18.5-200.fc36.x86_64\npackage:        libreport-plugin-mantisbt-2.17.1-1.fc36\nrunlevel:       N
+      5\ncrash_function: read\ncoredump:       \n\nTruncated backtrace:\n#1 [libc.so.6]
+      read\n#2 [libc.so.6] _IO_file_underflow@@GLIBC_2.2.5\n#3 [libc.so.6] _IO_default_uflow\n#4
+      [libc.so.6] _IO_getline_info\n#5 [libc.so.6] _IO_fgets\n#6 [libreport.so.2]
+      xmalloc_fgets_internal\n#7 [libreport.so.2] libreport_xmalloc_fgets\n#8 [libreport.so.2]
+      libreport_ask\n#9 [reporter-mantisbt] ask_mantisbt_credentials\n#10 [reporter-mantisbt]
+      main\n#11 [libc.so.6] __libc_start_call_main\n#12 [libc.so.6] __libc_start_main@@GLIBC_2.34\n#13
+      [reporter-mantisbt] _start\n\n", "status_whiteboard": "abrt_hash:None;VARIANT_ID=workstation;",
+      "platform": "x86_64"}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - 'Bearer: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1630'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.27.1
+    method: POST
+    uri: https://bugzilla.redhat.com/rest.cgi/bug
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6tWykxRsjIyNDQyMTavBQDReWM4DgAAAA==
+    headers:
+      Access-Control-Allow-Headers:
+      - origin, content-type, accept, x-requested-with
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - private, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '34'
+      Content-Security-Policy:
+      - frame-ancestors 'self' bugzilla.redhat.com
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Fri, 29 Jul 2022 17:23:58 GMT
+      ETag:
+      - wnQt65hVlfBNKAsUf+qtSw
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - Accept-Encoding,User-Agent
+      X-content-type-options:
+      - nosniff
+      X-frame-options:
+      - ALLOW-FROM=https://bugzilla.redhat.com/
+      X-xss-protection:
+      - 1; mode=block
+      x-rh-edge-cache-status:
+      - Miss from child, Miss from parent
+      x-rh-edge-reference-id:
+      - 0.905a33b8.1659115438.116e381d
+      x-rh-edge-request-id:
+      - 116e381d
+    status:
+      code: 200
+      message: OK
+version: 1
