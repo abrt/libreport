@@ -281,3 +281,8 @@ reporter_ureport_LDADD = \
 endif
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
+
+SUBDIRS = python
+
+clean:
+	rm -rf __pycache__

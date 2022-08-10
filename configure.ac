@@ -408,9 +408,11 @@ AC_CONFIG_FILES([
 	src/cli/Makefile
 	src/report-newt/Makefile
 	src/plugins/Makefile
+	src/plugins/python/Makefile
 	src/plugins/report_Bugzilla.xml.in
 	src/client-python/Makefile
 	src/client-python/reportclient/Makefile
+	src/client-python/reportclient/internal/Makefile
 	po/Makefile.in
 	doc/Makefile
 	src/workflows/Makefile
