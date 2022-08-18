@@ -18,7 +18,7 @@
 
 Summary: Generic library for reporting various problems
 Name: libreport
-Version: 2.17.1
+Version: 2.17.2
 Release: 1%{?dist}
 License: GPLv2+
 URL: https://abrt.readthedocs.org/
@@ -671,6 +671,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Thu Aug 18 2022 Michal Fabik <mfabik@redhat.com> - 2.17.2-1
+- Replace the reporter-bugzilla binary with a Python script in Rawhide
+
 * Thu Mar 10 2022 Michal Srb <michal@redhat.com> - 2.17.1-1
 - reporter-bugzilla: Always send API key in HTTP header (michal@redhat.com)
 

@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.17.2] - 2022-08-18
+- Replace the reporter-bugzilla binary with a Python script in Rawhide
+
 ## [2.17.1] - 2022-03-10
 ### Changed
 - reporter-bugzilla: send API key in HTTP header for Red Hat Bugzilla
@@ -295,7 +298,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.17.1...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.17.2...HEAD
+[2.17.2]: https://github.com/abrt/libreport/compare/2.17.1...2.17.2
 [2.17.1]: https://github.com/abrt/libreport/compare/2.17.0...2.17.1
 [2.17.0]: https://github.com/abrt/libreport/compare/2.16.0...2.17.0
 [2.16.0]: https://github.com/abrt/libreport/compare/2.15.2...2.16.0
