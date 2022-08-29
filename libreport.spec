@@ -470,7 +470,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files -n python3-libreport
 %{python3_sitearch}/report/
 %{python3_sitearch}/reportclient/
-%{python3_sitearch}/reportclient/internal/
 
 %files cli
 %{_bindir}/report-cli
