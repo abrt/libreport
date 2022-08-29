@@ -14,6 +14,7 @@ MAN5_BUGZILLA = \
 	bugzilla_format_kernel.conf.txt \
 	bugzilla_format_analyzer_libreport.conf.txt \
 	bugzilla_formatdup_analyzer_libreport.conf.txt \
+	report_rhel_bugzilla.conf.txt \
 	report_Bugzilla.conf.txt
 
 # silent rules for ASCIIDOC and XMLTO
@@ -54,7 +55,6 @@ MAN5_TXT = \
 	report_fedora.conf.txt \
 	report_centos.conf.txt \
 	report_Logger.conf.txt \
-	report_rhel_bugzilla.conf.txt \
 	report_uReport.conf.txt \
 	report_logger.conf.txt \
 	report_mailx.conf.txt \

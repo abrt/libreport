@@ -636,6 +636,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man5/report_fedora.conf.5.*
 %endif
 
+%if %{with bugzilla}
 %if 0%{?rhel} && ! 0%{?eln}
 %files rhel-bugzilla
 %{_datadir}/%{name}/workflows/workflow_RHELBugzillaCCpp.xml
@@ -653,7 +654,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/%{name}/workflows/workflow_AnacondaRHELBugzilla.xml
 %endif
 
-%if %{with bugzilla}
 %files anaconda
 %if 0%{?fedora} || 0%{?eln}
 %{_datadir}/%{name}/workflows/workflow_AnacondaFedora.xml
