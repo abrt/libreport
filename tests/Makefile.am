@@ -83,8 +83,7 @@ TESTSUITE_AT = \
   event_config.at \
   proc_helpers.at \
   forbidden_words.at \
-  client.at \
-  rhbz_functions.at
+  client.at
 
 TESTSUITE_AT_IN =
 

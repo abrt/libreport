@@ -1,4 +1,6 @@
+if BUILD_BUGZILLA
 bin_SCRIPTS = reporter-bugzilla-python
+endif
 
 maintainer-check:
 	PYTHONPATH="$(top_builddir)/src/client-python" pytest test_reporter_bugzilla.py
