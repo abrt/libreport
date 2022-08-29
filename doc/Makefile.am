@@ -3,6 +3,7 @@ EXTRA_DIST =
 MAN1_BUGZILLA = \
 	reporter-bugzilla.txt
 MAN5_BUGZILLA = \
+	anaconda_event.conf.txt \
 	bugzilla_anaconda_event.conf.txt \
 	bugzilla.conf.txt \
 	bugzilla_event.conf.txt \
@@ -37,7 +38,6 @@ MAN1_TXT = \
 	reporter-systemd-journal.txt
 
 MAN5_TXT = \
-	anaconda_event.conf.txt \
 	mantisbt.conf.txt \
 	mantisbt_format.conf.txt \
 	mantisbt_formatdup.conf.txt \
