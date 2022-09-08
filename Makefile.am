@@ -4,9 +4,8 @@ SUBDIRS = data po src tests doc apidoc
 EXTRA_DIST = \
     libreport.pc.in \
     libreport-version \
-    asciidoc.conf
-
-dist_doc_DATA = README.md
+    asciidoc.conf \
+    README.md
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libreport.pc
