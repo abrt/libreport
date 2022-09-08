@@ -18,9 +18,7 @@ AC_DEFUN([LIBREPORT_PARSE_WITH],
     m4_popdef([LIBREPORT_UC_PACKAGE])])
 
 
-AC_INIT([libreport],
-	m4_esyscmd([cat ./libreport-version]),
-	[crash-catcher@fedorahosted.org])
+AC_INIT([libreport],[m4_esyscmd(cat ./libreport-version)],[crash-catcher@fedorahosted.org])
 
 AC_CONFIG_MACRO_DIR([m4])
 gl_LD_VERSION_SCRIPT
@@ -33,7 +31,7 @@ AM_SILENT_RULES([yes])
 m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 
 AC_DISABLE_STATIC
-AC_PROG_LIBTOOL
+LT_INIT
 AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_LN_S
@@ -44,8 +42,7 @@ CFLAGS="$CFLAGS -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE \
           -D_FILE_OFFSET_BITS=64 -fno-strict-aliasing -std=gnu99 -Wall -Wwrite-strings"
 
 AC_ARG_ENABLE(debug,
-              [AC_HELP_STRING([--enable-debug],
-                             [Enable debug information])],
+              [AS_HELP_STRING([--enable-debug],[Enable debug information])],
               [CFLAGS="$CFLAGS -DDEBUG -ggdb -g -O0"])
 
 dnl ****** INTERNATIONALIZATION **********************
@@ -325,8 +322,7 @@ AC_SUBST([DEFAULT_DUMP_DIR_MODE], [$with_defaultdumpdirmode])
 
 DUMP_DIR_OWNED_BY_USER=1
 AC_ARG_ENABLE([userownsdumpdir],
-              [AC_HELP_STRING([--enable-userownsdumpdir],
-                              [Configure abrt to be owner of dump directories (default: user owns dump dir)])],
+              [AS_HELP_STRING([--enable-userownsdumpdir],[Configure abrt to be owner of dump directories (default: user owns dump dir)])],
               [DUMP_DIR_OWNED_BY_USER=0])
 
 
