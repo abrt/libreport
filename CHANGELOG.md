@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- Fix configure options and conditional building of optional features
 
 ## [2.17.2] - 2022-08-18
 - Replace the reporter-bugzilla binary with a Python script in Rawhide
