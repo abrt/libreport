@@ -18,7 +18,7 @@
 
 Summary: Generic library for reporting various problems
 Name: libreport
-Version: 2.17.2
+Version: 2.17.3
 Release: 1%{?dist}
 License: GPLv2+
 URL: https://abrt.readthedocs.org/
@@ -670,6 +670,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %changelog
+* Mon Sep 12 2022 Michal Fabik <mfabik@redhat.com> - 2.17.3-1
+- Various build configuration fixes
+
 * Thu Aug 18 2022 Michal Fabik <mfabik@redhat.com> - 2.17.2-1
 - Replace the reporter-bugzilla binary with a Python script in Rawhide
 

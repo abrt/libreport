@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.17.3] - 2022-09-12
 ### Fixed
 - Fix configure options and conditional building of optional features
 
@@ -300,7 +302,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.17.2...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.17.3...HEAD
+[2.17.3]: https://github.com/abrt/libreport/compare/2.17.2...2.17.3
 [2.17.2]: https://github.com/abrt/libreport/compare/2.17.1...2.17.2
 [2.17.1]: https://github.com/abrt/libreport/compare/2.17.0...2.17.1
 [2.17.0]: https://github.com/abrt/libreport/compare/2.16.0...2.17.0
