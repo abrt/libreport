@@ -62,10 +62,12 @@ class ReportedTo:
                     'found_label_len': 0}
 
         for line in reported_to.split('\n'):
-            label, _ = line.split(': ', 1)
-            if label == searched['label']:
-                searched['found'] = line
-                searched['found_label_len'] = len(label)
+            parts = line.split(': ', 1)
+            if len(parts) == 2:
+                label = parts[0]
+                if label == searched['label']:
+                    searched['found'] = line
+                    searched['found_label_len'] = len(label)
 
         result = None
         if searched['found']:
