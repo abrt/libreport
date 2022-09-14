@@ -246,7 +246,7 @@ def ask(question):
 
 
 def log_out(bug_info, rhbz, dump_dir_name):
-    if bug_info['bi_resolution']:
+    if bug_info.get('bi_resolution'):
         resolution = f" {bug_info['bi_resolution']}"
     else:
         resolution = ''
