@@ -322,11 +322,11 @@ class BZConnection:
 
         bug_info: Dict[str, Any] = {}
         bug_info['bi_id']: int = int(bug['id'])
-        bug_info['bi_product']: str = bug.get['product']
-        bug_info['bi_reporter']: str = bug.get['creator']
-        bug_info['bi_status']: str = bug.get['status']
-        bug_info['bi_resolution']: str = bug.get['resolution']
-        bug_info['bi_platform']: str = bug.get['platform']
+        bug_info['bi_product']: str = bug.get('product', '')
+        bug_info['bi_reporter']: str = bug.get('creator', '')
+        bug_info['bi_status']: str = bug.get('status', '')
+        bug_info['bi_resolution']: str = bug.get('resolution', '')
+        bug_info['bi_platform']: str = bug.get('platform', '')
 
         if bug_info['bi_status'] == 'CLOSED' and not bug_info['bi_resolution']:
             self.logger.error("Bug %i is CLOSED, but it has no RESOLUTION", bug_info['bi_id'])
@@ -342,7 +342,7 @@ class BZConnection:
             sys.exit(1)
 
         bug_info['bi_dup_id']: int = bug.get('dupe_of') or -1
-        bug_info['bi_cc_list']: List[str] = bug.get['cc']
+        bug_info['bi_cc_list']: List[str] = bug.get('cc')
 
         bug_info['bi_comments'] = self.bug_get_comments(bug['id'])
         bug_info['bi_best_bt_rating']: int = self.find_best_bt_rating_in_comments(bug_info['bi_comments'])
