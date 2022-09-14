@@ -117,6 +117,8 @@ def set_settings(bz: Dict, settings: Dict):
         environ = settings.get('DontMatchComponents')
     bz['b_DontMatchComponents'] = environ or ''
 
+    if bz.get('b_create_private'):
+        bz['b_create_private'] = False
     environ = os.environ.get('ABRT_CREATE_PRIVATE_TICKET')
     if not environ:
         environ = os.environ.get("Bugzilla_CreatePrivate")
