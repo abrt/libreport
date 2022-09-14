@@ -495,15 +495,15 @@ if __name__ == '__main__':
 
         sys.exit(0)
 
-    if ('APIKey' not in s_reporter_settings or s_reporter_settings['APIKey'] == ''):
+    if not rhbz.get('b_api_key'):
         try:
-            s_reporter_settings['APIKey'] = getpass(_("API key is not provided by configuration. Please enter the API key for '{}': ").format(bz_url))
+            rhbz['b_api_key'] = getpass(_("API key is not provided by configuration. Please enter the API key for '{}': ").format(bz_url))
         except (EOFError, KeyboardInterrupt):
-            s_reporter_settings['APIKey'] = None
-        if not s_reporter_settings['APIKey']:
+            rhbz['b_api_key'] = ''
+        if not rhbz.get('b_api_key'):
             logger.error(_("Can't continue without API key"))
             sys.exit(1)
-    bz_conn.add_api_key(s_reporter_settings['APIKey'])
+    bz_conn.add_api_key(rhbz.get('b_api_key'))
 
     if opt_switches & {'-t', '--ticket'}:
         if (
