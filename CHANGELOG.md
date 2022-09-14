@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- Various fixes of reporter-bugzilla-python
 
 ## [2.17.3] - 2022-09-12
 ### Fixed
