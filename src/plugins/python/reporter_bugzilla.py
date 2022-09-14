@@ -127,7 +127,7 @@ def set_settings(bz: Dict, settings: Dict):
             else:
                 bz['b_create_private'] = string_to_bool(environ)
 
-    if bz['b_create_private']:
+    if bz.get('b_create_private'):
         logger.info('create private bz ticket: YES')
     else:
         logger.info('create private bz ticket: NO')
