@@ -24,13 +24,14 @@
 # Igor Gorbounov <igor.gorbounov@gmail.com>, 2017. #zanata, 2020.
 # Petr Molodyk <pamolodyk@gmail.com>, 2020.
 # Vitaliy Bukatkin <vitaliy.bukatkin@gmail.com>, 2020.
+# V I <xasertop@gmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2020-09-23 08:07+0000\n"
-"Last-Translator: Vitaliy Bukatkin <vitaliy.bukatkin@gmail.com>\n"
+"PO-Revision-Date: 2022-09-05 14:19+0000\n"
+"Last-Translator: V I <xasertop@gmail.com>\n"
 "Language-Team: Russian <https://translate.fedoraproject.org/projects/abrt/"
 "libreport/ru/>\n"
 "Language: ru\n"
@@ -39,7 +40,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.2.2\n"
+"X-Generator: Weblate 4.14\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -84,7 +85,7 @@ msgstr "Запись в системный журнал"
 
 #: ../src/cli/cli.c:97 ../src/gui-wizard-gtk/main.c:168
 msgid "Add program names to log"
-msgstr "Добавить имена программ в журнал"
+msgstr "Добавить названия программ в журнал"
 
 #: ../src/cli/cli-report.c:132
 #, c-format
@@ -309,7 +310,7 @@ msgid ""
 "'{0}' must be owned by abrt. Please run '# chown -R abrt.abrt {0}' to fix "
 "the issue."
 msgstr ""
-" «{0}» должен принадлежать abrt. Чтобы изменить владельца, выполните «chown -"
+"«{0}» должен принадлежать abrt. Чтобы изменить владельца, выполните «chown -"
 "R abrt.abrt {0}»."
 
 #. Was: "All downloaded packages have been extracted, removing..."
@@ -361,7 +362,7 @@ msgstr ""
 #: ../src/client-python/reportclient/yumdebuginfo.py:137
 #, python-brace-format
 msgid "Can't setup {0}: {1}, disabling"
-msgstr "Не удалось настроить {0}: {1}. Отключается..."
+msgstr "Не удалось настроить {0}: {1}. Отключение..."
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:147
 msgid "Error retrieving metadata: '{0!s}'"
@@ -442,7 +443,7 @@ msgstr "Дополнительно"
 
 #: ../src/gtk-helpers/event_config_dialog.c:297
 msgid "Secret Service is not available, your settings won't be saved!"
-msgstr "Secret Service недоступен. Ваши настройки не будут сохранены."
+msgstr "Secret Service недоступен. Ваши настройки не будут сохранены!"
 
 #: ../src/gtk-helpers/event_config_dialog.c:340
 #: ../src/gtk-helpers/workflow_config_dialog.c:90
@@ -597,7 +598,7 @@ msgid ""
 "\t▫ <b>corrupted problem data</b>\n"
 "\t▫ <b>invalid configuration</b>"
 msgstr ""
-"Попытка обработки ошибки потерпела неудачу. Причин может быть несколько , но "
+"Попытка обработки ошибки потерпела неудачу. Причин может быть несколько, но "
 "наиболее распространены три:\n"
 "    ▫ <b>>проблемы с подключением к сети</b>\n"
 "    ▫ <b>данные об ошибке повреждены</b>\n"
@@ -678,8 +679,9 @@ msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
 "Do you want to continue?"
 msgstr ""
-"Событию «%s» требуется разрешение на отправку вероятно конфиденциальных "
-"данных. Вы хотите продолжить?"
+"Событию «%s» требуется разрешение на отправку потенциально конфиденциальных "
+"данных.\n"
+"Вы хотите продолжить?"
 
 #: ../src/gui-wizard-gtk/wizard.c:2665
 #, c-format
@@ -1041,7 +1043,7 @@ msgstr "gzip завершился с кодом выхода %d"
 
 #: ../src/lib/dump_dir.c:2536
 msgid "gzip process failed"
-msgstr "ошибка процесса gzip"
+msgstr "Ошибка процесса gzip"
 
 #: ../src/lib/event_config.c:399
 msgid "Missing mandatory value"
@@ -1050,7 +1052,7 @@ msgstr "Заполните обязательные поля"
 #: ../src/lib/event_config.c:407
 #, c-format
 msgid "Invalid utf8 character '%c'"
-msgstr "Недопустимый символ UTF8 \"%c\""
+msgstr "Недопустимый символ UTF8 «%c»"
 
 #: ../src/lib/event_config.c:420
 #, c-format
@@ -1564,39 +1566,40 @@ msgstr ""
 "Сообщает о проблеме в Bugzilla.\n"
 "\n"
 "Утилита читает содержимое DIR. Затем подключается к Bugzilla и ищет отчет об "
-"ошибке с \n"
-"с таким же значением abrt_hash:HEXSTRING в поле 'Whiteboard'.\n"
+"ошибке с\n"
+"таким же значением abrt_hash:HEXSTRING в поле «Whiteboard».\n"
 "\n"
-"Если отчет об ошибке не найден, создается новый отчет. Части DIR\n"
-"сохраняются в в отчете как описание проблемы или как вложения,\n"
+"Если отчет об ошибке не найден, создается новый отчет. Элементы DIR\n"
+"сохраняются в отчете как описание проблемы или как вложения,\n"
 "в зависимости от типа и размера.\n"
 "\n"
 "Если же такой отчет найден и помечен как CLOSED DUPLICATE,\n"
-"эта утилита проследует по цепочке дубликатов, пока не найдет  отчет non-"
+"эта утилита проследует по цепочке дубликатов, пока не найдет отчет non-"
 "DUPLICATE.\n"
 "К найденному отчету утилита добавит новый комментарий.\n"
 "\n"
-"URL нового или измененного отчета выводится в stdout и записывается в "
+"URL нового или измененного отчета выводится в stdout и записывается в\n"
 "элемент «reported_to».\n"
 "\n"
 "Параметр -t передает файлы FILE в уже созданный отчет на сайте Bugzilla.\n"
 "Идентификатор отчета будет получен из каталога, указанного -d DIR.\n"
-"Если сведения об ошибке из DIR до этого не отправлялись в Bugzilla, передача "
+"Если данные об ошибке из DIR до этого не отправлялись в Bugzilla, передача "
 "завершится неудачей.\n"
 "\n"
 "Параметр -tID передает файлы FILE в отчет с заданным идентификатором на "
 "сайте Bugzilla.\n"
 "-d DIR игнорируется.\n"
 "\n"
-"Параметр -w добавляет пользователя bugzilla в список получателей "
-"уведомлений.\n"
+"Параметр -w добавляет пользователя bugzilla в список получателей уведомлений."
+"\n"
 "\n"
 "Параметр -r копирует в поле URL последний адрес из элемента reporter_to с "
 "добавлением префикса\n"
-"TRACKER_NAME. Этот параметр применяется только при заполнении нового отчета. "
-"Стандартное значение - «ABRT Server»\n"
+"TRACKER_NAME. Этот параметр применяется только при заполнении нового отчета."
 "\n"
-"Если CONFFILE не задан, то по умолчанию используется "
+"Стандартное значение — «ABRT Server»\n"
+"\n"
+"Если параметр не задан, то по умолчанию для CONFFILE используется "
 
 #: ../src/plugins/reporter-bugzilla.c:324
 #: ../src/plugins/reporter-rhtsupport.c:549
@@ -2142,9 +2145,9 @@ msgstr ""
 "\n"
 "Сообщает информацию о проблеме в журнал systemd.\n"
 "\n"
-"Эта утилита читает каталог DIR и отправляет сведения из него в \n"
-"журнал systemd в виде сообщения. Если определен MESSAGEID, утилита создает и "
-"сообщение каталога.\n"
+"Эта утилита читает каталог DIR и отправляет сведения из него в\n"
+"журнал systemd в виде сообщения. Если определен MESSAGEID,\n"
+"утилита создает и сообщение каталога.\n"
 
 #: ../src/plugins/reporter-systemd-journal.c:251
 msgid "Catalog message id"
