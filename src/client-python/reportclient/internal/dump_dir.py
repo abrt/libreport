@@ -1432,12 +1432,11 @@ class DumpDir:
         return chown_res
 
     def load_text_file(self, path, flags):
-        if flags & DD_OPEN_FOLLOW:
-            flags = 0
-        else:
-            flags = os.O_NOFOLLOW
+        open_flags = os.O_RDONLY
+        if not flags & DD_OPEN_FOLLOW:
+            open_flags |= os.O_NOFOLLOW
         try:
-            fd = os.open(path, os.O_RDONLY | flags)
+            fd = os.open(path, open_flags)
         except OSError:
             if not flags & DD_FAIL_QUIETLY_ENOENT:
                 self.logger.error("Can't open file '%s' for reading", path)
