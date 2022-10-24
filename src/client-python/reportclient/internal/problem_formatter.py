@@ -152,22 +152,22 @@ class ProblemFormatter:
         has_description = False
         ignore_next_blank = False
         for line in self.format_text:
+            line = line.strip()
             # ignore any blank lines before actual content starts
             if not line and not sections:
                 continue
             try:
-                name, data = line.strip().split('::')
+                name, data = line.split('::')
+                name = name.strip()
+                data = data.strip()
             except ValueError:  # blank line
                 # insert blank line into description unless it comes before description starts
                 # don't insert blank line if it separates description
                 # element from a preceding section
-                if not ignore_next_blank:
+                if not ignore_next_blank and has_description:
                     description = next(s for s in sections if s['name'] == 'description')
                     description['children'].append({'name': '', 'items': [], 'children': []})
                 continue
-
-            name = name.strip()
-            data = data.strip()
 
             if name.startswith('%'):
                 sections.append({'name': name[1:],

@@ -848,7 +848,10 @@ if __name__ == '__main__':
 
         dup_comment = False
         trimmed_comment = re.sub(r'[ \t\n]', r'', bzcomment)
-        for c in bug_info['bi_comments']:
+
+        # We use "or []" here, because the value of "bi_comments"
+        # can be None and NoneType is not iterable.
+        for c in bug_info.get('bi_comments') or []:
             trimmed_c = re.sub(r'[ \t\n]', r'', c)
             if trimmed_c == trimmed_comment:
                 dup_comment = True
