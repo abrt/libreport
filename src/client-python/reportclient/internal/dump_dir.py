@@ -1457,7 +1457,7 @@ class DumpDir:
             self.dd_save_text(dd, name, data)
 
     def create_new_file_at(self, dir_fd: int, omode: int, name: str, uid: int, gid: int, mode: int):
-        assert name.startswith('/')
+        assert not name.startswith('/')
         assert omode in [os.O_WRONLY, os.O_RDWR]
 
         # the mode is set by the caller, see dd_create() for security analysis
