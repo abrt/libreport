@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.17.5] - 2022-10-24
 ### Fixed
 - More fixes for reporter-bugzilla-python
 
@@ -308,7 +310,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.17.4...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.17.5...HEAD
+[2.17.5]: https://github.com/abrt/libreport/compare/2.17.4...2.17.5
 [2.17.4]: https://github.com/abrt/libreport/compare/2.17.3...2.17.4
 [2.17.3]: https://github.com/abrt/libreport/compare/2.17.2...2.17.3
 [2.17.2]: https://github.com/abrt/libreport/compare/2.17.1...2.17.2

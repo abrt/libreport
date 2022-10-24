@@ -18,8 +18,8 @@
 
 Summary: Generic library for reporting various problems
 Name: libreport
-Version: 2.17.4
-Release: 1%{?dist}
+Version: 2.17.5
+Release: 1
 License: GPLv2+
 URL: https://abrt.readthedocs.org/
 Source: https://github.com/abrt/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
