@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- reporter-bugzilla: Fix TypeError (rhbz#2137472)
 
 ## [2.17.5] - 2022-10-24
 ### Fixed
