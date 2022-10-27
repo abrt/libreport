@@ -868,10 +868,10 @@ if __name__ == '__main__':
             if rating_str:
                 rtg = re.search(r'^\d+', rating_str)
                 if rtg:
-                    rating = rtg.group(0)
+                    rating = int(rtg.group(0))
                 if rating > G_MAXUINT64:
                     logger.error("expected number in range <0, %lu>: '%s'", G_MAXUINT64, rating_str)
-            if bt and rating > bug_info['bi_best_bt_rating']:
+            if bt and rating > bug_info.get('bi_best_bt_rating', 0):
                 logger.warning(_("Attaching better backtrace"))
                 bz_conn.attachment_create(int(bug_info['bi_id']), const.FILENAME_BACKTRACE, const.RHBZ_MINOR_UPDATE)
         else:
