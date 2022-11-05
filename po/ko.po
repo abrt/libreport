@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2022-07-21 10:36+0000\n"
+"PO-Revision-Date: 2022-11-02 20:53+0000\n"
 "Last-Translator: 김인수 <simmon@nplob.com>\n"
 "Language-Team: Korean <https://translate.fedoraproject.org/projects/abrt/"
 "libreport/ko/>\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.13\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -735,7 +735,7 @@ msgstr "_앞으로"
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3216 ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "Details"
-msgstr "상세 정보"
+msgstr "상세정보"
 
 #: ../src/gui-wizard-gtk/wizard.c:3263
 msgid "Restrict access to the report"
@@ -1553,7 +1553,7 @@ msgstr "이 문제가 이미 보고되어 있는 경우에도 강제로 보고�
 
 #: ../src/plugins/reporter-bugzilla.c:330
 msgid "Add bugzilla user to CC list [of bug with this ID]"
-msgstr "버그질라 사용자를 CC 목록에 추가하기 [이 ID와 함께 결점(bug)]"
+msgstr "버그질라 사용자를 CC 목록에 추가하기 [이 ID와 함께 결점]"
 
 #: ../src/plugins/reporter-bugzilla.c:331
 #: ../src/plugins/reporter-mantisbt.c:289
@@ -1567,7 +1567,7 @@ msgstr "버그질라 제품을 상세화합니다 (-h 없이면 무시합니다)
 #: ../src/plugins/reporter-bugzilla.c:333
 #: ../src/plugins/reporter-mantisbt.c:290
 msgid "A name of bug tracker for an additional URL from 'reported_to'"
-msgstr "'reported_to'에서 추가된 URL를 위한 결점(bug) 추적기의 이름"
+msgstr "'reported_to'에서 추가된 URL를 위한 결점 추적기의 이름"
 
 #: ../src/plugins/reporter-bugzilla.c:334
 msgid "Restrict access to this group only"
@@ -1665,10 +1665,11 @@ msgid ""
 "report and close it as DUPLICATE of the original one? Otherwise, the bug "
 "reporting procedure will be terminated."
 msgstr ""
-"지정된 그룹에서 자료에만 자료를 접근 할 수 있게 만들어주는 것을 요청해야 하고 이 결점(bug): %s/%u은 중복된 결점(bug)"
-"입니다. 결점(bug) 중복의 경우에 새로운 언급은 결점(bug)보고에 추가되어지나 언급에서 접근은 지정된 그룹에서 제한되어 질 수 "
-"없습니다.새로운 결점(bug) 보고를 시작하고 원래 하나의 중복으로 이를 종료할까요? 그렇지 않으면, 결점(bug) 보고 절차는 끝날 "
-"것입니다."
+"지정된 그룹에서 자료에만 자료를 접근 할 수 있게 만들어주는 것을 요청해야 "
+"하고 이 결점: %s/%u은 중복된 결점입니다. 결점(bug) 중복의 경우에 새로운 "
+"언급은 결점 보고에 추가되어지나 언급에서 접근은 지정된 그룹에서 제한되어 질 "
+"수 없습니다.새로운 결점 보고를 시작하고 원래 하나의 중복으로 이를 "
+"종료할까요? 그렇지 않으면, 결점 보고 절차는 끝날 것입니다."
 
 #. Create new bug
 #: ../src/plugins/reporter-bugzilla.c:763
@@ -1682,12 +1683,12 @@ msgstr "새로운 결점 생성에 실패하였습니다."
 #: ../src/plugins/reporter-bugzilla.c:800
 #, c-format
 msgid "Adding extra cc %s to bug report"
-msgstr "추가 CC %s를 결점(bug)보고에 추가히기"
+msgstr "추가 CC %s를 결점 보고에 추가히기"
 
 #: ../src/plugins/reporter-bugzilla.c:812
 #, c-format
 msgid "Adding External URL to bug %i"
-msgstr "외부 URL을 결점(bug)%i에 추가하기"
+msgstr "외부 URL을 결점 %i에 추가하기"
 
 #: ../src/plugins/reporter-bugzilla.c:819
 #, c-format
@@ -1697,7 +1698,7 @@ msgstr "버그 %i에 첨부 파일을 추가합니다"
 #: ../src/plugins/reporter-bugzilla.c:841
 #, c-format
 msgid "Closing bug %i as duplicate of bug %i"
-msgstr "중복된 결점(bug) %i로서 결점(bug) %i를 닫기"
+msgstr "중복된 결점 %i로서 결점 %i를 닫기"
 
 #: ../src/plugins/reporter-bugzilla.c:853
 #: ../src/plugins/reporter-mantisbt.c:622
@@ -2305,7 +2306,7 @@ msgstr "상태: %s%s%s %s/view.php?id=%u"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:1
 msgid "CentOS Bug Tracker"
-msgstr "센트오에스 결점 추적기"
+msgstr "CentOS 결점 추적기"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:2
 #: ../src/workflows/workflow_CentOSCCpp.xml.in.h:1
@@ -2318,11 +2319,11 @@ msgstr "센트오에스 결점 추적기"
 #: ../src/workflows/workflow_CentOSVmcore.xml.in.h:1
 #: ../src/workflows/workflow_CentOSXorg.xml.in.h:1
 msgid "Report to CentOS Bug Tracker"
-msgstr "센트오에스 결점 추적기에 보고"
+msgstr "CentOS 결점 추적기에 보고"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:4
 msgid "CentOS Bug Tracker account user name"
-msgstr "센트오에스 결점 추적기 계정 사용자 이름"
+msgstr "CentOS 결점 추적기 계정 사용자 이름"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:5
 msgid ""
@@ -2334,7 +2335,7 @@ msgstr ""
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:7
 msgid "CentOS Bug Tracker account password"
-msgstr "CentOS 결점(Bug) 추적 계정 비밀번호"
+msgstr "CentOS 결점 추적 계정 비밀번호"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:9
 msgid ""
@@ -2343,15 +2344,15 @@ msgstr "이 문제은 '사적인 문제'에 접근과 함께 사용자에게서�
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:10
 msgid "CentOS Bug Tracker URL"
-msgstr "CentOS 결점(Bug) 추적 URL"
+msgstr "CentOS 결점 추적 URL"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:11
 msgid "Address of CentOS Bug Tracker server"
-msgstr "CentOS 결점(bug)추적 서버 주소"
+msgstr "CentOS 결점 추적 서버 주소"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:14
 msgid "CentOS Bug Tracker project"
-msgstr "CentOS 결점(Bug) 추적 프로젝트"
+msgstr "CentOS 결점 추적 프로젝트"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:15
 msgid ""
@@ -2361,7 +2362,7 @@ msgstr "만약 /etc/os-release에서 지정된 것보다 다른 프로젝트가 
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:16
 msgid "CentOS Bug Tracker project version"
-msgstr "센트오에스 결점 추적 프로젝트 버전"
+msgstr "CentOS 결점 추적 프로젝트 버전"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:17
 msgid ""
@@ -2570,11 +2571,11 @@ msgstr "uReport 웹서비스 주소"
 
 #: ../src/plugins/report_uReport.xml.in.h:5
 msgid "Watch already reported bugs"
-msgstr "이미 보고된 결점(bugs)를 봅니다"
+msgstr "이미 보고된 결점을 봅니다"
 
 #: ../src/plugins/report_uReport.xml.in.h:6
 msgid "Adds your Bugzilla login to CC List of already reported bugs."
-msgstr "버그질라 로그인을 이미 보고된 결점(bugs) CC 목록에 추가합니다."
+msgstr "버그질라 로그인을 이미 보고된 결점 CC 목록에 추가합니다."
 
 #: ../src/plugins/report_uReport.xml.in.h:7
 msgid "Report unpackaged problems"
@@ -2596,11 +2597,11 @@ msgstr "당신에게 새로운 부분과 최신화에 대하여 알려주는 ABR
 
 #: ../src/plugins/watch_Bugzilla.xml.in.h:1
 msgid "Watch Bugzilla Bug"
-msgstr "버그질라 결점(bug)를 봅니다"
+msgstr "버그질라 결점을 봅니다"
 
 #: ../src/plugins/watch_Bugzilla.xml.in.h:2
 msgid "Adds your e-mail to CC List of Bugzilla bug"
-msgstr "버그질라 결점(bug)의 CC 목록에 당신의 전자우편을 추가합니다"
+msgstr "버그질라 결점의 CC 목록에 당신의 전자우편을 추가합니다"
 
 #: ../src/plugins/rhbz.c:382
 #, c-format
@@ -2639,7 +2640,7 @@ msgstr "버그질라는 버그 %d의 원인 버그를 찾을 수 없습니다"
 
 #: ../src/plugins/rhbz.c:873
 msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
-msgstr "Bug.search(빠른 검색) 반환 값은 구성 '결점(bug)'에 포함되지 않습니다"
+msgstr "Bug.search(빠른 검색) 반환 값은 구성 '결점'에 포함되지 않습니다"
 
 #: ../src/plugins/mantisbt.c:123
 #, c-format
@@ -2872,12 +2873,13 @@ msgstr "환경 또는 구성에서 전자우편 주소로 연락합니다(-a|-A�
 
 #: ../src/plugins/reporter-ureport.c:91
 msgid "attach RHBZ bug (requires -a|-A, conflicts with -B)"
-msgstr "RHBZ 결점(bug) 첨부하기(-a| -A가 필요하며, -B와 충돌합니다)"
+msgstr "RHBZ 결점 첨부하기(-a| -A가 필요하며, -B와 충돌합니다)"
 
 #: ../src/plugins/reporter-ureport.c:93
 msgid ""
 "attach last RHBZ bug from reported_to (requires -a|-A, conflicts with -b)"
-msgstr "보고되어진 (-a| -A가 필요하며, -b와 충돌합니다)에서 마지막 RHBZ 결점(bug)를 첨부합니다"
+msgstr "보고되어진 (-a| -A가 필요하며, -b와 충돌합니다)에서 마지막 RHBZ 결점을 "
+"첨부합니다"
 
 #: ../src/plugins/reporter-ureport.c:95
 msgid "attach short text (requires -a|-A, conflicts with -D)"
@@ -2945,12 +2947,12 @@ msgstr "이 문제는 버그질라에 보고되어지지 않습니다."
 #: ../src/plugins/reporter-ureport.c:218
 #, c-format
 msgid "Unable to find bug ID in bugzilla URL '%s'"
-msgstr "버그질라 URL '%s'에서 결점(bug) ID를 찾을 수 없습니다"
+msgstr "버그질라 URL '%s'에서 결점 ID를 찾을 수 없습니다"
 
 #: ../src/plugins/reporter-ureport.c:223
 #, c-format
 msgid "Unable to parse bug ID from bugzilla URL '%s'"
-msgstr "버그질라 URL '%s'에서 결점(bug) ID 구문 분석 할 수 없습니다"
+msgstr "버그질라 URL '%s'에서 결점 ID 구문 분석 할 수 없습니다"
 
 #: ../src/plugins/reporter-ureport.c:230
 msgid "Cannot attach comment from 'comment' file"
@@ -2978,7 +2980,7 @@ msgstr "환경 변수 'uReport_ContactEmail'도 구성 선택 'ContactEmail'도 
 
 #: ../src/plugins/reporter-ureport.c:273
 msgid "You need to specify bug ID, contact email, comment or all of them"
-msgstr "결점(bug) ID, 문의 전자우편, 언급 또는 그 것들 모두 지정하는데 필요합니다"
+msgstr "결점 ID, 문의 전자우편, 언급 또는 그 것들 모두 지정하는데 필요합니다"
 
 #: ../src/plugins/reporter-ureport.c:303
 msgid "You need to specify bthash of the uReport to attach."
@@ -3035,7 +3037,7 @@ msgstr "보고 후 DIR 삭제"
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:1
 msgid "Report a bug to Fedora maintainers"
-msgstr "페도라 관리자에게 결점(bug)를 보고합니다"
+msgstr "페도라 관리자에게 결점을 보고합니다"
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:2
 msgid "Process the report using the Fedora infrastructure"
@@ -3043,7 +3045,7 @@ msgstr "페도라 인프라스트럭처 사용하여 보고를 처리합니다"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:1
 msgid "Report a bug to Red Hat Customer Portal"
-msgstr "Red Hat 고객 포털에 결점(bug)를 보고합니다"
+msgstr "Red Hat 고객 포털에 결점을 보고합니다"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:2
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:2
@@ -3052,7 +3054,7 @@ msgstr "Red Hat 인프라스트럭처 사용하여 보고를 처리합니다"
 
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:1
 msgid "Report a bug to Red Hat Bugzilla"
-msgstr "Red Hat 버그질라에 결점(bug)를 보고합니다"
+msgstr "Red Hat 버그질라에 결점을 보고합니다"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
 msgid "Export the problem data for manual reporting"
