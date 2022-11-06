@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.17.6] - 2022-11-06
 ### Fixed
 - reporter-bugzilla: Fix TypeError (rhbz#2137472)
 
@@ -312,7 +314,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.17.5...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.17.6...HEAD
+[2.17.6]: https://github.com/abrt/libreport/compare/2.17.5...2.17.6
 [2.17.5]: https://github.com/abrt/libreport/compare/2.17.4...2.17.5
 [2.17.4]: https://github.com/abrt/libreport/compare/2.17.3...2.17.4
 [2.17.3]: https://github.com/abrt/libreport/compare/2.17.2...2.17.3
