@@ -1,10 +1,14 @@
 specfile_path: libreport.spec
 synced_files:
-  - .packit.yml
-  - libreport.spec
+- .packit.yml
+- libreport.spec
 upstream_package_name: libreport
 upstream_project_url: https://github.com/abrt/libreport
 downstream_package_name: libreport
+
+# No extra dependencies are necessary to build the SRPM.
+srpm_build_deps: []
+
 jobs:
 - job: propose_downstream
   trigger: release
