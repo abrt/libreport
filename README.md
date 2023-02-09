@@ -15,6 +15,30 @@ for automatic execution of shell scripts working with dump directories.
 
 The library is used in [**ABRT (Automatic Bug Reporting Tool)**](https://abrt.readthedocs.io).
 
+```mermaid
+flowchart BT
+    abrt-java-connector --> abrt
+    abrt-java-connector -. build .-> satyr
+    abrt --> libreport & satyr
+    abrt-java-connector --> libreport
+    gnome-abrt --> abrt & libreport
+    reportd --> libreport
+    libreport:::focus --> satyr
+    retrace-server[Retrace Server] -. "optional, for<br>packages only" .-> faf
+    faf["ABRT Analytics (FAF)"] --> satyr
+
+click abrt "https://github.com/abrt/abrt" "abrt GitHub repository" _blank
+click abrt-java-connector "https://github.com/abrt/abrt-java-connector" "abrt-java-connector GitHub repository" _blank
+click faf "https://github.com/abrt/faf" "ABRT Analytics GitHub repository" _blank
+click gnome-abrt "https://github.com/abrt/gnome-abrt" "gnome-abrt GitHub repository" _blank
+click libreport "https://github.com/abrt/libreport" "libreport GitHub repository" _blank
+click reportd "https://github.com/abrt/reportd" "reportd GitHub repository" _blank
+click satyr "https://github.com/abrt/satyr" "satyr GitHub repository" _blank
+click retrace-server "https://github.com/abrt/retrace-server" "Retrace Server GitHub repository" _blank
+
+classDef focus stroke-width: 4
+```
+
 
 ### Supported report destinations
 - **regular files**  : reporter-print
