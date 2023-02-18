@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- reporter-bugzilla: Fix TypeError (rhbz#2140799)
+- spec: f38+ should use the python implementation of reporter-bugzilla by default (rhbz#2170048)
 
 ## [2.17.6] - 2022-11-06
 ### Fixed
