@@ -12,10 +12,6 @@
 
 %define glib_ver 2.43.4
 
-%if "x%{?rhbz_product_version}" == "x"
-    %define rhbz_product_version %(source /etc/os-release; echo ${REDHAT_BUGZILLA_PRODUCT_VERSION})
-%endif
-
 Summary: Generic library for reporting various problems
 Name: libreport
 Version: 2.17.6
@@ -193,7 +189,7 @@ Summary: %{name}'s bugzilla plugin
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-web = %{version}-%{release}
 Requires: python3-libreport = %{version}-%{release}
-%if "%{rhbz_product_version}" == "rawhide"
+%if 0%{?fedora} >= 38
 Requires: python3-satyr
 Suggests: python3-pytest
 Suggests: python3-vcrpy
@@ -370,6 +366,10 @@ rm -f %{buildroot}/%{_sysconfdir}/libreport/workflows.d/report_uReport.conf
 rm -f %{buildroot}/%{_sysconfdir}/libreport/workflows.d/report_rhel_bugzilla.conf
 rm -f %{buildroot}%{_mandir}/man5/report_uReport.conf.5
 rm -f %{buildroot}%{_mandir}/man5/report_rhel_bugzilla.conf.5
+%endif
+
+%if 0%{?fedora} >= 38
+    mv %{buildroot}/%{_bindir}/reporter-bugzilla-python %{buildroot}/%{_bindir}/reporter-bugzilla
 %endif
 
 %check
@@ -562,11 +562,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man5/bugzilla_formatdup_analyzer_libreport.conf.5.*
 %{_mandir}/man5/bugzilla_format_kernel.conf.5.*
 %{_bindir}/reporter-bugzilla
+%if 0%{?fedora} < 38
 %{_bindir}/reporter-bugzilla-python
-
-%post plugin-bugzilla
-%if "%{rhbz_product_version}" == "rawhide"
-    mv %{_bindir}/reporter-bugzilla-python %{_bindir}/reporter-bugzilla
 %endif
 
 %endif
