@@ -241,9 +241,10 @@ class ProblemFormatter:
 
                 elif item == '%short_backtrace':
                     short_bt = get_short_backtrace(self.problem_data, self.logger)
-                    processed_items.append({'name': short_bt['name'],
-                                            'content': short_bt['content'],
-                                            'bare': False})
+                    if short_bt:
+                        processed_items.append({'name': short_bt['name'],
+                                                'content': short_bt['content'],
+                                                'bare': False})
                 else:
                     self.logger.warning("Unknown or unsupported element specifier '%s'",
                                         item)
@@ -267,9 +268,10 @@ class ProblemFormatter:
                                             'bare': True})
                 elif item == 'short_backtrace':
                     short_bt = get_short_backtrace(self.problem_data, self.logger)
-                    processed_items.append({'name': short_bt['name'],
-                                            'content': short_bt['content'],
-                                            'bare': True})
+                    if short_bt:
+                        processed_items.append({'name': short_bt['name'],
+                                                'content': short_bt['content'],
+                                                'bare': True})
                 else:
                     problem_item = pd_get_item(item, self.problem_data)
                     if problem_item:
