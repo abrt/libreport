@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.17.7] - 2023-02-20
 ### Fixed
 - reporter-bugzilla: Fix TypeError (rhbz#2140799)
 - spec: f38+ should use the python implementation of reporter-bugzilla by default (rhbz#2170048)
@@ -317,7 +319,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.17.6...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.17.7...HEAD
+[2.17.7]: https://github.com/abrt/libreport/compare/2.17.6...2.17.7
 [2.17.6]: https://github.com/abrt/libreport/compare/2.17.5...2.17.6
 [2.17.5]: https://github.com/abrt/libreport/compare/2.17.4...2.17.5
 [2.17.4]: https://github.com/abrt/libreport/compare/2.17.3...2.17.4
