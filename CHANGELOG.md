@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Fixed
 - reporter-bugzilla: Fix password prompt in client/server mode (rhbz#2172891)
+- reporter-bugzilla: Fix KeyError when HOME env var is not set
 
 ## [2.17.7] - 2023-02-20
 ### Fixed
