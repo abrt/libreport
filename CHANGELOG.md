@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.17.8] - 2023-03-03
 ### Fixed
 - reporter-bugzilla: Fix password prompt in client/server mode (rhbz#2172891)
 - reporter-bugzilla: Fix KeyError when HOME env var is not set
@@ -322,7 +324,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.17.7...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.17.8...HEAD
+[2.17.8]: https://github.com/abrt/libreport/compare/2.17.7...2.17.8
 [2.17.7]: https://github.com/abrt/libreport/compare/2.17.6...2.17.7
 [2.17.6]: https://github.com/abrt/libreport/compare/2.17.5...2.17.6
 [2.17.5]: https://github.com/abrt/libreport/compare/2.17.4...2.17.5
