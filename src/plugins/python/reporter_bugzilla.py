@@ -188,6 +188,28 @@ def find_in_reported_to(problem_dir: str, reportee: str):
     return None
 
 
+def ask_password(message):
+    """Ask for a password, with echo turned off.
+
+    :param message: str, prompt message
+    :return: str, password
+    """
+    is_slave_mode = bool(os.environ.get('REPORT_CLIENT_SLAVE') is not None)
+    is_noninteractive_mode = bool(os.environ.get('REPORT_CLIENT_NONINTERACTIVE') is not None)
+
+    if is_slave_mode:
+        # See src/include/client.h for details about the libreport communication protocol
+        print(f'ASK_PASSWORD {message}')
+        sys.stdout.flush()
+        return getpass()
+
+    if is_noninteractive_mode:
+        print()
+        return ''
+
+    return getpass(prompt=f'{message}')
+
+
 def ask_yes_no(question):
     yes = _("y")
     no = _("N")
@@ -497,7 +519,7 @@ if __name__ == '__main__':
 
     if not rhbz.get('b_api_key'):
         try:
-            rhbz['b_api_key'] = getpass(_("API key is not provided by configuration. Please enter the API key for '{}': ").format(bz_url))
+            rhbz['b_api_key'] = ask_password(_("API key is not provided by configuration. Please enter the API key for '{}': ").format(bz_url))
         except (EOFError, KeyboardInterrupt):
             rhbz['b_api_key'] = ''
         if not rhbz.get('b_api_key'):
