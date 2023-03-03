@@ -455,7 +455,8 @@ if __name__ == '__main__':
     conf_file_loader = ConfFileLoader(logger=logger)
     if not conf_files:
         conf_files.append(os.path.join(const.CONF_DIR, 'plugins/bugzilla.conf'))
-        conf_files.append(os.path.join(os.environ['HOME'], const.USER_HOME_CONFIG_PATH, 'bugzilla.conf'))
+        if os.environ.get('HOME'):
+            conf_files.append(os.path.join(os.environ['HOME'], const.USER_HOME_CONFIG_PATH, 'bugzilla.conf'))
     for file in conf_files:
         logger.info("Loading settings from '%s'", file)
         conf_file_loader.libreport_load_conf_file(file, settings=s_reporter_settings, skip_empty_keys=True)
