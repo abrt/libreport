@@ -302,6 +302,10 @@ if __name__ == '__main__':
 
     config = configparser.ConfigParser()
 
+    user_conf = os.path.join(os.getenv('XDG_CONFIG_HOME',
+                                       os.path.expanduser('~/.config')),
+                             'libreport', 'bugzilla.conf')
+
     program_usage_string = _(
         "Usage:"
         "\n{0} [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR"
@@ -342,7 +346,7 @@ if __name__ == '__main__':
         "\nfiled. The default value is 'ABRT Server'"
         "\n"
         "\nIf not specified, CONFFILE defaults to {1}/plugins/bugzilla.conf"
-        "\nand user's local ~{2}/bugzilla.conf."
+        "\nand {2}."
         "\nIts lines should have 'PARAM = VALUE' format."
         "\nRecognized string parameters: BugzillaURL, BugzillaAPIKey, OSRelease."
         "\nRecognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify."
@@ -350,7 +354,7 @@ if __name__ == '__main__':
         "\nParameters can be overridden via $Bugzilla_PARAM environment variables."
         "\n"
         "\nFMTFILE and FMTFILE2 default to {1}/plugins/bugzilla_format.conf"
-    ).format(g_progname, const.CONF_DIR, const.USER_HOME_CONFIG_PATH)
+    ).format(g_progname, const.CONF_DIR, user_conf)
 
     program_options = _(
         "\n        --help                  Print this help and exit"
@@ -455,8 +459,7 @@ if __name__ == '__main__':
     conf_file_loader = ConfFileLoader(logger=logger)
     if not conf_files:
         conf_files.append(os.path.join(const.CONF_DIR, 'plugins/bugzilla.conf'))
-        if os.environ.get('HOME'):
-            conf_files.append(os.path.join(os.environ['HOME'], const.USER_HOME_CONFIG_PATH, 'bugzilla.conf'))
+        conf_files.append(user_conf)
     for file in conf_files:
         logger.info("Loading settings from '%s'", file)
         conf_file_loader.libreport_load_conf_file(file, settings=s_reporter_settings, skip_empty_keys=True)

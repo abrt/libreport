@@ -215,6 +215,11 @@ int main(int argc, char **argv)
     textdomain(PACKAGE);
 #endif
 
+    /* user's config, ~/.config/libreport/mantisbt.conf */
+    g_autofree char *user_conf = g_build_filename(g_get_user_config_dir(),
+                                                  "libreport", "mantisbt.conf",
+                                                  NULL);
+
     g_autofree char *program_usage_string = g_strdup_printf(_(
         "\n& [-vf] [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR"
         "\nor:"
@@ -252,7 +257,7 @@ int main(int argc, char **argv)
         "\nfiled. The default value is 'ABRT Server'"
         "\n"
         "\nIf not specified, CONFFILE defaults to %1$s/plugins/mantisbt.conf"
-        "\nand user's local ~%2$s/mantisbt.conf."
+        "\nand %2$s."
         "\nIts lines should have 'PARAM = VALUE' format."
         "\nRecognized string parameters: MantisbtURL, Login, Password, Project, ProjectVersion."
         "\nRecognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify, CreatePrivate."
@@ -262,7 +267,7 @@ int main(int argc, char **argv)
         "\nFMTFILE default to %1$s/plugins/mantisbt_format.conf."
         "\nFMTFILE2 default to %1$s/plugins/mantisbt_formatdup.conf."),
         CONF_DIR,
-        USER_HOME_CONFIG_PATH);
+        user_conf);
 
     enum {
         OPT_v = 1 << 0,
@@ -309,23 +314,21 @@ int main(int argc, char **argv)
 
     GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 
+    if (!conf_file)
     {
-        g_autofree char *local_conf = NULL;
-        if (!conf_file)
-        {
-            conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/mantisbt.conf");
-            local_conf = g_strdup_printf("%s"USER_HOME_CONFIG_PATH"/mantisbt.conf", getenv("HOME"));
-            conf_file = g_list_append(conf_file, local_conf);
-        }
-        while (conf_file)
-        {
-            char *fn = (char *)conf_file->data;
-            log_notice("Loading settings from '%s'", fn);
-            libreport_load_conf_file(fn, settings, /*skip key w/o values:*/ false);
-            log_debug("Loaded '%s'", fn);
-            conf_file = g_list_delete_link(conf_file, conf_file);
-        }
+        conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/mantisbt.conf");
+        conf_file = g_list_append(conf_file, user_conf);
+    }
+    while (conf_file)
+    {
+        char *fn = (char *)conf_file->data;
+        log_notice("Loading settings from '%s'", fn);
+        libreport_load_conf_file(fn, settings, /*skip key w/o values:*/ false);
+        log_debug("Loaded '%s'", fn);
+        conf_file = g_list_delete_link(conf_file, conf_file);
+    }
 
+    {
         struct dump_dir *dd = NULL;
         if (abrt_hash == NULL)
         {

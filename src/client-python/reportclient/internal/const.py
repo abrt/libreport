@@ -17,7 +17,6 @@
 
 GETTEXT_PROGNAME = 'reporter-bugzilla'
 CONF_DIR = '/etc/libreport'
-USER_HOME_CONFIG_PATH = '/.config/libreport'
 CONF_DIR_FLAG_NONE = 0
 CONF_DIR_FLAG_OPTIONAL = 1
 

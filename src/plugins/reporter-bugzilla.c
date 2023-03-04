@@ -234,6 +234,11 @@ int main(int argc, char **argv)
     textdomain(PACKAGE);
 #endif
 
+    /* user's config, ~/.config/libreport/bugzilla.conf */
+    g_autofree char *user_conf = g_build_filename(g_get_user_config_dir(),
+                                                  "libreport", "bugzilla.conf",
+                                                  NULL);
+
     /* Can't keep these strings/structs static: _() doesn't support that */
     g_autofree char *program_usage_string = g_strdup_printf(_(
         "\n& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR"
@@ -274,7 +279,7 @@ int main(int argc, char **argv)
         "\nfiled. The default value is 'ABRT Server'"
         "\n"
         "\nIf not specified, CONFFILE defaults to %1$s/plugins/bugzilla.conf"
-        "\nand user's local ~%2$s/bugzilla.conf."
+        "\nand %2$s."
         "\nIts lines should have 'PARAM = VALUE' format."
         "\nRecognized string parameters: BugzillaURL, APIKey, OSRelease."
         "\nRecognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify."
@@ -283,7 +288,7 @@ int main(int argc, char **argv)
         "\n"
         "\nFMTFILE and FMTFILE2 default to %1$s/plugins/bugzilla_format.conf"),
         CONF_DIR,
-        USER_HOME_CONFIG_PATH);
+        user_conf);
 
     enum {
         OPT_v = 1 << 0,
@@ -351,27 +356,24 @@ int main(int argc, char **argv)
         }
     }
 
+    if (!conf_file)
     {
-        g_autofree char *local_conf = NULL;
-        if (!conf_file)
-        {
-            conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/bugzilla.conf");
-            local_conf = g_strdup_printf("%s"USER_HOME_CONFIG_PATH"/bugzilla.conf", getenv("HOME"));
-            conf_file = g_list_append(conf_file, local_conf);
-        }
-        while (conf_file)
-        {
-            char *fn = (char *)conf_file->data;
-            log_notice("Loading settings from '%s'", fn);
-            libreport_load_conf_file(fn, settings, /*skip key w/o values:*/ false);
-            log_debug("Loaded '%s'", fn);
-            conf_file = g_list_delete_link(conf_file, conf_file);
-        }
-
-        set_settings(&rhbz, settings);
-        if (settings)
-            g_hash_table_destroy(settings);
+        conf_file = g_list_append(conf_file, (char*) CONF_DIR"/plugins/bugzilla.conf");
+        conf_file = g_list_append(conf_file, user_conf);
     }
+    while (conf_file)
+    {
+        char *fn = (char *)conf_file->data;
+        log_notice("Loading settings from '%s'", fn);
+        libreport_load_conf_file(fn, settings, /*skip key w/o values:*/ false);
+        log_debug("Loaded '%s'", fn);
+        conf_file = g_list_delete_link(conf_file, conf_file);
+    }
+
+    set_settings(&rhbz, settings);
+    if (settings)
+        g_hash_table_destroy(settings);
+
     /* either we got Bugzilla_CreatePrivate from settings or -g was specified on cmdline */
     rhbz.b_create_private |= (opts & OPT_g);
 
