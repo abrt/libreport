@@ -902,3 +902,5 @@ if __name__ == '__main__':
                 bz_conn.attachment_create(int(bug_info['bi_id']), const.FILENAME_BACKTRACE, const.RHBZ_MINOR_UPDATE)
         else:
             logger.warning(_('Found the same comment in the bug history, not adding a new one'))
+
+    log_out(bug_info, rhbz, dump_dir_name)
