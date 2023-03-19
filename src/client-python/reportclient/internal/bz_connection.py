@@ -248,7 +248,7 @@ class BZConnection:
         self.logger.debug('-- %s', inspect.getframeinfo(inspect.currentframe()).function)
         params = self.params.copy()
         params.update({'ids': [bug_id]})
-        response = requests.get(os.path.join(self.url, 'rest.cgi/bug'),
+        response = requests.get(os.path.join(self.url, f'rest.cgi/bug/{bug_id}/comment'),
                                 headers=self.headers,
                                 params=params,
                                 verify=self.verify)
@@ -259,7 +259,7 @@ class BZConnection:
             return None
 
         comments = []
-        for comment in response.json()['bugs'][0]['comments']:
+        for comment in list(response.json()['bugs'].values())[0]['comments']:
             if comment.get('text'):
                 comments.append(comment['text'])
 
@@ -269,12 +269,12 @@ class BZConnection:
         self.logger.debug('-- %s', inspect.getframeinfo(inspect.currentframe()).function)
         params = self.params.copy()
         params.update({'id': bug_id, 'comment': comment})
-        response = requests.post(os.path.join(self.url, 'rest.cgi/bug/{bug_id}/comment'),
+        response = requests.post(os.path.join(self.url, f'rest.cgi/bug/{bug_id}/comment'),
                                  headers=self.headers,
                                  params=params,
                                  verify=self.verify)
-        if response.status_code != 200:
-            self.logger.error("Failed to get bug #%i info.\n"
+        if response.status_code != 201:
+            self.logger.error("Failed to add a comment to the bug #%i.\n"
                               "Server says: %s %s",
                               bug_id, response.status_code, response.reason)
             return None
