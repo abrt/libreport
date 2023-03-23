@@ -762,7 +762,7 @@ if __name__ == '__main__':
             logger.warning(_('Creating a new bug'))
 
             if existing_id < 0 <= crossver_id:
-                report['text'] += "\nPotential duplicate: bug {crossver_id}\n"
+                report['text'] += f"\nPotential duplicate: bug {crossver_id}\n"
 
             new_id = bz_conn.bug_create(problem_data, rhbz['b_product'], rhbz['b_product_version'],
                                         report['summary'], report['text'], rhbz['b_create_private'],
