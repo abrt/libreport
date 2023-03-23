@@ -92,7 +92,7 @@ class BZConnection:
         self.logger.debug('-- %s', inspect.getframeinfo(inspect.currentframe()).function)
         self.params['Bugzilla_api_key'] = api_key
 
-    def attachment_create(self, bug_id: int, file_name: str, flags: int):
+    def attachment_create(self, bug_id: int, file_name: str, minor_update: bool):
         self.logger.debug('-- %s', inspect.getframeinfo(inspect.currentframe()).function)
 
         pd_loader = ProblemDataLoader(self.logger, self.global_config)
@@ -109,13 +109,12 @@ class BZConnection:
             content_type = 'aplication/octet-stream'
             file_content = base64.b64encode(content).decode('utf-8')
 
-        minor = bool(flags & const.RHBZ_MINOR_UPDATE)
         data = json.dumps({'ids': [bug_id],
                            'data': file_content,
                            'file_name': file_name,
                            'content_type': content_type,
                            'summary': f'File: {file_name}',
-                           'minor_update': minor})
+                           'minor_update': minor_update})
 
         response = requests.post(os.path.join(self.url, f'rest.cgi/bug/{bug_id}/attachment'),
                                  headers=self.headers,

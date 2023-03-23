@@ -599,7 +599,7 @@ if __name__ == '__main__':
                     logger.error("'%s': not a regular file", filename)
                     continue
 
-                response = bz_conn.attachment_create(int(ticket_no), filename, 0)
+                response = bz_conn.attachment_create(int(ticket_no), filename, False)
                 # TODO: We can't print attachment id because
                 # POST rest/bug/<id>/attachment returns empty response - bug?
                 logger.info("Attached '%s' to bug #%s", filename, ticket_no)
@@ -906,7 +906,7 @@ if __name__ == '__main__':
                     logger.error("expected number in range <0, %lu>: '%s'", G_MAXUINT64, rating_str)
             if bt and rating > bug_info.get('bi_best_bt_rating', 0):
                 logger.warning(_("Attaching better backtrace"))
-                bz_conn.attachment_create(int(bug_info['bi_id']), const.FILENAME_BACKTRACE, const.RHBZ_MINOR_UPDATE)
+                bz_conn.attachment_create(int(bug_info['bi_id']), const.FILENAME_BACKTRACE, True)
         else:
             logger.warning(_('Found the same comment in the bug history, not adding a new one'))
 
