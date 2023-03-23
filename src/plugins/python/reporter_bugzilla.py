@@ -800,6 +800,13 @@ if __name__ == '__main__':
                 logger.info("Attached '%s' to bug no. %s with id %s",
                             attachment, new_id, response.json()['ids'][0])
 
+            # We just created a new bug, let's make sure that we are in CC
+            bug_info = bz_conn.bug_info(new_id)
+            if (bug_info.get('bi_reporter') and bug_info.get('bi_reporter') not in bug_info['bi_cc_list']):
+                logger.debug(_('Adding %s to CC list'), bug_info.get('bi_reporter'))
+                update_data = {'ids': [bug_info['bi_id']], 'cc': {'add': [bug_info.get('bi_reporter')]}, 'minor_update': True}
+                bz_conn.bug_update(bug_info['bi_id'], update_data)
+
             bug_info = {'bi_id': new_id,
                         'bi_status': 'NEW',
                         'bi_dup_id': -1}
