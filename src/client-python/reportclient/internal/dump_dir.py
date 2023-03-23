@@ -1460,8 +1460,12 @@ class DumpDir:
         assert not name.startswith('/')
         assert omode in [os.O_WRONLY, os.O_RDWR]
 
+        try:
+            os.unlink(name, dir_fd=dir_fd)
+        except FileNotFoundError:
+            pass  # The file doesn't have to exist, and that is fine
+
         # the mode is set by the caller, see dd_create() for security analysis
-        os.unlink(name, dir_fd=dir_fd)
         try:
             fd = os.open(name, omode | os.O_EXCL | os.O_CREAT | os.O_NOFOLLOW, mode=mode, dir_fd=dir_fd)
         except OSError:
