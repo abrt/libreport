@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.17.9] - 2023-03-24
+### Fixed
+- reporter-bugzilla: Honor XDG_CONFIG_HOME when accessing user's configuration files (Thanks to Yann Droneaud)
+- reporter-bugzilla: Fix reporting when the bug already exists
+- reporter-bugzilla: Don't fail if reported_to file doesn't exist (rhbz#2176481)
+- reporter-bugzilla: Make sure that the creator of a bug is always in CC
+- reporter-bugzilla: Don't send emails about each individual attachment (rhbz#2180286)
+- reporter-bugzilla: Fix string interpolation for duplicate bugs
+
 ## [2.17.8] - 2023-03-03
 ### Fixed
 - reporter-bugzilla: Fix password prompt in client/server mode (rhbz#2172891)
@@ -324,7 +333,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.17.8...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.17.9...HEAD
+[2.17.9]: https://github.com/abrt/libreport/compare/2.17.8...2.17.9
 [2.17.8]: https://github.com/abrt/libreport/compare/2.17.7...2.17.8
 [2.17.7]: https://github.com/abrt/libreport/compare/2.17.6...2.17.7
 [2.17.6]: https://github.com/abrt/libreport/compare/2.17.5...2.17.6
