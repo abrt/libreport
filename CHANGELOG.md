@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.17.10] - 2023-05-11
 ### Fixed
 - reporter-upload: Fix use-after-free error (#792)
 
@@ -335,7 +337,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.17.9...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.17.10...HEAD
+[2.17.10]: https://github.com/abrt/libreport/compare/2.17.9...2.17.10
 [2.17.9]: https://github.com/abrt/libreport/compare/2.17.8...2.17.9
 [2.17.8]: https://github.com/abrt/libreport/compare/2.17.7...2.17.8
 [2.17.7]: https://github.com/abrt/libreport/compare/2.17.6...2.17.7
