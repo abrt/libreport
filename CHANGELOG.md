@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- reporter-upload: Fix use-after-free error (#792)
 
 ## [2.17.8] - 2023-03-03
 ### Fixed
