@@ -116,7 +116,7 @@ static int create_and_upload_archive(
     {
         result = 0; /* success */
         log_warning(_("Archive is created: '%s'"), tempfile);
-        *remote_name = g_steal_pointer(&tempfile);
+        *remote_name = g_strdup(tempfile);
     }
 
  ret:
