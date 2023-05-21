@@ -149,7 +149,8 @@ class BZConnection:
         data = json.dumps({'data': file_content,
                            'file_name': file_name,
                            'content_type': content_type,
-                           'summary': f"File: {file_name}"})
+                           'summary': f"File: {file_name}",
+                           'minor_update': True})
 
         response = requests.post(os.path.join(self.url, f'rest.cgi/bug/{bug_id}/attachment'),
                                  headers=self.headers,
