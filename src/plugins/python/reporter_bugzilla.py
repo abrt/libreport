@@ -780,7 +780,7 @@ if __name__ == '__main__':
                     emails = extra.split('\n')
                     logger.warning(_("Adding extra ccs to bug report: %s"), emails)
                     update_data = {'ids': [new_id], 'cc': {'add': emails}, 'minor_update': False}
-                    bz_conn.bug_update(ticket, update_data)
+                    bz_conn.bug_update(new_id, update_data)
 
                 reported_to = dump_dir_obj.libreport_find_in_reported_to(dd, tracker_str)
                 url = ''
