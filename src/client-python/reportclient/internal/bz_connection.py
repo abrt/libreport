@@ -26,6 +26,8 @@ import sys
 from typing import Any, Dict, List, Optional
 
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 import reportclient.internal.const as const
 from reportclient.internal.problem_data import ProblemDataLoader
@@ -352,10 +354,22 @@ class BZConnection:
         self.logger.debug('-- %s', inspect.getframeinfo(inspect.currentframe()).function)
         params = self.params.copy()
         params.update(query)
-        response = requests.get(os.path.join(self.url, 'rest.cgi/bug'),
-                                headers=self.headers,
-                                params=params,
-                                verify=self.verify)
+
+        # Configure requests to retry with delays (See: rhbz#2208742)
+        session = requests.Session()
+        retry = Retry(connect=5, backoff_factor=0.5)
+        adapter = HTTPAdapter(max_retries=retry)
+        session.mount('http://', adapter)
+        session.mount('https://', adapter)
+        try:
+            response = session.get(os.path.join(self.url, 'rest.cgi/bug'),
+                                    headers=self.headers,
+                                    params=params,
+                                    verify=self.verify)
+        except requests.exceptions.ConnectionError as e:
+            self.logger.error("Failed to connect to Bugzilla: %s", repr(e))
+            sys.exit(1)
+
         if response.status_code != 200:
             self.logger.error("Bug search failed.\nServer says: %s %s",
                               response.status_code, response.reason)
