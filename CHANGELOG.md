@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.17.11] - 2023-06-30
+### Fixed
+- reporter-bugzilla: Fix NameError exception
+- reporter-bugzilla: Adding an attachment is a minor bug update (skip emails)
+- reporter-bugzilla: Retry Bugzilla queries with delays, if needed
+
+### Added
+- Add "XDG_ACTIVATION_TOKEN" to the list of ignored words
+
 ## [2.17.10] - 2023-05-11
 ### Fixed
 - reporter-upload: Fix use-after-free error (#792)
@@ -337,7 +346,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.17.10...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.17.11...HEAD
+[2.17.11]: https://github.com/abrt/libreport/compare/2.17.10...2.17.11
 [2.17.10]: https://github.com/abrt/libreport/compare/2.17.9...2.17.10
 [2.17.9]: https://github.com/abrt/libreport/compare/2.17.8...2.17.9
 [2.17.8]: https://github.com/abrt/libreport/compare/2.17.7...2.17.8
