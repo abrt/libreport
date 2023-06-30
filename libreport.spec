@@ -110,6 +110,8 @@ Requires: libreport >= %{version}-%{distfreerelease}
 Requires: libreport = %{version}-%{release}
 %endif
 Requires: python3-dnf
+Requires: python3-requests
+Requires: python3-urllib3
 %{?python_provide:%python_provide python3-libreport}
 
 %description -n python3-libreport
