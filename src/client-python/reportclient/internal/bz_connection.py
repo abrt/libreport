@@ -23,6 +23,7 @@ import logging
 import os
 import re
 import sys
+import urllib.parse
 from typing import Any, Dict, List, Optional
 
 import requests
@@ -363,7 +364,7 @@ class BZConnection:
         session.mount('http://', adapter)
         session.mount('https://', adapter)
         try:
-            response = session.get(os.path.join(self.url, 'rest.cgi/bug'),
+            response = session.get(urllib.parse.urljoin(self.url, 'rest.cgi/bug'),
                                     headers=self.headers,
                                     params=params,
                                     verify=self.verify)
