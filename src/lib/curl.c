@@ -598,7 +598,7 @@ char *libreport_upload_file_ext(post_state_t *state, const char *url, const char
     const char *username_bck = state->username;
     const char *password_bck = state->password;
 
-    g_autofree char *whole_url = NULL;
+    char *whole_url = NULL;
     g_autofree char *scheme = NULL;
     g_autofree char *hostname = NULL;
     g_autofree char *username = NULL;
