@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- reporter-upload: Fix double free crash (#792)
 
 ## [2.17.11] - 2023-06-30
 ### Fixed
