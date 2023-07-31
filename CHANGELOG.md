@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Fixed
 - reporter-upload: Fix double free crash (#792)
+- gui-wizard-gtk: Enable word wrap for comments
 
 ## [2.17.11] - 2023-06-30
 ### Fixed
