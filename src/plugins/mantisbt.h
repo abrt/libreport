@@ -25,6 +25,7 @@ extern "C" {
 #endif
 
 #include <libxml/encoding.h>
+#include <libxml/tree.h>
 #include "problem_report.h"
 
 #define SOAP_STRING "ns2:string"
