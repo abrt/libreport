@@ -3,25 +3,25 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Cheng-Chia Tseng <pswo10680@gmail.com>, 2011
+# Cheng-Chia Tseng <pswo10680@gmail.com>, 2011, 2023.
 # Chester Cheng <ccheng@redhat.com>, 2011-2012
 # Terry Chuang <tchuang@redhat.com>, 2011
-# Cheng-Chia Tseng <pswo10680@gmail.com>, 2017. #zanata
+# Cheng-Chia Tseng <pswo10680@gmail.com>, 2017. #zanata, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2017-09-12 07:46+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/"
-"libreport/language/zh_TW/)\n"
+"PO-Revision-Date: 2023-11-10 11:29+0000\n"
+"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
+"Language-Team: Chinese (Traditional) <https://translate.fedoraproject.org/"
+"projects/abrt/libreport/zh_TW/>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Zanata 4.6.2\n"
+"X-Generator: Weblate 5.1.1\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -593,7 +593,7 @@ msgstr "處理完成，請繼續下個步驟。"
 
 #: ../src/gui-wizard-gtk/wizard.c:1770
 msgid "No commands could be found for processsing the crashdump.\n"
-msgstr ""
+msgstr "找不到命令可處理這個崩潰傾印。\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1785
 msgid "Processing interrupted: can't continue without writable directory."
@@ -606,6 +606,9 @@ msgid ""
 "No matching actions found for this event.\n"
 "\n"
 msgstr ""
+"--- 正略過 %s ---\n"
+"沒有找到符合此事件的動作。\n"
+"\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1843
 msgid "Processing..."
@@ -865,7 +868,7 @@ msgstr ""
 
 #: ../src/include/internal_libreport.h:1246
 msgid "Be verbose"
-msgstr "詳盡"
+msgstr "詳盡模式"
 
 #: ../src/include/internal_libreport.h:1247
 #: ../src/plugins/reporter-bugzilla.c:323
@@ -1032,12 +1035,10 @@ msgid "The backtrace probably can't help developer to diagnose the bug."
 msgstr "回溯資料可能無法幫助開發者診斷臭蟲所在。"
 
 #: ../src/lib/event_config.c:533
-#, fuzzy
-#| msgid "Reporting disabled because the backtrace is unusable."
 msgid ""
 "Reporting is disabled because the generated backtrace has low informational "
 "value."
-msgstr "已停用回報，因為無法使用追蹤功能。"
+msgstr "已停用回報，因為生成的回溯資料其資訊價值過低。"
 
 #: ../src/lib/event_config.c:537
 #, c-format
@@ -1427,10 +1428,9 @@ msgid "Logging into Bugzilla at %s"
 msgstr "登入 Bugzilla 於 %s"
 
 #: ../src/plugins/reporter-bugzilla.c:223
-#, fuzzy, c-format
-#| msgid "Invalid password or login. Please enter your Red Hat login:"
+#, c-format
 msgid "Invalid password or login. Please enter your %s login:"
-msgstr "無效的密碼或登入資訊。請輸入您的 Red Hat 登入資訊："
+msgstr "無效的密碼或登入資訊。請輸入您的 %s 登入資訊："
 
 #: ../src/plugins/reporter-bugzilla.c:228
 #: ../src/plugins/reporter-rhtsupport.c:411
@@ -1601,11 +1601,9 @@ msgid "Using default product '%s'"
 msgstr "使用預設「%s」產品"
 
 #: ../src/plugins/reporter-bugzilla.c:468
-#, fuzzy, c-format
-#| msgid ""
-#| "Login is not provided by configuration. Please enter your RHTS login:"
+#, c-format
 msgid "Login is not provided by configuration. Please enter your %s login:"
-msgstr "登入資訊未由組態提供。請輸入您的 RHTS 登入資訊："
+msgstr "登入資訊未由組態提供。請輸入您的 %s 登入資訊："
 
 #: ../src/plugins/reporter-bugzilla.c:476
 #: ../src/plugins/reporter-rhtsupport.c:597
@@ -1645,15 +1643,11 @@ msgid "Logging out"
 msgstr "登出"
 
 #: ../src/plugins/reporter-bugzilla.c:579
-#, fuzzy, c-format
-#| msgid ""
-#| "This problem was already reported to MantisBT (see '%s'). Do you still "
-#| "want to create a new issue?"
+#, c-format
 msgid ""
 "This problem was already reported to Bugzilla (see '%s'). Do you still want "
 "to create a new bug?"
-msgstr ""
-"這個問題已經有回報給 MantisBT（請見「%s」）。您是否仍希望建立新的議題？"
+msgstr "這個問題已經有回報給 Bugzilla（請見「%s」）。您是否仍希望建立新的臭蟲回報？"
 
 #: ../src/plugins/reporter-bugzilla.c:609
 msgid "Can't determine Bugzilla Product from problem data."
@@ -1890,13 +1884,11 @@ msgstr "無效的密碼或登入資訊。請輸入您的 Red Hat 登入資訊：
 
 #: ../src/plugins/reporter-rhtsupport.c:473
 msgid "Please enter customer case number to which you want to attach the data:"
-msgstr ""
+msgstr "請輸入您想附上資料的客戶案例碼："
 
 #: ../src/plugins/reporter-rhtsupport.c:479
-#, fuzzy
-#| msgid "Can't continue without password"
 msgid "Can't continue without Red Hat Support case number"
-msgstr "無法沒有密碼就繼續"
+msgstr "無法在沒有 Rad Hat 支援案例碼的情況下繼續"
 
 #: ../src/plugins/reporter-rhtsupport.c:506
 msgid ""
@@ -1944,7 +1936,8 @@ msgid ""
 "We found a similar Red Hat support case %s. Do you want to attach the data "
 "to the case? Otherwise, you will have to enter the existing Red Hat support "
 "case number."
-msgstr ""
+msgstr "我們找到類似的 Red Hat 支援案例 %s。您是否想附上資料到這個案例？否則，"
+"您必須輸入已經存在的 Red Hat 支援案例碼。"
 
 #: ../src/plugins/reporter-rhtsupport.c:676
 #, c-format
@@ -2499,7 +2492,7 @@ msgstr "Red Hat 支援入口的電子郵件地址"
 
 #: ../src/plugins/report_RHTSupport_AddData.xml.in.h:2
 msgid "Attach the data to existing Red Hat support case"
-msgstr ""
+msgstr "附上資料給既有的 Red Hat 支援案例"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report Uploader"
@@ -2585,11 +2578,11 @@ msgstr "將您的 Bugzilla 登入資訊加入已回報臭蟲的寄件副本清�
 
 #: ../src/plugins/report_uReport.xml.in.h:7
 msgid "Report unpackaged problems"
-msgstr ""
+msgstr "回報尚未打包的問題"
 
 #: ../src/plugins/report_uReport.xml.in.h:8
 msgid "Report problems coming from unpackaged executables."
-msgstr ""
+msgstr "回報來自尚未打包的可執行檔的問題。"
 
 #: ../src/plugins/report_uReport.xml.in.h:9
 msgid "Contact email address"
@@ -3228,7 +3221,7 @@ msgstr "開立新的 Red Hat Support 案例 - 我願意讓 Red Hat Support 聯�
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:1
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:1
 msgid "Attach crash data to an existing Red Hat support case"
-msgstr ""
+msgstr "附上崩潰資料給既有的 Red Hat 支援案例"
 
 #: ../src/workflows/workflow_RHELAddDataCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJava.xml.in.h:2
@@ -3238,10 +3231,8 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDatavmcore.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:2
-#, fuzzy
-#| msgid "Ask Red Hat Support for help"
 msgid "Provide Red Hat Support with crash details"
-msgstr "尋求 Red Hat Suppot 協助"
+msgstr "向 Red Hat 支援提供崩潰的詳細資訊"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1

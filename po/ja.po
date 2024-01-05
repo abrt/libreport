@@ -9,21 +9,22 @@
 # noriko <noriko@fedoraproject.org>, 2011, 2012
 # Tomoyuki KATO <tomo@dream.daynight.jp>, 2012-2014
 # carrotsoft <www.carrotsoft@gmail.com>, 2011, 2012
+# Yūtenji <yuta@59ry.jp>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2015-01-08 06:55+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Japanese (http://www.transifex.com/projects/p/libreport/"
-"language/ja/)\n"
+"PO-Revision-Date: 2023-12-07 05:43+0000\n"
+"Last-Translator: Yūtenji <yuta@59ry.jp>\n"
+"Language-Team: Japanese <https://translate.fedoraproject.org/projects/abrt/"
+"libreport/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Zanata 4.6.2\n"
+"X-Generator: Weblate 5.2.1\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -226,12 +227,12 @@ msgstr "ダウンロード中 ({0} ／ {1}) {2}: {3:3}%"
 
 #: ../src/client-python/reportclient/debuginfo.py:306
 msgid "Initializing package manager"
-msgstr ""
+msgstr "パッケージマネージャーを初期化中"
 
 #. This takes some time, let user know what we are doing
 #: ../src/client-python/reportclient/debuginfo.py:310
 msgid "Setting up repositories"
-msgstr ""
+msgstr "レポジトリをセットアップ中"
 
 #: ../src/client-python/reportclient/debuginfo.py:313
 msgid "Looking for needed packages in repositories"
@@ -278,7 +279,7 @@ msgstr ""
 #: ../src/client-python/reportclient/debuginfo.py:398
 #, python-brace-format
 msgid "Downloading package {0} failed"
-msgstr "パッケージ {0} のダウンロードに失敗しました "
+msgstr "パッケージ {0} のダウンロードに失敗しました"
 
 #. recursively delete the temp dir on failure
 #: ../src/client-python/reportclient/debuginfo.py:405
@@ -291,6 +292,8 @@ msgid ""
 "'{0}' must be owned by abrt. Please run '# chown -R abrt.abrt {0}' to fix "
 "the issue."
 msgstr ""
+"'{0}' の所有者は abrt でなければなりません。修正するためには '# chown -R "
+"abrt.abrt {0}' を実行してください。"
 
 #. Was: "All downloaded packages have been extracted, removing..."
 #. but it was appearing even if no packages were in fact extracted
@@ -538,11 +541,11 @@ msgstr ""
 msgid ""
 "Please provide a short description of the problem and please include the "
 "steps you have used to reproduce the problem."
-msgstr ""
+msgstr "問題の簡単な説明と、問題を再現するための手順を含めてください。"
 
 #: ../src/gui-wizard-gtk/wizard.c:888
 msgid "Please provide the steps you have used to reproduce the problem."
-msgstr ""
+msgstr "問題を再現するために使用した手順を含めてください。"
 
 #: ../src/gui-wizard-gtk/wizard.c:1009
 msgid "(click here to view/edit)"
@@ -574,6 +577,11 @@ msgid ""
 "\t▫ <b>corrupted problem data</b>\n"
 "\t▫ <b>invalid configuration</b>"
 msgstr ""
+"問題の処理に失敗しました。これにはさまざまな理由が考えられますが、"
+"一般的には以下の 3 つが考えられます:\n"
+"\t▫ <b>ネットワーク接続の問題</b>\n"
+"\t▫ <b>破損した問題データ</b>\n"
+"\t▫ <b>無効な構成</b>"
 
 #: ../src/gui-wizard-gtk/wizard.c:1567
 msgid ""
@@ -602,7 +610,7 @@ msgstr "処理が完了しました。次のステップに進んでください
 
 #: ../src/gui-wizard-gtk/wizard.c:1770
 msgid "No commands could be found for processsing the crashdump.\n"
-msgstr ""
+msgstr "クラッシュダンプを処理するためのコマンドが見つかりませんでした。\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1785
 msgid "Processing interrupted: can't continue without writable directory."
@@ -633,7 +641,7 @@ msgstr "無効なイベント名のためバックトレースのレーティン
 #: ../src/gui-wizard-gtk/wizard.c:2418
 #, c-format
 msgid "Failed to save file '%s'"
-msgstr ""
+msgstr "ファイル '%s' の保存に失敗しました"
 
 #: ../src/gui-wizard-gtk/wizard.c:2619
 #, c-format
@@ -1949,6 +1957,9 @@ msgid ""
 "is unknown. Please ensure you will be able to provide detailed information "
 "to our Support Team. Would you like to continue and open a new support case?"
 msgstr ""
+"この問題は一度しか発生しておらず、問題を再現できるかどうかは不明です。サポー"
+"トチームに詳細な情報を提供できるようにしてください。続行して新しいサポートケ"
+"ースを作成しますか?"
 
 #: ../src/plugins/reporter-rhtsupport.c:779
 #, c-format
