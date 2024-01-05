@@ -10,19 +10,20 @@
 # Manuela Silva <mmsrs@sky.com>, 2020.
 # Lucas Perônico Barbotin <lucasperonicobarbotin@gmail.com>, 2020.
 # Fábio Rodrigues Ribeiro <farribeiro@gmail.com>, 2020.
-# Caio Fontes de Castro <caiofcastro@usp.br>, 2020.
+# Caio Fontes de Castro <caiofcastro@usp.br>, 2020, 2023.
 # Gustavo Costa <gusta@null.net>, 2021.
 # EDIVAN CARVALHO <edivancarvalho2008@hotmail.com>, 2021.
 # Marcus Gabaldo <gabaldo@gmail.com>, 2021.
-# Daimar Stein <daimarstein@pm.me>, 2021, 2022.
+# Daimar Stein <daimarstein@pm.me>, 2021, 2022, 2023.
 # Daniel Russo Fernandes <drusso86@gmail.com>, 2022.
+# Gabriel Aguas <gabriel.alex.aguas@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2022-02-13 21:16+0000\n"
-"Last-Translator: Daimar Stein <daimarstein@pm.me>\n"
+"PO-Revision-Date: 2023-08-17 21:21+0000\n"
+"Last-Translator: Caio Fontes de Castro <caiofcastro@usp.br>\n"
 "Language-Team: Portuguese <https://translate.fedoraproject.org/projects/abrt/"
 "libreport/pt/>\n"
 "Language: pt\n"
@@ -30,7 +31,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 4.10.1\n"
+"X-Generator: Weblate 4.18.2\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -59,7 +60,7 @@ msgstr "Remover PROBLEM_DIR depois de reportar"
 
 #: ../src/cli/cli.c:92
 msgid "Expert mode"
-msgstr "Modo expert"
+msgstr "Modo avançado"
 
 #: ../src/cli/cli.c:93 ../src/report-newt/report-newt.c:397
 msgid "Display version and exit"
@@ -67,7 +68,7 @@ msgstr "Apresentar a versão e terminar"
 
 #: ../src/cli/cli.c:94
 msgid "Noninteractive: don't ask questions, assume 'yes'"
-msgstr "Não interactivo: não perguntar, assumir 'sim'"
+msgstr "Não interativo: não perguntar, assumir 'sim'"
 
 #: ../src/cli/cli.c:96
 msgid "Log to syslog"
@@ -128,11 +129,11 @@ msgstr "# Motivo da falha"
 
 #: ../src/cli/cli-report.c:170
 msgid "# os-release configuration file from root dir"
-msgstr "# arquivo de configuração os-release do diretório raiz"
+msgstr "# arquivo de configuração os-release do directório raiz"
 
 #: ../src/cli/cli-report.c:175
 msgid "# Release string of the operating system from root dir"
-msgstr "# String de release do sistema operacional do diretório raíz"
+msgstr "# String de release do sistema operacional do directório raiz"
 
 #: ../src/cli/cli-report.c:183
 msgid "# os-release configuration file"
@@ -194,7 +195,7 @@ msgstr "Escolha um evento para rodar: "
 
 #: ../src/cli/cli-report.c:878
 msgid "Select a workflow to run: "
-msgstr ""
+msgstr "Escolha um fluxo de trabalho a executar: "
 
 #: ../src/client-python/reportclient/debuginfo.py:100
 #, python-brace-format
@@ -280,6 +281,8 @@ msgstr ""
 msgid ""
 "Warning: Not enough free space in cache dir '{0}' ({1:.2f}Mb left). Continue?"
 msgstr ""
+"Aviso: Espaço insuficiente no diretório de cache '{0}' ({1:.2f}Mb restantes)"
+". Deseja continuar?"
 
 #: ../src/client-python/reportclient/debuginfo.py:398
 #, python-brace-format
@@ -333,7 +336,7 @@ msgstr "Erro ao inicializar yum (YumBase.doConfigSetup): '{0!s}'"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:107
 msgid "Error: can't make cachedir, exiting"
-msgstr ""
+msgstr "Erro: não foi possível criar o diretório de cache, saindo"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:116
 msgid "Can't disable repository '{0!s}': {1!s}"
@@ -342,6 +345,8 @@ msgstr "Não foi possível desabilitar o repositório '{0!s}': {1!s}"
 #: ../src/client-python/reportclient/yumdebuginfo.py:135
 msgid "Can't disable async download, the output might contain artifacts!"
 msgstr ""
+"Não foi possível desabilitar a transferência assíncrona, o resultado pode "
+"conter artefactos!"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:137
 #, python-brace-format
@@ -456,12 +461,16 @@ msgid ""
 "A timeout was reached while waiting for a prompt result from the DBus Secret "
 "Service."
 msgstr ""
+"O limite de tempo foi atingido enquanto esperava por um resultado de prompt "
+"do Serviço Secreto de DBus."
 
 #: ../src/gtk-helpers/secrets.c:552
 msgid ""
 "Do you want to stop waiting and continue in reporting without properly "
 "loaded configuration?"
 msgstr ""
+"Deseja parar de esperar e continuar o relatório sem a configuração "
+"propriamente carregada?"
 
 #: ../src/gtk-helpers/secrets.c:862
 #, c-format
@@ -536,6 +545,8 @@ msgid ""
 "Please provide a short description of the problem and please include the "
 "steps you have used to reproduce the problem."
 msgstr ""
+"Por favor descreva de maneira resumida o problema e inclua os passos que "
+"você usou para reproduzir o problema."
 
 #: ../src/gui-wizard-gtk/wizard.c:888
 msgid "Please provide the steps you have used to reproduce the problem."

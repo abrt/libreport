@@ -18,13 +18,14 @@
 # Luca Ciavatta <luca.ciavatta@gmail.com>, 2017. #zanata
 # Luigi Toscano <luigi.toscano@tiscali.it>, 2017. #zanata
 # Agostino Montanaro <telometto@protonmail.com>, 2021.
+# Nathan <nathan95@live.it>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2021-05-27 23:02+0000\n"
-"Last-Translator: Agostino Montanaro <telometto@protonmail.com>\n"
+"PO-Revision-Date: 2023-11-02 11:47+0000\n"
+"Last-Translator: Nathan <nathan95@live.it>\n"
 "Language-Team: Italian <https://translate.fedoraproject.org/projects/abrt/"
 "libreport/it/>\n"
 "Language: it\n"
@@ -32,7 +33,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.6.2\n"
+"X-Generator: Weblate 5.1.1\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -631,7 +632,7 @@ msgstr "Elaborazione terminata, si prega di procedere con il prossimo passo."
 
 #: ../src/gui-wizard-gtk/wizard.c:1770
 msgid "No commands could be found for processsing the crashdump.\n"
-msgstr ""
+msgstr "Non sono stati trovati comandi per l'elaborazione del crashdump.\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1785
 msgid "Processing interrupted: can't continue without writable directory."
@@ -646,6 +647,9 @@ msgid ""
 "No matching actions found for this event.\n"
 "\n"
 msgstr ""
+"--- Salta %s ---\n"
+"Non sono state trovate azioni corrispondenti per questo evento.\n"
+"\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1843
 msgid "Processing..."
@@ -797,7 +801,6 @@ msgstr ""
 "scelto, possono diventare pubblicamente visibili."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
-#, fuzzy
 msgid "Sensitive words"
 msgstr "Termini sensibili"
 
@@ -806,7 +809,6 @@ msgid "Custom"
 msgstr "Personalizzazione"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
-#, fuzzy
 msgid "Clear the search bar to see the list of security sensitive words."
 msgstr ""
 "Cancellare la barra di ricerca per visualizzare un elenco di parole di "
@@ -847,12 +849,10 @@ msgstr ""
 "l'inglese se possibile."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
-#, fuzzy
 msgid "How reproducible is this problem?"
 msgstr "Quanto è riproducibile il problema?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
-#, fuzzy
 msgid "How it can be reproduced (one step per line)?"
 msgstr "Come può essere riprodotto (un passaggio per riga)?"
 
@@ -1100,12 +1100,12 @@ msgstr ""
 "il bug."
 
 #: ../src/lib/event_config.c:533
-#, fuzzy
-#| msgid "Reporting disabled because the backtrace is unusable."
 msgid ""
 "Reporting is disabled because the generated backtrace has low informational "
 "value."
-msgstr "Notifica disabilitata poichè il backtrace è inutilizzabile."
+msgstr ""
+"La segnalazione è disabilitata perché il backtrace generato ha un basso "
+"valore informativo."
 
 #: ../src/lib/event_config.c:537
 #, c-format
@@ -1122,7 +1122,7 @@ msgstr ""
 "Un corretto debuginfo è probabilmente mancante o il coredump è corrotto."
 
 #: ../src/lib/iso_date_string.c:50
-#, fuzzy, c-format
+#, c-format
 msgid "String doesn't seem to be a date: '%s'"
 msgstr "La stringa non sembra essere una data: '%s'"
 
@@ -1516,10 +1516,9 @@ msgid "Logging into Bugzilla at %s"
 msgstr "Accesso in corso in Bugzilla in %s"
 
 #: ../src/plugins/reporter-bugzilla.c:223
-#, fuzzy, c-format
-#| msgid "Invalid password or login. Please enter your Red Hat login:"
+#, c-format
 msgid "Invalid password or login. Please enter your %s login:"
-msgstr "Password o login invalidi. Inserire il login di Red Hat"
+msgstr "Password o login invalidi. Inserire i tuoi dati di login:"
 
 #: ../src/plugins/reporter-bugzilla.c:228
 #: ../src/plugins/reporter-rhtsupport.c:411
