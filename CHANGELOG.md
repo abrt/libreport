@@ -5,9 +5,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.17.12] - 2024-02-04
 ### Fixed
 - reporter-upload: Fix double free crash (#792)
 - gui-wizard-gtk: Enable word wrap for comments
+- Fix compatibility with libxml2 2.12 (Nicolas Iooss)
+- Fix multiple problems with the test suite (Florian Weimer)
+
+### Added
+- Add support for unpacking coredumps in the problem directory
+- Add "MEMORY_PRESSURE_WATCH" to the list of ignored words
 
 ## [2.17.11] - 2023-06-30
 ### Fixed
@@ -349,7 +357,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.17.11...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.17.12...HEAD
+[2.17.12]: https://github.com/abrt/libreport/compare/2.17.11...2.17.12
 [2.17.11]: https://github.com/abrt/libreport/compare/2.17.10...2.17.11
 [2.17.10]: https://github.com/abrt/libreport/compare/2.17.9...2.17.10
 [2.17.9]: https://github.com/abrt/libreport/compare/2.17.8...2.17.9
