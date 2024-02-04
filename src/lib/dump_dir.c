@@ -2419,6 +2419,26 @@ int dd_copy_file_unpack(struct dump_dir *dd, const char *name, const char *sourc
 
 }
 
+int dd_unpack_coredump(struct dump_dir *dd, const char *coredump_archive_filename)
+{
+    if (dd_exist(dd, FILENAME_COREDUMP))
+        return 0;
+
+    if (!coredump_archive_filename || !dd_exist(dd, coredump_archive_filename))
+    {
+        error_msg("Coredump archive file missing in the problem directory '%s'", dd->dd_dirname);
+        return -1;
+    }
+
+    const gchar *parts[] = {dd->dd_dirname, coredump_archive_filename, NULL};
+    g_autofree const char *coredump_archive_path = g_build_filenamev((gchar **) parts);
+
+    if (dd_copy_file_unpack(dd, FILENAME_COREDUMP, coredump_archive_path))
+        return -1;
+
+    return 0;
+}
+
 /* flags - for future needs */
 int dd_create_archive(struct dump_dir *dd, const char *archive_name,
         const_string_vector_const_ptr_t exclude_elements, int flags)
