@@ -230,6 +230,24 @@ static PyObject *p_dd_delete_item(PyObject *pself, PyObject *args)
     return Py_BuildValue("i", dd_delete_item(self->dd, name));
 }
 
+/* int dd_unpack_coredump(struct dump_dir *dd, const char *coredump_archive_filename); */
+static PyObject *p_dd_unpack_coredump(PyObject *pself, PyObject *args)
+{
+    p_dump_dir *self = (p_dump_dir*)pself;
+    if (!self->dd)
+    {
+        PyErr_SetString(ReportError, "dump dir is not open");
+        return NULL;
+    }
+    const char *coredump_archive_filename;
+    if (!PyArg_ParseTuple(args, "s", &coredump_archive_filename))
+    {
+        return NULL;
+    }
+
+    return Py_BuildValue("i", dd_unpack_coredump(self->dd, coredump_archive_filename));
+}
+
 /*** attribute getters/setters ***/
 
 static PyObject *get_name(PyObject *pself, void *unused)
@@ -261,6 +279,7 @@ static PyMethodDef p_dump_dir_methods[] = {
     { "save_binary", p_dd_save_binary, METH_VARARGS, NULL },
     { "copy_file"  , p_dd_copy_file, METH_VARARGS, NULL },
     { "delete_item", p_dd_delete_item, METH_VARARGS, NULL },
+    { "unpack_coredump", p_dd_unpack_coredump, METH_VARARGS, NULL },
     { NULL, NULL, 0, NULL }
 };
 
