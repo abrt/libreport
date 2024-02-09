@@ -109,7 +109,7 @@ class BZConnection:
             content_type = 'text/plain'
             file_content = base64.b64encode(content.encode(locale.getpreferredencoding())).decode('utf-8')
         else:
-            content_type = 'aplication/octet-stream'
+            content_type = 'application/octet-stream'
             file_content = base64.b64encode(content).decode('utf-8')
 
         data = json.dumps({'ids': [bug_id],
@@ -144,7 +144,7 @@ class BZConnection:
             content_type = 'text/plain'
             file_content = base64.b64encode(pd_item['content'].encode('utf-8')).decode('utf-8')
         else:
-            content_type = 'aplication/octet-stream'
+            content_type = 'application/octet-stream'
             # "content" is actually a file path in this case...
             with open(pd_item['content'], 'rb') as pd_item_content:
                 file_content = base64.b64encode(pd_item_content.read()).decode('utf-8')
