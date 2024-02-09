@@ -145,7 +145,9 @@ class BZConnection:
             file_content = base64.b64encode(pd_item['content'].encode('utf-8')).decode('utf-8')
         else:
             content_type = 'aplication/octet-stream'
-            file_content = base64.b64encode(pd_item['content']).decode('utf-8')
+            # "content" is actually a file path in this case...
+            with open(pd_item['content'], 'rb') as pd_item_content:
+                file_content = base64.b64encode(pd_item_content.read()).decode('utf-8')
 
         data = json.dumps({'data': file_content,
                            'file_name': file_name,
