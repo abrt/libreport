@@ -529,6 +529,13 @@ if __name__ == '__main__':
         if not rhbz.get('b_api_key'):
             logger.error(_("Can't continue without API key"))
             sys.exit(1)
+
+    try:
+        rhbz.get('b_api_key', '').encode('latin-1')  # HTTP headers are encoded with latin-1 (ISO-8859-1)
+    except UnicodeEncodeError as e:
+        logger.error(_("API key contains invalid characters: %s"), str(e))
+        sys.exit(1)
+
     bz_conn.add_api_key(rhbz.get('b_api_key'))
 
     if opt_switches & {'-t', '--ticket'}:
