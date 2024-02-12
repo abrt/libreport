@@ -119,15 +119,17 @@ def set_settings(bz: Dict, settings: Dict):
 
     if not bz.get('b_create_private'):
         bz['b_create_private'] = False
-    environ = os.environ.get('ABRT_CREATE_PRIVATE_TICKET')
-    if not environ:
-        environ = os.environ.get("Bugzilla_CreatePrivate")
-        if not environ:
-            environ = settings.get('Bugzilla_CreatePrivate')
-            if not environ:
-                bz['b_create_private'] = False
-            else:
-                bz['b_create_private'] = string_to_bool(environ)
+
+    # env var has the highest priority
+    b_create_private = os.environ.get('ABRT_CREATE_PRIVATE_TICKET')
+    if not b_create_private:
+        # 2nd highest priority
+        b_create_private = os.environ.get("Bugzilla_CreatePrivate")
+        if not b_create_private:
+            # value from the config file
+            b_create_private = settings.get('Bugzilla_CreatePrivate')
+    if b_create_private:
+        bz['b_create_private'] = string_to_bool(b_create_private)
 
     if bz.get('b_create_private'):
         logger.info('create private bz ticket: YES')
