@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.17.14] - 2024-02-12
+### Changed
+- reporter-bugzilla: Reduce number of duplicate bug reports
+
+### Fixed
+- reporter-bugzilla: Fail gracefully if API key contains invalid characters
+- reporter-bugzilla: Fix creating binary attachments
+- reporter-bugzilla: Fix loading configuration
+
 ## [2.17.13] - 2024-02-04
 ### Fixed
 - Exclude coredump archives when creating a bug
@@ -361,7 +370,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.17.13...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.17.14...HEAD
+[2.17.14]: https://github.com/abrt/libreport/compare/2.17.13...2.17.14
 [2.17.13]: https://github.com/abrt/libreport/compare/2.17.12...2.17.13
 [2.17.12]: https://github.com/abrt/libreport/compare/2.17.11...2.17.12
 [2.17.11]: https://github.com/abrt/libreport/compare/2.17.10...2.17.11
