@@ -175,7 +175,11 @@ class BZConnection:
                    summary: str,
                    comment: str,
                    private: bool,
-                   group: List) -> int:
+                   group: List,
+                   status: Optional[str] = None,
+                   resolution: Optional[str] = None,
+                   comment_is_private: bool = False,
+                   extra_private_groups: Optional[List[str]] = None) -> int:
         self.logger.debug('-- %s', inspect.getframeinfo(inspect.currentframe()).function)
 
         if group:
@@ -199,6 +203,15 @@ class BZConnection:
             'description': comment,
             'status_whiteboard': whiteboard
         }
+
+        if status and resolution:
+            data['status'] = status
+            data['resolution'] = resolution
+
+        if comment_is_private:
+            data['comment_is_private'] = comment_is_private
+            if extra_private_groups:
+                data['extra_private_groups'] = extra_private_groups
 
         sub_component = None
         if product.startswith('Red Hat Enterprise Linux'):
@@ -270,10 +283,16 @@ class BZConnection:
 
         return comments
 
-    def bug_add_comment(self, bug_id: int, comment: str):
+    def bug_add_comment(self, bug_id: int, comment: str, is_private: bool = False, extra_private_groups: Optional[List[str]] = None):
         self.logger.debug('-- %s', inspect.getframeinfo(inspect.currentframe()).function)
         params = self.params.copy()
         params.update({'id': bug_id, 'comment': comment})
+
+        if is_private:
+            params.update({'is_private': True})
+        if extra_private_groups:
+            params.update({'extra_private_groups': extra_private_groups})
+
         response = requests.post(os.path.join(self.url, f'rest.cgi/bug/{bug_id}/comment'),
                                  headers=self.headers,
                                  params=params,
