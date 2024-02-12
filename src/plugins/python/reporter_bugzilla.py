@@ -739,46 +739,64 @@ if __name__ == '__main__':
 
         # }
 
-        if existing_id < 0 or rhbz['b_create_private']:
+        if existing_id < 0:
             pf = ProblemFormatter(fmt_file, problem_data, logger)
             report = pf.generate_report()
             # TODO: if not report (how would that happen?)
             if existing_id > 0:
-                msg = _(
-                    'You have requested to make your data accessible only to a '
-                    'specific group and this bug is a duplicate of bug: '
-                    '{}/{}'
-                    ' '
-                    'In case of bug duplicates a new comment is added to the '
-                    'original bug report but access to the comments cannot be '
-                    'restricted to a specific group.'
-                    ' '
-                    'Would you like to open a new bug report and close it as '
-                    'DUPLICATE of the original one?'
-                    ' '
-                    'Otherwise, the bug reporting procedure will be terminated.'
-                ).format(rhbz['b_bugzilla_url'], existing_id)
-                if not ask_yes_no(msg):
-                    sys.exit(const.EXIT_CANCEL_BY_USER)
-                msg = _(
-                    "\nThis is a private, duplicate bug report of bug {}. "
-                    "The report has been created because Bugzilla cannot "
-                    "grant access to a comment for a specific group.\n"
-                ).format(existing_id)
-                report['text'] += msg
+                pass
 
             # Create new bug
-            logger.warning(_('Creating a new bug'))
+            logger.warning(_('Creating a new bug...'))
 
             if existing_id < 0 <= crossver_id:
                 report['text'] += f"\nPotential duplicate: bug {crossver_id}\n"
 
-            new_id = bz_conn.bug_create(problem_data, rhbz['b_product'], rhbz['b_product_version'],
-                                        report['summary'], report['text'], rhbz['b_create_private'],
-                                        rhbz['b_private_groups'])
+            new_id = bz_conn.bug_create(
+                problem_data,
+                rhbz['b_product'],
+                rhbz['b_product_version'],
+                report['summary'],
+                report['text'],
+                False,
+                None,
+                comment_is_private = rhbz['b_create_private'],
+                extra_private_groups = rhbz['b_private_groups']
+            )
             if new_id == -1:
-                # bug_create logged an error
+                # bug_create logged the error
                 sys.exit(1)
+
+            attachments_bug_id = new_id
+
+            if rhbz['b_create_private']:
+                # User wants to create a new private bug
+                text = _(
+                    f"This is a supplementary private bug for uploading attachments for the problem reported in {new_id}. "
+                    f"These attachments are intended to be accessible only to members of the following group(s):\n\n"
+                    f"{",".join(rhbz['b_private_groups'])}"
+                ).format(rhbz['b_private_groups'])
+                attachments_bug_id = bz_conn.bug_create(
+                    problem_data,
+                    rhbz['b_product'],
+                    rhbz['b_product_version'],
+                    report['summary'],
+                    text,
+                    True,
+                    rhbz['b_private_groups']
+                )
+                if attachments_bug_id == -1:
+                    # bug_create logged the error
+                    sys.exit(1)
+
+                # Immediately close the supplementary private bug with attachments
+                update_data = {
+                    'ids': [attachments_bug_id],
+                    'status': 'CLOSED',
+                    'resolution': 'NOTABUG',
+                    'minor_update': True
+                }
+                bz_conn.bug_update(attachments_bug_id, update_data)
 
             dump_dir_obj = DumpDir(logger)
             dd = dump_dir_obj.dd_opendir(dump_dir_name, 0)
@@ -802,12 +820,37 @@ if __name__ == '__main__':
 
                 dump_dir_obj.dd_close(dd)
 
-            logger.warning(_('Adding attachments to bug %i'), new_id)
+            logger.warning(_('Adding attachments to bug %i'), attachments_bug_id)
 
+            bug_attachments = []
             for attachment in report['attach']:
-                response = bz_conn.attachment_create_from_problem_data(new_id, attachment, problem_data)
+                response = bz_conn.attachment_create_from_problem_data(attachments_bug_id, attachment, problem_data)
                 logger.info("Attached '%s' to bug no. %s with id %s",
-                            attachment, new_id, response.json()['ids'][0])
+                            attachment, attachments_bug_id, response.json()['ids'][0])
+                if response.status_code == 201:
+                    bug_attachment = {
+                        'name': attachment,
+                        'id': response.json()['ids'][0]
+                    }
+                    bug_attachments.append(bug_attachment)
+
+            if rhbz['b_create_private'] and new_id != attachments_bug_id:
+                text = _(
+                    "Bugzilla does not offer support for private attachments accessible only to specific groups, "
+                    "such as 'fedora_contrib_private'. As a result, a separate private bug has been created, "
+                    "and the following attachments have been added there:\n\n"
+                )
+                for bug_attachment in bug_attachments:
+                    # We are hardcoding the URL here. The code already relies on certain "Red Hat Bugzilla API customizations",
+                    # so it wouldn't reliably work with any other Bugzilla instance anyway...
+                    text += f"* {bug_attachment['name']}: https://bugzilla-attachments.redhat.com/attachment.cgi?id={bug_attachment['id']}\n"
+                # We created a public bug FIXME
+                bz_conn.bug_add_comment(
+                    new_id,
+                    text,
+                    is_private=rhbz['b_create_private'],
+                    extra_private_groups=rhbz['b_private_groups']
+                )
 
             # We just created a new bug, let's make sure that we are in CC
             bug_info = bz_conn.bug_info(new_id)
@@ -819,15 +862,6 @@ if __name__ == '__main__':
             bug_info = {'bi_id': new_id,
                         'bi_status': 'NEW',
                         'bi_dup_id': -1}
-
-            if existing_id >= 0:
-                logger.warning(_("Closing bug %i as duplicate of bug %i"), new_id, existing_id)
-                update_data = {'ids': [new_id],
-                               'status': 'CLOSED',
-                               'resolution': 'DUPLICATE',
-                               'dupe_of': existing_id,
-                               'minor_update': True}
-                bz_conn.bug_update(new_id, update_data)
 
             log_out(bug_info, rhbz, dump_dir_name)
 
@@ -842,30 +876,6 @@ if __name__ == '__main__':
         origin = bz_conn.find_origin_bug_closed_duplicate(bug_info)
         if origin:
             bug_info = origin
-
-    # Original author's note:
-    # We used to skip adding the comment to CLOSED bugs:
-    #
-    # if (strcmp(bug_info['bi_status'], "CLOSED") != 0)
-    # {
-    #
-    # But that condition has been added without a good explanation of the
-    # reason for doing so:
-    #
-    # ABRT commit 1bf37ad93e87f065347fdb7224578d55cca8d384
-    #
-    # -    if (bug_id > 0)
-    # +    if (strcmp(bz.bug_status, "CLOSED") != 0)
-    #
-    #
-    # From my point of view, there is no good reason to not add the comment to
-    # such a bug. The reporter spent several minutes waiting for the backtrace
-    # and we don't want to make the reporters feel that they spent their time
-    # in vain and I think that adding comments to already closed bugs doesn't
-    # hurt the maintainers (at least not me).
-    #
-    # Plenty of new comments might convince the maintainer to reconsider the
-    # bug's status.
 
     # Add user's login to CC if not there already, but only if the login is known
     if (
@@ -901,21 +911,12 @@ if __name__ == '__main__':
 
         if not dup_comment:
             logger.warning(_("Adding new comment to bug %d"), bug_info['bi_id'])
-            bz_conn.bug_add_comment(int(bug_info['bi_id']), bzcomment)
-
-            bt = pd_get_item_content(const.FILENAME_BACKTRACE, problem_data)
-            rating_str = pd_get_item_content(const.FILENAME_RATING, problem_data)
-            rating = 0
-            # python doesn't have rating file
-            if rating_str:
-                rtg = re.search(r'^\d+', rating_str)
-                if rtg:
-                    rating = int(rtg.group(0))
-                if rating > G_MAXUINT64:
-                    logger.error("expected number in range <0, %lu>: '%s'", G_MAXUINT64, rating_str)
-            if bt and rating > bug_info.get('bi_best_bt_rating', 0):
-                logger.warning(_("Attaching better backtrace"))
-                bz_conn.attachment_create(int(bug_info['bi_id']), const.FILENAME_BACKTRACE, True)
+            bz_conn.bug_add_comment(
+                int(bug_info['bi_id']),
+                bzcomment,
+                is_private = rhbz['b_create_private'],
+                extra_private_groups = rhbz['b_private_groups']
+            )
         else:
             logger.warning(_('Found the same comment in the bug history, not adding a new one'))
 
