@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.17.15] - 2024-02-18
+### Changed
+- reporter-bugzilla: Improve bug formatting
+
 ## [2.17.14] - 2024-02-12
 ### Changed
 - reporter-bugzilla: Reduce number of duplicate bug reports
@@ -370,7 +374,8 @@ files.
 functions reporting errors through errno.
 
 
-[Unreleased]: https://github.com/abrt/libreport/compare/2.17.14...HEAD
+[Unreleased]: https://github.com/abrt/libreport/compare/2.17.15...HEAD
+[2.17.15]: https://github.com/abrt/libreport/compare/2.17.14...2.17.15
 [2.17.14]: https://github.com/abrt/libreport/compare/2.17.13...2.17.14
 [2.17.13]: https://github.com/abrt/libreport/compare/2.17.12...2.17.13
 [2.17.12]: https://github.com/abrt/libreport/compare/2.17.11...2.17.12
