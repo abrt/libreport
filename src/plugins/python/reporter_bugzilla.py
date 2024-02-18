@@ -770,7 +770,7 @@ if __name__ == '__main__':
             attachments_bug_id = new_id
 
             if rhbz['b_create_private']:
-                # User wants to create a new private bug
+                # Create a supplementary private bug for uploading attachments
                 text = _(
                     f"This is a supplementary private bug for uploading attachments for the problem reported in {new_id}. "
                     f"These attachments are intended to be accessible only to members of the following group(s):\n\n"
