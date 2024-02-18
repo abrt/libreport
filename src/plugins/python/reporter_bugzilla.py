@@ -772,9 +772,9 @@ if __name__ == '__main__':
             if rhbz['b_create_private']:
                 # Create a supplementary private bug for uploading attachments
                 text = _(
-                    f"This is a supplementary private bug for uploading attachments for the problem reported in {new_id}. "
+                    f"This is a supplementary private bug for uploading attachments for the problem reported in #{new_id}. "
                     f"These attachments are intended to be accessible only to members of the following group(s):\n\n"
-                    f"{",".join(rhbz['b_private_groups'])}"
+                    f" * {",".join(rhbz['b_private_groups'])}"
                 ).format(rhbz['b_private_groups'])
                 attachments_bug_id = bz_conn.bug_create(
                     problem_data,
