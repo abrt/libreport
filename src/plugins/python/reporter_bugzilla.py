@@ -776,6 +776,10 @@ if __name__ == '__main__':
                     f"These attachments are intended to be accessible only to members of the following group(s):\n\n"
                     f" * {",".join(rhbz['b_private_groups'])}"
                 ).format(rhbz['b_private_groups'])
+                if report['summary'].startswith('[abrt]'):
+                    # Make the supplementary bugs easily identifiable by adding "[attachments]" to the bug summary
+                    report['summary'] = f"[abrt][attachments]{report['summary'][len('[abrt]'):]}"
+
                 attachments_bug_id = bz_conn.bug_create(
                     problem_data,
                     rhbz['b_product'],
