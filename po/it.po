@@ -19,13 +19,14 @@
 # Luigi Toscano <luigi.toscano@tiscali.it>, 2017. #zanata
 # Agostino Montanaro <telometto@protonmail.com>, 2021.
 # Nathan <nathan95@live.it>, 2023.
+# Alessandro Bugliazzini <yattatux@posteo.net>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2023-11-02 11:47+0000\n"
-"Last-Translator: Nathan <nathan95@live.it>\n"
+"PO-Revision-Date: 2024-04-21 19:36+0000\n"
+"Last-Translator: Alessandro Bugliazzini <yattatux@posteo.net>\n"
 "Language-Team: Italian <https://translate.fedoraproject.org/projects/abrt/"
 "libreport/it/>\n"
 "Language: it\n"
@@ -33,7 +34,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.1.1\n"
+"X-Generator: Weblate 5.4\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -1527,7 +1528,6 @@ msgid "Invalid password or login. Please enter the password for '%s':"
 msgstr "Password o login non validi. Digitare la password per '%s':"
 
 #: ../src/plugins/reporter-bugzilla.c:247
-#, fuzzy
 msgid ""
 "\n"
 "& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d "
@@ -1575,48 +1575,46 @@ msgstr ""
 "\n"
 "& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d "
 "DIR\n"
-"o:\n"
+"or:\n"
 "& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\n"
-"o:\n"
+"or:\n"
 "& [-v] [-c CONFFILE]... [-d DIR] -t[ID] -w\n"
-"o:\n"
+"or:\n"
 "& [-v] [-c CONFFILE]... -h DUPHASH [-p[PRODUCT]]\n"
 "\n"
 "Riporta il problema su Bugzilla.\n"
 "\n"
-"Lo strumento legge la DIR. Successivamente accede ian Bugzilla e va alla \n"
-"ricerca nella 'Whiteboard' di un bug con lo stesso abrt_hash:HEXSTRING.\n"
+"Lo strumento legge la DIR. Successivamente accede a Bugzilla e va alla\n"
+"ricerca di un bug con lo stesso abrt_hash:HEXSTRING nella 'Whiteboard'.\n"
 "\n"
-"In caso di riscontro negativo verrà creato uno nuovo bug. Gli elementi \n"
-"di DIR vengono archiviati nel bug come parte della descrizione o come \n"
+"Se tale bug non viene trovato, verrà creato uno nuovo bug. Gli elementi\n"
+"di DIR vengono archiviati nel bug come parte della descrizione o come\n"
 "allegati in base alla loro dimensione e tipologia.\n"
 "\n"
-"In caso contrario se è possibile identificare il bug ed è contrassegnato \n"
-"con CLOSED DUPLICATE, lo strumento segue una catena di duplicati \n"
-"fino a quando non identifica un bug non-DUPLICATE. Lo strumento \n"
-"aggiunge un nuovo commento al bug trovato.\n"
+"Altrimenti, se tale bug viene trovato ed è contrassegnato come CLOSED "
+"DUPLICATE,\n"
+"lo strumento segue una catena di duplicati fino a quando non trova un bug\n"
+"non-DUPLICATE. Lo strumento aggiunge un nuovo commento al bug trovato.\n"
 "\n"
 "L'URL per il nuovo bug o per quello appena modificato viene stampato\n"
-" su stdout e registrato in 'reported_to'.\n"
+"su stdout e registrato in 'reported_to'.\n"
 "\n"
 "L'opzione -t carica i FILE sul sito di Bugzilla nel bug già creato. L'ID del "
-"bug è \n"
+"bug è\n"
 "ricavato dalla directory specificata da -d DIR. Se i dati del problema in "
-"DIR \n"
-"non sono stati ancora segnalati, il carico dei dati fallisce.\n"
+"DIR\n"
+"non sono stati ancora segnalati a Bugzilla, il carico dei dati fallirà.\n"
 "\n"
-"Opzione -tID carica i FILE nel bug con ID specificato in Bugzilla. -d DIR è "
-"ignorato.\n"
+"L'opzione -tID carica i FILE nel bug con ID specificato in Bugzilla.\n"
+"-d DIR è ignorato.\n"
 "\n"
 "L'opzione -w aggiunge l'utente in bugzilla all'elenco CC del bug.\n"
 "\n"
-"L'opzione -r imposta l'ultimo url dall'elemento reporter_to il quale a sua "
-"volta avrà un prefisso\n"
-"TRACKER_NAME per il campo URL. Questa opzione viene usata solo quando si "
-"crea \n"
-"un nuovo bug. Il valore predefinito è 'ABRT Server'\n"
+"L'opzione -r imposta l'ultimo url dall'elemento reporter_to con il prefisso\n"
+"TRACKER_NAME per il campo URL. Questa opzione viene applicata solo quando\n"
+"si crea un nuovo bug. Il valore predefinito è 'ABRT Server'\n"
 "\n"
-"Se non specificato, CONFFILE eseguirà un default su "
+"Se non specificato, il valore di default di CONFFILE è "
 
 #: ../src/plugins/reporter-bugzilla.c:324
 #: ../src/plugins/reporter-rhtsupport.c:549
@@ -1658,7 +1656,6 @@ msgid "Print BUG_ID which has given DUPHASH"
 msgstr "Stampa BUG_ID che ha dato DUPHASH"
 
 #: ../src/plugins/reporter-bugzilla.c:332
-#, fuzzy
 msgid "Specify a Bugzilla product (ignored without -h)"
 msgstr "Specificare un prodotto Bugzilla (viene ignorato senza -h)"
 
@@ -1688,10 +1685,9 @@ msgid "Failed to get 'REDHAT_BUGZILLA_PRODUCT' from '/etc/os-release'."
 msgstr "Impossibile ricavare 'REDHAT_BUGZILLA_PRODUCT' da '/etc/os-release'."
 
 #: ../src/plugins/reporter-bugzilla.c:434
-#, fuzzy
 msgid "Failed to read '/etc/os-release' to get Bugzilla product."
 msgstr ""
-"Impossibile leggere '/etc/os-release' per ottenere il prodotto Bugzilla"
+"Impossibile leggere '/etc/os-release' per ottenere il prodotto Bugzilla."
 
 #: ../src/plugins/reporter-bugzilla.c:445
 #, c-format
@@ -1699,12 +1695,9 @@ msgid "Using default product '%s'"
 msgstr "Utilizzando il prodotto '%s'"
 
 #: ../src/plugins/reporter-bugzilla.c:468
-#, fuzzy, c-format
-#| msgid ""
-#| "Login is not provided by configuration. Please enter your RHTS login:"
+#, c-format
 msgid "Login is not provided by configuration. Please enter your %s login:"
-msgstr ""
-"Il login non è incluso nella configurazione. Inserisci il tuo login RHTS:"
+msgstr "Il login non è incluso nella configurazione. Inserisci il tuo %s login:"
 
 #: ../src/plugins/reporter-bugzilla.c:476
 #: ../src/plugins/reporter-rhtsupport.c:597
@@ -1750,16 +1743,13 @@ msgid "Logging out"
 msgstr "Uscita in corso"
 
 #: ../src/plugins/reporter-bugzilla.c:579
-#, fuzzy, c-format
-#| msgid ""
-#| "This problem was already reported to MantisBT (see '%s'). Do you still "
-#| "want to create a new issue?"
+#, c-format
 msgid ""
 "This problem was already reported to Bugzilla (see '%s'). Do you still want "
 "to create a new bug?"
 msgstr ""
-"Questo problema è già stato riportato a MantisBT (vedere '%s'). Si desidera "
-"ancora creare una nuova segnalazione?"
+"Questo problema è già stato riportato a Bugzilla (vedere '%s'). Si desidera "
+"ancora creare un nuovo bug?"
 
 #: ../src/plugins/reporter-bugzilla.c:609
 msgid "Can't determine Bugzilla Product from problem data."
@@ -2005,13 +1995,11 @@ msgstr "Password o login invalidi. Inserire il login di Red Hat"
 
 #: ../src/plugins/reporter-rhtsupport.c:473
 msgid "Please enter customer case number to which you want to attach the data:"
-msgstr ""
+msgstr "Inserire il numero della pratica cliente al quale vuoi allegare i dati:"
 
 #: ../src/plugins/reporter-rhtsupport.c:479
-#, fuzzy
-#| msgid "Can't continue without password"
 msgid "Can't continue without Red Hat Support case number"
-msgstr "Non si può continuare senza password"
+msgstr "Non si può continuare senza il numero della pratica di supporto Red Hat"
 
 #: ../src/plugins/reporter-rhtsupport.c:506
 msgid ""
@@ -2061,6 +2049,9 @@ msgid ""
 "to the case? Otherwise, you will have to enter the existing Red Hat support "
 "case number."
 msgstr ""
+"Abbiamo trovato una pratica di supporto Red Hat simile %s. Vuoi allegare i "
+"dati alla pratica? Altrimenti, dovrai inserire il numero della pratica di "
+"supporto Red Hat esistente."
 
 #: ../src/plugins/reporter-rhtsupport.c:676
 #, c-format
@@ -2170,6 +2161,14 @@ msgid ""
 "into systemd journal as a message. If MESSAGEID is defined, the tool\n"
 "creates a catalog message as well.\n"
 msgstr ""
+"& [-v] [-d DIR] [-m MESSAGEID] [-F FMTFILE] [-p NONE|ESSENTIAL|FULL] [-s "
+"SYSLOGID]\n"
+"\n"
+"Riporta le informazioni sul problema nel journal systemd.\n"
+"\n"
+"Lo strumento legge la directory DIR del problema e ne invia i dettagli\n"
+"nel journal sistemd come messaggio. Se MESSAGEID è definito, lo strumento\n"
+"crea anche un messaggio di catalogo.\n"
 
 #: ../src/plugins/reporter-systemd-journal.c:251
 msgid "Catalog message id"
@@ -2177,11 +2176,11 @@ msgstr "Catalogo ID messaggio"
 
 #: ../src/plugins/reporter-systemd-journal.c:252
 msgid "Formatting file for catalog message"
-msgstr ""
+msgstr "File di formattazione per il messaggio del catalogo"
 
 #: ../src/plugins/reporter-systemd-journal.c:253
 msgid "Dump problem dir into systemd journal fields"
-msgstr ""
+msgstr "Scarica la directory del problema nei campi del journal di systemd"
 
 #: ../src/plugins/reporter-systemd-journal.c:254
 msgid "Define SYSLOG_IDENTIFIER systemd journal field"
@@ -2291,15 +2290,59 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"\n"
+"& [-vf] [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... [-d DIR] -t[ID] -w\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... -h DUPHASH\n"
+"\n"
+"Segnala il problema a MantisBT.\n"
+"\n"
+"Lo strumento legge DIR. Quindi tenta di trovare un problema\n"
+"con lo stesso abrt_hash nel campo personalizzato 'abrt_hash'.\n"
+"\n"
+"Se il problema non viene trovato, verrà creato un nuovo problema. Elementi "
+"di DIR\n"
+"vengono archiviati nel problema come parte della descrizione del problema o "
+"come allegati,\n"
+"a seconda del loro tipo e dimensione.\n"
+"\n"
+"Altrimenti, se tale problema viene rilevato ed è contrassegnato come CLOSED "
+"DUPLICATE,\n"
+"lo strumento segue la catena di duplicati finché non rileva un problema non-"
+"DUPLICATE.\n"
+"Lo strumento aggiunge un nuovo commento al problema riscontrato.\n"
+"\n"
+"L'URL del problema nuovo o modificato viene stampato su stdout e registrato\n"
+"nell'elemento 'reported_to'.\n"
+"\n"
+"L'opzione -t carica i FILE nel problema già creato sul sito MantisBT.\n"
+"L'ID del problema viene recuperato dalla directory specificata da -d DIR.\n"
+"Se i dati del problema in DIR non sono mai stati segnalati a MantisBT, il "
+"caricamento fallirà.\n"
+"\n"
+"L'opzione -tID carica i FILE sul problema con l'ID specificato sul sito "
+"MantisBT.\n"
+"-d DIR viene ignorato.\n"
+"\n"
+"L'opzione -r imposta l'ultimo URL dall'elemento reporter_to che ha il "
+"prefisso\n"
+"TRACKER_NAME nel campo URL. Questa opzione si applica solo quando deve\n"
+"essere inserito un nuovo problema. Il valore di default è 'ABRT Server'\n"
+"\n"
+"Se non specificato, il valore predefinito è CONFFILE "
 
 #: ../src/plugins/reporter-mantisbt.c:287
 msgid "Attach FILEs [to issue with this ID]"
 msgstr "Allega FILE [sull'issue con questo ID]"
 
 #: ../src/plugins/reporter-mantisbt.c:326
-#, fuzzy, c-format
+#, c-format
 msgid "Can't open problem dir '%s'."
-msgstr "Impossibile aprire la diretory problema %s."
+msgstr "Impossibile aprire la diretory problema '%s'."
 
 #: ../src/plugins/reporter-mantisbt.c:348
 msgid "Looking for similar problems in MantisBT"
@@ -2372,11 +2415,11 @@ msgstr "Aggiunta URL esterno al bug %i"
 #: ../src/plugins/reporter-mantisbt.c:648
 #, c-format
 msgid "Invalid duplicate format file: '%s"
-msgstr ""
+msgstr "File di formato duplicato non valido: '%s"
 
 #: ../src/plugins/reporter-mantisbt.c:652
 msgid "Failed to format duplicate comment from problem data"
-msgstr ""
+msgstr "Impossibile formattare il commento duplicato dai dati del problema"
 
 #: ../src/plugins/reporter-mantisbt.c:659
 #, c-format
@@ -2590,7 +2633,7 @@ msgstr "Indirizzo del portale di supporto di Red Hat"
 
 #: ../src/plugins/report_RHTSupport_AddData.xml.in.h:2
 msgid "Attach the data to existing Red Hat support case"
-msgstr ""
+msgstr "Allega i dati alla pratica di supporto Red Hat esistente"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report Uploader"
@@ -2681,11 +2724,11 @@ msgstr ""
 
 #: ../src/plugins/report_uReport.xml.in.h:7
 msgid "Report unpackaged problems"
-msgstr ""
+msgstr "Segnala problemi non pacchettizzati"
 
 #: ../src/plugins/report_uReport.xml.in.h:8
 msgid "Report problems coming from unpackaged executables."
-msgstr ""
+msgstr "Segnala problemi provenienti da eseguibili non pacchettizzati."
 
 #: ../src/plugins/report_uReport.xml.in.h:9
 msgid "Contact email address"
@@ -2700,9 +2743,8 @@ msgstr ""
 "di aggiornamenti o altre informazioni"
 
 #: ../src/plugins/watch_Bugzilla.xml.in.h:1
-#, fuzzy
 msgid "Watch Bugzilla Bug"
-msgstr "Seguire il bug Buzilla"
+msgstr "Seguire il bug Bugzilla"
 
 #: ../src/plugins/watch_Bugzilla.xml.in.h:2
 msgid "Adds your e-mail to CC List of Bugzilla bug"
@@ -2757,79 +2799,91 @@ msgstr "MantisBT non è stato in grado di trovare il genitore del problema %d"
 #: ../src/plugins/mantisbt.c:180
 msgid "SOAP: Failed to get child element because of no parent."
 msgstr ""
+"SOAP: impossibile ottenere l'elemento figlio a causa dell'assenza del "
+"genitore."
 
 #: ../src/plugins/mantisbt.c:189
 msgid "SOAP: Failed to get next element because of no node."
 msgstr ""
+"SOAP: impossibile ottenere l'elemento successivo a causa dell'assenza di un "
+"nodo."
 
 #: ../src/plugins/mantisbt.c:198
 msgid "SOAP: Failed to get child node because of no parent."
 msgstr ""
+"SOAP: impossibile ottenere il nodo figlio a causa dell'assenza del genitore."
 
 #: ../src/plugins/mantisbt.c:219
 msgid "SOAP: Failed to parse xml during creating request."
-msgstr ""
+msgstr "SOAP: impossibile analizzare XML durante la creazione della richiesta."
 
 #: ../src/plugins/mantisbt.c:227
 msgid "SOAP: Failed to get xml root element."
-msgstr ""
+msgstr "SOAP: impossibile ottenere l'elemento root xml."
 
 #: ../src/plugins/mantisbt.c:240
 msgid ""
 "SOAP: Failed to add a new child node because of no node or no child name."
 msgstr ""
+"SOAP: impossibile aggiungere un nuovo nodo figlio a causa dell'assenza di un "
+"nodo o di un nome figlio."
 
 #: ../src/plugins/mantisbt.c:245
 msgid "SOAP: Failed to create a new xml child item."
-msgstr ""
+msgstr "SOAP: impossibile creare un nuovo elemento figlio xml."
 
 #: ../src/plugins/mantisbt.c:250
 msgid "SOAP: Failed to create a new property."
-msgstr ""
+msgstr "SOAP: impossibile creare una nuova proprietà."
 
 #: ../src/plugins/mantisbt.c:260
 msgid "SOAP: Failed to add method parametr."
-msgstr ""
+msgstr "SOAP: impossibile aggiungere il parametro del metodo."
 
 #: ../src/plugins/mantisbt.c:289
 msgid "SOAP: Failed to add new issue parametrs."
-msgstr ""
+msgstr "SOAP: impossibile aggiungere nuovi parametri di problema."
 
 #: ../src/plugins/mantisbt.c:292
 msgid ""
 "SOAP: Failed to add new issue parameters because the required items are "
 "missing."
 msgstr ""
+"SOAP: impossibile aggiungere nuovi parametri di problema perché mancano gli "
+"elementi richiesti."
 
 #: ../src/plugins/mantisbt.c:336
 msgid "SOAP: Failed to create a new property in custom fields."
-msgstr ""
+msgstr "SOAP: impossibile creare una nuova proprietà nei campi personalizzati."
 
 #: ../src/plugins/mantisbt.c:354
 msgid ""
 "SOAP: Failed to create SOAP string because of invalid function arguments."
 msgstr ""
+"SOAP: impossibile creare una stringa SOAP a causa di argomenti di funzione "
+"non validi."
 
 #: ../src/plugins/mantisbt.c:361
 msgid "SOAP: Failed to dump xml node."
-msgstr ""
+msgstr "SOAP: impossibile eseguire il dump del nodo xml."
 
 #: ../src/plugins/mantisbt.c:375
 msgid "SOAP: Failed to print SOAP string."
-msgstr ""
+msgstr "SOAP: impossibile stampare la stringa SOAP."
 
 #: ../src/plugins/mantisbt.c:382
 msgid "Failed to dump xml node."
-msgstr ""
+msgstr "Impossibile eseguire il dump del nodo xml."
 
 #: ../src/plugins/mantisbt.c:458
 msgid "SOAP: Failed to parse xml (searching value at depth by name)."
 msgstr ""
+"SOAP: impossibile analizzare XML (ricerca del valore in profondità per nome)."
 
 #: ../src/plugins/mantisbt.c:462 ../src/plugins/mantisbt.c:505
 #: ../src/plugins/mantisbt.c:534
 msgid "SOAP: Failed to create xml text reader."
-msgstr ""
+msgstr "SOAP: impossibile creare il lettore di testo xml."
 
 #: ../src/plugins/mantisbt.c:501
 msgid "SOAP: Failed to parse xml."
@@ -2837,7 +2891,7 @@ msgstr "SOAP: impossibile analizzare xml"
 
 #: ../src/plugins/mantisbt.c:530
 msgid "SOAP: Failed to parse xml (get related to issue)."
-msgstr ""
+msgstr "SOAP: impossibile analizzare XML (collegarsi al problema)."
 
 #: ../src/plugins/mantisbt.c:647
 msgid "Url or request isn't specified."
@@ -2891,7 +2945,7 @@ msgstr "Impossibile cercare il problema MantisBT tramite duphash: '%s'"
 #: ../src/plugins/mantisbt.c:906
 #, c-format
 msgid "Failed to search MantisBT duplicate issue: '%s'"
-msgstr ""
+msgstr "Impossibile cercare il problema dei duplicati di MantisBT: '%s'"
 
 #: ../src/plugins/mantisbt.c:934
 #, c-format
@@ -2935,7 +2989,7 @@ msgstr "Impossibile aggiungere la nota del problema MantisBT: '%s'"
 
 #: ../src/plugins/mantisbt.c:1101
 msgid "The MantisBT project has not been deretmined."
-msgstr ""
+msgstr "Il progetto MantisBT non è stato annullato."
 
 #: ../src/plugins/mantisbt.c:1113
 msgid "Failed to get project id from name"
@@ -2958,9 +3012,8 @@ msgid "Use HTTP Authentication"
 msgstr "Usa l'autenticazione HTTP"
 
 #: ../src/plugins/reporter-ureport.c:80
-#, fuzzy
 msgid "Additional files included in 'auth' key"
-msgstr "File aggiuntivi inclusi in 'auth'"
+msgstr "File aggiuntivi inclusi nella chiave 'auth'"
 
 #: ../src/plugins/reporter-ureport.c:83
 msgid "bthash of uReport to attach (conflicts with -A)"
@@ -2995,11 +3048,12 @@ msgstr ""
 
 #: ../src/plugins/reporter-ureport.c:95
 msgid "attach short text (requires -a|-A, conflicts with -D)"
-msgstr ""
+msgstr "allegare un breve testo (richiede -a|-A, in conflitto con -D)"
 
 #: ../src/plugins/reporter-ureport.c:97
 msgid "attach short text from comment (requires -a|-A, conflicts with -d)"
 msgstr ""
+"allega un breve testo dal commento (richiede -a|-A, in conflitto con -d)"
 
 #: ../src/plugins/reporter-ureport.c:101
 #, fuzzy
@@ -3016,18 +3070,18 @@ msgstr ""
 "A, -r e -T, in conflitto con -l)"
 
 #: ../src/plugins/reporter-ureport.c:106
-#, fuzzy
 msgid ""
 "use REPORT_RESULT_TYPE when looking for FIELD in reported_to (used only with "
 "-L)"
 msgstr ""
-"usa REPORT_RESULT_TYPE quando si cerca il CAMPO in reported_to (utilizzato "
-"solo con -L)"
+"usa REPORT_RESULT_TYPE quando si cerca FIELD in reported_to (utilizzato solo "
+"con -L)"
 
 #: ../src/plugins/reporter-ureport.c:108
 msgid ""
 "attach DATA as ureport attachment ATTACHMENT_TYPE (used only with -l|-L)"
 msgstr ""
+"allega DATA come allegato ureport ATTACHMENT_TYPE (usato solo con -l|-L)"
 
 #: ../src/plugins/reporter-ureport.c:113
 msgid ""
@@ -3043,6 +3097,17 @@ msgid ""
 "\n"
 "Reads the default configuration from "
 msgstr ""
+"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS]\n"
+"  [-A -a bthash -B -b bug-id -E -e email -O -o comment] [-d DIR]\n"
+"  [-A -a bthash -T ATTACHMENT_TYPE -r REPORT_RESULT_TYPE -L RESULT_FIELD] [-"
+"d DIR]\n"
+"  [-A -a bthash -T ATTACHMENT_TYPE -l DATA] [-d DIR]\n"
+"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-i AUTH_ITEMS] "
+"[-d DIR]\n"
+"\n"
+"Carica un microreport o aggiungi un allegato a un microreport\n"
+"\n"
+"Legge la configurazione predefinita da "
 
 #: ../src/plugins/reporter-ureport.c:191
 msgid "This problem does not have an uReport assigned."
@@ -3064,11 +3129,11 @@ msgstr "Impossibile trovare l'ID del bug nell'URL di bugzilla '%s'"
 
 #: ../src/plugins/reporter-ureport.c:230
 msgid "Cannot attach comment from 'comment' file"
-msgstr ""
+msgstr "Impossibile allegare un commento dal file 'comment'"
 
 #: ../src/plugins/reporter-ureport.c:232
 msgid "'comment' file is empty"
-msgstr ""
+msgstr "Il file 'comment' è vuoto"
 
 #: ../src/plugins/reporter-ureport.c:243
 #, c-format
@@ -3089,9 +3154,9 @@ msgstr ""
 "configurazione 'ContactEmail' non sono stati impostati"
 
 #: ../src/plugins/reporter-ureport.c:273
-#, fuzzy
 msgid "You need to specify bug ID, contact email, comment or all of them"
-msgstr "Specificare il bug ID, l'email di contatto, il commento o tutti"
+msgstr ""
+"Specificare l'ID del bug, l'email di contatto, il commento o tutto quanto"
 
 #: ../src/plugins/reporter-ureport.c:303
 msgid "You need to specify bthash of the uReport to attach."
@@ -3347,6 +3412,8 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:1
 msgid "Attach crash data to an existing Red Hat support case"
 msgstr ""
+"Allega i dati sull'arresto anomalo a una pratica di supporto Red Hat "
+"esistente"
 
 #: ../src/workflows/workflow_RHELAddDataCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJava.xml.in.h:2
@@ -3356,10 +3423,8 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDatavmcore.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:2
-#, fuzzy
-#| msgid "Ask Red Hat Support for help"
 msgid "Provide Red Hat Support with crash details"
-msgstr "Richiedi il supporto di Red Hat"
+msgstr "Fornire al supporto Red Hat i dettagli sull'arresto anomalo"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
