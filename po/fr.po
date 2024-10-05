@@ -24,7 +24,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2024-06-27 08:36+0000\n"
+"PO-Revision-Date: 2024-09-04 23:01+0000\n"
 "Last-Translator: Léane GRASSER <leane.grasser@proton.me>\n"
 "Language-Team: French <https://translate.fedoraproject.org/projects/abrt/"
 "libreport/fr/>\n"
@@ -33,7 +33,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.5.5\n"
+"X-Generator: Weblate 5.7.1\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -1342,7 +1342,7 @@ msgstr "Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:2
 msgid "Report to Bugzilla bug tracker"
-msgstr "Rapporter sur le suivi de bogues de Bugzilla"
+msgstr "Rapporter sur le suivi de bugs de Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:3
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:3
@@ -1602,45 +1602,45 @@ msgstr ""
 "\n"
 "& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d "
 "DIR\n"
-"ou :\n"
+"ou :\n"
 "& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\n"
-"ou :\n"
+"ou :\n"
 "& [-v] [-c CONFFILE]... [-d DIR] -t[ID] -w\n"
-"ou :\n"
+"ou :\n"
 "& [-v] [-c CONFFILE]... -h DUPHASH [-p[PRODUCT]]\n"
 "\n"
 "Signale le problème sur Bugzilla.\n"
 "\n"
-"L’outil lit DIR, puis se connecte à Bugzilla et essaye de trouver un bogue\n"
+"L’outil lit DIR, puis se connecte à Bugzilla et essaye de trouver un bug\n"
 "avec le même abrt_hash:HEXSTRING dans le « Whiteboard ».\n"
 "\n"
-"Si un tel bogue n’est pas trouvé, alors un nouveau bogue est créé. Les\n"
-"éléments de DIR sont enregistrés dans le bogue en tant que description ou\n"
-"fichiers joints au bogue, selon leur type et taille.\n"
+"Si un tel bug n’est pas trouvé, alors un nouveau bug est créé. Les\n"
+"éléments de DIR sont enregistrés dans le bug en tant que description ou\n"
+"fichiers joints au bug, selon leur type et taille.\n"
 "\n"
-"Sinon, si un bogue est trouvé et est indiqué comme CLOSED DUPLICATE,\n"
-"l’outil va suivre la chaine de dupliqués jusqu’à trouvé un bogue non\n"
-"DUPLICATE. Cet outil ajoutera un nouveau commentaire au bogue trouvé.\n"
+"Sinon, si un bug est trouvé et est indiqué comme CLOSED DUPLICATE,\n"
+"l’outil va suivre la chaine de dupliqués jusqu’à trouvé un bug non\n"
+"DUPLICATE. Cet outil ajoutera un nouveau commentaire au bug trouvé.\n"
 "\n"
-"L’URL au nouveau bogue ou au bogue modifié sera affichée sur la sortie\n"
+"L’URL au nouveau bug ou au bug modifié sera affichée sur la sortie\n"
 "stdout et enregistrée en tant qu’élément « reported_to ».\n"
 "\n"
-"L’option -t envoie les fichiers FILE à un bogue déjà existant sur Bugzilla.\n"
-"L’ID du bogue est retrouvé à partir du dossier spécifié par -d DIR.\n"
+"L’option -t envoie les fichiers FILE à un bug déjà existant sur Bugzilla.\n"
+"L’ID du bug est retrouvé à partir du dossier spécifié par -d DIR.\n"
 "Si les données de l’incident dans DIR n’ont jamais été signalées sur\n"
 "Bugzilla, le téléversement échouera.\n"
 "\n"
-"L’option -tID envoie les fichiers FILE au rapport de bogue ayant l’ID "
+"L’option -tID envoie les fichiers FILE au rapport de bug ayant l’ID "
 "Bugzilla\n"
 "spécifié.\n"
 "-d DIR est ignoré.\n"
 "\n"
-"L’option -w ajoute un utilisateur à la liste CC d’un bogue Bugzilla.\n"
+"L’option -w ajoute un utilisateur à la liste CC d’un bug Bugzilla.\n"
 "\n"
 "L’option -r modifie la dernière URL de l’élément reporter_to qui est "
 "préfixé\n"
 "avec TRACKER_NAME dans le champ URL. Cette option est uniquement\n"
-"appliquée lorsqu’un nouveau bogue est signalé. La valeur par défaut est\n"
+"appliquée lorsqu’un nouveau bug est signalé. La valeur par défaut est\n"
 "« ABRT Server ».\n"
 "\n"
 "Si non spécifié, par défaut CONFFILE est "
@@ -1663,11 +1663,11 @@ msgstr "Mise en forme du fichier pour les doublons"
 
 #: ../src/plugins/reporter-bugzilla.c:327
 msgid "Attach FILEs [to bug with this ID]"
-msgstr "Joindre les FICHIERS [au bogue avec cet ID]"
+msgstr "Joindre les FICHIERS [au bug avec cet ID]"
 
 #: ../src/plugins/reporter-bugzilla.c:328
 msgid "When creating bug, attach binary files too"
-msgstr "Joindre les fichiers binaires aussi lors de la création d’un bogue"
+msgstr "Joindre les fichiers binaires aussi lors de la création d’un bug"
 
 #: ../src/plugins/reporter-bugzilla.c:329
 #: ../src/plugins/reporter-rhtsupport.c:551
@@ -1808,47 +1808,46 @@ msgid ""
 "reporting procedure will be terminated."
 msgstr ""
 "Vous avez demandé de rendre vos données accessibles uniquement à un groupe "
-"spécifique et ce bogue est un double du bogue : %s/%u Pour les doubles de "
-"bogue, un nouveau commentaire est ajouté au rapport de bogue d’origine mais "
-"l’accès aux commentaires est restreint à un groupe spécifique. Souhaitez-"
-"vous ouvrir un nouveau rapport de bogue et le fermer en tant que DOUBLE "
-"(DUPLICATE) du rapport de bogue d’origine ? Sinon, la procédure de rapport "
-"de bogue sera fermée."
+"spécifique et ce bug est un double du bug : %s/%u Pour les doubles de bug, "
+"un nouveau commentaire est ajouté au rapport de bug d’origine mais l’accès "
+"aux commentaires est restreint à un groupe spécifique. Souhaitez-vous ouvrir "
+"un nouveau rapport de bug et le fermer en tant que DOUBLE (DUPLICATE) du "
+"rapport de bug d’origine ? Sinon, la procédure de rapport de bug sera fermée."
 
 #. Create new bug
 #: ../src/plugins/reporter-bugzilla.c:763
 msgid "Creating a new bug"
-msgstr "Création d’un nouveau bogue"
+msgstr "Création d’un nouveau bug"
 
 #: ../src/plugins/reporter-bugzilla.c:782
 msgid "Failed to create a new bug."
-msgstr "La création d’un nouveau bogue a échoué."
+msgstr "La création d’un nouveau bug a échoué."
 
 #: ../src/plugins/reporter-bugzilla.c:800
 #, c-format
 msgid "Adding extra cc %s to bug report"
-msgstr "Ajout d’un cc %s supplémentaire au rapport de bogue"
+msgstr "Ajout d’un cc %s supplémentaire au rapport de bug"
 
 #: ../src/plugins/reporter-bugzilla.c:812
 #, c-format
 msgid "Adding External URL to bug %i"
-msgstr "Ajouter un URL externe au bogue %i"
+msgstr "Ajouter un URL externe au bug %i"
 
 #: ../src/plugins/reporter-bugzilla.c:819
 #, c-format
 msgid "Adding attachments to bug %i"
-msgstr "Ajouter des pièces jointes au bogue %i"
+msgstr "Ajouter des pièces jointes au bug %i"
 
 #: ../src/plugins/reporter-bugzilla.c:841
 #, c-format
 msgid "Closing bug %i as duplicate of bug %i"
-msgstr "Fermeture du bogue %i en tant que double du bogue %i"
+msgstr "Fermeture du bug %i en tant que double du bug %i"
 
 #: ../src/plugins/reporter-bugzilla.c:853
 #: ../src/plugins/reporter-mantisbt.c:622
 #, c-format
 msgid "Bug is already reported: %i"
-msgstr "Le bogue a déjà été rapporté : %i"
+msgstr "Le bug a déjà été rapporté : %i"
 
 #: ../src/plugins/reporter-bugzilla.c:896
 #, c-format
@@ -1858,7 +1857,7 @@ msgstr "Ajout de %s à la liste en copie"
 #: ../src/plugins/reporter-bugzilla.c:917
 #, c-format
 msgid "Adding new comment to bug %d"
-msgstr "Ajout d’un nouveau commentaire au bogue %d"
+msgstr "Ajout d’un nouveau commentaire au bug %d"
 
 #: ../src/plugins/reporter-bugzilla.c:930
 #: ../src/plugins/reporter-mantisbt.c:672
@@ -1868,7 +1867,7 @@ msgstr "Un meilleur backtrace est joint"
 #: ../src/plugins/reporter-bugzilla.c:936
 msgid "Found the same comment in the bug history, not adding a new one"
 msgstr ""
-"Le même commentaire a été trouvé dans l’historique du bogue, ajout d’un "
+"Le même commentaire a été trouvé dans l’historique du bug, ajout d’un "
 "nouveau commentaire annulé"
 
 #: ../src/plugins/reporter-bugzilla.c:946
@@ -2345,44 +2344,44 @@ msgid ""
 msgstr ""
 "\n"
 "& [-vf] [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\n"
-"ou :\n"
+"ou :\n"
 "& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\n"
-"ou :\n"
+"ou :\n"
 "& [-v] [-c CONFFILE]... [-d DIR] -t[ID] -w\n"
-"ou :\n"
+"ou :\n"
 "& [-v] [-c CONFFILE]... -h DUPHASH\n"
 "\n"
 "Signale le problème sur MantisBT.\n"
 "\n"
-"L’outil lit DIR, puis se connecte à Bugzilla et essaye de trouver un bogue\n"
+"L’outil lit DIR, puis se connecte à Bugzilla et essaye de trouver un bug\n"
 "avec le même abrt_hash dans le champ personnalisé « abrt_hash ».\n"
 "\n"
-"Si un tel bogue n’est pas trouvé, alors un nouveau bogue est créé. Les\n"
-"éléments de DIR sont enregistrés dans le bogue en tant que description ou\n"
-"fichiers joints au bogue, selon leur type et taille.\n"
+"Si un tel bug n’est pas trouvé, alors un nouveau bug est créé. Les\n"
+"éléments de DIR sont enregistrés dans le bug en tant que description ou\n"
+"fichiers joints au bug, selon leur type et taille.\n"
 "\n"
-"Sinon, si un bogue est trouvé et est indiqué comme CLOSED DUPLICATE,\n"
-"l’outil va suivre la chaine de dupliqués jusqu’à trouvé un bogue non\n"
-"DUPLICATE. Cet outil ajoutera un nouveau commentaire au bogue trouvé.\n"
+"Sinon, si un bug est trouvé et est indiqué comme CLOSED DUPLICATE,\n"
+"l’outil va suivre la chaine de dupliqués jusqu’à trouvé un bug non\n"
+"DUPLICATE. Cet outil ajoutera un nouveau commentaire au bug trouvé.\n"
 "\n"
-"L’URL au nouveau bogue ou au bogue modifié sera affichée sur la sortie\n"
+"L’URL au nouveau bug ou au bug modifié sera affichée sur la sortie\n"
 "stdout et enregistrée en tant qu’élément « reported_to ».\n"
 "\n"
-"L’option -t envoie les fichiers FILE à un bogue déjà existant sur MantisBT.\n"
-"L’ID du bogue est retrouvé à partir du dossier spécifié par -d DIR.\n"
+"L’option -t envoie les fichiers FILE à un bug déjà existant sur MantisBT.\n"
+"L’ID du bug est retrouvé à partir du dossier spécifié par -d DIR.\n"
 "Si les données de l’incident dans DIR n’ont jamais été signalées sur\n"
 "MantisBT, le téléversement échouera.\n"
 "\n"
-"L’option -tID envoie les fichiers FILE au rapport de bogue ayant l’ID\n"
+"L’option -tID envoie les fichiers FILE au rapport de bug ayant l’ID\n"
 "MantisBT spécifié.\n"
 "-d DIR est ignoré.\n"
 "\n"
-"L’option -w ajoute un utilisateur à la liste CC d’un bogue Bugzilla.\n"
+"L’option -w ajoute un utilisateur à la liste CC d’un bug Bugzilla.\n"
 "\n"
 "L’option -r modifie la dernière URL de l’élément reporter_to qui est "
 "préfixé\n"
 "avec TRACKER_NAME dans le champ URL. Cette option est uniquement\n"
-"appliquée lorsqu’un nouveau bogue est signalé. La valeur par défaut est\n"
+"appliquée lorsqu’un nouveau bug est signalé. La valeur par défaut est\n"
 "« ABRT Server ».\n"
 "\n"
 "Si non spécifié, par défaut CONFFILE est "
@@ -2768,12 +2767,12 @@ msgstr "Adresse du service web uReport"
 
 #: ../src/plugins/report_uReport.xml.in.h:5
 msgid "Watch already reported bugs"
-msgstr "Consulter les bogues déjà signalés"
+msgstr "Consulter les bugs déjà signalés"
 
 #: ../src/plugins/report_uReport.xml.in.h:6
 msgid "Adds your Bugzilla login to CC List of already reported bugs."
 msgstr ""
-"Ajoute vos identifiants Bugzilla à la liste de CC des bogues déjà signalés."
+"Ajoute vos identifiants Bugzilla à la liste de CC des bugs déjà signalés."
 
 #: ../src/plugins/report_uReport.xml.in.h:7
 msgid "Report unpackaged problems"
@@ -2801,7 +2800,7 @@ msgstr "Consulter Bogue Bugzilla"
 
 #: ../src/plugins/watch_Bugzilla.xml.in.h:2
 msgid "Adds your e-mail to CC List of Bugzilla bug"
-msgstr "Ajoute votre adresse électronique à la liste de CC du bogue Bugzilla"
+msgstr "Ajoute votre adresse électronique à la liste de CC du bug Bugzilla"
 
 #: ../src/plugins/rhbz.c:382
 #, c-format
@@ -2811,13 +2810,13 @@ msgstr "Il semble que la réponse xml soit corrompue car il manque « %s »."
 #: ../src/plugins/rhbz.c:470
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
-msgstr "Le bogue %i est FERMÉ (CLOSED), mais il n’y a pas de RÉSOLUTION"
+msgstr "Le bug %i est FERMÉ (CLOSED), mais il n’y a pas de RÉSOLUTION"
 
 #: ../src/plugins/rhbz.c:478
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
 msgstr ""
-"Le bogue %i est FERMÉ (CLOSED) en tant que DUPLIQUÉ (DUPLICATE), mais il ne "
+"Le bug %i est FERMÉ (CLOSED) en tant que DUPLIQUÉ (DUPLICATE), mais il ne "
 "possède pas de DUP_ID"
 
 #: ../src/plugins/rhbz.c:583
@@ -2833,17 +2832,17 @@ msgstr ""
 #: ../src/plugins/rhbz.c:604
 #, c-format
 msgid "New bug id: %i"
-msgstr "Nouvel ID de bogue : %i"
+msgstr "Nouvel ID de bug : %i"
 
 #: ../src/plugins/rhbz.c:725
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "Bugzilla n’a pas trouvé le parent du bogue %d"
+msgstr "Bugzilla n’a pas trouvé le parent du bug %d"
 
 #: ../src/plugins/rhbz.c:873
 msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
 msgstr ""
-"Bug.search(quicksearch) renvoie une valeur ne contenant pas de bogue membre"
+"Bug.search(quicksearch) renvoie une valeur ne contenant pas de bug membre"
 
 #: ../src/plugins/mantisbt.c:123
 #, c-format
@@ -3091,13 +3090,13 @@ msgstr ""
 
 #: ../src/plugins/reporter-ureport.c:91
 msgid "attach RHBZ bug (requires -a|-A, conflicts with -B)"
-msgstr "joindre le bogue RHBZ (requiert -a|-A, en conflit avec -B)"
+msgstr "joindre le bug RHBZ (requiert -a|-A, en conflit avec -B)"
 
 #: ../src/plugins/reporter-ureport.c:93
 msgid ""
 "attach last RHBZ bug from reported_to (requires -a|-A, conflicts with -b)"
 msgstr ""
-"joindre le dernier bogue RHBZ à partir de reported_to (requiert -a|-A, en "
+"joindre le dernier bug RHBZ à partir de reported_to (requiert -a|-A, en "
 "conflit avec -b)"
 
 #: ../src/plugins/reporter-ureport.c:95
@@ -3209,7 +3208,7 @@ msgstr ""
 #: ../src/plugins/reporter-ureport.c:273
 msgid "You need to specify bug ID, contact email, comment or all of them"
 msgstr ""
-"Vous devez spécifier l’ID du bogue, l’adresse de courriel, le commentaire ou "
+"Vous devez spécifier l’ID du bug, l’adresse de courriel, le commentaire ou "
 "les trois"
 
 #: ../src/plugins/reporter-ureport.c:303
@@ -3275,7 +3274,7 @@ msgstr "Traiter le rapport en utilisant l’infrastructure Fedora"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:1
 msgid "Report a bug to Red Hat Customer Portal"
-msgstr "Signaler un bogue sur le Portail Client Red Hat"
+msgstr "Signaler un bug sur le Portail Client Red Hat"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:2
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:2
@@ -3284,7 +3283,7 @@ msgstr "Traiter le rapport en utilisant l’infrastructure Red Hat"
 
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:1
 msgid "Report a bug to Red Hat Bugzilla"
-msgstr "Rapporter un bogue sur Red Hat Bugzilla"
+msgstr "Rapporter un bug sur Red Hat Bugzilla"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
 msgid "Export the problem data for manual reporting"
