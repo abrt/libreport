@@ -376,7 +376,14 @@ if __name__ == '__main__':
         "\n    -D, --debug[STR]            Debug\n"
     )
 
-    dump_dir_name = os.getcwd()
+    try:
+        dump_dir_name = os.getcwd()
+    except FileNotFoundError:
+        # The process was started from a directory that no longer exists
+        # (e.g. a temporary directory deleted before reporter was invoked).
+        # Fall back to '/' as a safe placeholder; the real dump directory
+        # will be supplied via the -d option.
+        dump_dir_name = '/'
     conf_files = []
     fmt_file = os.path.join(const.CONF_DIR, 'plugins/bugzilla_format.conf')
     fmt_file2 = fmt_file
