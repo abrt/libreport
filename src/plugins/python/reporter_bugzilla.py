@@ -376,7 +376,11 @@ if __name__ == '__main__':
         "\n    -D, --debug[STR]            Debug\n"
     )
 
-    dump_dir_name = os.getcwd()
+    try:
+        dump_dir_name = os.getcwd()
+    except FileNotFoundError:
+        # delay handling till after opts are parsed
+        dump_dir_name = None
     conf_files = []
     fmt_file = os.path.join(const.CONF_DIR, 'plugins/bugzilla_format.conf')
     fmt_file2 = fmt_file
@@ -437,6 +441,14 @@ if __name__ == '__main__':
             rhbz['b_private_group'] = arg
         elif opt in ('-D', '--debug'):
             debug = True
+
+    # If os.getcwd didn't work and -d was not set, this will still be
+    # None and we need to bail now
+    if not dump_dir_name:
+        sys.exit(
+            "Current working directory does not exist and -d not passed, cannot determine "
+            "dump location"
+        )
 
     g_verbose = min(g_verbose, 2)
     logger_init(logger, ['WARNING', 'INFO', 'DEBUG'][g_verbose])
