@@ -1,20 +1,24 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# Marija Grineviciute <marijagrine@protonmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: libreport 2.11.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2026-03-07 08:58+0000\n"
+"Last-Translator: Marija Grineviciute <marijagrine@protonmail.com>\n"
+"Language-Team: Lithuanian <https://translate.fedoraproject.org/projects/abrt/"
+"libreport/lt/>\n"
 "Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n % 10 == 1 && (n % 100 < 11 || n % 100 > "
+"19)) ? 0 : ((n % 10 >= 2 && n % 10 <= 9 && (n % 100 < 11 || n % 100 > 19)) ? "
+"1 : 2);\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -23,48 +27,52 @@ msgid ""
 "   or: & [-vspy] -d PROBLEM_DIR\n"
 "   or: & [-vspy] -x PROBLEM_DIR"
 msgstr ""
+"& [-vsp] -L[PREFIX] [PROBLEM_DIR]\n"
+"   arba: & [-vspy] -e EVENT PROBLEM_DIR\n"
+"   arba: & [-vspy] -d PROBLEM_DIR\n"
+"   arba: & [-vspy] -x PROBLEM_DIR"
 
 #. short_name long_name  value    parameter_name  help
 #: ../src/cli/cli.c:89
 msgid "List possible events [which start with PREFIX]"
-msgstr ""
+msgstr "Sudaryti galimų įvykių sąrašą [kurie prasideda su PRIEŠDĖLIU]"
 
 #: ../src/cli/cli.c:90 ../src/gui-wizard-gtk/main.c:170
 msgid "Run only these events"
-msgstr ""
+msgstr "Vykdyti tik šiuos įvykius"
 
 #: ../src/cli/cli.c:91 ../src/gui-wizard-gtk/main.c:169
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "Pašalinti PROBLEM_DIR po pranešimo"
 
 #: ../src/cli/cli.c:92
 msgid "Expert mode"
-msgstr ""
+msgstr "Ekspertinis režimas"
 
 #: ../src/cli/cli.c:93 ../src/report-newt/report-newt.c:397
 msgid "Display version and exit"
-msgstr ""
+msgstr "Rodyti versiją ir išeiti"
 
 #: ../src/cli/cli.c:94
 msgid "Noninteractive: don't ask questions, assume 'yes'"
-msgstr ""
+msgstr "Neinteraktyvus: neužduoti klausimų, priimti kaip „taip“"
 
 #: ../src/cli/cli.c:96
 msgid "Log to syslog"
-msgstr ""
+msgstr "Registruoti į syslog"
 
 #: ../src/cli/cli.c:97 ../src/gui-wizard-gtk/main.c:168
 msgid "Add program names to log"
-msgstr ""
+msgstr "Įtraukti programų pavadinimus į žurnalą"
 
 #: ../src/cli/cli-report.c:132
 #, c-format
 msgid "# This field is read only\n"
-msgstr ""
+msgstr "# Šį lauką galima tik skaityti\n"
 
 #: ../src/cli/cli-report.c:152
 msgid "# Describe the circumstances of this crash below"
-msgstr ""
+msgstr "# Žemiau apibūdinkite šios strigties aplinkybes"
 
 #: ../src/cli/cli-report.c:154
 msgid ""
@@ -74,76 +82,80 @@ msgstr ""
 
 #: ../src/cli/cli-report.c:156
 msgid "# Architecture"
-msgstr ""
+msgstr "# Architektūra"
 
 #: ../src/cli/cli-report.c:157
 msgid "# Command line"
-msgstr ""
+msgstr "# Komandų eilutė"
 
 #: ../src/cli/cli-report.c:158
 msgid "# Component"
-msgstr ""
+msgstr "# Komponentas"
 
 #: ../src/cli/cli-report.c:159
 msgid "# Core dump"
-msgstr ""
+msgstr "# Pagrindinė atminties išklotinė"
 
 #: ../src/cli/cli-report.c:160
 msgid "# Executable"
-msgstr ""
+msgstr "# Vykdomasis"
 
 #: ../src/cli/cli-report.c:161
 msgid "# Kernel version"
-msgstr ""
+msgstr "# Branduolio versija"
 
 #: ../src/cli/cli-report.c:162
 msgid "# Package"
-msgstr ""
+msgstr "# Paketas"
 
 #: ../src/cli/cli-report.c:163
 msgid "# Reason of crash"
-msgstr ""
+msgstr "# Strigties priežastis"
 
 #: ../src/cli/cli-report.c:170
 msgid "# os-release configuration file from root dir"
-msgstr ""
+msgstr "# OS išleidimo konfigūracijos failas iš šakninio katalogo"
 
 #: ../src/cli/cli-report.c:175
 msgid "# Release string of the operating system from root dir"
-msgstr ""
+msgstr "# Operacinės sistemos išleidimo eilutė iš šakninio katalogo"
 
 #: ../src/cli/cli-report.c:183
 msgid "# os-release configuration file"
-msgstr ""
+msgstr "# OS išleidimo konfigūrijos failas"
 
 #: ../src/cli/cli-report.c:188
 msgid "# Release string of the operating system"
-msgstr ""
+msgstr "# Operacinės sistemos išleidimo eilutė"
 
 #: ../src/cli/cli-report.c:319
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr ""
+msgstr "Nepavyksta vykdyti vi: nenustatyti $TERM, $VISUAL ir $EDITOR"
 
 #: ../src/cli/cli-report.c:403
 msgid ""
 "\n"
 "The report has been updated"
 msgstr ""
+"\n"
+"Ataskaita buvo atnaujinta"
 
 #: ../src/cli/cli-report.c:405
 msgid ""
 "\n"
 "No changes were detected in the report"
 msgstr ""
+"\n"
+"Ataskaitoje neaptikta jokių pakeitimų"
 
 #: ../src/cli/cli-report.c:466
 msgid "Your input is not valid, because of:"
-msgstr ""
+msgstr "Jūsų įvestis netinkama, nes:"
 
 #: ../src/cli/cli-report.c:470
 #, c-format
 msgid "Bad value for '%s': %s"
-msgstr ""
+msgstr "Netinkama „%s“ vertė: %s"
 
 #: ../src/cli/cli-report.c:671
 #, c-format
@@ -151,114 +163,120 @@ msgid ""
 "Event '%s' requires permission to send possibly sensitive data. Do you want "
 "to continue?"
 msgstr ""
+"„%s“ įvykiui reikalingas leidimas siųsti galimai pažeidžiamus duomenis. Ar "
+"norite tęsti?"
 
 #: ../src/cli/cli-report.c:718
 msgid "You have chosen number out of range"
-msgstr ""
+msgstr "Pasirinkote už diapazono ribų esantį skaičių"
 
 #: ../src/cli/cli-report.c:723
 msgid "Invalid input, exiting."
-msgstr ""
+msgstr "Netinkama įvestis, išeinama."
 
 #: ../src/cli/cli-report.c:744
 msgid "Select an event to run: "
-msgstr ""
+msgstr "Pasirinkite, kokį įvykį norite vykdyti: "
 
 #: ../src/cli/cli-report.c:878
 msgid "Select a workflow to run: "
-msgstr ""
+msgstr "Pasirinkite, kokią darbo eigą norite vykdyti: "
 
 #: ../src/client-python/reportclient/debuginfo.py:100
 #, python-brace-format
 msgid "Extracting cpio from {0}"
-msgstr ""
+msgstr "Gaunamas cpio iš {0}"
 
 #: ../src/client-python/reportclient/debuginfo.py:105
 #, python-brace-format
 msgid "Can't write to '{0}': {1}"
-msgstr ""
+msgstr "Negalima įrašyti į „{0}“: {1}"
 
 #: ../src/client-python/reportclient/debuginfo.py:116
 #, python-brace-format
 msgid "Can't extract package '{0}'"
-msgstr ""
+msgstr "Nepavyksta gauti „{0}“ paketo"
 
 #: ../src/client-python/reportclient/debuginfo.py:124
 #, python-brace-format
 msgid "Caching files from {0} made from {1}"
-msgstr ""
+msgstr "Į podėlį dedami failai iš {0}, sukurti iš {1}"
 
 #: ../src/client-python/reportclient/debuginfo.py:148
 #, python-brace-format
 msgid "Can't extract files from '{0}'. For more information see '{1}'"
-msgstr ""
+msgstr "Nepavyksta gauti failų iš „{0}“: daugiau informacijos rasite „{1}“"
 
 #: ../src/client-python/reportclient/debuginfo.py:163
 #, python-brace-format
 msgid "Can't remove '{0}': {1}"
-msgstr ""
+msgstr "Nepavyksta pašalinti: „{0}“: {1}"
 
 #: ../src/client-python/reportclient/debuginfo.py:205
 #: ../src/client-python/reportclient/debuginfo.py:214
 #, python-brace-format
 msgid "Downloading ({0} of {1}) {2}: {3:3}%"
-msgstr ""
+msgstr "Atsiunčiama ({0} iš {1}) {2}: {3:3} %"
 
 #: ../src/client-python/reportclient/debuginfo.py:306
 msgid "Initializing package manager"
-msgstr ""
+msgstr "Inicijuojama paketų tvarkytuvė"
 
 #. This takes some time, let user know what we are doing
 #: ../src/client-python/reportclient/debuginfo.py:310
 msgid "Setting up repositories"
-msgstr ""
+msgstr "Konfigūruojamos saugyklos"
 
 #: ../src/client-python/reportclient/debuginfo.py:313
 msgid "Looking for needed packages in repositories"
-msgstr ""
+msgstr "Ieškoma reikalingų paketų saugyklose"
 
 #: ../src/client-python/reportclient/debuginfo.py:347
 #, python-brace-format
 msgid "Can't find packages for {0} debuginfo files"
-msgstr ""
+msgstr "Nepavyksta rasti paketų {0} debuginfo failams"
 
 #: ../src/client-python/reportclient/debuginfo.py:350
 #, python-brace-format
 msgid "Packages to download: {0}"
-msgstr ""
+msgstr "Paketai, kuriuos reikia atsisiųsti: {0}"
 
 #: ../src/client-python/reportclient/debuginfo.py:352
 #, python-brace-format
 msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
-msgstr ""
+msgstr "Atsisiunčiama {0:.2f} Mb, dydis įdiegus: {1:.2f} Mb. Tęsti?"
 
 #: ../src/client-python/reportclient/debuginfo.py:357
 #: ../src/client-python/reportclient/debuginfo.py:369
 #: ../src/client-python/reportclient/debuginfo.py:380
 msgid "Download cancelled by user"
-msgstr ""
+msgstr "Naudotojas atšaukė atsisiuntimą"
 
 #: ../src/client-python/reportclient/debuginfo.py:364
 #, python-brace-format
 msgid ""
 "Warning: Not enough free space in tmp dir '{0}' ({1:.2f}Mb left). Continue?"
 msgstr ""
+"Įspėjimas: nepakanka laisvos vietos laikinajame „{0}“ kataloge (liko {1:.2f} "
+"Mb). Tęsti?"
 
 #: ../src/client-python/reportclient/debuginfo.py:375
 #, python-brace-format
 msgid ""
 "Warning: Not enough free space in cache dir '{0}' ({1:.2f}Mb left). Continue?"
 msgstr ""
+"Įspėjimas: nepakanka laisvos vietos podėlio „{0}“ kataloge (liko {1:.2f} Mb)"
+". Tęsti?"
 
 #: ../src/client-python/reportclient/debuginfo.py:398
 #, python-brace-format
 msgid "Downloading package {0} failed"
-msgstr ""
+msgstr "Nepavyko atsisiųsti {0} paketo"
 
 #. recursively delete the temp dir on failure
 #: ../src/client-python/reportclient/debuginfo.py:405
 msgid "Unpacking failed, aborting download..."
-msgstr ""
+msgstr "Nepavyko išpakuoti, atsisiuntimas nutraukiamas..."
 
 #: ../src/client-python/reportclient/debuginfo.py:410
 #, python-brace-format
@@ -266,6 +284,8 @@ msgid ""
 "'{0}' must be owned by abrt. Please run '# chown -R abrt.abrt {0}' to fix "
 "the issue."
 msgstr ""
+"„{0}“ turi priklausyti abrt. Vykdykite „# chown -R abrt.abrt {0}“, kad "
+"ištaisytumėte klaidą."
 
 #. Was: "All downloaded packages have been extracted, removing..."
 #. but it was appearing even if no packages were in fact extracted
@@ -273,12 +293,12 @@ msgstr ""
 #: ../src/client-python/reportclient/debuginfo.py:427
 #, python-brace-format
 msgid "Removing {0}"
-msgstr ""
+msgstr "Šalinama {0}"
 
 #: ../src/client-python/reportclient/debuginfo.py:431
 #, python-brace-format
 msgid "Can't remove {0}, probably contains an error log"
-msgstr ""
+msgstr "Nepavyksta pašalinti {0}, galimai turi klaidų žurnalą"
 
 #: ../src/client-python/reportclient/dnfdebuginfo.py:89
 msgid "Error reading repository configuration: '{0!s}'"
@@ -1187,7 +1207,7 @@ msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:1
 msgid "Bugzilla"
-msgstr ""
+msgstr "Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:2
 msgid "Report to Bugzilla bug tracker"
@@ -2222,7 +2242,7 @@ msgstr ""
 
 #: ../src/plugins/report_Mailx.xml.in.h:1
 msgid "Mailx"
-msgstr ""
+msgstr "Mailx"
 
 #: ../src/plugins/report_Mailx.xml.in.h:2
 msgid "Send via email"

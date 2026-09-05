@@ -8,14 +8,15 @@
 # Ville Skyttä <ville.skytta@iki.fi>, 2011
 # Jiri Grönroos <jiri.gronroos@iki.fi>, 2017. #zanata
 # Toni Rantala <trantalafilo@gmail.com>, 2017. #zanata
-# Ricky Tigg <ricky.tigg@gmail.com>, 2020, 2024.
+# Ricky Tigg <ricky.tigg@gmail.com>, 2020, 2024, 2025.
 # Jan Kuparinen <copper_fin@hotmail.com>, 2020.
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2024-12-20 12:38+0000\n"
+"PO-Revision-Date: 2025-10-02 12:43+0000\n"
 "Last-Translator: Ricky Tigg <ricky.tigg@gmail.com>\n"
 "Language-Team: Finnish <https://translate.fedoraproject.org/projects/abrt/"
 "libreport/fi/>\n"
@@ -24,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.9.1\n"
+"X-Generator: Weblate 5.13.3\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -817,7 +818,7 @@ msgstr "data"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "Search"
-msgstr "Etsi"
+msgstr "Haku"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid ""
@@ -1314,7 +1315,7 @@ msgstr "Raportoi Bugzillaan"
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:3
 #: ../src/plugins/report_Uploader.xml.in.h:6
 msgid "User name"
-msgstr "Käyttäjätunnus"
+msgstr "Käyttäjän nimi"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:4
 msgid "Bugzilla account user name"
@@ -2008,7 +2009,7 @@ msgstr ""
 
 #: ../src/plugins/reporter-rhtsupport.c:550
 msgid "Upload FILEs [to case with this ID]"
-msgstr "Lähetä TIEDOSTOJA [tapaukseen ID]"
+msgstr "Lataa ulospäin TIEDOSTOt [koteloon tällä tunnuksella]"
 
 #: ../src/plugins/reporter-rhtsupport.c:552
 msgid "Submit uReport before creating a new case"
@@ -2179,7 +2180,7 @@ msgstr "Ilman osoitetta ei voi jatkaa"
 #. may work somehow???
 #: ../src/plugins/reporter-upload.c:51
 msgid "Please enter password for uploading:"
-msgstr "Anna salasana lähetystä varten:"
+msgstr "Syötä salasana ulospäin-lataamista varten:"
 
 #. success
 #: ../src/plugins/reporter-upload.c:120
@@ -2194,14 +2195,14 @@ msgid ""
 "Uploads compressed tarball of problem directory DIR to URL.\n"
 "If URL is not specified, creates tarball in "
 msgstr ""
-"& [-v] -d DIR [-c CONFFILE] [-u URL] [-b FILE] [-r FILE]\n"
+"& [-v] -d HAK [-c KPANO_TIEDOSTO] [-u URL] [-b TIEDOSTO] [-r TIEDOSTO]\n"
 "\n"
-"Lataa ongelmahakemiston DIR pakatun paketin URL:een.\n"
-"Jos URL:ta ei ole määritetty, luo tarball-tiedosto tähän "
+"Lataa ulospäin ongelmahakemiston HAK pakatun tarballin URL:iin.\n"
+"Jos URL-osoitetta ei ole määritetty, luo tarball tähän "
 
 #: ../src/plugins/reporter-upload.c:188
 msgid "Base URL to upload to"
-msgstr "Perusosoite, johon lähetetään"
+msgstr "Perus-URL-osoite, johon ladataan ulospäin"
 
 #: ../src/plugins/reporter-upload.c:189
 msgid "SSH public key file"
@@ -2275,20 +2276,21 @@ msgid ""
 "If not specified, CONFFILE defaults to "
 msgstr ""
 "\n"
-"& [-vf] [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\n"
+"& [-vf] [-c KPANO_TIEDOSTO]... [-F MUOTO_TIEDOSTO] [-A MUOTO_TIEDOSTO2] -d "
+"HAK\n"
 "tai:\n"
-"& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\n"
+"& [-v] [-c KPANO_TIEDOSTO]... [-d HAK] -t[ID] TIEDOSTO...\n"
 "tai:\n"
-"& [-v] [-c CONFFILE]... [-d DIR] -t[ID] -w\n"
+"& [-v] [-c KPANO_TIEDOSTO]... [-d HAK] -t[ID] -w\n"
 "tai:\n"
-"& [-v] [-c CONFFILE]... -h DUPHASH\n"
+"& [-v] [-c KPANO_TIEDOSTO]... -h DUPHASH\n"
 "\n"
-"Ilmoittaa ongelmasta MantisBT:lle.\n"
+"Ilmoittaa ongelmasta MantisBTille.\n"
 "\n"
-"Työkalu lukee DIR. Sitten se yrittää löytää ongelman\n"
+"Työkalu lukee HAK. Sitten se yrittää löytää ongelman\n"
 "samalla abrt_hashilla mukautetussa kentässä 'abrt_hash'.\n"
 "\n"
-"Jos tällaista ongelmaa ei löydy, luodaan uusi numero. DIR:n elementit\n"
+"Jos tällaista ongelmaa ei löydy, luodaan uusi numero. HAK:n elementit\n"
 "tallennetaan numeroon osana julkaisun kuvausta tai liitteinä,\n"
 "niiden tyypistä ja koosta riippuen.\n"
 "\n"
@@ -2300,14 +2302,15 @@ msgstr ""
 "Uuden tai muokatun numeron URL-osoite tulostetaan vakiona ja tallennetaan\n"
 "'report_to' -elementti.\n"
 "\n"
-"Valitsin '-t' lataa tiedostot jo luotuun numeroon MantisBT-sivustossa.\n"
-"Ongelman tunnus haetaan hakemistosta, jonka määrittelee '-d DIR'.\n"
-"Jos DIR: n ongelmatietoja ei koskaan ilmoitettu MantisBT:lle, lataus "
-"epäonnistuu.\n"
+"Valitsin '-t' lataa ulospäin tiedostot jo luotuun numeroon MantisBT-"
+"sivustossa.\n"
+"Ongelman tunnus haetaan hakemistosta, jonka määrittelee '-d HAK'.\n"
+"Jos HAK: n ongelmatietoja ei koskaan ilmoitettu MantisBTille, lataus "
+"ulospäin epäonnistuu.\n"
 "\n"
-"Valitsin '-tID' lataa FILE-tiedostot määritetyn tunnuksen sisältävään "
+"Valitsin '-tID' lataa TIEDOSTO-tiedostot määritetyn tunnuksen sisältävään "
 "ongelmaan MantisBT-sivustossa.\n"
-"'-d DIR' ohitetaan.\n"
+"'-d HAK' ohitetaan.\n"
 "\n"
 "Vaihtoehto '-r' asettaa viimeisen URL-osoitteen reporter_to-elementille, "
 "johon on lisätty etuliite\n"
@@ -2315,7 +2318,7 @@ msgstr ""
 "on tarkoitus\n"
 "jätetty. Oletusarvo on 'ABRT-palvelin'\n"
 "\n"
-"Jos sitä ei määritetä, CONFFILE-asetuksen oletusarvo on "
+"Jos sitä ei määritetä, KPANO_TIEDOSTO-asetuksen oletusarvo on "
 
 #: ../src/plugins/reporter-mantisbt.c:287
 msgid "Attach FILEs [to issue with this ID]"
@@ -2580,7 +2583,7 @@ msgstr "Raportoi Red Hat:n tukeen"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:3
 msgid "Username"
-msgstr "Käyttäjätunnus"
+msgstr "Käyttäjänimi"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:4
 msgid "Red Hat customer user name"
@@ -2616,11 +2619,11 @@ msgstr "Liitä tiedot olemassa olevaan Red Hat -tukitapaukseen"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report Uploader"
-msgstr "Lähetyslatausraportti"
+msgstr "Raportin ulospäin-lataaja"
 
 #: ../src/plugins/report_Uploader.xml.in.h:2
 msgid "Upload as tar.gz file (via FTP/SCP/...)"
-msgstr "Lähetä tar.gz-tiedostona (FTP:llä/SCP:llä…)"
+msgstr "Lataa ulospäin tar.gz-tiedostona (FTP/SCP:n välityksellä…)"
 
 #: ../src/plugins/report_Uploader.xml.in.h:3
 msgid "URL"
@@ -2631,7 +2634,8 @@ msgid ""
 "Where do you want to upload the tarball with report in form login:"
 "password@url"
 msgstr ""
-"Minne haluat lähettää pakatun raportin? Muoto: käyttäjätunnus:salasana@url"
+"Mihin haluat ladata ulospäin tarballin raportin muodossa "
+"sisäänkirjautuminen:salasana@url"
 
 #: ../src/plugins/report_Uploader.xml.in.h:5
 msgid ""
@@ -2895,7 +2899,7 @@ msgstr "Ei voi lseek '%s'"
 #: ../src/plugins/mantisbt.c:768
 #, c-format
 msgid "Can't upload '%s', it's too large (%llu bytes)"
-msgstr "Ei voida lähettää '%s', se on liian suuri (%llu tavua)"
+msgstr "Ei voida ladata ulospäin '%s':ta; se on liian suuri (%llu tavua)"
 
 #: ../src/plugins/mantisbt.c:778
 #, c-format
@@ -3070,17 +3074,17 @@ msgid ""
 "\n"
 "Reads the default configuration from "
 msgstr ""
-"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS]\n"
-"  [-A -a bthash -B -b bug-id -E -e email -O -o comment] [-d DIR]\n"
-"  [-A -a bthash -T ATTACHMENT_TYPE -r REPORT_RESULT_TYPE -L RESULT_FIELD] [-"
-"d DIR]\n"
-"  [-A -a bthash -T ATTACHMENT_TYPE -l DATA] [-d DIR]\n"
-"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-i AUTH_ITEMS] "
-"[-d DIR]\n"
+"& [-v] [-c TIEDOSTO] [-u URL] [-k] [-t LÄHDE] [-h VALTUUSTIEDOT]\n"
+"  [-A -a bthash -B -b vikatunnus -E -e s-posti -O -o comment] [-d HAK]\n"
+"  [-A -a bthash -T LIITTEEN_TYYPPI -r REPORT_RESULT_TYPE -L RESULT_FIELD] "
+"[-d HAK]\n"
+"  [-A -a bthash -T LIITTEEN_TYYPPI -l DATA] [-d HAK]\n"
+"& [-v] [-c TIEDOSTO] [-u URL] [-k] [-t LÄHDE] [-h VALTUUSTIEDOT] "
+"[-i AUTH_ITEMS] [-d HAK]\n"
 "\n"
-"Lähetä mikroraportti tai lisää liite mikroraporttiin\n"
+"Lataa ulospäin mikroraportti tai lisää liite mikroraporttiin\n"
 "\n"
-"Lukee oletusasetukset kohteesta "
+"Lukee oletuskokoonpano kohteesta "
 
 #: ../src/plugins/reporter-ureport.c:191
 msgid "This problem does not have an uReport assigned."
@@ -3148,7 +3152,7 @@ msgstr "Miten haluat raportoida ongelman?"
 #: ../src/report-newt/report-newt.c:168 ../src/report-newt/report-newt.c:258
 #: ../src/report-newt/report-newt.c:334 ../src/report-newt/report-newt.c:356
 msgid "Ok"
-msgstr "Ok"
+msgstr "Hyvä on"
 
 #: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:145
 msgid "Cancel"
@@ -3212,7 +3216,7 @@ msgstr "Vie ongelman tiedot manuaaliraportointia varten"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:2
 msgid "Upload the data via scp or ftp to a remote destination"
-msgstr "Lähetä tiedot scp:n tai ftp:n välityksellä etäsijaintiin"
+msgstr "Lataa ulospäin tiedot scp:n tai ftp:n välityksellä etäsijaintiin"
 
 #: ../src/workflows/workflow_CentOSCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the CentOS infrastructure"
@@ -3323,13 +3327,14 @@ msgstr "Analysoi ongelma paikallisesti ja lähetä tiedot sähköpostitse"
 #: ../src/workflows/workflow_UploadCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Upload.xml.in.h:1
 msgid "Upload the problem data to a server"
-msgstr "Lähetä ongelman tiedot palvelimelle"
+msgstr "Lataa ulospäin ongelman tiedot palvelimelle"
 
 #: ../src/workflows/workflow_UploadCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Upload.xml.in.h:2
 msgid "Analyze the problem locally and upload the data via scp or ftp"
 msgstr ""
-"Analysoi ongelma paikallisesti ja lähetä tiedot scp:n tai ftp:n välityksellä"
+"Analysoi ongelma paikallisesti ja lataa ulospäin tiedot scp:n tai ftp:n "
+"välityksellä"
 
 #: ../src/workflows/workflow_uReport.xml.in.h:1
 msgid "Submit anonymous crash report"
