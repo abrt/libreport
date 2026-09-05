@@ -7,13 +7,14 @@
 # Chester Cheng <ccheng@redhat.com>, 2011-2012
 # Terry Chuang <tchuang@redhat.com>, 2011
 # Cheng-Chia Tseng <pswo10680@gmail.com>, 2017. #zanata, 2023.
+# hsu zangmen <chzang55@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2023-11-10 11:29+0000\n"
-"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
+"PO-Revision-Date: 2025-03-22 13:29+0000\n"
+"Last-Translator: hsu zangmen <chzang55@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://translate.fedoraproject.org/"
 "projects/abrt/libreport/zh_TW/>\n"
 "Language: zh_TW\n"
@@ -21,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.1.1\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -66,7 +67,7 @@ msgstr "紀錄至 syslog"
 
 #: ../src/cli/cli.c:97 ../src/gui-wizard-gtk/main.c:168
 msgid "Add program names to log"
-msgstr "加入程式名稱至記錄中"
+msgstr "加入程式名稱至記錄檔中"
 
 #: ../src/cli/cli-report.c:132
 #, c-format
@@ -179,11 +180,11 @@ msgstr "無效的輸入，離開程式。"
 
 #: ../src/cli/cli-report.c:744
 msgid "Select an event to run: "
-msgstr "選取要執行的事件："
+msgstr "選取要執行的事件： "
 
 #: ../src/cli/cli-report.c:878
 msgid "Select a workflow to run: "
-msgstr "選取要執行的工作流程："
+msgstr "選取要執行的工作流程： "
 
 #: ../src/client-python/reportclient/debuginfo.py:100
 #, python-brace-format
@@ -433,7 +434,7 @@ msgstr "無透過 DBus 連接至名稱「%s」路徑「%s」介面「%s」：%s"
 #: ../src/gtk-helpers/secrets.c:191
 #, c-format
 msgid "Can't call method '%s' over DBus on path '%s' interface '%s': %s"
-msgstr "無法透過 DBus 於路徑「%2$s」介面「%3$s」呼叫方法「%1$s」：%4$s"
+msgstr "無法透過 DBus 於路徑「'%s'」介面「'%s'」呼叫方法「%s'」：%s"
 
 #: ../src/gtk-helpers/secrets.c:549
 msgid ""
@@ -1154,7 +1155,7 @@ msgstr "無法回報"
 
 #: ../src/lib/parse_options.c:63
 msgid "Usage: "
-msgstr "用法："
+msgstr "用法： "
 
 #: ../src/lib/problem_data.c:252
 #, c-format
@@ -1629,7 +1630,7 @@ msgstr "此問題尚未回報至 Bugzilla「%s」，而不是設定中的 Bugzil
 #: ../src/plugins/reporter-bugzilla.c:509
 #, c-format
 msgid "Malformed url to Bugzilla '%s'."
-msgstr "格式不良的 Bugzilla「%s」URL"
+msgstr "格式不良的 Bugzilla「%s」URL。"
 
 #: ../src/plugins/reporter-bugzilla.c:513
 #, c-format
@@ -1755,6 +1756,7 @@ msgstr ""
 "回報 kernel oops 至 kerneloops.org 或類似網站。\n"
 "\n"
 "包含在 $EXCLUDE_FROM_REPORT 中的檔案不會納入 tarball 中。\n"
+"\n"
 "\n"
 "CONFFILE 必須要有 'PARAM = VALUE' 格式。\n"
 "可辨識的字串參數：SubmitURL。\n"
@@ -2024,11 +2026,11 @@ msgstr "正附加問題資料至案例「%s」"
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:202
 msgid "Documentation which might be relevant: "
-msgstr "可能有相關的文件："
+msgstr "可能有相關的文件： "
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:210
 msgid "Updates which possibly help: "
-msgstr "可能有幫助的更新："
+msgstr "可能有幫助的更新： "
 
 #: ../src/plugins/reporter-systemd-journal.c:225
 msgid ""
@@ -2857,7 +2859,7 @@ msgstr "要加入為附件的 uReport 之 bthash (與 -A 衝突)"
 
 #: ../src/plugins/reporter-ureport.c:85
 msgid "attach to a bthash from reported_to (conflicts with -a)"
-msgstr "從 reported_to 附加到 bthash  (與 -a 衝突)"
+msgstr "從 reported_to 附加到 bthash (與 -a 衝突)"
 
 #: ../src/plugins/reporter-ureport.c:87
 msgid "contact e-mail address (requires -a|-A, conflicts with -E)"

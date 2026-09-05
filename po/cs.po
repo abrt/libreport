@@ -17,14 +17,14 @@
 # Zdenek <chmelarz@gmail.com>, 2018. #zanata
 # Michal Konečný <michal.konecny@packetseekers.eu>, 2020.
 # Krystof Cerny <cleverline1mc@gmail.com>, 2021.
-# Pavel Borecki <pavel.borecki@gmail.com>, 2022, 2023.
+# Pavel Borecki <pavel.borecki@gmail.com>, 2022, 2023, 2025, 2026.
 # Jan Kalabza <jan.kalabza@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2023-07-24 20:21+0000\n"
+"PO-Revision-Date: 2026-07-26 19:17+0000\n"
 "Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Czech <https://translate.fedoraproject.org/projects/abrt/"
 "libreport/cs/>\n"
@@ -33,7 +33,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 2026.7.1\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -302,8 +302,8 @@ msgid ""
 "'{0}' must be owned by abrt. Please run '# chown -R abrt.abrt {0}' to fix "
 "the issue."
 msgstr ""
-"'{0}' musí být vlastněn ABRT. Pro opravu problému prosím spusťte '# chown -R "
-"abrt.abrt {0}'."
+"Je třeba, aby „{0}“ bylo vlastněno ABRT. Pro opravu problému spusťte „# "
+"chown -R abrt.abrt {0}“."
 
 #. Was: "All downloaded packages have been extracted, removing..."
 #. but it was appearing even if no packages were in fact extracted
@@ -1704,7 +1704,7 @@ msgstr ""
 #: ../src/plugins/reporter-bugzilla.c:509
 #, c-format
 msgid "Malformed url to Bugzilla '%s'."
-msgstr "Chybné URL Bugzilly '%s'."
+msgstr "Chybné URL Bugzilly „%s“."
 
 #: ../src/plugins/reporter-bugzilla.c:513
 #, c-format
@@ -1842,7 +1842,7 @@ msgstr ""
 #: ../src/plugins/reporter-kerneloops.c:174
 #: ../src/plugins/reporter-ureport.c:81
 msgid "Configuration file"
-msgstr "Konfigurační soubor"
+msgstr "Soubor s nastaveními"
 
 #: ../src/plugins/reporter-mailx.c:83
 #, c-format
@@ -2196,7 +2196,7 @@ msgstr "Soubor veřejného klíče SSH"
 
 #: ../src/plugins/reporter-upload.c:190
 msgid "SSH private key file"
-msgstr "Soubor soukromého klíče SSH"
+msgstr "Soubor se soukromým SSH klíčem"
 
 #: ../src/plugins/reporter-upload.c:219
 msgid ""
@@ -2715,7 +2715,7 @@ msgstr "Přidá váš e-mail do seznamu CC chyby v Bugzille"
 #: ../src/plugins/rhbz.c:382
 #, c-format
 msgid "Looks like corrupted xml response, because '%s' member is missing."
-msgstr "Vypadá to jako poškozená odpověď XML, protože chybí člen '%s'."
+msgstr "Vypadá to jako poškozená odpověď XML, protože chybí člen „%s“."
 
 #: ../src/plugins/rhbz.c:470
 #, c-format
@@ -2827,7 +2827,7 @@ msgstr "SOAP: Selhalo zobrazení řetězce SOAP."
 
 #: ../src/plugins/mantisbt.c:382
 msgid "Failed to dump xml node."
-msgstr "Selhalo vypsání nódu XML."
+msgstr "Nepodařilo se vypsat XML uzel."
 
 #: ../src/plugins/mantisbt.c:458
 msgid "SOAP: Failed to parse xml (searching value at depth by name)."
@@ -2946,7 +2946,7 @@ msgstr "Projekt v MantisBT nebyl dosud stanoven."
 
 #: ../src/plugins/mantisbt.c:1113
 msgid "Failed to get project id from name"
-msgstr "Selhalo získání ID projektu z názvu"
+msgstr "Nezdařilo se získání ID projektu z názvu"
 
 #: ../src/plugins/reporter-ureport.c:75
 msgid "Specify server URL"
