@@ -11,13 +11,14 @@
 # Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>, 2017. #zanata
 # Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>, 2018. #zanata
 # Julen Sansó <julensanso@gmail.com>, 2023.
+# naly zzwd <xeanhort007@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2023-11-30 10:02+0000\n"
-"Last-Translator: Julen Sansó <julensanso@gmail.com>\n"
+"PO-Revision-Date: 2025-03-31 14:08+0000\n"
+"Last-Translator: naly zzwd <xeanhort007@gmail.com>\n"
 "Language-Team: Catalan <https://translate.fedoraproject.org/projects/abrt/"
 "libreport/ca/>\n"
 "Language: ca\n"
@@ -25,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.2.1\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -66,7 +67,7 @@ msgstr "No interactiu: no facis preguntes, assumeix «sí»"
 
 #: ../src/cli/cli.c:96
 msgid "Log to syslog"
-msgstr "Registra a syslog"
+msgstr "Enregistra a syslog"
 
 #: ../src/cli/cli.c:97 ../src/gui-wizard-gtk/main.c:168
 msgid "Add program names to log"
@@ -187,11 +188,11 @@ msgstr "L'entrada no és vàlida, s'està sortint."
 
 #: ../src/cli/cli-report.c:744
 msgid "Select an event to run: "
-msgstr "Seleccioneu un esdeveniment a executar:"
+msgstr "Seleccioneu un esdeveniment a executar: "
 
 #: ../src/cli/cli-report.c:878
 msgid "Select a workflow to run: "
-msgstr "Seleccioneu un flux de treball a executar:"
+msgstr "Seleccioneu un flux de treball a executar: "
 
 #: ../src/client-python/reportclient/debuginfo.py:100
 #, python-brace-format
@@ -605,8 +606,9 @@ msgid ""
 "<b>Repeat</b> button."
 msgstr ""
 "Si voleu actualitzar la configuració i provar d'informar de nou, obriu "
-"l'element <b>Preferències</b> en el menú de l'aplicació, després d'aplicar "
-"els canvis en la configuració feu clic al botó <b>Repeteix</b>."
+"l'element <b>Preferències</b>\n"
+"en el menú de l'aplicació, i després d'aplicar els canvis en la configuració "
+"feu clic al botó <b>Repeteix</b>."
 
 #: ../src/gui-wizard-gtk/wizard.c:1689
 msgid "Processing was interrupted because the problem is not reportable."
@@ -630,6 +632,7 @@ msgstr "El processament ha finalitzat, continueu amb el següent pas."
 #: ../src/gui-wizard-gtk/wizard.c:1770
 msgid "No commands could be found for processsing the crashdump.\n"
 msgstr ""
+"No s'han trobat ordres per processar les dades bolcades de l'incident.\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1785
 msgid "Processing interrupted: can't continue without writable directory."
@@ -644,6 +647,9 @@ msgid ""
 "No matching actions found for this event.\n"
 "\n"
 msgstr ""
+"--- Saltant %s ---\n"
+"No s'han trobat accions coincidents per a aquest esdeveniment.\n"
+"\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1843
 msgid "Processing..."
@@ -742,7 +748,7 @@ msgstr "Seleccioneu com informar d'aquest problema"
 
 #: ../src/gui-wizard-gtk/wizard.c:3164
 msgid "Provide additional information"
-msgstr "Proporciona informació addicional "
+msgstr "Proporciona informació addicional"
 
 #: ../src/gui-wizard-gtk/wizard.c:3165
 msgid "Review the data"
@@ -1088,7 +1094,7 @@ msgid ""
 "reproduce."
 msgstr ""
 "La traça inversa està incompleta, si us plau, assegureu-vos que proporcioneu "
-"els passos a reproduir. "
+"els passos a reproduir."
 
 #: ../src/lib/event_config.c:527
 msgid "The backtrace probably can't help developer to diagnose the bug."
@@ -1097,14 +1103,12 @@ msgstr ""
 "diagnosticar l'error de programari."
 
 #: ../src/lib/event_config.c:533
-#, fuzzy
-#| msgid "Reporting disabled because the backtrace is unusable."
 msgid ""
 "Reporting is disabled because the generated backtrace has low informational "
 "value."
 msgstr ""
-"La presentació d'informes està deshabilitada perquè la traça inversa és "
-"inutilitzable."
+"La presentació d'informes està deshabilitada perquè la traça inversa "
+"generada té un valor informatiu baix."
 
 #: ../src/lib/event_config.c:537
 #, c-format
@@ -1523,12 +1527,10 @@ msgid "Logging into Bugzilla at %s"
 msgstr "S'està iniciant la sessió Bugzilla a %s"
 
 #: ../src/plugins/reporter-bugzilla.c:223
-#, fuzzy, c-format
-#| msgid "Invalid password or login. Please enter your Red Hat login:"
+#, c-format
 msgid "Invalid password or login. Please enter your %s login:"
 msgstr ""
-"La contrasenya o l'usuari no són vàlids. Introduïu el vostre usuari de Red "
-"Hat:"
+"La contrasenya o l'usuari no són vàlids. Introduïu el vostre usuari de %s:"
 
 #: ../src/plugins/reporter-bugzilla.c:228
 #: ../src/plugins/reporter-rhtsupport.c:411
@@ -1717,13 +1719,11 @@ msgid "Using default product '%s'"
 msgstr "S'utilitza el producte per defecte «%s»"
 
 #: ../src/plugins/reporter-bugzilla.c:468
-#, fuzzy, c-format
-#| msgid ""
-#| "Login is not provided by configuration. Please enter your RHTS login:"
+#, c-format
 msgid "Login is not provided by configuration. Please enter your %s login:"
 msgstr ""
 "En la configuració no s'ha proporcionat l'usuari. Introduïu el vostre usuari "
-"de RHTS:"
+"de %s:"
 
 #: ../src/plugins/reporter-bugzilla.c:476
 #: ../src/plugins/reporter-rhtsupport.c:597
@@ -1769,15 +1769,12 @@ msgid "Logging out"
 msgstr "S'està tancant la sessió"
 
 #: ../src/plugins/reporter-bugzilla.c:579
-#, fuzzy, c-format
-#| msgid ""
-#| "This problem was already reported to MantisBT (see '%s'). Do you still "
-#| "want to create a new issue?"
+#, c-format
 msgid ""
 "This problem was already reported to Bugzilla (see '%s'). Do you still want "
 "to create a new bug?"
 msgstr ""
-"Ja es va informar d'aquest problema al MantisBT (consulteu «%s»). Encara "
+"Ja es va informar d'aquest problema a Bugzilla (consulteu «%s»). Encara "
 "voleu crear una nova incidència?"
 
 #: ../src/plugins/reporter-bugzilla.c:609
@@ -1955,7 +1952,7 @@ msgstr ""
 
 #: ../src/plugins/reporter-mailx.c:289 ../src/plugins/reporter-upload.c:187
 msgid "Config file"
-msgstr "Fitxer de configuració "
+msgstr "Fitxer de configuració"
 
 #: ../src/plugins/reporter-mailx.c:290
 msgid "Formatting file for an email"
@@ -2030,13 +2027,11 @@ msgstr ""
 
 #: ../src/plugins/reporter-rhtsupport.c:473
 msgid "Please enter customer case number to which you want to attach the data:"
-msgstr ""
+msgstr "Introduïu el número de cas del client al qual voleu adjuntar les dades:"
 
 #: ../src/plugins/reporter-rhtsupport.c:479
-#, fuzzy
-#| msgid "Can't continue without password"
 msgid "Can't continue without Red Hat Support case number"
-msgstr "No es pot continuar sense la contrasenya"
+msgstr "No es pot continuar sense un número de cas d'Assistència de Red Hat"
 
 #: ../src/plugins/reporter-rhtsupport.c:506
 msgid ""
@@ -2087,6 +2082,9 @@ msgid ""
 "to the case? Otherwise, you will have to enter the existing Red Hat support "
 "case number."
 msgstr ""
+"Hem trobat un cas d'Assistència de Red Hat %s similar. Vols adjuntar les "
+"dades al cas? En cas contrari, haureu d'introduir el número de cas "
+"d'Assistència de Red Hat existent."
 
 #: ../src/plugins/reporter-rhtsupport.c:676
 #, c-format
@@ -2183,11 +2181,11 @@ msgstr "S'estan adjuntant les dades del problema al cas «%s»"
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:202
 msgid "Documentation which might be relevant: "
-msgstr "Documentació que pot ser apropiada:"
+msgstr "Documentació que pot ser rellevant: "
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:210
 msgid "Updates which possibly help: "
-msgstr "Actualitzacions que possiblement ajudin:"
+msgstr "Actualitzacions que possiblement ajudin: "
 
 #: ../src/plugins/reporter-systemd-journal.c:225
 msgid ""
@@ -2676,7 +2674,7 @@ msgstr "Adreça del portal de suport Red Hat"
 
 #: ../src/plugins/report_RHTSupport_AddData.xml.in.h:2
 msgid "Attach the data to existing Red Hat support case"
-msgstr ""
+msgstr "Adjunteu les dades al cas d'Assistència de Red Hat existent"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report Uploader"
@@ -2769,11 +2767,11 @@ msgstr ""
 
 #: ../src/plugins/report_uReport.xml.in.h:7
 msgid "Report unpackaged problems"
-msgstr ""
+msgstr "Informar de problemes sense empaquetar"
 
 #: ../src/plugins/report_uReport.xml.in.h:8
 msgid "Report problems coming from unpackaged executables."
-msgstr ""
+msgstr "Informar de problemes provinents dels executables no empaquetats."
 
 #: ../src/plugins/report_uReport.xml.in.h:9
 msgid "Contact email address"
@@ -3469,7 +3467,7 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:1
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:1
 msgid "Attach crash data to an existing Red Hat support case"
-msgstr ""
+msgstr "Adjunteu dades d'error a un cas d'Assistència de Red Hat existent"
 
 #: ../src/workflows/workflow_RHELAddDataCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJava.xml.in.h:2
@@ -3479,10 +3477,8 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDatavmcore.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:2
-#, fuzzy
-#| msgid "Ask Red Hat Support for help"
 msgid "Provide Red Hat Support with crash details"
-msgstr "Demaneu ajuda al suport de Red Hat"
+msgstr "Proporcioneu a l'Assistència de Red Hat els detalls de l'inccident"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1

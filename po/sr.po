@@ -3,22 +3,23 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
+# "Марко Костић (Marko Kostić)" <marko.m.kostic@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2015-01-08 07:00+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Serbian (http://www.transifex.com/projects/p/libreport/"
-"language/sr/)\n"
+"PO-Revision-Date: 2026-04-18 06:59+0000\n"
+"Last-Translator: \"Марко Костић (Marko Kostić)\" <marko.m.kostic@gmail.com>\n"
+"Language-Team: Serbian <https://translate.fedoraproject.org/projects/abrt/"
+"libreport/sr/>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 5.17\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -27,39 +28,43 @@ msgid ""
 "   or: & [-vspy] -d PROBLEM_DIR\n"
 "   or: & [-vspy] -x PROBLEM_DIR"
 msgstr ""
+"& [-vsp] -L[ПРЕФИКС] [ДИР_ПРОБЛЕМА]\n"
+"   или: & [-vspy] -e ДОГАЂАЈ ДИР_ПРОБЛЕМА\n"
+"   или: & [-vspy] -d ДИР_ПРОБЛЕМА\n"
+"   или: & [-vspy] -x ДИР_ПРОБЛЕМА"
 
 #. short_name long_name  value    parameter_name  help
 #: ../src/cli/cli.c:89
 msgid "List possible events [which start with PREFIX]"
-msgstr ""
+msgstr "Испиши могуће догађаје [који почињу ПРЕФИКСОМ]"
 
 #: ../src/cli/cli.c:90 ../src/gui-wizard-gtk/main.c:170
 msgid "Run only these events"
-msgstr ""
+msgstr "Покрени само ове догађаје"
 
 #: ../src/cli/cli.c:91 ../src/gui-wizard-gtk/main.c:169
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "Уклони ДИР_ПРОБЛЕМА након пријављивања"
 
 #: ../src/cli/cli.c:92
 msgid "Expert mode"
-msgstr ""
+msgstr "Експертски режим"
 
 #: ../src/cli/cli.c:93 ../src/report-newt/report-newt.c:397
 msgid "Display version and exit"
-msgstr ""
+msgstr "Приказује број издања и излази"
 
 #: ../src/cli/cli.c:94
 msgid "Noninteractive: don't ask questions, assume 'yes'"
-msgstr ""
+msgstr "Неинтерактивно: не постављај питања, претпостави „да“"
 
 #: ../src/cli/cli.c:96
 msgid "Log to syslog"
-msgstr ""
+msgstr "Пиши у системски дневник"
 
 #: ../src/cli/cli.c:97 ../src/gui-wizard-gtk/main.c:168
 msgid "Add program names to log"
-msgstr ""
+msgstr "Додај називе програма у дневник"
 
 #: ../src/cli/cli-report.c:132
 #, c-format
@@ -84,7 +89,7 @@ msgstr "# Архитектура"
 
 #: ../src/cli/cli-report.c:157
 msgid "# Command line"
-msgstr "# Линија Наредби"
+msgstr "# Линија наредби"
 
 #: ../src/cli/cli-report.c:158
 msgid "# Component"
@@ -100,7 +105,7 @@ msgstr "# Извршни"
 
 #: ../src/cli/cli-report.c:161
 msgid "# Kernel version"
-msgstr "# Верзија језгра"
+msgstr "# Издање језгра"
 
 #: ../src/cli/cli-report.c:162
 msgid "# Package"
@@ -112,15 +117,15 @@ msgstr "# Повод пада"
 
 #: ../src/cli/cli-report.c:170
 msgid "# os-release configuration file from root dir"
-msgstr ""
+msgstr "# датотека подешавања os-release из кореног директоријума"
 
 #: ../src/cli/cli-report.c:175
 msgid "# Release string of the operating system from root dir"
-msgstr ""
+msgstr "# ниска издања оперативног система из кореног директоријума"
 
 #: ../src/cli/cli-report.c:183
 msgid "# os-release configuration file"
-msgstr ""
+msgstr "# датотека подешавања os-release"
 
 #: ../src/cli/cli-report.c:188
 msgid "# Release string of the operating system"
@@ -148,12 +153,12 @@ msgstr ""
 
 #: ../src/cli/cli-report.c:466
 msgid "Your input is not valid, because of:"
-msgstr ""
+msgstr "Ваш унос није исправан због:"
 
 #: ../src/cli/cli-report.c:470
 #, c-format
 msgid "Bad value for '%s': %s"
-msgstr ""
+msgstr "Лоша вредност за „%s“: %s"
 
 #: ../src/cli/cli-report.c:671
 #, c-format
@@ -161,114 +166,121 @@ msgid ""
 "Event '%s' requires permission to send possibly sensitive data. Do you want "
 "to continue?"
 msgstr ""
+"Догађај „%s“ захтева дозволу за слање потенцијално осетљивих података. "
+"Желите ли да наставите?"
 
 #: ../src/cli/cli-report.c:718
 msgid "You have chosen number out of range"
-msgstr ""
+msgstr "Изабрали сте број изван опсега"
 
 #: ../src/cli/cli-report.c:723
 msgid "Invalid input, exiting."
-msgstr ""
+msgstr "Неисправан унос, излазим."
 
 #: ../src/cli/cli-report.c:744
 msgid "Select an event to run: "
-msgstr ""
+msgstr "Изаберите догађај за покретање: "
 
 #: ../src/cli/cli-report.c:878
 msgid "Select a workflow to run: "
-msgstr ""
+msgstr "Изаберите радни ток за покретање: "
 
 #: ../src/client-python/reportclient/debuginfo.py:100
 #, python-brace-format
 msgid "Extracting cpio from {0}"
-msgstr ""
+msgstr "Извлачим cpio из {0}"
 
 #: ../src/client-python/reportclient/debuginfo.py:105
 #, python-brace-format
 msgid "Can't write to '{0}': {1}"
-msgstr ""
+msgstr "Не могу да пишем у „{0}“: {1}"
 
 #: ../src/client-python/reportclient/debuginfo.py:116
 #, python-brace-format
 msgid "Can't extract package '{0}'"
-msgstr ""
+msgstr "Не могу да распакујем пакет „{0}“"
 
 #: ../src/client-python/reportclient/debuginfo.py:124
 #, python-brace-format
 msgid "Caching files from {0} made from {1}"
-msgstr ""
+msgstr "Кеширам датотеке из {0} направљене из {1}"
 
 #: ../src/client-python/reportclient/debuginfo.py:148
 #, python-brace-format
 msgid "Can't extract files from '{0}'. For more information see '{1}'"
 msgstr ""
+"Не могу да распакујем датотеке из „{0}“. За више података погледајте „{1}“"
 
 #: ../src/client-python/reportclient/debuginfo.py:163
 #, python-brace-format
 msgid "Can't remove '{0}': {1}"
-msgstr ""
+msgstr "Не могу да уклоним „{0}“: {1}"
 
 #: ../src/client-python/reportclient/debuginfo.py:205
 #: ../src/client-python/reportclient/debuginfo.py:214
 #, python-brace-format
 msgid "Downloading ({0} of {1}) {2}: {3:3}%"
-msgstr ""
+msgstr "Преузимам ({0} од {1}) {2}: {3:3}%"
 
 #: ../src/client-python/reportclient/debuginfo.py:306
 msgid "Initializing package manager"
-msgstr ""
+msgstr "Покрећем управника пакета"
 
 #. This takes some time, let user know what we are doing
 #: ../src/client-python/reportclient/debuginfo.py:310
 msgid "Setting up repositories"
-msgstr ""
+msgstr "Подешавам ризнице"
 
 #: ../src/client-python/reportclient/debuginfo.py:313
 msgid "Looking for needed packages in repositories"
-msgstr ""
+msgstr "Тражим потребне пакете у ризницама"
 
 #: ../src/client-python/reportclient/debuginfo.py:347
 #, python-brace-format
 msgid "Can't find packages for {0} debuginfo files"
-msgstr ""
+msgstr "Не могу да пронађем пакете за {0} debuginfo датотеке"
 
 #: ../src/client-python/reportclient/debuginfo.py:350
 #, python-brace-format
 msgid "Packages to download: {0}"
-msgstr ""
+msgstr "Пакети за преузимање: {0}"
 
 #: ../src/client-python/reportclient/debuginfo.py:352
 #, python-brace-format
 msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
-msgstr ""
+msgstr "Преузимам {0:.2f}Mb, инсталирана величина: {1:.2f}Mb. Наставити?"
 
 #: ../src/client-python/reportclient/debuginfo.py:357
 #: ../src/client-python/reportclient/debuginfo.py:369
 #: ../src/client-python/reportclient/debuginfo.py:380
 msgid "Download cancelled by user"
-msgstr ""
+msgstr "Корисник је отказао преузимање"
 
 #: ../src/client-python/reportclient/debuginfo.py:364
 #, python-brace-format
 msgid ""
 "Warning: Not enough free space in tmp dir '{0}' ({1:.2f}Mb left). Continue?"
 msgstr ""
+"Упозорење: Нема довољно слободног простора у привременом директоријуму „{0}“ "
+"(преостало {1:.2f}Mb). Наставити?"
 
 #: ../src/client-python/reportclient/debuginfo.py:375
 #, python-brace-format
 msgid ""
 "Warning: Not enough free space in cache dir '{0}' ({1:.2f}Mb left). Continue?"
 msgstr ""
+"Упозорење: Нема довољно слободног простора у директоријуму кеша „{0}“ "
+"(преостало {1:.2f}Mb). Наставити?"
 
 #: ../src/client-python/reportclient/debuginfo.py:398
 #, python-brace-format
 msgid "Downloading package {0} failed"
-msgstr ""
+msgstr "Преузимање пакета {0} није успело"
 
 #. recursively delete the temp dir on failure
 #: ../src/client-python/reportclient/debuginfo.py:405
 msgid "Unpacking failed, aborting download..."
-msgstr ""
+msgstr "Распакивање није успело, прекидам преузимање..."
 
 #: ../src/client-python/reportclient/debuginfo.py:410
 #, python-brace-format
@@ -276,6 +288,8 @@ msgid ""
 "'{0}' must be owned by abrt. Please run '# chown -R abrt.abrt {0}' to fix "
 "the issue."
 msgstr ""
+"„{0}“ мора бити у власништву abrt-а. Покрените „# chown -R abrt.abrt {0}“ да "
+"исправите овај проблем."
 
 #. Was: "All downloaded packages have been extracted, removing..."
 #. but it was appearing even if no packages were in fact extracted
@@ -283,84 +297,87 @@ msgstr ""
 #: ../src/client-python/reportclient/debuginfo.py:427
 #, python-brace-format
 msgid "Removing {0}"
-msgstr ""
+msgstr "Уклањам {0}"
 
 #: ../src/client-python/reportclient/debuginfo.py:431
 #, python-brace-format
 msgid "Can't remove {0}, probably contains an error log"
-msgstr ""
+msgstr "Не могу да уклоним {0}, вероватно садржи дневник грешака"
 
 #: ../src/client-python/reportclient/dnfdebuginfo.py:89
 msgid "Error reading repository configuration: '{0!s}'"
-msgstr ""
+msgstr "Грешка при читању подешавања ризнице: „{0!s}“"
 
 #: ../src/client-python/reportclient/dnfdebuginfo.py:106
 msgid "Error setting up repositories: '{0!s}'"
-msgstr ""
+msgstr "Грешка при подешавању ризница: „{0!s}“"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:66
 msgid ""
 "Problem '{0!s}' occured while downloading from mirror: '{1!s}'. Trying next "
 "one"
 msgstr ""
+"Проблем „{0!s}“ се појавио приликом преузимања са одраза: „{1!s}“. Покушавам "
+"следећи"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:100
 msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
-msgstr ""
+msgstr "Грешка при покретању програма yum (YumBase.doConfigSetup): „{0!s}“"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:107
 msgid "Error: can't make cachedir, exiting"
-msgstr ""
+msgstr "Грешка: не могу да направим директоријум оставе, излазим"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:116
 msgid "Can't disable repository '{0!s}': {1!s}"
-msgstr ""
+msgstr "Не могу да онемогућим ризницу „{0!s}“: {1!s}"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:135
 msgid "Can't disable async download, the output might contain artifacts!"
 msgstr ""
+"Не могу да онемогућим асинхроно преузимање, излаз може садржати артефакте!"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:137
 #, python-brace-format
 msgid "Can't setup {0}: {1}, disabling"
-msgstr ""
+msgstr "Не могу да подесим {0}: {1}, онемогућавам"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:147
 msgid "Error retrieving metadata: '{0!s}'"
-msgstr ""
+msgstr "Грешка при преузимању метаподатака: „{0!s}“"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:160
 msgid "Error retrieving filelists: '{0!s}'"
-msgstr ""
+msgstr "Грешка при преузимању спискова датотека: „{0!s}“"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:204
 #, python-brace-format
 msgid "Cannot copy file '{0}': {1}"
-msgstr ""
+msgstr "Не могу да умножим датотеку „{0}“: {1}"
 
 #. Follow GTK3's yes-no-buttons order:
 #. * [No] [Yes]
 #.
 #: ../src/gtk-helpers/ask_dialogs.c:87
 msgid "_No"
-msgstr ""
+msgstr "_Не"
 
 #: ../src/gtk-helpers/ask_dialogs.c:88
 msgid "_Yes"
-msgstr ""
+msgstr "_Да"
 
 #: ../src/gtk-helpers/ask_dialogs.c:94
 msgid "Don't ask me again"
-msgstr ""
+msgstr "Не питај ме поново"
 
 #. if event has no xml description
 #: ../src/gtk-helpers/config_dialog.c:182
 msgid "No description available"
-msgstr ""
+msgstr "Није доступан опис"
 
 #: ../src/gtk-helpers/config_dialog.c:338
 msgid "Configuration"
-msgstr ""
+msgstr "Конфигурација"
 
 #. we can't use this, because we want the workflows first and hashtable
 #. * doesn't return the items in the order they were added
@@ -370,21 +387,21 @@ msgstr ""
 #: ../src/gtk-helpers/config_dialog.c:358
 #: ../src/gtk-helpers/config_dialog.c:417
 msgid "Workflows"
-msgstr ""
+msgstr "Радни токови"
 
 #: ../src/gtk-helpers/config_dialog.c:360
 #: ../src/gtk-helpers/config_dialog.c:362
 #: ../src/gtk-helpers/config_dialog.c:420
 msgid "Events"
-msgstr ""
+msgstr "Догађаји"
 
 #: ../src/gtk-helpers/config_dialog.c:366
 msgid "C_onfigure"
-msgstr ""
+msgstr "По_деси"
 
 #: ../src/gtk-helpers/config_dialog.c:368 ../src/gui-wizard-gtk/wizard.c:3206
 msgid "_Close"
-msgstr ""
+msgstr "_Затвори"
 
 #: ../src/gtk-helpers/event_config_dialog.c:140
 msgid "Show password"
@@ -392,89 +409,97 @@ msgstr "Покажи лозинку"
 
 #: ../src/gtk-helpers/event_config_dialog.c:263
 msgid "Don't store passwords"
-msgstr ""
+msgstr "Не складишти лозинке"
 
 #: ../src/gtk-helpers/event_config_dialog.c:273
 msgid "Basic"
-msgstr ""
+msgstr "Основно"
 
 #: ../src/gtk-helpers/event_config_dialog.c:281
 msgid "Advanced"
-msgstr ""
+msgstr "Напредно"
 
 #: ../src/gtk-helpers/event_config_dialog.c:297
 msgid "Secret Service is not available, your settings won't be saved!"
-msgstr ""
+msgstr "Услуга тајни није доступна, ваша подешавања неће бити сачувана!"
 
 #: ../src/gtk-helpers/event_config_dialog.c:340
 #: ../src/gtk-helpers/workflow_config_dialog.c:90
 #: ../src/gui-wizard-gtk/wizard.c:732 ../src/gui-wizard-gtk/wizard.c:2865
 msgid "_Cancel"
-msgstr ""
+msgstr "От_кажи"
 
 #: ../src/gtk-helpers/event_config_dialog.c:342
 #: ../src/gtk-helpers/workflow_config_dialog.c:92
 msgid "_OK"
-msgstr ""
+msgstr "_У реду"
 
 #: ../src/gtk-helpers/secrets.c:171
 #, c-format
 msgid "Can't connect over DBus to name '%s' path '%s' interface '%s': %s"
 msgstr ""
+"Не могу да се повежем преко Д-сабирнице на назив „%s“ путању „%s“ интерфејс "
+"„%s“: %s"
 
 #: ../src/gtk-helpers/secrets.c:191
 #, c-format
 msgid "Can't call method '%s' over DBus on path '%s' interface '%s': %s"
 msgstr ""
+"Не могу да позовем метод „%s“ преко Д-сабирнице на путањи „%s“ интерфејсу „%s"
+"“: %s"
 
 #: ../src/gtk-helpers/secrets.c:549
 msgid ""
 "A timeout was reached while waiting for a prompt result from the DBus Secret "
 "Service."
 msgstr ""
+"Време је истекло приликом чекања на резултат упита од Услуге тајни Д-"
+"сабирнице."
 
 #: ../src/gtk-helpers/secrets.c:552
 msgid ""
 "Do you want to stop waiting and continue in reporting without properly "
 "loaded configuration?"
 msgstr ""
+"Желите ли да прекинете чекање и наставите са пријављивањем без исправно "
+"учитаних подешавања?"
 
 #: ../src/gtk-helpers/secrets.c:862
 #, c-format
 msgid "D-Bus Secrets Service ReadAlias('%s') method failed: %s"
-msgstr ""
+msgstr "Метод ReadAlias('%s') услуге Д-сабирнице за тајне није успео: %s"
 
 #. if the error wasn't about invalid properties we have an another problem
 #: ../src/gtk-helpers/secrets.c:1104
 #, c-format
 msgid "Can't create a secret item for event '%s': %s"
-msgstr ""
+msgstr "Не могу да направим ставку тајне за догађај „%s“: %s"
 
 #: ../src/gtk-helpers/secrets.c:1286
 #, c-format
 msgid "can't get secret value of '%s': %s"
-msgstr ""
+msgstr "не могу да добавим вредност тајне за „%s“: %s"
 
 #: ../src/gtk-helpers/problem_details_widget.c:198
 #, c-format
 msgid "$DATA_DIRECTORY/%s (binary file, %s)"
-msgstr ""
+msgstr "$DATA_DIRECTORY/%s (бинарна датотека, %s)"
 
 #: ../src/gtk-helpers/problem_details_dialog.c:30
 msgid "Problem details"
-msgstr ""
+msgstr "Детаљи о проблему"
 
 #: ../src/gtk-helpers/problem_details_dialog.c:33
 msgid "OK"
-msgstr ""
+msgstr "У реду"
 
 #: ../src/gui-wizard-gtk/main.c:106
 msgid "Preferences"
-msgstr ""
+msgstr "Подешавања"
 
 #: ../src/gui-wizard-gtk/main.c:109
 msgid "Quit"
-msgstr ""
+msgstr "Изађи"
 
 #: ../src/gui-wizard-gtk/main.c:153
 msgid ""
@@ -482,6 +507,10 @@ msgid ""
 "\n"
 "GUI tool to analyze and report problem saved in specified PROBLEM_DIR"
 msgstr ""
+"& [-vpdx] [-e ДОГАЂАЈ]... [-g ГУИ_ДАТОТЕКА] ДИР_ПРОБЛЕМА\n"
+"\n"
+"Графички алат за анализу и пријављивање проблема сачуваног у наведеном "
+"ДИР_ПРОБЛЕМА"
 
 #: ../src/gui-wizard-gtk/wizard.c:340
 #, c-format
@@ -489,14 +518,16 @@ msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved data?"
 msgstr ""
+"Потребан је директоријум у који се може уписивати, али „%s“ није уписив. "
+"Желите ли да га преместите у „%s“ и радите са премештеним подацима?"
 
 #: ../src/gui-wizard-gtk/wizard.c:723
 msgid "View/edit a text file"
-msgstr ""
+msgstr "Прегледај/уреди текстуалну датотеку"
 
 #: ../src/gui-wizard-gtk/wizard.c:731
 msgid "_Save"
-msgstr ""
+msgstr "Са_чувај"
 
 #: ../src/gui-wizard-gtk/wizard.c:874
 msgid ""
@@ -504,38 +535,45 @@ msgid ""
 "please provide a comprehensive description of the problem you have "
 "encountered."
 msgstr ""
+"Будући да се падови без познатог начина за поновно изазивање тешко "
+"дијагностикују, молимо вас да доставите свеобухватан опис проблема на који "
+"сте наишли."
 
 #: ../src/gui-wizard-gtk/wizard.c:881
 msgid ""
 "Please provide a short description of the problem and please include the "
 "steps you have used to reproduce the problem."
 msgstr ""
+"Молимо вас да доставите кратак опис проблема и кораке које сте користили да "
+"га поново изазовете."
 
 #: ../src/gui-wizard-gtk/wizard.c:888
 msgid "Please provide the steps you have used to reproduce the problem."
 msgstr ""
+"Молимо вас да доставите кораке које сте користили да поново изазовете "
+"проблем."
 
 #: ../src/gui-wizard-gtk/wizard.c:1009
 msgid "(click here to view/edit)"
-msgstr ""
+msgstr "(кликните овде за преглед/уређивање)"
 
 #: ../src/gui-wizard-gtk/wizard.c:1021
 #, c-format
 msgid "(binary file, %llu bytes)"
-msgstr ""
+msgstr "(бинарна датотека, %llu бајта)"
 
 #: ../src/gui-wizard-gtk/wizard.c:1121 ../src/report-newt/report-newt.c:332
 msgid "(no description)"
-msgstr ""
+msgstr "(нема описа)"
 
 #: ../src/gui-wizard-gtk/wizard.c:1129
 #, c-format
 msgid "%llu bytes, %u files"
-msgstr ""
+msgstr "%llu бајта, %u датотека"
 
 #: ../src/gui-wizard-gtk/wizard.c:1381
 msgid "Processing was canceled"
-msgstr ""
+msgstr "Обрада је отказана"
 
 #: ../src/gui-wizard-gtk/wizard.c:1561
 msgid ""
@@ -545,6 +583,11 @@ msgid ""
 "\t▫ <b>corrupted problem data</b>\n"
 "\t▫ <b>invalid configuration</b>"
 msgstr ""
+"Обрада проблема није успела. Ово се може десити из много разлога, али су три "
+"најчешћа:\n"
+"\t▫ <b>проблеми са мрежном везом</b>\n"
+"\t▫ <b>оштећени подаци о проблему</b>\n"
+"\t▫ <b>неисправна подешавања</b>"
 
 #: ../src/gui-wizard-gtk/wizard.c:1567
 msgid ""
@@ -553,31 +596,37 @@ msgid ""
 "in the application menu and after applying the configuration changes click "
 "<b>Repeat</b> button."
 msgstr ""
+"Ако желите да ажурирате подешавања и покушате поново са пријављивањем, "
+"отворите ставку <b>Поставке</b>\n"
+"у менију програма и након примене измена у подешавањима кликните на дугме <b>"
+"Понови</b>."
 
 #: ../src/gui-wizard-gtk/wizard.c:1689
 msgid "Processing was interrupted because the problem is not reportable."
-msgstr ""
+msgstr "Обрада је прекинута јер се проблем не може пријавити."
 
 #: ../src/gui-wizard-gtk/wizard.c:1699 ../src/gui-wizard-gtk/wizard.c:1773
 msgid "Processing failed."
-msgstr ""
+msgstr "Обрада није успела."
 
 #. No next event, go to progress page and finish.
 #: ../src/gui-wizard-gtk/wizard.c:1706 ../src/gui-wizard-gtk/wizard.c:2594
 msgid "Processing finished."
-msgstr ""
+msgstr "Обрада је завршена."
 
 #: ../src/gui-wizard-gtk/wizard.c:1707
 msgid "Processing finished, please proceed to the next step."
-msgstr ""
+msgstr "Обрада је завршена, наставите на следећи корак."
 
 #: ../src/gui-wizard-gtk/wizard.c:1770
 msgid "No commands could be found for processsing the crashdump.\n"
-msgstr ""
+msgstr "Нису пронађене наредбе за обраду избачаја меморије.\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1785
 msgid "Processing interrupted: can't continue without writable directory."
 msgstr ""
+"Обрада је прекинута: не могу да наставим без директоријума у који се може "
+"писати."
 
 #: ../src/gui-wizard-gtk/wizard.c:1808
 #, c-format
@@ -586,25 +635,29 @@ msgid ""
 "No matching actions found for this event.\n"
 "\n"
 msgstr ""
+"--- Прескачем %s ---\n"
+"Нису пронађене одговарајуће радње за овај догађај.\n"
+"\n"
 
 #: ../src/gui-wizard-gtk/wizard.c:1843
 msgid "Processing..."
-msgstr ""
+msgstr "Обрађујем..."
 
 #: ../src/gui-wizard-gtk/wizard.c:1925
 msgid ""
 "Possible sensitive data detected, feel free to edit the report and remove "
 "them."
 msgstr ""
+"Откривени су могући осетљиви подаци, слободно уредите извештај и уклоните их."
 
 #: ../src/gui-wizard-gtk/wizard.c:1968
 msgid "Cannot check backtrace rating because of invalid event name"
-msgstr ""
+msgstr "Не могу да проверим оцену бектрејса због неисправног назива догађаја"
 
 #: ../src/gui-wizard-gtk/wizard.c:2418
 #, c-format
 msgid "Failed to save file '%s'"
-msgstr ""
+msgstr "Нисам успео да сачувам датотеку „%s“"
 
 #: ../src/gui-wizard-gtk/wizard.c:2619
 #, c-format
@@ -612,50 +665,52 @@ msgid ""
 "Event '%s' requires permission to send possibly sensitive data.\n"
 "Do you want to continue?"
 msgstr ""
+"Догађај „%s“ захтева дозволу за слање могуће осетљивих података.\n"
+"Желите ли да наставите?"
 
 #: ../src/gui-wizard-gtk/wizard.c:2665
 #, c-format
 msgid "This problem should not be reported (it is likely a known problem). %s"
-msgstr ""
+msgstr "Овај проблем не би требало пријављивати (вероватно је већ познат). %s"
 
 #: ../src/gui-wizard-gtk/wizard.c:2866
 msgid "_Open"
-msgstr ""
+msgstr "_Отвори"
 
 #: ../src/gui-wizard-gtk/wizard.c:2888
 #, c-format
 msgid "'%s' is not an ordinary file"
-msgstr ""
+msgstr "„%s“ није обична датотека"
 
 #: ../src/gui-wizard-gtk/wizard.c:2901
 msgid "You are trying to copy a file onto itself"
-msgstr ""
+msgstr "Покушавате да умножите датотеку на саму себе"
 
 #: ../src/gui-wizard-gtk/wizard.c:2907
 #, c-format
 msgid "Can't copy '%s': %s"
-msgstr ""
+msgstr "Не могу да умножим „%s“: %s"
 
 #: ../src/gui-wizard-gtk/wizard.c:2921
 #, c-format
 msgid "Item '%s' already exists and is not modifiable"
-msgstr ""
+msgstr "Ставка „%s“ већ постоји и не може се мењати"
 
 #: ../src/gui-wizard-gtk/wizard.c:3087
 msgid "I have experienced this problem for the first time"
-msgstr ""
+msgstr "Први пут сам искусио овај проблем"
 
 #: ../src/gui-wizard-gtk/wizard.c:3090
 msgid "I can reproduce this problem"
-msgstr ""
+msgstr "Могу да поновим овај проблем"
 
 #: ../src/gui-wizard-gtk/wizard.c:3093
 msgid "This problem occurs repeatedly"
-msgstr ""
+msgstr "Овај проблем се понавља"
 
 #: ../src/gui-wizard-gtk/wizard.c:3106
 msgid "Include"
-msgstr ""
+msgstr "Укључи"
 
 #: ../src/gui-wizard-gtk/wizard.c:3117
 msgid "Name"
@@ -663,49 +718,49 @@ msgstr "Име"
 
 #: ../src/gui-wizard-gtk/wizard.c:3127
 msgid "Value"
-msgstr ""
+msgstr "Вредност"
 
 #: ../src/gui-wizard-gtk/wizard.c:3162
 msgid "Problem description"
-msgstr ""
+msgstr "Опис проблема"
 
 #: ../src/gui-wizard-gtk/wizard.c:3163
 msgid "Select how to report this problem"
-msgstr ""
+msgstr "Изаберите како да пријавите овај проблем"
 
 #: ../src/gui-wizard-gtk/wizard.c:3164
 msgid "Provide additional information"
-msgstr ""
+msgstr "Доставите додатне податке"
 
 #: ../src/gui-wizard-gtk/wizard.c:3165
 msgid "Review the data"
-msgstr ""
+msgstr "Прегледајте податке"
 
 #: ../src/gui-wizard-gtk/wizard.c:3166
 msgid "Confirm data to report"
-msgstr ""
+msgstr "Потврдите податке за пријаву"
 
 #: ../src/gui-wizard-gtk/wizard.c:3167
 msgid "Processing"
-msgstr ""
+msgstr "Обрада"
 
 #: ../src/gui-wizard-gtk/wizard.c:3168
 msgid "Processing done"
-msgstr ""
+msgstr "Обрада је готова"
 
 #: ../src/gui-wizard-gtk/wizard.c:3208
 msgid "_Stop"
-msgstr ""
+msgstr "_Заустави"
 
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3211
 msgid "Repeat"
-msgstr ""
+msgstr "Понављај"
 
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3213
 msgid "_Forward"
-msgstr ""
+msgstr "Просл_еди"
 
 #. else gtk_widget_hide won't work
 #: ../src/gui-wizard-gtk/wizard.c:3216 ../src/gui-wizard-gtk/wizard.glade.h:9
@@ -714,41 +769,44 @@ msgstr "Детаљи"
 
 #: ../src/gui-wizard-gtk/wizard.c:3263
 msgid "Restrict access to the report"
-msgstr ""
+msgstr "Ограничи приступ извештају"
 
 #: ../src/gui-wizard-gtk/wizard.c:3268
 msgid "Learn more about restricted access in the configuration"
-msgstr ""
+msgstr "Сазнајте више о ограниченом приступу у подешавањима"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
 msgid ""
 "Please review the data before it gets reported. Depending on reporter "
 "chosen, it may end up publicly visible."
 msgstr ""
+"Прегледајте податке пре него што буду пријављени. У зависности од изабраног "
+"извештавача, они могу постати јавно видљиви."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Sensitive words"
-msgstr ""
+msgstr "Осетљиве речи"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid "Custom"
-msgstr ""
+msgstr "Прилагођено"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid "Clear the search bar to see the list of security sensitive words."
 msgstr ""
+"Очистите траку за претрагу да бисте видели списак безбедносно осетљивих речи."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid "file"
-msgstr ""
+msgstr "датотека"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "data"
-msgstr ""
+msgstr "подаци"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "Search"
-msgstr ""
+msgstr "Претрага"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid ""
@@ -757,6 +815,10 @@ msgid ""
 "collected data, and to choose where the problem should be reported. Click "
 "'Forward' to proceed."
 msgstr ""
+"На следећим екранима бићете замољени да опишете како је дошло до проблема, "
+"да изаберете како да анализирате проблем (ако је потребно), да прегледате "
+"прикупљене податке и да изаберете где проблем треба да буде пријављен. "
+"Кликните на „Напред“ да бисте наставили."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid ""
@@ -764,46 +826,52 @@ msgid ""
 "additional comments useful for diagnosing the problem? Please use English if "
 "possible."
 msgstr ""
+"Како је дошло до овог проблема (корак по корак)? Како се може репродуковати? "
+"Имате ли додатних коментара корисних за дијагностиковање проблема? Користите "
+"енглески језик ако је могуће."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid "How reproducible is this problem?"
-msgstr ""
+msgstr "Колико се лако овај проблем може репродуковати?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid "How it can be reproduced (one step per line)?"
-msgstr ""
+msgstr "Како се може репродуковати (један корак по реду)?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid ""
 "Please add a comprehensive description of the problem you have. This is a "
 "very long place holder."
 msgstr ""
+"Додајте детаљан опис проблема који имате. Ово је веома дугачко место за унос."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:14
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "Морате попунити како је дошло до проблема пре него што наставите..."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
 msgstr ""
+"<b>Ваши коментари нису приватни.</b> Они могу бити укључени у јавно видљиве "
+"извештаје о проблемима."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "I don't know what caused this problem"
-msgstr ""
+msgstr "Не знам шта је узроковало овај проблем"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "Size:"
-msgstr ""
+msgstr "Величина:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid "Attach a file"
-msgstr ""
+msgstr "Приложите датотеку"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:19
 msgid "I reviewed the data and _agree with submitting it"
-msgstr ""
+msgstr "Прегледао сам податке и _слажем се са њиховим слањем"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:20
 msgid ""
@@ -811,18 +879,21 @@ msgid ""
 "data (such as usernames and passwords). Backtrace, command line, environment "
 "variables are the typical items in need of examining."
 msgstr ""
+"Ако вршите пријаву на удаљени сервер, уверите се да сте уклонили све "
+"приватне податке (као што су корисничка имена и лозинке). Бектрејс, линија "
+"наредби и променљиве окружења су уобичајене ставке које треба прегледати."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:21
 msgid "Processing did not start yet"
-msgstr ""
+msgstr "Обрада још није почела"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:22
 msgid "Show log"
-msgstr ""
+msgstr "Прикажи записник"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:23
 msgid "Reporting has finished. You can close this window now."
-msgstr ""
+msgstr "Пријављивање је завршено. Сада можете затворити овај прозор."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:24
 msgid ""
@@ -830,10 +901,13 @@ msgid ""
 "additional information, or provide a better problem description and repeat "
 "reporting process, press 'Forward'."
 msgstr ""
+"Ако желите да пријавите проблем на друго одредиште, прикупите додатне "
+"информације или обезбедите бољи опис проблема и поновите поступак "
+"пријављивања, притисните „Напред“."
 
 #: ../src/include/internal_libreport.h:1246
 msgid "Be verbose"
-msgstr ""
+msgstr "Бива опширан"
 
 #: ../src/include/internal_libreport.h:1247
 #: ../src/plugins/reporter-bugzilla.c:323
@@ -842,29 +916,29 @@ msgstr ""
 #: ../src/plugins/reporter-systemd-journal.c:250
 #: ../src/plugins/reporter-upload.c:186 ../src/plugins/reporter-mantisbt.c:283
 msgid "Problem directory"
-msgstr ""
+msgstr "Директоријум проблема"
 
 #: ../src/lib/abrt_sock.c:161
 #, c-format
 msgid "Can't delete: '%s'"
-msgstr ""
+msgstr "Не могу да обришем: „%s“"
 
 #: ../src/lib/abrt_sock.c:197
 msgid "locked by another process"
-msgstr ""
+msgstr "закључао је други процес"
 
 #: ../src/lib/abrt_sock.c:206
 msgid "permission denied"
-msgstr ""
+msgstr "приступ је одбијен"
 
 #: ../src/lib/abrt_sock.c:209
 msgid "not a problem directory"
-msgstr ""
+msgstr "није директоријум проблема"
 
 #: ../src/lib/abrt_sock.c:218
 #, c-format
 msgid "Can't delete '%s': %s"
-msgstr ""
+msgstr "Не могу да обришем „%s“: %s"
 
 #: ../src/lib/client.c:67 ../src/lib/client.c:99 ../src/lib/client.c:156
 msgid "y"
@@ -876,107 +950,107 @@ msgstr "Н"
 
 #: ../src/lib/client.c:101 ../src/lib/client.c:158
 msgid "f"
-msgstr ""
+msgstr "р"
 
 #: ../src/lib/client.c:159
 msgid "e"
-msgstr ""
+msgstr "ж"
 
 #: ../src/lib/create_dump_dir.c:32
 #, c-format
 msgid "uid value is not valid: '%s'"
-msgstr ""
+msgstr "вредност уид-а није исправна: „%s“"
 
 #: ../src/lib/create_dump_dir.c:51
 #, c-format
 msgid "'%s' is not correct file name"
-msgstr ""
+msgstr "„%s“ није исправан назив датотеке"
 
 #: ../src/lib/create_dump_dir.c:195
 #, c-format
 msgid "Missing required item: '%s'"
-msgstr ""
+msgstr "Недостаје обавезна ставка: „%s“"
 
 #: ../src/lib/curl.c:227
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
-msgstr ""
+msgstr "Отпремљено: %llu од %llu килобајта"
 
 #: ../src/lib/curl.c:636
 msgid "Ignoring URL without scheme and hostname"
-msgstr ""
+msgstr "Занемарујем адресу без шеме и назива домаћина"
 
 #. Do not include the path part of the URL as it can contain sensitive data
 #. * in case of typos
 #: ../src/lib/curl.c:666
 #, c-format
 msgid "Sending %s to %s//%s"
-msgstr ""
+msgstr "Шаљем %s на %s//%s"
 
 #: ../src/lib/curl.c:690
 #, c-format
 msgid "Please enter user name for '%s//%s':"
-msgstr ""
+msgstr "Унесите корисничко име за „%s//%s“:"
 
 #: ../src/lib/curl.c:696
 #, c-format
 msgid "Please enter password for '%s//%s@%s':"
-msgstr ""
+msgstr "Унесите лозинку за „%s//%s@%s“:"
 
 #. This ends up a "reporting status message" in abrtd
 #: ../src/lib/curl.c:719
 #, c-format
 msgid "Successfully created %s"
-msgstr ""
+msgstr "Успешно је направљено %s"
 
 #: ../src/lib/dump_dir.c:2481
 msgid "Failed to open TAR writer"
-msgstr ""
+msgstr "Нисам успео да отворим ТАР писач"
 
 #: ../src/lib/dump_dir.c:2507
 msgid "Failed to finalize TAR archive"
-msgstr ""
+msgstr "Нисам успео да завршим ТАР архиву"
 
 #: ../src/lib/dump_dir.c:2517
 msgid "Failed to close TAR writer"
-msgstr ""
+msgstr "Нисам успео да затворим ТАР писач"
 
 #: ../src/lib/dump_dir.c:2527
 #, c-format
 msgid "gzip killed with signal %d"
-msgstr ""
+msgstr "гзип је убијен сигналом %d"
 
 #: ../src/lib/dump_dir.c:2533
 #, c-format
 msgid "gzip exited with %d"
-msgstr ""
+msgstr "гзип је изашао са %d"
 
 #: ../src/lib/dump_dir.c:2536
 msgid "gzip process failed"
-msgstr ""
+msgstr "гзип процес није успео"
 
 #: ../src/lib/event_config.c:399
 msgid "Missing mandatory value"
-msgstr ""
+msgstr "Недостаје обавезна вредност"
 
 #: ../src/lib/event_config.c:407
 #, c-format
 msgid "Invalid utf8 character '%c'"
-msgstr ""
+msgstr "Неисправан utf8 знак „%c“"
 
 #: ../src/lib/event_config.c:420
 #, c-format
 msgid "Invalid number '%s'"
-msgstr ""
+msgstr "Неисправан број „%s“"
 
 #: ../src/lib/event_config.c:435
 #, c-format
 msgid "Invalid boolean value '%s'"
-msgstr ""
+msgstr "Неисправна логичка вредност „%s“"
 
 #: ../src/lib/event_config.c:441
 msgid "Unsupported option type"
-msgstr ""
+msgstr "Неподржана врста опције"
 
 #: ../src/lib/event_config.c:516
 #, c-format
@@ -984,29 +1058,32 @@ msgid ""
 "The problem cannot be reported due to an invalid data. '%s' file does not "
 "contain a number."
 msgstr ""
+"Проблем не може бити пријављен због неисправних података. Датотека „%s“ не "
+"садржи број."
 
 #: ../src/lib/event_config.c:520
 msgid "Please report this problem to ABRT project developers."
-msgstr ""
+msgstr "Молимо пријавите овај проблем програмерима пројекта ABRT."
 
 #: ../src/lib/event_config.c:526
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr ""
-"Backtrace је недовршен, постарајте се да дате кораке потребне за репродукцију"
+"Backtrace је недовршен, постарајте се да дате кораке потребне за "
+"репродукцију."
 
 #: ../src/lib/event_config.c:527
 msgid "The backtrace probably can't help developer to diagnose the bug."
-msgstr ""
+msgstr "Бектрејс вероватно не може помоћи програмеру да дијагностикује грешку."
 
 #: ../src/lib/event_config.c:533
-#, fuzzy
-#| msgid "Reporting disabled because the backtrace is unusable."
 msgid ""
 "Reporting is disabled because the generated backtrace has low informational "
 "value."
-msgstr "Пријављивање је онемогућено backtrace је неупотрбљив."
+msgstr ""
+"Пријављивање је онемогућено јер генерисани бектрејс има ниску информативну "
+"вредност."
 
 #: ../src/lib/event_config.c:537
 #, c-format
@@ -1014,25 +1091,28 @@ msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again."
 msgstr ""
+"Молимо покушајте да ручно инсталирате debuginfo користећи наредбу: „"
+"debuginfo-install %s“ и покушајте поново."
 
 #: ../src/lib/event_config.c:539
 msgid "A proper debuginfo is probably missing or the coredump is corrupted."
 msgstr ""
+"Вероватно недостаје одговарајући debuginfo или је избачај језгра оштећен."
 
 #: ../src/lib/iso_date_string.c:50
 #, c-format
 msgid "String doesn't seem to be a date: '%s'"
-msgstr ""
+msgstr "Ниска не изгледа као датум: „%s“"
 
 #: ../src/lib/iso_date_string.c:55
 #, c-format
 msgid "The date: '%s' has unrecognized suffix: '%s'"
-msgstr ""
+msgstr "Датум: „%s“ има непрепознат суфикс: „%s“"
 
 #: ../src/lib/iso_date_string.c:60
 #, c-format
 msgid "The date: '%s' is out of UNIX time stamp range"
-msgstr ""
+msgstr "Датум: „%s“ је изван опсега UNIX временске ознаке"
 
 #: ../src/lib/ureport.c:400
 #, c-format
@@ -1041,260 +1121,275 @@ msgid ""
 "\n"
 "%s\n"
 msgstr ""
+"Изгледа да је ваш проблем узрокован са %s\n"
+"\n"
+"%s\n"
 
 #: ../src/lib/ureport.c:403
 msgid "Your problem seems to be caused by one of the following:\n"
-msgstr ""
+msgstr "Изгледа да је ваш проблем узрокован једним од следећег:\n"
 
 #: ../src/lib/ureport.c:575
 #, c-format
 msgid "Failed to upload uReport to the server '%s' with curl: %s"
-msgstr ""
+msgstr "Није успело отпремање uReport-а на сервер „%s“ помоћу curl-а: %s"
 
 #: ../src/lib/ureport.c:579
 #, c-format
 msgid "Failed to upload uReport to the server '%s'"
-msgstr ""
+msgstr "Није успело отпремање uReport-а на сервер „%s“"
 
 #: ../src/lib/ureport.c:582
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Грешка: %s"
 
 #: ../src/lib/ureport.c:589
 #, c-format
 msgid "The URL '%s' does not exist (got error 404 from server)"
-msgstr ""
+msgstr "URL „%s“ не постоји (добијена је грешка 404 од сервера)"
 
 #: ../src/lib/ureport.c:595
 #, c-format
 msgid "The server at '%s' encountered an internal error (got error 500)"
-msgstr ""
+msgstr "Сервер на „%s“ је наишао на унутрашњу грешку (грешка 500)"
 
 #: ../src/lib/ureport.c:601
 #, c-format
 msgid "The server at '%s' currently can't handle the request (got error 503)"
-msgstr ""
+msgstr "Сервер на „%s“ тренутно не може да обради захтев (грешка 503)"
 
 #. can't print better error message
 #: ../src/lib/ureport.c:610
 #, c-format
 msgid "Unexpected HTTP response from '%s': %d"
-msgstr ""
+msgstr "Неочекиван ХТТП одговор од „%s“: %d"
 
 #: ../src/lib/ureport.c:619
 #, c-format
 msgid "Unable to parse response from ureport server at '%s'"
-msgstr ""
+msgstr "Не могу да обрадим одговор од ureport сервера на „%s“"
 
 #: ../src/lib/ureport.c:629
 #, c-format
 msgid "The response from '%s' has invalid format"
-msgstr ""
+msgstr "Одговор од „%s“ је у неисправном формату"
 
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
 #: ../src/lib/ureport.c:635
 #, c-format
 msgid "Type mismatch has been detected in the response from '%s'"
-msgstr ""
+msgstr "Неподударање врста је откривено у одговору од „%s“"
 
 #: ../src/lib/ureport.c:861 ../src/plugins/reporter-rhtsupport.c:235
 msgid "Failed on submitting the problem"
-msgstr ""
+msgstr "Слање проблема није успело"
 
 #: ../src/lib/ureport.c:903
 #, c-format
 msgid "The server at '%s' responded with an error: '%s'"
-msgstr ""
+msgstr "Сервер на „%s“ је одговорио грешком: „%s“"
 
 #: ../src/lib/make_descr.c:149 ../src/lib/make_descr.c:160
 msgid "Reported:"
-msgstr ""
+msgstr "Пријављено:"
 
 #: ../src/lib/make_descr.c:149
 msgid "cannot be reported"
-msgstr ""
+msgstr "не може бити пријављено"
 
 #: ../src/lib/parse_options.c:63
 msgid "Usage: "
-msgstr ""
+msgstr "Начин коришћења: "
 
 #: ../src/lib/problem_data.c:252
 #, c-format
 msgid "Essential element '%s' is missing, can't continue"
-msgstr ""
+msgstr "Суштински елемент „%s“ недостаје, не могу да наставим"
 
 #: ../src/lib/problem_report.c:517
 #, c-format
 msgid "Can't parse backtrace: %s"
-msgstr ""
+msgstr "Не могу да обрадим траг уназад: %s"
 
 #: ../src/lib/problem_report.c:532
 msgid "Can't generate stacktrace description (no crash thread?)"
-msgstr ""
+msgstr "Не могу да направим опис трага стека (нема нити пада?)"
 
 #: ../src/lib/report_result.c:265
 #, c-format
 msgid "Ignored invalid ISO date of report result '%s'"
-msgstr ""
+msgstr "Занемарен је неисправан ИСО датум резултата извештаја „%s“"
 
 #: ../src/lib/reporters.c:55
 msgid "Note does not contain rating"
-msgstr ""
+msgstr "Напомена не садржи оцену"
 
 #: ../src/lib/run_event.c:891
 #, c-format
 msgid "('%s' was killed by signal %u)\n"
-msgstr ""
+msgstr "(„%s“ је убијен сигналом %u)\n"
 
 #: ../src/lib/run_event.c:893
 #, c-format
 msgid "('%s' completed successfully)\n"
-msgstr ""
+msgstr "(„%s“ је успешно завршен)\n"
 
 #: ../src/lib/run_event.c:895
 #, c-format
 msgid "('%s' exited with %u)\n"
-msgstr ""
+msgstr "(„%s“ је изашао са %u)\n"
 
 #: ../src/plugins/abrt_rh_support.c:356
 #, c-format
 msgid "Error in case creation at '%s': %s"
-msgstr ""
+msgstr "Грешка при стварању случаја на „%s“: %s"
 
 #: ../src/plugins/abrt_rh_support.c:365
 #, c-format
 msgid "Error in case creation at '%s', HTTP code: %d, server says: '%s'"
-msgstr ""
+msgstr "Грешка при стварању случаја на „%s“, ХТТП код: %d, сервер каже: „%s“"
 
 #: ../src/plugins/abrt_rh_support.c:369
 #, c-format
 msgid "Error in case creation at '%s', HTTP code: %d"
-msgstr ""
+msgstr "Грешка при стварању случаја на „%s“, ХТТП кôд: %d"
 
 #: ../src/plugins/abrt_rh_support.c:420
 #, c-format
 msgid "Error in case creation at '%s': no Location URL, HTTP code: %d"
-msgstr ""
+msgstr "Грешка при стварању случаја на „%s“: нема адресе локације, ХТТП кôд: %d"
 
 #: ../src/plugins/abrt_rh_support.c:524
 #, c-format
 msgid "Error in comment creation at '%s': %s"
-msgstr ""
+msgstr "Грешка при стварању коментара на „%s“: %s"
 
 #: ../src/plugins/abrt_rh_support.c:533
 #, c-format
 msgid "Error in comment creation at '%s', HTTP code: %d, server says: '%s'"
-msgstr ""
+msgstr "Грешка при стварању коментара на „%s“, ХТТП кôд: %d, сервер каже: „%s“"
 
 #: ../src/plugins/abrt_rh_support.c:537
 #, c-format
 msgid "Error in comment creation at '%s', HTTP code: %d"
-msgstr ""
+msgstr "Грешка при стварању коментара на „%s“, ХТТП кôд: %d"
 
 #: ../src/plugins/abrt_rh_support.c:583
 #, c-format
 msgid "Error in comment creation at '%s': no Location URL, HTTP code: %d"
 msgstr ""
+"Грешка при стварању коментара на „%s“: нема адресе локације, ХТТП кôд: %d"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:1
 msgid "Bugzilla"
-msgstr ""
+msgstr "Багзила"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:2
 msgid "Report to Bugzilla bug tracker"
-msgstr ""
+msgstr "Пријави на Багзилин систем за праћење грешака"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:3
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:3
 #: ../src/plugins/report_Uploader.xml.in.h:6
 msgid "User name"
-msgstr ""
+msgstr "Корисничко име"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:4
 msgid "Bugzilla account user name"
-msgstr ""
+msgstr "Корисничко име Багзилиног налога"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:5
 msgid ""
 "You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
 "redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 msgstr ""
+"Можете направити налог на bugzilla.redhat.com &lt;a href=\"https://"
+"bugzilla.redhat.com/createaccount.cgi\"&gt;овде&lt;/a&gt;"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:6
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:6
 #: ../src/plugins/report_RHTSupport.xml.in.h:5
 #: ../src/plugins/report_Uploader.xml.in.h:8
 msgid "Password"
-msgstr ""
+msgstr "Лозинка"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:7
 msgid "Bugzilla account password"
-msgstr ""
+msgstr "Лозинка Багзилиног налога"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:8
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:8
 msgid "Restrict access"
-msgstr ""
+msgstr "Ограничи приступ"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:9
 msgid ""
 "Restrict access to the created bugzilla ticket allowing only users from "
 "specified groups to view it (see advanced settings for more details)"
 msgstr ""
+"Ограничи приступ направљеној Багзилиној пријави дозвољавајући само "
+"корисницима из наведених група да је виде (погледајте напредна подешавања за "
+"више детаља)"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:10
 msgid "Groups"
-msgstr ""
+msgstr "Групе"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:11
 msgid ""
 "Restrict the access to specified groups &lt;a href=\"https://github.com/abrt/"
 "abrt/wiki/FAQ#creating-private-bugzilla-tickets\"&gt;?&lt;/a&gt;"
 msgstr ""
+"Ограничи приступ наведеним групама &lt;a href=\"https://github.com/abrt/abrt/"
+"wiki/FAQ#creating-private-bugzilla-tickets\"&gt;?&lt;/a&gt;"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:12
 msgid "Bugzilla URL"
-msgstr ""
+msgstr "Адреса Багзиле"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:13
 msgid "Address of Bugzilla server"
-msgstr ""
+msgstr "Адреса Багзилиног сервера"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:14
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:12
 #: ../src/plugins/report_RHTSupport.xml.in.h:11
 #: ../src/plugins/report_uReport.xml.in.h:11
 msgid "Verify SSL"
-msgstr ""
+msgstr "Провери ССЛ"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:15
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:13
 #: ../src/plugins/report_RHTSupport.xml.in.h:12
 #: ../src/plugins/report_uReport.xml.in.h:12
 msgid "Check SSL key validity"
-msgstr ""
+msgstr "Провери исправност ССЛ кључа"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:16
 msgid "Bugzilla product"
-msgstr ""
+msgstr "Багзилин производ"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:17
 msgid ""
 "Specify this only if you needed different product than specified in /etc/os-"
 "release"
 msgstr ""
+"Наведите ово само ако вам је потребан другачији производ од оног наведеног "
+"у /etc/os-release"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:18
 msgid "Bugzilla product version"
-msgstr ""
+msgstr "Издање производа у Багзили"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:19
 msgid ""
 "Specify this only if you needed different product version than specified in /"
 "etc/os-release"
 msgstr ""
+"Наведите ово само ако вам је потребно другачије издање производа од оног "
+"наведеног у „/etc/os-release“"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:20
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:18
@@ -1303,7 +1398,7 @@ msgstr ""
 #: ../src/plugins/report_Uploader.xml.in.h:10
 #: ../src/plugins/report_uReport.xml.in.h:13
 msgid "HTTP Proxy"
-msgstr ""
+msgstr "HTTP прокси"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:21
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:19
@@ -1312,7 +1407,7 @@ msgstr ""
 #: ../src/plugins/report_Uploader.xml.in.h:11
 #: ../src/plugins/report_uReport.xml.in.h:14
 msgid "Sets the proxy server to use for HTTP"
-msgstr ""
+msgstr "Поставља посреднички сервер за HTTP"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:22
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:20
@@ -1321,7 +1416,7 @@ msgstr ""
 #: ../src/plugins/report_Uploader.xml.in.h:12
 #: ../src/plugins/report_uReport.xml.in.h:15
 msgid "HTTPS Proxy"
-msgstr ""
+msgstr "HTTPS прокси"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:23
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:21
@@ -1330,7 +1425,7 @@ msgstr ""
 #: ../src/plugins/report_Uploader.xml.in.h:13
 #: ../src/plugins/report_uReport.xml.in.h:16
 msgid "Sets the proxy server to use for HTTPS"
-msgstr ""
+msgstr "Поставља посреднички сервер за HTTPS"
 
 #: ../src/plugins/report.c:37
 msgid ""
@@ -1344,48 +1439,60 @@ msgid ""
 "\n"
 "Configuration (such as login data) can be supplied via files\n"
 msgstr ""
+"& [-v] --target ЦИЉ --ticket ИД ДАТОТЕКА...\n"
+"\n"
+"Отпрема ДАТОТЕКЕ на наведени купон на ЦИЉУ.\n"
+"\n"
+"Овај алат је обезбеђен како би се олакшао прелазак корисника са пакета „"
+"report“\n"
+"на „libreport“. Препознати ЦИЉЕВИ су „strata“ и „bugzilla“,\n"
+"први покреће отпремање на „RHTSupport“, а други на „Bugzilla“.\n"
+"\n"
+"Подешавања (као што су подаци за пријаву) могу се доставити путем датотека\n"
 
 #: ../src/plugins/report.c:59
 msgid "'strata' or 'bugzilla'"
-msgstr ""
+msgstr "„strata“ или „bugzilla“"
 
 #: ../src/plugins/report.c:60
 msgid "Ticket/case ID"
-msgstr ""
+msgstr "ИД купона/случаја"
 
 #: ../src/plugins/reporter-bugzilla.c:183
 msgid ""
 "Warning, private ticket groups already specified as cmdline argument, "
 "ignoring the env variable and configuration"
 msgstr ""
+"Упозорење, приватне групе купона су већ наведене као аргумент командне "
+"линије, занемарујем променљиву окружења и подешавања"
 
 #: ../src/plugins/reporter-bugzilla.c:194
 #: ../src/plugins/reporter-rhtsupport.c:384
 #: ../src/plugins/reporter-mantisbt.c:55
 msgid "Can't continue without login"
-msgstr ""
+msgstr "Не могу да наставим без пријаве"
 
 #: ../src/plugins/reporter-bugzilla.c:207
 #: ../src/plugins/reporter-rhtsupport.c:397
 #: ../src/plugins/reporter-mantisbt.c:68
 msgid "Can't continue without password"
-msgstr ""
+msgstr "Не могу да наставим без лозинке"
 
 #: ../src/plugins/reporter-bugzilla.c:216
 #, c-format
 msgid "Logging into Bugzilla at %s"
-msgstr ""
+msgstr "Пријављујем се на Багзилу на %s"
 
 #: ../src/plugins/reporter-bugzilla.c:223
 #, c-format
 msgid "Invalid password or login. Please enter your %s login:"
-msgstr ""
+msgstr "Неисправна лозинка или корисничко име. Унесите вашу пријаву за %s:"
 
 #: ../src/plugins/reporter-bugzilla.c:228
 #: ../src/plugins/reporter-rhtsupport.c:411
 #, c-format
 msgid "Invalid password or login. Please enter the password for '%s':"
-msgstr ""
+msgstr "Неисправна лозинка или корисничко име. Унесите лозинку за „%s“:"
 
 #: ../src/plugins/reporter-bugzilla.c:247
 msgid ""
@@ -1432,87 +1539,132 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"\n"
+"& [-vbf] [-g НАЗИВ-ГРУПЕ]... [-c ДАТОТЕКА-ПОДЕШАВАЊА]... [-F ДАТОТЕКА-"
+"ФОРМАТА] [-A ДАТОТЕКА-ФОРМАТА2] -d ДИР\n"
+"или:\n"
+"& [-v] [-c ДАТОТЕКА-ПОДЕШАВАЊА]... [-d ДИР] -t[ИД] ДАТОТЕКА...\n"
+"или:\n"
+"& [-v] [-c ДАТОТЕКА-ПОДЕШАВАЊА]... [-d ДИР] -t[ИД] -w\n"
+"или:\n"
+"& [-v] [-c ДАТОТЕКА-ПОДЕШАВАЊА]... -h ДУПХЕШ [-p[ПРОИЗВОД]]\n"
+"\n"
+"Пријављује проблем Багзили.\n"
+"\n"
+"Алат чита ДИР. Затим се пријављује на Багзилу и покушава да пронађе грешку\n"
+"са истим „abrt_hash:HEXSTRING“ у пољу „Whiteboard“.\n"
+"\n"
+"Ако таква грешка није пронађена, прави се нова. Елементи из ДИР-а\n"
+"се чувају у грешци као део описа или као прилози,\n"
+"у зависности од њиве врсте и величине.\n"
+"\n"
+"У супротном, ако је таква грешка пронађена и означена као „CLOSED DUPLICATE"
+"“,\n"
+"алат прати ланац дупликата док не пронађе грешку која није „DUPLICATE“.\n"
+"Алат додаје нови коментар пронађеној грешци.\n"
+"\n"
+"Адреса нове или измењене грешке се исписује на стандардни излаз и бележи у\n"
+"елементу „reported_to“.\n"
+"\n"
+"Опција -t отпрема ДАТОТЕКЕ у већ направљену грешку на сајту Багзиле.\n"
+"ИД грешке се преузима из директоријума наведеног помоћу -d ДИР.\n"
+"Ако подаци о проблему у ДИР-у никада нису пријављени Багзили, отпремање неће "
+"успети.\n"
+"\n"
+"Опција -tID отпрема ДАТОТЕКЕ у грешку са наведеним ИД-ом на сајту Багзиле.\n"
+"-d ДИР се занемарује.\n"
+"\n"
+"Опција -w додаје корисника Багзиле на ЦЦ списак грешке.\n"
+"\n"
+"Опција -r поставља последњу адресу из елемента „reporter_to“ која има "
+"префикс\n"
+"„TRACKER_NAME“ у поље за адресу. Ова опција се примењује само када се "
+"подноси\n"
+"нова грешка. Подразумевана вредност је „ABRT Server“.\n"
+"\n"
+"Ако није наведено, ДАТОТЕКА-ПОДЕШАВАЊА је подразумевано "
 
 #: ../src/plugins/reporter-bugzilla.c:324
 #: ../src/plugins/reporter-rhtsupport.c:549
 #: ../src/plugins/reporter-mantisbt.c:284
 msgid "Configuration file (may be given many times)"
-msgstr ""
+msgstr "Датотека подешавања (може се навести више пута)"
 
 #: ../src/plugins/reporter-bugzilla.c:325
 #: ../src/plugins/reporter-mantisbt.c:285
 msgid "Formatting file for initial comment"
-msgstr ""
+msgstr "Датотека формата за почетни коментар"
 
 #: ../src/plugins/reporter-bugzilla.c:326
 #: ../src/plugins/reporter-mantisbt.c:286
 msgid "Formatting file for duplicates"
-msgstr ""
+msgstr "Датотека формата за дупликате"
 
 #: ../src/plugins/reporter-bugzilla.c:327
 msgid "Attach FILEs [to bug with this ID]"
-msgstr ""
+msgstr "Приложи ДАТОТЕКЕ [грешци са овим ИД-ом]"
 
 #: ../src/plugins/reporter-bugzilla.c:328
 msgid "When creating bug, attach binary files too"
-msgstr ""
+msgstr "Приликом прављења грешке, приложи и бинарне датотеке"
 
 #: ../src/plugins/reporter-bugzilla.c:329
 #: ../src/plugins/reporter-rhtsupport.c:551
 #: ../src/plugins/reporter-mantisbt.c:288
 msgid "Force reporting even if this problem is already reported"
-msgstr ""
+msgstr "Приморај пријављивање чак и ако је овај проблем већ пријављен"
 
 #: ../src/plugins/reporter-bugzilla.c:330
 msgid "Add bugzilla user to CC list [of bug with this ID]"
-msgstr ""
+msgstr "Додај корисника багзиле на ЦЦ списак [грешке са овим ИД-ом]"
 
 #: ../src/plugins/reporter-bugzilla.c:331
 #: ../src/plugins/reporter-mantisbt.c:289
 msgid "Print BUG_ID which has given DUPHASH"
-msgstr ""
+msgstr "Испиши BUG_ID који је дао DUPHASH"
 
 #: ../src/plugins/reporter-bugzilla.c:332
 msgid "Specify a Bugzilla product (ignored without -h)"
-msgstr ""
+msgstr "Наведите производ Багзиле (занемарује се без -h)"
 
 #: ../src/plugins/reporter-bugzilla.c:333
 #: ../src/plugins/reporter-mantisbt.c:290
 msgid "A name of bug tracker for an additional URL from 'reported_to'"
-msgstr ""
+msgstr "Назив пратиоца грешака за додатну адресу из „reported_to“"
 
 #: ../src/plugins/reporter-bugzilla.c:334
 msgid "Restrict access to this group only"
-msgstr ""
+msgstr "Ограничи приступ само на ову групу"
 
 #: ../src/plugins/reporter-bugzilla.c:335 ../src/plugins/reporter-mailx.c:292
 #: ../src/plugins/reporter-rhtsupport.c:555
 #: ../src/plugins/reporter-systemd-journal.c:255
 #: ../src/plugins/reporter-mantisbt.c:292
 msgid "Debug"
-msgstr ""
+msgstr "Уклањање грешака"
 
 #: ../src/plugins/reporter-bugzilla.c:402
 msgid "Looking for similar problems in bugzilla"
-msgstr ""
+msgstr "Тражим сличне проблеме у багзили"
 
 #: ../src/plugins/reporter-bugzilla.c:431
 msgid "Failed to get 'REDHAT_BUGZILLA_PRODUCT' from '/etc/os-release'."
-msgstr ""
+msgstr "Нисам успео да добавим „REDHAT_BUGZILLA_PRODUCT“ из „/etc/os-release“."
 
 #: ../src/plugins/reporter-bugzilla.c:434
 msgid "Failed to read '/etc/os-release' to get Bugzilla product."
 msgstr ""
+"Нисам успео да прочитам „/etc/os-release“ да бих добавио производ Багзиле."
 
 #: ../src/plugins/reporter-bugzilla.c:445
 #, c-format
 msgid "Using default product '%s'"
-msgstr ""
+msgstr "Користим подразумевани производ „%s“"
 
 #: ../src/plugins/reporter-bugzilla.c:468
 #, c-format
 msgid "Login is not provided by configuration. Please enter your %s login:"
-msgstr ""
+msgstr "Пријава није достављена подешавањима. Унесите вашу пријаву за %s:"
 
 #: ../src/plugins/reporter-bugzilla.c:476
 #: ../src/plugins/reporter-rhtsupport.c:597
@@ -1520,13 +1672,15 @@ msgstr ""
 msgid ""
 "Password is not provided by configuration. Please enter the password for "
 "'%s':"
-msgstr ""
+msgstr "Лозинка није достављена подешавањима. Унесите лозинку за „%s“:"
 
 #: ../src/plugins/reporter-bugzilla.c:500
 msgid ""
 "Can't get Bugzilla ID because this problem has not yet been reported to "
 "Bugzilla."
 msgstr ""
+"Не могу да добавим ИД Багзиле јер овај проблем још увек није пријављен "
+"Багзили."
 
 #: ../src/plugins/reporter-bugzilla.c:505
 #, c-format
@@ -1534,22 +1688,24 @@ msgid ""
 "This problem has been reported to Bugzilla '%s' which differs from the "
 "configured Bugzilla '%s'."
 msgstr ""
+"Овај проблем је пријављен Багзили „%s“ што се разликује од подешене Багзиле "
+"„%s“."
 
 #: ../src/plugins/reporter-bugzilla.c:509
 #, c-format
 msgid "Malformed url to Bugzilla '%s'."
-msgstr ""
+msgstr "Неисправна адреса Багзиле „%s“."
 
 #: ../src/plugins/reporter-bugzilla.c:513
 #, c-format
 msgid "Using Bugzilla ID '%s'"
-msgstr ""
+msgstr "Користим ИД Багзиле „%s“"
 
 #: ../src/plugins/reporter-bugzilla.c:547
 #: ../src/plugins/reporter-bugzilla.c:747
 #: ../src/plugins/reporter-bugzilla.c:943
 msgid "Logging out"
-msgstr ""
+msgstr "Одјављујем се"
 
 #: ../src/plugins/reporter-bugzilla.c:579
 #, c-format
@@ -1557,15 +1713,17 @@ msgid ""
 "This problem was already reported to Bugzilla (see '%s'). Do you still want "
 "to create a new bug?"
 msgstr ""
+"Овај проблем је већ пријављен Багзили (погледајте „%s“). Да ли и даље желите "
+"да направите нову грешку?"
 
 #: ../src/plugins/reporter-bugzilla.c:609
 msgid "Can't determine Bugzilla Product from problem data."
-msgstr ""
+msgstr "Не могу да одредим производ Багзиле из података о проблему."
 
 #: ../src/plugins/reporter-bugzilla.c:671
 #: ../src/plugins/reporter-mantisbt.c:506
 msgid "Checking for duplicates"
-msgstr ""
+msgstr "Проверавам двојнике"
 
 #: ../src/plugins/reporter-bugzilla.c:728
 #, c-format
@@ -1577,70 +1735,76 @@ msgid ""
 "report and close it as DUPLICATE of the original one? Otherwise, the bug "
 "reporting procedure will be terminated."
 msgstr ""
+"Затражили сте да ваши подаци буду доступни само одређеној групи, а ова "
+"грешка је дупликат грешке: %s/%u У случају дупликата грешке, нови коментар "
+"се додаје изворном извештају о грешци, али приступ коментарима не може бити "
+"ограничен на одређену групу. Да ли желите да отворите нови извештај о грешци "
+"и затворите га као ДУПЛИКАТ изворног? У супротном, поступак пријављивања "
+"грешке ће бити прекинут."
 
 #. Create new bug
 #: ../src/plugins/reporter-bugzilla.c:763
 msgid "Creating a new bug"
-msgstr ""
+msgstr "Прављење нове грешке"
 
 #: ../src/plugins/reporter-bugzilla.c:782
 msgid "Failed to create a new bug."
-msgstr ""
+msgstr "Није успело прављење нове грешке."
 
 #: ../src/plugins/reporter-bugzilla.c:800
 #, c-format
 msgid "Adding extra cc %s to bug report"
-msgstr ""
+msgstr "Додавање додатног ЦЦ-а %s у пријаву грешке"
 
 #: ../src/plugins/reporter-bugzilla.c:812
 #, c-format
 msgid "Adding External URL to bug %i"
-msgstr ""
+msgstr "Додавање спољне адресе грешци %i"
 
 #: ../src/plugins/reporter-bugzilla.c:819
 #, c-format
 msgid "Adding attachments to bug %i"
-msgstr ""
+msgstr "Додавање прилога грешци %i"
 
 #: ../src/plugins/reporter-bugzilla.c:841
 #, c-format
 msgid "Closing bug %i as duplicate of bug %i"
-msgstr ""
+msgstr "Затварање грешке %i као дупликата грешке %i"
 
 #: ../src/plugins/reporter-bugzilla.c:853
 #: ../src/plugins/reporter-mantisbt.c:622
 #, c-format
 msgid "Bug is already reported: %i"
-msgstr ""
+msgstr "Грешка је већ пријављена: %i"
 
 #: ../src/plugins/reporter-bugzilla.c:896
 #, c-format
 msgid "Adding %s to CC list"
-msgstr ""
+msgstr "Додавање %s на списак ЦЦ-а"
 
 #: ../src/plugins/reporter-bugzilla.c:917
 #, c-format
 msgid "Adding new comment to bug %d"
-msgstr ""
+msgstr "Додавање нове напомене грешци %d"
 
 #: ../src/plugins/reporter-bugzilla.c:930
 #: ../src/plugins/reporter-mantisbt.c:672
 msgid "Attaching better backtrace"
-msgstr ""
+msgstr "Прилагање бољег бектрејса"
 
 #: ../src/plugins/reporter-bugzilla.c:936
 msgid "Found the same comment in the bug history, not adding a new one"
-msgstr ""
+msgstr "Пронађена је иста напомена у историјату грешке, не додајем нову"
 
 #: ../src/plugins/reporter-bugzilla.c:946
 #, c-format
 msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
-msgstr ""
+msgstr "Стање: %s%s%s %s/show_bug.cgi?id=%u"
 
 #: ../src/plugins/reporter-kerneloops.c:105
 #, c-format
 msgid "Submitting oops report to %s"
-msgstr ""
+msgstr "Слање извештаја о „oops“ грешци на %s"
 
 #: ../src/plugins/reporter-kerneloops.c:154
 msgid ""
@@ -1655,11 +1819,21 @@ msgid ""
 "Recognized string parameter: SubmitURL.\n"
 "Parameter can be overridden via $KerneloopsReporter_SubmitURL."
 msgstr ""
+"& [-v] [-c КОНФДАТОТЕКА]... -d ДИР\n"
+"\n"
+"Пријављује „oops“ грешке језгра на сајт kerneloops.org (или сличан).\n"
+"\n"
+"Датотеке са називима наведеним у $EXCLUDE_FROM_REPORT нису укључене\n"
+"у тар-архиву.\n"
+"\n"
+"Редови у КОНФДАТОТЕЦИ треба да имају формат „ПАРАМЕТАР = ВРЕДНОСТ“.\n"
+"Препознати параметар ниске: SubmitURL.\n"
+"Параметар се може премостити путем $KerneloopsReporter_SubmitURL."
 
 #: ../src/plugins/reporter-kerneloops.c:174
 #: ../src/plugins/reporter-ureport.c:81
 msgid "Configuration file"
-msgstr ""
+msgstr "Датотека подешавања"
 
 #: ../src/plugins/reporter-mailx.c:83
 #, c-format
@@ -1667,30 +1841,32 @@ msgid ""
 "Email address of %s was not specified. Would you like to do so now? If not, "
 "'%s' is to be used"
 msgstr ""
+"Адреса е-поште за %s није наведена. Желите ли да је наведете сада? Ако не, "
+"користиће се „%s“"
 
 #: ../src/plugins/reporter-mailx.c:90
 #, c-format
 msgid "Please, type email address of %s:"
-msgstr ""
+msgstr "Унесите адресу е-поште за %s:"
 
 #: ../src/plugins/reporter-mailx.c:97
 #, c-format
 msgid "Can't continue without email address of %s"
-msgstr ""
+msgstr "Не могу да наставим без адресе е-поште за %s"
 
 #: ../src/plugins/reporter-mailx.c:207
 #, c-format
 msgid "Sending a notification email to: %s"
-msgstr ""
+msgstr "Слање обавештења е-поштом на: %s"
 
 #: ../src/plugins/reporter-mailx.c:209
 msgid "Sending an email..."
-msgstr ""
+msgstr "Слање е-поште..."
 
 #: ../src/plugins/reporter-mailx.c:243
 #, c-format
 msgid "Email was sent to: %s"
-msgstr ""
+msgstr "Е-пошта је послата на: %s"
 
 #: ../src/plugins/reporter-mailx.c:266
 msgid ""
@@ -1700,18 +1876,23 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"& [-v] -d ДИР [-c КОНФ_ДАТОТЕКА] [-F ФМТ_ДАТОТЕКА]\n"
+"\n"
+"Шаље садржај директоријума проблема ДИР путем е-поште\n"
+"\n"
+"Ако није наведено, КОНФ_ДАТОТЕКА је подразумевано "
 
 #: ../src/plugins/reporter-mailx.c:289 ../src/plugins/reporter-upload.c:187
 msgid "Config file"
-msgstr ""
+msgstr "Датотека подешавања"
 
 #: ../src/plugins/reporter-mailx.c:290
 msgid "Formatting file for an email"
-msgstr ""
+msgstr "Датотека форматирања за е-пошту"
 
 #: ../src/plugins/reporter-mailx.c:291
 msgid "Notify only (Do not mark the report as sent)"
-msgstr ""
+msgstr "Само обавести (не означавај извештај као послат)"
 
 #: ../src/plugins/reporter-print.c:42
 msgid ""
@@ -1719,64 +1900,67 @@ msgid ""
 "\n"
 "Prints problem information to standard output or FILE"
 msgstr ""
+"& [-v] -d ДИР [-o ДАТОТЕКА] [-a да/не] [-r]\n"
+"\n"
+"Исписује податке о проблему на стандардни излаз или у ДАТОТЕКУ"
 
 #: ../src/plugins/reporter-print.c:57
 msgid "Output file"
-msgstr ""
+msgstr "Излазна датотека"
 
 #: ../src/plugins/reporter-print.c:58
 msgid "Append to, or overwrite FILE"
-msgstr ""
+msgstr "Прикачи на или препиши ДАТОТЕКУ"
 
 #: ../src/plugins/reporter-print.c:59
 msgid "Create reported_to in DIR"
-msgstr ""
+msgstr "Направи „reported_to“ у ДИР"
 
 #: ../src/plugins/reporter-print.c:98
 msgid "Cancelled by user."
-msgstr ""
+msgstr "Корисник је отказао."
 
 #: ../src/plugins/reporter-print.c:108
 #, c-format
 msgid "Can't open '%s' for writing. Please select another file:"
-msgstr ""
+msgstr "Не могу да отворим „%s“ за уписивање. Изаберите другу датотеку:"
 
 #: ../src/plugins/reporter-print.c:153
 #, c-format
 msgid "The report was appended to %s"
-msgstr ""
+msgstr "Извештај је прикачен у %s"
 
 #: ../src/plugins/reporter-print.c:153
 #, c-format
 msgid "The report was stored to %s"
-msgstr ""
+msgstr "Извештај је сачуван у %s"
 
 #: ../src/plugins/reporter-rhtsupport.c:280
 #: ../src/plugins/reporter-ureport.c:311
 msgid "Failed to generate microreport from the problem data"
-msgstr ""
+msgstr "Нисам успео да направим микро-извештај из података о проблему"
 
 #: ../src/plugins/reporter-rhtsupport.c:301
 #: ../src/plugins/reporter-ureport.c:340
 #, c-format
 msgid "Server responded with an error: '%s'"
-msgstr ""
+msgstr "Сервер је одговорио грешком: „%s“"
 
 #: ../src/plugins/reporter-rhtsupport.c:361
 msgid "Do you still want to create a RHTSupport ticket?"
-msgstr ""
+msgstr "Да ли и даље желите да направите „RHTSupport“ улазницу?"
 
 #: ../src/plugins/reporter-rhtsupport.c:409
 msgid "Invalid password or login. Please enter your Red Hat login:"
-msgstr ""
+msgstr "Неисправна лозинка или корисничко име. Унесите вашу „Red Hat“ пријаву:"
 
 #: ../src/plugins/reporter-rhtsupport.c:473
 msgid "Please enter customer case number to which you want to attach the data:"
-msgstr ""
+msgstr "Унесите број случаја корисника коме желите да приложите податке:"
 
 #: ../src/plugins/reporter-rhtsupport.c:479
 msgid "Can't continue without Red Hat Support case number"
-msgstr ""
+msgstr "Не могу да наставим без броја случаја „Red Hat“ подршке"
 
 #: ../src/plugins/reporter-rhtsupport.c:506
 msgid ""
@@ -1789,26 +1973,35 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"\n"
+"& [-v] [-c КОНФ_ДАТОТЕКА] [-F ФМТ_ДАТОТЕКА] -d ДИР\n"
+"или:\n"
+"& [-v] [-c КОНФ_ДАТОТЕКА] [-d ДИР] -t[ИД] [-u -C УР_КОНФ_ДАТОТЕКА] "
+"ДАТОТЕКА...\n"
+"\n"
+"Извештава о проблему „RHTSupport“-у.\n"
+"\n"
+"Ако није наведено, КОНФ_ДАТОТЕКА је подразумевано "
 
 #: ../src/plugins/reporter-rhtsupport.c:550
 msgid "Upload FILEs [to case with this ID]"
-msgstr ""
+msgstr "Отпреми ДАТОТЕКЕ [у случај са овим ИД-ом]"
 
 #: ../src/plugins/reporter-rhtsupport.c:552
 msgid "Submit uReport before creating a new case"
-msgstr ""
+msgstr "Пошаљи „uReport“ пре прављења новог случаја"
 
 #: ../src/plugins/reporter-rhtsupport.c:553
 msgid "Configuration file for uReport"
-msgstr ""
+msgstr "Датотека подешавања за uReport"
 
 #: ../src/plugins/reporter-rhtsupport.c:554
 msgid "Formatting file for a new case"
-msgstr ""
+msgstr "Датотека форматирања за нови случај"
 
 #: ../src/plugins/reporter-rhtsupport.c:591
 msgid "Login is not provided by configuration. Please enter your RHTS login:"
-msgstr ""
+msgstr "Пријава није достављена подешавањем. Унесите вашу RHTS пријаву:"
 
 #: ../src/plugins/reporter-rhtsupport.c:647
 #, c-format
@@ -1817,19 +2010,22 @@ msgid ""
 "to the case? Otherwise, you will have to enter the existing Red Hat support "
 "case number."
 msgstr ""
+"Пронашли смо сличан случај Red Hat подршке %s. Да ли желите да приложите "
+"податке овом случају? У супротном, мораћете да унесете број постојећег "
+"случаја Red Hat подршке."
 
 #: ../src/plugins/reporter-rhtsupport.c:676
 #, c-format
 msgid "Attaching '%s' to case '%s'"
-msgstr ""
+msgstr "Прилагање „%s“ случају „%s“"
 
 #: ../src/plugins/reporter-rhtsupport.c:720
 msgid "Sending ABRT crash statistics data"
-msgstr ""
+msgstr "Слање података ABRT статистике падова"
 
 #: ../src/plugins/reporter-rhtsupport.c:741
 msgid "Can't create a temporary directory in "
-msgstr ""
+msgstr "Не могу да направим привремени директоријум у "
 
 #: ../src/plugins/reporter-rhtsupport.c:766
 msgid ""
@@ -1837,6 +2033,10 @@ msgid ""
 "is unknown. Please ensure you will be able to provide detailed information "
 "to our Support Team. Would you like to continue and open a new support case?"
 msgstr ""
+"Проблем се догодио само једном и могућност његовог поновног изазивања је "
+"непозната. Постарајте се да будете у могућности да пружите детаљне "
+"информације нашем тиму за подршку. Да ли желите да наставите и отворите нови "
+"случај подршке?"
 
 #: ../src/plugins/reporter-rhtsupport.c:779
 #, c-format
@@ -1844,6 +2044,8 @@ msgid ""
 "The crashed program was released by '%s'. Would you like to report the "
 "problem to Red Hat Support?"
 msgstr ""
+"Програм који се срушио је издао „%s“. Да ли желите да пријавите проблем Red "
+"Hat подршци?"
 
 #: ../src/plugins/reporter-rhtsupport.c:797
 #, c-format
@@ -1851,6 +2053,8 @@ msgid ""
 "The program '%s' does not appear to be provided by Red Hat. Would you like "
 "to report the problem to Red Hat Support?"
 msgstr ""
+"Изгледа да програм „%s“ није обезбедио Red Hat. Да ли желите да пријавите "
+"проблем Red Hat подршци?"
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing
 #. error msg is already logged by dd_opendir
@@ -1858,53 +2062,54 @@ msgstr ""
 #: ../src/plugins/reporter-rhtsupport.c:861
 #: ../src/plugins/reporter-upload.c:103
 msgid "Compressing data"
-msgstr ""
+msgstr "Компримовање података"
 
 #: ../src/plugins/reporter-rhtsupport.c:869
 msgid "Can't create temporary file in "
-msgstr ""
+msgstr "Не могу да направим привремену датотеку у "
 
 #. Check for hints and show them if we have something
 #: ../src/plugins/reporter-rhtsupport.c:880
 msgid "Checking for hints"
-msgstr ""
+msgstr "Проверавање за савете"
 
 #: ../src/plugins/reporter-rhtsupport.c:885
 msgid "Creating a new case"
-msgstr ""
+msgstr "Прављење новог случаја"
 
 #. How can we help user sorting out this problem?
 #: ../src/plugins/reporter-rhtsupport.c:896
 msgid "Can't determine RH Support Product from problem data."
-msgstr ""
+msgstr "Не могу да одредим производ RH подршке из података о проблему."
 
 #: ../src/plugins/reporter-rhtsupport.c:958
 msgid "Linking ABRT crash statistics record with the case"
-msgstr ""
+msgstr "Повезивање записа ABRT статистике падова са случајем"
 
 #: ../src/plugins/reporter-rhtsupport.c:971
 #, c-format
 msgid "Linking ABRT crash statistics record with contact email: '%s'"
 msgstr ""
+"Повезивање записа ABRT статистике падова са адресом е-поште за контакт: „%s“"
 
 #: ../src/plugins/reporter-rhtsupport.c:995
 #, c-format
 msgid "Adding comment to case '%s'"
-msgstr ""
+msgstr "Додавање напомене случају „%s“"
 
 #. Attach the tarball of -d DIR
 #: ../src/plugins/reporter-rhtsupport.c:1013
 #, c-format
 msgid "Attaching problem data to case '%s'"
-msgstr ""
+msgstr "Прилагање података о проблему случају „%s“"
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:202
 msgid "Documentation which might be relevant: "
-msgstr ""
+msgstr "Документација која би могла бити релевантна: "
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:210
 msgid "Updates which possibly help: "
-msgstr ""
+msgstr "Ажурирања која могу помоћи: "
 
 #: ../src/plugins/reporter-systemd-journal.c:225
 msgid ""
@@ -1917,39 +2122,47 @@ msgid ""
 "into systemd journal as a message. If MESSAGEID is defined, the tool\n"
 "creates a catalog message as well.\n"
 msgstr ""
+"& [-v] [-d ДИР] [-m ИД_ПОРУКЕ] [-F ДАТОТЕКА_ФОРМАТА] [-p "
+"NONE|ESSENTIAL|FULL] [-s ИД_СИСЛОГА]\n"
+"\n"
+"Извештава о подацима о проблему у системд журнал.\n"
+"\n"
+"Алат чита директоријум проблема ДИР и шаље његове детаље\n"
+"у системд журнал као поруку. Ако је ИД_ПОРУКЕ дефинисан, алат\n"
+"такође прави каталошку поруку.\n"
 
 #: ../src/plugins/reporter-systemd-journal.c:251
 msgid "Catalog message id"
-msgstr ""
+msgstr "ИД каталошке поруке"
 
 #: ../src/plugins/reporter-systemd-journal.c:252
 msgid "Formatting file for catalog message"
-msgstr ""
+msgstr "Датотека форматирања за каталошку поруку"
 
 #: ../src/plugins/reporter-systemd-journal.c:253
 msgid "Dump problem dir into systemd journal fields"
-msgstr ""
+msgstr "Избаци директоријум проблема у поља системд журнала"
 
 #: ../src/plugins/reporter-systemd-journal.c:254
 msgid "Define SYSLOG_IDENTIFIER systemd journal field"
-msgstr ""
+msgstr "Дефиниши SYSLOG_IDENTIFIER поље системд журнала"
 
 #: ../src/plugins/reporter-upload.c:29
 msgid "Can't continue without URL"
-msgstr ""
+msgstr "Не могу да наставим без адресе"
 
 #. Be permissive and nice, ask only once and don't check
 #. the result. User can dismiss this prompt but the upload
 #. may work somehow???
 #: ../src/plugins/reporter-upload.c:51
 msgid "Please enter password for uploading:"
-msgstr ""
+msgstr "Молим унесите лозинку за отпремање:"
 
 #. success
 #: ../src/plugins/reporter-upload.c:120
 #, c-format
 msgid "Archive is created: '%s'"
-msgstr ""
+msgstr "Архива је направљена: „%s“"
 
 #: ../src/plugins/reporter-upload.c:156
 msgid ""
@@ -1958,39 +2171,44 @@ msgid ""
 "Uploads compressed tarball of problem directory DIR to URL.\n"
 "If URL is not specified, creates tarball in "
 msgstr ""
+"& [-v] -d ДИР [-c КОНФ_ДАТОТЕКА] [-u АДРЕСА] [-b ДАТОТЕКА] [-r ДАТОТЕКА]\n"
+"\n"
+"Отпрема запаковану архиву директоријума проблема ДИР на АДРЕСУ.\n"
+"Ако АДРЕСА није наведена, прави архиву у "
 
 #: ../src/plugins/reporter-upload.c:188
 msgid "Base URL to upload to"
-msgstr ""
+msgstr "Основна адреса за отпремање"
 
 #: ../src/plugins/reporter-upload.c:189
 msgid "SSH public key file"
-msgstr ""
+msgstr "Датотека SSH јавног кључа"
 
 #: ../src/plugins/reporter-upload.c:190
 msgid "SSH private key file"
-msgstr ""
+msgstr "Датотека SSH приватног кључа"
 
 #: ../src/plugins/reporter-upload.c:219
 msgid ""
 "Please enter a URL (scp, ftp, etc.) where the problem data is to be exported:"
 msgstr ""
+"Молим унесите адресу (scp, ftp, итд.) где треба извести податке о проблему:"
 
 #: ../src/plugins/reporter-mantisbt.c:80
 msgid "Please enter your MantisBT login:"
-msgstr ""
+msgstr "Молим унесите вашу пријаву за MantisBT:"
 
 #: ../src/plugins/reporter-mantisbt.c:84
 msgid "Please enter the password for"
-msgstr ""
+msgstr "Молим унесите лозинку за"
 
 #: ../src/plugins/reporter-mantisbt.c:95
 msgid "Credentials are not provided by configuration."
-msgstr ""
+msgstr "Подаци за приступ нису наведени у подешавањима."
 
 #: ../src/plugins/reporter-mantisbt.c:119
 msgid "Invalid password or login."
-msgstr ""
+msgstr "Неисправна лозинка или корисничко име."
 
 #: ../src/plugins/reporter-mantisbt.c:211
 msgid ""
@@ -2034,25 +2252,68 @@ msgid ""
 "\n"
 "If not specified, CONFFILE defaults to "
 msgstr ""
+"\n"
+"& [-vf] [-c КОНФ_ДАТОТЕКА]... [-F ДАТОТЕКА_ФОРМАТА] [-A ДАТОТЕКА_ФОРМАТА2] -"
+"d ДИР\n"
+"или:\n"
+"& [-v] [-c КОНФ_ДАТОТЕКА]... [-d ДИР] -t[ИД] ДАТОТЕКА...\n"
+"или:\n"
+"& [-v] [-c КОНФ_ДАТОТЕКА]... [-d ДИР] -t[ИД] -w\n"
+"или:\n"
+"& [-v] [-c КОНФ_ДАТОТЕКА]... -h ДУП_ХЕШ\n"
+"\n"
+"Пријављује проблем на MantisBT.\n"
+"\n"
+"Алат чита ДИР. Затим покушава да пронађе проблем\n"
+"са истим abrt_hash у произвољном пољу „abrt_hash“.\n"
+"\n"
+"Ако такав проблем није пронађен, прави се нови проблем. Елементи из ДИР\n"
+"се чувају у проблему као део описа проблема или као прилози,\n"
+"у зависности од њихове врсте и величине.\n"
+"\n"
+"У супротном, ако је такав проблем пронађен и означен као ЗАТВОРЕН ДУПЛИКАТ,\n"
+"алат прати ланац дупликата док не пронађе проблем који није ДУПЛИКАТ.\n"
+"Алат додаје нови коментар на пронађени проблем.\n"
+"\n"
+"Адреса до новог или измењеног проблема се исписује на стандардни излаз и "
+"бележи у\n"
+"елементу „reported_to“.\n"
+"\n"
+"Опција -t отпрема ДАТОТЕКЕ на већ направљени проблем на MantisBT сајту.\n"
+"ИД проблема се преузима из директоријума наведеног са -d ДИР.\n"
+"Ако подаци о проблему у ДИР никада нису пријављени на MantisBT, отпремање "
+"неће успети.\n"
+"\n"
+"Опција -tID отпрема ДАТОТЕКЕ на проблем са наведеним ИД-ом на MantisBT "
+"сајту.\n"
+"-d ДИР се занемарује.\n"
+"\n"
+"Опција -r поставља последњу адресу из елемента reported_to која има префикс\n"
+"TRACKER_NAME у поље URL. Ова опција се примењује само када се подноси нови\n"
+"проблем. Подразумевана вредност је „ABRT Server“.\n"
+"\n"
+"Ако није наведено, КОНФ_ДАТОТЕКА подразумева "
 
 #: ../src/plugins/reporter-mantisbt.c:287
 msgid "Attach FILEs [to issue with this ID]"
-msgstr ""
+msgstr "Приложи ДАТОТЕКЕ [на проблем са овим ИД-ом]"
 
 #: ../src/plugins/reporter-mantisbt.c:326
 #, c-format
 msgid "Can't open problem dir '%s'."
-msgstr ""
+msgstr "Не могу да отворим директоријум проблема „%s“."
 
 #: ../src/plugins/reporter-mantisbt.c:348
 msgid "Looking for similar problems in MantisBT"
-msgstr ""
+msgstr "Тражење сличних проблема у MantisBT-у"
 
 #: ../src/plugins/reporter-mantisbt.c:381
 msgid ""
 "Can't get MantisBT ID because this problem has not yet been reported to "
 "MantisBT."
 msgstr ""
+"Не могу да добавим ИД MantisBT-а јер овај проблем још увек није пријављен "
+"MantisBT-у."
 
 #: ../src/plugins/reporter-mantisbt.c:386
 #, c-format
@@ -2060,21 +2321,23 @@ msgid ""
 "This problem has been reported to MantisBT '%s' which differs from the "
 "configured MantisBT '%s'."
 msgstr ""
+"Овај проблем је пријављен MantisBT-у „%s“ који се разликује од подешеног "
+"MantisBT-а „%s“."
 
 #: ../src/plugins/reporter-mantisbt.c:390
 #, c-format
 msgid "Malformed url to MantisBT '%s'."
-msgstr ""
+msgstr "Лоше обликована адреса за MantisBT „%s“."
 
 #: ../src/plugins/reporter-mantisbt.c:394
 #, c-format
 msgid "Using MantisBT ID '%s'"
-msgstr ""
+msgstr "Користим MantisBT ИД „%s“"
 
 #: ../src/plugins/reporter-mantisbt.c:402
 #, c-format
 msgid "Attaching file '%s' to issue %s"
-msgstr ""
+msgstr "Прилагање датотеке „%s“ проблему %s"
 
 #: ../src/plugins/reporter-mantisbt.c:432
 #, c-format
@@ -2082,56 +2345,58 @@ msgid ""
 "This problem was already reported to MantisBT (see '%s'). Do you still want "
 "to create a new issue?"
 msgstr ""
+"Овај проблем је већ пријављен MantisBT-у (погледајте „%s“). Да ли и даље "
+"желите да направите нови проблем?"
 
 #. Create new issue
 #: ../src/plugins/reporter-mantisbt.c:545
 msgid "Creating a new issue"
-msgstr ""
+msgstr "Прављење новог проблема"
 
 #: ../src/plugins/reporter-mantisbt.c:550
 #, c-format
 msgid "Invalid format file: %s"
-msgstr ""
+msgstr "Неисправан формат датотеке: %s"
 
 #: ../src/plugins/reporter-mantisbt.c:554
 msgid "Failed to format problem data"
-msgstr ""
+msgstr "Нисам успео да форматирам податке о проблему"
 
 #: ../src/plugins/reporter-mantisbt.c:581
 msgid "Adding External URL to issue"
-msgstr ""
+msgstr "Додавање спољне адресе проблему"
 
 #: ../src/plugins/reporter-mantisbt.c:593
 #, c-format
 msgid "Adding attachments to issue %i"
-msgstr ""
+msgstr "Додавање прилога проблему %i"
 
 #: ../src/plugins/reporter-mantisbt.c:648
 #, c-format
 msgid "Invalid duplicate format file: '%s"
-msgstr ""
+msgstr "Неисправан формат дупликата датотеке: „%s"
 
 #: ../src/plugins/reporter-mantisbt.c:652
 msgid "Failed to format duplicate comment from problem data"
-msgstr ""
+msgstr "Нисам успео да форматирам дупликат коментара из података о проблему"
 
 #: ../src/plugins/reporter-mantisbt.c:659
 #, c-format
 msgid "Adding new comment to issue %d"
-msgstr ""
+msgstr "Додавање новог коментара проблему %d"
 
 #: ../src/plugins/reporter-mantisbt.c:695
 msgid "Found the same comment in the issue history, not adding a new one"
-msgstr ""
+msgstr "Пронађен је исти коментар у историјату проблема, не додајем нови"
 
 #: ../src/plugins/reporter-mantisbt.c:702
 #, c-format
 msgid "Status: %s%s%s %s/view.php?id=%u"
-msgstr ""
+msgstr "Стање: %s%s%s %s/view.php?id=%u"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:1
 msgid "CentOS Bug Tracker"
-msgstr ""
+msgstr "CentOS праћење грешака"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:2
 #: ../src/workflows/workflow_CentOSCCpp.xml.in.h:1
@@ -2144,298 +2409,313 @@ msgstr ""
 #: ../src/workflows/workflow_CentOSVmcore.xml.in.h:1
 #: ../src/workflows/workflow_CentOSXorg.xml.in.h:1
 msgid "Report to CentOS Bug Tracker"
-msgstr ""
+msgstr "Пријави CentOS праћењу грешака"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:4
 msgid "CentOS Bug Tracker account user name"
-msgstr ""
+msgstr "Корисничко име налога за CentOS пратиоца грешака"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:5
 msgid ""
 "You can create bugs.centos.org account &lt;a href=\"https://bugs.centos.org/"
 "signup_page.php\"&gt;here&lt;/a&gt;"
 msgstr ""
+"Можете направити налог на bugs.centos.org &lt;a href=\"https://"
+"bugs.centos.org/signup_page.php\"&gt;овде&lt;/a&gt;"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:7
 msgid "CentOS Bug Tracker account password"
-msgstr ""
+msgstr "Лозинка налога за CentOS пратиоца грешака"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:9
 msgid ""
 "The issue will be accessible only to users with access to 'Private Issues'"
 msgstr ""
+"Проблем ће бити доступан само корисницима са приступом „Приватним проблемима“"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:10
 msgid "CentOS Bug Tracker URL"
-msgstr ""
+msgstr "Адреса (URL) CentOS пратиоца грешака"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:11
 msgid "Address of CentOS Bug Tracker server"
-msgstr ""
+msgstr "Адреса сервера CentOS пратиоца грешака"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:14
 msgid "CentOS Bug Tracker project"
-msgstr ""
+msgstr "Пројекат CentOS пратиоца грешака"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:15
 msgid ""
 "Specify this only if you needed different project than specified in /etc/os-"
 "release"
 msgstr ""
+"Наведите ово само ако вам је потребан другачији пројекат од оног наведеног "
+"у /etc/os-release"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:16
 msgid "CentOS Bug Tracker project version"
-msgstr ""
+msgstr "Издање пројекта CentOS пратиоца грешака"
 
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:17
 msgid ""
 "Specify this only if you needed different project version than specified in /"
 "etc/os-release"
 msgstr ""
+"Наведите ово само ако вам је потребно другачије издање пројекта од оног "
+"наведеног у /etc/os-release"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
 msgid "Kerneloops.org"
-msgstr ""
+msgstr "Kerneloops.org"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:2
 msgid "Send to kernel oops tracker"
-msgstr ""
+msgstr "Пошаљи упс пратиоцу грешака језгра"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:3
 msgid "Kerneloops URL"
-msgstr ""
+msgstr "Адреса Kerneloops-а"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:4
 msgid "Oops server url"
-msgstr ""
+msgstr "Адреса упс сервера за грешке језгра"
 
 #: ../src/plugins/report_Logger.xml.in.h:1
 msgid "Logger"
-msgstr ""
+msgstr "Бележник"
 
 #: ../src/plugins/report_Logger.xml.in.h:2
 msgid "Save as text file"
-msgstr ""
+msgstr "Сачувај као текстуалну датотеку"
 
 #: ../src/plugins/report_Logger.xml.in.h:3
 msgid "Log File"
-msgstr ""
+msgstr "Датотека дневника"
 
 #: ../src/plugins/report_Logger.xml.in.h:4
 msgid "Name of the logfile"
-msgstr ""
+msgstr "Назив датотеке дневника"
 
 #: ../src/plugins/report_Logger.xml.in.h:5
 msgid "Append"
-msgstr ""
+msgstr "Прикачи"
 
 #: ../src/plugins/report_Logger.xml.in.h:6
 msgid "Append new reports or overwrite the old one."
-msgstr ""
+msgstr "Додај нове извештаје или препиши стари."
 
 #: ../src/plugins/report_Mailx.xml.in.h:1
 msgid "Mailx"
-msgstr ""
+msgstr "Mailx"
 
 #: ../src/plugins/report_Mailx.xml.in.h:2
 msgid "Send via email"
-msgstr ""
+msgstr "Пошаљи преко е-поште"
 
 #: ../src/plugins/report_Mailx.xml.in.h:3
 msgid "Subject"
-msgstr ""
+msgstr "Тема"
 
 #: ../src/plugins/report_Mailx.xml.in.h:4
 msgid "Message subject"
-msgstr ""
+msgstr "Тема поруке"
 
 #: ../src/plugins/report_Mailx.xml.in.h:5
 msgid "Sender"
-msgstr ""
+msgstr "Пошиљалац"
 
 #: ../src/plugins/report_Mailx.xml.in.h:6
 msgid "Sender's email"
-msgstr ""
+msgstr "Е-пошта пошиљаоца"
 
 #: ../src/plugins/report_Mailx.xml.in.h:7
 msgid "Recipient"
-msgstr ""
+msgstr "Прималац"
 
 #: ../src/plugins/report_Mailx.xml.in.h:8
 msgid "Recipient's email"
-msgstr ""
+msgstr "Е-пошта прималаца"
 
 #: ../src/plugins/report_Mailx.xml.in.h:9
 msgid "Send Binary Data"
-msgstr ""
+msgstr "Пошаљи бинарне податке"
 
 #: ../src/plugins/report_Mailx.xml.in.h:10
 msgid "Send binary files like coredump"
-msgstr ""
+msgstr "Пошаљи бинарне датотеке као што је избачај језгра"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:1
 #: ../src/plugins/report_RHTSupport_AddData.xml.in.h:1
 msgid "Red Hat Customer Support"
-msgstr ""
+msgstr "Ред Хет корисничка подршка"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:2
 msgid "Report to Red Hat support"
-msgstr ""
+msgstr "Пријави Ред Хет подршци"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:3
 msgid "Username"
-msgstr ""
+msgstr "Корисничко име"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:4
 msgid "Red Hat customer user name"
-msgstr ""
+msgstr "Корисничко име Ред Хет корисника"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:6
 msgid "Red Hat customer password"
-msgstr ""
+msgstr "Лозинка Ред Хет корисника"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:7
 msgid "Submit uReport"
-msgstr ""
+msgstr "Пошаљи „uReport“"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:8
 msgid ""
 "Submit &lt;a href=\"https://access.redhat.com/articles/642323\"&gt;micro-"
 "report&lt;/a&gt; when creating a new case."
 msgstr ""
+"Пошаљи &lt;a href=\"https://access.redhat.com/articles/642323\"&gt;микро-"
+"извештај&lt;/a&gt; приликом стварања новог случаја."
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:9
 msgid "RH Portal URL"
-msgstr ""
+msgstr "Адреса РХ портала"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Address of the Red Hat support portal"
-msgstr ""
+msgstr "Адреса Ред Хет портала подршке"
 
 #: ../src/plugins/report_RHTSupport_AddData.xml.in.h:2
 msgid "Attach the data to existing Red Hat support case"
-msgstr ""
+msgstr "Приложи податке постојећем Ред Хет случају подршке"
 
 #: ../src/plugins/report_Uploader.xml.in.h:1
 msgid "Report Uploader"
-msgstr ""
+msgstr "Отпремник извештаја"
 
 #: ../src/plugins/report_Uploader.xml.in.h:2
 msgid "Upload as tar.gz file (via FTP/SCP/...)"
-msgstr ""
+msgstr "Отпреми као „tar.gz“ датотеку (путем FTP-а/SCP-а/...)"
 
 #: ../src/plugins/report_Uploader.xml.in.h:3
 msgid "URL"
-msgstr ""
+msgstr "Адреса"
 
 #: ../src/plugins/report_Uploader.xml.in.h:4
 msgid ""
 "Where do you want to upload the tarball with report in form login:"
 "password@url"
 msgstr ""
+"Где желите да отпремите архиву са извештајем у облику пријава:лозинка@адреса"
 
 #: ../src/plugins/report_Uploader.xml.in.h:5
 msgid ""
 "Examples:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:"
 "pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]"
 msgstr ""
+"Примери:&#xA;ftp://[корисник[:лозинка]@]домаћин/дир/"
+"[датотека.tar.gz]&#xA;scp://[корисник[:лозинка]@]домаћин/дир/"
+"[датотека.tar.gz]&#xA;file:///дир/[датотека.tar.gz]"
 
 #: ../src/plugins/report_Uploader.xml.in.h:7
 msgid "Use this field if you do not want to have user name in URL"
-msgstr ""
+msgstr "Користите ово поље ако не желите да имате корисничко име у адреси"
 
 #: ../src/plugins/report_Uploader.xml.in.h:9
 msgid "Use this field if you do not want to have password in URL"
-msgstr ""
+msgstr "Користите ово поље ако не желите да имате лозинку у адреси"
 
 #: ../src/plugins/report_Uploader.xml.in.h:14
 msgid "FTP Proxy"
-msgstr ""
+msgstr "FTP посредник"
 
 #: ../src/plugins/report_Uploader.xml.in.h:15
 msgid "Sets the proxy server to use for FTP"
-msgstr ""
+msgstr "Поставља сервер посредника за ФТП"
 
 #: ../src/plugins/report_Uploader.xml.in.h:16
 msgid "SSH Public key file"
-msgstr ""
+msgstr "Датотека SSH јавног кључа"
 
 #: ../src/plugins/report_Uploader.xml.in.h:17
 msgid "Use this field to specify SSH public keyfile"
-msgstr ""
+msgstr "Користите ово поље да наведете датотеку SSH јавног кључа"
 
 #: ../src/plugins/report_Uploader.xml.in.h:18
 msgid "SSH Private key file"
-msgstr ""
+msgstr "Датотека SSH приватног кључа"
 
 #: ../src/plugins/report_Uploader.xml.in.h:19
 msgid "Use this field to specify SSH private keyfile"
-msgstr ""
+msgstr "Користите ово поље да наведете датотеку SSH приватног кључа"
 
 #: ../src/plugins/report_uReport.xml.in.h:1
 msgid "uReport"
-msgstr ""
+msgstr "uReport"
 
 #: ../src/plugins/report_uReport.xml.in.h:2
 msgid "Sends ureports to FAF server"
-msgstr ""
+msgstr "Шаље uReport-е FAF серверу"
 
 #: ../src/plugins/report_uReport.xml.in.h:3
 msgid "uReport Server URL"
-msgstr ""
+msgstr "Адреса uReport сервера"
 
 #: ../src/plugins/report_uReport.xml.in.h:4
 msgid "Address of uReport webservice"
-msgstr ""
+msgstr "Адреса uReport веб-услуге"
 
 #: ../src/plugins/report_uReport.xml.in.h:5
 msgid "Watch already reported bugs"
-msgstr ""
+msgstr "Прати већ пријављене грешке"
 
 #: ../src/plugins/report_uReport.xml.in.h:6
 msgid "Adds your Bugzilla login to CC List of already reported bugs."
-msgstr ""
+msgstr "Додаје вашу Багзила пријаву на CC листу већ пријављених грешака."
 
 #: ../src/plugins/report_uReport.xml.in.h:7
 msgid "Report unpackaged problems"
-msgstr ""
+msgstr "Пријави неупаковане проблеме"
 
 #: ../src/plugins/report_uReport.xml.in.h:8
 msgid "Report problems coming from unpackaged executables."
-msgstr ""
+msgstr "Пријави проблеме који долазе из неупакованих извршних датотека."
 
 #: ../src/plugins/report_uReport.xml.in.h:9
 msgid "Contact email address"
-msgstr ""
+msgstr "Контакт адреса е-поште"
 
 #: ../src/plugins/report_uReport.xml.in.h:10
 msgid ""
 "Email address that can be used by ABRT server to inform you about news and "
 "updates"
 msgstr ""
+"Адреса е-поште коју ABRT сервер може користити да вас обавести о новостима и "
+"ажурирањима"
 
 #: ../src/plugins/watch_Bugzilla.xml.in.h:1
 msgid "Watch Bugzilla Bug"
-msgstr ""
+msgstr "Прати Багзила грешку"
 
 #: ../src/plugins/watch_Bugzilla.xml.in.h:2
 msgid "Adds your e-mail to CC List of Bugzilla bug"
-msgstr ""
+msgstr "Додаје вашу е-пошту на CC листу Багзила грешке"
 
 #: ../src/plugins/rhbz.c:382
 #, c-format
 msgid "Looks like corrupted xml response, because '%s' member is missing."
-msgstr ""
+msgstr "Изгледа да је XML одговор оштећен, јер недостаје члан „%s“."
 
 #: ../src/plugins/rhbz.c:470
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
-msgstr ""
+msgstr "Грешка %i је ЗАТВОРЕНА, али нема РЕШЕЊЕ"
 
 #: ../src/plugins/rhbz.c:478
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
-msgstr ""
+msgstr "Грешка %i је ЗАТВОРЕНА као ДУПЛИКАТ, али нема DUP_ID"
 
 #: ../src/plugins/rhbz.c:583
 msgid ""
@@ -2443,164 +2723,174 @@ msgid ""
 "please see https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
 "tickets for more info"
 msgstr ""
+"Затражено је прављење приватног тикета, али нису наведене групе, погледајте "
+"https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-tickets за "
+"више информација"
 
 #: ../src/plugins/rhbz.c:604
 #, c-format
 msgid "New bug id: %i"
-msgstr ""
+msgstr "Нови ИД грешке: %i"
 
 #: ../src/plugins/rhbz.c:725
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
-msgstr ""
+msgstr "Багзила не може да пронађе надређеног за грешку %d"
 
 #: ../src/plugins/rhbz.c:873
 msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
-msgstr ""
+msgstr "Повратна вредност „Bug.search(quicksearch)“ није садржала члан „bugs“"
 
 #: ../src/plugins/mantisbt.c:123
 #, c-format
 msgid "MantisBT couldn't find parent of issue %d"
-msgstr ""
+msgstr "МантисБТ не може да пронађе надређеног за проблем %d"
 
 #: ../src/plugins/mantisbt.c:180
 msgid "SOAP: Failed to get child element because of no parent."
-msgstr ""
+msgstr "SOAP: Није успело добављање садржаног елемента јер нема надређеног."
 
 #: ../src/plugins/mantisbt.c:189
 msgid "SOAP: Failed to get next element because of no node."
-msgstr ""
+msgstr "SOAP: Није успело добављање следећег елемента јер нема чвора."
 
 #: ../src/plugins/mantisbt.c:198
 msgid "SOAP: Failed to get child node because of no parent."
-msgstr ""
+msgstr "SOAP: Није успело добављање садржаног чвора јер нема надређеног."
 
 #: ../src/plugins/mantisbt.c:219
 msgid "SOAP: Failed to parse xml during creating request."
-msgstr ""
+msgstr "SOAP: Није успела обрада ИксМЛ-а током стварања захтева."
 
 #: ../src/plugins/mantisbt.c:227
 msgid "SOAP: Failed to get xml root element."
-msgstr ""
+msgstr "SOAP: Није успело добављање кореног ИксМЛ елемента."
 
 #: ../src/plugins/mantisbt.c:240
 msgid ""
 "SOAP: Failed to add a new child node because of no node or no child name."
 msgstr ""
+"SOAP: Није успело додавање новог садржаног чвора јер нема чвора или назива "
+"садржаног елемента."
 
 #: ../src/plugins/mantisbt.c:245
 msgid "SOAP: Failed to create a new xml child item."
-msgstr ""
+msgstr "SOAP: Није успело стварање нове ИксМЛ садржане ставке."
 
 #: ../src/plugins/mantisbt.c:250
 msgid "SOAP: Failed to create a new property."
-msgstr ""
+msgstr "SOAP: Није успело стварање новог својства."
 
 #: ../src/plugins/mantisbt.c:260
 msgid "SOAP: Failed to add method parametr."
-msgstr ""
+msgstr "SOAP: Није успело додавање параметра метода."
 
 #: ../src/plugins/mantisbt.c:289
 msgid "SOAP: Failed to add new issue parametrs."
-msgstr ""
+msgstr "SOAP: Није успело додавање нових параметара проблема."
 
 #: ../src/plugins/mantisbt.c:292
 msgid ""
 "SOAP: Failed to add new issue parameters because the required items are "
 "missing."
 msgstr ""
+"SOAP: Није успело додавање нових параметара проблема јер недостају потребне "
+"ставке."
 
 #: ../src/plugins/mantisbt.c:336
 msgid "SOAP: Failed to create a new property in custom fields."
-msgstr ""
+msgstr "SOAP: Није успело стварање новог својства у произвољним пољима."
 
 #: ../src/plugins/mantisbt.c:354
 msgid ""
 "SOAP: Failed to create SOAP string because of invalid function arguments."
 msgstr ""
+"SOAP: Није успело стварање SOAP ниске због неисправних аргумената функције."
 
 #: ../src/plugins/mantisbt.c:361
 msgid "SOAP: Failed to dump xml node."
-msgstr ""
+msgstr "SOAP: Није успео извоз ИксМЛ чвора."
 
 #: ../src/plugins/mantisbt.c:375
 msgid "SOAP: Failed to print SOAP string."
-msgstr ""
+msgstr "SOAP: Није успело штампање SOAP ниске."
 
 #: ../src/plugins/mantisbt.c:382
 msgid "Failed to dump xml node."
-msgstr ""
+msgstr "Није успео извоз ИксМЛ чвора."
 
 #: ../src/plugins/mantisbt.c:458
 msgid "SOAP: Failed to parse xml (searching value at depth by name)."
 msgstr ""
+"Није успело рашчлањивање икс-ем-ел-а (тражење вредности по дубини и називу)."
 
 #: ../src/plugins/mantisbt.c:462 ../src/plugins/mantisbt.c:505
 #: ../src/plugins/mantisbt.c:534
 msgid "SOAP: Failed to create xml text reader."
-msgstr ""
+msgstr "Није успело стварање читача икс-ем-ел текста."
 
 #: ../src/plugins/mantisbt.c:501
 msgid "SOAP: Failed to parse xml."
-msgstr ""
+msgstr "Није успело рашчлањивање икс-ем-ел-а."
 
 #: ../src/plugins/mantisbt.c:530
 msgid "SOAP: Failed to parse xml (get related to issue)."
 msgstr ""
+"Није успело рашчлањивање икс-ем-ел-а (добављање повезаног са проблемом)."
 
 #: ../src/plugins/mantisbt.c:647
 msgid "Url or request isn't specified."
-msgstr ""
+msgstr "Адреса или захтев нису наведени."
 
 #: ../src/plugins/mantisbt.c:675
 #, c-format
 msgid "Error in HTTP POST, HTTP code: 404 (Not found), URL:'%s'"
-msgstr ""
+msgstr "Грешка у HTTP POST-у, HTTP код: 404 (Није пронађено), адреса: „%s“"
 
 #: ../src/plugins/mantisbt.c:699
 #, c-format
 msgid "Error in MantisBT request at '%s': %s"
-msgstr ""
+msgstr "Грешка у MantisBT захтеву на „%s“: %s"
 
 #: ../src/plugins/mantisbt.c:701
 #, c-format
 msgid "Error in MantisBT request at '%s'"
-msgstr ""
+msgstr "Грешка у MantisBT захтеву на „%s“"
 
 #: ../src/plugins/mantisbt.c:743
 #, c-format
 msgid "Failed to attach file: '%s'"
-msgstr ""
+msgstr "Није успело прилагање датотеке: „%s“"
 
 #: ../src/plugins/mantisbt.c:762
 #, c-format
 msgid "Can't lseek '%s'"
-msgstr ""
+msgstr "Не могу да извршим „lseek“ на „%s“"
 
 #: ../src/plugins/mantisbt.c:768
 #, c-format
 msgid "Can't upload '%s', it's too large (%llu bytes)"
-msgstr ""
+msgstr "Не могу да отпремим „%s“, превелика је (%llu бајтова)"
 
 #: ../src/plugins/mantisbt.c:778
 #, c-format
 msgid "Can't read '%s'"
-msgstr ""
+msgstr "Не могу да читам „%s“"
 
 #: ../src/plugins/mantisbt.c:794
 #, c-format
 msgid "Can't open '%s'"
-msgstr ""
+msgstr "Не могу да отворим „%s“"
 
 #: ../src/plugins/mantisbt.c:861
 #, c-format
 msgid "Failed to search MantisBT issue by duphash: '%s'"
-msgstr ""
+msgstr "Није успела претрага MantisBT проблема по хешу дупликата: „%s“"
 
 #: ../src/plugins/mantisbt.c:906
 #, c-format
 msgid "Failed to search MantisBT duplicate issue: '%s'"
-msgstr ""
+msgstr "Није успела претрага MantisBT дуплираних проблема: „%s“"
 
 #: ../src/plugins/mantisbt.c:934
 #, c-format
@@ -2608,120 +2898,130 @@ msgid ""
 "MantisBT doesn't contain custom field '%s', which is required for full "
 "functionality of the reporter. Do you still want to create a new issue?"
 msgstr ""
+"MantisBT не садржи произвољно поље „%s“, које је неопходно за пуну "
+"функционалност извештавача. Да ли и даље желите да направите нови проблем?"
 
 #: ../src/plugins/mantisbt.c:958
 #, c-format
 msgid "Failed to get custom fields for '%s' project"
-msgstr ""
+msgstr "Није успело добављање произвољних поља за пројекат „%s“"
 
 #: ../src/plugins/mantisbt.c:1002
 #, c-format
 msgid "Failed to create a new issue: '%s'"
-msgstr ""
+msgstr "Није успело стварање новог проблема: „%s“"
 
 #: ../src/plugins/mantisbt.c:1028
 #, c-format
 msgid "Failed to get MantisBT issue: '%s'"
-msgstr ""
+msgstr "Није успело добављање MantisBT проблема: „%s“"
 
 #: ../src/plugins/mantisbt.c:1042
 #, c-format
 msgid "Issue %i is CLOSED, but it has no RESOLUTION"
-msgstr ""
+msgstr "Проблем %i је ЗАТВОРЕН, али нема РЕШЕЊЕ"
 
 #: ../src/plugins/mantisbt.c:1050
 #, c-format
 msgid "Issue %i is CLOSED as DUPLICATE, but it has no DUPLICATE_ID"
-msgstr ""
+msgstr "Проблем %i је ЗАТВОРЕН као ДУПЛИКАТ, али нема DUPLICATE_ID"
 
 #: ../src/plugins/mantisbt.c:1087
 #, c-format
 msgid "Failed to add MantisBT issue note: '%s'"
-msgstr ""
+msgstr "Нисам успео да додам белешку MantisBT проблема: „%s“"
 
 #: ../src/plugins/mantisbt.c:1101
 msgid "The MantisBT project has not been deretmined."
-msgstr ""
+msgstr "MantisBT пројекат није одређен."
 
 #: ../src/plugins/mantisbt.c:1113
 msgid "Failed to get project id from name"
-msgstr ""
+msgstr "Нисам успео да добавим ИД пројекта из назива"
 
 #: ../src/plugins/reporter-ureport.c:75
 msgid "Specify server URL"
-msgstr ""
+msgstr "Наведите адресу сервера"
 
 #: ../src/plugins/reporter-ureport.c:77
 msgid "Allow insecure connection to ureport server"
-msgstr ""
+msgstr "Дозволи небезбедне везе са ureport сервером"
 
 #: ../src/plugins/reporter-ureport.c:78
 msgid "Use client authentication"
-msgstr ""
+msgstr "Користи идентификацију клијента"
 
 #: ../src/plugins/reporter-ureport.c:79
 msgid "Use HTTP Authentication"
-msgstr ""
+msgstr "Користи HTTP идентификацију"
 
 #: ../src/plugins/reporter-ureport.c:80
 msgid "Additional files included in 'auth' key"
-msgstr ""
+msgstr "Додатне датотеке укључене у кључ „auth“"
 
 #: ../src/plugins/reporter-ureport.c:83
 msgid "bthash of uReport to attach (conflicts with -A)"
-msgstr ""
+msgstr "bthash uReport-а за прилагање (у сукобу са -A)"
 
 #: ../src/plugins/reporter-ureport.c:85
 msgid "attach to a bthash from reported_to (conflicts with -a)"
-msgstr ""
+msgstr "приложи на bthash из reported_to (у сукобу са -a)"
 
 #: ../src/plugins/reporter-ureport.c:87
 msgid "contact e-mail address (requires -a|-A, conflicts with -E)"
-msgstr ""
+msgstr "адреса е-поште контакта (захтева -a|-A, у сукобу са -E)"
 
 #: ../src/plugins/reporter-ureport.c:89
 msgid ""
 "contact e-mail address from environment or configuration file (requires -a|-"
 "A, conflicts with -e)"
 msgstr ""
+"адреса е-поште контакта из окружења или датотеке подешавања (захтева -a|-A, "
+"у сукобу са -e)"
 
 #: ../src/plugins/reporter-ureport.c:91
 msgid "attach RHBZ bug (requires -a|-A, conflicts with -B)"
-msgstr ""
+msgstr "приложи RHBZ грешку (захтева -a|-A, у сукобу са -B)"
 
 #: ../src/plugins/reporter-ureport.c:93
 msgid ""
 "attach last RHBZ bug from reported_to (requires -a|-A, conflicts with -b)"
 msgstr ""
+"приложи последњу RHBZ грешку из reported_to (захтева -a|-A, у сукобу са -b)"
 
 #: ../src/plugins/reporter-ureport.c:95
 msgid "attach short text (requires -a|-A, conflicts with -D)"
-msgstr ""
+msgstr "приложи кратак текст (захтева -a|-A, у сукобу са -D)"
 
 #: ../src/plugins/reporter-ureport.c:97
 msgid "attach short text from comment (requires -a|-A, conflicts with -d)"
-msgstr ""
+msgstr "приложи кратак текст из коментара (захтева -a|-A, у сукобу са -d)"
 
 #: ../src/plugins/reporter-ureport.c:101
 msgid "attach value (requires -a|-A and -T, conflicts with -L)"
-msgstr ""
+msgstr "приложи вредност (захтева -a|-A и -T, у сукобу са -L)"
 
 #: ../src/plugins/reporter-ureport.c:103
 msgid ""
 "attach data of FIELD [URL] of the last report result (requires -a|-A, -r and "
 "-T, conflicts with -l)"
 msgstr ""
+"приложи податке ПОЉА [URL] последњег резултата извештаја (захтева -a|-A, -r "
+"и -T, у сукобу са -l)"
 
 #: ../src/plugins/reporter-ureport.c:106
 msgid ""
 "use REPORT_RESULT_TYPE when looking for FIELD in reported_to (used only with "
 "-L)"
 msgstr ""
+"користи REPORT_RESULT_TYPE приликом тражења ПОЉА у reported_to (користи се "
+"само уз -L)"
 
 #: ../src/plugins/reporter-ureport.c:108
 msgid ""
 "attach DATA as ureport attachment ATTACHMENT_TYPE (used only with -l|-L)"
 msgstr ""
+"приложи ПОДАТКЕ као прилог uReport-а ВРСТА_ПРИЛОГА (користи се само уз -l|-L)"
 
 #: ../src/plugins/reporter-ureport.c:113
 msgid ""
@@ -2737,91 +3037,104 @@ msgid ""
 "\n"
 "Reads the default configuration from "
 msgstr ""
+"& [-v] [-c ДАТОТЕКА] [-u УРЛ] [-k] [-t ИЗВОР] [-h АКРЕДИТИВИ]\n"
+"  [-A -a bthash -B -b ид-грешке -E -e е-пошта -O -o напомена] [-d ДИР]\n"
+"  [-A -a bthash -T ВРСТА_ПРИЛОГА -r ВРСТА_РЕЗУЛТАТА_ИЗВЕШТАЈА -L "
+"ПОЉЕ_РЕЗУЛТАТА] [-d ДИР]\n"
+"  [-A -a bthash -T ВРСТА_ПРИЛОГА -l ПОДАТЦИ] [-d ДИР]\n"
+"& [-v] [-c ДАТОТЕКА] [-u УРЛ] [-k] [-t ИЗВОР] [-h АКРЕДИТИВИ] [-i "
+"СТАВКЕ_ПРИЈАВЕ] [-d ДИР]\n"
+"\n"
+"Отпремите микро извештај или додајте прилог микро извештају\n"
+"\n"
+"Чита подразумевана подешавања из "
 
 #: ../src/plugins/reporter-ureport.c:191
 msgid "This problem does not have an uReport assigned."
-msgstr ""
+msgstr "Овај проблем нема додељен uReport."
 
 #: ../src/plugins/reporter-ureport.c:212
 msgid "This problem has not been reported to Bugzilla."
-msgstr ""
+msgstr "Овај проблем није пријављен Багзили."
 
 #: ../src/plugins/reporter-ureport.c:218
 #, c-format
 msgid "Unable to find bug ID in bugzilla URL '%s'"
-msgstr ""
+msgstr "Не могу да пронађем ИД грешке у Багзила УРЛ-у „%s“"
 
 #: ../src/plugins/reporter-ureport.c:223
 #, c-format
 msgid "Unable to parse bug ID from bugzilla URL '%s'"
-msgstr ""
+msgstr "Не могу да обрадим ИД грешке из Багзила УРЛ-а „%s“"
 
 #: ../src/plugins/reporter-ureport.c:230
 msgid "Cannot attach comment from 'comment' file"
-msgstr ""
+msgstr "Не могу да приложим напомену из датотеке „comment“"
 
 #: ../src/plugins/reporter-ureport.c:232
 msgid "'comment' file is empty"
-msgstr ""
+msgstr "Датотека „comment“ је празна"
 
 #: ../src/plugins/reporter-ureport.c:243
 #, c-format
 msgid "This problem has not been reported to '%s'."
-msgstr ""
+msgstr "Овај проблем није пријављен на „%s“."
 
 #: ../src/plugins/reporter-ureport.c:251
 #, c-format
 msgid "The report result '%s' is missing URL."
-msgstr ""
+msgstr "Резултату извештаја „%s“ недостаје УРЛ."
 
 #: ../src/plugins/reporter-ureport.c:267
 msgid ""
 "Neither environment variable 'uReport_ContactEmail' nor configuration option "
 "'ContactEmail' is set"
 msgstr ""
+"Ни променљива окружења „uReport_ContactEmail“ ни опција подешавања „"
+"ContactEmail“ нису постављене"
 
 #: ../src/plugins/reporter-ureport.c:273
 msgid "You need to specify bug ID, contact email, comment or all of them"
-msgstr ""
+msgstr "Морате навести ИД грешке, е-пошту за контакт, напомену или све то"
 
 #: ../src/plugins/reporter-ureport.c:303
 msgid "You need to specify bthash of the uReport to attach."
-msgstr ""
+msgstr "Морате навести bthash uReport-а за прилагање."
 
 #: ../src/plugins/reporter-ureport.c:332
 msgid "This problem has already been reported."
-msgstr ""
+msgstr "Овај проблем је већ пријављен."
 
 #: ../src/report-newt/report-newt.c:55
 msgid "How would you like to report the problem?"
-msgstr ""
+msgstr "Како желите да пријавите проблем?"
 
 #: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:145
 #: ../src/report-newt/report-newt.c:168 ../src/report-newt/report-newt.c:258
 #: ../src/report-newt/report-newt.c:334 ../src/report-newt/report-newt.c:356
 msgid "Ok"
-msgstr ""
+msgstr "У реду"
 
 #: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:145
 msgid "Cancel"
-msgstr ""
+msgstr "Откажи"
 
 #: ../src/report-newt/report-newt.c:168 ../src/report-newt/report-newt.c:334
 msgid "Error"
-msgstr ""
+msgstr "Грешка"
 
 #: ../src/report-newt/report-newt.c:255
 msgid "Reporting"
-msgstr ""
+msgstr "Пријављивање"
 
 #: ../src/report-newt/report-newt.c:275
 #, c-format
 msgid "--- Running %s ---"
-msgstr ""
+msgstr "--- Покрећем %s ---"
 
 #: ../src/report-newt/report-newt.c:356
 msgid "No reporters available"
-msgstr ""
+msgstr "Нема доступних пријављивача"
 
 #: ../src/report-newt/report-newt.c:386
 msgid ""
@@ -2829,75 +3142,78 @@ msgid ""
 "\n"
 "newt tool to report problem saved in specified DIR"
 msgstr ""
+"& [-d] ДИР\n"
+"\n"
+"newt алат за пријављивање проблема сачуваних у наведеном ДИР-у"
 
 #: ../src/report-newt/report-newt.c:396
 msgid "Remove DIR after reporting"
-msgstr ""
+msgstr "Уклони ДИР након пријављивања"
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:1
 msgid "Report a bug to Fedora maintainers"
-msgstr ""
+msgstr "Пријави грешку Fedora одржаваоцима"
 
 #: ../src/workflows/workflow_AnacondaFedora.xml.in.h:2
 msgid "Process the report using the Fedora infrastructure"
-msgstr ""
+msgstr "Обради извештај користећи Fedora инфраструктуру"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:1
 msgid "Report a bug to Red Hat Customer Portal"
-msgstr ""
+msgstr "Пријави грешку на Red Hat кориснички портал"
 
 #: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:2
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:2
 msgid "Process the report using the Red Hat infrastructure"
-msgstr ""
+msgstr "Обради извештај користећи Red Hat инфраструктуру"
 
 #: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:1
 msgid "Report a bug to Red Hat Bugzilla"
-msgstr ""
+msgstr "Пријави грешку на Red Hat Багзилу"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
 msgid "Export the problem data for manual reporting"
-msgstr ""
+msgstr "Извези податке о проблему за ручно пријављивање"
 
 #: ../src/workflows/workflow_AnacondaUpload.xml.in.h:2
 msgid "Upload the data via scp or ftp to a remote destination"
-msgstr ""
+msgstr "Отпреми податке путем scp-а или ftp-а на удаљено одредиште"
 
 #: ../src/workflows/workflow_CentOSCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the CentOS infrastructure"
-msgstr ""
+msgstr "Обради C/C++ пад користећи CentOS инфраструктуру"
 
 #: ../src/workflows/workflow_CentOSJava.xml.in.h:2
 msgid "Process the Java exception using the CentOS infrastructure"
-msgstr ""
+msgstr "Обради Java изузетак користећи CentOS инфраструктуру"
 
 #: ../src/workflows/workflow_CentOSJavaScript.xml.in.h:2
 msgid "Process the JavaScript exception using the CentOS infrastructure"
-msgstr ""
+msgstr "Обради JavaScript изузетак користећи CentOS инфраструктуру"
 
 #: ../src/workflows/workflow_CentOSKerneloops.xml.in.h:2
 msgid "Process the kerneloops using the CentOS infrastructure"
-msgstr ""
+msgstr "Обради kerneloops користећи CentOS инфраструктуру"
 
 #: ../src/workflows/workflow_CentOSLibreport.xml.in.h:2
 msgid "Process the problem using the CentOS infrastructure"
-msgstr ""
+msgstr "Обради проблем користећи CentOS инфраструктуру"
 
 #: ../src/workflows/workflow_CentOSPython.xml.in.h:2
 msgid "Process the python exception using the CentOS infrastructure"
-msgstr ""
+msgstr "Обради python изузетак користећи CentOS инфраструктуру"
 
 #: ../src/workflows/workflow_CentOSPython3.xml.in.h:2
 msgid "Process the python 3 exception using the CentOS infrastructure"
-msgstr ""
+msgstr "Обради python 3 изузетак користећи CentOS инфраструктуру"
 
 #: ../src/workflows/workflow_CentOSVmcore.xml.in.h:2
 msgid "Process the kernel crash using the CentOS infrastructure"
-msgstr ""
+msgstr "Обради пад језгра користећи CentOS инфраструктуру"
 
 #: ../src/workflows/workflow_CentOSXorg.xml.in.h:2
 msgid "Process the X Server problem using the CentOS infrastructure"
-msgstr ""
+msgstr "Обради проблем X сервера користећи CentOS инфраструктуру"
 
 #: ../src/workflows/workflow_FedoraCCpp.xml.in.h:1
 #: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:1
@@ -2909,48 +3225,48 @@ msgstr ""
 #: ../src/workflows/workflow_FedoraJava.xml.in.h:1
 #: ../src/workflows/workflow_FedoraJavaScript.xml.in.h:1
 msgid "Report to Fedora"
-msgstr ""
+msgstr "Пријави Fedora-и"
 
 #: ../src/workflows/workflow_FedoraCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the Fedora infrastructure"
-msgstr ""
+msgstr "Обради C/C++ пад користећи Fedora инфраструктуру"
 
 #: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:2
 msgid "Process the kerneloops using the Fedora infrastructure"
-msgstr ""
+msgstr "Обради kerneloops користећи Fedora инфраструктуру"
 
 #: ../src/workflows/workflow_FedoraPython.xml.in.h:2
 msgid "Process the python exception using the Fedora infrastructure"
-msgstr ""
+msgstr "Обради python изузетак користећи Fedora инфраструктуру"
 
 #: ../src/workflows/workflow_FedoraPython3.xml.in.h:2
 msgid "Process the python 3 exception using the Fedora infrastructure"
-msgstr ""
+msgstr "Обрадите Пајтон 3 изузетак користећи Fedora инфраструктуру"
 
 #: ../src/workflows/workflow_FedoraVmcore.xml.in.h:2
 msgid "Process the kernel crash using the Fedora infrastructure"
-msgstr ""
+msgstr "Обрадите пад језгра користећи Fedora инфраструктуру"
 
 #: ../src/workflows/workflow_FedoraXorg.xml.in.h:2
 msgid "Process the X Server problem using the Fedora infrastructure"
-msgstr ""
+msgstr "Обрадите проблем X сервера користећи Fedora инфраструктуру"
 
 #: ../src/workflows/workflow_FedoraLibreport.xml.in.h:2
 msgid "Process the problem using the Fedora infrastructure"
-msgstr ""
+msgstr "Обрадите проблем користећи Fedora инфраструктуру"
 
 #: ../src/workflows/workflow_FedoraJava.xml.in.h:2
 msgid "Process the Java exception using the Fedora infrastructure"
-msgstr ""
+msgstr "Обрадите Java изузетак користећи Fedora инфраструктуру"
 
 #: ../src/workflows/workflow_FedoraJavaScript.xml.in.h:2
 msgid "Process the JavaScript exception using the Fedora infrastructure"
-msgstr ""
+msgstr "Обрадите JavaScript изузетак користећи Fedora инфраструктуру"
 
 #: ../src/workflows/workflow_LoggerCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Logger.xml.in.h:1
 msgid "Export the problem data information to a text file"
-msgstr ""
+msgstr "Извезите податке о проблему у текстуалну датотеку"
 
 #: ../src/workflows/workflow_LoggerCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Logger.xml.in.h:2
@@ -2958,36 +3274,39 @@ msgid ""
 "Analyze the problem locally and export the problem data information to a "
 "text file"
 msgstr ""
+"Анализирајте проблем локално и извезите податке о проблему у текстуалну "
+"датотеку"
 
 #: ../src/workflows/workflow_MailxCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Mailx.xml.in.h:1
 msgid "Send the problem data via email"
-msgstr ""
+msgstr "Пошаљите податке о проблему путем е-поште"
 
 #: ../src/workflows/workflow_MailxCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Mailx.xml.in.h:2
 msgid "Analyze the problem locally and send information via email"
-msgstr ""
+msgstr "Анализирајте проблем локално и пошаљите информације путем е-поште"
 
 #: ../src/workflows/workflow_UploadCCpp.xml.in.h:1
 #: ../src/workflows/workflow_Upload.xml.in.h:1
 msgid "Upload the problem data to a server"
-msgstr ""
+msgstr "Отпремите податке о проблему на сервер"
 
 #: ../src/workflows/workflow_UploadCCpp.xml.in.h:2
 #: ../src/workflows/workflow_Upload.xml.in.h:2
 msgid "Analyze the problem locally and upload the data via scp or ftp"
-msgstr ""
+msgstr "Анализирајте проблем локално и отпремите податке путем scp-а или ftp-а"
 
 #: ../src/workflows/workflow_uReport.xml.in.h:1
 msgid "Submit anonymous crash report"
-msgstr ""
+msgstr "Пошаљите анонимни извештај о паду"
 
 #: ../src/workflows/workflow_uReport.xml.in.h:2
 msgid ""
 "Submit anonymous crash report - I do not want to be contacted by Red Hat "
 "Support"
 msgstr ""
+"Пошаљите анонимни извештај о паду - не желим да ме контактира Red Hat подршка"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1
@@ -2998,7 +3317,7 @@ msgstr ""
 #: ../src/workflows/workflow_RHELJava.xml.in.h:1
 #: ../src/workflows/workflow_RHELJavaScript.xml.in.h:1
 msgid "Ask Red Hat Support for help"
-msgstr ""
+msgstr "Затражите помоћ од Red Hat подршке"
 
 #: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELKerneloops.xml.in.h:2
@@ -3012,6 +3331,8 @@ msgid ""
 "Create new Red Hat Support case - I would like to be contacted by Red Hat "
 "Support"
 msgstr ""
+"Направите нови случај код Red Hat подршке - желим да ме контактира Red Hat "
+"подршка"
 
 #: ../src/workflows/workflow_RHELAddDataCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELAddDataJava.xml.in.h:1
@@ -3022,7 +3343,7 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:1
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:1
 msgid "Attach crash data to an existing Red Hat support case"
-msgstr ""
+msgstr "Приложите податке о паду постојећем случају код Red Hat подршке"
 
 #: ../src/workflows/workflow_RHELAddDataCCpp.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJava.xml.in.h:2
@@ -3033,7 +3354,7 @@ msgstr ""
 #: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:2
 #: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:2
 msgid "Provide Red Hat Support with crash details"
-msgstr ""
+msgstr "Доставите детаље о паду Red Hat подршци"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
@@ -3044,36 +3365,36 @@ msgstr ""
 #: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:1
 #: ../src/workflows/workflow_RHELBugzillaJavaScript.xml.in.h:1
 msgid "Report to Red Hat Bugzilla"
-msgstr ""
+msgstr "Пријавите на Red Hat Багзилу"
 
 #: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
 msgid "Process the C/C++ crash using the Red Hat infrastructure"
-msgstr ""
+msgstr "Обрадите C/C++ пад користећи Red Hat инфраструктуру"
 
 #: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:2
 msgid "Process the kerneloops using the Red Hat infrastructure"
-msgstr ""
+msgstr "Обрадите грешку језгра (kerneloops) користећи инфраструктуру Ред Хета"
 
 #: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:2
 msgid "Process the python exception using the Red Hat infrastructure"
-msgstr ""
+msgstr "Обрадите изузетак пајтона користећи инфраструктуру Ред Хета"
 
 #: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:2
 msgid "Process the kernel crash using the Red Hat infrastructure"
-msgstr ""
+msgstr "Обрадите пад језгра користећи инфраструктуру Ред Хета"
 
 #: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:2
 msgid "Process the X Server problem using the Red Hat infrastructure"
-msgstr ""
+msgstr "Обрадите проблем Икс сервера користећи инфраструктуру Ред Хета"
 
 #: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:2
 msgid "Process the problem using the Red Hat infrastructure"
-msgstr ""
+msgstr "Обрадите проблем користећи инфраструктуру Ред Хета"
 
 #: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
 msgid "Process the Java exception using the Red Hat infrastructure"
-msgstr ""
+msgstr "Обрадите изузетак јаве користећи инфраструктуру Ред Хета"
 
 #: ../src/workflows/workflow_RHELBugzillaJavaScript.xml.in.h:2
 msgid "Process the JavaScript exception using the Red Hat infrastructure"
-msgstr ""
+msgstr "Обрадите изузетак јаваскрипта користећи инфраструктуру Ред Хета"
