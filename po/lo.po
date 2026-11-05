@@ -1,0 +1,3334 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Bone NI <bounkirdni@gmail.com>, 2026.
+msgid ""
+msgstr ""
+"Project-Id-Version: libreport 2.11.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-01-09 10:42+0100\n"
+"PO-Revision-Date: 2026-05-06 13:00+0000\n"
+"Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
+"Language-Team: Lao <https://translate.fedoraproject.org/projects/abrt/"
+"libreport/lo/>\n"
+"Language: lo\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.17.1\n"
+
+#: ../src/cli/cli.c:66
+msgid ""
+"& [-vsp] -L[PREFIX] [PROBLEM_DIR]\n"
+"   or: & [-vspy] -e EVENT PROBLEM_DIR\n"
+"   or: & [-vspy] -d PROBLEM_DIR\n"
+"   or: & [-vspy] -x PROBLEM_DIR"
+msgstr ""
+"& [-vsp] -L[PREFIX] [PROBLEM_DIR]\n"
+"   ຫຼື: & [-vspy] -e EVENT PROBLEM_DIR\n"
+"   ຫຼື: & [-vspy] -d PROBLEM_DIR\n"
+"   ຫຼື: & [-vspy] -x PROBLEM_DIR"
+
+#. short_name long_name  value    parameter_name  help
+#: ../src/cli/cli.c:89
+msgid "List possible events [which start with PREFIX]"
+msgstr "ສະແດງລາຍການເຫດການທີ່ເປັນໄປໄດ້ [ທີ່ຂຶ້ນຕົ້ນດ້ວຍ PREFIX]"
+
+#: ../src/cli/cli.c:90 ../src/gui-wizard-gtk/main.c:170
+msgid "Run only these events"
+msgstr "ແລ່ນສະເພາະເຫດການເຫຼົ່ານີ້"
+
+#: ../src/cli/cli.c:91 ../src/gui-wizard-gtk/main.c:169
+msgid "Remove PROBLEM_DIR after reporting"
+msgstr "ລຶບ PROBLEM_DIR ຫຼັງຈາກການລາຍງານແລ້ວ"
+
+#: ../src/cli/cli.c:92
+msgid "Expert mode"
+msgstr "ໂໝດຊ່ຽວຊານ"
+
+#: ../src/cli/cli.c:93 ../src/report-newt/report-newt.c:397
+msgid "Display version and exit"
+msgstr "ສະແດງເວີຊັນແລ້ວອອກ"
+
+#: ../src/cli/cli.c:94
+msgid "Noninteractive: don't ask questions, assume 'yes'"
+msgstr "ແບບບໍ່ໂຕ້ຕອບ: ບໍ່ຕ້ອງຖາມ, ໃຫ້ຖືວ່າຕອບ 'ແມ່ນ'"
+
+#: ../src/cli/cli.c:96
+msgid "Log to syslog"
+msgstr "ບັນທຶກລົງ syslog"
+
+#: ../src/cli/cli.c:97 ../src/gui-wizard-gtk/main.c:168
+msgid "Add program names to log"
+msgstr "ເພີ່ມຊື່ໂປຣແກຣມລົງໃນບັນທຶກ"
+
+#: ../src/cli/cli-report.c:132
+#, c-format
+msgid "# This field is read only\n"
+msgstr "# ຊ່ອງນີ້ອ່ານໄດ້ຢ່າງດຽວ\n"
+
+#: ../src/cli/cli-report.c:152
+msgid "# Describe the circumstances of this crash below"
+msgstr "# ອະທິບາຍສະຖານະການຂອງການຂັດຂ້ອງນີ້ຢູ່ດ້ານລຸ່ມ"
+
+#: ../src/cli/cli-report.c:154
+msgid ""
+"# Backtrace\n"
+"# Check that it does not contain any sensitive data (passwords, etc.)"
+msgstr ""
+"# Backtrace\n"
+"# ກວດສອບໃຫ້ແນ່ໃຈວ່າມັນບໍ່ມີຂໍ້ມູນທີ່ສຳຄັນ (ເຊັ່ນ: ລະຫັດຜ່ານ, ແລະ ອື່ນໆ)"
+
+#: ../src/cli/cli-report.c:156
+msgid "# Architecture"
+msgstr "# ສະຖາປັດຕະຍະກຳ"
+
+#: ../src/cli/cli-report.c:157
+msgid "# Command line"
+msgstr "# ຄຳສັ່ງ (Command line)"
+
+#: ../src/cli/cli-report.c:158
+msgid "# Component"
+msgstr "# ອົງປະກອບ"
+
+#: ../src/cli/cli-report.c:159
+msgid "# Core dump"
+msgstr "# Core dump"
+
+#: ../src/cli/cli-report.c:160
+msgid "# Executable"
+msgstr "# ໄຟລ໌ທີ່ສາມາດເອີ້ນໃຊ້ງານໄດ້"
+
+#: ../src/cli/cli-report.c:161
+msgid "# Kernel version"
+msgstr "# ເວີຊັນ Kernel"
+
+#: ../src/cli/cli-report.c:162
+msgid "# Package"
+msgstr "# ແພັກເກດ"
+
+#: ../src/cli/cli-report.c:163
+msgid "# Reason of crash"
+msgstr "# ສາເຫດການຂັດຂ້ອງ"
+
+#: ../src/cli/cli-report.c:170
+msgid "# os-release configuration file from root dir"
+msgstr "# ໄຟລ໌ຕັ້ງຄ່າ os-release ຈາກໄດເຣັກທໍຣີ root"
+
+#: ../src/cli/cli-report.c:175
+msgid "# Release string of the operating system from root dir"
+msgstr "# ຂໍ້ຄວາມລຸ້ນຂອງລະບົບປະຕິບັດການຈາກໄດເຣັກທໍຣີ root"
+
+#: ../src/cli/cli-report.c:183
+msgid "# os-release configuration file"
+msgstr "# ໄຟລ໌ຕັ້ງຄ່າ os-release"
+
+#: ../src/cli/cli-report.c:188
+msgid "# Release string of the operating system"
+msgstr "# ຂໍ້ຄວາມລຸ້ນຂອງລະບົບປະຕິບັດການ"
+
+#: ../src/cli/cli-report.c:319
+msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
+msgstr "ບໍ່ສາມາດແລ່ນ vi: ບໍ່ໄດ້ຕັ້ງຄ່າ $TERM, $VISUAL ແລະ $EDITOR"
+
+#: ../src/cli/cli-report.c:403
+msgid ""
+"\n"
+"The report has been updated"
+msgstr ""
+"\n"
+"ລາຍງານຖືກອັບເດດແລ້ວ"
+
+#: ../src/cli/cli-report.c:405
+msgid ""
+"\n"
+"No changes were detected in the report"
+msgstr ""
+"\n"
+"ບໍ່ພົບການປ່ຽນແປງໃດໆໃນລາຍງານ"
+
+#: ../src/cli/cli-report.c:466
+msgid "Your input is not valid, because of:"
+msgstr "ຂໍ້ມູນທີ່ທ່ານປ້ອນເຂົ້າບໍ່ຖືກຕ້ອງ, ຍ້ອນວ່າ:"
+
+#: ../src/cli/cli-report.c:470
+#, c-format
+msgid "Bad value for '%s': %s"
+msgstr "ຄ່າບໍ່ຖືກຕ້ອງສຳລັບ '%s': %s"
+
+#: ../src/cli/cli-report.c:671
+#, c-format
+msgid ""
+"Event '%s' requires permission to send possibly sensitive data. Do you want "
+"to continue?"
+msgstr ""
+"ເຫດການ '%s' ຕ້ອງການສິດອະນຸຍາດເພື່ອສົ່ງຂໍ້ມູນທີ່ອາດຈະສຳຄັນ. ທ່ານຕ້ອງການສືບຕໍ່ບໍ່?"
+
+#: ../src/cli/cli-report.c:718
+msgid "You have chosen number out of range"
+msgstr "ທ່ານເລືອກຕົວເລກນອກຂອບເຂດ"
+
+#: ../src/cli/cli-report.c:723
+msgid "Invalid input, exiting."
+msgstr "ຂໍ້ມູນປ້ອນເຂົ້າບໍ່ຖືກຕ້ອງ, ກຳລັງອອກ."
+
+#: ../src/cli/cli-report.c:744
+msgid "Select an event to run: "
+msgstr "ເລືອກເຫດການທີ່ຈະແລ່ນ: "
+
+#: ../src/cli/cli-report.c:878
+msgid "Select a workflow to run: "
+msgstr "ເລືອກຂັ້ນຕອນການເຮັດວຽກທີ່ຈະແລ່ນ: "
+
+#: ../src/client-python/reportclient/debuginfo.py:100
+#, python-brace-format
+msgid "Extracting cpio from {0}"
+msgstr "ກຳລັງແຍກ cpio ຈາກ {0}"
+
+#: ../src/client-python/reportclient/debuginfo.py:105
+#, python-brace-format
+msgid "Can't write to '{0}': {1}"
+msgstr "ບໍ່ສາມາດຂຽນລົງ '{0}': {1}"
+
+#: ../src/client-python/reportclient/debuginfo.py:116
+#, python-brace-format
+msgid "Can't extract package '{0}'"
+msgstr "ບໍ່ສາມາດແຍກແພັກເກດ '{0}'"
+
+#: ../src/client-python/reportclient/debuginfo.py:124
+#, python-brace-format
+msgid "Caching files from {0} made from {1}"
+msgstr "ກຳລັງແຄຊ (Cache) ໄຟລ໌ຈາກ {0} ທີ່ສ້າງຈາກ {1}"
+
+#: ../src/client-python/reportclient/debuginfo.py:148
+#, python-brace-format
+msgid "Can't extract files from '{0}'. For more information see '{1}'"
+msgstr "ບໍ່ສາມາດແຍກໄຟລ໌ຈາກ '{0}'. ສຳລັບຂໍ້ມູນເພີ່ມເຕີມເບິ່ງທີ່ '{1}'"
+
+#: ../src/client-python/reportclient/debuginfo.py:163
+#, python-brace-format
+msgid "Can't remove '{0}': {1}"
+msgstr "ບໍ່ສາມາດລຶບ '{0}': {1}"
+
+#: ../src/client-python/reportclient/debuginfo.py:205
+#: ../src/client-python/reportclient/debuginfo.py:214
+#, python-brace-format
+msgid "Downloading ({0} of {1}) {2}: {3:3}%"
+msgstr "ກຳລັງດາວໂຫຼດ ({0} ຈາກ {1}) {2}: {3:3}%"
+
+#: ../src/client-python/reportclient/debuginfo.py:306
+msgid "Initializing package manager"
+msgstr "ກຳລັງເລີ່ມຕົ້ນຕົວຈັດການແພັກເກດ"
+
+#. This takes some time, let user know what we are doing
+#: ../src/client-python/reportclient/debuginfo.py:310
+msgid "Setting up repositories"
+msgstr "ກຳລັງຕັ້ງຄ່າແຫຼ່ງເກັບໂປຣແກຣມ (repositories)"
+
+#: ../src/client-python/reportclient/debuginfo.py:313
+msgid "Looking for needed packages in repositories"
+msgstr "ກຳລັງຊອກຫາແພັກເກດທີ່ຕ້ອງການໃນແຫຼ່ງເກັບໂປຣແກຣມ"
+
+#: ../src/client-python/reportclient/debuginfo.py:347
+#, python-brace-format
+msgid "Can't find packages for {0} debuginfo files"
+msgstr "ບໍ່ພົບແພັກເກດສຳລັບໄຟລ໌ debuginfo {0}"
+
+#: ../src/client-python/reportclient/debuginfo.py:350
+#, python-brace-format
+msgid "Packages to download: {0}"
+msgstr "ແພັກເກດທີ່ຈະດາວໂຫຼດ: {0}"
+
+#: ../src/client-python/reportclient/debuginfo.py:352
+#, python-brace-format
+msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
+msgstr "ກຳລັງດາວໂຫຼດ {0:.2f}Mb, ຂະໜາດຫຼັງຕິດຕັ້ງ: {1:.2f}Mb. ສືບຕໍ່ບໍ່?"
+
+#: ../src/client-python/reportclient/debuginfo.py:357
+#: ../src/client-python/reportclient/debuginfo.py:369
+#: ../src/client-python/reportclient/debuginfo.py:380
+msgid "Download cancelled by user"
+msgstr "ການດາວໂຫຼດຖືກຍົກເລີກໂດຍຜູ້ໃຊ້"
+
+#: ../src/client-python/reportclient/debuginfo.py:364
+#, python-brace-format
+msgid ""
+"Warning: Not enough free space in tmp dir '{0}' ({1:.2f}Mb left). Continue?"
+msgstr ""
+"ຄຳເຕືອນ: ພື້ນທີ່ຫວ່າງໃນໄດເຣັກທໍຣີ tmp '{0}' ບໍ່ພຽງພໍ (ເຫຼືອ {1:.2f}Mb). ສືບຕໍ່ບໍ່?"
+
+#: ../src/client-python/reportclient/debuginfo.py:375
+#, python-brace-format
+msgid ""
+"Warning: Not enough free space in cache dir '{0}' ({1:.2f}Mb left). Continue?"
+msgstr ""
+"ຄຳເຕືອນ: ພື້ນທີ່ຫວ່າງໃນໄດເຣັກທໍຣີ cache '{0}' ບໍ່ພຽງພໍ (ເຫຼືອ {1:.2f}Mb). ສືບຕໍ່ບໍ່?"
+
+#: ../src/client-python/reportclient/debuginfo.py:398
+#, python-brace-format
+msgid "Downloading package {0} failed"
+msgstr "ດາວໂຫຼດແພັກເກດ {0} ລົ້ມເຫຼວ"
+
+#. recursively delete the temp dir on failure
+#: ../src/client-python/reportclient/debuginfo.py:405
+msgid "Unpacking failed, aborting download..."
+msgstr "ການແຍກໄຟລ໌ລົ້ມເຫຼວ, ກຳລັງຍົກເລີກການດາວໂຫຼດ..."
+
+#: ../src/client-python/reportclient/debuginfo.py:410
+#, python-brace-format
+msgid ""
+"'{0}' must be owned by abrt. Please run '# chown -R abrt.abrt {0}' to fix "
+"the issue."
+msgstr ""
+"'{0}' ຕ້ອງເປັນຂອງ abrt. ກະລຸນາແລ່ນຄຳສັ່ງ '# chown -R abrt.abrt {0}' ເພື່ອແກ້ໄຂບັນຫາ."
+
+#. Was: "All downloaded packages have been extracted, removing..."
+#. but it was appearing even if no packages were in fact extracted
+#. (say, when there was one package, and it has download error).
+#: ../src/client-python/reportclient/debuginfo.py:427
+#, python-brace-format
+msgid "Removing {0}"
+msgstr "ກຳລັງລຶບ {0}"
+
+#: ../src/client-python/reportclient/debuginfo.py:431
+#, python-brace-format
+msgid "Can't remove {0}, probably contains an error log"
+msgstr "ບໍ່ສາມາດລຶບ {0}, ອາດຈະມີບັນທຶກຂໍ້ຜິດພາດຢູ່"
+
+#: ../src/client-python/reportclient/dnfdebuginfo.py:89
+msgid "Error reading repository configuration: '{0!s}'"
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການອ່ານການຕັ້ງຄ່າແຫຼ່ງເກັບໂປຣແກຣມ: '{0!s}'"
+
+#: ../src/client-python/reportclient/dnfdebuginfo.py:106
+msgid "Error setting up repositories: '{0!s}'"
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການຕັ້ງຄ່າແຫຼ່ງເກັບໂປຣແກຣມ: '{0!s}'"
+
+#: ../src/client-python/reportclient/yumdebuginfo.py:66
+msgid ""
+"Problem '{0!s}' occured while downloading from mirror: '{1!s}'. Trying next "
+"one"
+msgstr "ເກີດບັນຫາ '{0!s}' ໃນຂະນະທີ່ດາວໂຫຼດຈາກ mirror: '{1!s}'. ກຳລັງລອງອັນຖັດໄປ"
+
+#: ../src/client-python/reportclient/yumdebuginfo.py:100
+msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການເລີ່ມຕົ້ນ yum (YumBase.doConfigSetup): '{0!s}'"
+
+#: ../src/client-python/reportclient/yumdebuginfo.py:107
+msgid "Error: can't make cachedir, exiting"
+msgstr "ຂໍ້ຜິດພາດ: ບໍ່ສາມາດສ້າງໄດເຣັກທໍຣີ cache, ກຳລັງອອກ"
+
+#: ../src/client-python/reportclient/yumdebuginfo.py:116
+msgid "Can't disable repository '{0!s}': {1!s}"
+msgstr "ບໍ່ສາມາດປິດການນຳໃຊ້ແຫຼ່ງເກັບໂປຣແກຣມ '{0!s}': {1!s}"
+
+#: ../src/client-python/reportclient/yumdebuginfo.py:135
+msgid "Can't disable async download, the output might contain artifacts!"
+msgstr "ບໍ່ສາມາດປິດການນຳໃຊ້ການດາວໂຫຼດແບບ async, ຜົນໄດ້ຮັບອາດມີຂໍ້ມູນແປກປອມ!"
+
+#: ../src/client-python/reportclient/yumdebuginfo.py:137
+#, python-brace-format
+msgid "Can't setup {0}: {1}, disabling"
+msgstr "ບໍ່ສາມາດຕັ້ງຄ່າ {0}: {1}, ກຳລັງປິດການນຳໃຊ້"
+
+#: ../src/client-python/reportclient/yumdebuginfo.py:147
+msgid "Error retrieving metadata: '{0!s}'"
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການດຶງຂໍ້ມູນ metadata: '{0!s}'"
+
+#: ../src/client-python/reportclient/yumdebuginfo.py:160
+msgid "Error retrieving filelists: '{0!s}'"
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການດຶງລາຍຊື່ໄຟລ໌: '{0!s}'"
+
+#: ../src/client-python/reportclient/yumdebuginfo.py:204
+#, python-brace-format
+msgid "Cannot copy file '{0}': {1}"
+msgstr "ບໍ່ສາມາດສຳເນົາໄຟລ໌ '{0}': {1}"
+
+#. Follow GTK3's yes-no-buttons order:
+#. * [No] [Yes]
+#.
+#: ../src/gtk-helpers/ask_dialogs.c:87
+msgid "_No"
+msgstr "ບໍ່ (_N)"
+
+#: ../src/gtk-helpers/ask_dialogs.c:88
+msgid "_Yes"
+msgstr "ແມ່ນ (_Y)"
+
+#: ../src/gtk-helpers/ask_dialogs.c:94
+msgid "Don't ask me again"
+msgstr "ບໍ່ຕ້ອງຖາມຂ້ອຍອີກ"
+
+#. if event has no xml description
+#: ../src/gtk-helpers/config_dialog.c:182
+msgid "No description available"
+msgstr "ບໍ່ມີຄຳອະທິບາຍ"
+
+#: ../src/gtk-helpers/config_dialog.c:338
+msgid "Configuration"
+msgstr "ການຕັ້ງຄ່າ"
+
+#. we can't use this, because we want the workflows first and hashtable
+#. * doesn't return the items in the order they were added
+#.
+#. g_hash_table_foreach(configs, (GHFunc)add_config_tabs, config_nb);
+#: ../src/gtk-helpers/config_dialog.c:356
+#: ../src/gtk-helpers/config_dialog.c:358
+#: ../src/gtk-helpers/config_dialog.c:417
+msgid "Workflows"
+msgstr "ຂັ້ນຕອນການເຮັດວຽກ"
+
+#: ../src/gtk-helpers/config_dialog.c:360
+#: ../src/gtk-helpers/config_dialog.c:362
+#: ../src/gtk-helpers/config_dialog.c:420
+msgid "Events"
+msgstr "ເຫດການ"
+
+#: ../src/gtk-helpers/config_dialog.c:366
+msgid "C_onfigure"
+msgstr "ຕັ້ງຄ່າ (_O)"
+
+#: ../src/gtk-helpers/config_dialog.c:368 ../src/gui-wizard-gtk/wizard.c:3206
+msgid "_Close"
+msgstr "_ປິດ"
+
+#: ../src/gtk-helpers/event_config_dialog.c:140
+msgid "Show password"
+msgstr "ສະແດງລະຫັດຜ່ານ"
+
+#: ../src/gtk-helpers/event_config_dialog.c:263
+msgid "Don't store passwords"
+msgstr "ບໍ່ຕ້ອງບັນທຶກລະຫັດຜ່ານ"
+
+#: ../src/gtk-helpers/event_config_dialog.c:273
+msgid "Basic"
+msgstr "ພື້ນຖານ"
+
+#: ../src/gtk-helpers/event_config_dialog.c:281
+msgid "Advanced"
+msgstr "ຂັ້ນສູງ"
+
+#: ../src/gtk-helpers/event_config_dialog.c:297
+msgid "Secret Service is not available, your settings won't be saved!"
+msgstr ""
+"ບໍ່ມີບໍລິການ Secret Service (ຈັດການຄວາມລັບ), ການຕັ້ງຄ່າຂອງທ່ານຈະບໍ່ຖືກບັນທຶກ!"
+
+#: ../src/gtk-helpers/event_config_dialog.c:340
+#: ../src/gtk-helpers/workflow_config_dialog.c:90
+#: ../src/gui-wizard-gtk/wizard.c:732 ../src/gui-wizard-gtk/wizard.c:2865
+msgid "_Cancel"
+msgstr "ຍົກເລີກ (_C)"
+
+#: ../src/gtk-helpers/event_config_dialog.c:342
+#: ../src/gtk-helpers/workflow_config_dialog.c:92
+msgid "_OK"
+msgstr "ຕົກລົງ (_O)"
+
+#: ../src/gtk-helpers/secrets.c:171
+#, c-format
+msgid "Can't connect over DBus to name '%s' path '%s' interface '%s': %s"
+msgstr ""
+"ບໍ່ສາມາດເຊື່ອມຕໍ່ຜ່ານ DBus ໄປຫາຊື່ '%s' ເສັ້ນທາງ '%s' ອິນເຕີເຟດ '%s': %s"
+
+#: ../src/gtk-helpers/secrets.c:191
+#, c-format
+msgid "Can't call method '%s' over DBus on path '%s' interface '%s': %s"
+msgstr ""
+"ບໍ່ສາມາດເອີ້ນໃຊ້ເມທອດ '%s' ຜ່ານ DBus ທີ່ເສັ້ນທາງ '%s' ອິນເຕີເຟດ '%s': %s"
+
+#: ../src/gtk-helpers/secrets.c:549
+msgid ""
+"A timeout was reached while waiting for a prompt result from the DBus Secret "
+"Service."
+msgstr "ໝົດເວລາໃນຂະນະທີ່ລໍຖ້າຜົນຮັບຈາກ DBus Secret Service."
+
+#: ../src/gtk-helpers/secrets.c:552
+msgid ""
+"Do you want to stop waiting and continue in reporting without properly "
+"loaded configuration?"
+msgstr ""
+"ທ່ານຕ້ອງການຢຸດລໍຖ້າ ແລະ ສືບຕໍ່ລາຍງານໂດຍບໍ່ມີການໂຫຼດການຕັ້ງຄ່າທີ່ຖືກຕ້ອງບໍ່?"
+
+#: ../src/gtk-helpers/secrets.c:862
+#, c-format
+msgid "D-Bus Secrets Service ReadAlias('%s') method failed: %s"
+msgstr "ເມທອດ ReadAlias('%s') ຂອງ D-Bus Secrets Service ລົ້ມເຫຼວ: %s"
+
+#. if the error wasn't about invalid properties we have an another problem
+#: ../src/gtk-helpers/secrets.c:1104
+#, c-format
+msgid "Can't create a secret item for event '%s': %s"
+msgstr "ບໍ່ສາມາດສ້າງລາຍການຄວາມລັບສຳລັບເຫດການ '%s': %s"
+
+#: ../src/gtk-helpers/secrets.c:1286
+#, c-format
+msgid "can't get secret value of '%s': %s"
+msgstr "ບໍ່ສາມາດດຶງຄ່າຄວາມລັບຂອງ '%s': %s"
+
+#: ../src/gtk-helpers/problem_details_widget.c:198
+#, c-format
+msgid "$DATA_DIRECTORY/%s (binary file, %s)"
+msgstr "$DATA_DIRECTORY/%s (ໄຟລ໌ໄບນາຣີ, %s)"
+
+#: ../src/gtk-helpers/problem_details_dialog.c:30
+msgid "Problem details"
+msgstr "ລາຍລະອຽດບັນຫາ"
+
+#: ../src/gtk-helpers/problem_details_dialog.c:33
+msgid "OK"
+msgstr "ຕົກລົງ"
+
+#: ../src/gui-wizard-gtk/main.c:106
+msgid "Preferences"
+msgstr "ການຕັ້ງຄ່າ"
+
+#: ../src/gui-wizard-gtk/main.c:109
+msgid "Quit"
+msgstr "ອອກ"
+
+#: ../src/gui-wizard-gtk/main.c:153
+msgid ""
+"& [-vpdx] [-e EVENT]... [-g GUI_FILE] PROBLEM_DIR\n"
+"\n"
+"GUI tool to analyze and report problem saved in specified PROBLEM_DIR"
+msgstr ""
+"& [-vpdx] [-e EVENT]... [-g GUI_FILE] PROBLEM_DIR\n"
+"\n"
+"ເຄື່ອງມື GUI ສຳລັບວິເຄາະ ແລະ ລາຍງານບັນຫາທີ່ຖືກບັນທຶກໄວ້ໃນ PROBLEM_DIR ທີ່ລະບຸ"
+
+#: ../src/gui-wizard-gtk/wizard.c:340
+#, c-format
+msgid ""
+"Need writable directory, but '%s' is not writable. Move it to '%s' and "
+"operate on the moved data?"
+msgstr ""
+"ຕ້ອງການໄດເຣັກທໍຣີທີ່ສາມາດຂຽນໄດ້, ແຕ່ '%s' ຂຽນບໍ່ໄດ້. ຍ້າຍມັນໄປທີ່ '%s' ແລະ ດຳເນີນການກັບຂໍ້ມູນທີ່ຖືກຍ້"
+"າຍບໍ່?"
+
+#: ../src/gui-wizard-gtk/wizard.c:723
+msgid "View/edit a text file"
+msgstr "ເບິ່ງ/ແກ້ໄຂໄຟລ໌ຂໍ້ຄວາມ"
+
+#: ../src/gui-wizard-gtk/wizard.c:731
+msgid "_Save"
+msgstr "ບັນທຶກ (_S)"
+
+#: ../src/gui-wizard-gtk/wizard.c:874
+msgid ""
+"Since crashes without a known reproducer can be difficult to diagnose, "
+"please provide a comprehensive description of the problem you have "
+"encountered."
+msgstr ""
+"ເນື່ອງຈາກການຂັດຂ້ອງທີ່ບໍ່ຮູ້ວິທີເຮັດໃຫ້ເກີດຊ້ຳ ອາດຈະຍາກຕໍ່ການວິນິໄສ, ກະລຸນາໃຫ້ຄຳອະທິບາຍທີ່ຄົບຖ້ວນກ່ຽວກັບບັນ"
+"ຫາທີ່ທ່ານພົບ."
+
+#: ../src/gui-wizard-gtk/wizard.c:881
+msgid ""
+"Please provide a short description of the problem and please include the "
+"steps you have used to reproduce the problem."
+msgstr ""
+"ກະລຸນາໃຫ້ຄຳອະທິບາຍສັ້ນໆກ່ຽວກັບບັນຫາ ແລະ ກະລຸນາໃສ່ຂັ້ນຕອນທີ່ທ່ານໃຊ້ເພື່ອເຮັດໃຫ້ເກີດບັນຫານີ້ຂຶ້ນ."
+
+#: ../src/gui-wizard-gtk/wizard.c:888
+msgid "Please provide the steps you have used to reproduce the problem."
+msgstr "ກະລຸນາໃຫ້ຂັ້ນຕອນທີ່ທ່ານໃຊ້ເພື່ອເຮັດໃຫ້ເກີດບັນຫານີ້ຂຶ້ນ."
+
+#: ../src/gui-wizard-gtk/wizard.c:1009
+msgid "(click here to view/edit)"
+msgstr "(ຄລິກທີ່ນີ້ເພື່ອເບິ່ງ/ແກ້ໄຂ)"
+
+#: ../src/gui-wizard-gtk/wizard.c:1021
+#, c-format
+msgid "(binary file, %llu bytes)"
+msgstr "(ໄຟລ໌ໄບນາຣີ, %llu ໄບຕ໌)"
+
+#: ../src/gui-wizard-gtk/wizard.c:1121 ../src/report-newt/report-newt.c:332
+msgid "(no description)"
+msgstr "(ບໍ່ມີຄຳອະທິບາຍ)"
+
+#: ../src/gui-wizard-gtk/wizard.c:1129
+#, c-format
+msgid "%llu bytes, %u files"
+msgstr "%llu ໄບຕ໌, %u ໄຟລ໌"
+
+#: ../src/gui-wizard-gtk/wizard.c:1381
+msgid "Processing was canceled"
+msgstr "ການປະມວນຜົນຖືກຍົກເລີກ"
+
+#: ../src/gui-wizard-gtk/wizard.c:1561
+msgid ""
+"Processing of the problem failed. This can have many reasons but there are "
+"three most common:\n"
+"\t▫ <b>network connection problems</b>\n"
+"\t▫ <b>corrupted problem data</b>\n"
+"\t▫ <b>invalid configuration</b>"
+msgstr ""
+"ການປະມວນຜົນບັນຫາລົ້ມເຫຼວ. ອັນນີ້ອາດມີຫຼາຍສາເຫດ ແຕ່ມີ 3 ສາເຫດທົ່ວໄປທີ່ສຸດຄື:\n"
+"\t▫ <b>ບັນຫາການເຊື່ອມຕໍ່ເຄືອຂ່າຍ</b>\n"
+"\t▫ <b>ຂໍ້ມູນບັນຫາເສຍຫາຍ</b>\n"
+"\t▫ <b>ການຕັ້ງຄ່າບໍ່ຖືກຕ້ອງ</b>"
+
+#: ../src/gui-wizard-gtk/wizard.c:1567
+msgid ""
+"If you want to update the configuration and try to report again, please open "
+"<b>Preferences</b> item\n"
+"in the application menu and after applying the configuration changes click "
+"<b>Repeat</b> button."
+msgstr ""
+"ຖ້າທ່ານຕ້ອງການອັບເດດການຕັ້ງຄ່າ ແລະ ລອງລາຍງານອີກຄັ້ງ, ກະລຸນາເປີດລາຍການ <b>ການຕັ້ງຄ່າ</b> \n"
+"ໃນເມນູແອັບພລິເຄຊັນ ແລະ ຫຼັງຈາກນຳໃຊ້ການປ່ຽນແປງແລ້ວ ໃຫ້ຄລິກປຸ່ມ <b>ເຮັດຊ້ຳ</b>."
+
+#: ../src/gui-wizard-gtk/wizard.c:1689
+msgid "Processing was interrupted because the problem is not reportable."
+msgstr "ການປະມວນຜົນຖືກລົບກວນ ເນື່ອງຈາກບັນຫານີ້ບໍ່ສາມາດລາຍງານໄດ້."
+
+#: ../src/gui-wizard-gtk/wizard.c:1699 ../src/gui-wizard-gtk/wizard.c:1773
+msgid "Processing failed."
+msgstr "ການປະມວນຜົນລົ້ມເຫຼວ."
+
+#. No next event, go to progress page and finish.
+#: ../src/gui-wizard-gtk/wizard.c:1706 ../src/gui-wizard-gtk/wizard.c:2594
+msgid "Processing finished."
+msgstr "ການປະມວນຜົນສຳເລັດແລ້ວ."
+
+#: ../src/gui-wizard-gtk/wizard.c:1707
+msgid "Processing finished, please proceed to the next step."
+msgstr "ການປະມວນຜົນສຳເລັດແລ້ວ, ກະລຸນາດຳເນີນການໃນຂັ້ນຕອນຖັດໄປ."
+
+#: ../src/gui-wizard-gtk/wizard.c:1770
+msgid "No commands could be found for processsing the crashdump.\n"
+msgstr "ບໍ່ພົບຄຳສັ່ງສຳລັບປະມວນຜົນ crashdump.\n"
+
+#: ../src/gui-wizard-gtk/wizard.c:1785
+msgid "Processing interrupted: can't continue without writable directory."
+msgstr "ການປະມວນຜົນຖືກລົບກວນ: ບໍ່ສາມາດສືບຕໍ່ໄດ້ຫາກບໍ່ມີໄດເຣັກທໍຣີທີ່ຂຽນໄດ້."
+
+#: ../src/gui-wizard-gtk/wizard.c:1808
+#, c-format
+msgid ""
+"--- Skipping %s ---\n"
+"No matching actions found for this event.\n"
+"\n"
+msgstr ""
+"--- ຂ້າມ %s ---\n"
+"ບໍ່ພົບການກະທຳທີ່ກົງກັບເຫດການນີ້.\n"
+"\n"
+
+#: ../src/gui-wizard-gtk/wizard.c:1843
+msgid "Processing..."
+msgstr "ກຳລັງປະມວນຜົນ..."
+
+#: ../src/gui-wizard-gtk/wizard.c:1925
+msgid ""
+"Possible sensitive data detected, feel free to edit the report and remove "
+"them."
+msgstr ""
+"ກວດພົບຂໍ້ມູນທີ່ອາດຈະສຳຄັນ, ທ່ານສາມາດແກ້ໄຂລາຍງານ ແລະ ລຶບພວກມັນອອກໄດ້ຕາມຕ້ອງການ."
+
+#: ../src/gui-wizard-gtk/wizard.c:1968
+msgid "Cannot check backtrace rating because of invalid event name"
+msgstr ""
+"ບໍ່ສາມາດກວດສອບລະດັບ (rating) ຂອງ backtrace ໄດ້ ເນື່ອງຈາກຊື່ເຫດການບໍ່ຖືກຕ້ອງ"
+
+#: ../src/gui-wizard-gtk/wizard.c:2418
+#, c-format
+msgid "Failed to save file '%s'"
+msgstr "ບໍ່ສາມາດບັນທຶກໄຟລ໌ '%s'"
+
+#: ../src/gui-wizard-gtk/wizard.c:2619
+#, c-format
+msgid ""
+"Event '%s' requires permission to send possibly sensitive data.\n"
+"Do you want to continue?"
+msgstr ""
+"ເຫດການ '%s' ຕ້ອງການສິດອະນຸຍາດເພື່ອສົ່ງຂໍ້ມູນທີ່ອາດຈະສຳຄັນ.\n"
+"ທ່ານຕ້ອງການສືບຕໍ່ບໍ່?"
+
+#: ../src/gui-wizard-gtk/wizard.c:2665
+#, c-format
+msgid "This problem should not be reported (it is likely a known problem). %s"
+msgstr "ບັນຫານີ້ບໍ່ຄວນຖືກລາຍງານ (ອາດຈະເປັນບັນຫາທີ່ຮູ້ຈັກກັນຢູ່ແລ້ວ). %s"
+
+#: ../src/gui-wizard-gtk/wizard.c:2866
+msgid "_Open"
+msgstr "ເປີດ (_O)"
+
+#: ../src/gui-wizard-gtk/wizard.c:2888
+#, c-format
+msgid "'%s' is not an ordinary file"
+msgstr "'%s' ບໍ່ແມ່ນໄຟລ໌ທຳມະດາ"
+
+#: ../src/gui-wizard-gtk/wizard.c:2901
+msgid "You are trying to copy a file onto itself"
+msgstr "ທ່ານກຳລັງພະຍາຍາມສຳເນົາໄຟລ໌ທັບໂຕມັນເອງ"
+
+#: ../src/gui-wizard-gtk/wizard.c:2907
+#, c-format
+msgid "Can't copy '%s': %s"
+msgstr "ບໍ່ສາມາດສຳເນົາ '%s': %s"
+
+#: ../src/gui-wizard-gtk/wizard.c:2921
+#, c-format
+msgid "Item '%s' already exists and is not modifiable"
+msgstr "ລາຍການ '%s' ມີຢູ່ແລ້ວ ແລະ ບໍ່ສາມາດແກ້ໄຂໄດ້"
+
+#: ../src/gui-wizard-gtk/wizard.c:3087
+msgid "I have experienced this problem for the first time"
+msgstr "ຂ້ອຍພົບບັນຫານີ້ເປັນຄັ້ງທຳອິດ"
+
+#: ../src/gui-wizard-gtk/wizard.c:3090
+msgid "I can reproduce this problem"
+msgstr "ຂ້ອຍສາມາດເຮັດໃຫ້ບັນຫານີ້ເກີດຂຶ້ນຊ້ຳໄດ້"
+
+#: ../src/gui-wizard-gtk/wizard.c:3093
+msgid "This problem occurs repeatedly"
+msgstr "ບັນຫານີ້ເກີດຂຶ້ນຊ້ຳຫຼາຍຄັ້ງ"
+
+#: ../src/gui-wizard-gtk/wizard.c:3106
+msgid "Include"
+msgstr "ລວມເຂົ້າ"
+
+#: ../src/gui-wizard-gtk/wizard.c:3117
+msgid "Name"
+msgstr "ຊື່"
+
+#: ../src/gui-wizard-gtk/wizard.c:3127
+msgid "Value"
+msgstr "ຄ່າ"
+
+#: ../src/gui-wizard-gtk/wizard.c:3162
+msgid "Problem description"
+msgstr "ຄຳອະທິບາຍບັນຫາ"
+
+#: ../src/gui-wizard-gtk/wizard.c:3163
+msgid "Select how to report this problem"
+msgstr "ເລືອກວິທີລາຍງານບັນຫານີ້"
+
+#: ../src/gui-wizard-gtk/wizard.c:3164
+msgid "Provide additional information"
+msgstr "ໃຫ້ຂໍ້ມູນເພີ່ມເຕີມ"
+
+#: ../src/gui-wizard-gtk/wizard.c:3165
+msgid "Review the data"
+msgstr "ທົບທວນຂໍ້ມູນ"
+
+#: ../src/gui-wizard-gtk/wizard.c:3166
+msgid "Confirm data to report"
+msgstr "ຢືນຢັນຂໍ້ມູນທີ່ຈະລາຍງານ"
+
+#: ../src/gui-wizard-gtk/wizard.c:3167
+msgid "Processing"
+msgstr "ກຳລັງປະມວນຜົນ"
+
+#: ../src/gui-wizard-gtk/wizard.c:3168
+msgid "Processing done"
+msgstr "ປະມວນຜົນສຳເລັດ"
+
+#: ../src/gui-wizard-gtk/wizard.c:3208
+msgid "_Stop"
+msgstr "ຢຸດ (_S)"
+
+#. else gtk_widget_hide won't work
+#: ../src/gui-wizard-gtk/wizard.c:3211
+msgid "Repeat"
+msgstr "ເຮັດຊ້ຳ"
+
+#. else gtk_widget_hide won't work
+#: ../src/gui-wizard-gtk/wizard.c:3213
+msgid "_Forward"
+msgstr "ໄປໜ້າ (_F)"
+
+#. else gtk_widget_hide won't work
+#: ../src/gui-wizard-gtk/wizard.c:3216 ../src/gui-wizard-gtk/wizard.glade.h:9
+msgid "Details"
+msgstr "ລາຍລະອຽດ"
+
+#: ../src/gui-wizard-gtk/wizard.c:3263
+msgid "Restrict access to the report"
+msgstr "ຈຳກັດການເຂົ້າເຖິງລາຍງານ"
+
+#: ../src/gui-wizard-gtk/wizard.c:3268
+msgid "Learn more about restricted access in the configuration"
+msgstr "ຮຽນຮູ້ເພີ່ມເຕີມກ່ຽວກັບການຈຳກັດການເຂົ້າເຖິງໃນການຕັ້ງຄ່າ"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:1
+msgid ""
+"Please review the data before it gets reported. Depending on reporter "
+"chosen, it may end up publicly visible."
+msgstr ""
+"ກະລຸນາທົບທວນຂໍ້ມູນກ່ອນທີ່ຈະຖືກລາຍງານ. ຂຶ້ນຢູ່ກັບຜູ້ລາຍງານທີ່ເລືອກ, ຂໍ້ມູນອາດຈະຖືກສະແດງຕໍ່ສາທາລະນະ."
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:2
+msgid "Sensitive words"
+msgstr "ຄຳສັບທີ່ລະອຽດອ່ອນ (Sensitive words)"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:3
+msgid "Custom"
+msgstr "ກຳນົດເອງ"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:4
+msgid "Clear the search bar to see the list of security sensitive words."
+msgstr "ລຶບລ້າງແຖບຄົ້ນຫາເພື່ອເບິ່ງລາຍຊື່ຄຳສັບທີ່ລະອຽດອ່ອນດ້ານຄວາມປອດໄພ."
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:5
+msgid "file"
+msgstr "ໄຟລ໌"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:6
+msgid "data"
+msgstr "ຂໍ້ມູນ"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:7
+msgid "Search"
+msgstr "ຄົ້ນຫາ"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:8
+msgid ""
+"On the following screens, you will be asked to describe how the problem "
+"occurred, to choose how to analyze the problem (if needed), to review "
+"collected data, and to choose where the problem should be reported. Click "
+"'Forward' to proceed."
+msgstr ""
+"ໃນໜ້າຈໍຖັດໄປ, ທ່ານຈະຖືກຮ້ອງຂໍໃຫ້ອະທິບາຍວ່າບັນຫາເກີດຂຶ້ນແນວໃດ, ເລືອກວິທີວິເຄາະບັນຫາ (ຖ້າຈຳເປັນ), ທົບ"
+"ທວນຂໍ້ມູນທີ່ເກັບກຳມາ, ແລະ ເລືອກວ່າຈະລາຍງານບັນຫາໄປທີ່ໃດ. ຄລິກ 'ໄປໜ້າ' ເພື່ອດຳເນີນການ."
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:10
+msgid ""
+"How did this problem happen (step-by-step)? How can it be reproduced? Any "
+"additional comments useful for diagnosing the problem? Please use English if "
+"possible."
+msgstr ""
+"ບັນຫານີ້ເກີດຂຶ້ນແນວໃດ (ເທື່ອລະຂັ້ນຕອນ)? ສາມາດເຮັດໃຫ້ມັນເກີດຊ້ຳແນວໃດ? ມີຄຳເຫັນເພີ່ມເຕີມທີ່ເປັນປະໂຫຍດຕໍ່"
+"ການວິນິໄສບັນຫາບໍ່? ກະລຸນາໃຊ້ພາສາອັງກິດຖ້າເປັນໄປໄດ້."
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:11
+msgid "How reproducible is this problem?"
+msgstr "ບັນຫານີ້ສາມາດເກີດຂຶ້ນຊ້ຳໄດ້ສ່ຳໃດ?"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:12
+msgid "How it can be reproduced (one step per line)?"
+msgstr "ມັນສາມາດເກີດຂຶ້ນຊ້ຳໄດ້ແນວໃດ (ໜຶ່ງຂັ້ນຕອນຕໍ່ແຖວ)?"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:13
+msgid ""
+"Please add a comprehensive description of the problem you have. This is a "
+"very long place holder."
+msgstr ""
+"ກະລຸນາເພີ່ມຄຳອະທິບາຍທີ່ຄົບຖ້ວນກ່ຽວກັບບັນຫາທີ່ທ່ານພົບ. ນີ້ແມ່ນຂໍ້ຄວາມຈອງພື້ນທີ່ (placeholder) ທີ່ຍາວຫຼາຍ."
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:14
+msgid "You need to fill the how to before you can proceed..."
+msgstr "ທ່ານຕ້ອງຕື່ມຂໍ້ມູນວິທີການກ່ອນທີ່ທ່ານຈະສາມາດດຳເນີນການໄດ້..."
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:15
+msgid ""
+"<b>Your comments are not private.</b> They may be included into publicly "
+"visible problem reports."
+msgstr ""
+"<b>ຄຳເຫັນຂອງທ່ານບໍ່ເປັນສ່ວນຕົວ.</b> ມັນອາດຈະຖືກລວມເຂົ້າໃນລາຍງານບັນຫາທີ່ສະແດງຕໍ່ສາທາລະນະ."
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:16
+msgid "I don't know what caused this problem"
+msgstr "ຂ້ອຍບໍ່ຮູ້ວ່າຫຍັງຄືສາເຫດຂອງບັນຫານີ້"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:17
+msgid "Size:"
+msgstr "ຂະໜາດ:"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:18
+msgid "Attach a file"
+msgstr "ແນບໄຟລ໌"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:19
+msgid "I reviewed the data and _agree with submitting it"
+msgstr "ຂ້ອຍໄດ້ທົບທວນຂໍ້ມູນແລ້ວ ແລະ ຍອມຮັບໃນການສົ່ງຂໍ້ມູນ (_A)"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:20
+msgid ""
+"If you are reporting to a remote server, make sure you removed all private "
+"data (such as usernames and passwords). Backtrace, command line, environment "
+"variables are the typical items in need of examining."
+msgstr ""
+"ຖ້າທ່ານກຳລັງລາຍງານໄປຍັງເຊີບເວີທາງໄກ, ໃຫ້ແນ່ໃຈວ່າທ່ານໄດ້ລຶບຂໍ້ມູນສ່ວນຕົວທັງໝົດອອກແລ້ວ (ເຊັ່ນ: ຊື່ຜູ້ໃຊ້ ແ"
+"ລະ ລະຫັດຜ່ານ). Backtrace, ຄຳສັ່ງ, ຕົວແປສະພາບແວດລ້ອມ ແມ່ນລາຍການທົ່ວໄປທີ່ຕ້ອງກວດສອບ."
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:21
+msgid "Processing did not start yet"
+msgstr "ຍັງບໍ່ໄດ້ເລີ່ມການປະມວນຜົນ"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:22
+msgid "Show log"
+msgstr "ສະແດງບັນທຶກ (log)"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:23
+msgid "Reporting has finished. You can close this window now."
+msgstr "ການລາຍງານສຳເລັດແລ້ວ. ທ່ານສາມາດປິດປ່ອງຢ້ຽມນີ້ໄດ້ເລີຍ."
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:24
+msgid ""
+"If you want to report the problem to a different destination, collect "
+"additional information, or provide a better problem description and repeat "
+"reporting process, press 'Forward'."
+msgstr ""
+"ຖ້າທ່ານຕ້ອງການລາຍງານບັນຫາໄປຍັງປາຍທາງອື່ນ, ເກັບກຳຂໍ້ມູນເພີ່ມເຕີມ, ຫຼື ໃຫ້ຄຳອະທິບາຍບັນຫາທີ່ດີກວ່າເດີມ ແ"
+"ລະ ເຮັດຊ້ຳຂັ້ນຕອນການລາຍງານ, ໃຫ້ກົດ 'ໄປໜ້າ'."
+
+#: ../src/include/internal_libreport.h:1246
+msgid "Be verbose"
+msgstr "ສະແດງລາຍລະອຽດເພີ່ມເຕີມ"
+
+#: ../src/include/internal_libreport.h:1247
+#: ../src/plugins/reporter-bugzilla.c:323
+#: ../src/plugins/reporter-kerneloops.c:173 ../src/plugins/reporter-mailx.c:288
+#: ../src/plugins/reporter-print.c:56 ../src/plugins/reporter-rhtsupport.c:548
+#: ../src/plugins/reporter-systemd-journal.c:250
+#: ../src/plugins/reporter-upload.c:186 ../src/plugins/reporter-mantisbt.c:283
+msgid "Problem directory"
+msgstr "ໄດເຣັກທໍຣີບັນຫາ"
+
+#: ../src/lib/abrt_sock.c:161
+#, c-format
+msgid "Can't delete: '%s'"
+msgstr "ບໍ່ສາມາດລຶບ: '%s'"
+
+#: ../src/lib/abrt_sock.c:197
+msgid "locked by another process"
+msgstr "ຖືກລັອກໂດຍໂປຣເຊສອື່ນ"
+
+#: ../src/lib/abrt_sock.c:206
+msgid "permission denied"
+msgstr "ຖືກປະຕິເສດສິດ"
+
+#: ../src/lib/abrt_sock.c:209
+msgid "not a problem directory"
+msgstr "ບໍ່ແມ່ນໄດເຣັກທໍຣີບັນຫາ"
+
+#: ../src/lib/abrt_sock.c:218
+#, c-format
+msgid "Can't delete '%s': %s"
+msgstr "ບໍ່ສາມາດລຶບ '%s': %s"
+
+#: ../src/lib/client.c:67 ../src/lib/client.c:99 ../src/lib/client.c:156
+msgid "y"
+msgstr "y"
+
+#: ../src/lib/client.c:68 ../src/lib/client.c:100 ../src/lib/client.c:157
+msgid "N"
+msgstr "N"
+
+#: ../src/lib/client.c:101 ../src/lib/client.c:158
+msgid "f"
+msgstr "f"
+
+#: ../src/lib/client.c:159
+msgid "e"
+msgstr "e"
+
+#: ../src/lib/create_dump_dir.c:32
+#, c-format
+msgid "uid value is not valid: '%s'"
+msgstr "ຄ່າ uid ບໍ່ຖືກຕ້ອງ: '%s'"
+
+#: ../src/lib/create_dump_dir.c:51
+#, c-format
+msgid "'%s' is not correct file name"
+msgstr "'%s' ບໍ່ແມ່ນຊື່ໄຟລ໌ທີ່ຖືກຕ້ອງ"
+
+#: ../src/lib/create_dump_dir.c:195
+#, c-format
+msgid "Missing required item: '%s'"
+msgstr "ຂາດລາຍການທີ່ຈຳເປັນ: '%s'"
+
+#: ../src/lib/curl.c:227
+#, c-format
+msgid "Uploaded: %llu of %llu kbytes"
+msgstr "ອັບໂຫຼດແລ້ວ: %llu ຈາກ %llu ກິໂລໄບຕ໌"
+
+#: ../src/lib/curl.c:636
+msgid "Ignoring URL without scheme and hostname"
+msgstr "ລະເວັ້ນ URL ທີ່ບໍ່ມີ scheme ແລະ ຊື່ໂຮສ"
+
+#. Do not include the path part of the URL as it can contain sensitive data
+#. * in case of typos
+#: ../src/lib/curl.c:666
+#, c-format
+msgid "Sending %s to %s//%s"
+msgstr "ກຳລັງສົ່ງ %s ໄປທີ່ %s//%s"
+
+#: ../src/lib/curl.c:690
+#, c-format
+msgid "Please enter user name for '%s//%s':"
+msgstr "ກະລຸນາປ້ອນຊື່ຜູ້ໃຊ້ສຳລັບ '%s//%s':"
+
+#: ../src/lib/curl.c:696
+#, c-format
+msgid "Please enter password for '%s//%s@%s':"
+msgstr "ກະລຸນາປ້ອນລະຫັດຜ່ານສຳລັບ '%s//%s@%s':"
+
+#. This ends up a "reporting status message" in abrtd
+#: ../src/lib/curl.c:719
+#, c-format
+msgid "Successfully created %s"
+msgstr "ສ້າງ %s ສຳເລັດແລ້ວ"
+
+#: ../src/lib/dump_dir.c:2481
+msgid "Failed to open TAR writer"
+msgstr "ບໍ່ສາມາດເປີດຕົວຂຽນ TAR ໄດ້"
+
+#: ../src/lib/dump_dir.c:2507
+msgid "Failed to finalize TAR archive"
+msgstr "ບໍ່ສາມາດເຮັດໃຫ້ແຟ້ມຈັດເກັບ TAR ສົມບູນໄດ້"
+
+#: ../src/lib/dump_dir.c:2517
+msgid "Failed to close TAR writer"
+msgstr "ບໍ່ສາມາດປິດຕົວຂຽນ TAR ໄດ້"
+
+#: ../src/lib/dump_dir.c:2527
+#, c-format
+msgid "gzip killed with signal %d"
+msgstr "gzip ຖືກຂ້າດ້ວຍສັນຍານ %d"
+
+#: ../src/lib/dump_dir.c:2533
+#, c-format
+msgid "gzip exited with %d"
+msgstr "gzip ອອກດ້ວຍ %d"
+
+#: ../src/lib/dump_dir.c:2536
+msgid "gzip process failed"
+msgstr "ໂປຣເຊສ gzip ລົ້ມເຫຼວ"
+
+#: ../src/lib/event_config.c:399
+msgid "Missing mandatory value"
+msgstr "ຂາດຄ່າທີ່ບັງຄັບ"
+
+#: ../src/lib/event_config.c:407
+#, c-format
+msgid "Invalid utf8 character '%c'"
+msgstr "ຕົວອັກສອນ utf8 ບໍ່ຖືກຕ້ອງ '%c'"
+
+#: ../src/lib/event_config.c:420
+#, c-format
+msgid "Invalid number '%s'"
+msgstr "ຕົວເລກບໍ່ຖືກຕ້ອງ '%s'"
+
+#: ../src/lib/event_config.c:435
+#, c-format
+msgid "Invalid boolean value '%s'"
+msgstr "ຄ່າ boolean ບໍ່ຖືກຕ້ອງ '%s'"
+
+#: ../src/lib/event_config.c:441
+msgid "Unsupported option type"
+msgstr "ປະເພດຕົວເລືອກທີ່ບໍ່ຮອງຮັບ"
+
+#: ../src/lib/event_config.c:516
+#, c-format
+msgid ""
+"The problem cannot be reported due to an invalid data. '%s' file does not "
+"contain a number."
+msgstr "ບໍ່ສາມາດລາຍງານບັນຫາໄດ້ເນື່ອງຈາກຂໍ້ມູນບໍ່ຖືກຕ້ອງ. ໄຟລ໌ '%s' ບໍ່ມີຕົວເລກ."
+
+#: ../src/lib/event_config.c:520
+msgid "Please report this problem to ABRT project developers."
+msgstr "ກະລຸນາລາຍງານບັນຫານີ້ໃຫ້ນັກພັດທະນາໂຄງການ ABRT ຊາບ."
+
+#: ../src/lib/event_config.c:526
+msgid ""
+"The backtrace is incomplete, please make sure you provide the steps to "
+"reproduce."
+msgstr "Backtrace ບໍ່ສົມບູນ, ກະລຸນາແນ່ໃຈວ່າທ່ານໄດ້ໃຫ້ຂັ້ນຕອນການເຮັດໃຫ້ເກີດຊ້ຳ."
+
+#: ../src/lib/event_config.c:527
+msgid "The backtrace probably can't help developer to diagnose the bug."
+msgstr "Backtrace ອາດຈະບໍ່ສາມາດຊ່ວຍນັກພັດທະນາວິນິໄສບັກ (bug) ໄດ້."
+
+#: ../src/lib/event_config.c:533
+msgid ""
+"Reporting is disabled because the generated backtrace has low informational "
+"value."
+msgstr "ການລາຍງານຖືກປິດໄວ້ເນື່ອງຈາກ backtrace ທີ່ສ້າງຂຶ້ນມີມູນຄ່າຂໍ້ມູນຕ່ຳ."
+
+#: ../src/lib/event_config.c:537
+#, c-format
+msgid ""
+"Please try to install debuginfo manually using the command: \"debuginfo-"
+"install %s\" and try again."
+msgstr ""
+"ກະລຸນາລອງຕິດຕັ້ງ debuginfo ດ້ວຍຕົນເອງໂດຍໃຊ້ຄຳສັ່ງ: \"debuginfo-install %s\" ແລ້ວລອງໃໝ່ອີກ"
+"ຄັ້ງ."
+
+#: ../src/lib/event_config.c:539
+msgid "A proper debuginfo is probably missing or the coredump is corrupted."
+msgstr "ອາດຂາດ debuginfo ທີ່ເໝາະສົມ ຫຼື coredump ເສຍຫາຍ."
+
+#: ../src/lib/iso_date_string.c:50
+#, c-format
+msgid "String doesn't seem to be a date: '%s'"
+msgstr "ຂໍ້ຄວາມເບິ່ງຄືວ່າບໍ່ແມ່ນວັນທີ: '%s'"
+
+#: ../src/lib/iso_date_string.c:55
+#, c-format
+msgid "The date: '%s' has unrecognized suffix: '%s'"
+msgstr "ວັນທີ: '%s' ມີຄຳຕໍ່ທ້າຍທີ່ບໍ່ຮູ້ຈັກ: '%s'"
+
+#: ../src/lib/iso_date_string.c:60
+#, c-format
+msgid "The date: '%s' is out of UNIX time stamp range"
+msgstr "ວັນທີ: '%s' ຢູ່ນອກຂອບເຂດເວລາຂອງ UNIX"
+
+#: ../src/lib/ureport.c:400
+#, c-format
+msgid ""
+"Your problem seems to be caused by %s\n"
+"\n"
+"%s\n"
+msgstr ""
+"ບັນຫາຂອງທ່ານເບິ່ງຄືວ່າເກີດຈາກ %s\n"
+"\n"
+"%s\n"
+
+#: ../src/lib/ureport.c:403
+msgid "Your problem seems to be caused by one of the following:\n"
+msgstr "ບັນຫາຂອງທ່ານເບິ່ງຄືວ່າເກີດຈາກໜຶ່ງໃນສິ່ງຕໍ່ໄປນີ້:\n"
+
+#: ../src/lib/ureport.c:575
+#, c-format
+msgid "Failed to upload uReport to the server '%s' with curl: %s"
+msgstr "ບໍ່ສາມາດອັບໂຫຼດ uReport ໄປຍັງເຊີບເວີ '%s' ດ້ວຍ curl: %s"
+
+#: ../src/lib/ureport.c:579
+#, c-format
+msgid "Failed to upload uReport to the server '%s'"
+msgstr "ບໍ່ສາມາດອັບໂຫຼດ uReport ໄປຍັງເຊີບເວີ '%s'"
+
+#: ../src/lib/ureport.c:582
+#, c-format
+msgid "Error: %s"
+msgstr "ຂໍ້ຜິດພາດ: %s"
+
+#: ../src/lib/ureport.c:589
+#, c-format
+msgid "The URL '%s' does not exist (got error 404 from server)"
+msgstr "ບໍ່ມີ URL '%s' (ໄດ້ຮັບຂໍ້ຜິດພາດ 404 ຈາກເຊີບເວີ)"
+
+#: ../src/lib/ureport.c:595
+#, c-format
+msgid "The server at '%s' encountered an internal error (got error 500)"
+msgstr "ເຊີບເວີທີ່ '%s' ພົບຂໍ້ຜິດພາດພາຍໃນ (ໄດ້ຮັບຂໍ້ຜິດພາດ 500)"
+
+#: ../src/lib/ureport.c:601
+#, c-format
+msgid "The server at '%s' currently can't handle the request (got error 503)"
+msgstr ""
+"ເຊີບເວີທີ່ '%s' ບໍ່ສາມາດຈັດການຄຳຮ້ອງຂໍໃນຂະນະນີ້ໄດ້ (ໄດ້ຮັບຂໍ້ຜິດພາດ 503)"
+
+#. can't print better error message
+#: ../src/lib/ureport.c:610
+#, c-format
+msgid "Unexpected HTTP response from '%s': %d"
+msgstr "ການຕອບສະໜອງ HTTP ທີ່ບໍ່ຄາດຄິດຈາກ '%s': %d"
+
+#: ../src/lib/ureport.c:619
+#, c-format
+msgid "Unable to parse response from ureport server at '%s'"
+msgstr "ບໍ່ສາມາດແຍກການຕອບສະໜອງຈາກເຊີບເວີ ureport ທີ່ '%s'"
+
+#: ../src/lib/ureport.c:629
+#, c-format
+msgid "The response from '%s' has invalid format"
+msgstr "ການຕອບສະໜອງຈາກ '%s' ມີຮູບແບບບໍ່ຖືກຕ້ອງ"
+
+#. HTTP CODE 202 means that call was successful but the response
+#. has an error message
+#: ../src/lib/ureport.c:635
+#, c-format
+msgid "Type mismatch has been detected in the response from '%s'"
+msgstr "ກວດພົບປະເພດບໍ່ກົງກັນໃນການຕອບສະໜອງຈາກ '%s'"
+
+#: ../src/lib/ureport.c:861 ../src/plugins/reporter-rhtsupport.c:235
+msgid "Failed on submitting the problem"
+msgstr "ສົ່ງບັນຫາລົ້ມເຫຼວ"
+
+#: ../src/lib/ureport.c:903
+#, c-format
+msgid "The server at '%s' responded with an error: '%s'"
+msgstr "ເຊີບເວີທີ່ '%s' ຕອບກັບດ້ວຍຂໍ້ຜິດພາດ: '%s'"
+
+#: ../src/lib/make_descr.c:149 ../src/lib/make_descr.c:160
+msgid "Reported:"
+msgstr "ລາຍງານແລ້ວ:"
+
+#: ../src/lib/make_descr.c:149
+msgid "cannot be reported"
+msgstr "ບໍ່ສາມາດລາຍງານໄດ້"
+
+#: ../src/lib/parse_options.c:63
+msgid "Usage: "
+msgstr "ວິທີໃຊ້: "
+
+#: ../src/lib/problem_data.c:252
+#, c-format
+msgid "Essential element '%s' is missing, can't continue"
+msgstr "ອົງປະກອບທີ່ຈຳເປັນ '%s' ຂາດຫາຍໄປ, ບໍ່ສາມາດສືບຕໍ່ໄດ້"
+
+#: ../src/lib/problem_report.c:517
+#, c-format
+msgid "Can't parse backtrace: %s"
+msgstr "ບໍ່ສາມາດແຍກ backtrace: %s"
+
+#: ../src/lib/problem_report.c:532
+msgid "Can't generate stacktrace description (no crash thread?)"
+msgstr "ບໍ່ສາມາດສ້າງຄຳອະທິບາຍ stacktrace ໄດ້ (ບໍ່ມີ thread ທີ່ຂັດຂ້ອງ?)"
+
+#: ../src/lib/report_result.c:265
+#, c-format
+msgid "Ignored invalid ISO date of report result '%s'"
+msgstr "ລະເວັ້ນວັນທີ ISO ທີ່ບໍ່ຖືກຕ້ອງຂອງຜົນການລາຍງານ '%s'"
+
+#: ../src/lib/reporters.c:55
+msgid "Note does not contain rating"
+msgstr "ບັນທຶກບໍ່ມີຄະແນນ (rating)"
+
+#: ../src/lib/run_event.c:891
+#, c-format
+msgid "('%s' was killed by signal %u)\n"
+msgstr "('%s' ຖືກຂ້າໂດຍສັນຍານ %u)\n"
+
+#: ../src/lib/run_event.c:893
+#, c-format
+msgid "('%s' completed successfully)\n"
+msgstr "('%s' ສຳເລັດແລ້ວ)\n"
+
+#: ../src/lib/run_event.c:895
+#, c-format
+msgid "('%s' exited with %u)\n"
+msgstr "('%s' ອອກດ້ວຍ %u)\n"
+
+#: ../src/plugins/abrt_rh_support.c:356
+#, c-format
+msgid "Error in case creation at '%s': %s"
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການສ້າງເຄສ (case) ທີ່ '%s': %s"
+
+#: ../src/plugins/abrt_rh_support.c:365
+#, c-format
+msgid "Error in case creation at '%s', HTTP code: %d, server says: '%s'"
+msgstr ""
+"ເກີດຂໍ້ຜິດພາດໃນການສ້າງເຄສ (case) ທີ່ '%s', ລະຫັດ HTTP: %d, ເຊີບເວີແຈ້ງວ່າ: '%s'"
+
+#: ../src/plugins/abrt_rh_support.c:369
+#, c-format
+msgid "Error in case creation at '%s', HTTP code: %d"
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການສ້າງເຄສ (case) ທີ່ '%s', ລະຫັດ HTTP: %d"
+
+#: ../src/plugins/abrt_rh_support.c:420
+#, c-format
+msgid "Error in case creation at '%s': no Location URL, HTTP code: %d"
+msgstr ""
+"ເກີດຂໍ້ຜິດພາດໃນການສ້າງເຄສ (case) ທີ່ '%s': ບໍ່ມີ URL ສະຖານທີ່, ລະຫັດ HTTP: %d"
+
+#: ../src/plugins/abrt_rh_support.c:524
+#, c-format
+msgid "Error in comment creation at '%s': %s"
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການສ້າງຄຳເຫັນທີ່ '%s': %s"
+
+#: ../src/plugins/abrt_rh_support.c:533
+#, c-format
+msgid "Error in comment creation at '%s', HTTP code: %d, server says: '%s'"
+msgstr ""
+"ເກີດຂໍ້ຜິດພາດໃນການສ້າງຄຳເຫັນທີ່ '%s', ລະຫັດ HTTP: %d, ເຊີບເວີແຈ້ງວ່າ: '%s'"
+
+#: ../src/plugins/abrt_rh_support.c:537
+#, c-format
+msgid "Error in comment creation at '%s', HTTP code: %d"
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການສ້າງຄຳເຫັນທີ່ '%s', ລະຫັດ HTTP: %d"
+
+#: ../src/plugins/abrt_rh_support.c:583
+#, c-format
+msgid "Error in comment creation at '%s': no Location URL, HTTP code: %d"
+msgstr ""
+"ເກີດຂໍ້ຜິດພາດໃນການສ້າງຄຳເຫັນທີ່ '%s': ບໍ່ມີ URL ສະຖານທີ່, ລະຫັດ HTTP: %d"
+
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:1
+msgid "Bugzilla"
+msgstr "Bugzilla"
+
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:2
+msgid "Report to Bugzilla bug tracker"
+msgstr "ລາຍງານໄປທີ່ລະບົບຕິດຕາມບັກ Bugzilla"
+
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:3
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:3
+#: ../src/plugins/report_Uploader.xml.in.h:6
+msgid "User name"
+msgstr "ຊື່ຜູ້ໃຊ້"
+
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:4
+msgid "Bugzilla account user name"
+msgstr "ຊື່ຜູ້ໃຊ້ບັນຊີ Bugzilla"
+
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:5
+msgid ""
+"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
+"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+msgstr ""
+"ທ່ານສາມາດສ້າງບັນຊີ bugzilla.redhat.com &lt;a href=\"https://bugzilla.redhat.com/"
+"createaccount.cgi\"&gt;ທີ່ນີ້&lt;/a&gt;"
+
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:6
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:6
+#: ../src/plugins/report_RHTSupport.xml.in.h:5
+#: ../src/plugins/report_Uploader.xml.in.h:8
+msgid "Password"
+msgstr "ລະຫັດຜ່ານ"
+
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:7
+msgid "Bugzilla account password"
+msgstr "ລະຫັດຜ່ານບັນຊີ Bugzilla"
+
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:8
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:8
+msgid "Restrict access"
+msgstr "ຈຳກັດການເຂົ້າເຖິງ"
+
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:9
+msgid ""
+"Restrict access to the created bugzilla ticket allowing only users from "
+"specified groups to view it (see advanced settings for more details)"
+msgstr ""
+"ຈຳກັດການເຂົ້າເຖິງທິກເກັດ Bugzilla ທີ່ສ້າງຂຶ້ນ ໂດຍອະນຸຍາດສະເພາະຜູ້ໃຊ້ຈາກກຸ່ມທີ່ລະບຸໃຫ້ສາມາດເບິ່ງໄດ້ (ເ"
+"ບິ່ງການຕັ້ງຄ່າຂັ້ນສູງສຳລັບລາຍລະອຽດເພີ່ມເຕີມ)"
+
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:10
+msgid "Groups"
+msgstr "ກຸ່ມ"
+
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:11
+msgid ""
+"Restrict the access to specified groups &lt;a href=\"https://github.com/abrt/"
+"abrt/wiki/FAQ#creating-private-bugzilla-tickets\"&gt;?&lt;/a&gt;"
+msgstr ""
+"ຈຳກັດການເຂົ້າເຖິງສະເພາະກຸ່ມທີ່ລະບຸ &lt;a href=\"https://github.com/abrt/abrt/wiki/"
+"FAQ#creating-private-bugzilla-tickets\"&gt;?&lt;/a&gt;"
+
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:12
+msgid "Bugzilla URL"
+msgstr "Bugzilla URL"
+
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:13
+msgid "Address of Bugzilla server"
+msgstr "ທີ່ຢູ່ຂອງເຊີບເວີ Bugzilla"
+
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:14
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:12
+#: ../src/plugins/report_RHTSupport.xml.in.h:11
+#: ../src/plugins/report_uReport.xml.in.h:11
+msgid "Verify SSL"
+msgstr "ກວດສອບ SSL"
+
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:15
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:13
+#: ../src/plugins/report_RHTSupport.xml.in.h:12
+#: ../src/plugins/report_uReport.xml.in.h:12
+msgid "Check SSL key validity"
+msgstr "ກວດສອບຄວາມຖືກຕ້ອງຂອງຄີ SSL"
+
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:16
+msgid "Bugzilla product"
+msgstr "ຜະລິດຕະພັນ Bugzilla"
+
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:17
+msgid ""
+"Specify this only if you needed different product than specified in /etc/os-"
+"release"
+msgstr ""
+"ລະບຸຄ່ານີ້ສະເພາະເມື່ອທ່ານຕ້ອງການຜະລິດຕະພັນທີ່ແຕກຕ່າງຈາກທີ່ລະບຸໃນ /etc/os-release"
+
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:18
+msgid "Bugzilla product version"
+msgstr "ເວີຊັນຜະລິດຕະພັນ Bugzilla"
+
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:19
+msgid ""
+"Specify this only if you needed different product version than specified in /"
+"etc/os-release"
+msgstr ""
+"ລະບຸຄ່ານີ້ສະເພາະເມື່ອທ່ານຕ້ອງການເວີຊັນຜະລິດຕະພັນທີ່ແຕກຕ່າງຈາກທີ່ລະບຸໃນ /etc/os-release"
+
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:20
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:18
+#: ../src/plugins/report_Kerneloops.xml.in.h:5
+#: ../src/plugins/report_RHTSupport.xml.in.h:13
+#: ../src/plugins/report_Uploader.xml.in.h:10
+#: ../src/plugins/report_uReport.xml.in.h:13
+msgid "HTTP Proxy"
+msgstr "HTTP Proxy"
+
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:21
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:19
+#: ../src/plugins/report_Kerneloops.xml.in.h:6
+#: ../src/plugins/report_RHTSupport.xml.in.h:14
+#: ../src/plugins/report_Uploader.xml.in.h:11
+#: ../src/plugins/report_uReport.xml.in.h:14
+msgid "Sets the proxy server to use for HTTP"
+msgstr "ຕັ້ງຄ່າເຊີບເວີພຣັອກຊີ (proxy) ທີ່ໃຊ້ສຳລັບ HTTP"
+
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:22
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:20
+#: ../src/plugins/report_Kerneloops.xml.in.h:7
+#: ../src/plugins/report_RHTSupport.xml.in.h:15
+#: ../src/plugins/report_Uploader.xml.in.h:12
+#: ../src/plugins/report_uReport.xml.in.h:15
+msgid "HTTPS Proxy"
+msgstr "HTTPS Proxy"
+
+#: ../src/plugins/report_Bugzilla.xml.in.in.h:23
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:21
+#: ../src/plugins/report_Kerneloops.xml.in.h:8
+#: ../src/plugins/report_RHTSupport.xml.in.h:16
+#: ../src/plugins/report_Uploader.xml.in.h:13
+#: ../src/plugins/report_uReport.xml.in.h:16
+msgid "Sets the proxy server to use for HTTPS"
+msgstr "ຕັ້ງຄ່າເຊີບເວີພຣັອກຊີ (proxy) ທີ່ໃຊ້ສຳລັບ HTTPS"
+
+#: ../src/plugins/report.c:37
+msgid ""
+"& [-v] --target TARGET --ticket ID FILE...\n"
+"\n"
+"Uploads FILEs to specified ticket on TARGET.\n"
+"\n"
+"This tool is provided to ease transition of users of report package\n"
+"to libreport. Recognized TARGETs are 'strata' and 'bugzilla',\n"
+"first one invokes upload to RHTSupport and second - to Bugzilla.\n"
+"\n"
+"Configuration (such as login data) can be supplied via files\n"
+msgstr ""
+"& [-v] --target TARGET --ticket ID FILE...\n"
+"\n"
+"ອັບໂຫຼດໄຟລ໌ (FILEs) ໄປຍັງທິກເກັດທີ່ລະບຸຢູ່ TARGET.\n"
+"\n"
+"ເຄື່ອງມືນີ້ມີໄວ້ເພື່ອຊ່ວຍໃຫ້ຜູ້ໃຊ້ແພັກເກດ report ສາມາດປ່ຽນມາໃຊ້\n"
+"libreport ໄດ້ງ່າຍຂຶ້ນ. TARGET ທີ່ຮອງຮັບແມ່ນ 'strata' ແລະ 'bugzilla',\n"
+"ເຊິ່ງອັນທຳອິດຈະເອີ້ນການອັບໂຫຼດໄປຍັງ RHTSupport ແລະ ອັນທີສອງ - ໄປຍັງ Bugzilla.\n"
+"\n"
+"ການຕັ້ງຄ່າ (ເຊັ່ນ: ຂໍ້ມູນເຂົ້າສູ່ລະບົບ) ສາມາດໃຫ້ຜ່ານໄຟລ໌ໄດ້\n"
+
+#: ../src/plugins/report.c:59
+msgid "'strata' or 'bugzilla'"
+msgstr "'strata' ຫຼື 'bugzilla'"
+
+#: ../src/plugins/report.c:60
+msgid "Ticket/case ID"
+msgstr "ໄອດີ ທິກເກັດ/ເຄສ"
+
+#: ../src/plugins/reporter-bugzilla.c:183
+msgid ""
+"Warning, private ticket groups already specified as cmdline argument, "
+"ignoring the env variable and configuration"
+msgstr ""
+"ຄຳເຕືອນ, ກຸ່ມທິກເກັດສ່ວນຕົວຖືກລະບຸເປັນອາກິວເມັນໃນ cmdline ແລ້ວ, ຈະລະເວັ້ນຕົວແປສະພາບແວດລ້ອມ ແລ"
+"ະ ການຕັ້ງຄ່າ"
+
+#: ../src/plugins/reporter-bugzilla.c:194
+#: ../src/plugins/reporter-rhtsupport.c:384
+#: ../src/plugins/reporter-mantisbt.c:55
+msgid "Can't continue without login"
+msgstr "ບໍ່ສາມາດສືບຕໍ່ໄດ້ຫາກບໍ່ມີການເຂົ້າສູ່ລະບົບ"
+
+#: ../src/plugins/reporter-bugzilla.c:207
+#: ../src/plugins/reporter-rhtsupport.c:397
+#: ../src/plugins/reporter-mantisbt.c:68
+msgid "Can't continue without password"
+msgstr "ບໍ່ສາມາດສືບຕໍ່ໄດ້ຫາກບໍ່ມີລະຫັດຜ່ານ"
+
+#: ../src/plugins/reporter-bugzilla.c:216
+#, c-format
+msgid "Logging into Bugzilla at %s"
+msgstr "ກຳລັງເຂົ້າສູ່ລະບົບ Bugzilla ທີ່ %s"
+
+#: ../src/plugins/reporter-bugzilla.c:223
+#, c-format
+msgid "Invalid password or login. Please enter your %s login:"
+msgstr ""
+"ລະຫັດຜ່ານ ຫຼື ຊື່ເຂົ້າສູ່ລະບົບບໍ່ຖືກຕ້ອງ. ກະລຸນາປ້ອນຊື່ເຂົ້າສູ່ລະບົບ %s ຂອງທ່ານ:"
+
+#: ../src/plugins/reporter-bugzilla.c:228
+#: ../src/plugins/reporter-rhtsupport.c:411
+#, c-format
+msgid "Invalid password or login. Please enter the password for '%s':"
+msgstr ""
+"ລະຫັດຜ່ານ ຫຼື ຊື່ເຂົ້າສູ່ລະບົບບໍ່ຖືກຕ້ອງ. ກະລຸນາປ້ອນລະຫັດຜ່ານສຳລັບ '%s':"
+
+#: ../src/plugins/reporter-bugzilla.c:247
+msgid ""
+"\n"
+"& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d "
+"DIR\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... [-d DIR] -t[ID] -w\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... -h DUPHASH [-p[PRODUCT]]\n"
+"\n"
+"Reports problem to Bugzilla.\n"
+"\n"
+"The tool reads DIR. Then it logs in to Bugzilla and tries to find a bug\n"
+"with the same abrt_hash:HEXSTRING in 'Whiteboard'.\n"
+"\n"
+"If such bug is not found, then a new bug is created. Elements of DIR\n"
+"are stored in the bug as part of bug description or as attachments,\n"
+"depending on their type and size.\n"
+"\n"
+"Otherwise, if such bug is found and it is marked as CLOSED DUPLICATE,\n"
+"the tool follows the chain of duplicates until it finds a non-DUPLICATE "
+"bug.\n"
+"The tool adds a new comment to found bug.\n"
+"\n"
+"The URL to new or modified bug is printed to stdout and recorded in\n"
+"'reported_to' element.\n"
+"\n"
+"Option -t uploads FILEs to the already created bug on Bugzilla site.\n"
+"The bug ID is retrieved from directory specified by -d DIR.\n"
+"If problem data in DIR was never reported to Bugzilla, upload will fail.\n"
+"\n"
+"Option -tID uploads FILEs to the bug with specified ID on Bugzilla site.\n"
+"-d DIR is ignored.\n"
+"\n"
+"Option -w adds bugzilla user to bug's CC list.\n"
+"\n"
+"Option -r sets the last url from reporter_to element which is prefixed with\n"
+"TRACKER_NAME to URL field. This option is applied only when a new bug is to "
+"be\n"
+"filed. The default value is 'ABRT Server'\n"
+"\n"
+"If not specified, CONFFILE defaults to "
+msgstr ""
+"\n"
+"& [-vbf] [-g GROUP-NAME]... [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d "
+"DIR\n"
+"ຫຼື:\n"
+"& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\n"
+"ຫຼື:\n"
+"& [-v] [-c CONFFILE]... [-d DIR] -t[ID] -w\n"
+"ຫຼື:\n"
+"& [-v] [-c CONFFILE]... -h DUPHASH [-p[PRODUCT]]\n"
+"\n"
+"ລາຍງານບັນຫາໄປທີ່ Bugzilla.\n"
+"\n"
+"ເຄື່ອງມືຈະອ່ານ DIR. ຫຼັງຈາກນັ້ນຈະເຂົ້າສູ່ລະບົບ Bugzilla ແລະ ພະຍາຍາມຊອກຫາບັກ\n"
+"ທີ່ມີ abrt_hash:HEXSTRING ດຽວກັນໃນ 'Whiteboard'.\n"
+"\n"
+"ຖ້າບໍ່ພົບບັກດັ່ງກ່າວ, ມັນຈະສ້າງບັກໃໝ່. ອົງປະກອບຂອງ DIR\n"
+"ຈະຖືກເກັບໄວ້ໃນບັກເປັນສ່ວນໜຶ່ງຂອງຄຳອະທິບາຍບັກ ຫຼື ເປັນໄຟລ໌ແນບ,\n"
+"ຂຶ້ນຢູ່ກັບປະເພດ ແລະ ຂະໜາດຂອງມັນ.\n"
+"\n"
+"ໃນທາງກັບກັນ, ຖ້າພົບບັກດັ່ງກ່າວ ແລະ ມັນຖືກໝາຍເປັນ CLOSED DUPLICATE,\n"
+"ເຄື່ອງມືຈະຕິດຕາມສາຍໂສ້ຂອງບັກທີ່ຊ້ຳກັນ ຈົນກວ່າຈະພົບບັກທີ່ບໍ່ແມ່ນ DUPLICATE.\n"
+"ເຄື່ອງມືຈະເພີ່ມຄຳເຫັນໃໝ່ໃສ່ບັກທີ່ພົບ.\n"
+"\n"
+"URL ຂອງບັກໃໝ່ ຫຼື ບັກທີ່ຖືກແກ້ໄຂຈະຖືກພິມອອກທີ່ stdout ແລະ ບັນທຶກໄວ້ໃນ\n"
+"ອົງປະກອບ 'reported_to'.\n"
+"\n"
+"ຕົວເລືອກ -t ຈະອັບໂຫຼດ FILEs ໄປຍັງບັກທີ່ສ້າງຂຶ້ນແລ້ວໃນເວັບໄຊ Bugzilla.\n"
+"ໄອດີຂອງບັກຈະຖືກດຶງມາຈາກໄດເຣັກທໍຣີທີ່ລະບຸໂດຍ -d DIR.\n"
+"ຖ້າຂໍ້ມູນບັນຫາໃນ DIR ບໍ່ເຄີຍຖືກລາຍງານໄປທີ່ Bugzilla ມາກ່ອນ, ການອັບໂຫຼດຈະລົ້ມເຫຼວ.\n"
+"\n"
+"ຕົວເລືອກ -tID ຈະອັບໂຫຼດ FILEs ໄປຍັງບັກທີ່ມີໄອດີທີ່ລະບຸໃນເວັບໄຊ Bugzilla.\n"
+"ຈະລະເວັ້ນ -d DIR.\n"
+"\n"
+"ຕົວເລືອກ -w ຈະເພີ່ມຜູ້ໃຊ້ bugzilla ເຂົ້າໃນລາຍຊື່ CC ຂອງບັກ.\n"
+"\n"
+"ຕົວເລືອກ -r ຈະຕັ້ງຄ່າ url ສຸດທ້າຍຈາກອົງປະກອບ reporter_to ທີ່ມີຄຳນຳໜ້າດ້ວຍ\n"
+"TRACKER_NAME ໄປຍັງຊ່ອງ URL. ຕົວເລືອກນີ້ຈະຖືກນຳໃຊ້ສະເພາະເມື່ອຈະສ້າງບັກໃໝ່.\n"
+"ຄ່າເລີ່ມຕົ້ນແມ່ນ 'ABRT Server'\n"
+"\n"
+"ຖ້າບໍ່ໄດ້ລະບຸ, CONFFILE ຈະມີຄ່າເລີ່ມຕົ້ນເປັນ "
+
+#: ../src/plugins/reporter-bugzilla.c:324
+#: ../src/plugins/reporter-rhtsupport.c:549
+#: ../src/plugins/reporter-mantisbt.c:284
+msgid "Configuration file (may be given many times)"
+msgstr "ໄຟລ໌ການຕັ້ງຄ່າ (ອາດຈະກຳນົດໄດ້ຫຼາຍຄັ້ງ)"
+
+#: ../src/plugins/reporter-bugzilla.c:325
+#: ../src/plugins/reporter-mantisbt.c:285
+msgid "Formatting file for initial comment"
+msgstr "ໄຟລ໌ຈັດຮູບແບບສຳລັບຄຳເຫັນເລີ່ມຕົ້ນ"
+
+#: ../src/plugins/reporter-bugzilla.c:326
+#: ../src/plugins/reporter-mantisbt.c:286
+msgid "Formatting file for duplicates"
+msgstr "ໄຟລ໌ຈັດຮູບແບບສຳລັບລາຍການທີ່ຊ້ຳກັນ"
+
+#: ../src/plugins/reporter-bugzilla.c:327
+msgid "Attach FILEs [to bug with this ID]"
+msgstr "ແນບໄຟລ໌ FILEs [ໃສ່ບັກທີ່ມີໄອດີນີ້]"
+
+#: ../src/plugins/reporter-bugzilla.c:328
+msgid "When creating bug, attach binary files too"
+msgstr "ເມື່ອສ້າງບັກ, ໃຫ້ແນບໄຟລ໌ໄບນາຣີໄປນຳ"
+
+#: ../src/plugins/reporter-bugzilla.c:329
+#: ../src/plugins/reporter-rhtsupport.c:551
+#: ../src/plugins/reporter-mantisbt.c:288
+msgid "Force reporting even if this problem is already reported"
+msgstr "ບັງຄັບໃຫ້ລາຍງານເຖິງແມ່ນວ່າບັນຫານີ້ຈະຖືກລາຍງານໄປແລ້ວກໍຕາມ"
+
+#: ../src/plugins/reporter-bugzilla.c:330
+msgid "Add bugzilla user to CC list [of bug with this ID]"
+msgstr "ເພີ່ມຜູ້ໃຊ້ bugzilla ເຂົ້າໃນລາຍຊື່ CC [ຂອງບັກທີ່ມີໄອດີນີ້]"
+
+#: ../src/plugins/reporter-bugzilla.c:331
+#: ../src/plugins/reporter-mantisbt.c:289
+msgid "Print BUG_ID which has given DUPHASH"
+msgstr "ພິມ BUG_ID ທີ່ມີ DUPHASH ທີ່ລະບຸ"
+
+#: ../src/plugins/reporter-bugzilla.c:332
+msgid "Specify a Bugzilla product (ignored without -h)"
+msgstr "ລະບຸຜະລິດຕະພັນ Bugzilla (ລະເວັ້ນຫາກບໍ່ມີ -h)"
+
+#: ../src/plugins/reporter-bugzilla.c:333
+#: ../src/plugins/reporter-mantisbt.c:290
+msgid "A name of bug tracker for an additional URL from 'reported_to'"
+msgstr "ຊື່ຂອງລະບົບຕິດຕາມບັກສຳລັບ URL ເພີ່ມເຕີມຈາກ 'reported_to'"
+
+#: ../src/plugins/reporter-bugzilla.c:334
+msgid "Restrict access to this group only"
+msgstr "ຈຳກັດການເຂົ້າເຖິງສະເພາະກຸ່ມນີ້ເທົ່ານັ້ນ"
+
+#: ../src/plugins/reporter-bugzilla.c:335 ../src/plugins/reporter-mailx.c:292
+#: ../src/plugins/reporter-rhtsupport.c:555
+#: ../src/plugins/reporter-systemd-journal.c:255
+#: ../src/plugins/reporter-mantisbt.c:292
+msgid "Debug"
+msgstr "ດີບັກ (Debug)"
+
+#: ../src/plugins/reporter-bugzilla.c:402
+msgid "Looking for similar problems in bugzilla"
+msgstr "ກຳລັງຊອກຫາບັນຫາທີ່ຄ້າຍຄືກັນໃນ bugzilla"
+
+#: ../src/plugins/reporter-bugzilla.c:431
+msgid "Failed to get 'REDHAT_BUGZILLA_PRODUCT' from '/etc/os-release'."
+msgstr "ບໍ່ສາມາດດຶງຄ່າ 'REDHAT_BUGZILLA_PRODUCT' ຈາກ '/etc/os-release'."
+
+#: ../src/plugins/reporter-bugzilla.c:434
+msgid "Failed to read '/etc/os-release' to get Bugzilla product."
+msgstr "ບໍ່ສາມາດອ່ານ '/etc/os-release' ເພື່ອດຶງຄ່າຜະລິດຕະພັນ Bugzilla ໄດ້."
+
+#: ../src/plugins/reporter-bugzilla.c:445
+#, c-format
+msgid "Using default product '%s'"
+msgstr "ກຳລັງໃຊ້ຜະລິດຕະພັນເລີ່ມຕົ້ນ '%s'"
+
+#: ../src/plugins/reporter-bugzilla.c:468
+#, c-format
+msgid "Login is not provided by configuration. Please enter your %s login:"
+msgstr ""
+"ຊື່ເຂົ້າສູ່ລະບົບບໍ່ໄດ້ຖືກສະໜອງໃຫ້ໂດຍການຕັ້ງຄ່າ. ກະລຸນາປ້ອນຊື່ເຂົ້າສູ່ລະບົບ %s ຂອງທ່ານ:"
+
+#: ../src/plugins/reporter-bugzilla.c:476
+#: ../src/plugins/reporter-rhtsupport.c:597
+#, c-format
+msgid ""
+"Password is not provided by configuration. Please enter the password for "
+"'%s':"
+msgstr "ລະຫັດຜ່ານບໍ່ໄດ້ຖືກສະໜອງໃຫ້ໂດຍການຕັ້ງຄ່າ. ກະລຸນາປ້ອນລະຫັດຜ່ານສຳລັບ '%s':"
+
+#: ../src/plugins/reporter-bugzilla.c:500
+msgid ""
+"Can't get Bugzilla ID because this problem has not yet been reported to "
+"Bugzilla."
+msgstr ""
+"ບໍ່ສາມາດດຶງໄອດີ Bugzilla ໄດ້ເນື່ອງຈາກບັນຫານີ້ຍັງບໍ່ໄດ້ຖືກລາຍງານໄປທີ່ Bugzilla."
+
+#: ../src/plugins/reporter-bugzilla.c:505
+#, c-format
+msgid ""
+"This problem has been reported to Bugzilla '%s' which differs from the "
+"configured Bugzilla '%s'."
+msgstr ""
+"ບັນຫານີ້ໄດ້ຖືກລາຍງານໄປທີ່ Bugzilla '%s' ແລ້ວ ເຊິ່ງແຕກຕ່າງຈາກ Bugzilla '%s' ທີ່ຕັ້ງຄ່າໄວ້."
+
+#: ../src/plugins/reporter-bugzilla.c:509
+#, c-format
+msgid "Malformed url to Bugzilla '%s'."
+msgstr "ຮູບແບບ url ໄປຫາ Bugzilla '%s' ບໍ່ຖືກຕ້ອງ."
+
+#: ../src/plugins/reporter-bugzilla.c:513
+#, c-format
+msgid "Using Bugzilla ID '%s'"
+msgstr "ກຳລັງໃຊ້ໄອດີ Bugzilla '%s'"
+
+#: ../src/plugins/reporter-bugzilla.c:547
+#: ../src/plugins/reporter-bugzilla.c:747
+#: ../src/plugins/reporter-bugzilla.c:943
+msgid "Logging out"
+msgstr "ກຳລັງອອກຈາກລະບົບ"
+
+#: ../src/plugins/reporter-bugzilla.c:579
+#, c-format
+msgid ""
+"This problem was already reported to Bugzilla (see '%s'). Do you still want "
+"to create a new bug?"
+msgstr ""
+"ບັນຫານີ້ໄດ້ຖືກລາຍງານໄປທີ່ Bugzilla ແລ້ວ (ເບິ່ງ '%s'). ທ່ານຍັງຕ້ອງການສ້າງບັກໃໝ່ຢູ່ບໍ່?"
+
+#: ../src/plugins/reporter-bugzilla.c:609
+msgid "Can't determine Bugzilla Product from problem data."
+msgstr "ບໍ່ສາມາດກຳນົດຜະລິດຕະພັນ Bugzilla ຈາກຂໍ້ມູນບັນຫາໄດ້."
+
+#: ../src/plugins/reporter-bugzilla.c:671
+#: ../src/plugins/reporter-mantisbt.c:506
+msgid "Checking for duplicates"
+msgstr "ກຳລັງກວດສອບລາຍການທີ່ຊ້ຳກັນ"
+
+#: ../src/plugins/reporter-bugzilla.c:728
+#, c-format
+msgid ""
+"You have requested to make your data accessible only to a specific group and "
+"this bug is a duplicate of bug: %s/%u In case of bug duplicates a new "
+"comment is added to the original bug report but access to the comments "
+"cannot be restricted to a specific group. Would you like to open a new bug "
+"report and close it as DUPLICATE of the original one? Otherwise, the bug "
+"reporting procedure will be terminated."
+msgstr ""
+"ທ່ານໄດ້ຮ້ອງຂໍໃຫ້ຂໍ້ມູນຂອງທ່ານສາມາດເຂົ້າເຖິງໄດ້ສະເພາະກຸ່ມທີ່ລະບຸ ແລະ ບັກນີ້ແມ່ນການຊ້ຳກັນຂອງບັກ: %s/%u ໃ"
+"ນກໍລະນີທີ່ບັກຊ້ຳກັນ ຄຳເຫັນໃໝ່ຈະຖືກເພີ່ມເຂົ້າໃນລາຍງານບັກຕົ້ນສະບັບ ແຕ່ການເຂົ້າເຖິງຄຳເຫັນບໍ່ສາມາດຈຳກັດສະເພ"
+"າະກຸ່ມທີ່ລະບຸໄດ້. ທ່ານຕ້ອງການເປີດລາຍງານບັກໃໝ່ ແລະ ປິດມັນເປັນ DUPLICATE (ຊ້ຳກັນ) ຂອງອັນຕົ້ນສະບັບ"
+"ບໍ່? ຖ້າບໍ່ດັ່ງນັ້ນ, ຂັ້ນຕອນການລາຍງານບັກຈະຖືກຍົກເລີກ."
+
+#. Create new bug
+#: ../src/plugins/reporter-bugzilla.c:763
+msgid "Creating a new bug"
+msgstr "ກຳລັງສ້າງບັກໃໝ່"
+
+#: ../src/plugins/reporter-bugzilla.c:782
+msgid "Failed to create a new bug."
+msgstr "ບໍ່ສາມາດສ້າງບັກໃໝ່ໄດ້."
+
+#: ../src/plugins/reporter-bugzilla.c:800
+#, c-format
+msgid "Adding extra cc %s to bug report"
+msgstr "ກຳລັງເພີ່ມ cc ພິເສດ %s ເຂົ້າໃນລາຍງານບັກ"
+
+#: ../src/plugins/reporter-bugzilla.c:812
+#, c-format
+msgid "Adding External URL to bug %i"
+msgstr "ກຳລັງເພີ່ມ URL ພາຍນອກໃສ່ບັກ %i"
+
+#: ../src/plugins/reporter-bugzilla.c:819
+#, c-format
+msgid "Adding attachments to bug %i"
+msgstr "ກຳລັງເພີ່ມໄຟລ໌ແນບໃສ່ບັກ %i"
+
+#: ../src/plugins/reporter-bugzilla.c:841
+#, c-format
+msgid "Closing bug %i as duplicate of bug %i"
+msgstr "ກຳລັງປິດບັກ %i ເປັນລາຍການຊ້ຳກັນຂອງບັກ %i"
+
+#: ../src/plugins/reporter-bugzilla.c:853
+#: ../src/plugins/reporter-mantisbt.c:622
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "ບັກນີ້ຖືກລາຍງານໄປແລ້ວ: %i"
+
+#: ../src/plugins/reporter-bugzilla.c:896
+#, c-format
+msgid "Adding %s to CC list"
+msgstr "ກຳລັງເພີ່ມ %s ເຂົ້າໃນລາຍຊື່ CC"
+
+#: ../src/plugins/reporter-bugzilla.c:917
+#, c-format
+msgid "Adding new comment to bug %d"
+msgstr "ກຳລັງເພີ່ມຄຳເຫັນໃໝ່ໃສ່ບັກ %d"
+
+#: ../src/plugins/reporter-bugzilla.c:930
+#: ../src/plugins/reporter-mantisbt.c:672
+msgid "Attaching better backtrace"
+msgstr "ກຳລັງແນບ backtrace ທີ່ດີກວ່າ"
+
+#: ../src/plugins/reporter-bugzilla.c:936
+msgid "Found the same comment in the bug history, not adding a new one"
+msgstr "ພົບຄຳເຫັນທີ່ຄືກັນໃນປະຫວັດບັກ, ຈະບໍ່ເພີ່ມອັນໃໝ່ເຂົ້າໄປ"
+
+#: ../src/plugins/reporter-bugzilla.c:946
+#, c-format
+msgid "Status: %s%s%s %s/show_bug.cgi?id=%u"
+msgstr "ສະຖານະ: %s%s%s %s/show_bug.cgi?id=%u"
+
+#: ../src/plugins/reporter-kerneloops.c:105
+#, c-format
+msgid "Submitting oops report to %s"
+msgstr "ກຳລັງສົ່ງລາຍງານ oops ໄປທີ່ %s"
+
+#: ../src/plugins/reporter-kerneloops.c:154
+msgid ""
+"& [-v] [-c CONFFILE]... -d DIR\n"
+"\n"
+"Reports kernel oops to kerneloops.org (or similar) site.\n"
+"\n"
+"Files with names listed in $EXCLUDE_FROM_REPORT are not included\n"
+"into the tarball.\n"
+"\n"
+"CONFFILE lines should have 'PARAM = VALUE' format.\n"
+"Recognized string parameter: SubmitURL.\n"
+"Parameter can be overridden via $KerneloopsReporter_SubmitURL."
+msgstr ""
+"& [-v] [-c CONFFILE]... -d DIR\n"
+"\n"
+"ລາຍງານ kernel oops ໄປທີ່ເວັບໄຊ kerneloops.org (ຫຼື ຄ້າຍຄືກັນ).\n"
+"\n"
+"ໄຟລ໌ທີ່ມີຊື່ຢູ່ໃນລາຍການ $EXCLUDE_FROM_REPORT ຈະບໍ່ຖືກລວມ\n"
+"ເຂົ້າໃນ tarball.\n"
+"\n"
+"ແຖວໃນ CONFFILE ຄວນມີຮູບແບບ 'PARAM = VALUE'.\n"
+"ພາຣາມິເຕີສະຕຣິງ (string parameter) ທີ່ຮູ້ຈັກ: SubmitURL.\n"
+"ພາຣາມິເຕີສາມາດຖືກທັບຊ້ອນ (overridden) ຜ່ານ $KerneloopsReporter_SubmitURL."
+
+#: ../src/plugins/reporter-kerneloops.c:174
+#: ../src/plugins/reporter-ureport.c:81
+msgid "Configuration file"
+msgstr "ໄຟລ໌ການຕັ້ງຄ່າ"
+
+#: ../src/plugins/reporter-mailx.c:83
+#, c-format
+msgid ""
+"Email address of %s was not specified. Would you like to do so now? If not, "
+"'%s' is to be used"
+msgstr ""
+"ບໍ່ໄດ້ລະບຸທີ່ຢູ່ອີເມລຂອງ %s. ທ່ານຕ້ອງການລະບຸຕອນນີ້ບໍ່? ຖ້າບໍ່, ຈະນຳໃຊ້ '%s' ແທນ"
+
+#: ../src/plugins/reporter-mailx.c:90
+#, c-format
+msgid "Please, type email address of %s:"
+msgstr "ກະລຸນາພິມທີ່ຢູ່ອີເມລຂອງ %s:"
+
+#: ../src/plugins/reporter-mailx.c:97
+#, c-format
+msgid "Can't continue without email address of %s"
+msgstr "ບໍ່ສາມາດສືບຕໍ່ໄດ້ຫາກບໍ່ມີທີ່ຢູ່ອີເມລຂອງ %s"
+
+#: ../src/plugins/reporter-mailx.c:207
+#, c-format
+msgid "Sending a notification email to: %s"
+msgstr "ກຳລັງສົ່ງອີເມລແຈ້ງເຕືອນໄປທີ່: %s"
+
+#: ../src/plugins/reporter-mailx.c:209
+msgid "Sending an email..."
+msgstr "ກຳລັງສົ່ງອີເມລ..."
+
+#: ../src/plugins/reporter-mailx.c:243
+#, c-format
+msgid "Email was sent to: %s"
+msgstr "ສົ່ງອີເມລໄປທີ່: %s ແລ້ວ"
+
+#: ../src/plugins/reporter-mailx.c:266
+msgid ""
+"& [-v] -d DIR [-c CONFFILE] [-F FMTFILE]\n"
+"\n"
+"Sends contents of a problem directory DIR via email\n"
+"\n"
+"If not specified, CONFFILE defaults to "
+msgstr ""
+"& [-v] -d DIR [-c CONFFILE] [-F FMTFILE]\n"
+"\n"
+"ສົ່ງເນື້ອຫາຂອງໄດເຣັກທໍຣີບັນຫາ DIR ຜ່ານທາງອີເມລ\n"
+"\n"
+"ຖ້າບໍ່ໄດ້ລະບຸ, CONFFILE ຈະມີຄ່າເລີ່ມຕົ້ນເປັນ "
+
+#: ../src/plugins/reporter-mailx.c:289 ../src/plugins/reporter-upload.c:187
+msgid "Config file"
+msgstr "ໄຟລ໌ຕັ້ງຄ່າ"
+
+#: ../src/plugins/reporter-mailx.c:290
+msgid "Formatting file for an email"
+msgstr "ໄຟລ໌ຈັດຮູບແບບສຳລັບອີເມລ"
+
+#: ../src/plugins/reporter-mailx.c:291
+msgid "Notify only (Do not mark the report as sent)"
+msgstr "ແຈ້ງເຕືອນເທົ່ານັ້ນ (ບໍ່ໝາຍລາຍງານວ່າສົ່ງແລ້ວ)"
+
+#: ../src/plugins/reporter-print.c:42
+msgid ""
+"& [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
+"\n"
+"Prints problem information to standard output or FILE"
+msgstr ""
+"& [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
+"\n"
+"ພິມຂໍ້ມູນບັນຫາອອກທາງ standard output ຫຼື ລົງໃນ FILE"
+
+#: ../src/plugins/reporter-print.c:57
+msgid "Output file"
+msgstr "ໄຟລ໌ຜົນຮັບ"
+
+#: ../src/plugins/reporter-print.c:58
+msgid "Append to, or overwrite FILE"
+msgstr "ຂຽນຕໍ່ທ້າຍ, ຫຼື ຂຽນທັບ FILE"
+
+#: ../src/plugins/reporter-print.c:59
+msgid "Create reported_to in DIR"
+msgstr "ສ້າງ reported_to ໃນ DIR"
+
+#: ../src/plugins/reporter-print.c:98
+msgid "Cancelled by user."
+msgstr "ຍົກເລີກໂດຍຜູ້ໃຊ້."
+
+#: ../src/plugins/reporter-print.c:108
+#, c-format
+msgid "Can't open '%s' for writing. Please select another file:"
+msgstr "ບໍ່ສາມາດເປີດ '%s' ເພື່ອຂຽນໄດ້. ກະລຸນາເລືອກໄຟລ໌ອື່ນ:"
+
+#: ../src/plugins/reporter-print.c:153
+#, c-format
+msgid "The report was appended to %s"
+msgstr "ລາຍງານຖືກຂຽນຕໍ່ທ້າຍລົງໃນ %s ແລ້ວ"
+
+#: ../src/plugins/reporter-print.c:153
+#, c-format
+msgid "The report was stored to %s"
+msgstr "ລາຍງານຖືກບັນທຶກລົງໃນ %s ແລ້ວ"
+
+#: ../src/plugins/reporter-rhtsupport.c:280
+#: ../src/plugins/reporter-ureport.c:311
+msgid "Failed to generate microreport from the problem data"
+msgstr "ບໍ່ສາມາດສ້າງ microreport ຈາກຂໍ້ມູນບັນຫາໄດ້"
+
+#: ../src/plugins/reporter-rhtsupport.c:301
+#: ../src/plugins/reporter-ureport.c:340
+#, c-format
+msgid "Server responded with an error: '%s'"
+msgstr "ເຊີບເວີຕອບກັບດ້ວຍຂໍ້ຜິດພາດ: '%s'"
+
+#: ../src/plugins/reporter-rhtsupport.c:361
+msgid "Do you still want to create a RHTSupport ticket?"
+msgstr "ທ່ານຍັງຕ້ອງການສ້າງທິກເກັດ RHTSupport ຢູ່ບໍ່?"
+
+#: ../src/plugins/reporter-rhtsupport.c:409
+msgid "Invalid password or login. Please enter your Red Hat login:"
+msgstr ""
+"ລະຫັດຜ່ານ ຫຼື ຊື່ເຂົ້າສູ່ລະບົບບໍ່ຖືກຕ້ອງ. ກະລຸນາປ້ອນຊື່ເຂົ້າສູ່ລະບົບ Red Hat ຂອງທ່ານ:"
+
+#: ../src/plugins/reporter-rhtsupport.c:473
+msgid "Please enter customer case number to which you want to attach the data:"
+msgstr "ກະລຸນາປ້ອນໝາຍເລກເຄສຂອງລູກຄ້າທີ່ທ່ານຕ້ອງການແນບຂໍ້ມູນໃສ່:"
+
+#: ../src/plugins/reporter-rhtsupport.c:479
+msgid "Can't continue without Red Hat Support case number"
+msgstr "ບໍ່ສາມາດສືບຕໍ່ໄດ້ຫາກບໍ່ມີໝາຍເລກເຄສຂອງ Red Hat Support"
+
+#: ../src/plugins/reporter-rhtsupport.c:506
+msgid ""
+"\n"
+"& [-v] [-c CONFFILE] [-F FMTFILE] -d DIR\n"
+"or:\n"
+"& [-v] [-c CONFFILE] [-d DIR] -t[ID] [-u -C UR_CONFFILE] FILE...\n"
+"\n"
+"Reports a problem to RHTSupport.\n"
+"\n"
+"If not specified, CONFFILE defaults to "
+msgstr ""
+"\n"
+"& [-v] [-c CONFFILE] [-F FMTFILE] -d DIR\n"
+"ຫຼື:\n"
+"& [-v] [-c CONFFILE] [-d DIR] -t[ID] [-u -C UR_CONFFILE] FILE...\n"
+"\n"
+"ລາຍງານບັນຫາໄປທີ່ RHTSupport.\n"
+"\n"
+"ຖ້າບໍ່ໄດ້ລະບຸ, CONFFILE ຈະມີຄ່າເລີ່ມຕົ້ນເປັນ "
+
+#: ../src/plugins/reporter-rhtsupport.c:550
+msgid "Upload FILEs [to case with this ID]"
+msgstr "ອັບໂຫຼດໄຟລ໌ FILEs [ໄປຍັງເຄສທີ່ມີໄອດີນີ້]"
+
+#: ../src/plugins/reporter-rhtsupport.c:552
+msgid "Submit uReport before creating a new case"
+msgstr "ສົ່ງ uReport ກ່ອນການສ້າງເຄສໃໝ່"
+
+#: ../src/plugins/reporter-rhtsupport.c:553
+msgid "Configuration file for uReport"
+msgstr "ໄຟລ໌ການຕັ້ງຄ່າສຳລັບ uReport"
+
+#: ../src/plugins/reporter-rhtsupport.c:554
+msgid "Formatting file for a new case"
+msgstr "ໄຟລ໌ຈັດຮູບແບບສຳລັບເຄສໃໝ່"
+
+#: ../src/plugins/reporter-rhtsupport.c:591
+msgid "Login is not provided by configuration. Please enter your RHTS login:"
+msgstr ""
+"ຊື່ເຂົ້າສູ່ລະບົບບໍ່ໄດ້ຖືກສະໜອງໃຫ້ໂດຍການຕັ້ງຄ່າ. ກະລຸນາປ້ອນຊື່ເຂົ້າສູ່ລະບົບ RHTS ຂອງທ່ານ:"
+
+#: ../src/plugins/reporter-rhtsupport.c:647
+#, c-format
+msgid ""
+"We found a similar Red Hat support case %s. Do you want to attach the data "
+"to the case? Otherwise, you will have to enter the existing Red Hat support "
+"case number."
+msgstr ""
+"ພວກເຮົາພົບເຄສ Red Hat support ທີ່ຄ້າຍຄືກັນ %s. ທ່ານຕ້ອງການແນບຂໍ້ມູນໃສ່ເຄສນີ້ບໍ່? ຖ້າບໍ່ດັ່ງນັ້ນ, ທ່ານຈ"
+"ະຕ້ອງປ້ອນໝາຍເລກເຄສຂອງ Red Hat support ທີ່ມີຢູ່ແລ້ວ."
+
+#: ../src/plugins/reporter-rhtsupport.c:676
+#, c-format
+msgid "Attaching '%s' to case '%s'"
+msgstr "ກຳລັງແນບ '%s' ໃສ່ເຄສ '%s'"
+
+#: ../src/plugins/reporter-rhtsupport.c:720
+msgid "Sending ABRT crash statistics data"
+msgstr "ກຳລັງສົ່ງຂໍ້ມູນສະຖິຕິການຂັດຂ້ອງຂອງ ABRT"
+
+#: ../src/plugins/reporter-rhtsupport.c:741
+msgid "Can't create a temporary directory in "
+msgstr "ບໍ່ສາມາດສ້າງໄດເຣັກທໍຣີຊົ່ວຄາວໃນ "
+
+#: ../src/plugins/reporter-rhtsupport.c:766
+msgid ""
+"The problem has only occurred once and the ability to reproduce the problem "
+"is unknown. Please ensure you will be able to provide detailed information "
+"to our Support Team. Would you like to continue and open a new support case?"
+msgstr ""
+"ບັນຫານີ້ເກີດຂຶ້ນພຽງຄັ້ງດຽວ ແລະ ຍັງບໍ່ຮູ້ວ່າຈະສາມາດເຮັດໃຫ້ເກີດຊ້ຳໄດ້ຫຼືບໍ່. ກະລຸນາໃຫ້ແນ່ໃຈວ່າທ່ານຈະສາມາດໃຫ້"
+"ຂໍ້ມູນທີ່ລະອຽດແກ່ທີມງານຊ່ວຍເຫຼືອຂອງພວກເຮົາ. ທ່ານຕ້ອງການສືບຕໍ່ ແລະ ເປີດເຄສຊ່ວຍເຫຼືອໃໝ່ບໍ່?"
+
+#: ../src/plugins/reporter-rhtsupport.c:779
+#, c-format
+msgid ""
+"The crashed program was released by '%s'. Would you like to report the "
+"problem to Red Hat Support?"
+msgstr ""
+"ໂປຣແກຣມທີ່ຂັດຂ້ອງຖືກເຜີຍແຜ່ໂດຍ '%s'. ທ່ານຕ້ອງການລາຍງານບັນຫານີ້ໄປຍັງ Red Hat Support ບໍ່?"
+
+#: ../src/plugins/reporter-rhtsupport.c:797
+#, c-format
+msgid ""
+"The program '%s' does not appear to be provided by Red Hat. Would you like "
+"to report the problem to Red Hat Support?"
+msgstr ""
+"ໂປຣແກຣມ '%s' ເບິ່ງຄືວ່າບໍ່ໄດ້ຖືກສະໜອງໃຫ້ໂດຍ Red Hat. ທ່ານຕ້ອງການລາຍງານບັນຫານີ້ໄປຍັງ Red Hat "
+"Support ບໍ່?"
+
+#. Gzipping e.g. 0.5gig coredump takes a while. Let user know what we are doing
+#. error msg is already logged by dd_opendir
+#. Compressing e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#: ../src/plugins/reporter-rhtsupport.c:861
+#: ../src/plugins/reporter-upload.c:103
+msgid "Compressing data"
+msgstr "ກຳລັງບີບອັດຂໍ້ມູນ"
+
+#: ../src/plugins/reporter-rhtsupport.c:869
+msgid "Can't create temporary file in "
+msgstr "ບໍ່ສາມາດສ້າງໄຟລ໌ຊົ່ວຄາວໃນ "
+
+#. Check for hints and show them if we have something
+#: ../src/plugins/reporter-rhtsupport.c:880
+msgid "Checking for hints"
+msgstr "ກຳລັງກວດສອບຄຳແນະນຳ (hints)"
+
+#: ../src/plugins/reporter-rhtsupport.c:885
+msgid "Creating a new case"
+msgstr "ກຳລັງສ້າງເຄສໃໝ່"
+
+#. How can we help user sorting out this problem?
+#: ../src/plugins/reporter-rhtsupport.c:896
+msgid "Can't determine RH Support Product from problem data."
+msgstr "ບໍ່ສາມາດກຳນົດຜະລິດຕະພັນ RH Support ຈາກຂໍ້ມູນບັນຫາໄດ້."
+
+#: ../src/plugins/reporter-rhtsupport.c:958
+msgid "Linking ABRT crash statistics record with the case"
+msgstr "ກຳລັງເຊື່ອມໂຍງບັນທຶກສະຖິຕິການຂັດຂ້ອງຂອງ ABRT ເຂົ້າກັບເຄສ"
+
+#: ../src/plugins/reporter-rhtsupport.c:971
+#, c-format
+msgid "Linking ABRT crash statistics record with contact email: '%s'"
+msgstr "ກຳລັງເຊື່ອມໂຍງບັນທຶກສະຖິຕິການຂັດຂ້ອງຂອງ ABRT ເຂົ້າກັບອີເມລຕິດຕໍ່: '%s'"
+
+#: ../src/plugins/reporter-rhtsupport.c:995
+#, c-format
+msgid "Adding comment to case '%s'"
+msgstr "ກຳລັງເພີ່ມຄຳເຫັນໃສ່ເຄສ '%s'"
+
+#. Attach the tarball of -d DIR
+#: ../src/plugins/reporter-rhtsupport.c:1013
+#, c-format
+msgid "Attaching problem data to case '%s'"
+msgstr "ກຳລັງແນບຂໍ້ມູນບັນຫາໃສ່ເຄສ '%s'"
+
+#: ../src/plugins/reporter-rhtsupport-parse.c:202
+msgid "Documentation which might be relevant: "
+msgstr "ເອກະສານທີ່ອາດຈະກ່ຽວຂ້ອງ: "
+
+#: ../src/plugins/reporter-rhtsupport-parse.c:210
+msgid "Updates which possibly help: "
+msgstr "ການອັບເດດທີ່ອາດຈະຊ່ວຍໄດ້: "
+
+#: ../src/plugins/reporter-systemd-journal.c:225
+msgid ""
+"& [-v] [-d DIR] [-m MESSAGEID] [-F FMTFILE] [-p NONE|ESSENTIAL|FULL] [-s "
+"SYSLOGID]\n"
+"\n"
+"Reports problem information into systemd journal.\n"
+"\n"
+"The tool reads problem directory DIR and sends its details\n"
+"into systemd journal as a message. If MESSAGEID is defined, the tool\n"
+"creates a catalog message as well.\n"
+msgstr ""
+"& [-v] [-d DIR] [-m MESSAGEID] [-F FMTFILE] [-p NONE|ESSENTIAL|FULL] [-s "
+"SYSLOGID]\n"
+"\n"
+"ລາຍງານຂໍ້ມູນບັນຫາເຂົ້າໄປໃນ systemd journal.\n"
+"\n"
+"ເຄື່ອງມືຈະອ່ານໄດເຣັກທໍຣີບັນຫາ DIR ແລະ ສົ່ງລາຍລະອຽດ\n"
+"ເຂົ້າໄປໃນ systemd journal ເປັນຂໍ້ຄວາມ. ຖ້າມີການກຳນົດ MESSAGEID, ເຄື່ອງມື\n"
+"ຈະສ້າງຂໍ້ຄວາມ catalog ພ້ອມກັນນັ້ນດ້ວຍ.\n"
+
+#: ../src/plugins/reporter-systemd-journal.c:251
+msgid "Catalog message id"
+msgstr "ໄອດີຂໍ້ຄວາມ catalog"
+
+#: ../src/plugins/reporter-systemd-journal.c:252
+msgid "Formatting file for catalog message"
+msgstr "ໄຟລ໌ຈັດຮູບແບບສຳລັບຂໍ້ຄວາມ catalog"
+
+#: ../src/plugins/reporter-systemd-journal.c:253
+msgid "Dump problem dir into systemd journal fields"
+msgstr "ນຳຂໍ້ມູນໄດເຣັກທໍຣີບັນຫາເຂົ້າໃນຊ່ອງຕ່າງໆຂອງ systemd journal"
+
+#: ../src/plugins/reporter-systemd-journal.c:254
+msgid "Define SYSLOG_IDENTIFIER systemd journal field"
+msgstr "ກຳນົດຊ່ອງ SYSLOG_IDENTIFIER ໃນ systemd journal"
+
+#: ../src/plugins/reporter-upload.c:29
+msgid "Can't continue without URL"
+msgstr "ບໍ່ສາມາດສືບຕໍ່ໄດ້ຫາກບໍ່ມີ URL"
+
+#. Be permissive and nice, ask only once and don't check
+#. the result. User can dismiss this prompt but the upload
+#. may work somehow???
+#: ../src/plugins/reporter-upload.c:51
+msgid "Please enter password for uploading:"
+msgstr "ກະລຸນາປ້ອນລະຫັດຜ່ານສຳລັບການອັບໂຫຼດ:"
+
+#. success
+#: ../src/plugins/reporter-upload.c:120
+#, c-format
+msgid "Archive is created: '%s'"
+msgstr "ສ້າງແຟ້ມຈັດເກັບແລ້ວ: '%s'"
+
+#: ../src/plugins/reporter-upload.c:156
+msgid ""
+"& [-v] -d DIR [-c CONFFILE] [-u URL] [-b FILE] [-r FILE]\n"
+"\n"
+"Uploads compressed tarball of problem directory DIR to URL.\n"
+"If URL is not specified, creates tarball in "
+msgstr ""
+"& [-v] -d DIR [-c CONFFILE] [-u URL] [-b FILE] [-r FILE]\n"
+"\n"
+"ອັບໂຫຼດ tarball ທີ່ບີບອັດແລ້ວຂອງໄດເຣັກທໍຣີບັນຫາ DIR ໄປຍັງ URL.\n"
+"ຖ້າບໍ່ໄດ້ລະບຸ URL, ຈະສ້າງ tarball ໃນ "
+
+#: ../src/plugins/reporter-upload.c:188
+msgid "Base URL to upload to"
+msgstr "URL ຫຼັກທີ່ຕ້ອງການອັບໂຫຼດໄປຫາ"
+
+#: ../src/plugins/reporter-upload.c:189
+msgid "SSH public key file"
+msgstr "ໄຟລ໌ຄີສາທາລະນະ (public key) ສຳລັບ SSH"
+
+#: ../src/plugins/reporter-upload.c:190
+msgid "SSH private key file"
+msgstr "ໄຟລ໌ຄີສ່ວນຕົວ (private key) ສຳລັບ SSH"
+
+#: ../src/plugins/reporter-upload.c:219
+msgid ""
+"Please enter a URL (scp, ftp, etc.) where the problem data is to be exported:"
+msgstr ""
+"ກະລຸນາປ້ອນ URL (scp, ftp, ແລະ ອື່ນໆ) ບ່ອນທີ່ຕ້ອງການສົ່ງອອກຂໍ້ມູນບັນຫາໄປ:"
+
+#: ../src/plugins/reporter-mantisbt.c:80
+msgid "Please enter your MantisBT login:"
+msgstr "ກະລຸນາປ້ອນຊື່ເຂົ້າສູ່ລະບົບ MantisBT ຂອງທ່ານ:"
+
+#: ../src/plugins/reporter-mantisbt.c:84
+msgid "Please enter the password for"
+msgstr "ກະລຸນາປ້ອນລະຫັດຜ່ານສຳລັບ"
+
+#: ../src/plugins/reporter-mantisbt.c:95
+msgid "Credentials are not provided by configuration."
+msgstr "ຂໍ້ມູນການເຂົ້າສູ່ລະບົບ (Credentials) ບໍ່ໄດ້ຖືກສະໜອງໃຫ້ໂດຍການຕັ້ງຄ່າ."
+
+#: ../src/plugins/reporter-mantisbt.c:119
+msgid "Invalid password or login."
+msgstr "ລະຫັດຜ່ານ ຫຼື ຊື່ເຂົ້າສູ່ລະບົບບໍ່ຖືກຕ້ອງ."
+
+#: ../src/plugins/reporter-mantisbt.c:211
+msgid ""
+"\n"
+"& [-vf] [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... [-d DIR] -t[ID] -w\n"
+"or:\n"
+"& [-v] [-c CONFFILE]... -h DUPHASH\n"
+"\n"
+"Reports problem to MantisBT.\n"
+"\n"
+"The tool reads DIR. Then it tries to find an issue\n"
+"with the same abrt_hash in custom field 'abrt_hash'.\n"
+"\n"
+"If such issue is not found, then a new issue is created. Elements of DIR\n"
+"are stored in the issue as part of issue description or as attachments,\n"
+"depending on their type and size.\n"
+"\n"
+"Otherwise, if such issue is found and it is marked as CLOSED DUPLICATE,\n"
+"the tool follows the chain of duplicates until it finds a non-DUPLICATE "
+"issue.\n"
+"The tool adds a new comment to found issue.\n"
+"\n"
+"The URL to new or modified issue is printed to stdout and recorded in\n"
+"'reported_to' element.\n"
+"\n"
+"Option -t uploads FILEs to the already created issue on MantisBT site.\n"
+"The issue ID is retrieved from directory specified by -d DIR.\n"
+"If problem data in DIR was never reported to MantisBT, upload will fail.\n"
+"\n"
+"Option -tID uploads FILEs to the issue with specified ID on MantisBT site.\n"
+"-d DIR is ignored.\n"
+"\n"
+"Option -r sets the last url from reporter_to element which is prefixed with\n"
+"TRACKER_NAME to URL field. This option is applied only when a new issue is "
+"to be\n"
+"filed. The default value is 'ABRT Server'\n"
+"\n"
+"If not specified, CONFFILE defaults to "
+msgstr ""
+"\n"
+"& [-vf] [-c CONFFILE]... [-F FMTFILE] [-A FMTFILE2] -d DIR\n"
+"ຫຼື:\n"
+"& [-v] [-c CONFFILE]... [-d DIR] -t[ID] FILE...\n"
+"ຫຼື:\n"
+"& [-v] [-c CONFFILE]... [-d DIR] -t[ID] -w\n"
+"ຫຼື:\n"
+"& [-v] [-c CONFFILE]... -h DUPHASH\n"
+"\n"
+"ລາຍງານບັນຫາໄປທີ່ MantisBT.\n"
+"\n"
+"ເຄື່ອງມືຈະອ່ານ DIR. ຫຼັງຈາກນັ້ນຈະພະຍາຍາມຊອກຫາບັນຫາ (issue)\n"
+"ທີ່ມີ abrt_hash ດຽວກັນໃນຊ່ອງຂໍ້ມູນທີ່ກຳນົດເອງ 'abrt_hash'.\n"
+"\n"
+"ຖ້າບໍ່ພົບບັນຫາດັ່ງກ່າວ, ມັນຈະສ້າງບັນຫາໃໝ່. ອົງປະກອບຂອງ DIR\n"
+"ຈະຖືກເກັບໄວ້ໃນບັນຫາເປັນສ່ວນໜຶ່ງຂອງຄຳອະທິບາຍ ຫຼື ເປັນໄຟລ໌ແນບ,\n"
+"ຂຶ້ນຢູ່ກັບປະເພດ ແລະ ຂະໜາດຂອງມັນ.\n"
+"\n"
+"ໃນທາງກັບກັນ, ຖ້າພົບບັນຫາດັ່ງກ່າວ ແລະ ມັນຖືກໝາຍເປັນ CLOSED DUPLICATE,\n"
+"ເຄື່ອງມືຈະຕິດຕາມສາຍໂສ້ຂອງບັນຫາທີ່ຊ້ຳກັນ ຈົນກວ່າຈະພົບບັນຫາທີ່ບໍ່ແມ່ນ DUPLICATE.\n"
+"ເຄື່ອງມືຈະເພີ່ມຄຳເຫັນໃໝ່ໃສ່ບັນຫາທີ່ພົບ.\n"
+"\n"
+"URL ຂອງບັນຫາໃໝ່ ຫຼື ບັນຫາທີ່ຖືກແກ້ໄຂຈະຖືກພິມອອກທີ່ stdout ແລະ ບັນທຶກໄວ້ໃນ\n"
+"ອົງປະກອບ 'reported_to'.\n"
+"\n"
+"ຕົວເລືອກ -t ຈະອັບໂຫຼດ FILEs ໄປຍັງບັນຫາທີ່ສ້າງຂຶ້ນແລ້ວໃນເວັບໄຊ MantisBT.\n"
+"ໄອດີຂອງບັນຫາຈະຖືກດຶງມາຈາກໄດເຣັກທໍຣີທີ່ລະບຸໂດຍ -d DIR.\n"
+"ຖ້າຂໍ້ມູນບັນຫາໃນ DIR ບໍ່ເຄີຍຖືກລາຍງານໄປທີ່ MantisBT ມາກ່ອນ, ການອັບໂຫຼດຈະລົ້ມເຫຼວ.\n"
+"\n"
+"ຕົວເລືອກ -tID ຈະອັບໂຫຼດ FILEs ໄປຍັງບັນຫາທີ່ມີໄອດີທີ່ລະບຸໃນເວັບໄຊ MantisBT.\n"
+"ຈະລະເວັ້ນ -d DIR.\n"
+"\n"
+"ຕົວເລືອກ -r ຈະຕັ້ງຄ່າ url ສຸດທ້າຍຈາກອົງປະກອບ reporter_to ທີ່ມີຄຳນຳໜ້າດ້ວຍ\n"
+"TRACKER_NAME ໄປຍັງຊ່ອງ URL. ຕົວເລືອກນີ້ຈະຖືກນຳໃຊ້ສະເພາະເມື່ອຈະສ້າງບັນຫາໃໝ່.\n"
+"ຄ່າເລີ່ມຕົ້ນແມ່ນ 'ABRT Server'\n"
+"\n"
+"ຖ້າບໍ່ໄດ້ລະບຸ, CONFFILE ຈະມີຄ່າເລີ່ມຕົ້ນເປັນ "
+
+#: ../src/plugins/reporter-mantisbt.c:287
+msgid "Attach FILEs [to issue with this ID]"
+msgstr "ແນບໄຟລ໌ FILEs [ໃສ່ບັນຫາທີ່ມີໄອດີນີ້]"
+
+#: ../src/plugins/reporter-mantisbt.c:326
+#, c-format
+msgid "Can't open problem dir '%s'."
+msgstr "ບໍ່ສາມາດເປີດໄດເຣັກທໍຣີບັນຫາ '%s'."
+
+#: ../src/plugins/reporter-mantisbt.c:348
+msgid "Looking for similar problems in MantisBT"
+msgstr "ກຳລັງຊອກຫາບັນຫາທີ່ຄ້າຍຄືກັນໃນ MantisBT"
+
+#: ../src/plugins/reporter-mantisbt.c:381
+msgid ""
+"Can't get MantisBT ID because this problem has not yet been reported to "
+"MantisBT."
+msgstr ""
+"ບໍ່ສາມາດດຶງໄອດີ MantisBT ໄດ້ເນື່ອງຈາກບັນຫານີ້ຍັງບໍ່ໄດ້ຖືກລາຍງານໄປທີ່ MantisBT."
+
+#: ../src/plugins/reporter-mantisbt.c:386
+#, c-format
+msgid ""
+"This problem has been reported to MantisBT '%s' which differs from the "
+"configured MantisBT '%s'."
+msgstr ""
+"ບັນຫານີ້ໄດ້ຖືກລາຍງານໄປທີ່ MantisBT '%s' ແລ້ວ ເຊິ່ງແຕກຕ່າງຈາກ MantisBT '%s' ທີ່ຕັ້ງຄ່າໄວ້."
+
+#: ../src/plugins/reporter-mantisbt.c:390
+#, c-format
+msgid "Malformed url to MantisBT '%s'."
+msgstr "ຮູບແບບ url ໄປຫາ MantisBT '%s' ບໍ່ຖືກຕ້ອງ."
+
+#: ../src/plugins/reporter-mantisbt.c:394
+#, c-format
+msgid "Using MantisBT ID '%s'"
+msgstr "ກຳລັງໃຊ້ໄອດີ MantisBT '%s'"
+
+#: ../src/plugins/reporter-mantisbt.c:402
+#, c-format
+msgid "Attaching file '%s' to issue %s"
+msgstr "ກຳລັງແນບໄຟລ໌ '%s' ໃສ່ບັນຫາ %s"
+
+#: ../src/plugins/reporter-mantisbt.c:432
+#, c-format
+msgid ""
+"This problem was already reported to MantisBT (see '%s'). Do you still want "
+"to create a new issue?"
+msgstr ""
+"ບັນຫານີ້ໄດ້ຖືກລາຍງານໄປທີ່ MantisBT ແລ້ວ (ເບິ່ງ '%s'). ທ່ານຍັງຕ້ອງການສ້າງບັນຫາໃໝ່ຢູ່ບໍ່?"
+
+#. Create new issue
+#: ../src/plugins/reporter-mantisbt.c:545
+msgid "Creating a new issue"
+msgstr "ກຳລັງສ້າງບັນຫາໃໝ່"
+
+#: ../src/plugins/reporter-mantisbt.c:550
+#, c-format
+msgid "Invalid format file: %s"
+msgstr "ໄຟລ໌ຮູບແບບບໍ່ຖືກຕ້ອງ: %s"
+
+#: ../src/plugins/reporter-mantisbt.c:554
+msgid "Failed to format problem data"
+msgstr "ບໍ່ສາມາດຈັດຮູບແບບຂໍ້ມູນບັນຫາໄດ້"
+
+#: ../src/plugins/reporter-mantisbt.c:581
+msgid "Adding External URL to issue"
+msgstr "ກຳລັງເພີ່ມ URL ພາຍນອກໃສ່ບັນຫາ"
+
+#: ../src/plugins/reporter-mantisbt.c:593
+#, c-format
+msgid "Adding attachments to issue %i"
+msgstr "ກຳລັງເພີ່ມໄຟລ໌ແນບໃສ່ບັນຫາ %i"
+
+#: ../src/plugins/reporter-mantisbt.c:648
+#, c-format
+msgid "Invalid duplicate format file: '%s"
+msgstr "ໄຟລ໌ຮູບແບບສຳລັບລາຍການທີ່ຊ້ຳກັນບໍ່ຖືກຕ້ອງ: '%s"
+
+#: ../src/plugins/reporter-mantisbt.c:652
+msgid "Failed to format duplicate comment from problem data"
+msgstr "ບໍ່ສາມາດຈັດຮູບແບບຄຳເຫັນທີ່ຊ້ຳກັນຈາກຂໍ້ມູນບັນຫາໄດ້"
+
+#: ../src/plugins/reporter-mantisbt.c:659
+#, c-format
+msgid "Adding new comment to issue %d"
+msgstr "ກຳລັງເພີ່ມຄຳເຫັນໃໝ່ໃສ່ບັນຫາ %d"
+
+#: ../src/plugins/reporter-mantisbt.c:695
+msgid "Found the same comment in the issue history, not adding a new one"
+msgstr "ພົບຄຳເຫັນທີ່ຄືກັນໃນປະຫວັດບັນຫາ, ຈະບໍ່ເພີ່ມອັນໃໝ່ເຂົ້າໄປ"
+
+#: ../src/plugins/reporter-mantisbt.c:702
+#, c-format
+msgid "Status: %s%s%s %s/view.php?id=%u"
+msgstr "ສະຖານະ: %s%s%s %s/view.php?id=%u"
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:1
+msgid "CentOS Bug Tracker"
+msgstr "ລະບົບຕິດຕາມບັກ CentOS"
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:2
+#: ../src/workflows/workflow_CentOSCCpp.xml.in.h:1
+#: ../src/workflows/workflow_CentOSJava.xml.in.h:1
+#: ../src/workflows/workflow_CentOSJavaScript.xml.in.h:1
+#: ../src/workflows/workflow_CentOSKerneloops.xml.in.h:1
+#: ../src/workflows/workflow_CentOSLibreport.xml.in.h:1
+#: ../src/workflows/workflow_CentOSPython.xml.in.h:1
+#: ../src/workflows/workflow_CentOSPython3.xml.in.h:1
+#: ../src/workflows/workflow_CentOSVmcore.xml.in.h:1
+#: ../src/workflows/workflow_CentOSXorg.xml.in.h:1
+msgid "Report to CentOS Bug Tracker"
+msgstr "ລາຍງານໄປທີ່ລະບົບຕິດຕາມບັກ CentOS"
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:4
+msgid "CentOS Bug Tracker account user name"
+msgstr "ຊື່ຜູ້ໃຊ້ບັນຊີຂອງລະບົບຕິດຕາມບັກ CentOS"
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:5
+msgid ""
+"You can create bugs.centos.org account &lt;a href=\"https://bugs.centos.org/"
+"signup_page.php\"&gt;here&lt;/a&gt;"
+msgstr ""
+"ທ່ານສາມາດສ້າງບັນຊີ bugs.centos.org &lt;a href=\"https://bugs.centos.org/"
+"signup_page.php\"&gt;ທີ່ນີ້&lt;/a&gt;"
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:7
+msgid "CentOS Bug Tracker account password"
+msgstr "ລະຫັດຜ່ານບັນຊີຂອງລະບົບຕິດຕາມບັກ CentOS"
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:9
+msgid ""
+"The issue will be accessible only to users with access to 'Private Issues'"
+msgstr ""
+"ບັນຫານີ້ຈະສາມາດເຂົ້າເຖິງໄດ້ສະເພາະຜູ້ໃຊ້ທີ່ມີສິດເຂົ້າເຖິງ 'ບັນຫາສ່ວນຕົວ (Private Issues)' ເທົ່ານັ້ນ"
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:10
+msgid "CentOS Bug Tracker URL"
+msgstr "URL ຂອງລະບົບຕິດຕາມບັກ CentOS"
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:11
+msgid "Address of CentOS Bug Tracker server"
+msgstr "ທີ່ຢູ່ຂອງເຊີບເວີລະບົບຕິດຕາມບັກ CentOS"
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:14
+msgid "CentOS Bug Tracker project"
+msgstr "ໂຄງການຂອງລະບົບຕິດຕາມບັກ CentOS"
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:15
+msgid ""
+"Specify this only if you needed different project than specified in /etc/os-"
+"release"
+msgstr ""
+"ລະບຸຄ່ານີ້ສະເພາະເມື່ອທ່ານຕ້ອງການໂຄງການທີ່ແຕກຕ່າງຈາກທີ່ລະບຸໃນ /etc/os-release"
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:16
+msgid "CentOS Bug Tracker project version"
+msgstr "ເວີຊັນໂຄງການຂອງລະບົບຕິດຕາມບັກ CentOS"
+
+#: ../src/plugins/report_CentOSBugTracker.xml.in.h:17
+msgid ""
+"Specify this only if you needed different project version than specified in /"
+"etc/os-release"
+msgstr ""
+"ລະບຸຄ່ານີ້ສະເພາະເມື່ອທ່ານຕ້ອງການເວີຊັນໂຄງການທີ່ແຕກຕ່າງຈາກທີ່ລະບຸໃນ /etc/os-release"
+
+#: ../src/plugins/report_Kerneloops.xml.in.h:1
+msgid "Kerneloops.org"
+msgstr "Kerneloops.org"
+
+#: ../src/plugins/report_Kerneloops.xml.in.h:2
+msgid "Send to kernel oops tracker"
+msgstr "ສົ່ງໄປທີ່ລະບົບຕິດຕາມ kernel oops"
+
+#: ../src/plugins/report_Kerneloops.xml.in.h:3
+msgid "Kerneloops URL"
+msgstr "URL ຂອງ Kerneloops"
+
+#: ../src/plugins/report_Kerneloops.xml.in.h:4
+msgid "Oops server url"
+msgstr "url ຂອງເຊີບເວີ Oops"
+
+#: ../src/plugins/report_Logger.xml.in.h:1
+msgid "Logger"
+msgstr "ຕົວບັນທຶກ (Logger)"
+
+#: ../src/plugins/report_Logger.xml.in.h:2
+msgid "Save as text file"
+msgstr "ບັນທຶກເປັນໄຟລ໌ຂໍ້ຄວາມ"
+
+#: ../src/plugins/report_Logger.xml.in.h:3
+msgid "Log File"
+msgstr "ໄຟລ໌ບັນທຶກ"
+
+#: ../src/plugins/report_Logger.xml.in.h:4
+msgid "Name of the logfile"
+msgstr "ຊື່ຂອງໄຟລ໌ບັນທຶກ"
+
+#: ../src/plugins/report_Logger.xml.in.h:5
+msgid "Append"
+msgstr "ຂຽນຕໍ່ທ້າຍ"
+
+#: ../src/plugins/report_Logger.xml.in.h:6
+msgid "Append new reports or overwrite the old one."
+msgstr "ຂຽນລາຍງານໃໝ່ຕໍ່ທ້າຍ ຫຼື ຂຽນທັບອັນເກົ່າ."
+
+#: ../src/plugins/report_Mailx.xml.in.h:1
+msgid "Mailx"
+msgstr "Mailx"
+
+#: ../src/plugins/report_Mailx.xml.in.h:2
+msgid "Send via email"
+msgstr "ສົ່ງຜ່ານອີເມລ"
+
+#: ../src/plugins/report_Mailx.xml.in.h:3
+msgid "Subject"
+msgstr "ຫົວຂໍ້"
+
+#: ../src/plugins/report_Mailx.xml.in.h:4
+msgid "Message subject"
+msgstr "ຫົວຂໍ້ຂໍ້ຄວາມ"
+
+#: ../src/plugins/report_Mailx.xml.in.h:5
+msgid "Sender"
+msgstr "ຜູ້ສົ່ງ"
+
+#: ../src/plugins/report_Mailx.xml.in.h:6
+msgid "Sender's email"
+msgstr "ອີເມລຂອງຜູ້ສົ່ງ"
+
+#: ../src/plugins/report_Mailx.xml.in.h:7
+msgid "Recipient"
+msgstr "ຜູ້ຮັບ"
+
+#: ../src/plugins/report_Mailx.xml.in.h:8
+msgid "Recipient's email"
+msgstr "ອີເມລຂອງຜູ້ຮັບ"
+
+#: ../src/plugins/report_Mailx.xml.in.h:9
+msgid "Send Binary Data"
+msgstr "ສົ່ງຂໍ້ມູນໄບນາຣີ"
+
+#: ../src/plugins/report_Mailx.xml.in.h:10
+msgid "Send binary files like coredump"
+msgstr "ສົ່ງໄຟລ໌ໄບນາຣີເຊັ່ນ coredump"
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:1
+#: ../src/plugins/report_RHTSupport_AddData.xml.in.h:1
+msgid "Red Hat Customer Support"
+msgstr "ບໍລິການລູກຄ້າຂອງ Red Hat"
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:2
+msgid "Report to Red Hat support"
+msgstr "ລາຍງານໄປທີ່ Red Hat support"
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:3
+msgid "Username"
+msgstr "ຊື່ຜູ້ໃຊ້"
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:4
+msgid "Red Hat customer user name"
+msgstr "ຊື່ຜູ້ໃຊ້ລູກຄ້າຂອງ Red Hat"
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:6
+msgid "Red Hat customer password"
+msgstr "ລະຫັດຜ່ານລູກຄ້າຂອງ Red Hat"
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:7
+msgid "Submit uReport"
+msgstr "ສົ່ງ uReport"
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:8
+msgid ""
+"Submit &lt;a href=\"https://access.redhat.com/articles/642323\"&gt;micro-"
+"report&lt;/a&gt; when creating a new case."
+msgstr ""
+"ສົ່ງ &lt;a href=\"https://access.redhat.com/articles/642323\"&gt;micro-"
+"report&lt;/a&gt; ເມື່ອສ້າງເຄສໃໝ່."
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:9
+msgid "RH Portal URL"
+msgstr "RH Portal URL"
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:10
+msgid "Address of the Red Hat support portal"
+msgstr "ທີ່ຢູ່ຂອງປະຕູຊ່ວຍເຫຼືອ (support portal) ຂອງ Red Hat"
+
+#: ../src/plugins/report_RHTSupport_AddData.xml.in.h:2
+msgid "Attach the data to existing Red Hat support case"
+msgstr "ແນບຂໍ້ມູນໃສ່ເຄສຊ່ວຍເຫຼືອຂອງ Red Hat ທີ່ມີຢູ່ແລ້ວ"
+
+#: ../src/plugins/report_Uploader.xml.in.h:1
+msgid "Report Uploader"
+msgstr "ຕົວອັບໂຫຼດລາຍງານ"
+
+#: ../src/plugins/report_Uploader.xml.in.h:2
+msgid "Upload as tar.gz file (via FTP/SCP/...)"
+msgstr "ອັບໂຫຼດເປັນໄຟລ໌ tar.gz (ຜ່ານ FTP/SCP/...)"
+
+#: ../src/plugins/report_Uploader.xml.in.h:3
+msgid "URL"
+msgstr "URL"
+
+#: ../src/plugins/report_Uploader.xml.in.h:4
+msgid ""
+"Where do you want to upload the tarball with report in form login:"
+"password@url"
+msgstr ""
+"ທ່ານຕ້ອງການອັບໂຫຼດ tarball ພ້ອມກັບລາຍງານໄປທີ່ໃດ ໃນຮູບແບບ login:password@url"
+
+#: ../src/plugins/report_Uploader.xml.in.h:5
+msgid ""
+"Examples:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://[user[:"
+"pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]"
+msgstr ""
+"ຕົວຢ່າງ:&#xA;ftp://[user[:pass]@]host/dir/[file.tar.gz]&#xA;scp://"
+"[user[:pass]@]host/dir/[file.tar.gz]&#xA;file:///dir/[file.tar.gz]"
+
+#: ../src/plugins/report_Uploader.xml.in.h:7
+msgid "Use this field if you do not want to have user name in URL"
+msgstr "ໃຊ້ຊ່ອງນີ້ຖ້າທ່ານບໍ່ຕ້ອງການໃຫ້ມີຊື່ຜູ້ໃຊ້ໃນ URL"
+
+#: ../src/plugins/report_Uploader.xml.in.h:9
+msgid "Use this field if you do not want to have password in URL"
+msgstr "ໃຊ້ຊ່ອງນີ້ຖ້າທ່ານບໍ່ຕ້ອງການໃຫ້ມີລະຫັດຜ່ານໃນ URL"
+
+#: ../src/plugins/report_Uploader.xml.in.h:14
+msgid "FTP Proxy"
+msgstr "FTP Proxy"
+
+#: ../src/plugins/report_Uploader.xml.in.h:15
+msgid "Sets the proxy server to use for FTP"
+msgstr "ຕັ້ງຄ່າເຊີບເວີພຣັອກຊີ (proxy) ທີ່ໃຊ້ສຳລັບ FTP"
+
+#: ../src/plugins/report_Uploader.xml.in.h:16
+msgid "SSH Public key file"
+msgstr "ໄຟລ໌ຄີສາທາລະນະ (public key) ສຳລັບ SSH"
+
+#: ../src/plugins/report_Uploader.xml.in.h:17
+msgid "Use this field to specify SSH public keyfile"
+msgstr "ໃຊ້ຊ່ອງນີ້ເພື່ອລະບຸໄຟລ໌ຄີສາທາລະນະຂອງ SSH"
+
+#: ../src/plugins/report_Uploader.xml.in.h:18
+msgid "SSH Private key file"
+msgstr "ໄຟລ໌ຄີສ່ວນຕົວ (private key) ສຳລັບ SSH"
+
+#: ../src/plugins/report_Uploader.xml.in.h:19
+msgid "Use this field to specify SSH private keyfile"
+msgstr "ໃຊ້ຊ່ອງນີ້ເພື່ອລະບຸໄຟລ໌ຄີສ່ວນຕົວຂອງ SSH"
+
+#: ../src/plugins/report_uReport.xml.in.h:1
+msgid "uReport"
+msgstr "uReport"
+
+#: ../src/plugins/report_uReport.xml.in.h:2
+msgid "Sends ureports to FAF server"
+msgstr "ສົ່ງ ureport ໄປຍັງເຊີບເວີ FAF"
+
+#: ../src/plugins/report_uReport.xml.in.h:3
+msgid "uReport Server URL"
+msgstr "URL ຂອງເຊີບເວີ uReport"
+
+#: ../src/plugins/report_uReport.xml.in.h:4
+msgid "Address of uReport webservice"
+msgstr "ທີ່ຢູ່ຂອງເວັບເຊີວິສ (webservice) uReport"
+
+#: ../src/plugins/report_uReport.xml.in.h:5
+msgid "Watch already reported bugs"
+msgstr "ຕິດຕາມບັກທີ່ຖືກລາຍງານໄປແລ້ວ"
+
+#: ../src/plugins/report_uReport.xml.in.h:6
+msgid "Adds your Bugzilla login to CC List of already reported bugs."
+msgstr ""
+"ເພີ່ມຊື່ເຂົ້າສູ່ລະບົບ Bugzilla ຂອງທ່ານເຂົ້າໃນລາຍຊື່ CC ຂອງບັກທີ່ຖືກລາຍງານໄປແລ້ວ."
+
+#: ../src/plugins/report_uReport.xml.in.h:7
+msgid "Report unpackaged problems"
+msgstr "ລາຍງານບັນຫາທີ່ບໍ່ໄດ້ຢູ່ໃນແພັກເກດ"
+
+#: ../src/plugins/report_uReport.xml.in.h:8
+msgid "Report problems coming from unpackaged executables."
+msgstr "ລາຍງານບັນຫາທີ່ມາຈາກໄຟລ໌ທີ່ສາມາດເອີ້ນໃຊ້ງານໄດ້ເຊິ່ງບໍ່ໄດ້ຢູ່ໃນແພັກເກດ."
+
+#: ../src/plugins/report_uReport.xml.in.h:9
+msgid "Contact email address"
+msgstr "ທີ່ຢູ່ອີເມລສຳລັບຕິດຕໍ່"
+
+#: ../src/plugins/report_uReport.xml.in.h:10
+msgid ""
+"Email address that can be used by ABRT server to inform you about news and "
+"updates"
+msgstr ""
+"ທີ່ຢູ່ອີເມລທີ່ເຊີບເວີ ABRT ສາມາດໃຊ້ເພື່ອແຈ້ງໃຫ້ທ່ານຊາບກ່ຽວກັບຂ່າວສານ ແລະ ການອັບເດດ"
+
+#: ../src/plugins/watch_Bugzilla.xml.in.h:1
+msgid "Watch Bugzilla Bug"
+msgstr "ຕິດຕາມບັກຂອງ Bugzilla"
+
+#: ../src/plugins/watch_Bugzilla.xml.in.h:2
+msgid "Adds your e-mail to CC List of Bugzilla bug"
+msgstr "ເພີ່ມອີເມລຂອງທ່ານເຂົ້າໃນລາຍຊື່ CC ຂອງບັກໃນ Bugzilla"
+
+#: ../src/plugins/rhbz.c:382
+#, c-format
+msgid "Looks like corrupted xml response, because '%s' member is missing."
+msgstr "ເບິ່ງຄືວ່າການຕອບສະໜອງ xml ເສຍຫາຍ ເນື່ອງຈາກຂາດສະມາຊິກ '%s'."
+
+#: ../src/plugins/rhbz.c:470
+#, c-format
+msgid "Bug %i is CLOSED, but it has no RESOLUTION"
+msgstr "ບັກ %i ຖືກປິດ (CLOSED) ແລ້ວ, ແຕ່ມັນບໍ່ມີ RESOLUTION (ການແກ້ໄຂ)"
+
+#: ../src/plugins/rhbz.c:478
+#, c-format
+msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
+msgstr "ບັກ %i ຖືກປິດເປັນ DUPLICATE (ຊ້ຳກັນ) ແລ້ວ, ແຕ່ມັນບໍ່ມີ DUP_ID"
+
+#: ../src/plugins/rhbz.c:583
+msgid ""
+"A private ticket creation has been requested, but no groups were specified, "
+"please see https://github.com/abrt/abrt/wiki/FAQ#creating-private-bugzilla-"
+"tickets for more info"
+msgstr ""
+"ມີການຮ້ອງຂໍໃຫ້ສ້າງທິກເກັດສ່ວນຕົວ ແຕ່ບໍ່ໄດ້ລະບຸກຸ່ມໃດໆ, ກະລຸນາເບິ່ງ https://github.com/abrt/abrt/"
+"wiki/FAQ#creating-private-bugzilla-tickets ສຳລັບຂໍ້ມູນເພີ່ມເຕີມ"
+
+#: ../src/plugins/rhbz.c:604
+#, c-format
+msgid "New bug id: %i"
+msgstr "ໄອດີບັກໃໝ່: %i"
+
+#: ../src/plugins/rhbz.c:725
+#, c-format
+msgid "Bugzilla couldn't find parent of bug %d"
+msgstr "Bugzilla ບໍ່ພົບໂຕຫຼັກ (parent) ຂອງບັກ %d"
+
+#: ../src/plugins/rhbz.c:873
+msgid "Bug.search(quicksearch) return value did not contain member 'bugs'"
+msgstr "ຄ່າທີ່ສົ່ງກັບມາຈາກ Bug.search(quicksearch) ບໍ່ມີສະມາຊິກ 'bugs'"
+
+#: ../src/plugins/mantisbt.c:123
+#, c-format
+msgid "MantisBT couldn't find parent of issue %d"
+msgstr "MantisBT ບໍ່ພົບໂຕຫຼັກ (parent) ຂອງບັນຫາ %d"
+
+#: ../src/plugins/mantisbt.c:180
+msgid "SOAP: Failed to get child element because of no parent."
+msgstr "SOAP: ບໍ່ສາມາດດຶງອົງປະກອບຍ່ອຍ (child) ໄດ້ເນື່ອງຈາກບໍ່ມີໂຕຫຼັກ (parent)."
+
+#: ../src/plugins/mantisbt.c:189
+msgid "SOAP: Failed to get next element because of no node."
+msgstr "SOAP: ບໍ່ສາມາດດຶງອົງປະກອບຖັດໄປໄດ້ເນື່ອງຈາກບໍ່ມີໂໜດ (node)."
+
+#: ../src/plugins/mantisbt.c:198
+msgid "SOAP: Failed to get child node because of no parent."
+msgstr "SOAP: ບໍ່ສາມາດດຶງໂໜດຍ່ອຍ (child node) ໄດ້ເນື່ອງຈາກບໍ່ມີໂຕຫຼັກ (parent)."
+
+#: ../src/plugins/mantisbt.c:219
+msgid "SOAP: Failed to parse xml during creating request."
+msgstr "SOAP: ບໍ່ສາມາດແຍກ xml ໃນລະຫວ່າງການສ້າງຄຳຮ້ອງຂໍ."
+
+#: ../src/plugins/mantisbt.c:227
+msgid "SOAP: Failed to get xml root element."
+msgstr "SOAP: ບໍ່ສາມາດດຶງອົງປະກອບ root ຂອງ xml ໄດ້."
+
+#: ../src/plugins/mantisbt.c:240
+msgid ""
+"SOAP: Failed to add a new child node because of no node or no child name."
+msgstr ""
+"SOAP: ບໍ່ສາມາດເພີ່ມໂໜດຍ່ອຍ (child node) ໃໝ່ໄດ້ເນື່ອງຈາກບໍ່ມີໂໜດ ຫຼື ບໍ່ມີຊື່ຂອງໂຕຍ່ອຍ."
+
+#: ../src/plugins/mantisbt.c:245
+msgid "SOAP: Failed to create a new xml child item."
+msgstr "SOAP: ບໍ່ສາມາດສ້າງລາຍການຍ່ອຍ (child item) ຂອງ xml ໃໝ່ໄດ້."
+
+#: ../src/plugins/mantisbt.c:250
+msgid "SOAP: Failed to create a new property."
+msgstr "SOAP: ບໍ່ສາມາດສ້າງຄຸນສົມບັດ (property) ໃໝ່ໄດ້."
+
+#: ../src/plugins/mantisbt.c:260
+msgid "SOAP: Failed to add method parametr."
+msgstr "SOAP: ບໍ່ສາມາດເພີ່ມພາຣາມິເຕີຂອງເມທອດ (method) ໄດ້."
+
+#: ../src/plugins/mantisbt.c:289
+msgid "SOAP: Failed to add new issue parametrs."
+msgstr "SOAP: ບໍ່ສາມາດເພີ່ມພາຣາມິເຕີຂອງບັນຫາໃໝ່ໄດ້."
+
+#: ../src/plugins/mantisbt.c:292
+msgid ""
+"SOAP: Failed to add new issue parameters because the required items are "
+"missing."
+msgstr "SOAP: ບໍ່ສາມາດເພີ່ມພາຣາມິເຕີຂອງບັນຫາໃໝ່ໄດ້ເນື່ອງຈາກຂາດລາຍການທີ່ຈຳເປັນ."
+
+#: ../src/plugins/mantisbt.c:336
+msgid "SOAP: Failed to create a new property in custom fields."
+msgstr "SOAP: ບໍ່ສາມາດສ້າງຄຸນສົມບັດໃໝ່ໃນຊ່ອງຂໍ້ມູນທີ່ກຳນົດເອງໄດ້."
+
+#: ../src/plugins/mantisbt.c:354
+msgid ""
+"SOAP: Failed to create SOAP string because of invalid function arguments."
+msgstr "SOAP: ບໍ່ສາມາດສ້າງສະຕຣິງ SOAP ໄດ້ເນື່ອງຈາກອາກິວເມັນຂອງຟັງຊັນບໍ່ຖືກຕ້ອງ."
+
+#: ../src/plugins/mantisbt.c:361
+msgid "SOAP: Failed to dump xml node."
+msgstr "SOAP: ບໍ່ສາມາດນຳຂໍ້ມູນໂໜດ xml ອອກມາ (dump) ໄດ້."
+
+#: ../src/plugins/mantisbt.c:375
+msgid "SOAP: Failed to print SOAP string."
+msgstr "SOAP: ບໍ່ສາມາດພິມສະຕຣິງ SOAP ໄດ້."
+
+#: ../src/plugins/mantisbt.c:382
+msgid "Failed to dump xml node."
+msgstr "ບໍ່ສາມາດນຳຂໍ້ມູນໂໜດ xml ອອກມາໄດ້."
+
+#: ../src/plugins/mantisbt.c:458
+msgid "SOAP: Failed to parse xml (searching value at depth by name)."
+msgstr "SOAP: ບໍ່ສາມາດແຍກ xml ໄດ້ (ກຳລັງຊອກຫາຄ່າໃນຄວາມເລິກຕາມຊື່)."
+
+#: ../src/plugins/mantisbt.c:462 ../src/plugins/mantisbt.c:505
+#: ../src/plugins/mantisbt.c:534
+msgid "SOAP: Failed to create xml text reader."
+msgstr "SOAP: ບໍ່ສາມາດສ້າງຕົວອ່ານຂໍ້ຄວາມ xml ໄດ້."
+
+#: ../src/plugins/mantisbt.c:501
+msgid "SOAP: Failed to parse xml."
+msgstr "SOAP: ບໍ່ສາມາດແຍກ xml ໄດ້."
+
+#: ../src/plugins/mantisbt.c:530
+msgid "SOAP: Failed to parse xml (get related to issue)."
+msgstr "SOAP: ບໍ່ສາມາດແຍກ xml ໄດ້ (ດຶງຂໍ້ມູນທີ່ກ່ຽວຂ້ອງກັບບັນຫາ)."
+
+#: ../src/plugins/mantisbt.c:647
+msgid "Url or request isn't specified."
+msgstr "ບໍ່ໄດ້ລະບຸ Url ຫຼື ຄຳຮ້ອງຂໍ."
+
+#: ../src/plugins/mantisbt.c:675
+#, c-format
+msgid "Error in HTTP POST, HTTP code: 404 (Not found), URL:'%s'"
+msgstr "ເກີດຂໍ້ຜິດພາດໃນ HTTP POST, ລະຫັດ HTTP: 404 (ບໍ່ພົບ), URL:'%s'"
+
+#: ../src/plugins/mantisbt.c:699
+#, c-format
+msgid "Error in MantisBT request at '%s': %s"
+msgstr "ເກີດຂໍ້ຜິດພາດໃນຄຳຮ້ອງຂໍຂອງ MantisBT ທີ່ '%s': %s"
+
+#: ../src/plugins/mantisbt.c:701
+#, c-format
+msgid "Error in MantisBT request at '%s'"
+msgstr "ເກີດຂໍ້ຜິດພາດໃນຄຳຮ້ອງຂໍຂອງ MantisBT ທີ່ '%s'"
+
+#: ../src/plugins/mantisbt.c:743
+#, c-format
+msgid "Failed to attach file: '%s'"
+msgstr "ບໍ່ສາມາດແນບໄຟລ໌: '%s'"
+
+#: ../src/plugins/mantisbt.c:762
+#, c-format
+msgid "Can't lseek '%s'"
+msgstr "ບໍ່ສາມາດ lseek '%s'"
+
+#: ../src/plugins/mantisbt.c:768
+#, c-format
+msgid "Can't upload '%s', it's too large (%llu bytes)"
+msgstr "ບໍ່ສາມາດອັບໂຫຼດ '%s' ໄດ້, ມັນໃຫຍ່ເກີນໄປ (%llu ໄບຕ໌)"
+
+#: ../src/plugins/mantisbt.c:778
+#, c-format
+msgid "Can't read '%s'"
+msgstr "ບໍ່ສາມາດອ່ານ '%s'"
+
+#: ../src/plugins/mantisbt.c:794
+#, c-format
+msgid "Can't open '%s'"
+msgstr "ບໍ່ສາມາດເປີດ '%s'"
+
+#: ../src/plugins/mantisbt.c:861
+#, c-format
+msgid "Failed to search MantisBT issue by duphash: '%s'"
+msgstr "ບໍ່ສາມາດຊອກຫາບັນຫາໃນ MantisBT ດ້ວຍ duphash ໄດ້: '%s'"
+
+#: ../src/plugins/mantisbt.c:906
+#, c-format
+msgid "Failed to search MantisBT duplicate issue: '%s'"
+msgstr "ບໍ່ສາມາດຊອກຫາບັນຫາທີ່ຊ້ຳກັນໃນ MantisBT ໄດ້: '%s'"
+
+#: ../src/plugins/mantisbt.c:934
+#, c-format
+msgid ""
+"MantisBT doesn't contain custom field '%s', which is required for full "
+"functionality of the reporter. Do you still want to create a new issue?"
+msgstr ""
+"MantisBT ບໍ່ມີຊ່ອງຂໍ້ມູນທີ່ກຳນົດເອງ '%s', ເຊິ່ງຈຳເປັນສຳລັບການເຮັດວຽກທີ່ສົມບູນຂອງຕົວລາຍງານ. ທ່ານຍັງຕ້"
+"ອງການສ້າງບັນຫາໃໝ່ຢູ່ບໍ່?"
+
+#: ../src/plugins/mantisbt.c:958
+#, c-format
+msgid "Failed to get custom fields for '%s' project"
+msgstr "ບໍ່ສາມາດດຶງຊ່ອງຂໍ້ມູນທີ່ກຳນົດເອງສຳລັບໂຄງການ '%s' ໄດ້"
+
+#: ../src/plugins/mantisbt.c:1002
+#, c-format
+msgid "Failed to create a new issue: '%s'"
+msgstr "ບໍ່ສາມາດສ້າງບັນຫາໃໝ່ໄດ້: '%s'"
+
+#: ../src/plugins/mantisbt.c:1028
+#, c-format
+msgid "Failed to get MantisBT issue: '%s'"
+msgstr "ບໍ່ສາມາດດຶງບັນຫາຈາກ MantisBT ໄດ້: '%s'"
+
+#: ../src/plugins/mantisbt.c:1042
+#, c-format
+msgid "Issue %i is CLOSED, but it has no RESOLUTION"
+msgstr "ບັນຫາ %i ຖືກປິດ (CLOSED) ແລ້ວ, ແຕ່ມັນບໍ່ມີ RESOLUTION (ການແກ້ໄຂ)"
+
+#: ../src/plugins/mantisbt.c:1050
+#, c-format
+msgid "Issue %i is CLOSED as DUPLICATE, but it has no DUPLICATE_ID"
+msgstr "ບັນຫາ %i ຖືກປິດເປັນ DUPLICATE (ຊ້ຳກັນ) ແລ້ວ, ແຕ່ມັນບໍ່ມີ DUPLICATE_ID"
+
+#: ../src/plugins/mantisbt.c:1087
+#, c-format
+msgid "Failed to add MantisBT issue note: '%s'"
+msgstr "ບໍ່ສາມາດເພີ່ມບັນທຶກໃສ່ບັນຫາໃນ MantisBT ໄດ້: '%s'"
+
+#: ../src/plugins/mantisbt.c:1101
+msgid "The MantisBT project has not been deretmined."
+msgstr "ຍັງບໍ່ໄດ້ກຳນົດໂຄງການ MantisBT."
+
+#: ../src/plugins/mantisbt.c:1113
+msgid "Failed to get project id from name"
+msgstr "ບໍ່ສາມາດດຶງໄອດີໂຄງການຈາກຊື່ໄດ້"
+
+#: ../src/plugins/reporter-ureport.c:75
+msgid "Specify server URL"
+msgstr "ລະບຸ URL ຂອງເຊີບເວີ"
+
+#: ../src/plugins/reporter-ureport.c:77
+msgid "Allow insecure connection to ureport server"
+msgstr "ອະນຸຍາດໃຫ້ເຊື່ອມຕໍ່ແບບບໍ່ປອດໄພໄປຍັງເຊີບເວີ ureport"
+
+#: ../src/plugins/reporter-ureport.c:78
+msgid "Use client authentication"
+msgstr "ໃຊ້ການຢືນຢັນຕົວຕົນຂອງໄຄຼເອນ (client authentication)"
+
+#: ../src/plugins/reporter-ureport.c:79
+msgid "Use HTTP Authentication"
+msgstr "ໃຊ້ການຢືນຢັນຕົວຕົນແບບ HTTP"
+
+#: ../src/plugins/reporter-ureport.c:80
+msgid "Additional files included in 'auth' key"
+msgstr "ໄຟລ໌ເພີ່ມເຕີມທີ່ລວມຢູ່ໃນຄີ 'auth'"
+
+#: ../src/plugins/reporter-ureport.c:83
+msgid "bthash of uReport to attach (conflicts with -A)"
+msgstr "bthash ຂອງ uReport ທີ່ຈະແນບ (ຂັດແຍ່ງກັບ -A)"
+
+#: ../src/plugins/reporter-ureport.c:85
+msgid "attach to a bthash from reported_to (conflicts with -a)"
+msgstr "ແນບໃສ່ bthash ຈາກ reported_to (ຂັດແຍ່ງກັບ -a)"
+
+#: ../src/plugins/reporter-ureport.c:87
+msgid "contact e-mail address (requires -a|-A, conflicts with -E)"
+msgstr "ທີ່ຢູ່ອີເມລຕິດຕໍ່ (ຕ້ອງການ -a|-A, ຂັດແຍ່ງກັບ -E)"
+
+#: ../src/plugins/reporter-ureport.c:89
+msgid ""
+"contact e-mail address from environment or configuration file (requires -a|-"
+"A, conflicts with -e)"
+msgstr ""
+"ທີ່ຢູ່ອີເມລຕິດຕໍ່ຈາກຕົວແປສະພາບແວດລ້ອມ ຫຼື ໄຟລ໌ການຕັ້ງຄ່າ (ຕ້ອງການ -a|-A, ຂັດແຍ່ງກັບ -e)"
+
+#: ../src/plugins/reporter-ureport.c:91
+msgid "attach RHBZ bug (requires -a|-A, conflicts with -B)"
+msgstr "ແນບບັກ RHBZ (ຕ້ອງການ -a|-A, ຂັດແຍ່ງກັບ -B)"
+
+#: ../src/plugins/reporter-ureport.c:93
+msgid ""
+"attach last RHBZ bug from reported_to (requires -a|-A, conflicts with -b)"
+msgstr "ແນບບັກ RHBZ ລ່າສຸດຈາກ reported_to (ຕ້ອງການ -a|-A, ຂັດແຍ່ງກັບ -b)"
+
+#: ../src/plugins/reporter-ureport.c:95
+msgid "attach short text (requires -a|-A, conflicts with -D)"
+msgstr "ແນບຂໍ້ຄວາມສັ້ນ (ຕ້ອງການ -a|-A, ຂັດແຍ່ງກັບ -D)"
+
+#: ../src/plugins/reporter-ureport.c:97
+msgid "attach short text from comment (requires -a|-A, conflicts with -d)"
+msgstr "ແນບຂໍ້ຄວາມສັ້ນຈາກຄຳເຫັນ (ຕ້ອງການ -a|-A, ຂັດແຍ່ງກັບ -d)"
+
+#: ../src/plugins/reporter-ureport.c:101
+msgid "attach value (requires -a|-A and -T, conflicts with -L)"
+msgstr "ແນບຄ່າ (ຕ້ອງການ -a|-A ແລະ -T, ຂັດແຍ່ງກັບ -L)"
+
+#: ../src/plugins/reporter-ureport.c:103
+msgid ""
+"attach data of FIELD [URL] of the last report result (requires -a|-A, -r and "
+"-T, conflicts with -l)"
+msgstr ""
+"ແນບຂໍ້ມູນຂອງ FIELD [URL] ຂອງຜົນການລາຍງານລ່າສຸດ (ຕ້ອງການ -a|-A, -r ແລະ -T, ຂັດແຍ່ງກັບ -"
+"l)"
+
+#: ../src/plugins/reporter-ureport.c:106
+msgid ""
+"use REPORT_RESULT_TYPE when looking for FIELD in reported_to (used only with "
+"-L)"
+msgstr ""
+"ໃຊ້ REPORT_RESULT_TYPE ເມື່ອຊອກຫາ FIELD ໃນ reported_to (ໃຊ້ສະເພາະກັບ -L)"
+
+#: ../src/plugins/reporter-ureport.c:108
+msgid ""
+"attach DATA as ureport attachment ATTACHMENT_TYPE (used only with -l|-L)"
+msgstr "ແນບ DATA ເປັນໄຟລ໌ແນບຂອງ ureport ATTACHMENT_TYPE (ໃຊ້ສະເພາະກັບ -l|-L)"
+
+#: ../src/plugins/reporter-ureport.c:113
+msgid ""
+"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS]\n"
+"  [-A -a bthash -B -b bug-id -E -e email -O -o comment] [-d DIR]\n"
+"  [-A -a bthash -T ATTACHMENT_TYPE -r REPORT_RESULT_TYPE -L RESULT_FIELD] [-"
+"d DIR]\n"
+"  [-A -a bthash -T ATTACHMENT_TYPE -l DATA] [-d DIR]\n"
+"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-i AUTH_ITEMS] "
+"[-d DIR]\n"
+"\n"
+"Upload micro report or add an attachment to a micro report\n"
+"\n"
+"Reads the default configuration from "
+msgstr ""
+"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS]\n"
+"  [-A -a bthash -B -b bug-id -E -e email -O -o comment] [-d DIR]\n"
+"  [-A -a bthash -T ATTACHMENT_TYPE -r REPORT_RESULT_TYPE -L RESULT_FIELD] [-"
+"d DIR]\n"
+"  [-A -a bthash -T ATTACHMENT_TYPE -l DATA] [-d DIR]\n"
+"& [-v] [-c FILE] [-u URL] [-k] [-t SOURCE] [-h CREDENTIALS] [-i AUTH_ITEMS] "
+"[-d DIR]\n"
+"\n"
+"ອັບໂຫຼດ micro report ຫຼື ເພີ່ມໄຟລ໌ແນບໃສ່ micro report\n"
+"\n"
+"ອ່ານການຕັ້ງຄ່າເລີ່ມຕົ້ນຈາກ "
+
+#: ../src/plugins/reporter-ureport.c:191
+msgid "This problem does not have an uReport assigned."
+msgstr "ບັນຫານີ້ບໍ່ມີ uReport ທີ່ຖືກກຳນົດໄວ້."
+
+#: ../src/plugins/reporter-ureport.c:212
+msgid "This problem has not been reported to Bugzilla."
+msgstr "ບັນຫານີ້ຍັງບໍ່ໄດ້ຖືກລາຍງານໄປທີ່ Bugzilla."
+
+#: ../src/plugins/reporter-ureport.c:218
+#, c-format
+msgid "Unable to find bug ID in bugzilla URL '%s'"
+msgstr "ບໍ່ພົບໄອດີບັກໃນ Bugzilla URL '%s'"
+
+#: ../src/plugins/reporter-ureport.c:223
+#, c-format
+msgid "Unable to parse bug ID from bugzilla URL '%s'"
+msgstr "ບໍ່ສາມາດແຍກໄອດີບັກຈາກ Bugzilla URL '%s' ໄດ້"
+
+#: ../src/plugins/reporter-ureport.c:230
+msgid "Cannot attach comment from 'comment' file"
+msgstr "ບໍ່ສາມາດແນບຄຳເຫັນຈາກໄຟລ໌ 'comment' ໄດ້"
+
+#: ../src/plugins/reporter-ureport.c:232
+msgid "'comment' file is empty"
+msgstr "ໄຟລ໌ 'comment' ຫວ່າງເປົ່າ"
+
+#: ../src/plugins/reporter-ureport.c:243
+#, c-format
+msgid "This problem has not been reported to '%s'."
+msgstr "ບັນຫານີ້ຍັງບໍ່ໄດ້ຖືກລາຍງານໄປທີ່ '%s'."
+
+#: ../src/plugins/reporter-ureport.c:251
+#, c-format
+msgid "The report result '%s' is missing URL."
+msgstr "ຜົນການລາຍງານ '%s' ຂາດ URL."
+
+#: ../src/plugins/reporter-ureport.c:267
+msgid ""
+"Neither environment variable 'uReport_ContactEmail' nor configuration option "
+"'ContactEmail' is set"
+msgstr ""
+"ບໍ່ໄດ້ຕັ້ງຄ່າຕົວແປສະພາບແວດລ້ອມ 'uReport_ContactEmail' ຫຼື ຕົວເລືອກການຕັ້ງຄ່າ 'ContactEmail' "
+"ໄວ້"
+
+#: ../src/plugins/reporter-ureport.c:273
+msgid "You need to specify bug ID, contact email, comment or all of them"
+msgstr "ທ່ານຕ້ອງລະບຸໄອດີບັກ, ອີເມລຕິດຕໍ່, ຄຳເຫັນ ຫຼື ທັງໝົດນີ້"
+
+#: ../src/plugins/reporter-ureport.c:303
+msgid "You need to specify bthash of the uReport to attach."
+msgstr "ທ່ານຕ້ອງລະບຸ bthash ຂອງ uReport ທີ່ຈະແນບ."
+
+#: ../src/plugins/reporter-ureport.c:332
+msgid "This problem has already been reported."
+msgstr "ບັນຫານີ້ໄດ້ຖືກລາຍງານໄປແລ້ວ."
+
+#: ../src/report-newt/report-newt.c:55
+msgid "How would you like to report the problem?"
+msgstr "ທ່ານຕ້ອງການລາຍງານບັນຫານີ້ແນວໃດ?"
+
+#: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:145
+#: ../src/report-newt/report-newt.c:168 ../src/report-newt/report-newt.c:258
+#: ../src/report-newt/report-newt.c:334 ../src/report-newt/report-newt.c:356
+msgid "Ok"
+msgstr "ຕົກລົງ"
+
+#: ../src/report-newt/report-newt.c:68 ../src/report-newt/report-newt.c:145
+msgid "Cancel"
+msgstr "ຍົກເລີກ"
+
+#: ../src/report-newt/report-newt.c:168 ../src/report-newt/report-newt.c:334
+msgid "Error"
+msgstr "ຂໍ້ຜິດພາດ"
+
+#: ../src/report-newt/report-newt.c:255
+msgid "Reporting"
+msgstr "ກຳລັງລາຍງານ"
+
+#: ../src/report-newt/report-newt.c:275
+#, c-format
+msgid "--- Running %s ---"
+msgstr "--- ກຳລັງແລ່ນ %s ---"
+
+#: ../src/report-newt/report-newt.c:356
+msgid "No reporters available"
+msgstr "ບໍ່ມີຕົວລາຍງານ (reporters) ໃຫ້ໃຊ້"
+
+#: ../src/report-newt/report-newt.c:386
+msgid ""
+"& [-d] DIR\n"
+"\n"
+"newt tool to report problem saved in specified DIR"
+msgstr ""
+"& [-d] DIR\n"
+"\n"
+"ເຄື່ອງມື newt ສຳລັບລາຍງານບັນຫາທີ່ບັນທຶກໄວ້ໃນ DIR ທີ່ລະບຸ"
+
+#: ../src/report-newt/report-newt.c:396
+msgid "Remove DIR after reporting"
+msgstr "ລຶບ DIR ຫຼັງຈາກການລາຍງານແລ້ວ"
+
+#: ../src/workflows/workflow_AnacondaFedora.xml.in.h:1
+msgid "Report a bug to Fedora maintainers"
+msgstr "ລາຍງານບັກໄປໃຫ້ນັກພັດທະນາ/ຜູ້ຮັກສາ Fedora"
+
+#: ../src/workflows/workflow_AnacondaFedora.xml.in.h:2
+msgid "Process the report using the Fedora infrastructure"
+msgstr "ປະມວນຜົນລາຍງານໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ Fedora"
+
+#: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:1
+msgid "Report a bug to Red Hat Customer Portal"
+msgstr "ລາຍງານບັກໄປທີ່ປະຕູລູກຄ້າ (Customer Portal) ຂອງ Red Hat"
+
+#: ../src/workflows/workflow_AnacondaRHEL.xml.in.h:2
+#: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:2
+msgid "Process the report using the Red Hat infrastructure"
+msgstr "ປະມວນຜົນລາຍງານໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ Red Hat"
+
+#: ../src/workflows/workflow_AnacondaRHELBugzilla.xml.in.h:1
+msgid "Report a bug to Red Hat Bugzilla"
+msgstr "ລາຍງານບັກໄປທີ່ Bugzilla ຂອງ Red Hat"
+
+#: ../src/workflows/workflow_AnacondaUpload.xml.in.h:1
+msgid "Export the problem data for manual reporting"
+msgstr "ສົ່ງອອກຂໍ້ມູນບັນຫາສຳລັບການລາຍງານດ້ວຍຕົນເອງ"
+
+#: ../src/workflows/workflow_AnacondaUpload.xml.in.h:2
+msgid "Upload the data via scp or ftp to a remote destination"
+msgstr "ອັບໂຫຼດຂໍ້ມູນຜ່ານ scp ຫຼື ftp ໄປຍັງປາຍທາງທາງໄກ"
+
+#: ../src/workflows/workflow_CentOSCCpp.xml.in.h:2
+msgid "Process the C/C++ crash using the CentOS infrastructure"
+msgstr "ປະມວນຜົນການຂັດຂ້ອງຂອງ C/C++ ໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ CentOS"
+
+#: ../src/workflows/workflow_CentOSJava.xml.in.h:2
+msgid "Process the Java exception using the CentOS infrastructure"
+msgstr "ປະມວນຜົນຂໍ້ຜິດພາດ (exception) ຂອງ Java ໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ CentOS"
+
+#: ../src/workflows/workflow_CentOSJavaScript.xml.in.h:2
+msgid "Process the JavaScript exception using the CentOS infrastructure"
+msgstr ""
+"ປະມວນຜົນຂໍ້ຜິດພາດ (exception) ຂອງ JavaScript ໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ CentOS"
+
+#: ../src/workflows/workflow_CentOSKerneloops.xml.in.h:2
+msgid "Process the kerneloops using the CentOS infrastructure"
+msgstr "ປະມວນຜົນ kerneloops ໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ CentOS"
+
+#: ../src/workflows/workflow_CentOSLibreport.xml.in.h:2
+msgid "Process the problem using the CentOS infrastructure"
+msgstr "ປະມວນຜົນບັນຫາໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ CentOS"
+
+#: ../src/workflows/workflow_CentOSPython.xml.in.h:2
+msgid "Process the python exception using the CentOS infrastructure"
+msgstr ""
+"ປະມວນຜົນຂໍ້ຜິດພາດ (exception) ຂອງ python ໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ CentOS"
+
+#: ../src/workflows/workflow_CentOSPython3.xml.in.h:2
+msgid "Process the python 3 exception using the CentOS infrastructure"
+msgstr ""
+"ປະມວນຜົນຂໍ້ຜິດພາດ (exception) ຂອງ python 3 ໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ CentOS"
+
+#: ../src/workflows/workflow_CentOSVmcore.xml.in.h:2
+msgid "Process the kernel crash using the CentOS infrastructure"
+msgstr "ປະມວນຜົນການຂັດຂ້ອງຂອງ kernel ໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ CentOS"
+
+#: ../src/workflows/workflow_CentOSXorg.xml.in.h:2
+msgid "Process the X Server problem using the CentOS infrastructure"
+msgstr "ປະມວນຜົນບັນຫາຂອງ X Server ໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ CentOS"
+
+#: ../src/workflows/workflow_FedoraCCpp.xml.in.h:1
+#: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:1
+#: ../src/workflows/workflow_FedoraPython.xml.in.h:1
+#: ../src/workflows/workflow_FedoraPython3.xml.in.h:1
+#: ../src/workflows/workflow_FedoraVmcore.xml.in.h:1
+#: ../src/workflows/workflow_FedoraXorg.xml.in.h:1
+#: ../src/workflows/workflow_FedoraLibreport.xml.in.h:1
+#: ../src/workflows/workflow_FedoraJava.xml.in.h:1
+#: ../src/workflows/workflow_FedoraJavaScript.xml.in.h:1
+msgid "Report to Fedora"
+msgstr "ລາຍງານໄປທີ່ Fedora"
+
+#: ../src/workflows/workflow_FedoraCCpp.xml.in.h:2
+msgid "Process the C/C++ crash using the Fedora infrastructure"
+msgstr "ປະມວນຜົນການຂັດຂ້ອງຂອງ C/C++ ໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ Fedora"
+
+#: ../src/workflows/workflow_FedoraKerneloops.xml.in.h:2
+msgid "Process the kerneloops using the Fedora infrastructure"
+msgstr "ປະມວນຜົນ kerneloops ໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ Fedora"
+
+#: ../src/workflows/workflow_FedoraPython.xml.in.h:2
+msgid "Process the python exception using the Fedora infrastructure"
+msgstr ""
+"ປະມວນຜົນຂໍ້ຜິດພາດ (exception) ຂອງ python ໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ Fedora"
+
+#: ../src/workflows/workflow_FedoraPython3.xml.in.h:2
+msgid "Process the python 3 exception using the Fedora infrastructure"
+msgstr ""
+"ປະມວນຜົນຂໍ້ຜິດພາດ (exception) ຂອງ python 3 ໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ Fedora"
+
+#: ../src/workflows/workflow_FedoraVmcore.xml.in.h:2
+msgid "Process the kernel crash using the Fedora infrastructure"
+msgstr "ປະມວນຜົນການຂັດຂ້ອງຂອງ kernel ໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ Fedora"
+
+#: ../src/workflows/workflow_FedoraXorg.xml.in.h:2
+msgid "Process the X Server problem using the Fedora infrastructure"
+msgstr "ປະມວນຜົນບັນຫາຂອງ X Server ໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ Fedora"
+
+#: ../src/workflows/workflow_FedoraLibreport.xml.in.h:2
+msgid "Process the problem using the Fedora infrastructure"
+msgstr "ປະມວນຜົນບັນຫາໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ Fedora"
+
+#: ../src/workflows/workflow_FedoraJava.xml.in.h:2
+msgid "Process the Java exception using the Fedora infrastructure"
+msgstr "ປະມວນຜົນຂໍ້ຜິດພາດ (exception) ຂອງ Java ໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ Fedora"
+
+#: ../src/workflows/workflow_FedoraJavaScript.xml.in.h:2
+msgid "Process the JavaScript exception using the Fedora infrastructure"
+msgstr ""
+"ປະມວນຜົນຂໍ້ຜິດພາດ (exception) ຂອງ JavaScript ໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ Fedora"
+
+#: ../src/workflows/workflow_LoggerCCpp.xml.in.h:1
+#: ../src/workflows/workflow_Logger.xml.in.h:1
+msgid "Export the problem data information to a text file"
+msgstr "ສົ່ງອອກຂໍ້ມູນບັນຫາໄປເປັນໄຟລ໌ຂໍ້ຄວາມ"
+
+#: ../src/workflows/workflow_LoggerCCpp.xml.in.h:2
+#: ../src/workflows/workflow_Logger.xml.in.h:2
+msgid ""
+"Analyze the problem locally and export the problem data information to a "
+"text file"
+msgstr "ວິເຄາະບັນຫາໃນເຄື່ອງ ແລະ ສົ່ງອອກຂໍ້ມູນບັນຫາໄປເປັນໄຟລ໌ຂໍ້ຄວາມ"
+
+#: ../src/workflows/workflow_MailxCCpp.xml.in.h:1
+#: ../src/workflows/workflow_Mailx.xml.in.h:1
+msgid "Send the problem data via email"
+msgstr "ສົ່ງຂໍ້ມູນບັນຫາຜ່ານທາງອີເມລ"
+
+#: ../src/workflows/workflow_MailxCCpp.xml.in.h:2
+#: ../src/workflows/workflow_Mailx.xml.in.h:2
+msgid "Analyze the problem locally and send information via email"
+msgstr "ວິເຄາະບັນຫາໃນເຄື່ອງ ແລະ ສົ່ງຂໍ້ມູນຜ່ານທາງອີເມລ"
+
+#: ../src/workflows/workflow_UploadCCpp.xml.in.h:1
+#: ../src/workflows/workflow_Upload.xml.in.h:1
+msgid "Upload the problem data to a server"
+msgstr "ອັບໂຫຼດຂໍ້ມູນບັນຫາໄປຍັງເຊີບເວີ"
+
+#: ../src/workflows/workflow_UploadCCpp.xml.in.h:2
+#: ../src/workflows/workflow_Upload.xml.in.h:2
+msgid "Analyze the problem locally and upload the data via scp or ftp"
+msgstr "ວິເຄາະບັນຫາໃນເຄື່ອງ ແລະ ອັບໂຫຼດຂໍ້ມູນຜ່ານ scp ຫຼື ftp"
+
+#: ../src/workflows/workflow_uReport.xml.in.h:1
+msgid "Submit anonymous crash report"
+msgstr "ສົ່ງລາຍງານການຂັດຂ້ອງແບບບໍ່ລະບຸຕົວຕົນ"
+
+#: ../src/workflows/workflow_uReport.xml.in.h:2
+msgid ""
+"Submit anonymous crash report - I do not want to be contacted by Red Hat "
+"Support"
+msgstr ""
+"ສົ່ງລາຍງານການຂັດຂ້ອງແບບບໍ່ລະບຸຕົວຕົນ - ຂ້ອຍບໍ່ຕ້ອງການໃຫ້ Red Hat Support ຕິດຕໍ່ກັບມາ"
+
+#: ../src/workflows/workflow_RHELCCpp.xml.in.h:1
+#: ../src/workflows/workflow_RHELKerneloops.xml.in.h:1
+#: ../src/workflows/workflow_RHELPython.xml.in.h:1
+#: ../src/workflows/workflow_RHELvmcore.xml.in.h:1
+#: ../src/workflows/workflow_RHELxorg.xml.in.h:1
+#: ../src/workflows/workflow_RHELLibreport.xml.in.h:1
+#: ../src/workflows/workflow_RHELJava.xml.in.h:1
+#: ../src/workflows/workflow_RHELJavaScript.xml.in.h:1
+msgid "Ask Red Hat Support for help"
+msgstr "ຂໍຄວາມຊ່ວຍເຫຼືອຈາກ Red Hat Support"
+
+#: ../src/workflows/workflow_RHELCCpp.xml.in.h:2
+#: ../src/workflows/workflow_RHELKerneloops.xml.in.h:2
+#: ../src/workflows/workflow_RHELPython.xml.in.h:2
+#: ../src/workflows/workflow_RHELvmcore.xml.in.h:2
+#: ../src/workflows/workflow_RHELxorg.xml.in.h:2
+#: ../src/workflows/workflow_RHELLibreport.xml.in.h:2
+#: ../src/workflows/workflow_RHELJava.xml.in.h:2
+#: ../src/workflows/workflow_RHELJavaScript.xml.in.h:2
+msgid ""
+"Create new Red Hat Support case - I would like to be contacted by Red Hat "
+"Support"
+msgstr ""
+"ສ້າງເຄສຊ່ວຍເຫຼືອໃໝ່ກັບ Red Hat - ຂ້ອຍຕ້ອງການໃຫ້ Red Hat Support ຕິດຕໍ່ກັບມາ"
+
+#: ../src/workflows/workflow_RHELAddDataCCpp.xml.in.h:1
+#: ../src/workflows/workflow_RHELAddDataJava.xml.in.h:1
+#: ../src/workflows/workflow_RHELAddDataKerneloops.xml.in.h:1
+#: ../src/workflows/workflow_RHELAddDataLibreport.xml.in.h:1
+#: ../src/workflows/workflow_RHELAddDataPython.xml.in.h:1
+#: ../src/workflows/workflow_RHELAddDatavmcore.xml.in.h:1
+#: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:1
+#: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:1
+msgid "Attach crash data to an existing Red Hat support case"
+msgstr "ແນບຂໍ້ມູນການຂັດຂ້ອງໃສ່ເຄສຊ່ວຍເຫຼືອຂອງ Red Hat ທີ່ມີຢູ່ແລ້ວ"
+
+#: ../src/workflows/workflow_RHELAddDataCCpp.xml.in.h:2
+#: ../src/workflows/workflow_RHELAddDataJava.xml.in.h:2
+#: ../src/workflows/workflow_RHELAddDataKerneloops.xml.in.h:2
+#: ../src/workflows/workflow_RHELAddDataLibreport.xml.in.h:2
+#: ../src/workflows/workflow_RHELAddDataPython.xml.in.h:2
+#: ../src/workflows/workflow_RHELAddDatavmcore.xml.in.h:2
+#: ../src/workflows/workflow_RHELAddDataxorg.xml.in.h:2
+#: ../src/workflows/workflow_RHELAddDataJavaScript.xml.in.h:2
+msgid "Provide Red Hat Support with crash details"
+msgstr "ສະໜອງລາຍລະອຽດການຂັດຂ້ອງໃຫ້ແກ່ Red Hat Support"
+
+#: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:1
+#: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:1
+#: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:1
+#: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:1
+#: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:1
+#: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:1
+#: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:1
+#: ../src/workflows/workflow_RHELBugzillaJavaScript.xml.in.h:1
+msgid "Report to Red Hat Bugzilla"
+msgstr "ລາຍງານໄປທີ່ Red Hat Bugzilla"
+
+#: ../src/workflows/workflow_RHELBugzillaCCpp.xml.in.h:2
+msgid "Process the C/C++ crash using the Red Hat infrastructure"
+msgstr "ປະມວນຜົນການຂັດຂ້ອງຂອງ C/C++ ໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ Red Hat"
+
+#: ../src/workflows/workflow_RHELBugzillaKerneloops.xml.in.h:2
+msgid "Process the kerneloops using the Red Hat infrastructure"
+msgstr "ປະມວນຜົນ kerneloops ໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ Red Hat"
+
+#: ../src/workflows/workflow_RHELBugzillaPython.xml.in.h:2
+msgid "Process the python exception using the Red Hat infrastructure"
+msgstr ""
+"ປະມວນຜົນຂໍ້ຜິດພາດ (exception) ຂອງ python ໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ Red Hat"
+
+#: ../src/workflows/workflow_RHELBugzillaVmcore.xml.in.h:2
+msgid "Process the kernel crash using the Red Hat infrastructure"
+msgstr "ປະມວນຜົນການຂັດຂ້ອງຂອງ kernel ໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ Red Hat"
+
+#: ../src/workflows/workflow_RHELBugzillaXorg.xml.in.h:2
+msgid "Process the X Server problem using the Red Hat infrastructure"
+msgstr "ປະມວນຜົນບັນຫາຂອງ X Server ໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ Red Hat"
+
+#: ../src/workflows/workflow_RHELBugzillaLibreport.xml.in.h:2
+msgid "Process the problem using the Red Hat infrastructure"
+msgstr "ປະມວນຜົນບັນຫາໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ Red Hat"
+
+#: ../src/workflows/workflow_RHELBugzillaJava.xml.in.h:2
+msgid "Process the Java exception using the Red Hat infrastructure"
+msgstr ""
+"ປະມວນຜົນຂໍ້ຜິດພາດ (exception) ຂອງ Java ໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ Red Hat"
+
+#: ../src/workflows/workflow_RHELBugzillaJavaScript.xml.in.h:2
+msgid "Process the JavaScript exception using the Red Hat infrastructure"
+msgstr ""
+"ປະມວນຜົນຂໍ້ຜິດພາດ (exception) ຂອງ JavaScript ໂດຍນຳໃຊ້ໂຄງສ້າງພື້ນຖານຂອງ Red Hat"

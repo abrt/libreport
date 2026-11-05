@@ -18,16 +18,17 @@
 # Luca Ciavatta <luca.ciavatta@gmail.com>, 2017. #zanata
 # Luigi Toscano <luigi.toscano@tiscali.it>, 2017. #zanata
 # Agostino Montanaro <telometto@protonmail.com>, 2021.
-# Nathan <nathan95@live.it>, 2023.
+# Nathan <nathan95@live.it>, 2023, 2025, 2026.
 # Alessandro Bugliazzini <yattatux@posteo.net>, 2024.
-# Salvatore Cocuzza <info@salvatorecocuzza.it>, 2024.
+# Salvatore Cocuzza <info@salvatorecocuzza.it>, 2024, 2025.
+# Ali Ciloqlu <ali.ciloqlu@murena.io>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-09 10:42+0100\n"
-"PO-Revision-Date: 2024-12-24 03:20+0000\n"
-"Last-Translator: Salvatore Cocuzza <info@salvatorecocuzza.it>\n"
+"PO-Revision-Date: 2026-04-09 14:59+0000\n"
+"Last-Translator: Nathan <nathan95@live.it>\n"
 "Language-Team: Italian <https://translate.fedoraproject.org/projects/abrt/"
 "libreport/it/>\n"
 "Language: it\n"
@@ -35,7 +36,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.9.1\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #: ../src/cli/cli.c:66
 msgid ""
@@ -73,7 +74,7 @@ msgstr "Mostra versione ed esci"
 #: ../src/cli/cli.c:94
 msgid "Noninteractive: don't ask questions, assume 'yes'"
 msgstr ""
-"Noninteractive: nessuna conferma richiesta, assume sempre 'sì' come risposta "
+"Noninteractive: nessuna conferma richiesta, assume sempre 'sì' come risposta"
 
 #: ../src/cli/cli.c:96
 msgid "Log to syslog"
@@ -196,11 +197,11 @@ msgstr "Input invalido, uscita in corso."
 
 #: ../src/cli/cli-report.c:744
 msgid "Select an event to run: "
-msgstr "Selezionare un evento da lanciare:"
+msgstr "Selezionare un evento da lanciare: "
 
 #: ../src/cli/cli-report.c:878
 msgid "Select a workflow to run: "
-msgstr "Seleziona un flusso di lavoro da eseguire:"
+msgstr "Seleziona un flusso di lavoro da eseguire: "
 
 #: ../src/client-python/reportclient/debuginfo.py:100
 #, python-brace-format
@@ -255,7 +256,7 @@ msgstr "Ricerca nei repositori dei pacchetti necessari"
 #: ../src/client-python/reportclient/debuginfo.py:347
 #, python-brace-format
 msgid "Can't find packages for {0} debuginfo files"
-msgstr "Impossibile trovare i pacchetti per {0} file di debuginfo "
+msgstr "Impossibile trovare i pacchetti per {0} file di debuginfo"
 
 #: ../src/client-python/reportclient/debuginfo.py:350
 #, python-brace-format
@@ -335,7 +336,7 @@ msgid ""
 "Problem '{0!s}' occured while downloading from mirror: '{1!s}'. Trying next "
 "one"
 msgstr ""
-"Il problema '{0!s}' è apparso mentre si scarica dal mirror:  '{1!s}'. Si "
+"Il problema '{0!s}' è apparso mentre si scarica dal mirror: '{1!s}'. Si "
 "prova con il successivo"
 
 #: ../src/client-python/reportclient/yumdebuginfo.py:100
@@ -491,7 +492,7 @@ msgstr "Metodo ReadAlias('%s') del Servizio Secrets di D-Bus fallito: %s"
 #: ../src/gtk-helpers/secrets.c:1104
 #, c-format
 msgid "Can't create a secret item for event '%s': %s"
-msgstr "Impossibile creare un elemento segreto per l'evento  '%s': %s"
+msgstr "Impossibile creare un elemento segreto per l'evento '%s': %s"
 
 #: ../src/gtk-helpers/secrets.c:1286
 #, c-format
@@ -617,7 +618,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.c:1689
 msgid "Processing was interrupted because the problem is not reportable."
-msgstr "L'analisi è stata interrotta perchè il problema non è segnalabile"
+msgstr "L'analisi è stata interrotta perchè il problema non è segnalabile."
 
 #: ../src/gui-wizard-gtk/wizard.c:1699 ../src/gui-wizard-gtk/wizard.c:1773
 msgid "Processing failed."
@@ -765,7 +766,7 @@ msgstr "Elaborazione"
 
 #: ../src/gui-wizard-gtk/wizard.c:3168
 msgid "Processing done"
-msgstr "Elaborazione eseguita."
+msgstr "Elaborazione eseguita"
 
 #: ../src/gui-wizard-gtk/wizard.c:3208
 msgid "_Stop"
@@ -826,7 +827,7 @@ msgstr "dati"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "Search"
-msgstr "Cerca"
+msgstr "Ricerca"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid ""
@@ -1182,7 +1183,7 @@ msgstr "Il server in '%s' ha riscontrato un errore interno (errore 500)"
 #, c-format
 msgid "The server at '%s' currently can't handle the request (got error 503)"
 msgstr ""
-"Il server in '%s' correntemente, non può gestire la richiesta (errore 503) "
+"Il server in '%s' correntemente, non può gestire la richiesta (errore 503)"
 
 #. can't print better error message
 #: ../src/lib/ureport.c:610
@@ -1198,7 +1199,7 @@ msgstr "Impossibile analizzare la risposta dal server ureport in'%s'"
 #: ../src/lib/ureport.c:629
 #, c-format
 msgid "The response from '%s' has invalid format"
-msgstr "La risposta da  '%s' ha formato invalido"
+msgstr "La risposta da '%s' ha formato invalido"
 
 #. HTTP CODE 202 means that call was successful but the response
 #. has an error message
@@ -1226,7 +1227,7 @@ msgstr "impossibile da riportare"
 
 #: ../src/lib/parse_options.c:63
 msgid "Usage: "
-msgstr "Utilizzo:"
+msgstr "Utilizzo: "
 
 #: ../src/lib/problem_data.c:252
 #, c-format
@@ -1340,7 +1341,7 @@ msgid ""
 "redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 msgstr ""
 "È possibile creare un account bugzilla.redhat.com &lt;a href=\"https://"
-"bugzilla.redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt; "
+"bugzilla.redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 
 #: ../src/plugins/report_Bugzilla.xml.in.in.h:6
 #: ../src/plugins/report_CentOSBugTracker.xml.in.h:6
@@ -1477,9 +1478,9 @@ msgstr ""
 "\n"
 "Carica i FILE sul ticket specificato in TARGET.\n"
 "\n"
-"Questo strumento facilita la transizione degli utenti della notifica a "
-"libreport. I TARGET riconosciuti sono 'strata' e 'bugzilla', il primo invoca "
-"il caricamento su RHTSupport ed il secondo su Bugzilla.\n"
+"Questo strumento facilita la transizione degli utenti della notifica \n"
+"a libreport. I TARGET riconosciuti sono 'strata' e 'bugzilla', i\n"
+"l primo invoca il caricamento su RHTSupport ed il secondo su Bugzilla.\n"
 "\n"
 "La configurazione (come ad esempio i dati per il login) può essere fornita "
 "tramite file\n"
@@ -1520,7 +1521,7 @@ msgstr "Accesso in corso in Bugzilla in %s"
 #: ../src/plugins/reporter-bugzilla.c:223
 #, c-format
 msgid "Invalid password or login. Please enter your %s login:"
-msgstr "Password o login invalidi. Inserire i tuoi dati di login:"
+msgstr "%sPassword o login invalidi. Inserire i tuoi dati di login:"
 
 #: ../src/plugins/reporter-bugzilla.c:228
 #: ../src/plugins/reporter-rhtsupport.c:411
@@ -1645,7 +1646,7 @@ msgstr "Durante la creazione del bug, allega anche i file binari"
 #: ../src/plugins/reporter-rhtsupport.c:551
 #: ../src/plugins/reporter-mantisbt.c:288
 msgid "Force reporting even if this problem is already reported"
-msgstr "Forza il riporto anche se questo problema è già stato notificato."
+msgstr "Forza il riporto anche se questo problema è già stato notificato"
 
 #: ../src/plugins/reporter-bugzilla.c:330
 msgid "Add bugzilla user to CC list [of bug with this ID]"
@@ -1678,7 +1679,7 @@ msgstr "Debug"
 
 #: ../src/plugins/reporter-bugzilla.c:402
 msgid "Looking for similar problems in bugzilla"
-msgstr "Ricerca di problemi simili in bugzilla "
+msgstr "Ricerca di problemi simili in bugzilla"
 
 #: ../src/plugins/reporter-bugzilla.c:431
 msgid "Failed to get 'REDHAT_BUGZILLA_PRODUCT' from '/etc/os-release'."
@@ -1724,12 +1725,12 @@ msgid ""
 "configured Bugzilla '%s'."
 msgstr ""
 "Questo problema è stato riportato a Bugzilla '%s' che è diverso dal Bugzilla "
-"configurato  '%s'."
+"configurato '%s'."
 
 #: ../src/plugins/reporter-bugzilla.c:509
 #, c-format
 msgid "Malformed url to Bugzilla '%s'."
-msgstr "URL malformato a Bugzilla '%s'."
+msgstr "Url malformato a Bugzilla '%s'."
 
 #: ../src/plugins/reporter-bugzilla.c:513
 #, c-format
@@ -1753,7 +1754,7 @@ msgstr ""
 
 #: ../src/plugins/reporter-bugzilla.c:609
 msgid "Can't determine Bugzilla Product from problem data."
-msgstr "Non si riesce a determinare il Prodotto Bugzilla dai dati del problema"
+msgstr "Non si riesce a determinare il Prodotto Bugzilla dai dati del problema."
 
 #: ../src/plugins/reporter-bugzilla.c:671
 #: ../src/plugins/reporter-mantisbt.c:506
@@ -1784,7 +1785,7 @@ msgstr "Creazione di un nuovo bug in corso"
 
 #: ../src/plugins/reporter-bugzilla.c:782
 msgid "Failed to create a new bug."
-msgstr "Non riuscita la creazione di un nuovo bug"
+msgstr "Non riuscita la creazione di un nuovo bug."
 
 #: ../src/plugins/reporter-bugzilla.c:800
 #, c-format
@@ -1860,8 +1861,8 @@ msgstr ""
 "\n"
 "Notifica i kernel oops al sito kerneloops.org (o simile).\n"
 "\n"
-"I file con i nomi elencati in $EXCLUDE_FROM_REPORT non sono inclusi nel "
-"tarball.\n"
+"I file con i nomi elencati in $EXCLUDE_FROM_REPORT non sono inclusi\n"
+"nel tarball.\n"
 "\n"
 "Le righe di CONFFILE dovrebbero avere il formato 'PARAM = VALUE'. \n"
 "Parametro di stringa riconosciuto: SubmitURL.\n"
@@ -1929,7 +1930,7 @@ msgstr "Formattazione file per una email"
 
 #: ../src/plugins/reporter-mailx.c:291
 msgid "Notify only (Do not mark the report as sent)"
-msgstr "Notifica soltanto (Non impostare il report come inviato)."
+msgstr "Notifica soltanto (Non impostare il report come inviato)"
 
 #: ../src/plugins/reporter-print.c:42
 msgid ""
@@ -1991,7 +1992,7 @@ msgstr "Si desidera ancora creare un ticket per RHTSupport?"
 
 #: ../src/plugins/reporter-rhtsupport.c:409
 msgid "Invalid password or login. Please enter your Red Hat login:"
-msgstr "Password o login invalidi. Inserire il login di Red Hat"
+msgstr "Password o login invalidi. Inserire il login di Red Hat:"
 
 #: ../src/plugins/reporter-rhtsupport.c:473
 msgid "Please enter customer case number to which you want to attach the data:"
@@ -2064,7 +2065,7 @@ msgstr "Invio dati statistici sul crash di ABRT"
 
 #: ../src/plugins/reporter-rhtsupport.c:741
 msgid "Can't create a temporary directory in "
-msgstr "Impossibile creare una directory temporanea in"
+msgstr "Impossibile creare una directory temporanea in "
 
 #: ../src/plugins/reporter-rhtsupport.c:766
 msgid ""
@@ -2119,7 +2120,7 @@ msgstr "Sto creando un nuovo caso"
 #: ../src/plugins/reporter-rhtsupport.c:896
 msgid "Can't determine RH Support Product from problem data."
 msgstr ""
-"Non si può determinare il prodotto di supporto RH dai dati del problema"
+"Non si può determinare il prodotto di supporto RH dai dati del problema."
 
 #: ../src/plugins/reporter-rhtsupport.c:958
 msgid "Linking ABRT crash statistics record with the case"
@@ -2144,11 +2145,11 @@ msgstr "Assegnazione in corso, dei dati del problema al caso '%s'"
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:202
 msgid "Documentation which might be relevant: "
-msgstr "Documentazione che potrebbe essere rilevante:"
+msgstr "Documentazione che potrebbe essere rilevante: "
 
 #: ../src/plugins/reporter-rhtsupport-parse.c:210
 msgid "Updates which possibly help: "
-msgstr "Aggiornmenti che possono essere utili:"
+msgstr "Aggiornmenti che possono essere utili: "
 
 #: ../src/plugins/reporter-systemd-journal.c:225
 msgid ""
@@ -2172,7 +2173,7 @@ msgstr ""
 
 #: ../src/plugins/reporter-systemd-journal.c:251
 msgid "Catalog message id"
-msgstr "Catalogo ID messaggio"
+msgstr "Catalogo id messaggio"
 
 #: ../src/plugins/reporter-systemd-journal.c:252
 msgid "Formatting file for catalog message"
@@ -2234,7 +2235,7 @@ msgstr "Inserire un URL (SCP, FTP, ecc.) dove esportare i dati del problema:"
 
 #: ../src/plugins/reporter-mantisbt.c:80
 msgid "Please enter your MantisBT login:"
-msgstr "Inserire il login MantisBT desiderato."
+msgstr "Inserire il login MantisBT desiderato:"
 
 #: ../src/plugins/reporter-mantisbt.c:84
 msgid "Please enter the password for"
@@ -2242,7 +2243,7 @@ msgstr "Immettere la password per"
 
 #: ../src/plugins/reporter-mantisbt.c:95
 msgid "Credentials are not provided by configuration."
-msgstr "Non sono fornite credenziali dalla configurazione"
+msgstr "Non sono fornite credenziali dalla configurazione."
 
 #: ../src/plugins/reporter-mantisbt.c:119
 msgid "Invalid password or login."
@@ -2363,7 +2364,7 @@ msgid ""
 "configured MantisBT '%s'."
 msgstr ""
 "Questo problema è stato riportato a MantisBT '%s' che è diverso dal MantisBT "
-"configurato  '%s'."
+"configurato '%s'."
 
 #: ../src/plugins/reporter-mantisbt.c:390
 #, c-format
@@ -2410,7 +2411,7 @@ msgstr "Aggiunta URL esterno al bug"
 #: ../src/plugins/reporter-mantisbt.c:593
 #, c-format
 msgid "Adding attachments to issue %i"
-msgstr "Aggiunta URL esterno al bug %i"
+msgstr "Aggiunta url esterno al bug %i"
 
 #: ../src/plugins/reporter-mantisbt.c:648
 #, c-format
@@ -2547,7 +2548,7 @@ msgstr "Aggiungi"
 
 #: ../src/plugins/report_Logger.xml.in.h:6
 msgid "Append new reports or overwrite the old one."
-msgstr "Aggiungi nuovi riporti o sovrascrivi quello vecchio"
+msgstr "Aggiungi nuovi riporti o sovrascrivi quello vecchio."
 
 #: ../src/plugins/report_Mailx.xml.in.h:1
 msgid "Mailx"
@@ -2651,8 +2652,8 @@ msgid ""
 "Where do you want to upload the tarball with report in form login:"
 "password@url"
 msgstr ""
-"Dove si desidera caricare il tarball con il riporto nel formato login:"
-"password@url "
+"Dove si desidera caricare il tarball con il riporto nel formato "
+"login:password@url"
 
 #: ../src/plugins/report_Uploader.xml.in.h:5
 msgid ""
@@ -2719,7 +2720,7 @@ msgstr "Segui i bug già riportati"
 #: ../src/plugins/report_uReport.xml.in.h:6
 msgid "Adds your Bugzilla login to CC List of already reported bugs."
 msgstr ""
-"Aggiungere il proprio login Bugzilla alla lista CC dei bug già riportati"
+"Aggiungere il proprio login Bugzilla alla lista CC dei bug già riportati."
 
 #: ../src/plugins/report_uReport.xml.in.h:7
 msgid "Report unpackaged problems"
@@ -2886,7 +2887,7 @@ msgstr "SOAP: impossibile creare il lettore di testo xml."
 
 #: ../src/plugins/mantisbt.c:501
 msgid "SOAP: Failed to parse xml."
-msgstr "SOAP: impossibile analizzare xml"
+msgstr "SOAP: impossibile analizzare xml."
 
 #: ../src/plugins/mantisbt.c:530
 msgid "SOAP: Failed to parse xml (get related to issue)."
@@ -2894,7 +2895,7 @@ msgstr "SOAP: impossibile analizzare XML (collegarsi al problema)."
 
 #: ../src/plugins/mantisbt.c:647
 msgid "Url or request isn't specified."
-msgstr "Url o richiesta non specificata"
+msgstr "Url o richiesta non specificata."
 
 #: ../src/plugins/mantisbt.c:675
 #, c-format
@@ -3108,7 +3109,7 @@ msgstr ""
 
 #: ../src/plugins/reporter-ureport.c:191
 msgid "This problem does not have an uReport assigned."
-msgstr "Questo problema non ha un uReport assegnato"
+msgstr "Questo problema non ha un uReport assegnato."
 
 #: ../src/plugins/reporter-ureport.c:212
 msgid "This problem has not been reported to Bugzilla."
